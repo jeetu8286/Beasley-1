@@ -21,8 +21,43 @@ main {
 
 .page-header {
   background-color: #ccc;
-  padding: 50px;
+  padding: 0 50px;
   margin-bottom: 24px; }
+  .page-header .account {
+    margin-left: -50px;
+    margin-right: -50px;
+    line-height: 1.5;
+    padding: 0 20px;
+    font-size: 12px;
+    background-color: #efefef;
+    text-align: right;
+    margin-bottom: 24px; }
+  .page-header .register {
+    display: inline-block;
+    vertical-align: middle;
+    margin-bottom: -8px;
+    text-decoration: none;
+    color: #aaa; }
+    .page-header .register:hover {
+      color: #e69500;
+      text-decoration: underline; }
+  .page-header .login {
+    display: inline-block;
+    vertical-align: middle;
+    padding: 10px;
+    background-color: orange;
+    margin-bottom: -8px;
+    border-right: #996300 1px solid;
+    border-bottom: #996300 1px solid;
+    border-radius: 0 0 2px 2px;
+    margin-left: .5em;
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: .05em; }
+    .page-header .login:hover {
+      background-color: #e69500; }
 
 article {
   padding: 0 50px; }
@@ -60,3 +95,14 @@ article {
   padding: 0;
   font-family: "Andale Mono", AndaleMono, Consolas, Monaco, monospace;
   font-size: 12px; }
+
+.player {
+  float: left; }
+  .player i {
+    text-decoration: none;
+    color: #cc8400; }
+  .player i:before {
+    font-size: 45px;
+    color: orange;
+    text-shadow: 1px 1px 0px rgba(153, 99, 0, 0.6);
+    vertical-align: middle; }

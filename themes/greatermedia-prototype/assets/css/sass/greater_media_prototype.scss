@@ -24,8 +24,52 @@ main {
 
 .page-header {
 	background-color: #ccc;
-	padding: 50px;
+	padding: 0 50px;
 	margin-bottom: 24px;
+
+	.account {
+		margin-left: -50px;
+		margin-right: -50px;
+		line-height: 1.5;
+		padding: 0 20px;
+		font-size: 12px;
+		background-color: #efefef;
+		text-align: right;
+		margin-bottom: 24px;
+	}
+
+	.register {
+		display: inline-block;
+		vertical-align: middle;
+		margin-bottom: -8px;
+		text-decoration: none;
+		color: #aaa;
+		&:hover {
+			color: darken(orange, 5%);
+			text-decoration: underline;
+		}
+	}
+
+	.login {
+		display: inline-block;
+		vertical-align: middle;
+		padding: 10px;
+		background-color: orange;
+		margin-bottom: -8px;
+		border-right: saturate(darken(orange, 20%), 10%) 1px solid;
+		border-bottom: saturate(darken(orange, 20%), 10%) 1px solid;
+		border-radius: 0 0 2px 2px;
+		margin-left: .5em;
+		text-decoration: none;
+		color: white;
+		font-weight: bold;
+		text-transform: uppercase;
+		letter-spacing: .05em;
+
+		&:hover {
+			background-color: darken(orange, 5%);
+		}
+	}
 }
 
 article {
@@ -78,4 +122,18 @@ article {
 	padding: 0;
 	font-family: "Andale Mono", AndaleMono, Consolas, Monaco, monospace;
 	font-size: 12px;
+}
+
+.player {
+	float: left;
+	i {
+		text-decoration: none;
+		color: darken(orange, 10%);
+	}
+	i:before {
+		font-size: 45px;
+		color: orange;
+		text-shadow: 1px 1px 0px rgba(saturate(darken(orange, 20%), 10%), .6);
+		vertical-align: middle;
+	}
 }
