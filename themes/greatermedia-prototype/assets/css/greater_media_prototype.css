@@ -1,0 +1,62 @@
+/**
+ * Greater Media Prototype
+ * http://wordpress.org/themes
+ *
+ * Copyright (c) 2014 Taylor Dewey
+ * Licensed under the GPLv2+ license.
+ */
+* {
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
+
+body {
+  font-family: 'Helvetica Neue', 'Helvetica', 'Arial';
+  margin: 0;
+  padding: 0; }
+
+main {
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: #efefef; }
+
+.page-header {
+  background-color: #ccc;
+  padding: 50px;
+  margin-bottom: 24px; }
+
+article {
+  padding: 0 50px; }
+  article h2, article h1 {
+    font-weight: 100;
+    font-size: 40px;
+    margin-top: 0;
+    margin-bottom: 24px; }
+  article p:last-of-type {
+    margin-bottom: 24px; }
+  article h2 a, article h1 a {
+    text-decoration: none; }
+  article #share-bar-div {
+    margin-bottom: 24px;
+    background-color: #fff;
+    padding: 12px;
+    margin-left: -50px;
+    padding-left: 50px;
+    margin-right: -50px;
+    padding-right: 50px; }
+  article #comments-div {
+    margin-bottom: 24px; }
+
+.page-footer {
+  background-color: #ccc;
+  min-height: 24px; }
+
+.home article {
+  border-bottom: 1px solid #fff;
+  margin-bottom: 24px; }
+
+.site-ids {
+  color: #333;
+  margin: 0;
+  padding: 0;
+  font-family: "Andale Mono", AndaleMono, Consolas, Monaco, monospace;
+  font-size: 12px; }

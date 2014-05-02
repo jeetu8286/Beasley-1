@@ -1,0 +1,22 @@
+<?php
+/**
+ * The template for displaying the header.
+ *
+ * @package Greater Media Prototype
+ * @since 0.1.0
+ */
+ ?><!DOCTYPE html>
+		<head>
+	<title>Greater Media Prototype</title>
+	<?php wp_head(); ?>
+		</head>
+<body <?php body_class(); ?>>
+<main>
+
+<header class="page-header">
+	<p class="site-ids">
+		Network: <?php echo get_current_site()->site_name; ?> (ID: <?php echo get_current_site()->id; ?>)<br>
+		Blog ID: <?php echo get_current_blog_id(); ?>
+	</p>
+	<h1><a href="<?php echo home_url(); ?>"><?php echo get_bloginfo('name'); ?></a></h1>
+</header>
