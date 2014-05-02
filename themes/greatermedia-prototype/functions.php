@@ -14,7 +14,9 @@
  
  // Useful global constants
 define( 'GMIPROTO_VERSION', '0.1.0' );
- 
+
+include __DIR__ . '/includes/class-cpt-personality.php';
+
  /**
   * Set up theme defaults and register supported WordPress features.
   *
@@ -23,6 +25,8 @@ define( 'GMIPROTO_VERSION', '0.1.0' );
   * @since 0.1.0
   */
  function gmiproto_setup() {
+	 add_theme_support( 'post-thumbnails' );
+	 GMI_Personality::hooks();
 	/**
 	 * Makes Greater Media Prototype available for translation.
 	 *
