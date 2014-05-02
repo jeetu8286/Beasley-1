@@ -3,3 +3,4 @@ plugins/wp-multi-network/
 plugins/index.php
 themes/index.php
 upgrade/
+/index.php
