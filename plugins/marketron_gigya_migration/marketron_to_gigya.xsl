@@ -25,8 +25,6 @@
 					"lastName": "<xsl:value-of select="@LastName"/>",
 					"nickname": "<xsl:value-of select="@ScreenName"/>",
 					"email": "<xsl:value-of select="@EmailAddress"/>",
-					"photoURL": "",
-					"profileURL": "",
 					<xsl:if test="str:split(@Birthday, '/')[2]">"birthDay": <xsl:value-of select="str:split(@Birthday, '/')[2]"/>,</xsl:if>
 					<xsl:if test="str:split(@Birthday, '/')[1]">"birthMonth": <xsl:value-of select="str:split(@Birthday, '/')[1]"/>,</xsl:if>
 					<xsl:if test="str:split(@Birthday, '/')[3]">"birthYear": <xsl:value-of select="str:split(@Birthday, '/')[3]"/>,</xsl:if>
