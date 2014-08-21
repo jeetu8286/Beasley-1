@@ -2,6 +2,16 @@
 	<xsl:variable name="apos">'</xsl:variable>
 	<xsl:variable name="quot">"</xsl:variable>
 	<xsl:variable name="quot-entity"><![CDATA[&quot;]]></xsl:variable>
+
+	<!-- Convert a boolean string like "True" to a JSON bool value -->
+	<xsl:template name="boolstr-to-bool">
+		<xsl:param name="boolstr" />
+		<xsl:choose>
+			<xsl:when test="'True' = $boolstr">true</xsl:when>
+			<xsl:otherwise>false</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+
 	<xsl:template match="/">
 		{
 		"settings": {
@@ -44,9 +54,9 @@
 					"latitude": "<xsl:value-of select="@Latitude"/>",
 					"bounceBackCount": "<xsl:value-of select="@BounceBackCount"/>",
 					"isEmailUsable": "<xsl:value-of select="@IsEmailUsable"/>",
-					"isCommentingSiteAuthor": "<xsl:value-of select="@IsCommentingSiteAuthor"/>",
-					"isSubscribedToCommentReplies": "<xsl:value-of select="@IsSubscribedToCommentReplies"/>",
-					"isBannedFromCommenting": "<xsl:value-of select="@IsBannedFromCommenting"/>",
+					"isCommentingSiteAuthor": <xsl:call-template name="boolstr-to-bool"><xsl:with-param name="boolstr" select="@IsCommentingSiteAuthor"></xsl:with-param></xsl:call-template>,
+					"isSubscribedToCommentReplies": <xsl:call-template name="boolstr-to-bool"><xsl:with-param name="boolstr" select="@IsSubscribedToCommentReplies"></xsl:with-param></xsl:call-template>,
+					"isBannedFromCommenting": <xsl:call-template name="boolstr-to-bool"><xsl:with-param name="boolstr" select="@IsBannedFromCommenting"></xsl:with-param></xsl:call-template>,
 					"groups": [ <xsl:for-each select="MemberGroups/MemberGroup">
 						<xsl:if test="position()!=1">,</xsl:if> {"name": "<xsl:value-of select="@Name"/>", "subscribed": "<xsl:value-of select="@UTCDateSubscribed"/>"}
 					</xsl:for-each> ],
@@ -59,7 +69,7 @@
 							"startDate": "<xsl:value-of select="@StartDate"/>",
 							"endDate": "<xsl:value-of select="@EndDate"/>",
 							"isNonClubContest": "<xsl:value-of select="@IsNonClubContest"/>",
-							"isFullMembershipRequired": "<xsl:value-of select="@IsFullMembershipRequired"/>",
+							"isFullMembershipRequired": <xsl:value-of select="@IsFullMembershipRequired"/>,
 							"entries": [ <xsl:for-each select="set:distinct(ContestEntries/ContestEntry/@EntryID)">
 								<xsl:variable name="entryID" select="."/>
 								<xsl:if test="position()!=1">,</xsl:if> {
