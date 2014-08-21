@@ -50,11 +50,9 @@ class GMMarketronToGigya extends WP_CLI_Command {
 		$tidied_document = TidyJSON::tidy( $transformed_document );
 
 		// Fill in a placeholder values
-		$tidied_document = str_replace( '%password%', md5( '12345' ), $tidied_document );
+		$tidied_document = str_replace( '%password%', md5( self::generatePassword( 30 ) ), $tidied_document );
 		$tidied_document = str_replace( '%api_key%', $assoc_args['api_key'], $tidied_document );
 
-		self::jsonlint( $tidied_document );
-//die();
 		if ( isset( $assoc_args['output'] ) && ! empty( $assoc_args['output'] ) ) {
 			// Output a file
 			file_put_contents( $assoc_args['output'], $tidied_document );
@@ -84,6 +82,26 @@ class GMMarketronToGigya extends WP_CLI_Command {
 			print_r( $result );
 		}
 
+	}
+
+	/**
+	 * Generate a password
+	 *
+	 * @param int $length
+	 *
+	 * @return string
+	 * @see http://stackoverflow.com/a/1837443
+	 */
+	private function generatePassword( $length = 8 ) {
+		$chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+		$count = mb_strlen( $chars );
+
+		for ( $i = 0, $result = ''; $i < $length; $i ++ ) {
+			$index = rand( 0, $count - 1 );
+			$result .= mb_substr( $chars, $index, 1 );
+		}
+
+		return $result;
 	}
 
 }
