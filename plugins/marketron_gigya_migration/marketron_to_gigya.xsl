@@ -106,7 +106,7 @@
 									"date": "<xsl:value-of select="@UTCCompletionDate"/>",
 									"questions": [ <xsl:for-each select="Questions/Question">
 										<xsl:if test="position()!=1">,</xsl:if> {
-											"question": "<xsl:value-of select="@Question"/>",
+											"question": "<xsl:value-of select="str:replace(@Question, $quot, $quot-entity)"/>",
 											"answers": [ <xsl:for-each select="Responses/Response">
 												<xsl:if test="position()!=1">,</xsl:if>"<xsl:value-of select="str:replace(@Value, $quot, $quot-entity)"/>"
 											</xsl:for-each> ]
