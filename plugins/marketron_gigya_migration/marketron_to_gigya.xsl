@@ -12,6 +12,15 @@
 		</xsl:choose>
 	</xsl:template>
 
+	<!-- Convert a boolean numeric string like "1" to a JSON bool value -->
+	<xsl:template name="boolnumstr-to-bool">
+		<xsl:param name="boolnumstr" />
+		<xsl:choose>
+			<xsl:when test="'1' = $boolnumstr">true</xsl:when>
+			<xsl:otherwise>false</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+
 	<xsl:template match="/">
 		{
 		"settings": {
@@ -53,7 +62,7 @@
 					"longitude": "<xsl:value-of select="@Longitude"/>",
 					"latitude": "<xsl:value-of select="@Latitude"/>",
 					"bounceBackCount": "<xsl:value-of select="@BounceBackCount"/>",
-					"isEmailUsable": "<xsl:value-of select="@IsEmailUsable"/>",
+					"isEmailUsable": <xsl:call-template name="boolnumstr-to-bool"><xsl:with-param name="boolnumstr" select="@IsEmailUsable"></xsl:with-param></xsl:call-template>,
 					"isCommentingSiteAuthor": <xsl:call-template name="boolstr-to-bool"><xsl:with-param name="boolstr" select="@IsCommentingSiteAuthor"></xsl:with-param></xsl:call-template>,
 					"isSubscribedToCommentReplies": <xsl:call-template name="boolstr-to-bool"><xsl:with-param name="boolstr" select="@IsSubscribedToCommentReplies"></xsl:with-param></xsl:call-template>,
 					"isBannedFromCommenting": <xsl:call-template name="boolstr-to-bool"><xsl:with-param name="boolstr" select="@IsBannedFromCommenting"></xsl:with-param></xsl:call-template>,
@@ -68,8 +77,8 @@
 							"giveawayType": "<xsl:value-of select="@ContestGiveawayTypeDescription"/>",
 							"startDate": "<xsl:value-of select="@StartDate"/>",
 							"endDate": "<xsl:value-of select="@EndDate"/>",
-							"isNonClubContest": "<xsl:value-of select="@IsNonClubContest"/>",
-							"isFullMembershipRequired": <xsl:value-of select="@IsFullMembershipRequired"/>,
+							"isNonClubContest": <xsl:call-template name="boolstr-to-bool"><xsl:with-param name="boolstr" select="@IsNonClubContest"></xsl:with-param></xsl:call-template>,
+							"isFullMembershipRequired": <xsl:call-template name="boolstr-to-bool"><xsl:with-param name="boolstr" select="@IsFullMembershipRequired"></xsl:with-param></xsl:call-template>,
 							"entries": [ <xsl:for-each select="set:distinct(ContestEntries/ContestEntry/@EntryID)">
 								<xsl:variable name="entryID" select="."/>
 								<xsl:if test="position()!=1">,</xsl:if> {
@@ -99,7 +108,7 @@
 										<xsl:if test="position()!=1">,</xsl:if> {
 											"question": "<xsl:value-of select="@Question"/>",
 											"answers": [ <xsl:for-each select="Responses/Response">
-												<xsl:if test="position()!=1">,</xsl:if>"<xsl:value-of select="@Value"/>"
+												<xsl:if test="position()!=1">,</xsl:if>"<xsl:value-of select="str:replace(@Value, $quot, $quot-entity)"/>"
 											</xsl:for-each> ]
 										}
 									</xsl:for-each> ]
