@@ -1,4 +1,7 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0" xmlns:str="http://exslt.org/strings" xmlns:set="http://exslt.org/sets">
+	<xsl:variable name="apos">'</xsl:variable>
+	<xsl:variable name="quot">"</xsl:variable>
+	<xsl:variable name="quot-entity"><![CDATA[&quot;]]></xsl:variable>
 	<xsl:template match="/">
 		{
 		"settings": {
@@ -24,9 +27,9 @@
 					"email": "<xsl:value-of select="@EmailAddress"/>",
 					"photoURL": "",
 					"profileURL": "",
-					"birthDay": <xsl:value-of select="str:split(@Birthday, '/')[2]"/>,
-					"birthMonth": <xsl:value-of select="str:split(@Birthday, '/')[1]"/>,
-					"birthYear": <xsl:value-of select="str:split(@Birthday, '/')[3]"/>,
+					<xsl:if test="str:split(@Birthday, '/')[2]">"birthDay": <xsl:value-of select="str:split(@Birthday, '/')[2]"/>,</xsl:if>
+					<xsl:if test="str:split(@Birthday, '/')[1]">"birthMonth": <xsl:value-of select="str:split(@Birthday, '/')[1]"/>,</xsl:if>
+					<xsl:if test="str:split(@Birthday, '/')[3]">"birthYear": <xsl:value-of select="str:split(@Birthday, '/')[3]"/>,</xsl:if>
 					"city": "<xsl:value-of select="@City"/>",
 					"state": "<xsl:value-of select="@State"/>",
 					"zip": "<xsl:value-of select="@ZipCode"/>",
@@ -41,7 +44,7 @@
 					"address": "<xsl:value-of select="@Address1"/>",
 					"longitude": "<xsl:value-of select="@Longitude"/>",
 					"latitude": "<xsl:value-of select="@Latitude"/>",
-					"bounchBackCount": "<xsl:value-of select="@BounceBackCount"/>",
+					"bounceBackCount": "<xsl:value-of select="@BounceBackCount"/>",
 					"isEmailUsable": "<xsl:value-of select="@IsEmailUsable"/>",
 					"isCommentingSiteAuthor": "<xsl:value-of select="@IsCommentingSiteAuthor"/>",
 					"isSubscribedToCommentReplies": "<xsl:value-of select="@IsSubscribedToCommentReplies"/>",
@@ -50,7 +53,7 @@
 						<xsl:if test="position()!=1">,</xsl:if> {"name": "<xsl:value-of select="@Name"/>", "subscribed": "<xsl:value-of select="@UTCDateSubscribed"/>"}
 					</xsl:for-each> ],
 					"contests": [ <xsl:for-each select="MemberSiteInteraction/Contests/Contest">
-						{
+						<xsl:if test="position()!=1">,</xsl:if>{
 							"id": "<xsl:value-of select="@ContestID"/>",
 							"name": "<xsl:value-of select="@ContestName"/>",
 							"category": "<xsl:value-of select="@ContestCategoryDescription"/>",
@@ -59,18 +62,19 @@
 							"endDate": "<xsl:value-of select="@EndDate"/>",
 							"isNonClubContest": "<xsl:value-of select="@IsNonClubContest"/>",
 							"isFullMembershipRequired": "<xsl:value-of select="@IsFullMembershipRequired"/>",
-
 							"entries": [ <xsl:for-each select="set:distinct(ContestEntries/ContestEntry/@EntryID)">
 								<xsl:variable name="entryID" select="."/>
+								<xsl:if test="position()!=1">,</xsl:if> {
 								"date": "<xsl:value-of select="../../ContestEntry[@EntryID = $entryID]/@UTCEntryDate"/>",
 								"fields": [ <xsl:for-each select="../../ContestEntry[@EntryID = $entryID]">
 									<xsl:if test="position()!=1">,</xsl:if> {
 										"field": "<xsl:value-of select="@FieldHeadline"/>",
-										"value": "<xsl:value-of select="@Response"/>"
+										"value": "<xsl:value-of select="str:replace(@Response, $quot, $quot-entity)"/>"
 									}
-								</xsl:for-each> ],
+								</xsl:for-each> ]
+							}
 							</xsl:for-each> ]
-						},
+						}
 					</xsl:for-each> ],
 					"surveys": [ <xsl:for-each select="MemberSiteInteraction/Surveys/Survey">
 						<xsl:if test="position()!=1">,</xsl:if> {
@@ -80,16 +84,18 @@
 							"endDate": "<xsl:value-of select="@UTCEndDateTime"/>",
 							"isAssociatedToContest": "<xsl:value-of select="@IsAssociatedToContest"/>",
 							"entries": [ <xsl:for-each select="SurveyEntries/SurveyEntry">
-								"id": "<xsl:value-of select="@UserSurveyID"/>",
-								"date": "<xsl:value-of select="@UTCCompletionDate"/>",
-								"questions": [ <xsl:for-each select="Questions/Question">
-									<xsl:if test="position()!=1">,</xsl:if> {
-										"question": "<xsl:value-of select="@Question"/>",
-										"answers": [ <xsl:for-each select="Responses/Response">
-											<xsl:if test="position()!=1">,</xsl:if>"<xsl:value-of select="@Value"/>"
-										</xsl:for-each> ]
-									}
-								</xsl:for-each> ]
+								<xsl:if test="position()!=1">,</xsl:if> {
+									"id": "<xsl:value-of select="@UserSurveyID"/>",
+									"date": "<xsl:value-of select="@UTCCompletionDate"/>",
+									"questions": [ <xsl:for-each select="Questions/Question">
+										<xsl:if test="position()!=1">,</xsl:if> {
+											"question": "<xsl:value-of select="@Question"/>",
+											"answers": [ <xsl:for-each select="Responses/Response">
+												<xsl:if test="position()!=1">,</xsl:if>"<xsl:value-of select="@Value"/>"
+											</xsl:for-each> ]
+										}
+									</xsl:for-each> ]
+								}
 							</xsl:for-each> ]
 						}
 					</xsl:for-each> ]
