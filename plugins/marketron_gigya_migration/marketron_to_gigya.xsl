@@ -25,7 +25,7 @@
 		{
 		"settings": {
 		"importFormat": "gigya-raas-import",
-		"apiKey": "",
+		"apiKey": "%api_key%",
 		"profilePhotoDomains": "",
 		"finalizeRegistration": true,
 		"skipVerification": true,

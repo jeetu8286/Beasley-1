@@ -17,9 +17,9 @@ class GMMarketronToGigya extends WP_CLI_Command {
 	 *
 	 * ## EXAMPLES
 	 *
-	 *     wp marketron_to_gigya convert --marketron="marketron_export.xml" [--output=<filename>]
+	 *     wp marketron_to_gigya convert --marketron="marketron_export.xml" --api_key="123456" [--output=<filename>]
 	 *
-	 * @synopsis --marketron=<filename> [--output=<filename>]
+	 * @synopsis --marketron=<filename> --api_key=<key> [--output=<filename>]
 	 */
 	public function convert( $args, $assoc_args ) {
 
@@ -49,10 +49,11 @@ class GMMarketronToGigya extends WP_CLI_Command {
 
 		$tidied_document = TidyJSON::tidy( $transformed_document );
 
-		// Fill in a placeholder password
+		// Fill in a placeholder values
 		$tidied_document = str_replace( '%password%', md5( '12345' ), $tidied_document );
+		$tidied_document = str_replace( '%api_key%', $assoc_args['api_key'], $tidied_document );
 
-//		self::jsonlint( $tidied_document );
+		self::jsonlint( $tidied_document );
 //die();
 		if ( isset( $assoc_args['output'] ) && ! empty( $assoc_args['output'] ) ) {
 			// Output a file
