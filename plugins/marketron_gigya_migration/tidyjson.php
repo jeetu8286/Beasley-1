@@ -30,6 +30,7 @@ class TidyJSON {
 		$level = 0;
 		$strchr = null;
 		$c = null;
+		$eol = false;
 		for ($x = 0; $x < strlen($json); $x++) {
 			$lc = $c;
 			$c = substr($json, $x, 1);
