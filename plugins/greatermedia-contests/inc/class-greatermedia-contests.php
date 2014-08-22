@@ -51,7 +51,7 @@ class GreaterMediaContests {
 			'description'         => __( 'Contest', 'greatermedia_contests' ),
 			'labels'              => $labels,
 			'supports'            => array( 'title', 'editor', ),
-			'taxonomies'          => array( 'category', 'post_tag' ),
+			'taxonomies'          => array( 'contest_type' ),
 			'hierarchical'        => false,
 			'public'              => true,
 			'show_ui'             => true,
@@ -63,7 +63,7 @@ class GreaterMediaContests {
 			'has_archive'         => false,
 			'exclude_from_search' => false,
 			'publicly_queryable'  => true,
-			'capability_type'     => 'page',
+			'capability_type'     => 'post',
 		);
 
 		register_post_type( 'contest', $args );
