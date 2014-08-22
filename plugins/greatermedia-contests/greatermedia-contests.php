@@ -15,3 +15,7 @@ define( 'GREATER_MEDIA_CONTESTS_PATH', dirname( __FILE__ ) );
 
 include trailingslashit( __DIR__ ) . 'inc/class-greatermedia-contests.php';
 include trailingslashit( __DIR__ ) . 'inc/class-greatermedia-contests-metaboxes.php';
+
+if ( defined('WP_CLI') && WP_CLI ) {
+	include trailingslashit( __DIR__ ) . 'inc/class-greatermedia-contests-wp-cli.php';
+}

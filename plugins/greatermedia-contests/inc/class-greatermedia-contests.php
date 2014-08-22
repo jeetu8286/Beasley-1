@@ -247,14 +247,18 @@ class GreaterMediaContests {
 	/**
 	 * Convenience method for inserting a "comment" representing a contest entry
 	 *
-	 * @param array $commentdata
+	 * @param array $data
+	 * @return int comment ID
 	 *
 	 * @uses wp_insert_comment
 	 */
-	public static function insert_contest_entry( array $commentdata ) {
+	public static function insert_contest_entry( array $data ) {
 
-		$commentdata['comment_type'] = self::COMMENT_TYPE;
-		wp_insert_comment( $commentdata );
+		$data['comment_type'] = self::COMMENT_TYPE;
+
+		$data = apply_filters('gm_contest_entry_data', $data);
+
+		return wp_insert_comment( $data );
 
 	}
 
