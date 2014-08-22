@@ -40,9 +40,9 @@ class GreaterMediaContests {
 			'view_item'          => __( 'View Contest', 'greatermedia_contests' ),
 			'add_new_item'       => __( 'Add New Contest', 'greatermedia_contests' ),
 			'add_new'            => __( 'Add New', 'greatermedia_contests' ),
-			'edit_item'          => __( 'Edit Item', 'greatermedia_contests' ),
-			'update_item'        => __( 'Update Item', 'greatermedia_contests' ),
-			'search_items'       => __( 'Search Item', 'greatermedia_contests' ),
+			'edit_item'          => __( 'Edit Contest', 'greatermedia_contests' ),
+			'update_item'        => __( 'Update Contest', 'greatermedia_contests' ),
+			'search_items'       => __( 'Search Contests', 'greatermedia_contests' ),
 			'not_found'          => __( 'Not found', 'greatermedia_contests' ),
 			'not_found_in_trash' => __( 'Not found in Trash', 'greatermedia_contests' ),
 		);
@@ -50,7 +50,7 @@ class GreaterMediaContests {
 			'label'               => __( 'contest', 'greatermedia_contests' ),
 			'description'         => __( 'Contest', 'greatermedia_contests' ),
 			'labels'              => $labels,
-			'supports'            => array( 'title', 'editor', ),
+			'supports'            => array( 'title', ),
 			'taxonomies'          => array( 'contest_type' ),
 			'hierarchical'        => false,
 			'public'              => true,
@@ -257,6 +257,7 @@ class GreaterMediaContests {
 		wp_insert_comment( $commentdata );
 
 	}
+
 }
 
 $GreaterMediaContests = new GreaterMediaContests();

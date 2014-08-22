@@ -14,3 +14,4 @@ if ( ! defined( 'ABSPATH' ) ) {
 define( 'GREATER_MEDIA_CONTESTS_PATH', dirname( __FILE__ ) );
 
 include trailingslashit( __DIR__ ) . 'inc/class-greatermedia-contests.php';
+include trailingslashit( __DIR__ ) . 'inc/class-greatermedia-contests-metaboxes.php';
