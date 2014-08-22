@@ -25,6 +25,10 @@ class GreaterMediaContests {
 
 	}
 
+	/**
+	 * Register a Custom Post Type representing a contest
+	 * @uses register_post_type
+	 */
 	public function register_contest_post_type() {
 
 		$labels = array(
@@ -61,10 +65,15 @@ class GreaterMediaContests {
 			'publicly_queryable'  => true,
 			'capability_type'     => 'page',
 		);
+
 		register_post_type( 'contest', $args );
 
 	}
 
+	/**
+	 * Register a custom taxonomy representing Contest Types
+	 * @uses register_taxonomy
+	 */
 	public function register_contest_type_taxonomy() {
 
 		$labels = array(
@@ -104,6 +113,7 @@ class GreaterMediaContests {
 
 	/**
 	 * Populate the initial records in the Contest Type taxonomy
+	 *
 	 * @uses wp_insert_term
 	 * @uses get_option
 	 * @uses set_option
@@ -144,8 +154,6 @@ class GreaterMediaContests {
 	 * Exclude notes (comments) on edd_payment post type from showing in Recent
 	 * Comments widgets
 	 *
-	 * @since 1.4.1
-	 *
 	 * @param array $clauses          Comment clauses for comment query
 	 * @param obj   $wp_comment_query WordPress Comment Query Object
 	 *
@@ -164,8 +172,6 @@ class GreaterMediaContests {
 
 	/**
 	 * Exclude notes (comments) on edd_payment post type from showing in comment feeds
-	 *
-	 * @since 1.5.1
 	 *
 	 * @param array $where
 	 * @param obj   $wp_comment_query WordPress Comment Query Object
@@ -187,8 +193,6 @@ class GreaterMediaContests {
 	 * Remove EDD Comments from the wp_count_comments function
 	 *
 	 * @access public
-	 * @since  1.5.2
-	 *
 	 * @param array $stats   (empty from core filter)
 	 * @param int   $post_id Post ID
 	 *
