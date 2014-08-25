@@ -142,7 +142,8 @@ class GreaterMediaContests {
 			)
 		);
 
-		update_option( 'contest_type_seeded', true );
+		delete_option( 'contest_type_seeded' );
+		add_option( 'contest_type_seeded', true, '', true );
 
 		if ( class_exists( 'GreaterMediaAdminNotifier' ) ) {
 			GreaterMediaAdminNotifier::message( __( 'Seeded "Contest Types" taxonomy.', 'greatermedia_contests' ) );
