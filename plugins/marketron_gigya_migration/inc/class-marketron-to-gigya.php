@@ -53,6 +53,9 @@ class GMMarketronToGigya extends WP_CLI_Command {
 		$tidied_document = str_replace( '%password%', md5( self::generatePassword( 30 ) ), $tidied_document );
 		$tidied_document = str_replace( '%api_key%', $assoc_args['api_key'], $tidied_document );
 
+		// Replace tabs with spaces
+		$tidied_document = preg_replace( '/\t/', '\t', $tidied_document );
+
 		if ( isset( $assoc_args['output'] ) && ! empty( $assoc_args['output'] ) ) {
 			// Output a file
 			file_put_contents( $assoc_args['output'], $tidied_document );
