@@ -53,7 +53,8 @@ class GreaterMediaContestsWPCLI extends WP_CLI_Command {
 
 			);
 
-			GreaterMediaContests::insert_contest_entry( $commentdata );
+			$entry_id = GreaterMediaContests::insert_contest_entry( $commentdata );
+			WP_CLI::line( sprintf( 'Created entry %d', $entry_id ) );
 
 		}
 
