@@ -37,7 +37,7 @@
 				"UID": "<xsl:value-of select="@MemberGUID"/>",
 				"hashedPassword": "%password%",
 				"pwHashAlgorithm": "md5",
-				"email": "john.smith@acme.com",
+				"email": "<xsl:value-of select="@EmailAddress"/>",
 				"username": "<xsl:value-of select="@ScreenName"/>",
 				"profile": {
 					"firstName": "<xsl:value-of select="@FirstName"/>",
