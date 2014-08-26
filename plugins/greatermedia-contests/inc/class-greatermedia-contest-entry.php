@@ -19,13 +19,14 @@ class GreaterMediaContestEntry {
 
 	}
 
-	public static function for_comment_data( $post_id, $author_name, $author_email, $author_ip = '127.0.0.1' ) {
+	public static function for_comment_data( $post_id, $source_url, $author_name, $author_email, $author_ip = '127.0.0.1' ) {
 
 		$comment                                       = new self();
 		$comment->comment_data['comment_post_ID']      = $post_id;
 		$comment->comment_data['comment_author']       = $author_name;
 		$comment->comment_data['comment_author_email'] = $author_email;
 		$comment->comment_data['comment_author_IP']    = $author_ip;
+		$comment->comment_data['comment_author_url']   = $source_url;
 
 		return $comment;
 
@@ -50,8 +51,8 @@ class GreaterMediaContestEntry {
 		global $timestart;
 
 		$filtered_comment_data = apply_filters( 'gm_contest_entry_data', $this->comment_data );
-		if(!isset($filtered_comment_data['comment_date']) || empty($filtered_comment_data['comment_date'])) {
-			$filtered_comment_data['comment_date']         = date( 'Y-m-d H:i:s', intval( $timestart ) );
+		if ( ! isset( $filtered_comment_data['comment_date'] ) || empty( $filtered_comment_data['comment_date'] ) ) {
+			$filtered_comment_data['comment_date'] = date( 'Y-m-d H:i:s', intval( $timestart ) );
 		}
 
 		if ( isset( $filtered_comment_data['comment_ID'] ) ) {

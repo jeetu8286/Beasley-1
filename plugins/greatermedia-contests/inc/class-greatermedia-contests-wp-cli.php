@@ -35,27 +35,60 @@ class GreaterMediaContestsWPCLI extends WP_CLI_Command {
 			WP_CLI::error( sprintf( 'Post %d is not a Contest', $contest_id ) );
 		}
 
+		$personas = self::random_names( $num_entries );
+
 		for ( $entry_index = 0; $entry_index < $num_entries; $entry_index += 1 ) {
 
 			$comment                                   = GreaterMediaContestEntry::for_comment_data(
 				$contest_id,
-				'admin',
-				'admin@admin.com'
+				$personas[$entry_index]->user->picture,
+				ucfirst( $personas[$entry_index]->user->name->title ) . ' ' .
+				ucfirst( $personas[$entry_index]->user->name->first ) . ' ' .
+				ucfirst( $personas[$entry_index]->user->name->last ),
+				$personas[$entry_index]->user->email
 			);
 			$comment->comment_data['comment_parent']   = 0;
 			$comment->comment_data['comment_agent']    = 'WP-CLI';
 			$comment->comment_data['comment_approved'] = 1;
 
-//			'comment_author_url'   => 'http://example.com',
-//				'comment_content'      => 'content here',
+			$comment->comment_data['comment_content'] = json_encode( $personas[$entry_index] );
 
-//		);
-
-//			$entry_id = GreaterMediaContests::insert_contest_entry( $commentdata );
 			$entry_id = $comment->save();
 			WP_CLI::line( sprintf( 'Created entry %d', $entry_id ) );
 
 		}
+
+	}
+
+	public static function random_names( $num = 1 ) {
+
+		// Try to pull data from a service, fall back to just some hard-coded stuff
+		$data = wp_remote_get( add_query_arg( 'results', intval( $num ), 'http://api.randomuser.me' ) );
+		if ( ! is_wp_error( $data ) ) {
+			WP_CLI::line( 'Retrieved fake persona data from the randomuser.me API' );
+			$data = json_decode( $data['body'] );
+
+			return $data->results;
+		} else {
+			WP_CLI::line( 'Error retrieving fake personas from API. Using hard-coded alternative.' );
+
+			$persona                    = new stdClass();
+			$persona->user              = new stdClass();
+			$persona->user->email       = 'admin@127.0.0.1';
+			$persona->user->name        = new stdClass();
+			$persona->user->name->title = 'Ms';
+			$persona->user->name->first = 'First';
+			$persona->user->name->last  = 'Last';
+			$persona->user->picture     = 'http://example.com';
+
+			$results = array();
+			for ( $entry_index = 0; $entry_index < $num; $entry_index += 1 ) {
+				$results[] = $persona;
+			}
+
+			return $results;
+		}
+
 
 	}
 }
