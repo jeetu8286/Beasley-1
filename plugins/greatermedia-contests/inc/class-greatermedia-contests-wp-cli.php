@@ -37,23 +37,22 @@ class GreaterMediaContestsWPCLI extends WP_CLI_Command {
 
 		for ( $entry_index = 0; $entry_index < $num_entries; $entry_index += 1 ) {
 
-			$commentdata = array(
-				'comment_post_ID'      => $contest_id,
-				'comment_author'       => 'admin',
-				'comment_author_email' => 'admin@admin.com',
-				'comment_author_url'   => 'http://example.com',
-				'comment_content'      => 'content here',
-				'comment_type'         => '',
-				'comment_parent'       => 0,
-				'user_id'              => 1,
-				'comment_author_IP'    => '127.0.0.1',
-				'comment_agent'        => 'WP-CLI',
-				'comment_date'         => date( 'Y-m-d H:i:s', intval( $timestart ) ),
-				'comment_approved'     => 1,
-
+			$comment                                   = GreaterMediaContestEntry::for_comment_data(
+				$contest_id,
+				'admin',
+				'admin@admin.com'
 			);
+			$comment->comment_data['comment_parent']   = 0;
+			$comment->comment_data['comment_agent']    = 'WP-CLI';
+			$comment->comment_data['comment_approved'] = 1;
 
-			$entry_id = GreaterMediaContests::insert_contest_entry( $commentdata );
+//			'comment_author_url'   => 'http://example.com',
+//				'comment_content'      => 'content here',
+
+//		);
+
+//			$entry_id = GreaterMediaContests::insert_contest_entry( $commentdata );
+			$entry_id = $comment->save();
 			WP_CLI::line( sprintf( 'Created entry %d', $entry_id ) );
 
 		}

@@ -11,17 +11,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class GreaterMediaContests {
 
-	const COMMENT_TYPE = 'contest_entry';
-
 	function __construct() {
 
 		add_action( 'init', array( $this, 'register_contest_post_type' ) );
 		add_action( 'init', array( $this, 'register_contest_type_taxonomy' ) );
-
-		// Hide the custom comment type from queries
-		add_filter( 'comments_clauses', array( $this, 'comments_clauses' ), 10, 2 );
-		add_filter( 'comment_feed_where', array( $this, 'comment_feed_where' ), 10, 2 );
-		add_filter( 'wp_count_comments', array( $this, 'wp_count_comments' ), 10, 2 );
 
 	}
 
@@ -148,118 +141,6 @@ class GreaterMediaContests {
 		if ( class_exists( 'GreaterMediaAdminNotifier' ) ) {
 			GreaterMediaAdminNotifier::message( __( 'Seeded "Contest Types" taxonomy.', 'greatermedia_contests' ) );
 		}
-
-	}
-
-	/**
-	 * Exclude notes (comments) on edd_payment post type from showing in Recent
-	 * Comments widgets
-	 *
-	 * @param array $clauses          Comment clauses for comment query
-	 * @param obj   $wp_comment_query WordPress Comment Query Object
-	 *
-	 * @return array $clauses Updated comment clauses
-	 */
-	public function comments_clauses( $clauses, $wp_comment_query ) {
-
-		global $wpdb;
-
-		$clauses['where'] .= sprintf( ' AND comment_type != "%s"', self::COMMENT_TYPE );
-
-		return $clauses;
-
-	}
-
-
-	/**
-	 * Exclude notes (comments) on edd_payment post type from showing in comment feeds
-	 *
-	 * @param array $where
-	 * @param obj   $wp_comment_query WordPress Comment Query Object
-	 *
-	 * @return array $where
-	 */
-	public function comment_feed_where( $where, $wp_comment_query ) {
-
-		global $wpdb;
-
-		$where .= $wpdb->prepare( " AND comment_type != %s", self::COMMENT_TYPE );
-
-		return $where;
-
-	}
-
-
-	/**
-	 * Remove EDD Comments from the wp_count_comments function
-	 *
-	 * @access public
-	 * @param array $stats   (empty from core filter)
-	 * @param int   $post_id Post ID
-	 *
-	 * @return array Array of comment counts
-	 */
-	public function wp_count_comments( $stats, $post_id ) {
-
-		global $wpdb, $pagenow;
-
-		$post_id = (int) $post_id;
-
-		$stats = wp_cache_get( "comments-{$post_id}", 'counts' );
-
-		if ( false !== $stats ) {
-			return $stats;
-		}
-
-		$where = sprintf( 'WHERE comment_type != "%s"', self::COMMENT_TYPE );
-
-		if ( $post_id > 0 ) {
-			$where .= $wpdb->prepare( " AND comment_post_ID = %d", $post_id );
-		}
-
-		$count = $wpdb->get_results( "SELECT comment_approved, COUNT( * ) AS num_comments FROM {$wpdb->comments} {$where} GROUP BY comment_approved", ARRAY_A );
-
-		$total    = 0;
-		$approved = array( '0' => 'moderated', '1' => 'approved', 'spam' => 'spam', 'trash' => 'trash', 'post-trashed' => 'post-trashed' );
-		foreach ( (array) $count as $row ) {
-			// Don't count post-trashed toward totals
-			if ( 'post-trashed' != $row['comment_approved'] && 'trash' != $row['comment_approved'] ) {
-				$total += $row['num_comments'];
-			}
-			if ( isset( $approved[$row['comment_approved']] ) ) {
-				$stats[$approved[$row['comment_approved']]] = $row['num_comments'];
-			}
-		}
-
-		$stats['total_comments'] = $total;
-		foreach ( $approved as $key ) {
-			if ( empty( $stats[$key] ) ) {
-				$stats[$key] = 0;
-			}
-		}
-
-		$stats = (object) $stats;
-		wp_cache_set( "comments-{$post_id}", $stats, 'counts' );
-
-		return $stats;
-
-	}
-
-	/**
-	 * Convenience method for inserting a "comment" representing a contest entry
-	 *
-	 * @param array $data
-	 * @return int comment ID
-	 *
-	 * @uses wp_insert_comment
-	 */
-	public static function insert_contest_entry( array $data ) {
-
-		$data['comment_type'] = self::COMMENT_TYPE;
-
-		$data = apply_filters('gm_contest_entry_data', $data);
-
-		return wp_insert_comment( $data );
 
 	}
 
