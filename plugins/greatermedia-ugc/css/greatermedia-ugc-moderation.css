@@ -1,0 +1,37 @@
+.ugc-moderation-actions {
+	vertical-align: top;
+	width: 15%;
+}
+
+.ugc-moderation-primary-controls > * {
+	display: inline-block;
+}
+
+.ugc-moderation-primary-controls input[type="checkbox"] {
+	margin-left: 0;
+	margin-right: .5em;
+}
+
+.ugc-moderation-links li {
+	display: inline-block;
+	border-left: 1px solid #000;
+	padding-left: .5em;
+	padding-right: .5em;
+}
+
+.ugc-moderation-links li:first-child {
+	border-left: none;
+	padding-left: 0;
+}
+
+.ugc-moderation-gallery-thumb {
+	display:     inline-block;
+	height:      150px;
+	width:       auto;
+	margin-left: 1.4em;
+	box-shadow:  2px -1px 1px 0px rgba(50, 50, 50, 0.5);
+}
+
+.ugc-moderation-gallery-thumb:first-child {
+	margin-left: 0;
+}
