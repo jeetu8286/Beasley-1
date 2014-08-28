@@ -47,6 +47,14 @@ class GreaterMediaContestsMetaboxes {
 			)
 		);
 
+		x_add_metadata_group(
+			'gform-select',
+			array('contest'),
+			array(
+				'label'    => 'Entry Form', // Label for the group
+			)
+		);
+
 		// Fields
 		x_add_metadata_field(
 			'prizes-desc',
@@ -98,6 +106,33 @@ class GreaterMediaContestsMetaboxes {
 			)
 		);
 
+		x_add_metadata_field(
+			'form',
+			array('contest'),
+			array(
+				'group'                   => 'gform-select', // The slug of group the field should be added to. This needs to be registered with x_add_metadata_group first.
+				'field_type'              => 'radio', // The type of field; 'text', 'textarea', 'password', 'checkbox', 'radio', 'select', 'upload', 'wysiwyg', 'datepicker', 'taxonomy_select', 'taxonomy_radio'
+				'label'                   => 'Select a Gravity Form', // Label for the field
+				'values' 				  =>  $this->get_gravity_forms()
+			)
+		);
+
+	}
+
+	/**
+	 * Return an array of active Gravity Forms
+	 *
+	 */
+	public function get_gravity_forms() {
+		if ( class_exists( 'RGFormsModel' ) ) {
+			$forms      = RGFormsModel::get_forms( null, 'title' );
+			$form_array = array();
+			foreach ( $forms as $form ) {
+				$form_array[$form->id] = $form->title;
+			}
+
+			return $form_array;
+		}
 	}
 }
 
