@@ -141,6 +141,9 @@ class GreaterMediaUserGeneratedContentModerationTable extends WP_List_Table {
 					break;
 				case 'content':
 					$ugc     = GreaterMediaUserGeneratedContent::for_post_id( $post->ID );
+					$contest = $ugc->contest();
+					$listener_name = $ugc->listener_name();
+					$listener_gigya_id = $ugc->listener_gigya_id();
 					$preview = $ugc->render_moderation_row();
 					include trailingslashit( GREATER_MEDIA_UGC_PATH ) . 'tpl/moderation-table-content.tpl.php';
 					break;
@@ -159,9 +162,10 @@ class GreaterMediaUserGeneratedContentModerationTable extends WP_List_Table {
 	 *
 	 * @return string
 	 */
-	public function approve_link($post_id) {
+	public function approve_link( $post_id ) {
 
-		$url = '';
+		$url = home_url( sprintf( 'ugc/%d/approve', intval( $post_id ) ) );
+
 		return $url;
 
 	}
