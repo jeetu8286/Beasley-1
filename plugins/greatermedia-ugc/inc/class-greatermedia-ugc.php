@@ -36,7 +36,8 @@ class GreaterMediaUserGeneratedContent {
 	public static function register_cpt() {
 
 		add_action( 'init', array( __CLASS__, 'user_generated_content' ), 0 );
-		add_action( 'admin_init', array( __CLASS__, 'admin_endpoints' ) );
+		add_action( 'init', array( __CLASS__, 'admin_endpoints' ) );
+		add_action( 'wp', array( __CLASS__, 'wp' ), - 100 );
 		add_action( 'admin_menu', array( __CLASS__, 'admin_menu' ), 0 );
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'admin_enqueue_scripts' ) );
 
@@ -118,15 +119,45 @@ class GreaterMediaUserGeneratedContent {
 	public static function admin_endpoints() {
 
 		global $wp, $wp_rewrite;
+		$wp->add_query_var( 'ugc' );
 		$wp->add_query_var( 'ugc_action' );
 
-		$rewrite_regex = '^wp-admin/ugc/(.*)/approve';
-		add_rewrite_rule( $rewrite_regex, 'wp-admin/index.php?ugc_action=approve', 'top' );
+		$rewrite_regex = '^ugc/(.*)/approve';
+		add_rewrite_rule( $rewrite_regex, 'index.php?ugc_action=approve&ugc=$matches[1]', 'top' );
 
 		// flush rewrite rules only if our rules is not registered
 		$registered_rules = $wp_rewrite->wp_rewrite_rules();
 		if ( ! isset( $registered_rules[$rewrite_regex] ) ) {
-			flush_rewrite_rules();
+			flush_rewrite_rules( true );
+		}
+
+	}
+
+	public static function wp() {
+		global $wp;
+
+		$ugc_id     = intval( get_query_var( 'ugc' ) );
+		$ugc_action = get_query_var( 'ugc_action' );
+
+		if ( empty( $ugc_id ) || empty( $ugc_action ) ) {
+			return;
+		}
+
+		if ( 'approve' === $ugc_action ) {
+
+			$ugc = self::for_post_id( $ugc_id );
+			$ugc->approve();
+			wp_redirect(
+				add_query_arg(
+					'page',
+					'moderate-ugc',
+					add_query_arg(
+						'post_type',
+						'listener_submissions',
+						admin_url( 'edit.php' )
+					)
+				)
+			);
 		}
 
 	}
@@ -154,6 +185,11 @@ class GreaterMediaUserGeneratedContent {
 
 		return $ugc;
 
+	}
+
+	public function approve() {
+		$this->post->post_status = 'publish';
+		wp_update_post( $this->post );
 	}
 
 	/**

@@ -159,9 +159,10 @@ class GreaterMediaUserGeneratedContentModerationTable extends WP_List_Table {
 	 *
 	 * @return string
 	 */
-	public function approve_link($post_id) {
+	public function approve_link( $post_id ) {
 
-		$url = '';
+		$url = home_url( sprintf( 'ugc/%d/approve', intval( $post_id ) ) );
+
 		return $url;
 
 	}
