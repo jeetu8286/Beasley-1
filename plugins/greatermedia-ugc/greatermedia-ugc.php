@@ -19,3 +19,7 @@ include trailingslashit( GREATER_MEDIA_UGC_PATH ) . 'inc/class-greatermedia-ugga
 include trailingslashit( GREATER_MEDIA_UGC_PATH ) . 'inc/class-greatermedia-ugimage.php';
 include trailingslashit( GREATER_MEDIA_UGC_PATH ) . 'inc/class-greatermedia-uglink.php';
 include trailingslashit( GREATER_MEDIA_UGC_PATH ) . 'inc/class-ugc-moderation-table.php';
+
+if ( defined( 'WP_CLI' ) && WP_CLI ) {
+	include trailingslashit( __DIR__ ) . 'inc/class-greatermedia-ugc-wp-cli.php';
+}
