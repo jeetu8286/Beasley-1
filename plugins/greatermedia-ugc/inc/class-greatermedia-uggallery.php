@@ -29,13 +29,19 @@ class GreaterMediaUserGeneratedGallery extends GreaterMediaUserGeneratedContent 
 	public function render_moderation_row() {
 
 		$attachments = $this->get_attachments();
-		$html        = '';
+		$html        = '<div class="ugc-moderation-data">';
 
 		foreach ( $attachments as $attachment ) {
-			$html .= '<img src="' .
+
+			$html .= '<div class="ugc-moderation-gallery-thumb">' .
+				'<div class="dashicons dashicons-trash"></div>' .
+				'<img src="' .
 				esc_attr( $attachment ) .
-				'" class="ugc-moderation-gallery-thumb" />';
+				'" />' .
+				'</div>';
 		}
+
+		$html .= '</div>';
 
 		return $html;
 

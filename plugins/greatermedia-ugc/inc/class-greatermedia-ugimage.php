@@ -30,13 +30,17 @@ class GreaterMediaUserGeneratedImage extends GreaterMediaUserGeneratedContent {
 	 */
 	public function render_moderation_row() {
 
-		$html        = '';
+		$html = '';
 
 		$first_image = $this->first_image( $this->post->post_content );
 
-		$html .= '<img src="' .
+		$html .= '<div class="ugc-moderation-data">' .
+			'<div class="ugc-moderation-gallery-thumb">' .
+			'<img src="' .
 			esc_attr( $first_image ) .
-			'" class="ugc-moderation-gallery-thumb" />';
+			'" />' .
+			'</div>' .
+			'</div>';
 
 		return $html;
 

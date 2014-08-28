@@ -27,13 +27,32 @@
 }
 
 .ugc-moderation-gallery-thumb {
+	position:    relative;
 	display:     inline-block;
-	height:      150px;
-	width:       auto;
 	margin-left: 1.4em;
-	box-shadow:  2px -1px 1px 0px rgba(50, 50, 50, 0.5);
+	box-shadow:  2px 1px 1px 0px rgba(50, 50, 50, 0.5);
+	height:      150px;
 }
 
 .ugc-moderation-gallery-thumb:first-child {
 	margin-left: 0;
+}
+
+.ugc-moderation-gallery-thumb .dashicons-trash {
+	font-size:        1.4em;
+	padding:          .1em .25em;
+	position:         absolute;
+	top:              0;
+	right:            0;
+	color:            #000;
+	background-color: #fff;
+}
+
+.ugc-moderation-gallery-thumb .dashicons-trash:hover {
+	color: #a00;
+}
+
+.ugc-moderation-gallery-thumb img {
+	height: 150px;
+	width:  auto;
 }
