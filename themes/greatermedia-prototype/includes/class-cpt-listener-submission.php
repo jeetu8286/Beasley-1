@@ -32,7 +32,7 @@ class GMI_Listener_Submission {
 			'public'      => true,
 			'supports'    => array( 'title', 'editor', 'thumbnail' ),
 			'rewrite'     => array( 'slug' => 'listener-submissions' ),
-			'menu_icon'   => ''
+			'menu_icon'   => 'dashicons-playlist-audio'
 		);
 
 		register_post_type( 'gmi_listener_submit', $args );

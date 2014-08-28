@@ -37,7 +37,7 @@ class GMI_Personality {
 				'supports'             => array( 'title', 'editor', 'thumbnail' ),
 				'rewrite'							 => array( 'slug' => 'personalities' ),
 				'register_meta_box_cb' => array( __CLASS__, 'add_metaboxes' ),
-				'menu_icon'            => ''
+				'menu_icon'            => 'dashicons-groups'
 		);
 
 		register_post_type( self::CPT_SLUG, $args );
