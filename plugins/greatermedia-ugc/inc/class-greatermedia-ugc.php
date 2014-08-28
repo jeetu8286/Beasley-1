@@ -67,7 +67,7 @@ class GreaterMediaUserGeneratedContent {
 			'label'               => __( 'user_generated_content', 'greatermedia_ugc' ),
 			'description'         => __( 'Listener Submissions', 'greatermedia_ugc' ),
 			'labels'              => $labels,
-			'supports'            => array( 'title', 'editor', 'post-formats', ),
+			'supports'            => array( 'title', 'editor', 'custom-fields','post-formats', ),
 			'hierarchical'        => false,
 			'public'              => false,
 			'show_ui'             => true,
@@ -187,9 +187,49 @@ class GreaterMediaUserGeneratedContent {
 
 	}
 
+	/**
+	 * Approve this User Generated Content
+	 */
 	public function approve() {
+
 		$this->post->post_status = 'publish';
 		wp_update_post( $this->post );
+
+	}
+
+	/**
+	 * Retrieve the contest associated with this User Generated Content
+	 *
+	 * @return null|WP_Post
+	 */
+	public function contest() {
+
+		$contest_id = get_post_meta( $this->post_id, '_ugc_contest', true );
+
+		if ( ! empty( $contest_id ) ) {
+			$contest = get_post( $contest_id );
+
+			return $contest;
+		}
+
+		return null;
+
+	}
+
+	public function listener_gigya_id() {
+
+		$listener_gigya_id = get_post_meta( $this->post_id, '_ugc_listener_gigya_id', true );
+
+		return $listener_gigya_id;
+
+	}
+
+	public function listener_name() {
+
+		$listener_name = get_post_meta( $this->post_id, '_ugc_listener_name', true );
+
+		return $listener_name;
+
 	}
 
 	/**
