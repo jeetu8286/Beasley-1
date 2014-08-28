@@ -11,6 +11,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class GreaterMediaContests {
 
+	const CPT_SLUG = 'contest';
+
 	function __construct() {
 
 		add_action( 'init', array( $this, 'register_contest_post_type' ) );
@@ -59,7 +61,7 @@ class GreaterMediaContests {
 			'capability_type'     => 'post',
 		);
 
-		register_post_type( 'contest', $args );
+		register_post_type( self::CPT_SLUG, $args );
 
 	}
 

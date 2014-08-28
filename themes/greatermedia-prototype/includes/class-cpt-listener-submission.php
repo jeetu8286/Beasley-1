@@ -5,6 +5,8 @@
  */
 class GMI_Listener_Submission {
 
+	const CPT_SLUG = 'gmi_listener_submit';
+
 	function __construct() {
 		add_action( 'init', array( __CLASS__, 'register_cpt' ) );
 	}
@@ -35,7 +37,7 @@ class GMI_Listener_Submission {
 			'menu_icon'   => 'dashicons-playlist-audio'
 		);
 
-		register_post_type( 'gmi_listener_submit', $args );
+		register_post_type( self::CPT_SLUG, $args );
 
 	}
 }
