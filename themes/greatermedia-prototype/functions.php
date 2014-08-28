@@ -16,6 +16,7 @@
 define( 'GMIPROTO_VERSION', '0.1.0' );
 
 include __DIR__ . '/includes/class-cpt-personality.php';
+include __DIR__ . '/includes/class-cpt-listener-submission.php';
 
  /**
   * Set up theme defaults and register supported WordPress features.
