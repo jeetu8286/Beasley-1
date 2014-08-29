@@ -35,9 +35,8 @@ while ( have_posts() ):
 			echo '<p><h2>Dates: </h2>'. date("F d", esc_attr( $start_date ) ) . ' &#8211; ' . date("F d, Y", esc_attr( $end_date ) );
 		}
 		if( !empty( $form ) ){
-			echo '<p><h2>Form ID: </h2>';
 			if ( function_exists( 'gravity_form' ) ){
-				gravity_form( absint( $form ), true, true );
+				gravity_form( absint( $form ), false, false );
 			}
 		}
 

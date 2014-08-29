@@ -33,6 +33,44 @@ function debug_gravity_forms() {
 add_action( 'wp_head', 'debug_gravity_forms' );
 
 /**
+ * Fade out form on single contest page
+ *
+ */
+function gmi_form_tag( $form_tag ){
+	if ( is_singular( GreaterMediaContests::CPT_SLUG ) ){
+		$form_tag = str_replace("<form ", "<form class='hide' ", $form_tag);
+	}
+	return $form_tag;
+}
+add_filter( "gform_form_tag", "gmi_form_tag" );
+
+function gmi_pre_render_form( $form ){
+	if ( is_singular( GreaterMediaContests::CPT_SLUG ) ){
+	?>
+		<span id="gigya-login-wrap">
+		<h4>Create an account:</h4><br />
+		<div id="loginDiv"></div>
+		<script type="text/javascript">
+			gigya.socialize.showLoginUI({
+				height: 100
+				,width: 330
+				,showTermsLink:false // remove 'Terms' link
+				,hideGigyaLink:true // remove 'Gigya' link
+				,buttonsStyle: 'fullLogo' // Change the default buttons design to "Full Logos" design
+				,showWhatsThis: false // Pop-up a hint describing the Login Plugin, when the user rolls over the Gigya link.
+				,containerID: 'loginDiv' // The component will embed itself inside the loginDiv Div
+				,cid:''
+			});
+		</script>
+		</span>
+	<?php
+	}
+	return $form;
+}
+
+add_filter("gform_pre_render", "gmi_pre_render_form");
+
+/**
  * When a Gravity form is submitted it fires this hook callback. The hook contains the entries and the form.
  * The $form array contains all the $field data, which is then used to extract data from $entry
  *
