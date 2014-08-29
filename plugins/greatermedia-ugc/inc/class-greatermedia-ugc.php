@@ -179,7 +179,6 @@ class GreaterMediaUserGeneratedContent {
 			}
 
 			$post = get_post( $ugc_id );
-			$ugc  = self::for_post_id( $ugc_id );
 
 			// Trash (don't delete) the attachment
 			wp_trash_post( $ugc_attachment_id );
