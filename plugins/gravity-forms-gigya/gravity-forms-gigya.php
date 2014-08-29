@@ -44,18 +44,23 @@ function gmi_form_tag( $form_tag ){
 }
 add_filter( "gform_form_tag", "gmi_form_tag" );
 
+/**
+ * Show Gigya login/registration form before Gravity Form on single contest page
+ *
+ */
 function gmi_pre_render_form( $form ){
 	if ( is_singular( GreaterMediaContests::CPT_SLUG ) ){
 	?>
 		<div id="gigya-login-wrap">
 
-			<span>
+			<div class="gigya-buttons">
 				<a href="#" onclick="event.preventDefault(); gigya.accounts.showScreenSet({screenSet:'simple-screen-set', startScreen:'registration-screen', containerID:'gigya-controls'});">Create an Account</a>
 				<a href="#" onclick="event.preventDefault(); gigya.accounts.showScreenSet({screenSet:'simple-screen-set', startScreen:'login-screen', containerID:'gigya-controls'});">Login</a>
-			</span>
+			</div>
 
 			<div id="gigya-controls"></div>
 
+			<!-- Display registration screenset by default -->
 			<script>
 				gigya.accounts.showScreenSet({
 					screenSet:'simple-screen-set',
@@ -141,7 +146,6 @@ function gmi_pre_render_form( $form ){
 	}
 	return $form;
 }
-
 add_filter("gform_pre_render", "gmi_pre_render_form");
 
 /**
@@ -158,7 +162,7 @@ add_filter("gform_pre_render", "gmi_pre_render_form");
  * @param  array $entry Gravity Forms entry object {@link http://www.gravityhelp.com/documentation/page/Developer_Docs#Entry_Object}
  * @param  array $form  Gravity Forms form object {@link http://www.gravityhelp.com/documentation/page/Developer_Docs#Form_Object}
  */
-function tdd_after_submission( $entry, $form ) {
+function gmi_after_submission( $entry, $form ) {
 
 	// Build up this array from gigya data
 	$gigya_array = array();
@@ -167,7 +171,7 @@ function tdd_after_submission( $entry, $form ) {
 	// Go through each field and try to get data associated with each
 	foreach( $form['fields'] as $field ) {
 
-		$value = _tdd_normalize_entry_value( $field['id'], $entry, $field );
+		$value = _gmi_normalize_entry_value( $field['id'], $entry, $field );
 
 		// Don't store empty values!
 		if ( empty( $value ) ) {
@@ -214,7 +218,7 @@ function tdd_after_submission( $entry, $form ) {
 	die();
 
 }
-add_action("gform_after_submission", "tdd_after_submission", 10, 2);
+add_action("gform_after_submission", "gmi_after_submission", 10, 2);
 
 /**
  * Get the value from $entry for a given $id.
@@ -225,7 +229,7 @@ add_action("gform_after_submission", "tdd_after_submission", 10, 2);
  * @param  array $field A subset representing a single field in the Gravity Forms Form object
  * @return string       normalized entry value
  */
-function _tdd_normalize_entry_value( $id, $entry, $field ) {
+function _gmi_normalize_entry_value( $id, $entry, $field ) {
 
 		// If this field has "inputs" that means we need to go get them all. It's a select, check, or radio list.
 	if ( isset( $field['inputs'] ) ) {
@@ -262,9 +266,9 @@ function _tdd_normalize_entry_value( $id, $entry, $field ) {
  * @param  integer $position where in the form it should be shown
  * @param  integer $form_id a form ID, in case you want to restrict to certain forms
  */
-function tdd_gigya_profile_settings($position, $form_id){
+function gmi_gigya_profile_settings($position, $form_id){
 
-	$gigya_fields = tdd_get_gigya_fields();
+	$gigya_fields = gmi_get_gigya_fields();
 
     //create settings on position 50 (right after Admin Label)
 	if($position == 0){
@@ -284,13 +288,13 @@ function tdd_gigya_profile_settings($position, $form_id){
 	<?php
 }
 }
-add_action("gform_field_advanced_settings", "tdd_gigya_profile_settings", 10, 2);
+add_action("gform_field_advanced_settings", "gmi_gigya_profile_settings", 10, 2);
 
 /**
  * Returns an array of Gigya profile fields
  * @return array gigya fields
  */
-function tdd_get_gigya_fields() {
+function gmi_get_gigya_fields() {
 
 	$gigya_fields = array(
 		'favorite-band' => 'Favorite Band',

@@ -111,17 +111,31 @@ article {
   opacity: 0.2; }
 
 #gigya-login-wrap {
-  margin-top: 25px; }
+  display: block; }
+  #gigya-login-wrap .gigya-buttons {
+    margin: 25px 0 10px;
+    display: block;
+    border-bottom: solid 1px #ccc; }
+    #gigya-login-wrap .gigya-buttons a {
+      display: inline-block;
+      padding: 10px;
+      border: solid 1px #ccc;
+      border-bottom: none;
+      text-decoration: none;
+      color: black; }
 
-#gigya-controls .left-col {
-  width: 50%;
-  float: left; }
-#gigya-controls .right-col {
-  width: 50%;
-  float: left; }
-#gigya-controls h2 {
-  font-size: 18px;
-  margin-top: 20px; }
-#gigya-controls .gigya-error-display {
-  background-color: #fee9ea;
-  border: 1px solid #e49d9f; }
+#gigya-controls {
+  display: inline-block;
+  width: 100%; }
+  #gigya-controls .left-col {
+    width: 50%;
+    float: left; }
+  #gigya-controls .right-col {
+    width: 50%;
+    float: left; }
+  #gigya-controls h2 {
+    font-size: 18px;
+    margin-top: 20px; }
+  #gigya-controls .gigya-error-display {
+    background-color: #fee9ea;
+    border: 1px solid #e49d9f; }
