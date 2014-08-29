@@ -140,11 +140,11 @@ class GreaterMediaUserGeneratedContentModerationTable extends WP_List_Table {
 					include trailingslashit( GREATER_MEDIA_UGC_PATH ) . 'tpl/moderation-table-actions.tpl.php';
 					break;
 				case 'content':
-					$ugc     = GreaterMediaUserGeneratedContent::for_post_id( $post->ID );
-					$contest = $ugc->contest();
-					$listener_name = $ugc->listener_name();
+					$ugc               = GreaterMediaUserGeneratedContent::for_post_id( $post->ID );
+					$contest           = $ugc->contest();
+					$listener_name     = $ugc->listener_name();
 					$listener_gigya_id = $ugc->listener_gigya_id();
-					$preview = $ugc->render_moderation_row();
+					$preview           = $ugc->render_moderation_row();
 					include trailingslashit( GREATER_MEDIA_UGC_PATH ) . 'tpl/moderation-table-content.tpl.php';
 					break;
 			}

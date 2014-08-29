@@ -15,7 +15,13 @@ class GreaterMediaUserGeneratedGallery extends GreaterMediaUserGeneratedContent 
 	 */
 	protected function get_attachments() {
 
-		$attachments = get_post_gallery_images( $this->post_id );
+		$attachment_data = get_post_gallery( $this->post_id, false );
+		$attachment_ids  = explode( ',', $attachment_data['ids'] );
+
+		$attachments = array();
+		foreach ( $attachment_ids as $attachment_index => $attachment_id ) {
+			$attachments[$attachment_id] = $attachment_data['src'][$attachment_index];
+		}
 
 		return $attachments;
 
@@ -29,14 +35,17 @@ class GreaterMediaUserGeneratedGallery extends GreaterMediaUserGeneratedContent 
 	public function render_moderation_row() {
 
 		$attachments = $this->get_attachments();
-		$html        = '<div class="ugc-moderation-data">';
 
-		foreach ( $attachments as $attachment ) {
+		$html = '<div class="ugc-moderation-data">';
+
+		foreach ( $attachments as $attachment_id => $attachment_src ) {
+
+			$delete_url = home_url( sprintf( 'ugc/%d/gallery/%d/delete', $this->post_id, $attachment_id ) );
 
 			$html .= '<div class="ugc-moderation-gallery-thumb">' .
-				'<div class="dashicons dashicons-trash"></div>' .
+				'<a href="' . wp_nonce_url( $delete_url, 'trash-ugc-gallery_' . $attachment_id ) . '"><div class="dashicons dashicons-trash"></div></a>' .
 				'<img src="' .
-				esc_attr( $attachment ) .
+				esc_attr( $attachment_src ) .
 				'" />' .
 				'</div>';
 		}
