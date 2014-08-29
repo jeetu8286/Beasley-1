@@ -228,6 +228,11 @@ class GreaterMediaUserGeneratedContent {
 
 		} elseif ( 'bulk' === $ugc_action ) {
 
+			// Nonce check
+			if ( ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'bulk-' . 'submissions' ) ) {
+				wp_nonce_ays( '_wpnonce' );
+			}
+
 			$ugc_ids = get_query_var( 'ugc' );
 			if ( ! is_array( $ugc_ids ) ) {
 				$ugc_ids = array( $ugc_ids );
@@ -241,16 +246,30 @@ class GreaterMediaUserGeneratedContent {
 
 			if ( 'approve' === $action ) {
 
-				// Nonce check
-				if ( ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'bulk-' . 'submissions' ) ) {
-					wp_nonce_ays( '_wpnonce' );
-				}
-
 				// Approve each post
 				foreach ( $ugc_ids as $ugc_id ) {
 					$ugc = self::for_post_id( $ugc_id );
 					$ugc->approve();
 				}
+
+				// Redirect back to the Moderation screen
+				wp_redirect(
+					add_query_arg(
+						'page',
+						'moderate-ugc',
+						add_query_arg(
+							'post_type',
+							'listener_submissions',
+							admin_url( 'edit.php' )
+						)
+					)
+
+				);
+
+			} elseif ( 'trash' === $action ) {
+
+				// Trash each post
+				array_map('wp_trash_post', $ugc_ids);
 
 				// Redirect back to the Moderation screen
 				wp_redirect(
