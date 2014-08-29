@@ -47,22 +47,96 @@ add_filter( "gform_form_tag", "gmi_form_tag" );
 function gmi_pre_render_form( $form ){
 	if ( is_singular( GreaterMediaContests::CPT_SLUG ) ){
 	?>
-		<span id="gigya-login-wrap">
-		<h4>Create an account:</h4><br />
-		<div id="loginDiv"></div>
-		<script type="text/javascript">
-			gigya.socialize.showLoginUI({
-				height: 100
-				,width: 330
-				,showTermsLink:false // remove 'Terms' link
-				,hideGigyaLink:true // remove 'Gigya' link
-				,buttonsStyle: 'fullLogo' // Change the default buttons design to "Full Logos" design
-				,showWhatsThis: false // Pop-up a hint describing the Login Plugin, when the user rolls over the Gigya link.
-				,containerID: 'loginDiv' // The component will embed itself inside the loginDiv Div
-				,cid:''
-			});
-		</script>
-		</span>
+		<div id="gigya-login-wrap">
+
+			<span>
+				<a href="#" onclick="event.preventDefault(); gigya.accounts.showScreenSet({screenSet:'simple-screen-set', startScreen:'registration-screen', containerID:'gigya-controls'});">Create an Account</a>
+				<a href="#" onclick="event.preventDefault(); gigya.accounts.showScreenSet({screenSet:'simple-screen-set', startScreen:'login-screen', containerID:'gigya-controls'});">Login</a>
+			</span>
+
+			<div id="gigya-controls"></div>
+
+			<script>
+				gigya.accounts.showScreenSet({
+					screenSet:'simple-screen-set',
+					startScreen:'registration-screen',
+					containerID:'gigya-controls'
+				});
+			</script>
+
+			<!-- ScreenSet code begin -->
+			<div class="gigya-screen-set" id="simple-screen-set" data-width="100%" data-height="600" style="display: none" data-on-pending-registration-screen="edit-profile">
+
+				<!-- Login Screen -->
+				<div class="gigya-screen" id="login-screen" data-width="100%" data-height="565" >
+					<div class="left-col">
+						<h2>Login with your social network</h2>
+						<div class="gigya-social-login">
+							<param name="buttonsStyle" value="fullLogo">
+							<param name="width" value="313">
+							<param name="height" value="160">
+							<param name="showTermsLink" value="false">
+							<param name="hideGigyaLink" value="true">
+						</div>
+					</div>
+					<div class="right-col">
+						<h2>Or, with your site credentials</h2>
+						</br>
+						<form class="gigya-login-form">
+							<p >User Name:</p>
+							<input type="text" name="loginID" style="width:300">
+							<div class="gigya-error-msg" data-bound-to="loginID"></div>
+
+							<p >Password:</p>
+							<input type="password" name="password" style=" width:300">
+							<div class="gigya-error-msg" data-bound-to="password"></div>
+
+							</br>
+							<input type="submit" value="Login" style="float: right;"></p>
+						</form>
+					</div>
+				</div>
+
+				<!-- Registration Screen -->
+				<div class="gigya-screen" id="registration-screen" data-width="100%" data-height="735">
+					<div class="left-col">
+						<h2>Register with your social network</h2>
+						<div class="gigya-social-login">
+							<param name="buttonsStyle" value="fullLogo">
+							<param name="width" value="313">
+							<param name="height" value="160">
+							<param name="showTermsLink" value="false">
+							<param name="hideGigyaLink" value="true">
+						</div>
+					</div>
+					<div class="right-col">
+						<h2>Or, create a new account</h2>
+						<form class="gigya-register-form" data-on-success-screen="edit-profile">
+							<p >Email address:</p>
+							<input type="text" name="email" style=" width:180">&nbsp;&nbsp;<div class="gigya-loginID-availability" style="display: inline-block"></div>
+							</br><span class="gigya-error-msg" data-bound-to="email"></span>
+							</br>
+							<p >Password:</p>
+							<input type="password" name="password" style=" width:180">&nbsp;&nbsp;<div class="gigya-password-strength" data-bound-to="password" data-on-focus-bubble="true"></div>
+							<span class="gigya-error-msg" data-bound-to="password"></span>
+							</br>
+							<p>Retype Password:</p>
+							<input type="password" name="passwordRetype" style=" width:180">
+							</br><span class="gigya-error-msg" data-bound-to="passwordRetype"></span>
+							</br></br>
+							<div class="gigya-captcha" style="">
+							</div>
+							</br>
+							<input type="submit" value="Register" style="float: right;">
+						</form>
+						<span class="gigya-error-display" data-bound-to="gigya-register-form" data-scope="all-errors" >
+							<span class="gigya-error-msg" data-scope="all-errors" data-bound-to="gigya-register-form"></span>
+						</span>
+					</div>
+				</div>
+			</div>
+			<!-- ScreenSet code end -->
+		</div>
 	<?php
 	}
 	return $form;

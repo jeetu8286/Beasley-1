@@ -109,3 +109,19 @@ article {
 
 .single-contest .hide {
   opacity: 0.2; }
+
+#gigya-login-wrap {
+  margin-top: 25px; }
+
+#gigya-controls .left-col {
+  width: 50%;
+  float: left; }
+#gigya-controls .right-col {
+  width: 50%;
+  float: left; }
+#gigya-controls h2 {
+  font-size: 18px;
+  margin-top: 20px; }
+#gigya-controls .gigya-error-display {
+  background-color: #fee9ea;
+  border: 1px solid #e49d9f; }
