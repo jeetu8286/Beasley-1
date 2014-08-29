@@ -1,4 +1,4 @@
-<th scope="row" class="ugc-moderation-actions <?php echo $class; ?>">
+<th scope="row" id="ugc<?php the_ID(); ?>" class="ugc-moderation-actions <?php echo $class; ?>">
 	<?php
 	if ( $can_edit_post ) {
 
