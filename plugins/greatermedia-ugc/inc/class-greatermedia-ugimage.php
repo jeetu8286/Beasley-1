@@ -9,8 +9,9 @@ class GreaterMediaUserGeneratedImage extends GreaterMediaUserGeneratedContent {
 	}
 
 	public static function first_image( $post_content ) {
+
 		$matches = array();
-		$output = preg_match_all( '/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $post_content, $matches );
+		$output  = preg_match_all( '/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $post_content, $matches );
 		if ( isset( $matches[1][0] ) ) {
 			$first_img = $matches[1][0];
 		}
@@ -29,14 +30,17 @@ class GreaterMediaUserGeneratedImage extends GreaterMediaUserGeneratedContent {
 	 */
 	public function render_moderation_row() {
 
-//		$attachments = $this->get_attachments();
-		$html        = '';
+		$html = '';
 
-//		foreach ( $attachments as $attachment ) {
-//			$html .= '<img src="' .
-//				esc_attr( $attachment ) .
-//				'" class="ugc-moderation-gallery-thumb" />';
-//		}
+		$first_image = $this->first_image( $this->post->post_content );
+
+		$html .= '<div class="ugc-moderation-data">' .
+			'<div class="ugc-moderation-gallery-thumb">' .
+			'<img src="' .
+			esc_attr( $first_image ) .
+			'" />' .
+			'</div>' .
+			'</div>';
 
 		return $html;
 
