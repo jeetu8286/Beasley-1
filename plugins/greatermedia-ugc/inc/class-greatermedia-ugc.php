@@ -153,6 +153,11 @@ class GreaterMediaUserGeneratedContent {
 
 		if ( 'approve' === $ugc_action ) {
 
+			$nonce = isset( $_REQUEST['_wpnonce'] ) ? $_REQUEST['_wpnonce'] : '';
+			if ( false === wp_verify_nonce( $nonce, 'approve-ugc_' . $ugc_id ) ) {
+				wp_nonce_ays( 'approve-ugc_' . $ugc_id );
+			}
+
 			$ugc = self::for_post_id( $ugc_id );
 			$ugc->approve();
 			wp_redirect(
