@@ -1,4 +1,4 @@
-<th scope="row" class="ugc-moderation-actions <?php echo $class; ?>">
+<th scope="row" id="ugc<?php the_ID(); ?>" class="ugc-moderation-actions <?php echo $class; ?>">
 	<?php
 	if ( $can_edit_post ) {
 
@@ -6,7 +6,7 @@
 		<div class="ugc-moderation-primary-controls">
 			<label class="screen-reader-text" for="cb-select-<?php the_ID(); ?>"><?php printf( __( 'Select %s' ), $title ); ?></label>
 			<input id="cb-select-<?php the_ID(); ?>" type="checkbox" name="post[]" value="<?php the_ID(); ?>" />
-			<a href="<?php echo esc_attr( GreaterMediaUserGeneratedContentModerationTable::approve_link( $post->ID ) ); ?>" class="button" name="approve"><?php _e( 'Approve', 'greatermedia_ugc' ); ?></a>
+			<a href="<?php echo esc_attr( wp_nonce_url( GreaterMediaUserGeneratedContentModerationTable::approve_link( $post->ID ), 'approve-ugc_' . $post->ID ) ); ?>" class="button" name="approve"><?php _e( 'Approve', 'greatermedia_ugc' ); ?></a>
 		</div>
 		<ul class="ugc-moderation-links">
 			<li>
