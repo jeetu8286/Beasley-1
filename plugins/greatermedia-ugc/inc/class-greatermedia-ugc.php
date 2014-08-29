@@ -173,6 +173,11 @@ class GreaterMediaUserGeneratedContent {
 				return;
 			}
 
+			$nonce = isset( $_REQUEST['_wpnonce'] ) ? $_REQUEST['_wpnonce'] : '';
+			if ( false === wp_verify_nonce( $nonce, 'trash-ugc-gallery_' . $ugc_attachment_id ) ) {
+				wp_nonce_ays( 'trash-ugc-gallery_' . $ugc_attachment_id );
+			}
+
 			$post = get_post( $ugc_id );
 			$ugc  = self::for_post_id( $ugc_id );
 
