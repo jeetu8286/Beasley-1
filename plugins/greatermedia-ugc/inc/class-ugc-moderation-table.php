@@ -78,10 +78,7 @@ class GreaterMediaUserGeneratedContentModerationTable extends WP_List_Table {
 	 */
 	public function get_sortable_columns() {
 		// Nothing is sortable
-		$sortable_columns = array(
-//			'actions'     => array( 'name', false ),
-//			'content' => array( 'optus_id', false ),
-		);
+		$sortable_columns = array();
 
 		return $sortable_columns;
 	}
