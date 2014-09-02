@@ -15,20 +15,20 @@ class GreaterMediaUserGeneratedContentModerationTable extends WP_List_Table {
 	/**
 	 * Constructor.
 	 *
-	 * @since 3.1.0
+	 * @since  3.1.0
 	 * @access public
 	 *
-	 * @see WP_List_Table::__construct() for more information on default arguments.
+	 * @see    WP_List_Table::__construct() for more information on default arguments.
 	 *
 	 * @param array $args An associative array of arguments.
 	 */
 	public function __construct( $args = array() ) {
 
 		parent::__construct( array(
-			'plural' => 'submissions',
+			'plural'   => 'submissions',
 			'singular' => 'submission',
-			'ajax' => true,
-			'screen' => isset( $args['screen'] ) ? $args['screen'] : null,
+			'ajax'     => true,
+			'screen'   => isset( $args['screen'] ) ? $args['screen'] : null,
 		) );
 
 	}
@@ -105,12 +105,24 @@ class GreaterMediaUserGeneratedContentModerationTable extends WP_List_Table {
 		return $sortable_columns;
 	}
 
+	/**
+	 * Get an associative array ( option_name => option_title ) with the list
+	 * of bulk actions available on this table.
+	 *
+	 * @return array
+	 * @todo make this "protected" again once we're sure this will only run in WP 4.x
+	 * PHP allows subclasses to increase the visibility of inherited methods, which is used here as a hack to
+	 * allow this WP_List_Table subclass to work on WP 3.9.2 and WP 4.0-beta4
+	 */
 	public function get_bulk_actions() {
 
-		$actions = array();
+		static $actions;
+		if ( ! isset( $actions ) ) {
+			$actions = array();
 
-		$actions['approve'] = __( 'Approve' );
-		$actions['trash'] = __( 'Move to Trash' );
+			$actions['approve'] = __( 'Approve' );
+			$actions['trash']   = __( 'Move to Trash' );
+		}
 
 		return $actions;
 
