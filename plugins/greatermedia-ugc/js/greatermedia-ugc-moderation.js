@@ -57,6 +57,7 @@ jQuery(function () {
 				row.find('input[type=checkbox]').css('visibility', 'hidden');
 				if(GreaterMediaAdminNotifier && GreaterMediaAdminNotifier.message) {
 					// @TODO add listener name, contest name, etc. to this message & run it through translation
+					// @TODO include "undo" link
 					GreaterMediaAdminNotifier.message('Approved')
 				}
 			});
