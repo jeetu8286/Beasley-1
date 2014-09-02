@@ -105,7 +105,7 @@ class GreaterMediaUserGeneratedContentModerationTable extends WP_List_Table {
 		return $sortable_columns;
 	}
 
-	protected function get_bulk_actions() {
+	public function get_bulk_actions() {
 
 		$actions = array();
 
