@@ -55,6 +55,10 @@ jQuery(function () {
 				row.addClass('approved');
 				row.find('a[name=approve]').replaceWith(GreaterMediaUGC.templates.approved);
 				row.find('input[type=checkbox]').css('visibility', 'hidden');
+				if(GreaterMediaAdminNotifier && GreaterMediaAdminNotifier.message) {
+					// @TODO add listener name, contest name, etc. to this message & run it through translation
+					GreaterMediaAdminNotifier.message('Approved')
+				}
 			});
 
 			return false;
