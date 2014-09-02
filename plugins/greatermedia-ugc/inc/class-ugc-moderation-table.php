@@ -15,20 +15,20 @@ class GreaterMediaUserGeneratedContentModerationTable extends WP_List_Table {
 	/**
 	 * Constructor.
 	 *
-	 * @since 3.1.0
+	 * @since  3.1.0
 	 * @access public
 	 *
-	 * @see WP_List_Table::__construct() for more information on default arguments.
+	 * @see    WP_List_Table::__construct() for more information on default arguments.
 	 *
 	 * @param array $args An associative array of arguments.
 	 */
 	public function __construct( $args = array() ) {
 
 		parent::__construct( array(
-			'plural' => 'submissions',
+			'plural'   => 'submissions',
 			'singular' => 'submission',
-			'ajax' => true,
-			'screen' => isset( $args['screen'] ) ? $args['screen'] : null,
+			'ajax'     => true,
+			'screen'   => isset( $args['screen'] ) ? $args['screen'] : null,
 		) );
 
 	}
@@ -119,7 +119,7 @@ class GreaterMediaUserGeneratedContentModerationTable extends WP_List_Table {
 		$actions = array();
 
 		$actions['approve'] = __( 'Approve' );
-		$actions['trash'] = __( 'Move to Trash' );
+		$actions['trash']   = __( 'Move to Trash' );
 
 		return $actions;
 
