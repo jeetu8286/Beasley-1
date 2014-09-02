@@ -116,10 +116,13 @@ class GreaterMediaUserGeneratedContentModerationTable extends WP_List_Table {
 	 */
 	public function get_bulk_actions() {
 
-		$actions = array();
+		static $actions;
+		if ( ! isset( $actions ) ) {
+			$actions = array();
 
-		$actions['approve'] = __( 'Approve' );
-		$actions['trash']   = __( 'Move to Trash' );
+			$actions['approve'] = __( 'Approve' );
+			$actions['trash']   = __( 'Move to Trash' );
+		}
 
 		return $actions;
 
