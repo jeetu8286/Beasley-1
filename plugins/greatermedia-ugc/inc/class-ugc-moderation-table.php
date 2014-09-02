@@ -105,7 +105,16 @@ class GreaterMediaUserGeneratedContentModerationTable extends WP_List_Table {
 		return $sortable_columns;
 	}
 
-	protected function get_bulk_actions() {
+	/**
+	 * Get an associative array ( option_name => option_title ) with the list
+	 * of bulk actions available on this table.
+	 *
+	 * @return array
+	 * @todo make this "protected" again once we're sure this will only run in WP 4.x
+	 * PHP allows subclasses to increase the visibility of inherited methods, which is used here as a hack to
+	 * allow this WP_List_Table subclass to work on WP 3.9.2 and WP 4.0-beta4
+	 */
+	public function get_bulk_actions() {
 
 		$actions = array();
 
