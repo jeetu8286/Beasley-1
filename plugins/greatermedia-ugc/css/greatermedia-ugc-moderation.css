@@ -12,6 +12,10 @@
 	margin-right: .5em;
 }
 
+.ugc-moderation-primary-controls .approved {
+	font-style: italic;
+}
+
 .ugc-moderation-links li,
 .ugc-moderation-meta li {
 	display:       inline-block;

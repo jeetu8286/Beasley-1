@@ -1,3 +1,4 @@
+// Scroll to the appropriate row if a hash is present
 jQuery(function () {
 
 	function do_scroll() {
@@ -22,4 +23,43 @@ jQuery(function () {
 			}
 		}
 	}
+
+});
+
+jQuery(function () {
+
+	function append_extension(url, extension) {
+		var parser = document.createElement('a');
+		parser.href = url;
+
+		var new_url = parser.protocol + '//' +
+			parser.host +
+			parser.pathname +
+			'.' + extension +
+			parser.search +
+			parser.hash;
+
+		return new_url;
+
+	}
+
+	jQuery('a[name=approve]').click(
+		function () {
+
+			var approve_link = append_extension(this.href, 'json');
+			var ugc_id = jQuery(this).parents('tr').data('ugc-id');
+
+			var req = jQuery.ajax( approve_link );
+			req.done(function () {
+				var row = jQuery('tr[data-ugc-id=' + ugc_id + ']');
+				row.addClass('approved');
+				row.find('a[name=approve]').replaceWith(GreaterMediaUGC.templates.approved);
+				row.find('input[type=checkbox]').css('visibility', 'hidden');
+			});
+
+			return false;
+		}
+
+	);
+
 });

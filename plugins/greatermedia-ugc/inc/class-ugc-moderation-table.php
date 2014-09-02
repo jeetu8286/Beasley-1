@@ -169,7 +169,7 @@ class GreaterMediaUserGeneratedContentModerationTable extends WP_List_Table {
 
 		$tr_id      = 'post-' . $post->ID;
 		$tr_classes = implode( ' ', get_post_class( $classes, $post->ID ) );
-		echo sprintf( '<tr id="%s" class="%s">', $tr_id, $tr_classes );
+		echo sprintf( '<tr id="%s" class="%s" data-ugc-id="%d">', $tr_id, $tr_classes, $post->ID );
 
 		list( $columns, $hidden ) = $this->get_column_info();
 
