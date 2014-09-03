@@ -38,6 +38,11 @@
 	height:      150px;
 }
 
+.ugc-moderation-gallery-thumb.removed{
+	transform: translate(-50%, -50%) scale(0, 0);
+	transition: .5s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
 .ugc-moderation-gallery-thumb:first-child {
 	margin-left: 0;
 }

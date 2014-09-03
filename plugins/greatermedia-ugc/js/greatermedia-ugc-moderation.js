@@ -43,6 +43,7 @@ jQuery(function () {
 
 	}
 
+	// AJAX-ify the "approve" button
 	jQuery('a[name=approve]').click(
 		function () {
 
@@ -59,6 +60,29 @@ jQuery(function () {
 					// @TODO add listener name, contest name, etc. to this message & run it through translation
 					// @TODO include "undo" link
 					GreaterMediaAdminNotifier.message('Approved')
+				}
+			});
+
+			return false;
+		}
+
+	);
+
+	// AJAX-ify single gallery post deletion
+	jQuery('.ugc-moderation-gallery-thumb a.trash').click(
+		function () {
+
+			var trash_link = append_extension(this.href, 'json');
+			var thumb = jQuery(this).parents('.ugc-moderation-gallery-thumb');
+			var self = this;
+
+			var req = jQuery.ajax( trash_link );
+			req.done(function () {
+				thumb.addClass('removed');
+				if(GreaterMediaAdminNotifier && GreaterMediaAdminNotifier.message) {
+					// @TODO add listener name, contest name, etc. to this message & run it through translation
+					// @TODO include "undo" link
+					GreaterMediaAdminNotifier.message('Removed gallery image')
 				}
 			});
 
