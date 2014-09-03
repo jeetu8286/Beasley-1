@@ -129,10 +129,15 @@ class GreaterMediaUserGeneratedContentModerationTable extends WP_List_Table {
 	}
 
 	public function display_rows( $posts = array(), $level = 0 ) {
+
 		global $wp_query, $per_page, $mode;
 
-		foreach ( $this->query->posts as $post ) {
-			$this->single_row( $post, $level );
+		if ( ! empty( $this->query->posts ) ) {
+			foreach ( $this->query->posts as $post ) {
+				$this->single_row( $post, $level );
+			}
+		} else {
+			printf( '<tr class="no-items"><td><p>%s</p></td></tr>', __( 'No content needing moderation found.', 'greatermedia_ugc' ) );
 		}
 
 	}
