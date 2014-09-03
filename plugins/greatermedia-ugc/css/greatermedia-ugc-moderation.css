@@ -12,6 +12,10 @@
 	margin-right: .5em;
 }
 
+.ugc-moderation-primary-controls .approved {
+	font-style: italic;
+}
+
 .ugc-moderation-links li,
 .ugc-moderation-meta li {
 	display:       inline-block;
@@ -32,6 +36,11 @@
 	margin-left: 1.4em;
 	box-shadow:  2px 1px 1px 0px rgba(50, 50, 50, 0.5);
 	height:      150px;
+}
+
+.ugc-moderation-gallery-thumb.removed{
+	transform: translate(-50%, -50%) scale(0, 0);
+	transition: .5s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 .ugc-moderation-gallery-thumb:first-child {

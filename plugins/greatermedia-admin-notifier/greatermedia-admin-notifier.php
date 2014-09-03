@@ -7,11 +7,32 @@ Author: 10up
 Author URI: http://10up.com
 */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( "Please don't try to access this file directly." );
+}
+
+define( 'GREATER_MEDIA_ADMIN_NOTIFIER_PATH', dirname( __FILE__ ) );
+define( 'GREATER_MEDIA_ADMIN_NOTIFIER_URL', plugin_dir_url( __FILE__ ) );
+
 /**
  * Class GreaterMediaAdminNotifier
  * Singleton to manage admin notifications & errors
  */
 class GreaterMediaAdminNotifier {
+
+	/**
+	 * Register hooks
+	 */
+	public static function init() {
+		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'admin_enqueue_scripts' ) );
+	}
+
+	/**
+	 * Enqueue the plugin's JavaScript
+	 */
+	public static function admin_enqueue_scripts() {
+		wp_enqueue_script( 'gm-admin-notifier', trailingslashit( GREATER_MEDIA_ADMIN_NOTIFIER_URL ) . 'greatermedia-admin-notifier.js', array( 'jquery' ) );
+	}
 
 	/**
 	 * Enqueue an error message
@@ -126,3 +147,5 @@ class GreaterMediaAdminNotifier {
 	}
 
 }
+
+GreaterMediaAdminNotifier::init();

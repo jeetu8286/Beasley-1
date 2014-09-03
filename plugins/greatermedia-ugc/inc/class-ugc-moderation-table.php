@@ -129,10 +129,15 @@ class GreaterMediaUserGeneratedContentModerationTable extends WP_List_Table {
 	}
 
 	public function display_rows( $posts = array(), $level = 0 ) {
+
 		global $wp_query, $per_page, $mode;
 
-		foreach ( $this->query->posts as $post ) {
-			$this->single_row( $post, $level );
+		if ( ! empty( $this->query->posts ) ) {
+			foreach ( $this->query->posts as $post ) {
+				$this->single_row( $post, $level );
+			}
+		} else {
+			printf( '<tr class="no-items"><td><p>%s</p></td></tr>', __( 'No content needing moderation found.', 'greatermedia_ugc' ) );
 		}
 
 	}
@@ -169,12 +174,12 @@ class GreaterMediaUserGeneratedContentModerationTable extends WP_List_Table {
 
 		$tr_id      = 'post-' . $post->ID;
 		$tr_classes = implode( ' ', get_post_class( $classes, $post->ID ) );
-		echo sprintf( '<tr id="%s" class="%s">', $tr_id, $tr_classes );
+		echo sprintf( '<tr id="%s" class="%s" data-ugc-id="%d">', $tr_id, $tr_classes, $post->ID );
 
 		list( $columns, $hidden ) = $this->get_column_info();
 
 		foreach ( $columns as $column_name => $column_display_name ) {
-			$class = "class=\"$column_name column-$column_name\"";
+			$class = " $column_name column-$column_name";
 
 			switch ( $column_name ) {
 
