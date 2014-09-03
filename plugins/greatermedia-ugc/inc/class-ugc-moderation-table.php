@@ -179,7 +179,7 @@ class GreaterMediaUserGeneratedContentModerationTable extends WP_List_Table {
 		list( $columns, $hidden ) = $this->get_column_info();
 
 		foreach ( $columns as $column_name => $column_display_name ) {
-			$class = "class=\"$column_name column-$column_name\"";
+			$class = " $column_name column-$column_name";
 
 			switch ( $column_name ) {
 
