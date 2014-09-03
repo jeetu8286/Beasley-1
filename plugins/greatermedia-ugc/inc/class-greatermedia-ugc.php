@@ -238,17 +238,21 @@ class GreaterMediaUserGeneratedContent {
 				GreaterMediaAdminNotifier::message( __( 'Removed image', 'greatermedia_ugc' ) );
 			}
 
-			wp_redirect(
-				add_query_arg(
-					'page',
-					'moderate-ugc',
+			if ( '.json' === $output ) {
+				wp_send_json_success( array( 'ids' => $ugc_id ) );
+			} else {
+				wp_redirect(
 					add_query_arg(
-						'post_type',
-						'listener_submissions',
-						admin_url( 'edit.php' )
-					)
-				) . '#ugc-' . $ugc_id
-			);
+						'page',
+						'moderate-ugc',
+						add_query_arg(
+							'post_type',
+							'listener_submissions',
+							admin_url( 'edit.php' )
+						)
+					) . '#ugc-' . $ugc_id
+				);
+			}
 
 		} elseif ( 'bulk' === $ugc_action ) {
 
