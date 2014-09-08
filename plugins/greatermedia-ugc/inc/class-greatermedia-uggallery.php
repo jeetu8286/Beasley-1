@@ -73,7 +73,7 @@ class GreaterMediaUserGeneratedGallery extends GreaterMediaUserGeneratedContent 
 
 			$delete_url = home_url( sprintf( 'ugc/%d/gallery/%d/delete', $this->post_id, $attachment_id ) );
 
-			$html .= '<div class="ugc-moderation-gallery-thumb">' .
+			$html .= '<div class="ugc-gallery-preview-thumb">' .
 				'<img src="' .
 				esc_attr( $attachment_src ) .
 				'" />' .

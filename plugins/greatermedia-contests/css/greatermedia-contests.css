@@ -22,3 +22,8 @@
 	padding: 1em 0;
 	border-top: none;
 }
+
+.ugc-gallery-preview-thumb {
+	margin-right: 1em;
+	display: inline-block;
+}
