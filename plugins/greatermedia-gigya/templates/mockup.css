@@ -1,0 +1,31 @@
+.query-title {
+	width: 100%;
+	margin: 0 0 1em 0;
+}
+
+.updated {
+	display: none;
+}
+
+.segment-meta {
+	padding: 0.5em 1em 0.5em 1em;
+}
+
+#visibility {
+	line-height: 1.4em;
+}
+
+.segment-update-button {
+	float: left;
+}
+
+.segment-update-now {
+	display: block;
+	font-style: italic;
+	text-align: right;
+	color: #808080;
+}
+
+.segment-meta li {
+	margin-bottom: 1em;
+}

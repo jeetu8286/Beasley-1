@@ -20,12 +20,15 @@ class GreaterMediaGigya {
 			'Greater Media Gigya',
 			'Greater Media Gigya',
 			'manage_options',
-			'greater-media-gigy',
+			'greater-media-gigya',
 			array( $this, 'showSegmentsPage' )
 		);
 	}
 
 	function showSegmentsPage() {
+		echo "<style type='text/css'>";
+		require_once( __DIR__ . '/templates/mockup.css' );
+		echo "</style>";
 		require_once( __DIR__ . '/templates/mockup.html' );
 	}
 
