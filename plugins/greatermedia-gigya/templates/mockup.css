@@ -92,3 +92,16 @@
 	margin: 0;
 	padding: 0;
 }
+
+.segment-action-menu {
+}
+
+.segment-action-title {
+	margin: 0;
+}
+
+.segment-action-menu li {
+	display: inline-block;
+	border-right: 1px solid #ccc;
+	padding-right: 0.5em;
+}
