@@ -12,3 +12,13 @@
 	width: auto;
 	text-decoration: none;
 }
+
+.contest-entry-ugc-preview {
+	padding: 1em 0;
+	border-top: 1px dotted #888;
+}
+
+.contest-entry-ugc-preview:first-child {
+	padding: 1em 0;
+	border-top: none;
+}
