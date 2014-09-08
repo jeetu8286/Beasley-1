@@ -63,6 +63,7 @@ class GreaterMediaContestEntryMetaboxes {
 	}
 
 	public function add_meta_boxes() {
+
 		add_meta_box(
 			'parent-contest',
 			'Contest',
@@ -72,6 +73,17 @@ class GreaterMediaContestEntryMetaboxes {
 			'default',
 			array()
 		);
+
+		add_meta_box(
+			'contest-entries',
+			'Listener Submissions',
+			array( $this, 'submissions_meta_box' ),
+			'contest_entry',
+			'advanced',
+			'default',
+			array()
+		);
+
 	}
 
 	public function contest_meta_box() {
@@ -84,6 +96,23 @@ class GreaterMediaContestEntryMetaboxes {
 		$contest_types = get_the_terms( $contest->ID, 'contest_type' );
 
 		include trailingslashit( GREATER_MEDIA_CONTESTS_PATH ) . 'tpl/contest-meta-box.tpl.php';
+
+	}
+
+	public function submissions_meta_box() {
+
+		global $post;
+
+		$entries = get_children(
+			array(
+				'post_parent'    => $post->ID,
+				'post_type'      => 'listener_submissions',
+				'posts_per_page' => - 1,
+				'post_status'    => array( 'pending', 'publish' )
+			)
+		);
+
+		include trailingslashit( GREATER_MEDIA_CONTESTS_PATH ) . 'tpl/contest-entries-meta-box.tpl.php';
 
 	}
 }
