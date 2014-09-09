@@ -51,6 +51,10 @@ class Plugin {
 	}
 
 	function serialize_member_query( $sanitized_data, $raw_data = null ) {
+		if ( $sanitized_data['post_type'] !== 'member_query' ) {
+			return $sanitized_data;
+		}
+
 		$member_query = new MemberQuery ( $raw_data );
 		$sanitized_data['post_content'] = $member_query->to_json();
 
