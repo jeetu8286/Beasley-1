@@ -8,10 +8,17 @@ class GreaterMediaContestEntry {
 
 	private $post;
 
+	private $entrant_name;
+	private $entry_source; // How this entry was created (i.e. "gravity-forms"
+	private $entry_reference; // Reference/link to the source of the entry (i.e. Gravity Forms submission ID)
+
 	private function __construct( self $post_obj = null, $contest_id = null ) {
 
 		if ( null !== $post_obj ) {
-			$this->post = $post_obj;
+			$this->post            = $post_obj;
+			$this->entrant_name    = get_post_meta( $this->post->ID, 'entrant_name', true );
+			$this->entry_source    = get_post_meta( $this->post->ID, 'entry_source', true );
+			$this->entry_reference = get_post_meta( $this->post->ID, 'entry_reference', true );
 		} else {
 			$this->post = new WP_Post( new stdClass() );
 		}
@@ -30,6 +37,18 @@ class GreaterMediaContestEntry {
 			$this->post->post_parent = $contest_id;
 
 		}
+
+	}
+
+	/**
+	 * Update the post an all associated metadata
+	 */
+	public function save() {
+
+		wp_update_post( $this->post, true );
+		update_post_meta( $this->post->ID, 'entrant_name', $this->entrant_name );
+		update_post_meta( $this->post->ID, 'entry_source', $this->entry_source );
+		update_post_meta( $this->post->ID, 'entry_reference', $this->entry_reference );
 
 	}
 
@@ -85,15 +104,36 @@ class GreaterMediaContestEntry {
 	}
 
 	/**
-	 * Factory method to create a new GreaterMediaContestEntry object for entering a certain contest
+	 * Factory method to create a new contest entry for a given set of data
 	 *
-	 * @param int $contest_id
+	 * @param $contest_id      Post ID of the related contest
+	 * @param $entrant_name    Name of the entrant
+	 * @param $entry_source    Source of the entry (i.e. "gravity-forms")
+	 * @param $entry_reference ID or link to the source of the entry
 	 *
+	 * @throws UnexpectedValueException
 	 * @return GreaterMediaContestEntry
 	 */
-	public static function create_for_contest( $contest_id ) {
+	public static function create_for_data( $contest_id, $entrant_name, $entry_source, $entry_reference ) {
 
 		$entry = new self( null, $contest_id );
+
+		if ( ! is_scalar( $entrant_name ) ) {
+			throw new UnexpectedValueException( 'Entrant Name must be a scalar value' );
+		}
+
+		if ( ! is_scalar( $entry_source ) ) {
+			throw new UnexpectedValueException( 'Entry Source must be a scalar value' );
+		}
+
+		// This is an assumption. We can always get rid of this check.
+		if ( ! is_scalar( $entry_reference ) ) {
+			throw new UnexpectedValueException( 'Entry Reference must be a scalar value' );
+		}
+
+		$entry->entrant_name    = $entrant_name;
+		$entry->entry_source    = $entry_source;
+		$entry->entry_reference = $entry_reference;
 
 		return $entry;
 
@@ -111,7 +151,7 @@ class GreaterMediaContestEntry {
 
 		$entry_post = get_post( $post_id );
 		if ( 'contest_entry' !== $entry_post->post_type ) {
-			throw new UnexpectedValueException( 'Post ID passed does not reference a "Contest" post' );
+			throw new UnexpectedValueException( 'Post ID passed does not reference a "Contest Entry" post' );
 		}
 
 		$entry = new self( $entry_post );
