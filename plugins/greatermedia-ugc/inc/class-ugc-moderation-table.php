@@ -12,6 +12,28 @@ class GreaterMediaUserGeneratedContentModerationTable extends WP_List_Table {
 
 	const PAGE_NAME = 'moderate-ugc';
 
+	/**
+	 * Constructor.
+	 *
+	 * @since 3.1.0
+	 * @access public
+	 *
+	 * @see WP_List_Table::__construct() for more information on default arguments.
+	 *
+	 * @param array $args An associative array of arguments.
+	 */
+	public function __construct( $args = array() ) {
+
+		parent::__construct( array(
+			'plural' => 'submissions',
+			'singular' => 'submission',
+			'ajax' => true,
+			'screen' => isset( $args['screen'] ) ? $args['screen'] : null,
+		) );
+
+	}
+
+
 	public static function admin_init() {
 		if ( isset( $_REQUEST['page'] ) && self::PAGE_NAME === $_REQUEST['page'] ) {
 			add_filter( 'admin_body_class', array( __CLASS__, 'admin_body_class' ) );
@@ -81,6 +103,17 @@ class GreaterMediaUserGeneratedContentModerationTable extends WP_List_Table {
 		$sortable_columns = array();
 
 		return $sortable_columns;
+	}
+
+	public function get_bulk_actions() {
+
+		$actions = array();
+
+		$actions['approve'] = __( 'Approve' );
+		$actions['trash'] = __( 'Move to Trash' );
+
+		return $actions;
+
 	}
 
 	public function display_rows( $posts = array(), $level = 0 ) {

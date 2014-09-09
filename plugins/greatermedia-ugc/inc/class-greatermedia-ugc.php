@@ -37,7 +37,7 @@ class GreaterMediaUserGeneratedContent {
 
 		add_action( 'init', array( __CLASS__, 'user_generated_content' ), 0 );
 		add_action( 'init', array( __CLASS__, 'admin_endpoints' ) );
-		add_action( 'wp', array( __CLASS__, 'wp' ), - 100 );
+		add_action( 'wp', array( __CLASS__, 'wp' ), 100 );
 		add_action( 'admin_menu', array( __CLASS__, 'admin_menu' ), 0 );
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'admin_enqueue_scripts' ) );
 
@@ -124,34 +124,43 @@ class GreaterMediaUserGeneratedContent {
 		$wp->add_query_var( 'ugc_action' );
 		$wp->add_query_var( 'ugc_attachment' );
 
-		$approve_rewrite_regex = '^ugc/(.*)/approve';
-		add_rewrite_rule( $approve_rewrite_regex, 'index.php?ugc_action=approve&ugc=$matches[1]', 'top' );
+		$rewrite_rules = self::rewrite_rules();
 
-		$gallery_delete_rewrite_regex = '^ugc/(.*)/gallery/(.*)/delete';
-		add_rewrite_rule( $gallery_delete_rewrite_regex, 'index.php?ugc_action=gallery-delete&ugc=$matches[1]&ugc_attachment=$matches[2]', 'top' );
+		foreach ( $rewrite_rules as $rewrite_regex => $rewrite_target ) {
+			add_rewrite_rule( $rewrite_regex, $rewrite_target, 'top' );
+		}
 
 		// flush rewrite rules only if our rules is not registered
-		$registered_rules = $wp_rewrite->wp_rewrite_rules();
-		if (
-			! isset( $registered_rules[$approve_rewrite_regex] ) ||
-			! isset( $registered_rules[$gallery_delete_rewrite_regex] )
-		) {
+		$all_registered_rules = $wp_rewrite->wp_rewrite_rules();
+		$registered_rules     = array_intersect( $rewrite_rules, $all_registered_rules );
+		if ( count( $registered_rules ) !== count( $rewrite_rules ) ) {
 			flush_rewrite_rules( true );
 		}
 
 	}
 
 	public static function wp() {
+
 		global $wp;
 
-		$ugc_id     = intval( get_query_var( 'ugc' ) );
-		$ugc_action = get_query_var( 'ugc_action' );
+//		http://greatermedia.dev/wp-admin/edit.php?_wpnonce=5120bdfa2a&_wp_http_referer=%2Fwp-admin%2Fedit.php%3Fpost_type%3Dlistener_submissions%26page%3Dmoderate-ugc&action=approve&ugc%5B%5D=51&action2=-1
 
-		if ( empty( $ugc_id ) || empty( $ugc_action ) ) {
+		$rewrite_rules = self::rewrite_rules();
+		if ( ! isset( $rewrite_rules[$wp->matched_rule] ) ) {
+			return;
+		}
+
+		$ugc_action = get_query_var( 'ugc_action' );
+		if ( empty( $ugc_action ) ) {
 			return;
 		}
 
 		if ( 'approve' === $ugc_action ) {
+
+			$ugc_id = intval( get_query_var( 'ugc' ) );
+			if ( empty( $ugc_id ) ) {
+				return;
+			}
 
 			$nonce = isset( $_REQUEST['_wpnonce'] ) ? $_REQUEST['_wpnonce'] : '';
 			if ( false === wp_verify_nonce( $nonce, 'approve-ugc_' . $ugc_id ) ) {
@@ -172,6 +181,11 @@ class GreaterMediaUserGeneratedContent {
 				)
 			);
 		} elseif ( 'gallery-delete' === $ugc_action ) {
+
+			$ugc_id = intval( get_query_var( 'ugc' ) );
+			if ( empty( $ugc_id ) ) {
+				return;
+			}
 
 			$ugc_attachment_id = intval( get_query_var( 'ugc_attachment' ) );
 			if ( empty( $ugc_attachment_id ) ) {
@@ -212,6 +226,67 @@ class GreaterMediaUserGeneratedContent {
 				) . '#ugc-' . $ugc_id
 			);
 
+		} elseif ( 'bulk' === $ugc_action ) {
+
+			// Nonce check
+			if ( ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'bulk-' . 'submissions' ) ) {
+				wp_nonce_ays( '_wpnonce' );
+			}
+
+			$ugc_ids = get_query_var( 'ugc' );
+			if ( ! is_array( $ugc_ids ) ) {
+				$ugc_ids = array( $ugc_ids );
+			}
+
+			if ( empty( $ugc_ids ) ) {
+				return;
+			}
+
+			$action = ( $_REQUEST['action'] != - 1 ) ? $_REQUEST['action'] : $_REQUEST['action2'];
+
+			if ( 'approve' === $action ) {
+
+				// Approve each post
+				foreach ( $ugc_ids as $ugc_id ) {
+					$ugc = self::for_post_id( $ugc_id );
+					$ugc->approve();
+				}
+
+				// Redirect back to the Moderation screen
+				wp_redirect(
+					add_query_arg(
+						'page',
+						'moderate-ugc',
+						add_query_arg(
+							'post_type',
+							'listener_submissions',
+							admin_url( 'edit.php' )
+						)
+					)
+
+				);
+
+			} elseif ( 'trash' === $action ) {
+
+				// Trash each post
+				array_map('wp_trash_post', $ugc_ids);
+
+				// Redirect back to the Moderation screen
+				wp_redirect(
+					add_query_arg(
+						'page',
+						'moderate-ugc',
+						add_query_arg(
+							'post_type',
+							'listener_submissions',
+							admin_url( 'edit.php' )
+						)
+					)
+
+				);
+
+			}
+
 		}
 
 	}
@@ -248,6 +323,27 @@ class GreaterMediaUserGeneratedContent {
 
 		$this->post->post_status = 'publish';
 		wp_update_post( $this->post );
+
+	}
+
+	/**
+	 * Retrieve a list of rewrite rules this class implements
+	 * @return array
+	 */
+	public static function rewrite_rules() {
+
+		static $rewrite_rules;
+		if ( ! isset( $rewrite_rules ) ) {
+
+			$rewrite_rules = array(
+				'^ugc/bulk'                     => 'index.php?ugc_action=bulk&ugc=$matches[1]',
+				'^ugc/(.*)/approve'             => 'index.php?ugc_action=approve&ugc=$matches[1]',
+				'^ugc/(.*)/gallery/(.*)/delete' => 'index.php?ugc_action=gallery-delete&ugc=$matches[1]&ugc_attachment=$matches[2]',
+			);
+
+		}
+
+		return $rewrite_rules;
 
 	}
 
