@@ -117,6 +117,14 @@ function gmi_pre_render_form( $form ){
 					<div class="right-col">
 						<h2>Or, create a new account</h2>
 						<form class="gigya-register-form" data-on-success-screen="edit-profile">
+							<p >First Name:</p>
+							<input type="text" name="firstName" style="width:300">
+							<div class="gigya-error-msg" data-bound-to="firstName"></div>
+
+							<p >Last Name:</p>
+							<input type="text" name="lastName" style="width:300">
+							<div class="gigya-error-msg" data-bound-to="lastName"></div>
+
 							<p >Email address:</p>
 							<input type="text" name="email" style=" width:180">&nbsp;&nbsp;<div class="gigya-loginID-availability" style="display: inline-block"></div>
 							</br><span class="gigya-error-msg" data-bound-to="email"></span>
