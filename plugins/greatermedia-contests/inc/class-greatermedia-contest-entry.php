@@ -9,16 +9,18 @@ class GreaterMediaContestEntry {
 	private $post;
 
 	private $entrant_name;
+	private $entrant_reference; // Gigya ID
 	private $entry_source; // How this entry was created (i.e. "gravity-forms"
 	private $entry_reference; // Reference/link to the source of the entry (i.e. Gravity Forms submission ID)
 
 	private function __construct( self $post_obj = null, $contest_id = null ) {
 
 		if ( null !== $post_obj ) {
-			$this->post            = $post_obj;
-			$this->entrant_name    = get_post_meta( $this->post->ID, 'entrant_name', true );
-			$this->entry_source    = get_post_meta( $this->post->ID, 'entry_source', true );
-			$this->entry_reference = get_post_meta( $this->post->ID, 'entry_reference', true );
+			$this->post              = $post_obj;
+			$this->entrant_name      = get_post_meta( $this->post->ID, 'entrant_name', true );
+			$this->entrant_reference = get_post_meta( $this->post_ID, 'entrant_reference', true );
+			$this->entry_source      = get_post_meta( $this->post->ID, 'entry_source', true );
+			$this->entry_reference   = get_post_meta( $this->post->ID, 'entry_reference', true );
 		} else {
 			$this->post = new WP_Post( new stdClass() );
 		}
@@ -47,6 +49,7 @@ class GreaterMediaContestEntry {
 
 		wp_update_post( $this->post, true );
 		update_post_meta( $this->post->ID, 'entrant_name', $this->entrant_name );
+		update_post_meta( $this->post->ID, 'entrant_reference', $this->entrant_reference );
 		update_post_meta( $this->post->ID, 'entry_source', $this->entry_source );
 		update_post_meta( $this->post->ID, 'entry_reference', $this->entry_reference );
 
@@ -106,15 +109,16 @@ class GreaterMediaContestEntry {
 	/**
 	 * Factory method to create a new contest entry for a given set of data
 	 *
-	 * @param $contest_id      Post ID of the related contest
-	 * @param $entrant_name    Name of the entrant
-	 * @param $entry_source    Source of the entry (i.e. "gravity-forms")
-	 * @param $entry_reference ID or link to the source of the entry
+	 * @param $contest_id        Post ID of the related contest
+	 * @param $entrant_name      Name of the entrant
+	 * @param $entrant_reference Gigya ID
+	 * @param $entry_source      Source of the entry (i.e. "gravity-forms")
+	 * @param $entry_reference   ID or link to the source of the entry
 	 *
 	 * @throws UnexpectedValueException
 	 * @return GreaterMediaContestEntry
 	 */
-	public static function create_for_data( $contest_id, $entrant_name, $entry_source, $entry_reference ) {
+	public static function create_for_data( $contest_id, $entrant_name, $entrant_reference, $entry_source, $entry_reference ) {
 
 		$entry = new self( null, $contest_id );
 
@@ -131,9 +135,10 @@ class GreaterMediaContestEntry {
 			throw new UnexpectedValueException( 'Entry Reference must be a scalar value' );
 		}
 
-		$entry->entrant_name    = $entrant_name;
-		$entry->entry_source    = $entry_source;
-		$entry->entry_reference = $entry_reference;
+		$entry->entrant_name      = $entrant_name;
+		$entry->entrant_reference = $entrant_reference;
+		$entry->entry_source      = $entry_source;
+		$entry->entry_reference   = $entry_reference;
 
 		return $entry;
 
