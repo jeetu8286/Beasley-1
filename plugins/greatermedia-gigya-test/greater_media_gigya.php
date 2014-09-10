@@ -35,6 +35,7 @@ define( 'GMGIGYA_PATH',    dirname( __FILE__ ) . '/' );
 include __DIR__ . '/includes/class-gigya.php';
 include __DIR__ . '/includes/class-comments.php';
 include __DIR__ . '/includes/class-share.php';
+include __DIR__ . '/includes/example-survey.php';
 
 
 /**
