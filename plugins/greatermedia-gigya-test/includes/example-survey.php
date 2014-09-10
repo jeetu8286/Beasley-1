@@ -14,7 +14,7 @@ function print_my_script() {
 			screenSet  : "simple-screen-set",
 			startScreen: "registration-screen",
 			containerID: "gigya-controls"
-		})
+		});
 	</script>
 <?php
 }
@@ -28,11 +28,11 @@ function gmr_survey_form() {
 	global $add_my_script;
 	$add_my_script = true;
 
-	$gigya_form = '<div class="gigya-screen-set" id="simple-screen-set" data-width="100%" data-height="600" style="display: none" data-on-pending-registration-screen="edit-profile">
+	$gigya_form = '<div class="gigya-screen-set" id="simple-screen-set" data-width="100%" data-height="600" style="display: none" >
 						<div class="gigya-screen" id="registration-screen" data-width="100%" data-height="735">
 							<div class="right-col">
 								<h2>Signup for a Gigya Account:</h2>
-								<form class="gigya-register-form" data-on-success-screen="edit-profile">
+								<form class="gigya-register-form" data-on-success-screen="gigya-thankyou-screen">
 									<p>First Name:</p>
 									<input type="text" name="firstName" style="width:300">
 									<div class="gigya-error-msg" data-bound-to="firstName"></div>
@@ -83,6 +83,9 @@ function gmr_survey_form() {
 									<span class="gigya-error-msg" data-scope="all-errors" data-bound-to="gigya-register-form"></span>
 								</span>
 						</div>
+				</div>
+				<div class="gigya-screen" id="gigya-thankyou-screen" data-width="100%" data-height="735">
+					<p><strong>Success!</strong> Thank you for your time.</p>
 				</div>
 			</div>
 			<div id="gigya-controls"></div>';
