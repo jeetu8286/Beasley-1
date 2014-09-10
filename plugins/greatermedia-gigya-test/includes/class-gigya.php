@@ -11,19 +11,7 @@ class GMI_Gigya {
 
 		<script type='text/javascript' src='http://cdn.gigya.com/JS/socialize.js?apiKey=3_e_T7jWO0Vjsd9y0WJcjnsN6KaFUBv6r3VxMKqbitvw-qKfmaUWysQKa1fra5MTb6'>
 			{
-				enabledProviders: 'facebook,twitter,linkedin,yahoo,messenger',
-				dataSchema: {
-					fields: {
-						"listeningLoyalty": {
-							writeAccess:"clientCreate",
-								type:"string"
-						},
-						"listeningFrequency": {
-							writeAccess:"clientCreate",
-								type:"string"
-						}
-					}
-				}
+				enabledProviders: 'facebook,twitter,linkedin,yahoo,messenger'
 			}
 		</script>
 
