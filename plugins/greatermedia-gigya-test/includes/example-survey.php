@@ -33,7 +33,7 @@ function gmr_survey_form() {
 							<div class="right-col">
 								<h2>Signup for a Gigya Account:</h2>
 								<form class="gigya-register-form" data-on-success-screen="edit-profile">
-									<p >First Name:</p>
+									<p>First Name:</p>
 									<input type="text" name="firstName" style="width:300">
 									<div class="gigya-error-msg" data-bound-to="firstName"></div>
 
@@ -53,10 +53,24 @@ function gmr_survey_form() {
 									<input type="password" name="passwordRetype" style=" width:180">
 									</br><span class="gigya-error-msg" data-bound-to="passwordRetype"></span>
 									</br></br>
+									<hr>
+									<h2>About your favorite radio station:</h2>
+									<p>What is your listening loyalty?</p>
+									<input type="radio" name="data.listeningLoyalty" value="Only this station">Only this station<br>
+									<input type="radio" name="data.listeningLoyalty" value="This and 2-3 other stations">I listen to this and 2-3 other stations<br>
+									<input type="radio" name="data.listeningLoyalty" value="More than 3 other stations">I listen to more than 3 other stations<br>
+									<div class="gigya-error-msg" data-bound-to="data.listeningLoyalty"></div>
+									<p>How often do you listen to this station?</p>
+									<input type="radio" name="data.listeningFrequency" value="Several times daily">Several times daily<br>
+									<input type="radio" name="data.listeningFrequency" value="Once per day">Once per day<br>
+									<input type="radio" name="data.listeningFrequency" value="Several times per week">Several times per week<br>
+									<input type="radio" name="data.listeningFrequency" value="Once per week or less">Once per week or less<br>
+									<div class="gigya-error-msg" data-bound-to="data.listeningFrequency"></div>
+									</br></br>
 									<div class="gigya-captcha" style="">
 									</div>
 									</br>
-									<input type="submit" value="Register">
+									<input type="submit" value="Register"></br>
 								</form>
 								<span class="gigya-error-display" data-bound-to="gigya-register-form" data-scope="all-errors" >
 									<span class="gigya-error-msg" data-scope="all-errors" data-bound-to="gigya-register-form"></span>
