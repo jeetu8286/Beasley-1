@@ -112,7 +112,7 @@ class GreaterMediaContestEntryMetaboxes {
 			)
 		);
 
-		include trailingslashit( GREATER_MEDIA_CONTESTS_PATH ) . 'tpl/contest-entries-meta-box.tpl.php';
+		include trailingslashit( GREATER_MEDIA_CONTESTS_PATH ) . 'tpl/listener-submissions-meta-box.tpl.php';
 
 	}
 }
