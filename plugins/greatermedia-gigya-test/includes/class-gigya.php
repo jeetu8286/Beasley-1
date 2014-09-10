@@ -14,6 +14,7 @@ class GMI_Gigya {
 				enabledProviders: 'facebook,twitter,linkedin,yahoo,messenger'
 			}
 		</script>
+
 <?php
 	}
 }

@@ -137,3 +137,47 @@ article {
 		vertical-align: middle;
 	}
 }
+
+.single-contest{
+	.hide{
+		opacity: 0.2;
+	}
+}
+
+#gigya-login-wrap{
+	display: block;
+	.gigya-buttons{
+		margin: 25px 0 10px;
+		display: block;
+		border-bottom: solid 1px #ccc;
+		a{
+			display: inline-block;
+			padding: 10px;
+			border: solid 1px #ccc;
+			border-bottom: none;
+			text-decoration: none;
+			color: black;
+		}
+	}
+}
+
+#gigya-controls{
+	display: inline-block;
+	width: 100%;
+	.left-col{
+		width: 50%;
+		float: left;
+	}
+	.right-col{
+		width: 50%;
+		float: left;
+	}
+	h2{
+		font-size: 18px;
+		margin-top: 20px;
+	}
+	.gigya-error-display {
+		background-color: rgb(254, 233, 234);
+		border: 1px solid rgb(228, 157, 159);
+	}
+}
