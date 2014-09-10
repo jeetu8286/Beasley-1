@@ -6,6 +6,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class GreaterMediaContestEntry {
 
+	const ENTRY_SOURCE_TWITTER = 'twitter';
+	const ENTRY_SOURCE_INSTAGRAM = 'instagram';
+	const ENTRY_SOURCE_GRAVITY_FORMS = 'gravity-forms';
+
 	private $post;
 
 	private $entrant_name;
@@ -13,12 +17,17 @@ class GreaterMediaContestEntry {
 	private $entry_source; // How this entry was created (i.e. "gravity-forms"
 	private $entry_reference; // Reference/link to the source of the entry (i.e. Gravity Forms submission ID)
 
-	private function __construct( self $post_obj = null, $contest_id = null ) {
+	private function __construct( WP_Post $post_obj = null, $contest_id = null ) {
 
 		if ( null !== $post_obj ) {
+
+			if(!($post_obj instanceof WP_Post)) {
+				throw new UnexpectedValueException('$post_obj must be a WP_Post');
+			}
+
 			$this->post              = $post_obj;
 			$this->entrant_name      = get_post_meta( $this->post->ID, 'entrant_name', true );
-			$this->entrant_reference = get_post_meta( $this->post_ID, 'entrant_reference', true );
+			$this->entrant_reference = get_post_meta( $this->post->ID, 'entrant_reference', true );
 			$this->entry_source      = get_post_meta( $this->post->ID, 'entry_source', true );
 			$this->entry_reference   = get_post_meta( $this->post->ID, 'entry_reference', true );
 		} else {
@@ -120,7 +129,15 @@ class GreaterMediaContestEntry {
 	 */
 	public static function create_for_data( $contest_id, $entrant_name, $entrant_reference, $entry_source, $entry_reference ) {
 
-		$entry = new self( null, $contest_id );
+		$entry_source_camel_case      = str_replace( ' ', '', ucwords( str_replace( '-', ' ', $entry_source ) ) );
+		$possible_entry_subclass_name = 'GreaterMediaContestEntry' . $entry_source_camel_case;
+		if ( class_exists( $possible_entry_subclass_name ) ) {
+			$entry = new $possible_entry_subclass_name( null, $contest_id );
+		}
+		else {
+			$entry = new self( null, $contest_id );
+		}
+
 
 		if ( ! is_scalar( $entrant_name ) ) {
 			throw new UnexpectedValueException( 'Entrant Name must be a scalar value' );
@@ -163,6 +180,10 @@ class GreaterMediaContestEntry {
 
 		return $entry;
 
+	}
+
+	public function render_preview() {
+		return "This is a generic submission";
 	}
 
 }
