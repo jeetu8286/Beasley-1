@@ -97,6 +97,10 @@ class Plugin {
 			'query_builder',
 			plugins_url( 'js/query_builder.js?cache=' . strtotime('now'), $this->plugin_file )
 		);
+
+		wp_localize_script(
+			'query_builder', 'member_query_data', $member_query->properties
+		);
 	}
 
 	function initialize_styles( $member_query ) {
@@ -114,8 +118,10 @@ class Plugin {
 			return $sanitized_data;
 		}
 
-		foreach ($this->get_meta_boxes() as $meta_box) {
-			$meta_box->verify_nonce();
+		$member_query = new MemberQuery( $raw_data );
+		foreach ($this->get_meta_boxes( $member_query ) as $meta_box) {
+			// TODO: Important!, Fix Direct Query with new bug
+			//$meta_box->verify_nonce();
 		}
 
 		$member_query_builder = new MemberQueryBuilder();
