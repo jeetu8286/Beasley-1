@@ -30,6 +30,16 @@ function gmr_survey_form() {
 
 	$gigya_form = '<div class="gigya-screen-set" id="simple-screen-set" data-width="100%" data-height="600" style="display: none" >
 						<div class="gigya-screen" id="registration-screen" data-width="100%" data-height="735">
+							<div class="left-col">
+								<h2>Register with your social network</h2>
+								<div class="gigya-social-login" data-on-success-screen="gigya-thankyou-screen">
+									<param name="buttonsStyle" value="fullLogo">
+									<param name="width" value="313">
+									<param name="height" value="160">
+									<param name="showTermsLink" value="false">
+									<param name="hideGigyaLink" value="true">
+								</div>
+							</div>
 							<div class="right-col">
 								<h2>Signup for a Gigya Account:</h2>
 								<form class="gigya-register-form" data-on-success-screen="gigya-thankyou-screen">
