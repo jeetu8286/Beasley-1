@@ -17,3 +17,4 @@ define( 'GREATER_MEDIA_TIMED_CONTENT_PATH', dirname( __FILE__ ) );
 define( 'GREATER_MEDIA_TIMED_CONTENT_URL', plugin_dir_url( __FILE__ ) );
 
 include trailingslashit( GREATER_MEDIA_TIMED_CONTENT_PATH ) . 'inc/class-greatermedia-timed-content.php';
+include trailingslashit( GREATER_MEDIA_TIMED_CONTENT_PATH ) . 'inc/class-greatermedia-timed-content-shortcode.php';
