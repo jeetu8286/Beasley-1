@@ -8,7 +8,6 @@ class GreaterMediaTimedContent {
 
 	function __construct() {
 
-		add_action( 'admin_init', array( $this, 'admin_init' ) );
 		add_action( 'current_screen', array( $this, 'current_screen' ) );
 		add_action( 'post_submitbox_misc_actions', array( $this, 'post_submitbox_misc_actions' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ), 20, 0 );
@@ -16,13 +15,6 @@ class GreaterMediaTimedContent {
 		add_action( 'save_post', array( $this, 'save_post' ) );
 		add_action( 'greatermedia_expire_post', array( $this, 'greatermedia_expire_post' ) );
 
-	}
-
-	public function admin_init() {
-		// Register a debug log
-		if ( defined( 'WLS' ) ) {
-			wls_register( 'gm-timed-content', 'Debugging info for the GM Timed Content plugin' );
-		}
 	}
 
 	public function current_screen() {
@@ -113,13 +105,6 @@ class GreaterMediaTimedContent {
 
 			$exp_str = "{$exp_mm} {$exp_jj} {$exp_aa} {$exp_hh} {$exp_mn}";
 			if ( '0 0 0 0 0' !== trim( $exp_str ) ) {
-				if ( defined( 'WLS' ) ) {
-					wls_simple_log(
-						'gm-timed-content',
-						sprintf( 'exp_str is %s', $exp_str ),
-						WLS_INFO
-					);
-				}
 				$exp_date      = DateTime::createFromFormat( 'n j Y G i', $exp_str );
 				$exp_timestamp = $exp_date->getTimestamp();
 			} else {
@@ -127,45 +112,16 @@ class GreaterMediaTimedContent {
 			}
 
 			$local_to_gmt_time_offset = get_option( 'gmt_offset' ) * - 1 * 3600;
-			if ( defined( 'WLS' ) ) {
-				$dt = new DateTime();
-				wls_simple_log(
-					'gm-timed-content',
-					sprintf( 'PHP offset is %s, WordPress offset is %d, computed to be %d seconds', $dt->getOffset(), get_option( 'gmt_offset' ), $local_to_gmt_time_offset ),
-					WLS_INFO
-				);
-			}
 			$exp_timestamp_gmt = $exp_timestamp + $local_to_gmt_time_offset;
 			delete_post_meta( $post_id, '_post_expiration' );
 			add_post_meta( $post_id, '_post_expiration', $exp_timestamp );
 
-			// Uh oh, someone jumped the gun!
-			wls_simple_log(
-				'gm-timed-content',
-				sprintf( 'Can I set up the cron? exp_timestamp_gmt is %d, gmdate is %d', $exp_timestamp_gmt, gmdate( 'U' ) ),
-				WLS_INFO
-			);
-
+			// If the expiration date is in the future, set a cron to expire the post
 			if ( $exp_timestamp_gmt > gmdate( 'U' ) ) {
 				wp_clear_scheduled_hook( 'greatermedia_expire_post', array( $post_id ) ); // clear anything else in the system
-				if ( defined( 'WLS' ) ) {
-					wls_simple_log(
-						'gm-timed-content',
-						sprintf( 'Setting up expiration cron for %d, current time %d', $exp_timestamp_gmt, time() ),
-						WLS_INFO
-					);
-				}
 				wp_schedule_single_event( $exp_timestamp_gmt, 'greatermedia_expire_post', array( $post_id ) );
 
 				return;
-			} else {
-				if ( defined( 'WLS' ) ) {
-					wls_simple_log(
-						'gm-timed-content',
-						sprintf( 'Not setting up the cron because I think the expiration time is in the past' ),
-						WLS_INFO
-					);
-				}
 			}
 
 		}
