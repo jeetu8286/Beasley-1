@@ -5,8 +5,18 @@
  * @package Greater Media Prototype
  * @since 0.1.0
  */
- 
+
  get_header();
+
+ 	?>
+
+ 	<article>
+
+ 	<?php do_action( 'gmr_get_homepage_layout' ); ?>
+
+ 	</article>
+
+ 	<?php
 
 	while( have_posts() ):
 		the_post();
