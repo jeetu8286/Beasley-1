@@ -12,6 +12,9 @@ require_once __DIR__ . '/class-preview-meta-box.php';
 require_once __DIR__ . '/class-direct-query-meta-box.php';
 require_once __DIR__ . '/class-query-builder-meta-box.php';
 
+/* ajax handlers */
+require_once __DIR__ . '/class-preview-ajax-handler.php';
+
 /**
  * The main plugin class for greatermedia-gigya.
  *
@@ -54,6 +57,9 @@ class Plugin {
 		add_action( 'init', array( $this, 'initialize' ) );
 		add_action( 'add_meta_boxes', array( $this, 'initialize_meta_boxes' ), 10, 2 );
 		add_filter( 'wp_insert_post_data', array( $this, 'serialize_member_query' ), 10, 2 );
+
+		$preview_ajax_handler = new PreviewAjaxHandler();
+		$preview_ajax_handler->register();
 	}
 
 	/**
@@ -100,6 +106,15 @@ class Plugin {
 
 		wp_localize_script(
 			'query_builder', 'member_query_data', $member_query->properties
+		);
+
+		$meta = array(
+			'ajaxurl' => admin_url('admin-ajax.php'),
+			'preview_nonce' => wp_create_nonce( 'preview_member_query' )
+		);
+
+		wp_localize_script(
+			'query_builder', 'member_query_meta', $meta
 		);
 	}
 

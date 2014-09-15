@@ -131,3 +131,31 @@
 	width: 15%;
 }
 
+#major-publishing-actions.preview-member-query {
+	border: 1px solid #ddd;
+	margin: 0 -1em -1em -1em;
+}
+
+.count-status {
+	font-style: italic;
+	color: #666666;
+}
+
+.widefat.member-query-results {
+	margin-bottom: 1em;
+}
+
+.member-query-results a {
+	color: #555555;
+}
+
+.open-member-page {
+	float: right;
+}
+
+.member-query-results .open-member-page-text {
+	font-weight: bold;
+	text-decoration: underline;
+	text-overflow: ellipsis;
+	word-wrap: break-word;
+}
