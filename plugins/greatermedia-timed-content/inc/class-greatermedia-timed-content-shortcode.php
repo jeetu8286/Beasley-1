@@ -18,6 +18,14 @@ class GreaterMediaTimedContentShortcode {
 		add_shortcode( 'time-restricted', array( $this, 'process_shortcode' ) );
 	}
 
+	/**
+	 * Process the time-restricted shortcode
+	 *
+	 * @param      array  $atts
+	 * @param string|null $content optional content to display
+	 *
+	 * @return null|string output to display
+	 */
 	function process_shortcode( $atts, $content = null ) {
 
 		$local_to_gmt_time_offset = get_option( 'gmt_offset' ) * - 1 * 3600;
@@ -26,14 +34,14 @@ class GreaterMediaTimedContentShortcode {
 			$show     = strtotime( $atts['show'] );
 			$show_gmt = $show + $local_to_gmt_time_offset;
 		} else {
-			$show = $show_gmt = 0;
+			$show_gmt = 0;
 		}
 
 		if ( isset( $atts['hide'] ) ) {
 			$hide     = strtotime( $atts['hide'] );
 			$hide_gmt = $hide + $local_to_gmt_time_offset;
 		} else {
-			$hide = $hide_gmt = PHP_INT_MAX;
+			$hide_gmt = PHP_INT_MAX;
 		}
 
 		$now_gmt = intval( gmdate( 'U' ) );
@@ -43,6 +51,7 @@ class GreaterMediaTimedContentShortcode {
 		} else {
 			return '';
 		}
+
 	}
 
 }
