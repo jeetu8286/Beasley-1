@@ -1,8 +1,8 @@
 (function () {
 	tinymce.PluginManager.add('gm_timed_content_mce_button', function (editor, url) {
 		editor.addButton('gm_timed_content_mce_button', {
-			text   : 'Time Restrict',
-			icon   : false,
+			//text   : 'Time Restrict',
+			icon   : 'gm-timed-content-icon',
 			onclick: function () {
 				editor.windowManager.open({
 					title   : 'Timed Content',
