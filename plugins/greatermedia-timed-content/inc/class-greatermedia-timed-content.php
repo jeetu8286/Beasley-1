@@ -70,19 +70,25 @@ class GreaterMediaTimedContent {
 			$expiration_timestamp = get_post_meta( $post->ID, '_post_expiration', true );
 
 			$settings = array(
-				'templates' => array(
+				'templates'          => array(
 					'expiration_time' => self::touch_exptime( 1, $expiration_timestamp ),
+					'tinymce'         => file_get_contents( trailingslashit( GREATER_MEDIA_TIMED_CONTENT_PATH ) . 'tpl/greatermedia-tinymce-view-template.js' ),
 				),
-				'strings'   => array(
+				'rendered_templates' => array(),
+				'strings'            => array(
 					'never' => __( 'Never', 'greatermedia-timed-content' ),
 				),
-				'formats'   => array(
-					'date' => __( 'M j, Y @ G:i' )
+				'formats'            => array(
+					'date'      => __( 'M j, Y @ G:i' ),
+					'mce_view_date' => __( 'F j, Y g:i a' ),
 				),
 			);
 
 			wp_enqueue_script( 'date-format', trailingslashit( GREATER_MEDIA_TIMED_CONTENT_URL ) . 'js/vendor/date.format/date.format.js', array(), null, true );
-			wp_enqueue_script( 'greatermedia-tc-js', trailingslashit( GREATER_MEDIA_TIMED_CONTENT_URL ) . 'js/greatermedia-timed-content.js', array( 'jquery', 'date-format' ), false, true );
+			wp_enqueue_script( 'greatermedia-tc-js', trailingslashit( GREATER_MEDIA_TIMED_CONTENT_URL ) . 'js/greatermedia-timed-content.js', array(
+				'jquery',
+				'date-format'
+			), false, true );
 			wp_localize_script( 'greatermedia-tc-js', 'GreaterMediaTimedContent', $settings );
 
 		}
@@ -112,7 +118,7 @@ class GreaterMediaTimedContent {
 			}
 
 			$local_to_gmt_time_offset = get_option( 'gmt_offset' ) * - 1 * 3600;
-			$exp_timestamp_gmt = $exp_timestamp + $local_to_gmt_time_offset;
+			$exp_timestamp_gmt        = $exp_timestamp + $local_to_gmt_time_offset;
 			delete_post_meta( $post_id, '_post_expiration' );
 			add_post_meta( $post_id, '_post_expiration', $exp_timestamp );
 
