@@ -70,4 +70,17 @@ class GreaterMediaUserGeneratedLink extends GreaterMediaUserGeneratedContent {
 
 	}
 
-}
+	/**
+	 * Render a preview of this UGC suitable for use in the admin
+	 *
+	 * @return string html
+	 */
+	public function render_preview() {
+
+		$html = $this->retrieve_link_preview( $this->post->post_content );
+
+		return $html;
+
+	}
+
+	}

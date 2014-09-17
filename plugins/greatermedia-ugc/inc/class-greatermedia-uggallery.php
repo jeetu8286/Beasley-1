@@ -58,4 +58,33 @@ class GreaterMediaUserGeneratedGallery extends GreaterMediaUserGeneratedContent 
 
 	}
 
+	/**
+	 * Render a preview of this UGC suitable for use in the admin
+	 *
+	 * @return string html
+	 */
+	public function render_preview() {
+
+		$attachments = $this->get_attachments();
+
+		$html = '<div class="ugc-gallery-preview">';
+
+		foreach ( $attachments as $attachment_id => $attachment_src ) {
+
+			$delete_url = home_url( sprintf( 'ugc/%d/gallery/%d/delete', $this->post_id, $attachment_id ) );
+
+			$html .= '<div class="ugc-gallery-preview-thumb">' .
+				'<img src="' .
+				esc_attr( $attachment_src ) .
+				'" />' .
+				'</div>';
+		}
+
+		$html .= '</div>';
+
+		return $html;
+
+	}
+
+
 }

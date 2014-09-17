@@ -424,6 +424,15 @@ class GreaterMediaUserGeneratedContent {
 		return 'Generic result';
 	}
 
+	/**
+	 * Render a preview of this UGC suitable for use in the admin
+	 *
+	 * @return string html
+	 */
+	public function render_preview() {
+		return 'Generic result';
+	}
+
 }
 
 GreaterMediaUserGeneratedContent::register_cpt();
