@@ -162,8 +162,6 @@ class GreaterMediaUserGeneratedContent {
 
 		global $wp;
 
-//		http://greatermedia.dev/wp-admin/edit.php?_wpnonce=5120bdfa2a&_wp_http_referer=%2Fwp-admin%2Fedit.php%3Fpost_type%3Dlistener_submissions%26page%3Dmoderate-ugc&action=approve&ugc%5B%5D=51&action2=-1
-
 		$rewrite_rules = self::rewrite_rules();
 		if ( ! isset( $rewrite_rules[ $wp->matched_rule ] ) ) {
 			return;
