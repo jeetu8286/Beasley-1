@@ -5,5 +5,5 @@
 	<% if (undefined !== show && undefined !== hide) { %>;<% } %>
 	<% if (undefined !== hide) { %>Hide: <%= hide %><% }  %>
 	</header>
-	<%= content %>
+	<div class="content"><%= content %></div>
 </div>
