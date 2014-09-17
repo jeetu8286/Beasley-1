@@ -100,10 +100,11 @@
 				})
 			);
 
+			/*
 			constraints.push(
 				new Constraint({
-					type: 'facebook_likes',
-					title: 'Facebook Likes',
+					type: 'profile_likes',
+					title: 'Profile Likes',
 					fieldPath: 'profile.likes.name',
 					value: '',
 					valueType: 'string',
@@ -120,6 +121,116 @@
 					value: true,
 					valueType: 'string',
 					operator: '=',
+					conjunction: 'and'
+				})
+			);
+			*/
+
+			/* constraints from Jira */
+			constraints.push(
+				new Constraint({
+					type: 'membership_start_date',
+					title: 'Membership Start Date',
+					fieldPath: 'registeredTimestamp',
+					value: 1347872653,
+					valueType: 'number',
+					operator: '>',
+					conjunction: 'and'
+				})
+			);
+
+			constraints.push(
+				new Constraint({
+					type: 'profile_location',
+					title: 'Profile Location City',
+					fieldPath: 'profile.city',
+					value: '',
+					valueType: 'string',
+					operator: 'contains',
+					conjunction: 'and'
+				})
+			);
+
+			constraints.push(
+				new Constraint({
+					type: 'profile_location',
+					title: 'Profile Location State',
+					fieldPath: 'profile.state',
+					value: '',
+					valueType: 'string',
+					operator: 'contains',
+					conjunction: 'and'
+				})
+			);
+
+			constraints.push(
+				new Constraint({
+					type: 'listening_loyalty',
+					title: 'Listening Loyalty',
+					fieldPath: 'data.listeningLoyalty',
+					value: 'Only this station',
+					valueType: 'string',
+					operator: 'contains',
+					conjunction: 'and'
+				})
+			);
+
+			constraints.push(
+				new Constraint({
+					type: 'listening_frequency',
+					title: 'Listening Frequency',
+					fieldPath: 'data.listeningFrequency',
+					value: 'Once per day',
+					valueType: 'string',
+					operator: 'contains',
+					conjunction: 'and'
+				})
+			);
+
+			constraints.push(
+				new Constraint({
+					type: 'participation_in_survey',
+					title: 'Participation in Survey',
+					fieldPath: 'data.surveys.name',
+					value: '',
+					valueType: 'string',
+					operator: 'contains',
+					conjunction: 'and'
+				})
+			);
+
+			constraints.push(
+				new Constraint({
+					type: 'survey_question',
+					title: 'Survey Question',
+					fieldPath: 'data.surveys.entries.questions.question',
+					value: '',
+					valueType: 'string',
+					operator: 'contains',
+					conjunction: 'and'
+				})
+			);
+
+			constraints.push(
+				new Constraint({
+					type: 'survey_question_response',
+					title: 'Survey Question Response',
+					fieldPath: 'data.surveys.entries.questions.answers',
+					value: '',
+					valueType: 'string',
+					operator: 'contains',
+					conjunction: 'and'
+				})
+			);
+
+			constraints.push(
+				new Constraint({
+					type: 'contest_name',
+					title: 'Participation in Contest',
+					fieldPath: 'data.contests.name',
+					value: 'Favorite Band',
+					valueType: 'string',
+					operator: 'contains',
 					conjunction: 'and'
 				})
 			);
@@ -442,7 +553,8 @@
 				'data-id': constraint.id,
 				'alt': 'f105',
 				'class': 'dashicons dashicons-admin-page copy-constraint',
-				'href': '#'
+				'href': '#',
+				'title': 'Duplicate'
 			});
 			item.append(link);
 			list.append(item);
@@ -452,7 +564,8 @@
 				'data-id': constraint.id,
 				'alt': 'f105',
 				'class': 'dashicons dashicons-trash remove-constraint',
-				'href': '#'
+				'href': '#',
+				'title': 'Remove'
 			});
 			item.append(link);
 			list.append(item);
