@@ -1277,7 +1277,7 @@ function gmi_gigya_profile_settings($position, $form_id){
 	$gigya_fields = gmi_get_gigya_fields();
 
     //create settings on position 50 (right after Admin Label)
-	if($position == 0){
+	if($position == 0 && ! empty ( $gigya_fields ) ){
 		?>
 		<li class="gigya_setting field_setting">
 			<label for="field_admin_label">
