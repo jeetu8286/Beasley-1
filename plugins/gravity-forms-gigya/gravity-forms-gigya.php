@@ -1286,28 +1286,37 @@ function gmi_gigya_profile_settings($position, $form_id){
 			</label>
 			<select id="gigya_demographic" onChange="SetFieldProperty('gigyaDemographic', jQuery(this).val());">
 				<option value="">Don't add this field's value to user's profile</option>
-				<?php foreach ( $gigya_fields as $gigya_field_slug => $gigya_field_name ): ?>
-				<option value="<?php echo $gigya_field_slug; ?>"><?php echo $gigya_field_name; ?></option>
+				<?php foreach ( $gigya_fields as $predefined_field_key => $predefined_field_value ): ?>
+				<option value="<?php echo $predefined_field_key; ?>"><?php echo $predefined_field_key; ?></option>
 			<?php endforeach; ?>
 		</select>
 	</li>
 	<?php
-}
+	}
 }
 add_action("gform_field_advanced_settings", "gmi_gigya_profile_settings", 10, 2);
+
+/**
+ * If Gigya demographic field was set, apply key to GF 'parameter name' field
+ * @param array of all form data
+ */
+function apply_demographic_setting( $form ){
+	foreach ( $form["fields"] as $key => $field ) {
+		if ( !empty( $field['gigyaDemographic'] ) ) {
+			$form["fields"][$key]['allowsPrepopulate'] = 1;
+			$form["fields"][$key]['inputName'] = esc_html( $field['gigyaDemographic'] );
+		}
+	}
+	return $form;
+}
+add_filter( 'gform_admin_pre_render', 'apply_demographic_setting', 1 );
 
 /**
  * Returns an array of Gigya profile fields
  * @return array gigya fields
  */
 function gmi_get_gigya_fields() {
-
-	$gigya_fields = array(
-		'favorite-band' => 'Favorite Band',
-		'zip-code' => 'Zipcode',
-		't-shirt-size' => 'T-Shirt Size',
-		);
-
+	$gigya_fields = get_site_option( "gf_prebuilt_fields" );
 	return $gigya_fields;
 }
 

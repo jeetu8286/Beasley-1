@@ -112,7 +112,7 @@ class GFPrebuiltFields {
 		} ?>
 		<div class="wrap">
 			<h2><?php
-				_e( "Prebuilt Form Fields", "gravityformseloqua" ); ?>
+				_e( "Prebuilt Demographic Fields", "gravityformseloqua" ); ?>
 				<a class="button add-new-h2" href="admin.php?page=gf_prebuilt_fields&view=edit&id=0"><?php _e( "Add New", "gravityformseloqua" ) ?></a>
 			</h2>
 
