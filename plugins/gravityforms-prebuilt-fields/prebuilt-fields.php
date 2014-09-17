@@ -64,7 +64,7 @@ class GFPrebuiltFields {
 
 	// Creates admin menu item under Forms > Prebuilt Fields
 	public function prebuilt_fields_menu( $menus ) {
-		$menus[] = array( "name" => "gf_prebuilt_fields", "label" => __( "Prebuilt Fields", "gravityformseloqua" ), "callback" => array( "GFPrebuiltFields", "gf_prebuilt_fields" ), "permission" => 'administrator' );
+		$menus[] = array( "name" => "gf_prebuilt_fields", "label" => __( "Demographic Fields", "gravityformseloqua" ), "callback" => array( "GFPrebuiltFields", "gf_prebuilt_fields" ), "permission" => 'administrator' );
 		return $menus;
 	}
 
@@ -112,7 +112,7 @@ class GFPrebuiltFields {
 		} ?>
 		<div class="wrap">
 			<h2><?php
-				_e( "Prebuilt Demographic Fields", "gravityformseloqua" ); ?>
+				_e( "Demographic Fields", "gravityformseloqua" ); ?>
 				<a class="button add-new-h2" href="admin.php?page=gf_prebuilt_fields&view=edit&id=0"><?php _e( "Add New", "gravityformseloqua" ) ?></a>
 			</h2>
 
@@ -138,7 +138,7 @@ class GFPrebuiltFields {
 						<th scope="col" id="cb" class="manage-column column-cb check-column" style="">
 							<input type="checkbox" /></th>
 						<th scope="col" id="active" class="manage-column check-column"></th>
-						<th scope="col" class="manage-column"><?php _e( "Field Name", "gravityformseloqua" ) ?></th>
+						<th scope="col" class="manage-column"><?php _e( "Gigya Field Name", "gravityformseloqua" ) ?></th>
 						<th scope="col" class="manage-column"><?php _e( "Field Type", "gravityformseloqua" ) ?></th>
 					</tr>
 					</thead>
@@ -147,7 +147,7 @@ class GFPrebuiltFields {
 						<th scope="col" id="cb" class="manage-column column-cb check-column" style="">
 							<input type="checkbox" /></th>
 						<th scope="col" id="active" class="manage-column check-column"></th>
-						<th scope="col" class="manage-column"><?php _e( "Field Name", "gravityformseloqua" ) ?></th>
+						<th scope="col" class="manage-column"><?php _e( "Gigya Field Name", "gravityformseloqua" ) ?></th>
 						<th scope="col" class="manage-column"><?php _e( "Field Type", "gravityformseloqua" ) ?></th>
 					</tr>
 					</tfoot>
@@ -202,7 +202,7 @@ class GFPrebuiltFields {
 		$id = ! empty( $_POST["gf_prebuilt_fields_name"] ) ? $_POST["gf_prebuilt_fields_name"] : esc_html( $_GET["id"] );
 		?>
 		<div class="wrap">
-		<h2><?php _e( "Prebuilt Field", "gravityformseloqua" ) ?></h2>
+		<h2><?php _e( "Demographic Field", "gravityformseloqua" ) ?></h2>
 
 		<form method="post" action="">
 			<input type="hidden" name="eloqua_setting_id" id="eloqua_setting_id" value="<?php echo absint( $id ); ?>" />
@@ -254,7 +254,7 @@ class GFPrebuiltFields {
 				<tbody>
 				<tr>
 					<th scope="row">
-						<label for="gf_prebuilt_fields_name" class="left_header"><?php _e( "Field Name", "gravityformseloqua" ); ?> </label>
+						<label for="gf_prebuilt_fields_name" class="left_header"><?php _e( "Gigya Field Name", "gravityformseloqua" ); ?> </label>
 					</th>
 					<td>
 						<input type="text" name="gf_prebuilt_fields_name" id="gf_prebuilt_fields_name" <?php if ( !empty( $gf_prebuilt_fields_name ) ) {
