@@ -8,15 +8,7 @@
 
  get_header();
 
- 	?>
-
- 	<article>
-
- 	<?php do_action( 'gmr_get_homepage_layout' ); ?>
-
- 	</article>
-
- 	<?php
+ 	do_action( 'gmr_get_homepage_layout' );
 
 	while( have_posts() ):
 		the_post();
