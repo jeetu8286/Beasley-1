@@ -400,7 +400,6 @@
 			$('#constraints').attr('value', constraints);
 			$('#query').attr('value', query);
 
-			console.log(query);
 			return query;
 		}
 
@@ -791,6 +790,7 @@
 			this.previewView  = new PreviewView(this.queryUpdater);
 
 			this.previewView.preview(member_query_data.query);
+			this.queryUpdater.update();
 		},
 
 	};
