@@ -149,9 +149,9 @@ class GreaterMediaUserGeneratedContent {
 		// flush rewrite rules only if our rules is not registered
 		$all_registered_rules = $wp_rewrite->wp_rewrite_rules();
 		$registered_rules     = array_intersect( $rewrite_rules, $all_registered_rules );
-//		if ( count( $registered_rules ) !== count( $rewrite_rules ) ) {
-		flush_rewrite_rules( true );
-//		}
+		if ( count( $registered_rules ) !== count( $rewrite_rules ) ) {
+			flush_rewrite_rules( true );
+		}
 
 	}
 
