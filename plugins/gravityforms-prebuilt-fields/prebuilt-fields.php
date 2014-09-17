@@ -64,7 +64,7 @@ class GFPrebuiltFields {
 
 	// Creates admin menu item under Forms > Prebuilt Fields
 	public function prebuilt_fields_menu( $menus ) {
-		$menus[] = array( "name" => "gf_prebuilt_fields", "label" => __( "Demographic Fields", "gravityformseloqua" ), "callback" => array( "GFPrebuiltFields", "gf_prebuilt_fields" ), "permission" => 'administrator' );
+		$menus[] = array( "name" => "gf_prebuilt_fields", "label" => __( "Demographic Fields", "gravityformsprebuilt" ), "callback" => array( "GFPrebuiltFields", "gf_prebuilt_fields" ), "permission" => 'administrator' );
 		return $menus;
 	}
 
@@ -95,7 +95,7 @@ class GFPrebuiltFields {
 			$id = esc_html( $_POST["action_argument"] );
 			self::gf_prebuilt_field_delete_entry( esc_html( $id ) );
 			?>
-			<div class="updated fade" style="padding:6px"><?php _e( "Deleted.", "gravityformseloqua" ) ?></div>
+			<div class="updated fade" style="padding:6px"><?php _e( "Deleted.", "gravityformsprebuilt" ) ?></div>
 		<?php
 		} else {
 			if ( ! empty( $_POST["bulk_action"] ) ) {
@@ -106,14 +106,14 @@ class GFPrebuiltFields {
 						self::gf_prebuilt_field_delete_entry( esc_html( $feed_id ) );
 					}
 				} ?>
-				<div class="updated fade" style="padding:6px"><?php _e( "Deleted.", "gravityformseloqua" ) ?></div>
+				<div class="updated fade" style="padding:6px"><?php _e( "Deleted.", "gravityformsprebuilt" ) ?></div>
 			<?php
 			}
 		} ?>
 		<div class="wrap">
 			<h2><?php
-				_e( "Demographic Fields", "gravityformseloqua" ); ?>
-				<a class="button add-new-h2" href="admin.php?page=gf_prebuilt_fields&view=edit&id=0"><?php _e( "Add New", "gravityformseloqua" ) ?></a>
+				_e( "Demographic Fields", "gravityformsprebuilt" ); ?>
+				<a class="button add-new-h2" href="admin.php?page=gf_prebuilt_fields&view=edit&id=0"><?php _e( "Add New", "gravityformsprebuilt" ) ?></a>
 			</h2>
 
 			<form id="feed_form" method="post">
@@ -123,13 +123,13 @@ class GFPrebuiltFields {
 
 				<div class="tablenav">
 					<div class="alignleft actions" style="padding:8px 0 7px 0;">
-						<label class="hidden" for="bulk_action"><?php _e( "Bulk action", "gravityformseloqua" ) ?></label>
+						<label class="hidden" for="bulk_action"><?php _e( "Bulk action", "gravityformsprebuilt" ) ?></label>
 						<select name="bulk_action" id="bulk_action">
-							<option value=''> <?php _e( "Bulk action", "gravityformseloqua" ) ?> </option>
-							<option value='delete'><?php _e( "Delete", "gravityformseloqua" ) ?></option>
+							<option value=''> <?php _e( "Bulk action", "gravityformsprebuilt" ) ?> </option>
+							<option value='delete'><?php _e( "Delete", "gravityformsprebuilt" ) ?></option>
 						</select>
 						<?php
-						echo '<input type="submit" class="button" value="' . __( "Apply", "gravityformseloqua" ) . '" onclick="if( jQuery(\'#bulk_action\').val() == \'delete\' && !confirm(\'' . __( "Delete selected feeds? ", "gravityformseloqua" ) . __( "\'Cancel\' to stop, \'OK\' to delete.", "gravityformseloqua" ) . '\')) { return false; } return true;"/>'; ?>
+						echo '<input type="submit" class="button" value="' . __( "Apply", "gravityformsprebuilt" ) . '" onclick="if( jQuery(\'#bulk_action\').val() == \'delete\' && !confirm(\'' . __( "Delete selected feeds? ", "gravityformsprebuilt" ) . __( "\'Cancel\' to stop, \'OK\' to delete.", "gravityformsprebuilt" ) . '\')) { return false; } return true;"/>'; ?>
 					</div>
 				</div>
 				<table class="widefat fixed">
@@ -138,8 +138,8 @@ class GFPrebuiltFields {
 						<th scope="col" id="cb" class="manage-column column-cb check-column" style="">
 							<input type="checkbox" /></th>
 						<th scope="col" id="active" class="manage-column check-column"></th>
-						<th scope="col" class="manage-column"><?php _e( "Gigya Field Name", "gravityformseloqua" ) ?></th>
-						<th scope="col" class="manage-column"><?php _e( "Field Type", "gravityformseloqua" ) ?></th>
+						<th scope="col" class="manage-column"><?php _e( "Gigya Field Name", "gravityformsprebuilt" ) ?></th>
+						<th scope="col" class="manage-column"><?php _e( "Field Type", "gravityformsprebuilt" ) ?></th>
 					</tr>
 					</thead>
 					<tfoot>
@@ -147,8 +147,8 @@ class GFPrebuiltFields {
 						<th scope="col" id="cb" class="manage-column column-cb check-column" style="">
 							<input type="checkbox" /></th>
 						<th scope="col" id="active" class="manage-column check-column"></th>
-						<th scope="col" class="manage-column"><?php _e( "Gigya Field Name", "gravityformseloqua" ) ?></th>
-						<th scope="col" class="manage-column"><?php _e( "Field Type", "gravityformseloqua" ) ?></th>
+						<th scope="col" class="manage-column"><?php _e( "Gigya Field Name", "gravityformsprebuilt" ) ?></th>
+						<th scope="col" class="manage-column"><?php _e( "Field Type", "gravityformsprebuilt" ) ?></th>
 					</tr>
 					</tfoot>
 
@@ -167,15 +167,15 @@ class GFPrebuiltFields {
 									<input type="checkbox" name="feed[]" value="<?php echo esc_html( $id ) ?>" /></th>
 								<td></td>
 								<td class="column-title">
-									<a href="admin.php?page=gf_prebuilt_fields&view=edit&id=<?php echo esc_html( $id ) ?>" title="<?php _e( "Edit", "gravityformseloqua" ) ?>"><?php echo esc_html( $id ) ?></a>
+									<a href="admin.php?page=gf_prebuilt_fields&view=edit&id=<?php echo esc_html( $id ) ?>" title="<?php _e( "Edit", "gravityformsprebuilt" ) ?>"><?php echo esc_html( $id ) ?></a>
 
 									<div class="row-actions">
                                         <span class="edit">
-                                        <a title="<?php _e( "Edit", "gravityformseloqua" ) ?>" href="admin.php?page=gf_prebuilt_fields&view=edit&id=<?php echo esc_html( $id ) ?>"><?php _e( "Edit", "gravityformseloqua" ) ?></a>
+                                        <a title="<?php _e( "Edit", "gravityformsprebuilt" ) ?>" href="admin.php?page=gf_prebuilt_fields&view=edit&id=<?php echo esc_html( $id ) ?>"><?php _e( "Edit", "gravityformsprebuilt" ) ?></a>
                                         |
                                         </span>
                                         <span class="trash">
-                                        <a title="<?php _e( "Delete", "gravityformseloqua" ) ?>" href="javascript: if(confirm('<?php _e( "Delete this feed? ", "gravityformseloqua" ) ?> <?php _e( "\'Cancel\' to stop, \'OK\' to delete.", "gravityformseloqua" ) ?>')){ jQuery('#action_argument').val('<?php echo esc_html( $id ); ?>'); jQuery('#action').val('delete'); jQuery('#feed_form')[0].submit(); }"><?php _e( "Delete", "gravityformseloqua" ) ?></a>
+                                        <a title="<?php _e( "Delete", "gravityformsprebuilt" ) ?>" href="javascript: if(confirm('<?php _e( "Delete this feed? ", "gravityformsprebuilt" ) ?> <?php _e( "\'Cancel\' to stop, \'OK\' to delete.", "gravityformsprebuilt" ) ?>')){ jQuery('#action_argument').val('<?php echo esc_html( $id ); ?>'); jQuery('#action').val('delete'); jQuery('#feed_form')[0].submit(); }"><?php _e( "Delete", "gravityformsprebuilt" ) ?></a>
                                         </span>
 									</div>
 								</td>
@@ -202,7 +202,7 @@ class GFPrebuiltFields {
 		$id = ! empty( $_POST["gf_prebuilt_fields_name"] ) ? $_POST["gf_prebuilt_fields_name"] : esc_html( $_GET["id"] );
 		?>
 		<div class="wrap">
-		<h2><?php _e( "Demographic Field", "gravityformseloqua" ) ?></h2>
+		<h2><?php _e( "Demographic Field", "gravityformsprebuilt" ) ?></h2>
 
 		<form method="post" action="">
 			<input type="hidden" name="eloqua_setting_id" id="eloqua_setting_id" value="<?php echo absint( $id ); ?>" />
@@ -254,7 +254,7 @@ class GFPrebuiltFields {
 				<tbody>
 				<tr>
 					<th scope="row">
-						<label for="gf_prebuilt_fields_name" class="left_header"><?php _e( "Gigya Field Name", "gravityformseloqua" ); ?> </label>
+						<label for="gf_prebuilt_fields_name" class="left_header"><?php _e( "Gigya Field Name", "gravityformsprebuilt" ); ?> </label>
 					</th>
 					<td>
 						<input type="text" name="gf_prebuilt_fields_name" id="gf_prebuilt_fields_name" <?php if ( !empty( $gf_prebuilt_fields_name ) ) {
@@ -264,19 +264,19 @@ class GFPrebuiltFields {
 				</tr>
 				<tr>
 					<th scope="row">
-						<label for="gf_prebuilt_fields_type" class="left_header"><?php _e( "Field Type", "gravityformseloqua" ); ?> </label>
+						<label for="gf_prebuilt_fields_type" class="left_header"><?php _e( "Field Type", "gravityformsprebuilt" ); ?> </label>
 					</th>
 					<td>
 						<select id="gf_prebuilt_fields_type" name="gf_prebuilt_fields_type">
 							<option value="text" <?php if ( $gf_prebuilt_fields_type == 'text' ) {
 								echo 'selected';
-							} ?>><?php _e( "Text Field", "gravityformseloqua" ); ?> </option>
+							} ?>><?php _e( "Text Field", "gravityformsprebuilt" ); ?> </option>
 							<option value="dropdown"<?php if ( $gf_prebuilt_fields_type == 'dropdown' ) {
 								echo 'selected';
-							} ?>><?php _e( "Dropdown List", "gravityformseloqua" ); ?> </option>
+							} ?>><?php _e( "Dropdown List", "gravityformsprebuilt" ); ?> </option>
 							<option value="checkbox" <?php if ( $gf_prebuilt_fields_type == 'checkbox' ) {
 								echo 'selected';
-							} ?>><?php _e( "Checkbox", "gravityformseloqua" ); ?> </option>
+							} ?>><?php _e( "Checkbox", "gravityformsprebuilt" ); ?> </option>
 						</select>
 					</td>
 				</tr>
@@ -284,7 +284,7 @@ class GFPrebuiltFields {
 					echo 'class="hidden"';
 				} ?>>
 					<th scope="row">
-						<label for="gf_prebuilt_fields_text" class="left_header"><?php _e( "Field Value", "gravityformseloqua" ); ?> </label>
+						<label for="gf_prebuilt_fields_text" class="left_header"><?php _e( "Field Value", "gravityformsprebuilt" ); ?> </label>
 					</th>
 					<td>
 						<input type="text" name="gf_prebuilt_fields_text" id="gf_prebuilt_fields_text" <?php if ( $gf_prebuilt_fields_value ) {
@@ -296,7 +296,7 @@ class GFPrebuiltFields {
 					echo 'class="hidden"';
 				} ?>>
 					<th scope="row">
-						<label for="gf_prebuilt_fields_array_label" class="left_header"><?php _e( "Field Values", "gravityformseloqua" ); ?> </label>
+						<label for="gf_prebuilt_fields_array_label" class="left_header"><?php _e( "Field Values", "gravityformsprebuilt" ); ?> </label>
 					</th>
 					<td>
 						<?php
@@ -327,7 +327,7 @@ class GFPrebuiltFields {
 				</tbody>
 			</table>
 			<p>
-				<input type="submit" name="gf_prebuilt_fields_submit" class="button-primary" value="<?php _e( "Save Settings", "gravityformseloqua" ) ?>" />
+				<input type="submit" name="gf_prebuilt_fields_submit" class="button-primary" value="<?php _e( "Save Settings", "gravityformsprebuilt" ) ?>" />
 			</p>
 		</form>
 		</div><?php
