@@ -427,12 +427,15 @@
 		render: function() {
 			var constraints = this.store.available;
 			var n = constraints.length;
-			var i, constraint, link;
+			var i, constraint, link, span;
 
 			for (i = 0; i < n; i++) {
 				constraint = constraints[i];
 				item = $('<li></li>');
-				link = $('<a href="#"/>').attr('data-id', i).html(constraint.title);
+				link = $('<a href="#"/>')
+					.attr('data-id', i)
+					.attr('title', 'Click to add')
+					.text(constraint.title);
 
 				link.appendTo(item);
 				this.container.append(item);
@@ -531,7 +534,7 @@
 		listItemForConstraint: function(constraint) {
 			var li = $('<li></li>')
 				.append(this.toolbarForConstraint(constraint))
-				.append($('<p></p>').text(constraint.title))
+				.append($('<p></p>', { 'class': 'constraint-title' }).text(constraint.title))
 				.append(this.selectForOperator(constraint))
 				.append(this.inputForConstraint(constraint))
 				.append(this.selectForConjunction(constraint));
@@ -540,7 +543,9 @@
 		},
 
 		emptyListItem: function() {
-			var li = $('<li></li>').text('Click to add filters');
+			var li = $('<li></li>')
+				.append($('<p></p>', { 'class': 'constraint-empty' }).text('Click to add filters'));
+
 			return li;
 		},
 
