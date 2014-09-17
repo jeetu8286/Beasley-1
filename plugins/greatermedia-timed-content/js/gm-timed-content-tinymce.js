@@ -1,13 +1,19 @@
 (function () {
 
+	var self = this;
+
 	tinymce.PluginManager.add('gm_timed_content_mce_button', function (editor, url) {
-		editor.addButton('gm_timed_content_mce_button', {
+		self.editor = editor;
+		self.editor.addButton('gm_timed_content_mce_button', {
 			//text   : 'Time Restrict',
 			icon   : 'gm-timed-content-icon',
-			onclick: function() {
-				editor.windowManager.open({
-					title   : 'Timed Content',
-					body    : [
+			onclick: function () {
+				var time_restricted_editor_popup = {
+
+					title: 'Timed Content',
+
+					body: [
+
 						{
 							type : 'textbox',
 							name : 'show',
@@ -22,6 +28,7 @@
 						},
 
 					],
+
 					onsubmit: function (e) {
 
 						var show_attr = '', hide_attr = '', content = tinymce.activeEditor.selection.getContent();
@@ -43,7 +50,9 @@
 						editor.insertContent('[time-restricted ' + show_attr + ' ' + hide_attr + ']' + content + '[/time-restricted]');
 
 					}
-				});
+				}
+
+				self.editor.windowManager.open(time_restricted_editor_popup);
 
 			}
 		});
@@ -93,22 +102,72 @@
 
 		edit: function (node) {
 
-			var gallery = wp.media.gallery,
-				self = this,
-				frame, data;
+			var time_restricted_editor_popup = {
 
-			data = window.decodeURIComponent($(node).attr('data-wpview-text'));
-			frame = gallery.edit(data);
+				title: 'Timed Content',
 
-			frame.state('gallery-edit').on('update', function (selection) {
-				var shortcode = gallery.shortcode(selection).string();
-				$(node).attr('data-wpview-text', window.encodeURIComponent(shortcode));
-				wp.mce.views.refreshView(self, shortcode);
-			});
+				body: [
 
-			frame.on('close', function () {
-				frame.detach();
-			});
+					{
+						type : 'textbox',
+						name : 'show',
+						label: 'Show content on',
+						value: ''
+					},
+					{
+						type : 'textbox',
+						name : 'hide',
+						label: 'Hide content on',
+						value: ''
+					},
+					{
+						type: 'textbox',
+						multiline: true,
+						minHeight: 200,
+						name: 'content',
+						label: 'Content',
+						value: node.querySelector('.content').innerHTML
+					}
+
+				],
+
+				buttons: [
+					{
+						text: 'Ok',
+						onclick: function(){
+							//some code here that modifies the selected node in TinyMCE
+							tinymce.activeEditor.windowManager.close();
+						}
+					},
+					{
+						text: 'Cancel',
+						onclick: 'close'
+					}
+				],
+
+				width: 600,
+				height: 340
+			};
+
+			self.editor.windowManager.open(time_restricted_editor_popup);
+
+				//self.show_xxx();
+			//var gallery = wp.media.gallery,
+			//	self = this,
+			//	frame, data;
+			//
+			//data = window.decodeURIComponent($(node).attr('data-wpview-text'));
+			//frame = gallery.edit(data);
+			//
+			//frame.state('gallery-edit').on('update', function (selection) {
+			//	var shortcode = gallery.shortcode(selection).string();
+			//	$(node).attr('data-wpview-text', window.encodeURIComponent(shortcode));
+			//	wp.mce.views.refreshView(self, shortcode);
+			//});
+			//
+			//frame.on('close', function () {
+			//	frame.detach();
+			//});
 
 		}
 
