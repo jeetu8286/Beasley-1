@@ -287,8 +287,12 @@
 
 		toGQL: function() {
 			/* TODO: Optimize to only get the fields we need */
-			var gql = 'select * from accounts where ';
 			var n   = this.current.length;
+			if (n === 0) {
+				return '';
+			}
+
+			var gql = 'select * from accounts where ';
 			var i, constraint;
 			var prevConstraint;
 
@@ -687,6 +691,11 @@
 		},
 
 		preview: function(query) {
+			if (query === '') {
+				this.setStatus('Nothing to Preview, please add some filters.');
+				return;
+			}
+
 			// TODO: clean this up
 			var nonce = member_query_meta.preview_nonce;
 			var data  = {
