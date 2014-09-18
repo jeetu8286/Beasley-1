@@ -1767,11 +1767,19 @@ Media Queries
   -moz-transition: ease 0.25s;
   -o-transition: ease 0.25s;
   transition: ease 0.25s;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  -border-radius: 50%;
+  border-radius: 50%;
+  behavior: url("../js/PIE/PIE.htc");
   position: fixed;
   top: 0;
   right: auto;
-  left: 0;
-  padding: .15em .5em;
+  left: -20px;
+  width: 60px;
+  height: 60px;
   background-color: whitesmoke;
   border-color: #eeeeee;
   border-style: solid;
@@ -1780,7 +1788,8 @@ Media Queries
   border-left: none;
   outline: none;
   font-size: 1.25em;
-  color: #888888; }
+  color: #888888;
+  z-index: 10001; }
 .gmlp-nav .gmlp-menu {
   -webkit-transition: ease 0.25s;
   -moz-transition: ease 0.25s;
@@ -1799,11 +1808,12 @@ Media Queries
   max-height: 100%;
   padding: 10px;
   border-right: 1px solid #eeeeee;
+  background: white;
   color: black;
   z-index: 10000; }
 
 .gmlp-open button {
-  left: 200px; }
+  left: 180px; }
 .gmlp-open .gmlp-menu {
   left: 0; }
 

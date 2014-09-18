@@ -5,11 +5,13 @@
 .gmlp-nav{
 	button{
 		@include transition(ease .25s);
+		@include border-radius(50%);
 		position: fixed;
 		top: 0;
 		right: auto;
-		left: 0;
-		padding: .15em .5em;
+		left: -20px;
+		width: 60px;
+		height: 60px;
 		background-color: $light-gray;
 		border-color: $soft-gray;
 		border-style: solid;
@@ -19,6 +21,7 @@
 		outline: none;
 		font-size: 1.25em;
 		color: $icon-gray;
+		z-index: 10001;
 	}
 	.gmlp-menu{
 		@include transition(ease .25s);
@@ -32,13 +35,14 @@
 		max-height: 100%;
 		padding: 10px;
 		border-right: 1px solid $soft-gray;
+		background: $white;
 		color: $black;
 		z-index: 10000;
 	}
 }
 .gmlp-open{
 	button{
-		left: 200px;
+		left: 180px;
 	}
 	.gmlp-menu{
 		left: 0;

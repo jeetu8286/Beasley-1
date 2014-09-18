@@ -6,19 +6,23 @@
  * Licensed under the GPLv2+ license.
  */
 
-( function($) {
+(function ($) {
+	"use strict";
+
+	var menuLinkSelector = '.menu-item a';
 
 	function togglePlayer(){
 		var toggleButton = $('.gmlp-nav-toggle'),
 			body = $('body');
 
-		$('.gmlp-nav-toggle').click(function(){
+		toggleButton.click(function(){
 			body.toggleClass('gmlp-open');
 		});
 	}
 
 	$(document).ready(function($){
 		togglePlayer();
+		$(document).pjax(menuLinkSelector, '.post-content');
 	});
 
 } )(jQuery);
