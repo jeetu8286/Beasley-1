@@ -1,3 +1,53 @@
 /**
  * Styles for Front End
  */
+
+.gmlp-nav{
+	button{
+		@include transition(ease .25s);
+		position: fixed;
+		top: 0;
+		right: auto;
+		left: 0;
+		padding: .15em .5em;
+		background-color: $light-gray;
+		border-color: $soft-gray;
+		border-style: solid;
+		border-width: 1px;
+		border-top: none;
+		border-left: none;
+		outline: none;
+		font-size: 1.25em;
+		color: $icon-gray;
+	}
+	.gmlp-menu{
+		@include transition(ease .25s);
+		@include box-sizing(border-box);
+		position: fixed;
+		top: 0;
+		right: auto;
+		left: -200px;
+		bottom: 0;
+		width: 200px;
+		max-height: 100%;
+		padding: 10px;
+		border-right: 1px solid $soft-gray;
+		color: $black;
+		z-index: 10000;
+	}
+}
+.gmlp-open{
+	button{
+		left: 200px;
+	}
+	.gmlp-menu{
+		left: 0;
+	}
+}
+.admin-bar{
+	.gmlp-nav{
+		button,.gmlp-menu {
+			top: 32px;
+		}
+	}
+}

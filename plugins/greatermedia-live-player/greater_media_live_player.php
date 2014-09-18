@@ -51,6 +51,11 @@ function gmliveplayer_init() {
 }
 
 /**
+ * Required Files
+ */
+require_once( __DIR__ . '/includes/class-add-menu.php' );
+
+/**
  * Activate the plugin
  */
 function gmliveplayer_activate() {
