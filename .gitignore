@@ -1,3 +1,7 @@
+!/.gitignore
+.sass-cache/
+node_modules
+*.DS_Store
 uploads/
 plugins/wp-multi-network/
 plugins/index.php
