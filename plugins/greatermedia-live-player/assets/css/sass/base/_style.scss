@@ -1,0 +1,78 @@
+/**
+ * Styles for Front End
+ */
+
+.gmlp-nav{
+	.gmlp-nav-toggle{
+		@include transition(ease .25s);
+		@include border-radius(50%);
+		position: fixed;
+		top: 0;
+		right: auto;
+		left: -20px;
+		width: 60px;
+		height: 60px;
+		background-color: $light-gray;
+		border-color: $soft-gray;
+		border-style: solid;
+		border-width: 1px;
+		border-top: none;
+		border-left: none;
+		outline: none;
+		font-size: 1.25em;
+		color: $icon-gray;
+		z-index: 10001;
+	}
+	.gmlp-audio-button{
+		background-color: $light-gray;
+		border-color: $soft-gray;
+		border-style: solid;
+		border-width: 1px;
+		outline: none;
+	}
+	.gmlp-time{
+		@include transition(ease .25s);
+		position: fixed;
+		top: 100px;
+		right: auto;
+		left: 10px;
+		z-index: 10001;
+	}
+	.gmlp-menu{
+		@include transition(ease .25s);
+		@include box-sizing(border-box);
+		position: fixed;
+		top: 0;
+		right: auto;
+		left: -200px;
+		bottom: 0;
+		width: 200px;
+		max-height: 100%;
+		padding: 10px;
+		border-right: 1px solid $soft-gray;
+		background: $white;
+		color: $black;
+		z-index: 10000;
+	}
+}
+.gmlp-open{
+	.gmlp-nav-toggle{
+		left: 180px;
+	}
+	.gmlp-time{
+		left: 210px;
+	}
+	.gmlp-menu{
+		left: 0;
+	}
+}
+.admin-bar{
+	.gmlp-nav{
+		.gmlp-nav-toggle,.gmlp-menu {
+			top: 32px;
+		}
+		.gmlp-time{
+			top: 132px;
+		}
+	}
+}
