@@ -1282,22 +1282,44 @@ function gmi_get_gigya_fields() {
  * Outputs scripts for gravity forms. Gravity Forms uses javascript to save fields and show the previously saved value
  * Note that the actual field (output in gigya_profile_settings() ) has no name="" attribute.
  */
+add_action("gform_editor_js", "editor_script");
 function editor_script(){
-	?>
+
+	$gigya_fields = gmi_get_gigya_fields();
+	if ( ! empty ( $gigya_fields ) ) {
+		foreach ( $gigya_fields as $predefined_field_key => $predefined_field_value ) {
+			// Scalable way to process additional field types
+			switch( $predefined_field_value['type'] ){
+				case "dropdown":
+					$type = 'select';
+					break;
+				case "checkbox":
+					$type = 'checkbox';
+					break;
+				default:
+					$type = 'text';
+			}
+			?>
+			<script type='text/javascript'>
+				fieldSettings["<?php echo $predefined_field_key; ?>"] = fieldSettings["<?php echo $type; ?>"];
+			</script>
+			<?php
+		}
+	}
+?>
 	<script type='text/javascript'>
 
-        //binding to the load field settings event to initialize the checkbox
-        jQuery(document).bind("gform_load_field_settings", function(event, field, form){
-        	jQuery('.gigya_setting').show();
-        	if ( field["gigyaDemographic"] ) {
-        		jQuery('.gigya_setting').find('[value='+field["gigyaDemographic"]+']').attr('selected','selected');
-        	}
+	//binding to the load field settings event to initialize the checkbox
+	jQuery(document).bind("gform_load_field_settings", function(event, field, form){
+		jQuery('.gigya_setting').show();
+		if ( field["gigyaDemographic"] ) {
+			jQuery('.gigya_setting').find('[value='+field["gigyaDemographic"]+']').attr('selected','selected');
+		}
+	});
 
-        });
-    </script>
-    <?php
+	</script>
+<?php
 }
-add_action("gform_editor_js", "editor_script");
 
 /**
  * Add a help tooltip for the gigya profile fields
@@ -1309,7 +1331,9 @@ function add_encryption_tooltips($tooltips){
 }
 add_filter('gform_tooltips', 'add_encryption_tooltips');
 
-
+/**
+ * Add custom Gigya Field section to GForm UI
+ */
 function add_gigya_fields( $field_groups ){
 
 	$gigya_fields = gmi_get_gigya_fields();
@@ -1324,23 +1348,10 @@ function add_gigya_fields( $field_groups ){
 
 				foreach ( $gigya_fields as $predefined_field_key => $predefined_field_value ) {
 
-					// Scalable way to process additional field types
-					switch( $predefined_field_value['type'] ){
-						case "dropdown":
-							$type = 'select';
-							break;
-						case "checkbox":
-							$type = 'checkbox';
-							break;
-						default:
-							$type = 'text';
-					}
-
-					echo 'type is '.$predefined_field_key;
-
 					$group["fields"][] = array(
 						"class"   => "button",
 						"value"   => __( $predefined_field_key, "gravityforms" ),
+						"title"   => "button",
 						"onclick" => "StartAddField( '" . $predefined_field_key . "' );"
 					);
 				}
@@ -1349,9 +1360,11 @@ function add_gigya_fields( $field_groups ){
 	}
     return $field_groups;
 }
-
 add_filter( "gform_add_field_buttons", "add_gigya_fields", 10, 2 );
 
+/**
+ * Add Gigya Field prefix to custom field titles
+ */
 function assign_title( $title, $type ) {
 
 	$gigya_fields = gmi_get_gigya_fields();
@@ -1363,5 +1376,21 @@ function assign_title( $title, $type ) {
 		}
 	}
 }
-
 add_filter( "gform_field_type_title", "assign_title", 10, 2 );
+
+/**
+ * Handle each custom field type
+ * TODO: Add dynamic handling of allowed field types (select, checkbox & text
+ */
+function custom_field_input ( $input, $field, $value, $lead_id, $form_id ){
+
+	if ( $field["type"] == "exampleDDL" ) {
+		$tabindex  = GFCommon::get_tabindex();
+		$css_class = isset( $field['cssClass'] ) ? $field['cssClass'] : ”;
+
+		return sprintf( "<div class='ginput_container'><select name='input_%d' id='%s' class='%s' $tabindex %s>%s</select></div>", $id, $field_id, $css_class, $disabled_text, GFCommon::get_select_choices( $field, $value ) );
+	}
+
+	return $input;
+}
+add_action( "gform_field_input" , "custom_field_input", 10, 5 );
