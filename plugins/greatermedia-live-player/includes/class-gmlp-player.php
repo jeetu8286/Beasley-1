@@ -39,6 +39,9 @@ class GMLP_Player {
 
 	}
 
+	/**
+	 * @todo find a better way to load these
+	 */
 	public static function load_js() {
 
 		echo '<script src="http://player.listenlive.co/api/2.5/js/jquery-1.7.2.min.js"></script>';
