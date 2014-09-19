@@ -71,7 +71,7 @@ class GMLP_Menu {
 
 	public static function load_pjax_tpl() {
 
-		if ( array_key_exists( 'HTTP_X_PJAX', $_SERVER ) && $_SERVER['HTTP_X_PJAX'] ) {
+		if ( isset($_SERVER['HTTP_X_PJAX']) && $_SERVER['HTTP_X_PJAX'] == 'true' ) {
 			include( 'pjax.tpl.php' );
 			exit;
 		}
