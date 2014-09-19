@@ -23,6 +23,13 @@
 		color: $icon-gray;
 		z-index: 10001;
 	}
+	.gmlp-audio-button{
+		background-color: $light-gray;
+		border-color: $soft-gray;
+		border-style: solid;
+		border-width: 1px;
+		outline: none;
+	}
 	.gmlp-time{
 		@include transition(ease .25s);
 		position: fixed;

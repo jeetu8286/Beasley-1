@@ -1790,6 +1790,14 @@ Media Queries
   font-size: 1.25em;
   color: #888888;
   z-index: 10001; }
+.gmlp-nav input[type="button"] {
+  font-family: FontAwesome; }
+.gmlp-nav .gmlp-audio-button {
+  background-color: whitesmoke;
+  border-color: #eeeeee;
+  border-style: solid;
+  border-width: 1px;
+  outline: none; }
 .gmlp-nav .gmlp-time {
   -webkit-transition: ease 0.25s;
   -moz-transition: ease 0.25s;

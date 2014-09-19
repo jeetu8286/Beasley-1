@@ -22,10 +22,10 @@ class GMLP_Player {
 
 		?>
 		<div id="radio-callsign"><?php do_action( 'radio_callsign' ); ?></div>
-		<input type="button" data-action="play-live" data-station="<?php do_action( 'radio_callsign' ); ?>" value="player.play( { station:'WRORFM' } )"/>
-		<input type="button" id="stopButton" value="player.stop()">
+		<input class="gmlp-audio-button" type="button" data-action="play-live" data-station="<?php do_action( 'radio_callsign' ); ?>" value="Play" />
+		<input class="gmlp-audio-button" type="button" id="stopButton" value="Stop" />
 
-		<div id="nowPlaying" style="float:left; width:330px; height:250px;">
+		<div id="nowPlaying">
 			<div id="trackInfo">
 				<p><span class="label label-info">Now Playing</span></p>
 			</div>
@@ -41,21 +41,16 @@ class GMLP_Player {
 
 	public static function load_js() {
 
-		?>
+		echo '<script src="http://player.listenlive.co/api/2.5/js/jquery-1.7.2.min.js"></script>';
 
-		<script src="http://player.listenlive.co/api/2.5/js/jquery-1.7.2.min.js"></script>
-
-		<script src="http://player.listenlive.co/api/2.5/js/tdplayer.js"></script>
-		<script>
-			var tdApiBaseUrl = 'http://api.listenlive.co/tdplayerapi/2.5/';
-		</script>
-		<script type="text/javascript" charset="utf-8" src="http://api.listenlive.co/tdplayerapi/2.5/tdapi/modules/MediaPlayer.js"></script>
-		<script type="text/javascript" charset="utf-8" src="http://api.listenlive.co/tdplayerapi/2.5/tdapi/modules/Npe.js"></script>
-		<script type="text/javascript" charset="utf-8" src="http://api.listenlive.co/tdplayerapi/2.5/tdapi/modules/mediaplayer/Html5.js"></script>
-		<script data-dojo-config="onReady:window.tdPlayerApiReady, async: 1, tlmSiblingOfDojo: 0, deps:['tdapi/run']" src="//api.listenlive.co/tdplayerapi/2.5/dojo/dojo.js"></script>
-
-
-	<?php
+		echo '<script src="http://player.listenlive.co/api/2.5/js/tdplayer.js"></script>';
+		echo '<script>';
+		echo 'var tdApiBaseUrl = \'http://api.listenlive.co/tdplayerapi/2.5/\'';
+		echo '</script>';
+		echo '<script type="text/javascript" charset="utf-8" src="http://api.listenlive.co/tdplayerapi/2.5/tdapi/modules/MediaPlayer.js"></script>';
+		echo '<script type="text/javascript" charset="utf-8" src="http://api.listenlive.co/tdplayerapi/2.5/tdapi/modules/Npe.js"></script>';
+		echo '<script type="text/javascript" charset="utf-8" src="http://api.listenlive.co/tdplayerapi/2.5/tdapi/modules/mediaplayer/Html5.js"></script>';
+		echo '<script data-dojo-config="onReady:window.tdPlayerApiReady, async: 1, tlmSiblingOfDojo: 0, deps:[\'tdapi/run\']" src="//api.listenlive.co/tdplayerapi/2.5/dojo/dojo.js"></script>';
 
 	}
 
