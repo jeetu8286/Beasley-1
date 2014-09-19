@@ -1308,3 +1308,20 @@ function add_encryption_tooltips($tooltips){
 	return $tooltips;
 }
 add_filter('gform_tooltips', 'add_encryption_tooltips');
+
+
+function add_gigya_fields( $field_groups ){
+
+	// Create Gigya Field settings
+	array_push( $field_groups, array( 'name' => 'gigya_fields', 'label' => 'Gigya Fields' ) );
+
+    foreach($field_groups as &$group){
+        if($group["name"] == "gigya_fields"){
+            $group["fields"][] = array("class"=>"button", "value" => __("Demo field", "gravityforms"), "onclick" => "StartAddField('map');");
+            break;
+        }
+    }
+    return $field_groups;
+}
+
+add_filter("gform_add_field_buttons", "add_gigya_fields");
