@@ -15,20 +15,20 @@ class GreaterMediaUserGeneratedContentModerationTable extends WP_List_Table {
 	/**
 	 * Constructor.
 	 *
-	 * @since 3.1.0
+	 * @since  3.1.0
 	 * @access public
 	 *
-	 * @see WP_List_Table::__construct() for more information on default arguments.
+	 * @see    WP_List_Table::__construct() for more information on default arguments.
 	 *
 	 * @param array $args An associative array of arguments.
 	 */
 	public function __construct( $args = array() ) {
 
 		parent::__construct( array(
-			'plural' => 'submissions',
+			'plural'   => 'submissions',
 			'singular' => 'submission',
-			'ajax' => true,
-			'screen' => isset( $args['screen'] ) ? $args['screen'] : null,
+			'ajax'     => true,
+			'screen'   => isset( $args['screen'] ) ? $args['screen'] : null,
 		) );
 
 	}
@@ -105,22 +105,39 @@ class GreaterMediaUserGeneratedContentModerationTable extends WP_List_Table {
 		return $sortable_columns;
 	}
 
+	/**
+	 * Get an associative array ( option_name => option_title ) with the list
+	 * of bulk actions available on this table.
+	 *
+	 * @return array
+	 * @todo make this "protected" again once we're sure this will only run in WP 4.x
+	 * PHP allows subclasses to increase the visibility of inherited methods, which is used here as a hack to
+	 * allow this WP_List_Table subclass to work on WP 3.9.2 and WP 4.0-beta4
+	 */
 	public function get_bulk_actions() {
 
-		$actions = array();
+		static $actions;
+		if ( ! isset( $actions ) ) {
+			$actions = array();
 
-		$actions['approve'] = __( 'Approve' );
-		$actions['trash'] = __( 'Move to Trash' );
+			$actions['approve'] = __( 'Approve' );
+			$actions['trash']   = __( 'Move to Trash' );
+		}
 
 		return $actions;
 
 	}
 
 	public function display_rows( $posts = array(), $level = 0 ) {
+
 		global $wp_query, $per_page, $mode;
 
-		foreach ( $this->query->posts as $post ) {
-			$this->single_row( $post, $level );
+		if ( ! empty( $this->query->posts ) ) {
+			foreach ( $this->query->posts as $post ) {
+				$this->single_row( $post, $level );
+			}
+		} else {
+			printf( '<tr class="no-items"><td><p>%s</p></td></tr>', __( 'No content needing moderation found.', 'greatermedia_ugc' ) );
 		}
 
 	}
@@ -157,12 +174,12 @@ class GreaterMediaUserGeneratedContentModerationTable extends WP_List_Table {
 
 		$tr_id      = 'post-' . $post->ID;
 		$tr_classes = implode( ' ', get_post_class( $classes, $post->ID ) );
-		echo sprintf( '<tr id="%s" class="%s">', $tr_id, $tr_classes );
+		echo sprintf( '<tr id="%s" class="%s" data-ugc-id="%d">', $tr_id, $tr_classes, $post->ID );
 
 		list( $columns, $hidden ) = $this->get_column_info();
 
 		foreach ( $columns as $column_name => $column_display_name ) {
-			$class = "class=\"$column_name column-$column_name\"";
+			$class = " $column_name column-$column_name";
 
 			switch ( $column_name ) {
 

@@ -45,7 +45,7 @@ class GreaterMediaUserGeneratedGallery extends GreaterMediaUserGeneratedContent 
 			$delete_url = home_url( sprintf( 'ugc/%d/gallery/%d/delete', $this->post_id, $attachment_id ) );
 
 			$html .= '<div class="ugc-moderation-gallery-thumb">' .
-				'<a href="' . wp_nonce_url( $delete_url, 'trash-ugc-gallery_' . $attachment_id ) . '"><div class="dashicons dashicons-trash"></div></a>' .
+				'<a href="' . wp_nonce_url( $delete_url, 'trash-ugc-gallery_' . $attachment_id ) . '" class="trash"><div class="dashicons dashicons-trash"></div></a>' .
 				'<img src="' .
 				esc_attr( $attachment_src ) .
 				'" />' .
@@ -57,5 +57,34 @@ class GreaterMediaUserGeneratedGallery extends GreaterMediaUserGeneratedContent 
 		return $html;
 
 	}
+
+	/**
+	 * Render a preview of this UGC suitable for use in the admin
+	 *
+	 * @return string html
+	 */
+	public function render_preview() {
+
+		$attachments = $this->get_attachments();
+
+		$html = '<div class="ugc-gallery-preview">';
+
+		foreach ( $attachments as $attachment_id => $attachment_src ) {
+
+			$delete_url = home_url( sprintf( 'ugc/%d/gallery/%d/delete', $this->post_id, $attachment_id ) );
+
+			$html .= '<div class="ugc-gallery-preview-thumb">' .
+				'<img src="' .
+				esc_attr( $attachment_src ) .
+				'" />' .
+				'</div>';
+		}
+
+		$html .= '</div>';
+
+		return $html;
+
+	}
+
 
 }
