@@ -426,7 +426,7 @@ function gmi_pre_render_form( $form ){
 					<div class="gigya-layout-row">
 						<div class="gigya-layout-cell" style="min-width: 300px;">
 							<div class="gigya-layout-row">
-								<h2 class="gigya-composite-control gigya-composite-control-header" style="text-align: left;">Register with you social network</h2>
+								<h2 class="gigya-composite-control gigya-composite-control-header" style="text-align: left;">Login with your social network</h2>
 							</div>
 							<div class="gigya-layout-row">
 								<div class="gigya-layout-cell"></div>
@@ -1168,6 +1168,11 @@ function gmi_after_submission( $entry, $form ) {
 	
 	// wrap all the entries with the form title; Gigya submission prep
 	$gigya_array = array( $form['title'] => $gigya_array );
+
+	// Connect to Gigya
+	// 1) Make connection
+	// 2) Pass user profile data
+	// 3) Grab Gigya user ID for contest entry
 
 	// Generate Contest Entry
 	if ( is_singular( GreaterMediaContests::CPT_SLUG ) ) {
