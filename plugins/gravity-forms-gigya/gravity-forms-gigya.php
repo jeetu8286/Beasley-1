@@ -1312,15 +1312,27 @@ add_filter('gform_tooltips', 'add_encryption_tooltips');
 
 function add_gigya_fields( $field_groups ){
 
-	// Create Gigya Field settings
-	array_push( $field_groups, array( 'name' => 'gigya_fields', 'label' => 'Gigya Fields' ) );
+	$gigya_fields = gmi_get_gigya_fields();
+	if ( ! empty ( $gigya_fields ) ){
 
-    foreach($field_groups as &$group){
-        if($group["name"] == "gigya_fields"){
-            $group["fields"][] = array("class"=>"button", "value" => __("Demo field", "gravityforms"), "onclick" => "StartAddField('map');");
-            break;
-        }
-    }
+		// Create Gigya Field settings
+		array_unshift( $field_groups, array( 'name' => 'gigya_fields', 'label' => 'Gigya Demographic Fields' ) );
+
+		// Create buttons for each predefined demographic field
+		foreach ( $field_groups as &$group ) {
+			if ( $group["name"] == "gigya_fields" ) {
+
+				foreach ( $gigya_fields as $predefined_field_key => $predefined_field_value ) {
+
+					$group["fields"][] = array(
+						"class"   => "button",
+						"value"   => __( $predefined_field_key, "gravityforms" ),
+						"onclick" => "StartAddField('text');"
+					);
+				}
+			}
+		}
+	}
     return $field_groups;
 }
 
