@@ -41,6 +41,8 @@ class GMLP_Player {
 
 	public static function load_js() {
 
+		echo '<script src="http://player.listenlive.co/api/2.5/js/jquery-1.7.2.min.js"></script>';
+
 		echo '<script src="http://player.listenlive.co/api/2.5/js/tdplayer.js"></script>';
 		echo '<script>';
 		echo 'var tdApiBaseUrl = \'http://api.listenlive.co/tdplayerapi/2.5/\'';
