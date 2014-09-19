@@ -1148,7 +1148,7 @@ function gmi_after_submission( $entry, $form ) {
 	$gigya_array = array();
 	$gigya_profile = array();
 
-	// Go through each field and try to get data associated with each
+	// Go through each field and get data associated with each
 	foreach( $form['fields'] as $field ) {
 
 		$value = _gmi_normalize_entry_value( $field['id'], $entry, $field );
@@ -1170,7 +1170,7 @@ function gmi_after_submission( $entry, $form ) {
 	// wrap all the entries with the form title; Gigya submission prep
 	$gigya_array = array( $form['title'] => $gigya_array );
 
-	
+
 }
 add_action("gform_after_submission", "gmi_after_submission", 10, 2);
 
@@ -1185,7 +1185,9 @@ add_action("gform_after_submission", "gmi_after_submission", 10, 2);
  */
 function _gmi_normalize_entry_value( $id, $entry, $field ) {
 
-		// If this field has "inputs" that means we need to go get them all. It's a select, check, or radio list.
+	// If this field has "inputs" that means we need to go get all that have been set.
+	// It's a select, check, or radio list.
+
 	if ( isset( $field['inputs'] ) ){
 		$inputs = array();
 		foreach ( $field['inputs'] as $input ) {
@@ -1284,10 +1286,10 @@ function editor_script(){
         	}
 
         });
-        </script>
-        <?php
-    }
-    add_action("gform_editor_js", "editor_script");
+    </script>
+    <?php
+}
+add_action("gform_editor_js", "editor_script");
 
 /**
  * Add a help tooltip for the gigya profile fields
