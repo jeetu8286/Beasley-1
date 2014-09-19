@@ -2,8 +2,8 @@
 
 namespace GreaterMedia\Gigya;
 
-require_once __DIR__ . '/class-ajax-handler.php';
-require_once __DIR__ . '/class-accounts-searcher.php';
+//require_once __DIR__ . '/class-ajax-handler.php';
+//require_once __DIR__ . '/class-accounts-searcher.php';
 
 /**
  * PreviewAjaxHandler is the ajax handler invoked by the client to
@@ -48,7 +48,7 @@ class PreviewAjaxHandler extends AjaxHandler {
 
 		$count_query = str_replace( '*', 'count(*)', $query);
 		$query .= ' limit 5';
-		error_log($query);
+
 		$searcher = new AccountsSearcher();
 		$total_response = $searcher->search($count_query);
 		$response = $searcher->search($query);
