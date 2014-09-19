@@ -1170,7 +1170,7 @@ function gmi_after_submission( $entry, $form ) {
 	// wrap all the entries with the form title; Gigya submission prep
 	$gigya_array = array( $form['title'] => $gigya_array );
 
-
+	
 }
 add_action("gform_after_submission", "gmi_after_submission", 10, 2);
 
@@ -1186,11 +1186,10 @@ add_action("gform_after_submission", "gmi_after_submission", 10, 2);
 function _gmi_normalize_entry_value( $id, $entry, $field ) {
 
 		// If this field has "inputs" that means we need to go get them all. It's a select, check, or radio list.
-	if ( isset( $field['inputs'] ) ) {
+	if ( isset( $field['inputs'] ) ){
 		$inputs = array();
 		foreach ( $field['inputs'] as $input ) {
 
-			$key = $input['label'];
 			$value = $entry[ (string) $input['id']];
 
 			$value = maybe_unserialize( $value );
@@ -1200,13 +1199,14 @@ function _gmi_normalize_entry_value( $id, $entry, $field ) {
 				continue;
 			}
 
-			// Don't store labels as keys if the value is the same
-			if ( $key === $value ) {
-				$inputs[] = $value;
-			} else {
-				$inputs[$key] = $value;
-			}
+			// No need to store key here- only results go to Gigya
+			$inputs[] = $value;
 
+		}
+
+		// Single result, no array
+		if ( count($inputs) === 1 ){
+			$inputs = $inputs[0];
 		}
 
 		return $inputs;
