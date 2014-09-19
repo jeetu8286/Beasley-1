@@ -1762,7 +1762,7 @@ Media Queries
 /**
  * Styles for Front End
  */
-.gmlp-nav button {
+.gmlp-nav .gmlp-nav-toggle {
   -webkit-transition: ease 0.25s;
   -moz-transition: ease 0.25s;
   -o-transition: ease 0.25s;
@@ -1790,6 +1790,16 @@ Media Queries
   font-size: 1.25em;
   color: #888888;
   z-index: 10001; }
+.gmlp-nav .gmlp-time {
+  -webkit-transition: ease 0.25s;
+  -moz-transition: ease 0.25s;
+  -o-transition: ease 0.25s;
+  transition: ease 0.25s;
+  position: fixed;
+  top: 100px;
+  right: auto;
+  left: 10px;
+  z-index: 10001; }
 .gmlp-nav .gmlp-menu {
   -webkit-transition: ease 0.25s;
   -moz-transition: ease 0.25s;
@@ -1812,10 +1822,14 @@ Media Queries
   color: black;
   z-index: 10000; }
 
-.gmlp-open button {
+.gmlp-open .gmlp-nav-toggle {
   left: 180px; }
+.gmlp-open .gmlp-time {
+  left: 210px; }
 .gmlp-open .gmlp-menu {
   left: 0; }
 
-.admin-bar .gmlp-nav button, .admin-bar .gmlp-nav .gmlp-menu {
+.admin-bar .gmlp-nav .gmlp-nav-toggle, .admin-bar .gmlp-nav .gmlp-menu {
   top: 32px; }
+.admin-bar .gmlp-nav .gmlp-time {
+  top: 132px; }

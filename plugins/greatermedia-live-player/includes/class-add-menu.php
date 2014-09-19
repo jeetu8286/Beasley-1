@@ -24,6 +24,14 @@ class GMLP_Menu {
 		<nav class="gmlp-nav">
 
 			<button class="gmlp-nav-toggle"><i class="fa fa-volume-up"></i></button>
+			<div class="gmlp-time">
+				<?php
+				$dt = new DateTime();
+				echo $dt->format('Y-m-d H:i:s');
+				?>
+
+				<label><input type="checkbox" name="pjax" />pjax</label>
+			</div>
 
 			<div class="gmlp-menu">
 
@@ -45,14 +53,15 @@ class GMLP_Menu {
 		$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 		wp_enqueue_script( 'pjax', GMLIVEPLAYER_URL . 'assets/js/vendor/jquery.pjax.js', array( 'jquery' ), '0.1.3', true );
 		wp_enqueue_script( 'gmlp-js', GMLIVEPLAYER_URL . "assets/js/greater_media_live_player{$postfix}.js", array( 'jquery', 'pjax' ), GMLIVEPLAYER_VERSION, false );
+		wp_enqueue_script( 'jquery-cookie', GMLIVEPLAYER_URL . 'assets/js/src/jquery.cookie.js', array(), GMLIVEPLAYER_VERSION, false );
 		wp_enqueue_style( 'gmlp-styles', GMLIVEPLAYER_URL . "assets/css/greater_media_live_player{$postfix}.css", array(), GMLIVEPLAYER_VERSION );
 
 	}
 
 	public static function load_pjax_tpl() {
 
-		if (array_key_exists('HTTP_X_PJAX', $_SERVER) && $_SERVER['HTTP_X_PJAX']) {
-			include('pjax.tpl.php');
+		if ( array_key_exists( 'HTTP_X_PJAX', $_SERVER ) && $_SERVER['HTTP_X_PJAX'] ) {
+			include( 'pjax.tpl.php' );
 			exit;
 		}
 

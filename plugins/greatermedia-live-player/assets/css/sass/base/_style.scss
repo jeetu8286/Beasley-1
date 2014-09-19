@@ -3,7 +3,7 @@
  */
 
 .gmlp-nav{
-	button{
+	.gmlp-nav-toggle{
 		@include transition(ease .25s);
 		@include border-radius(50%);
 		position: fixed;
@@ -21,6 +21,14 @@
 		outline: none;
 		font-size: 1.25em;
 		color: $icon-gray;
+		z-index: 10001;
+	}
+	.gmlp-time{
+		@include transition(ease .25s);
+		position: fixed;
+		top: 100px;
+		right: auto;
+		left: 10px;
 		z-index: 10001;
 	}
 	.gmlp-menu{
@@ -41,8 +49,11 @@
 	}
 }
 .gmlp-open{
-	button{
+	.gmlp-nav-toggle{
 		left: 180px;
+	}
+	.gmlp-time{
+		left: 210px;
 	}
 	.gmlp-menu{
 		left: 0;
@@ -50,8 +61,11 @@
 }
 .admin-bar{
 	.gmlp-nav{
-		button,.gmlp-menu {
+		.gmlp-nav-toggle,.gmlp-menu {
 			top: 32px;
+		}
+		.gmlp-time{
+			top: 132px;
 		}
 	}
 }
