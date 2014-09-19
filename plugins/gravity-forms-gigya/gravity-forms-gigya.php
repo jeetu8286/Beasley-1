@@ -1158,7 +1158,7 @@ function gmi_after_submission( $entry, $form ) {
 			continue;
 		}
 
-		$gigya_array[$field['label']] = $value;
+		$gigya_array[$field['inputName']] = $value;
 		
 		if ( isset( $field['gigyaDemographic'] ) && ! empty( $field['gigyaDemographic'] ) ) {
 			$gigya_profile[$field['gigyaDemographic']] = $value;
