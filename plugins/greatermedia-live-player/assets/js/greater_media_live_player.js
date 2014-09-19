@@ -4,7 +4,8 @@
 (function ($) {
 	"use strict";
 
-	var menuLinkSelector = '.page_item a';
+	var menuLinkSelector = 'li a',
+		article = 'article';
 
 	function togglePlayer(){
 		var toggleButton = $('.gmlp-nav-toggle'),
@@ -17,7 +18,7 @@
 
 	$(document).ready(function($){
 		togglePlayer();
-		$(document).pjax(menuLinkSelector, 'article');
+		$(document).pjax(menuLinkSelector, article);
 	});
 
 } )(jQuery);
