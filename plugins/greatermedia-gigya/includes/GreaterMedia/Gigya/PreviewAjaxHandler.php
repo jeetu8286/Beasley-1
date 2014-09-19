@@ -48,7 +48,7 @@ class PreviewAjaxHandler extends AjaxHandler {
 
 		$count_query = str_replace( '*', 'count(*)', $query);
 		$query .= ' limit 5';
-		error_log($query);
+
 		$searcher = new AccountsSearcher();
 		$total_response = $searcher->search($count_query);
 		$response = $searcher->search($query);

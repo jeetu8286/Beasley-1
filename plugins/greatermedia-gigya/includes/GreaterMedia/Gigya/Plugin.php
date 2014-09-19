@@ -57,6 +57,7 @@ class Plugin {
 		add_action( 'init', array( $this, 'initialize' ) );
 		add_action( 'add_meta_boxes', array( $this, 'initialize_meta_boxes' ), 10, 2 );
 		add_filter( 'wp_insert_post_data', array( $this, 'serialize_member_query' ), 10, 2 );
+		add_action( 'save_post', array( $this, 'publish_member_query' ), 10, 2 );
 
 		$preview_ajax_handler = new PreviewAjaxHandler();
 		$preview_ajax_handler->register();
@@ -145,6 +146,13 @@ class Plugin {
 		$sanitized_data['post_content'] = $member_query_builder->build();
 
 		return $sanitized_data;
+	}
+
+	function publish_member_query( $post_id, $post = null ) {
+		$member_query      = new MemberQuery( $post );
+		$segment_publisher = new SegmentPublisher( $member_query );
+		$segment_publisher->publish();
+
 	}
 
 	/* helpers */

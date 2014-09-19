@@ -78,7 +78,6 @@ JSON;
 	 * @return string
 	 */
 	public function load_constraints() {
-		error_log( print_r($_POST, true) );
 		if ( array_key_exists( 'constraints', $_POST ) ) {
 			return $_POST['constraints'];
 		} else {
