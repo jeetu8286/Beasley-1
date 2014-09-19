@@ -10,3 +10,5 @@ themes/twentyfourteen
 upgrade/
 /index.php
 .idea
+debug.log
+npm-debug.log

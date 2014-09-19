@@ -1,0 +1,10 @@
+{
+	"includes/GreaterMedia/Gigya/*.php": {
+		"type": "plugin",
+		"test": "test/GreaterMedia/Gigya/%sTest.php"
+	},
+	"test/GreaterMedia/Gigya/*Test.php": {
+		"type": "test",
+		"alternate": "includes/GreaterMedia/Gigya/%s.php"
+	}
+}
