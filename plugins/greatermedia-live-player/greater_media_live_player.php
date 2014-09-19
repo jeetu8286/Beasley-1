@@ -54,6 +54,8 @@ function gmliveplayer_init() {
  * Required Files
  */
 require_once( __DIR__ . '/includes/class-add-menu.php' );
+require_once( __DIR__ . '/includes/class-gmlp-options.php' );
+require_once( __DIR__ . '/includes/class-gmlp-player.php' );
 
 /**
  * Activate the plugin

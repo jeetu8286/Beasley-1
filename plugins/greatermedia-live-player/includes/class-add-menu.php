@@ -35,7 +35,9 @@ class GMLP_Menu {
 
 			<div class="gmlp-menu">
 
-				This is a test
+				<h2>Live Player</h2>
+
+				<?php do_action( 'gm_player' ); ?>
 
 			</div>
 
