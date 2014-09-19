@@ -23,22 +23,7 @@ class GMLP_Player {
 		?>
 		<div id="radio-callsign"><?php do_action( 'radio_callsign' ); ?></div>
 		<input type="button" data-action="play-live" data-station="<?php do_action( 'radio_callsign' ); ?>" value="player.play( { station:'WRORFM' } )"/>
-		<input class="btn btn-primary" type="button" id="stopButton" value="player.stop()">
-		<div class="well">
-			<p>
-				<b>NowPlayingApi</b>
-			</p>
-			<div class="btn-group">
-				<div class="input-append">
-					<input class="span2" placeholder="Enter a Callsign" id="songHistoryCallsignUser" type="text">
-					<select id="songHistoryConnectionTypeSelect" name="songHistoryConnectionTypeSelect">
-						<option value="normalConnection">normalConnection</option>
-						<option value="hdConnection">hdConnection (AAC)</option>
-					</select>
-					<button class="btn" type="button" id="fetchSongHistoryByUserCallsignButton">Get Song History</button>
-				</div>
-			</div>
-		</div>
+		<input type="button" id="stopButton" value="player.stop()">
 
 		<div id="nowPlaying" style="float:left; width:330px; height:250px;">
 			<div id="trackInfo">
@@ -48,8 +33,7 @@ class GMLP_Player {
 		</div>
 
 		<!-- Player placeholder -->
-		<div id="td_container" style="border:1px dashed black; float:left; width:300px; height:250px;">Player</div>
-
+		<div id="td_container">Player</div>
 
 	<?php
 
