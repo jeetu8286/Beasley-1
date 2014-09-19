@@ -4,30 +4,7 @@
 (function ($) {
 	"use strict";
 
-	var menuLinkSelector = '.menu-item a';
-
-	function reloadTime() {
-
-		$(':checkbox').attr('checked', $.cookie('pjax'))
-
-		if ( !$(':checkbox').attr('checked') )
-			$.fn.pjax = $.noop
-
-		$(':checkbox').change(function() {
-			if ( $.pjax == $.noop ) {
-				$(this).removeAttr('checked')
-				return alert( "Sorry, your browser doesn't support pjax :(" )
-			}
-
-			if ( $(this).attr('checked') )
-				$.cookie('pjax', true)
-			else
-				$.cookie('pjax', null)
-
-			window.location = location.href
-		})
-
-	}
+	var menuLinkSelector = '.page_item a';
 
 	function togglePlayer(){
 		var toggleButton = $('.gmlp-nav-toggle'),
@@ -40,8 +17,7 @@
 
 	$(document).ready(function($){
 		togglePlayer();
-		$(document).pjax(menuLinkSelector, '.post-content');
-		reloadTime();
+		$(document).pjax(menuLinkSelector, 'article');
 	});
 
 } )(jQuery);

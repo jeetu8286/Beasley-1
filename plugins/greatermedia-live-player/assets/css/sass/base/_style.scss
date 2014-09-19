@@ -30,14 +30,6 @@
 		border-width: 1px;
 		outline: none;
 	}
-	.gmlp-time{
-		@include transition(ease .25s);
-		position: fixed;
-		top: 100px;
-		right: auto;
-		left: 10px;
-		z-index: 10001;
-	}
 	.gmlp-menu{
 		@include transition(ease .25s);
 		@include box-sizing(border-box);
@@ -54,6 +46,19 @@
 		color: $black;
 		z-index: 10000;
 	}
+}
+.gmlp-time{
+	@include transition(ease .25s);
+	position: fixed;
+	bottom: 10px;
+	right: 50%;
+	left: 50%;
+	width: 50%;
+	-ms-transform: translate(-50%, -50%);
+	-webkit-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	text-align: center;
+	z-index: 10001;
 }
 .gmlp-open{
 	.gmlp-nav-toggle{
