@@ -4,7 +4,7 @@ class GMLP_Player {
 
 	public static function init() {
 
-		add_action( 'wp_footer', array( __CLASS__, 'load_js' ) );
+		add_action( 'wp_footer', array( __CLASS__, 'load_js' ), 50 );
 		add_action( 'gm_player', array( __CLASS__, 'render_player' ) );
 		add_action( 'radio_callsign', array( __CLASS__, 'get_radio_callsign' ) );
 
@@ -44,8 +44,12 @@ class GMLP_Player {
 	 */
 	public static function load_js() {
 
-		echo '<script src="http://player.listenlive.co/api/2.5/js/jquery-1.7.2.min.js"></script>';
-
+//		echo '<script src="http://player.listenlive.co/api/2.5/js/jquery-1.7.2.min.js"></script>';
+		?>
+		<script>
+			var $ = jQuery;
+		</script>
+		<?php
 		echo '<script src="http://player.listenlive.co/api/2.5/js/tdplayer.js"></script>';
 		echo '<script>';
 		echo 'var tdApiBaseUrl = \'http://api.listenlive.co/tdplayerapi/2.5/\'';
