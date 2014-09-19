@@ -4,7 +4,7 @@
 (function ($) {
 	"use strict";
 
-	var menuLinkSelector = 'li a';
+	var menuLinkSelector = '.page_item a';
 
 	function togglePlayer(){
 		var toggleButton = $('.gmlp-nav-toggle'),
