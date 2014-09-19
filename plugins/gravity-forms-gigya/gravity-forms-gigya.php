@@ -1324,10 +1324,24 @@ function add_gigya_fields( $field_groups ){
 
 				foreach ( $gigya_fields as $predefined_field_key => $predefined_field_value ) {
 
+					// Scalable way to process additional field types
+					switch( $predefined_field_value['type'] ){
+						case "dropdown":
+							$type = 'select';
+							break;
+						case "checkbox":
+							$type = 'checkbox';
+							break;
+						default:
+							$type = 'text';
+					}
+
+					echo 'type is '.$predefined_field_key;
+
 					$group["fields"][] = array(
 						"class"   => "button",
 						"value"   => __( $predefined_field_key, "gravityforms" ),
-						"onclick" => "StartAddField('text');"
+						"onclick" => "StartAddField( '" . $predefined_field_key . "' );"
 					);
 				}
 			}
@@ -1336,4 +1350,18 @@ function add_gigya_fields( $field_groups ){
     return $field_groups;
 }
 
-add_filter("gform_add_field_buttons", "add_gigya_fields");
+add_filter( "gform_add_field_buttons", "add_gigya_fields", 10, 2 );
+
+function assign_title( $title, $type ) {
+
+	$gigya_fields = gmi_get_gigya_fields();
+	if ( ! empty ( $gigya_fields ) ) {
+		foreach ( $gigya_fields as $predefined_field_key => $predefined_field_value ) {
+			if ( $type == $predefined_field_key ) {
+				return __( 'Gigya Field: ' . $type, 'gravityforms' );
+			}
+		}
+	}
+}
+
+add_filter( "gform_field_type_title", "assign_title", 10, 2 );
