@@ -2,7 +2,7 @@
 
 namespace GreaterMedia\Gigya;
 
-require_once __DIR__ . '/class-meta-box.php';
+//require_once __DIR__ . '/class-meta-box.php';
 
 /**
  * QueryBuilderMetaBox is a javascript based meta box that displays a

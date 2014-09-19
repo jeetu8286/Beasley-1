@@ -3,17 +3,17 @@
 namespace GreaterMedia\Gigya;
 
 /* custom post type */
-require_once __DIR__ . '/class-member-query.php';
-require_once __DIR__ . '/class-member-query-post-type.php';
-require_once __DIR__ . '/class-member-query-builder.php';
+//require_once __DIR__ . '/class-member-query.php';
+//require_once __DIR__ . '/class-member-query-post-type.php';
+//require_once __DIR__ . '/class-member-query-builder.php';
 
 /* meta boxes */
-require_once __DIR__ . '/class-preview-meta-box.php';
-require_once __DIR__ . '/class-direct-query-meta-box.php';
-require_once __DIR__ . '/class-query-builder-meta-box.php';
+//require_once __DIR__ . '/class-preview-meta-box.php';
+//require_once __DIR__ . '/class-direct-query-meta-box.php';
+//require_once __DIR__ . '/class-query-builder-meta-box.php';
 
 /* ajax handlers */
-require_once __DIR__ . '/class-preview-ajax-handler.php';
+//require_once __DIR__ . '/class-preview-ajax-handler.php';
 
 /**
  * The main plugin class for greatermedia-gigya.
