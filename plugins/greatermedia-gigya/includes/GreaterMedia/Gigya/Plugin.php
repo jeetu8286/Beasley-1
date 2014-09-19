@@ -149,10 +149,11 @@ class Plugin {
 	}
 
 	function publish_member_query( $post_id, $post = null ) {
-		$member_query      = new MemberQuery( $post );
-		$segment_publisher = new SegmentPublisher( $member_query );
-		$segment_publisher->publish();
-
+		if ( $post->post_status === 'publish' ) {
+			$member_query      = new MemberQuery( $post );
+			$segment_publisher = new SegmentPublisher( $member_query );
+			$segment_publisher->publish();
+		}
 	}
 
 	/* helpers */
