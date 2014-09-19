@@ -1163,13 +1163,16 @@ function gmi_after_submission( $entry, $form ) {
 		if ( isset( $field['gigyaDemographic'] ) && ! empty( $field['gigyaDemographic'] ) ) {
 			$gigya_profile[$field['gigyaDemographic']] = $value;
 		}
-		
 
 	} // endforeach
 	
 	// wrap all the entries with the form title; Gigya submission prep
 	$gigya_array = array( $form['title'] => $gigya_array );
 
+	// Generate Contest Entry
+	if ( is_singular( GreaterMediaContests::CPT_SLUG ) ) {
+		$gf_contest_entry = GreaterMediaContestEntry::create_for_data( get_the_ID(), 'name', 'Gigya ID', 'gravity-forms', get_permalink() );
+	}
 
 }
 add_action("gform_after_submission", "gmi_after_submission", 10, 2);
