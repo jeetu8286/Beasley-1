@@ -5,32 +5,6 @@ Author: 10up
 License: gpl
 */
 
-/**
- * Get the Gravity Forms representation for a given entry ID.
- * e.g. greatermediatestsite.dev?entry=50
- *
- * Will echo out the lead data, and also the form data associated with the lead.
- * Then, because its mission is over, it will die.
- */
-function debug_gravity_forms() {
-	if ( isset( $_GET['entry'] ) ) {
-		$lead_id = $_GET['entry'];
-		$lead = RGFormsModel::get_lead( $lead_id ); 
-		$form = GFFormsModel::get_form_meta( $lead['form_id'] ); 
-
-		$values= array();
-
-		var_dump( $lead_id );
-		echo '=======';
-		var_dump( $lead );
-		echo '=======';
-		var_dump( $form );
-
-		die();
-	}
-
-}
-add_action( 'wp_head', 'debug_gravity_forms' );
 
 /**
  * Fade out form on single contest page
@@ -1193,35 +1167,9 @@ function gmi_after_submission( $entry, $form ) {
 
 	} // endforeach
 	
-	// wrap all the entries with the form title
+	// wrap all the entries with the form title; Gigya submission prep
 	$gigya_array = array( $form['title'] => $gigya_array );
-	?>
-	<?php get_header(); ?>
-	<div class="entry-content">
-		<h2><a href="#" onclick="jQuery('.gigya-profile').toggle(); return false;">Normalized user profile data</a></h2>
-		<pre class="gigya-profile" style=""><code>
-			<?php print_r( $gigya_profile ); ?>
-		</code></pre>
 
-		<h2><a href="#" onclick="jQuery('.gigya-array').toggle(); return false;">Submitted to Gigya</a></h2>
-		<pre class="gigya-array" style=""><code>
-			<?php print_r( $gigya_array ); ?>
-		</code></pre>
-
-		<h2><a href="#" onclick="jQuery('.gravity-forms-entry').toggle(); return false;">Gravity Forms Entry Object</a></h2>
-		<pre class="gravity-forms-entry" style="display: none;"><code>
-			<?php print_r( $entry ); ?>
-		</code></pre>
-
-		<h2><a href="#" onclick="jQuery('.gravity-forms-form').toggle(); return false;">Gravity Forms Form Object</a></h2>
-		<pre class="gravity-forms-form" style="display: none;"><code>
-			<?php print_r( $form ); ?>
-		</code></pre>
-
-	</div>
-	<?php get_footer(); ?>
-	<?php
-	die();
 
 }
 add_action("gform_after_submission", "gmi_after_submission", 10, 2);
@@ -1252,7 +1200,7 @@ function _gmi_normalize_entry_value( $id, $entry, $field ) {
 				continue;
 			}
 
-				// Don't store labels as keys if the value is the same
+			// Don't store labels as keys if the value is the same
 			if ( $key === $value ) {
 				$inputs[] = $value;
 			} else {
