@@ -9,7 +9,7 @@ class GMLP_Menu {
 	public static function init() {
 
 		add_action( 'wp_footer', array( __CLASS__, 'render_player_menu' ) );
-		add_action( 'wp_footer', array( __CLASS__, 'render_pjax_time' ) );
+		//add_action( 'wp_footer', array( __CLASS__, 'render_pjax_time' ) );
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'enqueue_scripts' ) );
 
 	}
