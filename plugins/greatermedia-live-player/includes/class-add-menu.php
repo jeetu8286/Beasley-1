@@ -9,9 +9,8 @@ class GMLP_Menu {
 	public static function init() {
 
 		add_action( 'wp_footer', array( __CLASS__, 'render_player_menu' ) );
-		add_action( 'wp_footer', array( __CLASS__, 'render_pjax_time' ) );
+		//add_action( 'wp_footer', array( __CLASS__, 'render_pjax_time' ) );
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'enqueue_scripts' ) );
-		add_action( 'template_redirect', array( __CLASS__, 'load_pjax_tpl' ) );
 
 	}
 
@@ -67,16 +66,6 @@ class GMLP_Menu {
 		wp_enqueue_script( 'gmlp-js', GMLIVEPLAYER_URL . "assets/js/greater_media_live_player.js", array( 'jquery', 'pjax' ), GMLIVEPLAYER_VERSION, false );
 		wp_enqueue_script( 'jquery-cookie', GMLIVEPLAYER_URL . 'assets/js/src/jquery.cookie.js', array(), GMLIVEPLAYER_VERSION, false );
 		wp_enqueue_style( 'gmlp-styles', GMLIVEPLAYER_URL . "assets/css/greater_media_live_player{$postfix}.css", array(), GMLIVEPLAYER_VERSION );
-
-	}
-
-	public static function load_pjax_tpl() {
-
-		if( isset( $_SERVER['HTTP_X_PJAX'] ) && $_SERVER['HTTP_X_PJAX'] == 'true' ) {
-			get_the_content();
-		} else {
-
-		}
 
 	}
 
