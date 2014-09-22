@@ -4,4 +4,4 @@
 var menuLinkSelector = 'li a',
 	article = 'article';
 
-pjax.connect('main');
+pjax.connect('page');
