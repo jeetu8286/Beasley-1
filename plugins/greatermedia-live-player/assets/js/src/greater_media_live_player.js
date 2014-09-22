@@ -39,13 +39,9 @@
 		});
 	}
 
-	var menuLinkSelector = 'li a',
-		article = 'article';
-
 	$(document).ready(function($){
 		togglePlayer();
 		pjaxTime();
-		$(document).pjax(menuLinkSelector, article);
 	});
 
 } )(jQuery);
