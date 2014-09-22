@@ -1767,20 +1767,20 @@ Media Queries
   -moz-transition: ease 0.25s;
   -o-transition: ease 0.25s;
   transition: ease 0.25s;
-  -webkit-border-radius: 50%;
-  -moz-border-radius: 50%;
-  -ms-border-radius: 50%;
-  -o-border-radius: 50%;
-  -border-radius: 50%;
-  border-radius: 50%;
+  -webkit-border-radius: 0 15px 15px 0;
+  -moz-border-radius: 0 15px 15px 0;
+  -ms-border-radius: 0 15px 15px 0;
+  -o-border-radius: 0 15px 15px 0;
+  -border-radius: 0 15px 15px 0;
+  border-radius: 0 15px 15px 0;
   behavior: url("../js/PIE/PIE.htc");
   position: fixed;
   top: 0;
   right: auto;
-  left: -20px;
-  width: 60px;
-  height: 60px;
-  background-color: whitesmoke;
+  left: 0;
+  width: 33px;
+  height: 50px;
+  background-color: #1167bd;
   border-color: #eeeeee;
   border-style: solid;
   border-width: 1px;
@@ -1788,14 +1788,25 @@ Media Queries
   border-left: none;
   outline: none;
   font-size: 1.25em;
-  color: #888888;
+  color: white;
   z-index: 10001; }
 .gmlp-nav .gmlp-audio-button {
-  background-color: whitesmoke;
-  border-color: #eeeeee;
-  border-style: solid;
-  border-width: 1px;
-  outline: none; }
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  -border-radius: 50%;
+  border-radius: 50%;
+  behavior: url("../js/PIE/PIE.htc");
+  width: 140px;
+  height: 140px;
+  margin: 0 auto;
+  background-color: #ea5e5b;
+  border: none;
+  outline: none;
+  font-family: FontAwesome;
+  font-size: 5.125em;
+  color: white; }
 .gmlp-nav .gmlp-menu {
   -webkit-transition: ease 0.25s;
   -moz-transition: ease 0.25s;
@@ -1813,10 +1824,11 @@ Media Queries
   width: 200px;
   max-height: 100%;
   padding: 10px;
-  border-right: 1px solid #eeeeee;
-  background: white;
-  color: black;
+  background: #1167bd;
+  color: white;
   z-index: 10000; }
+  .gmlp-nav .gmlp-menu #pauseButton, .gmlp-nav .gmlp-menu #resumeButton {
+    display: none; }
 
 .gmlp-time {
   -webkit-transition: ease 0.25s;
@@ -1835,7 +1847,7 @@ Media Queries
   z-index: 10001; }
 
 .gmlp-open .gmlp-nav-toggle {
-  left: 180px; }
+  left: 200px; }
 .gmlp-open .gmlp-time {
   left: 210px; }
 .gmlp-open .gmlp-menu {

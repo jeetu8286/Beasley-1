@@ -176,7 +176,20 @@ function loadIdSync( station )
 
 function initControlsUi()
 {
-    $(document).on('click', 'input[data-action="play-live"]', playLiveAudioStream);
+    //$(document).on('click', 'input[data-action="play-live"]', playLiveAudioStream);
+	// custom call to use button instead of input for styling purposes
+
+	var audioButton, pauseButton, resumeButton;
+	audioButton = $('#playButton');
+	pauseButton = $('#pauseButton');
+	resumeButton = $('#resumeButton');
+
+	$(document).on('click', audioButton, playLiveAudioStream);
+
+	audioButton.click(function() {
+		audioButton.hide();
+		pauseButton.show();
+	});
 
     $( "#clearDebug" ).click(function() {
         clearDebugInfo();
@@ -201,16 +214,20 @@ function initControlsUi()
         player.MediaPlayer.tech.playStream( { url:$( "#streamUrlUser" ).val(), aSyncCuePoint:{active:false} } );
     });
 
-    $( "#stopButton" ).click(function() {
+    $( ".stop-live" ).click(function() {
         stopStream();
     });
 
-    $( "#pauseButton" ).click(function() {
-        pauseStream();
+    pauseButton.click(function() {
+		pauseButton.hide();
+		resumeButton.show();
+		pauseStream();
     });
 
-    $( "#resumeButton" ).click(function() {
-        resumeStream();
+    resumeButton.click(function() {
+		resumeButton.hide();
+		pauseButton.show();
+		resumeStream();
     });
 
     $( "#seekLiveButton" ).click(function() {

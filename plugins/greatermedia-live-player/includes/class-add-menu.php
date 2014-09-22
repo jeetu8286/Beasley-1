@@ -67,6 +67,10 @@ class GMLP_Menu {
 		wp_enqueue_script( 'jquery-cookie', GMLIVEPLAYER_URL . 'assets/js/src/jquery.cookie.js', array(), GMLIVEPLAYER_VERSION, false );
 		wp_enqueue_style( 'gmlp-styles', GMLIVEPLAYER_URL . "assets/css/greater_media_live_player{$postfix}.css", array(), GMLIVEPLAYER_VERSION );
 
+		wp_localize_script( 'gmlp-js', 'player', array(
+			'location' => get_option( 'gmlp_player_location', '' )
+		) );
+
 	}
 
 }

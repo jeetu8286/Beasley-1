@@ -79,6 +79,7 @@ class GMLP_Settings {
 
 		// Radio Station Callsign
 		register_setting( self::option_group, 'gmlp_radio_callsign', 'sanitize_text_field' );
+		register_setting( self::option_group, 'gmlp_player_location', 'esc_attr' );
 
 		/**
 		 * Allows us to register extra settings that are not necessarily always present on all child sites.
@@ -88,10 +89,22 @@ class GMLP_Settings {
 
 	public function render_gmlp_settings_section() {
 		$radio_callsign = get_option( 'gmlp_radio_callsign', '' );
+		$player_location = get_option( 'gmlp_player_location', '' );
 
 		?>
 
 		<h4><?php _e( 'Live Player API Information', 'gmliveplayer' ); ?></h4>
+
+		<p>
+			<label for="gmlp_player_location"><?php _e( 'Player Location', 'gmliveplayer' ); ?></label>
+			<select name="gmlp_player_location" id="gmlp_player_location">
+				<option value=""><?php _e( '---', 'gmliveplayer' )?></option>
+				<option value="top" <?php selected( $player_location, 'top' ); ?>><?php _e( 'Top', 'gmliveplayer' )?></option>
+				<option value="bottom" <?php selected( $player_location, 'bottom' ); ?>><?php _e( 'Bottom', 'gmliveplayer' )?></option>
+				<option value="right" <?php selected( $player_location, 'right' ); ?>><?php _e( 'Right', 'gmliveplayer' )?></option>
+				<option value="left" <?php selected( $player_location, 'left' ); ?>><?php _e( 'Left', 'gmliveplayer' )?></option>
+			</select>
+		</p>
 
 		<p>
 			<label for="gmlp_radio_callsign"><?php _e( 'Radio Callsign', 'gmliveplayer' ); ?></label>
