@@ -63,7 +63,7 @@ class GMLP_Menu {
 
 		$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 		wp_enqueue_script( 'pjax', GMLIVEPLAYER_URL . 'assets/js/vendor/jquery.pjax.js', array( 'jquery' ), '0.1.3', false );
-		wp_enqueue_script( 'gmlp-js', GMLIVEPLAYER_URL . "assets/js/greater_media_live_player.js", array( 'jquery' ), GMLIVEPLAYER_VERSION, false );
+		wp_enqueue_script( 'gmlp-js', GMLIVEPLAYER_URL . "assets/js/greater_media_live_player.js", array( 'jquery', 'pjax' ), GMLIVEPLAYER_VERSION, false );
 		wp_enqueue_script( 'jquery-cookie', GMLIVEPLAYER_URL . 'assets/js/src/jquery.cookie.js', array(), GMLIVEPLAYER_VERSION, false );
 		wp_enqueue_style( 'gmlp-styles', GMLIVEPLAYER_URL . "assets/css/greater_media_live_player{$postfix}.css", array(), GMLIVEPLAYER_VERSION );
 
