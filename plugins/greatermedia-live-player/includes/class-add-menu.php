@@ -62,7 +62,8 @@ class GMLP_Menu {
 	public static function enqueue_scripts() {
 
 		$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
-		wp_enqueue_script( 'pjax', GMLIVEPLAYER_URL . 'assets/js/vendor/jquery.pjax.js', array( 'jquery' ), '0.1.3', false );
+		wp_enqueue_script( 'pjax', GMLIVEPLAYER_URL . 'assets/js/vendor/pjax-standalone.min.js', array(), '0.1.3', false );
+		wp_enqueue_script( 'pjax-load', GMLIVEPLAYER_URL . 'assets/js/src/pjax-load.js', array( 'pjax' ), GMLIVEPLAYER_VERSION, false );
 		wp_enqueue_script( 'gmlp-js', GMLIVEPLAYER_URL . "assets/js/greater_media_live_player.js", array( 'jquery', 'pjax' ), GMLIVEPLAYER_VERSION, false );
 		wp_enqueue_script( 'jquery-cookie', GMLIVEPLAYER_URL . 'assets/js/src/jquery.cookie.js', array(), GMLIVEPLAYER_VERSION, false );
 		wp_enqueue_style( 'gmlp-styles', GMLIVEPLAYER_URL . "assets/css/greater_media_live_player{$postfix}.css", array(), GMLIVEPLAYER_VERSION );
@@ -71,7 +72,7 @@ class GMLP_Menu {
 
 	public static function load_pjax_tpl() {
 
-		if ( isset( $_SERVER['HTTP_X_PJAX'] ) OR isset( $_GET['_pjax'] ) ) {
+		if( isset( $_SERVER['HTTP_X_PJAX'] ) && $_SERVER['HTTP_X_PJAX'] == 'true' ) {
 			include( 'pjax.tpl.php' );
 			exit;
 		}
