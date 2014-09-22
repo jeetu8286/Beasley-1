@@ -9,9 +9,6 @@
 (function ($) {
 	"use strict";
 
-	var menuLinkSelector = 'li a',
-		article = 'article';
-
 	function pjaxTime() {
 		$(':checkbox').attr('checked', $.cookie('pjax'))
 
@@ -41,6 +38,9 @@
 			body.toggleClass('gmlp-open');
 		});
 	}
+
+	var menuLinkSelector = 'li a',
+		article = 'article';
 
 	$(document).ready(function($){
 		togglePlayer();
