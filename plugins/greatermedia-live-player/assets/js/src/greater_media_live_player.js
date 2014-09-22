@@ -44,8 +44,8 @@
 
 	$(document).ready(function($){
 		togglePlayer();
-		$(document).pjax(menuLinkSelector, article);
 		pjaxTime();
+		$(document).pjax(menuLinkSelector, article);
 	});
 
 } )(jQuery);
