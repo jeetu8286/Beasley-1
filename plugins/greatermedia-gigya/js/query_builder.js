@@ -24,7 +24,7 @@
 			this.title       = json.title;
 
 			this.fieldPath   = json.fieldPath;
-			this.value       = json.value;
+			this.value       = this.unescapeValue(json.value);
 			this.valueType   = json.valueType;
 			this.operator    = json.operator;
 			this.conjunction = json.conjunction;
@@ -34,7 +34,7 @@
 			var json         = {};
 			json.type        = this.type;
 			json.title       = this.title;
-			json.value       = this.value;
+			json.value       = this.escapeValue(this.value);
 			json.valueType   = this.valueType;
 			json.conjunction = this.conjunction;
 			json.fieldPath   = this.fieldPath;
@@ -46,7 +46,7 @@
 		toGQL: function() {
 			var gql = this.fieldPath + ' ' + this.operator + ' ';
 			if (this.valueType === 'string') {
-				gql += "'" + this.value + "'";
+				gql += "'" + this.escapeValue(this.value) + "'";
 			} else {
 				gql += this.value;
 			}
@@ -73,6 +73,22 @@
 			operators.push.apply(operators, ['=', '!=']);
 
 			return operators;
+		},
+
+		escapeValue: function(source) {
+			source = source.replace(/"/g, 'C_DOUBLE_QUOTE');
+			source = source.replace(/'/g, 'C_SINGLE_QUOTE');
+			source = source.replace(/\\/g, 'C_BACKSLASH');
+
+			return source;
+		},
+
+		unescapeValue: function(source) {
+			source = source.replace(/C_DOUBLE_QUOTE/g, '"');
+			source = source.replace(/C_SINGLE_QUOTE/g, "'");
+			source = source.replace(/C_BACKSLASH/g, "\\");
+
+			return source;
 		}
 
 	};

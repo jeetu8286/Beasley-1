@@ -16,6 +16,10 @@ class AccountsSearcher {
 	public $secret_key = 'trS0ufXWUXZ0JBcpr/6umiRfgUiwT7YhJMQSDpUz/p8=';
 
 	public function search( $query ) {
+		$query = str_replace( 'C_SINGLE_QUOTE', "''", $query );
+		$query = str_replace( 'C_DOUBLE_QUOTE',  '"', $query );
+		$query = str_replace( 'C_BACKSLASH',  '\\', $query );
+
 		$request = $this->request_for( 'accounts.search' );
 		$request->setParam( 'query',  $query );
 		$response = $request->send();
