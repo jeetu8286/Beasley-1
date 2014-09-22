@@ -5,6 +5,7 @@ class GMLP_Player {
 	public static function init() {
 
 		add_action( 'wp_footer', array( __CLASS__, 'load_js' ), 50 );
+		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'enqueue_scripts' ), 50 );
 		add_action( 'gm_player', array( __CLASS__, 'render_player' ) );
 		add_action( 'radio_callsign', array( __CLASS__, 'get_radio_callsign' ) );
 
@@ -40,23 +41,23 @@ class GMLP_Player {
 	}
 
 	/**
+	 * Call TD Player js files
+	 */
+	public static function enqueue_scripts() {
+
+		wp_enqueue_script( 'load-jquery', GMLIVEPLAYER_URL . 'assets/js/src/jquery.load.js', array(), GMLIVEPLAYER_VERSION, true );
+		wp_enqueue_script( 'tdplayer', GMLIVEPLAYER_URL . 'assets/js/vendor/td-player/tdplayer.js', array( 'jquery' ), '2.5', true );
+		wp_enqueue_script( 'tdplayer-api', GMLIVEPLAYER_URL . 'assets/js/vendor/td-player/tdplayer-api.js', array(), '2.5', true );
+
+	}
+
+	/**
 	 * @todo find a better way to load these
 	 */
 	public static function load_js() {
 
 //		echo '<script src="http://player.listenlive.co/api/2.5/js/jquery-1.7.2.min.js"></script>';
-		?>
-		<script>
-			var $ = jQuery;
-		</script>
-		<?php
-		echo '<script src="http://player.listenlive.co/api/2.5/js/tdplayer.js"></script>';
-		echo '<script>';
-		echo 'var tdApiBaseUrl = \'http://api.listenlive.co/tdplayerapi/2.5/\'';
-		echo '</script>';
-		echo '<script type="text/javascript" charset="utf-8" src="http://api.listenlive.co/tdplayerapi/2.5/tdapi/modules/MediaPlayer.js"></script>';
-		echo '<script type="text/javascript" charset="utf-8" src="http://api.listenlive.co/tdplayerapi/2.5/tdapi/modules/Npe.js"></script>';
-		echo '<script type="text/javascript" charset="utf-8" src="http://api.listenlive.co/tdplayerapi/2.5/tdapi/modules/mediaplayer/Html5.js"></script>';
+
 		echo '<script data-dojo-config="onReady:window.tdPlayerApiReady, async: 1, tlmSiblingOfDojo: 0, deps:[\'tdapi/run\']" src="//api.listenlive.co/tdplayerapi/2.5/dojo/dojo.js"></script>';
 
 	}
