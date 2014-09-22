@@ -4,4 +4,6 @@
 var menuLinkSelector = 'li a',
 	article = 'article';
 
-pjax.connect('page');
+pjax.connect({
+	container: 'article'
+});
