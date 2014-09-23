@@ -42,8 +42,7 @@ class Plugin {
 	 */
 	public function enable() {
 		add_action( 'init', array( $this, 'initialize' ) );
-		add_action( 'add_meta_boxes', array( $this, 'initialize_meta_boxes' ), 10, 2 );
-		add_filter( 'wp_insert_post_data', array( $this, 'serialize_member_query' ), 10, 2 );
+		add_action( 'add_meta_boxes_member_query', array( $this, 'initialize_meta_boxes' ));
 		add_action( 'save_post', array( $this, 'publish_member_query' ), 10, 2 );
 
 		$preview_ajax_handler = new PreviewAjaxHandler();
@@ -65,16 +64,11 @@ class Plugin {
 	 * Registers the metaboxes for the plugin.
 	 *
 	 * @access public
-	 * @param string $post_type The current post_type name
 	 * @param WP_Post $post The current post object
 	 * @return void
 	 */
-	public function initialize_meta_boxes( $post_type, $post ) {
-		if ( $post_type !== 'member_query' ) {
-			return;
-		}
-
-		$member_query = new MemberQuery( $post );
+	public function initialize_meta_boxes( $post ) {
+		$member_query = new MemberQuery( $post->ID );
 		$meta_boxes   = $this->get_meta_boxes( $member_query );
 
 		foreach ( $meta_boxes as $meta_box ) {
@@ -114,29 +108,18 @@ class Plugin {
 	}
 
 	/**
-	 * Serialize member query before post is saved.
+	 * Saves the MemberQuery JSON in postmeta and then publishes the
+	 * segment to MailChimp.
+	 *
+	 * @param int $post_id The id of the parent post CPT of this MemberQuery
+	 * @param WP_Post $post The post object that was saved.
+	 * @return void
 	 */
-	function serialize_member_query( $sanitized_data, $raw_data = null ) {
-		if ( $sanitized_data['post_type'] !== 'member_query' ) {
-			return $sanitized_data;
-		}
-
-		$member_query = new MemberQuery( $raw_data );
-		foreach ( $this->get_meta_boxes( $member_query ) as $meta_box ) {
-			$meta_box->verify_nonce();
-		}
-
-		$member_query_builder = new MemberQueryBuilder();
-		$member_query_builder->prepare();
-
-		$sanitized_data['post_content'] = $member_query_builder->build();
-
-		return $sanitized_data;
-	}
-
 	function publish_member_query( $post_id, $post = null ) {
-		if ( $post->post_type === 'member_query' && $post->post_status === 'publish' ) {
-			$member_query      = new MemberQuery( $post );
+		if ( ! is_null( $post ) && $post->post_type === 'member_query' && $post->post_status === 'publish' ) {
+			$member_query      = new MemberQuery( $post_id );
+			$member_query->build_and_save();
+
 			$segment_publisher = new SegmentPublisher( $member_query );
 			$segment_publisher->publish();
 		}
@@ -195,6 +178,13 @@ class Plugin {
 		return $this->meta_boxes;
 	}
 
+	/**
+	 * Builds a new meta box for the specified params.
+	 *
+	 * @access public
+	 * @param array $params The params to pass to the meta box object
+	 * @param MemberQuery $member_query The member query associated with the meta box.
+	 */
 	public function meta_box_for( $params, $member_query ) {
 		$meta_box = new MetaBox( $member_query );
 		$meta_box->params = $params;

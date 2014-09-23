@@ -7,17 +7,20 @@ namespace GreaterMedia\Gigya;
  * a json representation of the constraints, query and direct query that
  * make up an individual MemberQueryPostType.
  *
+ * The MemberQuery JSON is stored in postmeta corresponding to it's
+ * parent MemberQuery CPT.
+ *
  * @package GreaterMedia\Gigya
  */
 class MemberQuery {
 
 	/**
-	 * The WP_Post or plain array corresponding to the MemberQuery.
+	 * The id of the post to which the current MemberQuery belongs.
 	 *
 	 * @access public
-	 * @var array|WP_Post
+	 * @var integer
 	 */
-	public $post;
+	public $post_id;
 
 	/**
 	 * The properties that make up a MemberQuery.
@@ -31,27 +34,20 @@ class MemberQuery {
 	 * Stores the post object corresponding to the member query and
 	 * parse it's post_content into the MemberQuery properties.
 	 */
-	public function __construct( $post ) {
-		$this->post = $post;
-		$this->properties = $this->parse( $this->content_for( $post ) );
+	public function __construct( $post_id ) {
+		$this->post_id = $post_id;
+		$this->properties = $this->parse( $this->content_for( $post_id ) );
 	}
 
 	/**
-	 * Extracts content from the specified post object. For WP_Post
-	 * objects it's post_content property is used.
-	 *
-	 * And the post_content key is use for arrays.
+	 * Fetches the raw JSON content for a post using postmeta lookups.
 	 *
 	 * @access public
-	 * @param WP_Post|array $post
+	 * @param integer $post
 	 * @return string The json representation of a MemberQuery.
 	 */
-	public function content_for( $post ) {
-		if ( $post instanceof \WP_Post ) {
-			return $post->post_content;
-		} else {
-			return $post['post_content'];
-		}
+	public function content_for( $post_id ) {
+		return get_post_meta( $post_id, 'member_query_json', true );
 	}
 
 	/**
@@ -62,12 +58,13 @@ class MemberQuery {
 	 * @return array
 	 */
 	public function parse( $content ) {
-		if ( is_array( $this->post ) ) {
-			$content = wp_unslash( $content );
-		}
+		if ( $content !== '' ) {
+			$json = json_decode( $content, true );
 
-		$json = json_decode( $content, true );
-		if ( ! is_array( $json ) ) {
+			if ( ! is_array( $json ) ) {
+				$json = array();
+			}
+		} else {
 			$json = array();
 		}
 
@@ -84,6 +81,59 @@ class MemberQuery {
 		}
 
 		return $json;
+	}
+
+	/**
+	 * Builds the MemberQuery from POST data.
+	 *
+	 * @access public
+	 * @return string JSON built from the POST data.
+	 */
+	public function build() {
+		$constraints  = $this->load_post_param( 'constraints', '[]' );
+		$query        = $this->load_post_param( 'query', '' );
+		$direct_query = $this->load_post_param( 'direct_query', '' );
+
+		$content = <<<JSON
+{
+	"constraints": {$constraints},
+	"query": "{$query}",
+	"direct_query": "{$direct_query}"
+}
+JSON;
+
+		return $content;
+	}
+
+	/**
+	 * Returns the value of a POST parameter if present or returns the
+	 * specified default.
+	 *
+	 * @access public
+	 * @param string $name The name of the parameter
+	 * @param mixed $default The default value to return if absent
+	 * @return string
+	 */
+	public function load_post_param( $name, $default ) {
+		if ( array_key_exists( $name, $_POST ) ) {
+			return $_POST[ $name ];
+		} else {
+			return $default;
+		}
+	}
+
+	/**
+	 * Builds the MemberQuery JSON from POST and saves to the current
+	 * post_id's postmeta.
+	 *
+	 * Post Meta key is 'member_query_json'
+	 *
+	 * @access public
+	 * @return void
+	 */
+	public function build_and_save() {
+		$json = $this->build();
+		update_post_meta( $this->post_id, 'member_query_json', $json );
 	}
 
 	/**
@@ -124,6 +174,30 @@ class MemberQuery {
 	 */
 	public function to_json() {
 		return json_encode( $this->properties );
+	}
+
+	/**
+	 * Returns the GQL to execute for this query. If a direct query is
+	 * present it is used, else the generated query is returned.
+	 *
+	 * @access public
+	 * @param bool $count Optionally Whether to return an aggregate query
+	 * @param int $limit Optional row limit to apply to the query
+	 * @return string
+	 */
+	public function to_gql( $count = false, $limit = null ) {
+		$direct_query = $this->get_direct_query();
+		$query = $direct_query === '' ? $this->get_query() : $direct_query;
+
+		if ( $count ) {
+			$query = str_replace( '*', 'count(*)', $query );
+		}
+
+		if ( is_int( $limit ) ) {
+			$query .= " limit $limit";
+		}
+
+		return $query;
 	}
 
 }
