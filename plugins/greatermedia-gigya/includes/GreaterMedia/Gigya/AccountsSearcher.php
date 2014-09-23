@@ -13,11 +13,8 @@ class AccountsSearcher {
 	public $api_key    = '3_e_T7jWO0Vjsd9y0WJcjnsN6KaFUBv6r3VxMKqbitvw-qKfmaUWysQKa1fra5MTb6';
 	public $secret_key = 'trS0ufXWUXZ0JBcpr/6umiRfgUiwT7YhJMQSDpUz/p8=';
 
-	public function search( $query ) {
-		$query = str_replace( 'C_SINGLE_QUOTE', "''", $query );
-		$query = str_replace( 'C_DOUBLE_QUOTE',  '"', $query );
-		$query = str_replace( 'C_BACKSLASH',  '\\', $query );
-
+	public function search( $query, $count = false, $limit = null ) {
+		$query   = $this->prepare_query( $query, $count, $limit );
 		$request = $this->request_for( 'accounts.search' );
 		$request->setParam( 'query',  $query );
 		$response = $request->send();
@@ -27,6 +24,22 @@ class AccountsSearcher {
 		} else {
 			throw new \Exception( $response->getErrorMessage() );
 		}
+	}
+
+	public function prepare_query( $query, $count = false, $limit = null ) {
+		$query = str_replace( 'C_SINGLE_QUOTE', "''", $query );
+		$query = str_replace( 'C_DOUBLE_QUOTE',  '"', $query );
+		$query = str_replace( 'C_BACKSLASH',  '\\', $query );
+
+		if ( $count ) {
+			$query = str_replace( '*', 'count(*)', $query );
+		}
+
+		if ( is_int( $limit ) ) {
+			$query .= " limit $limit";
+		}
+
+		return $query;
 	}
 
 	public function accounts_for_response( $response ) {

@@ -715,9 +715,9 @@
 			var nonce = member_query_meta.preview_nonce;
 			var data  = {
 				'action': 'preview_member_query',
-				'data': {
+				'action_data': JSON.stringify({
 					'query': query
-				}
+				})
 			};
 
 			var url = member_query_meta.ajaxurl + '?' + $.param({
