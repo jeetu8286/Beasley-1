@@ -1900,6 +1900,8 @@ Media Queries
   max-height: 100%; }
   .gmlp-vertical .gmlp-nav .gmlp-menu #player-actions {
     margin: 0 0 1em; }
+  .gmlp-vertical .gmlp-nav .gmlp-menu #now-playing-live {
+    margin: 0 0 1em; }
   .gmlp-vertical .gmlp-nav .gmlp-menu #td_synced_leaderboard {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
