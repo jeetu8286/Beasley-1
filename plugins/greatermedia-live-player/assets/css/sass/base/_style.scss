@@ -86,21 +86,19 @@
 		}
 	}
 }
+
 /**
- * Player Location: Top
+ * Universal styles for horizontal player location (top & bottom)
  */
-.gmlp-top{
+.gmlp-horizontal{
 	.gmlp-nav{
 		.gmlp-nav-toggle{
-			@include border-radius(0 0 15px 15px);
-			top: 0;
 			right: auto;
 			left: 50px;
 			width: 50px;
 			height: 33px;
 		}
 		.gmlp-menu{
-			top: -130px;
 			right: auto;
 			left: 0;
 			width: 100%;
@@ -134,6 +132,56 @@
 				float: left;
 				margin: 10px 0;
 			}
+		}
+	}
+}
+/**
+ * Universal styles for vertical player location (top & bottom)
+ */
+.gmlp-vertical{
+	.gmlp-nav{
+		.gmlp-nav-toggle{
+			top: 0;
+			width: 33px;
+			height: 50px;
+		}
+		.gmlp-menu{
+			top: 0;
+			bottom: 0;
+			width: 130px;
+			max-height: 100%;
+			#player-actions {
+				margin: 0 0 1em;
+			}
+			#td_synced_leaderboard{
+				@include box-sizing(border-box);
+				width: 90px;
+				height: 728px;
+				margin: 0 auto;
+				background-color: $light-blue;
+			}
+		}
+	}
+	&.admin-bar{
+		.gmlp-nav{
+			.gmlp-nav-toggle,.gmlp-menu {
+				top: 32px;
+			}
+		}
+	}
+}
+/**
+ * Player Location: Top
+ */
+.gmlp-top{
+	.gmlp-nav{
+		.gmlp-nav-toggle{
+			@include border-radius(0 0 15px 15px);
+			top: 0;
+		}
+		.gmlp-menu{
+			top: -130px;
+			height: 130px;
 		}
 	}
 	&.gmlp-open{
@@ -172,25 +220,14 @@
 		.gmlp-nav-toggle{
 			@include border-radius(15px 15px 0 0);
 			bottom: 0;
-			right: auto;
-			left: 50px;
-			width: 50px;
-			height: 33px;
 		}
 		.gmlp-menu{
-			bottom: -100px;
-			right: auto;
-			left: 0;
-			width: 100%;
-			max-height: 100px;
-			#player-actions {
-				margin: 25px 1em 0 0;
-			}
+			bottom: -130px;
 		}
 	}
 	&.gmlp-open{
 		.gmlp-nav-toggle{
-			bottom: 100px;
+			bottom: 130px;
 		}
 		.gmlp-menu{
 			bottom: 0;
@@ -205,29 +242,12 @@
 	.gmlp-nav{
 		.gmlp-nav-toggle{
 			@include border-radius(15px 0 0 15px);
-			top: 0;
 			right: 0;
 			left: auto;
-			width: 33px;
-			height: 50px;
 		}
 		.gmlp-menu{
-			top: 0;
 			left: auto;
 			right: -130px;
-			bottom: 0;
-			width: 130px;
-			max-height: 100%;
-			#player-actions {
-				margin: 0 0 1em;
-			}
-			#td_synced_leaderboard{
-				@include box-sizing(border-box);
-				width: 90px;
-				height: 728px;
-				margin: 0 auto;
-				background-color: $light-blue;
-			}
 		}
 	}
 	&.gmlp-open{
@@ -236,13 +256,6 @@
 		}
 		.gmlp-menu{
 			right: 0;
-		}
-	}
-	&.admin-bar{
-		.gmlp-nav{
-			.gmlp-nav-toggle,.gmlp-menu {
-				top: 32px;
-			}
 		}
 	}
 }
@@ -254,29 +267,12 @@
 	.gmlp-nav{
 		.gmlp-nav-toggle{
 			@include border-radius(0 15px 15px 0);
-			top: 0;
 			right: auto;
 			left: 0;
-			width: 33px;
-			height: 50px;
 		}
 		.gmlp-menu{
-			top: 0;
 			right: auto;
 			left: -130px;
-			bottom: 0;
-			width: 130px;
-			max-height: 100%;
-			#player-actions {
-				margin: 0 0 1em;
-			}
-			#td_synced_leaderboard{
-				@include box-sizing(border-box);
-				width: 90px;
-				height: 728px;
-				margin: 0 auto;
-				background-color: $light-blue;
-			}
 		}
 	}
 	&.gmlp-open{
@@ -285,13 +281,6 @@
 		}
 		.gmlp-menu{
 			left: 0;
-		}
-	}
-	&.admin-bar{
-		.gmlp-nav{
-			.gmlp-nav-toggle,.gmlp-menu {
-				top: 32px;
-			}
 		}
 	}
 }
