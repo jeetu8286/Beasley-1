@@ -136,7 +136,7 @@ class Plugin {
 	}
 
 	function publish_member_query( $post_id, $post = null ) {
-		if ( $post->post_status === 'publish' ) {
+		if ( $post->post_type === 'member_query' && $post->post_status === 'publish' ) {
 			$member_query      = new MemberQuery( $post );
 			$segment_publisher = new SegmentPublisher( $member_query );
 			$segment_publisher->publish();

@@ -20,7 +20,10 @@ class SegmentPublisher {
 	}
 
 	function publish() {
-		return;
+		if ( defined( 'GMR_PUBLISH_SEGMENTS' ) && GMR_PUBLISH_SEGMENTS === false ) {
+			return;
+		}
+
 		$segment_id = $this->get_segment_id();
 		$emails     = $this->get_accounts_to_publish();
 
