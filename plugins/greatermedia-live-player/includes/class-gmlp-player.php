@@ -6,7 +6,7 @@ class GMLP_Player {
 
 		add_action( 'wp_footer', array( __CLASS__, 'load_js' ), 50 );
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'enqueue_scripts' ), 50 );
-		add_action( 'gm_player', array( __CLASS__, 'render_player' ) );
+		add_action( 'wp_footer', array( __CLASS__, 'render_player' ) );
 		add_action( 'radio_callsign', array( __CLASS__, 'get_radio_callsign' ) );
 
 	}
@@ -22,22 +22,38 @@ class GMLP_Player {
 	public static function render_player() {
 
 		?>
-		<div id="player-actions">
-			<div id="playButton" class="gmlp-audio-button play" data-station="<?php do_action( 'radio_callsign' ); ?>"></div>
-			<button id="pauseButton" class="gmlp-audio-button" data-station="<?php do_action( 'radio_callsign' ); ?>"><i class="fa fa-pause"></i></button>
-			<button id="resumeButton" class="gmlp-audio-button" data-station="<?php do_action( 'radio_callsign' ); ?>"><i class="fa fa-play-circle-o"></i></button>
-		</div>
+		<nav class="gmlp-nav">
 
-		<div id="now-playing-live">
-			<div id="nowPlaying">
-				<div id="trackInfo">
+			<button class="gmlp-nav-toggle"><i class="fa fa-volume-up"></i></button>
+
+			<div class="gmlp-menu">
+
+				<div class="container">
+					<div id="player-actions">
+						<div id="playButton" class="gmlp-audio-button play" data-station="<?php do_action( 'radio_callsign' ); ?>"></div>
+						<button id="pauseButton" class="gmlp-audio-button" data-station="<?php do_action( 'radio_callsign' ); ?>"><i class="fa fa-pause"></i></button>
+						<button id="resumeButton" class="gmlp-audio-button" data-station="<?php do_action( 'radio_callsign' ); ?>"><i class="fa fa-play-circle-o"></i></button>
+					</div>
+
+					<div id="now-playing-live">
+						<div id="nowPlaying">
+							<div id="trackInfo">
+							</div>
+							<div id="npeInfo"></div>
+						</div>
+					</div>
+
+					<!-- Player placeholder -->
+					<div id="td_container"></div>
+					<div id="td_synced_leaderboard">Synced Leaderboard (728x90)</div>
+
+					<script type="text/javascript" src="http://playerservices.live.streamtheworld.com/api/idsync.js?mount=<?php do_action( 'radio-callsign' ); ?>"/>
+
 				</div>
-				<div id="npeInfo"></div>
-			</div>
-		</div>
 
-		<!-- Player placeholder -->
-		<div id="td_container"></div>
+			</div>
+
+		</nav>
 
 	<?php
 
@@ -48,9 +64,16 @@ class GMLP_Player {
 	 */
 	public static function enqueue_scripts() {
 
+		$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
+		wp_enqueue_script( 'pjax', GMLIVEPLAYER_URL . 'assets/js/vendor/pjax-standalone.min.js', array(), '0.1.3', false );
+		wp_enqueue_script( 'pjax-load', GMLIVEPLAYER_URL . 'assets/js/src/pjax-load.js', array( 'pjax' ), GMLIVEPLAYER_VERSION, false );
+		wp_enqueue_script( 'gmlp-js', GMLIVEPLAYER_URL . "assets/js/greater_media_live_player.js", array( 'jquery', 'pjax' ), GMLIVEPLAYER_VERSION, false );
+		wp_enqueue_script( 'jquery-cookie', GMLIVEPLAYER_URL . 'assets/js/src/jquery.cookie.js', array(), GMLIVEPLAYER_VERSION, false );
 		wp_enqueue_script( 'load-jquery', GMLIVEPLAYER_URL . 'assets/js/src/jquery.load.js', array(), GMLIVEPLAYER_VERSION, true );
 		wp_enqueue_script( 'tdplayer', GMLIVEPLAYER_URL . 'assets/js/vendor/td-player/tdplayer.js', array( 'jquery' ), '2.5', true );
 		wp_enqueue_script( 'tdplayer-api', GMLIVEPLAYER_URL . 'assets/js/vendor/td-player/tdplayer-api.js', array(), '2.5', true );
+		wp_enqueue_style( 'gmlp-styles', GMLIVEPLAYER_URL . "assets/css/greater_media_live_player{$postfix}.css", array(), GMLIVEPLAYER_VERSION );
+
 
 	}
 
@@ -59,7 +82,7 @@ class GMLP_Player {
 	 */
 	public static function load_js() {
 
-//		echo '<script src="http://player.listenlive.co/api/2.5/js/jquery-1.7.2.min.js"></script>';
+		//		echo '<script src="http://player.listenlive.co/api/2.5/js/jquery-1.7.2.min.js"></script>';
 
 		echo '<script data-dojo-config="onReady:window.tdPlayerApiReady, async: 1, tlmSiblingOfDojo: 0, deps:[\'tdapi/run\']" src="//api.listenlive.co/tdplayerapi/2.5/dojo/dojo.js"></script>';
 
