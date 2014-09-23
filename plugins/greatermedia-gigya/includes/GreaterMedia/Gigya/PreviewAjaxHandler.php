@@ -2,9 +2,6 @@
 
 namespace GreaterMedia\Gigya;
 
-//require_once __DIR__ . '/class-ajax-handler.php';
-//require_once __DIR__ . '/class-accounts-searcher.php';
-
 /**
  * PreviewAjaxHandler is the ajax handler invoked by the client to
  * preview a member query.
@@ -38,25 +35,12 @@ class PreviewAjaxHandler extends AjaxHandler {
 	 * @return array
 	 */
 	public function run( $params ) {
-		// TODO:
-		// derive from params,
-		// account for * in keywords
-		// test cases for serialization
-		// research GQL escape sequences
-		$query = $_POST['data']['query'];
-		$query = str_replace( '\\\'', '\'', $query );
-
-		$count_query = str_replace( '*', 'count(*)', $query );
-		$query .= ' limit 5';
-
+		$query    = $params['query'];
 		$searcher = new AccountsSearcher();
-		$total_response = $searcher->search( $count_query );
-		$response = $searcher->search( $query );
-		$json = json_decode( $response, true );
-		$totals = json_decode( $total_response, true );
-
+		$response = $searcher->search( $query, false, 5 );
+		$json     = json_decode( $response, true );
 		$accounts = array();
-		$i = 0;
+		$i        = 0;
 
 		foreach ( $json['results'] as $account ) {
 			$accounts[] = $account['profile']['email'];
@@ -65,12 +49,10 @@ class PreviewAjaxHandler extends AjaxHandler {
 			}
 		}
 
-		$to_return = array(
+		return array(
 			'accounts' => $accounts,
-			'total' => $totals['totalCount'],
+			'total'    => $json['totalCount'],
 		);
-
-		return $to_return;
 	}
 
 }

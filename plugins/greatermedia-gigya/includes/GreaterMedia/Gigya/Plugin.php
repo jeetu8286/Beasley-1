@@ -42,9 +42,9 @@ class Plugin {
 	 */
 	public function enable() {
 		add_action( 'init', array( $this, 'initialize' ) );
-		add_action( 'add_meta_boxes', array( $this, 'initialize_meta_boxes' ), 10, 2 );
-		add_filter( 'wp_insert_post_data', array( $this, 'serialize_member_query' ), 10, 2 );
+		add_action( 'add_meta_boxes_member_query', array( $this, 'initialize_meta_boxes' ));
 		add_action( 'save_post', array( $this, 'publish_member_query' ), 10, 2 );
+		add_action( 'admin_notices', array( $this, 'show_flash' ) );
 
 		$preview_ajax_handler = new PreviewAjaxHandler();
 		$preview_ajax_handler->register();
@@ -65,16 +65,11 @@ class Plugin {
 	 * Registers the metaboxes for the plugin.
 	 *
 	 * @access public
-	 * @param string $post_type The current post_type name
 	 * @param WP_Post $post The current post object
 	 * @return void
 	 */
-	public function initialize_meta_boxes( $post_type, $post ) {
-		if ( $post_type !== 'member_query' ) {
-			return;
-		}
-
-		$member_query = new MemberQuery( $post );
+	public function initialize_meta_boxes( $post ) {
+		$member_query = new MemberQuery( $post->ID );
 		$meta_boxes   = $this->get_meta_boxes( $member_query );
 
 		foreach ( $meta_boxes as $meta_box ) {
@@ -114,32 +109,35 @@ class Plugin {
 	}
 
 	/**
-	 * Serialize member query before post is saved.
+	 * Saves the MemberQuery JSON in postmeta and then publishes the
+	 * segment to MailChimp.
+	 *
+	 * @access public
+	 * @param int $post_id The id of the parent post CPT of this MemberQuery
+	 * @param WP_Post $post The post object that was saved.
+	 * @return void
 	 */
-	function serialize_member_query( $sanitized_data, $raw_data = null ) {
-		if ( $sanitized_data['post_type'] !== 'member_query' ) {
-			return $sanitized_data;
+	public function publish_member_query( $post_id, $post = null ) {
+		if ( ! is_null( $post ) && $post->post_type === 'member_query' && $post->post_status === 'publish' ) {
+			$this->verify_meta_box_nonces();
+
+			try {
+				$member_query      = new MemberQuery( $post_id );
+				$member_query->build_and_save();
+
+				$segment_publisher = new SegmentPublisher( $member_query );
+				$segment_publisher->publish();
+			} catch ( \Exception $e ) {
+				$this->set_flash( $e->getMessage() );
+			}
 		}
-
-		$member_query = new MemberQuery( $raw_data );
-		foreach ( $this->get_meta_boxes( $member_query ) as $meta_box ) {
-			// TODO: Important!, Fix Direct Query with new bug
-			//$meta_box->verify_nonce();
-		}
-
-		$member_query_builder = new MemberQueryBuilder();
-		$member_query_builder->prepare();
-
-		$sanitized_data['post_content'] = $member_query_builder->build();
-
-		return $sanitized_data;
 	}
 
-	function publish_member_query( $post_id, $post = null ) {
-		if ( $post->post_type === 'member_query' && $post->post_status === 'publish' ) {
-			$member_query      = new MemberQuery( $post );
-			$segment_publisher = new SegmentPublisher( $member_query );
-			$segment_publisher->publish();
+	public function show_flash() {
+		$flash = $this->get_flash();
+		if ( $flash !== false ) {
+			include dirname( $this->plugin_file ) . '/templates/flash.php';
+			$this->clear_flash();
 		}
 	}
 
@@ -154,17 +152,92 @@ class Plugin {
 	 *
 	 * @access public
 	 * @param MemberQuery $member_query
+	 * @return array Associative array of meta box objects
 	 */
 	public function get_meta_boxes( $member_query = null ) {
 		if ( count( $this->meta_boxes ) === 0 ) {
-			$this->meta_boxes = array(
-				'preview'       => new PreviewMetaBox( $member_query ),
-				'direct_query'  => new DirectQueryMetaBox( $member_query ),
-				'query_builder' => new QueryBuilderMetaBox( $member_query )
+			$this->meta_boxes = array();
+
+			$this->meta_boxes['preview'] = $this->meta_box_for(
+				array(
+					'id'       => 'preview',
+					'title'    => 'Preview Results',
+					'context'  => 'side',
+					'priority' => 'default',
+					'template' => 'preview',
+				),
+				$member_query
+			);
+
+			$this->meta_boxes['direct_query'] = $this->meta_box_for(
+				array(
+					'id'       => 'direct_query',
+					'title'    => 'Direct Query',
+					'context'  => 'side',
+					'priority' => 'low',
+					'template' => 'direct_query',
+				),
+				$member_query
+			);
+
+			$this->meta_boxes['query_builder'] = $this->meta_box_for(
+				array(
+					'id'       => 'query_builder',
+					'title'    => 'Gigya Social',
+					'context'  => 'normal',
+					'priority' => 'default',
+					'template' => 'query_builder',
+				),
+				$member_query
 			);
 		}
 
 		return $this->meta_boxes;
 	}
 
+	/**
+	 * Builds a new meta box for the specified params.
+	 *
+	 * @access public
+	 * @param array $params The params to pass to the meta box object
+	 * @param MemberQuery $member_query The member query associated with the meta box.
+	 */
+	public function meta_box_for( $params, $member_query ) {
+		$meta_box = new MetaBox( $member_query );
+		$meta_box->params = $params;
+
+		return $meta_box;
+	}
+
+	/**
+	 * Verifies than correct nonces were passed for each MetaBox.
+	 *
+	 * Exits script execution with a warning if invalid.
+	 *
+	 * @access public
+	 * @return void
+	 */
+	public function verify_meta_box_nonces() {
+		$meta_boxes = $this->get_meta_boxes( null );
+
+		foreach ( $meta_boxes as $meta_box ) {
+			$meta_box->verify_nonce();
+		}
+	}
+
+	public function get_flash_key() {
+		return get_current_user_id() . '_member_query_flash';
+	}
+
+	public function set_flash( $message ) {
+		set_transient( $this->get_flash_key(), $message, 30 );
+	}
+
+	public function get_flash() {
+		return get_transient( $this->get_flash_key() );
+	}
+
+	public function clear_flash() {
+		delete_transient( $this->get_flash_key() );
+	}
 }

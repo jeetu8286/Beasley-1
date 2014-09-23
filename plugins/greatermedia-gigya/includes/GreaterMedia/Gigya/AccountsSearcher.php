@@ -2,8 +2,6 @@
 
 namespace GreaterMedia\Gigya;
 
-//require_once __DIR__ . '/../../Gigya/GSSDK.php';
-
 /**
  * Account searcher uses the Gigya accounts api to match accounts to a
  * specified GQL query.
@@ -15,13 +13,18 @@ class AccountsSearcher {
 	public $api_key    = '3_e_T7jWO0Vjsd9y0WJcjnsN6KaFUBv6r3VxMKqbitvw-qKfmaUWysQKa1fra5MTb6';
 	public $secret_key = 'trS0ufXWUXZ0JBcpr/6umiRfgUiwT7YhJMQSDpUz/p8=';
 
-	public function search( $query ) {
-		$query = str_replace( 'C_SINGLE_QUOTE', "''", $query );
-		$query = str_replace( 'C_DOUBLE_QUOTE',  '"', $query );
-		$query = str_replace( 'C_BACKSLASH',  '\\', $query );
-
-		$request = $this->request_for( 'accounts.search' );
-		$request->setParam( 'query',  $query );
+	/**
+	 * Searches for accounts using the Gigya SDK using the
+	 * accounts.search method.
+	 *
+	 * @param string $query Escaped GQL query
+	 * @param bool $count Whether to build a count query
+	 * @param int $limit Optional limit the results to specified max
+	 * @return string The JSON result from the Gigya API server.
+	 */
+	public function search( $query, $count = false, $limit = null ) {
+		$query    = $this->prepare_query( $query, $count, $limit );
+		$request  = $this->request_for( 'accounts.search', $query );
 		$response = $request->send();
 
 		if ( $response->getErrorCode() === 0 ) {
@@ -31,16 +34,59 @@ class AccountsSearcher {
 		}
 	}
 
+	/**
+	 * Returns the accounts for response.
+	 *
+	 * TODO: iterate with GSSDK objects.
+	 */
 	public function accounts_for_response( $response ) {
 		return $response->getResponseText();
 	}
 
-	public function request_for( $method ) {
-		return new \GSRequest(
+	/**
+	 * Unescapes constants and builds a GQL query to be sent over the
+	 * wire to the Gigya API.
+	 *
+	 * @param string $query Escaped GQL query
+	 * @param bool $count Whether to build a count query
+	 * @param int $limit Optional limit the results to specified max
+	 * @return string
+	 */
+	public function prepare_query( $query, $count = false, $limit = null ) {
+		$query = str_replace( 'C_SINGLE_QUOTE', "''", $query );
+		$query = str_replace( 'C_DOUBLE_QUOTE',  '"', $query );
+		$query = str_replace( 'C_BACKSLASH',  '\\', $query );
+
+		if ( $count ) {
+			// TODO: Regex to restrict between select and from
+			$query = str_replace( '*', 'count(*)', $query );
+		}
+
+		if ( is_int( $limit ) ) {
+			$query .= " limit $limit";
+		}
+
+		return $query;
+	}
+
+	/**
+	 * Builds a Gigya Request object for the specified method.
+	 *
+	 * @access public
+	 * @param string $method The api method to call.
+	 * @param string $query The prepared query
+	 * @return GSRequest
+	 */
+	public function request_for( $method, $query ) {
+		$request = new \GSRequest(
 			$this->api_key,
 			$this->secret_key,
 			$method
 		);
+
+		$request->setParam( 'query',  $query );
+
+		return $request;
 	}
 
 }

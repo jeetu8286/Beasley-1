@@ -34,6 +34,32 @@ class MetaBox {
 	public $member_query;
 
 	/**
+	 * Properties of the meta box. These correspond to the getters like
+	 * get_id, get_title.
+	 *
+	 * You can either set the params directly or subclass and override
+	 * the getters.
+	 *
+	 * If provided must contain the keys,
+	 *
+	 * 1. id
+	 * 2. title
+	 * 3. context
+	 * 4. priority
+	 * 5. template
+	 *
+	 * @access public
+	 * @var array
+	 */
+	public $params = array(
+		'id'        => 'meta_box',
+		'title'     => 'Meta Box',
+		'post_type' => 'member_query',
+		'context'   => 'normal',
+		'priority'  => 'default'
+	);
+
+	/**
 	 * Stores the member query for this meta box.
 	 *
 	 * @access public
@@ -128,7 +154,7 @@ class MetaBox {
 	 * @return string
 	 */
 	public function get_template() {
-		return null;
+		return $this->params['template'];
 	}
 
 	/**
@@ -137,7 +163,7 @@ class MetaBox {
 	 * @return string
 	 */
 	public function get_id() {
-		return 'meta_box';
+		return $this->params['id'];
 	}
 
 	/**
@@ -145,7 +171,7 @@ class MetaBox {
 	 * at the time of registration.
 	 */
 	public function get_title() {
-		return 'Meta Box';
+		return $this->params['title'];
 	}
 
 	/**
@@ -163,14 +189,18 @@ class MetaBox {
 	 * By default meta boxes belong to the `member_query` custom post type.
 	 */
 	public function get_post_type() {
-		return 'member_query';
+		if ( array_key_exists( 'post_type', $this->params ) ) {
+			return $this->params['post_type'];
+		} else {
+			return 'member_query';
+		}
 	}
 
 	/**
 	 * The context of the meta box. Default context is 'normal'.
 	 */
 	public function get_context() {
-		return 'normal';
+		return $this->params['context'];
 	}
 
 	/**
@@ -180,7 +210,7 @@ class MetaBox {
 	 * @return string
 	 */
 	public function get_priority() {
-		return 'default';
+		return $this->params['priority'];
 	}
 
 	/**

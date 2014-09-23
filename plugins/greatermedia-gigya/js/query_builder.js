@@ -1,5 +1,21 @@
 (function($) {
 
+	var escapeValue = function(source) {
+		source = source.replace(/"/g, 'C_DOUBLE_QUOTE');
+		source = source.replace(/'/g, 'C_SINGLE_QUOTE');
+		source = source.replace(/\\/g, 'C_BACKSLASH');
+
+		return source;
+	};
+
+	var unescapeValue = function(source) {
+		source = source.replace(/C_DOUBLE_QUOTE/g, '"');
+		source = source.replace(/C_SINGLE_QUOTE/g, "'");
+		source = source.replace(/C_BACKSLASH/g, "\\");
+
+		return source;
+	};
+
 	var Constraint = function(properties) {
 		this.id = Constraint.nextID();
 
@@ -24,7 +40,7 @@
 			this.title       = json.title;
 
 			this.fieldPath   = json.fieldPath;
-			this.value       = this.unescapeValue(json.value);
+			this.value       = unescapeValue(json.value);
 			this.valueType   = json.valueType;
 			this.operator    = json.operator;
 			this.conjunction = json.conjunction;
@@ -34,7 +50,7 @@
 			var json         = {};
 			json.type        = this.type;
 			json.title       = this.title;
-			json.value       = this.escapeValue(this.value);
+			json.value       = escapeValue(this.value);
 			json.valueType   = this.valueType;
 			json.conjunction = this.conjunction;
 			json.fieldPath   = this.fieldPath;
@@ -46,7 +62,7 @@
 		toGQL: function() {
 			var gql = this.fieldPath + ' ' + this.operator + ' ';
 			if (this.valueType === 'string') {
-				gql += "'" + this.escapeValue(this.value) + "'";
+				gql += "'" + escapeValue(this.value) + "'";
 			} else {
 				gql += this.value;
 			}
@@ -75,21 +91,6 @@
 			return operators;
 		},
 
-		escapeValue: function(source) {
-			source = source.replace(/"/g, 'C_DOUBLE_QUOTE');
-			source = source.replace(/'/g, 'C_SINGLE_QUOTE');
-			source = source.replace(/\\/g, 'C_BACKSLASH');
-
-			return source;
-		},
-
-		unescapeValue: function(source) {
-			source = source.replace(/C_DOUBLE_QUOTE/g, '"');
-			source = source.replace(/C_SINGLE_QUOTE/g, "'");
-			source = source.replace(/C_BACKSLASH/g, "\\");
-
-			return source;
-		}
 
 	};
 
@@ -412,6 +413,11 @@
 			var gql         = {};
 			var constraints = JSON.stringify(this.store.toJSON());
 			var query       = this.store.toGQL();
+			var directQuery = $.trim($('.direct-query-input').val());
+
+			if (directQuery !== '') {
+				query = directQuery;
+			}
 
 			$('#constraints').attr('value', constraints);
 			$('#query').attr('value', query);
@@ -715,9 +721,9 @@
 			var nonce = member_query_meta.preview_nonce;
 			var data  = {
 				'action': 'preview_member_query',
-				'data': {
+				'action_data': JSON.stringify({
 					'query': query
-				}
+				})
 			};
 
 			var url = member_query_meta.ajaxurl + '?' + $.param({

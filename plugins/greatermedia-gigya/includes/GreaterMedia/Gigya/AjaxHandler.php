@@ -137,7 +137,7 @@ class AjaxHandler {
 				$this->send_success( $result );
 			} else {
 				// json was already sent, just quit
-				// only for PHPUnit since send_json_success already
+				// only for PHPUnit since send_success already
 				// quits
 				$this->quit();
 			}
@@ -341,7 +341,7 @@ class AjaxHandler {
 	 */
 	public function get_params() {
 		if ( array_key_exists( 'action_data', $_POST ) ) {
-			$json = $_POST['action_data'];
+			$json = wp_unslash( $_POST['action_data'] );
 			$data = json_decode( $json, true );
 
 			if ( ! is_array( $data ) ) {

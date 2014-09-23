@@ -40,23 +40,12 @@ class SegmentPublisher {
 
 	/* helpers */
 	function get_post_id() {
-		$post = $this->member_query->post;
-
-		if ( $post instanceof \WP_Post ) {
-			return $post->ID;
-		} else {
-			return $post['ID'];
-		}
+		return $this->member_query->post_id;
 	}
 
 	function get_post_title() {
-		$post = $this->member_query->post;
-
-		if ( $post instanceof \WP_Post ) {
-			return $post->post_title;
-		} else {
-			return $post['post_title'];
-		}
+		$post = get_post( $this->get_post_id() );
+		return $post->post_title;
 	}
 
 	function get_segment_id() {
@@ -77,7 +66,7 @@ class SegmentPublisher {
 	}
 
 	function get_accounts_to_publish() {
-		$query    = $this->member_query->get_query();
+		$query    = $this->member_query->to_gql();
 		$searcher = new AccountsSearcher();
 		$response = $searcher->search( $query );
 		$accounts = json_decode( $response, true );
