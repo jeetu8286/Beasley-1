@@ -39,6 +39,7 @@ class AccountsSearcher {
 			$query .= " limit $limit";
 		}
 
+		error_log( $query );
 		return $query;
 	}
 
