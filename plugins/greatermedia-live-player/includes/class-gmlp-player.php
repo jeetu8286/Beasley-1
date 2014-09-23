@@ -22,13 +22,14 @@ class GMLP_Player {
 	public static function render_player() {
 
 		?>
-		<div id="radio-callsign"><?php do_action( 'radio_callsign' ); ?></div>
-		<input class="gmlp-audio-button" type="button" data-action="play-live" data-station="<?php do_action( 'radio_callsign' ); ?>" value="Play" />
-		<input class="gmlp-audio-button" type="button" id="stopButton" value="Stop" />
+		<div id="player-actions">
+			<div id="playButton" class="gmlp-audio-button play" data-station="<?php do_action( 'radio_callsign' ); ?>"></div>
+			<button id="pauseButton" class="gmlp-audio-button" data-station="<?php do_action( 'radio_callsign' ); ?>"><i class="fa fa-pause"></i></button>
+			<button id="resumeButton" class="gmlp-audio-button" data-station="<?php do_action( 'radio_callsign' ); ?>"><i class="fa fa-play-circle-o"></i></button>
+		</div>
 
 		<div id="nowPlaying">
 			<div id="trackInfo">
-				<p><span class="label label-info">Now Playing</span></p>
 			</div>
 			<div id="npeInfo"></div>
 		</div>

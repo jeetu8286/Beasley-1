@@ -1761,12 +1761,26 @@ Media Queries
 
 /**
  * Styles for Front End
+ *
+ * Admins can choose the location of the player. A class is added to the body that will match the locations below.
+ */
+/**
+ * General Styles
  */
 .gmlp-nav .gmlp-nav-toggle {
   -webkit-transition: ease 0.25s;
   -moz-transition: ease 0.25s;
   -o-transition: ease 0.25s;
   transition: ease 0.25s;
+  position: fixed;
+  background-color: #1167bd;
+  border: none;
+  outline: none;
+  font-size: 1.25em;
+  color: white;
+  z-index: 10001;
+  cursor: pointer; }
+.gmlp-nav .gmlp-audio-button {
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
   -ms-border-radius: 50%;
@@ -1774,28 +1788,27 @@ Media Queries
   -border-radius: 50%;
   border-radius: 50%;
   behavior: url("../js/PIE/PIE.htc");
-  position: fixed;
-  top: 0;
-  right: auto;
-  left: -20px;
   width: 60px;
   height: 60px;
-  background-color: whitesmoke;
-  border-color: #eeeeee;
-  border-style: solid;
-  border-width: 1px;
-  border-top: none;
-  border-left: none;
+  margin: 0 auto;
+  background-color: #ea5e5b;
+  border: none;
   outline: none;
-  font-size: 1.25em;
-  color: #888888;
-  z-index: 10001; }
-.gmlp-nav .gmlp-audio-button {
-  background-color: whitesmoke;
-  border-color: #eeeeee;
-  border-style: solid;
-  border-width: 1px;
-  outline: none; }
+  font-family: FontAwesome;
+  font-size: 2em;
+  color: white;
+  cursor: pointer; }
+.gmlp-nav #playButton {
+  position: relative; }
+  .gmlp-nav #playButton:before {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    font-family: FontAwesome;
+    content: "\f01d"; }
 .gmlp-nav .gmlp-menu {
   -webkit-transition: ease 0.25s;
   -moz-transition: ease 0.25s;
@@ -1806,42 +1819,171 @@ Media Queries
   -ms-box-sizing: border-box;
   box-sizing: border-box;
   position: fixed;
+  padding: 10px;
+  background: #1167bd;
+  color: white;
+  z-index: 10000; }
+  .gmlp-nav .gmlp-menu #player-actions {
+    margin: 0 auto;
+    text-align: center; }
+    .gmlp-nav .gmlp-menu #player-actions #pauseButton, .gmlp-nav .gmlp-menu #player-actions #resumeButton {
+      display: none; }
+  .gmlp-nav .gmlp-menu #nowPlaying #trackInfo {
+    font-size: .75em; }
+    .gmlp-nav .gmlp-menu #nowPlaying #trackInfo .gmlp-np-song-title {
+      margin: 0 0 1em;
+      font-weight: 700; }
+    .gmlp-nav .gmlp-menu #nowPlaying #trackInfo .gmlp-np-artist {
+      font-weight: 400; }
+  .gmlp-nav .gmlp-menu #td_synced_leaderboard {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 728px;
+    height: 90px;
+    background-color: #e3f7fc; }
+
+/**
+ * Player Location: Top
+ */
+.gmlp-top .gmlp-nav .gmlp-nav-toggle {
+  -webkit-border-radius: 0 0 15px 15px;
+  -moz-border-radius: 0 0 15px 15px;
+  -ms-border-radius: 0 0 15px 15px;
+  -o-border-radius: 0 0 15px 15px;
+  -border-radius: 0 0 15px 15px;
+  border-radius: 0 0 15px 15px;
+  behavior: url("../js/PIE/PIE.htc");
   top: 0;
   right: auto;
-  left: -200px;
-  bottom: 0;
-  width: 200px;
-  max-height: 100%;
-  padding: 10px;
-  border-right: 1px solid #eeeeee;
-  background: white;
-  color: black;
-  z-index: 10000; }
-
-.gmlp-time {
-  -webkit-transition: ease 0.25s;
-  -moz-transition: ease 0.25s;
-  -o-transition: ease 0.25s;
-  transition: ease 0.25s;
-  position: fixed;
-  bottom: 10px;
-  right: 50%;
-  left: 50%;
-  width: 50%;
-  -ms-transform: translate(-50%, -50%);
-  -webkit-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-  text-align: center;
-  z-index: 10001; }
-
-.gmlp-open .gmlp-nav-toggle {
-  left: 180px; }
-.gmlp-open .gmlp-time {
-  left: 210px; }
-.gmlp-open .gmlp-menu {
-  left: 0; }
-
-.admin-bar .gmlp-nav .gmlp-nav-toggle, .admin-bar .gmlp-nav .gmlp-menu {
+  left: 50px;
+  width: 50px;
+  height: 33px; }
+.gmlp-top .gmlp-nav .gmlp-menu {
+  top: -130px;
+  right: auto;
+  left: 0;
+  width: 100%;
+  max-height: 130px; }
+  .gmlp-top .gmlp-nav .gmlp-menu #player-actions {
+    margin: 0 1em 0 0; }
+.gmlp-top.gmlp-open .gmlp-nav-toggle {
+  top: 130px; }
+.gmlp-top.gmlp-open .gmlp-menu {
+  top: 0; }
+.gmlp-top.admin-bar .gmlp-nav .gmlp-nav-toggle {
   top: 32px; }
-.admin-bar .gmlp-nav .gmlp-time {
-  top: 132px; }
+.gmlp-top.admin-bar .gmlp-nav .gmlp-menu {
+  top: -98px; }
+
+/**
+ * Player Location: Bottom
+ */
+.gmlp-bottom .gmlp-nav .gmlp-nav-toggle {
+  -webkit-border-radius: 15px 15px 0 0;
+  -moz-border-radius: 15px 15px 0 0;
+  -ms-border-radius: 15px 15px 0 0;
+  -o-border-radius: 15px 15px 0 0;
+  -border-radius: 15px 15px 0 0;
+  border-radius: 15px 15px 0 0;
+  behavior: url("../js/PIE/PIE.htc");
+  bottom: 0;
+  right: auto;
+  left: 50px;
+  width: 50px;
+  height: 33px; }
+.gmlp-bottom .gmlp-nav .gmlp-menu {
+  bottom: -100px;
+  right: auto;
+  left: 0;
+  width: 100%;
+  max-height: 100px; }
+  .gmlp-bottom .gmlp-nav .gmlp-menu #player-actions {
+    margin: 0 1em 0 0; }
+.gmlp-bottom.gmlp-open .gmlp-nav-toggle {
+  bottom: 100px; }
+.gmlp-bottom.gmlp-open .gmlp-menu {
+  bottom: 0; }
+
+/**
+ * Player Location: Right
+ */
+.gmlp-right .gmlp-nav .gmlp-nav-toggle {
+  -webkit-border-radius: 15px 0 0 15px;
+  -moz-border-radius: 15px 0 0 15px;
+  -ms-border-radius: 15px 0 0 15px;
+  -o-border-radius: 15px 0 0 15px;
+  -border-radius: 15px 0 0 15px;
+  border-radius: 15px 0 0 15px;
+  behavior: url("../js/PIE/PIE.htc");
+  top: 0;
+  right: 0;
+  left: auto;
+  width: 33px;
+  height: 50px; }
+.gmlp-right .gmlp-nav .gmlp-menu {
+  top: 0;
+  left: auto;
+  right: -130px;
+  bottom: 0;
+  width: 130px;
+  max-height: 100%; }
+  .gmlp-right .gmlp-nav .gmlp-menu #player-actions {
+    margin: 0 0 1em; }
+  .gmlp-right .gmlp-nav .gmlp-menu #td_synced_leaderboard {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 90px;
+    height: 728px;
+    margin: 0 auto;
+    background-color: #e3f7fc; }
+.gmlp-right.gmlp-open .gmlp-nav-toggle {
+  right: 130px; }
+.gmlp-right.gmlp-open .gmlp-menu {
+  right: 0; }
+.gmlp-right.admin-bar .gmlp-nav .gmlp-nav-toggle, .gmlp-right.admin-bar .gmlp-nav .gmlp-menu {
+  top: 32px; }
+
+/**
+ * Player Location: Left
+ */
+.gmlp-left .gmlp-nav .gmlp-nav-toggle {
+  -webkit-border-radius: 0 15px 15px 0;
+  -moz-border-radius: 0 15px 15px 0;
+  -ms-border-radius: 0 15px 15px 0;
+  -o-border-radius: 0 15px 15px 0;
+  -border-radius: 0 15px 15px 0;
+  border-radius: 0 15px 15px 0;
+  behavior: url("../js/PIE/PIE.htc");
+  top: 0;
+  right: auto;
+  left: 0;
+  width: 33px;
+  height: 50px; }
+.gmlp-left .gmlp-nav .gmlp-menu {
+  top: 0;
+  right: auto;
+  left: -130px;
+  bottom: 0;
+  width: 130px;
+  max-height: 100%; }
+  .gmlp-left .gmlp-nav .gmlp-menu #player-actions {
+    margin: 0 0 1em; }
+  .gmlp-left .gmlp-nav .gmlp-menu #td_synced_leaderboard {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 90px;
+    height: 728px;
+    margin: 0 auto;
+    background-color: #e3f7fc; }
+.gmlp-left.gmlp-open .gmlp-nav-toggle {
+  left: 130px; }
+.gmlp-left.gmlp-open .gmlp-menu {
+  left: 0; }
+.gmlp-left.admin-bar .gmlp-nav .gmlp-nav-toggle, .gmlp-left.admin-bar .gmlp-nav .gmlp-menu {
+  top: 32px; }

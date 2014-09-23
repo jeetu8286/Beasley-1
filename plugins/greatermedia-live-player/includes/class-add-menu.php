@@ -27,9 +27,9 @@ class GMLP_Menu {
 
 			<div class="gmlp-menu">
 
-				<h2>Live Player</h2>
-
 				<?php do_action( 'gm_player' ); ?>
+
+				<div id="td_synced_leaderboard">Synced Leaderboard (728x90)</div>
 
 			</div>
 
@@ -66,6 +66,10 @@ class GMLP_Menu {
 		wp_enqueue_script( 'gmlp-js', GMLIVEPLAYER_URL . "assets/js/greater_media_live_player.js", array( 'jquery', 'pjax' ), GMLIVEPLAYER_VERSION, false );
 		wp_enqueue_script( 'jquery-cookie', GMLIVEPLAYER_URL . 'assets/js/src/jquery.cookie.js', array(), GMLIVEPLAYER_VERSION, false );
 		wp_enqueue_style( 'gmlp-styles', GMLIVEPLAYER_URL . "assets/css/greater_media_live_player{$postfix}.css", array(), GMLIVEPLAYER_VERSION );
+
+		wp_localize_script( 'gmlp-js', 'player', array(
+			'location' => get_option( 'gmlp_player_location', '' )
+		) );
 
 	}
 

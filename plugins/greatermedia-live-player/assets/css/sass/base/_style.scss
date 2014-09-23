@@ -1,83 +1,258 @@
 /**
  * Styles for Front End
+ *
+ * Admins can choose the location of the player. A class is added to the body that will match the locations below.
  */
 
+
+/**
+ * General Styles
+ */
 .gmlp-nav{
 	.gmlp-nav-toggle{
 		@include transition(ease .25s);
-		@include border-radius(50%);
 		position: fixed;
-		top: 0;
-		right: auto;
-		left: -20px;
-		width: 60px;
-		height: 60px;
-		background-color: $light-gray;
-		border-color: $soft-gray;
-		border-style: solid;
-		border-width: 1px;
-		border-top: none;
-		border-left: none;
+		background-color: $blue;
+		border: none;
 		outline: none;
 		font-size: 1.25em;
-		color: $icon-gray;
+		color: $white;
 		z-index: 10001;
+		cursor: pointer;
 	}
 	.gmlp-audio-button{
-		background-color: $light-gray;
-		border-color: $soft-gray;
-		border-style: solid;
-		border-width: 1px;
+		@include border-radius(50%);
+		width: 60px;
+		height: 60px;
+		margin: 0 auto;
+		background-color: $red;
+		border: none;
 		outline: none;
+		font-family: FontAwesome;
+		font-size: 2em;
+		color: $white;
+		cursor: pointer;
+	}
+	#playButton{
+		position: relative;
+		&:before{
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			-ms-transform: translate(-50%, -50%);
+			-webkit-transform: translate(-50%, -50%);
+			transform: translate(-50%, -50%);
+			font-family: FontAwesome;
+			content: "\f01d";
+		}
 	}
 	.gmlp-menu{
 		@include transition(ease .25s);
 		@include box-sizing(border-box);
 		position: fixed;
-		top: 0;
-		right: auto;
-		left: -200px;
-		bottom: 0;
-		width: 200px;
-		max-height: 100%;
 		padding: 10px;
-		border-right: 1px solid $soft-gray;
-		background: $white;
-		color: $black;
+		background: $blue;
+		color: $white;
 		z-index: 10000;
-	}
-}
-.gmlp-time{
-	@include transition(ease .25s);
-	position: fixed;
-	bottom: 10px;
-	right: 50%;
-	left: 50%;
-	width: 50%;
-	-ms-transform: translate(-50%, -50%);
-	-webkit-transform: translate(-50%, -50%);
-	transform: translate(-50%, -50%);
-	text-align: center;
-	z-index: 10001;
-}
-.gmlp-open{
-	.gmlp-nav-toggle{
-		left: 180px;
-	}
-	.gmlp-time{
-		left: 210px;
-	}
-	.gmlp-menu{
-		left: 0;
-	}
-}
-.admin-bar{
-	.gmlp-nav{
-		.gmlp-nav-toggle,.gmlp-menu {
-			top: 32px;
+		#player-actions {
+			margin: 0 auto;
+			text-align: center;
+			#pauseButton, #resumeButton {
+				display: none;
+			}
 		}
-		.gmlp-time{
-			top: 132px;
+		#nowPlaying{
+			#trackInfo{
+				font-size:.75em;
+				.gmlp-np-song-title{
+					margin: 0 0 1em;
+					font-weight: 700;
+				}
+				.gmlp-np-artist{
+					font-weight: 400;
+				}
+			}
+		}
+		#td_synced_leaderboard{
+			@include box-sizing(border-box);
+			width: 728px;
+			height: 90px;
+			background-color: $light-blue;
+		}
+	}
+}
+/**
+ * Player Location: Top
+ */
+.gmlp-top{
+	.gmlp-nav{
+		.gmlp-nav-toggle{
+			@include border-radius(0 0 15px 15px);
+			top: 0;
+			right: auto;
+			left: 50px;
+			width: 50px;
+			height: 33px;
+		}
+		.gmlp-menu{
+			top: -130px;
+			right: auto;
+			left: 0;
+			width: 100%;
+			max-height: 130px;
+			#player-actions {
+				margin: 0 1em 0 0;
+			}
+		}
+	}
+	&.gmlp-open{
+		.gmlp-nav-toggle{
+			top: 130px;
+		}
+		.gmlp-menu{
+			top: 0;
+		}
+	}
+	&.admin-bar{
+		.gmlp-nav{
+			.gmlp-nav-toggle {
+				top: 32px;
+			}
+			.gmlp-menu {
+				top: -98px;
+			}
+		}
+	}
+}
+
+/**
+ * Player Location: Bottom
+ */
+.gmlp-bottom{
+	.gmlp-nav{
+		.gmlp-nav-toggle{
+			@include border-radius(15px 15px 0 0);
+			bottom: 0;
+			right: auto;
+			left: 50px;
+			width: 50px;
+			height: 33px;
+		}
+		.gmlp-menu{
+			bottom: -100px;
+			right: auto;
+			left: 0;
+			width: 100%;
+			max-height: 100px;
+			#player-actions {
+				margin: 0 1em 0 0;
+			}
+		}
+	}
+	&.gmlp-open{
+		.gmlp-nav-toggle{
+			bottom: 100px;
+		}
+		.gmlp-menu{
+			bottom: 0;
+		}
+	}
+}
+
+/**
+ * Player Location: Right
+ */
+.gmlp-right{
+	.gmlp-nav{
+		.gmlp-nav-toggle{
+			@include border-radius(15px 0 0 15px);
+			top: 0;
+			right: 0;
+			left: auto;
+			width: 33px;
+			height: 50px;
+		}
+		.gmlp-menu{
+			top: 0;
+			left: auto;
+			right: -130px;
+			bottom: 0;
+			width: 130px;
+			max-height: 100%;
+			#player-actions {
+				margin: 0 0 1em;
+			}
+			#td_synced_leaderboard{
+				@include box-sizing(border-box);
+				width: 90px;
+				height: 728px;
+				margin: 0 auto;
+				background-color: $light-blue;
+			}
+		}
+	}
+	&.gmlp-open{
+		.gmlp-nav-toggle{
+			right: 130px;
+		}
+		.gmlp-menu{
+			right: 0;
+		}
+	}
+	&.admin-bar{
+		.gmlp-nav{
+			.gmlp-nav-toggle,.gmlp-menu {
+				top: 32px;
+			}
+		}
+	}
+}
+
+/**
+ * Player Location: Left
+ */
+.gmlp-left{
+	.gmlp-nav{
+		.gmlp-nav-toggle{
+			@include border-radius(0 15px 15px 0);
+			top: 0;
+			right: auto;
+			left: 0;
+			width: 33px;
+			height: 50px;
+		}
+		.gmlp-menu{
+			top: 0;
+			right: auto;
+			left: -130px;
+			bottom: 0;
+			width: 130px;
+			max-height: 100%;
+			#player-actions {
+				margin: 0 0 1em;
+			}
+			#td_synced_leaderboard{
+				@include box-sizing(border-box);
+				width: 90px;
+				height: 728px;
+				margin: 0 auto;
+				background-color: $light-blue;
+			}
+		}
+	}
+	&.gmlp-open{
+		.gmlp-nav-toggle{
+			left: 130px;
+		}
+		.gmlp-menu{
+			left: 0;
+		}
+	}
+	&.admin-bar{
+		.gmlp-nav{
+			.gmlp-nav-toggle,.gmlp-menu {
+				top: 32px;
+			}
 		}
 	}
 }
