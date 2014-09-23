@@ -159,7 +159,7 @@ class AjaxHandler {
 	public function authorize() {
 		$nonce = $this->get_nonce_value();
 
-		if ( wp_verify_nonce( $nonce, $this->get_action() ) !== false) {
+		if ( wp_verify_nonce( $nonce, $this->get_action() ) !== false ) {
 			return $this->has_permissions();
 		} else {
 			$this->send_error( 'invalid_nonce' );
@@ -260,7 +260,7 @@ class AjaxHandler {
 	public function send_success( $data, $status = 200 ) {
 		$response = array(
 			'status' => 'success',
-			'data'   => $data
+			'data'   => $data,
 		);
 
 		$this->send_header( 'Status', $status );
@@ -277,7 +277,7 @@ class AjaxHandler {
 	public function send_error( $error, $status = 403 ) {
 		$response = array(
 			'status' => 'error',
-			'data'   => $error
+			'data'   => $error,
 		);
 
 		$this->send_header( 'Status', 403 );
@@ -301,7 +301,7 @@ class AjaxHandler {
 			ob_start();
 		}
 
-		echo json_encode($data);
+		echo json_encode( $data );
 
 		$this->did_send_json = true;
 		$this->quit();
@@ -319,7 +319,7 @@ class AjaxHandler {
 	 */
 	public function send_header( $name, $value ) {
 		if ( ! defined( 'PHPUNIT_RUNNER' ) ) {
-			if ($name === 'Status') {
+			if ( $name === 'Status' ) {
 				http_response_code( $value );
 			} else {
 				header( "$name: $value" );
