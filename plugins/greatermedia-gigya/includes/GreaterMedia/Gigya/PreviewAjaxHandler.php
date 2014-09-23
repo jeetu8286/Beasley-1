@@ -39,9 +39,8 @@ class PreviewAjaxHandler extends AjaxHandler {
 		$searcher = new AccountsSearcher();
 		$response = $searcher->search( $query, false, 5 );
 		$json     = json_decode( $response, true );
-
 		$accounts = array();
-		$i = 0;
+		$i        = 0;
 
 		foreach ( $json['results'] as $account ) {
 			$accounts[] = $account['profile']['email'];

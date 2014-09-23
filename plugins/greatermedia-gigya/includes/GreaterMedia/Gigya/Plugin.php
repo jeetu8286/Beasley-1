@@ -44,6 +44,7 @@ class Plugin {
 		add_action( 'init', array( $this, 'initialize' ) );
 		add_action( 'add_meta_boxes_member_query', array( $this, 'initialize_meta_boxes' ));
 		add_action( 'save_post', array( $this, 'publish_member_query' ), 10, 2 );
+		add_action( 'admin_notices', array( $this, 'show_flash' ) );
 
 		$preview_ajax_handler = new PreviewAjaxHandler();
 		$preview_ajax_handler->register();
@@ -120,11 +121,23 @@ class Plugin {
 		if ( ! is_null( $post ) && $post->post_type === 'member_query' && $post->post_status === 'publish' ) {
 			$this->verify_meta_box_nonces();
 
-			$member_query      = new MemberQuery( $post_id );
-			$member_query->build_and_save();
+			try {
+				$member_query      = new MemberQuery( $post_id );
+				$member_query->build_and_save();
 
-			$segment_publisher = new SegmentPublisher( $member_query );
-			$segment_publisher->publish();
+				$segment_publisher = new SegmentPublisher( $member_query );
+				$segment_publisher->publish();
+			} catch ( \Exception $e ) {
+				$this->set_flash( $e->getMessage() );
+			}
+		}
+	}
+
+	public function show_flash() {
+		$flash = $this->get_flash();
+		if ( $flash !== false ) {
+			include dirname( $this->plugin_file ) . '/templates/flash.php';
+			$this->clear_flash();
 		}
 	}
 
@@ -212,4 +225,19 @@ class Plugin {
 		}
 	}
 
+	public function get_flash_key() {
+		return get_current_user_id() . '_member_query_flash';
+	}
+
+	public function set_flash( $message ) {
+		set_transient( $this->get_flash_key(), $message, 30 );
+	}
+
+	public function get_flash() {
+		return get_transient( $this->get_flash_key() );
+	}
+
+	public function clear_flash() {
+		delete_transient( $this->get_flash_key() );
+	}
 }
