@@ -37,7 +37,7 @@ class GMLP_Player {
 		</div>
 
 		<!-- Player placeholder -->
-		<div id="td_container">Player</div>
+		<div id="td_container"></div>
 
 	<?php
 
