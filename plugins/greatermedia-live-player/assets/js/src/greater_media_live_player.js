@@ -9,9 +9,12 @@
 (function ($) {
 	"use strict";
 
+	// function to toggle a class when the player button is clicked
 	function togglePlayer(){
-		var toggleButton = $('.gmlp-nav-toggle'),
-			body = $('body');
+		var body;
+		var toggleButton;
+		toggleButton = $('.gmlp-nav-toggle');
+		body = $('body');
 
 		toggleButton.click(function(){
 			body.toggleClass('gmlp-open');
