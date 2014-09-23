@@ -131,13 +131,13 @@ class GMLP_Settings {
 		$location = get_option( 'gmlp_player_location', '' );
 
 		if ( $location == 'top' ) {
-			$classes[] = "gmlp-top";
+			$classes[] = 'gmlp-top gmlp-horizontal';
 		} elseif ( $location == 'bottom' ) {
-			$classes[] = "gmlp-bottom";
+			$classes[] = 'gmlp-bottom gmlp-horizontal';
 		} elseif ( $location == 'right' ) {
-			$classes[] = "gmlp-right";
+			$classes[] = 'gmlp-right gmlp-vertical';
 		} elseif ( $location == 'left' ) {
-			$classes[] = "gmlp-left";
+			$classes[] = 'gmlp-left gmlp-vertical';
 		}
 
 		return $classes;
