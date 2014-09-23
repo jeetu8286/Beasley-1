@@ -111,12 +111,15 @@ class Plugin {
 	 * Saves the MemberQuery JSON in postmeta and then publishes the
 	 * segment to MailChimp.
 	 *
+	 * @access public
 	 * @param int $post_id The id of the parent post CPT of this MemberQuery
 	 * @param WP_Post $post The post object that was saved.
 	 * @return void
 	 */
-	function publish_member_query( $post_id, $post = null ) {
+	public function publish_member_query( $post_id, $post = null ) {
 		if ( ! is_null( $post ) && $post->post_type === 'member_query' && $post->post_status === 'publish' ) {
+			$this->verify_meta_box_nonces();
+
 			$member_query      = new MemberQuery( $post_id );
 			$member_query->build_and_save();
 
@@ -136,6 +139,7 @@ class Plugin {
 	 *
 	 * @access public
 	 * @param MemberQuery $member_query
+	 * @return array Associative array of meta box objects
 	 */
 	public function get_meta_boxes( $member_query = null ) {
 		if ( count( $this->meta_boxes ) === 0 ) {
@@ -190,6 +194,22 @@ class Plugin {
 		$meta_box->params = $params;
 
 		return $meta_box;
+	}
+
+	/**
+	 * Verifies than correct nonces were passed for each MetaBox.
+	 *
+	 * Exits script execution with a warning if invalid.
+	 *
+	 * @access public
+	 * @return void
+	 */
+	public function verify_meta_box_nonces() {
+		$meta_boxes = $this->get_meta_boxes( null );
+
+		foreach ( $meta_boxes as $meta_box ) {
+			$meta_box->verify_nonce();
+		}
 	}
 
 }
