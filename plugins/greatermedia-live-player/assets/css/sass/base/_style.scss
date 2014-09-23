@@ -22,14 +22,14 @@
 	}
 	.gmlp-audio-button{
 		@include border-radius(50%);
-		width: 140px;
-		height: 140px;
+		width: 60px;
+		height: 60px;
 		margin: 0 auto;
 		background-color: $red;
 		border: none;
 		outline: none;
 		font-family: FontAwesome;
-		font-size: 5.125em;
+		font-size: 2em;
 		color: $white;
 		cursor: pointer;
 	}
@@ -41,8 +41,30 @@
 		background: $blue;
 		color: $white;
 		z-index: 10000;
-		#pauseButton,#resumeButton{
-			display: none;
+		#player-actions {
+			margin: 0 auto;
+			text-align: center;
+			#pauseButton, #resumeButton {
+				display: none;
+			}
+		}
+		#nowPlaying{
+			#trackInfo{
+				font-size:.75em;
+				.gmlp-np-song-title{
+					margin: 0 0 1em;
+					font-weight: 700;
+				}
+				.gmlp-np-artist{
+					font-weight: 400;
+				}
+			}
+		}
+		#td_synced_leaderboard{
+			@include box-sizing(border-box);
+			width: 728px;
+			height: 90px;
+			background-color: $light-blue;
 		}
 	}
 }
@@ -59,24 +81,15 @@
 			width: 50px;
 			height: 33px;
 		}
-		.gmlp-audio-button{
-			@include border-radius(50%);
-			width: 60px;
-			height: 60px;
-			margin: 0 auto;
-			background-color: $red;
-			border: none;
-			outline: none;
-			font-family: FontAwesome;
-			font-size: 3em;
-			color: $white;
-		}
 		.gmlp-menu{
 			top: -130px;
 			right: auto;
 			left: 0;
 			width: 100%;
 			max-height: 130px;
+			#player-actions {
+				margin: 0 1em 0 0;
+			}
 		}
 	}
 	&.gmlp-open{
@@ -118,6 +131,9 @@
 			left: 0;
 			width: 100%;
 			max-height: 100px;
+			#player-actions {
+				margin: 0 1em 0 0;
+			}
 		}
 	}
 	&.gmlp-open{
@@ -146,15 +162,25 @@
 		.gmlp-menu{
 			top: 0;
 			left: auto;
-			right: -200px;
+			right: -130px;
 			bottom: 0;
-			width: 200px;
+			width: 130px;
 			max-height: 100%;
+			#player-actions {
+				margin: 0 0 1em;
+			}
+			#td_synced_leaderboard{
+				@include box-sizing(border-box);
+				width: 90px;
+				height: 728px;
+				margin: 0 auto;
+				background-color: $light-blue;
+			}
 		}
 	}
 	&.gmlp-open{
 		.gmlp-nav-toggle{
-			right: 200px;
+			right: 130px;
 		}
 		.gmlp-menu{
 			right: 0;
@@ -185,15 +211,25 @@
 		.gmlp-menu{
 			top: 0;
 			right: auto;
-			left: -200px;
+			left: -130px;
 			bottom: 0;
-			width: 200px;
+			width: 130px;
 			max-height: 100%;
+			#player-actions {
+				margin: 0 0 1em;
+			}
+			#td_synced_leaderboard{
+				@include box-sizing(border-box);
+				width: 90px;
+				height: 728px;
+				margin: 0 auto;
+				background-color: $light-blue;
+			}
 		}
 	}
 	&.gmlp-open{
 		.gmlp-nav-toggle{
-			left: 200px;
+			left: 130px;
 		}
 		.gmlp-menu{
 			left: 0;

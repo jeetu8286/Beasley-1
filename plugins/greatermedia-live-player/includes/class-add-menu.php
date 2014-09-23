@@ -29,6 +29,8 @@ class GMLP_Menu {
 
 				<?php do_action( 'gm_player' ); ?>
 
+				<div id="td_synced_leaderboard">Synced Leaderboard (728x90)</div>
+
 			</div>
 
 		</nav>

@@ -569,7 +569,7 @@ function onTrackCuePoint( e )
 
     currentTrackCuePoint = e.data.cuePoint;
 
-    $( "#trackInfo" ).html( '<p><span class="label label-info">Now Playing:</span><br><b>Title:</b> ' + currentTrackCuePoint.cueTitle + '<br><b>Artist:</b> ' + currentTrackCuePoint.artistName + '</p>' );
+    $( "#trackInfo" ).html( '<div class="gmlp-np-song-title">' + currentTrackCuePoint.cueTitle + '</div><div class="gmlp-np-artist">' + currentTrackCuePoint.artistName + '</div>' );
 
 }
 
