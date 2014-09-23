@@ -89,6 +89,9 @@ class GMLP_Player {
 
 	/**
 	 * this script has to be loaded as Async and as shown
+	 *
+	 * @todo find a way to add this to wp_enqueue_script. This seemed to be interesting - http://wordpress.stackexchange.com/questions/38319/how-to-add-defer-defer-tag-in-plugin-javascripts/38335#38335
+	 *       but causes `data-dojo-config` to load after the src, which then causes the script to fail and the TD Player API will not fully load
 	 */
 	public static function load_js() {
 
