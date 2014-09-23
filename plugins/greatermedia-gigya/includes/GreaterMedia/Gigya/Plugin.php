@@ -123,8 +123,7 @@ class Plugin {
 
 		$member_query = new MemberQuery( $raw_data );
 		foreach ( $this->get_meta_boxes( $member_query ) as $meta_box ) {
-			// TODO: Important!, Fix Direct Query with new bug
-			//$meta_box->verify_nonce();
+			$meta_box->verify_nonce();
 		}
 
 		$member_query_builder = new MemberQueryBuilder();
@@ -157,14 +156,50 @@ class Plugin {
 	 */
 	public function get_meta_boxes( $member_query = null ) {
 		if ( count( $this->meta_boxes ) === 0 ) {
-			$this->meta_boxes = array(
-				'preview'       => new PreviewMetaBox( $member_query ),
-				'direct_query'  => new DirectQueryMetaBox( $member_query ),
-				'query_builder' => new QueryBuilderMetaBox( $member_query )
+			$this->meta_boxes = array();
+
+			$this->meta_boxes['preview'] = $this->meta_box_for(
+				array(
+					'id'       => 'preview',
+					'title'    => 'Preview Results',
+					'context'  => 'side',
+					'priority' => 'default',
+					'template' => 'preview',
+				),
+				$member_query
+			);
+
+			$this->meta_boxes['direct_query'] = $this->meta_box_for(
+				array(
+					'id'       => 'direct_query',
+					'title'    => 'Direct Query',
+					'context'  => 'side',
+					'priority' => 'low',
+					'template' => 'direct_query',
+				),
+				$member_query
+			);
+
+			$this->meta_boxes['query_builder'] = $this->meta_box_for(
+				array(
+					'id'       => 'query_builder',
+					'title'    => 'Gigya Social',
+					'context'  => 'normal',
+					'priority' => 'default',
+					'template' => 'query_builder',
+				),
+				$member_query
 			);
 		}
 
 		return $this->meta_boxes;
+	}
+
+	public function meta_box_for( $params, $member_query ) {
+		$meta_box = new MetaBox( $member_query );
+		$meta_box->params = $params;
+
+		return $meta_box;
 	}
 
 }
