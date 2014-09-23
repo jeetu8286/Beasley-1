@@ -2,8 +2,6 @@
 
 namespace GreaterMedia\Gigya;
 
-//require_once __DIR__ . '/../../Gigya/GSSDK.php';
-
 /**
  * Account searcher uses the Gigya accounts api to match accounts to a
  * specified GQL query.

@@ -2,9 +2,6 @@
 
 namespace GreaterMedia\Gigya;
 
-//require_once __DIR__ . '/class-ajax-handler.php';
-//require_once __DIR__ . '/class-accounts-searcher.php';
-
 /**
  * PreviewAjaxHandler is the ajax handler invoked by the client to
  * preview a member query.

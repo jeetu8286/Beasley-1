@@ -2,8 +2,6 @@
 
 namespace GreaterMedia\Gigya;
 
-//require_once __DIR__ . '/class-meta-box.php';
-
 /**
  * DirectQueryMetaBox is the meta box for overriding the QueryBuilder
  * generated GQL.

@@ -2,8 +2,6 @@
 
 namespace GreaterMedia\Gigya;
 
-//require_once __DIR__ . '/class-meta-box.php';
-
 /**
  * PreviewMetaBox displays the accounts matching the current query.
  *
