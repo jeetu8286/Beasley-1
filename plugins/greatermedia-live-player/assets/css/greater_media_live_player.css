@@ -1823,6 +1823,10 @@ Media Queries
   background: #1167bd;
   color: white;
   z-index: 10000; }
+  .gmlp-nav .gmlp-menu .container {
+    max-width: 1020px;
+    height: 100%;
+    margin: 0 auto; }
   .gmlp-nav .gmlp-menu #player-actions {
     margin: 0 auto;
     text-align: center; }
@@ -1865,9 +1869,31 @@ Media Queries
   right: auto;
   left: 0;
   width: 100%;
-  max-height: 130px; }
+  height: 130px; }
   .gmlp-top .gmlp-nav .gmlp-menu #player-actions {
+    float: left;
+    margin: 25px 1em 0 0; }
+  .gmlp-top .gmlp-nav .gmlp-menu #now-playing-live {
+    position: relative;
+    float: left;
+    width: 200px;
+    height: 110px;
     margin: 0 1em 0 0; }
+    .gmlp-top .gmlp-nav .gmlp-menu #now-playing-live #nowPlaying {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      -ms-transform: translate(0%, -50%);
+      -webkit-transform: translate(0%, -50%);
+      transform: translate(0%, -50%);
+      font-family: FontAwesome; }
+  .gmlp-top .gmlp-nav .gmlp-menu #td_container {
+    float: left;
+    width: 0;
+    height: 0; }
+  .gmlp-top .gmlp-nav .gmlp-menu #td_synced_leaderboard {
+    float: left;
+    margin: 10px 0; }
 .gmlp-top.gmlp-open .gmlp-nav-toggle {
   top: 130px; }
 .gmlp-top.gmlp-open .gmlp-menu {
@@ -1876,6 +1902,10 @@ Media Queries
   top: 32px; }
 .gmlp-top.admin-bar .gmlp-nav .gmlp-menu {
   top: -98px; }
+.gmlp-top.admin-bar.gmlp-open .gmlp-nav-toggle {
+  top: 162px; }
+.gmlp-top.admin-bar.gmlp-open .gmlp-menu {
+  top: 32px; }
 
 /**
  * Player Location: Bottom
@@ -1900,7 +1930,7 @@ Media Queries
   width: 100%;
   max-height: 100px; }
   .gmlp-bottom .gmlp-nav .gmlp-menu #player-actions {
-    margin: 0 1em 0 0; }
+    margin: 25px 1em 0 0; }
 .gmlp-bottom.gmlp-open .gmlp-nav-toggle {
   bottom: 100px; }
 .gmlp-bottom.gmlp-open .gmlp-menu {

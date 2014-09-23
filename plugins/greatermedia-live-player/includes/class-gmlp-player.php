@@ -28,10 +28,12 @@ class GMLP_Player {
 			<button id="resumeButton" class="gmlp-audio-button" data-station="<?php do_action( 'radio_callsign' ); ?>"><i class="fa fa-play-circle-o"></i></button>
 		</div>
 
-		<div id="nowPlaying">
-			<div id="trackInfo">
+		<div id="now-playing-live">
+			<div id="nowPlaying">
+				<div id="trackInfo">
+				</div>
+				<div id="npeInfo"></div>
 			</div>
-			<div id="npeInfo"></div>
 		</div>
 
 		<!-- Player placeholder -->

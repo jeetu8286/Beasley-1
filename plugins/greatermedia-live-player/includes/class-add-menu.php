@@ -27,9 +27,13 @@ class GMLP_Menu {
 
 			<div class="gmlp-menu">
 
-				<?php do_action( 'gm_player' ); ?>
+				<div class="container">
 
-				<div id="td_synced_leaderboard">Synced Leaderboard (728x90)</div>
+					<?php do_action( 'gm_player' ); ?>
+
+					<div id="td_synced_leaderboard">Synced Leaderboard (728x90)</div>
+
+				</div>
 
 			</div>
 

@@ -54,6 +54,11 @@
 		background: $blue;
 		color: $white;
 		z-index: 10000;
+		.container{
+			max-width: 1020px;
+			height: 100%;
+			margin: 0 auto;
+		}
 		#player-actions {
 			margin: 0 auto;
 			text-align: center;
@@ -99,9 +104,35 @@
 			right: auto;
 			left: 0;
 			width: 100%;
-			max-height: 130px;
+			height: 130px;
 			#player-actions {
+				float: left;
+				margin: 25px 1em 0 0;
+			}
+			#now-playing-live{
+				position: relative;
+				float: left;
+				width: 200px;
+				height: 110px;
 				margin: 0 1em 0 0;
+				#nowPlaying{
+					position: absolute;
+					top: 50%;
+					left: 0;
+					-ms-transform: translate(0%, -50%);
+					-webkit-transform: translate(0%, -50%);
+					transform: translate(0%, -50%);
+					font-family: FontAwesome;
+				}
+			}
+			#td_container{
+				float: left;
+				width: 0;
+				height: 0;
+			}
+			#td_synced_leaderboard{
+				float: left;
+				margin: 10px 0;
 			}
 		}
 	}
@@ -120,6 +151,14 @@
 			}
 			.gmlp-menu {
 				top: -98px;
+			}
+		}
+		&.gmlp-open{
+			.gmlp-nav-toggle{
+				top: 162px;
+			}
+			.gmlp-menu{
+				top: 32px;
 			}
 		}
 	}
@@ -145,7 +184,7 @@
 			width: 100%;
 			max-height: 100px;
 			#player-actions {
-				margin: 0 1em 0 0;
+				margin: 25px 1em 0 0;
 			}
 		}
 	}
