@@ -37,7 +37,7 @@ class GMLP_Settings {
 	}
 
 	public function __construct() {
-		// I don't do anything
+		// I do nothing
 	}
 
 	/**
@@ -46,6 +46,8 @@ class GMLP_Settings {
 	protected function _init() {
 		add_action( 'admin_menu', array( $this, 'add_settings_page' ) );
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
+		add_action( 'gmlp_location', array($this, 'player_location_class') );
+		add_filter( 'body_class', array( $this, 'player_location_body_class' ) );
 	}
 
 	public function add_settings_page() {
@@ -114,6 +116,32 @@ class GMLP_Settings {
 		<hr/>
 
 	<?php
+	}
+
+	public function player_location_class() {
+
+		$player_location = get_option( 'gmlp_player_location', '' );
+
+		echo esc_attr( $player_location);
+
+	}
+
+	public function player_location_body_class( $classes ) {
+
+		$location = get_option( 'gmlp_player_location', '' );
+
+		if ( $location == 'top' ) {
+			$classes[] = "gmlp-top";
+		} elseif ( $location == 'bottom' ) {
+			$classes[] = "gmlp-bottom";
+		} elseif ( $location == 'right' ) {
+			$classes[] = "gmlp-right";
+		} elseif ( $location == 'left' ) {
+			$classes[] = "gmlp-left";
+		}
+
+		return $classes;
+
 	}
 
 }
