@@ -1,23 +1,19 @@
 /**
  * Styles for Front End
+ *
+ * Admins can choose the location of the player. A class is added to the body that will match the locations below.
  */
 
+
+/**
+ * General Styles
+ */
 .gmlp-nav{
 	.gmlp-nav-toggle{
 		@include transition(ease .25s);
-		@include border-radius(0 15px 15px 0);
 		position: fixed;
-		top: 0;
-		right: auto;
-		left: 0;
-		width: 33px;
-		height: 50px;
 		background-color: $blue;
-		border-color: $soft-gray;
-		border-style: solid;
-		border-width: 1px;
-		border-top: none;
-		border-left: none;
+		border: none;
 		outline: none;
 		font-size: 1.25em;
 		color: $white;
@@ -39,12 +35,6 @@
 		@include transition(ease .25s);
 		@include box-sizing(border-box);
 		position: fixed;
-		top: 0;
-		right: auto;
-		left: -200px;
-		bottom: 0;
-		width: 200px;
-		max-height: 100%;
 		padding: 10px;
 		background: $blue;
 		color: $white;
@@ -54,37 +44,149 @@
 		}
 	}
 }
-.gmlp-time{
-	@include transition(ease .25s);
-	position: fixed;
-	bottom: 10px;
-	right: 50%;
-	left: 50%;
-	width: 50%;
-	-ms-transform: translate(-50%, -50%);
-	-webkit-transform: translate(-50%, -50%);
-	transform: translate(-50%, -50%);
-	text-align: center;
-	z-index: 10001;
-}
-.gmlp-open{
-	.gmlp-nav-toggle{
-		left: 200px;
-	}
-	.gmlp-time{
-		left: 210px;
-	}
-	.gmlp-menu{
-		left: 0;
-	}
-}
-.admin-bar{
+/**
+ * Player Location: Top
+ */
+.gmlp-top{
 	.gmlp-nav{
-		.gmlp-nav-toggle,.gmlp-menu {
-			top: 32px;
+		.gmlp-nav-toggle{
+			@include border-radius(0 0 15px 15px);
+			top: 0;
+			right: auto;
+			left: 50px;
+			width: 50px;
+			height: 33px;
 		}
-		.gmlp-time{
-			top: 132px;
+		.gmlp-menu{
+			top: -100px;
+			right: auto;
+			left: 0;
+			width: 100%;
+			max-height: 100px;
+		}
+	}
+	&.gmlp-open{
+		.gmlp-nav-toggle{
+			top: 100px;
+		}
+		.gmlp-menu{
+			top: 0;
+		}
+	}
+	.admin-bar{
+		.gmlp-nav{
+			.gmlp-nav-toggle,.gmlp-menu {
+				top: 32px;
+			}
+		}
+	}
+}
+
+/**
+ * Player Location: Bottom
+ */
+.gmlp-bottom{
+	.gmlp-nav{
+		.gmlp-nav-toggle{
+			@include border-radius(15px 15px 0 0);
+			bottom: 0;
+			right: auto;
+			left: 50px;
+			width: 50px;
+			height: 33px;
+		}
+		.gmlp-menu{
+			bottom: -100px;
+			right: auto;
+			left: 0;
+			width: 100%;
+			max-height: 100px;
+		}
+	}
+	&.gmlp-open{
+		.gmlp-nav-toggle{
+			bottom: 100px;
+		}
+		.gmlp-menu{
+			bottom: 0;
+		}
+	}
+}
+
+/**
+ * Player Location: Right
+ */
+.gmlp-right{
+	.gmlp-nav{
+		.gmlp-nav-toggle{
+			@include border-radius(15px 0 0 15px);
+			top: 0;
+			right: 0;
+			left: auto;
+			width: 33px;
+			height: 50px;
+		}
+		.gmlp-menu{
+			top: 0;
+			left: auto;
+			right: -200px;
+			bottom: 0;
+			width: 200px;
+			max-height: 100%;
+		}
+	}
+	&.gmlp-open{
+		.gmlp-nav-toggle{
+			right: 200px;
+		}
+		.gmlp-menu{
+			right: 0;
+		}
+	}
+	.admin-bar{
+		.gmlp-nav{
+			.gmlp-nav-toggle,.gmlp-menu {
+				top: 32px;
+			}
+		}
+	}
+}
+
+/**
+ * Player Location: Left
+ */
+.gmlp-left{
+	.gmlp-nav{
+		.gmlp-nav-toggle{
+			@include border-radius(0 15px 15px 0);
+			top: 0;
+			right: auto;
+			left: 0;
+			width: 33px;
+			height: 50px;
+		}
+		.gmlp-menu{
+			top: 0;
+			right: auto;
+			left: -200px;
+			bottom: 0;
+			width: 200px;
+			max-height: 100%;
+		}
+	}
+	&.gmlp-open{
+		.gmlp-nav-toggle{
+			left: 200px;
+		}
+		.gmlp-menu{
+			left: 0;
+		}
+	}
+	.admin-bar{
+		.gmlp-nav{
+			.gmlp-nav-toggle,.gmlp-menu {
+				top: 32px;
+			}
 		}
 	}
 }
