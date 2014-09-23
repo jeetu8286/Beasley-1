@@ -18,6 +18,7 @@
 		font-size: 1.25em;
 		color: $white;
 		z-index: 10001;
+		cursor: pointer;
 	}
 	.gmlp-audio-button{
 		@include border-radius(50%);
@@ -30,6 +31,7 @@
 		font-family: FontAwesome;
 		font-size: 5.125em;
 		color: $white;
+		cursor: pointer;
 	}
 	.gmlp-menu{
 		@include transition(ease .25s);
@@ -57,26 +59,41 @@
 			width: 50px;
 			height: 33px;
 		}
+		.gmlp-audio-button{
+			@include border-radius(50%);
+			width: 60px;
+			height: 60px;
+			margin: 0 auto;
+			background-color: $red;
+			border: none;
+			outline: none;
+			font-family: FontAwesome;
+			font-size: 3em;
+			color: $white;
+		}
 		.gmlp-menu{
-			top: -100px;
+			top: -130px;
 			right: auto;
 			left: 0;
 			width: 100%;
-			max-height: 100px;
+			max-height: 130px;
 		}
 	}
 	&.gmlp-open{
 		.gmlp-nav-toggle{
-			top: 100px;
+			top: 130px;
 		}
 		.gmlp-menu{
 			top: 0;
 		}
 	}
-	.admin-bar{
+	&.admin-bar{
 		.gmlp-nav{
-			.gmlp-nav-toggle,.gmlp-menu {
+			.gmlp-nav-toggle {
 				top: 32px;
+			}
+			.gmlp-menu {
+				top: -98px;
 			}
 		}
 	}
@@ -143,7 +160,7 @@
 			right: 0;
 		}
 	}
-	.admin-bar{
+	&.admin-bar{
 		.gmlp-nav{
 			.gmlp-nav-toggle,.gmlp-menu {
 				top: 32px;
@@ -182,7 +199,7 @@
 			left: 0;
 		}
 	}
-	.admin-bar{
+	&.admin-bar{
 		.gmlp-nav{
 			.gmlp-nav-toggle,.gmlp-menu {
 				top: 32px;

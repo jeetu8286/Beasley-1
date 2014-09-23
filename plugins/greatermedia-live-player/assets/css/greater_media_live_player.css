@@ -1778,7 +1778,8 @@ Media Queries
   outline: none;
   font-size: 1.25em;
   color: white;
-  z-index: 10001; }
+  z-index: 10001;
+  cursor: pointer; }
 .gmlp-nav .gmlp-audio-button {
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
@@ -1795,7 +1796,8 @@ Media Queries
   outline: none;
   font-family: FontAwesome;
   font-size: 5.125em;
-  color: white; }
+  color: white;
+  cursor: pointer; }
 .gmlp-nav .gmlp-menu {
   -webkit-transition: ease 0.25s;
   -moz-transition: ease 0.25s;
@@ -1829,18 +1831,37 @@ Media Queries
   left: 50px;
   width: 50px;
   height: 33px; }
+.gmlp-top .gmlp-nav .gmlp-audio-button {
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  -border-radius: 50%;
+  border-radius: 50%;
+  behavior: url("../js/PIE/PIE.htc");
+  width: 60px;
+  height: 60px;
+  margin: 0 auto;
+  background-color: #ea5e5b;
+  border: none;
+  outline: none;
+  font-family: FontAwesome;
+  font-size: 3em;
+  color: white; }
 .gmlp-top .gmlp-nav .gmlp-menu {
-  top: -100px;
+  top: -130px;
   right: auto;
   left: 0;
   width: 100%;
-  max-height: 100px; }
+  max-height: 130px; }
 .gmlp-top.gmlp-open .gmlp-nav-toggle {
-  top: 100px; }
+  top: 130px; }
 .gmlp-top.gmlp-open .gmlp-menu {
   top: 0; }
-.gmlp-top .admin-bar .gmlp-nav .gmlp-nav-toggle, .gmlp-top .admin-bar .gmlp-nav .gmlp-menu {
+.gmlp-top.admin-bar .gmlp-nav .gmlp-nav-toggle {
   top: 32px; }
+.gmlp-top.admin-bar .gmlp-nav .gmlp-menu {
+  top: -98px; }
 
 /**
  * Player Location: Bottom
@@ -1896,7 +1917,7 @@ Media Queries
   right: 200px; }
 .gmlp-right.gmlp-open .gmlp-menu {
   right: 0; }
-.gmlp-right .admin-bar .gmlp-nav .gmlp-nav-toggle, .gmlp-right .admin-bar .gmlp-nav .gmlp-menu {
+.gmlp-right.admin-bar .gmlp-nav .gmlp-nav-toggle, .gmlp-right.admin-bar .gmlp-nav .gmlp-menu {
   top: 32px; }
 
 /**
@@ -1926,5 +1947,5 @@ Media Queries
   left: 200px; }
 .gmlp-left.gmlp-open .gmlp-menu {
   left: 0; }
-.gmlp-left .admin-bar .gmlp-nav .gmlp-nav-toggle, .gmlp-left .admin-bar .gmlp-nav .gmlp-menu {
+.gmlp-left.admin-bar .gmlp-nav .gmlp-nav-toggle, .gmlp-left.admin-bar .gmlp-nav .gmlp-menu {
   top: 32px; }

@@ -22,7 +22,6 @@ class GMLP_Player {
 	public static function render_player() {
 
 		?>
-		<div id="radio-callsign"><?php do_action( 'radio_callsign' ); ?></div>
 		<button id="playButton" class="gmlp-audio-button" data-station="<?php do_action( 'radio_callsign' ); ?>"><i class="fa fa-play-circle-o"></i></button>
 		<button id="pauseButton" class="gmlp-audio-button" data-station="<?php do_action( 'radio_callsign' ); ?>"><i class="fa fa-pause"></i></button>
 		<button id="resumeButton" class="gmlp-audio-button" data-station="<?php do_action( 'radio_callsign' ); ?>"><i class="fa fa-play-circle-o"></i></button>
