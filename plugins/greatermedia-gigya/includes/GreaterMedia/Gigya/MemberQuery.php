@@ -62,6 +62,10 @@ class MemberQuery {
 	 * @return array
 	 */
 	public function parse( $content ) {
+		if ( is_array( $this->post ) ) {
+			$content = wp_unslash( $content );
+		}
+
 		$json = json_decode( $content, true );
 		if ( ! is_array( $json ) ) {
 			$json = array();

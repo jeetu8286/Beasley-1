@@ -13,19 +13,23 @@ class SegmentPublisher {
 	function __construct( $member_query ) {
 		$this->member_query  = $member_query;
 		$opts = array(
-			'CURLOPT_FOLLOWLOCATION' => false
+			'CURLOPT_FOLLOWLOCATION' => false,
 		);
 		$this->mailchimp_api = new \Mailchimp( $this->mailchimp_api_key, $opts );
 		$this->list_api      = new \Mailchimp_Lists( $this->mailchimp_api );
 	}
 
 	function publish() {
+		if ( defined( 'GMR_PUBLISH_SEGMENTS' ) && GMR_PUBLISH_SEGMENTS === false ) {
+			return;
+		}
+
 		$segment_id = $this->get_segment_id();
 		$emails     = $this->get_accounts_to_publish();
 
-		$this->list_api->staticSegmentReset($this->gmr_list_id, $segment_id);
+		$this->list_api->staticSegmentReset( $this->gmr_list_id, $segment_id );
 
-		if ( count($emails) > 0 ) {
+		if ( count( $emails ) > 0 ) {
 			$this->list_api->staticSegmentMembersAdd(
 				$this->gmr_list_id,
 				$segment_id,
@@ -80,7 +84,7 @@ class SegmentPublisher {
 		$accounts = $accounts['results'];
 		$emails   = array();
 
-		foreach ($accounts as $account) {
+		foreach ( $accounts as $account ) {
 			$emails[] = array( 'email' => $account['profile']['email'] );
 		}
 

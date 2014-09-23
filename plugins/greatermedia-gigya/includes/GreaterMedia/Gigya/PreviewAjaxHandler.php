@@ -44,21 +44,21 @@ class PreviewAjaxHandler extends AjaxHandler {
 		// test cases for serialization
 		// research GQL escape sequences
 		$query = $_POST['data']['query'];
-		$query = str_replace('\\\'', '\'', $query);
+		$query = str_replace( '\\\'', '\'', $query );
 
-		$count_query = str_replace( '*', 'count(*)', $query);
+		$count_query = str_replace( '*', 'count(*)', $query );
 		$query .= ' limit 5';
 
 		$searcher = new AccountsSearcher();
-		$total_response = $searcher->search($count_query);
-		$response = $searcher->search($query);
-		$json = json_decode($response, true);
-		$totals = json_decode($total_response, true);
+		$total_response = $searcher->search( $count_query );
+		$response = $searcher->search( $query );
+		$json = json_decode( $response, true );
+		$totals = json_decode( $total_response, true );
 
 		$accounts = array();
 		$i = 0;
 
-		foreach ($json['results'] as $account) {
+		foreach ( $json['results'] as $account ) {
 			$accounts[] = $account['profile']['email'];
 			if ( ++$i >= 5 ) {
 				break;
@@ -67,7 +67,7 @@ class PreviewAjaxHandler extends AjaxHandler {
 
 		$to_return = array(
 			'accounts' => $accounts,
-			'total' => $totals['totalCount']
+			'total' => $totals['totalCount'],
 		);
 
 		return $to_return;

@@ -2,19 +2,6 @@
 
 namespace GreaterMedia\Gigya;
 
-/* custom post type */
-//require_once __DIR__ . '/class-member-query.php';
-//require_once __DIR__ . '/class-member-query-post-type.php';
-//require_once __DIR__ . '/class-member-query-builder.php';
-
-/* meta boxes */
-//require_once __DIR__ . '/class-preview-meta-box.php';
-//require_once __DIR__ . '/class-direct-query-meta-box.php';
-//require_once __DIR__ . '/class-query-builder-meta-box.php';
-
-/* ajax handlers */
-//require_once __DIR__ . '/class-preview-ajax-handler.php';
-
 /**
  * The main plugin class for greatermedia-gigya.
  *
@@ -90,7 +77,7 @@ class Plugin {
 		$member_query = new MemberQuery( $post );
 		$meta_boxes   = $this->get_meta_boxes( $member_query );
 
-		foreach ($meta_boxes as $meta_box) {
+		foreach ( $meta_boxes as $meta_box ) {
 			$meta_box->register();
 		}
 
@@ -102,7 +89,7 @@ class Plugin {
 		wp_dequeue_script( 'autosave' );
 		wp_enqueue_script(
 			'query_builder',
-			plugins_url( 'js/query_builder.js?cache=' . strtotime('now'), $this->plugin_file )
+			plugins_url( 'js/query_builder.js?cache=' . strtotime( 'now' ), $this->plugin_file )
 		);
 
 		wp_localize_script(
@@ -110,7 +97,7 @@ class Plugin {
 		);
 
 		$meta = array(
-			'ajaxurl' => admin_url('admin-ajax.php'),
+			'ajaxurl' => admin_url( 'admin-ajax.php' ),
 			'preview_nonce' => wp_create_nonce( 'preview_member_query' )
 		);
 
@@ -122,7 +109,7 @@ class Plugin {
 	function initialize_styles( $member_query ) {
 		wp_enqueue_style(
 			'gmr_gigya',
-			plugins_url( 'css/gmr_gigya.css?cache=' . strtotime('now'), $this->plugin_file )
+			plugins_url( 'css/gmr_gigya.css?cache=' . strtotime( 'now' ), $this->plugin_file )
 		);
 	}
 
@@ -135,7 +122,7 @@ class Plugin {
 		}
 
 		$member_query = new MemberQuery( $raw_data );
-		foreach ($this->get_meta_boxes( $member_query ) as $meta_box) {
+		foreach ( $this->get_meta_boxes( $member_query ) as $meta_box ) {
 			// TODO: Important!, Fix Direct Query with new bug
 			//$meta_box->verify_nonce();
 		}
@@ -149,7 +136,7 @@ class Plugin {
 	}
 
 	function publish_member_query( $post_id, $post = null ) {
-		if ( $post->post_status === 'publish' ) {
+		if ( $post->post_type === 'member_query' && $post->post_status === 'publish' ) {
 			$member_query      = new MemberQuery( $post );
 			$segment_publisher = new SegmentPublisher( $member_query );
 			$segment_publisher->publish();

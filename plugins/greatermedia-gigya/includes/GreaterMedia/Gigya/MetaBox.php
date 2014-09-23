@@ -101,7 +101,7 @@ class MetaBox {
 		$nonce_field  = $nonce_action . '_nonce';
 
 		if ( array_key_exists( $nonce_field, $_POST ) ) {
-			$nonce_value = $_POST[$nonce_field];
+			$nonce_value = $_POST[ $nonce_field ];
 		} else {
 			$nonce_value = '';
 		}
