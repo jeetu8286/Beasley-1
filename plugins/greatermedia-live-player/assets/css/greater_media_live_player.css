@@ -1798,6 +1798,17 @@ Media Queries
   font-size: 2em;
   color: white;
   cursor: pointer; }
+.gmlp-nav #playButton {
+  position: relative; }
+  .gmlp-nav #playButton:before {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    font-family: FontAwesome;
+    content: "\f01d"; }
 .gmlp-nav .gmlp-menu {
   -webkit-transition: ease 0.25s;
   -moz-transition: ease 0.25s;

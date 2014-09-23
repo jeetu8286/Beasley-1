@@ -23,7 +23,7 @@ class GMLP_Player {
 
 		?>
 		<div id="player-actions">
-			<button id="playButton" class="gmlp-audio-button" data-station="<?php do_action( 'radio_callsign' ); ?>"><i class="fa fa-play-circle-o"></i></button>
+			<div id="playButton" class="gmlp-audio-button play" data-station="<?php do_action( 'radio_callsign' ); ?>"></div>
 			<button id="pauseButton" class="gmlp-audio-button" data-station="<?php do_action( 'radio_callsign' ); ?>"><i class="fa fa-pause"></i></button>
 			<button id="resumeButton" class="gmlp-audio-button" data-station="<?php do_action( 'radio_callsign' ); ?>"><i class="fa fa-play-circle-o"></i></button>
 		</div>

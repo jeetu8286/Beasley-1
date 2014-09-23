@@ -184,7 +184,7 @@ function initControlsUi()
 	pauseButton = $('#pauseButton');
 	resumeButton = $('#resumeButton');
 
-	$(document).on('click', audioButton, playLiveAudioStream);
+	$(document).on('click', '#playButton', playLiveAudioStream);
 
 	audioButton.click(function() {
 		audioButton.hide();
