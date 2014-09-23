@@ -1,5 +1,9 @@
 <?php
 
+
+/**
+ * Class GMLP_Player
+ */
 class GMLP_Player {
 
 	public static function init() {
@@ -11,6 +15,9 @@ class GMLP_Player {
 
 	}
 
+	/**
+	 * Helper function to call the Radio Callsign
+	 */
 	public static function get_radio_callsign() {
 
 		$radio_callsign = get_option( 'gmlp_radio_callsign', '' );
@@ -19,6 +26,9 @@ class GMLP_Player {
 
 	}
 
+	/**
+	 * Render the player for the front end
+	 */
 	public static function render_player() {
 
 		?>
@@ -60,7 +70,7 @@ class GMLP_Player {
 	}
 
 	/**
-	 * Call TD Player js files
+	 * Enqueue scripts
 	 */
 	public static function enqueue_scripts() {
 
@@ -78,11 +88,9 @@ class GMLP_Player {
 	}
 
 	/**
-	 * @todo find a better way to load these
+	 * this script has to be loaded as Async and as shown
 	 */
 	public static function load_js() {
-
-		//		echo '<script src="http://player.listenlive.co/api/2.5/js/jquery-1.7.2.min.js"></script>';
 
 		echo '<script data-dojo-config="onReady:window.tdPlayerApiReady, async: 1, tlmSiblingOfDojo: 0, deps:[\'tdapi/run\']" src="//api.listenlive.co/tdplayerapi/2.5/dojo/dojo.js"></script>';
 

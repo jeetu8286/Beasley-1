@@ -50,10 +50,16 @@ class GMLP_Settings {
 		add_filter( 'body_class', array( $this, 'player_location_body_class' ) );
 	}
 
+	/**
+	 * Add the settings page
+	 */
 	public function add_settings_page() {
 		$this->_settings_page_hook = add_options_page( 'Live Player Settings', 'Live Player Settings', 'manage_options', 'gmlp-settings', array( $this, 'render_settings_page' ), '', 3 );
 	}
 
+	/**
+	 * Render the settings page
+	 */
 	public function render_settings_page() {
 		?>
 		<form action="options.php" method="post" class="gmlp-settings-form" style="max-width: 550px;">
@@ -75,6 +81,9 @@ class GMLP_Settings {
 	<?php
 	}
 
+	/**
+	 * Register the settings page
+	 */
 	public function register_settings() {
 		// Settings Section
 		add_settings_section( 'gmlp_settings', 'Live Player Settings', array( $this, 'render_gmlp_settings_section' ), $this->_settings_page_hook );
@@ -89,6 +98,9 @@ class GMLP_Settings {
 		do_action( 'gmlp-settings-register-settings', self::option_group );
 	}
 
+	/**
+	 * Render inputs for the settings page
+	 */
 	public function render_gmlp_settings_section() {
 		$radio_callsign = get_option( 'gmlp_radio_callsign', '' );
 		$player_location = get_option( 'gmlp_player_location', '' );
@@ -118,6 +130,9 @@ class GMLP_Settings {
 	<?php
 	}
 
+	/**
+	 * Call the player location from the settings page
+	 */
 	public function player_location_class() {
 
 		$player_location = get_option( 'gmlp_player_location', '' );
@@ -126,6 +141,13 @@ class GMLP_Settings {
 
 	}
 
+	/**
+	 * Add a new body class based on the chosen location of the player
+	 *
+	 * @param $classes
+	 *
+	 * @return array
+	 */
 	public function player_location_body_class( $classes ) {
 
 		$location = get_option( 'gmlp_player_location', '' );
