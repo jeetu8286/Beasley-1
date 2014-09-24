@@ -12,6 +12,12 @@ module.exports = function( grunt ) {
 					' * Licensed GPLv2+' +
 					' */\n'
 			},
+			greater_media_podcasts_admin: {
+				src: [
+					'assets/js/admin/greater_media_live_podcasts_admin.js'
+				],
+				dest: 'assets/js/greater_media_live_podcasts_admin.js'
+			},
 			greater_media_podcasts: {
 				src: [
 					'assets/js/src/greater_media_podcasts.js'
@@ -45,6 +51,7 @@ module.exports = function( grunt ) {
 		uglify: {
 			all: {
 				files: {
+					'assets/js/greater_media_podcasts_admin.min.js': ['assets/js/greater_media_podcasts_admin.js'],
 					'assets/js/greater_media_podcasts.min.js': ['assets/js/greater_media_podcasts.js']
 				},
 				options: {
@@ -64,9 +71,14 @@ module.exports = function( grunt ) {
 		},
 		
 		sass:   {
+			options: {
+				require: 'sass-globbing',
+				update: true
+			},
 			all: {
 				files: {
-					'assets/css/greater_media_podcasts.css': 'assets/css/sass/greater_media_podcasts.scss'
+					'assets/css/greater_media_podcasts.css': 'assets/css/sass/greater_media_podcasts.scss',
+					'assets/css/greater_media_podcasts_admin.css': 'assets/css/sass/greater_media_podcasts_admin.scss'
 				}
 			}
 		},
@@ -83,7 +95,7 @@ module.exports = function( grunt ) {
 				expand: true,
 				
 				cwd: 'assets/css/',				
-				src: ['greater_media_podcasts.css'],
+				src: ['greater_media_podcasts.css', 'greater_media_podcasts_admin.css'],
 				
 				dest: 'assets/css/',
 				ext: '.min.css'
@@ -100,7 +112,7 @@ module.exports = function( grunt ) {
 			},
 			
 			scripts: {
-				files: ['assets/js/src/**/*.js', 'assets/js/vendor/**/*.js'],
+				files: ['assets/js/admin/**/*.js', 'assets/js/src/**/*.js', 'assets/js/vendor/**/*.js'],
 				tasks: ['jshint', 'concat', 'uglify'],
 				options: {
 					debounceDelay: 500
