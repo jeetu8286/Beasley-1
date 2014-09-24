@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * Class GM_Podcasts_Meta
+ *
+ * This class constructs a meta box for episodes and saves data entered into the fields of the meta box.
+ */
 class GM_Podcasts_Meta {
 
 	/**

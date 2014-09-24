@@ -1,7 +1,24 @@
 <?php
-
+/**
+ * Class GM_Podcasts_CPT
+ *
+ * This class creates the required `Podcasts` and `Episodes` Custom Post Types.
+ *
+ * A custom taxonomy of `_podcasts` is being constructed using a shadow taxonomy. Upon saving or updating a `Podcast` in
+ * the `Podcast` custom post type, a check is run to see if an associated `_podcast` term has been generated for the
+ * `Podcast`. If a term has not been generated, a term will then be created that is relational to the `Podcasts` and
+ * is available in a `Podcast` meta box on the `Episodes` edit screen. If an associated term has already been generated,
+ * the process will not generate a new one. A check is also in place to prohibit an `auto-save` from generating a term.
+ *
+ * Functionality is in place to delete a `_podcast` term if the associated `Podcast` has been deleted.
+ *
+ * The shadow taxonomy will allow an `Episode` to be associated with a `Podcast`.
+ */
 class GM_Podcasts_CPT {
 
+	/**
+	 * Hook into the appropriate actions when the class is initiated.
+	 */
 	public static function init() {
 
 		add_action( 'init', array( __CLASS__, 'podcasts_cpt' ), 0 );

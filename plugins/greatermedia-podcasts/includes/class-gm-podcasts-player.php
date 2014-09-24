@@ -1,7 +1,14 @@
 <?php
-
+/**
+ * Class GM_Podcasts_Player
+ *
+ * This class constructs a podcast player to use on the front end of a website
+ */
 class GM_Podcasts_Player{
 
+	/**
+	 * Hook into the appropriate actions when the class is initiated.
+	 */
 	public static function init() {
 
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'enqueue_scripts' ) );
