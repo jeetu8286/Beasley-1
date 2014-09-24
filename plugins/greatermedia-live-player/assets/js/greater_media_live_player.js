@@ -16,8 +16,18 @@
 		});
 	}
 
+	function audioPlayer(){
+		$('audio').mediaelementplayer({
+			alwaysShowControls: true,
+			features: ['playpause'],
+			audioWidth: 60,
+			audioHeight: 60
+		});
+	}
+
 	$(document).ready(function($){
 		togglePlayer();
+		audioPlayer();
 	});
 
 } )(jQuery);

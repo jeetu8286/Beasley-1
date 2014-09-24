@@ -177,17 +177,17 @@ function loadIdSync( station )
 function initControlsUi()
 {
     //$(document).on('click', 'input[data-action="play-live"]', playLiveAudioStream);
-	// custom call to use button instead of input for styling purposes
 
-	var audioButton, pauseButton, resumeButton;
-	audioButton = $('#playButton');
+	// custom call to use button instead of input for styling purposes
+	var playButton, pauseButton, resumeButton;
+	playButton = $('#playButton');
 	pauseButton = $('#pauseButton');
 	resumeButton = $('#resumeButton');
 
 	$(document).on('click', '#playButton', playLiveAudioStream);
 
-	audioButton.click(function() {
-		audioButton.hide();
+	playButton.click(function() {
+		playButton.hide();
 		pauseButton.show();
 	});
 

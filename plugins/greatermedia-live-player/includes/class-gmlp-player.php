@@ -12,7 +12,6 @@ class GMLP_Player {
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'enqueue_scripts' ), 50 );
 		add_action( 'wp_footer', array( __CLASS__, 'render_player' ) );
 		add_action( 'radio_callsign', array( __CLASS__, 'get_radio_callsign' ) );
-
 	}
 
 	/**
@@ -34,7 +33,7 @@ class GMLP_Player {
 		?>
 		<nav class="gmlp-nav">
 
-			<button class="gmlp-nav-toggle"><i class="fa fa-volume-up"></i></button>
+			<button class="gmlp-nav-toggle"></button>
 
 			<div class="gmlp-menu">
 
@@ -57,7 +56,7 @@ class GMLP_Player {
 					<div id="td_container"></div>
 					<div id="td_synced_leaderboard">Synced Leaderboard (728x90)</div>
 
-					<script type="text/javascript" src="http://playerservices.live.streamtheworld.com/api/idsync.js?mount=<?php do_action( 'radio-callsign' ); ?>"/>
+					<script type="text/javascript" src="http://playerservices.live.streamtheworld.com/api/idsync.js?mount=WRORFM" />
 
 				</div>
 
@@ -84,11 +83,13 @@ class GMLP_Player {
 		wp_enqueue_script( 'tdplayer-api', GMLIVEPLAYER_URL . 'assets/js/vendor/td-player/tdplayer-api.js', array(), '2.5', true );
 		wp_enqueue_style( 'gmlp-styles', GMLIVEPLAYER_URL . "assets/css/greater_media_live_player{$postfix}.css", array(), GMLIVEPLAYER_VERSION );
 
-
 	}
 
 	/**
 	 * this script has to be loaded as Async and as shown
+	 *
+	 * @todo find a way to add this to wp_enqueue_script. This seemed to be interesting - http://wordpress.stackexchange.com/questions/38319/how-to-add-defer-defer-tag-in-plugin-javascripts/38335#38335
+	 *       but causes `data-dojo-config` to load after the src, which then causes the script to fail and the TD Player API will not fully load
 	 */
 	public static function load_js() {
 
