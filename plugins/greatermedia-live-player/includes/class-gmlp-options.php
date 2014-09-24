@@ -48,13 +48,14 @@ class GMLP_Settings {
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
 		add_action( 'gmlp_location', array($this, 'player_location_class') );
 		add_filter( 'body_class', array( $this, 'player_location_body_class' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 	}
 
 	/**
 	 * Add the settings page
 	 */
 	public function add_settings_page() {
-		$this->_settings_page_hook = add_options_page( 'Live Player Settings', 'Live Player Settings', 'manage_options', 'gmlp-settings', array( $this, 'render_settings_page' ), '', 3 );
+		$this->_settings_page_hook = add_menu_page( 'Live Player Settings', 'Live Player', 'manage_options', 'gmlp-settings', array( $this, 'render_settings_page' ), 'dashicons-format-audio', 3 );
 	}
 
 	/**
@@ -86,7 +87,7 @@ class GMLP_Settings {
 	 */
 	public function register_settings() {
 		// Settings Section
-		add_settings_section( 'gmlp_settings', 'Live Player Settings', array( $this, 'render_gmlp_settings_section' ), $this->_settings_page_hook );
+		add_settings_section( 'gmlp_settings', 'Greater Media Live Player Settings', array( $this, 'render_gmlp_settings_section' ), $this->_settings_page_hook );
 
 		// Radio Station Callsign
 		register_setting( self::option_group, 'gmlp_radio_callsign', 'sanitize_text_field' );
@@ -110,7 +111,7 @@ class GMLP_Settings {
 		<h4><?php _e( 'Live Player API Information', 'gmliveplayer' ); ?></h4>
 
 		<p>
-			<label for="gmlp_player_location"><?php _e( 'Player Location', 'gmliveplayer' ); ?></label>
+			<label for="gmlp_player_location" class="gmlp-admin-label"><?php _e( 'Player Location', 'gmliveplayer' ); ?></label>
 			<select name="gmlp_player_location" id="gmlp_player_location">
 				<option value=""><?php _e( '---', 'gmliveplayer' )?></option>
 				<option value="top" <?php selected( $player_location, 'top' ); ?>><?php _e( 'Top', 'gmliveplayer' )?></option>
@@ -121,8 +122,9 @@ class GMLP_Settings {
 		</p>
 
 		<p>
-			<label for="gmlp_radio_callsign"><?php _e( 'Radio Callsign', 'gmliveplayer' ); ?></label>
+			<label for="gmlp_radio_callsign" class="gmlp-admin-label"><?php _e( 'Radio Callsign', 'gmliveplayer' ); ?></label>
 			<input type="text" class="widefat" name="gmlp_radio_callsign" id="gmlp_radio_callsign" value="<?php echo sanitize_text_field( $radio_callsign ); ?>" />
+			<div class="gmlp-description"><?php _e( 'The value for this field should consist of the Radio Callsign + Band Type. Ex: WMMR + FM = WMMRFM. WMMRFM would be the value to enter in this field.', 'gmliveplayer' ); ?></div>
 		</p>
 
 		<hr/>
@@ -163,6 +165,16 @@ class GMLP_Settings {
 		}
 
 		return $classes;
+
+	}
+
+	/**
+	 * Enqueue scripts
+	 */
+	public static function enqueue_scripts() {
+
+		$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
+		wp_enqueue_style( 'gmlp-admin-styles', GMLIVEPLAYER_URL . "assets/css/greater_media_live_player_admin{$postfix}.css", array(), GMLIVEPLAYER_VERSION );
 
 	}
 
