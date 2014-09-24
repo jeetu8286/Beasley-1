@@ -1930,7 +1930,6 @@ Media Queries
     .gmlp-vertical .gmlp-nav .gmlp-menu #now-playing-live #nowPlaying {
       position: absolute;
       top: 50%;
-      left: 0;
       -ms-transform: translate(0%, -50%);
       -webkit-transform: translate(0%, -50%);
       transform: translate(0%, -50%);
@@ -2021,7 +2020,10 @@ Media Queries
     transition: ease 0.25s;
     left: 0; }
   .gmlp-right .gmlp-nav .gmlp-menu #now-playing-live {
-    margin: 0 30px 1em 0; }
+    width: 100px;
+    margin: 0 0 1em 40px; }
+    .gmlp-right .gmlp-nav .gmlp-menu #now-playing-live #nowPlaying {
+      left: 0; }
 .gmlp-right.gmlp-open .gmlp-nav-toggle {
   right: 0; }
 .gmlp-right.gmlp-open .gmlp-menu {
@@ -2056,7 +2058,10 @@ Media Queries
     transition: ease 0.25s;
     right: 0; }
   .gmlp-left .gmlp-nav .gmlp-menu #now-playing-live {
-    margin: 0 0 1em 30px; }
+    margin: 10px 0 1em 20px;
+    text-align: right; }
+    .gmlp-left .gmlp-nav .gmlp-menu #now-playing-live #nowPlaying {
+      right: 0; }
 .gmlp-left.gmlp-open .gmlp-nav-toggle {
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
