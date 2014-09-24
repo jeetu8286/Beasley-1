@@ -191,7 +191,6 @@
 				#nowPlaying {
 					position: absolute;
 					top: 50%;
-					left: 0;
 					-ms-transform: translate(0%, -50%);
 					-webkit-transform: translate(0%, -50%);
 					transform: translate(0%, -50%);
@@ -305,7 +304,11 @@
 				left: 0;
 			}
 			#now-playing-live{
-				margin: 0 30px 1em 0;
+				width: 100px;
+				margin: 0 0 1em 40px;
+				#nowPlaying{
+					left: 0;
+				}
 			}
 		}
 	}
@@ -341,7 +344,11 @@
 				right: 0;
 			}
 			#now-playing-live{
-				margin: 0 0 1em 30px;
+				margin: 10px 0 1em 20px;
+				text-align: right;
+				#nowPlaying{
+					right: 0;
+				}
 			}
 		}
 	}
