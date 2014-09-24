@@ -8,6 +8,9 @@ class GM_Podcasts_Player{
 
 	}
 
+	/**
+	 * Enqueue scripts and styles
+	 */
 	public static function enqueue_scripts() {
 
 		$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';

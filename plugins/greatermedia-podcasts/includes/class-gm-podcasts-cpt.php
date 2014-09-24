@@ -12,6 +12,9 @@ class GM_Podcasts_CPT {
 
 	}
 
+	/**
+	 * Add the Podcast Custom Post Type
+	 */
 	public static function podcasts_cpt() {
 
 		$labels = array(
@@ -60,6 +63,9 @@ class GM_Podcasts_CPT {
 
 	}
 
+	/**
+	 * Add the Episodes Custom Post Type
+	 */
 	public static function episodes_cpt() {
 
 		$labels = array(
@@ -140,6 +146,11 @@ class GM_Podcasts_CPT {
 		register_taxonomy( '_podcast', array( 'episodes' ), $args );
 	}
 
+	/**
+	 * Update the shadow taxonomy when a podcasts has been published or updated. Also ensure that the new term is no duplicated
+	 *
+	 * @param $post_id
+	 */
 	public static function update_shadow_taxonomy( $post_id ) {
 
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
@@ -200,6 +211,11 @@ class GM_Podcasts_CPT {
 		}
 	}
 
+	/**
+	 * Delete a podcast term when the corresponding podcast has been deleted
+	 *
+	 * @param $post_id
+	 */
 	public static function delete_shadow_tax_term( $post_id ) {
 
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
