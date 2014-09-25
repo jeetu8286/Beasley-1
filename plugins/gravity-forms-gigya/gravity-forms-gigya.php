@@ -1129,7 +1129,6 @@ add_filter("gform_pre_render", "gmi_pre_render_form");
 function gmi_after_submission( $entry, $form ) {
 
 	// Build up this array from gigya data
-	$gigya_array = array();
 	$gigya_profile = array();
 
 	// Go through each field and get data associated with each
@@ -1148,7 +1147,7 @@ function gmi_after_submission( $entry, $form ) {
 
 	} // endforeach
 	
-	$gigya_array = json_encode( $gigya_profile );
+	$gigya_json = json_encode( $gigya_profile );
 
 	// Generate Contest Entry if on contest and gigya user data exists
 	if ( is_singular( GreaterMediaContests::CPT_SLUG ) && ( !empty( $_POST['gigya_name'] ) && !empty( $_POST['gigya_UID'] ) ) ) {

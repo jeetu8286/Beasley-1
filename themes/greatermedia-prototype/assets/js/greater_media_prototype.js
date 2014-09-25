@@ -29,6 +29,10 @@
 		gigya.accounts.showScreenSet({screenSet: 'Survey-registration', startScreen:'gigya-login-screen', containerID:'gigya-controls'});
 	}
 
+	function updateProfile( accountData ){
+		gigya.accounts.setAccountInfo({ data: accountData });
+	}
+
 	/**
 	 * Checks to see if the user is logged in, changes the header appropriately.
 	 * @param response
@@ -37,14 +41,13 @@
 
 		if (response.errorCode == 0) { // Success, this user is logged in
 
-			//window.console.log(response);
-
 			// set hidden form fields
 			jQuery('input#gigya_UID').val(response.UID);
 			jQuery('input#gigya_name').val(response.profile.firstName + ' ' + response.profile.lastName);
 
 			// hide login/registration form
 			jQuery('#gigya-login-wrap').hide();
+
 			// show gravity form
 			jQuery('form.hide').removeClass('hide');
 
@@ -58,6 +61,7 @@
 
 		}
 	}
+
 	/**
 	 * On successful login, hide tab controls & show thank you screen
 	 * @param response
@@ -73,6 +77,7 @@
 
 		// hide login/registration form
 		jQuery('#gigya-login-wrap').hide();
+
 		// show gravity form
 		jQuery('form.hide input, form.hide textarea, form.hide select').removeAttr('disabled');
 		jQuery('form.hide').removeClass('hide');
