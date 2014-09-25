@@ -340,7 +340,7 @@ Media Queries
 }
 */
 @mixin breakpoint($break) {
-    @media screen and (max-device-width: $break + px) {
+    @media screen and (max-width: $break + px) {
         @content;
     }
 }

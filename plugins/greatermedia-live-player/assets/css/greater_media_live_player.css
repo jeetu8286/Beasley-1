@@ -1857,14 +1857,6 @@ Media Queries
         font-weight: 700; }
       .gmlp-nav .gmlp-menu #now-playing-live #nowPlaying #trackInfo .gmlp-np-artist {
         font-weight: 400; }
-  .gmlp-nav .gmlp-menu #td_synced_leaderboard {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -ms-box-sizing: border-box;
-    box-sizing: border-box;
-    width: 728px;
-    height: 90px;
-    background-color: #e3f7fc; }
 
 .gmlp-open .gmlp-nav .gmlp-nav-toggle:before {
   content: "\f00d"; }
@@ -1943,6 +1935,9 @@ Media Queries
     height: 728px;
     margin: 0 auto;
     background-color: #e3f7fc; }
+@media screen and (max-width: 480px) {
+  .gmlp-vertical .gmlp-nav .gmlp-menu {
+    width: 100%; } }
 .gmlp-vertical.admin-bar .gmlp-nav .gmlp-nav-toggle {
   top: 32px; }
 .gmlp-vertical.admin-bar .gmlp-nav .gmlp-menu {
@@ -1965,10 +1960,56 @@ Media Queries
 .gmlp-top .gmlp-nav .gmlp-menu {
   top: -130px;
   height: 130px; }
+@media screen and (max-width: 480px) {
+  .gmlp-top .gmlp-nav {
+    top: 0; }
+    .gmlp-top .gmlp-nav .gmlp-nav-toggle {
+      -webkit-border-radius: 15px 0 0 15px;
+      -moz-border-radius: 15px 0 0 15px;
+      -ms-border-radius: 15px 0 0 15px;
+      -o-border-radius: 15px 0 0 15px;
+      -border-radius: 15px 0 0 15px;
+      border-radius: 15px 0 0 15px;
+      behavior: url("../js/PIE/PIE.htc");
+      top: 0;
+      left: auto;
+      right: 0;
+      width: 33px;
+      height: 50px; }
+    .gmlp-top .gmlp-nav .gmlp-menu {
+      top: 0;
+      bottom: 0;
+      right: -100%;
+      left: auto;
+      width: 100%;
+      height: 100%;
+      max-height: 100%; } }
 .gmlp-top.gmlp-open .gmlp-nav-toggle {
   top: 97px; }
 .gmlp-top.gmlp-open .gmlp-menu {
   top: 0; }
+@media screen and (max-width: 480px) {
+  .gmlp-top.gmlp-open .gmlp-nav-toggle {
+    -webkit-border-radius: 15px 0 0 15px;
+    -moz-border-radius: 15px 0 0 15px;
+    -ms-border-radius: 15px 0 0 15px;
+    -o-border-radius: 15px 0 0 15px;
+    -border-radius: 15px 0 0 15px;
+    border-radius: 15px 0 0 15px;
+    behavior: url("../js/PIE/PIE.htc");
+    top: 0;
+    left: auto;
+    right: 0;
+    width: 33px;
+    height: 50px; }
+  .gmlp-top.gmlp-open .gmlp-menu {
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: auto;
+    width: 100%;
+    height: 100%;
+    max-height: 100%; } }
 .gmlp-top.admin-bar .gmlp-nav .gmlp-nav-toggle {
   top: 32px; }
 .gmlp-top.admin-bar .gmlp-nav .gmlp-menu {
@@ -1992,10 +2033,56 @@ Media Queries
   bottom: 0; }
 .gmlp-bottom .gmlp-nav .gmlp-menu {
   bottom: -130px; }
+@media screen and (max-width: 480px) {
+  .gmlp-bottom .gmlp-nav {
+    top: 0; }
+    .gmlp-bottom .gmlp-nav .gmlp-nav-toggle {
+      -webkit-border-radius: 15px 0 0 15px;
+      -moz-border-radius: 15px 0 0 15px;
+      -ms-border-radius: 15px 0 0 15px;
+      -o-border-radius: 15px 0 0 15px;
+      -border-radius: 15px 0 0 15px;
+      border-radius: 15px 0 0 15px;
+      behavior: url("../js/PIE/PIE.htc");
+      top: 0;
+      left: auto;
+      right: 0;
+      width: 33px;
+      height: 50px; }
+    .gmlp-bottom .gmlp-nav .gmlp-menu {
+      top: 0;
+      bottom: 0;
+      right: -100%;
+      left: auto;
+      width: 100%;
+      height: 100%;
+      max-height: 100%; } }
 .gmlp-bottom.gmlp-open .gmlp-nav-toggle {
   bottom: 97px; }
 .gmlp-bottom.gmlp-open .gmlp-menu {
   bottom: 0; }
+@media screen and (max-width: 480px) {
+  .gmlp-bottom.gmlp-open .gmlp-nav-toggle {
+    -webkit-border-radius: 15px 0 0 15px;
+    -moz-border-radius: 15px 0 0 15px;
+    -ms-border-radius: 15px 0 0 15px;
+    -o-border-radius: 15px 0 0 15px;
+    -border-radius: 15px 0 0 15px;
+    border-radius: 15px 0 0 15px;
+    behavior: url("../js/PIE/PIE.htc");
+    top: 0;
+    left: auto;
+    right: 0;
+    width: 33px;
+    height: 50px; }
+  .gmlp-bottom.gmlp-open .gmlp-menu {
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: auto;
+    width: 100%;
+    height: 100%;
+    max-height: 100%; } }
 
 /**
  * Player Location: Right
@@ -2024,6 +2111,9 @@ Media Queries
     margin: 0 0 1em 40px; }
     .gmlp-right .gmlp-nav .gmlp-menu #now-playing-live #nowPlaying {
       left: 0; }
+@media screen and (max-width: 480px) {
+  .gmlp-right .gmlp-nav .gmlp-menu {
+    right: -100%; } }
 .gmlp-right.gmlp-open .gmlp-nav-toggle {
   right: 0; }
 .gmlp-right.gmlp-open .gmlp-menu {
@@ -2034,6 +2124,11 @@ Media Queries
     -o-transition: ease 0.25s;
     transition: ease 0.25s;
     left: -14px; }
+@media screen and (max-width: 480px) {
+  .gmlp-right.gmlp-open .gmlp-menu {
+    width: 100%;
+    left: auto;
+    right: 0; } }
 
 /**
  * Player Location: Left
@@ -2062,6 +2157,21 @@ Media Queries
     text-align: right; }
     .gmlp-left .gmlp-nav .gmlp-menu #now-playing-live #nowPlaying {
       right: 0; }
+@media screen and (max-width: 480px) {
+  .gmlp-left .gmlp-nav .gmlp-nav-toggle {
+    -webkit-border-radius: 15px 0 0 15px;
+    -moz-border-radius: 15px 0 0 15px;
+    -ms-border-radius: 15px 0 0 15px;
+    -o-border-radius: 15px 0 0 15px;
+    -border-radius: 15px 0 0 15px;
+    border-radius: 15px 0 0 15px;
+    behavior: url("../js/PIE/PIE.htc");
+    right: 0;
+    left: auto; }
+  .gmlp-left .gmlp-nav .gmlp-menu {
+    width: 100%;
+    left: auto;
+    right: -100%; } }
 .gmlp-left.gmlp-open .gmlp-nav-toggle {
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
@@ -2080,3 +2190,18 @@ Media Queries
     -o-transition: ease 0.25s;
     transition: ease 0.25s;
     right: -14px; }
+@media screen and (max-width: 480px) {
+  .gmlp-left.gmlp-open .gmlp-nav-toggle {
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    -ms-border-radius: 0;
+    -o-border-radius: 0;
+    -border-radius: 0;
+    border-radius: 0;
+    behavior: url("../js/PIE/PIE.htc");
+    right: 0;
+    background-color: transparent; }
+  .gmlp-left.gmlp-open .gmlp-menu {
+    width: 100%;
+    left: auto;
+    right: 0; } }

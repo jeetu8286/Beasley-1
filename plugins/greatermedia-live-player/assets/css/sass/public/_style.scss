@@ -97,12 +97,6 @@
 				}
 			}
 		}
-		#td_synced_leaderboard {
-			@include box-sizing(border-box);
-			width: 728px;
-			height: 90px;
-			background-color: $light-blue;
-		}
 	}
 }
 .gmlp-open{
@@ -205,6 +199,11 @@
 				background-color: $light-blue;
 			}
 		}
+		@include breakpoint(480){
+			.gmlp-menu {
+				width: 100%;
+			}
+		}
 	}
 	&.admin-bar {
 		.gmlp-nav {
@@ -234,6 +233,26 @@
 			top: -130px;
 			height: 130px;
 		}
+		@include breakpoint(480) {
+			top: 0;
+			.gmlp-nav-toggle {
+				@include border-radius(15px 0 0 15px);
+				top: 0;
+				left: auto;
+				right: 0;
+				width: 33px;
+				height: 50px;
+			}
+			.gmlp-menu {
+				top: 0;
+				bottom: 0;
+				right: -100%;
+				left: auto;
+				width: 100%;
+				height: 100%;
+				max-height: 100%;
+			}
+		}
 	}
 	&.gmlp-open {
 		.gmlp-nav-toggle {
@@ -241,6 +260,25 @@
 		}
 		.gmlp-menu {
 			top: 0;
+		}
+		@include breakpoint(480){
+			.gmlp-nav-toggle {
+				@include border-radius(15px 0 0 15px);
+				top: 0;
+				left: auto;
+				right: 0;
+				width: 33px;
+				height: 50px;
+			}
+			.gmlp-menu {
+				top: 0;
+				bottom: 0;
+				right: 0;
+				left: auto;
+				width: 100%;
+				height: 100%;
+				max-height: 100%;
+			}
 		}
 	}
 	&.admin-bar {
@@ -275,6 +313,26 @@
 		.gmlp-menu {
 			bottom: -130px;
 		}
+		@include breakpoint(480) {
+			top: 0;
+			.gmlp-nav-toggle {
+				@include border-radius(15px 0 0 15px);
+				top: 0;
+				left: auto;
+				right: 0;
+				width: 33px;
+				height: 50px;
+			}
+			.gmlp-menu {
+				top: 0;
+				bottom: 0;
+				right: -100%;
+				left: auto;
+				width: 100%;
+				height: 100%;
+				max-height: 100%;
+			}
+		}
 	}
 	&.gmlp-open {
 		.gmlp-nav-toggle {
@@ -282,6 +340,25 @@
 		}
 		.gmlp-menu {
 			bottom: 0;
+		}
+		@include breakpoint(480){
+			.gmlp-nav-toggle {
+				@include border-radius(15px 0 0 15px);
+				top: 0;
+				left: auto;
+				right: 0;
+				width: 33px;
+				height: 50px;
+			}
+			.gmlp-menu {
+				top: 0;
+				bottom: 0;
+				right: 0;
+				left: auto;
+				width: 100%;
+				height: 100%;
+				max-height: 100%;
+			}
 		}
 	}
 }
@@ -311,6 +388,11 @@
 				}
 			}
 		}
+		@include breakpoint(480){
+			.gmlp-menu{
+				right: -100%;
+			}
+		}
 	}
 	&.gmlp-open {
 		.gmlp-nav-toggle {
@@ -321,6 +403,13 @@
 			#player-actions {
 				@include transition(ease .25s);
 				left: -14px;
+			}
+		}
+		@include breakpoint(480){
+			.gmlp-menu {
+				width: 100%;
+				left: auto;
+				right: 0;
 			}
 		}
 	}
@@ -351,6 +440,18 @@
 				}
 			}
 		}
+		@include breakpoint(480){
+			.gmlp-nav-toggle {
+				@include border-radius(15px 0 0 15px);
+				right: 0;
+				left: auto;
+			}
+			.gmlp-menu {
+				width: 100%;
+				left: auto;
+				right: -100%;
+			}
+		}
 	}
 	&.gmlp-open {
 		.gmlp-nav-toggle {
@@ -363,6 +464,18 @@
 			#player-actions {
 				@include transition(ease .25s);
 				right: -14px;
+			}
+		}
+		@include breakpoint(480){
+			.gmlp-nav-toggle {
+				@include border-radius(0);
+				right: 0;
+				background-color: transparent;
+			}
+			.gmlp-menu {
+				width: 100%;
+				left: auto;
+				right: 0;
 			}
 		}
 	}

@@ -78,7 +78,8 @@ class GMP_Meta {
 		wp_nonce_field( 'gmp_episodes_meta_box', 'gmp_episodes_meta_box_nonce' );
 
 		// Use get_post_meta to retrieve an existing value from the database.
-		$gmp_audio_url = get_post_meta( $post->ID, 'gmp_audio_file_meta_key', true );
+
+
 		?>
 
 		<div class="gmp-meta-row">
