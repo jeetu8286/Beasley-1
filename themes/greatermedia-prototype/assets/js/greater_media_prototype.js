@@ -37,10 +37,11 @@
 
 		if (response.errorCode == 0) { // Success, this user is logged in
 
-			window.console.log(response);
+			//window.console.log(response);
 
-			var gigyaName = response.profile.firstName + ' ' + response.profile.lastName;
-			var gigyaID = response.UID;
+			// set hidden form fields
+			jQuery('input#gigya_UID').val(response.UID);
+			jQuery('input#gigya_name').val(response.profile.firstName + ' ' + response.profile.lastName);
 
 			// hide login/registration form
 			jQuery('#gigya-login-wrap').hide();

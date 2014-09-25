@@ -1122,13 +1122,6 @@ add_filter("gform_pre_render", "gmi_pre_render_form");
 /**
  * When a Gravity form is submitted it fires this hook callback. The hook contains the entries and the form.
  * The $form array contains all the $field data, which is then used to extract data from $entry
- *
- * For initial prototyping, this function outputs formatted data and dies. This is a proof of concept.
- *
- * The array that it var_dumps() could easily be converted into JSON with json_encode(). With a bit more work it
- * could be formatted as plain key: value text. Both of which are needed.
- *
- * 
  * 
  * @param  array $entry Gravity Forms entry object {@link http://www.gravityhelp.com/documentation/page/Developer_Docs#Entry_Object}
  * @param  array $form  Gravity Forms form object {@link http://www.gravityhelp.com/documentation/page/Developer_Docs#Form_Object}
@@ -1149,25 +1142,18 @@ function gmi_after_submission( $entry, $form ) {
 			continue;
 		}
 
-		$gigya_array[$field['inputName']] = $value;
-		
 		if ( isset( $field['gigyaDemographic'] ) && ! empty( $field['gigyaDemographic'] ) ) {
 			$gigya_profile[$field['gigyaDemographic']] = $value;
 		}
 
 	} // endforeach
 	
-	// wrap all the entries with the form title; Gigya submission prep
-	$gigya_array = array( $form['title'] => $gigya_array );
+	$gigya_array = json_encode( $gigya_profile );
 
-	// Connect to Gigya
-	// 1) Make connection
-	// 2) Pass user profile data
-	// 3) Grab Gigya user ID for contest entry
-
-	// Generate Contest Entry
-	if ( is_singular( GreaterMediaContests::CPT_SLUG ) ) {
-		$gf_contest_entry = GreaterMediaContestEntry::create_for_data( get_the_ID(), 'name', 'Gigya ID', 'gravity-forms', get_permalink() );
+	// Generate Contest Entry if on contest and gigya user data exists
+	if ( is_singular( GreaterMediaContests::CPT_SLUG ) && ( !empty( $_POST['gigya_name'] ) && !empty( $_POST['gigya_UID'] ) ) ) {
+		$gf_contest_entry = GreaterMediaContestEntry::create_for_data( get_the_ID(), esc_html( $_POST['gigya_name'] ), esc_html( $_POST['gigya_UID'] ), 'gravity-forms', get_permalink() );
+		$gf_contest_entry->save();
 	}
 
 }
@@ -1323,6 +1309,17 @@ function add_encryption_tooltips($tooltips){
 add_filter('gform_tooltips', 'add_encryption_tooltips');
 
 /**
+ * Set hidden fields for nabbing gigya user data
+ * @param array $form
+ */
+function gigya_hidden_fields( $button ) {
+	$hidden_fields = '<input type="hidden" id="gigya_UID" name="gigya_UID"> ';
+	$hidden_fields .= '<input type="hidden" id="gigya_name" name="gigya_name"> ';
+	return $hidden_fields.$button;
+}
+add_filter( "gform_submit_button", "gigya_hidden_fields", 10, 5 );
+
+/**
  * Add custom Gigya Field section to GForm UI
  */
 function add_gigya_fields( $field_groups ){
@@ -1385,7 +1382,6 @@ function custom_field_input ( $input, $field, $value, $lead_id, $form_id ){
 					case "dropdown":
 						$display = "<div class='ginput_container'><select name='.$id.' id='.$field_id.' class='.$css_class.' '. $tabindex.' >";
 						foreach ( $predefined_field_value as $key => $dropdown_option ){
-							$mike = 'mike';
 							$display .= '<option value="'. $dropdown_option .'">'. $dropdown_option .'</option>';
 						}
 						$display .= "</select></div>";
