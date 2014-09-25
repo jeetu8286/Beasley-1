@@ -12,17 +12,17 @@ module.exports = function( grunt ) {
 					' * Licensed GPLv2+' +
 					' */\n'
 			},
-			greater_media_podcasts_admin: {
+			gmp_admin: {
 				src: [
-					'assets/js/admin/greater_media_live_podcasts_admin.js'
+					'assets/js/admin/gmp_admin.js'
 				],
-				dest: 'assets/js/greater_media_live_podcasts_admin.js'
+				dest: 'assets/js/gmp_admin.js'
 			},
-			greater_media_podcasts: {
+			gmp: {
 				src: [
-					'assets/js/src/greater_media_podcasts.js'
+					'assets/js/src/gmp.js'
 				],
-				dest: 'assets/js/greater_media_podcasts.js'
+				dest: 'assets/js/gmp.js'
 			}
 		},
 		jshint: {
@@ -51,8 +51,8 @@ module.exports = function( grunt ) {
 		uglify: {
 			all: {
 				files: {
-					'assets/js/greater_media_podcasts_admin.min.js': ['assets/js/greater_media_podcasts_admin.js'],
-					'assets/js/greater_media_podcasts.min.js': ['assets/js/greater_media_podcasts.js']
+					'assets/js/gmp_admin.min.js': ['assets/js/gmp_admin.js'],
+					'assets/js/gmp.min.js': ['assets/js/gmp.js']
 				},
 				options: {
 					banner: '/*! <%= pkg.title %> - v<%= pkg.version %>\n' +
@@ -77,8 +77,8 @@ module.exports = function( grunt ) {
 			},
 			all: {
 				files: {
-					'assets/css/greater_media_podcasts.css': 'assets/css/sass/greater_media_podcasts.scss',
-					'assets/css/greater_media_podcasts_admin.css': 'assets/css/sass/greater_media_podcasts_admin.scss'
+					'assets/css/gmp.css': 'assets/css/sass/gmp.scss',
+					'assets/css/gmp_admin.css': 'assets/css/sass/gmp_admin.scss'
 				}
 			}
 		},
@@ -95,7 +95,7 @@ module.exports = function( grunt ) {
 				expand: true,
 				
 				cwd: 'assets/css/',				
-				src: ['greater_media_podcasts.css', 'greater_media_podcasts_admin.css'],
+				src: ['gmp.css', 'gmp_admin.css'],
 				
 				dest: 'assets/css/',
 				ext: '.min.css'
@@ -146,12 +146,12 @@ module.exports = function( grunt ) {
 			main: {
 				options: {
 					mode: 'zip',
-					archive: './release/greater_media_podcasts.<%= pkg.version %>.zip'
+					archive: './release/gmp.<%= pkg.version %>.zip'
 				},
 				expand: true,
 				cwd: 'release/<%= pkg.version %>/',
 				src: ['**/*'],
-				dest: 'greater_media_podcasts/'
+				dest: 'gmp/'
 			}		
 		}
 	} );

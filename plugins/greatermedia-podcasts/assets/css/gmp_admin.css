@@ -94,9 +94,42 @@ Media Queries
     stuff;
 }
 */
-/*
- * Variables
+/**
+ * Variables for the Listmaster Admin
  */
 /**
  * Styles for Admin
  */
+.gmp-meta-row {
+  width: 100%;
+  padding: 1em 0;
+  overflow: auto;
+  border-bottom: 1px solid whitesmoke; }
+  .gmp-meta-row:last-of-type {
+    border-bottom: none; }
+  .gmp-meta-row .gmp-meta-row-content {
+    float: left;
+    width: 100%; }
+    .gmp-meta-row .gmp-meta-row-content .gmp-meta-row-label {
+      display: block;
+      margin: 0 0 .25em;
+      font-weight: 600; }
+    .gmp-meta-row .gmp-meta-row-content .gmp-audio-location {
+      line-height: 1.25;
+      font-size: .75em; }
+    .gmp-meta-row .gmp-meta-row-content input[type="text"], .gmp-meta-row .gmp-meta-row-content input[type="url"] {
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      -ms-box-sizing: border-box;
+      box-sizing: border-box;
+      width: 99%; }
+      .gmp-meta-row .gmp-meta-row-content input[type="text"]::-webkit-input-placeholder, .gmp-meta-row .gmp-meta-row-content input[type="url"]::-webkit-input-placeholder {
+        color: #dddddd; }
+      .gmp-meta-row .gmp-meta-row-content input[type="text"]:-moz-placeholder, .gmp-meta-row .gmp-meta-row-content input[type="url"]:-moz-placeholder {
+        color: #dddddd; }
+      .gmp-meta-row .gmp-meta-row-content input[type="text"]::-moz-placeholder, .gmp-meta-row .gmp-meta-row-content input[type="url"]::-moz-placeholder {
+        color: #dddddd; }
+      .gmp-meta-row .gmp-meta-row-content input[type="text"]:-ms-input-placeholder, .gmp-meta-row .gmp-meta-row-content input[type="url"]:-ms-input-placeholder {
+        color: #dddddd; }
+    .gmp-meta-row .gmp-meta-row-content .gmp-upload-button {
+      margin: 1em 0; }
