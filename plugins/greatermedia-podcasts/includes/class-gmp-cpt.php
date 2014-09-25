@@ -1,6 +1,6 @@
 <?php
 /**
- * Class GM_Podcasts_CPT
+ * Class GMP_CPT
  *
  * This class creates the required `Podcasts` and `Episodes` Custom Post Types.
  *
@@ -14,7 +14,7 @@
  *
  * The shadow taxonomy will allow an `Episode` to be associated with a `Podcast`.
  */
-class GM_Podcasts_CPT {
+class GMP_CPT {
 
 	/**
 	 * Hook into the appropriate actions when the class is initiated.
@@ -256,4 +256,4 @@ class GM_Podcasts_CPT {
 
 }
 
-GM_Podcasts_CPT::init();
+GMP_CPT::init();

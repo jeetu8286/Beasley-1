@@ -1,10 +1,10 @@
 <?php
 /**
- * Class gmp_Meta
+ * Class GMP_Meta
  *
  * This class constructs a meta box for episodes and saves data entered into the fields of the meta box.
  */
-class gmp_Meta {
+class GMP_Meta {
 
 	/**
 	 * Hook into the appropriate actions when the class is constructed.
@@ -103,6 +103,9 @@ class gmp_Meta {
 
 	}
 
+	/**
+	 * Enqueue scripts and styles for Admin
+	 */
 	public function enqueue_scripts_styles() {
 
 		$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
@@ -115,4 +118,4 @@ class gmp_Meta {
 
 }
 
-new gmp_Meta();
+new GMP_Meta();

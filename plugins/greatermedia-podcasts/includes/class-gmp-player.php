@@ -1,10 +1,10 @@
 <?php
 /**
- * Class GM_Podcasts_Player
+ * Class GMP_Player
  *
  * This class constructs a podcast player to use on the front end of a website
  */
-class GM_Podcasts_Player{
+class GMP_Player{
 
 	/**
 	 * Hook into the appropriate actions when the class is initiated.

@@ -53,8 +53,8 @@ function gmpodcasts_init() {
 /**
  * Add required files
  */
-require_once( __DIR__ . '/includes/class-gm-podcasts-cpt.php' );
-require_once( __DIR__ . '/includes/class-gm-podcasts-metabox.php' );
+require_once( __DIR__ . '/includes/class-gmp-cpt.php' );
+require_once( __DIR__ . '/includes/class-gmp-metabox.php' );
 /**
  * Activate the plugin
  */
