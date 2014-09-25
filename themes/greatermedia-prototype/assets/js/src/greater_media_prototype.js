@@ -72,8 +72,11 @@
 			containerID:'gigya-controls'
 		});
 
-		// Hide login/registration tabs
-		document.getElementById("gigya-buttons").style.display = "none";
+		// hide login/registration form
+		jQuery('#gigya-login-wrap').hide();
+		// show gravity form
+		jQuery('form.hide input, form.hide textarea, form.hide select').removeAttr('disabled');
+		jQuery('form.hide').removeClass('hide');
 
 	}
 
