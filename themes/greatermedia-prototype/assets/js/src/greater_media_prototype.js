@@ -42,7 +42,10 @@
 
 		if (response.errorCode == 0) { // Success, this user is logged in
 
-			window.console.log(response.profile);
+			window.console.log(response);
+
+			var gigyaName = response.profile.firstName + ' ' + response.profile.lastName;
+			var gigyaID = response.UID;
 
 			// hide login/registration form
 			jQuery('#gigya-login-wrap').hide();
