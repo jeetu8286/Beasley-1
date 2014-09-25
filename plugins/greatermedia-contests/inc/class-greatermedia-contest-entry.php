@@ -32,6 +32,7 @@ class GreaterMediaContestEntry {
 			$this->entry_reference   = get_post_meta( $this->post->ID, 'entry_reference', true );
 		} else {
 			$this->post = new WP_Post( new stdClass() );
+			$this->post->post_type = 'contest_entry';
 		}
 
 		if ( null !== $contest_id ) {
