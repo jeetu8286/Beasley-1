@@ -54,7 +54,6 @@ class GMLP_Player {
 
 					<!-- Player placeholder -->
 					<div id="td_container"></div>
-					<div id="td_synced_leaderboard">Synced Leaderboard (728x90)</div>
 
 					<script type="text/javascript" src="http://playerservices.live.streamtheworld.com/api/idsync.js?mount=WRORFM" />
 
