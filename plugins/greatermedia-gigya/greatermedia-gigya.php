@@ -5,6 +5,10 @@ Description: Greater Media Gigya
 Author: 10up
 */
 
+define( 'GMR_GIGYA_URL', plugin_dir_url( __FILE__ ) );
+define( 'GMR_GIGYA_PATH', dirname( __FILE__ ) . '/' );
+define( 'GMR_GIGYA_VERSION', '0.1.0' );
+
 function gmr_gigya_main() {
 	$plugin = new \GreaterMedia\Gigya\Plugin( __FILE__ );
 	$plugin->enable();
