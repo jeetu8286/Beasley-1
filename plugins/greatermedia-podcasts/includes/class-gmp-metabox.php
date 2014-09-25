@@ -24,7 +24,7 @@ class GMP_Meta {
 	 */
 	public function add_meta_box( $post_type ) {
 
-		$post_types = array( 'episodes' );
+		$post_types = array( 'episode' );
 
 		if ( in_array( $post_type, $post_types ) ) {
 			add_meta_box(
@@ -91,7 +91,7 @@ class GMP_Meta {
 						<?php if ( isset ( $gmp_audio_url  ) ) echo esc_url_raw( $gmp_audio_url  ) ; ?>
 					</div>
 				<?php } elseif( $gmp_audio_url == false ) { ?>
-					<input type="text" name="gmp_audio_file" id="gmp_audio_file" value="<?php if ( isset ( $gmp_audio_url ) ) echo esc_url_raw( $gmp_audio_url ) ; ?>" />
+					<input type="text" name="gmp_audio_file" id="gmp_audio_file" value="<?php if ( isset ( $gmp_audio_url ) ) echo esc_url_raw( $gmp_audio_url ) ; ?>" placeholder="audio file url" />
 				<?php } ?>
 				<div class="gmp-upload-button">
 					<input type="button" class="button" name="gmp_audio_file_button" id="gmp_audio_file_button" value="<?php _e( 'Upload Audio', 'gmpodcasts' )?>" />
@@ -110,8 +110,11 @@ class GMP_Meta {
 
 		$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 
+		wp_register_script( 'gmp-admin-js', GMPODCASTS_URL . "/assets/js/gmp_admin{$postfix}.js", array( 'jquery' ), GMPODCASTS_VERSION, true );
+
 		wp_enqueue_script('media-upload');
-		wp_enqueue_script( 'gmp-admin-js', GMPODCASTS_URL . "/assets/js/gmp_admin{$postfix}.js", array( 'jquery' ), GMPODCASTS_VERSION, true );
+		wp_enqueue_script( 'gmp-admin-js' );
+
 		wp_enqueue_style( 'gmp-admin-style', GMPODCASTS_URL . "/assets/css/gmp_admin{$postfix}.css", array(), GMPODCASTS_VERSION );
 
 	}

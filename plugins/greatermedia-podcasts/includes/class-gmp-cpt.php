@@ -21,8 +21,8 @@ class GMP_CPT {
 	 */
 	public static function init() {
 
-		add_action( 'init', array( __CLASS__, 'podcasts_cpt' ), 0 );
-		add_action( 'init', array( __CLASS__, 'episodes_cpt' ), 0 );
+		add_action( 'init', array( __CLASS__, 'podcast_cpt' ), 0 );
+		add_action( 'init', array( __CLASS__, 'episode_cpt' ), 0 );
 		add_action( 'init', array( __CLASS__, 'register_shadow_taxonomy' ) );
 		add_action( 'save_post', array( __CLASS__, 'update_shadow_taxonomy' ) );
 		add_action( 'before_delete_post', array( __CLASS__, 'delete_shadow_tax_term' ) );
@@ -32,7 +32,7 @@ class GMP_CPT {
 	/**
 	 * Add the Podcast Custom Post Type
 	 */
-	public static function podcasts_cpt() {
+	public static function podcast_cpt() {
 
 		$labels = array(
 			'name'                => _x( 'Podcasts', 'Post Type General Name', 'gmpodcasts' ),
@@ -50,13 +50,13 @@ class GMP_CPT {
 			'not_found_in_trash'  => __( 'Not found in Trash', 'gmpodcasts' ),
 		);
 		$rewrite = array(
-			'slug'                => 'podcasts',
+			'slug'                => 'podcast',
 			'with_front'          => true,
 			'pages'               => true,
 			'feeds'               => true,
 		);
 		$args = array(
-			'label'               => __( 'podcasts', 'gmpodcasts' ),
+			'label'               => __( 'podcast', 'gmpodcasts' ),
 			'description'         => __( 'A post type for Podcasts', 'gmpodcasts' ),
 			'labels'              => $labels,
 			'supports'            => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', ),
@@ -76,14 +76,14 @@ class GMP_CPT {
 			'rewrite'             => $rewrite,
 			'capability_type'     => 'page',
 		);
-		register_post_type( 'podcasts', $args );
+		register_post_type( 'podcast', $args );
 
 	}
 
 	/**
 	 * Add the Episodes Custom Post Type
 	 */
-	public static function episodes_cpt() {
+	public static function episode_cpt() {
 
 		$labels = array(
 			'name'                => _x( 'Episodes', 'Post Type General Name', 'gmpodcasts' ),
@@ -107,15 +107,15 @@ class GMP_CPT {
 			'feeds'               => true,
 		);
 		$args = array(
-			'label'               => __( 'episodes', 'gmpodcasts' ),
-			'description'         => __( 'Episodes CPT', 'gmpodcasts' ),
+			'label'               => __( 'episode', 'gmpodcasts' ),
+			'description'         => __( 'Episode CPT', 'gmpodcasts' ),
 			'labels'              => $labels,
 			'supports'            => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', ),
 			'taxonomies'          => array( 'post_tag' ),
 			'hierarchical'        => false,
 			'public'              => true,
 			'show_ui'             => true,
-			'show_in_menu'        => 'edit.php?post_type=podcasts',
+			'show_in_menu'        => 'edit.php?post_type=podcast',
 			'show_in_nav_menus'   => true,
 			'show_in_admin_bar'   => true,
 			'menu_position'       => 5,
@@ -127,7 +127,7 @@ class GMP_CPT {
 			'rewrite'             => $rewrite,
 			'capability_type'     => 'page',
 		);
-		register_post_type( 'episodes', $args );
+		register_post_type( 'episode', $args );
 
 	}
 
@@ -160,7 +160,7 @@ class GMP_CPT {
 
 		);
 
-		register_taxonomy( '_podcast', array( 'episodes' ), $args );
+		register_taxonomy( '_podcast', array( 'episode' ), $args );
 	}
 
 	/**
@@ -174,7 +174,7 @@ class GMP_CPT {
 			return;
 		}
 
-		if ( 'podcasts' !== get_post_type( $post_id ) ) {
+		if ( 'podcast' !== get_post_type( $post_id ) ) {
 			return;
 		}
 
@@ -239,7 +239,7 @@ class GMP_CPT {
 			return;
 		}
 
-		if ( 'podcasts' !== get_post_type( $post_id ) ) {
+		if ( 'podcast' !== get_post_type( $post_id ) ) {
 			return;
 		}
 
