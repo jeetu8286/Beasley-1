@@ -27,20 +27,42 @@ function gmi_pre_render_form( $form ){
 	?>
 		<div id="gigya-login-wrap">
 
-			<div class="gigya-buttons">
+			<div id="gigya-buttons" class="gigya-buttons">
 				<a href="#" onclick="event.preventDefault(); gigya.accounts.showScreenSet({screenSet:'Survey-registration', startScreen:'gigya-register-screen', containerID:'gigya-controls'});">Create an Account</a>
 				<a href="#" onclick="event.preventDefault(); gigya.accounts.showScreenSet({screenSet:'Survey-registration', startScreen:'gigya-login-screen', containerID:'gigya-controls'});">Login</a>
 			</div>
 
 		<div id="gigya-controls"></div>
 
-		<!-- Display registration screenset by default -->
+
 		<script>
+
+			// Initialize registration screenset
 			gigya.accounts.showScreenSet({
 				screenSet:'Survey-registration',
 				startScreen:'gigya-register-screen',
 				containerID:'gigya-controls'
 			});
+
+			// Handle successful login / registration
+			gigya.socialize.addEventHandlers({
+				onLogin:loginSuccess
+			});
+
+			function loginSuccess(eventObj) {
+
+				// Display thank you screen
+				gigya.accounts.showScreenSet({
+					screenSet:'Survey-registration',
+					startScreen:'gigya-thank-you-screen',
+					containerID:'gigya-controls'
+				});
+
+				// Hide login/registration tabs
+				document.getElementById("gigya-buttons").style.display = "none";
+
+			}
+
 		</script>
 
 		<div class="gigya-screen-set" id="Survey-registration" style="display: none;" data-on-pending-registration-screen="gigya-complete-registiration-screen"
@@ -61,7 +83,7 @@ function gmi_pre_render_form( $form ){
 							<div class="gigya-social-login">
 								<param name="width" value="300">
 								<param name="height" value="100">
-								<param name="enabledProviders" value="facebook,Twitter,linkedin,google,yahoo,messenger">
+								<param name="enabledProviders" value="facebook,Twitter,linkedin,yahoo,messenger">
 								<param name="buttonsStyle" value="fullLogo">
 								<param name="buttonSize" value="35">
 								<param name="showWhatsThis" value="false">
@@ -1384,11 +1406,30 @@ add_filter( "gform_field_type_title", "assign_title", 10, 2 );
  */
 function custom_field_input ( $input, $field, $value, $lead_id, $form_id ){
 
-	if ( $field["type"] == "exampleDDL" ) {
-		$tabindex  = GFCommon::get_tabindex();
-		$css_class = isset( $field['cssClass'] ) ? $field['cssClass'] : ”;
-
-		return sprintf( "<div class='ginput_container'><select name='input_%d' id='%s' class='%s' $tabindex %s>%s</select></div>", $id, $field_id, $css_class, $disabled_text, GFCommon::get_select_choices( $field, $value ) );
+	$gigya_fields = gmi_get_gigya_fields();
+	if ( ! empty ( $gigya_fields ) ) {
+		foreach ( $gigya_fields as $predefined_field_key => $predefined_field_value ) {
+			if ( $field["type"] == $predefined_field_key ) {
+				$tabindex  = GFCommon::get_tabindex();
+				$css_class = isset( $field['cssClass'] ) ? $field['cssClass'] : ”;
+				switch( $predefined_field_value['type'] ){
+					case "dropdown":
+						$display = "<div class='ginput_container'><select name='.$id.' id='.$field_id.' class='.$css_class.' '. $tabindex.' >";
+						foreach ( $predefined_field_value as $key => $dropdown_option ){
+							$mike = 'mike';
+							$display .= '<option value="'. $dropdown_option .'">'. $dropdown_option .'</option>';
+						}
+						$display .= "</select></div>";
+						return $display;
+						break;
+					case "checkbox":
+						$type = 'checkbox';
+						break;
+					default:
+						$type = 'text';
+				}
+			}
+		}
 	}
 
 	return $input;
