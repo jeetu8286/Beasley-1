@@ -25,45 +25,14 @@ add_filter( "gform_form_tag", "gmi_form_tag" );
 function gmi_pre_render_form( $form ){
 	if ( is_singular( GreaterMediaContests::CPT_SLUG ) ){
 	?>
-		<div id="gigya-login-wrap">
+	<div id="gigya-login-wrap">
 
 			<div id="gigya-buttons" class="gigya-buttons">
-				<a href="#" onclick="event.preventDefault(); gigya.accounts.showScreenSet({screenSet:'Survey-registration', startScreen:'gigya-register-screen', containerID:'gigya-controls'});">Create an Account</a>
-				<a href="#" onclick="event.preventDefault(); gigya.accounts.showScreenSet({screenSet:'Survey-registration', startScreen:'gigya-login-screen', containerID:'gigya-controls'});">Login</a>
+				<a href="#" class="register" >Create an Account</a>
+				<a href="#" class="login">Login</a>
 			</div>
 
 		<div id="gigya-controls"></div>
-
-
-		<script>
-
-			// Initialize registration screenset
-			gigya.accounts.showScreenSet({
-				screenSet:'Survey-registration',
-				startScreen:'gigya-register-screen',
-				containerID:'gigya-controls'
-			});
-
-			// Handle successful login / registration
-			gigya.socialize.addEventHandlers({
-				onLogin:loginSuccess
-			});
-
-			function loginSuccess(eventObj) {
-
-				// Display thank you screen
-				gigya.accounts.showScreenSet({
-					screenSet:'Survey-registration',
-					startScreen:'gigya-thank-you-screen',
-					containerID:'gigya-controls'
-				});
-
-				// Hide login/registration tabs
-				document.getElementById("gigya-buttons").style.display = "none";
-
-			}
-
-		</script>
 
 		<div class="gigya-screen-set" id="Survey-registration" style="display: none;" data-on-pending-registration-screen="gigya-complete-registiration-screen"
 			 data-on-pending-verification-screen="gigya-email-verification-screen" data-on-pending-tfa-registration-screen="gigya-tfa-registration-screen"
@@ -1143,7 +1112,7 @@ function gmi_pre_render_form( $form ){
 			<div class="gigya-clear"></div>
 		</div>
 		</div>
-
+	</div>
 	<?php
 	}
 	return $form;
