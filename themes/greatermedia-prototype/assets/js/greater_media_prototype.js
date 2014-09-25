@@ -29,10 +29,6 @@
 		gigya.accounts.showScreenSet({screenSet: 'Survey-registration', startScreen:'gigya-login-screen', containerID:'gigya-controls'});
 	}
 
-	function updateProfile( accountData ){
-		gigya.accounts.setAccountInfo({ data: accountData });
-	}
-
 	/**
 	 * Checks to see if the user is logged in, changes the header appropriately.
 	 * @param response
@@ -40,6 +36,8 @@
 	function getAccountInfoResponse(response) {
 
 		if (response.errorCode == 0) { // Success, this user is logged in
+
+			//console.log(response);
 
 			// set hidden form fields
 			jQuery('input#gigya_UID').val(response.UID);

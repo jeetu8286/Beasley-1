@@ -1149,6 +1149,13 @@ function gmi_after_submission( $entry, $form ) {
 	
 	$gigya_json = json_encode( $gigya_profile );
 
+	?><script type="text/javascript">
+		document.addEventListener("DOMContentLoaded", theDomHasLoaded, false);
+		function theDomHasLoaded(e) {
+			gigya.accounts.setAccountInfo({ data: <?php echo $gigya_json; ?> });
+		}
+	</script><?php
+
 	// Generate Contest Entry if on contest and gigya user data exists
 	if ( is_singular( GreaterMediaContests::CPT_SLUG ) && ( !empty( $_POST['gigya_name'] ) && !empty( $_POST['gigya_UID'] ) ) ) {
 		$gf_contest_entry = GreaterMediaContestEntry::create_for_data( get_the_ID(), esc_html( $_POST['gigya_name'] ), esc_html( $_POST['gigya_UID'] ), 'gravity-forms', get_permalink() );
