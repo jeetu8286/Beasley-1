@@ -12,14 +12,17 @@ class GMP_Player{
 	public static function init() {
 
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'enqueue_scripts' ) );
-		add_action( 'display_podcasts', array( __CLASS__, 'render_podcasts' ) );
+		add_action( 'gmp_display_podcasts', array( __CLASS__, 'render_podcasts' ) );
+		add_action( 'gmp_audio', array( __CLASS__, 'podcast_audio_file' ) );
 
 	}
 
+	/**
+	 * A query to render a list of podcasts for the front end
+	 */
 	public static function render_podcasts() {
 
 		global $post;
-		$post_id = $post->ID;
 
 		$slug = get_post( $post )->post_name;
 
@@ -41,6 +44,7 @@ class GMP_Player{
 			);
 
 			echo '<a href="' . $episode_attr['link'] . '">' . $episode_attr['title'] . '</a>';
+			echo self::podcast_audio_file();
 
 		endwhile;
 
@@ -60,19 +64,49 @@ class GMP_Player{
 	}
 
 	/**
+	 * Helper function for the podcast file
+	 */
+	public static function podcast_audio_file() {
+
+		global $post;
+
+		$gmp_audio_url = get_post_meta( $post->ID, 'gmp_audio_file_meta_key', true );
+
+		echo '<audio controls>';
+		echo '<source src="' . esc_url( $gmp_audio_url ) . '" type="audio/mpeg">';
+		echo '</audio>';
+
+	}
+
+	/**
+	 * Generate an HTML5 audio player for the podcast
+	 */
+	public static function render_audio_player( $post_id ) {
+
+		$audio_file = self::podcast_audio_file();
+
+		echo '<audio controls>';
+		echo '<source src="' . $audio_file . '" type="audio/mpeg">';
+		echo '</audio>';
+
+	}
+
+	/**
 	 * Enqueue scripts and styles
 	 */
-	public function enqueue_scripts() {
+	public static function enqueue_scripts() {
 
 		$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
-		wp_register_script( 'gmpodcasts-js', GMPODCASTS_URL . "/assets/js/greater_media_podcasts{$postfix}.js", array( 'jquery' ), GMPODCASTS_VERSION, true );
+		wp_register_script( 'gmpodcasts-js', GMPODCASTS_URL . "/assets/js/gmp{$postfix}.js", array( 'jquery' ), GMPODCASTS_VERSION, true );
 		wp_register_script( 'mediaelement-js', GMPODCASTS_URL . "/assets/js/vendor/mediaelement-and-player{$postfix}.js", array( 'jquery' ), '2.15.1', true );
 
 		wp_enqueue_script( 'gmpodcasts-js' );
 		wp_enqueue_script( 'mediaelement-js' );
 
-		wp_enqueue_style( 'gmpodcasts-css', GMPODCASTS_URL . "/assets/css/greater_media_podcasts{$postfix}.css", array(), GMPODCASTS_VERSION );
+		wp_enqueue_style( 'gmpodcasts-css', GMPODCASTS_URL . "/assets/css/gmp{$postfix}.css", array(), GMPODCASTS_VERSION );
 
 	}
 
 }
+
+GMP_Player::init();
