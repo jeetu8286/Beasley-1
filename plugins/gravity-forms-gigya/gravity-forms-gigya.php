@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: Greater Media, Gravity Forms, Gigya Prototype
+Plugin Name: Greater Media Gravity Forms Integration
 Author: 10up
 License: gpl
 */
