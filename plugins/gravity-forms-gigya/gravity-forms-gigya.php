@@ -34,7 +34,7 @@ function gmi_pre_render_form( $form ){
 
 		<div id="gigya-controls"></div>
 
-		<div class="gigya-screen-set" id="Survey-registration" style="display: none;" data-on-pending-registration-screen="gigya-complete-registiration-screen"
+		<div class="gigya-screen-set" id="Contest-login" style="display: none;" data-on-pending-registration-screen="gigya-complete-registiration-screen"
 			 data-on-pending-verification-screen="gigya-email-verification-screen" data-on-pending-tfa-registration-screen="gigya-tfa-registration-screen"
 			 data-on-pending-tfa-verification-screen="gigya-tfa-verification-screen" data-on-pending-password-change-screen="gigya-password-change-required-screen"
 			 data-on-existing-login-identifier-screen="gigya-link-account-screen" data-on-pending-recent-login-screen="gigya-recent-login-screen"

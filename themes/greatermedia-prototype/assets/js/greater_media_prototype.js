@@ -1,4 +1,4 @@
-/*! Greater Media Prototype - v0.1.0 - 2014-09-25
+/*! Greater Media Prototype - v0.1.0 - 2014-09-26
  * http://wordpress.org/themes
  * Copyright (c) 2014; * Licensed GPLv2+ */
 (function (window, undefined) {
@@ -21,12 +21,12 @@
 
 	function showRegisterForm(e) {
 		e.preventDefault();
-		gigya.accounts.showScreenSet({screenSet: 'Survey-registration', startScreen:'gigya-register-screen', containerID:'gigya-controls'});
+		gigya.accounts.showScreenSet({screenSet: 'Contest-login', startScreen:'gigya-register-screen', containerID:'gigya-controls'});
 	}
 
 	function showLoginForm(e) {
 		e.preventDefault();
-		gigya.accounts.showScreenSet({screenSet: 'Survey-registration', startScreen:'gigya-login-screen', containerID:'gigya-controls'});
+		gigya.accounts.showScreenSet({screenSet: 'Contest-login', startScreen:'gigya-login-screen', containerID:'gigya-controls'});
 	}
 
 	/**
@@ -52,7 +52,7 @@
 		} else { // User not yet logged
 
 			// show login/registration form
-			gigya.accounts.showScreenSet({ screenSet:'Survey-registration', startScreen:'gigya-register-screen', containerID:'gigya-controls' });
+			gigya.accounts.showScreenSet({ screenSet:'Contest-login', startScreen:'gigya-register-screen', containerID:'gigya-controls' });
 
 			// disable gform fields
 			jQuery('form.hide input, form.hide textarea, form.hide select').attr('disabled','disabled');
@@ -68,7 +68,7 @@
 
 		// Display thank you screen
 		gigya.accounts.showScreenSet({
-			screenSet:'Survey-registration',
+			screenSet:'Contest-login',
 			startScreen:'gigya-thank-you-screen',
 			containerID:'gigya-controls'
 		});
