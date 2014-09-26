@@ -29,6 +29,9 @@
 			text-rendering: auto;
 			content: "\f028";
 		}
+		@include breakpoint(480){
+			display: initial;
+		}
 	}
 	.gmlp-audio-button {
 		@include border-radius(50%);
@@ -380,7 +383,7 @@
 			right: 0;
 			#player-actions {
 				@include transition(ease .25s);
-				left: 0;
+				left: -14px;
 			}
 			#now-playing-live{
 				width: 100px;
@@ -432,7 +435,7 @@
 			left: 0;
 			#player-actions {
 				@include transition(ease .25s);
-				right: 0;
+				right: -14px;
 			}
 			#now-playing-live{
 				margin: 10px 0 1em 20px;

@@ -40,4 +40,4 @@
 		audioPlayer();
 	});
 
-} )(jQuery, window);
+} )(jQuery,window);

@@ -31,7 +31,7 @@ class GMLP_Player {
 	public static function render_player() {
 
 		?>
-		<nav class="gmlp-nav">
+		<div class="gmlp-nav">
 
 			<button class="gmlp-nav-toggle"></button>
 
@@ -55,13 +55,11 @@ class GMLP_Player {
 					<!-- Player placeholder -->
 					<div id="td_container"></div>
 
-					<script type="text/javascript" src="http://playerservices.live.streamtheworld.com/api/idsync.js?mount=WRORFM" />
-
 				</div>
 
 			</div>
 
-		</nav>
+		</div>
 
 	<?php
 

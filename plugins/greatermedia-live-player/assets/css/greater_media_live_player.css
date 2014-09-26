@@ -1790,6 +1790,9 @@ Media Queries
     moz-osx-font-smoothing: grayscale;
     text-rendering: auto;
     content: "\f028"; }
+  @media screen and (max-width: 480px) {
+    .gmlp-nav .gmlp-nav-toggle {
+      display: initial; } }
 .gmlp-nav .gmlp-audio-button {
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
@@ -2108,7 +2111,7 @@ Media Queries
     -moz-transition: ease 0.25s;
     -o-transition: ease 0.25s;
     transition: ease 0.25s;
-    left: 0; }
+    left: -14px; }
   .gmlp-right .gmlp-nav .gmlp-menu #now-playing-live {
     width: 100px;
     margin: 0 0 1em 40px; }
@@ -2154,7 +2157,7 @@ Media Queries
     -moz-transition: ease 0.25s;
     -o-transition: ease 0.25s;
     transition: ease 0.25s;
-    right: 0; }
+    right: -14px; }
   .gmlp-left .gmlp-nav .gmlp-menu #now-playing-live {
     margin: 10px 0 1em 20px;
     text-align: right; }
