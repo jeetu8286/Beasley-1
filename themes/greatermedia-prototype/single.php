@@ -15,7 +15,6 @@ while ( have_posts() ):
 		<h1><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h1>
 		<?php the_content( 'read more >' ); ?>
 		<?php
-			GMI_Gigya_Share::display_share_buttons();
 
 			if ( is_singular( 'post' ) ) {
 				comments_template();

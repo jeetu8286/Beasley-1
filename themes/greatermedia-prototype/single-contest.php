@@ -41,10 +41,6 @@ while ( have_posts() ):
 		}
 
 		?>
-		<?php
-		GMI_Gigya_Share::display_share_buttons();
-
-		?>
 	</article>
 <?php
 endwhile;

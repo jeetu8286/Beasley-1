@@ -32,6 +32,7 @@ class GreaterMediaContestEntry {
 			$this->entry_reference   = get_post_meta( $this->post->ID, 'entry_reference', true );
 		} else {
 			$this->post = new WP_Post( new stdClass() );
+			$this->post->post_type = 'contest_entry';
 		}
 
 		if ( null !== $contest_id ) {
@@ -55,7 +56,6 @@ class GreaterMediaContestEntry {
 	 * Update the post an all associated metadata
 	 */
 	public function save() {
-
 		wp_update_post( $this->post, true );
 		update_post_meta( $this->post->ID, 'entrant_name', $this->entrant_name );
 		update_post_meta( $this->post->ID, 'entrant_reference', $this->entrant_reference );

@@ -55,9 +55,11 @@
  function gmiproto_scripts_styles() {
 	$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 
-	wp_enqueue_script( 'gmiproto', get_template_directory_uri() . "/assets/js/greater_media_prototype{$postfix}.js", array(), GMIPROTO_VERSION, true );
 
-	wp_enqueue_style( 'gmiproto', get_template_directory_uri() . "/assets/css/greater_media_prototype{$postfix}.css", array(), GMIPROTO_VERSION );
+	 wp_enqueue_script( 'gmiproto', get_template_directory_uri() . "/assets/js/greater_media_prototype{$postfix}.js", array( 'jquery' ), GMIPROTO_VERSION, true );
+
+	 wp_enqueue_style( 'gmiproto', get_template_directory_uri() . "/assets/css/greater_media_prototype{$postfix}.css", array(), GMIPROTO_VERSION );
+	 
  }
  add_action( 'wp_enqueue_scripts', 'gmiproto_scripts_styles' );
 
