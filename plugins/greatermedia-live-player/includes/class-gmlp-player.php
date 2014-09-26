@@ -31,20 +31,20 @@ class GMLP_Player {
 	public static function render_player() {
 
 		?>
-		<nav class="gmlp-nav">
+		<div class="gmlp-nav">
 
 			<button class="gmlp-nav-toggle"></button>
 
 			<div class="gmlp-menu">
 
 				<div class="container">
-					<div id="player-actions">
+					<div id="gmlp-actions">
 						<div id="playButton" class="gmlp-audio-button play" data-station="<?php do_action( 'radio_callsign' ); ?>"></div>
 						<button id="pauseButton" class="gmlp-audio-button" data-station="<?php do_action( 'radio_callsign' ); ?>"><i class="fa fa-pause"></i></button>
 						<button id="resumeButton" class="gmlp-audio-button" data-station="<?php do_action( 'radio_callsign' ); ?>"><i class="fa fa-play-circle-o"></i></button>
 					</div>
 
-					<div id="now-playing-live">
+					<div id="gmlp-live">
 						<div id="nowPlaying">
 							<div id="trackInfo">
 							</div>
@@ -55,13 +55,11 @@ class GMLP_Player {
 					<!-- Player placeholder -->
 					<div id="td_container"></div>
 
-					<script type="text/javascript" src="http://playerservices.live.streamtheworld.com/api/idsync.js?mount=WRORFM" />
-
 				</div>
 
 			</div>
 
-		</nav>
+		</div>
 
 	<?php
 
