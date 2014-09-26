@@ -1150,9 +1150,12 @@ function gmi_after_submission( $entry, $form ) {
 	$gigya_json = json_encode( $gigya_profile );
 
 	?><script type="text/javascript">
-		document.addEventListener("DOMContentLoaded", theDomHasLoaded, false);
-		function theDomHasLoaded(e) {
-			gigya.accounts.setAccountInfo({ data: <?php echo $gigya_json; ?> });
+		document.addEventListener("DOMContentLoaded", updateGigyaProfile, false);
+		function updateGigyaProfile(e) {
+			gigya.accounts.setAccountInfo({ data: <?php echo $gigya_json; ?>, callback: updateProfileAlert });
+		}
+		function updateProfileAlert(response){
+			console.log(response);
 		}
 	</script><?php
 
