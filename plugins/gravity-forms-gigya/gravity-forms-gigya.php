@@ -1357,7 +1357,7 @@ function add_gigya_fields( $field_groups ){
 	}
     return $field_groups;
 }
-add_filter( "gform_add_field_buttons", "add_gigya_fields", 10, 2 );
+//add_filter( "gform_add_field_buttons", "add_gigya_fields", 10, 2 );
 
 /**
  * Add Gigya Field prefix to custom field titles
@@ -1373,7 +1373,7 @@ function assign_title( $title, $type ) {
 		}
 	}
 }
-add_filter( "gform_field_type_title", "assign_title", 10, 2 );
+//add_filter( "gform_field_type_title", "assign_title", 10, 2 );
 
 /**
  * Handle each custom field type
@@ -1408,4 +1408,4 @@ function custom_field_input ( $input, $field, $value, $lead_id, $form_id ){
 
 	return $input;
 }
-add_action( "gform_field_input" , "custom_field_input", 10, 5 );
+//add_action( "gform_field_input" , "custom_field_input", 10, 5 );
