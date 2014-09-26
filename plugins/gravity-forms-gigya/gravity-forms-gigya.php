@@ -1059,7 +1059,7 @@ function gmi_pre_render_form( $form ){
 			 data-width="300">
 			<div class="gigya-layout-row">
 				<div class="gigya-composite-control gigya-spacer" data-units="4" style="height: 40px; display: block;"></div>
-				<label class="gigya-composite-control gigya-composite-control-label gigya-message">A confirmation email has been sent to you with a link to activate the account.</label>
+				<label class="gigya-composite-control gigya-composite-control-label gigya-message">Thank you!</label>
 				<div
 					class="gigya-composite-control gigya-spacer" data-units="5" style="height: 50px; display: block;"></div>
 			</div>
