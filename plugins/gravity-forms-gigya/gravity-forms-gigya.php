@@ -1155,7 +1155,7 @@ function gmi_after_submission( $entry, $form ) {
 			gigya.accounts.setAccountInfo({ data: <?php echo $gigya_json; ?>, callback: updateProfileAlert });
 		}
 		function updateProfileAlert(response){
-			console.log(response);
+			//console.log(response);
 		}
 	</script><?php
 
