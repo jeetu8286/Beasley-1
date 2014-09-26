@@ -49,7 +49,20 @@ class GMR_Gform {
 	}
 
 	function enqueue_scripts() {
-		wp_enqueue_script( 'gmiproto', plugins_url( null, __FILE__ ) . "/js/gravity-forms-gigya.js", array( 'jquery' ) );
+
+		// greatermedia.dev apiKey
+		$local_key = '3_e_T7jWO0Vjsd9y0WJcjnsN6KaFUBv6r3VxMKqbitvw-qKfmaUWysQKa1fra5MTb6';
+
+		// 10uplabs apiKey
+		$stage_key = '3_gJA-xhC3WxA2WIyT_OvOqDvNT846_cWIoyueHOCMO0RZwKyetbvytqlsg2PZQUcG';
+
+		?>
+		<script type='text/javascript' src='http://cdn.gigya.com/JS/socialize.js?apiKey=<?php echo $stage_key; ?>'>
+			{ enabledProviders: 'facebook,twitter,linkedin,yahoo,messenger' }
+		</script>
+		<?php
+		wp_enqueue_script( 'gravity-forms-gigya', plugins_url( null, __FILE__ ) . "/js/gravity-forms-gigya.js", array( 'jquery' ) );
+
 	}
 
 	/**

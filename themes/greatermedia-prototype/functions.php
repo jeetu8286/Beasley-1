@@ -49,12 +49,7 @@ include __DIR__ . '/includes/class-cpt-personality.php';
 	 wp_enqueue_script( 'gmiproto', get_template_directory_uri() . "/assets/js/greater_media_prototype{$postfix}.js", array( 'jquery' ), GMIPROTO_VERSION, true );
 
 	 wp_enqueue_style( 'gmiproto', get_template_directory_uri() . "/assets/css/greater_media_prototype{$postfix}.css", array(), GMIPROTO_VERSION );
-	 ?>
-	 <!-- socialize.js script should only be included once -->
-	<script type='text/javascript' src='http://cdn.gigya.com/JS/socialize.js?apiKey=3_e_T7jWO0Vjsd9y0WJcjnsN6KaFUBv6r3VxMKqbitvw-qKfmaUWysQKa1fra5MTb6'>
-		{ enabledProviders: 'facebook,twitter,linkedin,yahoo,messenger' }
-	</script>
-	 <?php
+
  }
  add_action( 'wp_enqueue_scripts', 'gmiproto_scripts_styles' );
  
