@@ -114,7 +114,6 @@ class GMR_Gform {
 								<div class="gigya-social-login">
 									<param name="width" value="300">
 									<param name="height" value="100">
-									<param name="enabledProviders" value="facebook,Twitter,linkedin,yahoo,messenger">
 									<param name="buttonsStyle" value="fullLogo">
 									<param name="buttonSize" value="35">
 									<param name="showWhatsThis" value="false">
@@ -378,7 +377,6 @@ class GMR_Gform {
 								<div class="gigya-social-login">
 									<param name="width" value="300">
 									<param name="height" value="100">
-									<param name="enabledProviders" value="facebook,Twitter,linkedin,google,yahoo,messenger">
 									<param name="buttonsStyle" value="fullLogo">
 									<param name="buttonSize" value="35">
 									<param name="showWhatsThis" value="false">
@@ -499,7 +497,6 @@ class GMR_Gform {
 										<div class="gigya-social-login">
 											<param name="width" value="333">
 											<param name="height" value="100">
-											<param name="enabledProviders" value="facebook,Twitter,linkedin,google,yahoo,microsoft">
 											<param name="buttonStyle" value="fullLogo">
 											<param name="buttonSize" value="">
 											<param name="showWhatsThis" value="false">
