@@ -8,6 +8,10 @@
 ?><!DOCTYPE html>
 <head>
 	<title>Greater Media Prototype</title>
+	<?php // mobile meta ?>
+	<meta name="HandheldFriendly" content="True">
+	<meta name="MobileOptimized" content="320">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	<?php wp_head(); ?>
 	<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
 </head>

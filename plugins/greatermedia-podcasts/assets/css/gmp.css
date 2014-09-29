@@ -1764,11 +1764,31 @@ Media Queries
  * Styles for Front End
  */
 .mejs-container {
-  position: relative;
+  position: absolute;
   font-family: Helvetica, Arial;
   text-align: left;
   vertical-align: top;
   text-indent: 0; }
+
+.gmlp-right .mejs-container {
+  top: 120px;
+  right: 134px;
+  z-index: 10002; }
+
+.gmlp-left .mejs-container {
+  top: 120px;
+  left: 134px;
+  z-index: 10002; }
+
+.gmlp-top .mejs-container {
+  top: 134px;
+  left: 120px;
+  z-index: 10002; }
+
+.gmlp-bottom .mejs-container {
+  bottom: 134px;
+  left: 120px;
+  z-index: 10002; }
 
 .me-plugin {
   position: absolute;
