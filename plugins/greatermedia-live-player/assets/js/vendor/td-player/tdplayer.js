@@ -179,10 +179,11 @@ function initControlsUi()
     //$(document).on('click', 'input[data-action="play-live"]', playLiveAudioStream);
 
 	// custom call to use button instead of input for styling purposes
-	var playButton, pauseButton, resumeButton;
+	var playButton, pauseButton, resumeButton, podcastButton;
 	playButton = $('#playButton');
 	pauseButton = $('#pauseButton');
 	resumeButton = $('#resumeButton');
+	podcastButton = $('.mejs-play');
 
 	$(document).on('click', '#playButton', playLiveAudioStream);
 
@@ -223,6 +224,12 @@ function initControlsUi()
 		resumeButton.show();
 		pauseStream();
     });
+
+	podcastButton.click(function() {
+		pauseButton.hide();
+		resumeButton.show();
+		pauseStream();
+	});
 
     resumeButton.click(function() {
 		resumeButton.hide();

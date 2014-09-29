@@ -100,6 +100,11 @@ class GMP_Settings {
 
 		?>
 
+		<p>
+			FUTURE: In order to properly submit a Podcast to iTunes, additional fields will need to be added to the Feed via XML. This area will serve as an options page for the editors at Greater Media to be able to choose the appropriate rating, iTunes Subtitle, author, owner info, podcast image, and more. Ref: <a href="https://www.apple.com/itunes/podcasts/specs.html">https://www.apple.com/itunes/podcasts/specs.html</a>.
+
+		</p>
+
 	<?php
 	}
 
