@@ -4,7 +4,7 @@
  *
  */
 
-(function (window, undefined) {
+jQuery(function($) {
 	'use strict';
 
 	function init() {
@@ -18,8 +18,8 @@
 	}
 
 	function bindRegisterLogin() {
-		jQuery('.register').on('click', showRegisterForm);
-		jQuery('.login').on('click', showLoginForm);
+		$('.register').on('click', showRegisterForm);
+		$('.login').on('click', showLoginForm);
 	}
 
 	function showRegisterForm(e) {
@@ -43,14 +43,14 @@
 			//console.log(response);
 
 			// set hidden form fields
-			jQuery('input#gigya_UID').val(response.UID);
-			jQuery('input#gigya_name').val(response.profile.firstName + ' ' + response.profile.lastName);
+			$('input#gigya_UID').val(response.UID);
+			$('input#gigya_name').val(response.profile.firstName + ' ' + response.profile.lastName);
 
 			// hide login/registration form
-			jQuery('#gigya-login-wrap').hide();
+			$('#gigya-login-wrap').hide();
 
 			// show gravity form
-			jQuery('form.hide').removeClass('hide');
+			$('form.hide').removeClass('hide');
 
 		} else { // User not yet logged
 
@@ -58,7 +58,7 @@
 			gigya.accounts.showScreenSet({ screenSet:'Contest-login', startScreen:'gigya-register-screen', containerID:'gigya-controls' });
 
 			// disable gform fields
-			jQuery('form.hide input, form.hide textarea, form.hide select').attr('disabled','disabled');
+			$('form.hide input, form.hide textarea, form.hide select').attr('disabled','disabled');
 
 		}
 	}
@@ -77,14 +77,14 @@
 		});
 
 		// hide login/registration form
-		jQuery('#gigya-login-wrap').hide();
+		$('#gigya-login-wrap').hide();
 
 		// show gravity form
-		jQuery('form.hide input, form.hide textarea, form.hide select').removeAttr('disabled');
-		jQuery('form.hide').removeClass('hide');
+		$('form.hide input, form.hide textarea, form.hide select').removeAttr('disabled');
+		$('form.hide').removeClass('hide');
 
 	}
 
 	init();
 
-})(this);
+});
