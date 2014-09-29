@@ -12,6 +12,7 @@
 	<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
 </head>
 <body <?php body_class(); ?>>
+	<?php do_action( 'show_breaking_news_banner' ); ?>
 <main>
 	<header class="page-header">
 		<div class="account">

@@ -5,8 +5,9 @@
  * @package Greater Media Prototype
  * @since 0.1.0
  */
- 
+
  get_header();
+ 	do_action( 'show_latest_breaking_news_item' );
 
 	while( have_posts() ):
 		the_post();

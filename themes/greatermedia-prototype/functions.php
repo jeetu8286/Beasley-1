@@ -11,7 +11,7 @@
  * @package Greater Media Prototype
  * @since 0.1.0
  */
- 
+
  // Useful global constants
 define( 'GMIPROTO_VERSION', '0.1.0' );
 
@@ -37,7 +37,7 @@ include __DIR__ . '/includes/class-cpt-personality.php';
 	load_theme_textdomain( 'gmiproto', get_template_directory() . '/languages' );
  }
  add_action( 'after_setup_theme', 'gmiproto_setup' );
- 
+
  /**
   * Enqueue scripts and styles for front-end.
   *
@@ -47,17 +47,17 @@ include __DIR__ . '/includes/class-cpt-personality.php';
 	$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 
 	wp_enqueue_script( 'gmiproto', get_template_directory_uri() . "/assets/js/greater_media_prototype{$postfix}.js", array(), GMIPROTO_VERSION, true );
-		
+
 	wp_enqueue_style( 'gmiproto', get_template_directory_uri() . "/assets/css/greater_media_prototype{$postfix}.css", array(), GMIPROTO_VERSION );
  }
  add_action( 'wp_enqueue_scripts', 'gmiproto_scripts_styles' );
- 
+
  /**
   * Add humans.txt to the <head> element.
   */
  function gmiproto_header_meta() {
 	$humans = '<link type="text/plain" rel="author" href="' . get_template_directory_uri() . '/humans.txt" />';
-	
+
 	echo apply_filters( 'gmiproto_humans', $humans );
  }
  add_action( 'wp_head', 'gmiproto_header_meta' );
