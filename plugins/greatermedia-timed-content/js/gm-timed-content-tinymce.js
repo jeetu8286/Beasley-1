@@ -118,8 +118,7 @@
 				return '';
 
 			}
-
-//debugger;
+			
 			var show_time = new Date(parse_shortcode_attribute(node.dataset.wpviewText, 'show')),
 				hide_time = new Date(parse_shortcode_attribute(node.dataset.wpviewText, 'hide'));
 
