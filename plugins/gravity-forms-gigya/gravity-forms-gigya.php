@@ -54,7 +54,7 @@ class GMR_Gform {
 		$local_key = '3_e_T7jWO0Vjsd9y0WJcjnsN6KaFUBv6r3VxMKqbitvw-qKfmaUWysQKa1fra5MTb6';
 
 		// 10uplabs apiKey
-		$stage_key = '3_gJA-xhC3WxA2WIyT_OvOqDvNT846_cWIoyueHOCMO0RZwKyetbvytqlsg2PZQUcG';
+		$stage_key = '3_Q1R8pTStLruOUIXtUXTq1Eie0nXW8DTSft8tjh0OR9qaSwsIKAOF9OZZgfwM-Md0';
 
 		?>
 		<script type='text/javascript' src='http://cdn.gigya.com/JS/socialize.js?apiKey=<?php echo $stage_key; ?>'>
