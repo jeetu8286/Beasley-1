@@ -150,25 +150,7 @@
 			};
 
 			self.editor.windowManager.open(time_restricted_editor_popup);
-
-				//self.show_xxx();
-			//var gallery = wp.media.gallery,
-			//	self = this,
-			//	frame, data;
-			//
-			//data = window.decodeURIComponent($(node).attr('data-wpview-text'));
-			//frame = gallery.edit(data);
-			//
-			//frame.state('gallery-edit').on('update', function (selection) {
-			//	var shortcode = gallery.shortcode(selection).string();
-			//	$(node).attr('data-wpview-text', window.encodeURIComponent(shortcode));
-			//	wp.mce.views.refreshView(self, shortcode);
-			//});
-			//
-			//frame.on('close', function () {
-			//	frame.detach();
-			//});
-
+			
 		}
 
 	});
