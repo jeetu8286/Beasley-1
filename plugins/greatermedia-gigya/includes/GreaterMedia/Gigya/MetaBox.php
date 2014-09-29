@@ -56,7 +56,8 @@ class MetaBox {
 		'title'     => 'Meta Box',
 		'post_type' => 'member_query',
 		'context'   => 'normal',
-		'priority'  => 'default'
+		'priority'  => 'default',
+		'template'  => null,
 	);
 
 	/**
@@ -231,7 +232,7 @@ class MetaBox {
 	 * @return string Expanded path to template file.
 	 */
 	public function get_template_path( $path ) {
-		return GMR_GIGYA_PATH . "/../../../templates/metaboxes/{$path}.php";
+		return GMR_GIGYA_PATH . "/templates/metaboxes/{$path}.php";
 	}
 
 }

@@ -130,7 +130,7 @@ abstract class AjaxHandler {
 				if ( is_null( $result ) ) {
 					$result = true;
 				}
-				wp_send_json_success( true, $data );
+				$this->send_json_success( $result );
 			} else {
 				// json was already sent, just quit
 				// only for PHPUnit since send_success already
@@ -139,7 +139,7 @@ abstract class AjaxHandler {
 			}
 		} catch ( \Exception $e ) {
 			// caught an exception, so send it as JSON
-			wp_send_json_error( false, $e->getMessage() );
+			$this->send_json_error( false, $e->getMessage() );
 		}
 	}
 
@@ -158,7 +158,7 @@ abstract class AjaxHandler {
 		if ( wp_verify_nonce( $nonce, $this->get_action() ) !== false ) {
 			return $this->has_permissions();
 		} else {
-			wp_send_json_error( false, 'invalid_nonce' );
+			$this->send_json_error( 'invalid_nonce' );
 			return false;
 		}
 	}
@@ -179,7 +179,7 @@ abstract class AjaxHandler {
 			$valid_perms = is_user_logged_in() && $this->has_capabilities();
 
 			if ( ! $valid_perms ) {
-				wp_send_json_error( false, 'invalid_permissions' );
+				$this->send_json_error( 'invalid_permissions' );
 			}
 
 			return $valid_perms;
@@ -205,7 +205,7 @@ abstract class AjaxHandler {
 		$valid_caps = current_user_can( 'manage_options' );
 
 		if ( ! $valid_caps ) {
-			wp_send_json_error( false, 'invalid_capabilities' );
+			wp_send_json_error( 'invalid_capabilities' );
 		}
 
 		return $valid_caps;
@@ -284,6 +284,42 @@ abstract class AjaxHandler {
 	public function quit() {
 		if ( ! defined( 'PHPUNIT_RUNNER' ) ) {
 			die();
+		}
+	}
+
+	/**
+	 * Helper that only sends json success if not running inside PHPUnit. This
+	 * helper prevent PHPUnit from quitting mid test as sending json
+	 * exits immediately.
+	 *
+	 * The response data corresponds to the result of the concrete ajax
+	 * handler.
+	 *
+	 * @access public
+	 * @param mixed $data The success response data
+	 * @return void
+	 */
+	public function send_json_success( $data ) {
+		$this->did_send_json = true;
+		if ( ! defined( 'PHPUNIT_RUNNER' ) ) {
+			wp_send_json_success( $data );
+		}
+	}
+
+	/*
+	 * Helper that only sends json error if not running inside PHPUnit. This
+	 * helper prevent PHPUnit from quitting mid test as sending json
+	 * exits immediately.
+	 *
+	 * @access public
+	 * @param mixed $data The error response data
+	 * @return void
+	 */
+	public function send_json_error( $data ) {
+		$this->did_send_json = true;
+
+		if ( ! defined( 'PHPUNIT_RUNNER' ) ) {
+			wp_send_json_error( $data );
 		}
 	}
 
