@@ -14,9 +14,6 @@ while ( have_posts() ):
 	<article <?php post_class(); ?>>
 		<h1><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h1>
 		<?php the_content( 'read more >' ); ?>
-		<?php
-		GMI_Gigya_Share::display_share_buttons();
-		?>
 	</article>
 <?php
 endwhile;

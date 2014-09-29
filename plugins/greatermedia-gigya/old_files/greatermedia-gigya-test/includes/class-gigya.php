@@ -2,7 +2,7 @@
 class GMI_Gigya {
 
 	public static function hooks() {
-		add_action( 'wp_head', array( __CLASS__, 'gigya_script' ) );
+		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'gigya_script' ) );
 	}
 
 	public static function gigya_script() {
