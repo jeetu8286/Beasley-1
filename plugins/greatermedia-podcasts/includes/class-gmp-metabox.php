@@ -78,24 +78,22 @@ class GMP_Meta {
 		wp_nonce_field( 'gmp_episodes_meta_box', 'gmp_episodes_meta_box_nonce' );
 
 		// Use get_post_meta to retrieve an existing value from the database.
-
+		$gmp_file = get_post_meta( $post->ID, 'gmp_audio_file_meta_key', true );
 
 		?>
 
 		<div class="gmp-meta-row">
 			<div class="gmp-meta-row-content gmp-upload">
-				<?php if( $gmp_audio_url == true ) { ?>
-					<div class="gmp-meta-row-label">
-						<?php _e( 'Audio URL: ', 'gmpodcasts' ); ?>
-					</div>
-					<div class="gmp-audio-location">
-						<?php if ( isset ( $gmp_audio_url  ) ) echo esc_url_raw( $gmp_audio_url  ) ; ?>
-					</div>
-				<?php } elseif( $gmp_audio_url == false ) { ?>
-					<input type="text" name="gmp_audio_file" id="gmp_audio_file" value="<?php if ( isset ( $gmp_audio_url ) ) echo esc_url_raw( $gmp_audio_url ) ; ?>" placeholder="audio file url" />
-				<?php } ?>
-				<div class="gmp-upload-button">
-					<input type="button" class="button" name="gmp_audio_file_button" id="gmp_audio_file_button" value="<?php _e( 'Upload Audio', 'gmpodcasts' )?>" />
+				<label for="gmp_audio_file" class="gmp-meta-row-label"><?php _e( 'Audio URL:', 'gmpodcasts' ); ?></label>
+				<input type="hidden" id="gmp_audio_file" name="gmp_audio_file" value="<?php if ( isset ( $gmp_file) ) echo esc_url_raw( $gmp_file ); ?>" />
+				<div id="gmp-audio-location" class="hidden">
+					<input type="text" id="gmp_audio_file_location" name="gmp_audio_file_location" value="<?php if ( isset ( $gmp_file ) ) echo esc_url_raw( $gmp_file ); ?>" />
+				</div>
+				<div id="gmp-audio-upload-button" class="hide-if-no-js gmp-upload-button">
+					<a title="Remove Footer Image" href="javascript:;" id="gmp_audio_file_button" class="button"><?php _e( 'Upload Audio', 'gmpodcasts' ); ?></a>
+				</div>
+				<div id="gmp-audio-remove-button" class="hidden gmp-upload-button">
+					<a title="Remove Footer Image" href="javascript:;" id="gmp_audio_file_remove" class="button"><?php _e( 'Remove featured image', 'gmpodcasts' ); ?></a>
 				</div>
 			</div>
 		</div>
@@ -111,11 +109,8 @@ class GMP_Meta {
 
 		$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 
-		wp_register_script( 'gmp-admin-js', GMPODCASTS_URL . "/assets/js/gmp_admin{$postfix}.js", array( 'jquery' ), GMPODCASTS_VERSION, true );
-
-		wp_enqueue_script('media-upload');
-		wp_enqueue_script( 'gmp-admin-js' );
-
+		wp_enqueue_media();
+		wp_enqueue_script( 'gmp-admin-js', GMPODCASTS_URL . "/assets/js/gmp_admin{$postfix}.js", array( 'jquery' ), GMPODCASTS_VERSION, true );
 		wp_enqueue_style( 'gmp-admin-style', GMPODCASTS_URL . "/assets/css/gmp_admin{$postfix}.css", array(), GMPODCASTS_VERSION );
 
 	}
