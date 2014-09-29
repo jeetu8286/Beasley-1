@@ -102,6 +102,27 @@
 
 		edit: function (node) {
 
+			function parse_shortcode_attribute(shortcode, attribute_name) {
+
+				if(undefined === shortcode || undefined === attribute_name) {
+					return '';
+				}
+
+				var matches = decodeURIComponent(shortcode).match(attribute_name + '="([^\"]*)"');
+
+				if(undefined !== matches[1]) {
+					return matches[1];
+				}
+
+				// Default
+				return '';
+
+			}
+
+//debugger;
+			var show_time = new Date(parse_shortcode_attribute(node.dataset.wpviewText, 'show')),
+				hide_time = new Date(parse_shortcode_attribute(node.dataset.wpviewText, 'hide'));
+
 			var time_restricted_editor_popup = {
 
 				title: 'Timed Content',
@@ -112,13 +133,13 @@
 						type : 'textbox',
 						name : 'show',
 						label: 'Show content on',
-						value: ''
+						value: show_time.format(GreaterMediaTimedContent.formats.mce_view_date)
 					},
 					{
 						type : 'textbox',
 						name : 'hide',
 						label: 'Hide content on',
-						value: ''
+						value: hide_time.format(GreaterMediaTimedContent.formats.mce_view_date)
 					},
 					{
 						type: 'textbox',
