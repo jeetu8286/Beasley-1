@@ -14,21 +14,27 @@ if ( !class_exists( "Breaking_News" ) ) {
 	    	add_action( 'show_breaking_news_banner', array( $this, 'show_breaking_news_banner' ) );
 	    	add_action( 'show_latest_breaking_news_item', array( $this, 'show_latest_breaking_news_item' ) );
 	    	add_action( 'wp_enqueue_scripts', array( $this, 'breaking_news_enqueue_scripts' ) );
+	    	add_action( 'admin_enqueue_scripts', array( $this, 'breaking_news_admin_enqueue_scripts' ) );
 	    }
 
 	    /**
-	     * Enqueue supporing scripts.
+	     * Enqueue supporing admin scripts.
+	     *
+	     * @return void
+	     */
+	    public function breaking_news_admin_enqueue_scripts() {
+	    	if ( 'post' === get_post_type() ) {
+				wp_enqueue_script( 'breaking-news-admin-js', BREAKING_NEWS_URL . 'assets/js/breaking-news.min.js', array( 'jquery'), BREAKING_NEWS_VERSION, true );
+			}
+		}
+
+	    /**
+	     * Enqueue supporing front-end scripts.
 	     *
 	     * @return void
 	     */
 	    public function breaking_news_enqueue_scripts() {
-	    	/*
-	    	if ( is_Admin() && 'post' === get_post_type() ) {
-				wp_enqueue_script( 'breaking-news-admin-js', BREAKING_NEWS_URL . 'assets/js/breaking-news.min.js', array( 'jquery'), false, true );
-			}
-			*/
-
-	        wp_enqueue_style( 'breaking-news',
+	    	wp_enqueue_style( 'breaking-news',
 				BREAKING_NEWS_URL . 'assets/css/breaking-news.min.css',
 				array(), BREAKING_NEWS_VERSION, 'all' );
 		}
@@ -71,7 +77,7 @@ if ( !class_exists( "Breaking_News" ) ) {
 		}
 
 		/**
-		 * Handle saving the post meta.
+		 * Save the post meta.
 		 *
 		 * @param  int $post_id
 		 * @return void
@@ -94,6 +100,11 @@ if ( !class_exists( "Breaking_News" ) ) {
 			$is_breaking_news = $this->sanitize_boolean( $_POST['breaking_news_option'] );
 			$show_site_wide_notification = $this->sanitize_boolean( $_POST['site_wide_notification_option'] );
 
+			// If the post isn't breaking news, don't enable the site-wide notification either.
+			if ( 0 === $is_breaking_news ) {
+				$show_site_wide_notification = 0;
+			}
+
 			update_post_meta( $post_id, '_is_breaking_news', $is_breaking_news );
 			update_post_meta( $post_id, '_show_in_site_wide_notification', $show_site_wide_notification );
 
@@ -115,12 +126,15 @@ if ( !class_exists( "Breaking_News" ) ) {
 				$show_banner = self::sanitize_boolean( get_post_meta( $post->ID, '_show_in_site_wide_notification', true ) );
 
 				if ( 1 === $show_banner ) {
+					setup_postdata( $post );
 			?>
-				<div id="breaking-news-banner">
-					<div class="breaking-news-item">
-						<a href="<?php echo get_permalink( $post->ID ); ?>"><?php echo get_the_title( $post->ID ); ?></a>
+					<div id="breaking-news-banner">
+						<div class="breaking-news-item">
+							<a href="<?php the_permalink(); ?>">
+								<span class="title"><?php the_title(); ?>:</span> <span class="excerpt"><?php echo $this->get_post_excerpt( $post, 25 ); ?></span>
+							</a>
+						</div>
 					</div>
-				</div>
 			<?php
 				}
 			}
@@ -135,47 +149,49 @@ if ( !class_exists( "Breaking_News" ) ) {
 			if ( function_exists( 'breaking_news_get_latest_item' ) ) {
 				breaking_news_get_latest_item();
 			} else {
-				$args = array(
-					'post_type' => 'post',
-					'posts_per_page' => 1,
-					'order' => 'DESC',
-					'orderby' => 'post_date',
-					'meta_query' => array(
-						array(
-							'key'     => '_is_breaking_news',
-							'value'   => 1,
-							'compare' => '=',
-						),
-					),
-				);
+				$post = $this->get_latest_breaking_news_item();
 
-				$query = new WP_Query( $args );
-
-				if ( $query->have_posts() ) {
+				if ( ! empty( $post ) ) {
+					setup_postdata( $post );
 				?>
-					<div id="latest-breaking-news">
-
-				<?php
-
-					while ( $query->have_posts() ) {
-						$query->the_post()
-
-					?>
-						<article class="breaking-news-item">
+					<div id="latest-breaking-news-item">
+						<div class="breaking-news-item">
 							<h2><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
-							<?php the_excerpt( 'read more >' ); ?>
-						</article>
-					<?php
-					}
-					?>
+							<p><?php echo $this->get_post_excerpt( $post, 50 ); ?></p>
 						</div>
-					<?php
-
-					wp_reset_postdata();
+					</div>
+				<?php
 				}
 			}
 		}
 
+		/**
+		 * Get the excerpt for a breaking news post.
+		 *
+		 * @param  WP_Post $post
+		 * @param  int $num_words
+		 * @return string
+		 */
+		function get_post_excerpt( $post = null, $num_words = 50 ) {
+			$excerpt = '';
+
+			if ( ! empty( $post ) ) {
+				// Get the custom excerpt field if not empty
+				if ( !empty( $post->post_excerpt ) ) {
+					$excerpt = get_the_excerpt();
+
+					// Trim at a reasonable number of words.
+					$excerpt = wp_trim_words( $excerpt, 100 );
+				} else {
+					$content = get_the_content();
+					$content = strip_shortcodes( $content );
+
+					$excerpt = wp_trim_words( $content, $num_words );
+				}
+			}
+
+			return wp_kses_post( $excerpt );
+		}
 		/**
 		 * Get latest breaking news item.
 		 *
