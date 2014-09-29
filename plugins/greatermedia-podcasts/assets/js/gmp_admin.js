@@ -46,6 +46,7 @@ function renderMediaUploader( $ ) {
 
 		$( '#gmp_audio_file' ).val( json.url );
 		$( '#gmp_audio_file_location' ).val( json.url );
+		$( '#gmp_audio_file_size' ).val( json.size );
 
 	});
 
