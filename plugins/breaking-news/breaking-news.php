@@ -51,13 +51,30 @@ include __DIR__ . '/includes/class-breaking-news.php';
  *
  * @return bool
  */
-function breaking_news_item_is_showing() {
+function breaking_news_item_is_available() {
 	if ( ! empty( Breaking_News::get_latest_breaking_news_item() ) ) {
 		return true;
 	}
 
 	return false;
 }
+
+/**
+ * Return an array of breaking news items. Use this with post__not_in to remove breaking news posts from other queries.
+ *
+ * @return array
+ */
+function breaking_news_get_latest_post_ids() {
+	$post_ids = array();
+	$post = Breaking_News::get_latest_breaking_news_item();
+
+	if ( ! empty( $post ) ) {
+		$post_ids[] = $post->ID;
+	}
+
+	return $post_ids;
+}
+
 
 /**
  * Default initialization for the plugin:
