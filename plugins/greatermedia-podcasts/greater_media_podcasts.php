@@ -56,6 +56,7 @@ function gmpodcasts_init() {
 require_once( __DIR__ . '/includes/class-gmp-cpt.php' );
 require_once( __DIR__ . '/includes/class-gmp-metabox.php' );
 require_once( __DIR__ . '/includes/class-gmp-player.php' );
+require_once( __DIR__ . '/includes/class-gmp-options.php' );
 
 /**
  * Activate the plugin
