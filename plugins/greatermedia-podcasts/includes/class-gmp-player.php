@@ -39,12 +39,13 @@ class GMP_Player{
 		if ( $podcasts->have_posts() ) : while ( $podcasts->have_posts() ) : $podcasts->the_post();
 
 			$episode_attr = array(
-				'link' => get_the_permalink(),
-				'title' => get_the_title()
+				'link'              => get_the_permalink(),
+				'title'             => get_the_title()
 			);
 
-			echo '<a href="' . $episode_attr['link'] . '">' . $episode_attr['title'] . '</a>';
+			echo esc_html( $episode_attr['title'] );
 			echo self::podcast_audio_file();
+			echo esc_html( $slug );
 
 		endwhile;
 
