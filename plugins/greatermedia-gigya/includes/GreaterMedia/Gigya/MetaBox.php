@@ -56,7 +56,8 @@ class MetaBox {
 		'title'     => 'Meta Box',
 		'post_type' => 'member_query',
 		'context'   => 'normal',
-		'priority'  => 'default'
+		'priority'  => 'default',
+		'template'  => null,
 	);
 
 	/**
@@ -78,7 +79,7 @@ class MetaBox {
 	public function register() {
 		add_meta_box(
 			$this->get_id(),
-			__( $this->get_title(), $this->get_text_domain() ),
+			$this->get_title(),
 			$this->get_callback(),
 			$this->get_post_type(),
 			$this->get_context(),
@@ -135,7 +136,7 @@ class MetaBox {
 		if ( wp_verify_nonce( $nonce_value, $nonce_action ) === false ) {
 			if ( ! defined( 'PHPUNIT_RUNNER' ) ) {
 				wp_die(
-					__( 'You do not have sufficient permissions to access this page.', $this->get_text_domain() )
+					__( 'You do not have sufficient permissions to access this page.', 'gmr_gigya' )
 				);
 			} else {
 				return false;
@@ -223,16 +224,6 @@ class MetaBox {
 		return array();
 	}
 
-	/**
-	 * Returns the localization text domain.
-	 *
-	 * @access public
-	 * @return string
-	 */
-	public function get_text_domain() {
-		return 'gmr_gigya';
-	}
-
 	/* helpers */
 	/**
 	 * Returns the full path to the template file specified.
@@ -241,7 +232,7 @@ class MetaBox {
 	 * @return string Expanded path to template file.
 	 */
 	public function get_template_path( $path ) {
-		return __DIR__ . "/../../../templates/metaboxes/{$path}.php";
+		return GMR_GIGYA_PATH . "/templates/metaboxes/{$path}.php";
 	}
 
 }

@@ -155,6 +155,7 @@ class GMP_CPT {
 			'rewrite'       => false,
 			'show_ui'       => true,
 			'show_in_menu'  => true,
+			'show_admin_column' => true,
 			'show_tagcloud' => true,
 			'hierarchical'  => true,
 

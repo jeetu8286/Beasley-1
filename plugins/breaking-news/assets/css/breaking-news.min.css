@@ -1,0 +1,5 @@
+/*! Breaking News - v0.1.0
+ * http://wordpress.org/plugins
+ * Copyright (c) 2014; * Licensed GPLv2+ */
+
+#breaking-news-banner{width:100%;background:#D23026;padding:.5em 1em;color:#fff}#breaking-news-banner a,#breaking-news-banner a:link,#breaking-news-banner a:visited,#breaking-news-banner a:hover{color:#fff;text-decoration:none}#latest-breaking-news{border:3px solid #D23026;padding:1em}

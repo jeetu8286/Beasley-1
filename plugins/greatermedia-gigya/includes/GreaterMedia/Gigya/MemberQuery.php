@@ -68,17 +68,13 @@ class MemberQuery {
 			$json = array();
 		}
 
-		if ( ! array_key_exists( 'constraints', $json ) ) {
-			$json['constraints'] = array();
-		}
+		$defaults = array(
+			'constraints'  => array(),
+			'query'        => '',
+			'direct_query' => ''
+		);
 
-		if ( ! array_key_exists( 'query', $json ) ) {
-			$json['query'] = '';
-		}
-
-		if ( ! array_key_exists( 'direct_query', $json ) ) {
-			$json['direct_query'] = '';
-		}
+		$json = wp_parse_args( $json, $defaults );
 
 		return $json;
 	}

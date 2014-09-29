@@ -42,7 +42,7 @@ class Plugin {
 	 */
 	public function enable() {
 		add_action( 'init', array( $this, 'initialize' ) );
-		add_action( 'add_meta_boxes_member_query', array( $this, 'initialize_meta_boxes' ));
+		add_action( 'add_meta_boxes_member_query', array( $this, 'initialize_meta_boxes' ) );
 		add_action( 'save_post', array( $this, 'publish_member_query' ), 10, 2 );
 		add_action( 'admin_notices', array( $this, 'show_flash' ) );
 
@@ -84,7 +84,9 @@ class Plugin {
 		wp_dequeue_script( 'autosave' );
 		wp_enqueue_script(
 			'query_builder',
-			plugins_url( 'js/query_builder.js?cache=' . strtotime( 'now' ), $this->plugin_file )
+			plugins_url( 'js/query_builder.js', $this->plugin_file ),
+			array(),
+			GMR_GIGYA_VERSION
 		);
 
 		wp_localize_script(
@@ -92,7 +94,7 @@ class Plugin {
 		);
 
 		$meta = array(
-			'ajaxurl' => admin_url( 'admin-ajax.php' ),
+			'ajaxurl'       => admin_url( 'admin-ajax.php' ),
 			'preview_nonce' => wp_create_nonce( 'preview_member_query' )
 		);
 
@@ -104,7 +106,9 @@ class Plugin {
 	function initialize_styles( $member_query ) {
 		wp_enqueue_style(
 			'gmr_gigya',
-			plugins_url( 'css/gmr_gigya.css?cache=' . strtotime( 'now' ), $this->plugin_file )
+			plugins_url( 'css/gmr_gigya.css', $this->plugin_file ),
+			array(),
+			GMR_GIGYA_VERSION
 		);
 	}
 
@@ -122,7 +126,7 @@ class Plugin {
 			$this->verify_meta_box_nonces();
 
 			try {
-				$member_query      = new MemberQuery( $post_id );
+				$member_query = new MemberQuery( $post_id );
 				$member_query->build_and_save();
 
 				$segment_publisher = new SegmentPublisher( $member_query );
@@ -136,7 +140,7 @@ class Plugin {
 	public function show_flash() {
 		$flash = $this->get_flash();
 		if ( $flash !== false ) {
-			include dirname( $this->plugin_file ) . '/templates/flash.php';
+			include GMR_GIGYA_PATH . '/templates/flash.php';
 			$this->clear_flash();
 		}
 	}
@@ -161,7 +165,7 @@ class Plugin {
 			$this->meta_boxes['preview'] = $this->meta_box_for(
 				array(
 					'id'       => 'preview',
-					'title'    => 'Preview Results',
+					'title'    => __( 'Preview Results', 'gmr_gigya' ),
 					'context'  => 'side',
 					'priority' => 'default',
 					'template' => 'preview',
@@ -172,7 +176,7 @@ class Plugin {
 			$this->meta_boxes['direct_query'] = $this->meta_box_for(
 				array(
 					'id'       => 'direct_query',
-					'title'    => 'Direct Query',
+					'title'    => __( 'Direct Query', 'gmr_gigya' ),
 					'context'  => 'side',
 					'priority' => 'low',
 					'template' => 'direct_query',
@@ -183,7 +187,7 @@ class Plugin {
 			$this->meta_boxes['query_builder'] = $this->meta_box_for(
 				array(
 					'id'       => 'query_builder',
-					'title'    => 'Gigya Social',
+					'title'    => __( 'Gigya Social', 'gmr_gigya' ),
 					'context'  => 'normal',
 					'priority' => 'default',
 					'template' => 'query_builder',
@@ -201,6 +205,7 @@ class Plugin {
 	 * @access public
 	 * @param array $params The params to pass to the meta box object
 	 * @param MemberQuery $member_query The member query associated with the meta box.
+	 * @return MetaBox
 	 */
 	public function meta_box_for( $params, $member_query ) {
 		$meta_box = new MetaBox( $member_query );
