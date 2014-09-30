@@ -85,6 +85,7 @@ class GreaterMediaTimedContent {
 			);
 
 			wp_enqueue_script( 'date-format', trailingslashit( GREATER_MEDIA_TIMED_CONTENT_URL ) . 'js/vendor/date.format/date.format.js', array(), null, true );
+			wp_enqueue_script( 'date-format', trailingslashit( GREATER_MEDIA_TIMED_CONTENT_URL ) . 'js/vendor/date.format/date-toisostring.js', array(), null, true );
 			wp_enqueue_script( 'greatermedia-tc-js', trailingslashit( GREATER_MEDIA_TIMED_CONTENT_URL ) . 'js/greatermedia-timed-content.js', array(
 				'jquery',
 				'date-format'
