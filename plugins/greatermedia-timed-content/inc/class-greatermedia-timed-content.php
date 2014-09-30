@@ -75,8 +75,14 @@ class GreaterMediaTimedContent {
 					'tinymce'         => file_get_contents( trailingslashit( GREATER_MEDIA_TIMED_CONTENT_PATH ) . 'tpl/greatermedia-tinymce-view-template.js' ),
 				),
 				'rendered_templates' => array(),
-				'strings'            => array(
-					'never' => __( 'Never', 'greatermedia-timed-content' ),
+				'strings' => array(
+					'never'           => __( 'Never', 'greatermedia-timed-content' ),
+					'Ok'              => __( 'Ok' ),
+					'Cancel'          => __( 'Cancel' ),
+					'Timed Content'   => __( 'Timed Content', 'greatermedia-timed-content' ),
+					'Show content on' => __( 'Show content on', 'greatermedia-timed-content' ),
+					'Hide content on' => __( 'Hide content on', 'greatermedia-timed-content' ),
+					'Content'         => __( 'Content', 'greatermedia-timed-content' ),
 				),
 				'formats'            => array(
 					'date'      => __( 'M j, Y @ G:i' ),

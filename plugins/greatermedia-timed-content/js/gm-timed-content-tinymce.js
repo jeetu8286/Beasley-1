@@ -60,20 +60,20 @@
 			onclick: function () {
 				var time_restricted_editor_popup = {
 
-					title: 'Timed Content',
+					title: GreaterMediaTimedContent.strings['Timed Content'],
 
 					body: [
 
 						{
 							type : 'textbox',
 							name : 'show',
-							label: 'Show content on',
+							label: GreaterMediaTimedContent.strings['Show content on'],
 							value: ''
 						},
 						{
 							type : 'textbox',
 							name : 'hide',
-							label: 'Hide content on',
+							label: GreaterMediaTimedContent.strings['Hide content on'],
 							value: ''
 						}
 
@@ -163,19 +163,19 @@
 
 			var time_restricted_editor_popup = {
 
-				title: 'Timed Content',
+				title: GreaterMediaTimedContent.strings['Timed Content'],
 
 				body: [
 					{
 						type : 'textbox',
 						name : 'show',
-						label: 'Show content on',
+						label: GreaterMediaTimedContent.strings['Show content on'],
 						value: show_time.format(GreaterMediaTimedContent.formats.mce_view_date)
 					},
 					{
 						type : 'textbox',
 						name : 'hide',
-						label: 'Hide content on',
+						label: GreaterMediaTimedContent.strings['Hide content on'],
 						value: hide_time.format(GreaterMediaTimedContent.formats.mce_view_date)
 					},
 					{
@@ -183,18 +183,18 @@
 						multiline: true,
 						minHeight: 200,
 						name     : 'content',
-						label    : 'Content',
+						label    : GreaterMediaTimedContent.strings['Content'],
 						value    : node.querySelector('.content').innerHTML
 					}
 				],
 
 				buttons: [
 					{
-						text   : 'Ok',
+						text   : GreaterMediaTimedContent.strings['Ok'],
 						onclick: 'submit'
 					},
 					{
-						text   : 'Cancel',
+						text   : GreaterMediaTimedContent.strings['Cancel'],
 						onclick: 'close'
 					}
 				],
@@ -208,7 +208,7 @@
 							e.data.content
 						)
 					);
-					
+
 					tinymce.activeEditor.windowManager.close();
 
 				},
