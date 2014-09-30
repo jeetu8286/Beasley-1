@@ -24,33 +24,7 @@
 		return '';
 
 	}
-
-	/**
-	 * Build a [time-restricted] shortcode with the appropriate show/hide dates and content
-	 *
-	 * @param {Date} show_date
-	 * @param {Date} hide_date
-	 * @param {string} content
-	 * @returns {string}
-	 */
-	function build_shortcode(show_date, hide_date, content) {
-
-		var shortcode = '[time-restricted ';
-
-		if ('' !== show_date) {
-			shortcode += 'show="' + show_date.toISOString() + '" ';
-		}
-
-		if ('' !== hide_date) {
-			shortcode += 'hide="' + hide_date.toISOString() + '" ';
-		}
-
-		shortcode += ']' + content + '[/time-restricted]';
-
-		return shortcode;
-
-	}
-
+	
 	// Register a custom button in the TinyMCE toolbar
 	tinymce.PluginManager.add('gm_timed_content_mce_button', function (editor, url) {
 
@@ -87,11 +61,11 @@
 					onsubmit: function (e) {
 
 						editor.insertContent(
-							build_shortcode(
-								new Date(e.data.show),
-								new Date(e.data.hide),
-								tinymce.activeEditor.selection.getContent()
-							)
+							new wp.shortcode({
+								tag    : 'time-restricted',
+								attrs  : {show: new Date(e.data.show).toISOString(), hide: new Date(e.data.hide).toISOString()},
+								content: tinymce.activeEditor.selection.getContent()
+							}).string()
 						);
 
 					}
@@ -202,11 +176,11 @@
 				onsubmit: function (e) {
 
 					editor.insertContent(
-						build_shortcode(
-							new Date(e.data.show),
-							new Date(e.data.hide),
-							e.data.content
-						)
+						new wp.shortcode({
+							tag    : 'time-restricted',
+							attrs  : {show: new Date(e.data.show).toISOString(), hide: new Date(e.data.hide).toISOString()},
+							content: e.data.content
+						}).string()
 					);
 
 					tinymce.activeEditor.windowManager.close();
