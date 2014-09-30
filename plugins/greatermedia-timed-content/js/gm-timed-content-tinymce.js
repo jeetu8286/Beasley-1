@@ -10,13 +10,13 @@
 	 */
 	function parse_shortcode_attribute(shortcode, attribute_name) {
 
-		if(undefined === shortcode || undefined === attribute_name) {
+		if (undefined === shortcode || undefined === attribute_name) {
 			return '';
 		}
 
 		var matches = decodeURIComponent(shortcode).match(attribute_name + '="([^\"]*)"');
 
-		if(undefined !== matches[1]) {
+		if (undefined !== matches[1]) {
 			return matches[1];
 		}
 
@@ -110,48 +110,50 @@
 	 * @returns TinyMCE view object
 	 * @constructor
 	 */
-	var TimeRestrictedView = function() { return {
+	var TimeRestrictedView = function () {
+		return {
 
-		template: _.template(GreaterMediaTimedContent.templates.tinymce),
+			template: _.template(GreaterMediaTimedContent.templates.tinymce),
 
-		// The fallback post ID to use as a parent for galleries that don't
-		// specify the `ids` or `include` parameters.
-		//
-		// Uses the hidden input on the edit posts page by default.
-		postID  : jQuery('#post_ID').val(),
+			// The fallback post ID to use as a parent for galleries that don't
+			// specify the `ids` or `include` parameters.
+			//
+			// Uses the hidden input on the edit posts page by default.
+			postID  : jQuery('#post_ID').val(),
 
-		initialize: function (options) {
-			this.shortcode = options.shortcode;
-		},
+			initialize: function (options) {
+				this.shortcode = options.shortcode;
+			},
 
-		getHtml: function () {
+			getHtml: function () {
 
-			var attrs = this.shortcode.attrs.named,
-				attachments = false,
-				options;
+				var attrs = this.shortcode.attrs.named,
+					attachments = false,
+					options;
 
-			// Format the "show" date for display using the date.format library
-			if (attrs.show) {
-				attrs.show = new Date(attrs.show).format(GreaterMediaTimedContent.formats.mce_view_date);
+				// Format the "show" date for display using the date.format library
+				if (attrs.show) {
+					attrs.show = new Date(attrs.show).format(GreaterMediaTimedContent.formats.mce_view_date);
+				}
+
+				// Format the "hide" date for display using the date.format library
+				if (attrs.hide) {
+					attrs.hide = new Date(attrs.hide).format(GreaterMediaTimedContent.formats.mce_view_date);
+				}
+
+				options = {
+					content: this.shortcode.content,
+					show   : undefined,
+					hide   : undefined
+				};
+				_.extend(options, attrs);
+
+				return this.template(options);
+
 			}
-
-			// Format the "hide" date for display using the date.format library
-			if (attrs.hide) {
-				attrs.hide = new Date(attrs.hide).format(GreaterMediaTimedContent.formats.mce_view_date);
-			}
-
-			options = {
-				content: this.shortcode.content,
-				show   : undefined,
-				hide   : undefined
-			};
-			_.extend(options, attrs);
-
-			return this.template(options);
 
 		}
-
-	}};
+	};
 
 	// Register a custom TinyMCE View for displaying the shortcode in the WYSIWYG editor
 	wp.mce.views.register('time-restricted', {
@@ -184,28 +186,28 @@
 						value: hide_time.format(GreaterMediaTimedContent.formats.mce_view_date)
 					},
 					{
-						type: 'textbox',
+						type     : 'textbox',
 						multiline: true,
 						minHeight: 200,
-						name: 'content',
-						label: 'Content',
-						value: node.querySelector('.content').innerHTML
+						name     : 'content',
+						label    : 'Content',
+						value    : node.querySelector('.content').innerHTML
 					}
 
 				],
 
 				buttons: [
 					{
-						text: 'Ok',
+						text   : 'Ok',
 						onclick: 'submit'
 					},
 					{
-						text: 'Cancel',
+						text   : 'Cancel',
 						onclick: 'close'
 					}
 				],
 
-				onsubmit: function(e) {
+				onsubmit: function (e) {
 
 					var new_shortcode_text = build_shortcode(
 						new Date(e.data.show),
@@ -213,13 +215,12 @@
 						e.data.content
 					);
 
-					editor.insertContent( new_shortcode_text );
+					editor.insertContent(new_shortcode_text);
 					tinymce.activeEditor.windowManager.close();
 
 				},
 
-
-				width: 600,
+				width : 600,
 				height: 340
 			};
 
