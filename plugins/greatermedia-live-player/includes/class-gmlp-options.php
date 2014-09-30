@@ -113,7 +113,7 @@ class GMLP_Settings {
 		<p>
 			<label for="gmlp_player_location" class="gmlp-admin-label"><?php _e( 'Player Location', 'gmliveplayer' ); ?></label>
 			<select name="gmlp_player_location" id="gmlp_player_location">
-				<option value=""><?php _e( '---', 'gmliveplayer' )?></option>
+				<option value=""><?php _e( 'Off', 'gmliveplayer' )?></option>
 				<option value="top" <?php selected( $player_location, 'top' ); ?>><?php _e( 'Top', 'gmliveplayer' )?></option>
 				<option value="bottom" <?php selected( $player_location, 'bottom' ); ?>><?php _e( 'Bottom', 'gmliveplayer' )?></option>
 				<option value="right" <?php selected( $player_location, 'right' ); ?>><?php _e( 'Right', 'gmliveplayer' )?></option>
