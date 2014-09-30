@@ -7,6 +7,9 @@
 /**
  * General Styles
  */
+.gmlp-nav{
+	display: none;
+}
 .gmlp-nav-toggle {
 	@include border-radius(15px 0 0 15px);
 	@include transition(ease .25s);
@@ -143,6 +146,9 @@
  * Universal styles for horizontal player location (top & bottom)
  */
 .gmlp-horizontal {
+	.gmlp-nav {
+		display: block;
+	}
 	.gmlp-menu {
 		top: 0;
 		@include min-width-breakpoint(481) {
@@ -185,6 +191,9 @@
  * Universal styles for vertical player location (top & bottom)
  */
 .gmlp-vertical {
+	.gmlp-nav {
+		display: block;
+	}
 	.gmlp-menu {
 		bottom: 0;
 		width: 180px;

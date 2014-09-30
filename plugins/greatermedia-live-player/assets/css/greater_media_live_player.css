@@ -1767,6 +1767,9 @@ Media Queries
 /**
  * General Styles
  */
+.gmlp-nav {
+  display: none; }
+
 .gmlp-nav-toggle {
   -webkit-border-radius: 15px 0 0 15px;
   -moz-border-radius: 15px 0 0 15px;
@@ -1910,6 +1913,8 @@ Media Queries
 /**
  * Universal styles for horizontal player location (top & bottom)
  */
+.gmlp-horizontal .gmlp-nav {
+  display: block; }
 .gmlp-horizontal .gmlp-menu {
   top: 0; }
   @media screen and (min-width: 481px) {
@@ -1943,6 +1948,8 @@ Media Queries
 /**
  * Universal styles for vertical player location (top & bottom)
  */
+.gmlp-vertical .gmlp-nav {
+  display: block; }
 .gmlp-vertical .gmlp-menu {
   bottom: 0;
   width: 180px;
