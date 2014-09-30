@@ -14,7 +14,6 @@
 					title: GreaterMediaTimedContent.strings['Timed Content'],
 
 					body: [
-
 						{
 							type : 'textbox',
 							name : 'show',
@@ -27,7 +26,6 @@
 							label: GreaterMediaTimedContent.strings['Hide content on'],
 							value: ''
 						}
-
 					],
 
 					/**
