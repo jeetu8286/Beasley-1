@@ -50,14 +50,11 @@ class GMR_Gform {
 
 	function enqueue_scripts() {
 
-		// greatermedia.dev apiKey
-		$local_key = '3_e_T7jWO0Vjsd9y0WJcjnsN6KaFUBv6r3VxMKqbitvw-qKfmaUWysQKa1fra5MTb6';
-
-		// 10uplabs apiKey
-		$stage_key = '3_Q1R8pTStLruOUIXtUXTq1Eie0nXW8DTSft8tjh0OR9qaSwsIKAOF9OZZgfwM-Md0';
+		// greatermedia.dev / 10uplabs apiKey
+		$dev_key = '3_e_T7jWO0Vjsd9y0WJcjnsN6KaFUBv6r3VxMKqbitvw-qKfmaUWysQKa1fra5MTb6';
 
 		?>
-		<script type='text/javascript' src='http://cdn.gigya.com/JS/socialize.js?apiKey=<?php echo $stage_key; ?>'>
+		<script type='text/javascript' src='http://cdn.gigya.com/JS/socialize.js?apiKey=<?php echo $dev_key; ?>'>
 			{ enabledProviders: 'facebook,twitter,linkedin,yahoo,messenger' }
 		</script>
 		<?php
