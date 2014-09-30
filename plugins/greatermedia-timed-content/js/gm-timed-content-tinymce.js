@@ -2,29 +2,6 @@
 
 	var self = this;
 
-	/**
-	 * Parse an attribute out of a shortcode
-	 * @param {string} shortcode the complete shortcode
-	 * @param {string} attribute_name to extract
-	 * @returns {string}
-	 */
-	function parse_shortcode_attribute(shortcode, attribute_name) {
-
-		if (undefined === shortcode || undefined === attribute_name) {
-			return '';
-		}
-
-		var matches = decodeURIComponent(shortcode).match(attribute_name + '="([^\"]*)"');
-
-		if (undefined !== matches[1]) {
-			return matches[1];
-		}
-
-		// Default
-		return '';
-
-	}
-	
 	// Register a custom button in the TinyMCE toolbar
 	tinymce.PluginManager.add('gm_timed_content_mce_button', function (editor, url) {
 
@@ -63,7 +40,10 @@
 						editor.insertContent(
 							new wp.shortcode({
 								tag    : 'time-restricted',
-								attrs  : {show: new Date(e.data.show).toISOString(), hide: new Date(e.data.hide).toISOString()},
+								attrs  : {
+									show: new Date(e.data.show).toISOString(),
+									hide: new Date(e.data.hide).toISOString()
+								},
 								content: tinymce.activeEditor.selection.getContent()
 							}).string()
 						);
@@ -130,66 +110,68 @@
 
 		edit: function (node) {
 
-			var edit_self = this;
+			var edit_self = this,
+				parsed_shortcode = wp.shortcode.next('time-restricted', decodeURIComponent(node.dataset.wpviewText)).shortcode,
+				show_time = new Date(parsed_shortcode.attrs.named.show),
+				hide_time = new Date(parsed_shortcode.attrs.named.hide),
+				time_restricted_editor_popup = {
 
-			var show_time = new Date(parse_shortcode_attribute(node.dataset.wpviewText, 'show')),
-				hide_time = new Date(parse_shortcode_attribute(node.dataset.wpviewText, 'hide'));
+					title: GreaterMediaTimedContent.strings['Timed Content'],
 
-			var time_restricted_editor_popup = {
+					body: [
+						{
+							type : 'textbox',
+							name : 'show',
+							label: GreaterMediaTimedContent.strings['Show content on'],
+							value: show_time.format(GreaterMediaTimedContent.formats.mce_view_date)
+						},
+						{
+							type : 'textbox',
+							name : 'hide',
+							label: GreaterMediaTimedContent.strings['Hide content on'],
+							value: hide_time.format(GreaterMediaTimedContent.formats.mce_view_date)
+						},
+						{
+							type     : 'textbox',
+							multiline: true,
+							minHeight: 200,
+							name     : 'content',
+							label    : GreaterMediaTimedContent.strings['Content'],
+							value    : node.querySelector('.content').innerHTML
+						}
+					],
 
-				title: GreaterMediaTimedContent.strings['Timed Content'],
+					buttons: [
+						{
+							text   : GreaterMediaTimedContent.strings['Ok'],
+							onclick: 'submit'
+						},
+						{
+							text   : GreaterMediaTimedContent.strings['Cancel'],
+							onclick: 'close'
+						}
+					],
 
-				body: [
-					{
-						type : 'textbox',
-						name : 'show',
-						label: GreaterMediaTimedContent.strings['Show content on'],
-						value: show_time.format(GreaterMediaTimedContent.formats.mce_view_date)
+					onsubmit: function (e) {
+
+						editor.insertContent(
+							new wp.shortcode({
+								tag    : 'time-restricted',
+								attrs  : {
+									show: new Date(e.data.show).toISOString(),
+									hide: new Date(e.data.hide).toISOString()
+								},
+								content: e.data.content
+							}).string()
+						);
+
+						tinymce.activeEditor.windowManager.close();
+
 					},
-					{
-						type : 'textbox',
-						name : 'hide',
-						label: GreaterMediaTimedContent.strings['Hide content on'],
-						value: hide_time.format(GreaterMediaTimedContent.formats.mce_view_date)
-					},
-					{
-						type     : 'textbox',
-						multiline: true,
-						minHeight: 200,
-						name     : 'content',
-						label    : GreaterMediaTimedContent.strings['Content'],
-						value    : node.querySelector('.content').innerHTML
-					}
-				],
 
-				buttons: [
-					{
-						text   : GreaterMediaTimedContent.strings['Ok'],
-						onclick: 'submit'
-					},
-					{
-						text   : GreaterMediaTimedContent.strings['Cancel'],
-						onclick: 'close'
-					}
-				],
-
-				onsubmit: function (e) {
-
-					editor.insertContent(
-						new wp.shortcode({
-							tag    : 'time-restricted',
-							attrs  : {show: new Date(e.data.show).toISOString(), hide: new Date(e.data.hide).toISOString()},
-							content: e.data.content
-						}).string()
-					);
-
-					tinymce.activeEditor.windowManager.close();
-
-				},
-
-				width : 600,
-				height: 340
-			};
+					width : 600,
+					height: 340
+				};
 
 			self.editor.windowManager.open(time_restricted_editor_popup);
 
