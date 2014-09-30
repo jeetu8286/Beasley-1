@@ -37,7 +37,7 @@
 		text-rendering: auto;
 		content: "\f028";
 	}
-	@include min-width-breakpoint(481) {
+	@include min-width-breakpoint(768) {
 		display: none;
 	}
 }
@@ -60,7 +60,7 @@
 	color: $white;
 	cursor: pointer;
 	z-index: 10001;
-	@include min-width-breakpoint(481){
+	@include min-width-breakpoint(768){
 		width: 60px;
 		height: 60px;
 		font-size: 2em;
@@ -99,7 +99,7 @@
 		position: relative;
 		margin: 1.25em auto 0;
 		text-align: center;
-		@include min-width-breakpoint(481){
+		@include min-width-breakpoint(768){
 			position: absolute;
 		}
 		#pauseButton, #resumeButton {
@@ -115,7 +115,7 @@
 		z-index: 999;
 		#trackInfo {
 			font-size: 1.375em;
-			@include min-width-breakpoint(481){
+			@include min-width-breakpoint(768){
 				font-size: .75em;
 			}
 			.gmlp-np-song-title {
@@ -137,7 +137,7 @@
 		&:before {
 			content: "\f00d";
 		}
-		@include min-width-breakpoint(481){
+		@include min-width-breakpoint(768){
 			font-size: 1.25em;
 		}
 	}
@@ -151,11 +151,11 @@
 	}
 	.gmlp-menu {
 		top: 0;
-		@include min-width-breakpoint(481) {
+		@include min-width-breakpoint(768) {
 			height: 130px;
 		}
 		#gmlp-actions{
-			@include min-width-breakpoint(481){
+			@include min-width-breakpoint(768){
 				position: relative;
 				float: left;
 				width: 60px;
@@ -163,7 +163,7 @@
 			}
 		}
 		#gmlp-live {
-			@include min-width-breakpoint(481){
+			@include min-width-breakpoint(768){
 				float: left;
 				width: 200px;
 				height: 110px;
@@ -199,13 +199,13 @@
 		width: 180px;
 		max-height: 100%;
 		#gmlp-live {
-			@include min-width-breakpoint(481){
+			@include min-width-breakpoint(768){
 				margin: 0;
 				width: 110px;
 				min-height: 60px;
 			}
 			#nowPlaying {
-				@include min-width-breakpoint(481){
+				@include min-width-breakpoint(768){
 					position: absolute;
 					top: 50%;
 					-ms-transform: translate(0%, -50%);
@@ -223,7 +223,7 @@
 	&.admin-bar {
 		.gmlp-menu {
 			#gmlp-actions {
-				@include min-width-breakpoint(481) {
+				@include min-width-breakpoint(768) {
 					margin: 0;
 					top: 12px;
 				}
@@ -236,7 +236,7 @@
  * Player Location: Top
  */
 .gmlp-top {
-	@include min-width-breakpoint(481){
+	@include min-width-breakpoint(768){
 		margin-top: 130px;
 		.gmlp-menu{
 			right: auto;
@@ -248,7 +248,7 @@
  * Player Location: Bottom
  */
 .gmlp-bottom {
-	@include min-width-breakpoint(481) {
+	@include min-width-breakpoint(768) {
 		.gmlp-menu {
 			top: auto !important;
 			bottom: 0;
@@ -261,7 +261,7 @@
  * Player Location: Right
  */
 .gmlp-right {
-	@include min-width-breakpoint(481) {
+	@include min-width-breakpoint(768) {
 		.gmlp-menu {
 			right: 0;
 			left: auto;
@@ -284,7 +284,7 @@
  * Player Location: Left
  */
 .gmlp-left {
-	@include min-width-breakpoint(481) {
+	@include min-width-breakpoint(768) {
 		.gmlp-menu {
 			right: auto;
 			left: 0;

@@ -1805,7 +1805,7 @@ Media Queries
     moz-osx-font-smoothing: grayscale;
     text-rendering: auto;
     content: "\f028"; }
-  @media screen and (min-width: 481px) {
+  @media screen and (min-width: 768px) {
     .gmlp-nav-toggle {
       display: none; } }
 
@@ -1834,7 +1834,7 @@ Media Queries
   color: white;
   cursor: pointer;
   z-index: 10001; }
-  @media screen and (min-width: 481px) {
+  @media screen and (min-width: 768px) {
     .gmlp-audio-button {
       width: 60px;
       height: 60px;
@@ -1877,7 +1877,7 @@ Media Queries
     position: relative;
     margin: 1.25em auto 0;
     text-align: center; }
-    @media screen and (min-width: 481px) {
+    @media screen and (min-width: 768px) {
       .gmlp-menu #gmlp-actions {
         position: absolute; } }
     .gmlp-menu #gmlp-actions #pauseButton, .gmlp-menu #gmlp-actions #resumeButton {
@@ -1891,7 +1891,7 @@ Media Queries
     z-index: 999; }
     .gmlp-menu #gmlp-live #trackInfo {
       font-size: 1.375em; }
-      @media screen and (min-width: 481px) {
+      @media screen and (min-width: 768px) {
         .gmlp-menu #gmlp-live #trackInfo {
           font-size: .75em; } }
       .gmlp-menu #gmlp-live #trackInfo .gmlp-np-song-title {
@@ -1906,7 +1906,7 @@ Media Queries
   font-size: 1.875em; }
   .gmlp-open .gmlp-nav-toggle:before {
     content: "\f00d"; }
-  @media screen and (min-width: 481px) {
+  @media screen and (min-width: 768px) {
     .gmlp-open .gmlp-nav-toggle {
       font-size: 1.25em; } }
 
@@ -1917,16 +1917,16 @@ Media Queries
   display: block; }
 .gmlp-horizontal .gmlp-menu {
   top: 0; }
-  @media screen and (min-width: 481px) {
+  @media screen and (min-width: 768px) {
     .gmlp-horizontal .gmlp-menu {
       height: 130px; } }
-  @media screen and (min-width: 481px) {
+  @media screen and (min-width: 768px) {
     .gmlp-horizontal .gmlp-menu #gmlp-actions {
       position: relative;
       float: left;
       width: 60px;
       margin: 1.5625em 1em 1.5625em 0; } }
-  @media screen and (min-width: 481px) {
+  @media screen and (min-width: 768px) {
     .gmlp-horizontal .gmlp-menu #gmlp-live {
       float: left;
       width: 200px;
@@ -1954,12 +1954,12 @@ Media Queries
   bottom: 0;
   width: 180px;
   max-height: 100%; }
-  @media screen and (min-width: 481px) {
+  @media screen and (min-width: 768px) {
     .gmlp-vertical .gmlp-menu #gmlp-live {
       margin: 0;
       width: 110px;
       min-height: 60px; } }
-  @media screen and (min-width: 481px) {
+  @media screen and (min-width: 768px) {
     .gmlp-vertical .gmlp-menu #gmlp-live #nowPlaying {
       position: absolute;
       top: 50%;
@@ -1969,7 +1969,7 @@ Media Queries
 @media screen and (max-width: 480px) {
   .gmlp-vertical .gmlp-menu {
     width: 100%; } }
-@media screen and (min-width: 481px) {
+@media screen and (min-width: 768px) {
   .gmlp-vertical.admin-bar .gmlp-menu #gmlp-actions {
     margin: 0;
     top: 12px; } }
@@ -1977,7 +1977,7 @@ Media Queries
 /**
  * Player Location: Top
  */
-@media screen and (min-width: 481px) {
+@media screen and (min-width: 768px) {
   .gmlp-top {
     margin-top: 130px; }
     .gmlp-top .gmlp-menu {
@@ -1986,7 +1986,7 @@ Media Queries
 /**
  * Player Location: Bottom
  */
-@media screen and (min-width: 481px) {
+@media screen and (min-width: 768px) {
   .gmlp-bottom .gmlp-menu {
     top: auto !important;
     bottom: 0;
@@ -1995,7 +1995,7 @@ Media Queries
 /**
  * Player Location: Right
  */
-@media screen and (min-width: 481px) {
+@media screen and (min-width: 768px) {
   .gmlp-right .gmlp-menu {
     right: 0;
     left: auto; }
@@ -2014,7 +2014,7 @@ Media Queries
 /**
  * Player Location: Left
  */
-@media screen and (min-width: 481px) {
+@media screen and (min-width: 768px) {
   .gmlp-left .gmlp-menu {
     right: auto;
     left: 0; }
