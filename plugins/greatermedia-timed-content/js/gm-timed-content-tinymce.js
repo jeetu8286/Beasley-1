@@ -111,14 +111,11 @@
 	 * @constructor
 	 */
 	var TimeRestrictedView = function () {
+
 		return {
 
 			template: _.template(GreaterMediaTimedContent.templates.tinymce),
 
-			// The fallback post ID to use as a parent for galleries that don't
-			// specify the `ids` or `include` parameters.
-			//
-			// Uses the hidden input on the edit posts page by default.
 			postID  : jQuery('#post_ID').val(),
 
 			initialize: function (options) {
@@ -128,31 +125,28 @@
 			getHtml: function () {
 
 				var attrs = this.shortcode.attrs.named,
-					attachments = false,
-					options;
+					options = {
+						content: this.shortcode.content,
+						show   : undefined,
+						hide   : undefined
+					};
 
 				// Format the "show" date for display using the date.format library
 				if (attrs.show) {
-					attrs.show = new Date(attrs.show).format(GreaterMediaTimedContent.formats.mce_view_date);
+					options.show = new Date(attrs.show).format(GreaterMediaTimedContent.formats.mce_view_date);
 				}
 
 				// Format the "hide" date for display using the date.format library
 				if (attrs.hide) {
-					attrs.hide = new Date(attrs.hide).format(GreaterMediaTimedContent.formats.mce_view_date);
+					options.hide = new Date(attrs.hide).format(GreaterMediaTimedContent.formats.mce_view_date);
 				}
-
-				options = {
-					content: this.shortcode.content,
-					show   : undefined,
-					hide   : undefined
-				};
-				_.extend(options, attrs);
 
 				return this.template(options);
 
 			}
 
 		}
+
 	};
 
 	// Register a custom TinyMCE View for displaying the shortcode in the WYSIWYG editor
@@ -172,7 +166,6 @@
 				title: 'Timed Content',
 
 				body: [
-
 					{
 						type : 'textbox',
 						name : 'show',
@@ -193,7 +186,6 @@
 						label    : 'Content',
 						value    : node.querySelector('.content').innerHTML
 					}
-
 				],
 
 				buttons: [
