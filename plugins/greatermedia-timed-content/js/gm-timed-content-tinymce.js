@@ -116,7 +116,7 @@
 
 			template: _.template(GreaterMediaTimedContent.templates.tinymce),
 
-			postID  : jQuery('#post_ID').val(),
+			postID: jQuery('#post_ID').val(),
 
 			initialize: function (options) {
 				this.shortcode = options.shortcode;
@@ -201,13 +201,14 @@
 
 				onsubmit: function (e) {
 
-					var new_shortcode_text = build_shortcode(
-						new Date(e.data.show),
-						new Date(e.data.hide),
-						e.data.content
+					editor.insertContent(
+						build_shortcode(
+							new Date(e.data.show),
+							new Date(e.data.hide),
+							e.data.content
+						)
 					);
-
-					editor.insertContent(new_shortcode_text);
+					
 					tinymce.activeEditor.windowManager.close();
 
 				},
