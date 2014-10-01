@@ -21,4 +21,3 @@
 		<?php
 	endwhile;
 get_footer();
-?>
