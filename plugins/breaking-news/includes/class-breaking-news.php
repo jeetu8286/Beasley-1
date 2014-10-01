@@ -23,8 +23,10 @@ if ( !class_exists( "Breaking_News" ) ) {
 	     * @return void
 	     */
 	    public function breaking_news_admin_enqueue_scripts() {
+	    	$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
+
 	    	if ( 'post' === get_post_type() ) {
-				wp_enqueue_script( 'breaking-news-admin-js', BREAKING_NEWS_URL . 'assets/js/breaking-news.min.js', array( 'jquery'), BREAKING_NEWS_VERSION, true );
+				wp_enqueue_script( 'breaking-news-admin-js', BREAKING_NEWS_URL . "assets/js/breaking-news{$postfix}.js", array( 'jquery'), BREAKING_NEWS_VERSION, true );
 			}
 		}
 
@@ -34,8 +36,10 @@ if ( !class_exists( "Breaking_News" ) ) {
 	     * @return void
 	     */
 	    public function breaking_news_enqueue_scripts() {
+	    	$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
+
 	    	wp_enqueue_style( 'breaking-news',
-				BREAKING_NEWS_URL . 'assets/css/breaking-news.min.css',
+				BREAKING_NEWS_URL . "assets/css/breaking-news{$postfix}.css",
 				array(), BREAKING_NEWS_VERSION, 'all' );
 		}
 
@@ -120,6 +124,7 @@ if ( !class_exists( "Breaking_News" ) ) {
 		 * @return void
 		 */
 		public function show_breaking_news_banner() {
+			global $post;
 			$post = $this->get_latest_breaking_news_item();
 
 			if ( ! empty( $post ) ) {
@@ -131,11 +136,12 @@ if ( !class_exists( "Breaking_News" ) ) {
 					<div id="breaking-news-banner">
 						<div class="breaking-news-item">
 							<a href="<?php the_permalink(); ?>">
-								<span class="title"><?php the_title(); ?>:</span> <span class="excerpt"><?php echo $this->get_post_excerpt( $post, 25 ); ?></span>
+								<span class="title"><?php the_title(); ?>:</span> <span class="excerpt"><?php echo wp_kses_post( $this->get_post_excerpt( $post, 25 ) ); ?></span>
 							</a>
 						</div>
 					</div>
 			<?php
+					wp_reset_postdata();
 				}
 			}
 		}
@@ -146,6 +152,8 @@ if ( !class_exists( "Breaking_News" ) ) {
 		 * @return void
 		 */
 		public function show_latest_breaking_news_item() {
+			global $post;
+
 			if ( function_exists( 'breaking_news_get_latest_item' ) ) {
 				breaking_news_get_latest_item();
 			} else {
@@ -157,10 +165,11 @@ if ( !class_exists( "Breaking_News" ) ) {
 					<div id="latest-breaking-news-item">
 						<div class="breaking-news-item">
 							<h2><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
-							<p><?php echo $this->get_post_excerpt( $post, 50 ); ?></p>
+							<p><?php echo wp_kses_post( $this->get_post_excerpt( $post, 50 ) ); ?></p>
 						</div>
 					</div>
 				<?php
+					wp_reset_postdata();
 				}
 			}
 		}
@@ -190,7 +199,7 @@ if ( !class_exists( "Breaking_News" ) ) {
 				}
 			}
 
-			return wp_kses_post( $excerpt );
+			return $excerpt;
 		}
 		/**
 		 * Get latest breaking news item.
