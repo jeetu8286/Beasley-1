@@ -9,6 +9,8 @@ Author URI: http://10up.com
 Text Domain: greatermedia-gigya-auth
 */
 
+// define('GREATER_MEDIA_GIGYA_AUTH_TEST_UI', true); in wp-config.php to enable test features
+
 if ( ! defined( 'ABSPATH' ) ) {
 	die( "Please don't try to access this file directly." );
 }
