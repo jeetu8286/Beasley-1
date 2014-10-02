@@ -15,9 +15,7 @@ class GreaterMediaGigyaAuth {
 
 	public function wp_enqueue_scripts() {
 
-		global $GreaterMediaGigyaAuthSettings;
-
-		if ( $GreaterMediaGigyaAuthSettings['USE_TEST_UI'] ) {
+		if ( defined( 'GREATER_MEDIA_GIGYA_AUTH_TEST_UI' ) && GREATER_MEDIA_GIGYA_AUTH_TEST_UI ) {
 			wp_enqueue_style( 'greatermedia-gigya-auth-testing', trailingslashit( GREATER_MEDIA_GIGYA_AUTH_URL ) . 'css/greatermedia-gigya-auth-testing.css', array(), false, 'all' );
 			wp_enqueue_script( 'greatermedia-gigya-auth-testing', trailingslashit( GREATER_MEDIA_GIGYA_AUTH_URL ) . 'js/greatermedia-gigya-auth-testing.js', array(), false, false );
 		}
@@ -28,9 +26,7 @@ class GreaterMediaGigyaAuth {
 
 	public static function wp_footer() {
 
-		global $GreaterMediaGigyaAuthSettings;
-
-		if ( $GreaterMediaGigyaAuthSettings['USE_TEST_UI'] ) {
+		if ( defined( 'GREATER_MEDIA_GIGYA_AUTH_TEST_UI' ) && GREATER_MEDIA_GIGYA_AUTH_TEST_UI ) {
 			include trailingslashit( GREATER_MEDIA_GIGYA_AUTH_PATH ) . 'tpl/greatermedia-gigya-auth-testing.html';
 		}
 

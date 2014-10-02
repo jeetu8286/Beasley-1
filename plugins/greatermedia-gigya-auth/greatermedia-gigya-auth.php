@@ -13,10 +13,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( "Please don't try to access this file directly." );
 }
 
-$GreaterMediaGigyaAuthSettings = array(
-	'USE_TEST_UI' => true, // @TODO remove the entire test UI implementation when actual implementation finished
-);
-
 define( 'GREATER_MEDIA_GIGYA_AUTH_PATH', dirname( __FILE__ ) );
 define( 'GREATER_MEDIA_GIGYA_AUTH_URL',  plugin_dir_url( __FILE__ ) );
 
