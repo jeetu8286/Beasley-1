@@ -47,4 +47,3 @@ while ( have_posts() ):
 <?php
 endwhile;
 get_footer();
-?>
