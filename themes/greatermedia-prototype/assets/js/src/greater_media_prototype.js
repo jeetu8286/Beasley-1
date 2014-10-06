@@ -4,6 +4,9 @@
  *
  * Copyright (c) 2014 Taylor Dewey
  * Licensed under the GPLv2+ license.
+ *
+ * We're having a few issues with merge's on staging keeping changes. Here is a check to see if changes are merged on staging.
+ *
  */
 
 (function (window, undefined) {
