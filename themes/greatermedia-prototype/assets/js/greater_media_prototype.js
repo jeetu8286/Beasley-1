@@ -1,47 +1,213 @@
-/*! Greater Media Prototype - v0.1.0 - 2014-05-01
+/*! Greater Media Prototype - v0.1.0 - 2014-10-07
  * http://wordpress.org/themes
  * Copyright (c) 2014; * Licensed GPLv2+ */
-(function (window, undefined) {
-	'use strict';
+(function($) {
 
-	window.console.log('prototype js running');
+	var GigyaSession     = function(sessionData) {
+		this.sessionData = sessionData;
+		this.authorized  = false;
+		this.willRegister = false;
+		this.mediator    = $({});
 
-	function init() {
-		gigya.accounts.getAccountInfo({ callback: getAccountInfoResponse });
-		bindRegisterLogin();
-	}
+		gigya.accounts.addEventHandlers({
+			onLogin: $.proxy(this.didLogin, this),
+			onLogout: $.proxy(this.didLogout, this)
+		});
+	};
 
-	function bindRegisterLogin() {
-		window.document.querySelector('.register').addEventListener('click', showRegisterForm);
-		window.document.querySelector('.login').addEventListener('click', showLoginForm);
-	}
+	GigyaSession.prototype = {
 
-	function showRegisterForm(e) {
-		e.preventDefault();
-		window.console.log('clicked register');
-		gigya.accounts.showScreenSet({screenSet: 'Login-web'});
-	}
+		get_cid: function() {
+			return this.sessionData.cid || '';
+		},
 
-	function showLoginForm(e) {
-		e.preventDefault();
-		window.console.log('clicked login');
-		gigya.accounts.showScreenSet({screenSet: 'Login-web', startScreen: 'gigya-register-screen'});
-	}
+		isAuthorized: function() {
+			return this.authorized;
+		},
 
-	/**
-	 * Checks to see if the user is logged in, changes the header appropriately.
-	 * @param response
-	 */
-	function getAccountInfoResponse(response) {
-		if (response.errorCode == 0) {
-			// Success, this user is logged in
-			window.console.log(response.profile);
-		} else {
-			// error
-			window.console.log(response);
+		authorize: function() {
+			var cid = this.get_cid();
+
+			if (cid !== '') {
+				gigya.accounts.getAccountInfo({
+					cid: cid,
+					callback: $.proxy(this.gotAccountInfo, this)
+				});
+			} else {
+				this.notify();
+			}
+		},
+
+		gotAccountInfo: function(response) {
+			if (response.errorCode === 0) {
+				this.authorized = true;
+				this.account    = response;
+			} else {
+				this.authorized = false;
+			}
+
+			this.notify();
+		},
+
+		on: function(event, listener) {
+			this.mediator.on(event, listener);
+		},
+
+		notify: function(event) {
+			if (!event) {
+				event = 'change';
+			}
+
+			this.mediator.trigger(event, this);
+		},
+
+		didLogin: function(response) {
+			if (this.willRegister) {
+				this.didRegister(response);
+			}
+
+			this.account    = response;
+			this.authorized = true;
+			this.notify();
+		},
+
+		didRegister: function(response) {
+			this.willRegister = false;
+
+			var listNames = [];
+
+			// TODO: fix this after Gigya support ticket response
+			if (response.data.vipGroup) {
+				listNames.push('VIP Newsletter');
+			}
+
+			if (response.data.birthdayGreetingsGroup) {
+				listNames.push('Birthday Greetings');
+			}
+
+			if (response.data.bigFrigginDealGroup) {
+				listNames.push('Big Deal');
+			}
+
+			var data  = {
+				'action': 'register_account',
+				'action_data': JSON.stringify({
+					'UID': response.UID,
+					'listNames': listNames
+				})
+			};
+
+			var url = this.sessionData.ajaxurl + '?' + $.param({
+				'register_account_nonce': this.sessionData.register_account_nonce,
+			});
+
+			var promise = $.post(url, data);
+
+			promise
+				.then($.proxy(this.didRegisterRelay, this))
+				.fail($.proxy(this.didRegisterRelayError, this));
+		},
+
+		didRegisterRelay: function(response) {
+			location.reload();
+		},
+
+		didRegisterRelayError: function(response) {
+			// TODO
+			console.log('didRegisterRelayError', response);
+		},
+
+		didLogout: function(response) {
+			this.authorized = false;
+			this.notify();
 		}
-	}
 
-	init();
+	};
 
-})(this);
+	var AccountMenuView = function(session) {
+		this.session = session;
+		this.session.on('change', $.proxy(this.didSessionChange, this));
+
+		this.container = $('.account');
+		this.container.on('click', $.proxy(this.didContainerClick, this));
+	};
+
+	AccountMenuView.prototype = {
+
+		render: function() {
+			var authorized = this.session.isAuthorized();
+
+			$('.login').css('visibility', 'visible');
+			$('.register').css('visibility', authorized ? 'hidden' : 'visible');
+
+			if (authorized) {
+				$('.login').text('Logout');
+			} else {
+				$('.login').text('Login');
+			}
+		},
+
+		didContainerClick: function(event) {
+			var className = $(event.target).attr('class');
+
+			switch (className) {
+				case 'register':
+					this.showRegisterScreen();
+					return false;
+
+				case 'login':
+					if (!this.session.isAuthorized()) {
+						this.showLoginScreen();
+					} else {
+						this.showLogoutScreen();
+					}
+					return false;
+
+			}
+		},
+
+		didSessionChange: function() {
+			this.render();
+		},
+
+		showScreenSet: function(name) {
+			gigya.accounts.showScreenSet({
+				screenSet: 'GMR-RegistrationLogin',
+				startScreen: name
+			});
+		},
+
+		showLoginScreen: function() {
+			this.showScreenSet('gigya-login-screen');
+		},
+
+		showRegisterScreen: function() {
+			/* TODO: Find Gigya's onRegister event */
+			this.session.willRegister = true;
+			this.showScreenSet('gigya-register-screen');
+		},
+
+		showLogoutScreen: function() {
+			gigya.accounts.logout({
+				cid: this.session.get_cid(),
+				callback: $.proxy(this.refresh, this)
+			});
+		},
+
+		refresh: function() {
+			location.reload();
+		}
+
+	};
+
+	$(document).ready(function() {
+		var sessionData    = window.gigya_session_data || { data: {} };
+		sessionData = sessionData.data;
+
+		var session         = new GigyaSession(sessionData);
+		var accountMenuView = new AccountMenuView(session);
+
+		session.authorize();
+	});
+
+}(jQuery));
