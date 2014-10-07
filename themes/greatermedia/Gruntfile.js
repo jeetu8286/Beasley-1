@@ -11,10 +11,10 @@ module.exports = function( grunt ) {
 			options: {
 				stripBanners: true,
 				banner: '/*! <%= pkg.title %> - v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %>\n' +
-					' * <%= pkg.homepage %>\n' +
-					' * Copyright (c) <%= grunt.template.today("yyyy") %>;' +
-					' * Licensed GPLv2+' +
-					' */\n'
+				' * <%= pkg.homepage %>\n' +
+				' * Copyright (c) <%= grunt.template.today("yyyy") %>;' +
+				' * Licensed GPLv2+' +
+				' */\n'
 			},
 			greater_media: {
 				src: [
@@ -40,7 +40,7 @@ module.exports = function( grunt ) {
 				options: {
 					jshintrc: '.gruntjshintrc'
 				}
-			}   
+			}
 		},
 		uglify: {
 			all: {
@@ -49,10 +49,10 @@ module.exports = function( grunt ) {
 				},
 				options: {
 					banner: '/*! <%= pkg.title %> - v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %>\n' +
-						' * <%= pkg.homepage %>\n' +
-						' * Copyright (c) <%= grunt.template.today("yyyy") %>;' +
-						' * Licensed GPLv2+' +
-						' */\n',
+					' * <%= pkg.homepage %>\n' +
+					' * Copyright (c) <%= grunt.template.today("yyyy") %>;' +
+					' * Licensed GPLv2+' +
+					' */\n',
 					mangle: {
 						except: ['jQuery']
 					}
@@ -62,35 +62,38 @@ module.exports = function( grunt ) {
 		test:   {
 			files: ['assets/js/test/**/*.js']
 		},
-		
+
 		sass:   {
+			options: {
+				require: 'sass-globbing'
+			},
 			all: {
 				files: {
 					'assets/css/greater_media.css': 'assets/css/sass/greater_media.scss'
 				}
 			}
 		},
-		
+
 		cssmin: {
 			options: {
 				banner: '/*! <%= pkg.title %> - v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %>\n' +
-					' * <%= pkg.homepage %>\n' +
-					' * Copyright (c) <%= grunt.template.today("yyyy") %>;' +
-					' * Licensed GPLv2+' +
-					' */\n'
+				' * <%= pkg.homepage %>\n' +
+				' * Copyright (c) <%= grunt.template.today("yyyy") %>;' +
+				' * Licensed GPLv2+' +
+				' */\n'
 			},
 			minify: {
 				expand: true,
-				
+
 				cwd: 'assets/css/',
 				src: ['greater_media.css'],
-				
+
 				dest: 'assets/css/',
 				ext: '.min.css'
 			}
 		},
 		watch:  {
-			
+
 			sass: {
 				files: ['assets/css/sass/*.scss'],
 				tasks: ['sass', 'cssmin'],
@@ -98,7 +101,7 @@ module.exports = function( grunt ) {
 					debounceDelay: 500
 				}
 			},
-			
+
 			scripts: {
 				files: ['assets/js/src/**/*.js', 'assets/js/vendor/**/*.js'],
 				tasks: ['jshint', 'concat', 'uglify'],
@@ -110,9 +113,9 @@ module.exports = function( grunt ) {
 	} );
 
 	// Default task.
-	
+
 	grunt.registerTask( 'default', ['jshint', 'concat', 'uglify', 'sass', 'cssmin'] );
-	
+
 
 	grunt.util.linefeed = '\n';
 };
