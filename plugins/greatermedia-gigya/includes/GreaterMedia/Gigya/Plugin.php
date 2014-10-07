@@ -48,6 +48,9 @@ class Plugin {
 
 		$preview_ajax_handler = new PreviewAjaxHandler();
 		$preview_ajax_handler->register();
+
+		$register_ajax_handler = new RegisterAjaxHandler();
+		$register_ajax_handler->register();
 	}
 
 	/**
@@ -59,6 +62,18 @@ class Plugin {
 	public function initialize() {
 		$member_query_post_type = new MemberQueryPostType();
 		$member_query_post_type->register();
+
+		$session_data = array(
+			'data' => array(
+				'ajaxurl'       => admin_url( 'admin-ajax.php' ),
+				'register_account_nonce' => wp_create_nonce( 'register_account' ),
+				'cid' => ''
+			)
+		);
+
+		// TODO: figure out if session code should live in this plugin
+		wp_enqueue_script( 'jquery' );
+		wp_localize_script( 'jquery', 'gigya_session_data', $session_data );
 	}
 
 	/**
