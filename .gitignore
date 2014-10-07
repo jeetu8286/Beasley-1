@@ -6,3 +6,4 @@ upgrade/
 /index.php
 .idea
 debug.log
+.DS_Store
