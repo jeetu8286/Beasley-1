@@ -13,7 +13,7 @@
 </head>
 <body <?php body_class(); ?>>
 	<?php do_action( 'show_breaking_news_banner' ); ?>
-<main>
+	<main id="container">
 	<header class="page-header">
 		<div class="account">
 			<div class="player">
