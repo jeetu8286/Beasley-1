@@ -48,8 +48,93 @@
 			// error
 			window.console.log(response);
 		}
-	}
 
-	init();
+	};
+
+	var AccountMenuView = function(session) {
+		this.session = session;
+		this.session.on('change', $.proxy(this.didSessionChange, this));
+
+		this.container = $('.account');
+		this.container.on('click', $.proxy(this.didContainerClick, this));
+	};
+
+	AccountMenuView.prototype = {
+
+		render: function() {
+			var authorized = this.session.isAuthorized();
+
+			$('.login').css('visibility', 'visible');
+			$('.register').css('visibility', authorized ? 'hidden' : 'visible');
+
+			if (authorized) {
+				$('.login').text('Logout');
+			} else {
+				$('.login').text('Login');
+			}
+		},
+
+		didContainerClick: function(event) {
+			var className = $(event.target).attr('class');
+
+			switch (className) {
+				case 'register':
+					this.showRegisterScreen();
+					return false;
+
+				case 'login':
+					if (!this.session.isAuthorized()) {
+						this.showLoginScreen();
+					} else {
+						this.showLogoutScreen();
+					}
+					return false;
+
+			}
+		},
+
+		didSessionChange: function() {
+			this.render();
+		},
+
+		showScreenSet: function(name) {
+			gigya.accounts.showScreenSet({
+				screenSet: 'GMR-RegistrationLogin',
+				startScreen: name
+			});
+		},
+
+		showLoginScreen: function() {
+			this.showScreenSet('gigya-login-screen');
+		},
+
+		showRegisterScreen: function() {
+			/* TODO: Find Gigya's onRegister event */
+			this.session.willRegister = true;
+			this.showScreenSet('gigya-register-screen');
+		},
+
+		showLogoutScreen: function() {
+			gigya.accounts.logout({
+				cid: this.session.get_cid(),
+				callback: $.proxy(this.refresh, this)
+			});
+		},
+
+		refresh: function() {
+			location.reload();
+		}
+
+	};
+
+	$(document).ready(function() {
+		var sessionData    = window.gigya_session_data || { data: {} };
+		sessionData = sessionData.data;
+
+		var session         = new GigyaSession(sessionData);
+		var accountMenuView = new AccountMenuView(session);
+
+		session.authorize();
+	});
 
 })(this);

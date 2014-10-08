@@ -21,3 +21,7 @@
 		<?php
 	endwhile;
 get_footer();
+?>
+
+<div class="gigya-screen-set" id="my-screen-set" style="display:none">
+</div>

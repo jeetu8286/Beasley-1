@@ -49,6 +49,19 @@ abstract class AjaxHandler {
 	abstract public function get_action();
 
 	/**
+	 * The action name for an async job for this ajax handler
+	 *
+	 * Default is to suffix with 'async_job'.
+	 * Eg:- foo_async_job
+	 *
+	 * @access public
+	 * @return string The name of the async job action
+	 */
+	public function get_async_action() {
+		return $this->get_action() . '_async_job';
+	}
+
+	/**
 	 * Indicates whether the handler is public. Default handlers are
 	 * private.
 	 *
@@ -59,6 +72,19 @@ abstract class AjaxHandler {
 	 * @return boolean
 	 */
 	public function is_public() {
+		return false;
+	}
+
+	/**
+	 * Indicates whether the handler is async. Async handlers are run
+	 * as gearman jobs.
+	 *
+	 * Default is false.
+	 *
+	 * @access public
+	 * @return boolean
+	 */
+	public function is_async() {
 		return false;
 	}
 
@@ -77,14 +103,29 @@ abstract class AjaxHandler {
 	 * Registers an action with WordPress. The public or private action
 	 * name version will be used based on the result of `is_public`.
 	 *
+	 * For async handlers the job action is also registered here.
+	 *
 	 * @access public
 	 * @return void
 	 */
 	public function register() {
-		add_action(
-			$this->get_action_to_register(),
-			array( $this, 'handle_ajax' )
-		);
+		$action = $this->get_action_to_register();
+
+		add_action( $action, array( $this, 'handle_ajax' ) );
+
+		if ( $this->is_public() ) {
+			add_action(
+				str_replace( 'wp_ajax_', 'wp_ajax_nopriv_', $action ),
+				array( $this, 'handle_ajax' )
+			);
+		}
+
+		if ( $this->is_async() ) {
+			add_action(
+				$this->get_async_action(),
+				array( $this, 'run_async' )
+			);
+		}
 	}
 
 	/**
@@ -107,6 +148,20 @@ abstract class AjaxHandler {
 	abstract public function run( $params );
 
 	/**
+	 * Wraps the run task in an exception handler
+	 *
+	 * @access public
+	 * @return mixed
+	 */
+	public function run_async( $params ) {
+		try {
+			$this->run( $params );
+		} catch ( \Exception $e ) {
+			error_log( "Async Job Failed: {$e->getMessage()}" );
+		}
+	}
+
+	/**
 	 * The callback wired to the corresponding WordPress ajax action. It
 	 * calls and wraps the response from run and sends success or error
 	 * responses in JSON format to the client.
@@ -120,27 +175,52 @@ abstract class AjaxHandler {
 			// ajax handler
 			$this->authorize();
 
-			// execute concrete handler and capture response
-			$result = $this->run( $this->get_params() );
+			$params = $this->get_params();
 
-			// if json was not sent manually send response as json
-			if ( ! $this->did_send_json ) {
-				// for no result returned, the default response data sent to the client
-				// is 'true' to indicate success.
-				if ( is_null( $result ) ) {
-					$result = true;
+			if ( ! $this->is_async() ) {
+				// execute concrete handler and capture response
+				$result = $this->run( $params );
+
+				// if json was not sent manually send response as json
+				if ( ! $this->did_send_json ) {
+					// for no result returned, the default response
+					// data sent to the client
+					// is 'true' to indicate success.
+					if ( is_null( $result ) ) {
+						$result = true;
+					}
+					$this->send_json_success( $result );
+				} else {
+					// json was already sent, just quit
+					// only for PHPUnit since send_success already
+					// quits
+					$this->quit();
 				}
-				$this->send_json_success( $result );
 			} else {
-				// json was already sent, just quit
-				// only for PHPUnit since send_success already
-				// quits
-				$this->quit();
+				return $this->add_async_job( $params );
 			}
 		} catch ( \Exception $e ) {
 			// caught an exception, so send it as JSON
 			$this->send_json_error( false, $e->getMessage() );
 		}
+	}
+
+	/**
+	 * The default behaviour for an async handler is to enqueue a job
+	 * for later execution and return immediately.
+	 *
+	 * It returns true by default without any processing.
+	 *
+	 * If you intend to do processing based on the params override this
+	 * method with a call to the parent method.
+	 *
+	 * @access public
+	 * @param array $params The params object from the client
+	 * @return mixed
+	 */
+	public function add_async_job( $params ) {
+		wp_async_task_add( $this->get_async_action(), $params );
+		return true;
 	}
 
 	/* helpers */
@@ -219,15 +299,7 @@ abstract class AjaxHandler {
 	 * @return string
 	 */
 	public function get_action_to_register() {
-		if ( ! $this->is_public() ) {
-			return 'wp_ajax_' . $this->get_action();
-		} else {
-			if ( is_user_logged_in() ) {
-				return 'wp_ajax_' . $this->get_action();
-			} else {
-				return 'wp_ajax_nopriv_' . $this->get_action();
-			}
-		}
+		return 'wp_ajax_' . $this->get_action();
 	}
 
 	/**
