@@ -1,0 +1,103 @@
+.styleguide-nav-toggle {
+	@include position(fixed, 1em 0 0 1em);
+	@include size(2em 2em);
+	@include box-sizing(border-box);
+	@include padding(7px 6px);
+	@include transition(all 500ms ease-in-out);
+	background-color: $black;
+	cursor: pointer;
+	z-index: 2;
+}
+
+.styleguide-nav-toggle-span {
+	@include position(absolute, 14px null null null);
+	@include size(20px 1px);
+	@include transition(all 500ms ease-in-out);
+	display: block;
+	border-radius: 1px;
+	background: white;
+	content: '';
+	&:before {
+		@include position(absolute, -6px null null null);
+		@include size(20px 1px);
+		@include transition(all 500ms ease-in-out);
+		display: block;
+		border-radius: 1px;
+		background: white;
+		content: '';
+	}
+	&:after {
+		@include position(absolute, null null -6px null);
+		@include size(20px 1px);
+		@include transition(all 500ms ease-in-out);
+		display: block;
+		border-radius: 1px;
+		background: white;
+		content: '';
+	}
+}
+
+.logged-in {
+	.styleguide-nav-toggle {
+		@include position(fixed, 3em 0 0 1em);
+	}
+}
+
+.styleguide-nav {
+	@include position(fixed, 0 null null -12.5em);
+	@include size(200px 100%);
+	@include transition(all 500ms ease-in-out);
+	background-color: $black;
+	color: $white;
+	z-index: 1;
+}
+
+.styleguide-nav-content {
+	@include outer-container;
+}
+
+.styleguide-nav-list {
+	@include padding(0 1em);
+	list-style: none;
+}
+
+.styleguide-nav-list-item {
+	list-style: none;
+	@include padding(0);
+	a {
+		&:link, &:visited {
+			font-size: .75em;
+			color: $white;
+			text-transform: uppercase;
+		}
+		&:hover, &:active {
+			color: $gray;
+		}
+	}
+}
+
+/**
+ * When the Nav Toggle is clicked, a body class is added.
+ * When the body classes of `styleguide-nav-open` is added to the body
+ * the Style Guide off-canvas nav will slide from the left and the toggle
+ * button will slide over to accommodate the nav.
+ */
+.styleguide-nav-open{
+	.styleguide-nav{
+		@include position(null, null null null 0);
+	}
+	.styleguide-nav-toggle {
+		@include position(null, null null null 10.5em);
+	}
+	.styleguide-nav-toggle-span {
+		background-color: transparent;
+		&:before {
+			@include position(null, 0 null null null);
+			@include transform(rotate(45deg));
+		}
+		&:after {
+			@include position(null, 0 null null null);
+			@include transform(rotate(-45deg));
+		}
+	}
+}

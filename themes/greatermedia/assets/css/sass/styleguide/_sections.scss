@@ -1,0 +1,60 @@
+/**
+ * Section Styles
+ */
+.styleguide-sections {
+	padding: 3em 0;
+}
+.styleguide-section-title{
+	color: $meta-gray;
+	text-transform: uppercase;
+	text-align: center;
+}
+.styleguide-content{
+	@include outer-container;
+	@include position(relative, null null null null);
+	@include size(null 100%);
+}
+.styleguide-color-list{
+	@include margin(0);
+	@include padding(0);
+	list-style: none;
+}
+.styleguide-color-swatch{
+	@include span-columns(2);
+	@include border-top-radius(50%);
+	@include border-bottom-radius(50%);
+	@include border-left-radius(50%);
+	@include border-right-radius(50%);
+	@include size(10em 10em);
+	@include padding(6em null null);
+	@include margin(null null 1.5625em null);
+	text-align: center;
+	&.white{
+		@include border-color(shade($white, 10%));
+		@include border-style(solid);
+		@include border-width(.25em);
+		background-color: $white;
+	}
+	&.light-gray{
+		@include border-color(shade($light-gray, 10%));
+		@include border-style(solid);
+		@include border-width(.25em);
+		background-color: $light-gray;
+	}
+	&.black{
+		@include border-color(shade($black, 60%));
+		@include border-style(solid);
+		@include border-width(.25em);
+		background-color: $black;
+		color: $white;
+	}
+}
+.styleguide-color-swatch-variable{
+	display: block;
+	font-size: .625em;
+	font-weight: bold;
+}
+.styleguide-color-swatch-hex{
+	display: block;
+	font-size: .625em;
+}
