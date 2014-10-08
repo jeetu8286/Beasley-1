@@ -646,8 +646,12 @@ POSTS & CONTENT STYLES
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   padding: 7px 6px;
+  -webkit-transition: all 500ms ease-in-out;
+  -moz-transition: all 500ms ease-in-out;
+  transition: all 500ms ease-in-out;
   background-color: #000000;
-  cursor: pointer; }
+  cursor: pointer;
+  z-index: 2; }
 
 .styleguide-nav-toggle-span {
   position: absolute;
@@ -686,25 +690,6 @@ POSTS & CONTENT STYLES
     background: white;
     content: ''; }
 
-.styleguide-nav-toggle.active {
-  left: 200px; }
-  .styleguide-nav-toggle.active .styleguide-nav-toggle-span {
-    background-color: transparent; }
-    .styleguide-nav-toggle.active .styleguide-nav-toggle-span:before {
-      top: 0;
-      -webkit-transform: rotate(45deg);
-      -moz-transform: rotate(45deg);
-      -ms-transform: rotate(45deg);
-      -o-transform: rotate(45deg);
-      transform: rotate(45deg); }
-    .styleguide-nav-toggle.active .styleguide-nav-toggle-span:after {
-      top: 0;
-      -webkit-transform: rotate(-45deg);
-      -moz-transform: rotate(-45deg);
-      -ms-transform: rotate(-45deg);
-      -o-transform: rotate(-45deg);
-      transform: rotate(-45deg); }
-
 .logged-in .styleguide-nav-toggle {
   position: fixed;
   top: 3em;
@@ -715,13 +700,15 @@ POSTS & CONTENT STYLES
 .styleguide-nav {
   position: fixed;
   top: 0;
-  left: -200px;
+  left: -12.5em;
   height: 100%;
   width: 200px;
+  -webkit-transition: all 500ms ease-in-out;
+  -moz-transition: all 500ms ease-in-out;
+  transition: all 500ms ease-in-out;
   background-color: #000000;
-  color: #fff; }
-  .styleguide-nav.active {
-    left: 0; }
+  color: #fff;
+  z-index: 1; }
 
 .styleguide-nav-content {
   max-width: 68em;
@@ -733,21 +720,44 @@ POSTS & CONTENT STYLES
     clear: both; }
 
 .styleguide-nav-list {
-  list-style: none;
-  padding: 0;
-  margin: 0; }
+  list-style: none; }
 
 .styleguide-nav-list-item {
   list-style: none;
-  display: inline-block;
-  padding: 0;
-  margin: 0; }
+  padding: 0; }
   .styleguide-nav-list-item a:link, .styleguide-nav-list-item a:visited {
     font-size: .75em;
     color: #fff;
     text-transform: uppercase; }
   .styleguide-nav-list-item a:hover, .styleguide-nav-list-item a:active {
     color: #888888; }
+
+/**
+ * When the Nav Toggle is clicked, a body class is added.
+ * When the body classes of `styleguide-nav-open` is added to the body
+ * the Style Guide off-canvas nav will slide from the left and the toggle
+ * button will slide over to accommodate the nav.
+ */
+.styleguide-nav-open .styleguide-nav {
+  left: 0; }
+.styleguide-nav-open .styleguide-nav-toggle {
+  left: 10.5em; }
+.styleguide-nav-open .styleguide-nav-toggle-span {
+  background-color: transparent; }
+  .styleguide-nav-open .styleguide-nav-toggle-span:before {
+    top: 0;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg); }
+  .styleguide-nav-open .styleguide-nav-toggle-span:after {
+    top: 0;
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    transform: rotate(-45deg); }
 
 /**
  * Header Styles
