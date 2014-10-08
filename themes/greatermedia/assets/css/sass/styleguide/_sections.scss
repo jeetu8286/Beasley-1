@@ -1,6 +1,14 @@
 /**
  * Section Styles
  */
+.styleguide-sections {
+	&:nth-of-type(odd) {
+		background-color: $light-gray;
+	}
+	&:nth-of-type(even) {
+		background-color: $white;
+	}
+}
 .styleguide-content{
 	@include outer-container;
 	@include position(relative, null null null null);

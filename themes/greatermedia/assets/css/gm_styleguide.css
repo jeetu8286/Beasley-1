@@ -766,7 +766,6 @@ POSTS & CONTENT STYLES
 .styleguide-header {
   height: 500px;
   width: 100%;
-  background-color: #f5f5f5;
   color: #000000; }
 
 .styleguide-header-title {
@@ -787,6 +786,11 @@ POSTS & CONTENT STYLES
 /**
  * Section Styles
  */
+.styleguide-sections:nth-of-type(odd) {
+  background-color: #f5f5f5; }
+.styleguide-sections:nth-of-type(even) {
+  background-color: #fff; }
+
 .styleguide-content {
   max-width: 68em;
   margin-left: auto;

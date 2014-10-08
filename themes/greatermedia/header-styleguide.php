@@ -55,7 +55,7 @@
 					</ul>
 				</div>
 			</nav>
-			<header id="styleguide-header" class="styleguide-header" role="banner">
+			<header id="styleguide-header" class="styleguide-header styleguide-sections" role="banner">
 				<div class="styleguide-content">
 					<h1 class="styleguide-header-title">Greater Media Style Guide</h1>
 				</div>

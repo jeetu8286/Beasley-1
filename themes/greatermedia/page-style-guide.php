@@ -8,7 +8,7 @@
  
 get_header( 'styleguide' ); ?>
 
-<section id="styleguide-colors" class="styleguide-colors">
+<section id="styleguide-colors" class="styleguide-colors styleguide-sections">
 	<div class="styleguide-content">
 
 	</div>
