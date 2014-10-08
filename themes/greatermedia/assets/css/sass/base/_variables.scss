@@ -1,0 +1,36 @@
+/**
+ * Variables
+ */
+
+/*********************
+COLORS
+*********************/
+
+$black:             #000000;
+$white:             #fff;
+
+// Base gray colors
+$light-gray:        #f5f5f5;
+$soft-gray:         #eeeeee;
+$meta-gray:         #dddddd;
+$gray:              #888888;
+$dark-gray:         #333333;
+
+/* Enter site specific color variables below this line */
+
+$text-color:        $black;
+
+$link-color:        $dark-gray;
+$link-hover:        $gray;
+
+$border-color:      $soft-gray;
+$dark-border-color: $dark-gray;
+
+$nav-link-color:    $white;
+
+/*********************
+Misc
+*********************/
+
+// Site Max Width
+$max-site-width:	1200px;
