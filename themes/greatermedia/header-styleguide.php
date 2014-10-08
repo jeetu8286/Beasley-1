@@ -51,12 +51,12 @@
 				<div class="styleguide-nav-content">
 					<ul class="styleguide-nav-list">
 						<li class="styleguide-nav-list-item"><a href="#styleguide-header"><?php _e( 'Home', 'greatermedia' ); ?></a></li>
-						<li class="styleguide-nav-list-item"><a href="#styleguide-header"><?php _e( 'Home', 'greatermedia' ); ?></a></li>
+						<li class="styleguide-nav-list-item"><a href="##styleguide-colors"><?php _e( 'Colors', 'greatermedia' ); ?></a></li>
 					</ul>
 				</div>
 			</nav>
 			<header id="styleguide-header" class="styleguide-header" role="banner">
-				<div class="styleguide-header-content">
-
+				<div class="styleguide-content">
+					<h1 class="styleguide-header-title">Greater Media Style Guide</h1>
 				</div>
 			</header>

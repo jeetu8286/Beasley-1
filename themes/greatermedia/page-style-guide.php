@@ -6,6 +6,12 @@
  * @since 0.1.0
  */
  
-get_header( 'styleguide' );
+get_header( 'styleguide' ); ?>
 
-get_footer() ;
+<section id="styleguide-colors" class="styleguide-colors">
+	<div class="styleguide-content">
+
+	</div>
+</section>
+
+<?php get_footer() ;

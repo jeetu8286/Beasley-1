@@ -57,13 +57,13 @@
 }
 
 .styleguide-nav-list {
+	@include padding(0 1em);
 	list-style: none;
-	padding: 0 1em;
 }
 
 .styleguide-nav-list-item {
 	list-style: none;
-	padding: 0;
+	@include padding(0);
 	a {
 		&:link, &:visited {
 			font-size: .75em;

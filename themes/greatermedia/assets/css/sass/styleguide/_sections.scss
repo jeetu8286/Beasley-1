@@ -1,0 +1,8 @@
+/**
+ * Section Styles
+ */
+.styleguide-content{
+	@include outer-container;
+	@include position(relative, null null null null);
+	@include size(null 100%);
+}
