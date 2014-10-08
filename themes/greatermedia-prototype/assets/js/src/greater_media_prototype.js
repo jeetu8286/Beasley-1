@@ -1,10 +1,48 @@
 (function($) {
 
-	var GigyaSession     = function(sessionData) {
-		this.sessionData = sessionData;
-		this.authorized  = false;
+	var WpAjaxApi = function(config) {
+		this.config = config;
+	};
+
+	WpAjaxApi.prototype = {
+
+		nonceFor: function(action) {
+			return this.config[action + '_nonce'];
+		},
+
+		urlFor: function(action) {
+			var queryParams = {};
+			queryParams[action + '_nonce'] = this.nonceFor(action);
+
+			var url = this.config.ajax_url;
+			url += url.indexOf('?') === -1 ? '?' : '&';
+			url += $.param(queryParams);
+
+			return url;
+		},
+
+		request: function(action, data) {
+			if (!data) {
+				data = {};
+			}
+
+			var url         = this.urlFor(action);
+			var requestData = {
+				'action': action,
+				'action_data': JSON.stringify(data)
+			};
+
+			return $.post(url, requestData);
+		},
+
+	};
+
+	var GigyaSession      = function(sessionData, ajaxApi) {
+		this.sessionData  = sessionData;
+		this.ajaxApi      = ajaxApi;
+		this.authorized   = false;
 		this.willRegister = false;
-		this.mediator    = $({});
+		this.mediator     = $({});
 
 		gigya.accounts.addEventHandlers({
 			onLogin: $.proxy(this.didLogin, this),
@@ -66,6 +104,22 @@
 			this.account    = response;
 			this.authorized = true;
 			this.notify();
+
+			var data = {
+				'UID': response.UID
+			};
+
+			this.ajaxApi.request('gigya_login', data)
+				.then($.proxy(this.didLoginRelay, this))
+				.fail($.proxy(this.didLoginRelayError, this));
+		},
+
+		didLoginRelay: function(response) {
+			location.reload();
+		},
+
+		didLoginRelayError: function(response) {
+			console.log('didLoginRelayError', response);
 		},
 
 		didRegister: function(response) {
@@ -86,38 +140,43 @@
 				listNames.push('Big Deal');
 			}
 
-			var data  = {
-				'action': 'register_account',
-				'action_data': JSON.stringify({
-					'UID': response.UID,
-					'listNames': listNames
-				})
+			var data = {
+				'UID': response.UID,
+				'listNames': listNames
 			};
 
-			var url = this.sessionData.ajaxurl + '?' + $.param({
-				'register_account_nonce': this.sessionData.register_account_nonce,
-			});
-
-			var promise = $.post(url, data);
-
-			promise
+			this.ajaxApi.request('register_account', data)
 				.then($.proxy(this.didRegisterRelay, this))
 				.fail($.proxy(this.didRegisterRelayError, this));
 		},
 
 		didRegisterRelay: function(response) {
+			console.log('didRegisterRelay', response);
 			location.reload();
 		},
 
 		didRegisterRelayError: function(response) {
-			// TODO
+			// TODO: UI
 			console.log('didRegisterRelayError', response);
 		},
 
 		didLogout: function(response) {
 			this.authorized = false;
 			this.notify();
-		}
+			this.ajaxApi.request('gigya_logout')
+				.then($.proxy(this.didLogoutRelay, this))
+				.fail($.proxy(this.didLogoutRelayError, this));
+		},
+
+		didLogoutRelay: function(response) {
+			console.log('didLogoutRelay', response);
+			location.reload();
+		},
+
+		didLogoutRelayError: function(response) {
+			// TODO: UI
+			console.log('didLogoutRelayError', response);
+		},
 
 	};
 
@@ -197,11 +256,28 @@
 
 	};
 
-	$(document).ready(function() {
-		var sessionData    = window.gigya_session_data || { data: {} };
-		sessionData = sessionData.data;
+	var testPing = function() {
+		var api = new WpAjaxApi(gigya_session_data.data);
+		var data = {
+			'UID': 'foo',
+			'listNames': "Foo's bar has \"some\" stuff again"
+		};
 
-		var session         = new GigyaSession(sessionData);
+		var promise = api.request('ping', data);
+
+		promise
+		.then(function(response) {
+			console.log('ping success', response);
+		})
+		.fail(function(response) {
+			console.log('ping error', response);
+		});
+	};
+
+	$(document).ready(function() {
+		var sessionData     = window.gigya_session_data.data;
+		var ajaxApi         = new WpAjaxApi(sessionData);
+		var session         = new GigyaSession(sessionData, ajaxApi);
 		var accountMenuView = new AccountMenuView(session);
 
 		session.authorize();

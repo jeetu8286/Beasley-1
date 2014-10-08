@@ -51,6 +51,12 @@ class Plugin {
 
 		$register_ajax_handler = new RegisterAjaxHandler();
 		$register_ajax_handler->register();
+
+		$gigya_login_ajax_handler = new GigyaLoginAjaxHandler();
+		$gigya_login_ajax_handler->register();
+
+		$gigya_logout_ajax_handler = new GigyaLogoutAjaxHandler();
+		$gigya_logout_ajax_handler->register();
 	}
 
 	/**
@@ -65,9 +71,12 @@ class Plugin {
 
 		$session_data = array(
 			'data' => array(
-				'ajaxurl'       => admin_url( 'admin-ajax.php' ),
+				'ajax_url'               => admin_url( 'admin-ajax.php' ),
 				'register_account_nonce' => wp_create_nonce( 'register_account' ),
-				'cid' => ''
+				'gigya_login_nonce'      => wp_create_nonce( 'gigya_login' ),
+				'gigya_logout_nonce'     => wp_create_nonce( 'gigya_logout' ),
+				'ping_nonce'             => wp_create_nonce( 'ping' ),
+				'cid'                    => gigya_user_id()
 			)
 		);
 

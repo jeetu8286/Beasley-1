@@ -44,6 +44,16 @@ class RegisterAjaxHandler extends AjaxHandler {
 		}
 	}
 
+	public function add_async_job( $params ) {
+		parent::add_async_job( $params );
+
+		$UID     = $params['UID'];
+		$session = GigyaSession::get_instance();
+		$session->login( $UID );
+
+		return true;
+	}
+
 	public function list_id_for( $name ) {
 		return $this->list_ids[ $name ];
 	}
@@ -67,6 +77,7 @@ class RegisterAjaxHandler extends AjaxHandler {
 	public function account_for( $UID ) {
 		$request  = $this->request_for( 'accounts.getAccountInfo', $UID );
 		$response = $request->send();
+		//error_log ($response->getResponseText());
 
 		if ( $response->getErrorCode() === 0 ) {
 			return json_decode( $response->getResponseText(), true );

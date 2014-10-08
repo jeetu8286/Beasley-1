@@ -10,7 +10,8 @@
 	  "GreaterMedia\\": "includes/GreaterMedia"
 	},
 	"files": [
-		"includes/Gigya/GSSDK.php"
+		"includes/Gigya/GSSDK.php",
+		"includes/GreaterMedia/Gigya/api-helpers.php"
 	]
   }
 }

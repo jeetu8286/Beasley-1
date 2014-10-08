@@ -157,7 +157,8 @@ abstract class AjaxHandler {
 		try {
 			$this->run( $params );
 		} catch ( \Exception $e ) {
-			error_log( "Async Job Failed: {$e->getMessage()}" );
+			$context = get_class( $this );
+			error_log( "Async Job Failed ({$context}): {$e->getMessage()}" );
 		}
 	}
 
@@ -197,7 +198,8 @@ abstract class AjaxHandler {
 					$this->quit();
 				}
 			} else {
-				return $this->add_async_job( $params );
+				$result = $this->add_async_job( $params );
+				$this->send_json_success( $result );
 			}
 		} catch ( \Exception $e ) {
 			// caught an exception, so send it as JSON
