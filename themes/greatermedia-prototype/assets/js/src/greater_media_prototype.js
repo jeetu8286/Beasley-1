@@ -256,24 +256,6 @@
 
 	};
 
-	var testPing = function() {
-		var api = new WpAjaxApi(gigya_session_data.data);
-		var data = {
-			'UID': 'foo',
-			'listNames': "Foo's bar has \"some\" stuff again"
-		};
-
-		var promise = api.request('ping', data);
-
-		promise
-		.then(function(response) {
-			console.log('ping success', response);
-		})
-		.fail(function(response) {
-			console.log('ping error', response);
-		});
-	};
-
 	$(document).ready(function() {
 		var sessionData     = window.gigya_session_data.data;
 		var ajaxApi         = new WpAjaxApi(sessionData);
