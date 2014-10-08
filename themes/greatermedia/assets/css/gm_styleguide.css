@@ -766,6 +766,7 @@ POSTS & CONTENT STYLES
 .styleguide-header {
   height: 500px;
   width: 100%;
+  background-color: #f5f5f5;
   color: #000000; }
 
 .styleguide-header-title {
@@ -786,10 +787,13 @@ POSTS & CONTENT STYLES
 /**
  * Section Styles
  */
-.styleguide-sections:nth-of-type(odd) {
-  background-color: #f5f5f5; }
-.styleguide-sections:nth-of-type(even) {
-  background-color: #fff; }
+.styleguide-sections {
+  padding: 3em 0; }
+
+.styleguide-section-title {
+  color: #dddddd;
+  text-transform: uppercase;
+  text-align: center; }
 
 .styleguide-content {
   max-width: 68em;
@@ -801,5 +805,56 @@ POSTS & CONTENT STYLES
     content: "";
     display: table;
     clear: both; }
+
+.styleguide-color-list {
+  margin: 0;
+  padding: 0;
+  list-style: none; }
+
+.styleguide-color-swatch {
+  float: left;
+  display: block;
+  margin-right: 2.35765%;
+  width: 14.70196%;
+  border-top-left-radius: 50%;
+  border-top-right-radius: 50%;
+  border-bottom-left-radius: 50%;
+  border-bottom-right-radius: 50%;
+  border-top-left-radius: 50%;
+  border-bottom-left-radius: 50%;
+  border-top-right-radius: 50%;
+  border-bottom-right-radius: 50%;
+  height: 10em;
+  width: 10em;
+  padding-top: 6em;
+  margin-bottom: 1.5625em;
+  text-align: center; }
+  .styleguide-color-swatch:last-child {
+    margin-right: 0; }
+  .styleguide-color-swatch.white {
+    border-color: #e5e5e5;
+    border-style: solid;
+    border-width: 0.25em;
+    background-color: #fff; }
+  .styleguide-color-swatch.light-gray {
+    border-color: gainsboro;
+    border-style: solid;
+    border-width: 0.25em;
+    background-color: #f5f5f5; }
+  .styleguide-color-swatch.black {
+    border-color: black;
+    border-style: solid;
+    border-width: 0.25em;
+    background-color: #000000;
+    color: #fff; }
+
+.styleguide-color-swatch-variable {
+  display: block;
+  font-size: .625em;
+  font-weight: bold; }
+
+.styleguide-color-swatch-hex {
+  display: block;
+  font-size: .625em; }
 
 /*# sourceMappingURL=gm_styleguide.css.map */

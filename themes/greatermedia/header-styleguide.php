@@ -47,15 +47,22 @@
 			<div id="styleguide-nav-toggle" class="styleguide-nav-toggle">
 				<div class="styleguide-nav-toggle-span"></div>
 			</div>
-			<nav id="styleguide-nav" class="styleguide-nav" role="navigation">
+			<nav id="nav" class="styleguide-nav" role="navigation">
 				<div class="styleguide-nav-content">
 					<ul class="styleguide-nav-list">
-						<li class="styleguide-nav-list-item"><a href="#styleguide-header"><?php _e( 'Home', 'greatermedia' ); ?></a></li>
-						<li class="styleguide-nav-list-item"><a href="##styleguide-colors"><?php _e( 'Colors', 'greatermedia' ); ?></a></li>
+						<li class="styleguide-nav-list-item"><a href="#header"><?php _e( 'Home', 'greatermedia' ); ?></a></li>
+						<li class="styleguide-nav-list-item"><a href="#colors"><?php _e( 'Colors', 'greatermedia' ); ?></a></li>
+						<li class="styleguide-nav-list-item"><a href="#typography"><?php _e( 'Typography', 'greatermedia' ); ?></a></li>
+						<li class="styleguide-nav-list-item"><a href="#icons"><?php _e( 'Icons', 'greatermedia' ); ?></a></li>
+						<li class="styleguide-nav-list-item"><a href="#buttons"><?php _e( 'Buttons', 'greatermedia' ); ?></a></li>
+						<li class="styleguide-nav-list-item"><a href="#forms"><?php _e( 'Forms', 'greatermedia' ); ?></a></li>
+						<li class="styleguide-nav-list-item"><a href="#navigations"><?php _e( 'Navigations', 'greatermedia' ); ?></a></li>
+						<li class="styleguide-nav-list-item"><a href="#discussions"><?php _e( 'Discussions', 'greatermedia' ); ?></a></li>
+						<li class="styleguide-nav-list-item"><a href="#layout"><?php _e( 'Layout', 'greatermedia' ); ?></a></li>
 					</ul>
 				</div>
 			</nav>
-			<header id="styleguide-header" class="styleguide-header styleguide-sections" role="banner">
+			<header id="header" class="styleguide-header styleguide-sections" role="banner">
 				<div class="styleguide-content">
 					<h1 class="styleguide-header-title">Greater Media Style Guide</h1>
 				</div>

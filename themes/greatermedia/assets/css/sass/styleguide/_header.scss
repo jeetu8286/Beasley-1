@@ -3,6 +3,7 @@
  */
 .styleguide-header{
 	@include size(100% 500px);
+	background-color: $light-gray;
 	color: $black;
 }
 .styleguide-header-title{
