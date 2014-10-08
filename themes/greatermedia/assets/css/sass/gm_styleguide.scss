@@ -1,5 +1,5 @@
 /**
- * Greater Media
+ * Greater Media Style Guide
  *
  * Copyright (c) 2014 10up
  * Licensed under the GPLv2+ license.
@@ -15,18 +15,9 @@
 @import "base/placeholders";
 @import "base/fonts";
 @import "base/breakpoints";
-@import "base/base";
 @import "base/helpers";
 
-// Main layout components: menu, typography, etc.
-@import "layout/typography";
-@import "layout/menus";
-
-// Folder for home if needed
-
-// Components
-@import "components/header";
-@import "components/footer";
-
-// Custom styles only used on single pages
-@import "pages/single";
+// Custom styles for the living style guide
+@import "styleguide/base";
+@import "styleguide/header";
+@import "styleguide/footer";

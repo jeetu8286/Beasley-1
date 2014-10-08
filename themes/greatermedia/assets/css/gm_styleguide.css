@@ -1,5 +1,5 @@
 /**
- * Greater Media
+ * Greater Media Style Guide
  *
  * Copyright (c) 2014 10up
  * Licensed under the GPLv2+ license.
@@ -385,6 +385,9 @@ th {
  * Breakpoints
  */
 /**
+ * Helpers
+ */
+/**
  * Base Styles
  */
 /*********************
@@ -626,20 +629,8 @@ POSTS & CONTENT STYLES
 /* end .gallery */
 /* gallery caption styles */
 /**
- * Helpers
- */
-/**
- * Typography
- */
-/**
- * Menu Styles
- */
-/**
  * Header Styles
  */
 /**
  * Footer Styles
- */
-/**
- * Single Page Styles
  */
