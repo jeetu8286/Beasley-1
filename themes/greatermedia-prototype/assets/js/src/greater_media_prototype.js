@@ -265,4 +265,5 @@
 		session.authorize();
 	});
 
+	/* jquery */
 }(jQuery));
