@@ -6,8 +6,8 @@
  * @since 0.1.0
  */
  ?>
-<section id="layout" class="styleguide-layout styleguide-sections">
-	<div class="styleguide-content">
-		<h2 class="styleguide-section-title"><?php _e( 'Layout', 'greatermedia' ); ?></h2>
+<section id="layout" class="sg-layout sg-sections">
+	<div class="sg-content">
+		<h2 class="sg-section-title"><?php _e( 'Layout', 'greatermedia' ); ?></h2>
 	</div>
 </section>

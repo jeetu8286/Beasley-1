@@ -394,7 +394,7 @@ GENERAL STYLES
 *********************/
 body {
   height: 100%;
-  background-color: #ffffff;
+  background-color: #f9f9f9;
   margin: 0 auto;
   line-height: 1.5;
   font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
@@ -629,7 +629,7 @@ POSTS & CONTENT STYLES
 /* image gallery styles */
 /* end .gallery */
 /* gallery caption styles */
-.styleguide-nav-toggle {
+.sg-nav-toggle {
   position: fixed;
   top: 1em;
   right: 0;
@@ -648,7 +648,7 @@ POSTS & CONTENT STYLES
   cursor: pointer;
   z-index: 2; }
 
-.styleguide-nav-toggle-span {
+.sg-nav-toggle-span {
   position: absolute;
   top: 14px;
   height: 1px;
@@ -660,7 +660,7 @@ POSTS & CONTENT STYLES
   border-radius: 1px;
   background: #ffffff;
   content: ''; }
-  .styleguide-nav-toggle-span:before {
+  .sg-nav-toggle-span:before {
     position: absolute;
     top: -6px;
     height: 1px;
@@ -672,7 +672,7 @@ POSTS & CONTENT STYLES
     border-radius: 1px;
     background: #ffffff;
     content: ''; }
-  .styleguide-nav-toggle-span:after {
+  .sg-nav-toggle-span:after {
     position: absolute;
     bottom: -6px;
     height: 1px;
@@ -685,14 +685,14 @@ POSTS & CONTENT STYLES
     background: #ffffff;
     content: ''; }
 
-.logged-in .styleguide-nav-toggle {
+.logged-in .sg-nav-toggle {
   position: fixed;
   top: 3em;
   right: 0;
   bottom: 0;
   left: 1em; }
 
-.styleguide-nav {
+.sg-nav {
   position: fixed;
   top: 0;
   left: -12.5em;
@@ -705,49 +705,49 @@ POSTS & CONTENT STYLES
   color: #ffffff;
   z-index: 1; }
 
-.styleguide-nav-content {
+.sg-nav-content {
   max-width: 68em;
   margin-left: auto;
   margin-right: auto; }
-  .styleguide-nav-content:after {
+  .sg-nav-content:after {
     content: "";
     display: table;
     clear: both; }
 
-.styleguide-nav-list {
+.sg-nav-list {
   padding: 0 1em;
   list-style: none; }
 
-.styleguide-nav-list-item {
+.sg-nav-list-item {
   list-style: none;
   padding: 0; }
-  .styleguide-nav-list-item a:link, .styleguide-nav-list-item a:visited {
+  .sg-nav-list-item a:link, .sg-nav-list-item a:visited {
     font-size: .75em;
     color: #ffffff;
     text-transform: uppercase; }
-  .styleguide-nav-list-item a:hover, .styleguide-nav-list-item a:active {
+  .sg-nav-list-item a:hover, .sg-nav-list-item a:active {
     color: #888888; }
 
 /**
  * When the Nav Toggle is clicked, a body class is added.
- * When the body classes of `styleguide-nav-open` is added to the body
+ * When the body classes of `sg-nav-open` is added to the body
  * the Style Guide off-canvas nav will slide from the left and the toggle
  * button will slide over to accommodate the nav.
  */
-.styleguide-nav-open .styleguide-nav {
+.sg-nav-open .sg-nav {
   left: 0; }
-.styleguide-nav-open .styleguide-nav-toggle {
+.sg-nav-open .sg-nav-toggle {
   left: 10.5em; }
-.styleguide-nav-open .styleguide-nav-toggle-span {
+.sg-nav-open .sg-nav-toggle-span {
   background-color: transparent; }
-  .styleguide-nav-open .styleguide-nav-toggle-span:before {
+  .sg-nav-open .sg-nav-toggle-span:before {
     top: 0;
     -webkit-transform: rotate(45deg);
     -moz-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
     -o-transform: rotate(45deg);
     transform: rotate(45deg); }
-  .styleguide-nav-open .styleguide-nav-toggle-span:after {
+  .sg-nav-open .sg-nav-toggle-span:after {
     top: 0;
     -webkit-transform: rotate(-45deg);
     -moz-transform: rotate(-45deg);
@@ -758,13 +758,13 @@ POSTS & CONTENT STYLES
 /**
  * Header Styles
  */
-.styleguide-header {
+.sg-header {
   height: 500px;
   width: 100%;
-  background-color: #f5f5f5;
+  background-color: #dddddd;
   color: #000000; }
 
-.styleguide-header-title {
+.sg-header-title {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -782,92 +782,192 @@ POSTS & CONTENT STYLES
 /**
  * Section Styles
  */
-.styleguide-sections {
+.sg-sections {
   padding: 3em 0; }
 
-.styleguide-section-title {
+.sg-section-title {
   color: #dddddd;
   text-transform: uppercase;
   text-align: center; }
 
-.styleguide-content {
+.sg-content {
   max-width: 68em;
   margin-left: auto;
   margin-right: auto;
   position: relative;
   height: 100%; }
-  .styleguide-content:after {
+  .sg-content:after {
     content: "";
     display: table;
     clear: both; }
 
-.styleguide-color-list {
-  margin: 0;
-  padding: 0;
-  list-style: none; }
-
-.styleguide-color-swatch {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
+.sg-colors-table {
   float: left;
   display: block;
   margin-right: 2.35765%;
-  width: 14.70196%;
-  height: 10em;
-  padding-top: 6em;
-  margin-bottom: 1.5625em;
-  text-align: center; }
-  .styleguide-color-swatch:last-child {
+  width: 100%;
+  display: table; }
+  .sg-colors-table:last-child {
     margin-right: 0; }
-  .styleguide-color-swatch:nth-of-type(6n) {
-    margin-right: 0; }
-  .styleguide-color-swatch.white {
-    border-color: #f5f5f5;
-    border-style: solid;
-    border-width: 0.25em;
-    background-color: #ffffff; }
-  .styleguide-color-swatch.light-gray {
-    border-color: #eeeeee;
-    border-style: solid;
-    border-width: 0.25em;
-    background-color: #f5f5f5; }
-  .styleguide-color-swatch.soft-gray {
-    border-color: #dddddd;
-    border-style: solid;
-    border-width: 0.25em;
-    background-color: #eeeeee; }
-  .styleguide-color-swatch.meta-gray {
-    border-color: #888888;
-    border-style: solid;
-    border-width: 0.25em;
-    background-color: #dddddd; }
-  .styleguide-color-swatch.gray {
-    border-color: #333333;
-    border-style: solid;
-    border-width: 0.25em;
-    background-color: #888888;
-    color: #ffffff; }
-  .styleguide-color-swatch.dark-gray {
-    border-color: #000000;
-    border-style: solid;
-    border-width: 0.25em;
-    background-color: #333333;
-    color: #ffffff; }
-  .styleguide-color-swatch.black {
-    border-color: #000000;
-    border-style: solid;
-    border-width: 0.25em;
-    background-color: #000000;
-    color: #ffffff; }
 
-.styleguide-color-swatch-variable {
+.sg-color {
+  height: 80px;
+  width: 13%;
+  display: table-cell;
+  color: #ffffff; }
+
+.color-black {
+  background-color: #000000; }
+
+.color-dark-gray {
+  background-color: #333333; }
+
+.color-gray {
+  background-color: #888888; }
+
+.color-meta-gray {
+  background-color: #dddddd; }
+
+.color-soft-gray {
+  background-color: #eeeeee; }
+
+.color-light-gray {
+  background-color: #f5f5f5; }
+
+.color-white {
+  background-color: #ffffff; }
+
+.sg-color-swatch {
   display: block;
+  position: relative;
+  height: 100%;
+  width: 100%; }
+  .sg-color-swatch:hover span {
+    opacity: 1; }
+
+.sg-color-variable {
+  display: block;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 0.25em 5px;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+  opacity: 0;
+  background-color: #000000;
   font-size: .625em;
   font-weight: bold; }
 
-.styleguide-color-swatch-hex {
-  display: block;
-  font-size: .625em; }
+/* http://prismjs.com/download.html?themes=prism&languages=markup+css+css-extras+clike+javascript+php+php-extras+scss */
+/**
+ * prism.js default theme for JavaScript, CSS and HTML
+ * Based on dabblet (http://dabblet.com)
+ * @author Lea Verou
+ */
+code[class*="language-"],
+pre[class*="language-"] {
+  color: black;
+  text-shadow: 0 1px white;
+  font-family: Consolas, Monaco, 'Andale Mono', monospace;
+  direction: ltr;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  line-height: 1.5;
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none; }
+
+pre[class*="language-"]::-moz-selection, pre[class*="language-"] ::-moz-selection,
+code[class*="language-"]::-moz-selection, code[class*="language-"] ::-moz-selection {
+  text-shadow: none;
+  background: #b3d4fc; }
+
+pre[class*="language-"]::selection, pre[class*="language-"] ::selection,
+code[class*="language-"]::selection, code[class*="language-"] ::selection {
+  text-shadow: none;
+  background: #b3d4fc; }
+
+@media print {
+  code[class*="language-"],
+  pre[class*="language-"] {
+    text-shadow: none; } }
+/* Code blocks */
+pre[class*="language-"] {
+  padding: 1em;
+  margin: .5em 0;
+  overflow: auto; }
+
+:not(pre) > code[class*="language-"],
+pre[class*="language-"] {
+  background: #f5f2f0; }
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+  padding: .1em;
+  border-radius: .3em; }
+
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+  color: slategray; }
+
+.token.punctuation {
+  color: #999; }
+
+.namespace {
+  opacity: .7; }
+
+.token.property,
+.token.tag,
+.token.boolean,
+.token.number,
+.token.constant,
+.token.symbol,
+.token.deleted {
+  color: #905; }
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+  color: #690; }
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+  color: #a67f59;
+  background: rgba(255, 255, 255, 0.5); }
+
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+  color: #07a; }
+
+.token.function {
+  color: #DD4A68; }
+
+.token.regex,
+.token.important,
+.token.variable {
+  color: #e90; }
+
+.token.important {
+  font-weight: bold; }
+
+.token.entity {
+  cursor: help; }
 
 /*# sourceMappingURL=gm_styleguide.css.map */
