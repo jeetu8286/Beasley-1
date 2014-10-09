@@ -841,7 +841,8 @@ POSTS & CONTENT STYLES
   display: block;
   position: relative;
   height: 100%;
-  width: 100%; }
+  width: 100%;
+  cursor: pointer; }
   .sg-color-swatch:hover span {
     opacity: 1; }
 
