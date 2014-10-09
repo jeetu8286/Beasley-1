@@ -117,6 +117,8 @@
 
 		View: new TimeRestrictedView(),
 
+		toView: function() { return this.View; },
+
 		edit: function (node) {
 
 			var edit_self = this,
