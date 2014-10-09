@@ -31,4 +31,3 @@ if ( is_gigya_user_logged_in() ) {
 get_footer();
 
 ?>
->>>>>>> feature/greatermedia-gigya-plugin
