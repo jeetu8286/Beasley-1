@@ -204,21 +204,18 @@
 		},
 
 		didContainerClick: function(event) {
-			var className = $(event.target).attr('class');
+			var target = $(event.target);
 
-			switch (className) {
-				case 'register':
-					this.showRegisterScreen();
-					return false;
-
-				case 'login':
-					if (!this.session.isAuthorized()) {
-						this.showLoginScreen();
-					} else {
-						this.showLogoutScreen();
-					}
-					return false;
-
+			if (target.hasClass('register')) {
+				this.showRegisterScreen();
+				return false;
+			} else if (target.hasClass('login')) {
+				if (!this.session.isAuthorized()) {
+					this.showLoginScreen();
+				} else {
+					this.showLogoutScreen();
+				}
+				return false;
 			}
 		},
 
