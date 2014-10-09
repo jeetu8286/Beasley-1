@@ -67,6 +67,7 @@ class GreaterMediaTimedContent {
 
 			// Enqueue CSS
 			wp_enqueue_style( 'greatermedia-tc', trailingslashit( GREATER_MEDIA_TIMED_CONTENT_URL ) . 'css/greatermedia-timed-content.css' );
+			wp_enqueue_style( 'datetimepicker', trailingslashit( GREATER_MEDIA_TIMED_CONTENT_URL ) . 'js/vendor/datetimepicker/jquery.datetimepicker.css' );
 
 			// Enqueue JavaScript
 			if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {

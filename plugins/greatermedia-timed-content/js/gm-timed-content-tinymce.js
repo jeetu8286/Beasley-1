@@ -16,12 +16,14 @@
 					body: [
 						{
 							type : 'textbox',
+							id   : 'gm-show-date',
 							name : 'show',
 							label: GreaterMediaTimedContent.strings['Show content on'],
 							value: ''
 						},
 						{
 							type : 'textbox',
+							id   : 'gm-hide-date',
 							name : 'hide',
 							label: GreaterMediaTimedContent.strings['Hide content on'],
 							value: ''
@@ -46,10 +48,19 @@
 							}).string()
 						);
 
-					}
+					},
+
+					width : 600,
+					height: 130
+
 				};
 
 				self.editor.windowManager.open(time_restricted_editor_popup);
+				jQuery('#gm-show-date, #gm-hide-date').datetimepicker({
+					format: GreaterMediaTimedContent.formats.mce_view_date,
+					inline: false,
+					lang  : 'en'
+				});
 
 			}
 		});
@@ -119,12 +130,14 @@
 					body: [
 						{
 							type : 'textbox',
+							id   : 'gm-show-date',
 							name : 'show',
 							label: GreaterMediaTimedContent.strings['Show content on'],
 							value: show_time.format(GreaterMediaTimedContent.formats.mce_view_date)
 						},
 						{
 							type : 'textbox',
+							id   : 'gm-hide-date',
 							name : 'hide',
 							label: GreaterMediaTimedContent.strings['Hide content on'],
 							value: hide_time.format(GreaterMediaTimedContent.formats.mce_view_date)
@@ -172,6 +185,12 @@
 				};
 
 			self.editor.windowManager.open(time_restricted_editor_popup);
+			jQuery('#gm-show-date, #gm-hide-date').datetimepicker({
+				format: GreaterMediaTimedContent.formats.mce_view_date,
+				inline: false,
+				lang  : 'en'
+			});
+
 
 		}
 
