@@ -1,4 +1,4 @@
-.styleguide-nav-toggle {
+.sg-nav-toggle {
 	@include position(fixed, 1em 0 0 1em);
 	@include size(2em 2em);
 	@include box-sizing(border-box);
@@ -9,7 +9,7 @@
 	z-index: 2;
 }
 
-.styleguide-nav-toggle-span {
+.sg-nav-toggle-span {
 	@include position(absolute, 14px null null null);
 	@include size(20px 1px);
 	@include transition(all 500ms ease-in-out);
@@ -38,12 +38,12 @@
 }
 
 .logged-in {
-	.styleguide-nav-toggle {
+	.sg-nav-toggle {
 		@include position(fixed, 3em 0 0 1em);
 	}
 }
 
-.styleguide-nav {
+.sg-nav {
 	@include position(fixed, 0 null null -12.5em);
 	@include size(200px 100%);
 	@include transition(all 500ms ease-in-out);
@@ -52,16 +52,16 @@
 	z-index: 1;
 }
 
-.styleguide-nav-content {
+.sg-nav-content {
 	@include outer-container;
 }
 
-.styleguide-nav-list {
+.sg-nav-list {
 	@include padding(0 1em);
 	list-style: none;
 }
 
-.styleguide-nav-list-item {
+.sg-nav-list-item {
 	list-style: none;
 	@include padding(0);
 	a {
@@ -78,18 +78,18 @@
 
 /**
  * When the Nav Toggle is clicked, a body class is added.
- * When the body classes of `styleguide-nav-open` is added to the body
+ * When the body classes of `sg-nav-open` is added to the body
  * the Style Guide off-canvas nav will slide from the left and the toggle
  * button will slide over to accommodate the nav.
  */
-.styleguide-nav-open{
-	.styleguide-nav{
+.sg-nav-open{
+	.sg-nav{
 		@include position(null, null null null 0);
 	}
-	.styleguide-nav-toggle {
+	.sg-nav-toggle {
 		@include position(null, null null null 10.5em);
 	}
-	.styleguide-nav-toggle-span {
+	.sg-nav-toggle-span {
 		background-color: transparent;
 		&:before {
 			@include position(null, 0 null null null);

@@ -6,8 +6,8 @@
  * @since 0.1.0
  */
  ?>
-<section id="buttons" class="styleguide-buttons styleguide-sections">
-	<div class="styleguide-content">
-		<h2 class="styleguide-section-title"><?php _e( 'Buttons', 'greatermedia' ); ?></h2>
+<section id="buttons" class="sg-buttons sg-sections">
+	<div class="sg-content">
+		<h2 class="sg-section-title"><?php _e( 'Buttons', 'greatermedia' ); ?></h2>
 	</div>
 </section>
