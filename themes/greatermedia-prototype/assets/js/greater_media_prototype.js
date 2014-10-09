@@ -209,10 +209,10 @@
 		didContainerClick: function(event) {
 			var target = $(event.target);
 
-			if (target.has('#register-button')) {
+			if (target.attr('id') === 'register-button') {
 				this.showRegisterScreen();
 				return false;
-			} else if (target.has('#login-button')) {
+			} else if (target.attr('id') === 'login-button') {
 				if (!this.session.isAuthorized()) {
 					this.showLoginScreen();
 				} else {
