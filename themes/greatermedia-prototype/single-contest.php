@@ -9,7 +9,16 @@ if ( is_gigya_user_logged_in() ) {
 			<h1><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h1>
 
 			<?php
-				$contest_form_id = 1;
+				/* TODO: TEMPORARY HACK, to demo a contest form */
+				$site_url = get_site_url();
+				$domain   = parse_url( $site_url, PHP_URL_HOST );
+
+				if ( strpos( '10up', $domain ) !== false ) {
+					$contest_form_id = 4;
+				} else {
+					$contest_form_id = 1;
+				}
+
 				gravity_form( $contest_form_id );
 			?>
 
