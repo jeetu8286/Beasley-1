@@ -67,15 +67,10 @@
 
 	});
 
-	/**
-	 * Function to instantiate a new TinyMCE view
-	 * Invoke with "new TimeRestrictedView()"
-	 * @returns TinyMCE view object
-	 * @constructor
-	 */
-	var TimeRestrictedView = function () {
+	// Register a custom TinyMCE View for displaying the shortcode in the WYSIWYG editor
+	wp.mce.views.register('time-restricted', {
 
-		return {
+		View: _.extend( wp.mce.View.prototype, {
 
 			template: _.template(GreaterMediaTimedContent.templates.tinymce),
 
@@ -108,14 +103,7 @@
 
 			}
 
-		}
-
-	};
-
-	// Register a custom TinyMCE View for displaying the shortcode in the WYSIWYG editor
-	wp.mce.views.register('time-restricted', {
-
-		View: new TimeRestrictedView(),
+		}),
 
 		edit: function (node) {
 
