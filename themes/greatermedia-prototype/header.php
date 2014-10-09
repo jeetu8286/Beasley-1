@@ -23,8 +23,8 @@
 			<div class="player">
 				<a href="#" class="pjaxer"><i class="fa fa-play-circle"> Listen Live</i></a>
 			</div>
-			<a href="" class="register pjaxer">register</a>
-			<a href="" class="login pjaxer">Login</a>
+			<a id="register-button" href="" class="register pjaxer" style="visibility:hidden">register</a>
+			<a id="login-button" href="" class="login pjaxer" style="visibility:hidden">Login</a>
 		</div>
 		<p class="site-ids">
 			Network: <?php echo get_current_site()->site_name; ?> (ID: <?php echo get_current_site()->id; ?>)<br>

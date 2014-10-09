@@ -206,10 +206,10 @@
 		didContainerClick: function(event) {
 			var target = $(event.target);
 
-			if (target.hasClass('register')) {
+			if (target.has('#register-button')) {
 				this.showRegisterScreen();
 				return false;
-			} else if (target.hasClass('login')) {
+			} else if (target.has('#login-button')) {
 				if (!this.session.isAuthorized()) {
 					this.showLoginScreen();
 				} else {
