@@ -4,7 +4,7 @@
 	@include box-sizing(border-box);
 	@include padding(7px 6px);
 	@include transition(all 500ms ease-in-out);
-	background-color: $black;
+	background-color: color(black);
 	cursor: pointer;
 	z-index: 2;
 }
@@ -15,7 +15,7 @@
 	@include transition(all 500ms ease-in-out);
 	display: block;
 	border-radius: 1px;
-	background: white;
+	background: color(white);
 	content: '';
 	&:before {
 		@include position(absolute, -6px null null null);
@@ -23,7 +23,7 @@
 		@include transition(all 500ms ease-in-out);
 		display: block;
 		border-radius: 1px;
-		background: white;
+		background: color(white);
 		content: '';
 	}
 	&:after {
@@ -32,7 +32,7 @@
 		@include transition(all 500ms ease-in-out);
 		display: block;
 		border-radius: 1px;
-		background: white;
+		background: color(white);
 		content: '';
 	}
 }
@@ -47,8 +47,8 @@
 	@include position(fixed, 0 null null -12.5em);
 	@include size(200px 100%);
 	@include transition(all 500ms ease-in-out);
-	background-color: $black;
-	color: $white;
+	background-color: color(black);
+	color: color(white);
 	z-index: 1;
 }
 
@@ -67,11 +67,11 @@
 	a {
 		&:link, &:visited {
 			font-size: .75em;
-			color: $white;
+			color: color(white);
 			text-transform: uppercase;
 		}
 		&:hover, &:active {
-			color: $gray;
+			color: color(gray);
 		}
 	}
 }

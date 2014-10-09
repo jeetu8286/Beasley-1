@@ -10,13 +10,6 @@
   -moz-box-sizing: border-box;
   box-sizing: border-box; }
 
-/**
- * Variables
- */
-/*********************
-COLORS
-*********************/
-/* Enter site specific color variables below this line */
 /*********************
 Misc
 *********************/
@@ -401,12 +394,12 @@ GENERAL STYLES
 *********************/
 body {
   height: 100%;
-  background: #fff;
+  background-color: #ffffff;
   margin: 0 auto;
   line-height: 1.5;
   font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
   font-size: 100%;
-  color: #000000;
+  color: color(black);
   -webkit-font-smoothing: antialiased; }
 
 * {
@@ -467,13 +460,13 @@ style a page via class
 LINK STYLES
 *********************/
 a, a:visited {
-  color: #333333;
+  color: color(dark-gray);
   text-decoration: none;
   /* on hover */
   /* on click */
   /* mobile tap color */ }
   a:hover, a:focus, a:visited:hover, a:visited:focus {
-    color: #888888; }
+    color: color(gray); }
   a:link, a:visited:link {
     /*
     this highlights links on iPhones/iPads.
@@ -563,7 +556,9 @@ POSTS & CONTENT STYLES
   .entry-content p {
     margin: 0 0 1.5em; }
   .entry-content blockquote {
-    border-left: 10px solid #888888;
+    border-color: #888888;
+    border-left-width: 10px;
+    border-style: solid;
     margin: 1.5em 10px;
     padding: 0.5em 10px;
     quotes: "“" "”" "‘" "’"; }
@@ -663,7 +658,7 @@ POSTS & CONTENT STYLES
   transition: all 500ms ease-in-out;
   display: block;
   border-radius: 1px;
-  background: white;
+  background: #ffffff;
   content: ''; }
   .styleguide-nav-toggle-span:before {
     position: absolute;
@@ -675,7 +670,7 @@ POSTS & CONTENT STYLES
     transition: all 500ms ease-in-out;
     display: block;
     border-radius: 1px;
-    background: white;
+    background: #ffffff;
     content: ''; }
   .styleguide-nav-toggle-span:after {
     position: absolute;
@@ -687,7 +682,7 @@ POSTS & CONTENT STYLES
     transition: all 500ms ease-in-out;
     display: block;
     border-radius: 1px;
-    background: white;
+    background: #ffffff;
     content: ''; }
 
 .logged-in .styleguide-nav-toggle {
@@ -707,7 +702,7 @@ POSTS & CONTENT STYLES
   -moz-transition: all 500ms ease-in-out;
   transition: all 500ms ease-in-out;
   background-color: #000000;
-  color: #fff;
+  color: #ffffff;
   z-index: 1; }
 
 .styleguide-nav-content {
@@ -728,7 +723,7 @@ POSTS & CONTENT STYLES
   padding: 0; }
   .styleguide-nav-list-item a:link, .styleguide-nav-list-item a:visited {
     font-size: .75em;
-    color: #fff;
+    color: #ffffff;
     text-transform: uppercase; }
   .styleguide-nav-list-item a:hover, .styleguide-nav-list-item a:active {
     color: #888888; }
@@ -832,21 +827,42 @@ POSTS & CONTENT STYLES
   .styleguide-color-swatch:last-child {
     margin-right: 0; }
   .styleguide-color-swatch.white {
-    border-color: #e5e5e5;
+    border-color: #f5f5f5;
     border-style: solid;
     border-width: 0.25em;
-    background-color: #fff; }
+    background-color: #ffffff; }
   .styleguide-color-swatch.light-gray {
-    border-color: gainsboro;
+    border-color: #eeeeee;
     border-style: solid;
     border-width: 0.25em;
     background-color: #f5f5f5; }
+  .styleguide-color-swatch.soft-gray {
+    border-color: #dddddd;
+    border-style: solid;
+    border-width: 0.25em;
+    background-color: #eeeeee; }
+  .styleguide-color-swatch.meta-gray {
+    border-color: #888888;
+    border-style: solid;
+    border-width: 0.25em;
+    background-color: #dddddd; }
+  .styleguide-color-swatch.gray {
+    border-color: #333333;
+    border-style: solid;
+    border-width: 0.25em;
+    background-color: #888888; }
+  .styleguide-color-swatch.dark-gray {
+    border-color: #000000;
+    border-style: solid;
+    border-width: 0.25em;
+    background-color: #333333;
+    color: #ffffff; }
   .styleguide-color-swatch.black {
-    border-color: black;
+    border-color: #000000;
     border-style: solid;
     border-width: 0.25em;
     background-color: #000000;
-    color: #fff; }
+    color: #ffffff; }
 
 .styleguide-color-swatch-variable {
   display: block;

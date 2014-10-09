@@ -13,7 +13,7 @@ get_header( 'styleguide' ); ?>
 		<h2 class="styleguide-section-title"><?php _e( 'Colors', 'greatermedia' ); ?></h2>
 		<ul class="styleguide-color-list">
 			<li class="styleguide-color-swatch white">
-				<span class="styleguide-color-swatch-variable"><?php _e( '$white', '' ); ?></span>
+				<span class="styleguide-color-swatch-variable"><?php _e( '$color: white', '' ); ?></span>
 				<span class="styleguide-color-swatch-hex"><?php _e( '#ffffff', '' ); ?></span>
 			</li>
 			<li class="styleguide-color-swatch">
@@ -25,7 +25,7 @@ get_header( 'styleguide' ); ?>
 			<li class="styleguide-color-swatch">
 			</li>
 			<li class="styleguide-color-swatch light-gray">
-				<span class="styleguide-color-swatch-variable"><?php _e( '$light-gray', '' ); ?></span>
+				<span class="styleguide-color-swatch-variable"><?php _e( '$color: light-gray', '' ); ?></span>
 				<span class="styleguide-color-swatch-hex"><?php _e( '#f5f5f5', '' ); ?></span>
 			</li>
 			<li class="styleguide-color-swatch">
@@ -36,9 +36,57 @@ get_header( 'styleguide' ); ?>
 			</li>
 			<li class="styleguide-color-swatch">
 			</li>
+			<li class="styleguide-color-swatch soft-gray">
+				<span class="styleguide-color-swatch-variable"><?php _e( '$color: soft-gray', '' ); ?></span>
+				<span class="styleguide-color-swatch-hex"><?php _e( '#eeeeee', '' ); ?></span>
+			</li>
+			<li class="styleguide-color-swatch">
+			</li>
+			<li class="styleguide-color-swatch">
+			</li>
+			<li class="styleguide-color-swatch">
+			</li>
+			<li class="styleguide-color-swatch">
+			</li>
+			<li class="styleguide-color-swatch meta-gray">
+				<span class="styleguide-color-swatch-variable"><?php _e( '$color: meta-gray', '' ); ?></span>
+				<span class="styleguide-color-swatch-hex"><?php _e( '#dddddd', '' ); ?></span>
+			</li>
+			<li class="styleguide-color-swatch">
+			</li>
+			<li class="styleguide-color-swatch">
+			</li>
+			<li class="styleguide-color-swatch">
+			</li>
+			<li class="styleguide-color-swatch">
+			</li>
+			<li class="styleguide-color-swatch gray">
+				<span class="styleguide-color-swatch-variable"><?php _e( '$color: gray', '' ); ?></span>
+				<span class="styleguide-color-swatch-hex"><?php _e( '#888888', '' ); ?></span>
+			</li>
+			<li class="styleguide-color-swatch">
+			</li>
+			<li class="styleguide-color-swatch">
+			</li>
+			<li class="styleguide-color-swatch">
+			</li>
+			<li class="styleguide-color-swatch">
+			</li>
+			<li class="styleguide-color-swatch dark-gray">
+				<span class="styleguide-color-swatch-variable"><?php _e( '$color: dark-gray', '' ); ?></span>
+				<span class="styleguide-color-swatch-hex"><?php _e( '#333333', '' ); ?></span>
+			</li>
+			<li class="styleguide-color-swatch">
+			</li>
+			<li class="styleguide-color-swatch">
+			</li>
+			<li class="styleguide-color-swatch">
+			</li>
+			<li class="styleguide-color-swatch">
+			</li>
 			<li class="styleguide-color-swatch black">
-				<span class="styleguide-color-swatch-variable"><?php _e( '$black', '' ); ?></span>
-				<span class="styleguide-color-swatch-hex"><?php _e( '#000000', '' ); ?></span>
+				<span class="styleguide-color-swatch-variable"><?php _e( '$color: black', '' ); ?></span>
+			<span class="styleguide-color-swatch-hex"><?php _e( '#000000', '' ); ?></span>
 			</li>
 			<li class="styleguide-color-swatch">
 			</li>
