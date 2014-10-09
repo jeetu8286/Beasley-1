@@ -22,7 +22,6 @@ if ( is_gigya_user_logged_in() ) {
 				gravity_form( $contest_form_id );
 			?>
 
-			<?php GMI_Gigya_Share::display_share_buttons(); ?>
 		</article>
 		<?php
 	endwhile;
