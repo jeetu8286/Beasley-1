@@ -57,6 +57,9 @@ class Plugin {
 
 		$gigya_logout_ajax_handler = new GigyaLogoutAjaxHandler();
 		$gigya_logout_ajax_handler->register();
+
+		$form_entry_publisher = new FormEntryPublisher();
+		$form_entry_publisher->enable();
 	}
 
 	/**
