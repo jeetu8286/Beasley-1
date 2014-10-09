@@ -20,15 +20,15 @@
 	list-style: none;
 }
 .styleguide-color-swatch{
+	@include box-sizing(border-box);
 	@include span-columns(2);
-	@include border-top-radius(50%);
-	@include border-bottom-radius(50%);
-	@include border-left-radius(50%);
-	@include border-right-radius(50%);
-	@include size(10em 10em);
+	@include size(null 10em);
 	@include padding(6em null null);
 	@include margin(null null 1.5625em null);
 	text-align: center;
+	&:nth-of-type(6n){
+		@include omega();
+	}
 	&.white{
 		@include border-color(color(light-gray));
 		@include border-style(solid);
@@ -58,6 +58,7 @@
 		@include border-style(solid);
 		@include border-width(.25em);
 		background-color: color(gray);
+		color: color(white);
 	}
 	&.dark-gray{
 		@include border-color(color(black));
