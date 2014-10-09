@@ -13,7 +13,7 @@ if ( is_gigya_user_logged_in() ) {
 				$site_url = get_site_url();
 				$domain   = parse_url( $site_url, PHP_URL_HOST );
 
-				if ( strpos( '10up', $domain ) !== false ) {
+				if ( strpos( $domain, '10up' ) !== false ) {
 					$contest_form_id = 4;
 				} else {
 					$contest_form_id = 1;
