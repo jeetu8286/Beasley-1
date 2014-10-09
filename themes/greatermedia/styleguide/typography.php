@@ -6,8 +6,8 @@
  * @since 0.1.0
  */
  ?>
-<section id="typography" class="styleguide-typography styleguide-sections">
-	<div class="styleguide-content">
-		<h2 class="styleguide-section-title"><?php _e( 'Typography', 'greatermedia' ); ?></h2>
+<section id="typography" class="sg-typography sg-sections">
+	<div class="sg-content">
+		<h2 class="sg-section-title"><?php _e( 'Typography', 'greatermedia' ); ?></h2>
 	</div>
 </section>

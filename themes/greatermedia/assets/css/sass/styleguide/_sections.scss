@@ -1,86 +1,68 @@
 /**
  * Section Styles
  */
-.styleguide-sections {
+.sg-sections {
 	padding: 3em 0;
 }
-.styleguide-section-title{
+.sg-section-title{
 	color: color(meta-gray);
 	text-transform: uppercase;
 	text-align: center;
 }
-.styleguide-content{
+.sg-content{
 	@include outer-container;
 	@include position(relative, null null null null);
 	@include size(null 100%);
 }
-.styleguide-color-list{
-	@include margin(0);
-	@include padding(0);
-	list-style: none;
+.sg-colors-table{
+	@include span-columns(12);
+	@include display(table);
 }
-.styleguide-color-swatch{
-	@include box-sizing(border-box);
-	@include span-columns(2);
-	@include size(null 10em);
-	@include padding(6em null null);
-	@include margin(null null 1.5625em null);
-	text-align: center;
-	&:nth-of-type(6n){
-		@include omega();
-	}
-	&.white{
-		@include border-color(color(light-gray));
-		@include border-style(solid);
-		@include border-width(.25em);
-		background-color: color(white);
-	}
-	&.light-gray{
-		@include border-color(color(soft-gray));
-		@include border-style(solid);
-		@include border-width(.25em);
-		background-color: color(light-gray);
-	}
-	&.soft-gray{
-		@include border-color(color(meta-gray));
-		@include border-style(solid);
-		@include border-width(.25em);
-		background-color: color(soft-gray);
-	}
-	&.meta-gray{
-		@include border-color(color(gray));
-		@include border-style(solid);
-		@include border-width(.25em);
-		background-color: color(meta-gray);
-	}
-	&.gray{
-		@include border-color(color(dark-gray));
-		@include border-style(solid);
-		@include border-width(.25em);
-		background-color: color(gray);
-		color: color(white);
-	}
-	&.dark-gray{
-		@include border-color(color(black));
-		@include border-style(solid);
-		@include border-width(.25em);
-		background-color: color(dark-gray);
-		color: color(white);
-	}
-	&.black{
-		@include border-color(color(black));
-		@include border-style(solid);
-		@include border-width(.25em);
-		background-color: color(black);
-		color: color(white);
+.sg-color{
+	@include size(13% 80px);
+	display: table-cell;
+	color: color(white);
+}
+.color-black{
+	background-color: color(black);
+}
+.color-dark-gray{
+	background-color: color(dark-gray);
+}
+.color-gray{
+	background-color: color(gray);
+}
+.color-meta-gray{
+	background-color: color(meta-gray);
+}
+.color-soft-gray{
+	background-color: color(soft-gray);
+}
+.color-light-gray{
+	background-color: color(light-gray);
+}
+.color-white{
+	background-color: color(white);
+}
+.sg-color-swatch{
+	@include display(block);
+	@include position(relative, null null null null);
+	@include size(100% 100%);
+	cursor: pointer;
+	&:hover{
+		span{
+			opacity: 1;
+		}
 	}
 }
-.styleguide-color-swatch-variable{
-	display: block;
+.sg-color-variable{
+	@include display(block);
+	@include position(absolute, null null 0 0);
+	@include size(100% null);
+	@include padding(.25em 5px);
+	@include transition(all .5s ease);
+	opacity: 0;
+	background-color: color(black);
 	font-size: .625em;
 	font-weight: bold;
-}
-.styleguide-color-swatch-hex{
-	display: block;
-	font-size: .625em;
 }
