@@ -30,16 +30,41 @@
 	@include margin(null null 1.5625em null);
 	text-align: center;
 	&.white{
-		@include border-color(color(white));
+		@include border-color(color(light-gray));
 		@include border-style(solid);
 		@include border-width(.25em);
 		background-color: color(white);
 	}
 	&.light-gray{
-		@include border-color(color(light-gray));
+		@include border-color(color(soft-gray));
 		@include border-style(solid);
 		@include border-width(.25em);
 		background-color: color(light-gray);
+	}
+	&.soft-gray{
+		@include border-color(color(meta-gray));
+		@include border-style(solid);
+		@include border-width(.25em);
+		background-color: color(soft-gray);
+	}
+	&.meta-gray{
+		@include border-color(color(gray));
+		@include border-style(solid);
+		@include border-width(.25em);
+		background-color: color(meta-gray);
+	}
+	&.gray{
+		@include border-color(color(dark-gray));
+		@include border-style(solid);
+		@include border-width(.25em);
+		background-color: color(gray);
+	}
+	&.dark-gray{
+		@include border-color(color(black));
+		@include border-style(solid);
+		@include border-width(.25em);
+		background-color: color(dark-gray);
+		color: color(white);
 	}
 	&.black{
 		@include border-color(color(black));

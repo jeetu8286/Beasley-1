@@ -394,7 +394,7 @@ GENERAL STYLES
 *********************/
 body {
   height: 100%;
-  background-color: color(white);
+  background-color: #ffffff;
   margin: 0 auto;
   line-height: 1.5;
   font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
@@ -546,7 +546,7 @@ POSTS & CONTENT STYLES
 /* style by tag (i.e. tag-news) */
 /* post meta */
 .byline {
-  color: color(light-gray);
+  color: #f5f5f5;
   font-style: italic;
   margin: 0; }
 
@@ -556,14 +556,14 @@ POSTS & CONTENT STYLES
   .entry-content p {
     margin: 0 0 1.5em; }
   .entry-content blockquote {
-    border-color: color(gray);
+    border-color: #888888;
     border-left-width: 10px;
     border-style: solid;
     margin: 1.5em 10px;
     padding: 0.5em 10px;
     quotes: "“" "”" "‘" "’"; }
     .entry-content blockquote:before {
-      color: color(light-gray);
+      color: #f5f5f5;
       content: open-quote;
       font-size: 4rem;
       line-height: 0.1em;
@@ -572,7 +572,7 @@ POSTS & CONTENT STYLES
     .entry-content blockquote p {
       display: inline;
       font-style: italic;
-      color: color(dark-gray); }
+      color: #333333; }
   .entry-content dd {
     margin-left: 0;
     font-size: 0.9rem;
@@ -600,8 +600,8 @@ POSTS & CONTENT STYLES
     max-width: 100%;
     height: auto; }
   .entry-content pre {
-    background: color(light-gray);
-    color: color(black);
+    background: #f5f5f5;
+    color: #000000;
     font-size: .9rem;
     padding: 1.5em;
     margin: 0 0 1.5em;
@@ -644,7 +644,7 @@ POSTS & CONTENT STYLES
   -webkit-transition: all 500ms ease-in-out;
   -moz-transition: all 500ms ease-in-out;
   transition: all 500ms ease-in-out;
-  background-color: color(black);
+  background-color: #000000;
   cursor: pointer;
   z-index: 2; }
 
@@ -658,7 +658,7 @@ POSTS & CONTENT STYLES
   transition: all 500ms ease-in-out;
   display: block;
   border-radius: 1px;
-  background: color(white);
+  background: #ffffff;
   content: ''; }
   .styleguide-nav-toggle-span:before {
     position: absolute;
@@ -670,7 +670,7 @@ POSTS & CONTENT STYLES
     transition: all 500ms ease-in-out;
     display: block;
     border-radius: 1px;
-    background: color(white);
+    background: #ffffff;
     content: ''; }
   .styleguide-nav-toggle-span:after {
     position: absolute;
@@ -682,7 +682,7 @@ POSTS & CONTENT STYLES
     transition: all 500ms ease-in-out;
     display: block;
     border-radius: 1px;
-    background: color(white);
+    background: #ffffff;
     content: ''; }
 
 .logged-in .styleguide-nav-toggle {
@@ -701,8 +701,8 @@ POSTS & CONTENT STYLES
   -webkit-transition: all 500ms ease-in-out;
   -moz-transition: all 500ms ease-in-out;
   transition: all 500ms ease-in-out;
-  background-color: color(black);
-  color: color(white);
+  background-color: #000000;
+  color: #ffffff;
   z-index: 1; }
 
 .styleguide-nav-content {
@@ -723,10 +723,10 @@ POSTS & CONTENT STYLES
   padding: 0; }
   .styleguide-nav-list-item a:link, .styleguide-nav-list-item a:visited {
     font-size: .75em;
-    color: color(white);
+    color: #ffffff;
     text-transform: uppercase; }
   .styleguide-nav-list-item a:hover, .styleguide-nav-list-item a:active {
-    color: color(gray); }
+    color: #888888; }
 
 /**
  * When the Nav Toggle is clicked, a body class is added.
@@ -761,8 +761,8 @@ POSTS & CONTENT STYLES
 .styleguide-header {
   height: 500px;
   width: 100%;
-  background-color: color(light-gray);
-  color: color(black); }
+  background-color: #f5f5f5;
+  color: #000000; }
 
 .styleguide-header-title {
   position: absolute;
@@ -786,7 +786,7 @@ POSTS & CONTENT STYLES
   padding: 3em 0; }
 
 .styleguide-section-title {
-  color: color(meta-gray);
+  color: #dddddd;
   text-transform: uppercase;
   text-align: center; }
 
@@ -827,21 +827,42 @@ POSTS & CONTENT STYLES
   .styleguide-color-swatch:last-child {
     margin-right: 0; }
   .styleguide-color-swatch.white {
-    border-color: color(white);
+    border-color: #f5f5f5;
     border-style: solid;
     border-width: 0.25em;
-    background-color: color(white); }
+    background-color: #ffffff; }
   .styleguide-color-swatch.light-gray {
-    border-color: color(light-gray);
+    border-color: #eeeeee;
     border-style: solid;
     border-width: 0.25em;
-    background-color: color(light-gray); }
+    background-color: #f5f5f5; }
+  .styleguide-color-swatch.soft-gray {
+    border-color: #dddddd;
+    border-style: solid;
+    border-width: 0.25em;
+    background-color: #eeeeee; }
+  .styleguide-color-swatch.meta-gray {
+    border-color: #888888;
+    border-style: solid;
+    border-width: 0.25em;
+    background-color: #dddddd; }
+  .styleguide-color-swatch.gray {
+    border-color: #333333;
+    border-style: solid;
+    border-width: 0.25em;
+    background-color: #888888; }
+  .styleguide-color-swatch.dark-gray {
+    border-color: #000000;
+    border-style: solid;
+    border-width: 0.25em;
+    background-color: #333333;
+    color: #ffffff; }
   .styleguide-color-swatch.black {
-    border-color: color(black);
+    border-color: #000000;
     border-style: solid;
     border-width: 0.25em;
-    background-color: color(black);
-    color: color(white); }
+    background-color: #000000;
+    color: #ffffff; }
 
 .styleguide-color-swatch-variable {
   display: block;
