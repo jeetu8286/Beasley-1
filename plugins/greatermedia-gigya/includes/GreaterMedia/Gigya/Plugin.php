@@ -48,6 +48,18 @@ class Plugin {
 
 		$preview_ajax_handler = new PreviewAjaxHandler();
 		$preview_ajax_handler->register();
+
+		$register_ajax_handler = new RegisterAjaxHandler();
+		$register_ajax_handler->register();
+
+		$gigya_login_ajax_handler = new GigyaLoginAjaxHandler();
+		$gigya_login_ajax_handler->register();
+
+		$gigya_logout_ajax_handler = new GigyaLogoutAjaxHandler();
+		$gigya_logout_ajax_handler->register();
+
+		$form_entry_publisher = new FormEntryPublisher();
+		$form_entry_publisher->enable();
 	}
 
 	/**
@@ -59,6 +71,20 @@ class Plugin {
 	public function initialize() {
 		$member_query_post_type = new MemberQueryPostType();
 		$member_query_post_type->register();
+
+		$session_data = array(
+			'data' => array(
+				'ajax_url'               => admin_url( 'admin-ajax.php' ),
+				'register_account_nonce' => wp_create_nonce( 'register_account' ),
+				'gigya_login_nonce'      => wp_create_nonce( 'gigya_login' ),
+				'gigya_logout_nonce'     => wp_create_nonce( 'gigya_logout' ),
+				'cid'                    => gigya_user_id()
+			)
+		);
+
+		// TODO: figure out if session code should live in this plugin
+		wp_enqueue_script( 'jquery' );
+		wp_localize_script( 'jquery', 'gigya_session_data', $session_data );
 	}
 
 	/**

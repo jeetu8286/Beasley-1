@@ -17,14 +17,14 @@
 </head>
 <body <?php body_class(); ?>>
 	<?php do_action( 'show_breaking_news_banner' ); ?>
-<main>
+<main id="container">
 	<header class="page-header">
 		<div class="account">
 			<div class="player">
-				<a href="#"><i class="fa fa-play-circle"> Listen Live</i></a>
+				<a href="#" class="pjaxer"><i class="fa fa-play-circle"> Listen Live</i></a>
 			</div>
-			<a href="" class="register">register</a>
-			<a href="" class="login">Login</a>
+			<a id="register-button" href="" class="register pjaxer" style="visibility:hidden">register</a>
+			<a id="login-button" href="" class="login pjaxer" style="visibility:hidden">Login</a>
 		</div>
 		<p class="site-ids">
 			Network: <?php echo get_current_site()->site_name; ?> (ID: <?php echo get_current_site()->id; ?>)<br>
@@ -32,6 +32,6 @@
 		</p>
 
 		<h1>
-			<a href="<?php echo home_url(); ?>"><?php echo get_bloginfo( 'name' ); ?></a>
+			<a href="<?php echo home_url(); ?>" class="pjaxer"><?php echo get_bloginfo( 'name' ); ?></a>
 		</h1>
 	</header>
