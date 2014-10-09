@@ -24,7 +24,7 @@ module.exports = function( grunt ) {
 			},
 			greater_media_styleguide: {
 				src: [
-					'assets/js/src/gm_styleguide.js'
+					'assets/js/styleguide/gm_styleguide.js'
 				],
 				dest: 'assets/js/gm_styleguide.js'
 			}

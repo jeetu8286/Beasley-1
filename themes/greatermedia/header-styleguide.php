@@ -64,6 +64,6 @@
 			</nav>
 			<header id="header" class="sg-header sg-sections" role="banner">
 				<div class="sg-content">
-					<h1 class="sg-header-title">Greater Media Style Guide</h1>
+					<h1 class="sg-header-title"><?php _e( 'Greater Media Style Guide', 'greatermedia' ); ?></h1>
 				</div>
 			</header>
