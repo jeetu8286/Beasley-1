@@ -44,7 +44,7 @@ class GreaterMediaTimedContent {
 
 		global $post;
 
-		$expiration_timestamp = get_post_meta( $post->ID, '_post_expiration', false );
+		$expiration_timestamp = get_post_meta( $post->ID, '_post_expiration', true );
 
 		if ( false !== $expiration_timestamp && '' !== $expiration_timestamp && ! empty( $expiration_timestamp ) ) {
 			$rendered_expiration_timestamp = date_i18n( __( 'M j, Y @ G:i' ), $expiration_timestamp );
