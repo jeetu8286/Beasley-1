@@ -12,3 +12,6 @@ upgrade/
 .idea
 debug.log
 npm-debug.log
+.DS_Store
+plugins/gears
+plugins/gravityforms

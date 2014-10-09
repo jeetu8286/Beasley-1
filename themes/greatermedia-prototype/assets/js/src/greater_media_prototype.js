@@ -1,53 +1,182 @@
-/**
- * Greater Media Prototype
- * http://wordpress.org/themes
- *
- * Copyright (c) 2014 Taylor Dewey
- * Licensed under the GPLv2+ license.
- *
- * We're having a few issues with merge's on staging keeping changes. Here is a check to see if changes are merged on staging.
- *
- */
+(function($) {
 
-(function (window, undefined) {
-	'use strict';
+	var WpAjaxApi = function(config) {
+		this.config = config;
+	};
 
-	window.console.log('prototype js running');
+	WpAjaxApi.prototype = {
 
-	function init() {
-		gigya.accounts.getAccountInfo({ callback: getAccountInfoResponse });
-		bindRegisterLogin();
-	}
+		nonceFor: function(action) {
+			return this.config[action + '_nonce'];
+		},
 
-	function bindRegisterLogin() {
-		window.document.querySelector('.register').addEventListener('click', showRegisterForm);
-		window.document.querySelector('.login').addEventListener('click', showLoginForm);
-	}
+		urlFor: function(action) {
+			var queryParams = {};
+			queryParams[action + '_nonce'] = this.nonceFor(action);
 
-	function showRegisterForm(e) {
-		e.preventDefault();
-		window.console.log('clicked register');
-		gigya.accounts.showScreenSet({screenSet: 'Login-web'});
-	}
+			var url = this.config.ajax_url;
+			url += url.indexOf('?') === -1 ? '?' : '&';
+			url += $.param(queryParams);
 
-	function showLoginForm(e) {
-		e.preventDefault();
-		window.console.log('clicked login');
-		gigya.accounts.showScreenSet({screenSet: 'Login-web', startScreen: 'gigya-register-screen'});
-	}
+			return url;
+		},
 
-	/**
-	 * Checks to see if the user is logged in, changes the header appropriately.
-	 * @param response
-	 */
-	function getAccountInfoResponse(response) {
-		if (response.errorCode == 0) {
-			// Success, this user is logged in
-			window.console.log(response.profile);
-		} else {
-			// error
-			window.console.log(response);
-		}
+		request: function(action, data) {
+			if (!data) {
+				data = {};
+			}
+
+			var url         = this.urlFor(action);
+			var requestData = {
+				'action': action,
+				'action_data': JSON.stringify(data)
+			};
+
+			return $.post(url, requestData);
+		},
+
+	};
+
+	var GigyaSession      = function(sessionData, ajaxApi) {
+		this.sessionData  = sessionData;
+		this.ajaxApi      = ajaxApi;
+		this.authorized   = false;
+		this.willRegister = false;
+		this.mediator     = $({});
+
+		gigya.accounts.addEventHandlers({
+			onLogin: $.proxy(this.didLogin, this),
+			onLogout: $.proxy(this.didLogout, this)
+		});
+	};
+
+	GigyaSession.prototype = {
+
+		get_cid: function() {
+			return this.sessionData.cid || '';
+		},
+
+		isAuthorized: function() {
+			return this.authorized;
+		},
+
+		authorize: function() {
+			var cid = this.get_cid();
+
+			if (cid !== '') {
+				gigya.accounts.getAccountInfo({
+					cid: cid,
+					callback: $.proxy(this.gotAccountInfo, this)
+				});
+			} else {
+				this.notify();
+			}
+		},
+
+		gotAccountInfo: function(response) {
+			if (response.errorCode === 0) {
+				this.authorized = true;
+				this.account    = response;
+			} else {
+				this.authorized = false;
+			}
+
+			this.notify();
+		},
+
+		on: function(event, listener) {
+			this.mediator.on(event, listener);
+		},
+
+		notify: function(event) {
+			if (!event) {
+				event = 'change';
+			}
+
+			this.mediator.trigger(event, this);
+		},
+
+		didLogin: function(response) {
+			if (this.willRegister) {
+				this.didRegister(response);
+			}
+
+			this.account    = response;
+			this.authorized = true;
+			this.notify();
+
+			var data = {
+				'UID': response.UID
+			};
+
+			this.ajaxApi.request('gigya_login', data)
+				.then($.proxy(this.didLoginRelay, this))
+				.fail($.proxy(this.didLoginRelayError, this));
+		},
+
+		didLoginRelay: function(response) {
+			location.reload();
+		},
+
+		didLoginRelayError: function(response) {
+			console.log('didLoginRelayError', response);
+		},
+
+		didRegister: function(response) {
+			this.willRegister = false;
+
+			var listNames = [];
+
+			// TODO: fix this after Gigya support ticket response
+			if (response.data.vipGroup) {
+				listNames.push('VIP Newsletter');
+			}
+
+			if (response.data.birthdayGreetingsGroup) {
+				listNames.push('Birthday Greetings');
+			}
+
+			if (response.data.bigFrigginDealGroup) {
+				listNames.push('Big Deal');
+			}
+
+			var data = {
+				'UID': response.UID,
+				'listNames': listNames
+			};
+
+			this.ajaxApi.request('register_account', data)
+				.then($.proxy(this.didRegisterRelay, this))
+				.fail($.proxy(this.didRegisterRelayError, this));
+		},
+
+		didRegisterRelay: function(response) {
+			console.log('didRegisterRelay', response);
+			location.reload();
+		},
+
+		didRegisterRelayError: function(response) {
+			// TODO: UI
+			console.log('didRegisterRelayError', response);
+		},
+
+		didLogout: function(response) {
+			this.authorized = false;
+			this.notify();
+			this.ajaxApi.request('gigya_logout')
+				.then($.proxy(this.didLogoutRelay, this))
+				.fail($.proxy(this.didLogoutRelayError, this));
+		},
+
+		didLogoutRelay: function(response) {
+			console.log('didLogoutRelay', response);
+			location.reload();
+		},
+
+		didLogoutRelayError: function(response) {
+			// TODO: UI
+			console.log('didLogoutRelayError', response);
+		},
 
 	};
 
@@ -128,10 +257,9 @@
 	};
 
 	$(document).ready(function() {
-		var sessionData    = window.gigya_session_data || { data: {} };
-		sessionData = sessionData.data;
-
-		var session         = new GigyaSession(sessionData);
+		var sessionData     = window.gigya_session_data.data;
+		var ajaxApi         = new WpAjaxApi(sessionData);
+		var session         = new GigyaSession(sessionData, ajaxApi);
 		var accountMenuView = new AccountMenuView(session);
 
 		session.authorize();
