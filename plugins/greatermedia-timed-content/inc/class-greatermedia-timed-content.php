@@ -44,7 +44,7 @@ class GreaterMediaTimedContent {
 
 		global $post;
 
-		$expiration_timestamp = get_post_meta( $post->ID, '_post_expiration', true );
+		$expiration_timestamp = get_post_meta( $post->ID, '_post_expiration', false );
 
 		if ( false !== $expiration_timestamp && '' !== $expiration_timestamp && ! empty( $expiration_timestamp ) ) {
 			$rendered_expiration_timestamp = date_i18n( __( 'M j, Y @ G:i' ), $expiration_timestamp );
@@ -126,7 +126,7 @@ class GreaterMediaTimedContent {
 			$exp_mn = isset( $_POST['hidden_exp_mn'] ) ? str_pad( intval( $_POST['hidden_exp_mn'] ), 2, '0', STR_PAD_LEFT ) : '';
 
 			$exp_str = "{$exp_mm} {$exp_jj} {$exp_aa} {$exp_hh} {$exp_mn}";
-			if ( '0 0 0 0 0' !== trim( $exp_str ) ) {
+			if ( '0 0 0 0 00' !== trim( $exp_str ) ) {
 				$exp_date      = DateTime::createFromFormat( 'n j Y G i', $exp_str );
 				$exp_timestamp = $exp_date->getTimestamp();
 			} else {
@@ -136,7 +136,9 @@ class GreaterMediaTimedContent {
 			$local_to_gmt_time_offset = get_option( 'gmt_offset' ) * - 1 * 3600;
 			$exp_timestamp_gmt        = $exp_timestamp + $local_to_gmt_time_offset;
 			delete_post_meta( $post_id, '_post_expiration' );
-			add_post_meta( $post_id, '_post_expiration', $exp_timestamp );
+			if('' !== $exp_timestamp) {
+				add_post_meta( $post_id, '_post_expiration', $exp_timestamp );
+			}
 
 			// If the expiration date is in the future, set a cron to expire the post
 			if ( $exp_timestamp_gmt > gmdate( 'U' ) ) {
