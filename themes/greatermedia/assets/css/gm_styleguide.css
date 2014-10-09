@@ -394,7 +394,7 @@ GENERAL STYLES
 *********************/
 body {
   height: 100%;
-  background-color: #ffffff;
+  background-color: #f9f9f9;
   margin: 0 auto;
   line-height: 1.5;
   font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
@@ -761,7 +761,7 @@ POSTS & CONTENT STYLES
 .sg-header {
   height: 500px;
   width: 100%;
-  background-color: #f5f5f5;
+  background-color: #dddddd;
   color: #000000; }
 
 .sg-header-title {
@@ -801,74 +801,64 @@ POSTS & CONTENT STYLES
     display: table;
     clear: both; }
 
-.sg-color-list {
-  margin: 0;
-  padding: 0;
-  list-style: none; }
-
-.sg-color-swatch {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
+.sg-colors-table {
   float: left;
   display: block;
   margin-right: 2.35765%;
-  width: 14.70196%;
-  height: 10em;
-  padding-top: 6em;
-  margin-bottom: 1.5625em;
-  text-align: center; }
-  .sg-color-swatch:last-child {
+  width: 100%;
+  display: table; }
+  .sg-colors-table:last-child {
     margin-right: 0; }
-  .sg-color-swatch:nth-of-type(6n) {
-    margin-right: 0; }
-  .sg-color-swatch.white {
-    border-color: #f5f5f5;
-    border-style: solid;
-    border-width: 0.25em;
-    background-color: #ffffff; }
-  .sg-color-swatch.light-gray {
-    border-color: #eeeeee;
-    border-style: solid;
-    border-width: 0.25em;
-    background-color: #f5f5f5; }
-  .sg-color-swatch.soft-gray {
-    border-color: #dddddd;
-    border-style: solid;
-    border-width: 0.25em;
-    background-color: #eeeeee; }
-  .sg-color-swatch.meta-gray {
-    border-color: #888888;
-    border-style: solid;
-    border-width: 0.25em;
-    background-color: #dddddd; }
-  .sg-color-swatch.gray {
-    border-color: #333333;
-    border-style: solid;
-    border-width: 0.25em;
-    background-color: #888888;
-    color: #ffffff; }
-  .sg-color-swatch.dark-gray {
-    border-color: #000000;
-    border-style: solid;
-    border-width: 0.25em;
-    background-color: #333333;
-    color: #ffffff; }
-  .sg-color-swatch.black {
-    border-color: #000000;
-    border-style: solid;
-    border-width: 0.25em;
-    background-color: #000000;
-    color: #ffffff; }
 
-.sg-color-swatch-variable {
+.sg-color {
+  height: 80px;
+  width: 13%;
+  display: table-cell;
+  color: #ffffff; }
+
+.color-black {
+  background-color: #000000; }
+
+.color-dark-gray {
+  background-color: #333333; }
+
+.color-gray {
+  background-color: #888888; }
+
+.color-meta-gray {
+  background-color: #dddddd; }
+
+.color-soft-gray {
+  background-color: #eeeeee; }
+
+.color-light-gray {
+  background-color: #f5f5f5; }
+
+.color-white {
+  background-color: #ffffff; }
+
+.sg-color-swatch {
   display: block;
+  position: relative;
+  height: 100%;
+  width: 100%; }
+  .sg-color-swatch:hover span {
+    opacity: 1; }
+
+.sg-color-variable {
+  display: block;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 0.25em 5px;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+  opacity: 0;
+  background-color: #000000;
   font-size: .625em;
   font-weight: bold; }
-
-.sg-color-swatch-hex {
-  display: block;
-  font-size: .625em; }
 
 /* http://prismjs.com/download.html?themes=prism&languages=markup+css+css-extras+clike+javascript+php+php-extras+scss */
 /**
