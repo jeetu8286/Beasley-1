@@ -5,7 +5,7 @@
 	padding: 3em 0;
 }
 .styleguide-section-title{
-	color: $meta-gray;
+	color: color(meta-gray);
 	text-transform: uppercase;
 	text-align: center;
 }
@@ -20,33 +20,59 @@
 	list-style: none;
 }
 .styleguide-color-swatch{
+	@include box-sizing(border-box);
 	@include span-columns(2);
-	@include border-top-radius(50%);
-	@include border-bottom-radius(50%);
-	@include border-left-radius(50%);
-	@include border-right-radius(50%);
-	@include size(10em 10em);
+	@include size(null 10em);
 	@include padding(6em null null);
 	@include margin(null null 1.5625em null);
 	text-align: center;
+	&:nth-of-type(6n){
+		@include omega();
+	}
 	&.white{
-		@include border-color(shade($white, 10%));
+		@include border-color(color(light-gray));
 		@include border-style(solid);
 		@include border-width(.25em);
-		background-color: $white;
+		background-color: color(white);
 	}
 	&.light-gray{
-		@include border-color(shade($light-gray, 10%));
+		@include border-color(color(soft-gray));
 		@include border-style(solid);
 		@include border-width(.25em);
-		background-color: $light-gray;
+		background-color: color(light-gray);
+	}
+	&.soft-gray{
+		@include border-color(color(meta-gray));
+		@include border-style(solid);
+		@include border-width(.25em);
+		background-color: color(soft-gray);
+	}
+	&.meta-gray{
+		@include border-color(color(gray));
+		@include border-style(solid);
+		@include border-width(.25em);
+		background-color: color(meta-gray);
+	}
+	&.gray{
+		@include border-color(color(dark-gray));
+		@include border-style(solid);
+		@include border-width(.25em);
+		background-color: color(gray);
+		color: color(white);
+	}
+	&.dark-gray{
+		@include border-color(color(black));
+		@include border-style(solid);
+		@include border-width(.25em);
+		background-color: color(dark-gray);
+		color: color(white);
 	}
 	&.black{
-		@include border-color(shade($black, 60%));
+		@include border-color(color(black));
 		@include border-style(solid);
 		@include border-width(.25em);
-		background-color: $black;
-		color: $white;
+		background-color: color(black);
+		color: color(white);
 	}
 }
 .styleguide-color-swatch-variable{
