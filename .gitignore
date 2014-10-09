@@ -7,3 +7,5 @@ upgrade/
 .idea
 debug.log
 .DS_Store
+plugins/gears
+plugins/gravityforms
