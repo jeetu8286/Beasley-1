@@ -258,6 +258,48 @@ class GMedia_Migration extends WP_CLI_Command {
 		$total  = count( $articles->Article );
 		$notify = new \cli\progress\Bar( "Importing $total articles", $total );
 
+		if ( isset( $article->Authors->Author ) ) {
+				foreach ( $article->Authors->Author as $author ) {
+					if ( isset( $author['Author'] ) && '' !== trim( (string) $author['Author'] ) ) {
+						$author_name = (string) $author['Author'];
+						$exists = $this->check_if_user_exists( $author_name, 'name' );
+					} else if ( isset( $author['EmailAddress'] ) && '' !== trim( (string) $author['EmailAddress'] ) ) {
+						$author_email = (string) $author['EmailAddress'];
+						$exists = $this->check_if_user_exists( $author_email );
+					} else {
+						$exists = false;
+					}
+
+					if ( $exists ) {
+						$user_id = $exists;
+						if ( ! get_user_meta( $user_id, 'simple_local_avatar' ) ) {
+							$image_id = $this->import_author_images( $author['ImageFilepath'] );
+							if ( $image_id ) {
+								$meta_value = array();
+								$meta_value['media_id'] = $image_id;
+								$url = wp_get_attachment_url( $image_id );
+								$meta_value['full'] = $url;
+								update_user_meta( $user_id, 'simple_local_avatar', $meta_value );
+							}
+						}
+					} else {
+						$user_id = $this->create_user( $author );
+						if ( ! get_user_meta( $user_id, 'simple_local_avatar' ) ) {
+							$image_id = $this->import_author_images( $author['ImageFilepath'] );
+							if ( $image_id ) {
+								$meta_value = array();
+								$meta_value['media_id'] = $image_id;
+								$url = wp_get_attachment_url( $image_id );
+								$meta_value['full'] = $url;
+								update_user_meta( $user_id, 'simple_local_avatar', $meta_value );
+							}
+						}
+					}
+				}
+			} else {
+				$user_id = get_current_user_id();
+			}
+
 		foreach ( $articles->Article as $article ) {
 			$article_hash = trim( (string) $article['Title'] ) . (string) $article['UTCStartDateTime'];
 			$article_hash = md5( $article_hash );
@@ -468,6 +510,12 @@ class GMedia_Migration extends WP_CLI_Command {
 						$featured_image_path  = '/Pics/' . (string) $image['MainImageSrc'];
 						$this->import_featured_image( $featured_image_path, $wp_id, $featured_image_attrs );
 					}
+				}
+
+				// add redirect
+				if ( isset( $entry->BlogEntryURL ) ) {
+					//add redirect
+					CMM_Legacy_Redirects::add_redirect( (string) $entry->BlogEntryURL, $wp_id );
 				}
 
 				$notify->tick();
@@ -1875,7 +1923,7 @@ class GMedia_Migration extends WP_CLI_Command {
 			// process metas
 			if( isset($scheduled_item['LinkURL']) ) {
 				update_post_meta( $wp_id, '_legacy_LinkURL', (string) $scheduled_item['LinkURL'] );
-				$this->add_redirect( (string) $scheduled_item['LinkURL'], $wp_id );
+				CMM_Legacy_Redirects::add_redirect( (string) $scheduled_item['LinkURL'], $wp_id );
 			}
 
 			foreach ( $scheduled_item->Schedules->Schedule as $schedule ) {
