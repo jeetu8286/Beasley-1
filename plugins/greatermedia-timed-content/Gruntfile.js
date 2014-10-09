@@ -8,7 +8,7 @@ module.exports = function(grunt) {
 			},
 			build: {
 				// Don't include 'js/gm-timed-content-tinymce.js' as WP's tinymce integration handles loading it for us
-				src: ['js/greatermedia-timed-content.js', 'js/vendor/date.format/date.format.js', 'js/vendor/date.format/date-toisostring.js'],
+				src: ['js/greatermedia-timed-content.js', 'js/vendor/date.format/date.format.js', 'js/vendor/date.format/date-toisostring.js', 'js/vendor/datetimepicker/jquery.datetimepicker.js'],
 				dest: 'js/dist/<%= pkg.name %>.min.js'
 			}
 		}
