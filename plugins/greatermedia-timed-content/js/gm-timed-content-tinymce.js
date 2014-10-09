@@ -101,25 +101,26 @@
 
 				return this.template(options);
 
-			},
-
-			toView: function( content ) {
-				var match = wp.shortcode.next( this.type, content );
-
-				if ( ! match ) {
-					return;
-				}
-
-				return {
-					index: match.index,
-					content: match.content,
-					options: {
-						shortcode: match.shortcode
-					}
-				};
 			}
 
 		}),
+
+		// Stock toView implementation from wp.mce.views
+		toView: function( content ) {
+			var match = wp.shortcode.next( this.type, content );
+
+			if ( ! match ) {
+				return;
+			}
+
+			return {
+				index: match.index,
+				content: match.content,
+				options: {
+					shortcode: match.shortcode
+				}
+			};
+		},
 
 		edit: function (node) {
 
