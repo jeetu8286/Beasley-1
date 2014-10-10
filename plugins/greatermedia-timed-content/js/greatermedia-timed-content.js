@@ -1,72 +1,36 @@
-jQuery(function () {
+(function () {
 
-	jQuery('#exptimestampdiv').html(GreaterMediaTimedContent.templates.expiration_time);
+	GreaterMediaTimedContent = (function ($, undefined) {
 
-	// Show the time entry boxes
-	jQuery("a[href='#edit_exptimestamp']").click(function () {
+		var public = {};
 
-		jQuery('#exptimestampdiv').slideDown();
-
-		if (true !== jQuery('#exptimestampdiv').data('populated')) {
-
-			jQuery('#exp_mm').val(jQuery('#hidden_exp_mm').val());
-			jQuery('#exp_jj').val(jQuery('#hidden_exp_jj').val());
-			jQuery('#exp_aa').val(jQuery('#hidden_exp_aa').val());
-			jQuery('#exp_hh').val(jQuery('#hidden_exp_hh').val());
-			jQuery('#exp_mn').val(jQuery('#hidden_exp_mn').val());
-
-			jQuery('#exptimestampdiv').data('populated', true);
+		function current_unix_time_utc() {
+			return Math.floor(new Date().getTime() / 1000);
 		}
 
-	});
+		jQuery('.timed-content').each(function () {
 
-	// Cancel button
-	jQuery('#exptimestampdiv').find('.cancel-timestamp').click(function () {
+			var content_block = jQuery(this),
+				show = content_block.data('show-time'),
+				hide = content_block.data('hide-time'),
+				now_utc = current_unix_time_utc();
 
-		jQuery('#exp_mm').val(jQuery('#hidden_exp_mm').val());
-		jQuery('#exp_jj').val(jQuery('#hidden_exp_jj').val());
-		jQuery('#exp_aa').val(jQuery('#hidden_exp_aa').val());
-		jQuery('#exp_hh').val(jQuery('#hidden_exp_hh').val());
-		jQuery('#exp_mn').val(jQuery('#hidden_exp_mn').val());
+			if (!(_.isNumber(show))) {
+				show = Number.MIN_VALUE;
+			}
 
-		jQuery('#exptimestampdiv').slideUp();
+			if (!(_.isNumber(hide))) {
+				hide = Number.MAX_VALUE;
+			}
 
-	})
+			if (now_utc > show && hide < now_utc) {
+				jQuery(content_block).hide();
+			}
 
-	// Update hidden fields
-	jQuery('#exptimestampdiv').find('.save-timestamp').click(function () {
+		});
 
-		jQuery('#hidden_exp_mm').val(jQuery('#exp_mm').val());
-		jQuery('#hidden_exp_jj').val(jQuery('#exp_jj').val());
-		jQuery('#hidden_exp_aa').val(jQuery('#exp_aa').val());
-		jQuery('#hidden_exp_hh').val(jQuery('#exp_hh').val());
-		jQuery('#hidden_exp_mn').val(jQuery('#exp_mn').val());
+		return public;
 
-		jQuery('#exptimestampdiv').slideUp();
+	}(jQuery));
 
-		var expiration_date = new Date();
-		expiration_date.setMonth(parseInt(jQuery('#exp_mm').val(), 10) - 1);
-		expiration_date.setDate(jQuery('#exp_jj').val());
-		expiration_date.setFullYear(jQuery('#exp_aa').val());
-		expiration_date.setHours(jQuery('#exp_hh').val());
-		expiration_date.setMinutes(jQuery('#exp_mn').val())
-
-		jQuery('#exptimestamp').find('b').text(expiration_date.format(GreaterMediaTimedContent.formats.date));
-
-	});
-
-	// Remove expiration timestamp
-	jQuery('#exptimestampdiv').find('.remove-timestamp').click(function () {
-
-		jQuery('#exp_mm, #hidden_exp_mm').val('');
-		jQuery('#exp_jj, #hidden_exp_jj').val('');
-		jQuery('#exp_aa, #hidden_exp_aa').val('');
-		jQuery('#exp_hh, #hidden_exp_hh').val('');
-		jQuery('#exp_mn, #hidden_exp_mn').val('');
-
-		jQuery('#exptimestampdiv').slideUp();
-		jQuery('#exptimestamp').find('b').text(GreaterMediaTimedContent.strings.never);
-
-	});
-
-});
+})();

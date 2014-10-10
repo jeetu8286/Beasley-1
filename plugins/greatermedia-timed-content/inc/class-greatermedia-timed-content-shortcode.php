@@ -94,9 +94,14 @@ class GreaterMediaTimedContentShortcode {
 		}
 
 		$now_gmt = intval( gmdate( 'U' ) );
-
 		if ( $now_gmt > $show_gmt && $hide_gmt > $now_gmt ) {
-			return $content;
+
+			// Render the template which wraps $content in a span so JavaScript can hide/show cached content
+			ob_start();
+			include trailingslashit( GREATER_MEDIA_TIMED_CONTENT_PATH ) . 'tpl/timed-content-render.tpl.php';
+
+			return ob_get_clean();
+
 		} else {
 			return '';
 		}
