@@ -72,11 +72,12 @@ class GreaterMediaTimedContent {
 			// Enqueue JavaScript
 			if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
 				wp_enqueue_script( 'date-format', trailingslashit( GREATER_MEDIA_TIMED_CONTENT_URL ) . 'js/vendor/date.format/date.format.js', array(), null, true );
-				wp_enqueue_script( 'date-format', trailingslashit( GREATER_MEDIA_TIMED_CONTENT_URL ) . 'js/vendor/date.format/date-toisostring.js', array(), null, true );
+				wp_enqueue_script( 'date-toisostring', trailingslashit( GREATER_MEDIA_TIMED_CONTENT_URL ) . 'js/vendor/date-toisostring.js', array(), null, true );
 				wp_enqueue_script( 'greatermedia-tc-js', trailingslashit( GREATER_MEDIA_TIMED_CONTENT_URL ) . 'js/greatermedia-timed-content.js', array(
 					'jquery',
 					'date-format'
 				), false, true );
+				wp_enqueue_script( 'gm-datetimepicker', trailingslashit( GREATER_MEDIA_TIMED_CONTENT_URL ) . 'js/vendor/datetimepicker/jquery.datetimepicker.js', array( 'jquery' ), null, true );
 			} else {
 				wp_enqueue_script( 'greatermedia-tc-js', trailingslashit( GREATER_MEDIA_TIMED_CONTENT_URL ) . 'js/dist/greatermedia-timed-content.min.js', array( 'jquery' ), false, true);
 			}
@@ -100,7 +101,7 @@ class GreaterMediaTimedContent {
 					'Content'         => __( 'Content', 'greatermedia-timed-content' ),
 				),
 				'formats'            => array(
-					'date'          => __( 'M j, Y @ G:i' ),
+					'date'          => __( 'M j, Y G:i' ),
 					'mce_view_date' => __( 'F j, Y g:i a' ),
 				),
 			);
