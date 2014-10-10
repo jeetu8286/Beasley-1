@@ -77,24 +77,20 @@ class GreaterMediaTimedContentShortcode {
 	 */
 	function process_shortcode( $atts, $content = null ) {
 
-		$local_to_gmt_time_offset = get_option( 'gmt_offset' ) * - 1 * 3600;
-
 		if ( isset( $atts['show'] ) ) {
-			$show     = strtotime( $atts['show'] );
-			$show_gmt = $show + $local_to_gmt_time_offset;
+			$show = strtotime( $atts['show'] );
 		} else {
-			$show_gmt = 0;
+			$show = 0;
 		}
 
 		if ( isset( $atts['hide'] ) ) {
-			$hide     = strtotime( $atts['hide'] );
-			$hide_gmt = $hide + $local_to_gmt_time_offset;
+			$hide = strtotime( $atts['hide'] );
 		} else {
-			$hide_gmt = PHP_INT_MAX;
+			$hide = PHP_INT_MAX;
 		}
 
 		$now_gmt = intval( gmdate( 'U' ) );
-		if ( $now_gmt > $show_gmt && $hide_gmt > $now_gmt ) {
+		if ( ( $now_gmt > $show ) && ( $hide > $now_gmt ) ) {
 
 			// Render the template which wraps $content in a span so JavaScript can hide/show cached content
 			ob_start();
