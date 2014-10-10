@@ -44,6 +44,10 @@ class GreaterMediaTimedContent {
 
 		global $post;
 
+		if ( ! post_type_supports( $post->post_type, 'timed-content' ) ) {
+			return;
+		}
+
 		$expiration_timestamp = get_post_meta( $post->ID, '_post_expiration', true );
 
 		if ( false !== $expiration_timestamp && '' !== $expiration_timestamp && ! empty( $expiration_timestamp ) ) {
@@ -63,7 +67,7 @@ class GreaterMediaTimedContent {
 
 		global $post;
 
-		if ( $post ) {
+		if ( $post && post_type_supports( $post->post_type, 'timed-content' ) ) {
 
 			// Enqueue CSS
 			wp_enqueue_style( 'greatermedia-tc', trailingslashit( GREATER_MEDIA_TIMED_CONTENT_URL ) . 'css/greatermedia-timed-content.css' );
@@ -119,6 +123,14 @@ class GreaterMediaTimedContent {
 	public function save_post( $post_id ) {
 
 		if ( $_POST ) {
+
+			if ( ! post_type_supports( $_POST['post_type'], 'timed-content' ) ) {
+				// Clean up any post expiration data that might already exist, in case the post support changed
+				delete_post_meta( $post_id, '_post_expiration' );
+				wp_clear_scheduled_hook( 'greatermedia_expire_post', array( $post_id ) );
+
+				return;
+			}
 
 			$exp_mm = isset( $_POST['hidden_exp_mm'] ) ? intval( $_POST['hidden_exp_mm'] ) : '';
 			$exp_jj = isset( $_POST['hidden_exp_jj'] ) ? intval( $_POST['hidden_exp_jj'] ) : '';
