@@ -63,6 +63,7 @@ class GreaterMediaContests {
 		);
 
 		register_post_type( self::CPT_SLUG, $args );
+		add_post_type_support( 'contest', 'timed-content' );
 
 	}
 
