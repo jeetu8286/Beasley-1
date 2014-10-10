@@ -42,11 +42,11 @@ add_action( 'after_setup_theme', 'greatermedia_setup' );
  */
 function greatermedia_scripts_styles() {
 	$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
-
-	wp_enqueue_script( 'greatermedia', get_template_directory_uri() . "/assets/js/greater_media{$postfix}.js", array( 'jquery' ), GREATERMEDIA_VERSION, true );
 	if ( is_page( 'style-guide' ) ) {
+		wp_enqueue_script( 'gm-styleguide', get_template_directory_uri() . "/assets/js/gm_styleguide{$postfix}.js", array( 'jquery' ), GREATERMEDIA_VERSION, true );
 		wp_enqueue_style( 'gm-styleguide', get_template_directory_uri() . "/assets/css/gm_styleguide{$postfix}.css", array(), GREATERMEDIA_VERSION );
 	} else {
+		wp_enqueue_script( 'greatermedia', get_template_directory_uri() . "/assets/js/greater_media{$postfix}.js", array( 'jquery' ), GREATERMEDIA_VERSION, true );
 		wp_enqueue_style( 'greatermedia', get_template_directory_uri() . "/assets/css/greater_media{$postfix}.css", array(), GREATERMEDIA_VERSION );
 	}
 }

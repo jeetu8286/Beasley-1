@@ -16,6 +16,7 @@
 @import "base/placeholders";
 @import "base/fonts";
 @import "base/breakpoints";
+@import "base/functions";
 @import "base/helpers";
 
 // Custom styles for the living style guide
@@ -24,3 +25,4 @@
 @import "styleguide/header";
 @import "styleguide/footer";
 @import "styleguide/sections";
+@import "styleguide/prism";
