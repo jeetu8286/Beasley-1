@@ -23,7 +23,10 @@
 				hide = Number.MAX_VALUE;
 			}
 
-			if (now_utc > show && hide < now_utc) {
+			if (now_utc > show && hide > now_utc) {
+				// leave content visible
+			}
+			else {
 				jQuery(content_block).hide();
 			}
 
