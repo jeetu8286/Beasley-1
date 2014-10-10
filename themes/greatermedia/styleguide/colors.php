@@ -46,5 +46,13 @@
 				</div>
 			</div>
 		</div>
+		<div class="sg-markup-controls">
+			<a href="#" class="sg-btn">HTML</a><a href="#" class="sg-btn">CSS</a>
+		</div>
+		<div class="sg-source">
+			<pre class="prettyprint linenums language-html">
+&lt;div&gt;test&lt;/div&gt;
+			</pre>
+		</div>
 	</div>
 </section>
