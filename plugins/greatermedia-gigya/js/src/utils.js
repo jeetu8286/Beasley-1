@@ -18,3 +18,17 @@ var unescapeValue = function(source) {
 	return source;
 };
 
+var getTemplate = function(name) {
+	return window.JST['src/templates/' + name + '.jst'];
+};
+
+var renderTemplate = function(name, data, settings) {
+	if (!settings) {
+		settings = {};
+	}
+
+	var template = getTemplate(name);
+	var html     = template(data);
+
+	return $(html);
+};

@@ -21,21 +21,13 @@ MenuView.prototype = {
 	},
 
 	render: function() {
-		var constraints = this.store.available;
-		var n = constraints.length;
-		var i, constraint, link, span;
+		var templateData = {
+			view: this,
+			constraints: this.store.available,
+		};
 
-		for (i = 0; i < n; i++) {
-			constraint = constraints[i];
-			item = $('<li></li>');
-			link = $('<a href="#"/>')
-				.attr('data-id', i)
-				.attr('title', 'Click to add')
-				.text(constraint.title);
-
-			link.appendTo(item);
-			this.container.append(item);
-		}
+		var listItems = renderTemplate('constraints_menu', templateData);
+		this.container.html(listItems);
 	}
 
 };

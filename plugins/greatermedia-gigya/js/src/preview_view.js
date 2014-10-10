@@ -73,24 +73,13 @@ PreviewView.prototype = {
 	},
 
 	rowForAccount: function(account, index) {
-		var tr = $('<tr></tr>', { 'class': index % 2 ? 'alternate': '' });
-		var td = $('<td></td>');
-		var link;
+		var templateData = {
+			view: this,
+			index: index,
+			account: account
+		};
 
-		link = $('<a href="#"></a>').text(account);
-		link.attr({ 'class': 'open-member-page-text' });
-		td.append(link);
-
-		link = $('<a href="#"></a>');
-		link.attr({
-			'alt': 'f105',
-			'class': 'dashicons dashicons-external open-member-page',
-		});
-		td.append(link);
-
-		tr.append(td);
-
-		return tr;
+		return renderTemplate('preview_result_row', templateData);
 	},
 
 	setStatus: function(message) {

@@ -97,75 +97,35 @@ ConstraintListView.prototype = {
 	},
 
 	emptyListItem: function() {
-		var li = $('<li></li>')
-			.append($('<p></p>', { 'class': 'constraint-empty' }).text('Click to add filters'));
-
-		return li;
+		return renderTemplate('empty_constraints');
 	},
 
 	toolbarForConstraint: function(constraint) {
-		var list = $('<ul></ul>').attr('class', 'constraint-toolbar');
-		var item, link;
+		var templateData = {
+			view: this,
+			constraint: constraint
+		};
 
-		item = $('<li></li>');
-		link = $('<a></a>', {
-			'data-id': constraint.id,
-			'alt': 'f105',
-			'class': 'dashicons dashicons-admin-page copy-constraint',
-			'href': '#',
-			'title': 'Duplicate'
-		});
-		item.append(link);
-		list.append(item);
-
-		item = $('<li></li>');
-		link = $('<a></a>', {
-			'data-id': constraint.id,
-			'alt': 'f105',
-			'class': 'dashicons dashicons-trash remove-constraint',
-			'href': '#',
-			'title': 'Remove'
-		});
-		item.append(link);
-		list.append(item);
-
-		return list;
+		return renderTemplate('constraint_toolbar', templateData);
 	},
 
 	inputForConstraint: function(constraint) {
-		var input = $('<input />', {
-			'data-id': constraint.id,
-			'type': 'text',
-			'value': constraint.value,
-			'class': 'constraint-value'
-		});
+		var templateData = {
+			view: this,
+			constraint: constraint
+		};
 
-		return input;
+		return renderTemplate('constraint_input', templateData);
 	},
 
 	selectForConjunction: function(constraint) {
-		var currentConjunction = constraint.conjunction;
-		var select = $('<select />', {
-			'data-id': constraint.id,
-			'class': 'constraint-conjunction'
-		});
-		var conjunctions = ['and', 'or'];
-		var n = conjunctions.length;
-		var i, conjunction, label, option;
+		var templateData = {
+			view: this,
+			constraint: constraint,
+			conjunctions: ['and', 'or']
+		};
 
-		for (i = 0; i < n; i++) {
-			conjunction = conjunctions[i];
-			label       = conjunction;
-			option      = $('<option></option>', { value: conjunction }).text(label);
-
-			if (currentConjunction === conjunction) {
-				option.prop('selected', true);
-			}
-
-			select.append(option);
-		}
-
-		return select;
+		return renderTemplate('conjunction_select', templateData);
 	},
 
 	operators : {
@@ -178,29 +138,13 @@ ConstraintListView.prototype = {
 	},
 
 	selectForOperator: function(constraint) {
-		var valueType = constraint.valueType;
-		var currentOperator = constraint.operator;
-		var select    = $('<select />', {
-			'data-id': constraint.id,
-			'class': 'constraint-operator'
-		});
-		var operators = this.operatorsFor(valueType);
-		var n         = operators.length;
-		var i, operator, label, option;
+		var templateData = {
+			view: this,
+			constraint: constraint,
+			operators: this.operatorsFor(constraint.valueType)
+		};
 
-		for (i = 0; i < n; i++) {
-			operator = operators[i];
-			label    = this.operatorLabelFor(operator);
-			option   = $('<option></option>', { value: operator }).text(label);
-
-			if (currentOperator === operator) {
-				option.prop('selected', true);
-			}
-
-			select.append(option);
-		}
-
-		return select;
+		return renderTemplate('operator_select', templateData);
 	},
 
 	operatorLabelFor: function(operator) {

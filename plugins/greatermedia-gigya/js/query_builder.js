@@ -1,3 +1,121 @@
+this["JST"] = this["JST"] || {};
+
+this["JST"]["src/templates/conjunction_select.jst"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
+with (obj) {
+__p += '<select data-id="' +
+__e( constraint.id ) +
+'" class="constraint-conjunction">\n\t';
+ _.each(conjunctions, function(conjunction) { ;
+__p += '\n\t<option value="' +
+__e( conjunction ) +
+'" ' +
+((__t = ( constraint.conjunction === conjunction ? 'selected="selected"' : ''  )) == null ? '' : __t) +
+'">\n\t' +
+__e( conjunction ) +
+'\n\t</option>\n\t';
+ }) ;
+__p += '\n</select>\n';
+
+}
+return __p
+};
+
+this["JST"]["src/templates/constraint_input.jst"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape;
+with (obj) {
+__p += '<input\n\ttype="text"\n\tclass="constraint-value"\n\tdata-id="' +
+__e( constraint.id ) +
+'"\n\tvalue="' +
+__e( constraint.value ) +
+'" />\n';
+
+}
+return __p
+};
+
+this["JST"]["src/templates/constraint_toolbar.jst"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape;
+with (obj) {
+__p += '<ul class="constraint-toolbar">\n\t<li>\n\t\t<a\n\t\t\tdata-id="' +
+__e( constraint.id ) +
+'"\n\t\t\talt="f105"\n\t\t\tclass="dashicons dashicons-admin-page copy-constraint"\n\t\t\thref="#"\n\t\t\ttitle="Duplicate"\n\t\t/>\n\n\t\t<a\n\t\t\tdata-id="' +
+__e( constraint.id ) +
+'"\n\t\t\talt="f105"\n\t\t\tclass="dashicons dashicons-trash remove-constraint"\n\t\t\thref="#"\n\t\t\ttitle="Remove"\n\t\t/>\n\t</li>\n</ul>\n';
+
+}
+return __p
+};
+
+this["JST"]["src/templates/constraints_menu.jst"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
+with (obj) {
+
+ _.each(constraints, function(constraint, index) { ;
+__p += '\n\t<li>\n\t\t<a\n\t\t\tdata-id="' +
+__e( index ) +
+'"\n\t\t\ttitle="Click to add" href="#" >\n\t\t\t' +
+__e( constraint.title ) +
+'\n\t\t</a>\n\t</li>\n';
+ }) ;
+__p += '\n';
+
+}
+return __p
+};
+
+this["JST"]["src/templates/empty_constraints.jst"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape;
+with (obj) {
+__p += '<li>\n\t<p class="constraint-empty">Click to add filters</p>\n</li>\n';
+
+}
+return __p
+};
+
+this["JST"]["src/templates/operator_select.jst"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
+with (obj) {
+__p += '<select data-id="' +
+__e( constraint.id ) +
+'" class="constraint-operator">\n\t';
+ _.each(operators, function(operator) { ;
+__p += '\n\t<option value="' +
+__e( operator ) +
+'" ' +
+((__t = ( constraint.operator === operator ? 'selected="selected"' : ''  )) == null ? '' : __t) +
+'">\n\t' +
+__e( view.operatorLabelFor(operator) ) +
+'\n\t</option>\n\t';
+ }) ;
+__p += '\n</select>\n';
+
+}
+return __p
+};
+
+this["JST"]["src/templates/preview_result_row.jst"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape;
+with (obj) {
+__p += '<tr class="' +
+__e( index % 2 ? 'alternate' : '' ) +
+'">\n\t<td>\n\t\t<a href="#" class="open-member-page-text">' +
+__e( account ) +
+'</a>\n\t\t<a href="#" alt="f105" class="dashicons dashicons-external open-member-page"></a>\n\t</td>\n</tr>\n';
+
+}
+return __p
+};
 var escapeValue = function(source) {
 	if (typeof(source) === 'string') {
 		source = source.replace(/"/g, 'C_DOUBLE_QUOTE');
@@ -18,6 +136,20 @@ var unescapeValue = function(source) {
 	return source;
 };
 
+var getTemplate = function(name) {
+	return window.JST['src/templates/' + name + '.jst'];
+};
+
+var renderTemplate = function(name, data, settings) {
+	if (!settings) {
+		settings = {};
+	}
+
+	var template = getTemplate(name);
+	var html     = template(data);
+
+	return $(html);
+};
 
 var Constraint = function(properties) {
 	this.id = Constraint.nextID();
@@ -453,21 +585,13 @@ MenuView.prototype = {
 	},
 
 	render: function() {
-		var constraints = this.store.available;
-		var n = constraints.length;
-		var i, constraint, link, span;
+		var templateData = {
+			view: this,
+			constraints: this.store.available,
+		};
 
-		for (i = 0; i < n; i++) {
-			constraint = constraints[i];
-			item = $('<li></li>');
-			link = $('<a href="#"/>')
-				.attr('data-id', i)
-				.attr('title', 'Click to add')
-				.text(constraint.title);
-
-			link.appendTo(item);
-			this.container.append(item);
-		}
+		var listItems = renderTemplate('constraints_menu', templateData);
+		this.container.html(listItems);
 	}
 
 };
@@ -571,75 +695,35 @@ ConstraintListView.prototype = {
 	},
 
 	emptyListItem: function() {
-		var li = $('<li></li>')
-			.append($('<p></p>', { 'class': 'constraint-empty' }).text('Click to add filters'));
-
-		return li;
+		return renderTemplate('empty_constraints');
 	},
 
 	toolbarForConstraint: function(constraint) {
-		var list = $('<ul></ul>').attr('class', 'constraint-toolbar');
-		var item, link;
+		var templateData = {
+			view: this,
+			constraint: constraint
+		};
 
-		item = $('<li></li>');
-		link = $('<a></a>', {
-			'data-id': constraint.id,
-			'alt': 'f105',
-			'class': 'dashicons dashicons-admin-page copy-constraint',
-			'href': '#',
-			'title': 'Duplicate'
-		});
-		item.append(link);
-		list.append(item);
-
-		item = $('<li></li>');
-		link = $('<a></a>', {
-			'data-id': constraint.id,
-			'alt': 'f105',
-			'class': 'dashicons dashicons-trash remove-constraint',
-			'href': '#',
-			'title': 'Remove'
-		});
-		item.append(link);
-		list.append(item);
-
-		return list;
+		return renderTemplate('constraint_toolbar', templateData);
 	},
 
 	inputForConstraint: function(constraint) {
-		var input = $('<input />', {
-			'data-id': constraint.id,
-			'type': 'text',
-			'value': constraint.value,
-			'class': 'constraint-value'
-		});
+		var templateData = {
+			view: this,
+			constraint: constraint
+		};
 
-		return input;
+		return renderTemplate('constraint_input', templateData);
 	},
 
 	selectForConjunction: function(constraint) {
-		var currentConjunction = constraint.conjunction;
-		var select = $('<select />', {
-			'data-id': constraint.id,
-			'class': 'constraint-conjunction'
-		});
-		var conjunctions = ['and', 'or'];
-		var n = conjunctions.length;
-		var i, conjunction, label, option;
+		var templateData = {
+			view: this,
+			constraint: constraint,
+			conjunctions: ['and', 'or']
+		};
 
-		for (i = 0; i < n; i++) {
-			conjunction = conjunctions[i];
-			label       = conjunction;
-			option      = $('<option></option>', { value: conjunction }).text(label);
-
-			if (currentConjunction === conjunction) {
-				option.prop('selected', true);
-			}
-
-			select.append(option);
-		}
-
-		return select;
+		return renderTemplate('conjunction_select', templateData);
 	},
 
 	operators : {
@@ -652,29 +736,13 @@ ConstraintListView.prototype = {
 	},
 
 	selectForOperator: function(constraint) {
-		var valueType = constraint.valueType;
-		var currentOperator = constraint.operator;
-		var select    = $('<select />', {
-			'data-id': constraint.id,
-			'class': 'constraint-operator'
-		});
-		var operators = this.operatorsFor(valueType);
-		var n         = operators.length;
-		var i, operator, label, option;
+		var templateData = {
+			view: this,
+			constraint: constraint,
+			operators: this.operatorsFor(constraint.valueType)
+		};
 
-		for (i = 0; i < n; i++) {
-			operator = operators[i];
-			label    = this.operatorLabelFor(operator);
-			option   = $('<option></option>', { value: operator }).text(label);
-
-			if (currentOperator === operator) {
-				option.prop('selected', true);
-			}
-
-			select.append(option);
-		}
-
-		return select;
+		return renderTemplate('operator_select', templateData);
 	},
 
 	operatorLabelFor: function(operator) {
@@ -775,24 +843,13 @@ PreviewView.prototype = {
 	},
 
 	rowForAccount: function(account, index) {
-		var tr = $('<tr></tr>', { 'class': index % 2 ? 'alternate': '' });
-		var td = $('<td></td>');
-		var link;
+		var templateData = {
+			view: this,
+			index: index,
+			account: account
+		};
 
-		link = $('<a href="#"></a>').text(account);
-		link.attr({ 'class': 'open-member-page-text' });
-		td.append(link);
-
-		link = $('<a href="#"></a>');
-		link.attr({
-			'alt': 'f105',
-			'class': 'dashicons dashicons-external open-member-page',
-		});
-		td.append(link);
-
-		tr.append(td);
-
-		return tr;
+		return renderTemplate('preview_result_row', templateData);
 	},
 
 	setStatus: function(message) {

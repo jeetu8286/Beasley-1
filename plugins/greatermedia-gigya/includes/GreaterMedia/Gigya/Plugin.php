@@ -111,7 +111,7 @@ class Plugin {
 		wp_enqueue_script(
 			'query_builder',
 			plugins_url( 'js/query_builder.js', $this->plugin_file ),
-			array(),
+			array('underscore'),
 			GMR_GIGYA_VERSION
 		);
 
