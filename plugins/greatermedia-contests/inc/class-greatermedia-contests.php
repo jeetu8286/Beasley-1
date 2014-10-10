@@ -61,6 +61,7 @@ class GreaterMediaContests {
 		);
 
 		register_post_type( 'contest', $args );
+		add_post_type_support( 'contest', 'timed-content' );
 
 	}
 
