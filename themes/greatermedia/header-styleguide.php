@@ -43,7 +43,7 @@
 
 		</head>
 
-		<body <?php body_class(); ?>>
+		<body <?php body_class(); ?> onload="prettyPrint()">
 			<div id="sg-nav-toggle" class="sg-nav-toggle">
 				<div class="sg-nav-toggle-span"></div>
 			</div>

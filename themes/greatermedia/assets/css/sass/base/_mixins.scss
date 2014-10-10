@@ -1,3 +1,30 @@
-/**
- * Mixins
- */
+// Mixin to create a button
+//
+// @example scss - Btn Mixin
+// @include btn(white, black, 1, 1.5em, .75em);
+//
+// @author Allen Moore
+// @access private
+// @since 0.1.0
+//
+// @param {color} $bgcolor - background color of the button
+// @param {color} $textcolor - text color of the button
+// @param {number | unit} $padding-top-bottom - padding for the top and bottom of the button
+// @param {number | unit} $padding-left-right - padding for the left and right of the button
+// @param {number | unit} $font-size - font size for the button
+@mixin btn($bgcolor, $textcolor, $padding-top-bottom, $padding-left-right, $font-size) {
+	@include padding($padding-top-bottom $padding-left-right);
+	@include margin(null .5em null null);
+	@include border-width(0);
+	outline: none;
+	background-color: color($bgcolor);
+	font-size: $font-size;
+	color: color($textcolor);
+	text-transform: uppercase;
+	&:hover{
+		background-color: darken(color($bgcolor), 9%);
+	}
+	&:last-of-type{
+		@include margin(0);
+	}
+}
