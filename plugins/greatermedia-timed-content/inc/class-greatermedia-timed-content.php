@@ -10,6 +10,7 @@ class GreaterMediaTimedContent {
 
 		add_action( 'current_screen', array( $this, 'current_screen' ) );
 		add_action( 'post_submitbox_misc_actions', array( $this, 'post_submitbox_misc_actions' ) );
+		add_action( 'wp_enqueue_scripts', array($this, 'wp_enqueue_scripts'));
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ), 20, 0 );
 		add_action( 'plugins_loaded', array( $this, 'plugins_loaded' ) );
 		add_action( 'save_post', array( $this, 'save_post' ) );
@@ -61,7 +62,7 @@ class GreaterMediaTimedContent {
 	}
 
 	/**
-	 * Enqueue JavaScript and CSS resources as needed
+	 * Enqueue JavaScript and CSS resources for admin functionality as needed
 	 */
 	public function admin_enqueue_scripts() {
 
@@ -77,13 +78,13 @@ class GreaterMediaTimedContent {
 			if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
 				wp_enqueue_script( 'date-format', trailingslashit( GREATER_MEDIA_TIMED_CONTENT_URL ) . 'js/vendor/date.format/date.format.js', array(), null, true );
 				wp_enqueue_script( 'date-toisostring', trailingslashit( GREATER_MEDIA_TIMED_CONTENT_URL ) . 'js/vendor/date-toisostring.js', array(), null, true );
-				wp_enqueue_script( 'greatermedia-tc-js', trailingslashit( GREATER_MEDIA_TIMED_CONTENT_URL ) . 'js/greatermedia-timed-content.js', array(
+				wp_enqueue_script( 'greatermedia-tc-admin-js', trailingslashit( GREATER_MEDIA_TIMED_CONTENT_URL ) . 'js/greatermedia-timed-content-admin.js', array(
 					'jquery',
 					'date-format'
 				), false, true );
 				wp_enqueue_script( 'gm-datetimepicker', trailingslashit( GREATER_MEDIA_TIMED_CONTENT_URL ) . 'js/vendor/datetimepicker/jquery.datetimepicker.js', array( 'jquery' ), null, true );
 			} else {
-				wp_enqueue_script( 'greatermedia-tc-js', trailingslashit( GREATER_MEDIA_TIMED_CONTENT_URL ) . 'js/dist/greatermedia-timed-content.min.js', array( 'jquery' ), false, true);
+				wp_enqueue_script( 'greatermedia-tc-admin-js', trailingslashit( GREATER_MEDIA_TIMED_CONTENT_URL ) . 'js/dist/greatermedia-timed-content.min.js', array( 'jquery' ), false, true );
 			}
 
 			$expiration_timestamp = get_post_meta( $post->ID, '_post_expiration', true );
@@ -110,9 +111,19 @@ class GreaterMediaTimedContent {
 				),
 			);
 
-			wp_localize_script( 'greatermedia-tc-js', 'GreaterMediaTimedContent', $settings );
+			wp_localize_script( 'greatermedia-tc-admin-js', 'GreaterMediaTimedContent', $settings );
 
 		}
+	}
+
+	/**
+	 * Enqueue JavaScript and CSS for public-facing functionality
+	 */
+	public function wp_enqueue_scripts() {
+
+		// Public-facing page
+		wp_enqueue_script( 'greatermedia-tc-admin', trailingslashit( GREATER_MEDIA_TIMED_CONTENT_URL ) . 'js/greatermedia-timed-content.js', array( 'jquery', 'underscore' ), false, true );
+
 	}
 
 	/**
@@ -149,7 +160,7 @@ class GreaterMediaTimedContent {
 			$local_to_gmt_time_offset = get_option( 'gmt_offset' ) * - 1 * 3600;
 			$exp_timestamp_gmt        = $exp_timestamp + $local_to_gmt_time_offset;
 			delete_post_meta( $post_id, '_post_expiration' );
-			if('' !== $exp_timestamp) {
+			if ( '' !== $exp_timestamp ) {
 				add_post_meta( $post_id, '_post_expiration', $exp_timestamp );
 			}
 
