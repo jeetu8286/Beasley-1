@@ -372,9 +372,6 @@ th {
   padding: 0; }
 
 /**
- * Mixins
- */
-/**
  * Placeholders
  */
 /**
@@ -599,13 +596,6 @@ POSTS & CONTENT STYLES
   .entry-content .size-thumbnail {
     max-width: 100%;
     height: auto; }
-  .entry-content pre {
-    background: #f5f5f5;
-    color: #000000;
-    font-size: .9rem;
-    padding: 1.5em;
-    margin: 0 0 1.5em;
-    border-radius: 3px; }
 
 /* end .entry-content */
 .wp-caption {
@@ -801,13 +791,39 @@ POSTS & CONTENT STYLES
     display: table;
     clear: both; }
 
+.sg-btn {
+  padding: 1em 1.5em;
+  margin-right: 0.5em;
+  border-width: 0;
+  outline: none;
+  background-color: #dddddd;
+  font-size: 0.875em;
+  color: #333333;
+  text-transform: uppercase; }
+  .sg-btn:hover {
+    background-color: #c6c6c6; }
+  .sg-btn:last-of-type {
+    margin: 0; }
+
 .sg-colors-table {
   float: left;
   display: block;
   margin-right: 2.35765%;
   width: 100%;
+  margin-top: 1em;
+  margin-bottom: 1em;
   display: table; }
   .sg-colors-table:last-child {
+    margin-right: 0; }
+
+.sg-markup-controls, .sg-source {
+  float: left;
+  display: block;
+  margin-right: 2.35765%;
+  width: 100%;
+  margin-top: 1em;
+  margin-bottom: 1em; }
+  .sg-markup-controls:last-child, .sg-source:last-child {
     margin-right: 0; }
 
 .sg-color {
@@ -861,114 +877,118 @@ POSTS & CONTENT STYLES
   font-size: .625em;
   font-weight: bold; }
 
-/* http://prismjs.com/download.html?themes=prism&languages=markup+css+css-extras+clike+javascript+php+php-extras+scss */
-/**
- * prism.js default theme for JavaScript, CSS and HTML
- * Based on dabblet (http://dabblet.com)
- * @author Lea Verou
- */
-code[class*="language-"],
-pre[class*="language-"] {
-  color: black;
-  text-shadow: 0 1px white;
-  font-family: Consolas, Monaco, 'Andale Mono', monospace;
-  direction: ltr;
-  text-align: left;
-  white-space: pre;
-  word-spacing: normal;
-  word-break: normal;
+/* Tomorrow Night Bright Theme */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+.prettyprint {
+  background: black;
+  font-family: Menlo, 'Bitstream Vera Sans Mono', 'DejaVu Sans Mono', Monaco, Consolas, monospace;
+  font-size: 12px;
   line-height: 1.5;
-  -moz-tab-size: 4;
-  -o-tab-size: 4;
-  tab-size: 4;
-  -webkit-hyphens: none;
-  -moz-hyphens: none;
-  -ms-hyphens: none;
-  hyphens: none; }
+  border: 1px solid #ccc;
+  padding: 10px; }
 
-pre[class*="language-"]::-moz-selection, pre[class*="language-"] ::-moz-selection,
-code[class*="language-"]::-moz-selection, code[class*="language-"] ::-moz-selection {
-  text-shadow: none;
-  background: #b3d4fc; }
+.pln {
+  color: #eaeaea; }
 
-pre[class*="language-"]::selection, pre[class*="language-"] ::selection,
-code[class*="language-"]::selection, code[class*="language-"] ::selection {
-  text-shadow: none;
-  background: #b3d4fc; }
+@media screen {
+  .str {
+    color: #b9ca4a; }
 
-@media print {
-  code[class*="language-"],
-  pre[class*="language-"] {
-    text-shadow: none; } }
-/* Code blocks */
-pre[class*="language-"] {
-  padding: 1em;
-  margin: .5em 0;
-  overflow: auto; }
+  .kwd {
+    color: #c397d8; }
 
-:not(pre) > code[class*="language-"],
-pre[class*="language-"] {
-  background: #f5f2f0; }
+  .com {
+    color: #969896; }
 
-/* Inline code */
-:not(pre) > code[class*="language-"] {
-  padding: .1em;
-  border-radius: .3em; }
+  .typ {
+    color: #7aa6da; }
 
-.token.comment,
-.token.prolog,
-.token.doctype,
-.token.cdata {
-  color: slategray; }
+  .lit {
+    color: #e78c45; }
 
-.token.punctuation {
-  color: #999; }
+  .pun {
+    color: #eaeaea; }
 
-.namespace {
-  opacity: .7; }
+  .opn {
+    color: #eaeaea; }
 
-.token.property,
-.token.tag,
-.token.boolean,
-.token.number,
-.token.constant,
-.token.symbol,
-.token.deleted {
-  color: #905; }
+  .clo {
+    color: #eaeaea; }
 
-.token.selector,
-.token.attr-name,
-.token.string,
-.token.char,
-.token.builtin,
-.token.inserted {
-  color: #690; }
+  .tag {
+    color: #d54e53; }
 
-.token.operator,
-.token.entity,
-.token.url,
-.language-css .token.string,
-.style .token.string {
-  color: #a67f59;
-  background: rgba(255, 255, 255, 0.5); }
+  .atn {
+    color: #e78c45; }
 
-.token.atrule,
-.token.attr-value,
-.token.keyword {
-  color: #07a; }
+  .atv {
+    color: #70c0b1; }
 
-.token.function {
-  color: #DD4A68; }
+  .dec {
+    color: #e78c45; }
 
-.token.regex,
-.token.important,
-.token.variable {
-  color: #e90; }
+  .var {
+    color: #d54e53; }
 
-.token.important {
-  font-weight: bold; }
+  .fun {
+    color: #7aa6da; } }
+@media print, projection {
+  .str {
+    color: #006600; }
 
-.token.entity {
-  cursor: help; }
+  .kwd {
+    color: #006;
+    font-weight: bold; }
+
+  .com {
+    color: #600;
+    font-style: italic; }
+
+  .typ {
+    color: #404;
+    font-weight: bold; }
+
+  .lit {
+    color: #004444; }
+
+  .pun, .opn, .clo {
+    color: #444400; }
+
+  .tag {
+    color: #006;
+    font-weight: bold; }
+
+  .atn {
+    color: #440044; }
+
+  .atv {
+    color: #006600; } }
+/* Specify class=linenums on a pre to get line numbering */
+ol.linenums {
+  margin-top: 0;
+  margin-bottom: 0; }
+  ol.linenums li {
+    color: #ffffff; }
+
+/* IE indents via margin-left */
+li.L0,
+li.L1,
+li.L2,
+li.L3,
+li.L4,
+li.L5,
+li.L6,
+li.L7,
+li.L8,
+li.L9 {
+  /* */ }
+
+/* Alternate shading for lines */
+li.L1,
+li.L3,
+li.L5,
+li.L7,
+li.L9 {
+  /* */ }
 
 /*# sourceMappingURL=gm_styleguide.css.map */
