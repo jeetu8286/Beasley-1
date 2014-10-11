@@ -26,10 +26,14 @@ while ( have_posts() ):
 				?>
 				<ol>
 					<?php
-						$author_id = get_post_meta( get_the_ID(), 'assoc_user', true );
-						$author_posts = new WP_Query( array(
-							'author' => $author_id
-						) );
+						$author_id = get_post_meta( get_the_ID(), 'personality_assoc_user_id', true );
+						$author_posts = new WP_Query(
+							array(
+								'author' => intval( $author_id ),
+								'posts_per_page' => 100,
+							)
+						);
+
 						if ( $author_id && $author_posts->have_posts()):
 							while( $author_posts->have_posts() ):
 								$author_posts->the_post();
