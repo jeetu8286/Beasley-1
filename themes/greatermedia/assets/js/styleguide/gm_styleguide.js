@@ -14,7 +14,9 @@
 		body = document.querySelectorAll('body'),
 		$body = $(body),
 		sgToggleButton = document.querySelectorAll('#sg-nav-toggle'),
-		$sgToggleButton = $(sgToggleButton);
+		$sgToggleButton = $(sgToggleButton),
+		$sgShowHTML = $('.sg-markup-controls .sg-show-html'),
+		$sgSourceHTML = $('.sg-source-html');
 
 	// function to toggle a class when the menu button is clicked
 	function sgMenu(){
