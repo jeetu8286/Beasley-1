@@ -78,7 +78,7 @@ class Plugin {
 				'register_account_nonce' => wp_create_nonce( 'register_account' ),
 				'gigya_login_nonce'      => wp_create_nonce( 'gigya_login' ),
 				'gigya_logout_nonce'     => wp_create_nonce( 'gigya_logout' ),
-				'cid'                    => gigya_user_id()
+				'cid'                    => get_gigya_user_id()
 			)
 		);
 

@@ -33,7 +33,7 @@ class FormEntryPublisher {
 				'entry_type_id' => $form['id'],
 			),
 			'entry' => $entry,
-			'user_id' => gigya_user_id(),
+			'user_id' => get_gigya_user_id(),
 		);
 
 		wp_async_task_add( $this->job_name, $params );
