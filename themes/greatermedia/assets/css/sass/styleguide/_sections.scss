@@ -25,6 +25,7 @@
 	@include outer-container;
 	@include position(relative, null null null null);
 	@include size(null 100%);
+	@include padding(null null 2em null);
 	border-bottom: 1px solid color(meta-gray);
 }
 
@@ -43,8 +44,12 @@
 	@include margin(1em null 1em);
 }
 
-.sg-source-html, .sg-source-css {
+.sg-source {
 	display: none;
+}
+
+.sg-source.is-active{
+	display: block;
 }
 
 .sg-color {
