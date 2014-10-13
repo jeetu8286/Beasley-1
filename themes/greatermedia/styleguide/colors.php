@@ -1,14 +1,14 @@
 <?php
 /**
- * Partial for the Colors section on the Style Guide
+ * Partial for the Colors div on the Style Guide
  *
  * @package Greater Media
  * @since 0.1.0
  */
  ?>
-<section id="colors" class="sg-colors sg-sections">
+<div id="colors" class="sg-colors sg-divs">
 	<div class="sg-content">
-		<h2 class="sg-section-title"><?php _e( 'Colors', 'greatermedia' ); ?></h2>
+		<h2 class="sg-div-title"><?php _e( 'Colors', 'greatermedia' ); ?></h2>
 		<div class="sg-colors-table">
 			<div class="sg-color color-black">
 				<div class="sg-color-swatch">
@@ -55,4 +55,4 @@
 			</pre>
 		</div>
 	</div>
-</section>
+</div>
