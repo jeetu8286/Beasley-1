@@ -15,8 +15,7 @@
 		$body = $(body),
 		sgToggleButton = document.querySelectorAll('#sg-nav-toggle'),
 		$sgToggleButton = $(sgToggleButton),
-		$sgShowHTML = $('.sg-markup-controls .sg-show-html'),
-		$sgSourceHTML = $('.sg-source-html');
+		$scrollToTop = $('.scroll-to-top');
 
 	// function to toggle a class when the menu button is clicked
 	function sgMenu(){
@@ -24,6 +23,24 @@
 			$body.toggleClass('sg-nav-open');
 		});
 	}
+
+	function scrollToTop(){
+		$(window).scroll(function(){
+			if ($(this).scrollTop() > 100) {
+				$scrollToTop.fadeIn();
+			} else {
+				$scrollToTop.fadeOut();
+			}
+		});
+
+		//Click event to scroll to top
+		$scrollToTop.click(function(){
+			$('html, body').animate({scrollTop : 0},800);
+			return false;
+		});
+	}
+
+	scrollToTop();
 
 	// functions to run on load of the site
 	$(document).ready(function(){
