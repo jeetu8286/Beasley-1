@@ -21,7 +21,7 @@
 			<h6>H6. Nworb Kciuq eht</h6>
 		</section>
 		<div class="sg-markup-controls">
-			<a href="#" class="sg-btn sg-show-html">HTML</a>
+			<a href="#" class="sg-btn sg-btn--source">HTML</a>
 		</div>
 		<div class="sg-source">
 			<pre class="prettyprint linenums language-html">
@@ -81,7 +81,7 @@
 			</ul>
 		</section>
 		<div class="sg-markup-controls">
-			<a href="#" class="sg-btn sg-show-html">HTML</a>
+			<a href="#" class="sg-btn sg-btn--source">HTML</a>
 		</div>
 		<div class="sg-source">
 			<pre class="prettyprint linenums language-html">
@@ -143,7 +143,7 @@
 			</blockquote>
 		</section>
 		<div class="sg-markup-controls">
-			<a href="#" class="sg-btn sg-show-html">HTML</a>
+			<a href="#" class="sg-btn sg-btn--source">HTML</a>
 		</div>
 		<div class="sg-source">
 			<pre class="prettyprint linenums language-html">
@@ -172,9 +172,9 @@
 			</p>
 		</section>
 		<div class="sg-markup-controls">
-			<button class="sg-btn sg-show-html">HTML</button>
+			<button class="sg-btn sg-btn--source">HTML</button>
 		</div>
-		<div class="sg-source sg-source-html">
+		<div class="sg-source">
 			<pre class="prettyprint linenums language-html">
 &lt;section&gt;
 	&lt;img style="width:250px;height:150px;float:right" src="http://placekitten.com/250/150" alt="Cute Kitten" /&gt;

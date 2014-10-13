@@ -547,6 +547,9 @@ POSTS & CONTENT STYLES
   font-style: italic;
   margin: 0; }
 
+pre {
+  white-space: pre-wrap; }
+
 /* entry content */
 .entry-content {
   padding: 1.5em 0 0; }
@@ -800,6 +803,7 @@ POSTS & CONTENT STYLES
   margin-right: auto;
   position: relative;
   height: 100%;
+  padding-bottom: 2em;
   border-bottom: 1px solid #dddddd; }
   .sg-section-content:after {
     content: "";
@@ -841,8 +845,11 @@ POSTS & CONTENT STYLES
   .sg-markup-controls:last-child, .sg-source:last-child {
     margin-right: 0; }
 
-.sg-source-html, .sg-source-css {
+.sg-source {
   display: none; }
+
+.sg-source.is-active {
+  display: block; }
 
 .sg-color {
   height: 80px;
