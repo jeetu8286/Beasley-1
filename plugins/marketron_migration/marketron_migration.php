@@ -30,3 +30,7 @@ if( is_readable( GMEDIA_PATH . 'includes/class-MigrationPostTypes.php' ) ) {
 if( is_readable( GMEDIA_PATH . 'includes/class-CMM_Legacy_Redirects.php' ) ) {
 	include_once GMEDIA_PATH . 'includes/class-CMM_Legacy_Redirects.php';
 }
+
+if( is_readable( GMEDIA_PATH . 'includes/class-MTM_Migration_Utils.php' ) ) {
+	include_once GMEDIA_PATH . 'includes/class-MTM_Migration_Utils.php';
+}
