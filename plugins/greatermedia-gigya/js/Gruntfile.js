@@ -10,6 +10,7 @@ module.exports = function(grunt) {
 					'src/constraint_store.js',
 					'src/member_query_updater.js',
 					'src/menu_view.js',
+					'src/constraint_item_view.js',
 					'src/constraint_list_view.js',
 					'src/preview_view.js',
 					'src/app.js',

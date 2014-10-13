@@ -1,0 +1,47 @@
+<li>
+	<ul class="constraint-toolbar">
+		<li>
+			<a
+				data-id="<%- constraint.id %>"
+				alt="f105"
+				class="dashicons dashicons-admin-page copy-constraint"
+				href="#"
+				title="Duplicate"
+			/>
+
+			<a
+				data-id="<%- constraint.id %>"
+				alt="f105"
+				class="dashicons dashicons-trash remove-constraint"
+				href="#"
+				title="Remove"
+			/>
+		</li>
+	</ul>
+
+	<p class="constraint-title">
+		<%- constraint.title %>
+	</p>
+
+	<select data-id="<%- constraint.id %>" class="constraint-operator">
+		<% _.each(view.operatorsFor(constraint.valueType), function(operator) { %>
+		<option value="<%- operator %>" <%= constraint.operator === operator ? 'selected="selected"' : ''  %>">
+		<%- view.operatorLabelFor(operator) %>
+		</option>
+		<% }) %>
+	</select>
+
+	<input
+		type="text"
+		class="constraint-value"
+		data-id="<%- constraint.id %>"
+		value="<%- constraint.value %>" />
+
+	<select data-id="<%- constraint.id %>" class="constraint-conjunction">
+		<% _.each(view.conjunctions, function(conjunction) { %>
+		<option value="<%- conjunction %>" <%= constraint.conjunction === conjunction ? 'selected="selected"' : ''  %>">
+		<%- conjunction %>
+		</option>
+		<% }) %>
+	</select>
+</li>

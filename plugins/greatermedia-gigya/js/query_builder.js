@@ -1,51 +1,45 @@
 this["JST"] = this["JST"] || {};
 
-this["JST"]["src/templates/conjunction_select.jst"] = function(obj) {
+this["JST"]["src/templates/constraint_item.jst"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 with (obj) {
-__p += '<select data-id="' +
+__p += '<li>\n\t<ul class="constraint-toolbar">\n\t\t<li>\n\t\t\t<a\n\t\t\t\tdata-id="' +
 __e( constraint.id ) +
-'" class="constraint-conjunction">\n\t';
- _.each(conjunctions, function(conjunction) { ;
-__p += '\n\t<option value="' +
+'"\n\t\t\t\talt="f105"\n\t\t\t\tclass="dashicons dashicons-admin-page copy-constraint"\n\t\t\t\thref="#"\n\t\t\t\ttitle="Duplicate"\n\t\t\t/>\n\n\t\t\t<a\n\t\t\t\tdata-id="' +
+__e( constraint.id ) +
+'"\n\t\t\t\talt="f105"\n\t\t\t\tclass="dashicons dashicons-trash remove-constraint"\n\t\t\t\thref="#"\n\t\t\t\ttitle="Remove"\n\t\t\t/>\n\t\t</li>\n\t</ul>\n\n\t<p class="constraint-title">\n\t\t' +
+__e( constraint.title ) +
+'\n\t</p>\n\n\t<select data-id="' +
+__e( constraint.id ) +
+'" class="constraint-operator">\n\t\t';
+ _.each(view.operatorsFor(constraint.valueType), function(operator) { ;
+__p += '\n\t\t<option value="' +
+__e( operator ) +
+'" ' +
+((__t = ( constraint.operator === operator ? 'selected="selected"' : ''  )) == null ? '' : __t) +
+'">\n\t\t' +
+__e( view.operatorLabelFor(operator) ) +
+'\n\t\t</option>\n\t\t';
+ }) ;
+__p += '\n\t</select>\n\n\t<input\n\t\ttype="text"\n\t\tclass="constraint-value"\n\t\tdata-id="' +
+__e( constraint.id ) +
+'"\n\t\tvalue="' +
+__e( constraint.value ) +
+'" />\n\n\t<select data-id="' +
+__e( constraint.id ) +
+'" class="constraint-conjunction">\n\t\t';
+ _.each(view.conjunctions, function(conjunction) { ;
+__p += '\n\t\t<option value="' +
 __e( conjunction ) +
 '" ' +
 ((__t = ( constraint.conjunction === conjunction ? 'selected="selected"' : ''  )) == null ? '' : __t) +
-'">\n\t' +
+'">\n\t\t' +
 __e( conjunction ) +
-'\n\t</option>\n\t';
+'\n\t\t</option>\n\t\t';
  }) ;
-__p += '\n</select>\n';
-
-}
-return __p
-};
-
-this["JST"]["src/templates/constraint_input.jst"] = function(obj) {
-obj || (obj = {});
-var __t, __p = '', __e = _.escape;
-with (obj) {
-__p += '<input\n\ttype="text"\n\tclass="constraint-value"\n\tdata-id="' +
-__e( constraint.id ) +
-'"\n\tvalue="' +
-__e( constraint.value ) +
-'" />\n';
-
-}
-return __p
-};
-
-this["JST"]["src/templates/constraint_toolbar.jst"] = function(obj) {
-obj || (obj = {});
-var __t, __p = '', __e = _.escape;
-with (obj) {
-__p += '<ul class="constraint-toolbar">\n\t<li>\n\t\t<a\n\t\t\tdata-id="' +
-__e( constraint.id ) +
-'"\n\t\t\talt="f105"\n\t\t\tclass="dashicons dashicons-admin-page copy-constraint"\n\t\t\thref="#"\n\t\t\ttitle="Duplicate"\n\t\t/>\n\n\t\t<a\n\t\t\tdata-id="' +
-__e( constraint.id ) +
-'"\n\t\t\talt="f105"\n\t\t\tclass="dashicons dashicons-trash remove-constraint"\n\t\t\thref="#"\n\t\t\ttitle="Remove"\n\t\t/>\n\t</li>\n</ul>\n';
+__p += '\n\t</select>\n</li>\n';
 
 }
 return __p
@@ -75,29 +69,6 @@ obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
 __p += '<li>\n\t<p class="constraint-empty">Click to add filters</p>\n</li>\n';
-
-}
-return __p
-};
-
-this["JST"]["src/templates/operator_select.jst"] = function(obj) {
-obj || (obj = {});
-var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
-function print() { __p += __j.call(arguments, '') }
-with (obj) {
-__p += '<select data-id="' +
-__e( constraint.id ) +
-'" class="constraint-operator">\n\t';
- _.each(operators, function(operator) { ;
-__p += '\n\t<option value="' +
-__e( operator ) +
-'" ' +
-((__t = ( constraint.operator === operator ? 'selected="selected"' : ''  )) == null ? '' : __t) +
-'">\n\t' +
-__e( view.operatorLabelFor(operator) ) +
-'\n\t</option>\n\t';
- }) ;
-__p += '\n</select>\n';
 
 }
 return __p
@@ -596,6 +567,58 @@ MenuView.prototype = {
 
 };
 
+var ConstraintItemView = function(container, constraint) {
+	this.container     = container;
+	this.constraint    = constraint;
+};
+
+ConstraintItemView.prototype = {
+
+	render: function() {
+		var templateData = {
+			view: this,
+			constraint: this.constraint
+		};
+
+		var html = renderTemplate('constraint_item', templateData);
+		this.container.append(html);
+	},
+
+	conjunctions: [
+		'and', 'or'
+	],
+
+	operators : {
+		'='   : 'equals',
+		'!='  : 'not equals',
+		'>'   : 'greater than',
+		'>='  : 'greater than or equal to',
+		'<'   : 'less than',
+		'<='  : 'less than or equal to',
+	},
+
+	operatorLabelFor: function(operator) {
+		if (this.operators.hasOwnProperty(operator)) {
+			return this.operators[operator];
+		} else {
+			return operator;
+		}
+	},
+
+	operatorsFor: function(valueType) {
+		var operators = ['=', '!='];
+
+		if (valueType === 'number') {
+			operators.push.apply(operators, ['>', '>=', '<', '<=']);
+		} else if (valueType === 'string') {
+			operators.push.apply(operators, ['contains', 'not contains']);
+		}
+
+		return operators;
+	}
+
+};
+
 var ConstraintListView = function(store) {
 	this.store         = store;
 	this.container     = $('.current-constraints');
@@ -669,13 +692,12 @@ ConstraintListView.prototype = {
 
 		var constraints = this.store.current;
 		var n           = constraints.length;
-		var i, constraint, li;
+		var i, constraint, itemView;
 
 		for (i = 0; i < n; i++) {
 			constraint = constraints[i];
-			li         = this.listItemForConstraint(constraint);
-
-			this.container.append(li);
+			itemView   = this.listItemForConstraint(constraint);
+			itemView.render();
 		}
 
 		if (n === 0) {
@@ -684,85 +706,12 @@ ConstraintListView.prototype = {
 	},
 
 	listItemForConstraint: function(constraint) {
-		var li = $('<li></li>')
-			.append(this.toolbarForConstraint(constraint))
-			.append($('<p></p>', { 'class': 'constraint-title' }).text(constraint.title))
-			.append(this.selectForOperator(constraint))
-			.append(this.inputForConstraint(constraint))
-			.append(this.selectForConjunction(constraint));
-
-		return li;
+		var itemView = new ConstraintItemView(this.container, constraint);
+		return itemView;
 	},
 
 	emptyListItem: function() {
 		return renderTemplate('empty_constraints');
-	},
-
-	toolbarForConstraint: function(constraint) {
-		var templateData = {
-			view: this,
-			constraint: constraint
-		};
-
-		return renderTemplate('constraint_toolbar', templateData);
-	},
-
-	inputForConstraint: function(constraint) {
-		var templateData = {
-			view: this,
-			constraint: constraint
-		};
-
-		return renderTemplate('constraint_input', templateData);
-	},
-
-	selectForConjunction: function(constraint) {
-		var templateData = {
-			view: this,
-			constraint: constraint,
-			conjunctions: ['and', 'or']
-		};
-
-		return renderTemplate('conjunction_select', templateData);
-	},
-
-	operators : {
-		'='   : 'equals',
-		'!='  : 'not equals',
-		'>'   : 'greater than',
-		'>='  : 'greater than or equal to',
-		'<'   : 'less than',
-		'<='  : 'less than or equal to',
-	},
-
-	selectForOperator: function(constraint) {
-		var templateData = {
-			view: this,
-			constraint: constraint,
-			operators: this.operatorsFor(constraint.valueType)
-		};
-
-		return renderTemplate('operator_select', templateData);
-	},
-
-	operatorLabelFor: function(operator) {
-		if (this.operators.hasOwnProperty(operator)) {
-			return this.operators[operator];
-		} else {
-			return operator;
-		}
-	},
-
-	operatorsFor: function(valueType) {
-		var operators = ['=', '!='];
-
-		if (valueType === 'number') {
-			operators.push.apply(operators, ['>', '>=', '<', '<=']);
-		} else if (valueType === 'string') {
-			operators.push.apply(operators, ['contains', 'not contains']);
-		}
-
-		return operators;
 	}
 
 };

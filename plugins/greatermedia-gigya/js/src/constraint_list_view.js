@@ -71,13 +71,12 @@ ConstraintListView.prototype = {
 
 		var constraints = this.store.current;
 		var n           = constraints.length;
-		var i, constraint, li;
+		var i, constraint, itemView;
 
 		for (i = 0; i < n; i++) {
 			constraint = constraints[i];
-			li         = this.listItemForConstraint(constraint);
-
-			this.container.append(li);
+			itemView   = this.listItemForConstraint(constraint);
+			itemView.render();
 		}
 
 		if (n === 0) {
@@ -86,85 +85,12 @@ ConstraintListView.prototype = {
 	},
 
 	listItemForConstraint: function(constraint) {
-		var li = $('<li></li>')
-			.append(this.toolbarForConstraint(constraint))
-			.append($('<p></p>', { 'class': 'constraint-title' }).text(constraint.title))
-			.append(this.selectForOperator(constraint))
-			.append(this.inputForConstraint(constraint))
-			.append(this.selectForConjunction(constraint));
-
-		return li;
+		var itemView = new ConstraintItemView(this.container, constraint);
+		return itemView;
 	},
 
 	emptyListItem: function() {
 		return renderTemplate('empty_constraints');
-	},
-
-	toolbarForConstraint: function(constraint) {
-		var templateData = {
-			view: this,
-			constraint: constraint
-		};
-
-		return renderTemplate('constraint_toolbar', templateData);
-	},
-
-	inputForConstraint: function(constraint) {
-		var templateData = {
-			view: this,
-			constraint: constraint
-		};
-
-		return renderTemplate('constraint_input', templateData);
-	},
-
-	selectForConjunction: function(constraint) {
-		var templateData = {
-			view: this,
-			constraint: constraint,
-			conjunctions: ['and', 'or']
-		};
-
-		return renderTemplate('conjunction_select', templateData);
-	},
-
-	operators : {
-		'='   : 'equals',
-		'!='  : 'not equals',
-		'>'   : 'greater than',
-		'>='  : 'greater than or equal to',
-		'<'   : 'less than',
-		'<='  : 'less than or equal to',
-	},
-
-	selectForOperator: function(constraint) {
-		var templateData = {
-			view: this,
-			constraint: constraint,
-			operators: this.operatorsFor(constraint.valueType)
-		};
-
-		return renderTemplate('operator_select', templateData);
-	},
-
-	operatorLabelFor: function(operator) {
-		if (this.operators.hasOwnProperty(operator)) {
-			return this.operators[operator];
-		} else {
-			return operator;
-		}
-	},
-
-	operatorsFor: function(valueType) {
-		var operators = ['=', '!='];
-
-		if (valueType === 'number') {
-			operators.push.apply(operators, ['>', '>=', '<', '<=']);
-		} else if (valueType === 'string') {
-			operators.push.apply(operators, ['contains', 'not contains']);
-		}
-
-		return operators;
 	}
 
 };

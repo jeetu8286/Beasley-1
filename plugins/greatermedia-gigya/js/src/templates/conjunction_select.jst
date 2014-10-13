@@ -1,7 +1,0 @@
-<select data-id="<%- constraint.id %>" class="constraint-conjunction">
-	<% _.each(conjunctions, function(conjunction) { %>
-	<option value="<%- conjunction %>" <%= constraint.conjunction === conjunction ? 'selected="selected"' : ''  %>">
-	<%- conjunction %>
-	</option>
-	<% }) %>
-</select>

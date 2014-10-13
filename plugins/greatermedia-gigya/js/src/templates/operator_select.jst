@@ -1,7 +1,0 @@
-<select data-id="<%- constraint.id %>" class="constraint-operator">
-	<% _.each(operators, function(operator) { %>
-	<option value="<%- operator %>" <%= constraint.operator === operator ? 'selected="selected"' : ''  %>">
-	<%- view.operatorLabelFor(operator) %>
-	</option>
-	<% }) %>
-</select>
