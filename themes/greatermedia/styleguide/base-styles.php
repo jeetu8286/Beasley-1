@@ -8,7 +8,7 @@
  ?>
 <div id="base-styles" class="sg-sections">
 	<div id="headings" class="sg-content">
-		<h2 class="sg-section-title"><?php _e( 'Headings', 'greatermedia' ); ?></h2>
+		<h2 class="sg-section-title"><?php _e( 'Base Styles', 'greatermedia' ); ?></h2>
 	</div>
 	<div id="headings" class="sg-section-content">
 		<h3 class="sg-subsection-title"><?php _e( 'Headings', 'greatermedia' ); ?></h3>
@@ -163,7 +163,7 @@
 	<div id="paragraph" class="sg-section-content">
 		<h3 class="sg-subsection-title"><?php _e( 'Paragraph', 'greatermedia' ); ?></h3>
 		<section>
-			<img style="width:250px;height:150px;float:right" src="http://placekitten.com/250/150" alt="Cute Kitten" />
+			<img style="width:250px;height:150px;" src="http://placekitten.com/250/150" alt="Cute Kitten" class="alignright" />
 			<p>Lorem ipsum dolor sit amet,
 				<a href="#" title="test link">test link</a> adipiscing elit. Nullam dignissim convallis est. Quisque aliquam. Donec faucibus. Nunc iaculis suscipit dui. Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec, gravida vehicula, nisl. Praesent mattis, massa quis luctus fermentum, turpis mi volutpat justo, eu volutpat enim diam eget metus. Maecenas ornare tortor. Donec sed tellus eget sapien fringilla nonummy. Mauris a ante. Suspendisse quam sem, consequat at, commodo vitae, feugiat in, nunc. Morbi imperdiet augue quis tellus.
 			</p>
@@ -177,12 +177,10 @@
 		<div class="sg-source">
 			<pre class="prettyprint linenums language-html">
 &lt;section&gt;
-	&lt;img style="width:250px;height:150px;float:right" src="http://placekitten.com/250/150" alt="Cute Kitten" /&gt;
-	&lt;p&gt;Lorem ipsum dolor sit amet,
-		&lt;a href="#" title="test link"&gt;test link&lt;/a&gt; adipiscing elit. Nullam dignissim convallis est. Quisque aliquam. Donec faucibus. Nunc iaculis suscipit dui. Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec, gravida vehicula, nisl. Praesent mattis, massa quis luctus fermentum, turpis mi volutpat justo, eu volutpat enim diam eget metus. Maecenas ornare tortor. Donec sed tellus eget sapien fringilla nonummy. Mauris a ante. Suspendisse quam sem, consequat at, commodo vitae, feugiat in, nunc. Morbi imperdiet augue quis tellus.
+	&lt;img style="width:250px;height:150px;" src="http://placekitten.com/250/150" alt="Cute Kitten" class="alignright" /&gt;
+	&lt;p&gt;Lorem ipsum dolor sit amet, &lt;a href="#" title="test link"&gt;test link&lt;/a&gt; adipiscing elit. Nullam dignissim convallis est. Quisque aliquam. Donec faucibus. Nunc iaculis suscipit dui. Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec, gravida vehicula, nisl. Praesent mattis, massa quis luctus fermentum, turpis mi volutpat justo, eu volutpat enim diam eget metus. Maecenas ornare tortor. Donec sed tellus eget sapien fringilla nonummy. Mauris a ante. Suspendisse quam sem, consequat at, commodo vitae, feugiat in, nunc. Morbi imperdiet augue quis tellus.
 	&lt;/p&gt;
-	&lt;p&gt;Lorem ipsum dolor sit amet,
-		&lt;em&gt;emphasis&lt;/em&gt; consectetuer adipiscing elit. Nullam dignissim convallis est. Quisque aliquam. Donec faucibus. Nunc iaculis suscipit dui. Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec, gravida vehicula, nisl. Praesent mattis, massa quis luctus fermentum, turpis mi volutpat justo, eu volutpat enim diam eget metus. Maecenas ornare tortor. Donec sed tellus eget sapien fringilla nonummy. &lt;strong&gt;Strong&lt;/strong&gt; mauris a ante. Suspendisse quam sem, consequat at, commodo vitae, feugiat in, nunc. Morbi imperdiet augue quis tellus.
+	&lt;p&gt;Lorem ipsum dolor sit amet, &lt;em&gt;emphasis&lt;/em&gt; consectetuer adipiscing elit. Nullam dignissim convallis est. Quisque aliquam. Donec faucibus. Nunc iaculis suscipit dui. Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec, gravida vehicula, nisl. Praesent mattis, massa quis luctus fermentum, turpis mi volutpat justo, eu volutpat enim diam eget metus. Maecenas ornare tortor. Donec sed tellus eget sapien fringilla nonummy. &lt;strong&gt;Strong&lt;/strong&gt; mauris a ante. Suspendisse quam sem, consequat at, commodo vitae, feugiat in, nunc. Morbi imperdiet augue quis tellus.
 	&lt;/p&gt;
 &lt;/section&gt;
 			</pre>

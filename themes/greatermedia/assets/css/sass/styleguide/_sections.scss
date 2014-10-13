@@ -48,7 +48,7 @@
 	display: none;
 }
 
-.sg-source.is-active{
+.sg-source.is-active {
 	display: block;
 }
 
@@ -108,4 +108,32 @@
 	background-color: color(black);
 	font-size: .625em;
 	font-weight: bold;
+}
+
+.sg-typography {
+	@include padding(.25em 5px);
+	@include margin(null null 2em null);
+	background-color: color(light-gray);
+	text-align: center;
+}
+
+.sg-typography-title {
+	color: color(meta-gray);
+	text-transform: uppercase;
+}
+
+.sg-typography-serif {
+	font-family: $serif;
+}
+
+.sg-typography-light {
+	font-weight: lighter;
+}
+
+.sg-typography-bold {
+	font-weight: bold;
+}
+
+.sg-typography-italic {
+	font-style: italic;
 }

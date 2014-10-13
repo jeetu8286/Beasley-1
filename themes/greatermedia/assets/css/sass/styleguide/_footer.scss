@@ -1,3 +1,14 @@
-/**
- * Footer Styles
- */
+.scroll-to-top{
+	@include position(fixed, null 1em 1em null);
+	@include size(2em 2em);
+	background-color: color(black);
+	color: color(white);
+	text-align: center;
+	cursor: pointer;
+}
+.scroll-to-top:before{
+	@include size(0 0);
+	font-family: FontAwesome;
+	font-size: 1.5em;
+	content: "\f106";
+}

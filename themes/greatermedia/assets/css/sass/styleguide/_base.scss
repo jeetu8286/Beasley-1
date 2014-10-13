@@ -10,7 +10,7 @@ body {
 	background-color: #f9f9f9;
 	margin: 0 auto;
 	line-height: 1.5;
-	font-family: $helvetica;
+	font-family: $sans-serif;
 	font-size: 100%;
 	color: $text-color;
 	-webkit-font-smoothing: antialiased;
@@ -421,6 +421,19 @@ pre{
 		height: auto;
 	}
 
+}
+.alignleft, img.alignleft {
+	margin: 0 1em 1em 0;
+	display: block;
+	float: left;
+}
+.alignright, img.alignright {
+	margin: 0 0 1em 1em;
+	display: block;
+	float: right;
+}
+.aligncenter, img.aligncenter {
+	margin: 0 auto 1em;
 }
 
 /* end .entry-content */
