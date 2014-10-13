@@ -300,6 +300,7 @@ class GMedia_Migration extends WP_CLI_Command {
 				$user_id = get_current_user_id();
 			}
 
+		$count = 0;
 		foreach ( $articles->Article as $article ) {
 			$article_hash = trim( (string) $article['Title'] ) . (string) $article['UTCStartDateTime'];
 			$article_hash = md5( $article_hash );
@@ -311,6 +312,15 @@ class GMedia_Migration extends WP_CLI_Command {
 			if ( ! $force && $wp_id ) {
 				$notify->tick();
 				continue;
+			}
+
+			// counter to clear the cache
+			$count++;
+			if( $count == 10 ) {
+				if( class_exists('MTM_Migration_Utils') ) {
+					MTM_Migration_Utils::stop_the_insanity();
+				}
+				$count = 0;
 			}
 
 			$post = array(
@@ -435,6 +445,7 @@ class GMedia_Migration extends WP_CLI_Command {
 			$blog      = (string) $single_blog['BlogName'];
 			$blog_desc = (string) $single_blog['BlogDescription'];
 
+			$count = 0;
 			foreach ( $single_blog->BlogEntries->BlogEntry as $entry ) {
 				$entry_hash = trim( (string) $entry['EntryTitle'] ) . (string) $entry['EntryPostedUTCDatetime'];
 				$entry_hash = md5( $entry_hash );
@@ -446,6 +457,15 @@ class GMedia_Migration extends WP_CLI_Command {
 				if ( ! $force && $wp_id ) {
 					$notify->tick();
 					continue;
+				}
+
+				// counter to clear the cache
+				$count++;
+				if( $count == 10 ) {
+					if( class_exists('MTM_Migration_Utils') ) {
+						MTM_Migration_Utils::stop_the_insanity();
+					}
+					$count = 0;
 				}
 
 				$post = array(
@@ -538,6 +558,7 @@ class GMedia_Migration extends WP_CLI_Command {
 		$total  = count( $channels->Channel );
 		$notify = new \cli\progress\Bar( "Importing $total channels!", $total );
 
+		$count = 0;
 		foreach ( $channels->Channel as $channel ) {
 
 			$channel_title = (string) $channel['ChannelTitle'];
@@ -555,6 +576,15 @@ class GMedia_Migration extends WP_CLI_Command {
 				// If we're not forcing import, skip existing posts.
 				if ( ! $force && $wp_id ) {
 					continue;
+				}
+
+				// counter to clear the cache
+				$count++;
+				if( $count == 10 ) {
+					if( class_exists('MTM_Migration_Utils') ) {
+						MTM_Migration_Utils::stop_the_insanity();
+					}
+					$count = 0;
 				}
 
 				$post = array(
@@ -637,6 +667,7 @@ class GMedia_Migration extends WP_CLI_Command {
 		$total  = count( $events->EventCalendar );
 		$notify = new \cli\progress\Bar( "Importing $total event calendars", $total );
 
+		$count = 0;
 		foreach ( $events->EventCalendar as $calendar ) {
 			$event_cat['name'] = (string) $calendar['EventCalendarName'];
 			$event_cat['desc'] = (string) $calendar['EventCalendarDescription'];
@@ -655,6 +686,15 @@ class GMedia_Migration extends WP_CLI_Command {
 				if ( ! $force && $wp_id ) {
 					$progress->tick();
 					continue;
+				}
+
+				// counter to clear the cache
+				$count++;
+				if( $count == 10 ) {
+					if( class_exists('MTM_Migration_Utils') ) {
+						MTM_Migration_Utils::stop_the_insanity();
+					}
+					$count = 0;
 				}
 
 				$tribe_event = array(
@@ -792,6 +832,7 @@ class GMedia_Migration extends WP_CLI_Command {
 		$notify = new \cli\progress\Bar( "Importing $total Albums", $total );
 
 		//$this->check_and_add_cpt('albums');
+		$count = 0;
 		foreach ( $galleries->Album as $album ) {
 			$gallery_hash = trim( (string) $album['AlbumName'] ) . (string) $album['UTCDateCreated'];
 			$gallery_hash = md5( $gallery_hash );
@@ -804,7 +845,16 @@ class GMedia_Migration extends WP_CLI_Command {
 				$notify->tick();
 				continue;
 			}
-			
+
+			// counter to clear the cache
+			$count++;
+			if( $count == 10 ) {
+				if( class_exists('MTM_Migration_Utils') ) {
+					MTM_Migration_Utils::stop_the_insanity();
+				}
+				$count = 0;
+			}
+
 			$gallery_args = array(
 				'post_type'     => 'albums',
 				'post_status'   => 'publish',
@@ -926,7 +976,7 @@ class GMedia_Migration extends WP_CLI_Command {
 		$total = count( $showcases->Showcase );
 		$notify = new \cli\progress\Bar( "Importing $total showcases", $total );
 
-		//$this->check_and_add_cpt('albums');
+		$count = 0;
 		foreach ( $showcases->Showcase as $showcase ) {
 			$showcase_hash = trim( (string) $showcase['ShowcaseName'] ) . (string) $showcase['DateCreated'];
 			$showcase_hash = md5( $showcase_hash );
@@ -938,6 +988,15 @@ class GMedia_Migration extends WP_CLI_Command {
 			if ( ! $force && $wp_id ) {
 				$notify->tick();
 				continue;
+			}
+
+			// counter to clear the cache
+			$count++;
+			if( $count == 10 ) {
+				if( class_exists('MTM_Migration_Utils') ) {
+					MTM_Migration_Utils::stop_the_insanity();
+				}
+				$count = 0;
 			}
 
 			$showcase_post = array(
@@ -1101,6 +1160,7 @@ class GMedia_Migration extends WP_CLI_Command {
 		$total = count( $videos->VideoChannel );
 		$notify = new \cli\progress\Bar( "Importing $total video channels", $total );
 
+		$count = 0;
 		foreach ( $videos->VideoChannel as $channel ) {
 			$channel_title = (string) $channel['VideoChannelName'];
 			$channel_desc = (string) $channel['VideoChannelDescription'];
@@ -1118,6 +1178,15 @@ class GMedia_Migration extends WP_CLI_Command {
 				if ( ! $force && $wp_id ) {
 					$notify->tick();
 					continue;
+				}
+
+				// counter to clear the cache
+				$count++;
+				if( $count == 10 ) {
+					if( class_exists('MTM_Migration_Utils') ) {
+						MTM_Migration_Utils::stop_the_insanity();
+					}
+					$count = 0;
 				}
 
 				if ( isset( $post['PostedBy'] ) ) {
@@ -1216,7 +1285,7 @@ class GMedia_Migration extends WP_CLI_Command {
 		$total  = count( $venues->Venue );
 		$progress = new \cli\progress\Bar( "Importing $total venues", $total );
 
-
+		$count = 0;
 		foreach ( $venues->Venue as $venue ) {
 			$venue_hash = trim( (string) $venue['VenueName'] ) . (string) $venue['DateCreated'];
 			$venue_hash = md5( $venue_hash );
@@ -1228,6 +1297,15 @@ class GMedia_Migration extends WP_CLI_Command {
 			if ( ! $force && $wp_id ) {
 				$progress->tick();
 				continue;
+			}
+
+			// counter to clear the cache
+			$count++;
+			if( $count == 10 ) {
+				if( class_exists('MTM_Migration_Utils') ) {
+					MTM_Migration_Utils::stop_the_insanity();
+				}
+				$count = 0;
 			}
 
 			$tribe_venue = array(
@@ -1312,6 +1390,7 @@ class GMedia_Migration extends WP_CLI_Command {
 		$total  = count( $calendars->Calendar );
 		$notify = new \cli\progress\Bar( "Importing $total concert calendars", $total );
 
+		$count = 0;
 		foreach ( $calendars->Calendar as $calendar ) {
 			$event_cat['name'] = (string) $calendar['CalendarName'];
 			$event_cat['desc'] = (string) $calendar['CalendarDescription'];
@@ -1332,6 +1411,15 @@ class GMedia_Migration extends WP_CLI_Command {
 				if ( ! $force && $wp_id ) {
 					$progress->tick();
 					continue;
+				}
+
+				// counter to clear the cache
+				$count++;
+				if( $count == 10 ) {
+					if( class_exists('MTM_Migration_Utils') ) {
+						MTM_Migration_Utils::stop_the_insanity();
+					}
+					$count = 0;
 				}
 
 				$tribe_event = array(
@@ -1521,6 +1609,7 @@ class GMedia_Migration extends WP_CLI_Command {
 		$total  = count( $podcasts->Channel );
 		$notify = new \cli\progress\Bar( "Importing $total podcast channels", $total );
 
+		$count = 0;
 		foreach ( $podcasts->Channel as $single_channel ) {
 
 			$channel_hash = trim( (string) $single_channel['ChannelTitle'] ) . (string) $single_channel['UTCDateCreated'];
@@ -1533,6 +1622,15 @@ class GMedia_Migration extends WP_CLI_Command {
 				if ( ! $force && $wp_id ) {
 					$progress->tick();
 					continue;
+				}
+
+				// counter to clear the cache
+				$count++;
+				if( $count == 10 ) {
+					if( class_exists('MTM_Migration_Utils') ) {
+						MTM_Migration_Utils::stop_the_insanity();
+					}
+					$count = 0;
 				}
 
 				$podcast = array(
@@ -1624,7 +1722,7 @@ class GMedia_Migration extends WP_CLI_Command {
 		$total  = count( $surveys->Survey );
 		$notify = new \cli\progress\Bar( "Importing $total surveys", $total );
 
-		//$this->check_and_add_cpt('survey');
+		$count = 0;
 		foreach ( $surveys->Survey as $survey ) {
 			$survey_id = (string) $survey['SurveyID'];
 
@@ -1638,6 +1736,15 @@ class GMedia_Migration extends WP_CLI_Command {
 			if ( ! $force && $wp_id ) {
 				$notify->tick();
 				continue;
+			}
+
+			// counter to clear the cache
+			$count++;
+			if( $count == 10 ) {
+				if( class_exists('MTM_Migration_Utils') ) {
+					MTM_Migration_Utils::stop_the_insanity();
+				}
+				$count = 0;
 			}
 
 			$survey_args = array(
@@ -1770,7 +1877,7 @@ class GMedia_Migration extends WP_CLI_Command {
 		$total  = count( $contests->Contest );
 		$notify = new \cli\progress\Bar( "Importing $total contests", $total );
 
-		//$this->check_and_add_cpt('contest');
+		$count = 0;
 		foreach ( $contests->Contest as $contest ) {
 			$contest_hash = trim( (string) $contest['Title'] ) . (string) $contest['DateCreated'];
 			$contest_hash = md5( $contest_hash );
@@ -1785,6 +1892,15 @@ class GMedia_Migration extends WP_CLI_Command {
 			if ( ! $force && $wp_id ) {
 				$notify->tick();
 				continue;
+			}
+
+			// counter to clear the cache
+			$count++;
+			if( $count == 10 ) {
+				if( class_exists('MTM_Migration_Utils') ) {
+					MTM_Migration_Utils::stop_the_insanity();
+				}
+				$count = 0;
 			}
 
 			$contest_args = array(
@@ -1890,7 +2006,7 @@ class GMedia_Migration extends WP_CLI_Command {
 		$total  = count( $schedules->OnAirNowItem );
 		$notify = new \cli\progress\Bar( "Importing $total on air items", $total );
 
-		//$this->check_and_add_cpt('show');
+		$count = 0;
 		foreach ( $schedules->OnAirNowItem as $scheduled_item ) {
 			$scheduled_item_hash = trim( (string) $scheduled_item['TitleText'] ) . (string) $scheduled_item['DateModified'];
 			$scheduled_item_hash = md5( $scheduled_item_hash );
@@ -1904,6 +2020,14 @@ class GMedia_Migration extends WP_CLI_Command {
 				continue;
 			}
 
+			// counter to clear the cache
+			$count++;
+			if( $count == 10 ) {
+				if( class_exists('MTM_Migration_Utils') ) {
+					MTM_Migration_Utils::stop_the_insanity();
+				}
+				$count = 0;
+			}
 			$scheduled_item_args = array(
 				'post_type'     => 'show',
 				'post_status'   => 'publish',
