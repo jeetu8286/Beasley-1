@@ -6,8 +6,14 @@
  * @since 0.1.0
  */
  ?>
-<section id="typography" class="sg-typography sg-sections">
-	<div class="sg-content">
+<div id="typography" class="sg-sections">
+	<div id="headings" class="sg-content">
 		<h2 class="sg-section-title"><?php _e( 'Typography', 'greatermedia' ); ?></h2>
 	</div>
-</section>
+	<div id="sans-serif" class="sg-section-content">
+		<h3 class="sg-subsection-title"><?php _e( 'Sans Serif', 'greatermedia' ); ?></h3>
+	</div>
+	<div id="serif" class="sg-section-content">
+		<h3 class="sg-subsection-title"><?php _e( 'Serif', 'greatermedia' ); ?></h3>
+	</div>
+</div>
