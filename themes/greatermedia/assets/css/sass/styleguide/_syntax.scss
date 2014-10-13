@@ -113,11 +113,14 @@
 }
 /* Specify class=linenums on a pre to get line numbering */
 ol.linenums {
-	margin-top: 0;
-	margin-bottom: 0;
-	li{
-		color: #ffffff;
-	}
+	@include padding(0);
+	@include margin(0 0 0 3.3em);
+	border-left: 1px solid #444;
+}
+ol.linenums li{
+	list-style-position: outside;
+	@include padding(null null null 1em);
+	color: #ffffff;
 }
 
 /* IE indents via margin-left */

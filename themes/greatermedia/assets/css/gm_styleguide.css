@@ -695,7 +695,6 @@ pre {
   -moz-transition: all 500ms ease-in-out;
   transition: all 500ms ease-in-out;
   background-color: #000000;
-  color: #ffffff;
   z-index: 1; }
 
 .sg-nav-content {
@@ -709,17 +708,28 @@ pre {
 
 .sg-nav-list {
   padding: 0 1em;
-  list-style: none; }
+  list-style: none;
+  color: #dddddd; }
 
 .sg-nav-list-item {
   list-style: none;
-  padding: 0; }
-  .sg-nav-list-item a:link, .sg-nav-list-item a:visited {
-    font-size: .75em;
-    color: #ffffff;
-    text-transform: uppercase; }
-  .sg-nav-list-item a:hover, .sg-nav-list-item a:active {
-    color: #888888; }
+  padding: 0;
+  font-size: .75em;
+  text-transform: uppercase; }
+
+.sg-nav-list-item a:link, .sg-nav-list-item a:visited {
+  display: block;
+  width: 100%;
+  color: #ffffff; }
+
+.sg-nav-list-item a:hover, .sg-nav-list-item a:active {
+  color: #888888; }
+
+.sg-subnav-list {
+  padding-left: 1em; }
+
+.sg-subnav-list .sg-nav-list-item {
+  font-size: .875em; }
 
 /**
  * When the Nav Toggle is clicked, a body class is added.
@@ -990,10 +1000,14 @@ pre {
     color: #006600; } }
 /* Specify class=linenums on a pre to get line numbering */
 ol.linenums {
-  margin-top: 0;
-  margin-bottom: 0; }
-  ol.linenums li {
-    color: #ffffff; }
+  padding: 0;
+  margin: 0 0 0 3.3em;
+  border-left: 1px solid #444; }
+
+ol.linenums li {
+  list-style-position: outside;
+  padding-left: 1em;
+  color: #ffffff; }
 
 /* IE indents via margin-left */
 li.L0,

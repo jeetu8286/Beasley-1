@@ -8,7 +8,7 @@
  ?>
 <div id="base-styles" class="sg-sections">
 	<div id="headings" class="sg-content">
-		<h2 class="sg-section-title"><?php _e( 'Headings', 'greatermedia' ); ?></h2>
+		<h2 class="sg-section-title"><?php _e( 'Base Styles', 'greatermedia' ); ?></h2>
 	</div>
 	<div id="headings" class="sg-section-content">
 		<h3 class="sg-subsection-title"><?php _e( 'Headings', 'greatermedia' ); ?></h3>
