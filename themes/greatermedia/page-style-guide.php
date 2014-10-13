@@ -10,6 +10,8 @@ get_header( 'styleguide' );
 
 get_template_part( 'styleguide/colors' );
 
+get_template_part( 'styleguide/base-styles' );
+
 get_template_part( 'styleguide/typography' );
 
 get_template_part( 'styleguide/icons' );

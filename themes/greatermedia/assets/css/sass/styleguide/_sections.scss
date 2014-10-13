@@ -6,15 +6,27 @@
 }
 
 .sg-section-title {
+	color: color(gray);
+	text-transform: uppercase;
+}
+
+.sg-subsection-title {
 	color: color(meta-gray);
 	text-transform: uppercase;
-	text-align: center;
 }
 
 .sg-content {
 	@include outer-container;
 	@include position(relative, null null null null);
 	@include size(null 100%);
+}
+
+.sg-section-content {
+	@include outer-container;
+	@include position(relative, null null null null);
+	@include size(null 100%);
+	@include padding(null null 2em null);
+	border-bottom: 1px solid color(meta-gray);
 }
 
 .sg-btn {
@@ -30,6 +42,14 @@
 .sg-markup-controls, .sg-source {
 	@include span-columns(12);
 	@include margin(1em null 1em);
+}
+
+.sg-source {
+	display: none;
+}
+
+.sg-source.is-active{
+	display: block;
 }
 
 .sg-color {
