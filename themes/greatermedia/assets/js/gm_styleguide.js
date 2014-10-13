@@ -1,4 +1,4 @@
-/*! Greater Media - v0.1.0 - 2014-10-10
+/*! Greater Media - v0.1.0 - 2014-10-13
  * http://greatermedia.com
  * Copyright (c) 2014; * Licensed GPLv2+ */
 (function ($,window,undefined) {
@@ -11,7 +11,9 @@
 		body = document.querySelectorAll('body'),
 		$body = $(body),
 		sgToggleButton = document.querySelectorAll('#sg-nav-toggle'),
-		$sgToggleButton = $(sgToggleButton);
+		$sgToggleButton = $(sgToggleButton),
+		$sgShowHTML = $('.sg-markup-controls .sg-show-html'),
+		$sgSourceHTML = $('.sg-source-html');
 
 	// function to toggle a class when the menu button is clicked
 	function sgMenu(){
@@ -20,9 +22,16 @@
 		});
 	}
 
+	function sgHTML(){
+		$sgShowHTML.click(function(){
+			$(this).siblings($sgSourceHTML).addClass('test');
+		});
+	}
+
 	// functions to run on load of the site
 	$(document).ready(function(){
 		sgMenu();
+		sgHTML();
 	});
 
 } )(jQuery,window);
