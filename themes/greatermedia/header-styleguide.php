@@ -60,7 +60,12 @@
 								<li class="sg-nav-list-item"><a href="#paragraph"><?php _e( 'Paragraph', 'greatermedia' ); ?></a></li>
 							</ul>
 						</li>
-						<li class="sg-nav-list-item"><a href="#typography"><?php _e( 'Typography', 'greatermedia' ); ?></a></li>
+						<li class="sg-nav-list-item"><?php _e( 'Typography', 'greatermedia' ); ?>
+							<ul class="sg-subnav-list">
+								<li class="sg-nav-list-item"><a href="#sans-serif"><?php _e( 'Sans Serif', 'greatermedia' ); ?></a></li>
+								<li class="sg-nav-list-item"><a href="#serif"><?php _e( 'Serif', 'greatermedia' ); ?></a></li>
+							</ul>
+						</li>
 						<li class="sg-nav-list-item"><a href="#icons"><?php _e( 'Icons', 'greatermedia' ); ?></a></li>
 						<li class="sg-nav-list-item"><a href="#buttons"><?php _e( 'Buttons', 'greatermedia' ); ?></a></li>
 						<li class="sg-nav-list-item"><a href="#forms"><?php _e( 'Forms', 'greatermedia' ); ?></a></li>
