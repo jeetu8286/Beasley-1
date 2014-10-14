@@ -870,7 +870,18 @@ pre {
  * Section Styles
  */
 .sg-sections {
-  padding: 3em 0; }
+  padding: 1em; }
+  @media screen and (min-width: 481px) {
+    .sg-sections {
+      padding-top: 1.5em;
+      padding-bottom: 1.5em; } }
+  @media screen and (min-width: 769px) {
+    .sg-sections {
+      padding-top: 2em;
+      padding-bottom: 2em; } }
+  @media screen and (min-width: 1025px) {
+    .sg-sections {
+      padding: 3em 0; } }
 
 .sg-section-title {
   color: #888888;
