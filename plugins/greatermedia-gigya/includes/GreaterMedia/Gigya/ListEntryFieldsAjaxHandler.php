@@ -9,6 +9,7 @@ class ListEntryFieldsAjaxHandler extends AjaxHandler {
 	}
 
 	public function run( $params ) {
+		var_dump(' foo ');
 		$form_id      = $params['entryTypeID'];
 		$form         = \GFAPI::get_form( $form_id );
 		$form_fields  = $form['fields'];
