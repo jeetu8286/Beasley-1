@@ -106,7 +106,7 @@
 	@include transition(all .5s ease);
 	opacity: 0;
 	background-color: color(black);
-	font-size: .625em;
+	font-size: rem(10px);
 	font-weight: bold;
 }
 
