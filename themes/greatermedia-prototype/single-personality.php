@@ -67,7 +67,7 @@ while ( have_posts() ):
 		?>
 
 		<?php
-			GMI_Gigya_Share::display_share_buttons();
+			// GMI_Gigya_Share::display_share_buttons();
 
 			if ( is_singular( 'post' ) ) {
 				comments_template();
