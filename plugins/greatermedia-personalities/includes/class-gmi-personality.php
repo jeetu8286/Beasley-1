@@ -12,8 +12,8 @@ if ( !class_exists( "GMI_Personality" ) ) {
 	 * Creates a CPT and taxonomy for personalities.
 	 */
 	class GMI_Personality {
-		const CPT_SLUG = 'gmi_personality';
-		const SHADOW_TAX_SLUG = '_gmi_personality';
+		const CPT_SLUG = 'personality';
+		const SHADOW_TAX_SLUG = '_personality';
 
 		/**
 		 * Default personalities constructor.
