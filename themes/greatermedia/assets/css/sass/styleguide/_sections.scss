@@ -2,7 +2,16 @@
  * Section Styles
  */
 .sg-sections {
-	padding: 3em 0;
+	@include padding(1em);
+	@include media($mobile){
+		@include padding(1.5em null);
+	}
+	@include media($tablet){
+		@include padding(2em null);
+	}
+	@include media($desktop){
+		@include padding(3em 0);
+	}
 }
 
 .sg-section-title {
