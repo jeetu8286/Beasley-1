@@ -522,11 +522,6 @@ POSTS & CONTENT STYLES
       margin: 0; }
 
 /* end .hentry */
-.single-title,
-.page-title,
-.entry-title {
-  margin: 0; }
-
 /* want to style individual post classes? Booya! */
 /* post by id (i.e. post-3) */
 /* general post style */
@@ -619,6 +614,68 @@ POSTS & CONTENT STYLES
 /* image gallery styles */
 /* end .gallery */
 /* gallery caption styles */
+.container {
+  max-width: 75em;
+  margin-left: auto;
+  margin-right: auto; }
+  .container:after {
+    content: "";
+    display: table;
+    clear: both; }
+
+.content {
+  width: 100%;
+  padding: 2em 0; }
+
+.main {
+  float: left;
+  display: block;
+  margin-right: 2.35765%;
+  width: 31.76157%; }
+  .main:last-child {
+    margin-right: 0; }
+  @media screen and (min-device-width: 769px) {
+    .main {
+      float: left;
+      display: block;
+      margin-right: 3.57866%;
+      width: 48.21067%; }
+      .main:last-child {
+        margin-right: 0; } }
+  @media screen and (min-device-width: 1025px) {
+    .main {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 65.88078%; }
+      .main:last-child {
+        margin-right: 0; } }
+
+.sidebar {
+  float: left;
+  display: block;
+  margin-right: 2.35765%;
+  width: 31.76157%; }
+  .sidebar:last-child {
+    margin-right: 0; }
+  @media screen and (min-device-width: 769px) {
+    .sidebar {
+      float: left;
+      display: block;
+      margin-right: 3.57866%;
+      width: 22.316%;
+      margin-right: 0; }
+      .sidebar:last-child {
+        margin-right: 0; } }
+  @media screen and (min-device-width: 1025px) {
+    .sidebar {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 31.76157%; }
+      .sidebar:last-child {
+        margin-right: 0; } }
+
 /**
  * Helpers
  */
@@ -685,9 +742,12 @@ POSTS & CONTENT STYLES
 /**
  * Menu Styles
  */
-/**
- * Header Styles
- */
+.header {
+  height: 100px;
+  width: 100%;
+  padding: 1em 0;
+  background-color: #000000; }
+
 /**
  * Footer Styles
  */

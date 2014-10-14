@@ -5,3 +5,33 @@ $grid-columns: 12 !global;
 
 // max-width for the site
 $max-width: em(1200) !global;
+
+.container, %container {
+	@include outer-container;
+}
+
+.content, %content {
+	@include size(100% null);
+	@include padding(2em 0);
+}
+
+.main {
+	@include span-columns(4);
+	@include media($tablet){
+		@include span-columns(4);
+	}
+	@include media($desktop){
+		@include span-columns(8);
+	}
+}
+
+.sidebar {
+	@include span-columns(4);
+	@include media($tablet){
+		@include span-columns(2);
+		@include omega;
+	}
+	@include media($desktop){
+		@include span-columns(4);
+	}
+}
