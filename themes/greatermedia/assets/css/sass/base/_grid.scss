@@ -1,0 +1,7 @@
+// global grid variables
+$column: golden-ratio(1em, 4) !global;
+$gutter: golden-ratio(1em, 2) !global;
+$grid-columns: 12 !global;
+
+// max-width for the site
+$max-width: em(1200) !global;
