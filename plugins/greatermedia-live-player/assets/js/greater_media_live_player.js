@@ -11,8 +11,7 @@
 		body = document.querySelectorAll('body'),
 		$body = $(body),
 		toggleButton = document.querySelectorAll('.gmlp-nav-toggle'),
-		$toggleButton = $(toggleButton),
-		menuLinkSelector = $('#container a');
+		$toggleButton = $(toggleButton);
 
 	// function to toggle a class when the player button is clicked
 	function togglePlayer(){
@@ -21,24 +20,11 @@
 		});
 	}
 
-	// audio player controls
-	function audioPlayer(){
-		$('audio').mediaelementplayer({
-			alwaysShowControls: true,
-			features: ['playpause'],
-			audioWidth: 60,
-			audioHeight: 60
-		});
-	}
-
-	function addLinkClass() {
-		menuLinkSelector.addClass('pjaxer');
-	}
-
 	$document.ready(function($){
 		togglePlayer();
-		audioPlayer();
-		addLinkClass();
 	});
 
 } )(jQuery,window);
+
+// call pjax to update container
+pjax.connect('container');
