@@ -325,6 +325,7 @@ if ( !class_exists( "GMI_Personality" ) ) {
 		 */
 		public static function custom_columns_content( $column_name, $post_id ) {
 			$assoc_user_id = get_post_meta( $post_id, '_personality_assoc_user_id', true );
+			$user_info = get_userdata( $assoc_user_id );
 
 			switch ( $column_name ) {
 				case( 'title' ):
