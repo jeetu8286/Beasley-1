@@ -43,27 +43,40 @@
 
 		</head>
 
-		<body <?php body_class(); ?>>
-			<div id="styleguide-nav-toggle" class="styleguide-nav-toggle">
-				<div class="styleguide-nav-toggle-span"></div>
+		<body <?php body_class(); ?> onload="prettyPrint()">
+			<div id="sg-nav-toggle" class="sg-nav-toggle">
+				<div class="sg-nav-toggle-span"></div>
 			</div>
-			<nav id="nav" class="styleguide-nav" role="navigation">
-				<div class="styleguide-nav-content">
-					<ul class="styleguide-nav-list">
-						<li class="styleguide-nav-list-item"><a href="#header"><?php _e( 'Home', 'greatermedia' ); ?></a></li>
-						<li class="styleguide-nav-list-item"><a href="#colors"><?php _e( 'Colors', 'greatermedia' ); ?></a></li>
-						<li class="styleguide-nav-list-item"><a href="#typography"><?php _e( 'Typography', 'greatermedia' ); ?></a></li>
-						<li class="styleguide-nav-list-item"><a href="#icons"><?php _e( 'Icons', 'greatermedia' ); ?></a></li>
-						<li class="styleguide-nav-list-item"><a href="#buttons"><?php _e( 'Buttons', 'greatermedia' ); ?></a></li>
-						<li class="styleguide-nav-list-item"><a href="#forms"><?php _e( 'Forms', 'greatermedia' ); ?></a></li>
-						<li class="styleguide-nav-list-item"><a href="#navigations"><?php _e( 'Navigations', 'greatermedia' ); ?></a></li>
-						<li class="styleguide-nav-list-item"><a href="#discussions"><?php _e( 'Discussions', 'greatermedia' ); ?></a></li>
-						<li class="styleguide-nav-list-item"><a href="#layout"><?php _e( 'Layout', 'greatermedia' ); ?></a></li>
+			<nav id="nav" class="sg-nav" role="navigation">
+				<div class="sg-nav-content">
+					<ul class="sg-nav-list">
+						<li class="sg-nav-list-item"><a href="#header"><?php _e( 'Home', 'greatermedia' ); ?></a></li>
+						<li class="sg-nav-list-item"><a href="#colors"><?php _e( 'Colors', 'greatermedia' ); ?></a></li>
+						<li class="sg-nav-list-item"><?php _e( 'Base Styles', 'greatermedia' ); ?>
+							<ul class="sg-subnav-list">
+								<li class="sg-nav-list-item"><a href="#headings"><?php _e( 'Headings', 'greatermedia' ); ?></a></li>
+								<li class="sg-nav-list-item"><a href="#lists"><?php _e( 'Lists', 'greatermedia' ); ?></a></li>
+								<li class="sg-nav-list-item"><a href="#misc-typography"><?php _e( 'Miscellaneous Typography', 'greatermedia' ); ?></a></li>
+								<li class="sg-nav-list-item"><a href="#paragraph"><?php _e( 'Paragraph', 'greatermedia' ); ?></a></li>
+							</ul>
+						</li>
+						<li class="sg-nav-list-item"><?php _e( 'Typography', 'greatermedia' ); ?>
+							<ul class="sg-subnav-list">
+								<li class="sg-nav-list-item"><a href="#sans-serif"><?php _e( 'Sans Serif', 'greatermedia' ); ?></a></li>
+								<li class="sg-nav-list-item"><a href="#serif"><?php _e( 'Serif', 'greatermedia' ); ?></a></li>
+							</ul>
+						</li>
+						<li class="sg-nav-list-item"><a href="#icons"><?php _e( 'Icons', 'greatermedia' ); ?></a></li>
+						<li class="sg-nav-list-item"><a href="#buttons"><?php _e( 'Buttons', 'greatermedia' ); ?></a></li>
+						<li class="sg-nav-list-item"><a href="#forms"><?php _e( 'Forms', 'greatermedia' ); ?></a></li>
+						<li class="sg-nav-list-item"><a href="#navigations"><?php _e( 'Navigations', 'greatermedia' ); ?></a></li>
+						<li class="sg-nav-list-item"><a href="#discussions"><?php _e( 'Discussions', 'greatermedia' ); ?></a></li>
+						<li class="sg-nav-list-item"><a href="#layout"><?php _e( 'Layout', 'greatermedia' ); ?></a></li>
 					</ul>
 				</div>
 			</nav>
-			<header id="header" class="styleguide-header styleguide-sections" role="banner">
-				<div class="styleguide-content">
-					<h1 class="styleguide-header-title">Greater Media Style Guide</h1>
+			<header id="header" class="sg-header sg-sections" role="banner">
+				<div class="sg-content">
+					<h1 class="sg-header-title"><?php _e( 'Greater Media Style Guide', 'greatermedia' ); ?></h1>
 				</div>
 			</header>

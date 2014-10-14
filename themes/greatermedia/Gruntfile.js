@@ -21,12 +21,19 @@ module.exports = function( grunt ) {
 					'assets/js/src/greater_media.js'
 				],
 				dest: 'assets/js/greater_media.js'
+			},
+			greater_media_styleguide: {
+				src: [
+					'assets/js/styleguide/gm_styleguide.js'
+				],
+				dest: 'assets/js/gm_styleguide.js'
 			}
 		},
 		jshint: {
 			browser: {
 				all: [
 					'assets/js/src/**/*.js',
+					'assets/js/styleguide/**/*.js',
 					'assets/js/test/**/*.js'
 				],
 				options: {
@@ -45,7 +52,8 @@ module.exports = function( grunt ) {
 		uglify: {
 			all: {
 				files: {
-					'assets/js/greater_media.min.js': ['assets/js/greater_media.js']
+					'assets/js/greater_media.min.js': ['assets/js/greater_media.js'],
+					'assets/js/gm_styleguide.min.js': ['assets/js/gm_styleguide.js']
 				},
 				options: {
 					banner: '/*! <%= pkg.title %> - v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %>\n' +
@@ -104,7 +112,7 @@ module.exports = function( grunt ) {
 			},
 
 			scripts: {
-				files: ['assets/js/src/**/*.js', 'assets/js/vendor/**/*.js'],
+				files: ['assets/js/src/**/*.js', 'assets/js/vendor/**/*.js', 'assets/js/styleguide/**/*.js'],
 				tasks: ['jshint', 'concat', 'uglify'],
 				options: {
 					debounceDelay: 500

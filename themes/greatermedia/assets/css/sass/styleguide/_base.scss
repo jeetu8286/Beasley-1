@@ -7,10 +7,10 @@ GENERAL STYLES
 *********************/
 body {
 	height: 100%;
-	background-color: color(white);
+	background-color: #f9f9f9;
 	margin: 0 auto;
 	line-height: 1.5;
-	font-family: $helvetica;
+	font-family: $sans-serif;
 	font-size: 100%;
 	color: $text-color;
 	-webkit-font-smoothing: antialiased;
@@ -226,33 +226,33 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
 }
 
 h1, .h1 {
-	font-size: 2.5rem;
+	font-size: rem(40px);
 	line-height: 1.1em;
 }
 
 h2, .h2 {
-	font-size: 2.25rem;
+	font-size: rem(36px);
 	line-height: 1.4em;
 	margin-bottom: 0.375em;
 }
 
 h3, .h3 {
-	font-size: 1.75rem;
+	font-size: rem(28px);
 }
 
 h4, .h4 {
-	font-size: 1.5rem;
+	font-size: rem(24px);
 }
 
 h5, .h5 {
-	font-size: 1.25rem;
+	font-size: rem(20px);
 	line-height: 2.09em;
 	text-transform: uppercase;
 	letter-spacing: 2px;
 }
 
 h6, .h6 {
-	font-size: 1rem;
+	font-size: rem(16px);
 	line-height: 2.09em;
 	text-transform: uppercase;
 	letter-spacing: 2px;
@@ -337,6 +337,9 @@ POSTS & CONTENT STYLES
 	time {
 	}
 }
+pre{
+	white-space: pre-wrap;
+}
 
 /* entry content */
 .entry-content {
@@ -368,7 +371,7 @@ POSTS & CONTENT STYLES
 		&:before {
 			color: color(light-gray);
 			content: open-quote;
-			font-size: 4rem;
+			font-size: rem(64px);
 			line-height: 0.1em;
 			margin-right: 0.25em;
 			vertical-align: -0.4em;
@@ -386,7 +389,7 @@ POSTS & CONTENT STYLES
 	}
 	dd {
 		margin-left: 0;
-		font-size: 0.9rem;
+		font-size: rem(14px);
 		color: #787878;
 		margin-bottom: 1.5em;
 	}
@@ -418,15 +421,19 @@ POSTS & CONTENT STYLES
 		height: auto;
 	}
 
-	pre {
-		background: color(light-gray);
-		color: color(black);
-		font-size: .9rem;
-		padding: 1.5em;
-		margin: 0 0 1.5em;
-		border-radius: 3px;
-	}
-
+}
+.alignleft, img.alignleft {
+	margin: 0 1em 1em 0;
+	display: block;
+	float: left;
+}
+.alignright, img.alignright {
+	margin: 0 0 1em 1em;
+	display: block;
+	float: right;
+}
+.aligncenter, img.aligncenter {
+	margin: 0 auto 1em;
 }
 
 /* end .entry-content */
@@ -444,7 +451,7 @@ POSTS & CONTENT STYLES
 		width: 100%;
 	}
 	p.wp-caption-text {
-		font-size: .75rem;
+		font-size: rem(12px);
 		margin: 4px 0 7px;
 		padding: 16px 20px 20px 20px;
 		text-align: left;
