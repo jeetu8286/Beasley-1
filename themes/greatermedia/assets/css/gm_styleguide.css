@@ -379,9 +379,6 @@ th {
  * Font Styles
  */
 /**
- * Breakpoints
- */
-/**
  * Helpers
  */
 @font-face {
@@ -772,7 +769,7 @@ pre {
   z-index: 1; }
 
 .sg-nav-content {
-  max-width: 68em;
+  max-width: 75em;
   margin-left: auto;
   margin-right: auto; }
   .sg-nav-content:after {
@@ -884,7 +881,7 @@ pre {
   text-transform: uppercase; }
 
 .sg-content {
-  max-width: 68em;
+  max-width: 75em;
   margin-left: auto;
   margin-right: auto;
   position: relative;
@@ -895,7 +892,7 @@ pre {
     clear: both; }
 
 .sg-section-content {
-  max-width: 68em;
+  max-width: 75em;
   margin-left: auto;
   margin-right: auto;
   position: relative;
