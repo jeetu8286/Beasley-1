@@ -636,7 +636,7 @@ pre {
       color: #333333; }
   .entry-content dd {
     margin-left: 0;
-    font-size: 0.9rem;
+    font-size: 0.875rem;
     color: #787878;
     margin-bottom: 1.5em; }
   .entry-content img {
@@ -686,7 +686,7 @@ pre {
     margin-bottom: 0;
     width: 100%; }
   .wp-caption p.wp-caption-text {
-    font-size: .75rem;
+    font-size: 0.75rem;
     margin: 4px 0 7px;
     padding: 16px 20px 20px 20px;
     text-align: left;
@@ -788,7 +788,7 @@ pre {
 .sg-nav-list-item {
   list-style: none;
   padding: 0;
-  font-size: .75em;
+  font-size: 0.75rem;
   text-transform: uppercase; }
 
 .sg-nav-list-item a:link, .sg-nav-list-item a:visited {
@@ -803,7 +803,7 @@ pre {
   padding-left: 1em; }
 
 .sg-subnav-list .sg-nav-list-item {
-  font-size: .875em; }
+  font-size: 0.875rem; }
 
 /**
  * When the Nav Toggle is clicked, a body class is added.
@@ -866,7 +866,7 @@ pre {
 
 .scroll-to-top:before {
   font-family: FontAwesome;
-  font-size: 1.5em;
+  font-size: 1.5rem;
   content: "\f106"; }
 
 /**
@@ -996,7 +996,7 @@ pre {
   transition: all 0.5s ease;
   opacity: 0;
   background-color: #000000;
-  font-size: .625em;
+  font-size: 0.625rem;
   font-weight: bold; }
 
 .sg-typography {
