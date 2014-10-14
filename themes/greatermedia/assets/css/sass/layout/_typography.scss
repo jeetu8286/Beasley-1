@@ -1,16 +1,16 @@
 // Sans-Serif Font: Open Sans
-@include font-face(OpenSans, '../../fonts/opensans/opensans-regular-webfont');
-@include font-face(OpenSans, '../../fonts/opensans/opensans-italic-webfont', normal, italic);
-@include font-face(OpenSans, '../../fonts/opensans/opensans-bold-webfont', bold);
-@include font-face(OpenSans, '../../fonts/opensans/opensans-bolditalic-webfont', bold, italic);
-@include font-face(OpenSans, '../../fonts/opensans/opensans-light-webfont', lighter);
-@include font-face(OpenSans, '../../fonts/opensans/opensans-lightitalic-webfont', lighter, italic);
+@include font-face(OpenSans, '../fonts/opensans/opensans-regular-webfont');
+@include font-face(OpenSans, '../fonts/opensans/opensans-italic-webfont', normal, italic);
+@include font-face(OpenSans, '../fonts/opensans/opensans-bold-webfont', bold);
+@include font-face(OpenSans, '../fonts/opensans/opensans-bolditalic-webfont', bold, italic);
+@include font-face(OpenSans, '../fonts/opensans/opensans-light-webfont', lighter);
+@include font-face(OpenSans, '../fonts/opensans/opensans-lightitalic-webfont', lighter, italic);
 
 // Serif Font: Playfair Display
-@include font-face(Playfair, '../../fonts/playfair/playfair-regular-webfont');
-@include font-face(Playfair, '../../fonts/playfair/playfair-italic-webfont', normal, italic);
-@include font-face(Playfair, '../../fonts/playfair/playfair-bold-webfont', bold);
-@include font-face(Playfair, '../../fonts/playfair/playfair-bolditalic-webfont', bold, italic);
+@include font-face(Playfair, '../fonts/playfair/playfair-regular-webfont');
+@include font-face(Playfair, '../fonts/playfair/playfair-italic-webfont', normal, italic);
+@include font-face(Playfair, '../fonts/playfair/playfair-bold-webfont', bold);
+@include font-face(Playfair, '../fonts/playfair/playfair-bolditalic-webfont', bold, italic);
 
 // Font Icons: Font-Awesome
 @import url(//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css);
