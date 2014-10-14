@@ -1,3 +1,4 @@
-/**
- * Breakpoints
- */
+// global breakpoints
+$mobile: new-breakpoint(min-width 481px 4);
+$tablet: new-breakpoint(min-width 769px 8);
+$desktop: new-breakpoint(min-width 1025px 12);

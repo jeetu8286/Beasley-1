@@ -48,7 +48,6 @@
 	@include size(200px 100%);
 	@include transition(all 500ms ease-in-out);
 	background-color: color(black);
-	color: color(white);
 	z-index: 1;
 }
 
@@ -59,21 +58,30 @@
 .sg-nav-list {
 	@include padding(0 1em);
 	list-style: none;
+	color: color(meta-gray);
 }
 
 .sg-nav-list-item {
 	list-style: none;
 	@include padding(0);
-	a {
-		&:link, &:visited {
-			font-size: .75em;
-			color: color(white);
-			text-transform: uppercase;
-		}
-		&:hover, &:active {
-			color: color(gray);
-		}
-	}
+	font-size: rem(12px);
+	text-transform: uppercase;
+}
+.sg-nav-list-item a:link, .sg-nav-list-item a:visited {
+	@include display(block);
+	@include size(100% null);
+	color: color(white);
+}
+.sg-nav-list-item a:hover, .sg-nav-list-item a:active {
+	color: color(gray);
+}
+
+.sg-subnav-list {
+	@include padding(null null null 1em);
+}
+
+.sg-subnav-list .sg-nav-list-item {
+	font-size: rem(14px);
 }
 
 /**

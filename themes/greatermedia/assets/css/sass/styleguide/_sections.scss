@@ -2,19 +2,40 @@
  * Section Styles
  */
 .sg-sections {
-	padding: 3em 0;
+	@include padding(1em);
+	@include media($mobile){
+		@include padding(1.5em null);
+	}
+	@include media($tablet){
+		@include padding(2em null);
+	}
+	@include media($desktop){
+		@include padding(3em 0);
+	}
 }
 
 .sg-section-title {
+	color: color(gray);
+	text-transform: uppercase;
+}
+
+.sg-subsection-title {
 	color: color(meta-gray);
 	text-transform: uppercase;
-	text-align: center;
 }
 
 .sg-content {
 	@include outer-container;
 	@include position(relative, null null null null);
 	@include size(null 100%);
+}
+
+.sg-section-content {
+	@include outer-container;
+	@include position(relative, null null null null);
+	@include size(null 100%);
+	@include padding(null null 2em null);
+	border-bottom: 1px solid color(meta-gray);
 }
 
 .sg-btn {
@@ -30,6 +51,14 @@
 .sg-markup-controls, .sg-source {
 	@include span-columns(12);
 	@include margin(1em null 1em);
+}
+
+.sg-source {
+	display: none;
+}
+
+.sg-source.is-active {
+	display: block;
 }
 
 .sg-color {
@@ -86,6 +115,34 @@
 	@include transition(all .5s ease);
 	opacity: 0;
 	background-color: color(black);
-	font-size: .625em;
+	font-size: rem(10px);
 	font-weight: bold;
+}
+
+.sg-typography {
+	@include padding(.25em 5px);
+	@include margin(null null 2em null);
+	background-color: color(light-gray);
+	text-align: center;
+}
+
+.sg-typography-title {
+	color: color(meta-gray);
+	text-transform: uppercase;
+}
+
+.sg-typography-serif {
+	font-family: $serif;
+}
+
+.sg-typography-light {
+	font-weight: lighter;
+}
+
+.sg-typography-bold {
+	font-weight: bold;
+}
+
+.sg-typography-italic {
+	font-style: italic;
 }
