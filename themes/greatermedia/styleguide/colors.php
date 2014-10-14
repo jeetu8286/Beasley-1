@@ -6,7 +6,7 @@
  * @since 0.1.0
  */
  ?>
-<div id="colors" class="sg-colors sg-divs">
+<div id="colors" class="sg-colors sg-sections">
 	<div class="sg-content">
 		<div class="sg-section-content">
 			<h2 class="sg-section-title"><?php _e( 'Colors', 'greatermedia' ); ?></h2>
