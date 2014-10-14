@@ -28,7 +28,7 @@ PreviewView.prototype = {
 			})
 		};
 
-		var url = member_query_meta.ajaxurl + '?' + $.param({
+		var url = member_query_meta.ajax_url + '?' + $.param({
 			'preview_member_query_nonce': nonce,
 		});
 

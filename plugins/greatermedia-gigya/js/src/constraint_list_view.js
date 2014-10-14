@@ -6,6 +6,7 @@ var ConstraintListView = function(store) {
 	this.container.on('click', $.proxy(this.didItemClick, this));
 	this.container.on('change', $.proxy(this.didItemChange, this));
 
+	this.itemViews = [];
 	this.render();
 };
 
@@ -68,6 +69,7 @@ ConstraintListView.prototype = {
 
 	render: function() {
 		this.container.empty();
+		this.itemViews = [];
 
 		var constraints = this.store.current;
 		var n           = constraints.length;
@@ -77,6 +79,8 @@ ConstraintListView.prototype = {
 			constraint = constraints[i];
 			itemView   = this.listItemForConstraint(constraint);
 			itemView.render();
+
+			this.itemViews.push(itemView);
 		}
 
 		if (n === 0) {
@@ -85,8 +89,11 @@ ConstraintListView.prototype = {
 	},
 
 	listItemForConstraint: function(constraint) {
-		var itemView = new ConstraintItemView(this.container, constraint);
-		return itemView;
+		if (constraint instanceof EntryConstraint) {
+			return new EntryConstraintItemView(this.container, constraint);
+		} else {
+			return new ConstraintItemView(this.container, constraint);
+		}
 	},
 
 	emptyListItem: function() {

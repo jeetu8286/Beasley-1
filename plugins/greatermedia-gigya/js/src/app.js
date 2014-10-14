@@ -6,7 +6,10 @@ var QueryBuilderApp = function() {
 QueryBuilderApp.prototype = {
 
 	initialize: function() {
-		this.store        = new ConstraintStore();
+		// TODO: IMPORTANT, should not be global
+		window.ajaxApi    = new WpAjaxApi(member_query_meta);
+
+		this.store        = window.store = new ConstraintStore();
 		this.menuView     = new MenuView(this.store);
 		this.listView     = new ConstraintListView(this.store);
 		this.queryUpdater = new MemberQueryUpdater(this.store);

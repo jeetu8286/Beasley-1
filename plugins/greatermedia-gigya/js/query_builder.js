@@ -74,6 +74,130 @@ __p += '<li>\n\t<p class="constraint-empty">Click to add filters</p>\n</li>\n';
 return __p
 };
 
+this["JST"]["src/templates/entry_answer.jst"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
+with (obj) {
+
+ if (answerType === 'choice') { ;
+__p += '\n\t<select id="constraint-value-select-' +
+__e( constraint.id ) +
+'" style="width: 40%">\n\t';
+ _.each(choices, function(choice, index) { ;
+__p += '\n\t\t<option value="' +
+__e( choice.value ) +
+'" ' +
+((__t = ( index === currentChoice ? 'selected="selected"' : ''  )) == null ? '' : __t) +
+'">\n\t\t' +
+__e( choice.label ) +
+'\n\t\t</option>\n\t';
+ }); ;
+__p += '\n\t</select>\n';
+ } else { ;
+__p += '\n\t<input\n\t\ttype="text"\n\t\tclass="constraint-value"\n\t\tdata-id="' +
+__e( constraint.id ) +
+'"\n\t\tid="constraint-value-input-' +
+__e( constraint.id ) +
+'"\n\t\tvalue="' +
+__e( constraint.value ) +
+'" />\n';
+ } ;
+__p += '\n\n';
+
+}
+return __p
+};
+
+this["JST"]["src/templates/entry_constraint_item.jst"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
+with (obj) {
+__p += '<li>\n\t<ul class="constraint-toolbar">\n\t\t<li>\n\t\t\t<a\n\t\t\t\tdata-id="' +
+__e( constraint.id ) +
+'"\n\t\t\t\talt="f105"\n\t\t\t\tclass="dashicons dashicons-admin-page copy-constraint"\n\t\t\t\thref="#"\n\t\t\t\ttitle="Duplicate"\n\t\t\t/>\n\n\t\t\t<a\n\t\t\t\tdata-id="' +
+__e( constraint.id ) +
+'"\n\t\t\t\talt="f105"\n\t\t\t\tclass="dashicons dashicons-trash remove-constraint"\n\t\t\t\thref="#"\n\t\t\t\ttitle="Remove"\n\t\t\t/>\n\t\t</li>\n\t</ul>\n\n\t<p class="constraint-title">\n\t\t' +
+__e( constraint.title ) +
+'\n\t</p>\n\n\t<div class="entry-select-group">\n\t\t<label><strong>Select Contest: </strong></label>\n\t\t<select class="entry-select-choice" id="entry-select-type-' +
+__e( constraint.id ) +
+'">\n\t\t</select>\n\t</div>\n\n\t<div class="entry-select-group">\n\t\t<label><strong>Select Question: </strong></label>\n\t\t<select class="entry-select-choice" id="entry-select-field-' +
+__e( constraint.id ) +
+'">\n\t\t</select>\n\t</div>\n\n\t<div class="entry-answer-group">\n\t\t<label><strong>Select Answer: </strong></label>\n\t\t<select data-id="' +
+__e( constraint.id ) +
+'" class="constraint-operator">\n\t\t\t';
+ _.each(view.operatorsFor(constraint.valueType), function(operator) { ;
+__p += '\n\t\t\t<option value="' +
+__e( operator ) +
+'" ' +
+((__t = ( constraint.operator === operator ? 'selected="selected"' : ''  )) == null ? '' : __t) +
+'">\n\t\t\t' +
+__e( view.operatorLabelFor(operator) ) +
+'\n\t\t\t</option>\n\t\t\t';
+ }) ;
+__p += '\n\t\t</select>\n\n\t\t<div id="entry-answer-' +
+__e( constraint.id ) +
+'" style="display: inline">\n\t\t</div>\n\n\t\t<select data-id="' +
+__e( constraint.id ) +
+'" class="constraint-conjunction">\n\t\t\t';
+ _.each(view.conjunctions, function(conjunction) { ;
+__p += '\n\t\t\t<option value="' +
+__e( conjunction ) +
+'" ' +
+((__t = ( constraint.conjunction === conjunction ? 'selected="selected"' : ''  )) == null ? '' : __t) +
+'">\n\t\t\t' +
+__e( conjunction ) +
+'\n\t\t\t</option>\n\t\t\t';
+ }) ;
+__p += '\n\t\t</select>\n\t</div>\n</li>\n';
+
+}
+return __p
+};
+
+this["JST"]["src/templates/entry_select.jst"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
+with (obj) {
+
+ _.each(choices, function(choice, index) { ;
+__p += '\n\t<option value="' +
+__e( choice.value ) +
+'" ' +
+((__t = ( index === currentChoice ? 'selected="selected"' : ''  )) == null ? '' : __t) +
+'">\n\t' +
+__e( choice.label ) +
+'\n\t</option>\n';
+ }); ;
+__p += '\n';
+
+}
+return __p
+};
+
+this["JST"]["src/templates/entry_select_type.jst"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
+with (obj) {
+
+ _.each(choices, function(choice) { ;
+__p += '\n\t<option value="' +
+__e( choice ) +
+'" ' +
+((__t = ( choice === currentChoice ? 'selected="selected"' : ''  )) == null ? '' : __t) +
+'">\n\t' +
+__e( choice ) +
+'\n\t</option>\n';
+ }); ;
+__p += '\n';
+
+}
+return __p
+};
+
 this["JST"]["src/templates/preview_result_row.jst"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
@@ -121,6 +245,62 @@ var renderTemplate = function(name, data, settings) {
 
 	return $(html);
 };
+
+if (typeof Object.create != 'function') {
+	Object.create = (function() {
+		var Object = function() {};
+		return function (prototype) {
+			if (arguments.length > 1) {
+				throw Error('Second argument not supported');
+			}
+			if (typeof prototype != 'object') {
+				throw TypeError('Argument must be an object');
+			}
+			Object.prototype = prototype;
+			var result = new Object();
+			Object.prototype = null;
+			return result;
+		};
+	})();
+}
+
+var WpAjaxApi = function(config) {
+	this.config = config;
+};
+
+WpAjaxApi.prototype = {
+
+	nonceFor: function(action) {
+		return this.config[action + '_nonce'];
+	},
+
+	urlFor: function(action) {
+		var queryParams = {};
+		queryParams[action + '_nonce'] = this.nonceFor(action);
+
+		var url = this.config.ajax_url;
+		url += url.indexOf('?') === -1 ? '?' : '&';
+		url += $.param(queryParams);
+
+		return url;
+	},
+
+	request: function(action, data) {
+		if (!data) {
+			data = {};
+		}
+
+		var url         = this.urlFor(action);
+		var requestData = {
+			'action': action,
+			'action_data': JSON.stringify(data)
+		};
+
+		return $.post(url, requestData);
+	},
+
+};
+
 
 var Constraint = function(properties) {
 	this.id = Constraint.nextID();
@@ -200,6 +380,174 @@ Constraint.prototype = {
 
 };
 
+var EntryConstraint = function(properties) {
+	Constraint.call(this, properties);
+};
+
+EntryConstraint.prototype = Object.create(Constraint.prototype);
+EntryConstraint.prototype.constructor = EntryConstraint;
+
+
+EntryConstraint.prototype.fromJSON = function(json) {
+	Constraint.prototype.fromJSON.call(this, json);
+
+	this.entryType = json.entryType;
+	this.entryTypeID = json.entryTypeID;
+	this.entryFieldID = json.entryFieldID;
+	this.entryFieldType = json.entryFieldType;
+};
+
+EntryConstraint.prototype.toJSON = function() {
+	var json = Constraint.prototype.toJSON.call(this);
+
+	json.entryType = this.entryType;
+	json.entryTypeID = this.entryTypeID;
+	json.entryFieldID = this.entryFieldID;
+	json.entryFieldType = this.entryFieldType;
+
+	return json;
+};
+
+EntryConstraint.prototype.clone = function() {
+	var constraint = new EntryConstraint();
+	constraint.fromJSON(this.toJSON());
+
+	return constraint;
+};
+
+EntryConstraint.prototype.toGQL = function() {
+	var query = this.pairToClause('entry_type', this.entryType) + ' and ';
+	query += this.pairToClause('entry_type_id', this.entryTypeID) + ' and ';
+	query += this.pairToClause('entry_field_id', this.entryFieldID) + ' and ';
+	query += this.pairToClause('entry_field_type', this.entryFieldType) + ' and ';
+	query += this.pairToClause('entry_field_value', this.value, this.operator);
+
+	//console.log(query);
+	return query;
+};
+
+EntryConstraint.prototype.toFieldKey = function(key) {
+	return this.fieldPath + '.' + key
+};
+
+EntryConstraint.prototype.pairToClause = function(key, value, operator) {
+	if (!operator) {
+		operator = '=';
+	}
+	var fieldKey = this.toFieldKey(key);
+	var fieldValue;
+	var valueType = typeof(value);
+
+	// TODO: use Gravity Form entry Types
+	if (valueType === 'string') {
+		fieldValue = "'" + escapeValue(value) + "'";
+		fieldKey += '_s';
+	} else {
+		fieldValue = value;
+		if (valueType === 'number') {
+			fieldKey += '_f';
+		}
+	}
+
+	return fieldKey + ' ' + operator + ' ' + fieldValue;
+};
+
+var ConstraintFactory = function() {
+
+};
+
+ConstraintFactory.prototype.build = function(json) {
+	var ConstraintType = this.constraintFor(json.type);
+	var instance = new ConstraintType();
+
+	instance.fromJSON(json);
+
+	return instance;
+};
+
+ConstraintFactory.prototype.constraintFor = function(type) {
+	switch (type) {
+		case 'entry_constraint':
+			return EntryConstraint;
+
+		default:
+			return Constraint;
+	}
+};
+
+ConstraintFactory.instance = new ConstraintFactory();
+
+var factory = ConstraintFactory.instance;
+var AVAILABLE_CONSTRAINTS = [
+
+	factory.build({
+		type: 'membership_start_date',
+		title: 'Membership Start Date',
+		fieldPath: 'registeredTimestamp',
+		value: 1347872653,
+		valueType: 'number',
+		operator: '>',
+		conjunction: 'and'
+	}),
+
+	factory.build({
+		type: 'profile_location',
+		title: 'Profile Location City',
+		fieldPath: 'profile.city',
+		value: '',
+		valueType: 'string',
+		operator: 'contains',
+		conjunction: 'and'
+	}),
+
+	factory.build({
+		type: 'profile_location',
+		title: 'Profile Location State',
+		fieldPath: 'profile.state',
+		value: '',
+		valueType: 'string',
+		operator: 'contains',
+		conjunction: 'and'
+	}),
+
+	factory.build({
+		type: 'listening_loyalty',
+		title: 'Listening Loyalty',
+		fieldPath: 'data.listeningLoyalty',
+		value: 'Only this station',
+		valueType: 'string',
+		operator: 'contains',
+		conjunction: 'and'
+	}),
+
+	factory.build({
+		type: 'listening_frequency',
+		title: 'Listening Frequency',
+		fieldPath: 'data.listeningFrequency',
+		value: 'Once per day',
+		valueType: 'string',
+		operator: 'contains',
+		conjunction: 'and'
+	}),
+
+	factory.build({
+		type           : 'entry_constraint',
+		title          : 'Participation in Contest',
+		fieldPath      : 'data.form_entries',
+		value          : '',
+		valueType      : 'string',
+		operator       : 'contains',
+		conjunction    : 'and',
+
+		entryType      : 'contest',
+		entryTypeID    : -1,
+		entryFieldID   : -1,
+		entryFieldType : 'text'
+	})
+
+];
+
+
 var ConstraintStore = function() {
 	this.mediator   = $({});
 	this.available  = this.getAvailableConstraints();
@@ -209,156 +557,7 @@ var ConstraintStore = function() {
 ConstraintStore.prototype = {
 
 	getAvailableConstraints: function() {
-		var constraints = [];
-
-		constraints.push(
-			new Constraint({
-				type: 'influence_rank',
-				title: 'Influence Rank',
-				fieldPath: 'iRank',
-				value: 1,
-				valueType: 'number',
-				operator: '>',
-				conjunction: 'and'
-			})
-		);
-
-		/*
-		constraints.push(
-			new Constraint({
-				type: 'profile_likes',
-				title: 'Profile Likes',
-				fieldPath: 'profile.likes.name',
-				value: '',
-				valueType: 'string',
-				operator: '=',
-				conjunction: 'and'
-			})
-		);
-
-		constraints.push(
-			new Constraint({
-				type: 'communication_preferences',
-				title: 'Communication Preferences',
-				fieldPath: 'data.groups.subscribed',
-				value: true,
-				valueType: 'string',
-				operator: '=',
-				conjunction: 'and'
-			})
-		);
-		*/
-
-		/* constraints from Jira */
-		constraints.push(
-			new Constraint({
-				type: 'membership_start_date',
-				title: 'Membership Start Date',
-				fieldPath: 'registeredTimestamp',
-				value: 1347872653,
-				valueType: 'number',
-				operator: '>',
-				conjunction: 'and'
-			})
-		);
-
-		constraints.push(
-			new Constraint({
-				type: 'profile_location',
-				title: 'Profile Location City',
-				fieldPath: 'profile.city',
-				value: '',
-				valueType: 'string',
-				operator: 'contains',
-				conjunction: 'and'
-			})
-		);
-
-		constraints.push(
-			new Constraint({
-				type: 'profile_location',
-				title: 'Profile Location State',
-				fieldPath: 'profile.state',
-				value: '',
-				valueType: 'string',
-				operator: 'contains',
-				conjunction: 'and'
-			})
-		);
-
-		constraints.push(
-			new Constraint({
-				type: 'listening_loyalty',
-				title: 'Listening Loyalty',
-				fieldPath: 'data.listeningLoyalty',
-				value: 'Only this station',
-				valueType: 'string',
-				operator: 'contains',
-				conjunction: 'and'
-			})
-		);
-
-		constraints.push(
-			new Constraint({
-				type: 'listening_frequency',
-				title: 'Listening Frequency',
-				fieldPath: 'data.listeningFrequency',
-				value: 'Once per day',
-				valueType: 'string',
-				operator: 'contains',
-				conjunction: 'and'
-			})
-		);
-
-		constraints.push(
-			new Constraint({
-				type: 'participation_in_survey',
-				title: 'Participation in Survey',
-				fieldPath: 'data.surveys.name',
-				value: '',
-				valueType: 'string',
-				operator: 'contains',
-				conjunction: 'and'
-			})
-		);
-
-		constraints.push(
-			new Constraint({
-				type: 'survey_question',
-				title: 'Survey Question',
-				fieldPath: 'data.surveys.entries.questions.question',
-				value: '',
-				valueType: 'string',
-				operator: 'contains',
-				conjunction: 'and'
-			})
-		);
-
-		constraints.push(
-			new Constraint({
-				type: 'survey_question_response',
-				title: 'Survey Question Response',
-				fieldPath: 'data.surveys.entries.questions.answers',
-				value: '',
-				valueType: 'string',
-				operator: 'contains',
-				conjunction: 'and'
-			})
-		);
-
-		constraints.push(
-			new Constraint({
-				type: 'contest_name',
-				title: 'Participation in Contest',
-				fieldPath: 'data.contests.name',
-				value: 'Favorite Band',
-				valueType: 'string',
-				operator: 'contains',
-				conjunction: 'and'
-			})
-		);
-
-		return constraints;
+		return AVAILABLE_CONSTRAINTS;
 	},
 
 	getCurrentConstraints: function() {
@@ -368,10 +567,8 @@ ConstraintStore.prototype = {
 		var i, item, constraint;
 
 		for (i = 0; i < n; i++) {
-			item = items[i];
-			constraint = new Constraint();
-			constraint.fromJSON(item);
-
+			item       = items[i];
+			constraint = ConstraintFactory.instance.build(item);
 			constraints.push(constraint);
 		}
 
@@ -386,9 +583,7 @@ ConstraintStore.prototype = {
 
 		for (i = 0; i < n; i++) {
 			item       = json[i];
-			constraint = new Constraint();
-			constraint.fromJSON(item);
-
+			constraint = ConstraintFactory.instance.build(item);
 			this.current.push(constraint);
 		}
 
@@ -502,6 +697,7 @@ ConstraintStore.prototype = {
 var MemberQueryUpdater = function(store) {
 	this.store = store;
 	this.store.on('change', $.proxy(this.didStoreChange, this));
+	this.store.on('inplaceChange', $.proxy(this.didStoreChange, this));
 	this.store.on('updateField', $.proxy(this.didUpdateField, this));
 };
 
@@ -619,6 +815,148 @@ ConstraintItemView.prototype = {
 
 };
 
+var EntryConstraintItemView = function(container, constraint) {
+	ConstraintItemView.call(this, container, constraint);
+	this.entryTypes = [];
+	this.entryFields = [];
+};
+
+EntryConstraintItemView.prototype = Object.create(ConstraintItemView.prototype);
+EntryConstraintItemView.prototype.constructor = EntryConstraintItemView;
+
+var p = EntryConstraintItemView.prototype;
+p.render = function() {
+	var templateData = {
+		view: this,
+		constraint: this.constraint
+	};
+
+	var html = renderTemplate('entry_constraint_item', templateData);
+	this.container.append(html);
+	this.loadEntryTypes();
+};
+
+p.loadEntryTypes = function() {
+	var params = { entryType: 'contest' };
+	ajaxApi.request('list_entry_types', params)
+		.then($.proxy(this.didLoadEntryTypes, this))
+		.fail($.proxy(this.didLoadEntryTypesError, this));
+};
+
+p.didLoadEntryTypes = function(response) {
+	this.entryTypes = response.data;
+
+	var select = $('#entry-select-type-' + this.constraint.id);
+	var html = this.renderSelect(this.entryTypes, this.constraint.entryTypeID);
+
+	select.html(html);
+	select.on('change', $.proxy(this.didEntryTypeChange, this));
+	select.trigger('change');
+};
+
+p.didLoadEntryTypesError = function(response) {
+	console.log('didLoadEntryTypesError', response);
+};
+
+p.didEntryTypeChange = function(event) {
+	var choice = $(event.target).val();
+	this.constraint.entryTypeID = choice;
+	this.loadEntryFields(choice);
+};
+
+p.loadEntryFields = function(entryTypeID) {
+	var params = { entryTypeID: entryTypeID };
+	ajaxApi.request('list_entry_fields', params)
+		.then($.proxy(this.didLoadEntryFields, this))
+		.fail($.proxy(this.didLoadEntryFieldsError, this));
+};
+
+p.didLoadEntryFields = function(response) {
+	this.entryFields = response.data;
+
+	var select = $('#entry-select-field-' + this.constraint.id);
+	var html   = this.renderSelect(this.entryFields, this.constraint.entryFieldID);
+
+	select.html(html);
+	select.on('change', $.proxy(this.didEntryFieldChange, this));
+	select.trigger('change');
+};
+
+p.didLoadEntryFieldsError = function(response) {
+	console.log('didLoadEntryFieldsError', response);
+};
+
+p.didEntryFieldChange   = function(event) {
+	var choice          = $(event.target).val();
+	var field           = this.getFieldByID(choice);
+	var type            = field.type;
+	var answerType = field.type === 'select' || field.type === 'checkbox' ? 'choice' : '';
+	var templateData = {
+		view: this,
+		choices: field.choices,
+		currentChoice: this.getChoiceIndex(field.choices, this.constraint.value),
+		answerType: answerType,
+		constraint: this.constraint
+	};
+
+	this.constraint.entryFieldID = field.value;
+	this.constraint.entryFieldType = field.type;
+
+	var html = renderTemplate('entry_answer', templateData);
+	var div = $('#entry-answer-' + this.constraint.id);
+	div.html(html);
+
+	this.constraint.value = '';
+
+	if (answerType === 'choice') {
+		div.on('change', $.proxy(this.didEntryAnswerChange, this));
+		var select = $('#constraint-value-select-' + this.constraint.id);
+		select.trigger('change');
+	} else {
+		var input = $('#constraint-value-input-' + this.constraint.id);
+		input.trigger('change');
+	}
+};
+
+p.didEntryAnswerChange = function(event) {
+	var target = $(event.target);
+	var value = target.val();
+
+	this.constraint.value = value;
+	store.notify('inplaceChange');
+	return false;
+};
+
+p.getFieldByID = function(id) {
+	return _.find(this.entryFields, function(field) {
+		return field.value == id;
+	});
+};
+
+p.getChoiceIndex = function(choices, choiceID) {
+	var n = choices.length;
+	for (var i = 0; i < n; i++) {
+		choice = choices[i];
+		if (choice.value == choiceID) {
+			return i;
+		}
+	}
+
+	return -1;
+};
+
+p.renderSelect = function(choices, choiceID) {
+	var templateData = {
+		view: this,
+		id: this.constraint.id,
+		choices: choices,
+		currentChoice: this.getChoiceIndex(choices, choiceID)
+	};
+
+	var html = renderTemplate('entry_select', templateData);
+	return html;
+};
+
 var ConstraintListView = function(store) {
 	this.store         = store;
 	this.container     = $('.current-constraints');
@@ -627,6 +965,7 @@ var ConstraintListView = function(store) {
 	this.container.on('click', $.proxy(this.didItemClick, this));
 	this.container.on('change', $.proxy(this.didItemChange, this));
 
+	this.itemViews = [];
 	this.render();
 };
 
@@ -689,6 +1028,7 @@ ConstraintListView.prototype = {
 
 	render: function() {
 		this.container.empty();
+		this.itemViews = [];
 
 		var constraints = this.store.current;
 		var n           = constraints.length;
@@ -698,6 +1038,8 @@ ConstraintListView.prototype = {
 			constraint = constraints[i];
 			itemView   = this.listItemForConstraint(constraint);
 			itemView.render();
+
+			this.itemViews.push(itemView);
 		}
 
 		if (n === 0) {
@@ -706,8 +1048,11 @@ ConstraintListView.prototype = {
 	},
 
 	listItemForConstraint: function(constraint) {
-		var itemView = new ConstraintItemView(this.container, constraint);
-		return itemView;
+		if (constraint instanceof EntryConstraint) {
+			return new EntryConstraintItemView(this.container, constraint);
+		} else {
+			return new ConstraintItemView(this.container, constraint);
+		}
 	},
 
 	emptyListItem: function() {
@@ -747,7 +1092,7 @@ PreviewView.prototype = {
 			})
 		};
 
-		var url = member_query_meta.ajaxurl + '?' + $.param({
+		var url = member_query_meta.ajax_url + '?' + $.param({
 			'preview_member_query_nonce': nonce,
 		});
 
@@ -816,7 +1161,10 @@ var QueryBuilderApp = function() {
 QueryBuilderApp.prototype = {
 
 	initialize: function() {
-		this.store        = new ConstraintStore();
+		// TODO: IMPORTANT, should not be global
+		window.ajaxApi    = new WpAjaxApi(member_query_meta);
+
+		this.store        = window.store = new ConstraintStore();
 		this.menuView     = new MenuView(this.store);
 		this.listView     = new ConstraintListView(this.store);
 		this.queryUpdater = new MemberQueryUpdater(this.store);

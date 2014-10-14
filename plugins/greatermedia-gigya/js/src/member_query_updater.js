@@ -1,6 +1,7 @@
 var MemberQueryUpdater = function(store) {
 	this.store = store;
 	this.store.on('change', $.proxy(this.didStoreChange, this));
+	this.store.on('inplaceChange', $.proxy(this.didStoreChange, this));
 	this.store.on('updateField', $.proxy(this.didUpdateField, this));
 };
 
