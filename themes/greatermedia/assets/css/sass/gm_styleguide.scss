@@ -19,6 +19,9 @@
 @import "base/functions";
 @import "base/helpers";
 
+// Main layout components: menu, typography, etc.
+@import "layout/typography";
+
 // Custom styles for the living style guide
 @import "styleguide/base";
 @import "styleguide/menus";
