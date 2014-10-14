@@ -2,60 +2,112 @@
  * Section Styles
  */
 .sg-sections {
-	padding: 3em 0;
+	@include padding(1em);
+	@include media($mobile){
+		@include padding(1.5em null);
+	}
+	@include media($tablet){
+		@include padding(2em null);
+	}
+	@include media($desktop){
+		@include padding(3em 0);
+	}
 }
-.sg-section-title{
+
+.sg-section-title {
+	color: color(gray);
+	text-transform: uppercase;
+}
+
+.sg-subsection-title {
 	color: color(meta-gray);
 	text-transform: uppercase;
-	text-align: center;
 }
-.sg-content{
+
+.sg-content {
 	@include outer-container;
 	@include position(relative, null null null null);
 	@include size(null 100%);
 }
-.sg-colors-table{
+
+.sg-section-content {
+	@include outer-container;
+	@include position(relative, null null null null);
+	@include size(null 100%);
+	@include padding(null null 2em null);
+	border-bottom: 1px solid color(meta-gray);
+}
+
+.sg-btn {
+	@include btn(meta-gray, dark-gray, 1em, 1.5em, .875em);
+}
+
+.sg-colors-table {
 	@include span-columns(12);
+	@include margin(1em null 1em);
 	@include display(table);
 }
-.sg-color{
+
+.sg-markup-controls, .sg-source {
+	@include span-columns(12);
+	@include margin(1em null 1em);
+}
+
+.sg-source {
+	display: none;
+}
+
+.sg-source.is-active {
+	display: block;
+}
+
+.sg-color {
 	@include size(13% 80px);
 	display: table-cell;
 	color: color(white);
 }
-.color-black{
+
+.color-black {
 	background-color: color(black);
 }
-.color-dark-gray{
+
+.color-dark-gray {
 	background-color: color(dark-gray);
 }
-.color-gray{
+
+.color-gray {
 	background-color: color(gray);
 }
-.color-meta-gray{
+
+.color-meta-gray {
 	background-color: color(meta-gray);
 }
-.color-soft-gray{
+
+.color-soft-gray {
 	background-color: color(soft-gray);
 }
-.color-light-gray{
+
+.color-light-gray {
 	background-color: color(light-gray);
 }
-.color-white{
+
+.color-white {
 	background-color: color(white);
 }
-.sg-color-swatch{
+
+.sg-color-swatch {
 	@include display(block);
 	@include position(relative, null null null null);
 	@include size(100% 100%);
 	cursor: pointer;
-	&:hover{
-		span{
+	&:hover {
+		span {
 			opacity: 1;
 		}
 	}
 }
-.sg-color-variable{
+
+.sg-color-variable {
 	@include display(block);
 	@include position(absolute, null null 0 0);
 	@include size(100% null);
@@ -63,6 +115,34 @@
 	@include transition(all .5s ease);
 	opacity: 0;
 	background-color: color(black);
-	font-size: .625em;
+	font-size: rem(10px);
 	font-weight: bold;
+}
+
+.sg-typography {
+	@include padding(.25em 5px);
+	@include margin(null null 2em null);
+	background-color: color(light-gray);
+	text-align: center;
+}
+
+.sg-typography-title {
+	color: color(meta-gray);
+	text-transform: uppercase;
+}
+
+.sg-typography-serif {
+	font-family: $serif;
+}
+
+.sg-typography-light {
+	font-weight: lighter;
+}
+
+.sg-typography-bold {
+	font-weight: bold;
+}
+
+.sg-typography-italic {
+	font-style: italic;
 }

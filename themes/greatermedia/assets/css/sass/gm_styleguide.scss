@@ -15,9 +15,13 @@
 @import "base/mixins";
 @import "base/placeholders";
 @import "base/fonts";
+@import "base/grid";
 @import "base/breakpoints";
 @import "base/functions";
 @import "base/helpers";
+
+// Main layout components: menu, typography, etc.
+@import "layout/typography";
 
 // Custom styles for the living style guide
 @import "styleguide/base";
@@ -25,4 +29,4 @@
 @import "styleguide/header";
 @import "styleguide/footer";
 @import "styleguide/sections";
-@import "styleguide/prism";
+@import "styleguide/syntax";
