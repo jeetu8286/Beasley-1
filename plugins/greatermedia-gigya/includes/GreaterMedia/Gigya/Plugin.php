@@ -43,7 +43,11 @@ class Plugin {
 	public function enable() {
 		add_action( 'init', array( $this, 'initialize' ) );
 		add_action( 'add_meta_boxes_member_query', array( $this, 'initialize_meta_boxes' ) );
+		add_action( 'add_meta_boxes_contest', array( $this, 'initialize_contest_meta_boxes' ) );
+
+		// TODO: collapse into one action
 		add_action( 'save_post', array( $this, 'publish_member_query' ), 10, 2 );
+		add_action( 'save_post', array( $this, 'update_form_for_contest' ), 10, 2 );
 		add_action( 'admin_notices', array( $this, 'show_flash' ) );
 
 		$preview_ajax_handler = new PreviewAjaxHandler();
@@ -57,6 +61,12 @@ class Plugin {
 
 		$gigya_logout_ajax_handler = new GigyaLogoutAjaxHandler();
 		$gigya_logout_ajax_handler->register();
+
+		$list_entry_types_ajax_handler = new ListEntryTypesAjaxHandler();
+		$list_entry_types_ajax_handler->register();
+
+		$list_entry_fields_ajax_handler = new ListEntryFieldsAjaxHandler();
+		$list_entry_fields_ajax_handler->register();
 
 		$form_entry_publisher = new FormEntryPublisher();
 		$form_entry_publisher->enable();
@@ -78,7 +88,7 @@ class Plugin {
 				'register_account_nonce' => wp_create_nonce( 'register_account' ),
 				'gigya_login_nonce'      => wp_create_nonce( 'gigya_login' ),
 				'gigya_logout_nonce'     => wp_create_nonce( 'gigya_logout' ),
-				'cid'                    => gigya_user_id()
+				'cid'                    => get_gigya_user_id(),
 			)
 		);
 
@@ -106,12 +116,56 @@ class Plugin {
 		$this->initialize_styles( $member_query );
 	}
 
+	public function initialize_contest_meta_boxes( $post ) {
+		$meta_box = $this->meta_box_for(
+			array(
+				'post_type' => 'contest',
+				'id'       => 'contest_form',
+				'title'    => __( 'Contest Form', 'gmr_gigya' ),
+				'context'  => 'side',
+				'priority' => 'default',
+				'template' => 'contest_form',
+			), $post // TODO: clean up MetaBox base class
+		);
+
+		$meta_box->register();
+
+		wp_enqueue_script(
+			'select2',
+			plugins_url( 'js/vendor/select2.js', $this->plugin_file ),
+			array(),
+			GMR_GIGYA_VERSION
+		);
+
+		wp_enqueue_script(
+			'contest_form_select',
+			plugins_url( 'js/contest_form_select.js', $this->plugin_file ),
+			array(),
+			GMR_GIGYA_VERSION
+		);
+
+		wp_enqueue_style(
+			'select2',
+			plugins_url( 'css/vendor/select2.css', $this->plugin_file ),
+			array(),
+			GMR_GIGYA_VERSION
+		);
+
+		wp_enqueue_style(
+			'contest_form_select',
+			plugins_url( 'css/contest_form_select.css', $this->plugin_file ),
+			array( 'select2' ),
+			GMR_GIGYA_VERSION
+		);
+	}
+
 	function initialize_scripts( $member_query ) {
 		wp_dequeue_script( 'autosave' );
+
 		wp_enqueue_script(
 			'query_builder',
 			plugins_url( 'js/query_builder.js', $this->plugin_file ),
-			array(),
+			array( 'underscore' ),
 			GMR_GIGYA_VERSION
 		);
 
@@ -120,8 +174,10 @@ class Plugin {
 		);
 
 		$meta = array(
-			'ajaxurl'       => admin_url( 'admin-ajax.php' ),
-			'preview_nonce' => wp_create_nonce( 'preview_member_query' )
+			'ajax_url'       => admin_url( 'admin-ajax.php' ),
+			'preview_nonce' => wp_create_nonce( 'preview_member_query' ),
+			'list_entry_types_nonce' => wp_create_nonce( 'list_entry_types' ),
+			'list_entry_fields_nonce' => wp_create_nonce( 'list_entry_fields' ),
 		);
 
 		wp_localize_script(
@@ -136,6 +192,7 @@ class Plugin {
 			array(),
 			GMR_GIGYA_VERSION
 		);
+
 	}
 
 	/**
@@ -159,6 +216,21 @@ class Plugin {
 				$segment_publisher->publish();
 			} catch ( \Exception $e ) {
 				$this->set_flash( $e->getMessage() );
+			}
+		}
+	}
+
+	public function update_form_for_contest( $post_id, $post ) {
+		if ( ! is_null( $post ) && $post->post_type === 'contest' && $post->post_status === 'publish' ) {
+			// TODO: verify nonce
+			$contest_form_id = intval( $_POST['contest_form_id'] );
+			$key = 'contest_form_id';
+
+			// TODO: validate if gform exists?
+			if ( is_int( $contest_form_id ) ) {
+				update_post_meta( $post_id, $key, $contest_form_id );
+			} else {
+				delete_post_meta( $post_id, $key );
 			}
 		}
 	}
@@ -220,7 +292,13 @@ class Plugin {
 				),
 				$member_query
 			);
+
 		}
+
+		return $this->meta_boxes;
+	}
+
+	public function get_contest_meta_boxes() {
 
 		return $this->meta_boxes;
 	}
