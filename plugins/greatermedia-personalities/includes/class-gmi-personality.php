@@ -184,11 +184,7 @@ if ( !class_exists( "GMI_Personality" ) ) {
 
 					<div class="personality_thumbnail">
 		<?php
-					if ( has_post_thumbnail( $post->ID ) ) {
-						the_post_thumbnail( array( 50, 50 ) );
-					} else if ( isset( $user_info->user_email ) ) {
-						echo get_avatar( $user_info->user_email, 45 );
-					}
+						gmi_print_personality_photo( $post->ID, 50 );
 		?>
 					</div>
 
@@ -330,12 +326,6 @@ if ( !class_exists( "GMI_Personality" ) ) {
 		public static function custom_columns_content( $column_name, $post_id ) {
 			$assoc_user_id = get_post_meta( $post_id, '_personality_assoc_user_id', true );
 
-			if ( empty( $assoc_user_id ) ) {
-				return;
-			}
-
-			$user_info = get_userdata( $assoc_user_id );
-
 			switch ( $column_name ) {
 				case( 'title' ):
 					if ( isset( $user_info->display_name ) )
@@ -346,11 +336,7 @@ if ( !class_exists( "GMI_Personality" ) ) {
 						echo '<a href="' . esc_url( 'mailto:' . $user_info->user_email ) . '">' . sanitize_email( $user_info->user_email ) . '</a>';
 					break;
 				case( 'avatar' ):
-					if ( has_post_thumbnail( $post_id ) ) {
-						the_post_thumbnail( array( 50, 50 ) );
-					} else if ( isset( $user_info->user_email ) ) {
-						echo get_avatar( $user_info->user_email, 45 );
-					}
+					gmi_print_personality_photo( $post_id, 50 );
 					break;
 				default:
 					break;
@@ -379,5 +365,68 @@ if ( !class_exists( "GMI_Personality" ) ) {
 		}
 	}
 
-	$gmr_personalities = GMI_Personality::init();
+	$gmi_personalities = GMI_Personality::init();
+}
+
+/**
+ * Get a personality's Facebook URL.
+ *
+ * @param  int $personality_id The personality's ID
+ * @return string The URL
+ */
+function gmi_get_personality_facebook_url( $personality_id = null ) {
+	if ( empty( $personality_id ) ) {
+		$personality_id = get_the_ID();
+	}
+
+    $url = get_post_meta( intval( $personality_id ), '_personality_facebook_url', true );
+
+    return esc_url( $url );
+}
+
+/**
+ * Get a personality's Twitter URL.
+ *
+ * @param  int $personality_id The personality's ID
+ * @return string The URL
+ */
+function gmi_get_personality_twitter_url( $personality_id = null ) {
+	if ( empty( $personality_id ) ) {
+		$personality_id = get_the_ID();
+	}
+
+    $url = get_post_meta( intval( $personality_id ), '_personality_twitter_url', true );
+
+    return esc_url( $url );
+}
+
+/**
+ * Get a personality's photo.
+ *
+ * @param  int $personality_id The personality's ID
+ */
+function gmi_print_personality_photo( $personality_id = null, $size = 50 ) {
+	if ( empty( $personality_id ) ) {
+		if ( GMI_Personality::CPT_SLUG === get_post_type() ) {
+			$personality_id = get_the_ID();
+		} else {
+			return;
+		}
+	}
+
+	$size = absint( intval( $size ) );
+
+	if ( has_post_thumbnail( $personality_id ) ) {
+		the_post_thumbnail( array( $size, $size ) );
+	} else {
+		$assoc_user_id = get_post_meta( $personality_id, '_personality_assoc_user_id', true );
+
+		if ( ! empty( $assoc_user_id ) ) {
+			$user_info = get_userdata( $assoc_user_id );
+
+			if ( isset( $user_info->user_email ) ) {
+				echo get_avatar( $user_info->user_email, $size );
+			}
+		}
+	}
 }
