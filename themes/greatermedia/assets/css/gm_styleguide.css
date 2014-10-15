@@ -376,11 +376,97 @@ th {
  * Placeholders
  */
 /**
- * Font Styles
- */
-/**
  * Helpers
  */
+/**
+ * Font Styles
+ */
+.container {
+  max-width: 75em;
+  margin-left: auto;
+  margin-right: auto; }
+  .container:after {
+    content: "";
+    display: table;
+    clear: both; }
+
+.main {
+  width: 100%;
+  padding: 2em 0; }
+
+.content {
+  float: left;
+  display: block;
+  margin-right: 7.42297%;
+  width: 100%;
+  padding-right: 0.5em;
+  padding-left: 0.5em; }
+  .content:last-child {
+    margin-right: 0; }
+  @media screen and (min-width: 481px) {
+    .content {
+      float: left;
+      display: block;
+      margin-right: 4.82916%;
+      width: 65.05695%; }
+      .content:last-child {
+        margin-right: 0; } }
+  @media screen and (min-width: 769px) {
+    .content {
+      float: left;
+      display: block;
+      margin-right: 3.57866%;
+      width: 74.10533%; }
+      .content:last-child {
+        margin-right: 0; } }
+  @media screen and (min-width: 1201px) {
+    .content {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 65.88078%;
+      padding-right: 0;
+      padding-left: 0; }
+      .content:last-child {
+        margin-right: 0; } }
+
+.sidebar {
+  float: left;
+  display: block;
+  margin-right: 7.42297%;
+  width: 100%;
+  padding-right: 0.5em;
+  padding-left: 0.5em; }
+  .sidebar:last-child {
+    margin-right: 0; }
+  @media screen and (min-width: 481px) {
+    .sidebar {
+      float: left;
+      display: block;
+      margin-right: 4.82916%;
+      width: 30.11389%;
+      margin-right: 0; }
+      .sidebar:last-child {
+        margin-right: 0; } }
+  @media screen and (min-width: 769px) {
+    .sidebar {
+      float: left;
+      display: block;
+      margin-right: 3.57866%;
+      width: 22.316%; }
+      .sidebar:last-child {
+        margin-right: 0; } }
+  @media screen and (min-width: 1201px) {
+    .sidebar {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 31.76157%;
+      padding-right: 0;
+      padding-left: 0; }
+      .sidebar:last-child {
+        margin-right: 0; } }
+
 @font-face {
   font-family: OpenSans;
   font-weight: normal;
@@ -441,6 +527,60 @@ th {
   font-style: italic;
   src: url("../fonts/playfair/playfair-bolditalic-webfont.eot");
   src: url("../fonts/playfair/playfair-bolditalic-webfont.eot?#iefix") format("embedded-opentype"), url("../fonts/playfair/playfair-bolditalic-webfont.woff") format("woff"), url("../fonts/playfair/playfair-bolditalic-webfont.ttf") format("truetype"), url("../fonts/playfair/playfair-bolditalic-webfont.svg#Playfair") format("svg"); }
+body {
+  font-size: 80%; }
+  @media screen and (min-width: 481px) {
+    body {
+      font-size: 85%; } }
+  @media screen and (min-width: 769px) {
+    body {
+      font-size: 90%; } }
+  @media screen and (min-width: 1201px) {
+    body {
+      font-size: 100%; } }
+
+/******************************************************************
+H1, H2, H3, H4, H5, H6 STYLES
+******************************************************************/
+h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
+  font-family: "OpenSans", sans-serif;
+  text-rendering: optimizelegibility;
+  font-weight: 700;
+  /*
+  if you're going to use webfonts, be sure to check your weights
+  http://css-tricks.com/watch-your-font-weight/
+  */
+  /* removing text decoration from all headline links */ }
+  h1 a, .h1 a, h2 a, .h2 a, h3 a, .h3 a, h4 a, .h4 a, h5 a, .h5 a, h6 a, .h6 a {
+    text-decoration: none; }
+
+h1, .h1 {
+  font-size: 2.5rem;
+  line-height: 1.1em; }
+
+h2, .h2 {
+  font-size: 2.25rem;
+  line-height: 1.4em;
+  margin-bottom: 0.375em; }
+
+h3, .h3 {
+  font-size: 1.75rem; }
+
+h4, .h4 {
+  font-size: 1.5rem; }
+
+h5, .h5 {
+  font-size: 1.25rem;
+  line-height: 2.09em;
+  text-transform: uppercase;
+  letter-spacing: 2px; }
+
+h6, .h6 {
+  font-size: 1rem;
+  line-height: 2.09em;
+  text-transform: uppercase;
+  letter-spacing: 2px; }
+
 /**
  * Base Styles
  */
@@ -453,18 +593,8 @@ body {
   margin: 0 auto;
   line-height: 1.5;
   font-family: "OpenSans", sans-serif;
-  font-size: 80%;
   color: color(black);
   -webkit-font-smoothing: antialiased; }
-  @media screen and (min-width: 481px) {
-    body {
-      font-size: 85%; } }
-  @media screen and (min-width: 769px) {
-    body {
-      font-size: 90%; } }
-  @media screen and (min-width: 1201px) {
-    body {
-      font-size: 100%; } }
 
 * {
   -webkit-tap-highlight-color: transparent; }
@@ -949,8 +1079,8 @@ pre {
 .sg-colors-table {
   float: left;
   display: block;
-  margin-right: 2.35765%;
-  width: 100%;
+  margin-right: 7.42297%;
+  width: 314.84594%;
   margin-top: 1em;
   margin-bottom: 1em;
   display: table; }
@@ -960,8 +1090,8 @@ pre {
 .sg-markup-controls, .sg-source {
   float: left;
   display: block;
-  margin-right: 2.35765%;
-  width: 100%;
+  margin-right: 7.42297%;
+  width: 314.84594%;
   margin-top: 1em;
   margin-bottom: 1em; }
   .sg-markup-controls:last-child, .sg-source:last-child {
@@ -1035,7 +1165,7 @@ pre {
   text-transform: uppercase; }
 
 .sg-typography-serif {
-  font-family: serif; }
+  font-family: "Playfair", serif; }
 
 .sg-typography-light {
   font-weight: lighter; }
