@@ -421,7 +421,7 @@ img {
       float: left;
       display: block;
       margin-right: 4.82916%;
-      width: 65.05695%; }
+      width: 100%; }
       .content:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 769px) {
@@ -457,8 +457,7 @@ img {
       float: left;
       display: block;
       margin-right: 4.82916%;
-      width: 30.11389%;
-      margin-right: 0; }
+      width: 100%; }
       .sidebar:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 769px) {
@@ -466,7 +465,8 @@ img {
       float: left;
       display: block;
       margin-right: 3.57866%;
-      width: 22.316%; }
+      width: 22.316%;
+      margin-right: 0; }
       .sidebar:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 1201px) {
@@ -542,19 +542,19 @@ img {
   src: url("../fonts/playfair/playfair-bolditalic-webfont.eot?#iefix") format("embedded-opentype"), url("../fonts/playfair/playfair-bolditalic-webfont.woff") format("woff"), url("../fonts/playfair/playfair-bolditalic-webfont.ttf") format("truetype"), url("../fonts/playfair/playfair-bolditalic-webfont.svg#Playfair") format("svg"); }
 body {
   line-height: 1.5em;
-  font-size: 80%;
+  font-size: 0.8232em;
   font-family: "OpenSans", sans-serif;
   color: #000000;
   -webkit-font-smoothing: antialiased; }
   @media screen and (min-width: 481px) {
     body {
-      font-size: 85%; } }
+      font-size: 0.87836em; } }
   @media screen and (min-width: 769px) {
     body {
-      font-size: 90%; } }
+      font-size: 0.93721em; } }
   @media screen and (min-width: 1201px) {
     body {
-      font-size: 100%; } }
+      font-size: 1.067em; } }
 
 /******************************************************************
 H1, H2, H3, H4, H5, H6 STYLES
