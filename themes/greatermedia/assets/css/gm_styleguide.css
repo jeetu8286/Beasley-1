@@ -654,7 +654,7 @@ style a page via class
 LINK STYLES
 *********************/
 a, a:visited {
-  color: color(dark-gray);
+  color: color(red);
   text-decoration: none;
   /* on hover */
   /* on click */

@@ -28,7 +28,7 @@ get_header(); ?>
 
 							if ( has_post_thumbnail() && ( $image_formats || false == get_post_format() ) ) { ?>
 
-							<section class="article-thumbnail">
+							<section class="entry-thumbnail">
 
 								<?php the_post_thumbnail( 'gm-article-thumbnail' ); ?>
 
@@ -55,6 +55,18 @@ get_header(); ?>
 							<section class="entry-content" itemprop="articleBody">
 
 								<?php the_excerpt(); ?>
+
+							</section> <?php // end article section ?>
+
+						<?php }
+
+							if ( has_post_format( 'video' ) ) {
+
+						?>
+
+							<section class="entry-content" itemprop="articleBody">
+
+								<?php the_content(); ?>
 
 							</section> <?php // end article section ?>
 

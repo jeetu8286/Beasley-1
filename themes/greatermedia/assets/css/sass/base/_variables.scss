@@ -14,7 +14,8 @@ $colors: (
 	soft-gray: #eeeeee,
 	meta-gray: #dddddd,
 	gray: #888888,
-	dark-gray: #333333
+	dark-gray: #333333,
+	red: #d32329
 );
 
 // Variables for site wide usage
@@ -24,7 +25,7 @@ $colors: (
 //
 $text-color: color(black);
 
-$link-color: color(dark-gray);
+$link-color: color(red);
 $link-hover: color(gray);
 
 $border-color: color(soft-gray);

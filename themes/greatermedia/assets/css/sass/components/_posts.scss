@@ -5,6 +5,24 @@
 	@include border-width(null null em(1px) null);
 }
 
+.entry-thumbnail{
+	@include position(relative, null null null null);
+	@include padding(null null em(32px) null);
+}
+
+.entry-thumbnail:before{
+	@include position(absolute, 0 null null 0);
+	@include size(48px 48px);
+	@include padding(em(1em) null);
+	@include margin(0 auto);
+	background-color: color(red);
+	font-family: FontAwesome;
+	font-size: rem(32px);
+	content: '\f03e';
+	color: color(white);
+	text-align: center;
+}
+
 .single-title,
 .page-title,
 .entry-title {
