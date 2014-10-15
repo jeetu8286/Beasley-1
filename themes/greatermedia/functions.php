@@ -87,21 +87,21 @@ function greatermedia_post_formats() {
 	$post_id = $post->ID;
 
 	if ( has_post_format( 'aside', $post_id ) ) {
-		$format = 'aside';
+		$format = '<div class="article-type--aside">aside</div>';
 	} elseif ( has_post_format( 'gallery', $post_id ) ) {
-		$format = 'gallery';
+		$format = '<div class="article-type--gallery">gallery</div>';
 	} elseif ( has_post_format( 'link', $post_id ) ) {
-		$format = 'link';
+		$format = '<div class="article-type--link">link</div>';
 	} elseif ( has_post_format( 'image', $post_id ) ) {
-		$format = 'image';
+		$format = '<div class="article-type--image">image</div>';
 	} elseif ( has_post_format( 'video', $post_id ) ) {
-		$format = 'video';
+		$format = '<div class="article-type--video">video</div>';
 	} elseif ( has_post_format( 'audio', $post_id ) ) {
-		$format = 'audio';
+		$format = '<div class="article-type--audio">audio</div>';
 	} else {
-		$format = 'standard';
+		$format = '<div class="article-type--standard">standard</div>';
 	}
 
-	echo esc_html( $format );
+	echo $format;
 
 }

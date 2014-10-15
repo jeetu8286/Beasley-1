@@ -20,7 +20,7 @@ get_header(); ?>
 
 						<header class="article-header">
 
-							<div class="article-type">
+							<div class="article-types">
 
 								<?php greatermedia_post_formats(); ?>
 
@@ -67,7 +67,14 @@ get_header(); ?>
 
 						<?php }
 
-							if ( has_post_format( 'video' ) ) {
+							$formats = has_post_format(
+								array(
+									'video',
+									'audio',
+								)
+							);
+
+							if ( $formats ) {
 
 						?>
 
