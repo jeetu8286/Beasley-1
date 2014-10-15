@@ -36,6 +36,12 @@ function greatermedia_setup() {
 	 * to change 'greatermedia' to the name of your theme in all template files.
 	 */
 	load_theme_textdomain( 'greatermedia', get_template_directory() . '/languages' );
+
+	/**
+	 * Add theme support for post thumbnails
+	 */
+	add_theme_support( 'post-thumbnails' );
+	add_image_size( 'gm-article-thumbnail', 1580, 9999, false ); // thumbnails used for articles
 }
 
 add_action( 'after_setup_theme', 'greatermedia_setup' );
@@ -69,3 +75,8 @@ function greatermedia_header_meta() {
 }
 
 add_action( 'wp_head', 'greatermedia_header_meta' );
+
+/**
+ * Add theme support for post-formats
+ */
+add_theme_support( 'post-formats', array( 'aside', 'gallery', 'link', 'image', 'video', 'audio' ) );

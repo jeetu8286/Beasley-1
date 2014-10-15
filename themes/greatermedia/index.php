@@ -16,8 +16,25 @@ get_header(); ?>
 
 				<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
 
-					<article id="post-<?php the_ID(); ?>" <?php post_class( 'cf' ); ?> role="article" itemscope
-					         itemtype="http://schema.org/BlogPosting">
+					<article id="post-<?php the_ID(); ?>" <?php post_class( 'cf' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
+
+						<?php
+
+							$image_formats = has_post_format(
+								array(
+									'gallery', 'image',
+								)
+							);
+
+							if ( has_post_thumbnail() && ( $image_formats || false == get_post_format() ) ) { ?>
+
+							<section class="article-thumbnail">
+
+								<?php the_post_thumbnail( 'gm-article-thumbnail' ); ?>
+
+							</section>
+
+						<?php } ?>
 
 						<header class="article-header">
 
@@ -32,11 +49,16 @@ get_header(); ?>
 
 						</header>
 
-						<section class="entry-content" itemprop="articleBody">
+						<?php
+							if ( false == get_post_format() ) {
+						?>
+							<section class="entry-content" itemprop="articleBody">
 
-							<?php the_excerpt(); ?>
+								<?php the_excerpt(); ?>
 
-						</section> <?php // end article section ?>
+							</section> <?php // end article section ?>
+
+						<?php } ?>
 
 						<footer class="article-footer">
 
