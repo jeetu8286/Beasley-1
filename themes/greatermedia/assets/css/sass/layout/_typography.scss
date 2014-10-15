@@ -86,3 +86,13 @@ h6, .h6 {
 	text-transform: uppercase;
 	letter-spacing: 2px;
 }
+
+// Link styles
+a, a:visited {
+	color: $link-color;
+	text-decoration: none;
+}
+
+a:hover, a:focus, a:active {
+	color: $link-hover;
+}

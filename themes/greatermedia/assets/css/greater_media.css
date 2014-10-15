@@ -381,12 +381,6 @@ th {
 /**
  * Font Styles
  */
-/**
- * Base Styles
- */
-/*********************
-GENERAL STYLES
-*********************/
 body {
   height: 100%;
   margin: 0 auto;
@@ -395,73 +389,6 @@ body {
 * {
   -webkit-tap-highlight-color: transparent; }
 
-#wpadminbar {
-  position: fixed; }
-
-.emphasis {
-  font-size: 1.2rem;
-  font-weight: 600; }
-
-/********************
-WORDPRESS BODY CLASSES
-style a page via class
-********************/
-/* for sites that are read right to left (i.e. hebrew) */
-/* home page */
-/* blog template page */
-/* archive page */
-/* date archive page */
-/* replace the number to the corresponding page number */
-/* search page */
-/* search result page */
-/* no results search page */
-/* individual paged search (i.e. body.search-paged-3) */
-/* 404 page */
-/* single post page */
-/* individual post page by id (i.e. body.postid-73) */
-/* individual paged single (i.e. body.single-paged-3) */
-/* attatchment page */
-/* individual attatchment page (i.e. body.attachmentid-763) */
-/* style mime type pages */
-/* author page */
-/* user nicename (i.e. body.author-samueladams) */
-/* paged author archives (i.e. body.author-paged-4) for page 4 */
-/* category page */
-/* individual category page (i.e. body.category-6) */
-/* replace the number to the corresponding page number */
-/* tag page */
-/* individual tag page (i.e. body.tag-news) */
-/* replace the number to the corresponding page number */
-/* custom page template page */
-/* individual page template (i.e. body.page-template-contact-php */
-/* replace the number to the corresponding page number */
-/* parent page template */
-/* child page template */
-/* replace the number to the corresponding page number */
-/* if user is logged in */
-/* paged items like search results or archives */
-/* individual paged (i.e. body.paged-3) */
-/*********************
-LINK STYLES
-*********************/
-a, a:visited {
-  color: #d32329;
-  text-decoration: none;
-  /* on hover */
-  /* on click */ }
-  a:hover, a:focus, a:visited:hover, a:visited:focus {
-    color: #888888; }
-
-/*********************
-POSTS & CONTENT STYLES
-*********************/
-/* want to style individual post classes? Booya! */
-/* post by id (i.e. post-3) */
-/* general post style */
-/* general article on a page style */
-/* general style on an attatchment */
-/* hentry class */
-/* style by category (i.e. category-videos) */
 img {
   max-width: 100%;
   display: block;
@@ -670,6 +597,13 @@ h6, .h6 {
   line-height: 2.09em;
   text-transform: uppercase;
   letter-spacing: 2px; }
+
+a, a:visited {
+  color: #d32329;
+  text-decoration: none; }
+
+a:hover, a:focus, a:active {
+  color: #888888; }
 
 /**
  * Menu Styles

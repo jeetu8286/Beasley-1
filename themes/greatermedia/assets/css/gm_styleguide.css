@@ -590,6 +590,13 @@ h6, .h6 {
   text-transform: uppercase;
   letter-spacing: 2px; }
 
+a, a:visited {
+  color: color(red);
+  text-decoration: none; }
+
+a:hover, a:focus, a:active {
+  color: color(gray); }
+
 /**
  * Base Styles
  */
