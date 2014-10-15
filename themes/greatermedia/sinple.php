@@ -1,6 +1,6 @@
 <?php
 /**
- * The main template file
+ * Single Post template file
  *
  * @package Greater Media
  * @since   0.1.0
@@ -34,7 +34,20 @@ get_header(); ?>
 
 						<section class="entry-content" itemprop="articleBody">
 
-							<?php the_excerpt(); ?>
+							<?php
+								the_content();
+
+								$link_args = array(
+									'before' => '<div class="page-numbers">Pages: ',
+									'after' => '</div>',
+									'link_before' => '<span class="post-pagination-link">',
+									'link_after' => '</span>'
+								);
+								echo '<div class="post-pagination">';
+								wp_link_pages( $link_args );
+								echo '</div>';
+
+							?>
 
 						</section> <?php // end article section ?>
 
@@ -44,16 +57,9 @@ get_header(); ?>
 
 					</article>
 
-				<?php endwhile; ?>
+				<?php endwhile;
 
-					<div class="pagination">
-
-						<div class="pagination-previous"><?php next_posts_link( '<i class="fa fa-angle-double-left"></i>Previous' ); ?></div>
-						<div class="pagination-next"><?php previous_posts_link( 'Next<i class="fa fa-angle-double-right"></i>' ); ?></div>
-
-					</div>
-
-				<?php else : ?>
+				else : ?>
 
 					<article id="post-not-found" class="hentry cf">
 

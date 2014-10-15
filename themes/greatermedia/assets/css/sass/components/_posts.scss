@@ -33,6 +33,30 @@
 	color: color(gray);
 }
 
+.pagination{
+	@include size(100% null);
+	font-size: rem(14px);
+}
+
+.pagination-previous{
+	@include size(50% null);
+	float: left;
+}
+
+.pagination-previous .fa {
+	@include margin(null em(8px) null null);
+}
+
+.pagination-next{
+	@include size(50% null);
+	float: right;
+	text-align: right;
+}
+
+.pagination-next .fa {
+	@include margin(null null null em(8px));
+}
+
 // Blockquote styles
 blockquote {
 	@include padding(em(8px) em(10px));

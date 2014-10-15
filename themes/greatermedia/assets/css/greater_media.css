@@ -700,8 +700,27 @@ h6, .h6 {
   font-family: "Playfair", serif; }
 
 .byline {
-  color: #888888;
-  font-style: italic; }
+  font-style: italic;
+  color: #888888; }
+
+.pagination {
+  width: 100%;
+  font-size: 0.875rem; }
+
+.pagination-previous {
+  width: 50%;
+  float: left; }
+
+.pagination-previous .fa {
+  margin-right: 0.5em; }
+
+.pagination-next {
+  width: 50%;
+  float: right;
+  text-align: right; }
+
+.pagination-next .fa {
+  margin-left: 0.5em; }
 
 blockquote {
   padding: 0.5em 0.625em;
