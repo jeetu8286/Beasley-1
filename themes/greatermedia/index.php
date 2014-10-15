@@ -3,64 +3,87 @@
  * The main template file
  *
  * @package Greater Media
- * @since 0.1.0
+ * @since   0.1.0
  */
- 
+
 get_header(); ?>
-<main class="content" role="main">
-	<div class="container">
-		<section class="main">
-			<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
 
-			<article id="post-<?php the_ID(); ?>" <?php post_class( 'cf' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
+	<main class="main" role="main">
 
-				<header class="article-header">
+		<div class="container">
 
-					<h2 class="entry-title" itemprop="headline"><?php the_title(); ?></h2>
+			<section class="content">
 
-					<div class="byline">
-						by
-						<span class="vcard author"><span class="fn url"><?php the_author_posts_link(); ?></span></span>
-						<time datetime="<?php the_time('c'); ?>" class="post-date updated">on <?php the_time( 'l, F jS' ); ?> at <?php the_time( 'g:ia' ); ?></time>
+				<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
+
+					<article id="post-<?php the_ID(); ?>" <?php post_class( 'cf' ); ?> role="article" itemscope
+					         itemtype="http://schema.org/BlogPosting">
+
+						<header class="article-header">
+
+							<a href="<?php the_permalink(); ?>"><h2 class="entry-title"
+							                                        itemprop="headline"><?php the_title(); ?></h2></a>
+
+							<div class="byline">
+								by
+								<span class="vcard author"><span class="fn url"><?php the_author_posts_link(); ?></span></span>
+								<time datetime="<?php the_time( 'c' ); ?>" class="post-date updated">
+									on <?php the_time( 'l, F jS' ); ?> at <?php the_time( 'g:ia' ); ?></time>
+							</div>
+
+						</header>
+
+						<section class="entry-content" itemprop="articleBody">
+
+							<?php the_excerpt(); ?>
+
+						</section> <?php // end article section ?>
+
+						<footer class="article-footer">
+
+						</footer>
+
+					</article>
+
+				<?php endwhile; ?>
+
+					<div id="pagination">
+
+						<div class="nav-previous"><?php next_posts_link( '<i class="fa fa-angle-double-left"></i>Previous' ); ?></div>
+						<div class="nav-next"><?php previous_posts_link( 'Next<i class="fa fa-angle-double-right"></i>' ); ?></div>
+
 					</div>
 
-				</header>
+				<?php else : ?>
 
-				<section class="entry-content" itemprop="articleBody">
+					<article id="post-not-found" class="hentry cf">
 
-					<?php the_excerpt(); ?>
+						<header class="article-header">
 
-				</section> <?php // end article section ?>
+							<h1><?php _e( 'Oops, Post Not Found!', 'greatermedia' ); ?></h1>
 
-				<footer class="article-footer">
+						</header>
 
-				</footer>
+						<section class="entry-content">
 
-			</article>
+							<p><?php _e( 'Uh Oh. Something is missing. Try double checking things.', 'greatermedia' ); ?></p>
 
-			<?php endwhile; // have_posts()
+						</section>
 
-			else : ?>
+					</article>
 
-			<article id="post-not-found" class="hentry cf">
-				<header class="article-header">
-					<h1><?php _e( 'Oops, Post Not Found!', 'greatermedia' ); ?></h1>
-				</header>
-				<section class="entry-content">
-					<p><?php _e( 'Uh Oh. Something is missing. Try double checking things.', 'greatermedia' ); ?></p>
-				</section>
-			</article>
+				<?php endif; ?>
 
-			<?php endif; ?>
-		</section>
+			</section>
 
-		<aside class="sidebar" role="complementary">
+			<aside class="sidebar" role="complementary">
 
-			Sidebar area
+				Sidebar area
 
-		</aside>
+			</aside>
 
-	</div>
+		</div>
 
-</main>
+	</main>
+
 <?php get_footer();

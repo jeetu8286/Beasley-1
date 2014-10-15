@@ -10,16 +10,16 @@
 @import "neat/neat";
 
 // Anything that doesn't print out CSS along with normalize and fonts
+@import "base/functions";
 @import "base/variables";
 @import "base/normalize";
 @import "base/mixins";
 @import "base/placeholders";
+@import "base/helpers";
 @import "base/fonts";
 @import "base/breakpoints";
 @import "base/base";
 @import "base/grid";
-@import "base/functions";
-@import "base/helpers";
 
 // Main layout components: menu, typography, etc.
 @import "layout/typography";
@@ -30,6 +30,7 @@
 // Components
 @import "components/header";
 @import "components/footer";
+@import "components/posts";
 
 // Custom styles only used on single pages
 @import "pages/single";

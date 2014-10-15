@@ -376,6 +376,9 @@ th {
  * Placeholders
  */
 /**
+ * Helpers
+ */
+/**
  * Font Styles
  */
 /**
@@ -386,12 +389,12 @@ GENERAL STYLES
 *********************/
 body {
   height: 100%;
-  background: color(white);
+  background: #ffffff;
   margin: 0 auto;
   line-height: 1.5;
   font-family: "OpenSans", sans-serif;
   font-size: 100%;
-  color: color(black);
+  color: #000000;
   -webkit-font-smoothing: antialiased; }
 
 * {
@@ -452,168 +455,23 @@ style a page via class
 LINK STYLES
 *********************/
 a, a:visited {
-  color: color(dark-gray);
+  color: #333333;
   text-decoration: none;
   /* on hover */
-  /* on click */
-  /* mobile tap color */ }
+  /* on click */ }
   a:hover, a:focus, a:visited:hover, a:visited:focus {
-    color: color(gray); }
-  a:link, a:visited:link {
-    /*
-    this highlights links on iPhones/iPads.
-    so it basically works like the :hover selector
-    for mobile devices.
-    */
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.3); }
-
-/******************************************************************
-H1, H2, H3, H4, H5, H6 STYLES
-******************************************************************/
-h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
-  font-family: "OpenSans", sans-serif;
-  text-rendering: optimizelegibility;
-  font-weight: 700;
-  /*
-  if you're going to use webfonts, be sure to check your weights
-  http://css-tricks.com/watch-your-font-weight/
-  */
-  /* removing text decoration from all headline links */ }
-  h1 a, .h1 a, h2 a, .h2 a, h3 a, .h3 a, h4 a, .h4 a, h5 a, .h5 a, h6 a, .h6 a {
-    text-decoration: none; }
-
-h1, .h1 {
-  font-size: 2.5rem;
-  line-height: 1.1em; }
-
-h2, .h2 {
-  font-size: 2.25rem;
-  line-height: 1.4em;
-  margin-bottom: 0.375em; }
-
-h3, .h3 {
-  font-size: 1.75rem; }
-
-h4, .h4 {
-  font-size: 1.5rem; }
-
-h5, .h5 {
-  font-size: 1.25rem;
-  line-height: 2.09em;
-  text-transform: uppercase;
-  letter-spacing: 2px; }
-
-h6, .h6 {
-  font-size: 1rem;
-  line-height: 2.09em;
-  text-transform: uppercase;
-  letter-spacing: 2px; }
+    color: #888888; }
 
 /*********************
 POSTS & CONTENT STYLES
 *********************/
-.hentry {
-  margin-bottom: 1em; }
-  .hentry header {
-    padding: 1.5em 0; }
-  .hentry footer {
-    padding: 1.5em 0; }
-    .hentry footer p {
-      margin: 0; }
-
-/* end .hentry */
 /* want to style individual post classes? Booya! */
 /* post by id (i.e. post-3) */
 /* general post style */
 /* general article on a page style */
 /* general style on an attatchment */
-/* sticky post style */
 /* hentry class */
 /* style by category (i.e. category-videos) */
-/* style by tag (i.e. tag-news) */
-/* post meta */
-.byline {
-  color: color(light-gray);
-  font-style: italic;
-  margin: 0; }
-
-/* entry content */
-.entry-content {
-  padding: 1.5em 0 0; }
-  .entry-content p {
-    margin: 0 0 1.5em; }
-  .entry-content blockquote {
-    border-left: 10px solid color(gray);
-    margin: 1.5em 10px;
-    padding: 0.5em 10px;
-    quotes: "“" "”" "‘" "’"; }
-    .entry-content blockquote:before {
-      color: color(light-gray);
-      content: open-quote;
-      font-size: 4rem;
-      line-height: 0.1em;
-      margin-right: 0.25em;
-      vertical-align: -0.4em; }
-    .entry-content blockquote p {
-      display: inline;
-      font-style: italic;
-      color: color(dark-gray); }
-  .entry-content dd {
-    margin-left: 0;
-    font-size: 0.9rem;
-    color: #787878;
-    margin-bottom: 1.5em; }
-  .entry-content img {
-    margin: 0 0 1.5em 0;
-    max-width: 100%;
-    height: auto; }
-  .entry-content .alignleft, .entry-content img.alignleft {
-    margin: 0 1em 1em 0;
-    display: block;
-    float: left; }
-  .entry-content .alignright, .entry-content img.alignright {
-    margin: 0 0 1em 1em;
-    display: block;
-    float: right; }
-  .entry-content .aligncenter, .entry-content img.aligncenter {
-    margin: 0 auto 1em; }
-  .entry-content .size-auto,
-  .entry-content .size-full,
-  .entry-content .size-large,
-  .entry-content .size-medium,
-  .entry-content .size-thumbnail {
-    max-width: 100%;
-    height: auto; }
-  .entry-content pre {
-    background: color(light-gray);
-    color: color(black);
-    font-size: .9rem;
-    padding: 1.5em;
-    margin: 0 0 1.5em;
-    border-radius: 3px; }
-
-/* end .entry-content */
-.wp-caption {
-  max-width: 100%;
-  background: #eee;
-  padding: 0;
-  margin-bottom: 1em;
-  /* images inside wp-caption */ }
-  .wp-caption img {
-    max-width: 100%;
-    margin-bottom: 0;
-    width: 100%; }
-  .wp-caption p.wp-caption-text {
-    font-size: .75rem;
-    margin: 4px 0 7px;
-    padding: 16px 20px 20px 20px;
-    text-align: left;
-    line-height: 1.5; }
-
-/* end .wp-caption */
-/* image gallery styles */
-/* end .gallery */
-/* gallery caption styles */
 .container {
   max-width: 75em;
   margin-left: auto;
@@ -623,48 +481,70 @@ POSTS & CONTENT STYLES
     display: table;
     clear: both; }
 
-.content {
+.main {
   width: 100%;
   padding: 2em 0; }
 
-.main {
+.content {
   float: left;
   display: block;
-  margin-right: 2.35765%;
-  width: 31.76157%; }
-  .main:last-child {
+  margin-right: 7.42297%;
+  width: 100%;
+  padding-right: 0.5em;
+  padding-left: 0.5em; }
+  .content:last-child {
     margin-right: 0; }
+  @media screen and (min-width: 481px) {
+    .content {
+      float: left;
+      display: block;
+      margin-right: 4.82916%;
+      width: 65.05695%; }
+      .content:last-child {
+        margin-right: 0; } }
   @media screen and (min-width: 769px) {
-    .main {
+    .content {
       float: left;
       display: block;
       margin-right: 3.57866%;
-      width: 48.21067%; }
-      .main:last-child {
+      width: 74.10533%; }
+      .content:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 1201px) {
-    .main {
+    .content {
       float: left;
       display: block;
       margin-right: 2.35765%;
-      width: 65.88078%; }
-      .main:last-child {
+      width: 65.88078%;
+      padding-right: 0;
+      padding-left: 0; }
+      .content:last-child {
         margin-right: 0; } }
 
 .sidebar {
   float: left;
   display: block;
-  margin-right: 2.35765%;
-  width: 31.76157%; }
+  margin-right: 7.42297%;
+  width: 100%;
+  padding-right: 0.5em;
+  padding-left: 0.5em; }
   .sidebar:last-child {
     margin-right: 0; }
+  @media screen and (min-width: 481px) {
+    .sidebar {
+      float: left;
+      display: block;
+      margin-right: 4.82916%;
+      width: 30.11389%;
+      margin-right: 0; }
+      .sidebar:last-child {
+        margin-right: 0; } }
   @media screen and (min-width: 769px) {
     .sidebar {
       float: left;
       display: block;
       margin-right: 3.57866%;
-      width: 22.316%;
-      margin-right: 0; }
+      width: 22.316%; }
       .sidebar:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 1201px) {
@@ -672,13 +552,12 @@ POSTS & CONTENT STYLES
       float: left;
       display: block;
       margin-right: 2.35765%;
-      width: 31.76157%; }
+      width: 31.76157%;
+      padding-right: 0;
+      padding-left: 0; }
       .sidebar:last-child {
         margin-right: 0; } }
 
-/**
- * Helpers
- */
 @font-face {
   font-family: OpenSans;
   font-weight: normal;
@@ -739,6 +618,60 @@ POSTS & CONTENT STYLES
   font-style: italic;
   src: url("../fonts/playfair/playfair-bolditalic-webfont.eot");
   src: url("../fonts/playfair/playfair-bolditalic-webfont.eot?#iefix") format("embedded-opentype"), url("../fonts/playfair/playfair-bolditalic-webfont.woff") format("woff"), url("../fonts/playfair/playfair-bolditalic-webfont.ttf") format("truetype"), url("../fonts/playfair/playfair-bolditalic-webfont.svg#Playfair") format("svg"); }
+body {
+  font-size: 80%; }
+  @media screen and (min-width: 481px) {
+    body {
+      font-size: 85%; } }
+  @media screen and (min-width: 769px) {
+    body {
+      font-size: 90%; } }
+  @media screen and (min-width: 1201px) {
+    body {
+      font-size: 100%; } }
+
+/******************************************************************
+H1, H2, H3, H4, H5, H6 STYLES
+******************************************************************/
+h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
+  font-family: "OpenSans", sans-serif;
+  text-rendering: optimizelegibility;
+  font-weight: 700;
+  /*
+  if you're going to use webfonts, be sure to check your weights
+  http://css-tricks.com/watch-your-font-weight/
+  */
+  /* removing text decoration from all headline links */ }
+  h1 a, .h1 a, h2 a, .h2 a, h3 a, .h3 a, h4 a, .h4 a, h5 a, .h5 a, h6 a, .h6 a {
+    text-decoration: none; }
+
+h1, .h1 {
+  font-size: 2.5rem;
+  line-height: 1.1em; }
+
+h2, .h2 {
+  font-size: 2.25rem;
+  line-height: 1.4em;
+  margin-bottom: 0.375em; }
+
+h3, .h3 {
+  font-size: 1.75rem; }
+
+h4, .h4 {
+  font-size: 1.5rem; }
+
+h5, .h5 {
+  font-size: 1.25rem;
+  line-height: 2.09em;
+  text-transform: uppercase;
+  letter-spacing: 2px; }
+
+h6, .h6 {
+  font-size: 1rem;
+  line-height: 2.09em;
+  text-transform: uppercase;
+  letter-spacing: 2px; }
+
 /**
  * Menu Styles
  */
@@ -751,6 +684,103 @@ POSTS & CONTENT STYLES
 /**
  * Footer Styles
  */
+.hentry {
+  margin-bottom: 2em;
+  border-color: #f5f5f5;
+  border-bottom-style: solid;
+  border-bottom-width: 0.0625em; }
+
+.single-title,
+.page-title,
+.entry-title {
+  margin: 0; }
+
+.entry-content {
+  padding: 1.5em 0;
+  font-family: "Playfair", serif; }
+
+.byline {
+  color: #888888;
+  font-style: italic; }
+
+blockquote {
+  padding: 0.5em 0.625em;
+  margin: 1.5em 0.625em;
+  border-left-color: #888888;
+  border-left-style: solid;
+  border-left-width: 0.625em;
+  quotes: "“" "”" "‘" "’"; }
+
+blockquote:before {
+  margin-right: 0.25em;
+  color: #f5f5f5;
+  content: open-quote;
+  font-size: 4rem;
+  line-height: 0.1em;
+  vertical-align: -0.25em; }
+
+blockquote p {
+  display: inline;
+  font-style: italic;
+  color: #333333; }
+
+p {
+  margin: 0 0 1.5em; }
+
+.alignleft, img.alignleft {
+  display: block;
+  margin: 0 1em 1em;
+  float: left; }
+
+.alignright, img.alignright {
+  display: block;
+  margin: 0 0 1em 1em;
+  float: right; }
+
+.aligncenter, img.aligncenter {
+  margin: 0 auto 1em; }
+
+.size-auto,
+.size-full,
+.size-large,
+.size-medium,
+.size-thumbnail {
+  max-width: 100%;
+  height: auto; }
+
+pre {
+  padding: 1.5em;
+  margin: 0 0 1.5em;
+  border-top-left-radius: 0.25em;
+  border-top-right-radius: 0.25em;
+  border-top-right-radius: 0.25em;
+  border-bottom-right-radius: 0.25em;
+  border-bottom-left-radius: 0.25em;
+  border-bottom-right-radius: 0.25em;
+  border-top-left-radius: 0.25em;
+  border-bottom-left-radius: 0.25em;
+  background: #f5f5f5;
+  color: #000000;
+  font-size: 0.875rem; }
+
+.wp-caption {
+  max-width: 100%;
+  padding: 0;
+  margin: 0 0 1em;
+  background: #f5f5f5; }
+
+.wp-caption img {
+  width: 100%;
+  margin-bottom: 0;
+  max-width: 100%; }
+
+.wp-caption p.wp-caption-text {
+  padding: 1em 1.25em 1.25em;
+  padding: 0.25em 0.5em;
+  line-height: 1.5;
+  font-size: 0.75rem;
+  text-align: left; }
+
 /**
  * Single Page Styles
  */

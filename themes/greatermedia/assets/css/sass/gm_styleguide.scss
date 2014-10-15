@@ -14,11 +14,11 @@
 @import "base/normalize";
 @import "base/mixins";
 @import "base/placeholders";
+@import "base/functions";
+@import "base/helpers";
 @import "base/fonts";
 @import "base/breakpoints";
 @import "base/grid";
-@import "base/functions";
-@import "base/helpers";
 
 // Main layout components: menu, typography, etc.
 @import "layout/typography";
