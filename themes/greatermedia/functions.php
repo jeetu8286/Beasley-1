@@ -80,3 +80,28 @@ add_action( 'wp_head', 'greatermedia_header_meta' );
  * Add theme support for post-formats
  */
 add_theme_support( 'post-formats', array( 'aside', 'gallery', 'link', 'image', 'video', 'audio' ) );
+
+function greatermedia_post_formats() {
+
+	global $post;
+	$post_id = $post->ID;
+
+	if ( has_post_format( 'aside', $post_id ) ) {
+		$format = 'aside';
+	} elseif ( has_post_format( 'gallery', $post_id ) ) {
+		$format = 'gallery';
+	} elseif ( has_post_format( 'link', $post_id ) ) {
+		$format = 'link';
+	} elseif ( has_post_format( 'image', $post_id ) ) {
+		$format = 'image';
+	} elseif ( has_post_format( 'video', $post_id ) ) {
+		$format = 'video';
+	} elseif ( has_post_format( 'audio', $post_id ) ) {
+		$format = 'audio';
+	} else {
+		$format = 'standard';
+	}
+
+	echo esc_html( $format );
+
+}

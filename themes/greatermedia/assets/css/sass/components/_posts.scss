@@ -5,6 +5,20 @@
 	@include border-width(null null em(1px) null);
 }
 
+.article-type{
+	@include display(block);
+	@include size(100% 30px);
+	@include padding(5px);
+	@include margin(null null 10px);
+	background-color: color(light-gray);
+}
+
+.byline {
+	font-size: rem(12px);
+	color: color(gray);
+	text-transform: uppercase;
+}
+
 .entry-thumbnail{
 	@include position(relative, null null null null);
 	@include padding(null null em(32px) null);
@@ -44,11 +58,6 @@
 .entry-content {
 	@include padding(1.5em 0);
 	font-family: $serif;
-}
-
-.byline {
-	font-style: italic;
-	color: color(gray);
 }
 
 .pagination{
