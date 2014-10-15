@@ -24,7 +24,7 @@
 		togglePlayer();
 	});
 
-} )(jQuery,window);
+	// call pjax to update container
+	$(document).pjax('a:not(.ab-item)', '#container', {'fragment': '#container'})
 
-// call pjax to update container
-pjax.connect('container');
+} )(jQuery,window);
