@@ -15,9 +15,15 @@
 // Font Icons: Font-Awesome
 @import url(//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css);
 
+$base-line-height: em(24px);
+
 // Global font sizes based on breakpoints
 body{
+	line-height: $base-line-height;
 	font-size: 80%;
+	font-family: $sans-serif;
+	color: $text-color;
+	-webkit-font-smoothing: antialiased;
 	@include media($mobile){
 		font-size: 85%;
 	}
@@ -36,7 +42,7 @@ H1, H2, H3, H4, H5, H6 STYLES
 h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
 	font-family: $sans-serif;
 	text-rendering: optimizelegibility;
-	font-weight: 700;
+	font-weight: lighter;
 	/*
 	if you're going to use webfonts, be sure to check your weights
 	http://css-tricks.com/watch-your-font-weight/

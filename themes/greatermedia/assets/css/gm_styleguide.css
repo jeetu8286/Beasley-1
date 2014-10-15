@@ -381,6 +381,11 @@ th {
 /**
  * Font Styles
  */
+img {
+  max-width: 100%;
+  display: block;
+  height: auto; }
+
 .container {
   max-width: 75em;
   margin-left: auto;
@@ -528,7 +533,11 @@ th {
   src: url("../fonts/playfair/playfair-bolditalic-webfont.eot");
   src: url("../fonts/playfair/playfair-bolditalic-webfont.eot?#iefix") format("embedded-opentype"), url("../fonts/playfair/playfair-bolditalic-webfont.woff") format("woff"), url("../fonts/playfair/playfair-bolditalic-webfont.ttf") format("truetype"), url("../fonts/playfair/playfair-bolditalic-webfont.svg#Playfair") format("svg"); }
 body {
-  font-size: 80%; }
+  line-height: 1.5em;
+  font-size: 80%;
+  font-family: "OpenSans", sans-serif;
+  color: color(black);
+  -webkit-font-smoothing: antialiased; }
   @media screen and (min-width: 481px) {
     body {
       font-size: 85%; } }
@@ -545,7 +554,7 @@ H1, H2, H3, H4, H5, H6 STYLES
 h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
   font-family: "OpenSans", sans-serif;
   text-rendering: optimizelegibility;
-  font-weight: 700;
+  font-weight: lighter;
   /*
   if you're going to use webfonts, be sure to check your weights
   http://css-tricks.com/watch-your-font-weight/

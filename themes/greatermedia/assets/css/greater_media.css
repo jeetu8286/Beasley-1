@@ -389,13 +389,8 @@ GENERAL STYLES
 *********************/
 body {
   height: 100%;
-  background: #ffffff;
   margin: 0 auto;
-  line-height: 1.5;
-  font-family: "OpenSans", sans-serif;
-  font-size: 100%;
-  color: #000000;
-  -webkit-font-smoothing: antialiased; }
+  background: #ffffff; }
 
 * {
   -webkit-tap-highlight-color: transparent; }
@@ -406,11 +401,6 @@ body {
 .emphasis {
   font-size: 1.2rem;
   font-weight: 600; }
-
-img {
-  max-width: 100%;
-  height: auto;
-  display: block; }
 
 /********************
 WORDPRESS BODY CLASSES
@@ -472,6 +462,11 @@ POSTS & CONTENT STYLES
 /* general style on an attatchment */
 /* hentry class */
 /* style by category (i.e. category-videos) */
+img {
+  max-width: 100%;
+  display: block;
+  height: auto; }
+
 .container {
   max-width: 75em;
   margin-left: auto;
@@ -619,7 +614,11 @@ POSTS & CONTENT STYLES
   src: url("../fonts/playfair/playfair-bolditalic-webfont.eot");
   src: url("../fonts/playfair/playfair-bolditalic-webfont.eot?#iefix") format("embedded-opentype"), url("../fonts/playfair/playfair-bolditalic-webfont.woff") format("woff"), url("../fonts/playfair/playfair-bolditalic-webfont.ttf") format("truetype"), url("../fonts/playfair/playfair-bolditalic-webfont.svg#Playfair") format("svg"); }
 body {
-  font-size: 80%; }
+  line-height: 1.5em;
+  font-size: 80%;
+  font-family: "OpenSans", sans-serif;
+  color: #000000;
+  -webkit-font-smoothing: antialiased; }
   @media screen and (min-width: 481px) {
     body {
       font-size: 85%; } }
@@ -636,7 +635,7 @@ H1, H2, H3, H4, H5, H6 STYLES
 h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
   font-family: "OpenSans", sans-serif;
   text-rendering: optimizelegibility;
-  font-weight: 700;
+  font-weight: lighter;
   /*
   if you're going to use webfonts, be sure to check your weights
   http://css-tricks.com/watch-your-font-weight/
@@ -738,30 +737,12 @@ h6, .h6 {
   color: #888888;
   text-transform: uppercase; }
 
+.single-title, .page-title, .entry-title {
+  margin: 0.5em 0; }
+
 .entry-thumbnail {
   position: relative;
   padding-bottom: 2em; }
-
-.entry-thumbnail:before {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 48px;
-  width: 48px;
-  padding-top: 0.0625em;
-  padding-bottom: 0.0625em;
-  margin: 0 auto;
-  background-color: #d32329;
-  font-family: FontAwesome;
-  font-size: 2rem;
-  content: '\f03e';
-  color: #ffffff;
-  text-align: center; }
-
-.single-title,
-.page-title,
-.entry-title {
-  margin: 0; }
 
 .entry-content {
   padding: 1.5em 0;
