@@ -1090,7 +1090,7 @@ pre {
   .sg-btn:hover {
     background-color: #c6c6c6; }
   .sg-btn:last-of-type {
-    margin: 0; }
+    margin-right: 0; }
 
 .sg-colors-table {
   float: left;

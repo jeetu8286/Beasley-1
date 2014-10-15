@@ -671,6 +671,13 @@ a:hover, a:focus, a:active {
   color: #888888;
   text-transform: uppercase; }
 
+.article-comments--count {
+  padding-left: 5px;
+  margin-left: 3px;
+  border-left-color: dark-gray;
+  border-left-style: solid;
+  border-left-width: 1px; }
+
 .single-title, .page-title, .entry-title {
   margin: 0.5em 0; }
 
@@ -681,6 +688,20 @@ a:hover, a:focus, a:active {
 .entry-content {
   padding: 1.5em 0;
   font-family: "Playfair", serif; }
+
+.read-more--btn {
+  padding: 1em 1.5em;
+  margin-right: 0.5em;
+  border-width: 0;
+  outline: none;
+  background-color: #d32329;
+  font-size: 0.875em;
+  color: #ffffff;
+  text-transform: uppercase; }
+  .read-more--btn:hover {
+    background-color: #ac1c21; }
+  .read-more--btn:last-of-type {
+    margin-right: 0; }
 
 .pagination {
   width: 100%;
