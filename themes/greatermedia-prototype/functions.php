@@ -24,7 +24,6 @@ add_theme_support( 'gmr-customizer' );
   * Required files
   */
 require_once( __DIR__ . '/includes/customizer/loader.php' );
-include __DIR__ . '/includes/class-cpt-personality.php';
 
 /**
  * Set up theme defaults and register supported WordPress features.
@@ -35,7 +34,7 @@ include __DIR__ . '/includes/class-cpt-personality.php';
  */
 function gmiproto_setup() {
 	add_theme_support( 'post-thumbnails' );
-	GMI_Personality::hooks();
+
 	/**
 	 * Makes Greater Media Prototype available for translation.
 	 *
