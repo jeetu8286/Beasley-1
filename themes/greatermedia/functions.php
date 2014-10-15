@@ -16,6 +16,11 @@
 define( 'GREATERMEDIA_VERSION', '0.1.0' );
 
 /**
+ * Required files
+ */
+require_once( __DIR__ . '/includes/class-post-styles.php' );
+
+/**
  * Set up theme defaults and register supported WordPress features.
  *
  * @uses  load_theme_textdomain() For translation/localization support.

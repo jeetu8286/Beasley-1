@@ -4,6 +4,7 @@ node_modules
 *.DS_Store
 uploads/
 plugins/wp-multi-network/
+plugins/wordpress-importer/
 plugins/index.php
 themes/index.php
 themes/twentyfourteen
