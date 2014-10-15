@@ -18,6 +18,25 @@ get_header(); ?>
 
 					<article id="post-<?php the_ID(); ?>" <?php post_class( 'cf' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
 
+						<header class="article-header">
+
+							<div class="article-types">
+
+								<?php greatermedia_post_formats(); ?>
+
+							</div>
+
+							<div class="byline">
+								by
+								<span class="vcard author"><span class="fn url"><?php the_author_posts_link(); ?></span></span>
+								<time datetime="<?php the_time( 'c' ); ?>" class="post-date updated">
+									on <?php the_time( 'l, F jS' ); ?> at <?php the_time( 'g:ia' ); ?></time>
+							</div>
+
+							<h2 class="entry-title" itemprop="headline"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
+
+						</header>
+
 						<?php
 
 							$image_formats = has_post_format(
@@ -28,7 +47,7 @@ get_header(); ?>
 
 							if ( has_post_thumbnail() && ( $image_formats || false == get_post_format() ) ) { ?>
 
-							<section class="article-thumbnail">
+							<section class="entry-thumbnail">
 
 								<?php the_post_thumbnail( 'gm-article-thumbnail' ); ?>
 
@@ -36,18 +55,6 @@ get_header(); ?>
 
 						<?php } ?>
 
-						<header class="article-header">
-
-							<a href="<?php the_permalink(); ?>"><h2 class="entry-title" itemprop="headline"><?php the_title(); ?></h2></a>
-
-							<div class="byline">
-								by
-								<span class="vcard author"><span class="fn url"><?php the_author_posts_link(); ?></span></span>
-								<time datetime="<?php the_time( 'c' ); ?>" class="post-date updated">
-									on <?php the_time( 'l, F jS' ); ?> at <?php the_time( 'g:ia' ); ?></time>
-							</div>
-
-						</header>
 
 						<?php
 							if ( false == get_post_format() ) {
@@ -55,6 +62,25 @@ get_header(); ?>
 							<section class="entry-content" itemprop="articleBody">
 
 								<?php the_excerpt(); ?>
+
+							</section> <?php // end article section ?>
+
+						<?php }
+
+							$formats = has_post_format(
+								array(
+									'video',
+									'audio',
+								)
+							);
+
+							if ( $formats ) {
+
+						?>
+
+							<section class="entry-content" itemprop="articleBody">
+
+								<?php the_content(); ?>
 
 							</section> <?php // end article section ?>
 

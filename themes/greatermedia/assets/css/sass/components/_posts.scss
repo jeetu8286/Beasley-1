@@ -5,10 +5,76 @@
 	@include border-width(null null em(1px) null);
 }
 
-.single-title,
-.page-title,
-.entry-title {
-	margin: 0;
+.article-types {
+	@include display(block);
+	@include size(100% 30px);
+	@include padding(5px);
+	@include margin(null null 10px);
+	background-color: color(light-gray);
+}
+
+%article-type {
+	@include position(relative, null null null null);
+	@include padding(null null null em(30px));
+	font-size: rem(12px);
+	text-transform: uppercase;
+}
+
+%article-type--before {
+	@include position(absolute, 0 null null 0 );
+	@include size(0 0);
+	font-family: dashicons;
+	font-size: rem(16px);
+	color: color(red);
+}
+
+.article-type--aside, .article-type--gallery, .article-type--link, .article-type--image, .article-type--video, .article-type--audio, .article-type--standard {
+	@extend %article-type;
+}
+
+.article-type--aside:before{
+	@extend %article-type--before;
+	content: "\f123";
+}
+
+.article-type--gallery:before{
+	@extend %article-type--before;
+	content: "\f161";
+}
+
+.article-type--link:before{
+	@extend %article-type--before;
+	content: "\f103";
+}
+
+.article-type--image:before{
+	@extend %article-type--before;
+	content: "\f128";
+}
+
+.article-type--video:before{
+	@extend %article-type--before;
+	content: "\f126";
+}
+
+.article-type--audio:before{
+	@extend %article-type--before;
+	content: "\f127";
+}
+
+.article-type--standard:before{
+	@extend %article-type--before;
+	content: "\f109";
+}
+
+.byline {
+	font-size: rem(12px);
+	color: color(gray);
+	text-transform: uppercase;
+}
+
+.single-title, .page-title, .entry-title {
+	@include margin(.5em 0);
 }
 
 .single-title {
@@ -23,22 +89,22 @@
 .archive-title {
 }
 
+.entry-thumbnail {
+	@include position(relative, null null null null);
+	@include padding(null null em(32px));
+}
+
 .entry-content {
 	@include padding(1.5em 0);
 	font-family: $serif;
 }
 
-.byline {
-	font-style: italic;
-	color: color(gray);
-}
-
-.pagination{
+.pagination {
 	@include size(100% null);
 	font-size: rem(14px);
 }
 
-.pagination-previous{
+.pagination-previous {
 	@include size(50% null);
 	float: left;
 }
@@ -47,7 +113,7 @@
 	@include margin(null em(8px) null null);
 }
 
-.pagination-next{
+.pagination-next {
 	@include size(50% null);
 	float: right;
 	text-align: right;
@@ -129,11 +195,13 @@ pre {
 	@include margin(0 0 em(16px));
 	background: color(light-gray);
 }
+
 .wp-caption img {
 	@include size(100% null);
 	@include margin(null null 0);
 	max-width: 100%;
 }
+
 .wp-caption p.wp-caption-text {
 	@include padding(em(16px) em(20px) em(20px) em(20px));
 	@include padding(em(4px) em(8px));

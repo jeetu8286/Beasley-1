@@ -20,7 +20,7 @@ get_header(); ?>
 
 						<header class="article-header">
 
-							<a href="<?php the_permalink(); ?>"><h2 class="entry-title" itemprop="headline"><?php the_title(); ?></h2></a>
+							<h2 class="entry-title" itemprop="headline"><?php the_title(); ?></h2>
 
 							<div class="byline">
 								by

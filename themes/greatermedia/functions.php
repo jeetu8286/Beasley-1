@@ -59,7 +59,7 @@ function greatermedia_scripts_styles() {
 		wp_enqueue_style( 'gm-styleguide', get_template_directory_uri() . "/assets/css/gm_styleguide{$postfix}.css", array(), GREATERMEDIA_VERSION );
 	} else {
 		wp_enqueue_script( 'greatermedia', get_template_directory_uri() . "/assets/js/greater_media{$postfix}.js", array( 'jquery' ), GREATERMEDIA_VERSION, true );
-		wp_enqueue_style( 'greatermedia', get_template_directory_uri() . "/assets/css/greater_media{$postfix}.css", array(), GREATERMEDIA_VERSION );
+		wp_enqueue_style( 'greatermedia', get_template_directory_uri() . "/assets/css/greater_media{$postfix}.css", array( 'dashicons' ), GREATERMEDIA_VERSION );
 	}
 }
 
@@ -80,3 +80,28 @@ add_action( 'wp_head', 'greatermedia_header_meta' );
  * Add theme support for post-formats
  */
 add_theme_support( 'post-formats', array( 'aside', 'gallery', 'link', 'image', 'video', 'audio' ) );
+
+function greatermedia_post_formats() {
+
+	global $post;
+	$post_id = $post->ID;
+
+	if ( has_post_format( 'aside', $post_id ) ) {
+		$format = '<div class="article-type--aside">aside</div>';
+	} elseif ( has_post_format( 'gallery', $post_id ) ) {
+		$format = '<div class="article-type--gallery">gallery</div>';
+	} elseif ( has_post_format( 'link', $post_id ) ) {
+		$format = '<div class="article-type--link">link</div>';
+	} elseif ( has_post_format( 'image', $post_id ) ) {
+		$format = '<div class="article-type--image">image</div>';
+	} elseif ( has_post_format( 'video', $post_id ) ) {
+		$format = '<div class="article-type--video">video</div>';
+	} elseif ( has_post_format( 'audio', $post_id ) ) {
+		$format = '<div class="article-type--audio">audio</div>';
+	} else {
+		$format = '<div class="article-type--standard">standard</div>';
+	}
+
+	echo $format;
+
+}
