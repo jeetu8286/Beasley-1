@@ -73,6 +73,14 @@
 	text-transform: uppercase;
 }
 
+.article-comments--count {
+	@include padding(null null null 5px);
+	@include margin(null null null 3px);
+	@include border-color(null null null dark-gray);
+	@include border-style(null null null solid);
+	@include border-width(null null null 1px);
+}
+
 .single-title, .page-title, .entry-title {
 	@include margin(.5em 0);
 }
@@ -97,6 +105,10 @@
 .entry-content {
 	@include padding(1.5em 0);
 	font-family: $serif;
+}
+
+.read-more--btn{
+	@include btn(red, white, 1em, 1.5em, em(14px));
 }
 
 .pagination {

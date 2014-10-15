@@ -31,7 +31,7 @@ img {
 	@include span-columns(4);
 	@include padding(null .5em);
 	@include media($mobile){
-		@include span-columns(4);
+		@include span-columns(6);
 	}
 	@include media($tablet){
 		@include span-columns(6);
@@ -46,11 +46,11 @@ img {
 	@include span-columns(4);
 	@include padding(null .5em);
 	@include media($mobile){
-		@include span-columns(2);
-		@include omega;
+		@include span-columns(6);
 	}
 	@include media($tablet){
 		@include span-columns(2);
+		@include omega;
 	}
 	@include media($desktop){
 		@include span-columns(4);

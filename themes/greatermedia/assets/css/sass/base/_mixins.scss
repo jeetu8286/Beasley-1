@@ -26,6 +26,6 @@
 		background-color: darken(color($bgcolor), 9%);
 	}
 	&:last-of-type{
-		@include margin(0);
+		@include margin(null 0 null null);
 	}
 }

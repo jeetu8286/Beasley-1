@@ -87,21 +87,34 @@ function greatermedia_post_formats() {
 	$post_id = $post->ID;
 
 	if ( has_post_format( 'aside', $post_id ) ) {
-		$format = '<div class="article-type--aside">aside</div>';
+		$format = 'aside';
 	} elseif ( has_post_format( 'gallery', $post_id ) ) {
-		$format = '<div class="article-type--gallery">gallery</div>';
+		$format = 'gallery';
 	} elseif ( has_post_format( 'link', $post_id ) ) {
-		$format = '<div class="article-type--link">link</div>';
+		$format = 'link';
 	} elseif ( has_post_format( 'image', $post_id ) ) {
-		$format = '<div class="article-type--image">image</div>';
+		$format = 'image';
 	} elseif ( has_post_format( 'video', $post_id ) ) {
-		$format = '<div class="article-type--video">video</div>';
+		$format = 'video';
 	} elseif ( has_post_format( 'audio', $post_id ) ) {
-		$format = '<div class="article-type--audio">audio</div>';
+		$format = 'audio';
 	} else {
-		$format = '<div class="article-type--standard">standard</div>';
+		$format = 'standard';
 	}
 
 	echo $format;
 
 }
+
+/**
+ * add a 'read more' link to the bottom of the excerpt
+ *
+ * @param $more
+ *
+ * @return string
+ */
+function new_excerpt_more( $more ) {
+	return '<div class="read-more"><a href="' . get_permalink( get_the_ID() ) . '" class="read-more--btn">' . __( 'Read More', 'your-text-domain' ) . '</a></div>';
+}
+
+add_filter( 'excerpt_more', 'new_excerpt_more' );

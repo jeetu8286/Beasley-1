@@ -15,23 +15,25 @@
 // Font Icons: Font-Awesome
 @import url(//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css);
 
+// Base Variables
+$base-font-size: em(16px);
 $base-line-height: em(24px);
 
 // Global font sizes based on breakpoints
 body{
 	line-height: $base-line-height;
-	font-size: 80%;
+	font-size: modular-scale($base-font-size, -3, $minor-second);
 	font-family: $sans-serif;
 	color: $text-color;
 	-webkit-font-smoothing: antialiased;
 	@include media($mobile){
-		font-size: 85%;
+		font-size: modular-scale($base-font-size, -2, $minor-second);
 	}
 	@include media($tablet){
-		font-size: 90%;
+		font-size: modular-scale($base-font-size, -1,  $minor-second);
 	}
 	@include media($desktop){
-		font-size: 100%;
+		font-size: modular-scale($base-font-size, 1, $minor-second);
 	}
 }
 
