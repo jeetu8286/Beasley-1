@@ -565,23 +565,23 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
   font-weight: lighter; }
 
 h1, .h1 {
-  font-size: 36.49116px; }
+  font-size: 2.2807em; }
 
 h2, .h2 {
-  font-size: 32.43658px; }
+  font-size: 2.02729em; }
 
 h3, .h3 {
-  font-size: 28.83252px; }
+  font-size: 1.80203em; }
 
 h4, .h4 {
-  font-size: 25.62891px; }
+  font-size: 1.60181em; }
 
 h5, .h5 {
-  font-size: 22.78125px;
+  font-size: 1.42383em;
   letter-spacing: 2px; }
 
 h6, .h6 {
-  font-size: 20.25px;
+  font-size: 1.26563em;
   letter-spacing: 2px; }
 
 a:link, a:visited {
@@ -620,7 +620,7 @@ p {
 .article-type--aside, .article-type--gallery, .article-type--link, .article-type--image, .article-type--video, .article-type--audio, .article-type--standard {
   position: relative;
   padding-left: 1.875em;
-  font-size: 12.64198px;
+  font-size: 0.79012em;
   text-transform: uppercase; }
 
 .article-type--aside:before, .article-type--gallery:before, .article-type--link:before, .article-type--image:before, .article-type--video:before, .article-type--audio:before, .article-type--standard:before {
@@ -628,7 +628,7 @@ p {
   top: 0;
   left: 0;
   font-family: dashicons;
-  font-size: 16px;
+  font-size: 1em;
   color: #d32329; }
 
 .article-type--aside:before {
@@ -653,7 +653,7 @@ p {
   content: "\f109"; }
 
 .byline {
-  font-size: 11.23731px;
+  font-size: 0.70233em;
   color: #888888;
   text-transform: uppercase; }
 
@@ -694,7 +694,7 @@ p {
 
 .pagination {
   width: 100%;
-  font-size: 14.22222px; }
+  font-size: 0.88889em; }
 
 .pagination-previous {
   width: 50%;
@@ -723,7 +723,7 @@ blockquote:before {
   margin-right: 0.25em;
   color: #f5f5f5;
   content: open-quote;
-  font-size: 65.75825px;
+  font-size: 4.10989em;
   line-height: 0.1em;
   vertical-align: -0.25em; }
 
@@ -766,7 +766,7 @@ pre {
   border-bottom-left-radius: 0.25em;
   background: #f5f5f5;
   color: #000000;
-  font-size: 14.22222px; }
+  font-size: 0.88889em; }
 
 .wp-caption {
   max-width: 100%;
@@ -782,7 +782,7 @@ pre {
 .wp-caption p.wp-caption-text {
   padding: 1em 1.25em 1.25em;
   padding: 0.25em 0.5em;
-  font-size: 12.64198px;
+  font-size: 0.79012em;
   text-align: left; }
 
 /**

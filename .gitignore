@@ -16,3 +16,4 @@ npm-debug.log
 .DS_Store
 plugins/gears
 plugins/gravityforms
+atlassian-ide-plugin.xml

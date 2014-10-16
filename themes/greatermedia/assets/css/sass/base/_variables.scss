@@ -8,8 +8,8 @@
 // @type String
 //
 $colors: (
-	text: #000000,
-	base: #ffffff,
+	black: #000000,
+	white: #ffffff,
 	light-gray: #f5f5f5,
 	soft-gray: #eeeeee,
 	medium-gray: #dddddd,
@@ -23,7 +23,7 @@ $colors: (
 // @author Allen Moore
 // @since 0.1.0
 //
-$text-color: color(text);
+$text-color: color(black);
 
 $link-color: color(red);
 $link-hover: color(gray);
@@ -31,7 +31,7 @@ $link-hover: color(gray);
 $border-color: color(soft-gray);
 $dark-border-color: color(dark-gray);
 
-$nav-link-color: color(base);
+$nav-link-color: color(white);
 
 /*********************
 Misc

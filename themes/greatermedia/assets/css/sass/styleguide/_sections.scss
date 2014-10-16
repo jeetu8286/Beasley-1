@@ -39,7 +39,7 @@
 }
 
 .sg-btn {
-	@include btn(red, base, 1em, 1.5em, .875em);
+	@include btn(red, white, 1em, 1.5em, .875em);
 }
 
 .sg-colors-table {
@@ -88,11 +88,11 @@
 .sg-color {
 	@include size(13% 80px);
 	display: table-cell;
-	color: color(base);
+	color: color(white);
 }
 
 .color-black {
-	background-color: color(text);
+	background-color: color(black);
 }
 
 .color-dark-gray {
@@ -116,7 +116,7 @@
 }
 
 .color-white {
-	background-color: color(base);
+	background-color: color(white);
 }
 
 .sg-color-swatch {
@@ -138,9 +138,8 @@
 	@include padding(.25em 5px);
 	@include transition(all .5s ease);
 	opacity: 0;
-	background-color: color(text);
-	font-size: rem(10px);
-	font-weight: bold;
+	background-color: color(black);
+	font-size: ms(-3);
 }
 
 .sg-typography {
