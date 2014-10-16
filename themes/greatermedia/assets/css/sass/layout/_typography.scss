@@ -96,7 +96,7 @@ h6, .h6, %h6 {
 }
 
 // Link styles
-a, a:visited {
+a:link, a:visited {
 	color: $link-color;
 	text-decoration: none;
 }

@@ -73,7 +73,7 @@
 .article-comments--count {
 	@include padding(null null null 5px);
 	@include margin(null null null 3px);
-	@include border-color(null null null dark-gray);
+	@include border-color(null null null color('dark-gray'));
 	@include border-style(null null null solid);
 	@include border-width(null null null 1px);
 }
@@ -105,7 +105,7 @@
 }
 
 .read-more--btn{
-	@include btn(red, white, 1em, 1.5em, em(14px));
+	@include btn(red, base, 1em, 1.5em, em(14px));
 }
 
 .pagination {
@@ -190,7 +190,7 @@ pre {
 	@include border-bottom-radius(em(4px));
 	@include border-left-radius(em(4px));
 	background: color(light-gray);
-	color: color(black);
+	color: color(text);
 	font-size: $ms-1;
 }
 
