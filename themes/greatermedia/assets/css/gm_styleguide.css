@@ -533,61 +533,47 @@ img {
   src: url("../fonts/playfair/playfair-bolditalic-webfont.eot");
   src: url("../fonts/playfair/playfair-bolditalic-webfont.eot?#iefix") format("embedded-opentype"), url("../fonts/playfair/playfair-bolditalic-webfont.woff") format("woff"), url("../fonts/playfair/playfair-bolditalic-webfont.ttf") format("truetype"), url("../fonts/playfair/playfair-bolditalic-webfont.svg#Playfair") format("svg"); }
 body {
-  line-height: 1.5em;
-  font-size: 0.8232em;
+  line-height: 2;
+  font-size: 80%;
   font-family: "OpenSans", sans-serif;
   color: color(black);
   -webkit-font-smoothing: antialiased; }
   @media screen and (min-width: 481px) {
     body {
-      font-size: 0.87836em; } }
+      font-size: 85%; } }
   @media screen and (min-width: 769px) {
     body {
-      font-size: 0.93721em; } }
+      line-height: 1.8;
+      font-size: 90%; } }
   @media screen and (min-width: 1201px) {
     body {
-      font-size: 1.067em; } }
+      line-height: 1.5;
+      font-size: 100%; } }
 
-/******************************************************************
-H1, H2, H3, H4, H5, H6 STYLES
-******************************************************************/
 h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
+  line-height: 1.5;
   font-family: "OpenSans", sans-serif;
   text-rendering: optimizelegibility;
-  font-weight: lighter;
-  /*
-  if you're going to use webfonts, be sure to check your weights
-  http://css-tricks.com/watch-your-font-weight/
-  */
-  /* removing text decoration from all headline links */ }
-  h1 a, .h1 a, h2 a, .h2 a, h3 a, .h3 a, h4 a, .h4 a, h5 a, .h5 a, h6 a, .h6 a {
-    text-decoration: none; }
+  font-weight: lighter; }
 
 h1, .h1 {
-  font-size: 2.5rem;
-  line-height: 1.1em; }
+  font-size: 36.49116px; }
 
 h2, .h2 {
-  font-size: 2.25rem;
-  line-height: 1.4em;
-  margin-bottom: 0.375em; }
+  font-size: 32.43658px; }
 
 h3, .h3 {
-  font-size: 1.75rem; }
+  font-size: 28.83252px; }
 
 h4, .h4 {
-  font-size: 1.5rem; }
+  font-size: 25.62891px; }
 
 h5, .h5 {
-  font-size: 1.25rem;
-  line-height: 2.09em;
-  text-transform: uppercase;
+  font-size: 22.78125px;
   letter-spacing: 2px; }
 
 h6, .h6 {
-  font-size: 1rem;
-  line-height: 2.09em;
-  text-transform: uppercase;
+  font-size: 20.25px;
   letter-spacing: 2px; }
 
 a, a:visited {
@@ -596,6 +582,9 @@ a, a:visited {
 
 a:hover, a:focus, a:active {
   color: color(gray); }
+
+p {
+  margin: 0 0 1.5em; }
 
 /**
  * Base Styles
@@ -1084,6 +1073,7 @@ pre {
   border-width: 0;
   outline: none;
   background-color: #dddddd;
+  font-family: "OpenSans", sans-serif;
   font-size: 0.875em;
   color: #333333;
   text-transform: uppercase; }

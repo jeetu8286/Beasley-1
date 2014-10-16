@@ -19,6 +19,7 @@
 	@include border-width(0);
 	outline: none;
 	background-color: color($bgcolor);
+	font-family: $sans-serif;
 	font-size: $font-size;
 	color: color($textcolor);
 	text-transform: uppercase;
