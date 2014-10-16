@@ -584,7 +584,7 @@ h6, .h6 {
   font-size: 20.25px;
   letter-spacing: 2px; }
 
-a, a:visited {
+a:link, a:visited {
   color: #d32329;
   text-decoration: none; }
 
@@ -660,7 +660,7 @@ p {
 .article-comments--count {
   padding-left: 5px;
   margin-left: 3px;
-  border-left-color: dark-gray;
+  border-left-color: #333333;
   border-left-style: solid;
   border-left-width: 1px; }
 
@@ -683,10 +683,12 @@ p {
   background-color: #d32329;
   font-family: "OpenSans", sans-serif;
   font-size: 0.875em;
-  color: #ffffff;
-  text-transform: uppercase; }
-  .read-more--btn:hover {
-    background-color: #ac1c21; }
+  color: #ffffff !important;
+  text-transform: uppercase;
+  cursor: pointer; }
+  .read-more--btn:hover, .read-more--btn:focus {
+    background-color: #ac1c21;
+    color: #ffffff; }
   .read-more--btn:last-of-type {
     margin-right: 0; }
 
