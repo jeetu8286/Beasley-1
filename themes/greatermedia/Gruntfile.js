@@ -78,7 +78,9 @@ module.exports = function( grunt ) {
 			all: {
 				files: {
 					'assets/css/greater_media.css': 'assets/css/sass/greater_media.scss',
-					'assets/css/gm_styleguide.css': 'assets/css/sass/gm_styleguide.scss'
+					'assets/css/gm_styleguide.css': 'assets/css/sass/gm_styleguide.scss',
+					'assets/css/gm_admin.css': 'assets/css/sass/gm_admin.scss',
+					'assets/css/gm_tinymce.css': 'assets/css/sass/gm_tinymce.scss'
 				}
 			}
 		},
@@ -95,7 +97,7 @@ module.exports = function( grunt ) {
 				expand: true,
 
 				cwd: 'assets/css/',
-				src: ['greater_media.css','gm_styleguide.css'],
+				src: ['greater_media.css','gm_styleguide.css','gm_admin.css','gm_tinymce.css'],
 
 				dest: 'assets/css/',
 				ext: '.min.css'
