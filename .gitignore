@@ -8,3 +8,4 @@ upgrade/
 .idea
 debug.log
 .DS_Store
+atlassian-ide-plugin.xml

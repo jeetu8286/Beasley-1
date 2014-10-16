@@ -4,7 +4,7 @@
 	@include box-sizing(border-box);
 	@include padding(7px 6px);
 	@include transition(all 500ms ease-in-out);
-	background-color: color(text);
+	background-color: color(black);
 	cursor: pointer;
 	z-index: 2;
 }
@@ -15,7 +15,7 @@
 	@include transition(all 500ms ease-in-out);
 	display: block;
 	border-radius: 1px;
-	background: color(base);
+	background: color(white);
 	content: '';
 	&:before {
 		@include position(absolute, -6px null null null);
@@ -23,7 +23,7 @@
 		@include transition(all 500ms ease-in-out);
 		display: block;
 		border-radius: 1px;
-		background: color(base);
+		background: color(white);
 		content: '';
 	}
 	&:after {
@@ -32,7 +32,7 @@
 		@include transition(all 500ms ease-in-out);
 		display: block;
 		border-radius: 1px;
-		background: color(base);
+		background: color(white);
 		content: '';
 	}
 }
@@ -47,7 +47,7 @@
 	@include position(fixed, 0 null null -90%);
 	@include size(90% 100%);
 	@include transition(all 500ms ease-in-out);
-	background-color: color(text);
+	background-color: color(black);
 	z-index: 1;
 	@include media($mobile){
 		@include position(null, null null null em(-200px));
@@ -68,13 +68,13 @@
 .sg-nav-list-item {
 	list-style: none;
 	@include padding(0);
-	font-size: rem(12px);
+	font-size: ms(-2);
 	text-transform: uppercase;
 }
 .sg-nav-list-item a:link, .sg-nav-list-item a:visited {
 	@include display(block);
 	@include size(100% null);
-	color: color(base);
+	color: color(white);
 }
 .sg-nav-list-item a:hover, .sg-nav-list-item a:active {
 	color: color(gray);
@@ -85,7 +85,7 @@
 }
 
 .sg-subnav-list .sg-nav-list-item {
-	font-size: rem(14px);
+	font-size: ms(-2);
 }
 
 /**
