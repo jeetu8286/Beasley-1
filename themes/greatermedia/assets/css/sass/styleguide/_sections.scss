@@ -43,14 +43,38 @@
 }
 
 .sg-colors-table {
-	@include span-columns(12);
+	@include span-columns(4);
 	@include margin(1em null 1em);
 	@include display(table);
+	@include media($mobile){
+		@include span-columns(6);
+		@include display(table);
+	}
+	@include media($tablet){
+		@include span-columns(8);
+		@include display(table);
+	}
+	@include media($desktop){
+		@include span-columns(12);
+		@include display(table);
+	}
 }
 
 .sg-markup-controls, .sg-source {
-	@include span-columns(12);
+	@include span-columns(4);
 	@include margin(1em null 1em);
+	@include media($mobile){
+		@include span-columns(6);
+		@include display(table);
+	}
+	@include media($tablet){
+		@include span-columns(8);
+		@include display(table);
+	}
+	@include media($desktop){
+		@include span-columns(12);
+		@include display(table);
+	}
 }
 
 .sg-source {
