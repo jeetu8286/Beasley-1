@@ -575,7 +575,7 @@ h6, .h6 {
   font-size: 20.25px;
   letter-spacing: 2px; }
 
-a, a:visited {
+a:link, a:visited {
   color: #d32329;
   text-decoration: none; }
 
@@ -828,13 +828,15 @@ body {
   margin-right: 0.5em;
   border-width: 0;
   outline: none;
-  background-color: #dddddd;
+  background-color: #d32329;
   font-family: "OpenSans", sans-serif;
   font-size: 0.875em;
-  color: #333333;
-  text-transform: uppercase; }
-  .sg-btn:hover {
-    background-color: #c6c6c6; }
+  color: #ffffff !important;
+  text-transform: uppercase;
+  cursor: pointer; }
+  .sg-btn:hover, .sg-btn:focus {
+    background-color: #ac1c21;
+    color: #ffffff; }
   .sg-btn:last-of-type {
     margin-right: 0; }
 

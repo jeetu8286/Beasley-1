@@ -20,7 +20,7 @@
 }
 
 .sg-subsection-title {
-	color: color(meta-gray);
+	color: color(medium-gray);
 	text-transform: uppercase;
 }
 
@@ -35,11 +35,11 @@
 	@include position(relative, null null null null);
 	@include size(null 100%);
 	@include padding(null null 2em null);
-	border-bottom: 1px solid color(meta-gray);
+	border-bottom: 1px solid color(medium-gray);
 }
 
 .sg-btn {
-	@include btn(meta-gray, dark-gray, 1em, 1.5em, .875em);
+	@include btn(red, base, 1em, 1.5em, .875em);
 }
 
 .sg-colors-table {
@@ -88,11 +88,11 @@
 .sg-color {
 	@include size(13% 80px);
 	display: table-cell;
-	color: color(white);
+	color: color(base);
 }
 
 .color-black {
-	background-color: color(black);
+	background-color: color(text);
 }
 
 .color-dark-gray {
@@ -104,7 +104,7 @@
 }
 
 .color-meta-gray {
-	background-color: color(meta-gray);
+	background-color: color(medium-gray);
 }
 
 .color-soft-gray {
@@ -116,7 +116,7 @@
 }
 
 .color-white {
-	background-color: color(white);
+	background-color: color(base);
 }
 
 .sg-color-swatch {
@@ -138,7 +138,7 @@
 	@include padding(.25em 5px);
 	@include transition(all .5s ease);
 	opacity: 0;
-	background-color: color(black);
+	background-color: color(text);
 	font-size: rem(10px);
 	font-weight: bold;
 }
@@ -151,7 +151,7 @@
 }
 
 .sg-typography-title {
-	color: color(meta-gray);
+	color: color(medium-gray);
 	text-transform: uppercase;
 }
 

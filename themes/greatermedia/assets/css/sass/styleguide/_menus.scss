@@ -4,7 +4,7 @@
 	@include box-sizing(border-box);
 	@include padding(7px 6px);
 	@include transition(all 500ms ease-in-out);
-	background-color: color(black);
+	background-color: color(text);
 	cursor: pointer;
 	z-index: 2;
 }
@@ -15,7 +15,7 @@
 	@include transition(all 500ms ease-in-out);
 	display: block;
 	border-radius: 1px;
-	background: color(white);
+	background: color(base);
 	content: '';
 	&:before {
 		@include position(absolute, -6px null null null);
@@ -23,7 +23,7 @@
 		@include transition(all 500ms ease-in-out);
 		display: block;
 		border-radius: 1px;
-		background: color(white);
+		background: color(base);
 		content: '';
 	}
 	&:after {
@@ -32,7 +32,7 @@
 		@include transition(all 500ms ease-in-out);
 		display: block;
 		border-radius: 1px;
-		background: color(white);
+		background: color(base);
 		content: '';
 	}
 }
@@ -47,7 +47,7 @@
 	@include position(fixed, 0 null null -90%);
 	@include size(90% 100%);
 	@include transition(all 500ms ease-in-out);
-	background-color: color(black);
+	background-color: color(text);
 	z-index: 1;
 	@include media($mobile){
 		@include position(null, null null null em(-200px));
@@ -62,7 +62,7 @@
 .sg-nav-list {
 	@include padding(0 1em);
 	list-style: none;
-	color: color(meta-gray);
+	color: color(medium-gray);
 }
 
 .sg-nav-list-item {
@@ -74,7 +74,7 @@
 .sg-nav-list-item a:link, .sg-nav-list-item a:visited {
 	@include display(block);
 	@include size(100% null);
-	color: color(white);
+	color: color(base);
 }
 .sg-nav-list-item a:hover, .sg-nav-list-item a:active {
 	color: color(gray);
