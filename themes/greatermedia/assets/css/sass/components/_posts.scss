@@ -1,8 +1,5 @@
 .hentry {
-	@include margin(null null 2em null);
-	@include border-color(color(light-gray));
-	@include border-style(null null solid null);
-	@include border-width(null null em(1px) null);
+	@include margin(null null 1em null);
 }
 
 .article-types {
@@ -158,10 +155,6 @@ blockquote p {
 	display: inline;
 	font-style: italic;
 	color: color(dark-gray);
-}
-
-p {
-	@include margin(0 0 1.5em 0);
 }
 
 .alignleft, img.alignleft {
