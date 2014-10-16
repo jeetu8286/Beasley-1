@@ -12,13 +12,13 @@
 // Anything that doesn't print out CSS along with normalize and fonts
 @import "base/variables";
 @import "base/normalize";
+@import "base/breakpoints";
 @import "base/mixins";
 @import "base/placeholders";
-@import "base/fonts";
-@import "base/grid";
-@import "base/breakpoints";
 @import "base/functions";
 @import "base/helpers";
+@import "base/fonts";
+@import "base/grid";
 
 // Main layout components: menu, typography, etc.
 @import "layout/typography";
