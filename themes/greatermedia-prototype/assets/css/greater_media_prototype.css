@@ -106,3 +106,6 @@ article {
     color: orange;
     text-shadow: 1px 1px 0px rgba(153, 99, 0, 0.6);
     vertical-align: middle; }
+
+.register, .login {
+  visibility: hidden; }
