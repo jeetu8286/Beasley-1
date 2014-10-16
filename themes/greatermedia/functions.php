@@ -19,6 +19,7 @@ define( 'GREATERMEDIA_VERSION', '0.1.0' );
  * Required files
  */
 require_once( __DIR__ . '/includes/class-post-styles.php' );
+require_once( __DIR__ . '/includes/gm-tinymce/loader.php');
 
 /**
  * Set up theme defaults and register supported WordPress features.
