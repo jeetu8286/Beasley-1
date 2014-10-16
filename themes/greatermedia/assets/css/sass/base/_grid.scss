@@ -1,7 +1,59 @@
 // global grid variables
 $column: golden-ratio(1em, 4) !global;
 $gutter: golden-ratio(1em, 2) !global;
-$grid-columns: 12 !global;
+$grid-columns: 4 !global; // this will give us a mobile first approach
+
+// add the visual grid for dev purposes
+$visual-grid: true !global;
+$visual-grid-color: #6e76ee !global;
+$visual-grid-index: front !global;
 
 // max-width for the site
 $max-width: em(1200) !global;
+
+// simple css effect to make images responsive and fluid while also retaining proper aspect ration
+img {
+	max-width: 100%;
+	@include display(block); // block display will remove additional padding on images
+	@include size(null auto); // this will keep images from being stretched at lower resolutions
+}
+
+.container, %container {
+	@include outer-container;
+}
+
+.main, %main {
+	@include size(100% null);
+	@include padding(2em 0);
+}
+
+.content {
+	@include span-columns(4);
+	@include padding(null .5em);
+	@include media($mobile){
+		@include span-columns(6);
+	}
+	@include media($tablet){
+		@include span-columns(6);
+	}
+	@include media($desktop){
+		@include span-columns(8);
+		@include padding(null 0);
+	}
+}
+
+.sidebar {
+	@include span-columns(4);
+	@include padding(null .5em);
+	@include media($mobile){
+		@include span-columns(6);
+	}
+	@include media($tablet){
+		@include span-columns(2);
+		@include omega;
+	}
+	@include media($desktop){
+		@include span-columns(4);
+		@include padding(null 0);
+	}
+}

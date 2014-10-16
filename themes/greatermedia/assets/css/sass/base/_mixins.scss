@@ -19,13 +19,16 @@
 	@include border-width(0);
 	outline: none;
 	background-color: color($bgcolor);
+	font-family: $sans-serif;
 	font-size: $font-size;
-	color: color($textcolor);
+	color: color($textcolor) !important;
 	text-transform: uppercase;
-	&:hover{
+	cursor: pointer;
+	&:hover, &:focus {
 		background-color: darken(color($bgcolor), 9%);
+		color: color($textcolor);
 	}
 	&:last-of-type{
-		@include margin(0);
+		@include margin(null 0 null null);
 	}
 }

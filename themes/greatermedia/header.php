@@ -44,3 +44,6 @@
 		</head>
 
 		<body <?php body_class(); ?>>
+			<header id="header" class="header" role="banner">
+
+			</header>

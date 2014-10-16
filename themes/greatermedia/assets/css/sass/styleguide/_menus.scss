@@ -62,13 +62,13 @@
 .sg-nav-list {
 	@include padding(0 1em);
 	list-style: none;
-	color: color(meta-gray);
+	color: color(medium-gray);
 }
 
 .sg-nav-list-item {
 	list-style: none;
 	@include padding(0);
-	font-size: rem(12px);
+	font-size: ms(-2);
 	text-transform: uppercase;
 }
 .sg-nav-list-item a:link, .sg-nav-list-item a:visited {
@@ -85,7 +85,7 @@
 }
 
 .sg-subnav-list .sg-nav-list-item {
-	font-size: rem(14px);
+	font-size: ms(-2);
 }
 
 /**
