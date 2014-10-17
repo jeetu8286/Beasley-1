@@ -11,7 +11,9 @@
 		body = document.querySelectorAll('body'),
 		$body = $(body),
 		toggleButton = document.querySelectorAll('.gmlp-nav-toggle'),
-		$toggleButton = $(toggleButton);
+		$toggleButton = $(toggleButton),
+		playButton = $('#playButton'),
+		pauseButton = $('#pauseButton');
 
 	// function to toggle a class when the player button is clicked
 	function togglePlayer(){
@@ -24,4 +26,24 @@
 		togglePlayer();
 	});
 
+	playButton.on('click', function(event) {
+		/* Stuff to do every *odd* time the element is clicked */
+		event.preventDefault();
+		// add gif file for testing
+		$('#trackInfo').html('<div><img src="http://coolchaser-static.coolchaser.com/images/themes/t/188000-i175.photobucket.com-albums-w144-XslayerXpac-equalizer.gif" alt=""></div>');
+		// call pjax to update container
+		$(document).pjax('a:not(.ab-item)', '#container', {'fragment': '#container'})
+		playButton.hide();
+		pauseButton.show();
+	});
+
+	pauseButton.on('click', function(event) {
+		/* Stuff to do every *odd* time the element is clicked */
+		event.preventDefault();
+		// add gif file for testing
+		$('#trackInfo').html('');
+		pauseButton.hide();
+		playButton.show();
+	});
+	
 } )(jQuery,window);
