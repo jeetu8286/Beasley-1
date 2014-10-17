@@ -1,3 +1,108 @@
 /**
- * Menu Styles
+ * When the Nav Toggle is clicked, a body class is added.
+ * When the body classes of `mobile-nav--open` is added to the body
+ * the Style Guide off-canvas nav will slide from the left and the toggle
+ * button will slide over to accommodate the nav.
  */
+.mobile-nav--toggle {
+	@include position(fixed, 2em 0 0 1em);
+	@include transform(translate(10px, 0));
+	@include size(2em 2em);
+	@include box-sizing(border-box);
+	@include padding(0);
+	@include transition(all 500ms ease-in-out);
+	background-color: color(black);
+	cursor: pointer;
+	z-index: 2;
+}
+
+.mobile-nav--toggle--span {
+	@include position(absolute, 14px null null null);
+	@include display(block);
+	@include size(em(32px) 4px);
+	@include transition(all 500ms ease-in-out);
+	@include border-top-radius(4px);
+	@include border-right-radius(4px);
+	@include border-bottom-radius(4px);
+	@include border-left-radius(4px);
+	background: color(gray);
+	content: '';
+}
+
+.mobile-nav--toggle--span:before {
+	@include position(absolute, -10px null null null);
+	@include display(block);
+	@include size(em(32px) 4px);
+	@include transition(all 500ms ease-in-out);
+	@include border-top-radius(4px);
+	@include border-right-radius(4px);
+	@include border-bottom-radius(4px);
+	@include border-left-radius(4px);
+	background: color(gray);
+	content: '';
+}
+
+.mobile-nav--toggle--span:after {
+	@include position(absolute, null null -10px null);
+	@include display(block);
+	@include size(em(32px) 4px);
+	@include transition(all 500ms ease-in-out);
+	@include border-top-radius(4px);
+	@include border-right-radius(4px);
+	@include border-bottom-radius(4px);
+	@include border-left-radius(4px);
+	background: color(gray);
+	content: '';
+}
+
+.mobile-nav {
+	@include position(fixed, 0 null null null);
+	@include size(90% 100%);
+	@include transform(translate(-100%, 0));
+	@include transition(all 500ms ease-in-out);
+	background-color: color(black);
+	z-index: 1;
+	@include bp(large) {
+		@include transform(translate(-200px, 0));
+		@include size(em(200px) 100%);
+	}
+}
+
+
+.mobile-nav--open {
+	overflow: hidden;
+}
+
+.mobile-nav--open .mobile-nav {
+	@include transform(translate(0, 0));
+}
+
+.mobile-nav--open .mobile-nav--toggle {
+	@include position(null, null null null 92%);
+	@include bp(large) {
+		@include position(null, null null null em(180px));
+	}
+}
+
+.mobile-nav--open .mobile-nav--toggle--span {
+	background-color: transparent;
+}
+
+.mobile-nav--open .mobile-nav--toggle--span:before {
+	@include position(null, 0 null null null);
+	@include transform(rotate(45deg));
+}
+
+.mobile-nav--open .mobile-nav--toggle--span:after {
+	@include position(null, 0 null null null);
+	@include transform(rotate(-45deg));
+}
+
+.mobile-nav--open .site-wrap{
+	@include transform(translate(90%, 0));
+	@include size(100% null);
+	@include transition(all 500ms ease-in-out);
+	@include bp(large){
+		@include transform(translate(200px, 0));
+	}
+}

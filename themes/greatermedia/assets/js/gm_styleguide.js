@@ -1,4 +1,4 @@
-/*! Greater Media - v0.1.0 - 2014-10-16
+/*! Greater Media - v0.1.0 - 2014-10-17
  * http://greatermedia.com
  * Copyright (c) 2014; * Licensed GPLv2+ */
 (function ($,window,undefined) {
@@ -10,14 +10,14 @@
 		$window = $(window),
 		body = document.querySelectorAll('body'),
 		$body = $(body),
-		sgToggleButton = document.querySelectorAll('#sg-nav-toggle'),
+		sgToggleButton = document.querySelectorAll('#sg-nav--toggle'),
 		$sgToggleButton = $(sgToggleButton),
 		$scrollToTop = $('.scroll-to-top');
 
 	// function to toggle a class when the menu button is clicked
 	function sgMenu(){
 		$sgToggleButton.click(function(){
-			$body.toggleClass('sg-nav-open');
+			$body.toggleClass('sg-nav--open');
 		});
 	}
 

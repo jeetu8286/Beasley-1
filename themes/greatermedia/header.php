@@ -44,6 +44,20 @@
 		</head>
 
 		<body <?php body_class(); ?>>
-			<header id="header" class="header" role="banner">
+			<div class="mobile-nav--toggle">
+				<div class="mobile-nav--toggle--span"></div>
+			</div>
+			<div class="mobile-nav">
 
-			</header>
+			</div>
+			<div class="site-wrap">
+				<header id="header" class="header" role="banner">
+					<div class="container">
+						<div class="header-nav--toggle">
+							<div class="header-nav--toggle--span"></div>
+						</div>
+						<div class="header-nav">
+
+						</div>
+					</div>
+				</header>

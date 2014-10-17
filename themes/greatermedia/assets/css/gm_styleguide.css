@@ -386,6 +386,18 @@ img {
   display: block;
   height: auto; }
 
+.site-wrap {
+  -webkit-transform: translate(0, 0);
+  -moz-transform: translate(0, 0);
+  -ms-transform: translate(0, 0);
+  -o-transform: translate(0, 0);
+  transform: translate(0, 0);
+  width: 100%;
+  -webkit-transition: all 500ms ease-in-out;
+  -moz-transition: all 500ms ease-in-out;
+  transition: all 500ms ease-in-out;
+  overflow-y: hidden; }
+
 .container {
   max-width: 75em;
   margin-left: auto;
