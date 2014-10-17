@@ -673,7 +673,7 @@ blockquote p {
   font-size: 0.79012em;
   text-align: left; }
 
-.sg-nav-toggle {
+.sg-nav--toggle {
   position: fixed;
   top: 1em;
   right: 0;
@@ -692,7 +692,7 @@ blockquote p {
   cursor: pointer;
   z-index: 2; }
 
-.sg-nav-toggle-span {
+.sg-nav--toggle--span {
   position: absolute;
   top: 14px;
   height: 1px;
@@ -704,32 +704,34 @@ blockquote p {
   border-radius: 1px;
   background: #ffffff;
   content: ''; }
-  .sg-nav-toggle-span:before {
-    position: absolute;
-    top: -6px;
-    height: 1px;
-    width: 1.25em;
-    -webkit-transition: all 500ms ease-in-out;
-    -moz-transition: all 500ms ease-in-out;
-    transition: all 500ms ease-in-out;
-    display: block;
-    border-radius: 1px;
-    background: #ffffff;
-    content: ''; }
-  .sg-nav-toggle-span:after {
-    position: absolute;
-    bottom: -6px;
-    height: 1px;
-    width: 1.25em;
-    -webkit-transition: all 500ms ease-in-out;
-    -moz-transition: all 500ms ease-in-out;
-    transition: all 500ms ease-in-out;
-    display: block;
-    border-radius: 1px;
-    background: #ffffff;
-    content: ''; }
 
-.logged-in .sg-nav-toggle {
+.sg-nav--toggle--span:before {
+  position: absolute;
+  top: -6px;
+  height: 1px;
+  width: 1.25em;
+  -webkit-transition: all 500ms ease-in-out;
+  -moz-transition: all 500ms ease-in-out;
+  transition: all 500ms ease-in-out;
+  display: block;
+  border-radius: 1px;
+  background: #ffffff;
+  content: ''; }
+
+.sg-nav--toggle--span:after {
+  position: absolute;
+  bottom: -6px;
+  height: 1px;
+  width: 1.25em;
+  -webkit-transition: all 500ms ease-in-out;
+  -moz-transition: all 500ms ease-in-out;
+  transition: all 500ms ease-in-out;
+  display: block;
+  border-radius: 1px;
+  background: #ffffff;
+  content: ''; }
+
+.logged-in .sg-nav--toggle {
   position: fixed;
   top: 3em;
   right: 0;
@@ -753,38 +755,38 @@ blockquote p {
       height: 100%;
       width: 12.5em; } }
 
-.sg-nav-content {
+.sg-nav--content {
   max-width: 75em;
   margin-left: auto;
   margin-right: auto; }
-  .sg-nav-content:after {
+  .sg-nav--content:after {
     content: "";
     display: table;
     clear: both; }
 
-.sg-nav-list {
+.sg-nav--list {
   padding: 0 1em;
   list-style: none;
   color: #dddddd; }
 
-.sg-nav-list-item {
+.sg-nav--item {
   list-style: none;
   padding: 0;
   font-size: 0.79012em;
   text-transform: uppercase; }
 
-.sg-nav-list-item a:link, .sg-nav-list-item a:visited {
+.sg-nav--item a:link, .sg-nav--item a:visited {
   display: block;
   width: 100%;
   color: #ffffff; }
 
-.sg-nav-list-item a:hover, .sg-nav-list-item a:active {
+.sg-nav--item a:hover, .sg-nav--item a:active {
   color: #888888; }
 
-.sg-subnav-list {
+.sg-nav--sublist {
   padding-left: 1em; }
 
-.sg-subnav-list .sg-nav-list-item {
+.sg-nav--sublist .sg-nav--item {
   font-size: 0.79012em; }
 
 /**
@@ -793,23 +795,23 @@ blockquote p {
  * the Style Guide off-canvas nav will slide from the left and the toggle
  * button will slide over to accommodate the nav.
  */
-.sg-nav-open .sg-nav {
+.sg-nav--open .sg-nav {
   left: 0; }
-.sg-nav-open .sg-nav-toggle {
+.sg-nav--open .sg-nav--toggle {
   left: 79%; }
   @media screen and (min-width: 480px) {
-    .sg-nav-open .sg-nav-toggle {
+    .sg-nav--open .sg-nav--toggle {
       left: 11.25em; } }
-.sg-nav-open .sg-nav-toggle-span {
+.sg-nav--open .sg-nav--toggle--span {
   background-color: transparent; }
-  .sg-nav-open .sg-nav-toggle-span:before {
+  .sg-nav--open .sg-nav--toggle--span:before {
     top: 0;
     -webkit-transform: rotate(45deg);
     -moz-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
     -o-transform: rotate(45deg);
     transform: rotate(45deg); }
-  .sg-nav-open .sg-nav-toggle-span:after {
+  .sg-nav--open .sg-nav--toggle--span:after {
     top: 0;
     -webkit-transform: rotate(-45deg);
     -moz-transform: rotate(-45deg);
@@ -826,7 +828,7 @@ blockquote p {
   background-color: #dddddd;
   color: #000000; }
 
-.sg-header-title {
+.sg-header--title {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -874,11 +876,11 @@ blockquote p {
     .sg-sections {
       padding: 3em 0; } }
 
-.sg-section-title {
+.sg-section--title {
   color: #888888;
   text-transform: uppercase; }
 
-.sg-subsection-title {
+.sg-subsection--title {
   color: #dddddd;
   text-transform: uppercase; }
 
@@ -893,7 +895,7 @@ blockquote p {
     display: table;
     clear: both; }
 
-.sg-section-content {
+.sg-section--content {
   max-width: 75em;
   margin-left: auto;
   margin-right: auto;
@@ -901,7 +903,7 @@ blockquote p {
   height: 100%;
   padding-bottom: 2em;
   border-bottom: 1px solid #dddddd; }
-  .sg-section-content:after {
+  .sg-section--content:after {
     content: "";
     display: table;
     clear: both; }
@@ -923,7 +925,7 @@ blockquote p {
   .sg-btn:last-of-type {
     margin-right: 0; }
 
-.sg-colors-table {
+.sg-colors--table {
   float: left;
   display: block;
   margin-right: 7.42297%;
@@ -931,71 +933,71 @@ blockquote p {
   margin-top: 1em;
   margin-bottom: 1em;
   display: table; }
-  .sg-colors-table:last-child {
+  .sg-colors--table:last-child {
     margin-right: 0; }
   @media screen and (min-width: 480px) {
-    .sg-colors-table {
+    .sg-colors--table {
       float: left;
       display: block;
       margin-right: 4.82916%;
       width: 100%;
       display: table; }
-      .sg-colors-table:last-child {
+      .sg-colors--table:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 768px) {
-    .sg-colors-table {
+    .sg-colors--table {
       float: left;
       display: block;
       margin-right: 3.57866%;
       width: 100%;
       display: table; }
-      .sg-colors-table:last-child {
+      .sg-colors--table:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 1024px) {
-    .sg-colors-table {
+    .sg-colors--table {
       float: left;
       display: block;
       margin-right: 2.35765%;
       width: 100%;
       display: table; }
-      .sg-colors-table:last-child {
+      .sg-colors--table:last-child {
         margin-right: 0; } }
 
-.sg-markup-controls, .sg-source {
+.sg-markup--controls, .sg-source {
   float: left;
   display: block;
   margin-right: 7.42297%;
   width: 100%;
   margin-top: 1em;
   margin-bottom: 1em; }
-  .sg-markup-controls:last-child, .sg-source:last-child {
+  .sg-markup--controls:last-child, .sg-source:last-child {
     margin-right: 0; }
   @media screen and (min-width: 480px) {
-    .sg-markup-controls, .sg-source {
+    .sg-markup--controls, .sg-source {
       float: left;
       display: block;
       margin-right: 4.82916%;
       width: 100%;
       display: table; }
-      .sg-markup-controls:last-child, .sg-source:last-child {
+      .sg-markup--controls:last-child, .sg-source:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 768px) {
-    .sg-markup-controls, .sg-source {
+    .sg-markup--controls, .sg-source {
       float: left;
       display: block;
       margin-right: 3.57866%;
       width: 100%;
       display: table; }
-      .sg-markup-controls:last-child, .sg-source:last-child {
+      .sg-markup--controls:last-child, .sg-source:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 1024px) {
-    .sg-markup-controls, .sg-source {
+    .sg-markup--controls, .sg-source {
       float: left;
       display: block;
       margin-right: 2.35765%;
       width: 100%;
       display: table; }
-      .sg-markup-controls:last-child, .sg-source:last-child {
+      .sg-markup--controls:last-child, .sg-source:last-child {
         margin-right: 0; } }
 
 .sg-source {
@@ -1031,16 +1033,16 @@ blockquote p {
 .color-white {
   background-color: #ffffff; }
 
-.sg-color-swatch {
+.sg-color--swatch {
   display: block;
   position: relative;
   height: 100%;
   width: 100%;
   cursor: pointer; }
-  .sg-color-swatch:hover span {
+  .sg-color--swatch:hover span {
     opacity: 1; }
 
-.sg-color-variable {
+.sg-color--variable {
   display: block;
   position: absolute;
   bottom: 0;
@@ -1060,20 +1062,20 @@ blockquote p {
   background-color: #f5f5f5;
   text-align: center; }
 
-.sg-typography-title {
+.sg-typography--title {
   color: #dddddd;
   text-transform: uppercase; }
 
-.sg-typography-serif {
+.sg-typography--serif {
   font-family: "Playfair", serif; }
 
-.sg-typography-light {
+.sg-typography--light {
   font-weight: lighter; }
 
-.sg-typography-bold {
+.sg-typography--bold {
   font-weight: bold; }
 
-.sg-typography-italic {
+.sg-typography--italic {
   font-style: italic; }
 
 /* Tomorrow Night Bright Theme */

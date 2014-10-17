@@ -17,12 +17,12 @@
 	}
 }
 
-.sg-section-title {
+.sg-section--title {
 	color: color(gray);
 	text-transform: uppercase;
 }
 
-.sg-subsection-title {
+.sg-subsection--title {
 	color: color(medium-gray);
 	text-transform: uppercase;
 }
@@ -33,7 +33,7 @@
 	@include size(null 100%);
 }
 
-.sg-section-content {
+.sg-section--content {
 	@include outer-container;
 	@include position(relative, null null null null);
 	@include size(null 100%);
@@ -45,7 +45,7 @@
 	@include btn(red, white, 1em, 1.5em, .875em);
 }
 
-.sg-colors-table {
+.sg-colors--table {
 	@include span-columns(4);
 	@include margin(1em null 1em);
 	@include display(table);
@@ -63,7 +63,7 @@
 	}
 }
 
-.sg-markup-controls, .sg-source {
+.sg-markup--controls, .sg-source {
 	@include span-columns(4);
 	@include margin(1em null 1em);
 	@include bp(small){
@@ -122,7 +122,7 @@
 	background-color: color(white);
 }
 
-.sg-color-swatch {
+.sg-color--swatch {
 	@include display(block);
 	@include position(relative, null null null null);
 	@include size(100% 100%);
@@ -134,7 +134,7 @@
 	}
 }
 
-.sg-color-variable {
+.sg-color--variable {
 	@include display(block);
 	@include position(absolute, null null 0 0);
 	@include size(100% null);
@@ -152,23 +152,23 @@
 	text-align: center;
 }
 
-.sg-typography-title {
+.sg-typography--title {
 	color: color(medium-gray);
 	text-transform: uppercase;
 }
 
-.sg-typography-serif {
+.sg-typography--serif {
 	font-family: $serif;
 }
 
-.sg-typography-light {
+.sg-typography--light {
 	font-weight: lighter;
 }
 
-.sg-typography-bold {
+.sg-typography--bold {
 	font-weight: bold;
 }
 
-.sg-typography-italic {
+.sg-typography--italic {
 	font-style: italic;
 }
