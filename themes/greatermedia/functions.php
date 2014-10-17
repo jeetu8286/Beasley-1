@@ -36,6 +36,9 @@ function greatermedia_setup() {
 	 * to change 'greatermedia' to the name of your theme in all template files.
 	 */
 	load_theme_textdomain( 'greatermedia', get_template_directory() . '/languages' );
+
+	// theme support
+	add_theme_support( 'post-formats', array( 'link', 'video', 'audio' ) );
 }
 
 add_action( 'after_setup_theme', 'greatermedia_setup' );
