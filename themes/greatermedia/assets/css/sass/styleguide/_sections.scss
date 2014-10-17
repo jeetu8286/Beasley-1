@@ -3,13 +3,16 @@
  */
 .sg-sections {
 	@include padding(1em);
-	@include media($mobile){
+	@include bp(small){
 		@include padding(1.5em null);
 	}
-	@include media($tablet){
+	@include bp(medium){
 		@include padding(2em null);
 	}
-	@include media($desktop){
+	@include bp(large){
+		@include padding(2.5em 0);
+	}
+	@include bp(x-large){
 		@include padding(3em 0);
 	}
 }
@@ -46,15 +49,15 @@
 	@include span-columns(4);
 	@include margin(1em null 1em);
 	@include display(table);
-	@include media($mobile){
+	@include bp(small){
 		@include span-columns(6);
 		@include display(table);
 	}
-	@include media($tablet){
+	@include bp(medium){
 		@include span-columns(8);
 		@include display(table);
 	}
-	@include media($desktop){
+	@include bp(large){
 		@include span-columns(12);
 		@include display(table);
 	}
@@ -63,15 +66,15 @@
 .sg-markup-controls, .sg-source {
 	@include span-columns(4);
 	@include margin(1em null 1em);
-	@include media($mobile){
+	@include bp(small){
 		@include span-columns(6);
 		@include display(table);
 	}
-	@include media($tablet){
+	@include bp(medium){
 		@include span-columns(8);
 		@include display(table);
 	}
-	@include media($desktop){
+	@include bp(large){
 		@include span-columns(12);
 		@include display(table);
 	}
