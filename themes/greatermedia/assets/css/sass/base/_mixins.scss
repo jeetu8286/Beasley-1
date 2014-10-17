@@ -32,3 +32,32 @@
 		@include margin(null 0 null null);
 	}
 }
+
+// This function is calling a breakpoint value, defined as `$name`, from the `$breakpoints` array located in the
+// `_breakpoints.scss`.
+//
+// @example scss - BP Mixin
+// @include bp(small);
+//
+// @author Allen Moore
+// @access private
+// @since 0.1.0
+//
+// @param {Breakpoint Name} $name - name of the breakpoint to be called from `$breakpoints` array
+// @param {Breakpoints} $breakpoints - references the $breakpoints array located in `_breakpoints.scss`
+//
+// @content autofill
+//
+@mixin bp($name) {
+	@if not map-has-key($breakpoints, $name) {
+		@warn "Invalid breakpoint `#{$name}`.";
+	} @else {
+		@if map-get($breakpoints, $name) {
+			@include media(map-get($breakpoints, $name)){
+				@content;
+			}
+		} @else {
+			@content;
+		}
+	}
+}

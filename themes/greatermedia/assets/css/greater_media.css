@@ -416,7 +416,7 @@ img {
   padding-left: 0.5em; }
   .content:last-child {
     margin-right: 0; }
-  @media screen and (min-width: 481px) {
+  @media screen and (min-width: 480px) {
     .content {
       float: left;
       display: block;
@@ -424,7 +424,7 @@ img {
       width: 100%; }
       .content:last-child {
         margin-right: 0; } }
-  @media screen and (min-width: 769px) {
+  @media screen and (min-width: 768px) {
     .content {
       float: left;
       display: block;
@@ -432,7 +432,15 @@ img {
       width: 74.10533%; }
       .content:last-child {
         margin-right: 0; } }
-  @media screen and (min-width: 1201px) {
+  @media screen and (min-width: 1024px) {
+    .content {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 65.88078%; }
+      .content:last-child {
+        margin-right: 0; } }
+  @media screen and (min-width: 1200px) {
     .content {
       float: left;
       display: block;
@@ -452,7 +460,7 @@ img {
   padding-left: 0.5em; }
   .sidebar:last-child {
     margin-right: 0; }
-  @media screen and (min-width: 481px) {
+  @media screen and (min-width: 480px) {
     .sidebar {
       float: left;
       display: block;
@@ -460,7 +468,7 @@ img {
       width: 100%; }
       .sidebar:last-child {
         margin-right: 0; } }
-  @media screen and (min-width: 769px) {
+  @media screen and (min-width: 768px) {
     .sidebar {
       float: left;
       display: block;
@@ -469,7 +477,15 @@ img {
       margin-right: 0; }
       .sidebar:last-child {
         margin-right: 0; } }
-  @media screen and (min-width: 1201px) {
+  @media screen and (min-width: 1024px) {
+    .sidebar {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 31.76157%; }
+      .sidebar:last-child {
+        margin-right: 0; } }
+  @media screen and (min-width: 1200px) {
     .sidebar {
       float: left;
       display: block;
@@ -546,14 +562,18 @@ body {
   font-family: "OpenSans", sans-serif;
   color: #000000;
   -webkit-font-smoothing: antialiased; }
-  @media screen and (min-width: 481px) {
+  @media screen and (min-width: 480px) {
     body {
       font-size: 85%; } }
-  @media screen and (min-width: 769px) {
+  @media screen and (min-width: 768px) {
     body {
       line-height: 1.8;
       font-size: 90%; } }
-  @media screen and (min-width: 1201px) {
+  @media screen and (min-width: 1024px) {
+    body {
+      line-height: 1.5;
+      font-size: 95%; } }
+  @media screen and (min-width: 1200px) {
     body {
       line-height: 1.5;
       font-size: 100%; } }
