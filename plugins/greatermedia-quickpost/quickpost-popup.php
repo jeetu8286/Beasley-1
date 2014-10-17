@@ -212,6 +212,8 @@
 								endif;
 							?></div>
 						</div>
+
+						<?php do_meta_boxes( 'quickpost', 'side', $post_ID ); ?>
 					</div>
 				</div>
 

@@ -152,6 +152,8 @@ function gmr_qp_quickpost() {
 	remove_action( 'media_buttons', 'media_buttons' );
 	add_action( 'media_buttons', 'gmr_qp_media_buttons' );
 
+	do_action( 'quickpost_add_metaboxes', 'quickpost', $post_ID );
+
 	include_once 'quickpost-popup.php';
 	exit;
 }
