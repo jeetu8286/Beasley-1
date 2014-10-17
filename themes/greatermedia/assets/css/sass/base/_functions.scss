@@ -52,11 +52,3 @@
 	@warn "Unknown `#{$key}` in $modular-scale.";
 	@return null;
 }
-
-@function get_bp($label) {
-	@return map-get($breakpoints, $label);
-}
-
-@function round-num($num) {
-	@return round($num*100)/100;
-}
