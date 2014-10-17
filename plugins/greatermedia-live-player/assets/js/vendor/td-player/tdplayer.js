@@ -3,13 +3,14 @@ $(document).ready(function () {
     configureTechButtons();
     configureSBMButtons();
 });
+
+var player; /* TD player instance */
 //Change platformid buttons - Triton Digital QA usage only.
 var platformid = getUrlVars()['platformid'] || 'prod';
 var tech = getUrlVars()['tech'] || 'html5';
 var sbm = getUrlVars()['sbm'] == 'false' ? false : true;
 var aSyncCuePointFallback = getUrlVars()['aSyncCuePointFallback'] == 'false' ? false : true;
 
-var player; /* TD player instance */
 var station = 'KOITFM'; /* Default audio station */
 var stationVideo = 'CKOIFMFLASH1'; /* Default video station */
 
@@ -443,6 +444,9 @@ function onPlayerReady()
     player.addEventListener( 'stream-start', onStreamStarted );
     player.addEventListener( 'stream-stop', onStreamStopped );
 
+    player.addEventListener( 'stream-start', pausePlayer );
+    player.addEventListener( 'track-cue-point', appendGif );
+
     player.setVolume( 1 ); //Set volume to 100%
 
     setStatus( 'Api Ready' );
@@ -560,6 +564,7 @@ function onStreamStopped()
 
     $('#hasLow').html('N/A');
     $('#isLow').html('N/A');
+    console.log('test');
 }
 
 function onTrackCuePoint( e )
@@ -577,7 +582,6 @@ function onTrackCuePoint( e )
     currentTrackCuePoint = e.data.cuePoint;
 
     $( "#trackInfo" ).html( '<div class="gmlp-np-song-title">' + currentTrackCuePoint.cueTitle + '</div><div class="gmlp-np-artist">' + currentTrackCuePoint.artistName + '</div>' );
-
 }
 
 function onAdBreak( e )
@@ -952,4 +956,15 @@ function debug(info, error)
 function clearDebugInfo()
 {
     $('#debugInformation').html('');
+}
+
+
+function pausePlayer() {
+    player.pause();
+}
+
+function appendGif() {
+    $('#trackInfo').append('<div><img src="http://coolchaser-static.coolchaser.com/images/themes/t/188000-i175.photobucket.com-albums-w144-XslayerXpac-equalizer.gif" alt=""></div>');
+    // call pjax to update container
+    $(document).pjax('a:not(.ab-item)', '#container', {'fragment': '#container'})
 }
