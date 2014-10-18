@@ -26,12 +26,13 @@ namespace GreaterMedia\Gigya;
 class MetaBox {
 
 	/**
-	 * The member query object for this meta box.
+	 * The data object for this meta box. This is used inside templates
+	 * as $this->data->foo.
 	 *
 	 * @access public
-	 * @var MemberQuery
+	 * @var mixed
 	 */
-	public $member_query;
+	public $data;
 
 	/**
 	 * Properties of the meta box. These correspond to the getters like
@@ -64,10 +65,10 @@ class MetaBox {
 	 * Stores the member query for this meta box.
 	 *
 	 * @access public
-	 * @param MemberQuery $member_query
+	 * @param mixed $data
 	 */
-	public function __construct( $member_query ) {
-		$this->member_query = $member_query;
+	public function __construct( $data ) {
+		$this->data = $data;
 	}
 
 	/**
