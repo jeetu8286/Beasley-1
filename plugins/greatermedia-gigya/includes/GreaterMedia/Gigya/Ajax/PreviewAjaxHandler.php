@@ -1,6 +1,6 @@
 <?php
 
-namespace GreaterMedia\Gigya;
+namespace GreaterMedia\Gigya\Ajax;
 
 /**
  * PreviewAjaxHandler is the ajax handler invoked by the client to

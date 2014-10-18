@@ -1,6 +1,6 @@
 <?php
 
-namespace GreaterMedia\Gigya;
+namespace GreaterMedia\Gigya\Ajax;
 
 class RegisterAjaxHandler extends AjaxHandler {
 

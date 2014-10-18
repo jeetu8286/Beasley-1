@@ -1,6 +1,6 @@
 <?php
 
-namespace GreaterMedia\Gigya;
+namespace GreaterMedia\Gigya\Ajax;
 
 /**
  * The main plugin class for greatermedia-gigya.
