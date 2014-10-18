@@ -2,6 +2,8 @@
 
 namespace GreaterMedia\Gigya\Ajax;
 
+use GreaterMedia\Gigya\GigyaSession;
+
 class RegisterAjaxHandler extends AjaxHandler {
 
 	public $mailchimp_api;

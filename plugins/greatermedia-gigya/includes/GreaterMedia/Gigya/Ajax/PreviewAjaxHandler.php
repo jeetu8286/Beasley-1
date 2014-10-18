@@ -2,6 +2,8 @@
 
 namespace GreaterMedia\Gigya\Ajax;
 
+use GreaterMedia\Gigya\AccountsSearcher;
+
 /**
  * PreviewAjaxHandler is the ajax handler invoked by the client to
  * preview a member query.

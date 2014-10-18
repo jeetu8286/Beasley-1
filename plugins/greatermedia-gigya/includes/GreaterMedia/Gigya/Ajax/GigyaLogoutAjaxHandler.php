@@ -2,6 +2,8 @@
 
 namespace GreaterMedia\Gigya\Ajax;
 
+use GreaterMedia\Gigya\GigyaSession;
+
 class GigyaLogoutAjaxHandler extends AjaxHandler {
 
 	public function get_action() {
