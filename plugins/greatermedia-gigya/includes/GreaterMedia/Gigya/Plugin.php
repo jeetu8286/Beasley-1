@@ -140,9 +140,9 @@ class Plugin {
 		$this->contest_post_type->register_meta_boxes( $data );
 
 		$this->enqueue_script( 'select2', 'js/vendor/select2.js' );
-		$this->enqueue_style( 'select2', 'css/vendor/select2.css' );
-
 		$this->enqueue_script( 'contest_form_select', 'js/contest_form_select.js', 'select2' );
+
+		$this->enqueue_style( 'select2', 'css/vendor/select2.css' );
 		$this->enqueue_style( 'contest_form_select', 'css/contest_form_select.css', 'select2' );
 	}
 
@@ -261,7 +261,7 @@ class Plugin {
 	}
 
 	public function enqueue_script( $id, $path, $dependency = null ) {
-		if ( is_null( $dependency ) ) {
+		if ( ! is_null( $dependency ) ) {
 			$dependencies = array( $dependency );
 		} else {
 			$dependencies = array();
@@ -275,8 +275,8 @@ class Plugin {
 		);
 	}
 
-	public function enqueue_style( $id, $path, $dependency = array() ) {
-		if ( is_null( $dependency ) ) {
+	public function enqueue_style( $id, $path, $dependency = null ) {
+		if ( ! is_null( $dependency ) ) {
 			$dependencies = array( $dependency );
 		} else {
 			$dependencies = array();
