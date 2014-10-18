@@ -1,6 +1,6 @@
 <?php
 
-namespace GreaterMedia\Gigya;
+namespace GreaterMedia\Gigya\Ajax;
 
 /**
  * AjaxHandler is the base class for all `wp_ajax` callbacks.

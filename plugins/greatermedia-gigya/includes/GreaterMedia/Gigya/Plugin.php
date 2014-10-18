@@ -1,6 +1,6 @@
 <?php
 
-namespace GreaterMedia\Gigya\Ajax;
+namespace GreaterMedia\Gigya;
 
 /**
  * The main plugin class for greatermedia-gigya.
@@ -96,12 +96,12 @@ class Plugin {
 	public function register_ajax_handlers() {
 		$handlers   = array();
 
-		$handlers[] = new GigyaLoginAjaxHandler();
-		$handlers[] = new GigyaLogoutAjaxHandler();
-		$handlers[] = new PreviewAjaxHandler();
-		$handlers[] = new RegisterAjaxHandler();
-		$handlers[] = new ListEntryTypesAjaxHandler();
-		$handlers[] = new ListEntryFieldsAjaxHandler();
+		$handlers[] = new Ajax\GigyaLoginAjaxHandler();
+		$handlers[] = new Ajax\GigyaLogoutAjaxHandler();
+		$handlers[] = new Ajax\PreviewAjaxHandler();
+		$handlers[] = new Ajax\RegisterAjaxHandler();
+		$handlers[] = new Ajax\ListEntryTypesAjaxHandler();
+		$handlers[] = new Ajax\ListEntryFieldsAjaxHandler();
 
 		foreach ( $handlers as $handler ) {
 			$handler->register();
