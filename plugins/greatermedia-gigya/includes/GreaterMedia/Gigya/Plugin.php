@@ -119,8 +119,8 @@ class Plugin {
 		$member_query = new MemberQuery( $post->ID );
 		$this->member_query_post_type->register_meta_boxes( $member_query );
 
-		$this->initialize_scripts( $member_query );
-		$this->initialize_styles( $member_query );
+		$this->initialize_member_query_scripts( $member_query );
+		$this->initialize_member_query_styles( $member_query );
 	}
 
 	/**
@@ -146,7 +146,7 @@ class Plugin {
 		$this->enqueue_style( 'contest_form_select', 'css/contest_form_select.css', 'select2' );
 	}
 
-	function initialize_scripts( $member_query ) {
+	function initialize_member_query_scripts( $member_query ) {
 		wp_dequeue_script( 'autosave' );
 
 		$this->enqueue_script( 'query_builder', 'js/query_builder.js', 'underscore' );
@@ -167,7 +167,7 @@ class Plugin {
 		);
 	}
 
-	function initialize_styles( $member_query ) {
+	function initialize_member_query_styles( $member_query ) {
 		$this->enqueue_style( 'gmr_gigya', 'css/gmr_gigya.css' );
 	}
 

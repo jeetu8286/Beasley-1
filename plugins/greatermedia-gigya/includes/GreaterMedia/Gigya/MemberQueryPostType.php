@@ -57,17 +57,6 @@ class MemberQueryPostType {
 				$data
 			);
 
-			$this->meta_boxes['direct_query'] = $this->meta_box_for(
-				array(
-					'id'       => 'direct_query',
-					'title'    => __( 'Direct Query', 'gmr_gigya' ),
-					'context'  => 'side',
-					'priority' => 'low',
-					'template' => 'direct_query',
-				),
-				$data
-			);
-
 			$this->meta_boxes['query_builder'] = $this->meta_box_for(
 				array(
 					'id'       => 'query_builder',
