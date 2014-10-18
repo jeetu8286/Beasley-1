@@ -21,6 +21,9 @@ namespace GreaterMedia\Gigya;
  *
  * { plugin }/templates/metaboxes
  *
+ * Templates can use $this->data to render dynamic content related to
+ * that meta box.
+ *
  * @package GreaterMedia\Gigya
  */
 class MetaBox {
