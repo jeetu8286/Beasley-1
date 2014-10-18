@@ -42,34 +42,7 @@ class Plugin {
 	 */
 	public function enable() {
 		add_action( 'init', array( $this, 'initialize' ) );
-		add_action( 'add_meta_boxes_member_query', array( $this, 'initialize_meta_boxes' ) );
-		add_action( 'add_meta_boxes_contest', array( $this, 'initialize_contest_meta_boxes' ) );
-
-		// TODO: collapse into one action
-		add_action( 'save_post', array( $this, 'publish_member_query' ), 10, 2 );
-		add_action( 'save_post', array( $this, 'update_form_for_contest' ), 10, 2 );
-		add_action( 'admin_notices', array( $this, 'show_flash' ) );
-
-		$preview_ajax_handler = new PreviewAjaxHandler();
-		$preview_ajax_handler->register();
-
-		$register_ajax_handler = new RegisterAjaxHandler();
-		$register_ajax_handler->register();
-
-		$gigya_login_ajax_handler = new GigyaLoginAjaxHandler();
-		$gigya_login_ajax_handler->register();
-
-		$gigya_logout_ajax_handler = new GigyaLogoutAjaxHandler();
-		$gigya_logout_ajax_handler->register();
-
-		$list_entry_types_ajax_handler = new ListEntryTypesAjaxHandler();
-		$list_entry_types_ajax_handler->register();
-
-		$list_entry_fields_ajax_handler = new ListEntryFieldsAjaxHandler();
-		$list_entry_fields_ajax_handler->register();
-
-		$form_entry_publisher = new FormEntryPublisher();
-		$form_entry_publisher->enable();
+		add_action( 'admin_init', array( $this, 'initialize_admin' ) );
 	}
 
 	/**
@@ -79,8 +52,10 @@ class Plugin {
 	 * @return void
 	 */
 	public function initialize() {
-		$member_query_post_type = new MemberQueryPostType();
-		$member_query_post_type->register();
+		$this->member_query_post_type = new MemberQueryPostType();
+		$this->member_query_post_type->register();
+
+		$this->contest_post_type = new ContestPostType();
 
 		$session_data = array(
 			'data' => array(
@@ -95,88 +70,95 @@ class Plugin {
 		// TODO: figure out if session code should live in this plugin
 		wp_enqueue_script( 'jquery' );
 		wp_localize_script( 'jquery', 'gigya_session_data', $session_data );
+
+		/* Lazy register ajax handlers only if this is an ajax request */
+		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+			$this->register_ajax_handlers();
+		}
+	}
+
+	public function initialize_admin() {
+		add_action( 'add_meta_boxes_member_query', array( $this, 'initialize_member_query_meta_boxes' ) );
+		add_action( 'add_meta_boxes_contest', array( $this, 'initialize_contest_meta_boxes' ) );
+		add_action( 'save_post', array( $this, 'did_save_post' ), 10, 2 );
+		add_action( 'admin_notices', array( $this, 'show_flash' ) );
+
+		$form_entry_publisher = new FormEntryPublisher();
+		$form_entry_publisher->enable();
 	}
 
 	/**
-	 * Registers the metaboxes for the plugin.
+	 * Registers the ajax handlers for this plugin.
+	 *
+	 * @access public
+	 * @return void
+	 */
+	public function register_ajax_handlers() {
+		$handlers   = array();
+
+		$handlers[] = new GigyaLoginAjaxHandler();
+		$handlers[] = new GigyaLogoutAjaxHandler();
+		$handlers[] = new PreviewAjaxHandler();
+		$handlers[] = new RegisterAjaxHandler();
+		$handlers[] = new ListEntryTypesAjaxHandler();
+		$handlers[] = new ListEntryFieldsAjaxHandler();
+
+		foreach ( $handlers as $handler ) {
+			$handler->register();
+		}
+	}
+
+	/**
+	 * Registers the member query post_type metaboxes.
 	 *
 	 * @access public
 	 * @param WP_Post $post The current post object
 	 * @return void
 	 */
-	public function initialize_meta_boxes( $post ) {
+	public function initialize_member_query_meta_boxes( $post ) {
 		$member_query = new MemberQuery( $post->ID );
-		$meta_boxes   = $this->get_meta_boxes( $member_query );
-
-		foreach ( $meta_boxes as $meta_box ) {
-			$meta_box->register();
-		}
+		$this->member_query_post_type->register_meta_boxes( $member_query );
 
 		$this->initialize_scripts( $member_query );
 		$this->initialize_styles( $member_query );
 	}
 
+	/**
+	 * Registers the contest post_type metaboxes.
+	 *
+	 * @access public
+	 * @param WP_Post $post The current post object
+	 * @return void
+	 */
 	public function initialize_contest_meta_boxes( $post ) {
-		$meta_box = $this->meta_box_for(
-			array(
-				'post_type' => 'contest',
-				'id'       => 'contest_form',
-				'title'    => __( 'Contest Form', 'gmr_gigya' ),
-				'context'  => 'side',
-				'priority' => 'default',
-				'template' => 'contest_form',
-			), $post // TODO: clean up MetaBox base class
+		$data = array(
+			'forms'           => \RGFormsModel::get_forms( true ),
+			'post'            => $post,
+			'post_id'         => $post->ID,
+			'contest_form_id' => get_post_meta( $post->ID, 'contest_form_id', true ),
 		);
+		$this->contest_post_type->register_meta_boxes( $data );
 
-		$meta_box->register();
+		$this->enqueue_script( 'select2', 'js/vendor/select2.js' );
+		$this->enqueue_style( 'select2', 'css/vendor/select2.css' );
 
-		wp_enqueue_script(
-			'select2',
-			plugins_url( 'js/vendor/select2.js', $this->plugin_file ),
-			array(),
-			GMR_GIGYA_VERSION
-		);
-
-		wp_enqueue_script(
-			'contest_form_select',
-			plugins_url( 'js/contest_form_select.js', $this->plugin_file ),
-			array(),
-			GMR_GIGYA_VERSION
-		);
-
-		wp_enqueue_style(
-			'select2',
-			plugins_url( 'css/vendor/select2.css', $this->plugin_file ),
-			array(),
-			GMR_GIGYA_VERSION
-		);
-
-		wp_enqueue_style(
-			'contest_form_select',
-			plugins_url( 'css/contest_form_select.css', $this->plugin_file ),
-			array( 'select2' ),
-			GMR_GIGYA_VERSION
-		);
+		$this->enqueue_script( 'contest_form_select', 'js/contest_form_select.js', 'select2' );
+		$this->enqueue_style( 'contest_form_select', 'css/contest_form_select.css', 'select2' );
 	}
 
 	function initialize_scripts( $member_query ) {
 		wp_dequeue_script( 'autosave' );
 
-		wp_enqueue_script(
-			'query_builder',
-			plugins_url( 'js/query_builder.js', $this->plugin_file ),
-			array( 'underscore' ),
-			GMR_GIGYA_VERSION
-		);
+		$this->enqueue_script( 'query_builder', 'js/query_builder.js', 'underscore' );
 
 		wp_localize_script(
 			'query_builder', 'member_query_data', $member_query->properties
 		);
 
 		$meta = array(
-			'ajax_url'       => admin_url( 'admin-ajax.php' ),
-			'preview_nonce' => wp_create_nonce( 'preview_member_query' ),
-			'list_entry_types_nonce' => wp_create_nonce( 'list_entry_types' ),
+			'ajax_url'                => admin_url( 'admin-ajax.php' ),
+			'preview_nonce'           => wp_create_nonce( 'preview_member_query' ),
+			'list_entry_types_nonce'  => wp_create_nonce( 'list_entry_types' ),
 			'list_entry_fields_nonce' => wp_create_nonce( 'list_entry_fields' ),
 		);
 
@@ -186,13 +168,34 @@ class Plugin {
 	}
 
 	function initialize_styles( $member_query ) {
-		wp_enqueue_style(
-			'gmr_gigya',
-			plugins_url( 'css/gmr_gigya.css', $this->plugin_file ),
-			array(),
-			GMR_GIGYA_VERSION
-		);
+		$this->enqueue_style( 'gmr_gigya', 'css/gmr_gigya.css' );
+	}
 
+	/**
+	 * If post was saved then calls member query or contest form helper
+	 * functions, else ignores the save.
+	 *
+	 * @access public
+	 * @param int $post_id The id of the parent post CPT of this MemberQuery
+	 * @param WP_Post $post The post object that was saved.
+	 * @return void
+	 */
+	public function did_save_post( $post_id, $post = null ) {
+		if ( ! is_null( $post ) ) {
+			$post_type   = $post->post_type;
+			$post_status = $post->post_status;
+
+			if ( $post_status === 'publish' ) {
+				switch ( $post_type ) {
+					case 'member_query':
+						return $this->publish_member_query( $post_id, $post );
+
+					case 'contest':
+						return $this->update_form_for_contest( $post_id, $post );
+
+				}
+			}
+		}
 	}
 
 	/**
@@ -205,132 +208,39 @@ class Plugin {
 	 * @return void
 	 */
 	public function publish_member_query( $post_id, $post = null ) {
-		if ( ! is_null( $post ) && $post->post_type === 'member_query' && $post->post_status === 'publish' ) {
-			$this->verify_meta_box_nonces();
+		$this->member_query_post_type->verify_meta_box_nonces();
 
-			try {
-				$member_query = new MemberQuery( $post_id );
-				$member_query->build_and_save();
+		try {
+			$member_query = new MemberQuery( $post_id );
+			$member_query->build_and_save();
 
-				$segment_publisher = new SegmentPublisher( $member_query );
-				$segment_publisher->publish();
-			} catch ( \Exception $e ) {
-				$this->set_flash( $e->getMessage() );
-			}
+			$segment_publisher = new SegmentPublisher( $member_query );
+			$segment_publisher->publish();
+		} catch ( \Exception $e ) {
+			$this->set_flash( $e->getMessage() );
 		}
 	}
 
 	public function update_form_for_contest( $post_id, $post ) {
-		if ( ! is_null( $post ) && $post->post_type === 'contest' && $post->post_status === 'publish' ) {
-			// TODO: verify nonce
-			$contest_form_id = intval( $_POST['contest_form_id'] );
-			$key = 'contest_form_id';
+		$this->contest_post_type->verify_meta_box_nonces();
 
-			// TODO: validate if gform exists?
-			if ( is_int( $contest_form_id ) ) {
-				update_post_meta( $post_id, $key, $contest_form_id );
-			} else {
-				delete_post_meta( $post_id, $key );
-			}
+		$contest_form_id = intval( $_POST['contest_form_id'] );
+		$key             = 'contest_form_id';
+
+		// TODO: validate if gform exists?
+		if ( is_int( $contest_form_id ) ) {
+			update_post_meta( $post_id, $key, $contest_form_id );
+		} else {
+			delete_post_meta( $post_id, $key );
 		}
 	}
 
+	/* helpers */
 	public function show_flash() {
 		$flash = $this->get_flash();
 		if ( $flash !== false ) {
 			include GMR_GIGYA_PATH . '/templates/flash.php';
 			$this->clear_flash();
-		}
-	}
-
-	/* helpers */
-	/**
-	 * Lazy initializes the meta boxes for this plugin. This keeps the
-	 * footprint down on the POST request, since we don't need to
-	 * register the meta boxes there.
-	 *
-	 * For the POST request, we'll use null member_query. For those
-	 * requests the meta boxes only do nonce verification.
-	 *
-	 * @access public
-	 * @param MemberQuery $member_query
-	 * @return array Associative array of meta box objects
-	 */
-	public function get_meta_boxes( $member_query = null ) {
-		if ( count( $this->meta_boxes ) === 0 ) {
-			$this->meta_boxes = array();
-
-			$this->meta_boxes['preview'] = $this->meta_box_for(
-				array(
-					'id'       => 'preview',
-					'title'    => __( 'Preview Results', 'gmr_gigya' ),
-					'context'  => 'side',
-					'priority' => 'default',
-					'template' => 'preview',
-				),
-				$member_query
-			);
-
-			$this->meta_boxes['direct_query'] = $this->meta_box_for(
-				array(
-					'id'       => 'direct_query',
-					'title'    => __( 'Direct Query', 'gmr_gigya' ),
-					'context'  => 'side',
-					'priority' => 'low',
-					'template' => 'direct_query',
-				),
-				$member_query
-			);
-
-			$this->meta_boxes['query_builder'] = $this->meta_box_for(
-				array(
-					'id'       => 'query_builder',
-					'title'    => __( 'Gigya Social', 'gmr_gigya' ),
-					'context'  => 'normal',
-					'priority' => 'default',
-					'template' => 'query_builder',
-				),
-				$member_query
-			);
-
-		}
-
-		return $this->meta_boxes;
-	}
-
-	public function get_contest_meta_boxes() {
-
-		return $this->meta_boxes;
-	}
-
-	/**
-	 * Builds a new meta box for the specified params.
-	 *
-	 * @access public
-	 * @param array $params The params to pass to the meta box object
-	 * @param MemberQuery $member_query The member query associated with the meta box.
-	 * @return MetaBox
-	 */
-	public function meta_box_for( $params, $member_query ) {
-		$meta_box = new MetaBox( $member_query );
-		$meta_box->params = $params;
-
-		return $meta_box;
-	}
-
-	/**
-	 * Verifies than correct nonces were passed for each MetaBox.
-	 *
-	 * Exits script execution with a warning if invalid.
-	 *
-	 * @access public
-	 * @return void
-	 */
-	public function verify_meta_box_nonces() {
-		$meta_boxes = $this->get_meta_boxes( null );
-
-		foreach ( $meta_boxes as $meta_box ) {
-			$meta_box->verify_nonce();
 		}
 	}
 
@@ -348,5 +258,35 @@ class Plugin {
 
 	public function clear_flash() {
 		delete_transient( $this->get_flash_key() );
+	}
+
+	public function enqueue_script( $id, $path, $dependency = null ) {
+		if ( is_null( $dependency ) ) {
+			$dependencies = array( $dependency );
+		} else {
+			$dependencies = array();
+		}
+
+		wp_enqueue_script(
+			$id,
+			plugins_url( $path, $this->plugin_file ),
+			$dependencies,
+			GMR_GIGYA_VERSION
+		);
+	}
+
+	public function enqueue_style( $id, $path, $dependency = array() ) {
+		if ( is_null( $dependency ) ) {
+			$dependencies = array( $dependency );
+		} else {
+			$dependencies = array();
+		}
+
+		wp_enqueue_style(
+			$id,
+			plugins_url( $path, $this->plugin_file ),
+			$dependencies,
+			GMR_GIGYA_VERSION
+		);
 	}
 }

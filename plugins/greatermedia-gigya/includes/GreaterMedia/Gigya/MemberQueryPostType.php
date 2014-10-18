@@ -85,6 +85,21 @@ class MemberQueryPostType {
 	}
 
 	/**
+	 * Registers the meta boxes with the associated data object.
+	 *
+	 * @access public
+	 * @param mixed $data The data to associate with a metabox.
+	 * @return void
+	 */
+	public function register_meta_boxes( $data ) {
+		$meta_boxes = $this->get_meta_boxes( $data );
+
+		foreach ( $meta_boxes as $meta_box ) {
+			$meta_box->register();
+		}
+	}
+
+	/**
 	 * Verifies than correct nonces were passed for each MetaBox.
 	 *
 	 * Exits script execution with a warning if invalid.
@@ -183,11 +198,11 @@ class MemberQueryPostType {
 	 *
 	 * @access public
 	 * @param array $params The params to pass to the meta box object
-	 * @param MemberQuery $member_query The member query associated with the meta box.
+	 * @param mixed $data The data associated with the meta box.
 	 * @return MetaBox
 	 */
-	public function meta_box_for( $params, $member_query ) {
-		$meta_box = new MetaBox( $member_query );
+	public function meta_box_for( $params, $data ) {
+		$meta_box = new MetaBox( $data );
 		$meta_box->params = $params;
 
 		return $meta_box;

@@ -1,22 +1,15 @@
-<?php
-
-// TODO: write custom query sorted on last changed timestamp and move out of template,
-$forms           = \RGFormsModel::get_forms( true );
-$post_id         = $this->member_query->ID; // TODO: fix after MetaBox cleanup
-$contest_form_id = get_post_meta( $post_id, 'contest_form_id', true );
-
-?>
+<?php ?>
 
 <div class="contest-form-heading">
 	<h4>Select Existing Form:</h4>
 </div>
 
 <select id="contest-form-select" style="width: 100%" name="contest_form_id">
-	<?php foreach ( $forms as $form ) {
+	<?php foreach ( $this->data['forms'] as $form ) {
 
-		$label = esc_attr( $form->title );
-		$value = esc_html( $form->id );
-		$selected = $contest_form_id === $form->id ? 'selected="selected"' : '';
+		$label    = esc_attr( $form->title );
+		$value    = esc_html( $form->id );
+		$selected = selected( $this->data['contest_form_id'], $form->id, false );
 
 		echo "<option value='$value' $selected>$label</option>";
 
