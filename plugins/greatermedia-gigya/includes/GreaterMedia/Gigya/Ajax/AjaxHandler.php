@@ -21,8 +21,11 @@ namespace GreaterMedia\Gigya\Ajax;
  *
  * Minimum implementation needed in subclasses is,
  *
- * 1. run() - with optional return statement.
- * 2. get_action() - the action name to call from the client.
+ * 1. get_action() - the action name to call from the client.
+ * 2. run() - with data to return to the client.
+ *
+ * This class has a tiny client-side Javascript class that wraps
+ * jQuery.ajax to make calling the corresponding handler simpler.
  *
  * @package GreaterMedia\Gigya
  */
@@ -31,10 +34,12 @@ abstract class AjaxHandler {
 	/**
 	 * Stores whether a json response has been sent to the client.
 	 *
+	 * Contains the json data array or null if absent.
+	 *
 	 * @access public
-	 * @var boolean
+	 * @var $mixed
 	 */
-	public $did_send_json = false;
+	public $sent_json = null;
 
 	/**
 	 * Abstract method that returns the name of the ajax action to register
@@ -91,6 +96,11 @@ abstract class AjaxHandler {
 	/**
 	 * The name of the nonce that must be passed with this ajax handler.
 	 * Defaults to use the name of the action combined with a suffix.
+	 *
+	 * The FrontEnd must pass a valid nonce value as a nonce in a
+	 * variable name = get_nonce_name.
+	 *
+	 * Both GET and POST can be used.
 	 *
 	 * @access public
 	 * @return string
@@ -167,6 +177,21 @@ abstract class AjaxHandler {
 	 * calls and wraps the response from run and sends success or error
 	 * responses in JSON format to the client.
 	 *
+	 * If this is handler is an async one, instead of executing the ajax
+	 * handler with `run`, a Gears async task is enqueued.
+	 *
+	 * The handler will be executed by a Gearman worker. The exact time
+	 * that the task will run is subject to Gearman worker availability
+	 * and the number of pending tasks.
+	 *
+	 * Important Note: The async task is executed by PHP-CLI and will
+	 * not have any session information available at the the time `run`
+	 * is executed.
+	 *
+	 * You need to add this to the action_data from the client.
+	 * For server-side specific session data override get_params or
+	 * add_async_task with custom/augmented params keys.
+	 *
 	 * @access public
 	 * @return void
 	 */
@@ -183,7 +208,7 @@ abstract class AjaxHandler {
 				$result = $this->run( $params );
 
 				// if json was not sent manually send response as json
-				if ( ! $this->did_send_json ) {
+				if ( ! is_null( $this->sent_json ) ) {
 					// for no result returned, the default response
 					// data sent to the client
 					// is 'true' to indicate success.
@@ -203,7 +228,7 @@ abstract class AjaxHandler {
 			}
 		} catch ( \Exception $e ) {
 			// caught an exception, so send it as JSON
-			$this->send_json_error( false, $e->getMessage() );
+			$this->send_json_error( $e->getMessage() );
 		}
 	}
 
@@ -287,7 +312,7 @@ abstract class AjaxHandler {
 		$valid_caps = current_user_can( 'manage_options' );
 
 		if ( ! $valid_caps ) {
-			wp_send_json_error( 'invalid_capabilities' );
+			$this->send_json_error( 'invalid_capabilities' );
 		}
 
 		return $valid_caps;
@@ -335,8 +360,9 @@ abstract class AjaxHandler {
 	 */
 	public function get_params() {
 		if ( array_key_exists( 'action_data', $_POST ) ) {
-			$json = wp_unslash( $_POST['action_data'] );
-			$data = json_decode( $json, true );
+			$action_data = $_POST['action_data'];
+			$json        = wp_unslash( $action_data );
+			$data        = json_decode( $json, true );
 
 			if ( ! is_array( $data ) ) {
 				throw new \Exception( 'invalid_params' );
@@ -374,7 +400,7 @@ abstract class AjaxHandler {
 	 * @return void
 	 */
 	public function send_json_success( $data ) {
-		$this->did_send_json = true;
+		$this->sent_json = $data;
 		if ( ! defined( 'PHPUNIT_RUNNER' ) ) {
 			wp_send_json_success( $data );
 		}
@@ -390,7 +416,7 @@ abstract class AjaxHandler {
 	 * @return void
 	 */
 	public function send_json_error( $data ) {
-		$this->did_send_json = true;
+		$this->sent_json = $data;
 
 		if ( ! defined( 'PHPUNIT_RUNNER' ) ) {
 			wp_send_json_error( $data );
