@@ -18,13 +18,6 @@ class Plugin {
 	public $plugin_file = null;
 
 	/**
-	 * List of currently registered meta boxes.
-	 *
-	 * @var array
-	 */
-	public $meta_boxes = array();
-
-	/**
 	 * Stores the plugin_file and initializes any dependencies.
 	 *
 	 * @access public
