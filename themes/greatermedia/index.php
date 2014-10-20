@@ -156,6 +156,10 @@ get_header(); ?>
 
 				</div>
 
+				<div class="live-player--next">
+					Up Next: <span class="live-player--next--artist">Pierre Robert</span>
+				</div>
+
 			</aside>
 
 		</div>

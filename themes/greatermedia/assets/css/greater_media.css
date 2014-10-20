@@ -512,7 +512,8 @@ img {
   position: fixed;
   top: 5em;
   right: 0;
-  padding: 2em;
+  padding-top: 2em;
+  padding-bottom: 2em;
   display: none;
   background-color: #221f1f; }
   @media screen and (min-width: 1024px) {
@@ -1266,12 +1267,14 @@ pre {
 
 .live-player--social {
   height: 32px;
-  width: 100%; }
+  width: 100%;
+  margin-bottom: 1em; }
 
 .live-player--social ul {
   padding: 0;
-  margin: 0;
-  list-style: none; }
+  margin: 0 auto;
+  list-style: none;
+  text-align: center; }
 
 .live-player--social ul li {
   height: 32px;
@@ -1284,6 +1287,18 @@ pre {
 
 .live-player--social ul li:last-of-type {
   margin-right: 0; }
+
+.live-player--next {
+  width: 100%;
+  padding: 0.5em 1em;
+  border-top-color: #c1c3c4;
+  border-bottom-color: #c1c3c4;
+  border-top-style: solid;
+  border-bottom-style: solid;
+  border-top-width: 1px;
+  border-bottom-width: 1px;
+  background-color: #1c1c1f;
+  font-size: 0.79012em; }
 
 /**
  * Single Page Styles

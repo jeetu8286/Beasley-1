@@ -169,12 +169,14 @@
 
 .live-player--social {
 	@include size(100% 32px);
+	@include margin(null null 1em);
 }
 
 .live-player--social ul {
 	@include padding(0);
-	@include margin(0);
+	@include margin(0 auto);
 	list-style: none;
+	text-align: center;
 }
 
 .live-player--social ul li {
@@ -188,4 +190,14 @@
 
 .live-player--social ul li:last-of-type {
 	@include margin(null 0 null null);
+}
+
+.live-player--next {
+	@include size(100% null);
+	@include padding(.5em 1em);
+	@include border-color(palette(gray, light) null palette(gray, light) null);
+	@include border-style(solid null solid null);
+	@include border-width(1px null 1px null);
+	background-color: palette(default, dark);
+	font-size: ms(-2);
 }

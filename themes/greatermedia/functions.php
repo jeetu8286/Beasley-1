@@ -59,6 +59,10 @@ add_action( 'after_setup_theme', 'greatermedia_setup' );
  */
 function greatermedia_scripts_styles() {
 	$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
+
+	wp_enqueue_script( 'html5shiv', get_template_directory_uri() . '/assets/js/vendor/html5shiv-printshiv.js', array(), '3.7.2', true );
+	wp_enqueue_script( 'respond.js', get_template_directory_uri() . '/assets/js/vendor/respond.min.js', array(), '1.4.2', true );
+
 	if ( is_page( 'style-guide' ) ) {
 		wp_enqueue_script( 'gm-styleguide', get_template_directory_uri() . "/assets/js/gm_styleguide{$postfix}.js", array( 'jquery' ), GREATERMEDIA_VERSION, true );
 		wp_enqueue_script( 'google-code-pretify', get_template_directory_uri() . "/assets/js/styleguide/prettify.js", array( 'jquery' ), GREATERMEDIA_VERSION, true );
