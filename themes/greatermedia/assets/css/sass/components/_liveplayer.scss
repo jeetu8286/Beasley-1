@@ -8,7 +8,10 @@
  * General Styles
  */
 .gmlp-nav {
-	@include display(block);
+	display: none;
+	@include bp(large) {
+		@include display(block)
+	}
 }
 
 .gmlp-nav-toggle {
@@ -76,7 +79,7 @@
 }
 
 .gmlp-menu {
-	@include position(absolute, 0 0 auto auto);
+	@include position(relative, auto auto auto auto);
 	@include transition(ease .25s);
 	@include box-sizing(border-box);
 	@include size(100% 100%);
@@ -144,4 +147,45 @@
 
 .admin-bar .gmlp-menu {
 	top: 0;
+}
+
+.now-playing--logo {
+	@include size(80px 50px);
+	@include margin(0 auto 1em auto);
+	background-color: palette(gray, light);
+}
+
+.now-playing--title {
+	@include size(100px 20px);
+	@include margin(0 auto 1em auto);
+	background-color: palette(gray, light);
+}
+
+.now-playing--artist {
+	@include size(100px 20px);
+	@include margin(0 auto 1em auto);
+	background-color: palette(gray, light);
+}
+
+.live-player--social {
+	@include size(100% 32px);
+}
+
+.live-player--social ul {
+	@include padding(0);
+	@include margin(0);
+	list-style: none;
+}
+
+.live-player--social ul li {
+	@include size(32px 32px);
+	@include padding(0);
+	@include margin(0 em(4px) 0 0);
+	list-style: none;
+	display: inline-block;
+	background-color: palette(gray, light);
+}
+
+.live-player--social ul li:last-of-type {
+	@include margin(null 0 null null);
 }

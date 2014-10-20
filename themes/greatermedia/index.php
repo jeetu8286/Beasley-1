@@ -130,7 +130,32 @@ get_header(); ?>
 			</aside>
 
 			<aside class="live-player">
+
+				<div class="now-playing--logo">
+
+				</div>
+
 				<?php GMLP_Player::render_player(); ?>
+
+				<div class="now-playing--title">
+
+				</div>
+
+				<div class="now-playing--artist">
+
+				</div>
+
+				<div class="live-player--social">
+
+					<ul>
+						<li></li>
+						<li></li>
+						<li></li>
+						<li></li>
+					</ul>
+
+				</div>
+
 			</aside>
 
 		</div>

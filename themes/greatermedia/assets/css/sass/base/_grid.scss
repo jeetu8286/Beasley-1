@@ -63,6 +63,7 @@ img {
 	}
 	@include bp(medium) {
 		@include span-columns(2);
+		@include omega;
 	}
 	@include bp(large) {
 		@include span-columns(3);
