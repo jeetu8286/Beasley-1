@@ -75,7 +75,7 @@
 							<div class="mobile-nav--toggle--span"></div>
 						</div>
 						<div class="header-logo">
-							<a href="<?php echo home_url(); ?>"><img src="<?php bloginfo( 'stylesheet_directory' ); ?>/images/wmmr-logo.png" alt="<?php bloginfo( 'name' ); ?> | <?php bloginfo( 'description' ); ?>"></a>
+							<a href="<?php echo home_url(); ?>"><img src="<?php bloginfo( 'stylesheet_directory' ); ?>/images/wmmr-logo.png" alt="<?php bloginfo( 'name' ); ?> | <?php bloginfo( 'description' ); ?>" class="header-logo--img"></a>
 						</div>
 						<?php
 
@@ -83,7 +83,7 @@
 								'theme_location'  => 'main-nav',
 								'menu'            => '',
 								'container'       => 'nav',
-								'container_class' => 'header-nav',
+								'container_class' => 'header-nav--main',
 								'container_id'    => '',
 								'menu_class'      => 'header-nav--list',
 								'menu_id'         => 'header-nav--list',
@@ -101,8 +101,34 @@
 							wp_nav_menu( $defaults );
 
 						?>
-						<div class="header-search">
-							<i class="fa fa-search"></i>
+						<div class="header-secondary">
+							<?php
+
+							$defaults = array(
+								'theme_location'  => 'secondary-nav',
+								'menu'            => '',
+								'container'       => 'nav',
+								'container_class' => 'header-secondary--nav',
+								'container_id'    => '',
+								'menu_class'      => 'header-nav--list',
+								'menu_id'         => 'header-nav--list',
+								'echo'            => true,
+								'fallback_cb'     => 'wp_page_menu',
+								'before'          => '',
+								'after'           => '',
+								'link_before'     => '',
+								'link_after'      => '',
+								'items_wrap'      => '<ul id="%1$s" class="%2$s">%3$s</ul>',
+								'depth'           => 0,
+								'walker'          => ''
+							);
+
+							wp_nav_menu( $defaults );
+
+							?>
+							<div class="header-secondary--search">
+								<i class="fa fa-search"></i>
+							</div>
 						</div>
 					</div>
 				</header>

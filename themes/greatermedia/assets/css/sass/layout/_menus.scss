@@ -98,33 +98,63 @@
 	@include transition(all 500ms ease-in-out);
 }
 
-.header-nav {
+.header-nav--main {
 	@include size(null 60px);
 	display: none;
 	line-height: 1;
 	@include bp(large) {
-		@include span-columns(6);
+		@include span-columns(7);
 		display: initial;
 	}
 }
 
-.header-nav ul {
+.header-secondary {
+	@include position(absolute, 2em 1em null null);
+	@include size(2em 2em);
+	line-height: 1;
+	color: palette(gray);
+	text-align: right;
+	@include bp(large) {
+		@include position(relative, auto auto null null);
+		@include span-columns(4);
+		@include size(null 60px);
+	}
+}
+
+.header-secondary--nav {
+	display: none;
+	@include bp(large) {
+		display: inline-block;
+	}
+}
+
+.header-nav--main ul, .header-secondary--nav ul {
 	@include padding(em(22px) 0);
 	@include margin(0);
 	list-style: none;
 }
 
-.header-nav ul li {
+.header-nav--main ul li, .header-secondary--nav ul li {
 	@include padding(0);
 	@include margin(0 1em 0 0);
 	list-style: none;
 	display: inline-block;
+	font-size: ms(-2);
 }
 
-.header-nav ul li a, .header-nav ul li a:visited {
+.header-nav--main ul li a, .header-nav--main ul li a:visited, .header-secondary--nav ul a, .header-secondary--nav ul a:visited {
 	color: palette(default);
 }
 
-.header-nav ul li a:hover, .header-nav ul li a:active {
+.header-nav--main ul li a:hover, .header-nav--main ul li a:active, .header-secondary--nav ul a:hover, .header-secondary--nav ul a:active {
 	color: palette(default, red);
+}
+
+.header-secondary--search{
+	display: inline-block;
+	font-size: ms(4);
+	color: palette(default);
+	@include bp(large) {
+		font-size: ms(0);
+	}
 }
