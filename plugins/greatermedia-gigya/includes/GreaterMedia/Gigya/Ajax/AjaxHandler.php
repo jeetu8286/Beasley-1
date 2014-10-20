@@ -208,7 +208,7 @@ abstract class AjaxHandler {
 				$result = $this->run( $params );
 
 				// if json was not sent manually send response as json
-				if ( ! is_null( $this->sent_json ) ) {
+				if ( is_null( $this->sent_json ) ) {
 					// for no result returned, the default response
 					// data sent to the client
 					// is 'true' to indicate success.

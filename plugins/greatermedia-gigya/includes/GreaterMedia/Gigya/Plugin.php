@@ -149,10 +149,10 @@ class Plugin {
 		);
 
 		$meta = array(
-			'ajax_url'                => admin_url( 'admin-ajax.php' ),
-			'preview_nonce'           => wp_create_nonce( 'preview_member_query' ),
-			'list_entry_types_nonce'  => wp_create_nonce( 'list_entry_types' ),
-			'list_entry_fields_nonce' => wp_create_nonce( 'list_entry_fields' ),
+			'ajax_url'                   => admin_url( 'admin-ajax.php' ),
+			'preview_member_query_nonce' => wp_create_nonce( 'preview_member_query' ),
+			'list_entry_types_nonce'     => wp_create_nonce( 'list_entry_types' ),
+			'list_entry_fields_nonce'    => wp_create_nonce( 'list_entry_fields' ),
 		);
 
 		wp_localize_script(
