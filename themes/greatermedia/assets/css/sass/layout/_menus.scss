@@ -11,9 +11,12 @@
 	@include box-sizing(border-box);
 	@include padding(0);
 	@include transition(all 500ms ease-in-out);
-	background-color: palette(default, black);
+	background-color: palette(default, dark);
 	cursor: pointer;
 	z-index: 2;
+	@include bp(large) {
+		display: none;
+	}
 }
 
 .mobile-nav--toggle--span {
@@ -60,14 +63,12 @@
 	@include size(90% 100%);
 	@include transform(translate(-100%, 0));
 	@include transition(all 500ms ease-in-out);
-	background-color: palette(default, black);
+	background-color: palette(default, dark);
 	z-index: 1;
 	@include bp(large) {
-		@include transform(translate(-200px, 0));
-		@include size(em(200px) 100%);
+		display: none;
 	}
 }
-
 
 .mobile-nav--open {
 	overflow: hidden;
@@ -75,13 +76,6 @@
 
 .mobile-nav--open .mobile-nav {
 	@include transform(translate(0, 0));
-}
-
-.mobile-nav--open .mobile-nav--toggle {
-	@include position(null, null null null 92%);
-	@include bp(large) {
-		@include position(null, null null null em(180px));
-	}
 }
 
 .mobile-nav--open .mobile-nav--toggle--span {
@@ -98,11 +92,36 @@
 	@include transform(rotate(-45deg));
 }
 
-.mobile-nav--open .site-wrap{
+.mobile-nav--open .site-wrap {
 	@include transform(translate(90%, 0));
 	@include size(100% null);
 	@include transition(all 500ms ease-in-out);
-	@include bp(large){
-		@include transform(translate(200px, 0));
+}
+
+.header-nav {
+	display: none;
+	@include bp(large) {
+		display: initial;
 	}
+}
+
+.header-nav ul {
+	@include padding(0);
+	@include margin(0);
+	list-style: none;
+}
+
+.header-nav ul li {
+	@include padding(0);
+	@include margin(0 1em 0 0);
+	list-style: none;
+	display: inline-block;
+}
+
+.header-nav ul li a, .header-nav ul li a:visited {
+	color: palette(default);
+}
+
+.header-nav ul li a:hover, .header-nav ul li a:active {
+	color: palette(default, red);
 }

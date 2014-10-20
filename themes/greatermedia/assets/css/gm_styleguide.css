@@ -609,7 +609,7 @@ h6, .h6 {
   letter-spacing: 2px; }
 
 a:link, a:visited {
-  color: #bbbdc0;
+  color: #d32329;
   text-decoration: none; }
 
 a:hover, a:focus, a:active {
@@ -636,7 +636,7 @@ blockquote {
 
 blockquote:before {
   margin-right: 0.25em;
-  color: #939597;
+  color: #c1c3c4;
   content: open-quote;
   font-size: 4.10989em;
   line-height: 0.1em;
@@ -672,7 +672,7 @@ blockquote p {
   max-width: 100%;
   padding: 0;
   margin: 0 0 1em;
-  background: #939597; }
+  background: #c1c3c4; }
 
 .wp-caption img {
   width: 100%;
@@ -925,14 +925,14 @@ blockquote p {
   margin-right: 0.5em;
   border-width: 0;
   outline: none;
-  background-color: #bbbdc0;
+  background-color: #d32329;
   font-family: "OpenSans", sans-serif;
   font-size: 0.875em;
   color: #ffffff !important;
   text-transform: uppercase;
   cursor: pointer; }
   .sg-btn:hover, .sg-btn:focus {
-    background-color: #a3a6aa;
+    background-color: #ac1c21;
     color: #ffffff; }
   .sg-btn:last-of-type {
     margin-right: 0; }
@@ -1034,7 +1034,7 @@ blockquote p {
   background-color: #a7a9ab; }
 
 .color-light-gray {
-  background-color: #939597; }
+  background-color: #c1c3c4; }
 
 .color-white {
   background-color: #ffffff; }
@@ -1065,7 +1065,7 @@ blockquote p {
 .sg-typography {
   padding: 0.25em 5px;
   margin-bottom: 2em;
-  background-color: #939597;
+  background-color: #c1c3c4;
   text-align: center; }
 
 .sg-typography--title {

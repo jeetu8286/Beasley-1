@@ -42,6 +42,12 @@ function greatermedia_setup() {
 	 */
 	add_theme_support( 'post-thumbnails' );
 	add_image_size( 'gm-article-thumbnail', 1580, 9999, false ); // thumbnails used for articles
+
+	/**
+	 * Add theme support for post-formats
+	 */
+	$formats = array( 'aside', 'gallery', 'link', 'image', 'video', 'audio' );
+	add_theme_support( 'post-formats', $formats );
 }
 
 add_action( 'after_setup_theme', 'greatermedia_setup' );
@@ -77,9 +83,18 @@ function greatermedia_header_meta() {
 add_action( 'wp_head', 'greatermedia_header_meta' );
 
 /**
- * Add theme support for post-formats
+ * Register Navigation Menus
  */
-add_theme_support( 'post-formats', array( 'aside', 'gallery', 'link', 'image', 'video', 'audio' ) );
+function greatermedia_nav_menus() {
+	$locations = array(
+		'main-nav' => __( 'Main Navigation', 'greatermedia' ),
+		'secondary-nav' => __( 'Seconadary Navigation', 'greatermedia' ),
+		'footer-nav' => __( 'Footer Navigation', 'greatermedia' )
+	);
+	register_nav_menus( $locations );
+}
+
+add_action( 'init', 'greatermedia_nav_menus' );
 
 function greatermedia_post_formats() {
 

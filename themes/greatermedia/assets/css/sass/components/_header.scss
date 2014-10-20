@@ -1,5 +1,8 @@
 .header{
 	@include size(100% 100px);
 	@include padding(1em 0);
-	background-color: palette(default, black);
+	@include border-color(null null palette(default, medium) null);
+	@include border-style(null null solid null);
+	@include border-width(null null 1px null);
+	background-color: palette(default, dark);
 }

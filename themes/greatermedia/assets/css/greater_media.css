@@ -617,7 +617,7 @@ h6, .h6 {
   letter-spacing: 2px; }
 
 a:link, a:visited {
-  color: #bbbdc0;
+  color: #d32329;
   text-decoration: none; }
 
 a:hover, a:focus, a:active {
@@ -652,9 +652,12 @@ p {
   -webkit-transition: all 500ms ease-in-out;
   -moz-transition: all 500ms ease-in-out;
   transition: all 500ms ease-in-out;
-  background-color: #000000;
+  background-color: #1c1c1f;
   cursor: pointer;
   z-index: 2; }
+  @media screen and (min-width: 1024px) {
+    .mobile-nav--toggle {
+      display: none; } }
 
 .mobile-nav--toggle--span {
   position: absolute;
@@ -729,17 +732,11 @@ p {
   -webkit-transition: all 500ms ease-in-out;
   -moz-transition: all 500ms ease-in-out;
   transition: all 500ms ease-in-out;
-  background-color: #000000;
+  background-color: #1c1c1f;
   z-index: 1; }
   @media screen and (min-width: 1024px) {
     .mobile-nav {
-      -webkit-transform: translate(-200px, 0);
-      -moz-transform: translate(-200px, 0);
-      -ms-transform: translate(-200px, 0);
-      -o-transform: translate(-200px, 0);
-      transform: translate(-200px, 0);
-      height: 100%;
-      width: 12.5em; } }
+      display: none; } }
 
 .mobile-nav--open {
   overflow: hidden; }
@@ -750,12 +747,6 @@ p {
   -ms-transform: translate(0, 0);
   -o-transform: translate(0, 0);
   transform: translate(0, 0); }
-
-.mobile-nav--open .mobile-nav--toggle {
-  left: 92%; }
-  @media screen and (min-width: 1024px) {
-    .mobile-nav--open .mobile-nav--toggle {
-      left: 11.25em; } }
 
 .mobile-nav--open .mobile-nav--toggle--span {
   background-color: transparent; }
@@ -786,19 +777,37 @@ p {
   -webkit-transition: all 500ms ease-in-out;
   -moz-transition: all 500ms ease-in-out;
   transition: all 500ms ease-in-out; }
+
+.header-nav {
+  display: none; }
   @media screen and (min-width: 1024px) {
-    .mobile-nav--open .site-wrap {
-      -webkit-transform: translate(200px, 0);
-      -moz-transform: translate(200px, 0);
-      -ms-transform: translate(200px, 0);
-      -o-transform: translate(200px, 0);
-      transform: translate(200px, 0); } }
+    .header-nav {
+      display: initial; } }
+
+.header-nav ul {
+  padding: 0;
+  margin: 0;
+  list-style: none; }
+
+.header-nav ul li {
+  padding: 0;
+  margin: 0 1em 0 0;
+  list-style: none;
+  display: inline-block; }
+
+.header-nav ul li a, .header-nav ul li a:visited {
+  color: #ffffff; }
+
+.header-nav ul li a:hover, .header-nav ul li a:active {
+  color: #d32329; }
 
 .header {
   height: 100px;
   width: 100%;
   padding: 1em 0;
-  background-color: #000000; }
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  background-color: #1c1c1f; }
 
 /**
  * Footer Styles
@@ -812,7 +821,7 @@ p {
   width: 100%;
   padding: 5px;
   margin-bottom: 10px;
-  background-color: #939597; }
+  background-color: #c1c3c4; }
 
 .article-type--aside, .article-type--gallery, .article-type--link, .article-type--image, .article-type--video, .article-type--audio, .article-type--standard {
   position: relative;
@@ -826,7 +835,7 @@ p {
   left: 0;
   font-family: dashicons;
   font-size: 1em;
-  color: #bbbdc0; }
+  color: #d32329; }
 
 .article-type--aside:before {
   content: "\f123"; }
@@ -877,14 +886,14 @@ p {
   margin-right: 0.5em;
   border-width: 0;
   outline: none;
-  background-color: #bbbdc0;
+  background-color: #d32329;
   font-family: "OpenSans", sans-serif;
   font-size: 0.875em;
   color: #ffffff !important;
   text-transform: uppercase;
   cursor: pointer; }
   .read-more--btn:hover, .read-more--btn:focus {
-    background-color: #a3a6aa;
+    background-color: #ac1c21;
     color: #ffffff; }
   .read-more--btn:last-of-type {
     margin-right: 0; }
@@ -918,7 +927,7 @@ blockquote {
 
 blockquote:before {
   margin-right: 0.25em;
-  color: #939597;
+  color: #c1c3c4;
   content: open-quote;
   font-size: 4.10989em;
   line-height: 0.1em;
@@ -961,7 +970,7 @@ pre {
   border-bottom-right-radius: 0.25em;
   border-top-left-radius: 0.25em;
   border-bottom-left-radius: 0.25em;
-  background: #939597;
+  background: #c1c3c4;
   color: #000000;
   font-size: 0.88889em; }
 
@@ -969,7 +978,7 @@ pre {
   max-width: 100%;
   padding: 0;
   margin: 0 0 1em;
-  background: #939597; }
+  background: #c1c3c4; }
 
 .wp-caption img {
   width: 100%;
