@@ -1,9 +1,11 @@
 uploads/
 plugins/wp-multi-network/
 plugins/index.php
+plugins/wordpress-importer
 themes/index.php
 upgrade/
 /index.php
 .idea
 debug.log
 .DS_Store
+atlassian-ide-plugin.xml
