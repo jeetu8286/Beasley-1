@@ -664,8 +664,8 @@ p {
   -ms-transform: translate(10px, 0);
   -o-transform: translate(10px, 0);
   transform: translate(10px, 0);
-  height: 2em;
-  width: 2em;
+  height: 32px;
+  width: 32px;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -685,7 +685,7 @@ p {
   top: 14px;
   display: block;
   height: 4px;
-  width: 2em;
+  width: 32px;
   -webkit-transition: all 500ms ease-in-out;
   -moz-transition: all 500ms ease-in-out;
   transition: all 500ms ease-in-out;
@@ -705,7 +705,7 @@ p {
   top: -10px;
   display: block;
   height: 4px;
-  width: 2em;
+  width: 32px;
   -webkit-transition: all 500ms ease-in-out;
   -moz-transition: all 500ms ease-in-out;
   transition: all 500ms ease-in-out;
@@ -725,7 +725,7 @@ p {
   bottom: -10px;
   display: block;
   height: 4px;
-  width: 2em;
+  width: 32px;
   -webkit-transition: all 500ms ease-in-out;
   -moz-transition: all 500ms ease-in-out;
   transition: all 500ms ease-in-out;
@@ -1086,6 +1086,161 @@ pre {
   padding: 0.25em 0.5em;
   font-size: 0.79012em;
   text-align: left; }
+
+/**
+ * Styles for Front End
+ *
+ * Admins can choose the location of the player. A class is added to the body that will match the locations below.
+ */
+/**
+ * General Styles
+ */
+.gmlp-nav {
+  display: block; }
+
+.gmlp-nav-toggle {
+  position: fixed;
+  top: 0;
+  right: 0;
+  display: block;
+  height: 50px;
+  width: 33px;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
+  -webkit-transition: ease 0.25s;
+  -moz-transition: ease 0.25s;
+  transition: ease 0.25s;
+  background-color: #1c1c1f;
+  border: none;
+  outline: none;
+  font-size: 1.25em;
+  color: #ffffff;
+  z-index: 10001;
+  cursor: pointer; }
+  @media screen and (min-width: 1024px) {
+    .gmlp-nav-toggle {
+      display: none; } }
+
+.gmlp-nav-toggle:before {
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  moz-osx-font-smoothing: grayscale;
+  text-rendering: auto;
+  content: "\f028"; }
+
+.gmlp-audio-button {
+  height: 140px;
+  width: 140px;
+  margin: 0 auto;
+  border-top-left-radius: 50%;
+  border-top-right-radius: 50%;
+  border-top-right-radius: 50%;
+  border-bottom-right-radius: 50%;
+  border-bottom-left-radius: 50%;
+  border-bottom-right-radius: 50%;
+  border-top-left-radius: 50%;
+  border-bottom-left-radius: 50%;
+  background-color: #d32329;
+  border: none;
+  outline: none;
+  font-family: FontAwesome;
+  font-size: 5em;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  moz-osx-font-smoothing: grayscale;
+  text-rendering: auto;
+  color: #ffffff;
+  cursor: pointer;
+  z-index: 10001; }
+
+#playButton {
+  position: relative; }
+
+#playButton:before {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  font-family: FontAwesome;
+  content: "\f01d"; }
+
+.gmlp-menu {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: auto;
+  left: auto;
+  -webkit-transition: ease 0.25s;
+  -moz-transition: ease 0.25s;
+  transition: ease 0.25s;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  height: 100%;
+  width: 100%;
+  background: transparent;
+  color: #ffffff;
+  z-index: 10000; }
+
+.gmlp-menu .container {
+  max-width: 1020px;
+  height: 100%;
+  margin: 0 auto; }
+
+.gmlp-menu #gmlp-actions {
+  position: relative;
+  margin: 1.25em auto 0;
+  text-align: center; }
+
+.gmlp-menu #gmlp-actions #pauseButton, .gmlp-menu #gmlp-actions #resumeButton {
+  display: none; }
+
+.gmlp-menu #gmlp-live {
+  position: relative;
+  width: 100%;
+  height: auto;
+  margin: 2.375em 0 0;
+  text-align: center;
+  z-index: 999; }
+
+.gmlp-menu #gmlp-live #trackInfo {
+  font-size: 1.375em; }
+
+.gmlp-menu #gmlp-live #trackInfo .gmlp-np-song-title {
+  margin: 0 0 1em;
+  font-weight: 700; }
+
+.gmlp-menu #gmlp-live #trackInfo .gmlp-np-artist {
+  font-weight: 400; }
+
+.gmlp-open .gmlp-menu {
+  right: 0; }
+
+.gmlp-open .gmlp-nav-toggle {
+  font-size: 1.875em; }
+
+.gmlp-open .gmlp-nav-toggle:before {
+  content: "\f00d"; }
+
+/**
+ * If Logged In
+ */
+.admin-bar .gmlp-nav-toggle {
+  top: 0; }
+
+.admin-bar .gmlp-menu {
+  top: 0; }
 
 /**
  * Single Page Styles

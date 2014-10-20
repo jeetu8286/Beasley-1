@@ -69,7 +69,7 @@ function greatermedia_scripts_styles() {
 	}
 }
 
-add_action( 'wp_enqueue_scripts', 'greatermedia_scripts_styles' );
+add_action( 'wp_enqueue_scripts', 'greatermedia_scripts_styles', 50 );
 
 /**
  * Add humans.txt to the <head> element.

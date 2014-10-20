@@ -130,7 +130,7 @@ get_header(); ?>
 			</aside>
 
 			<aside class="live-player">
-				The Live Player Will go here! Boom!
+				<?php GMLP_Player::render_player(); ?>
 			</aside>
 
 		</div>
