@@ -99,14 +99,17 @@
 }
 
 .header-nav {
+	@include size(null 60px);
 	display: none;
+	line-height: 1;
 	@include bp(large) {
+		@include span-columns(6);
 		display: initial;
 	}
 }
 
 .header-nav ul {
-	@include padding(0);
+	@include padding(em(22px) 0);
 	@include margin(0);
 	list-style: none;
 }

@@ -129,6 +129,10 @@ get_header(); ?>
 
 			</aside>
 
+			<aside class="live-player">
+				The Live Player Will go here! Boom!
+			</aside>
+
 		</div>
 
 	</main>

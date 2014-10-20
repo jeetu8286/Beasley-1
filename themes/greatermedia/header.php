@@ -74,6 +74,9 @@
 						<div class="mobile-nav--toggle">
 							<div class="mobile-nav--toggle--span"></div>
 						</div>
+						<div class="header-logo">
+							Logo
+						</div>
 						<?php
 
 							$defaults = array(
@@ -98,5 +101,8 @@
 							wp_nav_menu( $defaults );
 
 						?>
+						<div class="header-search">
+							<i class="fa fa-search"></i>
+						</div>
 					</div>
 				</header>

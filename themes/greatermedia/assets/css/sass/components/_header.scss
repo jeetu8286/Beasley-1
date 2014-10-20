@@ -1,8 +1,27 @@
 .header{
-	@include size(100% 100px);
-	@include padding(1em 0);
-	@include border-color(null null palette(default, medium) null);
+	@include size(100% 80px);
+	@include padding(em(4px) 0);
+	@include border-color(null null palette(gray, medium) null);
 	@include border-style(null null solid null);
 	@include border-width(null null 1px null);
 	background-color: palette(default, dark);
+}
+
+.header-logo{
+	@include size(null 60px);
+	line-height: 1;
+	color: palette(default);
+	@include bp(large) {
+		@include span-columns(1);
+	}
+}
+
+.header-search{
+	@include size(null 60px);
+	line-height: 1;
+	color: palette(gray);
+	@include bp(large) {
+		@include span-columns(2);
+		float: right;
+	}
 }
