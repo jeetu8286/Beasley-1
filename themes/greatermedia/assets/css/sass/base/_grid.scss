@@ -75,6 +75,7 @@ img {
 
 .live-player{
 	@include position(fixed, em(80px) 0 null null);
+	@include padding(2em);
 	display: none;
 	background-color: palette(default, gray);
 	@include bp(large){

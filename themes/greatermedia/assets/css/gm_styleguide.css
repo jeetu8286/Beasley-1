@@ -503,6 +503,7 @@ img {
   position: fixed;
   top: 5em;
   right: 0;
+  padding: 2em;
   display: none;
   background-color: #221f1f; }
   @media screen and (min-width: 1024px) {
