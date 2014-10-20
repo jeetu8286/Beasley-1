@@ -6,6 +6,7 @@ uploads/
 plugins/wp-multi-network/
 plugins/wordpress-importer/
 plugins/index.php
+plugins/wordpress-importer
 themes/index.php
 themes/twentyfourteen
 upgrade/
