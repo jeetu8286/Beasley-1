@@ -75,7 +75,7 @@
 							<div class="mobile-nav--toggle--span"></div>
 						</div>
 						<div class="header-logo">
-							Logo
+							<a href="<?php echo home_url(); ?>"><img src="<?php bloginfo( 'stylesheet_directory' ); ?>/images/wmmr-logo.png" alt="<?php bloginfo( 'name' ); ?> | <?php bloginfo( 'description' ); ?>"></a>
 						</div>
 						<?php
 
