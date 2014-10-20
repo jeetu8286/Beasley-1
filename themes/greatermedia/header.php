@@ -44,6 +44,65 @@
 		</head>
 
 		<body <?php body_class(); ?>>
-			<header id="header" class="header" role="banner">
+			<?php
 
-			</header>
+				$defaults = array(
+					'theme_location'  => 'main-nav',
+					'menu'            => '',
+					'container'       => 'nav',
+					'container_class' => 'mobile-nav',
+					'container_id'    => 'mobile-nav',
+					'menu_class'      => 'mobile-nav--list',
+					'menu_id'         => '',
+					'echo'            => true,
+					'fallback_cb'     => 'wp_page_menu',
+					'before'          => '',
+					'after'           => '',
+					'link_before'     => '',
+					'link_after'      => '',
+					'items_wrap'      => '<ul id="%1$s" class="%2$s">%3$s</ul>',
+					'depth'           => 0,
+					'walker'          => ''
+				);
+
+				wp_nav_menu( $defaults );
+
+			?>
+			<div class="site-wrap">
+				<header id="header" class="header" role="banner">
+					<div class="container">
+						<div class="mobile-nav--toggle">
+							<div class="mobile-nav--toggle--span"></div>
+						</div>
+						<div class="header-logo">
+							Logo
+						</div>
+						<?php
+
+							$defaults = array(
+								'theme_location'  => 'main-nav',
+								'menu'            => '',
+								'container'       => 'nav',
+								'container_class' => 'header-nav',
+								'container_id'    => '',
+								'menu_class'      => 'header-nav--list',
+								'menu_id'         => 'header-nav--list',
+								'echo'            => true,
+								'fallback_cb'     => 'wp_page_menu',
+								'before'          => '',
+								'after'           => '',
+								'link_before'     => '',
+								'link_after'      => '',
+								'items_wrap'      => '<ul id="%1$s" class="%2$s">%3$s</ul>',
+								'depth'           => 0,
+								'walker'          => ''
+							);
+
+							wp_nav_menu( $defaults );
+
+						?>
+						<div class="header-search">
+							<i class="fa fa-search"></i>
+						</div>
+					</div>
+				</header>

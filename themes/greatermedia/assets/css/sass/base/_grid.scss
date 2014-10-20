@@ -10,13 +10,22 @@ $visual-grid-color: #6e76ee !global;
 $visual-grid-index: front !global;
 
 // max-width for the site
-$max-width: em(1200) !global;
+$max-width: 95% !global;
 
 // simple css effect to make images responsive and fluid while also retaining proper aspect ration
 img {
 	max-width: 100%;
 	@include display(block); // block display will remove additional padding on images
 	@include size(null auto); // this will keep images from being stretched at lower resolutions
+}
+
+// The `.site-wrap` class is being used in conjunction with the off-canvas mobile navigation. On click of the
+// `.mobile-nav--toggle` button, the contents of `.site-wrap` will be pushed to the left by a particular value. This
+.site-wrap {
+	@include transform(translate(0, 0));
+	@include size(100% null);
+	@include transition(all 500ms ease-in-out);
+	overflow-y: hidden;
 }
 
 .container, %container {
@@ -38,10 +47,10 @@ img {
 		@include span-columns(6);
 	}
 	@include bp(large) {
-		@include span-columns(8);
+		@include span-columns(7);
 	}
 	@include bp(x-large) {
-		@include span-columns(8);
+		@include span-columns(7);
 		@include padding(null 0);
 	}
 }
@@ -54,13 +63,26 @@ img {
 	}
 	@include bp(medium) {
 		@include span-columns(2);
-		@include omega;
 	}
 	@include bp(large) {
-		@include span-columns(4);
+		@include span-columns(3);
 	}
 	@include bp(x-large) {
-		@include span-columns(4);
+		@include span-columns(3);
 		@include padding(null 0);
+	}
+}
+
+.live-player{
+	@include position(fixed, em(80px) 0 null null);
+	@include padding(2em);
+	display: none;
+	background-color: palette(default, gray);
+	@include bp(large){
+		@include span-columns(2);
+		@include size(null 100%);
+		@include omega;
+		@include box-sizing(border-box);
+		color: palette(default);
 	}
 }

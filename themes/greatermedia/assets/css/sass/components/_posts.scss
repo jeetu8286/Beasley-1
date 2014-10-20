@@ -7,7 +7,7 @@
 	@include size(100% 30px);
 	@include padding(5px);
 	@include margin(null null 10px);
-	background-color: color(light-gray);
+	background-color: palette(gray, light);
 }
 
 %article-type {
@@ -22,7 +22,7 @@
 	@include size(0 0);
 	font-family: dashicons;
 	font-size: ms(0);
-	color: color(red);
+	color: palette(default, red);
 }
 
 .article-type--aside, .article-type--gallery, .article-type--link, .article-type--image, .article-type--video, .article-type--audio, .article-type--standard {
@@ -66,14 +66,14 @@
 
 .byline {
 	font-size: ms(-3);
-	color: color(gray);
+	color: palette(gray);
 	text-transform: uppercase;
 }
 
 .article-comments--count {
 	@include padding(null null null 5px);
 	@include margin(null null null 3px);
-	@include border-color(null null null color('dark-gray'));
+	@include border-color(null null null palette(gray, dark));
 	@include border-style(null null null solid);
 	@include border-width(null null null 1px);
 }
@@ -105,7 +105,7 @@
 }
 
 .read-more--btn{
-	@include btn(red, white, 1em, 1.5em, em(14px));
+	@include btn(default, red, base, 1em, 1.5em, em(14px));
 }
 
 .pagination {
@@ -136,7 +136,7 @@
 blockquote {
 	@include padding(em(8px) em(10px));
 	@include margin(em(24px) em(10px));
-	@include border-color(null null null color(gray));
+	@include border-color(null null null palette(gray));
 	@include border-style(null null null solid);
 	@include border-width(null null null em(10px));
 	quotes: "\201C""\201D""\2018""\2019";
@@ -144,7 +144,7 @@ blockquote {
 
 blockquote:before {
 	@include margin(null em(4px) null null);
-	color: color(light-gray);
+	color: palette(gray, light);
 	content: open-quote;
 	font-size: ms(12);
 	line-height: 0.1em;
@@ -154,7 +154,7 @@ blockquote:before {
 blockquote p {
 	display: inline;
 	font-style: italic;
-	color: color(dark-gray);
+	color: palette(gray, dark);
 }
 
 .alignleft, img.alignleft {
@@ -189,8 +189,8 @@ pre {
 	@include border-right-radius(em(4px));
 	@include border-bottom-radius(em(4px));
 	@include border-left-radius(em(4px));
-	background: color(light-gray);
-	color: color(black);
+	background: palette(gray, light);
+	color: palette(default, black);
 	font-size: ms(-1);
 }
 
@@ -198,7 +198,7 @@ pre {
 	max-width: 100%;
 	@include padding(0);
 	@include margin(0 0 em(16px));
-	background: color(light-gray);
+	background: palette(gray, light);
 }
 
 .wp-caption img {
