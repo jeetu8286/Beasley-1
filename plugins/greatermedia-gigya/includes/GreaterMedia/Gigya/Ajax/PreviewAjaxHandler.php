@@ -1,6 +1,8 @@
 <?php
 
-namespace GreaterMedia\Gigya;
+namespace GreaterMedia\Gigya\Ajax;
+
+use GreaterMedia\Gigya\AccountsSearcher;
 
 /**
  * PreviewAjaxHandler is the ajax handler invoked by the client to

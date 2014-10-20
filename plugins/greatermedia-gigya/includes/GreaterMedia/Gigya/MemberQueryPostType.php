@@ -11,6 +11,14 @@ namespace GreaterMedia\Gigya;
 class MemberQueryPostType {
 
 	/**
+	 * Metaboxes for this post type. These are created on demand.
+	 *
+	 * @access public
+	 * @var array
+	 */
+	public $meta_boxes = array();
+
+	/**
 	 * Registers the `member_query` custom post type.
 	 *
 	 * @access public
@@ -20,6 +28,87 @@ class MemberQueryPostType {
 		register_post_type(
 			$this->get_post_type_name(), $this->get_options()
 		);
+	}
+
+	/**
+	 * Lazy initializes the meta boxes for this post_type. This keeps the
+	 * footprint down on the POST request, since we don't need to
+	 * register the meta boxes there.
+	 *
+	 * For the POST request, we'll use null data. For those
+	 * requests the meta boxes only do nonce verification.
+	 *
+	 * @access public
+	 * @param mixed $data
+	 * @return array Associative array of meta box objects
+	 */
+	public function get_meta_boxes( $data = null ) {
+		if ( count( $this->meta_boxes ) === 0 ) {
+			$this->meta_boxes = array();
+
+			$this->meta_boxes['preview'] = $this->meta_box_for(
+				array(
+					'id'       => 'preview',
+					'title'    => __( 'Preview Results', 'gmr_gigya' ),
+					'context'  => 'side',
+					'priority' => 'default',
+					'template' => 'preview',
+				),
+				$data
+			);
+
+			$this->meta_boxes['query_builder'] = $this->meta_box_for(
+				array(
+					'id'       => 'query_builder',
+					'title'    => __( 'Gigya Social', 'gmr_gigya' ),
+					'context'  => 'normal',
+					'priority' => 'default',
+					'template' => 'query_builder',
+				),
+				$data
+			);
+
+		}
+
+		return $this->meta_boxes;
+	}
+
+	/**
+	 * Registers the meta boxes with the associated data object.
+	 *
+	 * @access public
+	 * @param mixed $data The data to associate with a metabox.
+	 * @return void
+	 */
+	public function register_meta_boxes( $data ) {
+		$meta_boxes = $this->get_meta_boxes( $data );
+
+		foreach ( $meta_boxes as $meta_box ) {
+			$meta_box->register();
+		}
+	}
+
+	/**
+	 * Verifies than correct nonces were passed for each MetaBox.
+	 *
+	 * Exits script execution with a warning if invalid.
+	 *
+	 * @access public
+	 * @return void
+	 */
+	public function verify_meta_box_nonces() {
+		$meta_boxes = $this->get_meta_boxes( null );
+
+		foreach ( $meta_boxes as $meta_box ) {
+			$result = $meta_box->verify_nonce();
+			// only runs in PHPUnit, since the script has already
+			// ended execution before, if the nonce was invalid
+			if ( ! $result ) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	/**
@@ -92,4 +181,19 @@ class MemberQueryPostType {
 		return 'member_query';
 	}
 
+	/* Helpers */
+	/**
+	 * Builds a new meta box for the specified params.
+	 *
+	 * @access public
+	 * @param array $params The params to pass to the meta box object
+	 * @param mixed $data The data associated with the meta box.
+	 * @return MetaBox
+	 */
+	public function meta_box_for( $params, $data ) {
+		$meta_box = new MetaBox( $data );
+		$meta_box->params = $params;
+
+		return $meta_box;
+	}
 }

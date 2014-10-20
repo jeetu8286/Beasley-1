@@ -21,17 +21,21 @@ namespace GreaterMedia\Gigya;
  *
  * { plugin }/templates/metaboxes
  *
+ * Templates can use $this->data to render dynamic content related to
+ * that meta box.
+ *
  * @package GreaterMedia\Gigya
  */
 class MetaBox {
 
 	/**
-	 * The member query object for this meta box.
+	 * The data object for this meta box. This is used inside templates
+	 * as $this->data->foo.
 	 *
 	 * @access public
-	 * @var MemberQuery
+	 * @var mixed
 	 */
-	public $member_query;
+	public $data;
 
 	/**
 	 * Properties of the meta box. These correspond to the getters like
@@ -64,10 +68,10 @@ class MetaBox {
 	 * Stores the member query for this meta box.
 	 *
 	 * @access public
-	 * @param MemberQuery $member_query
+	 * @param mixed $data
 	 */
-	public function __construct( $member_query ) {
-		$this->member_query = $member_query;
+	public function __construct( $data ) {
+		$this->data = $data;
 	}
 
 	/**
@@ -101,7 +105,7 @@ class MetaBox {
 	public function render() {
 		wp_nonce_field(
 			$this->get_id(),
-			$this->get_id() . '_nonce',
+			$this->get_nonce_field(),
 			false
 		);
 
@@ -118,7 +122,8 @@ class MetaBox {
 	 * This function will halt current script execution if the nonce
 	 * verification fails.
 	 *
-	 * In PHPUnit mode nonce verification is skipped.
+	 * In PHPUnit mode script halting is skipped, the function returns false
+	 * instead.
 	 *
 	 * @access public
 	 * @return boolean
@@ -128,7 +133,7 @@ class MetaBox {
 		$nonce_field  = $nonce_action . '_nonce';
 
 		if ( array_key_exists( $nonce_field, $_POST ) ) {
-			$nonce_value = $_POST[ $nonce_field ];
+			$nonce_value = sanitize_text_field( $_POST[ $nonce_field ] );
 		} else {
 			$nonce_value = '';
 		}
@@ -145,6 +150,10 @@ class MetaBox {
 			return true;
 		}
 	}
+
+	/***************************************************/
+	/* Helpers                                         */
+	/***************************************************/
 
 	/**
 	 * Returns the name of the template used to render this meta box.
@@ -165,6 +174,17 @@ class MetaBox {
 	 */
 	public function get_id() {
 		return $this->params['id'];
+	}
+
+	/**
+	 * Returns the name of the nonce that is rendererd into the MetaBox.
+	 *
+	 * Default is {id}_nonce
+	 *
+	 * @return string
+	 */
+	public function get_nonce_field() {
+		return $this->get_id() . '_nonce';
 	}
 
 	/**
@@ -224,7 +244,6 @@ class MetaBox {
 		return array();
 	}
 
-	/* helpers */
 	/**
 	 * Returns the full path to the template file specified.
 	 *

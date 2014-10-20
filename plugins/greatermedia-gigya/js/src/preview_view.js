@@ -19,24 +19,9 @@ PreviewView.prototype = {
 			return;
 		}
 
-		// TODO: clean this up
-		var nonce = member_query_meta.preview_nonce;
-		var data  = {
-			'action': 'preview_member_query',
-			'action_data': JSON.stringify({
-				'query': query
-			})
-		};
-
-		var url = member_query_meta.ajax_url + '?' + $.param({
-			'preview_member_query_nonce': nonce,
-		});
-
 		this.setStatus('Searching, Please wait ...');
 
-		var promise = $.post(url, data);
-
-		promise
+		ajaxApi.request('preview_member_query', { query: query })
 			.then($.proxy(this.didPreviewSuccess, this))
 			.fail($.proxy(this.didPreviewError, this));
 	},

@@ -1,6 +1,8 @@
 <?php
 
-namespace GreaterMedia\Gigya;
+namespace GreaterMedia\Gigya\Ajax;
+
+use GreaterMedia\Gigya\GigyaSession;
 
 class GigyaLoginAjaxHandler extends AjaxHandler {
 
