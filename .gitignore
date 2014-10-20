@@ -1,5 +1,6 @@
 uploads/
 plugins/wp-multi-network/
+plugins/wordpress-importer/
 plugins/index.php
 themes/index.php
 upgrade/
@@ -9,3 +10,4 @@ debug.log
 .DS_Store
 plugins/gears
 plugins/gravityforms
+atlassian-ide-plugin.xml

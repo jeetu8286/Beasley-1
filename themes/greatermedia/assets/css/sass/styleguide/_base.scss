@@ -1,494 +1,80 @@
-/**
- * Base Styles
- */
-
-/*********************
-GENERAL STYLES
-*********************/
+// General Styles
 body {
-	height: 100%;
-	background-color: #f9f9f9;
-	margin: 0 auto;
-	line-height: 1.5;
-	font-family: $sans-serif;
-	font-size: 100%;
-	color: $text-color;
-	-webkit-font-smoothing: antialiased;
+	@include size(null 100%);
+	@include margin(0 auto);
+	background: #f9f9f9;
 }
+
 * {
 	-webkit-tap-highlight-color: rgba(0,0,0,0);
 }
-#wpadminbar {
-	position: fixed;
+
+// Blockquote styles
+blockquote {
+	@include padding(em(8px) em(10px));
+	@include margin(em(24px) em(10px));
+	@include border-color(null null null color(gray));
+	@include border-style(null null null solid);
+	@include border-width(null null null em(10px));
+	quotes: "\201C""\201D""\2018""\2019";
 }
 
-.emphasis {
-	font-size: 1.2rem;
-	font-weight: 600;
-}
-
-img {
-	max-width: 100%;
-	height: auto; // this will keep images from being stretched at lower resolutions
-	display: block; // block display will remove additional padding on images
-}
-/********************
-WORDPRESS BODY CLASSES
-style a page via class
-********************/
-
-.rtl {
-}
-
-/* for sites that are read right to left (i.e. hebrew) */
-.home {
-}
-
-/* home page */
-.blog {
-}
-
-/* blog template page */
-.archive {
-}
-
-/* archive page */
-.date {
-}
-
-/* date archive page */
-.date-paged-1 {
-}
-
-/* replace the number to the corresponding page number */
-.search {
-}
-
-/* search page */
-.search-results {
-}
-
-/* search result page */
-.search-no-results {
-}
-
-/* no results search page */
-.search-paged-1 {
-}
-
-/* individual paged search (i.e. body.search-paged-3) */
-.error404 {
-}
-
-/* 404 page */
-.single {
-}
-
-/* single post page */
-.postid-1 {
-}
-
-/* individual post page by id (i.e. body.postid-73) */
-.single-paged-1 {
-}
-
-/* individual paged single (i.e. body.single-paged-3) */
-.attachment {
-}
-
-/* attatchment page */
-.attachmentid-1 {
-}
-
-/* individual attatchment page (i.e. body.attachmentid-763) */
-.attachment-mime-type {
-}
-
-/* style mime type pages */
-.author {
-}
-
-/* author page */
-.author-nicename {
-}
-
-/* user nicename (i.e. body.author-samueladams) */
-.author-paged-1 {
-}
-
-/* paged author archives (i.e. body.author-paged-4) for page 4 */
-.category {
-}
-
-/* category page */
-.category-1 {
-}
-
-/* individual category page (i.e. body.category-6) */
-.category-paged-1 {
-}
-
-/* replace the number to the corresponding page number */
-.tag {
-}
-
-/* tag page */
-.tag-slug {
-}
-
-/* individual tag page (i.e. body.tag-news) */
-.tag-paged-1 {
-}
-
-/* replace the number to the corresponding page number */
-.page-template {
-}
-
-/* custom page template page */
-.page-template-page-php {
-}
-
-/* individual page template (i.e. body.page-template-contact-php */
-.page-paged-1 {
-}
-
-/* replace the number to the corresponding page number */
-.page-parent {
-}
-
-/* parent page template */
-.page-child {
-}
-
-/* child page template */
-.parent-pageid-1 {
-}
-
-/* replace the number to the corresponding page number */
-.logged-in {
-}
-
-/* if user is logged in */
-.paged {
-}
-
-/* paged items like search results or archives */
-.paged-1 {
-}
-
-/* individual paged (i.e. body.paged-3) */
-
-/*********************
-LINK STYLES
-*********************/
-
-a, a:visited {
-	color: $link-color;
-	text-decoration: none;
-
-	/* on hover */
-	&:hover, &:focus {
-		color: $link-hover;
-	}
-
-	/* on click */
-	&:active {
-	}
-
-	/* mobile tap color */
-	&:link {
-		/*
-		this highlights links on iPhones/iPads.
-		so it basically works like the :hover selector
-		for mobile devices.
-		*/
-		-webkit-tap-highlight-color: rgba(0, 0, 0, 0.3);
-	}
-}
-
-/******************************************************************
-H1, H2, H3, H4, H5, H6 STYLES
-******************************************************************/
-
-h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
-	font-family: $sans-serif;
-	text-rendering: optimizelegibility;
-	font-weight: 700;
-	/*
-	if you're going to use webfonts, be sure to check your weights
-	http://css-tricks.com/watch-your-font-weight/
-	*/
-
-	/* removing text decoration from all headline links */
-	a {
-		text-decoration: none;
-	}
-}
-
-h1, .h1 {
-	font-size: rem(40px);
-	line-height: 1.1em;
-}
-
-h2, .h2 {
-	font-size: rem(36px);
-	line-height: 1.4em;
-	margin-bottom: 0.375em;
-}
-
-h3, .h3 {
-	font-size: rem(28px);
-}
-
-h4, .h4 {
-	font-size: rem(24px);
-}
-
-h5, .h5 {
-	font-size: rem(20px);
-	line-height: 2.09em;
-	text-transform: uppercase;
-	letter-spacing: 2px;
-}
-
-h6, .h6 {
-	font-size: rem(16px);
-	line-height: 2.09em;
-	text-transform: uppercase;
-	letter-spacing: 2px;
-}
-/*********************
-POSTS & CONTENT STYLES
-*********************/
-
-.hentry {
-	margin-bottom: 1em;
-	header {
-		padding: 1.5em 0;
-	}
-	footer {
-		padding: 1.5em 0;
-
-		p {
-			margin: 0;
-		}
-	}
-}
-
-/* end .hentry */
-
-.single-title,
-.page-title,
-.entry-title {
-	margin: 0;
-}
-
-.single-title {
-}
-
-.page-title {
-}
-
-.entry-title {
-}
-
-.archive-title {
-}
-
-/* want to style individual post classes? Booya! */
-.post-id {
-}
-
-/* post by id (i.e. post-3) */
-.post {
-}
-
-/* general post style */
-.page {
-}
-
-/* general article on a page style */
-.attachment {
-}
-
-/* general style on an attatchment */
-.sticky {
-}
-
-/* sticky post style */
-.hentry {
-}
-
-/* hentry class */
-.category-slug {
-}
-
-/* style by category (i.e. category-videos) */
-.tag-slug {
-}
-
-/* style by tag (i.e. tag-news) */
-
-/* post meta */
-.byline {
+blockquote:before {
+	@include margin(null em(4px) null null);
 	color: color(light-gray);
+	content: open-quote;
+	font-size: ms(12);
+	line-height: 0.1em;
+	vertical-align: em(-4px);
+}
+
+blockquote p {
+	display: inline;
 	font-style: italic;
-	margin: 0;
-	time {
-	}
-}
-pre{
-	white-space: pre-wrap;
+	color: color(dark-gray);
 }
 
-/* entry content */
-.entry-content {
-	padding: 1.5em 0 0;
-	p {
-		margin: 0 0 1.5em;
-	}
-	ul, ol, table, dl {
-	}
-	ul, ol {
-		li {
-		}
-	}
-	ul {
-		li {
-		}
-	}
-	ol {
-		li {
-		}
-	}
-	blockquote {
-		border-color: color(gray);
-		border-left-width: 10px;
-		border-style: solid;
-		margin: 1.5em 10px;
-		padding: 0.5em 10px;
-		quotes: "\201C""\201D""\2018""\2019";
-		&:before {
-			color: color(light-gray);
-			content: open-quote;
-			font-size: rem(64px);
-			line-height: 0.1em;
-			margin-right: 0.25em;
-			vertical-align: -0.4em;
-		}
-		p {
-			display: inline;
-			font-style: italic;
-			color: color(dark-gray);
-		}
-	}
-	dl {
-	}
-
-	dt {
-	}
-	dd {
-		margin-left: 0;
-		font-size: rem(14px);
-		color: #787878;
-		margin-bottom: 1.5em;
-	}
-	img {
-		margin: 0 0 1.5em 0;
-		max-width: 100%;
-		height: auto;
-	}
-	.alignleft, img.alignleft {
-		margin: 0 1em 1em 0;
-		display: block;
-		float: left;
-	}
-	.alignright, img.alignright {
-		margin: 0 0 1em 1em;
-		display: block;
-		float: right;
-	}
-	.aligncenter, img.aligncenter {
-		margin: 0 auto 1em;
-	}
-
-	.size-auto,
-	.size-full,
-	.size-large,
-	.size-medium,
-	.size-thumbnail {
-		max-width: 100%;
-		height: auto;
-	}
-
-}
 .alignleft, img.alignleft {
-	margin: 0 1em 1em 0;
-	display: block;
+	@include display(block);
+	@include margin(0 1em 1em);
 	float: left;
 }
+
 .alignright, img.alignright {
-	margin: 0 0 1em 1em;
-	display: block;
+	@include display(block);
+	@include margin(0 0 1em 1em);
 	float: right;
 }
+
 .aligncenter, img.aligncenter {
-	margin: 0 auto 1em;
+	@include margin(0 auto 1em)
 }
 
-/* end .entry-content */
+.size-auto,
+.size-full,
+.size-large,
+.size-medium,
+.size-thumbnail {
+	max-width: 100%;
+	@include size(null auto);
+}
 
 .wp-caption {
 	max-width: 100%;
-	background: #eee;
-	padding: 0;
-	margin-bottom: 1em;
-
-	/* images inside wp-caption */
-	img {
-		max-width: 100%;
-		margin-bottom: 0;
-		width: 100%;
-	}
-	p.wp-caption-text {
-		font-size: rem(12px);
-		margin: 4px 0 7px;
-		padding: 16px 20px 20px 20px;
-		text-align: left;
-		line-height: 1.5;
-	}
+	@include padding(0);
+	@include margin(0 0 em(16px));
+	background: color(light-gray);
 }
 
-/* end .wp-caption */
-
-/* image gallery styles */
-.gallery {
-	dl {
-		a {
-		}
-		img {
-		}
-	}
-	dt {
-	}
-	dd {
-	}
+.wp-caption img {
+	@include size(100% null);
+	@include margin(null null 0);
+	max-width: 100%;
 }
 
-/* end .gallery */
-
-/* gallery caption styles */
-.gallery-caption {
-}
-
-.size-full {
-}
-
-.size-large {
-}
-
-.size-medium {
-}
-
-.size-thumbnail {
+.wp-caption p.wp-caption-text {
+	@include padding(em(16px) em(20px) em(20px) em(20px));
+	@include padding(em(4px) em(8px));
+	font-size: ms(-2);
+	text-align: left;
 }

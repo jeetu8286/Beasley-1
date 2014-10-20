@@ -11,7 +11,7 @@
 
 .sg-nav-toggle-span {
 	@include position(absolute, 14px null null null);
-	@include size(20px 1px);
+	@include size(em(20px) 1px);
 	@include transition(all 500ms ease-in-out);
 	display: block;
 	border-radius: 1px;
@@ -19,7 +19,7 @@
 	content: '';
 	&:before {
 		@include position(absolute, -6px null null null);
-		@include size(20px 1px);
+		@include size(em(20px) 1px);
 		@include transition(all 500ms ease-in-out);
 		display: block;
 		border-radius: 1px;
@@ -28,7 +28,7 @@
 	}
 	&:after {
 		@include position(absolute, null null -6px null);
-		@include size(20px 1px);
+		@include size(em(20px) 1px);
 		@include transition(all 500ms ease-in-out);
 		display: block;
 		border-radius: 1px;
@@ -44,11 +44,15 @@
 }
 
 .sg-nav {
-	@include position(fixed, 0 null null -12.5em);
-	@include size(200px 100%);
+	@include position(fixed, 0 null null -90%);
+	@include size(90% 100%);
 	@include transition(all 500ms ease-in-out);
 	background-color: color(black);
 	z-index: 1;
+	@include media($mobile){
+		@include position(null, null null null em(-200px));
+		@include size(em(200px) 100%);
+	}
 }
 
 .sg-nav-content {
@@ -58,13 +62,13 @@
 .sg-nav-list {
 	@include padding(0 1em);
 	list-style: none;
-	color: color(meta-gray);
+	color: color(medium-gray);
 }
 
 .sg-nav-list-item {
 	list-style: none;
 	@include padding(0);
-	font-size: rem(12px);
+	font-size: ms(-2);
 	text-transform: uppercase;
 }
 .sg-nav-list-item a:link, .sg-nav-list-item a:visited {
@@ -81,7 +85,7 @@
 }
 
 .sg-subnav-list .sg-nav-list-item {
-	font-size: rem(14px);
+	font-size: ms(-2);
 }
 
 /**
@@ -95,7 +99,10 @@
 		@include position(null, null null null 0);
 	}
 	.sg-nav-toggle {
-		@include position(null, null null null 10.5em);
+		@include position(null, null null null 79%);
+		@include media($mobile){
+			@include position(null, null null null em(180px));
+		}
 	}
 	.sg-nav-toggle-span {
 		background-color: transparent;
