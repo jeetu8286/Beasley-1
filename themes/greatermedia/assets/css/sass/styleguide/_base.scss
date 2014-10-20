@@ -13,7 +13,7 @@ body {
 blockquote {
 	@include padding(em(8px) em(10px));
 	@include margin(em(24px) em(10px));
-	@include border-color(null null null color(gray));
+	@include border-color(null null null palette(gray));
 	@include border-style(null null null solid);
 	@include border-width(null null null em(10px));
 	quotes: "\201C""\201D""\2018""\2019";
@@ -21,7 +21,7 @@ blockquote {
 
 blockquote:before {
 	@include margin(null em(4px) null null);
-	color: color(light-gray);
+	color: palette(gray, light);
 	content: open-quote;
 	font-size: ms(12);
 	line-height: 0.1em;
@@ -31,7 +31,7 @@ blockquote:before {
 blockquote p {
 	display: inline;
 	font-style: italic;
-	color: color(dark-gray);
+	color: palette(gray, dark);
 }
 
 .alignleft, img.alignleft {
@@ -63,7 +63,7 @@ blockquote p {
 	max-width: 100%;
 	@include padding(0);
 	@include margin(0 0 em(16px));
-	background: color(light-gray);
+	background: palette(gray, light);
 }
 
 .wp-caption img {

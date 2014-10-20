@@ -18,12 +18,12 @@
 }
 
 .sg-section--title {
-	color: color(gray);
+	color: palette(gray);
 	text-transform: uppercase;
 }
 
 .sg-subsection--title {
-	color: color(medium-gray);
+	color: palette(gray);
 	text-transform: uppercase;
 }
 
@@ -38,11 +38,11 @@
 	@include position(relative, null null null null);
 	@include size(null 100%);
 	@include padding(null null 2em null);
-	border-bottom: 1px solid color(medium-gray);
+	border-bottom: 1px solid palette(gray);
 }
 
 .sg-btn {
-	@include btn(red, white, 1em, 1.5em, .875em);
+	@include btn(default, red, base, 1em, 1.5em, .875em);
 }
 
 .sg-colors--table {
@@ -91,35 +91,27 @@
 .sg-color {
 	@include size(13% 80px);
 	display: table-cell;
-	color: color(white);
+	color: palette(default);
 }
 
 .color-black {
-	background-color: color(black);
+	background-color: palette(default, black);
 }
 
 .color-dark-gray {
-	background-color: color(dark-gray);
+	background-color: palette(gray, dark);
 }
 
 .color-gray {
-	background-color: color(gray);
-}
-
-.color-meta-gray {
-	background-color: color(medium-gray);
-}
-
-.color-soft-gray {
-	background-color: color(soft-gray);
+	background-color: palette(gray);
 }
 
 .color-light-gray {
-	background-color: color(light-gray);
+	background-color: palette(gray, light);
 }
 
 .color-white {
-	background-color: color(white);
+	background-color: palette(default);
 }
 
 .sg-color--swatch {
@@ -141,19 +133,19 @@
 	@include padding(.25em 5px);
 	@include transition(all .5s ease);
 	opacity: 0;
-	background-color: color(black);
+	background-color: palette(default, black);
 	font-size: ms(-3);
 }
 
 .sg-typography {
 	@include padding(.25em 5px);
 	@include margin(null null 2em null);
-	background-color: color(light-gray);
+	background-color: palette(gray, light);
 	text-align: center;
 }
 
 .sg-typography--title {
-	color: color(medium-gray);
+	color: palette(gray);
 	text-transform: uppercase;
 }
 

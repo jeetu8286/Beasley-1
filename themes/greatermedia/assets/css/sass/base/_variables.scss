@@ -18,20 +18,33 @@ $colors: (
 	red: #d32329
 );
 
+$palettes: (
+	default: (
+		base: #ffffff,
+		black: #000000,
+		red: #bbbdc0
+	),
+	gray: (
+		base: #a7a9ab,
+		light: #939597,
+		dark: #414141
+	)
+);
+
 // Variables for site wide usage
 //
 // @author Allen Moore
 // @since 0.1.0
 //
-$text-color: color(black);
+$text-color: palette(default, black);
 
-$link-color: color(red);
-$link-hover: color(gray);
+$link-color: palette(default, red);
+$link-hover: palette(gray);
 
-$border-color: color(soft-gray);
-$dark-border-color: color(dark-gray);
+$border-color: palette(gray, light);
+$dark-border-color: palette(gray, dark);
 
-$nav-link-color: color(white);
+$nav-link-color: palette(default);
 
 /*********************
 Misc
