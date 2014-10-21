@@ -91,7 +91,7 @@ get_header(); ?>
 
 				</div>
 
-				<?php GMLP_Player::render_player(); ?>
+				<?php do_action( 'gm_live_player' ); ?>
 
 				<div class="now-playing--title">
 
