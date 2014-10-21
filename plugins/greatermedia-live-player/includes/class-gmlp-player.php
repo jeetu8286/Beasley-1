@@ -10,7 +10,7 @@ class GMLP_Player {
 
 		add_action( 'wp_footer', array( __CLASS__, 'load_js' ), 50 );
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'enqueue_scripts' ), 50 );
-		add_action( 'wp_footer', array( __CLASS__, 'render_player' ) );
+		add_action( 'gm_live_player', array( __CLASS__, 'render_player' ) );
 		add_action( 'radio_callsign', array( __CLASS__, 'get_radio_callsign' ) );
 	}
 
