@@ -958,45 +958,9 @@ p {
   position: relative;
   margin-bottom: 0.5em; }
 
-.show-logo {
-  height: 60px;
-  width: 60px;
-  margin-right: 0.5em;
-  display: inline-block;
-  background-color: #414141; }
-
-.show-name {
-  position: absolute;
-  top: 50%;
-  height: 60px;
-  -webkit-transform: translate(0, -25%);
-  -moz-transform: translate(0, -25%);
-  -ms-transform: translate(0, -25%);
-  -o-transform: translate(0, -25%);
-  transform: translate(0, -25%);
-  display: inline-block; }
-
 .entry-personality {
   position: relative;
   margin-bottom: 0.5em; }
-
-.personality-avatar {
-  height: 60px;
-  width: 60px;
-  margin-right: 0.5em;
-  display: inline-block;
-  background-color: #414141; }
-
-.personality-name {
-  position: absolute;
-  top: 50%;
-  height: 60px;
-  -webkit-transform: translate(0, -25%);
-  -moz-transform: translate(0, -25%);
-  -ms-transform: translate(0, -25%);
-  -o-transform: translate(0, -25%);
-  transform: translate(0, -25%);
-  display: inline-block; }
 
 .entry-comments--count {
   padding-left: 5px;
@@ -1390,6 +1354,42 @@ pre {
   border-bottom-width: 1px;
   background-color: #1c1c1f;
   font-size: 0.79012em; }
+
+.personality-avatar {
+  height: 60px;
+  width: 60px;
+  margin-right: 0.5em;
+  display: inline-block;
+  background-color: #414141; }
+
+.personality-name {
+  position: absolute;
+  top: 50%;
+  height: 60px;
+  -webkit-transform: translate(0, -25%);
+  -moz-transform: translate(0, -25%);
+  -ms-transform: translate(0, -25%);
+  -o-transform: translate(0, -25%);
+  transform: translate(0, -25%);
+  display: inline-block; }
+
+.show-logo {
+  height: 60px;
+  width: 60px;
+  margin-right: 0.5em;
+  display: inline-block;
+  background-color: #414141; }
+
+.show-name {
+  position: absolute;
+  top: 50%;
+  height: 60px;
+  -webkit-transform: translate(0, -25%);
+  -moz-transform: translate(0, -25%);
+  -ms-transform: translate(0, -25%);
+  -o-transform: translate(0, -25%);
+  transform: translate(0, -25%);
+  display: inline-block; }
 
 /**
  * Single Page Styles

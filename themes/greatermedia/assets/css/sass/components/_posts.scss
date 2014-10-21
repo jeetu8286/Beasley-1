@@ -69,44 +69,16 @@
 	text-transform: uppercase;
 }
 
-// Shows
+// Shows container - individual attributes are located in _shows.scss
 .entry-show {
 	@include position(relative, null null null null);
 	@include margin(null null .5em null);
 }
 
-.show-logo {
-	@include size(60px 60px);
-	@include margin(null .5em null null);
-	display: inline-block;
-	background-color: palette(gray, dark);
-}
-
-.show-name {
-	@include position(absolute, 50% null null null);
-	@include size(null 60px);
-	@include transform(translate(0, -25%));
-	display: inline-block;
-}
-
-// Personalities
+// Personalities container - individual attributes are located in _personalities.scss
 .entry-personality {
 	@include position(relative, null null null null);
 	@include margin(null null .5em null);
-}
-
-.personality-avatar {
-	@include size(60px 60px);
-	@include margin(null .5em null null);
-	display: inline-block;
-	background-color: palette(gray, dark);
-}
-
-.personality-name {
-	@include position(absolute, 50% null null null);
-	@include size(null 60px);
-	@include transform(translate(0, -25%));
-	display: inline-block;
 }
 
 // Comments
