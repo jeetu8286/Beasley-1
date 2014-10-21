@@ -18,6 +18,14 @@
 
 <section class="entry-content" itemprop="articleBody">
 
-	<?php the_excerpt(); ?>
+	<?php if ( is_single() ) {
+
+		the_content();
+
+	} else {
+
+		the_excerpt();
+
+	} ?>
 
 </section>

@@ -126,27 +126,27 @@
 }
 
 // Pagination
-.pagination {
+.posts-pagination {
 	@include size(100% null);
 	font-size: ms(-1);
 }
 
-.pagination-previous {
+.posts-pagination--previous {
 	@include size(50% null);
 	float: left;
 }
 
-.pagination-previous .fa {
+.posts-pagination--previous .fa {
 	@include margin(null em(8px) null null);
 }
 
-.pagination-next {
+.posts-pagination--next {
 	@include size(50% null);
 	float: right;
 	text-align: right;
 }
 
-.pagination-next .fa {
+.posts-pagination--next .fa {
 	@include margin(null null null em(8px));
 }
 

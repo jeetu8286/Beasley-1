@@ -18,39 +18,78 @@ get_header(); ?>
 
 					<article id="post-<?php the_ID(); ?>" <?php post_class( 'cf' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
 
-						<header class="article-header">
+						<header class="entry-header">
 
-							<h2 class="entry-title" itemprop="headline"><?php the_title(); ?></h2>
+							<div class="entry-type">
 
-							<div class="byline">
-								by
-								<span class="vcard author"><span class="fn url"><?php the_author_posts_link(); ?></span></span>
-								<time datetime="<?php the_time( 'c' ); ?>" class="post-date updated">
-									on <?php the_time( 'l, F jS' ); ?> at <?php the_time( 'g:ia' ); ?></time>
+								<div class="entry-type--<?php greatermedia_post_formats(); ?>"><?php greatermedia_post_formats(); ?></div>
+
 							</div>
+
+							<div class="entry-byline">
+								by
+								<span class="vcard entry-author"><span class="fn url"><?php the_author_posts_link(); ?></span></span>
+								<time datetime="<?php the_time( 'c' ); ?>" class="entry-date"> on <?php the_time( 'l, F jS' ); ?></time>
+								<a href="<?php the_permalink(); ?>/#comments" class="entry-comments--count"><?php comments_number( 'No Comments', '1 Comment', '% Comments' ); ?></a>
+							</div>
+
+							<div class="show entry-show">
+								<div class="show-attr--logo"></div>
+								<div class="show-attr--name">Show Name</div>
+							</div>
+
+							<div class="personality entry-personality">
+								<div class="personality-attr--img"></div>
+								<div class="personality-attr--name">Personality Name</div>
+							</div>
+
+							<h2 class="entry-title" itemprop="headline"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
 
 						</header>
 
-						<section class="entry-content" itemprop="articleBody">
+						<?php
 
-							<?php
-								the_content();
+						if ( has_post_format( 'video' ) ) {
 
-								$link_args = array(
-									'before' => '<div class="page-numbers">Pages: ',
-									'after' => '</div>',
-									'link_before' => '<span class="post-pagination-link">',
-									'link_after' => '</span>'
-								);
-								echo '<div class="post-pagination">';
-								wp_link_pages( $link_args );
-								echo '</div>';
+							get_template_part( 'partials/post', 'video' );
 
-							?>
+						} elseif ( has_post_format( 'audio') ) {
 
-						</section> <?php // end article section ?>
+							get_template_part( 'partials/post', 'audio' );
 
-						<footer class="article-footer">
+						} elseif ( has_post_format( 'link') ) {
+
+							get_template_part( 'partials/post', 'link' );
+
+						} elseif ( has_post_format( 'gallery') ) {
+
+							get_template_part( 'partials/post', 'gallery' );
+
+						} else {
+
+							get_template_part( 'partials/post', 'standard' );
+
+						}
+
+						?>
+
+						<footer class="entry-footer">
+
+							<div class="entry-categories">
+								<ul class="entry-list entry-list--categories">
+									<li class="entry-list--item">Category</li>
+									<li class="entry-list--item">Category</li>
+								</ul>
+							</div>
+
+							<div class="entry-tags">
+								<ul class="entry-list entry-list--tags">
+									<li class="entry-list--item">Tag</li>
+									<li class="entry-list--item">Tag</li>
+									<li class="entry-list--item">Tag</li>
+									<li class="entry-list--item">Tag</li>
+								</ul>
+							</div>
 
 						</footer>
 

@@ -996,23 +996,23 @@ p {
   .read-more--btn:last-of-type {
     margin-right: 0; }
 
-.pagination {
+.posts-pagination {
   width: 100%;
   font-size: 0.88889em; }
 
-.pagination-previous {
+.posts-pagination--previous {
   width: 50%;
   float: left; }
 
-.pagination-previous .fa {
+.posts-pagination--previous .fa {
   margin-right: 0.5em; }
 
-.pagination-next {
+.posts-pagination--next {
   width: 50%;
   float: right;
   text-align: right; }
 
-.pagination-next .fa {
+.posts-pagination--next .fa {
   margin-left: 0.5em; }
 
 blockquote {
