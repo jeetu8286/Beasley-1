@@ -477,7 +477,8 @@ img {
       float: left;
       display: block;
       margin-right: 3.57866%;
-      width: 22.316%; }
+      width: 22.316%;
+      margin-right: 0; }
       .sidebar:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 1024px) {
@@ -503,7 +504,8 @@ img {
   position: fixed;
   top: 5em;
   right: 0;
-  padding: 2em;
+  padding-top: 2em;
+  padding-bottom: 2em;
   display: none;
   background-color: #221f1f; }
   @media screen and (min-width: 1024px) {

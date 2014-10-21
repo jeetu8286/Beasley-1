@@ -7,7 +7,7 @@
 .mobile-nav--toggle {
 	@include position(fixed, 2em 0 0 1em);
 	@include transform(translate(10px, 0));
-	@include size(2em 2em);
+	@include size(32px 32px);
 	@include box-sizing(border-box);
 	@include padding(0);
 	@include transition(all 500ms ease-in-out);
@@ -22,7 +22,7 @@
 .mobile-nav--toggle--span {
 	@include position(absolute, 14px null null null);
 	@include display(block);
-	@include size(em(32px) 4px);
+	@include size(32px 4px);
 	@include transition(all 500ms ease-in-out);
 	@include border-top-radius(4px);
 	@include border-right-radius(4px);
@@ -35,7 +35,7 @@
 .mobile-nav--toggle--span:before {
 	@include position(absolute, -10px null null null);
 	@include display(block);
-	@include size(em(32px) 4px);
+	@include size(32px 4px);
 	@include transition(all 500ms ease-in-out);
 	@include border-top-radius(4px);
 	@include border-right-radius(4px);
@@ -48,7 +48,7 @@
 .mobile-nav--toggle--span:after {
 	@include position(absolute, null null -10px null);
 	@include display(block);
-	@include size(em(32px) 4px);
+	@include size(32px 4px);
 	@include transition(all 500ms ease-in-out);
 	@include border-top-radius(4px);
 	@include border-right-radius(4px);
