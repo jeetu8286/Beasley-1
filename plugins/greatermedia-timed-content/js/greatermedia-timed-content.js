@@ -1,6 +1,6 @@
 (function () {
 
-	GreaterMediaTimedContent = (function ($, undefined) {
+	window.GreaterMediaTimedContent = (function ($, undefined) {
 
 		var public = {};
 
@@ -31,6 +31,62 @@
 			}
 
 		});
+
+		public.button_onclick = function () {
+			var time_restricted_editor_popup = {
+
+				title: GreaterMediaTimedContent.strings['Timed Content'],
+
+				body: [
+					{
+						type : 'textbox',
+						id   : 'gm-show-date',
+						name : 'show',
+						label: GreaterMediaTimedContent.strings['Show content on'],
+						value: ''
+					},
+					{
+						type : 'textbox',
+						id   : 'gm-hide-date',
+						name : 'hide',
+						label: GreaterMediaTimedContent.strings['Hide content on'],
+						value: ''
+					}
+				],
+
+				/**
+				 * When the popup is submitted, generate a shortcode and insert it into the editor
+				 *
+				 * @param {Event} e
+				 */
+				onsubmit: function (e) {
+
+					editor.insertContent(
+						new wp.shortcode({
+							tag    : 'time-restricted',
+							attrs  : {
+								show: new Date(e.data.show).toISOString(),
+								hide: new Date(e.data.hide).toISOString()
+							},
+							content: tinymce.activeEditor.selection.getContent()
+						}).string()
+					);
+
+				},
+
+				width : 600,
+				height: 130
+
+			};
+
+			self.editor.windowManager.open(time_restricted_editor_popup);
+			jQuery('#gm-show-date, #gm-hide-date').datetimepicker({
+				format: GreaterMediaTimedContent.formats.mce_view_date,
+				inline: false,
+				lang  : 'en'
+			});
+
+		};
 
 		return public;
 

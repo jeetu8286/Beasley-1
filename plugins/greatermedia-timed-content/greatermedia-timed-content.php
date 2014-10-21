@@ -13,8 +13,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( "Please don't try to access this file directly." );
 }
 
+// For testing/debugging
+add_post_type_support('post', 'timed-content');
+
 define( 'GREATER_MEDIA_TIMED_CONTENT_PATH', dirname( __FILE__ ) );
-define( 'GREATER_MEDIA_TIMED_CONTENT_URL', plugin_dir_url( __FILE__ ) );
+define( 'GREATER_MEDIA_TIMED_CONTENT_URL', plugins_url( trailingslashit( basename( dirname( __FILE__ ) ) ) ) );
+
+// This is a requirement
+if ( ! class_exists( 'VisualShortcode' ) ) {
+	include realpath( trailingslashit( __DIR__ ) . '../visual-shortcode/visual-shortcode.php' );
+}
 
 include trailingslashit( GREATER_MEDIA_TIMED_CONTENT_PATH ) . 'inc/class-greatermedia-timed-content.php';
-include trailingslashit( GREATER_MEDIA_TIMED_CONTENT_PATH ) . 'inc/class-greatermedia-timed-content-shortcode.php';

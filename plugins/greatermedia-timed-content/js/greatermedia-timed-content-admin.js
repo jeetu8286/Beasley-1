@@ -1,72 +1,164 @@
 jQuery(function () {
 
-	jQuery('#exptimestampdiv').html(GreaterMediaTimedContent.templates.expiration_time);
+	window.GreaterMediaTimedContentAdmin = (function () {
 
-	// Show the time entry boxes
-	jQuery("a[href='#edit_exptimestamp']").click(function () {
+		var module = {};
 
-		jQuery('#exptimestampdiv').slideDown();
+		module.template = GreaterMediaTimedContent.templates.tinymce;
 
-		if (true !== jQuery('#exptimestampdiv').data('populated')) {
+		module.create_popup_title = GreaterMediaTimedContent.strings['Timed Content'];
+		module.edit_popup_title = GreaterMediaTimedContent.strings['Timed Content'];
 
-			jQuery('#exp_mm').val(jQuery('#hidden_exp_mm').val());
-			jQuery('#exp_jj').val(jQuery('#hidden_exp_jj').val());
-			jQuery('#exp_aa').val(jQuery('#hidden_exp_aa').val());
-			jQuery('#exp_hh').val(jQuery('#hidden_exp_hh').val());
-			jQuery('#exp_mn').val(jQuery('#hidden_exp_mn').val());
+		module.button_onclick = function () {
 
-			jQuery('#exptimestampdiv').data('populated', true);
-		}
 
-	});
+		};
 
-	// Cancel button
-	jQuery('#exptimestampdiv').find('.cancel-timestamp').click(function () {
+		module.view_gethtml = function () {
 
-		jQuery('#exp_mm').val(jQuery('#hidden_exp_mm').val());
-		jQuery('#exp_jj').val(jQuery('#hidden_exp_jj').val());
-		jQuery('#exp_aa').val(jQuery('#hidden_exp_aa').val());
-		jQuery('#exp_hh').val(jQuery('#hidden_exp_hh').val());
-		jQuery('#exp_mn').val(jQuery('#hidden_exp_mn').val());
+			var attrs = this.shortcode.attrs.named,
+				options = {
+					content: this.shortcode.content,
+					show   : undefined,
+					hide   : undefined
+				};
 
-		jQuery('#exptimestampdiv').slideUp();
+			// Format the "show" date for display using the date.format library
+			if (attrs.show) {
+				options.show = new Date(attrs.show).format(GreaterMediaTimedContent.formats.mce_view_date);
+			}
 
-	})
+			// Format the "hide" date for display using the date.format library
+			if (attrs.hide) {
+				options.hide = new Date(attrs.hide).format(GreaterMediaTimedContent.formats.mce_view_date);
+			}
 
-	// Update hidden fields
-	jQuery('#exptimestampdiv').find('.save-timestamp').click(function () {
+			return this.template(options);
 
-		jQuery('#hidden_exp_mm').val(jQuery('#exp_mm').val());
-		jQuery('#hidden_exp_jj').val(jQuery('#exp_jj').val());
-		jQuery('#hidden_exp_aa').val(jQuery('#exp_aa').val());
-		jQuery('#hidden_exp_hh').val(jQuery('#exp_hh').val());
-		jQuery('#hidden_exp_mn').val(jQuery('#exp_mn').val());
+		};
 
-		jQuery('#exptimestampdiv').slideUp();
+		module.view_edit_popup_body_fields = function (parsed_shortcode) {
 
-		var expiration_date = new Date();
-		expiration_date.setMonth(parseInt(jQuery('#exp_mm').val(), 10) - 1);
-		expiration_date.setDate(jQuery('#exp_jj').val());
-		expiration_date.setFullYear(jQuery('#exp_aa').val());
-		expiration_date.setHours(jQuery('#exp_hh').val());
-		expiration_date.setMinutes(jQuery('#exp_mn').val())
+			var show_time = '', hide_time = '';
 
-		jQuery('#exptimestamp').find('b').text(expiration_date.format(GreaterMediaTimedContent.formats.date));
+			if (parsed_shortcode !== undefined) {
+				show_time = new Date(parsed_shortcode.attrs.named.show).format(GreaterMediaTimedContent.formats.mce_view_date);
+				hide_time = new Date(parsed_shortcode.attrs.named.hide).format(GreaterMediaTimedContent.formats.mce_view_date);
+			}
 
-	});
 
-	// Remove expiration timestamp
-	jQuery('#exptimestampdiv').find('.remove-timestamp').click(function () {
+			return [
+				{
+					type : 'textbox',
+					id   : 'gm-show-date',
+					name : 'show',
+					label: GreaterMediaTimedContent.strings['Show content on'],
+					value: show_time
+				},
+				{
+					type : 'textbox',
+					id   : 'gm-hide-date',
+					name : 'hide',
+					label: GreaterMediaTimedContent.strings['Hide content on'],
+					value: hide_time
+				}
+			];
+		};
 
-		jQuery('#exp_mm, #hidden_exp_mm').val('');
-		jQuery('#exp_jj, #hidden_exp_jj').val('');
-		jQuery('#exp_aa, #hidden_exp_aa').val('');
-		jQuery('#exp_hh, #hidden_exp_hh').val('');
-		jQuery('#exp_mn, #hidden_exp_mn').val('');
+		module.view_edit_popup_visible = function () {
 
-		jQuery('#exptimestampdiv').slideUp();
-		jQuery('#exptimestamp').find('b').text(GreaterMediaTimedContent.strings.never);
+			jQuery('#gm-show-date, #gm-hide-date').datetimepicker({
+				format: GreaterMediaTimedContent.formats.mce_view_date,
+				inline: false,
+				lang  : 'en'
+			});
 
-	});
+		};
+
+		module.view_edit_popup_onsubmit = function (submit_event) {
+			return {
+				show: new Date(submit_event.data.show).toISOString(),
+				hide: new Date(submit_event.data.hide).toISOString()
+			};
+		};
+
+		var exp_timestamp_div = jQuery('#exptimestampdiv');
+		exp_timestamp_div.html(GreaterMediaTimedContent.templates.expiration_time);
+		var exp_mm = jQuery('#exp_mm'),
+			exp_jj = jQuery('#exp_jj'),
+			exp_aa = jQuery('#exp_aa'),
+			exp_hh = jQuery('#exp_hh'),
+			exp_mn = jQuery('#exp_mn');
+
+		// Show the time entry boxes
+		jQuery("a[href='#edit_exptimestamp']").click(function () {
+
+			exp_timestamp_div.slideDown();
+
+			if (true !== exp_timestamp_div.data('populated')) {
+
+				exp_mm.val(jQuery('#hidden_exp_mm').val());
+				exp_jj.val(jQuery('#hidden_exp_jj').val());
+				exp_aa.val(jQuery('#hidden_exp_aa').val());
+				exp_hh.val(jQuery('#hidden_exp_hh').val());
+				exp_mn.val(jQuery('#hidden_exp_mn').val());
+
+				exp_timestamp_div.data('populated', true);
+			}
+
+		});
+
+		// Cancel button
+		exp_timestamp_div.find('.cancel-timestamp').click(function () {
+
+			exp_mm.val(jQuery('#hidden_exp_mm').val());
+			exp_jj.val(jQuery('#hidden_exp_jj').val());
+			exp_aa.val(jQuery('#hidden_exp_aa').val());
+			exp_hh.val(jQuery('#hidden_exp_hh').val());
+			exp_mn.val(jQuery('#hidden_exp_mn').val());
+
+			exp_timestamp_div.slideUp();
+
+		});
+
+		// Update hidden fields
+		exp_timestamp_div.find('.save-timestamp').click(function () {
+
+			jQuery('#hidden_exp_mm').val(exp_mm.val());
+			jQuery('#hidden_exp_jj').val(exp_jj.val());
+			jQuery('#hidden_exp_aa').val(exp_aa.val());
+			jQuery('#hidden_exp_hh').val(exp_hh.val());
+			jQuery('#hidden_exp_mn').val(exp_mn.val());
+
+			exp_timestamp_div.slideUp();
+			debugger;
+			var expiration_date = new Date();
+			expiration_date.setMonth(parseInt(exp_mm.val(), 10) - 1);
+			expiration_date.setDate(exp_jj.val());
+			expiration_date.setFullYear(exp_aa.val());
+			expiration_date.setHours(exp_hh.val());
+			expiration_date.setMinutes(exp_mn.val());
+
+			jQuery('#exptimestamp').find('b').text(expiration_date.format(GreaterMediaTimedContent.formats.date));
+
+		});
+
+		// Remove expiration timestamp
+		exp_timestamp_div.find('.remove-timestamp').click(function () {
+
+			jQuery('#exp_mm, #hidden_exp_mm').val('');
+			jQuery('#exp_jj, #hidden_exp_jj').val('');
+			jQuery('#exp_aa, #hidden_exp_aa').val('');
+			jQuery('#exp_hh, #hidden_exp_hh').val('');
+			jQuery('#exp_mn, #hidden_exp_mn').val('');
+
+			exp_timestamp_div.slideUp();
+			jQuery('#exptimestamp').find('b').text(GreaterMediaTimedContent.strings.never);
+
+		});
+
+		return module;
+
+	})();
 
 });

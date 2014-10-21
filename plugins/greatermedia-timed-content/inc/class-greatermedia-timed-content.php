@@ -4,9 +4,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( "Please don't try to access this file directly." );
 }
 
-class GreaterMediaTimedContent {
+class GreaterMediaTimedContent extends VisualShortcode {
 
 	function __construct() {
+
+		parent::__construct(
+			'time-restricted',
+			'GreaterMediaTimedContentAdmin',
+			'dashicons-clock'
+		);
 
 		add_action( 'current_screen', array( $this, 'current_screen' ) );
 		add_action( 'post_submitbox_misc_actions', array( $this, 'post_submitbox_misc_actions' ) );
@@ -98,8 +104,6 @@ class GreaterMediaTimedContent {
 				'rendered_templates' => array(),
 				'strings'            => array(
 					'never'           => __( 'Never', 'greatermedia-timed-content' ),
-					'Ok'              => __( 'Ok' ),
-					'Cancel'          => __( 'Cancel' ),
 					'Timed Content'   => __( 'Timed Content', 'greatermedia-timed-content' ),
 					'Show content on' => __( 'Show content on', 'greatermedia-timed-content' ),
 					'Hide content on' => __( 'Hide content on', 'greatermedia-timed-content' ),
@@ -122,7 +126,7 @@ class GreaterMediaTimedContent {
 	public function wp_enqueue_scripts() {
 
 		// Public-facing page
-		wp_enqueue_script( 'greatermedia-tc-admin', trailingslashit( GREATER_MEDIA_TIMED_CONTENT_URL ) . 'js/greatermedia-timed-content.js', array( 'jquery', 'underscore' ), false, true );
+		wp_enqueue_script( 'greatermedia-tc', trailingslashit( GREATER_MEDIA_TIMED_CONTENT_URL ) . 'js/greatermedia-timed-content.js', array( 'jquery', 'underscore' ), false, true );
 
 	}
 
@@ -276,6 +280,43 @@ class GreaterMediaTimedContent {
 		$post              = get_post( $post_id );
 		$post->post_status = 'draft';
 		wp_update_post( $post );
+
+	}
+
+	/**
+	 * Process the time-restricted shortcode
+	 *
+	 * @param      array  $atts
+	 * @param string|null $content optional content to display
+	 *
+	 * @return null|string output to display
+	 */
+	function process_shortcode( $atts, $content = null ) {
+
+		if ( isset( $atts['show'] ) ) {
+			$show = strtotime( $atts['show'] );
+		} else {
+			$show = 0;
+		}
+
+		if ( isset( $atts['hide'] ) ) {
+			$hide = strtotime( $atts['hide'] );
+		} else {
+			$hide = PHP_INT_MAX;
+		}
+
+		$now_gmt = intval( gmdate( 'U' ) );
+		if ( ( $now_gmt > $show ) && ( $hide > $now_gmt ) ) {
+
+			// Render the template which wraps $content in a span so JavaScript can hide/show cached content
+			ob_start();
+			include trailingslashit( GREATER_MEDIA_TIMED_CONTENT_PATH ) . 'tpl/timed-content-render.tpl.php';
+
+			return ob_get_clean();
+
+		} else {
+			return '';
+		}
 
 	}
 
