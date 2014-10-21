@@ -416,16 +416,14 @@ img {
     clear: both; }
 
 .main {
-  width: 100%;
-  padding: 2em 0; }
+  width: 100%; }
 
 .content {
   float: left;
   display: block;
   margin-right: 7.42297%;
   width: 100%;
-  padding-right: 0.5em;
-  padding-left: 0.5em; }
+  padding: 2em 0.5em; }
   .content:last-child {
     margin-right: 0; }
   @media screen and (min-width: 480px) {
@@ -468,8 +466,7 @@ img {
   display: block;
   margin-right: 7.42297%;
   width: 100%;
-  padding-right: 0.5em;
-  padding-left: 0.5em; }
+  padding: 2em 0.5em; }
   .sidebar:last-child {
     margin-right: 0; }
   @media screen and (min-width: 480px) {
@@ -510,7 +507,6 @@ img {
 
 .live-player {
   position: fixed;
-  top: 5em;
   right: 0;
   padding-top: 2em;
   padding-bottom: 2em;
