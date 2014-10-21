@@ -40,7 +40,7 @@ get_header(); ?>
 							} else {
 
 								get_template_part( 'partials/post', 'standard' );
-	
+
 							}
 
 						?>

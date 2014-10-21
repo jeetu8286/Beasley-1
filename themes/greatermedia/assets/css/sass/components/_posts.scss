@@ -1,8 +1,10 @@
+// Reusable Post Classes
 .hentry {
 	@include margin(null null 1em null);
 }
 
-.article-types {
+// Post Formats
+.entry-type {
 	@include display(block);
 	@include size(100% 30px);
 	@include padding(5px);
@@ -10,14 +12,14 @@
 	background-color: palette(gray, light);
 }
 
-%article-type {
+%entry-type {
 	@include position(relative, null null null null);
 	@include padding(null null null em(30px));
 	font-size: ms(-2);
 	text-transform: uppercase;
 }
 
-%article-type--before {
+%entry-type--before {
 	@include position(absolute, 0 null null 0 );
 	@include size(0 0);
 	font-family: dashicons;
@@ -25,52 +27,94 @@
 	color: palette(default, red);
 }
 
-.article-type--aside, .article-type--gallery, .article-type--link, .article-type--image, .article-type--video, .article-type--audio, .article-type--standard {
-	@extend %article-type;
+.entry-type--aside, .entry-type--gallery, .entry-type--link, .entry-type--image, .entry-type--video, .entry-type--audio, .entry-type--standard {
+	@extend %entry-type;
 }
 
-.article-type--aside:before{
-	@extend %article-type--before;
+.entry-type--aside:before{
+	@extend %entry-type--before;
 	content: "\f123";
 }
 
-.article-type--gallery:before{
-	@extend %article-type--before;
+.entry-type--gallery:before{
+	@extend %entry-type--before;
 	content: "\f161";
 }
 
-.article-type--link:before{
-	@extend %article-type--before;
+.entry-type--link:before{
+	@extend %entry-type--before;
 	content: "\f103";
 }
 
-.article-type--image:before{
-	@extend %article-type--before;
+.entry-type--image:before{
+	@extend %entry-type--before;
 	content: "\f128";
 }
 
-.article-type--video:before{
-	@extend %article-type--before;
+.entry-type--video:before{
+	@extend %entry-type--before;
 	content: "\f126";
 }
 
-.article-type--audio:before{
-	@extend %article-type--before;
+.entry-type--audio:before{
+	@extend %entry-type--before;
 	content: "\f127";
 }
 
-.article-type--standard:before{
-	@extend %article-type--before;
+.entry-type--standard:before{
+	@extend %entry-type--before;
 	content: "\f109";
 }
 
-.byline {
+// Byline
+.entry-byline {
 	font-size: ms(-3);
 	color: palette(gray);
 	text-transform: uppercase;
 }
 
-.article-comments--count {
+// Shows
+.entry-show {
+	@include position(relative, null null null null);
+	@include margin(null null .5em null);
+}
+
+.show-logo {
+	@include size(60px 60px);
+	@include margin(null .5em null null);
+	display: inline-block;
+	background-color: palette(gray, dark);
+}
+
+.show-name {
+	@include position(absolute, 50% null null null);
+	@include size(null 60px);
+	@include transform(translate(0, -25%));
+	display: inline-block;
+}
+
+// Personalities
+.entry-personality {
+	@include position(relative, null null null null);
+	@include margin(null null .5em null);
+}
+
+.personality-avatar {
+	@include size(60px 60px);
+	@include margin(null .5em null null);
+	display: inline-block;
+	background-color: palette(gray, dark);
+}
+
+.personality-name {
+	@include position(absolute, 50% null null null);
+	@include size(null 60px);
+	@include transform(translate(0, -25%));
+	display: inline-block;
+}
+
+// Comments
+.entry-comments--count {
 	@include padding(null null null 5px);
 	@include margin(null null null 3px);
 	@include border-color(null null null palette(gray, dark));
@@ -78,6 +122,8 @@
 	@include border-width(null null null 1px);
 }
 
+
+// Titles
 .single-title, .page-title, .entry-title {
 	@include margin(.5em 0);
 }
@@ -94,20 +140,24 @@
 .archive-title {
 }
 
+// Thumbnail
 .entry-thumbnail {
 	@include position(relative, null null null null);
 	@include padding(null null em(32px));
 }
 
+// Content
 .entry-content {
 	@include padding(1.5em 0);
 	font-family: $serif;
 }
 
+//  Read More Button
 .read-more--btn{
 	@include btn(default, red, base, 1em, 1.5em, em(14px));
 }
 
+// Pagination
 .pagination {
 	@include size(100% null);
 	font-size: ms(-1);
@@ -157,6 +207,7 @@ blockquote p {
 	color: palette(gray, dark);
 }
 
+// WordPress Styles
 .alignleft, img.alignleft {
 	@include display(block);
 	@include margin(0 1em 1em);
@@ -212,4 +263,52 @@ pre {
 	@include padding(em(4px) em(8px));
 	font-size: ms(-2);
 	text-align: left;
+}
+
+// Entry Footer
+.entry-categories, .entry-tags {
+	@include margin(null null .5em);
+}
+
+.entry-list, %entry-list {
+	@include padding(0);
+	@include margin(0);
+	list-style: none;
+	font-size: ms(-2);
+}
+
+.entry-list:before, %entry-list--before {
+	@include margin(null 4px null null null);
+	text-transform: uppercase;
+}
+
+.entry-list--item, %entry-list--item {
+	@include padding(0);
+	@include margin(0 1em 0 0);
+	list-style: none;
+	display: inline-block;
+}
+
+.entry-list--item:last-of-type, %entry-list--item--last {
+	@include margin(0);
+}
+
+.entry-list--item:after, %entry-list--item--after {
+	@include margin(null null null 1em);
+	content: "|";
+}
+
+.entry-list--item:last-of-type:after{
+	@include margin(0);
+	content: "";
+}
+
+.entry-list--categories:before {
+	@extend %entry-list--before;
+	content: "Categories:";
+}
+
+.entry-list--tags:before {
+	@extend %entry-list--before;
+	content: "Tags:";
 }
