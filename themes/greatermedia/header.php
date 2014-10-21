@@ -102,30 +102,15 @@
 
 						?>
 						<div class="header-secondary">
-							<?php
 
-							$defaults = array(
-								'theme_location'  => 'secondary-nav',
-								'menu'            => '',
-								'container'       => 'nav',
-								'container_class' => 'header-secondary--nav',
-								'container_id'    => '',
-								'menu_class'      => 'header-nav--list',
-								'menu_id'         => 'header-nav--list',
-								'echo'            => true,
-								'fallback_cb'     => 'wp_page_menu',
-								'before'          => '',
-								'after'           => '',
-								'link_before'     => '',
-								'link_after'      => '',
-								'items_wrap'      => '<ul id="%1$s" class="%2$s">%3$s</ul>',
-								'depth'           => 0,
-								'walker'          => ''
-							);
+							<nav class="header-secondary--nav">
 
-							wp_nav_menu( $defaults );
+								<ul class="header-nav--list">
+									<li><a href="#">Signup</a></li>
+									<li><a href="#">Login</a></li>
+								</ul>
 
-							?>
+							</nav>
 							<div class="header-secondary--search">
 								<i class="fa fa-search"></i>
 							</div>
