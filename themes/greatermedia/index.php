@@ -33,14 +33,14 @@ get_header(); ?>
 								<a href="<?php the_permalink(); ?>/#comments" class="entry-comments--count"><?php comments_number( 'No Comments', '1 Comment', '% Comments' ); ?></a>
 							</div>
 
-							<div class="entry-show">
-								<div class="show-logo"></div>
-								<div class="show-name">Show Name</div>
+							<div class="show entry-show">
+								<div class="show-attr--logo"></div>
+								<div class="show-attr--name">Show Name</div>
 							</div>
 
-							<div class="entry-personality">
-								<div class="personality-avatar"></div>
-								<div class="personality-name">Personality Name</div>
+							<div class="personality entry-personality">
+								<div class="personality-attr--img"></div>
+								<div class="personality-attr--name">Personality Name</div>
 							</div>
 
 							<h2 class="entry-title" itemprop="headline"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>

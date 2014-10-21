@@ -1354,14 +1354,7 @@ pre {
   background-color: #1c1c1f;
   font-size: 0.79012em; }
 
-.personality-avatar {
-  height: 60px;
-  width: 60px;
-  margin-right: 0.5em;
-  display: inline-block;
-  background-color: #414141; }
-
-.personality-name {
+.personality-attr--name {
   position: absolute;
   top: 50%;
   height: 60px;
@@ -1372,14 +1365,14 @@ pre {
   transform: translate(0, -25%);
   display: inline-block; }
 
-.show-logo {
+.personality-attr--img {
   height: 60px;
   width: 60px;
   margin-right: 0.5em;
   display: inline-block;
   background-color: #414141; }
 
-.show-name {
+.show-attr--name {
   position: absolute;
   top: 50%;
   height: 60px;
@@ -1389,6 +1382,13 @@ pre {
   -o-transform: translate(0, -25%);
   transform: translate(0, -25%);
   display: inline-block; }
+
+.show-attr--logo {
+  height: 60px;
+  width: 60px;
+  margin-right: 0.5em;
+  display: inline-block;
+  background-color: #414141; }
 
 /**
  * Single Page Styles
