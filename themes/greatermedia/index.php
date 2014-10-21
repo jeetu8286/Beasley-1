@@ -18,6 +18,34 @@ get_header(); ?>
 
 					<article id="post-<?php the_ID(); ?>" <?php post_class( 'cf' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
 
+						<header class="entry-header">
+
+							<div class="entry-type">
+
+								<div class="entry-type--<?php greatermedia_post_formats(); ?>"><?php greatermedia_post_formats(); ?></div>
+
+							</div>
+
+							<div class="entry-byline">
+								by
+								<span class="vcard entry-author"><span class="fn url"><?php the_author_posts_link(); ?></span></span>
+								<time datetime="<?php the_time( 'c' ); ?>" class="entry-date"> on <?php the_time( 'l, F jS' ); ?></time>
+								<a href="<?php the_permalink(); ?>/#comments" class="entry-comments--count"><?php comments_number( 'No Comments', '1 Comment', '% Comments' ); ?></a>
+							</div>
+
+							<div class="entry-show">
+								<div class="show-logo"></div>
+								<div class="show-name">Show Name</div>
+							</div>
+
+							<div class="entry-personality">
+								<div class="personality-avatar"></div>
+								<div class="personality-name">Personality Name</div>
+							</div>
+
+							<h2 class="entry-title" itemprop="headline"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
+
+						</header>
 
 						<?php
 
@@ -45,6 +73,25 @@ get_header(); ?>
 
 						?>
 
+						<footer class="entry-footer">
+
+							<div class="entry-categories">
+								<ul class="entry-list entry-list--categories">
+									<li class="entry-list--item">Category</li>
+									<li class="entry-list--item">Category</li>
+								</ul>
+							</div>
+
+							<div class="entry-tags">
+								<ul class="entry-list entry-list--tags">
+									<li class="entry-list--item">Tag</li>
+									<li class="entry-list--item">Tag</li>
+									<li class="entry-list--item">Tag</li>
+									<li class="entry-list--item">Tag</li>
+								</ul>
+							</div>
+
+						</footer>
 
 					</article>
 
@@ -79,44 +126,13 @@ get_header(); ?>
 
 			</section>
 
-			<aside class="sidebar" role="complementary">
+			<?php
 
-				Sidebar area
+			get_sidebar();
 
-			</aside>
+			get_sidebar( 'live-player');
 
-			<aside class="live-player">
-
-				<div class="now-playing--logo">
-
-				</div>
-
-				<?php do_action( 'gm_live_player' ); ?>
-
-				<div class="now-playing--title">
-
-				</div>
-
-				<div class="now-playing--artist">
-
-				</div>
-
-				<div class="live-player--social">
-
-					<ul>
-						<li></li>
-						<li></li>
-						<li></li>
-						<li></li>
-					</ul>
-
-				</div>
-
-				<div class="live-player--next">
-					Up Next: <span class="live-player--next--artist">Pierre Robert</span>
-				</div>
-
-			</aside>
+			?>
 
 		</div>
 
