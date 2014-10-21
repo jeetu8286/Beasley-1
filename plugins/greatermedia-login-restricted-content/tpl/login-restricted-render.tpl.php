@@ -1,0 +1,1 @@
+<span class="login-restricted-content" data-status="<?php echo esc_attr($status); ?>"><?php echo $content; ?></span>
