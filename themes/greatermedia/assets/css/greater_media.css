@@ -1173,8 +1173,9 @@ pre {
 .ad-unit--300--250 {
   position: relative;
   height: 250px;
-  width: 300px;
+  width: 100%;
   margin-bottom: 2em;
+  max-width: 300px;
   background-color: #c1c3c4; }
 
 .ad-unit--text {
