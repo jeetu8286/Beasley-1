@@ -957,6 +957,7 @@ p {
   content: "\f109"; }
 
 .entry-byline {
+  margin-bottom: 0.5em;
   font-size: 0.70233em;
   color: #a7a9ab;
   text-transform: uppercase; }

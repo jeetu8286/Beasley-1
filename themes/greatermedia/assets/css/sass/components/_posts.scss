@@ -68,6 +68,7 @@
 
 // Byline
 .entry-byline {
+	@include margin(null null .5em null);
 	font-size: ms(-3);
 	color: palette(gray);
 	text-transform: uppercase;
