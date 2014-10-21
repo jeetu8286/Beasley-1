@@ -899,7 +899,6 @@ p {
   text-align: center; }
   @media screen and (min-width: 1024px) {
     .header-logo--img {
-      max-height: none;
       text-align: left; } }
 
 /**
