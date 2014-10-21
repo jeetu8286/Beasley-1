@@ -69,6 +69,7 @@
 
 			?>
 			<div class="site-wrap">
+				<?php do_action( 'show_breaking_news_banner' ); ?>
 				<header id="header" class="header" role="banner">
 					<div class="container">
 						<div class="mobile-nav--toggle">
@@ -106,8 +107,8 @@
 							<nav class="header-secondary--nav">
 
 								<ul class="header-nav--list">
-									<li><a href="#">Signup</a></li>
-									<li><a href="#">Login</a></li>
+									<li><a id="register-button" href="" class="register pjaxer" style="visibility:hidden">register</a></li>
+									<li><a id="login-button" href="" class="login pjaxer" style="visibility:hidden">Login</a></li>
 								</ul>
 
 							</nav>
