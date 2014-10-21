@@ -27,13 +27,8 @@
 	color: palette(default, red);
 }
 
-.entry-type--aside, .entry-type--gallery, .entry-type--link, .entry-type--image, .entry-type--video, .entry-type--audio, .entry-type--standard {
+.entry-type--gallery, .entry-type--link, .entry-type--image, .entry-type--video, .entry-type--audio, .entry-type--standard {
 	@extend %entry-type;
-}
-
-.entry-type--aside:before{
-	@extend %entry-type--before;
-	content: "\f123";
 }
 
 .entry-type--gallery:before{

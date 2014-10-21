@@ -415,7 +415,8 @@ img {
   display: block;
   margin-right: 7.42297%;
   width: 100%;
-  padding: 2em 0.5em; }
+  padding-top: 2em;
+  padding-bottom: 2em; }
   .content:last-child {
     margin-right: 0; }
   @media screen and (min-width: 480px) {

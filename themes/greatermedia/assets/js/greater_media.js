@@ -11,4 +11,4 @@
 		body.classList.toggle('mobile-nav--open');
 	};
 
-} )();
+})();

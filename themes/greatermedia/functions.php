@@ -46,7 +46,7 @@ function greatermedia_setup() {
 	/**
 	 * Add theme support for post-formats
 	 */
-	$formats = array( 'aside', 'gallery', 'link', 'image', 'video', 'audio' );
+	$formats = array( 'gallery', 'link', 'image', 'video', 'audio' );
 	add_theme_support( 'post-formats', $formats );
 }
 
@@ -106,9 +106,7 @@ function greatermedia_post_formats() {
 	global $post;
 	$post_id = $post->ID;
 
-	if ( has_post_format( 'aside', $post_id ) ) {
-		$format = 'aside';
-	} elseif ( has_post_format( 'gallery', $post_id ) ) {
+	if ( has_post_format( 'gallery', $post_id ) ) {
 		$format = 'gallery';
 	} elseif ( has_post_format( 'link', $post_id ) ) {
 		$format = 'link';

@@ -1,4 +1,5 @@
 .header{
+	@include position(relative, null null null null);
 	@include size(100% 80px);
 	@include padding(em(10px) 0);
 	@include border-color(null null palette(gray, medium) null);

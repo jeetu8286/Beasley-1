@@ -423,7 +423,8 @@ img {
   display: block;
   margin-right: 7.42297%;
   width: 100%;
-  padding: 2em 0.5em; }
+  padding-top: 2em;
+  padding-bottom: 2em; }
   .content:last-child {
     margin-right: 0; }
   @media screen and (min-width: 480px) {
@@ -652,16 +653,13 @@ p {
  * button will slide over to accommodate the nav.
  */
 .mobile-nav--toggle {
-  position: fixed;
-  top: 2em;
-  right: 0;
-  bottom: 0;
-  left: 1em;
-  -webkit-transform: translate(10px, 0);
-  -moz-transform: translate(10px, 0);
-  -ms-transform: translate(10px, 0);
-  -o-transform: translate(10px, 0);
-  transform: translate(10px, 0);
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translate(0, -50%);
+  -moz-transform: translate(0, -50%);
+  -ms-transform: translate(0, -50%);
+  -o-transform: translate(0, -50%);
+  transform: translate(0, -50%);
   height: 32px;
   width: 32px;
   -webkit-box-sizing: border-box;
@@ -866,6 +864,7 @@ p {
       font-size: 1em; } }
 
 .header {
+  position: relative;
   height: 80px;
   width: 100%;
   padding: 0.625em 0;
@@ -917,22 +916,19 @@ p {
   margin-bottom: 10px;
   background-color: #c1c3c4; }
 
-.entry-type--aside, .entry-type--gallery, .entry-type--link, .entry-type--image, .entry-type--video, .entry-type--audio, .entry-type--standard {
+.entry-type--gallery, .entry-type--link, .entry-type--image, .entry-type--video, .entry-type--audio, .entry-type--standard {
   position: relative;
   padding-left: 1.875em;
   font-size: 0.79012em;
   text-transform: uppercase; }
 
-.entry-type--aside:before, .entry-type--gallery:before, .entry-type--link:before, .entry-type--image:before, .entry-type--video:before, .entry-type--audio:before, .entry-type--standard:before {
+.entry-type--gallery:before, .entry-type--link:before, .entry-type--image:before, .entry-type--video:before, .entry-type--audio:before, .entry-type--standard:before {
   position: absolute;
   top: 0;
   left: 0;
   font-family: dashicons;
   font-size: 1em;
   color: #d32329; }
-
-.entry-type--aside:before {
-  content: "\f123"; }
 
 .entry-type--gallery:before {
   content: "\f161"; }
