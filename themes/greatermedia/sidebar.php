@@ -8,6 +8,28 @@
 ?>
 <aside class="sidebar" role="complementary">
 
-	Sidebar area
+	<div class="ad-unit--300--250">
+		<div class="ad-unit--text">
+			Ad Unit - 300 x 250
+		</div>
+	</div>
+
+	<div class="ad-unit--300--250">
+		<div class="ad-unit--text">
+			Ad Unit - 300 x 250
+		</div>
+	</div>
+
+	<div class="ad-unit--300--250">
+		<div class="ad-unit--text">
+			Ad Unit - 300 x 250
+		</div>
+	</div>
+
+	<div class="ad-unit--300--250">
+		<div class="ad-unit--text">
+			Ad Unit - 300 x 250
+		</div>
+	</div>
 
 </aside>

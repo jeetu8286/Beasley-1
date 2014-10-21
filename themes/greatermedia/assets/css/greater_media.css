@@ -1170,6 +1170,23 @@ pre {
 .entry-list--tags:before {
   content: "Tags:"; }
 
+.ad-unit--300--250 {
+  position: relative;
+  height: 250px;
+  width: 300px;
+  margin-bottom: 2em;
+  background-color: #c1c3c4; }
+
+.ad-unit--text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%); }
+
 /**
  * Styles for Front End
  *

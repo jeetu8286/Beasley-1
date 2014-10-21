@@ -1,0 +1,11 @@
+.ad-unit--300--250 {
+	@include position(relative, null null null null);
+	@include size(300px 250px);
+	@include margin(null null 2em null);
+	background-color: palette(gray, light);
+}
+
+.ad-unit--text {
+	@include position(absolute, 50% null null 50%);
+	@include transform(translate(-50%, -50%));
+}
