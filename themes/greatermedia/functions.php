@@ -60,6 +60,14 @@ add_action( 'after_setup_theme', 'greatermedia_setup' );
 function greatermedia_scripts_styles() {
 	$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 
+	wp_enqueue_script(
+		'gigya_socialize',
+		'http://cdn.gigya.com/JS/gigya.js?apiKey=3_e_T7jWO0Vjsd9y0WJcjnsN6KaFUBv6r3VxMKqbitvw-qKfmaUWysQKa1fra5MTb6',
+		array('jquery'),
+		'0.1.0',
+		true
+	);
+
 	wp_enqueue_script( 'html5shiv', get_template_directory_uri() . '/assets/js/vendor/html5shiv-printshiv.js', array(), '3.7.2', true );
 	wp_enqueue_script( 'respond.js', get_template_directory_uri() . '/assets/js/vendor/respond.min.js', array(), '1.4.2', true );
 
