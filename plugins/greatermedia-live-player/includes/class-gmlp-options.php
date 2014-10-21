@@ -109,12 +109,10 @@ class GMLP_Settings {
 	 */
 	public function render_gmlp_settings_section() {
 		$radio_callsign = get_option( 'gmlp_radio_callsign', '' );
-		//$player_location = get_option( 'gmlp_player_location', '' );
+		$player_location = get_option( 'gmlp_player_location', '' );
+		?>
 
-		// Based on the proposed designs, the player will now reside fixed left for the site. These options can stay for
-		// but will need to be deleted.
-
-		/* <h4><?php _e( 'Live Player API Information', 'gmliveplayer' ); ?></h4>
+		<h4><?php _e( 'Live Player API Information', 'gmliveplayer' ); ?></h4>
 
 		<p>
 			<label for="gmlp_player_location" class="gmlp-admin-label"><?php _e( 'Player Location', 'gmliveplayer' ); ?></label>
@@ -125,7 +123,7 @@ class GMLP_Settings {
 				<option value="right" <?php selected( $player_location, 'right' ); ?>><?php _e( 'Right', 'gmliveplayer' )?></option>
 				<option value="left" <?php selected( $player_location, 'left' ); ?>><?php _e( 'Left', 'gmliveplayer' )?></option>
 			</select>
-		</p> */ ?>
+		</p>
 
 		<p>
 			<label for="gmlp_radio_callsign" class="gmlp-admin-label"><?php _e( 'Radio Callsign', 'gmliveplayer' ); ?></label>
