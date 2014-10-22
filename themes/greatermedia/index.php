@@ -91,7 +91,7 @@ get_header(); ?>
 
 							<div class="entry-comments">
 
-								<a href="<?php the_permalink(); ?>/#comments" class="entry-comments--count"><?php comments_number( 'No Comments', '1 Comment', '% Comments' ); ?></a>
+								<a href="<?php the_permalink(); ?>/#comments" class="entry-comments--count"><?php comments_number( '0', '1', '%' ); ?></a>
 
 							</div>
 

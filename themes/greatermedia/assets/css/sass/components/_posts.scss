@@ -70,17 +70,12 @@
 
 // Byline
 .entry-byline {
-	@include span-columns(1);
+	float: left;
+	width: 25%;
 	font-size: ms(-3);
 	color: palette(gray);
-	@include bp(small) {
-		@include span-columns(1);
-	}
 	@include bp(medium) {
-		@include span-columns(2);
-	}
-	@include bp(large) {
-		@include span-columns(2);
+		width: 20%;
 	}
 }
 
@@ -105,16 +100,11 @@
 
 // Post Formats
 .entry-type {
-	@include span-columns(2);
+	float: left;
+	width: 60%;
 	text-align: center;
-	@include bp(small) {
-		@include span-columns(4);
-	}
 	@include bp(medium) {
-		@include span-columns(6);
-	}
-	@include bp(large) {
-		@include span-columns(8);
+		width: 70%;
 	}
 }
 
@@ -186,26 +176,31 @@
 
 // Comments
 .entry-comments {
-	@include span-columns(1);
-	@include omega;
+	float: right;
+	@include display(block);
+	@include size(20px 16px);
+	@include margin(0 auto);
+	text-align: center;
 	font-size: ms(-3);
 	color: palette(gray);
-	@include bp(small) {
-		@include span-columns(1);
-		@include omega;
-	}
-	@include bp(medium) {
-		@include span-columns(2);
-		@include omega;
-	}
-	@include bp(large) {
-		@include span-columns(2);
-		@include omega;
-	}
 }
 
-.entry-comments--count {
-	
+a.entry-comments--count:link, a.entry-comments--count:visited {
+	@include display(block);
+	background-color: palette(gray, light);
+	color: palette(default, black);
+}
+
+a.entry-comments--count:hover, a.entry-comments--count:focus {
+	@include display(block);
+	background-color: palette(default, red);
+	color: palette(default);
+}
+
+a.entry-comments--count:active {
+	@include display(block);
+	background-color: palette(default, black);
+	color: palette(default);
 }
 
 // Standard Post Format
