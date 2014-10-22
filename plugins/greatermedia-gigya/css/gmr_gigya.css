@@ -180,3 +180,26 @@
 	font-weight: bold;
 	margin: 0;
 }
+
+.entry-select-group {
+	margin-bottom: 1em;
+}
+
+.entry-select-group label {
+	display: block;
+	margin-bottom: 0.5em;
+}
+
+.entry-select-group .entry-select-choice {
+	display: block;
+	width: 100%;
+}
+
+.entry-answer-group label {
+	display: block;
+	margin-bottom: 0.5em;
+}
+
+.entry-answer {
+	display: inline-block;
+}

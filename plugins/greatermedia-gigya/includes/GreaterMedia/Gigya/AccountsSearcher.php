@@ -10,9 +10,6 @@ namespace GreaterMedia\Gigya;
  */
 class AccountsSearcher {
 
-	public $api_key    = '3_e_T7jWO0Vjsd9y0WJcjnsN6KaFUBv6r3VxMKqbitvw-qKfmaUWysQKa1fra5MTb6';
-	public $secret_key = 'trS0ufXWUXZ0JBcpr/6umiRfgUiwT7YhJMQSDpUz/p8=';
-
 	/**
 	 * Searches for accounts using the Gigya SDK using the
 	 * accounts.search method.
@@ -79,8 +76,8 @@ class AccountsSearcher {
 	 */
 	public function request_for( $method, $query ) {
 		$request = new \GSRequest(
-			$this->api_key,
-			$this->secret_key,
+			GMR_GIGYA_API_KEY,
+			GMR_GIGYA_SECRET_KEY,
 			$method
 		);
 
