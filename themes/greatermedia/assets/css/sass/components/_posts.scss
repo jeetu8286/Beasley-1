@@ -3,13 +3,119 @@
 	@include margin(null null 1em null);
 }
 
+// Thumbnail
+.entry-thumbnail {
+	@include position(relative, null null null null);
+	@include padding(null null em(32px));
+}
+
+// Content
+.entry-content {
+	@include padding(1.5em 0);
+	font-family: $serif;
+}
+
+// Shows container - individual attributes are located in _shows.scss
+.entry-show {
+	@include position(relative, null null null null);
+	@include margin(null null .5em null);
+}
+
+// Personalities container - individual attributes are located in _personalities.scss
+.entry-personality {
+	@include position(relative, null null null null);
+	@include margin(null null .5em null);
+}
+
+// Titles
+.single-title, .page-title, .entry-title {
+	@include margin(.5em 0);
+}
+
+.single-title {
+}
+
+.page-title {
+}
+
+.entry-title {
+}
+
+.archive-title {
+}
+
+//  Read More Button
+.read-more--btn{
+	@include btn(default, red, base, 1em, 1.5em, em(14px));
+}
+
+// Entry Footer
+.entry-footer {
+	@include span-columns(4);
+	@include padding(em(5px) 0);
+	@include margin(1em null 3em);
+	@include border-color(palette(gray, light) null palette(gray, light) null);
+	@include border-style(solid null solid null);
+	@include border-width(1px null 1px null);
+	@include bp(small) {
+		@include span-columns(6);
+	}
+	@include bp(medium) {
+		@include span-columns(8);
+	}
+	@include bp(large) {
+		@include span-columns(12);
+	}
+}
+
+// Byline
+.entry-byline {
+	@include span-columns(1);
+	font-size: ms(-3);
+	color: palette(gray);
+	@include bp(small) {
+		@include span-columns(1);
+	}
+	@include bp(medium) {
+		@include span-columns(2);
+	}
+	@include bp(large) {
+		@include span-columns(2);
+	}
+}
+
+.entry-author--img {
+	float: left;
+	@include size(25px 25px);
+	@include margin(null em(10px) null null);
+	@include border-top-radius(50%);
+	@include border-right-radius(50%);
+	@include border-bottom-radius(50%);
+	@include border-left-radius(50%);
+	background-color: palette(gray, light);
+}
+
+.entry-author--name {
+	float: left;
+}
+
+.entry-date {
+	float: left;
+}
+
 // Post Formats
 .entry-type {
-	@include display(block);
-	@include size(100% 30px);
-	@include padding(5px);
-	@include margin(null null 10px);
-	background-color: palette(gray, light);
+	@include span-columns(2);
+	text-align: center;
+	@include bp(small) {
+		@include span-columns(4);
+	}
+	@include bp(medium) {
+		@include span-columns(6);
+	}
+	@include bp(large) {
+		@include span-columns(8);
+	}
 }
 
 %entry-type {
@@ -31,123 +137,104 @@
 	@extend %entry-type;
 }
 
-.entry-type--gallery:before{
-	@extend %entry-type--before;
-	content: "\f161";
+.entry-categories, .entry-tags {
+	@include margin(null null .5em);
 }
 
-.entry-type--link:before{
-	@extend %entry-type--before;
-	content: "\f103";
+.entry-list, %entry-list {
+	@include padding(0);
+	@include margin(0);
+	list-style: none;
+	font-size: ms(-2);
 }
 
-.entry-type--image:before{
-	@extend %entry-type--before;
-	content: "\f128";
-}
-
-.entry-type--video:before{
-	@extend %entry-type--before;
-	content: "\f126";
-}
-
-.entry-type--audio:before{
-	@extend %entry-type--before;
-	content: "\f127";
-}
-
-.entry-type--standard:before{
-	@extend %entry-type--before;
-	content: "\f109";
-}
-
-// Byline
-.entry-byline {
-	@include margin(null null .5em null);
-	font-size: ms(-3);
-	color: palette(gray);
+.entry-list:before, %entry-list--before {
+	@include margin(null 4px null null null);
 	text-transform: uppercase;
 }
 
-// Shows container - individual attributes are located in _shows.scss
-.entry-show {
-	@include position(relative, null null null null);
-	@include margin(null null .5em null);
+.entry-list--item, %entry-list--item {
+	@include padding(0);
+	@include margin(0 1em 0 0);
+	list-style: none;
+	display: inline-block;
 }
 
-// Personalities container - individual attributes are located in _personalities.scss
-.entry-personality {
-	@include position(relative, null null null null);
-	@include margin(null null .5em null);
+.entry-list--item:last-of-type, %entry-list--item--last {
+	@include margin(0);
+}
+
+.entry-list--item:after, %entry-list--item--after {
+	@include margin(null null null 1em);
+	content: "|";
+}
+
+.entry-list--item:last-of-type:after{
+	@include margin(0);
+	content: "";
+}
+
+.entry-list--categories:before {
+	@extend %entry-list--before;
+	content: "Categories:";
+}
+
+.entry-list--tags:before {
+	@extend %entry-list--before;
+	content: "Tags:";
 }
 
 // Comments
+.entry-comments {
+	@include span-columns(1);
+	@include omega;
+	font-size: ms(-3);
+	color: palette(gray);
+	@include bp(small) {
+		@include span-columns(1);
+		@include omega;
+	}
+	@include bp(medium) {
+		@include span-columns(2);
+		@include omega;
+	}
+	@include bp(large) {
+		@include span-columns(2);
+		@include omega;
+	}
+}
+
 .entry-comments--count {
-	@include padding(null null null 5px);
-	@include margin(null null null 3px);
-	@include border-color(null null null palette(gray, dark));
-	@include border-style(null null null solid);
-	@include border-width(null null null 1px);
+	
 }
 
-
-// Titles
-.single-title, .page-title, .entry-title {
-	@include margin(.5em 0);
+// Standard Post Format
+.entry-content--standard {
+	@include span-columns(4);
+	@include bp(small) {
+		@include span-columns(6);
+	}
+	@include bp(medium) {
+		@include span-columns(6);
+	}
+	@include bp(large) {
+		@include span-columns(7);
+	}
 }
 
-.single-title {
-}
-
-.page-title {
-}
-
-.entry-title {
-}
-
-.archive-title {
-}
-
-// Thumbnail
-.entry-thumbnail {
-	@include position(relative, null null null null);
-	@include padding(null null em(32px));
-}
-
-// Content
-.entry-content {
-	@include padding(1.5em 0);
-	font-family: $serif;
-}
-
-//  Read More Button
-.read-more--btn{
-	@include btn(default, red, base, 1em, 1.5em, em(14px));
-}
-
-// Pagination
-.posts-pagination {
-	@include size(100% null);
-	font-size: ms(-1);
-}
-
-.posts-pagination--previous {
-	@include size(50% null);
-	float: left;
-}
-
-.posts-pagination--previous .fa {
-	@include margin(null em(8px) null null);
-}
-
-.posts-pagination--next {
-	@include size(50% null);
-	float: right;
-	text-align: right;
-}
-
-.posts-pagination--next .fa {
-	@include margin(null null null em(8px));
+.entry-thumbnail--standard {
+	@include span-columns(4);
+	@include bp(small) {
+		@include span-columns(6);
+	}
+	@include bp(medium) {
+		@include span-columns(2);
+		@include omega;
+	}
+	@include bp(large) {
+		@include span-columns(5);
+		@include omega;
+	}
 }
 
 // Blockquote styles
@@ -233,50 +320,27 @@ pre {
 	text-align: left;
 }
 
-// Entry Footer
-.entry-categories, .entry-tags {
-	@include margin(null null .5em);
+// Pagination
+.posts-pagination {
+	@include size(100% null);
+	font-size: ms(-1);
 }
 
-.entry-list, %entry-list {
-	@include padding(0);
-	@include margin(0);
-	list-style: none;
-	font-size: ms(-2);
+.posts-pagination--previous {
+	@include size(50% null);
+	float: left;
 }
 
-.entry-list:before, %entry-list--before {
-	@include margin(null 4px null null null);
-	text-transform: uppercase;
+.posts-pagination--previous .fa {
+	@include margin(null em(8px) null null);
 }
 
-.entry-list--item, %entry-list--item {
-	@include padding(0);
-	@include margin(0 1em 0 0);
-	list-style: none;
-	display: inline-block;
+.posts-pagination--next {
+	@include size(50% null);
+	float: right;
+	text-align: right;
 }
 
-.entry-list--item:last-of-type, %entry-list--item--last {
-	@include margin(0);
-}
-
-.entry-list--item:after, %entry-list--item--after {
-	@include margin(null null null 1em);
-	content: "|";
-}
-
-.entry-list--item:last-of-type:after{
-	@include margin(0);
-	content: "";
-}
-
-.entry-list--categories:before {
-	@extend %entry-list--before;
-	content: "Categories:";
-}
-
-.entry-list--tags:before {
-	@extend %entry-list--before;
-	content: "Tags:";
+.posts-pagination--next .fa {
+	@include margin(null null null em(8px));
 }
