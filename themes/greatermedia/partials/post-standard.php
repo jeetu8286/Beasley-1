@@ -6,18 +6,35 @@
  * @since   0.1.0
  */
 ?>
-<?php if ( has_post_thumbnail() ) { ?>
 
-	<section class="entry-thumbnail">
+<section class="entry-content--standard">
 
-		<?php the_post_thumbnail( 'gm-article-thumbnail' ); ?>
+	<header class="entry-header">
+
+		<h2 class="entry-title" itemprop="headline"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
+
+	</header>
+
+	<section class="entry-content" itemprop="articleBody">
+
+		<?php the_excerpt(); ?>
 
 	</section>
 
+</section>
+
+
+<section class="entry-thumbnail--standard">
+
+<?php if ( has_post_thumbnail() ) {
+
+	the_post_thumbnail( 'gm-article-thumbnail' );
+
+} else { ?>
+
+		<img src="http://placehold.it/600x400&text=image">
+
 <?php } ?>
 
-<section class="entry-content" itemprop="articleBody">
-
-	<?php the_excerpt(); ?>
-
 </section>
+

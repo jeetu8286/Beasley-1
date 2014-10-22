@@ -1,25 +1,14 @@
-/*! Greater Media - v0.1.0 - 2014-10-21
+/*! Greater Media - v0.1.0 - 2014-10-22
  * http://greatermedia.com
  * Copyright (c) 2014; * Licensed GPLv2+ */
-(function ($,window,undefined) {
+(function() {
 	'use strict';
 
-	// variables
-	var document = window.document,
-		$document = $(document),
-		$window = $(window),
-		body = document.querySelectorAll('body'),
-		$body = $(body),
-		mobileNavButton = document.querySelectorAll('.mobile-nav--toggle'),
-		$mobileNavButton = $(mobileNavButton);
+	var body = document.querySelector('body'),
+		mobileNavButton = document.querySelector('.mobile-nav--toggle');
 
-	// function to toggle a class when the menu button is clicked
-	function mobileNav(){
-		$mobileNavButton.click(function(){
-			$body.toggleClass('mobile-nav--open');
-		});
-	}
+	mobileNavButton.onclick = function(){
+		body.classList.toggle('mobile-nav--open');
+	};
 
-	mobileNav();
-
-} )(jQuery,window);
+})();

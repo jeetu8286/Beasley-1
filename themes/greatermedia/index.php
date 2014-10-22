@@ -18,7 +18,7 @@ get_header(); ?>
 
 					<article id="post-<?php the_ID(); ?>" <?php post_class( 'cf' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
 
-						<header class="entry-header">
+						<?php /* <header class="entry-header">
 
 							<div class="entry-type">
 
@@ -33,19 +33,19 @@ get_header(); ?>
 								<a href="<?php the_permalink(); ?>/#comments" class="entry-comments--count"><?php comments_number( 'No Comments', '1 Comment', '% Comments' ); ?></a>
 							</div>
 
-							<div class="entry-show">
-								<div class="show-logo"></div>
-								<div class="show-name">Show Name</div>
+							<div class="show entry-show">
+								<div class="show-attr--logo"></div>
+								<div class="show-attr--name">Show Name</div>
 							</div>
 
-							<div class="entry-personality">
-								<div class="personality-avatar"></div>
-								<div class="personality-name">Personality Name</div>
+							<div class="personality entry-personality">
+								<div class="personality-attr--img"></div>
+								<div class="personality-attr--name">Personality Name</div>
 							</div>
 
 							<h2 class="entry-title" itemprop="headline"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
 
-						</header>
+						</header> */ ?>
 
 						<?php
 
@@ -75,20 +75,24 @@ get_header(); ?>
 
 						<footer class="entry-footer">
 
-							<div class="entry-categories">
-								<ul class="entry-list entry-list--categories">
-									<li class="entry-list--item">Category</li>
-									<li class="entry-list--item">Category</li>
-								</ul>
+							<div class="entry-byline">
+								<div class="entry-author--img">
+
+								</div>
+								<div class="entry-author--name"><?php the_author_posts_link(); ?></div>
+								<time datetime="<?php the_time( 'c' ); ?>" class="entry-date"><?php the_time( 'M. j, Y' ); ?></time>
 							</div>
 
-							<div class="entry-tags">
-								<ul class="entry-list entry-list--tags">
-									<li class="entry-list--item">Tag</li>
-									<li class="entry-list--item">Tag</li>
-									<li class="entry-list--item">Tag</li>
-									<li class="entry-list--item">Tag</li>
-								</ul>
+							<div class="entry-type">
+
+								<div class="entry-type--<?php greatermedia_post_formats(); ?>"><?php greatermedia_post_formats(); ?></div>
+
+							</div>
+
+							<div class="entry-comments">
+
+								<a href="<?php the_permalink(); ?>/#comments" class="entry-comments--count"><?php comments_number( '0', '1', '%' ); ?></a>
+
 							</div>
 
 						</footer>
@@ -97,10 +101,10 @@ get_header(); ?>
 
 				<?php endwhile; ?>
 
-					<div class="pagination">
+					<div class="posts-pagination">
 
-						<div class="pagination-previous"><?php next_posts_link( '<i class="fa fa-angle-double-left"></i>Previous' ); ?></div>
-						<div class="pagination-next"><?php previous_posts_link( 'Next<i class="fa fa-angle-double-right"></i>' ); ?></div>
+						<div class="posts-pagination--previous"><?php next_posts_link( '<i class="fa fa-angle-double-left"></i>Previous' ); ?></div>
+						<div class="posts-pagination--next"><?php previous_posts_link( 'Next<i class="fa fa-angle-double-right"></i>' ); ?></div>
 
 					</div>
 

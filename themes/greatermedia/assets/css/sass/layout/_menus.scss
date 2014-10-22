@@ -5,8 +5,8 @@
  * button will slide over to accommodate the nav.
  */
 .mobile-nav--toggle {
-	@include position(fixed, 2em 0 0 1em);
-	@include transform(translate(10px, 0));
+	@include position(absolute, 50% null null null);
+	@include transform(translate(0, -50%));
 	@include size(32px 32px);
 	@include box-sizing(border-box);
 	@include padding(0);

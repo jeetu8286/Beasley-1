@@ -12,7 +12,7 @@ $visual-grid-index: front !global;
 // max-width for the site
 $max-width: 95% !global;
 
-// simple css effect to make images responsive and fluid while also retaining proper aspect ration
+// simple css effect to make images responsive and fluid while also retaining proper aspect ratio
 img {
 	max-width: 100%;
 	@include display(block); // block display will remove additional padding on images
@@ -38,7 +38,7 @@ img {
 
 .content {
 	@include span-columns(4);
-	@include padding(2em .5em);
+	@include padding(2em null);
 	@include bp(small) {
 		@include span-columns(6);
 	}
