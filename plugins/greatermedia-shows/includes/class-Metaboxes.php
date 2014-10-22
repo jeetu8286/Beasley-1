@@ -102,7 +102,9 @@ class Shows_Meta_Box {
 					update_post_meta( $post_id, $field['id'], $new );
 
 					if( class_exists('ShowsCPT') && $field['id'] == 'show_homepage' && $new ) {
-						ShowsCPT::createShadowTerm( $post_title );
+						$term_id = ShowsCPT::createShadowTerm( $post_title );
+						wp_set_post_terms($post_id, $term_id, 'shows_shadow_taxonomy' );
+						update_post_meta( $post_id, '_related_term_id', $term_id );
 					}
 				}
 		}
