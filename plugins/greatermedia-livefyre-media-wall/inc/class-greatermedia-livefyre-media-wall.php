@@ -4,16 +4,24 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( "Please don't try to access this file directly." );
 }
 
+/**
+ * Class GreaterMediaLiveFyreMediaWall
+ * Registers a custom post type and handles front-end (content) rendering
+ */
 class GreaterMediaLiveFyreMediaWall {
 
 	function __construct() {
 
 		add_action( 'init', array( $this, 'init' ) );
-		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
-		add_action( 'save_post', array( $this, 'save_post' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts' ) );
+		add_filter( 'the_content', array( $this, 'the_content' ) );
 
 	}
 
+	/**
+	 * Implements init action
+	 * Registers the content type
+	 */
 	public function init() {
 
 		// Generated using http://generatewp.com/post-type/
@@ -33,95 +41,79 @@ class GreaterMediaLiveFyreMediaWall {
 			'not_found_in_trash' => __( 'Not found in Trash', 'greatermedia-livefyre-media-wall' ),
 		);
 		$args   = array(
-			'label'               => __( 'livefyre_media_wall', 'greatermedia-livefyre-media-wall' ),
-			'description'         => __( 'LiveFyre Media Wall', 'greatermedia-livefyre-media-wall' ),
-			'labels'              => $labels,
-			'supports'            => array( 'title' ),
-			'hierarchical'        => false,
-			'public'              => true,
-			'show_ui'             => true,
-			'show_in_menu'        => true,
-			'show_in_nav_menus'   => true,
-			'show_in_admin_bar'   => true,
-			'menu_position'       => 5,
-			'can_export'          => true,
-			'has_archive'         => false,
-			'exclude_from_search' => true,
-			'publicly_queryable'  => true,
-			'capability_type'     => 'post',
+			'label'                => __( 'livefyre_media_wall', 'greatermedia-livefyre-media-wall' ),
+			'description'          => __( 'LiveFyre Media Wall', 'greatermedia-livefyre-media-wall' ),
+			'labels'               => $labels,
+			'supports'             => array( 'title' ),
+			'hierarchical'         => true,
+			'public'               => true,
+			'show_ui'              => true,
+			'show_in_menu'         => true,
+			'show_in_nav_menus'    => false,
+			'show_in_admin_bar'    => true,
+			'menu_position'        => 5,
+			'can_export'           => true,
+			'has_archive'          => false,
+			'exclude_from_search'  => true,
+			'publicly_queryable'   => true,
+			'capability_type'      => 'post',
+			'register_meta_box_cb' => array( $GLOBALS['GreaterMediaLiveFyreMediaWallAdmin'], 'add_meta_boxes' ),
 		);
-		register_post_type( 'livefyre_media_wall', $args );
+		register_post_type( 'livefyre-media-wall', $args );
 
 	}
 
-	public function add_meta_boxes() {
+	/**
+	 * Implements wp_enqueue_scripts action
+	 * Enqueues JavaScript and sets up a "localization" object with settings & translations
+	 */
+	public function wp_enqueue_scripts() {
 
-		add_meta_box(
-			'media_wall_id',
-			__( 'Media Wall', 'greatermedia-livefyre-media-wall' ),
-			array( $this, 'media_wall_id_meta_box' ),
-			'livefyre_media_wall',
-			'normal',
-			'high'
+		$post_id = get_the_ID();
+		if ( empty( $post_id ) ) {
+			return;
+		}
+
+		wp_enqueue_script( 'livefyre', '//cdn.livefyre.com/Livefyre.js', array(), false, false );
+		wp_enqueue_script( 'livefyre-media-wall', trailingslashit( GREATER_MEDIA_LIVEFYRE_WALLS_URL ) . 'js/livefyre-media-wall.js', array( 'livefyre' ), false, false );
+
+		$media_wall_id      = get_post_meta( $post_id, 'media_wall_id', true );
+		$media_wall_modal   = get_post_meta( $post_id, 'media_wall_allow_modal', true );
+		$media_wall_initial = get_post_meta( $post_id, 'media_wall_initial', true );
+		$media_wall_columns = get_post_meta( $post_id, 'media_wall_columns', true );
+
+		$settings = array(
+			// One wall per page now, but trying to build in flexibility just in case
+			'walls' => array(
+				array(
+					'element_id' => 'wall',
+					'network'    => get_option( 'livefyre_media_walls_network', '' ),
+					'site'       => get_option( 'livefyre_media_walls_site', '' ),
+					'id'         => esc_attr( $media_wall_id ),
+					'initial'    => absint( $media_wall_initial ),
+					'modal'      => $media_wall_modal,
+					'columns'    => absint( $media_wall_columns ),
+				)
+			)
 		);
+		wp_localize_script( 'livefyre-media-wall', 'LiveFyreMediaWall', $settings );
 
 	}
 
-	public function media_wall_id_meta_box( $post ) {
+	/**
+	 * Implements the_content filter
+	 * Adds a div to be filled with Media Wall content
+	 *
+	 * @param string $content
+	 *
+	 * @return string
+	 */
+	public function the_content( $content ) {
 
-		// Add an nonce field so we can check for it later.
-		wp_nonce_field( 'media_wall_meta_box', 'media_wall_meta_box' );
-
-		/*
-		 * Use get_post_meta() to retrieve an existing value
-		 * from the database and use the value for the form.
-		 */
-		$value = get_post_meta( $post->ID, 'media_wall_id', true );
-
-		echo '<label for="media_wall_id">';
-		_e( 'Media Wall ID', 'greatermedia-livefyre-media-wall' );
-		echo '</label> ';
-		echo '<p><input type="text" id="media_wall_id" name="media_wall_id" value="' . esc_attr( $value ) . '" size="25" /></p>';
+		return '<div id="wall"></div>' . $content;
 
 	}
 
-	public function save_post( $post_id ) {
-
-		// Check if our nonce is set.
-		if ( ! isset( $_POST['media_wall_meta_box'] ) ) {
-			return;
-		}
-
-		// Verify that the nonce is valid.
-		if ( ! wp_verify_nonce( $_POST['media_wall_meta_box'], 'media_wall_meta_box' ) ) {
-			return;
-		}
-
-		// If this is an autosave, our form has not been submitted, so we don't want to do anything.
-		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
-			return;
-		}
-
-		// Make sure the post type is correct
-		if ( ! isset( $_POST['post_type'] ) || 'livefyre_media_wall' !== $_POST['post_type'] ) {
-			return;
-		}
-
-		// Check the user's permissions.
-		if ( ! current_user_can( 'edit_post', $post_id ) ) {
-			return;
-		}
-
-		// Make sure that it is set.
-		if ( ! isset( $_POST['media_wall_id'] ) ) {
-			return;
-		}
-
-		$media_wall_id = absint( $_POST['media_wall_id'] );
-		delete_post_meta( $post_id, 'media_wall_id' );
-		update_post_meta( $post_id, 'media_wall_id', $media_wall_id );
-
-	}
 }
 
 $GreaterMediaLiveFyreMediaWall = new GreaterMediaLiveFyreMediaWall();

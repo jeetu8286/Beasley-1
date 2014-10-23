@@ -15,3 +15,4 @@ define( 'GREATER_MEDIA_LIVEFYRE_WALLS_PATH', dirname( __FILE__ ) );
 define( 'GREATER_MEDIA_LIVEFYRE_WALLS_URL', plugins_url( trailingslashit( basename( dirname( __FILE__ ) ) ) ) );
 
 include trailingslashit( GREATER_MEDIA_LIVEFYRE_WALLS_PATH ) . 'inc/class-greatermedia-livefyre-media-wall.php';
+include trailingslashit( GREATER_MEDIA_LIVEFYRE_WALLS_PATH ) . 'inc/class-greatermedia-livefyre-media-wall-admin.php';
