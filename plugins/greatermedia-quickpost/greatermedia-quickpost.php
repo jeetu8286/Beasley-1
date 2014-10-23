@@ -83,6 +83,12 @@ class GMR_QuickPost {
 	 * @param array $params The quickpost params.
 	 */
 	public function render_featured_image_metabox( $params ) {
+		$images = $this->_get_images( $params['url'] );
+		if ( empty( $images ) ) {
+			echo '<i>No images were found.</i>';
+			return;
+		}
+		
 		?><script type="text/javascript">
 			(function($) {
 				$(document).ready(function() {
@@ -688,20 +694,20 @@ class GMR_QuickPost {
 	}
 
 	/**
-	 * Processes "photo_images" AJAX request.
+	 * Returns images array.
 	 *
 	 * @since 1.0.0
 	 *
 	 * @access private
 	 * @param string $url The URL to fetch images links from.
 	 */
-	private function _process_ajax_photo_images_request( $url ) {
-		$images = '';
-		
+	private function _get_images( $url ) {
+		$images = array();
+
 		$url = wp_kses( urldecode( $url ), null );
 		$url = preg_replace( '/\/#.+?$/', '', $url );
-		if ( preg_match( '/\.(jpe?g|jpe|gif|png)\b/i', $url ) && !strpos( $url, 'blogger.com' ) ) {
-			$images = "'" . esc_attr( html_entity_decode( $url ) ) . "'";
+		if ( preg_match( '/\.(jpe?g|jpe|gif|png)\b/i', $url ) && ! strpos( $url, 'blogger.com' ) ) {
+			$images[] = html_entity_decode( $url );
 		} else {
 			$content = wp_remote_fopen( $url );
 			if ( false !== $content ) {
@@ -709,7 +715,6 @@ class GMR_QuickPost {
 				$pattern = '/<img ([^>]*)src=(\"|\')([^<>\'\"]+)(\2)([^>]*)\/*>/i';
 				$content = str_replace( array( "\n", "\t", "\r" ), '', $content );
 				if ( preg_match_all( $pattern, $content, $matches ) && ! empty( $matches[0] ) ) {
-					$sources = array();
 					foreach ( $matches[3] as $src ) {
 						// If no http in URL.
 						if ( strpos( $src, 'http' ) === false ) {
@@ -721,14 +726,30 @@ class GMR_QuickPost {
 							}
 						}
 
-						$sources[] = esc_url( $src );
+						// add only jpeg and png fomrats
+						if ( preg_match( '#\.(jpe?g|jpe|png)#i', $src ) ) {
+							$images[] = esc_url( $src );
+						}
 					}
-
-					$images = "'" . implode( "','", $sources ) . "'";
 				}
 			}
 		}
 
+		return $images;
+	}
+
+	/**
+	 * Processes "photo_images" AJAX request.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @access private
+	 * @param string $url The URL to fetch images links from.
+	 */
+	private function _process_ajax_photo_images_request( $url ) {
+		$images = $this->_get_images( $url );
+		$images = "'" . implode( "','", $images ) . "'";
+		
 		echo 'new Array(', $images, ')';
 	}
 
