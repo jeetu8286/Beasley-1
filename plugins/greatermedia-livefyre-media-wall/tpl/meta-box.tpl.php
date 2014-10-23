@@ -1,4 +1,4 @@
-<table>
+<table class="form-table">
 	<tr>
 		<th scope="row">
 			<label for="media_wall_id"><?php _e( 'Article ID', 'greatermedia-livefyre-media-wall' ); ?></label></th>
