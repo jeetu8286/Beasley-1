@@ -32,7 +32,6 @@ class GreaterMediaContestsMetaboxes {
 		wp_enqueue_script( 'formbuilder', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'bower_components/formbuilder/dist/formbuilder.js' );
 
 		$embedded_form = get_post_meta( $post->ID, 'embedded_form', true );
-//		$embedded_form = '';
 		$settings = array(
 			'form' => $embedded_form,
 		);
