@@ -69,7 +69,9 @@ class GMR_QuickPost {
 	 * @access public
 	 */
 	public function register_dashboard_widget() {
-		wp_add_dashboard_widget( 'quickpost', 'Quick Post', array( $this, 'render_tool_box' ) );
+		if ( current_user_can( 'edit_posts' ) ) {
+			wp_add_dashboard_widget( 'quickpost', 'Quick Post', array( $this, 'render_tool_box' ) );
+		}
 	}
 
 	/**
