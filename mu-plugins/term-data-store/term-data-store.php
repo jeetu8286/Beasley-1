@@ -188,12 +188,12 @@ function get_save_post_hook( $post_type, $taxonomy ) {
 			return;
 		}
 		balancing_relationship( true );
-		$term = wpcom_vip_get_term_by( 'slug', $post->post_name, $taxonomy, ARRAY_A );
+		$term = get_term_by( 'slug', $post->post_name, $taxonomy, ARRAY_A );
 		if( !$term )
 		{
 			$term = wp_insert_term( $post->post_title, $taxonomy, array( 'slug' => $post->post_name ) );
 			if( is_wp_error( $term ) ) {
-				throw new \TC\General_Exception( 'Error creating a term: ' . implode( ', ', $term->get_error_messages() ) . ' Slug: ' . $post->post_name . ' / Title: ' . $post->post_title );
+				throw new \Exception( 'Error creating a term: ' . implode( ', ', $term->get_error_messages() ) . ' Slug: ' . $post->post_name . ' / Title: ' . $post->post_title );
 			}
 		}
 
