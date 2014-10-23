@@ -719,7 +719,9 @@ class GMR_QuickPost {
 						// If no http in URL.
 						if ( strpos( $src, 'http' ) === false ) {
 							// If it doesn't have a relative URI.
-							if ( strpos( $src, '../' ) === false && strpos( $src, './' ) === false && strpos( $src, '/' ) === 0 ) {
+							if ( strpos( $src, '//' ) === 0 ) {
+								$src = ( is_ssl() ? 'https:' : 'http:' ) . $src;
+							} elseif ( strpos( $src, '../' ) === false && strpos( $src, './' ) === false && strpos( $src, '/' ) === 0 ) {
 								$src = 'http://' . str_replace( '//', '/', $host['host'] . '/' . $src );
 							} else {
 								$src = 'http://' . str_replace( '//', '/', $host['host'] . '/' . dirname( $host['path'] ) . '/' . $src );
@@ -895,9 +897,11 @@ class GMR_QuickPost {
 			// featured image
 			$featured_image = filter_input( INPUT_POST, 'featured_image', FILTER_VALIDATE_URL );
 			if ( ! empty( $featured_image ) ) {
+				preg_match( '/[^\?]+\.(jpe?g|jpe|png)\b/i', $featured_image, $matches );
+
 				$file_array = array();
+				$file_array['name'] = basename( $matches[0] );
 				$file_array['tmp_name'] = download_url( $featured_image );
-				$file_array['name'] = basename( $featured_image );
 				if ( strpos( $file_array['name'], '.' ) === false ) {
 					$file_array['name'] = $file_array['name'] . '.jpg';
 				}
