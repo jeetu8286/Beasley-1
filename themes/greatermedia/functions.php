@@ -39,6 +39,7 @@ function greatermedia_setup() {
 
 	// theme support
 	add_theme_support( 'post-formats', array( 'link', 'video', 'audio' ) );
+	add_theme_support( 'post-thumbnails' ); 
 }
 
 add_action( 'after_setup_theme', 'greatermedia_setup' );

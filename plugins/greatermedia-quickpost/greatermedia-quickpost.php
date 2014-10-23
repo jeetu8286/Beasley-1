@@ -63,6 +63,62 @@ class GMR_QuickPost {
 	}
 
 	/**
+	 * Renders featured image metabox.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @access public
+	 * @param array $params The quickpost params.
+	 */
+	public function render_featured_image_metabox( $params ) {
+		?><script type="text/javascript">
+			(function($) {
+				$(document).ready(function() {
+					var selected_image = 0,
+						images = <?php $this->_process_ajax_photo_images_request( $params['url'] ) ?>;
+
+					$('#quickpost-featured-image-number span:last-child').text(images.length);
+					
+					function updateImage() {
+						$('#quickpost-featured-image img').attr('src', images[selected_image]);
+						$('#quickpost-featured-image-controls a:last-child').toggle(selected_image != images.length - 1);
+						$('#quickpost-featured-image-controls a:first-child').toggle(selected_image != 0);
+						$('#quickpost-featured-image-number span:first-child').text(selected_image + 1);
+						$('input[name="featured_image"]').val(images[selected_image]);
+					}
+
+					$('#quickpost-featured-image-controls a:first-child').click(function() {
+						selected_image--;
+						updateImage();
+						return false;
+					});
+
+					$('#quickpost-featured-image-controls a:last-child').click(function() {
+						selected_image++;
+						updateImage();
+						return false;
+					});
+
+					updateImage();
+				});
+			})(jQuery);
+		</script>
+
+		<input type="hidden" name="featured_image" value="">
+
+		<div id="quickpost-featured-image">
+			<div id="quickpost-featured-image-number">
+				<span></span>/<span></span>
+			</div>
+			<img src="">
+		</div>
+		<div id="quickpost-featured-image-controls">
+			<a href="#" style="display:none">&laquo; prev</a>
+			<a href="#">next &raquo;</a>
+		</div><?php
+	}
+
+	/**
 	 * Registers QuickPost post type.
 	 *
 	 * @since 1.0.0
@@ -175,10 +231,10 @@ class GMR_QuickPost {
 		// process submitted posts.
 		if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 			check_admin_referer( 'quickpost' );
-			$posted = $post_ID = $this->_save_quick_post();
+			$posted = $post_id = $this->_save_quick_post();
 		} else {
 			$post = get_default_post_to_edit( self::POST_TYPE, true );
-			$post_ID = $post->ID;
+			$post_id = $post->ID;
 		}
 
 		wp_enqueue_style( 'colors' );
@@ -191,10 +247,52 @@ class GMR_QuickPost {
 		remove_action( 'media_buttons', 'media_buttons' );
 		add_action( 'media_buttons', array( $this, 'substitute_media_buttons' ) );
 
-		do_action( 'quickpost_add_metaboxes', 'quickpost', $post_ID );
+		add_meta_box( 'quickpost_featured_image', 'Featured Image', array( $this, 'render_featured_image_metabox' ), 'quickpost', 'side' );
+		
+		do_action( 'quickpost_add_metaboxes', 'quickpost', $post_id );
 
 		_wp_admin_html_begin(); ?>
 				<title><?php _e('Quick Post') ?></title>
+
+				<style type="text/css" media="screen">
+					#quickpost-featured-image {
+						width: 214px;
+						height: 214px;
+						overflow: hidden;
+						margin-bottom: 10px;
+						position: relative;
+					}
+
+					#quickpost-featured-image img {
+						width: 100%;
+						height: auto;
+					}
+
+					#quickpost-featured-image-controls {
+						text-align: center;
+					}
+
+					#quickpost-featured-image-controls a {
+						text-decoration: none;
+					}
+
+					#quickpost-featured-image-controls a:first-child {
+						margin-right: 10px;
+					}
+
+					#quickpost-featured-image-number {
+						position: absolute;
+						top: 0;
+						right: 0;
+						background: rgba(0, 0, 0, 0.5);
+						color: white;
+						font-weight: bold;
+						padding: 3px 10px;
+					}
+
+					#quickpost-featured-image-number span {
+					}
+				</style>
 
 				<script type="text/javascript">
 					//<![CDATA[
@@ -357,7 +455,7 @@ class GMR_QuickPost {
 								<input type="hidden" name="autosave" id="autosave">
 								<input type="hidden" id="original_post_status" name="original_post_status" value="draft">
 								<input type="hidden" id="prev_status" name="prev_status" value="draft">
-								<input type="hidden" id="post_id" name="post_id" value="<?php echo (int) $post_ID; ?>">
+								<input type="hidden" id="post_id" name="post_id" value="<?php echo (int) $post_id; ?>">
 
 								<!-- This div holds the photo metadata -->
 								<div class="photolist"></div>
@@ -409,7 +507,10 @@ class GMR_QuickPost {
 									?></div>
 								</div>
 
-								<?php do_meta_boxes( 'quickpost', 'side', $post_ID ); ?>
+								<?php do_meta_boxes( 'quickpost', 'side', array(
+									'post_id' => $post_id,
+									'url'     => $url,
+								) ); ?>
 							</div>
 						</div>
 
@@ -423,12 +524,12 @@ class GMR_QuickPost {
 							</div>
 
 							<?php if ( isset( $posted ) && intval( $posted ) ) : ?>
-								<?php $post_ID = intval( $posted ); ?>
+								<?php $post_id = intval( $posted ); ?>
 								<div id="message" class="updated">
 									<p>
 										<strong><?php _e( 'Your post has been saved.' ); ?></strong>
-										<a onclick="window.opener.location.replace(this.href); window.close();" href="<?php echo get_permalink( $post_ID ); ?>"><?php _e( 'View post' ); ?></a>
-										| <a href="<?php echo get_edit_post_link( $post_ID ); ?>" onclick="window.opener.location.replace(this.href); window.close();"><?php _e( 'Edit Post' ); ?></a>
+										<a onclick="window.opener.location.replace(this.href); window.close();" href="<?php echo get_permalink( $post_id ); ?>"><?php _e( 'View post' ); ?></a>
+										| <a href="<?php echo get_edit_post_link( $post_id ); ?>" onclick="window.opener.location.replace(this.href); window.close();"><?php _e( 'Edit Post' ); ?></a>
 										| <a href="#" onclick="window.close();"><?php _e( 'Close Window' ); ?></a>
 									</p>
 								</div>
@@ -744,20 +845,41 @@ class GMR_QuickPost {
 		$content = isset( $_POST['content'] ) ? $_POST['content'] : '';
 
 		$upload = false;
-		if ( ! empty( $_POST['photo_src'] ) && current_user_can( 'upload_files' ) ) {
-			foreach ( (array) $_POST['photo_src'] as $key => $image ) {
-				// See if files exist in content - we don't want to upload non-used selected files.
-				if ( strpos( $_POST['content'], htmlspecialchars( $image ) ) !== false ) {
-					$desc = isset( $_POST['photo_description'][$key] ) ? $_POST['photo_description'][$key] : '';
-					$upload = media_sideload_image( $image, $post_ID, $desc );
+		if ( current_user_can( 'upload_files' ) ) {
+			if ( ! empty( $_POST['photo_src'] ) ) {
+				foreach ( (array) $_POST['photo_src'] as $key => $image ) {
+					// See if files exist in content - we don't want to upload non-used selected files.
+					if ( strpos( $_POST['content'], htmlspecialchars( $image ) ) !== false ) {
+						$desc = isset( $_POST['photo_description'][$key] ) ? $_POST['photo_description'][$key] : '';
+						$upload = media_sideload_image( $image, $post_ID, $desc );
 
-					// Replace the POSTED content <img> with correct uploaded ones. Regex contains fix for Magic Quotes
-					if ( !is_wp_error( $upload ) ) {
-						$content = preg_replace( '/<img ([^>]*)src=\\\?(\"|\')' . preg_quote( htmlspecialchars( $image ), '/' ) . '\\\?(\2)([^>\/]*)\/*>/is', $upload, $content );
+						// Replace the POSTED content <img> with correct uploaded ones. Regex contains fix for Magic Quotes
+						if ( !is_wp_error( $upload ) ) {
+							$content = preg_replace( '/<img ([^>]*)src=\\\?(\"|\')' . preg_quote( htmlspecialchars( $image ), '/' ) . '\\\?(\2)([^>\/]*)\/*>/is', $upload, $content );
+						}
+					}
+				}
+			}
+
+			// featured image
+			$featured_image = filter_input( INPUT_POST, 'featured_image', FILTER_VALIDATE_URL );
+			if ( ! empty( $featured_image ) ) {
+				$file_array = array();
+				$file_array['tmp_name'] = download_url( $featured_image );
+				$file_array['name'] = basename( $featured_image );
+				if ( strpos( $file_array['name'], '.' ) === false ) {
+					$file_array['name'] = $file_array['name'] . '.jpg';
+				}
+
+				if ( ! is_wp_error( $file_array['tmp_name'] ) ) {
+					$id = media_handle_sideload( $file_array, $post_ID, '' );
+					if ( ! is_wp_error( $id ) ) {
+						set_post_thumbnail( $post_ID, $id );
 					}
 				}
 			}
 		}
+
 		// Set the post_content and status.
 		$post['post_content'] = $content;
 		if ( isset( $_POST['publish'] ) && current_user_can( 'publish_posts' ) ) {
