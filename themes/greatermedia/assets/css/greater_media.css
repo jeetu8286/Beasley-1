@@ -840,6 +840,9 @@ p {
     .header-logo--img {
       text-align: left; } }
 
+.register, .login {
+  visibility: hidden; }
+
 /**
  * Footer Styles
  */
