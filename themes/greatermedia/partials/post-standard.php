@@ -17,7 +17,10 @@
 
 	<section class="entry-content" itemprop="articleBody">
 
-		<?php the_excerpt(); ?>
+		<?php
+		//the_excerpt();
+		the_content();
+		?>
 
 	</section>
 
