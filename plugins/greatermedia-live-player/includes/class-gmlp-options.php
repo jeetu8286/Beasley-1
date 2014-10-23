@@ -46,7 +46,7 @@ class GMLP_Settings {
 	protected function _init() {
 		add_action( 'admin_menu', array( $this, 'add_settings_page' ) );
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
-		add_action( 'gmlp_location', array($this, 'player_location_class') );
+		//add_action( 'gmlp_location', array($this, 'player_location_class') );
 		add_filter( 'body_class', array( $this, 'player_location_body_class' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 	}
@@ -94,7 +94,7 @@ class GMLP_Settings {
 
 		// Radio Station Callsign
 		register_setting( self::option_group, 'gmlp_radio_callsign', 'sanitize_text_field' );
-		register_setting( self::option_group, 'gmlp_player_location', 'esc_attr' );
+		//register_setting( self::option_group, 'gmlp_player_location', 'esc_attr' );
 
 		/**
 		 * Allows us to register extra settings that are not necessarily always present on all child sites.
@@ -109,8 +109,7 @@ class GMLP_Settings {
 	 */
 	public function render_gmlp_settings_section() {
 		$radio_callsign = get_option( 'gmlp_radio_callsign', '' );
-		$player_location = get_option( 'gmlp_player_location', '' );
-		?>
+		/* $player_location = get_option( 'gmlp_player_location', '' );
 
 		<h4><?php _e( 'Live Player API Information', 'gmliveplayer' ); ?></h4>
 
@@ -123,7 +122,7 @@ class GMLP_Settings {
 				<option value="right" <?php selected( $player_location, 'right' ); ?>><?php _e( 'Right', 'gmliveplayer' )?></option>
 				<option value="left" <?php selected( $player_location, 'left' ); ?>><?php _e( 'Left', 'gmliveplayer' )?></option>
 			</select>
-		</p>
+		</p> */ ?>
 
 		<p>
 			<label for="gmlp_radio_callsign" class="gmlp-admin-label"><?php _e( 'Radio Callsign', 'gmliveplayer' ); ?></label>
