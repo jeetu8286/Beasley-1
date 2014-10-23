@@ -13,7 +13,7 @@ class ShowsCPT {
 	public static function init() {
 		add_action('init', array( __CLASS__,  'register_post_type') );
 		add_action('init', array( __CLASS__,  'register_shadow_taxonomy') );
-		add_action( 'before_delete_post',array ( __CLASS__, 'remove_show_term' ));
+		add_action('before_delete_post', array( __CLASS__, 'remove_show_term' ) );
 	}
 
 	/**
@@ -77,31 +77,22 @@ class ShowsCPT {
 		);
 
 		register_taxonomy( 'shows_shadow_taxonomy', 'show', $args );
+
+		if( function_exists( 'TDS\add_relationship' ) ) {
+			TDS\add_relationship( 'show', 'shows_shadow_taxonomy' );
+		}
 	}
-
-	public static function createShadowTerm( $term_title ) {
-		$sanitize_title = sanitize_title($term_title);
-		$term_id = wp_insert_term(
-			$term_title,
-			'shows_shadow_taxonomy',
-			array(
-				'description'=> 'Shadow term of shows shadow taxonomy.',
-				'slug' => $sanitize_title,
-			)
-		);
-
-		return $term_id;
-	}
-
 
 	/*
 	 * Remove term taxonomy if the show is permanently deleted
 	 */
 	public static function remove_show_term( $post_id ) {
-		$term_id = get_post_meta( $post_id, '_related_term_id', true);
-
-		if( $term_id ) {
-			wp_delete_term( $term_id['term_id'], 'shows_shadow_taxonomy' );
+		if( function_exists( 'TDS\get_related_term' ) ) {
+			$term_id = TDS\get_related_term( $post_id );
+			
+			if( $term_id->term_id ) {
+				wp_delete_term( $term_id->term_id, 'shows_shadow_taxonomy' );
+			}
 		}
 	}
 }
