@@ -55,11 +55,23 @@ class GMR_QuickPost {
 			self::$_isntance = new GMR_QuickPost();
 			
 			add_action( 'init', array( self::$_isntance, 'register_post_type' ) );
-			add_action( 'tool_box', array( self::$_isntance, 'render_tool_box' ) );
+			add_action( 'wp_dashboard_setup', array( self::$_isntance, 'register_dashboard_widget' ) );
 			add_action( 'admin_action_' . self::ADMIN_ACTION, array( self::$_isntance, 'process_quickpost_popup' ) );
 		}
 
 		return self::$_isntance;
+	}
+
+	/**
+	 * Registers dashboard widget.
+	 *
+	 * @since 1.0.0
+	 * @action wp_dashboard_setup
+	 *
+	 * @access public
+	 */
+	public function register_dashboard_widget() {
+		wp_add_dashboard_widget( 'quickpost', 'Quick Post', array( $this, 'render_tool_box' ) );
 	}
 
 	/**
@@ -171,8 +183,6 @@ class GMR_QuickPost {
 		" );
 
 		?><div class="tool-box">
-			<h3 class="title">Quick Post</h3>
-
 			<p>Quick Post is a bookmarklet: a little app that runs in your browser and lets you grab bits of the web.</p>
 
 			<p class="description">
