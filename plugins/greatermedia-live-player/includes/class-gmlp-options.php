@@ -94,7 +94,7 @@ class GMLP_Settings {
 
 		// Radio Station Callsign
 		register_setting( self::option_group, 'gmlp_radio_callsign', 'sanitize_text_field' );
-		//register_setting( self::option_group, 'gmlp_player_location', 'esc_attr' );
+		register_setting( self::option_group, 'gmlp_player_location', 'esc_attr' );
 
 		/**
 		 * Allows us to register extra settings that are not necessarily always present on all child sites.
