@@ -80,7 +80,9 @@ class GreaterMediaLiveFyreMediaWall {
 		$media_wall_id      = get_post_meta( $post_id, 'media_wall_id', true );
 		$media_wall_modal   = get_post_meta( $post_id, 'media_wall_allow_modal', true );
 		$media_wall_initial = get_post_meta( $post_id, 'media_wall_initial', true );
+		$media_wall_responsive = get_post_meta($post_id, 'media_wall_responsive', true);
 		$media_wall_columns = get_post_meta( $post_id, 'media_wall_columns', true );
+		$media_wall_min_width = get_post_meta( $post_id, 'media_wall_min_width', true );
 
 		$settings = array(
 			// One wall per page now, but trying to build in flexibility just in case
@@ -92,6 +94,8 @@ class GreaterMediaLiveFyreMediaWall {
 					'id'         => esc_attr( $media_wall_id ),
 					'initial'    => absint( $media_wall_initial ),
 					'modal'      => $media_wall_modal,
+					'style' => $media_wall_responsive,
+					'min-width' => absint( $media_wall_min_width),
 					'columns'    => absint( $media_wall_columns ),
 				)
 			)

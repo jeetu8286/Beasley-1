@@ -1,4 +1,5 @@
 ((function (window, document, undefined) {
+
 	document.addEventListener('DOMContentLoaded', function () {
 
 		var wall_index, current_wall;
@@ -17,18 +18,29 @@
 					['streamhub-wall#3', 'streamhub-sdk#2'],
 					function (LiveMediaWall, SDK) {
 
-						var wall = window.wall = new LiveMediaWall({
+						var args = {
 							el        : document.getElementById(current_wall['element_id']),
 							initial   : current_wall['initial'],
 							modal     : ('modal' === current_wall['modal']) ? true : false,
-							columns   : current_wall['columns'],
 							postButton: false,
 							collection: new (SDK.Collection)({
 								"network"  : current_wall['network'],
 								"siteId"   : current_wall['site'],
 								"articleId": current_wall['id']
 							})
-						});
+						};
+
+						if ('min-width' === current_wall['style']) {
+							args.minContentWidth = current_wall['min-width'];
+						}
+						else if ('columns' === current_wall['style']) {
+							args.columns = current_wall['columns'];
+						}
+						else {
+							// style is an invalid value or one that hasn't been implemented here yet
+						}
+
+						var wall = window.wall = new LiveMediaWall(args);
 
 					}
 				);
@@ -37,4 +49,5 @@
 		}
 
 	});
+	
 })(window, document));

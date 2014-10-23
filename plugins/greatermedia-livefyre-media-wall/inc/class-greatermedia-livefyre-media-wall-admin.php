@@ -14,6 +14,7 @@ class GreaterMediaLiveFyreMediaWallAdmin {
 
 		add_action( 'save_post', array( $this, 'save_post' ) );
 		add_action( 'admin_init', array( $this, 'admin_init' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 	}
 
 	/**
@@ -80,6 +81,14 @@ class GreaterMediaLiveFyreMediaWallAdmin {
 	}
 
 	/**
+	 * Implements admin_enqueue_scripts action
+	 */
+	public function admin_enqueue_scripts() {
+
+		wp_enqueue_script( 'livefyre-media-wall-admin', trailingslashit( GREATER_MEDIA_LIVEFYRE_WALLS_URL ) . 'js/livefyre-media-wall-admin.js', array( 'jquery' ), false, true );
+	}
+
+	/**
 	 * Implements save_post action
 	 * Saves custom meta fields
 	 *
@@ -125,10 +134,25 @@ class GreaterMediaLiveFyreMediaWallAdmin {
 			update_post_meta( $post_id, 'media_wall_initial', $media_wall_initial );
 		}
 
+		if ( isset( $_POST['media_wall_responsive'] ) ) {
+			$media_wall_responsive = $_POST['media_wall_responsive'];
+			if ( ! in_array( $media_wall_responsive, array( 'columns', 'min-width' ) ) ) {
+				$media_wall_responsive = 'min-width';
+			}
+			delete_post_meta( $post_id, 'media_wall_responsive' );
+			update_post_meta( $post_id, 'media_wall_responsive', $media_wall_responsive );
+		}
+
 		if ( isset( $_POST['media_wall_columns'] ) ) {
 			$media_wall_columns = absint( $_POST['media_wall_columns'] );
 			delete_post_meta( $post_id, 'media_wall_columns' );
 			update_post_meta( $post_id, 'media_wall_columns', $media_wall_columns );
+		}
+
+		if ( isset( $_POST['media_wall_min_width'] ) ) {
+			$media_wall_min_width = absint( $_POST['media_wall_min_width'] );
+			delete_post_meta( $post_id, 'media_wall_min_width' );
+			update_post_meta( $post_id, 'media_wall_min_width', $media_wall_min_width );
 		}
 
 		if ( isset( $_POST['media_wall_allow_modal'] ) ) {
@@ -167,7 +191,7 @@ class GreaterMediaLiveFyreMediaWallAdmin {
 		wp_nonce_field( 'media_wall_meta_box', 'media_wall_meta_box' );
 
 		/*
-		 * Use get_post_meta() to retrieve an existing value
+		 * Use get_post_meta() t o retrieve an existing value
 		 * from the database and use the value for the form.
 		 */
 		$media_wall_id = get_post_meta( $post->ID, 'media_wall_id', true );
@@ -177,9 +201,19 @@ class GreaterMediaLiveFyreMediaWallAdmin {
 			$media_wall_initial = 50; // LiveFyre's default
 		}
 
+		$media_wall_responsive = get_post_meta( $post->ID, 'media_wall_responsive', true );
+		if ( empty( $media_wall_responsive ) ) {
+			$media_wall_responsive = 'min-width';
+		}
+
 		$media_wall_columns = get_post_meta( $post->ID, 'media_wall_columns', true );
 		if ( empty( $media_wall_columns ) ) {
 			$media_wall_columns = 3;
+		}
+
+		$media_wall_min_width = get_post_meta( $post->ID, 'media_wall_min_width', true );
+		if ( empty( $media_wall_min_width ) ) {
+			$media_wall_min_width = 300; // LiveFyre's default
 		}
 
 		$media_wall_allow_modal = get_post_meta( $post->ID, 'media_wall_allow_modal', true );
