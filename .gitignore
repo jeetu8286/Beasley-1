@@ -9,6 +9,8 @@ plugins/debug-bar/
 plugins/theme-check/
 plugins/index.php
 plugins/wordpress-importer
+plugins/debug-bar/
+plugins/theme-check/
 themes/index.php
 themes/twentyfourteen
 upgrade/
