@@ -9,7 +9,6 @@ Author URI: http://10up.com/
 
 class GMR_QuickPost {
 
-	const POST_TYPE    = 'gmr-quick-post';
 	const ADMIN_ACTION = 'gmr_quickpost';
 
 	/**
@@ -54,7 +53,6 @@ class GMR_QuickPost {
 		if ( is_null( self::$_isntance ) ) {
 			self::$_isntance = new GMR_QuickPost();
 			
-			add_action( 'init', array( self::$_isntance, 'register_post_type' ) );
 			add_action( 'wp_dashboard_setup', array( self::$_isntance, 'register_dashboard_widget' ) );
 			add_action( 'admin_action_' . self::ADMIN_ACTION, array( self::$_isntance, 'process_quickpost_popup' ) );
 		}
@@ -134,27 +132,6 @@ class GMR_QuickPost {
 			<a href="#" style="display:none">&laquo; prev</a>
 			<a href="#">next &raquo;</a>
 		</div><?php
-	}
-
-	/**
-	 * Registers QuickPost post type.
-	 *
-	 * @since 1.0.0
-	 * @action init
-	 *
-	 * @access public
-	 */
-	public function register_post_type() {
-		if ( ! post_type_exists( self::POST_TYPE ) ) {
-			register_post_type( self::POST_TYPE, array(
-				'public'        => false,
-				'show_ui'       => true,
-				'rewrite'       => false,
-				'menu_position' => 5,
-				'label'         => 'Quick Posts',
-				'supports'      => array( 'title', 'editor', 'thumbnail', 'post-formats' ),
-			) );
-		}
 	}
 
 	/**
@@ -249,7 +226,7 @@ class GMR_QuickPost {
 			check_admin_referer( 'quickpost' );
 			$posted = $post_id = $this->_save_quick_post();
 		} else {
-			$post = get_default_post_to_edit( self::POST_TYPE, true );
+			$post = get_default_post_to_edit( 'post', true );
 			$post_id = $post->ID;
 		}
 
@@ -273,7 +250,7 @@ class GMR_QuickPost {
 				<style type="text/css" media="screen">
 					#quickpost-featured-image {
 						width: 214px;
-						height: 214px;
+						height: 160px;
 						overflow: hidden;
 						margin-bottom: 10px;
 						position: relative;
@@ -864,7 +841,7 @@ class GMR_QuickPost {
 	 * @return int The ID of the quick post.
 	 */
 	private function _save_quick_post() {
-		$post = get_default_post_to_edit( self::POST_TYPE );
+		$post = get_default_post_to_edit( 'post' );
 		$post = get_object_vars( $post );
 		$post_ID = $post['ID'] = (int) $_POST['post_id'];
 

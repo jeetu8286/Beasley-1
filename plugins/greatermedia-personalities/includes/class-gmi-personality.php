@@ -104,7 +104,7 @@ if ( !class_exists( "GMI_Personality" ) ) {
 				'show_in_menu'  		=> true,
 				'show_admin_column'  	=> true,
 				'show_tagcloud'			=> true,
-				'hierarchical'  		=> false,
+				'hierarchical'  		=> true, // this taxonomy should be hierarchical to make it easier to select personalities
 			);
 
 			register_taxonomy( self::SHADOW_TAX_SLUG, array( 'post' ), $args );
