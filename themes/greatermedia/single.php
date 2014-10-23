@@ -67,7 +67,7 @@ get_header(); ?>
 
 						} else {
 
-							get_template_part( 'partials/post', 'standard' );
+							get_template_part( 'partials/single', 'standard' );
 
 						}
 
