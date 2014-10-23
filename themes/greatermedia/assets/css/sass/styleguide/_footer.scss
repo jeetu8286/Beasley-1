@@ -9,6 +9,6 @@
 .scroll-to-top:before{
 	@include size(0 0);
 	font-family: FontAwesome;
-	font-size: rem(24px);
+	font-size: ms(4);
 	content: "\f106";
 }

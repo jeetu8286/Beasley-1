@@ -1,12 +1,14 @@
 /* Tomorrow Night Bright Theme */
 /* Original theme - https://github.com/chriskempson/tomorrow-theme */
 .prettyprint {
-	background: black;
+	@include padding(10px);
+	@include border-color(#ccc);
+	@include border-style(solid);
+	@include border-width(1px);
+	background: color(black);
 	font-family: Menlo, 'Bitstream Vera Sans Mono', 'DejaVu Sans Mono', Monaco, Consolas, monospace;
-	font-size: 12px;
+	font-size: ms(-2);
 	line-height: 1.5;
-	border: 1px solid #ccc;
-	padding: 10px;
 }
 
 .pln {

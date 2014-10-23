@@ -11,6 +11,12 @@
   -moz-box-sizing: border-box;
   box-sizing: border-box; }
 
+/**
+ * Placeholders
+ */
+/**
+ * Helpers
+ */
 /*********************
 Misc
 *********************/
@@ -373,105 +379,21 @@ th {
   padding: 0; }
 
 /**
- * Placeholders
- */
-/**
- * Helpers
- */
-/**
  * Font Styles
  */
-/**
- * Base Styles
- */
-/*********************
-GENERAL STYLES
-*********************/
 body {
   height: 100%;
-  background: #ffffff;
   margin: 0 auto;
-  line-height: 1.5;
-  font-family: "OpenSans", sans-serif;
-  font-size: 100%;
-  color: #000000;
-  -webkit-font-smoothing: antialiased; }
+  background: #ffffff; }
 
 * {
   -webkit-tap-highlight-color: transparent; }
 
-#wpadminbar {
-  position: fixed; }
-
-.emphasis {
-  font-size: 1.2rem;
-  font-weight: 600; }
-
 img {
   max-width: 100%;
-  height: auto;
-  display: block; }
+  display: block;
+  height: auto; }
 
-/********************
-WORDPRESS BODY CLASSES
-style a page via class
-********************/
-/* for sites that are read right to left (i.e. hebrew) */
-/* home page */
-/* blog template page */
-/* archive page */
-/* date archive page */
-/* replace the number to the corresponding page number */
-/* search page */
-/* search result page */
-/* no results search page */
-/* individual paged search (i.e. body.search-paged-3) */
-/* 404 page */
-/* single post page */
-/* individual post page by id (i.e. body.postid-73) */
-/* individual paged single (i.e. body.single-paged-3) */
-/* attatchment page */
-/* individual attatchment page (i.e. body.attachmentid-763) */
-/* style mime type pages */
-/* author page */
-/* user nicename (i.e. body.author-samueladams) */
-/* paged author archives (i.e. body.author-paged-4) for page 4 */
-/* category page */
-/* individual category page (i.e. body.category-6) */
-/* replace the number to the corresponding page number */
-/* tag page */
-/* individual tag page (i.e. body.tag-news) */
-/* replace the number to the corresponding page number */
-/* custom page template page */
-/* individual page template (i.e. body.page-template-contact-php */
-/* replace the number to the corresponding page number */
-/* parent page template */
-/* child page template */
-/* replace the number to the corresponding page number */
-/* if user is logged in */
-/* paged items like search results or archives */
-/* individual paged (i.e. body.paged-3) */
-/*********************
-LINK STYLES
-*********************/
-a, a:visited {
-  color: #333333;
-  text-decoration: none;
-  /* on hover */
-  /* on click */ }
-  a:hover, a:focus, a:visited:hover, a:visited:focus {
-    color: #888888; }
-
-/*********************
-POSTS & CONTENT STYLES
-*********************/
-/* want to style individual post classes? Booya! */
-/* post by id (i.e. post-3) */
-/* general post style */
-/* general article on a page style */
-/* general style on an attatchment */
-/* hentry class */
-/* style by category (i.e. category-videos) */
 .container {
   max-width: 75em;
   margin-left: auto;
@@ -499,7 +421,7 @@ POSTS & CONTENT STYLES
       float: left;
       display: block;
       margin-right: 4.82916%;
-      width: 65.05695%; }
+      width: 100%; }
       .content:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 769px) {
@@ -535,8 +457,7 @@ POSTS & CONTENT STYLES
       float: left;
       display: block;
       margin-right: 4.82916%;
-      width: 30.11389%;
-      margin-right: 0; }
+      width: 100%; }
       .sidebar:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 769px) {
@@ -544,7 +465,8 @@ POSTS & CONTENT STYLES
       float: left;
       display: block;
       margin-right: 3.57866%;
-      width: 22.316%; }
+      width: 22.316%;
+      margin-right: 0; }
       .sidebar:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 1201px) {
@@ -619,58 +541,58 @@ POSTS & CONTENT STYLES
   src: url("../fonts/playfair/playfair-bolditalic-webfont.eot");
   src: url("../fonts/playfair/playfair-bolditalic-webfont.eot?#iefix") format("embedded-opentype"), url("../fonts/playfair/playfair-bolditalic-webfont.woff") format("woff"), url("../fonts/playfair/playfair-bolditalic-webfont.ttf") format("truetype"), url("../fonts/playfair/playfair-bolditalic-webfont.svg#Playfair") format("svg"); }
 body {
-  font-size: 80%; }
+  line-height: 2;
+  font-size: 80%;
+  font-family: "OpenSans", sans-serif;
+  color: #000000;
+  -webkit-font-smoothing: antialiased; }
   @media screen and (min-width: 481px) {
     body {
       font-size: 85%; } }
   @media screen and (min-width: 769px) {
     body {
+      line-height: 1.8;
       font-size: 90%; } }
   @media screen and (min-width: 1201px) {
     body {
+      line-height: 1.5;
       font-size: 100%; } }
 
-/******************************************************************
-H1, H2, H3, H4, H5, H6 STYLES
-******************************************************************/
 h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
+  line-height: 1.5;
   font-family: "OpenSans", sans-serif;
   text-rendering: optimizelegibility;
-  font-weight: 700;
-  /*
-  if you're going to use webfonts, be sure to check your weights
-  http://css-tricks.com/watch-your-font-weight/
-  */
-  /* removing text decoration from all headline links */ }
-  h1 a, .h1 a, h2 a, .h2 a, h3 a, .h3 a, h4 a, .h4 a, h5 a, .h5 a, h6 a, .h6 a {
-    text-decoration: none; }
+  font-weight: lighter; }
 
 h1, .h1 {
-  font-size: 2.5rem;
-  line-height: 1.1em; }
+  font-size: 2.2807em; }
 
 h2, .h2 {
-  font-size: 2.25rem;
-  line-height: 1.4em;
-  margin-bottom: 0.375em; }
+  font-size: 2.02729em; }
 
 h3, .h3 {
-  font-size: 1.75rem; }
+  font-size: 1.80203em; }
 
 h4, .h4 {
-  font-size: 1.5rem; }
+  font-size: 1.60181em; }
 
 h5, .h5 {
-  font-size: 1.25rem;
-  line-height: 2.09em;
-  text-transform: uppercase;
+  font-size: 1.42383em;
   letter-spacing: 2px; }
 
 h6, .h6 {
-  font-size: 1rem;
-  line-height: 2.09em;
-  text-transform: uppercase;
+  font-size: 1.26563em;
   letter-spacing: 2px; }
+
+a:link, a:visited {
+  color: #d32329;
+  text-decoration: none; }
+
+a:hover, a:focus, a:active {
+  color: #888888; }
+
+p {
+  margin: 0 0 1.5em; }
 
 /**
  * Menu Styles
@@ -685,27 +607,94 @@ h6, .h6 {
  * Footer Styles
  */
 .hentry {
-  margin-bottom: 2em;
-  border-color: #f5f5f5;
-  border-bottom-style: solid;
-  border-bottom-width: 0.0625em; }
+  margin-bottom: 1em; }
 
-.single-title,
-.page-title,
-.entry-title {
-  margin: 0; }
+.article-types {
+  display: block;
+  height: 30px;
+  width: 100%;
+  padding: 5px;
+  margin-bottom: 10px;
+  background-color: #f5f5f5; }
+
+.article-type--aside, .article-type--gallery, .article-type--link, .article-type--image, .article-type--video, .article-type--audio, .article-type--standard {
+  position: relative;
+  padding-left: 1.875em;
+  font-size: 0.79012em;
+  text-transform: uppercase; }
+
+.article-type--aside:before, .article-type--gallery:before, .article-type--link:before, .article-type--image:before, .article-type--video:before, .article-type--audio:before, .article-type--standard:before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-family: dashicons;
+  font-size: 1em;
+  color: #d32329; }
+
+.article-type--aside:before {
+  content: "\f123"; }
+
+.article-type--gallery:before {
+  content: "\f161"; }
+
+.article-type--link:before {
+  content: "\f103"; }
+
+.article-type--image:before {
+  content: "\f128"; }
+
+.article-type--video:before {
+  content: "\f126"; }
+
+.article-type--audio:before {
+  content: "\f127"; }
+
+.article-type--standard:before {
+  content: "\f109"; }
+
+.byline {
+  font-size: 0.70233em;
+  color: #888888;
+  text-transform: uppercase; }
+
+.article-comments--count {
+  padding-left: 5px;
+  margin-left: 3px;
+  border-left-color: #333333;
+  border-left-style: solid;
+  border-left-width: 1px; }
+
+.single-title, .page-title, .entry-title {
+  margin: 0.5em 0; }
+
+.entry-thumbnail {
+  position: relative;
+  padding-bottom: 2em; }
 
 .entry-content {
   padding: 1.5em 0;
   font-family: "Playfair", serif; }
 
-.byline {
-  font-style: italic;
-  color: #888888; }
+.read-more--btn {
+  padding: 1em 1.5em;
+  margin-right: 0.5em;
+  border-width: 0;
+  outline: none;
+  background-color: #d32329;
+  font-family: "OpenSans", sans-serif;
+  font-size: 0.875em;
+  color: #ffffff !important;
+  text-transform: uppercase;
+  cursor: pointer; }
+  .read-more--btn:hover, .read-more--btn:focus {
+    background-color: #ac1c21;
+    color: #ffffff; }
+  .read-more--btn:last-of-type {
+    margin-right: 0; }
 
 .pagination {
   width: 100%;
-  font-size: 0.875rem; }
+  font-size: 0.88889em; }
 
 .pagination-previous {
   width: 50%;
@@ -734,7 +723,7 @@ blockquote:before {
   margin-right: 0.25em;
   color: #f5f5f5;
   content: open-quote;
-  font-size: 4rem;
+  font-size: 4.10989em;
   line-height: 0.1em;
   vertical-align: -0.25em; }
 
@@ -742,9 +731,6 @@ blockquote p {
   display: inline;
   font-style: italic;
   color: #333333; }
-
-p {
-  margin: 0 0 1.5em; }
 
 .alignleft, img.alignleft {
   display: block;
@@ -780,7 +766,7 @@ pre {
   border-bottom-left-radius: 0.25em;
   background: #f5f5f5;
   color: #000000;
-  font-size: 0.875rem; }
+  font-size: 0.88889em; }
 
 .wp-caption {
   max-width: 100%;
@@ -796,8 +782,7 @@ pre {
 .wp-caption p.wp-caption-text {
   padding: 1em 1.25em 1.25em;
   padding: 0.25em 0.5em;
-  line-height: 1.5;
-  font-size: 0.75rem;
+  font-size: 0.79012em;
   text-align: left; }
 
 /**

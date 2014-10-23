@@ -1,0 +1,5 @@
+<% _.each(choices, function(choice, index) { %>
+	<option value="<%- choice.value %>" <%= index === currentChoice ? 'selected="selected"' : ''  %>">
+	<%- choice.label %>
+	</option>
+<% }); %>
