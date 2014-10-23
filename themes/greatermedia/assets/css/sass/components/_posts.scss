@@ -70,18 +70,23 @@
 
 // Byline
 .entry-byline {
-	float: left;
-	width: 25%;
+	@include span-columns(1);
 	font-size: ms(-3);
 	color: palette(gray);
+	@include bp(small) {
+		@include span-columns(1);
+	}
 	@include bp(medium) {
-		width: 20%;
+		@include span-columns(1);
+	}
+	@include bp(large) {
+		@include span-columns(2);
 	}
 }
 
 .entry-author--img {
 	float: left;
-	@include size(25px 25px);
+	@include size(40px 40px);
 	@include margin(null em(10px) null null);
 	@include border-top-radius(50%);
 	@include border-right-radius(50%);
@@ -100,11 +105,18 @@
 
 // Post Formats
 .entry-type {
-	float: left;
-	width: 60%;
+	@include span-columns(2);
+	@include padding(.75em null);
+	color: palette(gray, dark);
 	text-align: center;
+	@include bp(small) {
+		@include span-columns(4);
+	}
 	@include bp(medium) {
-		width: 70%;
+		@include span-columns(6);
+	}
+	@include bp(large) {
+		@include span-columns(8);
 	}
 }
 
@@ -112,7 +124,6 @@
 	@include position(relative, null null null null);
 	@include padding(null null null em(30px));
 	font-size: ms(-2);
-	text-transform: uppercase;
 }
 
 %entry-type--before {
@@ -176,31 +187,68 @@
 
 // Comments
 .entry-comments {
-	float: right;
-	@include display(block);
-	@include size(20px 16px);
-	@include margin(0 auto);
-	text-align: center;
-	font-size: ms(-3);
+	@include span-columns(1);
+	@include padding(8px 0);
 	color: palette(gray);
+	@include bp(small) {
+		@include span-columns(1);
+	}
+	@include bp(medium) {
+		@include span-columns(1);
+	}
+	@include bp(large) {
+		@include span-columns(2);
+	}
 }
 
-a.entry-comments--count:link, a.entry-comments--count:visited {
+.entry-comments--count {
+	@include position(relative, null null null null);
+	float: right;
 	@include display(block);
+	text-align: center;
+	font-size: ms(-3);
+}
+
+.entry-comments--count a:link, .entry-comments--count a:visited {
+	@include display(block);
+	@include size(24px 16px);
+	@include margin(0 auto);
+	@include border-top-radius(3px);
+	@include border-right-radius(3px);
+	@include border-bottom-radius(3px);
+	@include border-left-radius(3px);
 	background-color: palette(gray, light);
 	color: palette(default, black);
 }
 
-a.entry-comments--count:hover, a.entry-comments--count:focus {
+.entry-comments--count a:link:after, .entry-comments--count a:visited:after {
+	@include position(absolute, null null -8px 3px);
+	@include arrow(top-left, palette(gray, light), 8px, 10px);
+	content: " ";
+}
+
+.entry-comments--count a:hover, .entry-comments--count a:focus {
 	@include display(block);
 	background-color: palette(default, red);
 	color: palette(default);
 }
 
-a.entry-comments--count:active {
+.entry-comments--count a:hover:after, .entry-comments--count a:focus:after {
+	@include position(absolute, null null -8px 3px);
+	@include arrow(top-left, palette(default, red), 8px, 10px);
+	content: " ";
+}
+
+.entry-comments--count a:active {
 	@include display(block);
 	background-color: palette(default, black);
 	color: palette(default);
+}
+
+.entry-comments--count a:active:after{
+	@include position(absolute, null null -8px 3px);
+	@include arrow(top-left, palette(default, black), 8px, 10px);
+	content: " ";
 }
 
 // Standard Post Format

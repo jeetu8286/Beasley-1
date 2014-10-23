@@ -91,7 +91,11 @@ get_header(); ?>
 
 							<div class="entry-comments">
 
-								<a href="<?php the_permalink(); ?>/#comments" class="entry-comments--count"><?php comments_number( '0', '1', '%' ); ?></a>
+								<div class="entry-comments--count">
+
+									<a href="<?php the_permalink(); ?>#comments"><?php comments_number( '0', '1', '%' ); ?></a>
+
+								</div>
 
 							</div>
 
@@ -143,5 +147,3 @@ get_header(); ?>
 	</main>
 
 <?php get_footer(); ?>
-<div class="gigya-screen-set" id="my-screen-set" style="display:none">
-</div>

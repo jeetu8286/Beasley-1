@@ -34,7 +34,7 @@
 	}
 }
 
-// This function is calling a breakpoint value, defined as `$name`, from the `$breakpoints` array located in the
+// Mixin to call a breakpoint value, defined as `$name`, from the `$breakpoints` array located in the
 // `_breakpoints.scss`.
 //
 // @example scss - BP Mixin
@@ -60,5 +60,55 @@
 		} @else {
 			@content;
 		}
+	}
+}
+
+// Mixin to create an arrow
+//
+// @example scss - Arrow Mixin
+// @include arrow(right, #000, 12px, 12px);
+//
+// @author Allen Moore
+// @access private
+// @since 0.1.0
+//
+// @param {Arrow Direction} $direction - direction of the arrow (top, left, right, bottom, top-left, bottom-left, bottom-right)
+// @param {Color} $color - color of the arrow (hex, rgb, or rgba)
+// @param {Width} $width - width of the arrow (px or em)
+// @param {Height} $height - height of the arrow (px or em)
+//
+@mixin arrow($direction, $color, $width, $height){
+	display: block;
+	height: 0;
+	width: 0;
+
+	@if $direction == 'top' {
+		border-left: $width solid transparent;
+		border-right: $width solid transparent;
+		border-bottom: $height solid $color;
+	} @else if $direction == 'right' {
+		border-top: $height/2 solid transparent;
+		border-bottom: $height/2 solid transparent;
+		border-left: $width solid $color;
+	} @else if $direction == 'bottom' {
+		border-top: $height solid $color;
+		border-right: $width/2 solid transparent;
+		border-left: $width/2 solid transparent;
+	} @else if $direction == 'left' {
+		border-top: $height/2 solid transparent;
+		border-bottom: $height/2 solid transparent;
+		border-right: $width solid $color;
+	} @else if $direction == 'top-left' {
+		border-top: $width solid $color;
+		border-right: $height/2 solid transparent;
+	} @else if $direction == 'top-right' {
+		border-top: $width solid $color;
+		border-left: $height/2 solid transparent;
+	} @else if $direction == 'bottom-left' {
+		border-bottom: $height/2 solid $color;
+		border-right: $width solid transparent;
+	} @else if $direction == 'bottom-right' {
+		border-bottom: $height/2 solid $color;
+		border-left: $width solid transparent;
 	}
 }
