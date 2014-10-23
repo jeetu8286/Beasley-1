@@ -1,0 +1,32 @@
+/**
+ * Greater Media Style Guide
+ *
+ * Copyright (c) 2014 10up
+ * Licensed under the GPLv2+ license.
+ */
+
+// Integrate Bourbon
+@import "bourbon/bourbon";
+@import "neat/neat";
+
+// Anything that doesn't print out CSS along with normalize and fonts
+@import "base/functions";
+@import "base/mixins";
+@import "base/placeholders";
+@import "base/helpers";
+@import "base/variables";
+@import "base/normalize";
+@import "base/breakpoints";
+@import "base/fonts";
+@import "base/grid";
+
+// Main layout components: menu, typography, etc.
+@import "layout/typography";
+
+// Custom styles for the living style guide
+@import "styleguide/base";
+@import "styleguide/menus";
+@import "styleguide/header";
+@import "styleguide/footer";
+@import "styleguide/sections";
+@import "styleguide/syntax";

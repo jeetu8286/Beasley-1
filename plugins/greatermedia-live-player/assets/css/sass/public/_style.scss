@@ -1,0 +1,318 @@
+/**
+ * Styles for Front End
+ *
+ * Admins can choose the location of the player. A class is added to the body that will match the locations below.
+ */
+
+/**
+ * General Styles
+ */
+.gmlp-nav{
+	display: none;
+}
+.gmlp-nav-toggle {
+	@include border-radius(15px 0 0 15px);
+	@include transition(ease .25s);
+	display: block;
+	position: fixed;
+	top: 0;
+	left: auto;
+	right: 0;
+	width: 33px;
+	height: 50px;
+	background-color: $blue;
+	border: none;
+	outline: none;
+	font-size: 1.25em;
+	color: $white;
+	z-index: 10001;
+	cursor: pointer;
+	&:before {
+		font-family: FontAwesome;
+		font-style: normal;
+		font-weight: normal;
+		line-height: 1;
+		-webkit-font-smoothing: antialiased;
+		moz-osx-font-smoothing: grayscale;
+		text-rendering: auto;
+		content: "\f028";
+	}
+	@include min-width-breakpoint($max-width) {
+		display: none;
+	}
+}
+.gmlp-audio-button {
+	@include border-radius(50%);
+	width: 140px;
+	height: 140px;
+	margin: 0 auto;
+	background-color: $red;
+	border: none;
+	outline: none;
+	font-family: FontAwesome;
+	font-size: 5em;
+	font-style: normal;
+	font-weight: normal;
+	line-height: 1;
+	-webkit-font-smoothing: antialiased;
+	moz-osx-font-smoothing: grayscale;
+	text-rendering: auto;
+	color: $white;
+	cursor: pointer;
+	z-index: 10001;
+	@include min-width-breakpoint($max-width){
+		width: 60px;
+		height: 60px;
+		font-size: 2em;
+	}
+}
+#playButton {
+	position: relative;
+	&:before {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		-ms-transform: translate(-50%, -50%);
+		-webkit-transform: translate(-50%, -50%);
+		transform: translate(-50%, -50%);
+		font-family: FontAwesome;
+		content: "\f01d";
+	}
+}
+.gmlp-menu {
+	@include transition(ease .25s);
+	@include box-sizing(border-box);
+	position: fixed;
+	right: -100%;
+	width: 100%;
+	height: 100%;
+	padding: 10px;
+	background: $blue;
+	color: $white;
+	z-index: 10000;
+	.container {
+		max-width: 1020px;
+		height: 100%;
+		margin: 0 auto;
+	}
+	#gmlp-actions {
+		position: relative;
+		margin: 1.25em auto 0;
+		text-align: center;
+		@include min-width-breakpoint($max-width){
+			position: absolute;
+		}
+		#pauseButton, #resumeButton {
+			display: none;
+		}
+	}
+	#gmlp-live {
+		position: relative;
+		width: 100%;
+		height: auto;
+		margin: 2.375em 0 0;
+		text-align: center;
+		z-index: 999;
+		#trackInfo {
+			font-size: 1.375em;
+			@include min-width-breakpoint($max-width){
+				font-size: .75em;
+			}
+			.gmlp-np-song-title {
+				margin: 0 0 1em;
+				font-weight: 700;
+			}
+			.gmlp-np-artist {
+				font-weight: 400;
+			}
+		}
+	}
+}
+.gmlp-open {
+	.gmlp-menu{
+		right: 0;
+	}
+	.gmlp-nav-toggle {
+		font-size: 1.875em;
+		&:before {
+			content: "\f00d";
+		}
+		@include min-width-breakpoint($max-width){
+			font-size: 1.25em;
+		}
+	}
+}
+/**
+ * Universal styles for horizontal player location (top & bottom)
+ */
+.gmlp-horizontal {
+	.gmlp-nav {
+		display: block;
+	}
+	.gmlp-menu {
+		top: 0;
+		@include min-width-breakpoint($max-width) {
+			height: 130px;
+		}
+		#gmlp-actions{
+			@include min-width-breakpoint($max-width){
+				position: relative;
+				float: left;
+				width: 60px;
+				margin: 1.5625em 1em 1.5625em 0;
+			}
+		}
+		#gmlp-live {
+			@include min-width-breakpoint($max-width){
+				float: left;
+				width: 200px;
+				height: 110px;
+				margin: 0 1em 0 0;
+				text-align: left;
+				#nowPlaying{
+					position: absolute;
+					top: 50%;
+					left: 0;
+					-ms-transform: translate(0, -50%);
+					-webkit-transform: translate(0, -50%);
+					transform: translate(0, -50%);
+				}
+			}
+		}
+		#td_container {
+			float: left;
+			width: 0;
+			height: 0;
+		}
+	}
+}
+
+/**
+ * Universal styles for vertical player location (top & bottom)
+ */
+.gmlp-vertical {
+	.gmlp-nav {
+		display: block;
+	}
+	.gmlp-menu {
+		bottom: 0;
+		width: 180px;
+		max-height: 100%;
+		#gmlp-live {
+			@include min-width-breakpoint($max-width){
+				margin: 0;
+				width: 110px;
+				min-height: 60px;
+			}
+			#nowPlaying {
+				@include min-width-breakpoint($max-width){
+					position: absolute;
+					top: 50%;
+					-ms-transform: translate(0%, -50%);
+					-webkit-transform: translate(0%, -50%);
+					transform: translate(0%, -50%);
+				}
+			}
+		}
+	}
+	@include breakpoint(480) {
+		.gmlp-menu {
+			width: 100%;
+		}
+	}
+	&.admin-bar {
+		.gmlp-menu {
+			#gmlp-actions {
+				@include min-width-breakpoint($max-width) {
+					margin: 0;
+					top: 12px;
+				}
+			}
+		}
+	}
+}
+
+/**
+ * Player Location: Top
+ */
+.gmlp-top {
+	@include min-width-breakpoint($max-width){
+		margin-top: 130px;
+		.gmlp-menu{
+			right: auto;
+		}
+	}
+}
+
+/**
+ * Player Location: Bottom
+ */
+.gmlp-bottom {
+	@include min-width-breakpoint($max-width) {
+		.gmlp-menu {
+			top: auto !important;
+			bottom: 0;
+			right: auto;
+		}
+	}
+}
+
+/**
+ * Player Location: Right
+ */
+.gmlp-right {
+	@include min-width-breakpoint($max-width) {
+		.gmlp-menu {
+			right: 0;
+			left: auto;
+			#gmlp-actions {
+				@include transition(ease .25s);
+				left: -14px;
+			}
+			#gmlp-live {
+				margin: 0 0 1em 50px;
+				#nowPlaying {
+					left: 0;
+					text-align: left;
+				}
+			}
+		}
+	}
+}
+
+/**
+ * Player Location: Left
+ */
+.gmlp-left {
+	@include min-width-breakpoint($max-width) {
+		.gmlp-menu {
+			right: auto;
+			left: 0;
+		}
+		#gmlp-actions {
+			@include transition(ease .25s);
+			position: absolute;
+			right: -14px;
+		}
+		#gmlp-live {
+			#nowPlaying {
+				right: 0;
+				text-align: right;
+			}
+		}
+	}
+}
+/**
+ * If Logged In
+ */
+.admin-bar {
+	.gmlp-nav-toggle {
+		top: 46px;
+	}
+	.gmlp-menu {
+		top: 46px;
+		@include min-width-breakpoint(783){
+			top: 32px;
+		}
+	}
+}

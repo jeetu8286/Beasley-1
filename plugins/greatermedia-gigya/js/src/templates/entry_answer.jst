@@ -1,0 +1,17 @@
+<% if (answerType === 'choice') { %>
+	<select id="constraint-value-select-<%- constraint.id %>" style="width: 40%">
+	<% _.each(choices, function(choice, index) { %>
+		<option value="<%- choice.value %>" <%= index === currentChoice ? 'selected="selected"' : ''  %>">
+		<%- choice.label %>
+		</option>
+	<% }); %>
+	</select>
+<% } else { %>
+	<input
+		type="text"
+		class="constraint-value"
+		data-id="<%- constraint.id %>"
+		id="constraint-value-input-<%- constraint.id %>"
+		value="<%- constraint.value %>" />
+<% } %>
+
