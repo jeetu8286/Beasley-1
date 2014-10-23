@@ -46,7 +46,7 @@
 		<body <?php body_class(); ?>>
 			<?php
 
-				$defaults = array(
+				$mobile_nav = array(
 					'theme_location'  => 'main-nav',
 					'menu'            => '',
 					'container'       => 'nav',
@@ -65,7 +65,7 @@
 					'walker'          => ''
 				);
 
-				wp_nav_menu( $defaults );
+				wp_nav_menu( $mobile_nav );
 
 			?>
 			<div class="site-wrap">
@@ -80,7 +80,7 @@
 						</div>
 						<?php
 
-							$defaults = array(
+							$main_nav = array(
 								'theme_location'  => 'main-nav',
 								'menu'            => '',
 								'container'       => 'nav',
@@ -99,14 +99,14 @@
 								'walker'          => ''
 							);
 
-							wp_nav_menu( $defaults );
+							wp_nav_menu( $main_nav );
 
 						?>
 						<div class="header-secondary">
 
 							<nav class="header-secondary--nav">
 
-								<ul class="header-nav--list">
+								<ul class="header-nav--list account">
 									<li><a id="register-button" href="" class="register pjaxer" style="visibility:hidden">register</a></li>
 									<li><a id="login-button" href="" class="login pjaxer" style="visibility:hidden">Login</a></li>
 								</ul>
