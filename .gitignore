@@ -1,6 +1,8 @@
 uploads/
 plugins/wp-multi-network/
 plugins/wordpress-importer/
+plugins/debug-bar/
+plugins/theme-check/
 plugins/index.php
 themes/index.php
 upgrade/

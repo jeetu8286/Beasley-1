@@ -22,11 +22,11 @@ module.exports = function( grunt ) {
 				],
 				dest: 'assets/js/greater_media.js'
 			},
-			greater_media_login: {
+			gigya_login: {
 				src: [
-					'assets/js/src/greater_media_login.js'
+					'assets/js/src/gigya_login.js'
 				],
-				dest: 'assets/js/greater_media_login.js'
+				dest: 'assets/js/gigya_login.js'
 			},
 			greater_media_styleguide: {
 				src: [
@@ -59,7 +59,7 @@ module.exports = function( grunt ) {
 			all: {
 				files: {
 					'assets/js/greater_media.min.js': ['assets/js/greater_media.js'],
-					'assets/js/greater_media_login.min.js': ['assets/js/greater_media_login.js'],
+					'assets/js/gigya_login.min.js': ['assets/js/gigya_login.js'],
 					'assets/js/gm_styleguide.min.js': ['assets/js/gm_styleguide.js']
 				},
 				options: {
