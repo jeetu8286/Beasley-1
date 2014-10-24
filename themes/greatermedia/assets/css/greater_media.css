@@ -551,9 +551,13 @@ body {
 
 h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
   line-height: 1.5;
-  font-family: "Open Sans", sans-serif;
+  font-family: "Droid Sans", sans-serif;
   text-rendering: optimizelegibility;
-  font-weight: lighter; }
+  font-weight: bold; }
+  h1 a:link, h1 a:visited, .h1 a:link, .h1 a:visited, h2 a:link, h2 a:visited, .h2 a:link, .h2 a:visited, h3 a:link, h3 a:visited, .h3 a:link, .h3 a:visited, h4 a:link, h4 a:visited, .h4 a:link, .h4 a:visited, h5 a:link, h5 a:visited, .h5 a:link, .h5 a:visited, h6 a:link, h6 a:visited, .h6 a:link, .h6 a:visited {
+    color: #000000; }
+  h1 a:hover, h1 a:focus, h1 a:active, .h1 a:hover, .h1 a:focus, .h1 a:active, h2 a:hover, h2 a:focus, h2 a:active, .h2 a:hover, .h2 a:focus, .h2 a:active, h3 a:hover, h3 a:focus, h3 a:active, .h3 a:hover, .h3 a:focus, .h3 a:active, h4 a:hover, h4 a:focus, h4 a:active, .h4 a:hover, .h4 a:focus, .h4 a:active, h5 a:hover, h5 a:focus, h5 a:active, .h5 a:hover, .h5 a:focus, .h5 a:active, h6 a:hover, h6 a:focus, h6 a:active, .h6 a:hover, .h6 a:focus, .h6 a:active {
+    color: #d32329; }
 
 h1, .h1 {
   font-size: 2.2807em; }
@@ -855,7 +859,7 @@ p {
 
 .entry-content {
   padding: 1.5em 0;
-  font-family: "Playfair Display", serif; }
+  font-family: "Open Sans", sans-serif; }
 
 .entry-show {
   position: relative;
@@ -891,7 +895,7 @@ p {
   margin-right: 7.42297%;
   width: 100%;
   padding: 0.3125em 0;
-  margin-top: 1em;
+  margin-top: 2em;
   margin-bottom: 3em;
   border-top-color: #c1c3c4;
   border-bottom-color: #c1c3c4;
@@ -926,38 +930,38 @@ p {
       .entry-footer:last-child {
         margin-right: 0; } }
 
-.entry-byline {
+.entry-author {
   float: left;
   display: block;
   margin-right: 7.42297%;
   width: 19.43277%;
   font-size: 0.70233em;
   color: #a7a9ab; }
-  .entry-byline:last-child {
+  .entry-author:last-child {
     margin-right: 0; }
   @media screen and (min-width: 480px) {
-    .entry-byline {
+    .entry-author {
       float: left;
       display: block;
       margin-right: 4.82916%;
       width: 12.64237%; }
-      .entry-byline:last-child {
+      .entry-author:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 768px) {
-    .entry-byline {
+    .entry-author {
       float: left;
       display: block;
       margin-right: 3.57866%;
       width: 9.36867%; }
-      .entry-byline:last-child {
+      .entry-author:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 1024px) {
-    .entry-byline {
+    .entry-author {
       float: left;
       display: block;
       margin-right: 2.35765%;
       width: 14.70196%; }
-      .entry-byline:last-child {
+      .entry-author:last-child {
         margin-right: 0; } }
 
 .entry-author--img {
@@ -975,11 +979,28 @@ p {
   border-bottom-left-radius: 50%;
   background-color: #c1c3c4; }
 
-.entry-author--name {
+.entry-author--img img {
+  height: 40px;
+  width: 40px;
+  border-top-left-radius: 50%;
+  border-top-right-radius: 50%;
+  border-top-right-radius: 50%;
+  border-bottom-right-radius: 50%;
+  border-bottom-left-radius: 50%;
+  border-bottom-right-radius: 50%;
+  border-top-left-radius: 50%;
+  border-bottom-left-radius: 50%; }
+
+.entry-author--meta {
   float: left; }
 
+.entry-author--name {
+  float: left;
+  width: 100%; }
+
 .entry-date {
-  float: left; }
+  float: left;
+  width: 100%; }
 
 .entry-type {
   float: left;
@@ -1113,7 +1134,7 @@ p {
   border-top-left-radius: 3px;
   border-bottom-left-radius: 3px;
   background-color: #c1c3c4;
-  color: #000000; }
+  color: #ffffff; }
 
 .entry-comments--count a:link:after, .entry-comments--count a:visited:after {
   position: absolute;
@@ -1158,71 +1179,324 @@ p {
   border-right: 5px solid transparent;
   content: " "; }
 
-.entry-content--standard {
+.entry-standard--content {
   float: left;
   display: block;
   margin-right: 7.42297%;
   width: 100%; }
-  .entry-content--standard:last-child {
+  .entry-standard--content:last-child {
     margin-right: 0; }
   @media screen and (min-width: 480px) {
-    .entry-content--standard {
+    .entry-standard--content {
       float: left;
       display: block;
       margin-right: 4.82916%;
       width: 100%; }
-      .entry-content--standard:last-child {
+      .entry-standard--content:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 768px) {
-    .entry-content--standard {
+    .entry-standard--content {
       float: left;
       display: block;
       margin-right: 3.57866%;
       width: 74.10533%; }
-      .entry-content--standard:last-child {
+      .entry-standard--content:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 1024px) {
-    .entry-content--standard {
+    .entry-standard--content {
       float: left;
       display: block;
       margin-right: 2.35765%;
       width: 57.35098%; }
-      .entry-content--standard:last-child {
+      .entry-standard--content:last-child {
         margin-right: 0; } }
 
-.entry-thumbnail--standard {
+.entry-standard--thumbnail {
   float: left;
   display: block;
   margin-right: 7.42297%;
   width: 100%; }
-  .entry-thumbnail--standard:last-child {
+  .entry-standard--thumbnail:last-child {
     margin-right: 0; }
   @media screen and (min-width: 480px) {
-    .entry-thumbnail--standard {
+    .entry-standard--thumbnail {
       float: left;
       display: block;
       margin-right: 4.82916%;
       width: 100%; }
-      .entry-thumbnail--standard:last-child {
+      .entry-standard--thumbnail:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 768px) {
-    .entry-thumbnail--standard {
+    .entry-standard--thumbnail {
       float: left;
       display: block;
       margin-right: 3.57866%;
       width: 22.316%;
       margin-right: 0; }
-      .entry-thumbnail--standard:last-child {
+      .entry-standard--thumbnail:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 1024px) {
-    .entry-thumbnail--standard {
+    .entry-standard--thumbnail {
       float: left;
       display: block;
       margin-right: 2.35765%;
       width: 40.29137%;
       margin-right: 0; }
-      .entry-thumbnail--standard:last-child {
+      .entry-standard--thumbnail:last-child {
         margin-right: 0; } }
+
+.entry-video--content {
+  float: left;
+  display: block;
+  margin-right: 7.42297%;
+  width: 100%; }
+  .entry-video--content:last-child {
+    margin-right: 0; }
+  @media screen and (min-width: 480px) {
+    .entry-video--content {
+      float: left;
+      display: block;
+      margin-right: 4.82916%;
+      width: 100%; }
+      .entry-video--content:last-child {
+        margin-right: 0; } }
+  @media screen and (min-width: 768px) {
+    .entry-video--content {
+      float: left;
+      display: block;
+      margin-right: 3.57866%;
+      width: 74.10533%;
+      margin-right: 0; }
+      .entry-video--content:last-child {
+        margin-right: 0; } }
+  @media screen and (min-width: 1024px) {
+    .entry-video--content {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 57.35098%;
+      margin-right: 0; }
+      .entry-video--content:last-child {
+        margin-right: 0; } }
+
+.entry--full_width {
+  float: left;
+  display: block;
+  margin-right: 7.42297%;
+  width: 100%; }
+  .entry--full_width:last-child {
+    margin-right: 0; }
+  @media screen and (min-width: 480px) {
+    .entry--full_width {
+      float: left;
+      display: block;
+      margin-right: 4.82916%;
+      width: 100%; }
+      .entry--full_width:last-child {
+        margin-right: 0; } }
+  @media screen and (min-width: 768px) {
+    .entry--full_width {
+      float: left;
+      display: block;
+      margin-right: 3.57866%;
+      width: 100%; }
+      .entry--full_width:last-child {
+        margin-right: 0; } }
+  @media screen and (min-width: 1024px) {
+    .entry--full_width {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 100%; }
+      .entry--full_width:last-child {
+        margin-right: 0; } }
+
+@media screen and (min-width: 768px) {
+  .entry-video--content .entry-header {
+    padding-top: 3em; } }
+
+.entry-video--thumbnail {
+  float: left;
+  display: block;
+  margin-right: 7.42297%;
+  width: 100%; }
+  .entry-video--thumbnail:last-child {
+    margin-right: 0; }
+  @media screen and (min-width: 480px) {
+    .entry-video--thumbnail {
+      float: left;
+      display: block;
+      margin-right: 4.82916%;
+      width: 100%; }
+      .entry-video--thumbnail:last-child {
+        margin-right: 0; } }
+  @media screen and (min-width: 768px) {
+    .entry-video--thumbnail {
+      float: left;
+      display: block;
+      margin-right: 3.57866%;
+      width: 22.316%; }
+      .entry-video--thumbnail:last-child {
+        margin-right: 0; } }
+  @media screen and (min-width: 1024px) {
+    .entry-video--thumbnail {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 40.29137%; }
+      .entry-video--thumbnail:last-child {
+        margin-right: 0; } }
+
+.entry-concert--thumbnail {
+  float: left;
+  display: block;
+  margin-right: 7.42297%;
+  width: 100%; }
+  .entry-concert--thumbnail:last-child {
+    margin-right: 0; }
+  @media screen and (min-width: 480px) {
+    .entry-concert--thumbnail {
+      float: left;
+      display: block;
+      margin-right: 4.82916%;
+      width: 100%; }
+      .entry-concert--thumbnail:last-child {
+        margin-right: 0; } }
+  @media screen and (min-width: 768px) {
+    .entry-concert--thumbnail {
+      float: left;
+      display: block;
+      margin-right: 3.57866%;
+      width: 22.316%; }
+      .entry-concert--thumbnail:last-child {
+        margin-right: 0; } }
+  @media screen and (min-width: 1024px) {
+    .entry-concert--thumbnail {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 40.29137%; }
+      .entry-concert--thumbnail:last-child {
+        margin-right: 0; } }
+
+.entry-concert--content {
+  float: left;
+  display: block;
+  margin-right: 7.42297%;
+  width: 100%; }
+  .entry-concert--content:last-child {
+    margin-right: 0; }
+  @media screen and (min-width: 480px) {
+    .entry-concert--content {
+      float: left;
+      display: block;
+      margin-right: 4.82916%;
+      width: 100%; }
+      .entry-concert--content:last-child {
+        margin-right: 0; } }
+  @media screen and (min-width: 768px) {
+    .entry-concert--content {
+      float: left;
+      display: block;
+      margin-right: 3.57866%;
+      width: 74.10533%;
+      margin-right: 0; }
+      .entry-concert--content:last-child {
+        margin-right: 0; } }
+  @media screen and (min-width: 1024px) {
+    .entry-concert--content {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 57.35098%;
+      margin-right: 0; }
+      .entry-concert--content:last-child {
+        margin-right: 0; } }
+
+.entry-concert--content .entry-title {
+  margin-top: 0;
+  line-height: 1; }
+
+.entry-concert--meta_list {
+  padding: 0;
+  margin: 0; }
+
+.entry-concert--meta_item {
+  list-style: none;
+  display: inline-block;
+  padding: 0 0 0 1em;
+  margin: 0;
+  font-weight: bold; }
+
+.entry-cdrelease--thumbnail {
+  float: left;
+  display: block;
+  margin-right: 7.42297%;
+  width: 100%; }
+  .entry-cdrelease--thumbnail:last-child {
+    margin-right: 0; }
+  @media screen and (min-width: 480px) {
+    .entry-cdrelease--thumbnail {
+      float: left;
+      display: block;
+      margin-right: 4.82916%;
+      width: 100%; }
+      .entry-cdrelease--thumbnail:last-child {
+        margin-right: 0; } }
+  @media screen and (min-width: 768px) {
+    .entry-cdrelease--thumbnail {
+      float: left;
+      display: block;
+      margin-right: 3.57866%;
+      width: 22.316%; }
+      .entry-cdrelease--thumbnail:last-child {
+        margin-right: 0; } }
+  @media screen and (min-width: 1024px) {
+    .entry-cdrelease--thumbnail {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 23.23176%; }
+      .entry-cdrelease--thumbnail:last-child {
+        margin-right: 0; } }
+
+.entry-cdrelease--content {
+  float: left;
+  display: block;
+  margin-right: 7.42297%;
+  width: 100%; }
+  .entry-cdrelease--content:last-child {
+    margin-right: 0; }
+  @media screen and (min-width: 480px) {
+    .entry-cdrelease--content {
+      float: left;
+      display: block;
+      margin-right: 4.82916%;
+      width: 100%; }
+      .entry-cdrelease--content:last-child {
+        margin-right: 0; } }
+  @media screen and (min-width: 768px) {
+    .entry-cdrelease--content {
+      float: left;
+      display: block;
+      margin-right: 3.57866%;
+      width: 74.10533%;
+      margin-right: 0; }
+      .entry-cdrelease--content:last-child {
+        margin-right: 0; } }
+  @media screen and (min-width: 1024px) {
+    .entry-cdrelease--content {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 74.41059%;
+      margin-right: 0; }
+      .entry-cdrelease--content:last-child {
+        margin-right: 0; } }
+
+.entry-cdrelease--content .entry-title {
+  margin-top: 0;
+  line-height: 1; }
 
 blockquote {
   padding: 0.5em 0.625em;
@@ -1340,14 +1614,35 @@ pre {
  *
  * Admins can choose the location of the player. A class is added to the body that will match the locations below.
  */
+.live-player--container {
+  min-height: 70px;
+  padding: 1em 0;
+  text-align: center; }
+
+.live-player--listen_btn {
+  padding: 1em 3.5em;
+  margin-right: 0.5em;
+  border-width: 0;
+  outline: none;
+  background-color: #d32329;
+  font-family: "Open Sans", sans-serif;
+  font-size: 1.125em;
+  color: #ffffff !important;
+  text-transform: uppercase;
+  cursor: pointer; }
+  .live-player--listen_btn:hover, .live-player--listen_btn:focus {
+    background-color: #ac1c21;
+    color: #ffffff; }
+  .live-player--listen_btn:last-of-type {
+    margin-right: 0; }
+
 /**
  * General Styles
  */
 .gmlp-nav {
   display: none; }
-  @media screen and (min-width: 1024px) {
-    .gmlp-nav {
-      display: block; } }
+  .gmlp-nav.open {
+    display: block; }
 
 .gmlp-nav-toggle {
   position: fixed;

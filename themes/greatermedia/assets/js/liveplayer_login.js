@@ -187,7 +187,7 @@
 		this.session = session;
 		this.session.on('change', $.proxy(this.didSessionChange, this));
 
-		this.container = $('.account');
+		this.container = $('#live-player');
 		this.container.on('click', $.proxy(this.didContainerClick, this));
 	};
 
@@ -196,23 +196,23 @@
 		render: function() {
 			var authorized = this.session.isAuthorized();
 
-			$('.login').css('visibility', 'visible');
-			$('.register').css('visibility', authorized ? 'hidden' : 'visible');
+			$('#live-player--listen_now').css('visibility', 'visible');
 
 			if (authorized) {
-				$('.login').text('Logout');
+				$('.live-player--listen_btn').css('visibility', 'hidden');
+				$('.gmlp-nav').css('visibility', 'visible');
+				$('.gmlp-nav').addClass('open');
 			} else {
-				$('.login').text('Login');
+				$('.live-player--listen_btn').css('visibility', 'visible');
+				$('.gmlp-nav').css('visibility', 'hidden');
+				$('.gmlp-nav').removeClass('open');
 			}
 		},
 
 		didContainerClick: function(event) {
 			var target = $(event.target);
 
-			if (target.attr('id') === 'register-button') {
-				this.showRegisterScreen();
-				return false;
-			} else if (target.attr('id') === 'login-button') {
+			if (target.attr('id') === 'live-player--listen_now') {
 				if (!this.session.isAuthorized()) {
 					this.showLoginScreen();
 				} else {

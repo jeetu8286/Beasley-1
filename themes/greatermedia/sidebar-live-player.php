@@ -12,7 +12,11 @@
 
 	</div>
 
-	<?php do_action( 'gm_live_player' ); ?>
+	<div id="live-player" class="live-player--container">
+		<a id="live-player--listen_now" href="" class="live-player--listen_btn" style="visibility:hidden">Listen Now</a>
+
+		<?php do_action( 'gm_live_player' ); ?>
+	</div>
 
 	<div class="now-playing--title">
 

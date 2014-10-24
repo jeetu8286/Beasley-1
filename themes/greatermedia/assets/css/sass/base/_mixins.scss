@@ -20,7 +20,7 @@
 	@include border-width(0);
 	outline: none;
 	background-color: palette($palette, $bgcolor);
-	font-family: $sans-serif;
+	font-family: $open-sans;
 	font-size: $font-size;
 	color: palette($palette, $textcolor) !important;
 	text-transform: uppercase;

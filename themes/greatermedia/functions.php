@@ -70,7 +70,7 @@ function greatermedia_scripts_styles() {
 	);
 
 	wp_register_style( 'open-sans', 'http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,700', array(), GREATERMEDIA_VERSION );
-	wp_register_style( 'playfair-display', 'http://fonts.googleapis.com/css?family=Playfair+Display:400,700,400italic,700italic', array(), GREATERMEDIA_VERSION );
+	wp_register_style( 'droid-sans', 'http://fonts.googleapis.com/css?family=Droid+Sans:400,700', array(), GREATERMEDIA_VERSION );
 	wp_register_style( 'font-awesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css', array(), '4.2' );
 
 	if ( is_page( 'style-guide' ) ) {
@@ -79,10 +79,11 @@ function greatermedia_scripts_styles() {
 		wp_enqueue_style( 'gm-styleguide', get_template_directory_uri() . "/assets/css/gm_styleguide{$postfix}.css", array( 'open-sans', 'playfair-display', 'font-awesome' ), GREATERMEDIA_VERSION );
 	} else {
 		wp_enqueue_script( 'gigya-login', get_template_directory_uri() . "/assets/js/gigya_login{$postfix}.js", array(), GREATERMEDIA_VERSION, true );
+		wp_enqueue_script( 'liveplayer-login', get_template_directory_uri() . "/assets/js/liveplayer_login{$postfix}.js", array(), GREATERMEDIA_VERSION, true );
 		wp_enqueue_script( 'greatermedia', get_template_directory_uri() . "/assets/js/greater_media{$postfix}.js", array(), GREATERMEDIA_VERSION, true );
 		wp_enqueue_script( 'respond.js', get_template_directory_uri() . '/assets/js/vendor/respond.min.js', array(), '1.4.2', false );
 		wp_enqueue_script( 'html5shiv', get_template_directory_uri() . '/assets/js/vendor/html5shiv-printshiv.js', array(), '3.7.2', false );
-		wp_enqueue_style( 'greatermedia', get_template_directory_uri() . "/assets/css/greater_media{$postfix}.css", array( 'dashicons', 'open-sans', 'playfair-display', 'font-awesome'  ), GREATERMEDIA_VERSION );
+		wp_enqueue_style( 'greatermedia', get_template_directory_uri() . "/assets/css/greater_media{$postfix}.css", array( 'dashicons', 'open-sans', 'droid-sans', 'font-awesome'  ), GREATERMEDIA_VERSION );
 	};
 
 }
