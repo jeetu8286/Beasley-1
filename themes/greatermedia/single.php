@@ -119,11 +119,11 @@ get_header(); ?>
 
 			</section>
 
-			<aside class="sidebar" role="complementary">
+			<?php
 
-				Sidebar area
+			get_sidebar( 'live-player');
 
-			</aside>
+			?>
 
 		</div>
 

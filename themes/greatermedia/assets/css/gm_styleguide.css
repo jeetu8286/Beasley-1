@@ -431,7 +431,7 @@ img {
       float: left;
       display: block;
       margin-right: 3.57866%;
-      width: 74.10533%; }
+      width: 100%; }
       .content:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 1024px) {
@@ -439,7 +439,7 @@ img {
       float: left;
       display: block;
       margin-right: 2.35765%;
-      width: 57.35098%; }
+      width: 82.94039%; }
       .content:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 1200px) {
@@ -447,7 +447,7 @@ img {
       float: left;
       display: block;
       margin-right: 2.35765%;
-      width: 57.35098%;
+      width: 82.94039%;
       padding-right: 0;
       padding-left: 0; }
       .content:last-child {
