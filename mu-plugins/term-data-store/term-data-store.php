@@ -68,6 +68,8 @@ function add_relationship( $post_type, $taxonomy ) {
 
 	add_action( 'save_post', get_save_post_hook( $post_type, $taxonomy ), 10, 2 );
 	add_action( 'create_' . $taxonomy, get_create_term_hook( $post_type, $taxonomy ) );
+	add_action( 'before_delete_post', get_delete_post_hook( $post_type, $taxonomy ) );
+	add_action( 'delete_term', get_delete_term_hook( $post_type, $taxonomy ), 10, 4 );
 	get_relationship( $post_type, $taxonomy );
 
 }
@@ -281,6 +283,89 @@ function get_create_term_hook( $post_type, $taxonomy ) {
 	$existing_closures[$md5] = $closure;
 	return $closure;
 
+}
+
+// todo docs!
+function get_delete_post_hook( $post_type, $taxonomy ) {
+
+	static $existing_closures;
+	if ( ! isset( $existing_closures ) ) {
+		$existing_closures = array();
+	}
+
+	$md5 = md5( $post_type . '|' . $taxonomy );
+	if ( isset( $existing_closures[ $md5 ] ) ) {
+		return $existing_closures[ $md5 ];
+	}
+
+	$closure = function( $post_id ) use ( $post_type, $taxonomy ) {
+		if ( apply_filters( 'tds_balancing_from_delete_post', balancing_relationship(), $post_type, $taxonomy, $post_id ) ) {
+			return;
+		}
+
+		$post = get_post( $post_id );
+
+		if ( empty( $post ) || $post_type !== $post->post_type || ! get_the_terms( $post_id, $taxonomy ) ) {
+			return;
+		}
+
+		balancing_relationship( true );
+
+		$term = get_term_by( 'slug', $post->post_name, $taxonomy, ARRAY_A );
+
+		if ( $term ) {
+			wp_delete_term( $term['term_id'], $taxonomy );
+		}
+
+		wp_set_object_terms( $post->ID, (int) $term['term_id'], $taxonomy );
+
+		balancing_relationship( false );
+	};
+
+	$existing_closures[ $md5 ] = $closure;
+
+	return $closure;
+}
+
+// todo docs!
+function get_delete_term_hook( $post_type, $taxonomy ) {
+
+	static $existing_closures;
+	if ( ! isset( $existing_closures ) ) {
+		$existing_closures = array();
+	}
+
+	$md5 = md5( $post_type . '|' . $taxonomy );
+	if ( isset( $existing_closures[ $md5 ] ) ) {
+		return $existing_closures[ $md5 ];
+	}
+
+	$closure = function( $term_id, $tt_id, $deleted_term_taxonomy, $deleted_term ) use ( $post_type, $taxonomy ) {
+		global $wpdb;
+
+		if ( apply_filters( 'tds_balancing_from_delete_term', balancing_relationship(), $post_type, $taxonomy, $term_id ) ) {
+			return;
+		}
+
+		if ( empty( $term_id ) || $deleted_term_taxonomy !== $taxonomy ) {
+			return;
+		}
+
+		balancing_relationship( true );
+
+		// Since the term is already deleted by this point (there is no such action as before_delete_term) - we are relying on the term slug to match the post slug
+		$post_id = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_name = %s AND post_type = %s", $deleted_term->slug, $post_type ) );
+
+		if ( $post_id ) {
+			wp_delete_post( $post_id, true );
+		}
+
+		balancing_relationship( false );
+	};
+
+	$existing_closures[ $md5 ] = $closure;
+
+	return $closure;
 }
 
 /**
