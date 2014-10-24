@@ -305,7 +305,7 @@ function get_delete_post_hook( $post_type, $taxonomy ) {
 
 		$post = get_post( $post_id );
 
-		if ( empty( $post ) || $post_type !== $post->post_type || ! get_the_terms( $post_id, $taxonomy ) ) {
+		if ( empty( $post ) || $post_type !== $post->post_type ) {
 			return;
 		}
 
