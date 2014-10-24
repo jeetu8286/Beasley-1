@@ -14,6 +14,127 @@ get_header(); ?>
 
 			<section class="content">
 
+				<h2>Latest from WMMR</h2>
+
+				<!-- Video Post -->
+				<article id="post-id" class="post type-post status-publish hentrycf" role="article" itemscope="" itemtype="http://schema.org/BlogPosting">
+
+					<section class="entry-video--thumbnail">
+
+						<img src="http://placehold.it/600x350&text=video">
+
+					</section>
+
+					<section class="entry-video--content">
+
+						<header class="entry-header">
+
+							<h2 class="entry-title" itemprop="headline"><a href="#">Royal Blood News Round-Up: ‘Late Night’ Performance, MTV EMAs and More!</a></h2>
+
+						</header>
+
+					</section>
+
+					<footer class="entry-footer">
+
+						<div class="entry-author">
+							<div class="entry-author--img">
+
+							</div>
+							<div class="entry-author--meta">
+								<div class="entry-author--name">Pierre Robert</div>
+								<time datetime="2014" class="entry-date">12 September</time>
+							</div>
+						</div>
+
+						<div class="entry-type">
+
+							<div class="entry-type--standard">Rock News</div>
+
+						</div>
+
+						<div class="entry-comments">
+
+							<div class="entry-comments--count">
+
+								<a href="#comments">8</a>
+
+							</div>
+
+						</div>
+
+					</footer>
+
+				</article>
+
+				<!-- Concert Post -->
+				<article id="post-id" class="post type-post status-publish hentrycf" role="article" itemscope="" itemtype="http://schema.org/BlogPosting">
+
+					<section class="entry-concert--thumbnail">
+
+						<img src="http://placehold.it/600x400&text=concert">
+
+					</section>
+
+					<section class="entry-concert--content">
+
+						<header class="entry-header">
+
+							<h2 class="entry-title" itemprop="headline"><a href="#">Weezer</a></h2>
+
+						</header>
+
+						<section class="entry-content" itemprop="articleBody">
+
+							Performing their newest album in it's entirety! Tickets on sale Saturday, 9/27 at 1pm
+
+						</section>
+
+						<section class="entry-concert--meta">
+
+							<ul class="entry-concert--meta_list">
+								<li class="entry-concert--meta_item">8pm</li>
+								<li class="entry-concert--meta_item">The Trocadero Theatre</li>
+								<li class="entry-concert--meta_item">$65 (+Fees)</li>
+								<li class="entry-concert--meta_item">All Ages</li>
+							</ul>
+
+						</section>
+
+					</section>
+
+					<footer class="entry-footer">
+
+						<div class="entry-author">
+							<div class="entry-author--img">
+
+							</div>
+							<div class="entry-author--meta">
+								<div class="entry-author--name">Pierre Robert</div>
+								<time datetime="2014" class="entry-date">12 September</time>
+							</div>
+						</div>
+
+						<div class="entry-type">
+
+							<div class="entry-type--standard">Rock News</div>
+
+						</div>
+
+						<div class="entry-comments">
+
+							<div class="entry-comments--count">
+
+								<a href="#comments">8</a>
+
+							</div>
+
+						</div>
+
+					</footer>
+
+				</article>
+
 				<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
 
 					<article id="post-<?php the_ID(); ?>" <?php post_class( 'cf' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
@@ -26,7 +147,7 @@ get_header(); ?>
 
 							</div>
 
-							<div class="entry-byline">
+							<div class="entry-author">
 								by
 								<span class="vcard entry-author"><span class="fn url"><?php the_author_posts_link(); ?></span></span>
 								<time datetime="<?php the_time( 'c' ); ?>" class="entry-date"> on <?php the_time( 'l, F jS' ); ?></time>
@@ -75,12 +196,14 @@ get_header(); ?>
 
 						<footer class="entry-footer">
 
-							<div class="entry-byline">
+							<div class="entry-author">
 								<div class="entry-author--img">
 
 								</div>
-								<div class="entry-author--name"><?php the_author_posts_link(); ?></div>
-								<time datetime="<?php the_time( 'c' ); ?>" class="entry-date"><?php the_time( 'M. j, Y' ); ?></time>
+								<div class="entry-author--meta">
+									<div class="entry-author--name"><?php the_author_posts_link(); ?></div>
+									<time datetime="<?php the_time( 'c' ); ?>" class="entry-date"><?php the_time( 'M. j, Y' ); ?></time>
+								</div>
 							</div>
 
 							<div class="entry-type">

@@ -53,7 +53,7 @@
 .entry-footer {
 	@include span-columns(4);
 	@include padding(em(5px) 0);
-	@include margin(1em null 3em);
+	@include margin(2em null 3em);
 	@include border-color(palette(gray, light) null palette(gray, light) null);
 	@include border-style(solid null solid null);
 	@include border-width(1px null 1px null);
@@ -69,7 +69,7 @@
 }
 
 // Byline
-.entry-byline {
+.entry-author {
 	@include span-columns(1);
 	font-size: ms(-3);
 	color: palette(gray);
@@ -95,12 +95,18 @@
 	background-color: palette(gray, light);
 }
 
+.entry-author--meta{
+	float: left;
+}
+
 .entry-author--name {
 	float: left;
+	@include size(100% null);
 }
 
 .entry-date {
 	float: left;
+	@include size(100% null);
 }
 
 // Post Formats
@@ -278,6 +284,89 @@
 		@include span-columns(5);
 		@include omega;
 	}
+}
+
+// Video Post Format
+.entry-video--content {
+	@include span-columns(4);
+	@include bp(small) {
+		@include span-columns(6);
+	}
+	@include bp(medium) {
+		@include span-columns(6);
+		@include omega;
+	}
+	@include bp(large) {
+		@include span-columns(7);
+		@include omega;
+	}
+}
+
+.entry-video--content  .entry-header {
+	@include bp(medium) {
+		@include padding(3em null null);
+	}
+}
+
+.entry-video--thumbnail {
+	@include span-columns(4);
+	@include bp(small) {
+		@include span-columns(6);
+	}
+	@include bp(medium) {
+		@include span-columns(2);
+	}
+	@include bp(large) {
+		@include span-columns(5);
+	}
+}
+
+// Concert Content Type
+.entry-concert--thumbnail {
+	@include span-columns(4);
+	@include bp(small) {
+		@include span-columns(6);
+	}
+	@include bp(medium) {
+		@include span-columns(2);
+	}
+	@include bp(large) {
+		@include span-columns(5);
+	}
+}
+
+.entry-concert--content {
+	@include span-columns(4);
+	@include bp(small) {
+		@include span-columns(6);
+	}
+	@include bp(medium) {
+		@include span-columns(6);
+		@include omega;
+	}
+	@include bp(large) {
+		@include span-columns(7);
+		@include omega;
+	}
+}
+
+.entry-concert--content .entry-title {
+	@include margin(0 null null null);
+	line-height: 1;
+}
+
+
+.entry-concert--meta_list {
+	@include padding(0);
+	@include margin(0);
+}
+
+.entry-concert--meta_item {
+	list-style: none;
+	display: inline-block;
+	@include padding(0 0 0 1em);
+	@include margin(0);
+	font-weight: bold;
 }
 
 // Blockquote styles

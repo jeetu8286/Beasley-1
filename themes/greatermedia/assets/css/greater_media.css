@@ -891,7 +891,7 @@ p {
   margin-right: 7.42297%;
   width: 100%;
   padding: 0.3125em 0;
-  margin-top: 1em;
+  margin-top: 2em;
   margin-bottom: 3em;
   border-top-color: #c1c3c4;
   border-bottom-color: #c1c3c4;
@@ -926,38 +926,38 @@ p {
       .entry-footer:last-child {
         margin-right: 0; } }
 
-.entry-byline {
+.entry-author {
   float: left;
   display: block;
   margin-right: 7.42297%;
   width: 19.43277%;
   font-size: 0.70233em;
   color: #a7a9ab; }
-  .entry-byline:last-child {
+  .entry-author:last-child {
     margin-right: 0; }
   @media screen and (min-width: 480px) {
-    .entry-byline {
+    .entry-author {
       float: left;
       display: block;
       margin-right: 4.82916%;
       width: 12.64237%; }
-      .entry-byline:last-child {
+      .entry-author:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 768px) {
-    .entry-byline {
+    .entry-author {
       float: left;
       display: block;
       margin-right: 3.57866%;
       width: 9.36867%; }
-      .entry-byline:last-child {
+      .entry-author:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 1024px) {
-    .entry-byline {
+    .entry-author {
       float: left;
       display: block;
       margin-right: 2.35765%;
       width: 14.70196%; }
-      .entry-byline:last-child {
+      .entry-author:last-child {
         margin-right: 0; } }
 
 .entry-author--img {
@@ -975,11 +975,16 @@ p {
   border-bottom-left-radius: 50%;
   background-color: #c1c3c4; }
 
-.entry-author--name {
+.entry-author--meta {
   float: left; }
 
+.entry-author--name {
+  float: left;
+  width: 100%; }
+
 .entry-date {
-  float: left; }
+  float: left;
+  width: 100%; }
 
 .entry-type {
   float: left;
@@ -1223,6 +1228,157 @@ p {
       margin-right: 0; }
       .entry-thumbnail--standard:last-child {
         margin-right: 0; } }
+
+.entry-video--content {
+  float: left;
+  display: block;
+  margin-right: 7.42297%;
+  width: 100%; }
+  .entry-video--content:last-child {
+    margin-right: 0; }
+  @media screen and (min-width: 480px) {
+    .entry-video--content {
+      float: left;
+      display: block;
+      margin-right: 4.82916%;
+      width: 100%; }
+      .entry-video--content:last-child {
+        margin-right: 0; } }
+  @media screen and (min-width: 768px) {
+    .entry-video--content {
+      float: left;
+      display: block;
+      margin-right: 3.57866%;
+      width: 74.10533%;
+      margin-right: 0; }
+      .entry-video--content:last-child {
+        margin-right: 0; } }
+  @media screen and (min-width: 1024px) {
+    .entry-video--content {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 57.35098%;
+      margin-right: 0; }
+      .entry-video--content:last-child {
+        margin-right: 0; } }
+
+@media screen and (min-width: 768px) {
+  .entry-video--content .entry-header {
+    padding-top: 3em; } }
+
+.entry-video--thumbnail {
+  float: left;
+  display: block;
+  margin-right: 7.42297%;
+  width: 100%; }
+  .entry-video--thumbnail:last-child {
+    margin-right: 0; }
+  @media screen and (min-width: 480px) {
+    .entry-video--thumbnail {
+      float: left;
+      display: block;
+      margin-right: 4.82916%;
+      width: 100%; }
+      .entry-video--thumbnail:last-child {
+        margin-right: 0; } }
+  @media screen and (min-width: 768px) {
+    .entry-video--thumbnail {
+      float: left;
+      display: block;
+      margin-right: 3.57866%;
+      width: 22.316%; }
+      .entry-video--thumbnail:last-child {
+        margin-right: 0; } }
+  @media screen and (min-width: 1024px) {
+    .entry-video--thumbnail {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 40.29137%; }
+      .entry-video--thumbnail:last-child {
+        margin-right: 0; } }
+
+.entry-concert--thumbnail {
+  float: left;
+  display: block;
+  margin-right: 7.42297%;
+  width: 100%; }
+  .entry-concert--thumbnail:last-child {
+    margin-right: 0; }
+  @media screen and (min-width: 480px) {
+    .entry-concert--thumbnail {
+      float: left;
+      display: block;
+      margin-right: 4.82916%;
+      width: 100%; }
+      .entry-concert--thumbnail:last-child {
+        margin-right: 0; } }
+  @media screen and (min-width: 768px) {
+    .entry-concert--thumbnail {
+      float: left;
+      display: block;
+      margin-right: 3.57866%;
+      width: 22.316%; }
+      .entry-concert--thumbnail:last-child {
+        margin-right: 0; } }
+  @media screen and (min-width: 1024px) {
+    .entry-concert--thumbnail {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 40.29137%; }
+      .entry-concert--thumbnail:last-child {
+        margin-right: 0; } }
+
+.entry-concert--content {
+  float: left;
+  display: block;
+  margin-right: 7.42297%;
+  width: 100%; }
+  .entry-concert--content:last-child {
+    margin-right: 0; }
+  @media screen and (min-width: 480px) {
+    .entry-concert--content {
+      float: left;
+      display: block;
+      margin-right: 4.82916%;
+      width: 100%; }
+      .entry-concert--content:last-child {
+        margin-right: 0; } }
+  @media screen and (min-width: 768px) {
+    .entry-concert--content {
+      float: left;
+      display: block;
+      margin-right: 3.57866%;
+      width: 74.10533%;
+      margin-right: 0; }
+      .entry-concert--content:last-child {
+        margin-right: 0; } }
+  @media screen and (min-width: 1024px) {
+    .entry-concert--content {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 57.35098%;
+      margin-right: 0; }
+      .entry-concert--content:last-child {
+        margin-right: 0; } }
+
+.entry-concert--content .entry-title {
+  margin-top: 0;
+  line-height: 1; }
+
+.entry-concert--meta_list {
+  padding: 0;
+  margin: 0; }
+
+.entry-concert--meta_item {
+  list-style: none;
+  display: inline-block;
+  padding: 0 0 0 1em;
+  margin: 0;
+  font-weight: bold; }
 
 blockquote {
   padding: 0.5em 0.625em;
