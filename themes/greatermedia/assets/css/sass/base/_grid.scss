@@ -43,13 +43,13 @@ img {
 		@include span-columns(6);
 	}
 	@include bp(medium) {
-		@include span-columns(6);
+		@include span-columns(8);
 	}
 	@include bp(large) {
-		@include span-columns(7);
+		@include span-columns(10);
 	}
 	@include bp(x-large) {
-		@include span-columns(7);
+		@include span-columns(10);
 		@include padding(null 0);
 	}
 }
