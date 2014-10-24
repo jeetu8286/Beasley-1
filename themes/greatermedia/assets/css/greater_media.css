@@ -1614,14 +1614,35 @@ pre {
  *
  * Admins can choose the location of the player. A class is added to the body that will match the locations below.
  */
+.live-player--container {
+  min-height: 70px;
+  padding: 1em 0;
+  text-align: center; }
+
+.live-player--listen_btn {
+  padding: 1em 3.5em;
+  margin-right: 0.5em;
+  border-width: 0;
+  outline: none;
+  background-color: #d32329;
+  font-family: "Open Sans", sans-serif;
+  font-size: 1.125em;
+  color: #ffffff !important;
+  text-transform: uppercase;
+  cursor: pointer; }
+  .live-player--listen_btn:hover, .live-player--listen_btn:focus {
+    background-color: #ac1c21;
+    color: #ffffff; }
+  .live-player--listen_btn:last-of-type {
+    margin-right: 0; }
+
 /**
  * General Styles
  */
 .gmlp-nav {
   display: none; }
-  @media screen and (min-width: 1024px) {
-    .gmlp-nav {
-      display: block; } }
+  .gmlp-nav.open {
+    display: block; }
 
 .gmlp-nav-toggle {
   position: fixed;

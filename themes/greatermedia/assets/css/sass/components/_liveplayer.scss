@@ -4,13 +4,23 @@
  * Admins can choose the location of the player. A class is added to the body that will match the locations below.
  */
 
+.live-player--container {
+	min-height: 70px;
+	@include padding(1em 0);
+	text-align: center;
+}
+
+.live-player--listen_btn {
+	@include btn(default, red, base, 1em, 3.5em, em(18px));
+}
+
 /**
  * General Styles
  */
 .gmlp-nav {
 	display: none;
-	@include bp(large) {
-		@include display(block)
+	&.open {
+		display: block;
 	}
 }
 
