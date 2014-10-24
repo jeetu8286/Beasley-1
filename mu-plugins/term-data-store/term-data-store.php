@@ -327,7 +327,33 @@ function get_delete_post_hook( $post_type, $taxonomy ) {
 	return $closure;
 }
 
-// todo docs!
+/**
+ * Returns a closure to be used as the callback hooked to delete_term
+ *
+ * If balancing_relationship() returns true, this function does nothing.
+ * Otherwise it will set balancing_relationship to true before starting and back
+ * to false at the end of the function.
+ *
+ * The closure will receive the post_type and taxonomy values through its use
+ * statement so that it will be aware of which taxonomy the term was created in
+ * and which post type to create a post for.
+ *
+ * The function stores references to the closures in a static variable using the
+ * md5 hash of "$post_type|$taxonomy" to generate the key. If that value exists,
+ * return it instead of creating a new copy.
+ *
+ * The closure that this function generates receives four arguments ($term_id, $tt_id, $deleted_term_taxonomy, and $deleted_term) and
+ * does the following:
+ *  If we're able to find a post in the $post_type that has the same slug as the term's slug, that post id deleted
+ *
+ * @uses balancing_relationship()
+ * @uses wp_delete_post()
+ *
+ * @param string $post_type
+ * @param string $taxonomy
+ *
+ * @return \Closure The callback
+ */
 function get_delete_term_hook( $post_type, $taxonomy ) {
 
 	static $existing_closures;
