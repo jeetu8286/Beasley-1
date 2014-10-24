@@ -551,9 +551,9 @@ body {
 
 h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
   line-height: 1.5;
-  font-family: "Open Sans", sans-serif;
+  font-family: "Droid Sans", sans-serif;
   text-rendering: optimizelegibility;
-  font-weight: lighter; }
+  font-weight: bold; }
 
 h1, .h1 {
   font-size: 2.2807em; }
@@ -855,7 +855,7 @@ p {
 
 .entry-content {
   padding: 1.5em 0;
-  font-family: "Playfair Display", serif; }
+  font-family: "Open Sans", sans-serif; }
 
 .entry-show {
   position: relative;
