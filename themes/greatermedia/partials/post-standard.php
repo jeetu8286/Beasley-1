@@ -7,7 +7,7 @@
  */
 ?>
 
-<section class="entry-content--standard">
+<section class="entry-standard--content">
 
 	<header class="entry-header">
 
@@ -24,7 +24,7 @@
 </section>
 
 
-<section class="entry-thumbnail--standard">
+<section class="entry-standard--thumbnail">
 
 <?php if ( has_post_thumbnail() ) {
 

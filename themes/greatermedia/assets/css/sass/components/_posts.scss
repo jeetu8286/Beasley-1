@@ -95,6 +95,14 @@
 	background-color: palette(gray, light);
 }
 
+.entry-author--img img {
+	@include size(40px 40px);
+	@include border-top-radius(50%);
+	@include border-right-radius(50%);
+	@include border-bottom-radius(50%);
+	@include border-left-radius(50%);
+}
+
 .entry-author--meta{
 	float: left;
 }
@@ -224,7 +232,7 @@
 	@include border-bottom-radius(3px);
 	@include border-left-radius(3px);
 	background-color: palette(gray, light);
-	color: palette(default, black);
+	color: palette(default);
 }
 
 .entry-comments--count a:link:after, .entry-comments--count a:visited:after {
@@ -258,7 +266,7 @@
 }
 
 // Standard Post Format
-.entry-content--standard {
+.entry-standard--content {
 	@include span-columns(4);
 	@include bp(small) {
 		@include span-columns(6);
@@ -271,7 +279,7 @@
 	}
 }
 
-.entry-thumbnail--standard {
+.entry-standard--thumbnail {
 	@include span-columns(4);
 	@include bp(small) {
 		@include span-columns(6);
@@ -299,6 +307,19 @@
 	@include bp(large) {
 		@include span-columns(7);
 		@include omega;
+	}
+}
+
+.entry--full_width {
+	@include span-columns(4);
+	@include bp(small) {
+		@include span-columns(6);
+	}
+	@include bp(medium) {
+		@include span-columns(8);
+	}
+	@include bp(large) {
+		@include span-columns(12);
 	}
 }
 
@@ -367,6 +388,40 @@
 	@include padding(0 0 0 1em);
 	@include margin(0);
 	font-weight: bold;
+}
+
+// CD Release Content Type
+.entry-cdrelease--thumbnail {
+	@include span-columns(4);
+	@include bp(small) {
+		@include span-columns(6);
+	}
+	@include bp(medium) {
+		@include span-columns(2);
+	}
+	@include bp(large) {
+		@include span-columns(3);
+	}
+}
+
+.entry-cdrelease--content {
+	@include span-columns(4);
+	@include bp(small) {
+		@include span-columns(6);
+	}
+	@include bp(medium) {
+		@include span-columns(6);
+		@include omega;
+	}
+	@include bp(large) {
+		@include span-columns(9);
+		@include omega;
+	}
+}
+
+.entry-cdrelease--content .entry-title {
+	@include margin(0 null null null);
+	line-height: 1;
 }
 
 // Blockquote styles

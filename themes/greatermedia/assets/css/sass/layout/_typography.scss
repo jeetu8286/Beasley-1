@@ -65,6 +65,13 @@ h1, .h1, %h1, h2, .h2, %h2, h3, .h3, %h3, h4, .h4, %h4, h5, .h5, %h5, h6, .h6, %
 	font-family: $droid-sans;
 	text-rendering: optimizelegibility;
 	font-weight: bold;
+	a:link, a:visited {
+		color: palette(default, black);
+	}
+
+	a:hover, a:focus, a:active {
+		color: palette(default, red);
+	}
 }
 
 h1, .h1, %h1 {
