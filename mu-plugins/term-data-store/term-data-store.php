@@ -311,13 +311,11 @@ function get_delete_post_hook( $post_type, $taxonomy ) {
 
 		balancing_relationship( true );
 
-		$term = get_term_by( 'slug', $post->post_name, $taxonomy, ARRAY_A );
+		$term = get_related_term( $post );
 
 		if ( $term ) {
-			wp_delete_term( $term['term_id'], $taxonomy );
+			wp_delete_term( $term->term_id, $taxonomy );
 		}
-
-		wp_set_object_terms( $post->ID, (int) $term['term_id'], $taxonomy );
 
 		balancing_relationship( false );
 	};
