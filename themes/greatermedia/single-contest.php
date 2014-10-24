@@ -27,7 +27,16 @@ get_header(); ?>
 
 							</header>
 
-							<?php GMP_Player::render_podcasts(); ?>
+							<?php
+
+							$post_id         = get_the_ID();
+							$contest_form_id = get_post_meta( $post_id, 'contest_form_id', true );
+
+							if ( $contest_form_id ) {
+								gravity_form( $contest_form_id );
+							}
+
+							?>
 
 						</article>
 
@@ -55,7 +64,7 @@ get_header(); ?>
 				} else {
 
 					echo '<article><h3>Please login</h3></article>';
-
+					
 				} ?>
 
 			</section>
