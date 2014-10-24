@@ -1,1 +1,1 @@
-<span class="timed-content" data-show-time="<?php echo esc_attr($show); ?>" data-hide-time="<?php echo esc_attr( $hide ); ?>"><?php echo $content; ?></span>
+<span class="timed-content" data-show-time="<?php echo esc_attr( $show ); ?>" data-hide-time="<?php echo esc_attr( $hide ); ?>"><?php echo do_shortcode( $content ); ?></span>
