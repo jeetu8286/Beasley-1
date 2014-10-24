@@ -392,10 +392,10 @@ function delete_related_term( $post, $taxonomy ) {
 
 	$term = get_related_term( $post );
 
-	if( !is_null( $term ) ) {
+	if ( ! is_null( $term ) ) {
 		$return = wp_delete_term( $term->term_id, $taxonomy );
 
-		if( is_wp_error( $return ) || !$return ) {
+		if ( is_wp_error( $return ) || ! $return ) {
 			return false;
 		}
 
