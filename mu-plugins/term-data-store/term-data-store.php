@@ -285,7 +285,35 @@ function get_create_term_hook( $post_type, $taxonomy ) {
 
 }
 
-// todo docs!
+/**
+ * Returns a closure to be used as the callback hooked to before_delete_post
+ *
+ * If balancing_relationship() returns true, this function does nothing.
+ * Otherwise it will set balancing_relationship to true before starting and back
+ * to false at the end of the function.
+ *
+ * The closure will receive the post_type and taxonomy values through its use
+ * statement so that it will have the necessary data to filter out posts created
+ * for other post types and will know which taxonomy to check and create terms
+ * for.
+ *
+ * The function stores references to the closures in a static variable using the
+ * md5 hash of "$post_type|$taxonomy" to generate the key. If that value exists,
+ * return it instead of creating a new copy.
+ *
+ * The closure that this function generates receives one argument ($post_id) and does the following:
+ *   If able to find a post for the $post_id, and the $post->post_type is $post_type and get_related_term returns a term
+ *   then delete that term.
+ *
+ * @uses balancing_relationship()
+ * @uses get_related_term()
+ * @uses wp_delete_term()
+ *
+ * @param string $post_type
+ * @param string $taxonomy
+ *
+ * @return \Closure The callback
+ */
 function get_delete_post_hook( $post_type, $taxonomy ) {
 
 	static $existing_closures;
