@@ -26,8 +26,7 @@ class Shows_Meta_Box {
 
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 		add_action( 'add_meta_boxes', array( $this, 'add_box' ) );
-		add_action( 'save_post',  array( $this, 'save_box' ));
-
+		add_action( 'save_post',  array( $this, 'save_box' ), 20);
 	}
 
 	/**
@@ -100,6 +99,24 @@ class Shows_Meta_Box {
 				}
 				if ( isset( $new ) && $new != $old ) {
 					update_post_meta( $post_id, $field['id'], $new );
+
+					/*if( function_exists( 'TDS\delete_related_term' ) && $field['id'] == 'show_homepage' && !$new ) {
+						TDS\delete_related_term( $post_id, 'shows_shadow_taxonomy' );
+					}*/
+					
+					if( $field['id'] == 'show_homepage' && !$new ) {
+						ShowsCPT::remove_show_term_old( $post_id );
+					}
+
+				} elseif ($old == "") {
+					
+					/*if( function_exists( 'TDS\delete_related_term' ) && $field['id'] == 'show_homepage' && !$new ) {
+						TDS\delete_related_term( $post_id, 'shows_shadow_taxonomy' );
+					}*/
+
+					if( $field['id'] == 'show_homepage' && !$new ) {
+						ShowsCPT::remove_show_term_old( $post_id );
+					}
 				}
 		}
 	}

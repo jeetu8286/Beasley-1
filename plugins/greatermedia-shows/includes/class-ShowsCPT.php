@@ -13,7 +13,7 @@ class ShowsCPT {
 	public static function init() {
 		add_action('init', array( __CLASS__,  'register_post_type') );
 		add_action('init', array( __CLASS__,  'register_shadow_taxonomy') );
-		add_action('before_delete_post', array( __CLASS__, 'remove_show_term' ) );
+		add_action('before_delete_post', array( __CLASS__, 'remove_show_term_old' ) );
 	}
 
 	/**
@@ -87,11 +87,17 @@ class ShowsCPT {
 	 * Remove term taxonomy if the show is permanently deleted
 	 */
 	public static function remove_show_term( $post_id ) {
+		if( function_exists( 'TDS\delete_related_term' ) ) {
+			TDS\delete_related_term( $post_id, 'shows_shadow_taxonomy' );
+		}
+	}
+
+	public static function remove_show_term_old( $post_id ) {
 		if( function_exists( 'TDS\get_related_term' ) ) {
-			$term_id = TDS\get_related_term( $post_id );
+			$term = TDS\get_related_term( $post_id );
 			
-			if( $term_id->term_id ) {
-				wp_delete_term( $term_id->term_id, 'shows_shadow_taxonomy' );
+			if( $term->term_id ) {
+				wp_delete_term( $term->term_id, 'shows_shadow_taxonomy' );
 			}
 		}
 	}
