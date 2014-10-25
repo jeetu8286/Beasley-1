@@ -15,13 +15,13 @@
 		$window = $(window),
 		body = document.querySelectorAll('body'),
 		$body = $(body),
-		toggleButton = document.querySelectorAll('.gmlp-nav-toggle'),
+		toggleButton = document.querySelectorAll('.gm-liveplayer--toggle'),
 		$toggleButton = $(toggleButton);
 
 	// function to toggle a class when the player button is clicked
 	function togglePlayer(){
 		$toggleButton.click(function(){
-			$body.toggleClass('gmlp-open');
+			$body.toggleClass('gm-liveplayer--open');
 		});
 	}
 
