@@ -69,14 +69,48 @@ class ShowsCPT {
 	 */
 	public static function register_shadow_taxonomy() {
 
+		$labels = array(
+			'name'					=> _x( 'Show terms', 'Taxonomy Show terms', 'text-domain' ),
+			'singular_name'			=> _x( 'Show term', 'Taxonomy Show term', 'text-domain' ),
+			'search_items'			=> __( 'Search Show terms', 'text-domain' ),
+			'popular_items'			=> __( 'Popular Show terms', 'text-domain' ),
+			'all_items'				=> __( 'All Show terms', 'text-domain' ),
+			'parent_item'			=> __( 'Parent Show term', 'text-domain' ),
+			'parent_item_colon'		=> __( 'Parent Show term', 'text-domain' ),
+			'edit_item'				=> __( 'Edit Show term', 'text-domain' ),
+			'update_item'			=> __( 'Update Show term', 'text-domain' ),
+			'add_new_item'			=> __( 'Add New Show term', 'text-domain' ),
+			'new_item_name'			=> __( 'New Show term Name', 'text-domain' ),
+			'add_or_remove_items'	=> __( 'Add or remove Show terms', 'text-domain' ),
+			'choose_from_most_used'	=> __( 'Choose from most used text-domain', 'text-domain' ),
+			'menu_name'				=> __( 'Show term', 'text-domain' ),
+		);
+	
 		$args = array(
-			'labels'            => __( 'Shows' ),
-			'public'            => false,
-			'rewrite'           => false,
-			'hierarchical'      => true
+			'labels'            => $labels,
+			'public'            => true,
+			'show_in_nav_menus' => true,
+			'show_admin_column' => false,
+			'hierarchical'      => false,
+			'show_tagcloud'     => true,
+			'show_ui'           => true,
+			'query_var'         => true,
+			'rewrite'           => true,
+			'query_var'         => true,
+			'capabilities'      => array(),
 		);
 
-		register_taxonomy( 'shows_shadow_taxonomy', 'show', $args );
+		$supported_posttypes = array( 
+			'show',
+			'post',
+			'albums',
+			'contest',
+			'podcast',
+			'personality',
+			'tribe_events'
+			);
+
+		register_taxonomy( 'shows_shadow_taxonomy', $supported_posttypes, $args );
 
 		if( function_exists( 'TDS\add_relationship' ) ) {
 			TDS\add_relationship( 'show', 'shows_shadow_taxonomy' );
