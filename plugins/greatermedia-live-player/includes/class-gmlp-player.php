@@ -79,7 +79,7 @@ class GMLP_Player {
 		wp_enqueue_script( 'jquery-ui-button');
 		wp_enqueue_script( 'gmlp-js', GMLIVEPLAYER_URL . "assets/js/greater_media_live_player{$postfix}.js", array( 'jquery' ), GMLIVEPLAYER_VERSION, true );
 		//wp_enqueue_style( 'gmlp-styles', GMLIVEPLAYER_URL . "assets/css/greater_media_live_player{$postfix}.css", array(), GMLIVEPLAYER_VERSION );
-
+		wp_localize_script( 'gmlp-js', 'gmlp', array( 'logged_in' => is_user_logged_in() ) );
 	}
 
 	/**
