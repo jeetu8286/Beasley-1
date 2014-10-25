@@ -31,20 +31,20 @@ class GMLP_Player {
 	public static function render_player() {
 
 		?>
-		<div class="gmlp-nav" style="visibility:hidden">
+		<div class="gm-liveplayer" style="visibility:hidden">
 
-			<button class="gmlp-nav-toggle"></button>
+			<button class="gm-liveplayer--toggle"></button>
 
-			<div class="gmlp-menu">
+			<div class="gm-liveplayer--container">
 
 				<div class="container">
-					<div id="gmlp-actions">
-						<div id="playButton" class="gmlp-audio-button play" data-station="<?php do_action( 'radio_callsign' ); ?>"></div>
-						<button id="pauseButton" class="gmlp-audio-button" data-station="<?php do_action( 'radio_callsign' ); ?>"><i class="fa fa-pause"></i></button>
-						<button id="resumeButton" class="gmlp-audio-button" data-station="<?php do_action( 'radio_callsign' ); ?>"><i class="fa fa-play-circle-o"></i></button>
+					<div id="gm-liveplayer--controls">
+						<div id="playButton" class="gm-liveplayer--btn play" data-station="<?php do_action( 'radio_callsign' ); ?>"></div>
+						<button id="pauseButton" class="gm-liveplayer--btn" data-station="<?php do_action( 'radio_callsign' ); ?>"><i class="fa fa-pause"></i></button>
+						<button id="resumeButton" class="gm-liveplayer--btn" data-station="<?php do_action( 'radio_callsign' ); ?>"><i class="fa fa-play-circle-o"></i></button>
 					</div>
 
-					<div id="gmlp-live">
+					<div id="gm-liveplayer--now_playing">
 						<div id="nowPlaying">
 							<div id="trackInfo">
 							</div>
@@ -79,7 +79,7 @@ class GMLP_Player {
 		wp_enqueue_script( 'jquery-ui-button');
 		wp_enqueue_script( 'gmlp-js', GMLIVEPLAYER_URL . "assets/js/greater_media_live_player{$postfix}.js", array( 'jquery' ), GMLIVEPLAYER_VERSION, true );
 		//wp_enqueue_style( 'gmlp-styles', GMLIVEPLAYER_URL . "assets/css/greater_media_live_player{$postfix}.css", array(), GMLIVEPLAYER_VERSION );
-
+		wp_localize_script( 'gmlp-js', 'gmlp', array( 'logged_in' => is_user_logged_in() ) );
 	}
 
 	/**

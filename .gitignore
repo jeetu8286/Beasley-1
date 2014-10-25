@@ -11,6 +11,7 @@ plugins/index.php
 plugins/wordpress-importer
 plugins/debug-bar/
 plugins/theme-check/
+plugins/airplane-mode/
 themes/index.php
 themes/twentyfourteen
 upgrade/
