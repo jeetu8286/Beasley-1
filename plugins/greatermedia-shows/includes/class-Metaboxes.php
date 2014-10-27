@@ -34,9 +34,10 @@ class Shows_Meta_Box {
 	 */
 	public function admin_enqueue_scripts() {
 		global $pagenow;
+		$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 		if ( in_array( $pagenow, array( 'post-new.php', 'post.php' ) ) && get_post_type() == $this->page ) {
-			wp_enqueue_script( 'meta_box', GMEDIA_SHOWS_URL . 'assets/js/src/scripts.js' );
-			wp_enqueue_style( 'meta_box', GMEDIA_SHOWS_URL . 'assets/css/src/meta_box.css' );
+			wp_enqueue_script( 'meta_box', GMEDIA_SHOWS_URL . "assets/js/greatermedia_shows{$postfix}.js", array( 'jquery' ), GMEDIA_SHOWS_VERSION, true );
+			wp_enqueue_style( 'meta_box', GMEDIA_SHOWS_URL . "assets/css/greatermedia_shows{$postfix}.css", array(), GMEDIA_SHOWS_VERSION );
 		}
 	}
 
@@ -99,24 +100,6 @@ class Shows_Meta_Box {
 				}
 				if ( isset( $new ) && $new != $old ) {
 					update_post_meta( $post_id, $field['id'], $new );
-
-					/*if( function_exists( 'TDS\delete_related_term' ) && $field['id'] == 'show_homepage' && !$new ) {
-						TDS\delete_related_term( $post_id, 'shows_shadow_taxonomy' );
-					}*/
-					
-					if( $field['id'] == 'show_homepage' && !$new ) {
-						ShowsCPT::remove_show_term_old( $post_id );
-					}
-
-				} elseif ($old == "") {
-					
-					/*if( function_exists( 'TDS\delete_related_term' ) && $field['id'] == 'show_homepage' && !$new ) {
-						TDS\delete_related_term( $post_id, 'shows_shadow_taxonomy' );
-					}*/
-
-					if( $field['id'] == 'show_homepage' && !$new ) {
-						ShowsCPT::remove_show_term_old( $post_id );
-					}
 				}
 		}
 	}
