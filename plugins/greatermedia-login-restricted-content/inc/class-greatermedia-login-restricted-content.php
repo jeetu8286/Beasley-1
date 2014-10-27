@@ -39,8 +39,7 @@ class GreaterMediaLoginRestrictedContent extends VisualShortcode {
 		if ( ! post_type_supports( $post->post_type, 'login-restricted-content' ) ) {
 			return;
 		}
-
-//print $post->ID;print "<hr>";print get_post_meta( $post->ID, '_post_login_restriction', true );die();
+		
 		$login_restriction      = self::sanitize_login_restriction( get_post_meta( $post->ID, '_post_login_restriction', true ) );
 		$login_restriction_desc = self::login_restriction_description( $login_restriction );
 
