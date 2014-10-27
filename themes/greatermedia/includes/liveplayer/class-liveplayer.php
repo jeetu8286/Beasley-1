@@ -7,7 +7,9 @@ class GreaterMediaLivePlayer {
 	}
 
 	public static function render_live_player() {
-		include __DIR__ . '/tpl.live-player.php';
+		if ( !is_page( 'style-guide' ) ) {
+			include __DIR__ . '/tpl.live-player.php';
+		}
 	}
 
 }
