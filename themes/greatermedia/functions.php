@@ -49,6 +49,10 @@ function greatermedia_setup() {
 	 */
 	$formats = array( 'gallery', 'link', 'image', 'video', 'audio' );
 	add_theme_support( 'post-formats', $formats );
+
+	// Update this as appropriate content types are created and we want this functionality
+	add_post_type_support( 'post', 'timed-content' );
+	add_post_type_support( 'post', 'login-restricted-content' );
 }
 
 add_action( 'after_setup_theme', 'greatermedia_setup' );
