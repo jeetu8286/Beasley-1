@@ -1640,12 +1640,12 @@ pre {
 /**
  * General Styles
  */
-.gmlp-nav {
+.gm-liveplayer {
   display: none; }
-  .gmlp-nav.open {
+  .gm-liveplayer.open {
     display: block; }
 
-.gmlp-nav-toggle {
+.gm-liveplayer--toggle {
   position: fixed;
   top: 0;
   right: 0;
@@ -1667,10 +1667,10 @@ pre {
   z-index: 10001;
   cursor: pointer; }
   @media screen and (min-width: 1024px) {
-    .gmlp-nav-toggle {
+    .gm-liveplayer--toggle {
       display: none; } }
 
-.gmlp-nav-toggle:before {
+.gm-liveplayer--toggle:before {
   font-family: FontAwesome;
   font-style: normal;
   font-weight: normal;
@@ -1680,7 +1680,7 @@ pre {
   text-rendering: auto;
   content: "\f028"; }
 
-.gmlp-audio-button {
+.gm-liveplayer--btn {
   height: 140px;
   width: 140px;
   margin: 0 auto;
@@ -1722,7 +1722,7 @@ pre {
   font-family: FontAwesome;
   content: "\f01d"; }
 
-.gmlp-menu {
+.gm-liveplayer--container {
   position: relative;
   top: auto;
   right: auto;
@@ -1740,20 +1740,20 @@ pre {
   color: #ffffff;
   z-index: 10000; }
 
-.gmlp-menu .container {
+.gm-liveplayer--container .container {
   max-width: 1020px;
   height: 100%;
   margin: 0 auto; }
 
-.gmlp-menu #gmlp-actions {
+.gm-liveplayer--container #gm-liveplayer--controls {
   position: relative;
   margin: 1.25em auto 0;
   text-align: center; }
 
-.gmlp-menu #gmlp-actions #pauseButton, .gmlp-menu #gmlp-actions #resumeButton {
+.gm-liveplayer--container #gm-liveplayer--controls #pauseButton, .gm-liveplayer--container #gm-liveplayer--controls #resumeButton {
   display: none; }
 
-.gmlp-menu #gmlp-live {
+.gm-liveplayer--container #gm-liveplayer--now_playing {
   position: relative;
   width: 100%;
   height: auto;
@@ -1761,32 +1761,32 @@ pre {
   text-align: center;
   z-index: 999; }
 
-.gmlp-menu #gmlp-live #trackInfo {
+.gm-liveplayer--container #gm-liveplayer--now_playing #trackInfo {
   font-size: 1.375em; }
 
-.gmlp-menu #gmlp-live #trackInfo .gmlp-np-song-title {
+.gm-liveplayer--container #gm-liveplayer--now_playing #trackInfo .gmlp-np-song-title {
   margin: 0 0 1em;
   font-weight: 700; }
 
-.gmlp-menu #gmlp-live #trackInfo .gmlp-np-artist {
+.gm-liveplayer--container #gm-liveplayer--now_playing #trackInfo .gmlp-np-artist {
   font-weight: 400; }
 
-.gmlp-open .gmlp-menu {
+.gmlp-open .gm-liveplayer--container {
   right: 0; }
 
-.gmlp-open .gmlp-nav-toggle {
+.gmlp-open .gm-liveplayer--toggle {
   font-size: 1.875em; }
 
-.gmlp-open .gmlp-nav-toggle:before {
+.gmlp-open .gm-liveplayer--toggle:before {
   content: "\f00d"; }
 
 /**
  * If Logged In
  */
-.admin-bar .gmlp-nav-toggle {
+.admin-bar .gm-liveplayer--toggle {
   top: 0; }
 
-.admin-bar .gmlp-menu {
+.admin-bar .gm-liveplayer--container {
   top: 0; }
 
 .now-playing--logo {
