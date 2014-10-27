@@ -118,12 +118,6 @@ get_header(); ?>
 
 			</section>
 
-			<?php
-
-			get_sidebar( 'live-player');
-
-			?>
-
 		</div>
 
 	</main>

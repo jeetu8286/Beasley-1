@@ -88,11 +88,7 @@
 				<?php endif; ?>
 
 			</section>
-			<?php
 
-			get_sidebar( 'live-player');
-
-			?>
 		</div>
 
 	</main>
