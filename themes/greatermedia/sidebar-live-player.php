@@ -13,9 +13,15 @@
 	</div>
 
 	<div id="live-player" class="live-player--container">
-		<a id="live-player--listen_now" href="" class="live-player--listen_btn" style="visibility:hidden">Listen Now</a>
+		<div id="live-player--listen_now" class="live-player--listen_btn" style="visibility:visible">Listen Now</div>
 
-		<?php do_action( 'gm_live_player' ); ?>
+		<?php
+
+			do_action( 'gm_live_player_test_ui' );
+
+			do_action( 'gm_live_player' );
+
+		?>
 	</div>
 
 	<div class="now-playing--title">

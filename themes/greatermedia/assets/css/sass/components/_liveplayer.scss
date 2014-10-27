@@ -11,7 +11,8 @@
 }
 
 .live-player--listen_btn {
-	@include btn(default, red, base, 1em, 3.5em, em(18px));
+	@include btn(default, red, base, 1em, 1.5em, em(18px));
+	@include margin(0 .5em);
 }
 
 /**
@@ -210,4 +211,16 @@
 	@include border-width(1px null 1px null);
 	background-color: palette(default, dark);
 	font-size: ms(-2);
+}
+
+.live-player--test {
+	color: palette(default);
+	width: 100%;
+	padding: .25em .5em;
+}
+
+.live-player--test_label {
+	display: inline-block;
+	@include margin(null null null 4px);
+	cursor: pointer;
 }

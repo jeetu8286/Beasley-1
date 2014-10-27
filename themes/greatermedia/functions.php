@@ -15,6 +15,8 @@
 // Useful global constants
 define( 'GREATERMEDIA_VERSION', '0.1.0' );
 
+require_once( __DIR__ . '/includes/liveplayer-test/class-gigya-login-test.php' );
+
 /**
  * Required files
  */
@@ -65,14 +67,6 @@ add_action( 'after_setup_theme', 'greatermedia_setup' );
 function greatermedia_scripts_styles() {
 	$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 
-	wp_enqueue_script(
-		'gigya_socialize',
-		'http://cdn.gigya.com/JS/gigya.js?apiKey=3_e_T7jWO0Vjsd9y0WJcjnsN6KaFUBv6r3VxMKqbitvw-qKfmaUWysQKa1fra5MTb6',
-		array( 'jquery' ),
-		'0.1.0',
-		true
-	);
-
 	wp_register_style( 'open-sans', 'http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,700', array(), GREATERMEDIA_VERSION );
 	wp_register_style( 'droid-sans', 'http://fonts.googleapis.com/css?family=Droid+Sans:400,700', array(), GREATERMEDIA_VERSION );
 	wp_register_style( 'font-awesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css', array(), '4.2' );
@@ -82,8 +76,6 @@ function greatermedia_scripts_styles() {
 		wp_enqueue_script( 'google-code-pretify', get_template_directory_uri() . "/assets/js/styleguide/prettify.js", array( 'jquery' ), GREATERMEDIA_VERSION, true );
 		wp_enqueue_style( 'gm-styleguide', get_template_directory_uri() . "/assets/css/gm_styleguide{$postfix}.css", array( 'open-sans', 'playfair-display', 'font-awesome' ), GREATERMEDIA_VERSION );
 	} else {
-		wp_enqueue_script( 'gigya-login', get_template_directory_uri() . "/assets/js/gigya_login{$postfix}.js", array(), GREATERMEDIA_VERSION, true );
-		wp_enqueue_script( 'liveplayer-login', get_template_directory_uri() . "/assets/js/liveplayer_login{$postfix}.js", array(), GREATERMEDIA_VERSION, true );
 		wp_enqueue_script( 'greatermedia', get_template_directory_uri() . "/assets/js/greater_media{$postfix}.js", array(), GREATERMEDIA_VERSION, true );
 		wp_enqueue_script( 'respond.js', get_template_directory_uri() . '/assets/js/vendor/respond.min.js', array(), '1.4.2', false );
 		wp_enqueue_script( 'html5shiv', get_template_directory_uri() . '/assets/js/vendor/html5shiv-printshiv.js', array(), '3.7.2', false );

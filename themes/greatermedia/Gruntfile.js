@@ -34,6 +34,12 @@ module.exports = function( grunt ) {
 				],
 				dest: 'assets/js/liveplayer_login.js'
 			},
+			liveplayer_login_test: {
+				src: [
+					'assets/js/src/liveplayer_test.js'
+				],
+				dest: 'assets/js/liveplayer_test.js'
+			},
 			greater_media_styleguide: {
 				src: [
 					'assets/js/styleguide/gm_styleguide.js'
@@ -67,6 +73,7 @@ module.exports = function( grunt ) {
 					'assets/js/greater_media.min.js': ['assets/js/greater_media.js'],
 					'assets/js/gigya_login.min.js': ['assets/js/gigya_login.js'],
 					'assets/js/liveplayer_login.min.js': ['assets/js/liveplayer_login.js'],
+					'assets/js/liveplayer_test.min.js': ['assets/js/liveplayer_test.js'],
 					'assets/js/gm_styleguide.min.js': ['assets/js/gm_styleguide.js']
 				},
 				options: {

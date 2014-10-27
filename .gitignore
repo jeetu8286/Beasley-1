@@ -7,6 +7,7 @@ plugins/wp-multi-network/
 plugins/wordpress-importer/
 plugins/debug-bar/
 plugins/theme-check/
+plugins/airplane-mode/
 plugins/index.php
 plugins/wordpress-importer
 plugins/debug-bar/
