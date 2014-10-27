@@ -111,11 +111,9 @@ if ( !class_exists( "GMI_Personality" ) ) {
 				'page',
 				'contest',
 				'podcast',
-				'listener_submissions',
 				'show',
 				'albums',
 				'survey',
-				'question',
 				'livefyre-media-wall',
 			);
 
