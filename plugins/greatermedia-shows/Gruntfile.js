@@ -65,6 +65,9 @@ module.exports = function( grunt ) {
 		
 		sass:   {
 			all: {
+				options: {
+					trace: true
+				},
 				files: {
 					'assets/css/greatermedia_shows.css': 'assets/css/sass/greatermedia_shows.scss'
 				}

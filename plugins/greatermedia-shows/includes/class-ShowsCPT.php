@@ -13,7 +13,6 @@ class ShowsCPT {
 	public static function init() {
 		add_action('init', array( __CLASS__,  'register_post_type') );
 		add_action('init', array( __CLASS__,  'register_shadow_taxonomy') );
-		add_action('before_delete_post', array( __CLASS__, 'remove_show_term_old' ) );
 	}
 
 	/**
@@ -22,18 +21,18 @@ class ShowsCPT {
 	public static function register_post_type() {
 
 		$labels = array(
-			'name'                => __( 'Shows', 'text-domain' ),
-			'singular_name'       => __( 'Show', 'text-domain' ),
-			'add_new'             => _x( 'Add New Show', 'text-domain', 'text-domain' ),
-			'add_new_item'        => __( 'Add New Show', 'text-domain' ),
-			'edit_item'           => __( 'Edit Show', 'text-domain' ),
-			'new_item'            => __( 'New Show', 'text-domain' ),
-			'view_item'           => __( 'View Show', 'text-domain' ),
-			'search_items'        => __( 'Search Shows', 'text-domain' ),
-			'not_found'           => __( 'No Shows found', 'text-domain' ),
-			'not_found_in_trash'  => __( 'No Shows found in Trash', 'text-domain' ),
-			'parent_item_colon'   => __( 'Parent Show:', 'text-domain' ),
-			'menu_name'           => __( 'Shows', 'text-domain' ),
+			'name'                => __( 'Shows', 'greatermedia' ),
+			'singular_name'       => __( 'Show', 'greatermedia' ),
+			'add_new'             => _x( 'Add New Show', 'greatermedia', 'greatermedia' ),
+			'add_new_item'        => __( 'Add New Show', 'greatermedia' ),
+			'edit_item'           => __( 'Edit Show', 'greatermedia' ),
+			'new_item'            => __( 'New Show', 'greatermedia' ),
+			'view_item'           => __( 'View Show', 'greatermedia' ),
+			'search_items'        => __( 'Search Shows', 'greatermedia' ),
+			'not_found'           => __( 'No Shows found', 'greatermedia' ),
+			'not_found_in_trash'  => __( 'No Shows found in Trash', 'greatermedia' ),
+			'parent_item_colon'   => __( 'Parent Show:', 'greatermedia' ),
+			'menu_name'           => __( 'Shows', 'greatermedia' ),
 		);
 
 		$args = array(
@@ -70,20 +69,20 @@ class ShowsCPT {
 	public static function register_shadow_taxonomy() {
 
 		$labels = array(
-			'name'					=> _x( 'Show terms', 'Taxonomy Show terms', 'text-domain' ),
-			'singular_name'			=> _x( 'Show term', 'Taxonomy Show term', 'text-domain' ),
-			'search_items'			=> __( 'Search Show terms', 'text-domain' ),
-			'popular_items'			=> __( 'Popular Show terms', 'text-domain' ),
-			'all_items'				=> __( 'All Show terms', 'text-domain' ),
-			'parent_item'			=> __( 'Parent Show term', 'text-domain' ),
-			'parent_item_colon'		=> __( 'Parent Show term', 'text-domain' ),
-			'edit_item'				=> __( 'Edit Show term', 'text-domain' ),
-			'update_item'			=> __( 'Update Show term', 'text-domain' ),
-			'add_new_item'			=> __( 'Add New Show term', 'text-domain' ),
-			'new_item_name'			=> __( 'New Show term Name', 'text-domain' ),
-			'add_or_remove_items'	=> __( 'Add or remove Show terms', 'text-domain' ),
-			'choose_from_most_used'	=> __( 'Choose from most used text-domain', 'text-domain' ),
-			'menu_name'				=> __( 'Show term', 'text-domain' ),
+			'name'					=> _x( 'Show terms', 'Taxonomy Show terms', 'greatermedia' ),
+			'singular_name'			=> _x( 'Show term', 'Taxonomy Show term', 'greatermedia' ),
+			'search_items'			=> __( 'Search Show terms', 'greatermedia' ),
+			'popular_items'			=> __( 'Popular Show terms', 'greatermedia' ),
+			'all_items'				=> __( 'All Show terms', 'greatermedia' ),
+			'parent_item'			=> __( 'Parent Show term', 'greatermedia' ),
+			'parent_item_colon'		=> __( 'Parent Show term', 'greatermedia' ),
+			'edit_item'				=> __( 'Edit Show term', 'greatermedia' ),
+			'update_item'			=> __( 'Update Show term', 'greatermedia' ),
+			'add_new_item'			=> __( 'Add New Show term', 'greatermedia' ),
+			'new_item_name'			=> __( 'New Show term Name', 'greatermedia' ),
+			'add_or_remove_items'	=> __( 'Add or remove Show terms', 'greatermedia' ),
+			'choose_from_most_used'	=> __( 'Choose from most used greatermedia', 'greatermedia' ),
+			'menu_name'				=> __( 'Show term', 'greatermedia' ),
 		);
 	
 		$args = array(
@@ -114,25 +113,6 @@ class ShowsCPT {
 
 		if( function_exists( 'TDS\add_relationship' ) ) {
 			TDS\add_relationship( 'show', 'shows_shadow_taxonomy' );
-		}
-	}
-
-	/*
-	 * Remove term taxonomy if the show is permanently deleted
-	 */
-	public static function remove_show_term( $post_id ) {
-		if( function_exists( 'TDS\delete_related_term' ) ) {
-			TDS\delete_related_term( $post_id, 'shows_shadow_taxonomy' );
-		}
-	}
-
-	public static function remove_show_term_old( $post_id ) {
-		if( function_exists( 'TDS\get_related_term' ) ) {
-			$term = TDS\get_related_term( $post_id );
-			
-			if( $term->term_id ) {
-				wp_delete_term( $term->term_id, 'shows_shadow_taxonomy' );
-			}
 		}
 	}
 }
