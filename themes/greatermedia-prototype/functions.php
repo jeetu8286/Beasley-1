@@ -33,6 +33,10 @@ define( 'GMIPROTO_VERSION', '0.1.0' );
 	 * to change 'gmiproto' to the name of your theme in all template files.
 	 */
 	load_theme_textdomain( 'gmiproto', get_template_directory() . '/languages' );
+
+	 // Update this as appropriate content types are created and we want this functionality
+	 add_post_type_support( 'post', 'timed-content' );
+	 add_post_type_support( 'post', 'login-restricted-content' );
  }
  add_action( 'after_setup_theme', 'gmiproto_setup' );
 

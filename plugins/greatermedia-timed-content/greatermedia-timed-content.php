@@ -13,9 +13,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( "Please don't try to access this file directly." );
 }
 
-// For testing/debugging
-add_post_type_support('post', 'timed-content');
-
 define( 'GREATER_MEDIA_TIMED_CONTENT_PATH', dirname( __FILE__ ) );
 define( 'GREATER_MEDIA_TIMED_CONTENT_URL', plugins_url( trailingslashit( basename( dirname( __FILE__ ) ) ) ) );
 
