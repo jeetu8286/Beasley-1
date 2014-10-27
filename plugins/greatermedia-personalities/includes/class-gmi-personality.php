@@ -106,7 +106,20 @@ if ( !class_exists( "GMI_Personality" ) ) {
 				'hierarchical'  		=> false,
 			);
 
-			register_taxonomy( self::SHADOW_TAX_SLUG, array( 'post' ), $args );
+			$types = array(
+				'post',
+				'page',
+				'contest',
+				'podcast',
+				'listener_submissions',
+				'show',
+				'albums',
+				'survey',
+				'question',
+				'livefyre-media-wall',
+			);
+
+			register_taxonomy( self::SHADOW_TAX_SLUG, $types, $args );
 		}
 
 		public static function associate_personality_cpt_taxonomy() {
