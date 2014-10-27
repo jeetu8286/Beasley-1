@@ -31,11 +31,12 @@ class GreaterMediaContestsMetaboxes {
 		wp_enqueue_script( 'formbuilder-vendor', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'bower_components/formbuilder/vendor/js/vendor.js' );
 		wp_enqueue_script( 'formbuilder', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'bower_components/formbuilder/dist/formbuilder.js' );
 
+		wp_enqueue_script( 'greatermedia-contests-admin', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'js/greatermedia-contests-admin.js' );
 		$embedded_form = get_post_meta( $post->ID, 'embedded_form', true );
-		$settings = array(
+		$settings      = array(
 			'form' => $embedded_form,
 		);
-		wp_localize_script( 'formbuilder', 'GreaterMediaContestsForm', $settings );
+		wp_localize_script( 'greatermedia-contests-admin', 'GreaterMediaContestsForm', $settings );
 	}
 
 	public function custom_metadata_manager_init_metadata() {
