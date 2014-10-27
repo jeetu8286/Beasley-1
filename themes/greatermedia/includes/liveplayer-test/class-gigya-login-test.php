@@ -4,6 +4,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( "Please don't try to access this file directly." );
 }
 
+
+/**
+ * must add `define( 'GREATER_MEDIA_GIGYA_TEST_UI', true );` to wp-config.php
+ *
+ * Class GreaterMediaGigyaTest
+ */
+
 class GreaterMediaGigyaTest {
 
 	function __construct() {
@@ -15,22 +22,11 @@ class GreaterMediaGigyaTest {
 
 	public function wp_enqueue_scripts() {
 
-		$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
-
 		if ( defined( 'GREATER_MEDIA_GIGYA_TEST_UI' ) && GREATER_MEDIA_GIGYA_TEST_UI ) {
 			wp_enqueue_script( 'liveplayer-testing', get_template_directory_uri() . '/assets/js/liveplayer_test.js', array( 'jquery' ), false, false );
 		}
 
-		wp_enqueue_script(
-			'gigya_socialize',
-			'http://cdn.gigya.com/JS/gigya.js?apiKey=3_e_T7jWO0Vjsd9y0WJcjnsN6KaFUBv6r3VxMKqbitvw-qKfmaUWysQKa1fra5MTb6',
-			array( 'jquery' ),
-			'0.1.0',
-			true
-		);
-
-		wp_enqueue_script( 'gigya-login', get_template_directory_uri() . "/assets/js/gigya_login{$postfix}.js", array(), GREATERMEDIA_VERSION, true );
-		//wp_enqueue_script( 'liveplayer-login', get_template_directory_uri() . "/assets/js/liveplayer_login{$postfix}.js", array(), GREATERMEDIA_VERSION, true );
+		wp_enqueue_script( 'gigya-auth', get_template_directory_uri() . "/assets/js/greatermedia-gigya-auth.js", array(), false, false );
 
 	}
 
