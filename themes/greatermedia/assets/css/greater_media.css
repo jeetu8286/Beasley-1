@@ -970,7 +970,6 @@ p {
         margin-right: 0; } }
 
 .entry-author--img {
-  float: left;
   height: 40px;
   width: 40px;
   margin-right: 0.625em;
@@ -995,9 +994,6 @@ p {
   border-bottom-right-radius: 50%;
   border-top-left-radius: 50%;
   border-bottom-left-radius: 50%; }
-
-.entry-author--meta {
-  float: left; }
 
 .entry-author--name {
   float: left;

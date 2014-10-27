@@ -85,7 +85,6 @@
 }
 
 .entry-author--img {
-	float: left;
 	@include size(40px 40px);
 	@include margin(null em(10px) null null);
 	@include border-top-radius(50%);
@@ -101,10 +100,6 @@
 	@include border-right-radius(50%);
 	@include border-bottom-radius(50%);
 	@include border-left-radius(50%);
-}
-
-.entry-author--meta{
-	float: left;
 }
 
 .entry-author--name {
