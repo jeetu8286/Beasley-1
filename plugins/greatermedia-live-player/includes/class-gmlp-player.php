@@ -31,7 +31,7 @@ class GMLP_Player {
 	public static function render_player() {
 
 		?>
-		<div class="gm-liveplayer" style="visibility:hidden">
+		<div class="gm-liveplayer">
 
 			<button class="gm-liveplayer--toggle"></button>
 
