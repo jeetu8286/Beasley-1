@@ -18,7 +18,7 @@ class GreaterMediaGigyaTest {
 		$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 
 		if ( defined( 'GREATER_MEDIA_GIGYA_TEST_UI' ) && GREATER_MEDIA_GIGYA_TEST_UI ) {
-			wp_enqueue_script( 'liveplayer-testing', get_template_directory_uri() . '/assets/js/liveplayer-test.js', array(), false, false );
+			wp_enqueue_script( 'liveplayer-testing', get_template_directory_uri() . '/assets/js/liveplayer_test.js', array( 'jquery' ), false, false );
 		}
 
 		wp_enqueue_script(
@@ -30,14 +30,17 @@ class GreaterMediaGigyaTest {
 		);
 
 		wp_enqueue_script( 'gigya-login', get_template_directory_uri() . "/assets/js/gigya_login{$postfix}.js", array(), GREATERMEDIA_VERSION, true );
-		wp_enqueue_script( 'liveplayer-login', get_template_directory_uri() . "/assets/js/liveplayer_login{$postfix}.js", array(), GREATERMEDIA_VERSION, true );
+		//wp_enqueue_script( 'liveplayer-login', get_template_directory_uri() . "/assets/js/liveplayer_login{$postfix}.js", array(), GREATERMEDIA_VERSION, true );
 
 	}
 
 	public static function test_ui() {
 
 		if ( defined( 'GREATER_MEDIA_GIGYA_TEST_UI' ) && GREATER_MEDIA_GIGYA_TEST_UI ) {
-			require_once( __DIR__ . '/greatermedia-gigya-auth-testing.html' );
+			echo '<div id="live-player--test" class="live-player--test" style="visibility:hidden;">';
+			echo '<input type="checkbox" name="live-player--test_audio" class="live-player--test_audio" id="live-player--test_audio" value="live-audio">';
+			echo '<label for="live-player--test_audio" class="live-player--test_label">Test Live Audio</label>';
+			echo '</div>';
 		}
 
 	}

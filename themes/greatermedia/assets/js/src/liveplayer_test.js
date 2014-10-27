@@ -85,27 +85,37 @@ gigya.accounts._callEventHandlers = gigya.accounts._callEventHandlers || functio
 
 jQuery(function () {
 
-	// Default the checkbox to the correct status
-	if (GreaterMediaGigyaTest.is_gigya_user_logged_in()) {
-		jQuery('#myonoffswitch').prop('checked', 'checked');
+	var livePlayerListen = jQuery('#live-player--listen_now'),
+		livePlayerTest = jQuery('.live-player--test');
+
+	function listenLive() {
+		livePlayerListen.css('visibility', 'visible');
+
+		livePlayerListen.click(function() {
+			if ( livePlayerTest.css('visibility') == 'visible') {
+				livePlayerTest.css('visibility', 'hidden');
+				livePlayerListen.css('visibility', 'visible');
+			} else {
+				livePlayerTest.css('visibility', 'visible');
+				livePlayerListen.css('visibility', 'hidden');
+			}
+		});
 	}
 
-	// Trigger custom events
-	jQuery('#greatermedia-gigya-auth-testing').on('click', '#myonoffswitch', function () {
+	listenLive();
 
-		var event;
+	function showPlayer() {
 
-		if (jQuery('#myonoffswitch').is(':checked')) {
-			// Logged into gigya
-			gigya.accounts._callEventHandlers('login');
-		}
-		else {
-			// Logged out of gigya
-			gigya.accounts._callEventHandlers('logout');
-		}
+		var livePlayer = jQuery('.gmlp-nav'),
+			livePlayerSwitch = jQuery('.live-player--test');
 
+		livePlayer.css('display', 'none');
 
+		livePlayerSwitch.click(function() {
+			livePlayer.toggle(this.checked);
+		});
+	}
 
-	});
+	showPlayer();
 
 });

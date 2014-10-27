@@ -13,7 +13,7 @@
 	</div>
 
 	<div id="live-player" class="live-player--container">
-		<a id="live-player--listen_now" href="" class="live-player--listen_btn" style="visibility:hidden">Listen Now</a>
+		<div id="live-player--listen_now" class="live-player--listen_btn" style="visibility:hidden">Listen Now</div>
 
 		<?php
 
