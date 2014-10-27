@@ -72,7 +72,7 @@ var EntryConstraint = Constraint.extend({
 
 		if (this.get('entryFieldID') === -1) {
 			// auto-select first field
-			this.set('entryFieldID', entryTypes.at(0).get('value'));
+			this.set('entryFieldID', entryFields.at(0).get('value'));
 		}
 	},
 
