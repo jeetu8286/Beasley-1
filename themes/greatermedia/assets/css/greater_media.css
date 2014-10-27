@@ -380,6 +380,9 @@ th {
 /**
  * Font Styles
  */
+html {
+  height: 100%; }
+
 body {
   height: 100%;
   margin: 0 auto;
@@ -393,7 +396,7 @@ img {
   display: block;
   height: auto; }
 
-.site-wrap {
+.page-wrap {
   -webkit-transform: translate(0, 0);
   -moz-transform: translate(0, 0);
   -ms-transform: translate(0, 0);
@@ -506,7 +509,8 @@ img {
         margin-right: 0; } }
 
 .live-player {
-  position: fixed;
+  position: absolute;
+  top: 117px;
   right: 0;
   padding-top: 2em;
   padding-bottom: 2em;
@@ -514,6 +518,7 @@ img {
   background-color: #221f1f; }
   @media screen and (min-width: 1024px) {
     .live-player {
+      display: block;
       float: left;
       display: block;
       margin-right: 2.35765%;
@@ -727,7 +732,7 @@ p {
   -o-transform: rotate(-45deg);
   transform: rotate(-45deg); }
 
-.mobile-nav--open .site-wrap {
+.mobile-nav--open .page-wrap {
   -webkit-transform: translate(90%, 0);
   -moz-transform: translate(90%, 0);
   -ms-transform: translate(90%, 0);

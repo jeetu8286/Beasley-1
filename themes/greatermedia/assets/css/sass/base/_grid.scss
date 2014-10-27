@@ -21,7 +21,7 @@ img {
 
 // The `.site-wrap` class is being used in conjunction with the off-canvas mobile navigation. On click of the
 // `.mobile-nav--toggle` button, the contents of `.site-wrap` will be pushed to the left by a particular value. This
-.site-wrap {
+.page-wrap {
 	@include transform(translate(0, 0));
 	@include size(100% null);
 	@include transition(all 500ms ease-in-out);
@@ -74,11 +74,12 @@ img {
 }
 
 .live-player{
-	@include position(fixed, null 0 null null);
+	@include position(absolute, 117px 0 null null);
 	@include padding(2em null);
 	display: none;
 	background-color: palette(default, gray);
 	@include bp(large){
+		@include display(block);
 		@include span-columns(2);
 		@include size(null 100%);
 		@include omega;

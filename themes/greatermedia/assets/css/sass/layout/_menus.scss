@@ -92,7 +92,7 @@
 	@include transform(rotate(-45deg));
 }
 
-.mobile-nav--open .site-wrap {
+.mobile-nav--open .page-wrap {
 	@include transform(translate(90%, 0));
 	@include size(100% null);
 	@include transition(all 500ms ease-in-out);
