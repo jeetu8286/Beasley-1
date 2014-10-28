@@ -45,6 +45,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 include __DIR__ . '/includes/class-gmi-personality.php';
+include __DIR__ . '/includes/gmi-personality-live-links.php';
 
 /**
  * Default initialization for the plugin:
