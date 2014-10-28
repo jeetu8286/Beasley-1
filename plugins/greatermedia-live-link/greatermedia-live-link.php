@@ -6,10 +6,16 @@
  * Author URI:  http://10up.com/
  */
 
+// constants
 define( 'GMR_LIVE_LINK_CPT', 'gmr-live-link' );
 
+// action hooks
 add_action( 'init', 'gmr_ll_register_post_type' );
 add_action( 'save_post', 'gmr_ll_save_redirect_meta_box_data' );
+add_action( 'manage_' . GMR_LIVE_LINK_CPT . '_posts_custom_column', 'gmr_ll_render_custom_column', 10, 2 );
+
+// filter hooks
+add_filter( 'manage_' . GMR_LIVE_LINK_CPT . '_posts_columns', 'gmr_ll_filter_columns_list' );
 
 /**
  * Registers Live Link post type.
@@ -92,4 +98,59 @@ function gmr_ll_save_redirect_meta_box_data( $post_id ) {
 	// sanitize user input and update the meta field
 	$redirect = sanitize_text_field( filter_input( INPUT_POST, 'gmr_ll_redirect' ) );
 	update_post_meta( $post_id, 'redirect', $redirect );
+}
+
+/**
+ * Adds redirect column to the live links table.
+ *
+ * @filter manage_gmr-live-link_posts_custom_column
+ * @param array $columns Initial array of columns.
+ * @return array The array of columns.
+ */
+function gmr_ll_filter_columns_list( $columns ) {
+	$cut_mark = array_search( 'title', array_keys( $columns ) ) + 1;
+
+	$columns = array_merge(
+		array_slice( $columns, 0, $cut_mark ),
+		array( 'redirect' => 'Redirect To' ),
+		array_slice( $columns, $cut_mark )
+	);
+
+	return $columns;
+}
+
+/**
+ * Renders custom columns for the live links table.
+ *
+ * @action manage_gmr-live-link_posts_columns
+ * @param string $column_name The column name which is gonna be rendered.
+ * @param int $post_id The post id.
+ */
+function gmr_ll_render_custom_column( $column_name, $post_id ) {
+	if ( 'redirect' == $column_name ) {
+		$link = gmr_ll_get_redirect_link( $post_id );
+		if ( $link ) {
+			printf( '<a href="%s" target="_blank">%s</a>', esc_url( $link ), esc_html( $link ) );
+		}
+	}
+}
+
+/**
+ * Returns live link redirect.
+ *
+ * @param int $post_id The live link post id.
+ * @return string|boolean The redirect URL on success, otherwise FALSE.
+ */
+function gmr_ll_get_redirect_link( $post_id ) {
+	$redirect = get_post_meta( $post_id, 'redirect', true );
+	if ( is_numeric( $redirect ) ) {
+		$post = get_post( $redirect );
+		if ( $post ) {
+			return get_permalink( $post );
+		}
+	} elseif ( filter_var( $redirect, FILTER_VALIDATE_URL ) ) {
+		return $redirect;
+	}
+
+	return false;
 }
