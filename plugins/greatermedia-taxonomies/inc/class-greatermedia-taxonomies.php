@@ -15,7 +15,7 @@ class GreaterMediaTaxonomies {
 		add_action( 'init', array( $this, 'register_taxonomy_market' ) );
 		add_action( 'init', array( $this, 'register_taxonomy_format' ) );
 		add_action( 'init', array( $this, 'register_taxonomy_blog' ) );
-		add_action( 'init', array( $this, 'hide_categories_taxonomy' ) );
+		//add_action( 'init', array( $this, 'hide_categories_taxonomy' ) );
 
 	}
 
