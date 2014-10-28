@@ -48,7 +48,7 @@ class GMR_Gform {
 
 	}
 
-	function enqueue_scripts() {
+	public static function enqueue_scripts() {
 
 		// greatermedia.dev / 10uplabs apiKey
 		$dev_key = '3_e_T7jWO0Vjsd9y0WJcjnsN6KaFUBv6r3VxMKqbitvw-qKfmaUWysQKa1fra5MTb6';
