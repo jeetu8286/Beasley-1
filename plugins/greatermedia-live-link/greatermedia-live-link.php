@@ -13,9 +13,12 @@ define( 'GMR_LIVE_LINK_CPT', 'gmr-live-link' );
 add_action( 'init', 'gmr_ll_register_post_type' );
 add_action( 'save_post', 'gmr_ll_save_redirect_meta_box_data' );
 add_action( 'manage_' . GMR_LIVE_LINK_CPT . '_posts_custom_column', 'gmr_ll_render_custom_column', 10, 2 );
+add_action( 'admin_action_gmr_ll_copy', 'gmr_ll_copy_post_to_live_link' );
 
 // filter hooks
 add_filter( 'manage_' . GMR_LIVE_LINK_CPT . '_posts_columns', 'gmr_ll_filter_columns_list' );
+add_filter( 'post_row_actions', 'gmr_ll_add_post_action', 10, 2 );
+add_filter( 'page_row_actions', 'gmr_ll_add_post_action', 10, 2 );
 
 /**
  * Registers Live Link post type.
@@ -32,7 +35,7 @@ function gmr_ll_register_post_type() {
 		'can_export'           => false,
 		'menu_position'        => 5,
 		'menu_icon'            => 'dashicons-admin-links',
-		'supports'             => array( 'title', 'post-formats' ),
+		'supports'             => array( 'title', 'post-formats', 'thumbnail' ),
 		'taxonomies'           => apply_filters( 'gmr_live_link_taxonomies', array() ),
 		'register_meta_box_cb' => 'gmr_ll_register_meta_boxes',
 		'label'                => 'Live Links',
@@ -153,4 +156,72 @@ function gmr_ll_get_redirect_link( $post_id ) {
 	}
 
 	return false;
+}
+
+/**
+ * Adds "copy live link" action.
+ *
+ * @filter page_row_actions
+ * @filter post_row_actions
+ * @param array $actions The initial array of post actions.
+ * @param WP_Post $post The post object.
+ * @return array The array of post actions.
+ */
+function gmr_ll_add_post_action( $actions, WP_Post $post ) {
+	// do nothing if it is live link post type
+	if ( GMR_LIVE_LINK_CPT == $post->post_type ) {
+		return;
+	}
+
+	// add copy action 
+	$link = admin_url( 'admin.php?action=gmr_ll_copy&post_id=' . $post->ID );
+	$link = wp_nonce_url( $link, 'gmr-ll-copy' );
+
+	$actions['gmr-live-link'] = '<a href="' . esc_url( $link ) . '">Copy Live Link</a>';
+	
+	return $actions;
+}
+
+/**
+ * Copies selected post to live links list and redirects to live link edit page.
+ *
+ * @action admin_action_gmr_ll_copy
+ * @uses 'gmr_live_link_copy_post' action to perform additional action after copying.
+ */
+function gmr_ll_copy_post_to_live_link() {
+	check_admin_referer( 'gmr-ll-copy' );
+
+	$post_id = filter_input( INPUT_GET, 'post_id', FILTER_VALIDATE_INT, array( 'options' => array( 'min_range' => 1 ) ) );
+	if ( ! $post_id || ! ( $post = get_post( $post_id ) ) || $post->post_type == GMR_LIVE_LINK_CPT ) {
+		wp_die( 'The post was not found.' );
+	}
+
+	$args = array(
+		'post_status' => 'publish',
+		'post_type'   => GMR_LIVE_LINK_CPT,
+		'post_title'  => $post->post_title,
+	);
+
+	$ll_id = wp_insert_post( $args );
+	if ( $ll_id ) {
+		// set redirect anchor
+		add_post_meta( $ll_id, 'redirect', $post_id );
+
+		// copy format
+		$format = get_post_format( $post );
+		if ( ! empty( $format ) ) {
+			set_post_format( $ll_id, $format );
+		}
+
+		// copy thumbnail
+		$thumbnail_id = get_post_thumbnail_id( $post_id );
+		if ( ! empty( $thumbnail_id ) ) {
+			set_post_thumbnail( $ll_id, $thumbnail_id );
+		}
+
+		do_action( 'gmr_live_link_copy_post', $ll_id, $post_id );
+	}
+
+	wp_redirect( get_edit_post_link( $ll_id, 'redirect' ) );
+	exit;
 }
