@@ -23,6 +23,7 @@ class GreaterMediaGigyaTest {
 	public function wp_enqueue_scripts() {
 
 		if ( defined( 'GREATER_MEDIA_GIGYA_TEST_UI' ) && GREATER_MEDIA_GIGYA_TEST_UI ) {
+			wp_dequeue_script( 'gigya_socialize' );
 			wp_enqueue_script( 'liveplayer-testing', get_template_directory_uri() . '/assets/js/liveplayer_test.js', array( 'jquery' ), false, false );
 		}
 
