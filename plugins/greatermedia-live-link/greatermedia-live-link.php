@@ -10,7 +10,7 @@
 define( 'GMR_LIVE_LINK_CPT', 'gmr-live-link' );
 
 // action hooks
-add_action( 'init', 'gmr_ll_register_post_type' );
+add_action( 'init', 'gmr_ll_register_post_type', PHP_INT_MAX );
 add_action( 'save_post', 'gmr_ll_save_redirect_meta_box_data' );
 add_action( 'manage_' . GMR_LIVE_LINK_CPT . '_posts_custom_column', 'gmr_ll_render_custom_column', 10, 2 );
 add_action( 'admin_action_gmr_ll_copy', 'gmr_ll_copy_post_to_live_link' );
