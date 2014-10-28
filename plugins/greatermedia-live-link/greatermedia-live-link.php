@@ -163,14 +163,17 @@ function gmr_ll_get_redirect_link( $post_id ) {
  *
  * @filter page_row_actions
  * @filter post_row_actions
+ *
+ * @uses 'gmr_live_link_add_copy_action' to determine whether or not to add copy action.
+ *
  * @param array $actions The initial array of post actions.
  * @param WP_Post $post The post object.
  * @return array The array of post actions.
  */
 function gmr_ll_add_post_action( $actions, WP_Post $post ) {
-	// do nothing if it is live link post type
-	if ( GMR_LIVE_LINK_CPT == $post->post_type ) {
-		return;
+	// check whether or not we need to add copy link
+	if ( ! apply_filters( 'gmr_live_link_add_copy_action', GMR_LIVE_LINK_CPT != $post->post_type, $post ) ) {
+		return $actions;
 	}
 
 	// add copy action 

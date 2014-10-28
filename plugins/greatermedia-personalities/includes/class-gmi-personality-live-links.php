@@ -2,8 +2,10 @@
 
 // action hooks
 add_action( 'gmr_live_link_copy_post', 'gmrp_copy_personalities_to_live_link', 10, 2 );
+
 // filter hooks
 add_filter( 'gmr_live_link_taxonomies', 'gmrp_add_live_links_taxonomy_support' );
+add_filter( 'gmr_live_link_add_copy_action', 'gmrp_check_live_links_copy_action', 10, 2 );
 
 /**
  * Adds support of personalities taxonomy to live links post type.
@@ -30,4 +32,16 @@ function gmrp_copy_personalities_to_live_link( $ll_id, $post_id ) {
 		$terms = array_filter( (array) wp_list_pluck( $terms, 'term_id' ) );
 		wp_set_post_terms( $ll_id, $terms, GMI_Personality::SHADOW_TAX_SLUG );
 	}
+}
+
+/**
+ * Checks whether or not to add copy live link action.
+ *
+ * @filter gmr_live_link_add_copy_action
+ * @param boolean $add_copy_link Initial value.
+ * @param WP_Post $post The post object.
+ * @return boolean TRUE if we need to add a copy link, otherwise FALSE.
+ */
+function gmrp_check_live_links_copy_action( $add_copy_link, WP_Post $post ) {
+	return ! $add_copy_link ? $add_copy_link : GMI_Personality::CPT_SLUG != $post->post_type;
 }
