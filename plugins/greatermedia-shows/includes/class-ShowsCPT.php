@@ -113,6 +113,7 @@ class ShowsCPT {
 		if ( function_exists( 'TDS\add_relationship' ) ) {
 			TDS\add_relationship( 'show', self::SHADOW_TAXONOMY );
 		}
+		
 	}
 
 }
