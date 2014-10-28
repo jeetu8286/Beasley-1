@@ -121,6 +121,7 @@ class ShowsCPT {
 			TDS\add_relationship( 'show', self::SHADOW_TAXONOMY );
 >>>>>>> feature/greatermedia-shows
 		}
+		
 	}
 
 }
