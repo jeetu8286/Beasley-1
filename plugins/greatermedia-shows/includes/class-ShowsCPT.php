@@ -109,10 +109,10 @@ class ShowsCPT {
 			'tribe_events'
 			);
 
-		register_taxonomy( 'shows_shadow_taxonomy', $supported_posttypes, $args );
+		register_taxonomy( '_shows', $supported_posttypes, $args );
 
 		if( function_exists( 'TDS\add_relationship' ) ) {
-			TDS\add_relationship( 'show', 'shows_shadow_taxonomy' );
+			TDS\add_relationship( 'show', '_shows' );
 		}
 	}
 }
