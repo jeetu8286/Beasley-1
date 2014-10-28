@@ -24,10 +24,11 @@ define( 'GMEDIA_SHOWS_URL',     plugin_dir_url( __FILE__ ) );
 define( 'GMEDIA_SHOWS_PATH',    dirname( __FILE__ ) . '/' );
 
 if( is_readable( GMEDIA_SHOWS_PATH . 'includes/class-ShowsCPT.php' ) ) {
-	include_once GMEDIA_SHOWS_PATH. 'includes/class-ShowsCPT.php';
+	include_once GMEDIA_SHOWS_PATH . 'includes/class-ShowsCPT.php';
 }
 
 if( is_readable( GMEDIA_SHOWS_PATH . 'includes/class-Metaboxes.php' ) ) {
-	include_once GMEDIA_SHOWS_PATH. 'includes/class-Metaboxes.php';
+	include_once GMEDIA_SHOWS_PATH . 'includes/class-Metaboxes.php';
 }
 
+require_once GMEDIA_SHOWS_PATH . 'includes/gmi-show-live-links.php';
