@@ -11,7 +11,11 @@ if ( ! defined( 'WPINC' ) ) {
 class ShowsCPT {
 
 	const CPT_SLUG = 'show';
+<<<<<<< HEAD
 	const SHADOW_TAXONOMY = 'shows_shadow_taxonomy';
+=======
+	const SHADOW_TAXONOMY = '_shows';
+>>>>>>> feature/greatermedia-shows
 
 	public static function init() {
 		add_action( 'init', array( __CLASS__, 'register_post_type' ) );
@@ -111,7 +115,11 @@ class ShowsCPT {
 		register_taxonomy( self::SHADOW_TAXONOMY, $supported_posttypes, $args );
 
 		if ( function_exists( 'TDS\add_relationship' ) ) {
+<<<<<<< HEAD
 			TDS\add_relationship( 'show', 'shows_shadow_taxonomy' );
+=======
+			TDS\add_relationship( 'show', self::SHADOW_TAXONOMY );
+>>>>>>> feature/greatermedia-shows
 		}
 	}
 

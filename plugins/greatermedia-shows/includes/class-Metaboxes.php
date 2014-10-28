@@ -96,7 +96,7 @@ class Shows_Meta_Box {
 				$new = false;
 				$old = get_post_meta( $post_id, $field['id'], true );
 				if ( isset( $_POST[$field['id']] ) ) {
-					$new = $_POST[$field['id']];
+					$new = intval( $_POST[$field['id']] );
 				}
 				if ( isset( $new ) && $new != $old ) {
 					update_post_meta( $post_id, $field['id'], $new );
