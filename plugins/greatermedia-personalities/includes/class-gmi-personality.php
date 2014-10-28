@@ -21,10 +21,9 @@ if ( !class_exists( "GMI_Personality" ) ) {
 		protected function __construct() {
 			add_action( 'init', array( __CLASS__, 'register_personality_cpt' ) );
 			add_action( 'init', array( __CLASS__, 'register_personality_shadow_taxonomy' ) );
+			add_action( 'init', array( __CLASS__, 'associate_personality_cpt_taxonomy' ), 20 ); // after register_personality_cpt & associate_personality_cpt_taxonomy
 			add_action( 'add_meta_boxes', array( $this, 'add_personality_info_meta_box' ) );
 			add_action( 'save_post', array( __CLASS__, 'save_personality_cpt_meta_boxes' ) );
-			add_action( 'save_post', array( __CLASS__, 'update_personality_shadow_taxonomy' ) );
-			add_action( 'before_delete_post', array( __CLASS__, 'delete_personality_shadow_tax_term' ) );
 			add_filter( 'manage_' . self::CPT_SLUG . '_posts_columns', array( __CLASS__, 'custom_columns' ) );
 			add_action( 'manage_' . self::CPT_SLUG . '_posts_custom_column', array( __CLASS__, 'custom_columns_content' ), 1, 2 );
 			add_action( 'admin_enqueue_scripts', array( __CLASS__, 'admin_enqueue_scripts' ) );
@@ -108,6 +107,10 @@ if ( !class_exists( "GMI_Personality" ) ) {
 			);
 
 			register_taxonomy( self::SHADOW_TAX_SLUG, array( 'post' ), $args );
+		}
+
+		public static function associate_personality_cpt_taxonomy() {
+			TDS\add_relationship( self::CPT_SLUG, self::SHADOW_TAX_SLUG );
 		}
 
 		/**
@@ -227,74 +230,6 @@ if ( !class_exists( "GMI_Personality" ) ) {
 
 			update_post_meta( $post_id, '_personality_facebook_url', esc_url_raw( $_POST['personality_facebook_url'] ) );
 			update_post_meta( $post_id, '_personality_twitter_url', esc_url_raw( $_POST['personality_twitter_url'] ) );
-		}
-
-		/**
-		 * Keep the personlity shadow taxonomy and CPT in sync.
-		 *
-		 * @param  int $post_id The post being saved
-		 */
-		public static function update_personality_shadow_taxonomy( $post_id ) {
-			if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
-				return;
-			}
-
-			if ( self::CPT_SLUG !== get_post_type( $post_id ) ) {
-				return;
-			}
-
-			$personality = get_post( $post_id );
-
-			if ( null === $personality ) {
-				return;
-			}
-
-			if ( 'publish' != $personality->post_status ) {
-				return;
-			}
-
-			$term = get_term_by( 'slug', $personality->post_name, self::SHADOW_TAX_SLUG );
-
-			if ( false === $term ) {
-				$args = array();
-
-				// See if there is an existing post_tag with the same slug as the personality. We can't trust WordPress to do this in wp_insert_term() because it will think "This Is A Title" and "This is a Title" (small "is" and "a") are different tags.
-				$exising_term = get_term_by( 'slug', $personality->post_name, 'post_tag' );
-
-				if ( false === $exising_term) {
-					wp_insert_term( $personality->post_title, self::SHADOW_TAX_SLUG, $args );
-				} else {
-					// If there is an existing term in post_tag, use its name instead of the personality's title. This bypasses any weird matching issues in wp_insert_term();
-					wp_insert_term( $exising_term->name, self::SHADOW_TAX_SLUG, $args );
-				}
-			}
-		}
-
-		/**
-		 * Delete the matching shadow taxonomy term when the entry in the CPT is deleted.
-		 *
-		 * @param  int $post_id The post ID being deleted
-		 */
-		public static function delete_personality_shadow_tax_term( $post_id ) {
-			if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
-				return;
-			}
-
-			if ( self::CPT_SLUG !== get_post_type( $post_id ) ) {
-				return;
-			}
-
-			$personality = get_post( $post_id );
-
-			if ( null === $personality ) {
-				return;
-			}
-
-			$term = get_term_by( 'slug', $personality->post_name, self::SHADOW_TAX_SLUG );
-
-			if ( false !== $term ) {
-				wp_delete_term( $term->term_id, self::SHADOW_TAX_SLUG );
-			}
 		}
 
 		/**
