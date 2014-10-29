@@ -1,0 +1,35 @@
+/**
+ * GreaterMedia Shows
+ * http://wordpress.org/plugins
+ *
+ * Copyright (c) 2014 10up
+ * Licensed under the GPLv2+ license.
+ */
+
+ /*
+ * Meta box styles
+ */
+.form-table.meta_box h2 {
+	border-bottom:1px dashed #ccc;
+}
+
+.form-table.meta_box th label {
+	font-weight:bold;
+}
+
+.form-table.meta_box .description {
+	font-size:11px;
+	color:#777;
+	font-style:italic;
+}
+/* image */
+.meta_box_preview_image {
+	max-width:200px;
+	max-height:200px;
+	display:block;
+	margin-bottom:3px;
+}
+
+table.meta_box th {
+	width: 0;
+}
