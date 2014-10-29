@@ -244,7 +244,7 @@ class GMR_QuickPost {
 
 		add_meta_box( 'quickpost_featured_image', 'Featured Image', array( $this, 'render_featured_image_metabox' ), 'quickpost', 'side' );
 		
-		do_action( 'quickpost_add_metaboxes', 'quickpost', $post_id );
+		do_action( 'gmr_quickpost_add_metaboxes', 'quickpost', $post_id );
 
 		_wp_admin_html_begin(); ?>
 				<title><?php _e('Quick Post') ?></title>
@@ -918,7 +918,7 @@ class GMR_QuickPost {
 				}
 			}
 
-			$post_ID = wp_update_post( $post );
+			$post_ID = wp_update_post( apply_filters( 'gmr_quickpost_post_data', $post ) );
 		}
 
 		return $post_ID;
