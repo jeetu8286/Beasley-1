@@ -505,6 +505,8 @@ class GMR_QuickPost {
 												</p><?php
 											endif;
 										endif;
+
+										do_action( 'gmr_quickpost_submitbox_misc_actions', $post );
 									?></div>
 								</div>
 
@@ -839,9 +841,9 @@ class GMR_QuickPost {
 	private function _save_quick_post() {
 		$post = get_default_post_to_edit( 'post' );
 		$post = get_object_vars( $post );
-		$post_ID = $post['ID'] = (int) $_POST['post_id'];
+		$post_id = $post['ID'] = (int) $_POST['post_id'];
 
-		if ( ! current_user_can( 'edit_post', $post_ID ) ) {
+		if ( ! current_user_can( 'edit_post', $post_id ) ) {
 			wp_die( __( 'You are not allowed to edit this post.' ) );
 		}
 
@@ -857,7 +859,7 @@ class GMR_QuickPost {
 					// See if files exist in content - we don't want to upload non-used selected files.
 					if ( strpos( $_POST['content'], htmlspecialchars( $image ) ) !== false ) {
 						$desc = isset( $_POST['photo_description'][$key] ) ? $_POST['photo_description'][$key] : '';
-						$upload = media_sideload_image( $image, $post_ID, $desc );
+						$upload = media_sideload_image( $image, $post_id, $desc );
 
 						// Replace the POSTED content <img> with correct uploaded ones. Regex contains fix for Magic Quotes
 						if ( !is_wp_error( $upload ) ) {
@@ -880,9 +882,9 @@ class GMR_QuickPost {
 				}
 
 				if ( ! is_wp_error( $file_array['tmp_name'] ) ) {
-					$id = media_handle_sideload( $file_array, $post_ID, '' );
+					$id = media_handle_sideload( $file_array, $post_id, '' );
 					if ( ! is_wp_error( $id ) ) {
-						set_post_thumbnail( $post_ID, $id );
+						set_post_thumbnail( $post_id, $id );
 					}
 				}
 			}
@@ -900,22 +902,24 @@ class GMR_QuickPost {
 
 		// Error handling for media_sideload.
 		if ( is_wp_error( $upload ) ) {
-			wp_delete_post( $post_ID );
+			wp_delete_post( $post_id );
 			wp_die( $upload );
-		} else {
-			// Post formats.
-			if ( isset( $_POST['post_format'] ) ) {
-				if ( current_theme_supports( 'post-formats', $_POST['post_format'] ) ) {
-					set_post_format( $post_ID, $_POST['post_format'] );
-				} elseif ( '0' == $_POST['post_format'] ) {
-					set_post_format( $post_ID, false );
-				}
-			}
-
-			$post_ID = wp_update_post( apply_filters( 'gmr_quickpost_post_data', $post ) );
 		}
 
-		return $post_ID;
+		// Post formats.
+		if ( isset( $_POST['post_format'] ) ) {
+			if ( current_theme_supports( 'post-formats', $_POST['post_format'] ) ) {
+				set_post_format( $post_id, $_POST['post_format'] );
+			} elseif ( '0' == $_POST['post_format'] ) {
+				set_post_format( $post_id, false );
+			}
+		}
+
+		$post_id = wp_update_post( apply_filters( 'gmr_quickpost_post_data', $post ) );
+		
+		do_action( 'gmr_quickpost_post_created', $post_id );
+
+		return $post_id;
 	}
 
 	/**
