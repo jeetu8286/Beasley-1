@@ -45,7 +45,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 include 'includes/class-gmi-personality.php';
-include 'includes/class-gmi-personality-quickpost.php';
+include 'includes/gmi-personality-quickpost.php';
 
 /**
  * Default initialization for the plugin:
