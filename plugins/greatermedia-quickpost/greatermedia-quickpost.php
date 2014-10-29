@@ -224,9 +224,11 @@ class GMR_QuickPost {
 		// process ajax requests
 		$this->_process_ajax_request( $title, $selection, $image, $url );
 		// process submitted posts.
+		$saved = false;
 		if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 			check_admin_referer( 'quickpost' );
-			$posted = $post_id = $this->_save_quick_post();
+			$this->_save_quick_post();
+			$saved = true;
 		} else {
 			$post = get_default_post_to_edit( 'post', true );
 			$post_id = $post->ID;
@@ -248,6 +250,10 @@ class GMR_QuickPost {
 
 		_wp_admin_html_begin(); ?>
 				<title><?php _e('Quick Post') ?></title>
+
+				<?php if ( $saved ) : ?>
+					<script type="text/javascript">window.close();</script>
+				<?php endif; ?>
 
 				<style type="text/css" media="screen">
 					#quickpost-featured-image {
@@ -517,18 +523,6 @@ class GMR_QuickPost {
 									</a>
 								</h1>
 							</div>
-
-							<?php if ( isset( $posted ) && intval( $posted ) ) : ?>
-								<?php $post_id = intval( $posted ); ?>
-								<div id="message" class="updated">
-									<p>
-										<strong><?php _e( 'Your post has been saved.' ); ?></strong>
-										<a onclick="window.opener.location.replace(this.href); window.close();" href="<?php echo get_permalink( $post_id ); ?>"><?php _e( 'View post' ); ?></a>
-										| <a href="<?php echo get_edit_post_link( $post_id ); ?>" onclick="window.opener.location.replace(this.href); window.close();"><?php _e( 'Edit Post' ); ?></a>
-										| <a href="#" onclick="window.close();"><?php _e( 'Close Window' ); ?></a>
-									</p>
-								</div>
-							<?php endif; ?>
 
 							<div id="titlediv">
 								<div class="titlewrap">
