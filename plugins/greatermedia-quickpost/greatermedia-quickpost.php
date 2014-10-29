@@ -229,10 +229,10 @@ class GMR_QuickPost {
 			check_admin_referer( 'quickpost' );
 			$this->_save_quick_post();
 			$saved = true;
-		} else {
-			$post = get_default_post_to_edit( 'post', true );
-			$post_id = $post->ID;
 		}
+
+		$post = get_default_post_to_edit( 'post', ! $saved );
+		$post_id = $post->ID;
 
 		wp_enqueue_style( 'colors' );
 		wp_enqueue_script( 'post' );
@@ -464,19 +464,7 @@ class GMR_QuickPost {
 								<div id="submitdiv" class="postbox">
 									<div class="handlediv" title="<?php esc_attr_e( 'Click to toggle' ); ?>"><br /></div>
 									<h3 class="hndle"><?php _e( 'Quick Post' ) ?></h3>
-									<div class="inside">
-										<p id="publishing-actions">
-											<?php submit_button( __( 'Save Draft' ), 'button', 'draft', false, array( 'id' => 'save' ) ); ?>
-											<?php
-												if ( current_user_can( 'publish_posts' ) ) {
-													submit_button( __( 'Publish' ), 'primary', 'publish', false );
-												} else {
-													echo '<br><br>';
-													submit_button( __( 'Submit for Review' ), 'primary', 'review', false );
-												}
-											?>
-											<span class="spinner" style="display: none;"></span>
-										</p><?php
+									<div class="inside"><?php
 
 										if ( current_theme_supports( 'post-formats' ) ) :
 											$post_formats = get_theme_support( 'post-formats' );
@@ -507,7 +495,20 @@ class GMR_QuickPost {
 										endif;
 
 										do_action( 'gmr_quickpost_submitbox_misc_actions', $post );
-									?></div>
+
+										?><p id="publishing-actions">
+											<?php submit_button( __( 'Save Draft' ), 'button', 'draft', false, array( 'id' => 'save' ) ); ?>
+											<?php
+												if ( current_user_can( 'publish_posts' ) ) {
+													submit_button( __( 'Publish' ), 'primary', 'publish', false );
+												} else {
+													echo '<br><br>';
+													submit_button( __( 'Submit for Review' ), 'primary', 'review', false );
+												}
+											?>
+											<span class="spinner" style="display: none;"></span>
+										</p>
+									</div>
 								</div>
 
 								<?php do_meta_boxes( 'quickpost', 'side', array(
