@@ -44,8 +44,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( "Please don't try to access this file directly." );
 }
 
-include __DIR__ . '/includes/class-gmi-personality.php';
-include __DIR__ . '/includes/gmi-personality-live-links.php';
+include 'includes/class-gmi-personality.php';
+include 'includes/gmi-personality-live-links.php';
+include 'includes/gmi-personality-quickpost.php';
 
 /**
  * Default initialization for the plugin:
@@ -79,7 +80,3 @@ register_deactivation_hook( __FILE__, 'gmi_personality_deactivate' );
 
 // Wireup actions
 add_action( 'init', 'gmi_personality_init' );
-
-// Wireup filters
-
-// Wireup shortcodes

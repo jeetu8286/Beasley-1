@@ -13,12 +13,28 @@ define( 'GMR_LIVE_LINK_CPT', 'gmr-live-link' );
 add_action( 'init', 'gmr_ll_register_post_type', PHP_INT_MAX );
 add_action( 'save_post', 'gmr_ll_save_redirect_meta_box_data' );
 add_action( 'manage_' . GMR_LIVE_LINK_CPT . '_posts_custom_column', 'gmr_ll_render_custom_column', 10, 2 );
-add_action( 'admin_action_gmr_ll_copy', 'gmr_ll_copy_post_to_live_link' );
+add_action( 'admin_action_gmr_ll_copy', 'gmr_ll_handle_copy_post_to_live_link' );
+add_action( 'gmr_quickpost_submitbox_misc_actions', 'gmr_ll_add_quickpost_checkbox' );
+add_action( 'gmr_quickpost_post_created', 'gmr_ll_create_quickpost_live_link' );
 
 // filter hooks
 add_filter( 'manage_' . GMR_LIVE_LINK_CPT . '_posts_columns', 'gmr_ll_filter_columns_list' );
 add_filter( 'post_row_actions', 'gmr_ll_add_post_action', 10, 2 );
 add_filter( 'page_row_actions', 'gmr_ll_add_post_action', 10, 2 );
+
+/**
+ * Adds checkbox to create live link to quickpost popup form.
+ *
+ * @action gmr_quickpost_submitbox_misc_actions
+ */
+function gmr_ll_add_quickpost_checkbox() {
+	?><p>
+		<label>
+			Create Live Link: 
+			<input type="checkbox" name="gmr_create_live_link" value="1">
+		</label>
+	</p><?php
+}
 
 /**
  * Registers Live Link post type.
@@ -191,7 +207,7 @@ function gmr_ll_add_post_action( $actions, WP_Post $post ) {
  * @action admin_action_gmr_ll_copy
  * @uses 'gmr_live_link_copy_post' action to perform additional action after copying.
  */
-function gmr_ll_copy_post_to_live_link() {
+function gmr_ll_handle_copy_post_to_live_link() {
 	check_admin_referer( 'gmr-ll-copy' );
 
 	$post_id = filter_input( INPUT_GET, 'post_id', FILTER_VALIDATE_INT, array( 'options' => array( 'min_range' => 1 ) ) );
@@ -199,6 +215,35 @@ function gmr_ll_copy_post_to_live_link() {
 		wp_die( 'The post was not found.' );
 	}
 
+	$ll_id = gmr_ll_copy_post_to_live_link( $post );
+	wp_redirect( get_edit_post_link( $ll_id, 'redirect' ) );
+	exit;
+}
+
+/**
+ * Creates live link for a post created via quickpost form.
+ *
+ * @action gmr_quickpost_post_created
+ * @param int $post_id The new post id.
+ */
+function gmr_ll_create_quickpost_live_link( $post_id ) {
+	if ( filter_input( INPUT_POST, 'gmr_create_live_link', FILTER_VALIDATE_BOOLEAN ) ) {
+		gmr_ll_copy_post_to_live_link( $post_id );
+	}
+}
+
+/**
+ * Copies post to live link.
+ *
+ * @param int $post_id The post id.
+ * @return int The live link id.
+ */
+function gmr_ll_copy_post_to_live_link( $post_id ) {
+	$post = get_post( $post_id );
+	if ( $post->post_type == GMR_LIVE_LINK_CPT ) {
+		return false;
+	}
+	
 	$args = array(
 		'post_status' => 'publish',
 		'post_type'   => GMR_LIVE_LINK_CPT,
@@ -225,6 +270,5 @@ function gmr_ll_copy_post_to_live_link() {
 		do_action( 'gmr_live_link_copy_post', $ll_id, $post_id );
 	}
 
-	wp_redirect( get_edit_post_link( $ll_id, 'redirect' ) );
-	exit;
+	return $ll_id;
 }
