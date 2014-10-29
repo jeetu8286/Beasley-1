@@ -124,13 +124,11 @@ class GreaterMediaLiveFyreMediaWallAdmin {
 		// Make sure that it is set.
 		if ( isset( $_POST['media_wall_id'] ) ) {
 			$media_wall_id = sanitize_text_field( $_POST['media_wall_id'] );
-			delete_post_meta( $post_id, 'media_wall_id' );
 			update_post_meta( $post_id, 'media_wall_id', $media_wall_id );
 		}
 
 		if ( isset( $_POST['media_wall_initial'] ) ) {
 			$media_wall_initial = absint( $_POST['media_wall_initial'] );
-			delete_post_meta( $post_id, 'media_wall_initial' );
 			update_post_meta( $post_id, 'media_wall_initial', $media_wall_initial );
 		}
 
@@ -139,25 +137,21 @@ class GreaterMediaLiveFyreMediaWallAdmin {
 			if ( ! in_array( $media_wall_responsive, array( 'columns', 'min-width' ) ) ) {
 				$media_wall_responsive = 'min-width';
 			}
-			delete_post_meta( $post_id, 'media_wall_responsive' );
 			update_post_meta( $post_id, 'media_wall_responsive', $media_wall_responsive );
 		}
 
 		if ( isset( $_POST['media_wall_columns'] ) ) {
 			$media_wall_columns = absint( $_POST['media_wall_columns'] );
-			delete_post_meta( $post_id, 'media_wall_columns' );
 			update_post_meta( $post_id, 'media_wall_columns', $media_wall_columns );
 		}
 
 		if ( isset( $_POST['media_wall_min_width'] ) ) {
 			$media_wall_min_width = absint( $_POST['media_wall_min_width'] );
-			delete_post_meta( $post_id, 'media_wall_min_width' );
 			update_post_meta( $post_id, 'media_wall_min_width', $media_wall_min_width );
 		}
 
 		if ( isset( $_POST['media_wall_allow_modal'] ) ) {
 			$media_wall_modal = sanitize_text_field( $_POST['media_wall_allow_modal'] );
-			delete_post_meta( $post_id, 'media_wall_allow_modal' );
 			update_post_meta( $post_id, 'media_wall_allow_modal', $media_wall_modal );
 		}
 
@@ -233,3 +227,4 @@ class GreaterMediaLiveFyreMediaWallAdmin {
 }
 
 $GreaterMediaLiveFyreMediaWallAdmin = new GreaterMediaLiveFyreMediaWallAdmin();
+
