@@ -45,6 +45,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 include 'includes/class-gmi-personality.php';
+include 'includes/gmi-personality-live-links.php';
 include 'includes/gmi-personality-quickpost.php';
 
 /**
