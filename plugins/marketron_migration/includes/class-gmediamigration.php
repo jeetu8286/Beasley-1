@@ -1770,94 +1770,87 @@ class GMedia_Migration extends WP_CLI_Command {
 
 			update_post_meta( $wp_id, 'gmedia_import_id', $survey_id );
 
-
-			// register hidden post type for qestions
-			//$this->check_and_add_cpt('question');
-
-			$menu_order = 0;
+			$questions = array();
+			$order = 0;
 			foreach( $survey->Questions->Question as $question ) {
-				$question_args = array(
-					'post_status'           => 'publish',
-					'post_type'             => 'question',
-					'post_parent'           => $wp_id,
-					'menu_order'            => $menu_order,
-					'post_title'            => isset( $question['FieldLabel']) ? (string) $question['FieldLabel'] : (string) $question['QuestionText'],
+
+				$required = (string) $question['isRequired'] ? true : false;
+				$label = (string) $question['FieldLabel'];
+				$description = (string) $question['QuestionText'];
+				$cid = $order;
+				$field_options = array();
+				switch((string) $question['InputStyle']) {
+					case 'Text Box':
+						$field_type = "text";
+						$field_options = array(
+							"size" => "small",
+							"minlength" => "1",
+							"maxlength" => "1000000",
+							"include_blank_option" => true,
+							"description" => $description
+						);
+						break;
+					case 'Calendar':
+						$field_type = "date";
+						$field_options = array(
+							"description" => $description
+						);
+						break;
+					case 'Checkboxes':
+					case 'Buttons':
+						$field_type = "dropdown";
+						$options = array();
+						foreach( $question->Option as $option ) {
+							$options[] = array(
+								'label' => sanitize_text_field( (string) $option['Value'] ),
+								'checked' => sanitize_text_field( (string) $option['isCheckedByDefault'] ),
+							);
+						}
+						$field_options = array(
+							"options" => $options,
+							"include_blank_option" => true,
+							"description" => $description
+						);
+						break;
+					default:
+						$field_type = "text";
+						break;
+				}
+
+				$questions[] = array(
+					"label" => $label,
+					"field_type"=> $field_type,
+					"required" => $required,
+					"field_options" => $field_options,
+					"cid"=> $cid
 				);
 
-				$question_id = wp_insert_post( $question_args );
-
-				if( $question_id ) {
-					update_post_meta( $question_id, 'parent_survey_old_id', $survey_id );
-					if( isset($question['isRequired']) ) {
-						update_post_meta( $question_id, '_legacy_isRequired', (string) $question['isRequired'] );
-					}
-					if( isset($question['InputStyle']) ) {
-						update_post_meta( $question_id, '_legacy_InputStyle', (string) $question['InputStyle'] );
-					}
-					if( isset($question['QuestionText']) ) {
-						update_post_meta( $question_id, '_legacy_QuestionText', esc_html( (string) $question['QuestionText'] ) );
-					}
-
-					$option_number = 0;
-					$options = array();
-					foreach( $question->Option as $option ) {
-						$options[] = sanitize_text_field( (string) $option['Value'] );
-						$option_number++;
-					}
-					update_post_meta( $question_id, '_legacy_option_values', $options );
-
-					// keep question id with menu order to add as parent for answer
-					update_post_meta( $wp_id, 'question_id_' . $menu_order , $question_id );
-
-					//Keep questino "id"
-					update_post_meta( $question_id, '_legacy_QuestionID_' . $question_id, (string) $question['QuestionID'] );
-				}
-				$menu_order++;
+				$order++;
 			}
 
-			// register hidden post type for responses
-			//$this->check_and_add_cpt('response');
+			update_post_meta( $wp_id, 'embedded_form', json_encode( $questions ) );
 
-
+			$responses = array();
 			foreach( $survey->Responses->Response as $response ) {
 
-				$menu_order = 0;
-
+				$order = 0;
 				foreach( $response->Answer as $answer ) {
-
-					// get parent question id
-					$question_id = get_post_meta( $wp_id, 'question_id_' . $menu_order , true );
-					$legacy_questionid = get_post_meta( $question_id, '_legacy_QuestionID_' . $question_id , true );
-
-					while( $legacy_questionid != (string) $answer['QuestionID'] ) {
-						$menu_order++;
-						$question_id = get_post_meta( $wp_id, 'question_id_' . $menu_order , true );
-						$legacy_questionid = get_post_meta( $question_id, '_legacy_QuestionID_' . $question_id , true );
-						//WP_CLI::log( $legacy_questionid . " != " . (string) $answer['QuestionID'] );
-					}
-
-					$response_args = array(
-						'post_status'           => 'publish',
-						'post_type'             => 'response',
-						'post_parent'           => $question_id,
-						'post_title'            => (string) $answer['AnswerValue'],
+					$cid = $order;
+					$answers[] = array(
+						'value' => (string) $answer['isCheckedByDefault'],
+						'cid' => $cid
 					);
-
-					$response_id = wp_insert_post( $response_args );
-
-					if( $response_id ) {
-						if( isset($answer['QuestionID']) ) {
-							update_post_meta( $response_id, '_legacy_QuestionID', (string) $answer['QuestionID'] );
-						}
-
-						if( isset($response['UTCCompletionDate']) ){
-							update_post_meta( $response_id, '_legacy_UTCCompletionDate', (string) $response['UTCCompletionDate'] );
-						}
-					}
-					$menu_order++;
+					$order++;
 				}
+				$responses[] = array(
+					'date' => strtotime((string) $answer['UTCCompletionDate']),
+					'answers' => $answers
+				);
 				$progress->tick();
 			}
+
+			update_post_meta( $wp_id, 'embedded_form_responses', json_encode( $responses ) );
+
 			$progress->finish();
 			$notify->tick();
 		}
