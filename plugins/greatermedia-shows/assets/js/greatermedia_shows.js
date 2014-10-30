@@ -16,7 +16,7 @@
 
 	"use strict";
 
-	jQuery(function() {
+	$(function() {
 
 		// the upload image button, saves the id and outputs a preview of the image
 		var imageFrame;
