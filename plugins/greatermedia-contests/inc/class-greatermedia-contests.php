@@ -15,6 +15,7 @@ class GreaterMediaContests {
 
 		add_action( 'init', array( $this, 'register_contest_post_type' ) );
 		add_action( 'init', array( $this, 'register_contest_type_taxonomy' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 
 	}
 
@@ -60,6 +61,7 @@ class GreaterMediaContests {
 		);
 
 		register_post_type( 'contest', $args );
+		add_post_type_support( 'contest', 'timed-content' );
 
 	}
 
@@ -144,6 +146,9 @@ class GreaterMediaContests {
 
 	}
 
+	public function admin_enqueue_scripts() {
+		wp_enqueue_style( 'greatermedia-contests', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'css/greatermedia-contests.css' );
+	}
 }
 
 $GreaterMediaContests = new GreaterMediaContests();

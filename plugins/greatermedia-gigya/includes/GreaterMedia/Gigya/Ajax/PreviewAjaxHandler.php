@@ -45,7 +45,7 @@ class PreviewAjaxHandler extends AjaxHandler {
 		$i        = 0;
 
 		foreach ( $json['results'] as $account ) {
-			$accounts[] = $account['profile']['email'];
+			$accounts[] = array( 'email' => $account['profile']['email'] );
 			if ( ++$i >= 5 ) {
 				break;
 			}

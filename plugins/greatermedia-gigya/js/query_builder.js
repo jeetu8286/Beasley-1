@@ -1,216 +1,3 @@
-this["JST"] = this["JST"] || {};
-
-this["JST"]["src/templates/constraint_item.jst"] = function(obj) {
-obj || (obj = {});
-var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
-function print() { __p += __j.call(arguments, '') }
-with (obj) {
-__p += '<li>\n\t<ul class="constraint-toolbar">\n\t\t<li>\n\t\t\t<a\n\t\t\t\tdata-id="' +
-__e( constraint.id ) +
-'"\n\t\t\t\talt="f105"\n\t\t\t\tclass="dashicons dashicons-admin-page copy-constraint"\n\t\t\t\thref="#"\n\t\t\t\ttitle="Duplicate"\n\t\t\t/>\n\n\t\t\t<a\n\t\t\t\tdata-id="' +
-__e( constraint.id ) +
-'"\n\t\t\t\talt="f105"\n\t\t\t\tclass="dashicons dashicons-trash remove-constraint"\n\t\t\t\thref="#"\n\t\t\t\ttitle="Remove"\n\t\t\t/>\n\t\t</li>\n\t</ul>\n\n\t<p class="constraint-title">\n\t\t' +
-__e( constraint.title ) +
-'\n\t</p>\n\n\t<select data-id="' +
-__e( constraint.id ) +
-'" class="constraint-operator">\n\t\t';
- _.each(view.operatorsFor(constraint.valueType), function(operator) { ;
-__p += '\n\t\t<option value="' +
-__e( operator ) +
-'" ' +
-((__t = ( constraint.operator === operator ? 'selected="selected"' : ''  )) == null ? '' : __t) +
-'">\n\t\t' +
-__e( view.operatorLabelFor(operator) ) +
-'\n\t\t</option>\n\t\t';
- }) ;
-__p += '\n\t</select>\n\n\t<input\n\t\ttype="text"\n\t\tclass="constraint-value"\n\t\tdata-id="' +
-__e( constraint.id ) +
-'"\n\t\tvalue="' +
-__e( constraint.value ) +
-'" />\n\n\t<select data-id="' +
-__e( constraint.id ) +
-'" class="constraint-conjunction">\n\t\t';
- _.each(view.conjunctions, function(conjunction) { ;
-__p += '\n\t\t<option value="' +
-__e( conjunction ) +
-'" ' +
-((__t = ( constraint.conjunction === conjunction ? 'selected="selected"' : ''  )) == null ? '' : __t) +
-'">\n\t\t' +
-__e( conjunction ) +
-'\n\t\t</option>\n\t\t';
- }) ;
-__p += '\n\t</select>\n</li>\n';
-
-}
-return __p
-};
-
-this["JST"]["src/templates/constraints_menu.jst"] = function(obj) {
-obj || (obj = {});
-var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
-function print() { __p += __j.call(arguments, '') }
-with (obj) {
-
- _.each(constraints, function(constraint, index) { ;
-__p += '\n\t<li>\n\t\t<a\n\t\t\tdata-id="' +
-__e( index ) +
-'"\n\t\t\ttitle="Click to add" href="#" >\n\t\t\t' +
-__e( constraint.title ) +
-'\n\t\t</a>\n\t</li>\n';
- }) ;
-__p += '\n';
-
-}
-return __p
-};
-
-this["JST"]["src/templates/empty_constraints.jst"] = function(obj) {
-obj || (obj = {});
-var __t, __p = '', __e = _.escape;
-with (obj) {
-__p += '<li>\n\t<p class="constraint-empty">Click to add filters</p>\n</li>\n';
-
-}
-return __p
-};
-
-this["JST"]["src/templates/entry_answer.jst"] = function(obj) {
-obj || (obj = {});
-var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
-function print() { __p += __j.call(arguments, '') }
-with (obj) {
-
- if (answerType === 'choice') { ;
-__p += '\n\t<select id="constraint-value-select-' +
-__e( constraint.id ) +
-'" style="width: 40%">\n\t';
- _.each(choices, function(choice, index) { ;
-__p += '\n\t\t<option value="' +
-__e( choice.value ) +
-'" ' +
-((__t = ( index === currentChoice ? 'selected="selected"' : ''  )) == null ? '' : __t) +
-'">\n\t\t' +
-__e( choice.label ) +
-'\n\t\t</option>\n\t';
- }); ;
-__p += '\n\t</select>\n';
- } else { ;
-__p += '\n\t<input\n\t\ttype="text"\n\t\tclass="constraint-value"\n\t\tdata-id="' +
-__e( constraint.id ) +
-'"\n\t\tid="constraint-value-input-' +
-__e( constraint.id ) +
-'"\n\t\tvalue="' +
-__e( constraint.value ) +
-'" />\n';
- } ;
-__p += '\n\n';
-
-}
-return __p
-};
-
-this["JST"]["src/templates/entry_constraint_item.jst"] = function(obj) {
-obj || (obj = {});
-var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
-function print() { __p += __j.call(arguments, '') }
-with (obj) {
-__p += '<li>\n\t<ul class="constraint-toolbar">\n\t\t<li>\n\t\t\t<a\n\t\t\t\tdata-id="' +
-__e( constraint.id ) +
-'"\n\t\t\t\talt="f105"\n\t\t\t\tclass="dashicons dashicons-admin-page copy-constraint"\n\t\t\t\thref="#"\n\t\t\t\ttitle="Duplicate"\n\t\t\t/>\n\n\t\t\t<a\n\t\t\t\tdata-id="' +
-__e( constraint.id ) +
-'"\n\t\t\t\talt="f105"\n\t\t\t\tclass="dashicons dashicons-trash remove-constraint"\n\t\t\t\thref="#"\n\t\t\t\ttitle="Remove"\n\t\t\t/>\n\t\t</li>\n\t</ul>\n\n\t<p class="constraint-title">\n\t\t' +
-__e( constraint.title ) +
-'\n\t</p>\n\n\t<div class="entry-select-group">\n\t\t<label><strong>Select Contest: </strong></label>\n\t\t<select class="entry-select-choice" id="entry-select-type-' +
-__e( constraint.id ) +
-'">\n\t\t</select>\n\t</div>\n\n\t<div class="entry-select-group">\n\t\t<label><strong>Select Question: </strong></label>\n\t\t<select class="entry-select-choice" id="entry-select-field-' +
-__e( constraint.id ) +
-'">\n\t\t</select>\n\t</div>\n\n\t<div class="entry-answer-group">\n\t\t<label><strong>Select Answer: </strong></label>\n\t\t<select data-id="' +
-__e( constraint.id ) +
-'" class="constraint-operator">\n\t\t\t';
- _.each(view.operatorsFor(constraint.valueType), function(operator) { ;
-__p += '\n\t\t\t<option value="' +
-__e( operator ) +
-'" ' +
-((__t = ( constraint.operator === operator ? 'selected="selected"' : ''  )) == null ? '' : __t) +
-'">\n\t\t\t' +
-__e( view.operatorLabelFor(operator) ) +
-'\n\t\t\t</option>\n\t\t\t';
- }) ;
-__p += '\n\t\t</select>\n\n\t\t<div id="entry-answer-' +
-__e( constraint.id ) +
-'" style="display: inline">\n\t\t</div>\n\n\t\t<select data-id="' +
-__e( constraint.id ) +
-'" class="constraint-conjunction">\n\t\t\t';
- _.each(view.conjunctions, function(conjunction) { ;
-__p += '\n\t\t\t<option value="' +
-__e( conjunction ) +
-'" ' +
-((__t = ( constraint.conjunction === conjunction ? 'selected="selected"' : ''  )) == null ? '' : __t) +
-'">\n\t\t\t' +
-__e( conjunction ) +
-'\n\t\t\t</option>\n\t\t\t';
- }) ;
-__p += '\n\t\t</select>\n\t</div>\n</li>\n';
-
-}
-return __p
-};
-
-this["JST"]["src/templates/entry_select.jst"] = function(obj) {
-obj || (obj = {});
-var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
-function print() { __p += __j.call(arguments, '') }
-with (obj) {
-
- _.each(choices, function(choice, index) { ;
-__p += '\n\t<option value="' +
-__e( choice.value ) +
-'" ' +
-((__t = ( index === currentChoice ? 'selected="selected"' : ''  )) == null ? '' : __t) +
-'">\n\t' +
-__e( choice.label ) +
-'\n\t</option>\n';
- }); ;
-__p += '\n';
-
-}
-return __p
-};
-
-this["JST"]["src/templates/entry_select_type.jst"] = function(obj) {
-obj || (obj = {});
-var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
-function print() { __p += __j.call(arguments, '') }
-with (obj) {
-
- _.each(choices, function(choice) { ;
-__p += '\n\t<option value="' +
-__e( choice ) +
-'" ' +
-((__t = ( choice === currentChoice ? 'selected="selected"' : ''  )) == null ? '' : __t) +
-'">\n\t' +
-__e( choice ) +
-'\n\t</option>\n';
- }); ;
-__p += '\n';
-
-}
-return __p
-};
-
-this["JST"]["src/templates/preview_result_row.jst"] = function(obj) {
-obj || (obj = {});
-var __t, __p = '', __e = _.escape;
-with (obj) {
-__p += '<tr class="' +
-__e( index % 2 ? 'alternate' : '' ) +
-'">\n\t<td>\n\t\t<a href="#" class="open-member-page-text">' +
-__e( account ) +
-'</a>\n\t\t<a href="#" alt="f105" class="dashicons dashicons-external open-member-page"></a>\n\t</td>\n</tr>\n';
-
-}
-return __p
-};
 var escapeValue = function(source) {
 	if (typeof(source) === 'string') {
 		source = source.replace(/"/g, 'C_DOUBLE_QUOTE');
@@ -302,797 +89,1315 @@ WpAjaxApi.prototype = {
 };
 
 
-var Constraint = function(properties) {
-	this.id = Constraint.nextID();
+this["JST"] = this["JST"] || {};
 
-	if (properties) {
-		for (var property in properties) {
-			if (properties.hasOwnProperty(property)) {
-				this[property] = properties[property];
-			}
-		}
+this["JST"]["src/templates/constraint.jst"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
+with (obj) {
+__p += '<ul class="constraint-toolbar">\n\t<li>\n\t\t<a\n\t\t\talt="f105"\n\t\t\tclass="dashicons dashicons-admin-page copy-constraint"\n\t\t\thref="#"\n\t\t\ttitle="Duplicate"\n\t\t/>\n\n\t\t<a\n\t\t\talt="f105"\n\t\t\tclass="dashicons dashicons-trash remove-constraint"\n\t\t\thref="#"\n\t\t\ttitle="Remove"\n\t\t/>\n\t</li>\n</ul>\n\n<p class="constraint-title">\n\t' +
+__e( title ) +
+'\n</p>\n\n<select class="constraint-operator" style="width: 35%">\n\t';
+ _.each(view.operatorsFor(valueType), function(operatorItem) { ;
+__p += '\n\t<option value="' +
+__e( operatorItem ) +
+'" ' +
+((__t = ( operatorItem === operator ? 'selected="selected"' : ''  )) == null ? '' : __t) +
+'">\n\t' +
+__e( operatorItem ) +
+'\n\t</option>\n\t';
+ }) ;
+__p += '\n</select>\n\n';
+ if (view.hasChoices()) { ;
+__p += '\n\t<select class="constraint-value" style="width: 45%">\n\t\t';
+ _.each(choices, function(choiceItem) { ;
+__p += '\n\t\t<option value="' +
+__e( choiceItem.value ) +
+'" ' +
+((__t = ( choiceItem.value === value ? 'selected="selected"' : ''  )) == null ? '' : __t) +
+'">\n\t\t' +
+__e( choiceItem.label ) +
+'\n\t\t</option>\n\t\t';
+ }) ;
+__p += '\n\t</select>\n';
+ } else if (valueType === 'integer' || valueType === 'float') { ;
+__p += '\n\t<input type="number" class="constraint-value constraint-value-text" value="' +
+__e( value ) +
+'" />\n';
+ } else { ;
+__p += '\n\t<input type="text" class="constraint-value constraint-value-text" value="' +
+__e( value ) +
+'" />\n';
+ } ;
+__p += '\n\n<select class="constraint-conjunction" style="width: 15%">\n\t';
+ _.each(view.conjunctions, function(conjunctionItem) { ;
+__p += '\n\t<option value="' +
+__e( conjunctionItem ) +
+'" ' +
+((__t = ( conjunctionItem === conjunction ? 'selected="selected"' : ''  )) == null ? '' : __t) +
+'">\n\t' +
+__e( conjunctionItem ) +
+'\n\t</option>\n\t';
+ }) ;
+__p += '\n</select>\n';
+
+}
+return __p
+};
+
+this["JST"]["src/templates/constraint_item.jst"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
+with (obj) {
+__p += '<li>\n\t<ul class="constraint-toolbar">\n\t\t<li>\n\t\t\t<a\n\t\t\t\tdata-id="' +
+__e( constraint.id ) +
+'"\n\t\t\t\talt="f105"\n\t\t\t\tclass="dashicons dashicons-admin-page copy-constraint"\n\t\t\t\thref="#"\n\t\t\t\ttitle="Duplicate"\n\t\t\t/>\n\n\t\t\t<a\n\t\t\t\tdata-id="' +
+__e( constraint.id ) +
+'"\n\t\t\t\talt="f105"\n\t\t\t\tclass="dashicons dashicons-trash remove-constraint"\n\t\t\t\thref="#"\n\t\t\t\ttitle="Remove"\n\t\t\t/>\n\t\t</li>\n\t</ul>\n\n\t<p class="constraint-title">\n\t\t' +
+__e( constraint.title ) +
+'\n\t</p>\n\n\t<select data-id="' +
+__e( constraint.id ) +
+'" class="constraint-operator">\n\t\t';
+ _.each(view.operatorsFor(constraint.valueType), function(operator) { ;
+__p += '\n\t\t<option value="' +
+__e( operator ) +
+'" ' +
+((__t = ( constraint.operator === operator ? 'selected="selected"' : ''  )) == null ? '' : __t) +
+'">\n\t\t' +
+__e( view.operatorLabelFor(operator) ) +
+'\n\t\t</option>\n\t\t';
+ }) ;
+__p += '\n\t</select>\n\n\t<input\n\t\ttype="text"\n\t\tclass="constraint-value"\n\t\tdata-id="' +
+__e( constraint.id ) +
+'"\n\t\tvalue="' +
+__e( constraint.value ) +
+'" />\n\n\t<select data-id="' +
+__e( constraint.id ) +
+'" class="constraint-conjunction">\n\t\t';
+ _.each(view.conjunctions, function(conjunction) { ;
+__p += '\n\t\t<option value="' +
+__e( conjunction ) +
+'" ' +
+((__t = ( constraint.conjunction === conjunction ? 'selected="selected"' : ''  )) == null ? '' : __t) +
+'">\n\t\t' +
+__e( conjunction ) +
+'\n\t\t</option>\n\t\t';
+ }) ;
+__p += '\n\t</select>\n</li>\n';
+
+}
+return __p
+};
+
+this["JST"]["src/templates/empty_constraints.jst"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape;
+with (obj) {
+__p += '<p class="constraint-empty">Click to add filters</p>\n';
+
+}
+return __p
+};
+
+this["JST"]["src/templates/entry_answer.jst"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
+with (obj) {
+__p += '<label><strong>Select Answer: </strong></label>\n<select class="constraint-operator" style="width: 35%">\n\t';
+ _.each(view.operatorsFor(valueType), function(operatorItem) { ;
+__p += '\n\t<option value="' +
+__e( operatorItem ) +
+'" ' +
+((__t = ( operatorItem === operator ? 'selected="selected"' : ''  )) == null ? '' : __t) +
+'">\n\t' +
+__e( operatorItem ) +
+'\n\t</option>\n\t';
+ }) ;
+__p += '\n</select>\n\n';
+ if (view.hasChoices()) { ;
+__p += '\n\t<select class="constraint-value" style="width: 45%">\n\t\t';
+ _.each(choices, function(choiceItem) { ;
+__p += '\n\t\t<option value="' +
+__e( choiceItem.value ) +
+'" ' +
+((__t = ( choiceItem.value == currentChoice ? 'selected="selected"' : ''  )) == null ? '' : __t) +
+'">\n\t\t' +
+__e( choiceItem.label ) +
+'\n\t\t</option>\n\t\t';
+ }) ;
+__p += '\n\t</select>\n';
+ } else if (valueType === 'integer' || valueType === 'float') { ;
+__p += '\n\t<input type="number" class="constraint-value constraint-value-text" value="' +
+__e( value ) +
+'" />\n';
+ } else { ;
+__p += '\n\t<input type="text" class="constraint-value constraint-value-text" value="' +
+__e( value ) +
+'" />\n';
+ } ;
+__p += '\n\n<select class="constraint-conjunction" style="width: 15%">\n\t';
+ _.each(view.conjunctions, function(conjunctionItem) { ;
+__p += '\n\t<option value="' +
+__e( conjunctionItem ) +
+'" ' +
+((__t = ( conjunctionItem === conjunction ? 'selected="selected"' : ''  )) == null ? '' : __t) +
+'">\n\t' +
+__e( conjunctionItem ) +
+'\n\t</option>\n\t';
+ }) ;
+__p += '\n</select>\n';
+
+}
+return __p
+};
+
+this["JST"]["src/templates/entry_constraint.jst"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape;
+with (obj) {
+__p += '<ul class="constraint-toolbar">\n\t<li>\n\t\t<a\n\t\t\talt="f105"\n\t\t\tclass="dashicons dashicons-admin-page copy-constraint"\n\t\t\thref="#"\n\t\t\ttitle="Duplicate"\n\t\t/>\n\n\t\t<a\n\t\t\talt="f105"\n\t\t\tclass="dashicons dashicons-trash remove-constraint"\n\t\t\thref="#"\n\t\t\ttitle="Remove"\n\t\t/>\n\t</li>\n</ul>\n\n<p class="constraint-title">\n\t' +
+__e( title ) +
+'\n</p>\n\n<div class="entry-select-group">\n\t<label><strong>Select Contest: </strong></label>\n\t<select class="entry-select-choice entry-select-type">\n\t</select>\n</div>\n\n<div class="entry-select-group">\n\t<label><strong>Select Question: </strong></label>\n\t<select class="entry-select-choice entry-select-field">\n\t</select>\n</div>\n\n<div class="entry-answer-group">\n\t<label><strong>Loading ... </strong></label>\n</div>\n';
+
+}
+return __p
+};
+
+this["JST"]["src/templates/entry_select.jst"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
+with (obj) {
+
+ _.each(choices, function(choice, index) { ;
+__p += '\n\t<option value="' +
+__e( choice.value ) +
+'" ' +
+((__t = ( choice.value === currentChoice ? 'selected="selected"' : ''  )) == null ? '' : __t) +
+'">\n\t' +
+__e( choice.label ) +
+'\n\t</option>\n';
+ }); ;
+__p += '\n';
+
+}
+return __p
+};
+
+this["JST"]["src/templates/query_result_item.jst"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape;
+with (obj) {
+__p += '<tr>\n\t<td>\n\t\t<a href="#" class="open-member-page-text">' +
+__e( email ) +
+'</a>\n\t\t<a href="#" alt="f105" class="dashicons dashicons-external open-member-page"></a>\n\t</td>\n</tr>\n';
+
+}
+return __p
+};
+
+this["JST"]["src/templates/toolbar_item.jst"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape;
+with (obj) {
+__p += '<a title="Click to add" href="#" class="toolbar_item">\n\t' +
+__e( title ) +
+'\n</a>\n';
+
+}
+return __p
+};
+var EntryType = Backbone.Model.extend({
+
+	defaults: {
+		label: 'Entry Type',
+		value: -1
 	}
-};
 
-Constraint.idCounter = 0;
-Constraint.nextID = function() {
-	return Constraint.idCounter++;
-};
+});
 
-Constraint.prototype = {
+var EntryField = Backbone.Model.extend({
+	defaults: {
+		label: '',
+		value: '',
+		type: '',
+		choices: []
+	}
+});
 
-	fromJSON: function(json) {
-		this.type        = json.type;
-		this.title       = json.title;
+var Constraint = Backbone.Model.extend({
 
-		this.fieldPath   = json.fieldPath;
-		this.value       = unescapeValue(json.value);
-		this.valueType   = json.valueType;
-		this.operator    = json.operator;
-		this.conjunction = json.conjunction;
+	defaults        : {
+		type        : 'constraint:type_name',
+		operator    : 'equals',
+		conjunction : 'and',
+		valueType   : 'string',
+		value       : ''
 	},
 
-	toJSON: function() {
-		var json         = {};
-		json.type        = this.type;
-		json.title       = this.title;
-		json.value       = escapeValue(this.value);
-		json.valueType   = this.valueType;
-		json.conjunction = this.conjunction;
-		json.fieldPath   = this.fieldPath;
-		json.operator    = this.operator;
+	getMeta: function(key) {
+		if (this.hasMeta(key)) {
+			return AVAILABLE_CONSTRAINTS_META_MAP[this.get('type')][key];
+		} else {
+			return null;
+		}
+	},
+
+	hasMeta: function(key) {
+		var type = this.get('type');
+		return !!AVAILABLE_CONSTRAINTS_META_MAP[type] &&
+			   !!AVAILABLE_CONSTRAINTS_META_MAP[type][key];
+	},
+
+	toViewJSON: function() {
+		var json    = this.toJSON();
+		var type    = this.get('type');
+		var metaMap = AVAILABLE_CONSTRAINTS_META_MAP[type];
+
+		if (metaMap) {
+			_.extend(json, metaMap);
+		}
 
 		return json;
+	}
+
+});
+
+var ProfileConstraint = Constraint.extend({
+
+	defaults        : {
+		type        : 'profile:field_name',
+		operator    : 'equals',
+		conjunction : 'and',
+		valueType   : 'string',
+		value       : ''
+	}
+
+});
+
+var EntryConstraint = Constraint.extend({
+
+	defaults         : {
+		type         : 'record:contest',
+		operator     : 'equals',
+		conjunction  : 'and',
+		valueType    : 'string', // TODO: this is actually polymorphic
+		value        : '',
+		entryTypeID  : -1,
+		entryFieldID : -1
 	},
 
-	toGQL: function() {
-		var gql = this.fieldPath + ' ' + this.operator + ' ';
-		if (this.valueType === 'string') {
-			gql += "'" + escapeValue(this.value) + "'";
+	initialize: function(attr, opts) {
+		Constraint.prototype.initialize.call(this, attr, opts);
+		this.listenTo(this, 'change:entryTypeID', this.didChangeEntryTypeID);
+	},
+
+	getEntryType: function() {
+		var types = this.get('type').split(':');
+		var kind  = types[1];
+
+		return kind;
+	},
+
+	getEntryTypes: function() {
+		if (!this.entryTypes) {
+			this.entryTypes = new EntryTypeCollection();
+			this.loadEntryTypes();
+		}
+
+		return this.entryTypes;
+	},
+
+	loadEntryTypes: function() {
+		var params = { entryType: this.getEntryType() };
+		ajaxApi.request('list_entry_types', params)
+			.then($.proxy(this.didLoadEntryTypes, this))
+			.fail($.proxy(this.didLoadEntryTypesError, this));
+
+	},
+
+	didLoadEntryTypes: function(response) {
+		var entryTypes = this.entryTypes;
+		entryTypes.reset(response.data);
+
+		if (this.get('entryTypeID') === -1) {
+			// auto-select first entry
+			this.set('entryTypeID', entryTypes.at(0).get('value'));
 		} else {
-			gql += this.value;
+			this.didChangeEntryTypeID();
 		}
-
-		return gql;
 	},
 
-	clone: function() {
-		var constraint = new Constraint();
-		constraint.fromJSON(this.toJSON());
-
-		return constraint;
+	didLoadEntryTypesError: function(response) {
+		console.log(response);
 	},
 
-	getOperators: function() {
-		var operators = [];
-
-		if (this.valueType === 'string') {
-			operators.push.apply(operators, ['contains', 'not contains']);
-		} else if (this.valueType === 'number') {
-			operators.push.apply(operators, ['>', '>=', '<', '<=']);
-		}
-
-		operators.push.apply(operators, ['=', '!=']);
-
-		return operators;
+	didChangeEntryTypeID: function() {
+		this.loadEntryFields();
 	},
 
+	loadEntryFields: function() {
+		var params = { entryTypeID: this.get('entryTypeID') };
+		ajaxApi.request('list_entry_fields', params)
+			.then($.proxy(this.didLoadEntryFields, this))
+			.fail($.proxy(this.didLoadEntryFieldsError, this));
+	},
 
-};
+	didLoadEntryFields: function(response) {
+		var entryFields = this.getEntryFields();
+		entryFields.reset(response.data);
 
-var EntryConstraint = function(properties) {
-	Constraint.call(this, properties);
-};
-
-EntryConstraint.prototype = Object.create(Constraint.prototype);
-EntryConstraint.prototype.constructor = EntryConstraint;
-
-
-EntryConstraint.prototype.fromJSON = function(json) {
-	Constraint.prototype.fromJSON.call(this, json);
-
-	this.entryType = json.entryType;
-	this.entryTypeID = json.entryTypeID;
-	this.entryFieldID = json.entryFieldID;
-	this.entryFieldType = json.entryFieldType;
-};
-
-EntryConstraint.prototype.toJSON = function() {
-	var json = Constraint.prototype.toJSON.call(this);
-
-	json.entryType = this.entryType;
-	json.entryTypeID = this.entryTypeID;
-	json.entryFieldID = this.entryFieldID;
-	json.entryFieldType = this.entryFieldType;
-
-	return json;
-};
-
-EntryConstraint.prototype.clone = function() {
-	var constraint = new EntryConstraint();
-	constraint.fromJSON(this.toJSON());
-
-	return constraint;
-};
-
-EntryConstraint.prototype.toGQL = function() {
-	var query = this.pairToClause('entry_type', this.entryType) + ' and ';
-	query += this.pairToClause('entry_type_id', this.entryTypeID) + ' and ';
-	query += this.pairToClause('entry_field_id', this.entryFieldID) + ' and ';
-	query += this.pairToClause('entry_field_type', this.entryFieldType) + ' and ';
-	query += this.pairToClause('entry_field_value', this.value, this.operator);
-
-	//console.log(query);
-	return query;
-};
-
-EntryConstraint.prototype.toFieldKey = function(key) {
-	return this.fieldPath + '.' + key
-};
-
-EntryConstraint.prototype.pairToClause = function(key, value, operator) {
-	if (!operator) {
-		operator = '=';
-	}
-	var fieldKey = this.toFieldKey(key);
-	var fieldValue;
-	var valueType = typeof(value);
-
-	// TODO: use Gravity Form entry Types
-	if (valueType === 'string') {
-		fieldValue = "'" + escapeValue(value) + "'";
-		fieldKey += '_s';
-	} else {
-		fieldValue = value;
-		if (valueType === 'number') {
-			fieldKey += '_f';
+		if (this.get('entryFieldID') === -1) {
+			// auto-select first field
+			this.set('entryFieldID', entryFields.at(0).get('value'));
 		}
+	},
+
+	didLoadEntryFieldsError: function(response) {
+		console.log(response);
+	},
+
+	getEntryFields: function() {
+		if (!this.entryFields) {
+			this.entryFields = new EntryFieldCollection();
+		}
+
+		return this.entryFields;
+	},
+
+	getEntryFieldChoices: function() {
+		var fieldCollection = this.getEntryFields();
+		var field           = fieldCollection.findWhere({
+			value: this.get('entryFieldID')
+		});
+
+		if (field) {
+			var choices = field.get('choices');
+			if (choices && choices.length > 0) {
+				return choices;
+			} else {
+				return [];
+			}
+		} else {
+			return [];
+		}
+	},
+
+	hasChoices: function() {
+		var choices = this.getEntryFieldChoices();
+		return choices.length > 0;
 	}
 
-	return fieldKey + ' ' + operator + ' ' + fieldValue;
-};
+});
 
-var ConstraintFactory = function() {
-
-};
-
-ConstraintFactory.prototype.build = function(json) {
-	var ConstraintType = this.constraintFor(json.type);
-	var instance = new ConstraintType();
-
-	instance.fromJSON(json);
-
-	return instance;
-};
-
-ConstraintFactory.prototype.constraintFor = function(type) {
-	switch (type) {
-		case 'entry_constraint':
-			return EntryConstraint;
-
-		default:
-			return Constraint;
-	}
-};
-
-ConstraintFactory.instance = new ConstraintFactory();
-
-var factory = ConstraintFactory.instance;
 var AVAILABLE_CONSTRAINTS = [
 
-	factory.build({
-		type: 'membership_start_date',
-		title: 'Membership Start Date',
-		fieldPath: 'registeredTimestamp',
-		value: 1347872653,
-		valueType: 'number',
-		operator: '>',
-		conjunction: 'and'
-	}),
+	/* System Fields */
+	{
+		type: 'system:createdTimestamp',
+		valueType: 'date',
+		value: '01/01/2012'
+	},
+	{
+		type: 'system:isActive',
+		valueType: 'boolean',
+	},
+	{
+		type: 'system:isRegistered',
+		valueType: 'boolean',
+	},
+	{
+		type: 'system:lastLoginTimestamp',
+		valueType: 'date',
+		value: '01/01/2014'
+	},
+	{
+		type: 'system:verified',
+		valueType: 'boolean',
+	},
 
-	factory.build({
-		type: 'profile_location',
-		title: 'Profile Location City',
-		fieldPath: 'profile.city',
-		value: '',
+	/* Profile fields */
+	{
+		type: 'profile:birthYear',
+		valueType: 'integer',
+		value: 1990
+	},
+	{
+		type: 'profile:country',
 		valueType: 'string',
-		operator: 'contains',
-		conjunction: 'and'
-	}),
-
-	factory.build({
-		type: 'profile_location',
-		title: 'Profile Location State',
-		fieldPath: 'profile.state',
-		value: '',
+		value: 'United States'
+	},
+	{
+		type: 'profile:zip',
 		valueType: 'string',
-		operator: 'contains',
-		conjunction: 'and'
-	}),
-
-	factory.build({
-		type: 'listening_loyalty',
-		title: 'Listening Loyalty',
-		fieldPath: 'data.listeningLoyalty',
-		value: 'Only this station',
+		value: '01001'
+	},
+	{
+		type: 'profile:gender',
+		valueType: 'string'
+	},
+	{
+		type: 'profile:age',
+		valueType: 'integer',
+		value: 25
+	},
+	{
+		type: 'profile:birthDay',
+		valueType: 'integer',
+		value: 1,
+	},
+	{
+		type: 'profile:birthMonth',
+		valueType: 'integer',
+		value: 2
+	},
+	{
+		type: 'profile:state',
 		valueType: 'string',
-		operator: 'contains',
-		conjunction: 'and'
-	}),
+		value: 'New York'
+	},
+	{
+		type: 'profile:city',
+		valueType: 'string'
+	},
+	{
+		type: 'profile:timezone',
+		valueType: 'string'
+	},
 
-	factory.build({
-		type: 'listening_frequency',
-		title: 'Listening Frequency',
-		fieldPath: 'data.listeningFrequency',
-		value: 'Once per day',
+	/* Contests */
+	{
+		type: 'record:contest',
 		valueType: 'string',
-		operator: 'contains',
-		conjunction: 'and'
-	}),
-
-	factory.build({
-		type           : 'entry_constraint',
-		title          : 'Participation in Contest',
-		fieldPath      : 'data.form_entries',
-		value          : '',
-		valueType      : 'string',
-		operator       : 'contains',
-		conjunction    : 'and',
-
-		entryType      : 'contest',
-		entryTypeID    : -1,
-		entryFieldID   : -1,
-		entryFieldType : 'text'
-	})
+		entryTypeID: -1,
+		entryFieldID: -1
+	}
 
 ];
 
+/* Constraint Meta */
 
-var ConstraintStore = function() {
-	this.mediator   = $({});
-	this.available  = this.getAvailableConstraints();
-	this.current    = this.getCurrentConstraints();
-};
+var AVAILABLE_CONSTRAINTS_META = [
 
-ConstraintStore.prototype = {
-
-	getAvailableConstraints: function() {
-		return AVAILABLE_CONSTRAINTS;
+	/* System Fields */
+	{
+		type: 'system:createdTimestamp',
+		title: 'Creation Date',
+	},
+	{
+		type: 'system:isActive',
+		title: 'Active Status',
+		choices: [
+			{ label: 'Active', value: true },
+			{ label: 'Inactive', value: false }
+		]
+	},
+	{
+		type: 'system:isRegistered',
+		title: 'Registration Status',
+		choices: [
+			{ label: 'Registered', value: true },
+			{ label: 'Not Registered', value: false }
+		]
+	},
+	{
+		type: 'system:lastLoginTimestamp',
+		title: 'Last Logged In'
+	},
+	{
+		type: 'system:verified',
+		title: 'Verified Status',
+		choices: [
+			{ label: 'Verified', value: true },
+			{ label: 'Not Verified', value: false },
+		]
 	},
 
-	getCurrentConstraints: function() {
-		var items = member_query_data.constraints || [];
-		var constraints = [];
-		var n = items.length;
-		var i, item, constraint;
-
-		for (i = 0; i < n; i++) {
-			item       = items[i];
-			constraint = ConstraintFactory.instance.build(item);
-			constraints.push(constraint);
-		}
-
-		return constraints;
+	/* Profile Fields */
+	{
+		type: 'profile:birthYear',
+		title: 'Birth Year'
+	},
+	{
+		type: 'profile:country',
+		title: 'Country',
+		choices: [
+			{ label: 'Afghanistan', value: 'Afghanistan' },
+			{ label: 'Albania', value: 'Albania' },
+			{ label: 'Algeria', value: 'Algeria' },
+			{ label: 'American Samoa', value: 'Samoa' },
+			{ label: 'Andorra', value: 'Andorra' },
+			{ label: 'Angola', value: 'Angola' },
+			{ label: 'Antigua and Barbuda', value: 'Barbuda' },
+			{ label: 'Argentina', value: 'Argentina' },
+			{ label: 'Armenia', value: 'Armenia' },
+			{ label: 'Australia', value: 'Australia' },
+			{ label: 'Austria', value: 'Austria' },
+			{ label: 'Azerbaijan', value: 'Azerbaijan' },
+			{ label: 'Bahamas', value: 'Bahamas' },
+			{ label: 'Bahrain', value: 'Bahrain' },
+			{ label: 'Bangladesh', value: 'Bangladesh' },
+			{ label: 'Barbados', value: 'Barbados' },
+			{ label: 'Belarus', value: 'Belarus' },
+			{ label: 'Belgium', value: 'Belgium' },
+			{ label: 'Belize', value: 'Belize' },
+			{ label: 'Benin', value: 'Benin' },
+			{ label: 'Bermuda', value: 'Bermuda' },
+			{ label: 'Bhutan', value: 'Bhutan' },
+			{ label: 'Bolivia', value: 'Bolivia' },
+			{ label: 'Bosnia and Herzegovina', value: 'Herzegovina' },
+			{ label: 'Botswana', value: 'Botswana' },
+			{ label: 'Brazil', value: 'Brazil' },
+			{ label: 'Brunei', value: 'Brunei' },
+			{ label: 'Bulgaria', value: 'Bulgaria' },
+			{ label: 'Burkina Faso', value: 'Faso' },
+			{ label: 'Burundi', value: 'Burundi' },
+			{ label: 'Cambodia', value: 'Cambodia' },
+			{ label: 'Cameroon', value: 'Cameroon' },
+			{ label: 'Canada', value: 'Canada' },
+			{ label: 'Cape Verde', value: 'Verde' },
+			{ label: 'Cayman Islands', value: 'Islands' },
+			{ label: 'Central African Republic', value: 'Republic' },
+			{ label: 'Chad', value: 'Chad' },
+			{ label: 'Chile', value: 'Chile' },
+			{ label: 'China', value: 'China' },
+			{ label: 'Colombia', value: 'Colombia' },
+			{ label: 'Comoros', value: 'Comoros' },
+			{ label: 'Congo, Democratic Republic of the', value: 'the' },
+			{ label: 'Congo, Republic of the', value: 'the' },
+			{ label: 'Costa Rica', value: 'Rica' },
+			{ label: 'Croatia', value: 'Croatia' },
+			{ label: 'Cuba', value: 'Cuba' },
+			{ label: 'Cyprus', value: 'Cyprus' },
+			{ label: 'Czech Republic', value: 'Republic' },
+			{ label: 'Denmark', value: 'Denmark' },
+			{ label: 'Djibouti', value: 'Djibouti' },
+			{ label: 'Dominica', value: 'Dominica' },
+			{ label: 'Dominican Republic', value: 'Republic' },
+			{ label: 'East Timor', value: 'Timor' },
+			{ label: 'Ecuador', value: 'Ecuador' },
+			{ label: 'Egypt', value: 'Egypt' },
+			{ label: 'El Salvador', value: 'Salvador' },
+			{ label: 'Equatorial Guinea', value: 'Guinea' },
+			{ label: 'Eritrea', value: 'Eritrea' },
+			{ label: 'Estonia', value: 'Estonia' },
+			{ label: 'Ethiopia', value: 'Ethiopia' },
+			{ label: 'Fiji', value: 'Fiji' },
+			{ label: 'Finland', value: 'Finland' },
+			{ label: 'France', value: 'France' },
+			{ label: 'French Polynesia', value: 'Polynesia' },
+			{ label: 'Gabon', value: 'Gabon' },
+			{ label: 'Gambia', value: 'Gambia' },
+			{ label: 'Georgia', value: 'Georgia' },
+			{ label: 'Germany', value: 'Germany' },
+			{ label: 'Ghana', value: 'Ghana' },
+			{ label: 'Greece', value: 'Greece' },
+			{ label: 'Greenland', value: 'Greenland' },
+			{ label: 'Grenada', value: 'Grenada' },
+			{ label: 'Guam', value: 'Guam' },
+			{ label: 'Guatemala', value: 'Guatemala' },
+			{ label: 'Guinea', value: 'Guinea' },
+			{ label: 'Guinea-Bissau', value: 'Bissau' },
+			{ label: 'Guyana', value: 'Guyana' },
+			{ label: 'Haiti', value: 'Haiti' },
+			{ label: 'Honduras', value: 'Honduras' },
+			{ label: 'Hong Kong', value: 'Kong' },
+			{ label: 'Hungary', value: 'Hungary' },
+			{ label: 'Iceland', value: 'Iceland' },
+			{ label: 'India', value: 'India' },
+			{ label: 'Indonesia', value: 'Indonesia' },
+			{ label: 'Iran', value: 'Iran' },
+			{ label: 'Iraq', value: 'Iraq' },
+			{ label: 'Ireland', value: 'Ireland' },
+			{ label: 'Israel', value: 'Israel' },
+			{ label: 'Italy', value: 'Italy' },
+			{ label: 'Jamaica', value: 'Jamaica' },
+			{ label: 'Japan', value: 'Japan' },
+			{ label: 'Jordan', value: 'Jordan' },
+			{ label: 'Kazakhstan', value: 'Kazakhstan' },
+			{ label: 'Kenya', value: 'Kenya' },
+			{ label: 'Kiribati', value: 'Kiribati' },
+			{ label: 'North Korea', value: 'Korea' },
+			{ label: 'South Korea', value: 'Korea' },
+			{ label: 'Kosovo', value: 'Kosovo' },
+			{ label: 'Kuwait', value: 'Kuwait' },
+			{ label: 'Kyrgyzstan', value: 'Kyrgyzstan' },
+			{ label: 'Laos', value: 'Laos' },
+			{ label: 'Latvia', value: 'Latvia' },
+			{ label: 'Lebanon', value: 'Lebanon' },
+			{ label: 'Lesotho', value: 'Lesotho' },
+			{ label: 'Liberia', value: 'Liberia' },
+			{ label: 'Libya', value: 'Libya' },
+			{ label: 'Liechtenstein', value: 'Liechtenstein' },
+			{ label: 'Lithuania', value: 'Lithuania' },
+			{ label: 'Luxembourg', value: 'Luxembourg' },
+			{ label: 'Macedonia', value: 'Macedonia' },
+			{ label: 'Madagascar', value: 'Madagascar' },
+			{ label: 'Malawi', value: 'Malawi' },
+			{ label: 'Malaysia', value: 'Malaysia' },
+			{ label: 'Maldives', value: 'Maldives' },
+			{ label: 'Mali', value: 'Mali' },
+			{ label: 'Malta', value: 'Malta' },
+			{ label: 'Marshall Islands', value: 'Islands' },
+			{ label: 'Mauritania', value: 'Mauritania' },
+			{ label: 'Mauritius', value: 'Mauritius' },
+			{ label: 'Mexico', value: 'Mexico' },
+			{ label: 'Micronesia', value: 'Micronesia' },
+			{ label: 'Moldova', value: 'Moldova' },
+			{ label: 'Monaco', value: 'Monaco' },
+			{ label: 'Mongolia', value: 'Mongolia' },
+			{ label: 'Montenegro', value: 'Montenegro' },
+			{ label: 'Morocco', value: 'Morocco' },
+			{ label: 'Mozambique', value: 'Mozambique' },
+			{ label: 'Myanmar', value: 'Myanmar' },
+			{ label: 'Namibia', value: 'Namibia' },
+			{ label: 'Nauru', value: 'Nauru' },
+			{ label: 'Nepal', value: 'Nepal' },
+			{ label: 'Netherlands', value: 'Netherlands' },
+			{ label: 'New Zealand', value: 'Zealand' },
+			{ label: 'Nicaragua', value: 'Nicaragua' },
+			{ label: 'Niger', value: 'Niger' },
+			{ label: 'Nigeria', value: 'Nigeria' },
+			{ label: 'Norway', value: 'Norway' },
+			{ label: 'Northern Mariana Islands', value: 'Islands' },
+			{ label: 'Oman', value: 'Oman' },
+			{ label: 'Pakistan', value: 'Pakistan' },
+			{ label: 'Palau', value: 'Palau' },
+			{ label: 'Palestine', value: 'Palestine' },
+			{ label: 'Panama', value: 'Panama' },
+			{ label: 'Papua New Guinea', value: 'Guinea' },
+			{ label: 'Paraguay', value: 'Paraguay' },
+			{ label: 'Peru', value: 'Peru' },
+			{ label: 'Philippines', value: 'Philippines' },
+			{ label: 'Poland', value: 'Poland' },
+			{ label: 'Portugal', value: 'Portugal' },
+			{ label: 'Puerto Rico', value: 'Rico' },
+			{ label: 'Qatar', value: 'Qatar' },
+			{ label: 'Romania', value: 'Romania' },
+			{ label: 'Russia', value: 'Russia' },
+			{ label: 'Rwanda', value: 'Rwanda' },
+			{ label: 'Saint Kitts and Nevis', value: 'Nevis' },
+			{ label: 'Saint Lucia', value: 'Lucia' },
+			{ label: 'Saint Vincent and the Grenadines', value: 'Grenadines' },
+			{ label: 'Samoa', value: 'Samoa' },
+			{ label: 'San Marino', value: 'Marino' },
+			{ label: 'Sao Tome and Principe', value: 'Principe' },
+			{ label: 'Saudi Arabia', value: 'Arabia' },
+			{ label: 'Senegal', value: 'Senegal' },
+			{ label: 'Serbia and Montenegro', value: 'Montenegro' },
+			{ label: 'Seychelles', value: 'Seychelles' },
+			{ label: 'Sierra Leone', value: 'Leone' },
+			{ label: 'Singapore', value: 'Singapore' },
+			{ label: 'Slovakia', value: 'Slovakia' },
+			{ label: 'Slovenia', value: 'Slovenia' },
+			{ label: 'Solomon Islands', value: 'Islands' },
+			{ label: 'Somalia', value: 'Somalia' },
+			{ label: 'South Africa', value: 'South Africa' },
+			{ label: 'Spain', value: 'Spain' },
+			{ label: 'Sri Lanka', value: 'Lanka' },
+			{ label: 'Sudan', value: 'Sudan' },
+			{ label: 'Sudan, South', value: 'South' },
+			{ label: 'Suriname', value: 'Suriname' },
+			{ label: 'Swaziland', value: 'Swaziland' },
+			{ label: 'Sweden', value: 'Sweden' },
+			{ label: 'Switzerland', value: 'Switzerland' },
+			{ label: 'Syria', value: 'Syria' },
+			{ label: 'Taiwan', value: 'Taiwan' },
+			{ label: 'Tajikistan', value: 'Tajikistan' },
+			{ label: 'Tanzania', value: 'Tanzania' },
+			{ label: 'Thailand', value: 'Thailand' },
+			{ label: 'Togo', value: 'Togo' },
+			{ label: 'Tonga', value: 'Tonga' },
+			{ label: 'Trinidad and Tobago', value: 'Tobago' },
+			{ label: 'Tunisia', value: 'Tunisia' },
+			{ label: 'Turkey', value: 'Turkey' },
+			{ label: 'Turkmenistan', value: 'Turkmenistan' },
+			{ label: 'Tuvalu', value: 'Tuvalu' },
+			{ label: 'Uganda', value: 'Uganda' },
+			{ label: 'Ukraine', value: 'Ukraine' },
+			{ label: 'United Arab Emirates', value: 'Emirates' },
+			{ label: 'United Kingdom', value: 'Kingdom' },
+			{ label: 'United States', value: 'United States' },
+			{ label: 'Uruguay', value: 'Uruguay' },
+			{ label: 'Uzbekistan', value: 'Uzbekistan' },
+			{ label: 'Vanuatu', value: 'Vanuatu' },
+			{ label: 'Vatican City', value: 'City' },
+			{ label: 'Venezuela', value: 'Venezuela' },
+			{ label: 'Vietnam', value: 'Vietnam' },
+			{ label: 'Virgin Islands, British', value: 'British' },
+			{ label: 'Virgin Islands, U.S.', value: 'Virgin Islands, US' },
+			{ label: 'Yemen', value: 'Yemen' },
+			{ label: 'Zambia', value: 'Zambia' },
+			{ label: 'Zimbabwe', value: 'Zimbabwe' },
+		]
+	},
+	{
+		type: 'profile:zip',
+		title: 'Zip Code'
+	},
+	{
+		type: 'profile:gender',
+		title: 'Gender',
+		choices: [
+			{ label: 'Male', value: 'male' },
+			{ label: 'Female', value: 'female' }
+		]
+	},
+	{
+		type: 'profile:age',
+		title: 'Age',
+	},
+	{
+		type: 'profile:birthDay',
+		title: 'Birth Day'
+	},
+	{
+		type: 'profile:birthMonth',
+		title: 'Birth Month',
+		choices: [
+			{ label: 'January'   , value: 1  } ,
+			{ label: 'February'  , value: 2  } ,
+			{ label: 'March'     , value: 3  } ,
+			{ label: 'April'     , value: 4  } ,
+			{ label: 'May'       , value: 5  } ,
+			{ label: 'June'      , value: 6  } ,
+			{ label: 'July'      , value: 7  } ,
+			{ label: 'August'    , value: 8  } ,
+			{ label: 'September' , value: 9  } ,
+			{ label: 'October'   , value: 10 } ,
+			{ label: 'November'  , value: 11 } ,
+			{ label: 'December'  , value: 12 } ,
+		]
+	},
+	{
+		type: 'profile:state',
+		title: 'State',
+		choices: [
+			{ label: 'Alabama'               , value: 'Alabama'               } ,
+			{ label: 'Alaska'                , value: 'Alaska'                } ,
+			{ label: 'Arizona'               , value: 'Arizona'               } ,
+			{ label: 'Arkansas'              , value: 'Arkansas'              } ,
+			{ label: 'California'            , value: 'California'            } ,
+			{ label: 'Colorado'              , value: 'Colorado'              } ,
+			{ label: 'Connecticut'           , value: 'Connecticut'           } ,
+			{ label: 'Delaware'              , value: 'Delaware'              } ,
+			{ label: 'District of Columbia'  , value: 'District of Columbia'  } ,
+			{ label: 'Florida'               , value: 'Florida'               } ,
+			{ label: 'Georgia'               , value: 'Georgia'               } ,
+			{ label: 'Hawaii'                , value: 'Hawaii'                } ,
+			{ label: 'Idaho'                 , value: 'Idaho'                 } ,
+			{ label: 'Illinois'              , value: 'Illinois'              } ,
+			{ label: 'Indiana'               , value: 'Indiana'               } ,
+			{ label: 'Iowa'                  , value: 'Iowa'                  } ,
+			{ label: 'Kansas'                , value: 'Kansas'                } ,
+			{ label: 'Kentucky'              , value: 'Kentucky'              } ,
+			{ label: 'Louisiana'             , value: 'Louisiana'             } ,
+			{ label: 'Maine'                 , value: 'Maine'                 } ,
+			{ label: 'Maryland'              , value: 'Maryland'              } ,
+			{ label: 'Massachusetts'         , value: 'Massachusetts'         } ,
+			{ label: 'Michigan'              , value: 'Michigan'              } ,
+			{ label: 'Minnesota'             , value: 'Minnesota'             } ,
+			{ label: 'Mississippi'           , value: 'Mississippi'           } ,
+			{ label: 'Missouri'              , value: 'Missouri'              } ,
+			{ label: 'Montana'               , value: 'Montana'               } ,
+			{ label: 'Nebraska'              , value: 'Nebraska'              } ,
+			{ label: 'Nevada'                , value: 'Nevada'                } ,
+			{ label: 'New Hampshire'         , value: 'New Hampshire'         } ,
+			{ label: 'New Jersey'            , value: 'New Jersey'            } ,
+			{ label: 'New Mexico'            , value: 'New Mexico'            } ,
+			{ label: 'New York'              , value: 'New York'              } ,
+			{ label: 'North Carolina'        , value: 'North Carolina'        } ,
+			{ label: 'North Dakota'          , value: 'North Dakota'          } ,
+			{ label: 'Ohio'                  , value: 'Ohio'                  } ,
+			{ label: 'Oklahoma'              , value: 'Oklahoma'              } ,
+			{ label: 'Oregon'                , value: 'Oregon'                } ,
+			{ label: 'Pennsylvania'          , value: 'Pennsylvania'          } ,
+			{ label: 'Rhode Island'          , value: 'Rhode Island'          } ,
+			{ label: 'South Carolina'        , value: 'South Carolina'        } ,
+			{ label: 'South Dakota'          , value: 'South Dakota'          } ,
+			{ label: 'Tennessee'             , value: 'Tennessee'             } ,
+			{ label: 'Texas'                 , value: 'Texas'                 } ,
+			{ label: 'Utah'                  , value: 'Utah'                  } ,
+			{ label: 'Vermont'               , value: 'Vermont'               } ,
+			{ label: 'Virginia'              , value: 'Virginia'              } ,
+			{ label: 'Washington'            , value: 'Washington'            } ,
+			{ label: 'West Virginia'         , value: 'Virginia'              } ,
+			{ label: 'Wisconsin'             , value: 'Wisconsin'             } ,
+			{ label: 'Wyoming'               , value: 'Wyoming'               } ,
+			{ label: 'Armed Forces Americas' , value: 'Armed Forces Americas' } ,
+			{ label: 'Armed Forces Europe'   , value: 'Armed Forces Europe'   } ,
+			{ label: 'Armed Forces Pacific'  , value: 'Armed Forces Pacific'  } ,
+		]
+	},
+	{
+		type: 'profile:city',
+		title: 'City'
+	},
+	{
+		type: 'profile:timezone',
+		title: 'Timezone'
 	},
 
-	fromJSON: function(json) {
-		this.current = [];
-
-		var n = json.length;
-		var i, item, constraint;
-
-		for (i = 0; i < n; i++) {
-			item       = json[i];
-			constraint = ConstraintFactory.instance.build(item);
-			this.current.push(constraint);
-		}
-
-		this.notify();
-	},
-
-	toJSON: function() {
-		var n = this.current.length;
-		var i, constraint;
-		var json = [];
-
-		for (i = 0; i < n; i++) {
-			constraint = this.current[i];
-			json.push(constraint.toJSON());
-		}
-
-		return json;
-	},
-
-	toGQL: function() {
-		/* TODO: Optimize to only get the fields we need */
-		var n   = this.current.length;
-		if (n === 0) {
-			return '';
-		}
-
-		var gql = 'select * from accounts where ';
-		var i, constraint;
-		var prevConstraint;
-
-		for (i = 0; i < n; i++) {
-			constraint = this.current[i];
-			if (prevConstraint) {
-				gql += ' ' + prevConstraint.conjunction;
-			}
-
-			gql += ' ' + constraint.toGQL();
-			prevConstraint = constraint;
-		}
-
-		return gql;
-	},
-
-	add: function(id) {
-		var index      = this.indexOf(id, this.available);
-		var constraint = this.available[index];
-		constraint = constraint.clone();
-
-		this.current.push(constraint);
-		this.notify();
-	},
-
-	copy: function(id) {
-		var index         = this.indexOf(id);
-		var constraint    = this.current[index];
-		var newConstraint = constraint.clone();
-
-		this.current.splice(index, 0, newConstraint);
-		this.notify();
-	},
-
-	remove: function(id) {
-		var index         = this.indexOf(id);
-		var constraint    = this.current[index];
-		var newConstraint = constraint.clone();
-
-		this.current.splice(index, 1);
-		this.notify();
-	},
-
-	update: function(id, field, value) {
-		var index = this.indexOf(id);
-		var constraint = this.current[index];
-		constraint[field] = value;
-
-		this.notify('updateField');
-	},
-
-	indexOf: function(id, list) {
-		if (!list) {
-			list = this.current;
-		}
-
-		var n = list.length;
-		var i, constraint;
-
-		for (i = 0; i < n; i++) {
-			constraint = list[i];
-			if (constraint.id === id) {
-				return i;
-			}
-		}
-
-		return -1;
-	},
-
-	on: function(event, listener) {
-		this.mediator.on(event, listener);
-	},
-
-	notify: function(event) {
-		if (!event) {
-			event = 'change';
-		}
-
-		this.mediator.trigger(event, this);
+	/* Contests */
+	{
+		type: 'record:contest',
+		title: 'Contest Entry'
 	}
 
-};
+];
 
-var MemberQueryUpdater = function(store) {
-	this.store = store;
-	this.store.on('change', $.proxy(this.didStoreChange, this));
-	this.store.on('inplaceChange', $.proxy(this.didStoreChange, this));
-	this.store.on('updateField', $.proxy(this.didUpdateField, this));
-};
+var AVAILABLE_CONSTRAINTS_META_MAP = {};
 
-MemberQueryUpdater.prototype = {
+(function() {
+	var i;
+	var constraints = AVAILABLE_CONSTRAINTS_META;
+	var map         = AVAILABLE_CONSTRAINTS_META_MAP;
+	var n           = constraints.length;
 
-	didStoreChange: function(event, store) {
-		this.update();
-	},
+	for ( i = 0; i < n; i++ ) {
+		constraint = constraints[i];
+		map[constraint.type] = constraint;
+	}
+})();
 
-	didUpdateField: function(event, store) {
-		this.update();
-	},
 
-	update: function() {
-		var gql         = {};
-		var constraints = JSON.stringify(this.store.toJSON());
-		var query       = this.store.toGQL();
-		var directQuery = $.trim($('.direct-query-input').val());
+var QueryResult = Backbone.Model.extend({
 
-		if (directQuery !== '') {
-			query = directQuery;
-		}
-
-		$('#constraints').attr('value', constraints);
-		$('#query').attr('value', query);
-
-		return query;
+	defaults: {
+		email: ''
 	}
 
-};
+});
 
-var MenuView = function(store) {
-	this.store     = store;
-	this.container = $('.constraints-menu');
-	this.container.on('click', $.proxy(this.didItemClick, this));
+var EntryTypeCollection = Backbone.Collection.extend({
 
-	this.render();
-};
+	model: EntryType
 
-MenuView.prototype = {
+});
 
-	didItemClick: function(event) {
-		var id = $(event.target).attr('data-id');
-		if (id) {
-			this.addConstraint(parseInt(id, 10));
-		}
-		event.preventDefault();
+var EntryFieldCollection = Backbone.Collection.extend({
+	model: EntryField
+});
+
+var ConstraintCollection = Backbone.Collection.extend({
+
+	model: function(attr, options) {
+		var kind  = ConstraintCollection.kindForType(attr.type);
+		var klass = ConstraintCollection.typesMap[kind] || Constraint;
+
+		return new klass(attr, options);
 	},
 
-	addConstraint: function(id) {
-		this.store.add(id);
+	initialize: function(models, options) {
+		this.on('change add remove reset', this.save, this);
+		Backbone.Collection.prototype.initialize.call(this, models, options);
+	},
+
+	save: function() {
+		var json         = JSON.stringify(this.toJSON());
+		var $constraints = jQuery('#constraints');
+
+		$constraints.attr('value', json);
+		//console.log(json);
+	}
+}, {
+
+	kindForType: function(type) {
+		var typeList = type.split(':');
+
+		if (typeList.length > 0) {
+			return typeList[0];
+		} else {
+			return type;
+		}
+	},
+
+	typesMap: {
+		'system': Constraint,
+		'profile': ProfileConstraint,
+		'record': EntryConstraint
+	}
+
+});
+
+var QueryResultCollection = Backbone.Collection.extend({
+
+	model: QueryResult,
+
+	initialize: function(models, options) {
+		this.activeConstraints = options.activeConstraints;
+		Backbone.Collection.prototype.initialize(this, models, options);
+	},
+
+	search: function() {
+		var constraints       = this.activeConstraints.toJSON();
+		var query             = 'select * from accounts'; // TEMPORARY, limits to 5
+		var data              = {
+			query: query,
+			constraints: constraints
+		};
+
+		ajaxApi.request('preview_member_query', data)
+			.then($.proxy(this.didPreviewSuccess, this))
+			.fail($.proxy(this.didPreviewError, this));
+	},
+
+	didPreviewSuccess: function(response) {
+		if (!response.success) {
+			this.totalResults = 0;
+			this.didPreviewError(response);
+		} else {
+			this.totalResults = response.data.total;
+			this.reset(response.data.accounts);
+			this.trigger('searchSuccess');
+		}
+	},
+
+	didPreviewError: function(response) {
+		this.trigger('searchError', response.data);
+	},
+
+	getTotalResults: function() {
+		return this.totalResults;
+	}
+});
+
+var ToolbarItemView = Backbone.CollectionView.extend({
+
+	template: getTemplate('toolbar_item'),
+
+	events: {
+		'click .toolbar_item': 'didToolbarItemClick'
+	},
+
+	initialize: function() {
+		this.render();
 	},
 
 	render: function() {
-		var templateData = {
-			view: this,
-			constraints: this.store.available,
-		};
+		var data = this.model.toViewJSON();
+		var html = this.template(data);
 
-		var listItems = renderTemplate('constraints_menu', templateData);
-		this.container.html(listItems);
+		this.$el.html(html);
+	},
+
+	didToolbarItemClick: function(event) {
+		var constraint = this.model.clone();
+
+		this.$el.trigger('addConstraint', constraint);
+
+		return false;
 	}
 
-};
+});
 
-var ConstraintItemView = function(container, constraint) {
-	this.container     = container;
-	this.constraint    = constraint;
-};
+var ToolbarView = Backbone.CollectionView.extend({
+	modelView: ToolbarItemView,
 
-ConstraintItemView.prototype = {
+	events: {
+		'addConstraint': 'addConstraint'
+	},
+
+	initialize: function(options) {
+		this.activeConstraints = options.activeConstraints;
+		options.tabIndex = -1;
+		Backbone.CollectionView.prototype.initialize.call(this, options);
+	},
+
+	addConstraint: function(event, constraint) {
+		this.activeConstraints.add(constraint);
+	}
+});
+
+var ConstraintView = Backbone.View.extend({
+
+	template: getTemplate('constraint'),
+
+	events: {
+		'click .copy-constraint': 'didCopyClick',
+		'click .remove-constraint': 'didRemoveClick',
+		'change': 'didChange'
+	},
+
+	initialize: function(options) {
+		this.render();
+	},
 
 	render: function() {
-		var templateData = {
-			view: this,
-			constraint: this.constraint
+		var data = this.model.toViewJSON();
+		data.view = this;
+
+		var html = this.template(data);
+
+		this.$el.html(html);
+
+		var $constraintField = $('.constraint-value', this.el);
+
+		if (data.valueType === 'date') {
+			$constraintField.datepicker({dateFormat: 'mm/dd/yy'});
+		} else if (this.hasChoices()) {
+			//$constraintField.select2();
+		}
+
+		/*
+		var $operatorField    = $('.constraint-operator', this.el);
+		var $conjunctionField = $('.constraint-conjunction', this.el);
+
+		$operatorField.select2();
+		$conjunctionField.select2();
+		*/
+	},
+
+	didCopyClick: function(event) {
+		this.$el.trigger('copyConstraint', this.model);
+		return false;
+	},
+
+	didRemoveClick: function(event) {
+		this.$el.trigger('removeConstraint', this.model);
+		return false;
+	},
+
+	didChange: function(event) {
+		this.updateConstraint(this.model);
+	},
+
+	updateConstraint: function(constraint) {
+		var operator    = $('.constraint-operator', this.el).val();
+		var conjunction = $('.constraint-conjunction', this.el).val();
+		var value       = $('.constraint-value', this.el).val();
+		value           = this.parseValue(value, constraint.get('valueType'));
+
+		var changes     = {
+			operator: operator,
+			value: value,
+			conjunction: conjunction
 		};
 
-		var html = renderTemplate('constraint_item', templateData);
-		this.container.append(html);
+		//console.log('updateConstraint', changes);
+		constraint.set(changes);
+	},
+
+	parseValue: function(value, valueType) {
+		if (valueType === 'boolean') {
+			return value === 'true';
+		} else if (valueType === 'integer') {
+			return parseInt(value, 10);
+		} else if (valueType === 'float') {
+			return parseFloat(value, 10);
+		} else {
+			return value;
+		}
+	},
+
+	allOperators: [
+		'equals',
+		'not equals',
+		'greater than',
+		'greater than or equal to',
+		'less than',
+		'less than or equal to',
+		'contains',
+		'not contains'
+	],
+
+	numericOperators : [
+		'equals',
+		'not equals',
+		'greater than',
+		'greater than or equal to',
+		'less than',
+		'less than or equal to',
+	],
+
+	stringOperators: [
+		'equals',
+		'not equals',
+		'contains',
+		'not contains'
+	],
+
+	booleanOperators: [
+		'equals',
+		'not equals',
+	],
+
+	operatorsFor: function(valueType) {
+		if (valueType === 'integer' || valueType === 'float') {
+			return this.numericOperators;
+		} else if (valueType === 'string') {
+			return this.stringOperators;
+		} else if (valueType === 'boolean') {
+			return this.booleanOperators;
+		} else {
+			return this.allOperators;
+		}
+
+		return operators;
 	},
 
 	conjunctions: [
 		'and', 'or'
 	],
 
-	operators : {
-		'='   : 'equals',
-		'!='  : 'not equals',
-		'>'   : 'greater than',
-		'>='  : 'greater than or equal to',
-		'<'   : 'less than',
-		'<='  : 'less than or equal to',
+	hasChoices: function() {
+		return this.model.hasMeta('choices');
+	}
+
+});
+
+var EntryConstraintView = ConstraintView.extend({
+
+	template: getTemplate('entry_constraint'),
+	entrySelectTemplate: getTemplate('entry_select'),
+	entryAnswerTemplate: getTemplate('entry_answer'),
+
+	initialize: function(model, opts) {
+		ConstraintView.prototype.initialize.call(this, model, opts);
+		this.listenTo(this.model.getEntryTypes(), 'reset', this.renderEntryTypes);
+		this.listenTo(this.model.getEntryFields(), 'reset', this.renderEntryField);
 	},
 
-	operatorLabelFor: function(operator) {
-		if (this.operators.hasOwnProperty(operator)) {
-			return this.operators[operator];
+	renderEntryTypes: function() {
+		var $entrySelect = $('.entry-select-type', this.el);
+		var choices = this.model.getEntryTypes().toJSON();
+		var data = {
+			choices: choices,
+			currentChoice: this.model.get('entryTypeID')
+		};
+
+		var html = this.entrySelectTemplate(data);
+		$entrySelect.html(html);
+	},
+
+	renderEntryField: function() {
+		var $entrySelectChoice = $('.entry-select-field', this.el);
+		var choices = this.model.getEntryFields().toJSON();
+		var data = {
+			choices: choices,
+			currentChoice: this.model.get('entryFieldID')
+		};
+
+		var html = this.entrySelectTemplate(data);
+		$entrySelectChoice.html(html);
+
+		this.renderEntryAnswer();
+	},
+
+	renderEntryValueSelect: function() {
+		var $entrySelectChoice = $('.constraint-value', this.el);
+		var choices = this.model.getEntryFieldChoices();
+		var data = {
+			choices: choices,
+			currentChoice: this.model.get('value')
+		};
+
+		var html = this.entrySelectTemplate(data);
+		$entrySelectChoice.html(html);
+	},
+
+	renderEntryAnswer: function() {
+		var $entryAnswer   = $('.entry-answer-group', this.el);
+		var data           = this.model.toViewJSON();
+		data.view          = this;
+		data.choices       = this.model.getEntryFieldChoices();
+		data.currentChoice = this.model.get('value');
+
+		var html = this.entryAnswerTemplate(data);
+		$entryAnswer.html(html);
+	},
+
+	updateConstraint: function(constraint) {
+		var operator     = $('.constraint-operator', this.el).val();
+		var conjunction  = $('.constraint-conjunction', this.el).val();
+		var value        = $('.constraint-value', this.el).val();
+		var entryTypeID  = $('.entry-select-type', this.el).val();
+		var entryFieldID = $('.entry-select-field', this.el).val();
+		value            = this.parseValue(value, constraint.get('valueType'));
+
+		var changes     = {
+			operator: operator,
+			value: value,
+			conjunction: conjunction,
+			entryTypeID: this.parseValue(entryTypeID, 'integer'),
+			entryFieldID: this.parseValue(entryFieldID, 'integer')
+		};
+
+		//console.log('updateConstraint', changes);
+		constraint.set(changes);
+		this.renderEntryAnswer();
+	},
+
+	hasChoices: function() {
+		return this.model.hasChoices();
+	}
+
+});
+
+var ActiveConstraintsView = Backbone.CollectionView.extend({
+
+	el: jQuery('#active_constraints'),
+	emptyListCaption: getTemplate('empty_constraints'),
+
+	events: {
+		'copyConstraint': 'copyConstraint',
+		'removeConstraint': 'removeConstraint'
+	},
+
+	_getModelViewConstructor: function(model) {
+		var type = model.get('type');
+		var kind = ConstraintCollection.kindForType(type);
+
+		if (kind === 'record') {
+			return EntryConstraintView;
 		} else {
-			return operator;
+			return ConstraintView;
 		}
 	},
 
-	operatorsFor: function(valueType) {
-		var operators = ['=', '!='];
+	copyConstraint: function(event, constraint) {
+		var newConstraint = constraint.clone();
+		var index         = this.collection.indexOf(constraint);
 
-		if (valueType === 'number') {
-			operators.push.apply(operators, ['>', '>=', '<', '<=']);
-		} else if (valueType === 'string') {
-			operators.push.apply(operators, ['contains', 'not contains']);
-		}
+		this.collection.add(newConstraint, {at: index+1});
+	},
 
-		return operators;
+	removeConstraint: function(event, constraint) {
+		this.collection.remove(constraint);
 	}
 
-};
+});
 
-var EntryConstraintItemView = function(container, constraint) {
-	ConstraintItemView.call(this, container, constraint);
-	this.entryTypes = [];
-	this.entryFields = [];
-};
+var PreviewView = Backbone.View.extend({
 
-EntryConstraintItemView.prototype = Object.create(ConstraintItemView.prototype);
-EntryConstraintItemView.prototype.constructor = EntryConstraintItemView;
-
-var p = EntryConstraintItemView.prototype;
-p.render = function() {
-	var templateData = {
-		view: this,
-		constraint: this.constraint
-	};
-
-	var html = renderTemplate('entry_constraint_item', templateData);
-	this.container.append(html);
-	this.loadEntryTypes();
-};
-
-p.loadEntryTypes = function() {
-	var params = { entryType: 'contest' };
-	ajaxApi.request('list_entry_types', params)
-		.then($.proxy(this.didLoadEntryTypes, this))
-		.fail($.proxy(this.didLoadEntryTypesError, this));
-};
-
-p.didLoadEntryTypes = function(response) {
-	this.entryTypes = response.data;
-
-	var select = $('#entry-select-type-' + this.constraint.id);
-	var html = this.renderSelect(this.entryTypes, this.constraint.entryTypeID);
-
-	select.html(html);
-	select.on('change', $.proxy(this.didEntryTypeChange, this));
-	select.trigger('change');
-};
-
-p.didLoadEntryTypesError = function(response) {
-	console.log('didLoadEntryTypesError', response);
-};
-
-p.didEntryTypeChange = function(event) {
-	var choice = $(event.target).val();
-	this.constraint.entryTypeID = choice;
-	this.loadEntryFields(choice);
-};
-
-p.loadEntryFields = function(entryTypeID) {
-	var params = { entryTypeID: entryTypeID };
-	ajaxApi.request('list_entry_fields', params)
-		.then($.proxy(this.didLoadEntryFields, this))
-		.fail($.proxy(this.didLoadEntryFieldsError, this));
-};
-
-p.didLoadEntryFields = function(response) {
-	this.entryFields = response.data;
-
-	var select = $('#entry-select-field-' + this.constraint.id);
-	var html   = this.renderSelect(this.entryFields, this.constraint.entryFieldID);
-
-	select.html(html);
-	select.on('change', $.proxy(this.didEntryFieldChange, this));
-	select.trigger('change');
-};
-
-p.didLoadEntryFieldsError = function(response) {
-	console.log('didLoadEntryFieldsError', response);
-};
-
-p.didEntryFieldChange   = function(event) {
-	var choice          = $(event.target).val();
-	var field           = this.getFieldByID(choice);
-	var type            = field.type;
-	var answerType = field.type === 'select' || field.type === 'checkbox' ? 'choice' : '';
-	var templateData = {
-		view: this,
-		choices: field.choices,
-		currentChoice: this.getChoiceIndex(field.choices, this.constraint.value),
-		answerType: answerType,
-		constraint: this.constraint
-	};
-
-	this.constraint.entryFieldID = field.value;
-	this.constraint.entryFieldType = field.type;
-
-	var html = renderTemplate('entry_answer', templateData);
-	var div = $('#entry-answer-' + this.constraint.id);
-	div.html(html);
-
-	this.constraint.value = '';
-
-	if (answerType === 'choice') {
-		div.on('change', $.proxy(this.didEntryAnswerChange, this));
-		var select = $('#constraint-value-select-' + this.constraint.id);
-		select.trigger('change');
-	} else {
-		var input = $('#constraint-value-input-' + this.constraint.id);
-		input.trigger('change');
-	}
-};
-
-p.didEntryAnswerChange = function(event) {
-	var target = $(event.target);
-	var value = target.val();
-
-	this.constraint.value = value;
-	store.notify('inplaceChange');
-	return false;
-};
-
-p.getFieldByID = function(id) {
-	return _.find(this.entryFields, function(field) {
-		return field.value == id;
-	});
-};
-
-p.getChoiceIndex = function(choices, choiceID) {
-	var n = choices.length;
-	for (var i = 0; i < n; i++) {
-		choice = choices[i];
-		if (choice.value == choiceID) {
-			return i;
-		}
-	}
-
-	return -1;
-};
-
-p.renderSelect = function(choices, choiceID) {
-	var templateData = {
-		view: this,
-		id: this.constraint.id,
-		choices: choices,
-		currentChoice: this.getChoiceIndex(choices, choiceID)
-	};
-
-	var html = renderTemplate('entry_select', templateData);
-	return html;
-};
-
-var ConstraintListView = function(store) {
-	this.store         = store;
-	this.container     = $('.current-constraints');
-
-	this.store.on('change', $.proxy(this.didStoreChange, this));
-	this.container.on('click', $.proxy(this.didItemClick, this));
-	this.container.on('change', $.proxy(this.didItemChange, this));
-
-	this.itemViews = [];
-	this.render();
-};
-
-ConstraintListView.prototype = {
-
-	didItemClick: function(event) {
-		var target = $(event.target);
-		var id = target.attr('data-id');
-
-		if (id) {
-			id = parseInt(id, 10);
-		}
-
-		if (target.hasClass('remove-constraint')) {
-			this.removeConstraint(id);
-		} else if (target.hasClass('copy-constraint')) {
-			this.copyConstraint(id);
-		}
-
-		event.preventDefault();
+	events: {
+		'click .preview-member-query-button': 'didPreviewClick'
 	},
 
-	didItemChange: function(event) {
-		var target = $(event.target);
-		var id = target.attr('data-id');
-		var field;
+	initialize: function(options) {
+		this.collection = options.collection;
+		this.listenTo(this.collection, 'searchError', this.didSearchError);
+		this.listenTo(this.collection, 'searchSuccess', this.didSearchSuccess);
 
-		if (id) {
-			id = parseInt(id, 10);
-		}
-
-		if (target.hasClass('constraint-operator')) {
-			field = 'operator';
-		} else if (target.hasClass('constraint-conjunction')) {
-			field = 'conjunction';
-		} else if (target.hasClass('constraint-value')) {
-			field = 'value';
-		}
-
-		if (field) {
-			this.updateConstraint(id, field, target.val());
-		}
+		Backbone.View.prototype.initialize.call(this, options);
+		this.search();
 	},
 
-	didStoreChange: function(event) {
-		this.render();
+	didPreviewClick: function(event) {
+		this.search();
+		return false;
 	},
 
-	copyConstraint: function(id) {
-		this.store.copy(id);
-	},
-
-	removeConstraint: function(id) {
-		this.store.remove(id);
-	},
-
-	updateConstraint: function(id, field, value) {
-		this.store.update(id, field, value);
-	},
-
-	render: function() {
-		this.container.empty();
-		this.itemViews = [];
-
-		var constraints = this.store.current;
-		var n           = constraints.length;
-		var i, constraint, itemView;
-
-		for (i = 0; i < n; i++) {
-			constraint = constraints[i];
-			itemView   = this.listItemForConstraint(constraint);
-			itemView.render();
-
-			this.itemViews.push(itemView);
-		}
-
-		if (n === 0) {
-			this.container.append(this.emptyListItem());
-		}
-	},
-
-	listItemForConstraint: function(constraint) {
-		if (constraint instanceof EntryConstraint) {
-			return new EntryConstraintItemView(this.container, constraint);
-		} else {
-			return new ConstraintItemView(this.container, constraint);
-		}
-	},
-
-	emptyListItem: function() {
-		return renderTemplate('empty_constraints');
-	}
-
-};
-
-
-var PreviewView = function(queryUpdater) {
-	this.queryUpdater  = queryUpdater;
-	this.container     = $('.member-query-results');
-	this.previewButton = $('.preview-member-query-button');
-	this.previewButton.on('click', $.proxy(this.didPreviewButtonClick, this));
-};
-
-PreviewView.prototype = {
-
-	didPreviewButtonClick: function(event) {
-		var query = this.queryUpdater.update();
-		this.preview(query);
-		event.preventDefault();
-	},
-
-	preview: function(query) {
-		if (query === '') {
-			this.setStatus('Nothing to Preview, please add some filters.');
-			return;
-		}
-
+	search: function() {
 		this.setStatus('Searching, Please wait ...');
-
-		ajaxApi.request('preview_member_query', { query: query })
-			.then($.proxy(this.didPreviewSuccess, this))
-			.fail($.proxy(this.didPreviewError, this));
+		this.collection.search();
 	},
 
-	didPreviewSuccess: function(response) {
-		var accounts = response.data.accounts;
-		var total    = response.data.total;
+	didSearchSuccess: function() {
+		var total    = this.collection.getTotalResults();
 		var message = total + ' records found';
 
 		if (total > 0) {
@@ -1102,33 +1407,10 @@ PreviewView.prototype = {
 		}
 
 		this.setStatus(message);
-		this.render(accounts);
 	},
 
-	didPreviewError: function(response) {
-		this.setStatus('Failed to query records: ' + response.responseJSON.data);
-	},
-
-	render: function(accounts) {
-		this.container.empty();
-
-		var n = accounts.length;
-		var i, account;
-
-		for (i = 0; i < n; i++) {
-			account = accounts[i];
-			this.container.append(this.rowForAccount(account, i));
-		}
-	},
-
-	rowForAccount: function(account, index) {
-		var templateData = {
-			view: this,
-			index: index,
-			account: account
-		};
-
-		return renderTemplate('preview_result_row', templateData);
+	didSearchError: function(message) {
+		this.setStatus("Error: " + message);
 	},
 
 	setStatus: function(message) {
@@ -1136,7 +1418,23 @@ PreviewView.prototype = {
 		div.text(message);
 	}
 
-};
+});
+
+var QueryResultItemView = Backbone.CollectionView.extend({
+
+	template: getTemplate('query_result_item'),
+
+	render: function() {
+		var data = this.model.toJSON();
+		var html = this.template(data);
+
+		this.$el.html(html);
+	}
+});
+
+var QueryResultsView = Backbone.CollectionView.extend({
+	modelView: QueryResultItemView
+});
 
 var $ = jQuery;
 var QueryBuilderApp = function() {
@@ -1146,17 +1444,38 @@ var QueryBuilderApp = function() {
 QueryBuilderApp.prototype = {
 
 	initialize: function() {
-		// TODO: IMPORTANT, should not be global
-		window.ajaxApi    = new WpAjaxApi(member_query_meta);
+		//TODO: IMPORTANT, should not be global
+		window.ajaxApi           = new WpAjaxApi(member_query_meta);
+		var loadedConstraints    = member_query_data.constraints || [];
+		var availableConstraints = new ConstraintCollection(AVAILABLE_CONSTRAINTS);
+		var activeConstraints    = new ConstraintCollection(loadedConstraints);
+		var queryResults         = new QueryResultCollection([], { activeConstraints: activeConstraints });
 
-		this.store        = window.store = new ConstraintStore();
-		this.menuView     = new MenuView(this.store);
-		this.listView     = new ConstraintListView(this.store);
-		this.queryUpdater = new MemberQueryUpdater(this.store);
-		this.previewView  = new PreviewView(this.queryUpdater);
+		var toolbarView = new ToolbarView({
+			el: $('#query_builder_toolbar'),
+			collection: availableConstraints,
+			activeConstraints: activeConstraints
+		});
 
-		this.previewView.preview(member_query_data.query);
-		this.queryUpdater.update();
+		var activeConstraintsView = new ActiveConstraintsView({
+			el: $('#active_constraints'),
+			collection: activeConstraints,
+		});
+
+		var previewView = new PreviewView({
+			el: $('.preview-member-query'),
+			collection: queryResults
+		});
+
+		var queryResultsView = new QueryResultsView({
+			el: $('.member-query-results'),
+			collection: queryResults
+		});
+
+		toolbarView.render();
+		activeConstraintsView.render();
+		previewView.render();
+		queryResultsView.render();
 	},
 
 };
