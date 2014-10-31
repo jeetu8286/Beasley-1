@@ -9,6 +9,8 @@
  get_header();
  	do_action( 'show_latest_breaking_news_item' );
 
+ 	do_action( 'gmr_get_homepage_layout' );
+
 	while( have_posts() ):
 		the_post();
 		?>

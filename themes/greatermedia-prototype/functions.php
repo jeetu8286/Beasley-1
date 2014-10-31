@@ -13,7 +13,17 @@
  */
 
  // Useful global constants
-define( 'GMIPROTO_VERSION', '0.1.0' );
+ define( 'GMIPROTO_VERSION', '0.1.0' );
+
+ /*
+  * Theme support
+  */
+ add_theme_support( 'gmr-customizer' );
+
+ /*
+  * Required files
+  */
+ require_once( __DIR__ . '/includes/customizer/loader.php' );
 
  /**
   * Set up theme defaults and register supported WordPress features.
@@ -67,3 +77,20 @@ define( 'GMIPROTO_VERSION', '0.1.0' );
 	echo apply_filters( 'gmiproto_humans', $humans );
  }
  add_action( 'wp_head', 'gmiproto_header_meta' );
+
+ /**
+ * Used by hook: 'customize_preview_init'
+ *
+ * @see add_action('customize_preview_init',$func)
+ */
+ function gmi_customizer_live_preview()
+ {
+	wp_enqueue_script(
+		'gmi-theme-customizer',
+		get_template_directory_uri() . "/assets/js/theme-customize.min.js",
+		array( 'jquery','customize-preview' ),
+		GMIPROTO_VERSION,
+		true
+	);
+}
+add_action( 'customize_preview_init', 'gmi_customizer_live_preview' );
