@@ -97,10 +97,10 @@ class GMR_Show_Metaboxes {
 
 		$text = '';
 		$post_id = get_the_ID();
-		$time = mktime( 0, 0, 0 );
+		$precision = 0.5; // 1 - each hour, 0.5 - each 30 mins, 0.25 - each 15 mins
 
 		$origin_time = get_post_meta( $post_id, 'show_schedule_time', true );
-		$origin_days = get_post_meta( $post_id, 'show_schedule_day', true );
+		$origin_days = get_post_meta( $post_id, 'show_schedule_days', true );
 		if ( ! $origin_days ) {
 			$origin_days = array();
 		}
@@ -109,7 +109,7 @@ class GMR_Show_Metaboxes {
 			$days = array_map( array( $wp_locale, 'get_weekday' ), $origin_days );
 			$days = array_map( array( $wp_locale, 'get_weekday_abbrev' ), $days );
 
-			$text = date( 'h:i A', $time + $origin_time ) . ' on ' . implode( ', ', $days );
+			$text = date( 'h:i A', $origin_time ) . ' on ' . implode( ', ', $days );
 		} else {
 			$text = '&#8212;';
 		}
@@ -122,12 +122,12 @@ class GMR_Show_Metaboxes {
 			<div class="schedule-select hide-if-js">
 				<p>
 					<b>Pick time:</b>
-					<select name="show_schedule_time" class="widefat">
+					<br>
+					<select name="show_schedule_time">
 						<option></option>
-						<?php for ( $i = 0; $i < 96; $i++ ) : ?>
-							<option value="<?php echo MINUTE_IN_SECONDS * 15 * $i; ?>"<?php selected( MINUTE_IN_SECONDS * 15 * $i, $origin_time ) ?>>
-								<?php echo date( 'h:i A', $time + MINUTE_IN_SECONDS * 15 * $i ); ?>
-							</option>
+						<?php for ( $i = 0, $count = 24 / $precision; $i < $count ; $i++ ) : ?>
+							<?php $time = HOUR_IN_SECONDS * $precision * $i; ?>
+							<option value="<?php echo $time; ?>"<?php selected( $time, $origin_time ); ?>><?php echo date( 'h:i A', $time ); ?></option>
 						<?php endfor; ?>
 					</select>
 				</p>
@@ -137,7 +137,7 @@ class GMR_Show_Metaboxes {
 					<?php for ( $i = 0; $i < 7; $i++ ) : ?>
 						<?php $week_day = $wp_locale->get_weekday( $i ); ?>
 						<label>
-							<input type="checkbox" name="show_schedule_day[]" value="<?php echo $i; ?>" data-abbr="<?php echo esc_attr( $wp_locale->get_weekday_abbrev( $week_day ) ); ?>"<?php checked( in_array( $i, $origin_days ) ); ?>>
+							<input type="checkbox" name="show_schedule_days[]" value="<?php echo $i; ?>" data-abbr="<?php echo esc_attr( $wp_locale->get_weekday_abbrev( $week_day ) ); ?>"<?php checked( in_array( $i, $origin_days ) ); ?>>
 							<?php echo esc_html( $week_day ); ?>
 						</label>
 						<br>
@@ -186,18 +186,31 @@ class GMR_Show_Metaboxes {
 			return;
 		}
 
-		$selected_days = array();
-		$posted_days = isset( $_POST['show_schedule_day'] ) ? (array) $_POST['show_schedule_day'] : array();
+		update_post_meta( $post_id, 'show_homepage', filter_input( INPUT_POST, 'show_homepage', FILTER_VALIDATE_BOOLEAN ) );
+		update_post_meta( $post_id, 'logo_image', filter_input( INPUT_POST, 'logo_image', FILTER_VALIDATE_INT ) );
+
+		// schedule time
+		$schedule_time = filter_input( INPUT_POST, 'show_schedule_time' );
+		if ( is_numeric( $schedule_time ) ) {
+			update_post_meta( $post_id, 'show_schedule_time', $schedule_time );
+		} else {
+			delete_post_meta( $post_id, 'show_schedule_time' );
+		}
+
+		// schedule days
+		$scheduled_days = array();
+		$posted_days = isset( $_POST['show_schedule_days'] ) ? (array) $_POST['show_schedule_days'] : array();
 		foreach ( $posted_days as $day ) {
 			if ( 0 <= $day && $day < 7 ) {
-				$selected_days[] = $day;
+				$scheduled_days[] = $day;
 			}
 		}
 
-		update_post_meta( $post_id, 'show_homepage', filter_input( INPUT_POST, 'show_homepage', FILTER_VALIDATE_BOOLEAN ) );
-		update_post_meta( $post_id, 'logo_image', filter_input( INPUT_POST, 'logo_image', FILTER_VALIDATE_INT ) );
-		update_post_meta( $post_id, 'show_schedule_time', filter_input( INPUT_POST, 'show_schedule_time' ) );
-		update_post_meta( $post_id, 'show_schedule_day', $selected_days );
+		if ( ! empty( $scheduled_days ) ) {
+			update_post_meta( $post_id, 'show_schedule_days', $scheduled_days );
+		} else {
+			delete_post_meta( $post_id, 'show_schedule_days' );
+		}
 	}
 
 }

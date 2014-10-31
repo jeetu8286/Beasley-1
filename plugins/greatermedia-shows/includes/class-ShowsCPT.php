@@ -1,27 +1,49 @@
 <?php
+
 /**
  * Created by Eduard
  * Date: 15.10.2014
  */
-
-if ( ! defined( 'WPINC' ) ) {
-	die;
-}
-
 class ShowsCPT {
 
-	const CPT_SLUG = 'show';
+	const CPT_SLUG        = 'show';
 	const SHADOW_TAXONOMY = '_shows';
 
-	public static function init() {
-		add_action( 'init', array( __CLASS__, 'register_post_type' ) );
-		add_action( 'init', array( __CLASS__, 'register_shadow_taxonomy' ) );
+	/**
+	 * The singleton instance of the ShowsCPT class.
+	 *
+	 * @static
+	 * @access private
+	 * @var ShowsCPT
+	 */
+	private static $_instance = null;
+
+	/**
+	 * Returns instance of the ShowsCPT class.
+	 *
+	 * @static
+	 * @access public
+	 * @return ShowsCPT
+	 */
+	public static function get_instance() {
+		if ( is_null( self::$_instance ) ) {
+			self::$_instance = new ShowsCPT();
+			
+			add_action( 'init', array( self::$_instance, 'register_post_type' ) );
+			add_action( 'init', array( self::$_instance, 'register_shadow_taxonomy' ) );
+			add_action( 'manage_' . self::CPT_SLUG . '_posts_columns', array( self::$_instance, 'filter_columns_list' ) );
+			add_action( 'manage_' . self::CPT_SLUG . '_posts_custom_column', array( self::$_instance, 'render_custom_column' ), 10, 2 );
+		}
+
+		return self::$_instance;
 	}
 
 	/**
 	 * Registers shows post types
+	 *
+	 * @access public
 	 */
-	public static function register_post_type() {
+	public function register_post_type() {
 		$labels = array(
 			'name'               => __( 'Shows', 'greatermedia' ),
 			'singular_name'      => __( 'Show', 'greatermedia' ),
@@ -64,11 +86,12 @@ class ShowsCPT {
 
 	/**
 	 * Regsiter shadow taxonomy for shows
+	 *
+	 * @access public
 	 */
-	public static function register_shadow_taxonomy() {
-
+	public function register_shadow_taxonomy() {
 		$labels = array(
-			'name' => _x( 'Show terms', 'Taxonomy Show terms', 'greatermedia' ),
+			'name'                  => _x( 'Show terms', 'Taxonomy Show terms', 'greatermedia' ),
 			'singular_name'         => _x( 'Show term', 'Taxonomy Show term', 'greatermedia' ),
 			'search_items'          => __( 'Search Show terms', 'greatermedia' ),
 			'popular_items'         => __( 'Popular Show terms', 'greatermedia' ),
@@ -111,11 +134,58 @@ class ShowsCPT {
 		register_taxonomy( self::SHADOW_TAXONOMY, $supported_posttypes, $args );
 
 		if ( function_exists( 'TDS\add_relationship' ) ) {
-			TDS\add_relationship( 'show', self::SHADOW_TAXONOMY );
+			TDS\add_relationship( self::CPT_SLUG, self::SHADOW_TAXONOMY );
 		}
+	}
+
+	/**
+	 * Add the custom column to the columns list.
+	 *
+	 * @param array $columns
+	 * @return array
+	 */
+	public function filter_columns_list( $columns ) {
+		// Put just after the categories column.
+		$cut_mark = array_search( 'title', array_keys( $columns ) ) + 1;
+
+		$columns = array_merge(
+			array_slice( $columns, 0, $cut_mark ),
+			array(
+				'schedule' => 'Schedule',
+			),
+			array_slice( $columns, $cut_mark )
+		);
+
+		return $columns;
+	}
+
+	/**
+	 * Render the custom column.
+	 *
+	 * @global WP_Locale $wp_locale
+	 * @param string $column_name
+	 * @param int $post_id
+	 */
+	public function render_custom_column( $column_name, $post_id ) {
+		global $wp_locale;
 		
+		if ( $column_name != 'schedule' ) {
+			return;
+		}
+
+		$time = get_post_meta( $post_id, 'show_schedule_time', true );
+		$days = get_post_meta( $post_id, 'show_schedule_days', true );
+		if ( ! is_numeric( $time ) || empty( $days ) ) {
+			echo '&#8212;';
+			return;
+		}
+
+		$days = array_map( array( $wp_locale, 'get_weekday' ), $days );
+		$days = array_map( array( $wp_locale, 'get_weekday_abbrev' ), $days );
+
+		printf( '<b>%s</b> on <b>%s</b>', date( 'h:i A', $time ), implode( '</b>, <b>', $days ) );
 	}
 
 }
 
-ShowsCPT::init();
+ShowsCPT::get_instance();
