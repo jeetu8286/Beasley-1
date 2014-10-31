@@ -16,17 +16,20 @@
 
 		<?php
 
-		echo '<div id="live-player--listen_now" class="live-player--listen_btn" style="visibility:visible">Listen Now</div>';
-		do_action( 'gm_live_player_test_ui' );
-
-		do_action( 'gm_live_player' );
+		if ( defined( 'GREATER_MEDIA_GIGYA_TEST_UI' ) && GREATER_MEDIA_GIGYA_TEST_UI ) {
+			echo '<div id="live-player--listen_now" class="live-player--listen_btn" style="visibility:visible">Listen Now</div>';
+			do_action( 'gm_live_player_test_ui' );
+			do_action( 'gm_live_player' );
+		} else {
 
 			if ( is_gigya_user_logged_in() ) {
-
+				do_action( 'gm_live_player' );
 			} else {
-
+				echo '<div id="live-player--listen_now" class="live-player--listen_btn" style="visibility:visible">Listen Now</div>';
+				do_action( 'gm_live_player_test_ui' );
 			}
-
+		}
+		
 		?>
 	</div>
 
