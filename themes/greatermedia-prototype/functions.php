@@ -20,20 +20,20 @@ define( 'GMIPROTO_VERSION', '0.1.0' );
   */
 add_theme_support( 'gmr-customizer' );
 
-/*
+ /*
   * Required files
   */
-require_once( __DIR__ . '/includes/customizer/loader.php' );
+ require_once( __DIR__ . '/includes/customizer/loader.php' );
 
-/**
- * Set up theme defaults and register supported WordPress features.
- *
- * @uses  load_theme_textdomain() For translation/localization support.
- *
- * @since 0.1.0
- */
-function gmiproto_setup() {
-	add_theme_support( 'post-thumbnails' );
+ /**
+  * Set up theme defaults and register supported WordPress features.
+  *
+  * @uses load_theme_textdomain() For translation/localization support.
+  *
+  * @since 0.1.0
+  */
+ function gmiproto_setup() {
+	 add_theme_support( 'post-thumbnails' );
 
 	/**
 	 * Makes Greater Media Prototype available for translation.
@@ -81,7 +81,6 @@ function gmiproto_header_meta() {
 
 	echo apply_filters( 'gmiproto_humans', $humans );
 }
-
 add_action( 'wp_head', 'gmiproto_header_meta' );
 
 /**

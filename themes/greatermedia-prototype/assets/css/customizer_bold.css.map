@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAAA,IAAK;EACJ,UAAU,EAAE,IAAI",
+"sources": ["sass/customizer_bold.scss"],
+"names": [],
+"file": "customizer_bold.css"
+}

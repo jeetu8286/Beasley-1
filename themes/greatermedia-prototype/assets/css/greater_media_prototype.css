@@ -252,9 +252,9 @@ article {
   outline: none; }
 
 .gigya-input-text:focus, .gigya-input-password:focus, .gigya-textarea:focus {
-  box-shadow: 0 0 3px #50bade, inset 0 1px 3px rgba(0, 0, 0, 0.05);
-  -webkit-box-shadow: 0 0 3px #50bade, inset 0 1px 3px rgba(0, 0, 0, 0.05);
-  -moz-box-shadow: 0 0 3px #50bade, inset 0 1px 3px rgba(0, 0, 0, 0.05); }
+  box-shadow: 0 0 3px #50BADE, inset 0 1px 3px rgba(0, 0, 0, 0.05);
+  -webkit-box-shadow: 0 0 3px #50BADE, inset 0 1px 3px rgba(0, 0, 0, 0.05);
+  -moz-box-shadow: 0 0 3px #50BADE, inset 0 1px 3px rgba(0, 0, 0, 0.05); }
 
 .gigya-input-submit, .gigya-input-button {
   text-align: center;
@@ -267,14 +267,14 @@ article {
   line-height: 26px;
   background: #F2F2F2;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#FFFFFF", endColorstr="#F2F2F2");
-  background: -webkit-gradient(linear, left top, left bottom, from(white), to(#f2f2f2));
-  background: -moz-linear-gradient(top, white, #f2f2f2); }
+  background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#F2F2F2));
+  background: -moz-linear-gradient(top, #FFFFFF, #F2F2F2); }
 
 .gigya-input-submit:hover, .gigya-input-button:hover {
   background: #FFFFFF;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#F2F2F2", endColorstr="#FFFFFF");
-  background: -webkit-gradient(linear, left top, left bottom, from(#f2f2f2), to(white));
-  background: -moz-linear-gradient(top, #f2f2f2, white); }
+  background: -webkit-gradient(linear, left top, left bottom, from(#F2F2F2), to(#FFFFFF));
+  background: -moz-linear-gradient(top, #F2F2F2, #FFFFFF); }
 
 .gigya-input-radio, .gigya-input-checkbox {
   margin-right: 5px;
@@ -401,3 +401,5 @@ input.gigya-input-text, input.gigya-input-password {
 
 #gigya-login-screen a.forgotPassword:hover, #gigya-login-screen a.forgotPassword:active, #gigya-recent-login-screen a.forgotPassword:hover, #gigya-recent-login-screen a.forgotPassword:active {
   text-decoration: underline; }
+
+/*# sourceMappingURL=greater_media_prototype.css.map */
