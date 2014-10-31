@@ -1,3 +1,10 @@
-/**
- * Placeholders
- */
+%unordered-list {
+	@include padding(0);
+	@include margin(0);
+}
+
+%list-item {
+	list-style: none;
+	@include padding(0);
+	@include margin(0);
+}

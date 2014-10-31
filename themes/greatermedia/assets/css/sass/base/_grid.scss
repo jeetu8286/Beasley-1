@@ -36,7 +36,7 @@ img {
 	@include size(100% null);
 }
 
-.content {
+.content, %content {
 	@include span-columns(4);
 	@include padding(2em null);
 	@include bp(small) {
@@ -54,7 +54,7 @@ img {
 	}
 }
 
-.sidebar {
+.sidebar, %sidebar {
 	@include span-columns(4);
 	@include padding(2em .5em);
 	@include bp(small) {
