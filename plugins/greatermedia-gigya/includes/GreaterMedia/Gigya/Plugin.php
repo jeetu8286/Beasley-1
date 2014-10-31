@@ -142,7 +142,13 @@ class Plugin {
 	function initialize_member_query_scripts( $member_query ) {
 		wp_dequeue_script( 'autosave' );
 
-		$this->enqueue_script( 'query_builder', 'js/query_builder.js', 'underscore' );
+		wp_enqueue_script( 'underscore' );
+		wp_enqueue_script( 'backbone' );
+		wp_enqueue_script( 'jquery-ui-datepicker' );
+		//$this->enqueue_script( 'select2', 'js/vendor/select2.js' );
+
+		$this->enqueue_script( 'backbone.collectionView', 'js/vendor/backbone.collectionView.js', 'backbone' );
+		$this->enqueue_script( 'query_builder', 'js/query_builder.js', array( 'backbone', 'underscore' ) );
 
 		wp_localize_script(
 			'query_builder', 'member_query_data', $member_query->properties
@@ -161,7 +167,8 @@ class Plugin {
 	}
 
 	function initialize_member_query_styles( $member_query ) {
-		$this->enqueue_style( 'gmr_gigya', 'css/gmr_gigya.css' );
+		$this->enqueue_style( 'query_builder', 'css/query_builder.css' );
+		//$this->enqueue_style( 'select2', 'css/vendor/select2.css' );
 	}
 
 	/**
@@ -207,8 +214,8 @@ class Plugin {
 			$member_query = new MemberQuery( $post_id );
 			$member_query->build_and_save();
 
-			$segment_publisher = new SegmentPublisher( $member_query );
-			$segment_publisher->publish();
+			//$segment_publisher = new SegmentPublisher( $member_query );
+			//$segment_publisher->publish();
 		} catch ( \Exception $e ) {
 			$this->set_flash( $e->getMessage() );
 		}
@@ -255,7 +262,11 @@ class Plugin {
 
 	public function enqueue_script( $id, $path, $dependency = null ) {
 		if ( ! is_null( $dependency ) ) {
-			$dependencies = array( $dependency );
+			if ( is_array( $dependency ) ) {
+				$dependencies = $dependency;
+			} else {
+				$dependencies = array( $dependency );
+			}
 		} else {
 			$dependencies = array();
 		}
@@ -270,7 +281,11 @@ class Plugin {
 
 	public function enqueue_style( $id, $path, $dependency = null ) {
 		if ( ! is_null( $dependency ) ) {
-			$dependencies = array( $dependency );
+			if ( is_array( $dependency ) ) {
+				$dependencies = $dependency;
+			} else {
+				$dependencies = array( $dependency );
+			}
 		} else {
 			$dependencies = array();
 		}

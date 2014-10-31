@@ -46,4 +46,27 @@ class GreaterMediaUserGeneratedImage extends GreaterMediaUserGeneratedContent {
 
 	}
 
+	/**
+	 * Render a preview of this UGC suitable for use in the admin
+	 *
+	 * @return string html
+	 */
+	public function render_preview() {
+
+		$html = '';
+
+		$first_image = $this->first_image( $this->post->post_content );
+
+		$html .= '<div class="ugc-gallery-preview">' .
+			'<div class="ugc-moderation-gallery-thumb">' .
+			'<img src="' .
+			esc_attr( $first_image ) .
+			'" />' .
+			'</div>' .
+			'</div>';
+
+		return $html;
+
+	}
+
 }
