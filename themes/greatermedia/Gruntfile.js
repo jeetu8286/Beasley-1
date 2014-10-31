@@ -36,9 +36,15 @@ module.exports = function( grunt ) {
 			},
 			liveplayer_login_test: {
 				src: [
-					'assets/js/src/liveplayer_test.js'
+					'assets/js/liveplayer/liveplayer_test.js'
 				],
 				dest: 'assets/js/liveplayer_test.js'
+			},
+			liveplayer_login_test_auth: {
+				src: [
+					'assets/js/liveplayer/liveplayer_test_auth.js'
+				],
+				dest: 'assets/js/liveplayer_test_auth.js'
 			},
 			greater_media_styleguide: {
 				src: [
@@ -74,6 +80,7 @@ module.exports = function( grunt ) {
 					'assets/js/gigya_login.min.js': ['assets/js/gigya_login.js'],
 					'assets/js/liveplayer_login.min.js': ['assets/js/liveplayer_login.js'],
 					'assets/js/liveplayer_test.min.js': ['assets/js/liveplayer_test.js'],
+					'assets/js/liveplayer_test_auth.min.js': ['assets/js/liveplayer_test_auth.js'],
 					'assets/js/gm_styleguide.min.js': ['assets/js/gm_styleguide.js']
 				},
 				options: {

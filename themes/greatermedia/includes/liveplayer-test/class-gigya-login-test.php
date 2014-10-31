@@ -22,11 +22,26 @@ class GreaterMediaGigyaTest {
 
 	public function wp_enqueue_scripts() {
 
-		if ( defined( 'GREATER_MEDIA_GIGYA_TEST_UI' ) && GREATER_MEDIA_GIGYA_TEST_UI ) {
-			wp_enqueue_script( 'liveplayer-testing', get_template_directory_uri() . '/assets/js/liveplayer_test.js', array( 'jquery' ), false, false );
-		}
+		$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 
-		wp_enqueue_script( 'gigya-auth', get_template_directory_uri() . "/assets/js/greatermedia-gigya-auth.js", array(), false, false );
+		if ( defined( 'GREATER_MEDIA_GIGYA_TEST_UI' ) && GREATER_MEDIA_GIGYA_TEST_UI ) {
+			wp_enqueue_script(
+				'liveplayer-testing',
+				get_template_directory_uri() . "/assets/js/liveplayer_test{$postfix}.js",
+				array(
+					'jquery'
+				),
+				false,
+				false
+			);
+			wp_enqueue_script(
+				'gigya-auth',
+				get_template_directory_uri() . "/assets/js/liveplayer_test_auth{$postfix}.js",
+				array(),
+				false,
+				false
+			);
+		}
 
 	}
 
