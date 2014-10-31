@@ -15,12 +15,14 @@ define( 'GREATER_MEDIA_CONTESTS_URL', plugin_dir_url( __FILE__ ) );
 define( 'GREATER_MEDIA_CONTESTS_PATH', dirname( __FILE__ ) );
 
 include trailingslashit( __DIR__ ) . 'inc/class-greatermedia-contests.php';
+include trailingslashit( __DIR__ ) . 'inc/class-greatermedia-contests-rewrites.php';
 include trailingslashit( __DIR__ ) . 'inc/class-greatermedia-contests-metaboxes.php';
 include trailingslashit( __DIR__ ) . 'inc/class-greatermedia-contest-entry.php';
 include trailingslashit( __DIR__ ) . 'inc/class-greatermedia-contest-entry-metaboxes.php';
 include trailingslashit( __DIR__ ) . 'inc/class-greatermedia-contest-entry-gravity-forms.php';
 include trailingslashit( __DIR__ ) . 'inc/class-greatermedia-contest-entry-twitter.php';
 include trailingslashit( __DIR__ ) . 'inc/class-greatermedia-contest-entry-instagram.php';
+include trailingslashit( __DIR__ ) . 'inc/class-greatermedia-contests-template-actions.php';
 
 if ( defined( 'WP_CLI' ) && WP_CLI ) {
 	include trailingslashit( __DIR__ ) . 'inc/class-greatermedia-contests-wp-cli.php';
