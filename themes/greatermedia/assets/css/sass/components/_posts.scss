@@ -1,0 +1,215 @@
+.hentry {
+	@include margin(null null 1em null);
+}
+
+.article-types {
+	@include display(block);
+	@include size(100% 30px);
+	@include padding(5px);
+	@include margin(null null 10px);
+	background-color: color(light-gray);
+}
+
+%article-type {
+	@include position(relative, null null null null);
+	@include padding(null null null em(30px));
+	font-size: ms(-2);
+	text-transform: uppercase;
+}
+
+%article-type--before {
+	@include position(absolute, 0 null null 0 );
+	@include size(0 0);
+	font-family: dashicons;
+	font-size: ms(0);
+	color: color(red);
+}
+
+.article-type--aside, .article-type--gallery, .article-type--link, .article-type--image, .article-type--video, .article-type--audio, .article-type--standard {
+	@extend %article-type;
+}
+
+.article-type--aside:before{
+	@extend %article-type--before;
+	content: "\f123";
+}
+
+.article-type--gallery:before{
+	@extend %article-type--before;
+	content: "\f161";
+}
+
+.article-type--link:before{
+	@extend %article-type--before;
+	content: "\f103";
+}
+
+.article-type--image:before{
+	@extend %article-type--before;
+	content: "\f128";
+}
+
+.article-type--video:before{
+	@extend %article-type--before;
+	content: "\f126";
+}
+
+.article-type--audio:before{
+	@extend %article-type--before;
+	content: "\f127";
+}
+
+.article-type--standard:before{
+	@extend %article-type--before;
+	content: "\f109";
+}
+
+.byline {
+	font-size: ms(-3);
+	color: color(gray);
+	text-transform: uppercase;
+}
+
+.article-comments--count {
+	@include padding(null null null 5px);
+	@include margin(null null null 3px);
+	@include border-color(null null null color('dark-gray'));
+	@include border-style(null null null solid);
+	@include border-width(null null null 1px);
+}
+
+.single-title, .page-title, .entry-title {
+	@include margin(.5em 0);
+}
+
+.single-title {
+}
+
+.page-title {
+}
+
+.entry-title {
+}
+
+.archive-title {
+}
+
+.entry-thumbnail {
+	@include position(relative, null null null null);
+	@include padding(null null em(32px));
+}
+
+.entry-content {
+	@include padding(1.5em 0);
+	font-family: $serif;
+}
+
+.read-more--btn{
+	@include btn(red, white, 1em, 1.5em, em(14px));
+}
+
+.pagination {
+	@include size(100% null);
+	font-size: ms(-1);
+}
+
+.pagination-previous {
+	@include size(50% null);
+	float: left;
+}
+
+.pagination-previous .fa {
+	@include margin(null em(8px) null null);
+}
+
+.pagination-next {
+	@include size(50% null);
+	float: right;
+	text-align: right;
+}
+
+.pagination-next .fa {
+	@include margin(null null null em(8px));
+}
+
+// Blockquote styles
+blockquote {
+	@include padding(em(8px) em(10px));
+	@include margin(em(24px) em(10px));
+	@include border-color(null null null color(gray));
+	@include border-style(null null null solid);
+	@include border-width(null null null em(10px));
+	quotes: "\201C""\201D""\2018""\2019";
+}
+
+blockquote:before {
+	@include margin(null em(4px) null null);
+	color: color(light-gray);
+	content: open-quote;
+	font-size: ms(12);
+	line-height: 0.1em;
+	vertical-align: em(-4px);
+}
+
+blockquote p {
+	display: inline;
+	font-style: italic;
+	color: color(dark-gray);
+}
+
+.alignleft, img.alignleft {
+	@include display(block);
+	@include margin(0 1em 1em);
+	float: left;
+}
+
+.alignright, img.alignright {
+	@include display(block);
+	@include margin(0 0 1em 1em);
+	float: right;
+}
+
+.aligncenter, img.aligncenter {
+	@include margin(0 auto 1em)
+}
+
+.size-auto,
+.size-full,
+.size-large,
+.size-medium,
+.size-thumbnail {
+	max-width: 100%;
+	@include size(null auto);
+}
+
+pre {
+	@include padding(em(24px));
+	@include margin(0 0 em(24px));
+	@include border-top-radius(em(4px));
+	@include border-right-radius(em(4px));
+	@include border-bottom-radius(em(4px));
+	@include border-left-radius(em(4px));
+	background: color(light-gray);
+	color: color(black);
+	font-size: ms(-1);
+}
+
+.wp-caption {
+	max-width: 100%;
+	@include padding(0);
+	@include margin(0 0 em(16px));
+	background: color(light-gray);
+}
+
+.wp-caption img {
+	@include size(100% null);
+	@include margin(null null 0);
+	max-width: 100%;
+}
+
+.wp-caption p.wp-caption-text {
+	@include padding(em(16px) em(20px) em(20px) em(20px));
+	@include padding(em(4px) em(8px));
+	font-size: ms(-2);
+	text-align: left;
+}

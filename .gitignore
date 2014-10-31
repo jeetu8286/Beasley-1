@@ -1,7 +1,14 @@
 uploads/
 plugins/wp-multi-network/
+plugins/wordpress-importer/
 plugins/index.php
 themes/index.php
 upgrade/
 /index.php
 .idea
+debug.log
+.DS_Store
+plugins/gears
+plugins/gravityforms
+atlassian-ide-plugin.xml
+mu-plugins/test-data-store.php

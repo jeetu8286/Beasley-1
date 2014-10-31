@@ -1,0 +1,10 @@
+// General Styles
+body {
+	@include size(null 100%);
+	@include margin(0 auto);
+	background: color(white);
+}
+
+* {
+	-webkit-tap-highlight-color: rgba(0,0,0,0);
+}

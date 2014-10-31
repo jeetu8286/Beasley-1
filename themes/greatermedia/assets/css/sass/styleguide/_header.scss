@@ -1,0 +1,13 @@
+/**
+ * Header Styles
+ */
+.sg-header{
+	@include size(100% 500px);
+	background-color: color(medium-gray);
+	color: color(black);
+}
+.sg-header-title{
+	@include position(absolute, 50% null null 50%);
+	@include transform(translate(-50%, -50%));
+	@include margin(0 null);
+}

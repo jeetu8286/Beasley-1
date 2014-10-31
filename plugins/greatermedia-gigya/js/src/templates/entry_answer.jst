@@ -1,0 +1,30 @@
+<label><strong>Select Answer: </strong></label>
+<select class="constraint-operator" style="width: 35%">
+	<% _.each(view.operatorsFor(valueType), function(operatorItem) { %>
+	<option value="<%- operatorItem %>" <%= operatorItem === operator ? 'selected="selected"' : ''  %>">
+	<%- operatorItem %>
+	</option>
+	<% }) %>
+</select>
+
+<% if (view.hasChoices()) { %>
+	<select class="constraint-value" style="width: 45%">
+		<% _.each(choices, function(choiceItem) { %>
+		<option value="<%- choiceItem.value %>" <%= choiceItem.value == currentChoice ? 'selected="selected"' : ''  %>">
+		<%- choiceItem.label %>
+		</option>
+		<% }) %>
+	</select>
+<% } else if (valueType === 'integer' || valueType === 'float') { %>
+	<input type="number" class="constraint-value constraint-value-text" value="<%- value %>" />
+<% } else { %>
+	<input type="text" class="constraint-value constraint-value-text" value="<%- value %>" />
+<% } %>
+
+<select class="constraint-conjunction" style="width: 15%">
+	<% _.each(view.conjunctions, function(conjunctionItem) { %>
+	<option value="<%- conjunctionItem %>" <%= conjunctionItem === conjunction ? 'selected="selected"' : ''  %>">
+	<%- conjunctionItem %>
+	</option>
+	<% }) %>
+</select>
