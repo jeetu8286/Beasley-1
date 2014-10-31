@@ -25,22 +25,66 @@ class GreaterMediaContestsMetaboxes {
 
 		global $post;
 
-		if ( $post->post_type !== 'contests' ) {
-			return;
-		}
+		if ( $post && 'contest' === $post->post_type ) {
 
-		wp_enqueue_style( 'formbuilder-vendor', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'bower_components/formbuilder/vendor/css/vendor.css' );
-		wp_enqueue_style( 'formbuilder', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'bower_components/formbuilder/dist/formbuilder.css' );
+			wp_enqueue_style( 'formbuilder', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'bower_components/formbuilder/dist/formbuilder.css' );
 
-		wp_enqueue_script( 'formbuilder-vendor', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'bower_components/formbuilder/vendor/js/vendor.js' );
-		wp_enqueue_script( 'formbuilder', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'bower_components/formbuilder/dist/formbuilder.js' );
+			wp_enqueue_script( 'ie8-node-enum', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'bower_components/ie8-node-enum/index.js' );
+			wp_enqueue_script( 'jquery-scrollwindowto', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'bower_components/jquery.scrollWindowTo/index.js', array( 'jquery' ) );
+			wp_enqueue_script( 'underscore-mixin-deepextend', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'bower_components/underscore.mixin.deepExtend/index.js', array( 'underscore' ) );
+			wp_enqueue_script( 'backbone-deep-model', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'bower_components/backbone-deep-model/src/deep-model.js', array( 'backbone' ) );
 
-		wp_enqueue_script( 'greatermedia-contests-admin', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'js/greatermedia-contests-admin.js' );
-		$embedded_form = get_post_meta( $post->ID, 'embedded_form', true );
-		$settings      = array(
-			'form' => $embedded_form,
-		);
-		wp_localize_script( 'greatermedia-contests-admin', 'GreaterMediaContestsForm', $settings );
+			if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
+
+				wp_enqueue_script( 'rivets', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'bower_components/rivets/dist/rivets.js' );
+				wp_enqueue_style( 'font-awesome', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'bower_components/font-awesome/css/font-awesome.css' );
+
+				wp_enqueue_script(
+					'formbuilder',
+					trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'bower_components/formbuilder/dist/formbuilder.js',
+					array(
+						'jquery',
+						'jquery-ui-core',
+						'jquery-scrollwindowto',
+						'underscore',
+						'underscore-mixin-deepextend',
+						'backbone',
+						'backbone-deep-model',
+						'ie8-node-enum',
+						'rivets',
+					)
+				);
+
+			} else {
+
+				wp_enqueue_script( 'rivets', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'bower_components/rivets/dist/rivets.min.js' );
+				wp_enqueue_style( 'font-awesome', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'bower_components/font-awesome/css/font-awesome.min.css' );
+				wp_enqueue_script(
+					'formbuilder',
+					trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'bower_components/formbuilder/dist/formbuilder-min.js',
+					array(
+						'jquery',
+						'jquery-ui-core',
+						'jquery-scrollwindowto',
+						'underscore',
+						'underscore-mixin-deepextend',
+						'backbone',
+						'backbone-deep-model',
+						'ie8-node-enum',
+						'rivets',
+					)
+				);
+
+			}
+
+			wp_enqueue_script( 'greatermedia-contests-admin', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'js/greatermedia-contests-admin.js', array( 'formbuilder' ), false, true );
+			$embedded_form = get_post_meta( $post->ID, 'embedded_form', true );
+			$settings      = array(
+				'form' => $embedded_form,
+			);
+			wp_localize_script( 'greatermedia-contests-admin', 'GreaterMediaContestsForm', $settings );
+
+		};
 	}
 
 	public function custom_metadata_manager_init_metadata() {
