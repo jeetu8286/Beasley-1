@@ -1,6 +1,7 @@
 <?php
 /**
  * Contains methods for customizing the theme customization screen.
+ * This is a proof-of-concept right now – it will be expanded during theme development.
  */
 class GMR_Customizer {
     public static function init() {
