@@ -15,7 +15,6 @@ get_header(); ?>
 			<section class="content">
 
 				<?php
-				if ( is_gigya_user_logged_in() ) {
 
 					if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
 
@@ -109,12 +108,7 @@ get_header(); ?>
 
 						</article>
 
-					<?php endif;
-				} else {
-
-					echo '<article><h3>Please login</h3></article>';
-
-				} ?>
+					<?php endif; ?>
 
 			</section>
 
