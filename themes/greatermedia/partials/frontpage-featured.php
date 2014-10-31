@@ -31,8 +31,10 @@
 				</div>
 				<div class="featured-content--meta">
 					<h2 class="featured-content--title">MMR Rocks the Flyers</h2>
-					MMR Rocks the Flyers<br>
-					Flyers All Access
+					<ul class="featured-content--list">
+						<li class="featured-content--item">MMR Rocks the Flyers</li>
+						<li class="featured-content--item">Flyers All Access</li>
+					</ul>
 				</div>
 			</div>
 			<div class="featured-content--block">
@@ -40,9 +42,8 @@
 					<img src="http://placehold.it/400x400&text=featured+image">
 				</div>
 				<div class="featured-content--meta">
-					<h2 class="featured-content--title">MMR Rocks the Flyers</h2>
-					MMR Rocks the Flyers<br>
-					Flyers All Access
+					<h2 class="featured-content--title">Hitch a Ride with Pierre ...and Minerva</h2>
+					<a href="#" class="featured-content--btn">Enter To Win</a>
 				</div>
 			</div>
 			<div class="featured-content--block">
@@ -50,9 +51,12 @@
 					<img src="http://placehold.it/400x400&text=featured+image">
 				</div>
 				<div class="featured-content--meta">
-					<h2 class="featured-content--title">MMR Rocks the Flyers</h2>
-					MMR Rocks the Flyers<br>
-					Flyers All Access
+					<h2 class="featured-content--title">Preston and Steve</h2>
+					<ul class="featured-content--list">
+						<li class="featured-content--item">Daily Rush</li>
+						<li class="featured-content--item">Flyers All Access</li>
+						<li class="featured-content--item">Studio Guests</li>
+					</ul>
 				</div>
 			</div>
 		</div>
