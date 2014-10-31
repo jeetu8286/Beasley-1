@@ -7,6 +7,7 @@
  */
 
  get_header();
+ 	do_action( 'show_latest_breaking_news_item' );
 
  	do_action( 'gmr_get_homepage_layout' );
 
@@ -21,3 +22,6 @@
 	endwhile;
 get_footer();
 ?>
+
+<div class="gigya-screen-set" id="my-screen-set" style="display:none">
+</div>

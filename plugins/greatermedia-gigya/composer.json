@@ -1,0 +1,17 @@
+{
+  "require": {
+	"mailchimp/mailchimp": "~2.0.0"
+  },
+  "require-dev": {
+	"phpunit/phpunit": "~3.7"
+  },
+  "autoload": {
+	"psr-4": {
+	  "GreaterMedia\\": "includes/GreaterMedia"
+	},
+	"files": [
+		"includes/Gigya/GSSDK.php",
+		"includes/GreaterMedia/Gigya/api-helpers.php"
+	]
+  }
+}
