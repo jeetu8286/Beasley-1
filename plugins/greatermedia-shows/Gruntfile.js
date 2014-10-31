@@ -14,8 +14,8 @@ module.exports = function (grunt) {
 			},
 			greatermedia_shows: {
 				src: [
-					'assets/js/src/greatermedia_shows.js',
-					'assets/js/src/greatermedia_shows_metabox.js'
+					'assets/js/src/shows.js',
+					'assets/js/src/metabox.js'
 				],
 				dest: 'assets/js/greatermedia_shows.js'
 			}
@@ -63,7 +63,7 @@ module.exports = function (grunt) {
 					sourcemap: 'auto'
 				},
 				files: {
-					'assets/css/greatermedia_shows.css': 'assets/css/sass/greatermedia_shows.scss'
+					'assets/css/greatermedia_shows.css': 'assets/css/sass/shows.scss'
 				}
 			}
 		},
