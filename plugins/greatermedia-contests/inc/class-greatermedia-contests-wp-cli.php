@@ -41,17 +41,17 @@ class GreaterMediaContestsWPCLI extends WP_CLI_Command {
 
 			$comment                                   = GreaterMediaContestEntry::for_comment_data(
 				$contest_id,
-				$personas[$entry_index]->user->picture,
-				ucfirst( $personas[$entry_index]->user->name->title ) . ' ' .
-				ucfirst( $personas[$entry_index]->user->name->first ) . ' ' .
-				ucfirst( $personas[$entry_index]->user->name->last ),
-				$personas[$entry_index]->user->email
+				$personas[ $entry_index ]->user->picture,
+				ucfirst( $personas[ $entry_index ]->user->name->title ) . ' ' .
+				ucfirst( $personas[ $entry_index ]->user->name->first ) . ' ' .
+				ucfirst( $personas[ $entry_index ]->user->name->last ),
+				$personas[ $entry_index ]->user->email
 			);
 			$comment->comment_data['comment_parent']   = 0;
 			$comment->comment_data['comment_agent']    = 'WP-CLI';
 			$comment->comment_data['comment_approved'] = 1;
 
-			$comment->comment_data['comment_content'] = json_encode( $personas[$entry_index] );
+			$comment->comment_data['comment_content'] = json_encode( $personas[ $entry_index ] );
 
 			$entry_id = $comment->save();
 			WP_CLI::line( sprintf( 'Created entry %d', $entry_id ) );
@@ -91,6 +91,91 @@ class GreaterMediaContestsWPCLI extends WP_CLI_Command {
 
 
 	}
+
+	/**
+	 * Import contests from the Marketron data (as best we can - the data doesn't map to our fields exactly)
+	 *
+	 * ## OPTIONS
+	 *
+	 * <marketron>
+	 * : The Marketron XML file to import
+	 *
+	 * ## EXAMPLES
+	 *
+	 *     wp marketron_to_gigya convert --marketron="marketron_export.xml"
+	 *
+	 * @synopsis --marketron=<filename>
+	 */
+	public function import_contests( $args, $assoc_args ) {
+
+		if ( ! isset( $assoc_args['marketron'] ) || empty( $assoc_args['marketron'] ) ) {
+			WP_CLI::error( 'Please provide the filename of the Marketron export file using the --marketron parameter' );
+		}
+
+		// Load the Marketron export
+		$xml = new DOMDocument;
+		$xml->load( $assoc_args['marketron'] );
+
+		$xpath = new Domxpath( $xml );
+
+		$unique_contests = array();
+		$contests        = $xpath->query( '//Contest' );
+		foreach ( $contests as $contest ) {
+
+			$contest_data = array(
+				'name'        => $contest->getAttribute( 'ContestName' ),
+				'header'      => $contest->getAttribute( 'ContestHeader' ),
+				'description' => $contest->getAttribute( 'ContestDescription' ),
+			);
+
+			$unique_contests[ $contest->getAttribute( 'ContestID' ) ] = $contest_data;
+
+		}
+		ksort( $unique_contests );
+
+		foreach ( $unique_contests as $contest_id => $contest_data ) {
+
+			$contest_obj              = new stdClass();
+			$contest_obj->post_type   = 'contest';
+			$contest_obj->post_title  = $contest_data['name'];
+			$contest_obj->post_status = 'publish';
+
+			$contest_post_id = wp_insert_post( $contest_obj );
+			add_post_meta( $contest_post_id, '_marketron_contest_id', $contest_id );
+			add_post_meta( $contest_post_id, 'prizes-desc', $contest_data['description'] );
+
+			WP_CLI::success( sprintf( 'Imported contest %d', $contest_id ) );
+
+		}
+
+	}
+
+	/**
+	 * Erase all the contests in the system (use for debugging/testing)
+	 *
+	 * ## EXAMPLES
+	 *
+	 *     wp greatermedia_contests erase_contests --marketron=marketron_export_20140723.xml
+	 *
+	 * @synopsis --marketron=<filename>
+	 */
+	public function erase_contests( $args, $assoc_args ) {
+
+		$query = new WP_Query( array(
+			'post_type'      => 'contest',
+			'posts_per_page' => - 1,
+			'fields'         => 'ids',
+			'post_status'    => 'any',
+		) );
+
+		foreach ( $query->posts as $post_id ) {
+			wp_trash_post( $post_id );
+		}
+
+		WP_CLI::success( sprintf( 'Deleted %d contests', count( $query->posts ) ) );
+
+	}
+
 }
 
 WP_CLI::add_command( 'greatermedia_contests', 'GreaterMediaContestsWPCLI' );

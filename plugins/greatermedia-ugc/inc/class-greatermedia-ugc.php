@@ -89,7 +89,10 @@ class GreaterMediaUserGeneratedContent {
 	 * Add custom admin pages to the admin menu
 	 */
 	public static function admin_menu() {
-		add_submenu_page( 'edit.php?post_type=listener_submissions', 'Listener Submission Moderation', 'Listener Submission Moderation', 'delete_posts', GreaterMediaUserGeneratedContentModerationTable::PAGE_NAME, array( __CLASS__, 'moderation_ui' ) );
+		add_submenu_page( 'edit.php?post_type=listener_submissions', 'Listener Submission Moderation', 'Listener Submission Moderation', 'delete_posts', GreaterMediaUserGeneratedContentModerationTable::PAGE_NAME, array(
+				__CLASS__,
+				'moderation_ui'
+			) );
 	}
 
 	public static function admin_enqueue_scripts() {
@@ -149,9 +152,9 @@ class GreaterMediaUserGeneratedContent {
 		// flush rewrite rules only if our rules is not registered
 		$all_registered_rules = $wp_rewrite->wp_rewrite_rules();
 		$registered_rules     = array_intersect( $rewrite_rules, $all_registered_rules );
-//		if ( count( $registered_rules ) !== count( $rewrite_rules ) ) {
-		flush_rewrite_rules( true );
-//		}
+		if ( count( $registered_rules ) !== count( $rewrite_rules ) ) {
+			flush_rewrite_rules( true );
+		}
 
 	}
 
@@ -159,10 +162,8 @@ class GreaterMediaUserGeneratedContent {
 
 		global $wp;
 
-//		http://greatermedia.dev/wp-admin/edit.php?_wpnonce=5120bdfa2a&_wp_http_referer=%2Fwp-admin%2Fedit.php%3Fpost_type%3Dlistener_submissions%26page%3Dmoderate-ugc&action=approve&ugc%5B%5D=51&action2=-1
-
 		$rewrite_rules = self::rewrite_rules();
-		if ( ! isset( $rewrite_rules[$wp->matched_rule] ) ) {
+		if ( ! isset( $rewrite_rules[ $wp->matched_rule ] ) ) {
 			return;
 		}
 
@@ -421,6 +422,15 @@ class GreaterMediaUserGeneratedContent {
 	 * @return string html
 	 */
 	public function render_moderation_row() {
+		return 'Generic result';
+	}
+
+	/**
+	 * Render a preview of this UGC suitable for use in the admin
+	 *
+	 * @return string html
+	 */
+	public function render_preview() {
 		return 'Generic result';
 	}
 

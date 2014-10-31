@@ -2,9 +2,11 @@
 jQuery(function () {
 
 	function do_scroll() {
-		jQuery(document.body).animate({
-			'scrollTop': jQuery(window.location.hash).offset().top
-		}, 500);
+		if (jQuery(window.location.hash).offset()) {
+			jQuery(document.body).animate({
+				'scrollTop': jQuery(window.location.hash).offset().top
+			}, 500);
+		}
 	}
 
 	if (window.location.href.indexOf('page=moderate-ugc')) {
@@ -50,13 +52,13 @@ jQuery(function () {
 			var approve_link = append_extension(this.href, 'json');
 			var ugc_id = jQuery(this).parents('tr').data('ugc-id');
 
-			var req = jQuery.ajax( approve_link );
+			var req = jQuery.ajax(approve_link);
 			req.done(function () {
 				var row = jQuery('tr[data-ugc-id=' + ugc_id + ']');
 				row.addClass('approved');
 				row.find('a[name=approve]').replaceWith(GreaterMediaUGC.templates.approved);
 				row.find('input[type=checkbox]').css('visibility', 'hidden');
-				if(GreaterMediaAdminNotifier && GreaterMediaAdminNotifier.message) {
+				if (GreaterMediaAdminNotifier && GreaterMediaAdminNotifier.message) {
 					// @TODO add listener name, contest name, etc. to this message & run it through translation
 					// @TODO include "undo" link
 					GreaterMediaAdminNotifier.message('Approved')
@@ -76,10 +78,10 @@ jQuery(function () {
 			var thumb = jQuery(this).parents('.ugc-moderation-gallery-thumb');
 			var self = this;
 
-			var req = jQuery.ajax( trash_link );
+			var req = jQuery.ajax(trash_link);
 			req.done(function () {
 				thumb.addClass('removed');
-				if(GreaterMediaAdminNotifier && GreaterMediaAdminNotifier.message) {
+				if (GreaterMediaAdminNotifier && GreaterMediaAdminNotifier.message) {
 					// @TODO add listener name, contest name, etc. to this message & run it through translation
 					// @TODO include "undo" link
 					GreaterMediaAdminNotifier.message('Removed gallery image')
