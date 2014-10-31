@@ -552,7 +552,7 @@ var AVAILABLE_CONSTRAINTS = [
 	{
 		type: 'profile:birthMonth',
 		valueType: 'integer',
-		value: 2
+		value: 1
 	},
 	{
 		type: 'profile:state',
