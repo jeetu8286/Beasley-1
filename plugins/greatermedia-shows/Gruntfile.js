@@ -14,7 +14,8 @@ module.exports = function (grunt) {
 			},
 			greatermedia_shows: {
 				src: [
-					'assets/js/src/greatermedia_shows.js'
+					'assets/js/src/greatermedia_shows.js',
+					'assets/js/src/greatermedia_shows_metabox.js'
 				],
 				dest: 'assets/js/greatermedia_shows.js'
 			}
@@ -29,7 +30,7 @@ module.exports = function (grunt) {
 				newcap: true,
 				noarg: true,
 				sub: true,
-				undef: true,
+				undef: false,
 				boss: true,
 				eqnull: true,
 				globals: {

@@ -26,17 +26,12 @@
 		// the upload image button, saves the id and outputs a preview of the image
 		var imageFrame;
 		$('.meta_box_upload_image_button').click(function(event) {
-			event.preventDefault();
-			
-			var options, attachment;
-			
-			var $self = $(event.target);
-			var $div = $self.closest('div.meta_box_image');
+			var $div = $('#show_logo .inside');
 			
 			// if the frame already exists, open it
 			if ( imageFrame ) {
 				imageFrame.open();
-				return;
+				return false;
 			}
 			
 			// set our settings
@@ -72,13 +67,17 @@
 			
 			// open the frame
 			imageFrame.open();
+
+			return false;
 		});
 		
 		// the remove image link, removes the image id from the hidden field and replaces the image preview
 		$('.meta_box_clear_image_button').click(function() {
-			var defaultImage = $(this).parent().siblings('.meta_box_default_image').text();
-			$(this).parent().siblings('.meta_box_upload_image').val('');
-			$(this).parent().siblings('.meta_box_preview_image').attr('src', defaultImage);
+			var $parent = $(this).parent();
+
+			$parent.siblings('.meta_box_upload_image').val('');
+			$parent.siblings('.meta_box_preview_image').attr('src', '');
+			
 			return false;
 		});
 		
@@ -86,8 +85,6 @@
 		var fileFrame;
 		$('.meta_box_upload_file_button').click(function(event) {
 			event.preventDefault();
-			
-			var options, attachment;
 			
 			var $self = $(event.target);
 			var $div = $self.closest('div.meta_box_file_stuff');

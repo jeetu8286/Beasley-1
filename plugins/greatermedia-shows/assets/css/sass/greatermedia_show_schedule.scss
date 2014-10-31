@@ -1,0 +1,44 @@
+#show-schedule {
+	#shows {
+		margin: 2em 0;
+		padding: 1em 0.5em 0.5em 1em;
+		border: 1px solid #ccc;
+		background-color: white;
+
+		@include clearfix;
+
+		.show {
+			float: left;
+			margin: 0 0.5em 0.5em 0;
+			padding: 15px 30px;
+			border: 1px solid #ddd;
+			cursor: pointer;
+
+			@include user-select(none);
+
+			&:hover {
+				border-width: 3px;
+				padding: 13px 28px;
+			}
+		}
+	}
+	
+	#schedule {
+		float: left;
+		width: 100%;
+
+		.time {
+			width: 7%;
+			float: left;
+		}
+
+		.dayofweek {
+			width: 13.2868%;
+			height: 100%;
+			float: left;
+			border: 1px solid gray;
+			
+			@include box-sizing(border-box);
+		}
+	}
+}
