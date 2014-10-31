@@ -1,6 +1,3 @@
-/*! Greater Media - v0.1.0 - 2014-10-31
- * http://greatermedia.com
- * Copyright (c) 2014; * Licensed GPLv2+ */
 (function($) {
 
 	var WpAjaxApi = function(config) {
@@ -99,88 +96,6 @@
 			this.mediator.trigger(event, this);
 		},
 
-		didLogin: function(response) {
-			if (this.willRegister) {
-				this.didRegister(response);
-			}
-
-			this.account    = response;
-			this.authorized = true;
-			this.notify();
-
-			var data = {
-				'UID': response.UID
-			};
-
-			this.ajaxApi.request('gigya_login', data)
-				.then($.proxy(this.didLoginRelay, this))
-				.fail($.proxy(this.didLoginRelayError, this));
-		},
-
-		didLoginRelay: function(response) {
-			location.reload();
-		},
-
-		didLoginRelayError: function(response) {
-			console.log('didLoginRelayError', response);
-		},
-
-		didRegister: function(response) {
-			this.willRegister = false;
-
-			var listNames = [];
-
-			// TODO: fix this after Gigya support ticket response
-			if (response.data.vipGroup) {
-				listNames.push('VIP Newsletter');
-			}
-
-			if (response.data.birthdayGreetingsGroup) {
-				listNames.push('Birthday Greetings');
-			}
-
-			if (response.data.bigFrigginDealGroup) {
-				listNames.push('Big Deal');
-			}
-
-			var data = {
-				'UID': response.UID,
-				'listNames': listNames
-			};
-
-			this.ajaxApi.request('register_account', data)
-				.then($.proxy(this.didRegisterRelay, this))
-				.fail($.proxy(this.didRegisterRelayError, this));
-		},
-
-		didRegisterRelay: function(response) {
-			console.log('didRegisterRelay', response);
-			location.reload();
-		},
-
-		didRegisterRelayError: function(response) {
-			// TODO: UI
-			console.log('didRegisterRelayError', response);
-		},
-
-		didLogout: function(response) {
-			this.authorized = false;
-			this.notify();
-			this.ajaxApi.request('gigya_logout')
-				.then($.proxy(this.didLogoutRelay, this))
-				.fail($.proxy(this.didLogoutRelayError, this));
-		},
-
-		didLogoutRelay: function(response) {
-			console.log('didLogoutRelay', response);
-			location.reload();
-		},
-
-		didLogoutRelayError: function(response) {
-			// TODO: UI
-			console.log('didLogoutRelayError', response);
-		},
-
 	};
 
 	var AccountMenuView = function(session) {
@@ -232,27 +147,6 @@
 				startScreen: name
 			});
 		},
-
-		showLoginScreen: function() {
-			this.showScreenSet('gigya-login-screen');
-		},
-
-		showRegisterScreen: function() {
-			/* TODO: Find Gigya's onRegister event */
-			this.session.willRegister = true;
-			this.showScreenSet('gigya-register-screen');
-		},
-
-		showLogoutScreen: function() {
-			gigya.accounts.logout({
-				cid: this.session.get_cid(),
-				callback: $.proxy(this.refresh, this)
-			});
-		},
-
-		refresh: function() {
-			location.reload();
-		}
 
 	};
 

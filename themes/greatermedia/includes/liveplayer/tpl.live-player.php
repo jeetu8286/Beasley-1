@@ -16,13 +16,14 @@
 
 		<?php
 
-			if ( ! is_gigya_user_logged_in() ) {
-				echo '<div id="live-player--listen_now" class="live-player--listen_btn" style="visibility:visible">Listen Now</div>';
-				do_action( 'gm_live_player_test_ui' );
+		echo '<div id="live-player--listen_now" class="live-player--listen_btn" style="visibility:visible">Listen Now</div>';
+		do_action( 'gm_live_player_test_ui' );
+
+		do_action( 'gm_live_player' );
+
+			if ( is_gigya_user_logged_in() ) {
 
 			} else {
-
-				do_action( 'gm_live_player' );
 
 			}
 
