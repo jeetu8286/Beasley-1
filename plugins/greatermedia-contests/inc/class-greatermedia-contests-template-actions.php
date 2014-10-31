@@ -15,6 +15,7 @@ class GreaterMediaContestsTemplateActions {
 	public static function contest_list_filter() {
 
 		$terms = get_terms( 'contest_type' );
+		$query_var = get_query_var( 'contest_type' );
 
 		if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
 	?>
@@ -24,12 +25,12 @@ class GreaterMediaContestsTemplateActions {
 
 				if ( 0 === $key ) {
 				?>
-					<li><a href="<?php echo get_post_type_archive_link( 'contest' ); ?>"><?php esc_html_e( 'All', 'greatermedia_contests' ); ?></a></li>
+					<li "<?php if ( empty( $query_var ) ) { echo 'class="selected"'; } ?>><a href="<?php echo get_post_type_archive_link( 'contest' ); ?>"><?php esc_html_e( 'All', 'greatermedia_contests' ); ?></a></li>
 				<?php
 				}
 			?>
 
-				<li><a href="<?php echo get_post_type_archive_link( 'contest' ) . 'type/' . esc_attr( $term->slug, 'greatermedia_contests' ); ?>"><?php esc_html_e( $term->name, 'greatermedia_contests' ); ?></a></li>
+				<li <?php if ( $term->slug === $query_var ) { echo 'class="selected"'; } ?>><a href="<?php echo get_post_type_archive_link( 'contest' ) . 'type/' . esc_attr( $term->slug, 'greatermedia_contests' ); ?>"><?php esc_html_e( $term->name, 'greatermedia_contests' ); ?></a></li>
 
 			<?php
 			}
