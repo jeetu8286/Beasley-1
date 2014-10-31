@@ -108,8 +108,8 @@
 								<nav class="header-secondary--nav">
 
 									<ul class="header-nav--list account">
-										<li><a id="register-button" href="" class="register pjaxer" style="visibility:hidden">register</a></li>
-										<li><a id="login-button" href="" class="login pjaxer" style="visibility:hidden">Login</a></li>
+										<li><a id="register-button" href="" class="register" style="visibility:hidden">register</a></li>
+										<li><a id="login-button" href="" class="login" style="visibility:hidden">Login</a></li>
 									</ul>
 
 								</nav>
