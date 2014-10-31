@@ -420,48 +420,48 @@ img {
 .main, .featured {
   width: 100%; }
 
-.content, .featured-artist {
+.content, .featured-artist, .featured-content {
   float: left;
   display: block;
   margin-right: 7.42297%;
   width: 100%;
   padding-top: 2em;
   padding-bottom: 2em; }
-  .content:last-child, .featured-artist:last-child {
+  .content:last-child, .featured-artist:last-child, .featured-content:last-child {
     margin-right: 0; }
   @media screen and (min-width: 480px) {
-    .content, .featured-artist {
+    .content, .featured-artist, .featured-content {
       float: left;
       display: block;
       margin-right: 4.82916%;
       width: 100%; }
-      .content:last-child, .featured-artist:last-child {
+      .content:last-child, .featured-artist:last-child, .featured-content:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 768px) {
-    .content, .featured-artist {
+    .content, .featured-artist, .featured-content {
       float: left;
       display: block;
       margin-right: 3.57866%;
       width: 100%; }
-      .content:last-child, .featured-artist:last-child {
+      .content:last-child, .featured-artist:last-child, .featured-content:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 1024px) {
-    .content, .featured-artist {
+    .content, .featured-artist, .featured-content {
       float: left;
       display: block;
       margin-right: 2.35765%;
       width: 82.94039%; }
-      .content:last-child, .featured-artist:last-child {
+      .content:last-child, .featured-artist:last-child, .featured-content:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 1200px) {
-    .content, .featured-artist {
+    .content, .featured-artist, .featured-content {
       float: left;
       display: block;
       margin-right: 2.35765%;
       width: 82.94039%;
       padding-right: 0;
       padding-left: 0; }
-      .content:last-child, .featured-artist:last-child {
+      .content:last-child, .featured-artist:last-child, .featured-content:last-child {
         margin-right: 0; } }
 
 .sidebar {
@@ -1888,17 +1888,56 @@ pre {
 
 .featured-artist--content {
   width: 100%;
-  padding: 2em 1em;
-  background-color: #270e10; }
+  padding: 3em 2em;
+  overflow: auto;
+  background-color: #270e10;
+  color: #ffffff; }
 
 .featured-artist--heading {
   float: left;
   width: 30%;
-  margin-right: 5%;
-  color: #ffffff; }
+  margin-right: 5%; }
 
-.featured-artist--heading_title {
+.featured-artist--title {
+  margin: 0;
+  font-size: 1.60181em;
+  font-weight: normal; }
+
+.featured-artist--subtitle {
+  margin: 0;
   font-size: 2.88651em; }
+
+.featured-artist--bio {
+  float: left;
+  width: 65%;
+  font-size: 1.26563em; }
+
+.featured-content--block {
+  float: left;
+  width: 30%;
+  margin-right: 5%;
+  background-color: #270e10; }
+
+.featured-content--block:last-of-type {
+  margin: 0; }
+
+.featured-content--image {
+  float: left;
+  width: 33%;
+  margin-right: 10%; }
+
+.featured-content--meta {
+  float: left;
+  width: 57%;
+  padding-top: 1em;
+  padding-right: 1em;
+  padding-bottom: 1em;
+  color: #a6a8ab; }
+
+.featured-content--title {
+  margin-top: 0;
+  line-height: 1;
+  font-size: 1.42383em; }
 
 .personality-attr--name {
   position: absolute;

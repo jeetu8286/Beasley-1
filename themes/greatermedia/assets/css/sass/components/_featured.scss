@@ -6,7 +6,7 @@
 	background-size: auto 40%;
 }
 
-.featured-artist {
+.featured-artist, .featured-content {
 	@extend %content;
 }
 
@@ -17,17 +17,65 @@
 
 .featured-artist--content {
 	@include size(100% null);
-	@include padding(2em 1em);
-	background-color: palette(default, featured-heading)
+	@include padding(3em 2em);
+	overflow: auto;
+	background-color: palette(default, featured-heading);
+	color: palette(default);
 }
 
 .featured-artist--heading {
 	float: left;
 	@include size(30% null);
 	@include margin(null 5% null null);
-	color: palette(default);
 }
 
-.featured-artist--heading_title {
+.featured-artist--title {
+	@include margin(0);
+	font-size: ms(4);
+	font-weight: normal;
+}
+
+.featured-artist--subtitle {
+	@include margin(0);
 	font-size: ms(9);
+}
+
+.featured-artist--bio {
+	float: left;
+	@include size(65% null);
+	font-size: ms(2);
+}
+
+.featured-artist, .featured-content {
+	@extend %content;
+}
+
+.featured-content--block {
+	float: left;
+	@include size(30% null);
+	@include margin(null 5% null null);
+	background-color: palette(default, featured-heading);
+}
+
+.featured-content--block:last-of-type {
+	@include margin(0);
+}
+
+.featured-content--image {
+	float: left;
+	@include size(33% null);
+	@include margin(null 10% null null);
+}
+
+.featured-content--meta {
+	float: left;
+	@include size(57% null);
+	@include padding(1em 1em 1em null);
+	color: palette(default, title);
+}
+
+.featured-content--title {
+	@include margin(0 null null null);
+	line-height: 1;
+	font-size: ms(3);
 }
