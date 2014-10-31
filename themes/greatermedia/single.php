@@ -15,9 +15,7 @@ get_header(); ?>
 			<section class="content">
 
 				<?php
-				if ( is_gigya_user_logged_in() ) {
-
-					if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
+					while ( have_posts() ) : the_post(); ?>
 
 						<article id="post-<?php the_ID(); ?>" <?php post_class( 'cf' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
 
@@ -27,36 +25,46 @@ get_header(); ?>
 
 							</header>
 
-							<?php GMP_Player::render_podcasts(); ?>
 
-						</article>
+							<section class="entry-content" itemprop="articleBody">
 
-					<?php endwhile;
-
-					else : ?>
-
-						<article id="post-not-found" class="hentry cf">
-
-							<header class="article-header">
-
-								<h1><?php _e( 'Oops, Post Not Found!', 'greatermedia' ); ?></h1>
-
-							</header>
-
-							<section class="entry-content">
-
-								<p><?php _e( 'Uh Oh. Something is missing. Try double checking things.', 'greatermedia' ); ?></p>
+								<?php the_content(); ?>
 
 							</section>
 
+							<footer class="entry-footer">
+
+								<div class="entry-author">
+									<div class="entry-author--img">
+										<img src="http://placecreature.com/40/40">
+									</div>
+									<div class="entry-author--meta">
+										<div class="entry-author--name"><?php the_author_posts_link(); ?></div>
+										<time datetime="<?php the_time( 'c' ); ?>" class="entry-date"><?php the_time( 'M. j, Y' ); ?></time>
+									</div>
+								</div>
+
+								<div class="entry-type">
+
+									<div class="entry-type--<?php greatermedia_post_formats(); ?>"><?php greatermedia_post_formats(); ?></div>
+
+								</div>
+
+								<div class="entry-comments">
+
+									<div class="entry-comments--count">
+
+										<a href="<?php the_permalink(); ?>#comments"><?php comments_number( '0', '1', '%' ); ?></a>
+
+									</div>
+
+								</div>
+
+							</footer>
+
 						</article>
 
-					<?php endif;
-				} else {
-
-					echo '<article><h3>Please login</h3></article>';
-
-				} ?>
+					<?php endwhile; ?>
 
 			</section>
 
