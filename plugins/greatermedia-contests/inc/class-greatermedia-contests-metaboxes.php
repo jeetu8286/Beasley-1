@@ -25,6 +25,10 @@ class GreaterMediaContestsMetaboxes {
 
 		global $post;
 
+		if ( $post->post_type !== 'contests' ) {
+			return;
+		}
+
 		wp_enqueue_style( 'formbuilder-vendor', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'bower_components/formbuilder/vendor/css/vendor.css' );
 		wp_enqueue_style( 'formbuilder', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'bower_components/formbuilder/dist/formbuilder.css' );
 
