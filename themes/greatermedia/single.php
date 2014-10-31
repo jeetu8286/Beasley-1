@@ -25,7 +25,6 @@ get_header(); ?>
 
 							</header>
 
-
 							<section class="entry-content" itemprop="articleBody">
 
 								<?php the_content(); ?>

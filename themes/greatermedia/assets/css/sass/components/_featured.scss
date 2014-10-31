@@ -1,0 +1,33 @@
+.featured {
+	@extend %main;
+	@include position(relative, null null null null);
+	@include padding(3em 0);
+	background: url(../../images/featured-bg.png) repeat center center palette(default, black);
+	background-size: auto 40%;
+}
+
+.featured-artist {
+	@extend %content;
+}
+
+.featured-artist--image {
+	@include size(100% null);
+	background-color: palette(default, black);
+}
+
+.featured-artist--content {
+	@include size(100% null);
+	@include padding(2em 1em);
+	background-color: palette(default, featured-heading)
+}
+
+.featured-artist--heading {
+	float: left;
+	@include size(30% null);
+	@include margin(null 5% null null);
+	color: palette(default);
+}
+
+.featured-artist--heading_title {
+	font-size: ms(9);
+}

@@ -417,51 +417,51 @@ img {
     display: table;
     clear: both; }
 
-.main {
+.main, .featured {
   width: 100%; }
 
-.content {
+.content, .featured-artist {
   float: left;
   display: block;
   margin-right: 7.42297%;
   width: 100%;
   padding-top: 2em;
   padding-bottom: 2em; }
-  .content:last-child {
+  .content:last-child, .featured-artist:last-child {
     margin-right: 0; }
   @media screen and (min-width: 480px) {
-    .content {
+    .content, .featured-artist {
       float: left;
       display: block;
       margin-right: 4.82916%;
       width: 100%; }
-      .content:last-child {
+      .content:last-child, .featured-artist:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 768px) {
-    .content {
+    .content, .featured-artist {
       float: left;
       display: block;
       margin-right: 3.57866%;
       width: 100%; }
-      .content:last-child {
+      .content:last-child, .featured-artist:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 1024px) {
-    .content {
+    .content, .featured-artist {
       float: left;
       display: block;
       margin-right: 2.35765%;
       width: 82.94039%; }
-      .content:last-child {
+      .content:last-child, .featured-artist:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 1200px) {
-    .content {
+    .content, .featured-artist {
       float: left;
       display: block;
       margin-right: 2.35765%;
       width: 82.94039%;
       padding-right: 0;
       padding-left: 0; }
-      .content:last-child {
+      .content:last-child, .featured-artist:last-child {
         margin-right: 0; } }
 
 .sidebar {
@@ -786,12 +786,11 @@ p {
       display: inline-block; } }
 
 .header-nav--main ul, .header-secondary--nav ul {
-  padding: 1.375em 0;
   margin: 0;
   list-style: none; }
 
 .header-nav--main ul li, .header-secondary--nav ul li {
-  padding: 0;
+  padding: 1.375em 0;
   margin: 0 1em 0 0;
   list-style: none;
   display: inline-block;
@@ -803,13 +802,37 @@ p {
 .header-nav--main ul li a:hover, .header-nav--main ul li a:active, .header-secondary--nav ul a:hover, .header-secondary--nav ul a:active {
   color: #d32329; }
 
-.header-secondary--search {
+.header-secondary--social {
   display: inline-block;
-  font-size: 1.60181em;
   color: #ffffff; }
   @media screen and (min-width: 1024px) {
-    .header-secondary--search {
+    .header-secondary--social {
       font-size: 1em; } }
+
+.header-social--list {
+  margin: 0;
+  list-style: none; }
+
+.header-social--item {
+  padding: 1.375em 0;
+  margin: 0 1em 0 0;
+  list-style: none;
+  display: inline-block;
+  font-size: 1em; }
+
+.header-social--item a, .header-social--item a:visited {
+  color: #ffffff; }
+
+.header-social--item a:hover, .header-social--item a:focus {
+  color: #221f1f; }
+
+.header-social--item a:active {
+  color: #d32329; }
+
+.header-secondary--search {
+  display: inline-block;
+  font-size: 1.125em;
+  color: #ffffff; }
 
 .header {
   position: relative;
@@ -1852,6 +1875,30 @@ pre {
   display: inline-block;
   margin-left: 4px;
   cursor: pointer; }
+
+.featured {
+  position: relative;
+  padding: 3em 0;
+  background: url(../../images/featured-bg.png) repeat center center #000000;
+  background-size: auto 40%; }
+
+.featured-artist--image {
+  width: 100%;
+  background-color: #000000; }
+
+.featured-artist--content {
+  width: 100%;
+  padding: 2em 1em;
+  background-color: #270e10; }
+
+.featured-artist--heading {
+  float: left;
+  width: 30%;
+  margin-right: 5%;
+  color: #ffffff; }
+
+.featured-artist--heading_title {
+  font-size: 2.88651em; }
 
 .personality-attr--name {
   position: absolute;

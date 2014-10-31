@@ -113,6 +113,13 @@
 									</ul>
 
 								</nav>
+								<div class="header-secondary--social">
+									<ul class="header-social--list">
+										<li class="header-social--item"><a href="#"><i class="fa fa-facebook"></i></a></li>
+										<li class="header-social--item"><a href="#"><i class="fa fa-twitter"></i></a></li>
+										<li class="header-social--item"><a href="#"><i class="fa fa-google-plus"></i></a></li>
+									</ul>
+								</div>
 								<div class="header-secondary--search">
 									<i class="fa fa-search"></i>
 								</div>
