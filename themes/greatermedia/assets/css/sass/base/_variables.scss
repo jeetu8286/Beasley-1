@@ -1,21 +1,33 @@
-// Color Array
-// By default, these colors can be called using `map-get($color, key)`. To avoid continually calling `map-get`, a
-// function has been written. Reference the `color` function located in `_functions.scss`.
+$_color_base_gray: #a7a9ab;
+
+// Color Map
+// By default, these colors can be called using `map-get($palette, tone)`. To avoid continually calling `map-get`, a
+// function has been written. Reference the `palette` function located in `_functions.scss`.
 //
 // @author Allen Moore
 // @since 0.1.0
 //
 // @type String
 //
-$colors: (
-	black: #000000,
-	white: #ffffff,
-	light-gray: #f5f5f5,
-	soft-gray: #eeeeee,
-	medium-gray: #dddddd,
-	gray: #888888,
-	dark-gray: #333333,
-	red: #d32329
+$palettes: (
+	default: (
+		base: #ffffff,
+		black: #000000,
+		red: #d32329,
+		gray: #221f1f,
+		dark: #1c1c1f,
+		darker: #131415,
+		featured-heading: #270e10,
+		featured-list: #f7ef7e,
+		title: #a6a8ab,
+	),
+	gray: (
+		base: $_color_base_gray,
+		light: lighten($_color_base_gray, 10%),
+		soft: #939597,
+		medium: #3b383a,
+		dark: #414141,
+	)
 );
 
 // Variables for site wide usage
@@ -23,15 +35,15 @@ $colors: (
 // @author Allen Moore
 // @since 0.1.0
 //
-$text-color: color(black);
+$text-color: palette(default, black);
 
-$link-color: color(red);
-$link-hover: color(gray);
+$link-color: palette(default, red);
+$link-hover: palette(gray);
 
-$border-color: color(soft-gray);
-$dark-border-color: color(dark-gray);
+$border-color: palette(gray, light);
+$dark-border-color: palette(gray, dark);
 
-$nav-link-color: color(white);
+$nav-link-color: palette(default);
 
 /*********************
 Misc

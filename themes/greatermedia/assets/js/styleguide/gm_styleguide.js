@@ -13,14 +13,14 @@
 		$window = $(window),
 		body = document.querySelectorAll('body'),
 		$body = $(body),
-		sgToggleButton = document.querySelectorAll('#sg-nav-toggle'),
+		sgToggleButton = document.querySelectorAll('#sg-nav--toggle'),
 		$sgToggleButton = $(sgToggleButton),
 		$scrollToTop = $('.scroll-to-top');
 
 	// function to toggle a class when the menu button is clicked
 	function sgMenu(){
 		$sgToggleButton.click(function(){
-			$body.toggleClass('sg-nav-open');
+			$body.toggleClass('sg-nav--open');
 		});
 	}
 

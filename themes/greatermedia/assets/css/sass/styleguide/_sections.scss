@@ -3,24 +3,27 @@
  */
 .sg-sections {
 	@include padding(1em);
-	@include media($mobile){
+	@include bp(small){
 		@include padding(1.5em null);
 	}
-	@include media($tablet){
+	@include bp(medium){
 		@include padding(2em null);
 	}
-	@include media($desktop){
+	@include bp(large){
+		@include padding(2.5em 0);
+	}
+	@include bp(x-large){
 		@include padding(3em 0);
 	}
 }
 
-.sg-section-title {
-	color: color(gray);
+.sg-section--title {
+	color: palette(gray);
 	text-transform: uppercase;
 }
 
-.sg-subsection-title {
-	color: color(medium-gray);
+.sg-subsection--title {
+	color: palette(gray);
 	text-transform: uppercase;
 }
 
@@ -30,48 +33,48 @@
 	@include size(null 100%);
 }
 
-.sg-section-content {
+.sg-section--content {
 	@include outer-container;
 	@include position(relative, null null null null);
 	@include size(null 100%);
 	@include padding(null null 2em null);
-	border-bottom: 1px solid color(medium-gray);
+	border-bottom: 1px solid palette(gray);
 }
 
 .sg-btn {
-	@include btn(red, white, 1em, 1.5em, .875em);
+	@include btn(default, red, base, 1em, 1.5em, .875em);
 }
 
-.sg-colors-table {
+.sg-colors--table {
 	@include span-columns(4);
 	@include margin(1em null 1em);
 	@include display(table);
-	@include media($mobile){
+	@include bp(small){
 		@include span-columns(6);
 		@include display(table);
 	}
-	@include media($tablet){
+	@include bp(medium){
 		@include span-columns(8);
 		@include display(table);
 	}
-	@include media($desktop){
+	@include bp(large){
 		@include span-columns(12);
 		@include display(table);
 	}
 }
 
-.sg-markup-controls, .sg-source {
+.sg-markup--controls, .sg-source {
 	@include span-columns(4);
 	@include margin(1em null 1em);
-	@include media($mobile){
+	@include bp(small){
 		@include span-columns(6);
 		@include display(table);
 	}
-	@include media($tablet){
+	@include bp(medium){
 		@include span-columns(8);
 		@include display(table);
 	}
-	@include media($desktop){
+	@include bp(large){
 		@include span-columns(12);
 		@include display(table);
 	}
@@ -88,38 +91,30 @@
 .sg-color {
 	@include size(13% 80px);
 	display: table-cell;
-	color: color(white);
+	color: palette(default);
 }
 
 .color-black {
-	background-color: color(black);
+	background-color: palette(default, black);
 }
 
 .color-dark-gray {
-	background-color: color(dark-gray);
+	background-color: palette(gray, dark);
 }
 
 .color-gray {
-	background-color: color(gray);
-}
-
-.color-meta-gray {
-	background-color: color(medium-gray);
-}
-
-.color-soft-gray {
-	background-color: color(soft-gray);
+	background-color: palette(gray);
 }
 
 .color-light-gray {
-	background-color: color(light-gray);
+	background-color: palette(gray, light);
 }
 
 .color-white {
-	background-color: color(white);
+	background-color: palette(default);
 }
 
-.sg-color-swatch {
+.sg-color--swatch {
 	@include display(block);
 	@include position(relative, null null null null);
 	@include size(100% 100%);
@@ -131,41 +126,41 @@
 	}
 }
 
-.sg-color-variable {
+.sg-color--variable {
 	@include display(block);
 	@include position(absolute, null null 0 0);
 	@include size(100% null);
 	@include padding(.25em 5px);
 	@include transition(all .5s ease);
 	opacity: 0;
-	background-color: color(black);
+	background-color: palette(default, black);
 	font-size: ms(-3);
 }
 
 .sg-typography {
 	@include padding(.25em 5px);
 	@include margin(null null 2em null);
-	background-color: color(light-gray);
+	background-color: palette(gray, light);
 	text-align: center;
 }
 
-.sg-typography-title {
-	color: color(medium-gray);
+.sg-typography--title {
+	color: palette(gray);
 	text-transform: uppercase;
 }
 
-.sg-typography-serif {
-	font-family: $serif;
+.sg-typography--serif {
+	font-family: $open-sans;
 }
 
-.sg-typography-light {
+.sg-typography--light {
 	font-weight: lighter;
 }
 
-.sg-typography-bold {
+.sg-typography--bold {
 	font-weight: bold;
 }
 
-.sg-typography-italic {
+.sg-typography--italic {
 	font-style: italic;
 }

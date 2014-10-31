@@ -16,12 +16,12 @@
 //
 // @return {Color} - the color be called from the $color array
 //
-@function color($key) {
-	@if map-has-key($colors, $key) {
-		@return map-get($colors, $key);
+@function palette($palette, $tone: 'base') {
+	@if map-has-key(map-get($palettes, $palette), $tone) {
+		@return map-get(map-get($palettes, $palette), $tone);
 	}
 
-	@warn "Unknown `#{$key}` in $colors.";
+	@warn "Unknown `#{$tone}` in $palettes.";
 	@return null;
 }
 

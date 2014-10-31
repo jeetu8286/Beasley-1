@@ -1,44 +1,44 @@
-.sg-nav-toggle {
+.sg-nav--toggle {
 	@include position(fixed, 1em 0 0 1em);
 	@include size(2em 2em);
 	@include box-sizing(border-box);
 	@include padding(7px 6px);
 	@include transition(all 500ms ease-in-out);
-	background-color: color(black);
+	background-color: palette(default, black);
 	cursor: pointer;
 	z-index: 2;
 }
 
-.sg-nav-toggle-span {
+.sg-nav--toggle--span {
 	@include position(absolute, 14px null null null);
 	@include size(em(20px) 1px);
 	@include transition(all 500ms ease-in-out);
 	display: block;
 	border-radius: 1px;
-	background: color(white);
+	background: palette(default);
 	content: '';
-	&:before {
-		@include position(absolute, -6px null null null);
-		@include size(em(20px) 1px);
-		@include transition(all 500ms ease-in-out);
-		display: block;
-		border-radius: 1px;
-		background: color(white);
-		content: '';
-	}
-	&:after {
-		@include position(absolute, null null -6px null);
-		@include size(em(20px) 1px);
-		@include transition(all 500ms ease-in-out);
-		display: block;
-		border-radius: 1px;
-		background: color(white);
-		content: '';
-	}
+}
+.sg-nav--toggle--span:before {
+	@include position(absolute, -6px null null null);
+	@include size(em(20px) 1px);
+	@include transition(all 500ms ease-in-out);
+	display: block;
+	border-radius: 1px;
+	background: palette(default);
+	content: '';
+}
+.sg-nav--toggle--span:after {
+	@include position(absolute, null null -6px null);
+	@include size(em(20px) 1px);
+	@include transition(all 500ms ease-in-out);
+	display: block;
+	border-radius: 1px;
+	background: palette(default);
+	content: '';
 }
 
 .logged-in {
-	.sg-nav-toggle {
+	.sg-nav--toggle {
 		@include position(fixed, 3em 0 0 1em);
 	}
 }
@@ -47,44 +47,44 @@
 	@include position(fixed, 0 null null -90%);
 	@include size(90% 100%);
 	@include transition(all 500ms ease-in-out);
-	background-color: color(black);
+	background-color: palette(default, black);
 	z-index: 1;
-	@include media($mobile){
+	@include bp(small){
 		@include position(null, null null null em(-200px));
 		@include size(em(200px) 100%);
 	}
 }
 
-.sg-nav-content {
+.sg-nav--content {
 	@include outer-container;
 }
 
-.sg-nav-list {
+.sg-nav--list {
 	@include padding(0 1em);
 	list-style: none;
-	color: color(medium-gray);
+	color: palette(gray);
 }
 
-.sg-nav-list-item {
+.sg-nav--item {
 	list-style: none;
 	@include padding(0);
 	font-size: ms(-2);
 	text-transform: uppercase;
 }
-.sg-nav-list-item a:link, .sg-nav-list-item a:visited {
+.sg-nav--item a:link, .sg-nav--item a:visited {
 	@include display(block);
 	@include size(100% null);
-	color: color(white);
+	color: palette(default);
 }
-.sg-nav-list-item a:hover, .sg-nav-list-item a:active {
-	color: color(gray);
+.sg-nav--item a:hover, .sg-nav--item a:active {
+	color: palette(gray);
 }
 
-.sg-subnav-list {
+.sg-nav--sublist {
 	@include padding(null null null 1em);
 }
 
-.sg-subnav-list .sg-nav-list-item {
+.sg-nav--sublist .sg-nav--item {
 	font-size: ms(-2);
 }
 
@@ -94,17 +94,17 @@
  * the Style Guide off-canvas nav will slide from the left and the toggle
  * button will slide over to accommodate the nav.
  */
-.sg-nav-open{
+.sg-nav--open{
 	.sg-nav{
 		@include position(null, null null null 0);
 	}
-	.sg-nav-toggle {
+	.sg-nav--toggle {
 		@include position(null, null null null 79%);
-		@include media($mobile){
+		@include bp(small){
 			@include position(null, null null null em(180px));
 		}
 	}
-	.sg-nav-toggle-span {
+	.sg-nav--toggle--span {
 		background-color: transparent;
 		&:before {
 			@include position(null, 0 null null null);
