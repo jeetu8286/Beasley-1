@@ -5,40 +5,47 @@
  * Copyright (c) 2014 10up
  * Licensed under the GPLv2+ license.
  */
-#show-schedule #shows {
+#schedule-form {
   margin: 2em 0;
   padding: 1em 0.5em 0.5em 1em;
   border: 1px solid #ccc;
   background-color: white; }
-  #show-schedule #shows:after {
+  #schedule-form:after {
     content: "";
     display: table;
     clear: both; }
-  #show-schedule #shows .show {
-    float: left;
-    margin: 0 0.5em 0.5em 0;
-    padding: 15px 30px;
-    border: 1px solid #ddd;
-    cursor: pointer;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    user-select: none; }
-    #show-schedule #shows .show:hover {
-      border-width: 3px;
-      padding: 13px 28px; }
-#show-schedule #schedule {
-  float: left;
-  width: 100%; }
-  #show-schedule #schedule .time {
-    width: 7%;
-    float: left; }
-  #show-schedule #schedule .dayofweek {
-    width: 13.2868%;
-    height: 100%;
-    float: left;
-    border: 1px solid gray;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box; }
+  #schedule-form #start-from-date {
+    width: 100px; }
+  #schedule-form select,
+  #schedule-form input[type="text"],
+  #schedule-form input[type="submit"] {
+    margin-top: -3px; }
+  #schedule-form select,
+  #schedule-form input[type="text"] {
+    box-shadow: none;
+    border: 0;
+    border-bottom: 1px dashed #ccc;
+    font-weight: bold; }
+  #schedule-form input[type="submit"] {
+    float: right; }
+
+#schedule-table {
+  width: 100%;
+  border-spacing: 0;
+  border-collapse: collapse;
+  border: 1px solid #dfdfdf;
+  background-color: white; }
+  #schedule-table th, #schedule-table td {
+    padding: 5px 10px;
+    text-align: left;
+    border-right: 1px solid #dfdfdf; }
+  #schedule-table a {
+    text-decoration: none;
+    margin-right: 2em; }
+  #schedule-table thead th {
+    border-bottom: 1px solid #dfdfdf; }
+  #schedule-table tbody tr:nth-child(odd) td {
+    background-color: whitesmoke; }
 
 .misc-pub-gmr::before {
   font: 400 20px/1 dashicons;
@@ -61,9 +68,6 @@
 
 #show-homepage::before {
   content: "\f102"; }
-
-#show-schedule::before {
-  content: "\f469"; }
 
 #show_logo .meta_box_preview_image {
   max-width: 200px;

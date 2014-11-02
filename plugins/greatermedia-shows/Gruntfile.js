@@ -15,6 +15,7 @@ module.exports = function (grunt) {
 			greatermedia_shows: {
 				src: [
 					'assets/js/src/shows.js',
+					'assets/js/src/schedule.js',
 					'assets/js/src/metabox.js'
 				],
 				dest: 'assets/js/greatermedia_shows.js'

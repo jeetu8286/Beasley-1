@@ -1,44 +1,59 @@
-#show-schedule {
-	#shows {
-		margin: 2em 0;
-		padding: 1em 0.5em 0.5em 1em;
-		border: 1px solid #ccc;
-		background-color: white;
+#schedule-form {
+	margin: 2em 0;
+	padding: 1em 0.5em 0.5em 1em;
+	border: 1px solid #ccc;
+	background-color: white;
 
-		@include clearfix;
+	@include clearfix;
 
-		.show {
-			float: left;
-			margin: 0 0.5em 0.5em 0;
-			padding: 15px 30px;
-			border: 1px solid #ddd;
-			cursor: pointer;
-
-			@include user-select(none);
-
-			&:hover {
-				border-width: 3px;
-				padding: 13px 28px;
-			}
-		}
+	#start-from-date {
+		width: 100px;
 	}
-	
-	#schedule {
-		float: left;
-		width: 100%;
 
-		.time {
-			width: 7%;
-			float: left;
-		}
+	select,
+	input[type="text"],
+	input[type="submit"] {
+		margin-top: -3px;
+	}
 
-		.dayofweek {
-			width: 13.2868%;
-			height: 100%;
-			float: left;
-			border: 1px solid gray;
-			
-			@include box-sizing(border-box);
-		}
+	select,
+	input[type="text"] {
+		box-shadow: none;
+		border: 0;
+		border-bottom: 1px dashed #ccc;
+		font-weight: bold;
+	}
+
+	input[type="submit"] {
+		float: right;
+	}
+}
+
+#schedule-table {
+	$table-border-color: #dfdfdf;
+
+	width: 100%;
+    border-spacing: 0;
+    border-collapse: collapse;
+	border: 1px solid $table-border-color;
+	background-color: white;
+
+	th, td {
+		padding: 5px 10px;
+		text-align: left;
+		border-right: 1px solid $table-border-color;
+	}
+
+	a {
+		text-decoration: none;
+		margin-right: 2em;
+	}
+
+	thead th {
+		border-bottom: 1px solid $table-border-color;
+	}
+
+	tbody tr:nth-child(odd) td {
+		background-color: whitesmoke;
 	}
 }

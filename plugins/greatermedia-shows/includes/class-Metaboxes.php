@@ -13,7 +13,7 @@ class GMR_Show_Metaboxes {
 	 */
 	public function __construct() {
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
-		add_action( 'add_meta_boxes', array( $this, 'add_box' ) );
+		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
 		add_action( 'post_submitbox_misc_actions', array( $this, 'post_submitbox_misc_actions' ) );
 		add_action( 'save_post', array( $this, 'save_box' ), 20 );
 	}
@@ -25,21 +25,21 @@ class GMR_Show_Metaboxes {
 	 * @access public
 	 */
 	public function admin_enqueue_scripts() {
-		global $pagenow;
+		global $pagenow, $typenow;
 		$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
-		if ( in_array( $pagenow, array( 'post-new.php', 'post.php' ) ) && get_post_type() == 'show' ) {
+		if ( in_array( $pagenow, array( 'post-new.php', 'post.php' ) ) && $typenow == ShowsCPT::CPT_SLUG ) {
 			wp_enqueue_script( 'meta_box', GMEDIA_SHOWS_URL . "assets/js/greatermedia_shows{$postfix}.js", array( 'jquery' ), GMEDIA_SHOWS_VERSION, true );
 			wp_enqueue_style( 'meta_box', GMEDIA_SHOWS_URL . "assets/css/greatermedia_shows{$postfix}.css", array(), GMEDIA_SHOWS_VERSION );
 		}
 	}
 
 	/**
-	 * Adds the meta box for every post type in $page.
+	 * Adds meta boxes to show edit page.
 	 *
 	 * @action add_meta_boxes
 	 * @access public
 	 */
-	public function add_box() {
+	public function add_meta_boxes() {
 		add_meta_box( 'show_logo', 'Logo', array( $this, 'render_logo_meta_box' ), ShowsCPT::CPT_SLUG, 'side' );
 	}
 
@@ -56,17 +56,7 @@ class GMR_Show_Metaboxes {
 		}
 
 		wp_nonce_field( 'gmr_show', 'show_nonce', false );
-		
-		$this->_render_homepage_field();
-		$this->_render_schedule_field();
-	}
 
-	/**
-	 * Renders "Has Homepage" field.
-	 *
-	 * @access private
-	 */
-	private function _render_homepage_field() {
 		$has_homepage = filter_var( get_post_meta( get_the_ID(), 'show_homepage', true ), FILTER_VALIDATE_BOOLEAN );
 		
 		?><div id="show-homepage" class="misc-pub-section misc-pub-gmr mis-pub-radio">
@@ -81,72 +71,6 @@ class GMR_Show_Metaboxes {
 				<p>
 					<a href="#" class="save-radio hide-if-no-js button"><?php esc_html_e( 'OK' ) ?></a>
 					<a href="#" class="cancel-radio hide-if-no-js button-cancel"><?php esc_html_e( 'Cancel' ) ?></a>
-				</p>
-			</div>
-		</div><?php
-	}
-
-	/**
-	 * Renders schedule field.
-	 *
-	 * @access private
-	 * @global WP_Locale $wp_locale The locale instance.
-	 */
-	private function _render_schedule_field() {
-		global $wp_locale;
-
-		$text = '';
-		$post_id = get_the_ID();
-		$precision = 0.5; // 1 - each hour, 0.5 - each 30 mins, 0.25 - each 15 mins
-
-		$origin_time = get_post_meta( $post_id, 'show_schedule_time', true );
-		$origin_days = get_post_meta( $post_id, 'show_schedule_days', true );
-		if ( ! $origin_days ) {
-			$origin_days = array();
-		}
-		
-		if ( is_numeric( $origin_time ) && ! empty( $origin_days ) ) {
-			$days = array_map( array( $wp_locale, 'get_weekday' ), $origin_days );
-			$days = array_map( array( $wp_locale, 'get_weekday_abbrev' ), $days );
-
-			$text = date( 'h:i A', $origin_time ) . ' on ' . implode( ', ', $days );
-		} else {
-			$text = '&#8212;';
-		}
-
-		?><div id="show-schedule" class="misc-pub-section misc-pub-gmr">
-			Schedule:
-			<span class="post-pub-section-value schedule-value"><?php echo $text; ?></span>
-			<a href="#" class="edit-schedule hide-if-no-js" style="display: inline;"><span aria-hidden="true">Edit</span></a>
-
-			<div class="schedule-select hide-if-js">
-				<p>
-					<b>Pick time:</b>
-					<br>
-					<select name="show_schedule_time">
-						<option></option>
-						<?php for ( $i = 0, $count = 24 / $precision; $i < $count ; $i++ ) : ?>
-							<?php $time = HOUR_IN_SECONDS * $precision * $i; ?>
-							<option value="<?php echo $time; ?>"<?php selected( $time, $origin_time ); ?>><?php echo date( 'h:i A', $time ); ?></option>
-						<?php endfor; ?>
-					</select>
-				</p>
-
-				<p>
-					<b>Pick days:</b><br>
-					<?php for ( $i = 0; $i < 7; $i++ ) : ?>
-						<?php $week_day = $wp_locale->get_weekday( $i ); ?>
-						<label>
-							<input type="checkbox" name="show_schedule_days[]" value="<?php echo $i; ?>" data-abbr="<?php echo esc_attr( $wp_locale->get_weekday_abbrev( $week_day ) ); ?>"<?php checked( in_array( $i, $origin_days ) ); ?>>
-							<?php echo esc_html( $week_day ); ?>
-						</label>
-						<br>
-					<?php endfor; ?>
-				</p>
-
-				<p>
-					<a href="#" class="save-schedule hide-if-no-js button"><?php esc_html_e( 'OK' ) ?></a>
-					<a href="#" class="cancel-schedule hide-if-no-js button-cancel"><?php esc_html_e( 'Cancel' ) ?></a>
 				</p>
 			</div>
 		</div><?php
@@ -188,29 +112,6 @@ class GMR_Show_Metaboxes {
 
 		update_post_meta( $post_id, 'show_homepage', filter_input( INPUT_POST, 'show_homepage', FILTER_VALIDATE_BOOLEAN ) );
 		update_post_meta( $post_id, 'logo_image', filter_input( INPUT_POST, 'logo_image', FILTER_VALIDATE_INT ) );
-
-		// schedule time
-		$schedule_time = filter_input( INPUT_POST, 'show_schedule_time' );
-		if ( is_numeric( $schedule_time ) ) {
-			update_post_meta( $post_id, 'show_schedule_time', $schedule_time );
-		} else {
-			delete_post_meta( $post_id, 'show_schedule_time' );
-		}
-
-		// schedule days
-		$scheduled_days = array();
-		$posted_days = isset( $_POST['show_schedule_days'] ) ? (array) $_POST['show_schedule_days'] : array();
-		foreach ( $posted_days as $day ) {
-			if ( 0 <= $day && $day < 7 ) {
-				$scheduled_days[] = $day;
-			}
-		}
-
-		if ( ! empty( $scheduled_days ) ) {
-			update_post_meta( $post_id, 'show_schedule_days', $scheduled_days );
-		} else {
-			delete_post_meta( $post_id, 'show_schedule_days' );
-		}
 	}
 
 }
