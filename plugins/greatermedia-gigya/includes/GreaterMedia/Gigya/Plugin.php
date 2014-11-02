@@ -202,12 +202,19 @@ class Plugin {
 	 * Saves the MemberQuery JSON in postmeta and then publishes the
 	 * segment to MailChimp.
 	 *
+	 * If constraints not present in POST assumed to be a quick-edit and
+	 * does not update the member query.
+	 *
 	 * @access public
 	 * @param int $post_id The id of the parent post CPT of this MemberQuery
 	 * @param WP_Post $post The post object that was saved.
 	 * @return void
 	 */
 	public function publish_member_query( $post_id, $post = null ) {
+		if ( ! array_key_exists( 'constraints', $_POST ) ) {
+			return;
+		}
+
 		$this->member_query_post_type->verify_meta_box_nonces();
 
 		try {
