@@ -38,6 +38,8 @@ QueryBuilderApp.prototype = {
 		activeConstraintsView.render();
 		previewView.render();
 		queryResultsView.render();
+
+		activeConstraints.save();
 	},
 
 };
