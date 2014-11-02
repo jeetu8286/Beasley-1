@@ -229,9 +229,13 @@ __e( choiceItem.label ) +
 '\n\t\t</option>\n\t\t';
  }) ;
 __p += '\n\t</select>\n';
- } else if (valueType === 'integer' || valueType === 'float') { ;
-__p += '\n\t<input type="number" class="constraint-value constraint-value-text" value="' +
+ } else if (fieldType === 'number' || fieldType === 'price') { ;
+__p += '\n\t<input type="number" class="constraint-value constraint-value-text"\n\tvalue="' +
 __e( value ) +
+'" min="' +
+__e( fieldOptions.min ) +
+'" max="' +
+__e( fieldOptions.max ) +
 '" />\n';
  } else { ;
 __p += '\n\t<input type="text" class="constraint-value constraint-value-text" value="' +
@@ -276,7 +280,7 @@ with (obj) {
 __p += '\n\t<option value="' +
 __e( choice.value ) +
 '" ' +
-((__t = ( choice.value === currentChoice ? 'selected="selected"' : ''  )) == null ? '' : __t) +
+((__t = ( choice.value == currentChoice ? 'selected="selected"' : ''  )) == null ? '' : __t) +
 '">\n\t' +
 __e( choice.label ) +
 '\n\t</option>\n';
@@ -324,7 +328,8 @@ var EntryField = Backbone.Model.extend({
 		label: '',
 		value: '',
 		type: '',
-		choices: []
+		choices: [],
+		fieldOptions: {}
 	}
 });
 
@@ -421,14 +426,18 @@ var EntryConstraint = Constraint.extend({
 
 	didLoadEntryTypes: function(response) {
 		var entryTypes = this.entryTypes;
-		entryTypes.reset(response.data);
+		entryTypes.reset(response.data, {silent:true});
 
 		if (this.get('entryTypeID') === -1) {
 			// auto-select first entry
-			this.set('entryTypeID', entryTypes.at(0).get('value'));
-		} else {
-			this.didChangeEntryTypeID();
+			var first = entryTypes.at(0);
+			if (first !== undefined) {
+				this.set('entryTypeID', first.get('value'), {silent:true});
+			}
 		}
+
+		this.entryTypes.trigger('reset');
+		this.loadEntryFields();
 	},
 
 	didLoadEntryTypesError: function(response) {
@@ -448,12 +457,20 @@ var EntryConstraint = Constraint.extend({
 
 	didLoadEntryFields: function(response) {
 		var entryFields = this.getEntryFields();
-		entryFields.reset(response.data);
+		var first;
+
+		entryFields.reset(response.data, {silent:true});
 
 		if (this.get('entryFieldID') === -1) {
 			// auto-select first field
-			this.set('entryFieldID', entryFields.at(0).get('value'));
+			first = entryFields.at(0);
+			if (first !== undefined) {
+				this.set('entryFieldID', first.get('value'), {silent:true});
+			}
 		}
+
+		entryFields.trigger('reset');
+		this.trigger('change');
 	},
 
 	didLoadEntryFieldsError: function(response) {
@@ -468,10 +485,14 @@ var EntryConstraint = Constraint.extend({
 		return this.entryFields;
 	},
 
-	getEntryFieldChoices: function() {
+	getEntryFieldChoices: function(entryFieldID) {
+		if (!entryFieldID) {
+			entryFieldID = this.get('entryFieldID');
+		}
+
 		var fieldCollection = this.getEntryFields();
 		var field           = fieldCollection.findWhere({
-			value: this.get('entryFieldID')
+			value: entryFieldID
 		});
 
 		if (field) {
@@ -483,6 +504,28 @@ var EntryConstraint = Constraint.extend({
 			}
 		} else {
 			return [];
+		}
+	},
+
+	getEntryFieldOptions: function() {
+		var fieldCollection = this.getEntryFields();
+		var field           = fieldCollection.findWhere({
+			value: this.get('entryFieldID')
+		});
+
+		if (field) {
+			return field.get('fieldOptions');
+		} else {
+			return {};
+		}
+	},
+
+	getEntryFieldType: function() {
+		var fieldOptions = this.getEntryFieldOptions();
+		if (fieldOptions.fieldType) {
+			return fieldOptions.fieldType;
+		} else {
+			return 'text';
 		}
 	},
 
@@ -1001,7 +1044,7 @@ var ConstraintCollection = Backbone.Collection.extend({
 		var $constraints = jQuery('#constraints');
 
 		$constraints.attr('value', json);
-		//console.log(json);
+		console.log(json);
 	}
 }, {
 
@@ -1162,7 +1205,7 @@ var ConstraintView = Backbone.View.extend({
 	},
 
 	didChange: function(event) {
-		this.updateConstraint(this.model);
+		this.updateConstraint(this.model, event.target);
 	},
 
 	updateConstraint: function(constraint) {
@@ -1305,25 +1348,48 @@ var EntryConstraintView = ConstraintView.extend({
 		data.view          = this;
 		data.choices       = this.model.getEntryFieldChoices();
 		data.currentChoice = this.model.get('value');
+		data.fieldType     = this.model.getEntryFieldType();
+		data.fieldOptions  = this.model.getEntryFieldOptions();
 
 		var html = this.entryAnswerTemplate(data);
 		$entryAnswer.html(html);
+
+		var fieldType = this.model.getEntryFieldType();
+
+		if (fieldType === 'date') {
+			var $constraintField = $('.constraint-value', this.el);
+			$constraintField.datepicker({dateFormat: 'mm/dd/yy'});
+		}
 	},
 
-	updateConstraint: function(constraint) {
+	updateConstraint: function(constraint, source) {
 		var operator     = $('.constraint-operator', this.el).val();
 		var conjunction  = $('.constraint-conjunction', this.el).val();
 		var value        = $('.constraint-value', this.el).val();
 		var entryTypeID  = $('.entry-select-type', this.el).val();
 		var entryFieldID = $('.entry-select-field', this.el).val();
+		var $source      = $(source);
 		value            = this.parseValue(value, constraint.get('valueType'));
+
+		if ($source.hasClass('entry-select-type')) {
+			value = '';
+			entryFieldID = -1;
+		} else if ($source.hasClass('entry-select-field')) {
+			var fieldChoices = this.model.getEntryFieldChoices(entryFieldID);
+
+			if (fieldChoices.length > 0) {
+				value = fieldChoices[0].value;
+			} else {
+				value = '';
+			}
+		}
 
 		var changes     = {
 			operator: operator,
 			value: value,
 			conjunction: conjunction,
-			entryTypeID: this.parseValue(entryTypeID, 'integer'),
-			entryFieldID: this.parseValue(entryFieldID, 'integer')
+			entryTypeID: this.parseValue(entryTypeID, 'string'),
+			entryFieldID: this.parseValue(entryFieldID, 'string')
 		};
 
 		//console.log('updateConstraint', changes);
