@@ -3,8 +3,9 @@
 // action hooks
 add_action( 'admin_menu', 'gmrs_register_schedule_page' );
 add_action( 'admin_enqueue_scripts', 'gmrs_enqueue_schedule_scripts' );
-add_action( 'admin_action_gmr_add_show_schedule', 'gmr_add_show_schedule' );
-add_action( 'admin_action_gmr_delete_show_schedule', 'gmr_delete_show_schedule' );
+add_action( 'admin_action_gmr_add_show_schedule', 'gmrs_add_show_schedule' );
+add_action( 'admin_action_gmr_delete_show_schedule', 'gmrs_delete_show_schedule' );
+add_action( 'gmr_show_schdeule', 'gmrs_set_active_show', 10, 4 );
 
 // filter hooks
 add_filter( 'cron_schedules', 'gmrs_filter_cron_schedules' );
@@ -22,6 +23,29 @@ function gmrs_filter_cron_schedules( $schedules ) {
 		'display' => 'Once Weekly',
 	);
 	return $schedules;
+}
+
+/**
+ * Sets active (on air) show.
+ *
+ * @action gmr_show_schdeule
+ * @param int $show_id The show id.
+ */
+function gmrs_set_active_show( $show_id ) {
+	$show = get_post( $show_id );
+	if ( ! $show || $show->post_type != ShowsCPT::CPT_SLUG ) {
+		$args = func_get_args();
+		$next_run = wp_next_scheduled( 'gmr_show_schdeule', $args );
+		if ( $next_run ) {
+			wp_unschedule_event( $next_run, 'gmr_show_schdeule', $args );
+		}
+
+		return;
+	}
+
+	if ( $show->post_status == 'publish' ) {
+		update_option( 'gmr_active_show', $show_id );
+	}
 }
 
 /**
@@ -58,7 +82,7 @@ function gmrs_register_schedule_page() {
  *
  * @action admin_action_gmr_add_show_schedule
  */
-function gmr_add_show_schedule() {
+function gmrs_add_show_schedule() {
 	check_admin_referer( 'gmr_add_show_schedule' );
 
 	$data = filter_input_array( INPUT_POST, array(
@@ -96,7 +120,7 @@ function gmr_add_show_schedule() {
  *
  * @action admin_action_gmr_delete_show_schedule
  */
-function gmr_delete_show_schedule() {
+function gmrs_delete_show_schedule() {
 	check_admin_referer( 'gmr_delete_show_schedule' );
 
 	$crons = _get_cron_array();
@@ -121,7 +145,7 @@ function gmrs_render_schedule_page() {
 	$active_show = isset( $_COOKIE['gmr_show_id'] ) ? $_COOKIE['gmr_show_id'] : false;
 	$active_time = isset( $_COOKIE['gmr_show_time'] ) ? $_COOKIE['gmr_show_time'] : false;
 	
-	$events = gmr_get_scheduled_events();
+	$events = gmrs_get_scheduled_events();
 	$precision = 0.5; // 1 - each hour, 0.5 - each 30 mins, 0.25 - each 15 mins
 
 	$shows = new WP_Query( array(
@@ -216,7 +240,7 @@ function gmrs_render_schedule_page() {
  * @param int $show_id The show id.
  * @return array The array of scheduled events.
  */
-function gmr_get_scheduled_events() {
+function gmrs_get_scheduled_events() {
 	$events = $matches = array();
 	foreach( _get_cron_array() as $time => $cron ) {
 		foreach( $cron as $hook => $dings ) {
