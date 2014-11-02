@@ -1,178 +1,119 @@
 <?php
+
 /**
  * Created by Eduard
  * Date: 15.10.2014
  */
+class GMR_Show_Metaboxes {
 
-class Shows_Meta_Box {
-
-	public  $id;
-	public  $title;
-	public  $fields;
-	public  $page;
-	public  $context;
-	public  $priority;
-
+	/**
+	 * Construcotr.
+	 *
+	 * @access public
+	 */
 	public function __construct() {
-
-	}
-	public function init( $id, $title, $fields, $page, $context, $priority ) {
-		$this->id       = $id;
-		$this->title    = $title;
-		$this->fields   = $fields;
-		$this->page     = $page;
-		$this->context  = $context;
-		$this->priority = $priority;
-
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
-		add_action( 'add_meta_boxes', array( $this, 'add_box' ) );
-		add_action( 'save_post',  array( $this, 'save_box' ), 20);
+		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
+		add_action( 'post_submitbox_misc_actions', array( $this, 'post_submitbox_misc_actions' ) );
+		add_action( 'save_post', array( $this, 'save_box' ), 20 );
 	}
 
 	/**
-	 * enqueue necessary scripts and styles
+	 * Enqueues necessary scripts and styles.
+	 *
+	 * @action admin_enqueue_scripts
+	 * @access public
 	 */
 	public function admin_enqueue_scripts() {
-		global $pagenow;
+		global $pagenow, $typenow;
 		$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
-		if ( in_array( $pagenow, array( 'post-new.php', 'post.php' ) ) && get_post_type() == $this->page ) {
+		if ( in_array( $pagenow, array( 'post-new.php', 'post.php' ) ) && $typenow == ShowsCPT::CPT_SLUG ) {
 			wp_enqueue_script( 'meta_box', GMEDIA_SHOWS_URL . "assets/js/greatermedia_shows{$postfix}.js", array( 'jquery' ), GMEDIA_SHOWS_VERSION, true );
 			wp_enqueue_style( 'meta_box', GMEDIA_SHOWS_URL . "assets/css/greatermedia_shows{$postfix}.css", array(), GMEDIA_SHOWS_VERSION );
 		}
 	}
 
 	/**
-	 * adds the meta box for every post type in $page
+	 * Adds meta boxes to show edit page.
+	 *
+	 * @action add_meta_boxes
+	 * @access public
 	 */
-	public function add_box() {
-		add_meta_box( $this->id, $this->title, array( $this, 'meta_box_callback' ), $this->page, $this->context, $this->priority );
+	public function add_meta_boxes() {
+		add_meta_box( 'show_logo', 'Logo', array( $this, 'render_logo_meta_box' ), ShowsCPT::CPT_SLUG, 'side' );
 	}
 
 	/**
-	 * outputs the meta box
+	 * Displays show settings.
+	 *
+	 * @action post_submitbox_misc_actions
+	 * @access public
 	 */
-	public function meta_box_callback() {
-		// Use nonce for verification
-		wp_nonce_field( 'custom_meta_box_nonce_action', 'custom_meta_box_nonce_field' );
+	public function post_submitbox_misc_actions() {
+		global $typenow;
+		if ( ShowsCPT::CPT_SLUG != $typenow ) {
+			return;
+		}
 
-		// Begin the field table and loop
-		echo '<table class="form-table meta_box">';
-		foreach ( $this->fields as $field) {
-			echo '<tr>
-					<th><label for="' . $field['id'] . '">' . $field['label'] . '</label></th>
-					<td>';
-			$meta = get_post_meta( get_the_ID(), $field['id'], true);
-			echo $this->custom_meta_box_field( $field, $meta, false );
-			echo     '<td></tr>';
-		} // end foreach
-		echo '</table>'; // end table
+		wp_nonce_field( 'gmr_show', 'show_nonce', false );
+
+		$has_homepage = filter_var( get_post_meta( get_the_ID(), 'show_homepage', true ), FILTER_VALIDATE_BOOLEAN );
+		
+		?><div id="show-homepage" class="misc-pub-section misc-pub-gmr mis-pub-radio">
+			Has home page:
+			<span class="post-pub-section-value radio-value"><?php echo $has_homepage ? 'Yes' : 'No' ?></span>
+			<a href="#" class="edit-radio hide-if-no-js" style="display: inline;"><span aria-hidden="true">Edit</span></a>
+
+			<div class="radio-select hide-if-js">
+				<label><input type="radio" name="show_homepage" value="0"<?php checked( $has_homepage, false ) ?>> No</label><br>
+				<label><input type="radio" name="show_homepage" value="1"<?php checked( $has_homepage, true ) ?>> Yes</label><br>
+
+				<p>
+					<a href="#" class="save-radio hide-if-no-js button"><?php esc_html_e( 'OK' ) ?></a>
+					<a href="#" class="cancel-radio hide-if-no-js button-cancel"><?php esc_html_e( 'Cancel' ) ?></a>
+				</p>
+			</div>
+		</div><?php
 	}
 
 	/**
-	 * saves the captured data
+	 * Outputs the logo meta box.
+	 *
+	 * @access public
+	 */
+	public function render_logo_meta_box( WP_Post $post ) {
+		$image = '';
+		$image_id = intval( get_post_meta( $post->ID, 'logo_image', true ) );
+		if ( $image_id ) {
+			$image = current( (array) wp_get_attachment_image_src( $image_id, 'medium' ) );
+		}
+		
+		echo '<input name="logo_image" type="hidden" class="meta_box_upload_image" value="', $image_id, '">';
+		echo '<img src="', esc_attr( $image ), '" class="meta_box_preview_image">';
+		echo '<div style="text-align:center">';
+			echo '<a href="#" class="meta_box_upload_image_button button button-primary" rel="', $post->ID, '">Choose Image</a> ';
+			echo '<a href="#" class="meta_box_clear_image_button button">Remove Image</a>';
+		echo '</div>';
+	}
+
+	/**
+	 * Saves the captured data.
+	 *
+	 * @action save_post
+	 * @access public
 	 */
 	public function save_box( $post_id ) {
-		$post_type = get_post_type();
-		$post_title = get_the_title();
-
-		// verify nonce
-		if ( ! isset( $_POST['custom_meta_box_nonce_field'] ) ) {
-			return $post_id;
-		}
-
-		if ( $post_type != $this->page || !wp_verify_nonce( $_POST['custom_meta_box_nonce_field'],  'custom_meta_box_nonce_action' ) ) {
-			return $post_id;
-		}
-		// check autosave
-		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
-			return $post_id;
-		}
-		// check permissions
-		if ( ! current_user_can( 'edit_page', $post_id ) ) {
-			return $post_id;
-		}
-
-		foreach ( $this->fields as $field ) {
-				$new = false;
-				$old = get_post_meta( $post_id, $field['id'], true );
-				if ( isset( $_POST[$field['id']] ) ) {
-					$new = intval( $_POST[$field['id']] );
-				}
-				if ( isset( $new ) && $new != $old ) {
-					update_post_meta( $post_id, $field['id'], $new );
-				}
-		}
-	}
-
-	public function custom_meta_box_field( $field, $meta = null, $repeatable = null, $type = null ) {
-		if ( ! ( $field || is_array( $field ) ) )
+		$doing_autosave = defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE;
+		$valid_nonce = wp_verify_nonce( filter_input( INPUT_POST, 'show_nonce' ), 'gmr_show' );
+		$can_edit_post = current_user_can( 'edit_page', $post_id );
+		if ( $doing_autosave || ! $valid_nonce || ! $can_edit_post ) {
 			return;
-
-		// get field data
-		$label = isset( $field['label'] ) ? $field['label'] : null;
-		$desc = isset( $field['desc'] ) ? '<span class="description">' . $field['desc'] . '</span>' : null;
-		$place = isset( $field['place'] ) ? $field['place'] : null;
-		$size = isset( $field['size'] ) ? $field['size'] : null;
-		$post_type = isset( $field['post_type'] ) ? $field['post_type'] : null;
-		$options = isset( $field['options'] ) ? $field['options'] : null;
-		$settings = isset( $field['settings'] ) ? $field['settings'] : null;
-		$type = isset( $field['type'] ) ? $field['type'] : null;
-
-		// the id and name for each field
-		$id = $name = isset( $field['id'] ) ? $field['id'] : null;
-		if ( $repeatable ) {
-			$name = $repeatable[0] . '[' . $repeatable[1] . '][' . $id .']';
-			$id = $repeatable[0] . '_' . $repeatable[1] . '_' . $id;
 		}
-		switch( $type ) {
-			// checkbox
-			case 'checkbox':
-				echo '<input type="checkbox" name="' . esc_attr( $name ) . '" id="' . esc_attr( $id ) . '" ' . checked( $meta, true, false ) . ' value="1" />
-						<label for="' . esc_attr( $id ) . '">' . $desc . '</label>';
-				break;
 
-			case 'image':
-				// image
-				$image = '';
-				echo '<div class="meta_box_image"><span class="meta_box_default_image" style="display:none">' . $image . '</span>';
-				if ( $meta ) {
-					$image = wp_get_attachment_image_src( intval( $meta ), 'medium' );
-					$image = $image[0];
-				}
-				echo '<input name="' . esc_attr( $name ) . '" type="hidden" class="meta_box_upload_image" value="' . intval( $meta ) . '" />
-					<img src="' . esc_attr( $image ) . '" class="meta_box_preview_image" alt="" />
-					<a href="#" class="meta_box_upload_image_button button" rel="' . get_the_ID() . '">Choose Image</a>
-					<small>&nbsp;<a href="#" class="meta_box_clear_image_button">Remove Image</a></small></div>
-					<br clear="all" />' . $desc;
-				break;
-			default:
-				echo '<input type="' . $type . '" name="' . esc_attr( $name ) . '" id="' . esc_attr( $id ) . '" value="' . esc_attr( $meta ) . '" class="regular-text" size="30" />
-						<br />' . $desc;
-		}
+		update_post_meta( $post_id, 'show_homepage', filter_input( INPUT_POST, 'show_homepage', FILTER_VALIDATE_BOOLEAN ) );
+		update_post_meta( $post_id, 'logo_image', filter_input( INPUT_POST, 'logo_image', FILTER_VALIDATE_INT ) );
 	}
 
 }
 
-$images = array(
-	array( // Image ID field
-		'label'	=> '', // <label>
-		'desc'	=> 'Logo image for show.', // description
-		'id'	=> 'logo_image', // field id and name
-		'type'	=> 'image' // type of field
-	),
-);
-
-$image_meta = new Shows_Meta_Box();
-$image_meta->init( 'show_logo', 'Logo', $images, 'show', 'side', 'default', true);
-
-$checkbox_meta = new Shows_Meta_Box();
-$checkbox = array(
-	array( // Image ID field
-		'label'	=> '', // <label>
-		'desc'	=> 'Whether show is going to have it\'s own page.', // description
-		'id'	=> 'show_homepage', // field id and name
-		'type'	=> 'checkbox' // type of field
-	)
-);
-
-$checkbox_meta->init( 'show_homepage', 'Home page?', $checkbox, 'show', 'side', 'default', true);
+$gmr_show_metaboxes = new GMR_Show_Metaboxes();

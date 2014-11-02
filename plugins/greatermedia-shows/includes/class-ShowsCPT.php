@@ -1,27 +1,47 @@
 <?php
+
 /**
  * Created by Eduard
  * Date: 15.10.2014
  */
-
-if ( ! defined( 'WPINC' ) ) {
-	die;
-}
-
 class ShowsCPT {
 
-	const CPT_SLUG = 'show';
+	const CPT_SLUG        = 'show';
 	const SHADOW_TAXONOMY = '_shows';
 
-	public static function init() {
-		add_action( 'init', array( __CLASS__, 'register_post_type' ) );
-		add_action( 'init', array( __CLASS__, 'register_shadow_taxonomy' ) );
+	/**
+	 * The singleton instance of the ShowsCPT class.
+	 *
+	 * @static
+	 * @access private
+	 * @var ShowsCPT
+	 */
+	private static $_instance = null;
+
+	/**
+	 * Returns instance of the ShowsCPT class.
+	 *
+	 * @static
+	 * @access public
+	 * @return ShowsCPT
+	 */
+	public static function get_instance() {
+		if ( is_null( self::$_instance ) ) {
+			self::$_instance = new ShowsCPT();
+			
+			add_action( 'init', array( self::$_instance, 'register_post_type' ) );
+			add_action( 'init', array( self::$_instance, 'register_shadow_taxonomy' ) );
+		}
+
+		return self::$_instance;
 	}
 
 	/**
 	 * Registers shows post types
+	 *
+	 * @access public
 	 */
-	public static function register_post_type() {
+	public function register_post_type() {
 		$labels = array(
 			'name'               => __( 'Shows', 'greatermedia' ),
 			'singular_name'      => __( 'Show', 'greatermedia' ),
@@ -46,8 +66,8 @@ class ShowsCPT {
 			'show_ui'             => true,
 			'show_in_menu'        => true,
 			'show_in_admin_bar'   => true,
-			'menu_position'       => null,
-			'menu_icon'           => null,
+			'menu_position'       => 5,
+			'menu_icon'           => 'dashicons-megaphone',
 			'show_in_nav_menus'   => true,
 			'publicly_queryable'  => true,
 			'exclude_from_search' => false,
@@ -64,11 +84,12 @@ class ShowsCPT {
 
 	/**
 	 * Regsiter shadow taxonomy for shows
+	 *
+	 * @access public
 	 */
-	public static function register_shadow_taxonomy() {
-
+	public function register_shadow_taxonomy() {
 		$labels = array(
-			'name' => _x( 'Show terms', 'Taxonomy Show terms', 'greatermedia' ),
+			'name'                  => _x( 'Show terms', 'Taxonomy Show terms', 'greatermedia' ),
 			'singular_name'         => _x( 'Show term', 'Taxonomy Show term', 'greatermedia' ),
 			'search_items'          => __( 'Search Show terms', 'greatermedia' ),
 			'popular_items'         => __( 'Popular Show terms', 'greatermedia' ),
@@ -111,11 +132,10 @@ class ShowsCPT {
 		register_taxonomy( self::SHADOW_TAXONOMY, $supported_posttypes, $args );
 
 		if ( function_exists( 'TDS\add_relationship' ) ) {
-			TDS\add_relationship( 'show', self::SHADOW_TAXONOMY );
+			TDS\add_relationship( self::CPT_SLUG, self::SHADOW_TAXONOMY );
 		}
-		
 	}
 
 }
 
-ShowsCPT::init();
+ShowsCPT::get_instance();
