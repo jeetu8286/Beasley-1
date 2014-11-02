@@ -82,7 +82,7 @@ function gmr_delete_show_schedule() {
 		'show' => FILTER_VALIDATE_INT,
 		'ts'   => FILTER_VALIDATE_INT,
 	) ) );
-	
+
 	$next_run = wp_next_scheduled( 'gmr_show_schdeule', $args );
 	if ( ! $next_run ) {
 		wp_die( 'Show schedule has not been found.' );
@@ -202,7 +202,7 @@ function gmr_get_scheduled_events() {
 					
 					$events["$hook-$sig"] = (object) array(
 						'hook'     => $hook,
-						'time'     => date( DATE_ISO8601, $time ),
+						'time'     => date( DATE_ISO8601, $time - get_option( 'gmt_offset' ) * HOUR_IN_SECONDS ),
 						'sig'      => $sig,
 						'args'     => $data['args'],
 						'schedule' => $data['schedule'],
