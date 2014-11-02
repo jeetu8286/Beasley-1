@@ -552,7 +552,7 @@ var AVAILABLE_CONSTRAINTS = [
 	{
 		type: 'profile:birthMonth',
 		valueType: 'integer',
-		value: 2
+		value: 1
 	},
 	{
 		type: 'profile:state',
@@ -1476,6 +1476,8 @@ QueryBuilderApp.prototype = {
 		activeConstraintsView.render();
 		previewView.render();
 		queryResultsView.render();
+
+		activeConstraints.save();
 	},
 
 };
