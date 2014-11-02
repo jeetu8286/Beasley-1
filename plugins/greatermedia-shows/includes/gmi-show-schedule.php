@@ -6,6 +6,24 @@ add_action( 'admin_enqueue_scripts', 'gmrs_enqueue_schedule_scripts' );
 add_action( 'admin_action_gmr_add_show_schedule', 'gmr_add_show_schedule' );
 add_action( 'admin_action_gmr_delete_show_schedule', 'gmr_delete_show_schedule' );
 
+// filter hooks
+add_filter( 'cron_schedules', 'gmrs_filter_cron_schedules' );
+
+/**
+ * Filters cron schedules.
+ *
+ * @filter cron_schedules
+ * @param array $schedules The initial array of cron schedules.
+ * @return array The extended array of cron schedules.
+ */
+function gmrs_filter_cron_schedules( $schedules ) {
+	$schedules['weekly'] = array(
+		'interval' => WEEK_IN_SECONDS,
+		'display' => 'Once Weekly',
+	);
+	return $schedules;
+}
+
 /**
  * Enqueues scripts and styles required for show schedule page.
  *
@@ -59,12 +77,15 @@ function gmr_add_show_schedule() {
 	}
 
 	$date += $data['time'];
-
 	if ( $data['repeat'] ) {
-		wp_schedule_event( $date, 'hourly', 'gmr_show_schdeule', array( $show->ID, $date ) );
+		wp_schedule_event( $date, 'weekly', 'gmr_show_schdeule', $data );
 	} else {
-		wp_schedule_single_event( $date, 'gmr_show_schdeule', array( $show->ID, $date ) );
+		wp_schedule_single_event( $date, 'gmr_show_schdeule', $data );
 	}
+
+	$cookie_path = parse_url( admin_url( '/' ), PHP_URL_PATH );
+	setcookie( 'gmr_show_id', $show->ID, 0, $cookie_path );
+	setcookie( 'gmr_show_time', $data['time'], 0, $cookie_path );
 	
 	wp_redirect( wp_get_referer() );
 	exit;
@@ -78,16 +99,15 @@ function gmr_add_show_schedule() {
 function gmr_delete_show_schedule() {
 	check_admin_referer( 'gmr_delete_show_schedule' );
 
-	$args = array_values( filter_input_array( INPUT_GET, array(
-		'show' => FILTER_VALIDATE_INT,
-		'ts'   => FILTER_VALIDATE_INT,
-	) ) );
+	$crons = _get_cron_array();
+	$next_run = filter_input( INPUT_GET, 'next' );
+	$sig = filter_input( INPUT_GET, 'sig' );
 
-	$next_run = wp_next_scheduled( 'gmr_show_schdeule', $args );
-	if ( ! $next_run ) {
+	if( ! isset( $crons[$next_run]['gmr_show_schdeule'][$sig] ) ) {
 		wp_die( 'Show schedule has not been found.' );
 	}
 
+	$args = $crons[$next_run]['gmr_show_schdeule'][$sig]['args'];
 	wp_unschedule_event( $next_run, 'gmr_show_schdeule', $args );
 
 	wp_redirect( wp_get_referer() );
@@ -98,6 +118,9 @@ function gmr_delete_show_schedule() {
  * Renders show schedule page.
  */
 function gmrs_render_schedule_page() {
+	$active_show = isset( $_COOKIE['gmr_show_id'] ) ? $_COOKIE['gmr_show_id'] : false;
+	$active_time = isset( $_COOKIE['gmr_show_time'] ) ? $_COOKIE['gmr_show_time'] : false;
+	
 	$events = gmr_get_scheduled_events();
 	$precision = 0.5; // 1 - each hour, 0.5 - each 30 mins, 0.25 - each 15 mins
 
@@ -124,21 +147,25 @@ function gmrs_render_schedule_page() {
 			<select name="show">
 				<?php while ( $shows->have_posts() ) : ?>
 					<?php $show = $shows->next_post(); ?>
-					<option value="<?php echo esc_attr( $show->ID ); ?>"><?php echo esc_html( $show->post_title ); ?></option>
+					<option value="<?php echo esc_attr( $show->ID ); ?>"<?php selected( $show->ID, $active_show ); ?>>
+						<?php echo esc_html( $show->post_title ); ?>
+					</option>
 				<?php endwhile; ?>
 			</select>
 			show, which occurs
 			<select name="repeat">
-				<option value="0">once, this week only</option>
 				<option value="1">every week at this time</option>
+				<option value="0">once, this week only</option>
 			</select>
 			and starts from
 			<input type="text" id="start-from-date" value="<?php echo date( 'M d, Y' ); ?>" required>
 			at
 			<select name="time">
-				<?php for ( $i = 0, $count = 24 / $precision; $i < $count ; $i++ ) : ?>
+				<?php for ( $i = 0, $count = 24 / $precision; $i < $count; $i++ ) : ?>
 					<?php $time = HOUR_IN_SECONDS * $precision * $i; ?>
-					<option value="<?php echo $time; ?>"><?php echo date( 'h:i A', $time ); ?></option>
+					<option value="<?php echo $time; ?>"<?php selected( $time, $active_time ); ?>>
+						<?php echo date( 'h:i A', $time ); ?>
+					</option>
 				<?php endfor; ?>
 			</select>
 		</form>
@@ -168,7 +195,7 @@ function gmrs_render_schedule_page() {
 							<td>
 								<a href="#">Shift</a>
 								
-								<?php $delete_url = add_query_arg( array_combine( array( 'show', 'ts' ), $event->args ), 'admin.php?action=gmr_delete_show_schedule' ); ?>
+								<?php $delete_url = add_query_arg( array( 'sig' => $event->sig, 'next' => $event->next_run ), 'admin.php?action=gmr_delete_show_schedule' ); ?>
 								<a href="<?php echo esc_url( wp_nonce_url( $delete_url, 'gmr_delete_show_schedule' ) ) ?>" onclick="return showNotice.warn();">Delete</a>
 							</td>
 						</tr>
@@ -203,6 +230,7 @@ function gmr_get_scheduled_events() {
 					$events["$hook-$sig"] = (object) array(
 						'hook'     => $hook,
 						'time'     => date( DATE_ISO8601, $time - get_option( 'gmt_offset' ) * HOUR_IN_SECONDS ),
+						'next_run' => $time,
 						'sig'      => $sig,
 						'args'     => $data['args'],
 						'schedule' => $data['schedule'],
