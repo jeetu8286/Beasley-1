@@ -17,6 +17,12 @@ module.exports = function( grunt ) {
 					'assets/js/src/greater_media_personalities.js'
 				],
 				dest: 'assets/js/greater_media_personalities.js'
+			},
+			greater_media_personalities_admin: {
+				src: [
+					'assets/js/src/greater_media_personalities_admin.js'
+				],
+				dest: 'assets/js/greater_media_personalities_admin.js'
 			}
 		},
 		jshint: {
@@ -38,14 +44,18 @@ module.exports = function( grunt ) {
 				eqnull:  true,
 				globals: {
 					exports: true,
-					module:  false
+					module:  false,
+					jQuery:  true,
+					browser: true,
+					devel:   true
 				}
 			}
 		},
 		uglify: {
 			all: {
 				files: {
-					'assets/js/greater_media_personalities.min.js': ['assets/js/greater_media_personalities.js']
+					'assets/js/greater_media_personalities.min.js': ['assets/js/greater_media_personalities.js'],
+					'assets/js/greater_media_personalities_admin.min.js': ['assets/js/greater_media_personalities_admin.js']
 				},
 				options: {
 					banner: '/*! <%= pkg.title %> - v<%= pkg.version %>\n' +
