@@ -75,12 +75,7 @@ class AccountsSearcher {
 	 * @return GSRequest
 	 */
 	public function request_for( $method, $query ) {
-		$request = new \GSRequest(
-			GMR_GIGYA_API_KEY,
-			GMR_GIGYA_SECRET_KEY,
-			$method
-		);
-
+		$request = new GigyaRequest( null, null, $method );
 		$request->setParam( 'query',  $query );
 
 		return $request;
