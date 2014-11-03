@@ -17,7 +17,7 @@
 	@include size(60px 60px);
 	@include margin(null .5em null null);
 	display: inline-block;
-	background-color: palette(gray, dark);
+	background-color: color(primary-border);
 }
 
 .personality-attr--link_facebook {
