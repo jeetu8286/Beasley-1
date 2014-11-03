@@ -26,11 +26,11 @@
 	var breakingNews = $('#breaking-news-banner');
 
 	function livePlayerHeight() {
-		var height = pageWrap.height();
+		var pageHeight = pageWrap.height();
 		var headerHeight = header.height();
 		var bnHeight = breakingNews.height();
 		livePlayer.css( {"top": headerHeight + bnHeight + "px" } );
-		livePlayer.css( {"height": height - headerHeight - bnHeight + "px" } );
+		livePlayer.css( {"height": pageHeight - headerHeight - bnHeight + "px" } );
 	}
 
 	$window.on('resize', livePlayerHeight);
