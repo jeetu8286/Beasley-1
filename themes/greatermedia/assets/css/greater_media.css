@@ -842,7 +842,6 @@ p {
 
 .header {
   position: relative;
-  height: 80px;
   width: 100%;
   padding: 0.625em 0;
   border-bottom-color: #3b383a;
@@ -2043,6 +2042,13 @@ pre {
     color: #ffffff; }
   .featured-content--btn:last-of-type {
     margin-right: 0; }
+
+.leaderboard {
+  position: relative;
+  padding: 1.25em 0; }
+
+.leaderboard img {
+  margin: 0 auto; }
 
 .personality-attr--name {
   position: absolute;

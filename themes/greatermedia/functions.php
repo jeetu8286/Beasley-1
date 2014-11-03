@@ -133,7 +133,7 @@ function greatermedia_scripts_styles() {
 		wp_enqueue_script(
 			'greatermedia',
 			get_template_directory_uri() . "/assets/js/greater_media{$postfix}.js",
-			array(),
+			array('jquery'),
 			GREATERMEDIA_VERSION,
 			true
 		);
