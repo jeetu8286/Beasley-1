@@ -86,10 +86,9 @@ jQuery(function () {
 
 	var livePlayerListen = jQuery('#live-player--listen_now'), // targets the `Listen Live` button
 		livePlayerTest = jQuery('.live-player--test'), // targets the div that contains the test toggle
+		livePlayerLabel = jQuery('.live-player--test_label'),
 		livePlayerSwitch = jQuery('.live-player--test_audio'), // targets the actual toggle so we can bind a click to it
-		livePlayer = jQuery('.gm-liveplayer'), // targets the live player
-		register = jQuery('#register-button'), // targets the register link
-		logInBtn = jQuery('#login-button'); // targets the login link
+		livePlayer = jQuery('.gm-liveplayer'); // targets the live player
 
 	function listenLive() {
 		/**
@@ -98,8 +97,7 @@ jQuery(function () {
 		 * and change the state
 		 */
 		livePlayerListen.css('visibility', 'visible');
-		register.css('visibility', 'visible');
-		logInBtn.css('visibility', 'visible');
+		livePlayerLabel.css('color', '#ffffff');
 
 		/**
 		 * This statement will check if a the user has authenticated with Gigya.
@@ -117,18 +115,10 @@ jQuery(function () {
 			livePlayer.css('display', 'block');
 			livePlayerListen.css('visibility', 'hidden');
 			livePlayerTest.css('visibility', 'visible');
-			register.css('visibility', 'hidden');
-			logInBtn.text('Logout');
-			logInBtn.addClass('logged-in');
-			logInBtn.removeClass('logged-out');
 		} else {
 			livePlayerListen.css('visibility', 'visible');
 			livePlayerTest.css('visibility', 'hidden');
 			livePlayer.css('display', 'none');
-			register.css('visibility', 'visible');
-			logInBtn.text('LogIn');
-			logInBtn.removeClass('logged-in');
-			logInBtn.addClass('logged-out');
 		}
 
 		/**
@@ -166,18 +156,10 @@ jQuery(function () {
 				livePlayer.css('display', 'block');
 				livePlayerListen.css('visibility', 'hidden');
 				livePlayerTest.css('visibility', 'visible');
-				logInBtn.text('Logout');
-				logInBtn.addClass('logged-in');
-				logInBtn.removeClass('logged-out');
-				register.css('visibility', 'hidden');
 			} else {
 				livePlayer.css('display', 'none');
 				livePlayerListen.css('visibility', 'visible');
 				livePlayerTest.css('visibility', 'hidden');
-				logInBtn.text('Login');
-				logInBtn.removeClass('logged-in');
-				logInBtn.addClass('logged-out');
-				register.css('visibility', 'visible');
 			}
 
 			if (livePlayerSwitch.is(':checked')) {
