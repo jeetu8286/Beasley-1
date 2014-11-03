@@ -36,6 +36,7 @@ class Plugin {
 	public function enable() {
 		add_action( 'init', array( $this, 'initialize' ) );
 		add_action( 'admin_init', array( $this, 'initialize_admin' ) );
+		add_action( 'admin_menu', array( $this, 'initialize_admin_menu' ) );
 	}
 
 	/**
@@ -77,6 +78,11 @@ class Plugin {
 		$form_entry_publisher->enable();
 	}
 
+	public function initialize_admin_menu() {
+		$settings_page = new SettingsPage();
+		$settings_page->register();
+	}
+
 	/**
 	 * Registers the ajax handlers for this plugin.
 	 *
@@ -92,6 +98,7 @@ class Plugin {
 		$handlers[] = new Ajax\RegisterAjaxHandler();
 		$handlers[] = new Ajax\ListEntryTypesAjaxHandler();
 		$handlers[] = new Ajax\ListEntryFieldsAjaxHandler();
+		$handlers[] = new Ajax\ChangeGigyaSettingsAjaxHandler();
 
 		foreach ( $handlers as $handler ) {
 			$handler->register();
