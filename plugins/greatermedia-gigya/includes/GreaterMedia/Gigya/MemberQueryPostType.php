@@ -152,6 +152,7 @@ class MemberQueryPostType {
 			'show_ui'            => true,
 			'show_in_menu'       => true,
 			'query_var'          => false,
+			'can_export'         => true,
 			'rewrite'            => false,
 			'capability_type'    => 'page',
 			'has_archive'        => false,

@@ -9,6 +9,9 @@
 // constants
 define( 'GMR_LIVE_LINK_CPT', 'gmr-live-link' );
 
+// load widget
+require_once 'greatermedia-live-link-widget.php';
+
 // action hooks
 add_action( 'init', 'gmr_ll_register_post_type', PHP_INT_MAX );
 add_action( 'save_post', 'gmr_ll_save_redirect_meta_box_data' );
@@ -16,11 +19,21 @@ add_action( 'manage_' . GMR_LIVE_LINK_CPT . '_posts_custom_column', 'gmr_ll_rend
 add_action( 'admin_action_gmr_ll_copy', 'gmr_ll_handle_copy_post_to_live_link' );
 add_action( 'gmr_quickpost_submitbox_misc_actions', 'gmr_ll_add_quickpost_checkbox' );
 add_action( 'gmr_quickpost_post_created', 'gmr_ll_create_quickpost_live_link' );
+add_action( 'widgets_init', 'gmr_ll_register_widgets' );
 
 // filter hooks
 add_filter( 'manage_' . GMR_LIVE_LINK_CPT . '_posts_columns', 'gmr_ll_filter_columns_list' );
 add_filter( 'post_row_actions', 'gmr_ll_add_post_action', 10, 2 );
 add_filter( 'page_row_actions', 'gmr_ll_add_post_action', 10, 2 );
+
+/**
+ * Registers live link widgets.
+ *
+ * @action widgets_init
+ */
+function gmr_ll_register_widgets() {
+	register_widget( 'GMR_Live_Link_Widget' );
+}
 
 /**
  * Adds checkbox to create live link to quickpost popup form.

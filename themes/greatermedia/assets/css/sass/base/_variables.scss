@@ -9,25 +9,23 @@ $_color_base_gray: #a7a9ab;
 //
 // @type String
 //
-$palettes: (
-	default: (
-		base: #ffffff,
-		black: #000000,
-		red: #d32329,
-		gray: #221f1f,
-		dark: #1c1c1f,
-		darker: #131415,
-		featured-heading: #270e10,
-		featured-list: #f7ef7e,
-		title: #a6a8ab,
-	),
-	gray: (
-		base: $_color_base_gray,
-		light: lighten($_color_base_gray, 10%),
-		soft: #939597,
-		medium: #3b383a,
-		dark: #414141,
-	)
+$colors: (
+	primary-bg: #ffffff,
+	primary-text: #000000,
+	primary-link: #d22228,
+	primary-heading: #58595b,
+	primary-border: #d0d2d3,
+	secondary-bg: #000000,
+	secondary-text: #404041,
+	secondary-link: #ffffff,
+	tertiary-bg: #561015,
+	featured-bg: #58595b,
+	featured-heading: #ffffff,
+	featured-heading-bg: #270e10,
+	featured-text: #a6a8ab,
+	featured-list: #f7ef7e,
+	btn-bg: #d22228,
+	btn-text: #ffffff,
 );
 
 // Variables for site wide usage
@@ -35,15 +33,12 @@ $palettes: (
 // @author Allen Moore
 // @since 0.1.0
 //
-$text-color: palette(default, black);
+$text-color: color(primary-text);
 
-$link-color: palette(default, red);
-$link-hover: palette(gray);
+$link-color: color(primary-link);
+$link-hover: darken(color(primary-link), 10%);
 
-$border-color: palette(gray, light);
-$dark-border-color: palette(gray, dark);
-
-$nav-link-color: palette(default);
+$border-color: color(primary-border);
 
 /*********************
 Misc

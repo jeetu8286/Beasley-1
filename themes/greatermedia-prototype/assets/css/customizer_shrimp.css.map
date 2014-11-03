@@ -1,7 +1,0 @@
-{
-"version": 3,
-"mappings": "AAAA,IAAK;EACJ,UAAU,EAAE,OAAO",
-"sources": ["sass/customizer_shrimp.scss"],
-"names": [],
-"file": "customizer_shrimp.css"
-}

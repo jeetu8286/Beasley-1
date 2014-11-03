@@ -1,0 +1,80 @@
+#schedule-form {
+	margin: 2em 0;
+	padding: 1em 0.5em 0.5em 1em;
+	border: 1px solid #ccc;
+	background-color: white;
+
+	@include clearfix;
+
+	#start-from-date {
+		width: 100px;
+	}
+
+	select,
+	input[type="text"],
+	input[type="submit"] {
+		margin-top: -3px;
+	}
+
+	select,
+	input[type="text"] {
+		box-shadow: none;
+		border: 0;
+		border-bottom: 1px dashed #ccc;
+		font-weight: bold;
+	}
+
+	input[type="submit"] {
+		float: right;
+	}
+}
+
+#schedule-table {
+	$table-border-color: #dfdfdf;
+
+	width: 100%;
+    border-spacing: 0;
+    border-collapse: collapse;
+	border: 1px solid $table-border-color;
+	background-color: white;
+
+	th {
+		padding: 5px 10px;
+	}
+
+	td {
+		text-align: left;
+		vertical-align: top;
+		width: 14.285714286%;
+		font-size: 12px;
+		line-height: 18px;
+
+		> div {
+			padding: 5px 10px;
+			cursor: pointer;
+			border-top: 2px solid transparent;
+			overflow: hidden;
+
+			@include box-sizing(border-box);
+
+			> div:first-child {
+				@include clearfix;
+
+				small {
+					font-size: 10px;
+					line-height: 15px;
+					float: right;
+				}
+			}
+		}
+	}
+
+	a {
+		text-decoration: none;
+		margin-right: 2em;
+	}
+
+	thead th {
+		border-bottom: 2px solid $table-border-color;
+	}
+}

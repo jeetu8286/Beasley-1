@@ -1,11 +1,11 @@
 .header{
 	@include position(relative, null null null null);
-	@include size(100% 80px);
+	@include size(100% 100%);
 	@include padding(em(10px) 0);
-	@include border-color(null null palette(gray, medium) null);
+	@include border-color(null null color(primary-border) null);
 	@include border-style(null null solid null);
 	@include border-width(null null 1px null);
-	background-color: palette(default, dark);
+	background-color: color(secondary-bg);
 }
 
 .header-logo{
@@ -13,7 +13,6 @@
 	@include omega;
 	@include size(null 60px);
 	line-height: 1;
-	color: palette(default);
 	@include bp(large) {
 		@include span-columns(1);
 	}
