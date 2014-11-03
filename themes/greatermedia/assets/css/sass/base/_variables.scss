@@ -9,45 +9,23 @@ $_color_base_gray: #a7a9ab;
 //
 // @type String
 //
-$palettes: (
-	default: (
-		body-bg: #ffffff,
-		body-text: #58595b,
-		header-bg: #000000,
-		header-text: #ffffff,
-		liveplayer-bg: #000000,
-		liveplayer-text: #404041,
-		liveplayer-link: #d22228,
-		featured-bg: #58595b,
-		featured-heading: #ffffff,
-		featured-heading-bg: #270e10,
-		featured-text: #a6a8ab,
-		featured-list: #f7ef7e,
-		highlights-bg: #561015,
-		highlights-text: #404041,
-		article-heading: #58595b,
-		article-meta: #404041,
-		btn-bg: #d22228,
-		btn-text: #ffffff,
-		link: #d22228,
-		link-hover: #404041,
-		border: #231f20,
-		section-heading: #404041,
-		base: #ffffff,
-		black: #000000,
-		red: #d32329,
-		gray: #221f1f,
-		dark: #1c1c1f,
-		darker: #131415,
-		title: #a6a8ab,
-	),
-	gray: (
-		base: $_color_base_gray,
-		light: lighten($_color_base_gray, 10%),
-		soft: #939597,
-		medium: #3b383a,
-		dark: #414141,
-	)
+$colors: (
+	primary-bg: #ffffff,
+	primary-text: #000000,
+	primary-link: #d22228,
+	primary-heading: #58595b,
+	primary-border: #d0d2d3,
+	secondary-bg: #000000,
+	secondary-text: #404041,
+	secondary-link: #ffffff,
+	tertiary-bg: #561015,
+	featured-bg: #58595b,
+	featured-heading: #ffffff,
+	featured-heading-bg: #270e10,
+	featured-text: #a6a8ab,
+	featured-list: #f7ef7e,
+	btn-bg: #d22228,
+	btn-text: #ffffff,
 );
 
 // Variables for site wide usage
@@ -55,14 +33,12 @@ $palettes: (
 // @author Allen Moore
 // @since 0.1.0
 //
-$text-color: palette(default, body-text);
+$text-color: color(primary-text);
 
-$link-color: palette(default, link);
-$link-hover: palette(default, link-hover);
+$link-color: color(primary-link);
+$link-hover: darken(color(primary-link), 10%);
 
-$border-color: palette(default, border);
-
-$nav-link-color: palette(default, header-text);
+$border-color: color(primary-border);
 
 /*********************
 Misc

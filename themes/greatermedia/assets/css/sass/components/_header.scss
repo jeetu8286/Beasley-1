@@ -2,10 +2,10 @@
 	@include position(relative, null null null null);
 	@include size(100% 80px);
 	@include padding(em(10px) 0);
-	@include border-color(null null palette(default, border) null);
+	@include border-color(null null color(primary-border) null);
 	@include border-style(null null solid null);
 	@include border-width(null null 1px null);
-	background-color: palette(default, header-bg);
+	background-color: color(secondary-bg);
 }
 
 .header-logo{

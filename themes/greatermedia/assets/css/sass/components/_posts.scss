@@ -46,7 +46,7 @@
 
 //  Read More Button
 .read-more--btn{
-	@include btn(default, red, base, 1em, 1.5em, em(14px));
+	@include btn(btn-bg, btn-text, 1em, 1.5em, em(14px));
 }
 
 // Entry Footer
@@ -54,7 +54,7 @@
 	@include span-columns(4);
 	@include padding(em(5px) 0);
 	@include margin(2em null 3em);
-	@include border-color(palette(gray, light) null palette(gray, light) null);
+	@include border-color(color(primary-border) null color(primary-border) null);
 	@include border-style(solid null solid null);
 	@include border-width(1px null 1px null);
 	@include bp(small) {
@@ -72,7 +72,6 @@
 .entry-author {
 	@include span-columns(1);
 	font-size: ms(-3);
-	color: palette(gray);
 	@include bp(small) {
 		@include span-columns(1);
 	}
@@ -91,7 +90,6 @@
 	@include border-right-radius(50%);
 	@include border-bottom-radius(50%);
 	@include border-left-radius(50%);
-	background-color: palette(gray, light);
 }
 
 .entry-author--img img {
@@ -116,7 +114,6 @@
 .entry-type {
 	@include span-columns(2);
 	@include padding(.75em null);
-	color: palette(gray, dark);
 	text-align: center;
 	@include bp(small) {
 		@include span-columns(4);
@@ -140,7 +137,6 @@
 	@include size(0 0);
 	font-family: dashicons;
 	font-size: ms(0);
-	color: palette(default, red);
 }
 
 .entry-type--gallery, .entry-type--link, .entry-type--image, .entry-type--video, .entry-type--audio, .entry-type--standard {
@@ -198,7 +194,6 @@
 .entry-comments {
 	@include span-columns(1);
 	@include padding(8px 0);
-	color: palette(gray);
 	@include bp(small) {
 		@include span-columns(1);
 	}
@@ -226,37 +221,37 @@
 	@include border-right-radius(3px);
 	@include border-bottom-radius(3px);
 	@include border-left-radius(3px);
-	background-color: palette(gray, light);
-	color: palette(default);
+	background-color: color(primary-border);
+	color: color(secondary-link);
 }
 
 .entry-comments--count a:link:after, .entry-comments--count a:visited:after {
 	@include position(absolute, null null -8px 3px);
-	@include arrow(top-left, palette(gray, light), 8px, 10px);
+	@include arrow(top-left, color(primary-border), 8px, 10px);
 	content: " ";
 }
 
 .entry-comments--count a:hover, .entry-comments--count a:focus {
 	@include display(block);
-	background-color: palette(default, red);
-	color: palette(default);
+	background-color: color(primary-link);
+	color: color(primary-text);
 }
 
 .entry-comments--count a:hover:after, .entry-comments--count a:focus:after {
 	@include position(absolute, null null -8px 3px);
-	@include arrow(top-left, palette(default, red), 8px, 10px);
+	@include arrow(top-left, color(primary-link), 8px, 10px);
 	content: " ";
 }
 
 .entry-comments--count a:active {
 	@include display(block);
-	background-color: palette(default, black);
-	color: palette(default);
+	background-color: color(secondary-bg);
+	color: color(secondary-link);
 }
 
 .entry-comments--count a:active:after{
 	@include position(absolute, null null -8px 3px);
-	@include arrow(top-left, palette(default, black), 8px, 10px);
+	@include arrow(top-left, color(secondary-bg), 8px, 10px);
 	content: " ";
 }
 
@@ -423,25 +418,16 @@
 blockquote {
 	@include padding(em(8px) em(10px));
 	@include margin(em(24px) em(10px));
-	@include border-color(null null null palette(gray));
+	@include border-color(null null nullcolor(primary-border));
 	@include border-style(null null null solid);
 	@include border-width(null null null em(10px));
 	quotes: "\201C""\201D""\2018""\2019";
 }
 
-blockquote:before {
-	@include margin(null em(4px) null null);
-	color: palette(gray, light);
-	content: open-quote;
-	font-size: ms(12);
-	line-height: 0.1em;
-	vertical-align: em(-4px);
-}
-
 blockquote p {
 	display: inline;
 	font-style: italic;
-	color: palette(gray, dark);
+	color: color(secondary-text);
 }
 
 // WordPress Styles
@@ -470,23 +456,11 @@ blockquote p {
 	@include size(null auto);
 }
 
-pre {
-	@include padding(em(24px));
-	@include margin(0 0 em(24px));
-	@include border-top-radius(em(4px));
-	@include border-right-radius(em(4px));
-	@include border-bottom-radius(em(4px));
-	@include border-left-radius(em(4px));
-	background: palette(gray, light);
-	color: palette(default, black);
-	font-size: ms(-1);
-}
-
 .wp-caption {
 	max-width: 100%;
 	@include padding(0);
 	@include margin(0 0 em(16px));
-	background: palette(gray, light);
+	background: color(primary-border);
 }
 
 .wp-caption img {
