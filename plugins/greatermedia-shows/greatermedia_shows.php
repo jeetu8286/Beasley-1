@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name: GreaterMedia Shows
- * Plugin URI:  http://wordpress.org/plugins
+ * Plugin URI:  http://wordpress.org/plugins/
  * Description: GreaterMedia Shows Plugin
- * Version:     0.0.1
+ * Version:     1.0.0
  * Author:      10up
- * Author URI:  http://10up.com
+ * Author URI:  http://10up.com/
  */
 
 /**
@@ -19,7 +19,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 // Useful global constants
-define( 'GMEDIA_SHOWS_VERSION', '0.0.1' );
+define( 'GMEDIA_SHOWS_VERSION', '1.0.0' );
 define( 'GMEDIA_SHOWS_URL',     plugin_dir_url( __FILE__ ) );
 define( 'GMEDIA_SHOWS_PATH',    dirname( __FILE__ ) . '/' );
 
