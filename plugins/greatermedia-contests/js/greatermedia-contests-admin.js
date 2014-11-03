@@ -36,7 +36,9 @@ document.addEventListener(
 		var supported_input_types = supported_input_types();
 
 		/**
-		 * Adapted from Modernizr
+		 * Generate a list of supported input types (text, date, range, etc.).
+		 * Adapted from Modernizr, which is MIT licensed
+		 * @see http://modernizr.com/
 		 */
 		function supported_input_types() {
 
@@ -79,10 +81,13 @@ document.addEventListener(
 
 					inputs[props[i]] = !!bool;
 				}
+
 				return inputs;
+
 			})('search tel url email datetime date month week time datetime-local number range color'.split(' '));
 		}
 
+		// Add datepickers for start & end dates if not supported natively
 		if (!supported_input_types.hasOwnProperty('date') || false === supported_input_types.date) {
 			jQuery('#greatermedia_contest_start').add('#greatermedia_contest_end').datetimepicker(
 				{
