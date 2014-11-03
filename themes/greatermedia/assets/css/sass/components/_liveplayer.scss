@@ -4,6 +4,10 @@
  * Admins can choose the location of the player. A class is added to the body that will match the locations below.
  */
 
+.live-player.fixed {
+	@include position(fixed, 0 null null null);
+}
+
 .live-player--container {
 	min-height: 70px;
 	@include padding(1em 0);

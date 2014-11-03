@@ -74,16 +74,16 @@ img {
 }
 
 .live-player{
-	@include position(absolute, 117px 0 null null);
+	@include position(absolute, null 0 null null);
 	@include padding(2em null);
 	display: none;
 	background-color: color(secondary-bg);
 	@include bp(large){
-		@include display(block);
 		@include span-columns(2);
 		@include size(null 100%);
 		@include omega;
 		@include box-sizing(border-box);
 		color: color(secondary-text);
+		overflow: auto;
 	}
 }

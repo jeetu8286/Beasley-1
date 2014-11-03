@@ -9,32 +9,26 @@
 
 	var body = document.querySelector('body');
 	var mobileNavButton = document.querySelector('.mobile-nav--toggle');
+	var header = document.querySelector(".header");
+	var headroom = new Headroom(header, {
+		"offset": 100,
+		"tolerance": {
+			"up": 0,
+			"down": 0
+		},
+		"classes": {
+			"initial": "animated",
+			"pinned": "slideDown",
+			"unpinned": "slideUp"
+		}
+	});
+
+	headroom.init();
+
+	headroom.destroy();
 
 	mobileNavButton.onclick = function () {
 		body.classList.toggle('mobile-nav--open');
 	};
 
 })();
-
-(function ($) {
-	"use strict";
-
-	var $window = $(window);
-	var pageWrap = $('#page-wrap');
-	var livePlayer = $('.live-player');
-	var header = $('.header');
-	var breakingNews = $('#breaking-news-banner');
-
-	function livePlayerHeight() {
-		var pageHeight = pageWrap.height();
-		var headerHeight = header.height();
-		var bnHeight = breakingNews.height();
-		livePlayer.css( {"top": headerHeight + bnHeight + "px" } );
-		livePlayer.css( {"height": pageHeight - headerHeight - bnHeight + "px" } );
-	}
-
-	$window.on('resize', livePlayerHeight);
-
-	setTimeout(livePlayerHeight, 1000);
-
-}(jQuery) );

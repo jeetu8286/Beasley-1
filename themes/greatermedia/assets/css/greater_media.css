@@ -516,7 +516,6 @@ img {
 
 .live-player {
   position: absolute;
-  top: 117px;
   right: 0;
   padding-top: 2em;
   padding-bottom: 2em;
@@ -524,7 +523,6 @@ img {
   background-color: #000000; }
   @media screen and (min-width: 1024px) {
     .live-player {
-      display: block;
       float: left;
       display: block;
       margin-right: 2.35765%;
@@ -534,7 +532,8 @@ img {
       -webkit-box-sizing: border-box;
       -moz-box-sizing: border-box;
       box-sizing: border-box;
-      color: #404041; }
+      color: #404041;
+      overflow: auto; }
       .live-player:last-child {
         margin-right: 0; } }
 
@@ -1616,6 +1615,10 @@ blockquote p {
  *
  * Admins can choose the location of the player. A class is added to the body that will match the locations below.
  */
+.live-player.fixed {
+  position: fixed;
+  top: 0; }
+
 .live-player--container {
   min-height: 70px;
   padding: 1em 0;
