@@ -27,6 +27,8 @@ class ChangeGigyaSettingsAjaxHandler extends AjaxHandler {
 	}
 
 	public function check_gigya_credentials( $api_key, $secret_key ) {
+		// Not using GigyaRequest here because we want to test the
+		// specified credentials, not the saved ones
 		$request = new \GSRequest(
 			$api_key,
 			$secret_key,

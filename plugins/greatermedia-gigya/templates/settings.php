@@ -8,7 +8,7 @@
 	<h3 class="title">Gigya Settings</h3>
 	<?php wp_nonce_field( 'change_gigya_settings', 'change_gigya_settings_nonce', false, true ) ?>
 
-	<table class="form-table permalink-structure">
+	<table class="form-table">
 		<tbody>
 			<tr>
 				<th scope="row"><label for="gigya_api_key">API Key</label></th>
