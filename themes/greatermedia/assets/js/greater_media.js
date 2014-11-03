@@ -19,17 +19,15 @@
 	var $window = $(window);
 	var pageWrap = $('#page-wrap');
 	var livePlayer = $('.live-player');
-	var wpAdminBar = $('#wpadminbar');
 	var header = $('.header');
 	var breakingNews = $('#breaking-news-banner');
 
 	function livePlayerHeight() {
 		var pageHeight = pageWrap.height();
-		var adminBarHeight = wpAdminBar.height();
 		var headerHeight = header.height();
 		var bnHeight = breakingNews.height();
-		livePlayer.css( {"top": adminBarHeight + headerHeight + bnHeight + "px" } );
-		livePlayer.css( {"height": pageHeight - adminBarHeight - headerHeight - bnHeight + "px" } );
+		livePlayer.css( {"top": headerHeight + bnHeight + "px" } );
+		livePlayer.css( {"height": pageHeight - headerHeight - bnHeight + "px" } );
 	}
 
 	$window.on('resize', livePlayerHeight);
