@@ -111,6 +111,7 @@ function gmrs_add_show_schedule() {
 	$cookie_path = parse_url( admin_url( '/' ), PHP_URL_PATH );
 	setcookie( 'gmr_show_id', $show->ID, 0, $cookie_path );
 	setcookie( 'gmr_show_time', $data['time'], 0, $cookie_path );
+	setcookie( 'gmr_show_date', $date, 0, $cookie_path );
 	
 	wp_redirect( wp_get_referer() );
 	exit;
@@ -145,9 +146,13 @@ function gmrs_delete_show_schedule() {
 function gmrs_render_schedule_page() {
 	$active_show = isset( $_COOKIE['gmr_show_id'] ) ? $_COOKIE['gmr_show_id'] : false;
 	$active_time = isset( $_COOKIE['gmr_show_time'] ) ? $_COOKIE['gmr_show_time'] : false;
+	$active_date = date( 'M j, Y', isset( $_COOKIE['gmr_show_date'] ) ? $_COOKIE['gmr_show_date'] : time() );
 	
 	$events = gmrs_get_scheduled_events();
 	$precision = 0.5; // 1 - each hour, 0.5 - each 30 mins, 0.25 - each 15 mins
+
+	$days = array();
+	$start = current( get_weekstartend( date( DATE_ISO8601 ) ) );
 
 	$shows = new WP_Query( array(
 		'post_type'           => ShowsCPT::CPT_SLUG,
@@ -164,7 +169,7 @@ function gmrs_render_schedule_page() {
 		<form id="schedule-form" action="admin.php" method="post">
 			<?php wp_nonce_field( 'gmr_add_show_schedule' ); ?>
 			<input type="hidden" name="action" value="gmr_add_show_schedule">
-			<input type="hidden" id="start-from-date-value" name="date" value="<?php echo date( 'Y-m-d' ); ?>">
+			<input type="hidden" id="start-from-date-value" name="date" value="<?php echo $active_date; ?>">
 
 			<input type="submit" class="button button-primary" value="Add to the schedule">
 
@@ -183,7 +188,7 @@ function gmrs_render_schedule_page() {
 				<option value="0">once, this week only</option>
 			</select>
 			and starts from
-			<input type="text" id="start-from-date" value="<?php echo date( 'M d, Y' ); ?>" required>
+			<input type="text" id="start-from-date" value="<?php echo $active_date; ?>" required>
 			at
 			<select name="time">
 				<?php for ( $i = 0, $count = 24 / $precision; $i < $count; $i++ ) : ?>
@@ -198,38 +203,35 @@ function gmrs_render_schedule_page() {
 		<table id="schedule-table">
 			<thead>
 				<tr>
-					<th>Show</th>
-					<th>Time</th>
-					<th>Day</th>
-					<th>Next Run</th>
-					<th>Recurrence</th>
-					<th>Actions</th>
+					<?php for ( $i = 0; $i < 7; $i++, $start += DAY_IN_SECONDS ) : ?>
+						<?php $days[] = date( 'N', $start ); ?>
+						<th><?php echo date( 'l', $start ); ?></th>
+					<?php endfor; ?>
 				</tr>
 			</thead>
 			<tbody>
-				<?php if ( ! empty( $events ) ) : ?>
-					<?php foreach ( $events as $event ) : ?>
-						<tr>
-							<td>
-								<?php echo esc_html( $event->show->post_title ); ?>
-							</td>
-							<td><?php echo get_date_from_gmt( $event->time, 'h:i A' ) ?></td>
-							<td><?php echo get_date_from_gmt( $event->time, 'l' ) ?></td>
-							<td><?php echo get_date_from_gmt( $event->time, 'F j, Y' ) ?></td>
-							<td><?php echo $event->schedule ? 'Weekly' : 'Non-repeating'; ?></td>
-							<td>
-								<a href="#">Shift</a>
-								
-								<?php $delete_url = add_query_arg( array( 'sig' => $event->sig, 'next' => $event->next_run ), 'admin.php?action=gmr_delete_show_schedule' ); ?>
-								<a href="<?php echo esc_url( wp_nonce_url( $delete_url, 'gmr_delete_show_schedule' ) ) ?>" onclick="return showNotice.warn();">Delete</a>
-							</td>
-						</tr>
-					<?php endforeach; ?>
-				<?php else : ?>
 				<tr>
-					<td colspan="6"><i>No events were scheduled.</i></td>
+					<?php foreach ( $days as $day ) : ?>
+						<td>
+							<?php if ( ! empty( $events[ $day ] ) ) : ?>
+								<?php foreach ( $events[ $day ] as $event ) : ?>
+									<div class="show-<?php echo esc_attr( $event->show->ID ); ?>"
+										 style="background-color:<?php echo gmrs_show_color( $event->show->ID, 0.15 ) ?>;border-color:<?php echo gmrs_show_color( $event->show->ID, 0.75 ) ?>;"
+										 data-hover-color="<?php echo gmrs_show_color( $event->show->ID, 0.6 ) ?>">
+										
+										<div><b><?php echo esc_html( $event->show->post_title ); ?></b></div>
+										<small><?php echo get_date_from_gmt( $event->time, 'h:i A' ) ?></small>
+
+										<div>
+											<?php $delete_url = add_query_arg( array( 'sig' => $event->sig, 'next' => $event->next_run ), 'admin.php?action=gmr_delete_show_schedule' ); ?>
+											<a href="<?php echo esc_url( wp_nonce_url( $delete_url, 'gmr_delete_show_schedule' ) ) ?>" onclick="return showNotice.warn();">Delete</a>
+										</div>
+									</div>
+								<?php endforeach; ?>
+							<?php endif; ?>
+						</td>
+					<?php endforeach; ?>
 				</tr>
-				<?php endif; ?>
 			</tbody>
 		</table>
 	</div><?php
@@ -251,10 +253,16 @@ function gmrs_get_scheduled_events() {
 					if ( ! $show ) {
 						continue;
 					}
+
+					$time_tz = $time + get_option( 'gmt_offset' ) * HOUR_IN_SECONDS;
+					$dayofweek = date( 'N', $time_tz );
+					if ( ! isset( $events[ $dayofweek ] ) ) {
+						$events[ $dayofweek ] = array();
+					}
 					
-					$events["$hook-$sig"] = (object) array(
+					$events[ $dayofweek ][] = (object) array(
 						'hook'     => $hook,
-						'time'     => date( DATE_ISO8601, $time + get_option( 'gmt_offset' ) * HOUR_IN_SECONDS ),
+						'time'     => date( DATE_ISO8601, $time ),
 						'next_run' => $time,
 						'sig'      => $sig,
 						'args'     => $data['args'],
@@ -267,7 +275,26 @@ function gmrs_get_scheduled_events() {
 		}
 	}
 
+	foreach ( $events as $dayofweek => &$events_list ) {
+		usort( $events_list, 'gmrs_sort_scheduled_events' );
+	}
+
 	return $events;
+}
+
+/**
+ * Sorts scheduled shows by time.
+ *
+ * @param object $event_a The first scheduled show object.
+ * @param object $event_b The second scheduled show object.
+ * @return int 0 if shows start at the same time, -1 if first show starts earlier than the second and 1 in other case.
+ */
+function gmrs_sort_scheduled_events( $event_a, $event_b ) {
+	if ( $event_a->args['time'] == $event_b->args['time'] ) {
+		return 0;
+	}
+
+	return $event_a->args['time'] < $event_b->args['time'] ? -1 : 1;
 }
 
 /**

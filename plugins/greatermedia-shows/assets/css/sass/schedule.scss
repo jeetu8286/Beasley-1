@@ -38,10 +38,20 @@
 	border: 1px solid $table-border-color;
 	background-color: white;
 
-	th, td {
+	th {
 		padding: 5px 10px;
+	}
+
+	td {
 		text-align: left;
-		border-right: 1px solid $table-border-color;
+		vertical-align: top;
+		width: 14.285714286%;
+
+		> div {
+			padding: 5px 10px;
+			cursor: pointer;
+			border-top: 2px solid transparent;
+		}
 	}
 
 	a {
@@ -50,10 +60,6 @@
 	}
 
 	thead th {
-		border-bottom: 1px solid $table-border-color;
-	}
-
-	tbody tr:nth-child(odd) td {
-		background-color: whitesmoke;
+		border-bottom: 2px solid $table-border-color;
 	}
 }

@@ -35,17 +35,21 @@
   border-collapse: collapse;
   border: 1px solid #dfdfdf;
   background-color: white; }
-  #schedule-table th, #schedule-table td {
-    padding: 5px 10px;
+  #schedule-table th {
+    padding: 5px 10px; }
+  #schedule-table td {
     text-align: left;
-    border-right: 1px solid #dfdfdf; }
+    vertical-align: top;
+    width: 14.285714286%; }
+    #schedule-table td > div {
+      padding: 5px 10px;
+      cursor: pointer;
+      border-top: 2px solid transparent; }
   #schedule-table a {
     text-decoration: none;
     margin-right: 2em; }
   #schedule-table thead th {
-    border-bottom: 1px solid #dfdfdf; }
-  #schedule-table tbody tr:nth-child(odd) td {
-    background-color: whitesmoke; }
+    border-bottom: 2px solid #dfdfdf; }
 
 .misc-pub-gmr::before {
   font: 400 20px/1 dashicons;
