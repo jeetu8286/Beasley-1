@@ -16,11 +16,28 @@ class GreaterMediaContestsMetaboxes {
 	}
 
 	/**
+	 * Enqueue JavaScript & CSS
 	 * Implements admin_enqueue_scripts action
 	 */
 	public function admin_enqueue_scripts() {
 
 		global $post;
+
+		// Make sure this is an admin screen
+		if ( ! is_admin() ) {
+			return;
+		}
+
+		// Make sure this is the post editor
+		$current_screen = get_current_screen();
+		if ( 'post' !== $current_screen->base ) {
+			return;
+		}
+
+		// Make sure there's a post
+		if ( ! isset( $GLOBALS['post'] ) || ! ( $GLOBALS['post'] instanceof WP_Post ) ) {
+			return;
+		}
 
 		if ( $post && 'contest' === $post->post_type ) {
 
