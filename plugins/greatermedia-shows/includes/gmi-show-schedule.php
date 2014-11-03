@@ -100,7 +100,8 @@ function gmrs_add_show_schedule() {
 		wp_die( 'Wrong date has been selected.' );
 	}
 
-	$date += $data['time'];
+	$date += $data['time'] - get_option( 'gmt_offset' ) * HOUR_IN_SECONDS;
+	
 	if ( $data['repeat'] ) {
 		wp_schedule_event( $date, 'weekly', 'gmr_show_schdeule', $data );
 	} else {
@@ -253,7 +254,7 @@ function gmrs_get_scheduled_events() {
 					
 					$events["$hook-$sig"] = (object) array(
 						'hook'     => $hook,
-						'time'     => date( DATE_ISO8601, $time - get_option( 'gmt_offset' ) * HOUR_IN_SECONDS ),
+						'time'     => date( DATE_ISO8601, $time + get_option( 'gmt_offset' ) * HOUR_IN_SECONDS ),
 						'next_run' => $time,
 						'sig'      => $sig,
 						'args'     => $data['args'],
