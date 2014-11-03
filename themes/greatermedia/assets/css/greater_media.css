@@ -842,6 +842,7 @@ p {
 
 .header {
   position: relative;
+  height: 100%;
   width: 100%;
   padding: 0.625em 0;
   border-bottom-color: #3b383a;

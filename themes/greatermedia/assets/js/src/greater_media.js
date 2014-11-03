@@ -22,10 +22,15 @@
 	var $window = $(window);
 	var pageWrap = $('#page-wrap');
 	var livePlayer = $('.live-player');
+	var header = $('.header');
+	var breakingNews = $('#breaking-news-banner');
 
 	function livePlayerHeight() {
 		var height = pageWrap.height();
-		livePlayer.css( {"height": height + "px" } );
+		var headerHeight = header.height();
+		var bnHeight = breakingNews.height();
+		livePlayer.css( {"top": headerHeight + bnHeight + "px" } );
+		livePlayer.css( {"height": height - headerHeight - bnHeight + "px" } );
 	}
 
 	$window.on('resize', livePlayerHeight);
