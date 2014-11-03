@@ -6,7 +6,9 @@
  * @since 0.1.0
  */
 ?>
-<div class="scroll-to-top"></div>
+	</div>
+	<div class="scroll-to-top"></div>
+</div>
 <?php wp_footer(); ?>
 </body>
 </html>

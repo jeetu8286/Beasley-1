@@ -1,0 +1,226 @@
+/**
+ * Styles for Front End
+ *
+ * Admins can choose the location of the player. A class is added to the body that will match the locations below.
+ */
+
+.live-player--container {
+	min-height: 70px;
+	@include padding(1em 0);
+	text-align: center;
+}
+
+.live-player--listen_btn {
+	@include btn(default, red, base, 1em, 1.5em, em(18px));
+	@include margin(0 .5em);
+}
+
+/**
+ * General Styles
+ */
+.gm-liveplayer {
+	display: none;
+	&.open {
+		display: block;
+	}
+}
+
+.gm-liveplayer--toggle {
+	@include position(fixed, 0 0 null null);
+	@include display(block);
+	@include size(33px 50px);
+	@include border-top-radius(15px);
+	@include border-left-radius(15px);
+	@include transition(ease .25s);
+	background-color: palette(default, dark);
+	border: none;
+	outline: none;
+	font-size: 1.25em;
+	color: palette(default);
+	z-index: 10001;
+	cursor: pointer;
+	@include bp(large) {
+		display: none;
+	}
+}
+
+.gm-liveplayer--toggle:before {
+	font-family: FontAwesome;
+	font-style: normal;
+	font-weight: normal;
+	line-height: 1;
+	-webkit-font-smoothing: antialiased;
+	moz-osx-font-smoothing: grayscale;
+	text-rendering: auto;
+	content: "\f028";
+}
+
+.gm-liveplayer--btn {
+	@include size(140px 140px);
+	@include margin(0 auto);
+	@include border-top-radius(50%);
+	@include border-right-radius(50%);
+	@include border-bottom-radius(50%);
+	@include border-left-radius(50%);
+	background-color: palette(default, red);
+	border: none;
+	outline: none;
+	font-family: FontAwesome;
+	font-size: 5em;
+	font-style: normal;
+	font-weight: normal;
+	line-height: 1;
+	-webkit-font-smoothing: antialiased;
+	moz-osx-font-smoothing: grayscale;
+	text-rendering: auto;
+	color: palette(default);
+	cursor: pointer;
+	z-index: 10001;
+}
+
+#playButton {
+	@include position(relative, null null null null);
+}
+
+#playButton:before {
+	@include position(absolute, 50% null null 50%);
+	@include transform(translate(-50%, -50%));
+	font-family: FontAwesome;
+	content: "\f01d";
+}
+
+.gm-liveplayer--container {
+	@include position(relative, auto auto auto auto);
+	@include transition(ease .25s);
+	@include box-sizing(border-box);
+	@include size(100% 100%);
+	background: transparent;
+	color: palette(default);
+	z-index: 10000;
+}
+
+.gm-liveplayer--container .container {
+	max-width: 1020px;
+	height: 100%;
+	margin: 0 auto;
+}
+
+.gm-liveplayer--container #gm-liveplayer--controls {
+	position: relative;
+	margin: 1.25em auto 0;
+	text-align: center;
+}
+
+.gm-liveplayer--container #gm-liveplayer--controls #pauseButton, .gm-liveplayer--container #gm-liveplayer--controls #resumeButton {
+	display: none;
+}
+
+.gm-liveplayer--container #gm-liveplayer--now_playing {
+	position: relative;
+	width: 100%;
+	height: auto;
+	margin: 2.375em 0 0;
+	text-align: center;
+	z-index: 999;
+}
+
+.gm-liveplayer--container #gm-liveplayer--now_playing #trackInfo {
+	font-size: 1.375em;
+}
+
+.gm-liveplayer--container #gm-liveplayer--now_playing #trackInfo .gmlp-np-song-title {
+	margin: 0 0 1em;
+	font-weight: 700;
+}
+
+.gm-liveplayer--container #gm-liveplayer--now_playing #trackInfo .gmlp-np-artist {
+	font-weight: 400;
+}
+
+.gmlp-open .gm-liveplayer--container {
+	right: 0;
+}
+
+.gmlp-open .gm-liveplayer--toggle {
+	font-size: 1.875em;
+}
+
+.gmlp-open .gm-liveplayer--toggle:before {
+	content: "\f00d";
+}
+
+/**
+ * If Logged In
+ */
+.admin-bar .gm-liveplayer--toggle {
+	top: 0;
+}
+
+.admin-bar .gm-liveplayer--container {
+	top: 0;
+}
+
+.now-playing--logo {
+	@include size(80px 50px);
+	@include margin(0 auto 1em auto);
+	background-color: palette(gray, light);
+}
+
+.now-playing--title {
+	@include size(100px 20px);
+	@include margin(0 auto 1em auto);
+	background-color: palette(gray, light);
+}
+
+.now-playing--artist {
+	@include size(100px 20px);
+	@include margin(0 auto 1em auto);
+	background-color: palette(gray, light);
+}
+
+.live-player--social {
+	@include size(100% 32px);
+	@include margin(null null 1em);
+}
+
+.live-player--social ul {
+	@include padding(0);
+	@include margin(0 auto);
+	list-style: none;
+	text-align: center;
+}
+
+.live-player--social ul li {
+	@include size(32px 32px);
+	@include padding(0);
+	@include margin(0 em(4px) 0 0);
+	list-style: none;
+	display: inline-block;
+	background-color: palette(gray, light);
+}
+
+.live-player--social ul li:last-of-type {
+	@include margin(null 0 null null);
+}
+
+.live-player--next {
+	@include size(100% null);
+	@include padding(.5em 1em);
+	@include border-color(palette(gray, light) null palette(gray, light) null);
+	@include border-style(solid null solid null);
+	@include border-width(1px null 1px null);
+	background-color: palette(default, dark);
+	font-size: ms(-2);
+}
+
+.live-player--test {
+	color: palette(default);
+	width: 100%;
+	padding: .25em .5em;
+}
+
+.live-player--test_label {
+	display: inline-block;
+	@include margin(null null null 4px);
+	cursor: pointer;
+}

@@ -21,7 +21,13 @@ module.exports = function( grunt ) {
 					'assets/js/src/greater_media_prototype.js'
 				],
 				dest: 'assets/js/greater_media_prototype.js'
-			}
+			},
+			greater_media_customizer: {
+				src: [
+					'assets/js/src/theme-customize.js'
+				],
+				dest: 'assets/js/theme-customize.js'
+			},
 		},
 		jshint: {
 			browser: {
@@ -40,12 +46,13 @@ module.exports = function( grunt ) {
 				options: {
 					jshintrc: '.gruntjshintrc'
 				}
-			}   
+			}
 		},
 		uglify: {
 			all: {
 				files: {
-					'assets/js/greater_media_prototype.min.js': ['assets/js/greater_media_prototype.js']
+					'assets/js/greater_media_prototype.min.js': ['assets/js/greater_media_prototype.js'],
+					'assets/js/theme-customize.min.js': ['assets/js/theme-customize.js']
 				},
 				options: {
 					banner: '/*! <%= pkg.title %> - v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %>\n' +
@@ -62,15 +69,17 @@ module.exports = function( grunt ) {
 		test:   {
 			files: ['assets/js/test/**/*.js']
 		},
-		
+
 		sass:   {
 			all: {
 				files: {
-					'assets/css/greater_media_prototype.css': 'assets/css/sass/greater_media_prototype.scss'
+					'assets/css/greater_media_prototype.css': 'assets/css/sass/greater_media_prototype.scss',
+					'assets/css/customizer_shrimp.css': 'assets/css/sass/customizer_shrimp.scss',
+					'assets/css/customizer_bold.css': 'assets/css/sass/customizer_bold.scss',
 				}
 			}
 		},
-		
+
 		cssmin: {
 			options: {
 				banner: '/*! <%= pkg.title %> - v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %>\n' +
@@ -81,16 +90,20 @@ module.exports = function( grunt ) {
 			},
 			minify: {
 				expand: true,
-				
+
 				cwd: 'assets/css/',
-				src: ['greater_media_prototype.css'],
-				
+				src: [
+					'greater_media_prototype.css',
+					'customizer_shrimp.css',
+					'customizer_bold.css',
+				],
+
 				dest: 'assets/css/',
 				ext: '.min.css'
 			}
 		},
 		watch:  {
-			
+
 			sass: {
 				files: ['assets/css/sass/*.scss'],
 				tasks: ['sass', 'cssmin'],
@@ -98,7 +111,7 @@ module.exports = function( grunt ) {
 					debounceDelay: 500
 				}
 			},
-			
+
 			scripts: {
 				files: ['assets/js/src/**/*.js', 'assets/js/vendor/**/*.js'],
 				tasks: ['jshint', 'concat', 'uglify'],
@@ -110,9 +123,9 @@ module.exports = function( grunt ) {
 	} );
 
 	// Default task.
-	
+
 	grunt.registerTask( 'default', ['jshint', 'concat', 'uglify', 'sass', 'cssmin'] );
-	
+
 
 	grunt.util.linefeed = '\n';
 };

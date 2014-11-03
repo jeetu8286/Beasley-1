@@ -14,77 +14,58 @@ get_header(); ?>
 
 			<section class="content">
 
-				<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
+				<?php
+					while ( have_posts() ) : the_post(); ?>
 
-					<article id="post-<?php the_ID(); ?>" <?php post_class( 'cf' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
+						<article id="post-<?php the_ID(); ?>" <?php post_class( 'cf' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
 
-						<header class="article-header">
+							<header class="entry-header">
 
-							<h2 class="entry-title" itemprop="headline"><?php the_title(); ?></h2>
+								<h2 class="entry-title" itemprop="headline"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
 
-							<div class="byline">
-								by
-								<span class="vcard author"><span class="fn url"><?php the_author_posts_link(); ?></span></span>
-								<time datetime="<?php the_time( 'c' ); ?>" class="post-date updated">
-									on <?php the_time( 'l, F jS' ); ?> at <?php the_time( 'g:ia' ); ?></time>
-							</div>
+							</header>
 
-						</header>
+							<section class="entry-content" itemprop="articleBody">
 
-						<section class="entry-content" itemprop="articleBody">
+								<?php the_content(); ?>
 
-							<?php
-								the_content();
+							</section>
 
-								$link_args = array(
-									'before' => '<div class="page-numbers">Pages: ',
-									'after' => '</div>',
-									'link_before' => '<span class="post-pagination-link">',
-									'link_after' => '</span>'
-								);
-								echo '<div class="post-pagination">';
-								wp_link_pages( $link_args );
-								echo '</div>';
+							<footer class="entry-footer">
 
-							?>
+								<div class="entry-author">
+									<div class="entry-author--img">
+										<img src="http://placecreature.com/40/40">
+									</div>
+									<div class="entry-author--meta">
+										<div class="entry-author--name"><?php the_author_posts_link(); ?></div>
+										<time datetime="<?php the_time( 'c' ); ?>" class="entry-date"><?php the_time( 'M. j, Y' ); ?></time>
+									</div>
+								</div>
 
-						</section> <?php // end article section ?>
+								<div class="entry-type">
 
-						<footer class="article-footer">
+									<div class="entry-type--<?php greatermedia_post_formats(); ?>"><?php greatermedia_post_formats(); ?></div>
 
-						</footer>
+								</div>
 
-					</article>
+								<div class="entry-comments">
 
-				<?php endwhile;
+									<div class="entry-comments--count">
 
-				else : ?>
+										<a href="<?php the_permalink(); ?>#comments"><?php comments_number( '0', '1', '%' ); ?></a>
 
-					<article id="post-not-found" class="hentry cf">
+									</div>
 
-						<header class="article-header">
+								</div>
 
-							<h1><?php _e( 'Oops, Post Not Found!', 'greatermedia' ); ?></h1>
+							</footer>
 
-						</header>
+						</article>
 
-						<section class="entry-content">
-
-							<p><?php _e( 'Uh Oh. Something is missing. Try double checking things.', 'greatermedia' ); ?></p>
-
-						</section>
-
-					</article>
-
-				<?php endif; ?>
+					<?php endwhile; ?>
 
 			</section>
-
-			<aside class="sidebar" role="complementary">
-
-				Sidebar area
-
-			</aside>
 
 		</div>
 
