@@ -11,14 +11,34 @@ $_color_base_gray: #a7a9ab;
 //
 $palettes: (
 	default: (
+		body-bg: #ffffff,
+		body-text: #58595b,
+		header-bg: #000000,
+		header-text: #ffffff,
+		liveplayer-bg: #000000,
+		liveplayer-text: #404041,
+		liveplayer-link: #d22228,
+		featured-bg: #58595b,
+		featured-heading: #ffffff,
+		featured-heading-bg: #270e10,
+		featured-text: #a6a8ab,
+		featured-list: #f7ef7e,
+		highlights-bg: #561015,
+		highlights-text: #404041,
+		article-heading: #58595b,
+		article-meta: #404041,
+		btn-bg: #d22228,
+		btn-text: #ffffff,
+		link: #d22228,
+		link-hover: #404041,
+		border: #231f20,
+		section-heading: #404041,
 		base: #ffffff,
 		black: #000000,
 		red: #d32329,
 		gray: #221f1f,
 		dark: #1c1c1f,
 		darker: #131415,
-		featured-heading: #270e10,
-		featured-list: #f7ef7e,
 		title: #a6a8ab,
 	),
 	gray: (
@@ -35,15 +55,14 @@ $palettes: (
 // @author Allen Moore
 // @since 0.1.0
 //
-$text-color: palette(default, black);
+$text-color: palette(default, body-text);
 
-$link-color: palette(default, red);
-$link-hover: palette(gray);
+$link-color: palette(default, link);
+$link-hover: palette(default, link-hover);
 
-$border-color: palette(gray, light);
-$dark-border-color: palette(gray, dark);
+$border-color: palette(default, border);
 
-$nav-link-color: palette(default);
+$nav-link-color: palette(default, header-text);
 
 /*********************
 Misc

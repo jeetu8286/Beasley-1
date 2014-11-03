@@ -2,7 +2,7 @@
 	@extend %main;
 	@include position(relative, null null null null);
 	@include padding(3em 0);
-	background: url(../../images/featured-bg.png) repeat center center palette(default, black);
+	background: url(../../images/featured-bg.png) repeat center center palette(default, featured-bg);
 	background-size: auto 40%;
 }
 
@@ -12,20 +12,21 @@
 
 .featured-artist--image {
 	@include size(100% null);
-	background-color: palette(default, black);
+	background-color: palette(default, featured-bg);
 }
 
 .featured-artist--content {
 	@include size(100% null);
 	@include padding(3em 2em);
 	overflow: auto;
-	background-color: palette(default, featured-heading);
-	color: palette(default);
+	background-color: palette(default, featured-heading-bg);
+	color: palette(default, featured-text);
 }
 
 .featured-artist--heading {
 	float: left;
 	@include size(100% null);
+	color: palette(default, featured-heading);
 	@include bp(large) {
 		@include size(30% null);
 		@include margin(null 5% null null);
@@ -62,7 +63,7 @@
 	@include size(100% 90px);
 	@include margin(null null 3em null);
 	overflow: hidden;
-	background-color: palette(default, featured-heading);
+	background-color: palette(default, featured-heading-bg);
 	@include bp(small) {
 		@include size(100% 95px);
 		@include margin(null null 3em null);
@@ -108,7 +109,7 @@
 	float: left;
 	@include size(70% null);
 	@include padding(1em 1em 1em 2em);
-	color: palette(default, title);
+	color: palette(default, featured-text);
 	@include bp(small) {
 		@include size(65% null);
 	}
@@ -134,6 +135,7 @@
 
 .featured-content--list {
 	@extend %unordered-list;
+	line-height: 1;
 }
 
 .featured-content--item {
@@ -151,7 +153,7 @@
 }
 
 .featured-content--btn {
-	@include btn(default, red, base, .25em, 1.5em, 1em);
+	@include btn(default, btn-bg, btn-text, .25em, 1.5em, 1em);
 	@include border-top-radius(1.5em);
 	@include border-right-radius(1.5em);
 	@include border-bottom-radius(1.5em);

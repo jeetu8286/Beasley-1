@@ -5,7 +5,7 @@ html {
 body {
 	@include size(null 100%);
 	@include margin(0 auto);
-	background: color(white);
+	background: palette(default, body-bg);
 }
 
 * {

@@ -392,7 +392,7 @@ html {
 body {
   height: 100%;
   margin: 0 auto;
-  background: color(white); }
+  background: #ffffff; }
 
 * {
   -webkit-tap-highlight-color: transparent; }
@@ -521,7 +521,7 @@ img {
   padding-top: 2em;
   padding-bottom: 2em;
   display: none;
-  background-color: #221f1f; }
+  background-color: #000000; }
   @media screen and (min-width: 1024px) {
     .live-player {
       display: block;
@@ -534,7 +534,7 @@ img {
       -webkit-box-sizing: border-box;
       -moz-box-sizing: border-box;
       box-sizing: border-box;
-      color: #ffffff; }
+      color: #404041; }
       .live-player:last-child {
         margin-right: 0; } }
 
@@ -542,7 +542,7 @@ body {
   line-height: 2;
   font-size: 80%;
   font-family: "Open Sans", sans-serif;
-  color: #000000;
+  color: #58595b;
   -webkit-font-smoothing: antialiased; }
   @media screen and (min-width: 480px) {
     body {
@@ -591,11 +591,11 @@ h6, .h6 {
   letter-spacing: 2px; }
 
 a:link, a:visited {
-  color: #d32329;
+  color: #d22228;
   text-decoration: none; }
 
 a:hover, a:focus, a:active {
-  color: #a7a9ab; }
+  color: #404041; }
 
 p {
   margin: 0 0 1.5em; }
@@ -845,10 +845,10 @@ p {
   height: 80px;
   width: 100%;
   padding: 0.625em 0;
-  border-bottom-color: #3b383a;
+  border-bottom-color: #231f20;
   border-bottom-style: solid;
   border-bottom-width: 1px;
-  background-color: #1c1c1f; }
+  background-color: #000000; }
 
 .header-logo {
   float: left;
@@ -857,8 +857,7 @@ p {
   width: 100%;
   margin-right: 0;
   height: 60px;
-  line-height: 1;
-  color: #ffffff; }
+  line-height: 1; }
   .header-logo:last-child {
     margin-right: 0; }
   @media screen and (min-width: 1024px) {
@@ -1654,7 +1653,7 @@ pre {
   margin-right: 0.5em;
   border-width: 0;
   outline: none;
-  background-color: #d32329;
+  background-color: #d22228;
   font-family: "Open Sans", sans-serif;
   font-size: 1.125em;
   color: #ffffff !important;
@@ -1662,7 +1661,7 @@ pre {
   cursor: pointer;
   margin: 0 0.5em; }
   .live-player--listen_btn:hover, .live-player--listen_btn:focus {
-    background-color: #ac1c21;
+    background-color: #aa1c20;
     color: #ffffff; }
   .live-player--listen_btn:last-of-type {
     margin-right: 0; }
@@ -1689,11 +1688,11 @@ pre {
   -webkit-transition: ease 0.25s;
   -moz-transition: ease 0.25s;
   transition: ease 0.25s;
-  background-color: #1c1c1f;
+  background-color: #000000;
   border: none;
   outline: none;
   font-size: 1.25em;
-  color: #ffffff;
+  color: #404041;
   z-index: 10001;
   cursor: pointer; }
   @media screen and (min-width: 1024px) {
@@ -1722,7 +1721,7 @@ pre {
   border-bottom-right-radius: 50%;
   border-top-left-radius: 50%;
   border-bottom-left-radius: 50%;
-  background-color: #d32329;
+  background-color: #d22228;
   border: none;
   outline: none;
   font-family: FontAwesome;
@@ -1767,7 +1766,7 @@ pre {
   height: 100%;
   width: 100%;
   background: transparent;
-  color: #ffffff;
+  color: #404041;
   z-index: 10000; }
 
 .gm-liveplayer--container .container {
@@ -1873,7 +1872,7 @@ pre {
   font-size: 0.79012em; }
 
 .live-player--test {
-  color: #ffffff;
+  color: #404041;
   width: 100%;
   padding: .25em .5em; }
 
@@ -1885,23 +1884,24 @@ pre {
 .featured {
   position: relative;
   padding: 3em 0;
-  background: url(../../images/featured-bg.png) repeat center center #000000;
+  background: url(../../images/featured-bg.png) repeat center center #58595b;
   background-size: auto 40%; }
 
 .featured-artist--image {
   width: 100%;
-  background-color: #000000; }
+  background-color: #58595b; }
 
 .featured-artist--content {
   width: 100%;
   padding: 3em 2em;
   overflow: auto;
   background-color: #270e10;
-  color: #ffffff; }
+  color: #a6a8ab; }
 
 .featured-artist--heading {
   float: left;
-  width: 100%; }
+  width: 100%;
+  color: #ffffff; }
   @media screen and (min-width: 1024px) {
     .featured-artist--heading {
       width: 30%;
@@ -2006,6 +2006,9 @@ pre {
     .featured-content--title {
       font-size: 1.125em; } }
 
+.featured-content--list {
+  line-height: 1; }
+
 .featured-content--item {
   display: inline-block;
   width: 40%;
@@ -2023,7 +2026,7 @@ pre {
   margin-right: 0.5em;
   border-width: 0;
   outline: none;
-  background-color: #d32329;
+  background-color: #d22228;
   font-family: "Open Sans", sans-serif;
   font-size: 1em;
   color: #ffffff !important;
@@ -2039,7 +2042,7 @@ pre {
   border-bottom-left-radius: 1.5em;
   text-transform: uppercase; }
   .featured-content--btn:hover, .featured-content--btn:focus {
-    background-color: #ac1c21;
+    background-color: #aa1c20;
     color: #ffffff; }
   .featured-content--btn:last-of-type {
     margin-right: 0; }
