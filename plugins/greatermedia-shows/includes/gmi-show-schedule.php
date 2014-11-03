@@ -100,8 +100,8 @@ function gmrs_add_show_schedule() {
 		wp_die( 'Wrong date has been selected.' );
 	}
 
-	$date += $data['time'] - get_option( 'gmt_offset' ) * HOUR_IN_SECONDS;
-	
+	$date += $data['time'] - get_option( 'gmt_offset' ) * HOUR_IN_SECONDS; // convert to UTC
+
 	if ( $data['repeat'] ) {
 		wp_schedule_event( $date, 'weekly', 'gmr_show_schdeule', $data );
 	} else {
@@ -209,25 +209,29 @@ function gmrs_render_schedule_page() {
 					<?php endfor; ?>
 				</tr>
 			</thead>
+
 			<tbody>
 				<tr>
 					<?php foreach ( $days as $day ) : ?>
 						<td>
 							<?php if ( ! empty( $events[ $day ] ) ) : ?>
-								<?php foreach ( $events[ $day ] as $event ) : ?>
+								<?php for ( $i = 0, $len = count( $events[ $day ] ); $i < $len; $i++ ) : ?>
+									<?php $event = $events[ $day ][ $i ]; ?>
+									<?php $height = ( ( $i + 1 < $len ? $events[ $day ][ $i + 1 ]->args['time'] : DAY_IN_SECONDS ) - $event->args['time'] ) * 100 / HOUR_IN_SECONDS; ?>
+
 									<div class="show-<?php echo esc_attr( $event->show->ID ); ?>"
-										 style="background-color:<?php echo gmrs_show_color( $event->show->ID, 0.15 ) ?>;border-color:<?php echo gmrs_show_color( $event->show->ID, 0.75 ) ?>;"
+										 style="height: <?php echo $height ?>px;background-color:<?php echo gmrs_show_color( $event->show->ID, 0.15 ) ?>;border-color:<?php echo gmrs_show_color( $event->show->ID, 0.75 ) ?>;"
 										 data-hover-color="<?php echo gmrs_show_color( $event->show->ID, 0.6 ) ?>">
 										
 										<div><b><?php echo esc_html( $event->show->post_title ); ?></b></div>
-										<small><?php echo get_date_from_gmt( $event->time, 'h:i A' ) ?></small>
+										<small><?php echo get_date_from_gmt( $event->time, 'h:i A' ), ' ', $event->schedule ? '(weekly)' : ''; ?></small>
 
 										<div>
 											<?php $delete_url = add_query_arg( array( 'sig' => $event->sig, 'next' => $event->next_run ), 'admin.php?action=gmr_delete_show_schedule' ); ?>
 											<a href="<?php echo esc_url( wp_nonce_url( $delete_url, 'gmr_delete_show_schedule' ) ) ?>" onclick="return showNotice.warn();">Delete</a>
 										</div>
 									</div>
-								<?php endforeach; ?>
+								<?php endfor; ?>
 							<?php endif; ?>
 						</td>
 					<?php endforeach; ?>

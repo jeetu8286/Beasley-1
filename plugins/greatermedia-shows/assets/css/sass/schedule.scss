@@ -51,6 +51,9 @@
 			padding: 5px 10px;
 			cursor: pointer;
 			border-top: 2px solid transparent;
+			overflow: hidden;
+
+			@include box-sizing(border-box);
 		}
 	}
 

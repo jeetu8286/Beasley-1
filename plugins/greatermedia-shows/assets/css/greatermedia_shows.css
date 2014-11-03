@@ -44,7 +44,10 @@
     #schedule-table td > div {
       padding: 5px 10px;
       cursor: pointer;
-      border-top: 2px solid transparent; }
+      border-top: 2px solid transparent;
+      overflow: hidden;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box; }
   #schedule-table a {
     text-decoration: none;
     margin-right: 2em; }
