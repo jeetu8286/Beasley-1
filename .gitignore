@@ -16,3 +16,4 @@ plugins/gears
 plugins/gravityforms
 atlassian-ide-plugin.xml
 mu-plugins/test-data-store.php
+**/.sass-cache/**
