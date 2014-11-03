@@ -25,11 +25,13 @@ class GreaterMediaContestsMetaboxes {
 		if ( $post && 'contest' === $post->post_type ) {
 
 			wp_enqueue_style( 'formbuilder', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'bower_components/formbuilder/dist/formbuilder.css' );
+			wp_enqueue_style( 'datetimepicker', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'bower_components/datetimepicker/jquery.datetimepicker.css' );
 
 			wp_enqueue_script( 'ie8-node-enum', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'bower_components/ie8-node-enum/index.js' );
 			wp_enqueue_script( 'jquery-scrollwindowto', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'bower_components/jquery.scrollWindowTo/index.js', array( 'jquery' ) );
 			wp_enqueue_script( 'underscore-mixin-deepextend', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'bower_components/underscore.mixin.deepExtend/index.js', array( 'underscore' ) );
 			wp_enqueue_script( 'backbone-deep-model', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'bower_components/backbone-deep-model/src/deep-model.js', array( 'backbone' ) );
+			wp_enqueue_script( 'datetimepicker', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'bower_components/datetimepicker/jquery.datetimepicker.js', array( 'jquery' ) );
 
 			if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
 
@@ -42,6 +44,7 @@ class GreaterMediaContestsMetaboxes {
 					array(
 						'jquery',
 						'jquery-ui-core',
+						'jquery-ui-draggable',
 						'jquery-scrollwindowto',
 						'underscore',
 						'underscore-mixin-deepextend',
@@ -62,6 +65,7 @@ class GreaterMediaContestsMetaboxes {
 					array(
 						'jquery',
 						'jquery-ui-core',
+						'jquery-ui-draggable',
 						'jquery-scrollwindowto',
 						'underscore',
 						'underscore-mixin-deepextend',
@@ -188,11 +192,11 @@ class GreaterMediaContestsMetaboxes {
 
 	}
 
-	public function render_date_field(array $args) {
+	public function render_date_field( array $args ) {
 
-		$value = get_post_meta($args['post_id'], $args['meta_name'], true);
+		$value = get_post_meta( $args['post_id'], $args['meta_name'], true );
 
-		echo '<input type="date" name="" value="" />';
+		echo '<input type="date" id="' . esc_attr( $args['id'] ) . '" name="' . esc_attr( $args['name'] ) . '" value="' . esc_attr( $value ) . '" />';
 
 	}
 
