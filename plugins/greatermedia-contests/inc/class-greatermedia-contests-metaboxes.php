@@ -8,7 +8,7 @@ class GreaterMediaContestsMetaboxes {
 
 	function __construct() {
 
-		add_action( 'admin_init', array( $this, 'admin_init' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'admin_init' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
 		add_action( 'save_post', array( $this, 'save_post' ) );
@@ -90,10 +90,23 @@ class GreaterMediaContestsMetaboxes {
 
 	public function admin_init() {
 
-		$post_id = absint( $_REQUEST['post'] );
-		if ( empty( $post_id ) ) {
+		// Make sure this is an admin screen
+		if ( ! is_admin() ) {
 			return;
 		}
+
+		// Make sure this is the post editor
+		$current_screen = get_current_screen();
+		if ( 'post' !== $current_screen->base ) {
+			return;
+		}
+
+		// Make sure there's a post
+		if ( ! isset( $GLOBALS['post'] ) || ! ( $GLOBALS['post'] instanceof WP_Post ) ) {
+			return;
+		}
+
+		$post_id = absint( $GLOBALS['post']->ID );
 
 		add_settings_section(
 			'greatermedia-contest-rules',
@@ -109,10 +122,10 @@ class GreaterMediaContestsMetaboxes {
 			'greatermedia-contest-rules',
 			'greatermedia-contest-rules',
 			array(
-				'post_id'   => $post_id,
-				'id'        => 'greatermedia_contest_start',
-				'name'      => 'greatermedia_contest_start',
-				'meta_name' => 'contest-start'
+				'post_id' => $post_id,
+				'id'      => 'greatermedia_contest_start',
+				'name'    => 'greatermedia_contest_start',
+				'value'   => get_post_meta( $post_id, 'contest-start', true )
 			)
 		);
 
@@ -123,10 +136,10 @@ class GreaterMediaContestsMetaboxes {
 			'greatermedia-contest-rules',
 			'greatermedia-contest-rules',
 			array(
-				'post_id'   => $post_id,
-				'id'        => 'greatermedia_contest_end',
-				'name'      => 'greatermedia_contest_end',
-				'meta_name' => 'contest-end'
+				'post_id' => $post_id,
+				'id'      => 'greatermedia_contest_end',
+				'name'    => 'greatermedia_contest_end',
+				'value'   => get_post_meta( $post_id, 'contest-end', true )
 			)
 		);
 
@@ -137,10 +150,10 @@ class GreaterMediaContestsMetaboxes {
 			'greatermedia-contest-rules',
 			'greatermedia-contest-rules',
 			array(
-				'post_id'   => $post_id,
-				'id'        => 'greatermedia_contest_prizes',
-				'name'      => 'greatermedia_contest_prizes',
-				'meta_name' => 'prizes-desc'
+				'post_id' => $post_id,
+				'id'      => 'greatermedia_contest_prizes',
+				'name'    => 'greatermedia_contest_prizes',
+				'value'   => get_post_meta( $post_id, 'prizes-desc', true )
 			)
 		);
 
@@ -151,10 +164,10 @@ class GreaterMediaContestsMetaboxes {
 			'greatermedia-contest-rules',
 			'greatermedia-contest-rules',
 			array(
-				'post_id'   => $post_id,
-				'id'        => 'greatermedia_contest_enter',
-				'name'      => 'greatermedia_contest_enter',
-				'meta_name' => 'how-to-enter-desc'
+				'post_id' => $post_id,
+				'id'      => 'greatermedia_contest_enter',
+				'name'    => 'greatermedia_contest_enter',
+				'value'   => get_post_meta( $post_id, 'how-to-enter-desc', true )
 			)
 		);
 
@@ -165,10 +178,10 @@ class GreaterMediaContestsMetaboxes {
 			'greatermedia-contest-rules',
 			'greatermedia-contest-rules',
 			array(
-				'post_id'   => $post_id,
-				'id'        => 'greatermedia_contest_enter',
-				'name'      => 'greatermedia_contest_enter',
-				'meta_name' => 'rules-desc'
+				'post_id' => $post_id,
+				'id'      => 'greatermedia_contest_rules',
+				'name'    => 'greatermedia_contest_rules',
+				'value'   => get_post_meta( $post_id, 'rules-desc', true )
 			)
 		);
 
@@ -183,10 +196,8 @@ class GreaterMediaContestsMetaboxes {
 
 	public function render_wysiwyg( array $args ) {
 
-		$content = get_post_meta( $args['post_id'], $args['meta_name'], true );
-
 		wp_editor(
-			$content,
+			isset( $args['value'] ) ? sanitize_text_field( $args['value'] ) : '',
 			$args['id']
 		);
 
@@ -194,7 +205,12 @@ class GreaterMediaContestsMetaboxes {
 
 	public function render_date_field( array $args ) {
 
-		$value = get_post_meta( $args['post_id'], $args['meta_name'], true );
+		if ( isset( $args['value'] ) && is_numeric( $args['value'] ) ) {
+			// HTML5 date input needs date in Y-m-d and will convert to local format on display
+			$value = date( 'Y-m-d', $args['value'] );
+		} else {
+			$value = ''; // invalid, should be a unix timestamp
+		}
 
 		echo '<input type="date" id="' . esc_attr( $args['id'] ) . '" name="' . esc_attr( $args['name'] ) . '" value="' . esc_attr( $value ) . '" />';
 
@@ -236,7 +252,8 @@ class GreaterMediaContestsMetaboxes {
 
 	public function rules_meta_box() {
 
-		settings_fields( 'greatermedia-contest-rules' );    //pass slug name of page, also referred
+		// Add an nonce field so we can check for it later.
+		wp_nonce_field( 'contest_rules_meta_box', 'contest_rules_meta_box' );
 		do_settings_sections( 'greatermedia-contest-rules' );
 
 	}
@@ -269,23 +286,30 @@ class GreaterMediaContestsMetaboxes {
 
 	public function save_post( $post_id ) {
 
-		// Check if our nonce is set.
-		if ( ! isset( $_POST['contest_form_meta_box'] ) ) {
+		$post = get_post( $post_id );
+
+		// Check if our nonces are set.
+		if ( ! isset( $_POST['contest_form_meta_box'] ) || ! isset( $_POST['contest_rules_meta_box'] ) ) {
 			return;
 		}
 
-		// Verify that the nonce is valid.
+		// Verify that the form nonce is valid.
 		if ( ! wp_verify_nonce( $_POST['contest_form_meta_box'], 'contest_form_meta_box' ) ) {
 			return;
 		}
 
-		// If this is an autosave, our form has not been submitted, so we don't want to do anything.
+		// Verify that the rules nonce is valid
+		if ( ! wp_verify_nonce( $_POST['contest_rules_meta_box'], 'contest_rules_meta_box' ) ) {
+			return;
+		}
+
+		// If this is an autosave, the editor has not been submitted, so we don't want to do anything.
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
 			return;
 		}
 
 		// Make sure the post type is correct
-		if ( ! isset( $_POST['post_type'] ) || 'contest' !== $_POST['post_type'] ) {
+		if ( 'contest' !== $post->post_type ) {
 			return;
 		}
 
@@ -294,10 +318,19 @@ class GreaterMediaContestsMetaboxes {
 			return;
 		}
 
-		// Using json_decode() + json_encode() as a form of JSON sanitization
+		/**
+		 * Update the form's meta field
+		 * Using json_decode() + json_encode() as a form of JSON sanitization
+		 */
 		$form = wp_kses_stripslashes( $_POST['contest_embedded_form'] );
-		delete_post_meta( $post_id, 'embedded_form' );
 		update_post_meta( $post_id, 'embedded_form', $form );
+
+		// Update the contest rules meta fields
+		update_post_meta( $post_id, 'prizes-desc', wp_kses_post( $_POST['greatermedia_contest_prizes'] ) );
+		update_post_meta( $post_id, 'how-to-enter-desc', wp_kses_post( $_POST['greatermedia_contest_enter'] ) );
+		update_post_meta( $post_id, 'rules-desc', wp_kses_post( $_POST['greatermedia_contest_rules'] ) );
+		update_post_meta( $post_id, 'contest-start', strtotime( $_POST['greatermedia_contest_start'] ) );
+		update_post_meta( $post_id, 'contest-end', strtotime( $_POST['greatermedia_contest_end'] ) );
 
 	}
 
