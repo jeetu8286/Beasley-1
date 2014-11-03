@@ -37,7 +37,13 @@ if ( !class_exists( "GMI_Personality" ) ) {
 		public static function get_supported_post_types() {
 			$post_types = array(
 				'post',
+				'page',
 				'contest',
+				'podcast',
+				'show',
+				'albums',
+				'survey',
+				'livefyre-media-wall',
 			);
 
 			return $post_types;
