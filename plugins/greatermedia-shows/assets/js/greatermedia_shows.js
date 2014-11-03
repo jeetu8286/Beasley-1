@@ -16,22 +16,17 @@
 
 	"use strict";
 
-	jQuery(function() {
+	$(function() {
 
 		// the upload image button, saves the id and outputs a preview of the image
 		var imageFrame;
 		$('.meta_box_upload_image_button').click(function(event) {
-			event.preventDefault();
-			
-			var options, attachment;
-			
-			var $self = $(event.target);
-			var $div = $self.closest('div.meta_box_image');
+			var $div = $('#show_logo .inside');
 			
 			// if the frame already exists, open it
 			if ( imageFrame ) {
 				imageFrame.open();
-				return;
+				return false;
 			}
 			
 			// set our settings
@@ -67,13 +62,17 @@
 			
 			// open the frame
 			imageFrame.open();
+
+			return false;
 		});
 		
 		// the remove image link, removes the image id from the hidden field and replaces the image preview
 		$('.meta_box_clear_image_button').click(function() {
-			var defaultImage = $(this).parent().siblings('.meta_box_default_image').text();
-			$(this).parent().siblings('.meta_box_upload_image').val('');
-			$(this).parent().siblings('.meta_box_preview_image').attr('src', defaultImage);
+			var $parent = $(this).parent();
+
+			$parent.siblings('.meta_box_upload_image').val('');
+			$parent.siblings('.meta_box_preview_image').attr('src', '');
+			
 			return false;
 		});
 		
@@ -81,8 +80,6 @@
 		var fileFrame;
 		$('.meta_box_upload_file_button').click(function(event) {
 			event.preventDefault();
-			
-			var options, attachment;
 			
 			var $self = $(event.target);
 			var $div = $self.closest('div.meta_box_file_stuff');
@@ -147,3 +144,69 @@
 		}
 	});
 } )(jQuery);
+(function ($) {
+	$(document).ready(function () {
+		var hovered_show, original_color;
+		
+		$('#start-from-date').datepicker({
+			dateFormat : 'M d, yy',
+			minDate: 'now',
+			altField: '#start-from-date-value',
+			altFormat: 'yy-mm-dd'
+		});
+
+		$('#schedule-table td > div').hover(function() {
+			var $this = $(this);
+
+			hovered_show = '.' + $this.attr('class');
+
+			original_color = $this.css('background-color');
+			$(hovered_show).css('background-color', $this.attr('data-hover-color'));
+		}, function() {
+			$(hovered_show).css('background-color', original_color);
+		});
+	});
+})(jQuery);
+(function ($) {
+	$(document).ready(function () {
+		$('.mis-pub-radio').each(function() {
+			var $this = $(this),
+				$switchSelect = $this.find('.radio-select'),
+				$editLink = $this.find('.edit-radio'),
+				origin_value = $switchSelect.find('input:radio:checked').val();
+
+			$editLink.click(function() {
+				if ($switchSelect.is(':hidden')) {
+					$switchSelect.slideDown('fast').find('input[type="radio"]').first().focus();
+					$(this).hide();
+				}
+				return false;
+			});
+
+			$switchSelect.find('.cancel-radio').click(function() {
+				$switchSelect.slideUp('fast', function() {
+					$editLink.show().focus();
+
+					$switchSelect.find('input:radio').each(function() {
+						$(this).prop('checked', $(this).val() === origin_value);
+					});
+				});
+
+				return false;
+			});
+
+			$switchSelect.find('.save-radio').click(function() {
+				var selected = $switchSelect.find('input:radio:checked');
+
+				$switchSelect.slideUp('fast', function() {
+					$editLink.show();
+
+					origin_value = selected.val();
+					$this.find('.radio-value').text(selected.parent().text());
+				});
+
+				return false;
+			});
+		});
+	});
+})(jQuery);
