@@ -114,8 +114,8 @@ function gmrs_add_show_schedule() {
 	$cookie_path = parse_url( admin_url( '/' ), PHP_URL_PATH );
 	setcookie( 'gmr_show_id', $show->ID, 0, $cookie_path );
 	setcookie( 'gmr_show_time', $data['time'], 0, $cookie_path );
-	setcookie( 'gmr_show_date', $date, 0, $cookie_path );
-	
+	setcookie( 'gmr_show_date', strtotime( $data['date'] ), 0, $cookie_path );
+
 	wp_redirect( wp_get_referer() );
 	exit;
 }
@@ -150,7 +150,7 @@ function gmrs_render_schedule_page() {
 	$active_show = isset( $_COOKIE['gmr_show_id'] ) ? $_COOKIE['gmr_show_id'] : false;
 	$active_time = isset( $_COOKIE['gmr_show_time'] ) ? $_COOKIE['gmr_show_time'] : false;
 	$active_date = date( 'M j, Y', isset( $_COOKIE['gmr_show_date'] ) ? $_COOKIE['gmr_show_date'] : time() );
-	
+
 	$events = gmrs_get_scheduled_events();
 	$precision = 0.5; // 1 - each hour, 0.5 - each 30 mins, 0.25 - each 15 mins
 
@@ -225,10 +225,10 @@ function gmrs_render_schedule_page() {
 									<div class="show-<?php echo esc_attr( $event->show->ID ); ?>"
 										 style="height: <?php echo $height ?>px;background-color:<?php echo gmrs_show_color( $event->show->ID, 0.15 ) ?>;border-color:<?php echo gmrs_show_color( $event->show->ID, 0.75 ) ?>;"
 										 data-hover-color="<?php echo gmrs_show_color( $event->show->ID, 0.6 ) ?>">
-										
+
 										<div>
 											<b><?php echo esc_html( $event->show->post_title ); ?></b>
-											<small><?php echo get_date_from_gmt( $event->time, 'h:i A' ), ' ', $event->schedule ? '(weekly)' : ''; ?></small>
+											<small><?php echo date( 'h:i A', $event->args['time'] ), ' ', $event->schedule ? '(weekly)' : ''; ?></small>
 										</div>
 
 										<div>
@@ -263,12 +263,11 @@ function gmrs_get_scheduled_events() {
 						continue;
 					}
 
-					$time_tz = $time + get_option( 'gmt_offset' ) * HOUR_IN_SECONDS;
-					$dayofweek = date( 'N', $time_tz );
+					$dayofweek = date( 'N', strtotime( $data['args']['date'] ) + $data['args']['time'] );
 					if ( ! isset( $events[ $dayofweek ] ) ) {
 						$events[ $dayofweek ] = array();
 					}
-					
+
 					$events[ $dayofweek ][] = (object) array(
 						'hook'     => $hook,
 						'time'     => date( DATE_ISO8601, $time ),
@@ -315,7 +314,7 @@ function gmrs_sort_scheduled_events( $event_a, $event_b ) {
  */
 function gmrs_show_color( $show_id, $opacity ) {
 	$hash = sha1( $show_id );
-	return sprintf( 
+	return sprintf(
 		'rgba(%d, %d, %d, %f)',
 		hexdec( substr( $hash, 0, 2 ) ),
 		hexdec( substr( $hash, 2, 2 ) ),
