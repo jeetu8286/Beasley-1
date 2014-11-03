@@ -77,6 +77,30 @@ function greatermedia_scripts_styles() {
 		'4.2'
 	);
 
+	if ( ! defined( 'GREATER_MEDIA_GIGYA_TEST_UI' ) || ! GREATER_MEDIA_GIGYA_TEST_UI ) {
+		wp_enqueue_script(
+			'gigya_socialize',
+			'http://cdn.gigya.com/JS/gigya.js?apiKey=3_e_T7jWO0Vjsd9y0WJcjnsN6KaFUBv6r3VxMKqbitvw-qKfmaUWysQKa1fra5MTb6',
+			array( 'jquery' ),
+			'0.1.0',
+			true
+		);
+		wp_enqueue_script(
+			'gigya-login',
+			get_template_directory_uri() . "/assets/js/gigya_login{$postfix}.js",
+			array(),
+			GREATERMEDIA_VERSION,
+			true
+		);
+		wp_enqueue_script(
+			'liveplayer-login',
+			get_template_directory_uri() . "/assets/js/liveplayer_login{$postfix}.js",
+			array(),
+			GREATERMEDIA_VERSION,
+			true
+		);
+	}
+
 	if ( is_page( 'style-guide' ) ) {
 		wp_enqueue_script(
 			'gm-styleguide',
@@ -106,28 +130,6 @@ function greatermedia_scripts_styles() {
 				'font-awesome'
 			),
 			GREATERMEDIA_VERSION
-		);
-	} else if ( ! defined( 'GREATER_MEDIA_GIGYA_TEST_UI' ) && GREATER_MEDIA_GIGYA_TEST_UI ) {
-		wp_enqueue_script(
-			'gigya_socialize',
-			'http://cdn.gigya.com/JS/gigya.js?apiKey=3_e_T7jWO0Vjsd9y0WJcjnsN6KaFUBv6r3VxMKqbitvw-qKfmaUWysQKa1fra5MTb6',
-			array( 'jquery' ),
-			'0.1.0',
-			true
-		);
-		wp_enqueue_script(
-			'gigya-login',
-			get_template_directory_uri() ."/assets/js/gigya_login{$postfix}.js",
-			array(),
-			GREATERMEDIA_VERSION,
-			true
-		);
-		wp_enqueue_script(
-			'liveplayer-login',
-			get_template_directory_uri() . "/assets/js/liveplayer_login{$postfix}.js",
-			array(),
-			GREATERMEDIA_VERSION,
-			true
 		);
 	} else {
 		wp_enqueue_script(
