@@ -1,20 +1,3 @@
-// Sans-Serif Font: Open Sans
-@include font-face(OpenSans, '../fonts/opensans/opensans-regular-webfont');
-@include font-face(OpenSans, '../fonts/opensans/opensans-italic-webfont', normal, italic);
-@include font-face(OpenSans, '../fonts/opensans/opensans-bold-webfont', bold);
-@include font-face(OpenSans, '../fonts/opensans/opensans-bolditalic-webfont', bold, italic);
-@include font-face(OpenSans, '../fonts/opensans/opensans-light-webfont', lighter);
-@include font-face(OpenSans, '../fonts/opensans/opensans-lightitalic-webfont', lighter, italic);
-
-// Serif Font: Playfair Display
-@include font-face(Playfair, '../fonts/playfair/playfair-regular-webfont');
-@include font-face(Playfair, '../fonts/playfair/playfair-italic-webfont', normal, italic);
-@include font-face(Playfair, '../fonts/playfair/playfair-bold-webfont', bold);
-@include font-face(Playfair, '../fonts/playfair/playfair-bolditalic-webfont', bold, italic);
-
-// Font Icons: Font-Awesome
-@import url(//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css);
-
 // Base Variables
 $em-base: 16px;
 $base-font-size: em($em-base);
@@ -33,40 +16,44 @@ $ms-ratio: $major-second;
 // @type String
 //
 $modular-scale: (
-	-4: modular-scale($base-font-size, -4, $ms-ratio),
-	-3: modular-scale($base-font-size, -3, $ms-ratio),
-	-2: modular-scale($base-font-size, -2, $ms-ratio),
-	-1: modular-scale($base-font-size, -1, $ms-ratio),
-	0: modular-scale($base-font-size, 0, $ms-ratio),
-	1: modular-scale($base-font-size, 1, $ms-ratio),
-	2: modular-scale($base-font-size, 2, $ms-ratio),
-	3: modular-scale($base-font-size, 3, $ms-ratio),
-	4: modular-scale($base-font-size, 4, $ms-ratio),
-	5: modular-scale($base-font-size, 5, $ms-ratio),
-	6: modular-scale($base-font-size, 6, $ms-ratio),
-	7: modular-scale($base-font-size, 7, $ms-ratio),
-	8: modular-scale($base-font-size, 8, $ms-ratio),
-	9: modular-scale($base-font-size, 9, $ms-ratio),
-	10: modular-scale($base-font-size, 10, $ms-ratio),
-	11: modular-scale($base-font-size, 11, $ms-ratio),
-	12: modular-scale($base-font-size, 12, $ms-ratio),
+		-4: modular-scale($base-font-size, -4, $ms-ratio),
+		-3: modular-scale($base-font-size, -3, $ms-ratio),
+		-2: modular-scale($base-font-size, -2, $ms-ratio),
+		-1: modular-scale($base-font-size, -1, $ms-ratio),
+		0: modular-scale($base-font-size, 0, $ms-ratio),
+		1: modular-scale($base-font-size, 1, $ms-ratio),
+		2: modular-scale($base-font-size, 2, $ms-ratio),
+		3: modular-scale($base-font-size, 3, $ms-ratio),
+		4: modular-scale($base-font-size, 4, $ms-ratio),
+		5: modular-scale($base-font-size, 5, $ms-ratio),
+		6: modular-scale($base-font-size, 6, $ms-ratio),
+		7: modular-scale($base-font-size, 7, $ms-ratio),
+		8: modular-scale($base-font-size, 8, $ms-ratio),
+		9: modular-scale($base-font-size, 9, $ms-ratio),
+		10: modular-scale($base-font-size, 10, $ms-ratio),
+		11: modular-scale($base-font-size, 11, $ms-ratio),
+		12: modular-scale($base-font-size, 12, $ms-ratio),
 );
 
 // Global font sizes based on breakpoints
-body{
+body {
 	line-height: 2;
 	font-size: 80%;
-	font-family: $sans-serif;
+	font-family: $open-sans;
 	color: $text-color;
 	-webkit-font-smoothing: antialiased;
-	@include media($mobile){
+	@include bp(small) {
 		font-size: 85%;
 	}
-	@include media($tablet){
+	@include bp(medium) {
 		line-height: 1.8;
 		font-size: 90%;
 	}
-	@include media($desktop){
+	@include bp(large) {
+		line-height: 1.5;
+		font-size: 95%;
+	}
+	@include bp(x-large) {
 		line-height: 1.5;
 		font-size: 100%;
 	}
@@ -75,9 +62,16 @@ body{
 // Headings
 h1, .h1, %h1, h2, .h2, %h2, h3, .h3, %h3, h4, .h4, %h4, h5, .h5, %h5, h6, .h6, %h6 {
 	line-height: 1.5;
-	font-family: $sans-serif;
+	font-family: $droid-sans;
 	text-rendering: optimizelegibility;
-	font-weight: lighter;
+	font-weight: bold;
+	a:link, a:visited {
+		color: palette(default, black);
+	}
+
+	a:hover, a:focus, a:active {
+		color: palette(default, red);
+	}
 }
 
 h1, .h1, %h1 {

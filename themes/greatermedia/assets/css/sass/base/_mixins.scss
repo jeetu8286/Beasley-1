@@ -7,28 +7,108 @@
 // @access private
 // @since 0.1.0
 //
+// @param {palette} $palette - color palette to use with colors
 // @param {color} $bgcolor - background color of the button
 // @param {color} $textcolor - text color of the button
 // @param {number | unit} $padding-top-bottom - padding for the top and bottom of the button
 // @param {number | unit} $padding-left-right - padding for the left and right of the button
 // @param {number | unit} $font-size - font size for the button
 //
-@mixin btn($bgcolor, $textcolor, $padding-top-bottom, $padding-left-right, $font-size) {
+@mixin btn($palette, $bgcolor, $textcolor, $padding-top-bottom, $padding-left-right, $font-size) {
 	@include padding($padding-top-bottom $padding-left-right);
 	@include margin(null .5em null null);
 	@include border-width(0);
 	outline: none;
-	background-color: color($bgcolor);
-	font-family: $sans-serif;
+	background-color: palette($palette, $bgcolor);
+	font-family: $open-sans;
 	font-size: $font-size;
-	color: color($textcolor) !important;
+	color: palette($palette, $textcolor) !important;
 	text-transform: uppercase;
 	cursor: pointer;
 	&:hover, &:focus {
-		background-color: darken(color($bgcolor), 9%);
-		color: color($textcolor);
+		background-color: darken(palette($palette, $bgcolor), 9%);
+		color: palette($palette, $textcolor);
 	}
 	&:last-of-type{
 		@include margin(null 0 null null);
+	}
+}
+
+// Mixin to call a breakpoint value, defined as `$name`, from the `$breakpoints` array located in the
+// `_breakpoints.scss`.
+//
+// @example scss - BP Mixin
+// @include bp(small);
+//
+// @author Allen Moore
+// @access private
+// @since 0.1.0
+//
+// @param {Breakpoint Name} $name - name of the breakpoint to be called from `$breakpoints` array
+// @param {Breakpoints} $breakpoints - references the $breakpoints array located in `_breakpoints.scss`
+//
+// @content autofill
+//
+@mixin bp($name) {
+	@if not map-has-key($breakpoints, $name) {
+		@warn "Invalid breakpoint `#{$name}`.";
+	} @else {
+		@if map-get($breakpoints, $name) {
+			@include media(map-get($breakpoints, $name)){
+				@content;
+			}
+		} @else {
+			@content;
+		}
+	}
+}
+
+// Mixin to create an arrow
+//
+// @example scss - Arrow Mixin
+// @include arrow(right, #000, 12px, 12px);
+//
+// @author Allen Moore
+// @access private
+// @since 0.1.0
+//
+// @param {Arrow Direction} $direction - direction of the arrow (top, left, right, bottom, top-left, bottom-left, bottom-right)
+// @param {Color} $color - color of the arrow (hex, rgb, or rgba)
+// @param {Width} $width - width of the arrow (px or em)
+// @param {Height} $height - height of the arrow (px or em)
+//
+@mixin arrow($direction, $color, $width, $height){
+	display: block;
+	height: 0;
+	width: 0;
+
+	@if $direction == 'top' {
+		border-left: $width solid transparent;
+		border-right: $width solid transparent;
+		border-bottom: $height solid $color;
+	} @else if $direction == 'right' {
+		border-top: $height/2 solid transparent;
+		border-bottom: $height/2 solid transparent;
+		border-left: $width solid $color;
+	} @else if $direction == 'bottom' {
+		border-top: $height solid $color;
+		border-right: $width/2 solid transparent;
+		border-left: $width/2 solid transparent;
+	} @else if $direction == 'left' {
+		border-top: $height/2 solid transparent;
+		border-bottom: $height/2 solid transparent;
+		border-right: $width solid $color;
+	} @else if $direction == 'top-left' {
+		border-top: $width solid $color;
+		border-right: $height/2 solid transparent;
+	} @else if $direction == 'top-right' {
+		border-top: $width solid $color;
+		border-left: $height/2 solid transparent;
+	} @else if $direction == 'bottom-left' {
+		border-bottom: $height/2 solid $color;
+		border-right: $width solid transparent;
+	} @else if $direction == 'bottom-right' {
+		border-bottom: $height/2 solid $color;
+		border-left: $width solid transparent;
 	}
 }

@@ -6,7 +6,14 @@
  * @since   0.1.0
  */
 
-get_header(); ?>
+get_header();
+
+	/* we won't display this until we get some actual content
+	if ( is_front_page() || is_home() ) {
+		get_template_part( 'partials/frontpage', 'featured' );
+	} */
+
+	?>
 
 	<main class="main" role="main">
 
@@ -14,79 +21,94 @@ get_header(); ?>
 
 			<section class="content">
 
+				<h2>Latest from WMMR</h2>
+
 				<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
 
 					<article id="post-<?php the_ID(); ?>" <?php post_class( 'cf' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
 
-						<header class="article-header">
+						<?php /* <header class="entry-header">
 
-							<div class="article-types">
+							<div class="entry-type">
 
-								<div class="article-type--<?php greatermedia_post_formats(); ?>"><?php greatermedia_post_formats(); ?></div>
+								<div class="entry-type--<?php greatermedia_post_formats(); ?>"><?php greatermedia_post_formats(); ?></div>
 
 							</div>
 
-							<div class="byline">
+							<div class="entry-author">
 								by
-								<span class="vcard author"><span class="fn url"><?php the_author_posts_link(); ?></span></span>
-								<time datetime="<?php the_time( 'c' ); ?>" class="post-date updated"> on <?php the_time( 'l, F jS' ); ?></time>
-								<a href="<?php the_permalink(); ?>/#comments" class="article-comments--count"><?php comments_number( 'No Comments', '1 Comment', '% Comments' ); ?></a>
+								<span class="vcard entry-author"><span class="fn url"><?php the_author_posts_link(); ?></span></span>
+								<time datetime="<?php the_time( 'c' ); ?>" class="entry-date"> on <?php the_time( 'l, F jS' ); ?></time>
+								<a href="<?php the_permalink(); ?>/#comments" class="entry-comments--count"><?php comments_number( 'No Comments', '1 Comment', '% Comments' ); ?></a>
+							</div>
+
+							<div class="show entry-show">
+								<div class="show-attr--logo"></div>
+								<div class="show-attr--name">Show Name</div>
+							</div>
+
+							<div class="personality entry-personality">
+								<div class="personality-attr--img"></div>
+								<div class="personality-attr--name">Personality Name</div>
 							</div>
 
 							<h2 class="entry-title" itemprop="headline"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
 
-						</header>
+						</header> */ ?>
 
 						<?php
 
-							$image_formats = has_post_format(
-								array(
-									'gallery', 'image',
-								)
-							);
+							if ( has_post_format( 'video' ) ) {
 
-							if ( has_post_thumbnail() && ( $image_formats || false == get_post_format() ) ) { ?>
+								get_template_part( 'partials/post', 'video' );
 
-							<section class="entry-thumbnail">
+							} elseif ( has_post_format( 'audio') ) {
 
-								<?php the_post_thumbnail( 'gm-article-thumbnail' ); ?>
+								get_template_part( 'partials/post', 'audio' );
 
-							</section>
+							} elseif ( has_post_format( 'link') ) {
 
-						<?php } ?>
+								get_template_part( 'partials/post', 'link' );
 
+							} elseif ( has_post_format( 'gallery') ) {
 
-						<?php
-							if ( false == get_post_format() ) {
-						?>
-							<section class="entry-content" itemprop="articleBody">
+								get_template_part( 'partials/post', 'gallery' );
 
-								<?php the_excerpt(); ?>
+							} else {
 
-							</section> <?php // end article section ?>
+								get_template_part( 'partials/post', 'standard' );
 
-						<?php }
-
-							$formats = has_post_format(
-								array(
-									'video',
-									'audio',
-								)
-							);
-
-							if ( $formats ) {
+							}
 
 						?>
 
-							<section class="entry-content" itemprop="articleBody">
+						<footer class="entry-footer">
 
-								<?php the_content(); ?>
+							<div class="entry-author">
+								<div class="entry-author--img">
+									<img src="http://placecreature.com/40/40">
+								</div>
+								<div class="entry-author--meta">
+									<div class="entry-author--name"><?php the_author_posts_link(); ?></div>
+									<time datetime="<?php the_time( 'c' ); ?>" class="entry-date"><?php the_time( 'M. j, Y' ); ?></time>
+								</div>
+							</div>
 
-							</section> <?php // end article section ?>
+							<div class="entry-type">
 
-						<?php } ?>
+								<div class="entry-type--<?php greatermedia_post_formats(); ?>"><?php greatermedia_post_formats(); ?></div>
 
-						<footer class="article-footer">
+							</div>
+
+							<div class="entry-comments">
+
+								<div class="entry-comments--count">
+
+									<a href="<?php the_permalink(); ?>#comments"><?php comments_number( '0', '1', '%' ); ?></a>
+
+								</div>
+
+							</div>
 
 						</footer>
 
@@ -94,10 +116,10 @@ get_header(); ?>
 
 				<?php endwhile; ?>
 
-					<div class="pagination">
+					<div class="posts-pagination">
 
-						<div class="pagination-previous"><?php next_posts_link( '<i class="fa fa-angle-double-left"></i>Previous' ); ?></div>
-						<div class="pagination-next"><?php previous_posts_link( 'Next<i class="fa fa-angle-double-right"></i>' ); ?></div>
+						<div class="posts-pagination--previous"><?php next_posts_link( '<i class="fa fa-angle-double-left"></i>Previous' ); ?></div>
+						<div class="posts-pagination--next"><?php previous_posts_link( 'Next<i class="fa fa-angle-double-right"></i>' ); ?></div>
 
 					</div>
 
@@ -123,14 +145,8 @@ get_header(); ?>
 
 			</section>
 
-			<aside class="sidebar" role="complementary">
-
-				Sidebar area
-
-			</aside>
-
 		</div>
 
 	</main>
 
-<?php get_footer();
+<?php get_footer(); ?>
