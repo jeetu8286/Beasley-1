@@ -22,11 +22,25 @@ if ( !class_exists( "GMI_Personality" ) ) {
 			add_action( 'init', array( __CLASS__, 'register_personality_cpt' ) );
 			add_action( 'init', array( __CLASS__, 'register_personality_shadow_taxonomy' ) );
 			add_action( 'init', array( __CLASS__, 'associate_personality_cpt_taxonomy' ), 20 ); // after register_personality_cpt & associate_personality_cpt_taxonomy
-			add_action( 'add_meta_boxes', array( $this, 'add_personality_info_meta_box' ) );
+			add_action( 'add_meta_boxes', array( __CLASS__, 'add_personality_info_meta_box' ) );
 			add_action( 'save_post', array( __CLASS__, 'save_personality_cpt_meta_boxes' ) );
 			add_filter( 'manage_' . self::CPT_SLUG . '_posts_columns', array( __CLASS__, 'custom_columns' ) );
 			add_action( 'manage_' . self::CPT_SLUG . '_posts_custom_column', array( __CLASS__, 'custom_columns_content' ), 1, 2 );
 			add_action( 'admin_enqueue_scripts', array( __CLASS__, 'admin_enqueue_scripts' ) );
+		}
+
+		/**
+		 * Get the post types associated with the personality taxonomy.
+		 *
+		 * @return array The post types
+		 */
+		public static function get_supported_post_types() {
+			$post_types = array(
+				'post',
+				'contest',
+			);
+
+			return $post_types;
 		}
 
 		/**
@@ -103,10 +117,12 @@ if ( !class_exists( "GMI_Personality" ) ) {
 				'show_in_menu'  		=> true,
 				'show_admin_column'  	=> true,
 				'show_tagcloud'			=> true,
-				'hierarchical'  		=> false,
+				'hierarchical'  		=> true, // Show check boxes in the Personality meta box.
 			);
 
-			register_taxonomy( self::SHADOW_TAX_SLUG, array( 'post' ), $args );
+			$post_types = self::get_supported_post_types();
+
+			register_taxonomy( self::SHADOW_TAX_SLUG, $post_types, $args );
 		}
 
 		public static function associate_personality_cpt_taxonomy() {
@@ -283,11 +299,43 @@ if ( !class_exists( "GMI_Personality" ) ) {
 		 * Enqueue supporting admin scripts.
 		 */
 		public static function admin_enqueue_scripts() {
+			global $pagenow;
 			$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
+			$post_types = self::get_supported_post_types();
 
-			if ( self::CPT_SLUG === get_post_type() )
-			{
+			// Personality CPT styles
+			if ( self::CPT_SLUG === get_post_type() ) {
 				wp_enqueue_style( 'personality-admin', GMI_PERSONALITY_URL . "assets/css/greater_media_personalities_admin{$postfix}.css", array(), GMI_PERSONALITY_VERSION, 'all' );
+			}
+
+			// Add support for auto-selecting a user's personality when creting a new post.
+			if ( in_array( get_post_type(), $post_types ) && 'post-new.php' === $pagenow ) {
+				$term_ids = array();
+
+				$args = array(
+				    'meta_key' => '_personality_assoc_user_id',
+				    'meta_value' => get_current_user_id(),
+				    'post_type' => self::CPT_SLUG,
+				    'posts_per_page' => 50,
+				);
+
+				$personalities = get_posts( $args );
+
+				foreach ( $personalities as $personality ) {
+					$term = get_term_by( 'slug', $personality->post_name, self::SHADOW_TAX_SLUG );
+
+					if ( false !== $term ) {
+						$term_ids[] = $term->term_id;
+					}
+				}
+
+				wp_register_script( 'personality-shadow-tax-admin', GMI_PERSONALITY_URL . "assets/js/greater_media_personalities_admin{$postfix}.js", array( 'jquery'), false, true );
+
+				wp_localize_script( 'personality-shadow-tax-admin', 'PERSONALITY_JS', array(
+					'userPersonalities'		=> $term_ids,
+				));
+
+				wp_enqueue_script( 'personality-shadow-tax-admin' );
 			}
 		}
 
