@@ -44,8 +44,8 @@ class SettingsPage {
 
 	function get_options() {
 		$defaults = array(
-			'gigya_api_key' => 'foo',
-			'gigya_secret_key' => 'bar',
+			'gigya_api_key' => '',
+			'gigya_secret_key' => '',
 		);
 
 		$options = get_option( 'member_query_settings', json_encode( $defaults ) );
