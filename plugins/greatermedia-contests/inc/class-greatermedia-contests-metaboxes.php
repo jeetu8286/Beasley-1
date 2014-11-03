@@ -8,10 +8,7 @@ class GreaterMediaContestsMetaboxes {
 
 	function __construct() {
 
-		add_action( 'custom_metadata_manager_init_metadata', array(
-			$this,
-			'custom_metadata_manager_init_metadata'
-		), 20, 3 );
+		add_action( 'admin_init', array( $this, 'admin_init' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
 		add_action( 'save_post', array( $this, 'save_post' ) );
@@ -87,110 +84,129 @@ class GreaterMediaContestsMetaboxes {
 		};
 	}
 
-	public function custom_metadata_manager_init_metadata() {
+	public function admin_init() {
 
-		// Groups
-		x_add_metadata_group(
-			'prizes',
-			array( 'contest' ),
+		$post_id = absint( $_REQUEST['post'] );
+		if ( empty( $post_id ) ) {
+			return;
+		}
+
+		add_settings_section(
+			'greatermedia-contest-rules',
+			null,
+			array( $this, 'render_generic_settings_section' ),
+			'greatermedia-contest-rules'
+		);
+
+		add_settings_field(
+			'contest-start-date',
+			'Start Date',
+			array( $this, 'render_date_field' ),
+			'greatermedia-contest-rules',
+			'greatermedia-contest-rules',
 			array(
-				'label' => 'Prizes', // Label for the group
+				'post_id'   => $post_id,
+				'id'        => 'greatermedia_contest_start',
+				'name'      => 'greatermedia_contest_start',
+				'meta_name' => 'contest-start'
 			)
 		);
 
-		x_add_metadata_group(
-			'how-to-enter',
-			array( 'contest' ),
+		add_settings_field(
+			'contest-end-date',
+			'End Date',
+			array( $this, 'render_date_field' ),
+			'greatermedia-contest-rules',
+			'greatermedia-contest-rules',
 			array(
-				'label' => 'How to Enter', // Label for the group
+				'post_id'   => $post_id,
+				'id'        => 'greatermedia_contest_end',
+				'name'      => 'greatermedia_contest_end',
+				'meta_name' => 'contest-end'
 			)
 		);
 
-		x_add_metadata_group(
-			'rules',
-			array( 'contest' ),
-			array(
-				'label' => 'Rules', // Label for the group
-			)
-		);
-
-		x_add_metadata_group(
-			'dates',
-			array( 'contest' ),
-			array(
-				'label' => 'Eligible Dates', // Label for the group
-			)
-		);
-
-		// Fields
-		x_add_metadata_field(
+		add_settings_field(
 			'prizes-desc',
-			array( 'contest' ),
+			'What You Win',
+			array( $this, 'render_wysiwyg' ),
+			'greatermedia-contest-rules',
+			'greatermedia-contest-rules',
 			array(
-				'group'      => 'prizes',
-				// The slug of group the field should be added to. This needs to be registered with x_add_metadata_group first.
-				'field_type' => 'wysiwyg',
-				// The type of field; 'text', 'textarea', 'password', 'checkbox', 'radio', 'select', 'upload', 'wysiwyg', 'datepicker', 'taxonomy_select', 'taxonomy_radio'
-				'label'      => 'What You Win',
-				// Label for the field
+				'post_id'   => $post_id,
+				'id'        => 'greatermedia_contest_prizes',
+				'name'      => 'greatermedia_contest_prizes',
+				'meta_name' => 'prizes-desc'
 			)
 		);
 
-		x_add_metadata_field(
-			'how-to-enter-desc',
-			array( 'contest' ),
+		add_settings_field(
+			'enter-desc',
+			'How to Enter',
+			array( $this, 'render_wysiwyg' ),
+			'greatermedia-contest-rules',
+			'greatermedia-contest-rules',
 			array(
-				'group'      => 'how-to-enter',
-				// The slug of group the field should be added to. This needs to be registered with x_add_metadata_group first.
-				'field_type' => 'wysiwyg',
-				// The type of field; 'text', 'textarea', 'password', 'checkbox', 'radio', 'select', 'upload', 'wysiwyg', 'datepicker', 'taxonomy_select', 'taxonomy_radio'
-				'label'      => null,
-				// Label for the field
+				'post_id'   => $post_id,
+				'id'        => 'greatermedia_contest_enter',
+				'name'      => 'greatermedia_contest_enter',
+				'meta_name' => 'how-to-enter-desc'
 			)
 		);
 
-		x_add_metadata_field(
+		add_settings_field(
 			'rules-desc',
-			array( 'contest' ),
+			'Official Contest Rules',
+			array( $this, 'render_wysiwyg' ),
+			'greatermedia-contest-rules',
+			'greatermedia-contest-rules',
 			array(
-				'group'      => 'rules',
-				// The slug of group the field should be added to. This needs to be registered with x_add_metadata_group first.
-				'field_type' => 'wysiwyg',
-				// The type of field; 'text', 'textarea', 'password', 'checkbox', 'radio', 'select', 'upload', 'wysiwyg', 'datepicker', 'taxonomy_select', 'taxonomy_radio'
-				'label'      => 'Official Contest Rules',
-				// Label for the field
-			)
-		);
-
-		x_add_metadata_field(
-			'start-date',
-			array( 'contest' ),
-			array(
-				'group'      => 'dates',
-				// The slug of group the field should be added to. This needs to be registered with x_add_metadata_group first.
-				'field_type' => 'datepicker',
-				// The type of field; 'text', 'textarea', 'password', 'checkbox', 'radio', 'select', 'upload', 'wysiwyg', 'datepicker', 'taxonomy_select', 'taxonomy_radio'
-				'label'      => 'Start Date',
-				// Label for the field
-			)
-		);
-
-		x_add_metadata_field(
-			'end-date',
-			array( 'contest' ),
-			array(
-				'group'      => 'dates',
-				// The slug of group the field should be added to. This needs to be registered with x_add_metadata_group first.
-				'field_type' => 'datepicker',
-				// The type of field; 'text', 'textarea', 'password', 'checkbox', 'radio', 'select', 'upload', 'wysiwyg', 'datepicker', 'taxonomy_select', 'taxonomy_radio'
-				'label'      => 'End Date',
-				// Label for the field
+				'post_id'   => $post_id,
+				'id'        => 'greatermedia_contest_enter',
+				'name'      => 'greatermedia_contest_enter',
+				'meta_name' => 'rules-desc'
 			)
 		);
 
 	}
 
+	/**
+	 * Render instructions for the settings section
+	 */
+	public function render_generic_settings_section() {
+
+	}
+
+	public function render_wysiwyg( array $args ) {
+
+		$content = get_post_meta( $args['post_id'], $args['meta_name'], true );
+
+		wp_editor(
+			$content,
+			$args['id']
+		);
+
+	}
+
+	public function render_date_field(array $args) {
+
+		$value = get_post_meta($args['post_id'], $args['meta_name'], true);
+
+		echo '<input type="date" name="" value="" />';
+
+	}
+
 	public function add_meta_boxes() {
+
+		add_meta_box(
+			'rules',
+			'Contest Rules',
+			array( $this, 'rules_meta_box' ),
+			'contest',
+			'normal',
+			'default',
+			array()
+		);
 
 		add_meta_box(
 			'form',
@@ -211,6 +227,13 @@ class GreaterMediaContestsMetaboxes {
 			'default',
 			array()
 		);
+
+	}
+
+	public function rules_meta_box() {
+
+		settings_fields( 'greatermedia-contest-rules' );    //pass slug name of page, also referred
+		do_settings_sections( 'greatermedia-contest-rules' );
 
 	}
 
