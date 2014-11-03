@@ -8,7 +8,7 @@ class GreaterMediaContestsMetaboxes {
 
 	function __construct() {
 
-		add_action( 'admin_enqueue_scripts', array( $this, 'admin_init' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'register_settings_fields' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
 		add_action( 'save_post', array( $this, 'save_post' ) );
@@ -105,7 +105,11 @@ class GreaterMediaContestsMetaboxes {
 		};
 	}
 
-	public function admin_init() {
+	/**
+	 * Register meta box fields through the Settings API
+	 * Implements admin_enqueue_scripts action to be sure global $post is set by then
+	 */
+	public function register_settings_fields() {
 
 		// Make sure this is an admin screen
 		if ( ! is_admin() ) {
@@ -208,9 +212,13 @@ class GreaterMediaContestsMetaboxes {
 	 * Render instructions for the settings section
 	 */
 	public function render_generic_settings_section() {
-
+		// No special rendering
 	}
 
+	/**
+	 * Render a WYSIWYG editor meta field
+	 * @param array $args
+	 */
 	public function render_wysiwyg( array $args ) {
 
 		wp_editor(
@@ -220,6 +228,10 @@ class GreaterMediaContestsMetaboxes {
 
 	}
 
+	/**
+	 * Render an HTML5 date input meta field
+	 * @param array $args
+	 */
 	public function render_date_field( array $args ) {
 
 		if ( isset( $args['value'] ) && is_numeric( $args['value'] ) ) {
@@ -233,6 +245,10 @@ class GreaterMediaContestsMetaboxes {
 
 	}
 
+	/**
+	 * Register meta boxes on the Contest editor
+	 * Implements add_meta_boxes action
+	 */
 	public function add_meta_boxes() {
 
 		add_meta_box(
@@ -267,6 +283,9 @@ class GreaterMediaContestsMetaboxes {
 
 	}
 
+	/**
+	 * Render the "rules" meta box on the Contest editor
+	 */
 	public function rules_meta_box() {
 
 		// Add an nonce field so we can check for it later.
@@ -275,6 +294,9 @@ class GreaterMediaContestsMetaboxes {
 
 	}
 
+	/**
+	 * Render an embedded form editor on the Contest editor
+	 */
 	public function contest_embedded_form() {
 
 		// Add an nonce field so we can check for it later.
@@ -284,6 +306,9 @@ class GreaterMediaContestsMetaboxes {
 
 	}
 
+	/**
+	 * Render a meta box for Contest entries
+	 */
 	public function contest_entries_meta_box() {
 
 		global $post;
@@ -301,6 +326,10 @@ class GreaterMediaContestsMetaboxes {
 
 	}
 
+	/**
+	 * Save meta fields on post save
+	 * @param int $post_id
+	 */
 	public function save_post( $post_id ) {
 
 		$post = get_post( $post_id );
