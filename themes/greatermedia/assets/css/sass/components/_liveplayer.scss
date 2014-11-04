@@ -8,6 +8,13 @@
 	@include position(fixed, 0 null null null);
 }
 
+.logged-in .live-player--fixed {
+	top: 46px;
+	@include media(min-width 782px) {
+		top: 32px;
+	}
+}
+
 .live-player--container {
 	min-height: 70px;
 	@include padding(1em 0);

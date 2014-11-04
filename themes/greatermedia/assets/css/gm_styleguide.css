@@ -530,6 +530,12 @@ img {
       .live-player:last-child {
         margin-right: 0; } }
 
+.logged-in .live-player {
+  top: 284px; }
+  @media screen and (min-width: 782px) {
+    .logged-in .live-player {
+      top: 270px; } }
+
 body {
   line-height: 2;
   font-size: 80%;
@@ -1391,6 +1397,12 @@ blockquote p {
 .live-player--fixed {
   position: fixed;
   top: 0; }
+
+.logged-in .live-player--fixed {
+  top: 46px; }
+  @media screen and (min-width: 782px) {
+    .logged-in .live-player--fixed {
+      top: 32px; } }
 
 .live-player--container {
   min-height: 70px;
