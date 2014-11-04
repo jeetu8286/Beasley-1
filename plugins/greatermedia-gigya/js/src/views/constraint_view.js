@@ -48,7 +48,7 @@ var ConstraintView = Backbone.View.extend({
 	},
 
 	didChange: function(event) {
-		this.updateConstraint(this.model);
+		this.updateConstraint(this.model, event.target);
 	},
 
 	updateConstraint: function(constraint) {
