@@ -994,7 +994,7 @@ p {
   display: block;
   margin-right: 7.42297%;
   width: 19.43277%;
-  font-size: 0.70233em; }
+  font-size: 0.88889em; }
   .entry-author:last-child {
     margin-right: 0; }
   @media screen and (min-width: 480px) {
@@ -1022,7 +1022,14 @@ p {
       .entry-author:last-child {
         margin-right: 0; } }
 
+.entry-author a, .entry-author a:visited {
+  color: #404041; }
+
+.entry-author a:hover, .entry-author a:focus {
+  color: #404041; }
+
 .entry-author--img {
+  float: left;
   height: 40px;
   width: 40px;
   margin-right: 0.625em;
@@ -1047,13 +1054,11 @@ p {
   border-top-left-radius: 50%;
   border-bottom-left-radius: 50%; }
 
-.entry-author--name {
-  float: left;
-  width: 100%; }
+.entry-author--meta {
+  float: left; }
 
-.entry-date {
-  float: left;
-  width: 100%; }
+.entry-author--name {
+  text-transform: uppercase; }
 
 .entry-type {
   float: left;
