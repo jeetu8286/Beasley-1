@@ -5,17 +5,16 @@
 	@include border-color(null null color(primary-border) null);
 	@include border-style(null null solid null);
 	@include border-width(null null 1px null);
+	@include transition (all 200ms linear);
 	background-color: color(secondary-bg);
 }
 
 .header--pinned {
-	@include transition (all 0.5s ease-in-out);
-	@include opacity(1);
+	@include transform(translateY(0%));
 }
 
 .header--unpinned {
-	@include transition (all 0.5s ease-in-out);
-	@include opacity(0);
+	@include transform(translateY(-100%));
 }
 
 .header-logo{

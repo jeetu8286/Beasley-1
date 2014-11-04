@@ -32,6 +32,10 @@
 		?>
 	</div>
 
+	<?php
+		if ( dynamic_sidebar( 'liveplayer_sidebar' ) ) : else : endif;
+	?>
+
 	<div class="now-playing--title">
 
 	</div>

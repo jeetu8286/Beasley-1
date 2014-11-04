@@ -41,17 +41,17 @@
 	headroom = new Headroom(header, {
 		"offset": headerHeight,
 		"tolerance": {
-			"up": 5,
-			"down": 5
+			"up": 0,
+			"down": 0
 		},
 		"classes": {
 			"pinned": "header--pinned",
 			"unpinned": "header--unpinned"
 		},
-		onPin : function() {
+		onTop : function() {
 			livePlayerInit();
 		},
-		onUnpin : function() {
+		onNotTop : function() {
 			livePlayerFix();
 		}
 	});

@@ -71,7 +71,7 @@
 // Byline
 .entry-author {
 	@include span-columns(1);
-	font-size: ms(-3);
+	font-size: ms(-1);
 	@include bp(small) {
 		@include span-columns(1);
 	}
@@ -83,7 +83,16 @@
 	}
 }
 
+.entry-author a, .entry-author a:visited {
+	color: color(secondary-text);
+}
+
+.entry-author a:hover, .entry-author a:focus {
+	color: color(secondary-text);
+}
+
 .entry-author--img {
+	float: left;
 	@include size(40px 40px);
 	@include margin(null em(10px) null null);
 	@include border-top-radius(50%);
@@ -100,14 +109,15 @@
 	@include border-left-radius(50%);
 }
 
-.entry-author--name {
+.entry-author--meta {
 	float: left;
-	@include size(100% null);
+}
+.entry-author--name {
+	text-transform: uppercase;
 }
 
 .entry-date {
-	float: left;
-	@include size(100% null);
+
 }
 
 // Post Formats

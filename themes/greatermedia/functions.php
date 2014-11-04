@@ -152,7 +152,9 @@ function greatermedia_scripts_styles() {
 		wp_enqueue_script(
 			'greatermedia',
 			get_template_directory_uri() . "/assets/js/greater_media{$postfix}.js",
-			array('headroom'),
+			array(
+				'headroom'
+			),
 			GREATERMEDIA_VERSION,
 			true
 		);
@@ -212,6 +214,9 @@ function greatermedia_nav_menus() {
 
 add_action( 'init', 'greatermedia_nav_menus' );
 
+/**
+ * Add Post Formats
+ */
 function greatermedia_post_formats() {
 
 	global $post;
@@ -236,14 +241,19 @@ function greatermedia_post_formats() {
 }
 
 /**
- * add a 'read more' link to the bottom of the excerpt
- *
- * @param $more
- *
- * @return string
+ * Add Widget Areas
  */
-function new_excerpt_more( $more ) {
-	return '<div class="read-more"><a href="' . get_permalink( get_the_ID() ) . '" class="read-more--btn">' . __( 'Read More', 'greatermedia' ) . '</a></div>';
+function greatermedia_widgets_init() {
+
+	register_sidebar( array(
+		'name'          => 'Live Player Sidebar',
+		'id'            => 'liveplayer_sidebar',
+		'before_widget' => '<div id="%1$s" class="widget %2$s">',
+		'after_widget'  => '</div>',
+		'before_title'  => '<h3 class="widgettitle">',
+		'after_title'   => '</h3>',
+	) );
+
 }
 
-add_filter( 'excerpt_more', 'new_excerpt_more' );
+add_action( 'widgets_init', 'greatermedia_widgets_init' );
