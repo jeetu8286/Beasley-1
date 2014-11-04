@@ -6,6 +6,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class GreaterMediaContestsMetaboxes {
 
+	const DEFAULT_THANKS_MSG = 'Thanks for entering!';
+
 	function __construct() {
 
 		add_action( 'admin_enqueue_scripts', array( $this, 'register_settings_fields' ) );
@@ -136,6 +138,13 @@ class GreaterMediaContestsMetaboxes {
 			'greatermedia-contest-rules'
 		);
 
+		add_settings_section(
+			'greatermedia-contest-form',
+			null,
+			array( $this, 'render_generic_settings_section' ),
+			'greatermedia-contest-form'
+		);
+
 		add_settings_field(
 			'contest-start-date',
 			'Start Date',
@@ -206,6 +215,26 @@ class GreaterMediaContestsMetaboxes {
 			)
 		);
 
+		$thank_you = get_post_meta( $post_id, 'form-thankyou', true );
+		if ( empty( $thank_you ) ) {
+			$thank_you = __( self::DEFAULT_THANKS_MSG, 'greatermedia_contests' );
+		}
+
+		add_settings_field(
+			'form-thankyou',
+			'"Thank You" Message',
+			array( $this, 'render_input' ),
+			'greatermedia-contest-form',
+			'greatermedia-contest-form',
+			array(
+				'post_id' => $post_id,
+				'id'      => 'greatermedia_contest_form_thankyou',
+				'name'    => 'greatermedia_contest_form_thankyou',
+				'size'    => 50,
+				'value'   => $thank_you
+			)
+		);
+
 	}
 
 	/**
@@ -217,6 +246,7 @@ class GreaterMediaContestsMetaboxes {
 
 	/**
 	 * Render a WYSIWYG editor meta field
+	 *
 	 * @param array $args
 	 */
 	public function render_wysiwyg( array $args ) {
@@ -230,18 +260,36 @@ class GreaterMediaContestsMetaboxes {
 
 	/**
 	 * Render an HTML5 date input meta field
+	 *
 	 * @param array $args
 	 */
 	public function render_date_field( array $args ) {
 
 		if ( isset( $args['value'] ) && is_numeric( $args['value'] ) ) {
 			// HTML5 date input needs date in Y-m-d and will convert to local format on display
-			$value = date( 'Y-m-d', $args['value'] );
+			$args['value'] = date( 'Y-m-d', $args['value'] );
 		} else {
-			$value = ''; // invalid, should be a unix timestamp
+			$args['value'] = ''; // invalid, should be a unix timestamp
 		}
 
-		echo '<input type="date" id="' . esc_attr( $args['id'] ) . '" name="' . esc_attr( $args['name'] ) . '" value="' . esc_attr( $value ) . '" />';
+		$args['type'] = 'date';
+		self::render_input( $args );
+
+	}
+
+	public function render_input( array $args ) {
+
+		if ( ! isset( $args['type'] ) || empty( $args['type'] ) ) {
+			$args['type'] = 'text';
+		}
+
+		if ( isset( $args['size'] ) ) {
+			$size_attr = 'size="' . absint( $args['size'] ) . '"';
+		} else {
+			$size_attr = '';
+		}
+
+		echo '<input type="' . esc_attr( $args['type'] ) . '" id="' . esc_attr( $args['id'] ) . '" name="' . esc_attr( $args['name'] ) . '" value="' . esc_attr( $args['value'] ) . '" ' . $size_attr . ' />';
 
 	}
 
@@ -301,8 +349,8 @@ class GreaterMediaContestsMetaboxes {
 
 		// Add an nonce field so we can check for it later.
 		wp_nonce_field( 'contest_form_meta_box', 'contest_form_meta_box' );
-
 		include trailingslashit( GREATER_MEDIA_CONTESTS_PATH ) . 'tpl/contest-form-meta-box.tpl.php';
+		do_settings_sections( 'greatermedia-contest-form' );
 
 	}
 
@@ -328,6 +376,7 @@ class GreaterMediaContestsMetaboxes {
 
 	/**
 	 * Save meta fields on post save
+	 *
 	 * @param int $post_id
 	 */
 	public function save_post( $post_id ) {
@@ -370,6 +419,13 @@ class GreaterMediaContestsMetaboxes {
 		 */
 		$form = wp_kses_stripslashes( $_POST['contest_embedded_form'] );
 		update_post_meta( $post_id, 'embedded_form', $form );
+
+		// Update the form's "thank you" message
+		$thank_you = isset( $_POST['greatermedia_contest_form_thankyou'] ) ? $_POST['greatermedia_contest_form_thankyou'] : '';
+		if ( empty( $thank_you ) ) {
+			$thank_you = __( self::DEFAULT_THANKS_MSG, 'greatermedia_contests' );
+		}
+		update_post_meta( $post_id, 'form-thankyou', sanitize_text_field( $thank_you ) );
 
 		// Update the contest rules meta fields
 		update_post_meta( $post_id, 'prizes-desc', wp_kses_post( $_POST['greatermedia_contest_prizes'] ) );
