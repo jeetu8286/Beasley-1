@@ -401,7 +401,7 @@ img {
   overflow-y: hidden; }
 
 .container {
-  max-width: 64.125em;
+  max-width: 70.125em;
   margin-left: auto;
   margin-right: auto;
   margin: 0 18px; }
@@ -411,7 +411,7 @@ img {
     clear: both; }
 
 .main, .featured {
-  width: 64.125em;
+  width: 70.125em;
   margin: 0;
   background-color: #ffffff; }
 
@@ -516,7 +516,7 @@ img {
     .live-player {
       display: block;
       height: 100%;
-      width: 21.875em;
+      width: 15.625em;
       -webkit-box-sizing: border-box;
       -moz-box-sizing: border-box;
       box-sizing: border-box;
@@ -1953,7 +1953,7 @@ blockquote p {
       width: 12.5em; } }
 
 .sg-nav--content {
-  max-width: 64.125em;
+  max-width: 70.125em;
   margin-left: auto;
   margin-right: auto; }
   .sg-nav--content:after {
@@ -2082,7 +2082,7 @@ blockquote p {
   text-transform: uppercase; }
 
 .sg-content {
-  max-width: 64.125em;
+  max-width: 70.125em;
   margin-left: auto;
   margin-right: auto;
   position: relative;
@@ -2093,7 +2093,7 @@ blockquote p {
     clear: both; }
 
 .sg-section--content {
-  max-width: 64.125em;
+  max-width: 70.125em;
   margin-left: auto;
   margin-right: auto;
   position: relative;
