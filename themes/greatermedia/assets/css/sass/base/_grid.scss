@@ -87,3 +87,10 @@ img {
 		overflow: auto;
 	}
 }
+
+.logged-in .live-player {
+	top: 284px;
+	@include media(min-width 782px) {
+		top: 270px;
+	}
+}
