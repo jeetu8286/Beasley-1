@@ -10,9 +10,31 @@
 	var body = document.querySelector('body');
 	var mobileNavButton = document.querySelector('.mobile-nav--toggle');
 	var header = document.getElementById('header');
+	var headerHeight = header.offsetHeight;
 	var livePlayer = document.getElementById('live-player--sidebar');
 	var headroom;
+	var livePlayerFix;
 	var livePlayerInit;
+
+	/**
+	 * adds a class to the live player that causes it to become fixed to the top of the window while also removing the
+	 * class that has the initial live player state
+	 */
+	livePlayerFix = function() {
+		// Using an if statement to check the class
+		livePlayer.classList.remove('live-player--init');
+		livePlayer.classList.add('live-player--fixed');
+	};
+
+	/**
+	 * adds a class to the live player that causes it to return to it's original state while also removing the class
+	 * that causes the live player to become fixed to the top of the window
+	 */
+	livePlayerInit = function() {
+		// Using an if statement to check the class
+		livePlayer.classList.remove('live-player--fixed');
+		livePlayer.classList.add('live-player--init');
+	};
 
 	/**
 	 * adds headroom.js functionality to the header
@@ -20,39 +42,22 @@
 	 * @type {Window.Headroom}
 	 */
 	headroom = new Headroom(header, {
-		"offset": 238,
+		"offset": headerHeight,
 		"tolerance": {
-			"up": 0,
-			"down": 0
+			"up": 5,
+			"down": 5
 		},
 		"classes": {
 			"pinned": "header--pinned",
 			"unpinned": "header--unpinned"
+		},
+		onPin : function() {
+			livePlayerInit();
+		},
+		onUnpin : function() {
+			livePlayerFix();
 		}
 	});
-
-	/**
-	 * detects if the header has a class of `header--unpinned`. If the header has this class, the `live-player--fixed`
-	 * will be added to the live player so that it becomes fixed at the top of the window. This will also allows the
-	 * live player to fall back to it's original location.
-	 */
-	livePlayerInit = function(){
-		// Using an if statement to check the class
-		if (header.classList.contains('header--unpinned')) {
-			// The box that we clicked has a class of bad so let's remove it and add the good class
-			livePlayer.classList.remove('live-player--init');
-			livePlayer.classList.add('live-player--fixed');
-		} else {
-			// The user obviously can't follow instructions so let's alert them of what is supposed to happen next
-			livePlayer.classList.remove('live-player--fixed');
-			livePlayer.classList.add('live-player--init');
-		}
-	};
-
-	/**
-	 * Initiates `livePlayerInit` on scroll
-	 */
-	window.addEventListener('scroll', livePlayerInit, false);
 
 	/**
 	 * Initiates `headroom`
