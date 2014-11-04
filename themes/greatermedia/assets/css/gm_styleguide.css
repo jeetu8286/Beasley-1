@@ -388,6 +388,11 @@ img {
   display: block;
   height: auto; }
 
+#site-wrap {
+  max-width: 1400px;
+  max-height: 100%;
+  margin: 0 auto; }
+
 .page-wrap {
   -webkit-transform: translate(0, 0);
   -moz-transform: translate(0, 0);
