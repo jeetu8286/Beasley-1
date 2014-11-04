@@ -469,7 +469,7 @@ img {
   display: block;
   margin-right: 7.42297%;
   width: 100%;
-  padding: 2em 0.5em; }
+  padding: 2em .5em; }
   .sidebar:last-child {
     margin-right: 0; }
   @media screen and (min-width: 480px) {
@@ -520,8 +520,9 @@ img {
   @media screen and (min-width: 1024px) {
     .live-player {
       display: block;
-      height: 100%;
       width: 15.625em;
+      max-width: 17.857142857143%;
+      height: 100%;
       -webkit-box-sizing: border-box;
       -moz-box-sizing: border-box;
       box-sizing: border-box;

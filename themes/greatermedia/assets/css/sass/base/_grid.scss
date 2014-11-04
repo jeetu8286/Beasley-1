@@ -12,6 +12,7 @@ $visual-grid-index: front !global;
 // max-width for the site
 $max-width: em(1122) !global;
 $max-site-width: 1400px;
+$live-player: em(250px);
 
 // simple css effect to make images responsive and fluid while also retaining proper aspect ratio
 img {
@@ -30,7 +31,7 @@ img {
 // `.mobile-nav--toggle` button, the contents of `.page-wrap` will be pushed to the left by a particular value. This
 .page-wrap {
 	@include transform(translate(0, 0));
-	@include size(100% null);
+	width: 100%;
 	@include transition(all 500ms ease-in-out);
 	overflow-y: hidden;
 }
@@ -41,14 +42,15 @@ img {
 }
 
 .main, %main {
-	@include size($max-width null);
+	width: $max-width;
 	margin: 0;
 	background-color: color(primary-bg);
 }
 
 .content, %content {
 	@include span-columns(4);
-	@include padding(2em null);
+	padding-top: 2em;
+	padding-bottom: 2em;
 	@include bp(small) {
 		@include span-columns(6);
 	}
@@ -60,13 +62,14 @@ img {
 	}
 	@include bp(x-large) {
 		@include span-columns(12);
-		@include padding(null 0);
+		padding-right: 0;
+		padding-left: 0;
 	}
 }
 
 .sidebar, %sidebar {
 	@include span-columns(4);
-	@include padding(2em .5em);
+	padding: 2em .5em;
 	@include bp(small) {
 		@include span-columns(6);
 	}
@@ -79,7 +82,8 @@ img {
 	}
 	@include bp(x-large) {
 		@include span-columns(3);
-		@include padding(null 0);
+		padding-right: 0;
+		padding-left: 0;
 	}
 }
 
@@ -91,7 +95,8 @@ img {
 	background-color: color(secondary-bg);
 	@include bp(large){
 		@include display(block);
-		@include size(em(250px) 100%);
+		width: $live-player;
+		height: 100%;
 		@include box-sizing(border-box);
 		color: color(secondary-text);
 	}
