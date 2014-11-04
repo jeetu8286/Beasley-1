@@ -22,9 +22,6 @@
 /**
  * Helpers
  */
-/*********************
-Misc
-*********************/
 /*! normalize.css v3.0.2 | MIT License | git.io/normalize */
 /**
  * 1. Set default font family to sans-serif.
@@ -404,16 +401,19 @@ img {
   overflow-y: hidden; }
 
 .container {
-  max-width: 95%;
+  max-width: 64.125em;
   margin-left: auto;
-  margin-right: auto; }
+  margin-right: auto;
+  margin: 0 18px; }
   .container:after {
     content: "";
     display: table;
     clear: both; }
 
 .main, .featured {
-  width: 100%; }
+  width: 64.125em;
+  margin: 0;
+  background-color: #ffffff; }
 
 .content, .featured-artist, .featured-content {
   float: left;
@@ -445,7 +445,7 @@ img {
       float: left;
       display: block;
       margin-right: 2.35765%;
-      width: 82.94039%; }
+      width: 100%; }
       .content:last-child, .featured-artist:last-child, .featured-content:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 1200px) {
@@ -453,7 +453,7 @@ img {
       float: left;
       display: block;
       margin-right: 2.35765%;
-      width: 82.94039%;
+      width: 100%;
       padding-right: 0;
       padding-left: 0; }
       .content:last-child, .featured-artist:last-child, .featured-content:last-child {
@@ -506,7 +506,8 @@ img {
 .live-player {
   position: absolute;
   top: 117px;
-  right: 0;
+  right: -webkit-calc(50% - 700px);
+  right: calc(50% - 700px);
   padding-top: 2em;
   padding-bottom: 2em;
   display: none;
@@ -514,18 +515,12 @@ img {
   @media screen and (min-width: 1024px) {
     .live-player {
       display: block;
-      float: left;
-      display: block;
-      margin-right: 2.35765%;
-      width: 14.70196%;
       height: 100%;
-      margin-right: 0;
+      width: 21.875em;
       -webkit-box-sizing: border-box;
       -moz-box-sizing: border-box;
       box-sizing: border-box;
-      color: #404041; }
-      .live-player:last-child {
-        margin-right: 0; } }
+      color: #404041; } }
 
 body {
   line-height: 2;
@@ -594,10 +589,14 @@ p {
   height: 80px;
   width: 100%;
   padding: 0.625em 0;
+  margin: 0 auto;
   border-bottom-color: #d0d2d3;
   border-bottom-style: solid;
   border-bottom-width: 1px;
   background-color: #000000; }
+
+.header .container {
+  max-width: 1400px; }
 
 .header-logo {
   float: left;
@@ -1954,7 +1953,7 @@ blockquote p {
       width: 12.5em; } }
 
 .sg-nav--content {
-  max-width: 95%;
+  max-width: 64.125em;
   margin-left: auto;
   margin-right: auto; }
   .sg-nav--content:after {
@@ -2083,7 +2082,7 @@ blockquote p {
   text-transform: uppercase; }
 
 .sg-content {
-  max-width: 95%;
+  max-width: 64.125em;
   margin-left: auto;
   margin-right: auto;
   position: relative;
@@ -2094,7 +2093,7 @@ blockquote p {
     clear: both; }
 
 .sg-section--content {
-  max-width: 95%;
+  max-width: 64.125em;
   margin-left: auto;
   margin-right: auto;
   position: relative;
