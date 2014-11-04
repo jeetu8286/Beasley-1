@@ -6,8 +6,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class GreaterMediaContestsMetaboxes {
 
-	const DEFAULT_THANKS_MSG = 'Thanks for entering!';
-
 	function __construct() {
 
 		add_action( 'admin_enqueue_scripts', array( $this, 'register_settings_fields' ) );
@@ -217,7 +215,8 @@ class GreaterMediaContestsMetaboxes {
 
 		$thank_you = get_post_meta( $post_id, 'form-thankyou', true );
 		if ( empty( $thank_you ) ) {
-			$thank_you = __( self::DEFAULT_THANKS_MSG, 'greatermedia_contests' );
+			// If you change this string, be sure to get all the places it's used in this class
+			$thank_you = __( 'Thanks for entering!', 'greatermedia_contests' );
 		}
 
 		add_settings_field(
@@ -431,15 +430,17 @@ class GreaterMediaContestsMetaboxes {
 
 		/**
 		 * Update the form's meta field
-		 * Using json_decode() + json_encode() as a form of JSON sanitization
+		 * The form JSON has slashes in it which need to be stripped out.
+		 * json_decode() and json_encode() are used here to sanitize the JSON & keep out invalid values
 		 */
-		$form = wp_kses_stripslashes( $_POST['contest_embedded_form'] );
+		$form = json_encode( json_decode( stripslashes( $_POST['contest_embedded_form'] ) ) );
 		update_post_meta( $post_id, 'embedded_form', $form );
 
 		// Update the form's "thank you" message
 		$thank_you = isset( $_POST['greatermedia_contest_form_thankyou'] ) ? $_POST['greatermedia_contest_form_thankyou'] : '';
 		if ( empty( $thank_you ) ) {
-			$thank_you = __( self::DEFAULT_THANKS_MSG, 'greatermedia_contests' );
+			// If you change this string, be sure to get all the places it's used in this class
+			$thank_you = __( 'Thanks for entering!', 'greatermedia_contests' );
 		}
 		update_post_meta( $post_id, 'form-thankyou', sanitize_text_field( $thank_you ) );
 
