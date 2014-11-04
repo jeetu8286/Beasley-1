@@ -4,7 +4,7 @@
  * Admins can choose the location of the player. A class is added to the body that will match the locations below.
  */
 
-.live-player.fixed {
+.live-player--fixed {
 	@include position(fixed, 0 null null null);
 }
 
