@@ -16,7 +16,8 @@ class GreaterMediaContests {
 		add_action( 'init', array( $this, 'register_contest_post_type' ) );
 		add_action( 'init', array( $this, 'register_contest_type_taxonomy' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
-
+		add_action( 'restrict_manage_posts', array( $this, 'admin_contest_type_filter' ) );
+		add_action( 'pre_get_posts', array( $this, 'admin_filter_contest_list' ) );
 	}
 
 	/**
@@ -148,6 +149,69 @@ class GreaterMediaContests {
 
 	public function admin_enqueue_scripts() {
 		wp_enqueue_style( 'greatermedia-contests', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'css/greatermedia-contests.css' );
+	}
+
+	/**
+	 * Add a dropdown on the contest list page to filter by contest type.
+	 */
+	public function admin_contest_type_filter() {
+		global $typenow;
+		$contest_type_tax_id = 0;
+
+		if ( 'contest' !== $typenow || ! is_admin() ) {
+			return;
+		}
+
+		if ( isset( $_GET['type_filter'] ) ) {
+			// If user selected a term in the filter drop-down on the contest list page
+			$contest_type_tax_id = intval( $_GET['type_filter'] );
+		} else if ( isset( $_GET['contest_type'] ) ) {
+			// If user clicked on the post count next to the taxonomy term
+			$term = get_term_by( 'slug', $_GET['contest_type'], 'contest_type' );
+
+			if ( false !== $term ) {
+				$contest_type_tax_id = intval( $term->term_id );
+			}
+		}
+
+		$args = array(
+			'show_option_all'   => __( 'All contest types', 'greatermedia_contests' ),
+			'hierarchical'       => true,
+			'name'               => 'type_filter',
+			'id'                 => 'type-filter',
+			'class'              => 'postform',
+			'orderby'            => 'name',
+			'taxonomy'           => 'contest_type',
+			'hide_if_empty'      => true,
+			'selected'			 => $contest_type_tax_id,
+		);
+
+		wp_dropdown_categories( $args );
+	}
+
+	/**
+	 * Handle the request to filter contests by type.
+	 *
+	 * @param  WP_Query $wp_query
+	 */
+	public function admin_filter_contest_list( $wp_query ) {
+		global $typenow;
+
+		$contest_type_tax_id = isset( $_GET['type_filter'] ) ? intval( $_GET['type_filter'] ) : 0;
+
+		if ( 'contest' !== $typenow || ! is_admin() || empty( $contest_type_tax_id ) ) {
+			return;
+		}
+
+		$args = array(
+			array(
+				'taxonomy' => 'contest_type',
+				'field'    => 'id',
+				'terms'    => $contest_type_tax_id,
+			),
+		);
+
+		$wp_query->set( 'tax_query', $args );
 	}
 }
 
