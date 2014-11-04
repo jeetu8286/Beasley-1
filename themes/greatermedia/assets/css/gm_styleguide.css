@@ -10,6 +10,9 @@
   -moz-box-sizing: border-box;
   box-sizing: border-box; }
 
+/*********************
+Opacities & transparencies
+*********************/
 .featured-content--list {
   padding: 0;
   margin: 0; }
@@ -505,7 +508,7 @@ img {
 
 .live-player {
   position: absolute;
-  top: 117px;
+  top: 238px;
   right: 0;
   padding-top: 2em;
   padding-bottom: 2em;
@@ -513,7 +516,6 @@ img {
   background-color: #000000; }
   @media screen and (min-width: 1024px) {
     .live-player {
-      display: block;
       float: left;
       display: block;
       margin-right: 2.35765%;
@@ -523,7 +525,8 @@ img {
       -webkit-box-sizing: border-box;
       -moz-box-sizing: border-box;
       box-sizing: border-box;
-      color: #404041; }
+      color: #404041;
+      overflow: auto; }
       .live-player:last-child {
         margin-right: 0; } }
 
@@ -593,11 +596,31 @@ p {
   position: relative;
   height: 100%;
   width: 100%;
-  padding: 0.625em 0;
+  padding-bottom: 0.625em;
   border-bottom-color: #d0d2d3;
   border-bottom-style: solid;
   border-bottom-width: 1px;
   background-color: #000000; }
+
+.header--pinned {
+  -webkit-transition: all 0.5s ease-in-out;
+  -moz-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+  opacity: 1;
+  filter: alpha(opacity=100);
+  -moz-opacity: 1;
+  -khtml-opacity: 1;
+  zoom: 1; }
+
+.header--unpinned {
+  -webkit-transition: all 0.5s ease-in-out;
+  -moz-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+  opacity: 0;
+  filter: alpha(opacity=0);
+  -moz-opacity: 0;
+  -khtml-opacity: 0;
+  zoom: 1; }
 
 .header-logo {
   float: left;
@@ -1365,6 +1388,10 @@ blockquote p {
  *
  * Admins can choose the location of the player. A class is added to the body that will match the locations below.
  */
+.live-player--fixed {
+  position: fixed;
+  top: 0; }
+
 .live-player--container {
   min-height: 70px;
   padding: 1em 0;

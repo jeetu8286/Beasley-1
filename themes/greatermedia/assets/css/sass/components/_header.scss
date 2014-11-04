@@ -1,11 +1,21 @@
 .header{
 	@include position(relative, null null null null);
 	@include size(100% 100%);
-	@include padding(em(10px) 0);
+	@include padding(null null em(10px));
 	@include border-color(null null color(primary-border) null);
 	@include border-style(null null solid null);
 	@include border-width(null null 1px null);
 	background-color: color(secondary-bg);
+}
+
+.header--pinned {
+	@include transition (all 0.5s ease-in-out);
+	@include opacity(1);
+}
+
+.header--unpinned {
+	@include transition (all 0.5s ease-in-out);
+	@include opacity(0);
 }
 
 .header-logo{
