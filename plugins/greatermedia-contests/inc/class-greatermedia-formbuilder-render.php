@@ -165,7 +165,11 @@ class GreaterMediaFormbuilderRender {
 	}
 
 	/**
+	 * Render a text field on a form using data from formbuilder
+	 *
 	 * @param stdClass $field
+	 *
+	 * @return string HTML
 	 */
 	private static function render_text( $post_id, stdClass $field ) {
 
