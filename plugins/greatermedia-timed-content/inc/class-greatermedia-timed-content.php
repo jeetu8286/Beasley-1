@@ -144,11 +144,11 @@ class GreaterMediaTimedContent extends VisualShortcode {
 
 		if ( post_type_supports( $post->post_type, 'timed-content' ) ) {
 
-			$exp_mm = isset( $_POST['hidden_exp_mm'] ) ? intval( $_POST['hidden_exp_mm'] ) : '';
-			$exp_jj = isset( $_POST['hidden_exp_jj'] ) ? intval( $_POST['hidden_exp_jj'] ) : '';
-			$exp_aa = isset( $_POST['hidden_exp_aa'] ) ? intval( $_POST['hidden_exp_aa'] ) : '';
-			$exp_hh = isset( $_POST['hidden_exp_hh'] ) ? intval( $_POST['hidden_exp_hh'] ) : '';
-			$exp_mn = isset( $_POST['hidden_exp_mn'] ) ? str_pad( intval( $_POST['hidden_exp_mn'] ), 2, '0', STR_PAD_LEFT ) : '';
+			$exp_mm = isset( $_POST['hidden_exp_mm'] ) ? intval( $_POST['hidden_exp_mm'] ) : '0';
+			$exp_jj = isset( $_POST['hidden_exp_jj'] ) ? intval( $_POST['hidden_exp_jj'] ) : '0';
+			$exp_aa = isset( $_POST['hidden_exp_aa'] ) ? intval( $_POST['hidden_exp_aa'] ) : '0';
+			$exp_hh = isset( $_POST['hidden_exp_hh'] ) ? intval( $_POST['hidden_exp_hh'] ) : '0';
+			$exp_mn = isset( $_POST['hidden_exp_mn'] ) ? str_pad( intval( $_POST['hidden_exp_mn'] ), 2, '0', STR_PAD_LEFT ) : '0';
 
 			$exp_str = "{$exp_mm} {$exp_jj} {$exp_aa} {$exp_hh} {$exp_mn}";
 			if ( '0 0 0 0 00' !== trim( $exp_str ) ) {
