@@ -22,9 +22,6 @@
 /**
  * Helpers
  */
-/*********************
-Misc
-*********************/
 /*! normalize.css v3.0.2 | MIT License | git.io/normalize */
 /**
  * 1. Set default font family to sans-serif.
@@ -391,6 +388,11 @@ img {
   display: block;
   height: auto; }
 
+#site-wrap {
+  max-width: 1400px;
+  max-height: 100%;
+  margin: 0 auto; }
+
 .page-wrap {
   -webkit-transform: translate(0, 0);
   -moz-transform: translate(0, 0);
@@ -401,19 +403,28 @@ img {
   -webkit-transition: all 500ms ease-in-out;
   -moz-transition: all 500ms ease-in-out;
   transition: all 500ms ease-in-out;
-  overflow-y: hidden; }
+  overflow: hidden; }
 
 .container {
-  max-width: 95%;
+  max-width: 70.125em;
   margin-left: auto;
-  margin-right: auto; }
+  margin-right: auto;
+  margin: 0 18px; }
   .container:after {
     content: "";
     display: table;
     clear: both; }
 
 .main, .featured {
-  width: 100%; }
+  width: 100%;
+  margin: 0;
+  background-color: #ffffff; }
+  @media screen and (min-width: 1024px) {
+    .main, .featured {
+      width: 82.142857142857%; } }
+  @media screen and (min-width: 1400px) {
+    .main, .featured {
+      width: 70.125em; } }
 
 .content, .featured-artist, .featured-content {
   float: left;
@@ -445,15 +456,15 @@ img {
       float: left;
       display: block;
       margin-right: 2.35765%;
-      width: 82.94039%; }
+      width: 100%; }
       .content:last-child, .featured-artist:last-child, .featured-content:last-child {
         margin-right: 0; } }
-  @media screen and (min-width: 1200px) {
+  @media screen and (min-width: 1400px) {
     .content, .featured-artist, .featured-content {
       float: left;
       display: block;
       margin-right: 2.35765%;
-      width: 82.94039%;
+      width: 100%;
       padding-right: 0;
       padding-left: 0; }
       .content:last-child, .featured-artist:last-child, .featured-content:last-child {
@@ -464,7 +475,7 @@ img {
   display: block;
   margin-right: 7.42297%;
   width: 100%;
-  padding: 2em 0.5em; }
+  padding: 2em .5em; }
   .sidebar:last-child {
     margin-right: 0; }
   @media screen and (min-width: 480px) {
@@ -492,7 +503,7 @@ img {
       width: 23.23176%; }
       .sidebar:last-child {
         margin-right: 0; } }
-  @media screen and (min-width: 1200px) {
+  @media screen and (min-width: 1400px) {
     .sidebar {
       float: left;
       display: block;
@@ -514,18 +525,18 @@ img {
   @media screen and (min-width: 1024px) {
     .live-player {
       display: block;
-      float: left;
-      display: block;
-      margin-right: 2.35765%;
-      width: 14.70196%;
+      right: 0;
+      width: 17.857142857143%;
       height: 100%;
-      margin-right: 0;
       -webkit-box-sizing: border-box;
       -moz-box-sizing: border-box;
       box-sizing: border-box;
-      color: #6D6E70; }
-      .live-player:last-child {
-        margin-right: 0; } }
+      color: #6D6E70; } }
+  @media screen and (min-width: 1400px) {
+    .live-player {
+      right: -webkit-calc(50% - 700px);
+      right: calc(50% - 700px);
+      width: 15.625em; } }
 
 body {
   line-height: 2;
@@ -544,7 +555,7 @@ body {
     body {
       line-height: 1.5;
       font-size: 95%; } }
-  @media screen and (min-width: 1200px) {
+  @media screen and (min-width: 1400px) {
     body {
       line-height: 1.5;
       font-size: 100%; } }
@@ -594,10 +605,14 @@ p {
   height: 80px;
   width: 100%;
   padding: 0.625em 0;
+  margin: 0 auto;
   border-bottom-color: #d0d2d3;
   border-bottom-style: solid;
   border-bottom-width: 1px;
   background-color: #000000; }
+
+.header .container {
+  max-width: 1400px; }
 
 .header-logo {
   float: left;
@@ -1707,7 +1722,7 @@ blockquote p {
       margin-right: 5%;
       margin-bottom: 0;
       overflow: visible; } }
-  @media screen and (min-width: 1200px) {
+  @media screen and (min-width: 1400px) {
     .featured-content--block {
       height: 105px;
       width: 30%;
@@ -1728,7 +1743,7 @@ blockquote p {
       height: 138px;
       width: 100%;
       overflow: hidden; } }
-  @media screen and (min-width: 1200px) {
+  @media screen and (min-width: 1400px) {
     .featured-content--image {
       height: 100%;
       width: 35%; } }
@@ -1736,7 +1751,7 @@ blockquote p {
 .featured-content--image img {
   height: auto;
   width: 100%; }
-  @media screen and (min-width: 1200px) {
+  @media screen and (min-width: 1400px) {
     .featured-content--image img {
       max-width: 100%; } }
 
@@ -1755,7 +1770,7 @@ blockquote p {
     .featured-content--meta {
       height: 142px;
       width: 100%; } }
-  @media screen and (min-width: 1200px) {
+  @media screen and (min-width: 1400px) {
     .featured-content--meta {
       height: 100%;
       width: 65%; } }
@@ -1999,7 +2014,7 @@ blockquote p {
       width: 12.5em; } }
 
 .sg-nav--content {
-  max-width: 95%;
+  max-width: 70.125em;
   margin-left: auto;
   margin-right: auto; }
   .sg-nav--content:after {
@@ -2115,7 +2130,7 @@ blockquote p {
   @media screen and (min-width: 1024px) {
     .sg-sections {
       padding: 2.5em 0; } }
-  @media screen and (min-width: 1200px) {
+  @media screen and (min-width: 1400px) {
     .sg-sections {
       padding: 3em 0; } }
 
@@ -2128,7 +2143,7 @@ blockquote p {
   text-transform: uppercase; }
 
 .sg-content {
-  max-width: 95%;
+  max-width: 70.125em;
   margin-left: auto;
   margin-right: auto;
   position: relative;
@@ -2139,7 +2154,7 @@ blockquote p {
     clear: both; }
 
 .sg-section--content {
-  max-width: 95%;
+  max-width: 70.125em;
   margin-left: auto;
   margin-right: auto;
   position: relative;
