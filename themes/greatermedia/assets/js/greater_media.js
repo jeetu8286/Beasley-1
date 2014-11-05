@@ -9,6 +9,9 @@
 	var header = document.getElementById('header');
 	var headerHeight = header.offsetHeight;
 	var livePlayer = document.getElementById('live-player--sidebar');
+	var onAir = document.getElementById('on-air');
+	var nowPlaying = document.getElementById('now-playing');
+	var liveLinks = document.getElementById('live-links');
 	var headroom;
 	var livePlayerFix;
 	var livePlayerInit;
@@ -75,5 +78,28 @@
 	mobileNavButton.onclick = function(){
 		body.classList.toggle('mobile-nav--open');
 	};
+
+	/**
+	 * Toggles a class to the live links when the live player is clicked clicked on smaller screens
+	 */
+	if(window.innerWidth <= 767) {
+		onAir.onclick = function () {
+			body.classList.toggle('live-player--open');
+		};
+		nowPlaying.onclick = function () {
+			body.classList.toggle('live-player--open');
+		};
+	}
+
+	window.onresize = function(event) {
+		if(window.innerWidth <= 767) {
+			onAir.onclick = function () {
+				body.classList.toggle('live-player--open');
+			};
+			nowPlaying.onclick = function () {
+				body.classList.toggle('live-player--open');
+			};
+		}
+	}
 
 })();

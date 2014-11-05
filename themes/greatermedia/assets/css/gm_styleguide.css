@@ -13,6 +13,7 @@
 /*********************
 Opacities & transparencies
 *********************/
+/* @include css-gradient(#dfdfdf,#f8f8f8); */
 .featured-content--list {
   padding: 0;
   margin: 0; }
@@ -524,7 +525,8 @@ img {
   left: 0;
   padding: 1em;
   background-color: #000000;
-  color: #6D6E70; }
+  color: #6D6E70;
+  cursor: pointer; }
   @media screen and (min-width: 1024px) {
     .live-player {
       position: absolute;
@@ -539,23 +541,22 @@ img {
       -moz-box-sizing: border-box;
       box-sizing: border-box;
       color: #6D6E70;
-      overflow: auto; } }
+      overflow: auto;
+      cursor: default; } }
   @media screen and (min-width: 1400px) {
     .live-player {
       right: -webkit-calc(50% - 700px);
       right: calc(50% - 700px);
       width: 15.625em; } }
 
-.logged-in .live-player {
-  top: 284px; }
-  @media screen and (min-width: 782px) {
-    .logged-in .live-player {
-      top: 270px; } }
-  @media screen and (min-width: 1400px) {
-    .logged-in .live-player {
-      right: -webkit-calc(50% - 700px);
-      right: calc(50% - 700px);
-      width: 15.625em; } }
+@media screen and (min-width: 782px) {
+  .logged-in .live-player {
+    top: 270px; } }
+@media screen and (min-width: 1400px) {
+  .logged-in .live-player {
+    right: -webkit-calc(50% - 700px);
+    right: calc(50% - 700px);
+    width: 15.625em; } }
 
 body {
   line-height: 2;
@@ -1435,10 +1436,17 @@ blockquote p {
       top: 32px; } }
 
 .live-player--container {
-  float: right; }
+  height: 100%;
+  overflow: auto; }
+
+.live-player--controls {
+  float: right;
+  width: 35%;
+  text-align: right; }
   @media screen and (min-width: 1024px) {
-    .live-player--container {
+    .live-player--controls {
       float: none;
+      width: auto;
       padding: 1em 0;
       text-align: center; } }
 
@@ -1638,10 +1646,13 @@ blockquote p {
 
 .on-air {
   float: left;
-  margin: 0 1em 0 0; }
+  width: 15%;
+  padding: 0 1em 0 0;
+  margin: 0; }
   @media screen and (min-width: 1024px) {
     .on-air {
       float: none;
+      width: 100%;
       padding: 0 1em;
       margin: 0 0 .5em;
       text-align: center; } }
@@ -1658,10 +1669,14 @@ blockquote p {
 
 .now-playing {
   float: left;
-  margin: 0 1em 0 0; }
+  width: 50%;
+  padding: 0 1em;
+  margin: 0; }
   @media screen and (min-width: 1024px) {
     .now-playing {
       float: none;
+      width: 100%;
+      padding: 0;
       margin: 0 0 2em;
       text-align: center; } }
 
@@ -1721,8 +1736,92 @@ blockquote p {
   cursor: pointer; }
 
 .live-links {
+  display: none;
+  padding: 1em 0 0;
   margin: 1em 0 0;
   border-top: 1px solid #282827; }
+  @media screen and (min-width: 768px) {
+    .live-links {
+      display: block; } }
+
+.live-player--open .page-wrap:before {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  content: " "; }
+
+.live-player--open .live-player:before {
+  position: absolute;
+  top: -30px;
+  left: 0;
+  width: 100%;
+  height: 30px;
+  background: -moz-linear-gradient(top, transparent 0%, rgba(0, 0, 0, 0.4) 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, transparent), color-stop(100%, rgba(0, 0, 0, 0.4)));
+  background: -webkit-linear-gradient(top, transparent 0%, rgba(0, 0, 0, 0.4) 100%);
+  background: -o-linear-gradient(top, transparent 0%, rgba(0, 0, 0, 0.4) 100%);
+  background: -ms-linear-gradient(top, transparent 0%, rgba(0, 0, 0, 0.4) 100%);
+  background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.4) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#000000', endColorstr='#000000', GradientType=0);
+  content: " ";
+  z-index: 100; }
+
+.live-player--open .live-player:after {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  background: -moz-linear-gradient(top, transparent 0%, rgba(0, 0, 0, 0.7) 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, transparent), color-stop(100%, rgba(0, 0, 0, 0.7)));
+  background: -webkit-linear-gradient(top, transparent 0%, rgba(0, 0, 0, 0.7) 100%);
+  background: -o-linear-gradient(top, transparent 0%, rgba(0, 0, 0, 0.7) 100%);
+  background: -ms-linear-gradient(top, transparent 0%, rgba(0, 0, 0, 0.7) 100%);
+  background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.7) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#000000', endColorstr='#000000', GradientType=0);
+  content: " ";
+  z-index: 100; }
+
+.live-player--open .live-links {
+  display: block;
+  max-height: 250px;
+  text-align: center; }
+
+.live-link {
+  display: block;
+  margin: 0 0 1em; }
+
+.live-link--type {
+  display: block; }
+
+.live-link--type:before {
+  width: 0;
+  height: 0;
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  moz-osx-font-smoothing: grayscale;
+  text-rendering: auto;
+  color: #d22228; }
+
+.live-link--type_audio:before {
+  content: "\f001"; }
+
+.live-link--type_video:before {
+  content: "\f144"; }
+
+.live-link--type_link:before {
+  content: "\f0c1"; }
+
+.live-link--title {
+  display: block;
+  font-size: 1em;
+  font-weight: normal;
+  margin: 0; }
 
 .featured {
   position: relative;

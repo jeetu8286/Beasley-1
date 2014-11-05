@@ -101,6 +101,7 @@ img {
 	padding: 1em;
 	background-color: color(secondary-bg);
 	color: color(secondary-text);
+	cursor: pointer;
 	@include bp(large){
 		position: absolute;
 		top: 238px;
@@ -113,6 +114,7 @@ img {
 		@include box-sizing(border-box);
 		color: color(secondary-text);
 		overflow: auto;
+		cursor: default;
 	}
 	@include bp(x-large) {
 		@include calc(right, '50% - 700px');
@@ -121,7 +123,6 @@ img {
 }
 
 .logged-in .live-player {
-	top: 284px;
 	@include media(min-width 782px) {
 		top: 270px;
 	}
