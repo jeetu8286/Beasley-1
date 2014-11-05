@@ -156,7 +156,7 @@ class GreaterMediaFormbuilderRender {
 				throw new InvalidArgumentException( sprintf( 'Form field %s has an unimplemented field type', $field->cid ) );
 			}
 
-			self::$renderer_method( $post_id, $field );
+			echo wp_kses( self::$renderer_method( $post_id, $field ), self::allowed_tags() );
 
 		}
 
@@ -261,7 +261,7 @@ class GreaterMediaFormbuilderRender {
 
 		$html .= self::get_submit_button( 'Enter', null, null, true );
 
-		echo wp_kses( $html, self::allowed_tags() );
+		return $html;
 
 	}
 
