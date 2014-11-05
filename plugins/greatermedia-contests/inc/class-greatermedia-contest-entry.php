@@ -57,11 +57,12 @@ class GreaterMediaContestEntry {
 	 */
 	public function save() {
 
-		wp_update_post( $this->post, true );
-		update_post_meta( $this->post->ID, 'entrant_name', $this->entrant_name );
-		update_post_meta( $this->post->ID, 'entrant_reference', $this->entrant_reference );
-		update_post_meta( $this->post->ID, 'entry_source', $this->entry_source );
-		update_post_meta( $this->post->ID, 'entry_reference', $this->entry_reference );
+		$post_id = wp_update_post( $this->post, true );
+
+		update_post_meta( $post_id, 'entrant_name', $this->entrant_name );
+		update_post_meta( $post_id, 'entrant_reference', $this->entrant_reference );
+		update_post_meta( $post_id, 'entry_source', $this->entry_source );
+		update_post_meta( $post_id, 'entry_reference', $this->entry_reference );
 
 	}
 
