@@ -22,7 +22,7 @@ function qmi_shows_add_quickpost_meta_box( $screen_id ) {
  */
 function gmi_shows_render_quickpost_meta_box( $args ) {
 	require_once ABSPATH . 'wp-admin/includes/meta-boxes.php';
-	post_categories_meta_box( get_post( $args['post_id'] ), array( 'args' => array( 'taxonomy' => ShowsCPT::SHADOW_TAXONOMY ) ) );
+	post_categories_meta_box( get_post( $args['post_id'] ), array( 'args' => array( 'taxonomy' => ShowsCPT::SHOW_TAXONOMY ) ) );
 }
 
 /**
@@ -33,8 +33,8 @@ function gmi_shows_render_quickpost_meta_box( $args ) {
  * @return array The post data.
  */
 function gmi_shows_filter_quickpost_data( $post ) {
-	if ( ! empty( $post['tax_input'][ShowsCPT::SHADOW_TAXONOMY] ) ) {
-		$post['tax_input'][ShowsCPT::SHADOW_TAXONOMY] = array_map( 'intval', $post['tax_input'][ShowsCPT::SHADOW_TAXONOMY] );
+	if ( ! empty( $post['tax_input'][ShowsCPT::SHOW_TAXONOMY] ) ) {
+		$post['tax_input'][ShowsCPT::SHOW_TAXONOMY] = array_map( 'intval', $post['tax_input'][ShowsCPT::SHOW_TAXONOMY] );
 	}
 
 	return $post;

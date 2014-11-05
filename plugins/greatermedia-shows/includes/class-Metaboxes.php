@@ -27,7 +27,7 @@ class GMR_Show_Metaboxes {
 	public function admin_enqueue_scripts() {
 		global $pagenow, $typenow;
 		$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
-		if ( in_array( $pagenow, array( 'post-new.php', 'post.php' ) ) && $typenow == ShowsCPT::CPT_SLUG ) {
+		if ( in_array( $pagenow, array( 'post-new.php', 'post.php' ) ) && $typenow == ShowsCPT::SHOW_CPT ) {
 			wp_enqueue_script( 'meta_box', GMEDIA_SHOWS_URL . "assets/js/greatermedia_shows{$postfix}.js", array( 'jquery' ), GMEDIA_SHOWS_VERSION, true );
 			wp_enqueue_style( 'meta_box', GMEDIA_SHOWS_URL . "assets/css/greatermedia_shows{$postfix}.css", array(), GMEDIA_SHOWS_VERSION );
 		}
@@ -40,7 +40,7 @@ class GMR_Show_Metaboxes {
 	 * @access public
 	 */
 	public function add_meta_boxes() {
-		add_meta_box( 'show_logo', 'Logo', array( $this, 'render_logo_meta_box' ), ShowsCPT::CPT_SLUG, 'side' );
+		add_meta_box( 'show_logo', 'Logo', array( $this, 'render_logo_meta_box' ), ShowsCPT::SHOW_CPT, 'side' );
 	}
 
 	/**
@@ -51,7 +51,7 @@ class GMR_Show_Metaboxes {
 	 */
 	public function post_submitbox_misc_actions() {
 		global $typenow;
-		if ( ShowsCPT::CPT_SLUG != $typenow ) {
+		if ( ShowsCPT::SHOW_CPT != $typenow ) {
 			return;
 		}
 

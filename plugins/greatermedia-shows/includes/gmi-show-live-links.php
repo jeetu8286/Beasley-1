@@ -16,7 +16,7 @@ add_filter( 'gmr_live_link_widget_query_args', 'gmrs_filter_links_widget_args' )
  * @return array The extended array of supported taxonomies.
  */
 function gmrs_add_live_links_taxonomy_support( $taxonomies ) {
-	$taxonomies[] = ShowsCPT::SHADOW_TAXONOMY;
+	$taxonomies[] = ShowsCPT::SHOW_TAXONOMY;
 	return $taxonomies;
 }
 
@@ -28,10 +28,10 @@ function gmrs_add_live_links_taxonomy_support( $taxonomies ) {
  * @param int $post_id The copied post id.
  */
 function gmrs_copy_personalities_to_live_link( $ll_id, $post_id ) {
-	$terms = wp_get_post_terms( $post_id, ShowsCPT::SHADOW_TAXONOMY );
+	$terms = wp_get_post_terms( $post_id, ShowsCPT::SHOW_TAXONOMY );
 	if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
 		$terms = array_filter( (array) wp_list_pluck( $terms, 'term_id' ) );
-		wp_set_post_terms( $ll_id, $terms, ShowsCPT::SHADOW_TAXONOMY );
+		wp_set_post_terms( $ll_id, $terms, ShowsCPT::SHOW_TAXONOMY );
 	}
 }
 
@@ -44,7 +44,7 @@ function gmrs_copy_personalities_to_live_link( $ll_id, $post_id ) {
  * @return boolean TRUE if we need to add a copy link, otherwise FALSE.
  */
 function gmrs_check_live_links_copy_action( $add_copy_link, WP_Post $post ) {
-	return ! $add_copy_link ? $add_copy_link : ShowsCPT::CPT_SLUG != $post->post_type;
+	return ! $add_copy_link ? $add_copy_link : ShowsCPT::SHOW_CPT != $post->post_type;
 }
 
 /**
@@ -60,7 +60,7 @@ function gmrs_filter_links_widget_args( $args ) {
 		return $args;
 	}
 
-	$term = get_term_by( 'name', $active_show->post_title, ShowsCPT::SHADOW_TAXONOMY );
+	$term = get_term_by( 'name', $active_show->post_title, ShowsCPT::SHOW_TAXONOMY );
 	if ( ! $term ) {
 		return $args;
 	}
@@ -70,7 +70,7 @@ function gmrs_filter_links_widget_args( $args ) {
 	}
 
 	$args['tax_query'][] = array(
-		'taxonomy' => ShowsCPT::SHADOW_TAXONOMY,
+		'taxonomy' => ShowsCPT::SHOW_TAXONOMY,
 		'field'    => 'term_id',
 		'terms'    => $term->term_id,
 	);

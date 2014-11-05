@@ -6,8 +6,9 @@
  */
 class ShowsCPT {
 
-	const CPT_SLUG        = 'show';
-	const SHADOW_TAXONOMY = '_shows';
+	const SHOW_CPT      = 'show';
+	const SHOW_TAXONOMY = '_shows';
+	const EPISODE_CPT   = 'show-episode';
 
 	/**
 	 * The singleton instance of the ShowsCPT class.
@@ -42,44 +43,37 @@ class ShowsCPT {
 	 * @access public
 	 */
 	public function register_post_type() {
-		$labels = array(
-			'name'               => __( 'Shows', 'greatermedia' ),
-			'singular_name'      => __( 'Show', 'greatermedia' ),
-			'add_new'            => _x( 'Add New Show', 'greatermedia', 'greatermedia' ),
-			'add_new_item'       => __( 'Add New Show', 'greatermedia' ),
-			'edit_item'          => __( 'Edit Show', 'greatermedia' ),
-			'new_item'           => __( 'New Show', 'greatermedia' ),
-			'view_item'          => __( 'View Show', 'greatermedia' ),
-			'search_items'       => __( 'Search Shows', 'greatermedia' ),
-			'not_found'          => __( 'No Shows found', 'greatermedia' ),
-			'not_found_in_trash' => __( 'No Shows found in Trash', 'greatermedia' ),
-			'parent_item_colon'  => __( 'Parent Show:', 'greatermedia' ),
-			'menu_name'          => __( 'Shows', 'greatermedia' ),
-		);
-
-		$args = array(
-			'labels'              => $labels,
-			'hierarchical'        => false,
-			'description'         => 'description',
-			'taxonomies'          => array(),
+		register_post_type( self::SHOW_CPT, array(
 			'public'              => true,
-			'show_ui'             => true,
-			'show_in_menu'        => true,
-			'show_in_admin_bar'   => true,
 			'menu_position'       => 5,
 			'menu_icon'           => 'dashicons-megaphone',
-			'show_in_nav_menus'   => true,
-			'publicly_queryable'  => true,
-			'exclude_from_search' => false,
 			'has_archive'         => true,
-			'query_var'           => true,
-			'can_export'          => true,
-			'rewrite'             => true,
-			'capability_type'     => 'post',
 			'supports'            => array( 'title', 'editor', 'author', 'thumbnail', 'comments', 'revisions' ),
-		);
-
-		register_post_type( self::CPT_SLUG, $args );
+			'labels'              => array(
+				'name'               => __( 'Shows', 'greatermedia' ),
+				'singular_name'      => __( 'Show', 'greatermedia' ),
+				'add_new'            => _x( 'Add New Show', 'greatermedia', 'greatermedia' ),
+				'add_new_item'       => __( 'Add New Show', 'greatermedia' ),
+				'edit_item'          => __( 'Edit Show', 'greatermedia' ),
+				'new_item'           => __( 'New Show', 'greatermedia' ),
+				'view_item'          => __( 'View Show', 'greatermedia' ),
+				'search_items'       => __( 'Search Shows', 'greatermedia' ),
+				'not_found'          => __( 'No Shows found', 'greatermedia' ),
+				'not_found_in_trash' => __( 'No Shows found in Trash', 'greatermedia' ),
+				'parent_item_colon'  => __( 'Parent Show:', 'greatermedia' ),
+				'menu_name'          => __( 'Shows', 'greatermedia' ),
+			),
+		) );
+		
+		register_post_type( self::EPISODE_CPT, array( 
+			'public'     => false,
+			'rewrite'    => false,
+			'can_export' => true,
+			'labels'     => array(
+				'name'          => __( 'Show Episodes', 'greatermedia' ),
+				'singular_name' => __( 'Show Episode', 'greatermedia' ),
+			),
+		) );
 	}
 
 	/**
@@ -129,10 +123,10 @@ class ShowsCPT {
 			'tribe_events'
 		);
 
-		register_taxonomy( self::SHADOW_TAXONOMY, $supported_posttypes, $args );
+		register_taxonomy( self::SHOW_TAXONOMY, $supported_posttypes, $args );
 
 		if ( function_exists( 'TDS\add_relationship' ) ) {
-			TDS\add_relationship( self::CPT_SLUG, self::SHADOW_TAXONOMY );
+			TDS\add_relationship( self::SHOW_CPT, self::SHOW_TAXONOMY );
 		}
 	}
 

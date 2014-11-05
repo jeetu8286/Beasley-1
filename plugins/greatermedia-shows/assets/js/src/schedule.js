@@ -4,7 +4,7 @@
 		
 		$('#start-from-date').datepicker({
 			dateFormat : 'M d, yy',
-			minDate: 'now',
+			minDate: '+1d',
 			altField: '#start-from-date-value',
 			altFormat: 'yy-mm-dd'
 		});

@@ -1,63 +1,21 @@
 <?php
 
 // action hooks
-add_action( 'admin_menu', 'gmrs_register_schedule_page' );
-add_action( 'admin_enqueue_scripts', 'gmrs_enqueue_schedule_scripts' );
-add_action( 'admin_action_gmr_add_show_schedule', 'gmrs_add_show_schedule' );
-add_action( 'admin_action_gmr_delete_show_schedule', 'gmrs_delete_show_schedule' );
-add_action( 'gmr_show_schdeule', 'gmrs_set_active_show', 10, 4 );
-
-// filter hooks
-add_filter( 'cron_schedules', 'gmrs_filter_cron_schedules' );
+add_action( 'admin_menu', 'gmrs_register_episode_page' );
+add_action( 'admin_enqueue_scripts', 'gmrs_enqueue_episode_scripts' );
+add_action( 'admin_action_gmr_add_show_episode', 'gmrs_add_show_episode' );
+add_action( 'admin_action_gmr_delete_show_episode', 'gmrs_delete_show_episode' );
 
 /**
- * Filters cron schedules.
- *
- * @filter cron_schedules
- * @param array $schedules The initial array of cron schedules.
- * @return array The extended array of cron schedules.
- */
-function gmrs_filter_cron_schedules( $schedules ) {
-	$schedules['weekly'] = array(
-		'interval' => WEEK_IN_SECONDS,
-		'display' => 'Once Weekly',
-	);
-	return $schedules;
-}
-
-/**
- * Sets active (on air) show.
- *
- * @action gmr_show_schdeule
- * @param int $show_id The show id.
- */
-function gmrs_set_active_show( $show_id ) {
-	$show = get_post( $show_id );
-	if ( ! $show || $show->post_type != ShowsCPT::CPT_SLUG ) {
-		$args = func_get_args();
-		$next_run = wp_next_scheduled( 'gmr_show_schdeule', $args );
-		if ( $next_run ) {
-			wp_unschedule_event( $next_run, 'gmr_show_schdeule', $args );
-		}
-
-		return;
-	}
-
-	if ( $show->post_status == 'publish' ) {
-		update_option( 'gmr_active_show', $show_id );
-	}
-}
-
-/**
- * Enqueues scripts and styles required for show schedule page.
+ * Enqueues scripts and styles required for show episode page.
  *
  * @action admin_enqueue_scripts
- * @global string $gmrs_show_schedule_page The show schedule page slug.
+ * @global string $gmrs_show_episode_page The show episode page slug.
  * @param string $current_page The current page slug.
  */
-function gmrs_enqueue_schedule_scripts( $current_page ) {
-	global $gmrs_show_schedule_page;
-	if ( $gmrs_show_schedule_page == $current_page ) {
+function gmrs_enqueue_episode_scripts( $current_page ) {
+	global $gmrs_show_episode_page;
+	if ( $gmrs_show_episode_page == $current_page ) {
 		$postfix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 		wp_enqueue_style( 'meta_box', GMEDIA_SHOWS_URL . "assets/css/greatermedia_shows{$postfix}.css", null, GMEDIA_SHOWS_VERSION );
 		wp_enqueue_style( 'jquery-style', '//ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/jquery-ui.css' );
@@ -67,23 +25,23 @@ function gmrs_enqueue_schedule_scripts( $current_page ) {
 }
 
 /**
- * Registers schow schedule page.
+ * Registers show episode page.
  *
  * @action admin_menu
- * @global string $gmrs_show_schedule_page The show schedule page slug.
+ * @global string $gmrs_show_episode_page The show episode page slug.
  */
-function gmrs_register_schedule_page() {
-	global $gmrs_show_schedule_page;
-	$gmrs_show_schedule_page = add_submenu_page( 'edit.php?post_type=' . ShowsCPT::CPT_SLUG, 'Show Schedule', 'Schedule', 'manage_options', 'show-schedule', 'gmrs_render_schedule_page' );
+function gmrs_register_episode_page() {
+	global $gmrs_show_episode_page;
+	$gmrs_show_episode_page = add_submenu_page( 'edit.php?post_type=' . ShowsCPT::SHOW_CPT, 'Show Schedule', 'Schedule', 'manage_options', 'episode-schedule', 'gmrs_render_episode_schedule_page' );
 }
 
 /**
- * Adds new show schedule.
+ * Adds new show episode.
  *
- * @action admin_action_gmr_add_show_schedule
+ * @action admin_action_gmr_add_show_episode
  */
-function gmrs_add_show_schedule() {
-	check_admin_referer( 'gmr_add_show_schedule' );
+function gmrs_add_show_episode() {
+	check_admin_referer( 'gmr_add_show_episode' );
 
 	$data = filter_input_array( INPUT_POST, array(
 		'show'   => array( 'filter' => FILTER_VALIDATE_INT, 'options' => array( 'min_range' => 1 ) ),
@@ -92,7 +50,7 @@ function gmrs_add_show_schedule() {
 		'repeat' => FILTER_VALIDATE_BOOLEAN,
 	) );
 
-	if ( empty( $data['show'] ) || ! ( $show = get_post( $data['show'] ) ) || $show->post_type != ShowsCPT::CPT_SLUG ) {
+	if ( empty( $data['show'] ) || ! ( $show = get_post( $data['show'] ) ) || $show->post_type != ShowsCPT::SHOW_CPT ) {
 		wp_die( 'The show has not been found.' );
 	}
 
@@ -100,65 +58,70 @@ function gmrs_add_show_schedule() {
 		wp_die( 'Wrong date has been selected.' );
 	}
 
-	$date += $data['time'] - get_option( 'gmt_offset' ) * HOUR_IN_SECONDS; // convert to UTC
-	if ( $date < time() ) {
-		$date += WEEK_IN_SECONDS;
+	$date += $data['time'];
+	$date_gmt = $date - get_option( 'gmt_offset' ) * HOUR_IN_SECONDS;
+	if ( $date_gmt < time() ) {
+		wp_die( 'Please, select a date in a future.' );
 	}
 
-	if ( $data['repeat'] ) {
-		wp_schedule_event( $date, 'weekly', 'gmr_show_schdeule', $data );
-	} else {
-		wp_schedule_single_event( $date, 'gmr_show_schdeule', $data );
-	}
+	$inserted = wp_insert_post( array(
+		'post_title'    => $show->post_title,
+		'post_type'     => ShowsCPT::EPISODE_CPT,
+		'post_status'   => 'future',
+		'post_date'     => date( DATE_ISO8601, $date ),
+		'post_date_gmt' => date( DATE_ISO8601, $date_gmt ),
+		'post_parent'   => $show->ID,
+		'menu_order'    => $data['repeat'] ? 1 : 0,
+	) );
 
 	$cookie_path = parse_url( admin_url( '/' ), PHP_URL_PATH );
 	setcookie( 'gmr_show_id', $show->ID, 0, $cookie_path );
 	setcookie( 'gmr_show_time', $data['time'], 0, $cookie_path );
 	setcookie( 'gmr_show_date', strtotime( $data['date'] ), 0, $cookie_path );
-	
-	wp_redirect( wp_get_referer() );
+
+	$redirect = add_query_arg( array( 'created' => $inserted ? 1 : 0, 'deleted' => false ), wp_get_referer() );
+	wp_redirect( $redirect );
 	exit;
 }
 
 /**
- * Deletes show schedule.
+ * Deletes show episode.
  *
- * @action admin_action_gmr_delete_show_schedule
+ * @action admin_action_gmr_delete_show_episode
  */
-function gmrs_delete_show_schedule() {
-	check_admin_referer( 'gmr_delete_show_schedule' );
+function gmrs_delete_show_episode() {
+	$episode_id = filter_input( INPUT_GET, 'episode', FILTER_VALIDATE_INT, array( 'options' => array( 'min_range' => 1 ) ) );
+	check_admin_referer( 'gmr_delete_show_episode_' . $episode_id );
 
-	$crons = _get_cron_array();
-	$next_run = filter_input( INPUT_GET, 'next' );
-	$sig = filter_input( INPUT_GET, 'sig' );
-
-	if( ! isset( $crons[$next_run]['gmr_show_schdeule'][$sig] ) ) {
-		wp_die( 'Show schedule has not been found.' );
+	$episode = get_post( $episode_id );
+	if ( ! $episode || ShowsCPT::EPISODE_CPT != $episode->post_type ) {
+		wp_die( 'The episode was not found.' );
 	}
 
-	$args = $crons[$next_run]['gmr_show_schdeule'][$sig]['args'];
-	wp_unschedule_event( $next_run, 'gmr_show_schdeule', $args );
-
-	wp_redirect( wp_get_referer() );
+	$deleted = wp_delete_post( $episode_id, true );
+	
+	$redirect = add_query_arg( array( 'created' => false, 'deleted' => $deleted ? 1 : 0 ), wp_get_referer() );
+	wp_redirect( $redirect );
 	exit;
 }
 
 /**
- * Renders show schedule page.
+ * Renders show episode schedule page.
  */
-function gmrs_render_schedule_page() {
+function gmrs_render_episode_schedule_page() {
 	$active_show = isset( $_COOKIE['gmr_show_id'] ) ? $_COOKIE['gmr_show_id'] : false;
 	$active_time = isset( $_COOKIE['gmr_show_time'] ) ? $_COOKIE['gmr_show_time'] : false;
-	$active_date = date( 'M j, Y', isset( $_COOKIE['gmr_show_date'] ) ? $_COOKIE['gmr_show_date'] : time() );
+	$active_date = date( 'M j, Y', isset( $_COOKIE['gmr_show_date'] ) ? $_COOKIE['gmr_show_date'] : strtotime( 'tomorrow' ) );
 	
-	$events = gmrs_get_scheduled_events();
+	$episodes = gmrs_get_scheduled_episodes();
 	$precision = 0.5; // 1 - each hour, 0.5 - each 30 mins, 0.25 - each 15 mins
 
 	$days = array();
 	$start = current( get_weekstartend( date( DATE_ISO8601 ) ) );
+	$offset = get_option( 'gmt_offset' ) * HOUR_IN_SECONDS;
 
 	$shows = new WP_Query( array(
-		'post_type'           => ShowsCPT::CPT_SLUG,
+		'post_type'           => ShowsCPT::SHOW_CPT,
 		'post_status'         => 'publish',
 		'posts_per_page'      => -1,
 		'ignore_sticky_posts' => true,
@@ -169,9 +132,19 @@ function gmrs_render_schedule_page() {
 	?><div id="show-schedule" class="wrap">
 		<h2>Show Schedule</h2>
 
+		<?php foreach ( array( 'created', 'deleted' ) as $action ) : ?>
+			<?php if ( isset( $_GET[ $action ] ) ) : ?>
+				<?php if ( filter_input( INPUT_GET, $action, FILTER_VALIDATE_BOOLEAN ) ) : ?>
+					<div class="updated"><p>The episode has been <?php echo $action; ?> successfully.</p></div>
+				<?php else : ?>
+					<div class="updated error"><p>The episode has not been <?php echo $action; ?>.</p></div>
+				<?php endif; ?>
+			<?php endif; ?>
+		<?php endforeach; ?>
+
 		<form id="schedule-form" action="admin.php" method="post">
-			<?php wp_nonce_field( 'gmr_add_show_schedule' ); ?>
-			<input type="hidden" name="action" value="gmr_add_show_schedule">
+			<?php wp_nonce_field( 'gmr_add_show_episode' ); ?>
+			<input type="hidden" name="action" value="gmr_add_show_episode">
 			<input type="hidden" id="start-from-date-value" name="date" value="<?php echo $active_date; ?>">
 
 			<input type="submit" class="button button-primary" value="Add to the schedule">
@@ -216,29 +189,36 @@ function gmrs_render_schedule_page() {
 			<tbody>
 				<tr>
 					<?php foreach ( $days as $day ) : ?>
-						<td>
-							<?php if ( ! empty( $events[ $day ] ) ) : ?>
-								<?php for ( $i = 0, $len = count( $events[ $day ] ); $i < $len; $i++ ) : ?>
-									<?php $event = $events[ $day ][ $i ]; ?>
-									<?php $height = ( ( $i + 1 < $len ? $events[ $day ][ $i + 1 ]->args['time'] : DAY_IN_SECONDS ) - $event->args['time'] ) * 60 / HOUR_IN_SECONDS; ?>
+						<td><?php
+							if ( ! empty( $episodes[ $day ] ) ) :
+								for ( $i = 0, $len = count( $episodes[ $day ] ); $i < $len; $i++ ) :
+									$episode = $episodes[ $day ][ $i ];
 
-									<div class="show-<?php echo esc_attr( $event->show->ID ); ?>"
-										 style="height: <?php echo $height ?>px;background-color:<?php echo gmrs_show_color( $event->show->ID, 0.15 ) ?>;border-color:<?php echo gmrs_show_color( $event->show->ID, 0.75 ) ?>;"
-										 data-hover-color="<?php echo gmrs_show_color( $event->show->ID, 0.6 ) ?>">
+									$height = $i + 1 < $len
+										? strtotime( $episodes[ $day ][ $i + 1 ]->post_date ) % DAY_IN_SECONDS
+										: DAY_IN_SECONDS;
+									$height = ( $height - ( strtotime( $episode->post_date ) % DAY_IN_SECONDS ) ) * 60 / HOUR_IN_SECONDS;
+
+									?><div class="show-<?php echo esc_attr( $episode->post_parent ); ?>"
+										 style="height: <?php echo $height ?>px;background-color:<?php echo gmrs_show_color( $episode->post_parent, 0.15 ) ?>;border-color:<?php echo gmrs_show_color( $episode->post_parent, 0.75 ) ?>;"
+										 data-hover-color="<?php echo gmrs_show_color( $episode->post_parent, 0.6 ) ?>">
 										
 										<div>
-											<b><?php echo esc_html( $event->show->post_title ); ?></b>
-											<small><?php echo date( 'h:i A', $event->args['time'] ), ' ', $event->schedule ? '(weekly)' : ''; ?></small>
+											<b><?php echo esc_html( $episode->post_title ); ?></b>
+											<small>
+												<?php echo date( 'h:i A', strtotime( $episode->post_date_gmt ) + $offset ); ?>
+												<?php echo ! empty( $episode->menu_order ) ? '(weekly)' : ''; ?>
+											</small>
 										</div>
 
 										<div>
-											<?php $delete_url = add_query_arg( array( 'sig' => $event->sig, 'next' => $event->next_run ), 'admin.php?action=gmr_delete_show_schedule' ); ?>
-											<a href="<?php echo esc_url( wp_nonce_url( $delete_url, 'gmr_delete_show_schedule' ) ) ?>" onclick="return showNotice.warn();">Delete</a>
+											<?php $delete_url = 'admin.php?action=gmr_delete_show_episode&episode=' . $episode->ID ?>
+											<a href="<?php echo esc_url( wp_nonce_url( $delete_url, 'gmr_delete_show_episode_' . $episode->ID ) ) ?>" onclick="return showNotice.warn();">Delete</a>
 										</div>
-									</div>
-								<?php endfor; ?>
-							<?php endif; ?>
-						</td>
+									</div><?php
+								endfor;
+							endif;
+						?></td>
 					<?php endforeach; ?>
 				</tr>
 			</tbody>
@@ -247,62 +227,48 @@ function gmrs_render_schedule_page() {
 }
 
 /**
- * Returns scheduled events.
+ * Returns scheduled episodes.
  *
  * @param int $show_id The show id.
- * @return array The array of scheduled events.
+ * @return array The array of scheduled episodes.
  */
-function gmrs_get_scheduled_events() {
-	$events = $matches = array();
-	foreach( _get_cron_array() as $time => $cron ) {
-		foreach( $cron as $hook => $dings ) {
-			foreach( $dings as $sig => $data ) {
-				if ( 'gmr_show_schdeule' == $hook ) {
-					$show = get_post( current( $data['args'] ) );
-					if ( ! $show ) {
-						continue;
-					}
+function gmrs_get_scheduled_episodes() {
+	$query = new WP_Query();
+	
+	$posts = $query->query( array(
+		'post_type'           => ShowsCPT::EPISODE_CPT,
+		'post_status'         => 'any',
+		'posts_per_page'      => -1,
+		'ignore_sticky_posts' => true,
+		'orderby'             => 'date',
+		'order'               => 'ASC',
+		'date_query'          => array(
+			array(
+				'after'     => date( 'Y-m-d 00:00:00' ),
+				'before'    => date( 'Y-m-d 23:59:59', strtotime( '+1 week' ) ),
+				'inclusive' => true,
+			),
+		),
+	) );
 
-					$dayofweek = date( 'N', strtotime( $data['args']['date'] ) + $data['args']['time'] );
-					if ( ! isset( $events[ $dayofweek ] ) ) {
-						$events[ $dayofweek ] = array();
-					}
-					
-					$events[ $dayofweek ][] = (object) array(
-						'hook'     => $hook,
-						'time'     => date( DATE_ISO8601, $time ),
-						'next_run' => $time,
-						'sig'      => $sig,
-						'args'     => $data['args'],
-						'schedule' => $data['schedule'],
-						'interval' => isset( $data['interval'] ) ? $data['interval'] : null,
-						'show'     => $show,
-					);
-				}
-			}
+	$episodes = array();
+	foreach ( $posts as $post ) {
+		$dayofweek = date( 'N', strtotime( $post->post_date ) );
+		if ( ! isset( $episodes[ $dayofweek ] ) ) {
+			$episodes[ $dayofweek ] = array();
 		}
+
+		$show = get_post( $post->post_parent );
+		if ( ! $show ) {
+			continue;
+		}
+		
+		$post->post_title = $show->post_title;
+		
+		$episodes[ $dayofweek ][] = $post;
 	}
 
-	foreach ( $events as $dayofweek => &$events_list ) {
-		usort( $events_list, 'gmrs_sort_scheduled_events' );
-	}
-
-	return $events;
-}
-
-/**
- * Sorts scheduled shows by time.
- *
- * @param object $event_a The first scheduled show object.
- * @param object $event_b The second scheduled show object.
- * @return int 0 if shows start at the same time, -1 if first show starts earlier than the second and 1 in other case.
- */
-function gmrs_sort_scheduled_events( $event_a, $event_b ) {
-	if ( $event_a->args['time'] == $event_b->args['time'] ) {
-		return 0;
-	}
-
-	return $event_a->args['time'] < $event_b->args['time'] ? -1 : 1;
+	return $episodes;
 }
 
 /**
