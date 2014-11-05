@@ -521,10 +521,10 @@ img {
   position: absolute;
   top: 238px;
   right: 0;
-  padding-top: 2em;
-  padding-bottom: 2em;
+  padding: 2em 0;
   display: none;
-  background-color: #000000; }
+  background-color: #000000;
+  color: #6D6E70; }
   @media screen and (min-width: 1024px) {
     .live-player {
       display: block;
@@ -534,7 +534,7 @@ img {
       -webkit-box-sizing: border-box;
       -moz-box-sizing: border-box;
       box-sizing: border-box;
-      color: #404041;
+      color: #6D6E70;
       overflow: auto; } }
 
 .logged-in .live-player {
@@ -697,11 +697,13 @@ p {
   margin: 0.5em 0; }
 
 .read-more--btn {
+  display: inline-block;
+  line-height: 1;
   padding: 1em 1.5em;
-  margin-right: 0.5em;
-  border-width: 0;
+  margin-right: .5em;
   outline: none;
   background-color: #d22228;
+  border: 2px solid #d22228;
   font-family: "Open Sans", sans-serif;
   font-size: 0.875em;
   color: #ffffff !important;
@@ -709,6 +711,7 @@ p {
   cursor: pointer; }
   .read-more--btn:hover, .read-more--btn:focus {
     background-color: #aa1c20;
+    border-color: #aa1c20;
     color: #ffffff; }
   .read-more--btn:last-of-type {
     margin-right: 0; }
@@ -788,10 +791,10 @@ p {
         margin-right: 0; } }
 
 .entry-author a, .entry-author a:visited {
-  color: #404041; }
+  color: #6D6E70; }
 
 .entry-author a:hover, .entry-author a:focus {
-  color: #404041; }
+  color: #6D6E70; }
 
 .entry-author--img {
   float: left;
@@ -1330,7 +1333,7 @@ blockquote {
 blockquote p {
   display: inline;
   font-style: italic;
-  color: #404041; }
+  color: #6D6E70; }
 
 .alignleft, img.alignleft {
   display: block;
@@ -1423,24 +1426,32 @@ blockquote p {
       top: 32px; } }
 
 .live-player--container {
-  min-height: 70px;
   padding: 1em 0;
   text-align: center; }
 
 .live-player--listen_btn {
-  padding: 1em 1.5em;
-  margin-right: 0.5em;
-  border-width: 0;
+  display: inline-block;
+  line-height: 1;
+  padding: 0.25em 1em;
+  margin-right: .5em;
   outline: none;
   background-color: #d22228;
+  border: 2px solid #d22228;
   font-family: "Open Sans", sans-serif;
-  font-size: 1.125em;
+  font-size: 0.88889em;
   color: #ffffff !important;
   text-transform: uppercase;
   cursor: pointer;
-  margin: 0 0.5em; }
+  margin: 0 .5em;
+  -webkit-border-radius: 1em;
+  -moz-border-radius: 1em;
+  -ms-border-radius: 1em;
+  -o-border-radius: 1em;
+  -border-radius: 1em;
+  border-radius: 1em; }
   .live-player--listen_btn:hover, .live-player--listen_btn:focus {
     background-color: #aa1c20;
+    border-color: #aa1c20;
     color: #ffffff; }
   .live-player--listen_btn:last-of-type {
     margin-right: 0; }
@@ -1458,8 +1469,8 @@ blockquote p {
   top: 0;
   right: 0;
   display: block;
-  height: 50px;
   width: 33px;
+  height: 50px;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
   border-top-left-radius: 15px;
@@ -1471,7 +1482,7 @@ blockquote p {
   border: none;
   outline: none;
   font-size: 1.25em;
-  color: #404041;
+  color: #6D6E70;
   z-index: 10001;
   cursor: pointer; }
   @media screen and (min-width: 1024px) {
@@ -1489,8 +1500,8 @@ blockquote p {
   content: "\f028"; }
 
 .gm-liveplayer--btn {
-  height: 140px;
-  width: 140px;
+  width: 54px;
+  height: 54px;
   margin: 0 auto;
   border-top-left-radius: 50%;
   border-top-right-radius: 50%;
@@ -1500,25 +1511,25 @@ blockquote p {
   border-bottom-right-radius: 50%;
   border-top-left-radius: 50%;
   border-bottom-left-radius: 50%;
-  background-color: #d22228;
-  border: none;
+  background-color: transparent;
+  border: 2px solid #d22228;
   outline: none;
   font-family: FontAwesome;
-  font-size: 5em;
+  font-size: 1.25em;
   font-style: normal;
   font-weight: normal;
   line-height: 1;
   -webkit-font-smoothing: antialiased;
   moz-osx-font-smoothing: grayscale;
   text-rendering: auto;
-  color: #ffffff;
+  color: #d22228;
   cursor: pointer;
   z-index: 10001; }
 
-#playButton {
+#playButton, #resumeButton {
   position: relative; }
 
-#playButton:before {
+#playButton:before, #resumeButton:before {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -1528,7 +1539,22 @@ blockquote p {
   -o-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
   font-family: FontAwesome;
-  content: "\f01d"; }
+  content: "\f04b" !important; }
+
+#pauseButton {
+  position: relative; }
+
+#pauseButton:before {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  font-family: FontAwesome;
+  content: "\f04d" !important; }
 
 .gm-liveplayer--container {
   position: relative;
@@ -1545,7 +1571,7 @@ blockquote p {
   height: 100%;
   width: 100%;
   background: transparent;
-  color: #404041;
+  color: #6D6E70;
   z-index: 10000; }
 
 .gm-liveplayer--container .container {
@@ -1597,23 +1623,35 @@ blockquote p {
 .admin-bar .gm-liveplayer--container {
   top: 0; }
 
-.now-playing--logo {
-  height: 50px;
-  width: 80px;
-  margin: 0 auto 1em;
-  background-color: #404041; }
+.on-air {
+  padding: 0 1em;
+  margin: 0 0 .5em;
+  text-align: center; }
+
+.on-air--title {
+  margin: 0 0 .5em;
+  font-size: 0.79012em;
+  font-weight: lighter; }
+
+.on-air--show {
+  margin: 0;
+  text-transform: uppercase;
+  font-size: 0.79012em; }
+
+.now-playing {
+  margin: 0 0 2em;
+  text-align: center; }
 
 .now-playing--title {
-  height: 20px;
-  width: 100px;
-  margin: 0 auto 1em;
-  background-color: #404041; }
+  margin: 0 0 .25em;
+  font-size: 1.125em;
+  font-weight: lighter;
+  color: #d22228; }
 
 .now-playing--artist {
-  height: 20px;
-  width: 100px;
-  margin: 0 auto 1em;
-  background-color: #404041; }
+  margin: 0 0 .25em;
+  font-size: 0.79012em;
+  font-weight: lighter; }
 
 .live-player--social {
   height: 32px;
@@ -1633,7 +1671,7 @@ blockquote p {
   margin: 0 0.25em 0 0;
   list-style: none;
   display: inline-block;
-  background-color: #404041; }
+  background-color: #6D6E70; }
 
 .live-player--social ul li:last-of-type {
   margin-right: 0; }
@@ -1650,7 +1688,7 @@ blockquote p {
   font-size: 0.79012em; }
 
 .live-player--test {
-  color: #404041;
+  color: #6D6E70;
   width: 100%;
   padding: .25em .5em; }
 
@@ -1658,6 +1696,10 @@ blockquote p {
   display: inline-block;
   margin-left: 4px;
   cursor: pointer; }
+
+.live-links {
+  margin: 1em 0 0;
+  border-top: 1px solid #282827; }
 
 .featured {
   position: relative;
@@ -1800,11 +1842,13 @@ blockquote p {
       font-size: 0.88889em; } }
 
 .featured-content--btn {
+  display: inline-block;
+  line-height: 1;
   padding: 0.25em 1.5em;
-  margin-right: 0.5em;
-  border-width: 0;
+  margin-right: .5em;
   outline: none;
   background-color: #d22228;
+  border: 2px solid #d22228;
   font-family: "Open Sans", sans-serif;
   font-size: 1em;
   color: #ffffff !important;
@@ -1821,6 +1865,7 @@ blockquote p {
   text-transform: uppercase; }
   .featured-content--btn:hover, .featured-content--btn:focus {
     background-color: #aa1c20;
+    border-color: #aa1c20;
     color: #ffffff; }
   .featured-content--btn:last-of-type {
     margin-right: 0; }
@@ -1888,7 +1933,7 @@ blockquote:before {
 blockquote p {
   display: inline;
   font-style: italic;
-  color: #404041; }
+  color: #6D6E70; }
 
 .alignleft, img.alignleft {
   display: block;
@@ -2164,11 +2209,13 @@ blockquote p {
     clear: both; }
 
 .sg-btn {
+  display: inline-block;
+  line-height: 1;
   padding: 1em 1.5em;
-  margin-right: 0.5em;
-  border-width: 0;
+  margin-right: .5em;
   outline: none;
   background-color: #d22228;
+  border: 2px solid #d22228;
   font-family: "Open Sans", sans-serif;
   font-size: 0.875em;
   color: #ffffff !important;
@@ -2176,6 +2223,7 @@ blockquote p {
   cursor: pointer; }
   .sg-btn:hover, .sg-btn:focus {
     background-color: #aa1c20;
+    border-color: #aa1c20;
     color: #ffffff; }
   .sg-btn:last-of-type {
     margin-right: 0; }
@@ -2265,7 +2313,7 @@ blockquote p {
   height: 80px;
   width: 13%;
   display: table-cell;
-  color: #404041; }
+  color: #6D6E70; }
 
 .sg-color--swatch {
   display: block;

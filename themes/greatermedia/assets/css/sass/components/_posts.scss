@@ -46,7 +46,7 @@
 
 //  Read More Button
 .read-more--btn{
-	@include btn(btn-bg, btn-text, 1em, 1.5em, em(14px));
+	@include btn(btn-bg, btn-text, btn-bg, 1em, 1.5em, em(14px));
 }
 
 // Entry Footer
