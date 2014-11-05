@@ -17,7 +17,7 @@ define( 'GREATER_MEDIA_CONTESTS_PATH', dirname( __FILE__ ) );
 include trailingslashit( __DIR__ ) . 'inc/class-greatermedia-contests.php';
 include trailingslashit( __DIR__ ) . 'inc/class-greatermedia-contests-rewrites.php';
 include trailingslashit( __DIR__ ) . 'inc/class-greatermedia-contest-entry.php';
-include trailingslashit( __DIR__ ) . 'inc/class-greatermedia-contest-entry-gravity-forms.php';
+include trailingslashit( __DIR__ ) . 'inc/class-greatermedia-contest-entry-embedded-form.php';
 include trailingslashit( __DIR__ ) . 'inc/class-greatermedia-contest-entry-twitter.php';
 include trailingslashit( __DIR__ ) . 'inc/class-greatermedia-contest-entry-instagram.php';
 include trailingslashit( __DIR__ ) . 'inc/class-greatermedia-formbuilder-render.php';

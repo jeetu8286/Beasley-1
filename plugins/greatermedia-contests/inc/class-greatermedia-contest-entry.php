@@ -8,7 +8,7 @@ class GreaterMediaContestEntry {
 
 	const ENTRY_SOURCE_TWITTER = 'twitter';
 	const ENTRY_SOURCE_INSTAGRAM = 'instagram';
-	const ENTRY_SOURCE_GRAVITY_FORMS = 'gravity-forms';
+	const ENTRY_SOURCE_EMBEDDED_FORM = 'embedded_form';
 
 	private $post;
 
@@ -178,7 +178,16 @@ class GreaterMediaContestEntry {
 			throw new UnexpectedValueException( 'Post ID passed does not reference a "Contest Entry" post' );
 		}
 
-		$entry = new self( $entry_post );
+		$entry_source = get_post_meta( $post_id, 'entry_source', true );
+		if ( self::ENTRY_SOURCE_EMBEDDED_FORM === $entry_source ) {
+			$entry = new GreaterMediaContestEntryEmbeddedForm( $entry_post );
+		} else if ( self::ENTRY_SOURCE_TWITTER === $entry_source ) {
+			$entry = new GreaterMediaContestEntryTwitter( $entry_post );
+		} else if ( self::ENTRY_SOURCE_INSTAGRAM === $entry_source ) {
+			$entry = new GreaterMediaContestEntryInstagram( $entry_post );
+		} else {
+			$entry = new self( $entry_post );
+		}
 
 		return $entry;
 
