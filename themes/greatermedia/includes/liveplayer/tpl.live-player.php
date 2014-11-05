@@ -40,6 +40,6 @@
 	</div>
 
 	<div class="live-links">
-
+		<?php dynamic_sidebar( 'liveplayer_sidebar' ); ?>
 	</div>
 </aside>
