@@ -69,13 +69,40 @@ class GreaterMediaFormbuilderRender {
 
 			// Add form tags
 			$tags['input'] = array(
-				'type'  => 1,
-				'name'  => 1,
-				'value' => 1,
-				'class' => 1
+				'id'          => 1,
+				'type'        => 1,
+				'name'        => 1,
+				'value'       => 1,
+				'class'       => 1,
+				'disabled'    => 1,
+				'size'        => 1,
+				'minlength'   => 1,
+				'maxlength'   => 1,
+				'pattern'     => 1,
+				'value'       => 1,
+				'placeholder' => 1,
+				'step'        => 1,
+				'readonly'    => 1,
+				'min'         => 1,
+				'max'         => 1,
+				'form'        => 1,
 			);
 
-			$tags['select'] = array();
+			$tags['select'] = array(
+				'id'        => 1,
+				'name'      => 1,
+				'autofocus' => 1,
+				'disabled'  => 1,
+				'form'      => 1,
+				'multiple'  => 1,
+				'required'  => 1,
+				'size'      => 1,
+			);
+
+			$tags['label'] = array(
+				'for'  => 1,
+				'form' => 1,
+			);
 
 		}
 
