@@ -2,10 +2,15 @@
 	@include position(relative, null null null null);
 	@include size(100% 80px);
 	@include padding(em(10px) 0);
+	margin: 0 auto;
 	@include border-color(null null color(primary-border) null);
 	@include border-style(null null solid null);
 	@include border-width(null null 1px null);
 	background-color: color(secondary-bg);
+}
+
+.header .container {
+	max-width: $max-site-width;
 }
 
 .header-logo{
