@@ -17,12 +17,12 @@ class GreaterMediaContestEntry {
 	private $entry_source; // How this entry was created (i.e. "gravity-forms"
 	private $entry_reference; // Reference/link to the source of the entry (i.e. Gravity Forms submission ID)
 
-	private function __construct( WP_Post $post_obj = null, $contest_id = null ) {
+	protected function __construct( WP_Post $post_obj = null, $contest_id = null ) {
 
 		if ( null !== $post_obj ) {
 
-			if(!($post_obj instanceof WP_Post)) {
-				throw new UnexpectedValueException('$post_obj must be a WP_Post');
+			if ( ! ( $post_obj instanceof WP_Post ) ) {
+				throw new UnexpectedValueException( '$post_obj must be a WP_Post' );
 			}
 
 			$this->post              = $post_obj;
@@ -31,7 +31,7 @@ class GreaterMediaContestEntry {
 			$this->entry_source      = get_post_meta( $this->post->ID, 'entry_source', true );
 			$this->entry_reference   = get_post_meta( $this->post->ID, 'entry_reference', true );
 		} else {
-			$this->post = new WP_Post( new stdClass() );
+			$this->post            = new WP_Post( new stdClass() );
 			$this->post->post_type = 'contest_entry';
 		}
 
@@ -135,8 +135,7 @@ class GreaterMediaContestEntry {
 		$possible_entry_subclass_name = 'GreaterMediaContestEntry' . $entry_source_camel_case;
 		if ( class_exists( $possible_entry_subclass_name ) ) {
 			$entry = new $possible_entry_subclass_name( null, $contest_id );
-		}
-		else {
+		} else {
 			$entry = new self( null, $contest_id );
 		}
 
