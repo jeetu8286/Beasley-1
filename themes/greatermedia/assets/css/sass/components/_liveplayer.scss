@@ -16,8 +16,12 @@
 }
 
 .live-player--container {
-	padding: 1em 0;
-	text-align: center;
+	float: right;
+	@include bp(large) {
+		float: none;
+		padding: 1em 0;
+		text-align: center;
+	}
 }
 
 .live-player--listen_btn {
@@ -185,9 +189,14 @@
 }
 
 .on-air {
-	padding: 0 1em;
-	margin: 0 0 .5em;
-	text-align: center;
+	float: left;
+	margin: 0 1em 0 0;
+	@include bp(large) {
+		float: none;
+		padding: 0 1em;
+		margin: 0 0 .5em;
+		text-align: center;
+	}
 }
 
 .on-air--title {
@@ -203,8 +212,13 @@
 }
 
 .now-playing {
-	margin: 0 0 2em;
-	text-align: center;
+	float: left;
+	margin: 0 1em 0 0;
+	@include bp(large) {
+		float: none;
+		margin: 0 0 2em;
+		text-align: center;
+	}
 }
 
 .now-playing--title {
