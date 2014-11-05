@@ -94,7 +94,7 @@ img {
 }
 
 .live-player{
-	@include position(absolute, 117px null null null);
+	@include position(absolute, 238px null null null);
 	@include padding(2em null);
 	display: none;
 	background-color: color(secondary-bg);
