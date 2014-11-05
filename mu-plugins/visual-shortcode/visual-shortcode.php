@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 define( 'VISUAL_SHORTCODE_PATH', dirname( __FILE__ ) );
-define( 'VISUAL_SHORTCODE_URL', plugins_url( trailingslashit( basename( dirname( __FILE__ ) ) ) ) );
+define( 'VISUAL_SHORTCODE_URL', plugin_dir_url( __FILE__ ) );
 
 include trailingslashit( VISUAL_SHORTCODE_PATH ) . 'inc/class-visual-shortcode.php';
 include trailingslashit( VISUAL_SHORTCODE_PATH ) . 'inc/dashicon-xref.php';
