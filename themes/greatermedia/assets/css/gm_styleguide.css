@@ -393,8 +393,8 @@ img {
 
 #site-wrap {
   max-width: 1400px;
-  max-height: 100%;
-  margin: 0 auto; }
+  margin: 0 auto;
+  background-color: #ffffff; }
 
 .page-wrap {
   -webkit-transform: translate(0, 0);
@@ -540,6 +540,11 @@ img {
       box-sizing: border-box;
       color: #6D6E70;
       overflow: auto; } }
+  @media screen and (min-width: 1400px) {
+    .live-player {
+      right: -webkit-calc(50% - 700px);
+      right: calc(50% - 700px);
+      width: 15.625em; } }
 
 .logged-in .live-player {
   top: 284px; }
