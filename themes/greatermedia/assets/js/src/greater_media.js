@@ -62,7 +62,15 @@
 	/**
 	 * Initiates `headroom`
 	 */
-	headroom.init();
+	if(window.innerWidth >= 768) {
+		headroom.init();
+	}
+
+	window.onresize = function(event) {
+		if(window.innerWidth >= 768) {
+			headroom.init();
+		}
+	}
 
 	/**
 	 * Toggles a class to the body when the mobile nav button is clicked
