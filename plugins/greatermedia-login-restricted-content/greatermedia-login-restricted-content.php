@@ -17,8 +17,6 @@ define( 'GREATER_MEDIA_LOGIN_RESTRICTED_CONTENT_PATH', dirname( __FILE__ ) );
 define( 'GREATER_MEDIA_LOGIN_RESTRICTED_CONTENT_URL', plugins_url( trailingslashit( basename( dirname( __FILE__ ) ) ) ) );
 
 // This is a requirement
-if ( ! class_exists( 'VisualShortcode' ) ) {
-	include realpath( trailingslashit( __DIR__ ) . '../visual-shortcode/visual-shortcode.php' );
+if ( class_exists( 'VisualShortcode' ) ) {
+	include trailingslashit( GREATER_MEDIA_LOGIN_RESTRICTED_CONTENT_PATH ) . 'inc/class-greatermedia-login-restricted-content.php';
 }
-
-include trailingslashit( GREATER_MEDIA_LOGIN_RESTRICTED_CONTENT_PATH) . 'inc/class-greatermedia-login-restricted-content.php';

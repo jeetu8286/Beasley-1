@@ -47,15 +47,16 @@ function greatermedia_setup() {
 	add_theme_support( 'post-thumbnails' );
 	add_image_size( 'gm-article-thumbnail', 1580, 9999, false ); // thumbnails used for articles
 
+	// Update this as appropriate content types are created and we want this functionality
+	add_post_type_support( 'post', 'timed-content' );
+	add_post_type_support( 'post', 'login-restricted-content' );
+
 	/**
 	 * Add theme support for post-formats
 	 */
 	$formats = array( 'gallery', 'link', 'image', 'video', 'audio' );
 	add_theme_support( 'post-formats', $formats );
 
-	// Update this as appropriate content types are created and we want this functionality
-	add_post_type_support( 'post', 'timed-content' );
-	add_post_type_support( 'post', 'login-restricted-content' );
 }
 
 add_action( 'after_setup_theme', 'greatermedia_setup' );
