@@ -10,6 +10,7 @@ $_color_base_gray: #a7a9ab;
 // @type String
 //
 $colors: (
+	body-bg: #000000,
 	primary-bg: #ffffff,
 	primary-text: #000000,
 	primary-link: #d22228,
@@ -39,10 +40,3 @@ $link-color: color(primary-link);
 $link-hover: darken(color(primary-link), 10%);
 
 $border-color: color(primary-border);
-
-/*********************
-Misc
-*********************/
-
-// Site Max Width
-$max-site-width:	1200px;
