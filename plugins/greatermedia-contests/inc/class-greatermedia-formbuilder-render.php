@@ -61,7 +61,7 @@ class GreaterMediaFormbuilderRender {
 	}
 
 	/**
-	 * Retrieve a custom list of HTML tags we're allowing in a rendered form
+	 * Retrieve a custom list of HTML tags & attributes we're allowing in a rendered form
 	 * @return array valid tags
 	 */
 	protected static function allowed_tags() {
