@@ -1,0 +1,8 @@
+.leaderboard {
+	@include position(relative, null null null null);
+	@include padding(em(20px) 0);
+}
+
+.leaderboard img {
+	@include margin(0 auto);
+}

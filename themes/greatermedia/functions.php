@@ -41,11 +41,16 @@ function greatermedia_setup() {
 	add_theme_support( 'post-thumbnails' );
 	add_image_size( 'gm-article-thumbnail', 1580, 9999, false ); // thumbnails used for articles
 
+	// Update this as appropriate content types are created and we want this functionality
+	add_post_type_support( 'post', 'timed-content' );
+	add_post_type_support( 'post', 'login-restricted-content' );
+
 	/**
 	 * Add theme support for post-formats
 	 */
 	$formats = array( 'gallery', 'link', 'image', 'video', 'audio' );
 	add_theme_support( 'post-formats', $formats );
+
 }
 
 add_action( 'after_setup_theme', 'greatermedia_setup' );
@@ -58,6 +63,13 @@ add_action( 'after_setup_theme', 'greatermedia_setup' );
 function greatermedia_scripts_styles() {
 	$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 
+	wp_register_script(
+		'headroom',
+		get_template_directory_uri() . "/assets/js/vendor/headroom.min.js",
+		array(),
+		'0.7.0',
+		true
+	);
 	wp_register_style(
 		'open-sans',
 		'http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,700',
@@ -135,7 +147,9 @@ function greatermedia_scripts_styles() {
 		wp_enqueue_script(
 			'greatermedia',
 			get_template_directory_uri() . "/assets/js/greater_media{$postfix}.js",
-			array(),
+			array(
+				'headroom'
+			),
 			GREATERMEDIA_VERSION,
 			true
 		);
