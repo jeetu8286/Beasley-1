@@ -47,7 +47,7 @@ class GigyaCommand extends \WP_CLI_Command {
 
 		$errors_file = $file . '.errors.log';
 
-		file_put_contents( $file, '[\n' );
+		file_put_contents( $file, "[\n" );
 		file_put_contents( $errors_file, '' );
 
 		\WP_CLI::success( "Creating $count fake users in Gigya ..." );
