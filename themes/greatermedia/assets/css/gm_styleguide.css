@@ -515,19 +515,23 @@ img {
         margin-right: 0; } }
 
 .live-player {
-  position: absolute;
-  top: 117px;
+  position: fixed;
+  bottom: 0;
   right: 0;
-  padding: 2em 0;
-  display: none;
+  left: 0;
+  padding: 1em;
   background-color: #000000;
   color: #6D6E70; }
   @media screen and (min-width: 1024px) {
     .live-player {
-      display: block;
+      position: absolute;
+      top: 238px;
+      bottom: auto;
       right: 0;
+      left: auto;
       width: 17.857142857143%;
       height: 100%;
+      padding: 2em 0;
       -webkit-box-sizing: border-box;
       -moz-box-sizing: border-box;
       box-sizing: border-box;
@@ -1384,8 +1388,12 @@ blockquote p {
  * Admins can choose the location of the player. A class is added to the body that will match the locations below.
  */
 .live-player--container {
-  padding: 1em 0;
-  text-align: center; }
+  float: right; }
+  @media screen and (min-width: 1024px) {
+    .live-player--container {
+      float: none;
+      padding: 1em 0;
+      text-align: center; } }
 
 .live-player--listen_btn {
   display: inline-block;
@@ -1582,9 +1590,14 @@ blockquote p {
   top: 0; }
 
 .on-air {
-  padding: 0 1em;
-  margin: 0 0 .5em;
-  text-align: center; }
+  float: left;
+  margin: 0 1em 0 0; }
+  @media screen and (min-width: 1024px) {
+    .on-air {
+      float: none;
+      padding: 0 1em;
+      margin: 0 0 .5em;
+      text-align: center; } }
 
 .on-air--title {
   margin: 0 0 .5em;
@@ -1597,8 +1610,13 @@ blockquote p {
   font-size: 0.79012em; }
 
 .now-playing {
-  margin: 0 0 2em;
-  text-align: center; }
+  float: left;
+  margin: 0 1em 0 0; }
+  @media screen and (min-width: 1024px) {
+    .now-playing {
+      float: none;
+      margin: 0 0 2em;
+      text-align: center; } }
 
 .now-playing--title {
   margin: 0 0 .25em;
