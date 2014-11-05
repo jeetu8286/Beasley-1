@@ -48,12 +48,23 @@ class GreaterMediaFormbuilderRender {
 
 		$submitted_values = array();
 		foreach ( $form as $field ) {
-			if ( isset( $_POST[ $field->cid ] ) ) {
-				$submitted_values[ $_POST[ $field->cid ] ] = sanitize_text_field( $_POST[ $field->cid ] );
+
+			$post_array_key = 'form_field_' . $field->cid;
+			
+			if ( isset( $_POST[ $post_array_key ] ) ) {
+				$submitted_values[ $field->cid ] = sanitize_text_field( $_POST[ $post_array_key ] );
 			}
+
 		}
 
-		$entry = GreaterMediaContestEntry::create_for_data( $GLOBALS['post']->ID, $entrant_name, $entrant_reference, 'embedded_form', json_encode( $submitted_values ) );
+		$entry = GreaterMediaContestEntryEmbeddedForm::create_for_data(
+			$GLOBALS['post']->ID,
+			$entrant_name,
+			$entrant_reference,
+			GreaterMediaContestEntry::ENTRY_SOURCE_EMBEDDED_FORM,
+			json_encode( $submitted_values )
+		);
+
 		$entry->save();
 
 		do_action( 'greatermedia_contest_entry_save', $entry );
