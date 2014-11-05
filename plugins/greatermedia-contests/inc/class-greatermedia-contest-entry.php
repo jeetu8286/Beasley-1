@@ -10,12 +10,12 @@ class GreaterMediaContestEntry {
 	const ENTRY_SOURCE_INSTAGRAM = 'instagram';
 	const ENTRY_SOURCE_EMBEDDED_FORM = 'embedded_form';
 
-	private $post;
+	protected $post;
 
-	private $entrant_name;
-	private $entrant_reference; // Gigya ID
-	private $entry_source; // How this entry was created (i.e. "gravity-forms"
-	private $entry_reference; // Reference/link to the source of the entry (i.e. Gravity Forms submission ID)
+	protected $entrant_name;
+	protected $entrant_reference; // Gigya ID
+	protected $entry_source; // How this entry was created (i.e. "gravity-forms"
+	protected $entry_reference; // Reference/link to the source of the entry (i.e. Gravity Forms submission ID)
 
 	protected function __construct( WP_Post $post_obj = null, $contest_id = null ) {
 
