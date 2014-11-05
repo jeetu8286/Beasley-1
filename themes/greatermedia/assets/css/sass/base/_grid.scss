@@ -94,7 +94,7 @@ img {
 }
 
 .live-player{
-	@include position(absolute, 117px null null null);
+	@include position(absolute, 238px null null null);
 	@include padding(2em null);
 	display: none;
 	background-color: color(secondary-bg);
@@ -105,6 +105,14 @@ img {
 		height: 100%;
 		@include box-sizing(border-box);
 		color: color(secondary-text);
+		overflow: auto;
+	}
+}
+
+.logged-in .live-player {
+	top: 284px;
+	@include media(min-width 782px) {
+		top: 270px;
 	}
 	@include bp(x-large) {
 		@include calc(right, '50% - 700px');
