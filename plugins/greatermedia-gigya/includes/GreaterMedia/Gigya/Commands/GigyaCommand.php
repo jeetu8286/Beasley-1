@@ -70,7 +70,7 @@ class GigyaCommand extends \WP_CLI_Command {
 				file_put_contents( $file, $user_line, FILE_APPEND );
 			} catch ( \Exception $e ) {
 				\WP_CLI::warning( $e->getMessage() );
-				$this->_write_string( $file, $e->getMessage() );
+				file_put_contents( $error_file, $e->getMessage(), FILE_APPEND );
 			}
 		}
 

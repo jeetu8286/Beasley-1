@@ -191,7 +191,7 @@ class FakeGigyaUser {
 		$request->setParam( 'email', $this->properties['email'] );
 		$request->setParam( 'password', 'foobar123' );
 		$request->setParam( 'regToken', $regToken );
-		$request->setParam( 'finalizeRegistration', $finalize );
+		$request->setParam( 'finalizeRegistration', true ); // psuedo finalized for testing
 		$request->setParam( 'profile', json_encode( $profile_properties  ) );
 
 		$response = $request->send();
