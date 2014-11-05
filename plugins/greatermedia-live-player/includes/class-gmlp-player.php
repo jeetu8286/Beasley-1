@@ -10,7 +10,7 @@ class GMLP_Player {
 
 		add_action( 'wp_footer', array( __CLASS__, 'load_js' ), 50 );
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'enqueue_scripts' ), 50 );
-		add_action( 'wp_footer', array( __CLASS__, 'render_player' ) );
+		add_action( 'gm_live_player', array( __CLASS__, 'render_player' ) );
 		add_action( 'radio_callsign', array( __CLASS__, 'get_radio_callsign' ) );
 	}
 
@@ -31,20 +31,20 @@ class GMLP_Player {
 	public static function render_player() {
 
 		?>
-		<div class="gmlp-nav">
+		<div class="gm-liveplayer">
 
-			<button class="gmlp-nav-toggle"></button>
+			<button class="gm-liveplayer--toggle"></button>
 
-			<div class="gmlp-menu">
+			<div class="gm-liveplayer--container">
 
 				<div class="container">
-					<div id="gmlp-actions">
-						<div id="playButton" class="gmlp-audio-button play" data-station="<?php do_action( 'radio_callsign' ); ?>"></div>
-						<button id="pauseButton" class="gmlp-audio-button" data-station="<?php do_action( 'radio_callsign' ); ?>"><i class="fa fa-pause"></i></button>
-						<button id="resumeButton" class="gmlp-audio-button" data-station="<?php do_action( 'radio_callsign' ); ?>"><i class="fa fa-play-circle-o"></i></button>
+					<div id="gm-liveplayer--controls">
+						<div id="playButton" class="gm-liveplayer--btn play" data-station="<?php do_action( 'radio_callsign' ); ?>"></div>
+						<button id="pauseButton" class="gm-liveplayer--btn" data-station="<?php do_action( 'radio_callsign' ); ?>"><i class="fa fa-pause"></i></button>
+						<button id="resumeButton" class="gm-liveplayer--btn" data-station="<?php do_action( 'radio_callsign' ); ?>"><i class="fa fa-play-circle-o"></i></button>
 					</div>
 
-					<div id="gmlp-live">
+					<div id="gm-liveplayer--now_playing">
 						<div id="nowPlaying">
 							<div id="trackInfo">
 							</div>

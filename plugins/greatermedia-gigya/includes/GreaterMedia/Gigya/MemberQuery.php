@@ -15,6 +15,36 @@ namespace GreaterMedia\Gigya;
 class MemberQuery {
 
 	/**
+	 * Mapping of data types to their Gigya suffixes
+	 *
+	 * @access public
+	 * @var array
+	 */
+	static public $suffixes = array(
+		'integer' => 'i',
+		'float'   => 'f',
+		'string'  => 's',
+		'text'    => 't',
+		'boolean' => 'b',
+		'date'    => 'd',
+	);
+
+	/**
+	 * Mapping of operators labels to their Gigya operator symbols.
+	 *
+	 * @access public
+	 * @var array
+	 */
+	static public $operators = array(
+		'equals'                   => '=',
+		'not equals'               => '!=',
+		'greater than'             => '>',
+		'greater than or equal to' => '>=',
+		'less than'                => '<',
+		'less than or equal to'    => '<=',
+	);
+
+	/**
 	 * The id of the post to which the current MemberQuery belongs.
 	 *
 	 * @access public
@@ -29,6 +59,15 @@ class MemberQuery {
 	 * @var array
 	 */
 	public $properties;
+
+	/**
+	 * Name of Gigya Storage 'table'. All items are normalized and
+	 * stored as entry items in this table.
+	 *
+	 * @access public
+	 * @var string
+	 */
+	public $storeName = 'entries';
 
 	/**
 	 * Stores the post object corresponding to the member query and
@@ -47,7 +86,7 @@ class MemberQuery {
 	 * @return string The json representation of a MemberQuery.
 	 */
 	public function content_for( $post_id ) {
-		return get_post_meta( $post_id, 'member_query_json', true );
+		return get_post_meta( $post_id, 'member_query_constraints', true );
 	}
 
 	/**
@@ -68,15 +107,9 @@ class MemberQuery {
 			$json = array();
 		}
 
-		$defaults = array(
-			'constraints'  => array(),
-			'query'        => '',
-			'direct_query' => ''
+		return array(
+			'constraints' => $json,
 		);
-
-		$json = wp_parse_args( $json, $defaults );
-
-		return $json;
 	}
 
 	/**
@@ -86,35 +119,11 @@ class MemberQuery {
 	 * @return string JSON built from the POST data.
 	 */
 	public function build() {
-		$constraints  = $this->load_post_param( 'constraints', '[]' );
-		$query        = $this->load_post_param( 'query', '' );
-		$direct_query = $this->load_post_param( 'direct_query', '' );
-
-		$content = <<<JSON
-{
-	"constraints": {$constraints},
-	"query": "{$query}",
-	"direct_query": "{$direct_query}"
-}
-JSON;
-
-		return $content;
-	}
-
-	/**
-	 * Returns the value of a POST parameter if present or returns the
-	 * specified default.
-	 *
-	 * @access public
-	 * @param string $name The name of the parameter
-	 * @param mixed $default The default value to return if absent
-	 * @return string
-	 */
-	public function load_post_param( $name, $default ) {
-		if ( array_key_exists( $name, $_POST ) ) {
-			return $_POST[ $name ];
+		if ( array_key_exists( 'constraints', $_POST ) ) {
+			// TODO: Should check if constraints is actually json
+			return sanitize_text_field( $_POST['constraints'] );
 		} else {
-			return $default;
+			return '[]';
 		}
 	}
 
@@ -122,14 +131,14 @@ JSON;
 	 * Builds the MemberQuery JSON from POST and saves to the current
 	 * post_id's postmeta.
 	 *
-	 * Post Meta key is 'member_query_json'
+	 * Post Meta key is 'member_query_constraints'
 	 *
 	 * @access public
 	 * @return void
 	 */
 	public function build_and_save() {
 		$json = $this->build();
-		update_post_meta( $this->post_id, 'member_query_json', $json );
+		update_post_meta( $this->post_id, 'member_query_constraints', $json );
 	}
 
 	/**
@@ -143,23 +152,17 @@ JSON;
 	}
 
 	/**
-	 * Returns the generated GQL for the current member query.
+	 * Returns the generated GQL query. Currently this generates the GQL
+	 * everytime.
+	 *
+	 * TODO: Look into whether we should cache the generated query in
+	 * postmeta.
 	 *
 	 * @access public
 	 * @return string
 	 */
 	public function get_query() {
-		return $this->properties['query'];
-	}
-
-	/**
-	 * Returns the overriding direct query if present.
-	 *
-	 * @access public
-	 * @return string
-	 */
-	public function get_direct_query() {
-		return $this->properties['direct_query'];
+		return $this->to_gql();
 	}
 
 	/**
@@ -182,8 +185,8 @@ JSON;
 	 * @return string
 	 */
 	public function to_gql( $count = false, $limit = null ) {
-		$direct_query = $this->get_direct_query();
-		$query = $direct_query === '' ? $this->get_query() : $direct_query;
+		$query  = 'select UID from ' . $this->storeName . ' where ';
+		$query .= $this->clause_for( $this->get_constraints() );
 
 		if ( $count ) {
 			$query = str_replace( '*', 'count(*)', $query );
@@ -194,6 +197,203 @@ JSON;
 		}
 
 		return $query;
+	}
+
+	/**
+	 * Builds the GQL for a list of constraints.
+	 *
+	 * @access public
+	 * @param array $constraints The list of constraint array
+	 * @return string
+	 */
+	public function clause_for( $constraints ) {
+		$query       = '';
+		$total       = count( $constraints );
+
+		for ( $i = 0; $i < $total; $i++ ) {
+			$constraint = $constraints[ $i ];
+			$query .= $this->clause_for_constraint( $constraint );
+
+			if ( $i < $total - 1 ) {
+				$query .= ' ' . $constraint['conjunction'] . ' ';
+			}
+		}
+
+		return $query;
+	}
+
+	/**
+	 * Builds the GQL clause for a constraint based on it's type.
+	 *
+	 * Currently supports,
+	 *
+	 * 1. Profile Constraints - profile:foo
+	 * 2. Record Constraints - record:foo
+	 *
+	 * @access public
+	 * @param array $constraint The constraint array
+	 * @return string
+	 */
+	public function clause_for_constraint( $constraint ) {
+		$type     = $constraint['type'];
+		$typeList = explode( ':', $type );
+		$mainType = $typeList[0];
+
+		if ( $mainType === 'record' ) {
+			return $this->clause_for_record_constraint( $constraint );
+		} else {
+			return $this->clause_for_profile_constraint( $constraint );
+		}
+	}
+
+	/**
+	 * Generates the GQL clause for a record constraint.
+	 *
+	 * @access public
+	 * @param array $constraint The record constraint object
+	 * @return string
+	 */
+	public function clause_for_record_constraint( $constraint ) {
+		$type         = $constraint['type'];
+		$value        = $constraint['value'];
+		$valueType    = $constraint['valueType'];
+		$operator     = $constraint['operator'];
+		$entryTypeID  = $constraint['entryTypeID'];
+		$entryFieldID = $constraint['entryFieldID'];
+		$query        = '';
+
+		$query .= $this->field_name_for( 'entryType' );
+		$query .= ' ';
+		$query .= $this->operator_for( '=' );
+		$query .= ' ';
+		$query .= $this->value_for( $type );
+
+		$query .= ' and ';
+
+		$query .= $this->field_name_for( 'entryTypeID', 'integer' );
+		$query .= ' ';
+		$query .= $this->operator_for( '=' );
+		$query .= ' ';
+		$query .= $this->value_for( $entryTypeID, 'integer' );
+
+		$query .= ' and ';
+
+		$query .= $this->field_name_for( 'entryFieldID', 'integer' );
+		$query .= ' ';
+		$query .= $this->operator_for( '=' );
+		$query .= ' ';
+		$query .= $this->value_for( $entryFieldID, 'integer' );
+
+		$query .= ' and ';
+
+		$query .= $this->field_name_for( 'entryValue', $valueType );
+		$query .= ' ';
+		$query .= $this->operator_for( $operator );
+		$query .= ' ';
+		$query .= $this->value_for( $value, $valueType );
+
+		return $query;
+	}
+
+	/**
+	 * Generates the GQL clause for a single constraint specified.
+	 *
+	 * @access public
+	 * @param array $constraint Generates the GQL specified.
+	 * @return string
+	 */
+	public function clause_for_profile_constraint( $constraint ) {
+		$type      = $constraint['type'];
+		$value     = $constraint['value'];
+		$valueType = $constraint['valueType'];
+		$operator  = $constraint['operator'];
+		$query     = '';
+
+		$query .= $this->field_name_for( 'entryType' );
+		$query .= ' ';
+		$query .= $this->operator_for( '=' );
+		$query .= ' ';
+		$query .= $this->value_for( $type );
+
+		$query .= ' and ';
+
+		$query .= $this->field_name_for( 'entryValue', $valueType );
+		$query .= ' ';
+		$query .= $this->operator_for( $operator );
+		$query .= ' ';
+		$query .= $this->value_for( $value, $valueType );
+
+		return $query;
+	}
+
+	/**
+	 * Quotes values for insertion into GQL.
+	 *
+	 * @access public
+	 * @param string $value The actual data value
+	 * @param string $valueType The data type of the value
+	 * @return mixed
+	 */
+	public function value_for( $value, $valueType = 'string' ) {
+		if ( $valueType === 'string' || $valueType === 'text' ) {
+			// TODO: Custom escaping
+			return "'{$value}'";
+		} else {
+			return $value;
+		}
+	}
+
+	/**
+	 * Returns the Gigya operator from the operator label.
+	 *
+	 * Uses the same name as the operator if not found in map.
+	 *
+	 * @access public
+	 * @param string $operatorName Label of the operator
+	 * @return string
+	 */
+	public function operator_for( $operatorName ) {
+		if ( array_key_exists( $operatorName, self::$operators ) ) {
+			return self::$operators[ $operatorName ];
+		} else {
+			return $operatorName;
+		}
+	}
+
+	/**
+	 * Returns the suffixed name for a field based on it's valueType.
+	 *
+	 * @access public
+	 * @param string $field The name of the field
+	 * @param string $valueType The data type of the field
+	 * @return string
+	 */
+	public function field_name_for( $field, $valueType = 'string' ) {
+		return 'data.' . $this->storeName . '.' . $field . $this->suffix_for( $valueType );
+	}
+
+	/**
+	 * Returns the gigya suffix for the specified valueType. This is
+	 * used by Gigya to determine the data type of the field.
+	 *
+	 * Data Types supported are,
+	 * 1. integer
+	 * 2. float
+	 * 3. string
+	 * 4. boolean
+	 * 5. text
+	 * 6. date
+	 *
+	 * @access public
+	 * @param string $valueType Data type name
+	 * @return string
+	 */
+	public function suffix_for( $valueType ) {
+		if ( array_key_exists( $valueType, self::$suffixes ) ) {
+			return '_' . self::$suffixes[ $valueType ];
+		} else {
+			return '_s';
+		}
 	}
 
 }

@@ -36,6 +36,7 @@ class Plugin {
 	public function enable() {
 		add_action( 'init', array( $this, 'initialize' ) );
 		add_action( 'admin_init', array( $this, 'initialize_admin' ) );
+		add_action( 'admin_menu', array( $this, 'initialize_admin_menu' ) );
 	}
 
 	/**
@@ -47,8 +48,6 @@ class Plugin {
 	public function initialize() {
 		$this->member_query_post_type = new MemberQueryPostType();
 		$this->member_query_post_type->register();
-
-		$this->contest_post_type = new ContestPostType();
 
 		$session_data = array(
 			'data' => array(
@@ -72,12 +71,16 @@ class Plugin {
 
 	public function initialize_admin() {
 		add_action( 'add_meta_boxes_member_query', array( $this, 'initialize_member_query_meta_boxes' ) );
-		add_action( 'add_meta_boxes_contest', array( $this, 'initialize_contest_meta_boxes' ) );
 		add_action( 'save_post', array( $this, 'did_save_post' ), 10, 2 );
 		add_action( 'admin_notices', array( $this, 'show_flash' ) );
 
 		$form_entry_publisher = new FormEntryPublisher();
 		$form_entry_publisher->enable();
+	}
+
+	public function initialize_admin_menu() {
+		$settings_page = new SettingsPage();
+		$settings_page->register();
 	}
 
 	/**
@@ -95,6 +98,7 @@ class Plugin {
 		$handlers[] = new Ajax\RegisterAjaxHandler();
 		$handlers[] = new Ajax\ListEntryTypesAjaxHandler();
 		$handlers[] = new Ajax\ListEntryFieldsAjaxHandler();
+		$handlers[] = new Ajax\ChangeGigyaSettingsAjaxHandler();
 
 		foreach ( $handlers as $handler ) {
 			$handler->register();
@@ -116,33 +120,16 @@ class Plugin {
 		$this->initialize_member_query_styles( $member_query );
 	}
 
-	/**
-	 * Registers the contest post_type metaboxes.
-	 *
-	 * @access public
-	 * @param WP_Post $post The current post object
-	 * @return void
-	 */
-	public function initialize_contest_meta_boxes( $post ) {
-		$data = array(
-			'forms'           => \RGFormsModel::get_forms( true ),
-			'post'            => $post,
-			'post_id'         => $post->ID,
-			'contest_form_id' => get_post_meta( $post->ID, 'contest_form_id', true ),
-		);
-		$this->contest_post_type->register_meta_boxes( $data );
-
-		$this->enqueue_script( 'select2', 'js/vendor/select2.js' );
-		$this->enqueue_script( 'contest_form_select', 'js/contest_form_select.js', 'select2' );
-
-		$this->enqueue_style( 'select2', 'css/vendor/select2.css' );
-		$this->enqueue_style( 'contest_form_select', 'css/contest_form_select.css', 'select2' );
-	}
-
 	function initialize_member_query_scripts( $member_query ) {
 		wp_dequeue_script( 'autosave' );
 
-		$this->enqueue_script( 'query_builder', 'js/query_builder.js', 'underscore' );
+		wp_enqueue_script( 'underscore' );
+		wp_enqueue_script( 'backbone' );
+		wp_enqueue_script( 'jquery-ui-datepicker' );
+		//$this->enqueue_script( 'select2', 'js/vendor/select2.js' );
+
+		$this->enqueue_script( 'backbone.collectionView', 'js/vendor/backbone.collectionView.js', 'backbone' );
+		$this->enqueue_script( 'query_builder', 'js/query_builder.js', array( 'backbone', 'underscore' ) );
 
 		wp_localize_script(
 			'query_builder', 'member_query_data', $member_query->properties
@@ -161,11 +148,12 @@ class Plugin {
 	}
 
 	function initialize_member_query_styles( $member_query ) {
-		$this->enqueue_style( 'gmr_gigya', 'css/gmr_gigya.css' );
+		$this->enqueue_style( 'query_builder', 'css/query_builder.css' );
+		//$this->enqueue_style( 'select2', 'css/vendor/select2.css' );
 	}
 
 	/**
-	 * If post was saved then calls member query or contest form helper
+	 * If post was saved then calls member query helper
 	 * functions, else ignores the save.
 	 *
 	 * @access public
@@ -178,15 +166,8 @@ class Plugin {
 			$post_type   = $post->post_type;
 			$post_status = $post->post_status;
 
-			if ( $post_status === 'publish' ) {
-				switch ( $post_type ) {
-					case 'member_query':
-						return $this->publish_member_query( $post_id, $post );
-
-					case 'contest':
-						return $this->update_form_for_contest( $post_id, $post );
-
-				}
+			if ( $post_status === 'publish' && $post_type === 'member_query' ) {
+				return $this->publish_member_query( $post_id, $post );
 			}
 		}
 	}
@@ -195,36 +176,29 @@ class Plugin {
 	 * Saves the MemberQuery JSON in postmeta and then publishes the
 	 * segment to MailChimp.
 	 *
+	 * If constraints not present in POST assumed to be a quick-edit and
+	 * does not update the member query.
+	 *
 	 * @access public
 	 * @param int $post_id The id of the parent post CPT of this MemberQuery
 	 * @param WP_Post $post The post object that was saved.
 	 * @return void
 	 */
 	public function publish_member_query( $post_id, $post = null ) {
+		if ( ! array_key_exists( 'constraints', $_POST ) ) {
+			return;
+		}
+
 		$this->member_query_post_type->verify_meta_box_nonces();
 
 		try {
 			$member_query = new MemberQuery( $post_id );
 			$member_query->build_and_save();
 
-			$segment_publisher = new SegmentPublisher( $member_query );
-			$segment_publisher->publish();
+			//$segment_publisher = new SegmentPublisher( $member_query );
+			//$segment_publisher->publish();
 		} catch ( \Exception $e ) {
 			$this->set_flash( $e->getMessage() );
-		}
-	}
-
-	public function update_form_for_contest( $post_id, $post ) {
-		$this->contest_post_type->verify_meta_box_nonces();
-
-		$contest_form_id = intval( $_POST['contest_form_id'] );
-		$key             = 'contest_form_id';
-
-		// TODO: validate if gform exists?
-		if ( is_int( $contest_form_id ) ) {
-			update_post_meta( $post_id, $key, $contest_form_id );
-		} else {
-			delete_post_meta( $post_id, $key );
 		}
 	}
 
@@ -255,7 +229,11 @@ class Plugin {
 
 	public function enqueue_script( $id, $path, $dependency = null ) {
 		if ( ! is_null( $dependency ) ) {
-			$dependencies = array( $dependency );
+			if ( is_array( $dependency ) ) {
+				$dependencies = $dependency;
+			} else {
+				$dependencies = array( $dependency );
+			}
 		} else {
 			$dependencies = array();
 		}
@@ -270,7 +248,11 @@ class Plugin {
 
 	public function enqueue_style( $id, $path, $dependency = null ) {
 		if ( ! is_null( $dependency ) ) {
-			$dependencies = array( $dependency );
+			if ( is_array( $dependency ) ) {
+				$dependencies = $dependency;
+			} else {
+				$dependencies = array( $dependency );
+			}
 		} else {
 			$dependencies = array();
 		}

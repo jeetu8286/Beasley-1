@@ -1,8 +1,11 @@
 // General Styles
+html {
+	@include size(null 100%);
+}
 body {
 	@include size(null 100%);
 	@include margin(0 auto);
-	background: color(white);
+	background: color(primary-bg);
 }
 
 * {

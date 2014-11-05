@@ -1,7 +1,14 @@
-/*! Greater Media - v0.1.0 - 2014-10-16
+/*! Greater Media - v0.1.0 - 2014-11-03
  * http://greatermedia.com
  * Copyright (c) 2014; * Licensed GPLv2+ */
-(function ($,window,undefined) {
+(function() {
 	'use strict';
 
-} )(jQuery,window);
+	var body = document.querySelector('body'),
+		mobileNavButton = document.querySelector('.mobile-nav--toggle');
+
+	mobileNavButton.onclick = function(){
+		body.classList.toggle('mobile-nav--open');
+	};
+
+})();

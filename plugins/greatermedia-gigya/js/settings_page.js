@@ -1,0 +1,107 @@
+(function ($) {
+
+	var WpAjaxApi = function(config) {
+		this.config = config;
+	};
+
+	WpAjaxApi.prototype = {
+
+		nonceFor: function(action) {
+			return this.config[action + '_nonce'];
+		},
+
+		urlFor: function(action) {
+			var queryParams = {};
+			queryParams[action + '_nonce'] = this.nonceFor(action);
+
+			var url = this.config.ajax_url;
+			url += url.indexOf('?') === -1 ? '?' : '&';
+			url += $.param(queryParams);
+
+			return url;
+		},
+
+		request: function(action, data) {
+			if (!data) {
+				data = {};
+			}
+
+			var url         = this.urlFor(action);
+			var requestData = {
+				'action': action,
+				'action_data': JSON.stringify(data)
+			};
+
+			return $.post(url, requestData);
+		},
+
+	};
+
+	var saveGigyaSettings = function(ajaxApi) {
+		var data = {
+			gigya_api_key: $('#gigya_api_key').val(),
+			gigya_secret_key: $('#gigya_secret_key').val()
+		};
+
+		changeStatus('updated', 'Verifying Settings ...');
+
+		$submit = $('#submit');
+		$submit.toggleClass('disabled', true);
+
+		ajaxApi.request('change_gigya_settings', data)
+			.then(saveSuccess)
+			.fail(saveError);
+	};
+
+	var saveSuccess = function(response) {
+		if (!response.success) {
+			return saveError(response);
+		}
+
+		changeStatus('updated', 'Settings Saved.');
+		resetSubmit();
+	};
+
+	var saveError = function(response) {
+		changeStatus('error', response.data);
+		resetSubmit();
+	};
+
+	var resetSubmit = function() {
+		$submit = $('#submit');
+		$submit.toggleClass('disabled', false);
+	};
+
+	var prevType = null;
+	var changeStatus = function(type, message) {
+		var $status = $('#member-query-status-message');
+		$status.css('display', 'block');
+
+		if (prevType) {
+			$status.toggleClass(prevType, false);
+		}
+
+		$status.toggleClass(type, true);
+		prevType = type;
+
+		var $p = $('p', $status);
+		$p.text(message);
+	};
+
+	var main = function() {
+		var config = window.member_query_settings;
+		config.change_gigya_settings_nonce = $('#change_gigya_settings_nonce').val();
+
+		var ajaxApi = new WpAjaxApi(config);
+		var $submit = $('#submit');
+
+		$submit.on('click', function() {
+			saveGigyaSettings(ajaxApi);
+		});
+	};
+
+	$(document).ready(function() {
+		main();
+	});
+
+}(jQuery));

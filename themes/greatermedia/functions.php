@@ -15,10 +15,8 @@
 // Useful global constants
 define( 'GREATERMEDIA_VERSION', '0.1.0' );
 
-/**
- * Required files
- */
-require_once( __DIR__ . '/includes/class-post-styles.php' );
+require_once( __DIR__ . '/includes/liveplayer-test/class-gigya-login-test.php' );
+require_once( __DIR__ . '/includes/liveplayer/loader.php' );
 
 /**
  * Set up theme defaults and register supported WordPress features.
@@ -46,6 +44,13 @@ function greatermedia_setup() {
 	// Update this as appropriate content types are created and we want this functionality
 	add_post_type_support( 'post', 'timed-content' );
 	add_post_type_support( 'post', 'login-restricted-content' );
+
+	/**
+	 * Add theme support for post-formats
+	 */
+	$formats = array( 'gallery', 'link', 'image', 'video', 'audio' );
+	add_theme_support( 'post-formats', $formats );
+
 }
 
 add_action( 'after_setup_theme', 'greatermedia_setup' );
@@ -57,17 +62,118 @@ add_action( 'after_setup_theme', 'greatermedia_setup' );
  */
 function greatermedia_scripts_styles() {
 	$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
-	if ( is_page( 'style-guide' ) ) {
-		wp_enqueue_script( 'gm-styleguide', get_template_directory_uri() . "/assets/js/gm_styleguide{$postfix}.js", array( 'jquery' ), GREATERMEDIA_VERSION, true );
-		wp_enqueue_script( 'google-code-pretify', get_template_directory_uri() . "/assets/js/styleguide/prettify.js", array( 'jquery' ), GREATERMEDIA_VERSION, true );
-		wp_enqueue_style( 'gm-styleguide', get_template_directory_uri() . "/assets/css/gm_styleguide{$postfix}.css", array(), GREATERMEDIA_VERSION );
-	} else {
-		wp_enqueue_script( 'greatermedia', get_template_directory_uri() . "/assets/js/greater_media{$postfix}.js", array( 'jquery' ), GREATERMEDIA_VERSION, true );
-		wp_enqueue_style( 'greatermedia', get_template_directory_uri() . "/assets/css/greater_media{$postfix}.css", array( 'dashicons' ), GREATERMEDIA_VERSION );
+
+	wp_register_style(
+		'open-sans',
+		'http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,700',
+		array(),
+		GREATERMEDIA_VERSION
+	);
+	wp_register_style(
+		'droid-sans',
+		'http://fonts.googleapis.com/css?family=Droid+Sans:400,700',
+		array(),
+		GREATERMEDIA_VERSION
+	);
+	wp_register_style(
+		'font-awesome',
+		'//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css',
+		array(),
+		'4.2'
+	);
+
+	if ( ! defined( 'GREATER_MEDIA_GIGYA_TEST_UI' ) || ! GREATER_MEDIA_GIGYA_TEST_UI ) {
+		wp_enqueue_script(
+			'gigya_socialize',
+			'http://cdn.gigya.com/JS/gigya.js?apiKey=3_e_T7jWO0Vjsd9y0WJcjnsN6KaFUBv6r3VxMKqbitvw-qKfmaUWysQKa1fra5MTb6',
+			array( 'jquery' ),
+			'0.1.0',
+			true
+		);
+		wp_enqueue_script(
+			'gigya-login',
+			get_template_directory_uri() . "/assets/js/gigya_login{$postfix}.js",
+			array(),
+			GREATERMEDIA_VERSION,
+			true
+		);
+		wp_enqueue_script(
+			'liveplayer-login',
+			get_template_directory_uri() . "/assets/js/liveplayer_login{$postfix}.js",
+			array(),
+			GREATERMEDIA_VERSION,
+			true
+		);
 	}
+
+	if ( is_page( 'style-guide' ) ) {
+		wp_enqueue_script(
+			'gm-styleguide',
+			get_template_directory_uri() . "/assets/js/gm_styleguide{$postfix}.js",
+			array(
+				'jquery'
+			),
+			GREATERMEDIA_VERSION,
+			true
+		);
+		wp_enqueue_script(
+			'google-code-pretify',
+			get_template_directory_uri() .
+			'/assets/js/styleguide/prettify.js',
+			array(
+				'jquery'
+			),
+			GREATERMEDIA_VERSION,
+			true
+		);
+		wp_enqueue_style(
+			'gm-styleguide',
+			get_template_directory_uri() . "/assets/css/gm_styleguide{$postfix}.css",
+			array(
+				'open-sans',
+				'droid-sans',
+				'font-awesome'
+			),
+			GREATERMEDIA_VERSION
+		);
+	} else {
+		wp_enqueue_script(
+			'greatermedia',
+			get_template_directory_uri() . "/assets/js/greater_media{$postfix}.js",
+			array(),
+			GREATERMEDIA_VERSION,
+			true
+		);
+		wp_enqueue_script(
+			'respond.js',
+			get_template_directory_uri() . '/assets/js/vendor/respond.min.js',
+			array(),
+			'1.4.2',
+			false
+		);
+		wp_enqueue_script(
+			'html5shiv',
+			get_template_directory_uri() . '/assets/js/vendor/html5shiv-printshiv.js',
+			array(),
+			'3.7.2',
+			false
+		);
+		wp_enqueue_style(
+			'greatermedia',
+			get_template_directory_uri() . "/assets/css/greater_media{$postfix}.css",
+			array(
+				'dashicons',
+				'open-sans',
+				'droid-sans',
+				'font-awesome'
+			),
+			GREATERMEDIA_VERSION
+		);
+	};
+
 }
 
-add_action( 'wp_enqueue_scripts', 'greatermedia_scripts_styles' );
+add_action( 'wp_enqueue_scripts', 'greatermedia_scripts_styles');
 
 /**
  * Add humans.txt to the <head> element.
@@ -81,18 +187,25 @@ function greatermedia_header_meta() {
 add_action( 'wp_head', 'greatermedia_header_meta' );
 
 /**
- * Add theme support for post-formats
+ * Register Navigation Menus
  */
-add_theme_support( 'post-formats', array( 'aside', 'gallery', 'link', 'image', 'video', 'audio' ) );
+function greatermedia_nav_menus() {
+	$locations = array(
+		'main-nav' => __( 'Main Navigation', 'greatermedia' ),
+		'secondary-nav' => __( 'Seconadary Navigation', 'greatermedia' ),
+		'footer-nav' => __( 'Footer Navigation', 'greatermedia' )
+	);
+	register_nav_menus( $locations );
+}
+
+add_action( 'init', 'greatermedia_nav_menus' );
 
 function greatermedia_post_formats() {
 
 	global $post;
 	$post_id = $post->ID;
 
-	if ( has_post_format( 'aside', $post_id ) ) {
-		$format = 'aside';
-	} elseif ( has_post_format( 'gallery', $post_id ) ) {
+	if ( has_post_format( 'gallery', $post_id ) ) {
 		$format = 'gallery';
 	} elseif ( has_post_format( 'link', $post_id ) ) {
 		$format = 'link';
@@ -118,7 +231,7 @@ function greatermedia_post_formats() {
  * @return string
  */
 function new_excerpt_more( $more ) {
-	return '<div class="read-more"><a href="' . get_permalink( get_the_ID() ) . '" class="read-more--btn">' . __( 'Read More', 'your-text-domain' ) . '</a></div>';
+	return '<div class="read-more"><a href="' . get_permalink( get_the_ID() ) . '" class="read-more--btn">' . __( 'Read More', 'greatermedia' ) . '</a></div>';
 }
 
 add_filter( 'excerpt_more', 'new_excerpt_more' );
