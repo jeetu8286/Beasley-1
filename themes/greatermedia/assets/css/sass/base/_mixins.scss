@@ -14,12 +14,14 @@
 // @param {number | unit} $padding-left-right - padding for the left and right of the button
 // @param {number | unit} $font-size - font size for the button
 //
-@mixin btn($bgcolor, $textcolor, $padding-top-bottom, $padding-left-right, $font-size) {
-	@include padding($padding-top-bottom $padding-left-right);
-	@include margin(null .5em null null);
-	@include border-width(0);
+@mixin btn($bgcolor, $textcolor, $border-color, $padding-top-bottom, $padding-left-right, $font-size) {
+	display: inline-block;
+	line-height: 1;
+	padding: $padding-top-bottom $padding-left-right;
+	margin-right: .5em;
 	outline: none;
 	background-color: color($bgcolor);
+	border: 2px solid color($border-color);
 	font-family: $open-sans;
 	font-size: $font-size;
 	color: color($textcolor) !important;
@@ -27,10 +29,11 @@
 	cursor: pointer;
 	&:hover, &:focus {
 		background-color: darken(color($bgcolor), 9%);
+		border-color: darken(color($border-color), 9%);
 		color: color($textcolor);
 	}
 	&:last-of-type{
-		@include margin(null 0 null null);
+		margin-right: 0;
 	}
 }
 
@@ -111,4 +114,14 @@
 		border-bottom: $height/2 solid $color;
 		border-left: $width solid transparent;
 	}
+}
+
+@mixin border-radius($radius...) {
+	// defining prefixes so we can use them in mixins below
+	$prefixes:      ("-webkit", "-moz", "-ms", "-o",  "");
+	@each $prefix in $prefixes {
+		#{$prefix}-border-radius: $radius;
+	}
+
+	border-radius: $radius;
 }

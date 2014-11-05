@@ -1,4 +1,4 @@
-/*! Greater Media - v0.1.0 - 2014-11-03
+/*! Greater Media - v0.1.0 - 2014-11-05
  * http://greatermedia.com
  * Copyright (c) 2014; * Licensed GPLv2+ */
 var gigya = gigya || {};
@@ -96,7 +96,7 @@ jQuery(function () {
 		 * change. In order to not change this function that we will need for live use, we will just target the div here
 		 * and change the state
 		 */
-		livePlayerListen.css('visibility', 'visible');
+		livePlayerListen.css('display', 'inline-block');
 		livePlayerLabel.css('color', '#ffffff');
 
 		/**
@@ -113,11 +113,11 @@ jQuery(function () {
 		if (GreaterMediaGigyaAuth.is_gigya_user_logged_in()) {
 			livePlayerSwitch.prop('checked', 'checked');
 			livePlayer.css('display', 'block');
-			livePlayerListen.css('visibility', 'hidden');
-			livePlayerTest.css('visibility', 'visible');
+			livePlayerListen.css('display', 'none');
+			livePlayerTest.css('display', 'block');
 		} else {
-			livePlayerListen.css('visibility', 'visible');
-			livePlayerTest.css('visibility', 'hidden');
+			livePlayerListen.css('display', 'inline-block');
+			livePlayerTest.css('display', 'none');
 			livePlayer.css('display', 'none');
 		}
 
@@ -128,12 +128,12 @@ jQuery(function () {
 		 * will be hidden.
 		 */
 		livePlayerListen.click(function() {
-			if ( livePlayerTest.css('visibility') == 'visible') {
-				livePlayerTest.css('visibility', 'hidden');
-				livePlayerListen.css('visibility', 'visible');
+			if ( livePlayerTest.css('display') == 'block') {
+				livePlayerTest.css('display', 'none');
+				livePlayerListen.css('display', 'inline-block');
 			} else {
-				livePlayerTest.css('visibility', 'visible');
-				livePlayerListen.css('visibility', 'hidden');
+				livePlayerTest.css('display', 'block');
+				livePlayerListen.css('display', 'none');
 			}
 		});
 
@@ -154,12 +154,12 @@ jQuery(function () {
 
 			if (livePlayer.css('display') == 'none') {
 				livePlayer.css('display', 'block');
-				livePlayerListen.css('visibility', 'hidden');
-				livePlayerTest.css('visibility', 'visible');
+				livePlayerListen.css('display', 'none');
+				livePlayerTest.css('display', 'block');
 			} else {
 				livePlayer.css('display', 'none');
-				livePlayerListen.css('visibility', 'visible');
-				livePlayerTest.css('visibility', 'hidden');
+				livePlayerListen.css('display', 'inline-block');
+				livePlayerTest.css('display', 'none');
 			}
 
 			if (livePlayerSwitch.is(':checked')) {

@@ -40,8 +40,8 @@ class GMLP_Player {
 				<div class="container">
 					<div id="gm-liveplayer--controls">
 						<div id="playButton" class="gm-liveplayer--btn play" data-station="<?php do_action( 'radio_callsign' ); ?>"></div>
-						<button id="pauseButton" class="gm-liveplayer--btn" data-station="<?php do_action( 'radio_callsign' ); ?>"><i class="fa fa-pause"></i></button>
-						<button id="resumeButton" class="gm-liveplayer--btn" data-station="<?php do_action( 'radio_callsign' ); ?>"><i class="fa fa-play-circle-o"></i></button>
+						<div id="pauseButton" class="gm-liveplayer--btn" data-station="<?php do_action( 'radio_callsign' ); ?>"></div>
+						<div id="resumeButton" class="gm-liveplayer--btn" data-station="<?php do_action( 'radio_callsign' ); ?>"></div>
 					</div>
 
 					<div id="gm-liveplayer--now_playing">
