@@ -60,16 +60,21 @@ class GreaterMediaFormbuilderRender {
 
 	}
 
+	/**
+	 * Retrieve a custom list of HTML tags we're allowing in a rendered form
+	 * @return array valid tags
+	 */
 	protected static function allowed_tags() {
 
 		static $tags;
 		if ( ! isset( $tags ) ) {
 
-			$tags = wp_kses_allowed_html( 'data' );
+			$tags = array();
 
 			// Add form tags
 			$tags['input'] = array(
 				'id'          => 1,
+				'class'       => 1,
 				'type'        => 1,
 				'name'        => 1,
 				'value'       => 1,
@@ -91,6 +96,7 @@ class GreaterMediaFormbuilderRender {
 			$tags['select'] = array(
 				'id'        => 1,
 				'name'      => 1,
+				'class'     => 1,
 				'autofocus' => 1,
 				'disabled'  => 1,
 				'form'      => 1,
@@ -100,8 +106,13 @@ class GreaterMediaFormbuilderRender {
 			);
 
 			$tags['label'] = array(
-				'for'  => 1,
-				'form' => 1,
+				'for'   => 1,
+				'form'  => 1,
+				'class' => 1,
+			);
+
+			$tags['p'] = array(
+				'class' => 1,
 			);
 
 		}
