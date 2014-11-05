@@ -10,7 +10,7 @@ class GreaterMediaContestEntryEmbeddedForm extends GreaterMediaContestEntry {
 
 		$html = '<div class="contest_entry">';
 
-		$html .= '<p>' . date( 'm/d/Y h:ia', strtotime( $this->post->post_date ) ) . ' ' . wp_kses_data( $this->entrant_name ) . '</p>';
+		$html .= '<p>' . date_i18n( 'm/d/Y h:ia', strtotime( $this->post->post_date ) ) . ' ' . wp_kses_data( $this->entrant_name ) . '</p>';
 
 		$entry_data = json_decode( $this->entry_reference );
 		if ( ! empty( $entry_data ) ) {
