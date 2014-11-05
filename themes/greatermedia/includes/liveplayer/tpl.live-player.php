@@ -34,9 +34,7 @@
 		?>
 	</div>
 
-	<?php
-		if ( dynamic_sidebar( 'liveplayer_sidebar' ) ) : else : endif;
-	?>
+	<?php dynamic_sidebar( 'liveplayer_sidebar' ); ?>
 	
 	<div class="now-playing">
 		<h4 class="now-playing--title">Track Title</h4>
