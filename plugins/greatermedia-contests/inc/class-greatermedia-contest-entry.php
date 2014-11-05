@@ -119,11 +119,11 @@ class GreaterMediaContestEntry {
 	/**
 	 * Factory method to create a new contest entry for a given set of data
 	 *
-	 * @param $contest_id        Post ID of the related contest
-	 * @param $entrant_name      Name of the entrant
-	 * @param $entrant_reference Gigya ID
-	 * @param $entry_source      Source of the entry (i.e. "gravity-forms")
-	 * @param $entry_reference   ID or link to the source of the entry
+	 * @param int    $contest_id        Post ID of the related contest
+	 * @param string $entrant_name      Name of the entrant
+	 * @param string $entrant_reference Gigya ID
+	 * @param string $entry_source      Source of the entry (i.e. "gravity-forms")
+	 * @param string $entry_reference   ID or link to the source of the entry
 	 *
 	 * @throws UnexpectedValueException
 	 * @return GreaterMediaContestEntry
