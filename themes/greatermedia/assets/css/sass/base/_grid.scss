@@ -75,9 +75,10 @@ img {
 
 .live-player{
 	@include position(absolute, 117px 0 null null);
-	@include padding(2em null);
+	padding: 2em 0;
 	display: none;
 	background-color: color(secondary-bg);
+	color: color(secondary-text);
 	@include bp(large){
 		@include display(block);
 		@include span-columns(2);

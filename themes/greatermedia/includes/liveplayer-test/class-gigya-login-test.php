@@ -47,12 +47,12 @@ class GreaterMediaGigyaTest {
 
 	public static function test_ui() {
 
-		if ( defined( 'GREATER_MEDIA_GIGYA_TEST_UI' ) && GREATER_MEDIA_GIGYA_TEST_UI ) {
-			echo '<div id="live-player--test" class="live-player--test" style="display:none;">';
-			echo '<input type="checkbox" name="live-player--test_audio" class="live-player--test_audio" id="live-player--test_audio" value="live-audio">';
-			echo '<label for="live-player--test_audio" class="live-player--test_label">Logged In</label>';
-			echo '</div>';
-		}
+		if ( defined( 'GREATER_MEDIA_GIGYA_TEST_UI' ) && GREATER_MEDIA_GIGYA_TEST_UI ) { ?>
+			<div id="live-player--test" class="live-player--test" style="display:none;">
+				<input type="checkbox" name="live-player--test_audio" class="live-player--test_audio" id="live-player--test_audio" value="live-audio">
+				<label for="live-player--test_audio" class="live-player--test_label"><?php _e( 'Logged In', 'greatermedia' ); ?></label>
+			</div>
+		<?php }
 
 	}
 

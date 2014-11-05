@@ -191,16 +191,22 @@
 	font-size: ms(-2);
 }
 
+.now-playing {
+	margin: 0 0 2em;
+	text-align: center;
+}
+
 .now-playing--title {
-	@include size(100px 20px);
-	@include margin(0 auto 1em auto);
-	background-color: color(secondary-text);
+	margin: 0 0 .25em;
+	font-size: ms(1);
+	font-weight: lighter;
+	color: color(secondary-heading);
 }
 
 .now-playing--artist {
-	@include size(100px 20px);
-	@include margin(0 auto 1em auto);
-	background-color: color(secondary-text);
+	margin: 0 0 .25em;
+	font-size: ms(-2);
+	font-weight: lighter;
 }
 
 .live-player--social {
@@ -247,4 +253,9 @@
 	display: inline-block;
 	@include margin(null null null 4px);
 	cursor: pointer;
+}
+
+.live-links {
+	margin: 1em 0 0;
+	border-top: 1px solid color(secondary-border);
 }
