@@ -5,7 +5,6 @@ namespace GreaterMedia\Gigya\FakeProfiles;
 class FakeGigyaUser {
 
 	public $properties = array();
-	public $gigyaUserID;
 
 	function __construct( $properties = array() ) {
 		$this->properties = $properties;
@@ -338,7 +337,7 @@ class FakeGigyaUser {
 	function create_entry( $entry ) {
 		$request = $this->request_for( 'ds.store' );
 		$request->setParam( 'type', 'entries' );
-		$request->setParam( 'UID', $this->gigyaUserID );
+		$request->setParam( 'UID', $this->properties['UID'] );
 		$request->setParam( 'data', json_encode( $entry ) );
 		$request->setParam( 'oid', 'auto' );
 		$response = $request->send();

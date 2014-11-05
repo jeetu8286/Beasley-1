@@ -46,8 +46,9 @@ class GigyaCommand extends \WP_CLI_Command {
 		}
 
 		$errors_file = $file . '.errors.log';
-		$this->_write_preamble( $file, "[\n" );
-		$this->_write_preamble( $errors_file, '' );
+
+		file_put_contents( $file, '[\n' );
+		file_put_contents( $errors_file, '' );
 
 		\WP_CLI::success( "Creating $count fake users in Gigya ..." );
 
@@ -66,37 +67,19 @@ class GigyaCommand extends \WP_CLI_Command {
 					$user_line = $user->to_json() . "\n";
 				}
 
-				$this->_write_string( $file, $user_line );
+				file_put_contents( $file, $user_line, FILE_APPEND );
 			} catch ( \Exception $e ) {
 				\WP_CLI::warning( $e->getMessage() );
 				$this->_write_string( $file, $e->getMessage() );
 			}
 		}
 
-		$this->_write_postamble( $file, ']' );
+		file_put_contents( $file, ']', FILE_APPEND );
 		\WP_CLI::success( "Creating $count fake users in Gigya ... DONE" );
 	}
 
 	public function reset_users( $args, $opts ) {
 
-	}
-
-	private function _write_preamble( $file, $line ) {
-		file_put_contents(
-			$file, $line
-		);
-	}
-
-	public function _write_postamble( $file, $line ) {
-		file_put_contents(
-			$file, $line, FILE_APPEND
-		);
-	}
-
-	public function _write_string( $file, $line ) {
-		file_put_contents(
-			$file, $line, FILE_APPEND
-		);
 	}
 
 }
