@@ -23,8 +23,8 @@ img {
 
 #site-wrap {
 	max-width: $max-site-width;
-	max-height: 100%;
 	margin: 0 auto;
+	background-color: color(primary-bg);
 }
 
 // The `.page-wrap` class is being used in conjunction with the off-canvas mobile navigation. On click of the
@@ -113,6 +113,10 @@ img {
 		@include box-sizing(border-box);
 		color: color(secondary-text);
 		overflow: auto;
+	}
+	@include bp(x-large) {
+		@include calc(right, '50% - 700px');
+		width: $live-player;
 	}
 }
 
