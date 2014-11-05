@@ -14,7 +14,6 @@ class GreaterMediaLiveFyreMediaWall {
 
 		add_action( 'init', array( $this, 'init' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts' ) );
-		add_filter( 'the_content', array( $this, 'the_content' ) );
 
 	}
 
@@ -101,20 +100,6 @@ class GreaterMediaLiveFyreMediaWall {
 			)
 		);
 		wp_localize_script( 'livefyre-media-wall', 'LiveFyreMediaWall', $settings );
-
-	}
-
-	/**
-	 * Implements the_content filter
-	 * Adds a div to be filled with Media Wall content
-	 *
-	 * @param string $content
-	 *
-	 * @return string
-	 */
-	public function the_content( $content ) {
-
-		return '<div id="wall"></div>' . $content;
 
 	}
 

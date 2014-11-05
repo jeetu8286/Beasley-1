@@ -17,6 +17,10 @@
 	@include transform(translateY(-100%));
 }
 
+.header .container {
+	max-width: $max-site-width;
+}
+
 .header-logo{
 	@include span-columns(4);
 	@include omega;
