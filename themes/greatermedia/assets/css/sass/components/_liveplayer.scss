@@ -4,6 +4,17 @@
  * Admins can choose the location of the player. A class is added to the body that will match the locations below.
  */
 
+.live-player--fixed {
+	@include position(fixed, 0 null null null);
+}
+
+.logged-in .live-player--fixed {
+	top: 46px;
+	@include media(min-width 782px) {
+		top: 32px;
+	}
+}
+
 .live-player--container {
 	float: right;
 	@include bp(large) {

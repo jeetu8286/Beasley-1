@@ -10,6 +10,9 @@
   -moz-box-sizing: border-box;
   box-sizing: border-box; }
 
+/*********************
+Opacities & transparencies
+*********************/
 .featured-content--list {
   padding: 0;
   margin: 0; }
@@ -535,9 +538,16 @@ img {
       -webkit-box-sizing: border-box;
       -moz-box-sizing: border-box;
       box-sizing: border-box;
-      color: #6D6E70; } }
+      color: #6D6E70;
+      overflow: auto; } }
+
+.logged-in .live-player {
+  top: 284px; }
+  @media screen and (min-width: 782px) {
+    .logged-in .live-player {
+      top: 270px; } }
   @media screen and (min-width: 1400px) {
-    .live-player {
+    .logged-in .live-player {
       right: -webkit-calc(50% - 700px);
       right: calc(50% - 700px);
       width: 15.625em; } }
@@ -606,14 +616,30 @@ p {
 
 .header {
   position: relative;
-  height: 80px;
+  height: 100%;
   width: 100%;
-  padding: 0.625em 0;
-  margin: 0 auto;
+  padding-bottom: 0.625em;
   border-bottom-color: #d0d2d3;
   border-bottom-style: solid;
   border-bottom-width: 1px;
+  -webkit-transition: all 200ms linear;
+  -moz-transition: all 200ms linear;
+  transition: all 200ms linear;
   background-color: #000000; }
+
+.header--pinned {
+  -webkit-transform: translateY(0%);
+  -moz-transform: translateY(0%);
+  -ms-transform: translateY(0%);
+  -o-transform: translateY(0%);
+  transform: translateY(0%); }
+
+.header--unpinned {
+  -webkit-transform: translateY(-100%);
+  -moz-transform: translateY(-100%);
+  -ms-transform: translateY(-100%);
+  -o-transform: translateY(-100%);
+  transform: translateY(-100%); }
 
 .header .container {
   max-width: 1400px; }
@@ -1387,6 +1413,16 @@ blockquote p {
  *
  * Admins can choose the location of the player. A class is added to the body that will match the locations below.
  */
+.live-player--fixed {
+  position: fixed;
+  top: 0; }
+
+.logged-in .live-player--fixed {
+  top: 46px; }
+  @media screen and (min-width: 782px) {
+    .logged-in .live-player--fixed {
+      top: 32px; } }
+
 .live-player--container {
   float: right; }
   @media screen and (min-width: 1024px) {

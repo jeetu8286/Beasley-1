@@ -118,10 +118,22 @@
 
 @mixin border-radius($radius...) {
 	// defining prefixes so we can use them in mixins below
-	$prefixes:      ("-webkit", "-moz", "-ms", "-o",  "");
+	$prefixes: ("-webkit", "-moz", "-ms", "-o", "");
 	@each $prefix in $prefixes {
 		#{$prefix}-border-radius: $radius;
 	}
 
 	border-radius: $radius;
+}
+
+/*********************
+Opacities & transparencies
+*********************/
+@mixin opacity ($value: 0.5) {
+	opacity: $value;
+	filter: alpha(opacity= $value * 100 );
+	-moz-opacity: $value;
+	-khtml-opacity: $value;
+	zoom: 1;
+
 }

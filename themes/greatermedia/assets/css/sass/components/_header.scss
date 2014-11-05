@@ -1,12 +1,20 @@
 .header{
 	@include position(relative, null null null null);
-	@include size(100% 80px);
-	@include padding(em(10px) 0);
-	margin: 0 auto;
+	@include size(100% 100%);
+	@include padding(null null em(10px));
 	@include border-color(null null color(primary-border) null);
 	@include border-style(null null solid null);
 	@include border-width(null null 1px null);
+	@include transition (all 200ms linear);
 	background-color: color(secondary-bg);
+}
+
+.header--pinned {
+	@include transform(translateY(0%));
+}
+
+.header--unpinned {
+	@include transform(translateY(-100%));
 }
 
 .header .container {

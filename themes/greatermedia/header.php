@@ -70,8 +70,13 @@
 
 				?>
 				<div id="page-wrap" class="page-wrap">
-					<?php do_action( 'show_breaking_news_banner' ); ?>
 					<header id="header" class="header" role="banner">
+						<?php do_action( 'show_breaking_news_banner' ); ?>
+						<div class="container">
+							<div class="leaderboard">
+								<img src="http://placehold.it/728x90&text=leaderboard">
+							</div>
+						</div>
 						<div class="container">
 							<div class="mobile-nav--toggle">
 								<div class="mobile-nav--toggle--span"></div>
