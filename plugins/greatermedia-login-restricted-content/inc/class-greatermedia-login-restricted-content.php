@@ -117,20 +117,27 @@ class GreaterMediaLoginRestrictedContent extends VisualShortcode {
 	 */
 	public function save_post( $post_id ) {
 
-		if ( $_POST ) {
+		$post = get_post( $post_id );
 
-			if ( ! post_type_supports( $_POST['post_type'], 'login-restricted-content' ) ) {
-				// Clean up any post expiration data that might already exist, in case the post support changed
-				delete_post_meta( $post_id, '_post_login_restriction' );
+		if ( post_type_supports( $post->post_type, 'login-restricted-content' ) ) {
 
-				return;
-			}
-
-			$login_restriction = self::sanitize_login_restriction( $_POST['lr_status'] );
 			delete_post_meta( $post_id, '_post_login_restriction' );
-			if ( '' !== $login_restriction ) {
-				add_post_meta( $post_id, '_post_login_restriction', $login_restriction );
+
+			if ( isset( $_POST['lr_status'] ) ) {
+
+				$login_restriction = self::sanitize_login_restriction( $_POST['lr_status'] );
+				if ( '' !== $login_restriction ) {
+					add_post_meta( $post_id, '_post_login_restriction', $login_restriction );
+				}
+				
 			}
+
+		} else {
+
+			// Clean up any post expiration data that might already exist, in case the post support changed
+			delete_post_meta( $post_id, '_post_login_restriction' );
+
+			return;
 
 		}
 

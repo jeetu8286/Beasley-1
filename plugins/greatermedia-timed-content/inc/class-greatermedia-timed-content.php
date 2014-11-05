@@ -137,15 +137,9 @@ class GreaterMediaTimedContent extends VisualShortcode {
 	 */
 	public function save_post( $post_id ) {
 
-		if ( $_POST ) {
+		$post = get_post( $post_id );
 
-			if ( ! post_type_supports( $_POST['post_type'], 'timed-content' ) ) {
-				// Clean up any post expiration data that might already exist, in case the post support changed
-				delete_post_meta( $post_id, '_post_expiration' );
-				wp_clear_scheduled_hook( 'greatermedia_expire_post', array( $post_id ) );
-
-				return;
-			}
+		if ( post_type_supports( $post->post_type, 'timed-content' ) ) {
 
 			$exp_mm = isset( $_POST['hidden_exp_mm'] ) ? intval( $_POST['hidden_exp_mm'] ) : '';
 			$exp_jj = isset( $_POST['hidden_exp_jj'] ) ? intval( $_POST['hidden_exp_jj'] ) : '';
@@ -172,9 +166,13 @@ class GreaterMediaTimedContent extends VisualShortcode {
 			if ( $exp_timestamp_gmt > gmdate( 'U' ) ) {
 				wp_clear_scheduled_hook( 'greatermedia_expire_post', array( $post_id ) ); // clear anything else in the system
 				wp_schedule_single_event( $exp_timestamp_gmt, 'greatermedia_expire_post', array( $post_id ) );
-
-				return;
 			}
+
+		} else {
+
+			// Clean up any post expiration data that might already exist, in case the post support changed
+			delete_post_meta( $post_id, '_post_expiration' );
+			wp_clear_scheduled_hook( 'greatermedia_expire_post', array( $post_id ) );
 
 		}
 
