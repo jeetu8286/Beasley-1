@@ -1483,7 +1483,7 @@ blockquote p {
   position: fixed;
   top: 0;
   right: 0;
-  display: block;
+  display: none;
   width: 33px;
   height: 50px;
   border-top-left-radius: 15px;
@@ -1500,9 +1500,6 @@ blockquote p {
   color: #6D6E70;
   z-index: 10001;
   cursor: pointer; }
-  @media screen and (min-width: 1024px) {
-    .gm-liveplayer--toggle {
-      display: none; } }
 
 .gm-liveplayer--toggle:before {
   font-family: FontAwesome;
