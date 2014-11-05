@@ -33,7 +33,7 @@ img {
 	@include transform(translate(0, 0));
 	width: 100%;
 	@include transition(all 500ms ease-in-out);
-	overflow-y: hidden;
+	overflow: hidden;
 }
 
 .container, %container {
@@ -42,9 +42,15 @@ img {
 }
 
 .main, %main {
-	width: $max-width;
+	width: 100%;
 	margin: 0;
 	background-color: color(primary-bg);
+	@include bp(large) {
+		width: 82.142857142857%;
+	}
+	@include bp(x-large) {
+		width: $max-width;
+	}
 }
 
 .content, %content {
@@ -89,15 +95,19 @@ img {
 
 .live-player{
 	@include position(absolute, 117px null null null);
-	@include calc(right, '50% - 700px');
 	@include padding(2em null);
 	display: none;
 	background-color: color(secondary-bg);
-	@include bp(large){
+	@include bp(large) {
 		@include display(block);
-		width: $live-player;
+		right: 0;
+		width: 17.857142857143%;
 		height: 100%;
 		@include box-sizing(border-box);
 		color: color(secondary-text);
+	}
+	@include bp(x-large) {
+		@include calc(right, '50% - 700px');
+		width: $live-player;
 	}
 }
