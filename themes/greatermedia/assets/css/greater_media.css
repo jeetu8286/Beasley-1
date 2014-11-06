@@ -1685,27 +1685,57 @@ blockquote p {
     .logged-in .live-player--fixed {
       top: 32px; } }
 
+.live-player--open .page-wrap:before {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  content: " "; }
+
+.live-player--open .live-player:before {
+  position: absolute;
+  top: -30px;
+  left: 0;
+  width: 100%;
+  height: 30px;
+  background: -moz-linear-gradient(top, transparent 0%, rgba(0, 0, 0, 0.4) 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, transparent), color-stop(100%, rgba(0, 0, 0, 0.4)));
+  background: -webkit-linear-gradient(top, transparent 0%, rgba(0, 0, 0, 0.4) 100%);
+  background: -o-linear-gradient(top, transparent 0%, rgba(0, 0, 0, 0.4) 100%);
+  background: -ms-linear-gradient(top, transparent 0%, rgba(0, 0, 0, 0.4) 100%);
+  background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.4) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#000000', endColorstr='#000000', GradientType=0);
+  content: " ";
+  z-index: 100; }
+
+.live-player--open .live-player:after {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  background: -moz-linear-gradient(top, transparent 0%, rgba(0, 0, 0, 0.7) 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, transparent), color-stop(100%, rgba(0, 0, 0, 0.7)));
+  background: -webkit-linear-gradient(top, transparent 0%, rgba(0, 0, 0, 0.7) 100%);
+  background: -o-linear-gradient(top, transparent 0%, rgba(0, 0, 0, 0.7) 100%);
+  background: -ms-linear-gradient(top, transparent 0%, rgba(0, 0, 0, 0.7) 100%);
+  background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.7) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#000000', endColorstr='#000000', GradientType=0);
+  content: " ";
+  z-index: 100; }
+
 .live-player__stream {
   display: none;
-  width: 100%; }
+  width: 100%;
+  cursor: pointer; }
   @media screen and (min-width: 768px) {
     .live-player__stream {
       display: block; } }
 
 .live-player__stream--list {
   padding: 0;
-  margin: 0;
-  background-color: #1e1e1e; }
-
-.live-player__stream--available {
-  display: none;
-  padding: 0;
   margin: 0; }
-
-.live-player__stream--current.open .live-player__stream--available {
-  position: absolute;
-  display: block;
-  z-index: 10; }
 
 .live-player__stream--current {
   position: relative;
@@ -1715,8 +1745,14 @@ blockquote p {
   padding: 0;
   margin: 0;
   overflow: visible;
+  background-color: #1e1e1e;
   line-height: 1;
   font-size: 0.88889em; }
+
+.live-player__stream--current.open {
+  display: block;
+  background-color: #000000;
+  z-index: 10; }
 
 .live-player__stream--current:after {
   position: absolute;
@@ -1738,12 +1774,41 @@ blockquote p {
 .live-player__stream--current-name {
   display: inline-block; }
 
+.live-player__stream--available {
+  display: none;
+  padding: 0;
+  margin: 0; }
+
+.live-player__stream--current.open .live-player__stream--available {
+  position: absolute;
+  display: block;
+  z-index: 10; }
+
+.live-player__stream--available:after {
+  position: absolute;
+  bottom: -30px;
+  left: 0;
+  width: 100%;
+  height: 30px;
+  background: -moz-linear-gradient(top, rgba(0, 0, 0, 0.7) 0%, transparent 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(0, 0, 0, 0.7)), color-stop(100%, transparent));
+  background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.7) 0%, transparent 100%);
+  background: -o-linear-gradient(top, rgba(0, 0, 0, 0.7) 0%, transparent 100%);
+  background: -ms-linear-gradient(top, rgba(0, 0, 0, 0.7) 0%, transparent 100%);
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, transparent 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#000000', endColorstr='#000000', GradientType=0);
+  content: " ";
+  z-index: 100; }
+
 .live-player__stream--item {
   display: block;
   overflow: auto;
   padding: .5em 1em;
   background-color: #1e1e1e;
   font-size: 0.88889em; }
+
+.live-player__stream--item:hover {
+  background-color: #000000; }
 
 .live-player__stream--name {
   float: left;
@@ -1922,24 +1987,6 @@ blockquote p {
 .gm-liveplayer--container #gm-liveplayer--controls #pauseButton, .gm-liveplayer--container #gm-liveplayer--controls #resumeButton {
   display: none; }
 
-.gmlp-open .gm-liveplayer--container {
-  right: 0; }
-
-.gmlp-open .gm-liveplayer--toggle {
-  font-size: 1.875em; }
-
-.gmlp-open .gm-liveplayer--toggle:before {
-  content: "\f00d"; }
-
-/**
- * If Logged In
- */
-.admin-bar .gm-liveplayer--toggle {
-  top: 0; }
-
-.admin-bar .gm-liveplayer--container {
-  top: 0; }
-
 .on-air {
   float: left;
   width: 15%;
@@ -2030,46 +2077,6 @@ blockquote p {
   display: inline-block;
   margin-left: 4px;
   cursor: pointer; }
-
-.live-player--open .page-wrap:before {
-  position: absolute;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.4);
-  content: " "; }
-
-.live-player--open .live-player:before {
-  position: absolute;
-  top: -30px;
-  left: 0;
-  width: 100%;
-  height: 30px;
-  background: -moz-linear-gradient(top, transparent 0%, rgba(0, 0, 0, 0.4) 100%);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, transparent), color-stop(100%, rgba(0, 0, 0, 0.4)));
-  background: -webkit-linear-gradient(top, transparent 0%, rgba(0, 0, 0, 0.4) 100%);
-  background: -o-linear-gradient(top, transparent 0%, rgba(0, 0, 0, 0.4) 100%);
-  background: -ms-linear-gradient(top, transparent 0%, rgba(0, 0, 0, 0.4) 100%);
-  background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.4) 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#000000', endColorstr='#000000', GradientType=0);
-  content: " ";
-  z-index: 100; }
-
-.live-player--open .live-player:after {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 100px;
-  background: -moz-linear-gradient(top, transparent 0%, rgba(0, 0, 0, 0.7) 100%);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, transparent), color-stop(100%, rgba(0, 0, 0, 0.7)));
-  background: -webkit-linear-gradient(top, transparent 0%, rgba(0, 0, 0, 0.7) 100%);
-  background: -o-linear-gradient(top, transparent 0%, rgba(0, 0, 0, 0.7) 100%);
-  background: -ms-linear-gradient(top, transparent 0%, rgba(0, 0, 0, 0.7) 100%);
-  background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.7) 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#000000', endColorstr='#000000', GradientType=0);
-  content: " ";
-  z-index: 100; }
 
 .live-links {
   display: none;

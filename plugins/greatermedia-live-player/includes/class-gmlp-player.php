@@ -33,8 +33,6 @@ class GMLP_Player {
 		?>
 		<div class="gm-liveplayer">
 
-			<button class="gm-liveplayer--toggle"></button>
-
 			<div class="gm-liveplayer--container">
 
 				<div class="container">
