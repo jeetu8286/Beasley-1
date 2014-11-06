@@ -415,9 +415,10 @@ class GreaterMediaContestsMetaboxes {
 		/**
 		 * Update the form's meta field
 		 * The form JSON has slashes in it which need to be stripped out.
+		 * trim() with a second parameter to remove quotes JSON.stringify() puts around its output.
 		 * json_decode() and json_encode() are used here to sanitize the JSON & keep out invalid values
 		 */
-		$form = json_encode( json_decode( stripslashes( $_POST['contest_embedded_form'] ) ) );
+		$form = json_encode( json_decode( trim( stripslashes( $_POST['contest_embedded_form'] ), '"' ) ) );
 		update_post_meta( $post_id, 'embedded_form', $form );
 
 		// Update the form's "thank you" message
