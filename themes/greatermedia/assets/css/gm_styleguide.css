@@ -1642,49 +1642,16 @@ blockquote p {
   .gm-liveplayer.open {
     display: block; }
 
-.gm-liveplayer--toggle {
-  position: fixed;
-  top: 0;
-  right: 0;
-  display: none;
-  width: 33px;
-  height: 50px;
-  border-top-left-radius: 15px;
-  border-top-right-radius: 15px;
-  border-top-left-radius: 15px;
-  border-bottom-left-radius: 15px;
-  -webkit-transition: ease 0.25s;
-  -moz-transition: ease 0.25s;
-  transition: ease 0.25s;
-  background-color: #000000;
-  border: none;
-  outline: none;
-  font-size: 1.25em;
-  color: #6D6E70;
-  cursor: pointer; }
-
-.gm-liveplayer--toggle:before {
-  font-family: FontAwesome;
-  font-style: normal;
-  font-weight: normal;
-  line-height: 1;
-  -webkit-font-smoothing: antialiased;
-  moz-osx-font-smoothing: grayscale;
-  text-rendering: auto;
-  content: "\f028"; }
-
 .gm-liveplayer--btn {
   width: 54px;
   height: 54px;
   margin: 0 auto;
-  border-top-left-radius: 50%;
-  border-top-right-radius: 50%;
-  border-top-right-radius: 50%;
-  border-bottom-right-radius: 50%;
-  border-bottom-left-radius: 50%;
-  border-bottom-right-radius: 50%;
-  border-top-left-radius: 50%;
-  border-bottom-left-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  -border-radius: 50%;
+  border-radius: 50%;
   background-color: transparent;
   border: 2px solid #d22228;
   outline: none;
@@ -1706,11 +1673,6 @@ blockquote p {
   position: absolute;
   top: 50%;
   left: 50%;
-  -webkit-transform: translate(-50%, -50%);
-  -moz-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  -o-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
   font-family: FontAwesome;
   content: "\f04b" !important; }
 
@@ -1731,18 +1693,14 @@ blockquote p {
 
 .gm-liveplayer--container {
   position: relative;
-  top: auto;
-  right: auto;
-  bottom: auto;
-  left: auto;
   -webkit-transition: ease 0.25s;
   -moz-transition: ease 0.25s;
   transition: ease 0.25s;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  height: 100%;
   width: 100%;
+  height: 100%;
   background: transparent;
   color: #6D6E70; }
 
@@ -1807,8 +1765,8 @@ blockquote p {
   font-weight: lighter; }
 
 .live-player--social {
-  height: 32px;
   width: 100%;
+  height: 32px;
   margin-bottom: 1em; }
 
 .live-player--social ul {
@@ -1818,8 +1776,8 @@ blockquote p {
   text-align: center; }
 
 .live-player--social ul li {
-  height: 32px;
   width: 32px;
+  height: 32px;
   padding: 0;
   margin: 0 0.25em 0 0;
   list-style: none;
@@ -1831,13 +1789,10 @@ blockquote p {
 
 .live-player--next {
   width: 100%;
-  padding: 0.5em 1em;
-  border-top-color: #d0d2d3;
-  border-bottom-color: #d0d2d3;
-  border-top-style: solid;
-  border-bottom-style: solid;
-  border-top-width: 1px;
-  border-bottom-width: 1px;
+  padding: .5em 1em;
+  border: 1px solid #d0d2d3;
+  border-right: none;
+  border-left: none;
   font-size: 0.79012em; }
 
 .live-player--test {
