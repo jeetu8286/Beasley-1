@@ -67,8 +67,8 @@
 		</div>
 
 		<div id="now-playing" class="now-playing">
-			<h4 class="now-playing--title">Track Title</h4>
-			<h5 class="now-playing--artist">Artist Name</h5>
+			<h4 class="now-playing__title">Track Title</h4>
+			<h5 class="now-playing__artist">Artist Name</h5>
 		</div>
 
 	</div>

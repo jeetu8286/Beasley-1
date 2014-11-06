@@ -231,26 +231,6 @@
 	display: none;
 }
 
-.gm-liveplayer--container #gm-liveplayer--now_playing {
-	position: relative;
-	width: 100%;
-	height: auto;
-	text-align: center;
-}
-
-.gm-liveplayer--container #gm-liveplayer--now_playing #trackInfo {
-	font-size: 1.375em;
-}
-
-.gm-liveplayer--container #gm-liveplayer--now_playing #trackInfo .gmlp-np-song-title {
-	margin: 0 0 1em;
-	font-weight: 700;
-}
-
-.gm-liveplayer--container #gm-liveplayer--now_playing #trackInfo .gmlp-np-artist {
-	font-weight: 400;
-}
-
 .gmlp-open .gm-liveplayer--container {
 	right: 0;
 }
@@ -309,19 +289,19 @@
 		float: none;
 		width: 100%;
 		padding: 0;
-		margin: 0 0 2em;
+		margin: 1em 0 2em;
 		text-align: center;
 	}
 }
 
-.now-playing--title {
+.now-playing__title {
 	margin: 0 0 .25em;
 	font-size: ms(1);
 	font-weight: lighter;
 	color: color(secondary-heading);
 }
 
-.now-playing--artist {
+.now-playing__artist {
 	margin: 0 0 .25em;
 	font-size: ms(-2);
 	font-weight: lighter;

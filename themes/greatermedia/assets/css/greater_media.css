@@ -1922,22 +1922,6 @@ blockquote p {
 .gm-liveplayer--container #gm-liveplayer--controls #pauseButton, .gm-liveplayer--container #gm-liveplayer--controls #resumeButton {
   display: none; }
 
-.gm-liveplayer--container #gm-liveplayer--now_playing {
-  position: relative;
-  width: 100%;
-  height: auto;
-  text-align: center; }
-
-.gm-liveplayer--container #gm-liveplayer--now_playing #trackInfo {
-  font-size: 1.375em; }
-
-.gm-liveplayer--container #gm-liveplayer--now_playing #trackInfo .gmlp-np-song-title {
-  margin: 0 0 1em;
-  font-weight: 700; }
-
-.gm-liveplayer--container #gm-liveplayer--now_playing #trackInfo .gmlp-np-artist {
-  font-weight: 400; }
-
 .gmlp-open .gm-liveplayer--container {
   right: 0; }
 
@@ -1989,16 +1973,16 @@ blockquote p {
       float: none;
       width: 100%;
       padding: 0;
-      margin: 0 0 2em;
+      margin: 1em 0 2em;
       text-align: center; } }
 
-.now-playing--title {
+.now-playing__title {
   margin: 0 0 .25em;
   font-size: 1.125em;
   font-weight: lighter;
   color: #d22228; }
 
-.now-playing--artist {
+.now-playing__artist {
   margin: 0 0 .25em;
   font-size: 0.79012em;
   font-weight: lighter; }
