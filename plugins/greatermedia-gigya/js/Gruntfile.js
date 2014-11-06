@@ -4,19 +4,31 @@ module.exports = function(grunt) {
 		concat: {
 			dist: {
 				src: [
-					'templates.js',
 					'src/utils.js',
-					'src/constraint.js',
-					'src/entry_constraint.js',
-					'src/constraint_factory.js',
-					'src/available_constraints.js',
-					'src/constraint_store.js',
-					'src/member_query_updater.js',
-					'src/menu_view.js',
-					'src/constraint_item_view.js',
-					'src/entry_constraint_item_view.js',
-					'src/constraint_list_view.js',
-					'src/preview_view.js',
+					'templates.js',
+
+					'src/models/entry_type.js',
+					'src/models/entry_field.js',
+					'src/models/constraint.js',
+					'src/models/profile_constraint.js',
+					'src/models/entry_constraint.js',
+					'src/models/available_constraints.js',
+					'src/models/query_result.js',
+
+					'src/collections/entry_type_collection.js',
+					'src/collections/entry_field_collection.js',
+					'src/collections/constraint_collection.js',
+					'src/collections/query_result_collection.js',
+
+					'src/views/toolbar_item_view.js',
+					'src/views/toolbar_view.js',
+					'src/views/constraint_view.js',
+					'src/views/entry_constraint_view.js',
+					'src/views/active_constraints_view.js',
+					'src/views/preview_view.js',
+					'src/views/query_result_item_view.js',
+					'src/views/query_results_view.js',
+
 					'src/app.js',
 				],
 				dest: 'query_builder.js'

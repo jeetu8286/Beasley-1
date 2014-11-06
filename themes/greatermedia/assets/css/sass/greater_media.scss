@@ -18,8 +18,8 @@
 @import "base/normalize";
 @import "base/breakpoints";
 @import "base/fonts";
-@import "base/base";
 @import "base/grid";
+@import "base/base";
 
 // Main layout components: menu, typography, etc.
 @import "layout/typography";
@@ -31,6 +31,20 @@
 @import "components/header";
 @import "components/footer";
 @import "components/posts";
+@import "components/sidebar";
+@import "components/liveplayer";
+@import "components/featured";
+@import "components/breaking-news";
+@import "components/ads";
+@import "components/closures";
+@import "components/concerts";
+@import "components/contests";
+@import "components/events";
+@import "components/personalities";
+@import "components/podcasts";
+@import "components/polls-surveys";
+@import "components/shows";
+@import "components/widgets";
 
 // Custom styles only used on single pages
 @import "pages/single";

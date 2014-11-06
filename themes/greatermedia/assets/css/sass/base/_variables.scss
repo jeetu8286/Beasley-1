@@ -1,6 +1,8 @@
-// Color Array
-// By default, these colors can be called using `map-get($color, key)`. To avoid continually calling `map-get`, a
-// function has been written. Reference the `color` function located in `_functions.scss`.
+$_color_base_gray: #a7a9ab;
+
+// Color Map
+// By default, these colors can be called using `map-get($palette, tone)`. To avoid continually calling `map-get`, a
+// function has been written. Reference the `palette` function located in `_functions.scss`.
 //
 // @author Allen Moore
 // @since 0.1.0
@@ -8,14 +10,23 @@
 // @type String
 //
 $colors: (
-	black: #000000,
-	white: #ffffff,
-	light-gray: #f5f5f5,
-	soft-gray: #eeeeee,
-	medium-gray: #dddddd,
-	gray: #888888,
-	dark-gray: #333333,
-	red: #d32329
+	body-bg: #000000,
+	primary-bg: #ffffff,
+	primary-text: #000000,
+	primary-link: #d22228,
+	primary-heading: #58595b,
+	primary-border: #d0d2d3,
+	secondary-bg: #000000,
+	secondary-text: #404041,
+	secondary-link: #ffffff,
+	tertiary-bg: #561015,
+	featured-bg: #58595b,
+	featured-heading: #ffffff,
+	featured-heading-bg: #270e10,
+	featured-text: #a6a8ab,
+	featured-list: #f7ef7e,
+	btn-bg: #d22228,
+	btn-text: #ffffff,
 );
 
 // Variables for site wide usage
@@ -23,19 +34,9 @@ $colors: (
 // @author Allen Moore
 // @since 0.1.0
 //
-$text-color: color(black);
+$text-color: color(primary-text);
 
-$link-color: color(red);
-$link-hover: color(gray);
+$link-color: color(primary-link);
+$link-hover: darken(color(primary-link), 10%);
 
-$border-color: color(soft-gray);
-$dark-border-color: color(dark-gray);
-
-$nav-link-color: color(white);
-
-/*********************
-Misc
-*********************/
-
-// Site Max Width
-$max-site-width:	1200px;
+$border-color: color(primary-border);

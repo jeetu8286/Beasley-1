@@ -6,17 +6,40 @@ var QueryBuilderApp = function() {
 QueryBuilderApp.prototype = {
 
 	initialize: function() {
-		// TODO: IMPORTANT, should not be global
-		window.ajaxApi    = new WpAjaxApi(member_query_meta);
+		//TODO: IMPORTANT, should not be global
+		window.ajaxApi           = new WpAjaxApi(member_query_meta);
+		var loadedConstraints    = member_query_data.constraints || [];
+		var availableConstraints = new ConstraintCollection(AVAILABLE_CONSTRAINTS);
+		var activeConstraints    = new ConstraintCollection(loadedConstraints);
+		var queryResults         = new QueryResultCollection([], { activeConstraints: activeConstraints });
 
-		this.store        = window.store = new ConstraintStore();
-		this.menuView     = new MenuView(this.store);
-		this.listView     = new ConstraintListView(this.store);
-		this.queryUpdater = new MemberQueryUpdater(this.store);
-		this.previewView  = new PreviewView(this.queryUpdater);
+		var toolbarView = new ToolbarView({
+			el: $('#query_builder_toolbar'),
+			collection: availableConstraints,
+			activeConstraints: activeConstraints
+		});
 
-		this.previewView.preview(member_query_data.query);
-		this.queryUpdater.update();
+		var activeConstraintsView = new ActiveConstraintsView({
+			el: $('#active_constraints'),
+			collection: activeConstraints,
+		});
+
+		var previewView = new PreviewView({
+			el: $('.preview-member-query'),
+			collection: queryResults
+		});
+
+		var queryResultsView = new QueryResultsView({
+			el: $('.member-query-results'),
+			collection: queryResults
+		});
+
+		toolbarView.render();
+		activeConstraintsView.render();
+		previewView.render();
+		queryResultsView.render();
+
+		activeConstraints.save();
 	},
 
 };
