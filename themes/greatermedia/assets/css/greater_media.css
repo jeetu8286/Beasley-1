@@ -644,14 +644,14 @@ p {
  */
 .mobile-nav--toggle {
   position: absolute;
-  top: 50%;
+  top: 75%;
   -webkit-transform: translate(0, -50%);
   -moz-transform: translate(0, -50%);
   -ms-transform: translate(0, -50%);
   -o-transform: translate(0, -50%);
   transform: translate(0, -50%);
-  height: 32px;
   width: 32px;
+  height: 32px;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -670,8 +670,8 @@ p {
   position: absolute;
   top: 14px;
   display: block;
-  height: 4px;
   width: 32px;
+  height: 4px;
   -webkit-transition: all 500ms ease-in-out;
   -moz-transition: all 500ms ease-in-out;
   transition: all 500ms ease-in-out;
@@ -690,8 +690,8 @@ p {
   position: absolute;
   top: -10px;
   display: block;
-  height: 4px;
   width: 32px;
+  height: 4px;
   -webkit-transition: all 500ms ease-in-out;
   -moz-transition: all 500ms ease-in-out;
   transition: all 500ms ease-in-out;
@@ -710,8 +710,8 @@ p {
   position: absolute;
   bottom: -10px;
   display: block;
-  height: 4px;
   width: 32px;
+  height: 4px;
   -webkit-transition: all 500ms ease-in-out;
   -moz-transition: all 500ms ease-in-out;
   transition: all 500ms ease-in-out;
@@ -906,6 +906,12 @@ p {
 
 .header .container {
   max-width: 1400px; }
+
+#breaking-news-banner {
+  display: none; }
+  @media screen and (min-width: 768px) {
+    #breaking-news-banner {
+      display: block; } }
 
 .header-logo {
   float: left;
