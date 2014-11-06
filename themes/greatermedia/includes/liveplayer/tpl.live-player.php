@@ -32,6 +32,8 @@
 		?>
 	</div>
 
+	<?php dynamic_sidebar( 'liveplayer_sidebar' ); ?>
+
 	<div class="now-playing--title">
 
 	</div>
