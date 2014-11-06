@@ -12,6 +12,8 @@
 	var header = document.getElementById('header');
 	var headerHeight = header.offsetHeight;
 	var livePlayer = document.getElementById('live-player--sidebar');
+	var livePlayerStreamSelect = document.querySelector('.live-player__stream--current');
+	var livePlayerStreams = document.querySelector('.live-player__stream--available');
 	var onAir = document.getElementById('on-air');
 	var nowPlaying = document.getElementById('now-playing');
 	var liveLinks = document.getElementById('live-links');
@@ -80,6 +82,10 @@
 	 */
 	mobileNavButton.onclick = function(){
 		body.classList.toggle('mobile-nav--open');
+	};
+
+	livePlayerStreamSelect.onclick = function(){
+		livePlayerStreamSelect.classList.toggle('open');
 	};
 
 	/**
