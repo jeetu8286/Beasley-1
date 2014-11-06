@@ -44,8 +44,8 @@ class GMLP_Player {
 
 					<div id="gm-liveplayer--now_playing">
 						<div id="nowPlaying">
-							<div id="trackInfo" class="now-playing"><div>
-							<h5 id="npeInfo" class="now-playing__artist"></h5>
+							<div id="trackInfo" class="now-playing"></div>
+							<div id="npeInfo"></div>
 						</div>
 					</div>
 
