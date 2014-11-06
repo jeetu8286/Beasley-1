@@ -1,4 +1,4 @@
-/*! Greater Media - v0.1.0 - 2014-11-05
+/*! Greater Media - v0.1.0 - 2014-11-06
  * http://greatermedia.com
  * Copyright (c) 2014; * Licensed GPLv2+ */
 (function() {
@@ -9,6 +9,8 @@
 	var header = document.getElementById('header');
 	var headerHeight = header.offsetHeight;
 	var livePlayer = document.getElementById('live-player--sidebar');
+	var livePlayerStreamSelect = document.querySelector('.live-player__stream--current');
+	var livePlayerStreams = document.querySelector('.live-player__stream--available');
 	var onAir = document.getElementById('on-air');
 	var nowPlaying = document.getElementById('now-playing');
 	var liveLinks = document.getElementById('live-links');
@@ -77,6 +79,10 @@
 	 */
 	mobileNavButton.onclick = function(){
 		body.classList.toggle('mobile-nav--open');
+	};
+
+	livePlayerStreamSelect.onclick = function(){
+		livePlayerStreams.classList.toggle('open');
 	};
 
 	/**

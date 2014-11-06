@@ -8,6 +8,36 @@
 ?>
 <aside id="live-player--sidebar" class="live-player">
 
+	<nav class="live-player__stream">
+		<ul class="live-player__stream--list">
+			<li class="live-player__stream--current">
+				Stream<span class="live-player__stream--title">HD1</span>
+				<ul class="live-player__stream--available">
+					<li class="live-player__stream--item">
+						<span class="live-player__stream--title">HD1</span>
+						<span class="live-player__stream--desc">A brief description can be used here</span>
+					</li>
+					<li class="live-player__stream--item">
+						<span class="live-player__stream--title">HD2</span>
+						<span class="live-player__stream--desc">A brief description can be used here</span>
+					</li>
+					<li class="live-player__stream--item">
+						<span class="live-player__stream--title">HD3</span>
+						<span class="live-player__stream--desc">A brief description can be used here</span>
+					</li>
+					<li class="live-player__stream--item">
+						<span class="live-player__stream--title">FM</span>
+						<span class="live-player__stream--desc">A brief description can be used here</span>
+					</li>
+					<li class="live-player__stream--item">
+						<span class="live-player__stream--title">FM2</span>
+						<span class="live-player__stream--desc">A brief description can be used here</span>
+					</li>
+				</ul>
+			</li>
+		</ul>
+	</nav>
+
 	<div id="live-player" class="live-player--container">
 
 		<div id="on-air" class="on-air">

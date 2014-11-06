@@ -14,11 +14,11 @@
 Opacities & transparencies
 *********************/
 /* @include css-gradient(#dfdfdf,#f8f8f8); */
-.featured-content--list {
+.live-player__stream--list, .live-player__stream--available, .featured-content--list {
   padding: 0;
   margin: 0; }
 
-.featured-content--item {
+.live-player__stream--current, .live-player__stream--item, .featured-content--item {
   list-style: none;
   padding: 0;
   margin: 0; }
@@ -1429,6 +1429,22 @@ blockquote p {
     .logged-in .live-player--fixed {
       top: 32px; } }
 
+.live-player__stream {
+  width: 100%;
+  padding: 1em; }
+
+.live-player__stream--available {
+  display: none; }
+
+.live-player__stream--available.open {
+  display: block; }
+
+.live-player__stream--current {
+  font-size: 0.88889em; }
+
+.live-player__stream--item {
+  font-size: 0.88889em; }
+
 .live-player--container {
   height: 100%;
   overflow: auto; }
@@ -1593,7 +1609,7 @@ blockquote p {
 
 .gm-liveplayer--container #gm-liveplayer--controls {
   position: relative;
-  margin: 1.25em auto 0;
+  margin: 0 auto;
   text-align: center; }
 
 .gm-liveplayer--container #gm-liveplayer--controls #pauseButton, .gm-liveplayer--container #gm-liveplayer--controls #resumeButton {
@@ -1603,7 +1619,6 @@ blockquote p {
   position: relative;
   width: 100%;
   height: auto;
-  margin: 2.375em 0 0;
   text-align: center;
   z-index: 999; }
 
