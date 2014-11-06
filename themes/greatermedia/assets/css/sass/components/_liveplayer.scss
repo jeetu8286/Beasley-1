@@ -119,14 +119,24 @@
 }
 
 .live-player__stream--available {
-	display: none;
+	visibility: hidden;
+	@include opacity(0);
 	padding: 0;
 	margin: 0;
+	@include transition(visibility 0s linear 500ms, opacity 500ms linear);
 }
+
 .live-player__stream--current.open .live-player__stream--available {
 	position: absolute;
-	display: block;
+	visibility: visible;
+	@include opacity(1);
+	top: 36px;
 	z-index: 10;
+	@include transition-delay(0s);
+}
+
+.live-player__stream--current.open .live-player__stream--available:active {
+	@include transition(all 200ms linear);
 }
 
 .live-player__stream--available:after {
