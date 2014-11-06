@@ -29,3 +29,7 @@ define( 'GMR_SYNDICATION_PATH',    dirname( __FILE__ ) . '/' );
 if( is_readable( GMR_SYNDICATION_PATH . 'includes/SyndicationCPT.php' ) ) {
 	include_once GMR_SYNDICATION_PATH . 'includes/SyndicationCPT.php';
 }
+
+if( is_readable( GMR_SYNDICATION_PATH . 'includes/BlogData.php' ) ) {
+	include_once GMR_SYNDICATION_PATH . 'includes/BlogData.php';
+}

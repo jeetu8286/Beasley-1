@@ -180,18 +180,30 @@ class SyndicationCPT {
 	 */
 	public function render_filter_metabox( $post ) {
 
+		$allterms = BlogData::getTerms();
+
+/*		echo '<pre>';
+		foreach( $allterms as $index => $term ) {
+			var_dump( $term );
+		}
+		echo '</pre>';*/
 		// Add an nonce field so we can check for it later.
 		wp_nonce_field( plugin_basename(__FILE__), 'subscription_custom_nonce' );
 
 		// Use get_post_meta to retrieve an existing value from the database.
-		$value = get_post_meta( $post->ID, '_my_meta_value_key', true );
+		$terms = get_post_meta( $post->ID, '_subsription_filter_terms', false);
 
 		// Display the form, using the current value.
-		echo '<label for="myplugin_new_field">';
-		_e( 'Description for this field', 'myplugin_textdomain' );
+		echo '<label for="subscription_terms">';
+		_e( 'Terms', 'greatermedia' );
 		echo '</label> ';
-		echo '<input type="text" id="myplugin_new_field" name="myplugin_new_field"';
-		echo ' value="' . esc_attr( $value ) . '" size="25" />';
+		echo '<select multiple="multiple" name="subscription_terms[]" id="subscription_terms[]">';
+		foreach( $allterms as $index => $term ) {
+			foreach( $term as $single_term ) {
+				echo '<option', in_array( $single_term->term_id, $terms) ? ' selected="selected"' : '', ' value="' . $single_term->term_id .'">' . $single_term->name . '</option>';
+			}
+		}
+		echo '</select><br /><span class="description">Description</span>';
 	}
 
 	/**
