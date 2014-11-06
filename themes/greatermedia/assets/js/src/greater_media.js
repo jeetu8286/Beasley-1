@@ -85,7 +85,7 @@
 	};
 
 	livePlayerStreamSelect.onclick = function(){
-		livePlayerStreams.classList.toggle('open');
+		livePlayerStreamSelect.classList.toggle('open');
 	};
 
 	/**

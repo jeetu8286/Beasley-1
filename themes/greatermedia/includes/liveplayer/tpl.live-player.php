@@ -11,27 +11,28 @@
 	<nav class="live-player__stream">
 		<ul class="live-player__stream--list">
 			<li class="live-player__stream--current">
-				Stream<span class="live-player__stream--title">HD1</span>
+				<div class="live-player__stream--title">Stream</div>
+				<div class="live-player__stream--current-name">HD1</div>
 				<ul class="live-player__stream--available">
 					<li class="live-player__stream--item">
-						<span class="live-player__stream--title">HD1</span>
-						<span class="live-player__stream--desc">A brief description can be used here</span>
+						<div class="live-player__stream--name">HD1</div>
+						<div class="live-player__stream--desc">A brief description can be used here</div>
 					</li>
 					<li class="live-player__stream--item">
-						<span class="live-player__stream--title">HD2</span>
-						<span class="live-player__stream--desc">A brief description can be used here</span>
+						<div class="live-player__stream--name">HD2</div>
+						<div class="live-player__stream--desc">A brief description can be used here</div>
 					</li>
 					<li class="live-player__stream--item">
-						<span class="live-player__stream--title">HD3</span>
-						<span class="live-player__stream--desc">A brief description can be used here</span>
+						<div class="live-player__stream--name">HD3</div>
+						<div class="live-player__stream--desc">A brief description can be used here</div>
 					</li>
 					<li class="live-player__stream--item">
-						<span class="live-player__stream--title">FM</span>
-						<span class="live-player__stream--desc">A brief description can be used here</span>
+						<div class="live-player__stream--name">FM</div>
+						<div class="live-player__stream--desc">A brief description can be used here</div>
 					</li>
 					<li class="live-player__stream--item">
-						<span class="live-player__stream--title">FM2</span>
-						<span class="live-player__stream--desc">A brief description can be used here</span>
+						<div class="live-player__stream--name">FM2</div>
+						<div class="live-player__stream--desc">A brief description can be used here</div>
 					</li>
 				</ul>
 			</li>

@@ -15,37 +15,95 @@
 	}
 }
 
+// Select List to choose a stream
 .live-player__stream {
+	display: none;
 	width: 100%;
-	padding: 1em;
+	@include bp(medium) {
+		display: block;
+	}
 }
 
 .live-player__stream--list {
-	@extend %unordered-list;
+	padding: 0;
+	margin: 0;
+	background-color: color(secondary-drop);
 }
 
 .live-player__stream--available {
 	display: none;
-	@extend %unordered-list;
+	padding: 0;
+	margin: 0;
 }
 
-.live-player__stream--available.open {
+.live-player__stream--current.open .live-player__stream--available {
+	position: absolute;
 	display: block;
+	z-index: 10;
 }
 
 .live-player__stream--current {
-	@extend %list-item;
+	position: relative;
+	display: block;
+	list-style: none;
+	height: 36px;
+	padding: 0;
+	margin: 0;
+	overflow: visible;
+	line-height: 1;
 	font-size: ms(-1);
+}
+
+.live-player__stream--current:after {
+	position: absolute;
+	top: 8px;
+	right: 30px;
+	width: 0;
+	height: 0;
+	font-family: FontAwesome;
+	font-size: ms(4);
+	content: "\f0d7";
+}
+
+
+.live-player__stream--current.open:after {
+	content: "\f0d8";
+}
+
+.live-player__stream--title {
+	display: inline-block;
+	padding: em(11px);
+}
+
+.live-player__stream--current-name {
+	display: inline-block;
 }
 
 .live-player__stream--item {
+	display: block;
 	@extend %list-item;
+	overflow:auto;
+	padding: .5em 1em;
+	background-color: color(secondary-drop);
 	font-size: ms(-1);
 }
 
+.live-player__stream--name {
+	float: left;
+	width: 20%;
+}
+
+.live-player__stream--desc {
+	float: left;
+	width: 80%;
+}
+
+// live player area
 .live-player--container {
-	height: 100%;
 	overflow: auto;
+	@include bp (medium) {
+		margin: 1em 0 0;
+	}
 }
 
 .live-player--controls {
@@ -89,7 +147,6 @@
 	outline: none;
 	font-size: 1.25em;
 	color: color(secondary-text);
-	z-index: 10001;
 	cursor: pointer;
 }
 
@@ -125,7 +182,6 @@
 	text-rendering: auto;
 	color: color(btn-bg);
 	cursor: pointer;
-	z-index: 10001;
 }
 
 #playButton, #resumeButton {
@@ -157,7 +213,6 @@
 	@include size(100% 100%);
 	background: transparent;
 	color: color(secondary-text);
-	z-index: 10000;
 }
 
 .gm-liveplayer--container .container {
@@ -181,7 +236,6 @@
 	width: 100%;
 	height: auto;
 	text-align: center;
-	z-index: 999;
 }
 
 .gm-liveplayer--container #gm-liveplayer--now_playing #trackInfo {
@@ -319,16 +373,6 @@
 	cursor: pointer;
 }
 
-.live-links {
-	display: none;
-	padding: 1em 0 0;
-	margin: 1em 0 0;
-	border-top: 1px solid color(secondary-border);
-	@include bp(medium) {
-		display: block;
-	}
-}
-
 .live-player--open .page-wrap:before {
 	position: absolute;
 	top: 0;
@@ -372,10 +416,22 @@
 	z-index: 100;
 }
 
+// live links
+.live-links {
+	display: none;
+	padding: 1em 0 0;
+	margin: 1em 0 0;
+	border-top: 1px solid color(secondary-border);
+	text-align: center;
+	@include bp(medium) {
+		display: block;
+		padding-right: 1em;
+		padding-left: 1em;
+	}
+}
 .live-player--open .live-links {
 	display: block;
 	max-height: 250px;
-	text-align: center;
 }
 
 .live-link {

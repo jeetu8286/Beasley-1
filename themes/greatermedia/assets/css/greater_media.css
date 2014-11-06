@@ -14,11 +14,11 @@
 Opacities & transparencies
 *********************/
 /* @include css-gradient(#dfdfdf,#f8f8f8); */
-.live-player__stream--list, .live-player__stream--available, .featured-content--list {
+.featured-content--list {
   padding: 0;
   margin: 0; }
 
-.live-player__stream--current, .live-player__stream--item, .featured-content--item {
+.live-player__stream--item, .featured-content--item {
   list-style: none;
   padding: 0;
   margin: 0; }
@@ -536,7 +536,7 @@ img {
       left: auto;
       width: 17.857142857143%;
       height: 100%;
-      padding: 2em 0;
+      padding: 0;
       -webkit-box-sizing: border-box;
       -moz-box-sizing: border-box;
       box-sizing: border-box;
@@ -1686,24 +1686,78 @@ blockquote p {
       top: 32px; } }
 
 .live-player__stream {
-  width: 100%;
-  padding: 1em; }
+  display: none;
+  width: 100%; }
+  @media screen and (min-width: 768px) {
+    .live-player__stream {
+      display: block; } }
+
+.live-player__stream--list {
+  padding: 0;
+  margin: 0;
+  background-color: #1e1e1e; }
 
 .live-player__stream--available {
-  display: none; }
+  display: none;
+  padding: 0;
+  margin: 0; }
 
-.live-player__stream--available.open {
-  display: block; }
+.live-player__stream--current.open .live-player__stream--available {
+  position: absolute;
+  display: block;
+  z-index: 10; }
 
 .live-player__stream--current {
+  position: relative;
+  display: block;
+  list-style: none;
+  height: 36px;
+  padding: 0;
+  margin: 0;
+  overflow: visible;
+  line-height: 1;
   font-size: 0.88889em; }
+
+.live-player__stream--current:after {
+  position: absolute;
+  top: 8px;
+  right: 30px;
+  width: 0;
+  height: 0;
+  font-family: FontAwesome;
+  font-size: 1.60181em;
+  content: "\f0d7"; }
+
+.live-player__stream--current.open:after {
+  content: "\f0d8"; }
+
+.live-player__stream--title {
+  display: inline-block;
+  padding: 0.6875em; }
+
+.live-player__stream--current-name {
+  display: inline-block; }
 
 .live-player__stream--item {
+  display: block;
+  overflow: auto;
+  padding: .5em 1em;
+  background-color: #1e1e1e;
   font-size: 0.88889em; }
 
+.live-player__stream--name {
+  float: left;
+  width: 20%; }
+
+.live-player__stream--desc {
+  float: left;
+  width: 80%; }
+
 .live-player--container {
-  height: 100%;
   overflow: auto; }
+  @media screen and (min-width: 768px) {
+    .live-player--container {
+      margin: 1em 0 0; } }
 
 .live-player--controls {
   float: right;
@@ -1770,7 +1824,6 @@ blockquote p {
   outline: none;
   font-size: 1.25em;
   color: #6D6E70;
-  z-index: 10001;
   cursor: pointer; }
 
 .gm-liveplayer--toggle:before {
@@ -1807,8 +1860,7 @@ blockquote p {
   moz-osx-font-smoothing: grayscale;
   text-rendering: auto;
   color: #d22228;
-  cursor: pointer;
-  z-index: 10001; }
+  cursor: pointer; }
 
 #playButton, #resumeButton {
   position: relative; }
@@ -1855,8 +1907,7 @@ blockquote p {
   height: 100%;
   width: 100%;
   background: transparent;
-  color: #6D6E70;
-  z-index: 10000; }
+  color: #6D6E70; }
 
 .gm-liveplayer--container .container {
   max-width: 1020px;
@@ -1875,8 +1926,7 @@ blockquote p {
   position: relative;
   width: 100%;
   height: auto;
-  text-align: center;
-  z-index: 999; }
+  text-align: center; }
 
 .gm-liveplayer--container #gm-liveplayer--now_playing #trackInfo {
   font-size: 1.375em; }
@@ -1997,15 +2047,6 @@ blockquote p {
   margin-left: 4px;
   cursor: pointer; }
 
-.live-links {
-  display: none;
-  padding: 1em 0 0;
-  margin: 1em 0 0;
-  border-top: 1px solid #282827; }
-  @media screen and (min-width: 768px) {
-    .live-links {
-      display: block; } }
-
 .live-player--open .page-wrap:before {
   position: absolute;
   top: 0;
@@ -2046,10 +2087,21 @@ blockquote p {
   content: " ";
   z-index: 100; }
 
+.live-links {
+  display: none;
+  padding: 1em 0 0;
+  margin: 1em 0 0;
+  border-top: 1px solid #282827;
+  text-align: center; }
+  @media screen and (min-width: 768px) {
+    .live-links {
+      display: block;
+      padding-right: 1em;
+      padding-left: 1em; } }
+
 .live-player--open .live-links {
   display: block;
-  max-height: 250px;
-  text-align: center; }
+  max-height: 250px; }
 
 .live-link {
   display: block;
