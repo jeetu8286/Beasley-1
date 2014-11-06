@@ -650,6 +650,12 @@ p {
 .header .container {
   max-width: 1400px; }
 
+#breaking-news-banner {
+  display: none; }
+  @media screen and (min-width: 768px) {
+    #breaking-news-banner {
+      display: block; } }
+
 .header-logo {
   float: left;
   display: block;
