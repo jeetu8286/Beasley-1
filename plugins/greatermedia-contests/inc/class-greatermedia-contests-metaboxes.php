@@ -98,7 +98,7 @@ class GreaterMediaContestsMetaboxes {
 			wp_enqueue_script( 'greatermedia-contests-admin', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'js/greatermedia-contests-admin.js', array( 'formbuilder' ), false, true );
 			$embedded_form = get_post_meta( $post->ID, 'embedded_form', true );
 			$settings      = array(
-				'form' => $embedded_form,
+				'form' => trim( $embedded_form, '"' ),
 			);
 			wp_localize_script( 'greatermedia-contests-admin', 'GreaterMediaContestsForm', $settings );
 
@@ -415,10 +415,9 @@ class GreaterMediaContestsMetaboxes {
 		/**
 		 * Update the form's meta field
 		 * The form JSON has slashes in it which need to be stripped out.
-		 * trim() with a second parameter to remove quotes JSON.stringify() puts around its output.
 		 * json_decode() and json_encode() are used here to sanitize the JSON & keep out invalid values
 		 */
-		$form = json_encode( json_decode( trim( stripslashes( $_POST['contest_embedded_form'] ), '"' ) ) );
+		$form = json_encode( json_decode( urldecode( $_POST['contest_embedded_form'] ) ) );
 		update_post_meta( $post_id, 'embedded_form', $form );
 
 		// Update the form's "thank you" message
