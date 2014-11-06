@@ -16,6 +16,6 @@ define( 'GMRDEPENDENCIES_VERSION', '0.0.1' );
 define( 'GMRDEPENDENCIES_URL',     plugin_dir_url( __FILE__ ) );
 define( 'GMRDEPENDENCIES_PATH',    dirname( __FILE__ ) . '/' );
 
-if( is_readable( GMRDEPENDENCIES_PATH . 'includes/gmr_dependencies.php' ) ) {
-	include_once GMRDEPENDENCIES_PATH . 'includes/gmr_dependencies.php';
+if( is_readable( GMRDEPENDENCIES_PATH . 'includes/gmr-dependencies.php' ) ) {
+	include_once GMRDEPENDENCIES_PATH . 'includes/gmr-dependencies.php';
 }
