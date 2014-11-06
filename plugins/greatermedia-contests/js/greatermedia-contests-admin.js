@@ -17,11 +17,11 @@ document.addEventListener(
 
 		formbuilder.on('save', function (payload) {
 			// payload is a JSON string representation of the form
-			document.getElementById('contest_embedded_form_data').value = JSON.stringify(JSON.parse(payload).fields);
+			document.getElementById('contest_embedded_form_data').value = encodeURIComponent(JSON.stringify(JSON.parse(payload).fields));
 		});
 
 		// Default the hidden field with the form data loaded from the server
-		document.getElementById('contest_embedded_form_data').value = JSON.stringify(GreaterMediaContestsForm.form);
+		document.getElementById('contest_embedded_form_data').value = encodeURIComponent(JSON.stringify(GreaterMediaContestsForm.form));
 
 	},
 	false
