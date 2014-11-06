@@ -7,7 +7,7 @@
  * Author:      10up
  * Author URI:  http://10up.com
  * License:     GPLv2+
- * Text Domain: gm-songs
+ * Text Domain: greater_media_songs
  * Domain Path: /languages
  */
 
@@ -36,42 +36,47 @@
  */
 
 // Useful global constants
-define( 'GM-SONGS_VERSION', '0.1.0' );
-define( 'GM-SONGS_URL',     plugin_dir_url( __FILE__ ) );
-define( 'GM-SONGS_PATH',    dirname( __FILE__ ) . '/' );
+define( 'GREATER_MEDIA_SONGS_VERSION', '0.1.0' );
+define( 'GREATER_MEDIA_SONGS_URL',     plugin_dir_url( __FILE__ ) );
+define( 'GREATER_MEDIA_SONGS_PATH',    dirname( __FILE__ ) . '/' );
 
 /**
  * Default initialization for the plugin:
  * - Registers the default textdomain.
  */
-function gm-songs_init() {
-	$locale = apply_filters( 'plugin_locale', get_locale(), 'gm-songs' );
-	load_textdomain( 'gm-songs', WP_LANG_DIR . '/gm-songs/gm-songs-' . $locale . '.mo' );
-	load_plugin_textdomain( 'gm-songs', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+function greater_media_songs_init() {
+	$locale = apply_filters( 'plugin_locale', get_locale(), 'greater_media_songs' );
+	load_textdomain( 'greater_media_songs', WP_LANG_DIR . '/greater_media_songs/greater_media_songs-' . $locale . '.mo' );
+	load_plugin_textdomain( 'greater_media_songs', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 }
+
+/**
+ * Include classes
+ */
+include trailingslashit( __DIR__ ) . 'includes/class-greatermedia-songs.php';
 
 /**
  * Activate the plugin
  */
-function gm-songs_activate() {
+function greater_media_songs_activate() {
 	// First load the init scripts in case any rewrite functionality is being loaded
-	gm-songs_init();
+	greater_media_songs_init();
 
 	flush_rewrite_rules();
 }
-register_activation_hook( __FILE__, 'gm-songs_activate' );
+register_activation_hook( __FILE__, 'greater_media_songs_activate' );
 
 /**
  * Deactivate the plugin
  * Uninstall routines should be in uninstall.php
  */
-function gm-songs_deactivate() {
+function greater_media_songs_deactivate() {
 
 }
-register_deactivation_hook( __FILE__, 'gm-songs_deactivate' );
+register_deactivation_hook( __FILE__, 'greater_media_songs_deactivate' );
 
 // Wireup actions
-add_action( 'init', 'gm-songs_init' );
+add_action( 'init', 'greater_media_songs_init' );
 
 // Wireup filters
 
