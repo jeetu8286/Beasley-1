@@ -51,15 +51,15 @@
 
 				if ( defined( 'GREATER_MEDIA_GIGYA_TEST_UI' ) && GREATER_MEDIA_GIGYA_TEST_UI ) {
 					do_action( 'gm_live_player' ); ?>
-					<div id="live-player--listen_now" class="live-player--listen_btn"><?php _e( 'Listen Now', 'greatermedia' ); ?></div>
+					<div id="live-player--listen_now" class="live-player--listen_btn"><?php _e( 'Listen Live', 'greatermedia' ); ?></div>
 					<?php do_action( 'gm_live_player_test_ui' );
 				} else {
 
 					if ( is_gigya_user_logged_in() ) { ?>
-						<div id="live-player--listen_now" class="live-player--listen_btn"><?php _e( 'Listen Now', 'greatermedia' ); ?></div>
+						<div id="live-player--listen_now" class="live-player--listen_btn"><?php _e( 'Listen Live', 'greatermedia' ); ?></div>
 						<?php do_action( 'gm_live_player' );
 					} else { ?>
-						<div id="live-player--listen_now" class="live-player--listen_btn"><?php _e( 'Listen Now', 'greatermedia' ); ?></div>
+						<div id="live-player--listen_now" class="live-player--listen_btn"><?php _e( 'Listen Live', 'greatermedia' ); ?></div>
 					<?php }
 				}
 
