@@ -21,6 +21,13 @@
 	max-width: $max-site-width;
 }
 
+#breaking-news-banner {
+	display: none;
+	@include bp(medium) {
+		display: block;
+	}
+}
+
 .header-logo{
 	@include span-columns(4);
 	@include omega;
