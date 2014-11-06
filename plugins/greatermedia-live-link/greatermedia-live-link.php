@@ -132,6 +132,12 @@ function gmr_ll_register_meta_boxes( WP_Post $post ) {
 function gmr_ll_render_redirect_meta_box( WP_Post $post ) {
 	wp_enqueue_script( 'suggest' );
 
+	$redirect_url = get_post_meta( $post->ID, 'redirect', true );
+	if ( is_numeric( $redirect_url ) ) {
+		$post = get_post( $redirect_url );
+		$redirect_url = $post ? $post->post_title : '';
+	}
+
 	wp_nonce_field( 'gmr-ll-redirect', 'gmr_ll_redirect_nonce', false );
 
 	?><script type="text/javascript">
@@ -148,7 +154,7 @@ function gmr_ll_render_redirect_meta_box( WP_Post $post ) {
 		})(jQuery);
 	</script>
 	
-	<input type="text" class="widefat" name="gmr_ll_redirect" value="<?php echo esc_attr( get_post_meta( $post->ID, 'redirect', true ) ) ?>">
+	<input type="text" class="widefat" name="gmr_ll_redirect" value="<?php echo esc_attr( $redirect_url ) ?>">
 	<p class="description">Enter external link or post title to redirect to.</p><?php
 }
 
@@ -173,7 +179,7 @@ function gmr_ll_save_redirect_meta_box_data( $post_id ) {
 
 	// save redirect link
 	$redirect = filter_input( INPUT_POST, 'gmr_ll_redirect' );
-	if ( ! is_int( $redirect ) && ! filter_var( $redirect, FILTER_VALIDATE_URL ) ) {
+	if ( ! is_numeric( $redirect ) && ! filter_var( $redirect, FILTER_VALIDATE_URL ) ) {
 		$post = get_page_by_title( $redirect, OBJECT, gmr_ll_get_suggestion_post_types() );
 		if ( ! $post ) {
 			return;

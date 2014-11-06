@@ -5,6 +5,27 @@ add_action( 'admin_menu', 'gmrs_register_episode_page' );
 add_action( 'admin_enqueue_scripts', 'gmrs_enqueue_episode_scripts' );
 add_action( 'admin_action_gmr_add_show_episode', 'gmrs_add_show_episode' );
 add_action( 'admin_action_gmr_delete_show_episode', 'gmrs_delete_show_episode' );
+add_action( 'future_to_publish', 'gmrs_prolong_show_episode' );
+
+/**
+ * Creates new episode each time the current one is published.
+ *
+ * @param WP_Post $post Currently published episode.
+ */
+function gmrs_prolong_show_episode( $post ) {
+	if ( ShowsCPT::EPISODE_CPT != $post->post_type || ! $post->menu_order ) {
+		return;
+	}
+
+	$new_post = $post->to_array();
+	unset( $new_post['ID'] );
+
+	$new_post['post_date'] = date( DATE_ISO8601, strtotime( $post->post_date ) + WEEK_IN_SECONDS );
+	$new_post['post_date_gmt'] = date( DATE_ISO8601, strtotime( $post->post_date_gmt ) + WEEK_IN_SECONDS );
+	$new_post['post_status'] = 'future';
+
+	wp_insert_post( $new_post );
+}
 
 /**
  * Enqueues scripts and styles required for show episode page.
@@ -203,14 +224,14 @@ function gmrs_render_episode_schedule_page() {
 										 style="height: <?php echo $height ?>px;background-color:<?php echo gmrs_show_color( $episode->post_parent, 0.15 ) ?>;border-color:<?php echo gmrs_show_color( $episode->post_parent, 0.75 ) ?>;"
 										 data-hover-color="<?php echo gmrs_show_color( $episode->post_parent, 0.6 ) ?>">
 										
-										<div>
-											<b><?php echo esc_html( $episode->post_title ); ?></b>
-											<small>
-												<?php echo date( 'h:i A', strtotime( $episode->post_date_gmt ) + $offset ); ?>
-												<?php echo ! empty( $episode->menu_order ) ? '(weekly)' : ''; ?>
-											</small>
-										</div>
+										<small>
+											<?php echo date( 'h:i A', strtotime( $episode->post_date_gmt ) + $offset ); ?>
+											<?php echo ! empty( $episode->menu_order ) ? '(weekly)' : ''; ?><br>
+											<?php echo date( 'Y-m-d h:i A', strtotime( $episode->post_date_gmt ) + $offset ) ?>
+										</small>
 
+										<b><?php echo esc_html( $episode->post_title ); ?></b>
+										
 										<div>
 											<?php $delete_url = 'admin.php?action=gmr_delete_show_episode&episode=' . $episode->ID ?>
 											<a href="<?php echo esc_url( wp_nonce_url( $delete_url, 'gmr_delete_show_episode_' . $episode->ID ) ) ?>" onclick="return showNotice.warn();">Delete</a>
@@ -244,8 +265,8 @@ function gmrs_get_scheduled_episodes() {
 		'order'               => 'ASC',
 		'date_query'          => array(
 			array(
-				'after'     => date( 'Y-m-d 00:00:00' ),
-				'before'    => date( 'Y-m-d 23:59:59', strtotime( '+1 week' ) ),
+				'after'     => date( DATE_ISO8601 ),
+				'before'    => date( DATE_ISO8601, strtotime( '+1 week' ) ),
 				'inclusive' => true,
 			),
 		),
@@ -268,7 +289,29 @@ function gmrs_get_scheduled_episodes() {
 		$episodes[ $dayofweek ][] = $post;
 	}
 
+	foreach ( $episodes as &$dayofweek ) {
+		usort( $dayofweek, 'gmrs_sort_episodes' );
+	}
+
 	return $episodes;
+}
+
+/**
+ * Sorts episodes by time.
+ *
+ * @param WP_Post $a The first episode.
+ * @param WP_Post $b The second episode.
+ * @return int Returns 0 if time equals, -1 if a less b and 1 otherwise.
+ */
+function gmrs_sort_episodes( $a, $b ) {
+	$time_a = strtotime( $a->post_date ) % DAY_IN_SECONDS;
+	$time_b = strtotime( $b->post_date ) % DAY_IN_SECONDS;
+
+	if ( $time_a == $time_b ) {
+		return 0;
+	}
+
+	return $time_a < $time_b ? -1 : 1;
 }
 
 /**
@@ -287,4 +330,36 @@ function gmrs_show_color( $show_id, $opacity ) {
 		hexdec( substr( $hash, 4, 2 ) ),
 		$opacity
 	);
+}
+
+/**
+ * Returns current show.
+ *
+ * @return WP_Post|null The show object on success, otherwise NULL.
+ */
+function gmrs_get_current_show() {
+	$query = new WP_Query();
+	$episodes = $query->query( array(
+		'post_type'           => ShowsCPT::EPISODE_CPT,
+		'post_status'         => 'any',
+		'posts_per_page'      => 1,
+		'ignore_sticky_posts' => true,
+		'orderby'             => 'date',
+		'order'               => 'DESC',
+		'date_query'          => array(
+			array(
+				'before'    => current_time( 'mysql' ),
+				'inclusive' => true,
+			),
+		),
+	) );
+
+	if ( empty( $episodes ) ) {
+		return null;
+	}
+
+	$episode = current( $episodes );
+	$show = get_post( $episode->post_parent );
+	
+	return $show && ShowsCPT::SHOW_CPT == $show->post_type ? $show : null;
 }

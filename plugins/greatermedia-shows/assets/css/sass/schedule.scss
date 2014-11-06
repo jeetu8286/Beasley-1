@@ -56,15 +56,13 @@
 			overflow: hidden;
 
 			@include box-sizing(border-box);
+			@include clearfix;
 
-			> div:first-child {
-				@include clearfix;
-
-				small {
-					font-size: 10px;
-					line-height: 15px;
-					float: right;
-				}
+			small {
+				font-size: 10px;
+				line-height: 15px;
+				float: right;
+				text-align: right;
 			}
 		}
 	}

@@ -50,14 +50,15 @@
       overflow: hidden;
       -moz-box-sizing: border-box;
       box-sizing: border-box; }
-      #schedule-table td > div > div:first-child:after {
+      #schedule-table td > div:after {
         content: "";
         display: table;
         clear: both; }
-      #schedule-table td > div > div:first-child small {
+      #schedule-table td > div small {
         font-size: 10px;
         line-height: 15px;
-        float: right; }
+        float: right;
+        text-align: right; }
   #schedule-table a {
     text-decoration: none;
     margin-right: 2em; }

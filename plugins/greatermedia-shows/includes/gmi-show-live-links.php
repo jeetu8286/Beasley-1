@@ -55,8 +55,8 @@ function gmrs_check_live_links_copy_action( $add_copy_link, WP_Post $post ) {
  * @return array The widget links args.
  */
 function gmrs_filter_links_widget_args( $args ) {
-	$active_show = get_option( 'gmr_active_show' );
-	if ( ! $active_show || ! ( $active_show = get_post( $active_show ) ) ) {
+	$active_show = gmrs_get_current_show();
+	if ( ! $active_show ) {
 		return $args;
 	}
 

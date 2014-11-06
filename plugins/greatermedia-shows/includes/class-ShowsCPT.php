@@ -83,8 +83,8 @@ class ShowsCPT {
 	 */
 	public function register_shadow_taxonomy() {
 		$labels = array(
-			'name'                  => _x( 'Show terms', 'Taxonomy Show terms', 'greatermedia' ),
-			'singular_name'         => _x( 'Show term', 'Taxonomy Show term', 'greatermedia' ),
+			'name'                  => _x( 'Shows', 'Taxonomy Show terms', 'greatermedia' ),
+			'singular_name'         => _x( 'Show', 'Taxonomy Show term', 'greatermedia' ),
 			'search_items'          => __( 'Search Show terms', 'greatermedia' ),
 			'popular_items'         => __( 'Popular Show terms', 'greatermedia' ),
 			'all_items'             => __( 'All Show terms', 'greatermedia' ),
@@ -114,7 +114,6 @@ class ShowsCPT {
 		);
 
 		$supported_posttypes = array(
-			'show',
 			'post',
 			'albums',
 			'contest',
