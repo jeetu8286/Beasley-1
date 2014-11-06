@@ -20,11 +20,39 @@ add_action( 'admin_action_gmr_ll_copy', 'gmr_ll_handle_copy_post_to_live_link' )
 add_action( 'gmr_quickpost_submitbox_misc_actions', 'gmr_ll_add_quickpost_checkbox' );
 add_action( 'gmr_quickpost_post_created', 'gmr_ll_create_quickpost_live_link' );
 add_action( 'widgets_init', 'gmr_ll_register_widgets' );
+add_action( 'wp_ajax_gmr_live_link_suggest', 'gmr_ll_live_link_suggest' );
 
 // filter hooks
 add_filter( 'manage_' . GMR_LIVE_LINK_CPT . '_posts_columns', 'gmr_ll_filter_columns_list' );
 add_filter( 'post_row_actions', 'gmr_ll_add_post_action', 10, 2 );
 add_filter( 'page_row_actions', 'gmr_ll_add_post_action', 10, 2 );
+
+/**
+ * Sends post title suggestions for live link redirect field.
+ *
+ * @action wp_ajax_gmr_live_link_suggest
+ */
+function gmr_ll_live_link_suggest() {
+	$query = new WP_Query();
+	
+	$results = $query->query( array(
+		's'           => wp_unslash( $_GET['q'] ),
+		'post_type'   => gmr_ll_get_suggestion_post_types(),
+		'post_status' => 'publish',
+	) );
+
+	echo implode( wp_list_pluck( $results, 'post_title' ), PHP_EOL );
+	exit;
+}
+
+/**
+ * Returns post types for live link suggestion.
+ *
+ * @return array The array of post types.
+ */
+function gmr_ll_get_suggestion_post_types() {
+	return apply_filters( 'gmr_live_link_suggestion_post_types', array( 'post', 'page' ) );
+}
 
 /**
  * Registers live link widgets.
@@ -102,10 +130,26 @@ function gmr_ll_register_meta_boxes( WP_Post $post ) {
  * @param WP_Post $post The current post instance.
  */
 function gmr_ll_render_redirect_meta_box( WP_Post $post ) {
+	wp_enqueue_script( 'suggest' );
+
 	wp_nonce_field( 'gmr-ll-redirect', 'gmr_ll_redirect_nonce', false );
 
-	echo '<input type="text" class="widefat" name="gmr_ll_redirect" value="', esc_attr( get_post_meta( $post->ID, 'redirect', true ) ), '">';
-	echo '<p class="description">Enter link or post id to redirect to.</p>';
+	?><script type="text/javascript">
+		(function ($) {
+			$(document).ready(function() {
+				$('input[name="gmr_ll_redirect"]').each(function() {
+					$(this).suggest(ajaxurl + '?action=gmr_live_link_suggest', {
+						delay: 500,
+						minchars: 2,
+						multiple: false
+					});
+				});
+			});
+		})(jQuery);
+	</script>
+	
+	<input type="text" class="widefat" name="gmr_ll_redirect" value="<?php echo esc_attr( get_post_meta( $post->ID, 'redirect', true ) ) ?>">
+	<p class="description">Enter external link or post title to redirect to.</p><?php
 }
 
 /**
@@ -127,8 +171,17 @@ function gmr_ll_save_redirect_meta_box_data( $post_id ) {
 		return;
 	}
 
-	// sanitize user input and update the meta field
-	$redirect = sanitize_text_field( filter_input( INPUT_POST, 'gmr_ll_redirect' ) );
+	// save redirect link
+	$redirect = filter_input( INPUT_POST, 'gmr_ll_redirect' );
+	if ( ! is_int( $redirect ) && ! filter_var( $redirect, FILTER_VALIDATE_URL ) ) {
+		$post = get_page_by_title( $redirect, OBJECT, gmr_ll_get_suggestion_post_types() );
+		if ( ! $post ) {
+			return;
+		}
+
+		$redirect = $post->ID;
+	}
+	
 	update_post_meta( $post_id, 'redirect', $redirect );
 }
 
@@ -228,7 +281,7 @@ function gmr_ll_handle_copy_post_to_live_link() {
 		wp_die( 'The post was not found.' );
 	}
 
-	$ll_id = gmr_ll_copy_post_to_live_link( $post );
+	$ll_id = gmr_ll_copy_post_to_live_link( $post->ID );
 	wp_redirect( get_edit_post_link( $ll_id, 'redirect' ) );
 	exit;
 }
