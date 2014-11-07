@@ -7,7 +7,7 @@
  * Author:      10up
  * Author URI:  http://10up.com
  * License:     GPLv2+
- * Text Domain: greater_media_songs
+ * Text Domain: greatermedia_songs
  * Domain Path: /languages
  */
 
@@ -36,47 +36,48 @@
  */
 
 // Useful global constants
-define( 'GREATER_MEDIA_SONGS_VERSION', '0.1.0' );
-define( 'GREATER_MEDIA_SONGS_URL',     plugin_dir_url( __FILE__ ) );
-define( 'GREATER_MEDIA_SONGS_PATH',    dirname( __FILE__ ) . '/' );
+define( 'GREATERMEDIA_SONGS_VERSION', '0.1.0' );
+define( 'GREATERMEDIA_SONGS_URL',     plugin_dir_url( __FILE__ ) );
+define( 'GREATERMEDIA_SONGS_PATH',    dirname( __FILE__ ) . '/' );
 
 /**
  * Default initialization for the plugin:
  * - Registers the default textdomain.
  */
-function greater_media_songs_init() {
-	$locale = apply_filters( 'plugin_locale', get_locale(), 'greater_media_songs' );
-	load_textdomain( 'greater_media_songs', WP_LANG_DIR . '/greater_media_songs/greater_media_songs-' . $locale . '.mo' );
-	load_plugin_textdomain( 'greater_media_songs', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+function greatermedia_songs_init() {
+	$locale = apply_filters( 'plugin_locale', get_locale(), 'greatermedia_songs' );
+	load_textdomain( 'greatermedia_songs', WP_LANG_DIR . '/greatermedia_songs/greatermedia_songs-' . $locale . '.mo' );
+	load_plugin_textdomain( 'greatermedia_songs', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 }
 
 /**
  * Include classes
  */
 include trailingslashit( __DIR__ ) . 'includes/class-greatermedia-songs.php';
+include trailingslashit( __DIR__ ) . 'includes/class-greatermedia-songs-metaboxes.php';
 
 /**
  * Activate the plugin
  */
-function greater_media_songs_activate() {
+function greatermedia_songs_activate() {
 	// First load the init scripts in case any rewrite functionality is being loaded
-	greater_media_songs_init();
+	greatermedia_songs_init();
 
 	flush_rewrite_rules();
 }
-register_activation_hook( __FILE__, 'greater_media_songs_activate' );
+register_activation_hook( __FILE__, 'greatermedia_songs_activate' );
 
 /**
  * Deactivate the plugin
  * Uninstall routines should be in uninstall.php
  */
-function greater_media_songs_deactivate() {
+function greatermedia_songs_deactivate() {
 
 }
-register_deactivation_hook( __FILE__, 'greater_media_songs_deactivate' );
+register_deactivation_hook( __FILE__, 'greatermedia_songs_deactivate' );
 
 // Wireup actions
-add_action( 'init', 'greater_media_songs_init' );
+add_action( 'init', 'greatermedia_songs_init' );
 
 // Wireup filters
 

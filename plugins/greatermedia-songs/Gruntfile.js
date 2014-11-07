@@ -12,11 +12,11 @@ module.exports = function( grunt ) {
 					' * Licensed GPLv2+' +
 					' */\n'
 			},
-			greater_media_songs: {
+			greatermedia_songs: {
 				src: [
-					'assets/js/src/greater_media_songs.js'
+					'assets/js/src/greatermedia_songs.js'
 				],
-				dest: 'assets/js/greater_media_songs.js'
+				dest: 'assets/js/greatermedia_songs.js'
 			}
 		},
 		jshint: {
@@ -45,7 +45,7 @@ module.exports = function( grunt ) {
 		uglify: {
 			all: {
 				files: {
-					'assets/js/greater_media_songs.min.js': ['assets/js/greater_media_songs.js']
+					'assets/js/greatermedia_songs.min.js': ['assets/js/greatermedia_songs.js']
 				},
 				options: {
 					banner: '/*! <%= pkg.title %> - v<%= pkg.version %>\n' +
@@ -66,7 +66,8 @@ module.exports = function( grunt ) {
 		sass:   {
 			all: {
 				files: {
-					'assets/css/greater_media_songs.css': 'assets/css/sass/greater_media_songs.scss'
+					'assets/css/greatermedia_songs.css': 'assets/css/sass/greatermedia_songs.scss',
+					'assets/css/greatermedia_songs_admin.css': 'assets/css/sass/greatermedia_songs_admin.scss'
 				}
 			}
 		},
@@ -83,7 +84,7 @@ module.exports = function( grunt ) {
 				expand: true,
 				
 				cwd: 'assets/css/',				
-				src: ['greater_media_songs.css'],
+				src: ['greatermedia_songs.css','greatermedia_songs_admin.css'],
 				
 				dest: 'assets/css/',
 				ext: '.min.css'
@@ -134,12 +135,12 @@ module.exports = function( grunt ) {
 			main: {
 				options: {
 					mode: 'zip',
-					archive: './release/greater_media_songs.<%= pkg.version %>.zip'
+					archive: './release/greatermedia_songs.<%= pkg.version %>.zip'
 				},
 				expand: true,
 				cwd: 'release/<%= pkg.version %>/',
 				src: ['**/*'],
-				dest: 'greater_media_songs/'
+				dest: 'greatermedia_songs/'
 			}		
 		}
 	} );

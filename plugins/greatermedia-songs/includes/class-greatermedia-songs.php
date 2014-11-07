@@ -21,19 +21,19 @@ class GreaterMediaSongs {
 	public static function register_songs_post_type() {
 
 		$labels = array(
-			'name'                => _x( 'Songs', 'Post Type General Name', 'greater_media_songs' ),
-			'singular_name'       => _x( 'Song', 'Post Type Singular Name', 'greater_media_songs' ),
-			'menu_name'           => __( 'Songs', 'greater_media_songs' ),
-			'parent_item_colon'   => __( 'Parent Song:', 'greater_media_songs' ),
-			'all_items'           => __( 'All Songs', 'greater_media_songs' ),
-			'view_item'           => __( 'View Song', 'greater_media_songs' ),
-			'add_new_item'        => __( 'Add New Song', 'greater_media_songs' ),
-			'add_new'             => __( 'Add New', 'greater_media_songs' ),
-			'edit_item'           => __( 'Edit song', 'greater_media_songs' ),
-			'update_item'         => __( 'Update song', 'greater_media_songs' ),
-			'search_items'        => __( 'Search Songs', 'greater_media_songs' ),
-			'not_found'           => __( 'Not found', 'greater_media_songs' ),
-			'not_found_in_trash'  => __( 'Not found in Trash', 'greater_media_songs' ),
+			'name'                => _x( 'Songs', 'Post Type General Name', 'greatermedia_songs' ),
+			'singular_name'       => _x( 'Song', 'Post Type Singular Name', 'greatermedia_songs' ),
+			'menu_name'           => __( 'Songs', 'greatermedia_songs' ),
+			'parent_item_colon'   => __( 'Parent Song:', 'greatermedia_songs' ),
+			'all_items'           => __( 'All Songs', 'greatermedia_songs' ),
+			'view_item'           => __( 'View Song', 'greatermedia_songs' ),
+			'add_new_item'        => __( 'Add New Song', 'greatermedia_songs' ),
+			'add_new'             => __( 'Add New', 'greatermedia_songs' ),
+			'edit_item'           => __( 'Edit song', 'greatermedia_songs' ),
+			'update_item'         => __( 'Update song', 'greatermedia_songs' ),
+			'search_items'        => __( 'Search Songs', 'greatermedia_songs' ),
+			'not_found'           => __( 'Not found', 'greatermedia_songs' ),
+			'not_found_in_trash'  => __( 'Not found in Trash', 'greatermedia_songs' ),
 		);
 
 		$rewrite = array(
@@ -44,8 +44,8 @@ class GreaterMediaSongs {
 		);
 
 		$args = array(
-			'label'               => __( 'songs', 'greater_media_songs' ),
-			'description'         => __( 'Live Songs', 'greater_media_songs' ),
+			'label'               => __( 'songs', 'greatermedia_songs' ),
+			'description'         => __( 'Live Songs', 'greatermedia_songs' ),
 			'labels'              => $labels,
 			'supports'            => array( 'title', 'author', ),
 			'taxonomies'          => array( 'category', 'post_tag' ),
