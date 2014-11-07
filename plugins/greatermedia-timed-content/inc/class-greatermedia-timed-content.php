@@ -11,7 +11,9 @@ class GreaterMediaTimedContent extends VisualShortcode {
 		parent::__construct(
 			'time-restricted',
 			'GreaterMediaTimedContentAdmin',
-			'dashicons-clock'
+			'dashicons-clock',
+			null,
+			__( 'Timed Content', 'greatermedia-timed-content' )
 		);
 
 		add_action( 'current_screen', array( $this, 'current_screen' ) );
