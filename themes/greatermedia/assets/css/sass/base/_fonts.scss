@@ -52,6 +52,9 @@ $icon-font:     'gmr-icons';
 .icon-play:before {
 	content: "\e606";
 }
+.icon-stop:before {
+	content: "\e60b";
+}
 .icon-plus:before {
 	content: "\e607";
 }
@@ -63,4 +66,13 @@ $icon-font:     'gmr-icons';
 }
 .icon-user:before {
 	content: "\e60a";
+}
+.icon-volume:before {
+	content: "\e60c";
+}
+.icon-volume-mute:before {
+	content: "\e60d";
+}
+.icon-volume-up:before {
+	content: "\e60e";
 }

@@ -426,6 +426,9 @@ th {
 .icon-play:before {
   content: "\e606"; }
 
+.icon-stop:before {
+  content: "\e60b"; }
+
 .icon-plus:before {
   content: "\e607"; }
 
@@ -437,6 +440,15 @@ th {
 
 .icon-user:before {
   content: "\e60a"; }
+
+.icon-volume:before {
+  content: "\e60c"; }
+
+.icon-volume-mute:before {
+  content: "\e60d"; }
+
+.icon-volume-up:before {
+  content: "\e60e"; }
 
 img {
   max-width: 100%;
@@ -1813,16 +1825,27 @@ blockquote p {
 
 .live-player__stream--current:after {
   position: absolute;
-  top: 8px;
-  right: 30px;
+  top: 10px;
+  right: 10px;
   width: 0;
   height: 0;
-  font-family: FontAwesome;
-  font-size: 1.60181em;
-  content: "\f0d7"; }
+  font-family: "gmr-icons";
+  font-size: 1.125em;
+  content: "\e606";
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  transform: rotate(90deg); }
 
 .live-player__stream--current.open:after {
-  content: "\f0d8"; }
+  top: 25px;
+  right: 25px;
+  -webkit-transform: rotate(270deg);
+  -moz-transform: rotate(270deg);
+  -ms-transform: rotate(270deg);
+  -o-transform: rotate(270deg);
+  transform: rotate(270deg); }
 
 .live-player__stream--title {
   display: inline-block;
@@ -1962,7 +1985,6 @@ blockquote p {
   background-color: transparent;
   border: 2px solid #d22228;
   outline: none;
-  font-family: FontAwesome;
   font-size: 1.25em;
   font-style: normal;
   font-weight: normal;
@@ -1985,8 +2007,8 @@ blockquote p {
   -ms-transform: translate(-50%, -50%);
   -o-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
-  font-family: FontAwesome;
-  content: "\f04b" !important; }
+  font-family: "gmr-icons" !important;
+  content: "\e606" !important; }
 
 #pauseButton {
   position: relative; }
@@ -2000,8 +2022,8 @@ blockquote p {
   -ms-transform: translate(-50%, -50%);
   -o-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
-  font-family: FontAwesome;
-  content: "\f04d" !important; }
+  font-family: "gmr-icons" !important;
+  content: "\e60b" !important; }
 
 .gm-liveplayer--container {
   position: relative;

@@ -96,17 +96,20 @@
 
 .live-player__stream--current:after {
 	position: absolute;
-	top: 8px;
-	right: 30px;
+	top: 10px;
+	right: 10px;
 	width: 0;
 	height: 0;
-	font-family: FontAwesome;
-	font-size: ms(4);
-	content: "\f0d7";
+	font-family: $icon-font;
+	font-size: ms(1);
+	content: "\e606";
+	@include transform(rotate(90deg));
 }
 
 .live-player__stream--current.open:after {
-	content: "\f0d8";
+	top: 25px;
+	right: 25px;
+	@include transform(rotate(270deg));
 }
 
 .live-player__stream--title {
@@ -223,7 +226,6 @@
 	background-color: transparent;
 	border: 2px solid color(btn-bg);
 	outline: none;
-	font-family: FontAwesome;
 	font-size: 1.25em;
 	font-style: normal;
 	font-weight: normal;
@@ -244,8 +246,8 @@
 	top: 50%;
 	left: 50%;
 	@include transform(translate(-50%, -50%));
-	font-family: FontAwesome;
-	content: "\f04b" !important;
+	font-family: $icon-font !important;
+	content: "\e606" !important;
 }
 
 #pauseButton {
@@ -257,8 +259,8 @@
 	top: 50%;
 	left: 50%;
 	@include transform(translate(-50%, -50%));
-	font-family: FontAwesome;
-	content: "\f04d" !important;
+	font-family: $icon-font !important;
+	content: "\e60b" !important;
 }
 
 .gm-liveplayer--container {
