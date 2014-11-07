@@ -144,7 +144,7 @@ abstract class VisualShortcode {
 	 */
 	public function plugins_loaded() {
 		// Set up the textdomain, even thought we don't really use it
-		load_plugin_textdomain( 'visual-shortcode', false, GREATER_MEDIA_TIMED_CONTENT_PATH );
+		load_plugin_textdomain( 'visual-shortcode', false, VISUAL_SHORTCODE_PATH );
 	}
 
 	/**
