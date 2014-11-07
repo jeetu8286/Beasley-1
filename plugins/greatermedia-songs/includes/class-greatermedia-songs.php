@@ -8,6 +8,8 @@ class GreaterMediaSongs {
 
 	/**
 	 * Initiate actions and filters
+	 *
+	 * @since 0.1.0
 	 */
 	public static function init() {
 		add_action( 'init', array( __CLASS__, 'register_songs_post_type' ) );
@@ -17,6 +19,8 @@ class GreaterMediaSongs {
 	 * Register the Songs CPT
 	 *
 	 * @uses register_post_type
+	 *
+	 * @since 0.1.0
 	 */
 	public static function register_songs_post_type() {
 
@@ -47,8 +51,7 @@ class GreaterMediaSongs {
 			'label'               => __( 'songs', 'greatermedia_songs' ),
 			'description'         => __( 'Live Songs', 'greatermedia_songs' ),
 			'labels'              => $labels,
-			'supports'            => array( 'title', 'author', ),
-			'taxonomies'          => array( 'category', 'post_tag' ),
+			'supports'            => array( 'title', 'author', 'thumbnail' ),
 			'hierarchical'        => false,
 			'public'              => true,
 			'show_ui'             => true,

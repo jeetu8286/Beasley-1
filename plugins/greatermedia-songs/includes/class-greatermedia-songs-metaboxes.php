@@ -14,6 +14,9 @@ class GreaterMediaSongsMetaboxes {
 	 * Adds the meta box container for the Songs Post Type.
 	 *
 	 * @param $post_type
+	 * @uses add_meta_boxes
+	 *
+	 * @since 0.1.0
 	 */
 	public function add_songs_meta_box( $post_type ) {
 
@@ -36,6 +39,9 @@ class GreaterMediaSongsMetaboxes {
 	 * Save the meta when the post is saved for the Songs Post Type.
 	 *
 	 * @param $post_id
+	 * @uses save_post
+	 *
+	 * @since 0.1.0
 	 */
 	public function save_songs_meta_box( $post_id ) {
 
@@ -67,6 +73,8 @@ class GreaterMediaSongsMetaboxes {
 	 * Render Meta Box content for the Songs Post Type.
 	 *
 	 * @param $post
+	 *
+	 * @since 0.1.0
 	 */
 	public function render_songs_meta_box_content( $post ) {
 
@@ -106,6 +114,10 @@ class GreaterMediaSongsMetaboxes {
 
 	/**
 	 * Localize scripts and enqueue
+	 *
+	 * @uses admin_enqueue_scripts
+	 *
+	 * @since 0.1.0
 	 */
 	public static function admin_scripts() {
 
