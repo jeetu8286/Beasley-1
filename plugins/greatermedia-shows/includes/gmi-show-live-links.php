@@ -55,25 +55,17 @@ function gmrs_check_live_links_copy_action( $add_copy_link, WP_Post $post ) {
  * @return array The widget links args.
  */
 function gmrs_filter_links_widget_args( $args ) {
-	$active_show = gmrs_get_current_show();
-	if ( ! $active_show ) {
-		return $args;
-	}
+	if ( ( $active_show = gmrs_get_current_show() ) && ( $term = TDS\get_related_term( $active_show ) ) ) {
+		if ( ! isset( $args['tax_query'] ) ) {
+			$args['tax_query'] = array();
+		}
 
-	$term = get_term_by( 'name', $active_show->post_title, ShowsCPT::SHOW_TAXONOMY );
-	if ( ! $term ) {
-		return $args;
+		$args['tax_query'][] = array(
+			'taxonomy' => ShowsCPT::SHOW_TAXONOMY,
+			'field'    => 'term_id',
+			'terms'    => $term->term_id,
+		);
 	}
-
-	if ( ! isset( $args['tax_query'] ) ) {
-		$args['tax_query'] = array();
-	}
-
-	$args['tax_query'][] = array(
-		'taxonomy' => ShowsCPT::SHOW_TAXONOMY,
-		'field'    => 'term_id',
-		'terms'    => $term->term_id,
-	);
 
 	return $args;
 }

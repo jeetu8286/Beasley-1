@@ -75,7 +75,7 @@ function gmi_personalities_set_quickpost_defaults( $terms ) {
 
 	// find all shadow taxonomies for selected personalities
 	foreach ( $personalities as $personality ) {
-		$term = get_term_by( 'name', $personality->post_title, GMI_Personality::SHADOW_TAX_SLUG );
+		$term = TDS\get_related_term( $personality );
 		if ( $term ) {
 			$terms[] = $term->term_id;
 		}

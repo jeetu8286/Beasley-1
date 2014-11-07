@@ -157,7 +157,7 @@ class GMR_QuickPost {
 				e=w.getSelection,
 				k=d.getSelection,
 				x=d.selection,
-				s=(e?e():(k)?k():(x?x.createRange().text:0)),
+				s=(e?e()+'':(k)?k()+'':(x?x.createRange().text:0)),
 				f='{$link}',
 				l=d.location,
 				e=encodeURIComponent,
