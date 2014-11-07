@@ -71,6 +71,12 @@
 			<h5 class="now-playing__artist">Artist Name</h5>
 		</div>
 
+		<div class="live-player__volume">
+			<div class="live-player__volume--btn"></div>
+			<div class="live-player__volume--level"></div>
+			<div class="live-player__volume--up"></div>
+		</div>
+
 	</div>
 
 	<div id="live-links" class="live-links">
