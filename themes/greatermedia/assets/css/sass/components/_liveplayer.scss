@@ -419,7 +419,7 @@
 .live-link--type:before {
 	width: 0;
 	height: 0;
-	font-family: FontAwesome;
+	font-family: $icon-font;
 	font-style: normal;
 	font-weight: normal;
 	line-height: 1;
@@ -430,15 +430,15 @@
 }
 
 .live-link--type_audio:before {
-	content: "\f001";
+	content: "\e604";
 }
 
 .live-link--type_video:before {
-	content: "\f144";
+	content: "\e604";
 }
 
 .live-link--type_link:before {
-	content: "\f0c1";
+	content: "\e602";
 }
 
 .live-link--title {

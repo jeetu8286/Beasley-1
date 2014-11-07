@@ -389,12 +389,12 @@ th {
  */
 @font-face {
   font-family: 'gmr-icons';
-  src: url("../fonts/gmr-icons.eot?ivfz3x");
-  src: url("../fonts/gmr-icons.eot?#iefixivfz3x") format("embedded-opentype"), url("../fonts/gmr-icons.woff?ivfz3x") format("woff"), url("../fonts/gmr-icons.ttf?ivfz3x") format("truetype"), url("../fonts/gmr-icons.svg?ivfz3x#gmr-icons") format("svg");
+  src: url("../fonts/icon-font/gmr-icons.eot?ivfz3x");
+  src: url("../fonts/icon-font/gmr-icons.eot?#iefixivfz3x") format("embedded-opentype"), url("../fonts/icon-font/gmr-icons.woff?ivfz3x") format("woff"), url("../fonts/icon-font/gmr-icons.ttf?ivfz3x") format("truetype"), url("../fonts/icon-font/gmr-icons.svg?ivfz3x#gmr-icons") format("svg");
   font-weight: normal;
   font-style: normal; }
 [class^="icon-"], [class*=" icon-"] {
-  font-family: 'icomoon';
+  font-family: 'gmr-icons';
   speak: none;
   font-style: normal;
   font-weight: normal;
@@ -2143,7 +2143,7 @@ blockquote p {
 .live-link--type:before {
   width: 0;
   height: 0;
-  font-family: FontAwesome;
+  font-family: "gmr-icons";
   font-style: normal;
   font-weight: normal;
   line-height: 1;
@@ -2153,13 +2153,13 @@ blockquote p {
   color: #d22228; }
 
 .live-link--type_audio:before {
-  content: "\f001"; }
+  content: "\e604"; }
 
 .live-link--type_video:before {
-  content: "\f144"; }
+  content: "\e604"; }
 
 .live-link--type_link:before {
-  content: "\f0c1"; }
+  content: "\e602"; }
 
 .live-link--title {
   display: block;
