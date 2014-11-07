@@ -11,7 +11,9 @@ class GreaterMediaLoginRestrictedContent extends VisualShortcode {
 		parent::__construct(
 			'login-restricted',
 			'GreaterMediaLoginRestrictedContentAdmin',
-			'dashicons-admin-network'
+			'dashicons-admin-network',
+			null,
+			__( 'Login Restriction', 'login-restricted-content' )
 		);
 
 		add_action( 'post_submitbox_misc_actions', array( $this, 'post_submitbox_misc_actions' ), 30, 0 );

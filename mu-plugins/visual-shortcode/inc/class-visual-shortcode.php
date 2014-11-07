@@ -39,6 +39,11 @@ abstract class VisualShortcode {
 	protected $button_name;
 
 	/**
+	 * @var string Title displayed when shortcode's button is hovered on in TinyMCE
+	 */
+	protected $button_title;
+
+	/**
 	 * @var string MCE_TOOLBAR_* constant (see below). Determines which TinyMCE toolbar this shortcode's button will
 	 *             render on.
 	 */
@@ -75,8 +80,17 @@ abstract class VisualShortcode {
 	 * @param string $js_module_name Name of the JavaScript module containing this shortcode's implementations of VisualShortcode methods
 	 * @param string $dashicon_name  Name of the dashicon used for this shortcode's icon in TinyMCE i.e. 'dashicon-clock'
 	 * @param string $mce_toolbar    MCE_TOOLBAR_* constant for which TinyMCE toolbar this shortcode's button will render on
+	 * @param string $button_title   Title to display when the shortcode's button is hovered over in TinyMCE
 	 */
-	public function __construct( $shortcode_name, $js_module_name, $dashicon_name = 'dashicons-edit', $mce_toolbar = self::MCE_TOOLBAR_DEFAULT ) {
+	public function __construct( $shortcode_name, $js_module_name, $dashicon_name = 'dashicons-edit', $mce_toolbar = null, $button_title = '' ) {
+
+		/**
+		 * Defaulting $mce_toolbar to a class constant in the method signature wasn't working
+		 * so explicitly check for a null value and set a default value if appropriate
+		 */
+		if ( null === $mce_toolbar ) {
+			$mce_toolbar = self::MCE_TOOLBAR_DEFAULT;
+		}
 
 		// Sanity checks
 		if ( ! is_string( $shortcode_name ) ) {
@@ -104,6 +118,7 @@ abstract class VisualShortcode {
 		$this->tinymce_plugin_name = 'vs_' . str_replace( array( ' ', '-' ), '_', $shortcode_name );
 		$this->button_name         = $this->tinymce_plugin_name . '_button';
 		$this->icon_class          = $this->button_name;
+		$this->button_title        = $button_title;
 
 		// Add this shortcode to the VisualShortcode registry
 		self::$registry[ $shortcode_name ] = array(
@@ -113,6 +128,7 @@ abstract class VisualShortcode {
 			'dashicon_glyph' => $this->dashicon_glyph,
 			'button'         => $this->button_name,
 			'icon_class'     => $this->icon_class,
+			'button_title'   => $this->button_title,
 		);
 
 		// Register actions & filters
