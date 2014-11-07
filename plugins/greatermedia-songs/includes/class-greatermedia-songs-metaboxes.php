@@ -1,5 +1,16 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( "Please don't try to access this file directly." );
+}
+
+/**
+ * Class GreaterMediaSongsMetaboxes
+ *
+ * Adds a metabox with fields to the Songs Post Type
+ *
+ * @since 0.1.0
+ */
 class GreaterMediaSongsMetaboxes {
 
 	public function __construct() {

@@ -4,6 +4,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( "Please don't try to access this file directly." );
 }
 
+/**
+ * Class GreaterMediaSongs
+ *
+ * Creates a content type for Songs
+ *
+ * @since 0.1.0
+ */
 class GreaterMediaSongs {
 
 	/**
@@ -12,7 +19,9 @@ class GreaterMediaSongs {
 	 * @since 0.1.0
 	 */
 	public static function init() {
+
 		add_action( 'init', array( __CLASS__, 'register_songs_post_type' ) );
+
 	}
 
 	/**
