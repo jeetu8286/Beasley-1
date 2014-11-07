@@ -227,7 +227,7 @@ function gmrs_render_episode_schedule_page() {
 										<small>
 											<?php echo date( 'h:i A', strtotime( $episode->post_date_gmt ) + $offset ); ?>
 											<?php echo ! empty( $episode->menu_order ) ? '(weekly)' : ''; ?><br>
-											<?php echo date( 'Y-m-d h:i A', strtotime( $episode->post_date_gmt ) + $offset ) ?>
+											<?php echo date( 'M-d h:i A', strtotime( $episode->post_date_gmt ) + $offset ) ?>
 										</small>
 
 										<b><?php echo esc_html( $episode->post_title ); ?></b>
@@ -265,9 +265,10 @@ function gmrs_get_scheduled_episodes() {
 		'order'               => 'ASC',
 		'date_query'          => array(
 			array(
-				'after'     => date( DATE_ISO8601 ),
-				'before'    => date( DATE_ISO8601, strtotime( '+1 week' ) ),
+				'after'     => date( DATE_ISO8601, time() ),
+				'before'    => date( 'Y-m-d 23:59:59', strtotime( '+1 week' ) ),
 				'inclusive' => true,
+				'column'    => 'post_date_gmt'
 			),
 		),
 	) );
