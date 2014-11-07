@@ -189,6 +189,17 @@ function gmr_ll_save_redirect_meta_box_data( $post_id ) {
 	}
 	
 	update_post_meta( $post_id, 'redirect', $redirect );
+
+	// deactivate this action to prevent infinite loop
+	remove_action( 'save_post', 'gmr_ll_save_redirect_meta_box_data' );
+
+	// set live link post parent to its realted post id
+	if ( is_numeric( $redirect ) ) {
+		$post = get_post( $post_id );
+		$post->post_parent = $redirect;
+
+		wp_update_post( $post->to_array() );
+	}
 }
 
 /**
@@ -229,11 +240,20 @@ function gmr_ll_render_custom_column( $column_name, $post_id ) {
 /**
  * Returns live link redirect.
  *
- * @param int $post_id The live link post id.
+ * @param int $live_link_id The live link post id.
  * @return string|boolean The redirect URL on success, otherwise FALSE.
  */
-function gmr_ll_get_redirect_link( $post_id ) {
-	$redirect = get_post_meta( $post_id, 'redirect', true );
+function gmr_ll_get_redirect_link( $live_link_id ) {
+	$live_link = get_post( $live_link_id );
+	if ( ! $live_link || GMR_LIVE_LINK_CPT != $live_link->post_type ) {
+		return false;
+	}
+
+	if ( $live_link->post_parent > 0 ) {
+		return get_permalink( $live_link->post_parent );
+	}
+	
+	$redirect = get_post_meta( $live_link_id, 'redirect', true );
 	if ( is_numeric( $redirect ) ) {
 		$post = get_post( $redirect );
 		if ( $post ) {
@@ -320,6 +340,7 @@ function gmr_ll_copy_post_to_live_link( $post_id ) {
 		'post_status' => 'publish',
 		'post_type'   => GMR_LIVE_LINK_CPT,
 		'post_title'  => $post->post_title,
+		'post_parent' => $post_id,
 	);
 
 	$ll_id = wp_insert_post( $args );
