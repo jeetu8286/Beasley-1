@@ -10,10 +10,6 @@
   -moz-box-sizing: border-box;
   box-sizing: border-box; }
 
-/*********************
-Opacities & transparencies
-*********************/
-/* @include css-gradient(#dfdfdf,#f8f8f8); */
 .featured-content--list {
   padding: 0;
   margin: 0; }
@@ -602,7 +598,7 @@ img {
   background-color: #000000;
   color: #6D6E70;
   cursor: pointer; }
-  @media screen and (min-width: 1024px) {
+  @media screen and (min-width: 768px) {
     .live-player {
       position: absolute;
       top: 238px;
@@ -1684,7 +1680,7 @@ blockquote p {
   float: right;
   width: 35%;
   text-align: right; }
-  @media screen and (min-width: 1024px) {
+  @media screen and (min-width: 768px) {
     .live-player--controls {
       float: none;
       width: auto;
@@ -1807,10 +1803,10 @@ blockquote p {
 
 .on-air {
   float: left;
-  width: 15%;
+  width: 25%;
   padding: 0 1em 0 0;
   margin: 0; }
-  @media screen and (min-width: 1024px) {
+  @media screen and (min-width: 768px) {
     .on-air {
       float: none;
       width: 100%;
@@ -1830,10 +1826,10 @@ blockquote p {
 
 .now-playing {
   float: left;
-  width: 50%;
+  width: 40%;
   padding: 0 1em;
   margin: 0; }
-  @media screen and (min-width: 1024px) {
+  @media screen and (min-width: 768px) {
     .now-playing {
       float: none;
       width: 100%;
@@ -1853,8 +1849,11 @@ blockquote p {
   font-weight: lighter; }
 
 .live-player__volume {
-  width: 95%;
-  margin: 0 2.5%; }
+  display: none; }
+  @media screen and (min-width: 768px) {
+    .live-player__volume {
+      width: 95%;
+      margin: 0 2.5%; } }
 
 .live-player__volume--btn {
   display: inline-block;

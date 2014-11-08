@@ -193,7 +193,7 @@
 	float: right;
 	width: 35%;
 	text-align: right;
-	@include bp(large) {
+	@include bp(medium) {
 		float: none;
 		width: auto;
 		padding: 1em 0;
@@ -290,10 +290,10 @@
 
 .on-air {
 	float: left;
-	width: 15%;
+	width: 25%;
 	padding: 0 1em 0 0;
 	margin: 0;
-	@include bp(large) {
+	@include bp(medium) {
 		float: none;
 		width: 100%;
 		padding: 0 1em;
@@ -316,10 +316,10 @@
 
 .now-playing {
 	float: left;
-	width: 50%;
+	width: 40%;
 	padding: 0 1em;
 	margin: 0;
-	@include bp(large) {
+	@include bp(medium) {
 		float: none;
 		width: 100%;
 		padding: 0;
@@ -343,8 +343,11 @@
 
 // volume controls and level
 .live-player__volume {
-	width: 95%;
-	margin: 0 2.5%;
+	display: none;
+	@include bp(medium) {
+		width: 95%;
+		margin: 0 2.5%;
+	}
 }
 
 .live-player__volume--btn {

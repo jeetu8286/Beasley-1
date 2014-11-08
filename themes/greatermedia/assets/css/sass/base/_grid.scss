@@ -102,7 +102,7 @@ img {
 	background-color: color(secondary-bg);
 	color: color(secondary-text);
 	cursor: pointer;
-	@include bp(large){
+	@include bp(medium){
 		position: absolute;
 		top: 238px;
 		bottom: auto;
