@@ -70,8 +70,6 @@
 			<h4 class="now-playing__title">Track Title</h4>
 			<h5 class="now-playing__artist">Artist Name</h5>
 		</div>
-<<<<<<< HEAD
-=======
 
 		<div class="live-player__volume">
 			<div class="live-player__volume--btn"></div>
@@ -79,7 +77,6 @@
 			<div class="live-player__volume--up"></div>
 		</div>
 
->>>>>>> feature/theme/live-player
 	</div>
 
 	<div id="live-links" class="live-links">
