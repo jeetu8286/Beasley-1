@@ -8,10 +8,8 @@
 	var mobileNavButton = document.querySelector('.mobile-nav--toggle');
 	var header = document.getElementById('header');
 	var headerHeight = header.scrollHeight;
-	var leaderBoardHeight = 90;
 	var livePlayer = document.getElementById('live-player--sidebar');
-	var livePlayerStreamSelect = document.querySelector('.live-player__stream--current');
-	var livePlayerStreams = document.querySelector('.live-player__stream--available');
+	var wpAdminHeight = 32;
 	var onAir = document.getElementById('on-air');
 	var nowPlaying = document.getElementById('now-playing');
 	var liveLinks = document.getElementById('live-links');
@@ -36,7 +34,11 @@
 	 * that causes the live player to become fixed to the top of the window
 	 */
 	livePlayerInit = function() {
-		livePlayer.style.top = headerHeight + 'px';
+		if (body.classList.contains('logged-in')) {
+			livePlayer.style.top = headerHeight + wpAdminHeight + 'px';
+		} else {
+			livePlayer.style.top = headerHeight + 'px';
+		}
 		livePlayer.classList.remove('live-player--fixed');
 		livePlayer.classList.add('live-player--init');
 	};
