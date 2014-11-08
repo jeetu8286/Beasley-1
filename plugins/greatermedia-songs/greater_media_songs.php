@@ -54,7 +54,6 @@ function greatermedia_songs_init() {
  * Include classes
  */
 include trailingslashit( __DIR__ ) . 'includes/class-greatermedia-songs.php';
-include trailingslashit( __DIR__ ) . 'includes/class-greatermedia-songs-metaboxes.php';
 
 /**
  * Activate the plugin
