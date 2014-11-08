@@ -184,8 +184,10 @@
 
 // live player area
 .live-player--container {
+	overflow: auto;
 	@include bp (medium) {
 		margin: 1em 0 0;
+		overflow: visible;
 	}
 }
 
@@ -345,6 +347,7 @@
 .live-player__volume {
 	display: none;
 	@include bp(medium) {
+		display: block;
 		width: 95%;
 		margin: 0 2.5%;
 	}
@@ -354,7 +357,7 @@
 	display: inline-block;
 	width: 12px;
 	height: 12px;
-	margin: 0;
+	margin: 0 2% 0 0;
 	line-height: 1;
 }
 
@@ -374,10 +377,9 @@
 
 .live-player__volume--level {
 	display: inline-block;
-	width: 70%;
+	width: calc(90% - 24px);
 	height: 8px;
 	padding: 2px 0;
-	margin: 0 2%;
 	@include border-radius(4px);
 	background-color: color(tertiary-border);
 }
@@ -386,7 +388,7 @@
 	display: inline-block;
 	width: 12px;
 	height: 12px;
-	margin: 0;
+	margin: 0 0 0 2%;
 	line-height: 1;
 }
 
