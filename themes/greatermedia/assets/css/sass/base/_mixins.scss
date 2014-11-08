@@ -115,9 +115,40 @@
 		border-left: $width solid transparent;
 	}
 }
-/*********************
-Opacities & transparencies
-*********************/
+
+// Mixin to create border radius
+//
+// @example scss - Border Radius Mixin
+// @include border-radius(3px)
+// @include border-radius(3px 0 0 3px)
+//
+// @author Allen Moore
+// @access private
+// @since 0.1.0
+//
+// @param {Radius} $radius - variable to radius
+//
+@mixin border-radius($radius...) {
+	// defining prefixes so we can use them in mixins below
+	$prefixes: ("-webkit", "-moz", "-ms", "-o", "");
+	@each $prefix in $prefixes {
+		#{$prefix}-border-radius: $radius;
+	}
+
+	border-radius: $radius;
+}
+
+// Mixin to provide opacity for an element
+//
+// @example scss - Opacity Mixin
+// @include opacity(.8)
+//
+// @author Allen Moore
+// @access private
+// @since 0.1.0
+//
+// @param {Opacity} $value - value of the opacity
+//
 @mixin opacity ($value: 0.5) {
 	opacity: $value;
 	filter: alpha(opacity=$value * 100);
@@ -136,7 +167,18 @@ Opacities & transparencies
 	border-radius: $radius;
 }
 
-/* @include css-gradient(#dfdfdf,#f8f8f8); */
+// Mixin to create a css gradient
+//
+// @example scss - CSS Gradient Mixin
+// @include css-gradient(#dfdfdf,#f8f8f8)
+//
+// @author Allen Moore
+// @access private
+// @since 0.1.0
+//
+// @param {CSS Gradient From} $from - the color the gradient will be starting at
+// @param {CSS Gradient To} $to - the color the gradient will ending at
+//
 @mixin css-gradient($from: #dfdfdf, $to: #f8f8f8) {
 	background-color: $to;
 	background-image: -webkit-gradient(linear, left top, left bottom, from($from), to($to));

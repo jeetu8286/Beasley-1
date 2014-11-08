@@ -70,11 +70,21 @@
 			<h4 class="now-playing__title">Track Title</h4>
 			<h5 class="now-playing__artist">Artist Name</h5>
 		</div>
+<<<<<<< HEAD
+=======
+
+		<div class="live-player__volume">
+			<div class="live-player__volume--btn"></div>
+			<div class="live-player__volume--level"></div>
+			<div class="live-player__volume--up"></div>
+		</div>
+
+>>>>>>> feature/theme/live-player
 	</div>
 
 	<div id="live-links" class="live-links">
 		<?php dynamic_sidebar( 'liveplayer_sidebar' ); ?>
-		<?php /* <div class="live-link">
+		<div class="live-link">
 			<div class="live-link--type live-link--type_audio"></div>
 			<h3 class="live-link--title"><a href="#">WMMR Promo - 10/16/14 - A surprise in the movie "Fury"</a></h3>
 		</div>
@@ -85,7 +95,7 @@
 		<div class="live-link">
 			<div class="live-link--type live-link--type_link"></div>
 			<h3 class="live-link--title"><a href="#">Flyers Charities Halloween 5K will be held on Saturday, October 25</a></h3>
-		</div> */ ?>
+		</div>
 	</div>
 
 </aside>

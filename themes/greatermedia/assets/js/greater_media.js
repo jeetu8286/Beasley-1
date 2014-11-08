@@ -1,4 +1,4 @@
-/*! Greater Media - v0.1.0 - 2014-11-06
+/*! Greater Media - v0.1.0 - 2014-11-08
  * http://greatermedia.com
  * Copyright (c) 2014; * Licensed GPLv2+ */
 (function() {
@@ -7,7 +7,8 @@
 	var body = document.querySelector('body');
 	var mobileNavButton = document.querySelector('.mobile-nav--toggle');
 	var header = document.getElementById('header');
-	var headerHeight = header.offsetHeight;
+	var headerHeight = header.scrollHeight;
+	var leaderBoardHeight = 90;
 	var livePlayer = document.getElementById('live-player--sidebar');
 	var livePlayerStreamSelect = document.querySelector('.live-player__stream--current');
 	var livePlayerStreams = document.querySelector('.live-player__stream--available');
@@ -17,6 +18,7 @@
 	var headroom;
 	var livePlayerFix;
 	var livePlayerInit;
+	var livePlayerLocation;
 
 	/**
 	 * adds a class to the live player that causes it to become fixed to the top of the window while also removing the
@@ -24,6 +26,7 @@
 	 */
 	livePlayerFix = function() {
 		// Using an if statement to check the class
+		livePlayer.style.top = '0px';
 		livePlayer.classList.remove('live-player--init');
 		livePlayer.classList.add('live-player--fixed');
 	};
@@ -33,7 +36,7 @@
 	 * that causes the live player to become fixed to the top of the window
 	 */
 	livePlayerInit = function() {
-		// Using an if statement to check the class
+		livePlayer.style.top = headerHeight + 'px';
 		livePlayer.classList.remove('live-player--fixed');
 		livePlayer.classList.add('live-player--init');
 	};
@@ -68,11 +71,11 @@
 		headroom.init();
 	}
 
-	window.onresize = function(event) {
+	window.addEventListener('resize', function() {
 		if(window.innerWidth >= 768) {
 			headroom.init();
 		}
-	}
+	});
 
 	/**
 	 * Toggles a class to the body when the mobile nav button is clicked
@@ -97,7 +100,7 @@
 		};
 	}
 
-	window.onresize = function(event) {
+	window.addEventListener('resize', function() {
 		if(window.innerWidth <= 767) {
 			onAir.onclick = function () {
 				body.classList.toggle('live-player--open');
@@ -106,6 +109,6 @@
 				body.classList.toggle('live-player--open');
 			};
 		}
-	}
+	}, false);
 
 })();

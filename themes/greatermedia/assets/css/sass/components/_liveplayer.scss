@@ -96,17 +96,20 @@
 
 .live-player__stream--current:after {
 	position: absolute;
-	top: 8px;
-	right: 30px;
+	top: 10px;
+	right: 10px;
 	width: 0;
 	height: 0;
-	font-family: FontAwesome;
-	font-size: ms(4);
-	content: "\f0d7";
+	font-family: $icon-font;
+	font-size: ms(1);
+	content: "\e606";
+	@include transform(rotate(90deg));
 }
 
 .live-player__stream--current.open:after {
-	content: "\f0d8";
+	top: 25px;
+	right: 25px;
+	@include transform(rotate(270deg));
 }
 
 .live-player__stream--title {
@@ -181,7 +184,6 @@
 
 // live player area
 .live-player--container {
-	overflow: auto;
 	@include bp (medium) {
 		margin: 1em 0 0;
 	}
@@ -191,7 +193,7 @@
 	float: right;
 	width: 35%;
 	text-align: right;
-	@include bp(large) {
+	@include bp(medium) {
 		float: none;
 		width: auto;
 		padding: 1em 0;
@@ -223,7 +225,6 @@
 	background-color: transparent;
 	border: 2px solid color(btn-bg);
 	outline: none;
-	font-family: FontAwesome;
 	font-size: 1.25em;
 	font-style: normal;
 	font-weight: normal;
@@ -244,8 +245,8 @@
 	top: 50%;
 	left: 50%;
 	@include transform(translate(-50%, -50%));
-	font-family: FontAwesome;
-	content: "\f04b" !important;
+	font-family: $icon-font !important;
+	content: "\e606" !important;
 }
 
 #pauseButton {
@@ -257,8 +258,8 @@
 	top: 50%;
 	left: 50%;
 	@include transform(translate(-50%, -50%));
-	font-family: FontAwesome;
-	content: "\f04d" !important;
+	font-family: $icon-font !important;
+	content: "\e60b" !important;
 }
 
 .gm-liveplayer--container {
@@ -289,10 +290,10 @@
 
 .on-air {
 	float: left;
-	width: 15%;
+	width: 25%;
 	padding: 0 1em 0 0;
 	margin: 0;
-	@include bp(large) {
+	@include bp(medium) {
 		float: none;
 		width: 100%;
 		padding: 0 1em;
@@ -315,10 +316,10 @@
 
 .now-playing {
 	float: left;
-	width: 50%;
+	width: 40%;
 	padding: 0 1em;
 	margin: 0;
-	@include bp(large) {
+	@include bp(medium) {
 		float: none;
 		width: 100%;
 		padding: 0;
@@ -340,31 +341,67 @@
 	font-weight: lighter;
 }
 
-.live-player--social {
-	width: 100%;
-	height: 32px;
-	margin-bottom: 1em;
+// volume controls and level
+.live-player__volume {
+	display: none;
+	@include bp(medium) {
+		width: 95%;
+		margin: 0 2.5%;
+	}
 }
 
-.live-player--social ul {
-	padding: 0;
-	margin: 0 auto;
-	list-style: none;
-	text-align: center;
-}
-
-.live-player--social ul li {
-	width: 32px;
-	height: 32px;
-	padding: 0;
-	margin: 0 em(4px) 0 0;
-	list-style: none;
+.live-player__volume--btn {
 	display: inline-block;
-	background-color: color(secondary-text);
+	width: 12px;
+	height: 12px;
+	margin: 0;
+	line-height: 1;
 }
 
-.live-player--social ul li:last-of-type {
-	margin-right: 0;
+.live-player__volume--btn:before {
+	width: 0;
+	height: 0;
+	font-family: $icon-font;
+	font-style: normal;
+	font-weight: normal;
+	line-height: 1;
+	-webkit-font-smoothing: antialiased;
+	moz-osx-font-smoothing: grayscale;
+	text-rendering: auto;
+	color: color(player-controls);
+	content: "\e60c";
+}
+
+.live-player__volume--level {
+	display: inline-block;
+	width: 70%;
+	height: 8px;
+	padding: 2px 0;
+	margin: 0 2%;
+	@include border-radius(4px);
+	background-color: color(tertiary-border);
+}
+
+.live-player__volume--up {
+	display: inline-block;
+	width: 12px;
+	height: 12px;
+	margin: 0;
+	line-height: 1;
+}
+
+.live-player__volume--up:before {
+	width: 0;
+	height: 0;
+	font-family: $icon-font;
+	font-style: normal;
+	font-weight: normal;
+	line-height: 1;
+	-webkit-font-smoothing: antialiased;
+	moz-osx-font-smoothing: grayscale;
+	text-rendering: auto;
+	color: color(player-controls);
+	content: "\e60e";
 }
 
 .live-player--next {
@@ -419,7 +456,7 @@
 .live-link--type:before {
 	width: 0;
 	height: 0;
-	font-family: FontAwesome;
+	font-family: $icon-font;
 	font-style: normal;
 	font-weight: normal;
 	line-height: 1;
@@ -430,15 +467,15 @@
 }
 
 .live-link--type_audio:before {
-	content: "\f001";
+	content: "\e604";
 }
 
 .live-link--type_video:before {
-	content: "\f144";
+	content: "\e604";
 }
 
 .live-link--type_link:before {
-	content: "\f0c1";
+	content: "\e602";
 }
 
 .live-link--title {
