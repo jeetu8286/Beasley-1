@@ -60,7 +60,7 @@ class GreaterMediaSongs {
 			'label'               => __( 'songs', 'greatermedia_songs' ),
 			'description'         => __( 'Live Songs', 'greatermedia_songs' ),
 			'labels'              => $labels,
-			'supports'            => array( 'title', 'author', 'thumbnail' ),
+			'supports'            => array( 'title', 'editor', 'author', 'thumbnail' ),
 			'hierarchical'        => false,
 			'public'              => true,
 			'show_ui'             => true,
