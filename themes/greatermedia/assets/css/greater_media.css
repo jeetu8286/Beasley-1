@@ -612,7 +612,7 @@ img {
       -moz-box-sizing: border-box;
       box-sizing: border-box;
       color: #6D6E70;
-      overflow: scroll;
+      overflow-y: scroll;
       cursor: default; } }
   @media screen and (min-width: 1400px) {
     .live-player {
