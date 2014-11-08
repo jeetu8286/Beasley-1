@@ -78,3 +78,10 @@ blockquote p {
 	font-size: ms(-2);
 	text-align: left;
 }
+
+#live-player .live-player {
+	position: relative;
+	top: auto;
+	right: auto;
+	overflow: auto;
+}

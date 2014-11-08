@@ -612,7 +612,7 @@ img {
       -moz-box-sizing: border-box;
       box-sizing: border-box;
       color: #6D6E70;
-      overflow: auto;
+      overflow-y: scroll;
       cursor: default; } }
   @media screen and (min-width: 1400px) {
     .live-player {
@@ -1934,9 +1934,12 @@ blockquote p {
   float: left;
   width: 80%; }
 
-@media screen and (min-width: 768px) {
-  .live-player--container {
-    margin: 1em 0 0; } }
+.live-player--container {
+  overflow: auto; }
+  @media screen and (min-width: 768px) {
+    .live-player--container {
+      margin: 1em 0 0;
+      overflow: visible; } }
 
 .live-player--controls {
   float: right;
@@ -2114,6 +2117,7 @@ blockquote p {
   display: none; }
   @media screen and (min-width: 768px) {
     .live-player__volume {
+      display: block;
       width: 95%;
       margin: 0 2.5%; } }
 
@@ -2121,7 +2125,7 @@ blockquote p {
   display: inline-block;
   width: 12px;
   height: 12px;
-  margin: 0;
+  margin: 0 2% 0 0;
   line-height: 1; }
 
 .live-player__volume--btn:before {
@@ -2139,10 +2143,9 @@ blockquote p {
 
 .live-player__volume--level {
   display: inline-block;
-  width: 70%;
+  width: calc(90% - 24px);
   height: 8px;
   padding: 2px 0;
-  margin: 0 2%;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   -ms-border-radius: 4px;
@@ -2155,7 +2158,7 @@ blockquote p {
   display: inline-block;
   width: 12px;
   height: 12px;
-  margin: 0;
+  margin: 0 0 0 2%;
   line-height: 1; }
 
 .live-player__volume--up:before {
