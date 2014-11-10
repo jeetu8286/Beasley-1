@@ -1,4 +1,4 @@
-/*! GreaterMedia Shows - v0.0.1
+/*! GreaterMedia Shows - v1.0.0
  * http://wordpress.org/plugins
  * Copyright (c) 2014; * Licensed GPLv2+ */
 /**

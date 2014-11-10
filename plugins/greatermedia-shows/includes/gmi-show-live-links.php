@@ -6,7 +6,6 @@ add_action( 'gmr_live_link_copy_post', 'gmrs_copy_personalities_to_live_link', 1
 // filter hooks
 add_filter( 'gmr_live_link_taxonomies', 'gmrs_add_live_links_taxonomy_support' );
 add_filter( 'gmr_live_link_add_copy_action', 'gmrs_check_live_links_copy_action', 10, 2 );
-add_filter( 'gmr_live_link_widget_query_args', 'gmrs_filter_links_widget_args' );
 
 /**
  * Adds support of shows taxonomy to live links post type.
@@ -45,27 +44,4 @@ function gmrs_copy_personalities_to_live_link( $ll_id, $post_id ) {
  */
 function gmrs_check_live_links_copy_action( $add_copy_link, WP_Post $post ) {
 	return ! $add_copy_link ? $add_copy_link : ShowsCPT::SHOW_CPT != $post->post_type;
-}
-
-/**
- * Filters live links widget args.
- *
- * @action gmr_live_link_widget_query_args
- * @param array $args The widget links args.
- * @return array The widget links args.
- */
-function gmrs_filter_links_widget_args( $args ) {
-	if ( ( $active_show = gmrs_get_current_show() ) && ( $term = TDS\get_related_term( $active_show ) ) ) {
-		if ( ! isset( $args['tax_query'] ) ) {
-			$args['tax_query'] = array();
-		}
-
-		$args['tax_query'][] = array(
-			'taxonomy' => ShowsCPT::SHOW_TAXONOMY,
-			'field'    => 'term_id',
-			'terms'    => $term->term_id,
-		);
-	}
-
-	return $args;
 }

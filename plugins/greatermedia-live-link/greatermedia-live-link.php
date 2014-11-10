@@ -9,9 +9,6 @@
 // constants
 define( 'GMR_LIVE_LINK_CPT', 'gmr-live-link' );
 
-// load widget
-require_once 'greatermedia-live-link-widget.php';
-
 // action hooks
 add_action( 'init', 'gmr_ll_register_post_type', PHP_INT_MAX );
 add_action( 'save_post', 'gmr_ll_save_redirect_meta_box_data' );
@@ -19,13 +16,14 @@ add_action( 'manage_' . GMR_LIVE_LINK_CPT . '_posts_custom_column', 'gmr_ll_rend
 add_action( 'admin_action_gmr_ll_copy', 'gmr_ll_handle_copy_post_to_live_link' );
 add_action( 'gmr_quickpost_submitbox_misc_actions', 'gmr_ll_add_quickpost_checkbox' );
 add_action( 'gmr_quickpost_post_created', 'gmr_ll_create_quickpost_live_link' );
-add_action( 'widgets_init', 'gmr_ll_register_widgets' );
 add_action( 'wp_ajax_gmr_live_link_suggest', 'gmr_ll_live_link_suggest' );
 
 // filter hooks
 add_filter( 'manage_' . GMR_LIVE_LINK_CPT . '_posts_columns', 'gmr_ll_filter_columns_list' );
 add_filter( 'post_row_actions', 'gmr_ll_add_post_action', 10, 2 );
 add_filter( 'page_row_actions', 'gmr_ll_add_post_action', 10, 2 );
+add_filter( 'gmr_show_widget_item_post_types', 'gmr_ll_add_show_widget_post_types' );
+add_filter( 'gmr_show_widget_item', 'gmr_ll_output_show_widget_live_link_item' );
 
 /**
  * Sends post title suggestions for live link redirect field.
@@ -52,15 +50,6 @@ function gmr_ll_live_link_suggest() {
  */
 function gmr_ll_get_suggestion_post_types() {
 	return apply_filters( 'gmr_live_link_suggestion_post_types', array( 'post', 'page' ) );
-}
-
-/**
- * Registers live link widgets.
- *
- * @action widgets_init
- */
-function gmr_ll_register_widgets() {
-	register_widget( 'GMR_Live_Link_Widget' );
 }
 
 /**
@@ -155,7 +144,7 @@ function gmr_ll_render_redirect_meta_box( WP_Post $post ) {
 	</script>
 	
 	<input type="text" class="widefat" name="gmr_ll_redirect" value="<?php echo esc_attr( $redirect_url ) ?>">
-	<p class="description">Enter external link or post title to redirect to.</p><?php
+	<p class="description">Enter external link or start typing a post title to see a list of suggestions.</p><?php
 }
 
 /**
@@ -364,4 +353,35 @@ function gmr_ll_copy_post_to_live_link( $post_id ) {
 	}
 
 	return $ll_id;
+}
+
+/**
+ * Registers live link post type for shows widget.
+ *
+ * @filter gmr_show_widget_item_post_types
+ * @param array $post_types The post types array.
+ * @return array The post types array.
+ */
+function gmr_ll_add_show_widget_post_types( $post_types ) {
+	$post_types[] = GMR_LIVE_LINK_CPT;
+	return $post_types;
+}
+
+/**
+ * Returns shows widget item output.
+ * 
+ * @filter gmr_show_widget_item
+ * @return string The item html.
+ */
+function gmr_ll_output_show_widget_live_link_item( $item ) {
+	$link = gmr_ll_get_redirect_link( get_the_ID() );
+	if ( $link ) {
+		$item = sprintf(
+			'<a href="%s">%s</a>',
+			esc_url( $link ),
+			get_the_title()
+		);
+	}
+	
+	return $item;
 }
