@@ -139,6 +139,8 @@ class GreaterMediaFormbuilderRender {
 	 */
 	public static function render( $post_id, $form ) {
 
+		$html = '';
+
 		if ( ! is_numeric( $post_id ) ) {
 			throw new InvalidArgumentException( '$post_id must be an integer post ID' );
 		}
@@ -155,8 +157,8 @@ class GreaterMediaFormbuilderRender {
 			throw new InvalidArgumentException( '$form should be a JSON string or an Object' );
 		}
 
-		echo '<form action="" method="post" enctype="multipart/form-data">';
-		echo '<input type="hidden" name="contest_id" value="' . absint( $post_id ) . '" />';
+		$html .= '<form action="" method="post" enctype="multipart/form-data">';
+		$html .= '<input type="hidden" name="contest_id" value="' . absint( $post_id ) . '" />';
 
 		foreach ( $form as $field ) {
 
@@ -167,11 +169,16 @@ class GreaterMediaFormbuilderRender {
 				throw new InvalidArgumentException( sprintf( 'Form field %s has an unimplemented field type', $field->cid ) );
 			}
 
-			echo wp_kses( self::$renderer_method( $post_id, $field ), self::allowed_tags() );
+			$html .= wp_kses( self::$renderer_method( $post_id, $field ), self::allowed_tags() );
 
 		}
 
-		echo '</form>';
+		$html .= self::get_submit_button( 'Enter', null, null, true );
+
+
+		$html .= '</form>';
+
+		echo $html;
 
 	}
 
@@ -273,8 +280,6 @@ class GreaterMediaFormbuilderRender {
 
 			$html .= ' >' . wp_kses_data( $description ) . '</p>';
 		}
-
-		$html .= self::get_submit_button( 'Enter', null, null, true );
 
 		return $html;
 
