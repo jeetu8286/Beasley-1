@@ -5,11 +5,13 @@
  * button will slide over to accommodate the nav.
  */
 .mobile-nav--toggle {
-	@include position(absolute, 50% null null null);
+	position: absolute;
+	top: 75%;
 	@include transform(translate(0, -50%));
-	@include size(32px 32px);
+	width: 32px;
+	height: 32px;
 	@include box-sizing(border-box);
-	@include padding(0);
+	padding: 0;
 	@include transition(all 500ms ease-in-out);
 	background-color: color(secondary-bg);
 	cursor: pointer;
@@ -20,9 +22,11 @@
 }
 
 .mobile-nav--toggle--span {
-	@include position(absolute, 14px null null null);
-	@include display(block);
-	@include size(32px 4px);
+	position: absolute;
+	top: 14px;
+	display: block;
+	width: 32px;
+	height: 4px;
 	@include transition(all 500ms ease-in-out);
 	@include border-top-radius(4px);
 	@include border-right-radius(4px);
@@ -33,9 +37,11 @@
 }
 
 .mobile-nav--toggle--span:before {
-	@include position(absolute, -10px null null null);
-	@include display(block);
-	@include size(32px 4px);
+	position: absolute;
+	top: -10px;
+	display: block;
+	width: 32px;
+	height: 4px;
 	@include transition(all 500ms ease-in-out);
 	@include border-top-radius(4px);
 	@include border-right-radius(4px);
@@ -46,9 +52,11 @@
 }
 
 .mobile-nav--toggle--span:after {
-	@include position(absolute, null null -10px null);
-	@include display(block);
-	@include size(32px 4px);
+	position: absolute;
+	bottom: -10px;
+	display: block;
+	width: 32px;
+	height: 4px;
 	@include transition(all 500ms ease-in-out);
 	@include border-top-radius(4px);
 	@include border-right-radius(4px);
