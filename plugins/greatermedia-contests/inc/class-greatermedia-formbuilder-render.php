@@ -50,7 +50,7 @@ class GreaterMediaFormbuilderRender {
 		foreach ( $form as $field ) {
 
 			$post_array_key = 'form_field_' . $field->cid;
-			
+
 			if ( isset( $_POST[ $post_array_key ] ) ) {
 				$submitted_values[ $field->cid ] = sanitize_text_field( $_POST[ $post_array_key ] );
 			}
@@ -223,7 +223,7 @@ class GreaterMediaFormbuilderRender {
 			foreach ( $label_tag_attributes as $attribute => $value ) {
 				$html .= wp_kses_data( $attribute ) . '="' . esc_attr( $value ) . '" ';
 			}
-			
+
 			$html .= '>' . wp_kses_data( $label ) . '</label>';
 
 		}
