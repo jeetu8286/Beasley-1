@@ -124,6 +124,15 @@ class GreaterMediaFormbuilderRender {
 				$response->message = get_post_meta( $contest_id, 'form-thankyou', true );
 				wp_send_json_success( $response );
 				exit();
+			} else {
+
+				/**
+				 * If we've fallen back to an old-school non-AJAX POST,
+				 * use a constant to communicate status to the rendering function
+				 * since this class isn't meant to be instantiated.
+				 */
+				define( 'CONTEST_' . $contest_id . '_SUCCESS', true );
+				
 			}
 
 		} catch ( InvalidArgumentException $e ) {
@@ -227,27 +236,40 @@ class GreaterMediaFormbuilderRender {
 			throw new InvalidArgumentException( '$form should be a JSON string or an Object' );
 		}
 
-		$html .= '<form action="" method="post" enctype="multipart/form-data" class="' . esc_attr( self::FORM_CLASS ) . '">' .
-		         '<input type="hidden" name="action" value="enter_contest" />' .
-		         '<input type="hidden" name="contest_id" value="' . absint( $post_id ) . '" />';
+		if ( defined( 'CONTEST_' . $post_id . '_SUCCESS' ) && 'CONTEST_' . $post_id . '_SUCCESS' ) {
 
-		foreach ( $form as $field ) {
+			/**
+			 * Fallback to rendering the thank-you message on the server side.
+			 * This should be OK since a POST won't be cached.
+			 */
+			$html .= '<p>' .
+			         get_post_meta( $post_id, 'form-thankyou', true ) .
+			         '</p>';
 
-			$renderer_method = 'render_' . $field->field_type;
+		} else {
 
-			// Make sure the field type has been implemented/is valid
-			if ( ! method_exists( __CLASS__, $renderer_method ) ) {
-				throw new InvalidArgumentException( sprintf( 'Form field %s has an unimplemented field type', $field->cid ) );
+			$html .= '<form action="" method="post" enctype="multipart/form-data" class="' . esc_attr( self::FORM_CLASS ) . '">' .
+			         '<input type="hidden" name="action" value="enter_contest" />' .
+			         '<input type="hidden" name="contest_id" value="' . absint( $post_id ) . '" />';
+
+			foreach ( $form as $field ) {
+
+				$renderer_method = 'render_' . $field->field_type;
+
+				// Make sure the field type has been implemented/is valid
+				if ( ! method_exists( __CLASS__, $renderer_method ) ) {
+					throw new InvalidArgumentException( sprintf( 'Form field %s has an unimplemented field type', $field->cid ) );
+				}
+
+				$html .= wp_kses( self::$renderer_method( $post_id, $field ), self::allowed_tags() );
+
 			}
 
-			$html .= wp_kses( self::$renderer_method( $post_id, $field ), self::allowed_tags() );
+			$html .= self::get_submit_button( 'Enter', null, null, true );
+
+			$html .= '</form>';
 
 		}
-
-		$html .= self::get_submit_button( 'Enter', null, null, true );
-
-
-		$html .= '</form>';
 
 		echo $html;
 
