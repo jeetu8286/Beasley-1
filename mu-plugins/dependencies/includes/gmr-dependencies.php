@@ -18,7 +18,7 @@ class GmrDependencies {
 		// Register scripts
 		wp_register_script(
 			'select2'
-			, GMRDEPENDENCIES_URL . "/js/select2{$postfix}.js"
+			, GMRDEPENDENCIES_URL . "/select2/select2{$postfix}.js"
 			, array( 'jquery' )
 			, '3.5.2'
 			, true
@@ -27,7 +27,7 @@ class GmrDependencies {
 		// Register styles
 		wp_register_style(
 			'select2'
-			, GMRDEPENDENCIES_URL . "/css/select2.css"
+			, GMRDEPENDENCIES_URL . "/select2/select2.css"
 			, array()
 			, '3.5.2'
 			, 'all'
