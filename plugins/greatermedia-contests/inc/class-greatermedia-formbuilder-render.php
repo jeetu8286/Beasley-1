@@ -130,8 +130,10 @@ class GreaterMediaFormbuilderRender {
 	}
 
 	/**
-	 * @param $post_id
-	 * @param $form
+	 * Render a form attached to a given post
+	 *
+	 * @param int    $post_id Post ID
+	 * @param string $form    JSON-encoded form data
 	 *
 	 * @uses render_text
 	 */
