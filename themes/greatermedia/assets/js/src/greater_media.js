@@ -13,7 +13,7 @@
 		mobileNavButton = document.querySelector( '.mobile-nav--toggle' ),
 		header = document.getElementById( 'header' ),
 		headerHeight = header.scrollHeight,
-		livePlayer = document.getElementById( 'live-player--sidebar' ),
+		livePlayer = document.getElementById( 'live-player__sidebar' ),
 		livePlayerStreamSelect = document.querySelector( '.live-player__stream--current' ),
 		livePlayerStreams = document.querySelector( '.live-player__stream--available' ),
 		wpAdminHeight = 32,
@@ -27,7 +27,11 @@
 	 */
 	livePlayerFix = function() {
 		// Using an if statement to check the class
-		livePlayer.style.top = '0px';
+		if (body.classList.contains( 'logged-in' )) {
+			livePlayer.style.top = wpAdminHeight + 'px';
+		} else {
+			livePlayer.style.top = '0px';
+		}
 		livePlayer.classList.remove( 'live-player--init' );
 		livePlayer.classList.add( 'live-player--fixed' );
 	};

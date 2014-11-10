@@ -31,31 +31,20 @@ class GMLP_Player {
 	public static function render_player() {
 
 		?>
-		<div class="gm-liveplayer">
-
-			<div class="gm-liveplayer--container">
-
-				<div class="container">
-					<div id="gm-liveplayer--controls">
-						<div id="playButton" class="gm-liveplayer--btn play" data-station="<?php do_action( 'radio_callsign' ); ?>"></div>
-						<div id="pauseButton" class="gm-liveplayer--btn" data-station="<?php do_action( 'radio_callsign' ); ?>"></div>
-						<div id="resumeButton" class="gm-liveplayer--btn" data-station="<?php do_action( 'radio_callsign' ); ?>"></div>
-					</div>
-
-					<div id="gm-liveplayer--now_playing">
-						<div id="nowPlaying">
-							<div id="trackInfo" class="now-playing"></div>
-							<div id="npeInfo"></div>
-						</div>
-					</div>
-
-					<!-- Player placeholder -->
-					<div id="td_container"></div>
-
-				</div>
-
+		<div class="live-stream__player">
+			<div class="live-stream__controls">
+				<div id="playButton" class="live-stream__btn--play" data-station="<?php do_action( 'radio_callsign' ); ?>"></div>
+				<div id="pauseButton" class="live-stream__btn--pause" data-station="<?php do_action( 'radio_callsign' ); ?>"></div>
+				<div id="resumeButton" class="live-stream__btn--resume" data-station="<?php do_action( 'radio_callsign' ); ?>"></div>
 			</div>
 
+			<div id="nowPlaying" class="now-playing">
+				<div id="trackInfo" class="now-playing__info"></div>
+				<div id="npeInfo"></div>
+			</div>
+
+			<!-- Player placeholder -->
+			<div id="td_container"></div>
 		</div>
 
 	<?php
@@ -75,7 +64,7 @@ class GMLP_Player {
 		wp_enqueue_script( 'load-jquery', GMLIVEPLAYER_URL . 'assets/js/src/jquery.load.js', array(), GMLIVEPLAYER_VERSION, true );
 		wp_enqueue_script( 'tdplayer', GMLIVEPLAYER_URL . 'assets/js/vendor/td-player/tdplayer.js', array( 'jquery' ), '2.5', true );
 		wp_enqueue_script( 'tdplayer-api', GMLIVEPLAYER_URL . 'assets/js/vendor/td-player/tdplayer-api.js', array(), '2.5', true );
-		wp_enqueue_style( 'gmlp-styles', GMLIVEPLAYER_URL . "assets/css/greater_media_live_player{$postfix}.css", array(), GMLIVEPLAYER_VERSION );
+		//wp_enqueue_style( 'gmlp-styles', GMLIVEPLAYER_URL . "assets/css/greater_media_live_player{$postfix}.css", array(), GMLIVEPLAYER_VERSION );
 
 	}
 

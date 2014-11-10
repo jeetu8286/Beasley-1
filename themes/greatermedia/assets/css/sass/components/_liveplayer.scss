@@ -183,7 +183,7 @@
 }
 
 // live player area
-.live-player--container {
+.live-player__container {
 	overflow: auto;
 	@include bp (medium) {
 		margin: 1em 0 0;
@@ -191,7 +191,7 @@
 	}
 }
 
-.live-player--controls {
+.live-stream {
 	float: right;
 	width: 35%;
 	text-align: right;
@@ -203,36 +203,36 @@
 	}
 }
 
-.live-player__status {
+.live-stream__status {
 	height: 23px;
 }
 
-.live-player--listen_btn {
+.live-stream__listen-now--btn {
 	@include btn(btn-bg, btn-text, btn-bg, .25em, 1em, ms(-1));
 	margin: 0 .5em;
 	@include border-radius(1em);
 }
 
-.live-player__now-playing--btn {
+.live-stream__now-playing--btn {
 	@include btn(transparent, btn-bg, btn-bg, .25em, 1em, ms(-1));
 	margin: 0 .5em;
 	@include border-radius(1em);
 }
 
-.live-player__resume {
+.live-stream__resume {
 	height: 48px;
 	padding: 0 1em;
 	margin: 0 0 .5em;
 	text-align: center;
 }
 
-.live-player__resume--btn {
+.live-stream__resume--btn {
 	@include btn(transparent, btn-alt, btn-alt, .25em, 1em, ms(-1));
 	margin: 0 .5em;
 	@include border-radius(1em);
 }
 
-.live-player__resume--btn:before {
+.live-stream__resume--btn:before {
 	margin: 0 8px 0 0;
 	font-family: $icon-font !important;
 	content: "\e606" !important;
@@ -241,14 +241,14 @@
 /**
  * General Styles
  */
-.gm-liveplayer {
+.live-stream__player {
 	display: none;
 	&.open {
 		display: block;
 	}
 }
 
-.gm-liveplayer--btn {
+%live-stream__btn {
 	width: 54px;
 	height: 54px;
 	margin: 0 auto;
@@ -267,11 +267,12 @@
 	cursor: pointer;
 }
 
-#playButton, #resumeButton {
+.live-stream__btn--play, .live-stream__btn--resume, .live-stream__btn--pause  {
 	position: relative;
+	@extend %live-stream__btn;
 }
 
-#playButton:before, #resumeButton:before {
+.live-stream__btn--play:before, .live-stream__btn--resume:before {
 	position: absolute;
 	top: 50%;
 	left: 50%;
@@ -280,11 +281,7 @@
 	content: "\e606" !important;
 }
 
-#pauseButton {
-	position: relative;
-}
-
-#pauseButton:before {
+.live-stream__btn--pause:before {
 	position: absolute;
 	top: 50%;
 	left: 50%;
@@ -309,13 +306,13 @@
 	margin: 0 auto;
 }
 
-.gm-liveplayer--container #gm-liveplayer--controls {
+.live-stream__controls {
 	position: relative;
 	margin: em(23px) auto;
 	text-align: center;
 }
 
-.gm-liveplayer--container #gm-liveplayer--controls #pauseButton, .gm-liveplayer--container #gm-liveplayer--controls #resumeButton {
+#pauseButton, #resumeButton {
 	display: none;
 }
 
@@ -334,13 +331,13 @@
 	}
 }
 
-.on-air--title {
+.on-air__title {
 	margin: 0 .25em 0 0;
 	font-size: ms(-3);
 	font-weight: lighter;
 }
 
-.on-air--show {
+.on-air__show {
 	font-size: ms(-2);
 }
 
@@ -352,7 +349,7 @@
 	@include bp(medium) {
 		float: none;
 		width: 100%;
-		padding: 0;
+		padding: 0 1em;
 		margin: 1em 0 2em;
 		text-align: center;
 	}
@@ -479,11 +476,11 @@
 	margin: 0 0 1em;
 }
 
-.live-link--type {
+.live-link__type {
 	display: block;
 }
 
-.live-link--type:before {
+.live-link__type:before {
 	width: 0;
 	height: 0;
 	font-family: $icon-font;
@@ -496,19 +493,19 @@
 	color: color(primary-link);
 }
 
-.live-link--type_audio:before {
+.live-link__type--audio:before {
 	content: "\e604";
 }
 
-.live-link--type_video:before {
+.live-link__type--video:before {
 	content: "\e604";
 }
 
-.live-link--type_link:before {
+.live-link__type--link:before {
 	content: "\e602";
 }
 
-.live-link--title {
+.live-link__title {
 	display: block;
 	font-size: ms(0);
 	font-weight: normal;

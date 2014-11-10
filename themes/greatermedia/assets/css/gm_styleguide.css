@@ -1672,28 +1672,28 @@ blockquote p {
   float: left;
   width: 80%; }
 
-.live-player--container {
+.live-player__container {
   overflow: auto; }
   @media screen and (min-width: 768px) {
-    .live-player--container {
+    .live-player__container {
       margin: 1em 0 0;
       overflow: visible; } }
 
-.live-player--controls {
+.live-stream {
   float: right;
   width: 35%;
   text-align: right; }
   @media screen and (min-width: 768px) {
-    .live-player--controls {
+    .live-stream {
       float: none;
       width: auto;
       padding: 1em 0;
       text-align: center; } }
 
-.live-player__status {
+.live-stream__status {
   height: 23px; }
 
-.live-player--listen_btn {
+.live-stream__listen-now--btn {
   display: inline-block;
   line-height: 1;
   padding: 0.25em 1em;
@@ -1713,14 +1713,14 @@ blockquote p {
   -o-border-radius: 1em;
   -border-radius: 1em;
   border-radius: 1em; }
-  .live-player--listen_btn:hover, .live-player--listen_btn:focus {
+  .live-stream__listen-now--btn:hover, .live-stream__listen-now--btn:focus {
     background-color: #aa1c20;
     border-color: #aa1c20;
     color: #ffffff; }
-  .live-player--listen_btn:last-of-type {
+  .live-stream__listen-now--btn:last-of-type {
     margin-right: 0; }
 
-.live-player__now-playing--btn {
+.live-stream__now-playing--btn {
   display: inline-block;
   line-height: 1;
   padding: 0.25em 1em;
@@ -1740,20 +1740,20 @@ blockquote p {
   -o-border-radius: 1em;
   -border-radius: 1em;
   border-radius: 1em; }
-  .live-player__now-playing--btn:hover, .live-player__now-playing--btn:focus {
+  .live-stream__now-playing--btn:hover, .live-stream__now-playing--btn:focus {
     background-color: transparent;
     border-color: #aa1c20;
     color: #d22228; }
-  .live-player__now-playing--btn:last-of-type {
+  .live-stream__now-playing--btn:last-of-type {
     margin-right: 0; }
 
-.live-player__resume {
+.live-stream__resume {
   height: 48px;
   padding: 0 1em;
   margin: 0 0 .5em;
   text-align: center; }
 
-.live-player__resume--btn {
+.live-stream__resume--btn {
   display: inline-block;
   line-height: 1;
   padding: 0.25em 1em;
@@ -1773,14 +1773,14 @@ blockquote p {
   -o-border-radius: 1em;
   -border-radius: 1em;
   border-radius: 1em; }
-  .live-player__resume--btn:hover, .live-player__resume--btn:focus {
+  .live-stream__resume--btn:hover, .live-stream__resume--btn:focus {
     background-color: transparent;
     border-color: #f2e754;
     color: #f5ed7f; }
-  .live-player__resume--btn:last-of-type {
+  .live-stream__resume--btn:last-of-type {
     margin-right: 0; }
 
-.live-player__resume--btn:before {
+.live-stream__resume--btn:before {
   margin: 0 8px 0 0;
   font-family: "gmr-icons" !important;
   content: "\e606" !important; }
@@ -1788,12 +1788,12 @@ blockquote p {
 /**
  * General Styles
  */
-.gm-liveplayer {
+.live-stream__player {
   display: none; }
-  .gm-liveplayer.open {
+  .live-stream__player.open {
     display: block; }
 
-.gm-liveplayer--btn {
+.live-stream__btn--play, .live-stream__btn--resume, .live-stream__btn--pause {
   width: 54px;
   height: 54px;
   margin: 0 auto;
@@ -1816,10 +1816,10 @@ blockquote p {
   color: #d22228;
   cursor: pointer; }
 
-#playButton, #resumeButton {
+.live-stream__btn--play, .live-stream__btn--resume, .live-stream__btn--pause {
   position: relative; }
 
-#playButton:before, #resumeButton:before {
+.live-stream__btn--play:before, .live-stream__btn--resume:before {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -1831,10 +1831,7 @@ blockquote p {
   font-family: "gmr-icons" !important;
   content: "\e606" !important; }
 
-#pauseButton {
-  position: relative; }
-
-#pauseButton:before {
+.live-stream__btn--pause:before {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -1864,12 +1861,12 @@ blockquote p {
   height: 100%;
   margin: 0 auto; }
 
-.gm-liveplayer--container #gm-liveplayer--controls {
+.live-stream__controls {
   position: relative;
   margin: 1.4375em auto;
   text-align: center; }
 
-.gm-liveplayer--container #gm-liveplayer--controls #pauseButton, .gm-liveplayer--container #gm-liveplayer--controls #resumeButton {
+#pauseButton, #resumeButton {
   display: none; }
 
 .on-air {
@@ -1886,12 +1883,12 @@ blockquote p {
       padding: 0 1em;
       text-align: center; } }
 
-.on-air--title {
+.on-air__title {
   margin: 0 .25em 0 0;
   font-size: 0.70233em;
   font-weight: lighter; }
 
-.on-air--show {
+.on-air__show {
   font-size: 0.79012em; }
 
 .now-playing {
@@ -1903,7 +1900,7 @@ blockquote p {
     .now-playing {
       float: none;
       width: 100%;
-      padding: 0;
+      padding: 0 1em;
       margin: 1em 0 2em;
       text-align: center; } }
 
@@ -2017,10 +2014,10 @@ blockquote p {
   display: block;
   margin: 0 0 1em; }
 
-.live-link--type {
+.live-link__type {
   display: block; }
 
-.live-link--type:before {
+.live-link__type:before {
   width: 0;
   height: 0;
   font-family: "gmr-icons";
@@ -2032,16 +2029,16 @@ blockquote p {
   text-rendering: auto;
   color: #d22228; }
 
-.live-link--type_audio:before {
+.live-link__type--audio:before {
   content: "\e604"; }
 
-.live-link--type_video:before {
+.live-link__type--video:before {
   content: "\e604"; }
 
-.live-link--type_link:before {
+.live-link__type--link:before {
   content: "\e602"; }
 
-.live-link--title {
+.live-link__title {
   display: block;
   font-size: 1em;
   font-weight: normal;
