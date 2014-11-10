@@ -62,7 +62,7 @@ class GreaterMediaGigyaTest {
 	 */
 	public static function is_gigya_user_logged_in() {
 
-		return isset( $_COOKIE[ gm_gigya_user ] );
+		return isset( $_COOKIE[ 'gm_gigya_user' ] );
 
 	}
 
@@ -76,7 +76,7 @@ class GreaterMediaGigyaTest {
 			return null;
 		}
 
-		$cookie_data = json_decode( $_COOKIE[ gm_gigya_user ] );
+		$cookie_data = json_decode( $_COOKIE[ 'gm_gigya_user' ] );
 		if ( ! $cookie_data ) {
 			return null;
 		}
