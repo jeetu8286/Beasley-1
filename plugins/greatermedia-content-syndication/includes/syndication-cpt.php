@@ -275,11 +275,6 @@ class SyndicationCPT {
 		}
 
 
-		/*echo '<pre>';
-		var_dump( $_POST );
-		echo '</pre>';
-		die();*/
-
 		$taxonomy_names  = get_object_taxonomies( 'post', 'objects' );
 		//subscription_default_terms-category
 
