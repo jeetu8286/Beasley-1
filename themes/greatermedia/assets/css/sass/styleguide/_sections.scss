@@ -165,6 +165,32 @@
 	font-style: italic;
 }
 
-.gm-liveplayer {
+// styles to make sure elements of the live player show
+.live-player__col {
+	float: left;
+	display: block;
+	width: 100%;
+	margin-right: 0%;
+	@include bp(small){
+		width: 45%;
+		margin-right: 5%;
+	}
+	@include bp(medium){
+		width: 45%;
+		margin-right: 5%;
+	}
+	@include bp(large){
+		width: 18%;
+		margin-right: 2.5%;
+	}
+}
+
+.live-player__col:last-child {
+	@include bp(small) {
+		margin-right: 0;
+	}
+}
+
+.gm-liveplayer, .gm-liveplayer--container #gm-liveplayer--controls #pauseButton, .gm-liveplayer--container #gm-liveplayer--controls #resumeButton {
 	display: block;
 }

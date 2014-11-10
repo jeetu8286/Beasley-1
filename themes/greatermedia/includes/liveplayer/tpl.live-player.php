@@ -42,8 +42,7 @@
 	<div id="live-player" class="live-player--container">
 
 		<div id="on-air" class="on-air">
-			<h2 class="on-air--title">On Air:</h2>
-			<h3 class="on-air--show">Preston and Steve Show</h3>
+			<span class="on-air--title">On Air:</span><span class="on-air--show">Preston and Steve Show</span>
 		</div>
 
 		<div class="live-player--controls">
