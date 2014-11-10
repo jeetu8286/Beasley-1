@@ -1,3 +1,4 @@
+/*global jQuery, document */
 (function ($) {
 	$(document).ready(function () {
 		var hovered_show, original_color;

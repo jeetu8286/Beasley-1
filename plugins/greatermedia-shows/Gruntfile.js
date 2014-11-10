@@ -19,6 +19,12 @@ module.exports = function (grunt) {
 					'assets/js/src/metabox.js'
 				],
 				dest: 'assets/js/greatermedia_shows.js'
+			},
+			shows_widget: {
+				src: [
+					'assets/js/src/widget.js'
+				],
+				dest: 'assets/js/shows_widget.js'
 			}
 		},
 		jshint: {
@@ -31,7 +37,7 @@ module.exports = function (grunt) {
 				newcap: true,
 				noarg: true,
 				sub: true,
-				undef: false,
+				undef: true,
 				boss: true,
 				eqnull: true,
 				globals: {
@@ -43,7 +49,8 @@ module.exports = function (grunt) {
 		uglify: {
 			all: {
 				files: {
-					'assets/js/greatermedia_shows.min.js': ['assets/js/greatermedia_shows.js']
+					'assets/js/greatermedia_shows.min.js': ['assets/js/greatermedia_shows.js'],
+					'assets/js/shows_widget.min.js': ['assets/js/shows_widget.js']
 				},
 				options: {
 					banner: '/*! <%= pkg.title %> - v<%= pkg.version %>\n' +

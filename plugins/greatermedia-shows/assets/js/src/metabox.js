@@ -1,3 +1,4 @@
+/*global jQuery, document */
 (function ($) {
 	$(document).ready(function () {
 		$('.mis-pub-radio').each(function() {
