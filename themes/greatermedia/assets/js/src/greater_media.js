@@ -7,19 +7,19 @@
 (function() {
 	'use strict';
 
-	var body = document.querySelector('body');
-	var mobileNavButton = document.querySelector('.mobile-nav--toggle');
-	var header = document.getElementById('header');
-	var headerHeight = header.scrollHeight;
-	var livePlayer = document.getElementById('live-player--sidebar');
-	var wpAdminHeight = 32;
-	var onAir = document.getElementById('on-air');
-	var nowPlaying = document.getElementById('now-playing');
-	var liveLinks = document.getElementById('live-links');
-	var headroom;
-	var livePlayerFix;
-	var livePlayerInit;
-	var livePlayerLocation;
+	var headroom, livePlayerFix, livePlayerInit, livePlayerLocation,
+
+		body = document.querySelector('body'),
+		mobileNavButton = document.querySelector('.mobile-nav--toggle'),
+		header = document.getElementById('header'),
+		headerHeight = header.scrollHeight,
+		livePlayer = document.getElementById('live-player--sidebar'),
+		livePlayerStreamSelect = document.querySelector('.live-player__stream--current'),
+		livePlayerStreams = document.querySelector('.live-player__stream--available'),
+		wpAdminHeight = 32,
+		onAir = document.getElementById('on-air'),
+		nowPlaying = document.getElementById('now-playing'),
+		liveLinks = document.getElementById('live-links');
 
 	/**
 	 * adds a class to the live player that causes it to become fixed to the top of the window while also removing the
@@ -90,7 +90,7 @@
 	};
 
 	livePlayerStreamSelect.onclick = function(){
-		livePlayerStreamSelect.classList.toggle('open');
+		this.classList.toggle('open');
 	};
 
 	/**
