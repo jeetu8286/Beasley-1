@@ -6,6 +6,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class GreaterMediaFormbuilderRender {
 
+	const FORM_CLASS = 'contest_entry_form';
+
 	const FIELD_SIZE_SMALL = '10';
 	const FIELD_SIZE_MEDIUM = '25';
 	const FIELD_SIZE_LARGE = '40';
@@ -40,7 +42,8 @@ class GreaterMediaFormbuilderRender {
 
 		wp_enqueue_script( 'greatermedia-contests', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'js/greatermedia-contests.js', array( 'jquery' ), false, true );
 		$settings = array(
-			'ajax_url' => admin_url( 'admin-ajax.php' ),
+			'form_class' => self::FORM_CLASS,
+			'ajax_url'   => admin_url( 'admin-ajax.php' ),
 		);
 		wp_localize_script( 'greatermedia-contests', 'GreaterMediaContests', $settings );
 
@@ -224,7 +227,7 @@ class GreaterMediaFormbuilderRender {
 			throw new InvalidArgumentException( '$form should be a JSON string or an Object' );
 		}
 
-		$html .= '<form action="" method="post" enctype="multipart/form-data" class="contest_entry_form">' .
+		$html .= '<form action="" method="post" enctype="multipart/form-data" class="' . esc_attr( self::FORM_CLASS ) . '">' .
 		         '<input type="hidden" name="action" value="enter_contest" />' .
 		         '<input type="hidden" name="contest_id" value="' . absint( $post_id ) . '" />';
 
