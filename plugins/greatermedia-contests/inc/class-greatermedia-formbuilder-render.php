@@ -14,60 +14,127 @@ class GreaterMediaFormbuilderRender {
 		// Use the public static methods. Don't instantiate this class directly.
 	}
 
+	/**
+	 * Register WordPress actions & filters
+	 */
 	public static function register_actions() {
-		add_action( 'wp', array( __CLASS__, 'process_form_submission' ) );
+
+		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+			// Register AJAX handlers
+			add_action( 'wp_ajax_enter_contest', array( __CLASS__, 'process_form_submission' ) );
+			add_action( 'wp_ajax_nopriv_enter_contest', array( __CLASS__, 'process_form_submission' ) );
+		} else {
+			// Register a generic POST handler for if/when there's a fallback from the AJAX method
+			add_action( 'wp', array( __CLASS__, 'process_form_submission' ) );
+		}
+
+		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'wp_enqueue_scripts' ) );
+
+	}
+
+	/**
+	 * Enqueue scripts & styles
+	 * Implements wp_enqueue_scripts action
+	 */
+	public static function wp_enqueue_scripts() {
+
+		wp_enqueue_script( 'greatermedia-contests', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'js/greatermedia-contests.js', array( 'jquery' ), false, true );
+		$settings = array(
+			'ajax_url' => admin_url( 'admin-ajax.php' ),
+		);
+		wp_localize_script( 'greatermedia-contests', 'GreaterMediaContests', $settings );
+
 	}
 
 	/**
 	 * @uses do_action
+	 * @uses wp_send_json_success
 	 */
 	public static function process_form_submission() {
 
-		if ( 'POST' !== strtoupper( $_SERVER['REQUEST_METHOD'] ) ) {
-			return;
-		}
+		try {
 
-		if ( ! isset( $_POST['contest_id'] ) ) {
-			return;
-		}
+			if ( 'POST' !== strtoupper( $_SERVER['REQUEST_METHOD'] ) ) {
+				throw new InvalidArgumentException( 'Request should be a POST' );
+			}
 
-		if ( absint( $_POST['contest_id'] ) !== absint( $GLOBALS['post']->ID ) ) {
-			return;
-		}
+			if ( ! isset( $_POST['contest_id'] ) ) {
+				throw new InvalidArgumentException( 'Missing contest_id' );
+			}
 
-		// @TODO get entrant name from Gigya
-		$entrant_name = 'John Doe';
-		// @TODO get entrant reference (ID) from Gigya
-		$entrant_reference = '12345';
+			$contest_id = absint( $_POST['contest_id'] );
+			if ( empty( $contest_id ) ) {
+				throw new InvalidArgumentException( 'Invalid contest_id' );
+			}
 
-		// Pretty sure this is our form submission at this point
-		$form = json_decode( get_post_meta( $GLOBALS['post']->ID, 'embedded_form', true ) );
-		if ( empty( $form ) ) {
-			return;
-		}
+			$contest = get_post( $contest_id );
+			if ( empty( $contest ) ) {
+				throw new InvalidArgumentException( 'No contest found with given ID' );
+			}
 
-		$submitted_values = array();
-		foreach ( $form as $field ) {
+			if ( 'contest' !== $contest->post_type ) {
+				throw new InvalidArgumentException( 'contest_id does not reference a contest' );
+			}
 
-			$post_array_key = 'form_field_' . $field->cid;
+			// @TODO use the final Gigya API
+			$gigya_id = GreaterMediaGigyaTest::gigya_user_id();
+			if ( ! empty( $gigya_id ) ) {
+				$entrant_reference = $gigya_id;
+				// @TODO get entrant name from Gigya
+				$entrant_name = 'John Doe';
+			} else {
+				$entrant_name      = 'Anonymous Listener';
+				$entrant_reference = null;
+			}
 
-			if ( isset( $_POST[ $post_array_key ] ) ) {
-				$submitted_values[ $field->cid ] = sanitize_text_field( $_POST[ $post_array_key ] );
+			// Pretty sure this is our form submission at this point
+			$form = json_decode( get_post_meta( $contest_id, 'embedded_form', true ) );
+			if ( empty( $form ) ) {
+				throw new InvalidArgumentException( 'Contest is missing an embedded form' );
+			}
+
+			$submitted_values = array();
+			foreach ( $form as $field ) {
+
+				$post_array_key = 'form_field_' . $field->cid;
+
+				if ( isset( $_POST[ $post_array_key ] ) ) {
+					$submitted_values[ $field->cid ] = sanitize_text_field( $_POST[ $post_array_key ] );
+				}
+
+			}
+
+			$entry = GreaterMediaContestEntryEmbeddedForm::create_for_data(
+				$contest_id,
+				$entrant_name,
+				$entrant_reference,
+				GreaterMediaContestEntry::ENTRY_SOURCE_EMBEDDED_FORM,
+				json_encode( $submitted_values )
+			);
+
+			$entry->save();
+
+			do_action( 'greatermedia_contest_entry_save', $entry );
+
+			if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+				$response          = new stdClass();
+				$response->message = get_post_meta( $contest_id, 'form-thankyou', true );
+				wp_send_json_success( $response );
+				exit();
+			}
+
+		} catch ( InvalidArgumentException $e ) {
+
+			if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+				$response          = new stdClass();
+				$response->message = $e->getMessage();
+				wp_send_json_error( $response );
+				exit();
+			} else {
+				return;
 			}
 
 		}
-
-		$entry = GreaterMediaContestEntryEmbeddedForm::create_for_data(
-			$GLOBALS['post']->ID,
-			$entrant_name,
-			$entrant_reference,
-			GreaterMediaContestEntry::ENTRY_SOURCE_EMBEDDED_FORM,
-			json_encode( $submitted_values )
-		);
-
-		$entry->save();
-
-		do_action( 'greatermedia_contest_entry_save', $entry );
 
 	}
 
@@ -157,8 +224,9 @@ class GreaterMediaFormbuilderRender {
 			throw new InvalidArgumentException( '$form should be a JSON string or an Object' );
 		}
 
-		$html .= '<form action="" method="post" enctype="multipart/form-data">';
-		$html .= '<input type="hidden" name="contest_id" value="' . absint( $post_id ) . '" />';
+		$html .= '<form action="" method="post" enctype="multipart/form-data" class="contest_entry_form">' .
+		         '<input type="hidden" name="action" value="enter_contest" />' .
+		         '<input type="hidden" name="contest_id" value="' . absint( $post_id ) . '" />';
 
 		foreach ( $form as $field ) {
 
