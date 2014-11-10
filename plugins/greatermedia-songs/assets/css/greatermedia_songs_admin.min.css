@@ -1,0 +1,5 @@
+/*! Greater Media Songs - v0.1.0
+ * http://wordpress.org/plugins
+ * Copyright (c) 2014; * Licensed GPLv2+ */
+
+.songs__container{width:100%;padding:1em 0;overflow:auto;border-bottom:1px solid #eee}.songs__container:last-of-type{border-bottom:none}.songs__label{display:block;margin:0 0 .75em;font-weight:600}.songs__input{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;-ms-box-sizing:border-box;box-sizing:border-box;width:99%}.songs__input::-webkit-input-placeholder{color:#ddd}.songs__input:-moz-placeholder{color:#ddd}.songs__input::-moz-placeholder{color:#ddd}.songs__input:-ms-input-placeholder{color:#ddd}.songs__input.small{width:25%}
