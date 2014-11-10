@@ -50,7 +50,9 @@
 
 				if ( defined( 'GREATER_MEDIA_GIGYA_TEST_UI' ) && GREATER_MEDIA_GIGYA_TEST_UI ) {
 					do_action( 'gm_live_player' ); ?>
-					<div id="live-player--listen_now" class="live-player--listen_btn"><?php _e( 'Listen Live', 'greatermedia' ); ?></div>
+					<div class="live-player__status">
+						<div id="live-player--listen_now" class="live-player--listen_btn"><?php _e( 'Listen Live', 'greatermedia' ); ?></div>
+					</div>
 					<?php do_action( 'gm_live_player_test_ui' );
 				} else {
 

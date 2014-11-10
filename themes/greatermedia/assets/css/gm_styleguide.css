@@ -789,7 +789,7 @@ p {
   margin-right: .5em;
   outline: none;
   background-color: #d22228;
-  border: 2px solid #d22228;
+  border: 1px solid #d22228;
   font-family: "Open Sans", sans-serif;
   font-size: 0.875em;
   color: #ffffff !important;
@@ -1690,6 +1690,9 @@ blockquote p {
       padding: 1em 0;
       text-align: center; } }
 
+.live-player__status {
+  height: 23px; }
+
 .live-player--listen_btn {
   display: inline-block;
   line-height: 1;
@@ -1697,7 +1700,7 @@ blockquote p {
   margin-right: .5em;
   outline: none;
   background-color: #d22228;
-  border: 2px solid #d22228;
+  border: 1px solid #d22228;
   font-family: "Open Sans", sans-serif;
   font-size: 0.88889em;
   color: #ffffff !important;
@@ -1724,7 +1727,7 @@ blockquote p {
   margin-right: .5em;
   outline: none;
   background-color: transparent;
-  border: 2px solid #d22228;
+  border: 1px solid #d22228;
   font-family: "Open Sans", sans-serif;
   font-size: 0.88889em;
   color: #d22228 !important;
@@ -1757,7 +1760,7 @@ blockquote p {
   margin-right: .5em;
   outline: none;
   background-color: transparent;
-  border: 2px solid #f5ed7f;
+  border: 1px solid #f5ed7f;
   font-family: "Open Sans", sans-serif;
   font-size: 0.88889em;
   color: #f5ed7f !important;
@@ -1863,7 +1866,7 @@ blockquote p {
 
 .gm-liveplayer--container #gm-liveplayer--controls {
   position: relative;
-  margin: 0 auto 1em;
+  margin: 1.4375em auto;
   text-align: center; }
 
 .gm-liveplayer--container #gm-liveplayer--controls #pauseButton, .gm-liveplayer--container #gm-liveplayer--controls #resumeButton {
@@ -1881,7 +1884,6 @@ blockquote p {
       width: 100%;
       height: 48px;
       padding: 0 1em;
-      margin: 0 0 .5em;
       text-align: center; } }
 
 .on-air--title {
@@ -2192,7 +2194,7 @@ blockquote p {
   margin-right: .5em;
   outline: none;
   background-color: #d22228;
-  border: 2px solid #d22228;
+  border: 1px solid #d22228;
   font-family: "Open Sans", sans-serif;
   font-size: 1em;
   color: #ffffff !important;
@@ -2566,7 +2568,7 @@ blockquote p {
   margin-right: .5em;
   outline: none;
   background-color: #d22228;
-  border: 2px solid #d22228;
+  border: 1px solid #d22228;
   font-family: "Open Sans", sans-serif;
   font-size: 0.875em;
   color: #ffffff !important;

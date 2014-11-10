@@ -62,7 +62,9 @@
 										<div id="playButton" class="gm-liveplayer--btn play" data-station="WKLBFM"></div>
 									</div>
 
-									<div id="live-player--listen_now" class="live-player--listen_btn" style="display: inline-block;">Listen Live</div>
+									<div class="live-player__status">
+										<div id="live-player--listen_now" class="live-player--listen_btn" style="display: inline-block;">Listen Live</div>
+									</div>
 
 									<div id="gm-liveplayer--now_playing">
 										<div id="nowPlaying">
@@ -164,7 +166,9 @@
 										<div id="pauseButton" class="gm-liveplayer--btn" data-station="WKLBFM"></div>
 									</div>
 
-									<div id="live-player__now-playing" class="live-player__now-playing--btn" style="display: inline-block;">Now Playing</div>
+									<div class="live-player__status">
+										<div id="live-player__now-playing" class="live-player__now-playing--btn" style="display: inline-block;">Now Playing</div>
+									</div>
 
 									<div id="gm-liveplayer--now_playing">
 										<div id="nowPlaying">
@@ -264,6 +268,10 @@
 										<div id="resumeButton" class="gm-liveplayer--btn" data-station="WKLBFM"></div>
 									</div>
 
+									<div class="live-player__status">
+
+									</div>
+
 									<div id="gm-liveplayer--now_playing">
 										<div id="nowPlaying">
 											<div id="trackInfo" class="now-playing">
@@ -359,6 +367,10 @@
 								<div class="container">
 									<div id="gm-liveplayer--controls">
 										<div id="resumeButton" class="gm-liveplayer--btn" data-station="WKLBFM"></div>
+									</div>
+
+									<div class="live-player__status">
+
 									</div>
 
 									<div id="gm-liveplayer--now_playing">
@@ -457,6 +469,10 @@
 								<div class="container">
 									<div id="gm-liveplayer--controls">
 										<div id="resumeButton" class="gm-liveplayer--btn" data-station="WKLBFM"></div>
+									</div>
+
+									<div class="live-player__status">
+										<div id="live-player__now-playing" class="live-player__now-playing--btn" style="display: inline-block;">Now Playing</div>
 									</div>
 
 									<div id="gm-liveplayer--now_playing">
