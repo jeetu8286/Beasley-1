@@ -1,9 +1,11 @@
 jQuery(function () {
 
+	// Attach a submit handler to contest forms
 	jQuery('.contest_entry_form').submit(function () {
 
 		var form = this;
 
+		// Submit the form via AJAX
 		jQuery.post(
 			GreaterMediaContests.ajax_url,
 			jQuery(this).serialize(),
