@@ -144,7 +144,8 @@ function gmrs_render_episode_schedule_page() {
 	$shows = new WP_Query( array(
 		'post_type'           => ShowsCPT::SHOW_CPT,
 		'post_status'         => 'publish',
-		'posts_per_page'      => -1,
+		'posts_per_page'      => 500,
+		'no_found_rows'       => true,
 		'ignore_sticky_posts' => true,
 		'orderby'             => 'title',
 		'order'               => 'ASC',
@@ -259,7 +260,8 @@ function gmrs_get_scheduled_episodes() {
 	$posts = $query->query( array(
 		'post_type'           => ShowsCPT::EPISODE_CPT,
 		'post_status'         => 'any',
-		'posts_per_page'      => -1,
+		'posts_per_page'      => 500,
+		'no_found_rows'       => true,
 		'ignore_sticky_posts' => true,
 		'orderby'             => 'date',
 		'order'               => 'ASC',

@@ -114,7 +114,8 @@ function gmrs_get_shows_widget_html() {
 				'orderby'             => 'date',
 				'order'               => 'ASC',
 				'ignore_sticky_posts' => true,
-				'posts_per_page'      => -1,
+				'no_found_rows'       => true,
+				'posts_per_page'      => 500,
 				'tax_query'           => array(
 					'taxonomy' => ShowsCPT::SHOW_TAXONOMY,
 					'field'    => 'term_id',
