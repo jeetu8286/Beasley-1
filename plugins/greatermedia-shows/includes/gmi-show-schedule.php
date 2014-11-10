@@ -334,11 +334,11 @@ function gmrs_show_color( $show_id, $opacity ) {
 }
 
 /**
- * Returns current show.
+ * Returns current show episode.
  *
- * @return WP_Post|null The show object on success, otherwise NULL.
+ * @return WP_Post|null The show episode object on success, otherwise NULL.
  */
-function gmrs_get_current_show() {
+function gmrs_get_current_show_episode() {
 	$query = new WP_Query();
 	$episodes = $query->query( array(
 		'post_type'           => ShowsCPT::EPISODE_CPT,
@@ -359,8 +359,22 @@ function gmrs_get_current_show() {
 		return null;
 	}
 
-	$episode = current( $episodes );
-	$show = get_post( $episode->post_parent );
-	
-	return $show && ShowsCPT::SHOW_CPT == $show->post_type ? $show : null;
+	return current( $episodes );
+}
+
+/**
+ * Returns current show.
+ *
+ * @return WP_Post|null The show object on success, otherwise NULL.
+ */
+function gmrs_get_current_show() {
+	$episode = gmrs_get_current_show_episode();
+	if ( ! empty( $episode ) ) {
+		$show = get_post( $episode->post_parent );
+		if ( $show && ShowsCPT::SHOW_CPT == $show->post_type ) {
+			return $show;
+		}
+	}
+
+	return null;
 }
