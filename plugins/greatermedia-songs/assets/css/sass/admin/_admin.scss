@@ -1,0 +1,30 @@
+/**
+ * General Admin Styles
+ */
+
+.songs__container {
+	width: 100%;
+	padding: 1em 0;
+	overflow: auto;
+	border-bottom: 1px solid $soft-gray;
+}
+
+.songs__container:last-of-type{
+	border-bottom: none;
+}
+
+.songs__label {
+	display: block;
+	margin: 0 0 .75em;
+	font-weight: 600;
+}
+
+.songs__input {
+	@include box-sizing(border-box);
+	@include placeholder($meta-gray);
+	width: 99%;
+}
+
+.songs__input.small,.songs__input.small{
+	width: 25%;
+}
