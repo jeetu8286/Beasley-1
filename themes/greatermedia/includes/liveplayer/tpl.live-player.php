@@ -6,7 +6,7 @@
  * @since   0.1.0
  */
 ?>
-<aside class="live-player">
+<aside id="live-player--sidebar" class="live-player">
 
 	<div class="now-playing--logo">
 
@@ -31,6 +31,8 @@
 
 		?>
 	</div>
+
+	<?php dynamic_sidebar( 'liveplayer_sidebar' ); ?>
 
 	<div class="now-playing--title">
 

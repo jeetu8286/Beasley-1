@@ -112,3 +112,14 @@
 		border-left: $width solid transparent;
 	}
 }
+
+/*********************
+Opacities & transparencies
+*********************/
+@mixin opacity ($value: 0.5) {
+	opacity: $value;
+	filter: alpha(opacity= $value * 100 );
+	-moz-opacity: $value;
+	-khtml-opacity: $value;
+	zoom: 1;
+}
