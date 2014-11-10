@@ -3,6 +3,7 @@
 namespace GreaterMedia\Gigya\Ajax;
 
 use GreaterMedia\Gigya\AccountsSearcher;
+use GreaterMedia\Gigya\MemberQuery;
 
 /**
  * PreviewAjaxHandler is the ajax handler invoked by the client to
@@ -37,24 +38,16 @@ class PreviewAjaxHandler extends AjaxHandler {
 	 * @return array
 	 */
 	public function run( $params ) {
-		$query    = $params['query'];
-		$searcher = new AccountsSearcher();
-		$response = $searcher->search( $query, false, 5 );
-		$json     = json_decode( $response, true );
-		$accounts = array();
-		$i        = 0;
+		$constraints  = json_encode( $params['constraints'] );
+		$member_query = new MemberQuery( null, $constraints );
+		$query        = $member_query->to_gql();
 
-		foreach ( $json['results'] as $account ) {
-			$accounts[] = array( 'email' => $account['profile']['email'] );
-			if ( ++$i >= 5 ) {
-				break;
-			}
-		}
+		$searcher     = new AccountsSearcher();
+		//error_log( "DS.constraints: $constraints" );
+		//error_log( "DS.search: $query" );
+		$accounts     = $searcher->search( $query, false, 5 );
 
-		return array(
-			'accounts' => $accounts,
-			'total'    => $json['totalCount'],
-		);
+		return $accounts;
 	}
 
 }

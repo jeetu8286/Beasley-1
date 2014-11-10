@@ -179,4 +179,8 @@ class MemberQueryTest extends \WP_UnitTestCase {
 		$this->assertEquals( $constraints, $actual );
 	}
 
+	function test_it_can_build_gql_from_user_generated_json() {
+		$json = '[{"type":"system:isActive","valueType":"boolean","operator":"equals","conjunction":"and","value":false}] ';
+	}
+
 }
