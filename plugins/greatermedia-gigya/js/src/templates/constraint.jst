@@ -31,7 +31,7 @@
 <% if (view.hasChoices()) { %>
 	<select class="constraint-value" style="width: 45%">
 		<% _.each(choices, function(choiceItem) { %>
-		<option value="<%- choiceItem.value %>" <%= choiceItem.value === value ? 'selected="selected"' : ''  %>">
+		<option value="<%- choiceItem.value %>" <%= choiceItem.value == value ? 'selected="selected"' : ''  %>">
 		<%- choiceItem.label %>
 		</option>
 		<% }) %>
