@@ -63,7 +63,7 @@ var ConstraintView = Backbone.View.extend({
 			conjunction: conjunction
 		};
 
-		//console.log('updateConstraint', changes);
+		console.log('updateConstraint', changes);
 		constraint.set(changes);
 	},
 

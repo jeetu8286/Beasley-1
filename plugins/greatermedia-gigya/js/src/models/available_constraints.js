@@ -22,6 +22,7 @@ var AVAILABLE_CONSTRAINTS = [
 	{
 		type: 'system:verified',
 		valueType: 'boolean',
+		value: true,
 	},
 
 	/* Profile fields */
@@ -42,7 +43,8 @@ var AVAILABLE_CONSTRAINTS = [
 	},
 	{
 		type: 'profile:gender',
-		valueType: 'string'
+		valueType: 'string',
+		value: 'm'
 	},
 	{
 		type: 'profile:age',
@@ -347,8 +349,9 @@ var AVAILABLE_CONSTRAINTS_META = [
 		type: 'profile:gender',
 		title: 'Gender',
 		choices: [
-			{ label: 'Male', value: 'male' },
-			{ label: 'Female', value: 'female' }
+			{ label: 'Male', value: 'm' },
+			{ label: 'Female', value: 'f' },
+			{ label: 'Unknown', value: 'u' }
 		]
 	},
 	{

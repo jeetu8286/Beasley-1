@@ -115,7 +115,7 @@ __p += '\n\t<select class="constraint-value" style="width: 45%">\n\t\t';
 __p += '\n\t\t<option value="' +
 __e( choiceItem.value ) +
 '" ' +
-((__t = ( choiceItem.value === value ? 'selected="selected"' : ''  )) == null ? '' : __t) +
+((__t = ( choiceItem.value == value ? 'selected="selected"' : ''  )) == null ? '' : __t) +
 '">\n\t\t' +
 __e( choiceItem.label ) +
 '\n\t\t</option>\n\t\t';
@@ -560,6 +560,7 @@ var AVAILABLE_CONSTRAINTS = [
 	{
 		type: 'system:verified',
 		valueType: 'boolean',
+		value: true,
 	},
 
 	/* Profile fields */
@@ -580,7 +581,8 @@ var AVAILABLE_CONSTRAINTS = [
 	},
 	{
 		type: 'profile:gender',
-		valueType: 'string'
+		valueType: 'string',
+		value: 'm'
 	},
 	{
 		type: 'profile:age',
@@ -885,8 +887,9 @@ var AVAILABLE_CONSTRAINTS_META = [
 		type: 'profile:gender',
 		title: 'Gender',
 		choices: [
-			{ label: 'Male', value: 'male' },
-			{ label: 'Female', value: 'female' }
+			{ label: 'Male', value: 'm' },
+			{ label: 'Female', value: 'f' },
+			{ label: 'Unknown', value: 'u' }
 		]
 	},
 	{
@@ -1076,10 +1079,8 @@ var QueryResultCollection = Backbone.Collection.extend({
 	},
 
 	search: function() {
-		var constraints       = this.activeConstraints.toJSON();
-		var query             = 'select * from accounts'; // TEMPORARY, limits to 5
-		var data              = {
-			query: query,
+		var constraints = this.activeConstraints.toJSON();
+		var data        = {
 			constraints: constraints
 		};
 
@@ -1220,7 +1221,7 @@ var ConstraintView = Backbone.View.extend({
 			conjunction: conjunction
 		};
 
-		//console.log('updateConstraint', changes);
+		console.log('updateConstraint', changes);
 		constraint.set(changes);
 	},
 
