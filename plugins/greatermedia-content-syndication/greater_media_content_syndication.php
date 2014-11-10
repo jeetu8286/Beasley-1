@@ -26,10 +26,6 @@ define( 'GMR_SYNDICATION_VERSION', '0.1.0' );
 define( 'GMR_SYNDICATION_URL',     plugin_dir_url( __FILE__ ) );
 define( 'GMR_SYNDICATION_PATH',    dirname( __FILE__ ) . '/' );
 
-if( is_readable( GMR_SYNDICATION_PATH . 'includes/SyndicationCPT.php' ) ) {
-	include_once GMR_SYNDICATION_PATH . 'includes/SyndicationCPT.php';
-}
+require_once GMR_SYNDICATION_PATH . 'includes/syndication-cpt.php';
 
-if( is_readable( GMR_SYNDICATION_PATH . 'includes/BlogData.php' ) ) {
-	include_once GMR_SYNDICATION_PATH . 'includes/BlogData.php';
-}
+require_once GMR_SYNDICATION_PATH . 'includes/blog-data.php';
