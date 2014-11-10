@@ -24,7 +24,7 @@ class GreaterMediaGigyaTest {
 
 		$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 
-		if ( defined( 'GREATER_MEDIA_GIGYA_TEST_UI' ) && GREATER_MEDIA_GIGYA_TEST_UI ) {
+		if ( defined( 'GREATER_MEDIA_GIGYA_TEST_UI' ) && GREATER_MEDIA_GIGYA_TEST_UI && !is_page( 'style-guide' ) ) {
 			wp_enqueue_script(
 				'liveplayer-testing',
 				get_template_directory_uri() . "/assets/js/liveplayer_test{$postfix}.js",

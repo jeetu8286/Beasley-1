@@ -9,7 +9,7 @@
 <section id="live-player" class="sg-layout sg-sections">
 	<div class="sg-content">
 		<h2 class="sg-section-title"><?php _e( 'Live Player', 'greatermedia' ); ?></h2>
-		<aside id="live-player--sidebar" class="live-player">
+		<div id="live-player--sidebar" class="live-player">
 
 			<nav class="live-player__stream">
 				<ul class="live-player__stream--list">
@@ -61,9 +61,14 @@
 									<div id="resumeButton" class="gm-liveplayer--btn" data-station="WKLBFM"></div>
 								</div>
 
+								<div id="live-player--listen_now" class="live-player--listen_btn" style="display: inline-block;">Listen Live</div>
+
 								<div id="gm-liveplayer--now_playing">
 									<div id="nowPlaying">
-										<div id="trackInfo" class="now-playing"></div>
+										<div id="trackInfo" class="now-playing">
+											<h4 class="now-playing__title">Track Title</h4>
+											<h5 class="now-playing__artist">Artist Name</h5>
+										</div>
 										<div id="npeInfo"></div>
 									</div>
 								</div>
@@ -77,16 +82,6 @@
 
 					</div>
 
-					<div id="live-player--listen_now" class="live-player--listen_btn">Listen Live</div>
-					<div id="live-player--test" class="live-player--test" style="display:none;">
-						<input type="checkbox" name="live-player--test_audio" class="live-player--test_audio" id="live-player--test_audio" value="live-audio">
-						<label for="live-player--test_audio" class="live-player--test_label">Logged In</label>
-					</div>
-				</div>
-
-				<div id="now-playing" class="now-playing">
-					<h4 class="now-playing__title">Track Title</h4>
-					<h5 class="now-playing__artist">Artist Name</h5>
 				</div>
 
 				<div class="live-player__volume">
@@ -112,6 +107,6 @@
 				</div>
 			</div>
 
-		</aside>
+		</div>
 	</div>
 </section>

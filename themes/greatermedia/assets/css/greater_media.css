@@ -2054,7 +2054,7 @@ blockquote p {
 
 .gm-liveplayer--container #gm-liveplayer--controls {
   position: relative;
-  margin: 0 auto;
+  margin: 0 auto 1em;
   text-align: center; }
 
 .gm-liveplayer--container #gm-liveplayer--controls #pauseButton, .gm-liveplayer--container #gm-liveplayer--controls #resumeButton {
