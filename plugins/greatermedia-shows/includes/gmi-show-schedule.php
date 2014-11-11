@@ -73,22 +73,22 @@ function gmrs_add_show_episode() {
 	) );
 
 	if ( empty( $data['show'] ) || ! ( $show = get_post( $data['show'] ) ) || $show->post_type != ShowsCPT::SHOW_CPT ) {
-		wp_die( 'The show has not been found.' );
+		wp_die( 'The show has not been found.', '', array( 'back_link' => true ) );
 	}
 
 	if ( ( $date = strtotime( $data['date'] ) ) === false ) {
-		wp_die( 'Wrong date has been selected.' );
+		wp_die( 'Wrong date has been selected.', '', array( 'back_link' => true ) );
 	}
 
 	$offset = get_option( 'gmt_offset' ) * HOUR_IN_SECONDS;
 	$start_date = $date + $data['start_time'];
 	$start_date_gmt = $start_date - $offset;
 	if ( $start_date_gmt < time() ) {
-		wp_die( 'Please, select a date in a future.' );
+		wp_die( 'Please, select a date in a future.', '', array( 'back_link' => true ) );
 	}
 	
 	if ( $data['start_time'] > $data['end_time'] ) {
-		wp_die( 'Please, select a end time greater than start time.' );
+		wp_die( 'Please, select a end time greater than start time.', '', array( 'back_link' => true ) );
 	}
 
 	$inserted = wp_insert_post( array(
@@ -200,7 +200,7 @@ function gmrs_render_episode_schedule_page() {
 				<option value="1">every week at this time</option>
 				<option value="0">once, this week only</option>
 			</select>
-			and starts from
+			and starts on
 			<input type="text" id="start-from-date" value="<?php echo $active['date']; ?>" required>
 			at
 			<select name="start_time">
