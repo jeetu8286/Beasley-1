@@ -2063,6 +2063,7 @@ blockquote p {
 .live-link__title {
   display: block;
   margin: 0;
+  font-family: "Open Sans", sans-serif;
   font-size: 1em;
   font-weight: normal; }
 
@@ -2282,6 +2283,7 @@ blockquote p {
 
 .widget--live-player__title {
   margin: 0 0 1em;
+  font-family: "Open Sans", sans-serif;
   font-size: 1em;
   font-weight: normal;
   text-transform: uppercase; }
