@@ -10,6 +10,24 @@
 	text-transform: uppercase;
 }
 
+.widget--live-player li {
+	list-style: none;
+	display: block;
+	padding: 0;
+	margin: 0;
+	font-family: $open-sans;
+	font-size: ms(0);
+	font-weight: normal;
+}
+
+.widget--live-player li a:link, .widget--live-player li a:visited {
+	color: color(tertiary-link);
+}
+
+.widget--live-player li a:hover, .widget--live-player li a:focus, .widget--live-player li a:active {
+	color: color(primary-link);
+}
+
 // On-air Schedule
 .widget-onair--current {
 
