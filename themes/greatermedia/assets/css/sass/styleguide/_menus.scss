@@ -15,7 +15,7 @@
 	@include transition(all 500ms ease-in-out);
 	display: block;
 	border-radius: 1px;
-	background: color(secondary-bg);
+	background: color(primary-border);
 	content: '';
 }
 .sg-nav--toggle--span:before {

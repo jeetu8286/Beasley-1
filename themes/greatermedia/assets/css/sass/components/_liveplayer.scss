@@ -384,6 +384,7 @@
 	margin: 0 0 .25em;
 	font-size: ms(-2);
 	font-weight: lighter;
+	color: color(tertiary-link);
 }
 
 // volume controls and level
@@ -525,7 +526,15 @@
 
 .live-link__title {
 	display: block;
+	margin: 0;
 	font-size: ms(0);
 	font-weight: normal;
-	margin: 0;
+}
+
+.live-link__title a:link, .live-link__title a:visited {
+	color: color(tertiary-link);
+}
+
+.live-link__title a:hover, .live-link__title a:focus, .live-link__title a:active {
+	color: color(primary-link);
 }
