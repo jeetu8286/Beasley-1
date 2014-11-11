@@ -2037,7 +2037,7 @@ blockquote p {
   display: block;
   max-height: 250px; }
 
-.live-link__type--audio:before, .live-link__type--video:before, .live-link__type--link:before {
+.live-link__type--audio:before, .live-link__type--gallery:before, .live-link__type--image:before, .live-link__type--link:before, .live-link__type--standard:before, .live-link__type--video:before {
   width: 0;
   height: 0;
   font-family: "gmr-icons";
@@ -2049,17 +2049,32 @@ blockquote p {
   text-rendering: auto;
   color: #d22228; }
 
-.live-link__type--audio, .live-link__type--link, .live-link__type--video {
+.live-link__type--audio, .live-link__type--gallery, .live-link__type--image, .live-link__type--link, .live-link__type--standard, .live-link__type--video {
   display: block; }
+
+.live-link__song--artist {
+  font-size: 0.75em; }
+
+.live-link__song--title {
+  font-size: 0.8125em; }
 
 .live-link__type--audio:before {
   content: "\e604"; }
 
-.live-link__type--video:before {
-  content: "\e604"; }
+.live-link__type--gallery:before {
+  content: "\e602"; }
+
+.live-link__type--image:before {
+  content: "\e600"; }
 
 .live-link__type--link:before {
   content: "\e602"; }
+
+.live-link__type--standard:before {
+  content: "\e608"; }
+
+.live-link__type--video:before {
+  content: "\e604"; }
 
 .live-link__title {
   display: block;
