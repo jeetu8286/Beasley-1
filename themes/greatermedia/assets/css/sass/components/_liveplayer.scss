@@ -22,7 +22,7 @@
 }
 
 .live-player--listen_btn {
-	@include btn(btn-bg, btn-text, 1em, 1.5em, em(18px));
+	@include btn(btn, btn-bg, btn-text, 1em, 1.5em, em(18px));
 	@include margin(0 .5em);
 }
 
@@ -43,11 +43,11 @@
 	@include border-top-radius(15px);
 	@include border-left-radius(15px);
 	@include transition(ease .25s);
-	background-color: color(secondary-bg);
+	background-color: color(base, secondary-bg);
 	border: none;
 	outline: none;
 	font-size: 1.25em;
-	color: color(secondary-text);
+	color: color(base, secondary-text);
 	z-index: 10001;
 	cursor: pointer;
 	@include bp(large) {
@@ -73,7 +73,7 @@
 	@include border-right-radius(50%);
 	@include border-bottom-radius(50%);
 	@include border-left-radius(50%);
-	background-color: color(btn-bg);
+	background-color: color(base, btn-bg);
 	border: none;
 	outline: none;
 	font-family: FontAwesome;
@@ -84,7 +84,7 @@
 	-webkit-font-smoothing: antialiased;
 	moz-osx-font-smoothing: grayscale;
 	text-rendering: auto;
-	color: color(btn-text);
+	color: color(btn, btn-text);
 	cursor: pointer;
 	z-index: 10001;
 }
@@ -106,7 +106,7 @@
 	@include box-sizing(border-box);
 	@include size(100% 100%);
 	background: transparent;
-	color: color(secondary-text);
+	color: color(base, secondary-text);
 	z-index: 10000;
 }
 
@@ -174,19 +174,19 @@
 .now-playing--logo {
 	@include size(80px 50px);
 	@include margin(0 auto 1em auto);
-	background-color: color(secondary-text);
+	background-color: color(base, secondary-text);
 }
 
 .now-playing--title {
 	@include size(100px 20px);
 	@include margin(0 auto 1em auto);
-	background-color: color(secondary-text);
+	background-color: color(base, secondary-text);
 }
 
 .now-playing--artist {
 	@include size(100px 20px);
 	@include margin(0 auto 1em auto);
-	background-color: color(secondary-text);
+	background-color: color(base, secondary-text);
 }
 
 .live-player--social {
@@ -207,7 +207,7 @@
 	@include margin(0 em(4px) 0 0);
 	list-style: none;
 	display: inline-block;
-	background-color: color(secondary-text);
+	background-color: color(base, secondary-text);
 }
 
 .live-player--social ul li:last-of-type {
@@ -217,14 +217,14 @@
 .live-player--next {
 	@include size(100% null);
 	@include padding(.5em 1em);
-	@include border-color(color(primary-border) null color(primary-border) null);
+	@include border-color(color(base, primary-border) null color(base, primary-border) null);
 	@include border-style(solid null solid null);
 	@include border-width(1px null 1px null);
 	font-size: ms(-2);
 }
 
 .live-player--test {
-	color: color(secondary-text);
+	color: color(base, secondary-text);
 	width: 100%;
 	padding: .25em .5em;
 }

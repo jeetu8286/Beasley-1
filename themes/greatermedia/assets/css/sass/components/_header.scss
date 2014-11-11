@@ -2,11 +2,11 @@
 	@include position(relative, null null null null);
 	@include size(100% 100%);
 	@include padding(null null em(10px));
-	@include border-color(null null color(primary-border) null);
+	@include border-color(null null color(base, primary-border) null);
 	@include border-style(null null solid null);
 	@include border-width(null null 1px null);
 	@include transition (all 200ms linear);
-	background-color: color(secondary-bg);
+	background-color: color(base, secondary-bg);
 }
 
 .header--pinned {

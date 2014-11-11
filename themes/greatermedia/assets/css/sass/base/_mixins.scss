@@ -14,20 +14,20 @@
 // @param {number | unit} $padding-left-right - padding for the left and right of the button
 // @param {number | unit} $font-size - font size for the button
 //
-@mixin btn($bgcolor, $textcolor, $padding-top-bottom, $padding-left-right, $font-size) {
+@mixin btn($palette, $bgcolor, $textcolor, $padding-top-bottom, $padding-left-right, $font-size) {
 	@include padding($padding-top-bottom $padding-left-right);
 	@include margin(null .5em null null);
 	@include border-width(0);
 	outline: none;
-	background-color: color($bgcolor);
+	background-color: color($palette, $bgcolor);
 	font-family: $open-sans;
 	font-size: $font-size;
-	color: color($textcolor) !important;
+	color: color($palette, $textcolor) !important;
 	text-transform: uppercase;
 	cursor: pointer;
 	&:hover, &:focus {
-		background-color: darken(color($bgcolor), 9%);
-		color: color($textcolor);
+		background-color: color($palette, $bgcolor);
+		color: color($palette, $textcolor);
 	}
 	&:last-of-type{
 		@include margin(null 0 null null);

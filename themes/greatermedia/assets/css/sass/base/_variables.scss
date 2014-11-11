@@ -9,24 +9,33 @@ $_color_base_gray: #a7a9ab;
 //
 // @type String
 //
-$colors: (
-	body-bg: #000000,
-	primary-bg: #ffffff,
-	primary-text: #000000,
-	primary-link: #d22228,
-	primary-heading: #58595b,
-	primary-border: #d0d2d3,
-	secondary-bg: #000000,
-	secondary-text: #404041,
-	secondary-link: #ffffff,
-	tertiary-bg: #561015,
-	featured-bg: #58595b,
-	featured-heading: #ffffff,
-	featured-heading-bg: #270e10,
-	featured-text: #a6a8ab,
-	featured-list: #f7ef7e,
-	btn-bg: #d22228,
-	btn-text: #ffffff,
+$palettes: (
+	base: (
+		body-bg: #000000,
+		primary-bg: #ffffff,
+		primary-text: #000000,
+		primary-link: #d22228,
+		primary-heading: #58595b,
+		primary-border: #d0d2d3,
+		secondary-bg: #000000,
+		secondary-text: #404041,
+		secondary-link: #ffffff,
+		tertiary-bg: #561015
+	),
+	live-links: (
+		text-color: #000000
+	),
+	btn: (
+		btn-bg: #d22228,
+		btn-text: #ffffff
+	),
+	featured: (
+		featured-bg: #58595b,
+		featured-heading: #ffffff,
+		featured-heading-bg: #270e10,
+		featured-text: #a6a8ab,
+		featured-list: #f7ef7e
+	)
 );
 
 // Variables for site wide usage
@@ -34,9 +43,9 @@ $colors: (
 // @author Allen Moore
 // @since 0.1.0
 //
-$text-color: color(primary-text);
+$text-color: color(base, primary-text);
 
-$link-color: color(primary-link);
-$link-hover: darken(color(primary-link), 10%);
+$link-color: color(base, primary-link);
+$link-hover: color(base, primary-link);
 
-$border-color: color(primary-border);
+$border-color: color(base, primary-border);
