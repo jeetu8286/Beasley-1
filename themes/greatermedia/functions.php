@@ -249,9 +249,9 @@ function greatermedia_widgets_init() {
 	register_sidebar( array(
 		'name'          => 'Live Player Sidebar',
 		'id'            => 'liveplayer_sidebar',
-		'before_widget' => '<div id="%1$s" class="widget %2$s">',
+		'before_widget' => '<div id="%1$s" class="widget--live-player %2$s">',
 		'after_widget'  => '</div>',
-		'before_title'  => '<h3 class="widgettitle">',
+		'before_title'  => '<h3 class="widget--live-player__title">',
 		'after_title'   => '</h3>',
 	) );
 

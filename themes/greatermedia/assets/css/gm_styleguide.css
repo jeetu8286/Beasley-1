@@ -1940,7 +1940,8 @@ blockquote p {
 .now-playing__artist {
   margin: 0 0 .25em;
   font-size: 0.79012em;
-  font-weight: lighter; }
+  font-weight: lighter;
+  color: #c7c7c7; }
 
 .live-player__volume {
   display: none; }
@@ -2067,9 +2068,15 @@ blockquote p {
 
 .live-link__title {
   display: block;
+  margin: 0;
   font-size: 1em;
-  font-weight: normal;
-  margin: 0; }
+  font-weight: normal; }
+
+.live-link__title a:link, .live-link__title a:visited {
+  color: #c7c7c7; }
+
+.live-link__title a:hover, .live-link__title a:focus, .live-link__title a:active {
+  color: #d22228; }
 
 .featured {
   position: relative;
@@ -2276,6 +2283,15 @@ blockquote p {
   display: inline-block;
   background-color: #d0d2d3; }
 
+.widget--live-player {
+  margin: 0 1em 1em; }
+
+.widget--live-player__title {
+  margin: 0 0 1em;
+  font-size: 1em;
+  font-weight: normal;
+  text-transform: uppercase; }
+
 body {
   height: 100%;
   margin: 0 auto;
@@ -2379,7 +2395,7 @@ blockquote p {
   transition: all 500ms ease-in-out;
   display: block;
   border-radius: 1px;
-  background: #000000;
+  background: #d0d2d3;
   content: ''; }
 
 .sg-nav--toggle--span:before {
