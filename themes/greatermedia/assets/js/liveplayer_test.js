@@ -90,6 +90,7 @@ jQuery(function () {
 		livePlayerLabel = jQuery('.live-stream__test--label'),
 		livePlayerSwitch = jQuery('.live-stream__test--audio'), // targets the actual toggle so we can bind a click to it
 		livePlayer = jQuery('.live-stream__player'), // targets the live player
+		livePlayerVolume = jQuery('.live-player__volume'),
 		onAir = jQuery('.on-air'),
 		upNext = jQuery('.up-next');
 
@@ -101,6 +102,7 @@ jQuery(function () {
 		 */
 		livePlayerListen.css('display', 'inline-block');
 		livePlayerPlaying.css('display', 'none');
+		livePlayerVolume.css('display', 'none');
 		upNext.css('display', 'none');
 		livePlayerLabel.css('color', '#ffffff');
 
@@ -121,6 +123,7 @@ jQuery(function () {
 			livePlayerListen.css('display', 'none');
 			livePlayerPlaying.css('display', 'inline-block');
 			livePlayerTest.css('display', 'block');
+			livePlayerVolume.css('display', 'block');
 			upNext.css('display', 'block');
 			onAir.css('display', 'none');
 		} else {
@@ -128,6 +131,7 @@ jQuery(function () {
 			livePlayerPlaying.css('display', 'none');
 			livePlayerTest.css('display', 'none');
 			livePlayer.css('display', 'none');
+			livePlayerVolume.css('display', 'none');
 			upNext.css('display', 'none');
 			onAir.css('display', 'block');
 		}
@@ -168,6 +172,7 @@ jQuery(function () {
 				livePlayerListen.css('display', 'none');
 				livePlayerPlaying.css('display', 'inline-block');
 				livePlayerTest.css('display', 'block');
+				livePlayerVolume.css('display', 'block');
 				upNext.css('display', 'block');
 				onAir.css('display', 'none');
 			} else {
@@ -175,6 +180,7 @@ jQuery(function () {
 				livePlayerListen.css('display', 'inline-block');
 				livePlayerPlaying.css('display', 'none');
 				livePlayerTest.css('display', 'none');
+				livePlayerVolume.css('display', 'none');
 				upNext.css('display', 'none');
 				onAir.css('display', 'block');
 			}
