@@ -24,7 +24,7 @@ class GreaterMediaGigyaTest {
 
 		$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 
-		if ( defined( 'GREATER_MEDIA_GIGYA_TEST_UI' ) && GREATER_MEDIA_GIGYA_TEST_UI ) {
+		if ( defined( 'GREATER_MEDIA_GIGYA_TEST_UI' ) && GREATER_MEDIA_GIGYA_TEST_UI && !is_page( 'style-guide' ) ) {
 			wp_enqueue_script(
 				'liveplayer-testing',
 				get_template_directory_uri() . "/assets/js/liveplayer_test{$postfix}.js",
@@ -48,9 +48,9 @@ class GreaterMediaGigyaTest {
 	public static function test_ui() {
 
 		if ( defined( 'GREATER_MEDIA_GIGYA_TEST_UI' ) && GREATER_MEDIA_GIGYA_TEST_UI ) { ?>
-			<div id="live-player--test" class="live-player--test" style="display:none;">
-				<input type="checkbox" name="live-player--test_audio" class="live-player--test_audio" id="live-player--test_audio" value="live-audio">
-				<label for="live-player--test_audio" class="live-player--test_label"><?php _e( 'Logged In', 'greatermedia' ); ?></label>
+			<div id="live-stream__test" class="live-stream__test" style="display:none;">
+				<input type="checkbox" name="live-stream__test--audio" class="live-stream__test--audio" id="live-stream__test--audio" value="live-audio">
+				<label for="live-stream__test--audio" class="live-stream__test--label"><?php _e( 'Logged In', 'greatermedia' ); ?></label>
 			</div>
 		<?php }
 

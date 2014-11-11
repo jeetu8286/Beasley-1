@@ -164,3 +164,33 @@
 .sg-typography--italic {
 	font-style: italic;
 }
+
+// styles to make sure elements of the live player show
+.live-player__col {
+	float: left;
+	display: block;
+	width: 100%;
+	margin-right: 0%;
+	@include bp(small){
+		width: 45%;
+		margin-right: 5%;
+	}
+	@include bp(medium){
+		width: 45%;
+		margin-right: 5%;
+	}
+	@include bp(large){
+		width: 18%;
+		margin-right: 2.5%;
+	}
+}
+
+.live-player__col:last-child {
+	@include bp(small) {
+		margin-right: 0;
+	}
+}
+
+.live-stream__btn--play, .live-stream__btn--resume, .live-stream__btn--pause {
+	display: block;
+}
