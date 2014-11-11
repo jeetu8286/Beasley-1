@@ -36,7 +36,8 @@ $palettes: (
 	btn: (
 		btn-bg: #d22228,
 		btn-text: #ffffff,
-		btn-alt: #f5ed7f
+		btn-alt: #f5ed7f,
+		transparent: transparent,
 	),
 	featured: (
 		featured-bg: #58595b,
@@ -52,9 +53,9 @@ $palettes: (
 // @author Allen Moore
 // @since 0.1.0
 //
-$text-color: color(base, primary-text);
+$text-color: palette(base,  primary-text);
 
-$link-color: color(base, primary-link);
-$link-hover: color(base, primary-link);
+$link-color: palette(base,  primary-link);
+$link-hover: palette(base,  primary-link);
 
-$border-color: color(base, primary-border);
+$border-color: palette(base,  primary-border);

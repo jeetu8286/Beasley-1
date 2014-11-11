@@ -3,8 +3,8 @@
  */
 .sg-header{
 	@include size(100% 500px);
-	background-color: color(base, tertiary-bg);
-	color: color(base, primary-heading);
+	background-color: palette(base, tertiary-bg);
+	color: palette(base, primary-heading);
 }
 .sg-header--title{
 	@include position(absolute, 50% null null 50%);
