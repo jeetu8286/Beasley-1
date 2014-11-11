@@ -25,6 +25,12 @@ module.exports = function (grunt) {
 					'assets/js/src/widget.js'
 				],
 				dest: 'assets/js/shows_widget.js'
+			},
+			admin_show_selector: {
+				src: [
+					'assets/js/src/admin_show_selector.js'
+				],
+				dest: 'assets/js/admin_show_selector.js'
 			}
 		},
 		jshint: {
@@ -50,7 +56,8 @@ module.exports = function (grunt) {
 			all: {
 				files: {
 					'assets/js/greatermedia_shows.min.js': ['assets/js/greatermedia_shows.js'],
-					'assets/js/shows_widget.min.js': ['assets/js/shows_widget.js']
+					'assets/js/shows_widget.min.js': ['assets/js/shows_widget.js'],
+					'assets/js/admin_show_selector.min.js': ['assets/js/admin_show_selector.js']
 				},
 				options: {
 					banner: '/*! <%= pkg.title %> - v<%= pkg.version %>\n' +
@@ -120,7 +127,7 @@ module.exports = function (grunt) {
 	// Custom tasks
 	grunt.registerTask('js', ['jshint', 'concat', 'uglify']);
 	grunt.registerTask('css', ['sass', 'cssmin']);
-	
+
 	// Default task
 	grunt.registerTask('default', ['js', 'css']);
 
