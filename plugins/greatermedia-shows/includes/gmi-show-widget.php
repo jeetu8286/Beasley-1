@@ -61,91 +61,41 @@ function gmrs_render_shows_widget_html() {
  * @return string The widget html.
  */
 function gmrs_get_shows_widget_html() {
+	// check transient first and if it exists, then return cached version of the widget
 	$transient = 'gmrs_show_widget';
 	$html = get_transient( $transient );
 	if ( ! empty( $html ) ) {
 		return $html;
 	}
 
-	$current_episode = gmrs_get_current_show_episode();
-	if ( ! $current_episode ) {
-		return;
-	}
+	// transient doesn't exists, so let's build new widget and cache it
+	// start from enabling outbut buffering
+	ob_start();
 
-	$episodes = new WP_Query( array(
-		'post_type'           => ShowsCPT::EPISODE_CPT,
-		'post_status'         => array( 'publish', 'future' ),
+	// build quiery and render widget's html
+	$show_stuff = new WP_Query( array(
+		'post_type'           => apply_filters( 'gmr_show_widget_item_post_types', array() ),
+		'post_status'         => 'any',
 		'orderby'             => 'date',
-		'order'               => 'ASC',
+		'order'               => 'DESC',
 		'ignore_sticky_posts' => true,
-		'posts_per_page'      => 2,
-		'date_query'          => array(
-			array(
-				'after'     => date( DATE_ISO8601, strtotime( $current_episode->post_date_gmt ) - MINUTE_IN_SECONDS ),
-				'inclusive' => true,
-				'column'    => 'post_date_gmt'
-			),
-		),
+		'no_found_rows'       => true,
+		'posts_per_page'      => 20,
 	) );
 
-	// do nothing if there is no posts
-	if ( ! $episodes->have_posts() ) {
-		return;
-	}
-
-	ob_start();
-	
 	echo '<ul>';
-		while ( $episodes->have_posts() ) :
-			$episode = $episodes->next_post();
-			$show = get_post( $episode->post_parent );
-			if ( ! $show ) {
-				continue;
-			}
-
-			$term = TDS\get_related_term( $show );
-			if ( ! $term ) {
-				continue;
-			}
-
-			$show_stuff = new WP_Query( array(
-				'post_type'           => apply_filters( 'gmr_show_widget_item_post_types', array() ),
-				'post_status'         => 'any',
-				'orderby'             => 'date',
-				'order'               => 'ASC',
-				'ignore_sticky_posts' => true,
-				'no_found_rows'       => true,
-				'posts_per_page'      => 500,
-				'tax_query'           => array(
-					'taxonomy' => ShowsCPT::SHOW_TAXONOMY,
-					'field'    => 'term_id',
-					'terms'    => $term->term_id,
-				),
-				'date_query'          => array(
-					array(
-						'after'     => date( DATE_ISO8601, strtotime( $episode->post_date_gmt ) - MINUTE_IN_SECONDS ),
-						'inclusive' => true,
-						'column'    => 'post_date_gmt'
-					),
-				),
-			) );
-
-			echo '<li>';
-				echo '<span>', esc_html( $show->post_title ), '</span>';
-				echo '<ul>';
-					while ( $show_stuff->have_posts() ) :
-						$show_stuff->the_post();
-						echo '<li>', apply_filters( 'gmr_show_widget_item', get_the_title() ), '</li>';
-					endwhile;
-				echo '</ul>';
-			echo '</li>';
-
-			wp_reset_postdata();
+		while ( $show_stuff->have_posts() ) :
+			$show_stuff->the_post();
+			echo '<li>', apply_filters( 'gmr_show_widget_item', get_the_title() ), '</li>';
 		endwhile;
 	echo '</ul>';
-	
+
+	// grab html from output buffer
 	$html = ob_get_clean();
+	// create new transient with a minute TTL
 	set_transient( $transient, $html, MINUTE_IN_SECONDS );
+	// reset global post data
+	wp_reset_postdata();
 
 	return $html;
 }
