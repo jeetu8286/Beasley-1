@@ -13,7 +13,7 @@ add_action( 'future_to_publish', 'gmrs_prolong_show_episode' );
  * @param WP_Post $post Currently published episode.
  */
 function gmrs_prolong_show_episode( $post ) {
-	if ( ShowsCPT::EPISODE_CPT != $post->post_type || ! $post->menu_order ) {
+	if ( ShowsCPT::EPISODE_CPT != $post->post_type || $post->ping_status > 0 ) {
 		return;
 	}
 
@@ -64,12 +64,13 @@ function gmrs_register_episode_page() {
 function gmrs_add_show_episode() {
 	check_admin_referer( 'gmr_add_show_episode' );
 
+	$filter_args = array( 'filter' => FILTER_VALIDATE_INT, 'options' => array( 'min_range' => 0 ) );
 	$data = filter_input_array( INPUT_POST, array(
-		'show'       => array( 'filter' => FILTER_VALIDATE_INT, 'options' => array( 'min_range' => 1 ) ),
+		'show'       => $filter_args,
 		'date'       => FILTER_DEFAULT,
-		'start_time' => array( 'filter' => FILTER_VALIDATE_INT, 'options' => array( 'min_range' => 0 ) ),
-		'end_time'   => array( 'filter' => FILTER_VALIDATE_INT, 'options' => array( 'min_range' => 0 ) ),
-		'repeat'     => FILTER_VALIDATE_BOOLEAN,
+		'start_time' => $filter_args,
+		'end_time'   => $filter_args,
+		'repeat'     => $filter_args,
 	) );
 
 	if ( empty( $data['show'] ) || ! ( $show = get_post( $data['show'] ) ) || $show->post_type != ShowsCPT::SHOW_CPT ) {
@@ -91,20 +92,51 @@ function gmrs_add_show_episode() {
 		wp_die( 'Please, select a end time greater than start time.', '', array( 'back_link' => true ) );
 	}
 
-	$inserted = wp_insert_post( array(
-		'post_title'    => $show->post_title,
-		'post_type'     => ShowsCPT::EPISODE_CPT,
-		'post_status'   => 'future',
-		'post_date'     => date( DATE_ISO8601, $start_date ),
-		'post_date_gmt' => date( DATE_ISO8601, $start_date_gmt ),
-		'post_parent'   => $show->ID,
-		'ping_status'   => $data['repeat'] ? 1 : -1,
-		'menu_order'    => $data['end_time'] - $data['start_time'],
-	) );
+	$iterations = 1;
+	$skip_daysofweek = array();
+	switch ( $data['repeat'] ) {
+		case 2: 
+			$iterations = 7;
+			break;
+		case 3:
+			$iterations = 5;
+			$skip_daysofweek = array( 6, 7 );
+			break;
+		case 4:
+			$iterations = 2;
+			$skip_daysofweek = array( 1, 2, 3, 4, 5 );
+			break;
+	}
+
+	$inserted = $iteration = 0;
+	while ( $iteration < $iterations ) {
+		if ( $iteration > 0 ) {
+			$start_date += DAY_IN_SECONDS;
+			$start_date_gmt += DAY_IN_SECONDS;
+		}
+
+		if ( in_array( date( 'N', $start_date ), $skip_daysofweek ) ) {
+			continue;
+		}
+		
+		$inserted += wp_insert_post( array(
+			'post_title'    => $show->post_title,
+			'post_type'     => ShowsCPT::EPISODE_CPT,
+			'post_status'   => 'future',
+			'post_date'     => date( DATE_ISO8601, $start_date ),
+			'post_date_gmt' => date( DATE_ISO8601, $start_date_gmt ),
+			'post_parent'   => $show->ID,
+			'ping_status'   => $data['repeat'] ? 1 : -1,
+			'menu_order'    => $data['end_time'] - $data['start_time'],
+		) );
+
+		$iteration++;
+	}
 
 	$cookie_path = parse_url( admin_url( '/' ), PHP_URL_PATH );
 	setcookie( 'gmr_show_schedule', urlencode( serialize( array(
 		'show'       => $show->ID,
+		'repeat'     => $data['repeat'],
 		'start_time' => $data['start_time'],
 		'end_time'   => $data['end_time'],
 		'date'       => strtotime( $data['date'] ),
@@ -146,6 +178,7 @@ function gmrs_render_episode_schedule_page() {
 		'start_time' => false,
 		'end_time'   => false,
 		'date'       => strtotime( 'tomorrow' ),
+		'repeat'     => 1,
 	) );
 	$active['date'] = date( 'M j, Y', $active['date'] );
 	
@@ -165,6 +198,14 @@ function gmrs_render_episode_schedule_page() {
 		'orderby'             => 'title',
 		'order'               => 'ASC',
 	) );
+
+	$repeats = array(
+		'once, this week only',
+		'every week at this time',
+		'every day at this time',
+		'every working day at this time',
+		'every weekend day at this time',
+	);
 
 	?><div id="show-schedule" class="wrap">
 		<h2>Show Schedule</h2>
@@ -197,8 +238,9 @@ function gmrs_render_episode_schedule_page() {
 			</select>
 			show, which occurs
 			<select name="repeat">
-				<option value="1">every week at this time</option>
-				<option value="0">once, this week only</option>
+				<?php foreach ( $repeats as $index => $label ) : ?>
+				<option value="<?php echo esc_attr( $index ); ?>"><?php echo esc_html( $label ); ?></option>
+				<?php endforeach; ?>
 			</select>
 			and starts on
 			<input type="text" id="start-from-date" value="<?php echo $active['date']; ?>" required>
