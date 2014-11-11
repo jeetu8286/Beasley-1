@@ -47,7 +47,7 @@
     #schedule-table td > div {
       position: absolute;
       left: 1px;
-      right: 1px;
+      right: 0px;
       padding: 5px 10px;
       cursor: pointer;
       border-top: 2px solid transparent;

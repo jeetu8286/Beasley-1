@@ -239,7 +239,9 @@ function gmrs_render_episode_schedule_page() {
 			show, which occurs
 			<select name="repeat">
 				<?php foreach ( $repeats as $index => $label ) : ?>
-				<option value="<?php echo esc_attr( $index ); ?>"><?php echo esc_html( $label ); ?></option>
+				<option value="<?php echo esc_attr( $index ); ?>"<?php selected( $index, $active['repeat'] ); ?>>
+					<?php echo esc_html( $label ); ?>
+				</option>
 				<?php endforeach; ?>
 			</select>
 			and starts on
@@ -293,9 +295,9 @@ function gmrs_render_episode_schedule_page() {
 										 data-hover-color="<?php echo gmrs_show_color( $episode->post_parent, 0.4 ) ?>">
 										
 										<small>
-											<?php echo date( 'h:i A', strtotime( $episode->post_date_gmt ) + $offset ); ?>
-											<?php echo ! empty( $episode->ping_status ) ? '(weekly)' : ''; ?><br>
-											<?php echo date( 'M-d h:i A', strtotime( $episode->post_date_gmt ) + $offset ) ?>
+											<?php echo date( 'M d', strtotime( $episode->post_date_gmt ) + $offset ); ?><br>
+											<?php echo date( 'h:i A', strtotime( $episode->post_date_gmt ) + $offset ); ?><br>
+											<?php echo date( 'h:i A', strtotime( $episode->post_date_gmt ) + $episode->menu_order + $offset ); ?><br>
 										</small>
 
 										<b><?php echo esc_html( $episode->post_title ); ?></b>
