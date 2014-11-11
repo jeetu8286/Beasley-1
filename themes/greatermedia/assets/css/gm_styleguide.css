@@ -2075,7 +2075,7 @@ blockquote p {
   display: block;
   margin: 0;
   font-family: "Open Sans", sans-serif;
-  font-size: 1em;
+  font-size: 0.88889em;
   font-weight: normal; }
 
 .live-link__title a:link, .live-link__title a:visited {
@@ -2299,13 +2299,17 @@ blockquote p {
   font-weight: normal;
   text-transform: uppercase; }
 
+.widget--live-player ul {
+  padding: 0;
+  margin: 0; }
+
 .widget--live-player li {
   list-style: none;
   display: block;
   padding: 0;
   margin: 0;
   font-family: "Open Sans", sans-serif;
-  font-size: 1em;
+  font-size: 0.88889em;
   font-weight: normal; }
 
 .widget--live-player li a:link, .widget--live-player li a:visited {
