@@ -248,7 +248,7 @@ function gmrs_render_episode_schedule_page() {
 
 									?><div class="show-<?php echo esc_attr( $episode->post_parent ); ?>"
 										 style="<?php echo implode( ';', $styles ) ?>"
-										 data-hover-color="<?php echo gmrs_show_color( $episode->post_parent, 0.6 ) ?>">
+										 data-hover-color="<?php echo gmrs_show_color( $episode->post_parent, 0.4 ) ?>">
 										
 										<small>
 											<?php echo date( 'h:i A', strtotime( $episode->post_date_gmt ) + $offset ); ?>

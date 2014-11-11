@@ -68,6 +68,16 @@
 				float: right;
 				text-align: right;
 			}
+
+			a {
+				display: none;
+			}
+
+			&:hover {
+				a {
+					display: inline;
+				}
+			}
 		}
 	}
 
