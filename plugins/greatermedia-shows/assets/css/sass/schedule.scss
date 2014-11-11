@@ -48,8 +48,12 @@
 		width: 14.285714286%;
 		font-size: 12px;
 		line-height: 18px;
+		position: relative;
 
 		> div {
+			position: absolute;
+			left: 1px;
+			right: 1px;
 			padding: 5px 10px;
 			cursor: pointer;
 			border-top: 2px solid transparent;
@@ -74,5 +78,9 @@
 
 	thead th {
 		border-bottom: 2px solid $table-border-color;
+	}
+
+	tbody td {
+		height: 1440px;
 	}
 }

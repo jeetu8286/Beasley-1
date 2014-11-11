@@ -65,10 +65,11 @@ function gmrs_add_show_episode() {
 	check_admin_referer( 'gmr_add_show_episode' );
 
 	$data = filter_input_array( INPUT_POST, array(
-		'show'   => array( 'filter' => FILTER_VALIDATE_INT, 'options' => array( 'min_range' => 1 ) ),
-		'date'   => FILTER_DEFAULT,
-		'time'   => array( 'filter' => FILTER_VALIDATE_INT, 'options' => array( 'min_range' => 0 ) ),
-		'repeat' => FILTER_VALIDATE_BOOLEAN,
+		'show'       => array( 'filter' => FILTER_VALIDATE_INT, 'options' => array( 'min_range' => 1 ) ),
+		'date'       => FILTER_DEFAULT,
+		'start_time' => array( 'filter' => FILTER_VALIDATE_INT, 'options' => array( 'min_range' => 0 ) ),
+		'end_time'   => array( 'filter' => FILTER_VALIDATE_INT, 'options' => array( 'min_range' => 0 ) ),
+		'repeat'     => FILTER_VALIDATE_BOOLEAN,
 	) );
 
 	if ( empty( $data['show'] ) || ! ( $show = get_post( $data['show'] ) ) || $show->post_type != ShowsCPT::SHOW_CPT ) {
@@ -79,26 +80,35 @@ function gmrs_add_show_episode() {
 		wp_die( 'Wrong date has been selected.' );
 	}
 
-	$date += $data['time'];
-	$date_gmt = $date - get_option( 'gmt_offset' ) * HOUR_IN_SECONDS;
-	if ( $date_gmt < time() ) {
+	$offset = get_option( 'gmt_offset' ) * HOUR_IN_SECONDS;
+	$start_date = $date + $data['start_time'];
+	$start_date_gmt = $start_date - $offset;
+	if ( $start_date_gmt < time() ) {
 		wp_die( 'Please, select a date in a future.' );
+	}
+	
+	if ( $data['start_time'] > $data['end_time'] ) {
+		wp_die( 'Please, select a end time greater than start time.' );
 	}
 
 	$inserted = wp_insert_post( array(
 		'post_title'    => $show->post_title,
 		'post_type'     => ShowsCPT::EPISODE_CPT,
 		'post_status'   => 'future',
-		'post_date'     => date( DATE_ISO8601, $date ),
-		'post_date_gmt' => date( DATE_ISO8601, $date_gmt ),
+		'post_date'     => date( DATE_ISO8601, $start_date ),
+		'post_date_gmt' => date( DATE_ISO8601, $start_date_gmt ),
 		'post_parent'   => $show->ID,
-		'menu_order'    => $data['repeat'] ? 1 : 0,
+		'ping_status'   => $data['repeat'] ? 1 : -1,
+		'menu_order'    => $data['end_time'] - $data['start_time'],
 	) );
 
 	$cookie_path = parse_url( admin_url( '/' ), PHP_URL_PATH );
-	setcookie( 'gmr_show_id', $show->ID, 0, $cookie_path );
-	setcookie( 'gmr_show_time', $data['time'], 0, $cookie_path );
-	setcookie( 'gmr_show_date', strtotime( $data['date'] ), 0, $cookie_path );
+	setcookie( 'gmr_show_schedule', urlencode( serialize( array(
+		'show'       => $show->ID,
+		'start_time' => $data['start_time'],
+		'end_time'   => $data['end_time'],
+		'date'       => strtotime( $data['date'] ),
+	) ) ), 0, $cookie_path );
 
 	$redirect = add_query_arg( array( 'created' => $inserted ? 1 : 0, 'deleted' => false ), wp_get_referer() );
 	wp_redirect( $redirect );
@@ -130,9 +140,14 @@ function gmrs_delete_show_episode() {
  * Renders show episode schedule page.
  */
 function gmrs_render_episode_schedule_page() {
-	$active_show = isset( $_COOKIE['gmr_show_id'] ) ? $_COOKIE['gmr_show_id'] : false;
-	$active_time = isset( $_COOKIE['gmr_show_time'] ) ? $_COOKIE['gmr_show_time'] : false;
-	$active_date = date( 'M j, Y', isset( $_COOKIE['gmr_show_date'] ) ? $_COOKIE['gmr_show_date'] : strtotime( 'tomorrow' ) );
+	$active = isset( $_COOKIE['gmr_show_schedule'] ) ? unserialize( urldecode( $_COOKIE['gmr_show_schedule'] ) ) : array();
+	$active = wp_parse_args( $active, array(
+		'show'       => false,
+		'start_time' => false,
+		'end_time'   => false,
+		'date'       => strtotime( 'tomorrow' ),
+	) );
+	$active['date'] = date( 'M j, Y', $active['date'] );
 	
 	$episodes = gmrs_get_scheduled_episodes();
 	$precision = 0.5; // 1 - each hour, 0.5 - each 30 mins, 0.25 - each 15 mins
@@ -167,7 +182,7 @@ function gmrs_render_episode_schedule_page() {
 		<form id="schedule-form" action="admin.php" method="post">
 			<?php wp_nonce_field( 'gmr_add_show_episode' ); ?>
 			<input type="hidden" name="action" value="gmr_add_show_episode">
-			<input type="hidden" id="start-from-date-value" name="date" value="<?php echo $active_date; ?>">
+			<input type="hidden" id="start-from-date-value" name="date" value="<?php echo $active['date']; ?>">
 
 			<input type="submit" class="button button-primary" value="Add to the schedule">
 
@@ -175,7 +190,7 @@ function gmrs_render_episode_schedule_page() {
 			<select name="show">
 				<?php while ( $shows->have_posts() ) : ?>
 					<?php $show = $shows->next_post(); ?>
-					<option value="<?php echo esc_attr( $show->ID ); ?>"<?php selected( $show->ID, $active_show ); ?>>
+					<option value="<?php echo esc_attr( $show->ID ); ?>"<?php selected( $show->ID, $active['show'] ); ?>>
 						<?php echo esc_html( $show->post_title ); ?>
 					</option>
 				<?php endwhile; ?>
@@ -186,12 +201,21 @@ function gmrs_render_episode_schedule_page() {
 				<option value="0">once, this week only</option>
 			</select>
 			and starts from
-			<input type="text" id="start-from-date" value="<?php echo $active_date; ?>" required>
+			<input type="text" id="start-from-date" value="<?php echo $active['date']; ?>" required>
 			at
-			<select name="time">
+			<select name="start_time">
 				<?php for ( $i = 0, $count = 24 / $precision; $i < $count; $i++ ) : ?>
 					<?php $time = HOUR_IN_SECONDS * $precision * $i; ?>
-					<option value="<?php echo $time; ?>"<?php selected( $time, $active_time ); ?>>
+					<option value="<?php echo $time; ?>"<?php selected( $time, $active['start_time'] ); ?>>
+						<?php echo date( 'h:i A', $time ); ?>
+					</option>
+				<?php endfor; ?>
+			</select>
+			till
+			<select name="end_time">
+				<?php for ( $i = 1; $i < $count; $i++ ) : ?>
+					<?php $time = HOUR_IN_SECONDS * $precision * $i; ?>
+					<option value="<?php echo $time; ?>"<?php selected( $time, $active['end_time'] ); ?>>
 						<?php echo date( 'h:i A', $time ); ?>
 					</option>
 				<?php endfor; ?>
@@ -215,19 +239,20 @@ function gmrs_render_episode_schedule_page() {
 							if ( ! empty( $episodes[ $day ] ) ) :
 								for ( $i = 0, $len = count( $episodes[ $day ] ); $i < $len; $i++ ) :
 									$episode = $episodes[ $day ][ $i ];
-
-									$height = $i + 1 < $len
-										? strtotime( $episodes[ $day ][ $i + 1 ]->post_date ) % DAY_IN_SECONDS
-										: DAY_IN_SECONDS;
-									$height = ( $height - ( strtotime( $episode->post_date ) % DAY_IN_SECONDS ) ) * 60 / HOUR_IN_SECONDS;
+									$styles = array(
+										'top:' . ( ( strtotime( $episode->post_date ) % DAY_IN_SECONDS ) * 60 / HOUR_IN_SECONDS ) . 'px',
+										'height:' . ( $episode->menu_order * 60 / HOUR_IN_SECONDS ) . 'px',
+										'background-color:' . gmrs_show_color( $episode->post_parent, 0.15 ),
+										'border-color:' . gmrs_show_color( $episode->post_parent, 0.75 ),
+									);
 
 									?><div class="show-<?php echo esc_attr( $episode->post_parent ); ?>"
-										 style="height: <?php echo $height ?>px;background-color:<?php echo gmrs_show_color( $episode->post_parent, 0.15 ) ?>;border-color:<?php echo gmrs_show_color( $episode->post_parent, 0.75 ) ?>;"
+										 style="<?php echo implode( ';', $styles ) ?>"
 										 data-hover-color="<?php echo gmrs_show_color( $episode->post_parent, 0.6 ) ?>">
 										
 										<small>
 											<?php echo date( 'h:i A', strtotime( $episode->post_date_gmt ) + $offset ); ?>
-											<?php echo ! empty( $episode->menu_order ) ? '(weekly)' : ''; ?><br>
+											<?php echo ! empty( $episode->ping_status ) ? '(weekly)' : ''; ?><br>
 											<?php echo date( 'M-d h:i A', strtotime( $episode->post_date_gmt ) + $offset ) ?>
 										</small>
 
