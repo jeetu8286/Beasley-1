@@ -11,6 +11,8 @@
 		<h2 class="sg-section-title"><?php _e( 'Live Player', 'greatermedia' ); ?></h2>
 
 		<div class="live-player__col">
+
+			<h3 class="sg-subsection--title"><?php _e( 'Logged in : Live Radio Not Playing', 'greatermedia' ); ?></h2>
 			<div id="live-player__sidebar" class="live-player">
 
 				<nav class="live-player__stream">
@@ -92,6 +94,8 @@
 		</div>
 
 		<div class="live-player__col">
+
+			<h3 class="sg-subsection--title"><?php _e( 'Live Radio Playing', 'greatermedia' ); ?></h3>
 			<div id="live-player--sidebar" class="live-player">
 
 				<nav class="live-player__stream">
@@ -175,6 +179,7 @@
 
 		<div class="live-player__col">
 
+			<h3 class="sg-subsection--title"><?php _e( 'Podcast Playing', 'greatermedia' ); ?></h3>
 			<div id="live-player--sidebar" class="live-player">
 
 				<nav class="live-player__stream">
@@ -266,6 +271,8 @@
 		</div>
 
 		<div class="live-player__col">
+
+			<h3 class="sg-subsection--title"><?php _e( 'Inline Audio Playing', 'greatermedia' ); ?></h3>
 			<div id="live-player--sidebar" class="live-player">
 
 				<nav class="live-player__stream">
@@ -358,6 +365,8 @@
 		</div>
 
 		<div class="live-player__col">
+
+			<h3 class="sg-subsection--title"><?php _e( 'Channel Selector', 'greatermedia' ); ?></h3>
 			<div id="live-player__sidebar" class="live-player">
 
 				<nav class="live-player__stream">
