@@ -8,6 +8,11 @@ class BlogData {
 
 	private static $post_types = array( 'post' );
 
+	/**
+	 * Get all terms of all taxonomies from the corporate site
+	 *
+	 * @return array
+	 */
 	public static function getTerms() {
 		global $switched;
 
