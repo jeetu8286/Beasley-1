@@ -63,8 +63,8 @@
 						<div id="npeInfo"></div>
 					</div>
 					<div id="now-playing" class="now-playing">
-						<h4 class="now-playing__title">Track Title</h4>
-						<h5 class="now-playing__artist">Artist Name</h5>
+						<div class="now-playing__title">Track Title</div>
+						<div class="now-playing__artist">Artist Name</div>
 					</div>
 					<?php do_action( 'gm_live_player_test_ui' );
 				} else {
@@ -88,11 +88,11 @@
 			?>
 		</div>
 
-		<div class="live-player__volume">
+		<?php /* <div class="live-player__volume">
 			<div class="live-player__volume--btn"></div>
 			<div class="live-player__volume--level"></div>
 			<div class="live-player__volume--up"></div>
-		</div>
+		</div> */ ?>
 
 	</div>
 
@@ -100,15 +100,15 @@
 		<?php dynamic_sidebar( 'liveplayer_sidebar' ); ?>
 		<div class="live-link">
 			<div class="live-link__type live-link__type--audio"></div>
-			<h3 class="live-link__title"><a href="#">WMMR Promo - 10/16/14 - A surprise in the movie "Fury"</a></h3>
+			<div class="live-link__title"><a href="#">WMMR Promo - 10/16/14 - A surprise in the movie "Fury"</a></div>
 		</div>
 		<div class="live-link">
 			<div class="live-link__type live-link__type--video"></div>
-			<h3 class="live-link__title"><a href="#">"Breakdance Conversation" with Jimmy Fallon & Brad Pitt</a></h3>
+			<div class="live-link__title"><a href="#">"Breakdance Conversation" with Jimmy Fallon & Brad Pitt</a></div>
 		</div>
 		<div class="live-link">
 			<div class="live-link__type live-link__type--link"></div>
-			<h3 class="live-link__title"><a href="#">Flyers Charities Halloween 5K will be held on Saturday, October 25</a></h3>
+			<div class="live-link__title"><a href="#">Flyers Charities Halloween 5K will be held on Saturday, October 25</a></div>
 		</div>
 	</div>
 
