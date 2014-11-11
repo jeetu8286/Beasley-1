@@ -22,9 +22,27 @@ class SyndicationCPT {
 		add_filter( 'display_post_states' , array( $this, 'change_state_labels' ), 10, 1);
 		add_filter( 'gettext', array( $this, 'change_publish_button' ), 10, 2 );
 		add_filter( 'post_row_actions', array( $this, 'remove_quick_edit' ), 10, 2);
+		add_filter( 'is_protected_meta', 'hide_meta_keys', 10, 2);
 
 	}
 
+	/**
+	 * Hide meta keys from custom fields
+	 *
+	 * @param $protected - boolean
+	 * @param $meta_key  - string meta key
+	 *
+	 * @return bool
+	 */
+
+	public function hide_meta_keys( $protected, $meta_key ) {
+
+		if ( strpos( $meta_key, 'subscription_default_terms-' ) !== false || $meta_key = 'subscription_filter_terms') {
+			return true;
+		}
+
+		return $protected;
+	}
 
 	public function remove_quick_edit( $actions ) {
 		global $post;
@@ -177,7 +195,7 @@ class SyndicationCPT {
 			,__( 'Subscription control' )
 			,'post_submit_meta_box'
 			,$this->post_type
-			,'normal'
+			,'side'
 			,'high'
 		);
 
@@ -274,28 +292,27 @@ class SyndicationCPT {
 
 		}
 
-
-		/*echo '<pre>';
-		var_dump( $_POST );
-		echo '</pre>';
-		die();*/
-
+		// get all taxonomies for post
 		$taxonomy_names  = get_object_taxonomies( 'post', 'objects' );
-		//subscription_default_terms-category
 
+		// foreach taxonomy pare defaults
 		foreach( $taxonomy_names as $taxonomy ) {
-			if( isset( $_POST['subscription_default_terms-' . $taxonomy->name ] ) ) {
-				$default_terms = implode( ',', $_POST['subscription_default_terms-' . $taxonomy->name] );
-				update_post_meta( $post_id, '_subsription_default_terms-' . $taxonomy->name, $default_terms  );
+			if( isset( $_POST[ 'subscription_default_terms-' . $taxonomy->name ] ) ) {
+				// sanitize defaults
+				$sanitized = array_map( 'sanitize_text_field', $_POST['subscription_default_terms-' . $taxonomy->name] );
+				$default_terms = implode( ',', $sanitized );
+				update_post_meta( $post_id, 'subscription_default_terms-' . $taxonomy->name, $default_terms  );
 			}
 		}
 
+		// get filter metas
 		if( isset( $_POST[ 'subscription_filter_terms' ] ) ) {
-			$terms = implode( ',', $_POST[ 'subscription_filter_terms' ] );
+			$sanitized = array_map( 'sanitize_text_field', $_POST[ 'subscription_filter_terms' ] );
+			$terms = implode( ',', $sanitized );
 		}
 
 		// Update the meta field.
-		update_post_meta( $post_id, '_subsription_filter_terms', $terms  );
+		update_post_meta( $post_id, 'subscription_filter_terms', $terms  );
 
 	}
 
@@ -312,7 +329,7 @@ class SyndicationCPT {
 		wp_nonce_field( 'save_subscription_status', 'subscription_custom_nonce' );
 
 		// Use get_post_meta to retrieve an existing value from the database.
-		$terms = get_post_meta( $post->ID, '_subsription_filter_terms', true );
+		$terms = get_post_meta( $post->ID, 'subscription_filter_terms', true );
 		$terms = explode( ',', $terms );
 
 		// Display the form, using the current value.
@@ -367,7 +384,7 @@ class SyndicationCPT {
 			$label = $taxonomy->name;
 
 			// Use get_post_meta to retrieve an existing value from the database.
-			$terms = get_post_meta( $post->ID, '_subsription_default_terms-' . $label, true );
+			$terms = get_post_meta( $post->ID, 'subscription_default_terms-' . $label, true );
 			$terms = explode( ',', $terms );
 
 			// Display the form, using the current value.
