@@ -22,7 +22,7 @@ class SyndicationCPT {
 		add_filter( 'display_post_states' , array( $this, 'change_state_labels' ), 10, 1);
 		add_filter( 'gettext', array( $this, 'change_publish_button' ), 10, 2 );
 		add_filter( 'post_row_actions', array( $this, 'remove_quick_edit' ), 10, 2);
-		add_filter( 'is_protected_meta', 'hide_meta_keys', 10, 2);
+		add_filter( 'is_protected_meta', array( $this, 'hide_meta_keys' ), 10, 2);
 
 	}
 
@@ -36,9 +36,16 @@ class SyndicationCPT {
 	 */
 
 	public function hide_meta_keys( $protected, $meta_key ) {
+		$hidden_keys = array(
+			'subscription_post_status',
+			'subscription_filter_terms',
+			'subscription_default_terms-'
+		);
 
-		if ( strpos( $meta_key, 'subscription_default_terms-' ) !== false || $meta_key = 'subscription_filter_terms') {
-			return true;
+		foreach( $hidden_keys as $hidden_key ) {
+			if ( strpos( $meta_key, $hidden_key ) !== false ) {
+				return true;
+			}
 		}
 
 		return $protected;
@@ -213,7 +220,7 @@ class SyndicationCPT {
 		add_meta_box(
 			'subscription_default_metabox'
 			,__( 'Defaults' )
-			,array( $this, 'custom_term_metabox' )
+			,array( $this, 'render_defaults_metabox' )
 			,$this->post_type
 			,'advanced'
 			,'high'
@@ -305,6 +312,14 @@ class SyndicationCPT {
 			}
 		}
 
+		// save deafult status
+		if( isset( $_POST[ 'subscription_post_status' ] ) ) {
+			$sanitized = sanitize_text_field( $_POST[ 'subscription_post_status' ] );
+
+			// Update the meta field.
+			update_post_meta( $post_id, 'subscription_post_status', $sanitized  );
+		}
+
 		// get filter metas
 		if( isset( $_POST[ 'subscription_filter_terms' ] ) ) {
 			$sanitized = array_map( 'sanitize_text_field', $_POST[ 'subscription_filter_terms' ] );
@@ -370,10 +385,28 @@ class SyndicationCPT {
 	}
 
 
-	public function custom_term_metabox( $post, $args ) {
+	public function render_defaults_metabox( $post ) {
 
 		// Add an nonce field so we can check for it later.
 		wp_nonce_field( 'save_subscription_status', 'subscription_custom_nonce' );
+
+		// available statuses
+		$list_status = array( 'draft', 'publish' );
+
+		// get default status from meta
+		$default_status = get_post_meta( $post->ID, 'subscription_post_status', 'true');
+
+		// post status metabox
+		echo '<p><label for="subscription_post_status">';
+		_e( 'Status', 'greatermedia' );
+		echo '</label> ';
+
+		echo '<select name="subscription_post_status" id="subscription_post_status" style="width: 300px;">';
+			foreach( $list_status as $status ) {
+				echo '<option', $status == $default_status ? ' selected="selected"' : ''
+				, ' value="' . esc_html( $status ) .'">' . esc_html( ucfirst( $status ) ) . '</option>';
+			}
+		echo '</select></p>';
 
 		// get all taxonomies of "post"
 		$taxonomy_names = get_object_taxonomies( 'post', 'objects' );
