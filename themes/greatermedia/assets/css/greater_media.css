@@ -2016,7 +2016,6 @@ blockquote p {
 .live-stream__resume {
   height: 48px;
   padding: 0 1em;
-  margin: 0 0 .5em;
   text-align: center; }
 
 .live-stream__resume--btn {
@@ -2101,11 +2100,50 @@ blockquote p {
   font-family: "gmr-icons" !important;
   content: "\e60b" !important; }
 
+.live-stream--podcast__progress {
+  width: 85%;
+  height: 3px;
+  margin: 0 auto;
+  -webkit-border-radius: 1px;
+  -moz-border-radius: 1px;
+  -ms-border-radius: 1px;
+  -o-border-radius: 1px;
+  -border-radius: 1px;
+  border-radius: 1px;
+  background-color: #404041; }
+
+.live-stream--podcast__progress-current {
+  float: left;
+  width: 80%;
+  height: 3px;
+  -webkit-border-radius: 1px;
+  -moz-border-radius: 1px;
+  -ms-border-radius: 1px;
+  -o-border-radius: 1px;
+  -border-radius: 1px;
+  border-radius: 1px;
+  background-color: #d22228; }
+
+.live-stream--podcast__time {
+  width: 85%;
+  margin: 0 auto; }
+
+.live-stream--podcast__start, .live-stream--podcast__end {
+  float: left;
+  width: 50%;
+  padding-top: 8px;
+  line-height: 1;
+  font-size: 0.6243em;
+  text-align: left; }
+
+.live-stream--podcast__end {
+  text-align: right; }
+
 .live-stream__controls {
   position: relative;
   text-align: center; }
 
-#pauseButton, #resumeButton {
+.live-stream__btn--resume, .live-stream__btn--pause {
   display: none; }
 
 .on-air, .up-next {
@@ -2140,7 +2178,7 @@ blockquote p {
       float: none;
       width: 100%;
       padding: 0 1em;
-      margin: 1em 0 2em;
+      margin: 1em 0 0;
       text-align: center; } }
 
 .now-playing__title {
