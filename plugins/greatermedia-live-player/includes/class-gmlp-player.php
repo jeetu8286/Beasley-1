@@ -38,11 +38,6 @@ class GMLP_Player {
 				<div id="resumeButton" class="live-stream__btn--resume" data-station="<?php do_action( 'radio_callsign' ); ?>"></div>
 			</div>
 
-			<div id="nowPlaying" class="now-playing">
-				<div id="trackInfo" class="now-playing__info"></div>
-				<div id="npeInfo"></div>
-			</div>
-
 			<!-- Player placeholder -->
 			<div id="td_container"></div>
 		</div>

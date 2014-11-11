@@ -45,31 +45,47 @@
 			<span class="on-air__title">On Air:</span><span class="on-air__show">Preston and Steve Show</span>
 		</div>
 
+		<div id="up-next" class="up-next">
+			<span class="up-next__title">Up Next:</span><span class="up-next__show">Pierre Robert</span>
+		</div>
+
 		<div class="live-stream">
 			<?php
 
 				if ( defined( 'GREATER_MEDIA_GIGYA_TEST_UI' ) && GREATER_MEDIA_GIGYA_TEST_UI ) {
-					do_action( 'gm_live_player' ); ?>
+					do_action( 'gm_live_player' );?>
 					<div class="live-stream__status">
 						<div id="live-stream__listen-now" class="live-stream__listen-now--btn"><?php _e( 'Listen Live', 'greatermedia' ); ?></div>
+						<div id="live-stream__now-playing" class="live-stream__now-playing--btn">Now Playing</div>
+					</div>
+					<div id="nowPlaying" class="now-playing">
+						<div id="trackInfo" class="now-playing__info"></div>
+						<div id="npeInfo"></div>
+					</div>
+					<div id="now-playing" class="now-playing">
+						<h4 class="now-playing__title">Track Title</h4>
+						<h5 class="now-playing__artist">Artist Name</h5>
 					</div>
 					<?php do_action( 'gm_live_player_test_ui' );
 				} else {
 
 					if ( is_gigya_user_logged_in() ) { ?>
-						<div id="live-stream__listen-now" class="live-stream__listen-now--btn"><?php _e( 'Listen Live', 'greatermedia' ); ?></div>
-						<?php do_action( 'gm_live_player' );
-					} else { ?>
-						<div id="live-stream__listen-now" class="live-stream__listen-now--btn"><?php _e( 'Listen Live', 'greatermedia' ); ?></div>
+						<?php do_action( 'gm_live_player' ); ?>
+						<div class="live-stream__status">
+							<div id="live-stream__now-playing" class="live-stream__now-playing--btn">Now Playing</div>
+						</div>
+						<div id="nowPlaying" class="now-playing">
+							<div id="trackInfo" class="now-playing__info"></div>
+							<div id="npeInfo"></div>
+						</div>
+					<?php } else { ?>
+						<div class="live-stream__status">
+							<div id="live-stream__listen-now" class="live-stream__listen-now--btn"><?php _e( 'Listen Live', 'greatermedia' ); ?></div>
+						</div>
 					<?php }
 				}
 
 			?>
-		</div>
-
-		<div id="now-playing" class="now-playing">
-			<h4 class="now-playing__title">Track Title</h4>
-			<h5 class="now-playing__artist">Artist Name</h5>
 		</div>
 
 		<div class="live-player__volume">

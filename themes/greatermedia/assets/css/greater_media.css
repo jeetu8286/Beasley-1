@@ -2125,26 +2125,26 @@ blockquote p {
 #pauseButton, #resumeButton {
   display: none; }
 
-.on-air {
+.on-air, .up-next {
   float: left;
   width: 25%;
   padding: 0 1em 0 0;
   margin: 0;
   text-transform: uppercase; }
   @media screen and (min-width: 768px) {
-    .on-air {
+    .on-air, .up-next {
       float: none;
       width: 100%;
       height: 48px;
       padding: 0 1em;
       text-align: center; } }
 
-.on-air__title {
+.on-air__title, .up-next__title {
   margin: 0 .25em 0 0;
   font-size: 0.70233em;
   font-weight: lighter; }
 
-.on-air__show {
+.on-air__show, .up-next__show {
   font-size: 0.79012em; }
 
 .now-playing {
