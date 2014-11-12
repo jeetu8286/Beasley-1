@@ -9,33 +9,43 @@ $_color_base_gray: #a7a9ab;
 //
 // @type String
 //
-$colors: (
-	body-bg: #000000,
-	primary-bg: #ffffff,
-	primary-text: #000000,
-	primary-link: #d22228,
-	primary-heading: #58595b,
-	primary-border: #d0d2d3,
-	secondary-bg: #000000,
-	secondary-text: #6D6E70,
-	secondary-link: #ffffff,
-	secondary-link-alt: #919395,
-	secondary-heading: #d22228,
-	secondary-border: #282827,
-	secondary-drop: #1e1e1e,
-	tertiary-bg: #561015,
-	tertiary-border: #404041,
-	tertiary-link: #c7c7c7,
-	featured-bg: #58595b,
-	featured-heading: #ffffff,
-	featured-heading-bg: #270e10,
-	featured-text: #a6a8ab,
-	featured-list: #f7ef7e,
-	player-controls: #606060,
-	btn-bg: #d22228,
-	btn-text: #ffffff,
-	btn-alt: #f5ed7f,
-	transparent: transparent,
+$palettes: (
+	base: (
+		body-bg: #000000,
+		primary-bg: #ffffff,
+		primary-text: #000000,
+		primary-link: #d22228,
+		primary-heading: #58595b,
+		primary-border: #d0d2d3,
+		secondary-bg: #000000,
+		secondary-text: #6D6E70,
+		secondary-link: #ffffff,
+		secondary-link-alt: #919395,
+		secondary-heading: #d22228,
+		secondary-border: #282827,
+		secondary-drop: #1e1e1e,
+		tertiary-bg: #561015,
+		tertiary-border: #404041,
+		tertiary-link: #c7c7c7,
+		player-controls: #606060,
+		transparent: transparent,
+	),
+	live-links: (
+		text-color: #000000
+	),
+	btn: (
+		btn-bg: #d22228,
+		btn-text: #ffffff,
+		btn-alt: #f5ed7f,
+		transparent: transparent,
+	),
+	featured: (
+		featured-bg: #58595b,
+		featured-heading: #ffffff,
+		featured-heading-bg: #270e10,
+		featured-text: #a6a8ab,
+		featured-list: #f7ef7e
+	)
 );
 
 // Variables for site wide usage
@@ -43,9 +53,9 @@ $colors: (
 // @author Allen Moore
 // @since 0.1.0
 //
-$text-color: color(primary-text);
+$text-color: palette(base,  primary-text);
 
-$link-color: color(primary-link);
-$link-hover: darken(color(primary-link), 10%);
+$link-color: palette(base,  primary-link);
+$link-hover: palette(base,  primary-link);
 
-$border-color: color(primary-border);
+$border-color: palette(base,  primary-border);

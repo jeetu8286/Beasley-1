@@ -14,23 +14,23 @@
 // @param {number | unit} $padding-left-right - padding for the left and right of the button
 // @param {number | unit} $font-size - font size for the button
 //
-@mixin btn($bgcolor, $textcolor, $border-color, $padding-top-bottom, $padding-left-right, $font-size) {
+@mixin btn($palette, $bgcolor, $textcolor, $border-color, $padding-top-bottom, $padding-left-right, $font-size) {
 	display: inline-block;
 	line-height: 1;
 	padding: $padding-top-bottom $padding-left-right;
 	margin-right: .5em;
 	outline: none;
-	background-color: color($bgcolor);
-	border: 1px solid color($border-color);
+	background-color: color($palette, $bgcolor);
+	border: 1px solid color($palette, $border-color);
 	font-family: $open-sans;
 	font-size: $font-size;
-	color: color($textcolor) !important;
+	color: color($palette, $textcolor) !important;
 	text-transform: uppercase;
 	cursor: pointer;
 	&:hover, &:focus {
-		background-color: darken(color($bgcolor), 9%);
-		border-color: darken(color($border-color), 9%);
-		color: color($textcolor);
+		background-color: color($palette, $bgcolor);
+		border-color: color($palette, $border-color);
+		color: color($palette, $textcolor);
 	}
 	&:last-of-type{
 		margin-right: 0;

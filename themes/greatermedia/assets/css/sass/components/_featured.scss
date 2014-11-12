@@ -2,7 +2,7 @@
 	@extend %main;
 	@include position(relative, null null null null);
 	@include padding(3em 0);
-	background: url(../../images/featured-bg.png) repeat center center color(featured-bg);
+	background: url(../../images/featured-bg.png) repeat center center color(featured, featured-bg);
 	background-size: auto 40%;
 }
 
@@ -12,21 +12,21 @@
 
 .featured-artist--image {
 	@include size(100% null);
-	background-color: color(featured-bg);
+	background-color: color(featured, featured-bg);
 }
 
 .featured-artist--content {
 	@include size(100% null);
 	@include padding(3em 2em);
 	overflow: auto;
-	background-color: color(featured-heading-bg);
-	color: color(featured-text);
+	background-color: color(featured, featured-heading-bg);
+	color: color(featured, featured-text);
 }
 
 .featured-artist--heading {
 	float: left;
 	@include size(100% null);
-	color: color(featured-heading);
+	color: color(featured, featured-heading);
 	@include bp(large) {
 		@include size(30% null);
 		@include margin(null 5% null null);
@@ -63,7 +63,7 @@
 	@include size(100% 90px);
 	@include margin(null null 3em null);
 	overflow: hidden;
-	background-color: color(featured-heading-bg);
+	background-color: color(featured, featured-heading-bg);
 	@include bp(small) {
 		@include size(100% 95px);
 		@include margin(null null 3em null);
@@ -109,7 +109,7 @@
 	float: left;
 	@include size(70% null);
 	@include padding(1em 1em 1em 2em);
-	color: color(featured-text);
+	color: color(featured, featured-text);
 	@include bp(small) {
 		@include size(65% null);
 	}
@@ -144,7 +144,7 @@
 	@include size(40% null);
 	@include margin(null null .25em null);
 	font-size: ms(-2);
-	color: color(featured-list);
+	color: color(featured, featured-list);
 	@include bp(large) {
 		display: block;
 		@include size(100% null);
@@ -153,7 +153,7 @@
 }
 
 .featured-content--btn {
-	@include btn(btn-bg, btn-text, btn-bg, .25em, 1.5em, 1em);
+	@include btn(btn, btn-bg, btn-text, btn-bg, .25em, 1.5em, 1em);
 	@include border-top-radius(1.5em);
 	@include border-right-radius(1.5em);
 	@include border-bottom-radius(1.5em);
