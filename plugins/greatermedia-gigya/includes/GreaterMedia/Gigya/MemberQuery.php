@@ -356,7 +356,7 @@ class MemberQuery {
 		$query     = '';
 
 		if ( $category !== 'Any Category' ) {
-			$query = "profile.likes.category = '{$category}' and ";
+			$query = "profile.likes.category contains '{$category}' and ";
 		}
 
 		$query .= 'profile.likes.name';
@@ -386,7 +386,8 @@ class MemberQuery {
 		$query        = '';
 
 		if ( $category !== 'Any Category' ) {
-			$query .= "profile.favorites.{$favoriteType}.category = '{$category}' and ";
+			// TODO: Figure out why categories don't match exactly
+			$query .= "profile.favorites.{$favoriteType}.category contains '{$category}' and ";
 		}
 
 		$query .= "profile.favorites.{$favoriteType}.name";

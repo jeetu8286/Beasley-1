@@ -296,51 +296,51 @@ obj || (obj = {});
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 with (obj) {
-__p += '<p>Favorite Constraint</p>\n<ul class="constraint-toolbar">\n\t<li>\n\t\t<a\n\t\t\talt="f105"\n\t\t\tclass="dashicons dashicons-admin-page copy-constraint"\n\t\t\thref="#"\n\t\t\ttitle="Duplicate"\n\t\t/>\n\n\t\t<a\n\t\t\talt="f105"\n\t\t\tclass="dashicons dashicons-trash remove-constraint"\n\t\t\thref="#"\n\t\t\ttitle="Remove"\n\t\t/>\n\t</li>\n</ul>\n\n<p class="constraint-title">\n\t' +
+__p += '<ul class="constraint-toolbar">\n\t<li>\n\t\t<a\n\t\t\talt="f105"\n\t\t\tclass="dashicons dashicons-admin-page copy-constraint"\n\t\t\thref="#"\n\t\t\ttitle="Duplicate"\n\t\t/>\n\n\t\t<a\n\t\t\talt="f105"\n\t\t\tclass="dashicons dashicons-trash remove-constraint"\n\t\t\thref="#"\n\t\t\ttitle="Remove"\n\t\t/>\n\t</li>\n</ul>\n\n<p class="constraint-title">\n\t' +
 __e( title ) +
-'\n</p>\n\n<select class="constraint-operator" style="width: 35%">\n\t';
+'\n</p>\n\n<div class="entry-select-group">\n\t<label><strong>Favorite Type: </strong></label>\n\t<select class="favorite-type" style="width: 100%">\n\t\t';
+ _.each(favoriteTypes, function(favoriteItem) { ;
+__p += '\n\t\t<option value="' +
+__e( favoriteItem.value ) +
+'" ' +
+((__t = ( favoriteItem.value == favoriteType ? 'selected="selected"' : ''  )) == null ? '' : __t) +
+'">\n\t\t' +
+__e( favoriteItem.label ) +
+'\n\t\t</option>\n\t\t';
+ }) ;
+__p += '\n\t</select>\n</div>\n\n<div class="entry-select-group">\n\t<label><strong>Category: </strong></label>\n\t<select class="favorite-category" style="width: 100%">\n\t\t';
+ _.each(categories, function(categoryItem) { ;
+__p += '\n\t\t<option value="' +
+__e( categoryItem.value ) +
+'" ' +
+((__t = ( categoryItem.value == category ? 'selected="selected"' : ''  )) == null ? '' : __t) +
+'">\n\t\t' +
+__e( categoryItem.label ) +
+'\n\t\t</option>\n\t\t';
+ }) ;
+__p += '\n\t</select>\n</div>\n\n<div class="entry-answer-group">\n\t<label><strong>Favorite: </strong></label>\n\n\t<select class="constraint-operator" style="width: 35%">\n\t\t';
  _.each(view.operatorsFor(valueType), function(operatorItem) { ;
-__p += '\n\t<option value="' +
+__p += '\n\t\t<option value="' +
 __e( operatorItem ) +
 '" ' +
 ((__t = ( operatorItem === operator ? 'selected="selected"' : ''  )) == null ? '' : __t) +
-'">\n\t' +
-__e( operatorItem ) +
-'\n\t</option>\n\t';
- }) ;
-__p += '\n</select>\n\n';
- if (view.hasChoices()) { ;
-__p += '\n\t<select class="constraint-value" style="width: 45%">\n\t\t';
- _.each(choices, function(choiceItem) { ;
-__p += '\n\t\t<option value="' +
-__e( choiceItem.value ) +
-'" ' +
-((__t = ( choiceItem.value == value ? 'selected="selected"' : ''  )) == null ? '' : __t) +
 '">\n\t\t' +
-__e( choiceItem.label ) +
+__e( operatorItem ) +
 '\n\t\t</option>\n\t\t';
  }) ;
-__p += '\n\t</select>\n';
- } else if (valueType === 'integer' || valueType === 'float') { ;
-__p += '\n\t<input type="number" class="constraint-value constraint-value-text" value="' +
+__p += '\n\t</select>\n\n\t<input type="text" class="constraint-value constraint-value-text" value="' +
 __e( value ) +
-'" />\n';
- } else { ;
-__p += '\n\t<input type="text" class="constraint-value constraint-value-text" value="' +
-__e( value ) +
-'" />\n';
- } ;
-__p += '\n\n<select class="constraint-conjunction" style="width: 15%">\n\t';
+'" />\n\n\t<select class="constraint-conjunction" style="width: 15%">\n\t\t';
  _.each(view.conjunctions, function(conjunctionItem) { ;
-__p += '\n\t<option value="' +
+__p += '\n\t\t<option value="' +
 __e( conjunctionItem ) +
 '" ' +
 ((__t = ( conjunctionItem === conjunction ? 'selected="selected"' : ''  )) == null ? '' : __t) +
-'">\n\t' +
+'">\n\t\t' +
 __e( conjunctionItem ) +
-'\n\t</option>\n\t';
+'\n\t\t</option>\n\t\t';
  }) ;
-__p += '\n</select>\n';
+__p += '\n\t</select>\n</div>\n\n';
 
 }
 return __p
@@ -358,7 +358,7 @@ __e( title ) +
 __p += '\n\t\t<option value="' +
 __e( categoryItem.value ) +
 '" ' +
-((__t = ( categoryItem.value === operator ? 'selected="selected"' : ''  )) == null ? '' : __t) +
+((__t = ( categoryItem.value == category ? 'selected="selected"' : ''  )) == null ? '' : __t) +
 '">\n\t\t' +
 __e( categoryItem.label ) +
 '\n\t\t</option>\n\t\t';
@@ -835,18 +835,28 @@ var FavoriteConstraint = Constraint.extend({
 		value       : '',
 		favoriteType: 'music',
 		category    : 'Any Category',
+	},
+
+	getCategories: function() {
+		return FACEBOOK_CATEGORIES;
+	},
+
+	getFavoriteTypes: function() {
+		return FACEBOOK_FAVORITE_TYPES;
 	}
 
 });
 
+FACEBOOK_FAVORITE_TYPES = [
+	{ label: 'Interests'  , value: 'interests'  } ,
+	{ label: 'Music'      , value: 'music'      } ,
+	{ label: 'Television' , value: 'television' } ,
+	{ label: 'Activities' , value: 'activities' } ,
+	{ label: 'Books'      , value: 'books'      }
+];
+
 var AVAILABLE_CONSTRAINTS = [
 
-	{
-		type: 'profile:likes',
-		valueType: 'string',
-		category: 'Any Category',
-		value: ''
-	},
 	/* System Fields */
 	{
 		type: 'system:createdTimestamp',
@@ -925,6 +935,20 @@ var AVAILABLE_CONSTRAINTS = [
 		value: -5,
 	},
 
+	// Facebook
+	{
+		type: 'profile:likes',
+		valueType: 'string',
+		category: 'Any Category',
+		value: ''
+	},
+	{
+		type: 'profile:favorites',
+		valueType: 'string',
+		category: 'Any Category',
+		value: ''
+	},
+
 	/* Contests */
 	{
 		type: 'record:contest',
@@ -977,6 +1001,10 @@ var AVAILABLE_CONSTRAINTS_META = [
 	{
 		type: 'profile:likes',
 		title: 'Facebook Likes'
+	},
+	{
+		type: 'profile:favorites',
+		title: 'Facebook Favorites'
 	},
 	{
 		type: 'profile:birthYear',
@@ -1775,6 +1803,36 @@ var FavoriteConstraintView = ConstraintView.extend({
 	initialize: function(model, opts) {
 		ConstraintView.prototype.initialize.call(this, model, opts);
 	},
+
+	render: function() {
+		var data           = this.model.toViewJSON();
+		data.view          = this;
+		data.categories    = this.model.getCategories();
+		data.favoriteTypes = this.model.getFavoriteTypes();
+
+		var html = this.template(data);
+		this.$el.html(html);
+	},
+
+	updateConstraint: function(constraint) {
+		var operator     = $('.constraint-operator', this.el).val();
+		var conjunction  = $('.constraint-conjunction', this.el).val();
+		var value        = $('.constraint-value', this.el).val();
+		var category     = $('.favorite-category', this.el).val();
+		var favoriteType = $('.favorite-type', this.el).val();
+		value            = this.parseValue(value, constraint.get('valueType'));
+
+		var changes     = {
+			operator: operator,
+			value: value,
+			conjunction: conjunction,
+			category: category,
+			favoriteType: favoriteType
+		};
+
+		constraint.set(changes);
+	},
+
 
 });
 
