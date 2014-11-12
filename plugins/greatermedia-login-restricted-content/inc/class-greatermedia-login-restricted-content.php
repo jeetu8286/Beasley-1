@@ -62,7 +62,6 @@ class GreaterMediaLoginRestrictedContent extends VisualShortcode {
 			// Enqueue JavaScript
 			wp_enqueue_script( 'greatermedia-lc-admin-js', trailingslashit( GREATER_MEDIA_LOGIN_RESTRICTED_CONTENT_URL ) . 'js/greatermedia-login-restricted-content-admin.js', array(
 				'jquery',
-				'date-format'
 			), false, true );
 
 			$login_restriction = get_post_meta( $post->ID, '_post_login_restriction', true );
