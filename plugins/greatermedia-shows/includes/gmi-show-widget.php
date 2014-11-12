@@ -86,7 +86,7 @@ function gmrs_get_shows_widget_html() {
 	echo '<ul>';
 		while ( $show_stuff->have_posts() ) :
 			$show_stuff->the_post();
-			echo '<li>', apply_filters( 'gmr_show_widget_item', get_the_title() ), '</li>';
+			echo '<li">', apply_filters( 'gmr_show_widget_item', get_the_title() ), '</li>';
 		endwhile;
 	echo '</ul>';
 
