@@ -31,20 +31,22 @@ $palettes: (
 		transparent: transparent,
 	),
 	live-links: (
-		text-color: #000000
+		text-color: #000000,
 	),
 	btn: (
-		btn-bg: #d22228,
-		btn-text: #ffffff,
-		btn-alt: #f5ed7f,
-		transparent: transparent,
+		primary-bg: #d22228,
+		primary-border: #d22228,
+		primary-text: #ffffff,
+		secondary-bg: transparent,
+		secondary-border: #f5ed7f,
+		secondary-text: #d22228,
 	),
 	featured: (
 		featured-bg: #58595b,
 		featured-heading: #ffffff,
 		featured-heading-bg: #270e10,
 		featured-text: #a6a8ab,
-		featured-list: #f7ef7e
+		featured-list: #f7ef7e,
 	)
 );
 

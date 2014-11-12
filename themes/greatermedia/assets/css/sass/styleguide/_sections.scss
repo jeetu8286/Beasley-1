@@ -42,7 +42,7 @@
 }
 
 .sg-btn {
-	@include btn(btn, btn-bg, btn-text, btn-bg, 1em, 1.5em, .875em);
+	@include btn(btn, primary-bg, primary-text, primary-border, 1em, 1.5em, .875em);
 }
 
 .sg-colors--table {
