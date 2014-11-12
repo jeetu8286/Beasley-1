@@ -389,7 +389,7 @@ th {
   src: url("../fonts/icon-font/gmr-icons.eot?#iefixivfz3x") format("embedded-opentype"), url("../fonts/icon-font/gmr-icons.woff?ivfz3x") format("woff"), url("../fonts/icon-font/gmr-icons.ttf?ivfz3x") format("truetype"), url("../fonts/icon-font/gmr-icons.svg?ivfz3x#gmr-icons") format("svg");
   font-weight: normal;
   font-style: normal; }
-[class^="icon-"], [class*=" icon-"], .live-link__type--audio:before, .live-link__type--gallery:before, .live-link__type--image:before, .live-link__type--link:before, .live-link__type--standard:before, .live-link__type--video:before {
+[class^="icon-"], [class*=" icon-"], .live-link__song:before, .live-link__type--audio:before, .live-link__type--gallery:before, .live-link__type--image:before, .live-link__type--link:before, .live-link__type--standard:before, .live-link__type--video:before {
   font-family: 'gmr-icons';
   speak: none;
   font-style: normal;
@@ -2038,7 +2038,7 @@ blockquote p {
   display: block;
   max-height: 250px; }
 
-.live-link__type--audio:before, .live-link__type--gallery:before, .live-link__type--image:before, .live-link__type--link:before, .live-link__type--standard:before, .live-link__type--video:before {
+.live-link__song:before, .live-link__type--audio:before, .live-link__type--gallery:before, .live-link__type--image:before, .live-link__type--link:before, .live-link__type--standard:before, .live-link__type--video:before {
   width: 0;
   height: 0;
   color: #d22228; }
@@ -2046,11 +2046,20 @@ blockquote p {
 .live-link__type--audio, .live-link__type--gallery, .live-link__type--image, .live-link__type--link, .live-link__type--standard, .live-link__type--video {
   display: block; }
 
+.live-link__song {
+  display: block;
+  text-transform: uppercase; }
+
+.live-link__song:before {
+  content: "\e604";
+  color: #d22228; }
+
 .live-link__song--artist {
   font-size: 0.75em; }
 
 .live-link__song--title {
-  font-size: 0.8125em; }
+  font-size: 0.8125em;
+  color: #c7c7c7; }
 
 .live-link__type--audio:before {
   content: "\e604"; }
@@ -2307,12 +2316,6 @@ blockquote p {
   display: block;
   padding: 0;
   margin: 0 0 1em; }
-
-.widget--live-player li a:link, .widget--live-player li a:visited {
-  color: #c7c7c7; }
-
-.widget--live-player li a:hover, .widget--live-player li a:focus, .widget--live-player li a:active {
-  color: #d22228; }
 
 body {
   height: 100%;
