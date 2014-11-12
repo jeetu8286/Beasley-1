@@ -174,6 +174,8 @@ class GreaterMediaFormbuilderRender {
 
 			$tags = array();
 
+			$tags['fieldset'] = array();
+
 			// Add form tags
 			$tags['input'] = array(
 				'id'          => 1,
