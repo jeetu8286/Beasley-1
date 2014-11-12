@@ -20,17 +20,17 @@
 	padding: $padding-top-bottom $padding-left-right;
 	margin-right: .5em;
 	outline: none;
-	background-color: color($palette, $bgcolor);
-	border: 1px solid color($palette, $border-color);
+	background-color: palette($palette, $bgcolor);
+	border: 1px solid palette($palette, $border-color);
 	font-family: $open-sans;
 	font-size: $font-size;
-	color: color($palette, $textcolor) !important;
+	color: palette($palette, $textcolor) !important;
 	text-transform: uppercase;
 	cursor: pointer;
 	&:hover, &:focus {
-		background-color: color($palette, $bgcolor);
-		border-color: color($palette, $border-color);
-		color: color($palette, $textcolor);
+		background-color: palette($palette, $bgcolor);
+		border-color: palette($palette, $border-color);
+		color: palette($palette, $textcolor);
 	}
 	&:last-of-type{
 		margin-right: 0;

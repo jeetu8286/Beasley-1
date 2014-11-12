@@ -46,7 +46,7 @@
 
 //  Read More Button
 .read-more--btn{
-	@include btn(btn, btn-bg, btn-text, btn-bg, 1em, 1.5em, em(14px));
+	@include btn(btn, primary-bg, primary-text, primary-border, 1em, 1.5em, em(14px));
 }
 
 // Entry Footer
@@ -428,7 +428,7 @@
 blockquote {
 	@include padding(em(8px) em(10px));
 	@include margin(em(24px) em(10px));
-	@include border-color(null null nullpalette(base, primary-border));
+	@include border-color(null null null palette(base, primary-border));
 	@include border-style(null null null solid);
 	@include border-width(null null null em(10px));
 	quotes: "\201C""\201D""\2018""\2019";

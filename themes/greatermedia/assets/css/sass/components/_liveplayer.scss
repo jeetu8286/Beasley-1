@@ -225,13 +225,13 @@
 }
 
 .live-stream__listen-now--btn {
-	@include btn(btn, btn-bg, btn-text, btn-bg, .25em, 1em, ms(-1));
+	@include btn(btn, primary-bg, primary-text, primary-border, .25em, 1em, ms(-1));
 	margin: 0 .5em;
 	@include border-radius(1em);
 }
 
 .live-stream__now-playing--btn {
-	@include btn(btn, transparent, btn-bg, btn-bg, .25em, 1em, ms(-1));
+	@include btn(btn, secondary-bg, primary-text, primary-border, .25em, 1em, ms(-1));
 	margin: 0 .5em;
 	@include border-radius(1em);
 }
@@ -243,7 +243,7 @@
 }
 
 .live-stream__resume--btn {
-	@include btn(btn, transparent, btn-alt, btn-alt, .25em, 1em, ms(-1));
+	@include btn(btn, secondary-bg, primary-text, primary-border, .25em, 1em, ms(-1));
 	margin: 0 .5em;
 	@include border-radius(1em);
 }
@@ -260,7 +260,7 @@
 	margin: 0 auto;
 	@include border-radius(50%);
 	background-color: transparent;
-	border: 2px solid color(btn, btn-bg);
+	border: 2px solid palette(btn, primary-bg);
 	outline: none;
 	font-size: 1.25em;
 	font-style: normal;
@@ -269,7 +269,7 @@
 	-webkit-font-smoothing: antialiased;
 	moz-osx-font-smoothing: grayscale;
 	text-rendering: auto;
-	color: color(btn, btn-text);
+	color: palette(btn, primary-text);
 	cursor: pointer;
 }
 
@@ -309,7 +309,7 @@
 	width: 80%;
 	height: 3px;
 	@include border-radius(1px);
-	background-color: color(btn, btn-bg);
+	background-color: palette(btn, primary-bg);
 }
 
 .live-stream--podcast__time {
