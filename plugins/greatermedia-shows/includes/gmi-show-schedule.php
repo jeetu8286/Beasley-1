@@ -85,11 +85,11 @@ function gmrs_add_show_episode() {
 	$start_date = $date + $data['start_time'];
 	$start_date_gmt = $start_date - $offset;
 	if ( $start_date_gmt < time() ) {
-		wp_die( 'Please, select a date in a future.', '', array( 'back_link' => true ) );
+		wp_die( 'Please, select a date in the future.', '', array( 'back_link' => true ) );
 	}
 	
 	if ( $data['start_time'] > $data['end_time'] ) {
-		wp_die( 'Please, select a end time greater than start time.', '', array( 'back_link' => true ) );
+		wp_die( 'Please, select the end time greater than start time.', '', array( 'back_link' => true ) );
 	}
 
 	$iterations = 1;
