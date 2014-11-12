@@ -60,7 +60,7 @@ jQuery(function () {
 				value = login_restriction_description(parsed_shortcode.attrs.named.status);
 			}
 			else {
-				value = login_restriction_description('logged-out');
+				value = login_restriction_description('logged-in');
 			}
 
 			return [
