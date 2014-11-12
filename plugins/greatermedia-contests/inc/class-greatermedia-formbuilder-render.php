@@ -271,7 +271,7 @@ class GreaterMediaFormbuilderRender {
 
 		} else {
 
-			$html .= '<form action="" method="post" enctype="multipart/form-data" class="' . esc_attr( self::FORM_CLASS ) . '">' .
+			$html .= '<form action="" method="post" enctype="multipart/form-data" class="' . esc_attr( self::FORM_CLASS ) . '" data-parsley-validate>' .
 			         '<input type="hidden" name="action" value="enter_contest" />' .
 			         '<input type="hidden" name="contest_id" value="' . absint( $post_id ) . '" />';
 
