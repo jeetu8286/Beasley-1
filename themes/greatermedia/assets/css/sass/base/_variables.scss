@@ -18,16 +18,26 @@ $palettes: (
 		primary-heading: #58595b,
 		primary-border: #d0d2d3,
 		secondary-bg: #000000,
-		secondary-text: #404041,
+		secondary-text: #6D6E70,
 		secondary-link: #ffffff,
-		tertiary-bg: #561015
+		secondary-link-alt: #919395,
+		secondary-heading: #d22228,
+		secondary-border: #282827,
+		secondary-drop: #1e1e1e,
+		tertiary-bg: #561015,
+		tertiary-border: #404041,
+		tertiary-link: #c7c7c7,
+		player-controls: #606060,
+		transparent: transparent,
 	),
 	live-links: (
 		text-color: #000000
 	),
 	btn: (
 		btn-bg: #d22228,
-		btn-text: #ffffff
+		btn-text: #ffffff,
+		btn-alt: #f5ed7f,
+		transparent: transparent,
 	),
 	featured: (
 		featured-bg: #58595b,
@@ -43,9 +53,9 @@ $palettes: (
 // @author Allen Moore
 // @since 0.1.0
 //
-$text-color: color(base, primary-text);
+$text-color: palette(base,  primary-text);
 
-$link-color: color(base, primary-link);
-$link-hover: color(base, primary-link);
+$link-color: palette(base,  primary-link);
+$link-hover: palette(base,  primary-link);
 
-$border-color: color(base, primary-border);
+$border-color: palette(base,  primary-border);
