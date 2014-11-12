@@ -3,14 +3,14 @@ html {
 	width: 100%;
 	height: 100%;
 	margin: 0 auto;
-	background: color(base, body-bg);
+	background: palette(base, body-bg);
 }
 body {
 	width: 100%;
 	height: 100%;
 	max-width: $max-site-width;
 	margin: 0 auto;
-	background: color(base, primary-bg);
+	background: palette(base, primary-bg);
 }
 
 * {

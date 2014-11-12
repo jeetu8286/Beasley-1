@@ -18,12 +18,12 @@
 }
 
 .sg-section--title {
-	color: color(base, primary-heading);
+	color: palette(base, primary-heading);
 	text-transform: uppercase;
 }
 
 .sg-subsection--title {
-	color: color(base, primary-heading);
+	color: palette(base, primary-heading);
 	text-transform: uppercase;
 }
 
@@ -38,11 +38,11 @@
 	@include position(relative, null null null null);
 	@include size(null 100%);
 	@include padding(null null 2em null);
-	border-bottom: 1px solid color(base, primary-border);
+	border-bottom: 1px solid palette(base, primary-border);
 }
 
 .sg-btn {
-	@include btn(btn, btn-bg, btn-text, 1em, 1.5em, .875em);
+	@include btn(btn, btn-bg, btn-text, btn-bg, 1em, 1.5em, .875em);
 }
 
 .sg-colors--table {
@@ -91,7 +91,7 @@
 .sg-color {
 	@include size(13% 80px);
 	display: table-cell;
-	color: color(base, secondary-text);
+	color: palette(base, secondary-text);
 }
 
 .color-black {
@@ -133,19 +133,19 @@
 	@include padding(.25em 5px);
 	@include transition(all .5s ease);
 	opacity: 0;
-	background-color: color(base, secondary-bg);
+	background-color: palette(base, secondary-bg);
 	font-size: ms(-3);
 }
 
 .sg-typography {
 	@include padding(.25em 5px);
 	@include margin(null null 2em null);
-	background-color: color(base, primary-border);
+	background-color: palette(base, primary-border);
 	text-align: center;
 }
 
 .sg-typography--title {
-	color: color(base, primary-heading);
+	color: palette(base, primary-heading);
 	text-transform: uppercase;
 }
 
@@ -163,4 +163,34 @@
 
 .sg-typography--italic {
 	font-style: italic;
+}
+
+// styles to make sure elements of the live player show
+.live-player__col {
+	float: left;
+	display: block;
+	width: 100%;
+	margin-right: 0%;
+	@include bp(small){
+		width: 45%;
+		margin-right: 5%;
+	}
+	@include bp(medium){
+		width: 45%;
+		margin-right: 5%;
+	}
+	@include bp(large){
+		width: 18%;
+		margin-right: 2.5%;
+	}
+}
+
+.live-player__col:last-child {
+	@include bp(small) {
+		margin-right: 0;
+	}
+}
+
+.live-stream__btn--play, .live-stream__btn--resume, .live-stream__btn--pause {
+	display: block;
 }

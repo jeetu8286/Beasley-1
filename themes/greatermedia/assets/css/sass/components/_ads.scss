@@ -1,8 +1,11 @@
 .leaderboard {
-	@include position(relative, null null null null);
-	@include padding(em(20px) 0);
+	position: relative;
+	padding: em(20px) 0;
+	@include bp(medium) {
+		height: 130px;
+	}
 }
 
 .leaderboard img {
-	@include margin(0 auto);
+	margin: 0 auto;
 }
