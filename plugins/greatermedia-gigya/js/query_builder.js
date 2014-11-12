@@ -291,6 +291,106 @@ __p += '\n';
 return __p
 };
 
+this["JST"]["src/templates/favorite_constraint.jst"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
+with (obj) {
+__p += '<p>Favorite Constraint</p>\n<ul class="constraint-toolbar">\n\t<li>\n\t\t<a\n\t\t\talt="f105"\n\t\t\tclass="dashicons dashicons-admin-page copy-constraint"\n\t\t\thref="#"\n\t\t\ttitle="Duplicate"\n\t\t/>\n\n\t\t<a\n\t\t\talt="f105"\n\t\t\tclass="dashicons dashicons-trash remove-constraint"\n\t\t\thref="#"\n\t\t\ttitle="Remove"\n\t\t/>\n\t</li>\n</ul>\n\n<p class="constraint-title">\n\t' +
+__e( title ) +
+'\n</p>\n\n<select class="constraint-operator" style="width: 35%">\n\t';
+ _.each(view.operatorsFor(valueType), function(operatorItem) { ;
+__p += '\n\t<option value="' +
+__e( operatorItem ) +
+'" ' +
+((__t = ( operatorItem === operator ? 'selected="selected"' : ''  )) == null ? '' : __t) +
+'">\n\t' +
+__e( operatorItem ) +
+'\n\t</option>\n\t';
+ }) ;
+__p += '\n</select>\n\n';
+ if (view.hasChoices()) { ;
+__p += '\n\t<select class="constraint-value" style="width: 45%">\n\t\t';
+ _.each(choices, function(choiceItem) { ;
+__p += '\n\t\t<option value="' +
+__e( choiceItem.value ) +
+'" ' +
+((__t = ( choiceItem.value == value ? 'selected="selected"' : ''  )) == null ? '' : __t) +
+'">\n\t\t' +
+__e( choiceItem.label ) +
+'\n\t\t</option>\n\t\t';
+ }) ;
+__p += '\n\t</select>\n';
+ } else if (valueType === 'integer' || valueType === 'float') { ;
+__p += '\n\t<input type="number" class="constraint-value constraint-value-text" value="' +
+__e( value ) +
+'" />\n';
+ } else { ;
+__p += '\n\t<input type="text" class="constraint-value constraint-value-text" value="' +
+__e( value ) +
+'" />\n';
+ } ;
+__p += '\n\n<select class="constraint-conjunction" style="width: 15%">\n\t';
+ _.each(view.conjunctions, function(conjunctionItem) { ;
+__p += '\n\t<option value="' +
+__e( conjunctionItem ) +
+'" ' +
+((__t = ( conjunctionItem === conjunction ? 'selected="selected"' : ''  )) == null ? '' : __t) +
+'">\n\t' +
+__e( conjunctionItem ) +
+'\n\t</option>\n\t';
+ }) ;
+__p += '\n</select>\n';
+
+}
+return __p
+};
+
+this["JST"]["src/templates/like_constraint.jst"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
+with (obj) {
+__p += '<ul class="constraint-toolbar">\n\t<li>\n\t\t<a\n\t\t\talt="f105"\n\t\t\tclass="dashicons dashicons-admin-page copy-constraint"\n\t\t\thref="#"\n\t\t\ttitle="Duplicate"\n\t\t/>\n\n\t\t<a\n\t\t\talt="f105"\n\t\t\tclass="dashicons dashicons-trash remove-constraint"\n\t\t\thref="#"\n\t\t\ttitle="Remove"\n\t\t/>\n\t</li>\n</ul>\n\n<p class="constraint-title">\n\t' +
+__e( title ) +
+'\n</p>\n\n<div class="entry-select-group">\n\t<label><strong>Category: </strong></label>\n\t<select class="like-category" style="width: 100%">\n\t\t';
+ _.each(categories, function(categoryItem) { ;
+__p += '\n\t\t<option value="' +
+__e( categoryItem.value ) +
+'" ' +
+((__t = ( categoryItem.value === operator ? 'selected="selected"' : ''  )) == null ? '' : __t) +
+'">\n\t\t' +
+__e( categoryItem.label ) +
+'\n\t\t</option>\n\t\t';
+ }) ;
+__p += '\n\t</select>\n</div>\n\n<div class="entry-answer-group">\n\t<label><strong>Like: </strong></label>\n\n\t<select class="constraint-operator" style="width: 35%">\n\t\t';
+ _.each(view.operatorsFor(valueType), function(operatorItem) { ;
+__p += '\n\t\t<option value="' +
+__e( operatorItem ) +
+'" ' +
+((__t = ( operatorItem === operator ? 'selected="selected"' : ''  )) == null ? '' : __t) +
+'">\n\t\t' +
+__e( operatorItem ) +
+'\n\t\t</option>\n\t\t';
+ }) ;
+__p += '\n\t</select>\n\n\t<input type="text" class="constraint-value constraint-value-text" value="' +
+__e( value ) +
+'" />\n\n\t<select class="constraint-conjunction" style="width: 15%">\n\t\t';
+ _.each(view.conjunctions, function(conjunctionItem) { ;
+__p += '\n\t\t<option value="' +
+__e( conjunctionItem ) +
+'" ' +
+((__t = ( conjunctionItem === conjunction ? 'selected="selected"' : ''  )) == null ? '' : __t) +
+'">\n\t\t' +
+__e( conjunctionItem ) +
+'\n\t\t</option>\n\t\t';
+ }) ;
+__p += '\n\t</select>\n</div>\n';
+
+}
+return __p
+};
+
 this["JST"]["src/templates/query_result_item.jst"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
@@ -536,8 +636,217 @@ var EntryConstraint = Constraint.extend({
 
 });
 
+var LikeConstraint = Constraint.extend({
+
+	defaults        : {
+		type        : 'profile:likes',
+		operator    : 'equals',
+		conjunction : 'and',
+		valueType   : 'string',
+		value       : '',
+		category    : 'Any Category',
+	},
+
+	getCategories: function() {
+		return FACEBOOK_CATEGORIES;
+	}
+
+});
+
+FACEBOOK_CATEGORIES = [
+	{ label: 'Actor/Director' },
+	{ label: 'Movie' },
+	{ label: 'Producer' },
+	{ label: 'Writer' },
+	{ label: 'Studio' },
+	{ label: 'Movie Theater' },
+	{ label: 'TV/Movie Award' },
+	{ label: 'Fictional Character' },
+	{ label: 'Movie Character' },
+	{ label: 'Album' },
+	{ label: 'Song' },
+	{ label: 'Musician/Band' },
+	{ label: 'Music Video' },
+	{ label: 'Concert Tour' },
+	{ label: 'Concert Venue' },
+	{ label: 'Radio Station' },
+	{ label: 'Record Label' },
+	{ label: 'Music Award' },
+	{ label: 'Music Chart' },
+	{ label: 'Book' },
+	{ label: 'Author' },
+	{ label: 'Book Store' },
+	{ label: 'Library' },
+	{ label: 'Magazine' },
+	{ label: 'Book Series' },
+	{ label: 'TV Show' },
+	{ label: 'TV Network' },
+	{ label: 'TV Channel' },
+	{ label: 'Athlete' },
+	{ label: 'Artist' },
+	{ label: 'Public Figure' },
+	{ label: 'Journalist' },
+	{ label: 'News Personality' },
+	{ label: 'Chef' },
+	{ label: 'Lawyer' },
+	{ label: 'Doctor' },
+	{ label: 'Business Person' },
+	{ label: 'Comedian' },
+	{ label: 'Entertainer' },
+	{ label: 'Teacher' },
+	{ label: 'Dancer' },
+	{ label: 'Designer' },
+	{ label: 'Photographer' },
+	{ label: 'Entrepreneur' },
+	{ label: 'Politician' },
+	{ label: 'Government Official' },
+	{ label: 'Sports League' },
+	{ label: 'Professional Sports Team' },
+	{ label: 'Coach' },
+	{ label: 'Amateur Sports Team' },
+	{ label: 'School Sports Team' },
+	{ label: 'Restaurant/Cafe' },
+	{ label: 'Bar' },
+	{ label: 'Club' },
+	{ label: 'Company' },
+	{ label: 'Product/Service' },
+	{ label: 'Website' },
+	{ label: 'Cars' },
+	{ label: 'Bags/Luggage' },
+	{ label: 'Camera/Photo' },
+	{ label: 'Clothing' },
+	{ label: 'Computers' },
+	{ label: 'Software' },
+	{ label: 'Office Supplies' },
+	{ label: 'Electronics' },
+	{ label: 'Health/Beauty' },
+	{ label: 'Appliances' },
+	{ label: 'Building Materials' },
+	{ label: 'Commercial Equipment' },
+	{ label: 'Home Decor' },
+	{ label: 'Furniture' },
+	{ label: 'Household Supplies' },
+	{ label: 'Kitchen/Cooking' },
+	{ label: 'Patio/Garden' },
+	{ label: 'Tools/Equipment' },
+	{ label: 'Wine/Spirits' },
+	{ label: 'Jewelry/Watches' },
+	{ label: 'Pet Supplies' },
+	{ label: 'Outdoor Gear/Sporting Goods' },
+	{ label: 'Baby Goods/Kids Goods' },
+	{ label: 'Media/News/Publishing' },
+	{ label: 'Bank/Financial Institution' },
+	{ label: 'Non-Governmental Organization (NGO)' },
+	{ label: 'Insurance Company' },
+	{ label: 'Small Business' },
+	{ label: 'Energy/Utility' },
+	{ label: 'Retail and Consumer Merchandise' },
+	{ label: 'Automobiles and Parts' },
+	{ label: 'Industrials' },
+	{ label: 'Transport/Freight' },
+	{ label: 'Health/Medical/Pharmaceuticals' },
+	{ label: 'Aerospace/Defense' },
+	{ label: 'Mining/Materials' },
+	{ label: 'Farming/Agriculture' },
+	{ label: 'Chemicals' },
+	{ label: 'Consulting/Business Services' },
+	{ label: 'Legal/Law' },
+	{ label: 'Education' },
+	{ label: 'Engineering/Construction' },
+	{ label: 'Food/Beverages' },
+	{ label: 'Telecommunication' },
+	{ label: 'Biotechnology' },
+	{ label: 'Computers/Technology' },
+	{ label: 'Internet/Software' },
+	{ label: 'Travel/Leisure' },
+	{ label: 'Community Organization' },
+	{ label: 'Political Organization' },
+	{ label: 'Vitamins/Supplements' },
+	{ label: 'Drugs' },
+	{ label: 'Church/Religious Organization' },
+	{ label: 'Phone/Tablet' },
+	{ label: 'Games/Toys' },
+	{ label: 'App Page' },
+	{ label: 'Video Game' },
+	{ label: 'Board Game' },
+	{ label: 'Local Business' },
+	{ label: 'Hotel' },
+	{ label: 'Landmark' },
+	{ label: 'Airport' },
+	{ label: 'Sports Venue' },
+	{ label: 'Arts/Entertainment/Nightlife' },
+	{ label: 'Automotive' },
+	{ label: 'Spas/Beauty/Personal Care' },
+	{ label: 'Event Planning/Event Services' },
+	{ label: 'Bank/Financial Services' },
+	{ label: 'Food/Grocery' },
+	{ label: 'Health/Medical/Pharmacy' },
+	{ label: 'Home Improvement' },
+	{ label: 'Pet Services' },
+	{ label: 'Professional Services' },
+	{ label: 'Business Services' },
+	{ label: 'Community/Government' },
+	{ label: 'Real Estate' },
+	{ label: 'Shopping/Retail' },
+	{ label: 'Public Places' },
+	{ label: 'Attractions/Things to Do' },
+	{ label: 'Sports/Recreation/Activities' },
+	{ label: 'Tours/Sightseeing' },
+	{ label: 'Transportation' },
+	{ label: 'Hospital/Clinic' },
+	{ label: 'Museum/Art Gallery' },
+	{ label: 'Organization' },
+	{ label: 'School' },
+	{ label: 'University' },
+	{ label: 'Non-Profit Organization' },
+	{ label: 'Government Organization' },
+	{ label: 'Cause' },
+	{ label: 'Political Party' },
+	{ label: 'Pet' },
+	{ label: 'Middle School' },
+];
+
+(function() {
+	var i = 0;
+	var n = FACEBOOK_CATEGORIES.length;
+	var category;
+
+	for (i = 0; i < n; i++) {
+		category = FACEBOOK_CATEGORIES[i];
+		if (!category.value) {
+			category.value = category.label;
+		}
+	}
+
+	FACEBOOK_CATEGORIES = _.sortBy(FACEBOOK_CATEGORIES, 'label');
+	FACEBOOK_CATEGORIES.unshift({
+		label: 'Any Category', value: 'Any Category'
+	});
+
+}());
+
+var FavoriteConstraint = Constraint.extend({
+
+	defaults        : {
+		type        : 'profile:favorites',
+		operator    : 'equals',
+		conjunction : 'and',
+		valueType   : 'string',
+		value       : '',
+		favoriteType: 'music',
+		category    : 'Any Category',
+	}
+
+});
+
 var AVAILABLE_CONSTRAINTS = [
 
+	{
+		type: 'profile:likes',
+		valueType: 'string',
+		category: 'Any Category',
+		value: ''
+	},
 	/* System Fields */
 	{
 		type: 'system:createdTimestamp',
@@ -665,6 +974,10 @@ var AVAILABLE_CONSTRAINTS_META = [
 	},
 
 	/* Profile Fields */
+	{
+		type: 'profile:likes',
+		title: 'Facebook Likes'
+	},
 	{
 		type: 'profile:birthYear',
 		title: 'Birth Year'
@@ -1058,7 +1371,17 @@ var ConstraintCollection = Backbone.Collection.extend({
 		var typeList = type.split(':');
 
 		if (typeList.length > 0) {
-			return typeList[0];
+			var subType = typeList[1];
+
+			// treats profile:likes and profile:favorites
+			// as a custom type
+			if (subType === 'likes') {
+				return 'likes';
+			} else if (subType === 'favorites') {
+				return 'favorites';
+			} else {
+				return typeList[0];
+			}
 		} else {
 			return type;
 		}
@@ -1067,7 +1390,9 @@ var ConstraintCollection = Backbone.Collection.extend({
 	typesMap: {
 		'system': Constraint,
 		'profile': ProfileConstraint,
-		'record': EntryConstraint
+		'record': EntryConstraint,
+		'likes': LikeConstraint,
+		'favorites': FavoriteConstraint
 	}
 
 });
@@ -1407,6 +1732,52 @@ var EntryConstraintView = ConstraintView.extend({
 
 });
 
+var LikeConstraintView = ConstraintView.extend({
+
+	template: getTemplate('like_constraint'),
+
+	initialize: function(model, opts) {
+		ConstraintView.prototype.initialize.call(this, model, opts);
+	},
+
+	render: function() {
+		var data        = this.model.toViewJSON();
+		data.view       = this;
+		data.categories = this.model.getCategories();
+
+		var html = this.template(data);
+		this.$el.html(html);
+	},
+
+	updateConstraint: function(constraint) {
+		var operator    = $('.constraint-operator', this.el).val();
+		var conjunction = $('.constraint-conjunction', this.el).val();
+		var value       = $('.constraint-value', this.el).val();
+		var category    = $('.like-category', this.el).val();
+		value           = this.parseValue(value, constraint.get('valueType'));
+
+		var changes     = {
+			operator: operator,
+			value: value,
+			conjunction: conjunction,
+			category: category
+		};
+
+		constraint.set(changes);
+	},
+
+});
+
+var FavoriteConstraintView = ConstraintView.extend({
+
+	template: getTemplate('favorite_constraint'),
+
+	initialize: function(model, opts) {
+		ConstraintView.prototype.initialize.call(this, model, opts);
+	},
+
+});
+
 var ActiveConstraintsView = Backbone.CollectionView.extend({
 
 	el: jQuery('#active_constraints'),
@@ -1421,10 +1792,18 @@ var ActiveConstraintsView = Backbone.CollectionView.extend({
 		var type = model.get('type');
 		var kind = ConstraintCollection.kindForType(type);
 
-		if (kind === 'record') {
-			return EntryConstraintView;
-		} else {
-			return ConstraintView;
+		switch (kind) {
+			case 'record':
+				return EntryConstraintView;
+
+			case 'likes':
+				return LikeConstraintView;
+
+			case 'favorites':
+				return FavoriteConstraintView;
+
+			default:
+				return ConstraintView;
 		}
 	},
 

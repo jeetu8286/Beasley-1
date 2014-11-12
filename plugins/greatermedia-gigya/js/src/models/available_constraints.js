@@ -1,5 +1,11 @@
 var AVAILABLE_CONSTRAINTS = [
 
+	{
+		type: 'profile:likes',
+		valueType: 'string',
+		category: 'Any Category',
+		value: ''
+	},
 	/* System Fields */
 	{
 		type: 'system:createdTimestamp',
@@ -127,6 +133,10 @@ var AVAILABLE_CONSTRAINTS_META = [
 	},
 
 	/* Profile Fields */
+	{
+		type: 'profile:likes',
+		title: 'Facebook Likes'
+	},
 	{
 		type: 'profile:birthYear',
 		title: 'Birth Year'
