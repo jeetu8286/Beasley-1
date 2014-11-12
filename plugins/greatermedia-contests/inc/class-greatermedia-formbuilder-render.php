@@ -141,7 +141,7 @@ class GreaterMediaFormbuilderRender {
 				 * since this class isn't meant to be instantiated.
 				 */
 				define( 'CONTEST_' . $contest_id . '_SUCCESS', true );
-				
+
 			}
 
 		} catch ( InvalidArgumentException $e ) {
@@ -191,17 +191,21 @@ class GreaterMediaFormbuilderRender {
 			);
 
 			$tags['textarea'] = array(
-				'id'                    => 1,
-				'name'                  => 1,
-				'class'                 => 1,
-				'autofocus'             => 1,
-				'disabled'              => 1,
-				'form'                  => 1,
-				'required'              => 1,
-				'onkeypress'            => 1,
-				'pattern'               => 1,
-				'data-parsley-minwords' => 1,
-				'data-parsley-maxwords' => 1,
+				'id'                     => 1,
+				'name'                   => 1,
+				'class'                  => 1,
+				'autofocus'              => 1,
+				'disabled'               => 1,
+				'form'                   => 1,
+				'required'               => 1,
+				'onkeypress'             => 1,
+				'pattern'                => 1,
+				'data-parsley-minwords'  => 1,
+				'data-parsley-maxwords'  => 1,
+				'data-parsley-minlength' => 1,
+				'data-parsley-maxlength' => 1,
+				'minlength'              => 1,
+				'maxlength'              => 1,
 			);
 
 			$tags['select'] = array(
@@ -298,16 +302,10 @@ class GreaterMediaFormbuilderRender {
 
 	}
 
-	/**
-	 * Render a text field on a form using data from formbuilder
-	 *
-	 * @param stdClass $field
-	 *
-	 * @return string HTML
-	 */
-	private static function render_text( $post_id, stdClass $field ) {
+	protected static function render_label( stdClass $field ) {
 
-		$html     = '';
+		$html = '';
+
 		$field_id = 'form_field_' . $field->cid;
 
 		$label_tag_attributes = array(
@@ -315,16 +313,6 @@ class GreaterMediaFormbuilderRender {
 		);
 
 		$label = ( isset( $field->label ) ) ? $field->label : '';
-
-		$input_tag_attributes = array(
-			'id'   => $field_id,
-			'name' => $field_id,
-			'type' => 'text',
-		);
-
-		$description = ( isset( $field->field_options->description ) ) ? $field->field_options->description : '';
-
-		$description_tag_attributes = array();
 
 		// Give the theme a chance to alter the attributes for the input field
 		$label_tag_attributes = apply_filters( 'gm_form_text_label_attrs', $label_tag_attributes );
@@ -343,6 +331,58 @@ class GreaterMediaFormbuilderRender {
 			$html .= '>' . wp_kses_data( $label ) . '</label>';
 
 		}
+
+		return $html;
+	}
+
+	protected static function render_description( stdClass $field ) {
+
+		$html = '';
+
+		$description = ( isset( $field->field_options->description ) ) ? $field->field_options->description : '';
+
+		$description_tag_attributes = array();
+
+		// Give the theme a chance to alter the attributes for the description
+		$description_tag_attributes = apply_filters( 'gm_form_text_description_attrs', $description_tag_attributes );
+		$description_tag_attributes = apply_filters( 'gm_form_input_description_attrs', $description_tag_attributes );
+		$description                = apply_filters( 'gm_form_text_description_text', $description );
+		$description                = apply_filters( 'gm_form_description_text', $description );
+
+		if ( ! empty( $description ) ) {
+
+			$html .= '<p ';
+
+			foreach ( $description_tag_attributes as $attribute => $value ) {
+				$html .= wp_kses_data( $attribute ) . '="' . esc_attr( $value ) . '" ';
+			}
+
+			$html .= ' >' . wp_kses_data( $description ) . '</p>';
+		}
+
+		return $html;
+
+	}
+
+	/**
+	 * Render a text field on a form using data from formbuilder
+	 *
+	 * @param stdClass $field
+	 *
+	 * @return string HTML
+	 */
+	protected static function render_text( $post_id, stdClass $field ) {
+
+		$html     = '';
+		$field_id = 'form_field_' . $field->cid;
+
+		$input_tag_attributes = array(
+			'id'   => $field_id,
+			'name' => $field_id,
+			'type' => 'text',
+		);
+
+		$html .= self::render_label( $field );
 
 		if ( isset( $field->required ) && $field->required ) {
 			$input_tag_attributes['required'] = 'required';
@@ -380,22 +420,61 @@ class GreaterMediaFormbuilderRender {
 		}
 		$html .= ' />';
 
-		// Give the theme a chance to alter the attributes for the description
-		$description_tag_attributes = apply_filters( 'gm_form_text_description_attrs', $description_tag_attributes );
-		$description_tag_attributes = apply_filters( 'gm_form_input_description_attrs', $description_tag_attributes );
-		$description                = apply_filters( 'gm_form_text_description_text', $description );
-		$description                = apply_filters( 'gm_form_description_text', $description );
+		$html .= self::render_description( $field );
 
-		if ( ! empty( $description ) ) {
+		return $html;
 
-			$html .= '<p ';
+	}
 
-			foreach ( $description_tag_attributes as $attribute => $value ) {
-				$html .= wp_kses_data( $attribute ) . '="' . esc_attr( $value ) . '" ';
-			}
+	/**
+	 * Render a text field on a form using data from formbuilder
+	 *
+	 * @param stdClass $field
+	 *
+	 * @return string HTML
+	 */
+	protected static function render_paragraph( $post_id, stdClass $field ) {
 
-			$html .= ' >' . wp_kses_data( $description ) . '</p>';
+		$html     = '';
+		$field_id = 'form_field_' . $field->cid;
+
+		$textarea_tag_attributes = array(
+			'id'   => $field_id,
+			'name' => $field_id,
+		);
+
+		$html .= self::render_label( $field );
+
+		if ( isset( $field->required ) && $field->required ) {
+			$textarea_tag_attributes['required'] = 'required';
 		}
+
+		if ( 'words' === $field->field_options->min_max_length_units ) {
+
+			$textarea_tag_attributes['data-parsley-minwords'] = absint( $field->field_options->minlength );
+			$textarea_tag_attributes['data-parsley-maxwords'] = absint( $field->field_options->maxlength );
+
+		} else if ( 'characters' === $field->field_options->min_max_length_units ) {
+
+			$textarea_tag_attributes['minlength'] = absint( $field->field_options->minlength );
+			$textarea_tag_attributes['maxlength'] = absint( $field->field_options->maxlength );
+			$textarea_tag_attributes['data-parsley-minlength'] = absint( $field->field_options->minlength );
+			$textarea_tag_attributes['data-parsley-maxlength'] = absint( $field->field_options->maxlength );
+
+		}
+
+		// Give the theme a chance to alter the attributes for the input field
+		$textarea_tag_attributes = apply_filters( 'gm_form_text_input_attrs', $textarea_tag_attributes );
+		$textarea_tag_attributes = apply_filters( 'gm_form_input_attrs', $textarea_tag_attributes );
+
+		$html .= '<textarea ';
+		foreach ( $textarea_tag_attributes as $attribute => $value ) {
+			$html .= wp_kses_data( $attribute ) . '="' . esc_attr( $value ) . '" ';
+		}
+		$html .= ' >';
+		$html .= '</textarea>';
+
+		$html .= self::render_description( $field );
 
 		return $html;
 
