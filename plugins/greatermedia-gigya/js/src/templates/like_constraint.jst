@@ -24,7 +24,7 @@
 	<label><strong>Category: </strong></label>
 	<select class="like-category" style="width: 100%">
 		<% _.each(categories, function(categoryItem) { %>
-		<option value="<%- categoryItem.value %>" <%= categoryItem.value === operator ? 'selected="selected"' : ''  %>">
+		<option value="<%- categoryItem.value %>" <%= categoryItem.value == category ? 'selected="selected"' : ''  %>">
 		<%- categoryItem.label %>
 		</option>
 		<% }) %>
