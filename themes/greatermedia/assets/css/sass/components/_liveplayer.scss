@@ -496,15 +496,9 @@
 }
 
 %live-link__icon {
+	@extend %gmr-icons;
 	width: 0;
 	height: 0;
-	font-family: $icon-font;
-	font-style: normal;
-	font-weight: normal;
-	line-height: 1;
-	-webkit-font-smoothing: antialiased;
-	moz-osx-font-smoothing: grayscale;
-	text-rendering: auto;
 	color: palette(base, primary-link);
 }
 

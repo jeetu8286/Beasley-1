@@ -97,21 +97,11 @@
 	</div>
 
 	<div id="live-links" class="live-links">
+
 		<h3 class="widget--live-player__title"><?php _e( 'Live Links', 'greatermedia' ); ?></h3>
+
 		<?php dynamic_sidebar( 'liveplayer_sidebar' ); ?>
-		<div class="widget--live-player">
-			<ul>
-				<li class="live-link__type--audio">
-					<div class="live-link__title"><a href="#">WMMR Promo - 10/16/14 - A surprise in the movie "Fury"</a></div>
-				</li>
-				<li class="live-link__type--video">
-					<div class="live-link__title"><a href="#">"Breakdance Conversation" with Jimmy Fallon & Brad Pitt</a></div>
-				</li>
-				<li class="live-link__type--link">
-					<div class="live-link__title"><a href="#">Flyers Charities Halloween 5K will be held on Saturday, October 25</a></div>
-				</li>
-			</ul>
-		</div>
+
 	</div>
 
 </aside>
