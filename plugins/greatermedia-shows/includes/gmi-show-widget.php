@@ -83,10 +83,17 @@ function gmrs_get_shows_widget_html() {
 		'posts_per_page'      => 20,
 	) );
 
+	// check for post format of live link
+	$post_format = get_post_format();
+	// standard will return as false, so we need to assign a value in case
+	if ( $post_format === false ) {
+		$post_format = 'standard';
+	}
+
 	echo '<ul>';
 		while ( $show_stuff->have_posts() ) :
 			$show_stuff->the_post();
-			echo '<li">', apply_filters( 'gmr_show_widget_item', get_the_title() ), '</li>';
+			echo '<li class="live-link__type--' . esc_attr( $post_format ) . '"><div class="live-link__title">', apply_filters( 'gmr_show_widget_item', get_the_title() ), '</div></li>';
 		endwhile;
 	echo '</ul>';
 

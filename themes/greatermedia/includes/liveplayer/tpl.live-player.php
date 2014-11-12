@@ -98,6 +98,7 @@
 
 	<div id="live-links" class="live-links">
 		<h3 class="widget--live-player__title"><?php _e( 'Live Links', 'greatermedia' ); ?></h3>
+		<?php dynamic_sidebar( 'liveplayer_sidebar' ); ?>
 		<div class="widget--live-player">
 			<ul>
 				<li class="live-link__type--audio">
