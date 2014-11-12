@@ -192,6 +192,7 @@ class GreaterMediaFormbuilderRender {
 				'min'         => 1,
 				'max'         => 1,
 				'form'        => 1,
+				'checked'     => 1,
 			);
 
 			$tags['textarea'] = array(
@@ -338,6 +339,36 @@ class GreaterMediaFormbuilderRender {
 		}
 
 		return $html;
+	}
+
+	protected static function render_legend( stdClass $field ) {
+
+		$html = '';
+
+		$legend_tag_attributes = array();
+
+		$label = ( isset( $field->label ) ) ? $field->label : '';
+
+		// Give the theme a chance to alter the attributes for the input field
+		$legend_tag_attributes = apply_filters( 'gm_form_text_label_attrs', $legend_tag_attributes );
+		$legend_tag_attributes = apply_filters( 'gm_form_label_attrs', $legend_tag_attributes );
+		$label                 = apply_filters( 'gm_form_text_label_text', $label );
+		$label                 = apply_filters( 'gm_form_label_text', $label );
+
+		if ( ! empty( $label ) ) {
+
+			$html .= '<legend ';
+
+			foreach ( $legend_tag_attributes as $attribute => $value ) {
+				$html .= wp_kses_data( $attribute ) . '="' . esc_attr( $value ) . '" ';
+			}
+
+			$html .= '>' . wp_kses_data( $label ) . '</legend>';
+
+		}
+
+		return $html;
+
 	}
 
 	protected static function render_description( stdClass $field ) {
@@ -499,6 +530,43 @@ class GreaterMediaFormbuilderRender {
 
 	}
 
+	protected static function render_checkboxes( $post_id, stdClass $field ) {
+
+		$html = '';
+
+		$html .= '<fieldset>';
+
+		$html .= self::render_legend( $field );
+
+		if ( isset( $field->field_options->options ) && is_array( $field->field_options->options ) ) {
+			foreach ( $field->field_options->options as $field_option_index => $field_option_data ) {
+
+				$html .= self::render_single_checkbox( $field->cid, $field_option_index, $field_option_data );
+
+			}
+		}
+
+		if ( isset( $field->field_options->include_other_option ) && true == $field->field_options->include_other_option ) {
+
+			$other_option_data = new stdClass();
+
+			$other_option_data->label   = __( 'Other', 'greatermedia_contests' );
+			$other_option_data->checked = false;
+			$other_option_data->other   = true;
+
+			$html .= self::render_single_checkbox( $field->cid, 'other', $other_option_data );
+
+		}
+
+		$html .= self::render_description( $field );
+
+		$html .= '</fieldset>';
+
+		return $html;
+
+
+	}
+
 	/**
 	 * get_submit_button() from WordPress 4.0
 	 * Returns a submit button, with provided text and appropriate class
@@ -564,6 +632,83 @@ class GreaterMediaFormbuilderRender {
 		}
 
 		return $button;
+	}
+
+	/**
+	 * @param string     $cid
+	 * @param int|string $field_option_index
+	 * @param stdClass   $field_option_data
+	 *
+	 * @return string
+	 */
+	protected static function render_single_checkbox( $cid, $field_option_index, stdClass $field_option_data ) {
+
+		$html = '';
+
+		$field_id = 'form_field_' . $cid . '_' . $field_option_index;
+
+		$input_tag_attributes = array(
+			'id'    => $field_id,
+			'name'  => 'form_field_' . $cid . '[]',
+			'type'  => 'checkbox',
+			'value' => $field_option_index,
+		);
+
+		$label_tag_attributes = array(
+			'for' => $field_id,
+		);
+
+		$label = ! empty( $field_option_data->label ) ? $field_option_data->label : '';
+
+		if ( isset( $field_option_data->checked ) && $field_option_data->checked ) {
+			$input_tag_attributes['checked'] = 'checked';
+		}
+
+		// Give the theme a chance to alter the attributes for the input field
+		$input_tag_attributes = apply_filters( 'gm_form_checkbox_input_attrs', $input_tag_attributes );
+		$input_tag_attributes = apply_filters( 'gm_form_input_attrs', $input_tag_attributes );
+
+		$label_tag_attributes = apply_filters( 'gm_form_text_label_attrs', $label_tag_attributes );
+		$label_tag_attributes = apply_filters( 'gm_form_label_attrs', $label_tag_attributes );
+		$label                = apply_filters( 'gm_form_text_label_text', $label );
+		$label                = apply_filters( 'gm_form_label_text', $label );
+
+		$html .= '<div>';
+
+		$html .= '<input ';
+		foreach ( $input_tag_attributes as $attribute => $value ) {
+			$html .= wp_kses_data( $attribute ) . '="' . esc_attr( $value ) . '" ';
+		}
+		$html .= ' />';
+
+		$html .= '<label ';
+		foreach ( $label_tag_attributes as $attribute => $value ) {
+			$html .= wp_kses_data( $attribute ) . '="' . esc_attr( $value ) . '" ';
+		}
+		$html .= '>' . $label . '</label>';
+
+		if ( isset( $field_option_data->other ) && $field_option_data->other ) {
+
+			$other_input_tag_attributes = array(
+				'id'   => $field_id . '_value',
+				'name' => $field_id . '_value',
+				'type' => 'text',
+			);
+
+			$other_input_tag_attributes = apply_filters( 'gm_form_text_input_attrs', $other_input_tag_attributes );
+			$other_input_tag_attributes = apply_filters( 'gm_form_input_attrs', $other_input_tag_attributes );
+
+			$html .= '<input ';
+			foreach ( $other_input_tag_attributes as $attribute => $value ) {
+				$html .= wp_kses_data( $attribute ) . '="' . esc_attr( $value ) . '" ';
+			}
+			$html .= ' />';
+
+		}
+
+		$html .= '</div>';
+
+		return $html;
 	}
 
 }
