@@ -65,7 +65,7 @@ jQuery(function () {
 
 			return [
 				{
-					type  : 'combobox',
+					type  : 'listbox',
 					id    : 'gm-login-restricted-status',
 					name  : 'status',
 					label : ('undefined' !== typeof GreaterMediaLoginRestrictedContent) ? GreaterMediaLoginRestrictedContent.strings['Must be'] : 'Must be',
