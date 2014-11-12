@@ -23,11 +23,11 @@
 }
 
 .widget--live-player li a:link, .widget--live-player li a:visited {
-	color: color(tertiary-link);
+	color: palette(base, tertiary-link);
 }
 
 .widget--live-player li a:hover, .widget--live-player li a:focus, .widget--live-player li a:active {
-	color: color(primary-link);
+	color:  palette(base, primary-link);
 }
 
 // On-air Schedule
