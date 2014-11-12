@@ -13,7 +13,7 @@
 	@include box-sizing(border-box);
 	padding: 0;
 	@include transition(all 500ms ease-in-out);
-	background-color: color(secondary-bg);
+	background-color: palette(base, secondary-bg);
 	cursor: pointer;
 	z-index: 2;
 	@include bp(large) {
@@ -32,7 +32,7 @@
 	@include border-right-radius(4px);
 	@include border-bottom-radius(4px);
 	@include border-left-radius(4px);
-	background: color(primary-border);
+	background: palette(base, primary-border);
 	content: '';
 }
 
@@ -47,7 +47,7 @@
 	@include border-right-radius(4px);
 	@include border-bottom-radius(4px);
 	@include border-left-radius(4px);
-	background: color(primary-border);
+	background: palette(base, primary-border);
 	content: '';
 }
 
@@ -62,7 +62,7 @@
 	@include border-right-radius(4px);
 	@include border-bottom-radius(4px);
 	@include border-left-radius(4px);
-	background: color(primary-border);
+	background: palette(base, primary-border);
 	content: '';
 }
 
@@ -71,7 +71,7 @@
 	@include size(90% 100%);
 	@include transform(translate(-100%, 0));
 	@include transition(all 500ms ease-in-out);
-	background-color: color(secondary-bg);
+	background-color: palette(base, secondary-bg);
 	z-index: 1;
 	@include bp(large) {
 		display: none;
@@ -120,7 +120,7 @@
 	@include position(absolute, 2em 1em null null);
 	@include size(2em 2em);
 	line-height: 1;
-	color: color(secondary-link);
+	color: palette(base, secondary-link);
 	text-align: right;
 	@include bp(large) {
 		@include position(relative, auto auto null null);
@@ -150,16 +150,16 @@
 }
 
 .header-nav--main ul li a, .header-nav--main ul li a:visited, .header-secondary--nav ul a, .header-secondary--nav ul a:visited {
-	color: color(secondary-link);
+	color: palette(base, secondary-link);
 }
 
 .header-nav--main ul li a:hover, .header-nav--main ul li a:active, .header-secondary--nav ul a:hover, .header-secondary--nav ul a:active {
-	color: darken(color(secondary-link), 10%);
+	color: palette(base, secondary-link)
 }
 
 .header-secondary--social{
 	display: inline-block;
-	color: color(secondary-link);
+	color: palette(base, secondary-link);
 	@include bp(large) {
 		font-size: ms(0);
 	}
@@ -179,19 +179,19 @@
 }
 
 .header-social--item a,.header-social--item a:visited {
-	color: color(secondary-link);
+	color: palette(base, secondary-link);
 }
 
 .header-social--item a:hover,.header-social--item a:focus {
-	color: darken(color(secondary-link), 10%);
+	color: palette(base, secondary-link)
 }
 
 .header-social--item a:active {
-	color: darken(color(secondary-link), 10%);
+	color: palette(base, secondary-link)
 }
 
 .header-secondary--search{
 	display: inline-block;
 	font-size: ms(1);
-	color: color(secondary-link);
+	color: palette(base, secondary-link);
 }
