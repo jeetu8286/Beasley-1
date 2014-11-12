@@ -21,7 +21,7 @@ class GreaterMediaSongs {
 	public static function init() {
 
 		add_action( 'init', array( __CLASS__, 'register_songs_post_type' ) );
-		//add_filter( 'gmr_show_widget_item_post_types', array( __CLASS__, 'gmr_ll_add_show_widget_post_types' ) );
+		add_filter( 'gmr_show_widget_item_post_types', array( __CLASS__, 'add_songs_shows_widget' ) );
 
 	}
 
