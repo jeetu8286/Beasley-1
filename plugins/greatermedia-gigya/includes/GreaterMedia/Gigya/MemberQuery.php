@@ -189,11 +189,11 @@ class MemberQuery {
 	 * @return string
 	 */
 	public function to_gql( $count = false, $limit = null ) {
-		$query  = 'select * from ' . $this->storeName . ' where ';
+		$query  = 'select UID, profile.email from accounts where ';
 		$query .= $this->clause_for( $this->get_constraints() );
 
 		if ( $count ) {
-			$query = str_replace( '*', 'count(*)', $query );
+			$query = str_replace( 'UID, profile.email', 'count(*)', $query );
 		}
 
 		if ( is_int( $limit ) ) {
@@ -243,10 +243,26 @@ class MemberQuery {
 		$typeList = explode( ':', $type );
 		$mainType = $typeList[0];
 
-		if ( $mainType === 'record' ) {
-			return $this->clause_for_record_constraint( $constraint );
-		} else {
-			return $this->clause_for_profile_constraint( $constraint );
+		switch ( $mainType ) {
+			case 'record':
+				return $this->clause_for_record_constraint( $constraint );
+
+			case 'profile':
+				$subType = $typeList[1];
+
+				if ( $subType === 'likes' ) {
+					return $this->clause_for_likes_constraint( $constraint );
+				} else if ( $subType === 'favorites' ) {
+					return $this->clause_for_favorites_constraint( $constraint );
+				} else {
+					return $this->clause_for_profile_constraint( $constraint );
+				}
+
+			case 'system':
+				return $this->clause_for_system_constraint( $constraint );
+
+			default:
+				throw new \Exception( 'Unknown Constraint Type: ' . $mainType );
 		}
 	}
 
@@ -308,20 +324,96 @@ class MemberQuery {
 	 */
 	public function clause_for_profile_constraint( $constraint ) {
 		$type      = $constraint['type'];
+		$typeParts = explode( ':', $type );
 		$value     = $constraint['value'];
 		$valueType = $constraint['valueType'];
 		$operator  = $constraint['operator'];
 		$query     = '';
 
-		$query .= $this->field_name_for( 'entryType' );
+		$query .= 'profile.' . $typeParts[1];
 		$query .= ' ';
-		$query .= $this->operator_for( '=' );
+		$query .= $this->operator_for( $operator );
 		$query .= ' ';
-		$query .= $this->value_for( $type );
+		$query .= $this->value_for( $value, $valueType );
 
-		$query .= ' and ';
+		return $query;
+	}
 
-		$query .= $this->field_name_for( 'entryValue', $valueType );
+	/**
+	 * Generates the GQL clause for a likes constraint specified.
+	 *
+	 * @access public
+	 * @param array $constraint Generates the GQL specified.
+	 * @return string
+	 */
+	public function clause_for_likes_constraint( $constraint ) {
+		$type      = $constraint['type'];
+		$typeParts = explode( ':', $type );
+		$value     = $constraint['value'];
+		$valueType = $constraint['valueType'];
+		$operator  = $constraint['operator'];
+		$category  = $constraint['category'];
+		$query     = '';
+
+		if ( $category !== 'Any Category' ) {
+			$query = "profile.likes.category = '{$category}' and ";
+		}
+
+		$query .= 'profile.likes.name';
+		$query .= ' ';
+		$query .= $this->operator_for( $operator );
+		$query .= ' ';
+		$query .= $this->value_for( $value, $valueType );
+
+		return $query;
+	}
+
+	/**
+	 * Generates the GQL clause for a single favorites constraint specified.
+	 *
+	 * @access public
+	 * @param array $constraint Generates the GQL specified.
+	 * @return string
+	 */
+	public function clause_for_favorites_constraint( $constraint ) {
+		$type         = $constraint['type'];
+		$typeParts    = explode( ':', $type );
+		$value        = $constraint['value'];
+		$valueType    = $constraint['valueType'];
+		$operator     = $constraint['operator'];
+		$favoriteType = $constraint['favoriteType'];
+		$category     = $constraint['category'];
+		$query        = '';
+
+		if ( $category !== 'Any Category' ) {
+			$query .= "profile.favorites.{$favoriteType}.category = '{$category}' and ";
+		}
+
+		$query .= "profile.favorites.{$favoriteType}.name";
+		$query .= ' ';
+		$query .= $this->operator_for( $operator );
+		$query .= ' ';
+		$query .= $this->value_for( $value, $valueType );
+
+		return $query;
+	}
+
+	/**
+	 * Generates the GQL clause for the system constraint specified.
+	 *
+	 * @access public
+	 * @param array $constraint The system constraint to find the clause for.
+	 * @return string
+	 */
+	public function clause_for_system_constraint( $constraint ) {
+		$type      = $constraint['type'];
+		$typeParts = explode( ':', $type );
+		$value     = $constraint['value'];
+		$valueType = $constraint['valueType'];
+		$operator  = $constraint['operator'];
+		$query     = '';
+
+		$query .= $typeParts[1];
 		$query .= ' ';
 		$query .= $this->operator_for( $operator );
 		$query .= ' ';
@@ -344,7 +436,7 @@ class MemberQuery {
 			return "'{$value}'";
 		} elseif ( $valueType === 'boolean' ) {
 			$value = (bool)$value;
-			return $value ? 1 : 0;
+			return $value ? 'true' : 'false';
 		} elseif ( $valueType === 'date' ) {
 			$date = \DateTime::createFromFormat(
 				'm/d/Y', $value, new \DateTimeZone( 'UTC' )
@@ -382,7 +474,7 @@ class MemberQuery {
 	 * @return string
 	 */
 	public function field_name_for( $field, $valueType = 'string' ) {
-		return 'data.' . $field . $this->suffix_for( $valueType );
+		return 'data.' . $this->storeName . '.' . $field . $this->suffix_for( $valueType );
 	}
 
 	/**

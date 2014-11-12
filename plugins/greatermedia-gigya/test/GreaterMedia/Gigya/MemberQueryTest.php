@@ -77,7 +77,7 @@ class MemberQueryTest extends \WP_UnitTestCase {
 		);
 
 		$actual = $this->query->clause_for_constraint( $constraint );
-		$expected = "data.entries.entryType_s = 'profile:city' and data.entries.entryValue_s contains 'New York'";
+		$expected = "profile.city contains 'New York'";
 		$this->assertEquals( $expected, $actual );
 	}
 
@@ -94,6 +94,82 @@ class MemberQueryTest extends \WP_UnitTestCase {
 
 		$actual = $this->query->clause_for_constraint( $constraint );
 		$expected = "data.entries.entryType_s = 'record:contest' and data.entries.entryTypeID_i = 100 and data.entries.entryFieldID_i = 200 and data.entries.entryValue_s = 'New York'";
+		$this->assertEquals( $expected, $actual );
+	}
+
+	function test_it_can_build_clause_for_system_constraint() {
+		$constraint = array(
+			'type'         => 'system:verified',
+			'operator'     => 'equals',
+			'conjunction'  => 'and',
+			'valueType'    => 'boolean',
+			'value'        => true,
+		);
+
+		$actual = $this->query->clause_for_constraint( $constraint );
+		$expected = 'verified = true';
+		$this->assertEquals( $expected, $actual );
+	}
+
+	function test_it_can_build_clause_for_likes_constraint_with_custom_category() {
+		$constraint = array(
+			'type'         => 'profile:likes',
+			'operator'     => 'equals',
+			'conjunction'  => 'and',
+			'valueType'    => 'string',
+			'value'        => 'Xbox One',
+			'category'     => 'Games/toys',
+		);
+
+		$actual = $this->query->clause_for_constraint( $constraint );
+		$expected = "profile.likes.category = 'Games/toys' and profile.likes.name = 'Xbox One'";
+		$this->assertEquals( $expected, $actual );
+	}
+
+	function test_it_can_build_clause_for_likes_constraint_with_any_category() {
+		$constraint = array(
+			'type'         => 'profile:likes',
+			'operator'     => 'equals',
+			'conjunction'  => 'and',
+			'valueType'    => 'string',
+			'value'        => 'Xbox One',
+			'category'     => 'Any Category',
+		);
+
+		$actual = $this->query->clause_for_constraint( $constraint );
+		$expected = "profile.likes.name = 'Xbox One'";
+		$this->assertEquals( $expected, $actual );
+	}
+
+	function test_it_can_build_clause_for_favorites_constraint_with_custom_category() {
+		$constraint = array(
+			'type'         => 'profile:favorites',
+			'operator'     => 'equals',
+			'conjunction'  => 'and',
+			'valueType'    => 'string',
+			'value'        => 'Beetles',
+			'category'     => 'Musician/Band',
+			'favoriteType' => 'music',
+		);
+
+		$actual = $this->query->clause_for_constraint( $constraint );
+		$expected = "profile.favorites.music.category = 'Musician/Band' and profile.favorites.music.name = 'Beetles'";
+		$this->assertEquals( $expected, $actual );
+	}
+
+	function test_it_can_build_clause_for_favorites_constraint_with_any_category() {
+		$constraint = array(
+			'type'         => 'profile:favorites',
+			'operator'     => 'equals',
+			'conjunction'  => 'and',
+			'valueType'    => 'string',
+			'value'        => 'Beetles',
+			'category'     => 'Any Category',
+			'favoriteType' => 'music',
+		);
+
+		$actual = $this->query->clause_for_constraint( $constraint );
+		$expected = "profile.favorites.music.name = 'Beetles'";
 		$this->assertEquals( $expected, $actual );
 	}
 
@@ -118,7 +194,7 @@ class MemberQueryTest extends \WP_UnitTestCase {
 		);
 
 		$actual = $this->query->clause_for( $constraints );
-		$expected = "data.entries.entryType_s = 'profile:city' and data.entries.entryValue_s contains 'New York' and data.entries.entryType_s = 'record:contest' and data.entries.entryTypeID_i = 100 and data.entries.entryFieldID_i = 200 and data.entries.entryValue_s = 'New York'";
+		$expected = "profile.city contains 'New York' and data.entries.entryType_s = 'record:contest' and data.entries.entryTypeID_i = 100 and data.entries.entryFieldID_i = 200 and data.entries.entryValue_s = 'New York'";
 		$this->assertEquals( $expected, $actual );
 	}
 
@@ -144,7 +220,7 @@ class MemberQueryTest extends \WP_UnitTestCase {
 
 		$this->query = $this->query_for( json_encode( $constraints ) );
 		$actual = $this->query->to_gql();
-		$expected = "select UID from entries where data.entries.entryType_s = 'profile:city' and data.entries.entryValue_s contains 'New York' and data.entries.entryType_s = 'record:contest' and data.entries.entryTypeID_i = 100 and data.entries.entryFieldID_i = 200 and data.entries.entryValue_s = 'New York'";
+		$expected = "select UID, profile.email from accounts where profile.city contains 'New York' and data.entries.entryType_s = 'record:contest' and data.entries.entryTypeID_i = 100 and data.entries.entryFieldID_i = 200 and data.entries.entryValue_s = 'New York'";
 		$this->assertEquals( $expected, $actual );
 	}
 
@@ -177,10 +253,6 @@ class MemberQueryTest extends \WP_UnitTestCase {
 		$new_query = new MemberQuery( $this->query->post_id );
 		$actual = $new_query->get_constraints();
 		$this->assertEquals( $constraints, $actual );
-	}
-
-	function test_it_can_build_gql_from_user_generated_json() {
-		$json = '[{"type":"system:isActive","valueType":"boolean","operator":"equals","conjunction":"and","value":false}] ';
 	}
 
 }
