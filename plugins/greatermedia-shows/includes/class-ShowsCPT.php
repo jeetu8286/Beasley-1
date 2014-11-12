@@ -29,7 +29,7 @@ class ShowsCPT {
 	public static function get_instance() {
 		if ( is_null( self::$_instance ) ) {
 			self::$_instance = new ShowsCPT();
-			
+
 			add_action( 'init', array( self::$_instance, 'register_post_type' ) );
 			add_action( 'init', array( self::$_instance, 'register_shadow_taxonomy' ) );
 		}
@@ -64,8 +64,8 @@ class ShowsCPT {
 				'menu_name'          => __( 'Shows', 'greatermedia' ),
 			),
 		) );
-		
-		register_post_type( self::EPISODE_CPT, array( 
+
+		register_post_type( self::EPISODE_CPT, array(
 			'public'     => false,
 			'rewrite'    => false,
 			'can_export' => true,
@@ -83,20 +83,20 @@ class ShowsCPT {
 	 */
 	public function register_shadow_taxonomy() {
 		$labels = array(
-			'name'                  => _x( 'Shows', 'Taxonomy Show terms', 'greatermedia' ),
-			'singular_name'         => _x( 'Show', 'Taxonomy Show term', 'greatermedia' ),
-			'search_items'          => __( 'Search Show terms', 'greatermedia' ),
-			'popular_items'         => __( 'Popular Show terms', 'greatermedia' ),
-			'all_items'             => __( 'All Show terms', 'greatermedia' ),
-			'parent_item'           => __( 'Parent Show term', 'greatermedia' ),
-			'parent_item_colon'     => __( 'Parent Show term', 'greatermedia' ),
-			'edit_item'             => __( 'Edit Show term', 'greatermedia' ),
-			'update_item'           => __( 'Update Show term', 'greatermedia' ),
-			'add_new_item'          => __( 'Add New Show term', 'greatermedia' ),
-			'new_item_name'         => __( 'New Show term Name', 'greatermedia' ),
-			'add_or_remove_items'   => __( 'Add or remove Show terms', 'greatermedia' ),
+			'name'                  => _x( 'Shows', 'Shows', 'greatermedia' ),
+			'singular_name'         => _x( 'Show', 'Show', 'greatermedia' ),
+			'search_items'          => __( 'Search Shows', 'greatermedia' ),
+			'popular_items'         => __( 'Popular Shows', 'greatermedia' ),
+			'all_items'             => __( 'All Shows', 'greatermedia' ),
+			'parent_item'           => __( 'Parent Show', 'greatermedia' ),
+			'parent_item_colon'     => __( 'Parent Show', 'greatermedia' ),
+			'edit_item'             => __( 'Edit Show', 'greatermedia' ),
+			'update_item'           => __( 'Update Show', 'greatermedia' ),
+			'add_new_item'          => __( 'Add New Show', 'greatermedia' ),
+			'new_item_name'         => __( 'New Show Name', 'greatermedia' ),
+			'add_or_remove_items'   => __( 'Add or remove Show', 'greatermedia' ),
 			'choose_from_most_used' => __( 'Choose from most used greatermedia', 'greatermedia' ),
-			'menu_name'             => __( 'Show term', 'greatermedia' ),
+			'menu_name'             => __( 'Show', 'greatermedia' ),
 		);
 
 		$args = array(
@@ -104,7 +104,7 @@ class ShowsCPT {
 			'public'            => true,
 			'show_in_nav_menus' => true,
 			'show_admin_column' => false,
-			'hierarchical'      => false,
+			'hierarchical'      => true, // Show check boxes in the Shows meta box.
 			'show_tagcloud'     => true,
 			'show_ui'           => true,
 			'query_var'         => true,
@@ -113,20 +113,33 @@ class ShowsCPT {
 			'capabilities'      => array(),
 		);
 
-		$supported_posttypes = array(
+		$supported_posttypes = self::get_supported_post_types();
+
+		register_taxonomy( self::SHOW_TAXONOMY, (array) $supported_posttypes, $args );
+
+		if ( function_exists( 'TDS\add_relationship' ) ) {
+			TDS\add_relationship( self::SHOW_CPT, self::SHOW_TAXONOMY );
+		}
+	}
+
+	/**
+	 * Get supported post types.
+	 *
+	 * @return array The post types
+	 */
+	public static function get_supported_post_types() {
+		$post_types = array(
 			'post',
 			'albums',
 			'contest',
 			'podcast',
 			'personality',
-			'tribe_events'
+			'tribe_events',
+			'survey',
+			'livefyre-media-wall',
 		);
 
-		register_taxonomy( self::SHOW_TAXONOMY, $supported_posttypes, $args );
-
-		if ( function_exists( 'TDS\add_relationship' ) ) {
-			TDS\add_relationship( self::SHOW_CPT, self::SHOW_TAXONOMY );
-		}
+		return $post_types;
 	}
 
 }
