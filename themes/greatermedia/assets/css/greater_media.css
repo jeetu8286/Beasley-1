@@ -2308,13 +2308,15 @@ blockquote p {
 
 .live-link__song:before {
   content: "\e604";
-  color: #d22228; }
+  color: #c7c7c7; }
 
 .live-link__song--artist {
-  font-size: 0.75em; }
+  font-size: 0.75em;
+  font-weight: normal; }
 
 .live-link__song--title {
   font-size: 0.8125em;
+  font-weight: lighter;
   color: #c7c7c7; }
 
 .live-link__type--audio:before {
@@ -2570,8 +2572,7 @@ blockquote p {
   margin: 0 0 1em;
   font-family: "Open Sans", sans-serif;
   font-size: 1em;
-  font-weight: normal;
-  text-transform: uppercase; }
+  font-weight: normal; }
 
 .widget--live-player ul {
   padding: 0;

@@ -514,15 +514,17 @@
 .live-link__song:before {
 	@extend %live-link__icon;
 	content: "\e604";
-	color: palette(live-links, primary-link);
+	color: palette(live-links, primary-text);
 }
 
 .live-link__song--artist {
 	font-size: em(12px);
+	font-weight: normal;
 }
 
 .live-link__song--title {
 	font-size: em(13px);
+	font-weight: lighter;
 	color: palette(live-links, primary-text);
 }
 
