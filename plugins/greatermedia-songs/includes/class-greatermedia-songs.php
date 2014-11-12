@@ -21,6 +21,7 @@ class GreaterMediaSongs {
 	public static function init() {
 
 		add_action( 'init', array( __CLASS__, 'register_songs_post_type' ) );
+		add_filter( 'gmr_show_widget_item_post_types', array( __CLASS__, 'gmr_ll_add_show_widget_post_types' ) );
 
 	}
 
@@ -79,6 +80,18 @@ class GreaterMediaSongs {
 		
 		register_post_type( 'songs', $args );
 
+	}
+
+	/**
+	 * Adds the songs post types to the available post types to be queried by the shows widget
+	 *
+	 * @filter gmr_show_widget_item_post_types
+	 * @param array $post_types The post types array.
+	 * @return array The post types array.
+	 */
+	public static function add_songs_shows_widget( $post_types ) {
+		$post_types[] = 'songs';
+		return $post_types;
 	}
 }
 
