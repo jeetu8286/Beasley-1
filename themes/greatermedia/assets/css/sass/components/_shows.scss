@@ -13,7 +13,7 @@
 	@include size(60px 60px);
 	@include margin(null .5em null null);
 	display: inline-block;
-	background-color: color(base, primary-border);
+	background-color: palette(base, primary-border);
 }
 
 .show-attr--next_air_time {
