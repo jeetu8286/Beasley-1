@@ -281,7 +281,7 @@ class GreaterMediaFormbuilderRender {
 
 				// Make sure the field type has been implemented/is valid
 				if ( ! method_exists( __CLASS__, $renderer_method ) ) {
-					throw new InvalidArgumentException( sprintf( 'Form field %s has an unimplemented field type', $field->cid ) );
+					throw new InvalidArgumentException( sprintf( 'Form field %s has unimplemented field type %s', wp_kses_data( $field->cid ), wp_kses_data( $field->field_type ) ) );
 				}
 
 				$html .= wp_kses( self::$renderer_method( $post_id, $field ), self::allowed_tags() );
