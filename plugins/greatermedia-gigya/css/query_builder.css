@@ -89,8 +89,7 @@
 }
 
 .constraint-value-text {
-	margin-left: 0.5em;
-	margin-right: 0.5em;
+	width: 45%;
 	height: 2em;
 	vertical-align: top;
 }
