@@ -442,7 +442,7 @@ class MemberQuery {
 				'm/d/Y', $value, new \DateTimeZone( 'UTC' )
 			);
 
-			return $date->getTimestamp();
+			return $date->getTimestamp() * 1000;
 		} else {
 			return $value;
 		}
