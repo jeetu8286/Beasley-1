@@ -155,7 +155,7 @@
 									multiline: true,
 									minHeight: 200,
 									name     : 'content',
-									label    : GreaterMediaTimedContent.strings['Content'],
+									label    : VisualShortcode.strings['Content'],
 									value    : node.querySelector('.content').innerHTML
 								}],
 								title = VisualShortcode.strings['Edit'];
