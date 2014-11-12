@@ -184,6 +184,20 @@ class GreaterMediaFormbuilderRender {
 				'form'        => 1,
 			);
 
+			$tags['textarea'] = array(
+				'id'                    => 1,
+				'name'                  => 1,
+				'class'                 => 1,
+				'autofocus'             => 1,
+				'disabled'              => 1,
+				'form'                  => 1,
+				'required'              => 1,
+				'onkeypress'            => 1,
+				'pattern'               => 1,
+				'data-parsley-minwords' => 1,
+				'data-parsley-maxwords' => 1,
+			);
+
 			$tags['select'] = array(
 				'id'        => 1,
 				'name'      => 1,
