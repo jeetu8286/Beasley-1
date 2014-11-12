@@ -189,8 +189,13 @@ class MemberQuery {
 	 * @return string
 	 */
 	public function to_gql( $count = false, $limit = null ) {
-		$query  = 'select * from accounts where ';
-		$query .= $this->clause_for( $this->get_constraints() );
+		$constraints = $this->get_constraints();
+		if ( count( $constraints ) === 0 ) {
+			return '';
+		}
+
+		$query       = 'select * from accounts where ';
+		$query .= $this->clause_for( $constraints );
 
 		if ( $count ) {
 			$query = str_replace( '*', 'count(*)', $query );
@@ -356,7 +361,7 @@ class MemberQuery {
 		$query     = '';
 
 		if ( $category !== 'Any Category' ) {
-			$query = "profile.likes.category = '{$category}' and ";
+			$query = "profile.likes.category contains '{$category}' and ";
 		}
 
 		$query .= 'profile.likes.name';
@@ -386,7 +391,8 @@ class MemberQuery {
 		$query        = '';
 
 		if ( $category !== 'Any Category' ) {
-			$query .= "profile.favorites.{$favoriteType}.category = '{$category}' and ";
+			// TODO: Figure out why categories don't match exactly
+			$query .= "profile.favorites.{$favoriteType}.category contains '{$category}' and ";
 		}
 
 		$query .= "profile.favorites.{$favoriteType}.name";

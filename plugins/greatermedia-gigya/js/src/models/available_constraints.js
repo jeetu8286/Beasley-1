@@ -78,6 +78,20 @@ var AVAILABLE_CONSTRAINTS = [
 		value: -5,
 	},
 
+	// Facebook
+	{
+		type: 'profile:likes',
+		valueType: 'string',
+		category: 'Any Category',
+		value: ''
+	},
+	{
+		type: 'profile:favorites',
+		valueType: 'string',
+		category: 'Any Category',
+		value: ''
+	},
+
 	/* Contests */
 	{
 		type: 'record:contest',
@@ -127,6 +141,14 @@ var AVAILABLE_CONSTRAINTS_META = [
 	},
 
 	/* Profile Fields */
+	{
+		type: 'profile:likes',
+		title: 'Facebook Likes'
+	},
+	{
+		type: 'profile:favorites',
+		title: 'Facebook Favorites'
+	},
 	{
 		type: 'profile:birthYear',
 		title: 'Birth Year'

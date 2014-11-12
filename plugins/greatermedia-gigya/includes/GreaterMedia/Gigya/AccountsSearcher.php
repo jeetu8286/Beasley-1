@@ -23,7 +23,7 @@ class AccountsSearcher {
 	 */
 	public function search( $query, $count = false, $limit = null ) {
 		$query    = $this->prepare_query( $query, $count, $limit );
-		error_log( $query );
+		//error_log( $query );
 		$request  = $this->request_for( 'accounts.search', $query );
 		$response = $request->send();
 
