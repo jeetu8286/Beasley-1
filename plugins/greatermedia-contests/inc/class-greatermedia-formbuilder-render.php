@@ -8,9 +8,13 @@ class GreaterMediaFormbuilderRender {
 
 	const FORM_CLASS = 'contest_entry_form';
 
-	const FIELD_SIZE_SMALL = '10';
-	const FIELD_SIZE_MEDIUM = '25';
-	const FIELD_SIZE_LARGE = '40';
+	const INPUT_SIZE_SMALL = '10';
+	const INPUT_SIZE_MEDIUM = '25';
+	const INPUT_SIZE_LARGE = '40';
+
+	const TEXTAREA_SIZE_SMALL = '3';
+	const TEXTAREA_SIZE_MEDIUM = '5';
+	const TEXTAREA_SIZE_LARGE = '10';
 
 	private function __construct() {
 		// Use the public static methods. Don't instantiate this class directly.
@@ -206,6 +210,7 @@ class GreaterMediaFormbuilderRender {
 				'data-parsley-maxlength' => 1,
 				'minlength'              => 1,
 				'maxlength'              => 1,
+				'rows'                   => 1,
 			);
 
 			$tags['select'] = array(
@@ -391,11 +396,11 @@ class GreaterMediaFormbuilderRender {
 		if ( isset( $field->field_options->size ) ) {
 
 			if ( 'small' === $field->field_options->size ) {
-				$input_tag_attributes['size'] = self::FIELD_SIZE_SMALL;
+				$input_tag_attributes['size'] = self::INPUT_SIZE_SMALL;
 			} else if ( 'medium' === $field->field_options->size ) {
-				$input_tag_attributes['size'] = self::FIELD_SIZE_MEDIUM;
+				$input_tag_attributes['size'] = self::INPUT_SIZE_MEDIUM;
 			} else if ( 'large' === $field->field_options->size ) {
-				$input_tag_attributes['size'] = self::FIELD_SIZE_LARGE;
+				$input_tag_attributes['size'] = self::INPUT_SIZE_LARGE;
 			} else {
 				throw new InvalidArgumentException( sprintf( 'Field %d has an invalid size', $field->cid ) );
 			}
@@ -456,10 +461,24 @@ class GreaterMediaFormbuilderRender {
 
 		} else if ( 'characters' === $field->field_options->min_max_length_units ) {
 
-			$textarea_tag_attributes['minlength'] = absint( $field->field_options->minlength );
-			$textarea_tag_attributes['maxlength'] = absint( $field->field_options->maxlength );
+			$textarea_tag_attributes['minlength']              = absint( $field->field_options->minlength );
+			$textarea_tag_attributes['maxlength']              = absint( $field->field_options->maxlength );
 			$textarea_tag_attributes['data-parsley-minlength'] = absint( $field->field_options->minlength );
 			$textarea_tag_attributes['data-parsley-maxlength'] = absint( $field->field_options->maxlength );
+
+		}
+
+		if ( isset( $field->field_options->size ) ) {
+
+			if ( 'small' === $field->field_options->size ) {
+				$textarea_tag_attributes['rows'] = self::TEXTAREA_SIZE_SMALL;
+			} else if ( 'medium' === $field->field_options->size ) {
+				$textarea_tag_attributes['rows'] = self::TEXTAREA_SIZE_MEDIUM;
+			} else if ( 'large' === $field->field_options->size ) {
+				$textarea_tag_attributes['rows'] = self::TEXTAREA_SIZE_LARGE;
+			} else {
+				throw new InvalidArgumentException( sprintf( 'Field %d has an invalid size', $field->cid ) );
+			}
 
 		}
 
