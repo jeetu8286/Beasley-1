@@ -22,14 +22,6 @@
 	margin: 0 0 1em;
 }
 
-.widget--live-player li a:link, .widget--live-player li a:visited {
-	color: palette(base, tertiary-link);
-}
-
-.widget--live-player li a:hover, .widget--live-player li a:focus, .widget--live-player li a:active {
-	color:  palette(base, primary-link);
-}
-
 // On-air Schedule
 .widget-onair--current {
 
