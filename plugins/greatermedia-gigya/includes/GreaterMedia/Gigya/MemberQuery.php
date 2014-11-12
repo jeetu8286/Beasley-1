@@ -189,11 +189,11 @@ class MemberQuery {
 	 * @return string
 	 */
 	public function to_gql( $count = false, $limit = null ) {
-		$query  = 'select UID, profile.email from accounts where ';
+		$query  = 'select * from accounts where ';
 		$query .= $this->clause_for( $this->get_constraints() );
 
 		if ( $count ) {
-			$query = str_replace( 'UID, profile.email', 'count(*)', $query );
+			$query = str_replace( '*', 'count(*)', $query );
 		}
 
 		if ( is_int( $limit ) ) {
@@ -298,11 +298,11 @@ class MemberQuery {
 
 		$query .= ' and ';
 
-		$query .= $this->field_name_for( 'entryFieldID', 'integer' );
+		$query .= $this->field_name_for( 'entryFieldID', 'string' );
 		$query .= ' ';
 		$query .= $this->operator_for( '=' );
 		$query .= ' ';
-		$query .= $this->value_for( $entryFieldID, 'integer' );
+		$query .= $this->value_for( $entryFieldID, 'string' );
 
 		$query .= ' and ';
 
