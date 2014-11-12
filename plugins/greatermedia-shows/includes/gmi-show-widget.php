@@ -83,15 +83,10 @@ function gmrs_get_shows_widget_html() {
 		'posts_per_page'      => 20,
 	) );
 
-	$format = get_post_format();
-	if ( false === $format ) {
-		$format = 'standard';
-	}
-
 	echo '<ul>';
 		while ( $show_stuff->have_posts() ) :
 			$show_stuff->the_post();
-			echo '<li class="live-link__type--' . esc_attr( $format ) . '">', apply_filters( 'gmr_show_widget_item', get_the_title() ), '</li>';
+			echo '<li">', apply_filters( 'gmr_show_widget_item', get_the_title() ), '</li>';
 		endwhile;
 	echo '</ul>';
 
