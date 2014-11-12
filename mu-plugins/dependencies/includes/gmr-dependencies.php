@@ -32,6 +32,15 @@ class GmrDependencies {
 			, '3.5.2'
 			, 'all'
 		);
+
+		// Register jquery-ui theme
+		wp_register_style(
+			'jquery-ui'
+			, GMRDEPENDENCIES_URL . "/jquery-ui/jquery-ui{$postfix}.css"
+			, array()
+			, '1.11.2'
+			, 'all'
+		);
 	}
 }
 

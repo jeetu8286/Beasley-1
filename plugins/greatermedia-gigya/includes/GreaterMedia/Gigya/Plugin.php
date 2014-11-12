@@ -148,7 +148,7 @@ class Plugin {
 	}
 
 	function initialize_member_query_styles( $member_query ) {
-		$this->enqueue_style( 'query_builder', 'css/query_builder.css' );
+		$this->enqueue_style( 'query_builder', 'css/query_builder.css', 'jquery-ui' );
 		//$this->enqueue_style( 'select2', 'css/vendor/select2.css' );
 	}
 
