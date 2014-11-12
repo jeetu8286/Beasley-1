@@ -93,7 +93,7 @@ class MemberQueryTest extends \WP_UnitTestCase {
 		);
 
 		$actual = $this->query->clause_for_constraint( $constraint );
-		$expected = "data.entries.entryType_s = 'record:contest' and data.entries.entryTypeID_i = 100 and data.entries.entryFieldID_i = 200 and data.entries.entryValue_s = 'New York'";
+		$expected = "data.entries.entryType_s = 'record:contest' and data.entries.entryTypeID_i = 100 and data.entries.entryFieldID_s = '200' and data.entries.entryValue_s = 'New York'";
 		$this->assertEquals( $expected, $actual );
 	}
 
@@ -122,7 +122,7 @@ class MemberQueryTest extends \WP_UnitTestCase {
 		);
 
 		$actual = $this->query->clause_for_constraint( $constraint );
-		$expected = "profile.likes.category = 'Games/toys' and profile.likes.name = 'Xbox One'";
+		$expected = "profile.likes.category contains 'Games/toys' and profile.likes.name = 'Xbox One'";
 		$this->assertEquals( $expected, $actual );
 	}
 
@@ -153,7 +153,7 @@ class MemberQueryTest extends \WP_UnitTestCase {
 		);
 
 		$actual = $this->query->clause_for_constraint( $constraint );
-		$expected = "profile.favorites.music.category = 'Musician/Band' and profile.favorites.music.name = 'Beetles'";
+		$expected = "profile.favorites.music.category contains 'Musician/Band' and profile.favorites.music.name = 'Beetles'";
 		$this->assertEquals( $expected, $actual );
 	}
 
@@ -194,7 +194,7 @@ class MemberQueryTest extends \WP_UnitTestCase {
 		);
 
 		$actual = $this->query->clause_for( $constraints );
-		$expected = "profile.city contains 'New York' and data.entries.entryType_s = 'record:contest' and data.entries.entryTypeID_i = 100 and data.entries.entryFieldID_i = 200 and data.entries.entryValue_s = 'New York'";
+		$expected = "profile.city contains 'New York' and data.entries.entryType_s = 'record:contest' and data.entries.entryTypeID_i = 100 and data.entries.entryFieldID_s = '200' and data.entries.entryValue_s = 'New York'";
 		$this->assertEquals( $expected, $actual );
 	}
 
@@ -220,7 +220,7 @@ class MemberQueryTest extends \WP_UnitTestCase {
 
 		$this->query = $this->query_for( json_encode( $constraints ) );
 		$actual = $this->query->to_gql();
-		$expected = "select UID, profile.email from accounts where profile.city contains 'New York' and data.entries.entryType_s = 'record:contest' and data.entries.entryTypeID_i = 100 and data.entries.entryFieldID_i = 200 and data.entries.entryValue_s = 'New York'";
+		$expected = "select * from accounts where profile.city contains 'New York' and data.entries.entryType_s = 'record:contest' and data.entries.entryTypeID_i = 100 and data.entries.entryFieldID_s = '200' and data.entries.entryValue_s = 'New York'";
 		$this->assertEquals( $expected, $actual );
 	}
 
@@ -253,6 +253,14 @@ class MemberQueryTest extends \WP_UnitTestCase {
 		$new_query = new MemberQuery( $this->query->post_id );
 		$actual = $new_query->get_constraints();
 		$this->assertEquals( $constraints, $actual );
+	}
+
+	function test_it_builds_empty_string_if_constraints_are_empty() {
+		$constraints = array();
+
+		$this->query = $this->query_for( json_encode( $constraints ) );
+		$actual = $this->query->to_gql();
+		$this->assertEquals( '', $actual );
 	}
 
 }

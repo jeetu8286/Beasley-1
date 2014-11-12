@@ -189,8 +189,13 @@ class MemberQuery {
 	 * @return string
 	 */
 	public function to_gql( $count = false, $limit = null ) {
-		$query  = 'select * from accounts where ';
-		$query .= $this->clause_for( $this->get_constraints() );
+		$constraints = $this->get_constraints();
+		if ( count( $constraints ) === 0 ) {
+			return '';
+		}
+
+		$query       = 'select * from accounts where ';
+		$query .= $this->clause_for( $constraints );
 
 		if ( $count ) {
 			$query = str_replace( '*', 'count(*)', $query );
