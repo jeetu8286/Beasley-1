@@ -10,6 +10,7 @@ class SyndicationCPT {
 
 	public function __construct() {
 		add_action( 'init', array( $this, 'register_syndication_cpt' ) );
+		add_action( 'init', array( $this, 'register_collections_taxonomy' ) );
 		add_action( 'admin_menu', array( $this, 'hide_publish_meta' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'subscription_admin_scripts' ) );
 		add_action( 'admin_head-post.php', array( $this, 'hide_publishing_actions' ) );
@@ -27,6 +28,44 @@ class SyndicationCPT {
 	}
 
 	/**
+	 * Register collections taxonomy for posts
+	 */
+	public function register_collections_taxonomy() {
+		$labels = array(
+			'name'					=> _x( 'Collections', 'Taxonomy plural name', 'greatermedia' ),
+			'singular_name'			=> _x( 'Collections', 'Taxonomy singular name', 'greatermedia' ),
+			'search_items'			=> __( 'Search Collections', 'greatermedia' ),
+			'popular_items'			=> __( 'Popular Collections', 'greatermedia' ),
+			'all_items'				=> __( 'All Collections', 'greatermedia' ),
+			'parent_item'			=> __( 'Parent Collections', 'greatermedia' ),
+			'parent_item_colon'		=> __( 'Parent Collections', 'greatermedia' ),
+			'edit_item'				=> __( 'Edit Collections', 'greatermedia' ),
+			'update_item'			=> __( 'Update Collections', 'greatermedia' ),
+			'add_new_item'			=> __( 'Add New Collections', 'greatermedia' ),
+			'new_item_name'			=> __( 'New Collections Name', 'greatermedia' ),
+			'add_or_remove_items'	=> __( 'Add or remove Collections', 'greatermedia' ),
+			'choose_from_most_used'	=> __( 'Choose from most used greatermedia', 'greatermedia' ),
+			'menu_name'				=> __( 'Collections', 'greatermedia' ),
+		);
+
+		$args = array(
+			'labels'            => $labels,
+			'public'            => true,
+			'show_in_nav_menus' => true,
+			'show_admin_column' => false,
+			'hierarchical'      => false,
+			'show_tagcloud'     => true,
+			'show_ui'           => true,
+			'query_var'         => true,
+			'rewrite'           => true,
+			'query_var'         => true,
+			'capabilities'      => array(),
+		);
+
+		register_taxonomy( 'collection', array( 'post' ), $args );
+	}
+
+	/**
 	 * Hide meta keys from custom fields
 	 *
 	 * @param $protected - boolean
@@ -39,7 +78,8 @@ class SyndicationCPT {
 		$hidden_keys = array(
 			'subscription_post_status',
 			'subscription_filter_terms',
-			'subscription_default_terms-'
+			'subscription_default_terms-',
+			'syndication_import'
 		);
 
 		foreach( $hidden_keys as $hidden_key ) {
@@ -321,13 +361,17 @@ class SyndicationCPT {
 		}
 
 		// get filter metas
-		if( isset( $_POST[ 'subscription_filter_terms' ] ) ) {
-			$sanitized = array_map( 'sanitize_text_field', $_POST[ 'subscription_filter_terms' ] );
-			$terms = implode( ',', $sanitized );
-		}
+		foreach( BlogData::$taxonomies as $taxonomy ) {
 
-		// Update the meta field.
-		update_post_meta( $post_id, 'subscription_filter_terms', $terms  );
+			if( isset( $_POST[ 'subscription_filter_terms-' . $taxonomy ] ) ) {
+				$sanitized = array_map( 'sanitize_text_field', $_POST[ 'subscription_filter_terms-' . $taxonomy ] );
+				$terms = implode( ',', $sanitized );
+			}
+
+			// Update the meta field.
+			update_post_meta( $post_id, 'subscription_filter_terms-' . $taxonomy, $terms  );
+
+		}
 
 	}
 
@@ -342,24 +386,31 @@ class SyndicationCPT {
 
 		// Add an nonce field so we can check for it later.
 		wp_nonce_field( 'save_subscription_status', 'subscription_custom_nonce' );
+		
+		foreach( $allterms as $taxonomy => $terms ) {
+			if( taxonomy_exists( $taxonomy ) ) {
+				// Use get_post_meta to retrieve an existing value from the database.
+				$filter_terms = get_post_meta( $post->ID, 'subscription_filter_terms-' . $taxonomy , true );
+				$filter_terms = explode( ',', $filter_terms );
 
-		// Use get_post_meta to retrieve an existing value from the database.
-		$terms = get_post_meta( $post->ID, 'subscription_filter_terms', true );
-		$terms = explode( ',', $terms );
+				// get taxonomy label
+				$taxonomy_obj = get_taxonomies( array( 'name' => $taxonomy ), 'object' );
+				$taxonomy_name = $taxonomy_obj[$taxonomy]->label;
 
-		// Display the form, using the current value.
-		echo '<p><label for="subscription_filter_terms">';
-		_e( 'Terms', 'greatermedia' );
-		echo '</label> ';
+				// Display the form, using the current value.
+				echo '<p><label for="subscription_filter_terms">';
+				esc_html_e( $taxonomy_name, 'greatermedia' );
+				echo '</label> ';
 
-		echo '<select multiple name="subscription_filter_terms[]" id="subscription_terms" style="width: 300px;">';
-		foreach( $allterms as $index => $term ) {
-			foreach( $term as $single_term ) {
-				echo '<option', in_array( $single_term->term_id, $terms) ? ' selected="selected"' : ''
-				, ' value="' . intval( $single_term->term_id ) .'">' . esc_html( $single_term->name ) . '</option>';
+				echo '<select multiple name="subscription_filter_terms-' . $taxonomy . '[]" class="subscription_terms" style="width: 300px;">';
+				foreach( $terms as $single_term ) {
+					echo '<option', in_array( $single_term->term_id, $filter_terms) ? ' selected="selected"' : ''
+					, ' value="' . intval( $single_term->term_id ) .'">' . esc_attr( $single_term->name ) . '</option>';
+				}
+
+				echo '</select></p>';
 			}
 		}
-		echo '</select></p>';
 	}
 
 	/**
@@ -398,7 +449,7 @@ class SyndicationCPT {
 
 		// post status metabox
 		echo '<p><label for="subscription_post_status">';
-		_e( 'Status', 'greatermedia' );
+		esc_html_e( 'Status', 'greatermedia' );
 		echo '</label> ';
 
 		echo '<select name="subscription_post_status" id="subscription_post_status" style="width: 300px;">';
@@ -437,7 +488,7 @@ class SyndicationCPT {
 						$checked = in_array( $single_term->term_id, $terms) ? 'yes' : 'no';
 						echo '<label for="subscription_default_terms-' . $label . '[]">';
 						echo '<input name="subscription_default_terms-' . $label . '[]" id="subscription_default_terms" type="checkbox" ', checked( $checked, 'yes' )
-						, ' value="' . intval( $single_term->term_id ) .'">' . esc_html( $single_term->name );
+						, ' value="' . intval( $single_term->term_id ) .'">' . esc_attr( $single_term->name );
 						echo '</label><br/>';
 					}
 				}

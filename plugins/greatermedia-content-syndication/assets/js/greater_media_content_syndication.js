@@ -6,7 +6,7 @@
 	'use strict';
 
 	jQuery( function( $ ) {
-		$("#subscription_terms").select2({
+		$(".subscription_terms").select2({
 			placeholder: "Select term"
 		});
 	});
