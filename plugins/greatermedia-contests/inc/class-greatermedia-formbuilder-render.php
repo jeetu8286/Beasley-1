@@ -40,8 +40,14 @@ class GreaterMediaFormbuilderRender {
 	 */
 	public static function wp_enqueue_scripts() {
 
-		wp_enqueue_script( 'parsleyjs', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'bower_components/parsleyjs/dist/parsley.min.js', array( 'jquery' ) );
+		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
+			wp_enqueue_script( 'parsleyjs', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'bower_components/parsleyjs/dist/parsley.js', array( 'jquery' ) );
+		} else {
+			wp_enqueue_script( 'parsleyjs', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'bower_components/parsleyjs/dist/parsley.min.js', array( 'jquery' ) );
+		}
+
 		wp_enqueue_script( 'parsleyjs-words', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'bower_components/parsleyjs/src/extra/validator/words.js', array( 'parsleyjs' ) );
+
 		wp_enqueue_style( 'parsleyjs', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'bower_components/parsleyjs/src/parsley.css' );
 		wp_enqueue_script( 'greatermedia-contests', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'js/greatermedia-contests.js', array( 'jquery' ), false, true );
 		$settings = array(
