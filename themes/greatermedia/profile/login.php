@@ -8,6 +8,9 @@
 
 				<h2>Login</h2>
 
+				<div id="profile-content">
+				</div>
+
 			</section>
 
 		</div>

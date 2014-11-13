@@ -6,7 +6,7 @@
 
 			<section class="content">
 
-				<h2>Logout</h2>
+				<h2>Forgot Password</h2>
 
 				<div id="profile-content">
 				</div>
