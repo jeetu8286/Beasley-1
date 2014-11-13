@@ -85,7 +85,38 @@
 								<div class="header__logo">
 									<a href="<?php echo home_url(); ?>"><img src="<?php bloginfo( 'stylesheet_directory' ); ?>/images/wmmr-logo.png" alt="<?php bloginfo( 'name' ); ?> | <?php bloginfo( 'description' ); ?>" class="header__logo--img"></a>
 								</div>
-								<?php
+								<nav class="header__nav">
+									<ul id="header__nav--list" class="header__nav--list">
+										<li>
+											<a href="">Music</a>
+											<ul>
+
+											</ul>
+										</li>
+										<li>
+											<a href="">Concerts</a>
+										</li>
+										<li>
+											<a href="">Djs</a>
+										</li>
+										<li>
+											<a href="">Blogs</a>
+										</li>
+										<li>
+											<a href="">Events</a>
+										</li>
+										<li>
+											<a href="">Contests</a>
+										</li>
+										<li>
+											<a href="">Vip</a>
+										</li>
+										<li>
+											<a href="">You Rock</a>
+										</li>
+									</ul>
+								</nav>
+								<?php /*
 								$main_nav = array(
 									'theme_location'  => 'main-nav',
 									'menu'            => '',
@@ -104,7 +135,7 @@
 									'depth'           => 0,
 									'walker'          => ''
 								);
-								wp_nav_menu( $main_nav );
+								wp_nav_menu( $main_nav ); */
 								?>
 								<div class="header__secondary">
 									<nav class="header__account">

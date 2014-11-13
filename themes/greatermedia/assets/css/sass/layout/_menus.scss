@@ -135,8 +135,9 @@
 	background-color: $link-color;
 }
 
+// Header Nav
 .header__nav {
-	height: 57px;
+	height: 82px;
 	display: none;
 	line-height: 1;
 	@include bp(medium) {
@@ -181,8 +182,8 @@
 }
 
 .header__nav ul li, .header__account ul li {
-	padding: em(22px) 0;
-	margin: 0 1em 0 0;
+	padding: 0;
+	margin: 0;
 	list-style: none;
 	display: inline-block;
 	font-size: ms(0);
@@ -194,6 +195,31 @@
 
 .header__main a:hover, .header__main a:active {
 	color: palette(base, secondary-link-hover)
+}
+
+.header__nav ul li a, .header__nav ul li a:link, .header__nav ul li a:visited {
+	display: block;
+	padding: em(33px) em(18px) em(32px);
+}
+
+.header__nav ul li a:hover, .header__nav ul li a:focus, .header__nav ul li a:active {
+	background-color: $link-color;
+	color: palette(base, secondary-link);
+}
+
+.header__nav ul li ul {
+	display: none;
+}
+
+.header__nav ul li:hover ul {
+	display: block;
+	position: absolute;
+	left: 0;
+	width: $max-site-width;
+	height: 292px;
+	background-color: palette(base, primary-bg);
+	border-top: 7px solid $link-color;
+	z-index: 9999;
 }
 
 .header__social {
