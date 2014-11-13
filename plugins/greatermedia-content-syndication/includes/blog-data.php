@@ -133,6 +133,9 @@ class BlogData {
 	}
 
 	/**
+	 * TODO:        Assign default terms
+	 * TODO:        Import Fetured images
+	 * TODO:        Import attached images
 	 * @param object $post WP_POST object
 	 * @param array $metas
 	 * @param array $defaults
@@ -197,8 +200,8 @@ class BlogData {
 		 */
 		if( $updated ) {
 			self::AssignDefaultTerms( $post_id, $defaults );
-			self::ImportAttachedImages( $post_id, $defaults['attachments'] );
 			self::ImportFeaturedImage( $post_id, $defaults['featured'] );
+			self::ImportAttachedImages( $post_id, $defaults['attachments'] );
 		}
 
 	}
@@ -220,6 +223,22 @@ class BlogData {
 	}
 
 	public static function ImportFeaturedImage( $post_id, $filename ) {
+		$featured_image = '';
+
+		$featured_image = self::ImportMedia( $post_id, $filename, true );
+
+		return $featured_image;
+	}
+
+
+	public static function ImportAttachedImages( $post_id, $attachments) {
+		foreach ( $attachments as $attachment ) {
+			$filename = $attachment->guid;
+			self::ImportMedia( $post_id, $filename, false );
+		}
+	}
+
+	public static function ImportMedia( $post_id = 0, $filename, $featured = false ) {
 		$featured_image = '';
 
 		$tmp = download_url( $filename );
@@ -244,49 +263,16 @@ class BlogData {
 			if ( is_wp_error( $id ) ) {
 				@unlink( $file_array['tmp_name'] );
 			} else {
-				$featured_image = set_post_thumbnail( $post_id, $id );
 				@unlink( $file_array['tmp_name'] );
+				if( $featured ) {
+					$featured_image = set_post_thumbnail( $post_id, $id );
+				}
 			}
 		} else {
 			@unlink( $tmp );
 		}
 
 		return $featured_image;
-	}
-
-
-	public static function ImportAttachedImages( $post_id, $attachments) {
-		foreach ( $attachments as $attachment ) {
-			$filename = $attachment->guid;
-
-			$tmp = download_url( $filename );
-
-			preg_match( '/[^\?]+\.(jpg|JPG|jpe|JPE|jpeg|Jpeg|JPEG|gif|GIF|png|PNG)/', $filename, $matches );
-
-			// make sure we have a match.  This won't be set for PDFs and .docs
-			if ( $matches && isset( $matches[0] ) ) {
-				$file_array['name'] = basename( $matches[0] );
-				$file_array['tmp_name'] = $tmp;
-
-				// If error storing temporarily, unlink
-				if ( is_wp_error( $tmp ) ) {
-					@unlink( $file_array['tmp_name'] );
-					$file_array['tmp_name'] = '';
-				}
-
-				// do the validation and storage stuff
-				$id = media_handle_sideload( $file_array, $post_id, null );
-
-				// If error storing permanently, unlink
-				if ( is_wp_error( $id ) ) {
-					@unlink( $file_array['tmp_name'] );
-				} else {
-					@unlink( $file_array['tmp_name'] );
-				}
-			} else {
-				@unlink( $tmp );
-			}
-		}
 	}
 }
 
