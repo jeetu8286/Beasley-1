@@ -56,6 +56,97 @@
 	}
 }
 
+// container for main header navigation
+.header__nav {
+	height: 82px;
+	display: none;
+	line-height: 1;
+	@include bp(medium) {
+		display: block;
+		float: left;
+		width: auto;
+	}
+}
+
+// container for secondary navigation -- gigya registration, social links, search
+.header__secondary {
+	position: absolute;
+	top: 50%;
+	right: 1em;
+	@include transform(translate(0, -50%));
+	line-height: 1;
+	color: palette(base, secondary-link);
+	text-align: right;
+	@include bp(medium) {
+		position: relative;
+		display: block;
+		float: right;
+		top: auto;
+		right: auto;
+		width: auto;
+		height: 82px;
+		@include transform(none);
+	}
+}
+
+// container for account links
+.header__account {
+	display: none;
+	@include bp(medium) {
+		display: block;
+		float: left;
+	}
+}
+
+// gigya dependencies
 .register, .login {
 	visibility: hidden;
+}
+
+// container for social links
+.header__social {
+	display: none;
+	@include bp(medium) {
+		display: block;
+		float: left;
+		height: 82px;
+		margin-right: 2.125em;
+		font-size: 1em;
+	}
+}
+
+// container for search button
+.header__search {
+	display: block;
+	color: palette(base, secondary-link);
+	@include bp(medium) {
+		position: relative;
+		display: block;
+		float: left;
+		height: 82px;
+	}
+}
+
+.header__search--span {
+	display: none;
+	@include bp(medium) {
+		display: block;
+		float: left;
+		height: 82px;
+		padding: 36px 0;
+		margin-right: .625em;
+		font-size: .8125em;
+	}
+}
+
+.header__search--btn {
+	display: block;
+	float: left;
+	height: 82px;
+	padding: 34px 0 30px;
+}
+.header__search--btn:before {
+	@extend %gmr-icons;
+	font-size: 1.125em;
+	content: "\e612";
 }

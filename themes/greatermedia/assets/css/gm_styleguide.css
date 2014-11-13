@@ -389,7 +389,7 @@ th {
   src: url("../fonts/icon-font/gmr-icons.eot?#iefixivfz3x") format("embedded-opentype"), url("../fonts/icon-font/gmr-icons.woff?ivfz3x") format("woff"), url("../fonts/icon-font/gmr-icons.ttf?ivfz3x") format("truetype"), url("../fonts/icon-font/gmr-icons.svg?ivfz3x#gmr-icons") format("svg");
   font-weight: normal;
   font-style: normal; }
-[class^="icon-"], [class*=" icon-"], .live-link__song:before, .live-link__type--audio:before, .live-link__type--gallery:before, .live-link__type--image:before, .live-link__type--link:before, .live-link__type--standard:before, .live-link__type--video:before {
+[class^="icon-"], [class*=" icon-"], .header__search--btn:before, .live-link__song:before, .live-link__type--audio:before, .live-link__type--gallery:before, .live-link__type--image:before, .live-link__type--link:before, .live-link__type--standard:before, .live-link__type--video:before {
   font-family: 'gmr-icons';
   speak: none;
   font-style: normal;
@@ -761,8 +761,93 @@ p {
     .header__logo--img {
       text-align: left; } }
 
+.header__nav {
+  height: 82px;
+  display: none;
+  line-height: 1; }
+  @media screen and (min-width: 768px) {
+    .header__nav {
+      display: block;
+      float: left;
+      width: auto; } }
+
+.header__secondary {
+  position: absolute;
+  top: 50%;
+  right: 1em;
+  -webkit-transform: translate(0, -50%);
+  -moz-transform: translate(0, -50%);
+  -ms-transform: translate(0, -50%);
+  -o-transform: translate(0, -50%);
+  transform: translate(0, -50%);
+  line-height: 1;
+  color: #ffffff;
+  text-align: right; }
+  @media screen and (min-width: 768px) {
+    .header__secondary {
+      position: relative;
+      display: block;
+      float: right;
+      top: auto;
+      right: auto;
+      width: auto;
+      height: 82px;
+      -webkit-transform: none;
+      -moz-transform: none;
+      -ms-transform: none;
+      -o-transform: none;
+      transform: none; } }
+
+.header__account {
+  display: none; }
+  @media screen and (min-width: 768px) {
+    .header__account {
+      display: block;
+      float: left; } }
+
 .register, .login {
   visibility: hidden; }
+
+.header__social {
+  display: none; }
+  @media screen and (min-width: 768px) {
+    .header__social {
+      display: block;
+      float: left;
+      height: 82px;
+      margin-right: 2.125em;
+      font-size: 1em; } }
+
+.header__search {
+  display: block;
+  color: #ffffff; }
+  @media screen and (min-width: 768px) {
+    .header__search {
+      position: relative;
+      display: block;
+      float: left;
+      height: 82px; } }
+
+.header__search--span {
+  display: none; }
+  @media screen and (min-width: 768px) {
+    .header__search--span {
+      display: block;
+      float: left;
+      height: 82px;
+      padding: 36px 0;
+      margin-right: .625em;
+      font-size: .8125em; } }
+
+.header__search--btn {
+  display: block;
+  float: left;
+  height: 82px;
+  padding: 34px 0 30px; }
+
+.header__search--btn:before {
+  font-size: 1.125em;
+  content: "\e612"; }
 
 /**
  * Footer Styles
