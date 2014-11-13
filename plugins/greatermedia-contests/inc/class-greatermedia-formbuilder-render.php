@@ -115,7 +115,11 @@ class GreaterMediaFormbuilderRender {
 				$post_array_key = 'form_field_' . $field->cid;
 
 				if ( isset( $_POST[ $post_array_key ] ) ) {
-					$submitted_values[ $field->cid ] = sanitize_text_field( $_POST[ $post_array_key ] );
+					if ( is_scalar( $_POST[ $post_array_key ] ) ) {
+						$submitted_values[ $field->cid ] = sanitize_text_field( $_POST[ $post_array_key ] );
+					} else if ( is_array( $_POST[ $post_array_key ] ) ) {
+						$submitted_values[ $field->cid ] = array_map( 'sanitize_text_field', $_POST[ $post_array_key ] );
+					}
 				}
 
 			}
