@@ -116,7 +116,7 @@
 .mobile-nav__list .menu-item {
 	padding: 0;
 	margin: 0;
-	border-bottom: 1px solid palette(base, primary-border);
+	border-bottom: 1px solid palette(header, primary-border);
 }
 
 .mobile-nav__list .menu-item:last-child {
@@ -128,11 +128,11 @@
 	padding: 18px 1.25em;
 	line-height: 1;
 	font-size: 2.5em;
-	color: $link-hover;
+	color: palette(header, primary-text);
 }
 
 .mobile-nav__list a:hover, .mobile-nav__list a:focus, .mobile-nav__list a:active {
-	background-color: $link-color;
+	background-color: palette(header, primary-hover);
 }
 
 // main header navigation
@@ -151,11 +151,11 @@
 }
 
 .header__main a, .header__main a:visited {
-	color: palette(base, secondary-link);
+	color: palette(header, primary-text);
 }
 
 .header__main a:hover, .header__main a:active {
-	color: palette(base, secondary-link-hover)
+	color: palette(header, primary-hover)
 }
 
 .header__nav ul li a, .header__nav ul li a:link, .header__nav ul li a:visited {
@@ -165,7 +165,7 @@
 
 .header__nav ul li a:hover, .header__nav ul li a:focus, .header__nav ul li a:active {
 	background-color: $link-color;
-	color: palette(base, secondary-link);
+	color: palette(header, secondary-text);
 }
 
 // main header navigation mega-menu dropdowns
@@ -179,8 +179,8 @@
 	left: 0;
 	width: $max-site-width;
 	height: 292px;
-	background-color: palette(base, primary-bg);
-	border-top: 7px solid $link-color;
+	background-color: palette(header, tertiary-bg);
+	border-top: 7px solid palette(header, tertiary-border);
 	z-index: 9999;
 }
 
@@ -204,15 +204,15 @@
 }
 
 .header__social--item a, .header__social--item a:visited {
-	color: palette(base, secondary-link-alt);
+	color: palette(header, secondary-text);
 }
 
 .header__social--item a:hover, .header__social--item a:focus {
-	color: palette(base, secondary-link-hover)
+	color: palette(header, primary-hover);
 }
 
 .header__social--item a:active {
-	color: palette(base, secondary-link)
+	color: palette(header, primary-text);
 }
 
 .header__social--facebook:before {
