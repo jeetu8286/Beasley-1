@@ -21,7 +21,7 @@
 </p>
 
 <select class="constraint-operator" style="width: 35%">
-	<% _.each(view.operatorsFor(valueType), function(operatorItem) { %>
+	<% _.each(view.operatorsFor(valueType, type), function(operatorItem) { %>
 	<option value="<%- operatorItem %>" <%= operatorItem === operator ? 'selected="selected"' : ''  %>">
 	<%- operatorItem %>
 	</option>
