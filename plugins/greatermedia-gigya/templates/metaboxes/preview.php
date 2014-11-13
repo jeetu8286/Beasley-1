@@ -4,8 +4,6 @@
 	<p class='count-status'></p>
 
 	<table class="widefat member-query-results">
-		<tr>
-		</tr>
 	</table>
 </div>
 

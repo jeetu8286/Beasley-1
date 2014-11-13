@@ -21,12 +21,43 @@ module.exports = function( grunt ) {
 					'assets/js/src/greater_media.js'
 				],
 				dest: 'assets/js/greater_media.js'
+			},
+			gigya_login: {
+				src: [
+					'assets/js/src/gigya_login.js'
+				],
+				dest: 'assets/js/gigya_login.js'
+			},
+			liveplayer_login: {
+				src: [
+					'assets/js/src/liveplayer_login.js'
+				],
+				dest: 'assets/js/liveplayer_login.js'
+			},
+			liveplayer_login_test: {
+				src: [
+					'assets/js/liveplayer/liveplayer_test.js'
+				],
+				dest: 'assets/js/liveplayer_test.js'
+			},
+			liveplayer_login_test_auth: {
+				src: [
+					'assets/js/liveplayer/liveplayer_test_auth.js'
+				],
+				dest: 'assets/js/liveplayer_test_auth.js'
+			},
+			greater_media_styleguide: {
+				src: [
+					'assets/js/styleguide/gm_styleguide.js'
+				],
+				dest: 'assets/js/gm_styleguide.js'
 			}
 		},
 		jshint: {
 			browser: {
 				all: [
 					'assets/js/src/**/*.js',
+					'assets/js/styleguide/**/*.js',
 					'assets/js/test/**/*.js'
 				],
 				options: {
@@ -45,7 +76,12 @@ module.exports = function( grunt ) {
 		uglify: {
 			all: {
 				files: {
-					'assets/js/greater_media.min.js': ['assets/js/greater_media.js']
+					'assets/js/greater_media.min.js': ['assets/js/greater_media.js'],
+					'assets/js/gigya_login.min.js': ['assets/js/gigya_login.js'],
+					'assets/js/liveplayer_login.min.js': ['assets/js/liveplayer_login.js'],
+					'assets/js/liveplayer_test.min.js': ['assets/js/liveplayer_test.js'],
+					'assets/js/liveplayer_test_auth.min.js': ['assets/js/liveplayer_test_auth.js'],
+					'assets/js/gm_styleguide.min.js': ['assets/js/gm_styleguide.js']
 				},
 				options: {
 					banner: '/*! <%= pkg.title %> - v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %>\n' +
@@ -104,7 +140,7 @@ module.exports = function( grunt ) {
 			},
 
 			scripts: {
-				files: ['assets/js/src/**/*.js', 'assets/js/vendor/**/*.js'],
+				files: ['assets/js/src/**/*.js', 'assets/js/vendor/**/*.js', 'assets/js/styleguide/**/*.js'],
 				tasks: ['jshint', 'concat', 'uglify'],
 				options: {
 					debounceDelay: 500

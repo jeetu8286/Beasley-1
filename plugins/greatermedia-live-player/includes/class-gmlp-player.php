@@ -31,34 +31,15 @@ class GMLP_Player {
 	public static function render_player() {
 
 		?>
-		<div class="gm-liveplayer">
-
-			<button class="gm-liveplayer--toggle"></button>
-
-			<div class="gm-liveplayer--container">
-
-				<div class="container">
-					<div id="gm-liveplayer--controls">
-						<div id="playButton" class="gm-liveplayer--btn play" data-station="<?php do_action( 'radio_callsign' ); ?>"></div>
-						<button id="pauseButton" class="gm-liveplayer--btn" data-station="<?php do_action( 'radio_callsign' ); ?>"><i class="fa fa-pause"></i></button>
-						<button id="resumeButton" class="gm-liveplayer--btn" data-station="<?php do_action( 'radio_callsign' ); ?>"><i class="fa fa-play-circle-o"></i></button>
-					</div>
-
-					<div id="gm-liveplayer--now_playing">
-						<div id="nowPlaying">
-							<div id="trackInfo">
-							</div>
-							<div id="npeInfo"></div>
-						</div>
-					</div>
-
-					<!-- Player placeholder -->
-					<div id="td_container"></div>
-
-				</div>
-
+		<div class="live-stream__player">
+			<div class="live-stream__controls">
+				<div id="playButton" class="live-stream__btn--play" data-station="<?php do_action( 'radio_callsign' ); ?>"></div>
+				<div id="pauseButton" class="live-stream__btn--pause" data-station="<?php do_action( 'radio_callsign' ); ?>"></div>
+				<div id="resumeButton" class="live-stream__btn--resume" data-station="<?php do_action( 'radio_callsign' ); ?>"></div>
 			</div>
 
+			<!-- Player placeholder -->
+			<div id="td_container"></div>
 		</div>
 
 	<?php

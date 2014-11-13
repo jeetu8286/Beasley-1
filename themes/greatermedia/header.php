@@ -44,3 +44,86 @@
 		</head>
 
 		<body <?php body_class(); ?>>
+			<div id="site-wrap">
+				<?php
+
+					$mobile_nav = array(
+						'theme_location'  => 'main-nav',
+						'menu'            => '',
+						'container'       => 'nav',
+						'container_class' => 'mobile-nav',
+						'container_id'    => 'mobile-nav',
+						'menu_class'      => 'mobile-nav__list',
+						'menu_id'         => '',
+						'echo'            => true,
+						'fallback_cb'     => 'wp_page_menu',
+						'before'          => '',
+						'after'           => '',
+						'link_before'     => '',
+						'link_after'      => '',
+						'items_wrap'      => '<ul id="%1$s" class="%2$s">%3$s</ul>',
+						'depth'           => 0,
+						'walker'          => ''
+					);
+
+					wp_nav_menu( $mobile_nav );
+
+				?>
+				<div id="page-wrap" class="page-wrap">
+					<header id="header" class="header" role="banner">
+						<?php do_action( 'show_breaking_news_banner' ); ?>
+						<div class="container">
+							<div class="ad__leaderboard">
+								<img src="http://placehold.it/728x90&text=leaderboard">
+							</div>
+						</div>
+						<div class="header__main">
+							<div class="container">
+								<div class="mobile-nav__toggle">
+									<div class="mobile-nav__toggle--span"></div>
+								</div>
+								<div class="header__logo">
+									<a href="<?php echo home_url(); ?>"><img src="<?php echo get_stylesheet_directory_uri(); ?>/images/wmmr-logo.png" alt="<?php bloginfo( 'name' ); ?> | <?php bloginfo( 'description' ); ?>" class="header__logo--img"></a>
+								</div>
+								<?php
+								$main_nav = array(
+									'theme_location'  => 'main-nav',
+									'menu'            => '',
+									'container'       => 'nav',
+									'container_class' => 'header__nav',
+									'container_id'    => '',
+									'menu_class'      => 'header__nav--list',
+									'menu_id'         => 'header__nav--list',
+									'echo'            => true,
+									'fallback_cb'     => 'wp_page_menu',
+									'before'          => '',
+									'after'           => '',
+									'link_before'     => '',
+									'link_after'      => '',
+									'items_wrap'      => '<ul id="%1$s" class="%2$s">%3$s</ul>',
+									'depth'           => 0,
+									'walker'          => ''
+								);
+								wp_nav_menu( $main_nav );
+								?>
+								<div class="header__secondary">
+									<nav class="header__account">
+										<ul class="header__account--list account">
+											<li><a id="register-button" href="" class="register" style="visibility:hidden">register</a></li>
+											<li><a id="login-button" href="" class="login" style="visibility:hidden">Login</a></li>
+										</ul>
+									</nav>
+									<div class="header__social">
+										<ul class="header__social--list">
+											<li class="header__social--item"><a href="#"><i class="header__social--facebook"></i></a></li>
+											<li class="header__social--item"><a href="#"><i class="header__social--twitter"></i></a></li>
+											<li class="header__social--item"><a href="#"><i class="header__social--google-plus"></i></a></li>
+										</ul>
+									</div>
+									<div class="header__search">
+										<div class="header__search--span"><?php _e( 'Search', 'greatermedia' ); ?></div><i class="header__search--btn"></i>
+									</div>
+								</div>
+							</div>
+						</div>
+					</header>

@@ -10,13 +10,36 @@
 @import "neat/neat";
 
 // Anything that doesn't print out CSS along with normalize and fonts
-@import "base/variables";
-@import "base/normalize";
+@import "base/functions";
 @import "base/mixins";
 @import "base/placeholders";
-@import "base/fonts";
-@import "base/breakpoints";
 @import "base/helpers";
+@import "base/variables";
+@import "base/normalize";
+@import "base/breakpoints";
+@import "base/fonts";
+@import "base/grid";
+
+// Main layout components: menu, typography, etc.
+@import "layout/typography";
+
+// Components
+@import "components/header";
+@import "components/footer";
+@import "components/posts";
+@import "components/sidebar";
+@import "components/liveplayer";
+@import "components/featured";
+@import "components/breaking-news";
+@import "components/closures";
+@import "components/concerts";
+@import "components/contests";
+@import "components/events";
+@import "components/personalities";
+@import "components/podcasts";
+@import "components/polls-surveys";
+@import "components/shows";
+@import "components/widgets";
 
 // Custom styles for the living style guide
 @import "styleguide/base";
@@ -24,3 +47,4 @@
 @import "styleguide/header";
 @import "styleguide/footer";
 @import "styleguide/sections";
+@import "styleguide/syntax";

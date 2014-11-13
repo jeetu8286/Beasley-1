@@ -1,5 +1,9 @@
 uploads/
 plugins/wp-multi-network/
+plugins/wordpress-importer/
+plugins/debug-bar/
+plugins/theme-check/
+plugins/airplane-mode/
 plugins/index.php
 plugins/wordpress-importer
 plugins/debug-bar/
@@ -10,5 +14,10 @@ upgrade/
 /index.php
 .idea
 debug.log
+npm-debug.log
 .DS_Store
+plugins/gears
+plugins/gravityforms
 atlassian-ide-plugin.xml
+mu-plugins/test-data-store.php
+**/.sass-cache/**

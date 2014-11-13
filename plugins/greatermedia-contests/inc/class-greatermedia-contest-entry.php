@@ -6,167 +6,190 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class GreaterMediaContestEntry {
 
-	const COMMENT_TYPE = 'contest_entry';
+	const ENTRY_SOURCE_EMBEDDED_FORM = 'embedded_form';
 
-	public $comment_data;
+	protected $post;
 
-	private function __construct() {
+	protected $entrant_name;
+	protected $entrant_reference; // Gigya ID
+	protected $entry_source; // How this entry was created (i.e. "gravity-forms"
+	protected $entry_reference; // Reference/link to the source of the entry (i.e. Gravity Forms submission ID)
 
-		$this->comment_data                  = array();
-		$this->comment_data['comment_type']  = self::COMMENT_TYPE;
-		$this->comment_data['user_id']       = 1;
-		$this->comment_data['comment_agent'] = 'Greater Media Web';
+	protected function __construct( WP_Post $post_obj = null, $contest_id = null ) {
 
-	}
+		if ( null !== $post_obj ) {
 
-	public static function for_comment_data( $post_id, $source_url, $author_name, $author_email, $author_ip = '127.0.0.1' ) {
+			if ( ! ( $post_obj instanceof WP_Post ) ) {
+				throw new UnexpectedValueException( '$post_obj must be a WP_Post' );
+			}
 
-		$comment                                       = new self();
-		$comment->comment_data['comment_post_ID']      = $post_id;
-		$comment->comment_data['comment_author']       = $author_name;
-		$comment->comment_data['comment_author_email'] = $author_email;
-		$comment->comment_data['comment_author_IP']    = $author_ip;
-		$comment->comment_data['comment_author_url']   = $source_url;
+			$this->post              = $post_obj;
+			$this->entrant_name      = get_post_meta( $this->post->ID, 'entrant_name', true );
+			$this->entrant_reference = get_post_meta( $this->post->ID, 'entrant_reference', true );
+			$this->entry_source      = get_post_meta( $this->post->ID, 'entry_source', true );
+			$this->entry_reference   = get_post_meta( $this->post->ID, 'entry_reference', true );
+		} else {
+			$this->post            = new WP_Post( new stdClass() );
+			$this->post->post_type = 'contest_entry';
+		}
 
-		return $comment;
+		if ( null !== $contest_id ) {
 
-	}
+			if ( isset( $this->post->post_parent ) && ! empty( $this->post->post_parent ) ) {
+				throw new UnexpectedValueException( 'Underlying "Contest Entry" post already has a parent Contest' );
+			}
 
-	public static function for_comment_id( $comment_id ) {
+			$contest = get_post( $contest_id );
+			if ( 'contest' !== $contest->post_type ) {
+				throw new UnexpectedValueException( 'Contest ID passed as Parent does not reference a "Contest" post' );
+			}
 
-		$comment_data          = get_comment( intval( $comment_id ) );
-		$comment               = new self();
-		$comment->comment_data = $comment_data;
+			$this->post->post_parent = $contest_id;
 
-		return $comment;
+		}
 
 	}
 
 	/**
-	 * Save the comment to the database
-	 * @return int comment ID
+	 * Update the post an all associated metadata
 	 */
 	public function save() {
 
-		global $timestart;
+		$post_id = wp_update_post( $this->post, true );
 
-		$filtered_comment_data = apply_filters( 'gm_contest_entry_data', $this->comment_data );
-		if ( ! isset( $filtered_comment_data['comment_date'] ) || empty( $filtered_comment_data['comment_date'] ) ) {
-			$filtered_comment_data['comment_date'] = date( 'Y-m-d H:i:s', intval( $timestart ) );
-		}
+		update_post_meta( $post_id, 'entrant_name', $this->entrant_name );
+		update_post_meta( $post_id, 'entrant_reference', $this->entrant_reference );
+		update_post_meta( $post_id, 'entry_source', $this->entry_source );
+		update_post_meta( $post_id, 'entry_reference', $this->entry_reference );
 
-		if ( isset( $filtered_comment_data['comment_ID'] ) ) {
-			wp_update_comment( $filtered_comment_data );
+	}
+
+	/**
+	 * Set up hooks that don't relate to a particular instance of this class
+	 */
+	public static function register_cpt() {
+		add_action( 'init', array( __CLASS__, 'contest_entry' ), 0 );
+	}
+
+	/**
+	 * Register Custom Post Type
+	 */
+	public static function contest_entry() {
+
+		$labels = array(
+			'name'               => _x( 'Contest Entry', 'Post Type General Name', 'greatermedia_contests' ),
+			'singular_name'      => _x( 'Contest Entry', 'Post Type Singular Name', 'greatermedia_contests' ),
+			'menu_name'          => __( 'Contest Entry', 'greatermedia_contests' ),
+			'parent_item_colon'  => __( 'Parent Contest:', 'greatermedia_contests' ),
+			'all_items'          => __( 'All Entries', 'greatermedia_contests' ),
+			'view_item'          => __( 'View Entry', 'greatermedia_contests' ),
+			'add_new_item'       => __( 'Add New Entry', 'greatermedia_contests' ),
+			'add_new'            => __( 'Add New', 'greatermedia_contests' ),
+			'edit_item'          => __( 'Edit Entry', 'greatermedia_contests' ),
+			'update_item'        => __( 'Update Entry', 'greatermedia_contests' ),
+			'search_items'       => __( 'Search Entry', 'greatermedia_contests' ),
+			'not_found'          => __( 'Not found', 'greatermedia_contests' ),
+			'not_found_in_trash' => __( 'Not found in Trash', 'greatermedia_contests' ),
+		);
+		$args   = array(
+			'label'               => __( 'contest_entry', 'greatermedia_contests' ),
+			'description'         => __( 'An entry in a Contest', 'greatermedia_contests' ),
+			'labels'              => $labels,
+			'supports'            => array( 'title', ),
+			'taxonomies'          => array( 'category' ),
+			'hierarchical'        => false,
+			'public'              => true,
+			'show_ui'             => true,
+			'show_in_menu'        => true,
+			'show_in_nav_menus'   => false,
+			'show_in_admin_bar'   => false,
+			'menu_position'       => 5,
+			'can_export'          => true,
+			'has_archive'         => false,
+			'exclude_from_search' => true,
+			'publicly_queryable'  => true,
+			'capability_type'     => 'page',
+		);
+
+		register_post_type( 'contest_entry', $args );
+
+	}
+
+	/**
+	 * Factory method to create a new contest entry for a given set of data
+	 *
+	 * @param int    $contest_id        Post ID of the related contest
+	 * @param string $entrant_name      Name of the entrant
+	 * @param string $entrant_reference Gigya ID
+	 * @param string $entry_source      Source of the entry (i.e. "gravity-forms")
+	 * @param string $entry_reference   ID or link to the source of the entry
+	 *
+	 * @throws UnexpectedValueException
+	 * @return GreaterMediaContestEntry
+	 */
+	public static function create_for_data( $contest_id, $entrant_name, $entrant_reference, $entry_source, $entry_reference ) {
+
+		$entry_source_camel_case      = str_replace( ' ', '', ucwords( str_replace( '-', ' ', $entry_source ) ) );
+		$possible_entry_subclass_name = 'GreaterMediaContestEntry' . $entry_source_camel_case;
+		if ( class_exists( $possible_entry_subclass_name ) ) {
+			$entry = new $possible_entry_subclass_name( null, $contest_id );
 		} else {
-			$this->comment_data['comment_ID'] = wp_insert_comment( $filtered_comment_data );
+			$entry = new self( null, $contest_id );
 		}
 
-		return $this->comment_data['comment_ID'];
 
-	}
+		if ( ! is_scalar( $entrant_name ) ) {
+			throw new UnexpectedValueException( 'Entrant Name must be a scalar value' );
+		}
 
-	public static function register_hooks() {
+		if ( ! is_scalar( $entry_source ) ) {
+			throw new UnexpectedValueException( 'Entry Source must be a scalar value' );
+		}
 
-		// Hide the custom comment type from queries
-		add_filter( 'comments_clauses', array( __CLASS__, 'comments_clauses' ), 10, 2 );
-		add_filter( 'comment_feed_where', array( __CLASS__, 'comment_feed_where' ), 10, 2 );
-		add_filter( 'wp_count_comments', array( __CLASS__, 'wp_count_comments' ), 10, 2 );
+		// This is an assumption. We can always get rid of this check.
+		if ( ! is_scalar( $entry_reference ) ) {
+			throw new UnexpectedValueException( 'Entry Reference must be a scalar value' );
+		}
 
-	}
+		$entry->entrant_name      = $entrant_name;
+		$entry->entrant_reference = $entrant_reference;
+		$entry->entry_source      = $entry_source;
+		$entry->entry_reference   = $entry_reference;
 
-	/**
-	 * Exclude notes (comments) on edd_payment post type from showing in Recent
-	 * Comments widgets
-	 *
-	 * @param array $clauses          Comment clauses for comment query
-	 * @param obj   $wp_comment_query WordPress Comment Query Object
-	 *
-	 * @return array $clauses Updated comment clauses
-	 */
-	public static function comments_clauses( $clauses, $wp_comment_query ) {
-
-		global $wpdb;
-
-		$clauses['where'] .= sprintf( ' AND comment_type != "%s"', self::COMMENT_TYPE );
-
-		return $clauses;
+		return $entry;
 
 	}
 
 	/**
-	 * Exclude notes (comments) on edd_payment post type from showing in comment feeds
+	 * Factory method to retrieve a GreaterMediaContestEntry object for a given post ID
 	 *
-	 * @param array $where
-	 * @param obj   $wp_comment_query WordPress Comment Query Object
+	 * @param int $post_id
 	 *
-	 * @return array $where
+	 * @return GreaterMediaContestEntry
+	 * @throws UnexpectedValueException
 	 */
-	public static function comment_feed_where( $where, $wp_comment_query ) {
+	public static function for_post_id( $post_id ) {
 
-		global $wpdb;
+		$entry_post = get_post( $post_id );
+		if ( 'contest_entry' !== $entry_post->post_type ) {
+			throw new UnexpectedValueException( 'Post ID passed does not reference a "Contest Entry" post' );
+		}
 
-		$where .= $wpdb->prepare( " AND comment_type != %s", self::COMMENT_TYPE );
+		$entry_source = get_post_meta( $post_id, 'entry_source', true );
+		if ( self::ENTRY_SOURCE_EMBEDDED_FORM === $entry_source ) {
+			$entry = new GreaterMediaContestEntryEmbeddedForm( $entry_post );
+		} else {
+			$entry = new self( $entry_post );
+		}
 
-		return $where;
+		return $entry;
 
 	}
 
-	/**
-	 * Remove EDD Comments from the wp_count_comments function
-	 *
-	 * @access public
-	 *
-	 * @param array $stats   (empty from core filter)
-	 * @param int   $post_id Post ID
-	 *
-	 * @return array Array of comment counts
-	 */
-	public static function wp_count_comments( $stats, $post_id ) {
-
-		global $wpdb, $pagenow;
-
-		$post_id = (int) $post_id;
-
-		$stats = wp_cache_get( "comments-{$post_id}", 'counts' );
-
-		if ( false !== $stats ) {
-			return $stats;
-		}
-
-		$where = sprintf( 'WHERE comment_type != "%s"', self::COMMENT_TYPE );
-
-		if ( $post_id > 0 ) {
-			$where .= $wpdb->prepare( " AND comment_post_ID = %d", $post_id );
-		}
-
-		$count = $wpdb->get_results( "SELECT comment_approved, COUNT( * ) AS num_comments FROM {$wpdb->comments} {$where} GROUP BY comment_approved", ARRAY_A );
-
-		$total    = 0;
-		$approved = array( '0' => 'moderated', '1' => 'approved', 'spam' => 'spam', 'trash' => 'trash', 'post-trashed' => 'post-trashed' );
-		foreach ( (array) $count as $row ) {
-			// Don't count post-trashed toward totals
-			if ( 'post-trashed' != $row['comment_approved'] && 'trash' != $row['comment_approved'] ) {
-				$total += $row['num_comments'];
-			}
-			if ( isset( $approved[$row['comment_approved']] ) ) {
-				$stats[$approved[$row['comment_approved']]] = $row['num_comments'];
-			}
-		}
-
-		$stats['total_comments'] = $total;
-		foreach ( $approved as $key ) {
-			if ( empty( $stats[$key] ) ) {
-				$stats[$key] = 0;
-			}
-		}
-
-		$stats = (object) $stats;
-		wp_cache_set( "comments-{$post_id}", $stats, 'counts' );
-
-		return $stats;
-
+	public function render_preview() {
+		return "This is a generic submission";
 	}
 
 }
 
-GreaterMediaContestEntry::register_hooks();
+GreaterMediaContestEntry::register_cpt();

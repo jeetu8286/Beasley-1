@@ -1,36 +1,81 @@
-/**
- * Variables
- */
+$_color_base_gray: #a7a9ab;
 
-/*********************
-COLORS
-*********************/
+// Color Map
+// By default, these colors can be called using `map-get($palette, tone)`. To avoid continually calling `map-get`, a
+// function has been written. Reference the `palette` function located in `_functions.scss`.
+//
+// @author Allen Moore
+// @since 0.1.0
+//
+// @type String
+//
+$palettes: (
+	base: (
+		body-bg: #000000,
+		primary-bg: #ffffff,
+		primary-text: #000000,
+		primary-link: #d22228,
+		primary-link-hover: #d0d2d3,
+		primary-heading: #58595b,
+		primary-border: #d0d2d3,
+		secondary-bg: #000000,
+		secondary-text: #6D6E70,
+		secondary-link: #ffffff,
+		secondary-link-hover: #d22228,
+		secondary-link-alt: #919395,
+		secondary-heading: #d22228,
+		secondary-border: #282827,
+		secondary-drop: #1e1e1e,
+		tertiary-bg: #561015,
+		tertiary-border: #404041,
+		tertiary-link: #c7c7c7,
+		player-controls: #606060,
+		transparent: transparent,
+	),
+	header: (
+		primary-bg: #191919,
+		primary-text: #ffffff,
+		primary-hover: #d0d2d3,
+		primary-border: #303030,
+		secondary-bg: #000000,
+		secondary-text: #929497,
+		tertiary-bg: #ffffff,
+		tertiary-text: #000000,
+		tertiary-border: #d0d2d3,
+	),
+	ads: (
+		lead-bg: #191919,
+		lead-border: #303030,
+	),
+	live-links: (
+		primary-text: #c7c7c7,
+		primary-link: #d22228,
+	),
+	btn: (
+		primary-bg: #d22228,
+		primary-border: #d22228,
+		primary-text: #ffffff,
+		secondary-bg: transparent,
+		secondary-border: #f5ed7f,
+		secondary-text: #d22228,
+	),
+	featured: (
+		featured-bg: #58595b,
+		featured-heading: #ffffff,
+		featured-heading-bg: #270e10,
+		featured-text: #a6a8ab,
+		featured-list: #f7ef7e,
+	)
+);
 
-$black:             #000000;
-$white:             #fff;
+// Variables for site wide usage
+//
+// @author Allen Moore
+// @since 0.1.0
+//
+$text-color: palette(base,  primary-text);
 
-// Base gray colors
-$light-gray:        #f5f5f5;
-$soft-gray:         #eeeeee;
-$meta-gray:         #dddddd;
-$gray:              #888888;
-$dark-gray:         #333333;
+$link-color: palette(base,  primary-link);
+$link-hover: palette(base,  primary-link-hover);
 
-/* Enter site specific color variables below this line */
-
-$text-color:        $black;
-
-$link-color:        $dark-gray;
-$link-hover:        $gray;
-
-$border-color:      $soft-gray;
-$dark-border-color: $dark-gray;
-
-$nav-link-color:    $white;
-
-/*********************
-Misc
-*********************/
-
-// Site Max Width
-$max-site-width:	1200px;
+$border-color: palette(base,  primary-border);

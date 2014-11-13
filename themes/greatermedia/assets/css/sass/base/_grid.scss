@@ -1,0 +1,133 @@
+// global grid variables
+$column: golden-ratio(69px, 4) !global;
+$gutter: golden-ratio(18px, 1) !global;
+$grid-columns: 4 !global;
+// this will give us a mobile first approach
+
+// add the visual grid for dev purposes
+$visual-grid: true !global;
+$visual-grid-color: #6e76ee !global;
+$visual-grid-index: front !global;
+
+// max-width for the site
+$max-width: em(1122) !global;
+$max-site-width: 1400px;
+$live-player: em(250px);
+
+// simple css effect to make images responsive and fluid while also retaining proper aspect ratio
+img {
+	max-width: 100%;
+	@include display(block); // block display will remove additional padding on images
+	@include size(null auto); // this will keep images from being stretched at lower resolutions
+}
+
+#site-wrap {
+	max-width: $max-site-width;
+	margin: 0 auto;
+	background-color: palette(base,  primary-bg);
+}
+
+// The `.page-wrap` class is being used in conjunction with the off-canvas mobile navigation. On click of the
+// `.mobile-nav--toggle` button, the contents of `.page-wrap` will be pushed to the left by a particular value. This
+.page-wrap {
+	@include transform(translate(0, 0));
+	width: 100%;
+	@include transition(all 500ms ease-in-out);
+	overflow: hidden;
+}
+
+.container, %container {
+	@include outer-container;
+	margin: 0 18px;
+}
+
+.main, %main {
+	width: 100%;
+	margin: 0;
+	background-color: palette(base,  primary-bg);
+	@include bp(large) {
+		width: 82.142857142857%;
+	}
+	@include bp(x-large) {
+		width: $max-width;
+	}
+}
+
+.content, %content {
+	@include span-columns(4);
+	padding-top: 2em;
+	padding-bottom: 2em;
+	@include bp(small) {
+		@include span-columns(6);
+	}
+	@include bp(medium) {
+		@include span-columns(8);
+	}
+	@include bp(large) {
+		@include span-columns(12);
+	}
+	@include bp(x-large) {
+		@include span-columns(12);
+		padding-right: 0;
+		padding-left: 0;
+	}
+}
+
+.sidebar, %sidebar {
+	@include span-columns(4);
+	padding: 2em .5em;
+	@include bp(small) {
+		@include span-columns(6);
+	}
+	@include bp(medium) {
+		@include span-columns(2);
+		@include omega;
+	}
+	@include bp(large) {
+		@include span-columns(3);
+	}
+	@include bp(x-large) {
+		@include span-columns(3);
+		padding-right: 0;
+		padding-left: 0;
+	}
+}
+
+.live-player{
+	position: fixed;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	padding: 1em;
+	background-color: palette(base,  secondary-bg);
+	color: palette(base,  secondary-text);
+	cursor: pointer;
+	@include bp(medium){
+		position: absolute;
+		top: 238px;
+		bottom: auto;
+		right: 0;
+		left: auto;
+		width: 17.857142857143%;
+		height: 100%;
+		padding: 0;
+		@include box-sizing(border-box);
+		color: palette(base,  secondary-text);
+		overflow-y: scroll;
+		cursor: default;
+	}
+	@include bp(x-large) {
+		@include calc(right, '50% - 700px');
+		width: $live-player;
+	}
+}
+
+.logged-in .live-player {
+	@include media(min-width 782px) {
+		top: 270px;
+	}
+	@include bp(x-large) {
+		@include calc(right, '50% - 700px');
+		width: $live-player;
+	}
+}
