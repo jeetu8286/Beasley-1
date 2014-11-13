@@ -101,7 +101,8 @@
 
 							self.editor.addButton(VisualShortcode.registry[shortcode_name].button, {
 								icon   : VisualShortcode.registry[shortcode_name].icon_class,
-								onclick: button_onclick_handler
+								onclick: button_onclick_handler,
+								title: VisualShortcode.registry[shortcode_name].button_title
 							});
 
 						}
