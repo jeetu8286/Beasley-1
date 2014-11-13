@@ -20,6 +20,7 @@ $palettes: (
 		secondary-bg: #000000,
 		secondary-text: #6D6E70,
 		secondary-link: #ffffff,
+		secondary-link-hover: #d22228,
 		secondary-link-alt: #919395,
 		secondary-heading: #d22228,
 		secondary-border: #282827,
@@ -29,6 +30,10 @@ $palettes: (
 		tertiary-link: #c7c7c7,
 		player-controls: #606060,
 		transparent: transparent,
+	),
+	ads: (
+		lead-bg: #191919,
+		lead-border: #303030,
 	),
 	live-links: (
 		primary-text: #c7c7c7,

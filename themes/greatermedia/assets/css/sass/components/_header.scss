@@ -2,12 +2,9 @@
 	position: relative;
 	width: 100%;
 	height: 100%;
-	padding-bottom: em(10px);
-	border: 1px solid palette(base, primary-border);
-	border-top: none;
-	border-left: none;
-	border-right: none;
-	background-color: palette(base, secondary-bg);
+	padding: 0;
+	border-bottom: 3px solid palette(base, primary-border);
+	background-color: palette(ads, lead-bg);
 	@include transition(all 200ms linear);
 }
 
@@ -17,6 +14,14 @@
 
 .header--unpinned {
 	@include transform(translateY(-100%));
+}
+
+.header__main {
+	width: 100%;
+	height: 82px;
+	padding: 12px 0 13px;
+	background-color: palette(base, secondary-bg);
+	border-top: 1px solid palette(ads, lead-border);
 }
 
 .header .container {
@@ -30,19 +35,20 @@
 	}
 }
 
-.header-logo{
+.header__logo{
 	@include span-columns(4);
 	@include omega;
-	height: 60px;
+	height: 57px;
 	line-height: 1;
 	@include bp(large) {
 		@include span-columns(1);
+		width: auto;
 	}
 }
 
-.header-logo--img{
+.header__logo--img{
 	margin: 0 auto;
-	max-height: 60px;
+	max-height: 57px;
 	text-align: center;
 	@include bp(large){
 		text-align: left;
