@@ -13,7 +13,8 @@ get_header(); ?>
 		<div class="container">
 
 			<section class="content">
-
+				<?php $form = get_post_meta( get_the_ID(), 'embedded_form', true );
+				GreaterMediaFormbuilderRender::render( get_the_ID(), $form ); ?>
 				<?php
 
 				if ( defined( 'GREATER_MEDIA_GIGYA_TEST_UI' ) && GREATER_MEDIA_GIGYA_TEST_UI ) {
@@ -23,7 +24,8 @@ get_header(); ?>
 
 							<header class="entry-header">
 
-								<h2 class="entry-title" itemprop="headline"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
+								<h2 class="entry-title" itemprop="headline">
+									<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
 
 							</header>
 
@@ -61,7 +63,7 @@ get_header(); ?>
 						</article>
 
 					<?php endif;
-				} else if ( is_gigya_user_logged_in() ) {
+				} else if ( true /*is_gigya_user_logged_in()*/ ) {
 
 					if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
 
@@ -69,7 +71,8 @@ get_header(); ?>
 
 							<header class="entry-header">
 
-								<h2 class="entry-title" itemprop="headline"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
+								<h2 class="entry-title" itemprop="headline">
+									<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
 
 							</header>
 
