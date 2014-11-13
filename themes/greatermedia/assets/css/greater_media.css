@@ -702,7 +702,7 @@ a:link, a:visited {
   text-decoration: none; }
 
 a:hover, a:focus, a:active {
-  color: #d22228; }
+  color: #d0d2d3; }
 
 p {
   margin: 0 0 1.5em; }
@@ -713,14 +713,14 @@ p {
  * the Style Guide off-canvas nav will slide from the left and the toggle
  * button will slide over to accommodate the nav.
  */
-.mobile-nav--toggle {
+.mobile-nav__toggle {
   position: absolute;
   top: 50%;
-  -webkit-transform: translate(0, -25%);
-  -moz-transform: translate(0, -25%);
-  -ms-transform: translate(0, -25%);
-  -o-transform: translate(0, -25%);
-  transform: translate(0, -25%);
+  -webkit-transform: translate(0, -50%);
+  -moz-transform: translate(0, -50%);
+  -ms-transform: translate(0, -50%);
+  -o-transform: translate(0, -50%);
+  transform: translate(0, -50%);
   width: 32px;
   height: 32px;
   box-sizing: border-box;
@@ -732,10 +732,10 @@ p {
   cursor: pointer;
   z-index: 2; }
   @media screen and (min-width: 1024px) {
-    .mobile-nav--toggle {
+    .mobile-nav__toggle {
       display: none; } }
 
-.mobile-nav--toggle--span {
+.mobile-nav__toggle--span {
   position: absolute;
   top: 14px;
   display: block;
@@ -753,7 +753,7 @@ p {
   background: #d0d2d3;
   content: ""; }
 
-.mobile-nav--toggle--span:before {
+.mobile-nav__toggle--span:before {
   position: absolute;
   top: -10px;
   display: block;
@@ -771,7 +771,7 @@ p {
   background: #d0d2d3;
   content: ""; }
 
-.mobile-nav--toggle--span:after {
+.mobile-nav__toggle--span:after {
   position: absolute;
   bottom: -10px;
   display: block;
@@ -792,7 +792,7 @@ p {
 .mobile-nav {
   position: fixed;
   top: 0;
-  width: 90%;
+  width: 74%;
   height: 100%;
   -webkit-transform: translate(-100%, 0);
   -moz-transform: translate(-100%, 0);
@@ -804,7 +804,7 @@ p {
   transition: all 500ms ease-in-out;
   background-color: #000000;
   z-index: 1; }
-  @media screen and (min-width: 1024px) {
+  @media screen and (min-width: 768px) {
     .mobile-nav {
       display: none; } }
 
@@ -818,10 +818,10 @@ p {
   -o-transform: translate(0, 0);
   transform: translate(0, 0); }
 
-.mobile-nav--open .mobile-nav--toggle--span {
+.mobile-nav--open .mobile-nav__toggle--span {
   background-color: transparent; }
 
-.mobile-nav--open .mobile-nav--toggle--span:before {
+.mobile-nav--open .mobile-nav__toggle--span:before {
   top: 0;
   -webkit-transform: rotate(45deg);
   -moz-transform: rotate(45deg);
@@ -829,7 +829,7 @@ p {
   -o-transform: rotate(45deg);
   transform: rotate(45deg); }
 
-.mobile-nav--open .mobile-nav--toggle--span:after {
+.mobile-nav--open .mobile-nav__toggle--span:after {
   top: 0;
   -webkit-transform: rotate(-45deg);
   -moz-transform: rotate(-45deg);
@@ -838,21 +838,51 @@ p {
   transform: rotate(-45deg); }
 
 .mobile-nav--open .page-wrap {
-  -webkit-transform: translate(90%, 0);
-  -moz-transform: translate(90%, 0);
-  -ms-transform: translate(90%, 0);
-  -o-transform: translate(90%, 0);
-  transform: translate(90%, 0);
+  -webkit-transform: translate(74%, 0);
+  -moz-transform: translate(74%, 0);
+  -ms-transform: translate(74%, 0);
+  -o-transform: translate(74%, 0);
+  transform: translate(74%, 0);
   width: 100%;
   -webkit-transition: all 500ms ease-in-out;
   -moz-transition: all 500ms ease-in-out;
   transition: all 500ms ease-in-out; }
 
+.mobile-nav--open .page-wrap:before {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  content: " "; }
+
+.mobile-nav__list {
+  padding: 0;
+  margin: 0; }
+
+.mobile-nav__list .menu-item {
+  padding: 0;
+  margin: 0;
+  border-bottom: 1px solid #d0d2d3; }
+
+.mobile-nav__list .menu-item:last-child {
+  border-bottom: none; }
+
+.mobile-nav__list a:link, .mobile-nav__list a:visited {
+  display: block;
+  padding: 1.125em 1.5em;
+  line-height: 1;
+  font-size: 1.5rem;
+  color: #d0d2d3; }
+
+.mobile-nav__list a:hover, .mobile-nav__list a:focus, .mobile-nav__list a:active {
+  background-color: #d22228; }
+
 .header__nav {
   height: 57px;
   display: none;
   line-height: 1; }
-  @media screen and (min-width: 1024px) {
+  @media screen and (min-width: 768px) {
     .header__nav {
       display: block;
       float: left;
@@ -862,15 +892,15 @@ p {
   position: absolute;
   top: 50%;
   right: 1em;
-  -webkit-transform: translate(0, -25%);
-  -moz-transform: translate(0, -25%);
-  -ms-transform: translate(0, -25%);
-  -o-transform: translate(0, -25%);
-  transform: translate(0, -25%);
+  -webkit-transform: translate(0, -50%);
+  -moz-transform: translate(0, -50%);
+  -ms-transform: translate(0, -50%);
+  -o-transform: translate(0, -50%);
+  transform: translate(0, -50%);
   line-height: 1;
   color: #ffffff;
   text-align: right; }
-  @media screen and (min-width: 1024px) {
+  @media screen and (min-width: 768px) {
     .header__secondary {
       position: relative;
       display: block;
@@ -887,7 +917,7 @@ p {
 
 .header__account {
   display: none; }
-  @media screen and (min-width: 1024px) {
+  @media screen and (min-width: 768px) {
     .header__account {
       display: block;
       float: left; } }
