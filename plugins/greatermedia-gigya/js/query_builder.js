@@ -1972,6 +1972,7 @@ var QueryBuilderApp = function() {
 	$(document).ready($.proxy(this.initialize, this));
 };
 
+QueryBuilderApp.version = '0.1.0';
 QueryBuilderApp.prototype = {
 
 	initialize: function() {
