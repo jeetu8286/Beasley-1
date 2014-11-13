@@ -100,7 +100,7 @@
 }
 
 .header__nav {
-	height: 60px;
+	height: 57px;
 	display: none;
 	line-height: 1;
 	@include bp(large) {
@@ -120,19 +120,21 @@
 	text-align: right;
 	@include bp(large) {
 		position: relative;
-		top: auto;
-		left: auto;
 		display: block;
 		float: right;
+		top: auto;
+		right: auto;
 		width: auto;
 		height: 57px;
+		@include transform(none);
 	}
 }
 
 .header__account {
 	display: none;
 	@include bp(large) {
-		display: inline-block;
+		display: block;
+		float: left;
 	}
 }
 
@@ -155,24 +157,27 @@
 }
 
 .header__main a:hover, .header__main a:active {
-	color: palette(base, secondary-link)
+	color: palette(base, secondary-link-hover)
 }
 
 .header__social {
 	display: none;
 	@include bp(medium) {
-		display: inline-block;
+		display: block;
+		float: left;
+		height: 57px;
 		font-size: ms(0);
 	}
 }
 
 .header__social--list {
-	@include margin(0);
+	padding: em(20px) 0 em(21px);
+	margin: 0;
 	list-style: none;
 }
 
 .header__social--item {
-	padding: em(22px) 0;
+	padding: 0;
 	margin: 0 1em 0 0;
 	list-style: none;
 	display: inline-block;
@@ -180,23 +185,64 @@
 }
 
 .header__social--item a, .header__social--item a:visited {
-	color: palette(base, secondary-link);
+	color: palette(base, secondary-link-alt);
 }
 
 .header__social--item a:hover, .header__social--item a:focus {
-	color: palette(base, secondary-link)
+	color: palette(base, secondary-link-hover)
 }
 
 .header__social--item a:active {
 	color: palette(base, secondary-link)
 }
 
-.header__search{
+.header__social--facebook:before {
+	@extend %gmr-icons;
+	content: "\e60f";
+}
+
+.header__social--twitter:before {
+	@extend %gmr-icons;
+	content: "\e610";
+}
+
+.header__social--google-plus:before {
+	@extend %gmr-icons;
+	content: "\e611";
+}
+
+.header__search {
 	display: block;
 	font-size: ms(1);
 	color: palette(base, secondary-link);
 	@include bp(medium) {
 		position: relative;
-		display: inline-block;
+		display: block;
+		float: left;
+		height: 57px;
 	}
+}
+
+.header__search--span {
+	display: none;
+	@include bp(medium) {
+		display: block;
+		float: left;
+		height: 57px;
+		padding: em(22px) 0;
+		margin-right: em(10px);
+		font-size: em(13px);
+	}
+}
+
+.header__search--btn {
+	display: block;
+	float: left;
+	height: 57px;
+	padding: em(17px) 0 em(20px);
+}
+.header__search--btn:before {
+	@extend %gmr-icons;
+	font-size: em(18px);
+	content: "\e612";
 }

@@ -115,13 +115,13 @@
 									</nav>
 									<div class="header__social">
 										<ul class="header__social--list">
-											<li class="header__social--item"><a href="#"><i class="fa fa-facebook"></i></a></li>
-											<li class="header__social--item"><a href="#"><i class="fa fa-twitter"></i></a></li>
-											<li class="header__social--item"><a href="#"><i class="fa fa-google-plus"></i></a></li>
+											<li class="header__social--item"><a href="#"><i class="header__social--facebook"></i></a></li>
+											<li class="header__social--item"><a href="#"><i class="header__social--twitter"></i></a></li>
+											<li class="header__social--item"><a href="#"><i class="header__social--google-plus"></i></a></li>
 										</ul>
 									</div>
 									<div class="header__search">
-										<i class="fa fa-search"></i>
+										<div class="header__search--span"><?php _e( 'Search', 'greatermedia' ); ?></div><i class="header__search--btn"></i>
 									</div>
 								</div>
 							</div>
