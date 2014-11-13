@@ -67,6 +67,9 @@ class Plugin {
 		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 			$this->register_ajax_handlers();
 		}
+
+		$profile_page = new ProfilePage();
+		$profile_page->register();
 	}
 
 	public function initialize_admin() {
