@@ -116,9 +116,14 @@ class BlogData {
 		// get all metas
 		foreach ( $query as $single_result ) {
 			$metas	= get_metadata( $post_type, $single_result->ID, true );
+			$media = get_attached_media( 'image', $single_result->ID );
+			$featured = wp_get_attachment_image_src( get_post_thumbnail_id( $single_result->ID ), 'full' );
+
 			$result[] = array(
-				'post_obj'      => $single_result,
-				'post_metas'    => $metas
+				'post_obj'      =>  $single_result,
+				'post_metas'    =>  $metas,
+				'attachments'   =>  $media,
+				'featured'      =>  $featured[0]
 			);
 		}
 
@@ -128,10 +133,9 @@ class BlogData {
 	}
 
 	/**
-	 * TODO:        Assign default terms
-	 * @param       $post
+	 * @param object $post WP_POST object
 	 * @param array $metas
-	 * @param       $defaults
+	 * @param array $defaults
 	 */
 	public static function ImportPosts( $post, $metas = array(), $defaults ) {
 
@@ -155,30 +159,133 @@ class BlogData {
 		);
 
 		$existing = get_posts( $check_args );
+		$post_id = 0;
+		$updated = 0;
 
 		// check whether post with that name exist
 		if( !empty( $existing ) ) {
-			$existing_id = $existing[0]->ID;
-			$hash_value = get_post_meta( $existing_id, 'syndication_import', true );
+			$post_id = $existing[0]->ID;
+			$hash_value = get_post_meta( $post_id, 'syndication_import', true );
 			if( $hash_value != $post_hash ) {
 				// post has been updated, override existing one
-				$args['ID'] = $existing_id;
+				$args['ID'] = $post_id;
 				wp_insert_post( $args );
 				if( !empty( $metas ) ) {
 					foreach ( $metas as $meta_key => $meta_value ) {
-						update_post_meta( $existing_id, $meta_key, $meta_value );
+						update_post_meta( $post_id, $meta_key, $meta_value );
 					}
 				}
-				update_post_meta( $existing_id, 'syndication_import', $post_hash );
+				update_post_meta( $post_id, 'syndication_import', $post_hash );
+				$updated = 1;
 			}
 		} else {
-			$new_post_id = wp_insert_post( $args );
-			if( is_numeric( $new_post_id ) && !empty( $metas ) ) {
+			$post_id = wp_insert_post( $args );
+			if( is_numeric( $post_id ) && !empty( $metas ) ) {
 				foreach ( $metas as $meta_key => $meta_value ) {
-					update_post_meta( $new_post_id, $meta_key, $meta_value );
+					update_post_meta( $post_id, $meta_key, $meta_value );
 				}
 			}
-			update_post_meta( $new_post_id, 'syndication_import', $post_hash );
+			update_post_meta( $post_id, 'syndication_import', $post_hash );
+			if( $post_id ) {
+				$updated = 1;
+			}
+		}
+
+		/**
+		 * Post has been updated or created, assign default terms
+		 * Import featured and attached images
+		 */
+		if( $updated ) {
+			self::AssignDefaultTerms( $post_id, $defaults );
+			self::ImportAttachedImages( $post_id, $defaults['attachments'] );
+			self::ImportFeaturedImage( $post_id, $defaults['featured'] );
+		}
+
+	}
+
+	/**
+	 * Set post default terms
+	 *
+	 * @param $post_id
+	 * @param $defaults - associative array with $taxonomy => array( 'term_ids' )
+	 */
+	public static function AssignDefaultTerms( $post_id, $defaults ) {
+		if( !empty( $defaults ) ) {
+			foreach ( $defaults as $taxonomy => $default_terms ) {
+				if( $post_id and taxonomy_exists( $taxonomy ) ) {
+					wp_set_post_terms( $post_id, $default_terms, $taxonomy );
+				}
+			}
+		}
+	}
+
+	public static function ImportFeaturedImage( $post_id, $filename ) {
+		$featured_image = '';
+
+		$tmp = download_url( $filename );
+
+		preg_match( '/[^\?]+\.(jpg|JPG|jpe|JPE|jpeg|Jpeg|JPEG|gif|GIF|png|PNG)/', $filename, $matches );
+
+		// make sure we have a match.  This won't be set for PDFs and .docs
+		if ( $matches && isset( $matches[0] ) ) {
+			$file_array['name'] = basename( $matches[0] );
+			$file_array['tmp_name'] = $tmp;
+
+			// If error storing temporarily, unlink
+			if ( is_wp_error( $tmp ) ) {
+				@unlink( $file_array['tmp_name'] );
+				$file_array['tmp_name'] = '';
+			}
+
+			// do the validation and storage stuff
+			$id = media_handle_sideload( $file_array, $post_id, null );
+
+			// If error storing permanently, unlink
+			if ( is_wp_error( $id ) ) {
+				@unlink( $file_array['tmp_name'] );
+			} else {
+				$featured_image = set_post_thumbnail( $post_id, $id );
+				@unlink( $file_array['tmp_name'] );
+			}
+		} else {
+			@unlink( $tmp );
+		}
+
+		return $featured_image;
+	}
+
+
+	public static function ImportAttachedImages( $post_id, $attachments) {
+		foreach ( $attachments as $attachment ) {
+			$filename = $attachment->guid;
+
+			$tmp = download_url( $filename );
+
+			preg_match( '/[^\?]+\.(jpg|JPG|jpe|JPE|jpeg|Jpeg|JPEG|gif|GIF|png|PNG)/', $filename, $matches );
+
+			// make sure we have a match.  This won't be set for PDFs and .docs
+			if ( $matches && isset( $matches[0] ) ) {
+				$file_array['name'] = basename( $matches[0] );
+				$file_array['tmp_name'] = $tmp;
+
+				// If error storing temporarily, unlink
+				if ( is_wp_error( $tmp ) ) {
+					@unlink( $file_array['tmp_name'] );
+					$file_array['tmp_name'] = '';
+				}
+
+				// do the validation and storage stuff
+				$id = media_handle_sideload( $file_array, $post_id, null );
+
+				// If error storing permanently, unlink
+				if ( is_wp_error( $id ) ) {
+					@unlink( $file_array['tmp_name'] );
+				} else {
+					@unlink( $file_array['tmp_name'] );
+				}
+			} else {
+				@unlink( $tmp );
+			}
 		}
 	}
 }
