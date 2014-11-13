@@ -90,7 +90,9 @@ class GreaterMediaSongs {
 	 * @return array The post types array.
 	 */
 	public static function add_songs_shows_widget( $post_types ) {
-		$post_types[] = 'songs';
+		if ( ! in_array( 'songs', $post_types ) ) {
+			$post_types[] = 'songs';
+		}
 		return $post_types;
 	}
 }
