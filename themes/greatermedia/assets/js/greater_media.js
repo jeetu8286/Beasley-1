@@ -7,7 +7,7 @@
 	var headroom, livePlayerFix, livePlayerInit, livePlayerLocation,
 
 		body = document.querySelector( 'body' ),
-		mobileNavButton = document.querySelector( '.mobile-nav--toggle' ),
+		mobileNavButton = document.querySelector( '.mobile-nav__toggle' ),
 		header = document.getElementById( 'header' ),
 		headerHeight = header.scrollHeight,
 		livePlayer = document.getElementById( 'live-player__sidebar' ),

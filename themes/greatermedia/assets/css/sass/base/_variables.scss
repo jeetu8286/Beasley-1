@@ -15,6 +15,7 @@ $palettes: (
 		primary-bg: #ffffff,
 		primary-text: #000000,
 		primary-link: #d22228,
+		primary-link-hover: #d0d2d3,
 		primary-heading: #58595b,
 		primary-border: #d0d2d3,
 		secondary-bg: #000000,
@@ -64,6 +65,6 @@ $palettes: (
 $text-color: palette(base,  primary-text);
 
 $link-color: palette(base,  primary-link);
-$link-hover: palette(base,  primary-link);
+$link-hover: palette(base,  primary-link-hover);
 
 $border-color: palette(base,  primary-border);

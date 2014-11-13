@@ -53,7 +53,7 @@
 						'container'       => 'nav',
 						'container_class' => 'mobile-nav',
 						'container_id'    => 'mobile-nav',
-						'menu_class'      => 'mobile-nav--list',
+						'menu_class'      => 'mobile-nav__list',
 						'menu_id'         => '',
 						'echo'            => true,
 						'fallback_cb'     => 'wp_page_menu',
@@ -79,8 +79,8 @@
 						</div>
 						<div class="header__main">
 							<div class="container">
-								<div class="mobile-nav--toggle">
-									<div class="mobile-nav--toggle--span"></div>
+								<div class="mobile-nav__toggle">
+									<div class="mobile-nav__toggle--span"></div>
 								</div>
 								<div class="header__logo">
 									<a href="<?php echo home_url(); ?>"><img src="<?php bloginfo( 'stylesheet_directory' ); ?>/images/wmmr-logo.png" alt="<?php bloginfo( 'name' ); ?> | <?php bloginfo( 'description' ); ?>" class="header__logo--img"></a>
