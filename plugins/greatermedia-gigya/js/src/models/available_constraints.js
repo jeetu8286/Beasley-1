@@ -74,8 +74,8 @@ var AVAILABLE_CONSTRAINTS = [
 	},
 	{
 		type: 'profile:timezone',
-		valueType: 'integer',
-		value: -5,
+		valueType: 'string',
+		value: 'America/New_York',
 	},
 
 	// Facebook

@@ -931,8 +931,8 @@ var AVAILABLE_CONSTRAINTS = [
 	},
 	{
 		type: 'profile:timezone',
-		valueType: 'integer',
-		value: -5,
+		valueType: 'string',
+		value: 'America/New_York',
 	},
 
 	// Facebook
@@ -1620,7 +1620,7 @@ var ConstraintView = Backbone.View.extend({
 		'not contains'
 	],
 
-	fullTextOperators: [
+	nonFullTextOperators: [
 		'equals',
 		'not equals',
 	],
@@ -1630,18 +1630,19 @@ var ConstraintView = Backbone.View.extend({
 		'not equals',
 	],
 
-	fullTextTypes: [
+	nonFullTextTypes: [
 		'profile:zip',
 		'profile:state',
 		'profile:country',
+		'profile:timezone'
 	],
 
 	operatorsFor: function(valueType, type) {
 		if (valueType === 'integer' || valueType === 'float') {
 			return this.numericOperators;
 		} else if (valueType === 'string') {
-			if (this.isFullTextType(type)) {
-				return this.fullTextOperators;
+			if (this.isNonFullTextType(type)) {
+				return this.nonFullTextOperators;
 			} else {
 				return this.stringOperators;
 			}
@@ -1662,8 +1663,12 @@ var ConstraintView = Backbone.View.extend({
 		return this.model.hasMeta('choices');
 	},
 
-	isFullTextType: function(type) {
-		return _.indexOf(this.fullTextTypes, type) !== -1;
+	isNonFullTextType: function(type) {
+		if (type === undefined) {
+			return false;
+		} else {
+			return _.indexOf(this.nonFullTextTypes, type) !== -1;
+		}
 	}
 
 });
