@@ -1,4 +1,4 @@
-/*! Greater Media - v0.1.0 - 2014-11-06
+/*! Greater Media - v0.1.0 - 2014-11-12
  * http://greatermedia.com
  * Copyright (c) 2014; * Licensed GPLv2+ */
 var gigya = gigya || {};
@@ -84,11 +84,15 @@ gigya.accounts._callEventHandlers = gigya.accounts._callEventHandlers || functio
 
 jQuery(function () {
 
-	var livePlayerListen = jQuery('#live-player--listen_now'), // targets the `Listen Live` button
-		livePlayerTest = jQuery('.live-player--test'), // targets the div that contains the test toggle
-		livePlayerLabel = jQuery('.live-player--test_label'),
-		livePlayerSwitch = jQuery('.live-player--test_audio'), // targets the actual toggle so we can bind a click to it
-		livePlayer = jQuery('.gm-liveplayer'); // targets the live player
+	var livePlayerListen = jQuery('#live-stream__listen-now'), // targets the `Listen Live` button
+		livePlayerPlaying = jQuery('#live-stream__now-playing'),
+		livePlayerTest = jQuery('.live-stream__test'), // targets the div that contains the test toggle
+		livePlayerLabel = jQuery('.live-stream__test--label'),
+		livePlayerSwitch = jQuery('.live-stream__test--audio'), // targets the actual toggle so we can bind a click to it
+		livePlayer = jQuery('.live-stream__player'), // targets the live player
+		livePlayerVolume = jQuery('.live-player__volume'),
+		onAir = jQuery('.on-air'),
+		upNext = jQuery('.up-next');
 
 	function listenLive() {
 		/**
@@ -96,7 +100,10 @@ jQuery(function () {
 		 * change. In order to not change this function that we will need for live use, we will just target the div here
 		 * and change the state
 		 */
-		livePlayerListen.css('visibility', 'visible');
+		livePlayerListen.css('display', 'inline-block');
+		livePlayerPlaying.css('display', 'none');
+		livePlayerVolume.css('display', 'none');
+		upNext.css('display', 'none');
 		livePlayerLabel.css('color', '#ffffff');
 
 		/**
@@ -113,12 +120,20 @@ jQuery(function () {
 		if (GreaterMediaGigyaAuth.is_gigya_user_logged_in()) {
 			livePlayerSwitch.prop('checked', 'checked');
 			livePlayer.css('display', 'block');
-			livePlayerListen.css('visibility', 'hidden');
-			livePlayerTest.css('visibility', 'visible');
+			livePlayerListen.css('display', 'none');
+			livePlayerPlaying.css('display', 'inline-block');
+			livePlayerTest.css('display', 'block');
+			livePlayerVolume.css('display', 'block');
+			upNext.css('display', 'block');
+			onAir.css('display', 'none');
 		} else {
-			livePlayerListen.css('visibility', 'visible');
-			livePlayerTest.css('visibility', 'hidden');
+			livePlayerListen.css('display', 'inline-block');
+			livePlayerPlaying.css('display', 'none');
+			livePlayerTest.css('display', 'none');
 			livePlayer.css('display', 'none');
+			livePlayerVolume.css('display', 'none');
+			upNext.css('display', 'none');
+			onAir.css('display', 'block');
 		}
 
 		/**
@@ -128,12 +143,12 @@ jQuery(function () {
 		 * will be hidden.
 		 */
 		livePlayerListen.click(function() {
-			if ( livePlayerTest.css('visibility') == 'visible') {
-				livePlayerTest.css('visibility', 'hidden');
-				livePlayerListen.css('visibility', 'visible');
+			if ( livePlayerTest.css('display') == 'block') {
+				livePlayerTest.css('display', 'none');
+				livePlayerListen.css('display', 'inline-block');
 			} else {
-				livePlayerTest.css('visibility', 'visible');
-				livePlayerListen.css('visibility', 'hidden');
+				livePlayerTest.css('display', 'block');
+				livePlayerListen.css('display', 'none');
 			}
 		});
 
@@ -154,12 +169,20 @@ jQuery(function () {
 
 			if (livePlayer.css('display') == 'none') {
 				livePlayer.css('display', 'block');
-				livePlayerListen.css('visibility', 'hidden');
-				livePlayerTest.css('visibility', 'visible');
+				livePlayerListen.css('display', 'none');
+				livePlayerPlaying.css('display', 'inline-block');
+				livePlayerTest.css('display', 'block');
+				livePlayerVolume.css('display', 'block');
+				upNext.css('display', 'block');
+				onAir.css('display', 'none');
 			} else {
 				livePlayer.css('display', 'none');
-				livePlayerListen.css('visibility', 'visible');
-				livePlayerTest.css('visibility', 'hidden');
+				livePlayerListen.css('display', 'inline-block');
+				livePlayerPlaying.css('display', 'none');
+				livePlayerTest.css('display', 'none');
+				livePlayerVolume.css('display', 'none');
+				upNext.css('display', 'none');
+				onAir.css('display', 'block');
 			}
 
 			if (livePlayerSwitch.is(':checked')) {
@@ -176,7 +199,5 @@ jQuery(function () {
 	}
 
 	listenLive();
-
-
 
 });

@@ -23,8 +23,8 @@ img {
 
 #site-wrap {
 	max-width: $max-site-width;
-	max-height: 100%;
 	margin: 0 auto;
+	background-color: palette(base,  primary-bg);
 }
 
 // The `.page-wrap` class is being used in conjunction with the off-canvas mobile navigation. On click of the
@@ -44,7 +44,7 @@ img {
 .main, %main {
 	width: 100%;
 	margin: 0;
-	background-color: color(primary-bg);
+	background-color: palette(base,  primary-bg);
 	@include bp(large) {
 		width: 82.142857142857%;
 	}
@@ -94,23 +94,35 @@ img {
 }
 
 .live-player{
-	@include position(absolute, 238px null null null);
-	@include padding(2em null);
-	display: none;
-	background-color: color(secondary-bg);
-	@include bp(large) {
-		@include display(block);
+	position: fixed;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	padding: 1em;
+	background-color: palette(base,  secondary-bg);
+	color: palette(base,  secondary-text);
+	cursor: pointer;
+	@include bp(medium){
+		position: absolute;
+		top: 238px;
+		bottom: auto;
 		right: 0;
+		left: auto;
 		width: 17.857142857143%;
 		height: 100%;
+		padding: 0;
 		@include box-sizing(border-box);
-		color: color(secondary-text);
-		overflow: auto;
+		color: palette(base,  secondary-text);
+		overflow-y: scroll;
+		cursor: default;
+	}
+	@include bp(x-large) {
+		@include calc(right, '50% - 700px');
+		width: $live-player;
 	}
 }
 
 .logged-in .live-player {
-	top: 284px;
 	@include media(min-width 782px) {
 		top: 270px;
 	}
