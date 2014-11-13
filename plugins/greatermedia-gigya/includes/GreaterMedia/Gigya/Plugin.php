@@ -228,15 +228,8 @@ class Plugin {
 	}
 
 	public function enqueue_script( $id, $path, $dependency = null ) {
-		if ( ! is_null( $dependency ) ) {
-			if ( is_array( $dependency ) ) {
-				$dependencies = $dependency;
-			} else {
-				$dependencies = array( $dependency );
-			}
-		} else {
-			$dependencies = array();
-		}
+		$dependencies = $this->get_dependencies( $dependency );
+		$path         = $this->postfix( $path, '.js' );
 
 		wp_enqueue_script(
 			$id,
@@ -247,6 +240,21 @@ class Plugin {
 	}
 
 	public function enqueue_style( $id, $path, $dependency = null ) {
+		$dependencies = $this->get_dependencies( $dependency );
+		$path         = $this->postfix( $path, '.css' );
+
+		wp_enqueue_style(
+			$id,
+			plugins_url( $path, $this->plugin_file ),
+			$dependencies,
+			GMR_GIGYA_VERSION
+		);
+	}
+
+	/**
+	 * Helper to allow for a single dependency.
+	 */
+	public function get_dependencies( $dependency ) {
 		if ( ! is_null( $dependency ) ) {
 			if ( is_array( $dependency ) ) {
 				$dependencies = $dependency;
@@ -257,11 +265,27 @@ class Plugin {
 			$dependencies = array();
 		}
 
-		wp_enqueue_style(
-			$id,
-			plugins_url( $path, $this->plugin_file ),
-			$dependencies,
-			GMR_GIGYA_VERSION
-		);
+		return $dependencies;
+	}
+
+	/**
+	 * Adds a .min postfix to a path depending on script debug mode and
+	 * whether the minified file exists.
+	 */
+	public function postfix( $path, $extension ) {
+		$script_debug = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG;
+
+		if ( $script_debug ) {
+			return $path;
+		} else {
+			$min_path  = str_replace( $extension, ".min{$extension}", $path );
+			$file_path = GMR_GIGYA_PATH . $min_path;
+
+			if ( file_exists( $file_path ) ) {
+				return $min_path;
+			} else {
+				return $path;
+			}
+		}
 	}
 }

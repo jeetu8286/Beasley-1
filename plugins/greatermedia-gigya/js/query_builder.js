@@ -1972,6 +1972,7 @@ var QueryBuilderApp = function() {
 	$(document).ready($.proxy(this.initialize, this));
 };
 
+QueryBuilderApp.version = '0.1.0';
 QueryBuilderApp.prototype = {
 
 	initialize: function() {
@@ -2002,6 +2003,9 @@ QueryBuilderApp.prototype = {
 			el: $('.member-query-results'),
 			collection: queryResults
 		});
+
+		$('#query_builder_metabox').toggleClass('loading', false);
+		$('#query_builder_metabox .loading-indicator').remove();
 
 		toolbarView.render();
 		activeConstraintsView.render();
