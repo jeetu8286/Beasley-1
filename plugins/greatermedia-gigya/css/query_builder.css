@@ -3,11 +3,19 @@
 	margin: 0;
 }
 
+.loading-indicator {
+	margin-left: 1em;
+}
+
 .query_builder_toolbar {
 	width: 24%;
 	float: left;
 	margin-left: 1em;
 	border: 1px solid #e3e3e3;
+}
+
+.loading .query_builder_toolbar {
+	border: none;
 }
 
 .query_builder_toolbar li {

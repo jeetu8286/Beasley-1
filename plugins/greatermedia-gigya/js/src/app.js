@@ -35,6 +35,9 @@ QueryBuilderApp.prototype = {
 			collection: queryResults
 		});
 
+		$('#query_builder_metabox').toggleClass('loading', false);
+		$('#query_builder_metabox .loading-indicator').remove();
+
 		toolbarView.render();
 		activeConstraintsView.render();
 		previewView.render();
