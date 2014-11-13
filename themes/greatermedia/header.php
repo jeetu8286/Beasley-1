@@ -83,7 +83,7 @@
 									<div class="mobile-nav__toggle--span"></div>
 								</div>
 								<div class="header__logo">
-									<a href="<?php echo home_url(); ?>"><img src="<?php bloginfo( 'stylesheet_directory' ); ?>/images/wmmr-logo.png" alt="<?php bloginfo( 'name' ); ?> | <?php bloginfo( 'description' ); ?>" class="header__logo--img"></a>
+									<a href="<?php echo home_url(); ?>"><img src="<?php echo get_stylesheet_directory_uri(); ?>/images/wmmr-logo.png" alt="<?php bloginfo( 'name' ); ?> | <?php bloginfo( 'description' ); ?>" class="header__logo--img"></a>
 								</div>
 								<?php
 								$main_nav = array(
