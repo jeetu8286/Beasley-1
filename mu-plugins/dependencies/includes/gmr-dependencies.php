@@ -24,6 +24,22 @@ class GmrDependencies {
 			, true
 		);
 
+		wp_enqueue_script(
+			'parsleyjs',
+			GMRDEPENDENCIES_URL . "/parsleyjs/dist/parsley{$postfix}.js",
+			array( 'jquery' ),
+			'2.0.5', // Using daveross/parsley.js fork until word count include issue #765 is merged
+			true
+		);
+
+		wp_enqueue_script(
+			'parsleyjs-words',
+			GMRDEPENDENCIES_URL . '/parsleyjs/src/extra/validator/words.js',
+			array( 'parsleyjs' ),
+			'2.0.5', // Using daveross/parsley.js fork until word count include issue #765 is merged
+			true
+		);
+
 		// Register styles
 		wp_register_style(
 			'select2'
@@ -32,6 +48,15 @@ class GmrDependencies {
 			, '3.5.2'
 			, 'all'
 		);
+
+		wp_enqueue_style(
+			'parsleyjs',
+			GMRDEPENDENCIES_URL  . '/parsleyjs/src/parsley.css',
+			array(),
+			'2.0.5', // Using daveross/parsley.js fork until word count include issue #765 is merged
+			'all'
+		);
+
 	}
 }
 

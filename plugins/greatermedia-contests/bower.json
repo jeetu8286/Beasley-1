@@ -20,8 +20,7 @@
 	],
 	"dependencies": {
 		"formbuilder": "daveross/formbuilder#master",
-		"datetimepicker": "~2.3.0",
-		"parsleyjs": "https://github.com/daveross/Parsley.js.git~2.0.0"
+		"datetimepicker": "~2.3.0"
 	},
 	"overrides": {
 		"formbuilder": {
