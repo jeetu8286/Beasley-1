@@ -133,9 +133,8 @@ class BlogData {
 	}
 
 	/**
-	 * TODO:        Assign default terms
-	 * TODO:        Import Fetured images
-	 * TODO:        Import attached images
+	 * Import posts from content site and all related media
+	 *
 	 * @param object $post WP_POST object
 	 * @param array $metas
 	 * @param array $defaults
@@ -162,7 +161,6 @@ class BlogData {
 		);
 
 		$existing = get_posts( $check_args );
-		$post_id = 0;
 		$updated = 0;
 
 		// check whether post with that name exist
@@ -200,7 +198,7 @@ class BlogData {
 		 */
 		if( $updated ) {
 			self::AssignDefaultTerms( $post_id, $defaults );
-			self::ImportFeaturedImage( $post_id, $defaults['featured'] );
+			self::ImportMedia( $post_id, $defaults['featured'], true );
 			self::ImportAttachedImages( $post_id, $defaults['attachments'] );
 		}
 
@@ -222,15 +220,12 @@ class BlogData {
 		}
 	}
 
-	public static function ImportFeaturedImage( $post_id, $filename ) {
-		$featured_image = '';
-
-		$featured_image = self::ImportMedia( $post_id, $filename, true );
-
-		return $featured_image;
-	}
-
-
+	/**
+	 * Import all attached images
+	 *
+	 * @param $post_id
+	 * @param $attachments
+	 */
 	public static function ImportAttachedImages( $post_id, $attachments) {
 		foreach ( $attachments as $attachment ) {
 			$filename = $attachment->guid;
@@ -238,8 +233,18 @@ class BlogData {
 		}
 	}
 
+	/**
+	 * Helper function to import images
+	 * Reused code from
+	 * http://codex.wordpress.org/Function_Reference/media_handle_sideload
+	 * 
+	 * @param int    $post_id  - Post ID of the post to assign featured image if $featured is true
+	 * @param string $filename - URL of the image to upload
+	 * @param bool   $featured - Imported image should be featured or not
+	 *
+	 * @return int|object
+	 */
 	public static function ImportMedia( $post_id = 0, $filename, $featured = false ) {
-		$featured_image = '';
 
 		$tmp = download_url( $filename );
 
@@ -264,15 +269,15 @@ class BlogData {
 				@unlink( $file_array['tmp_name'] );
 			} else {
 				@unlink( $file_array['tmp_name'] );
-				if( $featured ) {
-					$featured_image = set_post_thumbnail( $post_id, $id );
+				if( $featured == true & $post_id != 0 ) {
+					set_post_thumbnail( $post_id, $id );
 				}
 			}
 		} else {
 			@unlink( $tmp );
 		}
 
-		return $featured_image;
+		return $id;
 	}
 }
 
