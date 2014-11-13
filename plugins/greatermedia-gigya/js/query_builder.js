@@ -931,8 +931,8 @@ var AVAILABLE_CONSTRAINTS = [
 	},
 	{
 		type: 'profile:timezone',
-		valueType: 'integer',
-		value: -5,
+		valueType: 'string',
+		value: 'America/New_York',
 	},
 
 	// Facebook
@@ -1634,6 +1634,7 @@ var ConstraintView = Backbone.View.extend({
 		'profile:zip',
 		'profile:state',
 		'profile:country',
+		'profile:timezone'
 	],
 
 	operatorsFor: function(valueType, type) {

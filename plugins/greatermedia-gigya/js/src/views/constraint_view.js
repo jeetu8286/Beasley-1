@@ -120,6 +120,7 @@ var ConstraintView = Backbone.View.extend({
 		'profile:zip',
 		'profile:state',
 		'profile:country',
+		'profile:timezone'
 	],
 
 	operatorsFor: function(valueType, type) {
