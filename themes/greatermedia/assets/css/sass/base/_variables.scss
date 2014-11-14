@@ -15,11 +15,13 @@ $palettes: (
 		primary-bg: #ffffff,
 		primary-text: #000000,
 		primary-link: #d22228,
+		primary-link-hover: #d0d2d3,
 		primary-heading: #58595b,
 		primary-border: #d0d2d3,
 		secondary-bg: #000000,
 		secondary-text: #6D6E70,
 		secondary-link: #ffffff,
+		secondary-link-hover: #d22228,
 		secondary-link-alt: #919395,
 		secondary-heading: #d22228,
 		secondary-border: #282827,
@@ -30,8 +32,24 @@ $palettes: (
 		player-controls: #606060,
 		transparent: transparent,
 	),
+	header: (
+		primary-bg: #191919,
+		primary-text: #ffffff,
+		primary-hover: #d0d2d3,
+		primary-border: #303030,
+		secondary-bg: #000000,
+		secondary-text: #929497,
+		tertiary-bg: #ffffff,
+		tertiary-text: #000000,
+		tertiary-border: #d0d2d3,
+	),
+	ads: (
+		lead-bg: #191919,
+		lead-border: #303030,
+	),
 	live-links: (
-		text-color: #000000,
+		primary-text: #c7c7c7,
+		primary-link: #d22228,
 	),
 	btn: (
 		primary-bg: #d22228,
@@ -58,6 +76,6 @@ $palettes: (
 $text-color: palette(base,  primary-text);
 
 $link-color: palette(base,  primary-link);
-$link-hover: palette(base,  primary-link);
+$link-hover: palette(base,  primary-link-hover);
 
 $border-color: palette(base,  primary-border);
