@@ -59,10 +59,6 @@ class Plugin {
 			)
 		);
 
-		// TODO: figure out if session code should live in this plugin
-		wp_enqueue_script( 'jquery' );
-		wp_localize_script( 'jquery', 'gigya_session_data', $session_data );
-
 		/* Lazy register ajax handlers only if this is an ajax request */
 		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 			$this->register_ajax_handlers();
@@ -70,6 +66,14 @@ class Plugin {
 
 		$profile_page = new ProfilePage();
 		$profile_page->register();
+
+		if ( ! $profile_page->is_user_on_profile_page() ) {
+			$this->enqueue_script(
+				'gigya_session',
+				'js/gigya_session.js',
+				array( 'jquery', 'cookies-js' )
+			);
+		}
 	}
 
 	public function initialize_admin() {
