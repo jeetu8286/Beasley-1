@@ -10,9 +10,9 @@
 	var headroom, livePlayerFix, livePlayerInit, livePlayerLocation,
 
 		body = document.querySelector( 'body' ),
-		mobileNavButton = document.querySelector( '.mobile-nav--toggle' ),
+		mobileNavButton = document.querySelector( '.mobile-nav__toggle' ),
 		header = document.getElementById( 'header' ),
-		headerHeight = header.scrollHeight,
+		headerHeight = header.offsetHeight,
 		livePlayer = document.getElementById( 'live-player__sidebar' ),
 		livePlayerStreamSelect = document.querySelector( '.live-player__stream--current' ),
 		livePlayerStreams = document.querySelector( '.live-player__stream--available' ),
