@@ -231,7 +231,7 @@
 }
 
 .live-stream__now-playing--btn {
-	@include btn(btn, secondary-bg, primary-text, primary-border, .25em, 1em, ms(-1));
+	@include btn(btn, secondary-bg, primary-bg, primary-border, .25em, 1em, ms(-1));
 	margin: 0 .5em;
 	@include border-radius(1em);
 }
@@ -243,7 +243,7 @@
 }
 
 .live-stream__resume--btn {
-	@include btn(btn, secondary-bg, primary-text, primary-border, .25em, 1em, ms(-1));
+	@include btn(btn, secondary-bg, primary-bg, primary-border, .25em, 1em, ms(-1));
 	margin: 0 .5em;
 	@include border-radius(1em);
 }
@@ -269,7 +269,7 @@
 	-webkit-font-smoothing: antialiased;
 	moz-osx-font-smoothing: grayscale;
 	text-rendering: auto;
-	color: palette(btn, primary-text);
+	color: palette(btn, primary-bg);
 	cursor: pointer;
 }
 
