@@ -37,10 +37,6 @@ class BlogData {
 			foreach ( $result as $single_post ) {
 				self::ImportPosts( $single_post['post_obj'], $single_post['post_metas'], $defaults, $single_post['featured'], $single_post['attachments'] );
 			}
-
-		// get current timestamp
-		$timestamp = current_time( 'timestamp' );
-		update_option( 'syndication_last_performed', $timestamp );
 	}
 
 	public static function syndicate_now() {
