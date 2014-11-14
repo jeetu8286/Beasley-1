@@ -299,6 +299,13 @@
 			if (this.store.isEnabled()) {
 				this.store.load();
 
+				if (this.session.isLoggedIn()) {
+					if (currentPage === 'login' || currentPage === 'register' || currentPage == 'forgot-password') {
+						this.controller.redirect('/');
+						return;
+					}
+				}
+
 				this.screenSetView = new GigyaScreenSetView(
 					this.config,
 					this.getCurrentScreenSet(),
