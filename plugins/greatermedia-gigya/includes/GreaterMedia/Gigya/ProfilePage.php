@@ -10,7 +10,7 @@ class ProfilePage {
 		'login',
 		'logout',
 		'settings',
-		'cookies',
+		'cookies-required',
 	);
 
 	public function register() {
@@ -72,7 +72,7 @@ class ProfilePage {
 		wp_enqueue_script(
 			'gigya_socialize',
 			"http://cdn.gigya.com/JS/gigya.js?apiKey={$api_key}",
-			array( 'jquery', 'cookies-js' ),
+			array( 'jquery', 'cookies-js', 'underscore' ),
 			GMR_GIGYA_VERSION,
 			true
 		);

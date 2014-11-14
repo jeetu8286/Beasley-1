@@ -146,7 +146,7 @@
 
 	};
 
-	var GigyaEventsListener = function(session, willRegister) {
+	var GigyaSessionController = function(session, willRegister) {
 		this.session      = session;
 		this.willRegister = !!willRegister;
 
@@ -156,7 +156,7 @@
 		});
 	};
 
-	GigyaEventsListener.prototype = {
+	GigyaSessionController.prototype = {
 
 		didLogin: function(response) {
 			if (this.willRegister) {
@@ -234,7 +234,6 @@
 		},
 
 		show: function(name) {
-			console.log('show', name);
 			if (name !== 'gigya-logout-screen') {
 				gigya.accounts.showScreenSet({
 					screenSet: this.screenSet,
@@ -277,22 +276,39 @@
 		this.config       = window.gigya_profile_meta;
 		var willRegister  = this.config.current_page === 'register';
 
-		this.store          = new GigyaSessionStore();
-		this.session        = new GigyaSession(this.store);
-		this.eventsListener = new GigyaEventsListener(this.session, willRegister);
+		this.store      = new GigyaSessionStore();
+		this.session    = new GigyaSession(this.store);
+		this.controller = new GigyaSessionController(this.session, willRegister);
 	};
 
 	GigyaProfileApp.prototype = {
 
 		run: function() {
-			this.store.load();
-			this.screenSetView = new GigyaScreenSetView(
-				this.config,
-				this.getCurrentScreenSet(),
-				this.session
-			);
+			var currentPage = this.getCurrentPage();
 
-			this.screenSetView.render();
+			if (this.store.isEnabled()) {
+				this.store.load();
+
+				this.screenSetView = new GigyaScreenSetView(
+					this.config,
+					this.getCurrentScreenSet(),
+					this.session
+				);
+
+				this.screenSetView.render();
+			} else if (currentPage !== 'cookies-required') {
+				this.controller.redirect('/profile/cookies-required');
+			}
+		},
+
+		/* must be logged in to access these pages */
+		loggedInPages: [
+			'logout',
+			'settings'
+		],
+
+		isLoggedInPage: function(pageName) {
+			return _.indexOf(this.loggedInPages, pageName) !== -1;
 		},
 
 		getCurrentPage: function() {
