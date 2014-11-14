@@ -79,7 +79,9 @@ class SyndicationCPT {
 			'subscription_post_status',
 			'subscription_filter_terms',
 			'subscription_default_terms-',
-			'syndication_import'
+			'syndication_import',
+			'syndication_old_data',
+			'syndication_old_name'
 		);
 
 		foreach( $hidden_keys as $hidden_key ) {
@@ -112,6 +114,15 @@ class SyndicationCPT {
 				,GMR_SYNDICATION_URL . "assets/js/greater_media_content_syndication{$postfix}.js"
 				,array( 'jquery' , 'select2')
 				,'0.0.1'
+			);
+
+			wp_localize_script(
+				'syndication_js'
+				,'syndication_ajax'
+				,array(
+					'ajaxurl' => admin_url( 'admin-ajax.php' ),
+					'syndication_nonce' => wp_create_nonce( 'perform-syndication-nonce' )
+				)
 			);
 		}
 	}
@@ -265,6 +276,17 @@ class SyndicationCPT {
 			,'advanced'
 			,'high'
 		);
+
+
+		// Temp metabox to perform syndication
+		add_meta_box(
+			'syndicate'
+			,__( 'Syndication control' )
+			,array( $this, 'render_syndication_control' )
+			,$this->post_type
+			,'side'
+			,'default'
+		);
 	}
 
 	/**
@@ -386,7 +408,7 @@ class SyndicationCPT {
 
 		// Add an nonce field so we can check for it later.
 		wp_nonce_field( 'save_subscription_status', 'subscription_custom_nonce' );
-		
+
 		foreach( $allterms as $taxonomy => $terms ) {
 			if( taxonomy_exists( $taxonomy ) ) {
 				// Use get_post_meta to retrieve an existing value from the database.
@@ -440,7 +462,7 @@ class SyndicationCPT {
 
 		// Add an nonce field so we can check for it later.
 		wp_nonce_field( 'save_subscription_status', 'subscription_custom_nonce' );
-
+		
 		// available statuses
 		$list_status = array( 'draft', 'publish' );
 
@@ -500,6 +522,15 @@ class SyndicationCPT {
 			$allterms = array();
 			echo '</p>';
 		}
+	}
+
+	// Add button to syndicate at any time, with ajax call
+	public function render_syndication_control( $post ) {
+		echo '<div id="syndication_status">';
+		echo '</div>';
+		echo '<button data-postid="' . $post->ID
+		     . '" name="syndicate_now" id="syndicate_now" class="button button-primary button-large"'
+		     . '>Syndicate</button>';
 	}
 
 }

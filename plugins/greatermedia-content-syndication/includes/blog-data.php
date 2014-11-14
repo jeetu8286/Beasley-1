@@ -12,9 +12,56 @@ class BlogData {
 	public static function init() {
 		add_action( 'admin_init', array( __CLASS__, 'register_subscription_setting' ) );
 		self::$content_site_id = defined( 'GMR_CONTENT_SITE_ID' ) ? GMR_CONTENT_SITE_ID : self::$content_site_id;
-		update_option( 'syndication_last_performed', 0 );
+		add_action( 'wp_ajax_syndicate-now', array( __CLASS__, 'syndicate_now' ) );
 	}
 
+	public static function run( $syndication_id ) {
+
+			$result = self::QueryContentSite( $syndication_id );
+
+			$taxonomy_names = get_object_taxonomies( 'post', 'objects' );
+			$defaults = array(
+				'status'    =>  get_post_meta( $syndication_id, 'subscription_post_status', true ),
+			);
+
+			foreach( $taxonomy_names as $taxonomy ) {
+				$label = $taxonomy->name;
+
+				// Use get_post_meta to retrieve an existing value from the database.
+				$terms = get_post_meta( $syndication_id, 'subscription_default_terms-' . $label, true );
+				$terms = explode( ',', $terms );
+				$defaults[ $label ] = $terms;
+
+			}
+
+			foreach ( $result as $single_post ) {
+				self::ImportPosts( $single_post['post_obj'], $single_post['post_metas'], $defaults, $single_post['featured'], $single_post['attachments'] );
+			}
+
+		// get current timestamp
+		$timestamp = current_time( 'timestamp' );
+		update_option( 'syndication_last_performed', $timestamp );
+	}
+
+	public static function syndicate_now() {
+
+		// get nonce from ajax post
+		$nonce = $_POST['syndication_nonce'];
+
+		// verify nonce, with predifined
+		if ( ! wp_verify_nonce( $nonce, 'perform-syndication-nonce' ) ) {
+			die ( ':P' );
+		}
+
+		// run syndication
+		if( isset( $_POST['syndication_id'] ) && is_numeric( $_POST['syndication_id'] ) ) {
+			$syndication_id = intval( $_POST['syndication_id'] );
+
+			self::run( $syndication_id );
+		}
+
+		die();
+	}
 
 	// Rgister setting to store last syndication timestamp
 	public static function register_subscription_setting() {
@@ -136,47 +183,67 @@ class BlogData {
 	 * Import posts from content site and all related media
 	 *
 	 * @param object $post WP_POST object
-	 * @param array $metas
-	 * @param array $defaults
+	 * @param array  $metas
+	 * @param array  $defaults
+	 * @param string $featured
+	 * @param array $attachments
 	 */
-	public static function ImportPosts( $post, $metas = array(), $defaults ) {
+	public static function ImportPosts( $post, $metas = array(), $defaults, $featured = null, $attachments = array() ) {
+		global $wpdb;
+
+		$post_name = sanitize_title( $post->post_name );
+		$post_title = sanitize_text_field( $post->post_title );
+		$post_type = sanitize_text_field( $post->post_type );
+		$post_status = sanitize_text_field( $defaults['status'] );
 
 		// prepare arguments for wp_insert_post
 		$args = array(
-			'post_title'    =>  $post->post_title,
+			'post_title'    =>  $post_title,
 			'post_content'  =>  $post->post_content,
-			'post_type'     =>  $post->post_type,
-			'post_name'     =>  $post->post_name,
-			'post_status'   =>  $defaults['status']
+			'post_type'     =>  $post_type,
+			'post_name'     =>  $post_name,
+			'post_status'   =>  $post_status
 		);
 
 		// create unique meta value for imported post
 		$post_hash = trim( $post->post_title ) . $post->post_modified;
 		$post_hash = md5( $post_hash );
 
+
 		// query to check whether post already exist
-		$check_args   =   array(
-			'post_name'     =>  $post->post_name,
-			'post_type'     =>  $post->post_type,
+		$meta_query_args = array(
+			'meta_key'     => 'syndication_old_name',
+			'meta_value'   => $post_name,
+			'post_status' => 'any',
 		);
 
-		$existing = get_posts( $check_args );
+		$existing = get_posts( $meta_query_args );
+
 		$updated = 0;
+		$post_id = 0;
 
 		// check whether post with that name exist
 		if( !empty( $existing ) ) {
-			$post_id = $existing[0]->ID;
+			$post_id = intval( $existing[0]->ID );
 			$hash_value = get_post_meta( $post_id, 'syndication_import', true );
+
 			if( $hash_value != $post_hash ) {
 				// post has been updated, override existing one
 				$args['ID'] = $post_id;
 				wp_insert_post( $args );
 				if( !empty( $metas ) ) {
 					foreach ( $metas as $meta_key => $meta_value ) {
+						$meta_value = sanitize_text_field( $meta_value );
 						update_post_meta( $post_id, $meta_key, $meta_value );
 					}
 				}
 				update_post_meta( $post_id, 'syndication_import', $post_hash );
+				update_post_meta( $post_id, 'syndication_old_name', $post_name );
+				$post_data = array(
+					'id' => intval( $post->ID ),
+					'blog_id' => self::$content_site_id
+				);
+				update_post_meta( $post_id, 'syndication_old_data', serialize( $post_data ) );
 				$updated = 1;
 			}
 		} else {
@@ -187,9 +254,13 @@ class BlogData {
 				}
 			}
 			update_post_meta( $post_id, 'syndication_import', $post_hash );
-			if( $post_id ) {
-				$updated = 1;
-			}
+			update_post_meta( $post_id, 'syndication_old_name', $post_name );
+			$post_data = array(
+				'id' => intval( $post->ID ),
+				'blog_id' => self::$content_site_id
+			);
+			update_post_meta( $post_id, 'syndication_old_data', serialize( $post_data ) );
+			$updated = 1;
 		}
 
 		/**
@@ -198,8 +269,13 @@ class BlogData {
 		 */
 		if( $updated ) {
 			self::AssignDefaultTerms( $post_id, $defaults );
-			self::ImportMedia( $post_id, $defaults['featured'], true );
-			self::ImportAttachedImages( $post_id, $defaults['attachments'] );
+			if( !is_null( $featured) ) {
+				$featured = esc_url_raw( $featured );
+				self::ImportMedia( $post_id, $featured, true );
+			}
+			if( !is_null( $attachments ) ) {
+				self::ImportAttachedImages( $post_id, $attachments );
+			}
 		}
 
 	}
@@ -228,7 +304,7 @@ class BlogData {
 	 */
 	public static function ImportAttachedImages( $post_id, $attachments) {
 		foreach ( $attachments as $attachment ) {
-			$filename = $attachment->guid;
+			$filename = esc_url_raw( $attachment->guid );
 			self::ImportMedia( $post_id, $filename, false );
 		}
 	}
@@ -237,7 +313,7 @@ class BlogData {
 	 * Helper function to import images
 	 * Reused code from
 	 * http://codex.wordpress.org/Function_Reference/media_handle_sideload
-	 * 
+	 *
 	 * @param int    $post_id  - Post ID of the post to assign featured image if $featured is true
 	 * @param string $filename - URL of the image to upload
 	 * @param bool   $featured - Imported image should be featured or not
@@ -245,7 +321,7 @@ class BlogData {
 	 * @return int|object
 	 */
 	public static function ImportMedia( $post_id = 0, $filename, $featured = false ) {
-
+		$id = 0;
 		$tmp = download_url( $filename );
 
 		preg_match( '/[^\?]+\.(jpg|JPG|jpe|JPE|jpeg|Jpeg|JPEG|gif|GIF|png|PNG)/', $filename, $matches );
