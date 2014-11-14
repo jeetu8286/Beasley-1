@@ -10,6 +10,7 @@ class ProfilePage {
 		'login',
 		'logout',
 		'settings',
+		'cookies',
 	);
 
 	public function register() {
@@ -71,7 +72,7 @@ class ProfilePage {
 		wp_enqueue_script(
 			'gigya_socialize',
 			"http://cdn.gigya.com/JS/gigya.js?apiKey={$api_key}",
-			array( 'jquery' ),
+			array( 'jquery', 'cookies-js' ),
 			GMR_GIGYA_VERSION,
 			true
 		);
@@ -108,6 +109,11 @@ class ProfilePage {
 	public function get_current_page_path() {
 		// TODO: make this multisite-subdir safe
 		return parse_url( $_SERVER['REQUEST_URI'], PHP_URL_PATH );
+	}
+
+	public function is_user_on_profile_page() {
+		$path = $this->get_current_page_path();
+		return $this->is_profile_page( $path );
 	}
 
 	public function is_profile_page( $path ) {
