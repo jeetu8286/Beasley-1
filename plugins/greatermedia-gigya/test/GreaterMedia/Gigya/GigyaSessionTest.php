@@ -45,6 +45,13 @@ class GigyaSessionTest extends \WP_UnitTestCase {
 		$this->assertEquals( array( 'a' => 1 ), $actual );
 	}
 
+	function test_it_can_parse_non_base64_data_for_old_browsers() {
+		$text = json_encode( array( 'UID' => 'foo' ) );
+		$actual = $this->session->deserialize( $text );
+
+		$this->assertEquals( 'foo', $actual['UID'] );
+	}
+
 	function test_it_has_a_cookie_name() {
 		$actual = $this->session->get_cookie_name();
 		$this->assertEquals( 'gigya_profile', $actual );
