@@ -51,6 +51,10 @@ class GreaterMediaFormbuilderRender {
 		);
 		wp_localize_script( 'greatermedia-contests', 'GreaterMediaContests', $settings );
 
+		wp_enqueue_script( 'jquery-ui-datepicker' );
+		wp_enqueue_style( 'jquery-ui-datepicker' );
+		wp_enqueue_style( 'greatermedia-contests', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'css/greatermedia-contests.css' );
+
 	}
 
 	/**
@@ -562,6 +566,40 @@ class GreaterMediaFormbuilderRender {
 		$html .= self::render_description( $field );
 
 		$html .= '</fieldset>';
+
+		return $html;
+
+	}
+
+	protected static function render_date( $post_id, stdClass $field ) {
+
+		$html = '';
+
+		$html .= self::render_label( $field );
+
+		$field_id = 'form_field_' . $field->cid;
+
+		$input_tag_attributes = array(
+			'id'   => $field_id,
+			'name' => $field_id,
+			'type' => 'date',
+		);
+
+		if ( isset( $field->required ) && $field->required ) {
+			$input_tag_attributes['required'] = 'required';
+		}
+
+		// Give the theme a chance to alter the attributes for the input field
+		$input_tag_attributes = apply_filters( 'gm_form_date_input_attrs', $input_tag_attributes );
+		$input_tag_attributes = apply_filters( 'gm_form_input_attrs', $input_tag_attributes );
+
+		$html .= '<input ';
+		foreach ( $input_tag_attributes as $attribute => $value ) {
+			$html .= wp_kses_data( $attribute ) . '="' . esc_attr( $value ) . '" ';
+		}
+		$html .= ' />';
+
+		$html .= self::render_description( $field );
 
 		return $html;
 

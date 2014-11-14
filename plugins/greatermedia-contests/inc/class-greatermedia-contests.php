@@ -148,7 +148,7 @@ class GreaterMediaContests {
 	}
 
 	public function admin_enqueue_scripts() {
-		wp_enqueue_style( 'greatermedia-contests', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'css/greatermedia-contests.css' );
+		wp_enqueue_style( 'greatermedia-contests-admin', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'css/greatermedia-contests-admin.css' );
 	}
 
 	/**
