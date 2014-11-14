@@ -50,7 +50,7 @@ class MemberQuery {
 	 * @access public
 	 * @var integer
 	 */
-	public $post_id;
+	public $post_id = null;
 
 	/**
 	 * The properties that make up a MemberQuery.
@@ -73,9 +73,13 @@ class MemberQuery {
 	 * Stores the post object corresponding to the member query and
 	 * parse it's post_content into the MemberQuery properties.
 	 */
-	public function __construct( $post_id ) {
-		$this->post_id = $post_id;
-		$this->properties = $this->parse( $this->content_for( $post_id ) );
+	public function __construct( $post_id, $constraints = null ) {
+		if ( ! is_null( $post_id ) ) {
+			$this->post_id = $post_id;
+			$this->properties = $this->parse( $this->content_for( $post_id ) );
+		} else {
+			$this->properties = $this->parse( $constraints );
+		}
 	}
 
 	/**
@@ -185,7 +189,7 @@ class MemberQuery {
 	 * @return string
 	 */
 	public function to_gql( $count = false, $limit = null ) {
-		$query  = 'select UID from ' . $this->storeName . ' where ';
+		$query  = 'select * from ' . $this->storeName . ' where ';
 		$query .= $this->clause_for( $this->get_constraints() );
 
 		if ( $count ) {
@@ -338,6 +342,15 @@ class MemberQuery {
 		if ( $valueType === 'string' || $valueType === 'text' ) {
 			// TODO: Custom escaping
 			return "'{$value}'";
+		} elseif ( $valueType === 'boolean' ) {
+			$value = (bool)$value;
+			return $value ? 1 : 0;
+		} elseif ( $valueType === 'date' ) {
+			$date = \DateTime::createFromFormat(
+				'm/d/Y', $value, new \DateTimeZone( 'UTC' )
+			);
+
+			return $date->getTimestamp();
 		} else {
 			return $value;
 		}
@@ -369,7 +382,7 @@ class MemberQuery {
 	 * @return string
 	 */
 	public function field_name_for( $field, $valueType = 'string' ) {
-		return 'data.' . $this->storeName . '.' . $field . $this->suffix_for( $valueType );
+		return 'data.' . $field . $this->suffix_for( $valueType );
 	}
 
 	/**

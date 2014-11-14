@@ -1,8 +1,13 @@
-.leaderboard {
-	@include position(relative, null null null null);
-	@include padding(em(20px) 0);
+.ad__leaderboard {
+	display: none;
+	position: relative;
+	padding: em(20px) 0;
+	@include bp(medium) {
+		display: block;
+		height: 132px;
+	}
 }
 
-.leaderboard img {
-	@include margin(0 auto);
+.ad__leaderboard img {
+	margin: 0 auto;
 }

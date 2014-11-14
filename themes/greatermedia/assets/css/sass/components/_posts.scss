@@ -46,7 +46,7 @@
 
 //  Read More Button
 .read-more--btn{
-	@include btn(btn-bg, btn-text, 1em, 1.5em, em(14px));
+	@include btn(btn, primary-bg, primary-text, primary-border, 1em, 1.5em, em(14px));
 }
 
 // Entry Footer
@@ -54,7 +54,7 @@
 	@include span-columns(4);
 	@include padding(em(5px) 0);
 	@include margin(2em null 3em);
-	@include border-color(color(primary-border) null color(primary-border) null);
+	@include border-color(palette(base, primary-border) null palette(base, primary-border) null);
 	@include border-style(solid null solid null);
 	@include border-width(1px null 1px null);
 	@include bp(small) {
@@ -221,37 +221,37 @@
 	@include border-right-radius(3px);
 	@include border-bottom-radius(3px);
 	@include border-left-radius(3px);
-	background-color: color(primary-border);
-	color: color(secondary-link);
+	background-color: palette(base, primary-border);
+	color: palette(base, secondary-link);
 }
 
 .entry-comments--count a:link:after, .entry-comments--count a:visited:after {
 	@include position(absolute, null null -8px 3px);
-	@include arrow(top-left, color(primary-border), 8px, 10px);
+	@include arrow(top-left, palette(base, primary-border), 8px, 10px);
 	content: " ";
 }
 
 .entry-comments--count a:hover, .entry-comments--count a:focus {
 	@include display(block);
-	background-color: color(primary-link);
-	color: color(primary-text);
+	background-color: palette(base, primary-link);
+	color: palette(base, primary-text);
 }
 
 .entry-comments--count a:hover:after, .entry-comments--count a:focus:after {
 	@include position(absolute, null null -8px 3px);
-	@include arrow(top-left, color(primary-link), 8px, 10px);
+	@include arrow(top-left, palette(base, primary-link), 8px, 10px);
 	content: " ";
 }
 
 .entry-comments--count a:active {
 	@include display(block);
-	background-color: color(secondary-bg);
-	color: color(secondary-link);
+	background-color: palette(base, secondary-bg);
+	color: palette(base, secondary-link);
 }
 
 .entry-comments--count a:active:after{
 	@include position(absolute, null null -8px 3px);
-	@include arrow(top-left, color(secondary-bg), 8px, 10px);
+	@include arrow(top-left, palette(base, secondary-bg), 8px, 10px);
 	content: " ";
 }
 
@@ -418,7 +418,7 @@
 blockquote {
 	@include padding(em(8px) em(10px));
 	@include margin(em(24px) em(10px));
-	@include border-color(null null nullcolor(primary-border));
+	@include border-color(null null null palette(base, primary-border));
 	@include border-style(null null null solid);
 	@include border-width(null null null em(10px));
 	quotes: "\201C""\201D""\2018""\2019";
@@ -427,7 +427,7 @@ blockquote {
 blockquote p {
 	display: inline;
 	font-style: italic;
-	color: color(secondary-text);
+	color: palette(base, secondary-text);
 }
 
 // WordPress Styles
@@ -460,7 +460,7 @@ blockquote p {
 	max-width: 100%;
 	@include padding(0);
 	@include margin(0 0 em(16px));
-	background: color(primary-border);
+	background: palette(base, primary-border);
 }
 
 .wp-caption img {

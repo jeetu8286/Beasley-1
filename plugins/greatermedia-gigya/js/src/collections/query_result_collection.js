@@ -8,10 +8,8 @@ var QueryResultCollection = Backbone.Collection.extend({
 	},
 
 	search: function() {
-		var constraints       = this.activeConstraints.toJSON();
-		var query             = 'select * from accounts'; // TEMPORARY, limits to 5
-		var data              = {
-			query: query,
+		var constraints = this.activeConstraints.toJSON();
+		var data        = {
 			constraints: constraints
 		};
 
