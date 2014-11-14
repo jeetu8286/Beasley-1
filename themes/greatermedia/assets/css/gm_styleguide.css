@@ -1939,6 +1939,9 @@ blockquote p {
   font-family: "gmr-icons" !important;
   content: "\e60b" !important; }
 
+.live-stream__player--container {
+  height: 0; }
+
 .live-stream--podcast__progress {
   width: 85%;
   height: 3px;

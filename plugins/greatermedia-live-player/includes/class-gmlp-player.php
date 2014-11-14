@@ -39,7 +39,7 @@ class GMLP_Player {
 			</div>
 
 			<!-- Player placeholder -->
-			<div id="td_container"></div>
+			<div id="td_container" class="live-stream__player--container"></div>
 		</div>
 
 	<?php

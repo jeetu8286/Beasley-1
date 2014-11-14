@@ -5,7 +5,7 @@ $(document).ready(function () {
 });
 //Change platformid buttons - Triton Digital QA usage only.
 var platformid = getUrlVars()['platformid'] || 'prod';
-var tech = getUrlVars()['tech'] || 'html5_flash';
+var tech = getUrlVars()['tech'] || 'flash_html5';
 var sbm = getUrlVars()['sbm'] == 'false' ? false : true;
 var aSyncCuePointFallback = getUrlVars()['aSyncCuePointFallback'] == 'false' ? false : true;
 
@@ -85,81 +85,6 @@ function initPlayer()
 	player.addEventListener( 'configuration-error', onConfigurationError );
 	player.addEventListener( 'module-error', onModuleError );
 	player.loadModules();
-}
-
-function configurePlatformIdButtons()
-{
-	$('#platform_' + platformid + '_button').button('toggle');
-	$( "#platform_local_button" ).click(function() {
-		window.location.href='index.php?platformid=local&tech='+tech+'&sbm='+sbm+'&aSyncCuePointFallback='+aSyncCuePointFallback;
-	});
-	$( "#platform_local_build_button" ).click(function() {
-		window.location.href='index.php?platformid=build&tech='+tech+'&sbm='+sbm+'&aSyncCuePointFallback='+aSyncCuePointFallback;
-	});
-	$( "#platform_dev_button" ).click(function() {
-		window.location.href='index.php?platformid=dev&tech='+tech+'&sbm='+sbm+'&aSyncCuePointFallback='+aSyncCuePointFallback;
-	});
-	$( "#platform_preprod_button" ).click(function() {
-		window.location.href='index.php?platformid=preprod&tech='+tech+'&sbm='+sbm+'&aSyncCuePointFallback='+aSyncCuePointFallback;
-	});
-	$( "#platform_prod_button" ).click(function() {
-		window.location.href='index.php?platformid=prod&tech='+tech+'&sbm='+sbm+'&aSyncCuePointFallback='+aSyncCuePointFallback;
-	});
-}
-//End platformid configuration - Triton Digital QA usage only.
-
-//Change tech buttons - Triton Digital QA usage only.
-function configureTechButtons()
-{
-	$('#tech_' + tech + '_button').button('toggle');
-	$( "#tech_flash_html5_button" ).click(function() {
-		window.location.href = 'index.php?platformid='+platformid+'&tech=flash_html5&sbm='+sbm+'&aSyncCuePointFallback='+aSyncCuePointFallback;
-	});
-	$( "#tech_html5_flash_button" ).click(function() {
-		window.location.href = 'index.php?platformid='+platformid+'&tech=html5_flash&sbm='+sbm+'&aSyncCuePointFallback='+aSyncCuePointFallback;
-	});
-	$( "#tech_flash_button" ).click(function() {
-		window.location.href = 'index.php?platformid='+platformid+'&tech=flash&sbm=false&aSyncCuePointFallback=false';
-	});
-	$( "#tech_html5_button" ).click(function() {
-		window.location.href = 'index.php?platformid='+platformid+'&tech=html5&sbm='+sbm+'&aSyncCuePointFallback='+aSyncCuePointFallback;
-	});
-}
-//End tech configuration - Triton Digital QA usage only.
-
-function configureSBMButtons()
-{
-	if( sbm )
-	{
-		$('#sbm_active_button').removeClass( "btn-default" ).addClass( "btn-primary active" );
-		$('#sbm_inactive_button').removeClass( "btn-primary active" ).addClass( "btn-default" );
-	} else {
-		$('#sbm_inactive_button').removeClass( "btn-default" ).addClass( "btn-primary active" );
-		$('#sbm_active_button').removeClass( "btn-primary active" ).addClass( "btn-default" );
-	}
-
-	if( aSyncCuePointFallback )
-	{
-		$('#np_active_button').removeClass( "btn-default" ).addClass( "btn-primary active" );
-		$('#np_inactive_button').removeClass( "btn-primary active" ).addClass( "btn-default" );
-	} else {
-		$('#np_inactive_button').removeClass( "btn-default" ).addClass( "btn-primary active" );
-		$('#np_active_button').removeClass( "btn-primary active" ).addClass( "btn-default" );
-	}
-
-	$('#sbm_active_button').click(function() {
-		window.location.href = 'index.php?platformid='+platformid+'&tech='+tech+'&sbm=true&aSyncCuePointFallback='+aSyncCuePointFallback;
-	});
-	$('#sbm_inactive_button').click(function() {
-		window.location.href = 'index.php?platformid='+platformid+'&tech='+tech+'&sbm=false&aSyncCuePointFallback='+aSyncCuePointFallback;
-	});
-
-	$('#np_active_button').click(function() {
-		window.location.href = 'index.php?platformid='+platformid+'&tech='+tech+'&sbm='+sbm+'&aSyncCuePointFallback=true';
-	});
-	$('#np_inactive_button').click(function() {
-		window.location.href = 'index.php?platformid='+platformid+'&tech='+tech+'&sbm='+sbm+'&aSyncCuePointFallback=false';
-	});
 }
 
 /**
@@ -249,65 +174,14 @@ function initControlsUi()
 		unMute();
 	});
 
-	$( "#skipAdButton" ).click(function() {
-		skipAd();
-	});
-
 	$( "#setVolume50Button" ).click(function() {
 		setVolume50();
-	});
-
-	$( "#playRunSpotAdButton" ).click(function() {
-		playRunSpotAd();
-	});
-
-	$( "#playRunSpotAdByIdButton" ).click(function() {
-		playRunSpotAdById();
-	});
-
-	$( "#playVastAdButton" ).click(function() {
-		playVastAd();
-	});
-
-	$( "#playVastAdByUrlButton" ).click(function() {
-		playVastAdByUrl();
-	});
-
-	$( "#playBloomAdButton" ).click(function() {
-		playBloomAd();
-	});
-
-	$( "#playMediaAdButton" ).click(function() {
-		playMediaAd();
 	});
 
 	$( "#getArtistButton" ).click(function() {
 		getArtistData();
 	});
 
-
-	//Buttons specific to User Registration / MediaPlayer / Selective Bitrate
-	$( "#loginButton" ).click(function() {
-
-		player.UserRegistration.emit('user-logged-in');
-
-		var data = { dob:'06/29/1980', gender:'male', zip:'00000' };
-		data.vid = $( "#userVid" ).val();
-		data.tdas = {};
-		data.tdas['user-tags'] = $( "#userTags" ).val();
-		data.tdas['user-tags-hash'] = $( "#userTagsHash" ).val();
-
-		player.UserRegistration.emit( 'user-details', data );
-	});
-	$( "#logoutButton" ).click(function() {
-		player.UserRegistration.emit('user-logged-out');
-	});
-	$( "#activateLowButton" ).click(function() {
-		player.MediaPlayer.activateLow();
-	});
-	$( "#deactivateLowButton" ).click(function() {
-		player.MediaPlayer.deactivateLow();
-	});
 
 }
 
@@ -393,11 +267,6 @@ function loadNpApi()
 	player.NowPlayingApi.load( { mount:$( "#songHistoryCallsignUser" ).val(), hd:isHd, numberToFetch:15 } );
 }
 
-function skipAd()
-{
-	player.skipAd();
-}
-
 function setVolume50()
 {
 	player.setVolume(.5);
@@ -463,76 +332,6 @@ function onPlayerReady()
 	});
 }
 
-/**
- * Event fired in case the loading of the companion ad returned an error.
- * @param e
- */
-function onCompanionLoadError(e)
-{
-	debug( 'tdplayer::onCompanionLoadError - containerId=' + e.containerId + ', adSpotUrl=' + e.adSpotUrl, true );
-}
-
-function onAdPlaybackStart( e )
-{
-	adPlaying = true;
-
-	setStatus( 'Advertising... Type=' + e.data.type );
-}
-
-function onAdPlaybackComplete( e )
-{
-	adPlaying = false;
-
-	$( "#td_adserver_bigbox" ).empty();
-	$( "#td_adserver_leaderboard" ).empty();
-
-	setStatus( 'Ready' );
-}
-
-function onAdCountdown( e )
-{
-	debug( 'Ad countdown : ' + e.data.countDown + ' second(s)');
-}
-
-function onVastProcessComplete( e )
-{
-	debug( 'Vast Process complete' );
-
-	var vastCompanions = e.data.companions;
-
-	//Load Vast Ad companion (bigbox & leaderbaord ads)
-	displayVastCompanionAds( vastCompanions );
-}
-function onVpaidAdCompanions( e )
-{
-	debug( 'Vpaid Ad Companions' );
-
-	//Load Vast Ad companion (bigbox & leaderbaord ads)
-	displayVastCompanionAds( e.companions );
-}
-function displayVastCompanionAds( vastCompanions )
-{
-	if ( vastCompanions && vastCompanions.length > 0 )
-	{
-		var bigboxIndex = -1;
-		var leaderboardIndex = -1;
-
-		$.each( vastCompanions, function( i, val ){
-			if( parseInt(val.width) == 300 && parseInt(val.height) == 250 ) {
-				bigboxIndex = i;
-			} else if( parseInt(val.width) == 728 && parseInt(val.height) == 90 ) {
-				leaderboardIndex = i;
-			}
-		});
-
-		if ( bigboxIndex > -1 )
-			companions.loadVASTCompanionAd( 'td_adserver_bigbox', vastCompanions[ bigboxIndex ] );
-
-		if ( leaderboardIndex > -1 )
-			companions.loadVASTCompanionAd( 'td_adserver_leaderboard', vastCompanions[ leaderboardIndex ] );
-	}
-}
-
 function onStreamStarted()
 {
 	livePlaying = true;
@@ -578,12 +377,6 @@ function onTrackCuePoint( e )
 
 	$( "#trackInfo" ).html( '<div class="now-playing__title">' + currentTrackCuePoint.cueTitle + '</div><div class="now-playing__artist">' + currentTrackCuePoint.artistName + '</div>' );
 
-}
-
-function onAdBreak( e )
-{
-	setStatus( 'Commercial break...' );
-	console.log(e);
 }
 
 function clearNpe()
@@ -716,90 +509,6 @@ function onPwaDataLoaded( e )
 	tableContent += "</table></p>";
 
 	$( "#asyncData").html( "<div>"+ tableContent + "</div>" );
-}
-
-function playRunSpotAd()
-{
-	detachAdListeners();
-	attachAdListeners();
-
-	player.stop();
-	player.skipAd();
-	player.playAd( 'vastAd', { sid:8441 } );
-}
-
-function playRunSpotAdById()
-{
-	if ( $( "#runSpotId" ).val() == '' ) return;
-
-	detachAdListeners();
-	attachAdListeners();
-
-	player.stop();
-	player.skipAd();
-	player.playAd( 'vastAd', { sid:$( "#runSpotId" ).val() } );
-}
-
-function playVastAd()
-{
-	detachAdListeners();
-	attachAdListeners();
-
-	player.stop();
-	player.skipAd();
-	player.playAd( 'vastAd', { url:'http://runspot4.tritondigital.com/RunSpotV4.svc/GetVASTAd?&StationID=8441&MediaFormat=21&RecordImpressionOnCall=false&AdMinimumDuration=0&AdMaximumDuration=900&AdLevelPlacement=1&AdCategory=1' } );
-}
-
-function playVastAdByUrl()
-{
-	if ( $( "#vastAdUrl" ).val() == '' ) return;
-
-	detachAdListeners();
-	attachAdListeners();
-
-	player.stop();
-	player.skipAd();
-	player.playAd( 'vastAd', { url:$( "#vastAdUrl" ).val() } );
-}
-
-function playBloomAd()
-{
-	detachAdListeners();
-	attachAdListeners();
-
-	player.stop();
-	player.skipAd();
-	player.playAd( 'bloom', { id: 4974 } );
-}
-
-function playMediaAd()
-{
-	detachAdListeners();
-	attachAdListeners();
-
-	player.stop();
-	player.skipAd();
-	//player.playAd( 'mediaAd', { mediaUrl: 'http://cdnp.tremormedia.com/video/acudeo/Carrot_400x300_500kb.flv', linkUrl:'http://www.google.fr/' } );
-	player.playAd( 'mediaAd', { mediaUrl: 'http://vjs.zencdn.net/v/oceans.mp4', linkUrl:'http://www.google.fr/' } );
-}
-
-function attachAdListeners()
-{
-	player.addEventListener( 'ad-playback-start', onAdPlaybackStart );
-	player.addEventListener( 'ad-playback-error', onAdPlaybackComplete );
-	player.addEventListener( 'ad-playback-complete', onAdPlaybackComplete );
-	player.addEventListener( 'ad-countdown', onAdCountdown );
-	player.addEventListener( 'vast-process-complete', onVastProcessComplete );
-	player.addEventListener( 'vpaid-ad-companions', onVpaidAdCompanions );
-}
-function detachAdListeners()
-{
-	player.removeEventListener( 'ad-playback-start', onAdPlaybackStart );
-	player.removeEventListener( 'ad-playback-error', onAdPlaybackComplete );
-	player.removeEventListener( 'ad-playback-complete', onAdPlaybackComplete );
-	player.removeEventListener( 'ad-countdown', onAdCountdown );
-	player.removeEventListener( 'vast-process-complete', onVastProcessComplete );
-	player.removeEventListener( 'vpaid-ad-companions', onVpaidAdCompanions );
 }
 
 var artist;
