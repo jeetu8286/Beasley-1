@@ -24,6 +24,11 @@ class GigyaSessionTest extends \WP_UnitTestCase {
 		update_option( 'member_query_settings', $settings, true );
 	}
 
+	function init_cookie( $data ) {
+		$text = json_encode( $data );
+		$_COOKIE['gigya_profile'] = base64_encode( $text );
+	}
+
 	function tearDown() {
 		delete_option( 'member_query_settings' );
 	}
@@ -34,7 +39,9 @@ class GigyaSessionTest extends \WP_UnitTestCase {
 	}
 
 	function test_it_can_parse_valid_cookie_data() {
-		$actual = $this->session->deserialize( '{"a":1}' );
+		$text = json_encode( array( 'a' => 1 ) );
+		$text = base64_encode( $text );
+		$actual = $this->session->deserialize( $text );
 		$this->assertEquals( array( 'a' => 1 ), $actual );
 	}
 
@@ -50,7 +57,7 @@ class GigyaSessionTest extends \WP_UnitTestCase {
 	}
 
 	function test_it_can_load_raw_cookie_data_if_present() {
-		$_COOKIE['gigya_profile'] = '{"UID":"foo"}';
+		$this->init_cookie( array( 'UID' => 'foo' ) );
 		$this->session->load();
 		$actual = $this->session->cookie_value;
 		$this->assertEquals( 'foo', $actual['UID'] );
@@ -85,18 +92,12 @@ class GigyaSessionTest extends \WP_UnitTestCase {
 	}
 
 	function test_it_knows_user_id_if_logged_in() {
-		$_COOKIE['gigya_profile'] = json_encode(
-			array( 'UID' => 'foo' )
-		);
-
+		$this->init_cookie( array( 'UID' => 'foo' ) );
 		$this->assertEquals( 'foo', $this->session->get_user_id() );
 	}
 
 	function test_it_knows_user_age_from_cookie() {
-		$_COOKIE['gigya_profile'] = json_encode(
-			array( 'UID' => 'foo', 'age' => 25 )
-		);
-
+		$this->init_cookie( array( 'UID' => 'foo', 'age' => 25 ) );
 		$this->assertEquals( 25, $this->session->get_user_field( 'age' ) );
 	}
 
@@ -106,10 +107,7 @@ class GigyaSessionTest extends \WP_UnitTestCase {
 	}
 
 	function test_api_helper_knows_if_user_is_logged_in() {
-		$_COOKIE['gigya_profile'] = json_encode(
-			array( 'UID' => 'foo', 'age' => 25 )
-		);
-
+		$this->init_cookie( array( 'UID' => 'foo', 'age' => 25 ) );
 		$this->assertTrue( is_gigya_user_logged_in() );
 	}
 
@@ -118,18 +116,12 @@ class GigyaSessionTest extends \WP_UnitTestCase {
 	}
 
 	function test_api_helper_knows_logged_in_users_id() {
-		$_COOKIE['gigya_profile'] = json_encode(
-			array( 'UID' => 'foo', 'age' => 25 )
-		);
-
+		$this->init_cookie( array( 'UID' => 'foo', 'age' => 25 ) );
 		$this->assertEquals( 'foo', get_gigya_user_id() );
 	}
 
 	function test_api_helper_knows_logged_in_users_age() {
-		$_COOKIE['gigya_profile'] = json_encode(
-			array( 'UID' => 'foo', 'age' => 25 )
-		);
-
+		$this->init_cookie( array( 'UID' => 'foo', 'age' => 25 ) );
 		$this->assertEquals( 25, get_gigya_user_field( 'age' ) );
 	}
 
@@ -140,9 +132,7 @@ class GigyaSessionTest extends \WP_UnitTestCase {
 
 	function test_api_helper_throws_exception_when_fetching_invalid_user_profile() {
 		$this->init_gigya_keys();
-		$_COOKIE['gigya_profile'] = json_encode(
-			array( 'UID' => 'foo', 'age' => 25 )
-		);
+		$this->init_cookie( array( 'UID' => 'foo', 'age' => 25 ) );
 
 		$this->setExpectedException( 'Exception' );
 		$this->session->get_user_profile();
@@ -150,9 +140,7 @@ class GigyaSessionTest extends \WP_UnitTestCase {
 
 	function test_api_helper_can_fetch_full_gigya_profile() {
 		$this->init_gigya_keys();
-		$_COOKIE['gigya_profile'] = json_encode(
-			array( 'UID' => '37F5E08F-74D3-40FC-8F4B-296AD29DACBB', 'age' => 25 )
-		);
+		$this->init_cookie( array( 'UID' => '37F5E08F-74D3-40FC-8F4B-296AD29DACBB', 'age' => 25 ) );
 
 		$profile = $this->session->get_user_profile();
 		$this->assertNotEmpty( $profile['country'] );

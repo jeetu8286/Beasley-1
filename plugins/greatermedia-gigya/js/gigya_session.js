@@ -63,6 +63,9 @@
 				var cookieValue;
 
 				try {
+					if (atob) {
+						cookieText = atob(cookieText);
+					}
 					cookieValue = JSON.parse(cookieText);
 				} finally {
 					if (!this.isObject(cookieValue)) {

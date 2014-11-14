@@ -99,6 +99,7 @@ class GigyaSession {
 	}
 
 	public function deserialize( $cookie_text ) {
+		$cookie_text  = base64_decode( $cookie_text );
 		$cookie_value = json_decode( $cookie_text, true );
 
 		if ( ! is_array( $cookie_value ) ) {
