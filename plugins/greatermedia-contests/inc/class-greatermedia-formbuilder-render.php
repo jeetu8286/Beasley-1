@@ -527,7 +527,11 @@ class GreaterMediaFormbuilderRender {
 
 	}
 
-	protected static function render_checkboxes( $post_id, stdClass $field ) {
+	protected static function render_radio( $post_id, stdClass $field ) {
+		return self::render_checkboxes( $post_id, $field, 'radio' );
+	}
+
+	protected static function render_checkboxes( $post_id, stdClass $field, $input_type = 'checkbox' ) {
 
 		$html = '';
 
@@ -538,7 +542,7 @@ class GreaterMediaFormbuilderRender {
 		if ( isset( $field->field_options->options ) && is_array( $field->field_options->options ) ) {
 			foreach ( $field->field_options->options as $field_option_index => $field_option_data ) {
 
-				$html .= self::render_single_checkbox( $field->cid, $field_option_index, $field_option_data );
+				$html .= self::render_single_checkbox( $field->cid, $field_option_index, $field_option_data, $input_type );
 
 			}
 		}
@@ -551,7 +555,7 @@ class GreaterMediaFormbuilderRender {
 			$other_option_data->checked = false;
 			$other_option_data->other   = true;
 
-			$html .= self::render_single_checkbox( $field->cid, 'other', $other_option_data );
+			$html .= self::render_single_checkbox( $field->cid, 'other', $other_option_data, $input_type );
 
 		}
 
@@ -560,7 +564,6 @@ class GreaterMediaFormbuilderRender {
 		$html .= '</fieldset>';
 
 		return $html;
-
 
 	}
 
@@ -635,10 +638,15 @@ class GreaterMediaFormbuilderRender {
 	 * @param string     $cid
 	 * @param int|string $field_option_index
 	 * @param stdClass   $field_option_data
+	 * @param string     $input_type 'checkbox' or 'radio'
 	 *
 	 * @return string
 	 */
-	protected static function render_single_checkbox( $cid, $field_option_index, stdClass $field_option_data ) {
+	protected static function render_single_checkbox( $cid, $field_option_index, stdClass $field_option_data, $input_type ) {
+
+		if ( 'checkbox' !== $input_type && 'radio' !== $input_type ) {
+			throw new InvalidArgumentException( 'Input type must be checkbox or radio' );
+		}
 
 		$html = '';
 
@@ -647,7 +655,7 @@ class GreaterMediaFormbuilderRender {
 		$input_tag_attributes = array(
 			'id'    => $field_id,
 			'name'  => 'form_field_' . $cid . '[]',
-			'type'  => 'checkbox',
+			'type'  => $input_type,
 			'value' => $field_option_index,
 		);
 
