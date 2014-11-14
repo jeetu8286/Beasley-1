@@ -1,10 +1,10 @@
-/*! Greater Media - v0.1.0 - 2014-11-13
+/*! Greater Media - v0.1.0 - 2014-11-14
  * http://greatermedia.com
  * Copyright (c) 2014; * Licensed GPLv2+ */
 (function() {
 	'use strict';
 
-	var headroom, livePlayerFix, livePlayerInit, livePlayerLocation,
+	var headroom, livePlayerFix, livePlayerInit, livePlayerLocation, livePlayerScroll,
 
 		body = document.querySelector( 'body' ),
 		mobileNavButton = document.querySelector( '.mobile-nav__toggle' ),
@@ -16,7 +16,8 @@
 		wpAdminHeight = 32,
 		onAir = document.getElementById( 'on-air' ),
 		nowPlaying = document.getElementById( 'now-playing' ),
-		liveLinks = document.getElementById( 'live-links' );
+		liveLinks = document.getElementById( 'live-links'),
+		h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
 
 	/**
 	 * adds a class to the live player that causes it to become fixed to the top of the window while also removing the
@@ -45,6 +46,18 @@
 		}
 		livePlayer.classList.remove( 'live-player--fixed' );
 		livePlayer.classList.add( 'live-player--init' );
+		livePlayer.style.height = h - headerHeight - wpAdminHeight + 'px';
+	};
+
+	livePlayerScroll = function() {
+		function lpScroll() {
+			if ( header.classList.contains('header--unpinned') || header.classList.contains('headroom--top')) {
+				livePlayer.style.height = h - wpAdminHeight + 'px';
+			} else {
+				livePlayer.style.height = '100%';
+			}
+		}
+		window.addEventListener( 'scroll', lpScroll, false );
 	};
 
 	/**
@@ -53,20 +66,22 @@
 	 * @type {Window.Headroom}
 	 */
 	headroom = new Headroom( header, {
-		"offset": headerHeight,
-		"tolerance": {
-			"up": 0,
-			"down": 0
+		offset: headerHeight,
+		tolerance : {
+			down : 0,
+			up : headerHeight
 		},
-		"classes": {
+		classes: {
 			"pinned": "header--pinned",
 			"unpinned": "header--unpinned"
 		},
 		onTop : function() {
 			livePlayerInit();
+			livePlayerScroll();
 		},
 		onNotTop : function() {
 			livePlayerFix();
+			livePlayerScroll();
 		}
 	});
 
