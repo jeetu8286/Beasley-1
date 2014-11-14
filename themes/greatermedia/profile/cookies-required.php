@@ -6,7 +6,7 @@
 
 			<section class="content">
 
-				<h2>Please wait while we log you out ...</h2>
+				<h2>Cookies are required on this site</h2>
 
 				<div id="profile-content">
 				</div>

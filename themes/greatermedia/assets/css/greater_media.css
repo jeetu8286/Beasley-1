@@ -2099,7 +2099,7 @@ blockquote p {
   border: 1px solid #d22228;
   font-family: "Open Sans", sans-serif;
   font-size: 0.88889em;
-  color: #ffffff !important;
+  color: #d22228 !important;
   text-transform: uppercase;
   cursor: pointer;
   margin: 0 .5em;
@@ -2112,7 +2112,7 @@ blockquote p {
   .live-stream__now-playing--btn:hover, .live-stream__now-playing--btn:focus {
     background-color: transparent;
     border-color: #d22228;
-    color: #ffffff; }
+    color: #d22228; }
   .live-stream__now-playing--btn:last-of-type {
     margin-right: 0; }
 
@@ -2131,7 +2131,7 @@ blockquote p {
   border: 1px solid #d22228;
   font-family: "Open Sans", sans-serif;
   font-size: 0.88889em;
-  color: #ffffff !important;
+  color: #d22228 !important;
   text-transform: uppercase;
   cursor: pointer;
   margin: 0 .5em;
@@ -2144,7 +2144,7 @@ blockquote p {
   .live-stream__resume--btn:hover, .live-stream__resume--btn:focus {
     background-color: transparent;
     border-color: #d22228;
-    color: #ffffff; }
+    color: #d22228; }
   .live-stream__resume--btn:last-of-type {
     margin-right: 0; }
 
@@ -2173,7 +2173,7 @@ blockquote p {
   -webkit-font-smoothing: antialiased;
   moz-osx-font-smoothing: grayscale;
   text-rendering: auto;
-  color: #ffffff;
+  color: #d22228;
   cursor: pointer; }
 
 .live-stream__btn--play, .live-stream__btn--resume, .live-stream__btn--pause {
@@ -2202,6 +2202,9 @@ blockquote p {
   transform: translate(-50%, -50%);
   font-family: "gmr-icons" !important;
   content: "\e60b" !important; }
+
+.live-stream__player--container {
+  height: 0; }
 
 .live-stream--podcast__progress {
   width: 85%;

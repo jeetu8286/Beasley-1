@@ -15,54 +15,39 @@
 		playButton = $('#playButton'),
 		pauseButton = $('#pauseButton');
 
-	// function to toggle a class when the player button is clicked
-	function togglePlayer(){
-		$toggleButton.click(function(){
-			$body.toggleClass('gmlp-open');
-		});
-	}
-
-	$document.ready(function($){
-		togglePlayer();
-	});
 
 	playButton.on('click', function(event) {
 		event.preventDefault();
 		// add gif file for testing
-		$('#trackInfo').html('<div><img src="http://coolchaser-static.coolchaser.com/images/themes/t/188000-i175.photobucket.com-albums-w144-XslayerXpac-equalizer.gif" alt=""></div>');
 		// call pjax to update container
 		if( !gmlp.logged_in ) {
 			$(document).pjax('a:not(.ab-item)', 'section.content', {'fragment': 'section.content', 'maxCacheLength': 500, 'timeout' : 5000});
 		}
-		playButton.hide();
-		pauseButton.show();
+
 	});
 
 	pauseButton.on('click', function(event) {
 		event.preventDefault();
-		// add gif file for testing
-		$('#trackInfo').html('');
-		pauseButton.hide();
-		playButton.show();
 	});
-	
-	
-/*
-    $.pjax({
-      area: 'main.main',
-      scope: {
-        '/': ['/', '!/wp-login.php', '!/wp-admin/']
-      },
-      load: {
-        head: 'base, meta, link',
-        css: true,
-        script: true
-      },
-      cache: { click: true, submit: false, popstate: true },
-      server: { query: null },
-      speedcheck: true
-    });
-    
-    $(document).bind( 'pjax:ready' );
-    */
+
+
+	/*
+	 $.pjax({
+	 area: 'main.main',
+	 scope: {
+	 '/': ['/', '!/wp-login.php', '!/wp-admin/']
+	 },
+	 load: {
+	 head: 'base, meta, link',
+	 css: true,
+	 script: true
+	 },
+	 cache: { click: true, submit: false, popstate: true },
+	 server: { query: null },
+	 speedcheck: true
+	 });
+
+	 $(document).bind( 'pjax:ready' );
+	 */
+
 } )(jQuery,window);
