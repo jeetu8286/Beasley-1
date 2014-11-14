@@ -42,7 +42,7 @@ class GigyaSession {
 		$this->load();
 
 		if ( ! $this->is_logged_in() ) {
-			throw new \Exception( 'Cannot Fetch Gigya Profile: not logged in' );
+			throw new \Exception( 'Cannot Fetch Gigya User Profile: not logged in' );
 		}
 
 		$user_id = $this->get_user_id();
@@ -62,7 +62,7 @@ class GigyaSession {
 			}
 		} else {
 			throw new \Exception(
-				"Failed to get User Profile: {$user_id} - " . $response->getErrorMessage()
+				"Failed to get Gigya User Profile: {$user_id} - " . $response->getErrorMessage()
 			);
 		}
 	}
@@ -85,7 +85,7 @@ class GigyaSession {
 		$cookie_name = $this->get_cookie_name();
 
 		if ( array_key_exists( $cookie_name, $_COOKIE ) ) {
-			$cookie_text = $_COOKIE[ $cookie_name ];
+			$cookie_text = wp_unslash( $_COOKIE[ $cookie_name ] );
 		} else {
 			$cookie_text = '{}';
 		}
