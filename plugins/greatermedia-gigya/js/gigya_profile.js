@@ -76,7 +76,12 @@
 		},
 
 		serialize: function(cookieValue) {
-			return JSON.stringify(cookieValue);
+			var cookieText = JSON.stringify(cookieValue);
+			if (btoa) {
+				return btoa(cookieText);
+			} else {
+				return cookieText;
+			}
 		},
 
 		deserialize: function(cookieText) {
@@ -84,7 +89,12 @@
 				var cookieValue;
 
 				try {
+					if (atob) {
+						cookieText = atob(cookieText);
+					}
 					cookieValue = JSON.parse(cookieText);
+				} catch (err) {
+					// ignore
 				} finally {
 					if (!this.isObject(cookieValue)) {
 						cookieValue = {};
