@@ -24,38 +24,12 @@
 				return;
 			}
 
-			var cookieText  = Cookies.get(this.getCookieName());
+			var cookieText   = Cookies.get(this.getCookieName());
 			this.cookieValue = this.deserialize(cookieText);
-		},
-
-		getCookieOptions: function(persistent) {
-			return {
-				path    : this.getCookiePath(),
-				domain  : this.getCookieDomain(),
-				secure  : this.isSecurePage(),
-				expires : this.getCookieTimeout(persistent)
-			};
 		},
 
 		getCookieName: function() {
 			return 'gigya_profile';
-		},
-
-		getCookiePath: function() {
-			return '/';
-		},
-
-		getCookieDomain: function() {
-			return location.hostname;
-		},
-
-		getCookieTimeout: function(persistent) {
-			// TODO: must mirror gigya sessions
-			if (persistent) {
-				return 365 * 24 * 60 * 60; // 1 year
-			} else {
-				return 30 * 60; // 30 minutes
-			}
 		},
 
 		deserialize: function(cookieText) {
@@ -67,6 +41,8 @@
 						cookieText = atob(cookieText);
 					}
 					cookieValue = JSON.parse(cookieText);
+				} catch (err) {
+					// ignore
 				} finally {
 					if (!this.isObject(cookieValue)) {
 						cookieValue = {};
@@ -81,10 +57,6 @@
 
 		isObject: function(obj) {
 			return (!!obj) && (obj.constructor === Object);
-		},
-
-		isSecurePage: function() {
-			return location.protocol === 'https:';
 		},
 
 	};
