@@ -227,6 +227,11 @@ class GreaterMediaFormbuilderRender {
 				'size'      => 1,
 			);
 
+			$tags['option'] = array(
+				'value'    => 1,
+				'selected' => 1,
+			);
+
 			$tags['label'] = array(
 				'for'   => 1,
 				'form'  => 1,
@@ -524,6 +529,49 @@ class GreaterMediaFormbuilderRender {
 		}
 		$html .= ' >';
 		$html .= '</textarea>';
+
+		$html .= self::render_description( $field );
+
+		return $html;
+
+	}
+
+	protected static function render_dropdown( $post_id, stdClass $field ) {
+
+		$html = '';
+
+		$field_id = 'form_field_' . $field->cid;
+
+		$select_tag_attributes = array(
+			'id'   => $field_id,
+			'name' => $field_id,
+		);
+
+		$html .= self::render_label( $field );
+
+		if ( isset( $field->required ) && $field->required ) {
+			$select_tag_attributes['required'] = 'required';
+		}
+
+		// Give the theme a chance to alter the attributes for the input field
+		$select_tag_attributes = apply_filters( 'gm_form_select_attrs', $select_tag_attributes );
+		$select_tag_attributes = apply_filters( 'gm_form_input_attrs', $select_tag_attributes );
+
+		$html .= '<select ';
+		foreach ( $select_tag_attributes as $attribute => $value ) {
+			$html .= wp_kses_data( $attribute ) . '="' . esc_attr( $value ) . '" ';
+		}
+		$html .= '>';
+
+		if(isset($field->field_options->include_blank_option) && $field->field_options->include_blank_option) {
+			$html .= '<option value=""></option>';
+		}
+
+		foreach ( $field->field_options->options as $option_index => $option_data ) {
+			$html .= '<option value="' . esc_attr( $option_data->label ) . '" ' . selected( 1, $option_data->checked, false ) . '>' . wp_kses_data( $option_data->label ) . '</option>';
+		}
+
+		$html .= '</select>';
 
 		$html .= self::render_description( $field );
 
