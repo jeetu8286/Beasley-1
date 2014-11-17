@@ -108,6 +108,16 @@ function gmrs_add_show_episode() {
 			break;
 	}
 
+	$interval = $data['end_time'] - $data['start_time'];
+	$episode = gmrs_get_current_show_episode( $start_date_gmt );
+	if ( $episode ) {
+		$episode_start_date = strtotime( $episode->post_date_gmt );
+		$episode_end_date = $episode_start_date + $episode->menu_order;
+		if ( $start_date_gmt <= $episode_start_date || $start_date_gmt < $episode_end_date ) {
+			wp_die( 'Selected slot is already taken. Please, find another slot.', '', array( 'back_link' => true ) );
+		}
+	}
+
 	$inserted = $iteration = 0;
 	while ( $iteration < $iterations ) {
 		if ( $iteration > 0 ) {
@@ -118,7 +128,7 @@ function gmrs_add_show_episode() {
 		if ( in_array( date( 'N', $start_date ), $skip_daysofweek ) ) {
 			continue;
 		}
-		
+
 		$inserted += wp_insert_post( array(
 			'post_title'    => $show->post_title,
 			'post_type'     => ShowsCPT::EPISODE_CPT,
@@ -127,7 +137,7 @@ function gmrs_add_show_episode() {
 			'post_date_gmt' => date( DATE_ISO8601, $start_date_gmt ),
 			'post_parent'   => $show->ID,
 			'ping_status'   => $data['repeat'] ? 1 : -1,
-			'menu_order'    => $data['end_time'] - $data['start_time'],
+			'menu_order'    => $interval,
 		) );
 
 		$iteration++;
@@ -180,7 +190,10 @@ function gmrs_render_episode_schedule_page() {
 		'date'       => strtotime( 'tomorrow' ),
 		'repeat'     => 1,
 	) );
-	$active['date'] = date( 'M j, Y', $active['date'] );
+	
+	$active['date'] = $active['date'] >= time() 
+		? date( 'M j, Y', $active['date'] )
+		: date( 'M j, Y', time() );
 	
 	$episodes = gmrs_get_scheduled_episodes();
 	$precision = 0.5; // 1 - each hour, 0.5 - each 30 mins, 0.25 - each 15 mins
@@ -407,21 +420,29 @@ function gmrs_show_color( $show_id, $opacity ) {
 /**
  * Returns current show episode.
  *
+ * @param int $time Optional timestamp which determines current time in the system. Could be used to get an episode before another one.
  * @return WP_Post|null The show episode object on success, otherwise NULL.
  */
-function gmrs_get_current_show_episode() {
+function gmrs_get_current_show_episode( $time = false ) {
+	if ( ! $time ) {
+		$time = time();
+	}
+	
 	$query = new WP_Query();
 	$episodes = $query->query( array(
 		'post_type'           => ShowsCPT::EPISODE_CPT,
 		'post_status'         => 'any',
 		'posts_per_page'      => 1,
 		'ignore_sticky_posts' => true,
+		'no_found_rows'       => true,
 		'orderby'             => 'date',
 		'order'               => 'DESC',
 		'date_query'          => array(
 			array(
-				'before'    => current_time( 'mysql' ),
+				'before'    => date( DATE_ISO8601, $time ),
+				'after'     => date( 'Y-m-d 00:00:00', $time ),
 				'inclusive' => true,
+				'column'    => 'post_date_gmt'
 			),
 		),
 	) );
