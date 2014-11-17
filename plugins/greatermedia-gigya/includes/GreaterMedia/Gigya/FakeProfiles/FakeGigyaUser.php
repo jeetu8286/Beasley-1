@@ -5,6 +5,7 @@ namespace GreaterMedia\Gigya\FakeProfiles;
 class FakeGigyaUser {
 
 	public $properties = array();
+	public $response;
 
 	function __construct( $properties = array() ) {
 		$this->properties = $properties;
@@ -97,7 +98,7 @@ class FakeGigyaUser {
 		 */
 		$gender = $this->random_gender( $faker );
 
-		$this->properties['email']     = $faker->email;
+		$this->properties['email']     = 'foo';//$faker->email;
 		$this->properties['firstName'] = $faker->firstName( $gender );
 		$this->properties['lastName']  = $faker->lastName;
 
@@ -195,6 +196,7 @@ class FakeGigyaUser {
 		$request->setParam( 'profile', json_encode( $profile_properties  ) );
 
 		$response = $request->send();
+		$this->response = $response;
 
 		if ( $response->getErrorCode() !== 0 ) {
 			error_log( $response->getResponseText() );
@@ -210,13 +212,10 @@ class FakeGigyaUser {
 		$this->properties['createdTimestamp']     = $json['createdTimestamp'];
 		$this->properties['lastLoginTimestamp']   = $json['lastLoginTimestamp'];
 		$this->properties['lastUpdatedTimestamp'] = $json['lastUpdatedTimestamp'];
-		$this->properties['registeredTimestamp']  = $json['registerdTimestamp'];
+		$this->properties['registeredTimestamp']  = $json['registeredTimestamp'];
 
-		\WP_CLI::success(
-			"Created User( {$this->properties['email']} ): {$json['UID']}"
-		);
-
-		$this->create_entries();
+		// Not syncing to DS.Store for profile data any more
+		//$this->create_entries();
 	}
 
 	function create_entries() {
@@ -426,8 +425,12 @@ class FakeGigyaUser {
 		);
 	}
 
-	function to_json() {
+	public function to_json() {
 		return json_encode( $this->properties );
+	}
+
+	public function get( $property ) {
+		return $this->properties[ $property ];
 	}
 
 	public function request_for( $method ) {
