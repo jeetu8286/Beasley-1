@@ -46,8 +46,6 @@ class GMLP_Settings {
 	protected function _init() {
 		add_action( 'admin_menu', array( $this, 'add_settings_page' ) );
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
-		add_action( 'gmlp_location', array($this, 'player_location_class') );
-		add_filter( 'body_class', array( $this, 'player_location_body_class' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 	}
 
@@ -109,21 +107,9 @@ class GMLP_Settings {
 	 */
 	public function render_gmlp_settings_section() {
 		$radio_callsign = get_option( 'gmlp_radio_callsign', '' );
-		$player_location = get_option( 'gmlp_player_location', '' );
 		?>
 
 		<h4><?php _e( 'Live Player API Information', 'gmliveplayer' ); ?></h4>
-
-		<p>
-			<label for="gmlp_player_location" class="gmlp-admin-label"><?php _e( 'Player Location', 'gmliveplayer' ); ?></label>
-			<select name="gmlp_player_location" id="gmlp_player_location">
-				<option value="Off" <?php selected( $player_location, 'off' ); ?>><?php _e( 'Off', 'gmliveplayer' )?></option>
-				<option value="top" <?php selected( $player_location, 'top' ); ?>><?php _e( 'Top', 'gmliveplayer' )?></option>
-				<option value="bottom" <?php selected( $player_location, 'bottom' ); ?>><?php _e( 'Bottom', 'gmliveplayer' )?></option>
-				<option value="right" <?php selected( $player_location, 'right' ); ?>><?php _e( 'Right', 'gmliveplayer' )?></option>
-				<option value="left" <?php selected( $player_location, 'left' ); ?>><?php _e( 'Left', 'gmliveplayer' )?></option>
-			</select>
-		</p>
 
 		<p>
 			<label for="gmlp_radio_callsign" class="gmlp-admin-label"><?php _e( 'Radio Callsign', 'gmliveplayer' ); ?></label>
@@ -136,41 +122,6 @@ class GMLP_Settings {
 	<?php
 	}
 
-	/**
-	 * Call the player location from the settings page
-	 */
-	public function player_location_class() {
-
-		$player_location = get_option( 'gmlp_player_location', '' );
-
-		echo esc_attr( $player_location);
-
-	}
-
-	/**
-	 * Add a new body class based on the chosen location of the player
-	 *
-	 * @param $classes
-	 *
-	 * @return array
-	 */
-	public function player_location_body_class( $classes ) {
-
-		$location = get_option( 'gmlp_player_location', '' );
-
-		if ( $location == 'top' ) {
-			$classes[] = 'gmlp-top gmlp-horizontal';
-		} elseif ( $location == 'bottom' ) {
-			$classes[] = 'gmlp-bottom gmlp-horizontal';
-		} elseif ( $location == 'right' ) {
-			$classes[] = 'gmlp-right gmlp-vertical';
-		} elseif ( $location == 'left' ) {
-			$classes[] = 'gmlp-left gmlp-vertical';
-		}
-
-		return $classes;
-
-	}
 
 	/**
 	 * Enqueue scripts
