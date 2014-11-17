@@ -81,7 +81,8 @@ class SyndicationCPT {
 			'subscription_default_terms-',
 			'syndication_import',
 			'syndication_old_data',
-			'syndication_old_name'
+			'syndication_old_name',
+			'syndication_attachment_old_id'
 		);
 
 		foreach( $hidden_keys as $hidden_key ) {
@@ -410,28 +411,26 @@ class SyndicationCPT {
 		wp_nonce_field( 'save_subscription_status', 'subscription_custom_nonce' );
 
 		foreach( $allterms as $taxonomy => $terms ) {
-			if( taxonomy_exists( $taxonomy ) ) {
-				// Use get_post_meta to retrieve an existing value from the database.
-				$filter_terms = get_post_meta( $post->ID, 'subscription_filter_terms-' . $taxonomy , true );
-				$filter_terms = explode( ',', $filter_terms );
+			// Use get_post_meta to retrieve an existing value from the database.
+			$filter_terms = get_post_meta( $post->ID, 'subscription_filter_terms-' . $taxonomy , true );
+			$filter_terms = explode( ',', $filter_terms );
 
-				// get taxonomy label
-				$taxonomy_obj = get_taxonomies( array( 'name' => $taxonomy ), 'object' );
-				$taxonomy_name = $taxonomy_obj[$taxonomy]->label;
+			// get taxonomy label
+			$taxonomy_obj = get_taxonomies( array( 'name' => $taxonomy ), 'object' );
+			$taxonomy_name = $taxonomy_obj[$taxonomy]->label;
 
-				// Display the form, using the current value.
-				echo '<p><label for="subscription_filter_terms">';
-				esc_html_e( $taxonomy_name, 'greatermedia' );
-				echo '</label> ';
+			// Display the form, using the current value.
+			echo '<p><label for="subscription_filter_terms">';
+			esc_html_e( $taxonomy_name, 'greatermedia' );
+			echo '</label> ';
 
-				echo '<select multiple name="subscription_filter_terms-' . $taxonomy . '[]" class="subscription_terms" style="width: 300px;">';
-				foreach( $terms as $single_term ) {
-					echo '<option', in_array( $single_term->term_id, $filter_terms) ? ' selected="selected"' : ''
-					, ' value="' . intval( $single_term->term_id ) .'">' . esc_attr( $single_term->name ) . '</option>';
-				}
-
-				echo '</select></p>';
+			echo '<select multiple name="subscription_filter_terms-' . $taxonomy . '[]" class="subscription_terms" style="width: 300px;">';
+			foreach( $terms as $single_term ) {
+				echo '<option', in_array( $single_term->term_id, $filter_terms) ? ' selected="selected"' : ''
+				, ' value="' . intval( $single_term->term_id ) .'">' . esc_attr( $single_term->name ) . '</option>';
 			}
+
+			echo '</select></p>';
 		}
 	}
 
