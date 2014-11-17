@@ -620,6 +620,14 @@ class GreaterMediaFormbuilderRender {
 
 	}
 
+	/**
+	 * Render a date input
+	 *
+	 * @param int      $post_id
+	 * @param stdClass $field
+	 *
+	 * @return string html
+	 */
 	protected static function render_date( $post_id, stdClass $field ) {
 		return self::render_input_tag( 'date', $post_id, $field );
 	}
@@ -636,6 +644,30 @@ class GreaterMediaFormbuilderRender {
 		return self::render_input_tag( 'time', $post_id, $field );
 	}
 
+	/**
+	 * Render a website (url) input
+	 *
+	 * @param int      $post_id
+	 * @param stdClass $field
+	 *
+	 * @return string html
+	 */
+	protected static function render_website( $post_id, stdClass $field ) {
+		return self::render_input_tag( 'url', $post_id, $field );
+	}
+
+	/**
+	 * Render an email input
+	 *
+	 * @param int      $post_id
+	 * @param stdClass $field
+	 *
+	 * @return string html
+	 */
+	protected static function render_email( $post_id, stdClass $field ) {
+		return self::render_input_tag( 'email', $post_id, $field );
+	}
+	
 	/**
 	 * Generic input field renderer (used by the more specific rendering functions)
 	 *
