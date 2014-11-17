@@ -118,7 +118,7 @@ class GreaterMediaContests {
 
 		$seeded = get_option( 'contest_type_seeded', false );
 
-		if ( true === $seeded ) {
+		if ( $seeded ) {
 			return;
 		}
 
@@ -144,7 +144,7 @@ class GreaterMediaContests {
 		if ( class_exists( 'GreaterMediaAdminNotifier' ) ) {
 			GreaterMediaAdminNotifier::message( __( 'Seeded "Contest Types" taxonomy.', 'greatermedia_contests' ) );
 		}
-
+g
 	}
 
 	public function admin_enqueue_scripts() {
