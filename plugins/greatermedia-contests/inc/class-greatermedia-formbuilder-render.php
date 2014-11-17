@@ -672,11 +672,16 @@ class GreaterMediaFormbuilderRender {
 		$input_tag_attributes = apply_filters( 'gm_form_' . $type . '_input_attrs', $input_tag_attributes );
 		$input_tag_attributes = apply_filters( 'gm_form_input_attrs', $input_tag_attributes );
 
-		$html .= '<input ';
+		$input_tag_html = '<input ';
 		foreach ( $input_tag_attributes as $attribute => $value ) {
-			$html .= wp_kses_data( $attribute ) . '="' . esc_attr( $value ) . '" ';
+			$input_tag_html .= wp_kses_data( $attribute ) . '="' . esc_attr( $value ) . '" ';
 		}
-		$html .= ' />';
+		$input_tag_html .= ' />';
+
+		// Call filters in case certain input types need extra markup (like 'units' following a number field)
+		$input_tag_html = apply_filters( 'gm_form_' . $type . '_input_tag', $input_tag_html, $post_id, $field );
+		$input_tag_html = apply_filters( 'gm_form_input_tag', $input_tag_html, $post_id, $field );
+		$html .= $input_tag_html;
 
 		$html .= self::render_description( $field );
 
@@ -708,7 +713,20 @@ class GreaterMediaFormbuilderRender {
 			$special_attributes['step'] = 1;
 		}
 
-		return self::render_input_tag( 'number', $post_id, $field, $special_attributes );
+		// Set up a filter to render units
+		add_filter(
+			'gm_form_number_input_tag',
+			function ( $html, $post_id, $field ) {
+				if ( isset( $field->field_options->units ) ) {
+					return $html .= '<span class="units">' . wp_kses_data( $field->field_options->units ) . '</span>';
+				}
+			},
+			10, 3
+		);
+
+		$html = self::render_input_tag( 'number', $post_id, $field, $special_attributes );
+
+		return $html;
 
 	}
 
