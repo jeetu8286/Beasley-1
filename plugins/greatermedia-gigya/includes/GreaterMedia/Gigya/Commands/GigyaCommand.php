@@ -50,7 +50,7 @@ class GigyaCommand extends \WP_CLI_Command {
 		file_put_contents( $file, "[\n" );
 		file_put_contents( $errors_file, '' );
 
-		\WP_CLI::success( "Creating $count fake users in Gigya ..." );
+		\WP_CLI::log( "Creating $count fake users in Gigya ..." );
 
 		$faker = Factory::create( 'en_US' );
 
@@ -60,6 +60,14 @@ class GigyaCommand extends \WP_CLI_Command {
 
 			try {
 				$user->save();
+				$progress   = ( $i + 1 ) / $count * 100;
+				$percent    = sprintf( '%.2f%%', $progress );
+				$user_id    = $user->get( 'UID' );
+				$user_email = str_pad( $user->get( 'email' ), 35, ' ', STR_PAD_BOTH );
+
+				\WP_CLI::success(
+					"Created User( {$user_email} ):\t {$user_id} - {$percent}"
+				);
 
 				if ( $count > 1 && $i < $count - 1 ) {
 					$user_line  = $user->to_json() . ",\n";
@@ -70,7 +78,10 @@ class GigyaCommand extends \WP_CLI_Command {
 				file_put_contents( $file, $user_line, FILE_APPEND );
 			} catch ( \Exception $e ) {
 				\WP_CLI::warning( $e->getMessage() );
-				file_put_contents( $error_file, $e->getMessage(), FILE_APPEND );
+				$error_message = $user->to_json() . "\n";
+				$error_message .= $user->response->getErrorMessage() . "\n";
+				$error_message .= $user->response->getResponseText() . "\n\n";
+				file_put_contents( $errors_file, $error_message, FILE_APPEND );
 			}
 		}
 
