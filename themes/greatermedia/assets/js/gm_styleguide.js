@@ -1,4 +1,4 @@
-/*! Greater Media - v0.1.0 - 2014-11-11
+/*! Greater Media - v0.1.0 - 2014-11-13
  * http://greatermedia.com
  * Copyright (c) 2014; * Licensed GPLv2+ */
 (function ($,window,undefined) {
