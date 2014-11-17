@@ -35,7 +35,13 @@ class BlogData {
 			}
 
 			foreach ( $result as $single_post ) {
-				self::ImportPosts( $single_post['post_obj'], $single_post['post_metas'], $defaults, $single_post['featured'], $single_post['attachments'] );
+				self::ImportPosts(
+					$single_post['post_obj']
+					, $single_post['post_metas']
+					, $defaults
+					, $single_post['featured']
+					, $single_post['attachments']
+				);
 			}
 	}
 
@@ -233,13 +239,6 @@ class BlogData {
 						update_post_meta( $post_id, $meta_key, $meta_value );
 					}
 				}
-				update_post_meta( $post_id, 'syndication_import', $post_hash );
-				update_post_meta( $post_id, 'syndication_old_name', $post_name );
-				$post_data = array(
-					'id' => intval( $post->ID ),
-					'blog_id' => self::$content_site_id
-				);
-				update_post_meta( $post_id, 'syndication_old_data', serialize( $post_data ) );
 				$updated = 1;
 			}
 		} else {
@@ -249,13 +248,6 @@ class BlogData {
 					update_post_meta( $post_id, $meta_key, $meta_value );
 				}
 			}
-			update_post_meta( $post_id, 'syndication_import', $post_hash );
-			update_post_meta( $post_id, 'syndication_old_name', $post_name );
-			$post_data = array(
-				'id' => intval( $post->ID ),
-				'blog_id' => self::$content_site_id
-			);
-			update_post_meta( $post_id, 'syndication_old_data', serialize( $post_data ) );
 			$updated = 1;
 		}
 
@@ -264,13 +256,26 @@ class BlogData {
 		 * Import featured and attached images
 		 */
 		if( $updated ) {
+
+			update_post_meta( $post_id, 'syndication_import', $post_hash );
+			update_post_meta( $post_id, 'syndication_old_name', $post_name );
+			$post_data = array(
+				'id' => intval( $post->ID ),
+				'blog_id' => self::$content_site_id
+			);
+			update_post_meta( $post_id, 'syndication_old_data', serialize( $post_data ) );
+
 			self::AssignDefaultTerms( $post_id, $defaults );
+
 			if( !is_null( $featured) ) {
 				$featured = esc_url_raw( $featured );
 				self::ImportMedia( $post_id, $featured, true );
 			}
+
 			if( !is_null( $attachments ) ) {
+
 				self::ImportAttachedImages( $post_id, $attachments );
+
 			}
 		}
 
@@ -301,7 +306,7 @@ class BlogData {
 	public static function ImportAttachedImages( $post_id, $attachments) {
 		foreach ( $attachments as $attachment ) {
 			$filename = esc_url_raw( $attachment->guid );
-			self::ImportMedia( $post_id, $filename, false );
+			self::ImportMedia( $post_id, $filename, false, $attachment->ID );
 		}
 	}
 
@@ -316,37 +321,66 @@ class BlogData {
 	 *
 	 * @return int|object
 	 */
-	public static function ImportMedia( $post_id = 0, $filename, $featured = false ) {
+	public static function ImportMedia( $post_id = 0, $filename, $featured = false, $old_id = 0 ) {
 		$id = 0;
+		$old_id = intval( $old_id );
 		$tmp = download_url( $filename );
 
-		preg_match( '/[^\?]+\.(jpg|JPG|jpe|JPE|jpeg|Jpeg|JPEG|gif|GIF|png|PNG)/', $filename, $matches );
-
-		// make sure we have a match.  This won't be set for PDFs and .docs
-		if ( $matches && isset( $matches[0] ) ) {
-			$file_array['name'] = basename( $matches[0] );
-			$file_array['tmp_name'] = $tmp;
-
-			// If error storing temporarily, unlink
-			if ( is_wp_error( $tmp ) ) {
-				@unlink( $file_array['tmp_name'] );
-				$file_array['tmp_name'] = '';
-			}
-
-			// do the validation and storage stuff
-			$id = media_handle_sideload( $file_array, $post_id, null );
-
-			// If error storing permanently, unlink
-			if ( is_wp_error( $id ) ) {
-				@unlink( $file_array['tmp_name'] );
-			} else {
-				@unlink( $file_array['tmp_name'] );
-				if( $featured == true & $post_id != 0 ) {
-					set_post_thumbnail( $post_id, $id );
-				}
-			}
+		if( $old_id == 0 && $featured == true ) {
+			$meta_query_args = array(
+				'meta_key'     => 'syndication_attachment_old_url',
+				'meta_value'   => esc_url_raw( $filename ),
+				'post_type' => 'attachment',
+			);
 		} else {
-			@unlink( $tmp );
+			$meta_query_args = array(
+				'meta_key'     => 'syndication_attachment_old_id',
+				'meta_value'   => $old_id,
+				'post_type' => 'attachment',
+			);
+		}
+
+		// query to check whether post already exist
+		$existing = get_posts( $meta_query_args );
+
+		if( empty($existing) ) {
+			preg_match( '/[^\?]+\.(jpg|JPG|jpe|JPE|jpeg|Jpeg|JPEG|gif|GIF|png|PNG)/', $filename, $matches );
+
+			// make sure we have a match.  This won't be set for PDFs and .docs
+			if ( $matches && isset( $matches[0] ) ) {
+				$file_array['name'] = basename( $matches[0] );
+				$file_array['tmp_name'] = $tmp;
+
+				// If error storing temporarily, unlink
+				if ( is_wp_error( $tmp ) ) {
+					@unlink( $file_array['tmp_name'] );
+					$file_array['tmp_name'] = '';
+				}
+
+				// do the validation and storage stuff
+				$id = media_handle_sideload( $file_array, $post_id, null );
+
+				// If error storing permanently, unlink
+				if ( is_wp_error( $id ) ) {
+					@unlink( $file_array['tmp_name'] );
+				} else {
+					@unlink( $file_array['tmp_name'] );
+					if( $featured == true && $post_id != 0 ) {
+						set_post_thumbnail( $post_id, $id );
+					}
+				}
+			} else {
+				@unlink( $tmp );
+			}
+
+			update_post_meta( $id, 'syndication_attachment_old_id', $old_id );
+			update_post_meta( $id, 'syndication_attachment_old_url', esc_url_raw( $filename ) );
+
+		} else {
+			$id = $existing[0]->ID;
+			if( $featured == true && $post_id != 0 ) {
+				set_post_thumbnail( $post_id, $id );
+			}
 		}
 
 		return $id;
