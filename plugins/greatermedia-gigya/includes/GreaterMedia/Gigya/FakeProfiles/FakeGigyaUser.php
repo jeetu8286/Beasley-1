@@ -136,7 +136,7 @@ class FakeGigyaUser {
 
 		// read-only
 		$this->properties['verified'] = $faker->boolean( 90 );
-		$this->properties['timezone'] = $faker->timezone;
+		$this->properties['timezone'] = $this->fake_timezone( $faker );
 		$this->properties['likes'] = array(
 			array( 'category' => 'Color', 'name' => $faker->colorName ),
 			array( 'category' => 'Color', 'name' => $faker->colorName ),
@@ -166,6 +166,11 @@ class FakeGigyaUser {
 			$faker->numberBetween( 100, 999 ) . '-' .
 			$faker->numberBetween( 100, 999 ) . '-' .
 			$faker->numberBetween( 100, 999 );
+	}
+
+	function fake_timezone( $faker ) {
+		$num = $faker->numberBetween( 4, 11 );
+		return sprintf( 'UTC-%s:00', str_pad( $num, 2, '0', STR_PAD_LEFT ) );
 	}
 
 	function random_gender( $faker ) {
