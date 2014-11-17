@@ -687,6 +687,64 @@ class GreaterMediaFormbuilderRender {
 
 	}
 
+	public function render_input_tag( $type = 'text', $post_id, stdClass $field, Array $special_attributes = null ) {
+
+		if ( null === $special_attributes ) {
+			$special_attributes = array();
+		}
+
+		$html = '';
+
+		$html .= self::render_label( $field );
+
+		$field_id = 'form_field_' . $field->cid;
+
+		$input_tag_attributes = array_merge( $special_attributes, array(
+			'id'   => $field_id,
+			'name' => $field_id,
+			'type' => $type,
+		) );
+
+		if ( isset( $field->required ) && $field->required ) {
+			$input_tag_attributes['required'] = 'required';
+		}
+
+		// Give the theme a chance to alter the attributes for the input field
+		$input_tag_attributes = apply_filters( 'gm_form_' . $type . '_input_attrs', $input_tag_attributes );
+		$input_tag_attributes = apply_filters( 'gm_form_input_attrs', $input_tag_attributes );
+
+		$html .= '<input ';
+		foreach ( $input_tag_attributes as $attribute => $value ) {
+			$html .= wp_kses_data( $attribute ) . '="' . esc_attr( $value ) . '" ';
+		}
+		$html .= ' />';
+
+		$html .= self::render_description( $field );
+
+		return $html;
+
+	}
+
+	public static function render_number( $post_id, stdClass $field ) {
+
+		$special_attributes = array();
+
+		if ( isset( $field->field_options->min ) ) {
+			$special_attributes['min'] = absint( $field->field_options->min );
+		}
+
+		if ( isset( $field->field_options->max ) ) {
+			$special_attributes['max'] = absint( $field->field_options->max );
+		}
+
+		if ( isset( $field->field_options->integer_only ) && $field->field_options->integer_only ) {
+			$special_attributes['step'] = 1;
+		}
+
+		return self::render_input_tag( 'number', $post_id, $field, $special_attributes );
+
+	}
+
 	/**
 	 * get_submit_button() from WordPress 4.0
 	 * Returns a submit button, with provided text and appropriate class
