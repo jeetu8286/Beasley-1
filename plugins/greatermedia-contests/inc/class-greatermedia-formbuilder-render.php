@@ -429,29 +429,20 @@ class GreaterMediaFormbuilderRender {
 	 */
 	protected static function render_text( $post_id, stdClass $field ) {
 
-		$html     = '';
-		$field_id = 'form_field_' . $field->cid;
-
-		$input_tag_attributes = array(
-			'id'   => $field_id,
-			'name' => $field_id,
-			'type' => 'text',
-		);
-
-		$html .= self::render_label( $field );
+		$special_attributes = array();
 
 		if ( isset( $field->required ) && $field->required ) {
-			$input_tag_attributes['required'] = 'required';
+			$special_attributes['required'] = 'required';
 		}
 
 		if ( isset( $field->field_options->size ) ) {
 
 			if ( 'small' === $field->field_options->size ) {
-				$input_tag_attributes['size'] = self::INPUT_SIZE_SMALL;
+				$special_attributes['size'] = self::INPUT_SIZE_SMALL;
 			} else if ( 'medium' === $field->field_options->size ) {
-				$input_tag_attributes['size'] = self::INPUT_SIZE_MEDIUM;
+				$special_attributes['size'] = self::INPUT_SIZE_MEDIUM;
 			} else if ( 'large' === $field->field_options->size ) {
-				$input_tag_attributes['size'] = self::INPUT_SIZE_LARGE;
+				$special_attributes['size'] = self::INPUT_SIZE_LARGE;
 			} else {
 				throw new InvalidArgumentException( sprintf( 'Field %d has an invalid size', $field->cid ) );
 			}
@@ -459,31 +450,19 @@ class GreaterMediaFormbuilderRender {
 		}
 
 		if ( isset( $field->field_options->minlength ) ) {
-			$input_tag_attributes['minlength'] = $field->field_options->minlength;
+			$special_attributes['minlength'] = $field->field_options->minlength;
 		}
 
 		if ( isset( $field->field_options->maxlength ) ) {
-			$input_tag_attributes['maxlength'] = $field->field_options->maxlength;
+			$special_attributes['maxlength'] = $field->field_options->maxlength;
 		}
 
-		// Give the theme a chance to alter the attributes for the input field
-		$input_tag_attributes = apply_filters( 'gm_form_text_input_attrs', $input_tag_attributes );
-		$input_tag_attributes = apply_filters( 'gm_form_input_attrs', $input_tag_attributes );
-
-		$html .= '<input ';
-		foreach ( $input_tag_attributes as $attribute => $value ) {
-			$html .= wp_kses_data( $attribute ) . '="' . esc_attr( $value ) . '" ';
-		}
-		$html .= ' />';
-
-		$html .= self::render_description( $field );
-
-		return $html;
+		return self::render_input_tag( 'text', $post_id, $field, $special_attributes );
 
 	}
 
 	/**
-	 * Render a text field on a form using data from formbuilder
+	 * Render a paragraph (textarea tag) on a form using data from formbuilder
 	 *
 	 * @param stdClass $field
 	 *
@@ -550,6 +529,14 @@ class GreaterMediaFormbuilderRender {
 
 	}
 
+	/**
+	 * Render a dropdown (select tag)
+	 *
+	 * @param int      $post_id
+	 * @param stdClass $field
+	 *
+	 * @return string html
+	 */
 	protected static function render_dropdown( $post_id, stdClass $field ) {
 
 		$html = '';
@@ -634,74 +621,32 @@ class GreaterMediaFormbuilderRender {
 	}
 
 	protected static function render_date( $post_id, stdClass $field ) {
-
-		$html = '';
-
-		$html .= self::render_label( $field );
-
-		$field_id = 'form_field_' . $field->cid;
-
-		$input_tag_attributes = array(
-			'id'   => $field_id,
-			'name' => $field_id,
-			'type' => 'date',
-		);
-
-		if ( isset( $field->required ) && $field->required ) {
-			$input_tag_attributes['required'] = 'required';
-		}
-
-		// Give the theme a chance to alter the attributes for the input field
-		$input_tag_attributes = apply_filters( 'gm_form_date_input_attrs', $input_tag_attributes );
-		$input_tag_attributes = apply_filters( 'gm_form_input_attrs', $input_tag_attributes );
-
-		$html .= '<input ';
-		foreach ( $input_tag_attributes as $attribute => $value ) {
-			$html .= wp_kses_data( $attribute ) . '="' . esc_attr( $value ) . '" ';
-		}
-		$html .= ' />';
-
-		$html .= self::render_description( $field );
-
-		return $html;
-
+		return self::render_input_tag( 'date', $post_id, $field );
 	}
 
+	/**
+	 * Render a time input
+	 *
+	 * @param int      $post_id
+	 * @param stdClass $field
+	 *
+	 * @return string html
+	 */
 	protected static function render_time( $post_id, stdClass $field ) {
-
-		$html = '';
-
-		$html .= self::render_label( $field );
-
-		$field_id = 'form_field_' . $field->cid;
-
-		$input_tag_attributes = array(
-			'id'   => $field_id,
-			'name' => $field_id,
-			'type' => 'time',
-		);
-
-		if ( isset( $field->required ) && $field->required ) {
-			$input_tag_attributes['required'] = 'required';
-		}
-
-		// Give the theme a chance to alter the attributes for the input field
-		$input_tag_attributes = apply_filters( 'gm_form_time_input_attrs', $input_tag_attributes );
-		$input_tag_attributes = apply_filters( 'gm_form_input_attrs', $input_tag_attributes );
-
-		$html .= '<input ';
-		foreach ( $input_tag_attributes as $attribute => $value ) {
-			$html .= wp_kses_data( $attribute ) . '="' . esc_attr( $value ) . '" ';
-		}
-		$html .= ' />';
-
-		$html .= self::render_description( $field );
-
-		return $html;
-
+		return self::render_input_tag( 'time', $post_id, $field );
 	}
 
-	public function render_input_tag( $type = 'text', $post_id, stdClass $field, Array $special_attributes = null ) {
+	/**
+	 * Generic input field renderer (used by the more specific rendering functions)
+	 *
+	 * @param string   $type               HTML5 input type
+	 * @param int      $post_id
+	 * @param stdClass $field
+	 * @param array    $special_attributes tag attributes specific to the input type
+	 *
+	 * @return string html
+	 */
+	protected static function render_input_tag( $type = 'text', $post_id, stdClass $field, Array $special_attributes = null ) {
 
 		if ( null === $special_attributes ) {
 			$special_attributes = array();
