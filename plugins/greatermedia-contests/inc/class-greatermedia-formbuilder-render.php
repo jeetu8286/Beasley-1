@@ -314,6 +314,13 @@ class GreaterMediaFormbuilderRender {
 
 	}
 
+	/**
+	 * Render a field's label tag
+	 *
+	 * @param stdClass $field
+	 *
+	 * @return string html
+	 */
 	protected static function render_label( stdClass $field ) {
 
 		$html = '';
@@ -347,6 +354,13 @@ class GreaterMediaFormbuilderRender {
 		return $html;
 	}
 
+	/**
+	 * Render a legend tag
+	 *
+	 * @param stdClass $field
+	 *
+	 * @return string html
+	 */
 	protected static function render_legend( stdClass $field ) {
 
 		$html = '';
@@ -563,7 +577,7 @@ class GreaterMediaFormbuilderRender {
 		}
 		$html .= '>';
 
-		if(isset($field->field_options->include_blank_option) && $field->field_options->include_blank_option) {
+		if ( isset( $field->field_options->include_blank_option ) && $field->field_options->include_blank_option ) {
 			$html .= '<option value=""></option>';
 		}
 
@@ -725,6 +739,14 @@ class GreaterMediaFormbuilderRender {
 
 	}
 
+	/**
+	 * Render a number input
+	 *
+	 * @param int      $post_id
+	 * @param stdClass $field
+	 *
+	 * @return string html
+	 */
 	public static function render_number( $post_id, stdClass $field ) {
 
 		$special_attributes = array();
