@@ -98,7 +98,7 @@ class FakeGigyaUser {
 		 */
 		$gender = $this->random_gender( $faker );
 
-		$this->properties['email']     = 'foo';//$faker->email;
+		$this->properties['email']     = $faker->email;
 		$this->properties['firstName'] = $faker->firstName( $gender );
 		$this->properties['lastName']  = $faker->lastName;
 
