@@ -485,6 +485,18 @@ var AVAILABLE_CONSTRAINTS_META = [
 var AVAILABLE_CONSTRAINTS_META_MAP = {};
 
 (function() {
+	var integerChoicesFor = function(start, end) {
+		var choices = [];
+		var i;
+
+		for (i = start; i <= end; i++) {
+			choice = { label: i, value: i };
+			choices.push(choice);
+		}
+
+		return choices;
+	};
+
 	var i;
 	var constraints = AVAILABLE_CONSTRAINTS_META;
 	var map         = AVAILABLE_CONSTRAINTS_META_MAP;
@@ -493,6 +505,10 @@ var AVAILABLE_CONSTRAINTS_META_MAP = {};
 	for ( i = 0; i < n; i++ ) {
 		constraint = constraints[i];
 		map[constraint.type] = constraint;
+
+		if (constraint.type === 'profile:birthDay') {
+			constraint.choices = integerChoicesFor(1, 31);
+		}
 	}
 })();
 
