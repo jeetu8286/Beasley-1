@@ -148,7 +148,7 @@ function greatermedia_scripts_styles() {
 			'greatermedia',
 			get_template_directory_uri() . "/assets/js/greater_media{$postfix}.js",
 			array(
-				'underscore'
+				'headroom'
 			),
 			GREATERMEDIA_VERSION,
 			true
@@ -177,6 +177,19 @@ function greatermedia_scripts_styles() {
 				'font-awesome'
 			),
 			GREATERMEDIA_VERSION
+		);
+	};
+
+	if ( is_page( 'scroll-test' ) ) {
+		wp_dequeue_script( 'greatermedia' );
+		wp_enqueue_script(
+			'greatermedia_scroll',
+			get_template_directory_uri() . "/assets/js/src/greater_media_scroll.js",
+			array(
+				'underscore'
+			),
+			GREATERMEDIA_VERSION,
+			true
 		);
 	};
 
