@@ -92,7 +92,8 @@ class GMLP_Settings {
 
 		// Radio Station Callsign
 		register_setting( self::option_group, 'gmlp_radio_callsign', 'sanitize_text_field' );
-		register_setting( self::option_group, 'gmlp_player_location', 'esc_attr' );
+		register_setting( self::option_group, 'gmlp_stream_name', 'sanitize_text_field' );
+		register_setting( self::option_group, 'gmlp_stream_desc', 'sanitize_text_field' );
 
 		/**
 		 * Allows us to register extra settings that are not necessarily always present on all child sites.
@@ -103,10 +104,12 @@ class GMLP_Settings {
 	/**
 	 * Render inputs for the settings page
 	 *
-	 * @todo remove selector for player location after the proposed design has been fully vetted and approved by client
+	 * @todo meta fields should be repeatable with the ability to add and remove from the options menu
 	 */
 	public function render_gmlp_settings_section() {
 		$radio_callsign = get_option( 'gmlp_radio_callsign', '' );
+		$stream_name = get_option( 'gmlp_stream_name', '' );
+		$stream_desc = get_option( 'gmlp_stream_desc', '' );
 		?>
 
 		<h4><?php _e( 'Live Player API Information', 'gmliveplayer' ); ?></h4>
@@ -115,6 +118,16 @@ class GMLP_Settings {
 			<label for="gmlp_radio_callsign" class="gmlp-admin-label"><?php _e( 'Radio Callsign', 'gmliveplayer' ); ?></label>
 			<input type="text" class="widefat" name="gmlp_radio_callsign" id="gmlp_radio_callsign" value="<?php echo sanitize_text_field( $radio_callsign ); ?>" />
 			<div class="gmlp-description"><?php _e( 'The value for this field should consist of the Radio Callsign + Band Type. Ex: WMMR + FM = WMMRFM. WMMRFM would be the value to enter in this field.', 'gmliveplayer' ); ?></div>
+		</p>
+
+		<p>
+			<label for="gmlp_stream_name" class="gmlp-admin-label"><?php _e( 'Stream Name', 'gmliveplayer' ); ?></label>
+			<input type="text" class="widefat" name="gmlp_stream_name" id="gmlp_stream_name" value="<?php echo sanitize_text_field( $stream_name ); ?>" />
+		</p>
+
+		<p>
+			<label for="gmlp_stream_desc" class="gmlp-admin-label"><?php _e( 'Stream Description', 'gmliveplayer' ); ?></label>
+			<input type="text" class="widefat" name="gmlp_stream_desc" id="gmlp_stream_desc" value="<?php echo sanitize_text_field( $stream_desc ); ?>" />
 		</p>
 
 		<hr/>
