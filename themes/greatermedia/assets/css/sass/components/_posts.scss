@@ -1,62 +1,53 @@
 // Reusable Post Classes
 .hentry {
-	@include margin(null null 1em null);
+	margin-bottom: 58px;
+	overflow: auto;
+	@include bp(medium) {
+		margin-bottom: 90px;
+	}
 }
 
 // Thumbnail
-.entry-thumbnail {
-	@include position(relative, null null null null);
-	@include padding(null null em(32px));
+.entry__thumbnail {
+	position: relative;
+	padding-bottom: 32px;
 }
 
 // Content
-.entry-content {
-	@include padding(1.5em 0);
+.entry__content {
+	padding: 1.5em 0;
 	font-family: $open-sans;
 }
 
+.entry__date {
+	font-size: .875em;
+	font-weight: lighter;
+	color: palette(base, tertiary-heading);
+}
+
 // Shows container - individual attributes are located in _shows.scss
-.entry-show {
-	@include position(relative, null null null null);
-	@include margin(null null .5em null);
+.entry__show {
+	position: relative;
+	margin-bottom: 8px;
 }
 
 // Personalities container - individual attributes are located in _personalities.scss
-.entry-personality {
-	@include position(relative, null null null null);
-	@include margin(null null .5em null);
+.entry__personality {
+	position: relative;
+	margin-bottom: 8px;
 }
 
 // Titles
-.single-title, .page-title, .entry-title {
-	@include margin(.5em 0);
-}
-
-.single-title {
-}
-
-.page-title {
-}
-
-.entry-title {
-}
-
-.archive-title {
-}
-
-//  Read More Button
-.read-more--btn{
-	@include btn(btn, primary-bg, primary-text, primary-border, 1em, 1.5em, em(14px));
+.entry__title {
+	margin: 12px 0 0;
+	font-size: 1.875em;
 }
 
 // Entry Footer
-.entry-footer {
+.entry__footer {
 	@include span-columns(4);
-	@include padding(em(5px) 0);
-	@include margin(2em null 3em);
-	@include border-color(palette(base, primary-border) null palette(base, primary-border) null);
-	@include border-style(solid null solid null);
-	@include border-width(1px null 1px null);
+	padding: 16px 0;
+	border-bottom: 1px solid palette(base, primary-border);
 	@include bp(small) {
 		@include span-columns(6);
 	}
@@ -68,62 +59,24 @@
 	}
 }
 
-// Byline
-.entry-author {
-	@include span-columns(1);
-	font-size: ms(-1);
-	@include bp(small) {
-		@include span-columns(1);
-	}
-	@include bp(medium) {
-		@include span-columns(1);
-	}
-	@include bp(large) {
-		@include span-columns(2);
-	}
+.entry__footer--category:link, .entry__footer--category:visited {
+	float: right;
+	line-height: 1;
+	font-family: $droid-sans;
+	font-weight: bold;
+	font-size: 1em;
+	color: palette(base, tertiary-heading);
 }
 
-.entry-author a, .entry-author a:visited {
-	color: color(secondary-text);
-}
-
-.entry-author a:hover, .entry-author a:focus {
-	color: color(secondary-text);
-}
-
-.entry-author--img {
-	float: left;
-	@include size(40px 40px);
-	@include margin(null em(10px) null null);
-	@include border-top-radius(50%);
-	@include border-right-radius(50%);
-	@include border-bottom-radius(50%);
-	@include border-left-radius(50%);
-}
-
-.entry-author--img img {
-	@include size(40px 40px);
-	@include border-top-radius(50%);
-	@include border-right-radius(50%);
-	@include border-bottom-radius(50%);
-	@include border-left-radius(50%);
-}
-
-.entry-author--meta {
-	float: left;
-}
-.entry-author--name {
-	text-transform: uppercase;
-}
-
-.entry-date {
-
+.entry__footer--category:hover, .entry__footer--category:focus, .entry__footer--category:active {
+	color: palette(base, secondary-link-hover);
 }
 
 // Post Formats
-.entry-type {
+.entry__type {
 	@include span-columns(2);
-	@include padding(.75em null);
+	padding-top: .75em;
+	padding-bottom: .75em;
 	text-align: center;
 	@include bp(small) {
 		@include span-columns(4);
@@ -136,74 +89,75 @@
 	}
 }
 
-%entry-type {
-	@include position(relative, null null null null);
-	@include padding(null null null em(30px));
-	font-size: ms(-2);
+%entry__type {
+	position: relative;
+	padding-left: 1.875em;
+	font-size: .75em;
 }
 
-%entry-type--before {
-	@include position(absolute, 0 null null 0 );
-	@include size(0 0);
+%entry__type--before {
+	position: absolute;
+	width: 0;
+	height: 0;
 	font-family: dashicons;
-	font-size: ms(0);
+	font-size: 1em;
 }
 
-.entry-type--gallery, .entry-type--link, .entry-type--image, .entry-type--video, .entry-type--audio, .entry-type--standard {
-	@extend %entry-type;
+.entry__type--gallery, .entry__type--link, .entry__type--image, .entry__type--video, .entry__type--audio, .entry__type--standard {
+	@extend %entry__type;
 }
 
-.entry-categories, .entry-tags {
-	@include margin(null null .5em);
+.entry__categories, .entry__tags {
+	margin-bottom: 8px;
 }
 
-.entry-list, %entry-list {
-	@include padding(0);
-	@include margin(0);
+.entry__list, %entry__list {
+	padding: 0;
+	margin: 0;
 	list-style: none;
-	font-size: ms(-2);
+	font-size: .75em;
 }
 
-.entry-list:before, %entry-list--before {
-	@include margin(null 4px null null null);
+.entry__list:before, %entry__list--before {
+	margin-right: .25em;
 	text-transform: uppercase;
 }
 
-.entry-list--item, %entry-list--item {
-	@include padding(0);
-	@include margin(0 1em 0 0);
+.entry__list--item, %entry__list--item {
+	padding: 0;
+	margin-right: 1em;
 	list-style: none;
 	display: inline-block;
 }
 
-.entry-list--item:last-of-type, %entry-list--item--last {
-	@include margin(0);
+.entry__list--item:last-of-type, %entry__list--item--last {
+	margin: 0;
 }
 
-.entry-list--item:after, %entry-list--item--after {
-	@include margin(null null null 1em);
+.entry__list--item:after, %entry__list--item--after {
+	margin-left: 1em;
 	content: "|";
 }
 
-.entry-list--item:last-of-type:after{
-	@include margin(0);
+.entry__list--item:last-of-type:after{
+	margin: 0;
 	content: "";
 }
 
-.entry-list--categories:before {
-	@extend %entry-list--before;
+.entry__list--categories:before {
+	@extend %entry__list--before;
 	content: "Categories:";
 }
 
-.entry-list--tags:before {
-	@extend %entry-list--before;
+.entry__list--tags:before {
+	@extend %entry__list--before;
 	content: "Tags:";
 }
 
 // Comments
-.entry-comments {
+.entry__comments {
 	@include span-columns(1);
-	@include padding(8px 0);
+	padding: 8px 0;
 	@include bp(small) {
 		@include span-columns(1);
 	}
@@ -215,58 +169,62 @@
 	}
 }
 
-.entry-comments--count {
-	@include position(relative, null null null null);
+.entry__comments--count {
+	position: relative;
+	display: block;
 	float: right;
-	@include display(block);
 	text-align: center;
-	font-size: ms(-3);
+	font-size: .625em;
 }
 
-.entry-comments--count a:link, .entry-comments--count a:visited {
-	@include display(block);
-	@include size(24px 16px);
-	@include margin(0 auto);
-	@include border-top-radius(3px);
-	@include border-right-radius(3px);
-	@include border-bottom-radius(3px);
-	@include border-left-radius(3px);
+.entry__comments--count a:link, .entry__comments--count a:visited {
+	display: block;
+	width: 24px;
+	height: 16px;
+	margin: 0 auto;
+	@include border-radius(3px);
 	background-color: palette(base, primary-border);
 	color: palette(base, secondary-link);
 }
 
-.entry-comments--count a:link:after, .entry-comments--count a:visited:after {
-	@include position(absolute, null null -8px 3px);
+.entry__comments--count a:link:after, .entry__comments--count a:visited:after {
+	position: absolute;
+	bottom: 3px;
+	left: -8px;
 	@include arrow(top-left, palette(base, primary-border), 8px, 10px);
 	content: " ";
 }
 
-.entry-comments--count a:hover, .entry-comments--count a:focus {
-	@include display(block);
+.entry__comments--count a:hover, .entry__comments--count a:focus {
+	display: block;
 	background-color: palette(base, primary-link);
 	color: palette(base, primary-text);
 }
 
-.entry-comments--count a:hover:after, .entry-comments--count a:focus:after {
-	@include position(absolute, null null -8px 3px);
+.entry__comments--count a:hover:after, .entry__comments--count a:focus:after {
+	position: absolute;
+	bottom: 3px;
+	left: -8px;
 	@include arrow(top-left, palette(base, primary-link), 8px, 10px);
 	content: " ";
 }
 
-.entry-comments--count a:active {
-	@include display(block);
+.entry__comments--count a:active {
+	display: block;
 	background-color: palette(base, secondary-bg);
 	color: palette(base, secondary-link);
 }
 
-.entry-comments--count a:active:after{
-	@include position(absolute, null null -8px 3px);
+.entry__comments--count a:active:after{
+	position: absolute;
+	bottom: 3px;
+	left: -8px;
 	@include arrow(top-left, palette(base, secondary-bg), 8px, 10px);
 	content: " ";
 }
 
 // Standard Post Format
-.entry-standard--content {
+.entry__standard--content {
 	@include span-columns(4);
 	@include bp(small) {
 		@include span-columns(6);
@@ -279,7 +237,7 @@
 	}
 }
 
-.entry-standard--thumbnail {
+.entry__standard--thumbnail {
 	@include span-columns(4);
 	@include bp(small) {
 		@include span-columns(6);
@@ -295,7 +253,7 @@
 }
 
 // Video Post Format
-.entry-video--content {
+.entry__video--content {
 	@include span-columns(4);
 	@include bp(small) {
 		@include span-columns(6);
@@ -310,7 +268,7 @@
 	}
 }
 
-.entry--full_width {
+.entry__-full_width {
 	@include span-columns(4);
 	@include bp(small) {
 		@include span-columns(6);
@@ -323,13 +281,13 @@
 	}
 }
 
-.entry-video--content  .entry-header {
+.entry__video--content  .entry__header {
 	@include bp(medium) {
-		@include padding(3em null null);
+		padding-top: 48px;
 	}
 }
 
-.entry-video--thumbnail {
+.entry__video--thumbnail {
 	@include span-columns(4);
 	@include bp(small) {
 		@include span-columns(6);
@@ -343,7 +301,7 @@
 }
 
 // Concert Content Type
-.entry-concert--thumbnail {
+.entry__concert--thumbnail {
 	@include span-columns(4);
 	@include bp(small) {
 		@include span-columns(6);
@@ -356,7 +314,7 @@
 	}
 }
 
-.entry-concert--content {
+.entry__concert--content {
 	@include span-columns(4);
 	@include bp(small) {
 		@include span-columns(6);
@@ -371,27 +329,27 @@
 	}
 }
 
-.entry-concert--content .entry-title {
-	@include margin(0 null null null);
+.entry__concert--content .entry__title {
+	margin-top: 0;
 	line-height: 1;
 }
 
 
-.entry-concert--meta_list {
-	@include padding(0);
-	@include margin(0);
+.entry__concert--meta_list {
+	padding: 0;
+	margin: 0;
 }
 
-.entry-concert--meta_item {
+.entry__concert--meta_item {
 	list-style: none;
 	display: inline-block;
-	@include padding(0 0 0 1em);
-	@include margin(0);
+	padding-left: 1em;
+	margin: 0;
 	font-weight: bold;
 }
 
 // CD Release Content Type
-.entry-cdrelease--thumbnail {
+.entry__cdrelease--thumbnail {
 	@include span-columns(4);
 	@include bp(small) {
 		@include span-columns(6);
@@ -404,7 +362,7 @@
 	}
 }
 
-.entry-cdrelease--content {
+.entry__cdrelease--content {
 	@include span-columns(4);
 	@include bp(small) {
 		@include span-columns(6);
@@ -419,18 +377,16 @@
 	}
 }
 
-.entry-cdrelease--content .entry-title {
-	@include margin(0 null null null);
+.entry__cdrelease--content .entry__title {
+	margin-top: 0;
 	line-height: 1;
 }
 
 // Blockquote styles
 blockquote {
-	@include padding(em(8px) em(10px));
-	@include margin(em(24px) em(10px));
-	@include border-color(null null null palette(base, primary-border));
-	@include border-style(null null null solid);
-	@include border-width(null null null em(10px));
+	padding: 8px .625em;
+	margin: 24px .625em;
+	border-left: 10px solid palette(base, primary-border);
 	quotes: "\201C""\201D""\2018""\2019";
 }
 
@@ -442,19 +398,19 @@ blockquote p {
 
 // WordPress Styles
 .alignleft, img.alignleft {
-	@include display(block);
-	@include margin(0 1em 1em);
+	display: block;
+	margin: 0 1em 16px;
 	float: left;
 }
 
 .alignright, img.alignright {
-	@include display(block);
-	@include margin(0 0 1em 1em);
+	display: block;
+	margin: 0 0 16px 1em;
 	float: right;
 }
 
 .aligncenter, img.aligncenter {
-	@include margin(0 auto 1em)
+	margin: 0 auto 1em;
 }
 
 .size-auto,
@@ -463,50 +419,50 @@ blockquote p {
 .size-medium,
 .size-thumbnail {
 	max-width: 100%;
-	@include size(null auto);
+	height: auto;
 }
 
 .wp-caption {
 	max-width: 100%;
-	@include padding(0);
-	@include margin(0 0 em(16px));
+	padding: 0;
+	margin: 0 0 16px;
 	background: palette(base, primary-border);
 }
 
 .wp-caption img {
-	@include size(100% null);
-	@include margin(null null 0);
+	width: 100%;
+	margin-bottom: 0;
 	max-width: 100%;
 }
 
 .wp-caption p.wp-caption-text {
-	@include padding(em(16px) em(20px) em(20px) em(20px));
-	@include padding(em(4px) em(8px));
-	font-size: ms(-2);
+	padding: 16px 1.25em 20px;
+	margin: 4px .5em;
+	font-size: .75em;
 	text-align: left;
 }
 
 // Pagination
 .posts-pagination {
-	@include size(100% null);
-	font-size: ms(-1);
+	width: 100%;
+	font-size: .875em;
 }
 
 .posts-pagination--previous {
-	@include size(50% null);
 	float: left;
+	width: 50%;
 }
 
 .posts-pagination--previous .fa {
-	@include margin(null em(8px) null null);
+	margin-right: .5em;
 }
 
 .posts-pagination--next {
-	@include size(50% null);
 	float: right;
+	width: 50%;
 	text-align: right;
 }
 
 .posts-pagination--next .fa {
-	@include margin(null null null em(8px));
+	margin-left: .5em;
 }
