@@ -60,12 +60,12 @@ jQuery(function () {
 				value = login_restriction_description(parsed_shortcode.attrs.named.status);
 			}
 			else {
-				value = login_restriction_description('logged-out');
+				value = login_restriction_description('logged-in');
 			}
 
 			return [
 				{
-					type  : 'combobox',
+					type  : 'listbox',
 					id    : 'gm-login-restricted-status',
 					name  : 'status',
 					label : ('undefined' !== typeof GreaterMediaLoginRestrictedContent) ? GreaterMediaLoginRestrictedContent.strings['Must be'] : 'Must be',
