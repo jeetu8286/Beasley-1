@@ -46,8 +46,6 @@ class GMLP_Settings {
 	protected function _init() {
 		add_action( 'admin_menu', array( $this, 'add_settings_page' ) );
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
-		add_action( 'gmlp_location', array($this, 'player_location_class') );
-		add_filter( 'body_class', array( $this, 'player_location_body_class' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 	}
 
@@ -94,7 +92,8 @@ class GMLP_Settings {
 
 		// Radio Station Callsign
 		register_setting( self::option_group, 'gmlp_radio_callsign', 'sanitize_text_field' );
-		register_setting( self::option_group, 'gmlp_player_location', 'esc_attr' );
+		register_setting( self::option_group, 'gmlp_stream_name', 'sanitize_text_field' );
+		register_setting( self::option_group, 'gmlp_stream_desc', 'sanitize_text_field' );
 
 		/**
 		 * Allows us to register extra settings that are not necessarily always present on all child sites.
@@ -105,25 +104,15 @@ class GMLP_Settings {
 	/**
 	 * Render inputs for the settings page
 	 *
-	 * @todo remove selector for player location after the proposed design has been fully vetted and approved by client
+	 * @todo meta fields should be repeatable with the ability to add and remove from the options menu
 	 */
 	public function render_gmlp_settings_section() {
 		$radio_callsign = get_option( 'gmlp_radio_callsign', '' );
-		$player_location = get_option( 'gmlp_player_location', '' );
+		$stream_name = get_option( 'gmlp_stream_name', '' );
+		$stream_desc = get_option( 'gmlp_stream_desc', '' );
 		?>
 
 		<h4><?php _e( 'Live Player API Information', 'gmliveplayer' ); ?></h4>
-
-		<p>
-			<label for="gmlp_player_location" class="gmlp-admin-label"><?php _e( 'Player Location', 'gmliveplayer' ); ?></label>
-			<select name="gmlp_player_location" id="gmlp_player_location">
-				<option value="Off" <?php selected( $player_location, 'off' ); ?>><?php _e( 'Off', 'gmliveplayer' )?></option>
-				<option value="top" <?php selected( $player_location, 'top' ); ?>><?php _e( 'Top', 'gmliveplayer' )?></option>
-				<option value="bottom" <?php selected( $player_location, 'bottom' ); ?>><?php _e( 'Bottom', 'gmliveplayer' )?></option>
-				<option value="right" <?php selected( $player_location, 'right' ); ?>><?php _e( 'Right', 'gmliveplayer' )?></option>
-				<option value="left" <?php selected( $player_location, 'left' ); ?>><?php _e( 'Left', 'gmliveplayer' )?></option>
-			</select>
-		</p>
 
 		<p>
 			<label for="gmlp_radio_callsign" class="gmlp-admin-label"><?php _e( 'Radio Callsign', 'gmliveplayer' ); ?></label>
@@ -131,46 +120,21 @@ class GMLP_Settings {
 			<div class="gmlp-description"><?php _e( 'The value for this field should consist of the Radio Callsign + Band Type. Ex: WMMR + FM = WMMRFM. WMMRFM would be the value to enter in this field.', 'gmliveplayer' ); ?></div>
 		</p>
 
+		<p>
+			<label for="gmlp_stream_name" class="gmlp-admin-label"><?php _e( 'Stream Name', 'gmliveplayer' ); ?></label>
+			<input type="text" class="widefat" name="gmlp_stream_name" id="gmlp_stream_name" value="<?php echo sanitize_text_field( $stream_name ); ?>" />
+		</p>
+
+		<p>
+			<label for="gmlp_stream_desc" class="gmlp-admin-label"><?php _e( 'Stream Description', 'gmliveplayer' ); ?></label>
+			<input type="text" class="widefat" name="gmlp_stream_desc" id="gmlp_stream_desc" value="<?php echo sanitize_text_field( $stream_desc ); ?>" />
+		</p>
+
 		<hr/>
 
 	<?php
 	}
 
-	/**
-	 * Call the player location from the settings page
-	 */
-	public function player_location_class() {
-
-		$player_location = get_option( 'gmlp_player_location', '' );
-
-		echo esc_attr( $player_location);
-
-	}
-
-	/**
-	 * Add a new body class based on the chosen location of the player
-	 *
-	 * @param $classes
-	 *
-	 * @return array
-	 */
-	public function player_location_body_class( $classes ) {
-
-		$location = get_option( 'gmlp_player_location', '' );
-
-		if ( $location == 'top' ) {
-			$classes[] = 'gmlp-top gmlp-horizontal';
-		} elseif ( $location == 'bottom' ) {
-			$classes[] = 'gmlp-bottom gmlp-horizontal';
-		} elseif ( $location == 'right' ) {
-			$classes[] = 'gmlp-right gmlp-vertical';
-		} elseif ( $location == 'left' ) {
-			$classes[] = 'gmlp-left gmlp-vertical';
-		}
-
-		return $classes;
-
-	}
 
 	/**
 	 * Enqueue scripts
