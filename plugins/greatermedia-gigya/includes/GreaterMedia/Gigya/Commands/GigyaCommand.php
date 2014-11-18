@@ -3,6 +3,8 @@
 namespace GreaterMedia\Gigya\Commands;
 
 use GreaterMedia\Gigya\FakeProfiles\FakeGigyaUser;
+use GreaterMedia\Gigya\GigyaRequest;
+use GreaterMedia\Gigya\Schema\AccountSchema;
 use Faker\Factory;
 
 /**
@@ -89,8 +91,127 @@ class GigyaCommand extends \WP_CLI_Command {
 		\WP_CLI::success( "Creating $count fake users in Gigya ... DONE" );
 	}
 
-	public function reset_users( $args, $opts ) {
+	public function set_account_schema( $args, $opts ) {
+		$schema  = new AccountSchema();
+		$request = new GigyaRequest( null, null, 'accounts.setSchema' );
 
+		try {
+			$schema->update( $request );
+			\WP_CLI::success( 'Updated Gigya Account Schema' );
+		} catch ( \Exception $err ) {
+			\WP_CLI::error( $err->getMessage() );
+		}
+	}
+
+	public function get_account_schema( $args, $opts ) {
+		$schema  = new AccountSchema();
+		$request = new GigyaRequest( null, null, 'accounts.getSchema' );
+
+		try {
+			$schema_text = $schema->fetch( $request );
+			\WP_CLI::log( $schema_text );
+		} catch ( \Exception $err ) {
+			\WP_CLI::error( $err->getMessage() );
+		}
+	}
+
+	function formatBytes( $size, $precision = 2 ) {
+		$base = log($size) / log(1024);
+		$suffixes = array('', 'k', 'M', 'G', 'T');
+
+		return round(pow(1024, $base - floor($base)), $precision) . $suffixes[floor($base)];
+	}
+
+	function new_string_of_size( $size, $input = 'A' ) {
+		return "{$size}k - " . str_repeat( $input, $size * 1024 );
+	}
+
+	public function add_contest_entry( $args, $opts ) {
+		$user_id              = $args[0];
+		$size                 = intval( $args[1] );
+		//$text_file          = $args[1];
+		//$text_file_contents = file_get_contents( $text_file );
+		$text_file_contents   = $this->new_string_of_size( $size );
+
+		$action = array(
+			'actionType'   => 'record:contest',
+			'actionTypeID' => rand( 1, 10000 ),
+			'actionData'   => array(
+				'c1_t'       => $text_file_contents,
+				//'c1_t' => 'foo',
+			)
+		);
+
+		$actions = array(
+			'actions' => array(
+				$action
+			)
+		);
+
+		$data    = json_encode( $actions );
+		$request = new GigyaRequest( null, null, 'accounts.setAccountInfo' );
+		$request->setParam( 'UID', $user_id );
+		$request->setParam( 'data', $data );
+		$response = $request->send();
+
+		if ( $response->getErrorCode() === 0 ) {
+			\WP_CLI::success( 'Added Contest Entry' );
+			\WP_CLI::log( $response->getResponseText() );
+		} else {
+			\WP_CLI::log( $response->getResponseText() );
+		}
+	}
+
+	public function add_multi_contest_entries( $args, $opts ) {
+		$user_id   = $args[0];
+		$unit_size = intval( $args[1] );
+		$total     = intval( $args[2] );
+		$actions   = array();
+
+		for ( $i = 0; $i < $total; $i++ ) {
+			$value = "{$unit_size}-{$total} " . $this->new_string_of_size( $unit_size );
+			$action = array(
+				'actionType'   => 'record:contest',
+				'actionTypeID' => rand( 1, 10000 ),
+				'actionData'   => array(
+					'c1_t'     => $value,
+				)
+			);
+
+			$actions[] = $action;
+		}
+
+		$data = array( 'actions' => $actions );
+		$data = json_encode( $data );
+
+		$request = new GigyaRequest( null, null, 'accounts.setAccountInfo' );
+		$request->setParam( 'UID', $user_id );
+		$request->setParam( 'data', $data );
+		$response = $request->send();
+
+		if ( $response->getErrorCode() === 0 ) {
+			\WP_CLI::success( 'Added Contest Entry' );
+			\WP_CLI::log( $response->getResponseText() );
+		} else {
+			\WP_CLI::log( $response->getResponseText() );
+		}
+	}
+
+	public function get_account_info( $args, $opts ) {
+		$user_id = $args[0];
+		$request = new GigyaRequest( null, null, 'accounts.getAccountInfo' );
+		$request->setParam( 'UID', $user_id );
+		$response = $request->send();
+
+		if ( $response->getErrorCode() === 0 ) {
+			\WP_CLI::log( $response->getResponseText() );
+		} else {
+			\WP_CLI::error( 'Failed to get account info' );
+			\WP_CLI::log( $response->getResponseText() );
+		}
+	}
+
+	public function reset_users( $args, $opts ) {
 	}
 
 }
