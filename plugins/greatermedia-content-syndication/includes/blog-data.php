@@ -390,6 +390,12 @@ class BlogData {
 		return $id;
 	}
 
+	/**
+	 * Replace the ids in post content to mathc the new attachments
+	 *
+	 * @param int   $post_id
+	 * @param array $galleries
+	 */
 	private static function ReplaceGalleryID( $post_id, $galleries = [] ) {
 
 		// get post content

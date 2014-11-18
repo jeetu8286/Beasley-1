@@ -48,19 +48,35 @@ class SyndicationCPT {
 			'menu_name'				=> __( 'Collections', 'greatermedia' ),
 		);
 
-		$args = array(
-			'labels'            => $labels,
-			'public'            => true,
-			'show_in_nav_menus' => true,
-			'show_admin_column' => false,
-			'hierarchical'      => false,
-			'show_tagcloud'     => true,
-			'show_ui'           => true,
-			'query_var'         => true,
-			'rewrite'           => true,
-			'query_var'         => true,
-			'capabilities'      => array(),
-		);
+		if( BlogData::$content_site_id != get_current_blog_id() ) {
+			$args = array(
+				'labels'            => $labels,
+				'public'            => false,
+				'show_in_nav_menus' => false,
+				'show_admin_column' => false,
+				'hierarchical'      => false,
+				'show_tagcloud'     => false,
+				'show_ui'           => false,
+				'query_var'         => true,
+				'rewrite'           => true,
+				'query_var'         => true,
+				'capabilities'      => array(),
+			);
+		} else {
+			$args = array(
+				'labels'            => $labels,
+				'public'            => true,
+				'show_in_nav_menus' => true,
+				'show_admin_column' => false,
+				'hierarchical'      => false,
+				'show_tagcloud'     => true,
+				'show_ui'           => true,
+				'query_var'         => true,
+				'rewrite'           => true,
+				'query_var'         => true,
+				'capabilities'      => array(),
+			);
+		}
 
 		register_taxonomy( 'collection', array( 'post' ), $args );
 	}
@@ -461,7 +477,7 @@ class SyndicationCPT {
 
 		// Add an nonce field so we can check for it later.
 		wp_nonce_field( 'save_subscription_status', 'subscription_custom_nonce' );
-		
+
 		// available statuses
 		$list_status = array( 'draft', 'publish' );
 
@@ -533,6 +549,5 @@ class SyndicationCPT {
 	}
 
 }
-
 
 $SyndicationCPT = new SyndicationCPT();
