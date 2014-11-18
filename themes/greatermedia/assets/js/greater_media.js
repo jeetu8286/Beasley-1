@@ -1,12 +1,10 @@
-/*! Greater Media - v0.1.0 - 2014-11-13
+/*! Greater Media - v0.1.0 - 2014-11-18
  * http://greatermedia.com
  * Copyright (c) 2014; * Licensed GPLv2+ */
 (function() {
 	'use strict';
 
-	var headroom, livePlayerFix, livePlayerInit, livePlayerLocation,
-
-		body = document.querySelector( 'body' ),
+	var body = document.querySelector( 'body' ),
 		mobileNavButton = document.querySelector( '.mobile-nav__toggle' ),
 		header = document.getElementById( 'header' ),
 		headerHeight = header.offsetHeight,
@@ -16,28 +14,47 @@
 		wpAdminHeight = 32,
 		onAir = document.getElementById( 'on-air' ),
 		nowPlaying = document.getElementById( 'now-playing' ),
-		liveLinks = document.getElementById( 'live-links' );
+		liveLinks = document.getElementById( 'live-links'),
+		windowHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0),
+		scrollObject = {};
 
-	/**
-	 * adds a class to the live player that causes it to become fixed to the top of the window while also removing the
-	 * class that has the initial live player state
-	 */
-	livePlayerFix = function() {
-		// Using an if statement to check the class
-		if (body.classList.contains( 'logged-in' )) {
-			livePlayer.style.top = wpAdminHeight + 'px';
+	function getScrollPosition() {
+		scrollObject = {
+			x: window.pageXOffset,
+			y: window.pageYOffset
+		};
+
+		if( scrollObject.y === 0 ) {
+			if ( body.classList.contains( 'logged-in' ) ) {
+				livePlayer.style.top = headerHeight + wpAdminHeight + 'px';
+			} else {
+				livePlayer.style.top = headerHeight + 'px';
+			}
+			livePlayer.style.height = windowHeight - headerHeight + 'px';
+			livePlayer.classList.remove( 'live-player--fixed' );
+			livePlayer.classList.add( 'live-player--init' );
+		} else if ( scrollObject.y >= 1 && scrollObject.y <= headerHeight ){
+			livePlayer.style.height = '100%';
+			livePlayerInit();
+		} else if ( scrollObject.y >= headerHeight ) {
+			if ( body.classList.contains( 'logged-in' ) ) {
+				livePlayer.style.top = wpAdminHeight + 'px';
+			} else {
+				livePlayer.style.top = '0px';
+			}
+			livePlayer.style.height = windowHeight + 'px';
+			livePlayer.classList.remove( 'live-player--init' );
+			livePlayer.classList.add( 'live-player--fixed' );
 		} else {
-			livePlayer.style.top = '0px';
+			livePlayer.style.height = '100%';
 		}
-		livePlayer.classList.remove( 'live-player--init' );
-		livePlayer.classList.add( 'live-player--fixed' );
-	};
+	}
 
 	/**
 	 * adds a class to the live player that causes it to return to it's original state while also removing the class
 	 * that causes the live player to become fixed to the top of the window
 	 */
-	livePlayerInit = function() {
+	function livePlayerInit() {
 		if (body.classList.contains( 'logged-in' )) {
 			livePlayer.style.top = headerHeight + wpAdminHeight + 'px';
 		} else {
@@ -45,45 +62,7 @@
 		}
 		livePlayer.classList.remove( 'live-player--fixed' );
 		livePlayer.classList.add( 'live-player--init' );
-	};
-
-	/**
-	 * adds headroom.js functionality to the header
-	 *
-	 * @type {Window.Headroom}
-	 */
-	headroom = new Headroom( header, {
-		"offset": headerHeight,
-		"tolerance": {
-			"up": 0,
-			"down": 0
-		},
-		"classes": {
-			"pinned": "header--pinned",
-			"unpinned": "header--unpinned"
-		},
-		onTop : function() {
-			livePlayerInit();
-		},
-		onNotTop : function() {
-			livePlayerFix();
-		}
-	});
-
-	/**
-	 * Initiates `headroom` if the window size is above 768px
-	 */
-	if ( window.innerWidth >= 768 ) {
-		headroom.init();
 	}
-
-	/**
-	 * Toggles a class to the body when the mobile nav button is clicked
-	 */
-	function toggleNavButton() {
-		body.classList.toggle( 'mobile-nav--open' );
-	}
-	mobileNavButton.addEventListener( 'click', toggleNavButton, false );
 
 	/**
 	 * Toggles a class to the Live Play Stream Select box when the box is clicked
@@ -104,22 +83,38 @@
 		body.classList.toggle( 'live-player--open' );
 	}
 
+	function resizeWindow() {
+		if( window.innerWidth <= 767 ) {
+			onAir.addEventListener( 'click', onAirClick, false );
+			nowPlaying.addEventListener( 'click', nowPlayingClick, false );
+		}
+		if ( window.innerWidth >= 768 ) {
+			window.addEventListener( 'load', livePlayerInit, false );
+		}
+	}
+
 	if( window.innerWidth <= 767 ) {
 		onAir.addEventListener( 'click', onAirClick, false );
 		nowPlaying.addEventListener( 'click', nowPlayingClick, false );
 	}
 
-	/**
-	 * A fail-safe for when the browser window is resized
-	 */
+	if ( window.innerWidth >= 768 ) {
+		window.addEventListener( 'load', livePlayerInit, false );
+	}
+
+	var scrollDebounce = _.debounce(getScrollPosition, 100),
+		scrollThrottle = _.throttle(getScrollPosition, 100),
+		resizeDebounce = _.debounce(resizeWindow, 100),
+		resizeThrottle = _.throttle(resizeWindow, 100);
+
+	window.addEventListener( 'scroll', function() {
+		scrollDebounce();
+		scrollThrottle();
+	}, false );
 	window.addEventListener( 'resize', function() {
-		if( window.innerWidth <= 767 ) {
-			onAir.addEventListener( 'click', onAirClick, false );
-			nowPlaying.addEventListener( 'click', nowPlayingClick, false );
-		}
-		if( window.innerWidth >= 768 ) {
-			headroom.init();
-		}
-	});
+		resizeDebounce();
+		resizeThrottle();
+
+	}, false);
 
 })();
