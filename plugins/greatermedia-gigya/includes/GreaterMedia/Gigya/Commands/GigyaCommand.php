@@ -3,6 +3,8 @@
 namespace GreaterMedia\Gigya\Commands;
 
 use GreaterMedia\Gigya\FakeProfiles\FakeGigyaUser;
+use GreaterMedia\Gigya\GigyaRequest;
+use GreaterMedia\Gigya\Schema\AccountSchema;
 use Faker\Factory;
 
 /**
@@ -87,6 +89,30 @@ class GigyaCommand extends \WP_CLI_Command {
 
 		file_put_contents( $file, ']', FILE_APPEND );
 		\WP_CLI::success( "Creating $count fake users in Gigya ... DONE" );
+	}
+
+	public function set_account_schema( $args, $opts ) {
+		$schema  = new AccountSchema();
+		$request = new GigyaRequest( null, null, 'accounts.setSchema' );
+
+		try {
+			$schema->update( $request );
+			\WP_CLI::success( 'Updated Gigya Account Schema' );
+		} catch ( \Exception $err ) {
+			\WP_CLI::error( $err->getMessage() );
+		}
+	}
+
+	public function get_account_schema( $args, $opts ) {
+		$schema  = new AccountSchema();
+		$request = new GigyaRequest( null, null, 'accounts.getSchema' );
+
+		try {
+			$schema_text = $schema->fetch( $request );
+			\WP_CLI::log( $schema_text );
+		} catch ( \Exception $err ) {
+			\WP_CLI::error( $err->getMessage() );
+		}
 	}
 
 	public function reset_users( $args, $opts ) {
