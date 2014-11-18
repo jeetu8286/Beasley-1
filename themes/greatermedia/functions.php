@@ -194,9 +194,7 @@ function greatermedia_scripts_styles() {
 		wp_enqueue_script(
 			'greatermedia_scroll',
 			get_template_directory_uri() . "/assets/js/src/greater_media_scroll.js",
-			array(
-				'underscore'
-			),
+			array(),
 			GREATERMEDIA_VERSION,
 			true
 		);
