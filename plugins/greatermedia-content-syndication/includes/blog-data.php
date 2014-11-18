@@ -16,7 +16,6 @@ class BlogData {
 	}
 
 	public static function run( $syndication_id ) {
-
 			$result = self::QueryContentSite( $syndication_id );
 
 			$taxonomy_names = get_object_taxonomies( 'post', 'objects' );
@@ -41,6 +40,7 @@ class BlogData {
 					, $defaults
 					, $single_post['featured']
 					, $single_post['attachments']
+					, $single_post['galleries']
 				);
 			}
 	}
@@ -167,12 +167,14 @@ class BlogData {
 			$metas	= get_metadata( $post_type, $single_result->ID, true );
 			$media = get_attached_media( 'image', $single_result->ID );
 			$featured = wp_get_attachment_image_src( get_post_thumbnail_id( $single_result->ID ), 'full' );
+			$galleries = get_post_galleries( $single_result->ID, false );
 
 			$result[] = array(
 				'post_obj'      =>  $single_result,
 				'post_metas'    =>  $metas,
 				'attachments'   =>  $media,
-				'featured'      =>  $featured[0]
+				'featured'      =>  $featured[0],
+				'galleries'      =>  $galleries
 			);
 		}
 
@@ -188,10 +190,11 @@ class BlogData {
 	 * @param array  $metas
 	 * @param array  $defaults
 	 * @param string $featured
-	 * @param array $attachments
+	 * @param array  $attachments
+	 *
+	 * @return int|\WP_Error
 	 */
-	public static function ImportPosts( $post, $metas = array(), $defaults, $featured = null, $attachments = array() ) {
-		global $wpdb;
+	public static function ImportPosts( $post, $metas = [], $defaults, $featured = null, $attachments = [], $galleries = [] ) {
 
 		$post_name = sanitize_title( $post->post_name );
 		$post_title = sanitize_text_field( $post->post_title );
@@ -273,12 +276,13 @@ class BlogData {
 			}
 
 			if( !is_null( $attachments ) ) {
-
 				self::ImportAttachedImages( $post_id, $attachments );
-
 			}
+
+			self::ReplaceGalleryID( $post_id, $galleries );
 		}
 
+		return $post_id;
 	}
 
 	/**
@@ -384,6 +388,49 @@ class BlogData {
 		}
 
 		return $id;
+	}
+
+	private static function ReplaceGalleryID( $post_id, $galleries = [] ) {
+
+		// get post content
+		$post = get_post( $post_id);
+		$content = $post->post_content;
+
+		if( !empty( $galleries ) ) {
+			foreach ( $galleries as $gallery ) {
+				$new_gallery = '[gallery ids="';
+				$old_ids     = explode( ",", $gallery["ids"] );
+				foreach ( $gallery['src'] as $index => $image_src ) {
+					$meta_query_args = array(
+						'meta_key'   => 'syndication_attachment_old_url',
+						'meta_value' => esc_url_raw( $image_src ),
+						'post_type'  => 'attachment',
+					);
+
+					$existing = get_posts( $meta_query_args );
+
+					if ( ! empty( $existing ) ) {
+						$new_gallery .= $existing[0]->ID . ",";
+					} else {
+						$new_id = self::ImportMedia( 0, $image_src, false, $old_ids[ $index ] );
+						$new_gallery .= $new_id . ",";
+					}
+				}
+
+				$new_gallery .= "\"]";
+
+				// replace old gallery with new gallery
+				$content = str_replace( '[gallery ids="' . $gallery["ids"] . '"]', $new_gallery, $content );
+
+				// update new post
+				wp_update_post(
+					array(
+						'ID'            =>  $post_id,
+						'post_content'  =>  $content
+					)
+				);
+			}
+		}
 	}
 }
 
