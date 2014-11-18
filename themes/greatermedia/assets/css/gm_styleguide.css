@@ -500,9 +500,10 @@ img {
       width: 84.121892542101%; } }
 
 .content, .featured-artist, .featured-content {
-  width: 100%;
+  width: 83.889418493804%;
   padding-top: 2em;
-  padding-bottom: 2em; }
+  padding-bottom: 2em;
+  margin: 0 8.055290753098%; }
 
 .live-player {
   position: fixed;
