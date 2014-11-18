@@ -536,17 +536,11 @@ img {
   @media screen and (min-width: 1400px) {
     .live-player {
       right: -webkit-calc(50% - 700px);
-      right: calc(50% - 700px);
-      width: 15.625em; } }
+      right: calc(50% - 700px); } }
 
 @media screen and (min-width: 782px) {
   .logged-in .live-player {
     top: 270px; } }
-@media screen and (min-width: 1400px) {
-  .logged-in .live-player {
-    right: -webkit-calc(50% - 700px);
-    right: calc(50% - 700px);
-    width: 15.625em; } }
 
 body {
   line-height: 2;

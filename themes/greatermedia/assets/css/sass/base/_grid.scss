@@ -86,16 +86,11 @@ img {
 	}
 	@include bp(x-large) {
 		@include calc(right, '50% - 700px');
-		width: $live-player;
 	}
 }
 
 .logged-in .live-player {
 	@include media(min-width 782px) {
 		top: 270px;
-	}
-	@include bp(x-large) {
-		@include calc(right, '50% - 700px');
-		width: $live-player;
 	}
 }
