@@ -1,7 +1,10 @@
 // Reusable Post Classes
 .hentry {
-	margin-bottom: 90px;
+	margin-bottom: 58px;
 	overflow: auto;
+	@include bp(medium) {
+		margin-bottom: 90px;
+	}
 }
 
 // Thumbnail
@@ -37,6 +40,7 @@
 // Titles
 .entry__title {
 	margin: 12px 0 0;
+	font-size: 1.875em;
 }
 
 // Entry Footer

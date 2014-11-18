@@ -38,7 +38,6 @@ img {
 
 .container, %container {
 	@include outer-container;
-	margin: 0 18px;
 }
 
 .main, %main {
@@ -52,10 +51,14 @@ img {
 }
 
 .content, %content {
-	width: 83.889418493804%;
+	width: 85.833333333333%;
 	padding-top: 2em;
 	padding-bottom: 2em;
-	margin: 0 8.055290753098%;
+	margin: 0 7.0833333333335%;
+	@include bp(medium) {
+		width: 83.889418493804%;
+		margin: 0 8.055290753098%;
+	}
 }
 
 .live-player{
