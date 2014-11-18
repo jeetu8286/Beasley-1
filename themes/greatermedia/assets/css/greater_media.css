@@ -731,7 +731,7 @@ p {
   background-color: #000000;
   cursor: pointer;
   z-index: 2; }
-  @media screen and (min-width: 1024px) {
+  @media screen and (min-width: 768px) {
     .mobile-nav__toggle {
       display: none; } }
 
@@ -1001,12 +1001,12 @@ p {
   line-height: 1; }
   .header__logo:last-child {
     margin-right: 0; }
-  @media screen and (min-width: 1024px) {
+  @media screen and (min-width: 768px) {
     .header__logo {
       float: left;
       display: block;
-      margin-right: 2.35765%;
-      width: 6.17215%;
+      margin-right: 3.57866%;
+      width: 9.36867%;
       width: auto; }
       .header__logo:last-child {
         margin-right: 0; } }
