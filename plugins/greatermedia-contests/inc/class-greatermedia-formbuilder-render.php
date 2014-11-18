@@ -238,6 +238,8 @@ class GreaterMediaFormbuilderRender {
 				'class' => 1,
 			);
 
+			$tags['legend'] = array();
+
 			$tags['p'] = array(
 				'class' => 1,
 			);
@@ -667,7 +669,75 @@ class GreaterMediaFormbuilderRender {
 	protected static function render_email( $post_id, stdClass $field ) {
 		return self::render_input_tag( 'email', $post_id, $field );
 	}
-	
+
+	protected static function render_price( $post_id, stdClass $field ) {
+
+		$special_attributes = array(
+			'step'    => '0.01',
+			'pattern' => '\d+(\.\d{2})?',
+		);
+
+		return self::render_input_tag( 'text', $post_id, $field, $special_attributes );
+	}
+
+	/**
+	 * Render an email input
+	 *
+	 * @param int      $post_id
+	 * @param stdClass $field
+	 *
+	 * @return string html
+	 */
+	protected static function render_address( $post_id, stdClass $field ) {
+
+		$html = '';
+
+		$html .= '<fieldset>';
+
+		$html .= self::render_legend( $field );
+		$description = self::render_description( $field );
+
+		$html .= '<div>';
+
+		$address_field = clone( $field );
+		$address_field->cid .= '[address]';
+		$address_field->label = 'Address';
+		unset( $address_field->field_options->description );
+		$html .= self::render_input_tag( 'text', $post_id, $address_field );
+
+		$city_field = clone( $field );
+		$city_field->cid .= '[city]';
+		$city_field->label = 'City';
+		unset( $city_field->field_options->description );
+		$html .= self::render_input_tag( 'text', $post_id, $city_field );
+
+		$state_field = clone( $field );
+		$state_field->cid .= '[state]';
+		$state_field->label = 'State';
+		unset( $state_field->field_options->description );
+		$state_field->field_options->options = self::get_us_states();
+		$html .= self::render_dropdown( $post_id, $state_field );
+
+		$postal_code_field = clone( $field );
+		$postal_code_field->cid .= '[postal_code]';
+		$postal_code_field->label = 'Zip Code/Postal Code';
+		unset( $postal_code_field->field_options->description );
+		$special_attributes = array(
+			// 5-character zip with optional zip+4 separated by space or dash
+			'pattern' => '^\d{5}(?:[-\s]\d{4})?$',
+		);
+		$html .= self::render_input_tag( 'number', $post_id, $postal_code_field, $special_attributes );
+
+		$html .= '</div>';
+
+		$html .= $description;
+
+		$html .= '</fieldset>';
+
+		return $html;
+
+	}
+
 	/**
 	 * Generic input field renderer (used by the more specific rendering functions)
 	 *
@@ -911,6 +981,84 @@ class GreaterMediaFormbuilderRender {
 		return $html;
 	}
 
+	/**
+	 * Build an array of US states for use when rendering address fields
+	 *
+	 * @return array abbreviation => stdClass(), where value is an option for rendering by render_dropdown()
+	 */
+	protected static function get_us_states() {
+
+		static $state_data;
+
+		if ( ! isset( $state_data ) ) {
+
+			$state_data = array();
+
+			$states = array(
+				'AL' => 'Alabama',
+				'AK' => 'Alaska',
+				'AZ' => 'Arizona',
+				'AR' => 'Arkansas',
+				'CA' => 'California',
+				'CO' => 'Colorado',
+				'CT' => 'Connecticut',
+				'DE' => 'Delaware',
+				'FL' => 'Florida',
+				'GA' => 'Georgia',
+				'HI' => 'Hawaii',
+				'ID' => 'Idaho',
+				'IL' => 'Illinois',
+				'IN' => 'Indiana',
+				'IA' => 'Iowa',
+				'KS' => 'Kansas',
+				'KY' => 'Kentucky',
+				'LA' => 'Louisiana',
+				'ME' => 'Maine',
+				'MD' => 'Maryland',
+				'MA' => 'Massachusetts',
+				'MI' => 'Michigan',
+				'MN' => 'Minnesota',
+				'MS' => 'Mississippi',
+				'MO' => 'Missouri',
+				'MT' => 'Montana',
+				'NE' => 'Nebraska',
+				'NV' => 'Nevada',
+				'NH' => 'New Hampshire',
+				'NJ' => 'New Jersey',
+				'NM' => 'New Mexico',
+				'NY' => 'New York',
+				'NC' => 'North Carolina',
+				'ND' => 'North Dakota',
+				'OH' => 'Ohio',
+				'OK' => 'Oklahoma',
+				'OR' => 'Oregon',
+				'PA' => 'Pennsylvania',
+				'RI' => 'Rhode Island',
+				'SC' => 'South Carolina',
+				'SD' => 'South Dakota',
+				'TN' => 'Tennessee',
+				'TX' => 'Texas',
+				'UT' => 'Utah',
+				'VT' => 'Vermont',
+				'VA' => 'Virginia',
+				'WA' => 'Washington',
+				'WV' => 'West Virginia',
+				'WI' => 'Wisconsin',
+				'WY' => 'Wyoming',
+			);
+
+
+			foreach ( $states as $abbreviation => $label ) {
+				$state_data[ $abbreviation ]          = new stdClass();
+				$state_data[ $abbreviation ]->label   = $label;
+				$state_data[ $abbreviation ]->checked = false;
+			}
+
+		}
+
+		return $state_data;
+
+	}
 }
 
 GreaterMediaFormbuilderRender::register_actions();
