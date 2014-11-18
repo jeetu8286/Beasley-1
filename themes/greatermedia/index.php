@@ -58,8 +58,8 @@ get_header();
 							<?php
 								$category = get_the_category();
 
-								if($category[0]){
-									echo '<a href="'.get_category_link($category[0]->term_id ).'" class="entry__footer--category">'.$category[0]->cat_name.'</a>';
+								if( isset( $category[0] ) ){
+									echo '<a href="' . esc_url( get_category_link($category[0]->term_id ) ) . '" class="entry__footer--category">' . esc_html( $category[0]->cat_name ) . '</a>';
 								}
 							?>
 
