@@ -21,29 +21,6 @@
 		liveLinks = document.getElementById( 'live-links'),
 		windowHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
 
-
-	function getScrollXY() {
-		var x = 0, y = 0;
-		if( typeof( window.pageYOffset ) == 'number' ) {
-			// Netscape
-			x = window.pageXOffset;
-			y = window.pageYOffset;
-		} else if( document.body && ( document.body.scrollLeft || document.body.scrollTop ) ) {
-			// DOM
-			x = document.body.scrollLeft;
-			y = document.body.scrollTop;
-		} else if( document.documentElement && ( document.documentElement.scrollLeft || document.documentElement.scrollTop ) ) {
-			// IE6 standards compliant mode
-			x = document.documentElement.scrollLeft;
-			y = document.documentElement.scrollTop;
-		}
-		return [x, y];
-	}
-
-	var xy = getScrollXY();
-	var x = xy[0];
-	var y = xy[1];
-
 	/**
 	 * adds a class to the live player that causes it to become fixed to the top of the window while also removing the
 	 * class that has the initial live player state
@@ -67,21 +44,32 @@
 	livePlayerInit = function() {
 		if (body.classList.contains( 'logged-in' )) {
 			livePlayer.style.top = headerHeight + wpAdminHeight + 'px';
+			livePlayer.style.height = windowHeight - headerHeight - wpAdminHeight + 'px';
 		} else {
 			livePlayer.style.top = headerHeight + 'px';
+			livePlayer.style.height = windowHeight - headerHeight + 'px';
 		}
 		livePlayer.classList.remove( 'live-player--fixed' );
 		livePlayer.classList.add( 'live-player--init' );
-		livePlayer.style.height = windowHeight - headerHeight - wpAdminHeight + 'px';
 	};
 
 	function lpScroll() {
-		if ( header.classList.contains( 'header--pinned' )) {
-			livePlayer.style.height = windowHeight  - headerHeight - wpAdminHeight + 'px';
-		} else if ( header.classList.contains( 'header--unpinned' ) ) {
-			livePlayer.style.height = windowHeight  - wpAdminHeight + 'px';
+		if (body.classList.contains( 'logged-in' )) {
+			if (header.classList.contains('header--pinned')) {
+				livePlayer.style.height = windowHeight - headerHeight - wpAdminHeight + 'px';
+			} else if (header.classList.contains('header--unpinned')) {
+				livePlayer.style.height = windowHeight - wpAdminHeight + 'px';
+			} else {
+				livePlayer.style.height = '100%';
+			}
 		} else {
-			livePlayer.style.height = '100%';
+			if (header.classList.contains('header--pinned')) {
+				livePlayer.style.height = windowHeight - headerHeight + 'px';
+			} else if (header.classList.contains('header--unpinned')) {
+				livePlayer.style.height = windowHeight + 'px';
+			} else {
+				livePlayer.style.height = '100%';
+			}
 		}
 	}
 	window.addEventListener( 'scroll', lpScroll, false );
