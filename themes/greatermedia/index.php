@@ -25,19 +25,31 @@ get_header();
 
 				<div class="highlights__community--item">
 
-					<img src="http://placehold.it/356x356&text=image">
+					<div class="highlights__community--thumb">
+						<img src="http://placehold.it/356x356&text=image">
+					</div>
+
+					<h3 class="highlights__community--title"><?php _e( 'title', 'greatermedia' ); ?></h3>
 
 				</div>
 
 				<div class="highlights__community--item">
 
-					<img src="http://placehold.it/356x356&text=image">
+					<div class="highlights__community--thumb">
+						<img src="http://placehold.it/356x356&text=image">
+					</div>
+
+					<h3 class="highlights__community--title"><?php _e( 'title', 'greatermedia' ); ?></h3>
 
 				</div>
 
 				<div class="highlights__community--item">
 
-					<img src="http://placehold.it/356x356&text=image">
+					<div class="highlights__community--thumb">
+						<img src="http://placehold.it/356x356&text=image">
+					</div>
+
+					<h3 class="highlights__community--title"><?php _e( 'title', 'greatermedia' ); ?></h3>
 
 				</div>
 
