@@ -8,7 +8,7 @@
 ?>
 <section class="entry--video__meta" itemprop="articleBody">
 
-	<time datetime="<?php the_time( 'c' ); ?>" class="entry__date"><?php the_time( 'M. j, Y' ); ?></time>
+	<time datetime="<?php the_time( 'c' ); ?>" class="entry__date"><?php the_time( 'j F' ); ?></time>
 
 	<h2 class="entry__title"><?php the_title(); ?></h2>
 

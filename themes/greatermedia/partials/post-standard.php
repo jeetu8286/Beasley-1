@@ -22,7 +22,7 @@
 
 <section class="entry--standard__meta">
 
-	<time datetime="<?php the_time( 'c' ); ?>" class="entry__date"><?php the_time( 'M. j, Y' ); ?></time>
+	<time datetime="<?php the_time( 'c' ); ?>" class="entry__date"><?php the_time( 'j F' ); ?></time>
 
 	<h2 class="entry__title" itemprop="headline"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
 
