@@ -94,3 +94,45 @@
 		height: 1440px;
 	}
 }
+
+.popup-wrapper {
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 99999;
+	background-color: rgba(255, 255, 255, 0.75);
+
+	.popup {
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		width: 600px;
+		height: 242px;
+		margin-left: -300px;
+		margin-top: -121px;
+		padding: 20px;
+		border: 1px solid #bbb;
+		box-shadow: 0 0 15px #ddd;
+		background-color: white;
+
+		.title {
+			margin-top: 0;
+			margin-bottom: 1.5em;
+		}
+		
+		.button-secondary {
+			width: 155px;
+			text-align: center;
+			margin-right: 10px;
+		}
+
+		.footer {
+			text-align: right;
+		}
+
+		@include box-sizing(border-box);
+	}
+
+}

@@ -171,8 +171,32 @@ function gmrs_delete_show_episode() {
 		wp_die( 'The episode was not found.' );
 	}
 
-	$deleted = wp_delete_post( $episode_id, true );
-	
+	$deleted = false;
+	if ( filter_input( INPUT_GET, 'all', FILTER_VALIDATE_BOOLEAN ) ) {
+		$query = new WP_Query( array(
+			'post_type'           => ShowsCPT::EPISODE_CPT,
+			'post_status'         => 'any',
+			'post_parent'         => $episode->post_parent,
+			'posts_per_page'      => 500,
+			'no_found_rows'       => true,
+			'ignore_sticky_posts' => true,
+			'fields'              => 'ids',
+			'date_query'          => array(
+				array(
+					'after'     => $episode->post_date_gmt,
+					'inclusive' => true,
+					'column'    => 'post_date_gmt'
+				),
+			),
+		) );
+
+		while ( $query->have_posts() ) {
+			$deleted = wp_delete_post( $query->next_post(), true );
+		}
+	} else {
+		$deleted = wp_delete_post( $episode_id, true );
+	}
+
 	$redirect = add_query_arg( array( 'created' => false, 'deleted' => $deleted ? 1 : 0 ), wp_get_referer() );
 	wp_redirect( $redirect );
 	exit;
@@ -317,7 +341,7 @@ function gmrs_render_episode_schedule_page() {
 										
 										<div>
 											<?php $delete_url = 'admin.php?action=gmr_delete_show_episode&episode=' . $episode->ID ?>
-											<a href="<?php echo esc_url( wp_nonce_url( $delete_url, 'gmr_delete_show_episode_' . $episode->ID ) ) ?>" onclick="return showNotice.warn();">Delete</a>
+											<a class="remove-show" href="<?php echo esc_url( wp_nonce_url( $delete_url, 'gmr_delete_show_episode_' . $episode->ID ) ) ?>">Remove</a>
 										</div>
 									</div><?php
 								endfor;
@@ -327,6 +351,27 @@ function gmrs_render_episode_schedule_page() {
 				</tr>
 			</tbody>
 		</table>
+
+		<script id="schedule-remove-popup" type="text/html">
+			<div class="popup-wrapper">
+				<div class="popup">
+					<h1 class="title">Delete recurring show</h1>
+
+					<p>Would you like to delete only this instance of the show, or all shows in this series?</p>
+					<p>
+						<a href="{url}" class="button button-secondary">Only this instance</a>
+						All other shows in this series will remain.
+					</p>
+					<p>
+						<a href="{url}&all=true" class="button button-secondary">All shows in the series</a>
+						All next shows in the series will be deleted.
+					</p>
+					<p class="footer">
+						<a href="#" class="button button-cancel">Cancel this change</a>
+					</p>
+				</div>
+			</div>
+		</script>
 	</div><?php
 }
 
