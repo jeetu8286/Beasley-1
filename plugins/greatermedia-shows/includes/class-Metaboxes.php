@@ -17,11 +17,11 @@ class GMR_Show_Metaboxes {
 		add_action( 'post_submitbox_misc_actions', array( $this, 'post_submitbox_misc_actions' ) );
 		add_action( 'save_post', array( $this, 'save_box' ), 20 );
 
-		add_action( 'show_user_profile', array( __CLASS__, 'admin_user_meta_fields' ), 10, 1 );
-		add_action( 'edit_user_profile', array( __CLASS__, 'admin_user_meta_fields' ), 10, 1 );
+		add_action( 'show_user_profile', array( $this, 'admin_user_meta_fields' ), 10, 1 );
+		add_action( 'edit_user_profile', array( $this, 'admin_user_meta_fields' ), 10, 1 );
 
-		add_action( 'personal_options_update', array( __CLASS__, 'admin_save_user_meta_fields' ), 10, 1 );
-		add_action( 'edit_user_profile_update', array( __CLASS__, 'admin_save_user_meta_fields' ), 10, 1 );
+		add_action( 'personal_options_update', array( $this, 'admin_save_user_meta_fields' ), 10, 1 );
+		add_action( 'edit_user_profile_update', array( $this, 'admin_save_user_meta_fields' ), 10, 1 );
 	}
 
 	/**
@@ -145,46 +145,38 @@ class GMR_Show_Metaboxes {
 	 *
 	 * @param  WP_User $user The user being edited
 	 */
-	public static function admin_user_meta_fields( $user ) {
-		$tax = get_taxonomy( ShowsCPT::SHOW_TAXONOMY );
+	public function admin_user_meta_fields( $user ) {
 		$terms = get_terms( ShowsCPT::SHOW_TAXONOMY, array( 'hide_empty' => false ) );
 		$current_show = get_user_option( 'show_taxonomy_id', intval( $user->ID ) );
-	?>
-		<h3><?php esc_html_e( 'Show Info', 'greatermedia' ); ?></h3>
+
+		?><h3><?php esc_html_e( 'Show Info', 'greatermedia' ); ?></h3>
 
 		<table class="form-table">
 			<tbody>
 				<tr>
 					<th><label for="user-show"><?php esc_html_e( 'Show', 'greatermedia' ); ?></label></th>
 					<td>
-	<?php
-		if ( ! empty( $terms ) ) {
-			$args = array(
-				'show_option_all'   => __( 'None', 'greatermedia' ),
-				'hierarchical'       => false,
-				'name'               => 'user_show',
-				'id'                 => 'user-show',
-				'class'              => '',
-				'orderby'            => 'name',
-				'taxonomy'           => ShowsCPT::SHOW_TAXONOMY,
-				'hide_if_empty'      => true,
-				'selected'			 => intval( $current_show ),
-			);
-
-			wp_dropdown_categories( $args );
-	?>
-			<br>
-			<span class="description"><?php esc_html_e( 'Choose the show this user is associated with.', 'greatermedia' ); ?></span>
-	<?php
-		} else {
-			esc_html_e( 'There are no shows available.', 'greatermedia' );
-		}
-	?>
+						<?php if ( ! empty( $terms ) ) : ?>
+							<?php wp_dropdown_categories( array(
+								'show_option_all' => __( 'None', 'greatermedia' ),
+								'hierarchical'    => false,
+								'name'            => 'user_show',
+								'id'              => 'user-show',
+								'class'           => '',
+								'orderby'         => 'name',
+								'taxonomy'        => ShowsCPT::SHOW_TAXONOMY,
+								'hide_if_empty'   => true,
+								'selected'        => intval( $current_show ),
+							) ); ?>
+							<br>
+							<span class="description"><?php esc_html_e( 'Choose the show this user is associated with.', 'greatermedia' ); ?></span>
+						<?php else : ?>
+							<?php esc_html_e( 'There are no shows available.', 'greatermedia' ); ?>
+						<?php endif; ?>
 					</td>
 				</tr>
 			</tbody>
-		</table>
-	<?php
+		</table><?php
 	}
 
 	/**
@@ -192,18 +184,18 @@ class GMR_Show_Metaboxes {
 	 *
 	 * @param  int $user_id The user ID
 	 */
-	public static function admin_save_user_meta_fields( $user_id ) {
+	public function admin_save_user_meta_fields( $user_id ) {
 		if ( ! current_user_can( 'edit_user', $user_id ) ) {
 			return;
 		}
 
-		if ( isset( $_POST[ 'user_show' ] ) && 0 < intval( $_POST[ 'user_show' ] ) ) {
-			$term = get_term_by( 'id', intval( $_POST[ 'user_show' ] ), ShowsCPT::SHOW_TAXONOMY );
-
+		$user_show = filter_input( INPUT_POST, 'user_show', FILTER_VALIDATE_INT );
+		if ( 0 < $user_show ) {
+			$term = get_term_by( 'id', $user_show, ShowsCPT::SHOW_TAXONOMY );
 			if ( false !== $term ) {
 				update_user_option( $user_id, 'show_taxonomy_id', $term->term_id, false );
 			}
-		} else if ( 0 === intval( $_POST[ 'user_show' ] ) ) {
+		} else {
 			// Remove the show association
 			delete_user_option( $user_id, 'show_taxonomy_id', false );
 		}

@@ -118,7 +118,7 @@ class GreaterMediaContests {
 
 		$seeded = get_option( 'contest_type_seeded', false );
 
-		if ( true === $seeded ) {
+		if ( $seeded ) {
 			return;
 		}
 
