@@ -1101,7 +1101,7 @@ p {
     margin-right: 0; }
 
 .highlights {
-  padding: 34px 0;
+  padding: 34px 3.95614871306%;
   background-color: #f1f1f2; }
 
 .highlights__heading {
@@ -1120,8 +1120,8 @@ p {
 .highlights__community--item {
   position: relative;
   float: left;
-  width: 195px;
-  margin-right: 20px;
+  width: 47.328244274809%;
+  margin-right: 5.343511450382%;
   overflow: auto; }
   @media screen and (min-width: 768px) {
     .highlights__community--item {
