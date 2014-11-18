@@ -33,7 +33,7 @@
 		var previous = 0;
 		if (!options) options = {};
 		var later = function() {
-			previous = options.leading === false ? 0 : _.now();
+			previous = options.leading === false ? 0 : _now();
 			timeout = null;
 			result = func.apply(context, args);
 			if (!timeout) context = args = null;
