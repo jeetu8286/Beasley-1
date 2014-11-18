@@ -489,13 +489,13 @@ img {
     display: table;
     clear: both; }
 
-.main, .featured {
+.main, .featured, .highlights {
   float: left;
   width: 100%;
   margin: 0;
   background-color: #ffffff; }
   @media screen and (min-width: 768px) {
-    .main, .featured {
+    .main, .featured, .highlights {
       width: 84.121892542101%; } }
 
 .content, .featured-artist, .featured-content {
@@ -1105,6 +1105,71 @@ p {
     color: #ffffff; }
   .featured-content--btn:last-of-type {
     margin-right: 0; }
+
+.highlights {
+  padding: 34px 0;
+  background-color: #f1f1f2; }
+
+.highlights__heading {
+  font-size: 1.125em;
+  font-weight: lighter;
+  color: #929497; }
+
+.highlights__community {
+  float: left;
+  width: 100%; }
+  @media screen and (min-width: 768px) {
+    .highlights__community {
+      width: 59.834368530021%;
+      margin-right: 2.277432712215%; } }
+
+.highlights__community--item {
+  float: left;
+  width: 195px;
+  margin-right: 20px;
+  overflow: auto; }
+  @media screen and (min-width: 768px) {
+    .highlights__community--item {
+      width: 30.795847750865%;
+      margin-right: 3.806228373702%; } }
+
+.highlights__community--item:nth-of-type(3) {
+  display: none; }
+  @media screen and (min-width: 768px) {
+    .highlights__community--item:nth-of-type(3) {
+      display: block;
+      margin-right: 0; } }
+
+.highlights__community--item:nth-of-type(2) {
+  margin-right: 0; }
+  @media screen and (min-width: 768px) {
+    .highlights__community--item:nth-of-type(2) {
+      margin-right: 3.806228373702%; } }
+
+.highlights__events {
+  float: left;
+  width: 100%; }
+  @media screen and (min-width: 768px) {
+    .highlights__events {
+      width: 37.888198757764%; } }
+
+.highlights__event--item {
+  width: 100%;
+  margin-bottom: 20px;
+  background-color: #ffffff;
+  overflow: auto; }
+
+.highlights__event--item:last-of-type {
+  margin-bottom: 0; }
+
+.highlights__event--thumb {
+  float: left;
+  width: 21.311475409836%;
+  margin-right: 4.918032786885%; }
+
+.highlights__event--meta {
+  float: left;
+  width: 73.770491803279%; }
 
 .header {
   position: relative;

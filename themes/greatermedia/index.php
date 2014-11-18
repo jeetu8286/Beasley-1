@@ -15,6 +15,68 @@ get_header();
 
 	?>
 
+	<section class="highlights">
+
+		<div class="container">
+
+			<div class="highlights__community">
+
+				<h2 class="highlights__heading"><?php bloginfo( 'name' ); ?><?php _e( ' Community Highlights', 'greatermedia' ); ?></h2>
+
+				<div class="highlights__community--item">
+
+					<img src="http://placehold.it/356x356&text=image">
+
+				</div>
+
+				<div class="highlights__community--item">
+
+					<img src="http://placehold.it/356x356&text=image">
+
+				</div>
+
+				<div class="highlights__community--item">
+
+					<img src="http://placehold.it/356x356&text=image">
+
+				</div>
+
+			</div>
+
+			<div class="highlights__events">
+
+				<h2 class="highlights__heading"><?php _e( 'Upcoming', 'greatermedia' ); ?></h2>
+
+				<div class="highlights__event--item">
+					
+					<div class="highlights__event--thumb">
+						<img src="http://placehold.it/156x156&text=image">
+					</div>
+					
+					<div class="highlights__event--meta">
+						test
+					</div>
+
+				</div>
+
+				<div class="highlights__event--item">
+
+					<div class="highlights__event--thumb">
+						<img src="http://placehold.it/156x156&text=image">
+					</div>
+
+					<div class="highlights__event--meta">
+						test
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</section>
+
 	<main class="main" role="main">
 
 		<div class="container">

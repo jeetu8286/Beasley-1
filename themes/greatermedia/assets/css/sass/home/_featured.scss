@@ -2,7 +2,7 @@
 	@extend %main;
 	@include position(relative, null null null null);
 	@include padding(3em 0);
-	background: url(../../images/featured-bg.png) repeat center center palette(featured, featured-bg);
+	background: url(../../images/featured-bg.png) repeat center center palette(home, featured-bg);
 	background-size: auto 40%;
 }
 
@@ -12,21 +12,21 @@
 
 .featured-artist--image {
 	@include size(100% null);
-	background-color: palette(featured, featured-bg);
+	background-color: palette(home, featured-bg);
 }
 
 .featured-artist--content {
 	@include size(100% null);
 	@include padding(3em 2em);
 	overflow: auto;
-	background-color: palette(featured, featured-heading-bg);
-	color: palette(featured, featured-text);
+	background-color: palette(home, featured-heading-bg);
+	color: palette(home, featured-text);
 }
 
 .featured-artist--heading {
 	float: left;
 	@include size(100% null);
-	color: palette(featured, featured-heading);
+	color: palette(home, featured-heading);
 	@include bp(large) {
 		@include size(30% null);
 		@include margin(null 5% null null);
@@ -63,7 +63,7 @@
 	@include size(100% 90px);
 	@include margin(null null 3em null);
 	overflow: hidden;
-	background-color: palette(featured, featured-heading-bg);
+	background-color: palette(home, featured-heading-bg);
 	@include bp(small) {
 		@include size(100% 95px);
 		@include margin(null null 3em null);
@@ -109,7 +109,7 @@
 	float: left;
 	@include size(70% null);
 	@include padding(1em 1em 1em 2em);
-	color: palette(featured, featured-text);
+	color: palette(home, featured-text);
 	@include bp(small) {
 		@include size(65% null);
 	}
@@ -144,7 +144,7 @@
 	@include size(40% null);
 	@include margin(null null .25em null);
 	font-size: ms(-2);
-	color: palette(featured, featured-list);
+	color: palette(home, featured-list);
 	@include bp(large) {
 		display: block;
 		@include size(100% null);
