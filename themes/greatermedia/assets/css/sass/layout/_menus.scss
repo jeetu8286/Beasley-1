@@ -16,7 +16,7 @@
 	background-color: palette(base, secondary-bg);
 	cursor: pointer;
 	z-index: 2;
-	@include bp(large) {
+	@include bp(medium) {
 		display: none;
 	}
 }

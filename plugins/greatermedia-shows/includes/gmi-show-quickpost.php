@@ -22,7 +22,16 @@ function qmi_shows_add_quickpost_meta_box( $screen_id ) {
  */
 function gmi_shows_render_quickpost_meta_box( $args ) {
 	require_once ABSPATH . 'wp-admin/includes/meta-boxes.php';
+
+	// set global post object
+	$GLOBALS['post'] = get_post( $args['post_id'] );
+
+	// activate default shows filter
+	add_filter( 'wp_get_object_terms', 'gmi_shows_set_quickpost_defaults' );
+	// render shows metabox
 	post_categories_meta_box( get_post( $args['post_id'] ), array( 'args' => array( 'taxonomy' => ShowsCPT::SHOW_TAXONOMY ) ) );
+	// deactivate default shows filter
+	remove_filter( 'wp_get_object_terms', 'gmi_shows_set_quickpost_defaults' );
 }
 
 /**
@@ -38,4 +47,23 @@ function gmi_shows_filter_quickpost_data( $post ) {
 	}
 
 	return $post;
+}
+
+/**
+ * Sets default shows for the quickpost form.
+ *
+ * @filter wp_get_object_terms
+ * @param array $terms The initial array of shows.
+ * @return array The extended array of shows.
+ */
+function gmi_shows_set_quickpost_defaults( $terms ) {
+	$user_show = get_user_option( 'show_taxonomy_id' );
+	if ( $user_show ) {
+		$term = get_term_by( 'id', $user_show, ShowsCPT::SHOW_TAXONOMY );
+		if ( $term ) {
+			$terms[] = $term->term_id;
+		}
+	}
+	
+	return $terms;
 }
