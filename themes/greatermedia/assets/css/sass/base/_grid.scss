@@ -42,55 +42,19 @@ img {
 }
 
 .main, %main {
+	float: left;
 	width: 100%;
 	margin: 0;
 	background-color: palette(base,  primary-bg);
-	@include bp(large) {
-		width: 82.142857142857%;
-	}
-	@include bp(x-large) {
-		width: $max-width;
+	@include bp(medium) {
+		width: 84.121892542101%;
 	}
 }
 
 .content, %content {
-	@include span-columns(4);
+	width: 100%;
 	padding-top: 2em;
 	padding-bottom: 2em;
-	@include bp(small) {
-		@include span-columns(6);
-	}
-	@include bp(medium) {
-		@include span-columns(8);
-	}
-	@include bp(large) {
-		@include span-columns(12);
-	}
-	@include bp(x-large) {
-		@include span-columns(12);
-		padding-right: 0;
-		padding-left: 0;
-	}
-}
-
-.sidebar, %sidebar {
-	@include span-columns(4);
-	padding: 2em .5em;
-	@include bp(small) {
-		@include span-columns(6);
-	}
-	@include bp(medium) {
-		@include span-columns(2);
-		@include omega;
-	}
-	@include bp(large) {
-		@include span-columns(3);
-	}
-	@include bp(x-large) {
-		@include span-columns(3);
-		padding-right: 0;
-		padding-left: 0;
-	}
 }
 
 .live-player{
@@ -108,7 +72,7 @@ img {
 		bottom: auto;
 		right: 0;
 		left: auto;
-		width: 17.857142857143%;
+		width: 15.878107457899%;
 		height: 100%;
 		padding: 0;
 		@include box-sizing(border-box);

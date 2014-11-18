@@ -7,24 +7,16 @@
  */
 ?>
 
-<section class="entry-standard--content">
+<section class="entry--standard__meta">
 
-	<header class="entry-header">
+	<time datetime="<?php the_time( 'c' ); ?>" class="entry__date"><?php the_time( 'M. j, Y' ); ?></time>
 
-		<h2 class="entry-title" itemprop="headline"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
-
-	</header>
-
-	<section class="entry-content" itemprop="articleBody">
-
-		<?php the_excerpt(); ?>
-
-	</section>
+	<h2 class="entry__title" itemprop="headline"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
 
 </section>
 
 
-<section class="entry-standard--thumbnail">
+<section class="entry--standard__thumbnail">
 
 <?php if ( has_post_thumbnail() ) {
 
