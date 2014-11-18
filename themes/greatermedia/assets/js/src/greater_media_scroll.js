@@ -7,7 +7,9 @@
 (function() {
 	'use strict';
 
-	var body = document.querySelector( 'body' ),
+	var _now,
+
+		body = document.querySelector( 'body' ),
 		mobileNavButton = document.querySelector( '.mobile-nav__toggle' ),
 		header = document.getElementById( 'header' ),
 		headerHeight = header.offsetHeight,
@@ -21,6 +23,72 @@
 		windowHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0),
 		scrollObject = {};
 
+	_now = Date.now || function () {
+			return new Date().getTime();
+		};
+
+	function _throttle(func, wait, options) {
+		var context, args, result;
+		var timeout = null;
+		var previous = 0;
+		if (!options) options = {};
+		var later = function() {
+			previous = options.leading === false ? 0 : _.now();
+			timeout = null;
+			result = func.apply(context, args);
+			if (!timeout) context = args = null;
+		};
+		return function() {
+			var now = _now();
+			if (!previous && options.leading === false) previous = now;
+			var remaining = wait - (now - previous);
+			context = this;
+			args = arguments;
+			if (remaining <= 0 || remaining > wait) {
+				clearTimeout(timeout);
+				timeout = null;
+				previous = now;
+				result = func.apply(context, args);
+				if (!timeout) context = args = null;
+			} else if (!timeout && options.trailing !== false) {
+				timeout = setTimeout(later, remaining);
+			}
+			return result;
+		};
+	}
+
+	function _debounce(func, wait, immediate) {
+		var timeout, args, context, timestamp, result;
+
+		var later = function() {
+			var last = _now() - timestamp;
+
+			if (last < wait && last > 0) {
+				timeout = setTimeout(later, wait - last);
+			} else {
+				timeout = null;
+				if (!immediate) {
+					result = func.apply(context, args);
+					if (!timeout) context = args = null;
+				}
+			}
+		};
+
+		return function() {
+			context = this;
+			args = arguments;
+			timestamp = _now();
+			var callNow = immediate && !timeout;
+			if (!timeout) timeout = setTimeout(later, wait);
+			if (callNow) {
+				result = func.apply(context, args);
+				context = args = null;
+			}
+
+			return result;
+		};
+	}
+
 	function getScrollPosition() {
 		scrollObject = {
 			x: window.pageXOffset,
@@ -30,22 +98,23 @@
 		if( scrollObject.y === 0 ) {
 			if ( body.classList.contains( 'logged-in' ) ) {
 				livePlayer.style.top = headerHeight + wpAdminHeight + 'px';
+				livePlayer.style.height = windowHeight - wpAdminHeight - headerHeight + 'px';
 			} else {
 				livePlayer.style.top = headerHeight + 'px';
+				livePlayer.style.height = windowHeight - headerHeight + 'px';
 			}
-			livePlayer.style.height = windowHeight - headerHeight + 'px';
 			livePlayer.classList.remove( 'live-player--fixed' );
 			livePlayer.classList.add( 'live-player--init' );
 		} else if ( scrollObject.y >= 1 && scrollObject.y <= headerHeight ){
 			livePlayer.style.height = '100%';
-			livePlayerInit();
 		} else if ( scrollObject.y >= headerHeight ) {
 			if ( body.classList.contains( 'logged-in' ) ) {
 				livePlayer.style.top = wpAdminHeight + 'px';
+				livePlayer.style.height = windowHeight - wpAdminHeight + 'px';
 			} else {
 				livePlayer.style.top = '0px';
+				livePlayer.style.height = windowHeight + 'px';
 			}
-			livePlayer.style.height = windowHeight + 'px';
 			livePlayer.classList.remove( 'live-player--init' );
 			livePlayer.classList.add( 'live-player--fixed' );
 		} else {
@@ -58,10 +127,12 @@
 	 * that causes the live player to become fixed to the top of the window
 	 */
 	function livePlayerInit() {
-		if (body.classList.contains( 'logged-in' )) {
+		if ( body.classList.contains( 'logged-in' ) ) {
 			livePlayer.style.top = headerHeight + wpAdminHeight + 'px';
+			livePlayer.style.height = windowHeight - wpAdminHeight - headerHeight + 'px';
 		} else {
 			livePlayer.style.top = headerHeight + 'px';
+			livePlayer.style.height = windowHeight - headerHeight + 'px';
 		}
 		livePlayer.classList.remove( 'live-player--fixed' );
 		livePlayer.classList.add( 'live-player--init' );
@@ -105,10 +176,10 @@
 		window.addEventListener( 'load', livePlayerInit, false );
 	}
 
-	var scrollDebounce = _.debounce(getScrollPosition, 100),
-		scrollThrottle = _.throttle(getScrollPosition, 100),
-		resizeDebounce = _.debounce(resizeWindow, 100),
-		resizeThrottle = _.throttle(resizeWindow, 100);
+	var scrollDebounce = _debounce(getScrollPosition, 100);
+	var scrollThrottle = _throttle(getScrollPosition, 100);
+	var resizeDebounce = _debounce(resizeWindow, 100);
+	var resizeThrottle = _throttle(resizeWindow, 100);
 
 	window.addEventListener( 'scroll', function() {
 		scrollDebounce();
