@@ -6,6 +6,7 @@
 		$('#start-from-date').datepicker({
 			dateFormat : 'M d, yy',
 			minDate: 'now',
+			maxDate: '+1w',
 			altField: '#start-from-date-value',
 			altFormat: 'yy-mm-dd'
 		});
@@ -24,7 +25,7 @@
 		$('.remove-show').click(function () {
 			var link = $(this).attr('href');
 			
-			$('body').append(popup_tmpl.replace(/{url}/g, function(match, key) {
+			$('body').append(popup_tmpl.replace(/{url}/g, function() {
 				return link;
 			}));
 			
