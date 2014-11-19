@@ -18,12 +18,14 @@ class SyndicationCPT {
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_box' ) );
 		add_action( 'post_submitbox_misc_actions', array( $this, 'custom_publish_meta' ) );
 		add_action( 'save_post', array( $this, 'save' ) );
+		add_action( 'manage_subscription_posts_custom_column' , array( $this, 'subscription_column_data' ), 10, 2 );
 
 		add_filter( 'views_edit-' . $this->post_type, array( $this, 'change_status_labels' ), 10, 1);
 		add_filter( 'display_post_states' , array( $this, 'change_state_labels' ), 10, 1);
 		add_filter( 'gettext', array( $this, 'change_publish_button' ), 10, 2 );
 		add_filter( 'post_row_actions', array( $this, 'remove_quick_edit' ), 10, 2);
 		add_filter( 'is_protected_meta', array( $this, 'hide_meta_keys' ), 10, 2);
+		add_filter( 'manage_edit-subscription_columns', array( $this, 'subscription_columns_filter' ),10, 1 );
 
 	}
 
@@ -48,21 +50,57 @@ class SyndicationCPT {
 			'menu_name'				=> __( 'Collections', 'greatermedia' ),
 		);
 
-		$args = array(
-			'labels'            => $labels,
-			'public'            => true,
-			'show_in_nav_menus' => true,
-			'show_admin_column' => false,
-			'hierarchical'      => false,
-			'show_tagcloud'     => true,
-			'show_ui'           => true,
-			'query_var'         => true,
-			'rewrite'           => true,
-			'query_var'         => true,
-			'capabilities'      => array(),
-		);
+		if( BlogData::$content_site_id != get_current_blog_id() ) {
+			$args = array(
+				'labels'            => $labels,
+				'public'            => false,
+				'show_in_nav_menus' => false,
+				'show_admin_column' => false,
+				'hierarchical'      => false,
+				'show_tagcloud'     => false,
+				'show_ui'           => false,
+				'query_var'         => true,
+				'rewrite'           => true,
+				'query_var'         => true,
+				'capabilities'      => array(),
+			);
+		} else {
+			$args = array(
+				'labels'            => $labels,
+				'public'            => true,
+				'show_in_nav_menus' => true,
+				'show_admin_column' => false,
+				'hierarchical'      => false,
+				'show_tagcloud'     => true,
+				'show_ui'           => true,
+				'query_var'         => true,
+				'rewrite'           => true,
+				'query_var'         => true,
+				'capabilities'      => array(),
+			);
+		}
 
 		register_taxonomy( 'collection', array( 'post' ), $args );
+	}
+
+
+	public function subscription_columns_filter( $columns ) {
+
+		$column_labels = array();
+		foreach( BlogData::$taxonomies as $supported_taxonomy ) {
+			// get taxonomy label
+			$taxonomy_obj = get_taxonomies( array( 'name' => $supported_taxonomy ), 'object' );
+			$column_labels[ $taxonomy_obj[$supported_taxonomy]->name ] = $taxonomy_obj[$supported_taxonomy]->label;
+		}
+
+		return array_merge($columns, $column_labels );
+	}
+
+	public function subscription_column_data( $column, $post_id ) {
+
+		$terms = sanitize_text_field(  get_post_meta( $post_id , 'subscription_filter_terms-' . $column , true ) );
+		echo esc_attr( $terms );
+
 	}
 
 	/**
@@ -426,8 +464,8 @@ class SyndicationCPT {
 
 			echo '<select multiple name="subscription_filter_terms-' . $taxonomy . '[]" class="subscription_terms" style="width: 300px;">';
 			foreach( $terms as $single_term ) {
-				echo '<option', in_array( $single_term->term_id, $filter_terms) ? ' selected="selected"' : ''
-				, ' value="' . intval( $single_term->term_id ) .'">' . esc_attr( $single_term->name ) . '</option>';
+				echo '<option', in_array( $single_term->name, $filter_terms) ? ' selected="selected"' : ''
+				, ' value="' . esc_attr( $single_term->name ) .'">' . esc_attr( $single_term->name ) . '</option>';
 			}
 
 			echo '</select></p>';
@@ -461,7 +499,7 @@ class SyndicationCPT {
 
 		// Add an nonce field so we can check for it later.
 		wp_nonce_field( 'save_subscription_status', 'subscription_custom_nonce' );
-		
+
 		// available statuses
 		$list_status = array( 'draft', 'publish' );
 
@@ -533,6 +571,5 @@ class SyndicationCPT {
 	}
 
 }
-
 
 $SyndicationCPT = new SyndicationCPT();

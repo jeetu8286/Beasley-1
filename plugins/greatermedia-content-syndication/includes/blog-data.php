@@ -151,7 +151,7 @@ class BlogData {
 		foreach( self::$taxonomies as $taxonomy ) {
 			$subscription_filter = get_post_meta( $subscription_id, 'subscription_filter_terms-' . $taxonomy, true );
 			$tax_query['taxonomy'] = $taxonomy;
-			$tax_query['field'] = 'id';
+			$tax_query['field'] = 'name';
 			$tax_query['terms'] = explode( ',', $subscription_filter );
 			array_push( $args['tax_query'], $tax_query );
 		}
@@ -390,6 +390,12 @@ class BlogData {
 		return $id;
 	}
 
+	/**
+	 * Replace the ids in post content to mathc the new attachments
+	 *
+	 * @param int   $post_id
+	 * @param array $galleries
+	 */
 	private static function ReplaceGalleryID( $post_id, $galleries = [] ) {
 
 		// get post content
