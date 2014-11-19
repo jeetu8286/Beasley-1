@@ -113,7 +113,7 @@
 		float: left;
 		height: 82px;
 		margin-right: 2.125em;
-		font-size: 1em;
+		font-size: ms(0);
 	}
 }
 
@@ -137,7 +137,7 @@
 		height: 82px;
 		padding: 36px 0;
 		margin-right: .625em;
-		font-size: .8125em;
+		font-size: ms(-1);
 	}
 }
 
@@ -149,6 +149,6 @@
 }
 .header__search--btn:before {
 	@extend %gmr-icons;
-	font-size: 1.125em;
+	font-size: ms(1);
 	content: "\e612";
 }

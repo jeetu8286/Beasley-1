@@ -127,7 +127,7 @@
 	display: block;
 	padding: 18px 1.25em;
 	line-height: 1;
-	font-size: 2.5em;
+	font-size: ms(7);
 	color: palette(header, primary-text);
 }
 
@@ -147,7 +147,7 @@
 	margin: 0;
 	list-style: none;
 	display: inline-block;
-	font-size: 1em;
+	font-size: ms(0);
 }
 
 .header__main a, .header__main a:visited {
@@ -196,7 +196,7 @@
 	margin: 0 1.25em 0 0;
 	list-style: none;
 	display: inline-block;
-	font-size: 1em;
+	font-size: ms(0);
 }
 
 .header__social--item:last-child {
