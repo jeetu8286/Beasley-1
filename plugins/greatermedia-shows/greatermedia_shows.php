@@ -19,7 +19,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 // Useful global constants
-define( 'GMEDIA_SHOWS_VERSION', '1.0.0.1' );
+define( 'GMEDIA_SHOWS_VERSION', '1.0.0.2' );
 define( 'GMEDIA_SHOWS_URL',     plugin_dir_url( __FILE__ ) );
 define( 'GMEDIA_SHOWS_PATH',    dirname( __FILE__ ) . '/' );
 
