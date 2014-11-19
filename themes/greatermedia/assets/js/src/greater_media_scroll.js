@@ -176,10 +176,10 @@
 		window.addEventListener( 'load', livePlayerInit, false );
 	}
 
-	var scrollDebounce = _debounce(getScrollPosition, 100);
-	var scrollThrottle = _throttle(getScrollPosition, 100);
-	var resizeDebounce = _debounce(resizeWindow, 100);
-	var resizeThrottle = _throttle(resizeWindow, 100);
+	var scrollDebounce = _debounce(getScrollPosition, 50);
+	var scrollThrottle = _throttle(getScrollPosition, 50);
+	var resizeDebounce = _debounce(resizeWindow, 50);
+	var resizeThrottle = _throttle(resizeWindow, 50);
 
 	window.addEventListener( 'scroll', function() {
 		scrollDebounce();
