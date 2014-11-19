@@ -151,7 +151,7 @@ class BlogData {
 		foreach( self::$taxonomies as $taxonomy ) {
 			$subscription_filter = get_post_meta( $subscription_id, 'subscription_filter_terms-' . $taxonomy, true );
 			$tax_query['taxonomy'] = $taxonomy;
-			$tax_query['field'] = 'id';
+			$tax_query['field'] = 'name';
 			$tax_query['terms'] = explode( ',', $subscription_filter );
 			array_push( $args['tax_query'], $tax_query );
 		}
