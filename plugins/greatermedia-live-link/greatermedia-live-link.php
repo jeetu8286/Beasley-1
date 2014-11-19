@@ -269,7 +269,8 @@ function gmr_ll_get_redirect_link( $live_link_id ) {
  */
 function gmr_ll_add_post_action( $actions, WP_Post $post ) {
 	// check whether or not we need to add copy link
-	if ( ! apply_filters( 'gmr_live_link_add_copy_action', GMR_LIVE_LINK_CPT != $post->post_type, $post ) ) {
+	$post_type = get_post_type_object( $post->post_type );
+	if ( ! apply_filters( 'gmr_live_link_add_copy_action', $post_type && $post_type->public, $post ) ) {
 		return $actions;
 	}
 
