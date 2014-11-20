@@ -244,7 +244,7 @@ class GMR_QuickPost {
 		remove_action( 'media_buttons', 'media_buttons' );
 		add_action( 'media_buttons', array( $this, 'substitute_media_buttons' ) );
 
-		add_meta_box( 'quickpost_featured_image', 'Featured Image', array( $this, 'render_featured_image_metabox' ), 'quickpost', 'side' );
+		add_meta_box( 'quickpost_featured_image', 'Featured Image', array( $this, 'render_featured_image_metabox' ), 'quickpost', 'side', 'high' );
 		
 		do_action( 'gmr_quickpost_add_metaboxes', 'quickpost', $post_id );
 
@@ -342,27 +342,6 @@ class GMR_QuickPost {
 						switch(tab_name) {
 							case 'video' :
 								jQuery('#extra-fields').load('<?php echo admin_url( 'admin.php?action=' . self::ADMIN_ACTION . '&ajax=video&s=' . urlencode( $selection ) ); ?>', function() {
-									<?php
-									$content = '';
-									if ( preg_match("/youtube\.com\/watch/i", $url) ) {
-										list($domain, $video_id) = explode("v=", $url);
-										$video_id = esc_attr($video_id);
-										$content = '<object width="425" height="350"><param name="movie" value="http://www.youtube.com/v/' . $video_id . '"></param><param name="wmode" value="transparent"></param><embed src="http://www.youtube.com/v/' . $video_id . '" type="application/x-shockwave-flash" wmode="transparent" width="425" height="350"></embed></object>';
-
-									} elseif ( preg_match("/vimeo\.com\/[0-9]+/i", $url) ) {
-										list($domain, $video_id) = explode(".com/", $url);
-										$video_id = esc_attr( $video_id );
-										$content = '<object width="400" height="225"><param name="allowfullscreen" value="true" /><param name="allowscriptaccess" value="always" /><param name="movie" value="http://www.vimeo.com/moogaloop.swf?clip_id=' . $video_id . '&amp;server=www.vimeo.com&amp;show_title=1&amp;show_byline=1&amp;show_portrait=0&amp;color=&amp;fullscreen=1" />	<embed src="http://www.vimeo.com/moogaloop.swf?clip_id=' . $video_id . '&amp;server=www.vimeo.com&amp;show_title=1&amp;show_byline=1&amp;show_portrait=0&amp;color=&amp;fullscreen=1" type="application/x-shockwave-flash" allowfullscreen="true" allowscriptaccess="always" width="400" height="225"></embed></object>';
-
-										if ( trim($selection) == '' ) {
-											$selection = '<p><a href="http://www.vimeo.com/' . $video_id . '?pg=embed&sec=' . $video_id . '">' . $title . '</a> on <a href="http://vimeo.com?pg=embed&sec=' . $video_id . '">Vimeo</a></p>';
-										}
-
-									} elseif ( strpos( $selection, '<object' ) !== false ) {
-										$content = $selection;
-									}
-									?>
-									jQuery('#embed-code').prepend('<?php echo htmlentities($content); ?>');
 								});
 								jQuery('#extra-fields').show();
 								return false;
@@ -423,13 +402,9 @@ class GMR_QuickPost {
 						jQuery('#video_button').click(function() { show('video'); return false; });
 
 						// Auto select.
-						<?php if ( preg_match("/youtube\.com\/watch/i", $url) ) { ?>
-							show('video');
-						<?php } elseif ( preg_match("/vimeo\.com\/[0-9]+/i", $url) ) { ?>
-							show('video');
-						<?php } elseif ( preg_match("/flickr\.com/i", $url) ) { ?>
+						<?php if ( preg_match("/flickr\.com/i", $url ) ) : ?>
 							show('photo');
-						<?php } ?>
+						<?php endif; ?>
 						jQuery('#title').unbind();
 						jQuery('#publish, #save').click(function() { jQuery('.press-this #publishing-actions .spinner').css('display', 'inline-block'); });
 
@@ -541,6 +516,24 @@ class GMR_QuickPost {
 								if ( $url ) {
 									$content .= $selection ? '<p>' . __( 'via ' ) : '<p>';
 									$content .= sprintf( "<a href='%s'>%s</a>.</p>", esc_url( $url ), esc_html( $title ) );
+								}
+
+								if ( preg_match( "/youtube\.com\/watch/i", $url ) || preg_match( "/vimeo\.com\/[0-9]+/i", $url ) ) {
+									$content .= PHP_EOL;
+									if ( preg_match( "/youtube\.com\/watch/i", $url ) ) {
+										list($domain, $video_id) = explode( "v=", $url );
+										$video_id = esc_attr( current( explode( '&', $video_id ) ) );
+										$content .= '<iframe width="425" height="350" src="//www.youtube.com/embed/' . $video_id . '" frameborder="0" allowfullscreen></iframe>';
+									} elseif ( preg_match( "/vimeo\.com\/[0-9]+/i", $url ) ) {
+										list($domain, $video_id) = explode( ".com/", $url );
+										$video_id = esc_attr( $video_id );
+										$content .= '<iframe src="//player.vimeo.com/video/' . $video_id . '" width="425" height="350" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
+										if ( trim( $selection ) == '' ) {
+											$selection = '<p><a href="http://www.vimeo.com/' . $video_id . '?pg=embed&sec=' . $video_id . '">' . $title . '</a> on <a href="http://vimeo.com?pg=embed&sec=' . $video_id . '">Vimeo</a></p>';
+										}
+									} elseif ( strpos( $selection, '<object' ) !== false ) {
+										$content .= $selection;
+									}
 								}
 
 								wp_editor( $content, 'content', array( 'teeny' => true, 'textarea_rows' => '15' ) );
