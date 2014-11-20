@@ -2014,12 +2014,19 @@ blockquote p {
   z-index: 100; }
 
 .live-player__stream {
+  position: absolute;
   display: none;
+  top: 58px;
   width: 100%;
   cursor: pointer; }
   @media screen and (min-width: 768px) {
     .live-player__stream {
-      display: block; } }
+      position: relative;
+      display: block;
+      top: auto; } }
+
+.live-player--open .live-player__stream {
+  display: block; }
 
 .live-player__stream--list {
   padding: 0;
@@ -2293,7 +2300,7 @@ blockquote p {
   font-weight: normal;
   line-height: 1;
   -webkit-font-smoothing: antialiased;
-  moz-osx-font-smoothing: grayscale;
+  -moz-osx-font-smoothing: grayscale;
   text-rendering: auto;
   color: #d22228;
   cursor: pointer; }
@@ -2461,7 +2468,7 @@ blockquote p {
   font-weight: normal;
   line-height: 1;
   -webkit-font-smoothing: antialiased;
-  moz-osx-font-smoothing: grayscale;
+  -moz-osx-font-smoothing: grayscale;
   text-rendering: auto;
   color: #404041;
   content: "\e60c"; }
@@ -2494,7 +2501,7 @@ blockquote p {
   font-weight: normal;
   line-height: 1;
   -webkit-font-smoothing: antialiased;
-  moz-osx-font-smoothing: grayscale;
+  -moz-osx-font-smoothing: grayscale;
   text-rendering: auto;
   color: #404041;
   content: "\e60e"; }
@@ -2531,7 +2538,8 @@ blockquote p {
 
 .live-player--open .live-links {
   display: block;
-  max-height: 48vh; }
+  max-height: 48vh;
+  padding-top: 52px; }
   @media screen and (min-width: 480px) {
     .live-player--open .live-links {
       max-height: 35vh; } }

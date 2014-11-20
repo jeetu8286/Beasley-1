@@ -62,12 +62,20 @@
 
 // Select List to choose a stream
 .live-player__stream {
+	position: absolute;
 	display: none;
+	top: 58px;
 	width: 100%;
 	cursor: pointer;
 	@include bp(medium) {
+		position: relative;
 		display: block;
+		top: auto;
 	}
+}
+
+.live-player--open .live-player__stream {
+	display: block;
 }
 
 .live-player__stream--list {
@@ -276,7 +284,7 @@
 	font-weight: normal;
 	line-height: 1;
 	-webkit-font-smoothing: antialiased;
-	moz-osx-font-smoothing: grayscale;
+	-moz-osx-font-smoothing: grayscale;
 	text-rendering: auto;
 	color: $color-text-red;
 	cursor: pointer;
@@ -448,7 +456,7 @@
 	font-weight: normal;
 	line-height: 1;
 	-webkit-font-smoothing: antialiased;
-	moz-osx-font-smoothing: grayscale;
+	-moz-osx-font-smoothing: grayscale;
 	text-rendering: auto;
 	color: $color-text-gray;
 	content: "\e60c";
@@ -479,7 +487,7 @@
 	font-weight: normal;
 	line-height: 1;
 	-webkit-font-smoothing: antialiased;
-	moz-osx-font-smoothing: grayscale;
+	-moz-osx-font-smoothing: grayscale;
 	text-rendering: auto;
 	color: $color-text-gray;
 	content: "\e60e";
@@ -523,6 +531,7 @@
 .live-player--open .live-links {
 	display: block;
 	max-height: 48vh;
+	padding-top: 52px;
 	@include bp(small) {
 		max-height: 35vh;
 	}
