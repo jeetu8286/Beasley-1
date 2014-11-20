@@ -111,6 +111,25 @@ class GreaterMedia_Keyword_Admin {
 		return $success;
 	}
 
+	/**
+	 * Store key and linkec_content in WP_Cache object
+	 *
+	 * @param $name
+	 * @param $data
+	 *
+	 * @return bool
+	 */
+	public function add_or_update_cache( $name, $data ) {
+
+		$success = wp_cache_add( $name, $data );
+
+		if( ! $success ) {
+			$success = wp_cache_set( $name, $data );
+		}
+
+		return $success;
+	}
+
 	public function save_settings() {
 		$pairs = get_option( $this->plugin_slug . '_option_name' );
 
@@ -138,6 +157,7 @@ class GreaterMedia_Keyword_Admin {
 
 			if( $this->add_or_update( $this->plugin_slug . '_option_name', $pairs ) ) {
 				echo '<div id="message" class="updated"><p>Keywords saved</p></div>';
+				$this->add_or_update_cache( $this->plugin_slug . '_option_name', $pairs );
 			}
 		}
 
@@ -163,6 +183,7 @@ class GreaterMedia_Keyword_Admin {
 				if( $linked_content['post_id'] == $key_post_id ) {
 					unset( $pairs[$key] );
 					$success = $this->add_or_update( $this->plugin_slug . '_option_name', $pairs );
+					$this->add_or_update_cache( $this->plugin_slug . '_option_name', $pairs );
 					break;
 				}
 			}
