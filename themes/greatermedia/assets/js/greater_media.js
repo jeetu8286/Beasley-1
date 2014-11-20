@@ -13,6 +13,7 @@
 		livePlayerStreamSelect = document.querySelector( '.live-player__stream--current' ),
 		wpAdminHeight = 32,
 		onAir = document.getElementById( 'on-air' ),
+		upNext = document.getElementById( 'up-next'),
 		nowPlaying = document.getElementById( 'now-playing' ),
 		windowHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0),
 		scrollObject = {};
@@ -222,6 +223,10 @@
 		body.classList.toggle( 'live-player--open' );
 	}
 
+	function upNextClick() {
+		body.classList.toggle( 'live-player--open' );
+	}
+
 	function nowPlayingClick() {
 		body.classList.toggle( 'live-player--open' );
 	}
@@ -238,6 +243,7 @@
 
 	if( window.innerWidth <= 767 ) {
 		onAir.addEventListener( 'click', onAirClick, false );
+		upNext.addEventListener( 'click', upNextClick, false );
 		nowPlaying.addEventListener( 'click', nowPlayingClick, false );
 	}
 
