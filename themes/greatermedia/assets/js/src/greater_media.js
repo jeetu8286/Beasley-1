@@ -244,6 +244,11 @@
 		}
 	}
 
+	var scrollDebounce = _debounce(getScrollPosition, 50);
+	var scrollThrottle = _throttle(getScrollPosition, 50);
+	var resizeDebounce = _debounce(resizeWindow, 50);
+	var resizeThrottle = _throttle(resizeWindow, 50);
+
 	if( window.innerWidth <= 767 ) {
 		onAir.addEventListener( 'click', onAirClick, false );
 		upNext.addEventListener( 'click', upNextClick, false );
@@ -252,21 +257,15 @@
 
 	if ( window.innerWidth >= 768 ) {
 		window.addEventListener( 'load', livePlayerInit, false );
+		window.addEventListener( 'scroll', function() {
+			scrollDebounce();
+			scrollThrottle();
+		}, false );
+
+		window.addEventListener( 'resize', function() {
+			resizeDebounce();
+			resizeThrottle();
+		}, false);
 	}
-
-	var scrollDebounce = _debounce(getScrollPosition, 50);
-	var scrollThrottle = _throttle(getScrollPosition, 50);
-	var resizeDebounce = _debounce(resizeWindow, 50);
-	var resizeThrottle = _throttle(resizeWindow, 50);
-
-	window.addEventListener( 'scroll', function() {
-		scrollDebounce();
-		scrollThrottle();
-	}, false );
-
-	window.addEventListener( 'resize', function() {
-		resizeDebounce();
-		resizeThrottle();
-	}, false);
 
 })();
