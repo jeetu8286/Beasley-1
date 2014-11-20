@@ -48,7 +48,11 @@ module.exports = function (grunt) {
 				eqnull: true,
 				globals: {
 					exports: true,
-					module: false
+					module: false,
+					jQuery: false,
+					document: false,
+					window: false,
+					console: false
 				}
 			}
 		},
