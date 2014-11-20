@@ -133,7 +133,7 @@
 	@include padding(.25em 5px);
 	@include transition(all .5s ease);
 	opacity: 0;
-	background-color: $black;
+	background-color: $secondary-bg;
 	font-size: ms(-3);
 }
 

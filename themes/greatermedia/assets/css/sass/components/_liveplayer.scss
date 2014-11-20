@@ -129,7 +129,7 @@
 	padding: 0;
 	margin: 0;
 	@include transition(visibility 0s linear 500ms, opacity 500ms linear);
-	color: $oslo-gray;
+	color: $secondary-heading;
 }
 
 .live-player__stream--current.open .live-player__stream--available {
@@ -171,7 +171,7 @@
 }
 
 .live-player__stream--item:hover {
-	background-color: $black;
+	background-color: $secondary-bg;
 }
 
 .live-player__stream--name {
@@ -415,7 +415,7 @@
 	margin: 0 0 .25em;
 	font-size: ms(-2);
 	font-weight: lighter;
-	color: $silver;
+	color: $secondary-link;
 }
 
 // volume controls and level
@@ -506,7 +506,7 @@
 .live-links {
 	display: none;
 	padding: 16px 0 0;
-	border-top: 1px solid $tuatara;
+	border-top: 1px solid $secondary-border;
 	text-align: center;
 	@include bp(medium) {
 		display: block;
@@ -543,7 +543,7 @@
 .live-link__song:before {
 	@extend %live-link__icon;
 	content: "\e604";
-	color: $silver;
+	color: $secondary-link;
 }
 
 .live-link__song--artist {
@@ -554,7 +554,7 @@
 .live-link__song--title {
 	font-size: em(13px);
 	font-weight: lighter;
-	color: $silver;
+	color: $secondary-link;
 }
 
 .live-link__type--audio:before {
@@ -596,7 +596,7 @@
 }
 
 .live-link__title a:link, .live-link__title a:visited {
-	color: $silver;
+	color: $secondary-link;
 }
 
 .live-link__title a:hover, .live-link__title a:focus, .live-link__title a:active {

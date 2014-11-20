@@ -13,7 +13,7 @@
 	box-sizing: border-box;
 	padding: 0;
 	@include transition(all 500ms ease-in-out);
-	background-color: $black;
+	background-color: $secondary-bg;
 	cursor: pointer;
 	z-index: 2;
 	@include bp(medium) {
@@ -64,7 +64,7 @@
 	height: 100%;
 	@include transform(translate(-100%, 0));
 	@include transition(all 500ms ease-in-out);
-	background-color: $black;
+	background-color: $secondary-bg;
 	z-index: 1;
 	@include bp(medium) {
 		display: none;
@@ -165,7 +165,7 @@
 
 .header__nav ul li a:hover, .header__nav ul li a:focus, .header__nav ul li a:active {
 	background-color: $cardinal;
-	color: $oslo-gray;
+	color: $secondary-heading;
 }
 
 // main header navigation mega-menu dropdowns
@@ -179,7 +179,7 @@
 	left: 0;
 	width: $max-site-width;
 	height: 292px;
-	background-color: $white;
+	background-color: $primary-bg;
 	border-top: 7px solid $primary-border;
 	z-index: 9999;
 }
@@ -204,7 +204,7 @@
 }
 
 .header__social--item a, .header__social--item a:visited {
-	color: $oslo-gray;
+	color: $secondary-heading;
 }
 
 .header__social--item a:hover, .header__social--item a:focus {

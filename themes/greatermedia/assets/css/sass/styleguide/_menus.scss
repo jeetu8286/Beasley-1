@@ -4,7 +4,7 @@
 	@include box-sizing(border-box);
 	@include padding(7px 6px);
 	@include transition(all 500ms ease-in-out);
-	background-color: $black;
+	background-color: $secondary-bg;
 	cursor: pointer;
 	z-index: 2;
 }
@@ -47,7 +47,7 @@
 	@include position(fixed, 0 null null -90%);
 	@include size(90% 100%);
 	@include transition(all 500ms ease-in-out);
-	background-color: $black;
+	background-color: $secondary-bg;
 	z-index: 1;
 	@include bp(small){
 		@include position(null, null null null em(-200px));

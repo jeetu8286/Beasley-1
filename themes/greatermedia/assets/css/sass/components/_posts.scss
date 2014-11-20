@@ -22,7 +22,7 @@
 .entry__date {
 	font-size: ms(-1);
 	font-weight: lighter;
-	color: $oslo-gray;
+	color: $secondary-heading;
 }
 
 // Shows container - individual attributes are located in _shows.scss
@@ -65,7 +65,7 @@
 	font-family: $droid-sans;
 	font-weight: bold;
 	font-size: ms(0);
-	color: $oslo-gray;
+	color: $secondary-heading;
 }
 
 .entry__footer--category:hover, .entry__footer--category:focus, .entry__footer--category:active {
@@ -211,7 +211,7 @@
 
 .entry__comments--count a:active {
 	display: block;
-	background-color: $black;
+	background-color: $secondary-bg;
 	color: $color-text-white;
 }
 
