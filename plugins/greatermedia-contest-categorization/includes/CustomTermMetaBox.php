@@ -67,13 +67,13 @@ class CustomTermMetaBox {
 		$post_terms = wp_list_pluck( wp_get_object_terms( get_the_ID(), $id ), 'term_id' );
 		$taxonomy = get_taxonomy( $id );
 
-		echo '<span class="description">' . $this->fields['desc'] . '</span>';
+		echo '<span class="description">' . esc_html( $this->fields['desc'] ) . '</span>';
 
 		// Begin the field table and loop
 		echo '<table class="form-table meta_box">';
 			if( !is_wp_error( $terms ) ) {
 				foreach ( $terms as $term ) {
-					echo '<tr><td><input type="checkbox" value="' . $term->term_id . '" name="' . $id . '[]" id="term-' . $term->term_id . '"' . checked( true, in_array( $term->term_id, $post_terms), false ) . ' /><label for="term-' . $term->term_id . '">' . $term->name . '</label></td></tr>';
+					echo '<tr><td><input type="checkbox" value="' . esc_attr( $term->term_id ) . '" name="' . esc_attr( $id ) . '[]" id="term-' . $term->term_id . '"' . checked( true, in_array( $term->term_id, $post_terms), false ) . ' /><label for="term-' . intval( $term->term_id ) . '">' . esc_html( $term->name ) . '</label></td></tr>';
 				}
 			}
 		echo '</table>'; // end table
@@ -146,7 +146,7 @@ class CustomTermMetaBox {
 		// the id and name for each field
 		$id = $name = isset( $field['id'] ) ? $field['id'] : null;
 		echo '<input type="checkbox" name="' . esc_attr( $name ) . '" id="' . esc_attr( $id ) . '" ' . checked( $meta, true, false ) . ' value="1" />
-		<label for="' . esc_attr( $id ) . '">' . $desc . '</label>';
+		<label for="' . esc_attr( $id ) . '">' . esc_html( $desc ) . '</label>';
 	}
 
 }
