@@ -21,7 +21,7 @@ if( !$options ) {
 <div class="wrap">
 
 	<h2><?php echo esc_html( get_admin_page_title() ); ?></h2>
-	<table class="form-table">
+	<table class="form-table keywords">
 		<tr>
 			<td>
 				<h3>Keyword</h3>
@@ -29,6 +29,7 @@ if( !$options ) {
 			<td>
 				<h3>Linked Content</h3>
 			</td>
+			<td></td>
 		</tr>
 		<?php
 		if( !empty( $options ) ):
@@ -36,24 +37,28 @@ if( !$options ) {
 				<tr>
 					<td><?php echo esc_html( $key ); ?></td>
 					<td><?php echo esc_html( $value['post_title'] ); ?></td>
-					<td><a data-postid="<?php echo esc_attr( $value['post_id'] ); ?>" id="submitdelete" class="submitdelete" href="#">delete</a></td>
+					<td><a data-postid="<?php echo esc_attr( $value['post_id'] ); ?>" class="submitdelete" href="#">delete</a></td>
 				</tr>
 		<?php endforeach;
 		endif;
 		?>
 	</table>
-	<h3>Add new keyword</h3>
+
 	<form method="post" action="">
-		<table class="form-table">
+		<table class="form-table keywords">
+			<tr>
+				<td><h3>Add new keyword</h3></td>
+			</tr>
+			<tr>
+				<td>Keyword</td>
+				<td>Linked Content</td>
+				<td></td>
+			</tr>
 			<tr>
 				<td>
-					<label for="keyword">Keyword</label>
-					<br />
 					<input type="text" id="keyword" name="keyword" size="25" />
 				</td>
 				<td>
-					<label for="linked_content">Linked Content</label>
-					<br />
 					<select id="linked_content" name="linked_content">
 						<?php foreach ($posts as $post) : ?>
 							<option value="<?php echo esc_attr( $post->ID ) . ',' . esc_attr( $post->post_title ); ?>">

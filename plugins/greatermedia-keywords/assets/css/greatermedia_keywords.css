@@ -7,3 +7,8 @@
  */
 tr.delete {
   background-color: #ed3939; }
+
+.keywords td {
+  width: 30%; }
+.keywords a.submitdelete {
+  color: #ed3939; }
