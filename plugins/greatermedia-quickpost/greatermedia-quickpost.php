@@ -514,29 +514,17 @@ class GMR_QuickPost {
 
 							<div class="postdivrich"><?php
 								$content = $selection ? $selection : '';
+								$oembed = false;
 								if ( $url ) {
-									$content .= $selection ? '<p>' . __( 'via ' ) : '<p>';
-									$content .= sprintf( "<a href='%s'>%s</a>.</p>", esc_url( $url ), esc_html( $title ) );
-								}
-
-								if ( preg_match( "/youtube\.com\/watch/i", $url ) || preg_match( "/vimeo\.com\/[0-9]+/i", $url ) ) {
-									$content .= PHP_EOL;
-									if ( preg_match( "/youtube\.com\/watch/i", $url ) ) {
-										list($domain, $video_id) = explode( "v=", $url );
-										$video_id = esc_attr( current( explode( '&', $video_id ) ) );
-										$content .= '<iframe width="425" height="350" src="//www.youtube.com/embed/' . $video_id . '" frameborder="0" allowfullscreen></iframe>';
-									} elseif ( preg_match( "/vimeo\.com\/[0-9]+/i", $url ) ) {
-										list($domain, $video_id) = explode( ".com/", $url );
-										$video_id = esc_attr( $video_id );
-										$content .= '<iframe src="//player.vimeo.com/video/' . $video_id . '" width="425" height="350" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
-										if ( trim( $selection ) == '' ) {
-											$selection = '<p><a href="http://www.vimeo.com/' . $video_id . '?pg=embed&sec=' . $video_id . '">' . $title . '</a> on <a href="http://vimeo.com?pg=embed&sec=' . $video_id . '">Vimeo</a></p>';
-										}
-									} elseif ( strpos( $selection, '<object' ) !== false ) {
-										$content .= $selection;
+									$oembed = wp_oembed_get( $url, array( 'width' => 425 ) );
+									if ( $oembed ) {
+										$content .= $oembed;
+									} else {
+										$content .= $selection ? '<p>' . __( 'via ' ) : '<p>';
+										$content .= sprintf( "<a href='%s'>%s</a>.</p>", esc_url( $url ), esc_html( $title ) );
 									}
 								}
-
+								
 								wp_editor( $content, 'content', array( 'teeny' => true, 'textarea_rows' => '15' ) );
 							?></div>
 						</div>
