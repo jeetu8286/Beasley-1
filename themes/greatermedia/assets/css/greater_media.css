@@ -553,7 +553,6 @@ img {
   right: 0;
   left: 0;
   width: 100%;
-  padding: 1em;
   background-color: #000000;
   color: #6D6E70;
   cursor: pointer; }
@@ -566,7 +565,6 @@ img {
       left: auto;
       width: 15.878107457899%;
       height: 100%;
-      padding: 0;
       -webkit-box-sizing: border-box;
       -moz-box-sizing: border-box;
       box-sizing: border-box;
@@ -2156,13 +2154,18 @@ blockquote p {
 
 .live-stream {
   float: right;
-  width: 35%;
+  width: 14.375%;
+  padding: 12px 3.75% 12px 0;
   text-align: right; }
+  @media screen and (min-width: 480px) {
+    .live-stream {
+      width: 9.583333333333%;
+      padding-right: 2.5%; } }
   @media screen and (min-width: 768px) {
     .live-stream {
       float: none;
       width: auto;
-      padding: 1.4375em 0 1em;
+      padding: 23px 0 1em;
       text-align: center; } }
 
 .live-stream__player {
@@ -2170,13 +2173,17 @@ blockquote p {
   @media screen and (min-width: 768px) {
     .live-stream__player {
       display: block;
-      padding-bottom: 1.4375em; } }
+      padding-bottom: 23px; } }
 
 .live-stream__player.open {
   display: block; }
 
 .live-stream__status {
-  height: 23px; }
+  display: none; }
+  @media screen and (min-width: 768px) {
+    .live-stream__status {
+      display: block;
+      height: 23px; } }
 
 .live-stream__listen-now--btn {
   display: inline-block;
@@ -2270,8 +2277,8 @@ blockquote p {
   content: "\e606" !important; }
 
 .live-stream__btn--play, .live-stream__btn--resume, .live-stream__btn--pause {
-  width: 54px;
-  height: 54px;
+  width: 34px;
+  height: 34px;
   margin: 0 auto;
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
@@ -2291,6 +2298,10 @@ blockquote p {
   text-rendering: auto;
   color: #ffffff;
   cursor: pointer; }
+  @media screen and (min-width: 768px) {
+    .live-stream__btn--play, .live-stream__btn--resume, .live-stream__btn--pause {
+      width: 54px;
+      height: 54px; } }
 
 .live-stream__btn--play, .live-stream__btn--resume, .live-stream__btn--pause {
   position: relative; }
@@ -2367,33 +2378,46 @@ blockquote p {
 
 .on-air, .up-next {
   float: left;
-  width: 25%;
-  padding: 0 1em 0 0;
-  margin: 0;
+  width: 78.125%;
+  padding: 23px 0 22px 3.75%;
+  margin-right: 3.75%;
+  line-height: 1;
   text-transform: uppercase; }
+  @media screen and (min-width: 480px) {
+    .on-air, .up-next {
+      width: 85.416666666667%;
+      padding-left: 2.5%;
+      margin-right: 2.5%; } }
   @media screen and (min-width: 768px) {
     .on-air, .up-next {
       float: none;
       width: 100%;
       height: 48px;
       padding: 0 1em;
+      margin: 0;
       text-align: center; } }
 
 .on-air__title, .up-next__title {
-  margin: 0 .25em 0 0;
-  font-size: 0.70233em;
+  margin-right: 1em;
+  font-size: 0.79012em;
   font-weight: lighter; }
+  @media screen and (min-width: 768px) {
+    .on-air__title, .up-next__title {
+      margin-right: .25em;
+      font-size: 0.70233em; } }
 
 .on-air__show, .up-next__show {
   font-size: 0.79012em; }
 
 .now-playing {
+  display: none;
   float: left;
   width: 40%;
   padding: 0 1em;
   margin: 0; }
   @media screen and (min-width: 768px) {
     .now-playing {
+      display: block;
       float: none;
       width: 100%;
       padding: 0 1em;
@@ -2493,19 +2517,22 @@ blockquote p {
 
 .live-links {
   display: none;
-  padding: 1em 0 0;
-  margin: 1em 0 0;
+  padding: 16px 0 0;
   border-top: 1px solid #282827;
   text-align: center; }
   @media screen and (min-width: 768px) {
     .live-links {
       display: block;
       padding-right: 1em;
-      padding-left: 1em; } }
+      padding-left: 1em;
+      margin: 16px 0 0; } }
 
 .live-player--open .live-links {
   display: block;
-  max-height: 250px; }
+  max-height: 48vh; }
+  @media screen and (min-width: 480px) {
+    .live-player--open .live-links {
+      max-height: 35vh; } }
 
 .live-link__song:before, .live-link__type--audio:before, .live-link__type--gallery:before, .live-link__type--image:before, .live-link__type--link:before, .live-link__type--standard:before, .live-link__type--video:before {
   width: 0;
@@ -2562,6 +2589,14 @@ blockquote p {
 
 .live-link__title a:hover, .live-link__title a:focus, .live-link__title a:active {
   color: #d22228; }
+
+.live-stream__test {
+  height: 0;
+  overflow: hidden; }
+  @media screen and (min-width: 768px) {
+    .live-stream__test {
+      height: auto;
+      overflow: auto; } }
 
 .breaking-news {
   width: 100%;
