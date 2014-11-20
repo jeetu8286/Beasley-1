@@ -113,25 +113,6 @@ class GreaterMedia_Keyword_Admin {
 		return $success;
 	}
 
-	/**
-	 * Store key and linkec_content in WP_Cache object
-	 *
-	 * @param $name
-	 * @param $data
-	 *
-	 * @return bool
-	 */
-	public function add_or_update_cache( $name, $data ) {
-
-		$success = wp_cache_add( $name, $data, "keywords" );
-
-		if( ! $success ) {
-			$success = wp_cache_set( $name, $data, "keywords" );
-		}
-
-		return $success;
-	}
-
 	public function save_settings() {
 		$pairs = get_option( $this->plugin_slug . '_option_name' );
 		$pairs = $this->array_map_r( 'sanitize_text_field', $pairs );
@@ -159,7 +140,7 @@ class GreaterMedia_Keyword_Admin {
 
 			if( $this->add_or_update( $this->plugin_slug . '_option_name', $pairs ) ) {
 				echo '<div id="message" class="updated"><p>Keywords saved</p></div>';
-				$this->add_or_update_cache( $this->plugin_slug . '_option_name', $pairs );
+				set_transient( $this->plugin_slug . '_option_name', $pairs, WEEK_IN_SECONDS * 4 );
 			}
 		}
 
@@ -186,7 +167,7 @@ class GreaterMedia_Keyword_Admin {
 				if( $linked_content['post_id'] == $key_post_id ) {
 					unset( $pairs[$key] );
 					$success = $this->add_or_update( $this->plugin_slug . '_option_name', $pairs );
-					$this->add_or_update_cache( $this->plugin_slug . '_option_name', $pairs );
+					set_transient( $this->plugin_slug . '_option_name', $pairs, WEEK_IN_SECONDS * 4 );
 					break;
 				}
 			}
@@ -201,12 +182,13 @@ class GreaterMedia_Keyword_Admin {
 
 		if( is_search() && $search ) {
 			global $wp_query;
-			$options = wp_cache_get( $this->plugin_slug . '_option_name', "keywords" );
+			$options = get_transient( $this->plugin_slug . '_option_name' );
+
+			$options = $this->array_map_r( 'sanitize_text_field', $options );
 
 			if( !$options ) {
 				$options = get_option( $this->plugin_slug . '_option_name' );
-				$options = $this->array_map_r( 'sanitize_text_field', $options );
-				$this->add_or_update_cache( $this->plugin_slug . '_option_name', $options );
+				set_transient( $this->plugin_slug . '_option_name', $options );
 			}
 
 			if( array_key_exists( $search, $options) ) {

@@ -12,11 +12,10 @@ $posts = get_posts(
 	)
 );
 
-$options = wp_cache_get( $this->plugin_slug . '_option_name', "keywords" );
+$options = get_transient( $this->plugin_slug . '_option_name' );
 if( !$options ) {
 	$options = get_option( $this->plugin_slug . '_option_name' );
 }
-
 ?>
 <div class="wrap">
 
