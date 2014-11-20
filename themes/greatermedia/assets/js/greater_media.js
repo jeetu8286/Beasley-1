@@ -144,6 +144,8 @@
 				livePlayer.style.top = headerHeight + 'px';
 			}
 			livePlayer.style.height = '100%';
+			livePlayer.classList.remove( 'live-player--fixed' );
+			livePlayer.classList.add( 'live-player--init' );
 		} else if ( scrollObject.y >= headerHeight ) {
 			if ( body.classList.contains( 'logged-in' ) ) {
 				livePlayer.style.top = wpAdminHeight + 'px';
