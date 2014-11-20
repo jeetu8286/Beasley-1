@@ -1912,6 +1912,10 @@ blockquote p {
       padding: 23px 0 1em;
       text-align: center; } }
 
+.live-player--open .live-stream {
+  width: 100%;
+  padding: 12px 3.75%; }
+
 .live-stream__player {
   display: none; }
   @media screen and (min-width: 768px) {
@@ -2120,6 +2124,10 @@ blockquote p {
   position: relative;
   text-align: center; }
 
+.live-player--open .live-stream__controls {
+  float: right;
+  width: 11.486486486486%; }
+
 .live-stream__btn--resume, .live-stream__btn--pause {
   display: none; }
 
@@ -2143,6 +2151,9 @@ blockquote p {
       padding: 0 1em;
       margin: 0;
       text-align: center; } }
+
+.live-player--open .on-air, .live-player--open .up-next {
+  display: none !important; }
 
 .on-air__title, .up-next__title {
   margin-right: 1em;
@@ -2170,6 +2181,11 @@ blockquote p {
       padding: 0 1em;
       margin: 1em 0 0;
       text-align: center; } }
+
+.live-player--open .now-playing {
+  float: left;
+  display: block;
+  width: 88.513513513514%; }
 
 .now-playing__title {
   margin: 0 0 .25em;
@@ -2299,10 +2315,12 @@ blockquote p {
   color: #c7c7c7; }
 
 .live-link__song--artist {
+  padding-top: 6px;
   font-size: 0.75em;
   font-weight: normal; }
 
 .live-link__song--title {
+  padding-top: 6px;
   font-size: 0.8125em;
   font-weight: lighter;
   color: #c7c7c7; }
@@ -2327,6 +2345,7 @@ blockquote p {
 
 .live-link__title {
   display: block;
+  padding-top: 6px;
   margin: 0;
   font-family: "Open Sans", sans-serif;
   font-size: 0.88889em;
@@ -2390,10 +2409,14 @@ blockquote p {
   margin: 0 1em 1em; }
 
 .widget--live-player__title {
-  margin: 0 0 1em;
-  font-family: "Open Sans", sans-serif;
-  font-size: 1em;
-  font-weight: normal; }
+  display: none; }
+  @media screen and (min-width: 768px) {
+    .widget--live-player__title {
+      display: block;
+      margin: 0 0 1em;
+      font-family: "Open Sans", sans-serif;
+      font-size: 1em;
+      font-weight: normal; } }
 
 .widget--live-player ul {
   padding: 0;
@@ -2403,7 +2426,8 @@ blockquote p {
   list-style: none;
   display: block;
   padding: 0;
-  margin: 0 0 1em; }
+  margin: 0 0 1em;
+  line-height: 1; }
 
 body {
   height: 100%;

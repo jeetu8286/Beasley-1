@@ -221,6 +221,11 @@
 	}
 }
 
+.live-player--open .live-stream {
+	width: 100%;
+	padding: 12px 3.75%; // 12px
+}
+
 .live-stream__player {
 	display: none;
 	@include bp(medium) {
@@ -360,6 +365,11 @@
 	text-align: center;
 }
 
+.live-player--open .live-stream__controls {
+	float: right;
+	width: 11.486486486486%; // 34px
+}
+
 .live-stream__btn--resume, .live-stream__btn--pause {
 	display: none;
 }
@@ -384,6 +394,10 @@
 		margin: 0;
 		text-align: center;
 	}
+}
+
+.live-player--open .on-air, .live-player--open .up-next {
+	display: none !important;
 }
 
 .on-air__title, .up-next__title {
@@ -414,6 +428,12 @@
 		margin: 1em 0 0;
 		text-align: center;
 	}
+}
+
+.live-player--open .now-playing {
+	float: left;
+	display: block;
+	width: 88.513513513514%; // 262px
 }
 
 .now-playing__title {
@@ -560,11 +580,13 @@
 }
 
 .live-link__song--artist {
+	padding-top: 6px;
 	font-size: em(12px);
 	font-weight: normal;
 }
 
 .live-link__song--title {
+	padding-top: 6px;
 	font-size: em(13px);
 	font-weight: lighter;
 	color: $secondary-link;
@@ -602,6 +624,7 @@
 
 .live-link__title {
 	display: block;
+	padding-top: 6px;
 	margin: 0;
 	font-family: $open-sans;
 	font-size: ms(-1);
