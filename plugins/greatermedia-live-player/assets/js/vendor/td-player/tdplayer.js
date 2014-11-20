@@ -5,7 +5,7 @@ $(document).ready(function () {
 });
 //Change platformid buttons - Triton Digital QA usage only.
 var platformid = getUrlVars()['platformid'] || 'prod';
-var tech = getUrlVars()['tech'] || 'flash_html5';
+var tech = getUrlVars()['tech'] || 'html5';
 var sbm = getUrlVars()['sbm'] == 'false' ? false : true;
 var aSyncCuePointFallback = getUrlVars()['aSyncCuePointFallback'] == 'false' ? false : true;
 
