@@ -27,6 +27,8 @@ class GreaterMedia_Keyword_Admin {
 		add_action( 'admin_init', array( $this, 'save_settings' ) );
 
 		add_action( 'wp_ajax_delete_keyword', array( $this, 'delete_keyword' ) );
+
+		add_filter( 'found_posts', array( $this, 'alter_search_results' ) );
 	}
 
 	public function enqueue_admin_styles(){
@@ -121,10 +123,10 @@ class GreaterMedia_Keyword_Admin {
 	 */
 	public function add_or_update_cache( $name, $data ) {
 
-		$success = wp_cache_add( $name, $data );
+		$success = wp_cache_add( $name, $data, "keywords" );
 
 		if( ! $success ) {
-			$success = wp_cache_set( $name, $data );
+			$success = wp_cache_set( $name, $data, "keywords" );
 		}
 
 		return $success;
@@ -132,7 +134,7 @@ class GreaterMedia_Keyword_Admin {
 
 	public function save_settings() {
 		$pairs = get_option( $this->plugin_slug . '_option_name' );
-
+		$pairs = $this->array_map_r( 'sanitize_text_field', $pairs );
 		if ( isset( $_POST["save_keyword_settings"] ) && current_user_can('manage_options') ) {
 
 			$linked_content = isset( $_POST['linked_content'] ) ? sanitize_text_field( $_POST['linked_content'] ) : '';
@@ -179,6 +181,7 @@ class GreaterMedia_Keyword_Admin {
 		if( isset( $_POST['post_id'] ) ) {
 			$key_post_id = intval( $_POST['post_id'] );
 			$pairs = get_option( $this->plugin_slug . '_option_name' );
+			$pairs = $this->array_map_r( 'sanitize_text_field', $pairs );
 			foreach ( $pairs as $key => $linked_content ) {
 				if( $linked_content['post_id'] == $key_post_id ) {
 					unset( $pairs[$key] );
@@ -190,6 +193,51 @@ class GreaterMedia_Keyword_Admin {
 		}
 
 		die( $success );
+	}
+
+	public function alter_search_results() {
+
+		$search = sanitize_text_field( get_query_var('s') );
+
+		if( is_search() && $search ) {
+			global $wp_query;
+			$options = wp_cache_get( $this->plugin_slug . '_option_name', "keywords" );
+
+			if( !$options ) {
+				$options = get_option( $this->plugin_slug . '_option_name' );
+				$options = $this->array_map_r( 'sanitize_text_field', $options );
+				$this->add_or_update_cache( $this->plugin_slug . '_option_name', $options );
+			}
+
+			if( array_key_exists( $search, $options) ) {
+				if( is_array( $wp_query->posts ) ) {
+					array_unshift( $wp_query->posts, $options[$search]['post_id'] );
+				} else {
+					$wp_query->posts = array( $options[$search]['post_id'] );
+				}
+			}
+		}
+	}
+
+
+	/**
+	 * Helper function to sanitize multidimensional array
+	 * http://php.net/manual/en/function.array-map.php#78904
+	 *
+	 * @param $func
+	 * @param $arr
+	 *
+	 * @return array
+	 */
+	public function array_map_r( $func, $arr ) {
+		$newArr = array();
+
+		foreach( $arr as $key => $value )
+		{
+			$newArr[ $key ] = ( is_array( $value ) ? $this->array_map_r( $func, $value ) : ( is_array($func) ? call_user_func_array($func, $value) : $func( $value ) ) );
+		}
+
+		return $newArr;
 	}
 }
 
