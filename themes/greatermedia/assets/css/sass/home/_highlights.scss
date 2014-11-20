@@ -1,13 +1,13 @@
 .highlights {
 	@extend %main;
-	padding: 34px 3.95614871306%;
-	background-color: palette(home, highlight-bg);
+	padding: 34px 0;
+	background-color: $athens-gray;
 }
 
 .highlights__heading {
 	font-size: 1.125em;
 	font-weight: lighter;
-	color: palette(base, tertiary-heading);
+	color: $secondary-heading;
 }
 
 .highlights__community {
@@ -75,7 +75,7 @@
 	margin: 0;
 	font-size: 1em;
 	font-weight: normal;
-	color: palette(home, highlight-heading);
+	color: $color-text-white;
 	text-align: center;
 }
 
@@ -90,7 +90,7 @@
 .highlights__event--item {
 	width: 100%;
 	margin-bottom: 20px;
-	background-color: palette(home, event-bg);
+	background-color: $primary-bg;
 	overflow: auto;
 }
 

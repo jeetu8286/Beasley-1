@@ -13,7 +13,7 @@
 	box-sizing: border-box;
 	padding: 0;
 	@include transition(all 500ms ease-in-out);
-	background-color: palette(base, secondary-bg);
+	background-color: $secondary-bg;
 	cursor: pointer;
 	z-index: 2;
 	@include bp(medium) {
@@ -29,7 +29,7 @@
 	height: 4px;
 	@include border-radius(4px);
 	@include transition(all 500ms ease-in-out);
-	background: palette(base, primary-border);
+	background: $primary-border;
 	content: "";
 }
 
@@ -41,7 +41,7 @@
 	height: 4px;
 	@include border-radius(4px);
 	@include transition(all 500ms ease-in-out);
-	background: palette(base, primary-border);
+	background: $primary-border;
 	content: "";
 }
 
@@ -53,7 +53,7 @@
 	height: 4px;
 	@include border-radius(4px);
 	@include transition(all 500ms ease-in-out);
-	background: palette(base, primary-border);
+	background: $primary-border;
 	content: "";
 }
 
@@ -64,7 +64,7 @@
 	height: 100%;
 	@include transform(translate(-100%, 0));
 	@include transition(all 500ms ease-in-out);
-	background-color: palette(base, secondary-bg);
+	background-color: $secondary-bg;
 	z-index: 1;
 	@include bp(medium) {
 		display: none;
@@ -116,7 +116,7 @@
 .mobile-nav__list .menu-item {
 	padding: 0;
 	margin: 0;
-	border-bottom: 1px solid palette(header, primary-border);
+	border-bottom: 1px solid $mine-shaft;
 }
 
 .mobile-nav__list .menu-item:last-child {
@@ -127,12 +127,12 @@
 	display: block;
 	padding: 18px 1.25em;
 	line-height: 1;
-	font-size: 2.5em;
-	color: palette(header, primary-text);
+	font-size: ms(7);
+	color: $color-text-white;
 }
 
 .mobile-nav__list a:hover, .mobile-nav__list a:focus, .mobile-nav__list a:active {
-	background-color: palette(header, primary-hover);
+	background-color: $color-text-white;
 }
 
 // main header navigation
@@ -147,15 +147,15 @@
 	margin: 0;
 	list-style: none;
 	display: inline-block;
-	font-size: 1em;
+	font-size: ms(0);
 }
 
 .header__main a, .header__main a:visited {
-	color: palette(header, primary-text);
+	color: $color-text-white;
 }
 
 .header__main a:hover, .header__main a:active {
-	color: palette(header, primary-hover)
+	color: $color-text-white;
 }
 
 .header__nav ul li a, .header__nav ul li a:link, .header__nav ul li a:visited {
@@ -164,8 +164,8 @@
 }
 
 .header__nav ul li a:hover, .header__nav ul li a:focus, .header__nav ul li a:active {
-	background-color: $link-color;
-	color: palette(header, secondary-text);
+	background-color: $cardinal;
+	color: $secondary-heading;
 }
 
 // main header navigation mega-menu dropdowns
@@ -179,8 +179,8 @@
 	left: 0;
 	width: $max-site-width;
 	height: 292px;
-	background-color: palette(header, tertiary-bg);
-	border-top: 7px solid palette(header, tertiary-border);
+	background-color: $primary-bg;
+	border-top: 7px solid $primary-border;
 	z-index: 9999;
 }
 
@@ -196,7 +196,7 @@
 	margin: 0 1.25em 0 0;
 	list-style: none;
 	display: inline-block;
-	font-size: 1em;
+	font-size: ms(0);
 }
 
 .header__social--item:last-child {
@@ -204,15 +204,15 @@
 }
 
 .header__social--item a, .header__social--item a:visited {
-	color: palette(header, secondary-text);
+	color: $secondary-heading;
 }
 
 .header__social--item a:hover, .header__social--item a:focus {
-	color: palette(header, primary-hover);
+	color: $iron;
 }
 
 .header__social--item a:active {
-	color: palette(header, primary-text);
+	color: $color-text-white;
 }
 
 .header__social--facebook:before {

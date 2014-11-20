@@ -1,5 +1,3 @@
-$_color_base_gray: #a7a9ab;
-
 // Color Map
 // By default, these colors can be called using `map-get($palette, tone)`. To avoid continually calling `map-get`, a
 // function has been written. Reference the `palette` function located in `_functions.scss`.
@@ -72,14 +70,51 @@ $palettes: (
 	)
 );
 
-// Variables for site wide usage
+// color variables
 //
 // @author Allen Moore
 // @since 0.1.0
 //
-$text-color: palette(base,  primary-text);
+$black: #000000;
+$white: #ffffff;
+$cardinal: #d22228;
+$heath: #561015;
+$coffee-bean: #270e10;
+$athens-gray: #f1f1f2;
+$iron: #d0d2d3;
+$silver: #c7c7c7;
+$aluminium: #a6a8ab;
+$oslo-gray: #929497;
+$nevada: #6d6e70;
+$scorpion: #606060;
+$abbey: #58595b;
+$ship-gray: #404041;
+$mine-shaft: #303030;
+$tuatara: #282827;
+$cod-gray: #191919;
+$sahara-sand: #f5ed7f;
+$sweet-corn: #f7ef7e;
 
-$link-color: palette(base,  primary-link);
-$link-hover: palette(base,  primary-link-hover);
+// global colors to use
+//
+// @author Allen Moore
+// @since 0.1.0
+//
+$color-text-black: $black;
+$color-text-white: $white;
+$color-text-gray: $ship-gray;
+$color-text-red: $cardinal;
 
-$border-color: palette(base,  primary-border);
+$primary-bg: $white;
+$primary-text: $color-text-gray;
+$primary-heading: $color-text-gray;
+$primary-link: $color-text-red;
+$primary-link-hover: darken($color-text-red, 9%);
+$primary-border: $iron;
+
+$secondary-bg: $black;
+$secondary-text: $color-text-white;
+$secondary-heading: $oslo-gray;
+$secondary-link: $silver;
+$secondary-link-hover: darken($color-text-red, 9%);
+$secondary-border: $tuatara;

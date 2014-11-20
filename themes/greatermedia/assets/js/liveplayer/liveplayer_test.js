@@ -81,7 +81,8 @@ gigya.accounts._callEventHandlers = gigya.accounts._callEventHandlers || functio
 
 jQuery(function () {
 
-	var livePlayerListen = jQuery('#live-stream__listen-now'), // targets the `Listen Live` button
+	var $window = jQuery(window),
+		livePlayerListen = jQuery('#live-stream__listen-now'), // targets the `Listen Live` button
 		livePlayerPlaying = jQuery('#live-stream__now-playing'),
 		livePlayerTest = jQuery('.live-stream__test'), // targets the div that contains the test toggle
 		livePlayerLabel = jQuery('.live-stream__test--label'),
