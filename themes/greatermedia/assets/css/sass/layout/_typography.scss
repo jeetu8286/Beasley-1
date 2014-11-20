@@ -40,7 +40,7 @@ body {
 	line-height: 2;
 	font-size: 80%;
 	font-family: $open-sans;
-	color: $text-color;
+	color: $primary-text;
 	-webkit-font-smoothing: antialiased;
 	@include bp(small) {
 		font-size: 85%;
@@ -66,11 +66,11 @@ h1, .h1, %h1, h2, .h2, %h2, h3, .h3, %h3, h4, .h4, %h4, h5, .h5, %h5, h6, .h6, %
 	text-rendering: optimizelegibility;
 	font-weight: bold;
 	a:link, a:visited {
-		color: palette(base, primary-heading);
+		color: $primary-heading;
 	}
 
 	a:hover, a:focus, a:active {
-		color: palette(base, primary-heading);
+		color: $primary-link-hover;
 	}
 }
 
@@ -102,12 +102,12 @@ h6, .h6, %h6 {
 
 // Link styles
 a:link, a:visited {
-	color: $link-color;
+	color: $primary-link;
 	text-decoration: none;
 }
 
 a:hover, a:focus, a:active {
-	color: $link-hover;
+	color: $primary-link-hover;
 }
 
 p {

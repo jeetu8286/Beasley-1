@@ -22,7 +22,7 @@
 .entry__date {
 	font-size: ms(-1);
 	font-weight: lighter;
-	color: palette(base, tertiary-heading);
+	color: $secondary-heading;
 }
 
 // Shows container - individual attributes are located in _shows.scss
@@ -47,7 +47,7 @@
 .entry__footer {
 	@include span-columns(4);
 	padding: 16px 0;
-	border-bottom: 1px solid palette(base, primary-border);
+	border-bottom: 1px solid $primary-border;
 	@include bp(small) {
 		@include span-columns(6);
 	}
@@ -65,7 +65,7 @@
 	font-family: $droid-sans;
 	font-weight: bold;
 	font-size: ms(0);
-	color: palette(base, tertiary-heading);
+	color: $secondary-heading;
 }
 
 .entry__footer--category:hover, .entry__footer--category:focus, .entry__footer--category:active {
@@ -183,8 +183,8 @@
 	height: 16px;
 	margin: 0 auto;
 	@include border-radius(3px);
-	background-color: palette(base, primary-border);
-	color: palette(base, secondary-link);
+	background-color: $primary-border;
+	color: $color-text-white;
 }
 
 .entry__comments--count a:link:after, .entry__comments--count a:visited:after {
@@ -197,8 +197,8 @@
 
 .entry__comments--count a:hover, .entry__comments--count a:focus {
 	display: block;
-	background-color: palette(base, primary-link);
-	color: palette(base, primary-text);
+	background-color: $primary-link;
+	color: $primary-text;
 }
 
 .entry__comments--count a:hover:after, .entry__comments--count a:focus:after {
@@ -211,8 +211,8 @@
 
 .entry__comments--count a:active {
 	display: block;
-	background-color: palette(base, secondary-bg);
-	color: palette(base, secondary-link);
+	background-color: $secondary-bg;
+	color: $color-text-white;
 }
 
 .entry__comments--count a:active:after{
@@ -386,14 +386,14 @@
 blockquote {
 	padding: 8px .625em;
 	margin: 24px .625em;
-	border-left: 10px solid palette(base, primary-border);
+	border-left: 10px solid $primary-border;
 	quotes: "\201C""\201D""\2018""\2019";
 }
 
 blockquote p {
 	display: inline;
 	font-style: italic;
-	color: palette(base, secondary-text);
+	color: $nevada;
 }
 
 // WordPress Styles
@@ -426,7 +426,7 @@ blockquote p {
 	max-width: 100%;
 	padding: 0;
 	margin: 0 0 16px;
-	background: palette(base, primary-border);
+	background: $primary-border;
 }
 
 .wp-caption img {
