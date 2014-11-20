@@ -18,12 +18,12 @@
 }
 
 .sg-section--title {
-	color: palette(base, primary-heading);
+	color: $primary-heading;
 	text-transform: uppercase;
 }
 
 .sg-subsection--title {
-	color: palette(base, primary-heading);
+	color: $primary-heading;
 	text-transform: uppercase;
 }
 
@@ -38,11 +38,11 @@
 	@include position(relative, null null null null);
 	@include size(null 100%);
 	@include padding(null null 2em null);
-	border-bottom: 1px solid palette(base, primary-border);
+	border-bottom: 1px solid $primary-border;
 }
 
 .sg-btn {
-	@include btn(btn, primary-bg, primary-text, primary-border, 1em, 1.5em, .875em);
+	@include btn($cardinal, $color-text-white, $cardinal, 1em, 1.5em, .875em);
 }
 
 .sg-colors--table {
@@ -91,7 +91,7 @@
 .sg-color {
 	@include size(13% 80px);
 	display: table-cell;
-	color: palette(base, secondary-text);
+	color: $nevada;
 }
 
 .color-black {
@@ -133,19 +133,19 @@
 	@include padding(.25em 5px);
 	@include transition(all .5s ease);
 	opacity: 0;
-	background-color: palette(base, secondary-bg);
+	background-color: $black;
 	font-size: ms(-3);
 }
 
 .sg-typography {
 	@include padding(.25em 5px);
 	@include margin(null null 2em null);
-	background-color: palette(base, primary-border);
+	background-color: $primary-border;
 	text-align: center;
 }
 
 .sg-typography--title {
-	color: palette(base, primary-heading);
+	color: $primary-heading;
 	text-transform: uppercase;
 }
 

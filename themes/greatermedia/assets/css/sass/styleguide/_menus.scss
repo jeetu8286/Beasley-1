@@ -4,7 +4,7 @@
 	@include box-sizing(border-box);
 	@include padding(7px 6px);
 	@include transition(all 500ms ease-in-out);
-	background-color: palette(base, secondary-bg);
+	background-color: $black;
 	cursor: pointer;
 	z-index: 2;
 }
@@ -15,7 +15,7 @@
 	@include transition(all 500ms ease-in-out);
 	display: block;
 	border-radius: 1px;
-	background: palette(base, secondary-bg);
+	background: $primary-border;
 	content: '';
 }
 .sg-nav--toggle--span:before {
@@ -24,7 +24,7 @@
 	@include transition(all 500ms ease-in-out);
 	display: block;
 	border-radius: 1px;
-	background: palette(base, primary-border);
+	background: $primary-border;
 	content: '';
 }
 .sg-nav--toggle--span:after {
@@ -33,7 +33,7 @@
 	@include transition(all 500ms ease-in-out);
 	display: block;
 	border-radius: 1px;
-	background: palette(base, primary-border);
+	background: $primary-border;
 	content: '';
 }
 
@@ -47,7 +47,7 @@
 	@include position(fixed, 0 null null -90%);
 	@include size(90% 100%);
 	@include transition(all 500ms ease-in-out);
-	background-color: palette(base, secondary-bg);
+	background-color: $black;
 	z-index: 1;
 	@include bp(small){
 		@include position(null, null null null em(-200px));
@@ -62,7 +62,7 @@
 .sg-nav--list {
 	@include padding(0 1em);
 	list-style: none;
-	color: palette(base, secondary-link);
+	color: $color-text-white;
 }
 
 .sg-nav--item {
@@ -74,10 +74,10 @@
 .sg-nav--item a:link, .sg-nav--item a:visited {
 	@include display(block);
 	@include size(100% null);
-	color: palette(base, secondary-link);
+	color: $color-text-white;
 }
 .sg-nav--item a:hover, .sg-nav--item a:active {
-	color: palette(base, primary-link);
+	color: $primary-link-hover;
 }
 
 .sg-nav--sublist {

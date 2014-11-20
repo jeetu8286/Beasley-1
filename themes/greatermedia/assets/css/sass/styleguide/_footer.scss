@@ -1,8 +1,8 @@
 .scroll-to-top{
 	@include position(fixed, null 1em 1em null);
 	@include size(2em 2em);
-	background-color: palette(base, secondary-bg);
-	color: palette(base, secondary-link);
+	background-color: $black;
+	color: $color-text-white;
 	text-align: center;
 	cursor: pointer;
 }
