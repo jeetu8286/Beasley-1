@@ -294,8 +294,13 @@ class BlogData {
 	public static function AssignDefaultTerms( $post_id, $defaults ) {
 		if( !empty( $defaults ) ) {
 			foreach ( $defaults as $taxonomy => $default_terms ) {
-				if( $post_id and taxonomy_exists( $taxonomy ) ) {
-					wp_set_post_terms( $post_id, $default_terms, $taxonomy );
+				if( $post_id && taxonomy_exists( $taxonomy ) ) {
+					if( is_taxonomy_hierarchical( $taxonomy) ) {
+						wp_set_post_terms( $post_id, $default_terms, $taxonomy );
+					} else {
+						$term_obj = get_term_by( 'id', absint( $default_terms[0] ), $taxonomy );
+						wp_set_post_terms( $post_id, $term_obj->name, $taxonomy );
+					}
 				}
 			}
 		}
