@@ -16,17 +16,12 @@ var station = 'KOITFM';
 var stationVideo = 'CKOIFMFLASH1';
 /* Default video station */
 
-var adPlaying;
-/* boolean - Ad break currently playing */
 var currentTrackCuePoint;
 /* Current Track */
 var livePlaying;
 /* boolean - Live stream currently playing */
-var companions;
-/* VAST companion banner object */
 var song;
 /* Song object that wraps NPE data */
-
 var currentStation = '';
 /* String - Current station played */
 
@@ -69,8 +64,7 @@ function initPlayer() {
 					max_listening_time: 35 /* If max_listening_time is undefined, the default value will be 30 minutes */
 				},
 				sbm: {active: sbm, aSyncCuePointFallback: aSyncCuePointFallback},
-				geoTargeting: {desktop: {isActive: true}, iOS: {isActive: true}, android: {isActive: true}},
-				plugins: [{id: "vastAd"}, {id: "bloom"}, {id: "mediaAd"}] /*These plugins are specific to the Flash controller - Each plugin contains id (String) and other optional config*/
+				geoTargeting: {desktop: {isActive: true}, iOS: {isActive: true}, android: {isActive: true}}
 			},
 			{id: 'UserRegistration', tenantId: 'see_1670', platformId: platformid + '01'},
 			{id: 'NowPlayingApi'},
@@ -209,9 +203,6 @@ function playLiveAudioStream(event) {
 
 	$('#stationUser').val('');
 
-	if (adPlaying)
-		player.skipAd();
-
 	if (livePlaying)
 		player.stop();
 
@@ -296,7 +287,6 @@ function onPlayerReady() {
 	initControlsUi();
 
 	player.addEventListener('track-cue-point', onTrackCuePoint);
-	player.addEventListener('ad-break-cue-point', onAdBreak);
 
 	player.addEventListener('stream-status', onStatus);
 	player.addEventListener('stream-geo-blocked', onGeoBlocked);
