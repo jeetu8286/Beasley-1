@@ -554,7 +554,7 @@ img {
   left: 0;
   width: 100%;
   background-color: #000000;
-  color: #6D6E70;
+  color: #6d6e70;
   cursor: pointer; }
   @media screen and (min-width: 768px) {
     .live-player {
@@ -568,7 +568,6 @@ img {
       -webkit-box-sizing: border-box;
       -moz-box-sizing: border-box;
       box-sizing: border-box;
-      color: #6D6E70;
       overflow-y: scroll;
       cursor: default; } }
   @media screen and (min-width: 1400px) {
@@ -604,7 +603,7 @@ body {
   line-height: 2;
   font-size: 80%;
   font-family: "Open Sans", sans-serif;
-  color: #000000;
+  color: #404041;
   -webkit-font-smoothing: antialiased; }
   @media screen and (min-width: 480px) {
     body {
@@ -628,9 +627,9 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
   text-rendering: optimizelegibility;
   font-weight: bold; }
   h1 a:link, h1 a:visited, .h1 a:link, .h1 a:visited, h2 a:link, h2 a:visited, .h2 a:link, .h2 a:visited, h3 a:link, h3 a:visited, .h3 a:link, .h3 a:visited, h4 a:link, h4 a:visited, .h4 a:link, .h4 a:visited, h5 a:link, h5 a:visited, .h5 a:link, .h5 a:visited, h6 a:link, h6 a:visited, .h6 a:link, .h6 a:visited {
-    color: #58595b; }
+    color: #404041; }
   h1 a:hover, h1 a:focus, h1 a:active, .h1 a:hover, .h1 a:focus, .h1 a:active, h2 a:hover, h2 a:focus, h2 a:active, .h2 a:hover, .h2 a:focus, .h2 a:active, h3 a:hover, h3 a:focus, h3 a:active, .h3 a:hover, .h3 a:focus, .h3 a:active, h4 a:hover, h4 a:focus, h4 a:active, .h4 a:hover, .h4 a:focus, .h4 a:active, h5 a:hover, h5 a:focus, h5 a:active, .h5 a:hover, .h5 a:focus, .h5 a:active, h6 a:hover, h6 a:focus, h6 a:active, .h6 a:hover, .h6 a:focus, .h6 a:active {
-    color: #58595b; }
+    color: #aa1c20; }
 
 h1, .h1 {
   font-size: 2.2807em; }
@@ -657,7 +656,7 @@ a:link, a:visited {
   text-decoration: none; }
 
 a:hover, a:focus, a:active {
-  color: #d0d2d3; }
+  color: #aa1c20; }
 
 p {
   margin: 0 0 1.5em; }
@@ -831,7 +830,7 @@ p {
   color: #ffffff; }
 
 .mobile-nav__list a:hover, .mobile-nav__list a:focus, .mobile-nav__list a:active {
-  background-color: #d0d2d3; }
+  background-color: #ffffff; }
 
 .header__nav ul, .header__account ul {
   padding: 0;
@@ -849,7 +848,7 @@ p {
   color: #ffffff; }
 
 .header__main a:hover, .header__main a:active {
-  color: #d0d2d3; }
+  color: #ffffff; }
 
 .header__nav ul li a, .header__nav ul li a:link, .header__nav ul li a:visited {
   display: block;
@@ -1136,8 +1135,8 @@ p {
   border-bottom-left-radius: 1.5em;
   text-transform: uppercase; }
   .featured-content--btn:hover, .featured-content--btn:focus {
-    background-color: #d22228;
-    border-color: #d22228;
+    background-color: #aa1c20;
+    border-color: #aa1c20;
     color: #ffffff; }
   .featured-content--btn:last-of-type {
     margin-right: 0; }
@@ -1146,7 +1145,7 @@ p {
   position: relative;
   width: 100%;
   padding: 0;
-  border-bottom: 3px solid #303030;
+  border-bottom: 3px solid #d0d2d3;
   background-color: #191919;
   -webkit-transition: all 200ms linear;
   -moz-transition: all 200ms linear;
@@ -1525,7 +1524,7 @@ p {
 .entry__comments--count a:hover, .entry__comments--count a:focus {
   display: block;
   background-color: #d22228;
-  color: #000000; }
+  color: #404041; }
 
 .entry__comments--count a:hover:after, .entry__comments--count a:focus:after {
   position: absolute;
@@ -1882,7 +1881,7 @@ blockquote {
 blockquote p {
   display: inline;
   font-style: italic;
-  color: #6D6E70; }
+  color: #6d6e70; }
 
 .alignleft, img.alignleft {
   display: block;
@@ -2034,13 +2033,13 @@ blockquote p {
   padding: 0;
   margin: 0;
   overflow: visible;
-  background-color: #1e1e1e;
+  background-color: #191919;
   line-height: 1;
   font-size: 0.88889em; }
 
 .live-player__stream--current.open {
   display: block;
-  background-color: #000000;
+  background-color: #191919;
   color: #ffffff;
   z-index: 10; }
 
@@ -2088,7 +2087,7 @@ blockquote p {
   -webkit-transition: visibility 0s linear 500ms, opacity 500ms linear;
   -moz-transition: visibility 0s linear 500ms, opacity 500ms linear;
   transition: visibility 0s linear 500ms, opacity 500ms linear;
-  color: #919395; }
+  color: #929497; }
 
 .live-player__stream--current.open .live-player__stream--available {
   position: absolute;
@@ -2129,7 +2128,7 @@ blockquote p {
   display: block;
   overflow: auto;
   padding: .5em 1em;
-  background-color: #1e1e1e; }
+  background-color: #191919; }
 
 .live-player__stream--item:hover {
   background-color: #000000; }
@@ -2206,8 +2205,8 @@ blockquote p {
   -border-radius: 1em;
   border-radius: 1em; }
   .live-stream__listen-now--btn:hover, .live-stream__listen-now--btn:focus {
-    background-color: #d22228;
-    border-color: #d22228;
+    background-color: #aa1c20;
+    border-color: #aa1c20;
     color: #ffffff; }
   .live-stream__listen-now--btn:last-of-type {
     margin-right: 0; }
@@ -2234,7 +2233,7 @@ blockquote p {
   border-radius: 1em; }
   .live-stream__now-playing--btn:hover, .live-stream__now-playing--btn:focus {
     background-color: transparent;
-    border-color: #d22228;
+    border-color: #aa1c20;
     color: #d22228; }
   .live-stream__now-playing--btn:last-of-type {
     margin-right: 0; }
@@ -2266,7 +2265,7 @@ blockquote p {
   border-radius: 1em; }
   .live-stream__resume--btn:hover, .live-stream__resume--btn:focus {
     background-color: transparent;
-    border-color: #d22228;
+    border-color: #aa1c20;
     color: #d22228; }
   .live-stream__resume--btn:last-of-type {
     margin-right: 0; }
@@ -2464,7 +2463,7 @@ blockquote p {
   -webkit-font-smoothing: antialiased;
   moz-osx-font-smoothing: grayscale;
   text-rendering: auto;
-  color: #606060;
+  color: #404041;
   content: "\e60c"; }
 
 .live-player__volume--level {
@@ -2478,7 +2477,7 @@ blockquote p {
   -o-border-radius: 4px;
   -border-radius: 4px;
   border-radius: 4px;
-  background-color: #404041; }
+  background-color: #d0d2d3; }
 
 .live-player__volume--up {
   display: inline-block;
@@ -2497,7 +2496,7 @@ blockquote p {
   -webkit-font-smoothing: antialiased;
   moz-osx-font-smoothing: grayscale;
   text-rendering: auto;
-  color: #606060;
+  color: #404041;
   content: "\e60e"; }
 
 .live-player--next {
@@ -2509,9 +2508,9 @@ blockquote p {
   font-size: 0.79012em; }
 
 .live-player--test {
-  color: #6D6E70;
   width: 100%;
-  padding: .25em .5em; }
+  padding: .25em .5em;
+  color: #6d6e70; }
 
 .live-player--test_label {
   display: inline-block;

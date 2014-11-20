@@ -2,8 +2,8 @@
 	position: relative;
 	width: 100%;
 	padding: 0;
-	border-bottom: 3px solid palette(header, primary-border);
-	background-color: palette(header, primary-bg);
+	border-bottom: 3px solid $primary-border;
+	background-color: $cod-gray;
 	@include transition(all 200ms linear);
 }
 
@@ -23,8 +23,8 @@
 	width: 100%;
 	height: 82px;
 	padding: 0;
-	background-color: palette(header, secondary-bg);
-	border-top: 1px solid palette(header, primary-border);
+	background-color: $secondary-bg;
+	border-top: 1px solid $mine-shaft;
 }
 
 .header .container {
@@ -120,7 +120,7 @@
 // container for search button
 .header__search {
 	display: block;
-	color: palette(header, primary-text);
+	color: $color-text-white;
 	@include bp(medium) {
 		position: relative;
 		display: block;

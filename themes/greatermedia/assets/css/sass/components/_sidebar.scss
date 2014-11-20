@@ -3,7 +3,7 @@
 	@include size(100% 250px);
 	@include margin(null null 2em null);
 	max-width: 300px;
-	background-color: palette(base, primary-border);
+	background-color: $primary-border;
 }
 
 .ad-unit--text {
