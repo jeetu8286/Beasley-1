@@ -2433,6 +2433,7 @@ blockquote p {
   display: none;
   float: left;
   width: 40%;
+  height: 34px;
   padding: 0 1em;
   margin: 0; }
   @media screen and (min-width: 768px) {
@@ -2440,6 +2441,7 @@ blockquote p {
       display: block;
       float: none;
       width: 100%;
+      height: auto;
       padding: 0 1em;
       margin: 1em 0 0;
       text-align: center; } }

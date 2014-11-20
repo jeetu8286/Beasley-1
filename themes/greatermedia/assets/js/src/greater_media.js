@@ -17,8 +17,9 @@
 		wpAdminHeight = 32,
 		onAir = document.getElementById( 'on-air' ),
 		upNext = document.getElementById( 'up-next'),
-		nowPlaying = document.getElementById( 'now-playing' ),
+		nowPlaying = document.getElementById( 'nowPlaying' ),
 		windowHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0),
+		windowWidth = this.innerWidth || this.document.documentElement.clientWidth || this.document.body.clientWidth || 0,
 		scrollObject = {};
 
 
@@ -180,27 +181,6 @@
 		livePlayer.classList.remove( 'live-player--fixed' );
 		livePlayer.classList.add( 'live-player--init' );
 	}
-
-	function lpScroll() {
-		if (body.classList.contains( 'logged-in' )) {
-			if (header.classList.contains('header--pinned')) {
-				livePlayer.style.height = windowHeight - headerHeight - wpAdminHeight + 'px';
-			} else if (header.classList.contains('header--unpinned')) {
-				livePlayer.style.height = windowHeight - wpAdminHeight + 'px';
-			} else {
-				livePlayer.style.height = '100%';
-			}
-		} else {
-			if (header.classList.contains('header--pinned')) {
-				livePlayer.style.height = windowHeight - headerHeight + 'px';
-			} else if (header.classList.contains('header--unpinned')) {
-				livePlayer.style.height = windowHeight + 'px';
-			} else {
-				livePlayer.style.height = '100%';
-			}
-		}
-	}
-	window.addEventListener( 'scroll', lpScroll, false );
 
 	/**
 	 * adds headroom.js functionality to the header
