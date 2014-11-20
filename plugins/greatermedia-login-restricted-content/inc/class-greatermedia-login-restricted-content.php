@@ -11,7 +11,9 @@ class GreaterMediaLoginRestrictedContent extends VisualShortcode {
 		parent::__construct(
 			'login-restricted',
 			'GreaterMediaLoginRestrictedContentAdmin',
-			'dashicons-admin-network'
+			'dashicons-admin-network',
+			null,
+			__( 'Login Restriction', 'login-restricted-content' )
 		);
 
 		add_action( 'post_submitbox_misc_actions', array( $this, 'post_submitbox_misc_actions' ), 30, 0 );
@@ -62,7 +64,6 @@ class GreaterMediaLoginRestrictedContent extends VisualShortcode {
 			// Enqueue JavaScript
 			wp_enqueue_script( 'greatermedia-lc-admin-js', trailingslashit( GREATER_MEDIA_LOGIN_RESTRICTED_CONTENT_URL ) . 'js/greatermedia-login-restricted-content-admin.js', array(
 				'jquery',
-				'date-format'
 			), false, true );
 
 			$login_restriction = get_post_meta( $post->ID, '_post_login_restriction', true );

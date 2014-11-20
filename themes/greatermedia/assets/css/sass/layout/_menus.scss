@@ -4,76 +4,69 @@
  * the Style Guide off-canvas nav will slide from the left and the toggle
  * button will slide over to accommodate the nav.
  */
-.mobile-nav--toggle {
+.mobile-nav__toggle {
 	position: absolute;
-	top: 75%;
+	top: 50%;
 	@include transform(translate(0, -50%));
 	width: 32px;
 	height: 32px;
-	@include box-sizing(border-box);
+	box-sizing: border-box;
 	padding: 0;
 	@include transition(all 500ms ease-in-out);
 	background-color: palette(base, secondary-bg);
 	cursor: pointer;
 	z-index: 2;
-	@include bp(large) {
+	@include bp(medium) {
 		display: none;
 	}
 }
 
-.mobile-nav--toggle--span {
+.mobile-nav__toggle--span {
 	position: absolute;
 	top: 14px;
 	display: block;
 	width: 32px;
 	height: 4px;
+	@include border-radius(4px);
 	@include transition(all 500ms ease-in-out);
-	@include border-top-radius(4px);
-	@include border-right-radius(4px);
-	@include border-bottom-radius(4px);
-	@include border-left-radius(4px);
 	background: palette(base, primary-border);
-	content: '';
+	content: "";
 }
 
-.mobile-nav--toggle--span:before {
+.mobile-nav__toggle--span:before {
 	position: absolute;
 	top: -10px;
 	display: block;
 	width: 32px;
 	height: 4px;
+	@include border-radius(4px);
 	@include transition(all 500ms ease-in-out);
-	@include border-top-radius(4px);
-	@include border-right-radius(4px);
-	@include border-bottom-radius(4px);
-	@include border-left-radius(4px);
 	background: palette(base, primary-border);
-	content: '';
+	content: "";
 }
 
-.mobile-nav--toggle--span:after {
+.mobile-nav__toggle--span:after {
 	position: absolute;
 	bottom: -10px;
 	display: block;
 	width: 32px;
 	height: 4px;
+	@include border-radius(4px);
 	@include transition(all 500ms ease-in-out);
-	@include border-top-radius(4px);
-	@include border-right-radius(4px);
-	@include border-bottom-radius(4px);
-	@include border-left-radius(4px);
 	background: palette(base, primary-border);
-	content: '';
+	content: "";
 }
 
 .mobile-nav {
-	@include position(fixed, 0 null null null);
-	@include size(90% 100%);
+	position: fixed;
+	top: 0;
+	width: 74%;
+	height: 100%;
 	@include transform(translate(-100%, 0));
 	@include transition(all 500ms ease-in-out);
 	background-color: palette(base, secondary-bg);
 	z-index: 1;
-	@include bp(large) {
+	@include bp(medium) {
 		display: none;
 	}
 }
@@ -86,112 +79,153 @@
 	@include transform(translate(0, 0));
 }
 
-.mobile-nav--open .mobile-nav--toggle--span {
+.mobile-nav--open .mobile-nav__toggle--span {
 	background-color: transparent;
 }
 
-.mobile-nav--open .mobile-nav--toggle--span:before {
-	@include position(null, 0 null null null);
+.mobile-nav--open .mobile-nav__toggle--span:before {
+	top: 0;
 	@include transform(rotate(45deg));
 }
 
-.mobile-nav--open .mobile-nav--toggle--span:after {
-	@include position(null, 0 null null null);
+.mobile-nav--open .mobile-nav__toggle--span:after {
+	top: 0;
 	@include transform(rotate(-45deg));
 }
 
 .mobile-nav--open .page-wrap {
-	@include transform(translate(90%, 0));
-	@include size(100% null);
+	@include transform(translate(74%, 0));
+	width: 100%;
 	@include transition(all 500ms ease-in-out);
 }
 
-.header-nav--main {
-	@include size(null 60px);
-	display: none;
+.mobile-nav--open .page-wrap:before {
+	position: absolute;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0,.4);
+	content: " ";
+}
+
+.mobile-nav__list {
+	padding: 0;
+	margin: 0;
+}
+
+.mobile-nav__list .menu-item {
+	padding: 0;
+	margin: 0;
+	border-bottom: 1px solid palette(header, primary-border);
+}
+
+.mobile-nav__list .menu-item:last-child {
+	border-bottom: none;
+}
+
+.mobile-nav__list a:link, .mobile-nav__list a:visited {
+	display: block;
+	padding: 18px 1.25em;
 	line-height: 1;
-	@include bp(large) {
-		@include span-columns(7);
-		display: initial;
-	}
+	font-size: ms(7);
+	color: palette(header, primary-text);
 }
 
-.header-secondary {
-	@include position(absolute, 2em 1em null null);
-	@include size(2em 2em);
-	line-height: 1;
-	color: palette(base, secondary-link);
-	text-align: right;
-	@include bp(large) {
-		@include position(relative, auto auto null null);
-		@include span-columns(4);
-		@include size(null 60px);
-	}
+.mobile-nav__list a:hover, .mobile-nav__list a:focus, .mobile-nav__list a:active {
+	background-color: palette(header, primary-hover);
 }
 
-.header-secondary--nav {
-	display: none;
-	@include bp(large) {
-		display: inline-block;
-	}
-}
-
-.header-nav--main ul, .header-secondary--nav ul {
-	@include margin(0);
+// main header navigation
+.header__nav ul, .header__account ul {
+	padding: 0;
+	margin: 0;
 	list-style: none;
 }
 
-.header-nav--main ul li, .header-secondary--nav ul li {
-	@include padding(em(22px) 0);
-	@include margin(0 1em 0 0);
-	list-style: none;
-	display: inline-block;
-	font-size: ms(-2);
-}
-
-.header-nav--main ul li a, .header-nav--main ul li a:visited, .header-secondary--nav ul a, .header-secondary--nav ul a:visited {
-	color: palette(base, secondary-link);
-}
-
-.header-nav--main ul li a:hover, .header-nav--main ul li a:active, .header-secondary--nav ul a:hover, .header-secondary--nav ul a:active {
-	color: palette(base, secondary-link)
-}
-
-.header-secondary--social{
-	display: inline-block;
-	color: palette(base, secondary-link);
-	@include bp(large) {
-		font-size: ms(0);
-	}
-}
-
-.header-social--list {
-	@include margin(0);
-	list-style: none;
-}
-
-.header-social--item {
-	@include padding(em(22px) 0);
-	@include margin(0 1em 0 0);
+.header__nav ul li, .header__account ul li {
+	padding: 0;
+	margin: 0;
 	list-style: none;
 	display: inline-block;
 	font-size: ms(0);
 }
 
-.header-social--item a,.header-social--item a:visited {
-	color: palette(base, secondary-link);
+.header__main a, .header__main a:visited {
+	color: palette(header, primary-text);
 }
 
-.header-social--item a:hover,.header-social--item a:focus {
-	color: palette(base, secondary-link)
+.header__main a:hover, .header__main a:active {
+	color: palette(header, primary-hover)
 }
 
-.header-social--item a:active {
-	color: palette(base, secondary-link)
+.header__nav ul li a, .header__nav ul li a:link, .header__nav ul li a:visited {
+	display: block;
+	padding: 33px 1.125em 32px;
 }
 
-.header-secondary--search{
+.header__nav ul li a:hover, .header__nav ul li a:focus, .header__nav ul li a:active {
+	background-color: $link-color;
+	color: palette(header, secondary-text);
+}
+
+// main header navigation mega-menu dropdowns
+.header__nav ul li ul {
+	display: none;
+}
+
+.header__nav ul li:hover ul {
+	display: block;
+	position: absolute;
+	left: 0;
+	width: $max-site-width;
+	height: 292px;
+	background-color: palette(header, tertiary-bg);
+	border-top: 7px solid palette(header, tertiary-border);
+	z-index: 9999;
+}
+
+// social links
+.header__social--list {
+	padding: 33px 0;
+	margin: 0;
+	list-style: none;
+}
+
+.header__social--item {
+	padding: 0;
+	margin: 0 1.25em 0 0;
+	list-style: none;
 	display: inline-block;
-	font-size: ms(1);
-	color: palette(base, secondary-link);
+	font-size: ms(0);
+}
+
+.header__social--item:last-child {
+	margin: 0;
+}
+
+.header__social--item a, .header__social--item a:visited {
+	color: palette(header, secondary-text);
+}
+
+.header__social--item a:hover, .header__social--item a:focus {
+	color: palette(header, primary-hover);
+}
+
+.header__social--item a:active {
+	color: palette(header, primary-text);
+}
+
+.header__social--facebook:before {
+	@extend %gmr-icons;
+	content: "\e60f";
+}
+
+.header__social--twitter:before {
+	@extend %gmr-icons;
+	content: "\e610";
+}
+
+.header__social--google-plus:before {
+	@extend %gmr-icons;
+	content: "\e611";
 }

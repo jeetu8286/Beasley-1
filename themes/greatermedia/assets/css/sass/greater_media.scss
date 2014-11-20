@@ -25,7 +25,9 @@
 @import "layout/typography";
 @import "layout/menus";
 
-// Folder for home if needed
+// Home
+@import "home/blog-roll";
+@import "home/featured";
 
 // Components
 @import "components/header";
@@ -33,7 +35,6 @@
 @import "components/posts";
 @import "components/sidebar";
 @import "components/liveplayer";
-@import "components/featured";
 @import "components/breaking-news";
 @import "components/ads";
 @import "components/closures";

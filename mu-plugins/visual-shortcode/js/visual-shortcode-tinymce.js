@@ -4,6 +4,11 @@
 
 	function js_module_sanity_check(shortcode_name, js_module_name) {
 
+		// Check if the shortcode's module implementation has been loaded on this page
+		if (!window[VisualShortcode.registry[shortcode_name].js_module]) {
+			return false;
+		}
+
 		var js_module = window[VisualShortcode.registry[shortcode_name].js_module],
 			check_passes = true,
 			required_methods = [
@@ -101,7 +106,8 @@
 
 							self.editor.addButton(VisualShortcode.registry[shortcode_name].button, {
 								icon   : VisualShortcode.registry[shortcode_name].icon_class,
-								onclick: button_onclick_handler
+								onclick: button_onclick_handler,
+								title: VisualShortcode.registry[shortcode_name].button_title
 							});
 
 						}
@@ -154,7 +160,7 @@
 									multiline: true,
 									minHeight: 200,
 									name     : 'content',
-									label    : GreaterMediaTimedContent.strings['Content'],
+									label    : VisualShortcode.strings['Content'],
 									value    : node.querySelector('.content').innerHTML
 								}],
 								title = VisualShortcode.strings['Edit'];

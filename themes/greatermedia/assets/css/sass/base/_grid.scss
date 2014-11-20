@@ -1,6 +1,6 @@
 // global grid variables
-$column: golden-ratio(69px, 4) !global;
-$gutter: golden-ratio(18px, 1) !global;
+$column: golden-ratio(1em, 4) !default;
+$gutter: golden-ratio(1em, 1) !default;
 $grid-columns: 4 !global;
 // this will give us a mobile first approach
 
@@ -10,7 +10,7 @@ $visual-grid-color: #6e76ee !global;
 $visual-grid-index: front !global;
 
 // max-width for the site
-$max-width: em(1122) !global;
+$max-width: em(1150) !global;
 $max-site-width: 1400px;
 $live-player: em(250px);
 
@@ -37,16 +37,16 @@ img {
 }
 
 .container, %container {
-	@include outer-container;
-	margin: 0 18px;
+	@include outer-container(92.08770257388%);
 }
 
 .main, %main {
+	float: left;
 	width: 100%;
 	margin: 0;
 	background-color: palette(base,  primary-bg);
-	@include bp(large) {
-		width: 82.142857142857%;
+	@include bp(medium) {
+		width: 84.121892542101%;
 	}
 	@include bp(x-large) {
 		width: $max-width;
@@ -55,41 +55,19 @@ img {
 
 .content, %content {
 	@include span-columns(4);
-	padding-top: 2em;
-	padding-bottom: 2em;
+	padding: 2em 7.0833333333335%;
 	@include bp(small) {
 		@include span-columns(6);
 	}
 	@include bp(medium) {
-		@include span-columns(8);
-	}
-	@include bp(large) {
-		@include span-columns(12);
-	}
-	@include bp(x-large) {
-		@include span-columns(12);
+		@include span-columns(4 of 6);
+		@include shift(1);
 		padding-right: 0;
 		padding-left: 0;
 	}
-}
-
-.sidebar, %sidebar {
-	@include span-columns(4);
-	padding: 2em .5em;
-	@include bp(small) {
-		@include span-columns(6);
-	}
-	@include bp(medium) {
-		@include span-columns(2);
-		@include omega;
-	}
 	@include bp(large) {
-		@include span-columns(3);
-	}
-	@include bp(x-large) {
-		@include span-columns(3);
-		padding-right: 0;
-		padding-left: 0;
+		@include span-columns(10 of 12);
+		@include shift(1);
 	}
 }
 
@@ -98,7 +76,7 @@ img {
 	bottom: 0;
 	right: 0;
 	left: 0;
-	padding: 1em;
+	width: 100%;
 	background-color: palette(base,  secondary-bg);
 	color: palette(base,  secondary-text);
 	cursor: pointer;
@@ -108,9 +86,8 @@ img {
 		bottom: auto;
 		right: 0;
 		left: auto;
-		width: 17.857142857143%;
+		width: 15.878107457899%;
 		height: 100%;
-		padding: 0;
 		@include box-sizing(border-box);
 		color: palette(base,  secondary-text);
 		overflow-y: scroll;
@@ -125,9 +102,5 @@ img {
 .logged-in .live-player {
 	@include media(min-width 782px) {
 		top: 270px;
-	}
-	@include bp(x-large) {
-		@include calc(right, '50% - 700px');
-		width: $live-player;
 	}
 }

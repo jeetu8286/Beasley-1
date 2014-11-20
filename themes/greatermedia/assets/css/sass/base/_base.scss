@@ -11,6 +11,9 @@ body {
 	max-width: $max-site-width;
 	margin: 0 auto;
 	background: palette(base, primary-bg);
+	@include bp(x-large) {
+		width: $max-site-width;
+	}
 }
 
 * {
