@@ -1139,6 +1139,12 @@ p {
   font-weight: lighter;
   color: #929497; }
 
+.highlights__heading--span {
+  margin-left: 16px;
+  font-size: 0.88889em;
+  color: #d22228;
+  text-transform: uppercase; }
+
 .highlights__community {
   float: left;
   width: 100%; }

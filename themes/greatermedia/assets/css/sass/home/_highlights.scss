@@ -5,9 +5,16 @@
 }
 
 .highlights__heading {
-	font-size: 1.125em;
+	font-size: ms(1);
 	font-weight: lighter;
 	color: $secondary-heading;
+}
+
+.highlights__heading--span {
+	margin-left: 16px;
+	font-size: ms(-1);
+	color: $color-text-red;
+	text-transform: uppercase;
 }
 
 .highlights__community {
@@ -73,7 +80,7 @@
 	left: 0;
 	width: 100%;
 	margin: 0;
-	font-size: 1em;
+	font-size: ms(0);
 	font-weight: normal;
 	color: $color-text-white;
 	text-align: center;
