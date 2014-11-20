@@ -423,6 +423,7 @@ class SyndicationCPT {
 
 		// get filter metas
 		foreach( BlogData::$taxonomies as $taxonomy ) {
+			$terms = '';
 
 			if( isset( $_POST[ 'subscription_filter_terms-' . $taxonomy ] ) ) {
 				$sanitized = array_map( 'sanitize_text_field', $_POST[ 'subscription_filter_terms-' . $taxonomy ] );
@@ -465,7 +466,7 @@ class SyndicationCPT {
 			echo '<select multiple name="subscription_filter_terms-' . $taxonomy . '[]" class="subscription_terms" style="width: 300px;">';
 			foreach( $terms as $single_term ) {
 				echo '<option', in_array( $single_term->name, $filter_terms) ? ' selected="selected"' : ''
-				, ' value="' . esc_attr( $single_term->name ) .'">' . esc_attr( $single_term->name ) . '</option>';
+				, ' value="' . esc_attr( $single_term->name ) .'">' . esc_html( $single_term->name ) . '</option>';
 			}
 
 			echo '</select></p>';
