@@ -143,7 +143,7 @@ function gmr_ll_render_redirect_meta_box( WP_Post $post ) {
 		})(jQuery);
 	</script>
 	
-	<input type="text" class="widefat" name="gmr_ll_redirect" value="<?php echo esc_attr( $redirect_url ) ?>">
+	<input type="text" class="widefat" name="gmr_ll_redirect" value="<?php echo esc_attr( $redirect_url ) ?>" required>
 	<p class="description">Enter external link or start typing a post title to see a list of suggestions.</p><?php
 }
 
