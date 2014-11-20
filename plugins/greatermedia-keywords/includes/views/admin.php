@@ -6,16 +6,13 @@
 
 $posts = get_posts(
 	array(
-		'post_type'         =>  $this->supported_post_types,
+		'post_type'         =>  $this::$supported_post_types,
 		'posts_per_page'    =>  -1,
 		'post_status'       =>  'publish'
 	)
 );
 
-$options = get_transient( $this->plugin_slug . '_option_name' );
-if( !$options ) {
-	$options = get_option( $this->plugin_slug . '_option_name' );
-}
+$options = self::get_keyword_options( $this::$plugin_slug . '_option_name' );
 ?>
 <div class="wrap">
 
@@ -58,7 +55,7 @@ if( !$options ) {
 					<input type="text" id="keyword" name="keyword" size="25" />
 				</td>
 				<td>
-					<select id="linked_content" name="linked_content">
+					<select id="linked_content" name="linked_content" style="width: 300px;">
 						<?php foreach ($posts as $post) : ?>
 							<option value="<?php echo esc_attr( $post->ID ) . ',' . esc_attr( $post->post_title ); ?>">
 								<?php echo esc_html( $post->post_title ); ?>

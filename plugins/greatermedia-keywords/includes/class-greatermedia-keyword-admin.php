@@ -10,8 +10,8 @@ if ( ! defined( 'WPINC' ) ) {
 
 class GreaterMedia_Keyword_Admin {
 
-	private $plugin_slug = 'gmedia_keywords' ;
-	private $supported_post_types = array( 'post' );
+	public static $plugin_slug = 'gmedia_keywords' ;
+	public static $supported_post_types;
 	private $postfix;
 
 	public function __construct() {
@@ -23,7 +23,7 @@ class GreaterMedia_Keyword_Admin {
 
 		// Add the options page and menu item.
 		add_action( 'admin_menu', array( $this, 'add_plugin_admin_menu' ) );
-		//add_action( 'admin_init', array( $this, 'settings_sections' ) );
+		add_action( 'admin_init', array( $this, 'get_supported_post_types' ) );
 		add_action( 'admin_init', array( $this, 'save_settings' ) );
 
 		add_action( 'wp_ajax_delete_keyword', array( $this, 'delete_keyword' ) );
@@ -31,10 +31,21 @@ class GreaterMedia_Keyword_Admin {
 		add_filter( 'found_posts', array( $this, 'alter_search_results' ) );
 	}
 
+	public function get_supported_post_types() {
+		$args = array(
+			'public'    =>  true,
+			'exclude_from_search' => false,
+			'publicly_queryable' => true,
+			'_builtin' => false
+		);
+		self::$supported_post_types = get_post_types( $args );
+
+		array_push( self::$supported_post_types, 'post' );
+	}
 	public function enqueue_admin_styles(){
 		wp_enqueue_style( 'select2');
 		wp_enqueue_style(
-			$this->plugin_slug . '-admin-style'
+			$this::$plugin_slug . '-admin-style'
 			, GMKEYWORDS_URL . "assets/css/greatermedia_keywords{$this->postfix}.css"
 			, array()
 			, GMKEYWORDS_VERSION
@@ -49,14 +60,14 @@ class GreaterMedia_Keyword_Admin {
 		wp_enqueue_script( 'jquery-effects-slide');
 
 		wp_enqueue_script(
-			$this->plugin_slug . '-admin-script'
+			$this::$plugin_slug . '-admin-script'
 			, GMKEYWORDS_URL . "assets/js/greatermedia_keywords{$this->postfix}.js"
 			, array( 'jquery' )
 			, GMKEYWORDS_VERSION
 		);
 
 		wp_localize_script(
-			$this->plugin_slug . '-admin-script'
+			$this::$plugin_slug . '-admin-script'
 			, 'ajax_data'
 			, array(
 				'ajaxurl' => admin_url( 'admin-ajax.php' ),
@@ -80,7 +91,7 @@ class GreaterMedia_Keyword_Admin {
 			'On-Air Keywords',
 			'Manage Keywords',
 			'manage_options',
-			$this->plugin_slug,
+			$this::$plugin_slug,
 			array( $this, 'display_plugin_admin_page' )
 		);
 
@@ -103,7 +114,7 @@ class GreaterMedia_Keyword_Admin {
 	 *
 	 * @return bool
 	 */
-	public function add_or_update( $name, $value ) {
+	public static function add_or_update( $name, $value ) {
 		$success = add_option( $name, $value, '', 'no' );
 
 		if ( ! $success ) {
@@ -114,8 +125,8 @@ class GreaterMedia_Keyword_Admin {
 	}
 
 	public function save_settings() {
-		$pairs = get_option( $this->plugin_slug . '_option_name' );
-		$pairs = $this->array_map_r( 'sanitize_text_field', $pairs );
+		$pairs = get_option( $this::$plugin_slug . '_option_name' );
+		$pairs = self::array_map_r( 'sanitize_text_field', $pairs );
 		if ( isset( $_POST["save_keyword_settings"] ) && current_user_can('manage_options') ) {
 
 			$linked_content = isset( $_POST['linked_content'] ) ? sanitize_text_field( $_POST['linked_content'] ) : '';
@@ -138,9 +149,9 @@ class GreaterMedia_Keyword_Admin {
 				'post_title'    =>  sanitize_text_field( $linked_content[1] )
 			);
 
-			if( $this->add_or_update( $this->plugin_slug . '_option_name', $pairs ) ) {
+			if( self::add_or_update( $this::$plugin_slug . '_option_name', $pairs ) ) {
 				echo '<div id="message" class="updated"><p>Keywords saved</p></div>';
-				set_transient( $this->plugin_slug . '_option_name', $pairs, WEEK_IN_SECONDS * 4 );
+				set_transient( $this::$plugin_slug . '_option_name', $pairs, WEEK_IN_SECONDS * 4 );
 			}
 		}
 
@@ -161,13 +172,13 @@ class GreaterMedia_Keyword_Admin {
 
 		if( isset( $_POST['post_id'] ) ) {
 			$key_post_id = intval( $_POST['post_id'] );
-			$pairs = get_option( $this->plugin_slug . '_option_name' );
-			$pairs = $this->array_map_r( 'sanitize_text_field', $pairs );
+			$pairs = get_option( $this::$plugin_slug . '_option_name' );
+			$pairs = self::array_map_r( 'sanitize_text_field', $pairs );
 			foreach ( $pairs as $key => $linked_content ) {
 				if( $linked_content['post_id'] == $key_post_id ) {
 					unset( $pairs[$key] );
-					$success = $this->add_or_update( $this->plugin_slug . '_option_name', $pairs );
-					set_transient( $this->plugin_slug . '_option_name', $pairs, WEEK_IN_SECONDS * 4 );
+					$success = self::add_or_update( $this::$plugin_slug . '_option_name', $pairs );
+					set_transient( $this::$plugin_slug . '_option_name', $pairs, WEEK_IN_SECONDS * 4 );
 					break;
 				}
 			}
@@ -182,14 +193,9 @@ class GreaterMedia_Keyword_Admin {
 
 		if( is_search() && $search ) {
 			global $wp_query;
-			$options = get_transient( $this->plugin_slug . '_option_name' );
 
-			$options = $this->array_map_r( 'sanitize_text_field', $options );
-
-			if( !$options ) {
-				$options = get_option( $this->plugin_slug . '_option_name' );
-				set_transient( $this->plugin_slug . '_option_name', $options );
-			}
+			$options = self::get_keyword_options( $this::$plugin_slug . '_option_name' );
+			$options = self::array_map_r( 'sanitize_text_field', $options );
 
 			if( array_key_exists( $search, $options) ) {
 				if( is_array( $wp_query->posts ) ) {
@@ -211,12 +217,12 @@ class GreaterMedia_Keyword_Admin {
 	 *
 	 * @return array
 	 */
-	public function array_map_r( $func, $arr ) {
+	public static function array_map_r( $func, $arr ) {
 		$newArr = array();
 		if( is_array( $arr) ) {
 			foreach( $arr as $key => $value )
 			{
-				$newArr[ $key ] = ( is_array( $value ) ? $this->array_map_r( $func, $value ) : ( is_array($func) ? call_user_func_array($func, $value) : $func( $value ) ) );
+				$newArr[ $key ] = ( is_array( $value ) ? self::array_map_r( $func, $value ) : ( is_array($func) ? call_user_func_array($func, $value) : $func( $value ) ) );
 			}
 
 			return $newArr;
@@ -224,6 +230,17 @@ class GreaterMedia_Keyword_Admin {
 			$arr = is_array($func) ? call_user_func_array($func, $arr) : $func( $arr );
 			return $arr;
 		}
+	}
+
+	public static function get_keyword_options( $name ) {
+		$name = sanitize_text_field( $name );
+
+		$options = get_transient( $name );
+		if( !$options ) {
+			$options = get_option( $name );
+		}
+
+		return $options;
 	}
 }
 
