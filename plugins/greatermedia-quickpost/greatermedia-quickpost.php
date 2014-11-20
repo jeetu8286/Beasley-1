@@ -207,8 +207,9 @@ class GMR_QuickPost {
 
 		// Set Variables
 		$url = isset( $_GET['u'] ) ? esc_url( $_GET['u'] ) : '';
-		$title = isset( $_GET['t'] ) ? trim( strip_tags( html_entity_decode( wp_unslash( $_GET['t'] ), ENT_QUOTES ) ) ) : '';
 		$image = isset( $_GET['i'] ) ? $_GET['i'] : '';
+		$title = isset( $_GET['t'] ) ? strip_tags( html_entity_decode( wp_unslash( $_GET['t'] ), ENT_QUOTES ) ) : '';
+		$title = trim( preg_replace( '#\W+#', ' ', $title ) );
 
 		$selection = '';
 		if ( ! empty( $_GET['s'] ) ) {
