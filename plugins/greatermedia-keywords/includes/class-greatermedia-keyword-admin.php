@@ -231,13 +231,17 @@ class GreaterMedia_Keyword_Admin {
 	 */
 	public function array_map_r( $func, $arr ) {
 		$newArr = array();
+		if( is_array( $arr) ) {
+			foreach( $arr as $key => $value )
+			{
+				$newArr[ $key ] = ( is_array( $value ) ? $this->array_map_r( $func, $value ) : ( is_array($func) ? call_user_func_array($func, $value) : $func( $value ) ) );
+			}
 
-		foreach( $arr as $key => $value )
-		{
-			$newArr[ $key ] = ( is_array( $value ) ? $this->array_map_r( $func, $value ) : ( is_array($func) ? call_user_func_array($func, $value) : $func( $value ) ) );
+			return $newArr;
+		} else {
+			$arr = is_array($func) ? call_user_func_array($func, $arr) : $func( $arr );
+			return $arr;
 		}
-
-		return $newArr;
 	}
 }
 
