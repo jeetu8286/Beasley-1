@@ -189,17 +189,6 @@ function greatermedia_scripts_styles() {
 		);
 	};
 
-	if ( is_page( 'scroll-test' ) ) {
-		wp_dequeue_script( 'greatermedia' );
-		wp_enqueue_script(
-			'greatermedia_scroll',
-			get_template_directory_uri() . "/assets/js/src/greater_media_scroll.js",
-			array(),
-			GREATERMEDIA_VERSION,
-			true
-		);
-	};
-
 }
 
 add_action( 'wp_enqueue_scripts', 'greatermedia_scripts_styles');
