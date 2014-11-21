@@ -77,9 +77,8 @@ img {
 	right: 0;
 	left: 0;
 	width: 100%;
-	padding: 1em;
-	background-color: palette(base,  secondary-bg);
-	color: palette(base,  secondary-text);
+	background-color: $secondary-bg;
+	color: $nevada;
 	cursor: pointer;
 	@include bp(medium){
 		position: absolute;
@@ -89,9 +88,7 @@ img {
 		left: auto;
 		width: 15.878107457899%;
 		height: 100%;
-		padding: 0;
 		@include box-sizing(border-box);
-		color: palette(base,  secondary-text);
 		overflow-y: scroll;
 		cursor: default;
 	}
