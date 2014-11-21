@@ -14,6 +14,8 @@ class GreaterMedia_Keyword_Admin {
 	public static $supported_post_types;
 	private $postfix;
 
+	private $_page_slug;
+
 	public function __construct() {
 		$this->postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 
@@ -42,6 +44,7 @@ class GreaterMedia_Keyword_Admin {
 
 		array_push( self::$supported_post_types, 'post' );
 	}
+
 	public function enqueue_admin_styles(){
 		wp_enqueue_style( 'select2');
 		wp_enqueue_style(
@@ -53,29 +56,31 @@ class GreaterMedia_Keyword_Admin {
 		);
 	}
 
-	public function enqueue_admin_scripts(){
+	public function enqueue_admin_scripts( $page_slug ) {
 
-		wp_enqueue_script( 'select2');
-		wp_enqueue_script( 'jquery-effects-core');
-		wp_enqueue_script( 'jquery-effects-slide');
+		if ( $this->_page_slug == $page_slug ) {
+			wp_enqueue_script( 'select2');
+			wp_enqueue_script( 'jquery-effects-core');
+			wp_enqueue_script( 'jquery-effects-slide');
 
-		wp_enqueue_script(
-			$this::$plugin_slug . '-admin-script'
-			, GMKEYWORDS_URL . "assets/js/greatermedia_keywords{$this->postfix}.js"
-			, array( 'jquery' )
-			, GMKEYWORDS_VERSION
-		);
+			wp_enqueue_script(
+				$this::$plugin_slug . '-admin-script'
+				, GMKEYWORDS_URL . "assets/js/greatermedia_keywords{$this->postfix}.js"
+				, array( 'jquery' )
+				, GMKEYWORDS_VERSION
+			);
 
-		wp_localize_script(
-			$this::$plugin_slug . '-admin-script'
-			, 'ajax_data'
-			, array(
-				'ajaxurl' => admin_url( 'admin-ajax.php' ),
-				'delete_key_nonce' => wp_create_nonce( 'perform-keyword-delete-nonce' )
-			)
-		);
+			wp_localize_script(
+				$this::$plugin_slug . '-admin-script'
+				, 'ajax_data'
+				, array(
+					'ajaxurl' => admin_url( 'admin-ajax.php' ),
+					'delete_key_nonce' => wp_create_nonce( 'perform-keyword-delete-nonce' )
+				)
+			);
+		}
+		
 	}
-
 
 	/**
 	 * Register the administration menu
@@ -86,7 +91,7 @@ class GreaterMedia_Keyword_Admin {
 		/**
 		 * Add a settings page for this plugin to the Tools menu.
 		 */
-		add_submenu_page(
+		$this->_page_slug = add_submenu_page(
 			'tools.php',
 			'On-Air Keywords',
 			'Manage Keywords',
@@ -238,6 +243,10 @@ class GreaterMedia_Keyword_Admin {
 		$options = get_transient( $name );
 		if( !$options ) {
 			$options = get_option( $name );
+		}
+
+		if ( empty( $options ) ) {
+			$options = array();
 		}
 
 		return $options;
