@@ -58,7 +58,8 @@
 				</div>
 
 				<div class="highlights__event--meta">
-					test
+					<h3 class="highlights__event--title">Preston & Steve’s Camp Out For Hunger 2014</h3>
+					<time datetime="<?php the_time( 'c' ); ?>" class="highlights__event--date">Dec 1 - Dec 5</time>
 				</div>
 
 			</div>
@@ -70,7 +71,8 @@
 				</div>
 
 				<div class="highlights__event--meta">
-					test
+					<h3 class="highlights__event--title">A.B.A.T.E. Motorcycle Toy Run For The Kids!</h3>
+					<time datetime="<?php the_time( 'c' ); ?>" class="highlights__event--date">Nov 2</time>
 				</div>
 
 			</div>

@@ -94,6 +94,7 @@ img {
 	}
 	@include bp(x-large) {
 		@include calc(right, '50% - 700px');
+		width: $live-player;
 	}
 }
 
