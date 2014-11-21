@@ -31,7 +31,7 @@ $options = self::get_keyword_options( $this::$plugin_slug . '_option_name' );
 		if( !empty( $options ) ):
 			foreach ( $options as $key => $value ): ?>
 				<tr>
-					<td><?php echo esc_html( $key ); ?></td>
+					<td><?php echo esc_html( $value['keyword'] ); ?></td>
 					<td><?php echo esc_html( $value['post_title'] ); ?></td>
 					<td><a data-postid="<?php echo esc_attr( $value['post_id'] ); ?>" class="submitdelete" href="#">delete</a></td>
 				</tr>
