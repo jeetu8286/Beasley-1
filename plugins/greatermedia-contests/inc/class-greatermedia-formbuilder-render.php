@@ -740,6 +740,10 @@ class GreaterMediaFormbuilderRender {
 
 	}
 
+	protected static function render_file( $post_id, stdClass $field ) {
+		return self::render_input_tag( 'file', $post_id, $field );
+	}
+
 	/**
 	 * Generic input field renderer (used by the more specific rendering functions)
 	 *
