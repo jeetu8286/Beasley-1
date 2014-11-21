@@ -1120,11 +1120,14 @@ p {
   float: left;
   width: 67.857142857143%;
   padding: 14px 3.571428571429% 14px 5.357142857143%;
+  font-size: 0.79012em;
+  font-weight: lighter;
   color: #a6a8ab; }
   @media screen and (min-width: 480px) {
     .featured__content--meta {
       width: 66.588235294118%;
-      padding: 15px 2.352941176471% 15px 4.941176470588%; } }
+      padding: 15px 2.352941176471% 15px 4.941176470588%;
+      font-size: 0.88889em; } }
   @media screen and (min-width: 1024px) {
     .featured__content--meta {
       width: 100%;
@@ -1142,7 +1145,7 @@ p {
   line-height: 1;
   font-family: "Open Sans", sans-serif;
   font-size: 1em; }
-  @media screen and (min-width: 1024px) {
+  @media screen and (min-width: 480px) {
     .featured__content--title {
       font-size: 1.125em; } }
 
