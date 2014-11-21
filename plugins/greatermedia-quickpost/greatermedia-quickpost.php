@@ -447,8 +447,10 @@ class GMR_QuickPost {
 											if ( is_array( $post_formats[0] ) ) :
 												if ( ! empty( $selection ) ) {
 													$default_format = '0';
-												} elseif ( preg_match( "/youtube\.com\/watch/i", $url ) || preg_match( "/vimeo\.com\/[0-9]+/i", $url ) ) {
+												} elseif ( preg_match( "/youtube\.com/i", $url ) || preg_match( "/vimeo\.com/i", $url ) ) {
 													$default_format = 'video';
+												} elseif ( preg_match( "/soundcloud\.com/i", $url ) ) {
+													$default_format = 'audio';
 												} else {
 													$default_format = 'link';
 												}
