@@ -67,6 +67,14 @@ class GmrDependencies {
 			true
 		);
 
+		wp_register_style(
+			'datetimepicker',
+			GMRDEPENDENCIES_URL . '/datetimepicker/jquery.datetimepicker.css',
+			array(),
+			'2.3.9',
+			'all'
+		);
+
 		wp_enqueue_style(
 			'parsleyjs',
 			GMRDEPENDENCIES_URL . '/parsleyjs/src/parsley.css',
@@ -74,7 +82,6 @@ class GmrDependencies {
 			'2.0.5', // Using daveross/parsley.js fork until word count include issue #765 is merged
 			'all'
 		);
-
 	}
 }
 
