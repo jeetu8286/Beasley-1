@@ -11,7 +11,6 @@ get_header();
 	/* we won't display this until we get some actual content
 	if ( is_front_page() || is_home() ) {
 		get_template_part( 'partials/frontpage', 'featured' );
-		get_template_part( 'partials/frontpage', 'highlights' );
 	} */
 
 	?>
