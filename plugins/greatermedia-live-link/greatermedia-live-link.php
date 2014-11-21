@@ -11,7 +11,7 @@ define( 'GMR_LIVE_LINK_CPT', 'gmr-live-link' );
 
 // action hooks
 add_action( 'init', 'gmr_ll_register_post_type', PHP_INT_MAX );
-add_action( 'save_post', 'gmr_ll_save_redirect_meta_box_data' );
+add_action( 'save_post', 'gmr_ll_save_redirect_meta_box_data', PHP_INT_MAX );
 add_action( 'manage_' . GMR_LIVE_LINK_CPT . '_posts_custom_column', 'gmr_ll_render_custom_column', 10, 2 );
 add_action( 'admin_action_gmr_ll_copy', 'gmr_ll_handle_copy_post_to_live_link' );
 add_action( 'gmr_quickpost_submitbox_misc_actions', 'gmr_ll_add_quickpost_checkbox' );
@@ -166,21 +166,22 @@ function gmr_ll_save_redirect_meta_box_data( $post_id ) {
 		return;
 	}
 
-	// save redirect link
+	// validate redirect link
 	$redirect = filter_input( INPUT_POST, 'gmr_ll_redirect' );
-	if ( ! is_numeric( $redirect ) && ! filter_var( $redirect, FILTER_VALIDATE_URL ) ) {
+	if ( ( ! is_numeric( $redirect ) || ! ( $post = get_post( $redirect ) ) || $post->post_type == GMR_LIVE_LINK_CPT ) && ! filter_var( $redirect, FILTER_VALIDATE_URL ) ) {
 		$post = get_page_by_title( $redirect, OBJECT, gmr_ll_get_suggestion_post_types() );
 		if ( ! $post ) {
-			return;
+			wp_die( 'You have entered wrong redirect URL, please, enter proper URL address or a post title.', '', array( 'back_link' => true ) );
 		}
 
 		$redirect = $post->ID;
 	}
-	
+
+	// save redirect link
 	update_post_meta( $post_id, 'redirect', $redirect );
 
 	// deactivate this action to prevent infinite loop
-	remove_action( 'save_post', 'gmr_ll_save_redirect_meta_box_data' );
+	remove_action( 'save_post', 'gmr_ll_save_redirect_meta_box_data', PHP_INT_MAX );
 
 	// set live link post parent to its realted post id
 	if ( is_numeric( $redirect ) ) {
