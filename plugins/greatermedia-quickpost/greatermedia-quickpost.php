@@ -514,11 +514,12 @@ class GMR_QuickPost {
 
 							<div class="postdivrich"><?php
 								$content = $selection ? $selection : '';
-								$oembed = false;
 								if ( $url ) {
-									$oembed = wp_oembed_get( $url, array( 'width' => 425 ) );
-									if ( $oembed ) {
-										$content .= $oembed;
+									if ( wp_oembed_get( $url ) ) {
+										if ( ! empty( $content ) ) {
+											$content .= PHP_EOL;
+										}
+										$content .= $url;
 									} else {
 										$content .= $selection ? '<p>' . __( 'via ' ) : '<p>';
 										$content .= sprintf( "<a href='%s'>%s</a>.</p>", esc_url( $url ), esc_html( $title ) );
