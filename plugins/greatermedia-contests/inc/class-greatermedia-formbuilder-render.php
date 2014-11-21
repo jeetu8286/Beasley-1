@@ -44,6 +44,8 @@ class GreaterMediaFormbuilderRender {
 	 */
 	public static function wp_enqueue_scripts() {
 
+		wp_enqueue_script( 'parsleyjs' );
+		wp_enqueue_script( 'parsleyjs-words' );
 		wp_enqueue_script( 'greatermedia-contests', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'js/greatermedia-contests.js', array( 'jquery' ), false, true );
 		$settings = array(
 			'form_class' => self::FORM_CLASS,

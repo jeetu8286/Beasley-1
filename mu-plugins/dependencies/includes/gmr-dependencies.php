@@ -24,7 +24,7 @@ class GmrDependencies {
 			, true
 		);
 
-		wp_enqueue_script(
+		wp_register_script(
 			'parsleyjs',
 			GMRDEPENDENCIES_URL . "/parsleyjs/dist/parsley{$postfix}.js",
 			array( 'jquery' ),
@@ -32,7 +32,7 @@ class GmrDependencies {
 			true
 		);
 
-		wp_enqueue_script(
+		wp_register_script(
 			'parsleyjs-words',
 			GMRDEPENDENCIES_URL . '/parsleyjs/src/extra/validator/words.js',
 			array( 'parsleyjs' ),
