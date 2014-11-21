@@ -233,7 +233,10 @@ function gmr_ll_filter_columns_list( $columns ) {
 
 	$columns = array_merge(
 		array_slice( $columns, 0, $cut_mark ),
-		array( 'redirect' => 'Redirect To' ),
+		array(
+			'related_to' => 'Related To',
+			'redirect'   => 'Redirect To',
+		),
 		array_slice( $columns, $cut_mark )
 	);
 
@@ -251,7 +254,26 @@ function gmr_ll_render_custom_column( $column_name, $post_id ) {
 	if ( 'redirect' == $column_name ) {
 		$link = gmr_ll_get_redirect_link( $post_id );
 		if ( $link ) {
-			printf( '<a href="%s" target="_blank">%s</a>', esc_url( $link ), esc_html( $link ) );
+			printf( 
+				'<a href="%s" target="_blank" title="%s">%s</a>',
+				esc_url( $link ),
+				esc_attr( $link ),
+				esc_html( $link )
+			);
+		} else {
+			echo '&#8212;';
+		}
+	} elseif ( 'related_to' == $column_name ) {
+		$live_link = get_post( $post_id );
+		if ( ! empty( $live_link->post_parent ) && ( $post = get_post( $live_link->post_parent ) ) ) {
+			printf(
+				'<a href="%s" title="%s">%s</a>',
+				esc_url( get_edit_post_link( $post->ID ) ),
+				esc_attr( $post->post_title ),
+				esc_html( $post->post_title )
+			);
+		} else {
+			echo '&#8212;';
 		}
 	}
 }
