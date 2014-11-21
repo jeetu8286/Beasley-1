@@ -133,6 +133,7 @@ class BlogData {
 		$result = array();
 
 		$last_queried = get_option( 'syndication_last_performed', 0);
+		$last_queried = date('Y-m-d H:i:s', $last_queried );
 
 		// query args
 		$args = array(
@@ -143,25 +144,31 @@ class BlogData {
 				'relation'  =>  'OR'
 			),
 			'date_query'    => array(
-				'after'     => $last_queried
-			)
+				'column' => 'post_modified_gmt',
+				'after'  => $last_queried,
+			),
 		);
 
 		// get filters to query content site
 		foreach( self::$taxonomies as $taxonomy ) {
 			$subscription_filter = get_post_meta( $subscription_id, 'subscription_filter_terms-' . $taxonomy, true );
-			$tax_query['taxonomy'] = $taxonomy;
-			$tax_query['field'] = 'name';
-			$tax_query['terms'] = explode( ',', $subscription_filter );
-			array_push( $args['tax_query'], $tax_query );
+
+			if( $subscription_filter != '' ) {
+				$subscription_filters = explode( ',', $subscription_filter );
+				$tax_query['taxonomy'] = $taxonomy;
+				$tax_query['field'] = 'name';
+				$tax_query['terms'] = $subscription_filters;
+				array_push( $args['tax_query'], $tax_query );
+			}
 		}
+
 
 		// switch to content site
 		switch_to_blog( self::$content_site_id );
 
 		// get all postst matching filters
 		$query = get_posts( $args );
-		
+
 		// get all metas
 		foreach ( $query as $single_result ) {
 			$metas	= get_metadata( $post_type, $single_result->ID, true );
