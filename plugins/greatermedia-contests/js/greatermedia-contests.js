@@ -121,7 +121,7 @@ document.addEventListener(
 			jQuery('input[type=date]').datetimepicker(
 				{
 					timepicker: false,
-					format: 'm/d/Y'
+					format    : 'm/d/Y'
 				}
 			);
 
@@ -130,7 +130,7 @@ document.addEventListener(
 					datepicker: false,
 					format    : 'g:i A',
 					formatTime: 'g:i A',
-					allowTimes:[
+					allowTimes: [
 						'12:00 AM', '12:30 AM',
 						'1:00 AM', '1:30 AM',
 						'2:00 AM', '2:30 AM',
