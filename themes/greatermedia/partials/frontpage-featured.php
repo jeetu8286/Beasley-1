@@ -1,6 +1,6 @@
 <?php
 /**
- * Partial for the Front Page Herp
+ * Partial for the Front Page Featured Content
  *
  * @package Greater Media
  * @since   0.1.0
