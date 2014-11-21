@@ -43,7 +43,9 @@
 				</div>
 				<div class="featured__content--meta">
 					<h2 class="featured__content--title">Hitch a Ride with Pierre ...and Minerva</h2>
-					<a href="#" class="featured__content--btn">Enter To Win</a>
+					<div class="featured__content--link">
+						<a href="#" class="featured__content--btn">Enter To Win</a>
+					</div>
 				</div>
 			</div>
 			<div class="featured__content--block">
