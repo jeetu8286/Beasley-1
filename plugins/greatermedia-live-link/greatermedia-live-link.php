@@ -17,6 +17,7 @@ add_action( 'admin_action_gmr_ll_copy', 'gmr_ll_handle_copy_post_to_live_link' )
 add_action( 'gmr_quickpost_submitbox_misc_actions', 'gmr_ll_add_quickpost_checkbox' );
 add_action( 'gmr_quickpost_post_created', 'gmr_ll_create_quickpost_live_link' );
 add_action( 'wp_ajax_gmr_live_link_suggest', 'gmr_ll_live_link_suggest' );
+add_action( 'deleted_post', 'gmr_ll_delete_post_live_links' );
 
 // filter hooks
 add_filter( 'manage_' . GMR_LIVE_LINK_CPT . '_posts_columns', 'gmr_ll_filter_columns_list' );
@@ -24,6 +25,35 @@ add_filter( 'post_row_actions', 'gmr_ll_add_post_action', 10, 2 );
 add_filter( 'page_row_actions', 'gmr_ll_add_post_action', 10, 2 );
 add_filter( 'gmr_show_widget_item_post_types', 'gmr_ll_add_show_widget_post_types' );
 add_filter( 'gmr_show_widget_item', 'gmr_ll_output_show_widget_live_link_item' );
+
+/**
+ * Deletes related live links when a post is hard deleted.
+ *
+ * @action deleted_post
+ * @param int $post_id The deleted post id.
+ */
+function gmr_ll_delete_post_live_links( $post_id ) {
+	// deactivate this hook to prevent infinite loop
+	remove_action( 'deleted_post', 'gmr_ll_delete_post_live_links' );
+
+	// fetch all child live links
+	$query = new WP_Query( array(
+		'post_type'           => GMR_LIVE_LINK_CPT,
+		'post_status'         => 'any',
+		'no_found_rows'       => true,
+		'ignore_sticky_posts' => true,
+		'posts_per_page'      => 100,
+		'post_parent'         => $post_id,
+		'fields'              => 'ids',
+	) );
+
+	while ( $query->have_posts() ) {
+		wp_delete_post( $query->next_post(), true );
+	}
+
+	// activate this hook back
+	add_action( 'deleted_post', 'gmr_ll_delete_post_live_links' );
+}
 
 /**
  * Sends post title suggestions for live link redirect field.
@@ -238,18 +268,23 @@ function gmr_ll_get_redirect_link( $live_link_id ) {
 		return false;
 	}
 
+	$post = null;
 	if ( $live_link->post_parent > 0 ) {
-		return get_permalink( $live_link->post_parent );
+		$post = get_post( $live_link->post_parent );
+	} else {
+		$redirect = get_post_meta( $live_link_id, 'redirect', true );
+		if ( is_numeric( $redirect ) ) {
+			$post = get_post( $redirect );
+		} elseif ( filter_var( $redirect, FILTER_VALIDATE_URL ) ) {
+			return $redirect;
+		}
 	}
 	
-	$redirect = get_post_meta( $live_link_id, 'redirect', true );
-	if ( is_numeric( $redirect ) ) {
-		$post = get_post( $redirect );
-		if ( $post ) {
-			return get_permalink( $post );
+	if ( $post ) {
+		$post_status = get_post_status_object( $post->post_status );
+		if ( $post_status && ! empty( $post_status->public ) ) {
+			return get_permalink( $live_link->post_parent );
 		}
-	} elseif ( filter_var( $redirect, FILTER_VALIDATE_URL ) ) {
-		return $redirect;
 	}
 
 	return false;
