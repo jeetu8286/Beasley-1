@@ -447,8 +447,10 @@ class GMR_QuickPost {
 											if ( is_array( $post_formats[0] ) ) :
 												if ( ! empty( $selection ) ) {
 													$default_format = '0';
-												} elseif ( preg_match( "/youtube\.com\/watch/i", $url ) || preg_match( "/vimeo\.com\/[0-9]+/i", $url ) ) {
+												} elseif ( preg_match( "/youtube\.com/i", $url ) || preg_match( "/vimeo\.com/i", $url ) ) {
 													$default_format = 'video';
+												} elseif ( preg_match( "/soundcloud\.com/i", $url ) ) {
+													$default_format = 'audio';
 												} else {
 													$default_format = 'link';
 												}
@@ -514,11 +516,12 @@ class GMR_QuickPost {
 
 							<div class="postdivrich"><?php
 								$content = $selection ? $selection : '';
-								$oembed = false;
 								if ( $url ) {
-									$oembed = wp_oembed_get( $url, array( 'width' => 425 ) );
-									if ( $oembed ) {
-										$content .= $oembed;
+									if ( wp_oembed_get( $url ) ) {
+										if ( ! empty( $content ) ) {
+											$content .= PHP_EOL;
+										}
+										$content .= $url;
 									} else {
 										$content .= $selection ? '<p>' . __( 'via ' ) : '<p>';
 										$content .= sprintf( "<a href='%s'>%s</a>.</p>", esc_url( $url ), esc_html( $title ) );
