@@ -18,7 +18,31 @@
 	padding: 1.5em 0;
 	font-family: $open-sans;
 }
+/*doc
+---
+title: Standard Post
+name: posts
+category: Components
+---
 
+```none_example 
+<article id="post-1241" class="post-1241 post type-post status-publish format-standard sticky hentry category-uncategorized tag-sticky-2 tag-template cf" role="article" itemscope="" itemtype="http://schema.org/BlogPosting">
+	<section class="entry--standard__thumbnail">
+		<img src="http://placehold.it/600x400&amp;text=image">
+	</section>
+
+	<section class="entry--standard__meta">
+		<time datetime="2012-01-07T07:07:21+00:00" class="entry__date">7 January</time>
+		<h2 class="entry__title" itemprop="headline"><a href="">An Incredible Post About a Musician</a></h2>
+	</section>
+
+	<footer class="entry__footer">
+		<a href="" class="entry__footer--category">Music</a>
+	</footer>
+</article>
+```
+
+*/
 .entry__date {
 	font-size: ms(-1);
 	font-weight: lighter;
