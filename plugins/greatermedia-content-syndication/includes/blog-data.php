@@ -139,7 +139,7 @@ class BlogData {
 		$args = array(
 			'post_type'     =>  $post_type,
 			'post_status'   =>  'publish',
-			'posts_per_page' => -1,
+			'posts_per_page' => 5000,
 			'tax_query'     =>  array(
 				'relation'  =>  'OR'
 			),
@@ -242,14 +242,14 @@ class BlogData {
 			if( $hash_value != $post_hash ) {
 				// post has been updated, override existing one
 				$args['ID'] = $post_id;
-				wp_insert_post( $args );
+				wp_update_post( $args );
 				if( !empty( $metas ) ) {
 					foreach ( $metas as $meta_key => $meta_value ) {
 						$meta_value = sanitize_text_field( $meta_value );
 						update_post_meta( $post_id, $meta_key, $meta_value );
 					}
 				}
-				$updated = 1;
+				$updated = 2;
 			}
 		} else {
 			$post_id = wp_insert_post( $args );
@@ -265,7 +265,7 @@ class BlogData {
 		 * Post has been updated or created, assign default terms
 		 * Import featured and attached images
 		 */
-		if( $updated ) {
+		if( $updated > 0 ) {
 
 			update_post_meta( $post_id, 'syndication_import', $post_hash );
 			update_post_meta( $post_id, 'syndication_old_name', $post_name );
@@ -275,7 +275,9 @@ class BlogData {
 			);
 			update_post_meta( $post_id, 'syndication_old_data', serialize( $post_data ) );
 
-			self::AssignDefaultTerms( $post_id, $defaults );
+			if( $updated == 1 ) {
+				self::AssignDefaultTerms( $post_id, $defaults );
+			}
 
 			if( !is_null( $featured) ) {
 				$featured = esc_url_raw( $featured );
