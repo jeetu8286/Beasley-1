@@ -1,0 +1,278 @@
+
+<!DOCTYPE html>
+<html ng-app="cortana">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Components</title>
+
+    <!-- Styleguide CSS -->
+    <link rel="stylesheet" href="./theme-build/css/vendors.css">
+    <link rel="stylesheet" href="./theme-build/css/cortana.css">
+
+    <!-- Source CSS -->
+    
+      
+        <link rel="stylesheet" href="../css/greater_media.css">
+      
+    
+
+    <!--[if lt IE 9]>
+      <script src="theme-build/polyfill/html5shiv.js"></script>
+      <script src="theme-build/polyfill/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+  <body class="cortana-body"  ng-controller="MainController">
+
+    <div class="sb-slidebar sb-left cortana-sidenav sb-style-push">
+
+      
+      
+        
+        
+          
+        
+      
+        
+        
+          
+        
+      
+
+      <nav class="cortana-nav">
+        <ul>
+          
+            <li><a href="index.html">Home</a></li>
+          
+        </ul>
+        
+          <h3>Basics</h3>
+          <ul>
+          
+            
+              
+              
+                <li><a href="basics.html">Basics</a></li>
+              
+            
+          
+            
+          
+          </ul>
+        
+          <h3>Components</h3>
+          <ul>
+          
+            
+          
+            
+              
+              
+                <li><a class="active" href="components.html">Components</a></li>
+              
+            
+          
+          </ul>
+        
+      </nav>
+    </div>
+
+    <header class="cortana-header sb-slide">
+      
+        <h1>Components</h1>
+      
+      <div id="open-left" class="cortana-menu-btn">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <div class="cortana-search-wrapper" ng-controller="TypeaheadCtrl">
+        <input id="cortana-search" type="text" class="form-control cortana-search" ng-model="customSelected" placeholder="Search" typeahead="data as data.title for data in searchData | filter:{title:$viewValue}" typeahead-template-url="customTemplate.html" class="form-control" typeahead-on-select="onSelect($item, $model, $label)">
+      </div>
+    </header>
+
+    <div id="sb-site">
+
+      <div class="cortana-container">
+
+        <nav id="cortana-inside-nav" class="cortana-inside-nav" bs-affix>
+          <ul bs-scrollspy-list data-offset="-30">
+            
+              
+                <li><a href="#posts">Post Excerpts</a></li>
+              
+            
+              
+            
+              
+            
+              
+            
+          </ul>
+        </nav>
+
+        <div class="cortana-content-wrapper clearfix">
+          <div class="cortana-content">
+
+
+
+<h1 id="posts">Post Excerpts</h1>
+
+<p>Post excerpts are displayed on the home page and category pages</p>
+
+<h2 id="image-post">Image Post</h2>
+
+<p>Standard posts are mostly text based but can include images. They can also optionally have a featured image.</p>
+</div><div class="container-fluid"><div class="col-sm-12"><article class="post type-post format-image hentry cf" role="article" itemscope="" itemtype="http://schema.org/BlogPosting">
+    <section class="entry--standard__thumbnail">
+        <img src="http://placehold.it/600x400&amp;text=image">
+    </section>
+
+    <section class="entry--standard__meta">
+        <time datetime="2012-01-07T07:07:21+00:00" class="entry__date">7 January</time>
+        <h2 class="entry__title" itemprop="headline"><a href="">An Incredible Post About a Musician</a></h2>
+    </section>
+
+    <footer class="entry__footer">
+        <a href="" class="entry__footer--category">Music</a>
+    </footer>
+</article>
+</div></div><div class="cortana-content">
+<h2 id="standard-post">Standard Post</h2>
+
+<p>Standard posts are mostly text based but can include images. They can also optionally have a featured image.</p>
+</div><div class="container-fluid"><div class="col-sm-12"><article class="post type-post format-standard hentry cf" role="article" itemscope="" itemtype="http://schema.org/BlogPosting">
+    <section class="entry--standard__thumbnail">
+        <img src="http://placehold.it/600x400&amp;text=image">
+    </section>
+
+    <section class="entry--standard__meta">
+        <time datetime="2012-01-07T07:07:21+00:00" class="entry__date">7 January</time>
+        <h2 class="entry__title" itemprop="headline"><a href="">An Incredible Post About a Musician</a></h2>
+    </section>
+
+    <footer class="entry__footer">
+        <a href="" class="entry__footer--category">Music</a>
+    </footer>
+</article>
+</div></div><div class="cortana-content">
+<h2 id="video-post">Video Post</h2>
+
+<p>Video posts display a video and minimal text. They can also optionally have a featured image.</p>
+</div><div class="container-fluid"><div class="col-sm-12"><article class="post type-post format-video hentry cf" role="article" itemscope="" itemtype="http://schema.org/BlogPosting">
+    <section class="entry--standard__thumbnail">
+        <img src="http://placehold.it/600x400&amp;text=image">
+    </section>
+
+    <section class="entry--standard__meta">
+        <time datetime="2012-01-07T07:07:21+00:00" class="entry__date">7 January</time>
+        <h2 class="entry__title" itemprop="headline"><a href="">An Incredible Post About a Musician</a></h2>
+    </section>
+
+    <footer class="entry__footer">
+        <a href="" class="entry__footer--category">Music</a>
+    </footer>
+</article>
+</div></div><div class="cortana-content">
+        </div>
+      </div>
+    </div>
+
+    <footer class="cortana-footer">
+      Build with love using Trulia's <a href="https://github.com/trulia/hologram">Hologram</a> and <a href="https://github.com/Yago/Cortana">Cortana</a> !
+    </footer>  
+  </div>
+
+  <script src="theme-build/js/vendors.min.js"></script>
+  <script type="text/javascript">
+    var jQuery_no_conflict = $.noConflict(true);
+  </script>
+  <script src="theme-build/js/main.js"></script>
+  <script type="text/javascript">
+    function TypeaheadCtrl($scope) {
+      $scope.selected = undefined;
+      $scope.searchData = 
+      [
+        
+          
+            
+              
+              
+              {
+              "title": "Buttons",
+              "breadcrumb": "Basics > Buttons",
+              "path": "basics.html#button"
+              },
+            
+          
+        
+          
+            
+              
+              
+              {
+              "title": "Post Excerpts",
+              "breadcrumb": "Components > Post Excerpts",
+              "path": "components.html#posts"
+              },
+            
+              
+              
+              {
+              "title": "Image Post",
+              "breadcrumb": "Components > Image Post",
+              "path": "components.html#image-post"
+              },
+            
+              
+              
+              {
+              "title": "Standard Post",
+              "breadcrumb": "Components > Standard Post",
+              "path": "components.html#standard-post"
+              },
+            
+              
+              
+              {
+              "title": "Video Post",
+              "breadcrumb": "Components > Video Post",
+              "path": "components.html#video-post"
+              },
+            
+          
+        
+          
+            
+              
+              
+              {
+              "title": "Buttons",
+              "breadcrumb": "Basics > Buttons",
+              "path": "basics.html#button"
+              },
+            
+          
+        
+      {}];
+      $scope.onSelect = function ($item, $model, $label) {
+        window.location.replace($item.path);
+      };
+    }
+  </script>
+  <script type="text/ng-template" id="customTemplate.html">
+    <a href="{{match.model.path}}">
+      <p class="cortana-search-title">{{match.model.title}}</p>
+      <p class="cortana-search-path">{{match.model.breadcrumb}}</p>
+    </a>
+  </script>
+  
+    
+      <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+    
+  
+  <!-- Source Components -->
+  
+</body>
+</html>

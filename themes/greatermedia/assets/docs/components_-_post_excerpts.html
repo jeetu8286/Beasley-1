@@ -1,0 +1,330 @@
+
+<!DOCTYPE html>
+<html ng-app="cortana">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Components - Post Excerpts</title>
+
+    <!-- Styleguide CSS -->
+    <link rel="stylesheet" href="./theme-build/css/vendors.css">
+    <link rel="stylesheet" href="./theme-build/css/cortana.css">
+
+    <!-- Source CSS -->
+    
+      
+        <link rel="stylesheet" href="../css/greater_media.css">
+      
+    
+
+    <!--[if lt IE 9]>
+      <script src="theme-build/polyfill/html5shiv.js"></script>
+      <script src="theme-build/polyfill/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+  <body class="cortana-body"  ng-controller="MainController">
+
+    <div class="sb-slidebar sb-left cortana-sidenav sb-style-push">
+
+      
+      
+        
+        
+          
+        
+      
+        
+        
+          
+        
+      
+
+      <nav class="cortana-nav">
+        <ul>
+          
+            <li><a href="index.html">Home</a></li>
+          
+        </ul>
+        
+          <h3>Basics</h3>
+          <ul>
+          
+            
+              
+              
+                <li><a href="basics.html">Basics</a></li>
+              
+            
+          
+            
+          
+          </ul>
+        
+          <h3>Components</h3>
+          <ul>
+          
+            
+          
+            
+              
+              
+                <li><a class="active" href="components_-_post_excerpts.html">Post Excerpts</a></li>
+              
+            
+          
+          </ul>
+        
+      </nav>
+    </div>
+
+    <header class="cortana-header sb-slide">
+      
+        <h1>Post Excerpts</h1>
+      
+      <div id="open-left" class="cortana-menu-btn">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <div class="cortana-search-wrapper" ng-controller="TypeaheadCtrl">
+        <input id="cortana-search" type="text" class="form-control cortana-search" ng-model="customSelected" placeholder="Search" typeahead="data as data.title for data in searchData | filter:{title:$viewValue}" typeahead-template-url="customTemplate.html" class="form-control" typeahead-on-select="onSelect($item, $model, $label)">
+      </div>
+    </header>
+
+    <div id="sb-site">
+
+      <div class="cortana-container">
+
+        <nav id="cortana-inside-nav" class="cortana-inside-nav" bs-affix>
+          <ul bs-scrollspy-list data-offset="-30">
+            
+              
+                <li><a href="#posts">Post Excerpts</a></li>
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          </ul>
+        </nav>
+
+        <div class="cortana-content-wrapper clearfix">
+          <div class="cortana-content">
+
+
+
+<h1 id="posts">Post Excerpts</h1>
+
+<p>Post excerpts are displayed on the home page and category pages</p>
+
+<h2 id="gallery-post">Gallery Post</h2>
+
+<p>Gallery posts are mostly image based but can include some text. They can also optionally have a featured image.</p>
+</div><div class="container-fluid"><div class="col-sm-12"><article id="post-922" class="post-922 post type-post status-publish format-gallery hentry category-uncategorized cf" role="article" itemscope="" itemtype="http://schema.org/BlogPosting">
+    <section class="entry--gallery__meta" itemprop="articleBody">
+        <time datetime="2014-11-10T20:11:28+00:00" class="entry__date">10 November</time>
+        <h2 class="entry__title"><a href="">Test Show Post</a></h2>
+    </section>
+
+    <section class="entry--gallery__thumbnail"> 
+        <img src="http://placehold.it/600x400&amp;text=image">
+    </section>
+    <footer class="entry__footer">
+        <a href="http://wmmr.greatermedia.10uplabs.com/category/uncategorized/" class="entry__footer--category">Uncategorized</a>
+    </footer>
+</article>
+</div></div><div class="cortana-content">
+<h2 id="image-post">Image Post</h2>
+
+<p>Standard posts are mostly text based but can include images. They can also optionally have a featured image.</p>
+</div><div class="container-fluid"><div class="col-sm-12"><article id="post-558" class="post-558 post type-post status-publish format-image has-post-thumbnail hentry category-uncategorized cf" role="article" itemscope="" itemtype="http://schema.org/BlogPosting">
+    <section class="entry--standard__thumbnail">
+        <img src="http://placehold.it/600x400&amp;text=image">
+    </section>
+
+    <section class="entry--standard__meta">
+        <time datetime="2014-11-03T22:34:27+00:00" class="entry__date">3 November</time>
+        <h2 class="entry__title" itemprop="headline"><a href="http://wmmr.greatermedia.10uplabs.com/hey-its-a-blog-post/">Hey it’s a blog post!</a></h2>
+    </section>
+
+    <footer class="entry__footer">
+        <a href="http://wmmr.greatermedia.10uplabs.com/category/uncategorized/" class="entry__footer--category">Uncategorized</a>
+    </footer>
+</article>
+</div></div><div class="cortana-content">
+<h2 id="link-post">Link Post</h2>
+
+<p>Link posts contain a link to an external site. They can also optionally have a featured image.</p>
+</div><div class="container-fluid"><div class="col-sm-12"><article id="post-886" class="post-886 post type-post status-publish format-link has-post-thumbnail hentry category-uncategorized cf" role="article" itemscope="" itemtype="http://schema.org/BlogPosting">
+    <section class="entry--link__meta" itemprop="articleBody">
+        <time datetime="2014-11-10T04:07:56+00:00" class="entry__date">10 November</time>
+        <h2 class="entry__title"><a href="">Ontario Highway 401 – Wikipedia, the free encyclopedia</a></h2>
+    </section>
+
+    <section class="entry--link__thumbnail">
+        <img src="http://placehold.it/600x400&amp;text=image">
+    </section>
+    <footer class="entry__footer">
+        <a href="http://wmmr.greatermedia.10uplabs.com/category/uncategorized/" class="entry__footer--category">Uncategorized</a>
+    </footer>
+</article>
+</div></div><div class="cortana-content">
+<h2 id="standard-post">Standard Post</h2>
+
+<p>Standard posts are mostly text based but can include images. They can also optionally have a featured image.</p>
+</div><div class="container-fluid"><div class="col-sm-12"><article class="post-1162 post type-post status-publish format-standard hentry category-uncategorized tag-post-tag cf" role="article" itemscope="" itemtype="http://schema.org/BlogPosting">
+    <section class="entry--standard__thumbnail">
+        <img src="http://placehold.it/600x400&amp;text=image">
+    </section>
+
+    <section class="entry--standard__meta">
+        <time datetime="2014-11-23T17:17:54+00:00" class="entry__date">23 November</time>
+        <h2 class="entry__title" itemprop="headline"><a href="http://wmmr.greatermedia.10uplabs.com/asdfasdf/">asdfasdf</a></h2>
+    </section>
+    <footer class="entry__footer">
+        <a href="http://wmmr.greatermedia.10uplabs.com/category/uncategorized/" class="entry__footer--category">Uncategorized</a>
+    </footer>
+</article>
+</div></div><div class="cortana-content">
+<h2 id="video-post">Video Post</h2>
+
+<p>Video posts display a video and minimal text. They can also optionally have a featured image.</p>
+</div><div class="container-fluid"><div class="col-sm-12"><article id="post-581" class="post-581 post type-post status-publish format-video has-post-thumbnail hentry category-uncategorized cf" role="article" itemscope="" itemtype="http://schema.org/BlogPosting">
+    <section class="entry--video__meta" itemprop="articleBody">
+        <time datetime="2014-11-05T00:13:14+00:00" class="entry__date">5 November</time>
+        <h2 class="entry__title"><a href="">Gladys Knight &amp; The Pips “Midnight Train To Georgia”</a></h2>
+    </section>
+
+    <section class="entry--video__thumbnail">
+        <img src="http://placehold.it/600x400&amp;text=image">
+    </section>
+    <footer class="entry__footer">
+        <a href="http://wmmr.greatermedia.10uplabs.com/category/uncategorized/" class="entry__footer--category">Uncategorized</a>
+    </footer>
+</article>
+</div></div><div class="cortana-content">
+        </div>
+      </div>
+    </div>
+
+    <footer class="cortana-footer">
+      Build with love using Trulia's <a href="https://github.com/trulia/hologram">Hologram</a> and <a href="https://github.com/Yago/Cortana">Cortana</a> !
+    </footer>  
+  </div>
+
+  <script src="theme-build/js/vendors.min.js"></script>
+  <script type="text/javascript">
+    var jQuery_no_conflict = $.noConflict(true);
+  </script>
+  <script src="theme-build/js/main.js"></script>
+  <script type="text/javascript">
+    function TypeaheadCtrl($scope) {
+      $scope.selected = undefined;
+      $scope.searchData = 
+      [
+        
+          
+            
+              
+              
+              {
+              "title": "Buttons",
+              "breadcrumb": "Basics > Buttons",
+              "path": "basics.html#button"
+              },
+            
+          
+        
+          
+            
+              
+              
+              {
+              "title": "Post Excerpts",
+              "breadcrumb": "Components - Post Excerpts > Post Excerpts",
+              "path": "components_-_post_excerpts.html#posts"
+              },
+            
+              
+              
+              {
+              "title": "Gallery Post",
+              "breadcrumb": "Components - Post Excerpts > Gallery Post",
+              "path": "components_-_post_excerpts.html#gallery-post"
+              },
+            
+              
+              
+              {
+              "title": "Image Post",
+              "breadcrumb": "Components - Post Excerpts > Image Post",
+              "path": "components_-_post_excerpts.html#image-post"
+              },
+            
+              
+              
+              {
+              "title": "Link Post",
+              "breadcrumb": "Components - Post Excerpts > Link Post",
+              "path": "components_-_post_excerpts.html#link-post"
+              },
+            
+              
+              
+              {
+              "title": "Standard Post",
+              "breadcrumb": "Components - Post Excerpts > Standard Post",
+              "path": "components_-_post_excerpts.html#standard-post"
+              },
+            
+              
+              
+              {
+              "title": "Video Post",
+              "breadcrumb": "Components - Post Excerpts > Video Post",
+              "path": "components_-_post_excerpts.html#video-post"
+              },
+            
+          
+        
+          
+            
+              
+              
+              {
+              "title": "Buttons",
+              "breadcrumb": "Basics > Buttons",
+              "path": "basics.html#button"
+              },
+            
+          
+        
+      {}];
+      $scope.onSelect = function ($item, $model, $label) {
+        window.location.replace($item.path);
+      };
+    }
+  </script>
+  <script type="text/ng-template" id="customTemplate.html">
+    <a href="{{match.model.path}}">
+      <p class="cortana-search-title">{{match.model.title}}</p>
+      <p class="cortana-search-path">{{match.model.breadcrumb}}</p>
+    </a>
+  </script>
+  
+    
+      <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+    
+  
+  <!-- Source Components -->
+  
+</body>
+</html>
