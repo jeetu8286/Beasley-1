@@ -93,11 +93,16 @@ class GreaterMediaTimedContent extends VisualShortcode {
 					'jquery',
 					'date-format'
 				), false, true );
+
+				wp_enqueue_script( 'datetimepicker', trailingslashit( GREATER_MEDIA_TIMED_CONTENT_URL ) . 'bower_components/datetimepicker/jquery.datetimepicker.js', array( 'jquery' ), null, true );
+
 			} else {
+
 				wp_enqueue_script( 'greatermedia-tc-admin-js', trailingslashit( GREATER_MEDIA_TIMED_CONTENT_URL ) . 'js/dist/greatermedia-timed-content.min.js', array(
 					'jquery',
 					'date-format'
 				), false, true );
+
 			}
 
 			$expiration_timestamp = get_post_meta( $post->ID, '_post_expiration', true );

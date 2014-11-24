@@ -11,4 +11,3 @@
 include __DIR__ . '/term-data-store/term-data-store.php';
 include __DIR__ . '/visual-shortcode/visual-shortcode.php';
 include __DIR__ . '/dependencies/dependencies.php';
-include __DIR__ . '/jquery-ui-theme/jquery-ui-theme.php';
