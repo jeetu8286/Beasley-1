@@ -80,19 +80,26 @@ class GreaterMediaTimedContent extends VisualShortcode {
 
 			// Enqueue CSS
 			wp_enqueue_style( 'greatermedia-tc', trailingslashit( GREATER_MEDIA_TIMED_CONTENT_URL ) . 'css/greatermedia-timed-content.css' );
-			wp_enqueue_style( 'datetimepicker', trailingslashit( GREATER_MEDIA_TIMED_CONTENT_URL ) . 'bower_components/datetimepicker/jquery.datetimepicker.css' );
+			wp_enqueue_style( 'datetimepicker');
+			wp_enqueue_script( 'datetimepicker');
 
 			// Enqueue JavaScript
 			if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
+
 				wp_enqueue_script( 'date-format', trailingslashit( GREATER_MEDIA_TIMED_CONTENT_URL ) . 'bower_components/date.format/date.format.js', array(), null, true );
 				wp_enqueue_script( 'date-toisostring', trailingslashit( GREATER_MEDIA_TIMED_CONTENT_URL ) . 'js/vendor/date-toisostring.js', array(), null, true );
 				wp_enqueue_script( 'greatermedia-tc-admin-js', trailingslashit( GREATER_MEDIA_TIMED_CONTENT_URL ) . 'js/greatermedia-timed-content-admin.js', array(
 					'jquery',
 					'date-format'
 				), false, true );
-				wp_enqueue_script( 'datetimepicker', trailingslashit( GREATER_MEDIA_TIMED_CONTENT_URL ) . 'bower_components/datetimepicker/jquery.datetimepicker.js', array( 'jquery' ), null, true );
+
 			} else {
-				wp_enqueue_script( 'greatermedia-tc-admin-js', trailingslashit( GREATER_MEDIA_TIMED_CONTENT_URL ) . 'js/dist/greatermedia-timed-content.min.js', array( 'jquery' ), false, true );
+
+				wp_enqueue_script( 'greatermedia-tc-admin-js', trailingslashit( GREATER_MEDIA_TIMED_CONTENT_URL ) . 'js/dist/greatermedia-timed-content.min.js', array(
+					'jquery',
+					'date-format'
+				), false, true );
+
 			}
 
 			$expiration_timestamp = get_post_meta( $post->ID, '_post_expiration', true );
