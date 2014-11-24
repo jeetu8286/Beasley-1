@@ -226,7 +226,7 @@ class GreaterMediaContests {
 	 * @return array The array of extended post types.
 	 */
 	public function extend_live_link_suggestion_post_types( $post_types ) {
-		$post_types[] = 'contest_entry';
+		$post_types[] = 'contest';
 		return $post_types;
 	}
 
