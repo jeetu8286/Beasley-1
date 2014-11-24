@@ -44,6 +44,10 @@ class GreaterMediaFormbuilderRender {
 	 */
 	public static function wp_enqueue_scripts() {
 
+		wp_enqueue_script( 'parsleyjs' );
+		wp_enqueue_style( 'parsleyjs' );
+		wp_enqueue_script( 'parsleyjs-words' );
+
 		wp_enqueue_script( 'greatermedia-contests', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'js/greatermedia-contests.js', array( 'jquery' ), false, true );
 		$settings = array(
 			'form_class' => self::FORM_CLASS,
@@ -51,8 +55,8 @@ class GreaterMediaFormbuilderRender {
 		);
 		wp_localize_script( 'greatermedia-contests', 'GreaterMediaContests', $settings );
 
-		wp_enqueue_script( 'jquery-ui-datepicker' );
-		wp_enqueue_style( 'jquery-ui-datepicker' );
+		wp_enqueue_script( 'datetimepicker' );
+		wp_enqueue_style( 'datetimepicker' );
 		wp_enqueue_style( 'greatermedia-contests', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'css/greatermedia-contests.css' );
 
 	}
@@ -87,16 +91,8 @@ class GreaterMediaFormbuilderRender {
 				throw new InvalidArgumentException( 'contest_id does not reference a contest' );
 			}
 
-			// @TODO use the final Gigya API
-			$gigya_id = GreaterMediaGigyaTest::gigya_user_id();
-			if ( ! empty( $gigya_id ) ) {
-				$entrant_reference = $gigya_id;
-				// @TODO get entrant name from Gigya
-				$entrant_name = 'John Doe';
-			} else {
-				$entrant_name      = 'Anonymous Listener';
-				$entrant_reference = null;
-			}
+			list( $entrant_reference, $entrant_name ) = self::entrant_id_and_name();
+
 
 			// Pretty sure this is our form submission at this point
 			$form = json_decode( get_post_meta( $contest_id, 'embedded_form', true ) );
@@ -174,6 +170,7 @@ class GreaterMediaFormbuilderRender {
 			$tags = array();
 
 			$tags['fieldset'] = array();
+			$tags['hr']       = array();
 
 			// Add form tags
 			$tags['input'] = array(
@@ -194,6 +191,7 @@ class GreaterMediaFormbuilderRender {
 				'max'         => 1,
 				'form'        => 1,
 				'checked'     => 1,
+				'required'    => 1,
 			);
 
 			$tags['textarea'] = array(
@@ -227,11 +225,18 @@ class GreaterMediaFormbuilderRender {
 				'size'      => 1,
 			);
 
+			$tags['option'] = array(
+				'value'    => 1,
+				'selected' => 1,
+			);
+
 			$tags['label'] = array(
 				'for'   => 1,
 				'form'  => 1,
 				'class' => 1,
 			);
+
+			$tags['legend'] = array();
 
 			$tags['p'] = array(
 				'class' => 1,
@@ -309,6 +314,13 @@ class GreaterMediaFormbuilderRender {
 
 	}
 
+	/**
+	 * Render a field's label tag
+	 *
+	 * @param stdClass $field
+	 *
+	 * @return string html
+	 */
 	protected static function render_label( stdClass $field ) {
 
 		$html = '';
@@ -342,6 +354,13 @@ class GreaterMediaFormbuilderRender {
 		return $html;
 	}
 
+	/**
+	 * Render a legend tag
+	 *
+	 * @param stdClass $field
+	 *
+	 * @return string html
+	 */
 	protected static function render_legend( stdClass $field ) {
 
 		$html = '';
@@ -410,29 +429,20 @@ class GreaterMediaFormbuilderRender {
 	 */
 	protected static function render_text( $post_id, stdClass $field ) {
 
-		$html     = '';
-		$field_id = 'form_field_' . $field->cid;
-
-		$input_tag_attributes = array(
-			'id'   => $field_id,
-			'name' => $field_id,
-			'type' => 'text',
-		);
-
-		$html .= self::render_label( $field );
+		$special_attributes = array();
 
 		if ( isset( $field->required ) && $field->required ) {
-			$input_tag_attributes['required'] = 'required';
+			$special_attributes['required'] = 'required';
 		}
 
 		if ( isset( $field->field_options->size ) ) {
 
 			if ( 'small' === $field->field_options->size ) {
-				$input_tag_attributes['size'] = self::INPUT_SIZE_SMALL;
+				$special_attributes['size'] = self::INPUT_SIZE_SMALL;
 			} else if ( 'medium' === $field->field_options->size ) {
-				$input_tag_attributes['size'] = self::INPUT_SIZE_MEDIUM;
+				$special_attributes['size'] = self::INPUT_SIZE_MEDIUM;
 			} else if ( 'large' === $field->field_options->size ) {
-				$input_tag_attributes['size'] = self::INPUT_SIZE_LARGE;
+				$special_attributes['size'] = self::INPUT_SIZE_LARGE;
 			} else {
 				throw new InvalidArgumentException( sprintf( 'Field %d has an invalid size', $field->cid ) );
 			}
@@ -440,31 +450,19 @@ class GreaterMediaFormbuilderRender {
 		}
 
 		if ( isset( $field->field_options->minlength ) ) {
-			$input_tag_attributes['minlength'] = $field->field_options->minlength;
+			$special_attributes['minlength'] = $field->field_options->minlength;
 		}
 
 		if ( isset( $field->field_options->maxlength ) ) {
-			$input_tag_attributes['maxlength'] = $field->field_options->maxlength;
+			$special_attributes['maxlength'] = $field->field_options->maxlength;
 		}
 
-		// Give the theme a chance to alter the attributes for the input field
-		$input_tag_attributes = apply_filters( 'gm_form_text_input_attrs', $input_tag_attributes );
-		$input_tag_attributes = apply_filters( 'gm_form_input_attrs', $input_tag_attributes );
-
-		$html .= '<input ';
-		foreach ( $input_tag_attributes as $attribute => $value ) {
-			$html .= wp_kses_data( $attribute ) . '="' . esc_attr( $value ) . '" ';
-		}
-		$html .= ' />';
-
-		$html .= self::render_description( $field );
-
-		return $html;
+		return self::render_input_tag( 'text', $post_id, $field, $special_attributes );
 
 	}
 
 	/**
-	 * Render a text field on a form using data from formbuilder
+	 * Render a paragraph (textarea tag) on a form using data from formbuilder
 	 *
 	 * @param stdClass $field
 	 *
@@ -531,6 +529,57 @@ class GreaterMediaFormbuilderRender {
 
 	}
 
+	/**
+	 * Render a dropdown (select tag)
+	 *
+	 * @param int      $post_id
+	 * @param stdClass $field
+	 *
+	 * @return string html
+	 */
+	protected static function render_dropdown( $post_id, stdClass $field ) {
+
+		$html = '';
+
+		$field_id = 'form_field_' . $field->cid;
+
+		$select_tag_attributes = array(
+			'id'   => $field_id,
+			'name' => $field_id,
+		);
+
+		$html .= self::render_label( $field );
+
+		if ( isset( $field->required ) && $field->required ) {
+			$select_tag_attributes['required'] = 'required';
+		}
+
+		// Give the theme a chance to alter the attributes for the input field
+		$select_tag_attributes = apply_filters( 'gm_form_select_attrs', $select_tag_attributes );
+		$select_tag_attributes = apply_filters( 'gm_form_input_attrs', $select_tag_attributes );
+
+		$html .= '<select ';
+		foreach ( $select_tag_attributes as $attribute => $value ) {
+			$html .= wp_kses_data( $attribute ) . '="' . esc_attr( $value ) . '" ';
+		}
+		$html .= '>';
+
+		if ( isset( $field->field_options->include_blank_option ) && $field->field_options->include_blank_option ) {
+			$html .= '<option value=""></option>';
+		}
+
+		foreach ( $field->field_options->options as $option_index => $option_data ) {
+			$html .= '<option value="' . esc_attr( $option_data->label ) . '" ' . selected( 1, $option_data->checked, false ) . '>' . wp_kses_data( $option_data->label ) . '</option>';
+		}
+
+		$html .= '</select>';
+
+		$html .= self::render_description( $field );
+
+		return $html;
+
+	}
+
 	protected static function render_radio( $post_id, stdClass $field ) {
 		return self::render_checkboxes( $post_id, $field, 'radio' );
 	}
@@ -571,7 +620,141 @@ class GreaterMediaFormbuilderRender {
 
 	}
 
+	/**
+	 * Render a date input
+	 *
+	 * @param int      $post_id
+	 * @param stdClass $field
+	 *
+	 * @return string html
+	 */
 	protected static function render_date( $post_id, stdClass $field ) {
+		return self::render_input_tag( 'date', $post_id, $field );
+	}
+
+	/**
+	 * Render a time input
+	 *
+	 * @param int      $post_id
+	 * @param stdClass $field
+	 *
+	 * @return string html
+	 */
+	protected static function render_time( $post_id, stdClass $field ) {
+		return self::render_input_tag( 'time', $post_id, $field );
+	}
+
+	/**
+	 * Render a website (url) input
+	 *
+	 * @param int      $post_id
+	 * @param stdClass $field
+	 *
+	 * @return string html
+	 */
+	protected static function render_website( $post_id, stdClass $field ) {
+		return self::render_input_tag( 'url', $post_id, $field );
+	}
+
+	/**
+	 * Render an email input
+	 *
+	 * @param int      $post_id
+	 * @param stdClass $field
+	 *
+	 * @return string html
+	 */
+	protected static function render_email( $post_id, stdClass $field ) {
+		return self::render_input_tag( 'email', $post_id, $field );
+	}
+
+	protected static function render_price( $post_id, stdClass $field ) {
+
+		$special_attributes = array(
+			'step'    => '0.01',
+			'pattern' => '\d+(\.\d{2})?',
+		);
+
+		return self::render_input_tag( 'text', $post_id, $field, $special_attributes );
+	}
+
+	/**
+	 * Render an email input
+	 *
+	 * @param int      $post_id
+	 * @param stdClass $field
+	 *
+	 * @return string html
+	 */
+	protected static function render_address( $post_id, stdClass $field ) {
+
+		$html = '';
+
+		$html .= '<fieldset>';
+
+		$html .= self::render_legend( $field );
+		$description = self::render_description( $field );
+
+		$html .= '<div>';
+
+		$address_field = clone( $field );
+		$address_field->cid .= '[address]';
+		$address_field->label = 'Address';
+		unset( $address_field->field_options->description );
+		$html .= self::render_input_tag( 'text', $post_id, $address_field );
+
+		$city_field = clone( $field );
+		$city_field->cid .= '[city]';
+		$city_field->label = 'City';
+		unset( $city_field->field_options->description );
+		$html .= self::render_input_tag( 'text', $post_id, $city_field );
+
+		$state_field = clone( $field );
+		$state_field->cid .= '[state]';
+		$state_field->label = 'State';
+		unset( $state_field->field_options->description );
+		$state_field->field_options->options = self::get_us_states();
+		$html .= self::render_dropdown( $post_id, $state_field );
+
+		$postal_code_field = clone( $field );
+		$postal_code_field->cid .= '[postal_code]';
+		$postal_code_field->label = 'Zip Code/Postal Code';
+		unset( $postal_code_field->field_options->description );
+		$special_attributes = array(
+			// 5-character zip with optional zip+4 separated by space or dash
+			'pattern' => '^\d{5}(?:[-\s]\d{4})?$',
+		);
+		$html .= self::render_input_tag( 'number', $post_id, $postal_code_field, $special_attributes );
+
+		$html .= '</div>';
+
+		$html .= $description;
+
+		$html .= '</fieldset>';
+
+		return $html;
+
+	}
+
+	protected static function render_file( $post_id, stdClass $field ) {
+		return self::render_input_tag( 'file', $post_id, $field );
+	}
+
+	/**
+	 * Generic input field renderer (used by the more specific rendering functions)
+	 *
+	 * @param string   $type               HTML5 input type
+	 * @param int      $post_id
+	 * @param stdClass $field
+	 * @param array    $special_attributes tag attributes specific to the input type
+	 *
+	 * @return string html
+	 */
+	protected static function render_input_tag( $type = 'text', $post_id, stdClass $field, Array $special_attributes = null ) {
+
+		if ( null === $special_attributes ) {
+			$special_attributes = array();
+		}
 
 		$html = '';
 
@@ -579,25 +762,93 @@ class GreaterMediaFormbuilderRender {
 
 		$field_id = 'form_field_' . $field->cid;
 
-		$input_tag_attributes = array(
+		$input_tag_attributes = array_merge( $special_attributes, array(
 			'id'   => $field_id,
 			'name' => $field_id,
-			'type' => 'date',
-		);
+			'type' => $type,
+		) );
 
 		if ( isset( $field->required ) && $field->required ) {
 			$input_tag_attributes['required'] = 'required';
 		}
 
 		// Give the theme a chance to alter the attributes for the input field
-		$input_tag_attributes = apply_filters( 'gm_form_date_input_attrs', $input_tag_attributes );
+		$input_tag_attributes = apply_filters( 'gm_form_' . $type . '_input_attrs', $input_tag_attributes );
 		$input_tag_attributes = apply_filters( 'gm_form_input_attrs', $input_tag_attributes );
 
-		$html .= '<input ';
+		$input_tag_html = '<input ';
 		foreach ( $input_tag_attributes as $attribute => $value ) {
-			$html .= wp_kses_data( $attribute ) . '="' . esc_attr( $value ) . '" ';
+			$input_tag_html .= wp_kses_data( $attribute ) . '="' . esc_attr( $value ) . '" ';
 		}
-		$html .= ' />';
+		$input_tag_html .= ' />';
+
+		// Call filters in case certain input types need extra markup (like 'units' following a number field)
+		$input_tag_html = apply_filters( 'gm_form_' . $type . '_input_tag', $input_tag_html, $post_id, $field );
+		$input_tag_html = apply_filters( 'gm_form_input_tag', $input_tag_html, $post_id, $field );
+		$html .= $input_tag_html;
+
+		$html .= self::render_description( $field );
+
+		return $html;
+
+	}
+
+	/**
+	 * Render a number input
+	 *
+	 * @param int      $post_id
+	 * @param stdClass $field
+	 *
+	 * @return string html
+	 */
+	public static function render_number( $post_id, stdClass $field ) {
+
+		$special_attributes = array();
+
+		if ( isset( $field->field_options->min ) ) {
+			$special_attributes['min'] = absint( $field->field_options->min );
+		}
+
+		if ( isset( $field->field_options->max ) ) {
+			$special_attributes['max'] = absint( $field->field_options->max );
+		}
+
+		if ( isset( $field->field_options->integer_only ) && $field->field_options->integer_only ) {
+			$special_attributes['step'] = 1;
+		}
+
+		// Set up a filter to render units
+		add_filter(
+			'gm_form_number_input_tag',
+			function ( $html, $post_id, $field ) {
+				if ( isset( $field->field_options->units ) ) {
+					return $html .= '<span class="units">' . wp_kses_data( $field->field_options->units ) . '</span>';
+				}
+			},
+			10, 3
+		);
+
+		$html = self::render_input_tag( 'number', $post_id, $field, $special_attributes );
+
+		return $html;
+
+	}
+
+	/**
+	 * Render a section break
+	 *
+	 * @param int      $post_id
+	 * @param stdClass $field
+	 *
+	 * @return string html
+	 */
+	public static function render_section_break( $post_id, stdClass $field ) {
+
+		$html = '';
+
+		$html .= '<hr />';
+
+		$html .= self::render_label( $field );
 
 		$html .= self::render_description( $field );
 
@@ -754,6 +1005,118 @@ class GreaterMediaFormbuilderRender {
 		return $html;
 	}
 
+	/**
+	 * Build an array of US states for use when rendering address fields
+	 *
+	 * @return array abbreviation => stdClass(), where value is an option for rendering by render_dropdown()
+	 */
+	protected static function get_us_states() {
+
+		static $state_data;
+
+		if ( ! isset( $state_data ) ) {
+
+			$state_data = array();
+
+			$states = array(
+				'AL' => 'Alabama',
+				'AK' => 'Alaska',
+				'AZ' => 'Arizona',
+				'AR' => 'Arkansas',
+				'CA' => 'California',
+				'CO' => 'Colorado',
+				'CT' => 'Connecticut',
+				'DE' => 'Delaware',
+				'FL' => 'Florida',
+				'GA' => 'Georgia',
+				'HI' => 'Hawaii',
+				'ID' => 'Idaho',
+				'IL' => 'Illinois',
+				'IN' => 'Indiana',
+				'IA' => 'Iowa',
+				'KS' => 'Kansas',
+				'KY' => 'Kentucky',
+				'LA' => 'Louisiana',
+				'ME' => 'Maine',
+				'MD' => 'Maryland',
+				'MA' => 'Massachusetts',
+				'MI' => 'Michigan',
+				'MN' => 'Minnesota',
+				'MS' => 'Mississippi',
+				'MO' => 'Missouri',
+				'MT' => 'Montana',
+				'NE' => 'Nebraska',
+				'NV' => 'Nevada',
+				'NH' => 'New Hampshire',
+				'NJ' => 'New Jersey',
+				'NM' => 'New Mexico',
+				'NY' => 'New York',
+				'NC' => 'North Carolina',
+				'ND' => 'North Dakota',
+				'OH' => 'Ohio',
+				'OK' => 'Oklahoma',
+				'OR' => 'Oregon',
+				'PA' => 'Pennsylvania',
+				'RI' => 'Rhode Island',
+				'SC' => 'South Carolina',
+				'SD' => 'South Dakota',
+				'TN' => 'Tennessee',
+				'TX' => 'Texas',
+				'UT' => 'Utah',
+				'VT' => 'Vermont',
+				'VA' => 'Virginia',
+				'WA' => 'Washington',
+				'WV' => 'West Virginia',
+				'WI' => 'Wisconsin',
+				'WY' => 'Wyoming',
+			);
+
+
+			foreach ( $states as $abbreviation => $label ) {
+				$state_data[ $abbreviation ]          = new stdClass();
+				$state_data[ $abbreviation ]->label   = $label;
+				$state_data[ $abbreviation ]->checked = false;
+			}
+
+		}
+
+		return $state_data;
+
+	}
+
+	/**
+	 * Get Gigya ID and build name, from Gigya session data if available
+	 *
+	 * @return array
+	 */
+	protected static function entrant_id_and_name() {
+
+		if ( class_exists( 'GreaterMedia\Gigya\GigyaSession' ) ) {
+
+			$gigya_session = \GreaterMedia\Gigya\GigyaSession::get_instance();
+			$gigya_id      = $gigya_session->get_user_id();
+			if ( ! empty( $gigya_id ) ) {
+
+				$entrant_reference = $gigya_id;
+				$entrant_name      = $gigya_session->get_key( 'firstName' ) . ' ' . $gigya_session->get_key( 'lastName' );
+
+			} else {
+
+				$entrant_name      = 'Anonymous Listener';
+				$entrant_reference = null;
+
+			}
+
+		} else {
+
+			$entrant_name      = 'Anonymous Listener';
+			$entrant_reference = null;
+
+		}
+
+		return array( $entrant_reference, $entrant_name );
+
+	}
 }
 
 GreaterMediaFormbuilderRender::register_actions();
