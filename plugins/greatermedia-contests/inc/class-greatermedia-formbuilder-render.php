@@ -189,6 +189,7 @@ class GreaterMediaFormbuilderRender {
 				'max'         => 1,
 				'form'        => 1,
 				'checked'     => 1,
+				'required'    => 1,
 			);
 
 			$tags['textarea'] = array(
