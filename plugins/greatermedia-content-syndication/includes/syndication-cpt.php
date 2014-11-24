@@ -463,7 +463,7 @@ class SyndicationCPT {
 			esc_html_e( $taxonomy_name, 'greatermedia' );
 			echo '</label> ';
 
-			echo '<select multiple name="subscription_filter_terms-' . $taxonomy . '[]" class="subscription_terms" style="width: 300px;">';
+			echo '<select multiple name="subscription_filter_terms-' . esc_attr( $taxonomy ) . '[]" class="subscription_terms" style="width: 300px;">';
 			foreach( $terms as $single_term ) {
 				echo '<option', in_array( $single_term->name, $filter_terms) ? ' selected="selected"' : ''
 				, ' value="' . esc_attr( $single_term->name ) .'">' . esc_html( $single_term->name ) . '</option>';
@@ -514,8 +514,8 @@ class SyndicationCPT {
 
 		echo '<select name="subscription_post_status" id="subscription_post_status" style="width: 300px;">';
 			foreach( $list_status as $status ) {
-				echo '<option', $status == $default_status ? ' selected="selected"' : ''
-				, ' value="' . esc_html( $status ) .'">' . esc_html( ucfirst( $status ) ) . '</option>';
+				echo '<option', esc_attr( $status == $default_status ? ' selected="selected"' : '' )
+				, ' value="' . esc_attr( $status ) .'">' . esc_html( ucfirst( $status ) ) . '</option>';
 			}
 		echo '</select></p>';
 
@@ -546,9 +546,9 @@ class SyndicationCPT {
 				foreach( $allterms as $index => $term ) {
 					foreach( $term as $single_term ) {
 						$checked = in_array( $single_term->term_id, $terms) ? 'yes' : 'no';
-						echo '<label for="subscription_default_terms-' . $label . '[]">';
-						echo '<input name="subscription_default_terms-' . $label . '[]" id="subscription_default_terms" type="checkbox" ', checked( $checked, 'yes' )
-						, ' value="' . intval( $single_term->term_id ) .'">' . esc_attr( $single_term->name );
+						echo '<label for="subscription_default_terms-' . esc_attr( $label ) . '[]">';
+						echo '<input name="subscription_default_terms-' . esc_attr( $label ) . '[]" id="subscription_default_terms" type="checkbox" ', checked( $checked, 'yes' )
+						, ' value="' . intval( $single_term->term_id ) .'">' . esc_html( $single_term->name );
 						echo '</label><br/>';
 					}
 				}
@@ -566,7 +566,7 @@ class SyndicationCPT {
 	public function render_syndication_control( $post ) {
 		echo '<div id="syndication_status">';
 		echo '</div>';
-		echo '<button data-postid="' . $post->ID
+		echo '<button data-postid="' . intval( $post->ID )
 		     . '" name="syndicate_now" id="syndicate_now" class="button button-primary button-large"'
 		     . '>Syndicate</button>';
 	}

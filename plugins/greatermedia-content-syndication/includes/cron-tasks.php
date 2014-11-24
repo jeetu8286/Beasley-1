@@ -8,17 +8,6 @@ class CronTasks {
 	public static function init() {
 		add_action( 'admin_init', array( __CLASS__, 'syndication_setup_schedule' ) );
 		add_action( 'syndication_five_minute_event', array( __CLASS__, 'run_syndication' ) );
-
-		add_filter( 'cron_schedules', array( __CLASS__, 'add_five_minute_cron_schedule' ) );
-	}
-
-	public static function add_five_minute_cron_schedule( $schedules ) {
-		$schedules['five_minutes'] = array(
-			'interval' => 300, // 1 week in seconds
-			'display'  => __( 'Every Five Minutes' ),
-		);
-
-		return $schedules;
 	}
 
 	/**
@@ -26,8 +15,7 @@ class CronTasks {
 	 */
 	public static function syndication_setup_schedule() {
 		if ( ! wp_next_scheduled( 'syndication_five_minute_event' ) ) {
-			wp_clear_scheduled_hook( 'syndication_five_minute_event' );
-			wp_schedule_event( self::get_time_for_syndication(), 'five_minutes', 'syndication_five_minute_event' );
+			wp_schedule_event( self::get_time_for_syndication(), 'hourly', 'syndication_five_minute_event' );
 		}
 	}
 
