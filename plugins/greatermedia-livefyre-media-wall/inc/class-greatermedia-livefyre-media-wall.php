@@ -15,6 +15,8 @@ class GreaterMediaLiveFyreMediaWall {
 		add_action( 'init', array( $this, 'init' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts' ) );
 
+		add_filter( 'gmr_live_link_suggestion_post_types', array( $this, 'extend_live_link_suggestion_post_types' ) );
+		
 	}
 
 	/**
@@ -103,6 +105,19 @@ class GreaterMediaLiveFyreMediaWall {
 
 	}
 
+	/**
+	 * Extends live link suggestion post types.
+	 *
+	 * @static
+	 * @access public
+	 * @param array $post_types The array of already registered post types.
+	 * @return array The array of extended post types.
+	 */
+	public function extend_live_link_suggestion_post_types( $post_types ) {
+		$post_types[] = 'livefyre-media-wall';
+		return $post_types;
+	}
+	
 }
 
 $GreaterMediaLiveFyreMediaWall = new GreaterMediaLiveFyreMediaWall();

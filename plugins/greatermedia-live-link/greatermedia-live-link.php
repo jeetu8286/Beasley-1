@@ -25,6 +25,7 @@ add_filter( 'post_row_actions', 'gmr_ll_add_post_action', 10, 2 );
 add_filter( 'page_row_actions', 'gmr_ll_add_post_action', 10, 2 );
 add_filter( 'gmr_show_widget_item_post_types', 'gmr_ll_add_show_widget_post_types' );
 add_filter( 'gmr_show_widget_item', 'gmr_ll_output_show_widget_live_link_item' );
+add_filter( 'posts_where', 'gmr_ll_suggestion_by_post_title', 10, 2 );
 
 /**
  * Deletes related live links when a post is hard deleted.
@@ -64,13 +65,36 @@ function gmr_ll_live_link_suggest() {
 	$query = new WP_Query();
 	
 	$results = $query->query( array(
-		's'           => wp_unslash( $_GET['q'] ),
-		'post_type'   => gmr_ll_get_suggestion_post_types(),
-		'post_status' => 'publish',
+		'live_link_suggestion' => wp_unslash( $_GET['q'] ),
+		'post_type'            => gmr_ll_get_suggestion_post_types(),
+		'post_status'          => 'publish',
+		'posts_per_page'       => 100,
+		'no_found_rows'        => true,
+		'ignore_sticky_posts'  => true,
 	) );
 
 	echo implode( wp_list_pluck( $results, 'post_title' ), PHP_EOL );
 	exit;
+}
+
+/**
+ * Extends WHERE statement of the WP_Query by adding "post_title like '...'" condition for live link suggestions.
+ *
+ * @filter posts_where 10 2
+ * @global wpdb $wpdb The database connection.
+ * @param string $where The initial WHERE statement.
+ * @param WP_Query $wp_query The query object.
+ * @return string Extended statement.
+ */
+function gmr_ll_suggestion_by_post_title( $where, $wp_query ) {
+    global $wpdb;
+	
+    if ( ( $post_title = $wp_query->get( 'live_link_suggestion' ) ) ) {
+		$post_title = esc_sql( $wpdb->esc_like( $post_title ) );
+		$where .= " AND {$wpdb->posts}.post_title LIKE '%{$post_title}%'";
+    }
+	
+    return $where;
 }
 
 /**
