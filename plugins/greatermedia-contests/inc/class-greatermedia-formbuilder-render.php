@@ -176,6 +176,7 @@ class GreaterMediaFormbuilderRender {
 			$tags = array();
 
 			$tags['fieldset'] = array();
+			$tags['hr'] = array();
 
 			// Add form tags
 			$tags['input'] = array(
@@ -833,6 +834,28 @@ class GreaterMediaFormbuilderRender {
 		);
 
 		$html = self::render_input_tag( 'number', $post_id, $field, $special_attributes );
+
+		return $html;
+
+	}
+
+	/**
+	 * Render a section break
+	 *
+	 * @param int      $post_id
+	 * @param stdClass $field
+	 *
+	 * @return string html
+	 */
+	public static function render_section_break( $post_id, stdClass $field ) {
+
+		$html = '';
+
+		$html .= '<hr />';
+
+		$html .= self::render_label( $field );
+
+		$html .= self::render_description( $field );
 
 		return $html;
 
