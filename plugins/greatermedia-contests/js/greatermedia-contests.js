@@ -13,8 +13,6 @@ jQuery(function () {
 				var input = this;
 				if ('file' === input.type) {
 					jQuery(this.files).each(function (key, value) {
-						console.log(key);
-						console.log(value);
 						form_data.append(input.name, value);
 					});
 				}
