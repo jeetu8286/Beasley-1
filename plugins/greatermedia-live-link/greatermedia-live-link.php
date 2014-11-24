@@ -201,7 +201,7 @@ function gmr_ll_save_redirect_meta_box_data( $post_id ) {
 	if ( ( ! is_numeric( $redirect ) || ! ( $post = get_post( $redirect ) ) || $post->post_type == GMR_LIVE_LINK_CPT ) && ! filter_var( $redirect, FILTER_VALIDATE_URL ) ) {
 		$post = get_page_by_title( $redirect, OBJECT, gmr_ll_get_suggestion_post_types() );
 		if ( ! $post ) {
-			wp_die( 'You have entered wrong redirect URL, please, enter proper URL address or a post title.', '', array( 'back_link' => true ) );
+			wp_die( 'Please enter a valid URL or post title.', '', array( 'back_link' => true ) );
 		}
 
 		$redirect = $post->ID;
