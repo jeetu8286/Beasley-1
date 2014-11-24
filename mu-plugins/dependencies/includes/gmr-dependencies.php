@@ -124,7 +124,7 @@ class GmrDependencies {
 			, 'all'
 		);
 
-		wp_enqueue_style(
+		wp_register_style(
 			'parsleyjs',
 			GMRDEPENDENCIES_URL . '/parsleyjs/src/parsley.css',
 			array(),
