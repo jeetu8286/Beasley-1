@@ -540,7 +540,7 @@ class SyndicationCPT {
 			);
 
 			$allterms[] = get_terms( $label, $term_args );
-			echo '<h4>' . $name . '</h4>';
+			echo '<h4>' . esc_html( $name ) . '</h4>';
 
 			if( !empty( $allterms[0] ) ) {
 				foreach( $allterms as $index => $term ) {
