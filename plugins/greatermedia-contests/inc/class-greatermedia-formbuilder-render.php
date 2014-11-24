@@ -89,16 +89,8 @@ class GreaterMediaFormbuilderRender {
 				throw new InvalidArgumentException( 'contest_id does not reference a contest' );
 			}
 
-			// @TODO use the final Gigya API
-			$gigya_id = GreaterMediaGigyaTest::gigya_user_id();
-			if ( ! empty( $gigya_id ) ) {
-				$entrant_reference = $gigya_id;
-				// @TODO get entrant name from Gigya
-				$entrant_name = 'John Doe';
-			} else {
-				$entrant_name      = 'Anonymous Listener';
-				$entrant_reference = null;
-			}
+			list( $entrant_reference, $entrant_name ) = self::entrant_id_and_name();
+
 
 			// Pretty sure this is our form submission at this point
 			$form = json_decode( get_post_meta( $contest_id, 'embedded_form', true ) );
@@ -1086,6 +1078,40 @@ class GreaterMediaFormbuilderRender {
 		}
 
 		return $state_data;
+
+	}
+
+	/**
+	 * Get Gigya ID and build name, from Gigya session data if available
+	 *
+	 * @return array
+	 */
+	protected static function entrant_id_and_name() {
+
+		if ( class_exists( 'GreaterMedia\Gigya\GigyaSession' ) ) {
+
+			$gigya_session = \GreaterMedia\Gigya\GigyaSession::get_instance();
+			$gigya_id      = $gigya_session->get_user_id();
+			if ( ! empty( $gigya_id ) ) {
+
+				$entrant_reference = $gigya_id;
+				$entrant_name      = $gigya_session->get_key( 'firstName' ) . ' ' . $gigya_session->get_key( 'lastName' );
+
+			} else {
+
+				$entrant_name      = 'Anonymous Listener';
+				$entrant_reference = null;
+
+			}
+
+		} else {
+
+			$entrant_name      = 'Anonymous Listener';
+			$entrant_reference = null;
+
+		}
+
+		return array( $entrant_reference, $entrant_name );
 
 	}
 }
