@@ -39,6 +39,9 @@
           
         
       
+        
+        
+      
 
       <nav class="cortana-nav">
         <ul>
@@ -47,14 +50,16 @@
           
         </ul>
         
-          <h3>Basics</h3>
+          <h3>Base</h3>
           <ul>
           
             
               
               
-                <li><a href="basics.html">Basics</a></li>
+                <li><a href="base_-_typography.html">Typography</a></li>
               
+            
+          
             
           
             
@@ -70,6 +75,13 @@
               
               
                 <li><a class="active" href="components.html">Components</a></li>
+              
+            
+          
+            
+              
+              
+                <li><a href="components_-_post_excerpts.html">Post Excerpts</a></li>
               
             
           
@@ -100,13 +112,7 @@
           <ul bs-scrollspy-list data-offset="-30">
             
               
-                <li><a href="#posts">Post Excerpts</a></li>
-              
-            
-              
-            
-              
-            
+                <li><a href="#live-player">Live Player</a></li>
               
             
           </ul>
@@ -117,64 +123,146 @@
 
 
 
-<h1 id="posts">Post Excerpts</h1>
+<h1 id="live-player">Live Player</h1>
+</div><div class="codeExample"><div class="exampleOutput"><aside id="live-player__sidebar" class="live-player live-player--init" style="top: 0px; height: auto; position: relative; float: right; overflow-y: auto; right: 0;">
+    <nav class="live-player__stream">
+        <ul class="live-player__stream--list">
+            <li class="live-player__stream--current">
+                <div class="live-player__stream--title">Stream</div>
+                <div class="live-player__stream--current-name">HD1</div>
+                <ul class="live-player__stream--available">
+                    <li class="live-player__stream--item">
+                        <div class="live-player__stream--name">HD1</div>
+                        <div class="live-player__stream--desc">A brief description can be used here</div>
+                    </li>
+                    <li class="live-player__stream--item">
+                        <div class="live-player__stream--name">HD2</div>
+                        <div class="live-player__stream--desc">A brief description can be used here</div>
+                    </li>
+                    <li class="live-player__stream--item">
+                        <div class="live-player__stream--name">HD3</div>
+                        <div class="live-player__stream--desc">A brief description can be used here</div>
+                    </li>
+                    <li class="live-player__stream--item">
+                        <div class="live-player__stream--name">FM</div>
+                        <div class="live-player__stream--desc">A brief description can be used here</div>
+                    </li>
+                    <li class="live-player__stream--item">
+                        <div class="live-player__stream--name">FM2</div>
+                        <div class="live-player__stream--desc">A brief description can be used here</div>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+    <div id="live-player" class="live-player__container">
+        <div id="on-air" class="on-air" style="display: none;">
+            <span class="on-air__title">On Air:</span><span class="on-air__show">Preston and Steve Show</span>
+        </div>
+        <div id="up-next" class="up-next" style="display: block;">
+            <span class="up-next__title">Up Next:</span><span class="up-next__show">Pierre Robert</span>
+        </div>
+        <div class="live-stream">
+                    <div class="live-stream__player" style="display: block;">
+            <div class="live-stream__controls">
+                <div id="playButton" class="live-stream__btn--play" data-station="WMMRFM" data-action="play-live"></div>
+                <div id="pauseButton" class="live-stream__btn--pause" data-station="WMMRFM"></div>
+                <div id="resumeButton" class="live-stream__btn--resume" data-station="WMMRFM"></div>
+            </div>
+            <!-- Player placeholder -->
+            <div id="td_container" class="live-stream__player--container"><div id="html5OnDemandNode" style="display: none;"><video id="videoNode" type="video" height="0%" width="0%" x-webkit-airplay="allow"><source id="odmediasource"></video></div><div id="html5Node"></div></div>
+        </div>
 
-<p>Post excerpts are displayed on the home page and category pages</p>
+        <div class="live-stream__status">
+            <div id="live-stream__listen-now" class="live-stream__listen-now--btn" style="display: none;">Listen Live</div>
+            <div id="live-stream__now-playing" class="live-stream__now-playing--btn" style="display: inline-block;">Now Playing</div>
+        </div>
+        <div id="nowPlaying" class="now-playing">
+            <div id="trackInfo" class="now-playing__info"></div>
+            <div id="npeInfo"></div>
+        </div>
+        <div id="live-stream__test" class="live-stream__test" style="display: block;">
+            <input type="checkbox" name="live-stream__test--audio" class="live-stream__test--audio" id="live-stream__test--audio" value="live-audio">
+            <label for="live-stream__test--audio" class="live-stream__test--label" style="color: rgb(255, 255, 255);">Logged In</label>
+        </div>
+    </div>
+    </div>
 
-<h2 id="image-post">Image Post</h2>
+    <div id="live-links" class="live-links">
+        <h3 class="widget--live-player__title">Live Links</h3>
+        <div id="gmr_shows_widget-2" class="widget--live-player widget_gmr_shows_widget"><ul><li class="live-link__type--standard"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/scroll-test/">GMR-278 test</a></div></li><li class="live-link__type--standard"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/contest/daves-contest/">Dave’s Contest</a></div></li><li class="live-link__song"><div class="live-link__song--artist">Soundgarden</div><div class="live-link__song--title">Black Hole Sun</div></li><li class="live-link__song"><div class="live-link__song--artist">The Village People</div><div class="live-link__song--title">YMCA</div></li><li class="live-link__song"><div class="live-link__song--artist">Taylor Swift</div><div class="live-link__song--title">Shake it Off</div></li><li class="live-link__song"><div class="live-link__song--artist">Pink Floyd</div><div class="live-link__song--title">Comfortably Numb</div></li><li class="live-link__type--link"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/timed-content-test/">test test</a></div></li><li class="live-link__type--standard"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/ontario-highway-401-wikipedia-the-free-encyclopedia/">Ontario Highway 401 – Wikipedia, the free encyclopedia</a></div></li><li class="live-link__type--video"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/?post_type=gmr-live-link&amp;p=633">Gladys Knight &amp; The Pips “Midnight Train To Georgia”</a></div></li><li class="live-link__type--video"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/gladys-knight-the-pips-midnight-train-to-georgia/">Gladys Knight &amp; The Pips</a></div></li><li class="live-link__type--video"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/?post_type=gmr-live-link&amp;p=538">Hilarious Volleyball Triple Head Shot – YouTube</a></div></li></ul></div>
+    </div>
+</aside>
+</div><div class="codeBlock"><div class="highlight"><pre><span class="nt">&lt;aside</span> <span class="na">id=</span><span class="s">"live-player__sidebar"</span> <span class="na">class=</span><span class="s">"live-player live-player--init"</span> <span class="na">style=</span><span class="s">"top: 0px; height: auto; position: relative; float: right; overflow-y: auto; right: 0;"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;nav</span> <span class="na">class=</span><span class="s">"live-player__stream"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">"live-player__stream--list"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"live-player__stream--current"</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"live-player__stream--title"</span><span class="nt">&gt;</span>Stream<span class="nt">&lt;/div&gt;</span>
+                <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"live-player__stream--current-name"</span><span class="nt">&gt;</span>HD1<span class="nt">&lt;/div&gt;</span>
+                <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">"live-player__stream--available"</span><span class="nt">&gt;</span>
+                    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"live-player__stream--item"</span><span class="nt">&gt;</span>
+                        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"live-player__stream--name"</span><span class="nt">&gt;</span>HD1<span class="nt">&lt;/div&gt;</span>
+                        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"live-player__stream--desc"</span><span class="nt">&gt;</span>A brief description can be used here<span class="nt">&lt;/div&gt;</span>
+                    <span class="nt">&lt;/li&gt;</span>
+                    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"live-player__stream--item"</span><span class="nt">&gt;</span>
+                        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"live-player__stream--name"</span><span class="nt">&gt;</span>HD2<span class="nt">&lt;/div&gt;</span>
+                        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"live-player__stream--desc"</span><span class="nt">&gt;</span>A brief description can be used here<span class="nt">&lt;/div&gt;</span>
+                    <span class="nt">&lt;/li&gt;</span>
+                    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"live-player__stream--item"</span><span class="nt">&gt;</span>
+                        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"live-player__stream--name"</span><span class="nt">&gt;</span>HD3<span class="nt">&lt;/div&gt;</span>
+                        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"live-player__stream--desc"</span><span class="nt">&gt;</span>A brief description can be used here<span class="nt">&lt;/div&gt;</span>
+                    <span class="nt">&lt;/li&gt;</span>
+                    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"live-player__stream--item"</span><span class="nt">&gt;</span>
+                        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"live-player__stream--name"</span><span class="nt">&gt;</span>FM<span class="nt">&lt;/div&gt;</span>
+                        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"live-player__stream--desc"</span><span class="nt">&gt;</span>A brief description can be used here<span class="nt">&lt;/div&gt;</span>
+                    <span class="nt">&lt;/li&gt;</span>
+                    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"live-player__stream--item"</span><span class="nt">&gt;</span>
+                        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"live-player__stream--name"</span><span class="nt">&gt;</span>FM2<span class="nt">&lt;/div&gt;</span>
+                        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"live-player__stream--desc"</span><span class="nt">&gt;</span>A brief description can be used here<span class="nt">&lt;/div&gt;</span>
+                    <span class="nt">&lt;/li&gt;</span>
+                <span class="nt">&lt;/ul&gt;</span>
+            <span class="nt">&lt;/li&gt;</span>
+        <span class="nt">&lt;/ul&gt;</span>
+    <span class="nt">&lt;/nav&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"live-player"</span> <span class="na">class=</span><span class="s">"live-player__container"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"on-air"</span> <span class="na">class=</span><span class="s">"on-air"</span> <span class="na">style=</span><span class="s">"display: none;"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"on-air__title"</span><span class="nt">&gt;</span>On Air:<span class="nt">&lt;/span&gt;&lt;span</span> <span class="na">class=</span><span class="s">"on-air__show"</span><span class="nt">&gt;</span>Preston and Steve Show<span class="nt">&lt;/span&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"up-next"</span> <span class="na">class=</span><span class="s">"up-next"</span> <span class="na">style=</span><span class="s">"display: block;"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"up-next__title"</span><span class="nt">&gt;</span>Up Next:<span class="nt">&lt;/span&gt;&lt;span</span> <span class="na">class=</span><span class="s">"up-next__show"</span><span class="nt">&gt;</span>Pierre Robert<span class="nt">&lt;/span&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"live-stream"</span><span class="nt">&gt;</span>
+                    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"live-stream__player"</span> <span class="na">style=</span><span class="s">"display: block;"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"live-stream__controls"</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"playButton"</span> <span class="na">class=</span><span class="s">"live-stream__btn--play"</span> <span class="na">data-station=</span><span class="s">"WMMRFM"</span> <span class="na">data-action=</span><span class="s">"play-live"</span><span class="nt">&gt;&lt;/div&gt;</span>
+                <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"pauseButton"</span> <span class="na">class=</span><span class="s">"live-stream__btn--pause"</span> <span class="na">data-station=</span><span class="s">"WMMRFM"</span><span class="nt">&gt;&lt;/div&gt;</span>
+                <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"resumeButton"</span> <span class="na">class=</span><span class="s">"live-stream__btn--resume"</span> <span class="na">data-station=</span><span class="s">"WMMRFM"</span><span class="nt">&gt;&lt;/div&gt;</span>
+            <span class="nt">&lt;/div&gt;</span>
+            <span class="c">&lt;!-- Player placeholder --&gt;</span>
+            <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"td_container"</span> <span class="na">class=</span><span class="s">"live-stream__player--container"</span><span class="nt">&gt;&lt;div</span> <span class="na">id=</span><span class="s">"html5OnDemandNode"</span> <span class="na">style=</span><span class="s">"display: none;"</span><span class="nt">&gt;&lt;video</span> <span class="na">id=</span><span class="s">"videoNode"</span> <span class="na">type=</span><span class="s">"video"</span> <span class="na">height=</span><span class="s">"0%"</span> <span class="na">width=</span><span class="s">"0%"</span> <span class="na">x-webkit-airplay=</span><span class="s">"allow"</span><span class="nt">&gt;&lt;source</span> <span class="na">id=</span><span class="s">"odmediasource"</span><span class="nt">&gt;&lt;/video&gt;&lt;/div&gt;&lt;div</span> <span class="na">id=</span><span class="s">"html5Node"</span><span class="nt">&gt;&lt;/div&gt;&lt;/div&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
 
-<p>Standard posts are mostly text based but can include images. They can also optionally have a featured image.</p>
-</div><div class="container-fluid"><div class="col-sm-12"><article class="post type-post format-image hentry cf" role="article" itemscope="" itemtype="http://schema.org/BlogPosting">
-    <section class="entry--standard__thumbnail">
-        <img src="http://placehold.it/600x400&amp;text=image">
-    </section>
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"live-stream__status"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"live-stream__listen-now"</span> <span class="na">class=</span><span class="s">"live-stream__listen-now--btn"</span> <span class="na">style=</span><span class="s">"display: none;"</span><span class="nt">&gt;</span>Listen Live<span class="nt">&lt;/div&gt;</span>
+            <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"live-stream__now-playing"</span> <span class="na">class=</span><span class="s">"live-stream__now-playing--btn"</span> <span class="na">style=</span><span class="s">"display: inline-block;"</span><span class="nt">&gt;</span>Now Playing<span class="nt">&lt;/div&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"nowPlaying"</span> <span class="na">class=</span><span class="s">"now-playing"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"trackInfo"</span> <span class="na">class=</span><span class="s">"now-playing__info"</span><span class="nt">&gt;&lt;/div&gt;</span>
+            <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"npeInfo"</span><span class="nt">&gt;&lt;/div&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"live-stream__test"</span> <span class="na">class=</span><span class="s">"live-stream__test"</span> <span class="na">style=</span><span class="s">"display: block;"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"checkbox"</span> <span class="na">name=</span><span class="s">"live-stream__test--audio"</span> <span class="na">class=</span><span class="s">"live-stream__test--audio"</span> <span class="na">id=</span><span class="s">"live-stream__test--audio"</span> <span class="na">value=</span><span class="s">"live-audio"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;label</span> <span class="na">for=</span><span class="s">"live-stream__test--audio"</span> <span class="na">class=</span><span class="s">"live-stream__test--label"</span> <span class="na">style=</span><span class="s">"color: rgb(255, 255, 255);"</span><span class="nt">&gt;</span>Logged In<span class="nt">&lt;/label&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
 
-    <section class="entry--standard__meta">
-        <time datetime="2012-01-07T07:07:21+00:00" class="entry__date">7 January</time>
-        <h2 class="entry__title" itemprop="headline"><a href="">An Incredible Post About a Musician</a></h2>
-    </section>
-
-    <footer class="entry__footer">
-        <a href="" class="entry__footer--category">Music</a>
-    </footer>
-</article>
-</div></div><div class="cortana-content">
-<h2 id="standard-post">Standard Post</h2>
-
-<p>Standard posts are mostly text based but can include images. They can also optionally have a featured image.</p>
-</div><div class="container-fluid"><div class="col-sm-12"><article class="post type-post format-standard hentry cf" role="article" itemscope="" itemtype="http://schema.org/BlogPosting">
-    <section class="entry--standard__thumbnail">
-        <img src="http://placehold.it/600x400&amp;text=image">
-    </section>
-
-    <section class="entry--standard__meta">
-        <time datetime="2012-01-07T07:07:21+00:00" class="entry__date">7 January</time>
-        <h2 class="entry__title" itemprop="headline"><a href="">An Incredible Post About a Musician</a></h2>
-    </section>
-
-    <footer class="entry__footer">
-        <a href="" class="entry__footer--category">Music</a>
-    </footer>
-</article>
-</div></div><div class="cortana-content">
-<h2 id="video-post">Video Post</h2>
-
-<p>Video posts display a video and minimal text. They can also optionally have a featured image.</p>
-</div><div class="container-fluid"><div class="col-sm-12"><article class="post type-post format-video hentry cf" role="article" itemscope="" itemtype="http://schema.org/BlogPosting">
-    <section class="entry--standard__thumbnail">
-        <img src="http://placehold.it/600x400&amp;text=image">
-    </section>
-
-    <section class="entry--standard__meta">
-        <time datetime="2012-01-07T07:07:21+00:00" class="entry__date">7 January</time>
-        <h2 class="entry__title" itemprop="headline"><a href="">An Incredible Post About a Musician</a></h2>
-    </section>
-
-    <footer class="entry__footer">
-        <a href="" class="entry__footer--category">Music</a>
-    </footer>
-</article>
-</div></div><div class="cortana-content">
+    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"live-links"</span> <span class="na">class=</span><span class="s">"live-links"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;h3</span> <span class="na">class=</span><span class="s">"widget--live-player__title"</span><span class="nt">&gt;</span>Live Links<span class="nt">&lt;/h3&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"gmr_shows_widget-2"</span> <span class="na">class=</span><span class="s">"widget--live-player widget_gmr_shows_widget"</span><span class="nt">&gt;&lt;ul&gt;&lt;li</span> <span class="na">class=</span><span class="s">"live-link__type--standard"</span><span class="nt">&gt;&lt;div</span> <span class="na">class=</span><span class="s">"live-link__title"</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">"http://wmmr.greatermedia.10uplabs.com/scroll-test/"</span><span class="nt">&gt;</span>GMR-278 test<span class="nt">&lt;/a&gt;&lt;/div&gt;&lt;/li&gt;&lt;li</span> <span class="na">class=</span><span class="s">"live-link__type--standard"</span><span class="nt">&gt;&lt;div</span> <span class="na">class=</span><span class="s">"live-link__title"</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">"http://wmmr.greatermedia.10uplabs.com/contest/daves-contest/"</span><span class="nt">&gt;</span>Dave’s Contest<span class="nt">&lt;/a&gt;&lt;/div&gt;&lt;/li&gt;&lt;li</span> <span class="na">class=</span><span class="s">"live-link__song"</span><span class="nt">&gt;&lt;div</span> <span class="na">class=</span><span class="s">"live-link__song--artist"</span><span class="nt">&gt;</span>Soundgarden<span class="nt">&lt;/div&gt;&lt;div</span> <span class="na">class=</span><span class="s">"live-link__song--title"</span><span class="nt">&gt;</span>Black Hole Sun<span class="nt">&lt;/div&gt;&lt;/li&gt;&lt;li</span> <span class="na">class=</span><span class="s">"live-link__song"</span><span class="nt">&gt;&lt;div</span> <span class="na">class=</span><span class="s">"live-link__song--artist"</span><span class="nt">&gt;</span>The Village People<span class="nt">&lt;/div&gt;&lt;div</span> <span class="na">class=</span><span class="s">"live-link__song--title"</span><span class="nt">&gt;</span>YMCA<span class="nt">&lt;/div&gt;&lt;/li&gt;&lt;li</span> <span class="na">class=</span><span class="s">"live-link__song"</span><span class="nt">&gt;&lt;div</span> <span class="na">class=</span><span class="s">"live-link__song--artist"</span><span class="nt">&gt;</span>Taylor Swift<span class="nt">&lt;/div&gt;&lt;div</span> <span class="na">class=</span><span class="s">"live-link__song--title"</span><span class="nt">&gt;</span>Shake it Off<span class="nt">&lt;/div&gt;&lt;/li&gt;&lt;li</span> <span class="na">class=</span><span class="s">"live-link__song"</span><span class="nt">&gt;&lt;div</span> <span class="na">class=</span><span class="s">"live-link__song--artist"</span><span class="nt">&gt;</span>Pink Floyd<span class="nt">&lt;/div&gt;&lt;div</span> <span class="na">class=</span><span class="s">"live-link__song--title"</span><span class="nt">&gt;</span>Comfortably Numb<span class="nt">&lt;/div&gt;&lt;/li&gt;&lt;li</span> <span class="na">class=</span><span class="s">"live-link__type--link"</span><span class="nt">&gt;&lt;div</span> <span class="na">class=</span><span class="s">"live-link__title"</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">"http://wmmr.greatermedia.10uplabs.com/timed-content-test/"</span><span class="nt">&gt;</span>test test<span class="nt">&lt;/a&gt;&lt;/div&gt;&lt;/li&gt;&lt;li</span> <span class="na">class=</span><span class="s">"live-link__type--standard"</span><span class="nt">&gt;&lt;div</span> <span class="na">class=</span><span class="s">"live-link__title"</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">"http://wmmr.greatermedia.10uplabs.com/ontario-highway-401-wikipedia-the-free-encyclopedia/"</span><span class="nt">&gt;</span>Ontario Highway 401 – Wikipedia, the free encyclopedia<span class="nt">&lt;/a&gt;&lt;/div&gt;&lt;/li&gt;&lt;li</span> <span class="na">class=</span><span class="s">"live-link__type--video"</span><span class="nt">&gt;&lt;div</span> <span class="na">class=</span><span class="s">"live-link__title"</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">"http://wmmr.greatermedia.10uplabs.com/?post_type=gmr-live-link&amp;amp;p=633"</span><span class="nt">&gt;</span>Gladys Knight <span class="ni">&amp;amp;</span> The Pips “Midnight Train To Georgia”<span class="nt">&lt;/a&gt;&lt;/div&gt;&lt;/li&gt;&lt;li</span> <span class="na">class=</span><span class="s">"live-link__type--video"</span><span class="nt">&gt;&lt;div</span> <span class="na">class=</span><span class="s">"live-link__title"</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">"http://wmmr.greatermedia.10uplabs.com/gladys-knight-the-pips-midnight-train-to-georgia/"</span><span class="nt">&gt;</span>Gladys Knight <span class="ni">&amp;amp;</span> The Pips<span class="nt">&lt;/a&gt;&lt;/div&gt;&lt;/li&gt;&lt;li</span> <span class="na">class=</span><span class="s">"live-link__type--video"</span><span class="nt">&gt;&lt;div</span> <span class="na">class=</span><span class="s">"live-link__title"</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">"http://wmmr.greatermedia.10uplabs.com/?post_type=gmr-live-link&amp;amp;p=538"</span><span class="nt">&gt;</span>Hilarious Volleyball Triple Head Shot – YouTube<span class="nt">&lt;/a&gt;&lt;/div&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/aside&gt;</span>
+</pre></div></div></div><div class="cortana-content">
         </div>
       </div>
     </div>
@@ -200,9 +288,45 @@
               
               
               {
-              "title": "Buttons",
-              "breadcrumb": "Basics > Buttons",
-              "path": "basics.html#button"
+              "title": "Headings",
+              "breadcrumb": "Base - Typography > Headings",
+              "path": "base_-_typography.html#headings"
+              },
+            
+              
+              
+              {
+              "title": "Icons",
+              "breadcrumb": "Base - Typography > Icons",
+              "path": "base_-_typography.html#icons"
+              },
+            
+              
+              
+              {
+              "title": "Links",
+              "breadcrumb": "Base - Typography > Links",
+              "path": "base_-_typography.html#links"
+              },
+            
+              
+              
+              {
+              "title": "Misc Type",
+              "breadcrumb": "Base - Typography > Misc Type",
+              "path": "base_-_typography.html#misc-type"
+              },
+            
+          
+        
+          
+            
+              
+              
+              {
+              "title": "Live Player",
+              "breadcrumb": "Components > Live Player",
+              "path": "components.html#live-player"
               },
             
           
@@ -213,44 +337,48 @@
               
               {
               "title": "Post Excerpts",
-              "breadcrumb": "Components > Post Excerpts",
-              "path": "components.html#posts"
+              "breadcrumb": "Components - Post Excerpts > Post Excerpts",
+              "path": "components_-_post_excerpts.html#posts"
+              },
+            
+              
+              
+              {
+              "title": "Gallery Post",
+              "breadcrumb": "Components - Post Excerpts > Gallery Post",
+              "path": "components_-_post_excerpts.html#gallery-post"
               },
             
               
               
               {
               "title": "Image Post",
-              "breadcrumb": "Components > Image Post",
-              "path": "components.html#image-post"
+              "breadcrumb": "Components - Post Excerpts > Image Post",
+              "path": "components_-_post_excerpts.html#image-post"
+              },
+            
+              
+              
+              {
+              "title": "Link Post",
+              "breadcrumb": "Components - Post Excerpts > Link Post",
+              "path": "components_-_post_excerpts.html#link-post"
               },
             
               
               
               {
               "title": "Standard Post",
-              "breadcrumb": "Components > Standard Post",
-              "path": "components.html#standard-post"
+              "breadcrumb": "Components - Post Excerpts > Standard Post",
+              "path": "components_-_post_excerpts.html#standard-post"
               },
             
               
               
               {
               "title": "Video Post",
-              "breadcrumb": "Components > Video Post",
-              "path": "components.html#video-post"
-              },
-            
-          
-        
-          
-            
-              
-              
-              {
-              "title": "Buttons",
-              "breadcrumb": "Basics > Buttons",
-              "path": "basics.html#button"
+              "breadcrumb": "Components - Post Excerpts > Video Post",
+              "path": "components_-_post_excerpts.html#video-post"
               },
             
           

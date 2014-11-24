@@ -18,10 +18,10 @@ name: standard-post
 
 Standard posts are mostly text based but can include images. They can also optionally have a featured image.
 
-```none_example 
+```html_example 
 <article class="post-1162 post type-post status-publish format-standard hentry category-uncategorized tag-post-tag cf" role="article" itemscope="" itemtype="http://schema.org/BlogPosting">
 	<section class="entry--standard__thumbnail">
-		<img src="http://placehold.it/600x400&amp;text=image">
+		<img src="http://placehold.it/600x400&amp;text=standard">
 	</section>
 
 	<section class="entry--standard__meta">
@@ -44,7 +44,7 @@ name: gallery-post
 
 Gallery posts are mostly image based but can include some text. They can also optionally have a featured image.
 
-```none_example 
+```html_example 
 <article id="post-922" class="post-922 post type-post status-publish format-gallery hentry category-uncategorized cf" role="article" itemscope="" itemtype="http://schema.org/BlogPosting">
 	<section class="entry--gallery__meta" itemprop="articleBody">
 		<time datetime="2014-11-10T20:11:28+00:00" class="entry__date">10 November</time>
@@ -52,7 +52,7 @@ Gallery posts are mostly image based but can include some text. They can also op
 	</section>
 
 	<section class="entry--gallery__thumbnail">	
-		<img src="http://placehold.it/600x400&amp;text=image">
+		<img src="http://placehold.it/400x400&amp;text=gallery">
 	</section>
 	<footer class="entry__footer">
 		<a href="http://wmmr.greatermedia.10uplabs.com/category/uncategorized/" class="entry__footer--category">Uncategorized</a>
@@ -70,7 +70,7 @@ name: video-post
 
 Video posts display a video and minimal text. They can also optionally have a featured image.
 
-```none_example 
+```html_example 
 <article id="post-581" class="post-581 post type-post status-publish format-video has-post-thumbnail hentry category-uncategorized cf" role="article" itemscope="" itemtype="http://schema.org/BlogPosting">
 	<section class="entry--video__meta" itemprop="articleBody">
 		<time datetime="2014-11-05T00:13:14+00:00" class="entry__date">5 November</time>
@@ -78,7 +78,7 @@ Video posts display a video and minimal text. They can also optionally have a fe
 	</section>
 
 	<section class="entry--video__thumbnail">
-		<img src="http://placehold.it/600x400&amp;text=image">
+		<img src="http://placehold.it/600x400&amp;text=video">
 	</section>
 	<footer class="entry__footer">
 		<a href="http://wmmr.greatermedia.10uplabs.com/category/uncategorized/" class="entry__footer--category">Uncategorized</a>
@@ -96,7 +96,7 @@ name: image-post
 
 Standard posts are mostly text based but can include images. They can also optionally have a featured image.
 
-```none_example 
+```html_example 
 <article id="post-558" class="post-558 post type-post status-publish format-image has-post-thumbnail hentry category-uncategorized cf" role="article" itemscope="" itemtype="http://schema.org/BlogPosting">
 	<section class="entry--standard__thumbnail">
 		<img src="http://placehold.it/600x400&amp;text=image">
@@ -123,16 +123,13 @@ name: link-post
 
 Link posts contain a link to an external site. They can also optionally have a featured image.
 
-```none_example 
+```html_example 
 <article id="post-886" class="post-886 post type-post status-publish format-link has-post-thumbnail hentry category-uncategorized cf" role="article" itemscope="" itemtype="http://schema.org/BlogPosting">
 	<section class="entry--link__meta" itemprop="articleBody">
 		<time datetime="2014-11-10T04:07:56+00:00" class="entry__date">10 November</time>
 		<h2 class="entry__title"><a href="">Ontario Highway 401 – Wikipedia, the free encyclopedia</a></h2>
 	</section>
 
-	<section class="entry--link__thumbnail">
-		<img src="http://placehold.it/600x400&amp;text=image">
-	</section>
 	<footer class="entry__footer">
 		<a href="http://wmmr.greatermedia.10uplabs.com/category/uncategorized/" class="entry__footer--category">Uncategorized</a>
 	</footer>

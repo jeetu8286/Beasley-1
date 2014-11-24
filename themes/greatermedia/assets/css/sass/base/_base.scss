@@ -5,27 +5,6 @@ html {
 	margin: 0 auto;
 	background: $secondary-bg;
 }
-/*doc
----
-title: Buttons
-name: button
-category: Basics
----
-
-Button styles can be applied to any element. Typically you'll want
-to use either a `<button>` or an `<a>` element:
-
-```html_example
-<button class="btn btnDefault">Click</button> <a
-class="btn btnDefault" href="trulia.com">Trulia!</a>
-```
-
-If your button is actually a link to another page, please use the
-`<a>` element, while if your button performs an action, such as
-submitting a form or triggering some javascript event, then use a
-`<button>` element.
-
-*/
 body {
 	width: 100%;
 	height: 100%;
