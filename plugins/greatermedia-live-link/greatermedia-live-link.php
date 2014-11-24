@@ -11,6 +11,8 @@ define( 'GMR_LIVE_LINK_CPT', 'gmr-live-link' );
 
 // action hooks
 add_action( 'init', 'gmr_ll_register_post_type', PHP_INT_MAX );
+add_action( 'save_post', 'gmr_ll_save_redirect_meta_box_data' );
+add_action( 'save_post', 'gmr_ll_update_live_link_title' );
 add_action( 'save_post', 'gmr_ll_save_redirect_meta_box_data', PHP_INT_MAX );
 add_action( 'manage_' . GMR_LIVE_LINK_CPT . '_posts_custom_column', 'gmr_ll_render_custom_column', 10, 2 );
 add_action( 'admin_action_gmr_ll_copy', 'gmr_ll_handle_copy_post_to_live_link' );
@@ -26,6 +28,51 @@ add_filter( 'page_row_actions', 'gmr_ll_add_post_action', 10, 2 );
 add_filter( 'gmr_show_widget_item_post_types', 'gmr_ll_add_show_widget_post_types' );
 add_filter( 'gmr_show_widget_item', 'gmr_ll_output_show_widget_live_link_item' );
 add_filter( 'posts_where', 'gmr_ll_suggestion_by_post_title', 10, 2 );
+
+/**
+ * Updates live link post title when a parent post title has been changed.
+ *
+ * @param int $post_id The post id.
+ */
+function gmr_ll_update_live_link_title( $post_id ) {
+	// do nothing if it is auto save action
+	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+		return;
+	}
+
+	// do nothing if it is live link post
+	$post = get_post( $post_id );
+	if ( ! $post || GMR_LIVE_LINK_CPT == $post->post_title ) {
+		return;
+	}
+
+	// find all associated live links and update its title
+	$query = new WP_Query( array(
+		'post_type'           => GMR_LIVE_LINK_CPT,
+		'post_status'         => 'any',
+		'post_parent'         => $post_id,
+		'posts_per_page'      => 1000,
+		'no_found_rows'       => true,
+		'ignore_sticky_posts' => true,
+	) );
+
+	// do nothing if we don't find related live links
+	if ( ! $query->have_posts() ) {
+		return;
+	}
+
+	// deactivate this hook to eliminate infinite loop
+	remove_action( 'save_post', 'gmr_ll_update_live_link_title' );
+
+	while ( $query->have_posts() ) {
+		$live_link = $query->next_post();
+		$live_link->post_title = $post->post_title;
+		wp_update_post( $live_link->to_array() );
+	}
+
+	// return back this hook
+	add_action( 'save_post', 'gmr_ll_update_live_link_title' );
+}
 
 /**
  * Deletes related live links when a post is hard deleted.
