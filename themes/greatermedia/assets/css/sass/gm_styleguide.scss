@@ -23,13 +23,16 @@
 // Main layout components: menu, typography, etc.
 @import "layout/typography";
 
+// Home
+@import "home/blog-roll";
+@import "home/featured";
+
 // Components
 @import "components/header";
 @import "components/footer";
 @import "components/posts";
 @import "components/sidebar";
 @import "components/liveplayer";
-@import "components/featured";
 @import "components/breaking-news";
 @import "components/closures";
 @import "components/concerts";

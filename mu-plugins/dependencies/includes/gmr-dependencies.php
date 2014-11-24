@@ -1,14 +1,14 @@
 <?php
+
 /**
  * Created by Eduard
  * Date: 07.11.2014 0:09
  */
-
 class GmrDependencies {
 
 	public function __construct() {
-		add_action( 'wp_enqueue_scripts', array( $this, 'register_dependencies') );
-		add_action( 'admin_enqueue_scripts', array( $this, 'register_dependencies') );
+		add_action( 'wp_enqueue_scripts', array( $this, 'register_dependencies' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'register_dependencies' ) );
 	}
 
 	public function register_dependencies() {
@@ -37,6 +37,30 @@ class GmrDependencies {
 			GMRDEPENDENCIES_URL . '/parsleyjs/src/extra/validator/words.js',
 			array( 'parsleyjs' ),
 			'2.0.5', // Using daveross/parsley.js fork until word count include issue #765 is merged
+			true
+		);
+
+		wp_register_script(
+			'date-format',
+			GMRDEPENDENCIES_URL . '/date.format/date.format.js',
+			array(),
+			false,
+			true
+		);
+
+		wp_register_script(
+			'date-toisostring',
+			GMRDEPENDENCIES_URL . '/date-toisostring.js',
+			array(),
+			null,
+			true
+		);
+
+		wp_register_script(
+			'datetimepicker',
+			GMRDEPENDENCIES_URL . '/datetimepicker/jquery.datetimepicker.js',
+			array( 'jquery' ),
+			'2.3.9',
 			true
 		);
 
@@ -73,6 +97,14 @@ class GmrDependencies {
 		wp_register_style( 'jquery-ui-tabs', GMRDEPENDENCIES_URL . '/jquery-ui-theme/jquery.ui.tabs.min.css', array( 'jquery-ui' ) );
 		wp_register_style( 'jquery-ui-theme', GMRDEPENDENCIES_URL . '/jquery-ui-theme/jquery.ui.theme.min.css', array( 'jquery-ui' ) );
 		wp_register_style( 'jquery-ui-tooltip', GMRDEPENDENCIES_URL . '/jquery-ui-theme/jquery.ui.tooltip.min.css', array( 'jquery-ui' ) );
+
+		wp_register_style(
+			'datetimepicker',
+			GMRDEPENDENCIES_URL . '/datetimepicker/jquery.datetimepicker.css',
+			array(),
+			'2.3.9',
+			'all'
+		);
 
 	}
 }
