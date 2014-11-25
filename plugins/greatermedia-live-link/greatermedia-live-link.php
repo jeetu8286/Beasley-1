@@ -63,8 +63,16 @@ function gmr_ll_update_live_link_title( $post_id ) {
 
 		while ( $query->have_posts() ) {
 			$live_link = $query->next_post();
+
+			// update title
 			$live_link->post_title = $post->post_title;
 			wp_update_post( $live_link->to_array() );
+
+			// copy format
+			$format = get_post_format( $post );
+			if ( ! empty( $format ) ) {
+				set_post_format( $live_link->ID, $format );
+			}
 		}
 	} while ( $paged <= $query->max_num_pages );
 
@@ -82,16 +90,12 @@ function gmr_ll_delete_post_live_links( $post_id ) {
 	// deactivate this hook to prevent infinite loop
 	remove_action( 'deleted_post', 'gmr_ll_delete_post_live_links' );
 
-	$paged = 0;
-
 	do {
-		$paged++;
 		$query = new WP_Query( array(
 			'post_type'           => GMR_LIVE_LINK_CPT,
 			'post_status'         => 'any',
 			'ignore_sticky_posts' => true,
 			'posts_per_page'      => 100,
-			'paged'               => $paged,
 			'post_parent'         => $post_id,
 			'fields'              => 'ids',
 		) );
@@ -99,7 +103,7 @@ function gmr_ll_delete_post_live_links( $post_id ) {
 		while ( $query->have_posts() ) {
 			wp_delete_post( $query->next_post(), true );
 		}
-	} while ( $paged <= $query->max_num_pages );
+	} while ( $query->max_num_pages > 0 );
 
 	// activate this hook back
 	add_action( 'deleted_post', 'gmr_ll_delete_post_live_links' );
