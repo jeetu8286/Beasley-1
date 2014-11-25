@@ -5,6 +5,7 @@ namespace GreaterMedia\Gigya\FakeProfiles;
 class FakeGigyaUser {
 
 	public $properties = array();
+	public $response;
 
 	function __construct( $properties = array() ) {
 		$this->properties = $properties;
@@ -135,7 +136,7 @@ class FakeGigyaUser {
 
 		// read-only
 		$this->properties['verified'] = $faker->boolean( 90 );
-		$this->properties['timezone'] = $faker->timezone;
+		$this->properties['timezone'] = $this->fake_timezone( $faker );
 		$this->properties['likes'] = array(
 			array( 'category' => 'Color', 'name' => $faker->colorName ),
 			array( 'category' => 'Color', 'name' => $faker->colorName ),
@@ -167,6 +168,11 @@ class FakeGigyaUser {
 			$faker->numberBetween( 100, 999 );
 	}
 
+	function fake_timezone( $faker ) {
+		$num = $faker->numberBetween( 4, 11 );
+		return sprintf( 'UTC-%s:00', str_pad( $num, 2, '0', STR_PAD_LEFT ) );
+	}
+
 	function random_gender( $faker ) {
 		$known = $faker->boolean( 95 );
 
@@ -195,6 +201,7 @@ class FakeGigyaUser {
 		$request->setParam( 'profile', json_encode( $profile_properties  ) );
 
 		$response = $request->send();
+		$this->response = $response;
 
 		if ( $response->getErrorCode() !== 0 ) {
 			error_log( $response->getResponseText() );
@@ -210,13 +217,10 @@ class FakeGigyaUser {
 		$this->properties['createdTimestamp']     = $json['createdTimestamp'];
 		$this->properties['lastLoginTimestamp']   = $json['lastLoginTimestamp'];
 		$this->properties['lastUpdatedTimestamp'] = $json['lastUpdatedTimestamp'];
-		$this->properties['registeredTimestamp']  = $json['registerdTimestamp'];
+		$this->properties['registeredTimestamp']  = $json['registeredTimestamp'];
 
-		\WP_CLI::success(
-			"Created User( {$this->properties['email']} ): {$json['UID']}"
-		);
-
-		$this->create_entries();
+		// Not syncing to DS.Store for profile data any more
+		//$this->create_entries();
 	}
 
 	function create_entries() {
@@ -426,8 +430,12 @@ class FakeGigyaUser {
 		);
 	}
 
-	function to_json() {
+	public function to_json() {
 		return json_encode( $this->properties );
+	}
+
+	public function get( $property ) {
+		return $this->properties[ $property ];
 	}
 
 	public function request_for( $method ) {

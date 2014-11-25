@@ -19,3 +19,4 @@ define( 'GMR_GIGYA_PATH', dirname( __FILE__ ) . '/../' );
 define( 'GMR_GIGYA_VERSION', '0.1.0' );
 
 require __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/MockAsyncTask.php';
