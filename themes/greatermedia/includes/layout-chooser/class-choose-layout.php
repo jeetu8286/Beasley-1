@@ -77,7 +77,7 @@ class GreaterMediaChooseClass {
 		?>
 
 		<div id="article-type" class="misc-pub-section">
-			<input type="checkbox" name="promoted" id="promoted" value="promoted" <?php checked( 1, $checked_term ); ?> /> <label for="cover-story"><?php _e( 'Promoted', 'publications' ); ?></label>
+			<input type="checkbox" name="promoted" id="promoted" value="promoted" <?php checked( 1, $checked_term ); ?> /> <label for="cover-story"><?php _e( 'Promote this Post', 'publications' ); ?></label>
 		</div>
 
 	<?php
