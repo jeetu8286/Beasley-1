@@ -88,7 +88,7 @@ class GreaterMediaChooseClass {
 	 *
 	 * hooked into save_post
 	 */
-	public function save_class_state( $post_id ) {
+	public static function save_class_state( $post_id ) {
 		global $post;
 
 		// Check if our nonce is set and that it validates it.
