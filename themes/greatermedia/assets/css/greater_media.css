@@ -19,6 +19,41 @@ html {
   -moz-box-sizing: inherit;
   box-sizing: inherit; }
 
+.hologram-color-swatch {
+  width: 200px;
+  height: 200px;
+  display: inline-block;
+  margin: 10px; }
+
+/*doc
+---
+title: Colors
+name: colors
+category: Base
+---
+
+```none_example
+<span class="hologram-color-swatch" style="background: #000000;">$black</span>
+<span class="hologram-color-swatch" style="background: #ffffff;">$white</span>
+<span class="hologram-color-swatch" style="background: #d22228;">$cardinal</span>
+<span class="hologram-color-swatch" style="background: #561015;">$heath</span>
+<span class="hologram-color-swatch" style="background: #270e10;">$coffee-bean</span>
+<span class="hologram-color-swatch" style="background: #d0d2d3;">$iron</span>
+<span class="hologram-color-swatch" style="background: #c7c7c7;">$silver</span>
+<span class="hologram-color-swatch" style="background: #a6a8ab;">$aluminium</span>
+<span class="hologram-color-swatch" style="background: #929497;">$oslo-gray</span>
+<span class="hologram-color-swatch" style="background: #6d6e70;">$nevada</span>
+<span class="hologram-color-swatch" style="background: #606060;">$scorpion</span>
+<span class="hologram-color-swatch" style="background: #58595b;">$abbey</span>
+<span class="hologram-color-swatch" style="background: #404041;">$ship-gray</span>
+<span class="hologram-color-swatch" style="background: #303030;">$mine-shaft</span>
+<span class="hologram-color-swatch" style="background: #282827;">$tuatara</span>
+<span class="hologram-color-swatch" style="background: #191919;">$cod-gray</span>
+<span class="hologram-color-swatch" style="background: #f5ed7f;">$sahara-sand</span>
+<span class="hologram-color-swatch" style="background: #f7ef7e;">$sweet-corn</span>
+```
+
+*/
 .featured-content--list {
   padding: 0;
   margin: 0; }
@@ -27,6 +62,11 @@ html {
   list-style: none;
   padding: 0;
   margin: 0; }
+
+.entry__categories, .entry__tags, .entry__tags a {
+  color: #929497;
+  font-size: 1.125em;
+  font-style: italic; }
 
 /**
  * Helpers
@@ -389,6 +429,36 @@ td,
 th {
   padding: 0; }
 
+/*doc
+---
+title: Icons
+name: icons
+category: Base - Typography
+---
+
+```html_example
+<span class="icon-camera"></span>
+<span class="icon-clipboard"></span>
+<span class="icon-link"></span>
+<span class="icon-minus"></span>
+<span class="icon-music"></span>
+<span class="icon-play-circle"></span>
+<span class="icon-play"></span>
+<span class="icon-stop"></span>
+<span class="icon-plus"></span>
+<span class="icon-post"></span>
+<span class="icon-radio"></span>
+<span class="icon-user"></span>
+<span class="icon-volume"></span>
+<span class="icon-volume-mute"></span>
+<span class="icon-volume-up"></span>
+<span class="icon-facebook"></span>
+<span class="icon-twitter"></span>
+<span class="icon-google-plus"></span>
+<span class="icon-search"></span>
+```
+
+*/
 /**
  * Font Styles
  */
@@ -621,6 +691,22 @@ body {
       line-height: 1.5;
       font-size: 100%; } }
 
+/*doc
+---
+title: Headings
+name: headings
+category: Base - Typography
+---
+
+```html_example
+<h1>H1. The Quick Brown</h1>
+<h2>H2. Fox Jumped Over the Lazy</h2>
+<h3>h3. dog enroute to tanzania</h3>
+<h4>H4. Ainazanat ot Etuorne God</h4>
+<h5>h5. yzal eht revo depmuj xof</h5>
+<h6>H6. Nworb Kciuq eht</h6>
+```
+*/
 h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
   line-height: 1.5;
   font-family: "Droid Sans", sans-serif;
@@ -651,6 +737,17 @@ h6, .h6 {
   font-size: 1.26563em;
   letter-spacing: 2px; }
 
+/*doc
+---
+title: Links
+name: links
+category: Base - Typography
+---
+
+```html_example
+<a href="http://google.com">Example</a>
+```
+*/
 a:link, a:visited {
   color: #d22228;
   text-decoration: none; }
@@ -658,8 +755,39 @@ a:link, a:visited {
 a:hover, a:focus, a:active {
   color: #aa1c20; }
 
+/*doc
+---
+title: Misc Type
+name: misc-type
+category: Base - Typography
+---
+
+```html_example
+<p>Lorem <sup>superscript</sup> dolor
+<sub>subscript</sub> amet, consectetuer adipiscing elit. Nullam dignissim convallis est. Quisque aliquam.
+<cite>cite</cite>. Nunc iaculis suscipit dui. Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec, gravida vehicula, nisl. Praesent mattis, massa quis luctus fermentum, turpis mi volutpat justo, eu volutpat enim diam eget metus. Maecenas ornare tortor. Donec sed tellus eget sapien fringilla nonummy.
+<abbr title="National Basketball Association">NBA</abbr> Mauris a ante. Suspendisse quam sem, consequat at, commodo vitae, feugiat in, nunc. Morbi imperdiet augue quis tellus.
+<abbr title="Avenue">AVE</abbr></p>
+<blockquote>
+	"This stylesheet is going to help so freaking much."
+</blockquote>
+```
+*/
 p {
   margin: 0 0 1.5em; }
+
+blockquote {
+  padding: 8px .625em;
+  margin: 24px .625em;
+  border-left: 10px solid #d0d2d3;
+  quotes: "“" "”" "‘" "’";
+  color: #6d6e70;
+  font-style: italic; }
+
+blockquote p {
+  display: inline;
+  font-style: italic;
+  color: #6d6e70; }
 
 /**
  * When the Nav Toggle is clicked, a body class is added.
@@ -1303,6 +1431,139 @@ p {
 /**
  * Footer Styles
  */
+/*doc
+---
+title: Post Excerpts
+name: posts
+category: Components - Post Excerpts
+---
+
+Post excerpts are displayed on the home page and category pages
+
+*/
+/*doc
+---
+parent: posts
+title: Standard Post
+name: standard-post
+---
+
+Standard posts are mostly text based but can include images. They can also optionally have a featured image.
+
+```html_example 
+<article class="post-1162 post type-post status-publish format-standard hentry category-uncategorized tag-post-tag cf" role="article" itemscope="" itemtype="http://schema.org/BlogPosting">
+	<section class="entry--standard__thumbnail">
+		<img src="http://placehold.it/600x400&amp;text=standard">
+	</section>
+
+	<section class="entry--standard__meta">
+		<time datetime="2014-11-23T17:17:54+00:00" class="entry__date">23 November</time>
+		<h2 class="entry__title" itemprop="headline"><a href="http://wmmr.greatermedia.10uplabs.com/asdfasdf/">asdfasdf</a></h2>
+	</section>
+	<footer class="entry__footer">
+		<a href="http://wmmr.greatermedia.10uplabs.com/category/uncategorized/" class="entry__footer--category">Uncategorized</a>
+	</footer>
+</article>
+```
+*/
+/*doc
+---
+parent: posts
+title: Gallery Post
+name: gallery-post
+---
+
+Gallery posts are mostly image based but can include some text. They can also optionally have a featured image.
+
+```html_example 
+<article id="post-922" class="post-922 post type-post status-publish format-gallery hentry category-uncategorized cf" role="article" itemscope="" itemtype="http://schema.org/BlogPosting">
+	<section class="entry--gallery__meta" itemprop="articleBody">
+		<time datetime="2014-11-10T20:11:28+00:00" class="entry__date">10 November</time>
+		<h2 class="entry__title"><a href="">Test Show Post</a></h2>
+	</section>
+
+	<section class="entry--gallery__thumbnail">	
+		<img src="http://placehold.it/400x400&amp;text=gallery">
+	</section>
+	<footer class="entry__footer">
+		<a href="http://wmmr.greatermedia.10uplabs.com/category/uncategorized/" class="entry__footer--category">Uncategorized</a>
+	</footer>
+</article>
+```
+*/
+/*doc
+---
+parent: posts
+title: Video Post
+name: video-post
+---
+
+Video posts display a video and minimal text. They can also optionally have a featured image.
+
+```html_example 
+<article id="post-581" class="post-581 post type-post status-publish format-video has-post-thumbnail hentry category-uncategorized cf" role="article" itemscope="" itemtype="http://schema.org/BlogPosting">
+	<section class="entry--video__meta" itemprop="articleBody">
+		<time datetime="2014-11-05T00:13:14+00:00" class="entry__date">5 November</time>
+		<h2 class="entry__title"><a href="">Gladys Knight &amp; The Pips “Midnight Train To Georgia”</a></h2>
+	</section>
+
+	<section class="entry--video__thumbnail">
+		<img src="http://placehold.it/600x400&amp;text=video">
+	</section>
+	<footer class="entry__footer">
+		<a href="http://wmmr.greatermedia.10uplabs.com/category/uncategorized/" class="entry__footer--category">Uncategorized</a>
+	</footer>
+</article>
+```
+*/
+/*doc
+---
+parent: posts
+title: Image Post
+name: image-post
+---
+
+Standard posts are mostly text based but can include images. They can also optionally have a featured image.
+
+```html_example 
+<article id="post-558" class="post-558 post type-post status-publish format-image has-post-thumbnail hentry category-uncategorized cf" role="article" itemscope="" itemtype="http://schema.org/BlogPosting">
+	<section class="entry--standard__thumbnail">
+		<img src="http://placehold.it/600x400&amp;text=image">
+	</section>
+
+	<section class="entry--standard__meta">
+		<time datetime="2014-11-03T22:34:27+00:00" class="entry__date">3 November</time>
+		<h2 class="entry__title" itemprop="headline"><a href="http://wmmr.greatermedia.10uplabs.com/hey-its-a-blog-post/">Hey it’s a blog post!</a></h2>
+	</section>
+
+	<footer class="entry__footer">
+		<a href="http://wmmr.greatermedia.10uplabs.com/category/uncategorized/" class="entry__footer--category">Uncategorized</a>
+	</footer>
+</article>
+```
+*/
+/*doc
+---
+parent: posts
+title: Link Post
+name: link-post
+---
+
+Link posts contain a link to an external site. They can also optionally have a featured image.
+
+```html_example 
+<article id="post-886" class="post-886 post type-post status-publish format-link has-post-thumbnail hentry category-uncategorized cf" role="article" itemscope="" itemtype="http://schema.org/BlogPosting">
+	<section class="entry--link__meta" itemprop="articleBody">
+		<time datetime="2014-11-10T04:07:56+00:00" class="entry__date">10 November</time>
+		<h2 class="entry__title"><a href="">Ontario Highway 401 – Wikipedia, the free encyclopedia</a></h2>
+	</section>
+
+	<footer class="entry__footer">
+		<a href="http://wmmr.greatermedia.10uplabs.com/category/uncategorized/" class="entry__footer--category">Uncategorized</a>
+	</footer>
+</article>
+```
+*/
 .hentry {
   margin-bottom: 58px;
   overflow: auto; }
@@ -1332,7 +1593,7 @@ p {
   margin-bottom: 8px; }
 
 .entry__title {
-  margin: 12px 0 0;
+  margin: 0 0 20px;
   font-size: 1.60181em; }
 
 .entry__footer {
@@ -1872,17 +2133,6 @@ p {
   margin-top: 0;
   line-height: 1; }
 
-blockquote {
-  padding: 8px .625em;
-  margin: 24px .625em;
-  border-left: 10px solid #d0d2d3;
-  quotes: "“" "”" "‘" "’"; }
-
-blockquote p {
-  display: inline;
-  font-style: italic;
-  color: #6d6e70; }
-
 .alignleft, img.alignleft {
   display: block;
   margin: 0 1em 16px;
@@ -1961,7 +2211,85 @@ blockquote p {
 /**
  * Styles for Front End
  *
- * Admins can choose the location of the player. A class is added to the body that will match the locations below.
+ */
+ /*doc
+---
+title: Live Player
+name: live-player
+category: Components
+---
+
+```html_example
+<aside id="live-player__sidebar" class="live-player live-player--init" style="top: 0px; height: auto; position: relative; float: right; overflow-y: auto; right: 0;">
+	<nav class="live-player__stream">
+		<ul class="live-player__stream--list">
+			<li class="live-player__stream--current">
+				<div class="live-player__stream--title">Stream</div>
+				<div class="live-player__stream--current-name">HD1</div>
+				<ul class="live-player__stream--available">
+					<li class="live-player__stream--item">
+						<div class="live-player__stream--name">HD1</div>
+						<div class="live-player__stream--desc">A brief description can be used here</div>
+					</li>
+					<li class="live-player__stream--item">
+						<div class="live-player__stream--name">HD2</div>
+						<div class="live-player__stream--desc">A brief description can be used here</div>
+					</li>
+					<li class="live-player__stream--item">
+						<div class="live-player__stream--name">HD3</div>
+						<div class="live-player__stream--desc">A brief description can be used here</div>
+					</li>
+					<li class="live-player__stream--item">
+						<div class="live-player__stream--name">FM</div>
+						<div class="live-player__stream--desc">A brief description can be used here</div>
+					</li>
+					<li class="live-player__stream--item">
+						<div class="live-player__stream--name">FM2</div>
+						<div class="live-player__stream--desc">A brief description can be used here</div>
+					</li>
+				</ul>
+			</li>
+		</ul>
+	</nav>
+	<div id="live-player" class="live-player__container">
+		<div id="on-air" class="on-air" style="display: none;">
+			<span class="on-air__title">On Air:</span><span class="on-air__show">Preston and Steve Show</span>
+		</div>
+		<div id="up-next" class="up-next" style="display: block;">
+			<span class="up-next__title">Up Next:</span><span class="up-next__show">Pierre Robert</span>
+		</div>
+		<div class="live-stream">
+					<div class="live-stream__player" style="display: block;">
+			<div class="live-stream__controls">
+				<div id="playButton" class="live-stream__btn--play" data-station="WMMRFM" data-action="play-live"></div>
+				<div id="pauseButton" class="live-stream__btn--pause" data-station="WMMRFM"></div>
+				<div id="resumeButton" class="live-stream__btn--resume" data-station="WMMRFM"></div>
+			</div>
+			<!-- Player placeholder -->
+			<div id="td_container" class="live-stream__player--container"><div id="html5OnDemandNode" style="display: none;"><video id="videoNode" type="video" height="0%" width="0%" x-webkit-airplay="allow"><source id="odmediasource"></video></div><div id="html5Node"></div></div>
+		</div>
+
+		<div class="live-stream__status">
+			<div id="live-stream__listen-now" class="live-stream__listen-now--btn" style="display: none;">Listen Live</div>
+			<div id="live-stream__now-playing" class="live-stream__now-playing--btn" style="display: inline-block;">Now Playing</div>
+		</div>
+		<div id="nowPlaying" class="now-playing">
+			<div id="trackInfo" class="now-playing__info"></div>
+			<div id="npeInfo"></div>
+		</div>
+		<div id="live-stream__test" class="live-stream__test" style="display: block;">
+			<input type="checkbox" name="live-stream__test--audio" class="live-stream__test--audio" id="live-stream__test--audio" value="live-audio">
+			<label for="live-stream__test--audio" class="live-stream__test--label" style="color: rgb(255, 255, 255);">Logged In</label>
+		</div>
+	</div>
+	</div>
+
+	<div id="live-links" class="live-links">
+		<h3 class="widget--live-player__title">Live Links</h3>
+		<div id="gmr_shows_widget-2" class="widget--live-player widget_gmr_shows_widget"><ul><li class="live-link__type--standard"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/scroll-test/">GMR-278 test</a></div></li><li class="live-link__type--standard"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/contest/daves-contest/">Dave’s Contest</a></div></li><li class="live-link__song"><div class="live-link__song--artist">Soundgarden</div><div class="live-link__song--title">Black Hole Sun</div></li><li class="live-link__song"><div class="live-link__song--artist">The Village People</div><div class="live-link__song--title">YMCA</div></li><li class="live-link__song"><div class="live-link__song--artist">Taylor Swift</div><div class="live-link__song--title">Shake it Off</div></li><li class="live-link__song"><div class="live-link__song--artist">Pink Floyd</div><div class="live-link__song--title">Comfortably Numb</div></li><li class="live-link__type--link"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/timed-content-test/">test test</a></div></li><li class="live-link__type--standard"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/ontario-highway-401-wikipedia-the-free-encyclopedia/">Ontario Highway 401 – Wikipedia, the free encyclopedia</a></div></li><li class="live-link__type--video"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/?post_type=gmr-live-link&amp;p=633">Gladys Knight &amp; The Pips “Midnight Train To Georgia”</a></div></li><li class="live-link__type--video"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/gladys-knight-the-pips-midnight-train-to-georgia/">Gladys Knight &amp; The Pips</a></div></li><li class="live-link__type--video"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/?post_type=gmr-live-link&amp;p=538">Hilarious Volleyball Triple Head Shot – YouTube</a></div></li></ul></div>
+	</div>
+</aside>
+```
  */
 .live-player--fixed {
   position: fixed;
@@ -2668,6 +2996,77 @@ blockquote p {
   padding: 0;
   margin: 0 0 1em; }
 
+/*doc
+---
+title: Social Share Buttons
+name: social-share-buttons
+category: Components
+---
+
+These are examples of Social Share Links for single articles. (TODO: replace with working social icons from icomoon)
+
+```html_example
+<a href="http://www.facebook.com/sharer/sharer.php?u=[URL]&title=[TITLE]" class="icon-facebook social-share-link"></a>
+<a href="http://twitter.com/home?status=[TITLE]+[URL]" class="icon-twitter social-share-link"></a>
+<a href="https://plus.google.com/share?url=[URL]" class="icon-google-plus social-share-link"></a>
+<a href="" class="icon-volume-up social-share-link"></a>
+```
+
+*/
+a.social-share-link {
+  color: #000000;
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  border: 1px solid #000000;
+  border-radius: 50%;
+  padding: 9px; }
+  a.social-share-link:hover {
+    color: #561015; }
+
+/*doc
+---
+title: Article Header
+name: article-header
+category: Components - Article
+---
+
+```html_example
+<header class="entry__header">
+	<img src="http://placehold.it/600x400&amp;text=image" alt="placeholder" class="entry__featured-image">
+	<time datetime="2014-11-10T20:11:28+00:00" class="entry__date">10 November</time>
+    <h2 class="entry__title"><a href="">Test Show Post</a></h2>
+</header>
+<a href="http://www.facebook.com/sharer/sharer.php?u=[URL]&title=[TITLE]" class="icon-facebook social-share-link"></a>
+<a href="http://twitter.com/home?status=[TITLE]+[URL]" class="icon-twitter social-share-link"></a>
+<a href="https://plus.google.com/share?url=[URL]" class="icon-google-plus social-share-link"></a>
+<a href="" class="icon-volume-up social-share-link"></a>
+```
+
+*/
+.entry__header {
+  margin-bottom: 40px; }
+
+.entry__featured-image {
+  width: 100%;
+  height: auto;
+  margin-bottom: 20px; }
+
+/*doc
+---
+title: Article Footer
+name: article-footer
+category: Components - Article
+---
+
+```html_example
+<footer class="entry__tags">
+	<a href="">Category</a> / <a href="">tag one</a>,<a href="">tag two</a>,<a href="">tag three</a>
+</footer>
+```
+
+*/
 /**
  * Single Page Styles
  */

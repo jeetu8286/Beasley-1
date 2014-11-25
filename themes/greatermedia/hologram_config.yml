@@ -24,7 +24,7 @@ index: base
 
 # List all css to include for the styleguide render examples (path from styleguide directory)
 css_include:
-  - '../css/greater_media.css'
+  - '../css/greater_media.min.css'
 
 # List all js to include for the styleguide render examples (path from styleguide directory)
 js_include:

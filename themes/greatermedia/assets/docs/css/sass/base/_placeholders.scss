@@ -8,3 +8,10 @@
 	padding: 0;
 	margin: 0;
 }
+
+// reduce visual importance of text
+%mute {
+	color: $oslo-gray;
+	font-size: ms(1);
+	font-style: italic;
+}
