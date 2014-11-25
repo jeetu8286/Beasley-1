@@ -57,6 +57,10 @@ class GreaterMediaChooseClass {
 
 		global $post;
 
+		if ( 'post' !== get_post_type() ) {
+			return;
+		}
+
 		wp_nonce_field( 'save_class_format', 'class_format_nonce' );
 
 		$tax = 'class-format';
@@ -64,7 +68,7 @@ class GreaterMediaChooseClass {
 
 		// Add the term if it doesn't exist
 		if ( false === $term) {
-			wp_insert_term( 'Promoted', 'class-format' );
+			wp_insert_term( 'Promoted', 'promoted' );
 			$term = get_term_by( 'slug', 'promoted', $tax );
 		}
 
@@ -72,8 +76,8 @@ class GreaterMediaChooseClass {
 
 		?>
 
-		<div id="promoted-post" class="misc-pub-section">
-			<input type="checkbox" name="promoted" id="promoted" value="promoted" <?php checked( 1, $checked_term ); ?> /> <label for="promoted"><?php _e( 'Promote this Post', 'greatermedia' ); ?></label>
+		<div id="article-type" class="misc-pub-section">
+			<input type="checkbox" name="promoted" id="promoted" value="promoted" <?php checked( 1, $checked_term ); ?> /> <label for="cover-story"><?php _e( 'Promoted', 'publications' ); ?></label>
 		</div>
 
 	<?php
@@ -84,7 +88,7 @@ class GreaterMediaChooseClass {
 	 *
 	 * hooked into save_post
 	 */
-	public function save_class_state( $post_id ) {
+	public static function save_class_state( $post_id ) {
 		global $post;
 
 		// Check if our nonce is set and that it validates it.
