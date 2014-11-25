@@ -366,7 +366,7 @@ class BlogData {
 		$existing = get_posts( $meta_query_args );
 
 		if( empty($existing) ) {
-			preg_match( '/[^\?]+\.(jpg|JPG|jpe|JPE|jpeg|Jpeg|JPEG|gif|GIF|png|PNG)/', $filename, $matches );
+			preg_match( '/[^\?]+\.(jpg|jpe|jpeg|gif|png)/i', $filename, $matches );
 
 			// make sure we have a match.  This won't be set for PDFs and .docs
 			if ( $matches && isset( $matches[0] ) ) {

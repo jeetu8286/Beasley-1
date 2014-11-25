@@ -120,7 +120,8 @@ class SyndicationCPT {
 			'syndication_import',
 			'syndication_old_data',
 			'syndication_old_name',
-			'syndication_attachment_old_id'
+			'syndication_attachment_old_id',
+			'subscription_enabled_filter'
 		);
 
 		foreach( $hidden_keys as $hidden_key ) {
@@ -128,7 +129,6 @@ class SyndicationCPT {
 				return true;
 			}
 		}
-
 		return $protected;
 	}
 
