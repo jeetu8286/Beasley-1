@@ -28,6 +28,14 @@ class Sentinel {
 		delete_post_meta( $this->member_query_id, $key );
 	}
 
+	function set_checksum( $checksum ) {
+		$this->set_task_meta( 'checksum', $checksum );
+	}
+
+	function get_checksum() {
+		return $this->get_task_meta( 'checksum' );
+	}
+
 	function get_task_progress( $task_type ) {
 		$progress = $this->get_task_meta( $task_type . '_progress' );
 		return intval( $progress );
@@ -73,8 +81,7 @@ class Sentinel {
 	}
 
 	function verify_checksum( $checksum ) {
-		$stored_checksum = $this->get_task_meta( 'checksum' );
-		return $checksum !== '' && $checksum === $stored_checksum;
+		return $checksum !== '' && $checksum === $this->get_checksum();
 	}
 
 	function reset() {

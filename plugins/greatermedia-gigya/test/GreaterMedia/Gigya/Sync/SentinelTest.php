@@ -23,9 +23,9 @@ class SentinelTest extends \WP_UnitTestCase {
 
 	function test_it_can_store_checksum_meta_key() {
 		$checksum = md5( strtotime( 'now' ) );
-		$this->sentinel->set_task_meta( 'checksum', $checksum );
+		$this->sentinel->set_checksum( $checksum );
 
-		$actual = $this->sentinel->get_task_meta( 'checksum' );
+		$actual = $this->sentinel->get_checksum();
 		$this->assertEquals( $checksum, $actual );
 	}
 
