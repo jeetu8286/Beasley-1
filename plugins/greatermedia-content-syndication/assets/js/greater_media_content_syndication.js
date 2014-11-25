@@ -11,9 +11,9 @@
 		});
 
 		// perform syndication
-		$("#syndicate_now").on('click', function(event) {
+		$("#syndicate_now").on( 'click', function(event) {
 			event.preventDefault();
-			var post_id = $(this).data( 'postid');
+			var post_id = $(this).data( 'postid' );
 			jQuery.ajax({
 				type : "post",
 				url : syndication_ajax.ajaxurl,
@@ -26,6 +26,18 @@
 				},
 				success: function(response) {
 					$('#syndication_status').html( 'Syndication Finished' );
+				}
+			});
+		});
+
+		$( '#filter_metaboxes input[type=radio]' ).on( "click", function() {
+			$('#filter_metaboxes input[type=radio]').each(function () {
+				var el = '#' + $(this).data('enabled');
+				if ( $(this).prop('checked') ) {
+					$(el).select2( 'enable', true );
+					$('#enabled_filter_taxonomy').val( $(this).data('enabled') );
+				} else {
+					$(el).select2( 'enable', false );
 				}
 			});
 		});
