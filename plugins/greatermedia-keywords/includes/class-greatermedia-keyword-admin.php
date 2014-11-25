@@ -11,7 +11,21 @@ if ( ! defined( 'WPINC' ) ) {
 class GreaterMedia_Keyword_Admin {
 
 	public static $plugin_slug = 'gmedia_keywords' ;
-	public static $supported_post_types;
+	public static $supported_post_types = array(
+		'post',
+		'attachment',
+		'podcast',
+		'episode',
+		'contest',
+		'personality',
+		'show',
+		'albums',
+		'tribe_events',
+		'survey',
+		'question',
+		'response',
+	);
+
 	private $postfix;
 
 	private $_page_slug;
@@ -19,43 +33,20 @@ class GreaterMedia_Keyword_Admin {
 	public function __construct() {
 		$this->postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 
+		$this::$supported_post_types = apply_filters( 'keywords_supported_cpts', $this::$supported_post_types );
+
 		// Load admin style sheet and js.
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
 
 		// Add the options page and menu item.
 		add_action( 'admin_menu', array( $this, 'add_plugin_admin_menu' ) );
-		add_action( 'admin_init', array( $this, 'get_supported_post_types' ) );
 		add_action( 'admin_init', array( $this, 'save_settings' ) );
 
 		add_action( 'wp_ajax_delete_keyword', array( $this, 'delete_keyword' ) );
-
 		add_action( 'template_redirect', array( $this, 'alter_search_results' ) );
+
 	}
-
-	public function get_supported_post_types() {
-		$post_types = array();
-
-		$args = array(
-			'public'    =>  true,
-			'exclude_from_search' => false,
-			'publicly_queryable' => true,
-			'_builtin' => false
-		);
-
-		$found_types = get_post_types( $args );
-		foreach ( $found_types as $post_type ) {
-			$located = locate_template( "single-{$post_type}.php" );
-			if ( !empty( $located ) ) {
-				array_push( $post_types, $post_type );
-			}
-		}
-
-		array_push( $post_types, 'post' );
-
-		self::$supported_post_types = $post_types;
-	}
-
 
 	public function enqueue_admin_styles(){
 		wp_enqueue_style( 'select2');
@@ -217,6 +208,7 @@ class GreaterMedia_Keyword_Admin {
 
 		$search = sanitize_text_field( get_query_var('s') );
 		$search = strtolower( $search );
+
 
 		if( is_search() && $search ) {
 			global $wp_query;
