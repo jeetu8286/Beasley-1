@@ -24,6 +24,8 @@ class GreaterMedia_Keyword_Admin {
 		'survey',
 		'question',
 		'response',
+		'page',
+		'livefyre-media-wall'
 	);
 
 	private $postfix;
