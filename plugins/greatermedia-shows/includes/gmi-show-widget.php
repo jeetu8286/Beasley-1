@@ -90,11 +90,17 @@ function gmrs_get_shows_widget_html() {
 			if ( get_post_type() == 'songs' ) {
 				echo '<li class="live-link__song"><div class="live-link__song--artist">', apply_filters( 'gmr_show_widget_item', get_the_content() ), '</div><div class="live-link__song--title">', apply_filters( 'gmr_show_widget_item', get_the_title() ), '</div></li>';
 			} else {
+				$item = apply_filters( 'gmr_show_widget_item', false );
+				if ( empty( $item ) ) {
+					continue;
+				}
+				
 				$post_format = get_post_format();
 				if ( $post_format === false ) {
 					$post_format = 'standard';
 				}
-				echo '<li class="live-link__type--' . esc_attr( $post_format ) . '"><div class="live-link__title">', apply_filters( 'gmr_show_widget_item', get_the_title() ), '</div></li>';
+				
+				echo '<li class="live-link__type--' . esc_attr( $post_format ) . '"><div class="live-link__title">', $item, '</div></li>';
 			};
 
 		endwhile;
