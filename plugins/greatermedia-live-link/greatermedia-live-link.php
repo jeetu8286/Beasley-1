@@ -45,29 +45,28 @@ function gmr_ll_update_live_link_title( $post_id ) {
 		return;
 	}
 
-	// find all associated live links and update its title
-	$query = new WP_Query( array(
-		'post_type'           => GMR_LIVE_LINK_CPT,
-		'post_status'         => 'any',
-		'post_parent'         => $post_id,
-		'posts_per_page'      => 1000,
-		'no_found_rows'       => true,
-		'ignore_sticky_posts' => true,
-	) );
-
-	// do nothing if we don't find related live links
-	if ( ! $query->have_posts() ) {
-		return;
-	}
-
 	// deactivate this hook to eliminate infinite loop
 	remove_action( 'save_post', 'gmr_ll_update_live_link_title' );
 
-	while ( $query->have_posts() ) {
-		$live_link = $query->next_post();
-		$live_link->post_title = $post->post_title;
-		wp_update_post( $live_link->to_array() );
-	}
+	$paged = 0;
+
+	do {
+		$paged++;
+		$query = new WP_Query(array(
+			'post_type'           => GMR_LIVE_LINK_CPT,
+			'post_status'         => 'any',
+			'post_parent'         => $post_id,
+			'posts_per_page'      => 100,
+			'paged'               => $paged,
+			'ignore_sticky_posts' => true,
+		));
+
+		while ( $query->have_posts() ) {
+			$live_link = $query->next_post();
+			$live_link->post_title = $post->post_title;
+			wp_update_post( $live_link->to_array() );
+		}
+	} while ( $paged <= $query->max_num_pages );
 
 	// return back this hook
 	add_action( 'save_post', 'gmr_ll_update_live_link_title' );
@@ -83,20 +82,24 @@ function gmr_ll_delete_post_live_links( $post_id ) {
 	// deactivate this hook to prevent infinite loop
 	remove_action( 'deleted_post', 'gmr_ll_delete_post_live_links' );
 
-	// fetch all child live links
-	$query = new WP_Query( array(
-		'post_type'           => GMR_LIVE_LINK_CPT,
-		'post_status'         => 'any',
-		'no_found_rows'       => true,
-		'ignore_sticky_posts' => true,
-		'posts_per_page'      => 100,
-		'post_parent'         => $post_id,
-		'fields'              => 'ids',
-	) );
+	$paged = 0;
 
-	while ( $query->have_posts() ) {
-		wp_delete_post( $query->next_post(), true );
-	}
+	do {
+		$paged++;
+		$query = new WP_Query( array(
+			'post_type'           => GMR_LIVE_LINK_CPT,
+			'post_status'         => 'any',
+			'ignore_sticky_posts' => true,
+			'posts_per_page'      => 100,
+			'paged'               => $paged,
+			'post_parent'         => $post_id,
+			'fields'              => 'ids',
+		) );
+
+		while ( $query->have_posts() ) {
+			wp_delete_post( $query->next_post(), true );
+		}
+	} while ( $paged <= $query->max_num_pages );
 
 	// activate this hook back
 	add_action( 'deleted_post', 'gmr_ll_delete_post_live_links' );
