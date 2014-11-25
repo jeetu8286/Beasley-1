@@ -80,3 +80,11 @@ function wp_async_task_autorun( $autorun = true ) {
 function wp_async_task_last_added() {
 	return wp_async_task_runner()->last();
 }
+
+function wp_async_task_run_last() {
+	$task    = wp_async_task_last_added();
+	$task_id = $task['task_id'];
+
+	return wp_async_task_run( $task_id );
+}
+
