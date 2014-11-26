@@ -85,7 +85,6 @@ class Sentinel {
 	}
 
 	function reset() {
-		$this->clear_task_meta( 'checksum' );
 		$this->clear_task_meta( 'mode' );
 		$this->clear_task_meta( 'profile_query_progress' );
 		$this->clear_task_meta( 'data_store_query_progress' );
