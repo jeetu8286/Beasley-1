@@ -59,13 +59,20 @@ class Plugin {
 			)
 		);
 
-		// TODO: figure out if session code should live in this plugin
-		wp_enqueue_script( 'jquery' );
-		wp_localize_script( 'jquery', 'gigya_session_data', $session_data );
-
 		/* Lazy register ajax handlers only if this is an ajax request */
 		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 			$this->register_ajax_handlers();
+		}
+
+		$profile_page = new ProfilePage();
+		$profile_page->register();
+
+		if ( ! $profile_page->is_user_on_profile_page() ) {
+			$this->enqueue_script(
+				'gigya_session',
+				'js/gigya_session.js',
+				array( 'jquery', 'cookies-js' )
+			);
 		}
 	}
 
@@ -148,7 +155,7 @@ class Plugin {
 	}
 
 	function initialize_member_query_styles( $member_query ) {
-		$this->enqueue_style( 'query_builder', 'css/query_builder.css' );
+		$this->enqueue_style( 'query_builder', 'css/query_builder.css', 'jquery-ui' );
 		//$this->enqueue_style( 'select2', 'css/vendor/select2.css' );
 	}
 
@@ -228,15 +235,8 @@ class Plugin {
 	}
 
 	public function enqueue_script( $id, $path, $dependency = null ) {
-		if ( ! is_null( $dependency ) ) {
-			if ( is_array( $dependency ) ) {
-				$dependencies = $dependency;
-			} else {
-				$dependencies = array( $dependency );
-			}
-		} else {
-			$dependencies = array();
-		}
+		$dependencies = $this->get_dependencies( $dependency );
+		$path         = $this->postfix( $path, '.js' );
 
 		wp_enqueue_script(
 			$id,
@@ -247,6 +247,21 @@ class Plugin {
 	}
 
 	public function enqueue_style( $id, $path, $dependency = null ) {
+		$dependencies = $this->get_dependencies( $dependency );
+		$path         = $this->postfix( $path, '.css' );
+
+		wp_enqueue_style(
+			$id,
+			plugins_url( $path, $this->plugin_file ),
+			$dependencies,
+			GMR_GIGYA_VERSION
+		);
+	}
+
+	/**
+	 * Helper to allow for a single dependency.
+	 */
+	public function get_dependencies( $dependency ) {
 		if ( ! is_null( $dependency ) ) {
 			if ( is_array( $dependency ) ) {
 				$dependencies = $dependency;
@@ -257,11 +272,27 @@ class Plugin {
 			$dependencies = array();
 		}
 
-		wp_enqueue_style(
-			$id,
-			plugins_url( $path, $this->plugin_file ),
-			$dependencies,
-			GMR_GIGYA_VERSION
-		);
+		return $dependencies;
+	}
+
+	/**
+	 * Adds a .min postfix to a path depending on script debug mode and
+	 * whether the minified file exists.
+	 */
+	public function postfix( $path, $extension ) {
+		$script_debug = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG;
+
+		if ( $script_debug ) {
+			return $path;
+		} else {
+			$min_path  = str_replace( $extension, ".min{$extension}", $path );
+			$file_path = GMR_GIGYA_PATH . $min_path;
+
+			if ( file_exists( $file_path ) ) {
+				return $min_path;
+			} else {
+				return $path;
+			}
+		}
 	}
 }
