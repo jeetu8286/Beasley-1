@@ -51,6 +51,14 @@ class LauncherTest extends \WP_UnitTestCase {
 		$this->assertNotEmpty( $actual['params']['checksum'] );
 	}
 
+	function test_it_launches_initializer_task_with_current_site_id() {
+		$this->launcher->launch( 1, 'export' );
+		$actual   = wp_async_task_last_added();
+		$expected = get_current_blog_id();
+
+		$this->assertEquals( $expected, $actual['params']['site_id'] );
+	}
+
 	function test_it_enqueues_initializer_on_launch() {
 		$this->launcher->register();
 		$this->launcher->launch( 1, 'export' );

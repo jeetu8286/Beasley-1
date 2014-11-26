@@ -29,6 +29,7 @@ class Launcher {
 
 	function launch( $member_query_id, $mode = 'preview' ) {
 		$params = array(
+			'site_id'         => get_current_blog_id(),
 			'member_query_id' => $member_query_id,
 			'mode'            => $mode,
 			'checksum'        => md5( strtotime( 'now' ) )
