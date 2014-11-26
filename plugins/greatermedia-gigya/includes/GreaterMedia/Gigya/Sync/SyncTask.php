@@ -1,0 +1,43 @@
+<?php
+
+namespace GreaterMedia\Gigya\Sync;
+
+class SyncTask extends Task {
+
+	public $sentinel;
+
+	function get_task_name() {
+		return 'sync_task';
+	}
+
+	function get_sentinel() {
+		if ( is_null( $this->sentinel ) ) {
+			$this->sentinel = new Sentinel( $this->get_member_query_id() );
+		}
+
+		return $this->sentinel;
+	}
+
+	function get_member_query_id() {
+		return $this->get_param( 'member_query_id' );
+	}
+
+	function get_mode() {
+		return $this->get_param( 'mode' );
+	}
+
+	function get_checksum() {
+		return $this->get_param( 'checksum' );
+	}
+
+	function verify_checksum() {
+		return $this->get_sentinel()->verify_checksum(
+			$this->get_checksum()
+		);
+	}
+
+	function before() {
+		return $this->verify_checksum();
+	}
+
+}

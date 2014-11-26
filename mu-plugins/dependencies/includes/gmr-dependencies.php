@@ -73,6 +73,24 @@ class GmrDependencies {
 			, 'all'
 		);
 
+		// jQuery-ui theme
+		wp_register_style(
+			'jquery-ui',
+			GMRDEPENDENCIES_URL . "/jquery-ui/jquery-ui{$postfix}.css",
+			array(),
+			'1.11.2',
+			'all'
+		);
+
+		// Cookies.js
+		wp_register_script(
+			'cookies-js',
+			GMRDEPENDENCIES_URL . "/cookies/cookies{$postfix}.js",
+			array(),
+			'1.1.0',
+			true
+		);
+
 		wp_enqueue_style(
 			'parsleyjs',
 			GMRDEPENDENCIES_URL  . '/parsleyjs/src/parsley.css',

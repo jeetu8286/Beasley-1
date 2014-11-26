@@ -63,7 +63,7 @@ var ConstraintView = Backbone.View.extend({
 			conjunction: conjunction
 		};
 
-		console.log('updateConstraint', changes);
+		//console.log('updateConstraint', changes);
 		constraint.set(changes);
 	},
 
@@ -106,16 +106,32 @@ var ConstraintView = Backbone.View.extend({
 		'not contains'
 	],
 
+	nonFullTextOperators: [
+		'equals',
+		'not equals',
+	],
+
 	booleanOperators: [
 		'equals',
 		'not equals',
 	],
 
-	operatorsFor: function(valueType) {
+	nonFullTextTypes: [
+		'profile:zip',
+		'profile:state',
+		'profile:country',
+		'profile:timezone'
+	],
+
+	operatorsFor: function(valueType, type) {
 		if (valueType === 'integer' || valueType === 'float') {
 			return this.numericOperators;
 		} else if (valueType === 'string') {
-			return this.stringOperators;
+			if (this.isNonFullTextType(type)) {
+				return this.nonFullTextOperators;
+			} else {
+				return this.stringOperators;
+			}
 		} else if (valueType === 'boolean') {
 			return this.booleanOperators;
 		} else {
@@ -131,6 +147,14 @@ var ConstraintView = Backbone.View.extend({
 
 	hasChoices: function() {
 		return this.model.hasMeta('choices');
+	},
+
+	isNonFullTextType: function(type) {
+		if (type === undefined) {
+			return false;
+		} else {
+			return _.indexOf(this.nonFullTextTypes, type) !== -1;
+		}
 	}
 
 });
