@@ -183,6 +183,8 @@ class MemberQuery {
 	 * Returns the GQL to execute for this query. If a direct query is
 	 * present it is used, else the generated query is returned.
 	 *
+	 * TODO: DEPRECATE
+	 *
 	 * @access public
 	 * @param bool $count Optionally Whether to return an aggregate query
 	 * @param int $limit Optional row limit to apply to the query
@@ -209,6 +211,108 @@ class MemberQuery {
 	}
 
 	/**
+	 * Converts the current constraints into an associative array of
+	 * subqueries.
+	 *
+	 * @return array Associative array of subqueries keyed on store_type
+	 */
+	public function to_subqueries() {
+		$groups = $this->group_constraints( $this->get_constraints() );
+		$subqueries = array();
+
+		foreach ( $groups as $store_type => $constraints ) {
+			$subquery = $this->constraints_to_query( $constraints, $store_type );
+			$subqueries[] = array(
+				'store_type' => $store_type,
+				'query'      => $subquery,
+			);
+		}
+
+		return $subqueries;
+	}
+
+	/**
+	 * Converts an array of constraints into an array grouped by their
+	 * corresponding store_type.
+	 *
+	 * @param $constraints Array of constraints to classify
+	 * @return array Associative array on store_type
+	 */
+	public function group_constraints( $constraints ) {
+		$groups = array();
+
+		foreach ( $constraints as $constraint ) {
+			$store_type            = $this->get_constraint_store_type( $constraint );
+			if ( ! array_key_exists( $store_type, $groups ) ) {
+				$groups[ $store_type ] = array();
+			}
+
+			$groups[ $store_type ][] = $constraint;
+		}
+
+		return $groups;
+	}
+
+	/**
+	 * Returns the storage type for the specified constraint.
+	 *
+	 * Currently valid store types are, 'profile' or 'data_store'.
+	 *
+	 * @access public
+	 * @param $constraint The constraint object
+	 * @return string
+	 */
+	public function get_constraint_store_type( $constraint ) {
+		$type     = $constraint['type'];
+		$typeList = explode( ':', $type );
+		$mainType = $typeList[0];
+
+		switch ( $mainType ) {
+			case 'system':
+				return 'profile';
+
+			case 'profile':
+				return 'profile';
+
+			case 'record':
+			case 'action':
+				return 'data_store';
+
+			default:
+				throw new \Exception( "Unknown constraint type: {$mainType}" );
+		}
+	}
+
+	/**
+	 * Converts specified constraints to a GQL query.
+	 *
+	 * @param array $constraints The list of constraints to serialize to GQL.
+	 * @param string $type The store type name
+	 * @param bool $count Optionally Whether to return an aggregate query
+	 * @param int $limit Optional row limit to apply to the query
+	 */
+	public function constraints_to_query( $constraints, $store_type, $count = false, $limit = null ) {
+		if ( count( $constraints ) === 0 ) {
+			return '';
+		}
+
+		$store_name = $this->store_name_for_type( $store_type );
+		$query      = "select * from {$store_name} where ";
+
+		$query .= $this->clause_for( $constraints );
+
+		if ( $count ) {
+			$query = str_replace( '*', 'count(*)', $query );
+		}
+
+		if ( is_int( $limit ) ) {
+			$query .= " limit $limit";
+		}
+
+		return $query;
+	}
+
+	/**
 	 * Builds the GQL for a list of constraints.
 	 *
 	 * @access public
@@ -216,8 +320,8 @@ class MemberQuery {
 	 * @return string
 	 */
 	public function clause_for( $constraints ) {
-		$query       = '';
-		$total       = count( $constraints );
+		$query = '';
+		$total = count( $constraints );
 
 		for ( $i = 0; $i < $total; $i++ ) {
 			$constraint = $constraints[ $i ];
@@ -252,6 +356,9 @@ class MemberQuery {
 			case 'record':
 				return $this->clause_for_record_constraint( $constraint );
 
+			case 'action':
+				return $this->clause_for_action_constraint( $constraint );
+
 			case 'profile':
 				$subType = $typeList[1];
 
@@ -272,7 +379,58 @@ class MemberQuery {
 	}
 
 	/**
+	 * Generates the GQL clause for an action constraint.
+	 *
+	 * @access public
+	 * @param array $constraint The record constraint object
+	 * @return string
+	 */
+	public function clause_for_action_constraint( $constraint ) {
+		$type          = $constraint['type'];
+		$value         = $constraint['value'];
+		$valueType     = $constraint['valueType'];
+		$operator      = $constraint['operator'];
+		$actionTypeID  = $constraint['actionTypeID'];
+		$actionFieldID = $constraint['actionFieldID'];
+		$query         = '';
+
+		$query .= $this->data_store_field_name_for( 'actionType' );
+		$query .= ' ';
+		$query .= $this->operator_for( '=' );
+		$query .= ' ';
+		$query .= $this->value_for( $type );
+
+		$query .= ' and ';
+
+		$query .= $this->data_store_field_name_for( 'actionTypeID', 'integer' );
+		$query .= ' ';
+		$query .= $this->operator_for( '=' );
+		$query .= ' ';
+		$query .= $this->value_for( $actionTypeID, 'integer' );
+
+		$query .= ' and ';
+
+		$query .= $this->data_store_field_name_for( 'actionFieldID', 'string' );
+		$query .= ' ';
+		$query .= $this->operator_for( '=' );
+		$query .= ' ';
+		$query .= $this->value_for( $actionFieldID, 'string' );
+
+		$query .= ' and ';
+
+		$query .= $this->data_store_field_name_for( 'actionValue', $valueType );
+		$query .= ' ';
+		$query .= $this->operator_for( $operator );
+		$query .= ' ';
+		$query .= $this->value_for( $value, $valueType );
+
+		return $query;
+	}
+
+	/**
 	 * Generates the GQL clause for a record constraint.
+	 *
+	 * TODO: DEPRECATE
 	 *
 	 * @access public
 	 * @param array $constraint The record constraint object
@@ -484,6 +642,18 @@ class MemberQuery {
 	}
 
 	/**
+	 * Returns the suffixed name for a field based on it's valueType.
+	 *
+	 * @access public
+	 * @param string $field The name of the field
+	 * @param string $valueType The data type of the field
+	 * @return string
+	 */
+	public function data_store_field_name_for( $field, $valueType = 'string' ) {
+		return 'data.actions.' . $field . $this->suffix_for( $valueType );
+	}
+
+	/**
 	 * Returns the gigya suffix for the specified valueType. This is
 	 * used by Gigya to determine the data type of the field.
 	 *
@@ -504,6 +674,24 @@ class MemberQuery {
 			return '_' . self::$suffixes[ $valueType ];
 		} else {
 			return '_s';
+		}
+	}
+
+	/**
+	 * Returns the storage name for corresponding store type.
+	 *
+	 * Valid store types are 'profile' or 'data_store'.
+	 *
+	 * @param $store_type The type name of the store
+	 * @return string The storage table name
+	 */
+	public function store_name_for_type( $store_type ) {
+		if ( $store_type === 'profile' ) {
+			return 'accounts';
+		} else if ( $store_type === 'data_store' ) {
+			return 'actions';
+		} else {
+			throw new \Exception( "Unknown Gigya storage type name: {$type}" );
 		}
 	}
 

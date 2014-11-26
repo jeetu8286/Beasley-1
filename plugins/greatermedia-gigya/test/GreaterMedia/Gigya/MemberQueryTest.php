@@ -263,4 +263,170 @@ class MemberQueryTest extends \WP_UnitTestCase {
 		$this->assertEquals( '', $actual );
 	}
 
+	/* TODO: Reorganize */
+	/* action constraint Tests */
+	function test_it_knows_suffix_for_data_store_field_name() {
+		$actual = $this->query->data_store_field_name_for( 'actionType', 'string' );
+		$this->assertEquals( 'data.actions.actionType_s', $actual );
+	}
+
+	function test_it_knows_store_name_for_profile_store_type() {
+		$actual = $this->query->store_name_for_type( 'profile' );
+		$this->assertEquals( 'accounts', $actual );
+	}
+
+	function test_it_knows_store_name_for_data_store_type() {
+		$actual = $this->query->store_name_for_type( 'data_store' );
+		$this->assertEquals( 'actions', $actual );
+	}
+
+	function test_it_can_build_clause_for_action_constraint() {
+		$constraint = array(
+			'type'         => 'action:contest',
+			'operator'     => 'equals',
+			'conjunction'  => 'and',
+			'valueType'    => 'string',
+			'value'        => 'New York',
+			'actionTypeID'  => 100,
+			'actionFieldID' => 200,
+		);
+
+		$actual = $this->query->clause_for_constraint( $constraint );
+		$expected = "data.actions.actionType_s = 'action:contest' and data.actions.actionTypeID_i = 100 and data.actions.actionFieldID_s = '200' and data.actions.actionValue_s = 'New York'";
+		$this->assertEquals( $expected, $actual );
+	}
+
+	function test_it_can_build_profile_query_from_constraints() {
+		$constraints = array(
+			array(
+				'type'        => 'profile:city',
+				'operator'    => 'contains',
+				'conjunction' => 'or',
+				'valueType'   => 'string',
+				'value'       => 'New York',
+			),
+			array(
+				'type'        => 'profile:city',
+				'operator'    => 'equals',
+				'conjunction' => 'and',
+				'valueType'   => 'string',
+				'value'       => 'Los Angeles',
+			),
+		);
+
+		$actual = $this->query->constraints_to_query( $constraints, 'profile' );
+		$expected = "select * from accounts where profile.city contains 'New York' or profile.city = 'Los Angeles'";
+
+		$this->assertEquals( $expected, $actual );
+	}
+
+	function test_it_can_build_data_store_query_from_constraints() {
+		$constraints = array(
+			array(
+				'type'         => 'action:contest',
+				'operator'     => 'equals',
+				'conjunction'  => 'or',
+				'valueType'    => 'string',
+				'value'        => 'foo',
+				'actionTypeID'  => 100,
+				'actionFieldID' => '200',
+			),
+			array(
+				'type'         => 'action:contest',
+				'operator'     => 'equals',
+				'conjunction'  => 'and',
+				'valueType'    => 'string',
+				'value'        => 'bar',
+				'actionTypeID'  => 101,
+				'actionFieldID' => '201',
+			),
+		);
+
+		$actual = $this->query->constraints_to_query( $constraints, 'data_store' );
+		$expected = "select * from actions where data.actions.actionType_s = 'action:contest' and data.actions.actionTypeID_i = 100 and data.actions.actionFieldID_s = '200' and data.actions.actionValue_s = 'foo' or data.actions.actionType_s = 'action:contest' and data.actions.actionTypeID_i = 101 and data.actions.actionFieldID_s = '201' and data.actions.actionValue_s = 'bar'";
+
+		$this->assertEquals( $expected, $actual );
+	}
+
+	function test_it_can_group_constraints_by_store_type() {
+		$constraints = array(
+			array(
+				'type' => 'profile:city',
+			),
+			array(
+				'type' => 'system:verified',
+			),
+			array(
+				'type' => 'action:contest',
+			),
+			array(
+				'type' => 'action:foo',
+			),
+		);
+
+		$actual = $this->query->group_constraints( $constraints );
+		$expected = array(
+			'profile' => array(
+				array( 'type' => 'profile:city' ),
+				array( 'type' => 'system:verified' ),
+			),
+			'data_store' => array(
+				array( 'type' => 'action:contest' ),
+				array( 'type' => 'action:foo' ),
+			),
+		);
+
+		$this->assertEquals( $expected, $actual );
+	}
+
+	function test_it_can_build_subqueries_from_constraints() {
+		$constraints = array(
+			array(
+				'type'        => 'profile:city',
+				'operator'    => 'contains',
+				'conjunction' => 'or',
+				'valueType'   => 'string',
+				'value'       => 'New York',
+			),
+			array(
+				'type'        => 'profile:city',
+				'operator'    => 'equals',
+				'conjunction' => 'and',
+				'valueType'   => 'string',
+				'value'       => 'Los Angeles',
+			),
+			array(
+				'type'         => 'action:contest',
+				'operator'     => 'equals',
+				'conjunction'  => 'or',
+				'valueType'    => 'string',
+				'value'        => 'foo',
+				'actionTypeID'  => 100,
+				'actionFieldID' => '200',
+			),
+			array(
+				'type'         => 'action:contest',
+				'operator'     => 'equals',
+				'conjunction'  => 'and',
+				'valueType'    => 'string',
+				'value'        => 'bar',
+				'actionTypeID'  => 101,
+				'actionFieldID' => '201',
+			),
+		);
+
+		$this->query = $this->query_for( json_encode( $constraints ) );
+		$actual = $this->query->to_subqueries();
+
+		$this->assertEquals( 2, count( $actual ) );
+
+		$expected = "select * from accounts where profile.city contains 'New York' or profile.city = 'Los Angeles'";
+		$this->assertEquals( 'profile', $actual[0]['store_type'] );
+		$this->assertEquals( $expected, $actual[0]['query'] );
+
+		$expected = "select * from actions where data.actions.actionType_s = 'action:contest' and data.actions.actionTypeID_i = 100 and data.actions.actionFieldID_s = '200' and data.actions.actionValue_s = 'foo' or data.actions.actionType_s = 'action:contest' and data.actions.actionTypeID_i = 101 and data.actions.actionFieldID_s = '201' and data.actions.actionValue_s = 'bar'";
+		$this->assertEquals( 'data_store', $actual[1]['store_type'] );
+		$this->assertEquals( $expected, $actual[1]['query'] );
+	}
+
 }
