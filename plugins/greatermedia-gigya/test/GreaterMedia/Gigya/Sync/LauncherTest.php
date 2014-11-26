@@ -44,6 +44,13 @@ class LauncherTest extends \WP_UnitTestCase {
 		$this->assertEquals( 'export', $actual['params']['mode'] );
 	}
 
+	function test_it_launches_initializer_task_with_a_valid_checksum() {
+		$this->launcher->launch( 1, 'export' );
+		$actual = wp_async_task_last_added();
+
+		$this->assertNotEmpty( $actual['params']['checksum'] );
+	}
+
 	function test_it_enqueues_initializer_on_launch() {
 		$this->launcher->register();
 		$this->launcher->launch( 1, 'export' );

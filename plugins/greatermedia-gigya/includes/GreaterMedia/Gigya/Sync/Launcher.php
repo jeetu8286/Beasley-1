@@ -30,7 +30,8 @@ class Launcher {
 	function launch( $member_query_id, $mode = 'preview' ) {
 		$params = array(
 			'member_query_id' => $member_query_id,
-			'mode' => $mode,
+			'mode'            => $mode,
+			'checksum'        => md5( strtotime( 'now' ) )
 		);
 
 		$initializer = $this->get_task( 'initializer' );
