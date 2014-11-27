@@ -67,7 +67,7 @@ class Plugin {
 		$profile_page = new ProfilePage();
 		$profile_page->register();
 
-		if ( ! $profile_page->is_user_on_profile_page() ) {
+		if ( ! $profile_page->is_user_on_profile_page() && ! is_admin() ) {
 			$this->enqueue_script(
 				'gigya_session',
 				'js/gigya_session.js',
