@@ -139,38 +139,42 @@ class BlogData {
 		$args = array(
 			'post_type'     =>  $post_type,
 			'post_status'   =>  'publish',
-			'posts_per_page' => 5000,
-			'tax_query'     =>  array(
-				'relation'  =>  'OR'
-			),
+			'posts_per_page' => 500,
 			'date_query'    => array(
 				'column' => 'post_modified_gmt',
 				'after'  => $last_queried,
 			),
 		);
 
+		$enabled_taxonomy = get_post_meta( $subscription_id, 'subscription_enabled_filter', true );
+		$enabled_taxonomy = sanitize_text_field( $enabled_taxonomy );
+
+		//$args['tax_query']['relation'] = 'AND';
+
 		// get filters to query content site
-		foreach( self::$taxonomies as $taxonomy ) {
-			$subscription_filter = get_post_meta( $subscription_id, 'subscription_filter_terms-' . $taxonomy, true );
+		$subscription_filter = get_post_meta( $subscription_id, 'subscription_filter_terms-' . $enabled_taxonomy, true );
+		$subscription_filter = sanitize_text_field( $subscription_filter );
 
-			if( $subscription_filter != '' ) {
+		if( $subscription_filter != '' ) {
+			if( $enabled_taxonomy != 'collection' ) {
 				$subscription_filters = explode( ',', $subscription_filter );
-				$tax_query['taxonomy'] = $taxonomy;
-				$tax_query['field'] = 'name';
-				$tax_query['terms'] = $subscription_filters;
-				array_push( $args['tax_query'], $tax_query );
+				$args['tax_query']['relation'] = 'AND';
 			}
+			$tax_query['taxonomy'] = $enabled_taxonomy;
+			$tax_query['field'] = 'name';
+			$tax_query['terms'] = $subscription_filters;
+			array_push( $args['tax_query'], $tax_query );
 		}
-
 
 		// switch to content site
 		switch_to_blog( self::$content_site_id );
 
 		// get all postst matching filters
-		$query = get_posts( $args );
+		$wp_custom_query = new WP_Query( $args );
+		//$wp_custom_query = get_posts( $args );
 
 		// get all metas
-		foreach ( $query as $single_result ) {
+		foreach ( $wp_custom_query->posts as $single_result ) {
 			$metas	= get_metadata( $post_type, $single_result->ID, true );
 			$media = get_attached_media( 'image', $single_result->ID );
 			$featured = wp_get_attachment_image_src( get_post_thumbnail_id( $single_result->ID ), 'full' );
@@ -362,7 +366,7 @@ class BlogData {
 		$existing = get_posts( $meta_query_args );
 
 		if( empty($existing) ) {
-			preg_match( '/[^\?]+\.(jpg|JPG|jpe|JPE|jpeg|Jpeg|JPEG|gif|GIF|png|PNG)/', $filename, $matches );
+			preg_match( '/[^\?]+\.(jpg|jpe|jpeg|gif|png)/i', $filename, $matches );
 
 			// make sure we have a match.  This won't be set for PDFs and .docs
 			if ( $matches && isset( $matches[0] ) ) {

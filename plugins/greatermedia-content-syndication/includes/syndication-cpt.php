@@ -120,7 +120,8 @@ class SyndicationCPT {
 			'syndication_import',
 			'syndication_old_data',
 			'syndication_old_name',
-			'syndication_attachment_old_id'
+			'syndication_attachment_old_id',
+			'subscription_enabled_filter'
 		);
 
 		foreach( $hidden_keys as $hidden_key ) {
@@ -128,7 +129,6 @@ class SyndicationCPT {
 				return true;
 			}
 		}
-
 		return $protected;
 	}
 
@@ -162,6 +162,13 @@ class SyndicationCPT {
 					'ajaxurl' => admin_url( 'admin-ajax.php' ),
 					'syndication_nonce' => wp_create_nonce( 'perform-syndication-nonce' )
 				)
+			);
+
+			wp_enqueue_style(
+				'syndication_css'
+				,GMR_SYNDICATION_URL . "assets/css/greater_media_content_syndication{$postfix}.css"
+				,array()
+				,'0.0.1'
 			);
 		}
 	}
@@ -435,6 +442,12 @@ class SyndicationCPT {
 
 		}
 
+		if( isset( $_POST['enabled_filter_taxonomy'] ) ) {
+			$enabled_taxonomy = sanitize_text_field( $_POST['enabled_filter_taxonomy'] );
+			// Update the meta field.
+			update_post_meta( $post_id, 'subscription_enabled_filter', $enabled_taxonomy  );
+		}
+
 	}
 
 	/**
@@ -453,6 +466,7 @@ class SyndicationCPT {
 			// Use get_post_meta to retrieve an existing value from the database.
 			$filter_terms = get_post_meta( $post->ID, 'subscription_filter_terms-' . $taxonomy , true );
 			$filter_terms = explode( ',', $filter_terms );
+			$enabled_filter = get_post_meta( $post->ID, 'subscription_enabled_filter' , true );
 
 			// get taxonomy label
 			$taxonomy_obj = get_taxonomies( array( 'name' => $taxonomy ), 'object' );
@@ -463,14 +477,24 @@ class SyndicationCPT {
 			esc_html_e( $taxonomy_name, 'greatermedia' );
 			echo '</label> ';
 
-			echo '<select multiple name="subscription_filter_terms-' . esc_attr( $taxonomy ) . '[]" class="subscription_terms" style="width: 300px;">';
+			$multiple = $taxonomy == 'collection' ? '' : 'multiple';
+			$disabled = $enabled_filter == $taxonomy ? '' : 'disabled';
+			$checked =  $enabled_filter == $taxonomy ? 'checked' : '';
+
+			echo '<select ' . $disabled . ' ' .$multiple . ' id="' . esc_attr( $taxonomy )
+			     . '" name="subscription_filter_terms-' . esc_attr( $taxonomy )
+			     . '[]" class="subscription_terms" style="width: 300px;">';
 			foreach( $terms as $single_term ) {
 				echo '<option', in_array( $single_term->name, $filter_terms) ? ' selected="selected"' : ''
 				, ' value="' . esc_attr( $single_term->name ) .'">' . esc_html( $single_term->name ) . '</option>';
 			}
 
-			echo '</select></p>';
+			echo '</select>';
+
+			echo '<input ' . esc_attr( $checked ) . ' data-enabled="' . esc_attr( $taxonomy ). '" class="enabled_filter" type="radio" name="enabled_filter" />';
+			echo '</p>';
 		}
+		echo '<input type="hidden" id="enabled_filter_taxonomy" name="enabled_filter_taxonomy" value="' . $enabled_filter. '">';
 	}
 
 	/**
