@@ -74,6 +74,14 @@ class Plugin {
 				array( 'jquery', 'cookies-js' )
 			);
 		}
+
+		wp_register_script(
+			'wp_ajax_api',
+			$this->postfix( plugins_url( 'js/wp_ajax_api.js', $this->plugin_file ), '.js' ),
+			array( 'jquery' ),
+			GMR_GIGYA_VERSION,
+			true
+		);
 	}
 
 	public function initialize_admin() {
@@ -136,7 +144,9 @@ class Plugin {
 		//$this->enqueue_script( 'select2', 'js/vendor/select2.js' );
 
 		$this->enqueue_script( 'backbone.collectionView', 'js/vendor/backbone.collectionView.js', 'backbone' );
-		$this->enqueue_script( 'query_builder', 'js/query_builder.js', array( 'backbone', 'underscore' ) );
+		$this->enqueue_script(
+			'query_builder', 'js/query_builder.js', array( 'backbone', 'underscore', 'wp_ajax_api' )
+		);
 
 		wp_localize_script(
 			'query_builder', 'member_query_data', $member_query->properties
@@ -280,9 +290,7 @@ class Plugin {
 	 * whether the minified file exists.
 	 */
 	public function postfix( $path, $extension ) {
-		$script_debug = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG;
-
-		if ( $script_debug ) {
+		if ( $this->get_script_debug() ) {
 			return $path;
 		} else {
 			$min_path  = str_replace( $extension, ".min{$extension}", $path );
@@ -294,5 +302,9 @@ class Plugin {
 				return $path;
 			}
 		}
+	}
+
+	function get_script_debug() {
+		return defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG;
 	}
 }
