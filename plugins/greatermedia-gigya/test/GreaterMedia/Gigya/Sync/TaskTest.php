@@ -298,7 +298,7 @@ class PagerTask extends Task {
 		$this->results = array_merge( $this->results, $items );
 	}
 
-	function after() {
+	function after( $result ) {
 		if ( count( $this->results ) !== $this->get_param( 'total' ) ) {
 			$params = $this->params;
 			$params['start'] = $params['start'] + $params['page_size'];
@@ -328,7 +328,7 @@ class CursorPagerTask extends Task {
 		$this->results = array_merge( $this->results, $page );
 	}
 
-	function after() {
+	function after( $result ) {
 		$new_params = $this->params;
 		$cursor     = $this->params['cursor'];
 

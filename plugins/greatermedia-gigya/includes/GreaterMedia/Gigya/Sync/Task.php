@@ -44,6 +44,7 @@ class Task {
 				$this->aborted = true;
 			}
 		} catch (\Exception $err) {
+			//error_log( $err->getMessage() );
 			$this->recover( $err );
 		}
 	}
@@ -56,7 +57,7 @@ class Task {
 
 	}
 
-	function after() {
+	function after( $result ) {
 
 	}
 
