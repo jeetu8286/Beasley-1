@@ -60,6 +60,7 @@ class InitializerTaskTest extends \WP_UnitTestCase {
 			'checksum' => 'foo-checksum',
 			'site_id' => 1,
 			'query' => 'select * from accounts',
+			'conjunction' => 'or'
 		);
 
 		$this->assertEquals( $expected, $actual );
@@ -154,6 +155,33 @@ class InitializerTaskTest extends \WP_UnitTestCase {
 
 		$this->task->enqueue_subqueries();
 		$this->assertEquals( 2, wp_async_task_count() );
+	}
+
+	function test_it_has_a_subquery_conjunction() {
+		$constraints = array(
+			array(
+				'type'        => 'profile:city',
+				'operator'    => 'contains',
+				'conjunction' => 'and',
+				'valueType'   => 'string',
+				'value'       => 'New York',
+			),
+			array(
+				'type'         => 'record:contest',
+				'operator'     => 'equals',
+				'conjunction'  => 'and',
+				'valueType'    => 'string',
+				'value'        => 'foo',
+				'entryTypeID'  => 100,
+				'entryFieldID' => 200,
+			),
+		);
+
+		$json = json_encode( $constraints );
+		update_post_meta( $this->post_id, 'member_query_constraints', $json, true );
+
+		$actual = $this->task->get_subquery_conjunction();
+		$this->assertEquals( 'and', $actual );
 	}
 
 	function test_it_reset_sentinel_on_run() {

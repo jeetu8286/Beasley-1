@@ -8,6 +8,7 @@ class InitializerTask extends SyncTask {
 
 	public $member_query = null;
 	public $task_factory = null;
+	public $conjunction  = null;
 
 	function get_task_name() {
 		return 'sync_initializer';
@@ -32,8 +33,9 @@ class InitializerTask extends SyncTask {
 	}
 
 	function get_params_for_subquery( $subquery ) {
-		$params = $this->params;
-		$params['query'] = $subquery['query'];
+		$params                = $this->params;
+		$params['query']       = $subquery['query'];
+		$params['conjunction'] = $this->get_subquery_conjunction();
 
 		return $params;
 	}
@@ -52,6 +54,15 @@ class InitializerTask extends SyncTask {
 
 	function get_subqueries() {
 		return $this->get_member_query()->to_subqueries();
+	}
+
+	function get_subquery_conjunction() {
+		if ( is_null( $this->conjunction ) ) {
+			$member_query      = $this->get_member_query();
+			$this->conjunction = $member_query->get_subquery_conjunction();
+		}
+
+		return $this->conjunction;
 	}
 
 }
