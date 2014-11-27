@@ -67,13 +67,21 @@ class Plugin {
 		$profile_page = new ProfilePage();
 		$profile_page->register();
 
-		if ( ! $profile_page->is_user_on_profile_page() ) {
+		if ( ! $profile_page->is_user_on_profile_page() && ! is_admin() ) {
 			$this->enqueue_script(
 				'gigya_session',
 				'js/gigya_session.js',
 				array( 'jquery', 'cookies-js' )
 			);
 		}
+
+		wp_register_script(
+			'wp_ajax_api',
+			$this->postfix( plugins_url( 'js/wp_ajax_api.js', $this->plugin_file ), '.js' ),
+			array( 'jquery' ),
+			GMR_GIGYA_VERSION,
+			true
+		);
 	}
 
 	public function initialize_admin() {
@@ -136,7 +144,9 @@ class Plugin {
 		//$this->enqueue_script( 'select2', 'js/vendor/select2.js' );
 
 		$this->enqueue_script( 'backbone.collectionView', 'js/vendor/backbone.collectionView.js', 'backbone' );
-		$this->enqueue_script( 'query_builder', 'js/query_builder.js', array( 'backbone', 'underscore' ) );
+		$this->enqueue_script(
+			'query_builder', 'js/query_builder.js', array( 'backbone', 'underscore', 'wp_ajax_api' )
+		);
 
 		wp_localize_script(
 			'query_builder', 'member_query_data', $member_query->properties
@@ -276,23 +286,17 @@ class Plugin {
 	}
 
 	/**
-	 * Adds a .min postfix to a path depending on script debug mode and
-	 * whether the minified file exists.
+	 * Adds a .min postfix to a path depending on script debug mode.
 	 */
 	public function postfix( $path, $extension ) {
-		$script_debug = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG;
-
-		if ( $script_debug ) {
+		if ( $this->get_script_debug() ) {
 			return $path;
 		} else {
-			$min_path  = str_replace( $extension, ".min{$extension}", $path );
-			$file_path = GMR_GIGYA_PATH . $min_path;
-
-			if ( file_exists( $file_path ) ) {
-				return $min_path;
-			} else {
-				return $path;
-			}
+			return str_replace( $extension, ".min{$extension}", $path );
 		}
+	}
+
+	function get_script_debug() {
+		return defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG;
 	}
 }
