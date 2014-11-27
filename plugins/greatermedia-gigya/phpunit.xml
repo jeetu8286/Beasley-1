@@ -3,6 +3,8 @@
   <testsuites>
     <testsuite>
       <directory suffix='Test.php'>test</directory>
+	  <exclude>test/integration</exclude>
+	  <exclude>test/old</exclude>
     </testsuite>
   </testsuites>
 </phpunit>
