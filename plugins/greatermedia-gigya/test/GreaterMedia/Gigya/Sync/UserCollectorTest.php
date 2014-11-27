@@ -10,6 +10,7 @@ class UserCollectorTest extends \WP_UnitTestCase {
 		parent::setUp();
 
 		$this->collector = new UserCollector( 10, 11 );
+		$this->collector->clear();
 	}
 
 	function tearDown() {
@@ -47,7 +48,7 @@ class UserCollectorTest extends \WP_UnitTestCase {
 			'amet',
 		);
 
-		$this->collector->collect( $users );
+		$this->collector->collect( $users, 'profile' );
 		$actual = $this->count_rows();
 
 		$this->assertEquals( 5, $actual );
@@ -62,7 +63,7 @@ class UserCollectorTest extends \WP_UnitTestCase {
 			'amet',
 		);
 
-		$this->collector->collect( $users );
+		$this->collector->collect( $users, 'profile' );
 		$this->collector->clear();
 
 		$this->assertEquals( 0, $this->count_rows() );

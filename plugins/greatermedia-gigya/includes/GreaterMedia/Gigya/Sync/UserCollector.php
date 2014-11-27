@@ -22,17 +22,17 @@ class UserCollector {
 		return $db->delete( 'member_query_users', $where );
 	}
 
-	function collect( $users ) {
+	function collect( $users, $store_type ) {
 		$formats = array(
 			'%d',
 			'%d',
 			'%s',
 		);
 
-		$format = '( %d, %d, %s )';
+		$format = '( %d, %d, %s, %s )';
 		$values = array();
 		$db     = $this->get_job_db();
-		$query  = 'Insert Into member_query_users ( site_id, member_query_id, user_id ) Values ';
+		$query  = 'Insert Into member_query_users ( site_id, member_query_id, store_type, user_id ) Values ';
 		$total  = count( $users );
 
 		for ( $i = 0; $i < $total; $i++ ) {
@@ -40,6 +40,7 @@ class UserCollector {
 			$values = array(
 				'site_id'         => $this->site_id,
 				'member_query_id' => $this->member_query_id,
+				'store_type'      => $store_type,
 				'user_id'         => $user_id,
 			);
 
