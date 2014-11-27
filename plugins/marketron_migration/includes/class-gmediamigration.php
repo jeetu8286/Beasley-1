@@ -316,7 +316,7 @@ class GMedia_Migration extends WP_CLI_Command {
 
 			// counter to clear the cache
 			$count++;
-			if( $count == 10 ) {
+			if( $count == 100 ) {
 				if( class_exists('MTM_Migration_Utils') ) {
 					MTM_Migration_Utils::stop_the_insanity();
 				}
@@ -462,10 +462,11 @@ class GMedia_Migration extends WP_CLI_Command {
 
 				// counter to clear the cache
 				$count++;
-				if( $count == 10 ) {
+				if( $count == 100 ) {
 					if( class_exists('MTM_Migration_Utils') ) {
 						MTM_Migration_Utils::stop_the_insanity();
 					}
+					sleep(15);
 					$count = 0;
 				}
 
@@ -581,10 +582,11 @@ class GMedia_Migration extends WP_CLI_Command {
 
 				// counter to clear the cache
 				$count++;
-				if( $count == 10 ) {
+				if( $count == 100 ) {
 					if( class_exists('MTM_Migration_Utils') ) {
 						MTM_Migration_Utils::stop_the_insanity();
 					}
+					sleep(15);
 					$count = 0;
 				}
 
@@ -691,9 +693,10 @@ class GMedia_Migration extends WP_CLI_Command {
 
 				// counter to clear the cache
 				$count++;
-				if( $count == 10 ) {
+				if( $count == 100 ) {
 					if( class_exists('MTM_Migration_Utils') ) {
 						MTM_Migration_Utils::stop_the_insanity();
+						sleep( 15 );
 					}
 					$count = 0;
 				}
@@ -849,10 +852,11 @@ class GMedia_Migration extends WP_CLI_Command {
 
 			// counter to clear the cache
 			$count++;
-			if( $count == 200 ) {
+			if( $count == 100 ) {
 				if( class_exists('MTM_Migration_Utils') ) {
 					MTM_Migration_Utils::stop_the_insanity();
 				}
+				sleep(15);
 				$count = 0;
 			}
 
@@ -996,7 +1000,9 @@ class GMedia_Migration extends WP_CLI_Command {
 			if( $count == 10 ) {
 				if( class_exists('MTM_Migration_Utils') ) {
 					MTM_Migration_Utils::stop_the_insanity();
+
 				}
+				sleep(15);
 				$count = 0;
 			}
 
@@ -1188,10 +1194,12 @@ class GMedia_Migration extends WP_CLI_Command {
 
 				// counter to clear the cache
 				$count++;
-				if( $count == 10 ) {
+				if( $count == 100 ) {
 					if( class_exists('MTM_Migration_Utils') ) {
 						MTM_Migration_Utils::stop_the_insanity();
+
 					}
+					sleep(15);
 					$count = 0;
 				}
 
@@ -1307,10 +1315,12 @@ class GMedia_Migration extends WP_CLI_Command {
 
 			// counter to clear the cache
 			$count++;
-			if( $count == 10 ) {
+			if( $count == 100 ) {
 				if( class_exists('MTM_Migration_Utils') ) {
 					MTM_Migration_Utils::stop_the_insanity();
+
 				}
+				sleep(15);
 				$count = 0;
 			}
 
@@ -1421,10 +1431,12 @@ class GMedia_Migration extends WP_CLI_Command {
 
 				// counter to clear the cache
 				$count++;
-				if( $count == 10 ) {
+				if( $count == 100 ) {
 					if( class_exists('MTM_Migration_Utils') ) {
 						MTM_Migration_Utils::stop_the_insanity();
+
 					}
+					sleep(15);
 					$count = 0;
 				}
 
@@ -1750,6 +1762,7 @@ class GMedia_Migration extends WP_CLI_Command {
 				if( class_exists('MTM_Migration_Utils') ) {
 					MTM_Migration_Utils::stop_the_insanity();
 				}
+				sleep(15);
 				$count = 0;
 			}
 
@@ -1902,7 +1915,7 @@ class GMedia_Migration extends WP_CLI_Command {
 
 			// counter to clear the cache
 			$count++;
-			if( $count == 10 ) {
+			if( $count == 100 ) {
 				if( class_exists('MTM_Migration_Utils') ) {
 					MTM_Migration_Utils::stop_the_insanity();
 				}
@@ -1955,7 +1968,6 @@ class GMedia_Migration extends WP_CLI_Command {
 				update_post_meta($wp_id, '_legacy_ConfirmationText_Header', (string) $contest->ConfirmationText['ConfirmationHeader']);
 				update_post_meta($wp_id, '_legacy_ConfirmationText', (string) $contest->ConfirmationText);
 			}
-
 
 			if( isset( $contest->PromotionalVehicle['Type'] ) ) {
 				update_post_meta($wp_id, '_legacy_PromotionalVehicle', (string) $contest->PromotionalVehicle['Type']);
@@ -2030,7 +2042,7 @@ class GMedia_Migration extends WP_CLI_Command {
 
 			// counter to clear the cache
 			$count++;
-			if( $count == 10 ) {
+			if( $count == 100 ) {
 				if( class_exists('MTM_Migration_Utils') ) {
 					MTM_Migration_Utils::stop_the_insanity();
 				}
