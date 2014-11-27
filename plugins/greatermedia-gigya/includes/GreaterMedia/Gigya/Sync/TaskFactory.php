@@ -5,8 +5,8 @@ namespace GreaterMedia\Gigya\Sync;
 class TaskFactory {
 
 	public $task_types = array(
-		'profile'    => 'GreaterMedia\Gigya\Sync\ProfileQueryTask',
-		'data_store' => 'GreaterMedia\Gigya\Sync\DataStoreQueryTask',
+		'profile'    => 'GreaterMedia\Gigya\Sync\QueryTask',
+		'data_store' => 'GreaterMedia\Gigya\Sync\QueryTask',
 	);
 
 	function build( $task_type ) {
