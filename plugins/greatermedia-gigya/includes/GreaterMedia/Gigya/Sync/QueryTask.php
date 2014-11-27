@@ -41,7 +41,7 @@ class QueryTask extends SyncTask {
 
 	function save_users( $users ) {
 		$collector = $this->get_collector();
-		$collector->collect( $users );
+		$collector->collect( $users, $this->get_store_type() );
 	}
 
 	function after( $matches ) {
