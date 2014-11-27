@@ -200,7 +200,7 @@ class StubProfileQueryTask extends QueryTask {
 
 }
 
-class StubDataStoreQueryTask extends DataStoreQueryTask {
+class StubDataStoreQueryTask extends QueryTask {
 
 	function run() {
 

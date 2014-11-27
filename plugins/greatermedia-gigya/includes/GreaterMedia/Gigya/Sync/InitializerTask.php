@@ -42,14 +42,6 @@ class InitializerTask extends SyncTask {
 		return $this->get_task_factory()->build( $store_type );
 	}
 
-	function get_task_factory() {
-		if ( is_null( $this->task_factory ) ) {
-			$this->task_factory = new TaskFactory();
-		}
-
-		return $this->task_factory;
-	}
-
 	function get_member_query() {
 		if ( is_null( $this->member_query ) ) {
 			$this->member_query = new MemberQuery( $this->get_member_query_id() );

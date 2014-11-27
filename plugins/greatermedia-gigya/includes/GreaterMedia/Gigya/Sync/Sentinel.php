@@ -52,8 +52,8 @@ class Sentinel {
 
 	function get_progress() {
 		$parts = array(
-			$this->get_task_progress( 'profile_query' ),
-			$this->get_task_progress( 'data_store_query' ),
+			$this->get_task_progress( 'profile' ),
+			$this->get_task_progress( 'data_store' ),
 			$this->get_task_progress( 'compile_results' ),
 		);
 
@@ -71,8 +71,8 @@ class Sentinel {
 	}
 
 	function can_compile_results() {
-		return $this->get_task_progress( 'profile_query' ) === 100 &&
-			$this->get_task_progress( 'data_store_query' ) === 100;
+		return $this->get_task_progress( 'profile' ) === 100 &&
+			$this->get_task_progress( 'data_store' ) === 100;
 	}
 
 	function can_export_results() {
@@ -86,8 +86,8 @@ class Sentinel {
 
 	function reset() {
 		$this->clear_task_meta( 'mode' );
-		$this->clear_task_meta( 'profile_query_progress' );
-		$this->clear_task_meta( 'data_store_query_progress' );
+		$this->clear_task_meta( 'profile_progress' );
+		$this->clear_task_meta( 'data_store_progress' );
 		$this->clear_task_meta( 'compile_results_progress' );
 		$this->clear_task_meta( 'export_results_progress' );
 	}

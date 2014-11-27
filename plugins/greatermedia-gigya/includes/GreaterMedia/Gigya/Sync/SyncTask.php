@@ -5,6 +5,7 @@ namespace GreaterMedia\Gigya\Sync;
 class SyncTask extends Task {
 
 	public $sentinel;
+	public $task_factory;
 
 	function get_task_name() {
 		return 'sync_task';
@@ -42,6 +43,14 @@ class SyncTask extends Task {
 
 	function before() {
 		return $this->verify_checksum();
+	}
+
+	function get_task_factory() {
+		if ( is_null( $this->task_factory ) ) {
+			$this->task_factory = new TaskFactory();
+		}
+
+		return $this->task_factory;
 	}
 
 }
