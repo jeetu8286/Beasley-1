@@ -320,6 +320,7 @@ class GMedia_Migration extends WP_CLI_Command {
 				if( class_exists('MTM_Migration_Utils') ) {
 					MTM_Migration_Utils::stop_the_insanity();
 				}
+				sleep(15);
 				$count = 0;
 			}
 
@@ -848,7 +849,7 @@ class GMedia_Migration extends WP_CLI_Command {
 
 			// counter to clear the cache
 			$count++;
-			if( $count == 10 ) {
+			if( $count == 200 ) {
 				if( class_exists('MTM_Migration_Utils') ) {
 					MTM_Migration_Utils::stop_the_insanity();
 				}
@@ -1142,6 +1143,11 @@ class GMedia_Migration extends WP_CLI_Command {
 
 			$updated_post = array( 'ID' => $wp_id, 'post_content' => $gallery );
 			wp_update_post( $updated_post );
+		}
+
+		// add redirect
+		if ( isset( $entry->ShowcaseEntryURL ) ) {
+			CMM_Legacy_Redirects::add_redirect( (string) $entry->ShowcaseEntryURL, $wp_id );
 		}
 
 		return $wp_id;
@@ -1900,6 +1906,8 @@ class GMedia_Migration extends WP_CLI_Command {
 				if( class_exists('MTM_Migration_Utils') ) {
 					MTM_Migration_Utils::stop_the_insanity();
 				}
+				// sleep for 10 seconds
+				sleep(15);
 				$count = 0;
 			}
 
@@ -2026,6 +2034,7 @@ class GMedia_Migration extends WP_CLI_Command {
 				if( class_exists('MTM_Migration_Utils') ) {
 					MTM_Migration_Utils::stop_the_insanity();
 				}
+				sleep(15);
 				$count = 0;
 			}
 			$scheduled_item_args = array(
