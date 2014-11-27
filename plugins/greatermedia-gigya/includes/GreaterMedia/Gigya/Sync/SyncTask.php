@@ -18,6 +18,10 @@ class SyncTask extends Task {
 		return $this->sentinel;
 	}
 
+	function get_site_id() {
+		return $this->get_param( 'site_id' );
+	}
+
 	function get_member_query_id() {
 		return $this->get_param( 'member_query_id' );
 	}
