@@ -513,4 +513,28 @@ class MemberQueryTest extends \WP_UnitTestCase {
 		$this->assertEquals( 'or', $actual );
 	}
 
+	function test_it_can_identify_an_any_subquery_conjunction() {
+		$constraints = array(
+			array(
+				'type'        => 'profile:city',
+				'operator'    => 'contains',
+				'conjunction' => 'or',
+				'valueType'   => 'string',
+				'value'       => 'New York',
+			),
+			array(
+				'type'        => 'profile:city',
+				'operator'    => 'equals',
+				'conjunction' => 'or',
+				'valueType'   => 'string',
+				'value'       => 'Los Angeles',
+			),
+		);
+
+		$this->query = $this->query_for( json_encode( $constraints ) );
+		$actual = $this->query->get_subquery_conjunction();
+
+		$this->assertEquals( 'any', $actual );
+	}
+
 }

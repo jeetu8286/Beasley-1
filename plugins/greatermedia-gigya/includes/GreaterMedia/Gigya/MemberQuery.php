@@ -234,6 +234,10 @@ class MemberQuery {
 	public function get_subquery_conjunction() {
 		$groups = $this->group_constraints( $this->get_constraints() );
 
+		if ( count( $groups ) === 1 ) {
+			return 'any';
+		}
+
 		if ( array_key_exists( 'profile', $groups ) ) {
 			$total      = count( $groups['profile'] );
 			$constraint = $groups['profile'][ $total - 1 ];
