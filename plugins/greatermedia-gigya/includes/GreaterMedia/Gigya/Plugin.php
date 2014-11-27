@@ -286,21 +286,13 @@ class Plugin {
 	}
 
 	/**
-	 * Adds a .min postfix to a path depending on script debug mode and
-	 * whether the minified file exists.
+	 * Adds a .min postfix to a path depending on script debug mode.
 	 */
 	public function postfix( $path, $extension ) {
 		if ( $this->get_script_debug() ) {
 			return $path;
 		} else {
-			$min_path  = str_replace( $extension, ".min{$extension}", $path );
-			$file_path = GMR_GIGYA_PATH . $min_path;
-
-			if ( file_exists( $file_path ) ) {
-				return $min_path;
-			} else {
-				return $path;
-			}
+			return str_replace( $extension, ".min{$extension}", $path );
 		}
 	}
 
