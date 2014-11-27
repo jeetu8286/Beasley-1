@@ -33,8 +33,10 @@ SQL;
 	function get_select_query() {
 		if ( $this->get_conjunction() === 'and' ) {
 			$query = $this->template_for_and_conjunction();
-		} else {
+		} else if ( $this->get_conjunction() === 'or' ) {
 			$query = $this->template_for_or_conjunction();
+		} else {
+			$query = $this->template_for_any_conjunction();
 		}
 
 		$db     = $this->get_job_db();
@@ -86,6 +88,10 @@ HAVING
 SQL;
 
 		return $query;
+	}
+
+	function template_for_any_conjunction() {
+		return $this->template_for_or_conjunction();
 	}
 
 	function get_job_db() {

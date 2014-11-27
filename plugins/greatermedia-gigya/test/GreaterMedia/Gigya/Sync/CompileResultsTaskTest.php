@@ -140,4 +140,29 @@ class CompileResultsTaskTest extends \WP_UnitTestCase {
 		$this->assertEquals( $expected, $actual );
 	}
 
+	function test_it_can_compile_only_profile_users() {
+		$this->insert_user_ids(
+			array( 'a', 'b', 'c', 'd', 'e' )
+		);
+
+		$this->task->params['conjunction'] = 'any';
+		$this->task->run();
+
+		$actual = $this->find_results_for( 10, 11 );
+		$expected = array( 'a', 'b', 'c', 'd', 'e' );
+		$this->assertEquals( $expected, $actual );
+	}
+
+	function test_it_can_compile_only_data_store_users() {
+		$this->insert_user_ids(
+			array( 'a', 'b', 'd', 'e' ), 'data_store'
+		);
+
+		$this->task->params['conjunction'] = 'any';
+		$this->task->run();
+
+		$actual = $this->find_results_for( 10, 11 );
+		$expected = array( 'a', 'b', 'd', 'e' );
+		$this->assertEquals( $expected, $actual );
+	}
 }
