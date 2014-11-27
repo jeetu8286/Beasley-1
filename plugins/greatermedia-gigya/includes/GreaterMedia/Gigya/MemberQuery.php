@@ -231,6 +231,19 @@ class MemberQuery {
 		return $subqueries;
 	}
 
+	public function get_subquery_conjunction() {
+		$groups = $this->group_constraints( $this->get_constraints() );
+
+		if ( array_key_exists( 'profile', $groups ) ) {
+			$total      = count( $groups['profile'] );
+			$constraint = $groups['profile'][ $total - 1 ];
+
+			return $constraint['conjunction'];
+		} else {
+			return 'or';
+		}
+	}
+
 	/**
 	 * Converts an array of constraints into an array grouped by their
 	 * corresponding store_type.

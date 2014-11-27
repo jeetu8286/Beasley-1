@@ -429,4 +429,88 @@ class MemberQueryTest extends \WP_UnitTestCase {
 		$this->assertEquals( $expected, $actual[1]['query'] );
 	}
 
+	function test_it_can_identify_an_and_subquery_conjunction() {
+		$constraints = array(
+			array(
+				'type'        => 'profile:city',
+				'operator'    => 'contains',
+				'conjunction' => 'or',
+				'valueType'   => 'string',
+				'value'       => 'New York',
+			),
+			array(
+				'type'        => 'profile:city',
+				'operator'    => 'equals',
+				'conjunction' => 'and',
+				'valueType'   => 'string',
+				'value'       => 'Los Angeles',
+			),
+			array(
+				'type'         => 'action:contest',
+				'operator'     => 'equals',
+				'conjunction'  => 'or',
+				'valueType'    => 'string',
+				'value'        => 'foo',
+				'actionTypeID'  => 100,
+				'actionFieldID' => '200',
+			),
+			array(
+				'type'         => 'action:contest',
+				'operator'     => 'equals',
+				'conjunction'  => 'and',
+				'valueType'    => 'string',
+				'value'        => 'bar',
+				'actionTypeID'  => 101,
+				'actionFieldID' => '201',
+			),
+		);
+
+		$this->query = $this->query_for( json_encode( $constraints ) );
+		$actual = $this->query->get_subquery_conjunction();
+
+		$this->assertEquals( 'and', $actual );
+	}
+
+	function test_it_can_identify_an_or_subquery_conjunction() {
+		$constraints = array(
+			array(
+				'type'        => 'profile:city',
+				'operator'    => 'contains',
+				'conjunction' => 'or',
+				'valueType'   => 'string',
+				'value'       => 'New York',
+			),
+			array(
+				'type'        => 'profile:city',
+				'operator'    => 'equals',
+				'conjunction' => 'or',
+				'valueType'   => 'string',
+				'value'       => 'Los Angeles',
+			),
+			array(
+				'type'         => 'action:contest',
+				'operator'     => 'equals',
+				'conjunction'  => 'or',
+				'valueType'    => 'string',
+				'value'        => 'foo',
+				'actionTypeID'  => 100,
+				'actionFieldID' => '200',
+			),
+			array(
+				'type'         => 'action:contest',
+				'operator'     => 'equals',
+				'conjunction'  => 'and',
+				'valueType'    => 'string',
+				'value'        => 'bar',
+				'actionTypeID'  => 101,
+				'actionFieldID' => '201',
+			),
+		);
+
+		$this->query = $this->query_for( json_encode( $constraints ) );
+		$actual = $this->query->get_subquery_conjunction();
+
+		$this->assertEquals( 'or', $actual );
+	}
+
 }
