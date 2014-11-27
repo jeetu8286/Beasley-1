@@ -44,7 +44,7 @@ class InitializerTaskTest extends \WP_UnitTestCase {
 
 	function test_it_can_create_task_for_profile_store_type() {
 		$actual = $this->task->get_task_for_store_type( 'profile' );
-		$this->assertInstanceOf( 'GreaterMedia\Gigya\Sync\ProfileQueryTask', $actual );
+		$this->assertInstanceOf( 'GreaterMedia\Gigya\Sync\QueryTask', $actual );
 	}
 
 	function test_it_can_build_params_object_for_subquery() {
@@ -192,7 +192,7 @@ class InitializerTaskTest extends \WP_UnitTestCase {
 
 }
 
-class StubProfileQueryTask extends ProfileQueryTask {
+class StubProfileQueryTask extends QueryTask {
 
 	function run() {
 
