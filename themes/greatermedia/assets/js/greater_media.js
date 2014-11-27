@@ -1,4 +1,4 @@
-/*! Greater Media - v0.1.0 - 2014-11-19
+/*! Greater Media - v0.1.0 - 2014-11-26
  * http://greatermedia.com
  * Copyright (c) 2014; * Licensed GPLv2+ */
 (function() {
@@ -11,10 +11,16 @@
 		headerHeight = header.offsetHeight,
 		livePlayer = document.getElementById( 'live-player__sidebar' ),
 		livePlayerStreamSelect = document.querySelector( '.live-player__stream--current' ),
+		livePlayerStreamSelectHeight = livePlayerStreamSelect.offsetHeight,
 		wpAdminHeight = 32,
 		onAir = document.getElementById( 'on-air' ),
 		upNext = document.getElementById( 'up-next'),
 		nowPlaying = document.getElementById( 'now-playing' ),
+		liveLinks = document.getElementById( 'live-links' ),
+		liveLinksWidget = document.querySelector( '.widget--live-player' ),
+		liveLinksWidgetHeight = liveLinksWidget.offsetHeight,
+		liveStream = document.getElementById( 'live-player' ),
+		liveStreamHeight = liveStream.offsetHeight,
 		windowHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0),
 		scrollObject = {};
 
@@ -132,17 +138,21 @@
 			if ( body.classList.contains( 'logged-in' ) ) {
 				livePlayer.style.top = headerHeight + wpAdminHeight + 'px';
 				livePlayer.style.height = windowHeight - wpAdminHeight - headerHeight + 'px';
+				liveLinks.style.height = windowHeight - headerHeight - wpAdminHeight - livePlayerStreamSelectHeight - liveStreamHeight - 36 + 'px';
 			} else {
 				livePlayer.style.top = headerHeight + 'px';
 				livePlayer.style.height = windowHeight - headerHeight + 'px';
+				liveLinks.style.height = windowHeight - headerHeight - livePlayerStreamSelectHeight - liveStreamHeight - 36 + 'px';
 			}
 			livePlayer.classList.remove( 'live-player--fixed' );
 			livePlayer.classList.add( 'live-player--init' );
 		} else if ( scrollObject.y >= 1 && scrollObject.y <= headerHeight ){
 			if ( body.classList.contains( 'logged-in' ) ) {
 				livePlayer.style.top = headerHeight + wpAdminHeight + 'px';
+				liveLinks.style.height = windowHeight - wpAdminHeight - livePlayerStreamSelectHeight - liveStreamHeight - 36 + 'px';
 			} else {
 				livePlayer.style.top = headerHeight + 'px';
+				liveLinks.style.height = windowHeight - livePlayerStreamSelectHeight - liveStreamHeight - 36 + 'px';
 			}
 			livePlayer.style.height = '100%';
 			livePlayer.classList.remove( 'live-player--fixed' );
@@ -151,9 +161,11 @@
 			if ( body.classList.contains( 'logged-in' ) ) {
 				livePlayer.style.top = wpAdminHeight + 'px';
 				livePlayer.style.height = windowHeight - wpAdminHeight + 'px';
+				liveLinks.style.height = windowHeight - wpAdminHeight - livePlayerStreamSelectHeight - liveStreamHeight - 36 + 'px';
 			} else {
 				livePlayer.style.top = '0px';
 				livePlayer.style.height = windowHeight + 'px';
+				liveLinks.style.height = windowHeight - livePlayerStreamSelectHeight - liveStreamHeight - 36 + 'px';
 			}
 			livePlayer.classList.remove( 'live-player--init' );
 			livePlayer.classList.add( 'live-player--fixed' );
@@ -176,6 +188,16 @@
 		}
 		livePlayer.classList.remove( 'live-player--fixed' );
 		livePlayer.classList.add( 'live-player--init' );
+	}
+
+
+	function liveLinksAddHeight() {
+		if ( body.classList.contains( 'logged-in' ) ) {
+			liveLinks.style.height = windowHeight - headerHeight - wpAdminHeight - livePlayerStreamSelectHeight - liveStreamHeight - 36 + 'px';
+		} else {
+			liveLinks.style.height = windowHeight - headerHeight - livePlayerStreamSelectHeight - liveStreamHeight - 36 + 'px';
+		}
+		liveLinksWidget.style.height = liveLinksWidgetHeight + 'px';
 	}
 
 	/**
@@ -253,7 +275,10 @@
 	}
 
 	if ( window.innerWidth >= 768 ) {
-		window.addEventListener( 'load', livePlayerInit, false );
+		window.addEventListener( 'load', function() {
+			livePlayerInit();
+			liveLinksAddHeight();
+		}, false );
 		window.addEventListener( 'scroll', function() {
 			scrollDebounce();
 			scrollThrottle();

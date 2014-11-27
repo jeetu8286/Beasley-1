@@ -286,12 +286,28 @@
 	}
 }
 
-.live-stream__btn--play, .live-stream__btn--resume, .live-stream__btn--pause  {
+.live-stream__btn--label {
+	position: absolute !important;
+	clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+	clip: rect(1px, 1px, 1px, 1px);
+}
+
+.live-stream__login--actions {
+	padding-bottom: 23px;
+}
+
+.live-stream__btn--login  {
+	position: relative;
+	display: block;
+	@extend %live-stream__btn;
+}
+
+.live-stream__btn--play, .live-stream__btn--resume, .live-stream__btn--pause {
 	position: relative;
 	@extend %live-stream__btn;
 }
 
-.live-stream__btn--play:before, .live-stream__btn--resume:before {
+.live-stream__btn--play:before, .live-stream__btn--resume:before, .live-stream__btn--login:before {
 	position: absolute;
 	top: 50%;
 	left: 50%;
@@ -510,9 +526,12 @@
 	text-align: center;
 	@include bp(medium) {
 		display: block;
+		height: 100%;
 		padding-right: 1em;
 		padding-left: 1em;
 		margin: 16px 0 0;
+		overflow: hidden;
+		overflow-y: scroll;
 	}
 }
 

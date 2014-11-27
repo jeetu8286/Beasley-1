@@ -4,6 +4,12 @@ plugins/wordpress-importer/
 plugins/debug-bar/
 plugins/theme-check/
 plugins/airplane-mode/
+plugins/debug-bar-cron/
+plugins/debug-bar-extender/
+plugins/restricted-site-access/
+plugins/role-quick-changer/
+plugins/the-events-calendar/
+plugins/wp-crontrol/
 plugins/index.php
 themes/index.php
 upgrade/
