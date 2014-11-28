@@ -2463,6 +2463,14 @@ class GMedia_Migration extends WP_CLI_Command {
 						'post_title'            => (string) $response['EmailAddress'],
 					);
 
+					$user_survey_id = (string) $response['UserSurveyID'];
+
+					$response_id = $wpdb->get_var( $sql = "SELECT post_id from {$wpdb->postmeta} WHERE meta_key = 'gmedia_import_id' AND meta_value = '" . $user_survey_id . "'" );
+
+					if( $response_id ) {
+						continue;
+					}
+
 					$response_id = wp_insert_post( $response_args );
 
 					if( $response_id ) {
@@ -2472,8 +2480,13 @@ class GMedia_Migration extends WP_CLI_Command {
 						}
 
 						if( !empty( $response_values ) ){
-						update_post_meta( $response_id, 'entry_reference', json_encode( $response_values ) );
+							update_post_meta( $response_id, 'entry_reference', json_encode( $response_values ) );
 						}
+
+						update_post_meta( $response_id, 'gmedia_import_id', $user_survey_id );
+
+						update_post_meta( $response_id, '_legacy_survey_MemberID', (string) $response['MemberID'] );
+						update_post_meta( $response_id, '_legacy_survey_stand_alone', (string) $response['IsResponseFromStandAloneSurvey'] );
 					}
 				}
 			$notify->tick();
