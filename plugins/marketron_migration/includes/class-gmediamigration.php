@@ -2648,13 +2648,19 @@ class GMedia_Migration extends WP_CLI_Command {
 				sleep(15);
 				$count = 0;
 			}
+
+			$show_title = trim( (string) $scheduled_item['TitleText'] );
+
+			if( $show_title == '' ) {
+				$show_title = 'No Title';
+			}
+
 			$scheduled_item_args = array(
 				'post_type'     => 'show',
 				'post_status'   => 'publish',
-				'post_title'    => trim( (string) $scheduled_item['TitleText'] ),
+				'post_title'    => $show_title,
 				'post_date'     => (string) $scheduled_item['DateModified'],
 			);
-
 
 			if ( $wp_id ) {
 				$scheduled_item_args['ID'] = $wp_id;
@@ -2671,7 +2677,48 @@ class GMedia_Migration extends WP_CLI_Command {
 			}
 
 			foreach ( $scheduled_item->Schedules->Schedule as $schedule ) {
-				if( isset($schedule['StartTime'] ) ) {
+				if( post_type_exists( 'show-episode' ) ) {
+					$post_date_gmt = 0;
+					$interval = 0;
+					if( isset($schedule['StartTime'] ) ) {
+						$start_time = (string) $schedule['StartTime'];
+						if( $start_time >= 1000 ) {
+							$start_time = substr( $start_time, 0, 2) . ':' . substr( $start_time, 2, 2);
+						} elseif ( $start_time == 0 ) {
+							$start_time = "00:00";
+						} else {
+							$start_time = substr( $start_time, 0, 1) . ':' . substr( $start_time, 1, 2);
+						}
+						$next_weekday = strtotime( 'next ' . strtolower( (string) $schedule['WeekdayName'] ) );
+						$post_date_gmt = strtotime( date( 'Y-m-d', $next_weekday) . ' ' . $start_time );
+					}
+					if( isset($schedule['EndTime'] ) ) {
+						$end_time = (string) $schedule['EndTime'];
+						if( $end_time >= 1000 ) {
+							$end_time = substr( $end_time, 0, 2) . ':' . substr( $end_time, 2, 2);
+						} elseif ( $end_time == 0 ) {
+							$end_time = "00:00";
+						} else {
+							$end_time = substr( $end_time, 0, 1) . ':' . substr( $end_time, 1, 2);
+						}
+					}
+					$interval = strtotime( $end_time ) - strtotime( $start_time );
+
+					$args = array(
+						'post_title'    => $show_title,
+						'post_type'     => ShowsCPT::EPISODE_CPT,
+						'post_status'   => 'future',
+						'post_date'     => date( DATE_ISO8601, $post_date_gmt ),
+						'post_date_gmt' => date( DATE_ISO8601, $post_date_gmt ),
+						'post_parent'   => $wp_id,
+						'ping_status'   => 1,
+						'menu_order'    => $interval,
+					);
+
+					$episode_id = wp_insert_post( $args );
+
+				}
+				/**if( isset($schedule['StartTime'] ) ) {
 					$start_time = (string) $schedule['StartTime'];
 					if( $start_time >= 1000 ) {
 						$start_time = substr( $start_time, 0, 2) . ':' . substr( $start_time, 2, 2);
@@ -2695,7 +2742,7 @@ class GMedia_Migration extends WP_CLI_Command {
 				}
 				if( isset($schedule['WeekdayName'] ) ) {
 					//update_post_meta( $wp_id, 'weekday', (string) $schedule['WeekdayName'] );
-				}
+				}*/
 			}
 
 			$notify->tick();
