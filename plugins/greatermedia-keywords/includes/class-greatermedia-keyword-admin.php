@@ -135,8 +135,20 @@ class GreaterMedia_Keyword_Admin {
 	}
 
 	public function save_settings() {
+
+		$nonce = '';
+
+		if( isset( $_POST['save_new_keyword'] ) ) {
+			$nonce = $_POST['save_new_keyword'];
+		}
+
+		if( !wp_verify_nonce( $nonce, 'save_new_keyword' ) ) {
+			return false;
+		}
+
 		$pairs = get_option( $this::$plugin_slug . '_option_name' );
 		$pairs = self::array_map_r( 'sanitize_text_field', $pairs );
+
 		if ( isset( $_POST["save_keyword_settings"] ) && current_user_can('manage_options') ) {
 
 			$linked_content = isset( $_POST['linked_content'] ) ? sanitize_text_field( $_POST['linked_content'] ) : '';

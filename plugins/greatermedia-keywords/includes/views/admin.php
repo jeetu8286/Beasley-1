@@ -41,6 +41,7 @@ $options = self::get_keyword_options( $this::$plugin_slug . '_option_name' );
 	</table>
 
 	<form method="post" action="">
+		<?php wp_nonce_field( 'save_new_keyword', 'save_new_keyword' ); ?>
 		<table class="form-table keywords">
 			<tr>
 				<td><h3>Add new keyword</h3></td>

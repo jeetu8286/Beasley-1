@@ -32,6 +32,7 @@ class GreaterMedia_Keyword_MetaBox {
 					echo '<span id="keyword" class="keyword">' . $keywords . '</span> ';
 					echo '<a href="' . $url . '" class="edit-visibility">';
 					echo '<span aria-hidden="true">Edit</span></a>';
+					echo '<span class="screen-reader-text">Edit</span>';
 					echo '</div>';
 				}
 			}

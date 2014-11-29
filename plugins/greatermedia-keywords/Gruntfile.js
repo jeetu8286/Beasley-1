@@ -38,7 +38,13 @@ module.exports = function( grunt ) {
 				eqnull:  true,
 				globals: {
 					exports: true,
-					module:  false
+					module:  false,
+					$: false,
+					jQuery:false,
+					wp:false,
+					console:false,
+					alert:false,
+					ajax_data:false
 				}
 			}		
 		},
