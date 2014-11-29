@@ -142,8 +142,8 @@ class GreaterMedia_Keyword_Admin {
 			$nonce = $_POST['save_new_keyword'];
 		}
 
-		if( ! wp_verify_nonce( $nonce, 'save_new_keyword' ) ) {
-			wp_die ();
+		if( !wp_verify_nonce( $nonce, 'save_new_keyword' ) ) {
+			return false;
 		}
 
 		$pairs = get_option( $this::$plugin_slug . '_option_name' );
