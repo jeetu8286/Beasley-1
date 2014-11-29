@@ -748,6 +748,7 @@ class GMedia_Migration extends WP_CLI_Command {
 
 		$term = wp_insert_term( $term_name, $taxonomy, $args );
 
+
 		if ( is_wp_error( $term ) ) {
 			WP_CLI::log( "Error: Term $term_name not imported." );
 			WP_CLI::log( "Error Message: " . $term->get_error_message() );
@@ -1055,7 +1056,7 @@ class GMedia_Migration extends WP_CLI_Command {
 			$channel_title = (string) $channel['ChannelTitle'];
 			$channel_desc  = (string) $channel['ChannelDescription'];
 			$blog_info     = array( 'Feed' => trim( $channel_title ), 'FeedDescription' => trim( $channel_desc ) );
-			$blog_id       = $this->process_term( $blog_info, 'channels', 'post' );
+			$blog_id       = $this->process_term( $blog_info, 'category', 'post' );
 
 			foreach ( $channel->Story as $story ) {
 				$story_hash = trim( (string) $story['Headline'] ) . (string) $story['StoryDate'];
@@ -1102,7 +1103,7 @@ class GMedia_Migration extends WP_CLI_Command {
 
 				// Process Blog Taxonomy Term
 				if ( $blog_id ) {
-					wp_set_post_terms( $wp_id, array( $blog_id ), 'channels', true );
+					wp_set_post_terms( $wp_id, array( $blog_id ), 'category', true );
 				}
 
 				// Post Meta
