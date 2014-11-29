@@ -31,8 +31,8 @@ class GreaterMedia_Keyword_MetaBox {
 					echo '<label for="keyword">Keywords: </label>';
 					echo '<span id="keyword" class="keyword">' . $keywords . '</span> ';
 					echo '<a href="' . $url . '" class="edit-visibility">';
-					echo '<span aria-hidden="true">Edit</span></a>';
-					echo '<span class="screen-reader-text">Edit</span>';
+					echo '<span aria-hidden="true">Edit</span>';
+					echo '<span class="screen-reader-text">Edit</span></a>';
 					echo '</div>';
 				}
 			}
