@@ -6,7 +6,6 @@
  * Licensed under the GPLv2+ license.
  */
 
-/*global $:false, jQuery:false, wp:false, console:false, alert:false, ajax_data:false */
 ( function( window, undefined ) {
 	'use strict';
 
@@ -30,7 +29,7 @@
 						el.closest('tr').addClass('delete').hide( 'drop' );
 					} else {
 						$('.form-table').first().prepend(
-							'<div id="message" class="error"><p>Somthing gone wrong! Keyword is not deleted!</p></div>'
+							'<div id="message" class="error"><p>Something gone wrong! Keyword is not deleted!</p></div>'
 						);
 					}
 				}
