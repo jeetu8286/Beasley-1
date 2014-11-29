@@ -66,6 +66,9 @@ class GMedia_Migration extends WP_CLI_Command {
 	 */
 	public $site_url;
 
+
+	public $skip = 0;
+
 	/**
 	 * Reset the DB
 	 * -e 'show databases;'
@@ -96,7 +99,7 @@ class GMedia_Migration extends WP_CLI_Command {
 	/**
 	 * Handle the import of an xml file.
 	 *
-	 * @synopsis <file> --type=<content-type> --site=<site> [--force]
+	 * @synopsis <file> --type=<content-type> --site=<site> [--force] --skip=<skip>
 	 */
 	public function import( $args = array(), $assoc_args = array() ) {
 		if ( isset( $assoc_args['type'] ) ) {
@@ -105,6 +108,9 @@ class GMedia_Migration extends WP_CLI_Command {
 			WP_CLI::error( 'Please specify the content type.' );
 		}
 
+		if( isset( $assoc_args['skip'] ) ) {
+			$this->skip = absint( $assoc_args['skip'] );
+		}
 		if ( isset( $assoc_args['site'] ) ) {
 			$site = $assoc_args['site'];
 			switch ( $site ) {
@@ -1051,6 +1057,7 @@ class GMedia_Migration extends WP_CLI_Command {
 		$notify = new \cli\progress\Bar( "Importing $total channels!", $total );
 
 		$count = 0;
+		$skipper = 0;
 		foreach ( $channels->Channel as $channel ) {
 
 			$channel_title = (string) $channel['ChannelTitle'];
@@ -1059,6 +1066,12 @@ class GMedia_Migration extends WP_CLI_Command {
 			$blog_id       = $this->process_term( $blog_info, 'category', 'post' );
 
 			foreach ( $channel->Story as $story ) {
+
+				if( $this->skip != $skipper ) {
+					$skipper++;
+					continue;
+				}
+
 				$story_hash = trim( (string) $story['Headline'] ) . (string) $story['StoryDate'];
 				$story_hash = md5( $story_hash );
 
