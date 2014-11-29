@@ -142,8 +142,8 @@ class GreaterMedia_Keyword_Admin {
 			$nonce = $_POST['save_new_keyword'];
 		}
 
-		if( !wp_verify_nonce( $nonce, 'save_new_keyword' ) ) {
-			return false;
+		if( ! wp_verify_nonce( $nonce, 'save_new_keyword' ) ) {
+			wp_die ();
 		}
 
 		$pairs = get_option( $this::$plugin_slug . '_option_name' );
@@ -194,7 +194,7 @@ class GreaterMedia_Keyword_Admin {
 
 		// verify nonce, with predefined
 		if ( ! wp_verify_nonce( $nonce, 'perform-keyword-delete-nonce' ) ) {
-			die ( ':P' );
+			wp_die ( ':P' );
 		}
 
 		if( isset( $_POST['post_id'] ) ) {
