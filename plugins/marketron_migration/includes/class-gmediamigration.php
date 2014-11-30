@@ -950,6 +950,7 @@ class GMedia_Migration extends WP_CLI_Command {
 
 				if( $skipper != $this->skip ) {
 					$skipper++;
+					$notify->tick();
 					continue;
 				}
 
