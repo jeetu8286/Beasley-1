@@ -694,7 +694,7 @@ class GMedia_Migration extends WP_CLI_Command {
 				$term_name = (string) $term['Tag'];
 				$slug = isset( $term['Slug'] ) ? (string) $term['Slug'] : '';
 				break;
-			case 'personality':
+			case '_personality':
 				$term_name = (string) $term['Feed'];
 				$slug = isset( $term['Slug'] ) ? (string) $term['Slug'] : '';
 				$desc = isset( $term['FeedDescription'] ) ? (string) $term['FeedDescription'] : '';
@@ -923,14 +923,37 @@ class GMedia_Migration extends WP_CLI_Command {
 		}
 
 		$notify = new \cli\progress\Bar( "Importing $total articles", $total );
+		$skipper = 0;
 
 		foreach ( $blogs as $single_blog ) {
 
 			$blog      = (string) $single_blog['BlogName'];
 			$blog_desc = (string) $single_blog['BlogDescription'];
 
+			foreach( $blogs->BlogAuthor as $author ) {
+				if ( isset( $author['AuthorEmailAddress'] ) ) {
+					$author_email = (string) $author['AuthorEmailAddress'];
+					$exists = $this->check_if_user_exists( $author_email );
+
+					if ( $exists ) {
+						$user_id = $exists;
+					} else {
+						$user_id = $this->create_user( $author_email, true );
+					}
+				} else {
+					$user_id = get_current_user_id();
+				}
+			}
+
 			$count = 0;
 			foreach ( $single_blog->BlogEntries->BlogEntry as $entry ) {
+
+				if( $skipper != $this->skip ) {
+					$skipper++;
+					$notify->tick();
+					continue;
+				}
+
 				$entry_hash = trim( (string) $entry['EntryTitle'] ) . (string) $entry['EntryPostedUTCDatetime'];
 				$entry_hash = md5( $entry_hash );
 
@@ -983,10 +1006,10 @@ class GMedia_Migration extends WP_CLI_Command {
 				if ( isset( $blog ) ) {
 					$blog_info = array( 'Feed' => trim( $blog ), 'FeedDescription' => trim( $blog_desc ) );
 
-					$blog_id = $this->process_term( $blog_info, 'personality', 'post' );
+					$blog_id = $this->process_term( $blog_info, '_personality', 'post' );
 
 					if ( $blog_id ) {
-						wp_set_post_terms( $wp_id, array( $blog_id ), 'personality', true );
+						wp_set_post_terms( $wp_id, array( $blog_id ), '_personality', true );
 					}
 				}
 
