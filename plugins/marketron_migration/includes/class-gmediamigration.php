@@ -708,7 +708,7 @@ class GMedia_Migration extends WP_CLI_Command {
 				$term_name = (string) $term['name'];
 				$desc = (string) $term['desc'];
 				break;
-			case 'contest_category':
+			case 'contest_type':
 				$term_name = (string) $term['name'];
 				$desc = (string) $term['desc'];
 				break;
@@ -2415,6 +2415,11 @@ class GMedia_Migration extends WP_CLI_Command {
 			wp_update_post( $updated_post );
 
 			update_post_meta( $wp_id, 'gmedia_import_id', $survey_id );
+			update_post_meta( $wp_id, '_legacy_SurveyID', $survey_id );
+
+			if( isset( $survey['ContestID'] ) )  {
+				update_post_meta( $wp_id, '_legacy_Parent_ContestID', (int) $survey['ContestID'] );
+			}
 
 			// register hidden post type for qestions
 			//$this->check_and_add_cpt('question');
@@ -2589,7 +2594,8 @@ class GMedia_Migration extends WP_CLI_Command {
 
 			// Download images found in post_content and update post_content with new images.
 			$updated_post = array( 'ID' => $wp_id );
-			$updated_post['post_content'] = $this->import_media( trim( (string) $contest->ContestText ), $wp_id );
+			/*$updated_post['post_content'] = $this->import_media( trim( (string) $contest->ContestText ), $wp_id );
+			*/
 			wp_update_post( $updated_post );
 
 			update_post_meta( $wp_id, 'gmedia_import_id', $contest_hash );
@@ -2597,12 +2603,12 @@ class GMedia_Migration extends WP_CLI_Command {
 			// process metas
 			if( isset($contest['StartDate']) ) {
 				$start_date = strtotime( (string) $contest['StartDate'] );
-				update_post_meta($wp_id, 'start-date', $start_date);
+				update_post_meta($wp_id, 'contest-start', $start_date);
 			}
 
 			if( isset($contest['EndDate']) ) {
 				$end_date = strtotime( (string) $contest['EndDate'] );
-				update_post_meta($wp_id, 'end-date', $end_date);
+				update_post_meta($wp_id, 'contest-end', $end_date);
 			}
 
 			if( isset($contest['EntryRestriction']) ) {
@@ -2614,8 +2620,11 @@ class GMedia_Migration extends WP_CLI_Command {
 			}
 
 			if( isset($contest->ConfirmationText['ConfirmationHeader']) ) {
-				update_post_meta($wp_id, '_legacy_ConfirmationText_Header', (string) $contest->ConfirmationText['ConfirmationHeader']);
-				update_post_meta($wp_id, '_legacy_ConfirmationText', (string) $contest->ConfirmationText);
+				update_post_meta( $wp_id, 'form-thankyou', (string) $contest->ConfirmationText['ConfirmationHeader'] . ' ' . (string) $contest->ConfirmationText );
+			}
+
+			if( isset($contest->ConfirmationText['ContestText']) ) {
+				update_post_meta( $wp_id, 'prizes-desc', (string) $contest->ConfirmationText['ContestHeader'] . '</br>' . (string) $contest->ConfirmationText['ContestText'] );
 			}
 
 			if( isset( $contest->PromotionalVehicle['Type'] ) ) {
@@ -2634,34 +2643,53 @@ class GMedia_Migration extends WP_CLI_Command {
 				}
 			}
 
-			//$this->check_and_add_cpt('contest_entry');
-			/**
-			foreach($contest->Entries->Entry as $entry ) {
-				$entry_args = array(
-					'post_status'           => 'publish',
-					'post_type'             => 'contest_entry',
-					'post_parent'           => $wp_id,
-					'post_title'            => $entry['MemberID'],
-					'post_date'             => $entry['UTCEntryDate'],
-				);
+			if( isset( $contest['ContestID'] ) ) {
+				update_post_meta( $wp_id, '_legacy_ContestID', (int) $contest['ContestID'] );
+			}
 
-				$entry_id = wp_insert_post( $entry_args );
+			if( isset( $contest['SurveyID'] ) ) {
+				$orig_survey_id = (int) $contest['SurveyID'];
+				$form_id = $wpdb->get_var( $sql = "SELECT post_id from {$wpdb->postmeta} WHERE meta_key = '_legacy_SurveyID' AND meta_value = '" . $orig_survey_id . "'" );
+				$form = get_post_meta( $form_id, 'survey_embedded_form', true );
 
-				if( $entry_id ) {
-					if( isset($entry['isWinner']) ) {
-						update_post_meta($entry_id, '_legacy_isWinner', (string) $entry['isWinner']);
-					}
+				update_post_meta( $wp_id, 'embedded_form', $form );
+			}
 
-					$fields = array();
-					for($i = 1; $i <=20; $i++ ) {
-						if( isset( $entry['Field' . $i]) ) {
-							$fields[] = sanitize_text_field( (string) $entry['Field' . $i] );
+			if( !empty( $contest->Entries ) ) {
+				foreach($contest->Entries->Entry as $entry ) {
+					$entry_args = array(
+						'post_status'           => 'publish',
+						'post_type'             => 'contest_entry',
+						'post_parent'           => $wp_id,
+						'post_title'            => (string) $entry['MemberID'],
+						'post_date'             => (string) $entry['UTCEntryDate'],
+					);
+
+					$entry_id = wp_insert_post( $entry_args );
+
+					if( $entry_id ) {
+
+						if( isset($entry['isWinner']) ) {
+							update_post_meta($entry_id, '_legacy_isWinner', (string) $entry['isWinner']);
 						}
+
+						if( isset($entry['ContestEntryID']) ) {
+							update_post_meta( $entry_id, '_legacy_ContestEntryID', (string) $entry['ContestEntryID'] );
+						}
+
+						$fields = array();
+						for($i = 1; $i <=20; $i++ ) {
+							if( isset( $entry['Field' . $i]) ) {
+								$fields[] = sanitize_text_field( (string) $entry['Field' . $i] );
+							}
+						}
+
+						update_post_meta($entry_id, '_legacy_Fields', $fields );
 					}
-					update_post_meta($entry_id, '_legacy_Fields', $fields );
+
+					$progress->tick();
 				}
-				$progress->tick();
-			}*/
+			}
 
 			$progress->finish();
 			$notify->tick();
