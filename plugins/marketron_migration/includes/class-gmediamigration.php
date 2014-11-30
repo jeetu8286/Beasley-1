@@ -954,7 +954,7 @@ class GMedia_Migration extends WP_CLI_Command {
 					continue;
 				}
 
-				$entry_hash = trim( (string) $entry['EntryTitle'] ) . (string) $entry['EntryPostedUTCDatetime'];
+				$entry_hash = trim( (string) $entry['EntryTitle'] ) . (string) $entry['BlogEntryID'] . (string) $entry['EntryPostedUTCDatetime'];
 				$entry_hash = md5( $entry_hash );
 
 				// grab the existing post ID (if it exists).
@@ -963,6 +963,7 @@ class GMedia_Migration extends WP_CLI_Command {
 				// If we're not forcing import, skip existing posts.
 				if ( ! $force && $wp_id ) {
 					$notify->tick();
+					WP_CLI::log( "Already exists $wp_id" );
 					continue;
 				}
 
