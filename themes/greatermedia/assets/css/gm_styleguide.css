@@ -568,7 +568,6 @@ img {
       -webkit-box-sizing: border-box;
       -moz-box-sizing: border-box;
       box-sizing: border-box;
-      overflow-y: scroll;
       cursor: default; } }
   @media screen and (min-width: 1400px) {
     .live-player {
@@ -2073,7 +2072,7 @@ blockquote p {
   font-family: "gmr-icons" !important;
   content: "\e606" !important; }
 
-.live-stream__btn--play, .live-stream__btn--resume, .live-stream__btn--pause {
+.live-stream__btn--login, .live-stream__btn--play, .live-stream__btn--resume, .live-stream__btn--pause {
   width: 34px;
   height: 34px;
   margin: 0 auto;
@@ -2096,14 +2095,27 @@ blockquote p {
   color: #d22228;
   cursor: pointer; }
   @media screen and (min-width: 768px) {
-    .live-stream__btn--play, .live-stream__btn--resume, .live-stream__btn--pause {
+    .live-stream__btn--login, .live-stream__btn--play, .live-stream__btn--resume, .live-stream__btn--pause {
       width: 54px;
       height: 54px; } }
+
+.live-stream__btn--label {
+  position: absolute !important;
+  clip: rect(1px 1px 1px 1px);
+  /* IE6, IE7 */
+  clip: rect(1px, 1px, 1px, 1px); }
+
+.live-stream__login--actions {
+  padding-bottom: 23px; }
+
+.live-stream__btn--login {
+  position: relative;
+  display: block; }
 
 .live-stream__btn--play, .live-stream__btn--resume, .live-stream__btn--pause {
   position: relative; }
 
-.live-stream__btn--play:before, .live-stream__btn--resume:before {
+.live-stream__btn--play:before, .live-stream__btn--resume:before, .live-stream__btn--login:before {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -2323,9 +2335,12 @@ blockquote p {
   @media screen and (min-width: 768px) {
     .live-links {
       display: block;
+      height: 100%;
       padding-right: 1em;
       padding-left: 1em;
-      margin: 16px 0 0; } }
+      margin: 16px 0 0;
+      overflow: hidden;
+      overflow-y: scroll; } }
 
 .live-player--open .live-links {
   display: block;

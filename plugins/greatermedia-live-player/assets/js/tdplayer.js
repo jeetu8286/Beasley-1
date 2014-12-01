@@ -8,7 +8,7 @@ $(document).ready(function () {
 });
 //Change platformid buttons - Triton Digital QA usage only.
 var platformid = getUrlVars()['platformid'] || 'prod';
-var tech = getUrlVars()['tech'] || 'html5';
+var tech = getUrlVars()['tech'] || 'flash_html5';
 var sbm = getUrlVars()['sbm'] == 'false' ? false : true;
 var aSyncCuePointFallback = getUrlVars()['aSyncCuePointFallback'] == 'false' ? false : true;
 
@@ -73,13 +73,6 @@ function initPlayer() {
 			{id: 'NowPlayingApi'},
 			{id: 'Npe'},
 			{id: 'PlayerWebAdmin'},
-			{id: 'SyncBanners',
-				elements: [{id: 'td_synced_bigbox', width: 300, height: 250}, {
-					id: 'td_synced_leaderboard',
-					width: 728,
-					height: 90
-				}]
-			},
 			{id: 'TargetSpot'}
 		]
 	};
