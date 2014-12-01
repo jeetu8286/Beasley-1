@@ -8,6 +8,8 @@ class TaskFactory {
 		'profile'         => 'GreaterMedia\Gigya\Sync\QueryTask',
 		'data_store'      => 'GreaterMedia\Gigya\Sync\QueryTask',
 		'compile_results' => 'GreaterMedia\Gigya\Sync\CompileResultsTask',
+		'preview_results' => 'GreaterMedia\Gigya\Sync\PreviewResultsTask',
+		'export_results' => 'GreaterMedia\Gigya\Sync\ExportResultsTask',
 	);
 
 	function build( $task_type ) {
