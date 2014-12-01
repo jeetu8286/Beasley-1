@@ -142,6 +142,10 @@ class MemberQuery {
 	 */
 	public function build_and_save() {
 		$json = $this->build();
+		$this->save( $json );
+	}
+
+	public function save( $json ) {
 		update_post_meta( $this->post_id, 'member_query_constraints', $json );
 	}
 

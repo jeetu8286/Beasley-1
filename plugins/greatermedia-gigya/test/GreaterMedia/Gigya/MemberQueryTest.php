@@ -537,4 +537,41 @@ class MemberQueryTest extends \WP_UnitTestCase {
 		$this->assertEquals( 'any', $actual );
 	}
 
+	function test_it_can_store_member_query_under_member_query_preview_post_type() {
+		$post_type = new MemberQueryPostType();
+		$post_type->register();
+
+		$params = array(
+			'post_name' => 'foo',
+			'post_status' => 'draft',
+			'post_type' => 'member_query_preview',
+		);
+
+		$post_id = $this->factory->post->create( $params );
+
+		$constraints = array(
+			array(
+				'type'        => 'profile:city',
+				'operator'    => 'contains',
+				'conjunction' => 'or',
+				'valueType'   => 'string',
+				'value'       => 'New York',
+			),
+			array(
+				'type'        => 'profile:city',
+				'operator'    => 'equals',
+				'conjunction' => 'or',
+				'valueType'   => 'string',
+				'value'       => 'Los Angeles',
+			),
+		);
+
+		$json = json_encode( $constraints );
+		$member_query = new MemberQuery( $post_id, $json );
+		$member_query->save( $json );
+
+		$member_query = new MemberQuery( $post_id );
+		$this->assertEquals( $constraints, $member_query->get_constraints() );
+	}
+
 }
