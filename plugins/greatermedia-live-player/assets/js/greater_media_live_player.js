@@ -11,8 +11,7 @@
 		body = document.querySelectorAll('body'),
 		$body = $(body),
 		toggleButton = document.querySelectorAll('.gmlp-nav-toggle'),
-		$toggleButton = $(toggleButton),
-		menuLinkSelector = $('#container a');
+		$toggleButton = $(toggleButton);
 
 	// function to toggle a class when the player button is clicked
 	function togglePlayer(){
@@ -31,14 +30,9 @@
 		});
 	}
 
-	function addLinkClass() {
-		menuLinkSelector.addClass('pjaxer');
-	}
-
 	$document.ready(function($){
 		togglePlayer();
 		audioPlayer();
-		addLinkClass();
 	});
 
 } )(jQuery,window);
