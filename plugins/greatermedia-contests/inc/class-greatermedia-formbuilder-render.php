@@ -484,19 +484,7 @@ class GreaterMediaFormbuilderRender {
 			$textarea_tag_attributes['required'] = 'required';
 		}
 
-		if ( 'words' === $field->field_options->min_max_length_units ) {
-
-			$textarea_tag_attributes['data-parsley-minwords'] = absint( $field->field_options->minlength );
-			$textarea_tag_attributes['data-parsley-maxwords'] = absint( $field->field_options->maxlength );
-
-		} else if ( 'characters' === $field->field_options->min_max_length_units ) {
-
-			$textarea_tag_attributes['minlength']              = absint( $field->field_options->minlength );
-			$textarea_tag_attributes['maxlength']              = absint( $field->field_options->maxlength );
-			$textarea_tag_attributes['data-parsley-minlength'] = absint( $field->field_options->minlength );
-			$textarea_tag_attributes['data-parsley-maxlength'] = absint( $field->field_options->maxlength );
-
-		}
+		$textarea_tag_attributes = self::paragraph_length_restriction_attributes( $field, $textarea_tag_attributes );
 
 		if ( isset( $field->field_options->size ) ) {
 
@@ -1117,6 +1105,35 @@ class GreaterMediaFormbuilderRender {
 		return array( $entrant_reference, $entrant_name );
 
 	}
+
+	/**
+	 * Set the appropriate attributes for character/word restrictions on a paragraph form field
+	 *
+	 * @param stdClass $field
+	 * @param array    $textarea_tag_attributes
+	 *
+	 * @return array
+	 */
+	protected static function paragraph_length_restriction_attributes( stdClass $field, array $textarea_tag_attributes ) {
+
+		if ( isset( $field->field_options->min_max_length_units ) && 'words' === $field->field_options->min_max_length_units ) {
+
+			$textarea_tag_attributes['data-parsley-minwords'] = absint( $field->field_options->minlength );
+			$textarea_tag_attributes['data-parsley-maxwords'] = absint( $field->field_options->maxlength );
+
+		} else if ( ! isset( $field->field_options->min_max_length_units ) || 'characters' === $field->field_options->min_max_length_units ) {
+
+			$textarea_tag_attributes['minlength']              = absint( $field->field_options->minlength );
+			$textarea_tag_attributes['maxlength']              = absint( $field->field_options->maxlength );
+			$textarea_tag_attributes['data-parsley-minlength'] = absint( $field->field_options->minlength );
+			$textarea_tag_attributes['data-parsley-maxlength'] = absint( $field->field_options->maxlength );
+
+		}
+
+		return $textarea_tag_attributes;
+
+	}
+
 }
 
 GreaterMediaFormbuilderRender::register_actions();
