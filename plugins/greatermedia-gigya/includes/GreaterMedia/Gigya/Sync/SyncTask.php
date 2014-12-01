@@ -13,7 +13,10 @@ class SyncTask extends Task {
 
 	function get_sentinel() {
 		if ( is_null( $this->sentinel ) ) {
-			$this->sentinel = new Sentinel( $this->get_member_query_id() );
+			$this->sentinel = new Sentinel(
+				$this->get_member_query_id(),
+				$this->params
+			);
 		}
 
 		return $this->sentinel;
