@@ -14,6 +14,13 @@ class ResultPaginator {
 		$this->page_size       = $page_size;
 	}
 
+	function count() {
+		$db    = $this->get_job_db();
+		$query = $this->get_count_query();
+
+		return $db->get_var( $query );
+	}
+
 	function fetch( $cursor = 0 ) {
 		$db = $this->get_job_db();
 		$query = $this->query_for( $cursor );
@@ -40,6 +47,25 @@ SQL;
 		);
 
 		return $db->prepare( $query, $params );
+	}
+
+	function get_count_query() {
+		$query = <<<SQL
+SELECT count(user_id) as total
+FROM member_query_results
+WHERE
+	site_id = %d and
+	member_query_id = %d;
+SQL;
+
+		$db     = $this->get_job_db();
+		$params = array(
+			$this->site_id,
+			$this->member_query_id,
+		);
+
+		return $db->prepare( $query, $params );
+
 	}
 
 	function get_job_db() {

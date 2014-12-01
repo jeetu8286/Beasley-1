@@ -88,4 +88,11 @@ class ResultPaginatorTest extends \WP_UnitTestCase {
 		$this->assertEquals( 6, count( $actual ) );
 	}
 
+	function test_it_can_fetch_count_of_total_results() {
+		$this->init_results();
+		$actual = $this->paginator->count();
+
+		$this->assertEquals( 26, $actual );
+	}
+
 }
