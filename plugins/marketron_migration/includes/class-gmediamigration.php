@@ -1831,12 +1831,17 @@ class GMedia_Migration extends WP_CLI_Command {
 					$user_id = get_current_user_id();
 				}
 
+				$post_content = trim( (string) $post['PostText'] );
+				if( isset( $post['EmbededTag'] ) ) {
+					$post_content .= html_entity_decode( (string) $post['EmbededTag'] );
+				}
+
 				$video_post = array(
 					'post_type'     => 'post',
 					'post_status'   => 'publish',
 					'post_author'   => $user_id,
 					'post_title'    => trim( (string) $post['PostTitle'] ),
-					'post_content'  => trim( (string) $post['PostText'] ),
+					'post_content'  => $post_content,
 					'post_date'     => (string) $post['DateCreated'],
 					'post_modified' => (string) $post['DateModified']
 				);
@@ -1853,7 +1858,8 @@ class GMedia_Migration extends WP_CLI_Command {
 
 				// Download images found in post_content and update post_content with new images.
 				$updated_post = array( 'ID' => $wp_id );
-				$updated_post['post_content'] = $this->import_media( trim( (string) $post['PostText'] ), $wp_id );
+				$updated_post['post_content'] = $this->import_media( $post_content, $wp_id );
+
 				wp_update_post( $updated_post );
 
 				set_post_format( $wp_id, 'video' );
@@ -2499,6 +2505,7 @@ class GMedia_Migration extends WP_CLI_Command {
 							}
 						}
 					}
+
 					$response_args = array(
 						'post_status'           => 'publish',
 						'post_type'             => 'survey_response',
@@ -2510,7 +2517,7 @@ class GMedia_Migration extends WP_CLI_Command {
 
 					$response_id = $wpdb->get_var( $sql = "SELECT post_id from {$wpdb->postmeta} WHERE meta_key = 'gmedia_import_id' AND meta_value = '" . $user_survey_id . "'" );
 
-					if( $response_id ) {
+					if( !$force && $response_id ) {
 						continue;
 					}
 
