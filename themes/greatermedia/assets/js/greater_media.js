@@ -3,7 +3,7 @@
  * Copyright (c) 2014; * Licensed GPLv2+ */
 (function() {
 
-	var _now, headroom, livePlayerFix, livePlayerInit, livePlayerLocation, livePlayerScroll,
+	var _now, headroom, livePlayerFix, livePlayerInit,
 
 		body = document.querySelector( 'body' ),
 		mobileNavButton = document.querySelector( '.mobile-nav__toggle' ),
@@ -190,7 +190,6 @@
 		livePlayer.classList.add( 'live-player--init' );
 	}
 
-
 	function liveLinksAddHeight() {
 		if ( body.classList.contains( 'logged-in' ) ) {
 			liveLinks.style.height = windowHeight - headerHeight - wpAdminHeight - livePlayerStreamSelectHeight - liveStreamHeight - 36 + 'px';
@@ -199,6 +198,56 @@
 		}
 		liveLinksWidget.style.height = liveLinksWidgetHeight + 'px';
 	}
+
+	/**
+	 * creates a re-usable variable that will call a button name, element to hide, and element to display
+	 *
+	 * @param btn
+	 * @param elemHide
+	 * @param elemDisplay
+	 */
+	var lpAction = function(btn, elemHide, elemDisplay) {
+		this.btn = btn;
+		this.elemHide = elemHide;
+		this.elemDisplay = elemDisplay;
+	};
+
+	/**
+	 * this function will create a re-usable function to hide and display elements based on lpAction
+	 */
+	lpAction.prototype.playAction = function() {
+		var that = this; // `this`, when registering an event handler, won't ref the method's parent object, so a var it is
+		that.btn.addEventListener( 'click', function() {
+			that.elemHide.style.display = 'none';
+			that.elemDisplay.style.display = 'inline-block';
+		}, false);
+	};
+
+	/**
+	 * variables used for button interactions on the live player
+	 */
+	var playLp, pauseLp, resumeLp, playBtn, pauseBtn, resumeBtn, lpListenNow, lpNowPlaying;
+	playBtn = document.getElementById('playButton');
+	pauseBtn = document.getElementById('pauseButton');
+	resumeBtn = document.getElementById('resumeButton');
+	lpListenNow = document.getElementById('live-stream__listen-now');
+	lpNowPlaying = document.getElementById('live-stream__now-playing');
+
+	/**
+	 * creates new method of lpAction with custom btn, element to hide, and element to display
+	 *
+	 * @type {lpAction}
+	 */
+	playLp = new lpAction(playBtn, lpListenNow, lpNowPlaying);
+	pauseLp = new lpAction(pauseBtn, lpNowPlaying, lpListenNow);
+	resumeLp = new lpAction(resumeBtn, lpListenNow, lpNowPlaying);
+
+	/**
+	 * Call the actions
+	 */
+	playLp.playAction();
+	pauseLp.playAction();
+	resumeLp.playAction();
 
 	/**
 	 * adds headroom.js functionality to the header

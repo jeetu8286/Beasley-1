@@ -2501,6 +2501,7 @@ blockquote p {
   color: #d22228 !important;
   text-transform: uppercase;
   cursor: pointer;
+  display: none;
   margin: 0 .5em;
   -webkit-border-radius: 1em;
   -moz-border-radius: 1em;
