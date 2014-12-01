@@ -18,6 +18,8 @@ get_header(); ?>
 
 				<h2 class="page__title"><?php printf( __( 'Search Results for: %s', 'greatermedia' ), '<span class="search__term">' . get_search_query() . '</span>' ); ?></h2>
 
+				<?php do_action( 'keyword_search_result' ); ?>
+
 				<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
 				<article id="post-<?php the_ID(); ?>" <?php post_class( 'cf' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
 
