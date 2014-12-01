@@ -6,7 +6,7 @@
  */
 (function() {
 
-	var _now, headroom, livePlayerFix, livePlayerInit, livePlayerLocation, livePlayerScroll,
+	var _now, headroom, livePlayerFix, livePlayerInit, lpPlayActions,
 
 		body = document.querySelector( 'body' ),
 		mobileNavButton = document.querySelector( '.mobile-nav__toggle' ),
@@ -25,7 +25,12 @@
 		liveStream = document.getElementById( 'live-player' ),
 		liveStreamHeight = liveStream.offsetHeight,
 		windowHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0),
-		scrollObject = {};
+		scrollObject = {},
+		playBtn = document.getElementById( 'playButton' ),
+		pauseBtn = document.getElementById( 'pauseButton' ),
+		resumeBtn = document.getElementById( 'resumeButton' ),
+		lpListenNow = document.getElementById( 'live-stream__listen-now' ),
+		lpNowPlaying = document.getElementById( 'live-stream__now-playing' );
 
 
 	/**
@@ -203,6 +208,25 @@
 		liveLinksWidget.style.height = liveLinksWidgetHeight + 'px';
 	}
 
+	lpPlayActions = function() {
+
+		playBtn.addEventListener( 'click', function() {
+			lpListenNow.style.display = 'none';
+			lpNowPlaying.style.display = 'inline-block';
+		});
+
+		pauseBtn.addEventListener( 'click', function() {
+			lpListenNow.style.display = 'inline-block';
+			lpNowPlaying.style.display = 'none';
+		});
+
+		resumeBtn.addEventListener( 'click', function() {
+			lpListenNow.style.display = 'none';
+			lpNowPlaying.style.display = 'inline-block';
+		});
+
+	};
+
 	/**
 	 * adds headroom.js functionality to the header
 	 *
@@ -281,6 +305,7 @@
 		window.addEventListener( 'load', function() {
 			livePlayerInit();
 			liveLinksAddHeight();
+			lpPlayActions();
 		}, false );
 		window.addEventListener( 'scroll', function() {
 			scrollDebounce();

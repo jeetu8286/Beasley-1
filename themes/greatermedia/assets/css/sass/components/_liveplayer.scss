@@ -241,6 +241,7 @@
 
 .live-stream__now-playing--btn {
 	@include btn(transparent, $color-text-red, $cardinal, .25em, 1em, ms(-1));
+	display: none;
 	margin: 0 .5em;
 	@include border-radius(1em);
 }
