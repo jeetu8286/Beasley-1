@@ -165,4 +165,27 @@ class CompileResultsTaskTest extends \WP_UnitTestCase {
 		$expected = array( 'a', 'b', 'd', 'e' );
 		$this->assertEquals( $expected, $actual );
 	}
+
+	function test_it_updates_task_progress_in_after_hook() {
+		$this->task->after( null );
+
+		$actual = $this->task->get_sentinel()->get_task_progress( 'compile_results' );
+		$this->assertEquals( 100, $actual );
+	}
+
+	function test_it_enqueues_preview_task_in_after_hook_if_in_preview_mode() {
+		$this->task->params['mode'] = 'preview';
+		$this->task->after( null );
+
+		$actual = wp_async_task_last_added();
+		$this->assertEquals( 'preview_results_async_job', $actual['action'] );
+	}
+
+	function test_it_enqueues_export_task_in_after_hook_if_in_standard_mode() {
+		$this->task->params['mode'] = 'export';
+		$this->task->after( null );
+
+		$actual = wp_async_task_last_added();
+		$this->assertEquals( 'export_results_async_job', $actual['action'] );
+	}
 }
