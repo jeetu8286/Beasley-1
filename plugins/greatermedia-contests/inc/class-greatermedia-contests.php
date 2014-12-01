@@ -18,6 +18,9 @@ class GreaterMediaContests {
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 		add_action( 'restrict_manage_posts', array( $this, 'admin_contest_type_filter' ) );
 		add_action( 'pre_get_posts', array( $this, 'admin_filter_contest_list' ) );
+
+		add_filter( 'gmr_live_link_suggestion_post_types', array( $this, 'extend_live_link_suggestion_post_types' ) );
+		
 	}
 
 	/**
@@ -148,7 +151,7 @@ class GreaterMediaContests {
 	}
 
 	public function admin_enqueue_scripts() {
-		wp_enqueue_style( 'greatermedia-contests', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'css/greatermedia-contests.css' );
+		wp_enqueue_style( 'greatermedia-contests-admin', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'css/greatermedia-contests-admin.css' );
 	}
 
 	/**
@@ -213,6 +216,20 @@ class GreaterMediaContests {
 
 		$wp_query->set( 'tax_query', $args );
 	}
+
+	/**
+	 * Extends live link suggestion post types.
+	 *
+	 * @static
+	 * @access public
+	 * @param array $post_types The array of already registered post types.
+	 * @return array The array of extended post types.
+	 */
+	public function extend_live_link_suggestion_post_types( $post_types ) {
+		$post_types[] = 'contest';
+		return $post_types;
+	}
+
 }
 
 $GreaterMediaContests = new GreaterMediaContests();

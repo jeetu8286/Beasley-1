@@ -23,7 +23,8 @@ class AccountsSearcher {
 	 */
 	public function search( $query, $count = false, $limit = null ) {
 		$query    = $this->prepare_query( $query, $count, $limit );
-		$request  = $this->request_for( 'ds.search', $query );
+		//error_log( $query );
+		$request  = $this->request_for( 'accounts.search', $query );
 		$response = $request->send();
 
 		if ( $response->getErrorCode() === 0 ) {
@@ -40,65 +41,30 @@ class AccountsSearcher {
 	public function accounts_for_response( $response, $limit ) {
 		$json       = json_decode( $response->getResponseText(), true );
 		$totalCount = $json['totalCount'];
-		$uids       = $this->uids_for_response( $json );
-
-		if ( $totalCount === 0 ) {
-			return array(
-				'accounts' => array(),
-				'total' => 0,
-			);
-		}
-
-		$query      = $this->uids_to_query( $uids, $totalCount, $limit );
-		$request    = $this->request_for( 'accounts.search', $query );
-		$response   = $request->send();
 
 		if ( $response->getErrorCode() === 0 ) {
 			$accounts = array();
-			$json = json_decode( $response->getResponseText(), true );
+			$json     = json_decode( $response->getResponseText(), true );
 
 			foreach ( $json['results'] as $account ) {
-				$accounts[] = array(
-					'email' => $account['profile']['email'],
-				);
+				$profile = $account['profile'];
+
+				if ( array_key_exists( 'email', $profile ) ) {
+					$email = $profile['email'];
+				} else {
+					$email = "Unknown Email ({$profile['firstName']} {$profile['lastName']})";
+				}
+
+				$accounts[] = array( 'email' => $email );
 			}
 
 			return array(
-				'accounts'   => $accounts,
-				'total' => $totalCount,
+				'accounts' => $accounts,
+				'total'    => $totalCount,
 			);
 		} else {
 			throw new \Exception( $response->getErrorMessage() );
 		}
-	}
-
-	public function uids_for_response( $json ) {
-		$uids = array();
-
-		foreach ( $json['results'] as $entry ) {
-			$uids[] = $entry['UID'];
-		}
-
-		return $uids;
-	}
-
-	public function uids_to_query( $uids, $total, $limit ) {
-		$query = 'select profile.email from accounts';
-		$query .= ' where ';
-		$limit = min( $total, $limit );
-
-		for ( $i = 0; $i < $limit; $i++ ) {
-			$uid = $uids[ $i ];
-			$query .= " UID = '{$uid}'";
-
-			if ( $i < $limit - 1 ) {
-				$query .= ' or ';
-			}
-		}
-
-		$query .= " limit {$limit}";
-
-		return $query;
 	}
 
 	/**
