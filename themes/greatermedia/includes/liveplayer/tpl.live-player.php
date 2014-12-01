@@ -61,10 +61,10 @@
 			</div>
 			<div class="live-stream">
 				<div class="live-stream__login--actions">
-					<a href="<?php echo esc_url( home_url( '/profile/' ) ); ?>" class="live-stream__btn--login"><span class="live-stream__btn--label"><?php _e( 'Login to Listen Live', 'greatermedia' ); ?></span></a>
+					<a href="<?php echo esc_url( home_url( '/profile/login/' ) ); ?>" class="live-stream__btn--login"><span class="live-stream__btn--label"><?php _e( 'Login to Listen Live', 'greatermedia' ); ?></span></a>
 				</div>
 				<div class="live-stream__status">
-					<a href="<?php echo esc_url( home_url( '/profile/' ) ); ?>" id="live-stream__listen-now" class="live-stream__listen-now--btn"><?php _e( 'Listen Live', 'greatermedia' ); ?></a>
+					<a href="<?php echo esc_url( home_url( '/profile/login/' ) ); ?>" id="live-stream__listen-now" class="live-stream__listen-now--btn"><?php _e( 'Listen Live', 'greatermedia' ); ?></a>
 				</div>
 			</div>
 		<?php } ?>
