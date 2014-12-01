@@ -6,9 +6,11 @@ class Sentinel {
 
 	public $member_query_id;
 	public $meta_prefix = 'mqsm'; // member_query_sync_meta
+	public $params;
 
-	function __construct( $member_query_id ) {
+	function __construct( $member_query_id, $params = array() ) {
 		$this->member_query_id = $member_query_id;
+		$this->params          = $params;
 	}
 
 	function get_task_meta( $key ) {
@@ -57,7 +59,7 @@ class Sentinel {
 			$this->get_task_progress( 'compile_results' ),
 		);
 
-		$mode = $this->get_task_meta( 'mode' );
+		$mode = $this->get_mode();
 		if ( $mode === 'export' ) {
 			$this->get_task_progress( 'export_results' );
 		}
@@ -71,8 +73,15 @@ class Sentinel {
 	}
 
 	function can_compile_results() {
-		return $this->get_task_progress( 'profile' ) === 100 &&
-			$this->get_task_progress( 'data_store' ) === 100;
+		$conjunction = $this->get_conjunction();
+
+		if ( $conjunction === 'any' ) {
+			return $this->get_task_progress( 'profile' ) === 100 ||
+				$this->get_task_progress( 'data_store' ) === 100;
+		} else {
+			return $this->get_task_progress( 'profile' ) === 100 &&
+				$this->get_task_progress( 'data_store' ) === 100;
+		}
 	}
 
 	function can_export_results() {
@@ -85,11 +94,26 @@ class Sentinel {
 	}
 
 	function reset() {
-		$this->clear_task_meta( 'mode' );
 		$this->clear_task_meta( 'profile_progress' );
 		$this->clear_task_meta( 'data_store_progress' );
 		$this->clear_task_meta( 'compile_results_progress' );
 		$this->clear_task_meta( 'export_results_progress' );
+	}
+
+	function get_param( $key ) {
+		if ( array_key_exists( $key, $this->params ) ) {
+			return $this->params[ $key ];
+		} else {
+			return '';
+		}
+	}
+
+	function get_mode() {
+		return $this->get_param( 'mode' );
+	}
+
+	function get_conjunction() {
+		return $this->get_param( 'conjunction' );
 	}
 
 }

@@ -50,7 +50,7 @@ class SentinelTest extends \WP_UnitTestCase {
 	}
 
 	function test_it_knows_overall_progress_for_export_mode() {
-		$this->sentinel->set_task_meta( 'mode',  'export' );
+		$this->sentinel->params['mode'] = 'export';
 		$this->sentinel->set_task_progress( 'profile', 50 );
 		$this->sentinel->set_task_progress( 'data_store', 50 );
 		$this->sentinel->set_task_progress( 'compile_results',  50 );
@@ -60,7 +60,7 @@ class SentinelTest extends \WP_UnitTestCase {
 	}
 
 	function test_it_knows_overall_progress_for_preview_mode() {
-		$this->sentinel->set_task_meta( 'mode',  'preview' );
+		$this->sentinel->params['mode'] = 'preview';
 		$this->sentinel->set_task_progress( 'profile', 50 );
 		$this->sentinel->set_task_progress( 'data_store', 50 );
 		$this->sentinel->set_task_progress( 'compile_results',  50 );
@@ -69,7 +69,7 @@ class SentinelTest extends \WP_UnitTestCase {
 	}
 
 	function test_it_knows_overall_progress_for_intermediate_progress() {
-		$this->sentinel->set_task_meta( 'mode',  'preview' );
+		$this->sentinel->params['mode'] = 'preview';
 		$this->sentinel->set_task_progress( 'profile', 10 );
 		$this->sentinel->set_task_progress( 'data_store', 70 );
 		$this->sentinel->set_task_progress( 'compile_results',  0 );
@@ -78,7 +78,7 @@ class SentinelTest extends \WP_UnitTestCase {
 	}
 
 	function test_it_knows_overall_progress_on_completion() {
-		$this->sentinel->set_task_meta( 'mode',  'preview' );
+		$this->sentinel->params['mode'] = 'preview';
 		$this->sentinel->set_task_progress( 'profile', 100 );
 		$this->sentinel->set_task_progress( 'data_store', 100 );
 		$this->sentinel->set_task_progress( 'compile_results',  100 );
@@ -98,6 +98,14 @@ class SentinelTest extends \WP_UnitTestCase {
 		$actual = $this->sentinel->can_compile_results();
 
 		$this->assertFalse( $actual );
+	}
+
+	function test_it_knows_it_can_compile_results_for_completed_profile_side_of_any_conjunction() {
+		$this->sentinel->params['conjunction'] = 'any';
+		$this->sentinel->set_task_progress( 'profile', 100 );
+		$actual = $this->sentinel->can_compile_results();
+
+		$this->assertTrue( $actual );
 	}
 
 	function test_it_can_compile_results_if_fetch_queries_have_completed() {
