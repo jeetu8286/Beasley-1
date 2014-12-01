@@ -305,7 +305,7 @@ class SyndicationCPT {
 
 		add_meta_box(
 			'filter_metaboxes'
-			,__( 'Filters', 'greatermedia' )
+			,__( 'Filters  - please choose one', 'greatermedia' )
 			,array( $this, 'render_filter_metabox' )
 			,$this->post_type
 			,'advanced'
@@ -472,14 +472,17 @@ class SyndicationCPT {
 			$taxonomy_obj = get_taxonomies( array( 'name' => $taxonomy ), 'object' );
 			$taxonomy_name = $taxonomy_obj[$taxonomy]->label;
 
-			// Display the form, using the current value.
-			echo '<p><label for="subscription_filter_terms">';
-			esc_html_e( $taxonomy_name, 'greatermedia' );
-			echo '</label> ';
 
 			$multiple = $taxonomy == 'collection' ? '' : 'multiple';
 			$disabled = $enabled_filter == $taxonomy ? '' : 'disabled';
 			$checked =  $enabled_filter == $taxonomy ? 'checked' : '';
+
+			// Display the form, using the current value.
+			echo '<p>';
+			echo '<input ' . esc_attr( $checked ) . ' data-enabled="' . esc_attr( $taxonomy ). '" class="enabled_filter" type="radio" name="enabled_filter" />';
+			echo '<label for="subscription_filter_terms">';
+			esc_html_e( $taxonomy_name, 'greatermedia' );
+			echo '</label> ';
 
 			echo '<select ' . $disabled . ' ' .$multiple . ' id="' . esc_attr( $taxonomy )
 			     . '" name="subscription_filter_terms-' . esc_attr( $taxonomy )
@@ -490,9 +493,12 @@ class SyndicationCPT {
 			}
 
 			echo '</select>';
-
-			echo '<input ' . esc_attr( $checked ) . ' data-enabled="' . esc_attr( $taxonomy ). '" class="enabled_filter" type="radio" name="enabled_filter" />';
 			echo '</p>';
+			if( $multiple != '' ) {
+				echo '<span class="description">Create a filter using one or more post tags</span>';
+			} else {
+				echo '<span class="description">Create a filter using a single ' . $taxonomy .'</span>';
+			}
 		}
 		echo '<input type="hidden" id="enabled_filter_taxonomy" name="enabled_filter_taxonomy" value="' . $enabled_filter. '">';
 	}
