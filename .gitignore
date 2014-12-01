@@ -11,6 +11,12 @@ plugins/role-quick-changer/
 plugins/the-events-calendar/
 plugins/wp-crontrol/
 plugins/index.php
+plugins/debug-bar-cron/
+plugins/debug-bar-extender/
+plugins/restricted-site-access/
+plugins/role-quick-changer/
+plugins/the-events-calendar/
+plugins/wp-crontrol/
 themes/index.php
 upgrade/
 /index.php
