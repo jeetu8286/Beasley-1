@@ -5,10 +5,6 @@ plugins/debug-bar/
 plugins/theme-check/
 plugins/airplane-mode/
 plugins/index.php
-plugins/wordpress-importer
-plugins/debug-bar/
-plugins/theme-check/
-plugins/airplane-mode/
 plugins/debug-bar-cron/
 plugins/debug-bar-extender/
 plugins/restricted-site-access/

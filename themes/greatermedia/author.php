@@ -1,20 +1,14 @@
 <?php
 /**
- * The main template file
+ * Author template file
  *
  * @package Greater Media
  * @since   0.1.0
+ *
+ * @todo this template file still needs to be layed out according to the design
  */
 
-get_header();
-
-	/* we won't display this until we get some actual content
-	if ( is_front_page() || is_home() ) {
-		get_template_part( 'partials/frontpage', 'featured' );
-		get_template_part( 'partials/frontpage', 'highlights' );
-	} */
-
-	?>
+get_header(); ?>
 
 	<main class="main" role="main">
 
