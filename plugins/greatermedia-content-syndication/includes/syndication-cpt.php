@@ -26,7 +26,7 @@ class SyndicationCPT {
 		add_filter( 'post_row_actions', array( $this, 'remove_quick_edit' ), 10, 2);
 		add_filter( 'is_protected_meta', array( $this, 'hide_meta_keys' ), 10, 2);
 		add_filter( 'manage_edit-subscription_columns', array( $this, 'subscription_columns_filter' ),10, 1 );
-
+		add_filter('post_updated_messages', array( $this, 'custom_messages_for_subscription') );
 	}
 
 	/**
@@ -221,6 +221,31 @@ class SyndicationCPT {
 		register_post_type( $this->post_type, $args );
 	}
 
+
+	public function custom_messages_for_subscription( $messages ) {
+		global $post, $post_ID;
+
+		if( $post->post_type === $this->post_type ) {
+			$messages[ $this->post_type ] = array(
+				0 => '', // Unused. Messages start at index 1.
+				1 => sprintf( __('Subscription updated. <a href="%s">View subscription</a>'), esc_url( get_permalink($post_ID) ) ),
+				2 => __('Custom field updated.'),
+				3 => __('Custom field deleted.'),
+				4 => __('Subscription updated.'),
+				/* translators: %s: date and time of the revision */
+				5 => isset($_GET['revision']) ? sprintf( __('Subscription restored to revision from %s'), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
+				6 => sprintf( __('Subscription published. <a href="%s">View subscription</a>'), esc_url( get_permalink($post_ID) ) ),
+				7 => __('Book saved.'),
+				8 => sprintf( __('Subscription submitted. <a target="_blank" href="%s">Preview subscription </a>'), esc_url( add_query_arg( 'preview', 'true', get_permalink($post_ID) ) ) ),
+				9 => sprintf( __('Subscription scheduled for: <strong>%1$s</strong>. <a target="_blank" href="%2$s">Preview subscription</a>'),
+					// translators: Publish box date format, see http://php.net/date
+					date_i18n( __( 'M j, Y @ G:i' ), strtotime( $post->post_date ) ), esc_url( get_permalink($post_ID) ) ),
+				10 => sprintf( __('Subscription draft updated. <a target="_blank" href="%s">Preview subscription</a>'), esc_url( add_query_arg( 'preview', 'true', get_permalink($post_ID) ) ) ),
+			);
+		}
+
+		return $messages;
+	}
 
 	public function change_state_labels( $post_states ) {
 		global $post;
