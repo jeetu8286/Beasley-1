@@ -485,20 +485,7 @@ class GreaterMediaFormbuilderRender {
 		}
 
 		$textarea_tag_attributes = self::paragraph_length_restriction_attributes( $field, $textarea_tag_attributes );
-
-		if ( isset( $field->field_options->size ) ) {
-
-			if ( 'small' === $field->field_options->size ) {
-				$textarea_tag_attributes['rows'] = self::TEXTAREA_SIZE_SMALL;
-			} else if ( 'medium' === $field->field_options->size ) {
-				$textarea_tag_attributes['rows'] = self::TEXTAREA_SIZE_MEDIUM;
-			} else if ( 'large' === $field->field_options->size ) {
-				$textarea_tag_attributes['rows'] = self::TEXTAREA_SIZE_LARGE;
-			} else {
-				throw new InvalidArgumentException( sprintf( 'Field %d has an invalid size', $field->cid ) );
-			}
-
-		}
+		$textarea_tag_attributes = self::paragraph_field_size_attributes( $field, $textarea_tag_attributes );
 
 		// Give the theme a chance to alter the attributes for the input field
 		$textarea_tag_attributes = apply_filters( 'gm_form_text_input_attrs', $textarea_tag_attributes );
@@ -1132,6 +1119,41 @@ class GreaterMediaFormbuilderRender {
 
 		return $textarea_tag_attributes;
 
+	}
+
+	/**
+	 * Set the appropriate attributes for paragraph form field size
+	 *
+	 * @param stdClass $field
+	 * @param array    $textarea_tag_attributes
+	 *
+	 * @return array
+	 * @throws InvalidArgumentException
+	 */
+	protected static function paragraph_field_size_attributes( stdClass $field, array $textarea_tag_attributes ) {
+
+		if ( isset( $field->field_options->size ) ) {
+
+			if ( 'small' === $field->field_options->size ) {
+				$textarea_tag_attributes['rows'] = self::TEXTAREA_SIZE_SMALL;
+
+				return $textarea_tag_attributes;
+			} else if ( 'medium' === $field->field_options->size ) {
+				$textarea_tag_attributes['rows'] = self::TEXTAREA_SIZE_MEDIUM;
+
+				return $textarea_tag_attributes;
+			} else if ( 'large' === $field->field_options->size ) {
+				$textarea_tag_attributes['rows'] = self::TEXTAREA_SIZE_LARGE;
+
+				return $textarea_tag_attributes;
+			} else {
+				throw new InvalidArgumentException( sprintf( 'Field %d has an invalid size', $field->cid ) );
+			}
+
+		}
+
+		return $textarea_tag_attributes;
+		
 	}
 
 }
