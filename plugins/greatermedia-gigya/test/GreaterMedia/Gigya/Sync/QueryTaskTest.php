@@ -20,6 +20,7 @@ class QueryTaskTest extends \WP_UnitTestCase {
 			'checksum'        => 'foo-checksum',
 			'query'           => 'select UID from accounts where profile.age = 93',
 			'store_type'      => 'profile',
+			'conjunction'     => 'and',
 		);
 
 		$this->task->get_sentinel()->set_checksum( 'foo-checksum' );
@@ -136,9 +137,22 @@ class QueryTaskTest extends \WP_UnitTestCase {
 		$this->assertEquals( 0, $actual );
 	}
 
-	// TODO: why is this failing?
-	function _test_it_fetches_pages_of_query_until_completion() {
-		$db     = TempDatabase::get_instance()->get_db();
+	function test_it_enqueues_compilation_task_if_query_finished() {
+		$this->task->get_sentinel()->params['conjunction'] = 'any';
+		$matches = array(
+			'has_next' => false,
+			'progress' => 100,
+		);
+
+		$this->task->after( $matches );
+		$actual = wp_async_task_last_added();
+		$this->assertEquals( 'compile_results_async_job', $actual['action'] );
+	}
+
+	function test_it_fetches_pages_of_query_until_completion() {
+		$this->init_gigya_keys();
+
+		$db = TempDatabase::get_instance()->get_db();
 		$db->delete( 'member_query_users', '1=1' );
 
 		wp_async_task_autorun();
@@ -146,11 +160,10 @@ class QueryTaskTest extends \WP_UnitTestCase {
 		$query_task = new QueryTask();
 		$query_task->register();
 
-		$this->init_gigya_keys();
 		$this->task->page_size = 10;
 		$this->task->execute( $this->task->params );
 
-		$result = $db->get_row( 'select count(*) as total from member_query_users' );
+		$result = $db->get_row( "select count(*) as total from member_query_users where site_id = 1 and member_query_id = {$this->post_id};" );
 		$total  = $result->total;
 
 		$this->assertEquals( 43, $total );
