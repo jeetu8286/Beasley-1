@@ -99,7 +99,7 @@ class GreatermediaSurveys {
 			'rewrite'             => true,
 			'capability_type'     => 'post',
 			'supports'            => array(
-				'title'
+				'title', 'editor'
 			)
 		);
 
