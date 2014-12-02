@@ -522,6 +522,9 @@ img {
   float: left;
   width: 100%;
   margin: 0;
+  background-color: #000000; }
+
+.main .container {
   background-color: #ffffff; }
 
 .content {
