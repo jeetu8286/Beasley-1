@@ -4,6 +4,7 @@
 add_action( 'init', 'gmr_songs_register_post_type' );
 add_action( 'admin_menu', 'gmr_songs_register_admin_menu' );
 add_action( 'dbx_post_advanced', 'gmr_songs_adjust_current_admin_menu' );
+add_action( 'save_post', 'gmr_songs_save_meta_box_data' );
 
 // filter hooks
 add_filter( 'gmr_live_link_add_copy_action', 'gmr_songs_remove_copy_to_live_link_action', 10, 2 );
@@ -33,15 +34,16 @@ function gmr_songs_register_post_type() {
 	);
 
 	$args = array(
-		'label'        => 'Songs',
-		'labels'       => $labels,
-		'public'       => false,
-		'show_ui'      => true,
-		'show_in_menu' => false,
-		'can_export'   => false,
-		'has_archive'  => false,
-		'rewrite'      => false,
-		'supports'     => array( 'title', 'editor', 'author', 'thumbnail' ),
+		'label'                => 'Songs',
+		'labels'               => $labels,
+		'public'               => false,
+		'show_ui'              => true,
+		'show_in_menu'         => false,
+		'can_export'           => false,
+		'has_archive'          => false,
+		'rewrite'              => false,
+		'register_meta_box_cb' => 'gmr_songs_register_meta_boxes',
+		'supports'             => array( 'title' ),
 	);
 
 	register_post_type( GMR_SONG_CPT, $args );
@@ -120,4 +122,58 @@ function gmr_songs_shows_widget_item( $item ) {
 	$item = '<div class="live-link__song"><div class="live-link__song--artist">' . get_the_content() . '</div><div class="live-link__song--title">' . get_the_title() . '</div></div>';
 
 	return $item;
+}
+
+/**
+ * Saves song meta data.
+ *
+ * @action save_post
+ * @param int $post_id The song post id.
+ */
+function gmr_songs_save_meta_box_data( $post_id ) {
+	// validate nonce and user permissions
+	$doing_autosave = defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE;
+	$valid_nonce = wp_verify_nonce( filter_input( INPUT_POST, '_gmr_songs_nonce' ), 'gmr_songs_meta_boxes' );
+	$can_edit = current_user_can( 'edit_post', $post_id );
+	if ( $doing_autosave || ! $valid_nonce || ! $can_edit ) {
+		return;
+	}
+
+	// save artist
+	$artist = sanitize_text_field( filter_input( INPUT_POST, 'song_artist' ) );
+	update_post_meta( $post_id, 'artist', $artist );
+
+	// save purchase link
+	$purchase_link = filter_input( INPUT_POST, 'song_purchase_link', FILTER_VALIDATE_URL );
+	update_post_meta( $post_id, 'purchase_link', $purchase_link );
+}
+
+/**
+ * Registers songs meta boxes.
+ */
+function gmr_songs_register_meta_boxes() {
+	add_meta_box( 'artist', 'Artist', 'gmr_songs_render_artist_meta_box', GMR_SONG_CPT, 'normal' );
+	add_meta_box( 'purchase-link', 'Purchase Link', 'gmr_songs_render_purchase_link_meta_box', GMR_SONG_CPT, 'normal' );
+}
+
+/**
+ * Renders song artist meta box.
+ *
+ * @param WP_Post $post The song object.
+ */
+function gmr_songs_render_artist_meta_box( WP_Post $post ) {
+	wp_nonce_field( 'gmr_songs_meta_boxes', '_gmr_songs_nonce', false );
+	
+	?><input type="text" name="song_artist" class="widefat" value="<?php echo esc_attr( get_post_meta( $post->ID, 'artist', true ) ) ?>">
+	<p class="description">Enter artist of this song.</p><?php
+}
+
+/**
+ * Renders song purchase link meta box.
+ *
+ * @param WP_Post $post The song object.
+ */
+function gmr_songs_render_purchase_link_meta_box( WP_Post $post ) {
+	?><input type="text" name="song_purchase_link" class="widefat" value="<?php echo esc_attr( get_post_meta( $post->ID, 'purchase_link', true ) ) ?>">
+	<p class="description">Enter iTunes link to this song.</p><?php
 }
