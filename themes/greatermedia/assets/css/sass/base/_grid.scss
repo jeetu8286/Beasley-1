@@ -22,7 +22,7 @@ img {
 }
 
 #site-wrap {
-	max-width: $max-site-width;
+	max-width: 100%;
 	margin: 0 auto;
 	background-color: palette(base,  primary-bg);
 }
@@ -38,6 +38,16 @@ img {
 
 .container, %container {
 	@include outer-container(92.08770257388%);
+	@include bp(medium) {
+		@include outer-container(100%);
+		padding-right: 15.8781%;
+	}
+	@include bp(large) {
+	}
+	@include bp(x-large) {
+		@include outer-container(1400px);
+		padding-right: 250px;
+	}
 }
 
 .main, %main {
@@ -45,12 +55,6 @@ img {
 	width: 100%;
 	margin: 0;
 	background-color: palette(base,  primary-bg);
-	@include bp(medium) {
-		width: 84.121892542101%;
-	}
-	@include bp(x-large) {
-		width: $max-width;
-	}
 }
 
 .content, %content {
