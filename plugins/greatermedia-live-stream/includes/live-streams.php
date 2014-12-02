@@ -4,6 +4,10 @@
 add_action( 'init', 'gmr_streams_register_post_type' );
 add_action( 'admin_menu', 'gmr_streams_update_admin_menu' );
 add_action( 'save_post', 'gmr_streams_save_meta_box_data' );
+add_action( 'manage_' . GMR_LIVE_STREAM_CPT . '_posts_custom_column', 'gmr_streams_render_custom_column', 10, 2 );
+
+// filter hooks
+add_filter( 'manage_' . GMR_LIVE_STREAM_CPT . '_posts_columns', 'gmr_streams_filter_columns_list' );
 
 /**
  * Registers Live Stream post type.
@@ -78,15 +82,11 @@ function gmr_streams_render_description_meta_box( WP_Post $post ) {
  * @param int $post_id The post id.
  */
 function gmr_streams_save_meta_box_data( $post_id ) {
-	// validate nonce
+	// validate nonce and user permissions
 	$doing_autosave = defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE;
 	$valid_nonce = wp_verify_nonce( filter_input( INPUT_POST, '_gmr_stream_nonce' ), 'gmr_stream_meta_boxes' );
-	if ( $doing_autosave || ! $valid_nonce ) {
-		return;
-	}
-
-	// check the user's permissions.
-	if ( ! current_user_can( 'edit_post', $post_id ) ) {
+	$can_edit = current_user_can( 'edit_post', $post_id );
+	if ( $doing_autosave || ! $valid_nonce || ! $can_edit ) {
 		return;
 	}
 
@@ -106,4 +106,36 @@ function gmr_streams_save_meta_box_data( $post_id ) {
  */
 function gmr_streams_update_admin_menu() {
 	remove_submenu_page( 'edit.php?post_type=' . GMR_LIVE_STREAM_CPT, 'post-new.php?post_type=' . GMR_LIVE_STREAM_CPT );
+}
+
+/**
+ * Adds Call Sign column to the Streams table.
+ *
+ * @fitler manage_gmr-live-stream_posts_columns
+ * @param array $columns The columns array.
+ * @return array Extended array of columns.
+ */
+function gmr_streams_filter_columns_list( $columns ) {
+	$cut_mark = array_search( 'title', array_keys( $columns ) ) + 1;
+
+	$columns = array_merge(
+		array_slice( $columns, 0, $cut_mark ),
+		array( 'call_sign' => 'Call Sign' ),
+		array_slice( $columns, $cut_mark )
+	);
+
+	return $columns;
+}
+
+/**
+ * Renders Call Sign column at the Streams table.
+ *
+ * @action manage_gmr-live-stream_posts_custom_column
+ * @param string $column_name The column name to render.
+ * @param int $post_id The current stream id.
+ */
+function gmr_streams_render_custom_column( $column_name, $post_id ) {
+	if ( 'call_sign' == $column_name ) {
+		echo '<b>', esc_html( get_post_meta( $post_id, 'call_sign', true ) ), '</b>';
+	}
 }
