@@ -1,8 +1,8 @@
 .footer {
 	width: 100%;
-	padding: 40px 0;
+	margin: 0 auto;
 	overflow: auto;
-	border-top: 1px solid $primary-border;
+	background-color: $secondary-bg;
 }
 
 .footer a:link, .footer a:visited {
@@ -15,6 +15,9 @@
 
 .footer__content {
 	@include span-columns(4);
+	padding: 40px 0;
+	background-color: $primary-bg;
+	border-top: 1px solid $primary-border;
 	color: $footer-text;
 	@include bp(small) {
 		@include span-columns(6);
@@ -26,7 +29,7 @@
 		@include span-columns(12);
 	}
 	@include bp(x-large) {
-		@inclue span-columns(12);
+		@include span-columns(12);
 	}
 }
 
