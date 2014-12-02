@@ -2596,10 +2596,9 @@ blockquote p {
   padding: 12px 3.75%; }
 
 .live-stream__player {
-  display: none; }
+  display: block; }
   @media screen and (min-width: 768px) {
     .live-stream__player {
-      display: block;
       padding-bottom: 23px; } }
 
 .live-stream__player.open {
