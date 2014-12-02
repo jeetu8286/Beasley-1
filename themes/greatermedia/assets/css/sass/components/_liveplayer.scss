@@ -62,12 +62,20 @@
 
 // Select List to choose a stream
 .live-player__stream {
+	position: absolute;
 	display: none;
+	top: 58px;
 	width: 100%;
 	cursor: pointer;
 	@include bp(medium) {
+		position: relative;
 		display: block;
+		top: auto;
 	}
+}
+
+.live-player--open .live-player__stream {
+	display: block;
 }
 
 .live-player__stream--list {
@@ -213,6 +221,11 @@
 	}
 }
 
+.live-player--open .live-stream {
+	width: 100%;
+	padding: 12px 3.75%; // 12px
+}
+
 .live-stream__player {
 	display: none;
 	@include bp(medium) {
@@ -277,7 +290,7 @@
 	font-weight: normal;
 	line-height: 1;
 	-webkit-font-smoothing: antialiased;
-	moz-osx-font-smoothing: grayscale;
+	-moz-osx-font-smoothing: grayscale;
 	text-rendering: auto;
 	color: $color-text-red;
 	cursor: pointer;
@@ -369,6 +382,11 @@
 	text-align: center;
 }
 
+.live-player--open .live-stream__controls {
+	float: right;
+	width: 11.486486486486%; // 34px
+}
+
 .live-stream__btn--resume, .live-stream__btn--pause {
 	display: none;
 }
@@ -395,6 +413,10 @@
 	}
 }
 
+.live-player--open .on-air, .live-player--open .up-next {
+	display: none !important;
+}
+
 .on-air__title, .up-next__title {
 	margin-right: 1em;
 	font-size: ms(-2);
@@ -413,16 +435,24 @@
 	display: none;
 	float: left;
 	width: 40%;
+	height: 34px;
 	padding: 0 1em;
 	margin: 0;
 	@include bp(medium) {
 		display: block;
 		float: none;
 		width: 100%;
+		height: auto;
 		padding: 0 1em;
 		margin: 1em 0 0;
 		text-align: center;
 	}
+}
+
+.live-player--open .now-playing {
+	float: left;
+	display: block;
+	width: 88.513513513514%; // 262px
 }
 
 .now-playing__title {
@@ -465,7 +495,7 @@
 	font-weight: normal;
 	line-height: 1;
 	-webkit-font-smoothing: antialiased;
-	moz-osx-font-smoothing: grayscale;
+	-moz-osx-font-smoothing: grayscale;
 	text-rendering: auto;
 	color: $color-text-gray;
 	content: "\e60c";
@@ -496,7 +526,7 @@
 	font-weight: normal;
 	line-height: 1;
 	-webkit-font-smoothing: antialiased;
-	moz-osx-font-smoothing: grayscale;
+	-moz-osx-font-smoothing: grayscale;
 	text-rendering: auto;
 	color: $color-text-gray;
 	content: "\e60e";
@@ -543,6 +573,7 @@
 .live-player--open .live-links {
 	display: block;
 	max-height: 48vh;
+	padding-top: 52px;
 	@include bp(small) {
 		max-height: 35vh;
 	}
@@ -571,11 +602,13 @@
 }
 
 .live-link__song--artist {
+	padding-top: 6px;
 	font-size: em(12px);
 	font-weight: normal;
 }
 
 .live-link__song--title {
+	padding-top: 6px;
 	font-size: em(13px);
 	font-weight: lighter;
 	color: $secondary-link;
@@ -613,6 +646,7 @@
 
 .live-link__title {
 	display: block;
+	padding-top: 6px;
 	margin: 0;
 	font-family: $open-sans;
 	font-size: ms(-1);

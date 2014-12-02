@@ -1,6 +1,3 @@
-/*! Greater Media - v0.1.0 - 2014-12-02
- * http://greatermedia.com
- * Copyright (c) 2014; * Licensed GPLv2+ */
 (function() {
 
 	var _now, headroom, livePlayerFix, livePlayerInit,
@@ -22,6 +19,7 @@
 		liveStream = document.getElementById( 'live-player' ),
 		liveStreamHeight = liveStream.offsetHeight,
 		windowHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0),
+		windowWidth = this.innerWidth || this.document.documentElement.clientWidth || this.document.body.clientWidth || 0,
 		scrollObject = {};
 
 
@@ -254,7 +252,7 @@
 	if ( resumeBtn != null ) {
 		resumeLp.playAction();
 	}
-
+	
 	/**
 	 * adds headroom.js functionality to the header
 	 *

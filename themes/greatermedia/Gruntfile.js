@@ -9,12 +9,7 @@ module.exports = function( grunt ) {
 		pkg:    grunt.file.readJSON( 'package.json' ),
 		concat: {
 			options: {
-				stripBanners: true,
-				banner: '/*! <%= pkg.title %> - v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %>\n' +
-				' * <%= pkg.homepage %>\n' +
-				' * Copyright (c) <%= grunt.template.today("yyyy") %>;' +
-				' * Licensed GPLv2+' +
-				' */\n'
+				stripBanners: true
 			},
 			greater_media: {
 				src: [
@@ -84,11 +79,6 @@ module.exports = function( grunt ) {
 					'assets/js/gm_styleguide.min.js': ['assets/js/gm_styleguide.js']
 				},
 				options: {
-					banner: '/*! <%= pkg.title %> - v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %>\n' +
-					' * <%= pkg.homepage %>\n' +
-					' * Copyright (c) <%= grunt.template.today("yyyy") %>;' +
-					' * Licensed GPLv2+' +
-					' */\n',
 					mangle: {
 						except: ['jQuery']
 					}
@@ -114,13 +104,6 @@ module.exports = function( grunt ) {
 		},
 
 		cssmin: {
-			options: {
-				banner: '/*! <%= pkg.title %> - v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %>\n' +
-				' * <%= pkg.homepage %>\n' +
-				' * Copyright (c) <%= grunt.template.today("yyyy") %>;' +
-				' * Licensed GPLv2+' +
-				' */\n'
-			},
 			minify: {
 				expand: true,
 

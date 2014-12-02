@@ -1,6 +1,3 @@
-/*! Greater Media Live Player - v0.1.0
- * http://wordpress.org/plugins
- * Copyright (c) 2014; * Licensed GPLv2+ */
 (function ($,window,undefined) {
 	"use strict";
 
@@ -29,25 +26,5 @@
 	pauseButton.on('click', function(event) {
 		event.preventDefault();
 	});
-
-
-	/*
-	 $.pjax({
-	 area: 'main.main',
-	 scope: {
-	 '/': ['/', '!/wp-login.php', '!/wp-admin/']
-	 },
-	 load: {
-	 head: 'base, meta, link',
-	 css: true,
-	 script: true
-	 },
-	 cache: { click: true, submit: false, popstate: true },
-	 server: { query: null },
-	 speedcheck: true
-	 });
-
-	 $(document).bind( 'pjax:ready' );
-	 */
 
 } )(jQuery,window);
