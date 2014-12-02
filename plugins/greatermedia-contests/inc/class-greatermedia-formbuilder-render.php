@@ -1108,15 +1108,25 @@ class GreaterMediaFormbuilderRender {
 
 		if ( isset( $field->field_options->min_max_length_units ) && 'words' === $field->field_options->min_max_length_units ) {
 
-			$textarea_tag_attributes['data-parsley-minwords'] = absint( $field->field_options->minlength );
-			$textarea_tag_attributes['data-parsley-maxwords'] = absint( $field->field_options->maxlength );
+			if ( isset( $field->field_options->minlength ) ) {
+				$textarea_tag_attributes['data-parsley-minwords'] = absint( $field->field_options->minlength );
+			}
+
+			if ( isset( $field->field_options->maxlength ) ) {
+				$textarea_tag_attributes['data-parsley-maxwords'] = absint( $field->field_options->maxlength );
+			}
 
 		} else if ( ! isset( $field->field_options->min_max_length_units ) || 'characters' === $field->field_options->min_max_length_units ) {
 
-			$textarea_tag_attributes['minlength']              = absint( $field->field_options->minlength );
-			$textarea_tag_attributes['maxlength']              = absint( $field->field_options->maxlength );
-			$textarea_tag_attributes['data-parsley-minlength'] = absint( $field->field_options->minlength );
-			$textarea_tag_attributes['data-parsley-maxlength'] = absint( $field->field_options->maxlength );
+			if ( isset( $field->field_options->minlength ) ) {
+				$textarea_tag_attributes['minlength']              = absint( $field->field_options->minlength );
+				$textarea_tag_attributes['data-parsley-minlength'] = absint( $field->field_options->minlength );
+			}
+
+			if ( isset( $field->field_options->maxlength ) ) {
+				$textarea_tag_attributes['maxlength']              = absint( $field->field_options->maxlength );
+				$textarea_tag_attributes['data-parsley-maxlength'] = absint( $field->field_options->maxlength );
+			}
 
 		}
 
