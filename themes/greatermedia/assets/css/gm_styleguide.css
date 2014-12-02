@@ -1965,10 +1965,9 @@ blockquote p {
       text-align: center; } }
 
 .live-stream__player {
-  display: none; }
+  display: block; }
   @media screen and (min-width: 768px) {
     .live-stream__player {
-      display: block;
       padding-bottom: 23px; } }
 
 .live-stream__player.open {

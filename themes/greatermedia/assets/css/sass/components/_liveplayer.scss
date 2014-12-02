@@ -214,9 +214,8 @@
 }
 
 .live-stream__player {
-	display: none;
+	display: block;
 	@include bp(medium) {
-		display: block;
 		padding-bottom: 23px;
 	}
 }

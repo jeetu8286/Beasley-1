@@ -4,8 +4,7 @@
 (function ($,window,undefined) {
 	"use strict";
 
-	//Change platformid buttons - Triton Digital QA usage only.
-	var tech = getUrlVars()['tech'] || 'flash_html5';
+	var tech = getUrlVars()['tech'];
 	var aSyncCuePointFallback = getUrlVars()['aSyncCuePointFallback'] == 'false' ? false : true;
 
 	var player;
@@ -21,7 +20,7 @@
 	/* String - Current station played */
 
 	/**
-	 * @todo remove this before beta
+	 * @todo remove the console log before beta
 	 */
 	window.tdPlayerApiReady = function () {
 		console.log("--- TD Player API Loaded ---")
