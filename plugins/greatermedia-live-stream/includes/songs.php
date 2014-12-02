@@ -119,7 +119,14 @@ function gmr_songs_shows_widget_item( $item ) {
 		return $item;
 	}
 
-	$item = '<div class="live-link__song"><div class="live-link__song--artist">' . get_the_content() . '</div><div class="live-link__song--title">' . get_the_title() . '</div></div>';
+	$item = '<div class="live-link__song">';
+		$item .= '<div class="live-link__song--artist">';
+			$item .= get_post_meta( get_the_ID(), 'artist', true );
+		$item .= '</div>';
+		$item .= '<div class="live-link__song--title">';
+			$item .= get_the_title();
+		$item .= '</div>';
+	$item .= '</div>';
 
 	return $item;
 }
