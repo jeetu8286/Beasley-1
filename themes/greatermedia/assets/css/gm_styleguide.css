@@ -1100,9 +1100,9 @@ p {
 
 .footer {
   width: 100%;
-  padding: 40px 0;
+  margin: 0 auto;
   overflow: auto;
-  border-top: 1px solid #d0d2d3; }
+  background-color: #000000; }
 
 .footer a:link, .footer a:visited {
   color: #929497; }
@@ -1115,6 +1115,9 @@ p {
   display: block;
   margin-right: 7.42297%;
   width: 100%;
+  padding: 40px 0;
+  background-color: #ffffff;
+  border-top: 1px solid #d0d2d3;
   color: #929497; }
   .footer__content:last-child {
     margin-right: 0; }
@@ -1144,7 +1147,12 @@ p {
         margin-right: 0; } }
   @media screen and (min-width: 1400px) {
     .footer__content {
-      @inclue span-columns(12); } }
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 100%; }
+      .footer__content:last-child {
+        margin-right: 0; } }
 
 .footer__logo {
   font-size: 1.60181em;
