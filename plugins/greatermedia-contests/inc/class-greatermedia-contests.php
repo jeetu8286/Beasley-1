@@ -18,8 +18,8 @@ class GreaterMediaContests {
 		add_action( 'restrict_manage_posts', array( $this, 'admin_contest_type_filter' ) );
 		add_action( 'pre_get_posts', array( $this, 'admin_filter_contest_list' ) );
 		add_filter( 'gmr_live_link_suggestion_post_types', array( $this, 'extend_live_link_suggestion_post_types' ) );
-		add_action( 'edit_form_after_title', array($this, 'myprefix_edit_form_after_title' ));
-		add_action( 'edit_form_after_editor', array($this, 'myprefix_edit_form_after_editor' ));
+		add_action( 'edit_form_after_title', array( $this, 'myprefix_edit_form_after_title' ) );
+		add_action( 'edit_form_after_editor', array( $this, 'myprefix_edit_form_after_editor' ) );
 
 	}
 
@@ -30,7 +30,7 @@ class GreaterMediaContests {
 	public function myprefix_edit_form_after_title() {
 
 		echo '<div id="contest_editor" class="postbox">';
-		echo '<h3>' . __('Introduction', 'greatermedia_contests' ). '</h3>';
+		echo '<h3>' . __( 'Introduction', 'greatermedia_contests' ) . '</h3>';
 		echo '<div class="inside">';
 
 	}
