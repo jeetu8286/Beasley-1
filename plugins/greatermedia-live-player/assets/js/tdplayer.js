@@ -59,7 +59,7 @@
 						active: 0, /* 1 = active, 0 = inactive */
 						max_listening_time: 35 /* If max_listening_time is undefined, the default value will be 30 minutes */
 					},
-					geoTargeting: {desktop: {isActive: true}, iOS: {isActive: true}, android: {isActive: true}}
+					geoTargeting: {desktop: {isActive: false}, iOS: {isActive: false}, android: {isActive: false}}
 				},
 				{id: 'NowPlayingApi'},
 				{id: 'Npe'},
