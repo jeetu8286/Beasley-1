@@ -799,6 +799,9 @@ class GreaterMediaFormbuilderRender {
 				if ( isset( $field->field_options->units ) ) {
 					return $html .= '<span class="units">' . wp_kses_data( $field->field_options->units ) . '</span>';
 				}
+
+				// Default
+				return $html;
 			},
 			10, 3
 		);
