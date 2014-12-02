@@ -21,6 +21,7 @@ function gmr_streams_register_post_type() {
 		'rewrite'              => false,
 		'query_var'            => false,
 		'can_export'           => false,
+		'hierarchical'         => true,
 		'menu_position'        => 5,
 		'menu_icon'            => 'dashicons-format-audio',
 		'supports'             => array( 'title' ),

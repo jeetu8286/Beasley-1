@@ -7,6 +7,7 @@ add_action( 'dbx_post_advanced', 'gmr_songs_adjust_current_admin_menu' );
 add_action( 'save_post', 'gmr_songs_save_meta_box_data' );
 
 // filter hooks
+add_filter( 'wp_insert_post_parent', 'gmr_songs_set_song_stream', PHP_INT_MAX, 3 );
 add_filter( 'gmr_live_link_add_copy_action', 'gmr_songs_remove_copy_to_live_link_action', 10, 2 );
 add_filter( 'gmr_show_widget_item_post_types', 'gmr_songs_add_songs_shows_widget' );
 add_filter( 'gmr_show_widget_item', 'gmr_songs_shows_widget_item' );
@@ -156,11 +157,32 @@ function gmr_songs_save_meta_box_data( $post_id ) {
 }
 
 /**
+ * Saves song's live stream reference.
+ *
+ * @filter wp_insert_post_parent PHP_INT_MAX 3
+ * @param int $post_parent The initial song parent id value.
+ * @param int $post_id The actual song id.
+ * @param array $post_args The song parameters.
+ * @return int The song parent id.
+ */
+function gmr_songs_set_song_stream( $post_parent, $post_id, $post_args ) {
+	if ( ! empty( $post_args['post_type'] ) && GMR_SONG_CPT == $post_args['post_type'] ) {
+		$stream_id = filter_input( INPUT_POST, 'song_stream_id', FILTER_VALIDATE_INT, array( 'options' => array( 'min_range' => 1 ) ) );
+		$post_parent = $stream_id && ( $stream = get_post( $stream_id ) ) && GMR_LIVE_STREAM_CPT == $stream->post_type
+			? $stream_id
+			: 0;
+	}
+
+	return $post_parent;
+}
+
+/**
  * Registers songs meta boxes.
  */
 function gmr_songs_register_meta_boxes() {
 	add_meta_box( 'artist', 'Artist', 'gmr_songs_render_artist_meta_box', GMR_SONG_CPT, 'normal' );
 	add_meta_box( 'purchase-link', 'Purchase Link', 'gmr_songs_render_purchase_link_meta_box', GMR_SONG_CPT, 'normal' );
+	add_meta_box( 'live-stream', 'Live Stream', 'gmr_songs_render_live_stream_meta_box', GMR_SONG_CPT, 'side' );
 }
 
 /**
@@ -183,4 +205,21 @@ function gmr_songs_render_artist_meta_box( WP_Post $post ) {
 function gmr_songs_render_purchase_link_meta_box( WP_Post $post ) {
 	?><input type="text" name="song_purchase_link" class="widefat" value="<?php echo esc_attr( get_post_meta( $post->ID, 'purchase_link', true ) ) ?>">
 	<p class="description">Enter iTunes link to this song.</p><?php
+}
+
+/**
+ * Renders song live stream meta box.
+ *
+ * @param WP_Post $post The song post object.
+ */
+function gmr_songs_render_live_stream_meta_box( WP_Post $post ) {
+	wp_dropdown_pages( array(
+		'show_option_none' => '&nbsp;',
+		'hierarchical'     => false,
+		'name'             => 'song_stream_id',
+		'post_type'        => GMR_LIVE_STREAM_CPT,
+		'selected'         => $post->post_parent,
+	) );
+
+	echo '<p class="description">Select live stream.</p>';
 }
