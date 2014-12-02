@@ -329,13 +329,13 @@ class GMedia_Migration extends WP_CLI_Command {
 				sleep(15);
 				$count = 0;
 			}
-
+			$feed_article_title = strtolower( trim( (string) $article['Title'] ) );
 			$post = array(
 				'post_type'     => 'post',
 				'post_status'   => 'publish',
 				'post_author'   => $user_id,
 				'post_name'     => trim( (string) $article['Slug'] ),
-				'post_title'    => trim( (string) $article['Title'] ),
+				'post_title'    => ucwords( $feed_article_title ),
 				'post_content'  => trim( (string) $article['ArticleText'] ),
 				'post_excerpt'  => trim( (string) $article['ExcerptText'] ),
 				'post_date'     => (string) $article['UTCStartDateTime'],
@@ -977,10 +977,11 @@ class GMedia_Migration extends WP_CLI_Command {
 					$count = 0;
 				}
 
+				$blog_entry_title = strtolower( trim( (string) $entry['EntryTitle'] ) );
 				$post = array(
 					'post_type'     => 'post',
 					'post_status'   => 'publish',
-					'post_title'    => trim( (string) $entry['EntryTitle'] ),
+					'post_title'    => ucwords( $blog_entry_title ),
 					'post_content'  => trim( (string) $entry->BlogEntryText ),
 					'post_date'     => (string) $entry['EntryPostedUTCDatetime'],
 					'post_date_gmt' => (string) $entry['EntryPostedUTCDatetime'],
@@ -1116,11 +1117,12 @@ class GMedia_Migration extends WP_CLI_Command {
 					sleep(15);
 					$count = 0;
 				}
+				$story_title = strtolower( trim( (string) $story['Headline'] ) );
 
 				$post = array(
 					'post_type'    => 'post',
 					'post_status'  => 'publish',
-					'post_title'   => trim( (string) $story['Headline'] ),
+					'post_title'   => ucwords( $story_title ),
 					'post_content' => trim( (string) $story->StoryText ),
 					'post_date'    => (string) $story['StoryDate']
 				);
@@ -1360,9 +1362,8 @@ class GMedia_Migration extends WP_CLI_Command {
 		global $wpdb;
 
 		$total = count( $galleries->Album );
-		$notify = new \cli\progress\Bar( "Importing $total Albums", $total );
+		$notify = new \cli\progress\Bar( "Importing $total albums", $total );
 
-		//$this->check_and_add_cpt('albums');
 		$count = 0;
 		foreach ( $galleries->Album as $album ) {
 			$gallery_hash = trim( (string) $album['AlbumName'] ) . (string) $album['UTCDateCreated'];
@@ -1387,6 +1388,7 @@ class GMedia_Migration extends WP_CLI_Command {
 				$count = 0;
 			}
 
+
 			$gallery_args = array(
 				'post_type'     => 'albums',
 				'post_status'   => 'publish',
@@ -1394,7 +1396,7 @@ class GMedia_Migration extends WP_CLI_Command {
 				'post_content'  => trim( (string) $album['Description'] ),
 				'post_date'     => (string) $album['UTCDateCreated'],
 				'post_date_gmt' => (string) $album['UTCDateCreated'],
-				'post_modified' => (string) $album['UTCDateModified']
+				'post_modified' => (string) $album['UTCDateModified'],
 			);
 
 
@@ -1408,6 +1410,8 @@ class GMedia_Migration extends WP_CLI_Command {
 			$updated_post = array( 'ID' => $wp_id );
 			$updated_post['post_content'] = $this->import_media( trim( (string) $album['Description'] ), $wp_id );
 			wp_update_post( $updated_post );
+
+			set_post_format($wp_id, 'gallery' ); //sets the given post to the 'gallery' format
 
 			update_post_meta( $wp_id, 'gmedia_import_id', $gallery_hash );
 
@@ -1465,31 +1469,15 @@ class GMedia_Migration extends WP_CLI_Command {
 						update_post_meta( $wp_id, '_gmedia_gallery_images', $image_ids );
 						$image_ids = implode( ',', $image_ids );
 						$gallery = '[gallery ids="'. $image_ids .'"]';
+						$updated_post['post_content'] = $updated_post['post_content'] . $gallery;
+						$updated_post['ID'] = $wp_id;
 
-						$updated_post['post_content'] = $updated_post['post_content'] . "\r\n" . $gallery;
 						wp_update_post( $updated_post );
-
-						// Find articles that relate to a gallery and add gallery to that article
-						$gallery_id = get_post_meta( $wp_id, '_gmedia_orig_gallery_id', true );
-						if ( $gallery_id ) {
-							$post_id = $wpdb->get_var( $sql = "SELECT post_id from {$wpdb->postmeta} WHERE meta_key = '_gmedia_gallery_id' AND meta_value = '". $gallery_id ."'" );
-
-							if ( $post_id ) {
-								$updated_article = array( 'ID' => $post_id );
-								$updated_article['post_content'] = $gallery . "\r\n" . get_post_field( 'post_content', $post_id, 'db' );
-								$updated = wp_update_post( $updated_article );
-
-								if ( $updated ) {
-									$draft_gallery = array( 'ID' => $wp_id, 'post_status' => 'draft' );
-									wp_update_post( $draft_gallery );
-								}
-							}
-						}
 					}
 				}
 			}
 
-			$notify->tick();
+			//$notify->tick();
 		}
 
 		$notify->finish();
@@ -1692,10 +1680,12 @@ class GMedia_Migration extends WP_CLI_Command {
 		}
 
 		$showcase_entry_post = array(
-			'post_type'     => 'gmedia-galleries',
+			'post_type'     => 'album',
 			'post_status'   => 'publish',
+			'post_parent'   => $parent_id,
 			'post_title'    => trim( (string) $entry['ShowcaseEntryName'] ),
 			'post_date'     => (string) $entry['DateCreated'],
+			'post_date_gmt'     => (string) $entry['DateCreated'],
 			'post_modified' => (string) $entry['DateModified']
 		);
 
@@ -1709,6 +1699,7 @@ class GMedia_Migration extends WP_CLI_Command {
 
 		$wp_id = wp_insert_post( $showcase_entry_post );
 
+		set_post_format( $wp_id, 'gallery' );
 		update_post_meta( $wp_id, 'gmedia_import_id', $entry_hash );
 		update_post_meta( $wp_id, '_gmedia_related_content', $parent_id );
 
@@ -1761,7 +1752,8 @@ class GMedia_Migration extends WP_CLI_Command {
 			update_post_meta( $wp_id, '_gmedia_gallery_images', $image_ids );
 			$image_ids = implode( ',', $image_ids );
 			$gallery = '[gallery ids="'. $image_ids .'"]';
-
+			WP_CLI::log( $gallery );
+			WP_CLI::log( $wp_id );
 			$updated_post = array( 'ID' => $wp_id, 'post_content' => $gallery );
 			wp_update_post( $updated_post );
 		}
@@ -1836,11 +1828,14 @@ class GMedia_Migration extends WP_CLI_Command {
 					$post_content .= html_entity_decode( (string) $post['EmbededTag'] );
 				}
 
+				$video_post_title = trim( (string) $post['PostTitle'] );
+				$video_post_title = ucwords( strtolower($video_post_title) );
+				
 				$video_post = array(
 					'post_type'     => 'post',
 					'post_status'   => 'publish',
 					'post_author'   => $user_id,
-					'post_title'    => trim( (string) $post['PostTitle'] ),
+					'post_title'    => $video_post_title,
 					'post_content'  => $post_content,
 					'post_date'     => (string) $post['DateCreated'],
 					'post_modified' => (string) $post['DateModified']
@@ -2483,6 +2478,7 @@ class GMedia_Migration extends WP_CLI_Command {
 			update_post_meta( $wp_id, 'survey_embedded_form', $form_encoded );
 
 			// register hidden post type for responses
+			if( is_array( $survey->Responses->Response ) ) {
 				foreach( $survey->Responses->Response as $response ) {
 
 					$response_values = array();
@@ -2522,7 +2518,7 @@ class GMedia_Migration extends WP_CLI_Command {
 					}
 
 					$response_id = wp_insert_post( $response_args );
-
+					WP_CLI::log( "Imported response" );
 					if( $response_id ) {
 
 						if( isset($response['UTCCompletionDate']) ){
@@ -2539,6 +2535,7 @@ class GMedia_Migration extends WP_CLI_Command {
 						update_post_meta( $response_id, '_legacy_survey_stand_alone', (string) $response['IsResponseFromStandAloneSurvey'] );
 					}
 				}
+			}
 			$notify->tick();
 		}
 
@@ -2585,10 +2582,17 @@ class GMedia_Migration extends WP_CLI_Command {
 				$count = 0;
 			}
 
+			$contest_title = trim( (string) $contest['ContestName'] );
+			preg_match( '/\[\s*(\S+)\s*\](.*)/', $contest_title, $contest_title_matches );
+
+			if( !empty( $contest_title_matches ) ) {
+				$contest_title = $contest_title_matches[2];
+			}
+
 			$contest_args = array(
 				'post_type'     => 'contest',
 				'post_status'   => 'publish',
-				'post_title'    => trim( (string) $contest['ContestName'] ),
+				'post_title'    => $contest_title,
 				'post_content'  => trim( (string) $contest->ContestText ),
 				'post_date'     => (string) $contest['DateCreated'],
 			);
@@ -2639,6 +2643,17 @@ class GMedia_Migration extends WP_CLI_Command {
 			}
 
 			// process terms
+			if( isset( $contest_title_matches ) && $contest_title_matches[1] ) {
+				$contest_term['name'] = $contest_title_matches[1];
+				$contest_term['desc'] = "";
+
+				$contest_cat_id = $this->process_term( $contest_term, 'contest_type', 'contest' );
+
+				if ( $contest_cat_id ) {
+					wp_set_post_terms( $wp_id, array( $contest_cat_id ), 'contest_type', true );
+				}
+			}
+
 			if( isset($contest['ContestCategory']) && (string) $contest['ContestCategory'] != "None" ) {
 				$contest_term['name'] = (string) $contest['ContestCategory'];
 				$contest_term['desc'] = "";
@@ -2648,6 +2663,8 @@ class GMedia_Migration extends WP_CLI_Command {
 				if ( $contest_cat_id ) {
 					wp_set_post_terms( $wp_id, array( $contest_cat_id ), 'contest_type', true );
 				}
+
+				update_post_meta($wp_id, '_legacy_ContestCategory', (string) $contest['ContestCategory']);
 			}
 
 			if( isset( $contest['ContestID'] ) ) {
@@ -2663,46 +2680,48 @@ class GMedia_Migration extends WP_CLI_Command {
 			}
 
 			if( !empty( $contest->Entries ) ) {
-				foreach($contest->Entries->Entry as $entry ) {
+
+				foreach ( $contest->Entries->Entry as $entry ) {
+
 					$entry_args = array(
-						'post_status'           => 'publish',
-						'post_type'             => 'contest_entry',
-						'post_parent'           => $wp_id,
-						'post_title'            => (string) $entry['MemberID'],
-						'post_date'             => (string) $entry['UTCEntryDate'],
+						'post_status' => 'publish',
+						'post_type'   => 'contest_entry',
+						'post_parent' => $wp_id,
+						'post_title'  => (string) $entry['MemberID'],
+						'post_date'   => (string) $entry['UTCEntryDate'],
 					);
 
 					$entry_id = wp_insert_post( $entry_args );
 
-					if( $entry_id ) {
+					if ( $entry_id ) {
 
-						if( isset($entry['isWinner']) ) {
-							update_post_meta($entry_id, '_legacy_isWinner', (string) $entry['isWinner']);
+						if ( isset( $entry['isWinner'] ) ) {
+							update_post_meta( $entry_id, '_legacy_isWinner', (string) $entry['isWinner'] );
 						}
 
-						if( isset($entry['ContestEntryID']) ) {
+						if ( isset( $entry['ContestEntryID'] ) ) {
 							update_post_meta( $entry_id, '_legacy_ContestEntryID', (string) $entry['ContestEntryID'] );
 						}
 
 						$fields = array();
-						for($i = 1; $i <=20; $i++ ) {
-							if( isset( $entry['Field' . $i]) ) {
-								$fields[] = sanitize_text_field( (string) $entry['Field' . $i] );
+						for ( $i = 1; $i <= 20; $i ++ ) {
+							if ( isset( $entry[ 'Field' . $i ] ) ) {
+								$fields[] = sanitize_text_field( (string) $entry[ 'Field' . $i ] );
 							}
 						}
 
-						update_post_meta($entry_id, '_legacy_Fields', $fields );
+						update_post_meta( $entry_id, '_legacy_Fields', $fields );
 					}
 
-					$progress->tick();
+					//$progress->tick();
 				}
-			}
 
-			$progress->finish();
-			$notify->tick();
+			}
+			//$progress->finish();
+			//$notify->tick();
 		}
 
-		$notify->finish();
+		//$notify->finish();
 	}
 
 	private function process_schedules( $schedules, $force ) {
@@ -2740,6 +2759,8 @@ class GMedia_Migration extends WP_CLI_Command {
 			if( $show_title == '' ) {
 				$show_title = 'No Title';
 			}
+
+			$show_title = str_ireplace( 'now on air: ', '', $show_title );
 
 			$scheduled_item_args = array(
 				'post_type'     => 'show',
