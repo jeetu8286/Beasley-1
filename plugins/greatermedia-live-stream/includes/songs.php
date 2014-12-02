@@ -6,8 +6,9 @@ add_action( 'admin_menu', 'gmr_songs_register_admin_menu' );
 add_action( 'dbx_post_advanced', 'gmr_songs_adjust_current_admin_menu' );
 
 // filter hooks
-add_filter( 'gmr_show_widget_item_post_types', 'gmr_songs_add_songs_shows_widget' );
 add_filter( 'gmr_live_link_add_copy_action', 'gmr_songs_remove_copy_to_live_link_action', 10, 2 );
+add_filter( 'gmr_show_widget_item_post_types', 'gmr_songs_add_songs_shows_widget' );
+add_filter( 'gmr_show_widget_item', 'gmr_songs_shows_widget_item' );
 
 /**
  * Registers Song post type.
@@ -102,4 +103,21 @@ function gmr_songs_adjust_current_admin_menu() {
  */
 function gmr_songs_remove_copy_to_live_link_action( $add_copy_action, WP_Post $post ) {
 	return GMR_SONG_CPT != $post->post_type ? $add_copy_action : false;
+}
+
+/**
+ * Returns show widget item content.
+ *
+ * @filter gmr_show_widget_item
+ * @param string $item The initial item HTML.
+ * @return string The song item HTML if it has song post type or initial HTML if it doesn't.
+ */
+function gmr_songs_shows_widget_item( $item ) {
+	if ( get_post_type() != GMR_SONG_CPT ) {
+		return $item;
+	}
+
+	$item = '<div class="live-link__song"><div class="live-link__song--artist">' . get_the_content() . '</div><div class="live-link__song--title">' . get_the_title() . '</div></div>';
+
+	return $item;
 }
