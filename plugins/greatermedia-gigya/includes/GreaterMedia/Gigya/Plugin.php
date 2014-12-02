@@ -64,6 +64,11 @@ class Plugin {
 			$this->register_ajax_handlers();
 		}
 
+		/* Lazy load the async tasks */
+		if ( defined( 'DOING_ASYNC' ) && DOING_ASYNC ) {
+			$this->register_task_handlers();
+		}
+
 		$profile_page = new ProfilePage();
 		$profile_page->register();
 
@@ -109,7 +114,7 @@ class Plugin {
 
 		$handlers[] = new Ajax\GigyaLoginAjaxHandler();
 		$handlers[] = new Ajax\GigyaLogoutAjaxHandler();
-		$handlers[] = new Ajax\PreviewAjaxHandler();
+		$handlers[] = new Ajax\PreviewResultsAjaxHandler();
 		$handlers[] = new Ajax\RegisterAjaxHandler();
 		$handlers[] = new Ajax\ListEntryTypesAjaxHandler();
 		$handlers[] = new Ajax\ListEntryFieldsAjaxHandler();
@@ -118,6 +123,11 @@ class Plugin {
 		foreach ( $handlers as $handler ) {
 			$handler->register();
 		}
+	}
+
+	public function register_task_handlers() {
+		$launcher = new Sync\Launcher();
+		$launcher->register();
 	}
 
 	/**
