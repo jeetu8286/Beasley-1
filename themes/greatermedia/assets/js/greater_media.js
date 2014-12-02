@@ -1,4 +1,4 @@
-/*! Greater Media - v0.1.0 - 2014-12-01
+/*! Greater Media - v0.1.0 - 2014-12-02
  * http://greatermedia.com
  * Copyright (c) 2014; * Licensed GPLv2+ */
 (function() {
@@ -245,9 +245,15 @@
 	/**
 	 * Call the actions
 	 */
-	playLp.playAction();
-	pauseLp.playAction();
-	resumeLp.playAction();
+	if ( playBtn != null ) {
+		playLp.playAction();
+	}
+	if ( pauseBtn != null ) {
+		pauseLp.playAction();
+	}
+	if ( resumeBtn != null ) {
+		resumeLp.playAction();
+	}
 
 	/**
 	 * adds headroom.js functionality to the header
