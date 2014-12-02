@@ -248,9 +248,15 @@
 	/**
 	 * Call the actions
 	 */
-	playLp.playAction();
-	pauseLp.playAction();
-	resumeLp.playAction();
+	if ( playBtn != null ) {
+		playLp.playAction();
+	}
+	if ( pauseBtn != null ) {
+		pauseLp.playAction();
+	}
+	if ( resumeBtn != null ) {
+		resumeLp.playAction();
+	}
 
 	/**
 	 * adds headroom.js functionality to the header
