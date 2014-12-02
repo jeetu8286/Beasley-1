@@ -7,7 +7,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Class GreaterMediaContests
  * @see  https://core.trac.wordpress.org/ticket/12668#comment:27
- * @TODO abstract GreaterMediaContestEntry into its own class?
  */
 class GreaterMediaContests {
 
@@ -20,9 +19,32 @@ class GreaterMediaContests {
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 		add_action( 'restrict_manage_posts', array( $this, 'admin_contest_type_filter' ) );
 		add_action( 'pre_get_posts', array( $this, 'admin_filter_contest_list' ) );
-
 		add_filter( 'gmr_live_link_suggestion_post_types', array( $this, 'extend_live_link_suggestion_post_types' ) );
-		
+		add_action( 'edit_form_after_title', array($this, 'myprefix_edit_form_after_title' ));
+		add_action( 'edit_form_after_editor', array($this, 'myprefix_edit_form_after_editor' ));
+
+	}
+
+	/**
+	 * Render markup to enclose the post content/body field in a fake metabox (for visual consistency) with a headline.
+	 * Implements edit_form_after_title action.
+	 */
+	public function myprefix_edit_form_after_title() {
+
+		echo '<div id="contest_editor" class="postbox">';
+		echo '<h3>' . __('Introduction', 'greatermedia_contests' ). '</h3>';
+		echo '<div class="inside">';
+
+	}
+
+	/**
+	 * Render markup to finish rendering the fake metabox around the post content/body field.
+	 * Implements edit_form_after_editor action.
+	 */
+	public function myprefix_edit_form_after_editor() {
+
+		echo '</div></div>';
+
 	}
 
 	/**
@@ -50,7 +72,7 @@ class GreaterMediaContests {
 			'label'               => __( 'contest', 'greatermedia_contests' ),
 			'description'         => __( 'Contest', 'greatermedia_contests' ),
 			'labels'              => $labels,
-			'supports'            => array( 'title', ),
+			'supports'            => array( 'title', 'editor' ),
 			'taxonomies'          => array( 'contest_type' ),
 			'hierarchical'        => false,
 			'public'              => true,
