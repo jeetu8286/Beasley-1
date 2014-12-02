@@ -1173,6 +1173,9 @@ p {
 .footer__logo a:link, .footer__logo a:visited {
   color: #6d6e70; }
 
+.footer__logo a:hover, .footer__logo a:focus, .footer__logo a:active {
+  color: #d22228; }
+
 .footer__copyright {
   padding: 13px 0;
   font-size: 0.70233em; }

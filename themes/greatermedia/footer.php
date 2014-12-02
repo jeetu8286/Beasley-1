@@ -10,10 +10,10 @@
 	<div class="container">
 		<div class="footer__content">
 			<div class="footer__logo">
-				<?php bloginfo( 'name' ); ?>
+				<a href="<?php echo home_url(); ?>"><?php bloginfo( 'name' ); ?></a>
 			</div>
 			<div class="footer__copyright">
-				<span class="footer__copyright--span"><?php _e( 'Copyright (c) ', 'greatermedia' ); ?><?php bloginfo( 'name' ); ?></span><?php _e( '-', 'greatermedia' ); ?><span class="footer__copyright--span"><?php _e( 'Greater Media', 'greatermedia' ); ?></span>
+				<span class="footer__copyright--span"><?php _e( 'Copyright (c) ', 'greatermedia' ); ?><?php bloginfo( 'name' ); ?></span><?php _e( '-', 'greatermedia' ); ?><span class="footer__copyright--span"><a href="http://www.greatermedia.com/"><?php _e( 'Greater Media', 'greatermedia' ); ?></a></span>
 			</div>
 			<div class="footer__menu">
 				<ul class="footer__social">
