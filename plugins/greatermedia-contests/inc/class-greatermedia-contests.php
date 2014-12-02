@@ -7,7 +7,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Class GreaterMediaContests
  * @see  https://core.trac.wordpress.org/ticket/12668#comment:27
- * @TODO abstract GreaterMediaContestEntry into its own class?
  */
 class GreaterMediaContests {
 
