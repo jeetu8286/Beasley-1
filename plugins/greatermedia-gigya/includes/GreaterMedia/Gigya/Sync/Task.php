@@ -11,7 +11,9 @@ class Task {
 	// TODO: will default to disabled in production
 	public $log_disabled = false;
 
-	public $message_types = array();
+	public $message_types = array(
+		'error'
+	);
 	/* for testing */
 	/*
 	public $message_types = array(

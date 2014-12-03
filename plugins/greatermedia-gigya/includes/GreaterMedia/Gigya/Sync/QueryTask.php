@@ -6,6 +6,14 @@ class QueryTask extends SyncTask {
 
 	public $page_size = 100;
 	public $collector = null;
+	public $message_types = array(
+		'enqueue',
+		'execute',
+		'retry',
+		'abort',
+		'after',
+		'error',
+	);
 
 	function get_task_name() {
 		return 'query_task';

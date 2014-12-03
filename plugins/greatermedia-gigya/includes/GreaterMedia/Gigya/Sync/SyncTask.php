@@ -6,6 +6,13 @@ class SyncTask extends Task {
 
 	public $sentinel;
 	public $task_factory;
+	public $message_types = array(
+		'enqueue',
+		'execute',
+		'retry',
+		'abort',
+		'error',
+	);
 
 	function get_task_name() {
 		return 'sync_task';
