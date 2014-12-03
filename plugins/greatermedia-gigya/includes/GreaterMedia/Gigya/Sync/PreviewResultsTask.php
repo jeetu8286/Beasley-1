@@ -5,7 +5,6 @@ namespace GreaterMedia\Gigya\Sync;
 class PreviewResultsTask extends SyncTask {
 
 	public $page_size    = 5;
-	public $force_delete = true;
 
 	function get_task_name() {
 		return 'preview_results';
@@ -49,10 +48,6 @@ class PreviewResultsTask extends SyncTask {
 
 	function after( $result ) {
 		$this->get_sentinel()->set_task_progress( 'preview_results', 100 );
-
-		if ( $this->force_delete ) {
-			wp_delete_post( $this->get_member_query_id(), true );
-		}
 	}
 
 }

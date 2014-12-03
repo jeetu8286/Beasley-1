@@ -62,15 +62,7 @@ class PreviewResultsTaskTest extends \WP_UnitTestCase {
 		$this->assertEquals( $users, $actual['users'] );
 	}
 
-	function test_it_removes_preview_post_in_after_hook() {
-		$this->task->after( null );
-
-		$actual = get_post_status( $this->post_id );
-		$this->assertFalse( $actual );
-	}
-
 	function test_it_updates_task_progress_on_preview_completion() {
-		$this->task->force_delete = false;
 		$this->task->after( null );
 
 		$sentinel = $this->task->get_sentinel();
@@ -116,6 +108,21 @@ class PreviewResultsTaskTest extends \WP_UnitTestCase {
 
 		$this->assertEquals( $expected, $results['users'] );
 		$this->assertEquals( 3, $results['total'] );
+	}
+
+	function test_it_can_handle_query_without_any_results() {
+		$this->init_gigya_keys();
+		$db = TempDatabase::get_instance()->get_db();
+		$db->delete( 'member_query_users', '1=1' );
+
+		$this->task->run();
+
+		$json = get_post_meta( $this->post_id, 'member_query_preview_results', true );
+		$results = json_decode( $json, true );
+		$expected = array();
+
+		$this->assertEquals( $expected, $results['users'] );
+		$this->assertEquals( 0, $results['total'] );
 	}
 
 }
