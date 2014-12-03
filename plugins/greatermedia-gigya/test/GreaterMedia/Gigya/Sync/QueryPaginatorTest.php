@@ -102,7 +102,7 @@ class QueryPaginatorTest extends \WP_UnitTestCase {
 		$query = 'select UID from accounts';
 		$actual = $this->paginator->to_limit_query( $query, 10, 100 );
 
-		$expected = 'select UID from accounts start 10 limit 100 order by UID';
+		$expected = 'select UID from accounts order by UID start 10 limit 100';
 		$this->assertEquals( $expected, $actual );
 	}
 

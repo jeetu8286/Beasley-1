@@ -75,7 +75,7 @@ class QueryPaginator {
 	}
 
 	function to_limit_query( $query, $start, $page_size ) {
-		return "{$query} start {$start} limit {$page_size} order by UID";
+		return "{$query} order by UID start {$start} limit {$page_size}";
 	}
 
 	function send( $request, $query ) {
