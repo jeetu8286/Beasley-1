@@ -40,6 +40,7 @@
 	</nav>
 
 	<div id="live-player" class="live-player__container">
+
 		<?php if ( is_gigya_user_logged_in() ) { ?>
 			<div id="up-next" class="up-next">
 				<span class="up-next__title">Up Next:</span><span class="up-next__show">Pierre Robert</span>
