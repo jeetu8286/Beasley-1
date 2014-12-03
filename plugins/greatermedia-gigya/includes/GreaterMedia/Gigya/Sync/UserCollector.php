@@ -23,6 +23,11 @@ class UserCollector {
 	}
 
 	function collect( $users, $store_type ) {
+		$total   = count( $users );
+		if ( $total === 0 ) {
+			return 0;
+		}
+
 		$formats = array(
 			'%d',
 			'%d',
@@ -33,7 +38,6 @@ class UserCollector {
 		$values = array();
 		$db     = $this->get_job_db();
 		$query  = 'Insert Into member_query_users ( site_id, member_query_id, store_type, user_id ) Values ';
-		$total  = count( $users );
 
 		for ( $i = 0; $i < $total; $i++ ) {
 			$user_id = $users[ $i ];

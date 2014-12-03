@@ -28,7 +28,7 @@ class UserCollectorTest extends \WP_UnitTestCase {
 	}
 
 	function count_rows() {
-		$db = $this->collector->get_job_db();
+		$db  = $this->collector->get_job_db();
 		$row = $db->get_row( 'select count(*) as total from member_query_users' );
 
 		return $row->total;
@@ -36,6 +36,13 @@ class UserCollectorTest extends \WP_UnitTestCase {
 
 	function test_it_can_remove_all_users() {
 		$this->collector->clear();
+		$this->assertEquals( 0, $this->count_rows() );
+	}
+
+	function test_it_can_collect_empty_list_of_user_ids() {
+		$this->collector->clear();
+		$this->collector->collect( array(), 'profile' );
+
 		$this->assertEquals( 0, $this->count_rows() );
 	}
 
