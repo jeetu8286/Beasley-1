@@ -5,12 +5,7 @@ module.exports = function( grunt ) {
 		pkg:    grunt.file.readJSON( 'package.json' ),
 		concat: {
 			options: {
-				stripBanners: true,
-				banner: '/*! <%= pkg.title %> - v<%= pkg.version %>\n' +
-					' * <%= pkg.homepage %>\n' +
-					' * Copyright (c) <%= grunt.template.today("yyyy") %>;' +
-					' * Licensed GPLv2+' +
-					' */\n'
+				stripBanners: true
 			},
 			greater_media_live_playeradmin: {
 				src: [
@@ -62,11 +57,6 @@ module.exports = function( grunt ) {
 					'assets/js/tdplayer.min.js': ['assets/js/tdplayer.js']
 				},
 				options: {
-					banner: '/*! <%= pkg.title %> - v<%= pkg.version %>\n' +
-						' * <%= pkg.homepage %>\n' +
-						' * Copyright (c) <%= grunt.template.today("yyyy") %>;' +
-						' * Licensed GPLv2+' +
-						' */\n',
 					mangle: {
 						except: ['jQuery']
 					}
@@ -91,13 +81,6 @@ module.exports = function( grunt ) {
 		},
 		
 		cssmin: {
-			options: {
-				banner: '/*! <%= pkg.title %> - v<%= pkg.version %>\n' +
-					' * <%= pkg.homepage %>\n' +
-					' * Copyright (c) <%= grunt.template.today("yyyy") %>;' +
-					' * Licensed GPLv2+' +
-					' */\n'
-			},
 			minify: {
 				expand: true,
 				
