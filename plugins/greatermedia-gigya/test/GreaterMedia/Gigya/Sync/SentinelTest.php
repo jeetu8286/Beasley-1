@@ -179,4 +179,77 @@ class SentinelTest extends \WP_UnitTestCase {
 		$sentinel = new Sentinel( 1 );
 		$this->assertEquals( 100, $sentinel->get_progress() );
 	}
+
+	function test_it_knows_if_preview_query_has_not_completed() {
+		$this->assertFalse( $this->sentinel->has_completed() );
+	}
+
+	function test_it_knows_if_preview_query_with_progress_has_not_completed() {
+		$this->sentinel = new Sentinel( 1, array( 'mode' => 'preview' ) );
+		$this->sentinel->set_task_progress( 'data_store', 100 );
+		$this->sentinel->set_task_progress( 'profile', 100 );
+
+		$this->assertFalse( $this->sentinel->has_completed() );
+	}
+
+	function test_it_knows_if_preview_query_has_completed() {
+		$this->sentinel = new Sentinel( 1, array( 'mode' => 'preview' ) );
+		$this->sentinel->set_task_progress( 'data_store', 100 );
+		$this->sentinel->set_task_progress( 'profile', 100 );
+		$this->sentinel->set_task_progress( 'compile_results', 100 );
+		$this->sentinel->set_task_progress( 'preview_results', 100 );
+
+		$sentinel = new Sentinel( 1, array( 'mode' => 'preview' ) );
+		$this->assertTrue( $sentinel->has_completed() );
+	}
+
+	function test_it_knows_if_export_query_has_completed() {
+		$this->sentinel = new Sentinel( 1, array( 'mode' => 'export' ) );
+		$this->sentinel->set_task_progress( 'data_store', 100 );
+		$this->sentinel->set_task_progress( 'profile', 100 );
+		$this->sentinel->set_task_progress( 'compile_results', 100 );
+		$this->sentinel->set_task_progress( 'export_results', 100 );
+
+		$sentinel = new Sentinel( 1, array( 'mode' => 'export' ) );
+		$this->assertTrue( $sentinel->has_completed() );
+	}
+
+	function test_it_knows_the_results_of_a_preview_query() {
+		$this->sentinel = new Sentinel( 1, array( 'mode' => 'preview' ) );
+		$this->sentinel->set_task_progress( 'data_store', 100 );
+		$this->sentinel->set_task_progress( 'profile', 100 );
+		$this->sentinel->set_task_progress( 'compile_results', 100 );
+		$this->sentinel->set_task_progress( 'preview_results', 100 );
+
+		$results = array(
+			'total' => 3,
+			'users' => array(
+				array( 'user_id' => 'a', 'email' => 'a@foo.com' ),
+				array( 'user_id' => 'b', 'email' => 'b@foo.com' ),
+				array( 'user_id' => 'c', 'email' => 'c@foo.com' ),
+			)
+		);
+
+		$results = json_encode( $results );
+		update_post_meta( 1, 'member_query_preview_results', $results );
+
+		$sentinel = new Sentinel( 1, array( 'mode' => 'preview' ) );
+		$actual = $sentinel->get_preview_results();
+		$expected = array(
+			'total' => 3,
+			'users' => array(
+				array( 'user_id' => 'a', 'email' => 'a@foo.com' ),
+				array( 'user_id' => 'b', 'email' => 'b@foo.com' ),
+				array( 'user_id' => 'c', 'email' => 'c@foo.com' ),
+			)
+		);
+
+		$this->assertEquals( $expected, $actual );
+	}
+
+	function test_it_throws_an_exception_when_fetching_results_of_unfinished_query() {
+		$this->setExpectedException( 'Exception' );
+		$this->sentinel->get_preview_results();
+	}
+
 }

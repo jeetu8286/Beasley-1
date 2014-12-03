@@ -91,6 +91,27 @@ class Sentinel {
 			$this->get_task_progress( 'compile_results' ) === 100;
 	}
 
+	function has_completed() {
+		return $this->get_progress() === 100;
+	}
+
+	function get_preview_results() {
+		if ( $this->has_completed() ) {
+			$results = get_post_meta(
+				$this->member_query_id,
+				'member_query_preview_results',
+				true
+			);
+
+			$json = json_decode( $results, true );
+			return $json;
+		} else {
+			throw new \Exception(
+				"Sentinel: Query has not completed - {$this->member_query_id}"
+			);
+		}
+	}
+
 	function verify_checksum( $checksum ) {
 		return $checksum !== '' && $checksum === $this->get_checksum();
 	}
