@@ -244,6 +244,26 @@ class BaseTaskTest extends \WP_UnitTestCase {
 
 		$this->assertFalse( $task->aborted );
 	}
+
+	function test_it_knows_it_cannot_log_unknown_message_type() {
+		$this->assertFalse( $this->task->can_log( 'foo' ) );
+	}
+
+	function test_it_knows_it_can_log_known_message_type() {
+		$this->task->message_types = array( 'foo' );
+		$this->assertTrue( $this->task->can_log( 'foo' ) );
+	}
+
+	function test_it_can_log_a_message() {
+		$this->task->params = array(
+			'member_query_id' => 1,
+			'store_type' => 'profile',
+		);
+
+		$this->task->message_types = array( 'hello' );
+		$this->task->log( 'hello', 'one', array( 'two' ), array( 'three' => 3 ) );
+	}
+
 }
 
 class BeforeTask extends Task {

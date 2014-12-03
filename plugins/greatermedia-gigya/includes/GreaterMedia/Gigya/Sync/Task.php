@@ -4,9 +4,23 @@ namespace GreaterMedia\Gigya\Sync;
 
 class Task {
 
-	public $params      = array();
-	public $max_retries = 3;
-	public $aborted     = false;
+	public $params       = array();
+	public $max_retries  = 3;
+	public $aborted      = false;
+
+	// TODO: will default to disabled in production
+	public $log_disabled = false;
+
+	public $message_types = array();
+	/* for testing */
+	/*
+	public $message_types = array(
+		'register',
+		'enqueue',
+		'abort',
+		'retry',
+	);
+	*/
 
 	function get_task_name() {
 		return 'task';
@@ -17,6 +31,8 @@ class Task {
 	}
 
 	function register() {
+		$this->log( 'register' );
+
 		add_action(
 			$this->get_async_action(), array( $this, 'execute' )
 		);
@@ -24,6 +40,7 @@ class Task {
 
 	function enqueue( $params = array() ) {
 		$this->params = $params;
+		$this->log( 'enqueue' );
 
 		return wp_async_task_add(
 			$this->get_async_action(),
@@ -33,6 +50,7 @@ class Task {
 
 	function execute( $params ) {
 		$this->params = $params;
+		$this->log( 'execute' );
 
 		try {
 			$proceed = $this->before();
@@ -41,16 +59,14 @@ class Task {
 				$this->log_attempt();
 
 				$result = $this->run();
+				$this->log( 'after', $result );
 				$this->after( $result );
 			} else {
 				$this->aborted = true;
+				$this->log( 'abort' );
 			}
 		} catch (\Exception $err) {
-			if ( ! defined( 'PHPUNIT_RUNNER' ) ) {
-				error_log(
-					'Task Failed - ' . $this->get_task_name() . ' - ' . $err->getMessage()
-				);
-			}
+			$this->log( 'error', $err->getMessage() );
 			$this->recover( $err );
 		}
 	}
@@ -73,6 +89,7 @@ class Task {
 
 	function retry() {
 		if ( $this->can_retry() ) {
+			$this->log( 'retry' );
 			$this->enqueue( $this->params );
 		}
 	}
@@ -112,6 +129,36 @@ class Task {
 			return $this->get_param( 'retries' );
 		} else {
 			return 0;
+		}
+	}
+
+	function can_log( $type ) {
+		return in_array( $type, $this->message_types );
+	}
+
+	function log() {
+		if ( defined( 'PHPUNIT_RUNNER' ) || $this->log_disabled ) {
+			return;
+		}
+
+		$count = func_num_args();
+
+		if ( $count >= 1 ) {
+			$args = func_get_args();
+			$type = $args[0];
+
+			array_shift( $args );
+
+			if ( $this->can_log( $type ) ) {
+				$task_name = $this->get_task_name();
+				$params    = json_encode( $this->params );
+
+				error_log( "Task ($task_name.$type) - ($params)" );
+
+				if ( count( $args ) > 0 ) {
+					error_log( "\t" . json_encode( $args ) );
+				}
+			}
 		}
 	}
 
