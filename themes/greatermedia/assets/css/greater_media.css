@@ -2422,12 +2422,19 @@ blockquote p {
   z-index: 100; }
 
 .live-player__stream {
+  position: absolute;
   display: none;
+  top: 58px;
   width: 100%;
   cursor: pointer; }
   @media screen and (min-width: 768px) {
     .live-player__stream {
-      display: block; } }
+      position: relative;
+      display: block;
+      top: auto; } }
+
+.live-player--open .live-player__stream {
+  display: block; }
 
 .live-player__stream--list {
   padding: 0;
@@ -2575,6 +2582,10 @@ blockquote p {
       padding: 23px 0 1em;
       text-align: center; } }
 
+.live-player--open .live-stream {
+  width: 100%;
+  padding: 12px 3.75%; }
+
 .live-stream__player {
   display: none; }
   @media screen and (min-width: 768px) {
@@ -2701,7 +2712,7 @@ blockquote p {
   font-weight: normal;
   line-height: 1;
   -webkit-font-smoothing: antialiased;
-  moz-osx-font-smoothing: grayscale;
+  -moz-osx-font-smoothing: grayscale;
   text-rendering: auto;
   color: #d22228;
   cursor: pointer; }
@@ -2736,6 +2747,9 @@ blockquote p {
   transform: translate(-50%, -50%);
   font-family: "gmr-icons" !important;
   content: "\e60b" !important; }
+
+.live-stream__player--container {
+  height: 0; }
 
 .live-stream--podcast__progress {
   width: 85%;
@@ -2780,6 +2794,10 @@ blockquote p {
   position: relative;
   text-align: center; }
 
+.live-player--open .live-stream__controls {
+  float: right;
+  width: 11.486486486486%; }
+
 .live-stream__btn--resume, .live-stream__btn--pause {
   display: none; }
 
@@ -2804,6 +2822,9 @@ blockquote p {
       margin: 0;
       text-align: center; } }
 
+.live-player--open .on-air, .live-player--open .up-next {
+  display: none !important; }
+
 .on-air__title, .up-next__title {
   margin-right: 1em;
   font-size: 0.79012em;
@@ -2820,6 +2841,7 @@ blockquote p {
   display: none;
   float: left;
   width: 40%;
+  height: 34px;
   padding: 0 1em;
   margin: 0; }
   @media screen and (min-width: 768px) {
@@ -2827,9 +2849,15 @@ blockquote p {
       display: block;
       float: none;
       width: 100%;
+      height: auto;
       padding: 0 1em;
       margin: 1em 0 0;
       text-align: center; } }
+
+.live-player--open .now-playing {
+  float: left;
+  display: block;
+  width: 88.513513513514%; }
 
 .now-playing__title {
   margin: 0 0 .25em;
@@ -2866,7 +2894,7 @@ blockquote p {
   font-weight: normal;
   line-height: 1;
   -webkit-font-smoothing: antialiased;
-  moz-osx-font-smoothing: grayscale;
+  -moz-osx-font-smoothing: grayscale;
   text-rendering: auto;
   color: #404041;
   content: "\e60c"; }
@@ -2899,7 +2927,7 @@ blockquote p {
   font-weight: normal;
   line-height: 1;
   -webkit-font-smoothing: antialiased;
-  moz-osx-font-smoothing: grayscale;
+  -moz-osx-font-smoothing: grayscale;
   text-rendering: auto;
   color: #404041;
   content: "\e60e"; }
@@ -2936,7 +2964,8 @@ blockquote p {
 
 .live-player--open .live-links {
   display: block;
-  max-height: 48vh; }
+  max-height: 48vh;
+  padding-top: 52px; }
   @media screen and (min-width: 480px) {
     .live-player--open .live-links {
       max-height: 35vh; } }
@@ -2958,10 +2987,12 @@ blockquote p {
   color: #c7c7c7; }
 
 .live-link__song--artist {
+  padding-top: 6px;
   font-size: 0.75em;
   font-weight: normal; }
 
 .live-link__song--title {
+  padding-top: 6px;
   font-size: 0.8125em;
   font-weight: lighter;
   color: #c7c7c7; }
@@ -2986,6 +3017,7 @@ blockquote p {
 
 .live-link__title {
   display: block;
+  padding-top: 6px;
   margin: 0;
   font-family: "Open Sans", sans-serif;
   font-size: 0.88889em;
@@ -3061,10 +3093,14 @@ blockquote p {
   margin: 0 1em 1em; }
 
 .widget--live-player__title {
-  margin: 0 0 1em;
-  font-family: "Open Sans", sans-serif;
-  font-size: 1em;
-  font-weight: normal; }
+  display: none; }
+  @media screen and (min-width: 768px) {
+    .widget--live-player__title {
+      display: block;
+      margin: 0 0 1em;
+      font-family: "Open Sans", sans-serif;
+      font-size: 1em;
+      font-weight: normal; } }
 
 .widget--live-player ul {
   padding: 0;
@@ -3074,7 +3110,8 @@ blockquote p {
   list-style: none;
   display: block;
   padding: 0;
-  margin: 0 0 1em; }
+  margin: 0 0 1em;
+  line-height: 1; }
 
 /**
  * Single Page Styles
