@@ -150,6 +150,14 @@ class GmrDependencies {
 			'all'
 		);
 
+		wp_enqueue_script(
+			'pjax',
+			GMRDEPENDENCIES_URL  . 'pjax/jquery.pjax.js',
+			array(),
+			'1.9.2',
+			false
+		);
+
 		wp_register_style( 'jquery-ui', GMRDEPENDENCIES_URL . '/jquery-ui-theme/jquery-ui.min.css' );
 		wp_register_style( 'jquery-ui-accordion', GMRDEPENDENCIES_URL . '/jquery-ui-theme/jquery.ui.accordion.min.css', array( 'jquery-ui' ) );
 		wp_register_style( 'jquery-ui-autocomplete', GMRDEPENDENCIES_URL . '/jquery-ui-theme/jquery.ui.autocomplete.min.css', array( 'jquery-ui' ) );
