@@ -37,6 +37,16 @@ class Plugin {
 		add_action( 'init', array( $this, 'initialize' ) );
 		add_action( 'admin_init', array( $this, 'initialize_admin' ) );
 		add_action( 'admin_menu', array( $this, 'initialize_admin_menu' ) );
+
+		register_activation_hook(
+			$this->plugin_file,
+			array( $this, 'migrate' )
+		);
+	}
+
+	public function migrate() {
+		$migrator = new Sync\TempSchemaMigrator();
+		$migrator->migrate();
 	}
 
 	/**
