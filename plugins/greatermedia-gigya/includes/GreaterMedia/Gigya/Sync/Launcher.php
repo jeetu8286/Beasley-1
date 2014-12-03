@@ -7,6 +7,7 @@ use GreaterMedia\Gigya\MemberQuery;
 class Launcher {
 
 	public $tasks = null;
+	public $last_member_query = null;
 
 	function get_tasks() {
 		if ( is_null( $this->tasks ) ) {
@@ -35,10 +36,10 @@ class Launcher {
 	}
 
 	function launch( $member_query_id, $mode = 'preview' ) {
-		$params      = $this->get_launch_params( $member_query_id, $mode );
-		$checksum    = $params['checksum'];
-		$initializer = $this->get_task( 'initializer' );
-		$sentinel    = new Sentinel( $params['member_query_id'], $params );
+		$params       = $this->get_launch_params( $member_query_id, $mode );
+		$checksum     = $params['checksum'];
+		$initializer  = $this->get_task( 'initializer' );
+		$sentinel     = new Sentinel( $params['member_query_id'], $params );
 
 		$sentinel->set_checksum( $checksum );
 		$initializer->enqueue( $params );
@@ -62,17 +63,34 @@ class Launcher {
 		$json         = json_encode( $constraints );
 
 		$member_query->save( $json );
+		$this->last_member_query = $member_query;
 
 		return $post_id;
 	}
 
 	function get_launch_params( $member_query_id, $mode = 'preview' ) {
-		return array(
+		$params = array(
 			'site_id'         => get_current_blog_id(),
 			'member_query_id' => $member_query_id,
 			'mode'            => $mode,
 			'checksum'        => md5( strtotime( 'now' ) )
 		);
+
+		$member_query          = $this->member_query_for( $member_query_id );
+		$params['conjunction'] = $member_query->get_subquery_conjunction();
+
+		return $params;
+	}
+
+	// KLUDGE
+	// TODO: get rid of the extra state here
+	function member_query_for( $member_query_id ) {
+		if ( ! is_null( $this->last_member_query ) &&
+			$this->last_member_query->post_id === $member_query_id ) {
+			return $this->last_member_query;
+		} else {
+			return new MemberQuery( $member_query_id );
+		}
 	}
 
 }
