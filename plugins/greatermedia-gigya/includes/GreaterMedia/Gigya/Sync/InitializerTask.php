@@ -29,6 +29,10 @@ class InitializerTask extends SyncTask {
 		}
 
 		if ( $total === 0 ) {
+			$sentinel = $this->get_sentinel();
+			$sentinel->set_task_progress( 'profile', 100 );
+			$sentinel->set_task_progress( 'data_store', 100 );
+
 			$compile_results_task = new CompileResultsTask();
 			$compile_results_task->enqueue( $this->params );
 		}
