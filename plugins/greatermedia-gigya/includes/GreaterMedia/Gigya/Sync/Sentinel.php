@@ -61,7 +61,9 @@ class Sentinel {
 
 		$mode = $this->get_mode();
 		if ( $mode === 'export' ) {
-			$this->get_task_progress( 'export_results' );
+			$parts[] = $this->get_task_progress( 'export_results' );
+		} else {
+			$parts[] = $this->get_task_progress( 'preview_results' );
 		}
 
 		$total_parts    = count( $parts );

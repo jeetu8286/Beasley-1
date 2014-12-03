@@ -65,7 +65,7 @@ class SentinelTest extends \WP_UnitTestCase {
 		$this->sentinel->set_task_progress( 'data_store', 50 );
 		$this->sentinel->set_task_progress( 'compile_results',  50 );
 
-		$this->assertEquals( 50, $this->sentinel->get_progress() );
+		$this->assertEquals( 37, $this->sentinel->get_progress() );
 	}
 
 	function test_it_knows_overall_progress_for_intermediate_progress() {
@@ -74,7 +74,7 @@ class SentinelTest extends \WP_UnitTestCase {
 		$this->sentinel->set_task_progress( 'data_store', 70 );
 		$this->sentinel->set_task_progress( 'compile_results',  0 );
 
-		$this->assertEquals( 26, $this->sentinel->get_progress() );
+		$this->assertEquals( 20, $this->sentinel->get_progress() );
 	}
 
 	function test_it_knows_overall_progress_on_completion() {
@@ -82,6 +82,7 @@ class SentinelTest extends \WP_UnitTestCase {
 		$this->sentinel->set_task_progress( 'profile', 100 );
 		$this->sentinel->set_task_progress( 'data_store', 100 );
 		$this->sentinel->set_task_progress( 'compile_results',  100 );
+		$this->sentinel->set_task_progress( 'preview_results',  100 );
 
 		$this->assertEquals( 100, $this->sentinel->get_progress() );
 	}
@@ -147,5 +148,35 @@ class SentinelTest extends \WP_UnitTestCase {
 		$this->assertFalse( get_post_meta( 'mqsm_profile_progress' ) );
 		$this->assertFalse( get_post_meta( 'mqsm_compile_results_progress' ) );
 		$this->assertFalse( get_post_meta( 'mqsm_export_results_progress' ) );
+	}
+
+	function test_it_knows_progress_of_incomplete_query_from_just_its_id() {
+		$this->sentinel->set_task_progress( 'data_store', 10 );
+		$this->sentinel->set_task_progress( 'profile', 70 );
+
+		$sentinel = new Sentinel( 1 );
+		$this->assertEquals( 20, $sentinel->get_progress() );
+	}
+
+	function test_it_knows_progress_of_preview_query_from_just_its_id() {
+		$this->sentinel = new Sentinel( 1, array( 'mode' => 'preview' ) );
+		$this->sentinel->set_task_progress( 'data_store', 100 );
+		$this->sentinel->set_task_progress( 'profile', 100 );
+		$this->sentinel->set_task_progress( 'compile_results', 100 );
+		$this->sentinel->set_task_progress( 'preview_results', 100 );
+
+		$sentinel = new Sentinel( 1 );
+		$this->assertEquals( 100, $sentinel->get_progress() );
+	}
+
+	function test_it_knows_progress_of_export_query_from_just_its_id() {
+		$this->sentinel = new Sentinel( 1, array( 'mode' => 'export' ) );
+		$this->sentinel->set_task_progress( 'data_store', 100 );
+		$this->sentinel->set_task_progress( 'profile', 100 );
+		$this->sentinel->set_task_progress( 'compile_results', 100 );
+		$this->sentinel->set_task_progress( 'preview_results', 100 );
+
+		$sentinel = new Sentinel( 1 );
+		$this->assertEquals( 100, $sentinel->get_progress() );
 	}
 }
