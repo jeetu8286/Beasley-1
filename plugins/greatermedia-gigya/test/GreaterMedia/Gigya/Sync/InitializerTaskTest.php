@@ -220,6 +220,19 @@ class InitializerTaskTest extends \WP_UnitTestCase {
 		$this->assertEquals( 2, wp_async_task_count() );
 	}
 
+	function test_it_tees_compile_results_task_if_no_subqueries_to_run() {
+		$constraints = array();
+		$json        = json_encode( $constraints );
+
+		update_post_meta( $this->post_id, 'member_query_constraints', $json, true );
+
+		$this->task->run();
+
+		$actual = wp_async_task_last_added();
+
+		$this->assertEquals( 'compile_results_async_job', $actual['action'] );
+	}
+
 }
 
 class StubProfileQueryTask extends QueryTask {

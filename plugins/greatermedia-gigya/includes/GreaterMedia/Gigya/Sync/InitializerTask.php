@@ -21,8 +21,16 @@ class InitializerTask extends SyncTask {
 
 	function enqueue_subqueries() {
 		$subqueries = $this->get_subqueries();
-		foreach ( $subqueries as $subquery ) {
+		$total      = count( $subqueries );
+
+		for ( $i = 0; $i < $total; $i++ ) {
+			$subquery = $subqueries[ $i ];
 			$this->enqueue_subquery( $subquery );
+		}
+
+		if ( $total === 0 ) {
+			$compile_results_task = new CompileResultsTask();
+			$compile_results_task->enqueue( $this->params );
 		}
 	}
 
