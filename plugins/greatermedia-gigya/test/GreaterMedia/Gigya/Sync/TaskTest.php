@@ -2,7 +2,7 @@
 
 namespace GreaterMedia\Gigya\Sync;
 
-class TaskTest extends \WP_UnitTestCase {
+class BaseTaskTest extends \WP_UnitTestCase {
 
 	public $task;
 
@@ -91,6 +91,12 @@ class TaskTest extends \WP_UnitTestCase {
 		$this->task->log_attempt();
 		$this->task->log_attempt();
 		$this->assertFalse( $this->task->can_retry() );
+	}
+
+	function test_it_will_store_params_on_enqueue() {
+		$params = array( 'member_query_id' => 10 );
+		$this->task->enqueue( $params );
+		$this->assertEquals( $params, $this->task->params );
 	}
 
 	function test_it_adds_task_to_queue_on_enqueue() {

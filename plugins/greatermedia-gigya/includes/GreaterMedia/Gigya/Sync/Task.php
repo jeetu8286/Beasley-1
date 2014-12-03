@@ -23,6 +23,8 @@ class Task {
 	}
 
 	function enqueue( $params = array() ) {
+		$this->params = $params;
+
 		return wp_async_task_add(
 			$this->get_async_action(),
 			$params
@@ -44,7 +46,11 @@ class Task {
 				$this->aborted = true;
 			}
 		} catch (\Exception $err) {
-			//error_log( $err->getMessage() );
+			if ( ! defined( 'PHPUNIT_RUNNER' ) ) {
+				error_log(
+					'Task Failed - ' . $this->get_task_name() . ' - ' . $err->getMessage()
+				);
+			}
 			$this->recover( $err );
 		}
 	}
