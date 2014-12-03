@@ -11,6 +11,7 @@ plugins/restricted-site-access/
 plugins/role-quick-changer/
 plugins/the-events-calendar/
 plugins/wp-crontrol/
+plugins/edit-flow/
 themes/index.php
 upgrade/
 /index.php
