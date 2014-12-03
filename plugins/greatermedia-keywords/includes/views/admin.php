@@ -4,13 +4,7 @@
  * Date: 20.11.2014
  */
 
-$posts = get_posts(
-	array(
-		'post_type'         =>  $this::$supported_post_types,
-		'posts_per_page'    =>  -1,
-		'post_status'       =>  'publish'
-	)
-);
+$posts = $this::get_post_for_keywords();
 
 $options = self::get_keyword_options( $this::$plugin_slug . '_option_name' );
 ?>
