@@ -19,6 +19,7 @@ class InitializerTaskTest extends \WP_UnitTestCase {
 			'mode' => 'preview',
 			'site_id' => 1,
 			'checksum' => 'foo-checksum',
+			'store_type' => 'profile',
 		);
 
 		$this->task->get_sentinel()->set_checksum( 'foo-checksum' );
@@ -56,11 +57,12 @@ class InitializerTaskTest extends \WP_UnitTestCase {
 		$actual = $this->task->get_params_for_subquery( $subquery );
 		$expected = array(
 			'member_query_id' => $this->post_id,
-			'mode' => 'preview',
-			'checksum' => 'foo-checksum',
-			'site_id' => 1,
-			'query' => 'select * from accounts',
-			'conjunction' => 'or'
+			'mode'            => 'preview',
+			'checksum'        => 'foo-checksum',
+			'site_id'         => 1,
+			'query'           => 'select * from accounts',
+			'conjunction'     => 'or',
+			'store_type'      => 'profile',
 		);
 
 		$this->assertEquals( $expected, $actual );

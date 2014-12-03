@@ -15,12 +15,13 @@ class InitializerTask extends SyncTask {
 	}
 
 	function run() {
-		$this->sentinel->reset();
+		$this->get_sentinel()->reset();
 		$this->enqueue_subqueries();
 	}
 
 	function enqueue_subqueries() {
-		foreach ( $this->get_subqueries() as $subquery ) {
+		$subqueries = $this->get_subqueries();
+		foreach ( $subqueries as $subquery ) {
 			$this->enqueue_subquery( $subquery );
 		}
 	}
@@ -36,6 +37,7 @@ class InitializerTask extends SyncTask {
 		$params                = $this->params;
 		$params['query']       = $subquery['query'];
 		$params['conjunction'] = $this->get_subquery_conjunction();
+		$params['store_type']  = $subquery['store_type'];
 
 		return $params;
 	}
