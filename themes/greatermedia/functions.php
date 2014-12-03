@@ -256,3 +256,30 @@ function greatermedia_widgets_init() {
 }
 
 add_action( 'widgets_init', 'greatermedia_widgets_init' );
+
+/**
+ * Custom action to add keyword search results
+ */
+function get_results_for_keyword() {
+	if( is_search() ) {
+		$query_arg = sanitize_text_field( strtolower( get_search_query() ) );
+		if( class_exists('GreaterMedia_Keyword_Admin') ) {
+			$saved_keyword = GreaterMedia_Keyword_Admin::get_keyword_options( GreaterMedia_Keyword_Admin::$plugin_slug . '_option_name' );
+			$saved_keyword = GreaterMedia_Keyword_Admin::array_map_r( 'sanitize_text_field', $saved_keyword );
+
+			if( $query_arg != '' && array_key_exists( $query_arg, $saved_keyword ) ) {
+				global $post;
+				$post = get_post( $saved_keyword[$query_arg]['post_id'] );
+				setup_postdata( $post );
+				?>
+				<article id="post-<?php the_ID(); ?>" <?php post_class( 'cf' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
+					<h2 class="entry__title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
+				</article>
+				<?php
+				wp_reset_postdata();
+			}
+		}
+	}
+}
+
+add_action( 'keyword_search_result', 'get_results_for_keyword' );
