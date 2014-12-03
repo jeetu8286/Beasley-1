@@ -62,10 +62,6 @@
 						<div id="trackInfo" class="now-playing__info"></div>
 						<div id="npeInfo"></div>
 					</div>
-					<div id="now-playing" class="now-playing">
-						<div class="now-playing__title">Track Title</div>
-						<div class="now-playing__artist">Artist Name</div>
-					</div>
 					<?php do_action( 'gm_live_player_test_ui' );
 				} else {
 
