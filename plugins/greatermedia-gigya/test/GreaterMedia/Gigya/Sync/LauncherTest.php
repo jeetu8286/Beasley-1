@@ -136,5 +136,13 @@ class LauncherTest extends \WP_UnitTestCase {
 		$this->assertEquals( $post_id, $actual['params']['member_query_id'] );
 	}
 
+	function test_it_assigns_a_checksum_to_a_task_at_time_of_launch() {
+		$this->launcher->register();
+		$this->launcher->launch( 1, 'export' );
+
+		$task = $this->launcher->get_task( 'initializer' );
+
+		$this->assertTrue( $task->verify_checksum() );
+	}
 
 }

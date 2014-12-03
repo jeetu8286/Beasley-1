@@ -11,7 +11,12 @@ class Launcher {
 	function get_tasks() {
 		if ( is_null( $this->tasks ) ) {
 			$this->tasks = array(
-				'initializer' => new InitializerTask()
+				'initializer'     => new InitializerTask(),
+				'profile'         => new QueryTask(),
+				'data_store'      => new QueryTask(),
+				'compile_results' => new CompileResultsTask(),
+				'preview_results' => new PreviewResultsTask(),
+				'export_results'  => new ExportResultsTask(),
 			);
 		}
 
@@ -31,7 +36,11 @@ class Launcher {
 
 	function launch( $member_query_id, $mode = 'preview' ) {
 		$params      = $this->get_launch_params( $member_query_id, $mode );
+		$checksum    = $params['checksum'];
 		$initializer = $this->get_task( 'initializer' );
+		$sentinel    = new Sentinel( $params['member_query_id'], $params );
+
+		$sentinel->set_checksum( $checksum );
 		$initializer->enqueue( $params );
 	}
 
