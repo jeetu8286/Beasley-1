@@ -51,7 +51,7 @@ class InitializerTaskTest extends \WP_UnitTestCase {
 	function test_it_can_build_params_object_for_subquery() {
 		$subquery = array(
 			'store_type' => 'profile',
-			'query' => 'select * from accounts'
+			'query' => 'select * from accounts',
 		);
 
 		$actual = $this->task->get_params_for_subquery( $subquery );
@@ -61,7 +61,7 @@ class InitializerTaskTest extends \WP_UnitTestCase {
 			'checksum'        => 'foo-checksum',
 			'site_id'         => 1,
 			'query'           => 'select * from accounts',
-			'conjunction'     => 'or',
+			'conjunction'     => 'any',
 			'store_type'      => 'profile',
 		);
 

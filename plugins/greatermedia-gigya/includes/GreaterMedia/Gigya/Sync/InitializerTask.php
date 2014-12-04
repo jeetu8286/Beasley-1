@@ -20,21 +20,42 @@ class InitializerTask extends SyncTask {
 	}
 
 	function enqueue_subqueries() {
-		$subqueries = $this->get_subqueries();
-		$total      = count( $subqueries );
+		$subqueries           = $this->get_subqueries();
+		$total                = count( $subqueries );
+		$has_profile_query    = false;
+		$has_data_store_query = false;
 
 		for ( $i = 0; $i < $total; $i++ ) {
 			$subquery = $subqueries[ $i ];
+
+			// KLUDGE
+			if ( ! $has_profile_query && $subquery['store_type'] === 'profile' ) {
+				$has_profile_query = true;
+			}
+
+			if ( ! $has_data_store_query && $subquery['store_type'] === 'data_store' ) {
+				$has_data_store_query = true;
+			}
+
 			$this->enqueue_subquery( $subquery );
 		}
 
+		$sentinel = $this->get_sentinel();
+
 		if ( $total === 0 ) {
-			$sentinel = $this->get_sentinel();
 			$sentinel->set_task_progress( 'profile', 100 );
 			$sentinel->set_task_progress( 'data_store', 100 );
 
 			$compile_results_task = new CompileResultsTask();
-			$compile_results_task->enqueue( $this->params );
+			$compile_results_task->enqueue( $this->export_params() );
+		} else {
+			if ( ! $has_profile_query ) {
+				$sentinel->set_task_progress( 'profile', 100 );
+			}
+
+			if ( ! $has_data_store_query ) {
+				$sentinel->set_task_progress( 'data_store', 100 );
+			}
 		}
 	}
 
