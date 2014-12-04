@@ -178,6 +178,17 @@ class QueryPaginatorTest extends \WP_UnitTestCase {
 		$this->assertFalse( $actual['has_next'] );
 	}
 
+	function test_it_fetch_query_with_no_results() {
+		$query     = 'select UID from accounts where profile.age = 5';
+		$paginator = new QueryPaginator( 'profile', 10000 );
+
+		$actual = $paginator->fetch( $query );
+		$this->assertEquals( 0, $actual['results_in_page'] );
+		$this->assertEquals( 0, $actual['total_results'] );
+		$this->assertEquals( 100, $actual['progress'] );
+		$this->assertFalse( $actual['has_next'] );
+	}
+
 	function test_it_can_fetch_pages_of_a_query_one_at_a_time_till_completion() {
 		// expecting 43 results
 		$query = 'select UID from accounts where profile.age = 93';

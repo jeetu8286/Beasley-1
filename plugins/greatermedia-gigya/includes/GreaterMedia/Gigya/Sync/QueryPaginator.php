@@ -24,9 +24,14 @@ class QueryPaginator {
 		$total_results   = $json['totalCount'];
 		$results_in_page = $json['objectsCount'];
 		$results         = $json['results'];
-		$has_next        = $cursor + $results_in_page < $total_results;
 
-		$progress = ceil( ( $cursor + $results_in_page ) / $total_results * 100 );
+		if ( $total_results > 0 ) {
+			$has_next = $cursor + $results_in_page < $total_results;
+			$progress = ceil( ( $cursor + $results_in_page ) / $total_results * 100 );
+		} else {
+			$progress = 100;
+			$has_next = false;
+		}
 
 		$result = array(
 			'total_results'   => $total_results,
