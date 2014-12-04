@@ -17,7 +17,7 @@ var ConstraintCollection = Backbone.Collection.extend({
 		var $constraints = jQuery('#constraints');
 
 		$constraints.attr('value', json);
-		console.log(json);
+		//console.log(json);
 	}
 }, {
 

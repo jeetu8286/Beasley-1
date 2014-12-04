@@ -105,6 +105,7 @@ class MemberQuery {
 			$json = json_decode( $content, true );
 
 			if ( ! is_array( $json ) ) {
+				error_log( 'Failed to parse constraints: ' . $content );
 				$json = array();
 			}
 		} else {
@@ -142,6 +143,10 @@ class MemberQuery {
 	 */
 	public function build_and_save() {
 		$json = $this->build();
+		$this->save( $json );
+	}
+
+	public function save( $json ) {
 		update_post_meta( $this->post_id, 'member_query_constraints', $json );
 	}
 
@@ -229,6 +234,23 @@ class MemberQuery {
 		}
 
 		return $subqueries;
+	}
+
+	public function get_subquery_conjunction() {
+		$groups = $this->group_constraints( $this->get_constraints() );
+
+		if ( count( $groups ) <= 1 ) {
+			return 'any';
+		}
+
+		if ( array_key_exists( 'profile', $groups ) ) {
+			$total      = count( $groups['profile'] );
+			$constraint = $groups['profile'][ $total - 1 ];
+
+			return $constraint['conjunction'];
+		} else {
+			return 'or';
+		}
 	}
 
 	/**

@@ -19,6 +19,7 @@ class InitializerTaskTest extends \WP_UnitTestCase {
 			'mode' => 'preview',
 			'site_id' => 1,
 			'checksum' => 'foo-checksum',
+			'store_type' => 'profile',
 		);
 
 		$this->task->get_sentinel()->set_checksum( 'foo-checksum' );
@@ -44,22 +45,24 @@ class InitializerTaskTest extends \WP_UnitTestCase {
 
 	function test_it_can_create_task_for_profile_store_type() {
 		$actual = $this->task->get_task_for_store_type( 'profile' );
-		$this->assertInstanceOf( 'GreaterMedia\Gigya\Sync\ProfileQueryTask', $actual );
+		$this->assertInstanceOf( 'GreaterMedia\Gigya\Sync\QueryTask', $actual );
 	}
 
 	function test_it_can_build_params_object_for_subquery() {
 		$subquery = array(
 			'store_type' => 'profile',
-			'query' => 'select * from accounts'
+			'query' => 'select * from accounts',
 		);
 
 		$actual = $this->task->get_params_for_subquery( $subquery );
 		$expected = array(
 			'member_query_id' => $this->post_id,
-			'mode' => 'preview',
-			'checksum' => 'foo-checksum',
-			'site_id' => 1,
-			'query' => 'select * from accounts',
+			'mode'            => 'preview',
+			'checksum'        => 'foo-checksum',
+			'site_id'         => 1,
+			'query'           => 'select * from accounts',
+			'conjunction'     => 'any',
+			'store_type'      => 'profile',
 		);
 
 		$this->assertEquals( $expected, $actual );
@@ -156,6 +159,33 @@ class InitializerTaskTest extends \WP_UnitTestCase {
 		$this->assertEquals( 2, wp_async_task_count() );
 	}
 
+	function test_it_has_a_subquery_conjunction() {
+		$constraints = array(
+			array(
+				'type'        => 'profile:city',
+				'operator'    => 'contains',
+				'conjunction' => 'and',
+				'valueType'   => 'string',
+				'value'       => 'New York',
+			),
+			array(
+				'type'         => 'record:contest',
+				'operator'     => 'equals',
+				'conjunction'  => 'and',
+				'valueType'    => 'string',
+				'value'        => 'foo',
+				'entryTypeID'  => 100,
+				'entryFieldID' => 200,
+			),
+		);
+
+		$json = json_encode( $constraints );
+		update_post_meta( $this->post_id, 'member_query_constraints', $json, true );
+
+		$actual = $this->task->get_subquery_conjunction();
+		$this->assertEquals( 'and', $actual );
+	}
+
 	function test_it_reset_sentinel_on_run() {
 		$this->task->run();
 
@@ -190,9 +220,22 @@ class InitializerTaskTest extends \WP_UnitTestCase {
 		$this->assertEquals( 2, wp_async_task_count() );
 	}
 
+	function test_it_tees_compile_results_task_if_no_subqueries_to_run() {
+		$constraints = array();
+		$json        = json_encode( $constraints );
+
+		update_post_meta( $this->post_id, 'member_query_constraints', $json, true );
+
+		$this->task->run();
+
+		$actual = wp_async_task_last_added();
+
+		$this->assertEquals( 'compile_results_async_job', $actual['action'] );
+	}
+
 }
 
-class StubProfileQueryTask extends ProfileQueryTask {
+class StubProfileQueryTask extends QueryTask {
 
 	function run() {
 
@@ -200,7 +243,7 @@ class StubProfileQueryTask extends ProfileQueryTask {
 
 }
 
-class StubDataStoreQueryTask extends DataStoreQueryTask {
+class StubDataStoreQueryTask extends QueryTask {
 
 	function run() {
 
