@@ -2681,7 +2681,6 @@ blockquote p {
   text-align: center; }
 
 .live-player--open .live-stream__controls {
-  float: right;
   width: 11.486486486486%; }
 
 .live-stream__btn--resume, .live-stream__btn--pause {
@@ -2709,7 +2708,7 @@ blockquote p {
       text-align: center; } }
 
 .live-player--open .on-air, .live-player--open .up-next {
-  display: none !important; }
+  display: block; }
 
 .on-air__title, .up-next__title {
   margin-right: 1em;
@@ -2728,7 +2727,7 @@ blockquote p {
   float: left;
   width: 88.513513513514%;
   height: 34px;
-  padding: 8px 1em 0;
+  padding: 8px 1em 0 0;
   margin: 0;
   text-align: left; }
   @media screen and (min-width: 768px) {

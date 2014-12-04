@@ -387,7 +387,6 @@
 }
 
 .live-player--open .live-stream__controls {
-	float: right;
 	width: 11.486486486486%; // 34px
 }
 
@@ -418,7 +417,7 @@
 }
 
 .live-player--open .on-air, .live-player--open .up-next {
-	display: none !important;
+	display: block;
 }
 
 .on-air__title, .up-next__title {
@@ -440,7 +439,7 @@
 	float: left;
 	width: 88.513513513514%; // 262px
 	height: 34px;
-	padding: 8px 1em 0;
+	padding: 8px 1em 0 0;
 	margin: 0;
 	text-align: left;
 	@include bp(medium) {
