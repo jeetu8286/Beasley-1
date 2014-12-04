@@ -92,6 +92,10 @@ class Task {
 	function retry() {
 		if ( $this->can_retry() ) {
 			$this->log( 'retry' );
+
+			// WARNING: Should NOT export params here
+			// else internal retries will be lost
+			// resulting in infinite retries => stack overflow
 			$this->enqueue( $this->params );
 		}
 	}
@@ -154,14 +158,22 @@ class Task {
 			if ( $this->can_log( $type ) ) {
 				$task_name = $this->get_task_name();
 				$params    = json_encode( $this->params );
+				$pid       = getmypid();
 
-				error_log( "Task ($task_name.$type) - ($params)" );
+				error_log( "Task[{$pid}] ($task_name.$type) - ($params)" );
 
 				if ( count( $args ) > 0 ) {
 					error_log( "\t" . json_encode( $args ) );
 				}
 			}
 		}
+	}
+
+	function export_params() {
+		$params = $this->params;
+		unset( $params['retries'] );
+
+		return $params;
 	}
 
 }

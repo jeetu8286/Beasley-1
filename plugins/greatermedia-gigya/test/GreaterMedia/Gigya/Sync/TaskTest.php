@@ -264,6 +264,24 @@ class BaseTaskTest extends \WP_UnitTestCase {
 		$this->task->log( 'hello', 'one', array( 'two' ), array( 'three' => 3 ) );
 	}
 
+	function test_it_can_export_params_without_internals() {
+		$params = array(
+			'start'     => 1,
+			'page_size' => 10,
+			'total'     => 55,
+			'retries'   => 5,
+		);
+
+		$task = new PagerTask();
+		$task->register();
+
+		wp_async_task_autorun();
+		$task->enqueue( $params );
+
+		$actual = $task->export_params();
+		$this->assertFalse( array_key_exists( 'retries', $actual ));
+	}
+
 }
 
 class BeforeTask extends Task {
