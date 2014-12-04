@@ -9,6 +9,7 @@ add_action( 'admin_action_gmr_stream_make_primary', 'gmr_streams_make_primary' )
 
 // filter hooks
 add_filter( 'manage_' . GMR_LIVE_STREAM_CPT . '_posts_columns', 'gmr_streams_filter_columns_list' );
+add_filter( 'gmr_live_player_streams', 'gmr_streams_get_public_streams' );
 
 /**
  * Registers Live Stream post type.
@@ -188,4 +189,40 @@ function gmr_streams_make_primary() {
 	
 	wp_redirect( wp_get_referer() );
 	exit;
+}
+
+/**
+ * Returns public streams.
+ *
+ * @filter gmr_live_player_streams
+ * @return array The array of public streams.
+ */
+function gmr_streams_get_public_streams() {
+	$paged = 0;
+	$streams = array();
+
+	do {
+		$paged++;
+		$query = new WP_Query( array(
+			'post_type'           => GMR_LIVE_STREAM_CPT,
+			'posts_per_page'      => 100,
+			'paged'               => $paged,
+			'ignore_sticky_posts' => true,
+			'orderby'             => 'menu_order',
+			'fields'              => 'ids',
+		) );
+
+		while ( $query->have_posts() ) {
+			$stream_id = $query->next_post();
+
+			$call_sign = get_post_meta( $stream_id, 'call_sign', true );
+			if ( empty( $call_sign ) ) {
+				continue;
+			}
+
+			$streams[ $call_sign ] = get_post_meta( $stream_id, 'description', true );
+		}
+	} while ( $paged <= $query->max_num_pages );
+	
+	return $streams;
 }
