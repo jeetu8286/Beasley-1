@@ -17,6 +17,7 @@ class QueryPaginator {
 	function fetch( $query, $cursor = 0 ) {
 		$request     = $this->request_for( $this->store_type );
 		$limit_query = $this->to_limit_query( $query, $cursor, $this->page_size );
+		$limit_query = $this->to_light_query( $limit_query );
 
 		$request->setParam( 'query', $limit_query );
 
@@ -48,6 +49,7 @@ class QueryPaginator {
 	function fetch_with_cursor( $query, $cursor = false ) {
 		$request     = $this->request_for( $this->store_type );
 		$limit_query = $this->to_cursor_limit_query( $query, $this->page_size );
+		$limit_query = $this->to_light_query( $limit_query );
 
 		if ( $cursor === false ) {
 			$request->setParam( 'openCursor', true );
@@ -81,6 +83,10 @@ class QueryPaginator {
 
 	function to_limit_query( $query, $start, $page_size ) {
 		return "{$query} order by UID start {$start} limit {$page_size}";
+	}
+
+	function to_light_query( $query ) {
+		return str_replace( 'select *', 'select UID', $query );
 	}
 
 	function send( $request, $query ) {
