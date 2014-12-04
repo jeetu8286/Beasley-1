@@ -27,25 +27,33 @@ Class SyndicationDashboardWidget {
 	{
 		$count = 0;
 		$posts = $this->get_syndicated_posts( 'syndication_imported_posts' );
+
 		$posts = explode( ',', $posts );
-		$last_performed = get_option( 'syndication_last_performed' );
-		echo "<h4>Syndication is last performed on: " . date( 'l jS \of F Y h:i:s A', $last_performed ) . '</h4>';
+		$last_performed = intval( get_option( 'syndication_last_performed' ) );
+
+		echo "<h4>Syndication is last performed on: " . esc_html( date( 'l jS \of F Y h:i:s A', $last_performed ) ) . '</h4>';
 		echo '<div id="syndicated_posts" class="syndicated_posts">';
 		echo '<ul class="syndicated_posts">';
-		foreach ( $posts as $post_id ) {
-			$post = get_post( $post_id );
-			echo '<li>';
-			$post_link = '<a class="syndicated_post_title" title="' . $post->post_title . '" href="' . get_edit_post_link( $post_id ) . '">';
-			$post_link .= $post->post_title;
-			$post_link .= '</a>';
-			echo $post_link;
-			if( $count < 2 ) {
-				echo '<div class="syndicated_post_excerpt">';
-				echo $this->custom_excerpt( $post );
-				echo '</div>';
+		if( !empty( $posts ) ) {
+			foreach ( $posts as $post_id ) {
+				$post = get_post( $post_id );
+				echo '<li>';
+				$post_link = '<a class="syndicated_post_title" title="';
+				$post_link .= esc_attr( $post->post_title ) . '" href="' . esc_attr( get_edit_post_link( $post_id ) ) . '">';
+				$post_link .= esc_html( $post->post_title );
+				$post_link .= '</a>';
+				echo $post_link;
+
+				if( $count < 2 ) {
+					echo '<div class="syndicated_post_excerpt">';
+					echo esc_html( $this->custom_excerpt( $post ) );
+					echo '</div>';
+				}
+				echo '</li>';
+				$count++;
 			}
-			echo '</li>';
-			$count++;
+		} else {
+			echo "There are no posts to show right now, please check later!";
 		}
 		echo '</ul>';
 		echo '</div>';
@@ -61,7 +69,7 @@ Class SyndicationDashboardWidget {
 	 *
 	 * @param $name Option name
 	 *
-	 * @return array|mixed|void
+	 * @return mixed|string|void
 	 */
 	public function get_syndicated_posts( $name ) {
 		$name = sanitize_text_field( $name );
@@ -71,8 +79,8 @@ Class SyndicationDashboardWidget {
 			$options = get_option( $name );
 		}
 
-		if ( empty( $options ) ) {
-			$options = array();
+		if ( strlen( $options ) == 0 ) {
+			$options = '';
 		}
 
 		return $options;
