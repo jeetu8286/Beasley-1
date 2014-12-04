@@ -58,12 +58,15 @@ $palettes: (
 		secondary-border: #f5ed7f,
 		secondary-text: #d22228,
 	),
-	featured: (
+	home: (
 		featured-bg: #58595b,
 		featured-heading: #ffffff,
 		featured-heading-bg: #270e10,
 		featured-text: #a6a8ab,
 		featured-list: #f7ef7e,
+		highlight-bg: #f1f1f2,
+		highlight-heading: #ffffff,
+		event-bg: #ffffff,
 	)
 );
 
@@ -77,6 +80,7 @@ $white: #ffffff;
 $cardinal: #d22228;
 $heath: #561015;
 $coffee-bean: #270e10;
+$athens-gray: #f1f1f2;
 $iron: #d0d2d3;
 $silver: #c7c7c7;
 $aluminium: #a6a8ab;
@@ -114,3 +118,5 @@ $secondary-heading: $oslo-gray;
 $secondary-link: $silver;
 $secondary-link-hover: darken($color-text-red, 9%);
 $secondary-border: $tuatara;
+
+$footer-text: $oslo-gray;

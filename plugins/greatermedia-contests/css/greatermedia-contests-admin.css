@@ -34,3 +34,11 @@
 .wp-admin .edit-response-field input[type=checkbox] {
 	height: 16px;
 }
+
+#contest_editor #wp-content-editor-tools {
+	background-color: transparent;
+}
+
+#contest_editor {
+	margin-top: 1em;
+}

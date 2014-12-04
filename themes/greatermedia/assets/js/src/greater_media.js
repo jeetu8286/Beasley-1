@@ -17,8 +17,9 @@
 		wpAdminHeight = 32,
 		onAir = document.getElementById( 'on-air' ),
 		upNext = document.getElementById( 'up-next'),
-		nowPlaying = document.getElementById( 'now-playing' ),
+		nowPlaying = document.getElementById( 'nowPlaying' ),
 		windowHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0),
+		windowWidth = this.innerWidth || this.document.documentElement.clientWidth || this.document.body.clientWidth || 0,
 		scrollObject = {};
 
 
