@@ -5,6 +5,7 @@ add_action( 'init', 'gmr_streams_register_post_type' );
 add_action( 'admin_menu', 'gmr_streams_update_admin_menu' );
 add_action( 'save_post', 'gmr_streams_save_meta_box_data' );
 add_action( 'manage_' . GMR_LIVE_STREAM_CPT . '_posts_custom_column', 'gmr_streams_render_custom_column', 10, 2 );
+add_action( 'admin_action_gmr_stream_make_primary', 'gmr_streams_make_primary' );
 
 // filter hooks
 add_filter( 'manage_' . GMR_LIVE_STREAM_CPT . '_posts_columns', 'gmr_streams_filter_columns_list' );
@@ -21,7 +22,7 @@ function gmr_streams_register_post_type() {
 		'rewrite'              => false,
 		'query_var'            => false,
 		'can_export'           => false,
-		'hierarchical'         => true,
+		'hierarchical'         => false,
 		'menu_position'        => 5,
 		'menu_icon'            => 'dashicons-format-audio',
 		'supports'             => array( 'title' ),
@@ -121,7 +122,10 @@ function gmr_streams_filter_columns_list( $columns ) {
 
 	$columns = array_merge(
 		array_slice( $columns, 0, $cut_mark ),
-		array( 'call_sign' => 'Call Sign' ),
+		array(
+			'call_sign' => 'Call Sign',
+			'primary'   => 'Primary',
+		),
 		array_slice( $columns, $cut_mark )
 	);
 
@@ -138,5 +142,50 @@ function gmr_streams_filter_columns_list( $columns ) {
 function gmr_streams_render_custom_column( $column_name, $post_id ) {
 	if ( 'call_sign' == $column_name ) {
 		echo '<b>', esc_html( get_post_meta( $post_id, 'call_sign', true ) ), '</b>';
+	} elseif ( 'primary' == $column_name ) {
+		$post = get_post( $post_id );
+		if ( $post->menu_order == 1 ) {
+			echo '<span class="dashicons dashicons-star-filled"></span>';
+		} else {
+			echo '<a href="', wp_nonce_url( 'admin.php?action=gmr_stream_make_primary&stream=' . $post_id, 'gmr_mark_primary_stream' ), '" title="Make Primary">';
+				echo '<span class="dashicons dashicons-star-empty"></span>';
+			echo '</a>';
+		}
 	}
+}
+
+/**
+ * Marks a stream as primary.
+ *
+ * @action admin_action_gmr_stream_make_primary
+ */
+function gmr_streams_make_primary() {
+	check_admin_referer( 'gmr_mark_primary_stream' );
+
+	$stream_id = filter_input( INPUT_GET, 'stream', FILTER_VALIDATE_INT );
+	if ( ! $stream_id || ! ( $stream = get_post( $stream_id ) ) || GMR_LIVE_STREAM_CPT != $stream->post_type ) {
+		wp_die( 'Stream was not found.' );
+	}
+
+	$paged = 0;
+
+	do {
+		$paged++;
+		$query = new WP_Query( array(
+			'post_type'           => GMR_LIVE_STREAM_CPT,
+			'post_status'         => 'any',
+			'posts_per_page'      => 100,
+			'paged'               => $paged,
+			'ignore_sticky_posts' => true,
+		) );
+
+		while ( $query->have_posts() ) {
+			$stream = $query->next_post();
+			$stream->menu_order = $stream->ID == $stream_id ? 1 : 0;
+			wp_update_post( $stream->to_array() );
+		}
+	} while ( $paged <= $query->max_num_pages );
+	
+	wp_redirect( wp_get_referer() );
+	exit;
 }
