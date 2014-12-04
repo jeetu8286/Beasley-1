@@ -16,11 +16,8 @@ add_filter( 'gmr_live_player_streams', 'gmr_streams_get_public_streams' );
  * Registers Live Stream post type.
  *
  * @action init
- * @global WP_Rewrite $wp_rewrite The rewrite object.
  */
 function gmr_streams_register_post_type() {
-	global $wp_rewrite;
-	
 	// register post type
 	register_post_type( GMR_LIVE_STREAM_CPT, array(
 		'public'               => false,
