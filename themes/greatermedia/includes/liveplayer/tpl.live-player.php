@@ -6,6 +6,10 @@
  * @since   0.1.0
  */
 ?>
+<style type="text/css">
+	#up-next {
+	}
+</style>
 <aside id="live-player__sidebar" class="live-player">
 
 	<nav class="live-player__stream">
@@ -69,12 +73,6 @@
 				</div>
 			</div>
 		<?php } ?>
-
-		<?php /* <div class="live-player__volume">
-			<div class="live-player__volume--btn"></div>
-			<div class="live-player__volume--level"></div>
-			<div class="live-player__volume--up"></div>
-		</div> */ ?>
 
 	</div>
 

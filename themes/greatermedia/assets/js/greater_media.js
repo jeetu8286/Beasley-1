@@ -308,8 +308,15 @@
 
 	function resizeWindow() {
 		if( window.innerWidth <= 767 ) {
-			onAir.addEventListener( 'click', onAirClick, false );
-			nowPlaying.addEventListener( 'click', nowPlayingClick, false );
+			if(onAir != null) {
+				onAir.addEventListener( 'click', onAirClick, false );
+			}
+			if(upNext != null) {
+				upNext.addEventListener( 'click', upNextClick, false );
+			}
+			if(nowPlaying != null) {
+				nowPlaying.addEventListener( 'click', nowPlayingClick, false );
+			}
 		}
 		if ( window.innerWidth >= 768 ) {
 			window.addEventListener( 'load', livePlayerInit, false );
@@ -322,9 +329,19 @@
 	var resizeThrottle = _throttle(resizeWindow, 50);
 
 	if( window.innerWidth <= 767 ) {
-		onAir.addEventListener( 'click', onAirClick, false );
-		upNext.addEventListener( 'click', upNextClick, false );
-		nowPlaying.addEventListener( 'click', nowPlayingClick, false );
+		if(onAir != null) {
+			onAir.addEventListener( 'click', onAirClick, false );
+		}
+		if(upNext != null) {
+			upNext.addEventListener( 'click', upNextClick, false );
+		}
+		if(nowPlaying != null) {
+			nowPlaying.addEventListener( 'click', nowPlayingClick, false );
+		}
+		window.addEventListener( 'resize', function() {
+			resizeDebounce();
+			resizeThrottle();
+		}, false);
 	}
 
 	if ( window.innerWidth >= 768 ) {
@@ -336,11 +353,6 @@
 			scrollDebounce();
 			scrollThrottle();
 		}, false );
-
-		window.addEventListener( 'resize', function() {
-			resizeDebounce();
-			resizeThrottle();
-		}, false);
 	}
 
 })();
