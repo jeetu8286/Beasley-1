@@ -20,10 +20,10 @@ class CompileResultsTask extends SyncTask {
 
 		if ( $this->get_mode() === 'preview' ) {
 			$preview_task = new PreviewResultsTask();
-			$preview_task->enqueue( $this->params );
+			$preview_task->enqueue( $this->export_params() );
 		} else {
 			$export_task = new ExportResultsTask();
-			$export_task->enqueue( $this->params );
+			$export_task->enqueue( $this->export_params() );
 		}
 	}
 
