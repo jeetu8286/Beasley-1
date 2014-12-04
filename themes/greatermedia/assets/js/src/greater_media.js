@@ -18,7 +18,7 @@
 		wpAdminHeight = 32,
 		onAir = document.getElementById( 'on-air' ),
 		upNext = document.getElementById( 'up-next'),
-		nowPlaying = document.getElementById( 'now-playing' ),
+		nowPlaying = document.getElementById( 'nowPlaying' ),
 		liveLinks = document.getElementById( 'live-links' ),
 		liveLinksWidget = document.querySelector( '.widget--live-player' ),
 		liveLinksWidgetHeight = liveLinksWidget.offsetHeight,
@@ -322,6 +322,29 @@
 			}
 			if(nowPlaying != null) {
 				nowPlaying.addEventListener( 'click', nowPlayingClick, false );
+			}
+			if(playBtn != null || resumeBtn != null) {
+				var playerActive;
+				playerActive = function() {
+					body.classList.add( 'live-player--active' );
+					nowPlaying.style.display = 'block';
+					upNext.style.display = 'none';
+					onAir.style.display = 'none';
+				};
+				playBtn.addEventListener( 'click', function() {
+					playerActive();
+				});
+				resumeBtn.addEventListener( 'click', function() {
+					playerActive();
+				});
+			}
+			if(pauseBtn != null) {
+				pauseBtn.addEventListener( 'click', function() {
+					body.classList.remove( 'live-player--active' );
+					nowPlaying.style.display = 'none';
+					upNext.style.display = 'block';
+					onAir.style.display = 'block';
+				});
 			}
 		}
 		if ( window.innerWidth >= 768 ) {
