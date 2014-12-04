@@ -18,6 +18,7 @@ class Launcher {
 				'compile_results' => new CompileResultsTask(),
 				'preview_results' => new PreviewResultsTask(),
 				'export_results'  => new ExportResultsTask(),
+				'cleanup'         => new CleanupTask(),
 			);
 		}
 

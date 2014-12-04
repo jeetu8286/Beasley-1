@@ -9,7 +9,8 @@ class TaskFactory {
 		'data_store'      => 'GreaterMedia\Gigya\Sync\DataStoreQueryTask',
 		'compile_results' => 'GreaterMedia\Gigya\Sync\CompileResultsTask',
 		'preview_results' => 'GreaterMedia\Gigya\Sync\PreviewResultsTask',
-		'export_results' => 'GreaterMedia\Gigya\Sync\ExportResultsTask',
+		'export_results'  => 'GreaterMedia\Gigya\Sync\ExportResultsTask',
+		'cleanup'         => 'GreaterMedia\Gigya\Sync\CleanupTask',
 	);
 
 	function build( $task_type ) {
