@@ -53,6 +53,7 @@ class Sentinel {
 	}
 
 	function get_progress() {
+		// TODO: If conjunction were known this could be dynamic
 		$parts = array(
 			$this->get_task_progress( 'profile' ),
 			$this->get_task_progress( 'data_store' ),

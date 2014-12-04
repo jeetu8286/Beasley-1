@@ -13,8 +13,8 @@ class Launcher {
 		if ( is_null( $this->tasks ) ) {
 			$this->tasks = array(
 				'initializer'     => new InitializerTask(),
-				'profile'         => new QueryTask(),
-				'data_store'      => new QueryTask(),
+				'profile'         => new ProfileQueryTask(),
+				'data_store'      => new DataStoreQueryTask(),
 				'compile_results' => new CompileResultsTask(),
 				'preview_results' => new PreviewResultsTask(),
 				'export_results'  => new ExportResultsTask(),
@@ -28,6 +28,15 @@ class Launcher {
 		foreach ( $this->get_tasks() as $task ) {
 			$task->register();
 		}
+
+		if ( ! defined( 'PHPUNIT_RUNNER' ) ) {
+			set_error_handler( array( $this, 'did_system_error' ) );
+		}
+	}
+
+	function did_system_error() {
+		$args = func_get_args();
+		error_log( 'System Error: ' . implode( "\n", $args ) );
 	}
 
 	function get_task( $task_id ) {
