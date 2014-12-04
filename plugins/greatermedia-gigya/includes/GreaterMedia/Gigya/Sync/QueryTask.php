@@ -4,14 +4,13 @@ namespace GreaterMedia\Gigya\Sync;
 
 class QueryTask extends SyncTask {
 
-	public $page_size = 100;
+	public $page_size = 10000;
 	public $collector = null;
 	public $message_types = array(
 		'enqueue',
 		'execute',
 		'retry',
 		'abort',
-		'after',
 		'error',
 	);
 
@@ -61,12 +60,12 @@ class QueryTask extends SyncTask {
 		}
 
 		if ( $matches['has_next'] ) {
-			$params           = $this->params;
+			$params           = $this->export_params();
 			$params['cursor'] = $matches['cursor'];
 
 			$this->enqueue( $params );
 		} else if ( $this->get_sentinel()->can_compile_results() ) {
-			$params = $this->params;
+			$params = $this->export_params();
 			$compile_results_task = new CompileResultsTask();
 			$compile_results_task->enqueue( $params );
 		}
