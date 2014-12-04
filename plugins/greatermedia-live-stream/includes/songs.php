@@ -5,12 +5,55 @@ add_action( 'init', 'gmr_songs_register_post_type' );
 add_action( 'admin_menu', 'gmr_songs_register_admin_menu' );
 add_action( 'dbx_post_advanced', 'gmr_songs_adjust_current_admin_menu' );
 add_action( 'save_post', 'gmr_songs_save_meta_box_data' );
+add_action( 'manage_' . GMR_SONG_CPT . '_posts_custom_column', 'gmr_songs_render_custom_column', 10, 2 );
 
 // filter hooks
+add_filter( 'manage_' . GMR_SONG_CPT . '_posts_columns', 'gmr_songs_filter_columns_list' );
 add_filter( 'wp_insert_post_parent', 'gmr_songs_set_song_stream', PHP_INT_MAX, 3 );
 add_filter( 'gmr_live_link_add_copy_action', 'gmr_songs_remove_copy_to_live_link_action', 10, 2 );
 add_filter( 'gmr_show_widget_item_post_types', 'gmr_songs_add_songs_shows_widget' );
 add_filter( 'gmr_show_widget_item', 'gmr_songs_shows_widget_item' );
+
+/**
+ * Adds Call Sign column to the Streams table.
+ *
+ * @fitler manage_gmr-live-stream_posts_columns
+ * @param array $columns The columns array.
+ * @return array Extended array of columns.
+ */
+function gmr_songs_filter_columns_list( $columns ) {
+	$cut_mark = array_search( 'title', array_keys( $columns ) ) + 1;
+
+	$columns = array_merge(
+		array_slice( $columns, 0, $cut_mark ),
+		array( 'stream' => 'Stream' ),
+		array_slice( $columns, $cut_mark )
+	);
+
+	return $columns;
+}
+
+/**
+ * Renders Call Sign column at the Streams table.
+ *
+ * @action manage_gmr-live-stream_posts_custom_column
+ * @param string $column_name The column name to render.
+ * @param int $post_id The current stream id.
+ */
+function gmr_songs_render_custom_column( $column_name, $post_id ) {
+	if ( 'stream' == $column_name ) {
+		$post = get_post( $post_id );
+		if ( ! empty( $post->post_parent ) ) {
+			$stream = get_post( $post->post_parent );
+			if ( $stream && GMR_LIVE_STREAM_CPT == $stream->post_type ) {
+				echo '<a href="', esc_url( get_edit_post_link( $post->post_parent ) ), '">',  esc_html( $stream->post_title ), '</a>';
+				return;
+			}
+		}
+		
+		echo '&#8212;';
+	}
+}
 
 /**
  * Registers Song post type.
