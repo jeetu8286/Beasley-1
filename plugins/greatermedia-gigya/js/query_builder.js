@@ -1472,6 +1472,7 @@ var QueryResultCollection = Backbone.Collection.extend({
 				this.totalResults = response.data.total;
 				this.reset(response.data.users);
 				this.trigger('searchSuccess');
+				this.clear();
 			} else {
 				this.trigger('searchProgress', response.data.progress);
 				this.startPolling();
@@ -1495,6 +1496,26 @@ var QueryResultCollection = Backbone.Collection.extend({
 		} else {
 			this.trigger('searchTimeout');
 		}
+	},
+
+	clear: function() {
+		var data = {
+			mode: 'clear',
+			member_query_id: this.memberQueryID
+		};
+
+		this.retries++;
+		ajaxApi.request('preview_member_query', data)
+			.then($.proxy(this.didClearSuccess, this))
+			.fail($.proxy(this.didClearError, this));
+	},
+
+	didClearSuccess: function(response) {
+		console.log('didClearSuccess', response);
+	},
+
+	didClearError: function(response) {
+		console.log('didClearError', response);
 	}
 });
 
