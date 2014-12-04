@@ -4,6 +4,7 @@ namespace GreaterMedia\Gigya\Ajax;
 
 use GreaterMedia\Gigya\Sync\Launcher;
 use GreaterMedia\Gigya\Sync\Sentinel;
+use GreaterMedia\Gigya\Sync\CleanupTask;
 
 class PreviewResultsAjaxHandler extends AjaxHandler {
 
@@ -23,7 +24,7 @@ class PreviewResultsAjaxHandler extends AjaxHandler {
 				return $this->status( $params );
 
 			case 'clear':
-				return $this->cancel( $params );
+				return $this->clear( $params );
 
 			default:
 				throw new \Exception( "Unknown preview mode - {$mode}" );
@@ -57,9 +58,16 @@ class PreviewResultsAjaxHandler extends AjaxHandler {
 	}
 
 	function clear( $params ) {
-		$member_query_id = $params['member_query_id'];
-		$sentinel        = $this->sentinel_for( $member_query_id );
-		$sentinel->reset();
+		$params = array(
+			'mode'            => 'preview',
+			'site_id'         => get_current_blog_id(),
+			'member_query_id' => $params['member_query_id'],
+		);
+
+		$cleanup_task = new CleanupTask();
+		$cleanup_task->enqueue( $params );
+
+		return true;
 	}
 
 	function sentinel_for( $member_query_id ) {
