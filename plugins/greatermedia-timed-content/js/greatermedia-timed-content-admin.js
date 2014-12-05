@@ -47,16 +47,10 @@ jQuery(function () {
 					// @TODO detect & accommodate invalid date values
 					show_time = new Date(parsed_shortcode.attrs.named.show).format(GreaterMediaTimedContent.formats.mce_view_date);
 				}
-				else {
-					show_time = '';
-				}
 
 				if (parsed_shortcode.attrs.named.hide && '' !== parsed_shortcode.attrs.named.hide) {
 					// @TODO detect & accommodate invalid date values
 					hide_time = new Date(parsed_shortcode.attrs.named.hide).format(GreaterMediaTimedContent.formats.mce_view_date);
-				}
-				else {
-					hide_time = '';
 				}
 
 			}
