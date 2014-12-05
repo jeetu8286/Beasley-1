@@ -21,7 +21,7 @@ add_filter( 'json_endpoints', 'gmr_streams_init_api_endpoint' );
  */
 function gmr_streams_init_api_endpoint( $routes ) {
 	$routes['/stream/(?P<sign>\S+)'] = array(
-		array( 'gmr_streams_process_endpoint', WP_JSON_Server::CREATABLE | WP_JSON_Server::ACCEPT_JSON | WP_JSON_Server::READABLE ),
+		array( 'gmr_streams_process_endpoint', WP_JSON_Server::CREATABLE | WP_JSON_Server::ACCEPT_JSON ),
 	);
 
 	return $routes;
