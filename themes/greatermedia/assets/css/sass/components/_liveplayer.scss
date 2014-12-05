@@ -390,7 +390,9 @@ category: Components
 }
 
 .live-stream__login--actions {
-	padding-bottom: 23px;
+	@include bp(medium) {
+		padding-bottom: 23px;
+	}
 }
 
 .live-stream__btn--login  {
