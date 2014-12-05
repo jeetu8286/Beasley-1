@@ -41,15 +41,20 @@ jQuery(function () {
 
 			var show_time = '', hide_time = '';
 
+			function is_parseable_date(date_string) {
+
+				var date_obj = new Date(date_string);
+				return (date_obj instanceof Date) && isFinite(date_obj);
+
+			}
+
 			if (parsed_shortcode !== undefined) {
 
-				if (parsed_shortcode.attrs.named.show && '' !== parsed_shortcode.attrs.named.show) {
-					// @TODO detect & accommodate invalid date values
+				if (parsed_shortcode.attrs.named.show && is_parseable_date(parsed_shortcode.attrs.named.show)) {
 					show_time = new Date(parsed_shortcode.attrs.named.show).format(GreaterMediaTimedContent.formats.mce_view_date);
 				}
 
-				if (parsed_shortcode.attrs.named.hide && '' !== parsed_shortcode.attrs.named.hide) {
-					// @TODO detect & accommodate invalid date values
+				if (parsed_shortcode.attrs.named.hide && is_parseable_date(parsed_shortcode.attrs.named.hide)) {
 					hide_time = new Date(parsed_shortcode.attrs.named.hide).format(GreaterMediaTimedContent.formats.mce_view_date);
 				}
 

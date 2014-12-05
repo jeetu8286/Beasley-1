@@ -39,11 +39,18 @@
 
 						var attributes = {};
 
-						if (e.data.show && '' !== e.data.show) {
+						function is_parseable_date(date_string) {
+
+							var date_obj = new Date(date_string);
+							return (date_obj instanceof Date) && isFinite(date_obj);
+
+						}
+
+						if (e.data.show && is_parseable_date(e.data.show)) {
 							attributes.show = new Date(e.data.show).toISOString();
 						}
 
-						if (e.data.hide && '' !== e.data.hide) {
+						if (e.data.hide && is_parseable_date(e.data.hide)) {
 							attributes.hide = new Date(e.data.hide).toISOString();
 						}
 
