@@ -666,8 +666,12 @@ category: Components
 	display: block;
 	max-height: 48vh;
 	padding-top: 52px;
+	overflow: hidden;
+	overflow-y: scroll;
 	@include bp(small) {
 		max-height: 35vh;
+		overflow: hidden;
+		overflow-y: scroll;
 	}
 }
 
