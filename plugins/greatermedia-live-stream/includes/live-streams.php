@@ -136,18 +136,18 @@ function gmr_streams_update_admin_menu() {
  */
 function gmr_streams_filter_columns_list( $columns ) {
 	$cut_mark = array_search( 'title', array_keys( $columns ) ) + 1;
-	$columns = array(
+	$new_columns = array(
 		'call_sign' => 'Call Sign',
 		'primary'   => 'Primary',
 	);
 
 	if ( defined( 'JSON_API_VERSION' ) ) {
-		$columns['endpoint'] = 'Endpoint';
+		$new_columns['endpoint'] = 'Endpoint';
 	}
 
 	return array_merge(
 		array_slice( $columns, 0, $cut_mark ),
-		$columns,
+		$new_columns,
 		array_slice( $columns, $cut_mark )
 	);
 }
