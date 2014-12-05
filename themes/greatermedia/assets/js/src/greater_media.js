@@ -9,6 +9,7 @@
 	var _now, headroom, livePlayerFix, livePlayerInit,
 
 		body = document.querySelector( 'body' ),
+		html = document.querySelector( 'html'),
 		mobileNavButton = document.querySelector( '.mobile-nav__toggle' ),
 		header = document.getElementById( 'header' ),
 		headerHeight = header.offsetHeight,
@@ -302,14 +303,35 @@
 	 */
 	function onAirClick() {
 		body.classList.toggle( 'live-player--open' );
+		if (body.classList.contains( 'live-player--open')) {
+			body.style.overflow = 'hidden';
+			html.style.overflow = 'hidden';
+		} else {
+			body.style.overflow = 'auto';
+			html.style.overflow = 'auto';
+		}
 	}
 
 	function upNextClick() {
 		body.classList.toggle( 'live-player--open' );
+		if (body.classList.contains( 'live-player--open')) {
+			body.style.overflow = 'hidden';
+			html.style.overflow = 'hidden';
+		} else {
+			body.style.overflow = 'auto';
+			html.style.overflow = 'auto';
+		}
 	}
 
 	function nowPlayingClick() {
 		body.classList.toggle( 'live-player--open' );
+		if (body.classList.contains( 'live-player--open')) {
+			body.style.overflow = 'auto';
+			html.style.overflow = 'auto';
+		} else {
+			body.style.overflow = 'hidden';
+			html.style.overflow = 'hidden';
+		}
 	}
 
 	function resizeWindow() {
