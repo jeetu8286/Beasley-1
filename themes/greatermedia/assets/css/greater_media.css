@@ -19,6 +19,41 @@ html {
   -moz-box-sizing: inherit;
   box-sizing: inherit; }
 
+.hologram-color-swatch {
+  width: 200px;
+  height: 200px;
+  display: inline-block;
+  margin: 10px; }
+
+/*doc
+---
+title: Colors
+name: colors
+category: Base
+---
+
+```none_example
+<span class="hologram-color-swatch" style="background: #000000;">$black</span>
+<span class="hologram-color-swatch" style="background: #ffffff;">$white</span>
+<span class="hologram-color-swatch" style="background: #d22228;">$cardinal</span>
+<span class="hologram-color-swatch" style="background: #561015;">$heath</span>
+<span class="hologram-color-swatch" style="background: #270e10;">$coffee-bean</span>
+<span class="hologram-color-swatch" style="background: #d0d2d3;">$iron</span>
+<span class="hologram-color-swatch" style="background: #c7c7c7;">$silver</span>
+<span class="hologram-color-swatch" style="background: #a6a8ab;">$aluminium</span>
+<span class="hologram-color-swatch" style="background: #929497;">$oslo-gray</span>
+<span class="hologram-color-swatch" style="background: #6d6e70;">$nevada</span>
+<span class="hologram-color-swatch" style="background: #606060;">$scorpion</span>
+<span class="hologram-color-swatch" style="background: #58595b;">$abbey</span>
+<span class="hologram-color-swatch" style="background: #404041;">$ship-gray</span>
+<span class="hologram-color-swatch" style="background: #303030;">$mine-shaft</span>
+<span class="hologram-color-swatch" style="background: #282827;">$tuatara</span>
+<span class="hologram-color-swatch" style="background: #191919;">$cod-gray</span>
+<span class="hologram-color-swatch" style="background: #f5ed7f;">$sahara-sand</span>
+<span class="hologram-color-swatch" style="background: #f7ef7e;">$sweet-corn</span>
+```
+
+*/
 .featured__content--list, .footer__nav--list, .footer__social {
   padding: 0;
   margin: 0; }
@@ -30,7 +65,7 @@ html {
 
 .entry__categories, .entry__tags, .entry__tags a {
   color: #929497;
-  font-size: 1.125em;
+  font-size: ms(1);
   font-style: italic; }
 
 /**
@@ -695,23 +730,23 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
     color: #aa1c20; }
 
 h1, .h1 {
-  font-size: 2.2807em; }
+  font-size: ms(7); }
 
 h2, .h2 {
-  font-size: 2.02729em; }
+  font-size: ms(6); }
 
 h3, .h3 {
-  font-size: 1.80203em; }
+  font-size: ms(5); }
 
 h4, .h4 {
-  font-size: 1.60181em; }
+  font-size: ms(4); }
 
 h5, .h5 {
-  font-size: 1.42383em;
+  font-size: ms(3);
   letter-spacing: 2px; }
 
 h6, .h6 {
-  font-size: 1.26563em;
+  font-size: ms(2);
   letter-spacing: 2px; }
 
 /*doc
@@ -931,7 +966,7 @@ blockquote p {
   display: block;
   padding: 18px 1.25em;
   line-height: 1;
-  font-size: 2.2807em;
+  font-size: ms(7);
   color: #ffffff; }
 
 .mobile-nav__list a:hover, .mobile-nav__list a:focus, .mobile-nav__list a:active {
@@ -947,7 +982,7 @@ blockquote p {
   margin: 0;
   list-style: none;
   display: inline-block;
-  font-size: 1em; }
+  font-size: ms(0); }
 
 .header__main a, .header__main a:visited {
   color: #ffffff; }
@@ -986,7 +1021,7 @@ blockquote p {
   margin: 0 1.25em 0 0;
   list-style: none;
   display: inline-block;
-  font-size: 1em; }
+  font-size: ms(0); }
 
 .header__social--item:last-child {
   margin: 0; }
@@ -1012,7 +1047,7 @@ blockquote p {
 .content__heading {
   margin-top: 0;
   margin-bottom: 24px;
-  font-size: 1.125em;
+  font-size: ms(1);
   font-weight: lighter;
   color: #929497; }
 
@@ -1149,13 +1184,13 @@ blockquote p {
   margin-bottom: 10px;
   line-height: 1;
   font-family: "Open Sans", sans-serif;
-  font-size: 1.125em;
+  font-size: ms(1);
   font-weight: normal; }
 
 .featured__artist--subtitle {
   margin: 0;
   line-height: 1;
-  font-size: 2.2807em;
+  font-size: ms(7);
   color: #ffffff; }
 
 .featured__artist--bio {
@@ -1165,7 +1200,7 @@ blockquote p {
       display: block;
       float: left;
       width: 68.693009118541%;
-      font-size: 0.88889em;
+      font-size: ms(-1);
       line-height: 1.5; } }
   @media screen and (min-width: 1400px) {
     .featured__artist--bio {
@@ -1225,14 +1260,14 @@ blockquote p {
   float: left;
   width: 67.857142857143%;
   padding: 14px 3.571428571429% 14px 5.357142857143%;
-  font-size: 0.79012em;
+  font-size: ms(-2);
   font-weight: lighter;
   color: #a6a8ab; }
   @media screen and (min-width: 480px) {
     .featured__content--meta {
       width: 66.588235294118%;
       padding: 15px 2.352941176471% 15px 4.941176470588%;
-      font-size: 0.88889em; } }
+      font-size: ms(-1); } }
   @media screen and (min-width: 1024px) {
     .featured__content--meta {
       width: 100%;
@@ -1249,10 +1284,10 @@ blockquote p {
   margin-bottom: 8px;
   line-height: 1;
   font-family: "Open Sans", sans-serif;
-  font-size: 1em; }
+  font-size: ms(0); }
   @media screen and (min-width: 480px) {
     .featured__content--title {
-      font-size: 1.125em; } }
+      font-size: ms(1); } }
 
 .featured__content--list {
   line-height: 1; }
@@ -1261,13 +1296,13 @@ blockquote p {
   display: inline-block;
   width: 40%;
   margin-bottom: 4px;
-  font-size: 0.79012em;
+  font-size: ms(-2);
   color: #f7ef7e; }
   @media screen and (min-width: 1024px) {
     .featured__content--item {
       display: block;
       width: 100%;
-      font-size: 0.88889em; } }
+      font-size: ms(-1); } }
 
 .featured__content--link {
   width: 100%;
@@ -1288,7 +1323,7 @@ blockquote p {
   background-color: #d22228;
   border: 1px solid #d22228;
   font-family: "Open Sans", sans-serif;
-  font-size: 0.79012em;
+  font-size: ms(-2);
   color: #ffffff !important;
   text-transform: uppercase;
   cursor: pointer;
@@ -1326,32 +1361,32 @@ blockquote p {
   margin-top: 0;
   margin-bottom: 17px;
   font-family: "Open Sans", sans-serif;
-  font-size: 1.125em;
+  font-size: ms(1);
   font-weight: lighter;
   color: #929497; }
   @media screen and (min-width: 480px) {
     .highlights__heading {
-      font-size: 1.125em; } }
+      font-size: ms(1); } }
   @media screen and (min-width: 1024px) {
     .highlights__heading {
       margin-bottom: 13px;
-      font-size: 1em; } }
+      font-size: ms(0); } }
   @media screen and (min-width: 1400px) {
     .highlights__heading {
       margin-bottom: 17px;
-      font-size: 1.125em; } }
+      font-size: ms(1); } }
 
 .highlights__heading--span {
   margin-left: 16px;
-  font-size: 0.88889em;
+  font-size: ms(-1);
   color: #d22228;
   text-transform: uppercase; }
   @media screen and (min-width: 1024px) {
     .highlights__heading--span {
-      font-size: 0.79012em; } }
+      font-size: ms(-2); } }
   @media screen and (min-width: 1400px) {
     .highlights__heading--span {
-      font-size: 0.88889em; } }
+      font-size: ms(-1); } }
 
 .highlights__community {
   float: left;
@@ -1420,7 +1455,7 @@ blockquote p {
   left: 0;
   width: 100%;
   margin: 0;
-  font-size: 1em;
+  font-size: ms(0);
   font-weight: normal;
   color: #ffffff;
   text-align: center; }
@@ -1501,27 +1536,27 @@ blockquote p {
   margin: 0;
   line-height: 1.2;
   font-family: "Open Sans", sans-serif;
-  font-size: 1em;
+  font-size: ms(0);
   color: #6d6e70; }
   @media screen and (min-width: 480px) {
     .highlights__event--title {
-      font-size: 1.125em; } }
+      font-size: ms(1); } }
   @media screen and (min-width: 1024px) {
     .highlights__event--title {
-      font-size: 0.88889em; } }
+      font-size: ms(-1); } }
   @media screen and (min-width: 1400px) {
     .highlights__event--title {
       position: relative;
       top: auto;
       transform: translate(0, 0);
-      font-size: 1em; } }
+      font-size: ms(0); } }
 
 .highlights__event--date {
   display: none; }
   @media screen and (min-width: 1400px) {
     .highlights__event--date {
       display: block;
-      font-size: 0.79012em;
+      font-size: ms(-2);
       color: #929497; } }
 
 .header {
@@ -1647,7 +1682,7 @@ blockquote p {
       float: left;
       height: 82px;
       margin-right: 2.125em;
-      font-size: 1em; } }
+      font-size: ms(0); } }
 
 .header__search {
   display: block;
@@ -1668,7 +1703,7 @@ blockquote p {
       height: 82px;
       padding: 36px 0;
       margin-right: .625em;
-      font-size: 0.88889em; } }
+      font-size: ms(-1); } }
 
 .header__search--btn {
   display: block;
@@ -1677,7 +1712,7 @@ blockquote p {
   padding: 34px 0 30px; }
 
 .header__search--btn:before {
-  font-size: 1.125em;
+  font-size: ms(1);
   content: "\e612"; }
 
 .footer {
@@ -1737,7 +1772,7 @@ blockquote p {
         margin-right: 0; } }
 
 .footer__logo {
-  font-size: 1.60181em;
+  font-size: ms(4);
   font-weight: lighter;
   color: #6d6e70;
   text-transform: uppercase; }
@@ -1758,7 +1793,7 @@ blockquote p {
 
 .footer__copyright {
   padding: 13px 0;
-  font-size: 0.70233em; }
+  font-size: ms(-3); }
   @media screen and (min-width: 1024px) {
     .footer__copyright {
       float: left;
@@ -1788,7 +1823,7 @@ blockquote p {
 
 .footer__nav--list {
   padding: 13px 0;
-  font-size: 0.70233em; }
+  font-size: ms(-3); }
 
 .footer__nav--list .menu-item {
   display: inline-block;
@@ -1802,7 +1837,7 @@ blockquote p {
   display: inline-block;
   height: 22px;
   margin-left: 30px;
-  font-size: 1.26563em; }
+  font-size: ms(2); }
 
 .footer__social--facebook:before {
   content: "\e60f"; }
@@ -1813,6 +1848,139 @@ blockquote p {
 .footer__social--google-plus:before {
   content: "\e611"; }
 
+/*doc
+---
+title: Post Excerpts
+name: posts
+category: Components - Post Excerpts
+---
+
+Post excerpts are displayed on the home page and category pages
+
+*/
+/*doc
+---
+parent: posts
+title: Standard Post
+name: standard-post
+---
+
+Standard posts are mostly text based but can include images. They can also optionally have a featured image.
+
+```html_example 
+<article class="post-1162 post type-post status-publish format-standard hentry category-uncategorized tag-post-tag cf" role="article" itemscope="" itemtype="http://schema.org/BlogPosting">
+	<section class="entry--standard__thumbnail">
+		<img src="http://placehold.it/600x400&amp;text=standard">
+	</section>
+
+	<section class="entry--standard__meta">
+		<time datetime="2014-11-23T17:17:54+00:00" class="entry__date">23 November</time>
+		<h2 class="entry__title" itemprop="headline"><a href="http://wmmr.greatermedia.10uplabs.com/asdfasdf/">asdfasdf</a></h2>
+	</section>
+	<footer class="entry__footer">
+		<a href="http://wmmr.greatermedia.10uplabs.com/category/uncategorized/" class="entry__footer--category">Uncategorized</a>
+	</footer>
+</article>
+```
+*/
+/*doc
+---
+parent: posts
+title: Gallery Post
+name: gallery-post
+---
+
+Gallery posts are mostly image based but can include some text. They can also optionally have a featured image.
+
+```html_example 
+<article id="post-922" class="post-922 post type-post status-publish format-gallery hentry category-uncategorized cf" role="article" itemscope="" itemtype="http://schema.org/BlogPosting">
+	<section class="entry--gallery__meta" itemprop="articleBody">
+		<time datetime="2014-11-10T20:11:28+00:00" class="entry__date">10 November</time>
+		<h2 class="entry__title"><a href="">Test Show Post</a></h2>
+	</section>
+
+	<section class="entry--gallery__thumbnail">	
+		<img src="http://placehold.it/400x400&amp;text=gallery">
+	</section>
+	<footer class="entry__footer">
+		<a href="http://wmmr.greatermedia.10uplabs.com/category/uncategorized/" class="entry__footer--category">Uncategorized</a>
+	</footer>
+</article>
+```
+*/
+/*doc
+---
+parent: posts
+title: Video Post
+name: video-post
+---
+
+Video posts display a video and minimal text. They can also optionally have a featured image.
+
+```html_example 
+<article id="post-581" class="post-581 post type-post status-publish format-video has-post-thumbnail hentry category-uncategorized cf" role="article" itemscope="" itemtype="http://schema.org/BlogPosting">
+	<section class="entry--video__meta" itemprop="articleBody">
+		<time datetime="2014-11-05T00:13:14+00:00" class="entry__date">5 November</time>
+		<h2 class="entry__title"><a href="">Gladys Knight &amp; The Pips “Midnight Train To Georgia”</a></h2>
+	</section>
+
+	<section class="entry--video__thumbnail">
+		<img src="http://placehold.it/600x400&amp;text=video">
+	</section>
+	<footer class="entry__footer">
+		<a href="http://wmmr.greatermedia.10uplabs.com/category/uncategorized/" class="entry__footer--category">Uncategorized</a>
+	</footer>
+</article>
+```
+*/
+/*doc
+---
+parent: posts
+title: Image Post
+name: image-post
+---
+
+Standard posts are mostly text based but can include images. They can also optionally have a featured image.
+
+```html_example 
+<article id="post-558" class="post-558 post type-post status-publish format-image has-post-thumbnail hentry category-uncategorized cf" role="article" itemscope="" itemtype="http://schema.org/BlogPosting">
+	<section class="entry--standard__thumbnail">
+		<img src="http://placehold.it/600x400&amp;text=image">
+	</section>
+
+	<section class="entry--standard__meta">
+		<time datetime="2014-11-03T22:34:27+00:00" class="entry__date">3 November</time>
+		<h2 class="entry__title" itemprop="headline"><a href="http://wmmr.greatermedia.10uplabs.com/hey-its-a-blog-post/">Hey it’s a blog post!</a></h2>
+	</section>
+
+	<footer class="entry__footer">
+		<a href="http://wmmr.greatermedia.10uplabs.com/category/uncategorized/" class="entry__footer--category">Uncategorized</a>
+	</footer>
+</article>
+```
+*/
+/*doc
+---
+parent: posts
+title: Link Post
+name: link-post
+---
+
+Link posts contain a link to an external site. They can also optionally have a featured image.
+
+```html_example 
+<article id="post-886" class="post-886 post type-post status-publish format-link has-post-thumbnail hentry category-uncategorized cf" role="article" itemscope="" itemtype="http://schema.org/BlogPosting">
+	<section class="entry--link__meta" itemprop="articleBody">
+		<time datetime="2014-11-10T04:07:56+00:00" class="entry__date">10 November</time>
+		<h2 class="entry__title"><a href="">Ontario Highway 401 – Wikipedia, the free encyclopedia</a></h2>
+	</section>
+
+	<footer class="entry__footer">
+		<a href="http://wmmr.greatermedia.10uplabs.com/category/uncategorized/" class="entry__footer--category">Uncategorized</a>
+	</footer>
+</article>
+```
+*/
 .hentry {
   margin-bottom: 58px;
   overflow: auto; }
@@ -1829,7 +1997,7 @@ blockquote p {
   font-family: "Open Sans", sans-serif; }
 
 .entry__date {
-  font-size: 0.88889em;
+  font-size: ms(-1);
   font-weight: lighter;
   color: #929497; }
 
@@ -1843,7 +2011,7 @@ blockquote p {
 
 .entry__title {
   margin: 0 0 20px;
-  font-size: 1.60181em; }
+  font-size: ms(4); }
 
 .entry__footer {
   float: left;
@@ -1884,7 +2052,7 @@ blockquote p {
   line-height: 1;
   font-family: "Droid Sans", sans-serif;
   font-weight: bold;
-  font-size: 1em;
+  font-size: ms(0);
   color: #929497; }
 
 .entry__footer--category:hover, .entry__footer--category:focus, .entry__footer--category:active {
@@ -1928,7 +2096,7 @@ blockquote p {
 .entry__type--gallery, .entry__type--link, .entry__type--image, .entry__type--video, .entry__type--audio, .entry__type--standard {
   position: relative;
   padding-left: 1.875em;
-  font-size: 0.79012em; }
+  font-size: ms(-2); }
 
 .entry__categories, .entry__tags {
   margin-bottom: 8px; }
@@ -1937,7 +2105,7 @@ blockquote p {
   padding: 0;
   margin: 0;
   list-style: none;
-  font-size: 0.79012em; }
+  font-size: ms(-2); }
 
 .entry__list:before, .entry__list--categories:before, .entry__list--tags:before {
   margin-right: .25em;
@@ -2004,7 +2172,7 @@ blockquote p {
   display: block;
   float: right;
   text-align: center;
-  font-size: 0.70233em; }
+  font-size: ms(-3); }
 
 .entry__comments--count a:link, .entry__comments--count a:visited {
   display: block;
@@ -2417,12 +2585,12 @@ blockquote p {
 .wp-caption p.wp-caption-text {
   padding: 16px 1.25em 20px;
   margin: 4px .5em;
-  font-size: 0.79012em;
+  font-size: ms(-2);
   text-align: left; }
 
 .posts-pagination {
   width: 100%;
-  font-size: 0.88889em; }
+  font-size: ms(-1); }
 
 .posts-pagination--previous {
   float: left;
@@ -2619,7 +2787,7 @@ category: Components
   overflow: visible;
   background-color: #191919;
   line-height: 1;
-  font-size: 0.88889em; }
+  font-size: ms(-1); }
 
 .live-player__stream--current.open {
   display: block;
@@ -2634,7 +2802,7 @@ category: Components
   width: 0;
   height: 0;
   font-family: "gmr-icons";
-  font-size: 1.125em;
+  font-size: ms(1);
   content: "\e606";
   -webkit-transform: rotate(90deg);
   -moz-transform: rotate(90deg);
@@ -2720,13 +2888,13 @@ category: Components
 .live-player__stream--name {
   float: left;
   width: 20%;
-  font-size: 0.88889em; }
+  font-size: ms(-1); }
 
 .live-player__stream--desc {
   float: left;
   width: 80%;
   line-height: 1.2;
-  font-size: 0.70233em; }
+  font-size: ms(-3); }
 
 .live-player__container {
   overflow: auto; }
@@ -2780,7 +2948,7 @@ category: Components
   background-color: #d22228;
   border: 1px solid #d22228;
   font-family: "Open Sans", sans-serif;
-  font-size: 0.88889em;
+  font-size: ms(-1);
   color: #ffffff !important;
   text-transform: uppercase;
   cursor: pointer;
@@ -2807,7 +2975,7 @@ category: Components
   background-color: transparent;
   border: 1px solid #d22228;
   font-family: "Open Sans", sans-serif;
-  font-size: 0.88889em;
+  font-size: ms(-1);
   color: #d22228 !important;
   text-transform: uppercase;
   cursor: pointer;
@@ -2840,7 +3008,7 @@ category: Components
   background-color: transparent;
   border: 1px solid #d22228;
   font-family: "Open Sans", sans-serif;
-  font-size: 0.88889em;
+  font-size: ms(-1);
   color: #d22228 !important;
   text-transform: uppercase;
   cursor: pointer;
@@ -2966,7 +3134,7 @@ category: Components
   width: 50%;
   padding-top: 8px;
   line-height: 1;
-  font-size: 0.6243em;
+  font-size: ms(-4);
   text-align: left; }
 
 .live-stream--podcast__end {
@@ -3009,15 +3177,15 @@ category: Components
 
 .on-air__title, .up-next__title {
   margin-right: 1em;
-  font-size: 0.79012em;
+  font-size: ms(-2);
   font-weight: lighter; }
   @media screen and (min-width: 768px) {
     .on-air__title, .up-next__title {
       margin-right: .25em;
-      font-size: 0.70233em; } }
+      font-size: ms(-3); } }
 
 .on-air__show, .up-next__show {
-  font-size: 0.79012em; }
+  font-size: ms(-2); }
 
 .now-playing {
   display: none;
@@ -3043,13 +3211,13 @@ category: Components
 
 .now-playing__title {
   margin: 0 0 .25em;
-  font-size: 1.125em;
+  font-size: ms(1);
   font-weight: lighter;
   color: #d22228; }
 
 .now-playing__artist {
   margin: 0 0 .25em;
-  font-size: 0.79012em;
+  font-size: ms(-2);
   font-weight: lighter;
   color: #c7c7c7; }
 
@@ -3120,7 +3288,7 @@ category: Components
   border: 1px solid #d0d2d3;
   border-right: none;
   border-left: none;
-  font-size: 0.79012em; }
+  font-size: ms(-2); }
 
 .live-player--test {
   width: 100%;
@@ -3205,7 +3373,7 @@ category: Components
   padding-top: 6px;
   margin: 0;
   font-family: "Open Sans", sans-serif;
-  font-size: 0.88889em;
+  font-size: ms(-1);
   font-weight: normal; }
 
 .live-link__title a:link, .live-link__title a:visited {
@@ -3284,7 +3452,7 @@ category: Components
       display: block;
       margin: 0 0 1em;
       font-family: "Open Sans", sans-serif;
-      font-size: 1em;
+      font-size: ms(0);
       font-weight: normal; } }
 
 .widget--live-player ul {
