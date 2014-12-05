@@ -8,7 +8,6 @@
 
 define( 'GMR_LIVE_STREAM_CPT', 'live-stream' );
 define( 'GMR_SONG_CPT',        'songs' );
-define( 'GMR_LIVE_STREAM_EP',  'live-stream' );
 
 require_once 'includes/live-streams.php';
 require_once 'includes/songs.php';

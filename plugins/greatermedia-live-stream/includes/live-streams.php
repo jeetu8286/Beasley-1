@@ -6,11 +6,26 @@ add_action( 'admin_menu', 'gmr_streams_update_admin_menu' );
 add_action( 'save_post', 'gmr_streams_save_meta_box_data' );
 add_action( 'manage_' . GMR_LIVE_STREAM_CPT . '_posts_custom_column', 'gmr_streams_render_custom_column', 10, 2 );
 add_action( 'admin_action_gmr_stream_make_primary', 'gmr_streams_make_primary' );
-add_action( 'template_redirect', 'gmr_streams_process_endpoint' );
 
 // filter hooks
 add_filter( 'manage_' . GMR_LIVE_STREAM_CPT . '_posts_columns', 'gmr_streams_filter_columns_list' );
 add_filter( 'gmr_live_player_streams', 'gmr_streams_get_public_streams' );
+add_filter( 'json_endpoints', 'gmr_streams_init_api_endpoint' );
+
+/**
+ * Registers API endpoint.
+ *
+ * @filter json_endpoints
+ * @param array $routes The initial array of routes.
+ * @return array Extended array of API routes.
+ */
+function gmr_streams_init_api_endpoint( $routes ) {
+	$routes['/stream/(?P<sign>\S+)'] = array(
+		array( 'gmr_streams_process_endpoint', WP_JSON_Server::CREATABLE | WP_JSON_Server::ACCEPT_JSON | WP_JSON_Server::READABLE ),
+	);
+
+	return $routes;
+}
 
 /**
  * Registers Live Stream post type.
@@ -18,14 +33,13 @@ add_filter( 'gmr_live_player_streams', 'gmr_streams_get_public_streams' );
  * @action init
  */
 function gmr_streams_register_post_type() {
-	// register post type
 	register_post_type( GMR_LIVE_STREAM_CPT, array(
 		'public'               => false,
 		'show_ui'              => true,
 		'rewrite'              => false,
 		'query_var'            => false,
 		'can_export'           => false,
-		'hierarchical'         => false,
+		'hierarchical'         => true,
 		'menu_position'        => 5,
 		'menu_icon'            => 'dashicons-format-audio',
 		'supports'             => array( 'title' ),
@@ -48,9 +62,6 @@ function gmr_streams_register_post_type() {
 			'not_found_in_trash' => 'No links found in Trash.',
 		),
 	) );
-
-	// register stream endpoint
-	add_rewrite_endpoint( GMR_LIVE_STREAM_EP, EP_ROOT );
 }
 
 /**
@@ -125,18 +136,20 @@ function gmr_streams_update_admin_menu() {
  */
 function gmr_streams_filter_columns_list( $columns ) {
 	$cut_mark = array_search( 'title', array_keys( $columns ) ) + 1;
-
-	$columns = array_merge(
-		array_slice( $columns, 0, $cut_mark ),
-		array(
-			'call_sign' => 'Call Sign',
-			'primary'   => 'Primary',
-			'endpoint'  => 'Endpoint',
-		),
-		array_slice( $columns, $cut_mark )
+	$columns = array(
+		'call_sign' => 'Call Sign',
+		'primary'   => 'Primary',
 	);
 
-	return $columns;
+	if ( defined( 'JSON_API_VERSION' ) ) {
+		$columns['endpoint'] = 'Endpoint';
+	}
+
+	return array_merge(
+		array_slice( $columns, 0, $cut_mark ),
+		$columns,
+		array_slice( $columns, $cut_mark )
+	);
 }
 
 /**
@@ -164,7 +177,7 @@ function gmr_streams_render_custom_column( $column_name, $post_id ) {
 		case 'endpoint':
 			$call_sign = trim( get_post_meta( $post_id, 'call_sign', true ) );
 			if ( ! empty( $call_sign ) ) {
-				$endpoint = home_url( sprintf( '/%s/%s', GMR_LIVE_STREAM_EP, urlencode( $call_sign ) ) );
+				$endpoint = home_url( sprintf( '/wp-json/stream/%s', urlencode( $call_sign ) ) );
 				printf( '<a href="%s" target="_blank">%s</a>', esc_url( $endpoint ), parse_url( $endpoint, PHP_URL_PATH ) );
 			} else {
 				echo '&#8212;';
@@ -248,29 +261,58 @@ function gmr_streams_get_public_streams() {
 /**
  * Processes stream endpoing submission.
  *
- * @action template_redirect
+ * @param string $sign The stream id.
+ * @param array $data The song data.
  */
-function gmr_streams_process_endpoint() {
-	$stream = get_query_var( GMR_LIVE_STREAM_EP );
-	if ( empty( $stream ) ) {
-		return;
+function gmr_streams_process_endpoint( $sign, $data ) {
+	// an example of data:
+	// {"artist": "Bruce Springsteen", "title": "Born to run", "purchase_link": "http://itunes.apple.com/album/born-to-run/id192810984?i=192811017&uo=5", "timestamp": "1417788996"}
+	//
+	// sample of curl command to test endpoint:
+	// curl -X POST --data '{json}' {endpoint_url}
+
+	$data = filter_var_array( $data, array(
+		'artist'        => FILTER_DEFAULT,
+		'title'         => FILTER_DEFAULT,
+		'purchase_link' => FILTER_VALIDATE_URL,
+		'timestamp'     => array( 'filter' => FILTER_VALIDATE_INT, 'options' => array( 'min_range' => current_time( 'timestamp', 1 ) ) ),
+	) );
+
+	if ( empty( $data['timestamp'] ) ) {
+		return new WP_Error( 'gmr_stream_wrong_aired_at', 'Timestamp is invalid. Please, provide UTC time in the future.', array( 'status' => 400 ) );
 	}
 
 	$query = new WP_Query( array(
 		'post_type'           => GMR_LIVE_STREAM_CPT,
 		'meta_key'            => 'call_sign',
-		'meta_value'          => $stream,
+		'meta_value'          => $sign,
 		'posts_per_page'      => 1,
 		'ignore_sticky_posts' => 1,
 		'no_found_rows'       => true,
 	) );
 
 	if ( ! $query->have_posts() ) {
-		status_header( 404 );
-		exit;
+		return new WP_Error( 'gmr_stream_not_found', 'The stream was not found.', array( 'status' => 404 ) );
 	}
 
-	$stream = $query->next_post();
+	$song = array(
+		'post_type'     => GMR_SONG_CPT,
+		'post_status'   => 'publish',
+		'post_date'     => date( DATE_ISO8601, $data['timestamp'] + get_option( 'gmt_offset' ) * HOUR_IN_SECONDS ),
+		'post_date_gmt' => date( DATE_ISO8601, $data['timestamp'] ),
+		'post_parent'   => $query->next_post()->ID,
+		'post_title'    => $data['title'],
+	);
 
-	exit;
+	$song_id = wp_insert_post( $song, true );
+	$created = $song_id && ! is_wp_error( $song_id );
+	if ( $created ) {
+		update_post_meta( $song_id, 'artist', $data['artist'] );
+		update_post_meta( $song_id, 'purchase_link', $data['purchase_link'] );
+	}
+
+	$response = new WP_JSON_Response();
+	$response->set_status( $created ? 201 : 400 );
+	
+	return $response;
 }

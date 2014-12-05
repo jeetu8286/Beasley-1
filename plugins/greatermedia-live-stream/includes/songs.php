@@ -209,6 +209,15 @@ function gmr_songs_save_meta_box_data( $post_id ) {
  * @return int The song parent id.
  */
 function gmr_songs_set_song_stream( $post_parent, $post_id, $post_args ) {
+	// validate nonce and user permissions
+	$doing_autosave = defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE;
+	$valid_nonce = wp_verify_nonce( filter_input( INPUT_POST, '_gmr_songs_nonce' ), 'gmr_songs_meta_boxes' );
+	$can_edit = current_user_can( 'edit_post', $post_id );
+	if ( $doing_autosave || ! $valid_nonce || ! $can_edit ) {
+		return $post_parent;
+	}
+
+	// set post parent
 	if ( ! empty( $post_args['post_type'] ) && GMR_SONG_CPT == $post_args['post_type'] ) {
 		$stream_id = filter_input( INPUT_POST, 'song_stream_id', FILTER_VALIDATE_INT, array( 'options' => array( 'min_range' => 1 ) ) );
 		$post_parent = $stream_id && ( $stream = get_post( $stream_id ) ) && GMR_LIVE_STREAM_CPT == $stream->post_type
