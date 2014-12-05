@@ -275,11 +275,11 @@ function gmr_streams_process_endpoint( $sign, $data ) {
 		'artist'        => FILTER_DEFAULT,
 		'title'         => FILTER_DEFAULT,
 		'purchase_link' => FILTER_VALIDATE_URL,
-		'timestamp'     => array( 'filter' => FILTER_VALIDATE_INT, 'options' => array( 'min_range' => current_time( 'timestamp', 1 ) ) ),
+		'timestamp'     => FILTER_VALIDATE_INT,
 	) );
 
 	if ( empty( $data['timestamp'] ) ) {
-		return new WP_Error( 'gmr_stream_wrong_aired_at', 'Timestamp is invalid. Please, provide UTC time in the future.', array( 'status' => 400 ) );
+		return new WP_Error( 'gmr_stream_wrong_aired_at', 'Timestamp is invalid.', array( 'status' => 400 ) );
 	}
 
 	$query = new WP_Query( array(
