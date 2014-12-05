@@ -11,7 +11,8 @@ add_action( 'admin_action_gmr_stream_make_primary', 'gmr_streams_make_primary' )
 add_filter( 'manage_' . GMR_LIVE_STREAM_CPT . '_posts_columns', 'gmr_streams_filter_columns_list' );
 add_filter( 'gmr_live_player_streams', 'gmr_streams_get_public_streams' );
 add_filter( 'json_endpoints', 'gmr_streams_init_api_endpoint' );
-add_filter( 'json_authentication_errors', 'gmr_streams_authorize_api_user', PHP_INT_MAX );
+add_filter( 'determine_current_user', 'gmr_streams_json_basic_auth_handler', 20 );
+add_filter( 'json_authentication_errors', 'gmr_streams_json_basic_auth_error' );
 
 /**
  * Registers API endpoint.
@@ -260,37 +261,6 @@ function gmr_streams_get_public_streams() {
 }
 
 /**
- * Authorizes API user based on Basic Authorization header.
- *
- * @filter json_authentication_errors
- * @return WP_Error|null Returns NULL on success, otherwise WP_Error object.
- */
-function gmr_streams_authorize_api_user() {
-	if ( ! is_user_logged_in() ) {
-		if ( ! isset( $_SERVER['HTTP_AUTHORIZATION'] ) ) {
-			return new WP_Error( 'gmr_stream_not_authorized', 'Authorization required', array( 'status' => 401 ) );
-		}
-
-		$user = isset( $_SERVER['PHP_AUTH_USER'] ) ? $_SERVER['PHP_AUTH_USER'] : false;
-		$password = isset( $_SERVER['PHP_AUTH_PW'] ) ? $_SERVER['PHP_AUTH_PW'] : false;
-
-		list( $type, $auth ) = explode( ' ', $_SERVER['HTTP_AUTHORIZATION'] );
-		if ( strtolower( $type ) === 'basic' ) {
-			list( $user, $password ) = explode( ':', base64_decode( $auth ) );
-		}
-
-		$authenticated = wp_authenticate_username_password( null, $user, $password );
-		if ( is_wp_error( $authenticated ) ) {
-			return new WP_Error( 'gmr_stream_authorization', 'Invlid user name or password.', array( 'status' => 401 ) );
-		}
-
-		wp_set_current_user( $authenticated->ID );
-	}
-
-	return null;
-}
-
-/**
  * Processes stream endpoing submission.
  *
  * @param string $sign The stream id.
@@ -347,4 +317,69 @@ function gmr_streams_process_endpoint( $sign, $data ) {
 	$response->set_status( $created ? 201 : 400 );
 	
 	return $response;
+}
+
+/**
+ * Authorizes an user using HTTP Basic Authorization method.
+ *
+ * @global WP_Error $wp_json_basic_auth_error The basic authorization error object.
+ * @param WP_User $user The current user object.
+ * @return WP_User|int The user id or object on success, otherwise null;
+ */
+function gmr_streams_json_basic_auth_handler( $user ) {
+	global $wp_json_basic_auth_error;
+
+	$wp_json_basic_auth_error = null;
+
+	// Don't authenticate twice
+	if ( ! empty( $user ) ) {
+		return $user;
+	}
+
+	// Check that we're trying to authenticate
+	if ( !isset( $_SERVER['PHP_AUTH_USER'] ) ) {
+		return $user;
+	}
+
+	$username = $_SERVER['PHP_AUTH_USER'];
+	$password = $_SERVER['PHP_AUTH_PW'];
+
+	/**
+	 * In multi-site, wp_authenticate_spam_check filter is run on authentication. This filter calls
+	 * get_currentuserinfo which in turn calls the determine_current_user filter. This leads to infinite
+	 * recursion and a stack overflow unless the current function is removed from the determine_current_user
+	 * filter during authentication.
+	 */
+	remove_filter( 'determine_current_user', 'gmr_streams_json_basic_auth_handler', 20 );
+
+	$user = wp_authenticate( $username, $password );
+
+	add_filter( 'determine_current_user', 'gmr_streams_json_basic_auth_handler', 20 );
+
+	if ( is_wp_error( $user ) ) {
+		$wp_json_basic_auth_error = $user;
+		return null;
+	}
+
+	$wp_json_basic_auth_error = true;
+
+	return $user->ID;
+}
+
+/**
+ * Returns Basic Authorization errors if exists any.
+ * 
+ * @global WP_Error $wp_json_basic_auth_error The basic authorization error object.
+ * @param WP_Error $error The incoming error object or null.
+ * @return WP_Error The error object on failure, otherwise null.
+ */
+function gmr_streams_json_basic_auth_error( $error ) {
+	// Passthrough other errors
+	if ( ! empty( $error ) ) {
+		return $error;
+	}
+
+	global $wp_json_basic_auth_error;
+
+	return $wp_json_basic_auth_error;
 }
