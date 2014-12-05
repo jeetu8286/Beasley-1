@@ -176,8 +176,8 @@ function gmr_streams_render_custom_column( $column_name, $post_id ) {
 			break;
 		case 'endpoint':
 			$call_sign = trim( get_post_meta( $post_id, 'call_sign', true ) );
-			if ( ! empty( $call_sign ) ) {
-				$endpoint = home_url( sprintf( '/wp-json/stream/%s', urlencode( $call_sign ) ) );
+			if ( ! empty( $call_sign ) && function_exists( 'json_get_url_prefix' ) ) {
+				$endpoint = home_url( sprintf( '/%s/stream/%s', json_get_url_prefix(), urlencode( $call_sign ) ) );
 				printf( '<a href="%s" target="_blank">%s</a>', esc_url( $endpoint ), parse_url( $endpoint, PHP_URL_PATH ) );
 			} else {
 				echo '&#8212;';
