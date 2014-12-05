@@ -60,7 +60,7 @@ jQuery(function () {
 				}
 
 			}
-			
+
 			return [
 				{
 					type : 'textbox',
