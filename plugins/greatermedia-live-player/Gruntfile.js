@@ -5,12 +5,7 @@ module.exports = function( grunt ) {
 		pkg:    grunt.file.readJSON( 'package.json' ),
 		concat: {
 			options: {
-				stripBanners: true,
-				banner: '/*! <%= pkg.title %> - v<%= pkg.version %>\n' +
-					' * <%= pkg.homepage %>\n' +
-					' * Copyright (c) <%= grunt.template.today("yyyy") %>;' +
-					' * Licensed GPLv2+' +
-					' */\n'
+				stripBanners: true
 			},
 			greater_media_live_playeradmin: {
 				src: [
@@ -23,6 +18,12 @@ module.exports = function( grunt ) {
 					'assets/js/src/greater_media_live_player.js'
 				],
 				dest: 'assets/js/greater_media_live_player.js'
+			},
+			tdplayer: {
+				src: [
+					'assets/js/src/tdplayer.js'
+				],
+				dest: 'assets/js/tdplayer.js'
 			}
 		},
 		jshint: {
@@ -52,14 +53,10 @@ module.exports = function( grunt ) {
 			all: {
 				files: {
 					'assets/js/greater_media_live_player_admin.min.js': ['assets/js/greater_media_live_player_admin.js'],
-					'assets/js/greater_media_live_player.min.js': ['assets/js/greater_media_live_player.js']
+					'assets/js/greater_media_live_player.min.js': ['assets/js/greater_media_live_player.js'],
+					'assets/js/tdplayer.min.js': ['assets/js/tdplayer.js']
 				},
 				options: {
-					banner: '/*! <%= pkg.title %> - v<%= pkg.version %>\n' +
-						' * <%= pkg.homepage %>\n' +
-						' * Copyright (c) <%= grunt.template.today("yyyy") %>;' +
-						' * Licensed GPLv2+' +
-						' */\n',
 					mangle: {
 						except: ['jQuery']
 					}
@@ -84,13 +81,6 @@ module.exports = function( grunt ) {
 		},
 		
 		cssmin: {
-			options: {
-				banner: '/*! <%= pkg.title %> - v<%= pkg.version %>\n' +
-					' * <%= pkg.homepage %>\n' +
-					' * Copyright (c) <%= grunt.template.today("yyyy") %>;' +
-					' * Licensed GPLv2+' +
-					' */\n'
-			},
 			minify: {
 				expand: true,
 				

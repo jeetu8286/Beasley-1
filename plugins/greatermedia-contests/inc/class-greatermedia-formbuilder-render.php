@@ -6,68 +6,159 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class GreaterMediaFormbuilderRender {
 
-	const FIELD_SIZE_SMALL = '10';
-	const FIELD_SIZE_MEDIUM = '25';
-	const FIELD_SIZE_LARGE = '40';
+	const FORM_CLASS = 'contest_entry_form';
+
+	const INPUT_SIZE_SMALL = '10';
+	const INPUT_SIZE_MEDIUM = '25';
+	const INPUT_SIZE_LARGE = '40';
+
+	const TEXTAREA_SIZE_SMALL = '3';
+	const TEXTAREA_SIZE_MEDIUM = '5';
+	const TEXTAREA_SIZE_LARGE = '10';
 
 	private function __construct() {
 		// Use the public static methods. Don't instantiate this class directly.
 	}
 
+	/**
+	 * Register WordPress actions & filters
+	 */
 	public static function register_actions() {
-		add_action( 'wp', array( __CLASS__, 'process_form_submission' ) );
+
+		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+			// Register AJAX handlers
+			add_action( 'wp_ajax_enter_contest', array( __CLASS__, 'process_form_submission' ) );
+			add_action( 'wp_ajax_nopriv_enter_contest', array( __CLASS__, 'process_form_submission' ) );
+		} else {
+			// Register a generic POST handler for if/when there's a fallback from the AJAX method
+			add_action( 'wp', array( __CLASS__, 'process_form_submission' ) );
+		}
+
+		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'wp_enqueue_scripts' ) );
+
+	}
+
+	/**
+	 * Enqueue scripts & styles
+	 * Implements wp_enqueue_scripts action
+	 */
+	public static function wp_enqueue_scripts() {
+
+		wp_enqueue_script( 'greatermedia-contests', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'js/greatermedia-contests.js', array( 'jquery' ), false, true );
+		$settings = array(
+			'form_class' => self::FORM_CLASS,
+			'ajax_url'   => admin_url( 'admin-ajax.php' ),
+		);
+		wp_localize_script( 'greatermedia-contests', 'GreaterMediaContests', $settings );
+
+		wp_enqueue_script( 'jquery-ui-datepicker' );
+		wp_enqueue_style( 'jquery-ui-datepicker' );
+		wp_enqueue_style( 'greatermedia-contests', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'css/greatermedia-contests.css' );
+
 	}
 
 	/**
 	 * @uses do_action
+	 * @uses wp_send_json_success
 	 */
 	public static function process_form_submission() {
 
-		if ( 'POST' !== strtoupper( $_SERVER['REQUEST_METHOD'] ) ) {
-			return;
-		}
+		try {
 
-		if ( ! isset( $_POST['contest_id'] ) ) {
-			return;
-		}
+			if ( 'POST' !== strtoupper( $_SERVER['REQUEST_METHOD'] ) ) {
+				throw new InvalidArgumentException( 'Request should be a POST' );
+			}
 
-		if ( absint( $_POST['contest_id'] ) !== absint( $GLOBALS['post']->ID ) ) {
-			return;
-		}
+			if ( ! isset( $_POST['contest_id'] ) ) {
+				throw new InvalidArgumentException( 'Missing contest_id' );
+			}
 
-		// @TODO get entrant name from Gigya
-		$entrant_name = 'John Doe';
-		// @TODO get entrant reference (ID) from Gigya
-		$entrant_reference = '12345';
+			$contest_id = absint( $_POST['contest_id'] );
+			if ( empty( $contest_id ) ) {
+				throw new InvalidArgumentException( 'Invalid contest_id' );
+			}
 
-		// Pretty sure this is our form submission at this point
-		$form = json_decode( get_post_meta( $GLOBALS['post']->ID, 'embedded_form', true ) );
-		if ( empty( $form ) ) {
-			return;
-		}
+			$contest = get_post( $contest_id );
+			if ( empty( $contest ) ) {
+				throw new InvalidArgumentException( 'No contest found with given ID' );
+			}
 
-		$submitted_values = array();
-		foreach ( $form as $field ) {
+			if ( 'contest' !== $contest->post_type ) {
+				throw new InvalidArgumentException( 'contest_id does not reference a contest' );
+			}
 
-			$post_array_key = 'form_field_' . $field->cid;
-			
-			if ( isset( $_POST[ $post_array_key ] ) ) {
-				$submitted_values[ $field->cid ] = sanitize_text_field( $_POST[ $post_array_key ] );
+			// @TODO use the final Gigya API
+			$gigya_id = GreaterMediaGigyaTest::gigya_user_id();
+			if ( ! empty( $gigya_id ) ) {
+				$entrant_reference = $gigya_id;
+				// @TODO get entrant name from Gigya
+				$entrant_name = 'John Doe';
+			} else {
+				$entrant_name      = 'Anonymous Listener';
+				$entrant_reference = null;
+			}
+
+			// Pretty sure this is our form submission at this point
+			$form = json_decode( get_post_meta( $contest_id, 'embedded_form', true ) );
+			if ( empty( $form ) ) {
+				throw new InvalidArgumentException( 'Contest is missing an embedded form' );
+			}
+
+			$submitted_values = array();
+			foreach ( $form as $field ) {
+
+				$post_array_key = 'form_field_' . $field->cid;
+
+				if ( isset( $_POST[ $post_array_key ] ) ) {
+					if ( is_scalar( $_POST[ $post_array_key ] ) ) {
+						$submitted_values[ $field->cid ] = sanitize_text_field( $_POST[ $post_array_key ] );
+					} else if ( is_array( $_POST[ $post_array_key ] ) ) {
+						$submitted_values[ $field->cid ] = array_map( 'sanitize_text_field', $_POST[ $post_array_key ] );
+					}
+				}
+
+			}
+
+			$entry = GreaterMediaContestEntryEmbeddedForm::create_for_data(
+				$contest_id,
+				$entrant_name,
+				$entrant_reference,
+				GreaterMediaContestEntry::ENTRY_SOURCE_EMBEDDED_FORM,
+				json_encode( $submitted_values )
+			);
+
+			$entry->save();
+
+			do_action( 'greatermedia_contest_entry_save', $entry );
+
+			if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+				$response          = new stdClass();
+				$response->message = get_post_meta( $contest_id, 'form-thankyou', true );
+				wp_send_json_success( $response );
+				exit();
+			} else {
+
+				/**
+				 * If we've fallen back to an old-school non-AJAX POST,
+				 * use a constant to communicate status to the rendering function
+				 * since this class isn't meant to be instantiated.
+				 */
+				define( 'CONTEST_' . $contest_id . '_SUCCESS', true );
+
+			}
+
+		} catch ( InvalidArgumentException $e ) {
+
+			if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+				$response          = new stdClass();
+				$response->message = $e->getMessage();
+				wp_send_json_error( $response );
+				exit();
+			} else {
+				return;
 			}
 
 		}
-
-		$entry = GreaterMediaContestEntryEmbeddedForm::create_for_data(
-			$GLOBALS['post']->ID,
-			$entrant_name,
-			$entrant_reference,
-			GreaterMediaContestEntry::ENTRY_SOURCE_EMBEDDED_FORM,
-			json_encode( $submitted_values )
-		);
-
-		$entry->save();
-
-		do_action( 'greatermedia_contest_entry_save', $entry );
 
 	}
 
@@ -81,6 +172,8 @@ class GreaterMediaFormbuilderRender {
 		if ( ! isset( $tags ) ) {
 
 			$tags = array();
+
+			$tags['fieldset'] = array();
 
 			// Add form tags
 			$tags['input'] = array(
@@ -100,6 +193,26 @@ class GreaterMediaFormbuilderRender {
 				'min'         => 1,
 				'max'         => 1,
 				'form'        => 1,
+				'checked'     => 1,
+			);
+
+			$tags['textarea'] = array(
+				'id'                     => 1,
+				'name'                   => 1,
+				'class'                  => 1,
+				'autofocus'              => 1,
+				'disabled'               => 1,
+				'form'                   => 1,
+				'required'               => 1,
+				'onkeypress'             => 1,
+				'pattern'                => 1,
+				'data-parsley-minwords'  => 1,
+				'data-parsley-maxwords'  => 1,
+				'data-parsley-minlength' => 1,
+				'data-parsley-maxlength' => 1,
+				'minlength'              => 1,
+				'maxlength'              => 1,
+				'rows'                   => 1,
 			);
 
 			$tags['select'] = array(
@@ -130,12 +243,16 @@ class GreaterMediaFormbuilderRender {
 	}
 
 	/**
-	 * @param $post_id
-	 * @param $form
+	 * Render a form attached to a given post
+	 *
+	 * @param int    $post_id Post ID
+	 * @param string $form    JSON-encoded form data
 	 *
 	 * @uses render_text
 	 */
 	public static function render( $post_id, $form ) {
+
+		$html = '';
 
 		if ( ! is_numeric( $post_id ) ) {
 			throw new InvalidArgumentException( '$post_id must be an integer post ID' );
@@ -153,36 +270,49 @@ class GreaterMediaFormbuilderRender {
 			throw new InvalidArgumentException( '$form should be a JSON string or an Object' );
 		}
 
-		echo '<form action="" method="post" enctype="multipart/form-data">';
-		echo '<input type="hidden" name="contest_id" value="' . absint( $post_id ) . '" />';
+		if ( defined( 'CONTEST_' . $post_id . '_SUCCESS' ) && 'CONTEST_' . $post_id . '_SUCCESS' ) {
 
-		foreach ( $form as $field ) {
+			/**
+			 * Fallback to rendering the thank-you message on the server side.
+			 * This should be OK since a POST won't be cached.
+			 */
+			$html .= '<p>' .
+			         get_post_meta( $post_id, 'form-thankyou', true ) .
+			         '</p>';
 
-			$renderer_method = 'render_' . $field->field_type;
+		} else {
 
-			// Make sure the field type has been implemented/is valid
-			if ( ! method_exists( __CLASS__, $renderer_method ) ) {
-				throw new InvalidArgumentException( sprintf( 'Form field %s has an unimplemented field type', $field->cid ) );
+			$html .= '<form action="" method="post" enctype="multipart/form-data" class="' . esc_attr( self::FORM_CLASS ) . '" data-parsley-validate>' .
+			         '<input type="hidden" name="action" value="enter_contest" />' .
+			         '<input type="hidden" name="contest_id" value="' . absint( $post_id ) . '" />';
+
+			foreach ( $form as $field ) {
+
+				$renderer_method = 'render_' . $field->field_type;
+
+				// Make sure the field type has been implemented/is valid
+				if ( ! method_exists( __CLASS__, $renderer_method ) ) {
+					throw new InvalidArgumentException( sprintf( 'Form field %s has unimplemented field type %s', wp_kses_data( $field->cid ), wp_kses_data( $field->field_type ) ) );
+				}
+
+				$html .= wp_kses( self::$renderer_method( $post_id, $field ), self::allowed_tags() );
+
 			}
 
-			echo wp_kses( self::$renderer_method( $post_id, $field ), self::allowed_tags() );
+			$html .= self::get_submit_button( 'Enter', null, null, true );
+
+			$html .= '</form>';
 
 		}
 
-		echo '</form>';
+		echo $html;
 
 	}
 
-	/**
-	 * Render a text field on a form using data from formbuilder
-	 *
-	 * @param stdClass $field
-	 *
-	 * @return string HTML
-	 */
-	private static function render_text( $post_id, stdClass $field ) {
+	protected static function render_label( stdClass $field ) {
 
-		$html     = '';
+		$html = '';
+
 		$field_id = 'form_field_' . $field->cid;
 
 		$label_tag_attributes = array(
@@ -190,16 +320,6 @@ class GreaterMediaFormbuilderRender {
 		);
 
 		$label = ( isset( $field->label ) ) ? $field->label : '';
-
-		$input_tag_attributes = array(
-			'id'   => $field_id,
-			'name' => $field_id,
-			'type' => 'text',
-		);
-
-		$description = ( isset( $field->field_options->description ) ) ? $field->field_options->description : '';
-
-		$description_tag_attributes = array();
 
 		// Give the theme a chance to alter the attributes for the input field
 		$label_tag_attributes = apply_filters( 'gm_form_text_label_attrs', $label_tag_attributes );
@@ -214,10 +334,92 @@ class GreaterMediaFormbuilderRender {
 			foreach ( $label_tag_attributes as $attribute => $value ) {
 				$html .= wp_kses_data( $attribute ) . '="' . esc_attr( $value ) . '" ';
 			}
-			
+
 			$html .= '>' . wp_kses_data( $label ) . '</label>';
 
 		}
+
+		return $html;
+	}
+
+	protected static function render_legend( stdClass $field ) {
+
+		$html = '';
+
+		$legend_tag_attributes = array();
+
+		$label = ( isset( $field->label ) ) ? $field->label : '';
+
+		// Give the theme a chance to alter the attributes for the input field
+		$legend_tag_attributes = apply_filters( 'gm_form_text_label_attrs', $legend_tag_attributes );
+		$legend_tag_attributes = apply_filters( 'gm_form_label_attrs', $legend_tag_attributes );
+		$label                 = apply_filters( 'gm_form_text_label_text', $label );
+		$label                 = apply_filters( 'gm_form_label_text', $label );
+
+		if ( ! empty( $label ) ) {
+
+			$html .= '<legend ';
+
+			foreach ( $legend_tag_attributes as $attribute => $value ) {
+				$html .= wp_kses_data( $attribute ) . '="' . esc_attr( $value ) . '" ';
+			}
+
+			$html .= '>' . wp_kses_data( $label ) . '</legend>';
+
+		}
+
+		return $html;
+
+	}
+
+	protected static function render_description( stdClass $field ) {
+
+		$html = '';
+
+		$description = ( isset( $field->field_options->description ) ) ? $field->field_options->description : '';
+
+		$description_tag_attributes = array();
+
+		// Give the theme a chance to alter the attributes for the description
+		$description_tag_attributes = apply_filters( 'gm_form_text_description_attrs', $description_tag_attributes );
+		$description_tag_attributes = apply_filters( 'gm_form_input_description_attrs', $description_tag_attributes );
+		$description                = apply_filters( 'gm_form_text_description_text', $description );
+		$description                = apply_filters( 'gm_form_description_text', $description );
+
+		if ( ! empty( $description ) ) {
+
+			$html .= '<p ';
+
+			foreach ( $description_tag_attributes as $attribute => $value ) {
+				$html .= wp_kses_data( $attribute ) . '="' . esc_attr( $value ) . '" ';
+			}
+
+			$html .= ' >' . wp_kses_data( $description ) . '</p>';
+		}
+
+		return $html;
+
+	}
+
+	/**
+	 * Render a text field on a form using data from formbuilder
+	 *
+	 * @param stdClass $field
+	 *
+	 * @return string HTML
+	 */
+	protected static function render_text( $post_id, stdClass $field ) {
+
+		$html     = '';
+		$field_id = 'form_field_' . $field->cid;
+
+		$input_tag_attributes = array(
+			'id'   => $field_id,
+			'name' => $field_id,
+			'type' => 'text',
+		);
+
+		$html .= self::render_label( $field );
 
 		if ( isset( $field->required ) && $field->required ) {
 			$input_tag_attributes['required'] = 'required';
@@ -226,11 +428,11 @@ class GreaterMediaFormbuilderRender {
 		if ( isset( $field->field_options->size ) ) {
 
 			if ( 'small' === $field->field_options->size ) {
-				$input_tag_attributes['size'] = self::FIELD_SIZE_SMALL;
+				$input_tag_attributes['size'] = self::INPUT_SIZE_SMALL;
 			} else if ( 'medium' === $field->field_options->size ) {
-				$input_tag_attributes['size'] = self::FIELD_SIZE_MEDIUM;
+				$input_tag_attributes['size'] = self::INPUT_SIZE_MEDIUM;
 			} else if ( 'large' === $field->field_options->size ) {
-				$input_tag_attributes['size'] = self::FIELD_SIZE_LARGE;
+				$input_tag_attributes['size'] = self::INPUT_SIZE_LARGE;
 			} else {
 				throw new InvalidArgumentException( sprintf( 'Field %d has an invalid size', $field->cid ) );
 			}
@@ -255,24 +457,149 @@ class GreaterMediaFormbuilderRender {
 		}
 		$html .= ' />';
 
-		// Give the theme a chance to alter the attributes for the description
-		$description_tag_attributes = apply_filters( 'gm_form_text_description_attrs', $description_tag_attributes );
-		$description_tag_attributes = apply_filters( 'gm_form_input_description_attrs', $description_tag_attributes );
-		$description                = apply_filters( 'gm_form_text_description_text', $description );
-		$description                = apply_filters( 'gm_form_description_text', $description );
+		$html .= self::render_description( $field );
 
-		if ( ! empty( $description ) ) {
+		return $html;
 
-			$html .= '<p ';
+	}
 
-			foreach ( $description_tag_attributes as $attribute => $value ) {
-				$html .= wp_kses_data( $attribute ) . '="' . esc_attr( $value ) . '" ';
-			}
+	/**
+	 * Render a text field on a form using data from formbuilder
+	 *
+	 * @param stdClass $field
+	 *
+	 * @return string HTML
+	 */
+	protected static function render_paragraph( $post_id, stdClass $field ) {
 
-			$html .= ' >' . wp_kses_data( $description ) . '</p>';
+		$html     = '';
+		$field_id = 'form_field_' . $field->cid;
+
+		$textarea_tag_attributes = array(
+			'id'   => $field_id,
+			'name' => $field_id,
+		);
+
+		$html .= self::render_label( $field );
+
+		if ( isset( $field->required ) && $field->required ) {
+			$textarea_tag_attributes['required'] = 'required';
 		}
 
-		$html .= self::get_submit_button( 'Enter', null, null, true );
+		if ( 'words' === $field->field_options->min_max_length_units ) {
+
+			$textarea_tag_attributes['data-parsley-minwords'] = absint( $field->field_options->minlength );
+			$textarea_tag_attributes['data-parsley-maxwords'] = absint( $field->field_options->maxlength );
+
+		} else if ( 'characters' === $field->field_options->min_max_length_units ) {
+
+			$textarea_tag_attributes['minlength']              = absint( $field->field_options->minlength );
+			$textarea_tag_attributes['maxlength']              = absint( $field->field_options->maxlength );
+			$textarea_tag_attributes['data-parsley-minlength'] = absint( $field->field_options->minlength );
+			$textarea_tag_attributes['data-parsley-maxlength'] = absint( $field->field_options->maxlength );
+
+		}
+
+		if ( isset( $field->field_options->size ) ) {
+
+			if ( 'small' === $field->field_options->size ) {
+				$textarea_tag_attributes['rows'] = self::TEXTAREA_SIZE_SMALL;
+			} else if ( 'medium' === $field->field_options->size ) {
+				$textarea_tag_attributes['rows'] = self::TEXTAREA_SIZE_MEDIUM;
+			} else if ( 'large' === $field->field_options->size ) {
+				$textarea_tag_attributes['rows'] = self::TEXTAREA_SIZE_LARGE;
+			} else {
+				throw new InvalidArgumentException( sprintf( 'Field %d has an invalid size', $field->cid ) );
+			}
+
+		}
+
+		// Give the theme a chance to alter the attributes for the input field
+		$textarea_tag_attributes = apply_filters( 'gm_form_text_input_attrs', $textarea_tag_attributes );
+		$textarea_tag_attributes = apply_filters( 'gm_form_input_attrs', $textarea_tag_attributes );
+
+		$html .= '<textarea ';
+		foreach ( $textarea_tag_attributes as $attribute => $value ) {
+			$html .= wp_kses_data( $attribute ) . '="' . esc_attr( $value ) . '" ';
+		}
+		$html .= ' >';
+		$html .= '</textarea>';
+
+		$html .= self::render_description( $field );
+
+		return $html;
+
+	}
+
+	protected static function render_radio( $post_id, stdClass $field ) {
+		return self::render_checkboxes( $post_id, $field, 'radio' );
+	}
+
+	protected static function render_checkboxes( $post_id, stdClass $field, $input_type = 'checkbox' ) {
+
+		$html = '';
+
+		$html .= '<fieldset>';
+
+		$html .= self::render_legend( $field );
+
+		if ( isset( $field->field_options->options ) && is_array( $field->field_options->options ) ) {
+			foreach ( $field->field_options->options as $field_option_index => $field_option_data ) {
+
+				$html .= self::render_single_checkbox( $field->cid, $field_option_index, $field_option_data, $input_type );
+
+			}
+		}
+
+		if ( isset( $field->field_options->include_other_option ) && true == $field->field_options->include_other_option ) {
+
+			$other_option_data = new stdClass();
+
+			$other_option_data->label   = __( 'Other', 'greatermedia_contests' );
+			$other_option_data->checked = false;
+			$other_option_data->other   = true;
+
+			$html .= self::render_single_checkbox( $field->cid, 'other', $other_option_data, $input_type );
+
+		}
+
+		$html .= self::render_description( $field );
+
+		$html .= '</fieldset>';
+
+		return $html;
+
+	}
+
+	protected static function render_date( $post_id, stdClass $field ) {
+
+		$html = '';
+
+		$html .= self::render_label( $field );
+
+		$field_id = 'form_field_' . $field->cid;
+
+		$input_tag_attributes = array(
+			'id'   => $field_id,
+			'name' => $field_id,
+			'type' => 'date',
+		);
+
+		if ( isset( $field->required ) && $field->required ) {
+			$input_tag_attributes['required'] = 'required';
+		}
+
+		// Give the theme a chance to alter the attributes for the input field
+		$input_tag_attributes = apply_filters( 'gm_form_date_input_attrs', $input_tag_attributes );
+		$input_tag_attributes = apply_filters( 'gm_form_input_attrs', $input_tag_attributes );
+
+		$html .= '<input ';
+		foreach ( $input_tag_attributes as $attribute => $value ) {
+			$html .= wp_kses_data( $attribute ) . '="' . esc_attr( $value ) . '" ';
+		}
+		$html .= ' />';
+
+		$html .= self::render_description( $field );
 
 		return $html;
 
@@ -343,6 +670,88 @@ class GreaterMediaFormbuilderRender {
 		}
 
 		return $button;
+	}
+
+	/**
+	 * @param string     $cid
+	 * @param int|string $field_option_index
+	 * @param stdClass   $field_option_data
+	 * @param string     $input_type 'checkbox' or 'radio'
+	 *
+	 * @return string
+	 */
+	protected static function render_single_checkbox( $cid, $field_option_index, stdClass $field_option_data, $input_type ) {
+
+		if ( 'checkbox' !== $input_type && 'radio' !== $input_type ) {
+			throw new InvalidArgumentException( 'Input type must be checkbox or radio' );
+		}
+
+		$html = '';
+
+		$field_id = 'form_field_' . $cid . '_' . $field_option_index;
+
+		$input_tag_attributes = array(
+			'id'    => $field_id,
+			'name'  => 'form_field_' . $cid . '[]',
+			'type'  => $input_type,
+			'value' => $field_option_index,
+		);
+
+		$label_tag_attributes = array(
+			'for' => $field_id,
+		);
+
+		$label = ! empty( $field_option_data->label ) ? $field_option_data->label : '';
+
+		if ( isset( $field_option_data->checked ) && $field_option_data->checked ) {
+			$input_tag_attributes['checked'] = 'checked';
+		}
+
+		// Give the theme a chance to alter the attributes for the input field
+		$input_tag_attributes = apply_filters( 'gm_form_checkbox_input_attrs', $input_tag_attributes );
+		$input_tag_attributes = apply_filters( 'gm_form_input_attrs', $input_tag_attributes );
+
+		$label_tag_attributes = apply_filters( 'gm_form_text_label_attrs', $label_tag_attributes );
+		$label_tag_attributes = apply_filters( 'gm_form_label_attrs', $label_tag_attributes );
+		$label                = apply_filters( 'gm_form_text_label_text', $label );
+		$label                = apply_filters( 'gm_form_label_text', $label );
+
+		$html .= '<div>';
+
+		$html .= '<input ';
+		foreach ( $input_tag_attributes as $attribute => $value ) {
+			$html .= wp_kses_data( $attribute ) . '="' . esc_attr( $value ) . '" ';
+		}
+		$html .= ' />';
+
+		$html .= '<label ';
+		foreach ( $label_tag_attributes as $attribute => $value ) {
+			$html .= wp_kses_data( $attribute ) . '="' . esc_attr( $value ) . '" ';
+		}
+		$html .= '>' . $label . '</label>';
+
+		if ( isset( $field_option_data->other ) && $field_option_data->other ) {
+
+			$other_input_tag_attributes = array(
+				'id'   => $field_id . '_value',
+				'name' => $field_id . '_value',
+				'type' => 'text',
+			);
+
+			$other_input_tag_attributes = apply_filters( 'gm_form_text_input_attrs', $other_input_tag_attributes );
+			$other_input_tag_attributes = apply_filters( 'gm_form_input_attrs', $other_input_tag_attributes );
+
+			$html .= '<input ';
+			foreach ( $other_input_tag_attributes as $attribute => $value ) {
+				$html .= wp_kses_data( $attribute ) . '="' . esc_attr( $value ) . '" ';
+			}
+			$html .= ' />';
+
+		}
+
+		$html .= '</div>';
+
+		return $html;
 	}
 
 }

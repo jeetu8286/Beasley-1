@@ -7,7 +7,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Class GreaterMediaContests
  * @see  https://core.trac.wordpress.org/ticket/12668#comment:27
- * @TODO abstract GreaterMediaContestEntry into its own class?
  */
 class GreaterMediaContests {
 
@@ -18,6 +17,32 @@ class GreaterMediaContests {
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 		add_action( 'restrict_manage_posts', array( $this, 'admin_contest_type_filter' ) );
 		add_action( 'pre_get_posts', array( $this, 'admin_filter_contest_list' ) );
+		add_filter( 'gmr_live_link_suggestion_post_types', array( $this, 'extend_live_link_suggestion_post_types' ) );
+		add_action( 'edit_form_after_title', array( $this, 'myprefix_edit_form_after_title' ) );
+		add_action( 'edit_form_after_editor', array( $this, 'myprefix_edit_form_after_editor' ) );
+
+	}
+
+	/**
+	 * Render markup to enclose the post content/body field in a fake metabox (for visual consistency) with a headline.
+	 * Implements edit_form_after_title action.
+	 */
+	public function myprefix_edit_form_after_title() {
+
+		echo '<div id="contest_editor" class="postbox">';
+		echo '<h3>' . __( 'Introduction', 'greatermedia_contests' ) . '</h3>';
+		echo '<div class="inside">';
+
+	}
+
+	/**
+	 * Render markup to finish rendering the fake metabox around the post content/body field.
+	 * Implements edit_form_after_editor action.
+	 */
+	public function myprefix_edit_form_after_editor() {
+
+		echo '</div></div>';
+
 	}
 
 	/**
@@ -45,7 +70,7 @@ class GreaterMediaContests {
 			'label'               => __( 'contest', 'greatermedia_contests' ),
 			'description'         => __( 'Contest', 'greatermedia_contests' ),
 			'labels'              => $labels,
-			'supports'            => array( 'title', ),
+			'supports'            => array( 'title', 'editor' ),
 			'taxonomies'          => array( 'contest_type' ),
 			'hierarchical'        => false,
 			'public'              => true,
@@ -148,7 +173,7 @@ class GreaterMediaContests {
 	}
 
 	public function admin_enqueue_scripts() {
-		wp_enqueue_style( 'greatermedia-contests', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'css/greatermedia-contests.css' );
+		wp_enqueue_style( 'greatermedia-contests-admin', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'css/greatermedia-contests-admin.css' );
 	}
 
 	/**
@@ -213,6 +238,20 @@ class GreaterMediaContests {
 
 		$wp_query->set( 'tax_query', $args );
 	}
+
+	/**
+	 * Extends live link suggestion post types.
+	 *
+	 * @static
+	 * @access public
+	 * @param array $post_types The array of already registered post types.
+	 * @return array The array of extended post types.
+	 */
+	public function extend_live_link_suggestion_post_types( $post_types ) {
+		$post_types[] = 'contest';
+		return $post_types;
+	}
+
 }
 
 $GreaterMediaContests = new GreaterMediaContests();
