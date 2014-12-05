@@ -11,6 +11,7 @@ add_action( 'admin_action_gmr_stream_make_primary', 'gmr_streams_make_primary' )
 add_filter( 'manage_' . GMR_LIVE_STREAM_CPT . '_posts_columns', 'gmr_streams_filter_columns_list' );
 add_filter( 'gmr_live_player_streams', 'gmr_streams_get_public_streams' );
 add_filter( 'json_endpoints', 'gmr_streams_init_api_endpoint' );
+add_filter( 'json_authentication_errors', 'gmr_streams_authorize_api_user', PHP_INT_MAX );
 
 /**
  * Registers API endpoint.
@@ -176,8 +177,8 @@ function gmr_streams_render_custom_column( $column_name, $post_id ) {
 			break;
 		case 'endpoint':
 			$call_sign = trim( get_post_meta( $post_id, 'call_sign', true ) );
-			if ( ! empty( $call_sign ) ) {
-				$endpoint = home_url( sprintf( '/wp-json/stream/%s', urlencode( $call_sign ) ) );
+			if ( ! empty( $call_sign ) && function_exists( 'json_get_url_prefix' ) ) {
+				$endpoint = home_url( sprintf( '/%s/stream/%s', json_get_url_prefix(), urlencode( $call_sign ) ) );
 				printf( '<a href="%s" target="_blank">%s</a>', esc_url( $endpoint ), parse_url( $endpoint, PHP_URL_PATH ) );
 			} else {
 				echo '&#8212;';
@@ -259,18 +260,12 @@ function gmr_streams_get_public_streams() {
 }
 
 /**
- * Processes stream endpoing submission.
+ * Authorizes API user based on Basic Authorization header.
  *
- * @param string $sign The stream id.
- * @param array $data The song data.
+ * @filter json_authentication_errors
+ * @return WP_Error|null Returns NULL on success, otherwise WP_Error object.
  */
-function gmr_streams_process_endpoint( $sign, $data ) {
-	// an example of data:
-	// {"artist": "Bruce Springsteen", "title": "Born to run", "purchase_link": "http://itunes.apple.com/album/born-to-run/id192810984?i=192811017&uo=5", "timestamp": "1417788996"}
-	//
-	// sample of curl command to test endpoint:
-	// curl -u admin:password -X POST --data '{json}' {endpoint_url}
-
+function gmr_streams_authorize_api_user() {
 	if ( ! is_user_logged_in() ) {
 		if ( ! isset( $_SERVER['HTTP_AUTHORIZATION'] ) ) {
 			return new WP_Error( 'gmr_stream_not_authorized', 'Authorization required', array( 'status' => 401 ) );
@@ -291,6 +286,22 @@ function gmr_streams_process_endpoint( $sign, $data ) {
 
 		wp_set_current_user( $authenticated->ID );
 	}
+
+	return null;
+}
+
+/**
+ * Processes stream endpoing submission.
+ *
+ * @param string $sign The stream id.
+ * @param array $data The song data.
+ */
+function gmr_streams_process_endpoint( $sign, $data ) {
+	// an example of data:
+	// {"artist": "Bruce Springsteen", "title": "Born to run", "purchase_link": "http://itunes.apple.com/album/born-to-run/id192810984?i=192811017&uo=5", "timestamp": "1417788996"}
+	//
+	// sample of curl command to test endpoint:
+	// curl -u admin:password -X POST --data '{json}' {endpoint_url}
 
 	$data = filter_var_array( $data, array(
 		'artist'        => FILTER_DEFAULT,
