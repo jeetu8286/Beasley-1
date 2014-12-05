@@ -1369,7 +1369,7 @@ var ConstraintCollection = Backbone.Collection.extend({
 		var $constraints = jQuery('#constraints');
 
 		$constraints.attr('value', json);
-		console.log(json);
+		//console.log(json);
 	}
 }, {
 
@@ -1409,37 +1409,113 @@ var QueryResultCollection = Backbone.Collection.extend({
 
 	initialize: function(models, options) {
 		this.activeConstraints = options.activeConstraints;
+		this.pollDelay         = 5; // seconds
+		this.maxQueryTime      = 60;
+		this.maxRetries        = Math.floor( this.maxQueryTime / this.pollDelay );
+		this.retries           = 0;
+		this.fetchStatusProxy  = $.proxy(this.fetchStatus, this);
+
 		Backbone.Collection.prototype.initialize(this, models, options);
 	},
 
 	search: function() {
+		this.start();
+	},
+
+	start: function() {
+		this.retries = 0;
+
 		var constraints = this.activeConstraints.toJSON();
 		var data        = {
-			constraints: constraints
+			constraints: constraints,
+			mode: 'start'
 		};
 
 		ajaxApi.request('preview_member_query', data)
-			.then($.proxy(this.didPreviewSuccess, this))
-			.fail($.proxy(this.didPreviewError, this));
+			.then($.proxy(this.didStartSuccess, this))
+			.fail($.proxy(this.didStartError, this));
 	},
 
-	didPreviewSuccess: function(response) {
-		if (!response.success) {
-			this.totalResults = 0;
-			this.didPreviewError(response);
+	didStartSuccess: function(response) {
+		if (response.success) {
+			this.memberQueryID = response.data.member_query_id;
+			this.trigger('searchStart', this.memberQueryID);
+			this.startPolling();
 		} else {
-			this.totalResults = response.data.total;
-			this.reset(response.data.accounts);
-			this.trigger('searchSuccess');
+			this.didStartError(response);
 		}
 	},
 
-	didPreviewError: function(response) {
+	didStartError: function(response) {
 		this.trigger('searchError', response.data);
+	},
+
+	onPoll: function() {
+		this.fetchStatus();
+	},
+
+	fetchStatus: function() {
+		var data = {
+			mode: 'status',
+			member_query_id: this.memberQueryID
+		};
+
+		this.retries++;
+		ajaxApi.request('preview_member_query', data)
+			.then($.proxy(this.didFetchStatusSuccess, this))
+			.fail($.proxy(this.didFetchStatusError, this));
+	},
+
+	didFetchStatusSuccess: function(response) {
+		if (response.success) {
+			if (response.data.complete) {
+				this.totalResults = response.data.total;
+				this.reset(response.data.users);
+				this.trigger('searchSuccess');
+				this.clear();
+			} else {
+				this.trigger('searchProgress', response.data.progress);
+				this.startPolling();
+			}
+		} else {
+			this.didFetchStatusError(response);
+		}
+	},
+
+	didFetchStatusError: function(response) {
+		this.startPolling();
 	},
 
 	getTotalResults: function() {
 		return this.totalResults;
+	},
+
+	startPolling: function() {
+		if (this.retries < this.maxRetries) {
+			setTimeout(this.fetchStatusProxy, this.pollDelay * 1000);
+		} else {
+			this.trigger('searchTimeout');
+		}
+	},
+
+	clear: function() {
+		var data = {
+			mode: 'clear',
+			member_query_id: this.memberQueryID
+		};
+
+		this.retries++;
+		ajaxApi.request('preview_member_query', data)
+			.then($.proxy(this.didClearSuccess, this))
+			.fail($.proxy(this.didClearError, this));
+	},
+
+	didClearSuccess: function(response) {
+		console.log('didClearSuccess', response);
+	},
+
+	didClearError: function(response) {
+		console.log('didClearError', response);
 	}
 });
 
@@ -1889,20 +1965,35 @@ var PreviewView = Backbone.View.extend({
 	initialize: function(options) {
 		this.collection = options.collection;
 		this.listenTo(this.collection, 'searchError', this.didSearchError);
+		this.listenTo(this.collection, 'searchStart', this.didSearchStart);
+		this.listenTo(this.collection, 'searchProgress', this.didSearchProgress);
 		this.listenTo(this.collection, 'searchSuccess', this.didSearchSuccess);
+		this.listenTo(this.collection, 'searchTimeout', this.didSearchTimeout);
 
 		Backbone.View.prototype.initialize.call(this, options);
 		this.search();
+		this.previewEnabled = true;
 	},
 
 	didPreviewClick: function(event) {
-		this.search();
+		if (this.previewEnabled) {
+			this.search();
+		}
+
 		return false;
 	},
 
 	search: function() {
 		this.setStatus('Searching, Please wait ...');
 		this.collection.search();
+	},
+
+	didSearchStart: function() {
+		this.setPreviewEnabled(false);
+	},
+
+	didSearchProgress: function(progress) {
+		this.setStatus('Searching, Please wait ... ' + progress + '%');
 	},
 
 	didSearchSuccess: function() {
@@ -1916,16 +2007,29 @@ var PreviewView = Backbone.View.extend({
 		}
 
 		this.setStatus(message);
+		this.setPreviewEnabled(true);
 	},
 
 	didSearchError: function(message) {
 		this.setStatus("Error: " + message);
 	},
 
+	didSearchTimeout: function() {
+		this.setStatus('Error: Query timed out, please try again.');
+		this.setPreviewEnabled(true);
+	},
+
 	setStatus: function(message) {
 		var div = $('.count-status');
 		div.text(message);
-	}
+	},
+
+	setPreviewEnabled: function(enabled) {
+		var previewButton = $('.preview-member-query-button', this.el);
+		previewButton.toggleClass('disabled', !enabled);
+
+		this.previewEnabled = enabled;
+	},
 
 });
 

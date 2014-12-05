@@ -30,6 +30,12 @@ class MemberQueryPostTypeTest extends \WP_UnitTestCase {
 		$this->assertFalse( $options['publicly_queryable'] );
 	}
 
+	function test_it_has_non_public_options_for_preview_post_type() {
+		$options = $this->post_type->get_preview_options();
+		$this->assertFalse( $options['show_ui'] );
+		$this->assertFalse( $options['public'] );
+	}
+
 	function test_it_has_wordpress_cpt_ui() {
 		$options = $this->post_type->get_options();
 		$this->assertTrue( $options['show_ui'] );
@@ -43,6 +49,11 @@ class MemberQueryPostTypeTest extends \WP_UnitTestCase {
 	function test_it_can_be_registered() {
 		$this->post_type->register();
 		$this->assertTrue( post_type_exists( 'member_query' ) );
+	}
+
+	function test_it_registers_a_corresponding_preview_post_type() {
+		$this->post_type->register();
+		$this->assertTrue( post_type_exists( 'member_query_preview' ) );
 	}
 
 	function test_it_has_meta_boxes() {

@@ -601,5 +601,5 @@
 	function clearDebugInfo() {
 		$('#debugInformation').html('');
 	}
-	
+
 } )(jQuery,window);

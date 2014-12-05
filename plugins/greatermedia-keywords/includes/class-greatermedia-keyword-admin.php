@@ -289,6 +289,35 @@ class GreaterMedia_Keyword_Admin {
 
 		return $options;
 	}
+
+	public static function get_post_for_keywords() {
+		$posts  =   array();
+
+		$args   =   array(
+			'post_type'         =>  self::$supported_post_types,
+			'posts_per_page'    =>  500,
+			'post_status'       =>  'publish',
+		);
+
+		$query = new WP_Query( $args );
+
+		foreach( $query->posts as $post ) {
+			$posts[] = $post;
+		}
+		$page = 1;
+		if( $query->max_num_pages > 1 ) {
+			while( $page < $query->max_num_pages ) {
+				$args['offset'] = $page * 500;
+				$query = new WP_Query( $args );
+				foreach( $query->posts as $post ) {
+					$posts[] = $post;
+				}
+				$page++;
+			}
+		}
+
+		return $posts;
+	}
 }
 
 

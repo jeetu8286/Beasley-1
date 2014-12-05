@@ -6,6 +6,10 @@
  * @since   0.1.0
  */
 ?>
+<style type="text/css">
+	#up-next {
+	}
+</style>
 <aside id="live-player__sidebar" class="live-player">
 
 	<nav class="live-player__stream">
@@ -40,6 +44,7 @@
 	</nav>
 
 	<div id="live-player" class="live-player__container">
+
 		<?php if ( is_gigya_user_logged_in() ) { ?>
 			<div id="up-next" class="up-next">
 				<span class="up-next__title">Up Next:</span><span class="up-next__show">Pierre Robert</span>
@@ -68,12 +73,6 @@
 				</div>
 			</div>
 		<?php } ?>
-
-		<?php /* <div class="live-player__volume">
-			<div class="live-player__volume--btn"></div>
-			<div class="live-player__volume--level"></div>
-			<div class="live-player__volume--up"></div>
-		</div> */ ?>
 
 	</div>
 

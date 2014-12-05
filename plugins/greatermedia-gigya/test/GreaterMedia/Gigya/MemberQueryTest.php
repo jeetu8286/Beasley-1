@@ -429,4 +429,149 @@ class MemberQueryTest extends \WP_UnitTestCase {
 		$this->assertEquals( $expected, $actual[1]['query'] );
 	}
 
+	function test_it_can_identify_an_and_subquery_conjunction() {
+		$constraints = array(
+			array(
+				'type'        => 'profile:city',
+				'operator'    => 'contains',
+				'conjunction' => 'or',
+				'valueType'   => 'string',
+				'value'       => 'New York',
+			),
+			array(
+				'type'        => 'profile:city',
+				'operator'    => 'equals',
+				'conjunction' => 'and',
+				'valueType'   => 'string',
+				'value'       => 'Los Angeles',
+			),
+			array(
+				'type'         => 'action:contest',
+				'operator'     => 'equals',
+				'conjunction'  => 'or',
+				'valueType'    => 'string',
+				'value'        => 'foo',
+				'actionTypeID'  => 100,
+				'actionFieldID' => '200',
+			),
+			array(
+				'type'         => 'action:contest',
+				'operator'     => 'equals',
+				'conjunction'  => 'and',
+				'valueType'    => 'string',
+				'value'        => 'bar',
+				'actionTypeID'  => 101,
+				'actionFieldID' => '201',
+			),
+		);
+
+		$this->query = $this->query_for( json_encode( $constraints ) );
+		$actual = $this->query->get_subquery_conjunction();
+
+		$this->assertEquals( 'and', $actual );
+	}
+
+	function test_it_can_identify_an_or_subquery_conjunction() {
+		$constraints = array(
+			array(
+				'type'        => 'profile:city',
+				'operator'    => 'contains',
+				'conjunction' => 'or',
+				'valueType'   => 'string',
+				'value'       => 'New York',
+			),
+			array(
+				'type'        => 'profile:city',
+				'operator'    => 'equals',
+				'conjunction' => 'or',
+				'valueType'   => 'string',
+				'value'       => 'Los Angeles',
+			),
+			array(
+				'type'         => 'action:contest',
+				'operator'     => 'equals',
+				'conjunction'  => 'or',
+				'valueType'    => 'string',
+				'value'        => 'foo',
+				'actionTypeID'  => 100,
+				'actionFieldID' => '200',
+			),
+			array(
+				'type'         => 'action:contest',
+				'operator'     => 'equals',
+				'conjunction'  => 'and',
+				'valueType'    => 'string',
+				'value'        => 'bar',
+				'actionTypeID'  => 101,
+				'actionFieldID' => '201',
+			),
+		);
+
+		$this->query = $this->query_for( json_encode( $constraints ) );
+		$actual = $this->query->get_subquery_conjunction();
+
+		$this->assertEquals( 'or', $actual );
+	}
+
+	function test_it_can_identify_an_any_subquery_conjunction() {
+		$constraints = array(
+			array(
+				'type'        => 'profile:city',
+				'operator'    => 'contains',
+				'conjunction' => 'or',
+				'valueType'   => 'string',
+				'value'       => 'New York',
+			),
+			array(
+				'type'        => 'profile:city',
+				'operator'    => 'equals',
+				'conjunction' => 'or',
+				'valueType'   => 'string',
+				'value'       => 'Los Angeles',
+			),
+		);
+
+		$this->query = $this->query_for( json_encode( $constraints ) );
+		$actual = $this->query->get_subquery_conjunction();
+
+		$this->assertEquals( 'any', $actual );
+	}
+
+	function test_it_can_store_member_query_under_member_query_preview_post_type() {
+		$post_type = new MemberQueryPostType();
+		$post_type->register();
+
+		$params = array(
+			'post_name' => 'foo',
+			'post_status' => 'draft',
+			'post_type' => 'member_query_preview',
+		);
+
+		$post_id = $this->factory->post->create( $params );
+
+		$constraints = array(
+			array(
+				'type'        => 'profile:city',
+				'operator'    => 'contains',
+				'conjunction' => 'or',
+				'valueType'   => 'string',
+				'value'       => 'New York',
+			),
+			array(
+				'type'        => 'profile:city',
+				'operator'    => 'equals',
+				'conjunction' => 'or',
+				'valueType'   => 'string',
+				'value'       => 'Los Angeles',
+			),
+		);
+
+		$json = json_encode( $constraints );
+		$member_query = new MemberQuery( $post_id, $json );
+		$member_query->save( $json );
+
+		$member_query = new MemberQuery( $post_id );
+		$this->assertEquals( $constraints, $member_query->get_constraints() );
+	}
+
 }

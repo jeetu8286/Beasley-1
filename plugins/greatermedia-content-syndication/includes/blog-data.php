@@ -15,36 +15,6 @@ class BlogData {
 		add_action( 'wp_ajax_syndicate-now', array( __CLASS__, 'syndicate_now' ) );
 	}
 
-	public static function run( $syndication_id ) {
-			$result = self::QueryContentSite( $syndication_id );
-
-			$taxonomy_names = get_object_taxonomies( 'post', 'objects' );
-			$defaults = array(
-				'status'    =>  get_post_meta( $syndication_id, 'subscription_post_status', true ),
-			);
-
-			foreach( $taxonomy_names as $taxonomy ) {
-				$label = $taxonomy->name;
-
-				// Use get_post_meta to retrieve an existing value from the database.
-				$terms = get_post_meta( $syndication_id, 'subscription_default_terms-' . $label, true );
-				$terms = explode( ',', $terms );
-				$defaults[ $label ] = $terms;
-
-			}
-
-			foreach ( $result as $single_post ) {
-				self::ImportPosts(
-					$single_post['post_obj']
-					, $single_post['post_metas']
-					, $defaults
-					, $single_post['featured']
-					, $single_post['attachments']
-					, $single_post['galleries']
-				);
-			}
-	}
-
 	public static function syndicate_now() {
 
 		// get nonce from ajax post
@@ -65,58 +35,40 @@ class BlogData {
 		die();
 	}
 
-	// Rgister setting to store last syndication timestamp
-	public static function register_subscription_setting() {
-		register_setting( 'syndication_last_performed', 'syndication_last_performed', 'intval' );
-	}
+	public static function run( $syndication_id ) {
+			$result = self::QueryContentSite( $syndication_id );
 
-	/**
-	 * Get all terms of all taxonomies from the content site
-	 *
-	 * @return array
-	 */
-	public static function getTerms() {
-		global $switched;
+			$taxonomy_names = get_object_taxonomies( 'post', 'objects' );
+			$defaults = array(
+				'status'    =>  get_post_meta( $syndication_id, 'subscription_post_status', true ),
+			);
 
-		$terms = array();
-		switch_to_blog( self::$content_site_id );
+			foreach( $taxonomy_names as $taxonomy ) {
+				$label = $taxonomy->name;
 
-		foreach( self::$taxonomies as $taxonomy ) {
-			if( taxonomy_exists( $taxonomy ) ) {
-				$args = array(
-					'get'        => 'all',
-					'hide_empty' => false
-				);
+				// Use get_post_meta to retrieve an existing value from the database.
+				$terms = get_post_meta( $syndication_id, 'subscription_default_terms-' . $label, true );
+				$terms = explode( ',', $terms );
+				$defaults[ $label ] = $terms;
 
-				$terms[ $taxonomy ] = get_terms( $taxonomy, $args );
 			}
-		}
+			$imported_post_ids = array();
+			foreach ( $result as $single_post ) {
+				array_push( $imported_post_ids,
+					self::ImportPosts(
+					$single_post['post_obj']
+					, $single_post['post_metas']
+					, $defaults
+					, $single_post['featured']
+					, $single_post['attachments']
+					, $single_post['galleries']
+					)
+				);
+			}
+			$imported_post_ids = implode( ',', $imported_post_ids );
 
-		restore_current_blog();
-
-		return $terms;
-	}
-
-
-	/**
-	 * Get all active subscription ordered by default post status
-	 * Defualt post status "Draft" has higher priority as it's less public
-	 *
-	 * @return array of post objects
-	 */
-	public static function GetActiveSubscriptions() {
-
-		$args = array(
-			'post_type' => 'subscription',
-			'post_status' => 'publish',
-			'meta_key' => 'subscription_post_status',
-			'orderby' => 'meta_value',
-			'order' => 'ASC',
-		);
-
-		$active_subscriptions = get_posts( $args );
-
-		return $active_subscriptions;
+		self::add_or_update( 'syndication_imported_posts', $imported_post_ids );
+		set_transient( 'syndication_imported_posts', $imported_post_ids, WEEK_IN_SECONDS * 4 );
 	}
 
 	/**
@@ -175,23 +127,53 @@ class BlogData {
 
 		// get all metas
 		foreach ( $wp_custom_query->posts as $single_result ) {
+			$result[] = self::PostDataExtractor( $post_type, $single_result );
+		}
+
+		$page = 1;
+		if( $wp_custom_query->max_num_pages > 1 ) {
+			while( $page < $wp_custom_query->max_num_pages ) {
+				$args['offset'] = $page * 500;
+				$wp_custom_query = new WP_Query( $args );
+				foreach( $wp_custom_query->posts as $post ) {
+					$posts[] = $post;
+				}
+				$page++;
+			}
+		}
+
+		if( $wp_custom_query->max_num_pages > 1 ){
+			while( $page < $wp_custom_query->max_num_pages ) {
+				$args['offset'] = $page * 500;
+				$wp_custom_query = new WP_Query( $args );
+				foreach ( $wp_custom_query->posts as $single_result ) {
+					$result[] = self::PostDataExtractor( $post_type, $single_result );
+				}
+				$page++;
+			}
+		}
+
+		restore_current_blog();
+
+		return $result;
+	}
+
+	// Rgister setting to store last syndication timestamp
+
+	public static function PostDataExtractor( $post_type, $single_result ) {
+
 			$metas	= get_metadata( $post_type, $single_result->ID, true );
 			$media = get_attached_media( 'image', $single_result->ID );
 			$featured = wp_get_attachment_image_src( get_post_thumbnail_id( $single_result->ID ), 'full' );
 			$galleries = get_post_galleries( $single_result->ID, false );
 
-			$result[] = array(
+			return array(
 				'post_obj'      =>  $single_result,
 				'post_metas'    =>  $metas,
 				'attachments'   =>  $media,
 				'featured'      =>  $featured[0],
 				'galleries'      =>  $galleries
 			);
-		}
-
-		restore_current_blog();
-
-		return $result;
 	}
 
 	/**
@@ -320,19 +302,6 @@ class BlogData {
 	}
 
 	/**
-	 * Import all attached images
-	 *
-	 * @param $post_id
-	 * @param $attachments
-	 */
-	public static function ImportAttachedImages( $post_id, $attachments) {
-		foreach ( $attachments as $attachment ) {
-			$filename = esc_url_raw( $attachment->guid );
-			self::ImportMedia( $post_id, $filename, false, $attachment->ID );
-		}
-	}
-
-	/**
 	 * Helper function to import images
 	 * Reused code from
 	 * http://codex.wordpress.org/Function_Reference/media_handle_sideload
@@ -409,6 +378,19 @@ class BlogData {
 	}
 
 	/**
+	 * Import all attached images
+	 *
+	 * @param $post_id
+	 * @param $attachments
+	 */
+	public static function ImportAttachedImages( $post_id, $attachments) {
+		foreach ( $attachments as $attachment ) {
+			$filename = esc_url_raw( $attachment->guid );
+			self::ImportMedia( $post_id, $filename, false, $attachment->ID );
+		}
+	}
+
+	/**
 	 * Replace the ids in post content to mathc the new attachments
 	 *
 	 * @param int   $post_id
@@ -422,7 +404,7 @@ class BlogData {
 
 		if( !empty( $galleries ) ) {
 			foreach ( $galleries as $gallery ) {
-				$new_gallery = '[gallery ids="';
+				$new_gallery_ids = '';
 				$old_ids     = explode( ",", $gallery["ids"] );
 				foreach ( $gallery['src'] as $index => $image_src ) {
 					$meta_query_args = array(
@@ -434,17 +416,15 @@ class BlogData {
 					$existing = get_posts( $meta_query_args );
 
 					if ( ! empty( $existing ) ) {
-						$new_gallery .= $existing[0]->ID . ",";
+						$new_gallery_ids .= $existing[0]->ID . ",";
 					} else {
 						$new_id = self::ImportMedia( 0, $image_src, false, $old_ids[ $index ] );
-						$new_gallery .= $new_id . ",";
+						$new_gallery_ids .= $new_id . ",";
 					}
 				}
 
-				$new_gallery .= "\"]";
-
 				// replace old gallery with new gallery
-				$content = str_replace( '[gallery ids="' . $gallery["ids"] . '"]', $new_gallery, $content );
+				$content = preg_replace( '/(\[gallery.*ids=*)\"([0-9,]*)(\".*\])/', '$1"' . $new_gallery_ids . '$3', $content  );
 
 				// update new post
 				wp_update_post(
@@ -455,6 +435,77 @@ class BlogData {
 				);
 			}
 		}
+	}
+
+	public static function register_subscription_setting() {
+		register_setting( 'syndication_last_performed', 'syndication_last_performed', 'intval' );
+	}
+
+	/**
+	 * Get all terms of all taxonomies from the content site
+	 *
+	 * @return array
+	 */
+	public static function getTerms() {
+		global $switched;
+
+		$terms = array();
+		switch_to_blog( self::$content_site_id );
+
+		foreach( self::$taxonomies as $taxonomy ) {
+			if( taxonomy_exists( $taxonomy ) ) {
+				$args = array(
+					'get'        => 'all',
+					'hide_empty' => false
+				);
+
+				$terms[ $taxonomy ] = get_terms( $taxonomy, $args );
+			}
+		}
+
+		restore_current_blog();
+
+		return $terms;
+	}
+
+	/**
+	 * Get all active subscription ordered by default post status
+	 * Defualt post status "Draft" has higher priority as it's less public
+	 *
+	 * @return array of post objects
+	 */
+	public static function GetActiveSubscriptions() {
+
+		$args = array(
+			'post_type' => 'subscription',
+			'post_status' => 'publish',
+			'meta_key' => 'subscription_post_status',
+			'orderby' => 'meta_value',
+			'order' => 'ASC',
+		);
+
+		$active_subscriptions = get_posts( $args );
+
+		return $active_subscriptions;
+	}
+
+
+	/**
+	 * Adds or udpates the existing option
+	 *
+	 * @param $name  Option name
+	 * @param $value New value of the option
+	 *
+	 * @return bool  Returns whether option has been added or updated
+	 */
+	public static function add_or_update( $name, $value ) {
+		$success = add_option( $name, $value, '', 'no' );
+
+		if ( ! $success ) {
+			$success = update_option( $name, $value );
+		}
+
+		return $success;
 	}
 }
 

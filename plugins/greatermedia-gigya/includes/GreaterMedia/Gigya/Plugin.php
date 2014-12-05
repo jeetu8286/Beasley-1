@@ -37,6 +37,16 @@ class Plugin {
 		add_action( 'init', array( $this, 'initialize' ) );
 		add_action( 'admin_init', array( $this, 'initialize_admin' ) );
 		add_action( 'admin_menu', array( $this, 'initialize_admin_menu' ) );
+
+		register_activation_hook(
+			$this->plugin_file,
+			array( $this, 'migrate' )
+		);
+	}
+
+	public function migrate() {
+		$migrator = new Sync\TempSchemaMigrator();
+		$migrator->migrate();
 	}
 
 	/**
@@ -62,6 +72,11 @@ class Plugin {
 		/* Lazy register ajax handlers only if this is an ajax request */
 		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 			$this->register_ajax_handlers();
+		}
+
+		/* Lazy load the async tasks */
+		if ( defined( 'DOING_ASYNC' ) && DOING_ASYNC ) {
+			$this->register_task_handlers();
 		}
 
 		$profile_page = new ProfilePage();
@@ -109,7 +124,7 @@ class Plugin {
 
 		$handlers[] = new Ajax\GigyaLoginAjaxHandler();
 		$handlers[] = new Ajax\GigyaLogoutAjaxHandler();
-		$handlers[] = new Ajax\PreviewAjaxHandler();
+		$handlers[] = new Ajax\PreviewResultsAjaxHandler();
 		$handlers[] = new Ajax\RegisterAjaxHandler();
 		$handlers[] = new Ajax\ListEntryTypesAjaxHandler();
 		$handlers[] = new Ajax\ListEntryFieldsAjaxHandler();
@@ -118,6 +133,11 @@ class Plugin {
 		foreach ( $handlers as $handler ) {
 			$handler->register();
 		}
+	}
+
+	public function register_task_handlers() {
+		$launcher = new Sync\Launcher();
+		$launcher->register();
 	}
 
 	/**
