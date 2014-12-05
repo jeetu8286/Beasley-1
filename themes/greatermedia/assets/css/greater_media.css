@@ -19,6 +19,41 @@ html {
   -moz-box-sizing: inherit;
   box-sizing: inherit; }
 
+.hologram-color-swatch {
+  width: 200px;
+  height: 200px;
+  display: inline-block;
+  margin: 10px; }
+
+/*doc
+---
+title: Colors
+name: colors
+category: Base
+---
+
+```none_example
+<span class="hologram-color-swatch" style="background: #000000;">$black</span>
+<span class="hologram-color-swatch" style="background: #ffffff;">$white</span>
+<span class="hologram-color-swatch" style="background: #d22228;">$cardinal</span>
+<span class="hologram-color-swatch" style="background: #561015;">$heath</span>
+<span class="hologram-color-swatch" style="background: #270e10;">$coffee-bean</span>
+<span class="hologram-color-swatch" style="background: #d0d2d3;">$iron</span>
+<span class="hologram-color-swatch" style="background: #c7c7c7;">$silver</span>
+<span class="hologram-color-swatch" style="background: #a6a8ab;">$aluminium</span>
+<span class="hologram-color-swatch" style="background: #929497;">$oslo-gray</span>
+<span class="hologram-color-swatch" style="background: #6d6e70;">$nevada</span>
+<span class="hologram-color-swatch" style="background: #606060;">$scorpion</span>
+<span class="hologram-color-swatch" style="background: #58595b;">$abbey</span>
+<span class="hologram-color-swatch" style="background: #404041;">$ship-gray</span>
+<span class="hologram-color-swatch" style="background: #303030;">$mine-shaft</span>
+<span class="hologram-color-swatch" style="background: #282827;">$tuatara</span>
+<span class="hologram-color-swatch" style="background: #191919;">$cod-gray</span>
+<span class="hologram-color-swatch" style="background: #f5ed7f;">$sahara-sand</span>
+<span class="hologram-color-swatch" style="background: #f7ef7e;">$sweet-corn</span>
+```
+
+*/
 .featured__content--list, .footer__nav--list, .footer__social {
   padding: 0;
   margin: 0; }
@@ -1814,6 +1849,139 @@ blockquote p {
 .footer__social--google-plus:before {
   content: "\e611"; }
 
+/*doc
+---
+title: Post Excerpts
+name: posts
+category: Components - Post Excerpts
+---
+
+Post excerpts are displayed on the home page and category pages
+
+*/
+/*doc
+---
+parent: posts
+title: Standard Post
+name: standard-post
+---
+
+Standard posts are mostly text based but can include images. They can also optionally have a featured image.
+
+```html_example 
+<article class="post-1162 post type-post status-publish format-standard hentry category-uncategorized tag-post-tag cf" role="article" itemscope="" itemtype="http://schema.org/BlogPosting">
+	<section class="entry--standard__thumbnail">
+		<img src="http://placehold.it/600x400&amp;text=standard">
+	</section>
+
+	<section class="entry--standard__meta">
+		<time datetime="2014-11-23T17:17:54+00:00" class="entry__date">23 November</time>
+		<h2 class="entry__title" itemprop="headline"><a href="http://wmmr.greatermedia.10uplabs.com/asdfasdf/">asdfasdf</a></h2>
+	</section>
+	<footer class="entry__footer">
+		<a href="http://wmmr.greatermedia.10uplabs.com/category/uncategorized/" class="entry__footer--category">Uncategorized</a>
+	</footer>
+</article>
+```
+*/
+/*doc
+---
+parent: posts
+title: Gallery Post
+name: gallery-post
+---
+
+Gallery posts are mostly image based but can include some text. They can also optionally have a featured image.
+
+```html_example 
+<article id="post-922" class="post-922 post type-post status-publish format-gallery hentry category-uncategorized cf" role="article" itemscope="" itemtype="http://schema.org/BlogPosting">
+	<section class="entry--gallery__meta" itemprop="articleBody">
+		<time datetime="2014-11-10T20:11:28+00:00" class="entry__date">10 November</time>
+		<h2 class="entry__title"><a href="">Test Show Post</a></h2>
+	</section>
+
+	<section class="entry--gallery__thumbnail">	
+		<img src="http://placehold.it/400x400&amp;text=gallery">
+	</section>
+	<footer class="entry__footer">
+		<a href="http://wmmr.greatermedia.10uplabs.com/category/uncategorized/" class="entry__footer--category">Uncategorized</a>
+	</footer>
+</article>
+```
+*/
+/*doc
+---
+parent: posts
+title: Video Post
+name: video-post
+---
+
+Video posts display a video and minimal text. They can also optionally have a featured image.
+
+```html_example 
+<article id="post-581" class="post-581 post type-post status-publish format-video has-post-thumbnail hentry category-uncategorized cf" role="article" itemscope="" itemtype="http://schema.org/BlogPosting">
+	<section class="entry--video__meta" itemprop="articleBody">
+		<time datetime="2014-11-05T00:13:14+00:00" class="entry__date">5 November</time>
+		<h2 class="entry__title"><a href="">Gladys Knight &amp; The Pips “Midnight Train To Georgia”</a></h2>
+	</section>
+
+	<section class="entry--video__thumbnail">
+		<img src="http://placehold.it/600x400&amp;text=video">
+	</section>
+	<footer class="entry__footer">
+		<a href="http://wmmr.greatermedia.10uplabs.com/category/uncategorized/" class="entry__footer--category">Uncategorized</a>
+	</footer>
+</article>
+```
+*/
+/*doc
+---
+parent: posts
+title: Image Post
+name: image-post
+---
+
+Standard posts are mostly text based but can include images. They can also optionally have a featured image.
+
+```html_example 
+<article id="post-558" class="post-558 post type-post status-publish format-image has-post-thumbnail hentry category-uncategorized cf" role="article" itemscope="" itemtype="http://schema.org/BlogPosting">
+	<section class="entry--standard__thumbnail">
+		<img src="http://placehold.it/600x400&amp;text=image">
+	</section>
+
+	<section class="entry--standard__meta">
+		<time datetime="2014-11-03T22:34:27+00:00" class="entry__date">3 November</time>
+		<h2 class="entry__title" itemprop="headline"><a href="http://wmmr.greatermedia.10uplabs.com/hey-its-a-blog-post/">Hey it’s a blog post!</a></h2>
+	</section>
+
+	<footer class="entry__footer">
+		<a href="http://wmmr.greatermedia.10uplabs.com/category/uncategorized/" class="entry__footer--category">Uncategorized</a>
+	</footer>
+</article>
+```
+*/
+/*doc
+---
+parent: posts
+title: Link Post
+name: link-post
+---
+
+Link posts contain a link to an external site. They can also optionally have a featured image.
+
+```html_example 
+<article id="post-886" class="post-886 post type-post status-publish format-link has-post-thumbnail hentry category-uncategorized cf" role="article" itemscope="" itemtype="http://schema.org/BlogPosting">
+	<section class="entry--link__meta" itemprop="articleBody">
+		<time datetime="2014-11-10T04:07:56+00:00" class="entry__date">10 November</time>
+		<h2 class="entry__title"><a href="">Ontario Highway 401 – Wikipedia, the free encyclopedia</a></h2>
+	</section>
+
+	<footer class="entry__footer">
+		<a href="http://wmmr.greatermedia.10uplabs.com/category/uncategorized/" class="entry__footer--category">Uncategorized</a>
+	</footer>
+</article>
+```
+*/
 .hentry {
   margin-bottom: 58px;
   overflow: auto; }
