@@ -1,19 +1,8 @@
 /*doc
 ---
-title: Post Excerpts
-name: posts
-category: Components - Post Excerpts
----
-
-Post excerpts are displayed on the home page and category pages
-
-*/
-
-/*doc
----
-parent: posts
 title: Standard Post
 name: standard-post
+category: Componenets - Post Excerpts
 ---
 
 Standard posts are mostly text based but can include images. They can also optionally have a featured image.
@@ -37,9 +26,9 @@ Standard posts are mostly text based but can include images. They can also optio
 
 /*doc
 ---
-parent: posts
 title: Gallery Post
 name: gallery-post
+category: Componenets - Post Excerpts
 ---
 
 Gallery posts are mostly image based but can include some text. They can also optionally have a featured image.
@@ -63,9 +52,9 @@ Gallery posts are mostly image based but can include some text. They can also op
 
 /*doc
 ---
-parent: posts
 title: Video Post
 name: video-post
+category: Componenets - Post Excerpts
 ---
 
 Video posts display a video and minimal text. They can also optionally have a featured image.
@@ -89,9 +78,9 @@ Video posts display a video and minimal text. They can also optionally have a fe
 
 /*doc
 ---
-parent: posts
 title: Image Post
 name: image-post
+category: Componenets - Post Excerpts
 ---
 
 Standard posts are mostly text based but can include images. They can also optionally have a featured image.
@@ -116,9 +105,9 @@ Standard posts are mostly text based but can include images. They can also optio
 
 /*doc
 ---
-parent: posts
 title: Link Post
 name: link-post
+category: Componenets - Post Excerpts
 ---
 
 Link posts contain a link to an external site. They can also optionally have a featured image.
@@ -248,6 +237,7 @@ Link posts contain a link to an external site. They can also optionally have a f
 
 .entry__categories, .entry__tags {
 	margin-bottom: 8px;
+	@extend %mute;
 }
 
 .entry__list, %entry__list {
