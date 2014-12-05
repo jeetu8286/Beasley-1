@@ -37,13 +37,20 @@
 					 */
 					onsubmit: function (e) {
 
+						var attributes = {};
+
+						if (e.data.show && '' !== e.data.show) {
+							attributes.show = new Date(e.data.show).toISOString();
+						}
+
+						if (e.data.hide && '' !== e.data.hide) {
+							attributes.hide = new Date(e.data.hide).toISOString();
+						}
+
 						editor.insertContent(
 							new wp.shortcode({
 								tag    : 'time-restricted',
-								attrs  : {
-									show: new Date(e.data.show).toISOString(),
-									hide: new Date(e.data.hide).toISOString()
-								},
+								attrs  : attributes,
 								content: tinymce.activeEditor.selection.getContent()
 							}).string()
 						);

@@ -42,10 +42,24 @@ jQuery(function () {
 			var show_time = '', hide_time = '';
 
 			if (parsed_shortcode !== undefined) {
-				show_time = new Date(parsed_shortcode.attrs.named.show).format(GreaterMediaTimedContent.formats.mce_view_date);
-				hide_time = new Date(parsed_shortcode.attrs.named.hide).format(GreaterMediaTimedContent.formats.mce_view_date);
-			}
 
+				if (parsed_shortcode.attrs.named.show && '' !== parsed_shortcode.attrs.named.show) {
+					// @TODO detect & accommodate invalid date values
+					show_time = new Date(parsed_shortcode.attrs.named.show).format(GreaterMediaTimedContent.formats.mce_view_date);
+				}
+				else {
+					show_time = '';
+				}
+
+				if (parsed_shortcode.attrs.named.hide && '' !== parsed_shortcode.attrs.named.hide) {
+					// @TODO detect & accommodate invalid date values
+					hide_time = new Date(parsed_shortcode.attrs.named.hide).format(GreaterMediaTimedContent.formats.mce_view_date);
+				}
+				else {
+					hide_time = '';
+				}
+
+			}
 
 			return [
 				{
@@ -76,10 +90,19 @@ jQuery(function () {
 		};
 
 		module.view_edit_popup_onsubmit = function (submit_event) {
-			return {
-				show: new Date(submit_event.data.show).toISOString(),
-				hide: new Date(submit_event.data.hide).toISOString()
-			};
+
+			var attributes = {};
+
+			if (submit_event.data.show && '' !== submit_event.data.show) {
+				attributes.show = new Date(submit_event.data.show).toISOString();
+			}
+
+			if (submit_event.data.hide && '' !== submit_event.data.hide) {
+				attributes.hide = new Date(submit_event.data.hide).toISOString();
+			}
+
+			return attributes;
+
 		};
 
 		var exp_timestamp_div = jQuery('#exptimestampdiv');
