@@ -41,6 +41,14 @@
 				}
 			});
 		});
+
+		var syndicated_posts = $('ul.syndicated_posts li');
+		syndicated_posts.hide().slice(0, 2).show();
+
+		$("#show_all_syndicated_posts").click(function( event ){
+			event.preventDefault();
+			syndicated_posts.show('600');
+		});
 	});
 
 } )( this );
