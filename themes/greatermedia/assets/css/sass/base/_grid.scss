@@ -22,9 +22,9 @@ img {
 }
 
 #site-wrap {
-	max-width: $max-site-width;
+	max-width: 100%;
 	margin: 0 auto;
-	background-color: palette(base,  primary-bg);
+	background-color: $primary-bg;
 }
 
 // The `.page-wrap` class is being used in conjunction with the off-canvas mobile navigation. On click of the
@@ -38,19 +38,27 @@ img {
 
 .container, %container {
 	@include outer-container(92.08770257388%);
+	@include bp(medium) {
+		@include outer-container(100%);
+		padding-right: 15.8781%;
+	}
+	@include bp(large) {
+	}
+	@include bp(x-large) {
+		@include outer-container(1400px);
+		padding-right: 250px;
+	}
 }
 
 .main, %main {
 	float: left;
 	width: 100%;
 	margin: 0;
-	background-color: palette(base,  primary-bg);
-	@include bp(medium) {
-		width: 84.121892542101%;
-	}
-	@include bp(x-large) {
-		width: $max-width;
-	}
+	background-color: $secondary-bg;
+}
+
+.main .container {
+	background-color: $primary-bg;
 }
 
 .content, %content {
