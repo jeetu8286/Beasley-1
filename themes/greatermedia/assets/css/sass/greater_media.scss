@@ -10,11 +10,11 @@
 @import "neat/neat";
 
 // Anything that doesn't print out CSS along with normalize and fonts
+@import "base/variables";
 @import "base/functions";
 @import "base/mixins";
 @import "base/placeholders";
 @import "base/helpers";
-@import "base/variables";
 @import "base/normalize";
 @import "base/breakpoints";
 @import "base/fonts";
@@ -47,6 +47,8 @@
 @import "components/polls-surveys";
 @import "components/shows";
 @import "components/widgets";
+@import "components/social-share-links";
+@import "components/article";
 
 // Custom styles only used on single pages
 @import "pages/single";
