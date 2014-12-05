@@ -269,7 +269,28 @@ function gmr_streams_process_endpoint( $sign, $data ) {
 	// {"artist": "Bruce Springsteen", "title": "Born to run", "purchase_link": "http://itunes.apple.com/album/born-to-run/id192810984?i=192811017&uo=5", "timestamp": "1417788996"}
 	//
 	// sample of curl command to test endpoint:
-	// curl -X POST --data '{json}' {endpoint_url}
+	// curl -u admin:password -X POST --data '{json}' {endpoint_url}
+
+	if ( ! is_user_logged_in() ) {
+		if ( ! isset( $_SERVER['HTTP_AUTHORIZATION'] ) ) {
+			return new WP_Error( 'gmr_stream_not_authorized', 'Authorization required', array( 'status' => 401 ) );
+		}
+
+		$user = isset( $_SERVER['PHP_AUTH_USER'] ) ? $_SERVER['PHP_AUTH_USER'] : false;
+		$password = isset( $_SERVER['PHP_AUTH_PW'] ) ? $_SERVER['PHP_AUTH_PW'] : false;
+
+		list( $type, $auth ) = explode( ' ', $_SERVER['HTTP_AUTHORIZATION'] );
+		if ( strtolower( $type ) === 'basic' ) {
+			list( $user, $password ) = explode( ':', base64_decode( $auth ) );
+		}
+
+		$authenticated = wp_authenticate_username_password( null, $user, $password );
+		if ( is_wp_error( $authenticated ) ) {
+			return new WP_Error( 'gmr_stream_authorization', 'Invlid user name or password.', array( 'status' => 401 ) );
+		}
+
+		wp_set_current_user( $authenticated->ID );
+	}
 
 	$data = filter_var_array( $data, array(
 		'artist'        => FILTER_DEFAULT,
