@@ -42,8 +42,23 @@ jQuery(function () {
 			var show_time = '', hide_time = '';
 
 			if (parsed_shortcode !== undefined) {
-				show_time = new Date(parsed_shortcode.attrs.named.show).format(GreaterMediaTimedContent.formats.mce_view_date);
-				hide_time = new Date(parsed_shortcode.attrs.named.hide).format(GreaterMediaTimedContent.formats.mce_view_date);
+
+				if(parsed_shortcode.attrs.named.show && '' !== parsed_shortcode.attrs.named.show) {
+					// @TODO detect & accommodate invalid date values
+					show_time = new Date(parsed_shortcode.attrs.named.show).format(GreaterMediaTimedContent.formats.mce_view_date);
+				}
+				else {
+					show_time = '';
+				}
+
+				if(parsed_shortcode.attrs.named.hide && '' !== parsed_shortcode.attrs.named.hide) {
+					// @TODO detect & accommodate invalid date values
+					hide_time = new Date(parsed_shortcode.attrs.named.hide).format(GreaterMediaTimedContent.formats.mce_view_date);
+				}
+				else {
+					hide_time = '';
+				}
+
 			}
 
 
