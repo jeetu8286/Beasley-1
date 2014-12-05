@@ -43,7 +43,7 @@ jQuery(function () {
 
 			if (parsed_shortcode !== undefined) {
 
-				if(parsed_shortcode.attrs.named.show && '' !== parsed_shortcode.attrs.named.show) {
+				if (parsed_shortcode.attrs.named.show && '' !== parsed_shortcode.attrs.named.show) {
 					// @TODO detect & accommodate invalid date values
 					show_time = new Date(parsed_shortcode.attrs.named.show).format(GreaterMediaTimedContent.formats.mce_view_date);
 				}
@@ -51,7 +51,7 @@ jQuery(function () {
 					show_time = '';
 				}
 
-				if(parsed_shortcode.attrs.named.hide && '' !== parsed_shortcode.attrs.named.hide) {
+				if (parsed_shortcode.attrs.named.hide && '' !== parsed_shortcode.attrs.named.hide) {
 					// @TODO detect & accommodate invalid date values
 					hide_time = new Date(parsed_shortcode.attrs.named.hide).format(GreaterMediaTimedContent.formats.mce_view_date);
 				}
@@ -60,8 +60,7 @@ jQuery(function () {
 				}
 
 			}
-
-
+			
 			return [
 				{
 					type : 'textbox',
