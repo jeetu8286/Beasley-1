@@ -148,9 +148,10 @@ Link posts contain a link to an external site. They can also optionally have a f
 }
 
 .entry__date {
-	font-size: ms(-1);
+	font-size: ms(-2);
 	font-weight: lighter;
 	color: $secondary-heading;
+	text-transform: uppercase;
 }
 
 // Shows container - individual attributes are located in _shows.scss

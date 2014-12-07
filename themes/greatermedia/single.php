@@ -29,7 +29,11 @@ get_header(); ?>
 	
 							<header class="entry-header">
 
+								<time class="entry__date" datetime="<?php echo get_the_time(); ?>"><?php the_date('F j'); ?></time>
 								<h2 class="entry-title" itemprop="headline"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
+								<a href="http://www.facebook.com/sharer/sharer.php?u=[URL]&title=[TITLE]" class="icon-facebook social-share-link"></a>
+								<a href="http://twitter.com/home?status=[TITLE]+[URL]" class="icon-twitter social-share-link"></a>
+								<a href="https://plus.google.com/share?url=[URL]" class="icon-google-plus social-share-link"></a>
 
 							</header>
 
