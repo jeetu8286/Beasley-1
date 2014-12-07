@@ -5,7 +5,7 @@ var QueryResultCollection = Backbone.Collection.extend({
 	initialize: function(models, options) {
 		this.activeConstraints = options.activeConstraints;
 		this.pollDelay         = 5; // seconds
-		this.maxQueryTime      = 60;
+		this.maxQueryTime      = 5 * 60; // seconds
 		this.maxRetries        = Math.floor( this.maxQueryTime / this.pollDelay );
 		this.retries           = 0;
 		this.fetchStatusProxy  = $.proxy(this.fetchStatus, this);
