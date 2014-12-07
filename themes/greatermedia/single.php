@@ -12,13 +12,21 @@ get_header(); ?>
 
 		<div class="container">
 
-			<section class="content">
+			<?php
+				if ( has_post_thumbnail() ) :
+					the_post_thumbnail( 'full', array( 'class' => 'single__featured-img' ) );
+				endif;
+			?>
 
-				<?php
-					while ( have_posts() ) : the_post(); ?>
+			<?php
+				while ( have_posts() ) : the_post(); ?>
+		
+					<section class="content">
 
 						<article id="post-<?php the_ID(); ?>" <?php post_class( 'cf' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
 
+							<img class="ad__inline--right" src="http://placehold.it/300x250&amp;text=inline ad">
+	
 							<header class="entry-header">
 
 								<h2 class="entry-title" itemprop="headline"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
@@ -61,9 +69,9 @@ get_header(); ?>
 
 						</article>
 
-					<?php endwhile; ?>
-
-			</section>
+					</section>
+	
+			<?php endwhile; ?>
 
 		</div>
 

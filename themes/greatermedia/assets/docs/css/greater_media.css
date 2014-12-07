@@ -1850,19 +1850,9 @@ blockquote p {
 
 /*doc
 ---
-title: Post Excerpts
-name: posts
-category: Components - Post Excerpts
----
-
-Post excerpts are displayed on the home page and category pages
-
-*/
-/*doc
----
-parent: posts
 title: Standard Post
 name: standard-post
+category: Componenets - Post Excerpts
 ---
 
 Standard posts are mostly text based but can include images. They can also optionally have a featured image.
@@ -1885,9 +1875,9 @@ Standard posts are mostly text based but can include images. They can also optio
 */
 /*doc
 ---
-parent: posts
 title: Gallery Post
 name: gallery-post
+category: Componenets - Post Excerpts
 ---
 
 Gallery posts are mostly image based but can include some text. They can also optionally have a featured image.
@@ -1910,9 +1900,9 @@ Gallery posts are mostly image based but can include some text. They can also op
 */
 /*doc
 ---
-parent: posts
 title: Video Post
 name: video-post
+category: Componenets - Post Excerpts
 ---
 
 Video posts display a video and minimal text. They can also optionally have a featured image.
@@ -1935,9 +1925,9 @@ Video posts display a video and minimal text. They can also optionally have a fe
 */
 /*doc
 ---
-parent: posts
 title: Image Post
 name: image-post
+category: Componenets - Post Excerpts
 ---
 
 Standard posts are mostly text based but can include images. They can also optionally have a featured image.
@@ -1961,9 +1951,9 @@ Standard posts are mostly text based but can include images. They can also optio
 */
 /*doc
 ---
-parent: posts
 title: Link Post
 name: link-post
+category: Componenets - Post Excerpts
 ---
 
 Link posts contain a link to an external site. They can also optionally have a featured image.
@@ -3215,22 +3205,22 @@ category: Components
 .now-playing__title {
   margin: 0 0 4px;
   line-height: 1;
-  font-size: 1em;
+  font-size: ms(0);
   font-weight: lighter;
   color: #d22228; }
   @media screen and (min-width: 768px) {
     .now-playing__title {
-      font-size: 1.125em; } }
+      font-size: ms(1); } }
 
 .now-playing__artist {
   margin: 0 0 4px;
   line-height: 1;
-  font-size: 0.70233em;
+  font-size: ms(-3);
   font-weight: lighter;
   color: #c7c7c7; }
   @media screen and (min-width: 768px) {
     .now-playing__artist {
-      font-size: 0.79012em; } }
+      font-size: ms(-2); } }
 
 .live-player__volume {
   display: none; }
@@ -3405,6 +3395,20 @@ category: Components
   width: 100%;
   overflow: auto; }
 
+/*doc
+---
+title: Leaderboard
+name: leaderboard
+category: Components - Ads
+---
+
+```html_example
+<div class="ad__leaderboard">
+	<img src="http://placehold.it/728x90&amp;text=leaderboard">
+</div>
+```
+
+*/
 .ad__leaderboard {
   display: none;
   position: relative;
@@ -3416,6 +3420,25 @@ category: Components
 
 .ad__leaderboard img {
   margin: 0 auto; }
+
+/*doc
+---
+title: Inline Ad
+name: inline-ad
+category: Components - Ads
+---
+
+```html_example
+<img class="ad__inline--right" src="http://placehold.it/300x250&amp;text=inline ad">
+```
+*/
+.ad__inline--right {
+  float: none;
+  margin: 0 auto; }
+  @media screen and (min-width: 768px) {
+    .ad__inline--right {
+      float: right;
+      margin: 0 0 1em 1em; } }
 
 .personality-attr--name {
   position: absolute;
