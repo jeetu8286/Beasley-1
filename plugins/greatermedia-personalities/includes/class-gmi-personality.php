@@ -128,7 +128,7 @@ if ( !class_exists( "GMI_Personality" ) ) {
 				'show_ui'       		=> true,
 				'show_in_nav_menus'  	=> false,
 				'show_admin_column'  	=> true,
-				'show_tagcloud'			=> true,
+				'show_tagcloud'			=> false,
 				'hierarchical'  		=> true, // Show check boxes in the Personality meta box.
 			);
 

@@ -97,7 +97,6 @@ img {
 		width: 15.878107457899%;
 		height: 100%;
 		@include box-sizing(border-box);
-		overflow-y: scroll;
 		cursor: default;
 	}
 	@include bp(x-large) {
