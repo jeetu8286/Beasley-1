@@ -12,10 +12,16 @@ get_header(); ?>
 
 		<div class="container">
 
-			<section class="content">
+			<?php
+				if ( has_post_thumbnail() ) :
+					the_post_thumbnail( 'full' );
+				endif;
+			?>
 
-				<?php
-					while ( have_posts() ) : the_post(); ?>
+			<?php
+				while ( have_posts() ) : the_post(); ?>
+		
+					<section class="content">
 
 						<article id="post-<?php the_ID(); ?>" <?php post_class( 'cf' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
 
@@ -61,9 +67,9 @@ get_header(); ?>
 
 						</article>
 
-					<?php endwhile; ?>
-
-			</section>
+					</section>
+	
+			<?php endwhile; ?>
 
 		</div>
 

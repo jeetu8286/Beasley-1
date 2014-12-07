@@ -300,7 +300,7 @@ category: Components
 	}
 }
 
-.live-player--open .live-stream {
+.live-player--active .live-stream {
 	width: 100%;
 	padding: 12px 3.75%; // 12px
 }
@@ -466,7 +466,6 @@ category: Components
 }
 
 .live-player--open .live-stream__controls {
-	float: right;
 	width: 11.486486486486%; // 34px
 }
 
@@ -497,7 +496,7 @@ category: Components
 }
 
 .live-player--open .on-air, .live-player--open .up-next {
-	display: none !important;
+	display: block;
 }
 
 .on-air__title, .up-next__title {
@@ -517,9 +516,9 @@ category: Components
 .now-playing {
 	display: none;
 	float: left;
-	width: 40%;
+	width: 88.513513513514%; // 262px
 	height: 34px;
-	padding: 0 1em;
+	padding: 8px 1em 0 0;
 	margin: 0;
 	text-align: left;
 	@include bp(medium) {
@@ -533,10 +532,9 @@ category: Components
 	}
 }
 
-.live-player--open .now-playing {
-	float: left;
-	display: block;
-	width: 88.513513513514%; // 262px
+.live-player--active .now-playing {
+	width: 80%;
+	padding-right: 0;
 }
 
 .now-playing__title {
