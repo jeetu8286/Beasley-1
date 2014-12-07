@@ -3215,22 +3215,22 @@ category: Components
 .now-playing__title {
   margin: 0 0 4px;
   line-height: 1;
-  font-size: 1em;
+  font-size: ms(0);
   font-weight: lighter;
   color: #d22228; }
   @media screen and (min-width: 768px) {
     .now-playing__title {
-      font-size: 1.125em; } }
+      font-size: ms(1); } }
 
 .now-playing__artist {
   margin: 0 0 4px;
   line-height: 1;
-  font-size: 0.70233em;
+  font-size: ms(-3);
   font-weight: lighter;
   color: #c7c7c7; }
   @media screen and (min-width: 768px) {
     .now-playing__artist {
-      font-size: 0.79012em; } }
+      font-size: ms(-2); } }
 
 .live-player__volume {
   display: none; }
