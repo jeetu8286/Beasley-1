@@ -31,6 +31,12 @@ class GreaterMediaContests {
 	 */
 	public function myprefix_edit_form_after_title() {
 
+		global $post;
+
+		if ( ! isset( $post ) || 'contest' !== $post->post_type ) {
+			return;
+		}
+
 		echo '<div id="contest_editor" class="postbox">';
 		echo '<h3>' . __( 'Introduction', 'greatermedia_contests' ) . '</h3>';
 		echo '<div class="inside">';
@@ -42,6 +48,12 @@ class GreaterMediaContests {
 	 * Implements edit_form_after_editor action.
 	 */
 	public function myprefix_edit_form_after_editor() {
+
+		global $post;
+
+		if ( ! isset( $post ) || 'contest' !== $post->post_type ) {
+			return;
+		}
 
 		echo '</div></div>';
 
@@ -202,15 +214,15 @@ class GreaterMediaContests {
 		}
 
 		$args = array(
-			'show_option_all'   => __( 'All contest types', 'greatermedia_contests' ),
-			'hierarchical'       => true,
-			'name'               => 'type_filter',
-			'id'                 => 'type-filter',
-			'class'              => 'postform',
-			'orderby'            => 'name',
-			'taxonomy'           => 'contest_type',
-			'hide_if_empty'      => true,
-			'selected'			 => $contest_type_tax_id,
+			'show_option_all' => __( 'All contest types', 'greatermedia_contests' ),
+			'hierarchical'    => true,
+			'name'            => 'type_filter',
+			'id'              => 'type-filter',
+			'class'           => 'postform',
+			'orderby'         => 'name',
+			'taxonomy'        => 'contest_type',
+			'hide_if_empty'   => true,
+			'selected'        => $contest_type_tax_id,
 		);
 
 		wp_dropdown_categories( $args );
@@ -246,11 +258,14 @@ class GreaterMediaContests {
 	 *
 	 * @static
 	 * @access public
+	 *
 	 * @param array $post_types The array of already registered post types.
+	 *
 	 * @return array The array of extended post types.
 	 */
 	public function extend_live_link_suggestion_post_types( $post_types ) {
 		$post_types[] = 'contest';
+
 		return $post_types;
 	}
 
