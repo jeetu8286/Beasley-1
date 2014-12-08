@@ -87,7 +87,7 @@ class SyndicationCPT {
 	public function subscription_columns_filter( $columns ) {
 
 		$column_labels = array();
-		foreach( BlogData::$taxonomies as $supported_taxonomy ) {
+		foreach( BlogData::$taxonomies as $supported_taxonomy => $type ) {
 			// get taxonomy label
 			$taxonomy_obj = get_taxonomies( array( 'name' => $supported_taxonomy ), 'object' );
 			$column_labels[ $taxonomy_obj[$supported_taxonomy]->name ] = $taxonomy_obj[$supported_taxonomy]->label;
@@ -454,7 +454,7 @@ class SyndicationCPT {
 		}
 
 		// get filter metas
-		foreach( BlogData::$taxonomies as $taxonomy ) {
+		foreach( BlogData::$taxonomies as $taxonomy => $type ) {
 			$terms = '';
 
 			if( isset( $_POST[ 'subscription_filter_terms-' . $taxonomy ] ) ) {
@@ -497,8 +497,7 @@ class SyndicationCPT {
 			$taxonomy_obj = get_taxonomies( array( 'name' => $taxonomy ), 'object' );
 			$taxonomy_name = $taxonomy_obj[$taxonomy]->label;
 
-
-			$multiple = $taxonomy == 'collection' ? '' : 'multiple';
+			$multiple = BlogData::$taxonomies[$taxonomy];
 			$disabled = $enabled_filter == $taxonomy ? '' : 'disabled';
 			$checked =  $enabled_filter == $taxonomy ? 'checked' : '';
 
