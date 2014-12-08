@@ -24,7 +24,17 @@ get_header();
 
 				<h2 class="content__heading">Latest from WMMR</h2>
 
-				<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
+				<?php
+
+				$args = array(
+					'post_type' => array(
+						'post', 'episode'
+					),
+				);
+
+				$query = new WP_Query( $args );
+
+				if ( $query->have_posts() ) : while (  $query->have_posts() ) :  $query->the_post(); ?>
 
 					<article id="post-<?php the_ID(); ?>" <?php post_class( 'cf' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
 
