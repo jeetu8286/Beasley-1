@@ -28,7 +28,7 @@ get_header();
 
 				$args = array(
 					'post_type' => array(
-						'post', 'episode'
+						'post', 'episode', 'tribe_events'
 					),
 				);
 
