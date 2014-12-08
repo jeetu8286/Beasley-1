@@ -38,7 +38,7 @@ get_header();
 
 					<article id="post-<?php the_ID(); ?>" <?php post_class( 'cf' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
 
-						<?php
+						<?php /*
 
 							if ( has_post_format( 'video' ) ) {
 
@@ -60,9 +60,30 @@ get_header();
 
 								get_template_part( 'partials/post', 'standard' );
 
-							}
+							} */
 
 						?>
+						<section class="entry__meta">
+
+							<time datetime="<?php the_time( 'c' ); ?>" class="entry__date"><?php the_time( 'j F' ); ?></time>
+
+							<h2 class="entry__title" itemprop="headline"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
+
+						</section>
+
+						<section class="entry__thumbnail">
+
+							<?php if ( has_post_thumbnail() ) {
+
+								the_post_thumbnail( 'gm-article-thumbnail' );
+
+							} else { ?>
+
+								<img src="http://placehold.it/600x400&text=image">
+
+							<?php } ?>
+
+						</section>
 
 						<footer class="entry__footer">
 
