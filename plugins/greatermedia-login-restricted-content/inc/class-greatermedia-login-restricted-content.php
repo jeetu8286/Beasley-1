@@ -21,6 +21,7 @@ class GreaterMediaLoginRestrictedContent extends VisualShortcode {
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ), 20, 0 );
 		add_action( 'plugins_loaded', array( $this, 'plugins_loaded' ) );
 		add_action( 'save_post', array( $this, 'save_post' ) );
+		add_filter( 'the_content', array( $this, 'the_content' ) );
 
 	}
 
@@ -41,7 +42,7 @@ class GreaterMediaLoginRestrictedContent extends VisualShortcode {
 		if ( ! post_type_supports( $post->post_type, 'login-restricted-content' ) ) {
 			return;
 		}
-		
+
 		$login_restriction      = self::sanitize_login_restriction( get_post_meta( $post->ID, '_post_login_restriction', true ) );
 		$login_restriction_desc = self::login_restriction_description( $login_restriction );
 
@@ -130,7 +131,7 @@ class GreaterMediaLoginRestrictedContent extends VisualShortcode {
 				if ( '' !== $login_restriction ) {
 					add_post_meta( $post_id, '_post_login_restriction', $login_restriction );
 				}
-				
+
 			}
 
 		} else {
@@ -262,6 +263,27 @@ class GreaterMediaLoginRestrictedContent extends VisualShortcode {
 		} else {
 			return __( 'No restriction', 'greatermedia-login-restricted-content' );
 		}
+
+	}
+
+	public function the_content( $content ) {
+
+		global $post;
+
+		$login_restriction = self::sanitize_login_restriction( get_post_meta( $post->ID, '_post_login_restriction', true ) );
+
+		if ( 'logged-in' === $login_restriction || 'logged-out' === $login_restriction ) {
+
+			ob_start();
+			include trailingslashit( GREATER_MEDIA_LOGIN_RESTRICTED_CONTENT_PATH ) . 'tpl/login-restricted-post-render.tpl.php';
+			$content = ob_get_clean();
+
+			return $content;
+
+		}
+
+		// Default - return content as-is
+		return $content;
 
 	}
 
