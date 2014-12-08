@@ -64,7 +64,7 @@ function initPlayer() {
 					max_listening_time: 35 /* If max_listening_time is undefined, the default value will be 30 minutes */
 				},
 				sbm: {active: sbm, aSyncCuePointFallback: aSyncCuePointFallback},
-				geoTargeting: {desktop: {isActive: true}, iOS: {isActive: true}, android: {isActive: true}}
+				geoTargeting: {desktop: {isActive: false}, iOS: {isActive: false}, android: {isActive: false}}
 			},
 			{id: 'UserRegistration', tenantId: 'see_1670', platformId: platformid + '01'},
 			{id: 'NowPlayingApi'},
