@@ -304,6 +304,12 @@ function get_results_for_keyword() {
 
 add_action( 'keyword_search_result', 'get_results_for_keyword' );
 
+/**
+ * Alter search results on search page
+ * 
+ * @param  [type] $query [description]
+ * @return [type]        [description]
+ */
 function alter_search_query( $query ) {
 	if( $query->is_search && $query->is_main_query() ) {
 		$search_query_arg = sanitize_text_field( $query->query_vars['s'] );
