@@ -26,7 +26,7 @@ class SyndicationCPT {
 		add_filter( 'post_row_actions', array( $this, 'remove_quick_edit' ), 10, 2);
 		add_filter( 'is_protected_meta', array( $this, 'hide_meta_keys' ), 10, 2);
 		add_filter( 'manage_edit-subscription_columns', array( $this, 'subscription_columns_filter' ),10, 1 );
-		add_filter('post_updated_messages', array( $this, 'custom_messages_for_subscription') );
+		add_filter( 'post_updated_messages', array( $this, 'custom_messages_for_subscription' ) );
 	}
 
 	/**

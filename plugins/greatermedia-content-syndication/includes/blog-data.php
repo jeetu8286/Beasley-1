@@ -6,7 +6,7 @@
 
 class BlogData {
 
-	public static $taxonomies = array( 'post_tag', 'collection');
+	public static $taxonomies = array( 'category', 'post_tag', 'collection' );
 	public static $content_site_id = 1;
 
 	public static function init() {
@@ -108,7 +108,7 @@ class BlogData {
 		$subscription_filter = sanitize_text_field( $subscription_filter );
 
 		if( $subscription_filter != '' ) {
-			if( $enabled_taxonomy != 'collection' ) {
+			if( !is_taxonomy_hierarchical( $enabled_taxonomy )) {
 				$subscription_filters = explode( ',', $subscription_filter );
 				$args['tax_query']['relation'] = 'AND';
 			}
@@ -123,8 +123,7 @@ class BlogData {
 
 		// get all postst matching filters
 		$wp_custom_query = new WP_Query( $args );
-		//$wp_custom_query = get_posts( $args );
-
+		
 		// get all metas
 		foreach ( $wp_custom_query->posts as $single_result ) {
 			$result[] = self::PostDataExtractor( $post_type, $single_result );
