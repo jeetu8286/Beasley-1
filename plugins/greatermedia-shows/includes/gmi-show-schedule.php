@@ -527,9 +527,15 @@ function gmrs_get_current_show() {
  * @return string Show episode HTML if it is an episode post, otherwise initial HTML.
  */
 function gmrs_get_widget_episode_item( $item ) {
-	if ( ShowsCPT::EPISODE_CPT != get_post_type() ) {
+	$episode = get_post();
+	if ( ! $episode || ShowsCPT::EPISODE_CPT != $episode->post_type ) {
 		return $item;
 	}
 
-	return sprintf( '<div class="live-link__type--standard"><div class="live-link__title">%s</div></div>', esc_html( get_the_title() ) );
+	$item = esc_html( get_the_title() );
+	if ( get_post_meta( $episode->post_parent, 'show_homepage', true ) ) {
+		$item = sprintf( '<a href="%s">%s</a>', get_permalink( $episode->post_parent ), $item );
+	}
+
+	return sprintf( '<div class="live-link__type--standard"><div class="live-link__title">%s</div></div>', $item );
 }
