@@ -71,7 +71,7 @@ get_header();
 
 						</section>
 
-						<section class="entry__thumbnail">
+						<section class="entry__thumbnail <?php greatermedia_post_formats(); ?>">
 
 							<?php if ( has_post_thumbnail() ) {
 
