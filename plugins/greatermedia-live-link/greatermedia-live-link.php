@@ -510,10 +510,14 @@ function gmr_ll_add_show_widget_post_types( $post_types ) {
  * @return string The item html.
  */
 function gmr_ll_output_show_widget_live_link_item( $item ) {
+	if ( GMR_LIVE_LINK_CPT != get_post_type() ) {
+		return $item;
+	}
+	
 	$link = gmr_ll_get_redirect_link( get_the_ID() );
 	if ( $link ) {
 		$item = sprintf(
-			'<a href="%s">%s</a>',
+			'<div class="live-link__type--standard"><div class="live-link__title"><a href="%s">%s</a></div></div>',
 			esc_url( $link ),
 			get_the_title()
 		);
