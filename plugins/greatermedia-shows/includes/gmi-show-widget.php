@@ -72,25 +72,32 @@ function gmrs_get_shows_widget_html() {
 	// start from enabling outbut buffering
 	ob_start();
 
+	// get widget item ids
+	$posts__in = apply_filters( 'gmr_shows_widget_item_ids', array() );
+	$posts__in = array_unique( array_filter( array_map( 'intval', $posts__in ) ) );
+
 	// build quiery and render widget's html
-	$show_stuff = new WP_Query( array(
-		'post_type'           => apply_filters( 'gmr_show_widget_item_post_types', array() ),
-		'post_status'         => 'any',
-		'orderby'             => 'date',
-		'order'               => 'DESC',
-		'ignore_sticky_posts' => true,
-		'no_found_rows'       => true,
-		'posts_per_page'      => 20,
-	) );
+	$query = new WP_Query();
+	if ( ! empty( $posts__in ) ) {
+		$query->query(  array(
+			'post_type'           => apply_filters( 'gmr_show_widget_item_post_types', array() ),
+			'post__in'            => $posts__in,
+			'orderby'             => 'date',
+			'order'               => 'DESC',
+			'ignore_sticky_posts' => true,
+			'no_found_rows'       => true,
+			'posts_per_page'      => 20,
+		) );
+	}
 
 	echo '<ul>';
-		while ( $show_stuff->have_posts() ) :
-			$show_stuff->the_post();
+		while ( $query->have_posts() ) :
+			$query->the_post();
 
 			$item = apply_filters( 'gmr_show_widget_item', false );
-			if ( ! empty( $item ) ) {
+			if ( ! empty( $item ) ) :
 				echo '<li>', $item, '</li>';
-			}
+			endif;
 		endwhile;
 	echo '</ul>';
 
