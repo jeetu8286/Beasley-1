@@ -169,6 +169,7 @@ class ShowsCPT {
 
 		return array_merge( $posts, $query->query(  array(
 			'post_type'           => self::EPISODE_CPT,
+			'post_status'         => 'publish',
 			'orderby'             => 'date',
 			'order'               => 'DESC',
 			'ignore_sticky_posts' => true,
