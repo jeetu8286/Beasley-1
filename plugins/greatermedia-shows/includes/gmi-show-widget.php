@@ -62,7 +62,7 @@ function gmrs_render_shows_widget_html() {
  */
 function gmrs_get_shows_widget_html() {
 	// check transient first and if it exists, then return cached version of the widget
-	$transient = 'gmrs_show_widget';
+	$transient = apply_filters( 'gmr_shows_widget_transient_name', 'gmrs_show_widget' );
 	$html = get_transient( $transient );
 	if ( ! empty( $html ) ) {
 		return $html;
@@ -80,7 +80,7 @@ function gmrs_get_shows_widget_html() {
 	$query = new WP_Query();
 	if ( ! empty( $posts__in ) ) {
 		$query->query(  array(
-			'post_type'           => apply_filters( 'gmr_show_widget_item_post_types', array( ShowsCPT::EPISODE_CPT ) ),
+			'post_type'           => apply_filters( 'gmr_show_widget_item_post_types', array() ),
 			'post__in'            => $posts__in,
 			'orderby'             => 'date',
 			'order'               => 'DESC',

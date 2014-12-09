@@ -13,6 +13,7 @@ add_filter( 'gmr_live_player_streams', 'gmr_streams_get_public_streams' );
 add_filter( 'json_endpoints', 'gmr_streams_init_api_endpoint' );
 add_filter( 'determine_current_user', 'gmr_streams_json_basic_auth_handler', 20 );
 add_filter( 'json_authentication_errors', 'gmr_streams_json_basic_auth_error' );
+add_filter( 'gmr_shows_widget_transient_name', 'gmr_streams_update_shows_widget_transient_name' );
 
 /**
  * Registers API endpoint.
@@ -427,4 +428,29 @@ function gmr_streams_json_basic_auth_error( $error ) {
 	global $wp_json_basic_auth_error;
 
 	return $wp_json_basic_auth_error;
+}
+
+/**
+ * Adjusts shows widget transient name to make unique transients per stream.
+ *
+ * @filter gmr_shows_widget_transient_name
+ * @param string $name The initial transient name.
+ * @return string Adjusted transient name.
+ */
+function gmr_streams_update_shows_widget_transient_name( $name ) {
+	$stream = null;
+	$sign = filter_input( INPUT_GET, 'stream' );
+	if ( ! empty( $sign ) ) {
+		$stream = gmr_streams_get_stream_by_sign( $sign );
+	}
+
+	if ( ! $stream ) {
+		$stream = gmr_streams_get_primary_stream();
+	}
+
+	if ( $stream ) {
+		$name .= '_' . get_post_meta( $stream->ID, 'call_sign', true );
+	}
+	
+	return $name;
 }
