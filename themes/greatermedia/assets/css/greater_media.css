@@ -581,8 +581,7 @@ img {
     .container {
       max-width: 1400px;
       margin-left: auto;
-      margin-right: auto;
-      padding-right: 250px; }
+      margin-right: auto; }
       .container:after {
         content: "";
         display: table;
@@ -3538,9 +3537,9 @@ category: Components - Article
 
 ```html_example
 <img src="http://placehold.it/600x400&amp;text=image" alt="placeholder" class="entry__featured-image">
-<header class="entry-header">
+<header class="entry__header">
 	<time datetime="2014-11-10T20:11:28+00:00" class="entry__date">10 November</time>
-    <h2 class="entry-title"><a href="">Test Show Post</a></h2>
+    <h2 class="entry__title"><a href="">Test Show Post</a></h2>
 </header>
 <a href="http://www.facebook.com/sharer/sharer.php?u=[URL]&title=[TITLE]" class="icon-facebook social-share-link"></a>
 <a href="http://twitter.com/home?status=[TITLE]+[URL]" class="icon-twitter social-share-link"></a>
@@ -3549,7 +3548,7 @@ category: Components - Article
 ```
 
 */
-.entry-header {
+.entry__header {
   margin-bottom: 2em; }
 
 .entry__featured-image {
@@ -3557,7 +3556,7 @@ category: Components - Article
   height: auto;
   margin-bottom: 1em; }
 
-.entry-title {
+.entry__title {
   margin: 0;
   margin-bottom: 1em; }
 

@@ -41,11 +41,8 @@ img {
 		@include outer-container(100%);
 		padding-right: 20em;
 	}
-	@include bp(large) {
-	}
 	@include bp(x-large) {
 		@include outer-container(1400px);
-		padding-right: 250px;
 	}
 }
 
