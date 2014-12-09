@@ -25,7 +25,7 @@ function gmrs_enqueue_widget_scripts() {
 	wp_register_script( 'gmr-show-widget', GMEDIA_SHOWS_URL . "/assets/js/shows_widget{$postfix}.js", array( 'jquery' ), GMEDIA_SHOWS_VERSION, true );
 	wp_localize_script( 'gmr-show-widget', 'gmrs', array(
 		'ajaxurl'  => admin_url( 'admin-ajax.php?action=gmrs_widget' ),
-		'interval' => MINUTE_IN_SECONDS * 1000,
+		'interval' => MINUTE_IN_SECONDS * 1000, // 60 000 milliseconds
 	) );
 }
 
@@ -80,7 +80,7 @@ function gmrs_get_shows_widget_html() {
 	$query = new WP_Query();
 	if ( ! empty( $posts__in ) ) {
 		$query->query(  array(
-			'post_type'           => apply_filters( 'gmr_show_widget_item_post_types', array() ),
+			'post_type'           => apply_filters( 'gmr_show_widget_item_post_types', array( ShowsCPT::EPISODE_CPT ) ),
 			'post__in'            => $posts__in,
 			'orderby'             => 'date',
 			'order'               => 'DESC',
