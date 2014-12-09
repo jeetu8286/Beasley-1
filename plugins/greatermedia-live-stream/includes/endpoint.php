@@ -64,7 +64,7 @@ function gmr_streams_process_endpoint( $sign, $data ) {
 	) );
 
 	if ( ! $query->have_posts() ) {
-		return new WP_Error( 'gmr_stream_not_found', 'The stream was not found.', array( 'status' => 404 ) );
+		return new WP_Error( 'gmr_stream_bad_request', 'The stream was not found.', array( 'status' => 400 ) );
 	}
 
 	$song = array(
@@ -127,7 +127,7 @@ function gmr_streams_json_basic_auth_handler( $user ) {
 	add_filter( 'determine_current_user', 'gmr_streams_json_basic_auth_handler', 20 );
 
 	if ( is_wp_error( $user ) ) {
-		$wp_json_basic_auth_error = $user;
+		$wp_json_basic_auth_error = new WP_Error( 'gmr_stream_not_authorized', strip_tags( $user->get_error_message() ), array( 'status' => 401 ) );
 		return null;
 	}
 
