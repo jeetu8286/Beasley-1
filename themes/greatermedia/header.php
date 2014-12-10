@@ -83,7 +83,7 @@
 									<div class="mobile-nav__toggle--span"></div>
 								</div>
 								<div class="header__logo">
-									<a href="<?php echo esc_url( home_url( '/' ) ); ?>"><img src="<?php do_action( 'gmr_site_logo' ); ?>" alt="<?php bloginfo( 'name' ); ?> | <?php bloginfo( 'description' ); ?>" class="header__logo--img"></a>
+									<a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php do_action( 'gmr_site_logo' ); ?></a>
 								</div>
 								<?php
 								$main_nav = array(

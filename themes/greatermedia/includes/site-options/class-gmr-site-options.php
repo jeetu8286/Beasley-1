@@ -166,7 +166,8 @@ class GreaterMediaSiteOptions {
 	public static function site_logo() {
 		$site_logo = get_option( 'gmr_site_logo', '' );
 
-		echo esc_url( $site_logo );
+		echo '<img src="' . esc_url( $site_logo ) . '" alt="' . get_bloginfo( 'name' ) . ' | ' . get_bloginfo( 'description' ) . '" class="header__logo--img">';
+
 	}
 
 }
