@@ -96,7 +96,6 @@ module.exports = function( grunt ) {
 			all: {
 				files: {
 					'assets/css/greater_media.css': 'assets/css/sass/greater_media.scss',
-					'assets/css/gm_styleguide.css': 'assets/css/sass/gm_styleguide.scss'
 				}
 			}
 		},
@@ -106,7 +105,7 @@ module.exports = function( grunt ) {
 				expand: true,
 
 				cwd: 'assets/css/',
-				src: ['greater_media.css','gm_styleguide.css'],
+				src: ['greater_media.css'],
 
 				dest: 'assets/css/',
 				ext: '.min.css'

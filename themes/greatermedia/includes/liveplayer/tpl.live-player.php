@@ -5,6 +5,13 @@
  * @package Greater Media
  * @since   0.1.0
  */
+
+$streams = apply_filters( 'gmr_live_player_streams', array() );
+$active_stream = key( $streams );
+if ( empty( $active_stream ) ) {
+	$active_stream = 'None';
+}
+
 ?>
 <aside id="live-player__sidebar" class="live-player">
 
@@ -12,28 +19,14 @@
 		<ul class="live-player__stream--list">
 			<li class="live-player__stream--current">
 				<div class="live-player__stream--title">Stream</div>
-				<div class="live-player__stream--current-name">HD1</div>
+				<div class="live-player__stream--current-name"><?php echo esc_html( $active_stream ); ?></div>
 				<ul class="live-player__stream--available">
+					<?php foreach ( $streams as $stream => $description ) : ?>
 					<li class="live-player__stream--item">
-						<div class="live-player__stream--name">HD1</div>
-						<div class="live-player__stream--desc">A brief description can be used here</div>
+						<div class="live-player__stream--name"><?php echo esc_html( $stream ); ?></div>
+						<div class="live-player__stream--desc"><?php echo esc_html( $description ); ?></div>
 					</li>
-					<li class="live-player__stream--item">
-						<div class="live-player__stream--name">HD2</div>
-						<div class="live-player__stream--desc">A brief description can be used here</div>
-					</li>
-					<li class="live-player__stream--item">
-						<div class="live-player__stream--name">HD3</div>
-						<div class="live-player__stream--desc">A brief description can be used here</div>
-					</li>
-					<li class="live-player__stream--item">
-						<div class="live-player__stream--name">FM</div>
-						<div class="live-player__stream--desc">A brief description can be used here</div>
-					</li>
-					<li class="live-player__stream--item">
-						<div class="live-player__stream--name">FM2</div>
-						<div class="live-player__stream--desc">A brief description can be used here</div>
-					</li>
+					<?php endforeach; ?>
 				</ul>
 			</li>
 		</ul>
