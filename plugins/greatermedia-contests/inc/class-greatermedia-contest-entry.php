@@ -55,7 +55,11 @@ class GreaterMediaContestEntry {
 	 */
 	public function save() {
 
-		$post_id = wp_update_post( $this->post, true );
+		if ( empty( $this->post->ID ) ) {
+			$post_id = wp_insert_post( $this->post, true );
+		} else {
+			$post_id = wp_update_post( $this->post, true );
+		}
 
 		update_post_meta( $post_id, 'entrant_name', $this->entrant_name );
 		update_post_meta( $post_id, 'entrant_reference', $this->entrant_reference );
