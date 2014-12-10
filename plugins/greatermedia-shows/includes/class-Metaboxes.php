@@ -22,6 +22,7 @@ class GMR_Show_Metaboxes {
 
 		add_action( 'personal_options_update', array( $this, 'admin_save_user_meta_fields' ), 10, 1 );
 		add_action( 'edit_user_profile_update', array( $this, 'admin_save_user_meta_fields' ), 10, 1 );
+		add_action( 'admin_notices', array( $this, 'admin_notices' ), 15 );
 	}
 
 	/**
@@ -189,11 +190,58 @@ class GMR_Show_Metaboxes {
 			return;
 		}
 
-		update_post_meta( $post_id, 'show_homepage', filter_input( INPUT_POST, 'show_homepage', FILTER_VALIDATE_BOOLEAN ) );
-		update_post_meta( $post_id, 'show_homepage_albums', filter_input( INPUT_POST, 'show_homepage_albums', FILTER_VALIDATE_BOOLEAN ) );
-		update_post_meta( $post_id, 'show_homepage_podcasts', filter_input( INPUT_POST, 'show_homepage_podcasts', FILTER_VALIDATE_BOOLEAN ) );
-		update_post_meta( $post_id, 'show_homepage_videos', filter_input( INPUT_POST, 'show_homepage_videos', FILTER_VALIDATE_BOOLEAN ) );
+		$homepage_support = filter_input( INPUT_POST, 'show_homepage', FILTER_VALIDATE_BOOLEAN );
+		$album_support = filter_input( INPUT_POST, 'show_homepage_albums', FILTER_VALIDATE_BOOLEAN );
+		$podcast_support = filter_input( INPUT_POST, 'show_homepage_podcasts', FILTER_VALIDATE_BOOLEAN );
+		$video_support = filter_input( INPUT_POST, 'show_homepage_videos', FILTER_VALIDATE_BOOLEAN );
+
+		update_post_meta( $post_id, 'show_homepage', $homepage_support );
+
+		if ( $homepage_support ) {
+			update_post_meta( $post_id, 'show_homepage_albums', $album_support );
+			update_post_meta( $post_id, 'show_homepage_podcasts', $podcast_support );
+			update_post_meta( $post_id, 'show_homepage_videos', $video_support );
+		} else {
+			// Impossible to support these if homepage support is turned off
+			update_post_meta( $post_id, 'show_homepage_albums', false );
+			update_post_meta( $post_id, 'show_homepage_podcasts', false );
+			update_post_meta( $post_id, 'show_homepage_videos', false );
+
+			if ( $album_support || $podcast_support || $video_support ) {
+				add_filter( 'redirect_post_location', array( $this, 'add_homepage_validation_error' ), 99 );
+			}
+		}
+
 		update_post_meta( $post_id, 'logo_image', filter_input( INPUT_POST, 'logo_image', FILTER_VALIDATE_INT ) );
+	}
+
+	/**
+	 * Adds a query var that specifies that we had an error saving all the homepage support so we can trigger an admin notice
+	 *
+	 * Happens when we say there is no homepage support, but try to add support for albums, podcasts, or videos at the same time.
+	 *
+	 * @param $location
+	 *
+	 * @return string
+	 */
+	public function add_homepage_validation_error( $location ) {
+		remove_filter( 'redirect_post_location', array( $this, 'add_homepage_validation_error' ) );
+		return add_query_arg( array( 'gmi-show-message' => 1), $location );
+	}
+
+	/**
+	 * Renders the message that there was an error saving homepage support
+	 */
+	public function admin_notices() {
+		if ( ! isset( $_GET['gmi-show-message'] ) ) {
+			return;
+		}
+
+		?>
+		<div class="error">
+			<p>You must enable show homepage support to support Albums, Podcasts, or Videos.</p>
+		</div>
+		<?php
 	}
 
 	/**
