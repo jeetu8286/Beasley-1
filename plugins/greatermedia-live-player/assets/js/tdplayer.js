@@ -50,12 +50,12 @@
 					id: 'MediaPlayer',
 					playerId: 'td_container',
 					isDebug: true,
-					techPriority: techPriority, /* (default behaviour) or ['Html5', 'Flash'] or ['Flash'] or ['Html5'] */
-					timeShift: {
-						/* The 'timeShift' configuration object is optional, by default the timeShifting is inactive and is Flash only, HTML5 to be tested in a future version of PlayerCore */
+					techPriority: techPriority,
+					timeShift: { // timeShifting is currently available on Flash only. Leaving for HTML5 future
 						active: 0, /* 1 = active, 0 = inactive */
 						max_listening_time: 35 /* If max_listening_time is undefined, the default value will be 30 minutes */
 					},
+					// set geoTargeting to false on devices in order to remove the daily geoTargeting in browser
 					geoTargeting: {desktop: {isActive: false}, iOS: {isActive: false}, android: {isActive: false}}
 				},
 				{id: 'NowPlayingApi'},
@@ -271,6 +271,7 @@
 		initControlsUi();
 
 		player.addEventListener('track-cue-point', onTrackCuePoint);
+		player.addEventListener( 'ad-break-cue-point', onAdBreak );
 
 		player.addEventListener('stream-status', onStatus);
 		player.addEventListener('stream-geo-blocked', onGeoBlocked);
@@ -301,6 +302,22 @@
 		$("#pwaButton").click(function () {
 			loadPwaData();
 		});
+	}
+
+	function onAdPlaybackStart( e ) {
+		adPlaying = true;
+		setStatus( 'Advertising... Type=' + e.data.type );
+	}
+
+	function onAdPlaybackComplete( e ) {
+		adPlaying = false;
+		$( "#td_adserver_bigbox" ).empty();
+		$( "#td_adserver_leaderboard" ).empty();
+		setStatus( 'Ready' );
+	}
+
+	function onAdCountdown( e ) {
+		debug( 'Ad countdown : ' + e.data.countDown + ' second(s)');
 	}
 
 	function onStreamStarted() {
@@ -344,6 +361,11 @@
 
 		$("#trackInfo").html('<div class="now-playing__title">' + currentTrackCuePoint.cueTitle + '</div><div class="now-playing__artist">' + currentTrackCuePoint.artistName + '</div>');
 
+	}
+
+	function onAdBreak( e ) {
+		setStatus( 'Commercial break...' );
+		console.log(e);
 	}
 
 	function clearNpe() {
