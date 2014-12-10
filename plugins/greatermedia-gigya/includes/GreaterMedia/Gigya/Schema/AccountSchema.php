@@ -190,6 +190,11 @@ class AccountSchema {
 					'writeAccess' => 'clientModify',
 					'required' => false,
 				),
+				'actions' => array(
+					'writeAccess' => 'clientModify',
+					'required' => false,
+					'arrayOp' => 'push',
+				)
 			),
 			'dynamicSchema' => true,
 		);

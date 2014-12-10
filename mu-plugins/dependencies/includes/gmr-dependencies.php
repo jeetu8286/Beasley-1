@@ -132,12 +132,46 @@ class GmrDependencies {
 			, 'all'
 		);
 
+		// jQuery-ui theme
 		wp_register_style(
+			'jquery-ui',
+			GMRDEPENDENCIES_URL . "/jquery-ui/jquery-ui{$postfix}.css",
+			array(),
+			'1.11.2',
+			'all'
+		);
+
+		// Cookies.js
+		wp_register_script(
+			'cookies-js',
+			GMRDEPENDENCIES_URL . "/cookies/cookies{$postfix}.js",
+			array(),
+			'1.1.0',
+			true
+		);
+
+		wp_enqueue_style(
 			'parsleyjs',
 			GMRDEPENDENCIES_URL . '/parsleyjs/src/parsley.css',
 			array(),
 			'2.0.5', // Using daveross/parsley.js fork until word count include issue #765 is merged
 			'all'
+		);
+
+		wp_enqueue_script(
+			'pjax',
+			GMRDEPENDENCIES_URL  . 'pjax/jquery.pjax.js',
+			array(),
+			'1.9.2',
+			false
+		);
+
+		wp_enqueue_script(
+			'mediaelement-js',
+			GMRDEPENDENCIES_URL  . "mediaelement-js/mediaelement-and-player{$postfix}.js",
+			array( 'jquery' ),
+			'2.16.2',
+			true
 		);
 
 		wp_register_style( 'jquery-ui', GMRDEPENDENCIES_URL . '/jquery-ui-theme/jquery-ui.min.css' );

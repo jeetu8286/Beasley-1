@@ -19,14 +19,54 @@ html {
   -moz-box-sizing: inherit;
   box-sizing: inherit; }
 
-.featured-content--list {
+.hologram-color-swatch {
+  width: 200px;
+  height: 200px;
+  display: inline-block;
+  margin: 10px; }
+
+/*doc
+---
+title: Colors
+name: colors
+category: Base
+---
+
+```none_example
+<span class="hologram-color-swatch" style="background: #000000;">$black</span>
+<span class="hologram-color-swatch" style="background: #ffffff;">$white</span>
+<span class="hologram-color-swatch" style="background: #d22228;">$cardinal</span>
+<span class="hologram-color-swatch" style="background: #561015;">$heath</span>
+<span class="hologram-color-swatch" style="background: #270e10;">$coffee-bean</span>
+<span class="hologram-color-swatch" style="background: #d0d2d3;">$iron</span>
+<span class="hologram-color-swatch" style="background: #c7c7c7;">$silver</span>
+<span class="hologram-color-swatch" style="background: #a6a8ab;">$aluminium</span>
+<span class="hologram-color-swatch" style="background: #929497;">$oslo-gray</span>
+<span class="hologram-color-swatch" style="background: #6d6e70;">$nevada</span>
+<span class="hologram-color-swatch" style="background: #606060;">$scorpion</span>
+<span class="hologram-color-swatch" style="background: #58595b;">$abbey</span>
+<span class="hologram-color-swatch" style="background: #404041;">$ship-gray</span>
+<span class="hologram-color-swatch" style="background: #303030;">$mine-shaft</span>
+<span class="hologram-color-swatch" style="background: #282827;">$tuatara</span>
+<span class="hologram-color-swatch" style="background: #191919;">$cod-gray</span>
+<span class="hologram-color-swatch" style="background: #f5ed7f;">$sahara-sand</span>
+<span class="hologram-color-swatch" style="background: #f7ef7e;">$sweet-corn</span>
+```
+
+*/
+.featured__content--list, .footer__nav--list, .footer__social {
   padding: 0;
   margin: 0; }
 
-.featured-content--item, .live-player__stream--item {
+.featured__content--item, .footer__nav--list .menu-item, .footer__social--item, .live-player__stream--item {
   list-style: none;
   padding: 0;
   margin: 0; }
+
+.entry__categories, .entry__tags, .entry__tags a {
+  color: #929497;
+  font-size: 1.125em;
+  font-style: italic; }
 
 /**
  * Helpers
@@ -389,6 +429,36 @@ td,
 th {
   padding: 0; }
 
+/*doc
+---
+title: Icons
+name: icons
+category: Base - Typography
+---
+
+```html_example
+<span class="icon-camera"></span>
+<span class="icon-clipboard"></span>
+<span class="icon-link"></span>
+<span class="icon-minus"></span>
+<span class="icon-music"></span>
+<span class="icon-play-circle"></span>
+<span class="icon-play"></span>
+<span class="icon-stop"></span>
+<span class="icon-plus"></span>
+<span class="icon-post"></span>
+<span class="icon-radio"></span>
+<span class="icon-user"></span>
+<span class="icon-volume"></span>
+<span class="icon-volume-mute"></span>
+<span class="icon-volume-up"></span>
+<span class="icon-facebook"></span>
+<span class="icon-twitter"></span>
+<span class="icon-google-plus"></span>
+<span class="icon-search"></span>
+```
+
+*/
 /**
  * Font Styles
  */
@@ -398,7 +468,7 @@ th {
   src: url("../fonts/icon-font/gmr-icons.eot?#iefixivfz3x") format("embedded-opentype"), url("../fonts/icon-font/gmr-icons.woff?ivfz3x") format("woff"), url("../fonts/icon-font/gmr-icons.ttf?ivfz3x") format("truetype"), url("../fonts/icon-font/gmr-icons.svg?ivfz3x#gmr-icons") format("svg");
   font-weight: normal;
   font-style: normal; }
-[class^="icon-"], [class*=" icon-"], .header__social--facebook:before, .header__social--twitter:before, .header__social--google-plus:before, .header__search--btn:before, .live-link__song:before, .live-link__type--audio:before, .live-link__type--gallery:before, .live-link__type--image:before, .live-link__type--link:before, .live-link__type--standard:before, .live-link__type--video:before {
+[class^="icon-"], [class*=" icon-"], .header__social--facebook:before, .header__social--twitter:before, .header__social--google-plus:before, .header__search--btn:before, .footer__social--facebook:before, .footer__social--twitter:before, .footer__social--google-plus:before, .live-link__song:before, .live-link__type--audio:before, .live-link__type--gallery:before, .live-link__type--image:before, .live-link__type--link:before, .live-link__type--standard:before, .live-link__type--video:before {
   font-family: 'gmr-icons';
   speak: none;
   font-style: normal;
@@ -473,9 +543,9 @@ img {
   height: auto; }
 
 #site-wrap {
-  max-width: 1400px;
+  max-width: 100%;
   margin: 0 auto;
-  background-color: #ffffff; }
+  background-color: #000000; }
 
 .page-wrap {
   -webkit-transform: translate(0, 0);
@@ -490,44 +560,63 @@ img {
   overflow: hidden; }
 
 .container {
-  max-width: 92.0877%;
+  max-width: 100%;
   margin-left: auto;
-  margin-right: auto; }
+  margin-right: auto;
+  padding: 0 3.125%; }
   .container:after {
     content: "";
     display: table;
     clear: both; }
+  @media screen and (min-width: 768px) {
+    .container {
+      max-width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 0;
+      padding-right: 15.8781%; }
+      .container:after {
+        content: "";
+        display: table;
+        clear: both; } }
+  @media screen and (min-width: 1400px) {
+    .container {
+      max-width: 1400px;
+      margin-left: auto;
+      margin-right: auto;
+      padding-right: 250px; }
+      .container:after {
+        content: "";
+        display: table;
+        clear: both; } }
 
-.main, .featured {
+.main, .featured, .highlights {
   float: left;
   width: 100%;
   margin: 0;
-  background-color: #ffffff; }
-  @media screen and (min-width: 768px) {
-    .main, .featured {
-      width: 84.121892542101%; } }
-  @media screen and (min-width: 1400px) {
-    .main, .featured {
-      width: 71.875em; } }
+  background-color: #000000; }
 
-.content, .featured-artist, .featured-content {
+.main .container {
+  background-color: #ffffff; }
+
+.content {
   float: left;
   display: block;
   margin-right: 7.42297%;
   width: 100%;
   padding: 2em 7.0833333333335%; }
-  .content:last-child, .featured-artist:last-child, .featured-content:last-child {
+  .content:last-child {
     margin-right: 0; }
   @media screen and (min-width: 480px) {
-    .content, .featured-artist, .featured-content {
+    .content {
       float: left;
       display: block;
       margin-right: 4.82916%;
       width: 100%; }
-      .content:last-child, .featured-artist:last-child, .featured-content:last-child {
+      .content:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 768px) {
-    .content, .featured-artist, .featured-content {
+    .content {
       float: left;
       display: block;
       margin-right: 4.82916%;
@@ -535,16 +624,16 @@ img {
       margin-left: 17.47153%;
       padding-right: 0;
       padding-left: 0; }
-      .content:last-child, .featured-artist:last-child, .featured-content:last-child {
+      .content:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 1024px) {
-    .content, .featured-artist, .featured-content {
+    .content {
       float: left;
       display: block;
       margin-right: 2.35765%;
       width: 82.94039%;
       margin-left: 8.5298%; }
-      .content:last-child, .featured-artist:last-child, .featured-content:last-child {
+      .content:last-child {
         margin-right: 0; } }
 
 .live-player {
@@ -584,17 +673,13 @@ html {
   width: 100%;
   height: 100%;
   margin: 0 auto;
-  background: #000000; }
+  background-color: #000000; }
 
 body {
   width: 100%;
   height: 100%;
-  max-width: 1400px;
   margin: 0 auto;
-  background: #ffffff; }
-  @media screen and (min-width: 1400px) {
-    body {
-      width: 1400px; } }
+  background-color: #000000; }
 
 * {
   -webkit-tap-highlight-color: transparent; }
@@ -621,6 +706,22 @@ body {
       line-height: 1.5;
       font-size: 100%; } }
 
+/*doc
+---
+title: Headings
+name: headings
+category: Base - Typography
+---
+
+```html_example
+<h1>H1. The Quick Brown</h1>
+<h2>H2. Fox Jumped Over the Lazy</h2>
+<h3>h3. dog enroute to tanzania</h3>
+<h4>H4. Ainazanat ot Etuorne God</h4>
+<h5>h5. yzal eht revo depmuj xof</h5>
+<h6>H6. Nworb Kciuq eht</h6>
+```
+*/
 h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
   line-height: 1.5;
   font-family: "Droid Sans", sans-serif;
@@ -651,6 +752,17 @@ h6, .h6 {
   font-size: 1.26563em;
   letter-spacing: 2px; }
 
+/*doc
+---
+title: Links
+name: links
+category: Base - Typography
+---
+
+```html_example
+<a href="http://google.com">Example</a>
+```
+*/
 a:link, a:visited {
   color: #d22228;
   text-decoration: none; }
@@ -658,8 +770,39 @@ a:link, a:visited {
 a:hover, a:focus, a:active {
   color: #aa1c20; }
 
+/*doc
+---
+title: Misc Type
+name: misc-type
+category: Base - Typography
+---
+
+```html_example
+<p>Lorem <sup>superscript</sup> dolor
+<sub>subscript</sub> amet, consectetuer adipiscing elit. Nullam dignissim convallis est. Quisque aliquam.
+<cite>cite</cite>. Nunc iaculis suscipit dui. Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec, gravida vehicula, nisl. Praesent mattis, massa quis luctus fermentum, turpis mi volutpat justo, eu volutpat enim diam eget metus. Maecenas ornare tortor. Donec sed tellus eget sapien fringilla nonummy.
+<abbr title="National Basketball Association">NBA</abbr> Mauris a ante. Suspendisse quam sem, consequat at, commodo vitae, feugiat in, nunc. Morbi imperdiet augue quis tellus.
+<abbr title="Avenue">AVE</abbr></p>
+<blockquote>
+	"This stylesheet is going to help so freaking much."
+</blockquote>
+```
+*/
 p {
   margin: 0 0 1.5em; }
+
+blockquote {
+  padding: 8px .625em;
+  margin: 24px .625em;
+  border-left: 10px solid #d0d2d3;
+  quotes: "“" "”" "‘" "’";
+  color: #6d6e70;
+  font-style: italic; }
+
+blockquote p {
+  display: inline;
+  font-style: italic;
+  color: #6d6e70; }
 
 /**
  * When the Nav Toggle is clicked, a body class is added.
@@ -974,145 +1117,207 @@ p {
 
 .featured {
   position: relative;
-  padding: 3em 0;
+  padding: 48px 0;
   background: url(../../images/featured-bg.png) repeat center center #58595b;
   background-size: auto 40%; }
 
-.featured-artist--image {
-  width: 100%;
-  background-color: #58595b; }
+.featured .container {
+  width: 87.5%; }
+  @media screen and (min-width: 480px) {
+    .featured .container {
+      width: 88.333333333333%; } }
+  @media screen and (min-width: 1024px) {
+    .featured .container {
+      width: 85.920577617329%; } }
+  @media screen and (min-width: 1400px) {
+    .featured .container {
+      width: 92.08770257388%; } }
 
-.featured-artist--content {
+.featured__artist, .featured__content {
+  width: 100%; }
+
+.featured__artist {
+  padding-bottom: 34px; }
+
+.featured__artist--image {
   width: 100%;
-  padding: 3em 2em;
+  height: 100px;
+  overflow: hidden;
+  background-color: #58595b; }
+  @media screen and (min-width: 480px) {
+    .featured__artist--image {
+      height: 150px; } }
+  @media screen and (min-width: 1024px) {
+    .featured__artist--image {
+      height: 256px; } }
+  @media screen and (min-width: 1400px) {
+    .featured__artist--image {
+      height: 343px; } }
+
+.featured__artist--content {
+  width: 100%;
+  padding: 15px 3.928571428572%;
   overflow: auto;
   background-color: #270e10;
-  color: #a6a8ab; }
-
-.featured-artist--heading {
-  float: left;
-  width: 100%;
-  color: #ffffff; }
+  color: #d0d2d3; }
+  @media screen and (min-width: 480px) {
+    .featured__artist--content {
+      padding: 15px 4.941176470588%; } }
   @media screen and (min-width: 1024px) {
-    .featured-artist--heading {
-      width: 30%;
-      margin-right: 5%; } }
+    .featured__artist--content {
+      padding: 34px 3.921568627451%; } }
+  @media screen and (min-width: 1400px) {
+    .featured__artist--content {
+      padding: 34px 2.898550724638%; } }
 
-.featured-artist--title {
-  margin: 0;
-  font-size: 1.60181em;
+.featured__artist--heading {
+  float: left;
+  width: 100%; }
+  @media screen and (min-width: 1024px) {
+    .featured__artist--heading {
+      width: 29.787234042553%;
+      margin-right: 1.519756838906%; } }
+  @media screen and (min-width: 1400px) {
+    .featured__artist--heading {
+      width: 21.538461538462%;
+      margin-right: 1.098901098901%; } }
+
+.featured__artist--title {
+  margin-top: 0;
+  margin-bottom: 10px;
+  line-height: 1;
+  font-family: "Open Sans", sans-serif;
+  font-size: 1.125em;
   font-weight: normal; }
 
-.featured-artist--subtitle {
+.featured__artist--subtitle {
   margin: 0;
-  font-size: 2.88651em; }
+  line-height: 1;
+  font-size: 2.2807em;
+  color: #ffffff; }
 
-.featured-artist--bio {
+.featured__artist--bio {
   display: none; }
   @media screen and (min-width: 1024px) {
-    .featured-artist--bio {
+    .featured__artist--bio {
       display: block;
       float: left;
-      width: 65%;
-      font-size: 1.26563em; } }
+      width: 68.693009118541%;
+      font-size: 0.88889em;
+      line-height: 1.5; } }
+  @media screen and (min-width: 1400px) {
+    .featured__artist--bio {
+      width: 77.362637362637%; } }
 
-.featured-content--block {
+.featured__content--block {
   float: left;
-  height: 90px;
   width: 100%;
-  margin-bottom: 3em;
+  height: 90px;
+  margin-bottom: 27px;
   overflow: hidden;
   background-color: #270e10; }
   @media screen and (min-width: 480px) {
-    .featured-content--block {
-      height: 95px;
+    .featured__content--block {
       width: 100%;
-      margin-bottom: 3em; } }
+      height: 95px;
+      margin-bottom: 25px; } }
   @media screen and (min-width: 1024px) {
-    .featured-content--block {
+    .featured__content--block {
+      width: 31.055900621118%;
       height: 280px;
-      width: 30%;
-      margin-right: 5%;
+      margin-right: 3.416149068323%;
       margin-bottom: 0;
       overflow: visible; } }
   @media screen and (min-width: 1400px) {
-    .featured-content--block {
-      height: 105px;
-      width: 30%;
-      margin-right: 5%;
-      margin-bottom: 0; } }
+    .featured__content--block {
+      height: 106px; } }
 
-.featured-content--block:last-of-type {
+.featured__content--block:last-of-type {
   margin: 0; }
 
-.featured-content--image {
+.featured__content--image {
   float: left;
-  width: 30%; }
+  width: 32.142857142857%;
+  height: 90px; }
   @media screen and (min-width: 480px) {
-    .featured-content--image {
-      width: 35%; } }
+    .featured__content--image {
+      width: 33.411764705882%;
+      height: 95px; } }
   @media screen and (min-width: 1024px) {
-    .featured-content--image {
-      height: 138px;
+    .featured__content--image {
       width: 100%;
+      height: 138px;
       overflow: hidden; } }
   @media screen and (min-width: 1400px) {
-    .featured-content--image {
-      height: 100%;
-      width: 35%; } }
+    .featured__content--image {
+      width: 35.570469798658%;
+      height: 106px; } }
 
-.featured-content--image img {
-  height: auto;
+.featured__content--image img {
   width: 100%; }
   @media screen and (min-width: 1400px) {
-    .featured-content--image img {
+    .featured__content--image img {
       max-width: 100%; } }
 
-.featured-content--meta {
+.featured__content--meta {
   float: left;
-  width: 70%;
-  padding: 1em 1em 1em 2em;
+  width: 67.857142857143%;
+  padding: 14px 3.571428571429% 14px 5.357142857143%;
+  font-size: 0.79012em;
+  font-weight: lighter;
   color: #a6a8ab; }
   @media screen and (min-width: 480px) {
-    .featured-content--meta {
-      width: 65%; } }
-  @media screen and (min-width: 768px) {
-    .featured-content--meta {
-      width: 65%; } }
+    .featured__content--meta {
+      width: 66.588235294118%;
+      padding: 15px 2.352941176471% 15px 4.941176470588%;
+      font-size: 0.88889em; } }
   @media screen and (min-width: 1024px) {
-    .featured-content--meta {
+    .featured__content--meta {
+      width: 100%;
       height: 142px;
-      width: 100%; } }
+      padding: 28px 10.280373831776% 15px 10.280373831776%; } }
   @media screen and (min-width: 1400px) {
-    .featured-content--meta {
+    .featured__content--meta {
+      width: 64.429530201342%;
       height: 100%;
-      width: 65%; } }
+      padding: 13px 3.355704697987% 13px 10.06711409396%; } }
 
-.featured-content--title {
+.featured__content--title {
   margin-top: 0;
-  margin-bottom: 0.5em;
+  margin-bottom: 8px;
   line-height: 1;
+  font-family: "Open Sans", sans-serif;
   font-size: 1em; }
-  @media screen and (min-width: 1024px) {
-    .featured-content--title {
+  @media screen and (min-width: 480px) {
+    .featured__content--title {
       font-size: 1.125em; } }
 
-.featured-content--list {
+.featured__content--list {
   line-height: 1; }
 
-.featured-content--item {
+.featured__content--item {
   display: inline-block;
   width: 40%;
-  margin-bottom: 0.25em;
+  margin-bottom: 4px;
   font-size: 0.79012em;
   color: #f7ef7e; }
   @media screen and (min-width: 1024px) {
-    .featured-content--item {
+    .featured__content--item {
       display: block;
       width: 100%;
       font-size: 0.88889em; } }
 
-.featured-content--btn {
+.featured__content--link {
+  width: 100%;
+  text-align: center; }
+  @media screen and (min-width: 480px) {
+    .featured__content--link {
+      text-align: right; } }
+  @media screen and (min-width: 1024px) {
+    .featured__content--link {
+      text-align: center; } }
+
+.featured__content--btn {
   display: inline-block;
   line-height: 1;
   padding: 0.25em 1.5em;
@@ -1121,25 +1326,241 @@ p {
   background-color: #d22228;
   border: 1px solid #d22228;
   font-family: "Open Sans", sans-serif;
-  font-size: 1em;
+  font-size: 0.79012em;
   color: #ffffff !important;
   text-transform: uppercase;
   cursor: pointer;
-  border-top-left-radius: 1.5em;
-  border-top-right-radius: 1.5em;
-  border-top-right-radius: 1.5em;
-  border-bottom-right-radius: 1.5em;
-  border-bottom-left-radius: 1.5em;
-  border-bottom-right-radius: 1.5em;
-  border-top-left-radius: 1.5em;
-  border-bottom-left-radius: 1.5em;
+  -webkit-border-radius: 1.5em;
+  -moz-border-radius: 1.5em;
+  -ms-border-radius: 1.5em;
+  -o-border-radius: 1.5em;
+  -border-radius: 1.5em;
+  border-radius: 1.5em;
   text-transform: uppercase; }
-  .featured-content--btn:hover, .featured-content--btn:focus {
+  .featured__content--btn:hover, .featured__content--btn:focus {
     background-color: #aa1c20;
     border-color: #aa1c20;
     color: #ffffff; }
-  .featured-content--btn:last-of-type {
+  .featured__content--btn:last-of-type {
     margin-right: 0; }
+
+.highlights {
+  padding: 33px 0;
+  background-color: #f1f1f2; }
+  @media screen and (min-width: 480px) {
+    .highlights {
+      padding-top: 36px;
+      padding-bottom: 36px; } }
+  @media screen and (min-width: 1024px) {
+    .highlights {
+      padding-top: 45px;
+      padding-bottom: 45px; } }
+  @media screen and (min-width: 1400px) {
+    .highlights {
+      padding-top: 35px;
+      padding-bottom: 35px; } }
+
+.highlights__heading {
+  margin-top: 0;
+  margin-bottom: 17px;
+  font-family: "Open Sans", sans-serif;
+  font-size: 1.125em;
+  font-weight: lighter;
+  color: #929497; }
+  @media screen and (min-width: 480px) {
+    .highlights__heading {
+      font-size: 1.125em; } }
+  @media screen and (min-width: 1024px) {
+    .highlights__heading {
+      margin-bottom: 13px;
+      font-size: 1em; } }
+  @media screen and (min-width: 1400px) {
+    .highlights__heading {
+      margin-bottom: 17px;
+      font-size: 1.125em; } }
+
+.highlights__heading--span {
+  margin-left: 16px;
+  font-size: 0.88889em;
+  color: #d22228;
+  text-transform: uppercase; }
+  @media screen and (min-width: 1024px) {
+    .highlights__heading--span {
+      font-size: 0.79012em; } }
+  @media screen and (min-width: 1400px) {
+    .highlights__heading--span {
+      font-size: 0.88889em; } }
+
+.highlights__community {
+  float: left;
+  width: 100%; }
+  @media screen and (min-width: 1024px) {
+    .highlights__community {
+      width: 65.546218487395%;
+      margin-right: 2.380952380952%; } }
+  @media screen and (min-width: 1400px) {
+    .highlights__community {
+      width: 58.695652173913%;
+      margin-right: 2.691511387164%; } }
+
+.highlights__community--item {
+  position: relative;
+  float: left;
+  width: 47.328244274809%;
+  margin-right: 5.343511450382%;
+  overflow: auto; }
+  @media screen and (min-width: 1024px) {
+    .highlights__community--item {
+      width: 30.511463844797%;
+      height: 149px;
+      overflow: hidden;
+      margin-right: 4.232804232804%; } }
+  @media screen and (min-width: 1400px) {
+    .highlights__community--item {
+      height: 173px;
+      overflow: hidden; } }
+
+.highlights__community--item:nth-of-type(3) {
+  display: none; }
+  @media screen and (min-width: 1024px) {
+    .highlights__community--item:nth-of-type(3) {
+      display: block;
+      margin-right: 0; } }
+
+.highlights__community--item:nth-of-type(2) {
+  margin-right: 0; }
+  @media screen and (min-width: 1024px) {
+    .highlights__community--item:nth-of-type(2) {
+      margin-right: 3.806228373702%; } }
+
+.highlights__community--thumb {
+  position: relative; }
+
+.highlights__community--thumb:after {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: 100%;
+  height: 50%;
+  background: -moz-linear-gradient(top, transparent 0%, rgba(0, 0, 0, 0.4) 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, transparent), color-stop(100%, rgba(0, 0, 0, 0.4)));
+  background: -webkit-linear-gradient(top, transparent 0%, rgba(0, 0, 0, 0.4) 100%);
+  background: -o-linear-gradient(top, transparent 0%, rgba(0, 0, 0, 0.4) 100%);
+  background: -ms-linear-gradient(top, transparent 0%, rgba(0, 0, 0, 0.4) 100%);
+  background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.4) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#000000', endColorstr='#000000', GradientType=0);
+  content: ""; }
+
+.highlights__community--title {
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  width: 100%;
+  margin: 0;
+  font-size: 1em;
+  font-weight: normal;
+  color: #ffffff;
+  text-align: center; }
+
+.highlights__events {
+  float: left;
+  width: 100%;
+  margin-top: 27px; }
+  @media screen and (min-width: 480px) {
+    .highlights__events {
+      margin-top: 30px; } }
+  @media screen and (min-width: 1024px) {
+    .highlights__events {
+      width: 32.072829131653%;
+      margin-top: 0; } }
+  @media screen and (min-width: 1400px) {
+    .highlights__events {
+      width: 38.612836438923%; } }
+
+.highlights__event--item {
+  width: 100%;
+  height: 91px;
+  margin-bottom: 24px;
+  background-color: #ffffff;
+  overflow: hidden; }
+  @media screen and (min-width: 1024px) {
+    .highlights__event--item {
+      height: 66px;
+      margin-bottom: 17px; } }
+  @media screen and (min-width: 1400px) {
+    .highlights__event--item {
+      height: 78px;
+      margin-bottom: 17px; } }
+
+.highlights__event--item:last-of-type {
+  margin-bottom: 0; }
+
+.highlights__event--thumb {
+  float: left;
+  width: 34.600760456274%;
+  margin-right: 7.604562737643%; }
+  @media screen and (min-width: 480px) {
+    .highlights__event--thumb {
+      width: 22.141119221411%;
+      margin-right: 4.866180048662%; } }
+  @media screen and (min-width: 1024px) {
+    .highlights__event--thumb {
+      width: 28.82096069869%;
+      margin-right: 4.366812227074%; } }
+  @media screen and (min-width: 1400px) {
+    .highlights__event--thumb {
+      width: 21.311475409836%;
+      margin-right: 4.918032786885%; } }
+
+.highlights__event--meta {
+  position: relative;
+  float: left;
+  width: 57.794676806083%;
+  height: 91px;
+  padding: 10px 2.71186440678% 10px 0; }
+  @media screen and (min-width: 480px) {
+    .highlights__event--meta {
+      width: 72.992700729927%;
+      height: 91px; } }
+  @media screen and (min-width: 1024px) {
+    .highlights__event--meta {
+      width: 66.812227074236%;
+      height: 66px; } }
+  @media screen and (min-width: 1400px) {
+    .highlights__event--meta {
+      width: 73.770491803279%;
+      height: 78px; } }
+
+.highlights__event--title {
+  position: absolute;
+  top: 50%;
+  transform: translate(0, -50%);
+  margin: 0;
+  line-height: 1.2;
+  font-family: "Open Sans", sans-serif;
+  font-size: 1em;
+  color: #6d6e70; }
+  @media screen and (min-width: 480px) {
+    .highlights__event--title {
+      font-size: 1.125em; } }
+  @media screen and (min-width: 1024px) {
+    .highlights__event--title {
+      font-size: 0.88889em; } }
+  @media screen and (min-width: 1400px) {
+    .highlights__event--title {
+      position: relative;
+      top: auto;
+      transform: translate(0, 0);
+      font-size: 1em; } }
+
+.highlights__event--date {
+  display: none; }
+  @media screen and (min-width: 1400px) {
+    .highlights__event--date {
+      display: block;
+      font-size: 0.79012em;
+      color: #929497; } }
 
 .header {
   position: relative;
@@ -1174,9 +1595,6 @@ p {
   padding: 0;
   background-color: #000000;
   border-top: 1px solid #303030; }
-
-.header .container {
-  max-width: 1400px; }
 
 #breaking-news-banner {
   display: none; }
@@ -1300,9 +1718,275 @@ p {
   font-size: 1.125em;
   content: "\e612"; }
 
-/**
- * Footer Styles
- */
+.footer {
+  width: 100%;
+  margin: 0 auto;
+  overflow: auto;
+  background-color: #000000; }
+
+.footer a:link, .footer a:visited {
+  color: #929497; }
+
+.footer a:hover, .footer a:focus, .footer a:active {
+  color: #d22228; }
+
+.footer .container {
+  background-color: #ffffff; }
+
+.footer__content {
+  float: left;
+  display: block;
+  margin-right: 7.42297%;
+  width: 100%;
+  padding: 40px 5.5%;
+  background-color: #ffffff;
+  border-top: 1px solid #d0d2d3;
+  color: #929497; }
+  .footer__content:last-child {
+    margin-right: 0; }
+  @media screen and (min-width: 480px) {
+    .footer__content {
+      float: left;
+      display: block;
+      margin-right: 4.82916%;
+      width: 100%; }
+      .footer__content:last-child {
+        margin-right: 0; } }
+  @media screen and (min-width: 768px) {
+    .footer__content {
+      float: left;
+      display: block;
+      margin-right: 3.57866%;
+      width: 100%; }
+      .footer__content:last-child {
+        margin-right: 0; } }
+  @media screen and (min-width: 1024px) {
+    .footer__content {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 100%; }
+      .footer__content:last-child {
+        margin-right: 0; } }
+  @media screen and (min-width: 1400px) {
+    .footer__content {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 100%; }
+      .footer__content:last-child {
+        margin-right: 0; } }
+
+.footer__logo {
+  font-size: 1.60181em;
+  font-weight: lighter;
+  color: #6d6e70;
+  text-transform: uppercase; }
+  @media screen and (min-width: 1024px) {
+    .footer__logo {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 14.70196%; }
+      .footer__logo:last-child {
+        margin-right: 0; } }
+
+.footer__logo a:link, .footer__logo a:visited {
+  color: #6d6e70; }
+
+.footer__logo a:hover, .footer__logo a:focus, .footer__logo a:active {
+  color: #d22228; }
+
+.footer__copyright {
+  padding: 13px 0;
+  font-size: 0.70233em; }
+  @media screen and (min-width: 1024px) {
+    .footer__copyright {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 23.23176%; }
+      .footer__copyright:last-child {
+        margin-right: 0; } }
+
+.footer__copyright--span:first-of-type {
+  padding-right: 5px; }
+
+.footer__copyright--span:last-of-type {
+  padding-left: 5px; }
+
+@media screen and (min-width: 1024px) {
+  .footer__menu {
+    float: left;
+    display: block;
+    margin-right: 2.35765%;
+    width: 57.35098%; }
+    .footer__menu:last-child {
+      margin-right: 0; } }
+
+.footer__nav {
+  float: right; }
+
+.footer__nav--list {
+  padding: 13px 0;
+  font-size: 0.70233em; }
+
+.footer__nav--list .menu-item {
+  display: inline-block;
+  margin-right: 2.5em; }
+
+.footer__social {
+  float: right;
+  padding: 8px 0 7px; }
+
+.footer__social--item {
+  display: inline-block;
+  height: 22px;
+  margin-left: 30px;
+  font-size: 1.26563em; }
+
+.footer__social--facebook:before {
+  content: "\e60f"; }
+
+.footer__social--twitter:before {
+  content: "\e610"; }
+
+.footer__social--google-plus:before {
+  content: "\e611"; }
+
+/*doc
+---
+title: Post Excerpts
+name: posts
+category: Components - Post Excerpts
+---
+
+Post excerpts are displayed on the home page and category pages
+
+*/
+/*doc
+---
+parent: posts
+title: Standard Post
+name: standard-post
+---
+
+Standard posts are mostly text based but can include images. They can also optionally have a featured image.
+
+```html_example 
+<article class="post-1162 post type-post status-publish format-standard hentry category-uncategorized tag-post-tag cf" role="article" itemscope="" itemtype="http://schema.org/BlogPosting">
+	<section class="entry--standard__thumbnail">
+		<img src="http://placehold.it/600x400&amp;text=standard">
+	</section>
+
+	<section class="entry--standard__meta">
+		<time datetime="2014-11-23T17:17:54+00:00" class="entry__date">23 November</time>
+		<h2 class="entry__title" itemprop="headline"><a href="http://wmmr.greatermedia.10uplabs.com/asdfasdf/">asdfasdf</a></h2>
+	</section>
+	<footer class="entry__footer">
+		<a href="http://wmmr.greatermedia.10uplabs.com/category/uncategorized/" class="entry__footer--category">Uncategorized</a>
+	</footer>
+</article>
+```
+*/
+/*doc
+---
+parent: posts
+title: Gallery Post
+name: gallery-post
+---
+
+Gallery posts are mostly image based but can include some text. They can also optionally have a featured image.
+
+```html_example 
+<article id="post-922" class="post-922 post type-post status-publish format-gallery hentry category-uncategorized cf" role="article" itemscope="" itemtype="http://schema.org/BlogPosting">
+	<section class="entry--gallery__meta" itemprop="articleBody">
+		<time datetime="2014-11-10T20:11:28+00:00" class="entry__date">10 November</time>
+		<h2 class="entry__title"><a href="">Test Show Post</a></h2>
+	</section>
+
+	<section class="entry--gallery__thumbnail">	
+		<img src="http://placehold.it/400x400&amp;text=gallery">
+	</section>
+	<footer class="entry__footer">
+		<a href="http://wmmr.greatermedia.10uplabs.com/category/uncategorized/" class="entry__footer--category">Uncategorized</a>
+	</footer>
+</article>
+```
+*/
+/*doc
+---
+parent: posts
+title: Video Post
+name: video-post
+---
+
+Video posts display a video and minimal text. They can also optionally have a featured image.
+
+```html_example 
+<article id="post-581" class="post-581 post type-post status-publish format-video has-post-thumbnail hentry category-uncategorized cf" role="article" itemscope="" itemtype="http://schema.org/BlogPosting">
+	<section class="entry--video__meta" itemprop="articleBody">
+		<time datetime="2014-11-05T00:13:14+00:00" class="entry__date">5 November</time>
+		<h2 class="entry__title"><a href="">Gladys Knight &amp; The Pips “Midnight Train To Georgia”</a></h2>
+	</section>
+
+	<section class="entry--video__thumbnail">
+		<img src="http://placehold.it/600x400&amp;text=video">
+	</section>
+	<footer class="entry__footer">
+		<a href="http://wmmr.greatermedia.10uplabs.com/category/uncategorized/" class="entry__footer--category">Uncategorized</a>
+	</footer>
+</article>
+```
+*/
+/*doc
+---
+parent: posts
+title: Image Post
+name: image-post
+---
+
+Standard posts are mostly text based but can include images. They can also optionally have a featured image.
+
+```html_example 
+<article id="post-558" class="post-558 post type-post status-publish format-image has-post-thumbnail hentry category-uncategorized cf" role="article" itemscope="" itemtype="http://schema.org/BlogPosting">
+	<section class="entry--standard__thumbnail">
+		<img src="http://placehold.it/600x400&amp;text=image">
+	</section>
+
+	<section class="entry--standard__meta">
+		<time datetime="2014-11-03T22:34:27+00:00" class="entry__date">3 November</time>
+		<h2 class="entry__title" itemprop="headline"><a href="http://wmmr.greatermedia.10uplabs.com/hey-its-a-blog-post/">Hey it’s a blog post!</a></h2>
+	</section>
+
+	<footer class="entry__footer">
+		<a href="http://wmmr.greatermedia.10uplabs.com/category/uncategorized/" class="entry__footer--category">Uncategorized</a>
+	</footer>
+</article>
+```
+*/
+/*doc
+---
+parent: posts
+title: Link Post
+name: link-post
+---
+
+Link posts contain a link to an external site. They can also optionally have a featured image.
+
+```html_example 
+<article id="post-886" class="post-886 post type-post status-publish format-link has-post-thumbnail hentry category-uncategorized cf" role="article" itemscope="" itemtype="http://schema.org/BlogPosting">
+	<section class="entry--link__meta" itemprop="articleBody">
+		<time datetime="2014-11-10T04:07:56+00:00" class="entry__date">10 November</time>
+		<h2 class="entry__title"><a href="">Ontario Highway 401 – Wikipedia, the free encyclopedia</a></h2>
+	</section>
+
+	<footer class="entry__footer">
+		<a href="http://wmmr.greatermedia.10uplabs.com/category/uncategorized/" class="entry__footer--category">Uncategorized</a>
+	</footer>
+</article>
+```
+*/
 .hentry {
   margin-bottom: 58px;
   overflow: auto; }
@@ -1332,7 +2016,7 @@ p {
   margin-bottom: 8px; }
 
 .entry__title {
-  margin: 12px 0 0;
+  margin: 0 0 20px;
   font-size: 1.60181em; }
 
 .entry__footer {
@@ -1872,17 +2556,6 @@ p {
   margin-top: 0;
   line-height: 1; }
 
-blockquote {
-  padding: 8px .625em;
-  margin: 24px .625em;
-  border-left: 10px solid #d0d2d3;
-  quotes: "“" "”" "‘" "’"; }
-
-blockquote p {
-  display: inline;
-  font-style: italic;
-  color: #6d6e70; }
-
 .alignleft, img.alignleft {
   display: block;
   margin: 0 1em 16px;
@@ -1961,7 +2634,85 @@ blockquote p {
 /**
  * Styles for Front End
  *
- * Admins can choose the location of the player. A class is added to the body that will match the locations below.
+ */
+ /*doc
+---
+title: Live Player
+name: live-player
+category: Components
+---
+
+```html_example
+<aside id="live-player__sidebar" class="live-player live-player--init" style="top: 0px; height: auto; position: relative; float: right; overflow-y: auto; right: 0;">
+	<nav class="live-player__stream">
+		<ul class="live-player__stream--list">
+			<li class="live-player__stream--current">
+				<div class="live-player__stream--title">Stream</div>
+				<div class="live-player__stream--current-name">HD1</div>
+				<ul class="live-player__stream--available">
+					<li class="live-player__stream--item">
+						<div class="live-player__stream--name">HD1</div>
+						<div class="live-player__stream--desc">A brief description can be used here</div>
+					</li>
+					<li class="live-player__stream--item">
+						<div class="live-player__stream--name">HD2</div>
+						<div class="live-player__stream--desc">A brief description can be used here</div>
+					</li>
+					<li class="live-player__stream--item">
+						<div class="live-player__stream--name">HD3</div>
+						<div class="live-player__stream--desc">A brief description can be used here</div>
+					</li>
+					<li class="live-player__stream--item">
+						<div class="live-player__stream--name">FM</div>
+						<div class="live-player__stream--desc">A brief description can be used here</div>
+					</li>
+					<li class="live-player__stream--item">
+						<div class="live-player__stream--name">FM2</div>
+						<div class="live-player__stream--desc">A brief description can be used here</div>
+					</li>
+				</ul>
+			</li>
+		</ul>
+	</nav>
+	<div id="live-player" class="live-player__container">
+		<div id="on-air" class="on-air" style="display: none;">
+			<span class="on-air__title">On Air:</span><span class="on-air__show">Preston and Steve Show</span>
+		</div>
+		<div id="up-next" class="up-next" style="display: block;">
+			<span class="up-next__title">Up Next:</span><span class="up-next__show">Pierre Robert</span>
+		</div>
+		<div class="live-stream">
+					<div class="live-stream__player" style="display: block;">
+			<div class="live-stream__controls">
+				<div id="playButton" class="live-stream__btn--play" data-station="WMMRFM" data-action="play-live"></div>
+				<div id="pauseButton" class="live-stream__btn--pause" data-station="WMMRFM"></div>
+				<div id="resumeButton" class="live-stream__btn--resume" data-station="WMMRFM"></div>
+			</div>
+			<!-- Player placeholder -->
+			<div id="td_container" class="live-stream__player--container"><div id="html5OnDemandNode" style="display: none;"><video id="videoNode" type="video" height="0%" width="0%" x-webkit-airplay="allow"><source id="odmediasource"></video></div><div id="html5Node"></div></div>
+		</div>
+
+		<div class="live-stream__status">
+			<div id="live-stream__listen-now" class="live-stream__listen-now--btn" style="display: none;">Listen Live</div>
+			<div id="live-stream__now-playing" class="live-stream__now-playing--btn" style="display: inline-block;">Now Playing</div>
+		</div>
+		<div id="nowPlaying" class="now-playing">
+			<div id="trackInfo" class="now-playing__info"></div>
+			<div id="npeInfo"></div>
+		</div>
+		<div id="live-stream__test" class="live-stream__test" style="display: block;">
+			<input type="checkbox" name="live-stream__test--audio" class="live-stream__test--audio" id="live-stream__test--audio" value="live-audio">
+			<label for="live-stream__test--audio" class="live-stream__test--label" style="color: rgb(255, 255, 255);">Logged In</label>
+		</div>
+	</div>
+	</div>
+
+	<div id="live-links" class="live-links">
+		<h3 class="widget--live-player__title">Live Links</h3>
+		<div id="gmr_shows_widget-2" class="widget--live-player widget_gmr_shows_widget"><ul><li class="live-link__type--standard"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/scroll-test/">GMR-278 test</a></div></li><li class="live-link__type--standard"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/contest/daves-contest/">Dave’s Contest</a></div></li><li class="live-link__song"><div class="live-link__song--artist">Soundgarden</div><div class="live-link__song--title">Black Hole Sun</div></li><li class="live-link__song"><div class="live-link__song--artist">The Village People</div><div class="live-link__song--title">YMCA</div></li><li class="live-link__song"><div class="live-link__song--artist">Taylor Swift</div><div class="live-link__song--title">Shake it Off</div></li><li class="live-link__song"><div class="live-link__song--artist">Pink Floyd</div><div class="live-link__song--title">Comfortably Numb</div></li><li class="live-link__type--link"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/timed-content-test/">test test</a></div></li><li class="live-link__type--standard"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/ontario-highway-401-wikipedia-the-free-encyclopedia/">Ontario Highway 401 – Wikipedia, the free encyclopedia</a></div></li><li class="live-link__type--video"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/?post_type=gmr-live-link&amp;p=633">Gladys Knight &amp; The Pips “Midnight Train To Georgia”</a></div></li><li class="live-link__type--video"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/gladys-knight-the-pips-midnight-train-to-georgia/">Gladys Knight &amp; The Pips</a></div></li><li class="live-link__type--video"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/?post_type=gmr-live-link&amp;p=538">Hilarious Volleyball Triple Head Shot – YouTube</a></div></li></ul></div>
+	</div>
+</aside>
+```
  */
 .live-player--fixed {
   position: fixed;
@@ -2014,12 +2765,19 @@ blockquote p {
   z-index: 100; }
 
 .live-player__stream {
+  position: absolute;
   display: none;
+  top: 58px;
   width: 100%;
   cursor: pointer; }
   @media screen and (min-width: 768px) {
     .live-player__stream {
-      display: block; } }
+      position: relative;
+      display: block;
+      top: auto; } }
+
+.live-player--open .live-player__stream {
+  display: block; }
 
 .live-player__stream--list {
   padding: 0;
@@ -2167,6 +2925,10 @@ blockquote p {
       padding: 23px 0 1em;
       text-align: center; } }
 
+.live-player--open .live-stream {
+  width: 100%;
+  padding: 12px 3.75%; }
+
 .live-stream__player {
   display: none; }
   @media screen and (min-width: 768px) {
@@ -2293,7 +3055,7 @@ blockquote p {
   font-weight: normal;
   line-height: 1;
   -webkit-font-smoothing: antialiased;
-  moz-osx-font-smoothing: grayscale;
+  -moz-osx-font-smoothing: grayscale;
   text-rendering: auto;
   color: #d22228;
   cursor: pointer; }
@@ -2328,6 +3090,9 @@ blockquote p {
   transform: translate(-50%, -50%);
   font-family: "gmr-icons" !important;
   content: "\e60b" !important; }
+
+.live-stream__player--container {
+  height: 0; }
 
 .live-stream--podcast__progress {
   width: 85%;
@@ -2372,6 +3137,10 @@ blockquote p {
   position: relative;
   text-align: center; }
 
+.live-player--open .live-stream__controls {
+  float: right;
+  width: 11.486486486486%; }
+
 .live-stream__btn--resume, .live-stream__btn--pause {
   display: none; }
 
@@ -2396,6 +3165,9 @@ blockquote p {
       margin: 0;
       text-align: center; } }
 
+.live-player--open .on-air, .live-player--open .up-next {
+  display: none !important; }
+
 .on-air__title, .up-next__title {
   margin-right: 1em;
   font-size: 0.79012em;
@@ -2412,6 +3184,7 @@ blockquote p {
   display: none;
   float: left;
   width: 40%;
+  height: 34px;
   padding: 0 1em;
   margin: 0; }
   @media screen and (min-width: 768px) {
@@ -2419,9 +3192,15 @@ blockquote p {
       display: block;
       float: none;
       width: 100%;
+      height: auto;
       padding: 0 1em;
       margin: 1em 0 0;
       text-align: center; } }
+
+.live-player--open .now-playing {
+  float: left;
+  display: block;
+  width: 88.513513513514%; }
 
 .now-playing__title {
   margin: 0 0 .25em;
@@ -2458,7 +3237,7 @@ blockquote p {
   font-weight: normal;
   line-height: 1;
   -webkit-font-smoothing: antialiased;
-  moz-osx-font-smoothing: grayscale;
+  -moz-osx-font-smoothing: grayscale;
   text-rendering: auto;
   color: #404041;
   content: "\e60c"; }
@@ -2491,7 +3270,7 @@ blockquote p {
   font-weight: normal;
   line-height: 1;
   -webkit-font-smoothing: antialiased;
-  moz-osx-font-smoothing: grayscale;
+  -moz-osx-font-smoothing: grayscale;
   text-rendering: auto;
   color: #404041;
   content: "\e60e"; }
@@ -2528,7 +3307,8 @@ blockquote p {
 
 .live-player--open .live-links {
   display: block;
-  max-height: 48vh; }
+  max-height: 48vh;
+  padding-top: 52px; }
   @media screen and (min-width: 480px) {
     .live-player--open .live-links {
       max-height: 35vh; } }
@@ -2550,10 +3330,12 @@ blockquote p {
   color: #c7c7c7; }
 
 .live-link__song--artist {
+  padding-top: 6px;
   font-size: 0.75em;
   font-weight: normal; }
 
 .live-link__song--title {
+  padding-top: 6px;
   font-size: 0.8125em;
   font-weight: lighter;
   color: #c7c7c7; }
@@ -2578,6 +3360,7 @@ blockquote p {
 
 .live-link__title {
   display: block;
+  padding-top: 6px;
   margin: 0;
   font-family: "Open Sans", sans-serif;
   font-size: 0.88889em;
@@ -2613,24 +3396,6 @@ blockquote p {
 .ad__leaderboard img {
   margin: 0 auto; }
 
-.personality-attr--name {
-  position: absolute;
-  top: 50%;
-  height: 60px;
-  -webkit-transform: translate(0, -25%);
-  -moz-transform: translate(0, -25%);
-  -ms-transform: translate(0, -25%);
-  -o-transform: translate(0, -25%);
-  transform: translate(0, -25%);
-  display: inline-block; }
-
-.personality-attr--img {
-  height: 60px;
-  width: 60px;
-  margin-right: 0.5em;
-  display: inline-block;
-  background-color: #d0d2d3; }
-
 .show-attr--name {
   position: absolute;
   top: 50%;
@@ -2653,10 +3418,14 @@ blockquote p {
   margin: 0 1em 1em; }
 
 .widget--live-player__title {
-  margin: 0 0 1em;
-  font-family: "Open Sans", sans-serif;
-  font-size: 1em;
-  font-weight: normal; }
+  display: none; }
+  @media screen and (min-width: 768px) {
+    .widget--live-player__title {
+      display: block;
+      margin: 0 0 1em;
+      font-family: "Open Sans", sans-serif;
+      font-size: 1em;
+      font-weight: normal; } }
 
 .widget--live-player ul {
   padding: 0;
@@ -2666,8 +3435,80 @@ blockquote p {
   list-style: none;
   display: block;
   padding: 0;
-  margin: 0 0 1em; }
+  margin: 0 0 1em;
+  line-height: 1; }
 
+/*doc
+---
+title: Social Share Buttons
+name: social-share-buttons
+category: Components
+---
+
+These are examples of Social Share Links for single articles. (TODO: replace with working social icons from icomoon)
+
+```html_example
+<a href="http://www.facebook.com/sharer/sharer.php?u=[URL]&title=[TITLE]" class="icon-facebook social-share-link"></a>
+<a href="http://twitter.com/home?status=[TITLE]+[URL]" class="icon-twitter social-share-link"></a>
+<a href="https://plus.google.com/share?url=[URL]" class="icon-google-plus social-share-link"></a>
+<a href="" class="icon-volume-up social-share-link"></a>
+```
+
+*/
+a.social-share-link {
+  color: #000000;
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  border: 1px solid #000000;
+  border-radius: 50%;
+  padding: 9px; }
+  a.social-share-link:hover {
+    color: #561015; }
+
+/*doc
+---
+title: Article Header
+name: article-header
+category: Components - Article
+---
+
+```html_example
+<header class="entry__header">
+	<img src="http://placehold.it/600x400&amp;text=image" alt="placeholder" class="entry__featured-image">
+	<time datetime="2014-11-10T20:11:28+00:00" class="entry__date">10 November</time>
+    <h2 class="entry__title"><a href="">Test Show Post</a></h2>
+</header>
+<a href="http://www.facebook.com/sharer/sharer.php?u=[URL]&title=[TITLE]" class="icon-facebook social-share-link"></a>
+<a href="http://twitter.com/home?status=[TITLE]+[URL]" class="icon-twitter social-share-link"></a>
+<a href="https://plus.google.com/share?url=[URL]" class="icon-google-plus social-share-link"></a>
+<a href="" class="icon-volume-up social-share-link"></a>
+```
+
+*/
+.entry__header {
+  margin-bottom: 40px; }
+
+.entry__featured-image {
+  width: 100%;
+  height: auto;
+  margin-bottom: 20px; }
+
+/*doc
+---
+title: Article Footer
+name: article-footer
+category: Components - Article
+---
+
+```html_example
+<footer class="entry__tags">
+	<a href="">Category</a> / <a href="">tag one</a>,<a href="">tag two</a>,<a href="">tag three</a>
+</footer>
+```
+
+*/
 /**
  * Single Page Styles
  */

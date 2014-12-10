@@ -37,6 +37,16 @@ class Plugin {
 		add_action( 'init', array( $this, 'initialize' ) );
 		add_action( 'admin_init', array( $this, 'initialize_admin' ) );
 		add_action( 'admin_menu', array( $this, 'initialize_admin_menu' ) );
+
+		register_activation_hook(
+			$this->plugin_file,
+			array( $this, 'migrate' )
+		);
+	}
+
+	public function migrate() {
+		$migrator = new Sync\TempSchemaMigrator();
+		$migrator->migrate();
 	}
 
 	/**
@@ -59,14 +69,34 @@ class Plugin {
 			)
 		);
 
-		// TODO: figure out if session code should live in this plugin
-		wp_enqueue_script( 'jquery' );
-		wp_localize_script( 'jquery', 'gigya_session_data', $session_data );
-
 		/* Lazy register ajax handlers only if this is an ajax request */
 		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 			$this->register_ajax_handlers();
 		}
+
+		/* Lazy load the async tasks */
+		if ( defined( 'DOING_ASYNC' ) && DOING_ASYNC ) {
+			$this->register_task_handlers();
+		}
+
+		$profile_page = new ProfilePage();
+		$profile_page->register();
+
+		if ( ! $profile_page->is_user_on_profile_page() && ! is_admin() ) {
+			$this->enqueue_script(
+				'gigya_session',
+				'js/gigya_session.js',
+				array( 'jquery', 'cookies-js' )
+			);
+		}
+
+		wp_register_script(
+			'wp_ajax_api',
+			$this->postfix( plugins_url( 'js/wp_ajax_api.js', $this->plugin_file ), '.js' ),
+			array( 'jquery' ),
+			GMR_GIGYA_VERSION,
+			true
+		);
 	}
 
 	public function initialize_admin() {
@@ -94,7 +124,7 @@ class Plugin {
 
 		$handlers[] = new Ajax\GigyaLoginAjaxHandler();
 		$handlers[] = new Ajax\GigyaLogoutAjaxHandler();
-		$handlers[] = new Ajax\PreviewAjaxHandler();
+		$handlers[] = new Ajax\PreviewResultsAjaxHandler();
 		$handlers[] = new Ajax\RegisterAjaxHandler();
 		$handlers[] = new Ajax\ListEntryTypesAjaxHandler();
 		$handlers[] = new Ajax\ListEntryFieldsAjaxHandler();
@@ -103,6 +133,11 @@ class Plugin {
 		foreach ( $handlers as $handler ) {
 			$handler->register();
 		}
+	}
+
+	public function register_task_handlers() {
+		$launcher = new Sync\Launcher();
+		$launcher->register();
 	}
 
 	/**
@@ -129,7 +164,9 @@ class Plugin {
 		//$this->enqueue_script( 'select2', 'js/vendor/select2.js' );
 
 		$this->enqueue_script( 'backbone.collectionView', 'js/vendor/backbone.collectionView.js', 'backbone' );
-		$this->enqueue_script( 'query_builder', 'js/query_builder.js', array( 'backbone', 'underscore' ) );
+		$this->enqueue_script(
+			'query_builder', 'js/query_builder.js', array( 'backbone', 'underscore', 'wp_ajax_api' )
+		);
 
 		wp_localize_script(
 			'query_builder', 'member_query_data', $member_query->properties
@@ -148,7 +185,7 @@ class Plugin {
 	}
 
 	function initialize_member_query_styles( $member_query ) {
-		$this->enqueue_style( 'query_builder', 'css/query_builder.css' );
+		$this->enqueue_style( 'query_builder', 'css/query_builder.css', 'jquery-ui' );
 		//$this->enqueue_style( 'select2', 'css/vendor/select2.css' );
 	}
 
@@ -228,15 +265,8 @@ class Plugin {
 	}
 
 	public function enqueue_script( $id, $path, $dependency = null ) {
-		if ( ! is_null( $dependency ) ) {
-			if ( is_array( $dependency ) ) {
-				$dependencies = $dependency;
-			} else {
-				$dependencies = array( $dependency );
-			}
-		} else {
-			$dependencies = array();
-		}
+		$dependencies = $this->get_dependencies( $dependency );
+		$path         = $this->postfix( $path, '.js' );
 
 		wp_enqueue_script(
 			$id,
@@ -247,6 +277,21 @@ class Plugin {
 	}
 
 	public function enqueue_style( $id, $path, $dependency = null ) {
+		$dependencies = $this->get_dependencies( $dependency );
+		$path         = $this->postfix( $path, '.css' );
+
+		wp_enqueue_style(
+			$id,
+			plugins_url( $path, $this->plugin_file ),
+			$dependencies,
+			GMR_GIGYA_VERSION
+		);
+	}
+
+	/**
+	 * Helper to allow for a single dependency.
+	 */
+	public function get_dependencies( $dependency ) {
 		if ( ! is_null( $dependency ) ) {
 			if ( is_array( $dependency ) ) {
 				$dependencies = $dependency;
@@ -257,11 +302,21 @@ class Plugin {
 			$dependencies = array();
 		}
 
-		wp_enqueue_style(
-			$id,
-			plugins_url( $path, $this->plugin_file ),
-			$dependencies,
-			GMR_GIGYA_VERSION
-		);
+		return $dependencies;
+	}
+
+	/**
+	 * Adds a .min postfix to a path depending on script debug mode.
+	 */
+	public function postfix( $path, $extension ) {
+		if ( $this->get_script_debug() ) {
+			return $path;
+		} else {
+			return str_replace( $extension, ".min{$extension}", $path );
+		}
+	}
+
+	function get_script_debug() {
+		return defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG;
 	}
 }

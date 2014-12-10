@@ -12,6 +12,8 @@ use GreaterMedia\Gigya\MemberQuery;
  * It receives the client generated GQL query as a parameter. And
  * returns the corresponding user accounts using the Gigya API.
  *
+ * DEPRECATED
+ *
  * @namespace GreaterMedia\Gigya
  */
 class PreviewAjaxHandler extends AjaxHandler {
@@ -42,10 +44,15 @@ class PreviewAjaxHandler extends AjaxHandler {
 		$member_query = new MemberQuery( null, $constraints );
 		$query        = $member_query->to_gql();
 
-		$searcher     = new AccountsSearcher();
-		//error_log( "DS.constraints: $constraints" );
-		//error_log( "DS.search: $query" );
-		$accounts     = $searcher->search( $query, false, 5 );
+		if ( $query === '' ) {
+			return array(
+				'accounts' => array(),
+				'total' => 0,
+			);
+		}
+
+		$searcher = new AccountsSearcher();
+		$accounts = $searcher->search( $query, false, 5 );
 
 		return $accounts;
 	}
