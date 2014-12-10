@@ -1,9 +1,10 @@
 (function() {
 
-	var _now, headroom, livePlayerFix, livePlayerInit, livePlayerLocation, livePlayerScroll,
+	var _now, headroom, livePlayerFix, livePlayerInit, livePlayerLocation, livePlayerScroll, showSearch,
 
 		body = document.querySelector( 'body' ),
 		mobileNavButton = document.querySelector( '.mobile-nav__toggle' ),
+		pageWrap = document.getElementById( 'page-wrap' ),
 		header = document.getElementById( 'header' ),
 		headerHeight = header.offsetHeight,
 		livePlayer = document.getElementById( 'live-player__sidebar' ),
@@ -241,9 +242,10 @@
 		}
 	}
 
-	function showSearch() {
-		searchForm.classList.toggle( 'open' );
-	}
+	showSearch = function() {
+		searchForm.classList.toggle( 'header__search--open' );
+		pageWrap.classList.toggle( 'search--active' );
+	};
 
 	searchBtn.addEventListener('click', showSearch, false);
 

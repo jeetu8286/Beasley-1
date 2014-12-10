@@ -10,6 +10,7 @@
 
 		body = document.querySelector( 'body' ),
 		mobileNavButton = document.querySelector( '.mobile-nav__toggle' ),
+		pageWrap = document.getElementById( 'page-wrap' ),
 		header = document.getElementById( 'header' ),
 		headerHeight = header.offsetHeight,
 		livePlayer = document.getElementById( 'live-player__sidebar' ),
@@ -248,7 +249,8 @@
 	}
 
 	showSearch = function() {
-		searchForm.classList.toggle( 'open' );
+		searchForm.classList.toggle( 'header__search--open' );
+		pageWrap.classList.toggle( 'search--active' );
 	};
 
 	searchBtn.addEventListener('click', showSearch, false);

@@ -468,7 +468,7 @@ category: Base - Typography
   src: url("../fonts/icon-font/gmr-icons.eot?#iefixivfz3x") format("embedded-opentype"), url("../fonts/icon-font/gmr-icons.woff?ivfz3x") format("woff"), url("../fonts/icon-font/gmr-icons.ttf?ivfz3x") format("truetype"), url("../fonts/icon-font/gmr-icons.svg?ivfz3x#gmr-icons") format("svg");
   font-weight: normal;
   font-style: normal; }
-[class^="icon-"], [class*=" icon-"], .header__social--facebook:before, .header__social--twitter:before, .header__social--google-plus:before, .header__search--btn:before, .header__search--submit:before, .footer__social--facebook:before, .footer__social--twitter:before, .footer__social--google-plus:before, .live-link__song:before, .live-link__type--audio:before, .live-link__type--gallery:before, .live-link__type--image:before, .live-link__type--link:before, .live-link__type--standard:before, .live-link__type--video:before {
+[class^="icon-"], [class*=" icon-"], .header__social--facebook:before, .header__social--twitter:before, .header__social--google-plus:before, .header__search--btn:before, .footer__social--facebook:before, .footer__social--twitter:before, .footer__social--google-plus:before, .live-link__song:before, .live-link__type--audio:before, .live-link__type--gallery:before, .live-link__type--image:before, .live-link__type--link:before, .live-link__type--standard:before, .live-link__type--video:before, .header__search--submit:before {
   font-family: 'gmr-icons';
   speak: none;
   font-style: normal;
@@ -1715,49 +1715,6 @@ blockquote p {
 
 .header__search--btn:before {
   font-size: 1.125em;
-  content: "\e612"; }
-
-.header__search--form {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 132px;
-  padding: 16px 0;
-  background-color: #000000; }
-
-.header__search--form.open {
-  display: block; }
-
-.header__search--input {
-  width: 90%;
-  height: 100px;
-  background-color: #000000;
-  border: none;
-  outline: none;
-  font-size: 2.2807em;
-  color: #ffffff;
-  text-align: center; }
-  .header__search--input::-webkit-input-placeholder {
-    color: #c7c7c7; }
-  .header__search--input::-moz-placeholder {
-    color: #c7c7c7; }
-  .header__search--input:-moz-placeholder {
-    color: #c7c7c7; }
-  .header__search--input:-ms-input-placeholder {
-    color: #c7c7c7; }
-
-.header__search--submit {
-  position: relative;
-  width: 5%;
-  height: 100px;
-  border: none;
-  background-color: transparent;
-  color: #ffffff; }
-
-.header__search--submit:before {
-  font-size: 1.80203em;
   content: "\e612"; }
 
 .footer {
@@ -3548,6 +3505,74 @@ category: Components - Article
 ```
 
 */
+.header__search--form {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 132px;
+  padding: 16px 0;
+  background-color: #000000;
+  z-index: 10000;
+  -webkit-transition: opacity 1s ease-in 0s;
+  -moz-transition: opacity 1s ease-in 0s;
+  transition: opacity 1s ease-in 0s;
+  opacity: 0;
+  filter: alpha(opacity=0);
+  -moz-opacity: 0;
+  -khtml-opacity: 0;
+  zoom: 1; }
+
+.header__search--open {
+  display: block;
+  -webkit-transition: opacity 1s ease-in 0s;
+  -moz-transition: opacity 1s ease-in 0s;
+  transition: opacity 1s ease-in 0s;
+  opacity: 1;
+  filter: alpha(opacity=100);
+  -moz-opacity: 1;
+  -khtml-opacity: 1;
+  zoom: 1; }
+
+.header__search--input {
+  width: 90%;
+  height: 100px;
+  background-color: #000000;
+  border: none;
+  outline: none;
+  font-size: 2.2807em;
+  color: #ffffff;
+  text-align: center; }
+  .header__search--input::-webkit-input-placeholder {
+    color: #c7c7c7; }
+  .header__search--input::-moz-placeholder {
+    color: #c7c7c7; }
+  .header__search--input:-moz-placeholder {
+    color: #c7c7c7; }
+  .header__search--input:-ms-input-placeholder {
+    color: #c7c7c7; }
+
+.header__search--submit {
+  position: relative;
+  width: 5%;
+  height: 100px;
+  border: none;
+  background-color: transparent;
+  color: #ffffff; }
+
+.header__search--submit:before {
+  font-size: 1.80203em;
+  content: "\e612"; }
+
+.page-wrap.search--active:before {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  content: ""; }
+
 /**
  * Single Page Styles
  */
