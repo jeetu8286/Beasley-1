@@ -38,6 +38,11 @@ function renderLogoUpload( $ ) {
 			.removeClass( 'hidden' );
 
 		$( '#gmr_site_logo--preview')
+			.children( 'img' )
+				.attr( 'src', json.url )
+				.attr( 'alt', json.caption )
+				.attr( 'title', json.title )
+			.parent()
 			.show()
 			.removeClass( 'hidden' );
 

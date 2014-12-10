@@ -100,19 +100,15 @@ class GreaterMediaSiteOptions {
 		$site_logo = get_option( 'gmr_site_logo', '' );
 
 		?>
-		
-		<h4>Site Logo</h4>
-		
+
 		<div class="gmr__option">
 			<label for="gmr_site_logo" class="gmr__option--label"><?php _e( 'Site Logo:', 'greatermedia' ); ?></label>
 			<input type="hidden" id="gmr_site_logo" name="gmr_site_logo" value="<?php if ( isset ( $site_logo ) ) echo esc_url_raw( $site_logo ); ?>" />
-			<?php if( get_option( 'gmr_site_logo' ) ) { ?>
-				<div id="gmr_site_logo--preview" class="gmr_site_logo--preview">
-					<img src="<?php if ( isset ( $site_logo ) ) echo esc_url( $site_logo ); ?>">
-				</div>
-			<?php } ?>
+			<div id="gmr_site_logo--preview" class="gmr__option--preview hidden">
+				<img src="<?php if ( isset ( $site_logo ) ) echo esc_url( $site_logo ); ?>" id="gmr_site_logo--img">
+			</div>
 			<div id="gmr_site_logo--location" class="hidden">
-				<input type="text" id="gmr_logo_location" name="gmr_logo_location" value="<?php if ( isset ( $site_logo ) ) echo esc_url_raw( $site_logo ); ?>" />
+				<input type="text" id="gmr_logo_location" name="gmr_logo_location" class="gmr__option--input" value="<?php if ( isset ( $site_logo ) ) echo esc_url_raw( $site_logo ); ?>" />
 			</div>
 			<div id="gmr_site_logo--upload" class="hide-if-no-js gmr__option--upload-btn">
 				<a title="Upload Logo" href="javascript:;" id="gmr_site_logo--upload-btn" class="button"><?php _e( 'Upload Logo', 'greatermedia' ); ?></a>
@@ -122,27 +118,29 @@ class GreaterMediaSiteOptions {
 			</div>
 		</div>
 
+		<hr/>
+
 		<h4>Social Pages</h4>
 
-		<div class="gmr-option">
-			<label for="greatermedia_facebook_url">Facebook URL</label>
-			<input type="text" class="widefat" name="greatermedia_facebook_url" id="greatermedia_facebook_url" value="<?php echo esc_url( $facebook ); ?>" />
+		<div class="gmr__option">
+			<label for="greatermedia_facebook_url" class="gmr__option--label">Facebook URL</label>
+			<input type="text" class="gmr__option--input" name="greatermedia_facebook_url" id="greatermedia_facebook_url" value="<?php echo esc_url( $facebook ); ?>" />
 		</div>
 
-		<div class="gmr-option">
-			<label for="greatermedia_twitter_url">Twitter Username</label>
-			<input type="text" class="widefat" name="greatermedia_twitter_name" id="greatermedia_twitter_name" value="<?php echo esc_html( $twitter ); ?>" />
+		<div class="gmr__option">
+			<label for="greatermedia_twitter_url" class="gmr__option--label">Twitter Username</label>
+			<input type="text" class="gmr__option--input" name="greatermedia_twitter_name" id="greatermedia_twitter_name" value="<?php echo esc_html( $twitter ); ?>" />
 			<div class="gmr-option__field--desc"><?php _e( 'Please enter username minus the @', 'greatermedia' ); ?></div>
 		</div>
 
-		<div class="gmr-option">
-			<label for="greatermedia_youtube_url">YouTube URL</label>
-			<input type="text" class="widefat" name="greatermedia_youtube_url" id="greatermedia_youtube_url" value="<?php echo esc_url( $youtube ); ?>" />
+		<div class="gmr__option">
+			<label for="greatermedia_youtube_url" class="gmr__option--label">YouTube URL</label>
+			<input type="text" class="gmr__option--input" name="greatermedia_youtube_url" id="greatermedia_youtube_url" value="<?php echo esc_url( $youtube ); ?>" />
 		</div>
 
-		<div class="gmr-option">
-			<label for="greatermedia_instagram_url">Instagram Username</label>
-			<input type="text" class="widefat" name="greatermedia_instagram_name" id="greatermedia_instagram_name" value="<?php echo esc_html( $instagram ); ?>" />
+		<div class="gmr__option">
+			<label for="greatermedia_instagram_url" class="gmr__option--label">Instagram Username</label>
+			<input type="text" class="gmr__option--input" name="greatermedia_instagram_name" id="greatermedia_instagram_name" value="<?php echo esc_html( $instagram ); ?>" />
 		</div>
 
 		<hr/>
@@ -161,7 +159,7 @@ class GreaterMediaSiteOptions {
 		wp_enqueue_media();
 
 		wp_enqueue_script( 'gmr-options-admin', get_template_directory_uri() . "/assets/js/greater_media_admin{$postfix}.js", array( 'jquery' ), GREATERMEDIA_VERSION, 'all' );
-
+		wp_enqueue_style( 'gmr-options-admin', get_template_directory_uri() . "/assets/css/greater_media_admin{$postfix}.css", array(), GREATERMEDIA_VERSION );
 	}
 
 }
