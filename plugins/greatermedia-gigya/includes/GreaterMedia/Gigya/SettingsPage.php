@@ -19,7 +19,7 @@ class SettingsPage {
 		wp_enqueue_script(
 			'member_query_settings',
 			plugins_url( 'js/settings_page.js', GMR_GIGYA_PLUGIN_FILE ),
-			array(),
+			array( 'wp_ajax_api' ),
 			GMR_GIGYA_VERSION
 		);
 

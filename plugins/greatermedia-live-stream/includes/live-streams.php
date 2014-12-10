@@ -10,9 +10,6 @@ add_action( 'admin_action_gmr_stream_make_primary', 'gmr_streams_make_primary' )
 // filter hooks
 add_filter( 'manage_' . GMR_LIVE_STREAM_CPT . '_posts_columns', 'gmr_streams_filter_columns_list' );
 add_filter( 'gmr_live_player_streams', 'gmr_streams_get_public_streams' );
-add_filter( 'json_endpoints', 'gmr_streams_init_api_endpoint' );
-add_filter( 'determine_current_user', 'gmr_streams_json_basic_auth_handler', 20 );
-add_filter( 'json_authentication_errors', 'gmr_streams_json_basic_auth_error' );
 add_filter( 'post_type_link', 'gmr_streams_get_stream_permalink', 10, 2 );
 add_filter( 'request', 'gmr_streams_unpack_vars' );
 add_filter( 'gmr_shows_widget_transient_name', 'gmr_streams_update_shows_widget_transient_name' );
