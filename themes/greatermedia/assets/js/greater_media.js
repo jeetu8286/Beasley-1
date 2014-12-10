@@ -278,7 +278,9 @@
 		if(nowPlaying != null) {
 			nowPlaying.addEventListener( 'click', nowPlayingClick, false );
 		}
-		liveLink.addEventListener( 'click', liveLinksClose(), false );
+		if(liveLink != null) {
+			liveLink.addEventListener('click', liveLinksClose(), false);
+		}
 		window.addEventListener( 'resize', function() {
 			resizeDebounce();
 			resizeThrottle();
