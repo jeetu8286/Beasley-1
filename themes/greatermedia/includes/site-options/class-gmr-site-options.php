@@ -46,6 +46,7 @@ class GreaterMediaSiteOptions {
 	protected function _init() {
 		add_action( 'admin_menu', array( $this, 'add_settings_page' ) );
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 	}
 
 	public function add_settings_page() {
@@ -79,10 +80,11 @@ class GreaterMediaSiteOptions {
 		add_settings_section( 'greatermedia_site_settings', 'Greater Media Site Settings', array( $this, 'render_site_settings_section' ), $this->_settings_page_hook );
 
 		// Social URLs
-		register_setting( self::option_group, 'greatermedia_facebook_url', 'esc_url_raw' );
-		register_setting( self::option_group, 'greatermedia_twitter_name', 'sanitize_text_field' );
-		register_setting( self::option_group, 'greatermedia_youtube_url', 'esc_url_raw' );
-		register_setting( self::option_group, 'greatermedia_instagram_name', 'sanitize_text_field' );
+		register_setting( self::option_group, 'gmr_facebook_url', 'esc_url_raw' );
+		register_setting( self::option_group, 'gmr_twitter_name', 'sanitize_text_field' );
+		register_setting( self::option_group, 'gmr_youtube_url', 'esc_url_raw' );
+		register_setting( self::option_group, 'gmr_instagram_name', 'sanitize_text_field' );
+		register_setting( self::option_group, 'gmr_site_logo', 'esc_url_raw' );
 
 		/**
 		 * Allows us to register extra settings that are not necessarily always present on all child sites.
@@ -91,12 +93,34 @@ class GreaterMediaSiteOptions {
 	}
 
 	public function render_site_settings_section() {
-		$facebook = get_option( 'greatermedia_facebook_url', '' );
-		$twitter = get_option( 'greatermedia_twitter_name', '' );
-		$youtube = get_option( 'greatermedia_youtube_url', '' );
-		$instagram = get_option( 'greatermedia_instagram_name', '' );
+		$facebook = get_option( 'gmr_facebook_url', '' );
+		$twitter = get_option( 'gmr_twitter_name', '' );
+		$youtube = get_option( 'gmr_youtube_url', '' );
+		$instagram = get_option( 'gmr_instagram_name', '' );
+		$site_logo = get_option( 'gmr_site_logo', '' );
 
 		?>
+		
+		<h4>Site Logo</h4>
+		
+		<div class="gmr__option">
+			<label for="gmr_site_logo" class="gmr__option--label"><?php _e( 'Site Logo:', 'greatermedia' ); ?></label>
+			<input type="hidden" id="gmr_site_logo" name="gmr_site_logo" value="<?php if ( isset ( $site_logo ) ) echo esc_url_raw( $site_logo ); ?>" />
+			<?php if( get_option( 'gmr_site_logo' ) ) { ?>
+				<div id="gmr_site_logo--preview" class="gmr_site_logo--preview">
+					<img src="<?php if ( isset ( $site_logo ) ) echo esc_url( $site_logo ); ?>">
+				</div>
+			<?php } ?>
+			<div id="gmr_site_logo--location" class="hidden">
+				<input type="text" id="gmr_logo_location" name="gmr_logo_location" value="<?php if ( isset ( $site_logo ) ) echo esc_url_raw( $site_logo ); ?>" />
+			</div>
+			<div id="gmr_site_logo--upload" class="hide-if-no-js gmr__option--upload-btn">
+				<a title="Upload Logo" href="javascript:;" id="gmr_site_logo--upload-btn" class="button"><?php _e( 'Upload Logo', 'greatermedia' ); ?></a>
+			</div>
+			<div id="gmr_site_logo--remove" class="hidden gmr__option--upload-btn">
+				<a title="Remove Logo" href="javascript:;" id="gmr_site_logo-remove" class="button"><?php _e( 'Remove Logo', 'greatermedia' ); ?></a>
+			</div>
+		</div>
 
 		<h4>Social Pages</h4>
 
@@ -126,6 +150,20 @@ class GreaterMediaSiteOptions {
 
 	<?php
 	}
+
+	/**
+	 * Localize scripts and enqueue
+	 */
+	public static function enqueue_scripts() {
+
+		$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
+
+		wp_enqueue_media();
+
+		wp_enqueue_script( 'gmr-options-admin', get_template_directory_uri() . "/assets/js/greater_media_admin{$postfix}.js", array( 'jquery' ), GREATERMEDIA_VERSION, 'all' );
+
+	}
+
 }
 
 GreaterMediaSiteOptions::instance();
