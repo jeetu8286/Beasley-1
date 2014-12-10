@@ -84,10 +84,10 @@ class GMR_Show_Metaboxes {
 
 		wp_nonce_field( 'gmr_show', 'show_nonce', false );
 
-		$has_homepage = filter_var( get_post_meta( get_the_ID(), 'show_homepage', true ), FILTER_VALIDATE_BOOLEAN );
-		$supports_albums = filter_var( get_post_meta( get_the_ID(), 'show_homepage_albums', true ), FILTER_VALIDATE_BOOLEAN );
-		$supports_podcasts = filter_var( get_post_meta( get_the_ID(), 'show_homepage_podcasts', true ), FILTER_VALIDATE_BOOLEAN );
-		$supports_videos = filter_var( get_post_meta( get_the_ID(), 'show_homepage_videos', true ), FILTER_VALIDATE_BOOLEAN );
+		$has_homepage = \GreaterMedia\Shows\supports_homepage( get_the_ID() );
+		$supports_albums = \GreaterMedia\Shows\supports_albums( get_the_ID() );
+		$supports_podcasts = \GreaterMedia\Shows\supports_podcasts( get_the_ID() );
+		$supports_videos = \GreaterMedia\Shows\supports_videos( get_the_ID() );
 
 		?><div id="show-homepage" class="misc-pub-section misc-pub-gmr mis-pub-radio">
 			Has home page:
