@@ -47,6 +47,7 @@ class GreaterMediaSiteOptions {
 		add_action( 'admin_menu', array( $this, 'add_settings_page' ) );
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+		add_action( 'gmr_site_logo', array( $this, 'site_logo' ) );
 	}
 
 	public function add_settings_page() {
@@ -160,6 +161,12 @@ class GreaterMediaSiteOptions {
 
 		wp_enqueue_script( 'gmr-options-admin', get_template_directory_uri() . "/assets/js/greater_media_admin{$postfix}.js", array( 'jquery' ), GREATERMEDIA_VERSION, 'all' );
 		wp_enqueue_style( 'gmr-options-admin', get_template_directory_uri() . "/assets/css/greater_media_admin{$postfix}.css", array(), GREATERMEDIA_VERSION );
+	}
+
+	public static function site_logo() {
+		$site_logo = get_option( 'gmr_site_logo', '' );
+
+		echo esc_url( $site_logo );
 	}
 
 }
