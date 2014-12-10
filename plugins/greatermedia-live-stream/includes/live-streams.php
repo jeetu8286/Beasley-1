@@ -10,34 +10,97 @@ add_action( 'admin_action_gmr_stream_make_primary', 'gmr_streams_make_primary' )
 // filter hooks
 add_filter( 'manage_' . GMR_LIVE_STREAM_CPT . '_posts_columns', 'gmr_streams_filter_columns_list' );
 add_filter( 'gmr_live_player_streams', 'gmr_streams_get_public_streams' );
-add_filter( 'json_endpoints', 'gmr_streams_init_api_endpoint' );
-add_filter( 'determine_current_user', 'gmr_streams_json_basic_auth_handler', 20 );
-add_filter( 'json_authentication_errors', 'gmr_streams_json_basic_auth_error' );
+add_filter( 'post_type_link', 'gmr_streams_get_stream_permalink', 10, 2 );
+add_filter( 'request', 'gmr_streams_unpack_vars' );
 
 /**
- * Registers API endpoint.
+ * Builds permalink for Live Stream object.
  *
- * @filter json_endpoints
- * @param array $routes The initial array of routes.
- * @return array Extended array of API routes.
+ * @filter post_type_link 10 2
+ * @param string $post_link The initial permalink
+ * @param WP_Post $post The post object.
+ * @return string The live stream permalink.
  */
-function gmr_streams_init_api_endpoint( $routes ) {
-	$routes['/stream/(?P<sign>\S+)'] = array(
-		array( 'gmr_streams_process_endpoint', WP_JSON_Server::CREATABLE | WP_JSON_Server::ACCEPT_JSON ),
-	);
+function gmr_streams_get_stream_permalink( $post_link, $post ) {
+	// do nothing if it is not a live stream post
+	if ( GMR_LIVE_STREAM_CPT != $post->post_type ) {
+		return $post_link;
+	}
 
-	return $routes;
+	// build permalink using call sign if available,
+	// if call sign is unavailable, then use post id to build a permalink
+	$call_sign = trim( get_post_meta( $post->ID, 'call_sign', true ) );
+	if ( empty( $call_sign ) ) {
+		$call_sign = $post->ID;
+	}
+
+	return home_url( "/stream/{$call_sign}/" );
+}
+
+/**
+ * Unpacks query vars for live stream page.
+ *
+ * @filter request
+ * @param array $query_vars The array of initial query vars.
+ * @return array The array of unpacked query vars.
+ */
+function gmr_streams_unpack_vars( $query_vars ) {
+	// do nothing if it is wrong page
+	if ( empty( $query_vars[GMR_LIVE_STREAM_CPT] ) ) {
+		return $query_vars;
+	}
+
+	// fetch stream
+	$stream_id = false;
+	$stream_sign = $query_vars[GMR_LIVE_STREAM_CPT];
+	$query = new WP_Query( array(
+		'post_type'           => GMR_LIVE_STREAM_CPT,
+		'meta_key'            => 'call_sign',
+		'meta_value'          => $stream_sign,
+		'posts_per_page'      => 1,
+		'ignore_sticky_posts' => 1,
+		'no_found_rows'       => true,
+		'fields'              => 'ids',
+	) );
+
+	if ( ! $query->have_posts() && is_numeric( $stream_sign ) ) {
+		$stream = get_post( $stream_sign );
+		if ( $stream && GMR_LIVE_STREAM_CPT == $stream->post_type ) {
+			$stream_id = $stream->ID;
+		}
+	} else {
+		$stream_id = $query->next_post();
+	}
+
+	// unpack query vars if stream has been found
+	if ( ! empty( $stream_id ) ) {
+		$query_vars['post_type'] = GMR_SONG_CPT;
+		$query_vars['post_parent'] = $stream_id;
+		$query_vars['order'] = 'DESC';
+		$query_vars['orderby'] = 'date';
+		$query_vars['posts_per_page'] = 50;
+	}
+
+	return $query_vars;
 }
 
 /**
  * Registers Live Stream post type.
  *
  * @action init
+ * @global WP_Rewrite $wp_rewrite The rewrite rules object.
+ * @global WP $wp The WP object.
  */
 function gmr_streams_register_post_type() {
+	global $wp_rewrite, $wp;
+
+	// register post type
 	register_post_type( GMR_LIVE_STREAM_CPT, array(
-		'public'               => false,
+		'public'               => true,
+		'exclude_from_search'  => true,
+		'publicly_queryable'   => false,
 		'show_ui'              => true,
+		'show_in_nav_menus'    => false,
 		'rewrite'              => false,
 		'query_var'            => false,
 		'can_export'           => false,
@@ -64,6 +127,16 @@ function gmr_streams_register_post_type() {
 			'not_found_in_trash' => 'No links found in Trash.',
 		),
 	) );
+
+	// register rewrite rule and add query var
+	$regex = '^stream/([^/]+)/?$';
+	$wp_rewrite->add_rule( $regex, 'index.php?' . GMR_LIVE_STREAM_CPT . '=$matches[1]', 'top' );
+
+	$wp->add_query_var( GMR_LIVE_STREAM_CPT );
+	$rules = $wp_rewrite->wp_rewrite_rules();
+	if ( ! isset( $rules[ $regex ] ) ) {
+		flush_rewrite_rules();
+	}
 }
 
 /**
@@ -258,128 +331,4 @@ function gmr_streams_get_public_streams() {
 	} while ( $paged <= $query->max_num_pages );
 	
 	return $streams;
-}
-
-/**
- * Processes stream endpoing submission.
- *
- * @param string $sign The stream id.
- * @param array $data The song data.
- */
-function gmr_streams_process_endpoint( $sign, $data ) {
-	// an example of data:
-	// {"artist": "Bruce Springsteen", "title": "Born to run", "purchase_link": "http://itunes.apple.com/album/born-to-run/id192810984?i=192811017&uo=5", "timestamp": "1417788996"}
-	//
-	// sample of curl command to test endpoint:
-	// curl -u admin:password -X POST --data '{json}' {endpoint_url}
-
-	$data = filter_var_array( $data, array(
-		'artist'        => FILTER_DEFAULT,
-		'title'         => FILTER_DEFAULT,
-		'purchase_link' => FILTER_VALIDATE_URL,
-		'timestamp'     => FILTER_VALIDATE_INT,
-	) );
-
-	if ( empty( $data['timestamp'] ) ) {
-		return new WP_Error( 'gmr_stream_wrong_aired_at', 'Timestamp is invalid.', array( 'status' => 400 ) );
-	}
-
-	$query = new WP_Query( array(
-		'post_type'           => GMR_LIVE_STREAM_CPT,
-		'meta_key'            => 'call_sign',
-		'meta_value'          => $sign,
-		'posts_per_page'      => 1,
-		'ignore_sticky_posts' => 1,
-		'no_found_rows'       => true,
-	) );
-
-	if ( ! $query->have_posts() ) {
-		return new WP_Error( 'gmr_stream_not_found', 'The stream was not found.', array( 'status' => 404 ) );
-	}
-
-	$song = array(
-		'post_type'     => GMR_SONG_CPT,
-		'post_status'   => 'publish',
-		'post_date'     => date( DATE_ISO8601, $data['timestamp'] + get_option( 'gmt_offset' ) * HOUR_IN_SECONDS ),
-		'post_date_gmt' => date( DATE_ISO8601, $data['timestamp'] ),
-		'post_parent'   => $query->next_post()->ID,
-		'post_title'    => $data['title'],
-	);
-
-	$song_id = wp_insert_post( $song, true );
-	$created = $song_id && ! is_wp_error( $song_id );
-	if ( $created ) {
-		update_post_meta( $song_id, 'artist', $data['artist'] );
-		update_post_meta( $song_id, 'purchase_link', $data['purchase_link'] );
-	}
-
-	$response = new WP_JSON_Response();
-	$response->set_status( $created ? 201 : 400 );
-	
-	return $response;
-}
-
-/**
- * Authorizes an user using HTTP Basic Authorization method.
- *
- * @global WP_Error $wp_json_basic_auth_error The basic authorization error object.
- * @param WP_User $user The current user object.
- * @return WP_User|int The user id or object on success, otherwise null;
- */
-function gmr_streams_json_basic_auth_handler( $user ) {
-	global $wp_json_basic_auth_error;
-
-	$wp_json_basic_auth_error = null;
-
-	// Don't authenticate twice
-	if ( ! empty( $user ) ) {
-		return $user;
-	}
-
-	// Check that we're trying to authenticate
-	if ( !isset( $_SERVER['PHP_AUTH_USER'] ) ) {
-		return $user;
-	}
-
-	$username = $_SERVER['PHP_AUTH_USER'];
-	$password = $_SERVER['PHP_AUTH_PW'];
-
-	/**
-	 * In multi-site, wp_authenticate_spam_check filter is run on authentication. This filter calls
-	 * get_currentuserinfo which in turn calls the determine_current_user filter. This leads to infinite
-	 * recursion and a stack overflow unless the current function is removed from the determine_current_user
-	 * filter during authentication.
-	 */
-	remove_filter( 'determine_current_user', 'gmr_streams_json_basic_auth_handler', 20 );
-
-	$user = wp_authenticate( $username, $password );
-
-	add_filter( 'determine_current_user', 'gmr_streams_json_basic_auth_handler', 20 );
-
-	if ( is_wp_error( $user ) ) {
-		$wp_json_basic_auth_error = $user;
-		return null;
-	}
-
-	$wp_json_basic_auth_error = true;
-
-	return $user->ID;
-}
-
-/**
- * Returns Basic Authorization errors if exists any.
- * 
- * @global WP_Error $wp_json_basic_auth_error The basic authorization error object.
- * @param WP_Error $error The incoming error object or null.
- * @return WP_Error The error object on failure, otherwise null.
- */
-function gmr_streams_json_basic_auth_error( $error ) {
-	// Passthrough other errors
-	if ( ! empty( $error ) ) {
-		return $error;
-	}
-
-	global $wp_json_basic_auth_error;
-
-	return $wp_json_basic_auth_error;
 }
