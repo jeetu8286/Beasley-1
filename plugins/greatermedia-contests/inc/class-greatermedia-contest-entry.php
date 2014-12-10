@@ -95,7 +95,7 @@ class GreaterMediaContestEntry {
 			'label'               => __( 'contest_entry', 'greatermedia_contests' ),
 			'description'         => __( 'An entry in a Contest', 'greatermedia_contests' ),
 			'labels'              => $labels,
-			'supports'            => array( 'title', ),
+			'supports'            => array( 'title', 'custom-fields' ),
 			'taxonomies'          => array( 'category' ),
 			'hierarchical'        => false,
 			'public'              => true,
