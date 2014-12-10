@@ -1,10 +1,34 @@
 <?php
 
 // action hooks
+add_action( 'init', 'gmr_blogroll_register_endpoint' );
 add_action( 'widgets_init', 'gmr_blogroll_register_widgets' );
 add_action( 'wp_enqueue_scripts', 'gmr_blogroll_enqueue_widget_scripts' );
-add_action( 'wp_ajax_gmr_blogroll_widget', 'gmr_blogroll_render_widget_html' );
-add_action( 'wp_ajax_nopriv_gmr_blogroll_widget', 'gmr_blogroll_render_widget_html' );
+add_action( 'template_redirect', 'gmr_blogroll_render_widget_html' );
+
+/**
+ * Registers blogroll endpoint.
+ *
+ * @action init
+ * @global WP $wp The WP object.
+ * @global WP_Rewrite $wp_rewrite The WP_Rewrite object.
+ */
+function gmr_blogroll_register_endpoint() {
+	global $wp, $wp_rewrite;
+
+	// register blogroll query vars
+	$wp->add_query_var( 'blogroll' );
+
+	// register rewrite rule
+	$regex = '^blogroll/stream/([^/]+)/?$';
+	$wp_rewrite->add_rule( $regex, 'index.php?blogroll=yes&' . GMR_LIVE_STREAM_CPT . '=$matches[1]', 'top' );
+
+	// flush rewrite rules if it doesn't contain blogroll endpoint
+	$rules = $wp_rewrite->wp_rewrite_rules();
+	if ( ! isset( $rules[ $regex ] ) ) {
+		$wp_rewrite->flush_rules();
+	}
+}
 
 /**
  * Registers live link widgets.
@@ -23,8 +47,8 @@ function gmr_blogroll_register_widgets() {
 function gmr_blogroll_enqueue_widget_scripts() {
 	$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 	wp_register_script( 'gmr-blogroll-widget', GMEDIA_LIVE_STREAM_URL . "/assets/js/blogroll-widget{$postfix}.js", array( 'jquery' ), GMEDIA_LIVE_STREAM_VERSION, true );
-	wp_localize_script( 'gmr-blogroll-widget', 'gmrs', array(
-		'ajaxurl'  => admin_url( 'admin-ajax.php?action=gmr_blogroll_widget' ),
+	wp_localize_script( 'gmr-blogroll-widget', 'gmr_blogroll_widget', array(
+		'ajaxurl'  => home_url( '/blogroll/stream/' ),
 		'interval' => MINUTE_IN_SECONDS * 1000, // 60 000 milliseconds
 	) );
 }
@@ -32,10 +56,14 @@ function gmr_blogroll_enqueue_widget_scripts() {
 /**
  * Renders blogroll widget.
  *
- * @action wp_ajax_gmr_blogroll_widget
- * @action wp_ajax_nopriv_gmr_blogroll_widget
+ * @action template_redirect
  */
 function gmr_blogroll_render_widget_html() {
+	// do nothing if it is not a blogroll request
+	if ( ! filter_var( get_query_var( 'blogroll' ), FILTER_VALIDATE_BOOLEAN ) ) {
+		return;
+	}
+
 	// send cache headers
 	if ( ! headers_sent() ) {
 		$max_age = MINUTE_IN_SECONDS;
@@ -63,7 +91,7 @@ function gmr_blogroll_render_widget_html() {
  */
 function gmr_blogroll_get_widget_transient_name( $name ) {
 	$stream = null;
-	$sign = filter_input( INPUT_GET, 'stream' );
+	$sign = get_query_var( GMR_LIVE_STREAM_CPT );
 	if ( ! empty( $sign ) ) {
 		$stream = gmr_streams_get_stream_by_sign( $sign );
 	}

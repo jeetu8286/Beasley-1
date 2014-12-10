@@ -36,7 +36,8 @@ module.exports = function (grunt) {
 					jQuery: false,
 					document: false,
 					window: false,
-					console: false
+					console: false,
+					gmr_blogroll_widget: false
 				}
 			}
 		},

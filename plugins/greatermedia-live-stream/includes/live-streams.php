@@ -135,7 +135,7 @@ function gmr_streams_register_post_type() {
 	$wp->add_query_var( GMR_LIVE_STREAM_CPT );
 	$rules = $wp_rewrite->wp_rewrite_rules();
 	if ( ! isset( $rules[ $regex ] ) ) {
-		flush_rewrite_rules();
+		$wp_rewrite->flush_rules();
 	}
 }
 

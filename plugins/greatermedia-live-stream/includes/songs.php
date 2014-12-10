@@ -131,7 +131,7 @@ function gmr_songs_get_blogroll_widget_item_ids( $posts ) {
 	$query = new WP_Query();
 
 	$stream = null;
-	$sign = filter_input( INPUT_GET, 'stream' );
+	$sign = get_query_var( GMR_LIVE_STREAM_CPT );
 	if ( ! empty( $sign ) ) {
 		$stream = gmr_streams_get_stream_by_sign( $sign );
 	}
