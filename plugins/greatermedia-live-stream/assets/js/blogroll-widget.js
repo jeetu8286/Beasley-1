@@ -1,4 +1,4 @@
-/*! GreaterMedia Shows - v1.0.0
+/*! GreaterMedia Live Streams - v1.0.0
  * http://wordpress.org/plugins
  * Copyright (c) 2014; * Licensed GPLv2+ */
 (function ($, gmrs) {
@@ -9,7 +9,7 @@
 			url: gmrs.ajaxurl,
 			data: {stream: active_stream}
 		}).done(function(response) {
-			$('.widget_gmr_shows_widget').html(response);
+			$('.widget_gmr_blogroll_widget').html(response);
 		});
 	};
 

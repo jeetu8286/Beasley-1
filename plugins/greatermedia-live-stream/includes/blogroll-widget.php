@@ -1,41 +1,41 @@
 <?php
 
 // action hooks
-add_action( 'widgets_init', 'gmrs_register_widgets' );
-add_action( 'wp_enqueue_scripts', 'gmrs_enqueue_widget_scripts' );
-add_action( 'wp_ajax_gmrs_widget', 'gmrs_render_shows_widget_html' );
-add_action( 'wp_ajax_nopriv_gmrs_widget', 'gmrs_render_shows_widget_html' );
+add_action( 'widgets_init', 'gmr_blogroll_register_widgets' );
+add_action( 'wp_enqueue_scripts', 'gmr_blogroll_enqueue_widget_scripts' );
+add_action( 'wp_ajax_gmr_blogroll_widget', 'gmr_blogroll_render_widget_html' );
+add_action( 'wp_ajax_nopriv_gmr_blogroll_widget', 'gmr_blogroll_render_widget_html' );
 
 /**
  * Registers live link widgets.
  *
  * @action widgets_init
  */
-function gmrs_register_widgets() {
-	register_widget( 'Shows_Widget' );
+function gmr_blogroll_register_widgets() {
+	register_widget( 'Blogroll_Widget' );
 }
 
 /**
- * Registers shows widget scripts.
+ * Registers blogroll widget scripts.
  *
  * @access wp_enqueue_scripts
  */
-function gmrs_enqueue_widget_scripts() {
+function gmr_blogroll_enqueue_widget_scripts() {
 	$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
-	wp_register_script( 'gmr-show-widget', GMEDIA_SHOWS_URL . "/assets/js/shows_widget{$postfix}.js", array( 'jquery' ), GMEDIA_SHOWS_VERSION, true );
-	wp_localize_script( 'gmr-show-widget', 'gmrs', array(
-		'ajaxurl'  => admin_url( 'admin-ajax.php?action=gmrs_widget' ),
+	wp_register_script( 'gmr-blogroll-widget', GMEDIA_LIVE_STREAM_URL . "/assets/js/blogroll-widget{$postfix}.js", array( 'jquery' ), GMEDIA_LIVE_STREAM_VERSION, true );
+	wp_localize_script( 'gmr-blogroll-widget', 'gmrs', array(
+		'ajaxurl'  => admin_url( 'admin-ajax.php?action=gmr_blogroll_widget' ),
 		'interval' => MINUTE_IN_SECONDS * 1000, // 60 000 milliseconds
 	) );
 }
 
 /**
- * Renders shows widget.
+ * Renders blogroll widget.
  *
- * @action wp_ajax_gmrs_widget
- * @action wp_ajax_nopriv_gmrs_widget
+ * @action wp_ajax_gmr_blogroll_widget
+ * @action wp_ajax_nopriv_gmr_blogroll_widget
  */
-function gmrs_render_shows_widget_html() {
+function gmr_blogroll_render_widget_html() {
 	// send cache headers
 	if ( ! headers_sent() ) {
 		$max_age = MINUTE_IN_SECONDS;
@@ -51,18 +51,38 @@ function gmrs_render_shows_widget_html() {
 	}
 
 	// send widget html
-	echo gmrs_get_shows_widget_html();
+	echo gmr_blogroll_get_widget_html();
 	exit;
 }
 
 /**
- * Builds and returns shows widget html.
+ * Adjusts blogroll widget transient name to make unique transients per stream.
+ *
+ * @param string $name The initial transient name.
+ * @return string Adjusted transient name.
+ */
+function gmr_blogroll_get_widget_transient_name( $name ) {
+	$stream = null;
+	$sign = filter_input( INPUT_GET, 'stream' );
+	if ( ! empty( $sign ) ) {
+		$stream = gmr_streams_get_stream_by_sign( $sign );
+	}
+
+	if ( ! $stream ) {
+		$stream = gmr_streams_get_primary_stream();
+	}
+
+	return $stream ? "{$name}_{$stream->ID}" : $name;
+}
+
+/**
+ * Builds and returns blogroll widget html.
  *
  * @return string The widget html.
  */
-function gmrs_get_shows_widget_html() {
+function gmr_blogroll_get_widget_html() {
 	// check transient first and if it exists, then return cached version of the widget
-	$transient = apply_filters( 'gmr_shows_widget_transient_name', 'gmrs_show_widget' );
+	$transient = gmr_blogroll_get_widget_transient_name( 'gmr_blogroll_blogroll_widget' );
 	$html = get_transient( $transient );
 	if ( ! empty( $html ) ) {
 		return $html;
@@ -73,14 +93,14 @@ function gmrs_get_shows_widget_html() {
 	ob_start();
 
 	// get widget item ids
-	$posts__in = apply_filters( 'gmr_shows_widget_item_ids', array() );
+	$posts__in = apply_filters( 'gmr_blogroll_widget_item_ids', array() );
 	$posts__in = array_unique( array_filter( array_map( 'intval', $posts__in ) ) );
 
 	// build quiery and render widget's html
 	$query = new WP_Query();
 	if ( ! empty( $posts__in ) ) {
 		$query->query(  array(
-			'post_type'           => apply_filters( 'gmr_show_widget_item_post_types', array() ),
+			'post_type'           => apply_filters( 'gmr_blogroll_widget_item_post_types', array() ),
 			'post__in'            => $posts__in,
 			'orderby'             => 'date',
 			'order'               => 'DESC',
@@ -94,7 +114,7 @@ function gmrs_get_shows_widget_html() {
 		while ( $query->have_posts() ) :
 			$query->the_post();
 
-			$item = apply_filters( 'gmr_show_widget_item', false );
+			$item = apply_filters( 'gmr_blogroll_widget_item', false );
 			if ( ! empty( $item ) ) :
 				echo '<li>', $item, '</li>';
 			endif;
@@ -112,9 +132,9 @@ function gmrs_get_shows_widget_html() {
 }
 
 /**
- * Shows blogroll widget class.
+ * Blogroll widget class.
  */
-class Shows_Widget extends WP_Widget {
+class Blogroll_Widget extends WP_Widget {
 
 	/**
 	 * Constructor.
@@ -122,7 +142,7 @@ class Shows_Widget extends WP_Widget {
 	 * @access public
 	 */
 	public function __construct() {
-		parent::__construct( 'gmr_shows_widget', 'GMR - Shows' );
+		parent::__construct( 'gmr_blogroll_widget', 'GMR - Blogroll' );
 	}
 
 	/**
@@ -130,15 +150,15 @@ class Shows_Widget extends WP_Widget {
 	 *
 	 * @access public
 	 * @param array $args The widget settings array.
-	 * @param array $instance The widget instance settings array.
+	 * @param array $instance The widget instance arguments.
 	 */
 	public function widget( $args, $instance ) {
-		$widget = gmrs_get_shows_widget_html();
+		$widget = gmr_blogroll_get_widget_html();
 		if ( empty( $widget ) ) {
 			return;
 		}
 
-		wp_enqueue_script( 'gmr-show-widget' );
+		wp_enqueue_script( 'gmr-blogroll-widget' );
 		
 		echo $args['before_widget'], $widget, $args['after_widget'];
 	}

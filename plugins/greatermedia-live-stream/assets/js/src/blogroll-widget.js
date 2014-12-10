@@ -7,7 +7,7 @@
 			url: gmrs.ajaxurl,
 			data: {stream: active_stream}
 		}).done(function(response) {
-			$('.widget_gmr_shows_widget').html(response);
+			$('.widget_gmr_blogroll_widget').html(response);
 		});
 	};
 
