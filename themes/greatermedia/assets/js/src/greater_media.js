@@ -296,7 +296,9 @@
 	} else {
 		window.addEventListener( 'load', function() {
 			livePlayerInit();
-			liveLinksAddHeight();
+			if(liveLink != null) {
+				liveLinksAddHeight();
+			}
 		}, false );
 		window.addEventListener( 'scroll', function() {
 			scrollDebounce();
