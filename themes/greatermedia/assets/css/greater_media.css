@@ -567,7 +567,7 @@ img {
   max-width: 100%;
   margin-left: auto;
   margin-right: auto;
-  padding: 0 3.125%; }
+  padding-right: 20em; }
   .container:after {
     content: "";
     display: table;
@@ -576,8 +576,7 @@ img {
     .container {
       max-width: 100%;
       margin-left: auto;
-      margin-right: auto;
-      padding-right: 20em; }
+      margin-right: auto; }
       .container:after {
         content: "";
         display: table;
@@ -645,7 +644,7 @@ img {
   left: 0;
   width: 100%;
   background-color: #000000;
-  color: #6d6e70;
+  color: #ffffff;
   cursor: pointer; }
   @media screen and (min-width: 768px) {
     .live-player {

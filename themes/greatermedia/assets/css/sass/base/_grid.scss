@@ -41,10 +41,9 @@ img {
 
 .container, %container {
 	@include outer-container(100%);
-	padding: 0 3.125%;
+		padding-right: 20em;
 	@include bp(medium) {
 		@include outer-container(100%);
-		padding-right: 20em;
 	}
 	@include bp(x-large) {
 		@include outer-container(1400px);
@@ -87,7 +86,7 @@ img {
 	left: 0;
 	width: 100%;
 	background-color: $secondary-bg;
-	color: $nevada;
+	color: $secondary-text;
 	cursor: pointer;
 	@include bp(medium){
 		position: absolute;
