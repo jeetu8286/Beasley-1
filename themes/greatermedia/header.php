@@ -120,8 +120,11 @@
 											<li class="header__social--item"><a href="#"><i class="header__social--google-plus"></i></a></li>
 										</ul>
 									</div>
-									<div class="header__search">
+									<div id="header__search" class="header__search">
 										<div class="header__search--span"><?php _e( 'Search', 'greatermedia' ); ?></div><i class="header__search--btn"></i>
+									</div>
+									<div id="header__search--form" class="header__search--form">
+										<?php get_template_part( 'searchform', 'header' ); ?>
 									</div>
 								</div>
 							</div>

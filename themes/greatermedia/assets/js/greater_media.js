@@ -14,7 +14,9 @@
 		nowPlaying = document.getElementById( 'nowPlaying' ),
 		windowHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0),
 		windowWidth = this.innerWidth || this.document.documentElement.clientWidth || this.document.body.clientWidth || 0,
-		scrollObject = {};
+		scrollObject = {},
+		searchForm = document.getElementById( 'header__search--form'),
+		searchBtn = document.getElementById( 'header__search');
 
 
 	/**
@@ -238,6 +240,12 @@
 			window.addEventListener( 'load', livePlayerInit, false );
 		}
 	}
+
+	function showSearch() {
+		searchForm.classList.toggle( 'open' );
+	}
+
+	searchBtn.addEventListener('click', showSearch, false);
 
 	var scrollDebounce = _debounce(getScrollPosition, 50);
 	var scrollThrottle = _throttle(getScrollPosition, 50);
