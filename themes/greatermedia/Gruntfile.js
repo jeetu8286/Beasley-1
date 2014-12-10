@@ -40,19 +40,12 @@ module.exports = function( grunt ) {
 					'assets/js/liveplayer/liveplayer_test_auth.js'
 				],
 				dest: 'assets/js/liveplayer_test_auth.js'
-			},
-			greater_media_styleguide: {
-				src: [
-					'assets/js/styleguide/gm_styleguide.js'
-				],
-				dest: 'assets/js/gm_styleguide.js'
 			}
 		},
 		jshint: {
 			browser: {
 				all: [
 					'assets/js/src/**/*.js',
-					'assets/js/styleguide/**/*.js',
 					'assets/js/test/**/*.js'
 				],
 				options: {
@@ -75,8 +68,7 @@ module.exports = function( grunt ) {
 					'assets/js/gigya_login.min.js': ['assets/js/gigya_login.js'],
 					'assets/js/liveplayer_login.min.js': ['assets/js/liveplayer_login.js'],
 					'assets/js/liveplayer_test.min.js': ['assets/js/liveplayer_test.js'],
-					'assets/js/liveplayer_test_auth.min.js': ['assets/js/liveplayer_test_auth.js'],
-					'assets/js/gm_styleguide.min.js': ['assets/js/gm_styleguide.js']
+					'assets/js/liveplayer_test_auth.min.js': ['assets/js/liveplayer_test_auth.js']
 				},
 				options: {
 					mangle: {
@@ -122,7 +114,7 @@ module.exports = function( grunt ) {
 			},
 
 			scripts: {
-				files: ['assets/js/src/**/*.js', 'assets/js/vendor/**/*.js', 'assets/js/styleguide/**/*.js'],
+				files: ['assets/js/src/**/*.js', 'assets/js/vendor/**/*.js'],
 				tasks: ['jshint', 'concat', 'uglify'],
 				options: {
 					debounceDelay: 500
