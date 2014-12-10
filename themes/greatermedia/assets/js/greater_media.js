@@ -256,7 +256,7 @@
 					onAir.style.display = 'block';
 				});
 			}
-			if(liveLink != null) {
+			if(liveLinksWidget != null) {
 				liveLink.addEventListener('click', liveLinksClose(), false);
 			}
 		}
@@ -280,7 +280,7 @@
 		if(nowPlaying != null) {
 			nowPlaying.addEventListener( 'click', nowPlayingClick, false );
 		}
-		if(liveLink != null) {
+		if(liveLinksWidget != null) {
 			liveLink.addEventListener('click', liveLinksClose(), false);
 		}
 		window.addEventListener( 'resize', function() {
@@ -290,7 +290,7 @@
 	} else {
 		window.addEventListener( 'load', function() {
 			livePlayerInit();
-			if(liveLink != null) {
+			if(liveLinksWidget != null) {
 				liveLinksAddHeight();
 			}
 		}, false );
