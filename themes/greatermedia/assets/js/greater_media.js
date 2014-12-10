@@ -163,7 +163,7 @@
 	if ( resumeBtn != null ) {
 		resumeLp.playAction();
 	}
-
+	
 	/**
 	 * Toggles a class to the body when the mobile nav button is clicked
 	 */

@@ -1,15 +1,13 @@
+!/.gitignore
+.sass-cache/
+node_modules
+*.DS_Store
 uploads/
 plugins/wp-multi-network/
 plugins/wordpress-importer/
 plugins/debug-bar/
 plugins/theme-check/
 plugins/airplane-mode/
-plugins/debug-bar-cron/
-plugins/debug-bar-extender/
-plugins/restricted-site-access/
-plugins/role-quick-changer/
-plugins/the-events-calendar/
-plugins/wp-crontrol/
 plugins/index.php
 plugins/debug-bar-cron/
 plugins/debug-bar-extender/
@@ -23,6 +21,7 @@ plugins/ooyala-video-browser/
 plugins/simple-page-ordering/
 plugins/tag-pages/
 themes/index.php
+themes/twentyfourteen
 upgrade/
 /index.php
 .idea

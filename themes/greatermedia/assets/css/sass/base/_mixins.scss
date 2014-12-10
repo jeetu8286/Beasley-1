@@ -151,11 +151,20 @@
 //
 @mixin opacity ($value: 0.5) {
 	opacity: $value;
-	filter: alpha(opacity= $value * 100 );
+	filter: alpha(opacity=$value * 100);
 	-moz-opacity: $value;
 	-khtml-opacity: $value;
 	zoom: 1;
+}
 
+@mixin border-radius($radius...) {
+	// defining prefixes so we can use them in mixins below
+	$prefixes:      ("-webkit", "-moz", "-ms", "-o",  "");
+	@each $prefix in $prefixes {
+		#{$prefix}-border-radius: $radius;
+	}
+
+	border-radius: $radius;
 }
 
 // Mixin to create a css gradient

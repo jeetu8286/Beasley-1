@@ -23,6 +23,12 @@ require_once( __DIR__ . '/includes/liveplayer/loader.php' );
 require_once( __DIR__ . '/includes/layout-chooser/class-choose-layout.php' );
 
 /**
+ * Required files
+ */
+require_once( __DIR__ . '/includes/class-post-styles.php' );
+require_once( __DIR__ . '/includes/gm-tinymce/loader.php');
+
+/**
  * Set up theme defaults and register supported WordPress features.
  *
  * @uses  load_theme_textdomain() For translation/localization support.
@@ -67,13 +73,6 @@ add_action( 'after_setup_theme', 'greatermedia_setup' );
 function greatermedia_scripts_styles() {
 	$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 
-	wp_register_script(
-		'headroom',
-		get_template_directory_uri() . "/assets/js/vendor/headroom.min.js",
-		array(),
-		'0.7.0',
-		true
-	);
 	wp_register_style(
 		'open-sans',
 		'http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,700',
@@ -132,6 +131,13 @@ function greatermedia_scripts_styles() {
 			),
 			GREATERMEDIA_VERSION,
 			true
+		);
+		wp_enqueue_script(
+			'cycle2',
+			get_template_directory_uri() . "/assets/js/vendor/cycle2.min.js",
+			array(),
+			'2.1.6',
+			false
 		);
 		wp_enqueue_script(
 			'respond.js',

@@ -217,6 +217,22 @@ class GreaterMediaContestsMetaboxes {
 	}
 
 	/**
+	 * Return an array of active Gravity Forms
+	 *
+	 */
+	public function get_gravity_forms() {
+		if ( class_exists( 'RGFormsModel' ) ) {
+			$forms      = RGFormsModel::get_forms( null, 'title' );
+			$form_array = array();
+			foreach ( $forms as $form ) {
+				$form_array[$form->id] = $form->title;
+			}
+
+			return $form_array;
+		}
+	}
+
+	/**
 	 * Render an HTML5 date input meta field
 	 *
 	 * @param array $args
