@@ -567,7 +567,7 @@ img {
   max-width: 100%;
   margin-left: auto;
   margin-right: auto;
-  padding-right: 20em; }
+  padding-right: 14em; }
   .container:after {
     content: "";
     display: table;
@@ -653,7 +653,7 @@ img {
       bottom: auto;
       right: 0;
       left: auto;
-      width: 20em;
+      width: 14em;
       height: 100%;
       -webkit-box-sizing: border-box;
       -moz-box-sizing: border-box;
