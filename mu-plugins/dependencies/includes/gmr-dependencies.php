@@ -24,7 +24,7 @@ class GmrDependencies {
 			, true
 		);
 
-		wp_enqueue_script(
+		wp_register_script(
 			'parsleyjs',
 			GMRDEPENDENCIES_URL . "/parsleyjs/dist/parsley{$postfix}.js",
 			array( 'jquery' ),
@@ -32,7 +32,7 @@ class GmrDependencies {
 			true
 		);
 
-		wp_enqueue_script(
+		wp_register_script(
 			'parsleyjs-words',
 			GMRDEPENDENCIES_URL . '/parsleyjs/src/extra/validator/words.js',
 			array( 'parsleyjs' ),
@@ -61,6 +61,65 @@ class GmrDependencies {
 			GMRDEPENDENCIES_URL . '/datetimepicker/jquery.datetimepicker.js',
 			array( 'jquery' ),
 			'2.3.9',
+			true
+		);
+
+		wp_register_script(
+			'ie8-node-enum',
+			GMRDEPENDENCIES_URL . '/ie8-node-enum/index.js',
+			array(),
+			false,
+			true
+		);
+
+		wp_register_script(
+			'formbuilder',
+			GMRDEPENDENCIES_URL . "/formbuilder/dist/formbuilder{$postfix}.js",
+			array(
+				'jquery',
+				'jquery-ui-core',
+				'jquery-ui-draggable',
+				'jquery-scrollwindowto',
+				'underscore',
+				'underscore-mixin-deepextend',
+				'backbone',
+				'backbone-deep-model',
+				'ie8-node-enum',
+				'rivets',
+			),
+			'0.2.1',
+			true
+		);
+
+		wp_register_script(
+			'backbone-deep-model',
+			GMRDEPENDENCIES_URL . '/backbone-deep-model/src/deep-model.js',
+			array( 'backbone' ),
+			'0.10.4',
+			true
+		);
+
+		wp_register_script(
+			'underscore-mixin-deepextend',
+			GMRDEPENDENCIES_URL . '/underscore.mixin.deepExtend/index.js',
+			array( 'underscore' ),
+			false,
+			true
+		);
+
+		wp_register_script(
+			'rivets',
+			GMRDEPENDENCIES_URL . "/rivets/dist/rivets{$postfix}.js",
+			array(),
+			'0.5.13',
+			true
+		);
+
+		wp_register_script(
+			'jquery-scrollwindowto',
+			GMRDEPENDENCIES_URL . "/jquery.scrollWindowTo.js",
+			array( 'jquery' ),
+			false,
 			true
 		);
 
@@ -93,7 +152,7 @@ class GmrDependencies {
 
 		wp_enqueue_style(
 			'parsleyjs',
-			GMRDEPENDENCIES_URL  . '/parsleyjs/src/parsley.css',
+			GMRDEPENDENCIES_URL . '/parsleyjs/src/parsley.css',
 			array(),
 			'2.0.5', // Using daveross/parsley.js fork until word count include issue #765 is merged
 			'all'
@@ -140,7 +199,24 @@ class GmrDependencies {
 			'all'
 		);
 
+		wp_register_style(
+			'formbuilder',
+			GMRDEPENDENCIES_URL . '/formbuilder/dist/formbuilder.css',
+			array(),
+			'0.2.1',
+			'all'
+		);
+
+		wp_register_style(
+			'font-awesome',
+			GMRDEPENDENCIES_URL . "/font-awesome/css/font-awesome{$postfix}.css",
+			array(),
+			'4.0.3',
+			'all'
+		);
+
 	}
+
 }
 
 $GmrDependencies = new GmrDependencies();
