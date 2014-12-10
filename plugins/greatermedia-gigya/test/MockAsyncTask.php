@@ -88,3 +88,10 @@ function wp_async_task_run_last() {
 	return wp_async_task_run( $task_id );
 }
 
+function wp_async_task_clear() {
+	wp_async_task_runner()->clear();
+}
+
+function wp_async_task_count() {
+	return wp_async_task_runner()->count();
+}
