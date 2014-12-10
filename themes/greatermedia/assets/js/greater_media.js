@@ -256,7 +256,9 @@
 					onAir.style.display = 'block';
 				});
 			}
-			liveLink.addEventListener( 'click', liveLinksClose(), false );
+			if(liveLink != null) {
+				liveLink.addEventListener('click', liveLinksClose(), false);
+			}
 		}
 		if ( window.innerWidth >= 768 ) {
 			window.addEventListener( 'load', livePlayerInit, false );
