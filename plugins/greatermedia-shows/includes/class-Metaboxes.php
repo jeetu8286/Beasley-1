@@ -85,6 +85,9 @@ class GMR_Show_Metaboxes {
 		wp_nonce_field( 'gmr_show', 'show_nonce', false );
 
 		$has_homepage = filter_var( get_post_meta( get_the_ID(), 'show_homepage', true ), FILTER_VALIDATE_BOOLEAN );
+		$supports_albums = filter_var( get_post_meta( get_the_ID(), 'show_homepage_albums', true ), FILTER_VALIDATE_BOOLEAN );
+		$supports_podcasts = filter_var( get_post_meta( get_the_ID(), 'show_homepage_podcasts', true ), FILTER_VALIDATE_BOOLEAN );
+		$supports_videos = filter_var( get_post_meta( get_the_ID(), 'show_homepage_videos', true ), FILTER_VALIDATE_BOOLEAN );
 
 		?><div id="show-homepage" class="misc-pub-section misc-pub-gmr mis-pub-radio">
 			Has home page:
@@ -100,7 +103,56 @@ class GMR_Show_Metaboxes {
 					<a href="#" class="cancel-radio hide-if-no-js button-cancel"><?php esc_html_e( 'Cancel' ) ?></a>
 				</p>
 			</div>
-		</div><?php
+		</div>
+
+		<div id="show-homepage-supports-albums" class="misc-pub-section misc-pub-gmr mis-pub-radio">
+			Supports Albums:
+			<span class="post-pub-section-value radio-value"><?php echo $supports_albums ? 'Yes' : 'No'; ?></span>
+			<a href="#" class="edit-radio hide-if-no-js" style="display: inline;"><span aria-hidden="true">Edit</span></a>
+
+			<div class="radio-select hide-if-js">
+				<label for="show-homepage-supports-albums-no"><input type="radio" name="show_homepage_albums" id="show-homepage-supports-albums-no" value="0"<?php checked( $supports_albums, false ) ?>> No</label><br>
+				<label for="show-homepage-supports-albums-yes"><input type="radio" name="show_homepage_albums" id="show-homepage-supports-albums-yes" value="1"<?php checked( $supports_albums, true ) ?>> Yes</label><br>
+
+				<p>
+					<a href="#" class="save-radio hide-if-no-js button"><?php esc_html_e( 'OK' ) ?></a>
+					<a href="#" class="cancel-radio hide-if-no-js button-cancel"><?php esc_html_e( 'Cancel' ) ?></a>
+				</p>
+			</div>
+		</div>
+
+		<div id="show-homepage-supports-podcasts" class="misc-pub-section misc-pub-gmr mis-pub-radio">
+			Supports Podcasts:
+			<span class="post-pub-section-value radio-value"><?php echo $supports_podcasts ? 'Yes' : 'No'; ?></span>
+			<a href="#" class="edit-radio hide-if-no-js" style="display: inline;"><span aria-hidden="true">Edit</span></a>
+
+			<div class="radio-select hide-if-js">
+				<label for="show-homepage-supports-podcasts-no"><input type="radio" name="show_homepage_podcasts" id="show-homepage-supports-podcasts-no" value="0"<?php checked( $supports_podcasts, false ) ?>> No</label><br>
+				<label for="show-homepage-supports-podcasts-yes"><input type="radio" name="show_homepage_podcasts" id="show-homepage-supports-podcasts-yes" value="1"<?php checked( $supports_podcasts, true ) ?>> Yes</label><br>
+
+				<p>
+					<a href="#" class="save-radio hide-if-no-js button"><?php esc_html_e( 'OK' ) ?></a>
+					<a href="#" class="cancel-radio hide-if-no-js button-cancel"><?php esc_html_e( 'Cancel' ) ?></a>
+				</p>
+			</div>
+		</div>
+
+		<div id="show-homepage-supports-videos" class="misc-pub-section misc-pub-gmr mis-pub-radio">
+			Supports Videos:
+			<span class="post-pub-section-value radio-value"><?php echo $supports_videos ? 'Yes' : 'No'; ?></span>
+			<a href="#" class="edit-radio hide-if-no-js" style="display: inline;"><span aria-hidden="true">Edit</span></a>
+
+			<div class="radio-select hide-if-js">
+				<label for="show-homepage-supports-videos-no"><input type="radio" name="show_homepage_videos" id="show-homepage-supports-videos-no" value="0"<?php checked( $supports_videos, false ) ?>> No</label><br>
+				<label for="show-homepage-supports-videos-yes"><input type="radio" name="show_homepage_videos" id="show-homepage-supports-videos-yes" value="1"<?php checked( $supports_videos, true ) ?>> Yes</label><br>
+
+				<p>
+					<a href="#" class="save-radio hide-if-no-js button"><?php esc_html_e( 'OK' ) ?></a>
+					<a href="#" class="cancel-radio hide-if-no-js button-cancel"><?php esc_html_e( 'Cancel' ) ?></a>
+				</p>
+			</div>
+		</div>
+		<?php
 	}
 
 	/**
@@ -138,6 +190,9 @@ class GMR_Show_Metaboxes {
 		}
 
 		update_post_meta( $post_id, 'show_homepage', filter_input( INPUT_POST, 'show_homepage', FILTER_VALIDATE_BOOLEAN ) );
+		update_post_meta( $post_id, 'show_homepage_albums', filter_input( INPUT_POST, 'show_homepage_albums', FILTER_VALIDATE_BOOLEAN ) );
+		update_post_meta( $post_id, 'show_homepage_podcasts', filter_input( INPUT_POST, 'show_homepage_podcasts', FILTER_VALIDATE_BOOLEAN ) );
+		update_post_meta( $post_id, 'show_homepage_videos', filter_input( INPUT_POST, 'show_homepage_videos', FILTER_VALIDATE_BOOLEAN ) );
 		update_post_meta( $post_id, 'logo_image', filter_input( INPUT_POST, 'logo_image', FILTER_VALIDATE_INT ) );
 	}
 
