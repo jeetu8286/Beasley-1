@@ -27,6 +27,10 @@ class SyncTaskTest extends \WP_UnitTestCase {
 		$this->assertNotNull( $this->task->get_sentinel() );
 	}
 
+	function test_it_gives_sentinel_its_own_params() {
+		$this->assertEquals( $this->task->params, $this->task->get_sentinel()->params );
+	}
+
 	function test_it_knows_its_member_query_id() {
 		$this->assertEquals( 1, $this->task->get_member_query_id() );
 	}
