@@ -25,3 +25,4 @@ atlassian-ide-plugin.xml
 mu-plugins/test-data-store.php
 **/.sass-cache/**
 /plugins/json-rest-api/
+/plugins/duplicate-post
