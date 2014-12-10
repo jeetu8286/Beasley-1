@@ -8,6 +8,8 @@ class SyndicationCPT {
 
 	private $post_type = 'subscription';
 
+	private $supported_subscriptions = array( 'post', 'content-kit' );
+
 	public function __construct() {
 		add_action( 'init', array( $this, 'register_syndication_cpt' ) );
 		add_action( 'init', array( $this, 'register_collections_taxonomy' ) );
@@ -26,7 +28,7 @@ class SyndicationCPT {
 		add_filter( 'post_row_actions', array( $this, 'remove_quick_edit' ), 10, 2);
 		add_filter( 'is_protected_meta', array( $this, 'hide_meta_keys' ), 10, 2);
 		add_filter( 'manage_edit-subscription_columns', array( $this, 'subscription_columns_filter' ),10, 1 );
-		add_filter('post_updated_messages', array( $this, 'custom_messages_for_subscription') );
+		add_filter( 'post_updated_messages', array( $this, 'custom_messages_for_subscription' ) );
 	}
 
 	/**
@@ -80,14 +82,14 @@ class SyndicationCPT {
 			);
 		}
 
-		register_taxonomy( 'collection', array( 'post' ), $args );
+		register_taxonomy( 'collection', array( 'post', 'announcement', 'content-kit' ), $args );
 	}
 
 
 	public function subscription_columns_filter( $columns ) {
 
 		$column_labels = array();
-		foreach( BlogData::$taxonomies as $supported_taxonomy ) {
+		foreach( BlogData::$taxonomies as $supported_taxonomy => $type ) {
 			// get taxonomy label
 			$taxonomy_obj = get_taxonomies( array( 'name' => $supported_taxonomy ), 'object' );
 			$column_labels[ $taxonomy_obj[$supported_taxonomy]->name ] = $taxonomy_obj[$supported_taxonomy]->label;
@@ -329,6 +331,15 @@ class SyndicationCPT {
 		);
 
 		add_meta_box(
+			'subscription_type'
+			,__( 'Choose subscription type', 'greatermedia' )
+			,array( $this, 'render_subscription_type' )
+			,$this->post_type
+			,'advanced'
+			,'high'
+		);
+
+		add_meta_box(
 			'filter_metaboxes'
 			,__( 'Filters  - please choose one', 'greatermedia' )
 			,array( $this, 'render_filter_metabox' )
@@ -454,7 +465,7 @@ class SyndicationCPT {
 		}
 
 		// get filter metas
-		foreach( BlogData::$taxonomies as $taxonomy ) {
+		foreach( BlogData::$taxonomies as $taxonomy => $type ) {
 			$terms = '';
 
 			if( isset( $_POST[ 'subscription_filter_terms-' . $taxonomy ] ) ) {
@@ -471,6 +482,39 @@ class SyndicationCPT {
 			$enabled_taxonomy = sanitize_text_field( $_POST['enabled_filter_taxonomy'] );
 			// Update the meta field.
 			update_post_meta( $post_id, 'subscription_enabled_filter', $enabled_taxonomy  );
+		}
+
+		if( isset( $_POST['subscription_type'] ) ) {
+			$subscription_type = sanitize_text_field( $_POST['subscription_type'] );
+			// Update the meta field.
+			update_post_meta( $post_id, 'subscription_type', $subscription_type  );
+		}
+	}
+
+
+	public function render_subscription_type( $post ) {
+
+		$subscription_type = get_post_meta( $post->ID, 'subscription_type', true );
+		$checked = '';
+
+		foreach( $this->supported_subscriptions as $type ) {
+			echo '<p>';
+
+			if( post_type_exists( $type ) ) {
+				$cpt_obj = get_post_type_object( $type );
+
+				if( $subscription_type != '' ) {
+					$checked = $subscription_type == $type ? 'checked' : '';
+				} elseif( $type == 'post') {
+					$checked = 'checked';
+				} else {
+					$checked = '';
+				}
+
+				echo '<input ' . esc_attr( $checked ) . ' type="radio" name="subscription_type" value="' . esc_attr( $type ) . '">';
+				echo '<label for"' . esc_attr( $type ) . '">' . esc_html( $cpt_obj->labels->name ) . '</label>';
+				echo '</p>';
+			}
 		}
 
 	}
@@ -497,8 +541,7 @@ class SyndicationCPT {
 			$taxonomy_obj = get_taxonomies( array( 'name' => $taxonomy ), 'object' );
 			$taxonomy_name = $taxonomy_obj[$taxonomy]->label;
 
-
-			$multiple = $taxonomy == 'collection' ? '' : 'multiple';
+			$multiple = BlogData::$taxonomies[$taxonomy];
 			$disabled = $enabled_filter == $taxonomy ? '' : 'disabled';
 			$checked =  $enabled_filter == $taxonomy ? 'checked' : '';
 
@@ -525,6 +568,7 @@ class SyndicationCPT {
 				echo '<span class="description">Create a filter using a single ' . $taxonomy .'</span>';
 			}
 		}
+
 		echo '<input type="hidden" id="enabled_filter_taxonomy" name="enabled_filter_taxonomy" value="' . $enabled_filter. '">';
 	}
 
