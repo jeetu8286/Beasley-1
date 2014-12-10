@@ -3396,24 +3396,6 @@ category: Components
 .ad__leaderboard img {
   margin: 0 auto; }
 
-.personality-attr--name {
-  position: absolute;
-  top: 50%;
-  height: 60px;
-  -webkit-transform: translate(0, -25%);
-  -moz-transform: translate(0, -25%);
-  -ms-transform: translate(0, -25%);
-  -o-transform: translate(0, -25%);
-  transform: translate(0, -25%);
-  display: inline-block; }
-
-.personality-attr--img {
-  height: 60px;
-  width: 60px;
-  margin-right: 0.5em;
-  display: inline-block;
-  background-color: #d0d2d3; }
-
 .show-attr--name {
   position: absolute;
   top: 50%;
