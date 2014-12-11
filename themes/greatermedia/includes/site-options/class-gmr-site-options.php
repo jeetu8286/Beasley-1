@@ -47,7 +47,6 @@ class GreaterMediaSiteOptions {
 		add_action( 'admin_menu', array( $this, 'add_settings_page' ) );
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
-		add_action( 'gmr_site_logo', array( $this, 'site_logo' ) );
 	}
 
 	public function add_settings_page() {
@@ -124,24 +123,25 @@ class GreaterMediaSiteOptions {
 		<h4>Social Pages</h4>
 
 		<div class="gmr__option">
-			<label for="greatermedia_facebook_url" class="gmr__option--label">Facebook URL</label>
-			<input type="text" class="gmr__option--input" name="greatermedia_facebook_url" id="greatermedia_facebook_url" value="<?php echo esc_url( $facebook ); ?>" />
+			<label for="gmr_facebook_url" class="gmr__option--label">Facebook URL</label>
+			<input type="text" class="gmr__option--input" name="gmr_facebook_url" id="gmr_facebook_url" value="<?php echo esc_url( $facebook ); ?>" />
 		</div>
 
 		<div class="gmr__option">
-			<label for="greatermedia_twitter_url" class="gmr__option--label">Twitter Username</label>
-			<input type="text" class="gmr__option--input" name="greatermedia_twitter_name" id="greatermedia_twitter_name" value="<?php echo esc_html( $twitter ); ?>" />
+			<label for="gmr_twitter_url" class="gmr__option--label">Twitter Username</label>
+			<input type="text" class="gmr__option--input" name="gmr_twitter_name" id="gmr_twitter_name" value="<?php echo esc_html( $twitter ); ?>" />
 			<div class="gmr-option__field--desc"><?php _e( 'Please enter username minus the @', 'greatermedia' ); ?></div>
 		</div>
 
 		<div class="gmr__option">
-			<label for="greatermedia_youtube_url" class="gmr__option--label">YouTube URL</label>
-			<input type="text" class="gmr__option--input" name="greatermedia_youtube_url" id="greatermedia_youtube_url" value="<?php echo esc_url( $youtube ); ?>" />
+			<label for="gmr_youtube_url" class="gmr__option--label">YouTube URL</label>
+			<input type="text" class="gmr__option--input" name="gmr_youtube_url" id="gmr_youtube_url" value="<?php echo esc_url( $youtube ); ?>" />
 		</div>
 
 		<div class="gmr__option">
-			<label for="greatermedia_instagram_url" class="gmr__option--label">Instagram Username</label>
-			<input type="text" class="gmr__option--input" name="greatermedia_instagram_name" id="greatermedia_instagram_name" value="<?php echo esc_html( $instagram ); ?>" />
+			<label for="gmr_instagram_url" class="gmr__option--label">Instagram Username</label>
+			<input type="text" class="gmr__option--input" name="gmr_instagram_name" id="gmr_instagram_name" value="<?php echo esc_html( $instagram ); ?>" />
+			<div class="gmr-option__field--desc"><?php _e( 'Please enter username only, not a full url.', 'greatermedia' ); ?></div>
 		</div>
 
 		<hr/>
@@ -161,13 +161,6 @@ class GreaterMediaSiteOptions {
 
 		wp_enqueue_script( 'gmr-options-admin', get_template_directory_uri() . "/assets/js/greater_media_admin{$postfix}.js", array( 'jquery' ), GREATERMEDIA_VERSION, 'all' );
 		wp_enqueue_style( 'gmr-options-admin', get_template_directory_uri() . "/assets/css/greater_media_admin{$postfix}.css", array(), GREATERMEDIA_VERSION );
-	}
-
-	public static function site_logo() {
-		$site_logo = get_option( 'gmr_site_logo', '' );
-
-		echo '<img src="' . esc_url( $site_logo ) . '" alt="' . get_bloginfo( 'name' ) . ' | ' . get_bloginfo( 'description' ) . '" class="header__logo--img">';
-
 	}
 
 }

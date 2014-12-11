@@ -114,11 +114,7 @@
 										</ul>
 									</nav>
 									<div class="header__social">
-										<ul class="header__social--list">
-											<li class="header__social--item"><a href="#"><i class="header__social--facebook"></i></a></li>
-											<li class="header__social--item"><a href="#"><i class="header__social--twitter"></i></a></li>
-											<li class="header__social--item"><a href="#"><i class="header__social--google-plus"></i></a></li>
-										</ul>
+										<?php do_action( 'gmr_social' ); ?>
 									</div>
 									<div class="header__search">
 										<div class="header__search--span"><?php _e( 'Search', 'greatermedia' ); ?></div><i class="header__search--btn"></i>

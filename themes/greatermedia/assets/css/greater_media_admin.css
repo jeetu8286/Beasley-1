@@ -62,6 +62,10 @@
   .gmr__option--input:-ms-input-placeholder {
     color: #dddddd; }
 
+.gmr-option__field--desc {
+  font-size: .75em;
+  font-style: italic; }
+
 .gmr__option--upload-btn {
   margin: 1em 0; }
 
