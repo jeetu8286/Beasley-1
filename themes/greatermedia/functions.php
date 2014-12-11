@@ -18,7 +18,6 @@
  */
 define( 'GREATERMEDIA_VERSION', '0.1.0' );
 
-//require_once( __DIR__ . '/includes/liveplayer-test/class-gigya-login-test.php' );
 require_once( __DIR__ . '/includes/liveplayer/loader.php' );
 require_once( __DIR__ . '/includes/layout-chooser/class-choose-layout.php' );
 require_once( __DIR__ . '/includes/site-options/loader.php');
@@ -92,33 +91,6 @@ function greatermedia_scripts_styles() {
 		array(),
 		'4.2'
 	);
-
-	if ( ! defined( 'GREATER_MEDIA_GIGYA_TEST_UI' ) || ! GREATER_MEDIA_GIGYA_TEST_UI ) {
-		/* TODO: Remove this, the script is enqueued by the greatermedia-plugin
-		 * with the api key set in it's setting screen
-		wp_enqueue_script(
-			'gigya_socialize',
-			'http://cdn.gigya.com/JS/gigya.js?apiKey=3_e_T7jWO0Vjsd9y0WJcjnsN6KaFUBv6r3VxMKqbitvw-qKfmaUWysQKa1fra5MTb6',
-			array( 'jquery' ),
-			'0.1.0',
-			true
-		);
-		wp_enqueue_script(
-			'gigya-login',
-			get_template_directory_uri() . "/assets/js/gigya_login{$postfix}.js",
-			array(),
-			GREATERMEDIA_VERSION,
-			true
-		);
-		wp_enqueue_script(
-			'liveplayer-login',
-			get_template_directory_uri() . "/assets/js/liveplayer_login{$postfix}.js",
-			array(),
-			GREATERMEDIA_VERSION,
-			true
-		);
-		 */
-	}
 	wp_enqueue_script(
 		'greatermedia',
 		get_template_directory_uri() . "/assets/js/greater_media{$postfix}.js",
