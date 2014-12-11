@@ -10,13 +10,13 @@
 
 			<section class="content">
 
-				<div class="podcasts">
+				<div class="galleries">
 
 					<?php
-					$podcast_query = \GreaterMedia\Shows\get_show_podcast_query();
+					$album_query = \GreaterMedia\Shows\get_show_gallery_query();
 
-					while( $podcast_query->have_posts() ) : $podcast_query->the_post(); ?>
-						<article id="post-<?php the_ID(); ?>" <?php post_class( 'cf' ); ?> role="article" itemscope itemtype="http://schema.org/OnDemandEvent">
+					while( $album_query->have_posts() ) : $album_query->the_post(); ?>
+						<article id="post-<?php the_ID(); ?>" <?php post_class( 'cf' ); ?> role="article">
 
 							<header class="entry-header">
 								<h2 class="entry-title" itemprop="headline"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
@@ -32,10 +32,10 @@
 					wp_reset_query();
 					?>
 
-					<div class="podcast-paging"><?php echo \GreaterMedia\Shows\get_show_endpoint_pagination_links( $podcast_query ); ?></div>
+					<div class="video-paging"><?php echo \GreaterMedia\Shows\get_show_endpoint_pagination_links( $album_query ); ?></div>
 
 				</div>
-
+				
 			</section>
 
 		</div>
