@@ -69,6 +69,10 @@
 .gmr__option--upload-btn {
   margin: 1em 0; }
 
+.gmr-image-buttons {
+  clear: both;
+  padding-top: 1em; }
+
 #featured-footer-image-container img {
   width: 100%;
   height: auto; }
