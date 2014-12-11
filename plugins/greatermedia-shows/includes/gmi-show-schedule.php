@@ -228,10 +228,11 @@ function gmrs_render_episode_schedule_page() {
 		'date'       => strtotime( 'tomorrow' ),
 		'repeat'     => 1,
 	) );
-	
+
+	$now = current_time( 'timestamp', 1 );
 	$active['date'] = $active['date'] >= time() 
-		? date( 'M j, Y', $active['date'] )
-		: date( 'M j, Y', time() );
+		? date( 'Y-m-d', $active['date'] )
+		: date( 'Y-m-d', $now );
 	
 	$episodes = gmrs_get_scheduled_episodes();
 	$precision = 0.5; // 1 - each hour, 0.5 - each 30 mins, 0.25 - each 15 mins
@@ -274,7 +275,6 @@ function gmrs_render_episode_schedule_page() {
 		<form id="schedule-form" action="admin.php" method="post">
 			<?php wp_nonce_field( 'gmr_add_show_episode' ); ?>
 			<input type="hidden" name="action" value="gmr_add_show_episode">
-			<input type="hidden" id="start-from-date-value" name="date" value="<?php echo $active['date']; ?>">
 
 			<input type="submit" class="button button-primary" value="Add to the schedule">
 
@@ -296,7 +296,14 @@ function gmrs_render_episode_schedule_page() {
 				<?php endforeach; ?>
 			</select>
 			and starts on
-			<input type="text" id="start-from-date" value="<?php echo $active['date']; ?>" required>
+			<select id="start-from-date" name="date" required>
+				<?php for ( $i = 0; $i <= 7; $i++, $now += DAY_IN_SECONDS ) : ?>
+					<?php $now_y_m_d = date( 'Y-m-d', $now ); ?>
+					<option value="<?php echo esc_attr( $now_y_m_d ); ?>"<?php selected( $now_y_m_d, $active['date'] ); ?>>
+						<?php echo date( 'D, M-j', $now ); ?>
+					</option>;
+				<?php endfor; ?>
+			</select>
 			at
 			<select name="start_time">
 				<?php for ( $i = 0, $count = 24 / $precision; $i < $count; $i++ ) : ?>
