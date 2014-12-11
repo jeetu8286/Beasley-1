@@ -1470,10 +1470,14 @@ var QueryResultCollection = Backbone.Collection.extend({
 	didFetchStatusSuccess: function(response) {
 		if (response.success) {
 			if (response.data.complete) {
-				this.totalResults = response.data.total;
-				this.reset(response.data.users);
-				this.trigger('searchSuccess');
-				this.clear();
+				if ( ! response.data.errors ) {
+					this.totalResults = response.data.total;
+					this.reset(response.data.users);
+					this.trigger('searchSuccess');
+					this.clear();
+				} else {
+					this.trigger('searchError', response.data.errors[0]);
+				}
 			} else {
 				var progress = response.data.progress;
 				if (this.lastProgress !== progress) {
@@ -2028,6 +2032,7 @@ var PreviewView = Backbone.View.extend({
 
 	didSearchError: function(message) {
 		this.stepper.stop();
+		this.setPreviewEnabled(true);
 		this.setStatus("Error: " + message);
 	},
 
