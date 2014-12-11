@@ -9,13 +9,19 @@ module.exports = function( grunt ) {
 		pkg:    grunt.file.readJSON( 'package.json' ),
 		concat: {
 			options: {
-				stripBanners: true,
+				stripBanners: true
 			},
 			greater_media: {
 				src: [
 					'assets/js/src/greater_media.js'
 				],
 				dest: 'assets/js/greater_media.js'
+			},
+			greater_media_admin: {
+				src: [
+					'assets/js/src/greater_media_admin.js'
+				],
+				dest: 'assets/js/greater_media_admin.js'
 			},
 			gigya_login: {
 				src: [
@@ -65,6 +71,7 @@ module.exports = function( grunt ) {
 			all: {
 				files: {
 					'assets/js/greater_media.min.js': ['assets/js/greater_media.js'],
+					'assets/js/greater_media_admin.min.js': ['assets/js/greater_media_admin.js'],
 					'assets/js/gigya_login.min.js': ['assets/js/gigya_login.js'],
 					'assets/js/liveplayer_login.min.js': ['assets/js/liveplayer_login.js'],
 					'assets/js/liveplayer_test.min.js': ['assets/js/liveplayer_test.js'],
@@ -88,6 +95,9 @@ module.exports = function( grunt ) {
 			all: {
 				files: {
 					'assets/css/greater_media.css': 'assets/css/sass/greater_media.scss',
+					'assets/css/greater_media_admin.css': 'assets/css/sass/greater_media_admin.scss',
+					'assets/css/gm_admin.css': 'assets/css/sass/gm_admin.scss',
+					'assets/css/gm_tinymce.css': 'assets/css/sass/gm_tinymce.scss'
 				}
 			}
 		},
@@ -97,7 +107,7 @@ module.exports = function( grunt ) {
 				expand: true,
 
 				cwd: 'assets/css/',
-				src: ['greater_media.css'],
+				src: ['greater_media.css', 'greater_media_admin.css', 'gm_admin.css','gm_tinymce.css'],
 
 				dest: 'assets/css/',
 				ext: '.min.css'
