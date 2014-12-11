@@ -15,7 +15,7 @@ require $_tests_dir . '/includes/bootstrap.php';
 define('PHPUNIT_RUNNER', true);
 define('INCLUDES', __DIR__ . '/../includes');
 define( 'GMR_GIGYA_URL', plugin_dir_url( __DIR__ . '/../greatermedia-gigya.php' ) );
-define( 'GMR_GIGYA_PATH', dirname( __FILE__ ) . '/../' );
+define( 'GMR_GIGYA_PATH', realpath( dirname( __FILE__ ) . '/../' ) . '/' );
 define( 'GMR_GIGYA_VERSION', '0.1.0' );
 
 require __DIR__ . '/../vendor/autoload.php';

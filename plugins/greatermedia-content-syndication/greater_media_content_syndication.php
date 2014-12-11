@@ -29,4 +29,8 @@ define( 'GMR_SYNDICATION_PATH',    dirname( __FILE__ ) . '/' );
 require_once GMR_SYNDICATION_PATH . 'includes/syndication-cpt.php';
 require_once GMR_SYNDICATION_PATH . 'includes/blog-data.php';
 require_once GMR_SYNDICATION_PATH . 'includes/cron-tasks.php';
-require_once GMR_SYNDICATION_PATH . 'includes/dashboard-widget.php';
+require_once GMR_SYNDICATION_PATH . 'includes/content-kit.php';
+
+if ( defined( 'WP_CLI' ) && WP_CLI  ) {
+	require_once GMR_SYNDICATION_PATH . 'includes/syndication-cli.php';
+}

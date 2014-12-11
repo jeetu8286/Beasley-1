@@ -51,44 +51,6 @@ if (typeof Object.create != 'function') {
 	})();
 }
 
-var WpAjaxApi = function(config) {
-	this.config = config;
-};
-
-WpAjaxApi.prototype = {
-
-	nonceFor: function(action) {
-		return this.config[action + '_nonce'];
-	},
-
-	urlFor: function(action) {
-		var queryParams = {};
-		queryParams[action + '_nonce'] = this.nonceFor(action);
-
-		var url = this.config.ajax_url;
-		url += url.indexOf('?') === -1 ? '?' : '&';
-		url += $.param(queryParams);
-
-		return url;
-	},
-
-	request: function(action, data) {
-		if (!data) {
-			data = {};
-		}
-
-		var url         = this.urlFor(action);
-		var requestData = {
-			'action': action,
-			'action_data': JSON.stringify(data)
-		};
-
-		return $.post(url, requestData);
-	},
-
-};
-
-
 this["JST"] = this["JST"] || {};
 
 this["JST"]["src/templates/constraint.jst"] = function(obj) {
@@ -1407,7 +1369,7 @@ var ConstraintCollection = Backbone.Collection.extend({
 		var $constraints = jQuery('#constraints');
 
 		$constraints.attr('value', json);
-		console.log(json);
+		//console.log(json);
 	}
 }, {
 
@@ -1447,37 +1409,120 @@ var QueryResultCollection = Backbone.Collection.extend({
 
 	initialize: function(models, options) {
 		this.activeConstraints = options.activeConstraints;
+		this.pollDelay         = 3; // seconds
+		this.maxQueryTime      = 5 * 60; // seconds
+		this.maxRetries        = Math.floor( this.maxQueryTime / this.pollDelay );
+		this.retries           = 0;
+		this.fetchStatusProxy  = $.proxy(this.fetchStatus, this);
+		this.lastProgress      = 0;
+
 		Backbone.Collection.prototype.initialize(this, models, options);
 	},
 
 	search: function() {
+		this.start();
+	},
+
+	start: function() {
+		this.retries = 0;
+
 		var constraints = this.activeConstraints.toJSON();
 		var data        = {
-			constraints: constraints
+			constraints: constraints,
+			mode: 'start'
 		};
 
 		ajaxApi.request('preview_member_query', data)
-			.then($.proxy(this.didPreviewSuccess, this))
-			.fail($.proxy(this.didPreviewError, this));
+			.then($.proxy(this.didStartSuccess, this))
+			.fail($.proxy(this.didStartError, this));
 	},
 
-	didPreviewSuccess: function(response) {
-		if (!response.success) {
-			this.totalResults = 0;
-			this.didPreviewError(response);
+	didStartSuccess: function(response) {
+		if (response.success) {
+			this.memberQueryID = response.data.member_query_id;
+			this.trigger('searchStart', this.memberQueryID);
+			this.startPolling();
 		} else {
-			this.totalResults = response.data.total;
-			this.reset(response.data.accounts);
-			this.trigger('searchSuccess');
+			this.didStartError(response);
 		}
 	},
 
-	didPreviewError: function(response) {
+	didStartError: function(response) {
 		this.trigger('searchError', response.data);
+	},
+
+	onPoll: function() {
+		this.fetchStatus();
+	},
+
+	fetchStatus: function() {
+		var data = {
+			mode: 'status',
+			member_query_id: this.memberQueryID
+		};
+
+		this.retries++;
+		ajaxApi.request('preview_member_query', data)
+			.then($.proxy(this.didFetchStatusSuccess, this))
+			.fail($.proxy(this.didFetchStatusError, this));
+	},
+
+	didFetchStatusSuccess: function(response) {
+		if (response.success) {
+			if (response.data.complete) {
+				this.totalResults = response.data.total;
+				this.reset(response.data.users);
+				this.trigger('searchSuccess');
+				this.clear();
+			} else {
+				var progress = response.data.progress;
+				if (this.lastProgress !== progress) {
+					this.lastProgress = progress;
+					this.retries--;
+				}
+
+				this.trigger('searchProgress', progress);
+				this.startPolling();
+			}
+		} else {
+			this.didFetchStatusError(response);
+		}
+	},
+
+	didFetchStatusError: function(response) {
+		this.startPolling();
 	},
 
 	getTotalResults: function() {
 		return this.totalResults;
+	},
+
+	startPolling: function() {
+		if (this.retries < this.maxRetries) {
+			setTimeout(this.fetchStatusProxy, this.pollDelay * 1000);
+		} else {
+			this.trigger('searchTimeout');
+		}
+	},
+
+	clear: function() {
+		var data = {
+			mode: 'clear',
+			member_query_id: this.memberQueryID
+		};
+
+		this.retries++;
+		ajaxApi.request('preview_member_query', data)
+			.then($.proxy(this.didClearSuccess, this))
+			.fail($.proxy(this.didClearError, this));
+	},
+
+	didClearSuccess: function(response) {
+
+	},
+
+	didClearError: function(response) {
+		console.log('didClearError', response);
 	}
 });
 
@@ -1927,14 +1972,23 @@ var PreviewView = Backbone.View.extend({
 	initialize: function(options) {
 		this.collection = options.collection;
 		this.listenTo(this.collection, 'searchError', this.didSearchError);
+		this.listenTo(this.collection, 'searchStart', this.didSearchStart);
+		this.listenTo(this.collection, 'searchProgress', this.didSearchProgress);
 		this.listenTo(this.collection, 'searchSuccess', this.didSearchSuccess);
+		this.listenTo(this.collection, 'searchTimeout', this.didSearchTimeout);
 
 		Backbone.View.prototype.initialize.call(this, options);
 		this.search();
+		this.previewEnabled = true;
+
+		this.stepper = new Stepper('didStep', this);
 	},
 
 	didPreviewClick: function(event) {
-		this.search();
+		if (this.previewEnabled) {
+			this.search();
+		}
+
 		return false;
 	},
 
@@ -1943,7 +1997,22 @@ var PreviewView = Backbone.View.extend({
 		this.collection.search();
 	},
 
+	didSearchStart: function() {
+		this.stepper.start(0);
+		this.setPreviewEnabled(false);
+	},
+
+	didSearchProgress: function(progress) {
+		this.stepper.update(progress);
+	},
+
+	didStep: function(progress) {
+		this.setStatus('Searching, Please wait ... ' + progress + '%');
+	},
+
 	didSearchSuccess: function() {
+		this.stepper.stop();
+
 		var total    = this.collection.getTotalResults();
 		var message = total + ' records found';
 
@@ -1954,18 +2023,85 @@ var PreviewView = Backbone.View.extend({
 		}
 
 		this.setStatus(message);
+		this.setPreviewEnabled(true);
 	},
 
 	didSearchError: function(message) {
+		this.stepper.stop();
 		this.setStatus("Error: " + message);
+	},
+
+	didSearchTimeout: function() {
+		this.stepper.stop();
+		this.setStatus('Error: Query timed out, please try again.');
+		this.setPreviewEnabled(true);
 	},
 
 	setStatus: function(message) {
 		var div = $('.count-status');
 		div.text(message);
-	}
+	},
+
+	setPreviewEnabled: function(enabled) {
+		var previewButton = $('.preview-member-query-button', this.el);
+		previewButton.toggleClass('disabled', !enabled);
+
+		this.previewEnabled = enabled;
+	},
 
 });
+
+var Stepper = function(callback, scope) {
+	this.callback   = callback;
+	this.scope      = scope;
+	this.intervalID = -1;
+
+	var self = this;
+	this.stepFunc = function() {
+		self.step();
+	};
+};
+
+Stepper.prototype = {
+
+	start: function(value) {
+		this.value   = value;
+		this.current = 0;
+		this.startInterval();
+	},
+
+	update: function(value) {
+		this.value = value;
+
+		if (!this.isRunning()) {
+			this.startInterval();
+		}
+	},
+
+	startInterval: function() {
+		clearInterval(this.intervalID);
+		this.intervalID = setInterval(this.stepFunc, 100);
+	},
+
+	stop: function() {
+		clearInterval(this.intervalID);
+		this.intervalID = -1;
+	},
+
+	step: function() {
+		if (this.current < this.value) {
+			this.current++;
+			this.scope[this.callback](this.current);
+		} else {
+			this.stop();
+		}
+	},
+
+	isRunning: function() {
+		return this.intervalID !== -1;
+	}
+
+};
 
 var QueryResultItemView = Backbone.CollectionView.extend({
 

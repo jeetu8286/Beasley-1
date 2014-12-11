@@ -13,11 +13,20 @@
  */
 
 // Useful global constants
+/**
+ *
+ */
 define( 'GREATERMEDIA_VERSION', '0.1.0' );
 
-require_once( __DIR__ . '/includes/liveplayer-test/class-gigya-login-test.php' );
+//require_once( __DIR__ . '/includes/liveplayer-test/class-gigya-login-test.php' );
 require_once( __DIR__ . '/includes/liveplayer/loader.php' );
 require_once( __DIR__ . '/includes/layout-chooser/class-choose-layout.php' );
+
+/**
+ * Required files
+ */
+require_once( __DIR__ . '/includes/class-post-styles.php' );
+require_once( __DIR__ . '/includes/gm-tinymce/loader.php');
 
 /**
  * Set up theme defaults and register supported WordPress features.
@@ -64,13 +73,6 @@ add_action( 'after_setup_theme', 'greatermedia_setup' );
 function greatermedia_scripts_styles() {
 	$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 
-	wp_register_script(
-		'headroom',
-		get_template_directory_uri() . "/assets/js/vendor/headroom.min.js",
-		array(),
-		'0.7.0',
-		true
-	);
 	wp_register_style(
 		'open-sans',
 		'http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,700',
@@ -89,33 +91,6 @@ function greatermedia_scripts_styles() {
 		array(),
 		'4.2'
 	);
-
-	if ( ! defined( 'GREATER_MEDIA_GIGYA_TEST_UI' ) || ! GREATER_MEDIA_GIGYA_TEST_UI ) {
-		/* TODO: Remove this, the script is enqueued by the greatermedia-plugin
-		 * with the api key set in it's setting screen
-		wp_enqueue_script(
-			'gigya_socialize',
-			'http://cdn.gigya.com/JS/gigya.js?apiKey=3_e_T7jWO0Vjsd9y0WJcjnsN6KaFUBv6r3VxMKqbitvw-qKfmaUWysQKa1fra5MTb6',
-			array( 'jquery' ),
-			'0.1.0',
-			true
-		);
-		wp_enqueue_script(
-			'gigya-login',
-			get_template_directory_uri() . "/assets/js/gigya_login{$postfix}.js",
-			array(),
-			GREATERMEDIA_VERSION,
-			true
-		);
-		wp_enqueue_script(
-			'liveplayer-login',
-			get_template_directory_uri() . "/assets/js/liveplayer_login{$postfix}.js",
-			array(),
-			GREATERMEDIA_VERSION,
-			true
-		);
-		 */
-	}
 
 	if ( is_page( 'style-guide' ) ) {
 		wp_enqueue_script(
@@ -156,6 +131,13 @@ function greatermedia_scripts_styles() {
 			),
 			GREATERMEDIA_VERSION,
 			true
+		);
+		wp_enqueue_script(
+			'cycle2',
+			get_template_directory_uri() . "/assets/js/vendor/cycle2.min.js",
+			array(),
+			'2.1.6',
+			false
 		);
 		wp_enqueue_script(
 			'respond.js',
@@ -258,28 +240,64 @@ function greatermedia_widgets_init() {
 add_action( 'widgets_init', 'greatermedia_widgets_init' );
 
 /**
+ * Helper function to get the post id from options or transient cache
+ *
+ * @param $query_arg
+ *
+ * @return int post id if found
+ */
+function get_post_with_keyword( $query_arg ) {
+	$query_arg = strtolower( $query_arg );
+	if( class_exists('GreaterMedia_Keyword_Admin') ) {
+		$saved_keyword = GreaterMedia_Keyword_Admin::get_keyword_options( GreaterMedia_Keyword_Admin::$plugin_slug . '_option_name' );
+		$saved_keyword = GreaterMedia_Keyword_Admin::array_map_r( 'sanitize_text_field', $saved_keyword );
+
+		if( $query_arg != '' && array_key_exists( $query_arg, $saved_keyword ) ) {
+			return $saved_keyword[$query_arg]['post_id'];
+		}
+	}
+	return 0;
+}
+
+/**
  * Custom action to add keyword search results
  */
 function get_results_for_keyword() {
 	if( is_search() ) {
-		$query_arg = sanitize_text_field( strtolower( get_search_query() ) );
-		if( class_exists('GreaterMedia_Keyword_Admin') ) {
-			$saved_keyword = GreaterMedia_Keyword_Admin::get_keyword_options( GreaterMedia_Keyword_Admin::$plugin_slug . '_option_name' );
-			$saved_keyword = GreaterMedia_Keyword_Admin::array_map_r( 'sanitize_text_field', $saved_keyword );
+		$search_query_arg = sanitize_text_field( get_search_query() );
+		$custom_post_id = intval( get_post_with_keyword( $search_query_arg ) );
 
-			if( $query_arg != '' && array_key_exists( $query_arg, $saved_keyword ) ) {
-				global $post;
-				$post = get_post( $saved_keyword[$query_arg]['post_id'] );
-				setup_postdata( $post );
-				?>
-				<article id="post-<?php the_ID(); ?>" <?php post_class( 'cf' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
-					<h2 class="entry__title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
-				</article>
-				<?php
-				wp_reset_postdata();
-			}
+		if( $custom_post_id != 0 ) {
+			global $post;
+			$post = get_post( $custom_post_id );
+			setup_postdata( $post );
+			?>
+			<article id="post-<?php the_ID(); ?>" <?php echo post_class( 'cf' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
+				<h2 class="entry__title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
+			</article>
+			<?php
+			wp_reset_postdata();
+			wp_reset_query();
 		}
 	}
 }
 
 add_action( 'keyword_search_result', 'get_results_for_keyword' );
+
+/**
+ * Alter search results on search page
+ * 
+ * @param  [type] $query [description]
+ * @return [type]        [description]
+ */
+function alter_search_query( $query ) {
+	if( $query->is_search && $query->is_main_query() ) {
+		$search_query_arg = sanitize_text_field( $query->query_vars['s'] );
+		$custom_post_id = intval( get_post_with_keyword( $search_query_arg ) );
+		if( $custom_post_id != 0 ) {
+			$query->set( 'post__not_in', array( $custom_post_id ) );
+		}
+	}
+}
+add_action( 'pre_get_posts', 'alter_search_query' );
+

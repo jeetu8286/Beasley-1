@@ -12,6 +12,8 @@ use GreaterMedia\Gigya\MemberQuery;
  * It receives the client generated GQL query as a parameter. And
  * returns the corresponding user accounts using the Gigya API.
  *
+ * DEPRECATED
+ *
  * @namespace GreaterMedia\Gigya
  */
 class PreviewAjaxHandler extends AjaxHandler {
