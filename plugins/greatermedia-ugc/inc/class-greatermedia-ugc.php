@@ -23,7 +23,28 @@ class GreaterMediaUserGeneratedContent {
 	 *
 	 * @param int $post_id
 	 */
-	protected function __construct( $post_id ) {
+	protected function __construct( $post_id = null ) {
+
+		if ( null === $post_id ) {
+
+			// New post
+			$this->post_id = null;
+			$this->post    = new stdClass();
+
+		} else {
+
+			// Verify
+			if ( ! is_numeric( $post_id ) ) {
+				throw new InvalidArgumentException( 'Post ID must be numeric' );
+			}
+
+			// Existing post
+			$this->post_id = intval( $post_id );
+			$this->post    = get_post( $this->post_id );
+
+		}
+
+	}
 
 		$this->post_id = $post_id;
 		$this->post    = get_post( $post_id );

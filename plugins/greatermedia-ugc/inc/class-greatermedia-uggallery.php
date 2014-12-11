@@ -2,7 +2,7 @@
 
 class GreaterMediaUserGeneratedGallery extends GreaterMediaUserGeneratedContent {
 
-	function __construct( $post_id ) {
+	function __construct( $post_id = null ) {
 
 		parent::__construct( $post_id );
 
