@@ -15,8 +15,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class GreaterMediaUserGeneratedContent {
 
-	protected $post_id;
-	protected $post;
+	public $post_id;
+	public $post;
+
 	protected static $subclasses;
 
 	/**
