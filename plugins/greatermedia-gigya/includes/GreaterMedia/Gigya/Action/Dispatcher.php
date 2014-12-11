@@ -6,6 +6,15 @@ use GreaterMedia\Gigya\GigyaSession;
 
 class Dispatcher {
 
+	static public $instance;
+	static public function get_instance() {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new Dispatcher();
+		}
+
+		return self::$instance;
+	}
+
 	public $page_size = 100;
 
 	function save_action( $action, $user_id = null ) {

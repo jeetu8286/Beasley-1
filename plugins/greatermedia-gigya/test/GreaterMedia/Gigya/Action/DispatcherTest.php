@@ -102,4 +102,35 @@ class ActionDispatcherTest extends \WP_UnitTestCase {
 		$this->assertEquals( 3, wp_async_task_count() );
 	}
 
+	function test_it_has_a_static_instance() {
+		$instance = Dispatcher::get_instance();
+		$instance2 = Dispatcher::get_instance();
+
+		$this->assertSame( $instance, $instance2 );
+	}
+
+	// api helpers
+	function test_it_has_api_helper_to_enqueue_publisher_task_on_single_save_action() {
+		$action = $this->action;
+
+		save_gigya_action( $action );
+		$actual = wp_async_task_last_added();
+
+		$this->assertEquals( 'action_publisher_async_job', $actual['action'] );
+		$this->assertEquals( array( $action ), $actual['params']['actions'] );
+	}
+
+	function test_it_has_api_helper_to_enqueue_publisher_task_on_batch_save_actions() {
+		$actions = array();
+		for ( $i = 0; $i < 30; $i++ ) {
+			$actions[] = $this->action;
+		}
+
+		get_gigya_action_dispatcher()->page_size = 10;
+		save_gigya_actions( $actions );
+		$actual = wp_async_task_last_added();
+
+		$this->assertEquals( 'action_publisher_async_job', $actual['action'] );
+		$this->assertEquals( 3, wp_async_task_count() );
+	}
 }
