@@ -138,6 +138,9 @@ class Plugin {
 	public function register_task_handlers() {
 		$launcher = new Sync\Launcher();
 		$launcher->register();
+
+		$actionPublisher = new Action\Publisher();
+		$actionPublisher->register();
 	}
 
 	/**
