@@ -27,10 +27,6 @@
 	border-top: 1px solid $mine-shaft;
 }
 
-.header .container {
-	max-width: $max-site-width;
-}
-
 #breaking-news-banner {
 	display: none;
 	@include bp(medium) {
@@ -147,6 +143,7 @@
 	height: 82px;
 	padding: 34px 0 30px;
 }
+
 .header__search--btn:before {
 	@extend %gmr-icons;
 	font-size: ms(1);

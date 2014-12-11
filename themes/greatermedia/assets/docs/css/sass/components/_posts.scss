@@ -248,6 +248,7 @@ Link posts contain a link to an external site. They can also optionally have a f
 
 .entry__categories, .entry__tags {
 	margin-bottom: 8px;
+	@extend %mute;
 }
 
 .entry__list, %entry__list {
