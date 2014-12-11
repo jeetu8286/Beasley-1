@@ -217,6 +217,22 @@ class GreaterMediaContestsMetaboxes {
 	}
 
 	/**
+	 * Return an array of active Gravity Forms
+	 *
+	 */
+	public function get_gravity_forms() {
+		if ( class_exists( 'RGFormsModel' ) ) {
+			$forms      = RGFormsModel::get_forms( null, 'title' );
+			$form_array = array();
+			foreach ( $forms as $form ) {
+				$form_array[$form->id] = $form->title;
+			}
+
+			return $form_array;
+		}
+	}
+
+	/**
 	 * Render an HTML5 date input meta field
 	 *
 	 * @param array $args
@@ -377,6 +393,8 @@ class GreaterMediaContestsMetaboxes {
 		 * json_decode() and json_encode() are used here to sanitize the JSON & keep out invalid values
 		 */
 		$form = json_encode( json_decode( urldecode( $_POST['contest_embedded_form'] ) ) );
+		// PHP's json_encode() may add quotes around the encoded string. Remove them.
+		$form = trim( $form, '"' );
 		update_post_meta( $post_id, 'embedded_form', $form );
 
 		// Update the form's "thank you" message
