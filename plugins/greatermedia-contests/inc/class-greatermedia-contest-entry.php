@@ -193,6 +193,14 @@ class GreaterMediaContestEntry {
 		return "This is a generic submission";
 	}
 
+	/**
+	 * Get the entry's Post ID
+	 * @return int post ID
+	 */
+	public function post_id() {
+		return $this->post->ID;
+	}
+
 }
 
 GreaterMediaContestEntry::register_cpt();
