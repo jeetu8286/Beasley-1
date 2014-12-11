@@ -192,6 +192,7 @@ class GreaterMediaFormbuilderRender {
 				'form'        => 1,
 				'checked'     => 1,
 				'required'    => 1,
+				'accept'      => 1,
 			);
 
 			$tags['textarea'] = array(
@@ -711,8 +712,22 @@ class GreaterMediaFormbuilderRender {
 
 	}
 
+	/**
+	 * Render a file upload field
+	 *
+	 * @param integer  $post_id
+	 * @param stdClass $field
+	 *
+	 * @return string html
+	 */
 	protected static function render_file( $post_id, stdClass $field ) {
-		return self::render_input_tag( 'file', $post_id, $field );
+
+		$special_attributes = array(
+			'accept' => "image/*",
+		);
+
+		return self::render_input_tag( 'file', $post_id, $field, $special_attributes );
+
 	}
 
 	/**
