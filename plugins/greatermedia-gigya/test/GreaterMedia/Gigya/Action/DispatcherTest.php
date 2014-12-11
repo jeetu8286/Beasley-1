@@ -7,12 +7,20 @@ use GreaterMedia\Gigya\GigyaSession;
 class ActionDispatcherTest extends \WP_UnitTestCase {
 
 	public $dispatcher;
+	public $action;
 
 	function setUp() {
 		parent::setUp();
 
 		GigyaSession::$instance = null;
 		$this->dispatcher = new Dispatcher();
+		$this->action = array(
+			'actionType' => 'action:contest',
+			'actionID' => '1',
+			'actionData' => array(
+				array( 'name' => 'a1', 'value' => 'a1v' ),
+			),
+		);
 	}
 
 	function tearDown() {
@@ -60,7 +68,7 @@ class ActionDispatcherTest extends \WP_UnitTestCase {
 
 	function test_it_can_enqueue_publisher_task_on_publish() {
 		$actions = array(
-			array( 'foo' )
+			$this->action
 		);
 
 		$this->dispatcher->publish( $actions );
@@ -71,7 +79,7 @@ class ActionDispatcherTest extends \WP_UnitTestCase {
 	}
 
 	function test_it_can_enqueue_publisher_task_on_single_save_action() {
-		$action = array( 'foo' );
+		$action = $this->action;
 
 		$this->dispatcher->save_action( $action );
 		$actual = wp_async_task_last_added();
@@ -81,7 +89,10 @@ class ActionDispatcherTest extends \WP_UnitTestCase {
 	}
 
 	function test_it_can_enqueue_publisher_task_on_batch_save_actions() {
-		$actions = range( 'a', 'z' );
+		$actions = array();
+		for ( $i = 0; $i < 30; $i++ ) {
+			$actions[] = $this->action;
+		}
 
 		$this->dispatcher->page_size = 10;
 		$this->dispatcher->save_actions( $actions );
