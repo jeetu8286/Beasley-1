@@ -43,6 +43,7 @@ var QueryResultCollection = Backbone.Collection.extend({
 	},
 
 	didStartError: function(response) {
+		this.reset([]);
 		this.trigger('searchError', response.data);
 	},
 
@@ -71,6 +72,7 @@ var QueryResultCollection = Backbone.Collection.extend({
 					this.trigger('searchSuccess');
 					this.clear();
 				} else {
+					this.reset([]);
 					this.trigger('searchError', response.data.errors[0]);
 				}
 			} else {
