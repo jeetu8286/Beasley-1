@@ -49,6 +49,27 @@ class GreaterMediaUserGeneratedContent {
 	}
 
 	/**
+	 * Save this UGC (creates or updates the underlying post)
+	 * @return integer post ID
+ 	 */
+	public function save() {
+
+		if(empty($this->post->ID)) {
+			$post_id = wp_insert_post($this->post);
+		}
+		else {
+			$post_id = wp_update_post($this->post);
+		}
+
+		// Refresh the local copies of the data
+		$this->post_id = intval( $post_id );
+		$this->post    = get_post( $this->post_id );
+
+		return $this->post_id;
+
+	}
+
+	/**
 	 * Register subclasses to facilitate a factory method without hard-coding subclasses in this class
 	 *
 	 * @param string $type_name  a short description of the type like 'image' or 'gallery'
