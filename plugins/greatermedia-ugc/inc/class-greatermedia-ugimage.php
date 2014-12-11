@@ -70,3 +70,5 @@ class GreaterMediaUserGeneratedImage extends GreaterMediaUserGeneratedContent {
 	}
 
 }
+
+GreaterMediaUserGeneratedContent::register_subclass( 'image', 'GreaterMediaUserGeneratedImage' );

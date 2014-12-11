@@ -83,4 +83,6 @@ class GreaterMediaUserGeneratedLink extends GreaterMediaUserGeneratedContent {
 
 	}
 
-	}
+}
+
+GreaterMediaUserGeneratedContent::register_subclass( 'link', 'GreaterMediaUserGeneratedLink' );

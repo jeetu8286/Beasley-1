@@ -88,3 +88,5 @@ class GreaterMediaUserGeneratedGallery extends GreaterMediaUserGeneratedContent 
 
 
 }
+
+GreaterMediaUserGeneratedContent::register_subclass( 'gallery', 'GreaterMediaUserGeneratedGallery' );

@@ -17,6 +17,7 @@ class GreaterMediaUserGeneratedContent {
 
 	protected $post_id;
 	protected $post;
+	protected static $subclasses;
 
 	/**
 	 * Constructor is protected so it's only called from the factory method for_post_id() or a child class
@@ -46,8 +47,57 @@ class GreaterMediaUserGeneratedContent {
 
 	}
 
-		$this->post_id = $post_id;
-		$this->post    = get_post( $post_id );
+	/**
+	 * Register subclasses to facilitate a factory method without hard-coding subclasses in this class
+	 *
+	 * @param string $type_name  a short description of the type like 'image' or 'gallery'
+	 * @param string $class_name The subclass's name
+	 *
+	 * @throws InvalidArgumentException
+	 */
+	public static function register_subclass( $type_name, $class_name ) {
+
+		if ( ! is_string( $type_name ) ) {
+			throw new InvalidArgumentException( 'Subclass type name must be a string' );
+		}
+
+		if ( ! is_string( $class_name ) && ! class_exists( $class_name ) ) {
+			throw new InvalidArgumentException( 'Subclass does not exist' );
+		}
+
+		if ( ! isset( self::$subclasses ) ) {
+			self::$subclasses = array();
+		}
+
+		self::$subclasses[ $type_name ] = $class_name;
+
+	}
+
+	/**
+	 * Factory method to instantiate a child class based on a data type
+	 *
+	 * @param string $type_name
+	 * @return GreaterMediaUserGeneratedContent
+	 * @throws InvalidArgumentException
+	 * @throws UnexpectedValueException
+	 */
+	public static function for_data_type( $type_name ) {
+
+		if ( ! is_string( $type_name ) ) {
+			throw new InvalidArgumentException( 'Type name must be a string' );
+		}
+
+		if ( isset( self::$subclasses[ $type_name ] ) ) {
+
+			$class_name = self::$subclasses[ $type_name ];
+
+			return new $class_name;
+
+		} else {
+
+			throw new UnexpectedValueException( 'Unknown data type name' );
+
+		}
 
 	}
 
