@@ -106,11 +106,11 @@ function gmrs_add_show_episode() {
 			$iterations = 7;
 			break;
 		case 3:
-			$iterations = 5;
+			$iterations = 7;
 			$skip_daysofweek = array( 6, 7 );
 			break;
 		case 4:
-			$iterations = 2;
+			$iterations = 7;
 			$skip_daysofweek = array( 1, 2, 3, 4, 5 );
 			break;
 	}
