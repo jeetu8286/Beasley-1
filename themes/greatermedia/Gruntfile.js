@@ -9,13 +9,19 @@ module.exports = function( grunt ) {
 		pkg:    grunt.file.readJSON( 'package.json' ),
 		concat: {
 			options: {
-				stripBanners: true,
+				stripBanners: true
 			},
 			greater_media: {
 				src: [
 					'assets/js/src/greater_media.js'
 				],
 				dest: 'assets/js/greater_media.js'
+			},
+			greater_media_admin: {
+				src: [
+					'assets/js/src/greater_media_admin.js'
+				],
+				dest: 'assets/js/greater_media_admin.js'
 			},
 			gigya_login: {
 				src: [
@@ -40,19 +46,12 @@ module.exports = function( grunt ) {
 					'assets/js/liveplayer/liveplayer_test_auth.js'
 				],
 				dest: 'assets/js/liveplayer_test_auth.js'
-			},
-			greater_media_styleguide: {
-				src: [
-					'assets/js/styleguide/gm_styleguide.js'
-				],
-				dest: 'assets/js/gm_styleguide.js'
 			}
 		},
 		jshint: {
 			browser: {
 				all: [
 					'assets/js/src/**/*.js',
-					'assets/js/styleguide/**/*.js',
 					'assets/js/test/**/*.js'
 				],
 				options: {
@@ -72,11 +71,11 @@ module.exports = function( grunt ) {
 			all: {
 				files: {
 					'assets/js/greater_media.min.js': ['assets/js/greater_media.js'],
+					'assets/js/greater_media_admin.min.js': ['assets/js/greater_media_admin.js'],
 					'assets/js/gigya_login.min.js': ['assets/js/gigya_login.js'],
 					'assets/js/liveplayer_login.min.js': ['assets/js/liveplayer_login.js'],
 					'assets/js/liveplayer_test.min.js': ['assets/js/liveplayer_test.js'],
-					'assets/js/liveplayer_test_auth.min.js': ['assets/js/liveplayer_test_auth.js'],
-					'assets/js/gm_styleguide.min.js': ['assets/js/gm_styleguide.js']
+					'assets/js/liveplayer_test_auth.min.js': ['assets/js/liveplayer_test_auth.js']
 				},
 				options: {
 					mangle: {
@@ -96,6 +95,9 @@ module.exports = function( grunt ) {
 			all: {
 				files: {
 					'assets/css/greater_media.css': 'assets/css/sass/greater_media.scss',
+					'assets/css/greater_media_admin.css': 'assets/css/sass/greater_media_admin.scss',
+					'assets/css/gm_admin.css': 'assets/css/sass/gm_admin.scss',
+					'assets/css/gm_tinymce.css': 'assets/css/sass/gm_tinymce.scss'
 				}
 			}
 		},
@@ -105,7 +107,7 @@ module.exports = function( grunt ) {
 				expand: true,
 
 				cwd: 'assets/css/',
-				src: ['greater_media.css'],
+				src: ['greater_media.css', 'greater_media_admin.css', 'gm_admin.css','gm_tinymce.css'],
 
 				dest: 'assets/css/',
 				ext: '.min.css'
@@ -122,7 +124,7 @@ module.exports = function( grunt ) {
 			},
 
 			scripts: {
-				files: ['assets/js/src/**/*.js', 'assets/js/vendor/**/*.js', 'assets/js/styleguide/**/*.js'],
+				files: ['assets/js/src/**/*.js', 'assets/js/vendor/**/*.js'],
 				tasks: ['jshint', 'concat', 'uglify'],
 				options: {
 					debounceDelay: 500
