@@ -122,7 +122,7 @@ function get_show_video_query() {
 }
 
 /**
- * Gets an instance of WP_Query that corresponds to the current page of the albums endpoints for shows
+ * Gets an instance of WP_Query that corresponds to the current page of the galleries endpoints for shows
  *
  * @return \WP_Query
  */
