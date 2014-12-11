@@ -17,9 +17,9 @@
 				    <nav class="show__nav">
 				        <a href=""><h1 class="show__title">Show Title Here</h1></a>
 				        <ul>
-				            <li><a href="">about</a></li>
-				            <li><a href="">podcasts</a></li>
-				            <li><a href="">galleries</a></li>
+							<?php \GreaterMedia\Shows\about_link_html( get_the_ID() ); ?>
+							<?php \GreaterMedia\Shows\podcasts_link_html( get_the_ID() ); ?>
+							<?php \GreaterMedia\Shows\albums_link_html( get_the_ID(), 'Galleries' ); ?>
 				        </ul>
 				    </nav>
 				    <div class="show__meta">
