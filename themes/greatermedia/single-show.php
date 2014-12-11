@@ -8,7 +8,7 @@
 
 		<div class="container">
 
-			<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
+			<?php the_post(); ?>
 
 				<div class="show__header">
 				    <div class="show__cast">
@@ -99,28 +99,6 @@
 						</div>
 
 					</article>
-
-				<?php endwhile;
-
-				else : ?>
-
-					<article id="post-not-found" class="hentry cf">
-
-						<header class="article-header">
-
-							<h1><?php _e( 'Oops, Post Not Found!', 'greatermedia' ); ?></h1>
-
-						</header>
-
-						<section class="entry-content">
-
-							<p><?php _e( 'Uh Oh. Something is missing. Try double checking things.', 'greatermedia' ); ?></p>
-
-						</section>
-
-					</article>
-
-				<?php endif; ?>
 
 			</section>
 
