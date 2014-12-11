@@ -120,12 +120,12 @@ function gmrs_add_show_episode() {
 
 	$inserted = $iteration = 0;
 	while ( $iteration < $iterations ) {
-		if ( $iteration > 0 ) {
+		if ( $iteration++ > 0 ) {
 			$start_date += DAY_IN_SECONDS;
 			$start_date_gmt += DAY_IN_SECONDS;
 		}
 
-		if ( in_array( date( 'N', $start_date ), $skip_daysofweek ) ) {
+		if ( in_array( (int) date( 'N', $start_date ), $skip_daysofweek ) ) {
 			continue;
 		}
 
@@ -139,8 +139,6 @@ function gmrs_add_show_episode() {
 			'ping_status'   => $data['repeat'] ? 1 : -1,
 			'menu_order'    => $interval,
 		) );
-
-		$iteration++;
 	}
 
 	$cookie_path = parse_url( admin_url( '/' ), PHP_URL_PATH );
