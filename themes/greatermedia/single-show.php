@@ -8,32 +8,48 @@
 
 		<div class="container">
 
-			<section class="content">
+			<?php the_post(); ?>
 
-				<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
+				<?php get_template_part( 'show-header' ); ?>
+
+				<section class="content">
+
+					<section class="show__features">
+						<div class="show__feature--primary">
+							<a href=""><div class="show__feature">
+								<img src="http://placehold.it/570x315&text=show-feature" alt="">
+								<div class="show__feature--desc">
+									<h3>The Title of the Primary Featured Post on the Show Homepage</h3>
+									<time class="show__feature--date" datetime="">23 SEP</time>
+								</div>
+							</div></a>
+						</div>
+						<div class="show__feature--secondary">
+							<a href=""><div class="show__feature">
+								<img src="http://placehold.it/570x315&text=show-feature" alt="">
+								<div class="show__feature--desc">
+									<h3>The Title of a Secondary Featured Post on the Show Homepage</h3>
+									<time class="show__feature--date" datetime="">23 SEP</time>
+								</div>
+							</div></a>
+							<a href=""><div class="show__feature">
+								<img src="http://placehold.it/570x315&text=show-feature" alt="">
+								<div class="show__feature--desc">
+									<h3>The Title of a Secondary Featured Post on the Show Homepage</h3>
+									<time class="show__feature--date" datetime="">23 SEP</time>
+								</div>
+							</div></a>
+						</div>
+					</section>
 
 					<article id="post-<?php the_ID(); ?>" <?php post_class( 'cf' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
 
-						<header class="entry-header">
+						<header class="entry__header">
 
-							<h2 class="entry-title" itemprop="headline"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
+							<h2 class="entry__title" itemprop="headline"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
 
 						</header>
 
-						<div id="logo">
-							
-							<?php
-								global $post;
-								$logo_id = get_post_meta($post->ID, 'logo_image', true);
-								if( $logo_id ) {
-									$logo = get_post( $logo_id );
-									echo '<img src="' . $logo->guid . '" />';
-								} else {
-									echo '<div>No Logo Image</div>';
-								}
-							?>
-
-						</div>
 						<hr>
 						<div class="entry-content">
 							<div>
@@ -64,28 +80,6 @@
 						</div>
 
 					</article>
-
-				<?php endwhile;
-
-				else : ?>
-
-					<article id="post-not-found" class="hentry cf">
-
-						<header class="article-header">
-
-							<h1><?php _e( 'Oops, Post Not Found!', 'greatermedia' ); ?></h1>
-
-						</header>
-
-						<section class="entry-content">
-
-							<p><?php _e( 'Uh Oh. Something is missing. Try double checking things.', 'greatermedia' ); ?></p>
-
-						</section>
-
-					</article>
-
-				<?php endif; ?>
 
 			</section>
 
