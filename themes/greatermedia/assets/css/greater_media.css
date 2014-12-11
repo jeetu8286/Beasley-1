@@ -54,11 +54,11 @@ category: Base
 ```
 
 */
-.featured__content--list, .footer__nav--list, .footer__social {
+.featured__content--list, .footer__nav--list {
   padding: 0;
   margin: 0; }
 
-.featured__content--item, .footer__nav--list .menu-item, .footer__social--item, .live-player__stream--item {
+.featured__content--item, .footer__nav--list .menu-item, .live-player__stream--item {
   list-style: none;
   padding: 0;
   margin: 0; }
@@ -468,7 +468,7 @@ category: Base - Typography
   src: url("../fonts/icon-font/gmr-icons.eot?#iefixawb6kj") format("embedded-opentype"), url("../fonts/icon-font/gmr-icons.woff?awb6kj") format("woff"), url("../fonts/icon-font/gmr-icons.ttf?awb6kj") format("truetype"), url("../fonts/icon-font/gmr-icons.svg?awb6kj#gmr-icons") format("svg");
   font-weight: normal;
   font-style: normal; }
-[class^="icon-"], [class*=" icon-"], .header__search--btn:before, .footer__social--facebook:before, .footer__social--twitter:before, .footer__social--google-plus:before, .live-link__song:before, .live-link__type--audio:before, .live-link__type--gallery:before, .live-link__type--image:before, .live-link__type--link:before, .live-link__type--standard:before, .live-link__type--video:before, .social__link--facebook:before, .social__link--twitter:before, .social__link--google-plus:before, .social__link--youtube:before, .social__link--instagram:before {
+[class^="icon-"], [class*=" icon-"], .header__search--btn:before, .live-link__song:before, .live-link__type--audio:before, .live-link__type--gallery:before, .live-link__type--image:before, .live-link__type--link:before, .live-link__type--standard:before, .live-link__type--video:before, .social__link--facebook:before, .social__link--twitter:before, .social__link--google-plus:before, .social__link--youtube:before, .social__link--instagram:before {
   font-family: 'gmr-icons';
   speak: none;
   font-style: normal;
@@ -1857,24 +1857,17 @@ blockquote p {
   display: inline-block;
   margin-right: 2.5em; }
 
-.footer__social {
+.footer__menu .social__list {
   float: right;
   padding: 8px 0 7px; }
 
-.footer__social--item {
-  display: inline-block;
+.footer__menu .social__link {
   height: 22px;
-  margin-left: 30px;
+  margin: 0 0 0 30px;
   font-size: 1.26563em; }
 
-.footer__social--facebook:before {
-  content: "\e60f"; }
-
-.footer__social--twitter:before {
-  content: "\e610"; }
-
-.footer__social--google-plus:before {
-  content: "\e611"; }
+.footer__menu .social__link:last-child {
+  margin: 0 0 0 30px; }
 
 /*doc
 ---
