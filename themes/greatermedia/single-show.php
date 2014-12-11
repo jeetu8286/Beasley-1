@@ -42,6 +42,36 @@
 						</div>
 					</section>
 
+					<div class="featured__content">
+			            <div class="featured__content--block">
+			                <div class="featured__content--image">
+			                    <img src="http://placehold.it/400x400&text=featured+image">
+			                </div>
+			                <div class="featured__content--meta">
+			                    <h3 class="featured__content--title">MMR Rocks the Flyers</h3>
+			                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur.</p>
+			                </div>
+			            </div>
+			            <div class="featured__content--block">
+			                <div class="featured__content--image">
+			                    <img src="http://placehold.it/400x400&text=featured+image">
+			                </div>
+			                <div class="featured__content--meta">
+			                    <h2 class="featured__content--title">Hitch a Ride with Pierre ...and Minerva</h2>
+			                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Hic temporibus praesentium, ipsum architecto.</p>
+			                </div>
+			            </div>
+			            <div class="featured__content--block">
+			                <div class="featured__content--image">
+			                    <img src="http://placehold.it/400x400&text=featured+image">
+			                </div>
+			                <div class="featured__content--meta">
+			                    <h2 class="featured__content--title">Preston and Steve</h2>
+			                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium, aliquid.</p>
+			                </div>
+			            </div>
+			        </div>					
+
 					<article id="post-<?php the_ID(); ?>" <?php post_class( 'cf' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
 
 						<header class="entry__header">

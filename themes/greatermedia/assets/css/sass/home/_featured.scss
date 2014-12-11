@@ -188,9 +188,8 @@ Curated posts for Featured Articles
 		margin-bottom: 25px;
 	}
 	@include bp(large) {
-		width: 31.055900621118%;
+		@include span-columns(4 of 12);
 		height: 280px;
-		margin-right: 3.416149068323%;
 		margin-bottom: 0;
 		overflow: visible;
 	}
