@@ -13,7 +13,7 @@ add_action( 'template_include', __NAMESPACE__ . '\filter_template' );
  * @return array
  */
 function get_sections() {
-	return array( 'about', 'podcasts', 'albums', 'videos' );
+	return array( 'about', 'podcasts', 'galleries', 'videos' );
 }
 
 /**
@@ -59,8 +59,8 @@ function template_redirect() {
 	$section = get_query_var( 'show_section' );
 	if ( $section && in_array( $section, get_sections() ) ) {
 		switch( $section ) {
-			case 'albums':
-				$allowed = supports_albums( get_the_ID() );
+			case 'galleries':
+				$allowed = supports_galleries( get_the_ID() );
 				break;
 			case 'podcasts':
 				$allowed = supports_podcasts( get_the_ID() );
