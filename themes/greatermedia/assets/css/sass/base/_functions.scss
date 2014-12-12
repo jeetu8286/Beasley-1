@@ -29,8 +29,6 @@
 // This function is written to provide a simple way to call the value for Modular Scale instead of continually having
 // to use `map-get($modular-scale, key)` when using a modular-scale.
 //
-// trying to force this
-//
 // @example scss - MS function
 // font-size: ms(4);
 //
