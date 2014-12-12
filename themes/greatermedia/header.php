@@ -107,17 +107,13 @@
 								wp_nav_menu( $main_nav );
 								?>
 								<div class="header__secondary">
-									<nav class="header__account">
-										<ul class="header__account--list account">
-											<li><a id="register-button" href="" class="register" style="visibility:hidden">register</a></li>
-											<li><a id="login-button" href="" class="login" style="visibility:hidden">Login</a></li>
-										</ul>
-									</nav>
-									<div class="header__social">
-										<?php do_action( 'gmr_social' ); ?>
+									<div class="header__account">
+										<i class="header__account--btn"></i>
+										<div class="header__account--links">
+										</div>
 									</div>
 									<div class="header__search">
-										<div class="header__search--span"><?php _e( 'Search', 'greatermedia' ); ?></div><i class="header__search--btn"></i>
+										<i class="header__search--btn"></i><div class="header__search--span"><?php _e( 'Keyword Search', 'greatermedia' ); ?></div>
 									</div>
 								</div>
 							</div>

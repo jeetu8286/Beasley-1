@@ -43,6 +43,12 @@
 	@include bp(medium) {
 		@include span-columns(1);
 	}
+	@include bp(large) {
+		@include span-columns(1);
+	}
+	@include bp(x-large) {
+		@include span-columns(1);
+	}
 }
 
 .header__logo--img{
@@ -101,9 +107,55 @@
 .header__account {
 	display: none;
 	@include bp(medium) {
+		position: relative;
 		display: block;
-		float: left;
+		float: right;
+		width: 64px;
+		height: 82px;
+		margin: 0 auto;
+		color: $secondary-heading;
+		text-align: center;
+		cursor: pointer;
 	}
+}
+
+.header__account:hover {
+	background-color: $color-text-red;
+	color: $color-text-white;
+}
+
+.header__account--btn {
+	display: block;
+	width: 64px;
+	height: 82px;
+	padding: 32px 0;
+	margin: 0 auto;
+}
+
+.header__account--btn:before {
+	@extend %gmr-icons;
+	font-size: ms(1);
+	content: "\e60a";
+}
+
+.header__account--links {
+	display: none;
+}
+
+.header__account:hover .header__account--links {
+	position: absolute;
+	display: block;
+	top: 82px;
+	right: 0;
+	width: 250px;
+	height: 118px;
+	border-top: 7px solid $color-text-red;
+	background-color: $primary-bg;
+	z-index: 99999;
+}
+
+.header__account--open {
+	display: block;
 }
 
 // gigya dependencies
@@ -116,9 +168,8 @@
 	display: none;
 	@include bp(medium) {
 		display: block;
-		float: left;
+		float: right;
 		height: 82px;
-		margin-right: 2.125em;
 		font-size: ms(0);
 	}
 }
@@ -126,12 +177,13 @@
 // container for search button
 .header__search {
 	display: block;
-	color: $color-text-white;
+	color: $primary-border;
 	@include bp(medium) {
 		position: relative;
 		display: block;
-		float: left;
+		float: right;
 		height: 82px;
+		margin-right: 46px;
 	}
 }
 
@@ -142,8 +194,8 @@
 		float: left;
 		height: 82px;
 		padding: 36px 0;
-		margin-right: .625em;
-		font-size: ms(-1);
+		margin-left: .625em;
+		font-size: ms(-2);
 	}
 }
 
