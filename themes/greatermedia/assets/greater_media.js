@@ -1,6 +1,6 @@
 (function() {
 
-	var showSearch,
+	var livePlayerFix, livePlayerInit, showSearch,
 
 		body = document.querySelector( 'body' ),
 		html = document.querySelector( 'html'),
@@ -10,6 +10,8 @@
 		headerHeight = header.offsetHeight,
 		livePlayer = document.getElementById( 'live-player__sidebar' ),
 		livePlayerStreamSelect = document.querySelector( '.live-player__stream--current' ),
+		livePlayerCurrentName = livePlayerStreamSelect.querySelector( '.live-player__stream--current-name' ),
+		livePlayerStreams = livePlayerStreamSelect.querySelectorAll( '.live-player__stream--item' ),
 		livePlayerStreamSelectHeight = livePlayerStreamSelect.offsetHeight,
 		wpAdminHeight = 32,
 		onAir = document.getElementById( 'on-air' ),
@@ -184,6 +186,20 @@
 	livePlayerStreamSelect.addEventListener( 'click', toggleStreamSelect, false );
 
 	/**
+	 * Selects a Live Player Stream
+	 */
+	function selectStream() {
+		var selected_stream = this.querySelector( '.live-player__stream--name' ).textContent;
+
+		livePlayerCurrentName.textContent = selected_stream;
+		document.dispatchEvent( new CustomEvent( 'live-player-stream-changed', { 'detail': selected_stream } ) );
+	};
+
+	for ( var i = 0; i < livePlayerStreams.length; i++ ) {
+		livePlayerStreams[i].addEventListener( 'click', selectStream, false );
+	}
+
+	/**
 	 * Toggles a class to the live links when the live player is clicked clicked on smaller screens
 	 */
 	function onAirClick() {
@@ -268,13 +284,12 @@
 		}
 	}
 
-	/*
 	showSearch = function() {
 		searchForm.classList.toggle( 'header__search--open' );
 		pageWrap.classList.toggle( 'search--active' );
 	};
 
-	searchBtn.addEventListener('click', showSearch, false);  */
+	searchBtn.addEventListener('click', showSearch, false);
 
 	var scrollDebounce = _.debounce(getScrollPosition, 50),
 		scrollThrottle = _.throttle(getScrollPosition, 50),
