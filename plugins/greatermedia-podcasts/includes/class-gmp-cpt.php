@@ -23,15 +23,9 @@ class GMP_CPT {
 	 * Hook into the appropriate actions when the class is initiated.
 	 */
 	public static function init() {
-
 		add_action( 'init', array( __CLASS__, 'podcast_cpt' ), 0 );
 		add_action( 'init', array( __CLASS__, 'episode_cpt' ), 0 );
-		add_action( 'init', array( __CLASS__, 'register_shadow_taxonomy' ) );
-		add_action( 'save_post', array( __CLASS__, 'update_shadow_taxonomy' ) );
-		add_action( 'before_delete_post', array( __CLASS__, 'delete_shadow_tax_term' ) );
-
 		add_filter( 'gmr_live_link_suggestion_post_types', array( __CLASS__, 'extend_live_link_suggestion_post_types' ) );
-
 	}
 
 	/**
