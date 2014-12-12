@@ -2,6 +2,8 @@
 
 class GreaterMediaUserGeneratedLink extends GreaterMediaUserGeneratedContent {
 
+	const POST_FORMAT = 'link';
+
 	function __construct( $post_id = null ) {
 
 		parent::__construct( $post_id );

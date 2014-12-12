@@ -2,6 +2,8 @@
 
 class GreaterMediaUserGeneratedImage extends GreaterMediaUserGeneratedContent {
 
+	const POST_FORMAT = 'image';
+
 	function __construct( $post_id = null ) {
 
 		parent::__construct( $post_id );

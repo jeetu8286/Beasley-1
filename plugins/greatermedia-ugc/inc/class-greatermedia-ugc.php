@@ -20,6 +20,8 @@ class GreaterMediaUserGeneratedContent {
 
 	protected static $subclasses;
 
+	const POST_FORMAT = '';
+
 	/**
 	 * Constructor is protected so it's only called from the factory method for_post_id() or a child class
 	 *
@@ -32,6 +34,12 @@ class GreaterMediaUserGeneratedContent {
 			// New post
 			$this->post_id = null;
 			$this->post    = new stdClass();
+
+			// Defaults
+			$this->post->post_title   = self::getGUID();
+			$this->post->post_content = '';
+			$this->post->post_excerpt = '';
+			$this->post->post_type    = 'listener_submissions';
 
 		} else {
 
@@ -49,16 +57,50 @@ class GreaterMediaUserGeneratedContent {
 	}
 
 	/**
+	 * Generate a 32-character ID
+	 * @return string GUID
+	 * @see http://guid.us/GUID/PHP
+	 */
+	protected function getGUID() {
+
+		if ( function_exists( 'com_create_guid' ) ) {
+
+			return com_create_guid();
+
+		} else {
+
+			$charid = strtoupper( md5( uniqid( rand(), true ) ) );
+			$uuid   = substr( $charid, 0, 8 ) . '-'
+			          . substr( $charid, 8, 4 ) . '-'
+			          . substr( $charid, 12, 4 ) . '-'
+			          . substr( $charid, 16, 4 ) . '-'
+			          . substr( $charid, 20, 12 );
+
+			return $uuid;
+
+		}
+
+	}
+
+	/**
 	 * Save this UGC (creates or updates the underlying post)
 	 * @return integer post ID
- 	 */
+	 */
 	public function save() {
 
-		if(empty($this->post->ID)) {
-			$post_id = wp_insert_post($this->post);
+		if ( empty( $this->post->ID ) ) {
+			$post_id = wp_insert_post( get_object_vars( $this->post ), true );
+			if ( is_wp_error( $post_id ) ) {
+				// @TODO error handling
+			}
+
+		} else {
+			$post_id = wp_update_post( get_object_vars( $this->post ) );
 		}
-		else {
-			$post_id = wp_update_post($this->post);
+
+		// Set the post format. Done with a taxonomy term, so this needs to happen after the post is saved.
+		if ( '' !== static::POST_FORMAT ) {
+			set_post_format( $this->post, static::POST_FORMAT );
 		}
 
 		// Refresh the local copies of the data
@@ -99,6 +141,7 @@ class GreaterMediaUserGeneratedContent {
 	 * Factory method to instantiate a child class based on a data type
 	 *
 	 * @param string $type_name
+	 *
 	 * @return GreaterMediaUserGeneratedContent
 	 * @throws InvalidArgumentException
 	 * @throws UnexpectedValueException
@@ -186,22 +229,24 @@ class GreaterMediaUserGeneratedContent {
 	 * @static
 	 * @access public
 	 * @filter gmr_live_link_add_copy_action
+	 *
 	 * @param boolean $add_copy_action Determines whether or not to add the action.
-	 * @param WP_Post $post The current post object.
+	 * @param WP_Post $post            The current post object.
+	 *
 	 * @return boolean Initial flag if a post type is not a listener submission pt, otherwise FALSE.
 	 */
 	public static function remove_copy_to_live_link_action( $add_copy_action, WP_Post $post ) {
 		return 'listener_submissions' != $post->post_type ? $add_copy_action : false;
 	}
-	
+
 	/**
 	 * Add custom admin pages to the admin menu
 	 */
 	public static function admin_menu() {
 		add_submenu_page( 'edit.php?post_type=listener_submissions', 'Listener Submission Moderation', 'Listener Submission Moderation', 'delete_posts', GreaterMediaUserGeneratedContentModerationTable::PAGE_NAME, array(
-				__CLASS__,
-				'moderation_ui'
-			) );
+			__CLASS__,
+			'moderation_ui'
+		) );
 	}
 
 	public static function admin_enqueue_scripts() {
