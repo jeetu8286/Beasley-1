@@ -4187,7 +4187,10 @@ category: Components - Shows
     clear: both; }
 
 .personality {
-  margin: 2em 0;
+  margin: 4em 0;
+  height: 12em;
+  overflow: hidden;
+  position: relative;
   display: block; }
   .personality:after {
     content: "";
@@ -4198,9 +4201,17 @@ category: Components - Shows
   float: left;
   display: block;
   margin-right: 2.35765%;
-  width: 23.23176%; }
+  width: 31.76157%; }
   .personality__avatar:last-child {
     margin-right: 0; }
+  @media screen and (min-width: 768px) {
+    .personality__avatar {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 23.23176%; }
+      .personality__avatar:last-child {
+        margin-right: 0; } }
   .personality__avatar img {
     width: 80%;
     height: auto;
@@ -4215,10 +4226,18 @@ category: Components - Shows
   float: left;
   display: block;
   margin-right: 2.35765%;
-  width: 74.41059%;
+  width: 65.88078%;
   margin-right: 0; }
   .personality__meta:last-child {
     margin-right: 0; }
+  @media screen and (min-width: 768px) {
+    .personality__meta {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 74.41059%; }
+      .personality__meta:last-child {
+        margin-right: 0; } }
 
 /**
  * Single Page Styles
