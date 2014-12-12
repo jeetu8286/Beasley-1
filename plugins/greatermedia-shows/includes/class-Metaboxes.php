@@ -186,7 +186,12 @@ class GMR_Show_Metaboxes {
 		}
 		$featured_posts = get_post_meta( $post->ID, 'gmr_featured_post_ids', true );
 
-		$options = array();
+		$options = array(
+			'args' => array(
+				'post_type' => array( 'post', 'tribe_events' ),
+			),
+			'limit' => 3,
+		);
 
 		pf_render( 'gmr-featured-post-ids', $featured_posts, $options );
 	}
@@ -199,7 +204,12 @@ class GMR_Show_Metaboxes {
 
 		$favorite_posts = get_post_meta( $post->ID, 'gmr_favorite_post_ids', true );
 
-		$options = array();
+		$options = array(
+			'args' => array(
+				'post_type' => array( 'post' ),
+			),
+			'limit' => 10,
+		);
 
 		pf_render( 'gmr-favorite-post-ids', $favorite_posts, $options );
 	}
