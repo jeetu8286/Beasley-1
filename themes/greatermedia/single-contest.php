@@ -13,11 +13,7 @@ get_header(); ?>
 		<div class="container">
 
 			<section class="content">
-				<?php $form = get_post_meta( get_the_ID(), 'embedded_form', true );
-				GreaterMediaFormbuilderRender::render( get_the_ID(), $form ); ?>
-				<?php
-
-				if ( defined( 'GREATER_MEDIA_GIGYA_TEST_UI' ) && GREATER_MEDIA_GIGYA_TEST_UI ) {
+				<?php if ( defined( 'GREATER_MEDIA_GIGYA_TEST_UI' ) && GREATER_MEDIA_GIGYA_TEST_UI ) {
 					if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
 
 						<article id="post-<?php the_ID(); ?>" <?php post_class( 'cf' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
@@ -31,12 +27,8 @@ get_header(); ?>
 
 							<?php
 
-							$post_id         = get_the_ID();
-							$contest_form_id = get_post_meta( $post_id, 'contest_form_id', true );
-
-							if ( $contest_form_id ) {
-								gravity_form( $contest_form_id );
-							}
+							$form = get_post_meta( get_the_ID(), 'embedded_form', true );
+							GreaterMediaFormbuilderRender::render( get_the_ID(), $form );
 
 							?>
 

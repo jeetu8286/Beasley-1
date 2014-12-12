@@ -28,6 +28,7 @@
 // Home
 @import "home/blog-roll";
 @import "home/featured";
+@import "home/highlights";
 
 // Components
 @import "components/header";
@@ -41,13 +42,13 @@
 @import "components/concerts";
 @import "components/contests";
 @import "components/events";
-@import "components/personalities";
 @import "components/podcasts";
 @import "components/polls-surveys";
 @import "components/shows";
 @import "components/widgets";
 @import "components/social-share-links";
 @import "components/article";
+@import "components/gallery";
 
 // Custom styles only used on single pages
 @import "pages/single";
