@@ -76,30 +76,22 @@
 				        <aside class="inner-right-col">
 					        <section class="show__favorites">
 					        	<h2>Our Favorites</h2>
+						        <?php
+						        $fav_query = \GreaterMedia\Shows\get_show_favorites_query();
+								while( $fav_query->have_posts() ): $fav_query->the_post();
+						        ?>
 								<div class="featured__content--block">
-					                <div class="featured__content--image">
-					                    <img src="http://placehold.it/400x400&text=featured+image">
-					                </div>
+					                <?php if ( has_post_thumbnail() ): ?>
+						                <div class="featured__content--image">
+							                <a href="<?php the_permalink(); ?>"><?php the_post_thumbnail( array( 400, 400 ) ); ?></a>
+						                </div>
+									<?php endif; ?>
 					                <div class="featured__content--meta">
-					                    <h3 class="featured__content--title">MMR Rocks the Flyers</h3>
+					                    <h3 class="featured__content--title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
 					                </div>
 					            </div>
-					            <div class="featured__content--block">
-					                <div class="featured__content--image">
-					                    <img src="http://placehold.it/400x400&text=featured+image">
-					                </div>
-					                <div class="featured__content--meta">
-					                    <h3 class="featured__content--title">Hitch a Ride with Pierre ...and Minerva</h3>
-					                </div>
-					            </div>
-					            <div class="featured__content--block">
-					                <div class="featured__content--image">
-					                    <img src="http://placehold.it/400x400&text=featured+image">
-					                </div>
-					                <div class="featured__content--meta">
-					                    <h3 class="featured__content--title">Preston and Steve</h3>
-					                </div>
-					            </div>
+								<?php endwhile; ?>
+						        <?php wp_reset_query(); ?>
 					        </section>
 
 						<section class="show__latest-crap">
