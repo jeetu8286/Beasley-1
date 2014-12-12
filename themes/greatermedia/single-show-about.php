@@ -41,7 +41,7 @@
 										</div>
 										<div class="personality__meta">
 											<span class="personality__name h1"><?php echo esc_html( $personality->data->display_name ); ?></span>
-											<p class="personality__bio"><?php echo esc_html( get_the_author_meta( 'description', $personality->ID ) ); ?></p>
+											<p class="personality__bio"><?php echo apply_filters('the_content', esc_html( get_the_author_meta( 'description', $personality->ID ) ) ); ?></p>
 										</div>
 											<?php
 										$social = GreaterMedia\Shows\get_personality_social_ul( $personality );
