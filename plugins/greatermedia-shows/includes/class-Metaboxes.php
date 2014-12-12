@@ -184,7 +184,7 @@ class GMR_Show_Metaboxes {
 			?><p>Please install the <a href="http://github.com/10up/post-finder">"post-finder"</a> plugin.</p><?php
 			return;
 		}
-		$featured_posts = get_post_meta( 'gmr_featured_post_ids', true );
+		$featured_posts = get_post_meta( $post->ID, 'gmr_featured_post_ids', true );
 
 		$options = array();
 
@@ -197,7 +197,7 @@ class GMR_Show_Metaboxes {
 			return;
 		}
 
-		$favorite_posts = get_post_meta( 'gmr_favorite_post_ids', true );
+		$favorite_posts = get_post_meta( $post->ID, 'gmr_favorite_post_ids', true );
 
 		$options = array();
 
@@ -241,6 +241,16 @@ class GMR_Show_Metaboxes {
 		}
 
 		update_post_meta( $post_id, 'logo_image', filter_input( INPUT_POST, 'logo_image', FILTER_VALIDATE_INT ) );
+
+		if ( isset( $_POST['gmr-featured-post-ids'] ) ) {
+			$featured_ids = implode( ',', array_map( 'intval', explode( ',', $_POST['gmr-featured-post-ids'] ) ) );
+			update_post_meta( $post_id, 'gmr_featured_post_ids', $featured_ids );
+		}
+
+		if ( isset( $_POST['gmr-favorite-post-ids'] ) ) {
+			$favorite_ids = implode( ',', array_map( 'intval', explode( ',', $_POST['gmr-favorite-post-ids'] ) ) );
+			update_post_meta( $post_id, 'gmr_favorite_post_ids', $favorite_ids );
+		}
 	}
 
 	/**
