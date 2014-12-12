@@ -14,33 +14,43 @@
 
 				<section class="content">
 
-					<section class="show__features">
-						<div class="show__feature--primary">
-							<a href=""><div class="show__feature">
-								<img src="http://placehold.it/570x315&text=show-feature" alt="">
-								<div class="show__feature--desc">
-									<h3>The Title of the Primary Featured Post on the Show Homepage</h3>
-									<time class="show__feature--date" datetime="">23 SEP</time>
-								</div>
-							</div></a>
-						</div>
-						<div class="show__feature--secondary">
-							<a href=""><div class="show__feature">
-								<img src="http://placehold.it/570x315&text=show-feature" alt="">
-								<div class="show__feature--desc">
-									<h3>The Title of a Secondary Featured Post on the Show Homepage</h3>
-									<time class="show__feature--date" datetime="">23 SEP</time>
-								</div>
-							</div></a>
-							<a href=""><div class="show__feature">
-								<img src="http://placehold.it/570x315&text=show-feature" alt="">
-								<div class="show__feature--desc">
-									<h3>The Title of a Secondary Featured Post on the Show Homepage</h3>
-									<time class="show__feature--date" datetime="">23 SEP</time>
-								</div>
-							</div></a>
-						</div>
-					</section>
+					<?php
+					$featured_query = \GreaterMedia\Shows\get_show_featured_query();
+					if ( $featured_query->have_posts() ): $featured_query->the_post(); ?>
+						<section class="show__features">
+							<div class="show__feature--primary">
+								<a href="<?php the_permalink(); ?>">
+									<div class="show__feature">
+										<?php if ( has_post_thumbnail() ) : ?>
+											<?php the_post_thumbnail( array( 570,315 ) ); ?>
+										<?php endif; ?>
+										<div class="show__feature--desc">
+											<h3><?php the_title(); ?></h3>
+											<time class="show__feature--date" datetime="<?php the_time( 'c' ); ?>"><?php the_time( 'd M' ); ?></time>
+										</div>
+									</div>
+								</a>
+							</div>
+							<?php if ( $featured_query->have_posts() ): ?>
+							<div class="show__feature--secondary">
+								<?php while( $featured_query->have_posts() ): $featured_query->the_post(); ?>
+									<a href="<?php the_permalink(); ?>">
+										<div class="show__feature">
+											<?php if ( has_post_thumbnail() ) : ?>
+												<?php the_post_thumbnail( array( 570,315 ) ); ?>
+											<?php endif; ?>
+											<div class="show__feature--desc">
+												<h3><?php the_title(); ?></h3>
+												<time class="show__feature--date" datetime="<?php the_time( 'c' ); ?>"><?php the_time( 'd M' ); ?></time>
+											</div>
+										</div>
+									</a>
+								<?php endwhile; ?>
+							</div>
+							<?php endif; ?>
+						</section>
+						<?php wp_reset_query(); ?>
+					<?php endif; ?>
 
 					<div class="featured__content">
 						<?php
