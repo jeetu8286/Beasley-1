@@ -57,7 +57,6 @@ class GreaterMediaSiteOptions {
 		?>
 		<form action="options.php" method="post" class="greatermedia-settings-form" style="max-width: 550px;">
 			<?php
-			settings_errors();
 			settings_fields( self::option_group );
 			do_settings_sections( $this->_settings_page_hook );
 
@@ -151,6 +150,10 @@ class GreaterMediaSiteOptions {
 	public static function render_image_select( $label, $name, $image_id = 0 ) {
 		$image_src = wp_get_attachment_image_src( $image_id, 'thumbnail' );
 		$image_src = is_array( $image_src ) ? reset( $image_src ): '';
+
+		if ( empty( $image_src ) ) {
+			$image_src = get_template_directory_uri() . '/images/admin-no-logo.png';
+		}
 
 		?>
 		<div class="gmr__option image-select-parent">
