@@ -10,15 +10,15 @@ get_header(); ?>
 
 	<main class="main" role="main">
 
+		<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
+
+			<?php do_action( 'gmr_gallery' ); ?>
+
 		<div class="container">
 
 			<section class="content">
 
 				<h2 class="content__heading">Latest from WMMR</h2>
-
-				<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
-
-					<?php do_action( 'gmr_gallery' ); ?>
 
 				<?php endwhile; ?>
 
@@ -47,11 +47,11 @@ get_header(); ?>
 
 					</article>
 
-				<?php endif; ?>
-
 			</section>
 
 		</div>
+
+		<?php endif; ?>
 
 	</main>
 

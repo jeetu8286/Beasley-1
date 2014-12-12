@@ -111,14 +111,13 @@ class GreaterMediaGallery {
 			$main_post_title      = get_the_title( $main_post_id );
 			$main_post_short_link = wp_get_shortlink( $main_post_id );
 
-			// 16x9 galleries have less vertical space for thumbnails & caption
 			$thumbnails_per_page = 15;
 
 			$image_count_text = sprintf( __( 'Image %s of %s', 'greatermedia' ), '{{slideNum}}</span>', '{{slideCount}}' );
 			?>
 			<div class="gallery">
-				<div class="main-wrapper">
-					<div class="main cycle-slideshow"
+				<div class="container">
+					<div class="gallery__slides cycle-slideshow"
 					     data-cycle-log="false"
 					     data-slides="> .slide"
 					     data-cycle-prev=".prev-img"
@@ -149,7 +148,7 @@ class GreaterMediaGallery {
 							$image = wp_get_attachment_image_src( get_the_ID(), 'gmr-gallery', false );
 							$image_url = $image[0];
 							?>
-							<div class="slide"
+							<div class="gallery__slide--image"
 								<?php
 								foreach ( $attr as $attr_name => $attr_value ) {
 									echo $attr_name . '="' . esc_attr( $attr_value ) . '" ';

@@ -4,12 +4,12 @@
 	var document = window.document,
 		$document = $( document ),
 		$window = $( window ),
-		slideshow = $( '.main.cycle-slideshow' ),
+		slideshow = $( '.gallery__slides.cycle-slideshow' ),
 		gallery = document.querySelectorAll( '.gallery' ),
-		main = document.querySelector( '.main' ),
+		main = document.querySelector( '.gallery__slides' ),
 		$gallery = $( gallery ),
 		$main = $( main ),
-		$main_wrapper = $( '.main-wrapper' ),
+		$main_wrapper = $( '.gallery .container' ),
 		$caption = $( '.caption' ),
 		$sidebar = $( '.sidebar' ),
 		$slide_paging = $( '.slide-paging' ),
@@ -170,14 +170,6 @@
 	 */
 	function isWidescreen() {
 		return $gallery.hasClass( 'iswidescreen' );
-	}
-
-	/**
-	 * Is the slideshow a 16x9 ratio?
-	 * @returns bool
-	 */
-	function is16x9() {
-		return $gallery.hasClass( 'gallery-ratio-16-9' );
 	}
 
 	/**
@@ -384,7 +376,7 @@
 		expand_wide();
 	}
 
-	window.WEF_Gallery = {
+	window.GMR_Gallery = {
 		isFullscreen: isFullscreen,
 		expand      : expand_full,
 		collapse    : collapse_full

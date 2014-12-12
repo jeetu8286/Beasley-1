@@ -8,3 +8,35 @@ category: Components - Gallery
 ---
 
 */
+
+.gallery {
+	width: 100%;
+	overflow: auto;
+	background-color: $cod-gray;
+}
+
+.gallery .container {
+	background: transparent;
+}
+
+.gallery__slides {
+	@include span-columns(4);
+	@include bp(medium) {
+		@include span-columns(6);
+	}
+	@include bp(large) {
+		@include span-columns(8);
+		@include shift(2);
+		height: 486px;
+		overflow: hidden;
+	}
+	@include bp(x-large) {
+		@include span-columns(8);
+		@include shift(2);
+	}
+}
+
+.gallery__slide--image{
+	width: 100%;
+	height: 486px;
+}
