@@ -41,59 +41,18 @@ class GreaterMediaContestsMetaboxes {
 
 		if ( $post && 'contest' === $post->post_type ) {
 
-			wp_enqueue_style( 'formbuilder', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'bower_components/formbuilder/dist/formbuilder.css' );
-			wp_enqueue_style( 'datetimepicker', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'bower_components/datetimepicker/jquery.datetimepicker.css' );
+			wp_enqueue_style( 'formbuilder' );
+			wp_enqueue_style( 'datetimepicker' );
 
-			wp_enqueue_script( 'ie8-node-enum', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'bower_components/ie8-node-enum/index.js' );
-			wp_enqueue_script( 'jquery-scrollwindowto', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'bower_components/jquery.scrollWindowTo/index.js', array( 'jquery' ) );
-			wp_enqueue_script( 'underscore-mixin-deepextend', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'bower_components/underscore.mixin.deepExtend/index.js', array( 'underscore' ) );
-			wp_enqueue_script( 'backbone-deep-model', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'bower_components/backbone-deep-model/src/deep-model.js', array( 'backbone' ) );
-			wp_enqueue_script( 'datetimepicker', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'bower_components/datetimepicker/jquery.datetimepicker.js', array( 'jquery' ) );
+			wp_enqueue_script( 'ie8-node-enum' );
+			wp_enqueue_script( 'jquery-scrollwindowto' );
+			wp_enqueue_script( 'underscore-mixin-deepextend' );
+			wp_enqueue_script( 'backbone-deep-model' );
+			wp_enqueue_script( 'datetimepicker' );
 
-			if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
-
-				wp_enqueue_script( 'rivets', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'bower_components/rivets/dist/rivets.js' );
-				wp_enqueue_style( 'font-awesome', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'bower_components/font-awesome/css/font-awesome.css' );
-
-				wp_enqueue_script(
-					'formbuilder',
-					trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'bower_components/formbuilder/dist/formbuilder.js',
-					array(
-						'jquery',
-						'jquery-ui-core',
-						'jquery-ui-draggable',
-						'jquery-scrollwindowto',
-						'underscore',
-						'underscore-mixin-deepextend',
-						'backbone',
-						'backbone-deep-model',
-						'ie8-node-enum',
-						'rivets',
-					)
-				);
-
-			} else {
-
-				wp_enqueue_script( 'rivets', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'bower_components/rivets/dist/rivets.min.js' );
-				wp_enqueue_style( 'font-awesome', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'bower_components/font-awesome/css/font-awesome.min.css' );
-				wp_enqueue_script(
-					'formbuilder',
-					trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'bower_components/formbuilder/dist/formbuilder-min.js',
-					array(
-						'jquery',
-						'jquery-ui-core',
-						'jquery-ui-draggable',
-						'jquery-scrollwindowto',
-						'underscore',
-						'underscore-mixin-deepextend',
-						'backbone',
-						'backbone-deep-model',
-						'ie8-node-enum',
-						'rivets',
-					)
-				);
-
-			}
+			wp_enqueue_script( 'formbuilder' );
+			wp_enqueue_script( 'rivets' );
+			wp_enqueue_style( 'font-awesome' );
 
 			wp_enqueue_script( 'greatermedia-contests-admin', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'js/greatermedia-contests-admin.js', array( 'formbuilder' ), false, true );
 			$embedded_form = get_post_meta( $post->ID, 'embedded_form', true );
@@ -258,6 +217,22 @@ class GreaterMediaContestsMetaboxes {
 	}
 
 	/**
+	 * Return an array of active Gravity Forms
+	 *
+	 */
+	public function get_gravity_forms() {
+		if ( class_exists( 'RGFormsModel' ) ) {
+			$forms      = RGFormsModel::get_forms( null, 'title' );
+			$form_array = array();
+			foreach ( $forms as $form ) {
+				$form_array[$form->id] = $form->title;
+			}
+
+			return $form_array;
+		}
+	}
+
+	/**
 	 * Render an HTML5 date input meta field
 	 *
 	 * @param array $args
@@ -418,6 +393,8 @@ class GreaterMediaContestsMetaboxes {
 		 * json_decode() and json_encode() are used here to sanitize the JSON & keep out invalid values
 		 */
 		$form = json_encode( json_decode( urldecode( $_POST['contest_embedded_form'] ) ) );
+		// PHP's json_encode() may add quotes around the encoded string. Remove them.
+		$form = trim( $form, '"' );
 		update_post_meta( $post_id, 'embedded_form', $form );
 
 		// Update the form's "thank you" message
