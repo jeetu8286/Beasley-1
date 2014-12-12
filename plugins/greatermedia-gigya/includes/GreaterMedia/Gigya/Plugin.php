@@ -130,7 +130,10 @@ class Plugin {
 		$handlers[] = new Ajax\ListEntryTypesAjaxHandler();
 		$handlers[] = new Ajax\ListEntryFieldsAjaxHandler();
 		$handlers[] = new Ajax\ChangeGigyaSettingsAjaxHandler();
-		$handlers[] = new Ajax\SaveGigyaActionAjaxHandler();
+
+		if ( is_gigya_user_logged_in() ) {
+			$handlers[] = new Ajax\SaveGigyaActionAjaxHandler();
+		}
 
 		foreach ( $handlers as $handler ) {
 			$handler->register();

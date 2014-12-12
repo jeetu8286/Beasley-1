@@ -9,7 +9,7 @@ class SaveGigyaActionAjaxHandler extends AjaxHandler {
 	}
 
 	function is_public() {
-		return true;
+		return false;
 	}
 
 	function run( $params ) {

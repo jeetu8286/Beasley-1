@@ -158,8 +158,12 @@
 	};
 
 	window.save_gigya_action = function(action, user_id) {
+		if (!is_gigya_user_logged_in()) {
+			return false;
+		}
+
 		if (!user_id) {
-			user_id = 'guest';
+			user_id = 'logged_in_user';
 		}
 
 		var params = {

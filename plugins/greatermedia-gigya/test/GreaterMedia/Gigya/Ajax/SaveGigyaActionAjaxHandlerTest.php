@@ -29,8 +29,8 @@ class SaveGigyaActionAjaxHandlerTest extends \WP_UnitTestCase {
 		$this->assertEquals( 'save_gigya_action', $actual );
 	}
 
-	function test_it_is_public() {
-		$this->assertTrue( $this->handler->is_public() );
+	function test_it_is_not_public() {
+		$this->assertFalse( $this->handler->is_public() );
 	}
 
 	function test_it_will_not_save_action_if_not_logged_in_and_saving_as_logged_in_user() {
