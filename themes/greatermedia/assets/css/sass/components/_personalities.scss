@@ -25,8 +25,6 @@ category: Components - Shows
 
 .personality {
 	margin: 4em 0;
-	height: 12em;
-	overflow: hidden;
 	position: relative;
 	@include row();
 	// @include box-shadow(0, -9px, -5, rgba(255, 255, 255, 0.75), inset);
@@ -48,10 +46,14 @@ category: Components - Shows
 }
 
 .personality__meta {
+	overflow: hidden;
+	height: 8em;
 	@include span-columns(8 of 12);
 	@include omega;
 
 	@include bp(medium) {
+		height: 12em;
 		@include span-columns(9 of 12);
+		@include omega;
 	}
 }
