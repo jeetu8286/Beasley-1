@@ -69,6 +69,9 @@ class GMR_Show_Metaboxes {
 	 */
 	public function add_meta_boxes() {
 		add_meta_box( 'show_logo', 'Logo', array( $this, 'render_logo_meta_box' ), ShowsCPT::SHOW_CPT, 'side' );
+
+		add_meta_box( 'show_featured', 'Featured', array( $this, 'render_featured_meta_box' ), ShowsCPT::SHOW_CPT, 'advanced', 'high' );
+		add_meta_box( 'show_favorites', 'Favorites', array( $this, 'render_favorites_meta_box' ), ShowsCPT::SHOW_CPT, 'advanced', 'high' );
 	}
 
 	/**
@@ -174,6 +177,14 @@ class GMR_Show_Metaboxes {
 			echo '<a href="#" class="meta_box_upload_image_button button button-primary" rel="', $post->ID, '">Choose Image</a> ';
 			echo '<a href="#" class="meta_box_clear_image_button button">Remove Image</a>';
 		echo '</div>';
+	}
+
+	public function render_featured_meta_box( WP_Post $post ) {
+
+	}
+
+	public function render_favorites_meta_box( WP_Post $post ) {
+
 	}
 
 	/**
