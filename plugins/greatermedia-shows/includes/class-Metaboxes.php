@@ -189,10 +189,14 @@ class GMR_Show_Metaboxes {
 		$options = array(
 			'args' => array(
 				'post_type' => array( 'post', 'tribe_events' ),
+				'meta_key' => '_thumbnail_id',
 			),
 			'limit' => 3,
 		);
 
+		?>
+		<p>These items require featured images. If an item is not present, make sure a featured image is assigned.</p>
+		<?php
 		pf_render( 'gmr-featured-post-ids', $featured_posts, $options );
 	}
 
@@ -207,10 +211,14 @@ class GMR_Show_Metaboxes {
 		$options = array(
 			'args' => array(
 				'post_type' => array( 'post' ),
+				'meta_key' => '_thumbnail_id',
 			),
 			'limit' => 10,
 		);
 
+		?>
+		<p>These items require featured images. If an item is not present, make sure a featured image is assigned.</p>
+		<?php
 		pf_render( 'gmr-favorite-post-ids', $favorite_posts, $options );
 	}
 
