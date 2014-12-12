@@ -6,7 +6,7 @@
  */
 (function() {
 
-	var livePlayerFix, livePlayerInit, showSearch,
+	var showSearch,
 
 		body = document.querySelector( 'body' ),
 		html = document.querySelector( 'html'),
