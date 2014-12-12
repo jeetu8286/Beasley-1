@@ -45,14 +45,15 @@
 
 		<body <?php body_class(); ?>>
 			<div id="site-wrap">
-				<?php
+				<nav id="mobile-nav" class="mobile-nav">
+					<?php
 
 					$mobile_nav = array(
 						'theme_location'  => 'main-nav',
 						'menu'            => '',
-						'container'       => 'nav',
-						'container_class' => 'mobile-nav',
-						'container_id'    => 'mobile-nav',
+						'container'       => '',
+						'container_class' => '',
+						'container_id'    => '',
 						'menu_class'      => 'mobile-nav__list',
 						'menu_id'         => '',
 						'echo'            => true,
@@ -68,7 +69,8 @@
 
 					wp_nav_menu( $mobile_nav );
 
-				?>
+					do_action( 'gmr_social' ); ?>
+				</nav>
 				<div id="page-wrap" class="page-wrap">
 					<header id="header" class="header" role="banner">
 						<?php do_action( 'show_breaking_news_banner' ); ?>
