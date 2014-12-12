@@ -26,6 +26,17 @@ class GMP_CPT {
 		add_action( 'init', array( __CLASS__, 'podcast_cpt' ), 0 );
 		add_action( 'init', array( __CLASS__, 'episode_cpt' ), 0 );
 		add_filter( 'gmr_live_link_suggestion_post_types', array( __CLASS__, 'extend_live_link_suggestion_post_types' ) );
+		self::add_save_post_actions();
+	}
+
+
+	public static function add_save_post_actions() {
+		add_action( 'save_post_' . self::EPISODE_POST_TYPE, array( __CLASS__, 'save_post' ), 10, 2 );
+	}
+
+	public static function remove_save_post_actions() {
+		// Removes actions that might cause infinite loops
+		remove_action( 'save_post_' . self::EPISODE_POST_TYPE, array( __CLASS__, 'save_post' ), 10, 2 );
 	}
 
 	/**
@@ -125,9 +136,61 @@ class GMP_CPT {
 			'publicly_queryable'  => true,
 			'rewrite'             => $rewrite,
 			'capability_type'     => 'page',
+			'register_meta_box_cb' => array( __CLASS__, 'parent_metabox' ),
 		);
 		register_post_type( self::EPISODE_POST_TYPE, $args );
 
+	}
+
+	public static function parent_metabox( \WP_Post $post ) {
+		add_meta_box( 'episode-parent', 'Podcast', array( __CLASS__, 'render_parent_metabox' ), $post->post_type, 'side' );
+	}
+
+	public static function render_parent_metabox( \WP_Post $post ) {
+		$podcast_args = array(
+			'post_type' => self::PODCAST_POST_TYPE,
+			'posts_per_page' => 100,
+			'paged' => 0,
+		);
+
+		wp_nonce_field( 'save_podcast_parent', 'podcast_parent_nonce' );
+
+		?>
+		<select name="podcast-episode-parent" id="podcast-episode-parent">
+		<option value="0">--Select a Podcast--</option>
+		<?php
+
+			do {
+				$podcast_args['paged']++;
+				$podcast_query = new WP_Query( $podcast_args );
+				while( $podcast_query->have_posts() ) {
+					$podcast = $podcast_query->next_post();
+
+					?><option value="<?php echo intval( $podcast->ID ); ?>" <?php selected( $podcast->ID, $post->post_parent ); ?>><?php echo esc_html( $podcast->post_title ); ?></option><?php
+				}
+			} while ( $podcast_args['paged'] < $podcast_query->max_num_pages );
+
+		?></select><?php
+
+		wp_dropdown_pages( array( 'post_type' => self::PODCAST_POST_TYPE ) );
+	}
+
+	public static function save_post( $post_id, $post ) {
+		if ( ! isset( $_POST['podcast_parent_nonce'] ) || ! wp_verify_nonce( $_POST['podcast_parent_nonce'], 'save_podcast_parent' ) ) {
+			return;
+		}
+
+		if ( ! isset( $_POST['podcast-episode-parent'] ) ) {
+			return;
+		}
+
+		$parent_id = intval( $_POST['podcast-episode-parent'] );
+
+		$post->post_parent = $parent_id;
+
+		self::remove_save_post_actions();
+		wp_update_post( $post );
+		self::add_save_post_actions();
 	}
 
 	/**
