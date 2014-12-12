@@ -22,6 +22,7 @@ class GMR_Show_Metaboxes {
 
 		add_action( 'personal_options_update', array( $this, 'admin_save_user_meta_fields' ), 10, 1 );
 		add_action( 'edit_user_profile_update', array( $this, 'admin_save_user_meta_fields' ), 10, 1 );
+		add_action( 'admin_notices', array( $this, 'admin_notices' ), 15 );
 	}
 
 	/**
@@ -36,17 +37,18 @@ class GMR_Show_Metaboxes {
 		$post_types = ShowsCPT::get_supported_post_types();
 
 		if ( in_array( $pagenow, array( 'post-new.php', 'post.php' ) ) && $typenow == ShowsCPT::SHOW_CPT ) {
-			wp_enqueue_script( 'meta_box', GMEDIA_SHOWS_URL . "assets/js/greatermedia_shows{$postfix}.js", array( 'jquery' ), GMEDIA_SHOWS_VERSION, true );
+			wp_enqueue_script( 'meta_box', GMEDIA_SHOWS_URL . "assets/js/greatermedia_shows{$postfix}.js", array( 'jquery', 'jquery-ui-datepicker' ), GMEDIA_SHOWS_VERSION, true );
 			wp_enqueue_style( 'meta_box', GMEDIA_SHOWS_URL . "assets/css/greatermedia_shows{$postfix}.css", array(), GMEDIA_SHOWS_VERSION );
 		}
 
 		// Add support for auto-selecting a user's show ONLY when creting a new post.
 		if ( in_array( get_post_type(), (array) $post_types ) && 'post-new.php' === $pagenow ) {
 			$term_ids = array();
-			$show_taxonomy_id = get_user_option( 'show_taxonomy_id', get_current_user_id() );
+			$show_tt_id = get_user_option( 'show_tt_id', get_current_user_id() );
+			$current_show_term = get_term_by( 'term_taxonomy_id', $show_tt_id, ShowsCPT::SHOW_TAXONOMY );
 
-			if ( false !== $show_taxonomy_id ) {
-				$term_ids[] = $show_taxonomy_id;
+			if ( false !== $current_show_term ) {
+				$term_ids[] = $current_show_term->term_id;
 			}
 
 			wp_register_script( 'admin_show_selector', GMEDIA_SHOWS_URL . "assets/js/admin_show_selector{$postfix}.js", array( 'jquery'), GMEDIA_SHOWS_VERSION, true );
@@ -67,6 +69,9 @@ class GMR_Show_Metaboxes {
 	 */
 	public function add_meta_boxes() {
 		add_meta_box( 'show_logo', 'Logo', array( $this, 'render_logo_meta_box' ), ShowsCPT::SHOW_CPT, 'side' );
+
+		add_meta_box( 'show_featured', 'Featured', array( $this, 'render_featured_meta_box' ), ShowsCPT::SHOW_CPT, 'advanced', 'high' );
+		add_meta_box( 'show_favorites', 'Favorites', array( $this, 'render_favorites_meta_box' ), ShowsCPT::SHOW_CPT, 'advanced', 'high' );
 	}
 
 	/**
@@ -83,7 +88,10 @@ class GMR_Show_Metaboxes {
 
 		wp_nonce_field( 'gmr_show', 'show_nonce', false );
 
-		$has_homepage = filter_var( get_post_meta( get_the_ID(), 'show_homepage', true ), FILTER_VALIDATE_BOOLEAN );
+		$has_homepage = \GreaterMedia\Shows\supports_homepage( get_the_ID() );
+		$supports_galleries = \GreaterMedia\Shows\supports_galleries( get_the_ID() );
+		$supports_podcasts = \GreaterMedia\Shows\supports_podcasts( get_the_ID() );
+		$supports_videos = \GreaterMedia\Shows\supports_videos( get_the_ID() );
 
 		?><div id="show-homepage" class="misc-pub-section misc-pub-gmr mis-pub-radio">
 			Has home page:
@@ -99,7 +107,56 @@ class GMR_Show_Metaboxes {
 					<a href="#" class="cancel-radio hide-if-no-js button-cancel"><?php esc_html_e( 'Cancel' ) ?></a>
 				</p>
 			</div>
-		</div><?php
+		</div>
+
+		<div id="show-homepage-supports-galleries" class="misc-pub-section misc-pub-gmr mis-pub-radio">
+			Supports Galleries:
+			<span class="post-pub-section-value radio-value"><?php echo $supports_galleries ? 'Yes' : 'No'; ?></span>
+			<a href="#" class="edit-radio hide-if-no-js" style="display: inline;"><span aria-hidden="true">Edit</span></a>
+
+			<div class="radio-select hide-if-js">
+				<label for="show-homepage-supports-galleries-no"><input type="radio" name="show_homepage_galleries" id="show-homepage-supports-galleries-no" value="0"<?php checked( $supports_galleries, false ) ?>> No</label><br>
+				<label for="show-homepage-supports-galleries-yes"><input type="radio" name="show_homepage_galleries" id="show-homepage-supports-galleries-yes" value="1"<?php checked( $supports_galleries, true ) ?>> Yes</label><br>
+
+				<p>
+					<a href="#" class="save-radio hide-if-no-js button"><?php esc_html_e( 'OK' ) ?></a>
+					<a href="#" class="cancel-radio hide-if-no-js button-cancel"><?php esc_html_e( 'Cancel' ) ?></a>
+				</p>
+			</div>
+		</div>
+
+		<div id="show-homepage-supports-podcasts" class="misc-pub-section misc-pub-gmr mis-pub-radio">
+			Supports Podcasts:
+			<span class="post-pub-section-value radio-value"><?php echo $supports_podcasts ? 'Yes' : 'No'; ?></span>
+			<a href="#" class="edit-radio hide-if-no-js" style="display: inline;"><span aria-hidden="true">Edit</span></a>
+
+			<div class="radio-select hide-if-js">
+				<label for="show-homepage-supports-podcasts-no"><input type="radio" name="show_homepage_podcasts" id="show-homepage-supports-podcasts-no" value="0"<?php checked( $supports_podcasts, false ) ?>> No</label><br>
+				<label for="show-homepage-supports-podcasts-yes"><input type="radio" name="show_homepage_podcasts" id="show-homepage-supports-podcasts-yes" value="1"<?php checked( $supports_podcasts, true ) ?>> Yes</label><br>
+
+				<p>
+					<a href="#" class="save-radio hide-if-no-js button"><?php esc_html_e( 'OK' ) ?></a>
+					<a href="#" class="cancel-radio hide-if-no-js button-cancel"><?php esc_html_e( 'Cancel' ) ?></a>
+				</p>
+			</div>
+		</div>
+
+		<div id="show-homepage-supports-videos" class="misc-pub-section misc-pub-gmr mis-pub-radio">
+			Supports Videos:
+			<span class="post-pub-section-value radio-value"><?php echo $supports_videos ? 'Yes' : 'No'; ?></span>
+			<a href="#" class="edit-radio hide-if-no-js" style="display: inline;"><span aria-hidden="true">Edit</span></a>
+
+			<div class="radio-select hide-if-js">
+				<label for="show-homepage-supports-videos-no"><input type="radio" name="show_homepage_videos" id="show-homepage-supports-videos-no" value="0"<?php checked( $supports_videos, false ) ?>> No</label><br>
+				<label for="show-homepage-supports-videos-yes"><input type="radio" name="show_homepage_videos" id="show-homepage-supports-videos-yes" value="1"<?php checked( $supports_videos, true ) ?>> Yes</label><br>
+
+				<p>
+					<a href="#" class="save-radio hide-if-no-js button"><?php esc_html_e( 'OK' ) ?></a>
+					<a href="#" class="cancel-radio hide-if-no-js button-cancel"><?php esc_html_e( 'Cancel' ) ?></a>
+				</p>
+			</div>
+		</div>
+		<?php
 	}
 
 	/**
@@ -122,6 +179,49 @@ class GMR_Show_Metaboxes {
 		echo '</div>';
 	}
 
+	public function render_featured_meta_box( WP_Post $post ) {
+		if ( ! function_exists( 'pf_render' ) ) {
+			?><p>Please install the <a href="http://github.com/10up/post-finder">"post-finder"</a> plugin.</p><?php
+			return;
+		}
+		$featured_posts = get_post_meta( $post->ID, 'gmr_featured_post_ids', true );
+
+		$options = array(
+			'args' => array(
+				'post_type' => array( 'post', 'tribe_events' ),
+				'meta_key' => '_thumbnail_id',
+			),
+			'limit' => 3,
+		);
+
+		?>
+		<p>These items require featured images. If an item is not present, make sure a featured image is assigned.</p>
+		<?php
+		pf_render( 'gmr-featured-post-ids', $featured_posts, $options );
+	}
+
+	public function render_favorites_meta_box( WP_Post $post ) {
+		if ( ! function_exists( 'pf_render' ) ) {
+			?><p>Please install the <a href="http://github.com/10up/post-finder">"post-finder"</a> plugin.</p><?php
+			return;
+		}
+
+		$favorite_posts = get_post_meta( $post->ID, 'gmr_favorite_post_ids', true );
+
+		$options = array(
+			'args' => array(
+				'post_type' => array( 'post' ),
+				'meta_key' => '_thumbnail_id',
+			),
+			'limit' => 10,
+		);
+
+		?>
+		<p>These items require featured images. If an item is not present, make sure a featured image is assigned.</p>
+		<?php
+		pf_render( 'gmr-favorite-post-ids', $favorite_posts, $options );
+	}
+
 	/**
 	 * Saves the captured data.
 	 *
@@ -136,8 +236,68 @@ class GMR_Show_Metaboxes {
 			return;
 		}
 
-		update_post_meta( $post_id, 'show_homepage', filter_input( INPUT_POST, 'show_homepage', FILTER_VALIDATE_BOOLEAN ) );
+		$homepage_support = filter_input( INPUT_POST, 'show_homepage', FILTER_VALIDATE_BOOLEAN );
+		$gallery_support = filter_input( INPUT_POST, 'show_homepage_galleries', FILTER_VALIDATE_BOOLEAN );
+		$podcast_support = filter_input( INPUT_POST, 'show_homepage_podcasts', FILTER_VALIDATE_BOOLEAN );
+		$video_support = filter_input( INPUT_POST, 'show_homepage_videos', FILTER_VALIDATE_BOOLEAN );
+
+		update_post_meta( $post_id, 'show_homepage', $homepage_support );
+
+		if ( $homepage_support ) {
+			update_post_meta( $post_id, 'show_homepage_galleries', $gallery_support );
+			update_post_meta( $post_id, 'show_homepage_podcasts', $podcast_support );
+			update_post_meta( $post_id, 'show_homepage_videos', $video_support );
+		} else {
+			// Impossible to support these if homepage support is turned off
+			update_post_meta( $post_id, 'show_homepage_galleries', false );
+			update_post_meta( $post_id, 'show_homepage_podcasts', false );
+			update_post_meta( $post_id, 'show_homepage_videos', false );
+
+			if ( $gallery_support || $podcast_support || $video_support ) {
+				add_filter( 'redirect_post_location', array( $this, 'add_homepage_validation_error' ), 99 );
+			}
+		}
+
 		update_post_meta( $post_id, 'logo_image', filter_input( INPUT_POST, 'logo_image', FILTER_VALIDATE_INT ) );
+
+		if ( isset( $_POST['gmr-featured-post-ids'] ) ) {
+			$featured_ids = implode( ',', array_map( 'intval', explode( ',', $_POST['gmr-featured-post-ids'] ) ) );
+			update_post_meta( $post_id, 'gmr_featured_post_ids', $featured_ids );
+		}
+
+		if ( isset( $_POST['gmr-favorite-post-ids'] ) ) {
+			$favorite_ids = implode( ',', array_map( 'intval', explode( ',', $_POST['gmr-favorite-post-ids'] ) ) );
+			update_post_meta( $post_id, 'gmr_favorite_post_ids', $favorite_ids );
+		}
+	}
+
+	/**
+	 * Adds a query var that specifies that we had an error saving all the homepage support so we can trigger an admin notice
+	 *
+	 * Happens when we say there is no homepage support, but try to add support for albums, podcasts, or videos at the same time.
+	 *
+	 * @param $location
+	 *
+	 * @return string
+	 */
+	public function add_homepage_validation_error( $location ) {
+		remove_filter( 'redirect_post_location', array( $this, 'add_homepage_validation_error' ) );
+		return add_query_arg( array( 'gmi-show-message' => 1), $location );
+	}
+
+	/**
+	 * Renders the message that there was an error saving homepage support
+	 */
+	public function admin_notices() {
+		if ( ! isset( $_GET['gmi-show-message'] ) ) {
+			return;
+		}
+
+		?>
+		<div class="error">
+			<p>You must enable show homepage support to support Galleries, Podcasts, or Videos.</p>
+		</div>
+		<?php
 	}
 
 	/**
@@ -147,7 +307,9 @@ class GMR_Show_Metaboxes {
 	 */
 	public function admin_user_meta_fields( $user ) {
 		$terms = get_terms( ShowsCPT::SHOW_TAXONOMY, array( 'hide_empty' => false ) );
-		$current_show = get_user_option( 'show_taxonomy_id', intval( $user->ID ) );
+		$current_show_tt_id = get_user_option( 'show_tt_id', intval( $user->ID ) );
+		$current_show_term = get_term_by( 'term_taxonomy_id', $current_show_tt_id, ShowsCPT::SHOW_TAXONOMY );
+		$current_show = $current_show_term ? $current_show_term->term_id : false;
 
 		?><h3><?php esc_html_e( 'Show Info', 'greatermedia' ); ?></h3>
 
@@ -193,11 +355,14 @@ class GMR_Show_Metaboxes {
 		if ( 0 < $user_show ) {
 			$term = get_term_by( 'id', $user_show, ShowsCPT::SHOW_TAXONOMY );
 			if ( false !== $term ) {
-				update_user_option( $user_id, 'show_taxonomy_id', $term->term_id, false );
+				update_user_option( $user_id, 'show_tt_id', $term->term_taxonomy_id, false );
+				update_user_option( $user_id, 'show_tt_id_' . $term->term_taxonomy_id, true, false ); // Adds a version of the key with the show in the key, so that lookups are quicker
 			}
 		} else {
 			// Remove the show association
-			delete_user_option( $user_id, 'show_taxonomy_id', false );
+			$old_tt_id = get_user_option( 'show_tt_id', $user_id );
+			delete_user_option( $user_id, 'show_tt_id', false );
+			delete_user_option( $user_id, 'show_tt_id_' . intval( $old_tt_id ) );
 		}
 	}
 

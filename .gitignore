@@ -1,3 +1,7 @@
+!/.gitignore
+.sass-cache/
+node_modules
+*.DS_Store
 uploads/
 plugins/wp-multi-network/
 plugins/wordpress-importer/
@@ -17,6 +21,7 @@ plugins/ooyala-video-browser/
 plugins/simple-page-ordering/
 plugins/tag-pages/
 themes/index.php
+themes/twentyfourteen
 upgrade/
 /index.php
 .idea
@@ -29,3 +34,10 @@ atlassian-ide-plugin.xml
 mu-plugins/test-data-store.php
 **/.sass-cache/**
 /plugins/json-rest-api/
+/plugins/duplicate-post
+/plugins/rewrite-rules-inspector
+/plugins/simple-local-avatars
+/plugins/wordpress-seo
+plugins/ooyala-video-browser/
+plugins/simple-page-ordering/
+plugins/tag-pages/

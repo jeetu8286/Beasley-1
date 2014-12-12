@@ -57,6 +57,7 @@ class BlogData {
 				$defaults[ $label ] = $terms;
 
 			}
+
 			$imported_post_ids = array();
 			foreach ( $result as $single_post ) {
 				array_push( $imported_post_ids,
@@ -79,18 +80,25 @@ class BlogData {
 	/**
 	 * Query content site and return full query result
 	 *
-	 * @param int    $subscription_id
-	 * @param string $post_type
+	 * @param int $subscription_id
+	 * @param string $start_date
 	 *
 	 * @return array WP_Post objects
 	 */
-	public static function QueryContentSite( $subscription_id, $post_type = 'post' ) {
+	public static function QueryContentSite( $subscription_id , $start_date = '' ) {
 		global $switched;
 
 		$result = array();
 
-		$last_queried = get_option( 'syndication_last_performed', 0);
-		$last_queried = date('Y-m-d H:i:s', $last_queried );
+		if( $start_date == '' ) {
+			$last_queried = get_option( 'syndication_last_performed', 0);
+			$last_queried = date( 'Y-m-d H:i:s', $last_queried );
+		} else {
+			$last_queried = $start_date;
+		}
+
+		$post_type = get_post_meta( $subscription_id, 'subscription_type', true );
+		$post_type = sanitize_text_field( $post_type );
 
 		// query args
 		$args = array(
@@ -106,8 +114,6 @@ class BlogData {
 
 		$enabled_taxonomy = get_post_meta( $subscription_id, 'subscription_enabled_filter', true );
 		$enabled_taxonomy = sanitize_text_field( $enabled_taxonomy );
-
-		//$args['tax_query']['relation'] = 'AND';
 
 		// get filters to query content site
 		$subscription_filter = get_post_meta( $subscription_id, 'subscription_filter_terms-' . $enabled_taxonomy, true );
@@ -140,16 +146,6 @@ class BlogData {
 		}
 
 		$page = 1;
-		if( $wp_custom_query->max_num_pages > 1 ) {
-			while( $page < $wp_custom_query->max_num_pages ) {
-				$args['offset'] = $page * 500;
-				$wp_custom_query = new WP_Query( $args );
-				foreach( $wp_custom_query->posts as $post ) {
-					$posts[] = $post;
-				}
-				$page++;
-			}
-		}
 
 		if( $wp_custom_query->max_num_pages > 1 ){
 			while( $page < $wp_custom_query->max_num_pages ) {
@@ -222,6 +218,7 @@ class BlogData {
 			'meta_key'     => 'syndication_old_name',
 			'meta_value'   => $post_name,
 			'post_status' => 'any',
+			'post_type' => $post_type
 		);
 
 		$existing = get_posts( $meta_query_args );
@@ -233,7 +230,6 @@ class BlogData {
 		if( !empty( $existing ) ) {
 			$post_id = intval( $existing[0]->ID );
 			$hash_value = get_post_meta( $post_id, 'syndication_import', true );
-
 			if( $hash_value != $post_hash ) {
 				// post has been updated, override existing one
 				$args['ID'] = $post_id;
