@@ -54,11 +54,11 @@ category: Base
 ```
 
 */
-.featured__content--list, .footer__nav--list {
+.entry__event--details, .featured__content--list, .footer__nav--list {
   padding: 0;
   margin: 0; }
 
-.featured__content--item, .footer__nav--list .menu-item, .live-player__stream--item {
+.entry__event--item, .featured__content--item, .footer__nav--list .menu-item, .live-player__stream--item {
   list-style: none;
   padding: 0;
   margin: 0; }
@@ -468,7 +468,7 @@ category: Base - Typography
   src: url("../fonts/icon-font/gmr-icons.eot?#iefixawb6kj") format("embedded-opentype"), url("../fonts/icon-font/gmr-icons.woff?awb6kj") format("woff"), url("../fonts/icon-font/gmr-icons.ttf?awb6kj") format("truetype"), url("../fonts/icon-font/gmr-icons.svg?awb6kj#gmr-icons") format("svg");
   font-weight: normal;
   font-style: normal; }
-[class^="icon-"], [class*=" icon-"], .header__search--btn:before, .live-link__song:before, .live-link__type--audio:before, .live-link__type--gallery:before, .live-link__type--image:before, .live-link__type--link:before, .live-link__type--standard:before, .live-link__type--video:before, .social__link--facebook:before, .social__link--twitter:before, .social__link--google-plus:before, .social__link--youtube:before, .social__link--instagram:before {
+[class^="icon-"], [class*=" icon-"], .entry__thumbnail--video:before, .entry__thumbnail--events:before, .entry__thumbnail--audio:before, .header__search--btn:before, .live-link__song:before, .live-link__type--audio:before, .live-link__type--gallery:before, .live-link__type--image:before, .live-link__type--link:before, .live-link__type--standard:before, .live-link__type--video:before, .social__link--facebook:before, .social__link--twitter:before, .social__link--google-plus:before, .social__link--youtube:before, .social__link--instagram:before {
   font-family: 'gmr-icons';
   speak: none;
   font-style: normal;
@@ -592,7 +592,7 @@ img {
       max-width: 100%;
       margin-left: auto;
       margin-right: auto;
-      padding-right: 14em; }
+      padding-right: 225px; }
       .container:after {
         content: "";
         display: table;
@@ -607,7 +607,7 @@ img {
         display: table;
         clear: both; } }
 
-.main, .featured, .highlights {
+.main, .home__featured, .home__highlights {
   float: left;
   width: 100%;
   margin: 0;
@@ -652,6 +652,15 @@ img {
       margin-left: 8.5298%; }
       .content:last-child {
         margin-right: 0; } }
+  @media screen and (min-width: 1400px) {
+    .content {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 82.94039%;
+      margin-left: 8.5298%; }
+      .content:last-child {
+        margin-right: 0; } }
 
 .live-player {
   position: fixed;
@@ -669,7 +678,7 @@ img {
       bottom: auto;
       right: 0;
       left: auto;
-      width: 14em;
+      width: 225px;
       height: 100%;
       -webkit-box-sizing: border-box;
       -moz-box-sizing: border-box;
@@ -683,6 +692,13 @@ img {
 @media screen and (min-width: 782px) {
   .logged-in .live-player {
     top: 270px; } }
+
+.row {
+  display: block; }
+  .row:after {
+    content: "";
+    display: table;
+    clear: both; }
 
 html {
   width: 100%;
@@ -1036,6 +1052,69 @@ blockquote p {
   font-weight: lighter;
   color: #929497; }
 
+.entry__thumbnail {
+  position: relative;
+  float: left;
+  width: 100%;
+  margin-bottom: 34px; }
+  @media screen and (min-width: 768px) {
+    .entry__thumbnail {
+      width: 35%;
+      margin-bottom: 0; } }
+
+.entry__thumbnail--video:before, .entry__thumbnail--events:before, .entry__thumbnail--audio:before {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 42px;
+  height: 42px;
+  font-size: 2.625em;
+  color: #ffffff; }
+
+.entry__thumbnail--video:before {
+  content: "\e613"; }
+
+.entry__thumbnail--events:before {
+  content: "\e614"; }
+
+.entry__thumbnail--audio:before {
+  content: "\e615"; }
+
+@media screen and (min-width: 768px) {
+  .promoted .entry__thumbnail {
+    width: 100%; } }
+
+.entry__meta {
+  position: relative;
+  float: left;
+  width: 100%;
+  text-align: center; }
+  @media screen and (min-width: 768px) {
+    .entry__meta {
+      width: 60%;
+      margin-right: 5%;
+      text-align: left; } }
+
+.entry__meta--fullwidth {
+  position: relative;
+  float: left;
+  width: 100%;
+  text-align: left; }
+
+@media screen and (min-width: 768px) {
+  .promoted .entry__meta {
+    width: 100%;
+    margin-right: 0; } }
+
+.entry__event--item {
+  list-style: none;
+  display: inline-block;
+  margin-right: 44px;
+  font-weight: bold; }
+
+.entry__event--item:last-child {
+  margin-right: 0; }
+
 .entry--video__thumbnail, .entry--gallery__thumbnail, .entry--link__thumbnail {
   position: relative;
   float: left;
@@ -1067,6 +1146,16 @@ blockquote p {
       width: 35.454545454545%;
       margin-bottom: 0; } }
 
+.entry__thumbnail {
+  position: relative;
+  float: left;
+  width: 100%;
+  margin-bottom: 34px; }
+  @media screen and (min-width: 768px) {
+    .entry__thumbnail {
+      width: 35%;
+      margin-bottom: 0; } }
+
 .entry--standard__meta {
   position: relative;
   float: left;
@@ -1074,8 +1163,8 @@ blockquote p {
   text-align: center; }
   @media screen and (min-width: 768px) {
     .entry--standard__meta {
-      width: 60.909090909091%;
-      margin-right: 3.636363636364%;
+      width: 60%;
+      margin-right: 5%;
       text-align: left; } }
 
 .entry--audio__thumbnail {
@@ -1097,74 +1186,132 @@ blockquote p {
     .entry--audio__meta {
       width: 75.113636363636%; } }
 
-.featured {
+/*doc
+---
+title: Featured Articles
+name: featured-articles
+category: Components - Front Page
+---
+
+Curated posts for Featured Articles
+
+```html_example
+<section id="featured" class="home__featured">
+		<div class="featured__article">
+			<div class="featured__article--image">
+				<img src="http://placehold.it/2800x1000&text=featured+image">
+			</div>
+			<div class="featured__article--content">
+				<div class="featured__article--heading">
+					<h3 class="featured__article--subtitle">Artist of the Month</h3>
+					<h2 class="featured__article--title">Minshara</h2>
+				</div>
+				<div class="featured__article--bio">
+					Min•sha•ra (min SHä rə) 1. adj. the classification for a planet capable of supporting humanoid life; 2. n. electronic pop rock band from Harrisburg / Philadelphia, Pennsylvania From The Viper Room in LA to Webster Hall in NYC, Minshara has been spreading infectious pop melodies, dance grooves, and rock
+				</div>
+			</div>
+		</div>
+		<div class="featured__content">
+			<div class="featured__content--block">
+				<div class="featured__content--image">
+					<img src="http://placehold.it/400x400&text=featured+image">
+				</div>
+				<div class="featured__content--meta">
+					<h2 class="featured__content--title">MMR Rocks the Flyers</h2>
+					<ul class="featured__content--list">
+						<li class="featured__content--item">MMR Rocks the Flyers</li>
+						<li class="featured__content--item">Flyers All Access</li>
+					</ul>
+				</div>
+			</div>
+			<div class="featured__content--block">
+				<div class="featured__content--image">
+					<img src="http://placehold.it/400x400&text=featured+image">
+				</div>
+				<div class="featured__content--meta">
+					<h2 class="featured__content--title">Hitch a Ride with Pierre ...and Minerva</h2>
+					<div class="featured__content--link">
+						<a href="#" class="featured__content--btn">Enter To Win</a>
+					</div>
+				</div>
+			</div>
+			<div class="featured__content--block">
+				<div class="featured__content--image">
+					<img src="http://placehold.it/400x400&text=featured+image">
+				</div>
+				<div class="featured__content--meta">
+					<h2 class="featured__content--title">Preston and Steve</h2>
+					<ul class="featured__content--list">
+						<li class="featured__content--item">Daily Rush</li>
+						<li class="featured__content--item">Flyers All Access</li>
+						<li class="featured__content--item">Studio Guests</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+</section>
+```
+*/
+.home__featured {
   position: relative;
-  padding: 48px 0;
+  padding: 48px;
   background: url(../../images/featured-bg.png) repeat center center #58595b;
   background-size: auto 40%; }
 
-.featured .container {
-  width: 87.5%; }
-  @media screen and (min-width: 480px) {
-    .featured .container {
-      width: 88.333333333333%; } }
-  @media screen and (min-width: 1024px) {
-    .featured .container {
-      width: 85.920577617329%; } }
-  @media screen and (min-width: 1400px) {
-    .featured .container {
-      width: 92.08770257388%; } }
+.featured__article, .featured__content {
+  padding-bottom: 34px;
+  display: block; }
+  .featured__article:after, .featured__content:after {
+    content: "";
+    display: table;
+    clear: both; }
 
-.featured__artist, .featured__content {
-  width: 100%; }
-
-.featured__artist {
-  padding-bottom: 34px; }
-
-.featured__artist--image {
+.featured__article--image {
   width: 100%;
   height: 100px;
   overflow: hidden;
   background-color: #58595b; }
   @media screen and (min-width: 480px) {
-    .featured__artist--image {
+    .featured__article--image {
       height: 150px; } }
   @media screen and (min-width: 1024px) {
-    .featured__artist--image {
+    .featured__article--image {
       height: 256px; } }
   @media screen and (min-width: 1400px) {
-    .featured__artist--image {
+    .featured__article--image {
       height: 343px; } }
 
-.featured__artist--content {
+.featured__article--content {
   width: 100%;
   padding: 15px 3.928571428572%;
   overflow: auto;
-  background-color: #270e10;
-  color: #d0d2d3; }
+  background: #c7c7c7; }
   @media screen and (min-width: 480px) {
-    .featured__artist--content {
+    .featured__article--content {
       padding: 15px 4.941176470588%; } }
   @media screen and (min-width: 1024px) {
-    .featured__artist--content {
+    .featured__article--content {
       padding: 34px 3.921568627451%; } }
   @media screen and (min-width: 1400px) {
-    .featured__artist--content {
+    .featured__article--content {
       padding: 34px 2.898550724638%; } }
+  .home__featured .featured__article--content {
+    background-color: #270e10;
+    color: #d0d2d3; }
 
-.featured__artist--heading {
+.featured__article--heading {
   float: left;
   width: 100%; }
   @media screen and (min-width: 1024px) {
-    .featured__artist--heading {
+    .featured__article--heading {
       width: 29.787234042553%;
       margin-right: 1.519756838906%; } }
   @media screen and (min-width: 1400px) {
-    .featured__artist--heading {
+    .featured__article--heading {
       width: 21.538461538462%;
       margin-right: 1.098901098901%; } }
 
-.featured__artist--title {
+.featured__article--title {
   margin-top: 0;
   margin-bottom: 10px;
   line-height: 1;
@@ -1172,23 +1319,23 @@ blockquote p {
   font-size: ms(1);
   font-weight: normal; }
 
-.featured__artist--subtitle {
+.featured__article--subtitle {
   margin: 0;
   line-height: 1;
   font-size: ms(7);
   color: #ffffff; }
 
-.featured__artist--bio {
+.featured__article--bio {
   display: none; }
   @media screen and (min-width: 1024px) {
-    .featured__artist--bio {
+    .featured__article--bio {
       display: block;
       float: left;
       width: 68.693009118541%;
       font-size: ms(-1);
       line-height: 1.5; } }
   @media screen and (min-width: 1400px) {
-    .featured__artist--bio {
+    .featured__article--bio {
       width: 77.362637362637%; } }
 
 .featured__content--block {
@@ -1197,7 +1344,7 @@ blockquote p {
   height: 90px;
   margin-bottom: 27px;
   overflow: hidden;
-  background-color: #270e10; }
+  background: #c7c7c7; }
   @media screen and (min-width: 480px) {
     .featured__content--block {
       width: 100%;
@@ -1205,64 +1352,53 @@ blockquote p {
       margin-bottom: 25px; } }
   @media screen and (min-width: 1024px) {
     .featured__content--block {
-      width: 31.055900621118%;
-      height: 280px;
-      margin-right: 3.416149068323%;
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 31.76157%;
+      height: 100px;
       margin-bottom: 0;
-      overflow: visible; } }
+      overflow: visible; }
+      .featured__content--block:last-child {
+        margin-right: 0; } }
   @media screen and (min-width: 1400px) {
     .featured__content--block {
       height: 106px; } }
+  .home__featured .featured__content--block {
+    background-color: #270e10;
+    color: #d0d2d3; }
 
 .featured__content--block:last-of-type {
-  margin: 0; }
+  margin-right: 0; }
 
 .featured__content--image {
   float: left;
-  width: 32.142857142857%;
-  height: 90px; }
-  @media screen and (min-width: 480px) {
-    .featured__content--image {
-      width: 33.411764705882%;
-      height: 95px; } }
-  @media screen and (min-width: 1024px) {
-    .featured__content--image {
-      width: 100%;
-      height: 138px;
-      overflow: hidden; } }
-  @media screen and (min-width: 1400px) {
-    .featured__content--image {
-      width: 35.570469798658%;
-      height: 106px; } }
+  display: block;
+  margin-right: 2.35765%;
+  width: 31.76157%;
+  height: 100%;
+  overflow: hidden; }
+  .featured__content--image:last-child {
+    margin-right: 0; }
 
 .featured__content--image img {
-  width: 100%; }
-  @media screen and (min-width: 1400px) {
-    .featured__content--image img {
-      max-width: 100%; } }
+  height: 100%;
+  width: auto;
+  max-width: none; }
 
 .featured__content--meta {
-  float: left;
-  width: 67.857142857143%;
-  padding: 14px 3.571428571429% 14px 5.357142857143%;
   font-size: ms(-2);
   font-weight: lighter;
-  color: #a6a8ab; }
-  @media screen and (min-width: 480px) {
-    .featured__content--meta {
-      width: 66.588235294118%;
-      padding: 15px 2.352941176471% 15px 4.941176470588%;
-      font-size: ms(-1); } }
-  @media screen and (min-width: 1024px) {
-    .featured__content--meta {
-      width: 100%;
-      height: 142px;
-      padding: 28px 10.280373831776% 15px 10.280373831776%; } }
-  @media screen and (min-width: 1400px) {
-    .featured__content--meta {
-      width: 64.429530201342%;
-      height: 100%;
-      padding: 13px 3.355704697987% 13px 10.06711409396%; } }
+  padding: 1em;
+  float: left;
+  display: block;
+  margin-right: 2.35765%;
+  width: 65.88078%;
+  margin-right: 0; }
+  .featured__content--meta:last-child {
+    margin-right: 0; }
+  .home__featured .featured__content--meta {
+    color: #a6a8ab; }
 
 .featured__content--title {
   margin-top: 0;
@@ -1326,21 +1462,154 @@ blockquote p {
   .featured__content--btn:last-of-type {
     margin-right: 0; }
 
-.highlights {
-  padding: 33px 0;
+/*doc
+---
+title: Highlights
+name: highlights
+category: Components - Front Page
+---
+
+Community Highlights and Events
+
+```html_example
+	<section class="home__highlights">
+
+			<div class="highlights__col">
+
+				<div class="highlights__community">
+
+					<h2 class="highlights__heading">93.3 WMMR Community Highlights<span class="highlights__heading--span">YouRock</span></h2>
+
+					<div class="highlights__community--item">
+
+						<div class="highlights__community--thumb">
+							<img src="http://placehold.it/356x356&text=image">
+						</div>
+
+						<h3 class="highlights__community--title">title</h3>
+
+					</div>
+
+					<div class="highlights__community--item">
+
+						<div class="highlights__community--thumb">
+							<img src="http://placehold.it/356x356&text=image">
+						</div>
+
+						<h3 class="highlights__community--title">title</h3>
+
+					</div>
+
+					<div class="highlights__community--item">
+
+						<div class="highlights__community--thumb">
+							<img src="http://placehold.it/356x356&text=image">
+						</div>
+
+						<h3 class="highlights__community--title">title</h3>
+
+					</div>
+
+				</div>
+
+				<div class="highlights__events">
+
+					<h2 class="highlights__heading">Upcoming<span class="highlights__heading--span">Events</span></h2>
+
+					<div class="highlights__event--item">
+
+						<div class="highlights__event--thumb">
+							<img src="http://placehold.it/156x156&text=image">
+						</div>
+
+						<div class="highlights__event--meta">
+							<h3 class="highlights__event--title">Preston & Steve’s Camp Out For Hunger 2014</h3>
+							<time datetime="" class="highlights__event--date">Dec 1 - Dec 5</time>
+						</div>
+
+					</div>
+
+					<div class="highlights__event--item">
+
+						<div class="highlights__event--thumb">
+							<img src="http://placehold.it/156x156&text=image">
+						</div>
+
+						<div class="highlights__event--meta">
+							<h3 class="highlights__event--title">A.B.A.T.E. Motorcycle Toy Run For The Kids!</h3>
+							<time datetime="" class="highlights__event--date">Nov 2</time>
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+
+	</section>
+```
+*/
+.home__highlights {
+  padding-top: 33px;
+  padding-bottom: 33px;
   background-color: #f1f1f2; }
   @media screen and (min-width: 480px) {
-    .highlights {
+    .home__highlights {
       padding-top: 36px;
       padding-bottom: 36px; } }
   @media screen and (min-width: 1024px) {
-    .highlights {
+    .home__highlights {
       padding-top: 45px;
       padding-bottom: 45px; } }
   @media screen and (min-width: 1400px) {
-    .highlights {
+    .home__highlights {
       padding-top: 35px;
       padding-bottom: 35px; } }
+
+.highlights__col {
+  float: left;
+  display: block;
+  margin-right: 7.42297%;
+  width: 100%; }
+  .highlights__col:last-child {
+    margin-right: 0; }
+  @media screen and (min-width: 480px) {
+    .highlights__col {
+      float: left;
+      display: block;
+      margin-right: 4.82916%;
+      width: 100%; }
+      .highlights__col:last-child {
+        margin-right: 0; } }
+  @media screen and (min-width: 768px) {
+    .highlights__col {
+      float: left;
+      display: block;
+      margin-right: 3.57866%;
+      width: 74.10533%;
+      margin-left: 12.94733%;
+      padding-right: 0;
+      padding-left: 0; }
+      .highlights__col:last-child {
+        margin-right: 0; } }
+  @media screen and (min-width: 1024px) {
+    .highlights__col {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 82.94039%;
+      margin-left: 8.5298%; }
+      .highlights__col:last-child {
+        margin-right: 0; } }
+  @media screen and (min-width: 1400px) {
+    .highlights__col {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 82.94039%;
+      margin-left: 8.5298%; }
+      .highlights__col:last-child {
+        margin-right: 0; } }
 
 .highlights__heading {
   margin-top: 0;
@@ -1873,7 +2142,7 @@ blockquote p {
 ---
 title: Standard Post
 name: standard-post
-category: Componenets - Post Excerpts
+category: Components - Post Excerpts
 ---
 
 Standard posts are mostly text based but can include images. They can also optionally have a featured image.
@@ -1898,7 +2167,7 @@ Standard posts are mostly text based but can include images. They can also optio
 ---
 title: Gallery Post
 name: gallery-post
-category: Componenets - Post Excerpts
+category: Components - Post Excerpts
 ---
 
 Gallery posts are mostly image based but can include some text. They can also optionally have a featured image.
@@ -1923,7 +2192,7 @@ Gallery posts are mostly image based but can include some text. They can also op
 ---
 title: Video Post
 name: video-post
-category: Componenets - Post Excerpts
+category: Components - Post Excerpts
 ---
 
 Video posts display a video and minimal text. They can also optionally have a featured image.
@@ -1948,7 +2217,7 @@ Video posts display a video and minimal text. They can also optionally have a fe
 ---
 title: Image Post
 name: image-post
-category: Componenets - Post Excerpts
+category: Components - Post Excerpts
 ---
 
 Standard posts are mostly text based but can include images. They can also optionally have a featured image.
@@ -1974,7 +2243,7 @@ Standard posts are mostly text based but can include images. They can also optio
 ---
 title: Link Post
 name: link-post
-category: Componenets - Post Excerpts
+category: Components - Post Excerpts
 ---
 
 Link posts contain a link to an external site. They can also optionally have a featured image.
@@ -3358,7 +3627,8 @@ category: Components
   color: #d22228; }
 
 .live-link__type--audio, .live-link__type--gallery, .live-link__type--image, .live-link__type--link, .live-link__type--standard, .live-link__type--video {
-  display: block; }
+  display: block;
+  position: relative; }
 
 .live-link__song {
   display: block;
@@ -3524,10 +3794,12 @@ category: Components - Shows
   position: relative;
   padding: 2em;
   width: 100%;
-  display: table;
-  width: 100%;
-  table-layout: fixed;
+  display: block;
   color: #ffffff; }
+  .show__header:after {
+    content: "";
+    display: table;
+    clear: both; }
   .show__header > div {
     vertical-align: middle; }
   @media screen and (min-width: 768px) {
@@ -3539,8 +3811,12 @@ category: Components - Shows
   height: 100%; }
   @media screen and (min-width: 768px) {
     .show__cast {
-      display: table-cell;
-      width: 16.66667%; } }
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 14.70196%; }
+      .show__cast:last-child {
+        margin-right: 0; } }
   .show__cast img {
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
@@ -3557,8 +3833,12 @@ category: Components - Shows
     .show__nav {
       padding-left: 4em;
       text-align: left;
-      display: table-cell;
-      width: 50%; } }
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 48.82117%; }
+      .show__nav:last-child {
+        margin-right: 0; } }
   .show__nav ul {
     list-style-type: none;
     padding-left: 0;
@@ -3592,9 +3872,13 @@ category: Components - Shows
   text-align: center; }
   @media screen and (min-width: 768px) {
     .show__meta {
-      display: table-cell;
-      width: 33.33333%;
-      text-align: right; } }
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 31.76157%;
+      text-align: right; }
+      .show__meta:last-child {
+        margin-right: 0; } }
   .show__meta em {
     display: block; }
   .show__meta .social-share-link {
@@ -3694,6 +3978,38 @@ category: Components - Shows
 ---
 
 */
+@media screen and (min-width: 768px) {
+  .show__blogroll {
+    float: left;
+    display: block;
+    margin-right: 2.35765%;
+    width: 65.88078%; }
+    .show__blogroll:last-child {
+      margin-right: 0; } }
+
+.inner-right-col {
+  float: none; }
+  @media screen and (min-width: 768px) {
+    .inner-right-col {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 31.76157%;
+      margin-right: 0;
+      float: right; }
+      .inner-right-col:last-child {
+        margin-right: 0; } }
+
+.show__favorites .featured__content--block {
+  float: left;
+  display: block;
+  margin-right: 2.35765%;
+  width: 100%;
+  margin-bottom: 1em;
+  background: none; }
+  .show__favorites .featured__content--block:last-child {
+    margin-right: 0; }
+
 .widget--live-player {
   margin: 0 1em 1em; }
 
