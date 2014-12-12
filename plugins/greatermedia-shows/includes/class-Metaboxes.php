@@ -180,11 +180,28 @@ class GMR_Show_Metaboxes {
 	}
 
 	public function render_featured_meta_box( WP_Post $post ) {
+		if ( ! function_exists( 'pf_render' ) ) {
+			?><p>Please install the <a href="http://github.com/10up/post-finder">"post-finder"</a> plugin.</p><?php
+			return;
+		}
+		$featured_posts = get_post_meta( 'gmr_featured_post_ids', true );
 
+		$options = array();
+
+		pf_render( 'gmr-featured-post-ids', $featured_posts, $options );
 	}
 
 	public function render_favorites_meta_box( WP_Post $post ) {
+		if ( ! function_exists( 'pf_render' ) ) {
+			?><p>Please install the <a href="http://github.com/10up/post-finder">"post-finder"</a> plugin.</p><?php
+			return;
+		}
 
+		$favorite_posts = get_post_meta( 'gmr_favorite_post_ids', true );
+
+		$options = array();
+
+		pf_render( 'gmr-favorite-post-ids', $favorite_posts, $options );
 	}
 
 	/**
