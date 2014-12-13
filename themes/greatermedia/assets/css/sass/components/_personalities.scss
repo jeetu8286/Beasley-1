@@ -1,0 +1,59 @@
+/*doc
+---
+title: Personalities
+name: personalities
+category: Components - Shows
+---
+
+```html_example
+<div class="personality">
+	<div class="personality__avatar">
+		<img alt="" src="http://0.gravatar.com/avatar/ad516503a11cd5ca435acc9bb6523536?s=96" class="avatar avatar-96 photo avatar-default" height="96" width="96">
+	</div>
+	<div class="personality__meta">
+		<span class="personality__name h1">Dan Blaker</span>
+		<div class="personality__bio"><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Optio minus unde temporibus libero cupiditate sint quaerat. Rem minima, culpa odit, quis nesciunt cum, repellendus saepe laboriosam nihil totam debitis velit pariatur!</p><p>Libero quidem minima hic. Odio libero delectus placeat iure nam provident rem quaerat, sapiente corporis repudiandae praesentium, et commodi hic pariatur minus officia blanditiis accusamus fugiat quae! At, voluptatum!</p></div>
+	</div>
+</div>
+```
+
+*/
+
+.show__personalities {
+	@include outer-container();
+}
+
+.personality {
+	margin: 4em 0;
+	position: relative;
+	@include row();
+	// @include box-shadow(0, -9px, -5, rgba(255, 255, 255, 0.75), inset);
+	// TODO - fix box-shadow mixin
+}
+
+.personality__avatar {
+	@include span-columns(4 of 12);
+
+	@include bp(medium) {
+		@include span-columns(3 of 12);
+	}
+
+	img {
+		width: 80%;
+		height: auto;
+		@include border-radius(50%);
+	}
+}
+
+.personality__meta {
+	overflow: hidden;
+	height: 8em;
+	@include span-columns(8 of 12);
+	@include omega;
+
+	@include bp(medium) {
+		height: 12em;
+		@include span-columns(9 of 12);
+		@include omega;
+	}
+}
