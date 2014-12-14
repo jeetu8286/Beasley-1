@@ -17,3 +17,17 @@ function get_featured_query() {
 
 	return $query;
 }
+
+function get_community_query() {
+	$ids = explode( ',', get_option( 'gmr-homepage-community' ) );
+
+	$args = array(
+		'post_type' => 'any',
+		'post__in' => $ids,
+		'orderby' => 'post__in',
+	);
+
+	$query = new WP_Query( $args );
+
+	return $query;
+}

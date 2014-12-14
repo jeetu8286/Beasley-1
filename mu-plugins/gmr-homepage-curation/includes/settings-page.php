@@ -41,7 +41,7 @@ function register_settings() {
 
 
 	// Community Highlights
-	$option_name = 'gmr-homepage-highlights';
+	$option_name = 'gmr-homepage-community';
 	$render_args = array(
 		'name' => $option_name,
 		'pf_options' => array(
