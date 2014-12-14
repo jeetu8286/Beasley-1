@@ -31,3 +31,26 @@ function get_community_query() {
 
 	return $query;
 }
+
+function get_events_query() {
+	$ids = array_filter( explode( ',', get_option( 'gmr-homepage-events' ) ) );
+
+	if ( count( $ids ) ) {
+		$args = array(
+			'post_type' => 'any',
+			'post__in' => $ids,
+			'orderby' => 'post__in',
+		);
+
+		$query = new WP_Query( $args );
+	} else {
+		$event_args = array(
+			'eventDisplay'=>'upcoming',
+			'posts_per_page' => 2,
+		);
+
+		$query = \tribe_get_events( $event_args, true );
+	}
+
+	return $query;
+}

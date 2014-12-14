@@ -56,7 +56,7 @@ function register_settings() {
 	register_setting( get_settings_section(), $option_name, __NAMESPACE__ . '\sanitize_post_finder' );
 
 
-	// Events - This section is optional - will fill with latest events to reach number of events required
+	// Events - This section is optional - Either curated, or falls back. If you only curate one, we only show one. May be nice in the future to fill up to the max required, but that could also be confusing.
 	$option_name = 'gmr-homepage-events';
 	$render_args = array(
 		'name' => $option_name,
