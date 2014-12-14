@@ -31,11 +31,27 @@ function register_settings() {
 				'post_type' => array( 'post', 'tribe_events' ),
 				'meta_key' => '_thumbnail_id', // Forces the posts to have a featured image
 			),
+			'limit' => 4,
+		),
+	);
+	add_settings_field( $option_name, 'Featured', __NAMESPACE__ . '\render_post_finder', get_settings_page_slug(), get_settings_section(), $render_args );
+	register_setting( get_settings_section(), $option_name, __NAMESPACE__ . '\sanitize_post_finder' );
+
+
+	// Community Highlights
+	$option_name = 'gmr-homepage-highlights';
+	$render_args = array(
+		'name' => $option_name,
+		'pf_options' => array(
+			'args' => array(
+				'post_type' => array( 'post' ),
+				'meta_key' => '_thumbnail_id', // Forces the posts to have a featured image
+			),
 			'limit' => 3,
 		),
 	);
-	add_settings_field( $option_name, 'Homepage Featured', __NAMESPACE__ . '\render_post_finder', get_settings_page_slug(), get_settings_section(), $render_args );
-	register_setting( get_settings_section(), 'gmr-homepage-featured', __NAMESPACE__ . '\sanitize_post_finder' );
+	add_settings_field( $option_name, 'Community Highlights', __NAMESPACE__ . '\render_post_finder', get_settings_page_slug(), get_settings_section(), $render_args );
+	register_setting( get_settings_section(), $option_name, __NAMESPACE__ . '\sanitize_post_finder' );
 }
 
 function render_post_finder( $args ) {
