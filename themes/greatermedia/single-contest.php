@@ -25,12 +25,21 @@ get_header(); ?>
 
 							</header>
 
-							<?php
+							<section class="col__inner--left">
+								<?php the_content(); ?>
 
-							$form = get_post_meta( get_the_ID(), 'embedded_form', true );
-							GreaterMediaFormbuilderRender::render( get_the_ID(), $form );
+								other metabox content goes here
+							</section>
 
-							?>
+
+							<section class="col__inner--right">
+								<?php
+
+								$form = get_post_meta( get_the_ID(), 'embedded_form', true );
+								GreaterMediaFormbuilderRender::render( get_the_ID(), $form );
+
+								?>
+							</section>
 
 						</article>
 

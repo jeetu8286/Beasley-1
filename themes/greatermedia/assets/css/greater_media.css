@@ -700,6 +700,39 @@ img {
     display: table;
     clear: both; }
 
+.col__inner--right {
+  float: left;
+  display: block;
+  margin-right: 2.35765%;
+  width: 100%; }
+  .col__inner--right:last-child {
+    margin-right: 0; }
+  @media screen and (min-width: 768px) {
+    .col__inner--right {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 31.76157%;
+      margin-right: 0; }
+      .col__inner--right:last-child {
+        margin-right: 0; } }
+
+.col__inner--left {
+  float: left;
+  display: block;
+  margin-right: 2.35765%;
+  width: 100%; }
+  .col__inner--left:last-child {
+    margin-right: 0; }
+  @media screen and (min-width: 768px) {
+    .col__inner--left {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 65.88078%; }
+      .col__inner--left:last-child {
+        margin-right: 0; } }
+
 html {
   width: 100%;
   height: 100%;
