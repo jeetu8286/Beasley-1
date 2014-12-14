@@ -73,7 +73,7 @@ function get_show_podcast_query() {
 	$current_page = get_query_var( 'show_section_page' ) ?: 1;
 
 	$podcast_args = array(
-		'post_type' => \GMP_CPT::PODCAST_POST_TYPE,
+		'post_type' => \GMP_CPT::EPISODE_POST_TYPE,
 		'tax_query' => array(
 			array(
 				'taxonomy' => \ShowsCPT::SHOW_TAXONOMY,
