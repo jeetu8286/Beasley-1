@@ -62,7 +62,7 @@ function register_settings() {
 		'name' => $option_name,
 		'pf_options' => array(
 			'args' => array(
-				'post_type' => array( 'tribe_event' ),
+				'post_type' => array( 'tribe_events' ),
 			),
 			'limit' => 2,
 		),
