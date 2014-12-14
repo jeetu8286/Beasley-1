@@ -124,7 +124,7 @@ img {
 .col__inner--right {
 	@include span-columns(12 of 12);
 
-	@include bp(medium) {
+	@include bp(large) {
 		@include span-columns(4 of 12);
 		@include omega;
 	}
@@ -133,7 +133,9 @@ img {
 .col__inner--left {
 	@include span-columns(12 of 12);
 
-	@include bp(medium) {
+	@include bp(large) {
+		border-right: 1px solid $primary-border;
+		padding-right: 2em;
 		@include span-columns(8 of 12);
 	}
 }

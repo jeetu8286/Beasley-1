@@ -707,7 +707,7 @@ img {
   width: 100%; }
   .col__inner--right:last-child {
     margin-right: 0; }
-  @media screen and (min-width: 768px) {
+  @media screen and (min-width: 1024px) {
     .col__inner--right {
       float: left;
       display: block;
@@ -724,8 +724,10 @@ img {
   width: 100%; }
   .col__inner--left:last-child {
     margin-right: 0; }
-  @media screen and (min-width: 768px) {
+  @media screen and (min-width: 1024px) {
     .col__inner--left {
+      border-right: 1px solid #d0d2d3;
+      padding-right: 2em;
       float: left;
       display: block;
       margin-right: 2.35765%;
@@ -3770,6 +3772,9 @@ category: Components - Ads
     .ad__inline--right {
       float: right;
       margin: 0 0 1em 1em; } }
+
+.single__featured-img--contest {
+  margin-bottom: 2em; }
 
 /*doc
 ---
