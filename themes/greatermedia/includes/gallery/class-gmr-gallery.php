@@ -168,14 +168,17 @@ class GreaterMediaGallery {
 								global $post;
 								$gallery->the_post();
 								$slide_hash = get_post_field( 'post_name', get_the_ID() );
+								$slide_link = get_permalink( $main_post_id ) . '#' . $slide_hash;
 								$image_title = get_the_title( $post ); // title of the gallery image
 								echo '<div class="gallery__slide--content" data-cycle-hash="' . $slide_hash . '">';
 								echo '<h2 class="gallery__slide--title">';
 								echo $image_title;
 								echo '</h2>';
-								if ( function_exists( 'sharing_display' ) ) {
-									echo sharing_display();
-								}
+								echo '<div class="gallery__social">';
+								echo '<a class="icon-facebook social-share-link" href="http://www.facebook.com/sharer/sharer.php?u=' . $slide_link . '&title=' . $image_title . '"></a>';
+								echo '<a class="icon-twitter social-share-link" href="http://twitter.com/home?status=' . $image_title . '+' . $slide_link . '"></a>';
+								echo '<a class="icon-google-plus social-share-link" href="https://plus.google.com/share?url=' . $slide_link . '"></a>';
+								echo '</div>';
 								echo '</div>';
 							}
 							$gallery->rewind_posts();

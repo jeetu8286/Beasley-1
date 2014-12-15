@@ -4415,6 +4415,14 @@ category: Components - Gallery
   color: #ffffff;
   text-transform: uppercase; }
 
+.gallery__prev--btn:hover, .gallery__next--btn:hover, .gallery__prev--btn:focus, .gallery__next--btn:focus {
+  border-color: #d22228;
+  color: #d22228; }
+
+.gallery__prev--btn:active, .gallery__next--btn:active {
+  border-color: #404041;
+  color: #404041; }
+
 .gallery__prev {
   position: absolute;
   bottom: 0;
@@ -4490,7 +4498,7 @@ category: Components - Gallery
       margin-right: 2.35765%;
       width: 65.88078%;
       margin-left: 17.05961%;
-      height: 90px; }
+      height: 92px; }
       .gallery__content:last-child {
         margin-right: 0; } }
 
@@ -4560,6 +4568,28 @@ category: Components - Gallery
   font-family: "Open Sans", sans-serif;
   font-size: 1.60181em;
   font-weight: lighter; }
+
+.gallery__social {
+  width: 100%;
+  height: 40px; }
+
+.gallery__social a.social-share-link {
+  margin-right: 8px; }
+
+.gallery__social a.social-share-link:last-of-type {
+  margin-right: 0; }
+
+.gallery__social a.social-share-link:link, .gallery__social a.social-share-link:visited {
+  border-color: #d0d2d3;
+  color: #d0d2d3; }
+
+.gallery__social a.social-share-link:hover, .gallery__social a.social-share-link:focus {
+  border-color: #d22228;
+  color: #d22228; }
+
+.gallery__social a.social-share-link:active {
+  border-color: #404041;
+  color: #404041; }
 
 .gallery__count {
   float: left;
