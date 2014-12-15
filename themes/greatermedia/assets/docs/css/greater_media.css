@@ -38,19 +38,12 @@ category: Base
 <span class="hologram-color-swatch" style="background: #d22228;">$cardinal</span>
 <span class="hologram-color-swatch" style="background: #561015;">$heath</span>
 <span class="hologram-color-swatch" style="background: #270e10;">$coffee-bean</span>
-<span class="hologram-color-swatch" style="background: #d0d2d3;">$iron</span>
-<span class="hologram-color-swatch" style="background: #c7c7c7;">$silver</span>
-<span class="hologram-color-swatch" style="background: #a6a8ab;">$aluminium</span>
-<span class="hologram-color-swatch" style="background: #929497;">$oslo-gray</span>
-<span class="hologram-color-swatch" style="background: #6d6e70;">$nevada</span>
-<span class="hologram-color-swatch" style="background: #606060;">$scorpion</span>
-<span class="hologram-color-swatch" style="background: #58595b;">$abbey</span>
-<span class="hologram-color-swatch" style="background: #404041;">$ship-gray</span>
-<span class="hologram-color-swatch" style="background: #303030;">$mine-shaft</span>
-<span class="hologram-color-swatch" style="background: #282827;">$tuatara</span>
-<span class="hologram-color-swatch" style="background: #191919;">$cod-gray</span>
-<span class="hologram-color-swatch" style="background: #f5ed7f;">$sahara-sand</span>
-<span class="hologram-color-swatch" style="background: #f7ef7e;">$sweet-corn</span>
+<span class="hologram-color-swatch" style="background: #d0d2d3;">$light-gray</span>
+<span class="hologram-color-swatch" style="background: #929497;">$gray</span>
+<span class="hologram-color-swatch" style="background: #404041;">$medium-gray</span>
+<span class="hologram-color-swatch" style="background: #282827;">$dark-gray</span>
+<span class="hologram-color-swatch" style="background: #191919;">$darker-gray</span>
+<span class="hologram-color-swatch" style="background: #f5ed7f;">$yellow</span>
 ```
 
 */
@@ -65,7 +58,7 @@ category: Base
 
 .entry__categories, .entry__tags, .entry__tags a {
   color: #929497;
-  font-size: ms(1);
+  font-size: 1.125em;
   font-style: italic; }
 
 /**
@@ -700,6 +693,41 @@ img {
     display: table;
     clear: both; }
 
+.col__inner--right {
+  float: left;
+  display: block;
+  margin-right: 2.35765%;
+  width: 100%; }
+  .col__inner--right:last-child {
+    margin-right: 0; }
+  @media screen and (min-width: 1024px) {
+    .col__inner--right {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 31.76157%;
+      margin-right: 0; }
+      .col__inner--right:last-child {
+        margin-right: 0; } }
+
+.col__inner--left {
+  float: left;
+  display: block;
+  margin-right: 2.35765%;
+  width: 100%; }
+  .col__inner--left:last-child {
+    margin-right: 0; }
+  @media screen and (min-width: 1024px) {
+    .col__inner--left {
+      border-right: 1px solid #d0d2d3;
+      padding-right: 2em;
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 65.88078%; }
+      .col__inner--left:last-child {
+        margin-right: 0; } }
+
 html {
   width: 100%;
   height: 100%;
@@ -764,23 +792,23 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
     color: #aa1c20; }
 
 h1, .h1 {
-  font-size: ms(7); }
+  font-size: 2.2807em; }
 
 h2, .h2 {
-  font-size: ms(6); }
+  font-size: 2.02729em; }
 
 h3, .h3 {
-  font-size: ms(5); }
+  font-size: 1.80203em; }
 
 h4, .h4 {
-  font-size: ms(4); }
+  font-size: 1.60181em; }
 
 h5, .h5 {
-  font-size: ms(3);
+  font-size: 1.42383em;
   letter-spacing: 2px; }
 
 h6, .h6 {
-  font-size: ms(2);
+  font-size: 1.26563em;
   letter-spacing: 2px; }
 
 /*doc
@@ -827,13 +855,13 @@ blockquote {
   margin: 24px .625em;
   border-left: 10px solid #d0d2d3;
   quotes: "“" "”" "‘" "’";
-  color: #6d6e70;
+  color: #404041;
   font-style: italic; }
 
 blockquote p {
   display: inline;
   font-style: italic;
-  color: #6d6e70; }
+  color: #404041; }
 
 /**
  * When the Nav Toggle is clicked, a body class is added.
@@ -991,7 +1019,7 @@ blockquote p {
 .mobile-nav__list .menu-item {
   padding: 0;
   margin: 0;
-  border-bottom: 1px solid #303030; }
+  border-bottom: 1px solid #282827; }
 
 .mobile-nav__list .menu-item:last-child {
   border-bottom: none; }
@@ -1000,7 +1028,7 @@ blockquote p {
   display: block;
   padding: 18px 1.25em;
   line-height: 1;
-  font-size: ms(7);
+  font-size: 2.2807em;
   color: #ffffff; }
 
 .mobile-nav__list a:hover, .mobile-nav__list a:focus, .mobile-nav__list a:active {
@@ -1016,7 +1044,7 @@ blockquote p {
   margin: 0;
   list-style: none;
   display: inline-block;
-  font-size: ms(0); }
+  font-size: 1em; }
 
 .header__main a, .header__main a:visited {
   color: #ffffff; }
@@ -1048,7 +1076,7 @@ blockquote p {
 .content__heading {
   margin-top: 0;
   margin-bottom: 24px;
-  font-size: ms(1);
+  font-size: 1.125em;
   font-weight: lighter;
   color: #929497; }
 
@@ -1255,7 +1283,7 @@ Curated posts for Featured Articles
 .home__featured {
   position: relative;
   padding: 48px;
-  background: url(../../images/featured-bg.png) repeat center center #58595b;
+  background: url(../../images/featured-bg.png) repeat center center #270e10;
   background-size: auto 40%; }
 
 .featured__article, .featured__content {
@@ -1270,7 +1298,7 @@ Curated posts for Featured Articles
   width: 100%;
   height: 100px;
   overflow: hidden;
-  background-color: #58595b; }
+  background-color: #270e10; }
   @media screen and (min-width: 480px) {
     .featured__article--image {
       height: 150px; } }
@@ -1285,7 +1313,7 @@ Curated posts for Featured Articles
   width: 100%;
   padding: 15px 3.928571428572%;
   overflow: auto;
-  background: #c7c7c7; }
+  background: #d0d2d3; }
   @media screen and (min-width: 480px) {
     .featured__article--content {
       padding: 15px 4.941176470588%; } }
@@ -1316,13 +1344,13 @@ Curated posts for Featured Articles
   margin-bottom: 10px;
   line-height: 1;
   font-family: "Open Sans", sans-serif;
-  font-size: ms(1);
+  font-size: 1.125em;
   font-weight: normal; }
 
 .featured__article--subtitle {
   margin: 0;
   line-height: 1;
-  font-size: ms(7);
+  font-size: 2.2807em;
   color: #ffffff; }
 
 .featured__article--bio {
@@ -1332,7 +1360,7 @@ Curated posts for Featured Articles
       display: block;
       float: left;
       width: 68.693009118541%;
-      font-size: ms(-1);
+      font-size: 0.88889em;
       line-height: 1.5; } }
   @media screen and (min-width: 1400px) {
     .featured__article--bio {
@@ -1344,7 +1372,7 @@ Curated posts for Featured Articles
   height: 90px;
   margin-bottom: 27px;
   overflow: hidden;
-  background: #c7c7c7; }
+  background: #d0d2d3; }
   @media screen and (min-width: 480px) {
     .featured__content--block {
       width: 100%;
@@ -1387,7 +1415,7 @@ Curated posts for Featured Articles
   max-width: none; }
 
 .featured__content--meta {
-  font-size: ms(-2);
+  font-size: 0.79012em;
   font-weight: lighter;
   padding: 1em;
   float: left;
@@ -1398,17 +1426,17 @@ Curated posts for Featured Articles
   .featured__content--meta:last-child {
     margin-right: 0; }
   .home__featured .featured__content--meta {
-    color: #a6a8ab; }
+    color: #929497; }
 
 .featured__content--title {
   margin-top: 0;
   margin-bottom: 8px;
   line-height: 1;
   font-family: "Open Sans", sans-serif;
-  font-size: ms(0); }
+  font-size: 1em; }
   @media screen and (min-width: 480px) {
     .featured__content--title {
-      font-size: ms(1); } }
+      font-size: 1.125em; } }
 
 .featured__content--list {
   line-height: 1; }
@@ -1417,13 +1445,13 @@ Curated posts for Featured Articles
   display: inline-block;
   width: 40%;
   margin-bottom: 4px;
-  font-size: ms(-2);
-  color: #f7ef7e; }
+  font-size: 0.79012em;
+  color: #f5ed7f; }
   @media screen and (min-width: 1024px) {
     .featured__content--item {
       display: block;
       width: 100%;
-      font-size: ms(-1); } }
+      font-size: 0.88889em; } }
 
 .featured__content--link {
   width: 100%;
@@ -1444,7 +1472,7 @@ Curated posts for Featured Articles
   background-color: #d22228;
   border: 1px solid #d22228;
   font-family: "Open Sans", sans-serif;
-  font-size: ms(-2);
+  font-size: 0.79012em;
   color: #ffffff !important;
   text-transform: uppercase;
   cursor: pointer;
@@ -1552,7 +1580,7 @@ Community Highlights and Events
 .home__highlights {
   padding-top: 33px;
   padding-bottom: 33px;
-  background-color: #f1f1f2; }
+  background-color: #d0d2d3; }
   @media screen and (min-width: 480px) {
     .home__highlights {
       padding-top: 36px;
@@ -1615,32 +1643,32 @@ Community Highlights and Events
   margin-top: 0;
   margin-bottom: 17px;
   font-family: "Open Sans", sans-serif;
-  font-size: ms(1);
+  font-size: 1.125em;
   font-weight: lighter;
   color: #929497; }
   @media screen and (min-width: 480px) {
     .highlights__heading {
-      font-size: ms(1); } }
+      font-size: 1.125em; } }
   @media screen and (min-width: 1024px) {
     .highlights__heading {
       margin-bottom: 13px;
-      font-size: ms(0); } }
+      font-size: 1em; } }
   @media screen and (min-width: 1400px) {
     .highlights__heading {
       margin-bottom: 17px;
-      font-size: ms(1); } }
+      font-size: 1.125em; } }
 
 .highlights__heading--span {
   margin-left: 16px;
-  font-size: ms(-1);
+  font-size: 0.88889em;
   color: #d22228;
   text-transform: uppercase; }
   @media screen and (min-width: 1024px) {
     .highlights__heading--span {
-      font-size: ms(-2); } }
+      font-size: 0.79012em; } }
   @media screen and (min-width: 1400px) {
     .highlights__heading--span {
-      font-size: ms(-1); } }
+      font-size: 0.88889em; } }
 
 .highlights__community {
   float: left;
@@ -1709,7 +1737,7 @@ Community Highlights and Events
   left: 0;
   width: 100%;
   margin: 0;
-  font-size: ms(0);
+  font-size: 1em;
   font-weight: normal;
   color: #ffffff;
   text-align: center; }
@@ -1790,27 +1818,27 @@ Community Highlights and Events
   margin: 0;
   line-height: 1.2;
   font-family: "Open Sans", sans-serif;
-  font-size: ms(0);
-  color: #6d6e70; }
+  font-size: 1em;
+  color: #404041; }
   @media screen and (min-width: 480px) {
     .highlights__event--title {
-      font-size: ms(1); } }
+      font-size: 1.125em; } }
   @media screen and (min-width: 1024px) {
     .highlights__event--title {
-      font-size: ms(-1); } }
+      font-size: 0.88889em; } }
   @media screen and (min-width: 1400px) {
     .highlights__event--title {
       position: relative;
       top: auto;
       transform: translate(0, 0);
-      font-size: ms(0); } }
+      font-size: 1em; } }
 
 .highlights__event--date {
   display: none; }
   @media screen and (min-width: 1400px) {
     .highlights__event--date {
       display: block;
-      font-size: ms(-2);
+      font-size: 0.79012em;
       color: #929497; } }
 
 .header {
@@ -1845,7 +1873,7 @@ Community Highlights and Events
   height: 82px;
   padding: 0;
   background-color: #000000;
-  border-top: 1px solid #303030; }
+  border-top: 1px solid #282827; }
 
 #breaking-news-banner {
   display: none; }
@@ -1976,7 +2004,7 @@ Community Highlights and Events
       float: left;
       height: 82px;
       margin-right: 2.125em;
-      font-size: ms(0); } }
+      font-size: 1em; } }
 
 .header__search {
   display: block;
@@ -1997,7 +2025,7 @@ Community Highlights and Events
       height: 82px;
       padding: 36px 0;
       margin-right: .625em;
-      font-size: ms(-1); } }
+      font-size: 0.88889em; } }
 
 .header__search--btn {
   display: block;
@@ -2006,7 +2034,7 @@ Community Highlights and Events
   padding: 34px 0 30px; }
 
 .header__search--btn:before {
-  font-size: ms(1);
+  font-size: 1.125em;
   content: "\e612"; }
 
 .footer {
@@ -2069,9 +2097,9 @@ Community Highlights and Events
         margin-right: 0; } }
 
 .footer__logo {
-  font-size: ms(4);
+  font-size: 1.60181em;
   font-weight: lighter;
-  color: #6d6e70;
+  color: #929497;
   text-transform: uppercase; }
   @media screen and (min-width: 1024px) {
     .footer__logo {
@@ -2083,14 +2111,14 @@ Community Highlights and Events
         margin-right: 0; } }
 
 .footer__logo a:link, .footer__logo a:visited {
-  color: #6d6e70; }
+  color: #929497; }
 
 .footer__logo a:hover, .footer__logo a:focus, .footer__logo a:active {
   color: #d22228; }
 
 .footer__copyright {
   padding: 13px 0;
-  font-size: ms(-3); }
+  font-size: 0.70233em; }
   @media screen and (min-width: 1024px) {
     .footer__copyright {
       float: left;
@@ -2120,7 +2148,7 @@ Community Highlights and Events
 
 .footer__nav--list {
   padding: 13px 0;
-  font-size: ms(-3); }
+  font-size: 0.70233em; }
 
 .footer__nav--list .menu-item {
   display: inline-block;
@@ -2133,7 +2161,7 @@ Community Highlights and Events
 .footer__menu .social__link {
   height: 22px;
   margin: 0 0 0 30px;
-  font-size: ms(2); }
+  font-size: 1.26563em; }
 
 .footer__menu .social__link:last-child {
   margin: 0 0 0 30px; }
@@ -2277,7 +2305,7 @@ Link posts contain a link to an external site. They can also optionally have a f
   font-family: "Open Sans", sans-serif; }
 
 .entry__date {
-  font-size: ms(-2);
+  font-size: 0.79012em;
   font-weight: lighter;
   color: #929497;
   text-transform: uppercase; }
@@ -2292,7 +2320,7 @@ Link posts contain a link to an external site. They can also optionally have a f
 
 .entry__title {
   margin: 0 0 20px;
-  font-size: ms(4); }
+  font-size: 1.60181em; }
 
 .entry__footer {
   float: left;
@@ -2333,11 +2361,11 @@ Link posts contain a link to an external site. They can also optionally have a f
   line-height: 1;
   font-family: "Droid Sans", sans-serif;
   font-weight: bold;
-  font-size: ms(0);
+  font-size: 1em;
   color: #929497; }
 
 .entry__footer--category:hover, .entry__footer--category:focus, .entry__footer--category:active {
-  color: #d22228; }
+  color: palette(base, secondary-link-hover); }
 
 .entry__type {
   float: left;
@@ -2377,7 +2405,7 @@ Link posts contain a link to an external site. They can also optionally have a f
 .entry__type--gallery, .entry__type--link, .entry__type--image, .entry__type--video, .entry__type--audio, .entry__type--standard {
   position: relative;
   padding-left: 1.875em;
-  font-size: ms(-2); }
+  font-size: 0.79012em; }
 
 .entry__categories, .entry__tags {
   margin-bottom: 8px; }
@@ -2386,7 +2414,7 @@ Link posts contain a link to an external site. They can also optionally have a f
   padding: 0;
   margin: 0;
   list-style: none;
-  font-size: ms(-2); }
+  font-size: 0.79012em; }
 
 .entry__list:before, .entry__list--categories:before, .entry__list--tags:before {
   margin-right: .25em;
@@ -2453,7 +2481,7 @@ Link posts contain a link to an external site. They can also optionally have a f
   display: block;
   float: right;
   text-align: center;
-  font-size: ms(-3); }
+  font-size: 0.70233em; }
 
 .entry__comments--count a:link, .entry__comments--count a:visited {
   display: block;
@@ -2476,7 +2504,7 @@ Link posts contain a link to an external site. They can also optionally have a f
   display: block;
   height: 0;
   width: 0;
-  border-top: 8px solid #d0d2d3;
+  border-top: 8px solid palette(base, primary-border);
   border-right: 5px solid transparent;
   content: " "; }
 
@@ -2492,7 +2520,7 @@ Link posts contain a link to an external site. They can also optionally have a f
   display: block;
   height: 0;
   width: 0;
-  border-top: 8px solid #d22228;
+  border-top: 8px solid palette(base, primary-link);
   border-right: 5px solid transparent;
   content: " "; }
 
@@ -2508,7 +2536,7 @@ Link posts contain a link to an external site. They can also optionally have a f
   display: block;
   height: 0;
   width: 0;
-  border-top: 8px solid #000000;
+  border-top: 8px solid palette(base, secondary-bg);
   border-right: 5px solid transparent;
   content: " "; }
 
@@ -2866,12 +2894,12 @@ Link posts contain a link to an external site. They can also optionally have a f
 .wp-caption p.wp-caption-text {
   padding: 16px 1.25em 20px;
   margin: 4px .5em;
-  font-size: ms(-2);
+  font-size: 0.79012em;
   text-align: left; }
 
 .posts-pagination {
   width: 100%;
-  font-size: ms(-1); }
+  font-size: 0.88889em; }
 
 .posts-pagination--previous {
   float: left;
@@ -3068,7 +3096,7 @@ category: Components
   overflow: visible;
   background-color: #191919;
   line-height: 1;
-  font-size: ms(-1); }
+  font-size: 0.88889em; }
 
 .live-player__stream--current.open {
   display: block;
@@ -3083,7 +3111,7 @@ category: Components
   width: 0;
   height: 0;
   font-family: "gmr-icons";
-  font-size: ms(1);
+  font-size: 1.125em;
   content: "\e606";
   -webkit-transform: rotate(90deg);
   -moz-transform: rotate(90deg);
@@ -3169,13 +3197,13 @@ category: Components
 .live-player__stream--name {
   float: left;
   width: 20%;
-  font-size: ms(-1); }
+  font-size: 0.88889em; }
 
 .live-player__stream--desc {
   float: left;
   width: 80%;
   line-height: 1.2;
-  font-size: ms(-3); }
+  font-size: 0.70233em; }
 
 .live-player__container {
   overflow: auto; }
@@ -3224,7 +3252,7 @@ category: Components
       display: block;
       height: 23px; } }
 
-.live-stream__listen-now--btn {
+.live-stream__listen-now--btn, .podcast__download {
   display: inline-block;
   line-height: 1;
   padding: 0.25em 1em;
@@ -3233,7 +3261,7 @@ category: Components
   background-color: #d22228;
   border: 1px solid #d22228;
   font-family: "Open Sans", sans-serif;
-  font-size: ms(-1);
+  font-size: 0.88889em;
   color: #ffffff !important;
   text-transform: uppercase;
   cursor: pointer;
@@ -3244,11 +3272,11 @@ category: Components
   -o-border-radius: 1em;
   -border-radius: 1em;
   border-radius: 1em; }
-  .live-stream__listen-now--btn:hover, .live-stream__listen-now--btn:focus {
+  .live-stream__listen-now--btn:hover, .podcast__download:hover, .live-stream__listen-now--btn:focus, .podcast__download:focus {
     background-color: #aa1c20;
     border-color: #aa1c20;
     color: #ffffff; }
-  .live-stream__listen-now--btn:last-of-type {
+  .live-stream__listen-now--btn:last-of-type, .podcast__download:last-of-type {
     margin-right: 0; }
 
 .live-stream__now-playing--btn {
@@ -3260,7 +3288,7 @@ category: Components
   background-color: transparent;
   border: 1px solid #d22228;
   font-family: "Open Sans", sans-serif;
-  font-size: ms(-1);
+  font-size: 0.88889em;
   color: #d22228 !important;
   text-transform: uppercase;
   cursor: pointer;
@@ -3293,7 +3321,7 @@ category: Components
   background-color: transparent;
   border: 1px solid #d22228;
   font-family: "Open Sans", sans-serif;
-  font-size: ms(-1);
+  font-size: 0.88889em;
   color: #d22228 !important;
   text-transform: uppercase;
   cursor: pointer;
@@ -3316,7 +3344,7 @@ category: Components
   font-family: "gmr-icons" !important;
   content: "\e606" !important; }
 
-.live-stream__btn--login, .live-stream__btn--play, .live-stream__btn--resume, .live-stream__btn--pause {
+.live-stream__btn--login, .live-stream__btn--play, .live-stream__btn--resume, .live-stream__btn--pause, .podcast__btn--play {
   width: 34px;
   height: 34px;
   margin: 0 auto;
@@ -3339,7 +3367,7 @@ category: Components
   color: #d22228;
   cursor: pointer; }
   @media screen and (min-width: 768px) {
-    .live-stream__btn--login, .live-stream__btn--play, .live-stream__btn--resume, .live-stream__btn--pause {
+    .live-stream__btn--login, .live-stream__btn--play, .live-stream__btn--resume, .live-stream__btn--pause, .podcast__btn--play {
       width: 54px;
       height: 54px; } }
 
@@ -3420,7 +3448,7 @@ category: Components
   width: 50%;
   padding-top: 8px;
   line-height: 1;
-  font-size: ms(-4);
+  font-size: 0.6243em;
   text-align: left; }
 
 .live-stream--podcast__end {
@@ -3462,15 +3490,15 @@ category: Components
 
 .on-air__title, .up-next__title {
   margin-right: 1em;
-  font-size: ms(-2);
+  font-size: 0.79012em;
   font-weight: lighter; }
   @media screen and (min-width: 768px) {
     .on-air__title, .up-next__title {
       margin-right: .25em;
-      font-size: ms(-3); } }
+      font-size: 0.70233em; } }
 
 .on-air__show, .up-next__show {
-  font-size: ms(-2); }
+  font-size: 0.79012em; }
 
 .now-playing {
   display: none;
@@ -3497,22 +3525,22 @@ category: Components
 .now-playing__title {
   margin: 0 0 4px;
   line-height: 1;
-  font-size: ms(0);
+  font-size: 1em;
   font-weight: lighter;
   color: #d22228; }
   @media screen and (min-width: 768px) {
     .now-playing__title {
-      font-size: ms(1); } }
+      font-size: 1.125em; } }
 
 .now-playing__artist {
   margin: 0 0 4px;
   line-height: 1;
-  font-size: ms(-3);
+  font-size: 0.70233em;
   font-weight: lighter;
-  color: #c7c7c7; }
+  color: #d0d2d3; }
   @media screen and (min-width: 768px) {
     .now-playing__artist {
-      font-size: ms(-2); } }
+      font-size: 0.79012em; } }
 
 .live-player__volume {
   display: none; }
@@ -3581,17 +3609,7 @@ category: Components
   border: 1px solid #d0d2d3;
   border-right: none;
   border-left: none;
-  font-size: ms(-2); }
-
-.live-player--test {
-  width: 100%;
-  padding: .25em .5em;
-  color: #6d6e70; }
-
-.live-player--test_label {
-  display: inline-block;
-  margin-left: 4px;
-  cursor: pointer; }
+  font-size: 0.79012em; }
 
 .live-links {
   display: none;
@@ -3636,7 +3654,7 @@ category: Components
 
 .live-link__song:before {
   content: "\e604";
-  color: #c7c7c7; }
+  color: #d0d2d3; }
 
 .live-link__song--artist {
   padding-top: 6px;
@@ -3647,7 +3665,7 @@ category: Components
   padding-top: 6px;
   font-size: 0.8125em;
   font-weight: lighter;
-  color: #c7c7c7; }
+  color: #d0d2d3; }
 
 .live-link__type--audio:before {
   content: "\e604"; }
@@ -3672,11 +3690,11 @@ category: Components
   padding-top: 6px;
   margin: 0;
   font-family: "Open Sans", sans-serif;
-  font-size: ms(-1);
+  font-size: 0.88889em;
   font-weight: normal; }
 
 .live-link__title a:link, .live-link__title a:visited {
-  color: #c7c7c7; }
+  color: #d0d2d3; }
 
 .live-link__title a:hover, .live-link__title a:focus, .live-link__title a:active {
   color: #d22228; }
@@ -3737,6 +3755,80 @@ category: Components - Ads
     .ad__inline--right {
       float: right;
       margin: 0 0 1em 1em; } }
+
+.single__featured-img--contest {
+  margin-bottom: 2em; }
+
+/*doc
+---
+title: Podcast Excerpt
+name: podcast-excerpt
+category: Components - Shows
+---
+
+```html_example
+<article class="podcast">
+	<div class="podcast__play">
+		<button class="podcast__btn--play"></button>
+		<span class="podcast__runtime">57:14</span>
+	</div>
+	<div class="podcast__meta">
+		<time datetime="">September 12</time>
+		<button class="podcast__download">Download</button>
+		<h3>Preston & Steve Daily Feed</h3>
+		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas, ratione, molestias possimus eos in nobis vero aliquid optio deserunt ipsam.</p>
+	</div>
+</article>
+```
+
+*/
+.podcast {
+  display: block; }
+  .podcast:after {
+    content: "";
+    display: table;
+    clear: both; }
+
+.podcast__play {
+  float: left;
+  display: block;
+  margin-right: 2.35765%;
+  width: 14.70196%; }
+  .podcast__play:last-child {
+    margin-right: 0; }
+
+.podcast__btn--play {
+  position: relative; }
+
+.podcast__btn--play, .podcast__runtime {
+  display: block;
+  margin: 0 auto;
+  text-align: center; }
+
+.podcast__btn--play:before {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  font-family: "gmr-icons" !important;
+  content: "\e606" !important; }
+
+.podcast__meta {
+  float: left;
+  display: block;
+  margin-right: 2.35765%;
+  width: 82.94039%; }
+  .podcast__meta:last-child {
+    margin-right: 0; }
+  .podcast__meta h3 {
+    margin: 0;
+    clear: both; }
+  .podcast__meta time {
+    float: left; }
 
 .show-attr--name {
   position: absolute;
@@ -3853,18 +3945,18 @@ category: Components - Shows
     display: block;
     text-align: center; }
     .show__nav li a {
-      font-size: ms(4); }
+      font-size: 1.60181em; }
     @media screen and (min-width: 768px) {
       .show__nav li {
         display: inline-block; }
         .show__nav li a {
-          font-size: ms(0); } }
+          font-size: 1em; } }
   .show__nav a {
     color: #ffffff;
     text-transform: uppercase; }
 
 .show__title {
-  font-size: ms(10);
+  font-size: 2em;
   font-family: "Droid Sans", sans-serif; }
 
 .show__meta {
@@ -4010,6 +4102,17 @@ category: Components - Shows
   .show__favorites .featured__content--block:last-child {
     margin-right: 0; }
 
+.show__toggle {
+  position: absolute;
+  bottom: -35px;
+  right: 0;
+  background: none repeat scroll 0 0 transparent;
+  border: none;
+  outline: none;
+  color: #d22228; }
+  .show__toggle:hover {
+    color: #aa1c20; }
+
 .widget--live-player {
   margin: 0 1em 1em; }
 
@@ -4020,7 +4123,7 @@ category: Components - Shows
       display: block;
       margin: 0 0 1em;
       font-family: "Open Sans", sans-serif;
-      font-size: ms(0);
+      font-size: 1em;
       font-weight: normal; } }
 
 .widget--live-player ul {
@@ -4073,7 +4176,7 @@ a.social-share-link {
   margin: 0 1.25em 0 0;
   list-style: none;
   display: inline-block;
-  font-size: ms(0); }
+  font-size: 1em; }
 
 .social__link:last-child {
   margin: 0; }
@@ -4157,6 +4260,421 @@ category: Components - Gallery
 ---
 
 */
+/*doc
+---
+title: Personalities
+name: personalities
+category: Components - Shows
+---
+
+```html_example
+<div class="personality">
+	<div class="personality__avatar">
+		<img alt="" src="http://0.gravatar.com/avatar/ad516503a11cd5ca435acc9bb6523536?s=96" class="avatar avatar-96 photo avatar-default" height="96" width="96">
+	</div>
+	<div class="personality__meta">
+		<span class="personality__name h1">Dan Blaker</span>
+		<div class="personality__bio"><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Optio minus unde temporibus libero cupiditate sint quaerat. Rem minima, culpa odit, quis nesciunt cum, repellendus saepe laboriosam nihil totam debitis velit pariatur!</p><p>Libero quidem minima hic. Odio libero delectus placeat iure nam provident rem quaerat, sapiente corporis repudiandae praesentium, et commodi hic pariatur minus officia blanditiis accusamus fugiat quae! At, voluptatum!</p></div>
+	</div>
+</div>
+```
+
+*/
+.show__personalities {
+  max-width: 71.875em;
+  margin-left: auto;
+  margin-right: auto; }
+  .show__personalities:after {
+    content: "";
+    display: table;
+    clear: both; }
+
+.personality {
+  margin: 4em 0;
+  position: relative;
+  display: block; }
+  .personality:after {
+    content: "";
+    display: table;
+    clear: both; }
+
+.personality__avatar {
+  float: left;
+  display: block;
+  margin-right: 2.35765%;
+  width: 31.76157%; }
+  .personality__avatar:last-child {
+    margin-right: 0; }
+  @media screen and (min-width: 768px) {
+    .personality__avatar {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 23.23176%; }
+      .personality__avatar:last-child {
+        margin-right: 0; } }
+  .personality__avatar img {
+    width: 80%;
+    height: auto;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+    -border-radius: 50%;
+    border-radius: 50%; }
+
+.personality__meta {
+  overflow: hidden;
+  height: 8em;
+  float: left;
+  display: block;
+  margin-right: 2.35765%;
+  width: 65.88078%;
+  margin-right: 0; }
+  .personality__meta:last-child {
+    margin-right: 0; }
+  @media screen and (min-width: 768px) {
+    .personality__meta {
+      height: 12em;
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 74.41059%;
+      margin-right: 0; }
+      .personality__meta:last-child {
+        margin-right: 0; } }
+
+/*doc
+---
+title: Form Fields
+name: form-fields
+category: Components
+---
+
+```none_example
+<form>
+	<input name="action" type="hidden" value="enter_contest"><input name=
+	"contest_id" type="hidden" value="1862"><label for="form_field_c5">Your
+	Name</label><input id="form_field_c5" name="form_field_c5" required=
+	"required" size="10" style=
+	"background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABHklEQVQ4EaVTO26DQBD1ohQWaS2lg9JybZ+AK7hNwx2oIoVf4UPQ0Lj1FdKktevIpel8AKNUkDcWMxpgSaIEaTVv3sx7uztiTdu2s/98DywOw3Dued4Who/M2aIx5lZV1aEsy0+qiwHELyi+Ytl0PQ69SxAxkWIA4RMRTdNsKE59juMcuZd6xIAFeZ6fGCdJ8kY4y7KAuTRNGd7jyEBXsdOPE3a0QGPsniOnnYMO67LgSQN9T41F2QGrQRRFCwyzoIF2qyBuKKbcOgPXdVeY9rMWgNsjf9ccYesJhk3f5dYT1HX9gR0LLQR30TnjkUEcx2uIuS4RnI+aj6sJR0AM8AaumPaM/rRehyWhXqbFAA9kh3/8/NvHxAYGAsZ/il8IalkCLBfNVAAAAABJRU5ErkJggg==&quot;); background-repeat: no-repeat; background-attachment: scroll; background-position: right center;"
+	type="text">
+</form>
+
+
+<fieldset>
+	<legend>Which are your favorites?</legend><input id="form_field_c9_0" name=
+	"form_field_c9[]" type="checkbox" value="0"><label for=
+	"form_field_c9_0">this one</label><input id="form_field_c9_1" name=
+	"form_field_c9[]" type="checkbox" value="1"><label for=
+	"form_field_c9_1">that one</label><input id="form_field_c9_2" name=
+	"form_field_c9[]" type="checkbox" value="2"><label for=
+	"form_field_c9_2">the other one</label>
+</fieldset>
+<label for="form_field_c13">Tell me a story</label>
+
+<textarea id="form_field_c13" name="form_field_c13" required="required" rows=
+"5">
+</textarea>
+
+<fieldset>
+	<legend>Please choose one</legend><input id="form_field_c21_0" name=
+	"form_field_c21[]" type="radio" value="0"><label for=
+	"form_field_c21_0">Red</label><input id="form_field_c21_1" name=
+	"form_field_c21[]" type="radio" value="1"><label for=
+	"form_field_c21_1">Blue</label>
+</fieldset>
+<label for="form_field_c25">What day is it today?</label>
+
+<form>
+	<input id="form_field_c25" name="form_field_c25" required="required" type=
+	"date"><label for="form_field_c29">Select something</label><select id=
+	"form_field_c29" name="form_field_c29" required="required">
+		<option value="no">
+			no
+		</option>
+
+		<option value="ok">
+			ok
+		</option>
+
+		<option value="never!">
+			never!
+		</option>
+	</select><label for="form_field_c33">What time is it?</label><input id=
+	"form_field_c33" name="form_field_c33" required="required" type=
+	"time"><label for="form_field_c37">How many fingers am I holding
+	up?</label><input id="form_field_c37" name="form_field_c37" required=
+	"required" type="number"><label for="form_field_c41">Know any cool blogs
+	bro?</label><input id="form_field_c41" name="form_field_c41" required=
+	"required" type="url"><label for="form_field_c45">send me ur email
+	dood</label><input id="form_field_c45" name="form_field_c45" required=
+	"required" type="email"><label for="form_field_c49">how
+	much?</label><input id="form_field_c49" name="form_field_c49" pattern=
+	"\d+(\.\d{2})?" required="required" step="0.01" type="text">
+</form>
+
+
+<fieldset>
+	<legend>where u at?</legend><label for=
+	"form_field_c53[address]">Address</label><input id=
+	"form_field_c53[address]" name="form_field_c53[address]" required=
+	"required" type="text"><label for=
+	"form_field_c53[city]">City</label><input id="form_field_c53[city]" name=
+	"form_field_c53[city]" required="required" type="text"><label for=
+	"form_field_c53[state]">State</label><select id="form_field_c53[state]"
+	name="form_field_c53[state]" required="required">
+		<option value="Alabama">
+			Alabama
+		</option>
+
+		<option value="Alaska">
+			Alaska
+		</option>
+
+		<option value="Arizona">
+			Arizona
+		</option>
+
+		<option value="Arkansas">
+			Arkansas
+		</option>
+
+		<option value="California">
+			California
+		</option>
+
+		<option value="Colorado">
+			Colorado
+		</option>
+
+		<option value="Connecticut">
+			Connecticut
+		</option>
+
+		<option value="Delaware">
+			Delaware
+		</option>
+
+		<option value="Florida">
+			Florida
+		</option>
+
+		<option value="Georgia">
+			Georgia
+		</option>
+
+		<option value="Hawaii">
+			Hawaii
+		</option>
+
+		<option value="Idaho">
+			Idaho
+		</option>
+
+		<option value="Illinois">
+			Illinois
+		</option>
+
+		<option value="Indiana">
+			Indiana
+		</option>
+
+		<option value="Iowa">
+			Iowa
+		</option>
+
+		<option value="Kansas">
+			Kansas
+		</option>
+
+		<option value="Kentucky">
+			Kentucky
+		</option>
+
+		<option value="Louisiana">
+			Louisiana
+		</option>
+
+		<option value="Maine">
+			Maine
+		</option>
+
+		<option value="Maryland">
+			Maryland
+		</option>
+
+		<option value="Massachusetts">
+			Massachusetts
+		</option>
+
+		<option value="Michigan">
+			Michigan
+		</option>
+
+		<option value="Minnesota">
+			Minnesota
+		</option>
+
+		<option value="Mississippi">
+			Mississippi
+		</option>
+
+		<option value="Missouri">
+			Missouri
+		</option>
+
+		<option value="Montana">
+			Montana
+		</option>
+
+		<option value="Nebraska">
+			Nebraska
+		</option>
+
+		<option value="Nevada">
+			Nevada
+		</option>
+
+		<option value="New Hampshire">
+			New Hampshire
+		</option>
+
+		<option value="New Jersey">
+			New Jersey
+		</option>
+
+		<option value="New Mexico">
+			New Mexico
+		</option>
+
+		<option value="New York">
+			New York
+		</option>
+
+		<option value="North Carolina">
+			North Carolina
+		</option>
+
+		<option value="North Dakota">
+			North Dakota
+		</option>
+
+		<option value="Ohio">
+			Ohio
+		</option>
+
+		<option value="Oklahoma">
+			Oklahoma
+		</option>
+
+		<option value="Oregon">
+			Oregon
+		</option>
+
+		<option value="Pennsylvania">
+			Pennsylvania
+		</option>
+
+		<option value="Rhode Island">
+			Rhode Island
+		</option>
+
+		<option value="South Carolina">
+			South Carolina
+		</option>
+
+		<option value="South Dakota">
+			South Dakota
+		</option>
+
+		<option value="Tennessee">
+			Tennessee
+		</option>
+
+		<option value="Texas">
+			Texas
+		</option>
+
+		<option value="Utah">
+			Utah
+		</option>
+
+		<option value="Vermont">
+			Vermont
+		</option>
+
+		<option value="Virginia">
+			Virginia
+		</option>
+
+		<option value="Washington">
+			Washington
+		</option>
+
+		<option value="West Virginia">
+			West Virginia
+		</option>
+
+		<option value="Wisconsin">
+			Wisconsin
+		</option>
+
+		<option value="Wyoming">
+			Wyoming
+		</option>
+	</select><label for="form_field_c53[postal_code]">Zip Code/Postal
+	Code</label><input id="form_field_c53[postal_code]" name=
+	"form_field_c53[postal_code]" pattern="^\d{5}(?:[-\s]\d{4})?$" required=
+	"required" type="number">
+</fieldset>
+<label for="form_field_c57">no viruses plz!</label>
+
+<form>
+	<input id="form_field_c57" name="form_field_c57" required="required" type=
+	"file">
+</form>
+
+
+<p class="submit"><input class="button" id="" name="" type="submit" value=
+"Enter">
+</p>
+```
+
+*/
+input[type=text], input[type=number], input[type=date], input[type=time], input[type=url], input[type=email], textarea, fieldset input[type=text], fieldset input[type=number] {
+  border: none;
+  background: #929497;
+  margin-bottom: 1em;
+  display: block;
+  padding: 0.25em 0.5em; }
+
+label {
+  display: block; }
+
+input[type=text], input[type=number], input[type=date], input[type=time], input[type=url], input[type=email] {
+  width: 100%;
+  margin: 0; }
+
+textarea {
+  width: 100%; }
+
+fieldset {
+  border: none;
+  padding: 0; }
+  fieldset label {
+    display: inline-block;
+    margin: 0 0.5em; }
+  fieldset input[type=text], fieldset input[type=number] {
+    width: 100%; }
+
+select {
+  -webkit-appeaerance: none;
+  border-radius: none;
+  background: #929497;
+  border: none;
+  width: 100%; }
+
 /**
  * Single Page Styles
  */
