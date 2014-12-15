@@ -194,9 +194,9 @@ class GreaterMediaGallery {
 						<?php
 						$pager_text = sprintf( _x( 'Group %s', 'noun: group number', 'greatermedia' ), '{{slideNum}}' );
 						?>
-						<div class="slide-paging-previews cycle-slideshow"
+						<div class="gallery__previews cycle-slideshow"
 						     data-cycle-log="false"
-						     data-slides=".slide-previews-group"
+						     data-slides=".gallery__previews--group"
 						     data-cycle-prev=".gallery__paging--prev"
 						     data-cycle-next=".gallery__paging--next"
 						     data-cycle-pager=".slide-group-pager"
@@ -208,7 +208,7 @@ class GreaterMediaGallery {
 						     data-cycle-fx="scrollHorz"
 						     data-cycle-swipe-fx="scrollHorz">
 
-							<div class="slide-previews-group">
+							<div class="gallery__previews--group">
 								<?php
 								$image_count = 0;
 								while ( $gallery->have_posts() ) {
@@ -216,7 +216,7 @@ class GreaterMediaGallery {
 									$thumb_url = wp_get_attachment_image_src( get_the_ID(), 'gmr-gallery-thumbnail' );
 
 									if ( $image_count > 0 && $image_count % $thumbnails_per_page == 0 ) {
-										echo '</div><div class="slide-previews-group">';
+										echo '</div><div class="gallery__previews--group">';
 									}
 
 									echo '<div id="preview-' . $image_count . '" class="gallery__slide--preview" style="background-image: url(' . $thumb_url[0] . ');" data-cycle-hash="' . get_post_field( 'post_name', get_the_ID() ) . '" data-cycle-index="' . $image_count . '"></div>';
@@ -226,14 +226,14 @@ class GreaterMediaGallery {
 								?>
 							</div>
 						</div>
-						<div class="slide-paging gallery__paging--left">
+						<div class="gallery__paging gallery__paging--left">
 							<div class="slide-paging-arrows carousel-controls">
-								<button type="button" class="gallery__paging--prev prev-group"></button>
+								<button type="button" class="gallery__paging--prev"></button>
 							</div>
 						</div>
-						<div class="slide-paging gallery__paging--right">
+						<div class="gallery__paging gallery__paging--right">
 							<div class="slide-paging-arrows carousel-controls">
-								<button type="button" class="gallery__paging--next next-group"></button>
+								<button type="button" class="gallery__paging--next"></button>
 							</div>
 						</div>
 					</div> <!-- / gallery sidebar -->

@@ -12,10 +12,9 @@
 		$main_wrapper = $( '.gallery__slides' ),
 		$caption = $( '.caption' ),
 		$sidebar = $( '.gallery__thumbnails' ),
-		$slide_paging = $( '.slide-paging' ),
-		$slide_paging_previews = $( '.slide-paging-previews' ),
-		$toolbar_thumbnails = $( '.toolbar-thumbnails' ),
-		$single_thumbnail = $( '.slide-paging-previews div div' );
+		$slide_paging = $( '.gallery__paging' ),
+		$slide_paging_previews = $( '.gallery__previews' ),
+		$single_thumbnail = $( '.gallery__previews div div' );
 
 	/**
 	 * Bind the gallery full screen toggle
@@ -116,7 +115,7 @@
 
 			$main.css( 'height', '' );
 			$main_wrapper.css( 'height', '' );
-			$( '.slide-paging-previews, .slide-previews-group' ).css( 'height', '' );
+			$( '.gallery__previews, .gallery__previews--group' ).css( 'height', '' );
 			return;
 		}
 
@@ -135,7 +134,7 @@
 			$main_wrapper.css( 'height', main_height );
 
 			thumb_height = $single_thumbnail.width();
-			$( '.slide-paging-previews, .slide-previews-group' ).css( 'height', thumb_height + 'px' );
+			$( '.gallery__previews, .gallery__previews--group' ).css( 'height', thumb_height + 'px' );
 		}
 	}
 
@@ -149,11 +148,11 @@
 	 * @param number_in_group
 	 */
 	function regroup_thumbnails( number_in_group ) {
-		var $thumbnails_group = $( '.slide-previews-group' );
+		var $thumbnails_group = $( '.gallery__previews--group' );
 
-		$thumbnails_group.children( 'div' ).appendTo( '.slide-paging-previews' );
+		$thumbnails_group.children( 'div' ).appendTo( '.gallery__previews' );
 		$thumbnails_group.remove();
-		$( '.slide-paging-previews div' ).each( function() {
+		$( '.gallery__previews div' ).each( function() {
 			var $this = $( this );
 			if ( undefined == $this.attr( 'id' ) ) {
 				$this.remove();
@@ -163,7 +162,7 @@
 			.each( function () {
 				var divs = $( 'div', this );
 				for ( var i = 0; i < divs.length; i += number_in_group ) {
-					divs.slice( i, i + number_in_group ).wrapAll( '<div class="slide-previews-group"></div>' );
+					divs.slice( i, i + number_in_group ).wrapAll( '<div class="gallery__previews--group"></div>' );
 				}
 			} )
 			.cycle( 'reinit' );
@@ -205,7 +204,6 @@
 		}
 		var url_twitter  = 'http://twitter.com/home?status=' + share_url + '%20-%20' + share_title;
 		var url_facebook = 'http://www.facebook.com/sharer.php?u=' + share_url + '&amp;t=' + share_title;
-		var url_linkedin = 'http://www.linkedin.com/shareArticle?mini=true&url=' + share_url + '&title=' + share_title + '&source=World+Economic+Forum';
 
 		$( '.gallery-toolbar .fa-twitter' ).attr( 'href', url_twitter );
 		$( '.gallery-toolbar .fa-facebook' ).attr( 'href', url_facebook );

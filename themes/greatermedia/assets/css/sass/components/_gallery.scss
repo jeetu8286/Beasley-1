@@ -286,7 +286,7 @@ category: Components - Gallery
 	}
 }
 
-.slide-paging-previews {
+.gallery__previews {
 	width: 100%;
 	overflow: auto;
 	@include bp(small) {
@@ -365,6 +365,12 @@ category: Components - Gallery
 	height: 100px;
 	margin-right: 5px;
 	@include opacity(.5);
+	@include transition(opacity 200ms linear);
+	cursor: pointer;
+}
+
+.gallery__slide--preview:hover {
+	@include opacity(1);
 	@include transition(opacity 200ms linear);
 }
 
