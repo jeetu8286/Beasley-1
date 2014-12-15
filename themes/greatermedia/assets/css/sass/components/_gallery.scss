@@ -203,6 +203,8 @@ category: Components - Gallery
 .gallery__count {
 	@include span-columns(2);
 	@include shift(1);
+	font-size: ms(0);
+	font-weight: lighter;
 	@include bp(small) {
 		@include span-columns(4);
 		@include shift(1);

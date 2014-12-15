@@ -173,6 +173,9 @@ class GreaterMediaGallery {
 								echo '<h2 class="gallery__slide--title">';
 								echo $image_title;
 								echo '</h2>';
+								if ( function_exists( 'sharing_display' ) ) {
+									echo sharing_display();
+								}
 								echo '</div>';
 							}
 							$gallery->rewind_posts();

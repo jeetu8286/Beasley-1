@@ -4566,7 +4566,9 @@ category: Components - Gallery
   display: block;
   margin-right: 7.42297%;
   width: 46.28851%;
-  margin-left: 26.85574%; }
+  margin-left: 26.85574%;
+  font-size: 1em;
+  font-weight: lighter; }
   .gallery__count:last-child {
     margin-right: 0; }
   @media screen and (min-width: 480px) {
