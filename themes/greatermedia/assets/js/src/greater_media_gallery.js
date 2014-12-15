@@ -4,7 +4,7 @@
 	var document = window.document,
 		$document = $( document ),
 		$window = $( window ),
-		slideshow = $( '.main.cycle-slideshow' ),
+		slideshow = $( '.gallery__slide--images.cycle-slideshow' ),
 		gallery = document.querySelectorAll( '.gallery' ),
 		main = document.querySelector( '.gallery__slide--images' ),
 		$gallery = $( gallery ),
@@ -184,9 +184,9 @@
 	}
 
 	function get_thumbs_per_page() {
-		var slides_per_page = 15;
+		var slides_per_page = 8;
 		if ( isMobile() ) {
-			slides_per_page = 4;
+			slides_per_page = 3;
 		}
 		return slides_per_page;
 	}

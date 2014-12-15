@@ -101,8 +101,8 @@ class GreaterMediaGallery {
 			$main_post_title      = get_the_title( $main_post_id );
 			$main_post_short_link = wp_get_shortlink( $main_post_id );
 
-			$thumbnails_per_page = 15;
-			$image_count_text = sprintf( __( 'Image %s of %s', 'greatermedia' ), '{{slideNum}}</span>', '{{slideCount}}' );
+			$thumbnails_per_page = 8;
+			$image_count_text = sprintf( __( '%s of %s', 'greatermedia' ), '{{slideNum}}', '{{slideCount}}' );
 			?>
 			<div class="gallery">
 				<div class="container">
@@ -113,8 +113,8 @@ class GreaterMediaGallery {
 						     data-cycle-prev=".gallery__prev--btn"
 						     data-cycle-next=".gallery__next--btn"
 						     data-cycle-timeout="0"
-						     data-cycle-caption=".slide-paging-text"
-						     data-cycle-caption-template="<span class='highlight'><?php echo esc_attr( $image_count_text ); ?>"
+						     data-cycle-caption=".gallery__count"
+						     data-cycle-caption-template="<?php echo esc_attr( $image_count_text ); ?>"
 						     data-cycle-center-horz="true"
 						     data-cycle-center-vert="true"
 						     data-cycle-manual-speed="200"
@@ -153,7 +153,7 @@ class GreaterMediaGallery {
 					</div>
 					<div class="gallery__meta">
 						<div class="gallery__prev">
-							<button type="button" class="gallery__prev--btn slide-overlay-control-nohide"><span class="fa fa-angle-left"><?php _e( 'Prev', 'greatermedia'); ?></span></button>
+							<button type="button" class="gallery__prev--btn slide-overlay-control-nohide"><span class="gallery__prev--span"><?php _e( 'Prev', 'greatermedia'); ?></span></button>
 						</div>
 						<div class="gallery__content cycle-slideshow"
 						     data-cycle-log="false"
@@ -169,20 +169,19 @@ class GreaterMediaGallery {
 								$gallery->the_post();
 								$slide_hash = get_post_field( 'post_name', get_the_ID() );
 								$image_title = get_the_title( $post ); // title of the gallery image
-								echo '<div data-cycle-hash="' . $slide_hash . '">';
-								echo '<div class="gallery__title">';
+								echo '<div class="gallery__slide--content" data-cycle-hash="' . $slide_hash . '">';
+								echo '<h2 class="gallery__slide--title">';
 								echo $image_title;
-								echo '</div>';
+								echo '</h2>';
 								echo '</div>';
 							}
 							$gallery->rewind_posts();
 							?>
 						</div>
-						<div class="slide-paging">
-							<span class="slide-paging-text"></span>
+						<div class="gallery__count">
 						</div>
 						<div class="gallery__next">
-							<button type="button" class="gallery__next--btn slide-overlay-control-nohide"><span class="fa fa-angle-right"><?php _e( 'Next', 'greatermedia'); ?></span></button>
+							<button type="button" class="gallery__next--btn slide-overlay-control-nohide"><span class="gallery__next--span"><?php _e( 'Next', 'greatermedia'); ?></span></button>
 						</div>
 					</div>
 					<div class="gallery__thumbnails">
@@ -192,8 +191,8 @@ class GreaterMediaGallery {
 						<div class="slide-paging-previews cycle-slideshow"
 						     data-cycle-log="false"
 						     data-slides=".slide-previews-group"
-						     data-cycle-prev=".prev-group"
-						     data-cycle-next=".next-group"
+						     data-cycle-prev=".gallery__paging--prev"
+						     data-cycle-next=".gallery__paging--next"
 						     data-cycle-pager=".slide-group-pager"
 						     data-cycle-pager-template="<button class='btn btn-link indicator'><i class='dot'><?php echo esc_attr( $pager_text ); ?></i></button>"
 						     data-cycle-pager-active-class="current"
@@ -214,18 +213,21 @@ class GreaterMediaGallery {
 										echo '</div><div class="slide-previews-group">';
 									}
 
-									echo '<div id="preview-' . $image_count . '" style="background-image: url(' . $thumb_url[0] . ');" data-cycle-hash="' . get_post_field( 'post_name', get_the_ID() ) . '" data-cycle-index="' . $image_count . '"></div>';
+									echo '<div id="preview-' . $image_count . '" class="gallery__slide--preview" style="background-image: url(' . $thumb_url[0] . ');" data-cycle-hash="' . get_post_field( 'post_name', get_the_ID() ) . '" data-cycle-index="' . $image_count . '"></div>';
 									$image_count++;
 								}
 								$gallery->rewind_posts();
 								?>
 							</div>
 						</div>
-						<div class="slide-paging">
+						<div class="slide-paging gallery__paging--left">
 							<div class="slide-paging-arrows carousel-controls">
-								<button type="button" class="btn btn-link btn-left prev-group"><i class="arrow-left"><?php _ex( 'Left', 'direction', 'greatermedia' ); ?></i></button>
-								<button type="button" class="btn btn-link btn-right next-group"><i class="arrow-right"><?php _ex( 'Right', 'direction', 'greatermedia' ); ?></i></button>
-								<div class="slide-group-pager"></div>
+								<button type="button" class="gallery__paging--prev prev-group"></button>
+							</div>
+						</div>
+						<div class="slide-paging gallery__paging--right">
+							<div class="slide-paging-arrows carousel-controls">
+								<button type="button" class="gallery__paging--next next-group"></button>
 							</div>
 						</div>
 					</div> <!-- / gallery sidebar -->
