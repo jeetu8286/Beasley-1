@@ -1,4 +1,4 @@
-(function ($,window,undefined) {
+(function ($, window, undefined) {
 	"use strict";
 
 	var tech = getUrlVars()['tech'];
@@ -174,10 +174,11 @@
 	}
 
 	function loggedInGigyaUser() {
-		if ( !gmr.logged_in ) {
-			console.log( "--- Log In with Gigya ---" );
+		if (!gmr.logged_in) {
+			console.log("--- Log In with Gigya ---");
 		} else {
-			console.log( "--- You are logged in, so now enjoy some music ---" );
+			console.log("--- You are logged in, so now enjoy some music ---");
+			//playVastAd();
 			playLiveAudioStream();
 		}
 	}
@@ -195,6 +196,9 @@
 		debug('playLiveAudioStream - station=' + station);
 
 		$('#stationUser').val('');
+
+		if (adPlaying)
+			player.skipAd();
 
 		if (livePlaying)
 			player.stop();
@@ -280,7 +284,7 @@
 		initControlsUi();
 
 		player.addEventListener('track-cue-point', onTrackCuePoint);
-		player.addEventListener( 'ad-break-cue-point', onAdBreak );
+		player.addEventListener('ad-break-cue-point', onAdBreak);
 
 		player.addEventListener('stream-status', onStatus);
 		player.addEventListener('stream-geo-blocked', onGeoBlocked);
@@ -313,20 +317,57 @@
 		});
 	}
 
-	function onAdPlaybackStart( e ) {
+	function onAdPlaybackStart(e) {
 		adPlaying = true;
-		setStatus( 'Advertising... Type=' + e.data.type );
+		setStatus('Advertising... Type=' + e.data.type);
 	}
 
-	function onAdPlaybackComplete( e ) {
+	function onAdPlaybackComplete(e) {
 		adPlaying = false;
-		$( "#td_adserver_bigbox" ).empty();
-		$( "#td_adserver_leaderboard" ).empty();
-		setStatus( 'Ready' );
+		$("#td_adserver_bigbox").empty();
+		$("#td_adserver_leaderboard").empty();
+		setStatus('Ready');
 	}
 
-	function onAdCountdown( e ) {
-		debug( 'Ad countdown : ' + e.data.countDown + ' second(s)');
+	function onAdCountdown(e) {
+		debug('Ad countdown : ' + e.data.countDown + ' second(s)');
+	}
+
+	function onVastProcessComplete(e) {
+		debug('Vast Process complete');
+
+		var vastCompanions = e.data.companions;
+
+		//Load Vast Ad companion (bigbox & leaderbaord ads)
+		displayVastCompanionAds(vastCompanions);
+	}
+
+	function onVpaidAdCompanions(e) {
+		debug('Vpaid Ad Companions');
+
+		//Load Vast Ad companion (bigbox & leaderbaord ads)
+		displayVastCompanionAds(e.companions);
+	}
+
+	function displayVastCompanionAds(vastCompanions) {
+		if (vastCompanions && vastCompanions.length > 0) {
+			var bigboxIndex = -1;
+			var leaderboardIndex = -1;
+
+			$.each(vastCompanions, function (i, val) {
+				if (parseInt(val.width) == 300 && parseInt(val.height) == 250) {
+					bigboxIndex = i;
+				} else if (parseInt(val.width) == 728 && parseInt(val.height) == 90) {
+					leaderboardIndex = i;
+				}
+			});
+
+			if (bigboxIndex > -1)
+				companions.loadVASTCompanionAd('td_adserver_bigbox', vastCompanions[bigboxIndex]);
+
+			if (leaderboardIndex > -1)
+				companions.loadVASTCompanionAd('td_adserver_leaderboard', vastCompanions[leaderboardIndex]);
+		}
 	}
 
 	function onStreamStarted() {
@@ -372,8 +413,8 @@
 
 	}
 
-	function onAdBreak( e ) {
-		setStatus( 'Commercial break...' );
+	function onAdBreak(e) {
+		setStatus('Commercial break...');
 		console.log(e);
 	}
 
@@ -495,7 +536,85 @@
 		$("#asyncData").html("<div>" + tableContent + "</div>");
 	}
 
+	function playRunSpotAd() {
+		detachAdListeners();
+		attachAdListeners();
+
+		player.stop();
+		player.skipAd();
+		player.playAd('vastAd', {sid: 8441});
+	}
+
+	function playRunSpotAdById() {
+		if ($("#runSpotId").val() == '') return;
+
+		detachAdListeners();
+		attachAdListeners();
+
+		player.stop();
+		player.skipAd();
+		player.playAd('vastAd', {sid: $("#runSpotId").val()});
+	}
+
+	function playVastAd() {
+		detachAdListeners();
+		attachAdListeners();
+
+		player.stop();
+		player.skipAd();
+		player.playAd('vastAd', {url: 'http://runspot4.tritondigital.com/RunSpotV4.svc/GetVASTAd?&StationID=8441&MediaFormat=21&RecordImpressionOnCall=false&AdMinimumDuration=0&AdMaximumDuration=900&AdLevelPlacement=1&AdCategory=1'});
+	}
+
+	function playVastAdByUrl() {
+		if ($("#vastAdUrl").val() == '') return;
+
+		detachAdListeners();
+		attachAdListeners();
+
+		player.stop();
+		player.skipAd();
+		player.playAd('vastAd', {url: $("#vastAdUrl").val()});
+	}
+
+	function playBloomAd() {
+		detachAdListeners();
+		attachAdListeners();
+
+		player.stop();
+		player.skipAd();
+		player.playAd('bloom', {id: 4974});
+	}
+
+	function playMediaAd() {
+		detachAdListeners();
+		attachAdListeners();
+
+		player.stop();
+		player.skipAd();
+		//player.playAd( 'mediaAd', { mediaUrl: 'http://cdnp.tremormedia.com/video/acudeo/Carrot_400x300_500kb.flv', linkUrl:'http://www.google.fr/' } );
+		player.playAd('mediaAd', {mediaUrl: 'http://vjs.zencdn.net/v/oceans.mp4', linkUrl: 'http://www.google.fr/'});
+	}
+
+	function attachAdListeners() {
+		player.addEventListener('ad-playback-start', onAdPlaybackStart);
+		player.addEventListener('ad-playback-error', onAdPlaybackComplete);
+		player.addEventListener('ad-playback-complete', onAdPlaybackComplete);
+		player.addEventListener('ad-countdown', onAdCountdown);
+		player.addEventListener('vast-process-complete', onVastProcessComplete);
+		player.addEventListener('vpaid-ad-companions', onVpaidAdCompanions);
+	}
+
+	function detachAdListeners() {
+		player.removeEventListener('ad-playback-start', onAdPlaybackStart);
+		player.removeEventListener('ad-playback-error', onAdPlaybackComplete);
+		player.removeEventListener('ad-playback-complete', onAdPlaybackComplete);
+		player.removeEventListener('ad-countdown', onAdCountdown);
+		player.removeEventListener('vast-process-complete', onVastProcessComplete);
+		player.removeEventListener('vpaid-ad-companions', onVpaidAdCompanions);
+	}
+
 	var artist;
+
 	function onNPESong(e) {
 		console.log('tdplayer::onNPESong');
 		console.log(e);
@@ -509,6 +628,7 @@
 
 		displayNpeInfo(songData, false);
 	}
+
 	function displayNpeInfo(songData, asyncData) {
 		$("#asyncData").empty();
 
@@ -536,6 +656,7 @@
 
 		displayNpeInfo(songData, true);
 	}
+
 	function onArtistPictureComplete(pictures) {
 		console.log('tdplayer::onArtistPictureComplete');
 		console.log(pictures);
@@ -629,8 +750,9 @@
 		$('#debugInformation').append(info);
 		$('#debugInformation').append('\n');
 	}
+
 	function clearDebugInfo() {
 		$('#debugInformation').html('');
 	}
 
-} )(jQuery,window);
+})(jQuery, window);
