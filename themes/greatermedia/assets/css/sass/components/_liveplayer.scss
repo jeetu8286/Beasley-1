@@ -127,7 +127,7 @@ category: Components
 	bottom: 0;
 	left: 0;
 	width: 100%;
-	height: 100px;
+	height: 40px;
 	background: -moz-linear-gradient(top,rgba(0,0,0,0) 0%,rgba(0,0,0,.7) 100%);
 	background: -webkit-gradient(linear,left top,left bottom,color-stop(0%,rgba(0,0,0,0)),color-stop(100%,rgba(0,0,0,.7)));
 	background: -webkit-linear-gradient(top,rgba(0,0,0,0) 0%,rgba(0,0,0,.7) 100%);
@@ -170,14 +170,14 @@ category: Components
 	padding: 0;
 	margin: 0;
 	overflow: visible;
-	background-color: $cod-gray;
+	background-color: $liveplayer-bg;
 	line-height: 1;
 	font-size: ms(-1);
 }
 
 .live-player__stream--current.open {
 	display: block;
-	background-color: $cod-gray;
+	background-color: $liveplayer-bg;
 	color: $color-text-white;
 	z-index: 10;
 }
@@ -254,7 +254,7 @@ category: Components
 	@extend %list-item;
 	overflow:auto;
 	padding: .5em 1em;
-	background-color: $cod-gray;
+	background-color: $liveplayer-bg;
 }
 
 .live-player__stream--item:hover {
@@ -330,13 +330,13 @@ category: Components
 }
 
 .live-stream__listen-now--btn {
-	@include btn($cardinal, $color-text-white, $cardinal, .25em, 1em, ms(-1));
+	@include btn($btn-bg, $color-text-white, $btn-bg, .25em, 1em, ms(-1));
 	margin: 0 .5em;
 	@include border-radius(1em);
 }
 
 .live-stream__now-playing--btn {
-	@include btn(transparent, $color-text-red, $cardinal, .25em, 1em, ms(-1));
+	@include btn(transparent, $color-text-red, $btn-bg, .25em, 1em, ms(-1));
 	display: none;
 	margin: 0 .5em;
 	@include border-radius(1em);
@@ -349,7 +349,7 @@ category: Components
 }
 
 .live-stream__resume--btn {
-	@include btn(transparent, $color-text-red, $cardinal, .25em, 1em, ms(-1));
+	@include btn(transparent, $color-text-red, $btn-bg, .25em, 1em, ms(-1));
 	margin: 0 .5em;
 	@include border-radius(1em);
 }
@@ -366,7 +366,7 @@ category: Components
 	margin: 0 auto;
 	@include border-radius(50%);
 	background-color: transparent;
-	border: 2px solid $cardinal;
+	border: 2px solid $btn-bg;
 	outline: none;
 	font-size: 1.25em;
 	font-style: normal;
@@ -433,7 +433,7 @@ category: Components
 	height: 3px;
 	margin: 0 auto;
 	@include border-radius(1px);
-	background-color: $ship-gray;
+	background-color: $medium-gray;
 }
 
 .live-stream--podcast__progress-current {
@@ -441,7 +441,7 @@ category: Components
 	width: 80%;
 	height: 3px;
 	@include border-radius(1px);
-	background-color: $cardinal;
+	background-color: $btn-bg;
 }
 
 .live-stream--podcast__time {
@@ -633,18 +633,6 @@ category: Components
 	font-size: ms(-2);
 }
 
-.live-player--test {
-	width: 100%;
-	padding: .25em .5em;
-	color: $nevada;
-}
-
-.live-player--test_label {
-	display: inline-block;
-	margin-left: 4px;
-	cursor: pointer;
-}
-
 // live links
 .live-links {
 	display: none;
@@ -685,6 +673,7 @@ category: Components
 
 .live-link__type--audio, .live-link__type--gallery, .live-link__type--image, .live-link__type--link, .live-link__type--standard, .live-link__type--video {
 	display: block;
+	position: relative;
 }
 
 .live-link__song {

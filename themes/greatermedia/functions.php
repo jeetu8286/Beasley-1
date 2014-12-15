@@ -18,14 +18,15 @@
  */
 define( 'GREATERMEDIA_VERSION', '0.1.0' );
 
-//require_once( __DIR__ . '/includes/liveplayer-test/class-gigya-login-test.php' );
+add_theme_support( 'homepage-curation' );
+
 require_once( __DIR__ . '/includes/liveplayer/loader.php' );
 require_once( __DIR__ . '/includes/layout-chooser/class-choose-layout.php' );
+require_once( __DIR__ . '/includes/site-options/loader.php');
 
 /**
  * Required files
  */
-require_once( __DIR__ . '/includes/class-post-styles.php' );
 require_once( __DIR__ . '/includes/gm-tinymce/loader.php');
 
 /**
@@ -91,80 +92,40 @@ function greatermedia_scripts_styles() {
 		array(),
 		'4.2'
 	);
-
-	if ( is_page( 'style-guide' ) ) {
-		wp_enqueue_script(
-			'gm-styleguide',
-			get_template_directory_uri() . "/assets/js/gm_styleguide{$postfix}.js",
-			array(
-				'jquery'
-			),
-			GREATERMEDIA_VERSION,
-			true
-		);
-		wp_enqueue_script(
-			'google-code-pretify',
-			get_template_directory_uri() .
-			'/assets/js/styleguide/prettify.js',
-			array(
-				'jquery'
-			),
-			GREATERMEDIA_VERSION,
-			true
-		);
-		wp_enqueue_style(
-			'gm-styleguide',
-			get_template_directory_uri() . "/assets/css/gm_styleguide{$postfix}.css",
-			array(
-				'open-sans',
-				'droid-sans',
-				'font-awesome'
-			),
-			GREATERMEDIA_VERSION
-		);
-	} else {
-		wp_enqueue_script(
-			'greatermedia',
-			get_template_directory_uri() . "/assets/js/greater_media{$postfix}.js",
-			array(
-				'headroom'
-			),
-			GREATERMEDIA_VERSION,
-			true
-		);
-		wp_enqueue_script(
-			'cycle2',
-			get_template_directory_uri() . "/assets/js/vendor/cycle2.min.js",
-			array(),
-			'2.1.6',
-			false
-		);
-		wp_enqueue_script(
-			'respond.js',
-			get_template_directory_uri() . '/assets/js/vendor/respond.min.js',
-			array(),
-			'1.4.2',
-			false
-		);
-		wp_enqueue_script(
-			'html5shiv',
-			get_template_directory_uri() . '/assets/js/vendor/html5shiv-printshiv.js',
-			array(),
-			'3.7.2',
-			false
-		);
-		wp_enqueue_style(
-			'greatermedia',
-			get_template_directory_uri() . "/assets/css/greater_media{$postfix}.css",
-			array(
-				'dashicons',
-				'open-sans',
-				'droid-sans',
-				'font-awesome'
-			),
-			GREATERMEDIA_VERSION
-		);
-	};
+	wp_enqueue_script(
+		'greatermedia',
+		get_template_directory_uri() . "/assets/js/greater_media{$postfix}.js",
+		array(
+			'underscore'
+		),
+		GREATERMEDIA_VERSION,
+		true
+	);
+	wp_enqueue_script(
+		'respond.js',
+		get_template_directory_uri() . '/assets/js/vendor/respond.min.js',
+		array(),
+		'1.4.2',
+		false
+	);
+	wp_enqueue_script(
+		'html5shiv',
+		get_template_directory_uri() . '/assets/js/vendor/html5shiv-printshiv.js',
+		array(),
+		'3.7.2',
+		false
+	);
+	wp_enqueue_style(
+		'greatermedia',
+		get_template_directory_uri() . "/assets/css/greater_media{$postfix}.css",
+		array(
+			'dashicons',
+			'open-sans',
+			'droid-sans',
+			'font-awesome'
+		),
+		GREATERMEDIA_VERSION
+	);
 
 }
 
@@ -204,17 +165,17 @@ function greatermedia_post_formats() {
 	$post_id = $post->ID;
 
 	if ( has_post_format( 'gallery', $post_id ) ) {
-		$format = 'gallery';
+		$format = 'entry__thumbnail--gallery';
 	} elseif ( has_post_format( 'link', $post_id ) ) {
-		$format = 'link';
+		$format = 'entry__thumbnail--link';
 	} elseif ( has_post_format( 'image', $post_id ) ) {
-		$format = 'image';
+		$format = 'entry__thumbnail--image';
 	} elseif ( has_post_format( 'video', $post_id ) ) {
-		$format = 'video';
+		$format = 'entry__thumbnail--video';
 	} elseif ( has_post_format( 'audio', $post_id ) ) {
-		$format = 'audio';
+		$format = 'entry__thumbnail--audio';
 	} else {
-		$format = 'standard';
+		$format = 'entry__thumbnail--standard';
 	}
 
 	echo $format;
@@ -287,10 +248,9 @@ add_action( 'keyword_search_result', 'get_results_for_keyword' );
 /**
  * Alter search results on search page
  * 
- * @param  [type] $query [description]
- * @return [type]        [description]
+ * @param  WP_Query $query [description]
  */
-function alter_search_query( $query ) {
+function greatermedia_alter_search_query( $query ) {
 	if( $query->is_search && $query->is_main_query() ) {
 		$search_query_arg = sanitize_text_field( $query->query_vars['s'] );
 		$custom_post_id = intval( get_post_with_keyword( $search_query_arg ) );
@@ -299,5 +259,23 @@ function alter_search_query( $query ) {
 		}
 	}
 }
-add_action( 'pre_get_posts', 'alter_search_query' );
+add_action( 'pre_get_posts', 'greatermedia_alter_search_query' );
 
+/**
+ * Alters the main query on the front page to include additional post types
+ *
+ * @param WP_Query $query
+ */
+function greatermedia_alter_front_page_query( $query ) {
+	if ( $query->is_main_query() && $query->is_front_page() ) {
+		// Need to really think about how to include events here, and if it really makes sense. By default,
+		// we would have all published events, in reverse cron - so like we'd have "posts" looking things dated for the future
+		// that would end up hiding the actual posts, potentially for pages before getting to any real content.
+		//
+		// ADDITIONALLY - There is a checkbox for this on the events setting page, so we don't need to do that here :)
+		$post_types = array( 'post', GMP_CPT::EPISODE_POST_TYPE );
+
+		$query->set( 'post_type', $post_types );
+	}
+}
+add_action( 'pre_get_posts', 'greatermedia_alter_front_page_query' );

@@ -4,23 +4,37 @@
 
 		<div class="container">
 
+			<?php the_post(); ?>
+
+			<?php get_template_part( 'show-header' ); ?>
+
 			<section class="content">
 
-				<?php the_post(); ?>
+				<div class="videos">
 
-					<article id="post-<?php the_ID(); ?>" <?php post_class( 'cf' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
+					<?php
+					$video_query = \GreaterMedia\Shows\get_show_video_query();
 
-						<header class="entry-header">
+					while( $video_query->have_posts() ) : $video_query->the_post(); ?>
+						<article id="post-<?php the_ID(); ?>" <?php post_class( 'cf' ); ?> role="article">
 
-							<h2 class="entry-title" itemprop="headline"><a href="<?php the_permalink(); ?>"><?php the_title(); ?> Videos</a></h2>
+							<header class="entry-header">
+								<h2 class="entry-title" itemprop="headline"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
+							</header>
 
-						</header>
+							<div class="entry-content">
+								<?php the_excerpt(); ?>
+							</div>
 
-						<div class="entry-content">
-							single-show-videos.php
-						</div>
+						</article>
+					<?php
+					endwhile;
+					wp_reset_query();
+					?>
 
-					</article>
+					<div class="video-paging"><?php echo \GreaterMedia\Shows\get_show_endpoint_pagination_links( $video_query ); ?></div>
+
+				</div>
 				
 			</section>
 

@@ -4,29 +4,35 @@
 
 		<div class="container">
 
+			<?php the_post(); ?>
+
+			<?php get_template_part( 'show-header' ); ?>
+
 			<section class="content">
 
-				<?php the_post(); ?>
-
-				<h2 class="content__heading"><?php the_title(); ?> Podcasts</h2>
-
 				<div class="podcasts">
+
+					<h2>Podcasts</h2>
 
 					<?php
 					$podcast_query = \GreaterMedia\Shows\get_show_podcast_query();
 
 					while( $podcast_query->have_posts() ) : $podcast_query->the_post(); ?>
-						<article id="post-<?php the_ID(); ?>" <?php post_class( 'cf' ); ?> role="article" itemscope itemtype="http://schema.org/OnDemandEvent">
+						<article id="post-<?php the_ID(); ?>" <?php post_class( 'cf podcast' ); ?> role="article" itemscope itemtype="http://schema.org/OnDemandEvent">
 
-							<header class="entry-header">
-								<h2 class="entry-title" itemprop="headline"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
-							</header>
-
-							<div class="entry-content">
+							<div class="podcast__play">
+								<button class="podcast__btn--play"></button>
+								<span class="podcast__runtime">RUNTIME</span><?php // todo Podcasts: runtime ?>
+							</div>
+							<div class="podcast__meta">
+								<time datetime="<?php the_time( 'c' ); ?>"><?php the_time( 'd F' ); ?></time>
+								<button class="podcast__download">Download</button><?php // todo Podcasts: Download ?>
+								<h3><?php the_title(); ?></h3>
 								<?php the_excerpt(); ?>
 							</div>
 
 						</article>
+						
 					<?php
 					endwhile;
 					wp_reset_query();

@@ -69,6 +69,9 @@ class GMR_Show_Metaboxes {
 	 */
 	public function add_meta_boxes() {
 		add_meta_box( 'show_logo', 'Logo', array( $this, 'render_logo_meta_box' ), ShowsCPT::SHOW_CPT, 'side' );
+
+		add_meta_box( 'show_featured', 'Featured', array( $this, 'render_featured_meta_box' ), ShowsCPT::SHOW_CPT, 'advanced', 'high' );
+		add_meta_box( 'show_favorites', 'Favorites', array( $this, 'render_favorites_meta_box' ), ShowsCPT::SHOW_CPT, 'advanced', 'high' );
 	}
 
 	/**
@@ -86,7 +89,7 @@ class GMR_Show_Metaboxes {
 		wp_nonce_field( 'gmr_show', 'show_nonce', false );
 
 		$has_homepage = \GreaterMedia\Shows\supports_homepage( get_the_ID() );
-		$supports_albums = \GreaterMedia\Shows\supports_albums( get_the_ID() );
+		$supports_galleries = \GreaterMedia\Shows\supports_galleries( get_the_ID() );
 		$supports_podcasts = \GreaterMedia\Shows\supports_podcasts( get_the_ID() );
 		$supports_videos = \GreaterMedia\Shows\supports_videos( get_the_ID() );
 
@@ -106,14 +109,14 @@ class GMR_Show_Metaboxes {
 			</div>
 		</div>
 
-		<div id="show-homepage-supports-albums" class="misc-pub-section misc-pub-gmr mis-pub-radio">
-			Supports Albums:
-			<span class="post-pub-section-value radio-value"><?php echo $supports_albums ? 'Yes' : 'No'; ?></span>
+		<div id="show-homepage-supports-galleries" class="misc-pub-section misc-pub-gmr mis-pub-radio">
+			Supports Galleries:
+			<span class="post-pub-section-value radio-value"><?php echo $supports_galleries ? 'Yes' : 'No'; ?></span>
 			<a href="#" class="edit-radio hide-if-no-js" style="display: inline;"><span aria-hidden="true">Edit</span></a>
 
 			<div class="radio-select hide-if-js">
-				<label for="show-homepage-supports-albums-no"><input type="radio" name="show_homepage_albums" id="show-homepage-supports-albums-no" value="0"<?php checked( $supports_albums, false ) ?>> No</label><br>
-				<label for="show-homepage-supports-albums-yes"><input type="radio" name="show_homepage_albums" id="show-homepage-supports-albums-yes" value="1"<?php checked( $supports_albums, true ) ?>> Yes</label><br>
+				<label for="show-homepage-supports-galleries-no"><input type="radio" name="show_homepage_galleries" id="show-homepage-supports-galleries-no" value="0"<?php checked( $supports_galleries, false ) ?>> No</label><br>
+				<label for="show-homepage-supports-galleries-yes"><input type="radio" name="show_homepage_galleries" id="show-homepage-supports-galleries-yes" value="1"<?php checked( $supports_galleries, true ) ?>> Yes</label><br>
 
 				<p>
 					<a href="#" class="save-radio hide-if-no-js button"><?php esc_html_e( 'OK' ) ?></a>
@@ -176,6 +179,49 @@ class GMR_Show_Metaboxes {
 		echo '</div>';
 	}
 
+	public function render_featured_meta_box( WP_Post $post ) {
+		if ( ! function_exists( 'pf_render' ) ) {
+			?><p>Please install the <a href="http://github.com/10up/post-finder">"post-finder"</a> plugin.</p><?php
+			return;
+		}
+		$featured_posts = get_post_meta( $post->ID, 'gmr_featured_post_ids', true );
+
+		$options = array(
+			'args' => array(
+				'post_type' => array( 'post', 'tribe_events' ),
+				'meta_key' => '_thumbnail_id',
+			),
+			'limit' => 3,
+		);
+
+		?>
+		<p>These items require featured images. If an item is not present, make sure a featured image is assigned.</p>
+		<?php
+		pf_render( 'gmr-featured-post-ids', $featured_posts, $options );
+	}
+
+	public function render_favorites_meta_box( WP_Post $post ) {
+		if ( ! function_exists( 'pf_render' ) ) {
+			?><p>Please install the <a href="http://github.com/10up/post-finder">"post-finder"</a> plugin.</p><?php
+			return;
+		}
+
+		$favorite_posts = get_post_meta( $post->ID, 'gmr_favorite_post_ids', true );
+
+		$options = array(
+			'args' => array(
+				'post_type' => array( 'post' ),
+				'meta_key' => '_thumbnail_id',
+			),
+			'limit' => 10,
+		);
+
+		?>
+		<p>These items require featured images. If an item is not present, make sure a featured image is assigned.</p>
+		<?php
+		pf_render( 'gmr-favorite-post-ids', $favorite_posts, $options );
+	}
+
 	/**
 	 * Saves the captured data.
 	 *
@@ -191,28 +237,38 @@ class GMR_Show_Metaboxes {
 		}
 
 		$homepage_support = filter_input( INPUT_POST, 'show_homepage', FILTER_VALIDATE_BOOLEAN );
-		$album_support = filter_input( INPUT_POST, 'show_homepage_albums', FILTER_VALIDATE_BOOLEAN );
+		$gallery_support = filter_input( INPUT_POST, 'show_homepage_galleries', FILTER_VALIDATE_BOOLEAN );
 		$podcast_support = filter_input( INPUT_POST, 'show_homepage_podcasts', FILTER_VALIDATE_BOOLEAN );
 		$video_support = filter_input( INPUT_POST, 'show_homepage_videos', FILTER_VALIDATE_BOOLEAN );
 
 		update_post_meta( $post_id, 'show_homepage', $homepage_support );
 
 		if ( $homepage_support ) {
-			update_post_meta( $post_id, 'show_homepage_albums', $album_support );
+			update_post_meta( $post_id, 'show_homepage_galleries', $gallery_support );
 			update_post_meta( $post_id, 'show_homepage_podcasts', $podcast_support );
 			update_post_meta( $post_id, 'show_homepage_videos', $video_support );
 		} else {
 			// Impossible to support these if homepage support is turned off
-			update_post_meta( $post_id, 'show_homepage_albums', false );
+			update_post_meta( $post_id, 'show_homepage_galleries', false );
 			update_post_meta( $post_id, 'show_homepage_podcasts', false );
 			update_post_meta( $post_id, 'show_homepage_videos', false );
 
-			if ( $album_support || $podcast_support || $video_support ) {
+			if ( $gallery_support || $podcast_support || $video_support ) {
 				add_filter( 'redirect_post_location', array( $this, 'add_homepage_validation_error' ), 99 );
 			}
 		}
 
 		update_post_meta( $post_id, 'logo_image', filter_input( INPUT_POST, 'logo_image', FILTER_VALIDATE_INT ) );
+
+		if ( isset( $_POST['gmr-featured-post-ids'] ) ) {
+			$featured_ids = implode( ',', array_map( 'intval', explode( ',', $_POST['gmr-featured-post-ids'] ) ) );
+			update_post_meta( $post_id, 'gmr_featured_post_ids', $featured_ids );
+		}
+
+		if ( isset( $_POST['gmr-favorite-post-ids'] ) ) {
+			$favorite_ids = implode( ',', array_map( 'intval', explode( ',', $_POST['gmr-favorite-post-ids'] ) ) );
+			update_post_meta( $post_id, 'gmr_favorite_post_ids', $favorite_ids );
+		}
 	}
 
 	/**
@@ -239,7 +295,7 @@ class GMR_Show_Metaboxes {
 
 		?>
 		<div class="error">
-			<p>You must enable show homepage support to support Albums, Podcasts, or Videos.</p>
+			<p>You must enable show homepage support to support Galleries, Podcasts, or Videos.</p>
 		</div>
 		<?php
 	}

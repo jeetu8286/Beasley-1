@@ -13,7 +13,7 @@ add_action( 'template_include', __NAMESPACE__ . '\filter_template' );
  * @return array
  */
 function get_sections() {
-	return array( 'about', 'podcasts', 'albums', 'videos' );
+	return array( 'about', 'podcasts', 'galleries', 'videos' );
 }
 
 /**
@@ -39,12 +39,16 @@ function add_rewrites() {
 
 		\add_rewrite_rule( $rule, sprintf( 'index.php?%1$s=$matches[1]&show_section=$matches[2]&show_section_page=$matches[4]', $post_type ) , 'top' );
 	}
+
+	// The rule so that the main show page can be paginated!
+	$rule = sprintf( '%1$s/([^/]+)(/page/([0-9]+))?/?$', $rewrite_base );
+	\add_rewrite_rule( $rule, sprintf( 'index.php?%1$s=$matches[1]&show_section_page=$matches[3]', $post_type ) , 'top' );
 }
 
 /**
  * Checks if we should be allowing access to this show's homepage or not, based on the settings on the show page in wp-admin.
  *
- * Checks for Homepage support (applies to about also), in addition to Albums, Podcasts, and Videos.
+ * Checks for Homepage support (applies to about also), in addition to Galleries, Podcasts, and Videos.
  */
 function template_redirect() {
 	if ( get_post_type() !== \ShowsCPT::SHOW_CPT ) {
@@ -59,8 +63,8 @@ function template_redirect() {
 	$section = get_query_var( 'show_section' );
 	if ( $section && in_array( $section, get_sections() ) ) {
 		switch( $section ) {
-			case 'albums':
-				$allowed = supports_albums( get_the_ID() );
+			case 'galleries':
+				$allowed = supports_galleries( get_the_ID() );
 				break;
 			case 'podcasts':
 				$allowed = supports_podcasts( get_the_ID() );

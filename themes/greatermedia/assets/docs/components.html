@@ -41,7 +41,11 @@
       
         
         
-          
+      
+        
+        
+      
+        
         
       
         
@@ -80,6 +84,25 @@
             
           
             
+              
+              
+                <li><a href="components_-_front_page.html">Front Page</a></li>
+              
+            
+          
+            
+              
+              
+                <li><a class="active" href="components.html">Components</a></li>
+              
+            
+          
+            
+              
+              
+                <li><a href="components_-_post_excerpts.html">Post Excerpts</a></li>
+              
+            
           
             
               
@@ -107,7 +130,7 @@
             
               
               
-                <li><a class="active" href="components.html">Components</a></li>
+                <li><a href="components_-_shows.html">Shows</a></li>
               
             
           
@@ -130,36 +153,14 @@
             
           
             
+          
+            
+          
+            
               
               
                 <li><a href="base_-_typography.html">Typography</a></li>
               
-            
-          
-            
-          
-            
-          
-            
-          
-          </ul>
-        
-          <h3>Componenets</h3>
-          <ul>
-          
-            
-          
-            
-          
-            
-              
-              
-                <li><a href="componenets_-_post_excerpts.html">Post Excerpts</a></li>
-              
-            
-          
-            
-          
             
           
             
@@ -195,6 +196,10 @@
           <ul bs-scrollspy-list data-offset="-30">
             
               
+                <li><a href="#form-fields">Form Fields</a></li>
+              
+            
+              
                 <li><a href="#live-player">Live Player</a></li>
               
             
@@ -210,6 +215,295 @@
 
 
 
+<h1 id="form-fields">Form Fields</h1>
+</div><div class="container-fluid"><div class="col-sm-12"><form>
+    <input name="action" type="hidden" value="enter_contest"><input name=
+    "contest_id" type="hidden" value="1862"><label for="form_field_c5">Your
+    Name</label><input id="form_field_c5" name="form_field_c5" required=
+    "required" size="10" style=
+    "background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABHklEQVQ4EaVTO26DQBD1ohQWaS2lg9JybZ+AK7hNwx2oIoVf4UPQ0Lj1FdKktevIpel8AKNUkDcWMxpgSaIEaTVv3sx7uztiTdu2s/98DywOw3Dued4Who/M2aIx5lZV1aEsy0+qiwHELyi+Ytl0PQ69SxAxkWIA4RMRTdNsKE59juMcuZd6xIAFeZ6fGCdJ8kY4y7KAuTRNGd7jyEBXsdOPE3a0QGPsniOnnYMO67LgSQN9T41F2QGrQRRFCwyzoIF2qyBuKKbcOgPXdVeY9rMWgNsjf9ccYesJhk3f5dYT1HX9gR0LLQR30TnjkUEcx2uIuS4RnI+aj6sJR0AM8AaumPaM/rRehyWhXqbFAA9kh3/8/NvHxAYGAsZ/il8IalkCLBfNVAAAAABJRU5ErkJggg==&quot;); background-repeat: no-repeat; background-attachment: scroll; background-position: right center;"
+    type="text">
+</form>
+
+
+<fieldset>
+    <legend>Which are your favorites?</legend><input id="form_field_c9_0" name=
+    "form_field_c9[]" type="checkbox" value="0"><label for=
+    "form_field_c9_0">this one</label><input id="form_field_c9_1" name=
+    "form_field_c9[]" type="checkbox" value="1"><label for=
+    "form_field_c9_1">that one</label><input id="form_field_c9_2" name=
+    "form_field_c9[]" type="checkbox" value="2"><label for=
+    "form_field_c9_2">the other one</label>
+</fieldset>
+<label for="form_field_c13">Tell me a story</label>
+
+<textarea id="form_field_c13" name="form_field_c13" required="required" rows=
+"5">
+</textarea>
+
+<fieldset>
+    <legend>Please choose one</legend><input id="form_field_c21_0" name=
+    "form_field_c21[]" type="radio" value="0"><label for=
+    "form_field_c21_0">Red</label><input id="form_field_c21_1" name=
+    "form_field_c21[]" type="radio" value="1"><label for=
+    "form_field_c21_1">Blue</label>
+</fieldset>
+<label for="form_field_c25">What day is it today?</label>
+
+<form>
+    <input id="form_field_c25" name="form_field_c25" required="required" type=
+    "date"><label for="form_field_c29">Select something</label><select id=
+    "form_field_c29" name="form_field_c29" required="required">
+        <option value="no">
+            no
+        </option>
+
+        <option value="ok">
+            ok
+        </option>
+
+        <option value="never!">
+            never!
+        </option>
+    </select><label for="form_field_c33">What time is it?</label><input id=
+    "form_field_c33" name="form_field_c33" required="required" type=
+    "time"><label for="form_field_c37">How many fingers am I holding
+    up?</label><input id="form_field_c37" name="form_field_c37" required=
+    "required" type="number"><label for="form_field_c41">Know any cool blogs
+    bro?</label><input id="form_field_c41" name="form_field_c41" required=
+    "required" type="url"><label for="form_field_c45">send me ur email
+    dood</label><input id="form_field_c45" name="form_field_c45" required=
+    "required" type="email"><label for="form_field_c49">how
+    much?</label><input id="form_field_c49" name="form_field_c49" pattern=
+    "\d+(\.\d{2})?" required="required" step="0.01" type="text">
+</form>
+
+
+<fieldset>
+    <legend>where u at?</legend><label for=
+    "form_field_c53[address]">Address</label><input id=
+    "form_field_c53[address]" name="form_field_c53[address]" required=
+    "required" type="text"><label for=
+    "form_field_c53[city]">City</label><input id="form_field_c53[city]" name=
+    "form_field_c53[city]" required="required" type="text"><label for=
+    "form_field_c53[state]">State</label><select id="form_field_c53[state]"
+    name="form_field_c53[state]" required="required">
+        <option value="Alabama">
+            Alabama
+        </option>
+
+        <option value="Alaska">
+            Alaska
+        </option>
+
+        <option value="Arizona">
+            Arizona
+        </option>
+
+        <option value="Arkansas">
+            Arkansas
+        </option>
+
+        <option value="California">
+            California
+        </option>
+
+        <option value="Colorado">
+            Colorado
+        </option>
+
+        <option value="Connecticut">
+            Connecticut
+        </option>
+
+        <option value="Delaware">
+            Delaware
+        </option>
+
+        <option value="Florida">
+            Florida
+        </option>
+
+        <option value="Georgia">
+            Georgia
+        </option>
+
+        <option value="Hawaii">
+            Hawaii
+        </option>
+
+        <option value="Idaho">
+            Idaho
+        </option>
+
+        <option value="Illinois">
+            Illinois
+        </option>
+
+        <option value="Indiana">
+            Indiana
+        </option>
+
+        <option value="Iowa">
+            Iowa
+        </option>
+
+        <option value="Kansas">
+            Kansas
+        </option>
+
+        <option value="Kentucky">
+            Kentucky
+        </option>
+
+        <option value="Louisiana">
+            Louisiana
+        </option>
+
+        <option value="Maine">
+            Maine
+        </option>
+
+        <option value="Maryland">
+            Maryland
+        </option>
+
+        <option value="Massachusetts">
+            Massachusetts
+        </option>
+
+        <option value="Michigan">
+            Michigan
+        </option>
+
+        <option value="Minnesota">
+            Minnesota
+        </option>
+
+        <option value="Mississippi">
+            Mississippi
+        </option>
+
+        <option value="Missouri">
+            Missouri
+        </option>
+
+        <option value="Montana">
+            Montana
+        </option>
+
+        <option value="Nebraska">
+            Nebraska
+        </option>
+
+        <option value="Nevada">
+            Nevada
+        </option>
+
+        <option value="New Hampshire">
+            New Hampshire
+        </option>
+
+        <option value="New Jersey">
+            New Jersey
+        </option>
+
+        <option value="New Mexico">
+            New Mexico
+        </option>
+
+        <option value="New York">
+            New York
+        </option>
+
+        <option value="North Carolina">
+            North Carolina
+        </option>
+
+        <option value="North Dakota">
+            North Dakota
+        </option>
+
+        <option value="Ohio">
+            Ohio
+        </option>
+
+        <option value="Oklahoma">
+            Oklahoma
+        </option>
+
+        <option value="Oregon">
+            Oregon
+        </option>
+
+        <option value="Pennsylvania">
+            Pennsylvania
+        </option>
+
+        <option value="Rhode Island">
+            Rhode Island
+        </option>
+
+        <option value="South Carolina">
+            South Carolina
+        </option>
+
+        <option value="South Dakota">
+            South Dakota
+        </option>
+
+        <option value="Tennessee">
+            Tennessee
+        </option>
+
+        <option value="Texas">
+            Texas
+        </option>
+
+        <option value="Utah">
+            Utah
+        </option>
+
+        <option value="Vermont">
+            Vermont
+        </option>
+
+        <option value="Virginia">
+            Virginia
+        </option>
+
+        <option value="Washington">
+            Washington
+        </option>
+
+        <option value="West Virginia">
+            West Virginia
+        </option>
+
+        <option value="Wisconsin">
+            Wisconsin
+        </option>
+
+        <option value="Wyoming">
+            Wyoming
+        </option>
+    </select><label for="form_field_c53[postal_code]">Zip Code/Postal
+    Code</label><input id="form_field_c53[postal_code]" name=
+    "form_field_c53[postal_code]" pattern="^\d{5}(?:[-\s]\d{4})?$" required=
+    "required" type="number">
+</fieldset>
+<label for="form_field_c57">no viruses plz!</label>
+
+<form>
+    <input id="form_field_c57" name="form_field_c57" required="required" type=
+    "file">
+</form>
+
+
+<p class="submit"><input class="button" id="" name="" type="submit" value=
+"Enter">
+</p>
+</div></div><div class="cortana-content">
 <h1 id="live-player">Live Player</h1>
 </div><div class="codeExample"><div class="exampleOutput"><aside id="live-player__sidebar" class="live-player live-player--init" style="top: 0px; height: auto; position: relative; float: right; overflow-y: auto; right: 0;">
     <nav class="live-player__stream">
@@ -435,41 +729,89 @@
               
               
               {
+              "title": "Featured Articles",
+              "breadcrumb": "Components - Front Page > Featured Articles",
+              "path": "components_-_front_page.html#featured-articles"
+              },
+            
+              
+              
+              {
+              "title": "Highlights",
+              "breadcrumb": "Components - Front Page > Highlights",
+              "path": "components_-_front_page.html#highlights"
+              },
+            
+          
+        
+          
+            
+              
+              
+              {
+              "title": "Form Fields",
+              "breadcrumb": "Components > Form Fields",
+              "path": "components.html#form-fields"
+              },
+            
+              
+              
+              {
+              "title": "Live Player",
+              "breadcrumb": "Components > Live Player",
+              "path": "components.html#live-player"
+              },
+            
+              
+              
+              {
+              "title": "Social Share Buttons",
+              "breadcrumb": "Components > Social Share Buttons",
+              "path": "components.html#social-share-buttons"
+              },
+            
+          
+        
+          
+            
+              
+              
+              {
               "title": "Gallery Post",
-              "breadcrumb": "Componenets - Post Excerpts > Gallery Post",
-              "path": "componenets_-_post_excerpts.html#gallery-post"
+              "breadcrumb": "Components - Post Excerpts > Gallery Post",
+              "path": "components_-_post_excerpts.html#gallery-post"
               },
             
               
               
               {
               "title": "Image Post",
-              "breadcrumb": "Componenets - Post Excerpts > Image Post",
-              "path": "componenets_-_post_excerpts.html#image-post"
+              "breadcrumb": "Components - Post Excerpts > Image Post",
+              "path": "components_-_post_excerpts.html#image-post"
               },
             
               
               
               {
               "title": "Link Post",
-              "breadcrumb": "Componenets - Post Excerpts > Link Post",
-              "path": "componenets_-_post_excerpts.html#link-post"
+              "breadcrumb": "Components - Post Excerpts > Link Post",
+              "path": "components_-_post_excerpts.html#link-post"
               },
             
               
               
               {
               "title": "Standard Post",
-              "breadcrumb": "Componenets - Post Excerpts > Standard Post",
-              "path": "componenets_-_post_excerpts.html#standard-post"
+              "breadcrumb": "Components - Post Excerpts > Standard Post",
+              "path": "components_-_post_excerpts.html#standard-post"
               },
             
               
               
               {
               "title": "Video Post",
-              "breadcrumb": "Componenets - Post Excerpts > Video Post",
-              "path": "componenets_-_post_excerpts.html#video-post"
+              "breadcrumb": "Components - Post Excerpts > Video Post",
+              "path": "components_-_post_excerpts.html#video-post"
               },
             
           
@@ -559,17 +901,41 @@
               
               
               {
-              "title": "Live Player",
-              "breadcrumb": "Components > Live Player",
-              "path": "components.html#live-player"
+              "title": "Personalities",
+              "breadcrumb": "Components - Shows > Personalities",
+              "path": "components_-_shows.html#personalities"
               },
             
               
               
               {
-              "title": "Social Share Buttons",
-              "breadcrumb": "Components > Social Share Buttons",
-              "path": "components.html#social-share-buttons"
+              "title": "Podcast Excerpt",
+              "breadcrumb": "Components - Shows > Podcast Excerpt",
+              "path": "components_-_shows.html#podcast-excerpt"
+              },
+            
+              
+              
+              {
+              "title": "Related Events",
+              "breadcrumb": "Components - Shows > Related Events",
+              "path": "components_-_shows.html#related-events"
+              },
+            
+              
+              
+              {
+              "title": "Show Features",
+              "breadcrumb": "Components - Shows > Show Features",
+              "path": "components_-_shows.html#show-features"
+              },
+            
+              
+              
+              {
+              "title": "Show Header",
+              "breadcrumb": "Components - Shows > Show Header",
+              "path": "components_-_shows.html#show-header"
               },
             
           
