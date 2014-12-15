@@ -177,8 +177,8 @@
 	function update_thumbnails( selected_slide ) {
 		var slides_per_page = get_thumbs_per_page();
 
-		$( '.pager-slide-active' ).removeClass( 'pager-slide-active' );
-		$( '#preview-' + selected_slide ).addClass( 'pager-slide-active' );
+		$( '.gallery__slide--active' ).removeClass( 'gallery__slide--active' );
+		$( '#preview-' + selected_slide ).addClass( 'gallery__slide--active' );
 		var selected_slide_group = Math.floor( selected_slide / slides_per_page );
 		$slide_paging_previews.cycle( 'goto', selected_slide_group );
 	}
