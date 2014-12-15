@@ -248,10 +248,9 @@ add_action( 'keyword_search_result', 'get_results_for_keyword' );
 /**
  * Alter search results on search page
  * 
- * @param  [type] $query [description]
- * @return [type]        [description]
+ * @param  WP_Query $query [description]
  */
-function alter_search_query( $query ) {
+function greatermedia_alter_search_query( $query ) {
 	if( $query->is_search && $query->is_main_query() ) {
 		$search_query_arg = sanitize_text_field( $query->query_vars['s'] );
 		$custom_post_id = intval( get_post_with_keyword( $search_query_arg ) );
@@ -260,5 +259,23 @@ function alter_search_query( $query ) {
 		}
 	}
 }
-add_action( 'pre_get_posts', 'alter_search_query' );
+add_action( 'pre_get_posts', 'greatermedia_alter_search_query' );
 
+/**
+ * Alters the main query on the front page to include additional post types
+ *
+ * @param WP_Query $query
+ */
+function greatermedia_alter_front_page_query( $query ) {
+	if ( $query->is_main_query() && $query->is_front_page() ) {
+		// Need to really think about how to include events here, and if it really makes sense. By default,
+		// we would have all published events, in reverse cron - so like we'd have "posts" looking things dated for the future
+		// that would end up hiding the actual posts, potentially for pages before getting to any real content.
+		//
+		// ADDITIONALLY - There is a checkbox for this on the events setting page, so we don't need to do that here :)
+		$post_types = array( 'post', GMP_CPT::EPISODE_POST_TYPE );
+
+		$query->set( 'post_type', $post_types );
+	}
+}
+add_action( 'pre_get_posts', 'greatermedia_alter_front_page_query' );
