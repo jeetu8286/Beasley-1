@@ -98,7 +98,7 @@
 		resumeButton = $('#resumeButton');
 		podcastButton = $('.mejs-play');
 
-		$(document).on('click', '#playButton', playLiveAudioStream);
+		$(document).on('click', '#playButton', loggedInGigyaUser);
 
 		playButton.click(function () {
 			playButton.hide();
@@ -171,6 +171,15 @@
 		});
 
 
+	}
+
+	function loggedInGigyaUser() {
+		if ( !gmr.logged_in ) {
+			console.log( "--- Log In with Gigya ---" );
+		} else {
+			console.log( "--- You are logged in, so now enjoy some music ---" );
+			playLiveAudioStream();
+		}
 	}
 
 	function playLiveAudioStream(event) {
