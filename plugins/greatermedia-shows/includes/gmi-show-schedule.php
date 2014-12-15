@@ -568,6 +568,9 @@ function gmrs_enable_ediflow_custom_status_influence() {
 		$gmrs_editflow_custom_status_disabled = false;
 		add_filter( 'wp_insert_post_data', array( $edit_flow->custom_status, 'fix_custom_status_timestamp' ), 10, 2 );
 	}
+}
+
+/*
  * Returns blogroll episode HTML for live link widget.
  *
  * @filter gmr_blogroll_widget_item
