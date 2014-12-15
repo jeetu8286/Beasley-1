@@ -135,7 +135,7 @@ function gmr_streams_register_post_type() {
 	$wp->add_query_var( GMR_LIVE_STREAM_CPT );
 	$rules = $wp_rewrite->wp_rewrite_rules();
 	if ( ! isset( $rules[ $regex ] ) ) {
-		flush_rewrite_rules();
+		$wp_rewrite->flush_rules();
 	}
 }
 
@@ -331,4 +331,57 @@ function gmr_streams_get_public_streams() {
 	} while ( $paged <= $query->max_num_pages );
 	
 	return $streams;
+}
+
+/**
+ * Returns live stream based on its sign.
+ *
+ * @param string $sign The stream call sign.
+ * @return WP_Post The stream object on success, otherwise NULL.
+ */
+function gmr_streams_get_stream_by_sign( $sign ) {
+	static $streams = array();
+
+	if ( ! array_key_exists( $sign, $streams ) ) {
+		$query = new WP_Query( array(
+			'post_type'           => GMR_LIVE_STREAM_CPT,
+			'meta_key'            => 'call_sign',
+			'meta_value'          => $sign,
+			'posts_per_page'      => 1,
+			'ignore_sticky_posts' => 1,
+			'no_found_rows'       => true,
+		) );
+
+		$streams[ $sign ] = $query->have_posts()
+			? $query->next_post()
+			: null;
+	}
+
+	return $streams[ $sign ];
+}
+
+/**
+ * Returns primary stream.
+ *
+ * @return WP_Post The primary stream if exists, otherwise FALSE.
+ */
+function gmr_streams_get_primary_stream() {
+	static $stream = null;
+
+	if ( is_null( $stream ) ) {
+		$query = new WP_Query( array(
+			'post_type'           => GMR_LIVE_STREAM_CPT,
+			'order'               => 'DESC',
+			'orderby'             => 'menu_order',
+			'posts_per_page'      => 1,
+			'ignore_sticky_posts' => 1,
+			'no_found_rows'       => true,
+		) );
+
+		$stream = $query->have_posts()
+			? $query->next_post()
+			: false;
+	}
+
+	return $stream;
 }
