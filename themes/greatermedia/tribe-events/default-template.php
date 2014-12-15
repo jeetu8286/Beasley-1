@@ -15,9 +15,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 get_header(); ?>
-	<div id="tribe-events-pg-template">
-		<?php tribe_events_before_html(); ?>
-		<?php tribe_get_view(); ?>
-		<?php tribe_events_after_html(); ?>
-	</div> <!-- #tribe-events-pg-template -->
+<main class="main" role="main">
+
+	<div class="container">
+
+		<section class="content">
+
+			<div id="tribe-events-pg-template">
+				<?php tribe_events_before_html(); ?>
+				<?php tribe_get_view(); ?>
+				<?php tribe_events_after_html(); ?>
+			</div> <!-- #tribe-events-pg-template -->
+
+		</section>
+
+	</div>
+
+</main>
 <?php get_footer(); ?>
