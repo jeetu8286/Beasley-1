@@ -118,6 +118,10 @@ category: Components - Shows
 			
 			a { font-size: ms(0); }
 		}
+
+		&:hover, &.current-menu-item {
+			text-decoration: underline;
+		}
 	}
 	a {
 		color: $secondary-text;
@@ -232,7 +236,7 @@ category: Components - Shows
 }
 
 .show__feature--desc {
-	background-color: $secondary-bg;
+	background-color: $header-bg;
 	color: $secondary-text;
 	padding: 1em 2em 1em;
 }

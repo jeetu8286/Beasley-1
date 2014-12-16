@@ -3873,6 +3873,8 @@ category: Components - Shows
         display: inline-block; }
         .show__nav li a {
           font-size: 1em; } }
+    .show__nav li:hover, .show__nav li.current-menu-item {
+      text-decoration: underline; }
   .show__nav a {
     color: #ffffff;
     text-transform: uppercase; }
@@ -3980,7 +3982,7 @@ category: Components - Shows
       font-size: 0.8em; } }
 
 .show__feature--desc {
-  background-color: #000000;
+  background-color: #191919;
   color: #ffffff;
   padding: 1em 2em 1em; }
 
