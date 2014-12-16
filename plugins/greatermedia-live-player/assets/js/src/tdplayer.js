@@ -59,7 +59,7 @@
 				{id: 'NowPlayingApi'},
 				{id: 'Npe'},
 				{id: 'PlayerWebAdmin'},
-				{ id: 'SyncBanners', elements:[{id:'td_synced_bigbox', width:300, height:250}, {id:'td_synced_leaderboard', width:728, height:90}] },
+				{id: 'SyncBanners', elements:[{id:'td_synced_bigbox', width:300, height:250}] },
 				{id: 'TargetSpot'}
 			]
 		};
@@ -181,6 +181,11 @@
 			player.addEventListener('ad-playback-complete', function() {
 				console.log("--- add complete ---");
 				var station = 'WLNKFM';
+				var tdContainer = document.getElementById('td_container');
+				var playButton = document.getElementById('playButton');
+				var pauseButton = document.getElementById('pauseButton');
+				var listenNow = document.getElementById('live-stream__listen-now');
+				var nowPlaying = document.getElementById('live-stream__now-playing');
 
 				if (station == '') {
 					alert('Please enter a Station');
@@ -189,12 +194,15 @@
 
 				debug('playLiveAudioStream - station=' + station);
 
-				$('#stationUser').val('');
-
 				if (livePlaying)
 					player.stop();
 
 				player.play({station: station, timeShift: true});
+				tdContainer.style.height = '0px';
+				playButton.style.display = 'none';
+				pauseButton.style.display = 'block';
+				listenNow.style.display = 'none';
+				nowPlaying.style.display = 'inline-block';
 			});
 		}
 	}
