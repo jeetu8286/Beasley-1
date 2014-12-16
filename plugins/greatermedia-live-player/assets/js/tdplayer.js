@@ -97,7 +97,7 @@
 		resumeButton = $('#resumeButton');
 		podcastButton = $('.mejs-play');
 
-		//$(document).on('click', '#playButton', loggedInGigyaUser);
+		$(document).on('click', '#playButton', playLiveAudioStream);
 
 		playButton.click(function () {
 			playButton.hide();
