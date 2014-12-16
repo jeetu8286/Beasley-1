@@ -46,7 +46,7 @@ class GreaterMediaGalleryCPT {
 			'not_found_in_trash'  => __( 'Not found in Trash', 'greatermedia' ),
 		);
 		$rewrite = array(
-			'slug'                => self::GALLERY_POST_TYPE,
+			'slug'                => 'gallery',
 			'with_front'          => true,
 			'pages'               => true,
 			'feeds'               => true,
@@ -103,7 +103,7 @@ class GreaterMediaGalleryCPT {
 			'label'               => __( 'album', 'greatermedia' ),
 			'description'         => __( 'A post type for Albums', 'greatermedia' ),
 			'labels'              => $labels,
-			'supports'            => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', ),
+			'supports'            => array( 'title', 'author', 'thumbnail', ),
 			'taxonomies'          => array( 'post_tag' ),
 			'hierarchical'        => true,
 			'public'              => true,
