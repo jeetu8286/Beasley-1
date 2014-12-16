@@ -15,3 +15,4 @@ define( 'GREATER_MEDIA_GALLERIES_URL', plugin_dir_url( __FILE__ ) );
 define( 'GREATER_MEDIA_GALLERIES_PATH', dirname( __FILE__ ) );
 
 include __DIR__ . '/includes/post-types.php';
+include __DIR__ . '/includes/rendering.php';
