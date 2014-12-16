@@ -198,7 +198,7 @@
 					player.stop();
 
 				player.play({station: station, timeShift: true});
-				tdContainer.style.height = '0px';
+				tdContainer.classList.add('stream__active');
 				playButton.style.display = 'none';
 				pauseButton.style.display = 'block';
 				listenNow.style.display = 'none';

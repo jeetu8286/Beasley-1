@@ -3340,7 +3340,14 @@ category: Components
   content: "\e60b" !important; }
 
 .live-stream__player--container {
-  height: 0; }
+  width: 100%;
+  height: 171px;
+  padding: 10px; }
+
+.live-stream__player--container.stream__active {
+  width: 0;
+  height: 0;
+  padding: 0; }
 
 .live-stream--podcast__progress {
   width: 85%;
