@@ -7,6 +7,9 @@ add_action( 'admin_action_gmr_add_show_episode', 'gmrs_add_show_episode' );
 add_action( 'admin_action_gmr_delete_show_episode', 'gmrs_delete_show_episode' );
 add_action( 'future_to_publish', 'gmrs_prolong_show_episode' );
 
+// filter hooks
+add_filter( 'gmr_blogroll_widget_item', 'gmrs_get_blogroll_widget_episode_item' );
+
 /**
  * Creates new episode each time the current one is published.
  *
@@ -565,4 +568,28 @@ function gmrs_enable_ediflow_custom_status_influence() {
 		$gmrs_editflow_custom_status_disabled = false;
 		add_filter( 'wp_insert_post_data', array( $edit_flow->custom_status, 'fix_custom_status_timestamp' ), 10, 2 );
 	}
+}
+
+/*
+ * Returns blogroll episode HTML for live link widget.
+ *
+ * @filter gmr_blogroll_widget_item
+ * @param string $item The initial HTML of a widget item.
+ * @return string Show episode HTML if it is an episode post, otherwise initial HTML.
+ */
+function gmrs_get_blogroll_widget_episode_item( $item ) {
+	$episode = get_post();
+	if ( ! $episode || ShowsCPT::EPISODE_CPT != $episode->post_type ) {
+		return $item;
+	}
+
+	$item = esc_html( get_the_title() );
+	if ( get_post_meta( $episode->post_parent, 'show_homepage', true ) ) {
+		$item = sprintf( '<a href="%s">%s</a>', get_permalink( $episode->post_parent ), $item );
+	}
+
+	$post_date = strtotime( $episode->post_date_gmt ) + get_option( 'gmt_offset' ) * HOUR_IN_SECONDS;
+	$post_date = date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $post_date );
+
+	return sprintf( '<div class="live-link__type--standard"><div class="live-link__title" title="%s">%s</div></div>', esc_attr( $post_date ), $item );
 }
