@@ -177,7 +177,7 @@
 			console.log("--- Log In with Gigya ---");
 		} else {
 			console.log("--- You are logged in, so now enjoy some music ---");
-			playVastAdByUrl();
+			streamVastAd();
 			player.addEventListener('ad-playback-complete', function() {
 				console.log("--- add complete ---");
 				var station = gmr.callsign;
@@ -205,6 +205,17 @@
 				nowPlaying.style.display = 'inline-block';
 			});
 		}
+	}
+
+	function streamVastAd() {
+		var vastUrl = gmr.streamUrl;
+
+		detachAdListeners();
+		attachAdListeners();
+
+		player.stop();
+		player.skipAd();
+		player.playAd('vastAd', {url: vastUrl});
 	}
 
 	function playLiveAudioStream(event) {
