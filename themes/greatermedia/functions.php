@@ -22,6 +22,7 @@ add_theme_support( 'homepage-curation' );
 
 require_once( __DIR__ . '/includes/liveplayer/loader.php' );
 require_once( __DIR__ . '/includes/layout-chooser/class-choose-layout.php' );
+require_once( __DIR__ . '/includes/gallery/loader.php');
 require_once( __DIR__ . '/includes/site-options/loader.php');
 
 /**
@@ -51,6 +52,8 @@ function greatermedia_setup() {
 	 */
 	add_theme_support( 'post-thumbnails' );
 	add_image_size( 'gm-article-thumbnail', 1580, 9999, false ); // thumbnails used for articles
+	add_image_size( 'gmr-gallery',               800,  534, true );
+	add_image_size( 'gmr-gallery-thumbnail',     100,  100 );
 
 	// Update this as appropriate content types are created and we want this functionality
 	add_post_type_support( 'post', 'timed-content' );
@@ -279,3 +282,16 @@ function greatermedia_alter_front_page_query( $query ) {
 	}
 }
 add_action( 'pre_get_posts', 'greatermedia_alter_front_page_query' );
+
+/**
+ * This will keep Jetpack Sharing from auto adding to the end of a post.
+ * We want to add this manually to the proper theme locations
+ *
+ * Hooked into loop_end
+ */
+function greatermedia_remove_jetpack_share() {
+	remove_filter( 'the_content', 'sharing_display', 19 );
+	remove_filter( 'the_excerpt', 'sharing_display', 19 );
+}
+
+add_action( 'wp_head', 'greatermedia_remove_jetpack_share' );
