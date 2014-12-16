@@ -6,10 +6,16 @@ class Plugin {
 
 	function enable() {
 		add_action( 'admin_menu', array( $this, 'initialize_admin_menu' ) );
+		add_action( 'init', array( $this, 'initialize' ) );
 
 		if ( $this->is_ajax_request() ) {
 			$this->register_ajax_handlers();
 		}
+	}
+
+	function initialize() {
+		$comments_app = new CommentsApp();
+		$comments_app->register();
 	}
 
 	function initialize_admin_menu() {
