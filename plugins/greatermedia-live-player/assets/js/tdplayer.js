@@ -180,7 +180,7 @@
 			playVastAdByUrl();
 			player.addEventListener('ad-playback-complete', function() {
 				console.log("--- add complete ---");
-				var station = 'WLNKFM';
+				var station = gmr.callsign;
 				var tdContainer = document.getElementById('td_container');
 				var playButton = document.getElementById('playButton');
 				var pauseButton = document.getElementById('pauseButton');

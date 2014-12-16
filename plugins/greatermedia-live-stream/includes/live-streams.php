@@ -385,3 +385,15 @@ function gmr_streams_get_primary_stream() {
 
 	return $stream;
 }
+
+function gmr_streams_get_primary_stream_callsign() {
+	static $callsign = null;
+
+	if ( is_null( $callsign) ) {
+		$stream = gmr_streams_get_primary_stream();
+
+		$callsign = get_post_meta( $stream->ID, 'call_sign', true );
+	}
+
+	return $callsign;
+}

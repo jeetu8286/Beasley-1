@@ -40,7 +40,7 @@ class GMLP_Player {
 
 			<!-- Player placeholder -->
 			<div id="td_container" class="live-stream__player--container"></div>
-			<input type="hidden" id="vastAdUrl" value="http://ad3.liverail.com/?LR_PUBLISHER_ID=1331&LR_CAMPAIGN_ID=229&LR_SCHEMA=vast2" />
+			<input type="hidden" id="vastAdUrl" value="http://ad3.liverail.com/?LR_PUBLISHER_ID=1331&LR_CAMPAIGN_ID=229&LR_SCHEMA=vast2&VPl=MP4" />
 		</div>
 
 	<?php
@@ -53,10 +53,12 @@ class GMLP_Player {
 	public static function enqueue_scripts() {
 
 		$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
+
+		$callsign = gmr_streams_get_primary_stream_callsign();
+
 		wp_register_script( 'load-jquery', GMLIVEPLAYER_URL . 'assets/js/src/jquery.load.js', array(), GMLIVEPLAYER_VERSION, true );
 		wp_enqueue_script( 'tdplayer', GMLIVEPLAYER_URL . "assets/js/tdplayer{$postfix}.js", array( 'load-jquery' ), '2.5', true );
-		wp_localize_script( 'tdplayer', 'gmr', array( 'logged_in' => is_gigya_user_logged_in() ) );
-		wp_localize_script( 'tdplayer', 'gm', array( 'primary_station' => gmr_streams_get_primary_stream() ) );
+		wp_localize_script( 'tdplayer', 'gmr', array( 'logged_in' => is_gigya_user_logged_in(), 'callsign' => $callsign ) );
 		wp_enqueue_script( 'jquery-ui-button');
 		wp_enqueue_script( 'gmlp-js', GMLIVEPLAYER_URL . "assets/js/greater_media_live_player{$postfix}.js", array( 'jquery' ), GMLIVEPLAYER_VERSION, true );
 		wp_localize_script( 'gmlp-js', 'gmlp', array( 'logged_in' => is_user_logged_in() ) );
