@@ -39,7 +39,8 @@ class GMLP_Player {
 			</div>
 
 			<!-- Player placeholder -->
-			<div id="td_container" class="live-stream__player--container"></div>
+			<div id="td_container" class="live-stream__player--container" style="height: 200px; width: 200px"></div>
+			<input type="hidden" id="vastAdUrl" value="http://ad3.liverail.com/?LR_PUBLISHER_ID=1331&LR_CAMPAIGN_ID=229&LR_SCHEMA=vast2" />
 		</div>
 
 	<?php

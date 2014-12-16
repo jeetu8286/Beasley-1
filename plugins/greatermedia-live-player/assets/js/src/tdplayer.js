@@ -4,17 +4,14 @@
 	var tech = getUrlVars()['tech'];
 	var aSyncCuePointFallback = getUrlVars()['aSyncCuePointFallback'] == 'false' ? false : true;
 
-	var player;
-	/* TD player instance */
+	var player; /* TD player instance */
 
-	var currentTrackCuePoint;
-	/* Current Track */
-	var livePlaying;
-	/* boolean - Live stream currently playing */
-	var song;
-	/* Song object that wraps NPE data */
-	var currentStation = '';
-	/* String - Current station played */
+	var adPlaying; /* boolean - Ad break currently playing */
+	var currentTrackCuePoint; /* Current Track */
+	var livePlaying; /* boolean - Live stream currently playing */
+	var song; /* Song object that wraps NPE data */
+	var companions; /* VAST companion banner object */
+	var currentStation = ''; /* String - Current station played */
 
 	/**
 	 * @todo remove the console log before beta
@@ -56,11 +53,13 @@
 						max_listening_time: 35 /* If max_listening_time is undefined, the default value will be 30 minutes */
 					},
 					// set geoTargeting to false on devices in order to remove the daily geoTargeting in browser
-					geoTargeting: {desktop: {isActive: false}, iOS: {isActive: false}, android: {isActive: false}}
+					geoTargeting: {desktop: {isActive: false}, iOS: {isActive: false}, android: {isActive: false}},
+					plugins: [ {id:"vastAd"} ]
 				},
 				{id: 'NowPlayingApi'},
 				{id: 'Npe'},
 				{id: 'PlayerWebAdmin'},
+				{ id: 'SyncBanners', elements:[{id:'td_synced_bigbox', width:300, height:250}, {id:'td_synced_leaderboard', width:728, height:90}] },
 				{id: 'TargetSpot'}
 			]
 		};
@@ -98,7 +97,7 @@
 		resumeButton = $('#resumeButton');
 		podcastButton = $('.mejs-play');
 
-		$(document).on('click', '#playButton', loggedInGigyaUser);
+		//$(document).on('click', '#playButton', loggedInGigyaUser);
 
 		playButton.click(function () {
 			playButton.hide();
@@ -178,8 +177,25 @@
 			console.log("--- Log In with Gigya ---");
 		} else {
 			console.log("--- You are logged in, so now enjoy some music ---");
-			//playVastAd();
-			playLiveAudioStream();
+			playVastAdByUrl();
+			player.addEventListener('ad-playback-complete', function() {
+				console.log("--- add complete ---");
+				var station = 'WLNKFM';
+
+				if (station == '') {
+					alert('Please enter a Station');
+					return;
+				}
+
+				debug('playLiveAudioStream - station=' + station);
+
+				$('#stationUser').val('');
+
+				if (livePlaying)
+					player.stop();
+
+				player.play({station: station, timeShift: true});
+			});
 		}
 	}
 
@@ -196,9 +212,6 @@
 		debug('playLiveAudioStream - station=' + station);
 
 		$('#stationUser').val('');
-
-		if (adPlaying)
-			player.skipAd();
 
 		if (livePlaying)
 			player.stop();
@@ -281,10 +294,13 @@
 		//Listen on companion-load-error event
 		//companions.addEventListener("companion-load-error", onCompanionLoadError);
 
+		loggedInGigyaUser();
 		initControlsUi();
 
 		player.addEventListener('track-cue-point', onTrackCuePoint);
 		player.addEventListener('ad-break-cue-point', onAdBreak);
+		player.addEventListener( 'stream-track-change', onTrackChange );
+		player.addEventListener( 'hls-cue-point', onHlsCuePoint );
 
 		player.addEventListener('stream-status', onStatus);
 		player.addEventListener('stream-geo-blocked', onGeoBlocked);
@@ -315,6 +331,15 @@
 		$("#pwaButton").click(function () {
 			loadPwaData();
 		});
+	}
+
+	/**
+	 * Event fired in case the loading of the companion ad returned an error.
+	 * @param e
+	 */
+	function onCompanionLoadError(e)
+	{
+		debug( 'tdplayer::onCompanionLoadError - containerId=' + e.containerId + ', adSpotUrl=' + e.adSpotUrl, true );
 	}
 
 	function onAdPlaybackStart(e) {
@@ -412,6 +437,20 @@
 		$("#trackInfo").html('<div class="now-playing__title">' + currentTrackCuePoint.cueTitle + '</div><div class="now-playing__artist">' + currentTrackCuePoint.artistName + '</div>');
 
 	}
+
+	function onTrackChange( e )
+	{
+		debug( 'Stream Track has changed' );
+		debug( 'Codec:'+ e.data.cuePoint.audioTrack.codec() + ' - Bitrate:'+ e.data.cuePoint.audioTrack.bitRate());
+	}
+
+	function onHlsCuePoint( e )
+	{
+		debug( 'New HLS cuepoint received' );
+		debug( 'Track Id:'+e.data.cuePoint.hlsTrackId+' SegmentId:'+e.data.cuePoint.hlsSegmentId );
+		console.log( e );
+	}
+
 
 	function onAdBreak(e) {
 		setStatus('Commercial break...');
