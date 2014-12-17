@@ -27,6 +27,10 @@ class SyncTaskTest extends \WP_UnitTestCase {
 		$this->assertNotNull( $this->task->get_sentinel() );
 	}
 
+	function test_it_gives_sentinel_its_own_params() {
+		$this->assertEquals( $this->task->params, $this->task->get_sentinel()->params );
+	}
+
 	function test_it_knows_its_member_query_id() {
 		$this->assertEquals( 1, $this->task->get_member_query_id() );
 	}
@@ -77,5 +81,23 @@ class SyncTaskTest extends \WP_UnitTestCase {
 
 		wp_async_task_run_last();
 		$this->assertFalse( $task->aborted );
+	}
+
+	function test_it_stores_error_messages_in_sentinel_on_failure() {
+		$params = $this->task->params;
+		$params['checksum'] = 'foo-checksum';
+
+		$sentinel = $this->task->get_sentinel();
+		$sentinel->set_checksum( 'foo-checksum' );
+
+		$task = new SyncTask();
+		$task->register();
+		$task->enqueue( $params );
+
+		$error = new \Exception( 'foo' );
+		$task->fail( $error );
+
+		$this->assertTrue( $sentinel->has_errors() );
+		$this->assertEquals( array( 'foo' ), $sentinel->get_errors() );
 	}
 }
