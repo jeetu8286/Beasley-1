@@ -47,11 +47,11 @@ category: Base
 ```
 
 */
-.entry__event--details, .featured__content--list, .footer__nav--list {
+.entry__event--details, .featured__content--list, .footer__nav--list, .gallery-grid__pagination--list {
   padding: 0;
   margin: 0; }
 
-.entry__event--item, .featured__content--item, .footer__nav--list .menu-item, .live-player__stream--item {
+.entry__event--item, .featured__content--item, .footer__nav--list .menu-item, .live-player__stream--item, .gallery-grid__pagination--item {
   list-style: none;
   padding: 0;
   margin: 0; }
@@ -4188,6 +4188,160 @@ category: Components - Gallery
 ---
 
 */
+/*doc
+---
+title: Gallery Archive
+name: gallery-archive
+category: Components - Gallery Archive
+---
+
+```html_example
+<section class="gallery-grid">
+
+	<div class="gallery-grid__column">
+
+		<div class="gallery-grid__thumbnail">
+			<a href="#">
+				<img src="http://placehold.it/254x186">
+			</a>
+		</div>
+
+		<div class="gallery-grid__meta">
+			<h3 class="gallery-grid__title">
+				<a href="#">Title Goes Here</a>
+			</h3>
+		</div>
+
+	</div>
+
+	<div class="gallery-grid__column">
+
+		<div class="gallery-grid__thumbnail">
+			<a href="#">
+				<img src="http://placehold.it/254x186">
+			</a>
+		</div>
+
+		<div class="gallery-grid__meta">
+			<h3 class="gallery-grid__title">
+				<a href="#">Title Goes Here</a>
+			</h3>
+		</div>
+
+	</div>
+
+	<div class="gallery-grid__column">
+
+		<div class="gallery-grid__thumbnail">
+			<a href="#">
+				<img src="http://placehold.it/254x186">
+			</a>
+		</div>
+
+		<div class="gallery-grid__meta">
+			<h3 class="gallery-grid__title">
+				<a href="#">Title Goes Here</a>
+			</h3>
+		</div>
+
+	</div>
+
+	<div class="gallery-grid__column">
+
+		<div class="gallery-grid__thumbnail">
+			<a href="#">
+				<img src="http://placehold.it/254x186">
+			</a>
+		</div>
+
+		<div class="gallery-grid__meta">
+			<h3 class="gallery-grid__title">
+				<a href="#">Title Goes Here</a>
+			</h3>
+		</div>
+
+	</div>
+
+	<div class="gallery-grid__column">
+
+		<div class="gallery-grid__thumbnail">
+			<a href="#">
+				<img src="http://placehold.it/254x186">
+			</a>
+		</div>
+
+		<div class="gallery-grid__meta">
+			<h3 class="gallery-grid__title">
+				<a href="#">Title Goes Here</a>
+			</h3>
+		</div>
+
+	</div>
+
+	<div class="gallery-grid__column">
+
+		<div class="gallery-grid__thumbnail">
+			<a href="#">
+				<img src="http://placehold.it/254x186">
+			</a>
+		</div>
+
+		<div class="gallery-grid__meta">
+			<h3 class="gallery-grid__title">
+				<a href="#">Title Goes Here</a>
+			</h3>
+		</div>
+
+	</div>
+
+	<div class="gallery-grid__column">
+
+		<div class="gallery-grid__thumbnail">
+			<a href="#">
+				<img src="http://placehold.it/254x186">
+			</a>
+		</div>
+
+		<div class="gallery-grid__meta">
+			<h3 class="gallery-grid__title">
+				<a href="#">Title Goes Here</a>
+			</h3>
+		</div>
+
+	</div>
+
+	<div class="gallery-grid__column">
+
+		<div class="gallery-grid__thumbnail">
+			<a href="#">
+				<img src="http://placehold.it/254x186">
+			</a>
+		</div>
+
+		<div class="gallery-grid__meta">
+			<h3 class="gallery-grid__title">
+				<a href="#">Title Goes Here</a>
+			</h3>
+		</div>
+
+	</div>
+
+</section>
+
+<section class="gallery-grid__pagination">
+
+	<ul class="gallery-grid__pagination--list">
+		<li class="gallery-grid__pagination--item gallery-grid__pagination--current"><a href="#">1</a></li>
+		<li class="gallery-grid__pagination--item"><a href="#">2</a></li>
+		<li class="gallery-grid__pagination--item"><a href="#">3</a></li>
+		<li class="gallery-grid__pagination--item"><a href="#">...</a></li>
+		<li class="gallery-grid__pagination--item"><a href="#">4</a></li>
+		<li class="gallery-grid__pagination--item"><a href="#">5</a></li>
+	</ul>
+</section>
+```
+
+*/
 .gallery {
   width: 100%;
   overflow: auto; }
@@ -4741,6 +4895,78 @@ category: Components - Gallery
   -khtml-opacity: 1;
   zoom: 1;
   border: 1px solid #d0d2d3; }
+
+.gallery-grid {
+  width: 100%;
+  overflow: auto; }
+
+.gallery-grid__column {
+  float: left;
+  width: 23.5%;
+  margin-right: 2%;
+  overflow: auto; }
+
+.gallery-grid__column:nth-of-type(4n+4) {
+  margin-right: 0%; }
+
+.gallery-grid__thumbnail {
+  margin-bottom: 30px; }
+
+.gallery-grid__meta {
+  height: 100px; }
+
+.gallery-grid__title {
+  margin: 0;
+  font-family: "Open Sans", sans-serif;
+  font-size: 1.125em;
+  font-weight: lighter;
+  color: #404041; }
+
+.gallery-grid__pagination {
+  width: 100%;
+  overflow: auto;
+  text-align: center; }
+
+.gallery-grid__pagination--item {
+  list-style: none;
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  margin-right: 1em;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  color: #929497;
+  text-align: center; }
+
+.gallery-grid__pagination--item a, .gallery-grid__pagination--item a:visited {
+  display: block;
+  width: 26px;
+  height: 26px;
+  color: #929497; }
+
+.gallery-grid__pagination--item a:hover, .gallery-grid__pagination--item a:focus {
+  color: #d22228; }
+
+.gallery-grid__pagination--item a:active {
+  color: #404041; }
+
+.gallery-grid__pagination--current {
+  border: 1px solid #929497;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  -border-radius: 50%;
+  border-radius: 50%; }
+
+.gallery-grid__pagination--current:hover, .gallery-grid__pagination--current:focus {
+  border-color: #d22228;
+  color: #d22228; }
+
+.gallery-grid__pagination--current:active {
+  border-color: #404041;
+  color: #404041; }
 
 /*doc
 ---
