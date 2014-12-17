@@ -3,6 +3,7 @@
 namespace GreaterMedia\AdCodeManager;
 
 add_filter( 'acm_register_provider_slug', __NAMESPACE__ . '\filter_providers' );
+add_filter( 'acm_provider_slug', __NAMESPACE__ . '\filter_provider' );
 
 function filter_providers( $providers ) {
 	$custom_providers = new \stdClass();
@@ -18,4 +19,8 @@ function filter_providers( $providers ) {
 	}
 
 	return $custom_providers;
+}
+
+function filter_provider() {
+	return 'openx';
 }
