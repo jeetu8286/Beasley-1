@@ -268,11 +268,14 @@ class GreaterMediaLoginRestrictedContent extends VisualShortcode {
 
 	public function the_content( $content ) {
 
-		global $post;
+		global $post, $wp;
 
 		$login_restriction = self::sanitize_login_restriction( get_post_meta( $post->ID, '_post_login_restriction', true ) );
 
 		if ( 'logged-in' === $login_restriction || 'logged-out' === $login_restriction ) {
+
+			$current_url = home_url(add_query_arg(array(),$wp->request));
+			$login_url = gigya_profile_path('login', array('dest' => $current_url));
 
 			ob_start();
 			include trailingslashit( GREATER_MEDIA_LOGIN_RESTRICTED_CONTENT_PATH ) . 'tpl/login-restricted-post-render.tpl.php';
