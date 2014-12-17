@@ -13,6 +13,7 @@ class GreaterMediaGalleryEndpoints {
 		add_action( 'init', array( __CLASS__, 'add_rewrite_tag' ) );
 		add_action( 'init', array( __CLASS__, 'add_rewrites' ) );
 		add_filter( 'template_include', array( __CLASS__, 'filter_template' ) );
+		add_action( 'pre_get_posts', array( __CLASS__, 'pre_get_posts' ) );
 	}
 
 	public static function add_rewrite_tag() {
@@ -50,6 +51,20 @@ class GreaterMediaGalleryEndpoints {
 		}
 
 		return $template;
+	}
+
+	public static function pre_get_posts( \WP_Query $query ) {
+		if ( $query->is_main_query() && $query->get( 'photos_category' ) ) {
+			$query->set( 'post_type', array( GreaterMediaGalleryCPT::GALLERY_POST_TYPE, GreaterMediaGalleryCPT::ALBUM_POST_TYPE ) );
+			$query->set( 'tax_query', array(
+				array(
+					'taxonomy' => 'category',
+					'field' => 'slug',
+					'terms' => $query->get( 'photos_category' ),
+				),
+			) );
+			$query->is_home = false; // For whatever reason, this was true
+		}
 	}
 }
 
