@@ -176,4 +176,42 @@
 			.fail(didSaveActionError);
 	};
 
+	var escapeValue = function(value) {
+		value = '' + value;
+		value = value.replace(/[!'()*]/g, escape);
+		value = encodeURIComponent(value);
+
+		return value;
+	};
+
+	var build_query = function(params) {
+		var value;
+		var output = [];
+		var anchor;
+
+		for (var key in params) {
+			if (params.hasOwnProperty(key)) {
+				value = params[key];
+				value = escapeValue(value);
+				key   = escapeValue(key);
+
+				output.push(key + '=' + value);
+			}
+		}
+
+		return output.join('&');
+	};
+
+	var endpoint = 'members';
+
+	window.gigya_profile_path = function(action, params) {
+		var path = '/' + endpoint + '/' + action;
+
+		if (params) {
+			return path + '?' + build_query(params);
+		} else {
+			return path;
+		}
+	};
+
 }(jQuery));
