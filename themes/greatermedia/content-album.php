@@ -14,7 +14,7 @@
 			<article id="post-<?php the_ID(); ?>" <?php post_class( 'cf' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
 
 				<div class="ad__inline--right">
-					<?php do_action( 'acm_tag', 'mrec-body' ); ?>
+					<img src="http://placehold.it/300x250&amp;text=inline ad">
 				</div>
 
 				<header class="entry__header">
@@ -46,6 +46,11 @@
 				</footer>
 
 			</article>
+
+			<?php
+			// todo Children Galleries Should Go Here!
+			?>
+			Children Galleries Here
 
 		</section>
 
