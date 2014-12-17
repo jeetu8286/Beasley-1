@@ -19,7 +19,7 @@ class ProfilePage {
 		);
 
 		add_action(
-			'wp_title', array( $this, 'change_page_title' ), 10
+			'wp_title', array( $this, 'change_page_title' ), 99
 		);
 	}
 
