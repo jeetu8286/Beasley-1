@@ -94,4 +94,11 @@ class ProfilePathTest extends \WP_UnitTestCase {
 		$this->assertEquals( $params, $actual_params );
 		$this->assertEquals( 'comments', $parts['fragment'] );
 	}
+
+	function test_it_has_a_singleton_instance() {
+		$instance = ProfilePath::get_instance();
+		$instance2 = ProfilePath::get_instance();
+
+		$this->assertSame( $instance, $instance2 );
+	}
 }
