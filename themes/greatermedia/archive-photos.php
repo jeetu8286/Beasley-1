@@ -38,13 +38,13 @@ get_header(); ?>
 
 						<header class="article-header">
 
-							<h1><?php _e( 'Oops, Post Not Found!', 'greatermedia' ); ?></h1>
+							<h1><?php _e( 'Oops, Nothing Found!', 'greatermedia' ); ?></h1>
 
 						</header>
 
 						<section class="entry-content">
 
-							<p><?php _e( 'Uh Oh. Something is missing. Try double checking things.', 'greatermedia' ); ?></p>
+							<p>We can't find the photos you are looking for. Try double checking things.</p>
 
 						</section>
 
