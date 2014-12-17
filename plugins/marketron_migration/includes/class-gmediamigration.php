@@ -69,6 +69,8 @@ class GMedia_Migration extends WP_CLI_Command {
 
 	public $skip = 0;
 
+	public $config_file = '';
+
 	/**
 	 * Reset the DB
 	 * -e 'show databases;'
@@ -99,7 +101,7 @@ class GMedia_Migration extends WP_CLI_Command {
 	/**
 	 * Handle the import of an xml file.
 	 *
-	 * @synopsis <file> --type=<content-type> --site=<site> [--force] --skip=<skip>
+	 * @synopsis <file> --type=<content-type> --site=<site> [--force] [--skip] [--config_file]
 	 */
 	public function import( $args = array(), $assoc_args = array() ) {
 		if ( isset( $assoc_args['type'] ) ) {
@@ -111,15 +113,24 @@ class GMedia_Migration extends WP_CLI_Command {
 		if( isset( $assoc_args['skip'] ) ) {
 			$this->skip = absint( $assoc_args['skip'] );
 		}
+
+		if( isset( $assoc_args['config_file'] ) ) {
+			$this->config_file = $assoc_args['config_file'];
+			if( !file_exists( $this->config_file ) ) {
+				WP_CLI::error( "$this->config_file doesn't exist\n" );
+			}
+		} elseif( $type == 'blog' || $type == 'blogs' ) {
+			WP_CLI::error( "Type is set to blog. Please provide config file!" );
+		}
+
 		if ( isset( $assoc_args['site'] ) ) {
-			$site = $assoc_args['site'];
-			switch ( $site ) {
+			$this->site_url = $assoc_args['site'];
+			/*switch ( $site ) {
 				case 'wmmr':
 					$this->site_url = 'wmmr';
 					break;
-				/*case 'cincinnati':
-				case 'cincy':
-					$this->site_url = 'cincinnatimagazine';
+				case 'wmgk':
+					$this->site_url = 'wmgk';
 					break;
 				case 'indianapolis':
 				case 'indy':
@@ -136,8 +147,7 @@ class GMedia_Migration extends WP_CLI_Command {
 				case 'wedding':
 					$this->site_url = 'cincinnatiweddingmagazine';
 					break;
-				*/
-			}
+			}*/
 		} else {
 			WP_CLI::error( 'Please specify the site.' );
 		}
@@ -243,6 +253,9 @@ class GMedia_Migration extends WP_CLI_Command {
 					$schedules = $xml;
 					$this->process_schedules( $schedules, $force );
 					break;
+				default:
+					WP_CLI::error( "Type is set!" );
+					break;
 			}
 		} else {
 			WP_CLI::error( 'XML file not valid.' );
@@ -261,10 +274,17 @@ class GMedia_Migration extends WP_CLI_Command {
 	private function process_feeds( $articles, $force ) {
 		global $wpdb;
 
+		$taxonomy_mapping = array();
+		if( $this->config_file != '' ) {
+			$taxonomy_mapping = $this->parse_taxonomy_mapping();
+		}
+
 		$total  = count( $articles->Article );
 		$notify = new \cli\progress\Bar( "Importing $total articles", $total );
 
-		if ( isset( $article->Authors->Author ) ) {
+		$count = 0;
+		foreach ( $articles->Article as $article ) {
+			if ( isset( $article->Authors->Author ) ) {
 				foreach ( $article->Authors->Author as $author ) {
 					if ( isset( $author['Author'] ) && '' !== trim( (string) $author['Author'] ) ) {
 						$author_name = (string) $author['Author'];
@@ -306,8 +326,6 @@ class GMedia_Migration extends WP_CLI_Command {
 				$user_id = get_current_user_id();
 			}
 
-		$count = 0;
-		foreach ( $articles->Article as $article ) {
 			$article_hash = trim( (string) $article['Title'] ) . (string) $article['UTCStartDateTime'];
 			$article_hash = md5( $article_hash );
 
@@ -330,13 +348,20 @@ class GMedia_Migration extends WP_CLI_Command {
 				$count = 0;
 			}
 			$feed_article_title = strtolower( trim( (string) $article['Title'] ) );
+
+			if( isset( $article['PrimaryMediaReference'] ) ) {
+				$content =  trim( (string) $article['PrimaryMediaReference'] . '<br>' . (string) $article['ArticleText'] );
+			} else {
+				$content =  trim( (string) $article['ArticleText'] );
+			}
+
 			$post = array(
 				'post_type'     => 'post',
 				'post_status'   => 'publish',
 				'post_author'   => $user_id,
 				'post_name'     => trim( (string) $article['Slug'] ),
 				'post_title'    => ucwords( $feed_article_title ),
-				'post_content'  => trim( (string) $article['ArticleText'] ),
+				'post_content'  => $content,
 				'post_excerpt'  => trim( (string) $article['ExcerptText'] ),
 				'post_date'     => (string) $article['UTCStartDateTime'],
 				'post_date_gmt' => (string) $article['UTCStartDateTime'],
@@ -349,22 +374,56 @@ class GMedia_Migration extends WP_CLI_Command {
 
 			$wp_id = wp_insert_post( $post );
 
-			// Download images found in post_content and update post_content with new images.
-			$updated_post                 = array( 'ID' => $wp_id );
-			$updated_post['post_content'] = $this->import_media( trim( (string) $article['ArticleText'] ), $wp_id );
-			wp_update_post( $updated_post );
 
 			update_post_meta( $wp_id, 'gmedia_import_id', $article_hash );
 
-			// Process Blog Taxonomy Term
-			if ( isset( $article->Feeds->Feed ) ) {
-				foreach ( $article->Feeds->Feed as $blog ) {
-					$blog_id = $this->process_term( $blog, 'category', 'post' );
+			if( isset($article['FeaturedAudioFilepath']) && $wp_id ) {
+				$media_file_id = $this->import_music_files( $wp_id, $article['FeaturedAudioFilepath'] );
+				$media_url  = wp_get_attachment_url( $media_file_id );
+				$updated_post                 = array( 'ID' => $wp_id );
+				$updated_post['post_content'] = $content . '<br/>' . '[audio mp3="' . $media_url . '"][/audio]' ;
 
-					if ( $blog_id ) {
-						wp_set_post_terms( $wp_id, array( $blog_id ), 'category', true );
+				wp_update_post( $updated_post );
+
+				update_post_meta( $wp_id, '_legacy_music_file', $media_url );
+			}
+
+			// Process Feed Taxonomy Term
+			if ( isset( $article->Feeds->Feed->FeedCategories->FeedCategory ) ) {
+				$feed_cats = array();
+				foreach ( $article->Feeds->Feed->FeedCategories->FeedCategory as $feed_category ) {
+					if( $feed_category['Category'] ) {
+						$cat_info = array( 'Feed' => $feed_category['Category'], 'FeedDescription' => '' );
+						$feed_id = $this->process_term( $cat_info , 'category', 'post' );
+
+						if ( $feed_id ) {
+							wp_set_post_terms( $wp_id, array( $feed_id ), 'category', true );
+						}
 					}
 				}
+			}
+
+			if ( isset( $article->Feeds->Feed['Feed'] ) ) {
+				$marketron_term = trim( (string)  $article->Feeds->Feed['Feed'] );
+
+				$new_term = $taxonomy_mapping[$marketron_term]['term'];
+				$new_tax = $taxonomy_mapping[$marketron_term]['taxonomy'];
+
+				$feed_id = $this->process_term( $new_term, $new_tax, 'post' );
+
+				if ( $feed_id ) {
+					wp_set_post_terms( $wp_id, array( $feed_id ), $new_tax, true );
+				}
+			}
+
+			$old_url = $this->site_url;
+			if ( isset( $article->Feeds->Feed->FeedSlugHistoryItems ) ) {
+				foreach ( $article->Feeds->Feed->FeedSlugHistoryItems->FeedSlugHistoryItem as $SlugHistoryitem ) {
+					$old_url = trailingslashit( $this->site_url )  . trim( (string) $SlugHistoryitem['FeedHistoricalSlug'] )
+					           . '/' . trim( (string) $article['SlugDate'] ) . '/' . trim( (string) $article['Slug'] );
+				}
+				update_post_meta( $wp_id, '_legacy_FeedArticle_old_url', $old_url );
+				CMM_Legacy_Redirects::add_redirect( $old_url, $wp_id );
 			}
 
 			// Process Tags
@@ -410,7 +469,7 @@ class GMedia_Migration extends WP_CLI_Command {
 				WP_CLI::log( "Error: No Featured Image Found!" );
 			}
 
-			// Comments
+			/*// Comments
 			if ( isset( $article->Comments ) ) {
 				foreach ( $article->Comments->Comment as $comment ) {
 					$comment_id = $this->add_comment( $comment, $wp_id, $force );
@@ -422,12 +481,89 @@ class GMedia_Migration extends WP_CLI_Command {
 						}
 					}
 				}
-			}
+			}*/
 
-			$notify->tick();
+			//$notify->tick();
 		}
 
-		$notify->finish();
+		//$notify->finish();
+	}
+
+
+	private function check_file( $file ) {
+		$file_headers = @get_headers($file);
+
+		if( $file_headers[0] == 'HTTP/1.1 404 Not Found' || $file_headers[0] == 'HTTP/1.1 301 Moved Permanently' ) {
+			$exists = false;
+		}
+		else {
+			$exists = true;
+		}
+
+		return $exists;
+	}
+
+	private function import_music_files( $post_id, $filepath ) {
+
+		$blog_id = get_current_blog_id();
+		$upload_dir = get_site_url( $blog_id );
+
+		require_once( ABSPATH . 'wp-admin/includes/media.php' );
+		require_once( ABSPATH . 'wp-admin/includes/file.php' );
+		require_once( ABSPATH . 'wp-admin/includes/image.php' );
+
+		$id = '';
+		$old_filename = '';
+
+		$filename = str_replace( '\\', '/', $filepath );
+		$filename = urldecode( $filename ); // for filenames with spaces
+		$filename = str_replace( ' ', '%20', $filename );
+		$filename = str_replace( '&amp;', '&', $filename );
+		$filename = str_replace( '&mdash;', '—', $filename );
+
+		$old_filename = $upload_dir . '/wp-content/uploads/' . $filename;
+
+		if( !$this->check_file( $old_filename ) ) {
+			if( strpos( $this->site_url,'wmgk' ) ) {
+				$old_filename = 'http://media.wmgk.com/' . $filename;
+			} else {
+				$old_filename = trailingslashit( $this->site_url ) . $filename;
+			}
+		}
+
+		$tmp = download_url( $old_filename );
+		preg_match( '/[^\?]+\.(mp3|mp4|flv)/i', $filename, $matches );
+
+		// make sure we have a match.  This won't be set for PDFs and .docs
+		if ( $matches && isset( $matches[0] ) ) {
+			$name = str_replace( '%20', ' ', basename( $matches[0] ) );
+			$file_array['name'] = $name;
+			$file_array['tmp_name'] = $tmp;
+
+			// If error storing temporarily, unlink
+			if ( is_wp_error( $tmp ) ) {
+				@unlink( $file_array['tmp_name'] );
+				$file_array['tmp_name'] = '';
+			}
+
+			// do the validation and storage stuff
+			$id = media_handle_sideload( $file_array, 0 );
+
+			// If error storing permanently, unlink
+			if ( is_wp_error( $id ) ) {
+				@unlink( $file_array['tmp_name'] );
+				WP_CLI::log( "Error uploading music:". $id->get_error_message() );
+				WP_CLI::log( "Filename: $old_filename" );
+				$id = '';
+			}
+
+		} else {
+			@unlink( $tmp );
+			WP_CLI::log( "Error: ". $filename . " not added." );
+		}
+
+		return $id;
+
 	}
 
 	/**
@@ -472,7 +608,7 @@ class GMedia_Migration extends WP_CLI_Command {
 		if ( preg_match( '/^http/', $filename ) || preg_match( '/^www/', $filename ) ) {
 			$old_filename = $filename;
 		} else {
-			$old_filename = "http://www.$this->site_url.com$filename";
+			$old_filename = trailingslashit( $this->site_url) . $filename;
 		}
 
 		$tmp = download_url( $old_filename );
@@ -608,7 +744,7 @@ class GMedia_Migration extends WP_CLI_Command {
 				if ( preg_match( '/^http/', $filename ) || preg_match( '/^www/', $filename ) ) {
 					$old_filename = $filename;
 				} else {
-					$old_filename = "http://www.$this->site_url.com$filename";
+					$old_filename = trailingslashit( $this->site_url.com) . $filename;
 				}
 
 				$tmp = download_url( $old_filename );
@@ -694,7 +830,7 @@ class GMedia_Migration extends WP_CLI_Command {
 				$term_name = (string) $term['Tag'];
 				$slug = isset( $term['Slug'] ) ? (string) $term['Slug'] : '';
 				break;
-			case '_personality':
+			case '_shows':
 				$term_name = (string) $term['Feed'];
 				$slug = isset( $term['Slug'] ) ? (string) $term['Slug'] : '';
 				$desc = isset( $term['FeedDescription'] ) ? (string) $term['FeedDescription'] : '';
@@ -708,12 +844,11 @@ class GMedia_Migration extends WP_CLI_Command {
 				$term_name = (string) $term['name'];
 				$desc = (string) $term['desc'];
 				break;
-			case 'contest_type':
-				$term_name = (string) $term['name'];
-				$desc = (string) $term['desc'];
+			case 'collection':
+				$term_name = $term;
+				$desc = '';
 				break;
 		}
-
 
 		$term_name = sanitize_term_field( 'name', $term_name, 0, $taxonomy, 'db' );
 
@@ -754,7 +889,6 @@ class GMedia_Migration extends WP_CLI_Command {
 
 		$term = wp_insert_term( $term_name, $taxonomy, $args );
 
-
 		if ( is_wp_error( $term ) ) {
 			WP_CLI::log( "Error: Term $term_name not imported." );
 			WP_CLI::log( "Error Message: " . $term->get_error_message() );
@@ -789,7 +923,7 @@ class GMedia_Migration extends WP_CLI_Command {
 		if ( preg_match( '/^http/', $filename ) || preg_match( '/^www/', $filename ) ) {
 			$old_filename = $filename;
 		} else {
-			$old_filename = "http://www.$this->site_url.com$filename";
+			$old_filename = trailingslashit( $this->site_url ) . $filename;
 		}
 
 		$tmp = download_url( $old_filename );
@@ -917,18 +1051,21 @@ class GMedia_Migration extends WP_CLI_Command {
 	private function process_blogs( $blogs, $force ) {
 		global $wpdb;
 
-		$total = 0;
-		foreach ( $blogs as $blog ) {
-			$total += count( $blog->BlogEntries->BlogEntry );
-		}
+		$taxonomy_map = array();
 
-		$notify = new \cli\progress\Bar( "Importing $total articles", $total );
+		$taxonomy_map = $this->parse_taxonomy_mapping();
+
+		$total = count( $blogs );
+
+		$notify = new \cli\progress\Bar( "Importing $total blogs", $total );
 		$skipper = 0;
 
 		foreach ( $blogs as $single_blog ) {
 
 			$blog      = (string) $single_blog['BlogName'];
 			$blog_desc = (string) $single_blog['BlogDescription'];
+
+			//echo $taxonomy_map[ $blog ];
 
 			foreach( $blogs->BlogAuthor as $author ) {
 				if ( isset( $author['AuthorEmailAddress'] ) ) {
@@ -997,21 +1134,40 @@ class GMedia_Migration extends WP_CLI_Command {
 
 				$wp_id = wp_insert_post( $post );
 
-				// Download images found in post_content and update post_content with new images.
-				$updated_post                 = array( 'ID' => $wp_id );
-				$updated_post['post_content'] = $this->import_media( trim( (string) $entry->BlogEntryText ), $wp_id );
-				wp_update_post( $updated_post );
-
 				update_post_meta( $wp_id, 'gmedia_import_id', $entry_hash );
+
+				if( isset( $single_blog->BlogEntries->BlogEntry->BlogEntryAudio ) ) {
+					foreach ( $single_blog->BlogEntries->BlogEntry->BlogEntryAudio as $single_audio ) {
+						if( isset( $single_audio['AudioSrc'] ) ) {
+							$media_file_id = $this->import_music_files( $wp_id, $single_audio['AudioSrc'] );
+							$media_url  = wp_get_attachment_url( $media_file_id );
+
+							$updated_post                 = array( 'ID' => $wp_id );
+							$content = $this->import_media( trim( (string) $entry->BlogEntryText ), $wp_id );
+							$updated_post['post_content'] =  $content . '<br/>' . '[audio mp3="' . $media_url . '"][/audio]' ;
+
+							wp_update_post( $updated_post );
+
+							update_post_meta( $wp_id, '_legacy_blog_music_file', $media_url );
+						}
+					}
+
+				} else {
+					// Download images found in post_content and update post_content with new images.
+					$updated_post                 = array( 'ID' => $wp_id );
+					$content = $this->import_media( trim( (string) $entry->BlogEntryText ), $wp_id );
+					$updated_post['post_content'] = $content;
+					wp_update_post( $updated_post );
+				}
 
 				// Process Blog Taxonomy Term
 				if ( isset( $blog ) ) {
-					$blog_info = array( 'Feed' => trim( $blog ), 'FeedDescription' => trim( $blog_desc ) );
+					$blog_info = array( 'Feed' => trim( $taxonomy_map[ $blog ][ 'term' ] ), 'FeedDescription' => trim( $blog_desc ) );
 
-					$blog_id = $this->process_term( $blog_info, '_personality', 'post' );
+					$blog_id = $this->process_term( $blog_info, $taxonomy_map[ $blog ][ 'taxonomy' ], 'post' );
 
 					if ( $blog_id ) {
-						wp_set_post_terms( $wp_id, array( $blog_id ), '_personality', true );
+						wp_set_post_terms( $wp_id, array( $blog_id ), $taxonomy_map[ $blog ][ 'taxonomy' ], true );
 					}
 				}
 
@@ -1035,14 +1191,17 @@ class GMedia_Migration extends WP_CLI_Command {
 				// Images
 				if ( isset( $entry->BlogEntryImage ) ) {
 					foreach ( $entry->BlogEntryImage as $image ) {
-						// import images here
-						$featured_image_attrs = array();
-						$featured_image_path  = '/Pics/' . (string) $image['MainImageSrc'];
-						$this->import_featured_image( $featured_image_path, $wp_id, $featured_image_attrs );
+						$width = (string) $image['MainImageWidth'];
+						if( $width >= 300 ) {
+							// import images here
+							$featured_image_attrs = array();
+							$featured_image_path  = '/Pics/' . (string) $image['MainImageSrc'];
+							$this->import_featured_image( $featured_image_path, $wp_id, $featured_image_attrs );
+						}
 					}
 				}
 
-				if ( isset( $entry->Comments ) ) {
+				/*if ( isset( $entry->Comments ) ) {
 					foreach ( $entry->Comments->Comment as $comment ) {
 						$comment_id = $this->add_comment( $comment, $wp_id, $force );
 
@@ -1053,7 +1212,7 @@ class GMedia_Migration extends WP_CLI_Command {
 							}
 						}
 					}
-				}
+				}*/
 
 				// add redirect
 				if ( isset( $entry->BlogEntryURL ) ) {
@@ -1061,10 +1220,9 @@ class GMedia_Migration extends WP_CLI_Command {
 					CMM_Legacy_Redirects::add_redirect( (string) $entry->BlogEntryURL, $wp_id );
 				}
 
-				$notify->tick();
 			}
+			$notify->tick();
 		}
-
 		$notify->finish();
 	}
 
@@ -1166,7 +1324,7 @@ class GMedia_Migration extends WP_CLI_Command {
 				}
 
 				// Comments
-				if ( isset( $story->Comments ) ) {
+				/*if ( isset( $story->Comments ) ) {
 					foreach ( $story->Comments->Comment as $comment ) {
 						$comment_id = $this->add_comment( $comment, $wp_id, $force );
 
@@ -1177,7 +1335,7 @@ class GMedia_Migration extends WP_CLI_Command {
 							}
 						}
 					}
-				}
+				}*/
 			}
 
 			$notify->tick();
@@ -1390,7 +1548,7 @@ class GMedia_Migration extends WP_CLI_Command {
 
 
 			$gallery_args = array(
-				'post_type'     => 'albums',
+				'post_type'     => 'gmr_gallery',
 				'post_status'   => 'publish',
 				'post_title'    => trim( (string) $album['AlbumName'] ),
 				'post_content'  => trim( (string) $album['Description'] ),
@@ -1399,17 +1557,11 @@ class GMedia_Migration extends WP_CLI_Command {
 				'post_modified' => (string) $album['UTCDateModified'],
 			);
 
-
 			if ( $wp_id ) {
 				$gallery_args['ID'] = $wp_id;
 			}
 
 			$wp_id = wp_insert_post( $gallery_args );
-
-			// Download images found in post_content and update post_content with new images.
-			$updated_post = array( 'ID' => $wp_id );
-			$updated_post['post_content'] = $this->import_media( trim( (string) $album['Description'] ), $wp_id );
-			wp_update_post( $updated_post );
 
 			set_post_format($wp_id, 'gallery' ); //sets the given post to the 'gallery' format
 
@@ -1420,10 +1572,12 @@ class GMedia_Migration extends WP_CLI_Command {
 				$gallery_cats = explode( ',', (string) $album['Categories'] );
 				foreach ( $gallery_cats as $gallery_cat ) {
 					if ( '' !== trim( $gallery_cat ) ) {
-						$cat_id = $this->process_term( $gallery_cat, 'gallery-category', 'albums');
+						$term_title = $gallery_cat;
+						$album_term = array( 'Feed' => $term_title, 'FeedDescription' => '' );
+						$cat_id = $this->process_term( $album_term, 'category', 'gmr_gallery');
 
 						if ( $cat_id ) {
-							wp_set_post_terms( $wp_id, array( $cat_id ), 'gallery-category', true );
+							wp_set_post_terms( $wp_id, array( $cat_id ), 'category', true );
 						}
 					}
 				}
@@ -1456,6 +1610,7 @@ class GMedia_Migration extends WP_CLI_Command {
 					$draft_gallery = array( 'ID' => $wp_id, 'post_status' => 'draft' );
 					wp_update_post( $draft_gallery );
 				} else {
+
 					foreach ( $album->Photo as $photo ) {
 						$photo_info = array(
 							'caption'     => $photo['PhotoCaption'],
@@ -1469,7 +1624,8 @@ class GMedia_Migration extends WP_CLI_Command {
 						update_post_meta( $wp_id, '_gmedia_gallery_images', $image_ids );
 						$image_ids = implode( ',', $image_ids );
 						$gallery = '[gallery ids="'. $image_ids .'"]';
-						$updated_post['post_content'] = $updated_post['post_content'] . $gallery;
+
+						$updated_post['post_content'] = trim( (string) $album['Description'] ) . $gallery;
 						$updated_post['ID'] = $wp_id;
 
 						wp_update_post( $updated_post );
@@ -1506,7 +1662,7 @@ class GMedia_Migration extends WP_CLI_Command {
 		if ( preg_match( '/^http/', $filename ) || preg_match( '/^www/', $filename ) ) {
 			$old_filename = $filename;
 		} else {
-			$old_filename = "http://www.$this->site_url.com$filename";
+			$old_filename = trailingslashit( $this->site_url) . $filename;
 		}
 
 		if ( strpos( $old_filename, '-sizeID-' ) !== false ) {
@@ -1610,7 +1766,7 @@ class GMedia_Migration extends WP_CLI_Command {
 			}
 
 			$showcase_post = array(
-				'post_type'     => 'albums',
+				'post_type'     => 'gmr_album',
 				'post_status'   => 'publish',
 				'post_title'    => trim( (string) $showcase['ShowcaseName'] ),
 				'post_content'  => trim( (string) $showcase['ShowcaseDescription'] ),
@@ -1647,8 +1803,10 @@ class GMedia_Migration extends WP_CLI_Command {
 			update_post_meta( $wp_id, '_legacy_labels', $questions );
 
 			$gallery_ids = array();
+			$menu_order = 1;
 			foreach ( $showcase as $entry ) {
-				$gallery_ids[] = $this->process_showcase_entry( $entry, $wp_id, $force );
+				$gallery_ids[] = $this->process_showcase_entry( $entry, $wp_id, $force, $menu_order );
+				$menu_order++;
 			}
 
 			if ( ! empty( $gallery_ids ) ) {
@@ -1665,7 +1823,7 @@ class GMedia_Migration extends WP_CLI_Command {
 	 * @var bool $force Whether to force import or not.
 	 * @return void
 	 */
-	private function process_showcase_entry( $entry, $parent_id, $force ) {
+	private function process_showcase_entry( $entry, $parent_id, $force, $menu_order ) {
 		global $wpdb;
 
 		$entry_hash = trim( (string) $entry['ShowcaseEntryName'] ) . (string) $entry['DateCreated'];
@@ -1680,13 +1838,14 @@ class GMedia_Migration extends WP_CLI_Command {
 		}
 
 		$showcase_entry_post = array(
-			'post_type'     => 'album',
+			'post_type'     => 'gmr_gallery',
 			'post_status'   => 'publish',
 			'post_parent'   => $parent_id,
 			'post_title'    => trim( (string) $entry['ShowcaseEntryName'] ),
 			'post_date'     => (string) $entry['DateCreated'],
 			'post_date_gmt'     => (string) $entry['DateCreated'],
-			'post_modified' => (string) $entry['DateModified']
+			'post_modified' => (string) $entry['DateModified'],
+			'menu_order'    => $menu_order
 		);
 
 		if ( ! $entry['IsApproved'] ) {
@@ -1698,7 +1857,7 @@ class GMedia_Migration extends WP_CLI_Command {
 		}
 
 		$wp_id = wp_insert_post( $showcase_entry_post );
-
+		WP_CLI::log( 'Added showcase entry' );
 		set_post_format( $wp_id, 'gallery' );
 		update_post_meta( $wp_id, 'gmedia_import_id', $entry_hash );
 		update_post_meta( $wp_id, '_gmedia_related_content', $parent_id );
@@ -1752,8 +1911,6 @@ class GMedia_Migration extends WP_CLI_Command {
 			update_post_meta( $wp_id, '_gmedia_gallery_images', $image_ids );
 			$image_ids = implode( ',', $image_ids );
 			$gallery = '[gallery ids="'. $image_ids .'"]';
-			WP_CLI::log( $gallery );
-			WP_CLI::log( $wp_id );
 			$updated_post = array( 'ID' => $wp_id, 'post_content' => $gallery );
 			wp_update_post( $updated_post );
 		}
@@ -1828,14 +1985,11 @@ class GMedia_Migration extends WP_CLI_Command {
 					$post_content .= html_entity_decode( (string) $post['EmbededTag'] );
 				}
 
-				$video_post_title = trim( (string) $post['PostTitle'] );
-				$video_post_title = ucwords( strtolower($video_post_title) );
-				
 				$video_post = array(
 					'post_type'     => 'post',
 					'post_status'   => 'publish',
 					'post_author'   => $user_id,
-					'post_title'    => $video_post_title,
+					'post_title'    => trim( (string) $post['PostTitle'] ),
 					'post_content'  => $post_content,
 					'post_date'     => (string) $post['DateCreated'],
 					'post_modified' => (string) $post['DateModified']
@@ -2100,8 +2254,14 @@ class GMedia_Migration extends WP_CLI_Command {
 
 				//update_post_meta( $wp_id, '_EventAllDay', 'yes' );
 
-				$start_date     = isset($event['UTCDisplayDateStart']) ? date( 'Y-m-d', strtotime( (string) $event['UTCDisplayDateStart'] ) ) : date( 'Y-m-d', strtotime( (string) $event['DateCreated'] ) );
-				$end_date     = isset($event['UTCDisplayDateEnd']) ? date( 'Y-m-d', strtotime( (string) $event['UTCDisplayDateEnd'] ) ) : date( 'Y-m-d', strtotime( (string) $event['DateToExpire'] ) );;
+				$start_date     = isset($event['ConcertDate']) ? (string) $event['ConcertDate']  : (string) $event['DateToRelease'];
+				$end_date     = isset($event['ConcertDate']) ? (string) $event['ConcertDate']  : (string) $event['DateToExpire'] ;
+
+				$start_date = explode( 'T', $start_date );
+				$end_date = explode( 'T', $end_date );
+
+				$start_date = date( "Y-m-d H:i:s", strtotime( $start_date[0] . ' ' . $start_date[1] ) );
+				$end_date = date( "Y-m-d H:i:s", strtotime( $end_date[0] . ' ' . $end_date[1] ) );
 
 				update_post_meta( $wp_id, '_EventStartDate', $start_date );
 				update_post_meta( $wp_id, '_EventEndDate', $end_date );
@@ -2221,7 +2381,7 @@ class GMedia_Migration extends WP_CLI_Command {
 
 				// Add redirects
 				if( class_exists('CMM_Legacy_Redirects') ) {
-					$redirectid_id = CMM_Legacy_Redirects::add_redirect( 'http://www.' . $this->site_url . '.com/music/concerts/Details.aspx?ConcertID=' . $event['ConcertID'] , $wp_id );
+					$redirectid_id = CMM_Legacy_Redirects::add_redirect( trailingslashit( $this->site_url ) . 'music/concerts/Details.aspx?ConcertID=' . $event['ConcertID'] , $wp_id );
 				} else {
 					WP_CLI::warning('Class for adding redircet is mssing!');
 				}
@@ -2305,7 +2465,7 @@ class GMedia_Migration extends WP_CLI_Command {
 					// import images here
 					if( (string) $single_channel['Podcast_Image'] != "") {
 						$featured_image_attrs = array();
-						$featured_image_path  = (string) $single_channel['Podcast_Image'];
+						$featured_image_path  = '/' . (string) $single_channel['Podcast_Image'];
 						$this->import_featured_image( $featured_image_path, $wp_id, $featured_image_attrs );
 					}
 				}
@@ -2347,7 +2507,30 @@ class GMedia_Migration extends WP_CLI_Command {
 					update_post_meta( $wp_id, '_legacy_DisplayPosition', (string) $single_channel['DisplayPosition'] );
 				}
 
-				$notify->tick();
+				//gmp_audio_file_meta_key
+				foreach ( $podcasts->Channel->Item as $podcast_item ) {
+					$episode = array(
+						'post_type'     => 'episode',
+						'post_status'   => 'publish',
+						'post_title'    => trim( (string) $podcast_item['ItemTitle'] ),
+						'post_content'  => trim( (string) $podcast_item['ItemDescription'] ),
+						'post_date'     => (string) $single_channel['UTCDateCreated'],
+						'post_modified' => (string) $single_channel['UTCDateLastModified'],
+						'post_parent'   => $wp_id
+					);
+
+					$episode_id = wp_insert_post( $episode );
+
+					if( isset( $podcast_item['MediaFilename'] ) && $episode_id ) {
+						$audio_path = str_ireplace( '\Media\\', '', (string) $podcast_item['MediaFilename'] );
+						$media_file_id = $this->import_music_files( $wp_id, $audio_path );
+						$url = wp_get_attachment_url( $media_file_id );
+						update_post_meta( $episode_id, 'gmp_audio_file_meta_key', $url );
+					}
+				}
+
+
+			$notify->tick();
 			}
 
 		$notify->finish();
@@ -2477,13 +2660,13 @@ class GMedia_Migration extends WP_CLI_Command {
 			$form_encoded = json_encode( $form );
 			update_post_meta( $wp_id, 'survey_embedded_form', $form_encoded );
 
-			// register hidden post type for responses
-			if( is_array( $survey->Responses->Response ) ) {
-				foreach( $survey->Responses->Response as $response ) {
+			if( isset( $survey->Responses->Response ) ) {
+
+				foreach ( $survey->Responses->Response as $response ) {
 
 					$response_values = array();
 
-					foreach( $response->Answer as $answer ) {
+					foreach ( $response->Answer as $answer ) {
 
 						// get parent question id
 						$survey_form = get_post_meta( $wp_id, 'survey_embedded_form', true );
@@ -2494,38 +2677,35 @@ class GMedia_Migration extends WP_CLI_Command {
 
 						foreach ( $survey_form as $single_response ) {
 							if ( $single_response->cid == (string) $answer['SubQuestionID'] ) {
-								$response_values[] = array(
-									'cid'   => $single_response->cid,
-									'value' => (string) $answer['AnswerValue']
-								);
+								$response_values[ 'c' . $single_response->cid ] = (string) $answer['AnswerValue'];
 							}
 						}
 					}
 
 					$response_args = array(
-						'post_status'           => 'publish',
-						'post_type'             => 'survey_response',
-						'post_parent'           => $wp_id,
-						'post_title'            => (string) $response['EmailAddress'],
+						'post_status' => 'publish',
+						'post_type'   => 'survey_response',
+						'post_parent' => $wp_id,
+						'post_title'  => (string) $response['EmailAddress'],
 					);
 
 					$user_survey_id = (string) $response['UserSurveyID'];
 
 					$response_id = $wpdb->get_var( $sql = "SELECT post_id from {$wpdb->postmeta} WHERE meta_key = 'gmedia_import_id' AND meta_value = '" . $user_survey_id . "'" );
 
-					if( !$force && $response_id ) {
+					if ( ! $force && $response_id ) {
 						continue;
 					}
 
 					$response_id = wp_insert_post( $response_args );
-					WP_CLI::log( "Imported response" );
-					if( $response_id ) {
 
-						if( isset($response['UTCCompletionDate']) ){
+					if ( $response_id ) {
+
+						if ( isset( $response['UTCCompletionDate'] ) ) {
 							update_post_meta( $response_id, '_legacy_UTCCompletionDate', (string) $response['UTCCompletionDate'] );
 						}
 
-						if( !empty( $response_values ) ){
+						if ( ! empty( $response_values ) ) {
 							update_post_meta( $response_id, 'entry_reference', json_encode( $response_values ) );
 						}
 
@@ -2567,7 +2747,7 @@ class GMedia_Migration extends WP_CLI_Command {
 
 			// If we're not forcing import, skip existing posts.
 			if ( ! $force && $wp_id ) {
-				$notify->tick();
+				//$notify->tick();
 				continue;
 			}
 
@@ -2583,10 +2763,10 @@ class GMedia_Migration extends WP_CLI_Command {
 			}
 
 			$contest_title = trim( (string) $contest['ContestName'] );
-			preg_match( '/\[\s*(\S+)\s*\](.*)/', $contest_title, $contest_title_matches );
+			preg_match( '/(\[\s*(\S+)\s*\])?(.*)/', $contest_title, $contest_title_matches );
 
 			if( !empty( $contest_title_matches ) ) {
-				$contest_title = $contest_title_matches[2];
+				$contest_title = $contest_title_matches[3];
 			}
 
 			$contest_args = array(
@@ -2604,10 +2784,10 @@ class GMedia_Migration extends WP_CLI_Command {
 			$wp_id = wp_insert_post( $contest_args );
 
 			// Download images found in post_content and update post_content with new images.
-			$updated_post = array( 'ID' => $wp_id );
+			//$updated_post = array( 'ID' => $wp_id );
 			/*$updated_post['post_content'] = $this->import_media( trim( (string) $contest->ContestText ), $wp_id );
 			*/
-			wp_update_post( $updated_post );
+			//wp_update_post( $updated_post );
 
 			update_post_meta( $wp_id, 'gmedia_import_id', $contest_hash );
 
@@ -2643,8 +2823,9 @@ class GMedia_Migration extends WP_CLI_Command {
 			}
 
 			// process terms
-			if( isset( $contest_title_matches ) && $contest_title_matches[1] ) {
-				$contest_term['name'] = $contest_title_matches[1];
+
+			if( !empty( $contest_title_matches ) && $contest_title_matches[1] ) {
+				$contest_term['name'] = $contest_title_matches[2];
 				$contest_term['desc'] = "";
 
 				$contest_cat_id = $this->process_term( $contest_term, 'contest_type', 'contest' );
@@ -2654,17 +2835,14 @@ class GMedia_Migration extends WP_CLI_Command {
 				}
 			}
 
-			if( isset($contest['ContestCategory']) && (string) $contest['ContestCategory'] != "None" ) {
-				$contest_term['name'] = (string) $contest['ContestCategory'];
-				$contest_term['desc'] = "";
-
-				$contest_cat_id = $this->process_term( $contest_term, 'contest_type', 'contest' );
-
-				if ( $contest_cat_id ) {
-					wp_set_post_terms( $wp_id, array( $contest_cat_id ), 'contest_type', true );
+			if( isset($contest['ContestCategory'])  ) {
+				//form_login_restriction
+				if( (string) $contest['ContestCategory'] == 'Non Club Contest' ) {
+					update_post_meta( $wp_id, 'form_login_restriction', '' );
+				} else {
+					update_post_meta( $wp_id, 'form_login_restriction', 'logged-in' );
 				}
-
-				update_post_meta($wp_id, '_legacy_ContestCategory', (string) $contest['ContestCategory']);
+				update_post_meta( $wp_id, '_legacy_ContestCategory', (string) $contest['ContestCategory'] );
 			}
 
 			if( isset( $contest['ContestID'] ) ) {
@@ -2674,26 +2852,58 @@ class GMedia_Migration extends WP_CLI_Command {
 			if( isset( $contest['SurveyID'] ) ) {
 				$orig_survey_id = (int) $contest['SurveyID'];
 				$form_id = $wpdb->get_var( $sql = "SELECT post_id from {$wpdb->postmeta} WHERE meta_key = '_legacy_SurveyID' AND meta_value = '" . $orig_survey_id . "'" );
-				$form = get_post_meta( $form_id, 'survey_embedded_form', true );
-
-				update_post_meta( $wp_id, 'embedded_form', $form );
+				if( $form_id ) {
+					$form = get_post_meta( $form_id, 'survey_embedded_form', true );
+					update_post_meta( $form_id, 'gmedia_must_delete', 'true' );
+					update_post_meta( $wp_id, 'embedded_form', $form );
+				}
 			}
 
-			if( !empty( $contest->Entries ) ) {
+			if( isset( $contest->Entries->Entry ) ) {
 
 				foreach ( $contest->Entries->Entry as $entry ) {
+
+					$entry_name = (string) $entry['ContestEntryID'];
+					if( isset( $entry['MemberID'] ) ) {
+						$entry_name = (string) $entry['MemberID'];
+					}
 
 					$entry_args = array(
 						'post_status' => 'publish',
 						'post_type'   => 'contest_entry',
 						'post_parent' => $wp_id,
-						'post_title'  => (string) $entry['MemberID'],
+						'post_title'  => $entry_name,
 						'post_date'   => (string) $entry['UTCEntryDate'],
 					);
 
 					$entry_id = wp_insert_post( $entry_args );
 
 					if ( $entry_id ) {
+
+						$response_id = $wpdb->get_var( $sql = "SELECT post_id from {$wpdb->postmeta} WHERE meta_key = '_legacy_survey_MemberID' AND meta_value = '" . $entry_name . "'" );
+
+						$submitted_values = array();
+
+						if( $response_id ) {
+							update_post_meta( $response_id, 'gmedia_must_delete', 'true' );
+							$submitted_values = get_post_meta( $response_id, 'entry_reference', true );
+						}
+
+						/*$contest_entry = GreaterMediaContestEntryEmbeddedForm::create_for_data(
+							$wp_id,
+							$entry_name,
+							$entry_name,
+							GreaterMediaContestEntry::ENTRY_SOURCE_EMBEDDED_FORM,
+							$submitted_values
+						);*/
+
+
+						update_post_meta( $entry_id, 'entrant_name', $entry_name );
+						update_post_meta( $entry_id, 'entrant_reference', $entry_name );
+						update_post_meta( $entry_id, 'entry_source', GreaterMediaContestEntry::ENTRY_SOURCE_EMBEDDED_FORM );
+						update_post_meta( $entry_id, 'entry_reference', $submitted_values );
+
+						//do_action( 'greatermedia_contest_entry_save', $contest_entry );
 
 						if ( isset( $entry['isWinner'] ) ) {
 							update_post_meta( $entry_id, '_legacy_isWinner', (string) $entry['isWinner'] );
@@ -2703,25 +2913,17 @@ class GMedia_Migration extends WP_CLI_Command {
 							update_post_meta( $entry_id, '_legacy_ContestEntryID', (string) $entry['ContestEntryID'] );
 						}
 
-						$fields = array();
-						for ( $i = 1; $i <= 20; $i ++ ) {
-							if ( isset( $entry[ 'Field' . $i ] ) ) {
-								$fields[] = sanitize_text_field( (string) $entry[ 'Field' . $i ] );
-							}
-						}
-
-						update_post_meta( $entry_id, '_legacy_Fields', $fields );
 					}
 
-					//$progress->tick();
 				}
-
 			}
+
 			//$progress->finish();
 			//$notify->tick();
 		}
 
 		//$notify->finish();
+		//$this->clean_up();
 	}
 
 	private function process_schedules( $schedules, $force ) {
@@ -2731,6 +2933,7 @@ class GMedia_Migration extends WP_CLI_Command {
 		$notify = new \cli\progress\Bar( "Importing $total on air items", $total );
 
 		$count = 0;
+
 		foreach ( $schedules->OnAirNowItem as $scheduled_item ) {
 			$scheduled_item_hash = trim( (string) $scheduled_item['TitleText'] ) . (string) $scheduled_item['DateModified'];
 			$scheduled_item_hash = md5( $scheduled_item_hash );
@@ -2787,42 +2990,56 @@ class GMedia_Migration extends WP_CLI_Command {
 				if( post_type_exists( 'show-episode' ) ) {
 					$post_date_gmt = 0;
 					$interval = 0;
-					if( isset($schedule['StartTime'] ) ) {
-						$start_time = (string) $schedule['StartTime'];
-						if( $start_time >= 1000 ) {
-							$start_time = substr( $start_time, 0, 2) . ':' . substr( $start_time, 2, 2);
-						} elseif ( $start_time == 0 ) {
-							$start_time = "00:00";
-						} else {
-							$start_time = substr( $start_time, 0, 1) . ':' . substr( $start_time, 1, 2);
-						}
-						$next_weekday = strtotime( 'next ' . strtolower( (string) $schedule['WeekdayName'] ) );
-						$post_date_gmt = strtotime( date( 'Y-m-d', $next_weekday) . ' ' . $start_time );
-					}
-					if( isset($schedule['EndTime'] ) ) {
-						$end_time = (string) $schedule['EndTime'];
-						if( $end_time >= 1000 ) {
-							$end_time = substr( $end_time, 0, 2) . ':' . substr( $end_time, 2, 2);
-						} elseif ( $end_time == 0 ) {
-							$end_time = "00:00";
-						} else {
-							$end_time = substr( $end_time, 0, 1) . ':' . substr( $end_time, 1, 2);
-						}
-					}
-					$interval = strtotime( $end_time ) - strtotime( $start_time );
+					$weekdays = array( strtolower( (string) $schedule['WeekdayName'] ) );
 
-					$args = array(
-						'post_title'    => $show_title,
-						'post_type'     => ShowsCPT::EPISODE_CPT,
-						'post_status'   => 'future',
-						'post_date'     => date( DATE_ISO8601, $post_date_gmt ),
-						'post_date_gmt' => date( DATE_ISO8601, $post_date_gmt ),
-						'post_parent'   => $wp_id,
-						'ping_status'   => 1,
-						'menu_order'    => $interval,
-					);
+					if( $weekdays[0] == "weekdays" ) {
+						$weekdays = array(
+							'monday',
+							'tuesday',
+							'wednesday',
+							'thursday',
+							'Friday',
+						);
+					}
 
-					$episode_id = wp_insert_post( $args );
+					foreach ( $weekdays as $weekday ) {
+						if( isset($schedule['StartTime'] ) ) {
+							$start_time = (string) $schedule['StartTime'];
+							if( $start_time >= 1000 ) {
+								$start_time = substr( $start_time, 0, 2) . ':' . substr( $start_time, 2, 2);
+							} elseif ( $start_time == 0 ) {
+								$start_time = "00:00";
+							} else {
+								$start_time = substr( $start_time, 0, 1) . ':' . substr( $start_time, 1, 2);
+							}
+							$next_weekday = strtotime( "next $weekday" );
+							$post_date_gmt = strtotime( date( 'Y-m-d', $next_weekday) . ' ' . $start_time );
+						}
+						if( isset($schedule['EndTime'] ) ) {
+							$end_time = (string) $schedule['EndTime'];
+							if( $end_time >= 1000 ) {
+								$end_time = substr( $end_time, 0, 2) . ':' . substr( $end_time, 2, 2);
+							} elseif ( $end_time == 0 ) {
+								$end_time = "00:00";
+							} else {
+								$end_time = substr( $end_time, 0, 1) . ':' . substr( $end_time, 1, 2);
+							}
+						}
+						$interval = strtotime( $end_time ) - strtotime( $start_time );
+
+						$args = array(
+							'post_title'    => $show_title,
+							'post_type'     => ShowsCPT::EPISODE_CPT,
+							'post_status'   => 'future',
+							'post_date'     => date( DATE_ISO8601, $post_date_gmt ),
+							'post_date_gmt' => date( DATE_ISO8601, $post_date_gmt ),
+							'post_parent'   => $wp_id,
+							'ping_status'   => 1,
+							'menu_order'    => $interval,
+						);
+
+						$episode_id = wp_insert_post( $args );
+					}
 
 				}
 				/**if( isset($schedule['StartTime'] ) ) {
@@ -2881,6 +3098,154 @@ class GMedia_Migration extends WP_CLI_Command {
 
 		return (int) $term['term_id'];
 	}
+
+	private function parse_taxonomy_mapping() {
+
+		$config_file_handle = fopen( $this->config_file, "r");
+		while ( ( $data = fgetcsv( $config_file_handle, 1000, ",")) !== FALSE) {
+			$config_file[] = $data;
+		}
+		fclose($config_file_handle);
+		foreach ( $config_file as $config_string ) {
+			$marketron_taxonomy = html_entity_decode( $config_string[2], ENT_QUOTES | ENT_HTML5 );
+			$new_term = $config_string[4];
+			$taxonomy_map[ $marketron_taxonomy ]['term'] = $new_term;
+			$taxonomy_map[ $marketron_taxonomy ]['taxonomy'] = $config_string[3];
+		}
+
+		return $taxonomy_map;
+	}
+
 }
 
 WP_CLI::add_command( 'gmedia-migration', 'GMedia_Migration' );
+
+
+class Post_Term extends \WP_CLI_Command{
+	/**
+	 * Add a term to a post
+	 *
+	 * @synopsis <id> <taxonomy> [--slug=<slug>] [--term-id=<term-id>] [--replace]
+	 */
+	public function add( $args, $assoc_args ){
+		if ( empty($assoc_args['slug']) && empty($assoc_args['term-id']) ) {
+			WP_CLI::error("You must specify the term slug or the term_id");
+		}
+		if ( ! empty($assoc_args['term-id']) ) {
+			$term = \absint( $assoc_args['term-id'] );
+		} else {
+			$term = $assoc_args['slug'];
+		}
+		list( $post_id, $taxonomy ) = $args;
+		if ( !isset($post_id) ){
+			WP_CLI::error("You must specify the post ID");
+		}
+		if ( !isset($taxonomy) ){
+			WP_CLI::error("You must specify the term taxonomy");
+		}
+		// if replace is set, then append is false
+		$append = !! empty( $assoc_args['replace'] );
+		$set_term = \wp_set_object_terms( $post_id, $term, $taxonomy, $append );
+		if ( \is_wp_error($success) ) {
+			WP_CLI::warning( $success->get_error_mesage() );
+		} else {
+			WP_CLI::success("$taxonomy $term successfully added to post ID $post_id");
+		}
+	}
+	/**
+	 * Remove one term from the post associations
+	 *
+	 * @synopsis <id> <taxonomy> [--slug=<slug>] [--term-id=<term-id>]
+	 */
+	public function remove( $args, $assoc_args ){
+		if ( empty($assoc_args['slug']) && empty($assoc_args['term-id']) ) {
+			WP_CLI::error("You must specify the term slug or the term_id");
+			return;
+		}
+		if ( ! empty($assoc_args['term-id']) ) {
+			$term  = \absint( $assoc_args['term-id'] );
+			$field = 'term_id';
+		} else {
+			$term  = $assoc_args['slug'];
+			$field = 'slug';
+		}
+		list( $post_id, $taxonomy ) = $args;
+		if ( !isset($post_id) ){
+			WP_CLI::error("You must specify the post ID");
+			return;
+		}
+		if ( !isset($taxonomy) ){
+			WP_CLI::error("You must specify the term taxonomy");
+			return;
+		}
+		$existing_terms = \wp_get_object_terms( $post_id, $taxonomy );
+		if ( \is_wp_error($existing_terms) ) {
+			WP_CLI::warning( $existing_terms->get_error_mesage() );
+			return;
+		}
+		$terms_count = count( $existing_terms );
+		$new_terms = array();
+		foreach ( $existing_terms as $e_term ) {
+			if ( $term != $e_term->$field ) {
+				$new_terms[] = (int)$e_term->term_id;
+			}
+		}
+		switch ( $terms_count - count( $new_terms ) ){
+			case 1:
+				// exactly one term less
+				$update = \wp_set_object_terms( $post_id, $new_terms, $taxonomy, false );
+				if ( \is_wp_error($update) ) {
+					WP_CLI::error( $update->get_error_message() );
+				} elseif ( is_string($update) ) {
+					WP_CLI::error("$taxonomy $update could not be added to the post");
+				} else {
+					WP_CLI::success("$taxonomy $term removed from post $post_id");
+				}
+				return;
+				break;
+			case 0:
+				// no terms less
+				WP_CLI::warning("$taxonomy $term was not associated to post $post_id");
+				return;
+				break;
+			default:
+				// weird stuff
+				WP_CLI::warning("Something weird happened... or didn't");
+				break;
+		}
+	}
+	/**
+	 * Unlink the object from the taxonomy
+	 *
+	 * @synopsis <id> <taxonomy>
+	 */
+	public function delete( $args, $assoc_args ){
+		list( $post_id, $taxonomy ) = $args;
+		$post_id = absint( $post_id );
+		$post = \get_post($post_id);
+		WP_CLI::confirm( "Sure you want to remove all $taxonomy terms from \"{$post->post_title}\" [ID: $post_id]?");
+		\wp_delete_object_term_relationships( absint($post_id), $taxonomy );
+		WP_CLI::success("All $taxonomy terms where removed from post $post_id");
+	}
+	/**
+	 * Get terms associated to a post
+	 *
+	 * @synopsis <id> <taxonomy> [--format=<format>]
+	 */
+	public function get( $args, $assoc_args ){
+		list( $post_id, $taxonomy ) = $args;
+		$terms = \wp_get_object_terms( absint($post_id), $taxonomy );
+		if ( \is_wp_error( $terms ) ) {
+			WP_CLI::warning( $terms->get_error_message() );
+		} else {
+			WP_CLI::print_value( $terms, $assoc_args );
+		}
+	}
+
+	public function clean_up() {
+		global $wpdb;
+		$wp_id = $wpdb->get_var( $sql = "SELECT post_id from {$wpdb->postmeta} WHERE meta_key = 'gmedia_must_delete' AND meta_value = 'true'" );
+		WP_CLI::log( $wp_id );
+	}
+}
+WP_CLI::add_command( 'post-term', 'Post_Term' );
