@@ -131,7 +131,6 @@ function(a){"use strict";a.extend(a.fn.cycle.defaults,{tmplRegex:"{{((.)?.*?)}}"
 		// If we're on a small screen but ismobile is not set, shift things around
 		if ( $window.width() < 768 && ! isMobile() ) {
 			$gallery.addClass( 'ismobile' );
-			$sidebar.prepend( $caption );
 			regroup_thumbnails( get_thumbs_per_page() );
 			update_thumbnails( $main.data( "cycle.opts" ).currSlide );
 		}

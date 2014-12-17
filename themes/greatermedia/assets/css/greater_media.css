@@ -4496,7 +4496,8 @@ category: Components - Gallery Archive
   display: block;
   margin-right: 7.42297%;
   width: 100%;
-  margin-right: 0; }
+  margin-right: 0;
+  margin-bottom: 40px; }
   .gallery__content:last-child {
     margin-right: 0; }
   @media screen and (min-width: 480px) {
@@ -4636,12 +4637,15 @@ category: Components - Gallery Archive
   color: #404041; }
 
 .gallery__progress {
-  position: absolute;
-  bottom: 0;
-  left: 0;
+  position: relative;
   width: 100%;
   padding: 0 4.375%;
   overflow: auto; }
+  @media screen and (min-width: 1024px) {
+    .gallery__progress {
+      position: absolute;
+      bottom: 0;
+      left: 0; } }
 
 .gallery__prev--btn, .gallery__next--btn {
   position: relative;
@@ -4740,6 +4744,7 @@ category: Components - Gallery Archive
   display: block;
   width: 36%;
   height: 36px;
+  padding-top: 12px;
   line-height: 1;
   font-size: 1em;
   font-weight: lighter;
@@ -4757,6 +4762,8 @@ category: Components - Gallery Archive
   display: block;
   margin-right: 7.42297%;
   width: 100%;
+  height: 145px;
+  padding: 20px 0;
   overflow: auto;
   border-top: 1px solid #404041;
   background-color: #282827; }
@@ -4816,6 +4823,12 @@ category: Components - Gallery Archive
       width: 72%;
       margin: 0 14%; } }
 
+.gallery__paging {
+  display: none; }
+  @media screen and (min-width: 768px) {
+    .gallery__paging {
+      display: block; } }
+
 .gallery__paging--left, .gallery__paging--right {
   position: absolute;
   top: 22px;
@@ -4860,14 +4873,18 @@ category: Components - Gallery Archive
 
 .gallery__previews--group {
   width: 100%;
-  height: 100px; }
+  height: 100px;
+  left: 5px !important; }
+  @media screen and (min-width: 768px) {
+    .gallery__previews--group {
+      left: 0 !important; } }
 
 .gallery__slide--preview {
   float: left;
-  width: 11.5%;
+  width: 100px;
   height: 100%;
   max-height: 100px;
-  margin-right: .875%;
+  margin-right: 5px;
   opacity: 0.5;
   filter: alpha(opacity=50);
   -moz-opacity: 0.5;
@@ -4877,6 +4894,10 @@ category: Components - Gallery Archive
   -moz-transition: opacity 200ms linear;
   transition: opacity 200ms linear;
   cursor: pointer; }
+  @media screen and (min-width: 768px) {
+    .gallery__slide--preview {
+      width: 11.5%;
+      margin-right: .875%; } }
 
 .gallery__slide--preview:hover {
   opacity: 1;

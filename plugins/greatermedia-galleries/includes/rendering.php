@@ -200,7 +200,8 @@ class GreaterMediaGallery {
 						     data-cycle-swipe="true"
 						     data-cycle-fx="scrollHorz"
 						     data-cycle-swipe-fx="scrollHorz"
-						     data-cycle-manual-fx="scrollHoriz">
+						     data-cycle-manual-fx="scrollHoriz"
+						     data-cycle-auto-height=container>
 							<?php
 							while ( $gallery->have_posts() ) {
 								$gallery->the_post();
