@@ -601,6 +601,10 @@ category: Components - Gallery Archive
 	left: 5px !important;
 	@include bp(medium) {
 		left: 0 !important;
+		height: 75px;
+	}
+	@include bp(large) {
+		height: 100px;
 	}
 }
 

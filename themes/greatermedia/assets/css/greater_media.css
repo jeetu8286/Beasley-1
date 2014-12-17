@@ -4884,7 +4884,11 @@ category: Components - Gallery Archive
   left: 5px !important; }
   @media screen and (min-width: 768px) {
     .gallery__previews--group {
-      left: 0 !important; } }
+      left: 0 !important;
+      height: 75px; } }
+  @media screen and (min-width: 1024px) {
+    .gallery__previews--group {
+      height: 100px; } }
 
 .gallery__slide--preview {
   float: left;
