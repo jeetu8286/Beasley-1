@@ -174,7 +174,6 @@
 
 	function loggedInGigyaUser() {
 		var station = gmr.callsign;
-		var currentStream = document.querySelector('.live-player__stream--current-name');
 		if (!gmr.logged_in) {
 			console.log("--- Log In with Gigya ---");
 		} else {
@@ -205,16 +204,6 @@
 				listenNow.style.display = 'none';
 				nowPlaying.style.display = 'inline-block';
 			});
-
-			currentStream.addEventListener('change', function() {
-				console.log("--- new stream select ---");
-				var station = this.text();
-
-				if (livePlaying)
-					player.stop();
-
-				player.play({station: station, timeShift: true});
-			}, false);
 		}
 	}
 
@@ -228,6 +217,18 @@
 		player.skipAd();
 		player.playAd('vastAd', {url: vastUrl});
 	}
+
+	var currentStream = $('.live-player__stream--current-name');
+
+	currentStream.bind("DOMSubtreeModified",function(){
+		console.log("--- new stream select ---");
+		var station = currentStream.text();
+
+		if (livePlaying)
+			player.stop();
+
+		player.play({station: station, timeShift: true});
+	});
 
 	function playLiveAudioStream(event) {
 		event.preventDefault();
