@@ -1,5 +1,10 @@
 var AVAILABLE_CONSTRAINTS = [
 
+	{
+		type: 'action:comment_status',
+		valueType: 'boolean'
+	},
+
 	/* System Fields */
 	{
 		type: 'system:createdTimestamp',
@@ -72,11 +77,14 @@ var AVAILABLE_CONSTRAINTS = [
 		valueType: 'string',
 		value: '01001'
 	},
+
+	/*
 	{
 		type: 'profile:timezone',
 		valueType: 'string',
 		value: 'America/New_York',
 	},
+	*/
 
 	// Facebook
 	{
@@ -98,7 +106,7 @@ var AVAILABLE_CONSTRAINTS = [
 		valueType: 'string',
 		entryTypeID: -1,
 		entryFieldID: -1
-	}
+	},
 
 ];
 
@@ -478,6 +486,15 @@ var AVAILABLE_CONSTRAINTS_META = [
 	{
 		type: 'record:contest',
 		title: 'Contest Entry'
+	},
+
+	{
+		type: 'action:comment_status',
+		title: 'Comment Status',
+		choices: [
+			{ label: 'Has Commented' },
+			{ label: 'Has Not Commented' },
+		]
 	}
 
 ];

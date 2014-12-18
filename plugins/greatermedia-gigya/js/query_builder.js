@@ -896,11 +896,14 @@ var AVAILABLE_CONSTRAINTS = [
 		valueType: 'string',
 		value: '01001'
 	},
+
+	/*
 	{
 		type: 'profile:timezone',
 		valueType: 'string',
 		value: 'America/New_York',
 	},
+	*/
 
 	// Facebook
 	{
