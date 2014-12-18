@@ -4189,7 +4189,6 @@ category: Components - Article
   height: 132px;
   padding: 16px 2.5%;
   background-color: #000000;
-  z-index: 10000;
   -webkit-transition: opacity 1s ease-in 0s;
   -moz-transition: opacity 1s ease-in 0s;
   transition: opacity 1s ease-in 0s;
@@ -4197,7 +4196,8 @@ category: Components - Article
   filter: alpha(opacity=0);
   -moz-opacity: 0;
   -khtml-opacity: 0;
-  zoom: 1; }
+  zoom: 1;
+  z-index: 28000; }
 
 .header__search--open {
   display: block;
