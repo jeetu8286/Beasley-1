@@ -1,8 +1,14 @@
 var AVAILABLE_CONSTRAINTS = [
 
 	{
-		type: 'action:comment_status',
-		valueType: 'boolean'
+		type: 'data:comment_count',
+		valueType: 'integer',
+		value: 0,
+	},
+	{
+		type: 'data:comment_status',
+		valueType: 'boolean',
+		value: true,
 	},
 
 	/* System Fields */
@@ -489,11 +495,15 @@ var AVAILABLE_CONSTRAINTS_META = [
 	},
 
 	{
-		type: 'action:comment_status',
+		type: 'data:comment_count',
+		title: 'Comment Count'
+	},
+	{
+		type: 'data:comment_status',
 		title: 'Comment Status',
 		choices: [
-			{ label: 'Has Commented' },
-			{ label: 'Has Not Commented' },
+			{ label: 'Has Commented', value: true },
+			{ label: 'Has Not Commented', value: false }
 		]
 	}
 

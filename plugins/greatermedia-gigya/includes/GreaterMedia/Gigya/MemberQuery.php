@@ -294,6 +294,7 @@ class MemberQuery {
 				return 'profile';
 
 			case 'profile':
+			case 'data':
 				return 'profile';
 
 			case 'record':
@@ -390,6 +391,15 @@ class MemberQuery {
 					return $this->clause_for_favorites_constraint( $constraint );
 				} else {
 					return $this->clause_for_profile_constraint( $constraint );
+				}
+
+			case 'data':
+				$subType = $typeList[1];
+
+				if ( $subType === 'comment_status' ) {
+					return $this->clause_for_comment_status_constraint( $constraint );
+				} else {
+					return $this->clause_for_data_constraint( $constraint );
 				}
 
 			case 'system':
@@ -520,6 +530,39 @@ class MemberQuery {
 		$query .= $this->operator_for( $operator );
 		$query .= ' ';
 		$query .= $this->value_for( $value, $valueType );
+
+		return $query;
+	}
+
+	public function clause_for_data_constraint( $constraint ) {
+		$type      = $constraint['type'];
+		$typeParts = explode( ':', $type );
+		$value     = $constraint['value'];
+		$valueType = $constraint['valueType'];
+		$operator  = $constraint['operator'];
+		$query     = '';
+
+		$query .= 'data.' . $typeParts[1];
+		$query .= ' ';
+		$query .= $this->operator_for( $operator );
+		$query .= ' ';
+		$query .= $this->value_for( $value, $valueType );
+
+		return $query;
+	}
+
+	public function clause_for_comment_status_constraint( $constraint ) {
+		$type      = $constraint['type'];
+		$typeParts = explode( ':', $type );
+		$value     = $constraint['value'];
+		$valueType = $constraint['valueType'];
+		$operator  = $constraint['operator'];
+
+		if ( $operator === 'equals' && $value ) {
+			$query = 'data.comment_count > 0';
+		} else {
+			$query = 'data.comment_count = 0 or data.comment_count is null';
+		}
 
 		return $query;
 	}
