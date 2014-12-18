@@ -819,6 +819,11 @@ FACEBOOK_FAVORITE_TYPES = [
 
 var AVAILABLE_CONSTRAINTS = [
 
+	{
+		type: 'action:comment_status',
+		valueType: 'boolean'
+	},
+
 	/* System Fields */
 	{
 		type: 'system:createdTimestamp',
@@ -917,7 +922,7 @@ var AVAILABLE_CONSTRAINTS = [
 		valueType: 'string',
 		entryTypeID: -1,
 		entryFieldID: -1
-	}
+	},
 
 ];
 
@@ -1297,6 +1302,15 @@ var AVAILABLE_CONSTRAINTS_META = [
 	{
 		type: 'record:contest',
 		title: 'Contest Entry'
+	},
+
+	{
+		type: 'action:comment_status',
+		title: 'Comment Status',
+		choices: [
+			{ label: 'Has Commented' },
+			{ label: 'Has Not Commented' },
+		]
 	}
 
 ];
@@ -1698,6 +1712,13 @@ var ConstraintView = Backbone.View.extend({
 		'not equals',
 	],
 
+	dateOperators: [
+		'greater than',
+		'greater than or equal to',
+		'less than',
+		'less than or equal to'
+	],
+
 	nonFullTextTypes: [
 		'profile:zip',
 		'profile:state',
@@ -1716,6 +1737,8 @@ var ConstraintView = Backbone.View.extend({
 			}
 		} else if (valueType === 'boolean') {
 			return this.booleanOperators;
+		} else if (valueType === 'date') {
+			return this.dateOperators;
 		} else {
 			return this.allOperators;
 		}
