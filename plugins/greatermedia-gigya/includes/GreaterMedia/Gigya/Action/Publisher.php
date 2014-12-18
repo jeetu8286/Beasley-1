@@ -54,6 +54,20 @@ class Publisher extends Task {
 			$json = json_decode( $response_text, true );
 
 			if ( is_array( $json ) ) {
+				$subtype = $this->action_subtype_for( $action['actionType'] );
+
+				if ( $this->is_counter_action( $subtype ) ) {
+					$counter_name = $subtype . '_count';
+
+					try {
+						$this->increment_counter( $uid, $counter_name );
+					} catch ( \Exception $e ) {
+						// probably don't need to retry counter increments,
+						// TODO: confirm
+						error_log( "Failed to increment counter: $name " . $e->getMessage() );
+					}
+				}
+
 				return $json;
 			} else {
 				throw new \Exception(
@@ -67,19 +81,6 @@ class Publisher extends Task {
 			);
 		}
 
-		$subtype = $this->action_subtype_for( $action['actionType'] );
-
-		if ( $this->is_counter_action( $subtype ) ) {
-			$counter_name = $subtype . '_count';
-
-			try {
-				$this->increment_counter( $uid, $counter_name );
-			} catch ( \Exception $e ) {
-				// probably don't need to retry counter increments,
-				// TODO: confirm
-				error_log( "Failed to increment counter: $name " . $e->getMessage() );
-			}
-		}
 	}
 
 	function increment_counter( $uid, $counter_name ) {
