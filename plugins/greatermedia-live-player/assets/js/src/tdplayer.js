@@ -88,7 +88,6 @@
 
 
 	function initControlsUi() {
-		//$(document).on('click', 'input[data-action="play-live"]', playLiveAudioStream);
 
 		// custom call to use button instead of input for styling purposes
 		var playButton, pauseButton, resumeButton, podcastButton;
@@ -97,11 +96,8 @@
 		resumeButton = $('#resumeButton');
 		podcastButton = $('.mejs-play');
 
-		$(document).on('click', '#playButton', playLiveAudioStream);
-
 		playButton.click(function () {
-			playButton.hide();
-			pauseButton.show();
+			playLiveStream();
 		});
 
 		$("#clearDebug").click(function () {
@@ -132,8 +128,6 @@
 		});
 
 		pauseButton.click(function () {
-			pauseButton.hide();
-			resumeButton.show();
 			pauseStream();
 		});
 
@@ -144,8 +138,6 @@
 		});
 
 		resumeButton.click(function () {
-			resumeButton.hide();
-			pauseButton.show();
 			seekLive();
 		});
 
@@ -183,29 +175,8 @@
 			streamVastAd();
 			player.addEventListener('ad-playback-complete', function() {
 				postVastAd();
-				console.log("--- add complete ---");
-				var tdContainer = document.getElementById('td_container');
-				var playButton = document.getElementById('playButton');
-				var pauseButton = document.getElementById('pauseButton');
-				var listenNow = document.getElementById('live-stream__listen-now');
-				var nowPlaying = document.getElementById('live-stream__now-playing');
-
-				if (station == '') {
-					alert('Please enter a Station');
-					return;
-				}
-
-				debug('playLiveAudioStream - station=' + station);
-
-				if (livePlaying)
-					player.stop();
-
-				player.play({station: station, timeShift: true});
-				tdContainer.classList.add('stream__active');
-				playButton.style.display = 'none';
-				pauseButton.style.display = 'block';
-				listenNow.style.display = 'none';
-				nowPlaying.style.display = 'inline-block';
+				console.log("--- ad complete ---");
+				playLiveStream();
 			});
 		}
 	}
@@ -249,52 +220,62 @@
 		player.play({station: station, timeShift: true});
 	});
 
-	function playLiveAudioStream(event) {
+	function playLiveStream(event) {
 		event.preventDefault();
-
-		var station = $(event.target).data('station');
+		var tdContainer = document.getElementById('td_container');
+		var playButton = document.getElementById('playButton');
+		var pauseButton = document.getElementById('pauseButton');
+		var listenNow = document.getElementById('live-stream__listen-now');
+		var nowPlaying = document.getElementById('live-stream__now-playing');
 
 		if (station == '') {
 			alert('Please enter a Station');
 			return;
 		}
 
-		debug('playLiveAudioStream - station=' + station);
-
-		$('#stationUser').val('');
+		debug('playLiveStream - station=' + station);
 
 		if (livePlaying)
 			player.stop();
 
 		player.play({station: station, timeShift: true});
-	}
-
-	function playStreamByUserStation() {
-		if ($("#stationUser").val() == '') {
-			alert('Please enter a Station');
-			return;
-		}
-
-		if (adPlaying)
-			player.skipAd();
-
-		if (livePlaying)
-			player.stop();
-
-		player.play({station: $("#stationUser").val(), timeShift: true});
-
-		if (currentStation != $("#stationUser").val()) {
-			currentStation = $("#stationUser").val();
-			loadIdSync(currentStation);
-		}
+		tdContainer.classList.add('stream__active');
+		playButton.style.display = 'none';
+		pauseButton.style.display = 'block';
+		listenNow.style.display = 'none';
+		nowPlaying.style.display = 'inline-block';
 	}
 
 	function stopStream() {
+		var tdContainer = document.getElementById('td_container');
+		var playButton = document.getElementById('playButton');
+		var pauseButton = document.getElementById('pauseButton');
+		var listenNow = document.getElementById('live-stream__listen-now');
+		var nowPlaying = document.getElementById('live-stream__now-playing');
+
 		player.stop();
+
+		tdContainer.classList.remove('stream__active');
+		playButton.style.display = 'block';
+		pauseButton.style.display = 'none';
+		listenNow.style.display = 'inline-block';
+		nowPlaying.style.display = 'none';
 	}
 
 	function pauseStream() {
+		var tdContainer = document.getElementById('td_container');
+		var playButton = document.getElementById('playButton');
+		var pauseButton = document.getElementById('pauseButton');
+		var listenNow = document.getElementById('live-stream__listen-now');
+		var nowPlaying = document.getElementById('live-stream__now-playing');
+
 		player.pause();
+
+		tdContainer.classList.remove('stream__active');
+		playButton.style.display = 'block';
+		pauseButton.style.display = 'none';
+		listenNow.style.display = 'inline-block';
+		nowPlaying.style.display = 'none';
 	}
 
 	function resumeStream() {
