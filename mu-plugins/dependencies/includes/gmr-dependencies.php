@@ -173,7 +173,7 @@ class GmrDependencies {
 				'wp-mediaelement',
 				GMRDEPENDENCIES_URL  . "mediaelement-js/mediaelement-and-player{$postfix}.js",
 				array( 'jquery' ),
-				'2.16.2',
+				'2.16.3',
 				true
 			);
 		}
