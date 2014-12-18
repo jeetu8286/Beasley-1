@@ -84,9 +84,9 @@ function ooyala_responsive_shortcode( $atts ) {
 		return '<!--Error: Ooyala shortcode attribute contains illegal characters -->';
 	}
 
-	// @TODO defaulting to the Ooyala sales video & it's associated playerBrandingId
+	// If there isn't a valid player ID, return nothing
 	if ( empty( $player_id ) || 'null' === $player_id ) {
-		$player_id = 'dcb79e2098c94889a1b9f2af6280b45d';
+		return '<!--Error: Ooyala options are missing the player ID -->';
 	}
 
 	$output = '';
