@@ -123,6 +123,26 @@ class MemberQueryTest extends \WP_UnitTestCase {
 		$this->assertEquals( $expected, $actual );
 	}
 
+	function test_it_can_build_clause_for_comment_date_constraint() {
+		$constraint = array(
+			'type'         => 'action:comment_date',
+			'operator'     => 'greater than',
+			'conjunction'  => 'or',
+			'valueType'    => 'string',
+			'value'        => '01/01/2014',
+		);
+
+		$date = \DateTime::createFromFormat(
+			'm/d/Y', $constraint['value'], new \DateTimeZone( 'UTC' )
+		);
+
+		$timestamp = $date->getTimestamp();
+
+		$actual = $this->query->clause_for_constraint( $constraint );
+		$expected = "data.actions.actionType = 'action:comment' and data.actions.actionData.name = 'timestamp' and data.actions.actionData.value_i > {$timestamp}";
+		$this->assertEquals( $expected, $actual );
+	}
+
 	function test_it_can_build_clause_for_record_constraint() {
 		$constraint = array(
 			'type'         => 'record:contest',

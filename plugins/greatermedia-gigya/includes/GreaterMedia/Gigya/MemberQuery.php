@@ -380,7 +380,13 @@ class MemberQuery {
 				return $this->clause_for_record_constraint( $constraint );
 
 			case 'action':
-				return $this->clause_for_action_constraint( $constraint );
+				$subType = $typeList[1];
+
+				if ( $subType === 'comment_date' ) {
+					return $this->clause_for_comment_date_constraint( $constraint );
+				} else {
+					return $this->clause_for_action_constraint( $constraint );
+				}
 
 			case 'profile':
 				$subType = $typeList[1];
@@ -567,6 +573,37 @@ class MemberQuery {
 		return $query;
 	}
 
+	public function clause_for_comment_date_constraint( $constraint ) {
+		$type          = $constraint['type'];
+		$value         = $constraint['value'];
+		$valueType     = $constraint['valueType'];
+		$operator      = $constraint['operator'];
+		$query         = '';
+
+		$query .= $this->data_store_field_name_for( 'actionType', 'none' );
+		$query .= ' ';
+		$query .= $this->operator_for( '=' );
+		$query .= ' ';
+		$query .= $this->value_for( 'action:comment' );
+
+		$query .= ' and ';
+
+		$query .= $this->data_store_field_name_for( 'actionData.name', 'none' );
+		$query .= ' ';
+		$query .= $this->operator_for( 'equals' );
+		$query .= ' ';
+		$query .= $this->value_for( 'timestamp', 'string' );
+
+		$query .= ' and ';
+
+		$query .= $this->data_store_field_name_for( 'actionData.value', 'integer' );
+		$query .= ' ';
+		$query .= $this->operator_for( $operator );
+		$query .= ' ';
+		$query .= $this->value_for( $value, 'epoch' );
+
+		return $query;
+	}
 	/**
 	 * Generates the GQL clause for a likes constraint specified.
 	 *
@@ -672,6 +709,12 @@ class MemberQuery {
 			);
 
 			return $date->getTimestamp() * 1000;
+		} elseif ( $valueType === 'epoch' ) {
+			$date = \DateTime::createFromFormat(
+				'm/d/Y', $value, new \DateTimeZone( 'UTC' )
+			);
+
+			return $date->getTimestamp();
 		} else {
 			return $value;
 		}

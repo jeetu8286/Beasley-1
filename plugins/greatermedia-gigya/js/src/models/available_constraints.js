@@ -1,26 +1,18 @@
 var AVAILABLE_CONSTRAINTS = [
 
-	{
-		type: 'data:comment_count',
-		valueType: 'integer',
-		value: 0,
-	},
-	{
-		type: 'data:comment_status',
-		valueType: 'boolean',
-		value: true,
-	},
 
 	/* System Fields */
 	{
 		type: 'system:createdTimestamp',
 		valueType: 'date',
-		value: '01/01/2012'
+		value: '01/01/2012',
+		operator: 'greater than',
 	},
 	{
 		type: 'system:lastLoginTimestamp',
 		valueType: 'date',
-		value: '01/01/2014'
+		value: '01/01/2014',
+		operator: 'greater than',
 	},
 	{
 		type: 'system:isActive',
@@ -114,6 +106,22 @@ var AVAILABLE_CONSTRAINTS = [
 		entryFieldID: -1
 	},
 
+	{
+		type: 'data:comment_count',
+		valueType: 'integer',
+		value: 0,
+	},
+	{
+		type: 'data:comment_status',
+		valueType: 'boolean',
+		value: true,
+	},
+	{
+		type: 'action:comment_date',
+		valueType: 'date',
+		value: '01/01/2014',
+		operator: 'greater than',
+	},
 ];
 
 /* Constraint Meta */
@@ -505,6 +513,10 @@ var AVAILABLE_CONSTRAINTS_META = [
 			{ label: 'Has Commented', value: true },
 			{ label: 'Has Not Commented', value: false }
 		]
+	},
+	{
+		type: 'action:comment_date',
+		title: 'Comment Date'
 	}
 
 ];

@@ -64,7 +64,7 @@ class Publisher extends Task {
 					} catch ( \Exception $e ) {
 						// probably don't need to retry counter increments,
 						// TODO: confirm
-						error_log( "Failed to increment counter: $name " . $e->getMessage() );
+						error_log( "Failed to increment counter: $counter_name " . $e->getMessage() );
 					}
 				}
 
