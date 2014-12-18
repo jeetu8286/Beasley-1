@@ -27,14 +27,7 @@ function ooyala_responsive_init() {
 }
 
 function ooyala_responsive_shortcode( $atts ) {
-
-//	$instance = Ooyala_Video::init();
-//	$rendered_player = $instance->shortcode($atts);
-//	$rendered_player = str_replace("width='500'", "width='100%'", $rendered_player);
-//	$rendered_player = str_replace('width=500', 'width=960', $rendered_player);
-//	print esc_html($rendered_player);
-//	return $rendered_player;
-
+	
 	$options = get_option( 'ooyala' );
 	extract( shortcode_atts( apply_filters( 'ooyala_default_query_args', array(
 			'width'         => '',
