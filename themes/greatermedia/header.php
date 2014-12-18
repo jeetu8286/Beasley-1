@@ -72,9 +72,6 @@
 				<div id="page-wrap" class="page-wrap">
 					<header id="header" class="header" role="banner">
 						<?php do_action( 'show_breaking_news_banner' ); ?>
-						<div id="header__search--form" class="header__search--form">
-							<?php get_template_part( 'searchform', 'header' ); ?>
-						</div>
 						<div class="container">
 							<div class="ad__leaderboard">
 								<?php do_action( 'acm_tag', 'leaderboard-top-of-site' ); ?>
@@ -124,5 +121,8 @@
 									</div>
 								</div>
 							</div>
+						</div>
+						<div id="header__search--form" class="header__search--form">
+							<?php get_template_part( 'searchform', 'header' ); ?>
 						</div>
 					</header>
