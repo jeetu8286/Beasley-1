@@ -30,15 +30,15 @@ function ooyala_responsive_shortcode( $atts ) {
 	
 	$options = get_option( 'ooyala' );
 	extract( shortcode_atts( apply_filters( 'ooyala_default_query_args', array(
-			'width'         => '',
-			'code'          => '',
-			'autoplay'      => '',
-			'callback'      => 'recieveOoyalaEvent',
-			'wmode'         => 'opaque',
-			'player_id'     => $options['player_id'],
-			'platform'      => 'html5-fallback',
-			'wrapper_class' => 'ooyala-video-wrapper',
-		) ), $atts
+		'width'         => '',
+		'code'          => '',
+		'autoplay'      => '',
+		'callback'      => 'recieveOoyalaEvent',
+		'wmode'         => 'opaque',
+		'player_id'     => $options['player_id'],
+		'platform'      => 'html5-fallback',
+		'wrapper_class' => 'ooyala-video-wrapper',
+	) ), $atts
 	) );
 	if ( empty( $width ) ) {
 		$width = $options['video_width'];
