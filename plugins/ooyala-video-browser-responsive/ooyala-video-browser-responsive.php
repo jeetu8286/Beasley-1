@@ -27,7 +27,12 @@ function ooyala_responsive_init() {
 }
 
 function ooyala_responsive_shortcode( $atts ) {
-	
+
+	static $player_shortcode_index;
+	if(!isset($player_shortcode_index)) {
+		$player_shortcode_index = 1;
+	}
+
 	$options = get_option( 'ooyala' );
 	extract( shortcode_atts( apply_filters( 'ooyala_default_query_args', array(
 		'width'         => '',
@@ -92,6 +97,8 @@ function ooyala_responsive_shortcode( $atts ) {
 	$output = '';
 	$output .= '<script src="http://player.ooyala.com/v3/' . esc_attr( $player_id ) . '?platform=' . $platform . '"></script>';
 	$output .= <<<HTML
+<div id='playerwrapper{$player_shortcode_index}' class="ooyala-player-wrapper" style='max-width:800px;max-height:600px;' data-ooyala-video="{$code}"></div>
+	$player_shortcode_index += 1;
 
 <div id='playerwrapper1' class="ooyala-player-wrapper" style='max-width:800px;max-height:600px;' data-ooyala-video="{$code}"></div>
 
