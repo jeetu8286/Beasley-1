@@ -13,6 +13,12 @@
 	var companions; /* VAST companion banner object */
 	var currentStation = ''; /* String - Current station played */
 
+	var tdContainer = document.getElementById('td_container');
+	var playButton = document.getElementById('playButton');
+	var pauseButton = document.getElementById('pauseButton');
+	var listenNow = document.getElementById('live-stream__listen-now');
+	var nowPlaying = document.getElementById('live-stream__now-playing');
+
 	/**
 	 * @todo remove the console log before beta
 	 */
@@ -90,77 +96,33 @@
 	function initControlsUi() {
 
 		// custom call to use button instead of input for styling purposes
-		var playButton, pauseButton, resumeButton, podcastButton;
-		playButton = $('#playButton');
-		pauseButton = $('#pauseButton');
-		resumeButton = $('#resumeButton');
-		podcastButton = $('.mejs-play');
+		var playBtn = document.getElementById('playButton'),
+			pauseBtn = document.getElementById('pauseButton'),
+			resumeBtn = document.getElementById('resumeButton'),
+			clearDebug = document.getElementById('clearDebug'),
+			podcastButton = $('.mejs-play');
 
-		playButton.click(function () {
-			playLiveStream();
-		});
+		if (playBtn != null) {
+			playBtn.addEventListener('click', playLiveStream);
+		}
 
-		$("#clearDebug").click(function () {
-			clearDebugInfo();
-		});
+		if (pauseBtn != null) {
+			pauseBtn.addEventListener('click', pauseStream);
+		}
 
-		$("#playStreamByUserStationButton").click(function () {
-			playStreamByUserStation();
-		});
+		if (resumeBtn != null) {
+			resumeBtn.addEventListener('click', seekLive);
+		}
 
-		$("#playUrlButton").click(function () {
-			if ($("#streamUrlUser").val() == '') {
-				alert('Please enter an url');
-				return;
-			}
-
-			if (adPlaying)
-				player.skipAd();
-
-			if (livePlaying)
-				player.stop();
-
-			player.MediaPlayer.tech.playStream({url: $("#streamUrlUser").val(), aSyncCuePoint: {active: false}});
-		});
-
-		$(".stop-live").click(function () {
-			stopStream();
-		});
-
-		pauseButton.click(function () {
-			pauseStream();
-		});
+		if (clearDebug != null) {
+			clearDebug.addEventListener('click', clearDebugInfo);
+		}
 
 		podcastButton.click(function () {
 			pauseButton.hide();
 			resumeButton.show();
 			pauseStream();
 		});
-
-		resumeButton.click(function () {
-			seekLive();
-		});
-
-		$("#seekLiveButton").click(function () {
-			seekLive();
-		});
-
-		$("#muteButton").click(function () {
-			mute();
-		});
-
-		$("#unMuteButton").click(function () {
-			unMute();
-		});
-
-		$("#setVolume50Button").click(function () {
-			setVolume50();
-		});
-
-		$("#getArtistButton").click(function () {
-			getArtistData();
-		});
-
 
 	}
 
@@ -220,14 +182,8 @@
 		player.play({station: station, timeShift: true});
 	});
 
-	function playLiveStream(event) {
-		event.preventDefault();
-		var tdContainer = document.getElementById('td_container');
-		var playButton = document.getElementById('playButton');
-		var pauseButton = document.getElementById('pauseButton');
-		var listenNow = document.getElementById('live-stream__listen-now');
-		var nowPlaying = document.getElementById('live-stream__now-playing');
-
+	function playLiveStream() {
+		var station = gmr.callsign;
 		if (station == '') {
 			alert('Please enter a Station');
 			return;
@@ -247,12 +203,6 @@
 	}
 
 	function stopStream() {
-		var tdContainer = document.getElementById('td_container');
-		var playButton = document.getElementById('playButton');
-		var pauseButton = document.getElementById('pauseButton');
-		var listenNow = document.getElementById('live-stream__listen-now');
-		var nowPlaying = document.getElementById('live-stream__now-playing');
-
 		player.stop();
 
 		tdContainer.classList.remove('stream__active');
@@ -263,12 +213,6 @@
 	}
 
 	function pauseStream() {
-		var tdContainer = document.getElementById('td_container');
-		var playButton = document.getElementById('playButton');
-		var pauseButton = document.getElementById('pauseButton');
-		var listenNow = document.getElementById('live-stream__listen-now');
-		var nowPlaying = document.getElementById('live-stream__now-playing');
-
 		player.pause();
 
 		tdContainer.classList.remove('stream__active');
@@ -279,14 +223,25 @@
 	}
 
 	function resumeStream() {
-		if (livePlaying)
+		if (livePlaying) {
 			player.resume();
-		else
+		} else {
 			player.play();
+		}
+		tdContainer.classList.add('stream__active');
+		playButton.style.display = 'none';
+		pauseButton.style.display = 'block';
+		listenNow.style.display = 'none';
+		nowPlaying.style.display = 'inline-block';
 	}
 
 	function seekLive() {
 		player.seekLive();
+		tdContainer.classList.add('stream__active');
+		playButton.style.display = 'none';
+		pauseButton.style.display = 'block';
+		listenNow.style.display = 'none';
+		nowPlaying.style.display = 'inline-block';
 	}
 
 	function loadNpApi() {
