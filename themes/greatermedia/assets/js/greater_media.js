@@ -3,6 +3,7 @@
 	var body = document.querySelector( 'body' ),
 		html = document.querySelector( 'html'),
 		mobileNavButton = document.querySelector( '.mobile-nav__toggle' ),
+		siteWrap = document.getElementById( 'site-wrap' ),
 		pageWrap = document.getElementById( 'page-wrap' ),
 		header = document.getElementById( 'header' ),
 		headerHeight = header.offsetHeight,
@@ -191,7 +192,7 @@
 
 		livePlayerCurrentName.textContent = selected_stream;
 		document.dispatchEvent( new CustomEvent( 'live-player-stream-changed', { 'detail': selected_stream } ) );
-	};
+	}
 
 	for ( var i = 0; i < livePlayerStreams.length; i++ ) {
 		livePlayerStreams[i].addEventListener( 'click', selectStream, false );
@@ -298,9 +299,6 @@
 	function closeSearch(e) {
 		e = e || window.event;
 		if (searchForm !== null && searchForm.classList.contains('header__search--open')) {
-			searchForm.addEventListener('click', function(e) {
-				e.stopPropagation();
-			});
 			searchForm.classList.remove('header__search--open');
 		}
 		if (pageWrap !== null && pageWrap.classList.contains('search--active')) {
@@ -314,7 +312,10 @@
 
 	if (searchBtn !== null) {
 		searchBtn.addEventListener('click', showSearch, false);
-		document.addEventListener('click', closeSearch);
+		pageWrap.addEventListener('click', closeSearch, false);
+		searchForm.addEventListener('click', function(e) {
+			e.stopPropagation();
+		});
 	}
 
 	var scrollDebounce = _.debounce(getScrollPosition, 50),
