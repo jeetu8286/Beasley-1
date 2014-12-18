@@ -166,13 +166,17 @@ class GmrDependencies {
 			false
 		);
 
-		wp_enqueue_script(
-			'mediaelement-js',
-			GMRDEPENDENCIES_URL  . "mediaelement-js/mediaelement-and-player{$postfix}.js",
-			array( 'jquery' ),
-			'2.16.2',
-			true
-		);
+		// Old versions have a bug with MP3s
+		if ( ! is_admin() ) {
+			wp_deregister_script( 'wp-mediaelement' );
+			wp_register_script(
+				'wp-mediaelement',
+				GMRDEPENDENCIES_URL  . "mediaelement-js/mediaelement-and-player{$postfix}.js",
+				array( 'jquery' ),
+				'2.16.2',
+				true
+			);
+		}
 
 		wp_register_style( 'jquery-ui', GMRDEPENDENCIES_URL . '/jquery-ui-theme/jquery-ui.min.css' );
 		wp_register_style( 'jquery-ui-accordion', GMRDEPENDENCIES_URL . '/jquery-ui-theme/jquery.ui.accordion.min.css', array( 'jquery-ui' ) );
