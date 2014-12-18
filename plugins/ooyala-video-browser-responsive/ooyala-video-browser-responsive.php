@@ -120,7 +120,6 @@ jQuery(function() {
 });
 </script>
 HTML;
-	echo esc_html( $output );
 
 	return $output;
 }
