@@ -11,6 +11,12 @@ class Publisher extends Task {
 	public $store_name = 'actions';
 	public $guest_uid  = '37F5E08F-74D3-40FC-8F4B-296AD29DACBB';
 	public $member_query;
+	public $message_types = array(
+		'execute',
+		'retry',
+		'abort',
+		'error',
+	);
 
 	function get_task_name() {
 		return 'action_publisher';
@@ -65,8 +71,14 @@ class Publisher extends Task {
 			$field_name = $this->field_name_for( 'value', $item['value'] );
 
 			$action['actionData'][ $i ][ $field_name ] = $item['value'];
-			unset( $action['actionData'][ $i ][ 'value' ] );
+			unset( $action['actionData'][ $i ]['value'] );
 		}
+
+		// each action gets a timestamp
+		$action['actionData'][] = array(
+			'name'    => 'timestamp',
+			'value_i' => time()
+		);
 
 		$data = array( 'actions' => array( $action ) );
 		$json = json_encode( $data );
