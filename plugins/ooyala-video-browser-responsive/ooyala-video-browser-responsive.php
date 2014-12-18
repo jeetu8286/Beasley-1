@@ -98,22 +98,27 @@ function ooyala_responsive_shortcode( $atts ) {
 	$output .= '<script src="http://player.ooyala.com/v3/' . esc_attr( $player_id ) . '?platform=' . $platform . '"></script>';
 	$output .= <<<HTML
 <div id='playerwrapper{$player_shortcode_index}' class="ooyala-player-wrapper" style='max-width:800px;max-height:600px;' data-ooyala-video="{$code}"></div>
-	$player_shortcode_index += 1;
-
-<div id='playerwrapper1' class="ooyala-player-wrapper" style='max-width:800px;max-height:600px;' data-ooyala-video="{$code}"></div>
-
-<script>
-jQuery(function() {
-	window.ooyalaResponsiveVideoPlayers = [];
-	jQuery('.ooyala-player-wrapper').each(function() {
-		ooyalaResponsiveVideoPlayers.push(OO.Player.create(this.id, this.dataset.ooyalaVideo,
-		{
-		}));
-
-	});
-});
-</script>
 HTML;
 
+	$player_shortcode_index += 1;
+
 	return $output;
+
+}
+
+add_action( 'wp_print_footer_scripts', 'ooyala_print_footer_scripts', 20 );
+function ooyala_print_footer_scripts() {
+	echo <<<SCRIPT
+	<script>
+	jQuery(function() {
+		window.ooyalaResponsiveVideoPlayers = [];
+		jQuery('.ooyala-player-wrapper').each(function() {
+			ooyalaResponsiveVideoPlayers.push(OO.Player.create(this.id, this.dataset.ooyalaVideo,
+			{
+			}));
+		});
+	});
+	</script>
+SCRIPT;
+
 }
