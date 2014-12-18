@@ -42,25 +42,32 @@
 			if (is_gigya_user_logged_in()) {
 				callback(null, this.getAuthParams());
 			} else {
-				this.redirect('/profile/login?dest=' + this.config.getOption('article_path'));
+				this.redirect('login', {
+					dest: this.config.getOption('article_path'),
+					anchor: 'livefyre-comments'
+				});
 			}
 		},
 
 		logout: function(callback) {
 			callback(null);
-			this.redirect('/profile/logout?dest=' + this.config.getOption('article_path'));
+			this.redirect('logout', {
+				dest: this.config.getOption('article_path'),
+				anchor: 'livefyre-comments'
+			});
 		},
 
 		editProfile: function() {
-			this.redirect('/profile/settings'); // TODO
+			this.redirect('account', { mode: 'edit' });
 		},
 
 		viewProfile: function() {
-			this.redirect('/profile/settings'); // TODO
+			this.redirect('account', { mode: 'view' });
 		},
 
-		redirect: function(path) {
-			location.href = path;
+		redirect: function(actionName, params) {
+			var profilePath = gigya_profile_path(actionName, params);
+			location.href = profilePath;
 		},
 
 		getAuthParams: function() {
@@ -112,12 +119,34 @@
 		},
 
 		buildConv: function(Conv) {
+			var self = this;
+
 			return new Conv(
 				this.config.getNetworkConfig(),
 				this.config.getConvConfig(),
-				function() {} // TODO
+				function(widget) {
+					widget.on('commentPosted', function(data) {
+						self.didPostComment(data);
+					});
+				}
 			);
 		},
+
+		didPostComment: function(data) {
+			var title = this.config.getOption('article_title');
+			var url   = location.href;
+
+			var action = {
+				actionType: 'action:comment',
+				actionID: this.config.getOption('article_id'),
+				actionData: [
+					{ name: 'title', value: title },
+					{ name: 'url', value: url }
+				]
+			};
+
+			save_gigya_action(action);
+		}
 
 	};
 
