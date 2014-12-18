@@ -111,12 +111,6 @@ jQuery(function() {
 		}));
 
 	});
-	// Autoplay
-//	for(var video_index in ooyalaResponsiveVideoPlayers) {
-//		if(ooyalaResponsiveVideoPlayers.hasOwnProperty(video_index)) {
-//			ooyalaResponsiveVideoPlayers[video_index].play();
-//		}
-//	}
 });
 </script>
 HTML;
