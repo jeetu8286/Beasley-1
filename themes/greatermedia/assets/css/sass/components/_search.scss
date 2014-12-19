@@ -1,5 +1,5 @@
 .header__search--form {
-	display: none;
+	display: block;
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -7,15 +7,14 @@
 	height: 132px;
 	padding: 16px 2.5%;
 	background-color: $primary-bg;
-	@include transition(opacity 1.0s ease-in 0s);
-	@include opacity(0);
+	@include transition(all .5s ease-in-out);
+	@include transform(translate(0, -100%));
 	z-index: 28000;
 }
 
 .header__search--open {
-	display: block;
-	@include transition(opacity 1.0s ease-in 0s);
-	@include opacity(1);
+	@include transition(all .5s ease-in-out);
+	@include transform(translate(0, 0));
 }
 
 .header__search--input {
