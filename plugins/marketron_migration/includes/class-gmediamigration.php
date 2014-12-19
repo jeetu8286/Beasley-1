@@ -1151,7 +1151,7 @@ class GMedia_Migration extends WP_CLI_Command {
 				}
 
 				// Process Tags
-				if ( isset( $entry['Tags'] ) ) {
+				/*if ( isset( $entry['Tags'] ) ) {
 					$tags = trim( (string) $entry['Tags'] );
 					$tags = explode( ',', $tags );
 					if( count( $tags ) == 1 ) {
@@ -1168,7 +1168,7 @@ class GMedia_Migration extends WP_CLI_Command {
 							}
 						}
 					}
-				}
+				}*/
 
 				// TO-DO
 				// Images
