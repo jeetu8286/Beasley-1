@@ -2517,7 +2517,12 @@ class GMedia_Migration extends WP_CLI_Command {
 						$audio_path = str_ireplace( '\Media\\', '', (string) $podcast_item['MediaFilename'] );
 						$media_file_id = $this->import_music_files( $wp_id, $audio_path );
 						$url = wp_get_attachment_url( $media_file_id );
-						update_post_meta( $episode_id, 'gmp_audio_file_meta_key', $url );
+						$shortcode = '[audio mp3="' . $url . '"]';
+						$episode = array(
+							'post_content'  => $shortcode . '<br/>' . trim( (string) $podcast_item['ItemDescription'] ),
+							'ID'            => $episode_id
+						);
+						wp_update_post( $episode );
 					}
 				}
 
