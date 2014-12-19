@@ -75,7 +75,7 @@
 	display: none;
 	line-height: 1;
 	@include bp(medium) {
-		@include span-columns(5);
+		@include span-columns(4);
 	}
 	@include bp(large) {
 		@include span-columns(8);
@@ -94,7 +94,7 @@
 	text-align: right;
 	@include bp(medium) {
 		position: relative;
-		@include span-columns(2);
+		@include span-columns(3);
 		@include omega;
 		top: auto;
 		right: auto;
