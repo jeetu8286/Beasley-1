@@ -16,15 +16,10 @@ module.exports = function (grunt) {
 				src: [
 					'assets/js/src/shows.js',
 					'assets/js/src/schedule.js',
-					'assets/js/src/metabox.js'
+					'assets/js/src/metabox.js',
+					'assets/js/src/hide-metabox-if-disabled.js'
 				],
 				dest: 'assets/js/greatermedia_shows.js'
-			},
-			shows_widget: {
-				src: [
-					'assets/js/src/widget.js'
-				],
-				dest: 'assets/js/shows_widget.js'
 			},
 			admin_show_selector: {
 				src: [
@@ -60,7 +55,6 @@ module.exports = function (grunt) {
 			all: {
 				files: {
 					'assets/js/greatermedia_shows.min.js': ['assets/js/greatermedia_shows.js'],
-					'assets/js/shows_widget.min.js': ['assets/js/shows_widget.js'],
 					'assets/js/admin_show_selector.min.js': ['assets/js/admin_show_selector.js']
 				},
 				options: {
@@ -111,7 +105,7 @@ module.exports = function (grunt) {
 				}
 			},
 			scripts: {
-				files: ['assets/js/src/**/*.js', 'assets/js/vendor/**/*.js'],
+				files: ['assets/js/src/**/*.js'],
 				tasks: ['js'],
 				options: {
 					debounceDelay: 500

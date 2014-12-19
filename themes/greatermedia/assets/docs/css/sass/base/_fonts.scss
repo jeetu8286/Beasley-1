@@ -1,0 +1,136 @@
+/*doc
+---
+title: Icons
+name: icons
+category: Base - Typography
+---
+
+```html_example
+<span class="icon-camera"></span>
+<span class="icon-clipboard"></span>
+<span class="icon-link"></span>
+<span class="icon-minus"></span>
+<span class="icon-music"></span>
+<span class="icon-play-circle"></span>
+<span class="icon-play"></span>
+<span class="icon-stop"></span>
+<span class="icon-plus"></span>
+<span class="icon-post"></span>
+<span class="icon-radio"></span>
+<span class="icon-user"></span>
+<span class="icon-volume"></span>
+<span class="icon-volume-mute"></span>
+<span class="icon-volume-up"></span>
+<span class="icon-facebook"></span>
+<span class="icon-twitter"></span>
+<span class="icon-google-plus"></span>
+<span class="icon-search"></span>
+```
+
+*/
+
+/**
+ * Font Styles
+ */
+
+$open-sans:     'Open Sans', sans-serif;
+$droid-sans:    'Droid Sans', sans-serif;
+$icon-font:     'gmr-icons';
+
+@font-face {
+	font-family: 'gmr-icons';
+	src:url('../fonts/icon-font/gmr-icons.eot?awb6kj');
+	src:url('../fonts/icon-font/gmr-icons.eot?#iefixawb6kj') format('embedded-opentype'),
+	url('../fonts/icon-font/gmr-icons.woff?awb6kj') format('woff'),
+	url('../fonts/icon-font/gmr-icons.ttf?awb6kj') format('truetype'),
+	url('../fonts/icon-font/gmr-icons.svg?awb6kj#gmr-icons') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"], %gmr-icons {
+	font-family: 'gmr-icons';
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+
+	/* Better Font Rendering =========== */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.icon-camera:before {
+	content: "\e600";
+}
+.icon-clipboard:before {
+	content: "\e601";
+}
+.icon-link:before {
+	content: "\e602";
+}
+.icon-minus:before {
+	content: "\e603";
+}
+.icon-music:before {
+	content: "\e604";
+}
+.icon-play-circle:before {
+	content: "\e605";
+}
+.icon-play:before {
+	content: "\e606";
+}
+.icon-stop:before {
+	content: "\e60b";
+}
+.icon-plus:before {
+	content: "\e607";
+}
+.icon-post:before {
+	content: "\e608";
+}
+.icon-radio:before {
+	content: "\e609";
+}
+.icon-user:before {
+	content: "\e60a";
+}
+.icon-volume:before {
+	content: "\e60c";
+}
+.icon-volume-mute:before {
+	content: "\e60d";
+}
+.icon-volume-up:before {
+	content: "\e60e";
+}
+.icon-facebook:before {
+	content: "\e60f";
+}
+.icon-twitter:before {
+	content: "\e610";
+}
+.icon-google-plus:before {
+	content: "\e611";
+}
+.icon-youtube:before {
+	content: "\e617";
+}
+.icon-instagram:before {
+	content: "\e616";
+}
+.icon-search:before {
+	content: "\e612";
+}
+.icon-post-format-video:before {
+	content: "\e613";
+}
+.icon-post-format-events:before {
+	content: "\e614";
+}
+.icon-post-format-audio:before {
+	content: "\e615";
+}

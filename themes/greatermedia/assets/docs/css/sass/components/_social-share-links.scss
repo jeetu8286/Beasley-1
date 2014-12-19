@@ -1,0 +1,87 @@
+/*doc
+---
+title: Social Share Buttons
+name: social-share-buttons
+category: Components
+---
+
+These are examples of Social Share Links for single articles. (TODO: replace with working social icons from icomoon)
+
+```html_example
+<a href="http://www.facebook.com/sharer/sharer.php?u=[URL]&title=[TITLE]" class="icon-facebook social-share-link"></a>
+<a href="http://twitter.com/home?status=[TITLE]+[URL]" class="icon-twitter social-share-link"></a>
+<a href="https://plus.google.com/share?url=[URL]" class="icon-google-plus social-share-link"></a>
+<a href="" class="icon-volume-up social-share-link"></a>
+```
+
+*/
+
+a.social-share-link {
+	color: $black;
+	display: inline-block;
+	width: 40px;
+	height: 40px;
+	font-size: 20px;
+	border: 1px solid $black;
+	border-radius: 50%;
+	padding: 9px;
+
+	&:hover {
+		color: $social-hover;
+	}
+}
+
+.social__list {
+	padding: 33px 0;
+	margin: 0;
+	list-style: none;
+}
+
+.social__link {
+	padding: 0;
+	margin: 0 1.25em 0 0;
+	list-style: none;
+	display: inline-block;
+	font-size: ms(0);
+}
+
+.social__link:last-child {
+	margin: 0;
+}
+
+.social__link a, .social__link a:visited {
+	color: $secondary-heading;
+}
+
+.social__link a:hover, .social__link a:focus {
+	color: $secondary-link;
+}
+
+.social__link a:active {
+	color: $color-text-white;
+}
+
+.social__link--facebook:before {
+	@extend %gmr-icons;
+	content: "\e60f";
+}
+
+.social__link--twitter:before {
+	@extend %gmr-icons;
+	content: "\e610";
+}
+
+.social__link--google-plus:before {
+	@extend %gmr-icons;
+	content: "\e611";
+}
+
+.social__link--youtube:before {
+	@extend %gmr-icons;
+	content: "\e617";
+}
+
+.social__link--instagram:before {
+	@extend %gmr-icons;
+	content: "\e616";
+}

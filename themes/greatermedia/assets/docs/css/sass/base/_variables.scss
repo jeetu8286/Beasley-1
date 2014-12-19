@@ -1,0 +1,127 @@
+// color variables
+//
+// @author Allen Moore
+// @since 0.1.0
+//
+$black: #000000;
+$white: #ffffff;
+$cardinal: #d22228;
+$heath: #561015;
+$coffee-bean: #270e10;
+$light-gray: #d0d2d3;
+$gray: #929497;
+$medium-gray: #404041;
+$dark-gray: #282827;
+$darker-gray: #191919;
+$yellow: #f5ed7f;
+
+// Hologram Styleguide Swatches
+.hologram-color-swatch {
+	width: 200px;
+	height: 200px;
+	display: inline-block;
+	margin: 10px;
+	
+}
+
+/*doc
+---
+title: Colors
+name: colors
+category: Base
+---
+
+```none_example
+<span class="hologram-color-swatch" style="background: #000000;">$black</span>
+<span class="hologram-color-swatch" style="background: #ffffff;">$white</span>
+<span class="hologram-color-swatch" style="background: #d22228;">$cardinal</span>
+<span class="hologram-color-swatch" style="background: #561015;">$heath</span>
+<span class="hologram-color-swatch" style="background: #270e10;">$coffee-bean</span>
+<span class="hologram-color-swatch" style="background: #d0d2d3;">$light-gray</span>
+<span class="hologram-color-swatch" style="background: #929497;">$gray</span>
+<span class="hologram-color-swatch" style="background: #404041;">$medium-gray</span>
+<span class="hologram-color-swatch" style="background: #282827;">$dark-gray</span>
+<span class="hologram-color-swatch" style="background: #191919;">$darker-gray</span>
+<span class="hologram-color-swatch" style="background: #f5ed7f;">$yellow</span>
+```
+
+*/
+
+// global colors to use
+//
+// @author Allen Moore
+// @since 0.1.0
+//
+$color-text-black: $black;
+$color-text-white: $white;
+$color-text-gray: $medium-gray;
+$color-text-red: $cardinal;
+$color-text-yellow: $yellow;
+
+$primary-bg: $white;
+$primary-text: $color-text-gray;
+$primary-heading: $color-text-gray;
+$primary-link: $color-text-red;
+$primary-link-hover: darken($color-text-red, 9%);
+$primary-border: $light-gray;
+
+$secondary-bg: $black;
+$secondary-text: $color-text-white;
+$secondary-heading: $gray;
+$secondary-link: $light-gray;
+$secondary-link-hover: darken($color-text-red, 9%);
+$secondary-border: $dark-gray;
+
+// Section Variables
+$header-bg: $darker-gray;
+$header-border: $dark-gray;
+$header-nav-bg: $cardinal;
+
+$liveplayer-bg: $darker-gray;
+
+$featured-bg: $coffee-bean;
+
+$highlights-bg: $light-gray;
+$highlights-text: $gray;
+$highlights-heading: $medium-gray;
+
+$footer-text: $gray;
+
+$btn-bg: $cardinal;
+
+$social-hover: $heath;
+
+// Base Variables
+$em-base: 16px;
+$base-font-size: em($em-base);
+$base-line-height: em(24px);
+// Modular Scale
+$ms-ratio: $major-second;
+// Modular Scale Array
+// By default, these values can be called using `map-get($modular-scale, key)`. To avoid continually calling `map-get`, a
+// function has been written. Reference the `ms` function located in `_functions.scss`.
+//
+// @author Allen Moore
+// @since 0.1.0
+//
+// @type String
+//
+$modular-scale: (
+		-4: modular-scale($base-font-size, -4, $ms-ratio),
+		-3: modular-scale($base-font-size, -3, $ms-ratio),
+		-2: modular-scale($base-font-size, -2, $ms-ratio),
+		-1: modular-scale($base-font-size, -1, $ms-ratio),
+		0: modular-scale($base-font-size, 0, $ms-ratio),
+		1: modular-scale($base-font-size, 1, $ms-ratio),
+		2: modular-scale($base-font-size, 2, $ms-ratio),
+		3: modular-scale($base-font-size, 3, $ms-ratio),
+		4: modular-scale($base-font-size, 4, $ms-ratio),
+		5: modular-scale($base-font-size, 5, $ms-ratio),
+		6: modular-scale($base-font-size, 6, $ms-ratio),
+		7: modular-scale($base-font-size, 7, $ms-ratio),
+		8: modular-scale($base-font-size, 8, $ms-ratio),
+		9: modular-scale($base-font-size, 9, $ms-ratio),
+		10: modular-scale($base-font-size, 10, $ms-ratio),
+		11: modular-scale($base-font-size, 11, $ms-ratio),
+		12: modular-scale($base-font-size, 12, $ms-ratio),
+);

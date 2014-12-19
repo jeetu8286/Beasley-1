@@ -67,7 +67,7 @@ class MemberQuery {
 	 * @access public
 	 * @var string
 	 */
-	public $storeName = 'entries';
+	public $storeName = 'actions';
 
 	/**
 	 * Stores the post object corresponding to the member query and
@@ -105,6 +105,7 @@ class MemberQuery {
 			$json = json_decode( $content, true );
 
 			if ( ! is_array( $json ) ) {
+				error_log( 'Failed to parse constraints: ' . $content );
 				$json = array();
 			}
 		} else {
@@ -142,6 +143,10 @@ class MemberQuery {
 	 */
 	public function build_and_save() {
 		$json = $this->build();
+		$this->save( $json );
+	}
+
+	public function save( $json ) {
 		update_post_meta( $this->post_id, 'member_query_constraints', $json );
 	}
 
@@ -183,6 +188,8 @@ class MemberQuery {
 	 * Returns the GQL to execute for this query. If a direct query is
 	 * present it is used, else the generated query is returned.
 	 *
+	 * TODO: DEPRECATE
+	 *
 	 * @access public
 	 * @param bool $count Optionally Whether to return an aggregate query
 	 * @param int $limit Optional row limit to apply to the query
@@ -209,6 +216,126 @@ class MemberQuery {
 	}
 
 	/**
+	 * Converts the current constraints into an associative array of
+	 * subqueries.
+	 *
+	 * @return array Associative array of subqueries keyed on store_type
+	 */
+	public function to_subqueries() {
+		$groups = $this->group_constraints( $this->get_constraints() );
+		$subqueries = array();
+
+		foreach ( $groups as $store_type => $constraints ) {
+			$subquery = $this->constraints_to_query( $constraints, $store_type );
+			$subqueries[] = array(
+				'store_type' => $store_type,
+				'query'      => $subquery,
+			);
+		}
+
+		return $subqueries;
+	}
+
+	public function get_subquery_conjunction() {
+		$groups = $this->group_constraints( $this->get_constraints() );
+
+		if ( count( $groups ) <= 1 ) {
+			return 'any';
+		}
+
+		if ( array_key_exists( 'profile', $groups ) ) {
+			$total      = count( $groups['profile'] );
+			$constraint = $groups['profile'][ $total - 1 ];
+
+			return $constraint['conjunction'];
+		} else {
+			return 'or';
+		}
+	}
+
+	/**
+	 * Converts an array of constraints into an array grouped by their
+	 * corresponding store_type.
+	 *
+	 * @param $constraints Array of constraints to classify
+	 * @return array Associative array on store_type
+	 */
+	public function group_constraints( $constraints ) {
+		$groups = array();
+
+		foreach ( $constraints as $constraint ) {
+			$store_type            = $this->get_constraint_store_type( $constraint );
+			if ( ! array_key_exists( $store_type, $groups ) ) {
+				$groups[ $store_type ] = array();
+			}
+
+			$groups[ $store_type ][] = $constraint;
+		}
+
+		return $groups;
+	}
+
+	/**
+	 * Returns the storage type for the specified constraint.
+	 *
+	 * Currently valid store types are, 'profile' or 'data_store'.
+	 *
+	 * @access public
+	 * @param $constraint The constraint object
+	 * @return string
+	 */
+	public function get_constraint_store_type( $constraint ) {
+		$type     = $constraint['type'];
+		$typeList = explode( ':', $type );
+		$mainType = $typeList[0];
+
+		switch ( $mainType ) {
+			case 'system':
+				return 'profile';
+
+			case 'profile':
+			case 'data':
+				return 'profile';
+
+			case 'record':
+			case 'action':
+				return 'data_store';
+
+			default:
+				throw new \Exception( "Unknown constraint type: {$mainType}" );
+		}
+	}
+
+	/**
+	 * Converts specified constraints to a GQL query.
+	 *
+	 * @param array $constraints The list of constraints to serialize to GQL.
+	 * @param string $type The store type name
+	 * @param bool $count Optionally Whether to return an aggregate query
+	 * @param int $limit Optional row limit to apply to the query
+	 */
+	public function constraints_to_query( $constraints, $store_type, $count = false, $limit = null ) {
+		if ( count( $constraints ) === 0 ) {
+			return '';
+		}
+
+		$store_name = $this->store_name_for_type( $store_type );
+		$query      = "select * from {$store_name} where ";
+
+		$query .= $this->clause_for( $constraints );
+
+		if ( $count ) {
+			$query = str_replace( '*', 'count(*)', $query );
+		}
+
+		if ( is_int( $limit ) ) {
+			$query .= " limit $limit";
+		}
+
+		return $query;
+	}
+
+	/**
 	 * Builds the GQL for a list of constraints.
 	 *
 	 * @access public
@@ -216,8 +343,8 @@ class MemberQuery {
 	 * @return string
 	 */
 	public function clause_for( $constraints ) {
-		$query       = '';
-		$total       = count( $constraints );
+		$query = '';
+		$total = count( $constraints );
 
 		for ( $i = 0; $i < $total; $i++ ) {
 			$constraint = $constraints[ $i ];
@@ -252,6 +379,15 @@ class MemberQuery {
 			case 'record':
 				return $this->clause_for_record_constraint( $constraint );
 
+			case 'action':
+				$subType = $typeList[1];
+
+				if ( $subType === 'comment_date' ) {
+					return $this->clause_for_comment_date_constraint( $constraint );
+				} else {
+					return $this->clause_for_action_constraint( $constraint );
+				}
+
 			case 'profile':
 				$subType = $typeList[1];
 
@@ -263,6 +399,15 @@ class MemberQuery {
 					return $this->clause_for_profile_constraint( $constraint );
 				}
 
+			case 'data':
+				$subType = $typeList[1];
+
+				if ( $subType === 'comment_status' ) {
+					return $this->clause_for_comment_status_constraint( $constraint );
+				} else {
+					return $this->clause_for_data_constraint( $constraint );
+				}
+
 			case 'system':
 				return $this->clause_for_system_constraint( $constraint );
 
@@ -272,7 +417,58 @@ class MemberQuery {
 	}
 
 	/**
+	 * Generates the GQL clause for an action constraint.
+	 *
+	 * @access public
+	 * @param array $constraint The record constraint object
+	 * @return string
+	 */
+	public function clause_for_action_constraint( $constraint ) {
+		$type          = $constraint['type'];
+		$value         = $constraint['value'];
+		$valueType     = $constraint['valueType'];
+		$operator      = $constraint['operator'];
+		$actionTypeID  = $constraint['actionTypeID'];
+		$actionFieldID = $constraint['actionFieldID'];
+		$query         = '';
+
+		$query .= $this->data_store_field_name_for( 'actionType' );
+		$query .= ' ';
+		$query .= $this->operator_for( '=' );
+		$query .= ' ';
+		$query .= $this->value_for( $type );
+
+		$query .= ' and ';
+
+		$query .= $this->data_store_field_name_for( 'actionTypeID', 'integer' );
+		$query .= ' ';
+		$query .= $this->operator_for( '=' );
+		$query .= ' ';
+		$query .= $this->value_for( $actionTypeID, 'integer' );
+
+		$query .= ' and ';
+
+		$query .= $this->data_store_field_name_for( 'actionFieldID', 'string' );
+		$query .= ' ';
+		$query .= $this->operator_for( '=' );
+		$query .= ' ';
+		$query .= $this->value_for( $actionFieldID, 'string' );
+
+		$query .= ' and ';
+
+		$query .= $this->data_store_field_name_for( 'actionValue', $valueType );
+		$query .= ' ';
+		$query .= $this->operator_for( $operator );
+		$query .= ' ';
+		$query .= $this->value_for( $value, $valueType );
+
+		return $query;
+	}
+
+	/**
 	 * Generates the GQL clause for a record constraint.
+	 *
+	 * TODO: DEPRECATE
 	 *
 	 * @access public
 	 * @param array $constraint The record constraint object
@@ -287,23 +483,23 @@ class MemberQuery {
 		$entryFieldID = $constraint['entryFieldID'];
 		$query        = '';
 
-		$query .= $this->field_name_for( 'entryType' );
+		$query .= $this->field_name_for( 'actionType', 'none' );
 		$query .= ' ';
 		$query .= $this->operator_for( '=' );
 		$query .= ' ';
-		$query .= $this->value_for( $type );
+		$query .= $this->value_for( $this->get_action_type_name( $type ) );
 
 		$query .= ' and ';
 
-		$query .= $this->field_name_for( 'entryTypeID', 'integer' );
+		$query .= $this->field_name_for( 'actionID', 'none' );
 		$query .= ' ';
 		$query .= $this->operator_for( '=' );
 		$query .= ' ';
-		$query .= $this->value_for( $entryTypeID, 'integer' );
+		$query .= $this->value_for( $entryTypeID, 'string' );
 
 		$query .= ' and ';
 
-		$query .= $this->field_name_for( 'entryFieldID', 'string' );
+		$query .= $this->field_name_for( 'actionData.name', 'none' );
 		$query .= ' ';
 		$query .= $this->operator_for( '=' );
 		$query .= ' ';
@@ -311,7 +507,7 @@ class MemberQuery {
 
 		$query .= ' and ';
 
-		$query .= $this->field_name_for( 'entryValue', $valueType );
+		$query .= $this->field_name_for( 'actionData.value', $valueType );
 		$query .= ' ';
 		$query .= $this->operator_for( $operator );
 		$query .= ' ';
@@ -344,6 +540,70 @@ class MemberQuery {
 		return $query;
 	}
 
+	public function clause_for_data_constraint( $constraint ) {
+		$type      = $constraint['type'];
+		$typeParts = explode( ':', $type );
+		$value     = $constraint['value'];
+		$valueType = $constraint['valueType'];
+		$operator  = $constraint['operator'];
+		$query     = '';
+
+		$query .= 'data.' . $typeParts[1];
+		$query .= ' ';
+		$query .= $this->operator_for( $operator );
+		$query .= ' ';
+		$query .= $this->value_for( $value, $valueType );
+
+		return $query;
+	}
+
+	public function clause_for_comment_status_constraint( $constraint ) {
+		$type      = $constraint['type'];
+		$typeParts = explode( ':', $type );
+		$value     = $constraint['value'];
+		$valueType = $constraint['valueType'];
+		$operator  = $constraint['operator'];
+
+		if ( $operator === 'equals' && $value ) {
+			$query = 'data.comment_count > 0';
+		} else {
+			$query = 'data.comment_count = 0 or data.comment_count is null';
+		}
+
+		return $query;
+	}
+
+	public function clause_for_comment_date_constraint( $constraint ) {
+		$type          = $constraint['type'];
+		$value         = $constraint['value'];
+		$valueType     = $constraint['valueType'];
+		$operator      = $constraint['operator'];
+		$query         = '';
+
+		$query .= $this->data_store_field_name_for( 'actionType', 'none' );
+		$query .= ' ';
+		$query .= $this->operator_for( '=' );
+		$query .= ' ';
+		$query .= $this->value_for( 'action:comment' );
+
+		$query .= ' and ';
+
+		$query .= $this->data_store_field_name_for( 'actionData.name', 'none' );
+		$query .= ' ';
+		$query .= $this->operator_for( 'equals' );
+		$query .= ' ';
+		$query .= $this->value_for( 'timestamp', 'string' );
+
+		$query .= ' and ';
+
+		$query .= $this->data_store_field_name_for( 'actionData.value', 'integer' );
+		$query .= ' ';
+		$query .= $this->operator_for( $operator );
+		$query .= ' ';
+		$query .= $this->value_for( $value, 'epoch' );
+
+		return $query;
+	}
 	/**
 	 * Generates the GQL clause for a likes constraint specified.
 	 *
@@ -449,6 +709,12 @@ class MemberQuery {
 			);
 
 			return $date->getTimestamp() * 1000;
+		} elseif ( $valueType === 'epoch' ) {
+			$date = \DateTime::createFromFormat(
+				'm/d/Y', $value, new \DateTimeZone( 'UTC' )
+			);
+
+			return $date->getTimestamp();
 		} else {
 			return $value;
 		}
@@ -484,6 +750,18 @@ class MemberQuery {
 	}
 
 	/**
+	 * Returns the suffixed name for a field based on it's valueType.
+	 *
+	 * @access public
+	 * @param string $field The name of the field
+	 * @param string $valueType The data type of the field
+	 * @return string
+	 */
+	public function data_store_field_name_for( $field, $valueType = 'string' ) {
+		return 'data.actions.' . $field . $this->suffix_for( $valueType );
+	}
+
+	/**
 	 * Returns the gigya suffix for the specified valueType. This is
 	 * used by Gigya to determine the data type of the field.
 	 *
@@ -500,10 +778,40 @@ class MemberQuery {
 	 * @return string
 	 */
 	public function suffix_for( $valueType ) {
-		if ( array_key_exists( $valueType, self::$suffixes ) ) {
+		if ( $valueType === 'none' ) {
+			return '';
+		} else if ( array_key_exists( $valueType, self::$suffixes ) ) {
 			return '_' . self::$suffixes[ $valueType ];
 		} else {
 			return '_s';
+		}
+	}
+
+	/**
+	 * Returns the storage name for corresponding store type.
+	 *
+	 * Valid store types are 'profile' or 'data_store'.
+	 *
+	 * @param $store_type The type name of the store
+	 * @return string The storage table name
+	 */
+	public function store_name_for_type( $store_type ) {
+		if ( $store_type === 'profile' ) {
+			return 'accounts';
+		} else if ( $store_type === 'data_store' ) {
+			return 'actions';
+		} else {
+			throw new \Exception( "Unknown Gigya storage type name: {$type}" );
+		}
+	}
+
+	public function get_action_type_name( $old_type_name ) {
+		switch ( $old_type_name ) {
+			case 'record:contest':
+				return 'action:contest';
+
+			default:
+				return $old_type_name;
 		}
 	}
 

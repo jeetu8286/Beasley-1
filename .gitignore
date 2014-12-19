@@ -1,3 +1,7 @@
+!/.gitignore
+.sass-cache/
+node_modules
+*.DS_Store
 uploads/
 plugins/wp-multi-network/
 plugins/wordpress-importer/
@@ -11,7 +15,13 @@ plugins/restricted-site-access/
 plugins/role-quick-changer/
 plugins/the-events-calendar/
 plugins/wp-crontrol/
+plugins/edit-flow/
+plugins/duplicate-post/
+plugins/ooyala-video-browser/
+plugins/simple-page-ordering/
+plugins/tag-pages/
 themes/index.php
+themes/twentyfourteen
 upgrade/
 /index.php
 .idea
@@ -23,3 +33,14 @@ plugins/gravityforms
 atlassian-ide-plugin.xml
 mu-plugins/test-data-store.php
 **/.sass-cache/**
+/plugins/json-rest-api/
+/plugins/duplicate-post
+/plugins/rewrite-rules-inspector
+/plugins/simple-local-avatars
+/plugins/wordpress-seo
+plugins/ooyala-video-browser/
+plugins/simple-page-ordering/
+plugins/tag-pages/
+plugins/yet-another-related-posts-plugin
+plugins/jetpack/
+/plugins/greatermedia-live-stream/node_modules/
