@@ -10,7 +10,7 @@ function gmr_restrict_api_user_access() {
 
 	$api_user_name = 'nowplayingwmgk';
 
-	if ( $api_user_name == $user->data->user_login ) {
+	if ( ! defined( 'JSON_REQUEST' ) && $api_user_name == $user->data->user_login ) {
 		wp_die("The current user is only authorized for API access");
 	}
 }
