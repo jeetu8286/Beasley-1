@@ -11,7 +11,7 @@ add_filter( 'restricted_site_access_is_restricted', function( $is_restricted, $w
 	$api_user_name = 'nowplayingwmgk';
 
 	if ( $api_user_name == $user->data->user_login ) {
-		return true;
+		wp_die("The current user is only authorized for API access");
 	}
 
 	return $is_restricted;
