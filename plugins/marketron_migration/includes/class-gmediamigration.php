@@ -1151,20 +1151,24 @@ class GMedia_Migration extends WP_CLI_Command {
 				}
 
 				// Process Tags
-				if ( isset( $entry['Tags'] ) ) {
+				/*if ( isset( $entry['Tags'] ) ) {
 					$tags = trim( (string) $entry['Tags'] );
 					$tags = explode( ',', $tags );
+					if( count( $tags ) == 1 ) {
+						$tags = explode( ' ', trim( (string) $entry['Tags'] ) );
+					}
+
 					foreach ( $tags as $tag ) {
 						if ( $tag != "" ) {
-							$tag['name']    = trim( $tag );
-							$tag_id = $this->process_term( $tag, 'post_tag', 'post' );
+							$tag_term['name'] = $tag;
+							$tag_id = $this->process_term( $tag_term, 'post_tag', 'post' );
 
 							if ( $tag_id ) {
 								wp_set_post_terms( $wp_id, array( $tag_id ), 'post_tag', true );
 							}
 						}
 					}
-				}
+				}*/
 
 				// TO-DO
 				// Images
@@ -2513,7 +2517,12 @@ class GMedia_Migration extends WP_CLI_Command {
 						$audio_path = str_ireplace( '\Media\\', '', (string) $podcast_item['MediaFilename'] );
 						$media_file_id = $this->import_music_files( $wp_id, $audio_path );
 						$url = wp_get_attachment_url( $media_file_id );
-						update_post_meta( $episode_id, 'gmp_audio_file_meta_key', $url );
+						$shortcode = '[audio mp3="' . $url . '"]';
+						$episode = array(
+							'post_content'  => $shortcode . '<br/>' . trim( (string) $podcast_item['ItemDescription'] ),
+							'ID'            => $episode_id
+						);
+						wp_update_post( $episode );
 					}
 				}
 
