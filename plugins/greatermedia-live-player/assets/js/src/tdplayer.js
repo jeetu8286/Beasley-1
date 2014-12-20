@@ -962,7 +962,10 @@
 			customAudio = new Audio();
 
 			// Revert the button states back to play once the file is done playing
-			customAudio.addEventListener( 'ended', resetInlineAudioStates );
+			customAudio.addEventListener( 'ended', function() {
+				resetInlineAudioStates();
+				setPausedStyles();
+			} );
 		}
 	};
 
