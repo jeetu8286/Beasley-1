@@ -871,13 +871,10 @@
 	 * Finds any inline audio players with a matching hash of the current custom audio file, and sets the playing state appropriately
 	 */
 	var setInlineAudioStates = function() {
-		var className = '.mp3-' + customHash,
-			$inlineElements = $( className );
+		var className = '.mp3-' + customHash;
 
-		//$play.addClass('playing');
-		//$pause.addClass('playing');
-
-		$inlineElements.find('.podcast__btn--play, .podcast__btn--pause').addClass('playing');
+		$( className + ' .podcast__btn--play').addClass('playing');
+		$( className + ' .podcast__btn--pause').addClass('playing');
 	};
 
 	var setInlineAudioSrc = function( src ) {
@@ -891,6 +888,8 @@
 		setPlayerTrackName();
 		setPlayerArtist();
 		setPlayingStyles();
+		resetInlineAudioStates();
+		setInlineAudioStates();
 	};
 
 	var playCustomInlineAudio = function( src ) {
