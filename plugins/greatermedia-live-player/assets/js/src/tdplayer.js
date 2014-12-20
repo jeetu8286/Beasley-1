@@ -8,6 +8,7 @@
 
 	var playingCustomAudio = false; /* This will be true if we're playing a custom audio file vs. live stream */
 	var customAudio = false; /* Will be an HTML5 Audio object, if we support it */
+	var customArtist, customTrack; // So we can re-add these when resuming via live-player
 
 	var adPlaying; /* boolean - Ad break currently playing */
 	var currentTrackCuePoint; /* Current Track */
@@ -22,6 +23,7 @@
 	var resumeButton = document.getElementById('resumeButton');
 	var listenNow = document.getElementById('live-stream__listen-now');
 	var nowPlaying = document.getElementById('live-stream__now-playing');
+	var $trackInfo = $(document.getElementById('trackInfo'));
 	var gigyaLogin = gmr.homeUrl + "members/login";
 
 	/**
@@ -133,6 +135,33 @@
 
 	$(document).pjax('a:not(.ab-item)', 'div.page-wrap', {'fragment': 'div.page-wrap', 'maxCacheLength': 500, 'timeout' : 5000});
 
+	function setPlayingStyles() {
+		tdContainer.classList.add('stream__active');
+		playButton.style.display = 'none';
+		resumeButton.style.display = 'none';
+		pauseButton.style.display = 'block';
+		listenNow.style.display = 'none';
+		nowPlaying.style.display = 'inline-block';
+	}
+
+	function setStoppedStyles() {
+		tdContainer.classList.remove('stream__active');
+		playButton.style.display = 'block';
+		pauseButton.style.display = 'none';
+		listenNow.style.display = 'inline-block';
+		nowPlaying.style.display = 'none';
+	}
+
+	function setPausedStyles() {
+		tdContainer.classList.remove('stream__active');
+		playButton.style.display = 'none';
+		pauseButton.style.display = 'none';
+		listenNow.style.display = 'inline-block';
+		nowPlaying.style.display = 'none';
+
+		resumeButton.style.display = 'block';
+	}
+
 	function loggedInGigyaUser() {
 		if (!gmr.logged_in) {
 			console.log("--- Log In with Gigya ---");
@@ -192,6 +221,8 @@
 		}
 
 		player.play({station: station, timeShift: true});
+
+		setPlayingStyles();
 	});
 
 	function playLiveStream() {
@@ -212,22 +243,14 @@
 			player.play({station: station, timeShift: true});
 		}
 
-		tdContainer.classList.add('stream__active');
-		playButton.style.display = 'none';
-		pauseButton.style.display = 'block';
-		listenNow.style.display = 'none';
-		nowPlaying.style.display = 'inline-block';
+		setPlayingStyles();
 	}
 
 	function playLiveStreamWithPreRoll() {
 		if ( true === playingCustomAudio ) {
 			resumeCustomInlineAudio();
 
-			tdContainer.classList.add('stream__active');
-			playButton.style.display = 'none';
-			pauseButton.style.display = 'block';
-			listenNow.style.display = 'none';
-			nowPlaying.style.display = 'inline-block';
+			setPlayingStyles();
 		} else {
 			var station = gmr.callsign;
 			if (station == '') {
@@ -248,11 +271,7 @@
 				}
 
 				player.play({station: station, timeShift: true});
-				tdContainer.classList.add('stream__active');
-				playButton.style.display = 'none';
-				pauseButton.style.display = 'block';
-				listenNow.style.display = 'none';
-				nowPlaying.style.display = 'inline-block';
+				setPlayingStyles();
 			});
 		}
 	}
@@ -264,11 +283,7 @@
 			player.stop();
 		}
 
-		tdContainer.classList.remove('stream__active');
-		playButton.style.display = 'block';
-		pauseButton.style.display = 'none';
-		listenNow.style.display = 'inline-block';
-		nowPlaying.style.display = 'none';
+		setStoppedStyles();
 	}
 
 	function pauseStream() {
@@ -278,12 +293,7 @@
 			player.pause();
 		}
 
-		tdContainer.classList.remove('stream__active');
-		playButton.style.display = 'none';
-		pauseButton.style.display = 'none';
-		resumeButton.style.display = 'block';
-		listenNow.style.display = 'inline-block';
-		nowPlaying.style.display = 'none';
+		setPausedStyles();
 	}
 
 	function resumeStream() {
@@ -297,21 +307,12 @@
 			}
 		}
 
-		tdContainer.classList.add('stream__active');
-		playButton.style.display = 'none';
-		resumeButton.style.display = 'none';
-		pauseButton.style.display = 'block';
-		listenNow.style.display = 'none';
-		nowPlaying.style.display = 'inline-block';
+		setPlayingStyles();
 	}
 
 	function seekLive() {
 		player.seekLive();
-		tdContainer.classList.add('stream__active');
-		playButton.style.display = 'none';
-		pauseButton.style.display = 'block';
-		listenNow.style.display = 'none';
-		nowPlaying.style.display = 'inline-block';
+		setPlayingStyles();
 	}
 
 	function loadNpApi() {
@@ -851,7 +852,10 @@
 	}
 
 
-	/* Inline Audio */
+
+
+
+	/* Inline Audio Support */
 	var resetInlineAudioStates = function() {
 		$('.podcast__btn--play.playing').removeClass('playing');
 		$('.podcast__btn--pause.playing').removeClass('playing');
@@ -867,36 +871,63 @@
 		playingCustomAudio = true;
 		player.stop(); // Stop the live player, if its playing :)
 		customAudio.play();
+		setPlayerTrackName();
+		setPlayerArtist();
+		setPlayingStyles();
 	};
 
 	var playCustomInlineAudio = function( src ) {
 		setInlineAudioSrc( src );
 		resumeCustomInlineAudio();
+		setPlayerTrackName();
+		setPlayerArtist();
+		setPlayingStyles();
 	};
 
 	var pauseCustomInlineAudio = function() {
 		customAudio.pause();
 		resetInlineAudioStates();
+		setPausedStyles();
 	};
 
 	/*
 	Same as pausing, but sets the "Playing" state to false, to allow resuming live player audio
 	 */
 	var stopCustomInlineAudio = function() {
-		pauseCustomInlineAudio();
+		customAudio.pause();
+		resetInlineAudioStates();
 		playingCustomAudio = false;
+		setStoppedStyles();
 	};
 
-	var setPlayerTrackName = function( track ) {
-		var $trackTitleDiv = $('.now-playing__title');
+	var setPlayerTrackName = function() {
+		var template = _.template('<div class="now-playing__title"><%- title %></div>'),
+			$trackTitleDiv = $('.now-playing__title');
 
-		$trackTitleDiv.text( track );
+		if ( $trackTitleDiv.length > 0 ) {
+			$trackTitleDiv.text( customTrack );
+		} else {
+			$trackInfo.prepend( template({ title: customTrack }) );
+		}
 	};
 
-	var setPlayerArtist = function( artist ) {
-		var $trackArtistDiv = $('.now-playing__artist');
+	var setPlayerArtist = function() {
+		var template = _.template('<div class="now-playing__artist"><%- artist %></div>'),
+			$trackArtistDiv = $('.now-playing__artist');
 
-		$trackArtistDiv.text( artist );
+		if ( $trackArtistDiv.length > 0 ) {
+			$trackArtistDiv.text( customArtist );
+		} else {
+			$trackInfo.append( template({ artist: customArtist }) );
+		}
+	};
+
+	var setCustomAudioMetadata = function( track, artist ) {
+		customTrack = track;
+		customArtist = artist;
+
+		setPlayerTrackName();
+		setPlayerArtist();
 	};
 
 	var initCustomAudioPlayer = function() {
@@ -924,11 +955,10 @@
 				$play.addClass('playing');
 				$pause.addClass('playing');
 
-				setPlayerTrackName( $play.attr( 'data-mp3-title' ) );
-				setPlayerArtist( $play.attr( 'data-mp3-artist' ) );
+				setCustomAudioMetadata( $play.attr( 'data-mp3-title' ), $play.attr( 'data-mp3-artist' ));
 			});
 
-			$content.on('click', '.podcast__btn--pause', stopCustomInlineAudio );
+			$content.on('click', '.podcast__btn--pause', pauseCustomInlineAudio );
 		} else {
 			var $meFallbacks = $('.gmr-mediaelement-fallback audio'),
 				$customInterfaces = $('.podcast__play');
