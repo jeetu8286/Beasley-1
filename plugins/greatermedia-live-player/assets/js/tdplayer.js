@@ -136,6 +136,11 @@
 	$(document).pjax('a:not(.ab-item)', 'div.page-wrap', {'fragment': 'div.page-wrap', 'maxCacheLength': 500, 'timeout' : 5000});
 
 	function setPlayingStyles() {
+		if ( null === tdContainer ) {
+			// gigya user is logged out, so everythign is different ಠ_ಠ - Should we force login for inline audio as well??
+			return;
+		}
+
 		tdContainer.classList.add('stream__active');
 		playButton.style.display = 'none';
 		resumeButton.style.display = 'none';
@@ -145,7 +150,11 @@
 	}
 
 	function setStoppedStyles() {
-		tdContainer.classList.remove('stream__active');
+		if ( null === tdContainer ) {
+			// gigya user is logged out, so everythign is different ಠ_ಠ - Should we force login for inline audio as well??
+			return;
+		}
+
 		playButton.style.display = 'block';
 		pauseButton.style.display = 'none';
 		listenNow.style.display = 'inline-block';
@@ -153,12 +162,15 @@
 	}
 
 	function setPausedStyles() {
-		tdContainer.classList.remove('stream__active');
+		if ( null === tdContainer ) {
+			// gigya user is logged out, so everythign is different ಠ_ಠ - Should we force login for inline audio as well??
+			return;
+		}
+
 		playButton.style.display = 'none';
 		pauseButton.style.display = 'none';
 		listenNow.style.display = 'inline-block';
 		nowPlaying.style.display = 'none';
-
 		resumeButton.style.display = 'block';
 	}
 
