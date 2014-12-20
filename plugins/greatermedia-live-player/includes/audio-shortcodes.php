@@ -50,9 +50,11 @@ class GMR_Audio_Shortcodes {
 		}
 
 		ob_start();
+
+		$hash = md5( $mp3_src );
 		?>
-		<div class="podcast__play">
-			<button class="podcast__btn--play" data-mp3-src="<?php echo esc_attr( $mp3_src );?>" data-mp3-title="<?php echo esc_attr( $metadata['title'] ); ?>" data-mp3-artist="<?php echo esc_attr( $metadata['artist'] ); ?>"></button>
+		<div class="podcast__play mp3-<?php echo esc_attr( $hash ); // Hash is used to ensure the inline audio can always match state of live player, even when the player is the buttons that are clicked ?>">
+			<button class="podcast__btn--play" data-mp3-src="<?php echo esc_attr( $mp3_src );?>" data-mp3-title="<?php echo esc_attr( $metadata['title'] ); ?>" data-mp3-artist="<?php echo esc_attr( $metadata['artist'] ); ?>" data-mp3-hash="<?php echo esc_attr( $hash ); ?>"></button>
 			<button class="podcast__btn--pause"></button>
 			<span class="podcast__runtime"><?php echo esc_html( $metadata['length_formatted'] ); ?></span>
 		</div>

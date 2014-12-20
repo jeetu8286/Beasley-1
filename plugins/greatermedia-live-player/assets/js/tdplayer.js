@@ -8,7 +8,7 @@
 
 	var playingCustomAudio = false; /* This will be true if we're playing a custom audio file vs. live stream */
 	var customAudio = false; /* Will be an HTML5 Audio object, if we support it */
-	var customArtist, customTrack; // So we can re-add these when resuming via live-player
+	var customArtist, customTrack, customHash; // So we can re-add these when resuming via live-player
 
 	var adPlaying; /* boolean - Ad break currently playing */
 	var currentTrackCuePoint; /* Current Track */
@@ -856,20 +856,37 @@
 
 
 	/* Inline Audio Support */
+	var stopLiveStreamIfPlaying = function() {
+		if ( "undefined" !== typeof player && "undefined" !== typeof player.stop ) {
+			player.stop();
+		}
+	};
+
 	var resetInlineAudioStates = function() {
 		$('.podcast__btn--play.playing').removeClass('playing');
 		$('.podcast__btn--pause.playing').removeClass('playing');
 	};
 
+	/*
+	 * Finds any inline audio players with a matching hash of the current custom audio file, and sets the playing state appropriately
+	 */
+	var setInlineAudioStates = function() {
+		var className = '.mp3-' + customHash,
+			$inlineElements = $( className );
+
+		//$play.addClass('playing');
+		//$pause.addClass('playing');
+
+		$inlineElements.find('.podcast__btn--play, .podcast__btn--pause').addClass('playing');
+	};
+
 	var setInlineAudioSrc = function( src ) {
 		customAudio.src = src;
-		// @todo should probably keep track of the currently playing audio file, so taht if we go away and come back to same audio file
-		// we can just set button state back to playing, instead of starting it over!
 	};
 
 	var resumeCustomInlineAudio = function() {
 		playingCustomAudio = true;
-		player.stop(); // Stop the live player, if its playing :)
+		stopLiveStreamIfPlaying();
 		customAudio.play();
 		setPlayerTrackName();
 		setPlayerArtist();
@@ -879,9 +896,6 @@
 	var playCustomInlineAudio = function( src ) {
 		setInlineAudioSrc( src );
 		resumeCustomInlineAudio();
-		setPlayerTrackName();
-		setPlayerArtist();
-		setPlayingStyles();
 	};
 
 	var pauseCustomInlineAudio = function() {
@@ -922,12 +936,14 @@
 		}
 	};
 
-	var setCustomAudioMetadata = function( track, artist ) {
+	var setCustomAudioMetadata = function( track, artist, hash ) {
 		customTrack = track;
 		customArtist = artist;
+		customHash = hash;
 
 		setPlayerTrackName();
 		setPlayerArtist();
+		setInlineAudioStates();
 	};
 
 	var initCustomAudioPlayer = function() {
@@ -945,17 +961,13 @@
 				$content = $(content); // Because getElementsByClassName is not supported in IE8 ಠ_ಠ
 
 			$content.on('click', '.podcast__btn--play', function(e) {
-				var $play = $(e.currentTarget),
-					$pause = $play.parent().find('.podcast__btn--pause');
+				var $play = $(e.currentTarget);
 
 				playCustomInlineAudio( $play.attr( 'data-mp3-src' ) );
 
 				resetInlineAudioStates();
 
-				$play.addClass('playing');
-				$pause.addClass('playing');
-
-				setCustomAudioMetadata( $play.attr( 'data-mp3-title' ), $play.attr( 'data-mp3-artist' ));
+				setCustomAudioMetadata( $play.attr( 'data-mp3-title' ), $play.attr( 'data-mp3-artist' ), $play.attr('data-mp3-hash') );
 			});
 
 			$content.on('click', '.podcast__btn--pause', pauseCustomInlineAudio );
@@ -971,5 +983,6 @@
 	initCustomAudioPlayer();
 	initInlineAudioUI();
 	$(document).on( 'pjax:end', initInlineAudioUI ); // Ensures our listeners work even after a PJAX load
+	// todo also hook this into the setInlineAudioStates function
 
 })(jQuery, window);
