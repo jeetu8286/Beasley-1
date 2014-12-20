@@ -24,6 +24,9 @@
 	var nowPlaying = document.getElementById('live-stream__now-playing');
 	var gigyaLogin = gmr.homeUrl + "members/login";
 
+	var $trackTitleDiv = false,
+		$trackArtistDiv = false; // populated right before they are needed the first time
+
 	/**
 	 * @todo remove the console log before beta
 	 */
@@ -853,6 +856,22 @@
 		playingCustomAudio = false;
 	};
 
+	var setPlayerTrackName = function( track ) {
+		if ( false === $trackTitleDiv ) {
+			$trackTitleDiv = $('.now-playing__title');
+		}
+
+		$trackTitleDiv.text( track );
+	};
+
+	var setPlayerArtist = function( artist ) {
+		if ( false === $trackArtistDiv ) {
+			$trackArtistDiv = $('.now-playing__artist');
+		}
+
+		$trackArtistDiv.text( artist );
+	};
+
 	var initCustomAudioPlayer = function() {
 		if ( "undefined" !== typeof Modernizr && Modernizr.audio ) {
 			customAudio = new Audio();
@@ -877,6 +896,9 @@
 
 				$play.addClass('playing');
 				$pause.addClass('playing');
+
+				setPlayerTrackName( $play.attr( 'data-mp3-title' ) );
+				setPlayerArtist( $play.attr( 'data-mp3-artist' ) );
 			});
 
 			$content.on('click', '.podcast__btn--pause', stopCustomInlineAudio );

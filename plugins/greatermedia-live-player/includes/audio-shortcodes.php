@@ -37,6 +37,7 @@ class GMR_Audio_Shortcodes {
 		$metadata_defaults = array(
 			'title' => '',
 			'length_formatted' => '',
+			'artist' => '',
 		);
 
 		if ( function_exists( 'wp_read_audio_metadata' ) ) {
@@ -51,7 +52,7 @@ class GMR_Audio_Shortcodes {
 		ob_start();
 		?>
 		<div class="podcast__play">
-			<button class="podcast__btn--play" data-mp3-src="<?php echo esc_attr( $mp3_src );?>" data-mp3-title="<?php echo esc_attr( $metadata['title'] ); ?>"></button>
+			<button class="podcast__btn--play" data-mp3-src="<?php echo esc_attr( $mp3_src );?>" data-mp3-title="<?php echo esc_attr( $metadata['title'] ); ?>" data-mp3-artist="<?php echo esc_attr( $metadata['artist'] ); ?>"></button>
 			<button class="podcast__btn--pause"></button>
 			<span class="podcast__runtime"><?php echo esc_html( $metadata['length_formatted'] ); ?></span>
 		</div>
