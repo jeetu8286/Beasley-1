@@ -24,9 +24,6 @@
 	var nowPlaying = document.getElementById('live-stream__now-playing');
 	var gigyaLogin = gmr.homeUrl + "members/login";
 
-	var $trackTitleDiv = false,
-		$trackArtistDiv = false; // populated right before they are needed the first time
-
 	/**
 	 * @todo remove the console log before beta
 	 */
@@ -190,22 +187,31 @@
 		if (livePlaying)
 			player.stop();
 
+		if ( true === playingCustomAudio ) {
+			stopCustomInlineAudio();
+		}
+
 		player.play({station: station, timeShift: true});
 	});
 
 	function playLiveStream() {
-		var station = gmr.callsign;
-		if (station == '') {
-			alert('Please enter a Station');
-			return;
+		if ( true === playingCustomAudio ) {
+			resumeCustomInlineAudio();
+		} else {
+			var station = gmr.callsign;
+			if (station == '') {
+				alert('Please enter a Station');
+				return;
+			}
+
+			debug('playLiveStream - station=' + station);
+
+			if (livePlaying)
+				player.stop();
+
+			player.play({station: station, timeShift: true});
 		}
 
-		debug('playLiveStream - station=' + station);
-
-		if (livePlaying)
-			player.stop();
-
-		player.play({station: station, timeShift: true});
 		tdContainer.classList.add('stream__active');
 		playButton.style.display = 'none';
 		pauseButton.style.display = 'block';
@@ -214,34 +220,49 @@
 	}
 
 	function playLiveStreamWithPreRoll() {
-		var station = gmr.callsign;
-		if (station == '') {
-			alert('Please enter a Station');
-			return;
-		}
+		if ( true === playingCustomAudio ) {
+			resumeCustomInlineAudio();
 
-		debug('playLiveStream - station=' + station);
-
-		preVastAd();
-		streamVastAd();
-		player.addEventListener('ad-playback-complete', function() {
-			postVastAd();
-			console.log("--- ad complete ---");
-
-			if (livePlaying)
-				player.stop();
-
-			player.play({station: station, timeShift: true});
 			tdContainer.classList.add('stream__active');
 			playButton.style.display = 'none';
 			pauseButton.style.display = 'block';
 			listenNow.style.display = 'none';
 			nowPlaying.style.display = 'inline-block';
-		});
+		} else {
+			var station = gmr.callsign;
+			if (station == '') {
+				alert('Please enter a Station');
+				return;
+			}
+
+			debug('playLiveStream - station=' + station);
+
+			preVastAd();
+			streamVastAd();
+			player.addEventListener('ad-playback-complete', function() {
+				postVastAd();
+				console.log("--- ad complete ---");
+
+				if ( livePlaying ) {
+					player.stop();
+				}
+
+				player.play({station: station, timeShift: true});
+				tdContainer.classList.add('stream__active');
+				playButton.style.display = 'none';
+				pauseButton.style.display = 'block';
+				listenNow.style.display = 'none';
+				nowPlaying.style.display = 'inline-block';
+			});
+		}
 	}
 
 	function stopStream() {
-		player.stop();
+		if ( true === playingCustomAudio ) {
+			stopCustomInlineAudio();
+		} else {
+			player.stop();
+		}
 
 		tdContainer.classList.remove('stream__active');
 		playButton.style.display = 'block';
@@ -251,7 +272,11 @@
 	}
 
 	function pauseStream() {
-		player.pause();
+		if ( true === playingCustomAudio ) {
+			pauseCustomInlineAudio();
+		} else {
+			player.pause();
+		}
 
 		tdContainer.classList.remove('stream__active');
 		playButton.style.display = 'none';
@@ -262,11 +287,16 @@
 	}
 
 	function resumeStream() {
-		if (livePlaying) {
-			player.resume();
+		if ( true === playingCustomAudio ) {
+			resumeCustomInlineAudio();
 		} else {
-			player.play();
+			if (livePlaying) {
+				player.resume();
+			} else {
+				player.play();
+			}
 		}
+
 		tdContainer.classList.add('stream__active');
 		playButton.style.display = 'none';
 		resumeButton.style.display = 'none';
@@ -835,6 +865,7 @@
 
 	var resumeCustomInlineAudio = function() {
 		playingCustomAudio = true;
+		player.stop(); // Stop the live player, if its playing :)
 		customAudio.play();
 	};
 
@@ -857,17 +888,13 @@
 	};
 
 	var setPlayerTrackName = function( track ) {
-		if ( false === $trackTitleDiv ) {
-			$trackTitleDiv = $('.now-playing__title');
-		}
+		var $trackTitleDiv = $('.now-playing__title');
 
 		$trackTitleDiv.text( track );
 	};
 
 	var setPlayerArtist = function( artist ) {
-		if ( false === $trackArtistDiv ) {
-			$trackArtistDiv = $('.now-playing__artist');
-		}
+		var $trackArtistDiv = $('.now-playing__artist');
 
 		$trackArtistDiv.text( artist );
 	};
