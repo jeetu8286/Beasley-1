@@ -981,7 +981,10 @@
 
 	initCustomAudioPlayer();
 	initInlineAudioUI();
-	$(document).on( 'pjax:end', initInlineAudioUI ); // Ensures our listeners work even after a PJAX load
-	// todo also hook this into the setInlineAudioStates function
+	// Ensures our listeners work even after a PJAX load
+	$(document).on( 'pjax:end', function() {
+		initInlineAudioUI();
+		setInlineAudioStates();
+	});
 
 })(jQuery, window);
