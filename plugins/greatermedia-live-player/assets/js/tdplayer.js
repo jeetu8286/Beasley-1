@@ -6,6 +6,9 @@
 
 	var player; /* TD player instance */
 
+	var playingCustomAudio = false; /* This will be true if we're playing a custom audio file vs. live stream */
+	var customAudio = false; /* Will be an HTML5 Audio object, if we support it */
+
 	var adPlaying; /* boolean - Ad break currently playing */
 	var currentTrackCuePoint; /* Current Track */
 	var livePlaying; /* boolean - Live stream currently playing */
@@ -20,6 +23,9 @@
 	var listenNow = document.getElementById('live-stream__listen-now');
 	var nowPlaying = document.getElementById('live-stream__now-playing');
 	var gigyaLogin = gmr.homeUrl + "members/login";
+
+	var $trackTitleDiv = false,
+		$trackArtistDiv = false; // populated right before they are needed the first time
 
 	/**
 	 * @todo remove the console log before beta
@@ -813,5 +819,100 @@
 	function clearDebugInfo() {
 		$('#debugInformation').html('');
 	}
+
+
+	/* Inline Audio */
+	var resetInlineAudioStates = function() {
+		$('.podcast__btn--play.playing').removeClass('playing');
+		$('.podcast__btn--pause.playing').removeClass('playing');
+	};
+
+	var setInlineAudioSrc = function( src ) {
+		customAudio.src = src;
+		// @todo should probably keep track of the currently playing audio file, so taht if we go away and come back to same audio file
+		// we can just set button state back to playing, instead of starting it over!
+	};
+
+	var resumeCustomInlineAudio = function() {
+		playingCustomAudio = true;
+		customAudio.play();
+	};
+
+	var playCustomInlineAudio = function( src ) {
+		setInlineAudioSrc( src );
+		resumeCustomInlineAudio();
+	};
+
+	var pauseCustomInlineAudio = function() {
+		customAudio.pause();
+		resetInlineAudioStates();
+	};
+
+	/*
+	Same as pausing, but sets the "Playing" state to false, to allow resuming live player audio
+	 */
+	var stopCustomInlineAudio = function() {
+		pauseCustomInlineAudio();
+		playingCustomAudio = false;
+	};
+
+	var setPlayerTrackName = function( track ) {
+		if ( false === $trackTitleDiv ) {
+			$trackTitleDiv = $('.now-playing__title');
+		}
+
+		$trackTitleDiv.text( track );
+	};
+
+	var setPlayerArtist = function( artist ) {
+		if ( false === $trackArtistDiv ) {
+			$trackArtistDiv = $('.now-playing__artist');
+		}
+
+		$trackArtistDiv.text( artist );
+	};
+
+	var initCustomAudioPlayer = function() {
+		if ( "undefined" !== typeof Modernizr && Modernizr.audio ) {
+			customAudio = new Audio();
+
+			// Revert the button states back to play once the file is done playing
+			customAudio.addEventListener( 'ended', resetInlineAudioStates );
+		}
+	};
+
+	function initInlineAudioUI() {
+		if ( "undefined" !== typeof Modernizr && Modernizr.audio ) {
+			var content = document.querySelectorAll( '.content'),
+				$content = $(content); // Because getElementsByClassName is not supported in IE8 ಠ_ಠ
+
+			$content.on('click', '.podcast__btn--play', function(e) {
+				var $play = $(e.currentTarget),
+					$pause = $play.parent().find('.podcast__btn--pause');
+
+				playCustomInlineAudio( $play.attr( 'data-mp3-src' ) );
+
+				resetInlineAudioStates();
+
+				$play.addClass('playing');
+				$pause.addClass('playing');
+
+				setPlayerTrackName( $play.attr( 'data-mp3-title' ) );
+				setPlayerArtist( $play.attr( 'data-mp3-artist' ) );
+			});
+
+			$content.on('click', '.podcast__btn--pause', stopCustomInlineAudio );
+		} else {
+			var $meFallbacks = $('.gmr-mediaelement-fallback audio'),
+				$customInterfaces = $('.podcast__play');
+
+			$meFallbacks.mediaelementplayer();
+			$customInterfaces.hide();
+		}
+	}
+
+	initCustomAudioPlayer();
+	initInlineAudioUI();
+	$(document).on( 'pjax:end', initInlineAudioUI ); // Ensures our listeners work even after a PJAX load
 
 })(jQuery, window);
