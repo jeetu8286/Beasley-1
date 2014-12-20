@@ -6,11 +6,11 @@ use Livefyre\Livefyre;
 
 class CommentsApp {
 
-	public $livefyre_options;
+	public $livefyre_options = null;
 
 	function register() {
 		add_filter(
-			'comments_template', array( $this, 'change_comments_template' )
+			'comments_template', array( $this, 'change_comments_template' ), 99
 		);
 	}
 
