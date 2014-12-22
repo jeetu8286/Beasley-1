@@ -94,3 +94,26 @@ function render_tag( $output_html, $tag_id ) {
 
 	return $output;
 }
+
+function render_variant( $tag_id, $variant ) {
+	$tag_meta = get_ad_tag_meta( $tag_id );
+
+	if ( false === $tag_meta ) {
+		return;
+	}
+
+	if ( ! isset( $tag_meta['variants'] ) || ! isset( $tag_meta['variants'][ $variant ] ) ) {
+		error_log( "Ad Render Error: Trying to render {$tag_id} with undefined variant {$variant}" );
+		return;
+	}
+
+	// Set our current variant
+	ad_variant( $variant );
+
+	// Do the ad slot
+	do_action( 'acm_tag', $tag_id );
+
+	// Clear the current variant
+	ad_variant( '' );
+}
+add_action( 'acm_tag_gmr_variant', __NAMESPACE__ . '\render_variant', 10, 2 );
