@@ -76,9 +76,16 @@ class GmrDependencies {
 			true
 		);
 
+		if(defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) {
+			$formbuilder_js_url = GMRDEPENDENCIES_URL . "/formbuilder/dist/formbuilder.js";
+		}
+		else {
+			$formbuilder_js_url = GMRDEPENDENCIES_URL . "/formbuilder/dist/formbuilder-min.js";
+		}
+
 		wp_register_script(
 			'formbuilder',
-			GMRDEPENDENCIES_URL . "/formbuilder/dist/formbuilder{$postfix}.js",
+			$formbuilder_js_url,
 			array(
 				'jquery',
 				'jquery-ui-core',
@@ -123,6 +130,14 @@ class GmrDependencies {
 			'jquery-scrollwindowto',
 			GMRDEPENDENCIES_URL . "/jquery.scrollWindowTo.js",
 			array( 'jquery' ),
+			false,
+			true
+		);
+
+		wp_register_script(
+			'classlist-polyfill',
+			GMRDEPENDENCIES_URL . 'polyfills/classList.js',
+			array(),
 			false,
 			true
 		);
