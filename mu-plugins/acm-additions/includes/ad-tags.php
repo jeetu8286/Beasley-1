@@ -6,6 +6,9 @@ add_filter( 'acm_ad_tag_ids', __NAMESPACE__ . '\filter_ad_tags' );
 
 function filter_ad_tags() {
 	/*
+	 * To render a variant, call do_action( 'acm_tag_gmr_variant', 'tag_id', 'variant' ); instead of
+	 * do_action( 'acm_tag', 'tag_id' );
+	 *
 	 * If you define variants for any slot, you must define min_width and max_width in the variant!
 	 * top-level min_width/max_width for a slot will be ignored if rendering using a variant!
 	 */
@@ -31,13 +34,12 @@ function filter_ad_tags() {
 			'tag' => 'mrec-body',
 			'url_vars' => array(),
 			'enable_ui_mapping' => true,
-			// custom action for this, to handle conditional rendering. something like: do_action( 'acm_tag_variant', 'tag_id, 'variant' );
 			'variants' => array(
 				'desktop' => array(
-					'min_width' => 728,
+					'min_width' => 768,
 				),
 				'mobile' => array(
-					'max_width' => 727,
+					'max_width' => 767,
 				),
 			),
 		),
