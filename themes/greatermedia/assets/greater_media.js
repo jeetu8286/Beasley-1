@@ -1,17 +1,8 @@
-/**
- * Greater Media
- *
- * Copyright (c) 2014 10up
- * Licensed under the GPLv2+ license.
- */
 (function() {
 
-	/**
-	 * global variables
-	 *
-	 * @type {HTMLElement}
-	 */
-	var body = document.querySelector( 'body' ),
+	var livePlayerFix, livePlayerInit, showSearch,
+
+		body = document.querySelector( 'body' ),
 		html = document.querySelector( 'html'),
 		mobileNavButton = document.querySelector( '.mobile-nav__toggle' ),
 		pageWrap = document.getElementById( 'page-wrap' ),
@@ -19,9 +10,9 @@
 		headerHeight = header.offsetHeight,
 		livePlayer = document.getElementById( 'live-player__sidebar' ),
 		livePlayerStreamSelect = document.querySelector( '.live-player__stream--current' ),
-		livePlayerStreamSelectHeight = livePlayerStreamSelect.offsetHeight,
 		livePlayerCurrentName = livePlayerStreamSelect.querySelector( '.live-player__stream--current-name' ),
 		livePlayerStreams = livePlayerStreamSelect.querySelectorAll( '.live-player__stream--item' ),
+		livePlayerStreamSelectHeight = livePlayerStreamSelect.offsetHeight,
 		wpAdminHeight = 32,
 		onAir = document.getElementById( 'on-air' ),
 		upNext = document.getElementById( 'up-next'),
@@ -36,30 +27,6 @@
 		scrollObject = {},
 		searchForm = document.getElementById( 'header__search--form'),
 		searchBtn = document.getElementById( 'header__search');
-
-	/**
-	 * global variables for event types to use in conjunction with `addEventHandler` function
-	 * @type {string}
-	 */
-	var elemClick = 'click',
-		elemLoad = 'load',
-		elemScroll = 'scroll',
-		elemResize = 'resize';
-
-	/**
-	 * function to detect if the current browser can use `addEventListener`, if not, use `attachEvent`
-	 * this is a specific fix for IE8
-	 *
-	 * @param elem
-	 * @param eventType
-	 * @param handler
-	 */
-	function addEventHandler(elem,eventType,handler) {
-		if (elem.addEventListener)
-			elem.addEventListener (eventType,handler,false);
-		else if (elem.attachEvent)
-			elem.attachEvent ('on'+eventType,handler);
-	}
 
 	/**
 	 * detects various positions of the screen on scroll to deliver states of the live player
@@ -164,10 +131,10 @@
 	 */
 	lpAction.prototype.playAction = function() {
 		var that = this; // `this`, when registering an event handler, won't ref the method's parent object, so a var it is
-		addEventHandler(that.btn,elemClick,function() {
+		that.btn.addEventListener( 'click', function() {
 			that.elemHide.style.display = 'none';
 			that.elemDisplay.style.display = 'inline-block';
-		});
+		}, false);
 	};
 
 	/**
@@ -188,6 +155,19 @@
 	playLp = new lpAction(playBtn, lpListenNow, lpNowPlaying);
 	pauseLp = new lpAction(pauseBtn, lpNowPlaying, lpListenNow);
 	resumeLp = new lpAction(resumeBtn, lpListenNow, lpNowPlaying);
+
+	/**
+	 * Call the actions
+	 */
+	if ( playBtn != null ) {
+		playLp.playAction();
+	}
+	if ( pauseBtn != null ) {
+		pauseLp.playAction();
+	}
+	if ( resumeBtn != null ) {
+		resumeLp.playAction();
+	}
 	
 	/**
 	 * Toggles a class to the body when the mobile nav button is clicked
@@ -195,16 +175,16 @@
 	function toggleNavButton() {
 		body.classList.toggle( 'mobile-nav--open' );
 	}
-	addEventHandler(mobileNavButton,elemClick,toggleNavButton);
-	
+	mobileNavButton.addEventListener( 'click', toggleNavButton, false );
+
 	/**
 	 * Toggles a class to the Live Play Stream Select box when the box is clicked
 	 */
 	function toggleStreamSelect() {
 		livePlayerStreamSelect.classList.toggle( 'open' );
 	}
-	addEventHandler(livePlayerStreamSelect,elemClick,toggleStreamSelect);
-	
+	livePlayerStreamSelect.addEventListener( 'click', toggleStreamSelect, false );
+
 	/**
 	 * Selects a Live Player Stream
 	 */
@@ -213,14 +193,14 @@
 
 		livePlayerCurrentName.textContent = selected_stream;
 		document.dispatchEvent( new CustomEvent( 'live-player-stream-changed', { 'detail': selected_stream } ) );
-	}
+	};
 
 	for ( var i = 0; i < livePlayerStreams.length; i++ ) {
-		addEventHandler(livePlayerStreams[i],elemClick,selectStream);
+		livePlayerStreams[i].addEventListener( 'click', selectStream, false );
 	}
 
 	/**
-	 * Toggles a class to the live links when the live player `On Air` is clicked on smaller screens
+	 * Toggles a class to the live links when the live player is clicked clicked on smaller screens
 	 */
 	function onAirClick() {
 		body.classList.toggle( 'live-player--open' );
@@ -233,9 +213,6 @@
 		}
 	}
 
-	/**
-	 * Toggles a class to the live links when the live player `Up Next` is clicked on smaller screens
-	 */
 	function upNextClick() {
 		body.classList.toggle( 'live-player--open' );
 		if (body.classList.contains( 'live-player--open')) {
@@ -247,9 +224,6 @@
 		}
 	}
 
-	/**
-	 * Toggles a class to the live links when the live player `Now Playing` is clicked on smaller screens
-	 */
 	function nowPlayingClick() {
 		body.classList.toggle( 'live-player--open' );
 		if (body.classList.contains( 'live-player--open')) {
@@ -261,28 +235,22 @@
 		}
 	}
 
-	/**
-	 * Closes the live links
-	 */
 	function liveLinksClose() {
 		if (body.classList.contains( 'live-player--open')) {
 			body.classList.remove('live-player--open');
 		}
 	}
 
-	/**
-	 * Resize Window function for when a user scales down their browser window below 767px
-	 */
 	function resizeWindow() {
 		if( window.innerWidth <= 767 ) {
 			if(onAir != null) {
-				addEventHandler(onAir,elemClick,onAirClick);
+				onAir.addEventListener( 'click', onAirClick, false );
 			}
 			if(upNext != null) {
-				addEventHandler(upNext,elemClick,upNextClick);
+				upNext.addEventListener( 'click', upNextClick, false );
 			}
 			if(nowPlaying != null) {
-				addEventHandler(nowPlaying,elemClick,nowPlayingClick);
+				nowPlaying.addEventListener( 'click', nowPlayingClick, false );
 			}
 			if(playBtn != null || resumeBtn != null) {
 				var playerActive;
@@ -292,11 +260,15 @@
 					upNext.style.display = 'none';
 					onAir.style.display = 'none';
 				};
-				addEventHandler(playBtn,elemClick,playerActive);
-				addEventHandler(resumeBtn,elemClick,playerActive);
+				playBtn.addEventListener( 'click', function() {
+					playerActive();
+				});
+				resumeBtn.addEventListener( 'click', function() {
+					playerActive();
+				});
 			}
 			if(pauseBtn != null) {
-				addEventHandler(pauseBtn,elemClick,function() {
+				pauseBtn.addEventListener( 'click', function() {
 					body.classList.remove( 'live-player--active' );
 					nowPlaying.style.display = 'none';
 					upNext.style.display = 'block';
@@ -304,99 +276,54 @@
 				});
 			}
 			if(liveLinksWidget != null) {
-				addEventHandler(liveLinksWidget,elemClick,liveLinksClose);
+				liveLink.addEventListener('click', liveLinksClose(), false);
 			}
 		}
 		if ( window.innerWidth >= 768 ) {
-			addEventHandler(window,elemLoad,livePlayerInit);
+			window.addEventListener( 'load', livePlayerInit, false );
 		}
 	}
 
-	/**
-	 * A function to show the header search when an event is targeted.
-	 *
-	 * @param e
-	 */
-	function showSearch(e) {
-		e = e || window.event;
-		if (searchForm !== null) {
-			searchForm.classList.toggle('header__search--open');
-		}
-		e.cancelBubble = true;
-		if (e.stopPropagation)
-			e.stopPropagation();
-	}
+	showSearch = function() {
+		searchForm.classList.toggle( 'header__search--open' );
+		pageWrap.classList.toggle( 'search--active' );
+	};
 
-	/**
-	 * A function to hide the header search when an event is targeted.
-	 *
-	 * @param e
-	 */
-	function closeSearch(e) {
-		e = e || window.event;
-		if (searchForm !== null && searchForm.classList.contains('header__search--open')) {
-			searchForm.classList.remove('header__search--open');
-		}
-		e.cancelBubble = true;
-		if (e.stopPropagation)
-			e.stopPropagation();
-	}
+	searchBtn.addEventListener('click', showSearch, false);
 
-	/**
-	 * Event listeners to run on click to show and close the search.
-	 */
-	if (searchBtn !== null) {
-		searchBtn.addEventListener('click', showSearch, false);
-		pageWrap.addEventListener('click', closeSearch, false);
-		/**
-		 * An event listener is also in place for the header search form so that when a user clicks inside of it, it will
-		 * not hide. This is key because the header search for sits within the element that the click event that closes the
-		 * search. If this is event listener is not in place and a user clicks within the search area, it will close.
-		 */
-		searchForm.addEventListener('click', function(e) {
-			e.stopPropagation();
-		});
-	}
-
-	/**
-	 * variables that define debounce and throttling for window resizing and scrolling
-	 */
 	var scrollDebounce = _.debounce(getScrollPosition, 50),
 		scrollThrottle = _.throttle(getScrollPosition, 50),
 		resizeDebounce = _.debounce(resizeWindow, 50),
 		resizeThrottle = _.throttle(resizeWindow, 50);
 
-	/**
-	 * functions being run at specific window widths.
-	 */
 	if( window.innerWidth <= 767 ) {
 		if(onAir != null) {
-			addEventHandler(onAir,elemClick,onAirClick);
+			onAir.addEventListener( 'click', onAirClick, false );
 		}
 		if(upNext != null) {
-			addEventHandler(upNext,elemClick,upNextClick);
+			upNext.addEventListener( 'click', upNextClick, false );
 		}
 		if(nowPlaying != null) {
-			addEventHandler(nowPlaying,elemClick,nowPlayingClick);
+			nowPlaying.addEventListener( 'click', nowPlayingClick, false );
 		}
 		if(liveLinksWidget != null) {
-			addEventHandler(liveLinksWidget,elemClick,liveLinksClose);
+			liveLink.addEventListener('click', liveLinksClose(), false);
 		}
-		addEventHandler(window,elemResize,function() {
+		window.addEventListener( 'resize', function() {
 			resizeDebounce();
 			resizeThrottle();
-		});
+		}, false);
 	} else {
-		addEventHandler(window,elemLoad,function() {
+		window.addEventListener( 'load', function() {
 			livePlayerInit();
 			if(liveLinksWidget != null) {
 				liveLinksAddHeight();
 			}
-		});
-		addEventHandler(window,elemScroll,function() {
+		}, false );
+		window.addEventListener( 'scroll', function() {
 			scrollDebounce();
 			scrollThrottle();
-		});
+		}, false );
 	}
 
 })();
