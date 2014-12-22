@@ -42,6 +42,15 @@ function load_js() {
 function render_tag( $output_html, $tag_id ) {
 	static $random_number;
 
+	$tag_meta = get_ad_tag_meta( $tag_id );
+
+	if ( false === $tag_meta ) {
+		return '';
+	}
+
+	$min_width = isset( $tag_meta['min_width'] ) ? $tag_meta['min_width'] : false;
+	$max_width = isset( $tag_meta['max_width'] ) ? $tag_meta['max_width'] : false;
+
 	if ( is_null( $random_number ) ) {
 		$random_number =  str_pad( rand( 0, 999999999999999 ), 15, rand( 0, 9 ), STR_PAD_LEFT );
 	}
@@ -58,11 +67,26 @@ function render_tag( $output_html, $tag_id ) {
 		</noscript>
 	</div>
 	<script type="text/javascript">
-		var OX_ads = OX_ads || [];
-		OX_ads.push({
-			slot_id: "%openx_id%_%tag%",
-			auid: "%openx_id%"
-		});
+		<?php if ( $min_width ) { ?>
+			var minWidthOk = ( parseInt( "<?php echo esc_js( $min_width ); ?>", 10 ) <= parseInt( GMRAds.width, 10 ) ) ? true : false;
+		<?php } else { ?>
+			var minWidthOk = true;
+		<?php } ?>
+		console.log( "GMRAds:minWidthOk: " + minWidthOk);
+
+		<?php if ( $max_width ) { ?>
+			var maxWidthOk = ( parseInt( "<?php echo esc_js( $max_width ); ?>", 10 ) >= parseInt( GMRAds.width, 10 ) ) ? true : false;
+		<?php } else { ?>
+			var maxWidthOk = true;
+		<?php } ?>
+
+		if ( maxWidthOk && minWidthOk ) {
+			var OX_ads = OX_ads || [];
+			OX_ads.push({
+				slot_id: "%openx_id%_%tag%",
+				auid: "%openx_id%"
+			});
+		}
 	</script>
 
 	<?php
