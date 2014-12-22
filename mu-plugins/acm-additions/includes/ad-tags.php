@@ -27,6 +27,15 @@ function filter_ad_tags() {
 			'tag' => 'mrec-body',
 			'url_vars' => array(),
 			'enable_ui_mapping' => true,
+			// custom action for this, to handle conditional rendering. something like: do_action( 'acm_tag_variant', 'tag_id, 'variant' );
+			'variants' => array(
+				'desktop' => array(
+					'min_width' => 728,
+				),
+				'mobile' => array(
+					'max_width' => 727,
+				),
+			),
 		),
 		'mrec-lists' => array(
 			'tag' => 'mrec-lists',
@@ -52,4 +61,15 @@ function get_ad_tag_meta( $tag_id ) {
 	}
 
 	return $tags[ $tag_id ];
+}
+
+// Used in rendering to support
+function ad_variant( $new_variant = false ) {
+	static $variant;
+
+	if ( false !== $new_variant ) {
+		$variant = $new_variant;
+	}
+
+	return $variant;
 }
