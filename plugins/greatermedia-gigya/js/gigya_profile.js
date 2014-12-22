@@ -15,7 +15,8 @@
 		},
 
 		get: function(key) {
-			return this.cookieValue[key];
+			var value = this.cookieValue[key];
+			return value;
 		},
 
 		save: function(persistent) {
@@ -77,7 +78,7 @@
 
 		serialize: function(cookieValue) {
 			var cookieText = JSON.stringify(cookieValue);
-			if (btoa) {
+			if (window.btoa) {
 				return btoa(cookieText);
 			} else {
 				return cookieText;
@@ -89,7 +90,7 @@
 				var cookieValue;
 
 				try {
-					if (atob) {
+					if (window.atob) {
 						cookieText = atob(cookieText);
 					}
 					cookieValue = JSON.parse(cookieText);
@@ -213,9 +214,14 @@
 
 		getRedirectUrl: function(defaultDest) {
 			var dest = this.getQueryParam('dest');
+			var anchor = this.getQueryParam('anchor');
 
 			if (dest.indexOf('/') === 0) {
-				return dest;
+				if (anchor !== '') {
+					return dest + '#' + anchor;
+				} else {
+					return dest;
+				}
 			} else {
 				return defaultDest;
 			}
@@ -262,12 +268,12 @@
 			return this.pageToScreenSet(pageName);
 		},
 
-		screenSets: {
-			'register'        : 'gigya-register-screen',
+		screenSets            : {
+			'join'            : 'gigya-register-screen',
 			'login'           : 'gigya-login-screen',
 			'logout'          : 'gigya-logout-screen',
 			'forgot-password' : 'gigya-forgot-password-screen',
-			'settings'        : 'gigya-update-profile-screen'
+			'account'         : 'gigya-update-profile-screen'
 		},
 
 		pageToScreenSet: function(pageName) {
@@ -314,14 +320,14 @@
 
 				this.screenSetView.render();
 			} else if (currentPage !== 'cookies-required') {
-				this.controller.redirect('/profile/cookies-required');
+				this.controller.redirect('/members/cookies-required');
 			}
 		},
 
 		/* must be logged in to access these pages */
 		loggedInPages: [
 			'logout',
-			'settings'
+			'account'
 		],
 
 		isLoggedInPage: function(pageName) {
@@ -334,7 +340,7 @@
 
 		getCurrentScreenSet: function() {
 			switch (this.getCurrentPage()) {
-				case 'settings':
+				case 'account':
 					return 'GMR-ProfileUpdate';
 
 				default:

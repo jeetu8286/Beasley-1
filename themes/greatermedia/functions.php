@@ -98,7 +98,8 @@ function greatermedia_scripts_styles() {
 		'greatermedia',
 		get_template_directory_uri() . "/assets/js/greater_media{$postfix}.js",
 		array(
-			'underscore'
+			'underscore',
+			'classlist-polyfill'
 		),
 		GREATERMEDIA_VERSION,
 		true
@@ -275,7 +276,10 @@ function greatermedia_alter_front_page_query( $query ) {
 		// that would end up hiding the actual posts, potentially for pages before getting to any real content.
 		//
 		// ADDITIONALLY - There is a checkbox for this on the events setting page, so we don't need to do that here :)
-		$post_types = array( 'post', GMP_CPT::EPISODE_POST_TYPE );
+		$post_types = array( 'post' );
+		if ( class_exists( 'GMP_CPT' ) ) {
+			$post_types[] = GMP_CPT::EPISODE_POST_TYPE;
+		}
 
 		$query->set( 'post_type', $post_types );
 	}
