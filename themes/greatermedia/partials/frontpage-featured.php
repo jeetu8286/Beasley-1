@@ -17,10 +17,7 @@
 				</div>
 				<div class="featured__article--content">
 					<div class="featured__article--heading">
-						<?php
-						// <h3 class="featured__article--subtitle">Minshara</h3> // todo Do we have/need subtitle support?
-						?>
-						<h2 class="featured__article--title"><?php the_title(); ?></h2>
+						<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
 					</div>
 					<div class="featured__article--bio"><?php the_excerpt(); ?></div>
 				</div>
@@ -36,9 +33,6 @@
 						</div>
 						<div class="featured__content--meta">
 							<h2 class="featured__content--title"><?php the_title(); ?></h2>
-							<div class="featured__content--excerpt">
-								<?php \GreaterMedia\TemplateTags\the_excerpt_length( 10 ); ?>
-							</div>
 							<div class="featured__content--link">
 								<a href="<?php the_permalink(); ?>" class="featured__content--btn">Read More</a>
 							</div>
