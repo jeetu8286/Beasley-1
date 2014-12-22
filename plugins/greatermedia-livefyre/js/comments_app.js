@@ -84,6 +84,16 @@
 		this.config = new CommentsConfig(
 			window.livefyre_comments_data.data
 		);
+
+		if (this.canLoadComments()) {
+			this.load();
+		} else {
+			var self = this;
+
+			$(document).ready(function() {
+				self.load();
+			});
+		}
 	};
 
 	CommentsApp.prototype = {
@@ -107,7 +117,14 @@
 			auth.delegate(this.authDelegate);
 
 			if (is_gigya_user_logged_in()) {
-				auth.authenticate(this.authDelegate.getAuthParams());
+				try {
+					auth.authenticate(this.authDelegate.getAuthParams());
+				} catch (e) {
+					console.log('Failed to login to Livefyre: ' + e.message);
+				}
+			} else {
+				// TODO: Check with livefyre
+				auth.emit('logout');
 			}
 		},
 
@@ -146,13 +163,14 @@
 			};
 
 			save_gigya_action(action);
+		},
+
+		canLoadComments: function() {
+			return window.Livefyre && $('#livefyre-comments').length > 0;
 		}
 
 	};
 
-	$(document).ready(function() {
-		var app = new CommentsApp();
-		app.load();
-	});
+	var app = new CommentsApp();
 
 }(jQuery));
