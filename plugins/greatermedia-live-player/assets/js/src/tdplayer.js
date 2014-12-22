@@ -205,7 +205,7 @@
 	}
 
 	function loggedInGigyaUser() {
-		if (!gmr.logged_in) {
+		if (!is_gigya_user_logged_in) {
 			console.log("--- Log In with Gigya ---");
 		} /* else if (document.referrer == gigyaLogin) {
 			console.log("--- You are just logged in, so now enjoy some music ---");
