@@ -23,7 +23,8 @@
 		liveStreamHeight = liveStream.offsetHeight,
 		windowHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0),
 		windowWidth = this.innerWidth || this.document.documentElement.clientWidth || this.document.body.clientWidth || 0,
-		scrollObject = {};
+		scrollObject = {},
+		isAdBlockActive = true;
 
 	/**
 	 * global variables for event types to use in conjunction with `addEventHandler` function
