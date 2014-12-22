@@ -5,6 +5,10 @@ namespace GreaterMedia\AdCodeManager;
 add_filter( 'acm_ad_tag_ids', __NAMESPACE__ . '\filter_ad_tags' );
 
 function filter_ad_tags() {
+	/*
+	 * If you define variants for any slot, you must define min_width and max_width in the variant!
+	 * top-level min_width/max_width for a slot will be ignored if rendering using a variant!
+	 */
 	$ad_tags = array(
 		'leaderboard-top-of-site' => array(
 			'tag' => 'leaderboard-top-of-site',
