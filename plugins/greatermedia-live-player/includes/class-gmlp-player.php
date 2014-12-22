@@ -64,7 +64,7 @@ class GMLP_Player {
 		$home_url = home_url( '/' );
 
 		wp_register_script( 'load-jquery', GMLIVEPLAYER_URL . 'assets/js/src/jquery.load.js', array(), GMLIVEPLAYER_VERSION, true );
-		wp_enqueue_script( 'tdplayer', GMLIVEPLAYER_URL . "assets/js/tdplayer{$postfix}.js", array( 'load-jquery', 'wp-mediaelement', 'underscore', 'pjax' ), '2.5.1', true );
+		wp_enqueue_script( 'tdplayer', GMLIVEPLAYER_URL . "assets/js/tdplayer{$postfix}.js", array( 'load-jquery', 'wp-mediaelement', 'underscore', 'pjax', 'classlist-polyfill' ), '2.5.1', true );
 		wp_localize_script( 'tdplayer', 'gmr', array( 'logged_in' => is_gigya_user_logged_in(), 'callsign' => $callsign, 'streamUrl' => $vast_url, 'wpLoggedIn' => is_user_logged_in(), 'homeUrl' => $home_url ) );
 		wp_enqueue_script( 'jquery-ui-button');
 		wp_enqueue_script( 'gmlp-js', GMLIVEPLAYER_URL . "assets/js/greater_media_live_player{$postfix}.js", array( 'jquery', 'wp-mediaelement' ), GMLIVEPLAYER_VERSION, true );
@@ -78,6 +78,9 @@ class GMLP_Player {
 	 *       but causes `data-dojo-config` to load after the src, which then causes the script to fail and the TD Player API will not fully load
 	 */
 	public static function load_js() {
+		echo '<script>
+            var tdApiBaseUrl = \'http://playercore.preprod01.streamtheworld.net/tdplayerapi/2.5/\';
+        </script>';
 
 		echo '<script data-dojo-config="onReady:window.tdPlayerApiReady, async: 1, tlmSiblingOfDojo: 0, deps:[\'tdapi/run\']" src="//api.listenlive.co/tdplayerapi/2.5/dojo/dojo.js"></script>';
 

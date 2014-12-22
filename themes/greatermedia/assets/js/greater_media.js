@@ -23,7 +23,32 @@
 		liveStreamHeight = liveStream.offsetHeight,
 		windowHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0),
 		windowWidth = this.innerWidth || this.document.documentElement.clientWidth || this.document.body.clientWidth || 0,
-		scrollObject = {};
+		scrollObject = {},
+		isAdBlockActive = true;
+
+	/**
+	 * global variables for event types to use in conjunction with `addEventHandler` function
+	 * @type {string}
+	 */
+	var elemClick = 'click',
+		elemLoad = 'load',
+		elemScroll = 'scroll',
+		elemResize = 'resize';
+
+	/**
+	 * function to detect if the current browser can use `addEventListener`, if not, use `attachEvent`
+	 * this is a specific fix for IE8
+	 *
+	 * @param elem
+	 * @param eventType
+	 * @param handler
+	 */
+	function addEventHandler(elem,eventType,handler) {
+		if (elem.addEventListener)
+			elem.addEventListener (eventType,handler,false);
+		else if (elem.attachEvent)
+			elem.attachEvent ('on'+eventType,handler);
+	}
 
 	/**
 	 * detects various positions of the screen on scroll to deliver states of the live player
@@ -128,10 +153,10 @@
 	 */
 	lpAction.prototype.playAction = function() {
 		var that = this; // `this`, when registering an event handler, won't ref the method's parent object, so a var it is
-		that.btn.addEventListener( 'click', function() {
+		addEventHandler(that.btn,elemClick,function() {
 			that.elemHide.style.display = 'none';
 			that.elemDisplay.style.display = 'inline-block';
-		}, false);
+		});
 	};
 
 	/**
@@ -159,16 +184,16 @@
 	function toggleNavButton() {
 		body.classList.toggle( 'mobile-nav--open' );
 	}
-	mobileNavButton.addEventListener( 'click', toggleNavButton, false );
-
+	addEventHandler(mobileNavButton,elemClick,toggleNavButton);
+	
 	/**
 	 * Toggles a class to the Live Play Stream Select box when the box is clicked
 	 */
 	function toggleStreamSelect() {
 		livePlayerStreamSelect.classList.toggle( 'open' );
 	}
-	livePlayerStreamSelect.addEventListener( 'click', toggleStreamSelect, false );
-
+	addEventHandler(livePlayerStreamSelect,elemClick,toggleStreamSelect);
+	
 	/**
 	 * Selects a Live Player Stream
 	 */
@@ -177,10 +202,10 @@
 
 		livePlayerCurrentName.textContent = selected_stream;
 		document.dispatchEvent( new CustomEvent( 'live-player-stream-changed', { 'detail': selected_stream } ) );
-	};
+	}
 
 	for ( var i = 0; i < livePlayerStreams.length; i++ ) {
-		livePlayerStreams[i].addEventListener( 'click', selectStream, false );
+		addEventHandler(livePlayerStreams[i],elemClick,selectStream);
 	}
 
 	/**
@@ -228,13 +253,13 @@
 	function resizeWindow() {
 		if( window.innerWidth <= 767 ) {
 			if(onAir != null) {
-				onAir.addEventListener( 'click', onAirClick, false );
+				addEventHandler(onAir,elemClick,onAirClick);
 			}
 			if(upNext != null) {
-				upNext.addEventListener( 'click', upNextClick, false );
+				addEventHandler(upNext,elemClick,upNextClick);
 			}
 			if(nowPlaying != null) {
-				nowPlaying.addEventListener( 'click', nowPlayingClick, false );
+				addEventHandler(nowPlaying,elemClick,nowPlayingClick);
 			}
 			if(playBtn != null || resumeBtn != null) {
 				var playerActive;
@@ -244,15 +269,11 @@
 					upNext.style.display = 'none';
 					onAir.style.display = 'none';
 				};
-				playBtn.addEventListener( 'click', function() {
-					playerActive();
-				});
-				resumeBtn.addEventListener( 'click', function() {
-					playerActive();
-				});
+				addEventHandler(playBtn,elemClick,playerActive);
+				addEventHandler(resumeBtn,elemClick,playerActive);
 			}
 			if(pauseBtn != null) {
-				pauseBtn.addEventListener( 'click', function() {
+				addEventHandler(pauseBtn,elemClick,function() {
 					body.classList.remove( 'live-player--active' );
 					nowPlaying.style.display = 'none';
 					upNext.style.display = 'block';
@@ -260,11 +281,11 @@
 				});
 			}
 			if(liveLinksWidget != null) {
-				liveLink.addEventListener('click', liveLinksClose(), false);
+				addEventHandler(liveLinksWidget,elemClick,liveLinksClose);
 			}
 		}
 		if ( window.innerWidth >= 768 ) {
-			window.addEventListener( 'load', livePlayerInit, false );
+			addEventHandler(window,elemLoad,livePlayerInit);
 		}
 	}
 
@@ -275,32 +296,32 @@
 
 	if( window.innerWidth <= 767 ) {
 		if(onAir != null) {
-			onAir.addEventListener( 'click', onAirClick, false );
+			addEventHandler(onAir,elemClick,onAirClick);
 		}
 		if(upNext != null) {
-			upNext.addEventListener( 'click', upNextClick, false );
+			addEventHandler(upNext,elemClick,upNextClick);
 		}
 		if(nowPlaying != null) {
-			nowPlaying.addEventListener( 'click', nowPlayingClick, false );
+			addEventHandler(nowPlaying,elemClick,nowPlayingClick);
 		}
 		if(liveLinksWidget != null) {
-			liveLink.addEventListener('click', liveLinksClose(), false);
+			addEventHandler(liveLinksWidget,elemClick,liveLinksClose);
 		}
-		window.addEventListener( 'resize', function() {
+		addEventHandler(window,elemResize,function() {
 			resizeDebounce();
 			resizeThrottle();
-		}, false);
+		});
 	} else {
-		window.addEventListener( 'load', function() {
+		addEventHandler(window,elemLoad,function() {
 			livePlayerInit();
 			if(liveLinksWidget != null) {
 				liveLinksAddHeight();
 			}
-		}, false );
-		window.addEventListener( 'scroll', function() {
+		});
+		addEventHandler(window,elemScroll,function() {
 			scrollDebounce();
 			scrollThrottle();
-		}, false );
+		});
 	}
 
 })();
