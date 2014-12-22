@@ -49,7 +49,10 @@ get_header(); ?>
 								<?php
 
 								$form = get_post_meta( get_the_ID(), 'embedded_form', true );
-								GreaterMediaFormbuilderRender::render( get_the_ID(), $form );
+								$error = GreaterMediaFormbuilderRender::render( get_the_ID(), $form );
+								if ( is_wp_error( $error ) ) :
+									echo '<p>', $error->get_error_message(), '</p>';
+								endif;
 
 								?>
 							</section>
