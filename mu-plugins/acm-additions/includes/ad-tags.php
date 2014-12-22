@@ -10,11 +10,13 @@ function filter_ad_tags() {
 			'tag' => 'leaderboard-top-of-site',
 			'url_vars' => array(),
 			'enable_ui_mapping' => true,
+			'min_width' => 728,
 		),
 		array(
 			'tag' => 'leaderboard-body',
 			'url_vars' => array(),
 			'enable_ui_mapping' => true,
+			'min_width' => 728,
 		),
 		array(
 			'tag' => 'live-links-rectangle',
@@ -35,6 +37,7 @@ function filter_ad_tags() {
 			'tag' => 'smartphone-wide-banner',
 			'url_vars' => array(),
 			'enable_ui_mapping' => true,
+			'max_width' => 727, // since the main leaderboard comes in at 728
 		),
 	);
 

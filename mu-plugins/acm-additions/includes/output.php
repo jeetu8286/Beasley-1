@@ -2,8 +2,36 @@
 
 namespace GreaterMedia\AdCodeManager;
 
+add_action( 'wp_head', __NAMESPACE__ . '\wp_head', 1 );
 add_action( 'wp_footer', __NAMESPACE__ . '\load_js' );
 add_filter( 'acm_output_html', __NAMESPACE__ . '\render_tag', 15, 2 );
+
+function wp_head() {
+	// Creates global ad object for use later in the rendering process
+	?>
+	<script type="text/javascript">
+		(function() {
+			var GMRAds = GMRAds || {};
+
+			if ( typeof window.innerWidth !== "undefined" ) {
+				// Normal Browsers (Including IE9+)
+				GMRAds.width = window.innerWidth;
+				GMRAds.height = window.innerHeight;
+			} else if ( typeof document.documentElement !== "undefined" && typeof document.documentElement.clientWidth !== 0 ) {
+				// Old IE Versions
+				GMRAds.width = document.documentElement.clientWidth;
+				GMRAds.height = document.documentElement.clientHeight;
+			} else {
+				// Ancient IE Versions
+				GMRAds.width = document.getElementsByTagName('body')[0].clientWidth;
+				GMRAds.height = document.getElementsByTagName('body')[0].clientHeight;
+			}
+
+			window.GMRAds = GMRAds;
+		})();
+	</script>
+	<?php
+}
 
 function load_js() {
 	?>
