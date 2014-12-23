@@ -64,6 +64,11 @@ category: Base
 /**
  * Helpers
  */
+.cf:after {
+  content: "";
+  display: table;
+  clear: both; }
+
 /*! normalize.css v3.0.2 | MIT License | git.io/normalize */
 /**
  * 1. Set default font family to sans-serif.
@@ -800,6 +805,11 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
   h1 a:hover, h1 a:focus, h1 a:active, .h1 a:hover, .h1 a:focus, .h1 a:active, h2 a:hover, h2 a:focus, h2 a:active, .h2 a:hover, .h2 a:focus, .h2 a:active, h3 a:hover, h3 a:focus, h3 a:active, .h3 a:hover, .h3 a:focus, .h3 a:active, h4 a:hover, h4 a:focus, h4 a:active, .h4 a:hover, .h4 a:focus, .h4 a:active, h5 a:hover, h5 a:focus, h5 a:active, .h5 a:hover, .h5 a:focus, .h5 a:active, h6 a:hover, h6 a:focus, h6 a:active, .h6 a:hover, .h6 a:focus, .h6 a:active {
     color: #aa1c20; }
 
+.featured__content--title a:link, .featured__content--title a:visited, .featured__article--title a:link, .featured__article--title a:visited, .highlights__community--title a:link, .highlights__community--title a:visited {
+  color: #ffffff; }
+.featured__content--title a:hover, .featured__content--title a:focus, .featured__content--title a:active, .featured__article--title a:hover, .featured__article--title a:focus, .featured__article--title a:active, .highlights__community--title a:hover, .highlights__community--title a:focus, .highlights__community--title a:active {
+  color: #aa1c20; }
+
 h1, .h1 {
   font-size: 2.2807em; }
 
@@ -819,6 +829,11 @@ h5, .h5 {
 h6, .h6 {
   font-size: 1.26563em;
   letter-spacing: 2px; }
+
+.section-header {
+  font-family: "Open Sans", sans-serif;
+  font-size: 1em;
+  font-weight: 200; }
 
 /*doc
 ---
@@ -1054,8 +1069,7 @@ blockquote p {
   padding: 33px 1.125em 32px; }
 
 .header__nav ul li a:hover, .header__nav ul li a:focus, .header__nav ul li a:active {
-  background-color: #d22228;
-  color: #929497; }
+  background-color: #d22228; }
 
 .header__nav ul li ul {
   display: none; }
@@ -1341,7 +1355,8 @@ Curated posts for Featured Articles
   margin-right: 7.42297%;
   width: 100%;
   margin-right: 0;
-  height: 100px;
+  height: 100%;
+  max-height: 100px;
   overflow: hidden;
   background-color: #270e10; }
   .featured__article--image:last-child {
@@ -1352,7 +1367,8 @@ Curated posts for Featured Articles
       display: block;
       margin-right: 4.82916%;
       width: 100%;
-      margin-right: 0; }
+      margin-right: 0;
+      max-height: 200px; }
       .featured__article--image:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 768px) {
@@ -1362,7 +1378,7 @@ Curated posts for Featured Articles
       margin-right: 3.57866%;
       width: 100%;
       margin-right: 0;
-      height: 256px; }
+      max-height: 256px; }
       .featured__article--image:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 1024px) {
@@ -1371,7 +1387,8 @@ Curated posts for Featured Articles
       display: block;
       margin-right: 2.35765%;
       width: 100%;
-      margin-right: 0; }
+      margin-right: 0;
+      max-height: 300px; }
       .featured__article--image:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 1400px) {
@@ -1381,7 +1398,7 @@ Curated posts for Featured Articles
       margin-right: 2.35765%;
       width: 100%;
       margin-right: 0;
-      height: 343px; }
+      max-height: 343px; }
       .featured__article--image:last-child {
         margin-right: 0; } }
 
@@ -1888,7 +1905,7 @@ Community Highlights and Events
   font-family: "Open Sans", sans-serif;
   font-size: 1.125em;
   font-weight: lighter;
-  color: #929497; }
+  color: #404041; }
   @media screen and (min-width: 480px) {
     .highlights__heading {
       font-size: 1.125em; } }
@@ -4046,13 +4063,20 @@ category: Components - Ads
 
 */
 .ad__leaderboard {
-  display: none;
   position: relative;
-  padding: 1.25em 0; }
+  padding: 1.25em 0;
+  text-align: center; }
+  .ad__leaderboard.desktop {
+    display: none; }
+  .ad__leaderboard.mobile {
+    display: block; }
   @media screen and (min-width: 768px) {
     .ad__leaderboard {
-      display: block;
-      height: 132px; } }
+      height: 132px; }
+      .ad__leaderboard.desktop {
+        display: block; }
+      .ad__leaderboard.mobile {
+        display: none; } }
 
 .ad__leaderboard img {
   margin: 0 auto; }
@@ -4308,6 +4332,8 @@ category: Components - Shows
         display: inline-block; }
         .show__nav li a {
           font-size: 1em; } }
+    .show__nav li:hover, .show__nav li.current-menu-item {
+      text-decoration: underline; }
   .show__nav a {
     color: #ffffff;
     text-transform: uppercase; }
@@ -4415,7 +4441,7 @@ category: Components - Shows
       font-size: 0.8em; } }
 
 .show__feature--desc {
-  background-color: #000000;
+  background-color: #191919;
   color: #ffffff;
   padding: 1em 2em 1em; }
 
@@ -4459,16 +4485,42 @@ category: Components - Shows
   .show__favorites .featured__content--block:last-child {
     margin-right: 0; }
 
-.show__toggle {
+.show__latest-crap {
+  position: relative; }
+  .show__latest-crap ul {
+    margin-top: 0;
+    padding-left: 2em; }
+  .show__latest-crap li[class^="live-link__type"] {
+    margin-bottom: 1em; }
+    .show__latest-crap li[class^="live-link__type"]:before {
+      position: absolute;
+      left: -30px;
+      top: 8px; }
+    .show__latest-crap li[class^="live-link__type"] a {
+      color: #404041; }
+      .show__latest-crap li[class^="live-link__type"] a:hover {
+        color: #aa1c20; }
+  .show__latest-crap .more-btn {
+    left: 40%;
+    right: auto;
+    top: 0;
+    bottom: auto;
+    color: #404041; }
+
+.more-btn {
   position: absolute;
   bottom: -35px;
   right: 0;
   background: none repeat scroll 0 0 transparent;
-  border: none;
+  border: 1px solid #404041;
+  border-radius: 1em;
   outline: none;
-  color: #d22228; }
-  .show__toggle:hover {
-    color: #aa1c20; }
+  color: #404041;
+  padding: 0.25em 0.5em;
+  font-size: 0.75em; }
+  .more-btn:hover {
+    color: #aa1c20;
+    border: 1px solid #aa1c20; }
 
 .widget--live-player {
   margin: 0 1em 1em; }
@@ -4634,7 +4686,7 @@ category: Components - Article
       -ms-transform: translate(0, -100%);
       -o-transform: translate(0, -100%);
       transform: translate(0, -100%);
-      z-index: 28000; } }
+      z-index: 1000; } }
 
 .header__search--open {
   -webkit-transition: all 0.5s ease-in-out;

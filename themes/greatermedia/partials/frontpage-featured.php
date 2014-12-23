@@ -13,7 +13,9 @@
 		if ( $hp_featured_query->have_posts() ) : $hp_featured_query->the_post(); ?>
 			<div class="featured__article">
 				<div class="featured__article--image">
-					<?php the_post_thumbnail( array( 2800, 1000 ) ); // todo Image Size: 2800x1000 ?>
+					<a href="<?php the_permalink(); ?>">
+						<?php the_post_thumbnail( 'gmr-featured' ); ?>
+					</a>
 				</div>
 				<div class="featured__article--content">
 					<div class="featured__article--heading">
