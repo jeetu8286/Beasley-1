@@ -17,19 +17,11 @@ get_header(); ?>
 			<section class="content">
 
 				<?php
-					$count = 0;
-					$page = 1;
-					$search_count = new WP_Query( 's=' . $s . '&posts_per_page=500' );
-					while( $search_count->max_num_pages > $page ) {
-						$count += $search_count->post_count;
-						$search_count = new WP_Query( 's=' . $s . '&posts_per_page=500&offest=' . $page * 500 );
-						$page += 1;
-					}
-
+					$count = $wp_query->found_posts;
 					$search_query = sanitize_text_field( get_search_query() );
 					$keyword_post_id = intval( get_post_with_keyword( $search_query ) );
-					if( $count == 0 && $keyword_post_id != 0 ) {
-						$count = 1;
+					if( $keyword_post_id != 0 ) {
+						$count += 1;
 					}
 
 					echo '<h2 class="search__results--count">' . $count . ' ';
