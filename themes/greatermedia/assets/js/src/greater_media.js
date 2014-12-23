@@ -6,11 +6,15 @@
  */
 (function() {
 
-	var livePlayerFix, livePlayerInit,
-
-		body = document.querySelector( 'body' ),
+	/**
+	 * global variables
+	 *
+	 * @type {HTMLElement}
+	 */
+	var body = document.querySelector( 'body' ),
 		html = document.querySelector( 'html'),
 		mobileNavButton = document.querySelector( '.mobile-nav__toggle' ),
+		pageWrap = document.getElementById( 'page-wrap' ),
 		header = document.getElementById( 'header' ),
 		headerHeight = header.offsetHeight,
 		livePlayer = document.getElementById( 'live-player__sidebar' ),
@@ -29,7 +33,33 @@
 		liveStreamHeight = liveStream.offsetHeight,
 		windowHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0),
 		windowWidth = this.innerWidth || this.document.documentElement.clientWidth || this.document.body.clientWidth || 0,
-		scrollObject = {};
+		scrollObject = {},
+		searchForm = document.getElementById( 'header__search--form'),
+		searchBtn = document.getElementById( 'header__search');
+
+	/**
+	 * global variables for event types to use in conjunction with `addEventHandler` function
+	 * @type {string}
+	 */
+	var elemClick = 'click',
+		elemLoad = 'load',
+		elemScroll = 'scroll',
+		elemResize = 'resize';
+
+	/**
+	 * function to detect if the current browser can use `addEventListener`, if not, use `attachEvent`
+	 * this is a specific fix for IE8
+	 *
+	 * @param elem
+	 * @param eventType
+	 * @param handler
+	 */
+	function addEventHandler(elem,eventType,handler) {
+		if (elem.addEventListener)
+			elem.addEventListener (eventType,handler,false);
+		else if (elem.attachEvent)
+			elem.attachEvent ('on'+eventType,handler);
+	}
 
 	/**
 	 * detects various positions of the screen on scroll to deliver states of the live player
@@ -134,10 +164,10 @@
 	 */
 	lpAction.prototype.playAction = function() {
 		var that = this; // `this`, when registering an event handler, won't ref the method's parent object, so a var it is
-		that.btn.addEventListener( 'click', function() {
+		addEventHandler(that.btn,elemClick,function() {
 			that.elemHide.style.display = 'none';
 			that.elemDisplay.style.display = 'inline-block';
-		}, false);
+		});
 	};
 
 	/**
@@ -165,16 +195,16 @@
 	function toggleNavButton() {
 		body.classList.toggle( 'mobile-nav--open' );
 	}
-	mobileNavButton.addEventListener( 'click', toggleNavButton, false );
-
+	addEventHandler(mobileNavButton,elemClick,toggleNavButton);
+	
 	/**
 	 * Toggles a class to the Live Play Stream Select box when the box is clicked
 	 */
 	function toggleStreamSelect() {
 		livePlayerStreamSelect.classList.toggle( 'open' );
 	}
-	livePlayerStreamSelect.addEventListener( 'click', toggleStreamSelect, false );
-
+	addEventHandler(livePlayerStreamSelect,elemClick,toggleStreamSelect);
+	
 	/**
 	 * Selects a Live Player Stream
 	 */
@@ -183,14 +213,14 @@
 
 		livePlayerCurrentName.textContent = selected_stream;
 		document.dispatchEvent( new CustomEvent( 'live-player-stream-changed', { 'detail': selected_stream } ) );
-	};
+	}
 
 	for ( var i = 0; i < livePlayerStreams.length; i++ ) {
-		livePlayerStreams[i].addEventListener( 'click', selectStream, false );
+		addEventHandler(livePlayerStreams[i],elemClick,selectStream);
 	}
 
 	/**
-	 * Toggles a class to the live links when the live player is clicked clicked on smaller screens
+	 * Toggles a class to the live links when the live player `On Air` is clicked on smaller screens
 	 */
 	function onAirClick() {
 		body.classList.toggle( 'live-player--open' );
@@ -203,6 +233,9 @@
 		}
 	}
 
+	/**
+	 * Toggles a class to the live links when the live player `Up Next` is clicked on smaller screens
+	 */
 	function upNextClick() {
 		body.classList.toggle( 'live-player--open' );
 		if (body.classList.contains( 'live-player--open')) {
@@ -214,6 +247,9 @@
 		}
 	}
 
+	/**
+	 * Toggles a class to the live links when the live player `Now Playing` is clicked on smaller screens
+	 */
 	function nowPlayingClick() {
 		body.classList.toggle( 'live-player--open' );
 		if (body.classList.contains( 'live-player--open')) {
@@ -225,22 +261,28 @@
 		}
 	}
 
+	/**
+	 * Closes the live links
+	 */
 	function liveLinksClose() {
 		if (body.classList.contains( 'live-player--open')) {
 			body.classList.remove('live-player--open');
 		}
 	}
 
+	/**
+	 * Resize Window function for when a user scales down their browser window below 767px
+	 */
 	function resizeWindow() {
 		if( window.innerWidth <= 767 ) {
 			if(onAir != null) {
-				onAir.addEventListener( 'click', onAirClick, false );
+				addEventHandler(onAir,elemClick,onAirClick);
 			}
 			if(upNext != null) {
-				upNext.addEventListener( 'click', upNextClick, false );
+				addEventHandler(upNext,elemClick,upNextClick);
 			}
 			if(nowPlaying != null) {
-				nowPlaying.addEventListener( 'click', nowPlayingClick, false );
+				addEventHandler(nowPlaying,elemClick,nowPlayingClick);
 			}
 			if(playBtn != null || resumeBtn != null) {
 				var playerActive;
@@ -250,15 +292,11 @@
 					upNext.style.display = 'none';
 					onAir.style.display = 'none';
 				};
-				playBtn.addEventListener( 'click', function() {
-					playerActive();
-				});
-				resumeBtn.addEventListener( 'click', function() {
-					playerActive();
-				});
+				addEventHandler(playBtn,elemClick,playerActive);
+				addEventHandler(resumeBtn,elemClick,playerActive);
 			}
 			if(pauseBtn != null) {
-				pauseBtn.addEventListener( 'click', function() {
+				addEventHandler(pauseBtn,elemClick,function() {
 					body.classList.remove( 'live-player--active' );
 					nowPlaying.style.display = 'none';
 					upNext.style.display = 'block';
@@ -266,47 +304,99 @@
 				});
 			}
 			if(liveLinksWidget != null) {
-				liveLink.addEventListener('click', liveLinksClose(), false);
+				addEventHandler(liveLinksWidget,elemClick,liveLinksClose);
 			}
 		}
 		if ( window.innerWidth >= 768 ) {
-			window.addEventListener( 'load', livePlayerInit, false );
+			addEventHandler(window,elemLoad,livePlayerInit);
 		}
 	}
 
+	/**
+	 * A function to show the header search when an event is targeted.
+	 *
+	 * @param e
+	 */
+	function showSearch(e) {
+		e = e || window.event;
+		if (searchForm !== null) {
+			searchForm.classList.toggle('header__search--open');
+		}
+		e.cancelBubble = true;
+		if (e.stopPropagation)
+			e.stopPropagation();
+	}
+
+	/**
+	 * A function to hide the header search when an event is targeted.
+	 *
+	 * @param e
+	 */
+	function closeSearch(e) {
+		e = e || window.event;
+		if (searchForm !== null && searchForm.classList.contains('header__search--open')) {
+			searchForm.classList.remove('header__search--open');
+		}
+		e.cancelBubble = true;
+		if (e.stopPropagation)
+			e.stopPropagation();
+	}
+
+	/**
+	 * Event listeners to run on click to show and close the search.
+	 */
+	if (searchBtn !== null) {
+		searchBtn.addEventListener('click', showSearch, false);
+		pageWrap.addEventListener('click', closeSearch, false);
+		/**
+		 * An event listener is also in place for the header search form so that when a user clicks inside of it, it will
+		 * not hide. This is key because the header search for sits within the element that the click event that closes the
+		 * search. If this is event listener is not in place and a user clicks within the search area, it will close.
+		 */
+		searchForm.addEventListener('click', function(e) {
+			e.stopPropagation();
+		});
+	}
+
+	/**
+	 * variables that define debounce and throttling for window resizing and scrolling
+	 */
 	var scrollDebounce = _.debounce(getScrollPosition, 50),
 		scrollThrottle = _.throttle(getScrollPosition, 50),
 		resizeDebounce = _.debounce(resizeWindow, 50),
 		resizeThrottle = _.throttle(resizeWindow, 50);
 
+	/**
+	 * functions being run at specific window widths.
+	 */
 	if( window.innerWidth <= 767 ) {
 		if(onAir != null) {
-			onAir.addEventListener( 'click', onAirClick, false );
+			addEventHandler(onAir,elemClick,onAirClick);
 		}
 		if(upNext != null) {
-			upNext.addEventListener( 'click', upNextClick, false );
+			addEventHandler(upNext,elemClick,upNextClick);
 		}
 		if(nowPlaying != null) {
-			nowPlaying.addEventListener( 'click', nowPlayingClick, false );
+			addEventHandler(nowPlaying,elemClick,nowPlayingClick);
 		}
 		if(liveLinksWidget != null) {
-			liveLink.addEventListener('click', liveLinksClose(), false);
+			addEventHandler(liveLinksWidget,elemClick,liveLinksClose);
 		}
-		window.addEventListener( 'resize', function() {
+		addEventHandler(window,elemResize,function() {
 			resizeDebounce();
 			resizeThrottle();
-		}, false);
+		});
 	} else {
-		window.addEventListener( 'load', function() {
+		addEventHandler(window,elemLoad,function() {
 			livePlayerInit();
 			if(liveLinksWidget != null) {
 				liveLinksAddHeight();
 			}
-		}, false );
-		window.addEventListener( 'scroll', function() {
+		});
+		addEventHandler(window,elemScroll,function() {
 			scrollDebounce();
 			scrollThrottle();
-		}, false );
+		});
 	}
 
 })();

@@ -44,10 +44,9 @@
 		</head>
 
 		<body <?php body_class(); ?>>
-			<div id="site-wrap">
+			<div id="site-wrap" class="site-wrap">
 				<nav id="mobile-nav" class="mobile-nav">
 					<?php
-
 					$mobile_nav = array(
 						'theme_location'  => 'main-nav',
 						'menu'            => '',
@@ -75,8 +74,11 @@
 					<header id="header" class="header" role="banner">
 						<?php do_action( 'show_breaking_news_banner' ); ?>
 						<div class="container">
-							<div class="ad__leaderboard">
+							<div class="ad__leaderboard desktop">
 								<?php do_action( 'acm_tag', 'leaderboard-top-of-site' ); ?>
+							</div>
+							<div class="ad__leaderboard mobile">
+								<?php do_action( 'acm_tag', 'smartphone-wide-banner' ); ?>
 							</div>
 						</div>
 						<div class="header__main">
@@ -119,5 +121,8 @@
 									</div>
 								</div>
 							</div>
+						</div>
+						<div id="header__search--form" class="header__search--form">
+							<?php get_template_part( 'searchform', 'header' ); ?>
 						</div>
 					</header>
