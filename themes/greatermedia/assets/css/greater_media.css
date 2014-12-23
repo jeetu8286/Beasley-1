@@ -1064,8 +1064,7 @@ blockquote p {
   padding: 33px 1.125em 32px; }
 
 .header__nav ul li a:hover, .header__nav ul li a:focus, .header__nav ul li a:active {
-  background-color: #d22228;
-  color: #929497; }
+  background-color: #d22228; }
 
 .header__nav ul li ul {
   display: none; }
@@ -3755,13 +3754,19 @@ category: Components - Ads
 
 */
 .ad__leaderboard {
-  display: none;
   position: relative;
   padding: 1.25em 0; }
+  .ad__leaderboard.desktop {
+    display: none; }
+  .ad__leaderboard.mobile {
+    display: block; }
   @media screen and (min-width: 768px) {
     .ad__leaderboard {
-      display: block;
-      height: 132px; } }
+      height: 132px; }
+      .ad__leaderboard.desktop {
+        display: block; }
+      .ad__leaderboard.mobile {
+        display: none; } }
 
 .ad__leaderboard img {
   margin: 0 auto; }
@@ -4368,7 +4373,7 @@ category: Components - Article
       -ms-transform: translate(0, -100%);
       -o-transform: translate(0, -100%);
       transform: translate(0, -100%);
-      z-index: 28000; } }
+      z-index: 1000; } }
 
 .header__search--open {
   -webkit-transition: all 0.5s ease-in-out;
