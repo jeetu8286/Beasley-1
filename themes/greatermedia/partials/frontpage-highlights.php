@@ -7,15 +7,13 @@
  */
 ?>
 
-<section class="highlights">
-
-	<div class="container">
+<section class="home__highlights">
 
 		<div class="highlights__col">
 
 			<div class="highlights__community">
 
-				<h2 class="highlights__heading"><?php bloginfo( 'name' ); ?><?php _e( ' Community Highlights', 'greatermedia' ); ?><span class="highlights__heading--span"><?php _e( 'YouRock', 'greatermedia' ); ?></span></h2>
+				<h2 class="highlights__heading"><?php bloginfo( 'name' ); ?><?php _e( ' Community Highlights', 'greatermedia' ); ?></h2>
 
 				<?php
 				$hp_comm_query = \GreaterMedia\HomepageCuration\get_community_query();
@@ -23,10 +21,16 @@
 					<div class="highlights__community--item">
 
 						<div class="highlights__community--thumb">
-							<?php the_post_thumbnail( array( 356, 356 ) ); // todo Image Size: 356x356 ?>
+							<a href="<?php the_permalink(); ?>">
+								<?php the_post_thumbnail( 'gmr-featured-secondary' ); ?>
+							</a>
 						</div>
 
-						<h3 class="highlights__community--title"><?php the_title(); ?></h3>
+						<h3 class="highlights__community--title">
+							<a href="<?php the_permalink(); ?>">
+								<?php the_title(); ?>
+							</a>
+						</h3>
 
 					</div>
 				<?php endwhile; ?>
@@ -35,7 +39,7 @@
 
 			<div class="highlights__events">
 
-				<h2 class="highlights__heading"><?php _e( 'Upcoming', 'greatermedia' ); ?><span class="highlights__heading--span"><?php _e( 'Events', 'greatermedia' ); ?></span></h2>
+				<h2 class="highlights__heading"><?php _e( 'Upcoming Events', 'greatermedia' ); ?></h2>
 
 				<?php
 				$events_query = \GreaterMedia\HomepageCuration\get_events_query();
@@ -44,12 +48,12 @@
 
 						<?php if ( has_post_thumbnail() ) : ?>
 							<div class="highlights__event--thumb">
-								<?php the_post_thumbnail( array( 156, 156 ) ); // todo Image Size 156x156 ?>
+								<a href="<?php the_permalink(); ?>"><?php the_post_thumbnail( 'gmr-featured-secondary' ); ?></a>
 							</div>
 						<?php endif; ?>
 
 						<div class="highlights__event--meta">
-							<h3 class="highlights__event--title"><?php the_title(); ?></h3>
+							<h3 class="highlights__event--title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
 							<?php
 							/*
 							 * Moved the class from the span to the time so I could add both the start and end times to the datetime attributes
@@ -73,7 +77,5 @@
 			</div>
 
 		</div>
-
-	</div>
 
 </section>

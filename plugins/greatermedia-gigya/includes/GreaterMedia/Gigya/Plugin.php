@@ -94,6 +94,7 @@ class Plugin {
 				'data'                        => array(
 					'ajax_url'                => admin_url( 'admin-ajax.php' ),
 					'save_gigya_action_nonce' => wp_create_nonce( 'save_gigya_action' ),
+					'has_participated_nonce'  => wp_create_nonce( 'has_participated' )
 				)
 			);
 
@@ -123,13 +124,15 @@ class Plugin {
 	public function register_ajax_handlers() {
 		$handlers   = array();
 
-		$handlers[] = new Ajax\GigyaLoginAjaxHandler();
-		$handlers[] = new Ajax\GigyaLogoutAjaxHandler();
+		//$handlers[] = new Ajax\GigyaLoginAjaxHandler();
+		//$handlers[] = new Ajax\GigyaLogoutAjaxHandler();
 		$handlers[] = new Ajax\PreviewResultsAjaxHandler();
 		$handlers[] = new Ajax\RegisterAjaxHandler();
 		$handlers[] = new Ajax\ListEntryTypesAjaxHandler();
 		$handlers[] = new Ajax\ListEntryFieldsAjaxHandler();
 		$handlers[] = new Ajax\ChangeGigyaSettingsAjaxHandler();
+		$handlers[] = new Ajax\HasParticipatedAjaxHandler();
+		$handlers[] = new Ajax\MemberQueryStatusAjaxHandler();
 
 		if ( is_gigya_user_logged_in() ) {
 			$handlers[] = new Ajax\SaveGigyaActionAjaxHandler();
@@ -161,6 +164,12 @@ class Plugin {
 
 		$this->initialize_member_query_scripts( $member_query );
 		$this->initialize_member_query_styles( $member_query );
+
+		add_action( 'admin_notices', array( $this, 'render_preloader' ) );
+	}
+
+	function render_preloader() {
+		include GMR_GIGYA_PATH . '/templates/preloader.php';
 	}
 
 	function initialize_member_query_scripts( $member_query ) {
@@ -180,11 +189,16 @@ class Plugin {
 			'query_builder', 'member_query_data', $member_query->properties
 		);
 
+		$sentinel    = new Sync\Sentinel( $member_query->post_id, array( 'mode' => 'export' ) );
+		$status_meta = $sentinel->get_status_meta();
+
 		$meta = array(
 			'ajax_url'                   => admin_url( 'admin-ajax.php' ),
 			'preview_member_query_nonce' => wp_create_nonce( 'preview_member_query' ),
 			'list_entry_types_nonce'     => wp_create_nonce( 'list_entry_types' ),
 			'list_entry_fields_nonce'    => wp_create_nonce( 'list_entry_fields' ),
+			'member_query_status_nonce'  => wp_create_nonce( 'member_query_status' ),
+			'status_meta'                => $sentinel->get_status_meta()
 		);
 
 		wp_localize_script(
@@ -240,10 +254,25 @@ class Plugin {
 			$member_query = new MemberQuery( $post_id );
 			$member_query->build_and_save();
 
-			//$segment_publisher = new SegmentPublisher( $member_query );
-			//$segment_publisher->publish();
+			if ( $this->can_export_member_query() ) {
+				$this->export_member_query( $post_id );
+			}
 		} catch ( \Exception $e ) {
 			$this->set_flash( $e->getMessage() );
+		}
+	}
+
+	public function export_member_query( $member_query_id ) {
+		$launcher = new Sync\Launcher();
+		$launcher->launch( $member_query_id, 'export' );
+	}
+
+	public function can_export_member_query() {
+		if ( array_key_exists( 'export_member_query', $_POST ) ) {
+			$export_member_query = $_POST['export_member_query'];
+			return intval( $export_member_query ) === 1;
+		} else {
+			return false;
 		}
 	}
 

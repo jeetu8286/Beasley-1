@@ -13,8 +13,9 @@
 
 			<article id="post-<?php the_ID(); ?>" <?php post_class( 'cf' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
 
-				<div class="ad__inline--right">
-					<img src="http://placehold.it/300x250&amp;text=inline ad">
+				<div class="ad__inline--right desktop">
+					<?php // 'desktop' is a variant, can call a 'mobile' variant elsewhere if we need it, but never the same variant twice ?>
+					<?php do_action( 'acm_tag_gmr_variant', 'mrec-body', 'desktop' ); ?>
 				</div>
 
 				<header class="entry__header">
@@ -32,6 +33,10 @@
 					<?php the_content(); ?>
 
 				</section>
+
+				<div class="ad__inline--right mobile">
+					<?php do_action( 'acm_tag_gmr_variant', 'mrec-body', 'mobile' ); ?>
+				</div>
 
 				<footer class="entry__footer">
 					<?php
