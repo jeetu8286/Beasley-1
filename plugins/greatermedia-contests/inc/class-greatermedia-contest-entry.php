@@ -86,7 +86,7 @@ class GreaterMediaContestEntry {
 		register_post_type( 'contest_entry', array(
 			'label'               => __( 'contest_entry', 'greatermedia_contests' ),
 			'description'         => __( 'An entry in a Contest', 'greatermedia_contests' ),
-			'supports'            => array( 'title' ),
+			'supports'            => array( 'title', 'custom-fields' ),
 			'taxonomies'          => array( 'category' ),
 			'hierarchical'        => false,
 			'public'              => false,
