@@ -1645,14 +1645,14 @@ Curated posts for Featured Articles
   max-width: none; }
 
 .featured__content--meta {
-  font-size: 0.79012em;
-  font-weight: lighter;
-  padding: 1em;
   float: left;
   display: block;
   margin-right: 2.35765%;
   width: 65.88078%;
-  margin-right: 0; }
+  margin-right: 0;
+  padding: 10px;
+  font-size: 0.79012em;
+  font-weight: lighter; }
   .featured__content--meta:last-child {
     margin-right: 0; }
   @media screen and (min-width: 480px) {
@@ -1695,14 +1695,28 @@ Curated posts for Featured Articles
     color: #929497; }
 
 .featured__content--title {
+  height: 44px;
   margin-top: 0;
   margin-bottom: 8px;
   line-height: 1.25;
+  overflow: hidden;
   font-family: "Open Sans", sans-serif;
   font-size: 1em; }
   @media screen and (min-width: 480px) {
     .featured__content--title {
+      height: 49px;
       font-size: 1.125em; } }
+  @media screen and (min-width: 768px) {
+    .featured__content--title {
+      height: 100%;
+      overflow: auto; } }
+  @media screen and (min-width: 1024px) {
+    .featured__content--title {
+      height: 54px;
+      overflow: hidden; } }
+  @media screen and (min-width: 1400px) {
+    .featured__content--title {
+      height: 60px; } }
 
 .featured__content--title a:link, .featured__content--title a:visited {
   color: #ffffff; }
@@ -1730,6 +1744,7 @@ Curated posts for Featured Articles
 
 .featured__content--link {
   width: 100%;
+  height: 18px;
   text-align: center; }
   @media screen and (min-width: 480px) {
     .featured__content--link {
