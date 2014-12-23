@@ -64,6 +64,11 @@ category: Base
 /**
  * Helpers
  */
+.cf:after {
+  content: "";
+  display: table;
+  clear: both; }
+
 /*! normalize.css v3.0.2 | MIT License | git.io/normalize */
 /**
  * 1. Set default font family to sans-serif.
@@ -820,6 +825,11 @@ h6, .h6 {
   font-size: 1.26563em;
   letter-spacing: 2px; }
 
+.section-header {
+  font-family: "Open Sans", sans-serif;
+  font-size: 1em;
+  font-weight: 200; }
+
 /*doc
 ---
 title: Links
@@ -1054,8 +1064,7 @@ blockquote p {
   padding: 33px 1.125em 32px; }
 
 .header__nav ul li a:hover, .header__nav ul li a:focus, .header__nav ul li a:active {
-  background-color: #d22228;
-  color: #929497; }
+  background-color: #d22228; }
 
 .header__nav ul li ul {
   display: none; }
@@ -3745,13 +3754,19 @@ category: Components - Ads
 
 */
 .ad__leaderboard {
-  display: none;
   position: relative;
   padding: 1.25em 0; }
+  .ad__leaderboard.desktop {
+    display: none; }
+  .ad__leaderboard.mobile {
+    display: block; }
   @media screen and (min-width: 768px) {
     .ad__leaderboard {
-      display: block;
-      height: 132px; } }
+      height: 132px; }
+      .ad__leaderboard.desktop {
+        display: block; }
+      .ad__leaderboard.mobile {
+        display: none; } }
 
 .ad__leaderboard img {
   margin: 0 auto; }
@@ -4007,6 +4022,8 @@ category: Components - Shows
         display: inline-block; }
         .show__nav li a {
           font-size: 1em; } }
+    .show__nav li:hover, .show__nav li.current-menu-item {
+      text-decoration: underline; }
   .show__nav a {
     color: #ffffff;
     text-transform: uppercase; }
@@ -4114,7 +4131,7 @@ category: Components - Shows
       font-size: 0.8em; } }
 
 .show__feature--desc {
-  background-color: #000000;
+  background-color: #191919;
   color: #ffffff;
   padding: 1em 2em 1em; }
 
@@ -4158,16 +4175,42 @@ category: Components - Shows
   .show__favorites .featured__content--block:last-child {
     margin-right: 0; }
 
-.show__toggle {
+.show__latest-crap {
+  position: relative; }
+  .show__latest-crap ul {
+    margin-top: 0;
+    padding-left: 2em; }
+  .show__latest-crap li[class^="live-link__type"] {
+    margin-bottom: 1em; }
+    .show__latest-crap li[class^="live-link__type"]:before {
+      position: absolute;
+      left: -30px;
+      top: 8px; }
+    .show__latest-crap li[class^="live-link__type"] a {
+      color: #404041; }
+      .show__latest-crap li[class^="live-link__type"] a:hover {
+        color: #aa1c20; }
+  .show__latest-crap .more-btn {
+    left: 40%;
+    right: auto;
+    top: 0;
+    bottom: auto;
+    color: #404041; }
+
+.more-btn {
   position: absolute;
   bottom: -35px;
   right: 0;
   background: none repeat scroll 0 0 transparent;
-  border: none;
+  border: 1px solid #404041;
+  border-radius: 1em;
   outline: none;
-  color: #d22228; }
-  .show__toggle:hover {
-    color: #aa1c20; }
+  color: #404041;
+  padding: 0.25em 0.5em;
+  font-size: 0.75em; }
+  .more-btn:hover {
+    color: #aa1c20;
+    border: 1px solid #aa1c20; }
 
 .widget--live-player {
   margin: 0 1em 1em; }
@@ -4333,7 +4376,7 @@ category: Components - Article
       -ms-transform: translate(0, -100%);
       -o-transform: translate(0, -100%);
       transform: translate(0, -100%);
-      z-index: 28000; } }
+      z-index: 1000; } }
 
 .header__search--open {
   -webkit-transition: all 0.5s ease-in-out;
