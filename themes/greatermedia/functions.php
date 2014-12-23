@@ -50,9 +50,11 @@ function greatermedia_setup() {
 	 * Add theme support for post thumbnails
 	 */
 	add_theme_support( 'post-thumbnails' );
-	add_image_size( 'gm-article-thumbnail', 1580, 9999, false ); // thumbnails used for articles
-	add_image_size( 'gmr-gallery',               800,  534, true );
-	add_image_size( 'gmr-gallery-thumbnail',     100,  100 );
+	add_image_size( 'gm-article-thumbnail',     1580,   9999,   false   ); // thumbnails used for articles
+	add_image_size( 'gmr-gallery',              800,    534,    true    ); // large images for the gallery
+	add_image_size( 'gmr-gallery-thumbnail',    100,    100             ); // thumbnails for the gallery
+	add_image_size( 'gmr-featured-primary',     2800,   1000,   true    ); // image for primary featured post on front page
+	add_image_size( 'gmr-featured-secondary',   400,    400,    true    ); // thumbnails for secondary featured posts on front page
 
 	// Update this as appropriate content types are created and we want this functionality
 	add_post_type_support( 'post', 'timed-content' );
@@ -235,9 +237,16 @@ function get_results_for_keyword() {
 			global $post;
 			$post = get_post( $custom_post_id );
 			setup_postdata( $post );
+			$title = get_the_title();
+			$keys= explode(" ",$search_query_arg);
+			$title = preg_replace('/('.implode('|', $keys) .')/iu', '<span class="search__result--term">\0</span>', $title);
 			?>
-			<article id="post-<?php the_ID(); ?>" <?php echo post_class( 'cf' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
-				<h2 class="entry__title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
+			<article id="post-<?php the_ID(); ?>" <?php post_class( 'search__result' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
+
+				<time datetime="<?php the_time( 'c' ); ?>" class="search__result--date"><?php the_time( 'M j, Y' ); ?></time>
+
+				<h3 class="search__result--title"><a href="<?php the_permalink(); ?>"><?php echo $title ?></a></h3>
+
 			</article>
 			<?php
 			wp_reset_postdata();
@@ -298,3 +307,15 @@ function greatermedia_remove_jetpack_share() {
 }
 
 add_action( 'wp_head', 'greatermedia_remove_jetpack_share' );
+
+/**
+ * Removes the `[...]` from the excerpt.
+ *
+ * @param $more
+ *
+ * @return string
+ */
+function greatermedia_excerpt_more( $more ) {
+	return '';
+}
+add_filter( 'excerpt_more', 'greatermedia_excerpt_more' );
