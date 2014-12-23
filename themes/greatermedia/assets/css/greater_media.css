@@ -1298,7 +1298,7 @@ Curated posts for Featured Articles
   margin-right: 7.42297%;
   width: 100%;
   margin-right: 0;
-  padding: 1em;
+  padding: 40px 20px;
   background: url(../../images/featured-bg.png) repeat center center #270e10;
   background-size: auto 40%; }
   .home__featured:last-child {
@@ -1319,7 +1319,7 @@ Curated posts for Featured Articles
       margin-right: 3.57866%;
       width: 100%;
       margin-right: 0;
-      padding: 48px; }
+      padding: 55px 48px; }
       .home__featured:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 1024px) {
@@ -1337,17 +1337,29 @@ Curated posts for Featured Articles
       display: block;
       margin-right: 2.35765%;
       width: 100%;
-      margin-right: 0; }
+      margin-right: 0;
+      padding: 40px; }
       .home__featured:last-child {
         margin-right: 0; } }
 
-.featured__article, .featured__content {
+.featured__article {
   padding-bottom: 34px;
   display: block; }
-  .featured__article:after, .featured__content:after {
+  .featured__article:after {
     content: "";
     display: table;
     clear: both; }
+
+.featured__content {
+  padding-bottom: 34px;
+  display: block; }
+  .featured__content:after {
+    content: "";
+    display: table;
+    clear: both; }
+  @media screen and (min-width: 1024px) {
+    .featured__content {
+      padding-bottom: 0; } }
 
 .featured__article--image {
   float: left;
@@ -1439,7 +1451,7 @@ Curated posts for Featured Articles
       margin-right: 2.35765%;
       width: 100%;
       margin-right: 0;
-      padding: 34px 3.921568627451%; }
+      padding: 33px 3.921568627451%; }
       .featured__article--content:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 1400px) {
@@ -1449,7 +1461,7 @@ Curated posts for Featured Articles
       margin-right: 2.35765%;
       width: 100%;
       margin-right: 0;
-      padding: 34px 2.898550724638%; }
+      padding: 36px 2.898550724638%; }
       .featured__article--content:last-child {
         margin-right: 0; } }
   .home__featured .featured__article--content {

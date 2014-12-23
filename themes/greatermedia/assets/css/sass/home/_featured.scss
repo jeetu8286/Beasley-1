@@ -69,7 +69,7 @@ Curated posts for Featured Articles
 	position: relative;
 	@include span-columns(4);
 	@include omega;
-	padding: 1em;
+	padding: 40px 20px;
 	background: url(../../images/featured-bg.png) repeat center center $featured-bg;
 	background-size: auto 40%;
 	@include bp(small) {
@@ -79,7 +79,7 @@ Curated posts for Featured Articles
 	@include bp(medium) {
 		@include span-columns(8);
 		@include omega;
-		padding: 48px;
+		padding: 55px 48px;
 	}
 	@include bp(large) {
 		@include span-columns(12);
@@ -88,12 +88,21 @@ Curated posts for Featured Articles
 	@include bp(x-large) {
 		@include span-columns(12);
 		@include omega;
+		padding: 40px;
 	}
 }
 
-.featured__article, .featured__content {
+.featured__article{
 	padding-bottom: 34px;
 	@include row();
+}
+
+.featured__content {
+	padding-bottom: 34px;
+	@include row();
+	@include bp(large) {
+		padding-bottom: 0;
+	}
 }
 
 .featured__article--image {
@@ -143,12 +152,12 @@ Curated posts for Featured Articles
 	@include bp(large) {
 		@include span-columns(12 of 12);
 		@include omega;
-		padding: 34px 3.921568627451%;
+		padding: 33px 3.921568627451%;
 	}
 	@include bp(x-large) {
 		@include span-columns(12 of 12);
 		@include omega;
-		padding: 34px 2.898550724638%;
+		padding: 36px 2.898550724638%;
 	}
 
 	.home__featured & {
