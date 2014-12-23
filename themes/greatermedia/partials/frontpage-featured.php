@@ -14,7 +14,7 @@
 			<div class="featured__article">
 				<div class="featured__article--image">
 					<a href="<?php the_permalink(); ?>">
-						<?php the_post_thumbnail( 'gmr-featured' ); ?>
+						<?php the_post_thumbnail( 'gmr-featured-primary' ); ?>
 					</a>
 				</div>
 				<div class="featured__article--content">
@@ -31,7 +31,7 @@
 				<?php while ( $hp_featured_query->have_posts() ) : $hp_featured_query->the_post(); ?>
 					<div class="featured__content--block">
 						<div class="featured__content--image">
-							<a href="<?php the_permalink(); ?>"><?php the_post_thumbnail( array( 400, 400 ) ); // todo Image Size: 400x400 ?></a>
+							<a href="<?php the_permalink(); ?>"><?php the_post_thumbnail( 'gmr-featured-secondary' ); ?></a>
 						</div>
 						<div class="featured__content--meta">
 							<h2 class="featured__content--title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
