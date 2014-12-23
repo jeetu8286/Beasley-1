@@ -24,10 +24,12 @@ if ( is_admin() ) {
 
 	include trailingslashit( __DIR__ ) . 'inc/class-greatermedia-contests-metaboxes.php';
 	include trailingslashit( __DIR__ ) . 'inc/class-greatermedia-contests-template-actions.php';
-	include trailingslashit( __DIR__ ) . 'inc/class-greatermedia-contest-entry-metaboxes.php';
 
 }
 
 if ( defined( 'WP_CLI' ) && WP_CLI ) {
 	include trailingslashit( __DIR__ ) . 'inc/class-greatermedia-contests-wp-cli.php';
 }
+
+include trailingslashit( __DIR__ ) . 'inc/class-greatermedia-surveys.php';
+include trailingslashit( __DIR__ ) . 'inc/class-greatermedia-survey-form-render.php';

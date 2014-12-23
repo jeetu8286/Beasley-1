@@ -8,7 +8,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-class GreatermediaSurveys {
+class GreaterMediaSurveys {
 
 	protected $survey_slug = 'survey';
 
@@ -23,8 +23,6 @@ class GreatermediaSurveys {
 	public function survey_enqueue_scripts() {
 
 		global $post;
-
-		$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 
 		if( $post && $post->post_type === $this->survey_slug ) {
 
@@ -42,21 +40,21 @@ class GreatermediaSurveys {
 
 
 			wp_enqueue_script( 'formbuilder' );
+				wp_enqueue_script(
+					'greatermedia-surveys-admin'
+					, GREATER_MEDIA_CONTESTS_URL . "/js/greater_media_surveys_admin.js"
+					, array( 'formbuilder' )
+					, false
+					, true );
 
-			wp_enqueue_script(
-				'greatermedia-surveys-admin'
-				, GMSURVEYS_URL . "assets/js/greatermedia_surveys{$postfix}.js"
-				, array( 'formbuilder' )
-				, false
-				, true );
+				$embedded_form = get_post_meta( $post->ID, 'survey_embedded_form', true );
+				$settings      = array(
+					'form' => trim( $embedded_form, '"' ),
+				);
 
-			$embedded_form = get_post_meta( $post->ID, 'survey_embedded_form', true );
-			$settings      = array(
-				'form' => trim( $embedded_form, '"' ),
-			);
-
-			wp_localize_script( 'greatermedia-surveys-admin', 'GreaterMediaContestsForm', $settings );
+				wp_localize_script( 'greatermedia-surveys-admin', 'GreaterMediaContestsForm', $settings );
 		}
+
 	}
 
 	/**
@@ -168,9 +166,23 @@ class GreatermediaSurveys {
 	}
 
 	public function survey_form_builder() {
+		global $post;
+		$post_id = $post->ID;
+		$thankyou = sanitize_text_field( get_post_meta( $post_id, 'form-thankyou', true ) );
+		$thankyou = $thankyou ? $thankyou : "Thank's for your submission";
 		wp_nonce_field( 'survey_form_meta_box', 'survey_form_meta_box' );
-		echo '<div id="contest_embedded_form"></div>';
-		echo '<input type="hidden" id="contest_embedded_form_data" name="contest_embedded_form" value="" />';
+		echo '<div id="survey_embedded_form"></div>';
+		echo '<input type="hidden" id="survey_embedded_form_data" name="survey_embedded_form" value="" />';
+		echo '<table class="form-table"><tbody>';
+		echo '<tr>';
+		echo '<th scope="row">';
+		echo '"Thank you" message:';
+		echo '</th>';
+		echo '<td>';
+		echo '<input size="50" type="text" id="form-thankyou" name="form-thankyou" value="' . esc_html($thankyou) . '" />';
+		echo '</td>';
+		echo '</tr>';
+		echo '</table></tbody>';
 	}
 
 	public function save_form( $post_id ) {
@@ -208,11 +220,18 @@ class GreatermediaSurveys {
 		}
 
 		// time to save the form
-		$form = json_encode( json_decode( urldecode( $_POST['contest_embedded_form'] ) ) );
-		update_post_meta( $post_id, 'survey_embedded_form', $form );
+		if( isset( $_POST['survey_embedded_form'] ) ) {
+			$form = json_encode( json_decode( urldecode( $_POST['survey_embedded_form'] ) ) );
+			update_post_meta( $post_id, 'survey_embedded_form', $form );
+		}
+
+		if( isset( $_POST['form-thankyou'] ) ) {
+		    $thank_you = sanitize_text_field( $_POST['form-thankyou'] );
+			update_post_meta( $post_id, 'form-thankyou', $thank_you );
+		}
 	}
 
 }
 
 
-$GreatermediaSurveys = new GreatermediaSurveys();
+$GreatermediaSurveys = new GreaterMediaSurveys();
