@@ -306,3 +306,15 @@ function greatermedia_remove_jetpack_share() {
 }
 
 add_action( 'wp_head', 'greatermedia_remove_jetpack_share' );
+
+/**
+ * Removes the `[...]` from the excerpt.
+ *
+ * @param $more
+ *
+ * @return string
+ */
+function greatermedia_excerpt_more( $more ) {
+	return '';
+}
+add_filter( 'excerpt_more', 'greatermedia_excerpt_more' );

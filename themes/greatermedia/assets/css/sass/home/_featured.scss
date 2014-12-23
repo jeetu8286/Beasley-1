@@ -207,6 +207,10 @@ Curated posts for Featured Articles
 	}
 }
 
+.featured__article--excerpt p {
+	margin-bottom: 0;
+}
+
 .featured__content--block {
 	@include span-columns(4 of 4);
 	@include omega;
@@ -312,7 +316,7 @@ Curated posts for Featured Articles
 }
 
 .featured__content--title {
-	height: 44px;
+	height: 43px;
 	margin-top: 0;
 	margin-bottom: 8px;
 	line-height: 1.25;
@@ -320,7 +324,7 @@ Curated posts for Featured Articles
 	font-family: $open-sans;
 	font-size: ms(0);
 	@include bp(small) {
-		height: 49px;
+		height: 48px;
 		font-size: ms(1);
 	}
 	@include bp(medium) {
@@ -328,11 +332,11 @@ Curated posts for Featured Articles
 		overflow: auto;
 	}
 	@include bp(large) {
-		height: 54px;
+		height: 53px;
 		overflow: hidden;
 	}
 	@include bp(x-large) {
-		height: 60px;
+		height: 59px;
 	}
 }
 
@@ -348,28 +352,9 @@ Curated posts for Featured Articles
 	color: darken($color-text-yellow, 9%);
 }
 
-.featured__content--list {
-	@extend %unordered-list;
-	line-height: 1;
-}
-
-.featured__content--item {
-	@extend %list-item;
-	display: inline-block;
-	width: 40%;
-	margin-bottom: 4px;
-	font-size: ms(-2);
-	color: $color-text-yellow;
-	@include bp(large) {
-		display: block;
-		width: 100%;
-		font-size: ms(-1);
-	}
-}
-
 .featured__content--link {
 	width: 100%;
-	height: 18px;
+	height: 19px;
 	text-align: center;
 	@include bp(small) {
 		text-align: right;
@@ -380,15 +365,15 @@ Curated posts for Featured Articles
 }
 
 .featured__content--btn {
-	@include btn($btn-bg, $color-text-white, $btn-bg, .25em, 1.5em, ms(-2));
+	@include btn($btn-bg, $color-text-white, $btn-bg, .25em, 1.5em, ms(-1));
 	@include border-radius(1.5em);
 	text-transform: uppercase;
 }
 
 .featured__content--btn:hover {
-	@include btn($btn-hover, $color-text-black, $btn-hover, .25em, 1.5em, ms(-2));
+	@include btn($btn-hover, $color-text-black, $btn-hover, .25em, 1.5em, ms(-1));
 }
 
 .featured__content--btn:active {
-	@include btn($btn-active, $color-text-white, $btn-active, .25em, 1.5em, ms(-2));
+	@include btn($btn-active, $color-text-white, $btn-active, .25em, 1.5em, ms(-1));
 }
