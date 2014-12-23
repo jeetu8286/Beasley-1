@@ -9,9 +9,11 @@ class GreaterMediaGallery {
 	public static $strip_shortcodes = false;
 
 	public static function init() {
-		// Override the core gallery shortcode with our own handler
-		remove_shortcode( 'gallery' );
-		add_shortcode( 'gallery', array( __CLASS__, 'render_shortcode' ) );
+		if ( ! is_admin() ) {
+			// Override the core gallery shortcode with our own handler, only on the front end
+			remove_shortcode( 'gallery' );
+			add_shortcode( 'gallery', array( __CLASS__, 'render_shortcode' ) );
+		}
 
 		// If we need to manually render somewhere, like on the top of a single-gallery template
 		add_action( 'gmr_gallery', array( __CLASS__, 'do_gallery_action' ) );
@@ -159,12 +161,24 @@ class GreaterMediaGallery {
 	public static function render_gallery_from_query( \WP_Query $gallery ) {
 		ob_start();
 		if ( $gallery->have_posts() ):
-			wp_enqueue_script( 'cycle', get_template_directory_uri() . '/assets/js/vendor/cycle2/jquery.cycle2.min.js', array( 'jquery' ), '2.1.6', true );
-			wp_enqueue_script( 'cycle-center', get_template_directory_uri() . '/assets/js/vendor/cycle2/jquery.cycle2.center.min.js', array( 'cycle' ), '20141007', true );
-			wp_enqueue_script( 'cycle-swipe', get_template_directory_uri() . '/assets/js/vendor/cycle2/jquery.cycle2.swipe.min.js', array( 'cycle' ), '20141007', true );
-			wp_enqueue_script( 'cycle-carousel', get_template_directory_uri() . '/assets/js/vendor/cycle2/jquery.cycle2.carousel.min.js', array( 'cycle' ), '20141007', true );
-			wp_register_script( 'gmr-gallery', get_template_directory_uri() . '/assets/js/src/greater_media_gallery.js', array( 'jquery' ), GREATERMEDIA_VERSION, true );
-			wp_enqueue_script( 'gmr-gallery' );
+			$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
+
+			/* all js files are being concatenated into a single js file.
+			 * This include all js files for cycle2, located in `assets/js/vendor/cycle2/`
+			 * and `gmr_gallery.js`, located in `assets/js/src/`
+			 */
+			wp_register_script(
+				'gmr-gallery',
+				GREATER_MEDIA_GALLERIES_URL . "assets/js/gmr_gallery{$postfix}.js",
+				array(
+					'jquery'
+				),
+				GREATER_MEDIA_GALLERIES_VERSION,
+				true
+			);
+			wp_enqueue_script(
+				'gmr-gallery'
+			);
 
 			$main_post_id         = get_queried_object_id();
 
@@ -188,7 +202,8 @@ class GreaterMediaGallery {
 						     data-cycle-swipe="true"
 						     data-cycle-fx="scrollHorz"
 						     data-cycle-swipe-fx="scrollHorz"
-						     data-cycle-manual-fx="scrollHoriz">
+						     data-cycle-manual-fx="scrollHoriz"
+						     data-cycle-auto-height=container>
 							<?php
 							while ( $gallery->have_posts() ) {
 								$gallery->the_post();
@@ -248,15 +263,15 @@ class GreaterMediaGallery {
 							$gallery->rewind_posts();
 							?>
 						</div>
-					</div>
-					<div class="gallery__progress">
-						<div class="gallery__prev">
-							<button type="button" class="gallery__prev--btn slide-overlay-control-nohide"><span class="gallery__prev--span"><?php _e( 'Prev', 'greatermedia'); ?></span></button>
-						</div>
-						<div id="gallery__count" class="gallery__count">
-						</div>
-						<div class="gallery__next">
-							<button type="button" class="gallery__next--btn slide-overlay-control-nohide"><span class="gallery__next--span"><?php _e( 'Next', 'greatermedia'); ?></span></button>
+						<div class="gallery__progress">
+							<div class="gallery__prev">
+								<button type="button" class="gallery__prev--btn slide-overlay-control-nohide"><span class="gallery__prev--span"><?php _e( 'Prev', 'greatermedia'); ?></span></button>
+							</div>
+							<div id="gallery__count" class="gallery__count">
+							</div>
+							<div class="gallery__next">
+								<button type="button" class="gallery__next--btn slide-overlay-control-nohide"><span class="gallery__next--span"><?php _e( 'Next', 'greatermedia'); ?></span></button>
+							</div>
 						</div>
 					</div>
 					<div class="gallery__thumbnails">

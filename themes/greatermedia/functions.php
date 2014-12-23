@@ -98,7 +98,8 @@ function greatermedia_scripts_styles() {
 		'greatermedia',
 		get_template_directory_uri() . "/assets/js/greater_media{$postfix}.js",
 		array(
-			'underscore'
+			'underscore',
+			'classlist-polyfill'
 		),
 		GREATERMEDIA_VERSION,
 		true
@@ -234,9 +235,16 @@ function get_results_for_keyword() {
 			global $post;
 			$post = get_post( $custom_post_id );
 			setup_postdata( $post );
+			$title = get_the_title();
+			$keys= explode(" ",$search_query_arg);
+			$title = preg_replace('/('.implode('|', $keys) .')/iu', '<span class="search__result--term">\0</span>', $title);
 			?>
-			<article id="post-<?php the_ID(); ?>" <?php echo post_class( 'cf' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
-				<h2 class="entry__title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
+			<article id="post-<?php the_ID(); ?>" <?php post_class( 'search__result' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
+
+				<time datetime="<?php the_time( 'c' ); ?>" class="search__result--date"><?php the_time( 'M j, Y' ); ?></time>
+
+				<h3 class="search__result--title"><a href="<?php the_permalink(); ?>"><?php echo $title ?></a></h3>
+
 			</article>
 			<?php
 			wp_reset_postdata();
@@ -275,7 +283,10 @@ function greatermedia_alter_front_page_query( $query ) {
 		// that would end up hiding the actual posts, potentially for pages before getting to any real content.
 		//
 		// ADDITIONALLY - There is a checkbox for this on the events setting page, so we don't need to do that here :)
-		$post_types = array( 'post', GMP_CPT::EPISODE_POST_TYPE );
+		$post_types = array( 'post' );
+		if ( class_exists( 'GMP_CPT' ) ) {
+			$post_types[] = GMP_CPT::EPISODE_POST_TYPE;
+		}
 
 		$query->set( 'post_type', $post_types );
 	}

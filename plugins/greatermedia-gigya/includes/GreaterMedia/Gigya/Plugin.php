@@ -94,6 +94,7 @@ class Plugin {
 				'data'                        => array(
 					'ajax_url'                => admin_url( 'admin-ajax.php' ),
 					'save_gigya_action_nonce' => wp_create_nonce( 'save_gigya_action' ),
+					'has_participated_nonce'  => wp_create_nonce( 'has_participated' )
 				)
 			);
 
@@ -123,13 +124,14 @@ class Plugin {
 	public function register_ajax_handlers() {
 		$handlers   = array();
 
-		$handlers[] = new Ajax\GigyaLoginAjaxHandler();
-		$handlers[] = new Ajax\GigyaLogoutAjaxHandler();
+		//$handlers[] = new Ajax\GigyaLoginAjaxHandler();
+		//$handlers[] = new Ajax\GigyaLogoutAjaxHandler();
 		$handlers[] = new Ajax\PreviewResultsAjaxHandler();
 		$handlers[] = new Ajax\RegisterAjaxHandler();
 		$handlers[] = new Ajax\ListEntryTypesAjaxHandler();
 		$handlers[] = new Ajax\ListEntryFieldsAjaxHandler();
 		$handlers[] = new Ajax\ChangeGigyaSettingsAjaxHandler();
+		$handlers[] = new Ajax\HasParticipatedAjaxHandler();
 
 		if ( is_gigya_user_logged_in() ) {
 			$handlers[] = new Ajax\SaveGigyaActionAjaxHandler();
@@ -161,6 +163,12 @@ class Plugin {
 
 		$this->initialize_member_query_scripts( $member_query );
 		$this->initialize_member_query_styles( $member_query );
+
+		add_action( 'admin_notices', array( $this, 'render_preloader' ) );
+	}
+
+	function render_preloader() {
+		include GMR_GIGYA_PATH . '/templates/preloader.php';
 	}
 
 	function initialize_member_query_scripts( $member_query ) {
