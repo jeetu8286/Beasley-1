@@ -50,21 +50,28 @@ function wmgk_scripts_styles() {
 		WMGK_VERSION,
 		true
 	);
-	wp_enqueue_style(
-		'greatermedia-parent-style',
-		get_template_directory_uri() . "/assets/css/greater_media{$postfix}.css"
-	);
+	/**
+	 * We are dequeueing and deregistering the parent theme's style sheets.
+	 * The purpose for this is we are importing the parent's sass files into the child's sass files so that we can
+	 * override variables and take advantage of the parent's mixin's, functions, placeholders, bourbon, and bourbon
+	 * neat.
+	 */
+	wp_dequeue_style( 'greatermedia' );
+	wp_deregister_style( 'greatermedia' );
 	wp_enqueue_style(
 		'wmgk',
-		get_stylesheet_uri() . "/assets/css/wmgk{$postfix}.css",
+		get_stylesheet_directory_uri() . "/assets/css/wmgk{$postfix}.css",
 		array(
-			'greatermedia-parent-style'
+			'dashicons',
+			'open-sans',
+			'droid-sans',
+			'font-awesome'
 		),
 		WMGK_VERSION
 	);
 }
 
-add_action( 'wp_enqueue_scripts', 'wmgk_scripts_styles' );
+add_action( 'wp_enqueue_scripts', 'wmgk_scripts_styles', 20 );
 
 /**
  * Add humans.txt to the <head> element.
