@@ -101,16 +101,29 @@ class GreaterMediaFormbuilderRender {
 			}
 
 			$submitted_values = array();
+			$submitted_files  = array(
+				'images' => array(),
+				'other'  => array(),
+			);
 			foreach ( $form as $field ) {
 
 				$post_array_key = 'form_field_' . $field->cid;
 
-				if ( isset( $_POST[ $post_array_key ] ) ) {
+				if ( 'file' === $field->field_type ) {
+
+					if ( isset( $_FILES[ $post_array_key ] ) ) {
+						$file_type_index                                        = self::file_type_index( $_FILES[ $post_array_key ]['tmp_name'] );
+						$submitted_files[ $file_type_index ][ $post_array_key ] = $_FILES[ $post_array_key ];
+					}
+
+				} else if ( isset( $_POST[ $post_array_key ] ) ) {
+
 					if ( is_scalar( $_POST[ $post_array_key ] ) ) {
 						$submitted_values[ $field->cid ] = sanitize_text_field( $_POST[ $post_array_key ] );
 					} else if ( is_array( $_POST[ $post_array_key ] ) ) {
 						$submitted_values[ $field->cid ] = array_map( 'sanitize_text_field', $_POST[ $post_array_key ] );
 					}
+
 				}
 
 			}
@@ -124,6 +137,8 @@ class GreaterMediaFormbuilderRender {
 			);
 
 			$entry->save();
+
+			self::handle_submitted_files( $submitted_files, $entry );
 
 			do_action( 'greatermedia_contest_entry_save', $entry );
 
@@ -162,7 +177,7 @@ class GreaterMediaFormbuilderRender {
 	 * Retrieve a custom list of HTML tags & attributes we're allowing in a rendered form
 	 * @return array valid tags
 	 */
-	public static function allowed_tags() {
+	protected static function allowed_tags() {
 
 		static $tags;
 		if ( ! isset( $tags ) ) {
@@ -192,6 +207,7 @@ class GreaterMediaFormbuilderRender {
 				'form'        => 1,
 				'checked'     => 1,
 				'required'    => 1,
+				'accept'      => 1,
 			);
 
 			$tags['textarea'] = array(
@@ -328,7 +344,7 @@ class GreaterMediaFormbuilderRender {
 	 *
 	 * @return string html
 	 */
-	public static function render_label( stdClass $field ) {
+	protected static function render_label( stdClass $field ) {
 
 		$html = '';
 
@@ -368,7 +384,7 @@ class GreaterMediaFormbuilderRender {
 	 *
 	 * @return string html
 	 */
-	public static function render_legend( stdClass $field ) {
+	protected static function render_legend( stdClass $field ) {
 
 		$html = '';
 
@@ -398,7 +414,7 @@ class GreaterMediaFormbuilderRender {
 
 	}
 
-	public static function render_description( stdClass $field ) {
+	protected static function render_description( stdClass $field ) {
 
 		$html = '';
 
@@ -434,7 +450,7 @@ class GreaterMediaFormbuilderRender {
 	 *
 	 * @return string HTML
 	 */
-	public static function render_text( $post_id, stdClass $field ) {
+	protected static function render_text( $post_id, stdClass $field ) {
 
 		$special_attributes = array();
 
@@ -475,7 +491,7 @@ class GreaterMediaFormbuilderRender {
 	 *
 	 * @return string HTML
 	 */
-	public static function render_paragraph( $post_id, stdClass $field ) {
+	protected static function render_paragraph( $post_id, stdClass $field ) {
 
 		$html     = '';
 		$field_id = 'form_field_' . $field->cid;
@@ -519,7 +535,7 @@ class GreaterMediaFormbuilderRender {
 	 *
 	 * @return string html
 	 */
-	public static function render_dropdown( $post_id, stdClass $field ) {
+	protected static function render_dropdown( $post_id, stdClass $field ) {
 
 		$html = '';
 
@@ -562,11 +578,11 @@ class GreaterMediaFormbuilderRender {
 
 	}
 
-	public static function render_radio( $post_id, stdClass $field ) {
+	protected static function render_radio( $post_id, stdClass $field ) {
 		return self::render_checkboxes( $post_id, $field, 'radio' );
 	}
 
-	public static function render_checkboxes( $post_id, stdClass $field, $input_type = 'checkbox' ) {
+	protected static function render_checkboxes( $post_id, stdClass $field, $input_type = 'checkbox' ) {
 
 		$html = '';
 
@@ -610,7 +626,7 @@ class GreaterMediaFormbuilderRender {
 	 *
 	 * @return string html
 	 */
-	public static function render_date( $post_id, stdClass $field ) {
+	protected static function render_date( $post_id, stdClass $field ) {
 		return self::render_input_tag( 'date', $post_id, $field );
 	}
 
@@ -622,7 +638,7 @@ class GreaterMediaFormbuilderRender {
 	 *
 	 * @return string html
 	 */
-	public static function render_time( $post_id, stdClass $field ) {
+	protected static function render_time( $post_id, stdClass $field ) {
 		return self::render_input_tag( 'time', $post_id, $field );
 	}
 
@@ -634,7 +650,7 @@ class GreaterMediaFormbuilderRender {
 	 *
 	 * @return string html
 	 */
-	public static function render_website( $post_id, stdClass $field ) {
+	protected static function render_website( $post_id, stdClass $field ) {
 		return self::render_input_tag( 'url', $post_id, $field );
 	}
 
@@ -646,11 +662,11 @@ class GreaterMediaFormbuilderRender {
 	 *
 	 * @return string html
 	 */
-	public static function render_email( $post_id, stdClass $field ) {
+	protected static function render_email( $post_id, stdClass $field ) {
 		return self::render_input_tag( 'email', $post_id, $field );
 	}
 
-	public static function render_price( $post_id, stdClass $field ) {
+	protected static function render_price( $post_id, stdClass $field ) {
 
 		$special_attributes = array(
 			'step'    => '0.01',
@@ -668,7 +684,7 @@ class GreaterMediaFormbuilderRender {
 	 *
 	 * @return string html
 	 */
-	public static function render_address( $post_id, stdClass $field ) {
+	protected static function render_address( $post_id, stdClass $field ) {
 
 		$html = '';
 
@@ -718,8 +734,22 @@ class GreaterMediaFormbuilderRender {
 
 	}
 
-	public static function render_file( $post_id, stdClass $field ) {
-		return self::render_input_tag( 'file', $post_id, $field );
+	/**
+	 * Render a file upload field
+	 *
+	 * @param integer  $post_id
+	 * @param stdClass $field
+	 *
+	 * @return string html
+	 */
+	protected static function render_file( $post_id, stdClass $field ) {
+
+		$special_attributes = array(
+			'accept' => "image/*",
+		);
+
+		return self::render_input_tag( 'file', $post_id, $field, $special_attributes );
+
 	}
 
 	/**
@@ -732,7 +762,7 @@ class GreaterMediaFormbuilderRender {
 	 *
 	 * @return string html
 	 */
-	public static function render_input_tag( $type = 'text', $post_id, stdClass $field, Array $special_attributes = null ) {
+	protected static function render_input_tag( $type = 'text', $post_id, stdClass $field, Array $special_attributes = null ) {
 
 		if ( null === $special_attributes ) {
 			$special_attributes = array();
@@ -861,7 +891,7 @@ class GreaterMediaFormbuilderRender {
 	 *
 	 * @return string HTML
 	 */
-	public static function get_submit_button( $text = null, $type = 'primary large', $name = 'submit', $wrap = true, $other_attributes = null ) {
+	protected static function get_submit_button( $text = null, $type = 'primary large', $name = 'submit', $wrap = true, $other_attributes = null ) {
 		if ( ! is_array( $type ) ) {
 			$type = explode( ' ', $type );
 		}
@@ -916,7 +946,7 @@ class GreaterMediaFormbuilderRender {
 	 *
 	 * @return string
 	 */
-	public static function render_single_checkbox( $cid, $field_option_index, stdClass $field_option_data, $input_type ) {
+	protected static function render_single_checkbox( $cid, $field_option_index, stdClass $field_option_data, $input_type ) {
 
 		if ( 'checkbox' !== $input_type && 'radio' !== $input_type ) {
 			throw new InvalidArgumentException( 'Input type must be checkbox or radio' );
@@ -995,7 +1025,7 @@ class GreaterMediaFormbuilderRender {
 	 *
 	 * @return array abbreviation => stdClass(), where value is an option for rendering by render_dropdown()
 	 */
-	public static function get_us_states() {
+	protected static function get_us_states() {
 
 		static $state_data;
 
@@ -1074,7 +1104,7 @@ class GreaterMediaFormbuilderRender {
 	 *
 	 * @return array
 	 */
-	public static function entrant_id_and_name() {
+	protected static function entrant_id_and_name() {
 
 		if ( class_exists( 'GreaterMedia\Gigya\GigyaSession' ) ) {
 
@@ -1111,7 +1141,7 @@ class GreaterMediaFormbuilderRender {
 	 *
 	 * @return array
 	 */
-	public static function paragraph_length_restriction_attributes( stdClass $field, array $textarea_tag_attributes ) {
+	protected static function paragraph_length_restriction_attributes( stdClass $field, array $textarea_tag_attributes ) {
 
 		if ( isset( $field->field_options->min_max_length_units ) && 'words' === $field->field_options->min_max_length_units ) {
 
@@ -1150,7 +1180,7 @@ class GreaterMediaFormbuilderRender {
 	 * @return array
 	 * @throws InvalidArgumentException
 	 */
-	public static function paragraph_field_size_attributes( stdClass $field, array $textarea_tag_attributes ) {
+	protected static function paragraph_field_size_attributes( stdClass $field, array $textarea_tag_attributes ) {
 
 		if ( isset( $field->field_options->size ) ) {
 
@@ -1173,7 +1203,88 @@ class GreaterMediaFormbuilderRender {
 		}
 
 		return $textarea_tag_attributes;
-		
+
+	}
+
+	/**
+	 * Identify what type of file an upload is so it can be handled appropriately
+	 *
+	 * @param $filename path to filename
+	 *
+	 * @return string 'images'|'other'
+	 */
+	protected static function file_type_index( $filename ) {
+
+		if ( file_is_valid_image( $filename ) ) {
+			return 'images';
+		} else {
+			return 'other';
+		}
+
+	}
+
+	/**
+	 * @param array                    $submitted_files
+	 * @param GreaterMediaContestEntry $entry
+	 *
+	 * @return GreaterMediaUserGeneratedContent|null
+	 */
+	protected static function handle_submitted_files( array $submitted_files, GreaterMediaContestEntry $entry ) {
+
+		/**
+		 * Ignoring the "other" files per GMR-343
+		 * "There's no reason for Contest or Survey upload fields to allow any filetypes other than images. Aside
+		 * from security considerations, it also becomes much more complex to manage user generated content if it's
+		 * anything beside photos."
+		 */
+		if ( empty( $submitted_files['images'] ) ) {
+
+			// No need to create UGC
+			return null;
+
+		} elseif ( 1 === count( $submitted_files['images'] ) ) {
+
+			// Single image. Create a GreaterMediaUserGeneratedImage.
+			$ugc                    = GreaterMediaUserGeneratedContent::for_data_type( 'image' );
+			$ugc->post->post_parent = $entry->post_id();
+			$ugc_post_id            = $ugc->save();
+
+			$upload_field = array_keys( $submitted_files['images'] )[0];
+			$upload_data  = array_values( $submitted_files['images'] )[0];
+
+			$attachment_id = media_handle_upload(
+				$upload_field,
+				$ugc_post_id
+			);
+
+			$ugc->post->post_content = wp_get_attachment_image( $attachment_id, 'full' );
+
+			$ugc->save();
+
+		} else {
+
+			// Multiple images. Create a GreaterMediaUserGeneratedGallery.
+			$ugc                    = GreaterMediaUserGeneratedContent::for_data_type( 'gallery' );
+			$ugc->post->post_parent = $entry->post_id();
+			$ugc_post_id            = $ugc->save();
+
+			$attachment_ids = array();
+			foreach($submitted_files['images'] as $upload_field => $upload_data) {
+
+				$attachment_ids[] = media_handle_upload(
+					$upload_field,
+					$ugc_post_id
+				);
+			}
+
+			$ugc->post->post_content = '[gallery ids="' . implode( ',', $attachment_ids ) . '"]';
+
+			$ugc->save();
+
+		}
+
+		return $ugc;
+
 	}
 
 }
