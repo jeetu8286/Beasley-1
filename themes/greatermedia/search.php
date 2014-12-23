@@ -16,23 +16,45 @@ get_header(); ?>
 
 			<section class="content">
 
-				<?php if ( have_posts() ) :
-					$count = $wp_query->found_posts;
-				?>
-
-					<h2 class="search__results--count"><?php echo intval( $count ); ?><?php _e( ' Results Found', 'greatermedia' ); ?></h2>
-					<h3 class="search__keyword"><?php printf( __( 'Keyword: %s', 'greatermedia' ), '<span class="search__keyword--term">' . get_search_query() . '</span>' ); ?></h3>
-					<div class="keyword__search--results">
-
-						<?php do_action( 'keyword_search_result' ); ?>
-
-					</div>
-
-					<h2 class="search__title"><?php _e( 'Relevant Search Results', 'greatermedia' ); ?></h2>
-					<?php while ( have_posts() ) : the_post();
-				?>
-
 				<?php
+					$count = 0;
+					$page = 1;
+					$search_count = new WP_Query( 's=' . $s . '&posts_per_page=500' );
+					while( $search_count->max_num_pages > $page ) {
+						$count += $search_count->post_count;
+						$search_count = new WP_Query( 's=' . $s . '&posts_per_page=500&offest=' . $page * 500 );
+						$page += 1;
+					}
+
+					$search_query = sanitize_text_field( get_search_query() );
+					$keyword_post_id = intval( get_post_with_keyword( $search_query ) );
+					if( $count == 0 && $keyword_post_id != 0 ) {
+						$count = 1;
+					}
+
+					echo '<h2 class="search__results--count">' . $count . ' ';
+					_e( 'Results Found', 'greatermedia' );
+					echo '</h2>';
+
+					$term_label = $keyword_post_id ? 'Keyword:' : 'Search term:';
+					wp_reset_postdata();
+
+				?>
+
+				<h3 class="search__keyword"><?php printf( __( '%s %s', 'greatermedia' ), $term_label, '<span class="search__keyword--term">' . get_search_query() . '</span>' ); ?></h3>
+
+				<?php if( $keyword_post_id != 0 ): ?>
+				<div class="keyword__search--results">
+
+					<?php do_action( 'keyword_search_result' ); ?>
+
+				</div>
+
+				<?php endif; ?>
+
+				<h2 class="search__title"><?php _e( 'Relevant Search Results', 'greatermedia' ); ?></h2>
+
+				<?php if ( have_posts() ) : while ( have_posts() ) : the_post();
 					$title = get_the_title();
 					$keys= explode(" ",$s);
 					$title = preg_replace('/('.implode('|', $keys) .')/iu', '<span class="search__result--term">\0</span>', $title);
@@ -54,7 +76,7 @@ get_header(); ?>
 					</div>
 
 				<?php else : ?>
-
+					<?php if( $keyword_post_id == 0 ): ?>
 					<article id="post-not-found" class="hentry cf">
 
 						<header class="article-header">
@@ -70,6 +92,7 @@ get_header(); ?>
 						</section>
 
 					</article>
+					<?php endif; ?>
 
 				<?php endif; ?>
 
