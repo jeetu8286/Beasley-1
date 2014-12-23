@@ -1549,7 +1549,15 @@ Curated posts for Featured Articles
         margin-right: 0; } }
 
 .featured__article--excerpt p {
-  margin-bottom: 0; }
+  margin-bottom: 0;
+  display: block;
+  display: -webkit-box;
+  width: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis; }
 
 .featured__content--block {
   float: left;
@@ -1730,7 +1738,6 @@ Curated posts for Featured Articles
   margin: 0 auto 13px;
   line-height: 1.25;
   overflow: hidden;
-  max-width: 400px;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   text-overflow: ellipsis;
