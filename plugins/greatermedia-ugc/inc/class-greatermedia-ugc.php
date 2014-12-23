@@ -540,16 +540,13 @@ class GreaterMediaUserGeneratedContent {
 	 */
 	public function contest() {
 
-		$contest_id = get_post_meta( $this->post_id, '_ugc_contest', true );
-
-		if ( ! empty( $contest_id ) ) {
-			$contest = get_post( $contest_id );
-
-			return $contest;
+		$contest_entry = get_post( $this->post->post_parent );
+		if ( $contest_entry && ! empty( $contest_entry->post_parent ) ) {
+			return get_post( $contest_entry->post_parent );
 		}
 
 		return null;
-
+		
 	}
 
 	public function listener_gigya_id() {
