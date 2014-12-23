@@ -16,6 +16,7 @@ module.exports = function(grunt) {
 					'src/models/favorite_constraint.js',
 					'src/models/available_constraints.js',
 					'src/models/query_result.js',
+					'src/models/member_query_status.js',
 
 					'src/collections/entry_type_collection.js',
 					'src/collections/entry_field_collection.js',
@@ -32,6 +33,8 @@ module.exports = function(grunt) {
 					'src/views/preview_view.js',
 					'src/views/query_result_item_view.js',
 					'src/views/query_results_view.js',
+					'src/views/export_view.js',
+					'src/views/export_menu_view.js',
 
 					'src/app.js',
 				],

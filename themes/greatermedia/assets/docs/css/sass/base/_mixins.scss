@@ -151,11 +151,20 @@
 //
 @mixin opacity ($value: 0.5) {
 	opacity: $value;
-	filter: alpha(opacity= $value * 100 );
+	filter: alpha(opacity=$value * 100);
 	-moz-opacity: $value;
 	-khtml-opacity: $value;
 	zoom: 1;
+}
 
+@mixin border-radius($radius...) {
+	// defining prefixes so we can use them in mixins below
+	$prefixes:      ("-webkit", "-moz", "-ms", "-o",  "");
+	@each $prefix in $prefixes {
+		#{$prefix}-border-radius: $radius;
+	}
+
+	border-radius: $radius;
 }
 
 // Mixin to create a css gradient
@@ -177,4 +186,16 @@
 	background-image: -moz-linear-gradient(top, $from, $to);
 	background-image: -o-linear-gradient(top, $from, $to);
 	background-image: linear-gradient(to bottom, $from, $to);
+}
+
+// Mixin to create a css Box Shadow
+//
+// @example scss - CSS Box Shadow
+// @include box-shadow( 0, 1px, 1px, rgba(0, 0, 0, 0.75), inset);
+//
+//
+@mixin box-shadow($top, $left, $blur, $color, $inset:"") {
+  -webkit-box-shadow:$top $left $blur $color #{$inset};
+  -moz-box-shadow:$top $left $blur $color #{$inset};
+  box-shadow:$top $left $blur $color #{$inset};
 }

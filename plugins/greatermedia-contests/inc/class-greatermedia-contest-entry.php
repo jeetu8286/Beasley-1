@@ -8,12 +8,12 @@ class GreaterMediaContestEntry {
 
 	const ENTRY_SOURCE_EMBEDDED_FORM = 'embedded_form';
 
-	protected $post;
+	public $post;
 
-	protected $entrant_name;
-	protected $entrant_reference; // Gigya ID
-	protected $entry_source; // How this entry was created (i.e. "gravity-forms"
-	protected $entry_reference; // Reference/link to the source of the entry (i.e. Gravity Forms submission ID)
+	public $entrant_name;
+	public $entrant_reference; // Gigya ID
+	public $entry_source; // How this entry was created (i.e. "gravity-forms"
+	public $entry_reference; // Reference/link to the source of the entry (i.e. Gravity Forms submission ID)
 
 	protected function __construct( WP_Post $post_obj = null, $contest_id = null ) {
 
@@ -60,6 +60,9 @@ class GreaterMediaContestEntry {
 		} else {
 			$post_id = wp_update_post( $this->post, true );
 		}
+
+		// Refresh the data
+		$this->post = get_post( $post_id );
 
 		update_post_meta( $post_id, 'entrant_name', $this->entrant_name );
 		update_post_meta( $post_id, 'entrant_reference', $this->entrant_reference );
@@ -192,6 +195,14 @@ class GreaterMediaContestEntry {
 
 	public function render_preview() {
 		return "This is a generic submission";
+	}
+
+	/**
+	 * Get the entry's Post ID
+	 * @return int post ID
+	 */
+	public function post_id() {
+		return $this->post->ID;
 	}
 
 }

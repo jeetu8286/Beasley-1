@@ -12,7 +12,6 @@ $visual-grid-index: front !global;
 // max-width for the site
 $max-width: em(1150) !global;
 $max-site-width: 1400px;
-$live-player: em(250px);
 
 // simple css effect to make images responsive and fluid while also retaining proper aspect ratio
 img {
@@ -32,23 +31,25 @@ img {
 .page-wrap {
 	@include transform(translate(0, 0));
 	width: 100%;
+	padding-bottom: 58px;
 	@include transition(all 500ms ease-in-out);
 	overflow: hidden;
+	@include bp(medium) {
+		padding-bottom: 0;
+	}
 }
 
 .container, %container {
 	@include outer-container(100%);
-	padding: 0 3.125%;
+	padding-right: 0;
+
 	@include bp(medium) {
 		@include outer-container(100%);
-		padding-left: 0;
-		padding-right: 15.8781%;
+		padding-right: 225px;
 	}
-	@include bp(large) {
-	}
+	
 	@include bp(x-large) {
 		@include outer-container(1400px);
-		padding-right: 250px;
 	}
 }
 
@@ -79,6 +80,10 @@ img {
 		@include span-columns(10 of 12);
 		@include shift(1);
 	}
+	@include bp(x-large) {
+		@include span-columns(10 of 12);
+		@include shift(1);
+	}
 }
 
 .live-player{
@@ -88,7 +93,7 @@ img {
 	left: 0;
 	width: 100%;
 	background-color: $secondary-bg;
-	color: $nevada;
+	color: $secondary-text;
 	cursor: pointer;
 	@include bp(medium){
 		position: absolute;
@@ -96,20 +101,41 @@ img {
 		bottom: auto;
 		right: 0;
 		left: auto;
-		width: 15.878107457899%;
+		width: 225px;
 		height: 100%;
 		@include box-sizing(border-box);
-		overflow-y: scroll;
 		cursor: default;
 	}
 	@include bp(x-large) {
 		@include calc(right, '50% - 700px');
-		width: $live-player;
 	}
 }
 
 .logged-in .live-player {
 	@include media(min-width 782px) {
 		top: 270px;
+	}
+}
+
+.row {
+	@include row();
+}
+
+.col__inner--right {
+	@include span-columns(12 of 12);
+
+	@include bp(large) {
+		@include span-columns(4 of 12);
+		@include omega;
+	}
+}
+
+.col__inner--left {
+	@include span-columns(12 of 12);
+
+	@include bp(large) {
+		border-right: 1px solid $primary-border;
+		padding-right: 2em;
+		@include span-columns(8 of 12);
 	}
 }

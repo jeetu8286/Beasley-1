@@ -172,6 +172,27 @@ class GreaterMediaContestsMetaboxes {
 			)
 		);
 
+		$submit_text = get_post_meta( $post_id, 'form-submitbutton', true );
+		if ( empty( $submit_text ) ) {
+			// If you change this string, be sure to get all the places it's used in this class
+			$submit_text = __( 'Submit', 'greatermedia_contests' );
+		}
+
+		add_settings_field(
+			'form-submitbutton',
+			'Submit Button Text',
+			array( $this, 'render_input' ),
+			'greatermedia-contest-form',
+			'greatermedia-contest-form',
+			array(
+				'post_id' => $post_id,
+				'id'      => 'greatermedia_contest_form_submit',
+				'name'    => 'greatermedia_contest_form_submit',
+				'size'    => 50,
+				'value'   => $submit_text
+			)
+		);
+
 		$thank_you = get_post_meta( $post_id, 'form-thankyou', true );
 		if ( empty( $thank_you ) ) {
 			// If you change this string, be sure to get all the places it's used in this class
@@ -214,6 +235,22 @@ class GreaterMediaContestsMetaboxes {
 			$args['id']
 		);
 
+	}
+
+	/**
+	 * Return an array of active Gravity Forms
+	 *
+	 */
+	public function get_gravity_forms() {
+		if ( class_exists( 'RGFormsModel' ) ) {
+			$forms      = RGFormsModel::get_forms( null, 'title' );
+			$form_array = array();
+			foreach ( $forms as $form ) {
+				$form_array[ $form->id ] = $form->title;
+			}
+
+			return $form_array;
+		}
 	}
 
 	/**
@@ -277,16 +314,6 @@ class GreaterMediaContestsMetaboxes {
 			array()
 		);
 
-		add_meta_box(
-			'contest-entries',
-			'Contest Entries',
-			array( $this, 'contest_entries_meta_box' ),
-			'contest',
-			'advanced',
-			'default',
-			array()
-		);
-
 	}
 
 	/**
@@ -309,26 +336,6 @@ class GreaterMediaContestsMetaboxes {
 		wp_nonce_field( 'contest_form_meta_box', 'contest_form_meta_box' );
 		include trailingslashit( GREATER_MEDIA_CONTESTS_PATH ) . 'tpl/contest-form-meta-box.tpl.php';
 		do_settings_sections( 'greatermedia-contest-form' );
-
-	}
-
-	/**
-	 * Render a meta box for Contest entries
-	 */
-	public function contest_entries_meta_box() {
-
-		global $post;
-
-		$entries = get_children(
-			array(
-				'post_parent'    => $post->ID,
-				'post_type'      => 'contest_entry',
-				'posts_per_page' => - 1,
-				'post_status'    => array( 'pending', 'publish' )
-			)
-		);
-
-		include trailingslashit( GREATER_MEDIA_CONTESTS_PATH ) . 'tpl/contest-entries-meta-box.tpl.php';
 
 	}
 
@@ -377,7 +384,17 @@ class GreaterMediaContestsMetaboxes {
 		 * json_decode() and json_encode() are used here to sanitize the JSON & keep out invalid values
 		 */
 		$form = json_encode( json_decode( urldecode( $_POST['contest_embedded_form'] ) ) );
+		// PHP's json_encode() may add quotes around the encoded string. Remove them.
+		$form = trim( $form, '"' );
 		update_post_meta( $post_id, 'embedded_form', $form );
+
+		// Update the form's "submit button" text
+		$submit_text = isset( $_POST['greatermedia_contest_form_submit'] ) ? $_POST['greatermedia_contest_form_submit'] : '';
+		if ( empty( $submit_text ) ) {
+			// If you change this string, be sure to get all the places it's used in this class
+			$submit_button = __( 'Submit', 'greatermedia_contests' );
+		}
+		update_post_meta( $post_id, 'form-submitbutton', sanitize_text_field( $submit_text ) );
 
 		// Update the form's "thank you" message
 		$thank_you = isset( $_POST['greatermedia_contest_form_thankyou'] ) ? $_POST['greatermedia_contest_form_thankyou'] : '';

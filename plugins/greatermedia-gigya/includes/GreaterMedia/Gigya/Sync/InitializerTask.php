@@ -15,7 +15,9 @@ class InitializerTask extends SyncTask {
 	}
 
 	function run() {
-		$this->get_sentinel()->reset();
+		$sentinel = $this->get_sentinel();
+		$sentinel->reset();
+
 		$this->enqueue_subqueries();
 	}
 
@@ -37,7 +39,7 @@ class InitializerTask extends SyncTask {
 				$has_data_store_query = true;
 			}
 
-			$this->enqueue_subquery( $subquery );
+			$this->enqueue_subquery( $subquery, $total );
 		}
 
 		$sentinel = $this->get_sentinel();
@@ -59,9 +61,10 @@ class InitializerTask extends SyncTask {
 		}
 	}
 
-	function enqueue_subquery( $subquery ) {
+	function enqueue_subquery( $subquery, $total ) {
 		$task   = $this->get_task_for_store_type( $subquery['store_type'] );
 		$params = $this->get_params_for_subquery( $subquery );
+		$params['subquery_count'] = $total;
 
 		$task->enqueue( $params );
 	}

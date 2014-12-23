@@ -18,9 +18,16 @@
  */
 define( 'GREATERMEDIA_VERSION', '0.1.0' );
 
-require_once( __DIR__ . '/includes/liveplayer-test/class-gigya-login-test.php' );
+add_theme_support( 'homepage-curation' );
+
 require_once( __DIR__ . '/includes/liveplayer/loader.php' );
 require_once( __DIR__ . '/includes/layout-chooser/class-choose-layout.php' );
+require_once( __DIR__ . '/includes/site-options/loader.php');
+
+/**
+ * Required files
+ */
+require_once( __DIR__ . '/includes/gm-tinymce/loader.php');
 
 /**
  * Set up theme defaults and register supported WordPress features.
@@ -44,6 +51,8 @@ function greatermedia_setup() {
 	 */
 	add_theme_support( 'post-thumbnails' );
 	add_image_size( 'gm-article-thumbnail', 1580, 9999, false ); // thumbnails used for articles
+	add_image_size( 'gmr-gallery',               800,  534, true );
+	add_image_size( 'gmr-gallery-thumbnail',     100,  100 );
 
 	// Update this as appropriate content types are created and we want this functionality
 	add_post_type_support( 'post', 'timed-content' );
@@ -67,13 +76,6 @@ add_action( 'after_setup_theme', 'greatermedia_setup' );
 function greatermedia_scripts_styles() {
 	$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 
-	wp_register_script(
-		'headroom',
-		get_template_directory_uri() . "/assets/js/vendor/headroom.min.js",
-		array(),
-		'0.7.0',
-		true
-	);
 	wp_register_style(
 		'open-sans',
 		'http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,700',
@@ -92,100 +94,41 @@ function greatermedia_scripts_styles() {
 		array(),
 		'4.2'
 	);
-
-	if ( ! defined( 'GREATER_MEDIA_GIGYA_TEST_UI' ) || ! GREATER_MEDIA_GIGYA_TEST_UI ) {
-		/* TODO: Remove this, the script is enqueued by the greatermedia-plugin
-		 * with the api key set in it's setting screen
-		wp_enqueue_script(
-			'gigya_socialize',
-			'http://cdn.gigya.com/JS/gigya.js?apiKey=3_e_T7jWO0Vjsd9y0WJcjnsN6KaFUBv6r3VxMKqbitvw-qKfmaUWysQKa1fra5MTb6',
-			array( 'jquery' ),
-			'0.1.0',
-			true
-		);
-		wp_enqueue_script(
-			'gigya-login',
-			get_template_directory_uri() . "/assets/js/gigya_login{$postfix}.js",
-			array(),
-			GREATERMEDIA_VERSION,
-			true
-		);
-		wp_enqueue_script(
-			'liveplayer-login',
-			get_template_directory_uri() . "/assets/js/liveplayer_login{$postfix}.js",
-			array(),
-			GREATERMEDIA_VERSION,
-			true
-		);
-		 */
-	}
-
-	if ( is_page( 'style-guide' ) ) {
-		wp_enqueue_script(
-			'gm-styleguide',
-			get_template_directory_uri() . "/assets/js/gm_styleguide{$postfix}.js",
-			array(
-				'jquery'
-			),
-			GREATERMEDIA_VERSION,
-			true
-		);
-		wp_enqueue_script(
-			'google-code-pretify',
-			get_template_directory_uri() .
-			'/assets/js/styleguide/prettify.js',
-			array(
-				'jquery'
-			),
-			GREATERMEDIA_VERSION,
-			true
-		);
-		wp_enqueue_style(
-			'gm-styleguide',
-			get_template_directory_uri() . "/assets/css/gm_styleguide{$postfix}.css",
-			array(
-				'open-sans',
-				'droid-sans',
-				'font-awesome'
-			),
-			GREATERMEDIA_VERSION
-		);
-	} else {
-		wp_enqueue_script(
-			'greatermedia',
-			get_template_directory_uri() . "/assets/js/greater_media{$postfix}.js",
-			array(
-				'headroom'
-			),
-			GREATERMEDIA_VERSION,
-			true
-		);
-		wp_enqueue_script(
-			'respond.js',
-			get_template_directory_uri() . '/assets/js/vendor/respond.min.js',
-			array(),
-			'1.4.2',
-			false
-		);
-		wp_enqueue_script(
-			'html5shiv',
-			get_template_directory_uri() . '/assets/js/vendor/html5shiv-printshiv.js',
-			array(),
-			'3.7.2',
-			false
-		);
-		wp_enqueue_style(
-			'greatermedia',
-			get_template_directory_uri() . "/assets/css/greater_media{$postfix}.css",
-			array(
-				'dashicons',
-				'open-sans',
-				'droid-sans',
-				'font-awesome'
-			),
-			GREATERMEDIA_VERSION
-		);
-	};
+	wp_enqueue_script(
+		'greatermedia',
+		get_template_directory_uri() . "/assets/js/greater_media{$postfix}.js",
+		array(
+			'underscore',
+			'classlist-polyfill'
+		),
+		GREATERMEDIA_VERSION,
+		true
+	);
+	wp_enqueue_script(
+		'respond.js',
+		get_template_directory_uri() . '/assets/js/vendor/respond.min.js',
+		array(),
+		'1.4.2',
+		false
+	);
+	wp_enqueue_script(
+		'html5shiv',
+		get_template_directory_uri() . '/assets/js/vendor/html5shiv-printshiv.js',
+		array(),
+		'3.7.2',
+		false
+	);
+	wp_enqueue_style(
+		'greatermedia',
+		get_template_directory_uri() . "/assets/css/greater_media{$postfix}.css",
+		array(
+			'dashicons',
+			'open-sans',
+			'droid-sans',
+			'font-awesome'
+		),
+		GREATERMEDIA_VERSION
+	);
 
 }
 
@@ -225,17 +168,17 @@ function greatermedia_post_formats() {
 	$post_id = $post->ID;
 
 	if ( has_post_format( 'gallery', $post_id ) ) {
-		$format = 'gallery';
+		$format = 'entry__thumbnail--gallery';
 	} elseif ( has_post_format( 'link', $post_id ) ) {
-		$format = 'link';
+		$format = 'entry__thumbnail--link';
 	} elseif ( has_post_format( 'image', $post_id ) ) {
-		$format = 'image';
+		$format = 'entry__thumbnail--image';
 	} elseif ( has_post_format( 'video', $post_id ) ) {
-		$format = 'video';
+		$format = 'entry__thumbnail--video';
 	} elseif ( has_post_format( 'audio', $post_id ) ) {
-		$format = 'audio';
+		$format = 'entry__thumbnail--audio';
 	} else {
-		$format = 'standard';
+		$format = 'entry__thumbnail--standard';
 	}
 
 	echo $format;
@@ -292,9 +235,16 @@ function get_results_for_keyword() {
 			global $post;
 			$post = get_post( $custom_post_id );
 			setup_postdata( $post );
+			$title = get_the_title();
+			$keys= explode(" ",$search_query_arg);
+			$title = preg_replace('/('.implode('|', $keys) .')/iu', '<span class="search__result--term">\0</span>', $title);
 			?>
-			<article id="post-<?php the_ID(); ?>" <?php echo post_class( 'cf' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
-				<h2 class="entry__title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
+			<article id="post-<?php the_ID(); ?>" <?php post_class( 'search__result' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
+
+				<time datetime="<?php the_time( 'c' ); ?>" class="search__result--date"><?php the_time( 'M j, Y' ); ?></time>
+
+				<h3 class="search__result--title"><a href="<?php the_permalink(); ?>"><?php echo $title ?></a></h3>
+
 			</article>
 			<?php
 			wp_reset_postdata();
@@ -308,10 +258,9 @@ add_action( 'keyword_search_result', 'get_results_for_keyword' );
 /**
  * Alter search results on search page
  * 
- * @param  [type] $query [description]
- * @return [type]        [description]
+ * @param  WP_Query $query [description]
  */
-function alter_search_query( $query ) {
+function greatermedia_alter_search_query( $query ) {
 	if( $query->is_search && $query->is_main_query() ) {
 		$search_query_arg = sanitize_text_field( $query->query_vars['s'] );
 		$custom_post_id = intval( get_post_with_keyword( $search_query_arg ) );
@@ -320,5 +269,39 @@ function alter_search_query( $query ) {
 		}
 	}
 }
-add_action( 'pre_get_posts', 'alter_search_query' );
+add_action( 'pre_get_posts', 'greatermedia_alter_search_query' );
 
+/**
+ * Alters the main query on the front page to include additional post types
+ *
+ * @param WP_Query $query
+ */
+function greatermedia_alter_front_page_query( $query ) {
+	if ( $query->is_main_query() && $query->is_front_page() ) {
+		// Need to really think about how to include events here, and if it really makes sense. By default,
+		// we would have all published events, in reverse cron - so like we'd have "posts" looking things dated for the future
+		// that would end up hiding the actual posts, potentially for pages before getting to any real content.
+		//
+		// ADDITIONALLY - There is a checkbox for this on the events setting page, so we don't need to do that here :)
+		$post_types = array( 'post' );
+		if ( class_exists( 'GMP_CPT' ) ) {
+			$post_types[] = GMP_CPT::EPISODE_POST_TYPE;
+		}
+
+		$query->set( 'post_type', $post_types );
+	}
+}
+add_action( 'pre_get_posts', 'greatermedia_alter_front_page_query' );
+
+/**
+ * This will keep Jetpack Sharing from auto adding to the end of a post.
+ * We want to add this manually to the proper theme locations
+ *
+ * Hooked into loop_end
+ */
+function greatermedia_remove_jetpack_share() {
+	remove_filter( 'the_content', 'sharing_display', 19 );
+	remove_filter( 'the_excerpt', 'sharing_display', 19 );
+}
+
+add_action( 'wp_head', 'greatermedia_remove_jetpack_share' );

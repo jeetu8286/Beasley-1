@@ -1,0 +1,336 @@
+/*doc
+---
+title: Highlights
+name: highlights
+category: Components - Front Page
+---
+
+Community Highlights and Events
+
+```html_example
+	<section class="home__highlights">
+
+			<div class="highlights__col">
+
+				<div class="highlights__community">
+
+					<h2 class="highlights__heading">93.3 WMMR Community Highlights<span class="highlights__heading--span">YouRock</span></h2>
+
+					<div class="highlights__community--item">
+
+						<div class="highlights__community--thumb">
+							<img src="http://placehold.it/356x356&text=image">
+						</div>
+
+						<h3 class="highlights__community--title">title</h3>
+
+					</div>
+
+					<div class="highlights__community--item">
+
+						<div class="highlights__community--thumb">
+							<img src="http://placehold.it/356x356&text=image">
+						</div>
+
+						<h3 class="highlights__community--title">title</h3>
+
+					</div>
+
+					<div class="highlights__community--item">
+
+						<div class="highlights__community--thumb">
+							<img src="http://placehold.it/356x356&text=image">
+						</div>
+
+						<h3 class="highlights__community--title">title</h3>
+
+					</div>
+
+				</div>
+
+				<div class="highlights__events">
+
+					<h2 class="highlights__heading">Upcoming<span class="highlights__heading--span">Events</span></h2>
+
+					<div class="highlights__event--item">
+
+						<div class="highlights__event--thumb">
+							<img src="http://placehold.it/156x156&text=image">
+						</div>
+
+						<div class="highlights__event--meta">
+							<h3 class="highlights__event--title">Preston & Steve’s Camp Out For Hunger 2014</h3>
+							<time datetime="" class="highlights__event--date">Dec 1 - Dec 5</time>
+						</div>
+
+					</div>
+
+					<div class="highlights__event--item">
+
+						<div class="highlights__event--thumb">
+							<img src="http://placehold.it/156x156&text=image">
+						</div>
+
+						<div class="highlights__event--meta">
+							<h3 class="highlights__event--title">A.B.A.T.E. Motorcycle Toy Run For The Kids!</h3>
+							<time datetime="" class="highlights__event--date">Nov 2</time>
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+
+	</section>
+```
+*/
+.home__highlights {
+	@extend %main;
+	padding: 1em;
+	background-color: $highlights-bg;
+	
+	@include bp(medium) {
+		padding: 48px;
+	}
+}
+
+// .highlights__col {
+// 	@include span-columns(4);
+// 	@include bp(small) {
+// 		@include span-columns(6);
+// 	}
+// 	@include bp(medium) {
+// 		@include span-columns(6);
+// 		padding-right: 0;
+// 		padding-left: 0;
+// 	}
+// 	@include bp(large) {
+// 		@include span-columns(10);
+// 	}
+// 	@include bp(x-large) {
+// 		@include span-columns(10);
+// 	}
+// }
+
+.highlights__heading {
+	margin-top: 0;
+	margin-bottom: 17px;
+	font-family: $open-sans;
+	font-size: ms(1);
+	font-weight: lighter;
+	color: $secondary-heading;
+	@include bp(small) {
+		font-size: ms(1);
+	}
+	@include bp(large) {
+		margin-bottom: 13px;
+		font-size: ms(0);
+	}
+	@include bp(x-large) {
+		margin-bottom: 17px;
+		font-size: ms(1);
+	}
+}
+
+// .highlights__heading--span {
+// 	margin-left: 16px;
+// 	font-size: ms(-1);
+// 	color: $color-text-red;
+// 	text-transform: uppercase;
+// 	@include bp(large) {
+// 		font-size: ms(-2);
+// 	}
+// 	@include bp(x-large) {
+// 		font-size: ms(-1);
+// 	}
+// }
+
+.highlights__community {
+	float: left;
+	width: 100%;
+	@include bp(large) {
+		@include span-columns(8 of 12);
+	}
+}
+
+.highlights__community--item {
+	position: relative;
+	float: left;
+	overflow: auto;
+	width: 140px;
+	margin-right: 1em;
+	margin-bottom: 1em;
+
+	&:nth-of-type(2n) {
+		margin-right: 0;
+	}
+
+	&:nth-of-type(3) {
+		display: none;
+	}
+
+	@include bp(large) {
+		&:nth-of-type(2n) {
+			margin-right: 1em;
+		}
+		&:nth-of-type(3) {
+			display: block;
+		}
+	}
+}
+
+// .highlights__community--item:nth-of-type(3) {
+// 	display: none;
+// 	@include bp(large) {
+// 		display: block;
+// 		margin-right: 0;
+// 	}
+// }
+
+// .highlights__community--item:nth-of-type(2) {
+// 	margin-right: 0;
+// 	@include bp(large) {
+// 		margin-right: 3.806228373702%; // 22px
+// 	}
+// }
+
+.highlights__community--thumb {
+	position: relative;
+	width: 140px;
+	height: 140px;
+	overflow: hidden;
+
+	img {
+		max-width: none;
+		width: auto;
+		height: 100%;
+	}
+}
+
+.highlights__community--thumb:after {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, 0);
+	width: 100%;
+	height: 50%;
+	background: -moz-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, .4) 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(0, 0, 0, 0)), color-stop(100%, rgba(0, 0, 0, .4)));
+	background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, .4) 100%);
+	background: -o-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, .4) 100%);
+	background: -ms-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, .4) 100%);
+	background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, .4) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#000000', endColorstr='#000000', GradientType=0);
+	content: "";
+}
+
+.highlights__community--title {
+	position: absolute;
+	bottom: 10px;
+	left: 0;
+	width: 100%;
+	margin: 0;
+	font-size: ms(0);
+	font-weight: normal;
+	color: $color-text-white;
+	text-align: center;
+}
+
+.highlights__events {
+
+	@include bp(large) {
+		@include span-columns(4 of 12);
+		@include omega;	
+	}
+}
+
+.highlights__event--item {
+	width: 100%;
+	height: 91px;
+	margin-bottom: 24px;
+	background-color: $primary-bg;
+	overflow: hidden;
+	@include bp(large) {
+		height: 66px;
+		margin-bottom: 17px;
+	}
+	@include bp(x-large) {
+		height: 78px;
+		margin-bottom: 17px;
+	}
+}
+
+.highlights__event--item:last-of-type {
+	margin-bottom: 0;
+}
+
+.highlights__event--thumb {
+	float: left;
+	width: 34.600760456274%; // 91px
+	margin-right: 7.604562737643%; // 20px
+	@include bp(small) {
+		width: 22.141119221411%; // 91px
+		margin-right: 4.866180048662%; // 20px
+	}
+	@include bp(large) {
+		width: 28.82096069869%; // 66px
+		margin-right: 4.366812227074%; // 10px
+	}
+	@include bp(x-large) {
+		width: 21.311475409836%; // 78px
+		margin-right: 4.918032786885%; // 18px
+	}
+}
+
+.highlights__event--meta {
+	position: relative;
+	float: left;
+	width: 57.794676806083%;
+	height: 91px;
+	padding: 10px 2.71186440678% 10px 0;
+	@include bp(small) {
+		width: 72.992700729927%;
+		height: 91px;
+	}
+	@include bp(large) {
+		width: 66.812227074236%;
+		height: 66px;
+	}
+	@include bp(x-large) {
+		width: 73.770491803279%;
+		height: 78px;
+	}
+}
+
+.highlights__event--title {
+	position: absolute;
+	top: 50%;
+	transform: translate(0, -50%);
+	margin: 0;
+	line-height: 1.2;
+	font-family: $open-sans;
+	font-size: ms(0);
+	color: $highlights-heading;
+	@include bp(small) {
+		font-size: ms(1);
+	}
+	@include bp(large) {
+		font-size: ms(-1);
+	}
+	@include bp(x-large) {
+		position: relative;
+		top: auto;
+		transform: translate(0, 0);
+		font-size: ms(0);
+	}
+}
+
+.highlights__event--date {
+	display: none;
+	@include bp(x-large) {
+		display: block;
+		font-size: ms(-2);
+		color: $gray
+	}
+}
