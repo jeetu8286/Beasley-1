@@ -1276,6 +1276,8 @@ class GreaterMediaFormbuilderRender {
 			$ugc->post->post_content = '[gallery ids="' . implode( ',', $attachment_ids ) . '"]';
 			$ugc->save();
 
+			set_post_thumbnail( $ugc->post->ID, $attachment_ids[0] );
+
 		}
 
 		return $ugc;
