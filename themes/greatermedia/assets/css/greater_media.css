@@ -805,6 +805,11 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
   h1 a:hover, h1 a:focus, h1 a:active, .h1 a:hover, .h1 a:focus, .h1 a:active, h2 a:hover, h2 a:focus, h2 a:active, .h2 a:hover, .h2 a:focus, .h2 a:active, h3 a:hover, h3 a:focus, h3 a:active, .h3 a:hover, .h3 a:focus, .h3 a:active, h4 a:hover, h4 a:focus, h4 a:active, .h4 a:hover, .h4 a:focus, .h4 a:active, h5 a:hover, h5 a:focus, h5 a:active, .h5 a:hover, .h5 a:focus, .h5 a:active, h6 a:hover, h6 a:focus, h6 a:active, .h6 a:hover, .h6 a:focus, .h6 a:active {
     color: #aa1c20; }
 
+.featured__content--title a:link, .featured__content--title a:visited, .featured__article--title a:link, .featured__article--title a:visited, .highlights__community--title a:link, .highlights__community--title a:visited {
+  color: #ffffff; }
+.featured__content--title a:hover, .featured__content--title a:focus, .featured__content--title a:active, .featured__article--title a:hover, .featured__article--title a:focus, .featured__article--title a:active, .highlights__community--title a:hover, .highlights__community--title a:focus, .highlights__community--title a:active {
+  color: #aa1c20; }
+
 h1, .h1 {
   font-size: 2.2807em; }
 
@@ -1596,7 +1601,7 @@ Community Highlights and Events
   font-family: "Open Sans", sans-serif;
   font-size: 1.125em;
   font-weight: lighter;
-  color: #929497; }
+  color: #404041; }
   @media screen and (min-width: 480px) {
     .highlights__heading {
       font-size: 1.125em; } }
@@ -3755,7 +3760,8 @@ category: Components - Ads
 */
 .ad__leaderboard {
   position: relative;
-  padding: 1.25em 0; }
+  padding: 1.25em 0;
+  text-align: center; }
   .ad__leaderboard.desktop {
     display: none; }
   .ad__leaderboard.mobile {
