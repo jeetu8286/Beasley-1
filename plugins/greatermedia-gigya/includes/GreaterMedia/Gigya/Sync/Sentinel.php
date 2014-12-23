@@ -268,7 +268,7 @@ class Sentinel {
 	function get_status_meta() {
 		$meta                   = array();
 		$meta['statusCode']     = $this->get_status_code();
-		$meta['emailSegmentID'] = '2086163';
+		$meta['emailSegmentID'] = $this->get_email_segment_id();
 		$meta['memberQueryID']  = $this->member_query_id;
 		$meta['progress']       = $this->get_progress();
 		$meta['lastExport']     = $this->get_last_export();

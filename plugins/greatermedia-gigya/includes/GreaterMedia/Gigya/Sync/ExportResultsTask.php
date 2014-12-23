@@ -10,7 +10,7 @@ class ExportResultsTask extends SyncTask {
 
 	function run() {
 		$sentinel = $this->get_sentinel();
-		$sentinel->set_email_segment_id( 'foo123' );
+		$sentinel->set_email_segment_id( '2086163' );
 	}
 
 	function after( $result ) {
