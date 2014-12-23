@@ -107,7 +107,12 @@ class Sentinel {
 	}
 
 	function get_last_export() {
-		return $this->get_end_time();
+		$end_time = $this->get_task_meta( 'end_time' );
+		if ( $end_time !== '' ) {
+			return $this->get_end_time();
+		} else {
+			return 0;
+		}
 	}
 
 	function is_running() {
