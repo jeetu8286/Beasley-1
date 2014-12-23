@@ -24,6 +24,8 @@ document.addEventListener(
 		if (GreaterMediaContestsForm.form) {
 			args.bootstrapData = JSON.parse(GreaterMediaContestsForm.form);
 		}
+		
+		args.controls = ['address', 'checkboxes', 'date', 'dropdown', 'email', 'number', 'paragraph', 'price', 'radio', 'section_break', 'text', 'time', 'website' ];
 
 		var formbuilder = new Formbuilder(args);
 		formbuilder.on('save', function (payload) {
