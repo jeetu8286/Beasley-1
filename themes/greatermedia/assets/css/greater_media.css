@@ -1619,7 +1619,8 @@ Curated posts for Featured Articles
       display: block;
       margin-right: 7.42297%;
       width: 100%;
-      margin-right: 0; }
+      margin-right: 0;
+      height: 138px; }
       .featured__content--image:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 1024px) {
@@ -1627,7 +1628,8 @@ Curated posts for Featured Articles
       float: left;
       display: block;
       margin-right: 2.35765%;
-      width: 31.76157%; }
+      width: 31.76157%;
+      height: 100%; }
       .featured__content--image:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 1400px) {
@@ -1643,6 +1645,16 @@ Curated posts for Featured Articles
   height: 100%;
   width: auto;
   max-width: none; }
+  @media screen and (min-width: 768px) {
+    .featured__content--image img {
+      height: auto;
+      width: 100%;
+      max-width: 100%; } }
+  @media screen and (min-width: 1024px) {
+    .featured__content--image img {
+      height: 100%;
+      width: auto;
+      max-width: none; } }
 
 .featured__content--meta {
   float: left;

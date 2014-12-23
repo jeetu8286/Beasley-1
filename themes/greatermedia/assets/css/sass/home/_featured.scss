@@ -256,9 +256,11 @@ Curated posts for Featured Articles
 	@include bp(medium) {
 		@include span-columns(4 of 4);
 		@include omega;
+		height: 138px;
 	}
 	@include bp(large) {
 		@include span-columns(4 of 12);
+		height: 100%;
 	}
 	@include bp(x-large) {
 		@include span-columns(4 of 12);
@@ -269,6 +271,16 @@ Curated posts for Featured Articles
 	height: 100%;
 	width: auto;
 	max-width: none;
+	@include bp(medium) {
+		height: auto;
+		width: 100%;
+		max-width: 100%;
+	}
+	@include bp(large) {
+		height: 100%;
+		width: auto;
+		max-width: none;
+	}
 }
 
 .featured__content--meta {
