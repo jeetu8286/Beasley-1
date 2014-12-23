@@ -33,3 +33,4 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 
 include trailingslashit( __DIR__ ) . 'inc/class-greatermedia-surveys.php';
 include trailingslashit( __DIR__ ) . 'inc/class-greatermedia-survey-form-render.php';
+include trailingslashit( __DIR__ ) . 'inc/class-greatermedia-survey-entry.php';

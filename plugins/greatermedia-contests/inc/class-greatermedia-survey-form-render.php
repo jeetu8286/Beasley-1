@@ -4,6 +4,10 @@
  * Date: 18.12.2014 4:01
  */
 
+if ( ! defined( 'WPINC' ) ) {
+	die( "Please don't try to access this file directly." );
+}
+
 class GreaterMediaSurveyFormRender {
 
 	public static $post;
@@ -14,8 +18,8 @@ class GreaterMediaSurveyFormRender {
 		self::$post            = 'survey_response';
 		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 			// Register AJAX handlers
-			add_action( 'wp_ajax_enter_contest', array( __CLASS__, 'process_form_submission' ) );
-			add_action( 'wp_ajax_nopriv_enter_contest', array( __CLASS__, 'process_form_submission' ) );
+			add_action( 'wp_ajax_enter_survey', array( __CLASS__, 'process_form_submission' ) );
+			add_action( 'wp_ajax_nopriv_enter_survey', array( __CLASS__, 'process_form_submission' ) );
 		} else {
 			// Register a generic POST handler for if/when there's a fallback from the AJAX method
 			add_action( 'wp', array( __CLASS__, 'process_form_submission' ) );
@@ -99,11 +103,12 @@ class GreaterMediaSurveyFormRender {
 	public static function process_form_submission() {
 
 		try {
+
 			if ( 'POST' !== strtoupper( $_SERVER['REQUEST_METHOD'] ) ) {
 				throw new InvalidArgumentException( 'Request should be a POST' );
 			}
 
-			if ( isset( $_POST['survey_id'] ) ) {
+			if ( !isset( $_POST['survey_id'] ) ) {
 				throw new InvalidArgumentException( 'Missing survey_id' );
 			}
 
@@ -114,7 +119,7 @@ class GreaterMediaSurveyFormRender {
 
 			$survey = get_post( $survey_id );
 			if ( empty( $survey ) ) {
-				throw new InvalidArgumentException( 'No contest found with given ID' );
+				throw new InvalidArgumentException( 'No survey found with given ID' );
 			}
 
 			if ( 'survey' !== $survey->post_type ) {
@@ -123,18 +128,14 @@ class GreaterMediaSurveyFormRender {
 
 			list( $entrant_reference, $entrant_name ) = GreaterMediaFormbuilderRender::entrant_id_and_name();
 
-
 			// Pretty sure this is our form submission at this point
 			$form = json_decode( get_post_meta( $survey_id, 'survey_embedded_form', true ) );
+
 			if ( empty( $form ) ) {
-				throw new InvalidArgumentException( 'Contest is missing an embedded form' );
+				throw new InvalidArgumentException( 'Survey is missing an embedded form');
 			}
 
 			$submitted_values = array();
-			$submitted_files  = array(
-				'images' => array(),
-				'other'  => array(),
-			);
 
 			foreach ( $form as $field ) {
 
@@ -159,7 +160,7 @@ class GreaterMediaSurveyFormRender {
 
 			}
 
-			$entry = GreaterMediaContestEntryEmbeddedForm::create_for_data(
+			$entry = GreaterMediaSurveyEntry::create_for_data(
 				$survey_id,
 				$entrant_name,
 				$entrant_reference,
@@ -167,8 +168,7 @@ class GreaterMediaSurveyFormRender {
 				json_encode( $submitted_values )
 			);
 
-			//$entry->save();
-			self::save( $entry );
+			$entry->save( $entry );
 
 			do_action( 'greatermedia_survey_entry_save', $entry );
 
@@ -203,7 +203,7 @@ class GreaterMediaSurveyFormRender {
 
 	}
 
-	public static function save( $entry ) {
+	/*public static function save( $entry ) {
 
 		$post_id = wp_update_post( self::$post, true );
 
@@ -212,6 +212,38 @@ class GreaterMediaSurveyFormRender {
 		update_post_meta( $post_id, 'entry_source', $entry->entry_source );
 		update_post_meta( $post_id, 'entry_reference', $entry->entry_reference );
 	}
+
+	public static function create_for_data( $contest_id, $entrant_name, $entrant_reference, $entry_source, $entry_reference ) {
+
+		$entry_source_camel_case      = str_replace( ' ', '', ucwords( str_replace( '-', ' ', $entry_source ) ) );
+		$possible_entry_subclass_name = 'GreaterMediaContestEntry' . $entry_source_camel_case;
+		if ( class_exists( $possible_entry_subclass_name ) ) {
+			$entry = new $possible_entry_subclass_name( null, $contest_id );
+		} else {
+			$entry = new self( null, $contest_id );
+		}
+
+
+		if ( ! is_scalar( $entrant_name ) ) {
+			throw new UnexpectedValueException( 'Entrant Name must be a scalar value' );
+		}
+
+		if ( ! is_scalar( $entry_source ) ) {
+			throw new UnexpectedValueException( 'Entry Source must be a scalar value' );
+		}
+
+		// This is an assumption. We can always get rid of this check.
+		if ( ! is_scalar( $entry_reference ) ) {
+			throw new UnexpectedValueException( 'Entry Reference must be a scalar value' );
+		}
+
+		$entry->entrant_name      = $entrant_name;
+		$entry->entrant_reference = $entrant_reference;
+		$entry->entry_source      = $entry_source;
+		$entry->entry_reference   = $entry_reference;
+
+		return $entry;
+	}*/
 }
 
 GreaterMediaSurveyFormRender::init();

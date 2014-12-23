@@ -1,5 +1,5 @@
 jQuery(function () {
-	alert( GreaterMediaSurveys.form_class );
+
 	// Attach a submit handler to survey forms
 	jQuery( '.' + GreaterMediaSurveys.form_class ).submit(function (e) {
 		var form = this;

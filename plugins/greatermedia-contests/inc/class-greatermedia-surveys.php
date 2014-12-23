@@ -5,16 +5,15 @@
  */
 
 if ( ! defined( 'WPINC' ) ) {
-	die;
+	die( "Please don't try to access this file directly." );
 }
 
 class GreaterMediaSurveys {
 
-	protected $survey_slug = 'survey';
+	public static $survey_slug = 'survey';
 
 	public function __construct() {
 		add_action( 'init', array( $this, 'register_survey_cpt' ) );
-		add_action( 'init', array( $this, 'register_survey_response_cpt' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'survey_enqueue_scripts' ) );
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
 		add_action( 'save_post', array( $this, 'save_form' ) );
@@ -24,7 +23,7 @@ class GreaterMediaSurveys {
 
 		global $post;
 
-		if( $post && $post->post_type === $this->survey_slug ) {
+		if( $post && $post->post_type === self::$survey_slug ) {
 
 			wp_enqueue_style( 'formbuilder' );
 
@@ -101,54 +100,7 @@ class GreaterMediaSurveys {
 			)
 		);
 
-		register_post_type( $this->survey_slug, $args );
-	}
-
-	/**
-	 * Registers survey response cpt
-	 */
-	public function register_survey_response_cpt() {
-
-		$labels = array(
-			'name'                => __( 'Survey responses', 'greatermedia' ),
-			'singular_name'       => __( 'Survey response', 'greatermedia' ),
-			'add_new'             => _x( 'Add New Survey response', 'greatermedia', 'greatermedia' ),
-			'add_new_item'        => __( 'Add New Survey response', 'greatermedia' ),
-			'edit_item'           => __( 'Edit Survey response', 'greatermedia' ),
-			'new_item'            => __( 'New Survey response', 'greatermedia' ),
-			'view_item'           => __( 'View Survey response', 'greatermedia' ),
-			'search_items'        => __( 'Search Survey responses', 'greatermedia' ),
-			'not_found'           => __( 'No survey responses found', 'greatermedia' ),
-			'not_found_in_trash'  => __( 'No Survey responses found in Trash', 'greatermedia' ),
-			'parent_item_colon'   => __( 'Parent Survey:', 'greatermedia' ),
-			'menu_name'           => __( 'Survey responses', 'greatermedia' ),
-		);
-
-		$args = array(
-			'labels'              => $labels,
-			'hierarchical'        => true,
-			'description'         => 'description',
-			'taxonomies'          => array(),
-			'public'              => true,
-			'show_ui'             => true,
-			'show_in_menu'        => 'edit.php?post_type=' . $this->survey_slug,
-			'show_in_admin_bar'   => false,
-			'menu_position'       => null,
-			'menu_icon'           => null,
-			'show_in_nav_menus'   => true,
-			'publicly_queryable'  => true,
-			'exclude_from_search' => false,
-			'has_archive'         => true,
-			'query_var'           => true,
-			'can_export'          => true,
-			'rewrite'             => true,
-			'capability_type'     => 'post',
-			'supports'            => array(
-				'title'
-			)
-		);
-
-		register_post_type( 'survey_response', $args );
+		register_post_type( self::$survey_slug, $args );
 	}
 
 	public function add_meta_boxes() {
