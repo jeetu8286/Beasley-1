@@ -3905,7 +3905,8 @@ category: Components - Shows
     margin: 0;
     clear: both; }
   .podcast__meta time {
-    float: left; }
+    float: left;
+    margin-right: 1em; }
 
 .show-attr--name {
   position: absolute;
