@@ -320,7 +320,7 @@ class GreaterMediaFormbuilderRender {
 			         '<input type="hidden" name="contest_id" value="' . absint( $post_id ) . '" />';
 
 			foreach ( $form as $field ) {
-
+				
 				$renderer_method = 'render_' . $field->field_type;
 
 				// Make sure the field type has been implemented/is valid
@@ -530,6 +530,7 @@ class GreaterMediaFormbuilderRender {
 			$html .= wp_kses_data( $attribute ) . '="' . esc_attr( $value ) . '" ';
 		}
 		$html .= ' >';
+		$html .= esc_textarea( get_gigya_user_contest_data( $field->cid ) );
 		$html .= '</textarea>';
 
 		$html .= self::render_description( $field );
@@ -551,6 +552,7 @@ class GreaterMediaFormbuilderRender {
 		$html = '';
 
 		$field_id = 'form_field_' . $field->cid;
+		$field_value = get_gigya_user_contest_data( $field->cid, null );
 
 		$select_tag_attributes = array(
 			'id'   => $field_id,
@@ -578,7 +580,11 @@ class GreaterMediaFormbuilderRender {
 		}
 
 		foreach ( $field->field_options->options as $option_index => $option_data ) {
-			$html .= '<option value="' . esc_attr( $option_data->label ) . '" ' . selected( 1, $option_data->checked, false ) . '>' . wp_kses_data( $option_data->label ) . '</option>';
+			$selected = is_null( $field_value )
+				? selected( $option_data->checked, 1, false )
+				: selected( $option_data->label, $field_value, false );
+			
+			$html .= '<option value="' . esc_attr( $option_data->label ) . '"' . $selected . '>' . wp_kses_data( $option_data->label ) . '</option>';
 		}
 
 		$html .= '</select>';
@@ -786,9 +792,10 @@ class GreaterMediaFormbuilderRender {
 		$field_id = 'form_field_' . $field->cid;
 
 		$input_tag_attributes = array_merge( $special_attributes, array(
-			'id'   => $field_id,
-			'name' => $field_id,
-			'type' => $type,
+			'id'    => $field_id,
+			'name'  => $field_id,
+			'type'  => $type,
+			'value' => get_gigya_user_contest_data( $field->cid ),
 		) );
 
 		if ( isset( $field->required ) && $field->required ) {
