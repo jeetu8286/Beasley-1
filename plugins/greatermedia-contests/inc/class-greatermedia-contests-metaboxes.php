@@ -23,11 +23,6 @@ class GreaterMediaContestsMetaboxes {
 
 		global $post;
 
-		// Make sure this is an admin screen
-		if ( ! is_admin() ) {
-			return;
-		}
-
 		// Make sure this is the post editor
 		$current_screen = get_current_screen();
 		if ( 'post' !== $current_screen->base ) {
@@ -91,43 +86,15 @@ class GreaterMediaContestsMetaboxes {
 		add_settings_section(
 			'greatermedia-contest-rules',
 			null,
-			array( $this, 'render_generic_settings_section' ),
+			'__return_false',
 			'greatermedia-contest-rules'
 		);
 
 		add_settings_section(
 			'greatermedia-contest-form',
 			null,
-			array( $this, 'render_generic_settings_section' ),
+			'__return_false',
 			'greatermedia-contest-form'
-		);
-
-		add_settings_field(
-			'contest-start-date',
-			'Start Date',
-			array( $this, 'render_date_field' ),
-			'greatermedia-contest-rules',
-			'greatermedia-contest-rules',
-			array(
-				'post_id' => $post_id,
-				'id'      => 'greatermedia_contest_start',
-				'name'    => 'greatermedia_contest_start',
-				'value'   => get_post_meta( $post_id, 'contest-start', true )
-			)
-		);
-
-		add_settings_field(
-			'contest-end-date',
-			'End Date',
-			array( $this, 'render_date_field' ),
-			'greatermedia-contest-rules',
-			'greatermedia-contest-rules',
-			array(
-				'post_id' => $post_id,
-				'id'      => 'greatermedia_contest_end',
-				'name'    => 'greatermedia_contest_end',
-				'value'   => get_post_meta( $post_id, 'contest-end', true )
-			)
 		);
 
 		add_settings_field(
@@ -215,14 +182,7 @@ class GreaterMediaContestsMetaboxes {
 		);
 
 	}
-
-	/**
-	 * Render instructions for the settings section
-	 */
-	public function render_generic_settings_section() {
-		// No special rendering
-	}
-
+	
 	/**
 	 * Render a WYSIWYG editor meta field
 	 *
@@ -284,7 +244,7 @@ class GreaterMediaContestsMetaboxes {
 			$size_attr = '';
 		}
 
-		echo '<input type="' . esc_attr( $args['type'] ) . '" id="' . esc_attr( $args['id'] ) . '" name="' . esc_attr( $args['name'] ) . '" value="' . esc_attr( $args['value'] ) . '" ' . $size_attr . ' />';
+		echo '<input type="' . esc_attr( $args['type'] ) . '" id="' . esc_attr( $args['id'] ) . '" name="' . esc_attr( $args['name'] ) . '" value="' . esc_attr( $args['value'] ) . '" ' . $size_attr . '>';
 
 	}
 
@@ -293,11 +253,58 @@ class GreaterMediaContestsMetaboxes {
 	 * Implements add_meta_boxes action
 	 */
 	public function add_meta_boxes() {
-
 		add_meta_box( 'rules', 'Contest Rules', array( $this, 'rules_meta_box' ), GMR_CONTEST_CPT, 'normal', 'default', array() );
 		add_meta_box( 'form', 'Form', array( $this, 'contest_embedded_form' ), GMR_CONTEST_CPT, 'advanced', 'default', array() );
+		add_meta_box( 'restrictions', 'Restrictions', array( $this, 'restrictions_meta_box' ), GMR_CONTEST_CPT, 'side', 'high' );
 		add_meta_box( 'gallery', 'Gallery', array( $this, 'gallery_meta_box' ), GMR_CONTEST_CPT, 'side' );
+	}
 
+	public function restrictions_meta_box( WP_Post $post ) {
+		?><p>
+			<label for="greatermedia_contest_start">Start date</label>
+			<?php $this->render_date_field( array(
+				'post_id' => $post->ID,
+				'id'      => 'greatermedia_contest_start',
+				'name'    => 'greatermedia_contest_start',
+				'value'   => get_post_meta( $post->ID, 'contest-start', true )
+			) ); ?>
+		</p>
+		
+		<p>
+			<label for="greatermedia_contest_end">End date</label>
+			<?php $this->render_date_field( array(
+				'post_id' => $post->ID,
+				'id'      => 'greatermedia_contest_end',
+				'name'    => 'greatermedia_contest_end',
+				'value'   => get_post_meta( $post->ID, 'contest-end', true )
+			) ); ?>
+		</p>
+
+		<p>
+			<label for="greatermedia_contest_members_only">Who can apply</label>
+			<select id="greatermedia_contest_members_only" name="greatermedia_contest_members_only">
+				<option value="0">Members and guests</option>
+				<option value="1"<?php selected( get_post_meta( $post->ID, 'contest-members-only', true ) ); ?>>Members only</option>
+			</select>
+		</p>
+
+		<p>
+			<label for="greatermedia_contest_single_entry">How many times can user apply</label>
+			<select id="greatermedia_contest_single_entry" name="greatermedia_contest_single_entry">
+				<option value="1">Only once</option>
+				<option value="0"<?php selected( get_post_meta( $post->ID, 'contest-single-entry', true ), false ); ?>>Multiple times</option>
+			</select>
+		</p>
+
+		<p>
+			<label for="greatermedia_contest_max_entries">How many entries allowed in total</label>
+			<input type="text" id="greatermedia_contest_max_entries" name="greatermedia_contest_max_entries" value="<?php echo esc_attr( get_post_meta( $post->ID, 'contest-max-entries', true ) ); ?>">
+		</p>
+
+		<p>
+			<label for="greatermedia_contest_min_age">Minimum age to apply</label>
+			<input type="text" id="greatermedia_contest_min_age" name="greatermedia_contest_min_age" value="<?php echo esc_attr( get_post_meta( $post->ID, 'contest-min-age', true ) ); ?>">
+		</p><?php
 	}
 
 	public function gallery_meta_box( WP_Post $post ) {
@@ -412,6 +419,17 @@ class GreaterMediaContestsMetaboxes {
 		update_post_meta( $post_id, 'contest-start', strtotime( $_POST['greatermedia_contest_start'] ) );
 		update_post_meta( $post_id, 'contest-end', strtotime( $_POST['greatermedia_contest_end'] ) );
 
+		$members_only = filter_input( INPUT_POST, 'greatermedia_contest_members_only', FILTER_VALIDATE_BOOLEAN );
+		update_post_meta( $post_id, 'contest-members-only', $members_only );
+
+		$single_entry = filter_input( INPUT_POST, 'greatermedia_contest_single_entry', FILTER_VALIDATE_BOOLEAN );
+		update_post_meta( $post_id, 'contest-single-entry', $single_entry );
+
+		$max_etries = filter_input( INPUT_POST, 'greatermedia_contest_max_entries', FILTER_VALIDATE_INT, array( 'options' => array( 'min_range' => 1, 'default' => '' ) ) );
+		update_post_meta( $post_id, 'contest-max-entries', $max_etries );
+
+		$min_age = filter_input( INPUT_POST, 'greatermedia_contest_min_age', FILTER_VALIDATE_INT, array( 'options' => array( 'min_range' => 1, 'default' => '' ) ) );
+		update_post_meta( $post_id, 'contest-min-age', $min_age );
 	}
 
 }

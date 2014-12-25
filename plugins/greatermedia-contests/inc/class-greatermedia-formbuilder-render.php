@@ -116,64 +116,33 @@ class GreaterMediaFormbuilderRender {
 	 */
 	public static function render( $post_id, $form ) {
 
-		$html = '';
-
-		$now = current_time( 'timestamp', 1 );
-		$contest_start = (int) get_post_meta( $post_id, 'contest-start', true );
-		if ( $contest_start > 0 && $contest_start > $now ) {
-			return new WP_Error( 'contest_form_builder', 'The contest is not started yet.' );
-		}
-
-		$contest_end = (int) get_post_meta( $post_id, 'contest-end', true );
-		if ( $contest_end > 0 && $now > $contest_end ) {
-			return new WP_Error( 'contest_form_builder', 'The contest is already finished.' );
-		}
-
-		if ( ! is_numeric( $post_id ) ) {
-			return new WP_Error( 'contest_form_builder', '$post_id must be an integer post ID' );
-		}
-
 		if ( is_string( $form ) ) {
 			$clean_form = trim( $form, '"' );
 			$form = json_decode( $clean_form );
 		}
 
-		if ( defined( 'CONTEST_' . $post_id . '_SUCCESS' ) && 'CONTEST_' . $post_id . '_SUCCESS' ) {
+		$html = '<form action="" method="post" enctype="multipart/form-data" class="' . esc_attr( self::FORM_CLASS ) . '" data-parsley-validate>';
 
-			/**
-			 * Fallback to rendering the thank-you message on the server side.
-			 * This should be OK since a POST won't be cached.
-			 */
-			$html .= '<p>' . get_post_meta( $post_id, 'form-thankyou', true ) . '</p>';
+		foreach ( $form as $field ) {
 
-		} else {
+			$renderer_method = 'render_' . $field->field_type;
 
-			$html .= '<form action="" method="post" enctype="multipart/form-data" class="' . esc_attr( self::FORM_CLASS ) . '" data-parsley-validate>';
-
-			foreach ( $form as $field ) {
-				
-				$renderer_method = 'render_' . $field->field_type;
-
-				// Make sure the field type has been implemented/is valid
-				if ( ! method_exists( __CLASS__, $renderer_method ) ) {
-					return new WP_Error( 'contest_form_builder', sprintf( 'Form field %s has unimplemented field type %s', wp_kses_data( $field->cid ), wp_kses_data( $field->field_type ) ) );
-				}
-
+			// Make sure the field type has been implemented/is valid
+			if ( method_exists( __CLASS__, $renderer_method ) ) {
 				$html .= wp_kses( self::$renderer_method( $post_id, $field ), self::allowed_tags() );
-
 			}
-
-			$submit_text = get_post_meta( $post_id, 'form-submitbutton', true );
-			if ( empty( $submit_text ) ) {
-				// If you change this string, be sure to get all the places it's used in this class
-				$submit_text = __( 'Submit', 'greatermedia_contests' );
-			}
-
-			$html .= self::get_submit_button( $submit_text, null, null, true );
-
-			$html .= '</form>';
-
+			
 		}
+
+		$submit_text = get_post_meta( $post_id, 'form-submitbutton', true );
+		if ( empty( $submit_text ) ) {
+			// If you change this string, be sure to get all the places it's used in this class
+			$submit_text = __( 'Submit', 'greatermedia_contests' );
+		}
+
+		$html .= self::get_submit_button( $submit_text, null, null, true );
+
+		$html .= '</form>';
 
 		echo $html;
 

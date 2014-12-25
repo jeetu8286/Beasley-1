@@ -3,7 +3,9 @@
  * Copyright (c) 2014; * Licensed GPLv2+ */
 (function ($) {
 	var __ready = function() {
-		$(document).on('submit', GreaterMediaContests.selectors.form, function() {
+		var container = $(GreaterMediaContests.selectors.container);
+
+		container.on('submit', GreaterMediaContests.selectors.form, function() {
 			var form = $(this);
 
 			if (!form.parsley || form.parsley().isValid()) {
@@ -32,7 +34,7 @@
 					processData: false, // Don't process the files
 					contentType: false, // Set content type to false as jQuery will tell the server its a query string request
 					success: function(data) {
-						$(GreaterMediaContests.selectors.container).html(data);
+						container.html(data);
 					}
 				});
 			}
@@ -40,8 +42,17 @@
 			return false;
 		});
 
-		// load form
-		$(GreaterMediaContests.selectors.container).load(GreaterMediaContests.endpoints.load);
+		container.on('click', GreaterMediaContests.selectors.yes_age, function() {
+			container.load(GreaterMediaContests.endpoints.confirm_age);
+			return false;
+		});
+		
+		container.on('click', GreaterMediaContests.selectors.no_age, function() {
+			container.load(GreaterMediaContests.endpoints.reject_age);
+			return false;
+		});
+
+		container.load(GreaterMediaContests.endpoints.load);
 	};
 
 	$(document).bind('pjax:end', __ready).ready(__ready);

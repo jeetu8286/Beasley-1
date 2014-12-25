@@ -42,3 +42,20 @@
 #contest_editor {
 	margin-top: 1em;
 }
+
+.post-type-contest {
+	#restrictions {
+		p {
+			margin-top: 0;
+
+			&:last-child {
+				margin-bottom: 0;
+			}
+		}
+
+		label {
+			display: block;
+			font-weight: bold;
+		}
+	}
+}
