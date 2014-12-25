@@ -17,128 +17,6 @@ class GreaterMediaFormbuilderRender {
 	const TEXTAREA_SIZE_LARGE = '10';
 
 	/**
-	 * Register WordPress actions & filters
-	 */
-	public static function register_actions() {
-		// Register AJAX handlers
-		add_action( 'gmr_contest_submit', array( __CLASS__, 'process_form_submission' ) );
-		// Register a generic POST handler for if/when there's a fallback from the AJAX method
-		add_action( 'wp', array( __CLASS__, 'process_form_submission' ) );
-	}
-
-	/**
-	 * @uses do_action
-	 * @uses wp_send_json_success
-	 */
-	public static function process_form_submission() {
-
-		try {
-
-			if ( 'POST' !== strtoupper( $_SERVER['REQUEST_METHOD'] ) ) {
-				throw new InvalidArgumentException( 'Request should be a POST' );
-			}
-
-			if ( ! isset( $_POST['contest_id'] ) ) {
-				throw new InvalidArgumentException( 'Missing contest_id' );
-			}
-
-			$contest_id = absint( $_POST['contest_id'] );
-			if ( empty( $contest_id ) ) {
-				throw new InvalidArgumentException( 'Invalid contest_id' );
-			}
-
-			$contest = get_post( $contest_id );
-			if ( empty( $contest ) ) {
-				throw new InvalidArgumentException( 'No contest found with given ID' );
-			}
-
-			if ( 'contest' !== $contest->post_type ) {
-				throw new InvalidArgumentException( 'contest_id does not reference a contest' );
-			}
-
-			list( $entrant_reference, $entrant_name ) = self::entrant_id_and_name();
-
-
-			// Pretty sure this is our form submission at this point
-			$form = json_decode( get_post_meta( $contest_id, 'embedded_form', true ) );
-			if ( empty( $form ) ) {
-				throw new InvalidArgumentException( 'Contest is missing an embedded form' );
-			}
-
-			$submitted_values = array();
-			$submitted_files  = array(
-				'images' => array(),
-				'other'  => array(),
-			);
-			foreach ( $form as $field ) {
-
-				$post_array_key = 'form_field_' . $field->cid;
-
-				if ( 'file' === $field->field_type ) {
-
-					if ( isset( $_FILES[ $post_array_key ] ) ) {
-						$file_type_index                                        = self::file_type_index( $_FILES[ $post_array_key ]['tmp_name'] );
-						$submitted_files[ $file_type_index ][ $post_array_key ] = $_FILES[ $post_array_key ];
-					}
-
-				} else if ( isset( $_POST[ $post_array_key ] ) ) {
-
-					if ( is_scalar( $_POST[ $post_array_key ] ) ) {
-						$submitted_values[ $field->cid ] = sanitize_text_field( $_POST[ $post_array_key ] );
-					} else if ( is_array( $_POST[ $post_array_key ] ) ) {
-						$submitted_values[ $field->cid ] = array_map( 'sanitize_text_field', $_POST[ $post_array_key ] );
-					}
-
-				}
-
-			}
-
-			$entry = GreaterMediaContestEntryEmbeddedForm::create_for_data(
-				$contest_id,
-				$entrant_name,
-				$entrant_reference,
-				GreaterMediaContestEntry::ENTRY_SOURCE_EMBEDDED_FORM,
-				json_encode( $submitted_values )
-			);
-
-			$entry->save();
-
-			self::handle_submitted_files( $submitted_files, $entry );
-
-			do_action( 'greatermedia_contest_entry_save', $entry );
-
-			if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-				$response          = new stdClass();
-				$response->message = get_post_meta( $contest_id, 'form-thankyou', true );
-				wp_send_json_success( $response );
-				exit();
-			} else {
-
-				/**
-				 * If we've fallen back to an old-school non-AJAX POST,
-				 * use a constant to communicate status to the rendering function
-				 * since this class isn't meant to be instantiated.
-				 */
-				define( 'CONTEST_' . $contest_id . '_SUCCESS', true );
-
-			}
-
-		} catch ( InvalidArgumentException $e ) {
-
-			if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-				$response          = new stdClass();
-				$response->message = $e->getMessage();
-				wp_send_json_error( $response );
-				exit();
-			} else {
-				return;
-			}
-
-		}
-
-	}
-
-	/**
 	 * Retrieve a custom list of HTML tags & attributes we're allowing in a rendered form
 	 * @return array valid tags
 	 */
@@ -257,15 +135,7 @@ class GreaterMediaFormbuilderRender {
 
 		if ( is_string( $form ) ) {
 			$clean_form = trim( $form, '"' );
-			$form       = json_decode( $clean_form );
-		}
-
-		if ( is_null( $form ) ) {
-			return new WP_Error( 'contest_form_builder', '$form parameter is invalid' );
-		}
-
-		if ( ! is_array( $form ) ) {
-			return new WP_Error( 'contest_form_builder', '$form should be a JSON string or an Object' );
+			$form = json_decode( $clean_form );
 		}
 
 		if ( defined( 'CONTEST_' . $post_id . '_SUCCESS' ) && 'CONTEST_' . $post_id . '_SUCCESS' ) {
@@ -274,14 +144,11 @@ class GreaterMediaFormbuilderRender {
 			 * Fallback to rendering the thank-you message on the server side.
 			 * This should be OK since a POST won't be cached.
 			 */
-			$html .= '<p>' .
-			         get_post_meta( $post_id, 'form-thankyou', true ) .
-			         '</p>';
+			$html .= '<p>' . get_post_meta( $post_id, 'form-thankyou', true ) . '</p>';
 
 		} else {
 
-			$html .= '<form action="" method="post" enctype="multipart/form-data" class="' . esc_attr( self::FORM_CLASS ) . '" data-parsley-validate>' .
-			         '<input type="hidden" name="contest_id" value="' . absint( $post_id ) . '" />';
+			$html .= '<form action="" method="post" enctype="multipart/form-data" class="' . esc_attr( self::FORM_CLASS ) . '" data-parsley-validate>';
 
 			foreach ( $form as $field ) {
 				
@@ -1082,40 +949,6 @@ class GreaterMediaFormbuilderRender {
 	}
 
 	/**
-	 * Get Gigya ID and build name, from Gigya session data if available
-	 *
-	 * @return array
-	 */
-	protected static function entrant_id_and_name() {
-
-		if ( class_exists( 'GreaterMedia\Gigya\GigyaSession' ) ) {
-
-			$gigya_session = \GreaterMedia\Gigya\GigyaSession::get_instance();
-			$gigya_id      = $gigya_session->get_user_id();
-			if ( ! empty( $gigya_id ) ) {
-
-				$entrant_reference = $gigya_id;
-				$entrant_name      = $gigya_session->get_key( 'firstName' ) . ' ' . $gigya_session->get_key( 'lastName' );
-
-			} else {
-
-				$entrant_name      = 'Anonymous Listener';
-				$entrant_reference = null;
-
-			}
-
-		} else {
-
-			$entrant_name      = 'Anonymous Listener';
-			$entrant_reference = null;
-
-		}
-
-		return array( $entrant_reference, $entrant_name );
-
-	}
-
-	/**
 	 * Set the appropriate attributes for character/word restrictions on a paragraph form field
 	 *
 	 * @param stdClass $field
@@ -1188,84 +1021,4 @@ class GreaterMediaFormbuilderRender {
 
 	}
 
-	/**
-	 * Identify what type of file an upload is so it can be handled appropriately
-	 *
-	 * @param $filename path to filename
-	 *
-	 * @return string 'images'|'other'
-	 */
-	protected static function file_type_index( $filename ) {
-
-		if ( file_is_valid_image( $filename ) ) {
-			return 'images';
-		} else {
-			return 'other';
-		}
-
-	}
-
-	/**
-	 * @param array                    $submitted_files
-	 * @param GreaterMediaContestEntry $entry
-	 *
-	 * @return GreaterMediaUserGeneratedContent|null
-	 */
-	protected static function handle_submitted_files( array $submitted_files, GreaterMediaContestEntry $entry ) {
-
-		/**
-		 * Ignoring the "other" files per GMR-343
-		 * "There's no reason for Contest or Survey upload fields to allow any filetypes other than images. Aside
-		 * from security considerations, it also becomes much more complex to manage user generated content if it's
-		 * anything beside photos."
-		 */
-		if ( empty( $submitted_files['images'] ) ) {
-
-			// No need to create UGC
-			return null;
-
-		}
-
-		if ( 1 === count( $submitted_files['images'] ) ) {
-
-			// Single image. Create a GreaterMediaUserGeneratedImage.
-			$ugc = GreaterMediaUserGeneratedContent::for_data_type( 'image' );
-			$ugc->post->post_parent = $entry->post_id();
-			$ugc->save();
-
-			reset( $submitted_files );
-			$upload_field = key( $submitted_files['images'] );
-
-			$attachment_id = media_handle_upload( $upload_field, $entry->post->post_parent, array( 'post_status' => 'private' ) );
-
-			$ugc->post->post_content = wp_get_attachment_image( $attachment_id, 'full' );
-			$ugc->save();
-
-			set_post_thumbnail( $ugc->post->ID, $attachment_id );
-
-		} else {
-
-			// Multiple images. Create a GreaterMediaUserGeneratedGallery.
-			$ugc = GreaterMediaUserGeneratedContent::for_data_type( 'gallery' );
-			$ugc->post->post_parent = $entry->post_id();
-			$ugc->save();
-
-			$attachment_ids = array();
-			foreach ( array_keys( $submitted_files['images'] ) as $upload_field ) {
-				$attachment_ids[] = media_handle_upload( $upload_field, $entry->post->post_parent, array( 'post_status' => 'private' ) );
-			}
-
-			$ugc->post->post_content = '[gallery ids="' . implode( ',', $attachment_ids ) . '"]';
-			$ugc->save();
-
-			set_post_thumbnail( $ugc->post->ID, $attachment_ids[0] );
-
-		}
-
-		return $ugc;
-		
-	}
-
 }
-
-GreaterMediaFormbuilderRender::register_actions();

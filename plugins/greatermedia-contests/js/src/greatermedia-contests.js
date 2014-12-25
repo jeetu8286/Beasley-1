@@ -28,14 +28,8 @@
 					data: form_data,
 					processData: false, // Don't process the files
 					contentType: false, // Set content type to false as jQuery will tell the server its a query string request
-					dataType: 'json',
-					success: function(data, textStatus, jqXHR) {
-						if ('success' === textStatus && data.data.message) {
-							var wrapper = document.createElement('p');
-							wrapper.class = 'contest_thank_you';
-							wrapper.innerText = data.data.message;
-							form.replaceWith(wrapper);
-						}
+					success: function(data) {
+						$(GreaterMediaContests.selectors.container).html(data);
 					}
 				});
 			}
