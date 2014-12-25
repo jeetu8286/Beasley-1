@@ -16,49 +16,14 @@ class GreaterMediaFormbuilderRender {
 	const TEXTAREA_SIZE_MEDIUM = '5';
 	const TEXTAREA_SIZE_LARGE = '10';
 
-	private function __construct() {
-		// Use the public static methods. Don't instantiate this class directly.
-	}
-
 	/**
 	 * Register WordPress actions & filters
 	 */
 	public static function register_actions() {
-
-		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-			// Register AJAX handlers
-			add_action( 'wp_ajax_enter_contest', array( __CLASS__, 'process_form_submission' ) );
-			add_action( 'wp_ajax_nopriv_enter_contest', array( __CLASS__, 'process_form_submission' ) );
-		} else {
-			// Register a generic POST handler for if/when there's a fallback from the AJAX method
-			add_action( 'wp', array( __CLASS__, 'process_form_submission' ) );
-		}
-
-		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'wp_enqueue_scripts' ) );
-
-	}
-
-	/**
-	 * Enqueue scripts & styles
-	 * Implements wp_enqueue_scripts action
-	 */
-	public static function wp_enqueue_scripts() {
-
-		wp_enqueue_script( 'parsleyjs' );
-		wp_enqueue_style( 'parsleyjs' );
-		wp_enqueue_script( 'parsleyjs-words' );
-
-		wp_enqueue_script( 'greatermedia-contests', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'js/greatermedia-contests.js', array( 'jquery' ), false, true );
-		$settings = array(
-			'form_class' => self::FORM_CLASS,
-			'ajax_url'   => admin_url( 'admin-ajax.php' ),
-		);
-		wp_localize_script( 'greatermedia-contests', 'GreaterMediaContests', $settings );
-
-		wp_enqueue_script( 'datetimepicker' );
-		wp_enqueue_style( 'datetimepicker' );
-		wp_enqueue_style( 'greatermedia-contests', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'css/greatermedia-contests.css' );
-
+		// Register AJAX handlers
+		add_action( 'gmr_contest_submit', array( __CLASS__, 'process_form_submission' ) );
+		// Register a generic POST handler for if/when there's a fallback from the AJAX method
+		add_action( 'wp', array( __CLASS__, 'process_form_submission' ) );
 	}
 
 	/**
@@ -316,7 +281,6 @@ class GreaterMediaFormbuilderRender {
 		} else {
 
 			$html .= '<form action="" method="post" enctype="multipart/form-data" class="' . esc_attr( self::FORM_CLASS ) . '" data-parsley-validate>' .
-			         '<input type="hidden" name="action" value="enter_contest" />' .
 			         '<input type="hidden" name="contest_id" value="' . absint( $post_id ) . '" />';
 
 			foreach ( $form as $field ) {

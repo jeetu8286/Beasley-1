@@ -19,44 +19,37 @@ get_header(); ?>
 
 						<article id="post-<?php the_ID(); ?>" <?php post_class( 'cf' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
 
-							<?php if ( has_post_thumbnail() ) {
+							<?php if ( has_post_thumbnail() ) : ?>
+								<?php the_post_thumbnail( 'full', array( 'class' => 'single__featured-img--contest' ) ); ?>
+							<?php endif; ?>
 
-									the_post_thumbnail( 'full', array( 'class' => 'single__featured-img--contest' ) );
-
-								}
-							?>
-			
 							<section class="col__inner--left">
 
 								<header class="entry__header">
 									<?php $encoded_permalink = urlencode( get_permalink() ); ?>
 									<?php $encoded_title = urlencode( get_the_title() ); ?>
 
-									<time class="entry__date" datetime="<?php echo get_the_time(); ?>"><?php the_date('F j'); ?></time>
+									<time class="entry__date" datetime="<?php echo get_the_time(); ?>"><?php the_date( 'F j' ); ?></time>
 									<h2 class="entry__title" itemprop="headline"><?php the_title(); ?></h2>
+
 									<a class="icon-facebook social-share-link" href="http://www.facebook.com/sharer/sharer.php?u=<?php echo $encoded_permalink; ?>&title=<?php echo $encoded_title; ?>"></a>
 									<a class="icon-twitter social-share-link" href="http://twitter.com/home?status=<?php echo $encoded_title; ?>+<?php echo $encoded_permalink; ?>"></a>
 									<a class="icon-google-plus social-share-link" href="https://plus.google.com/share?url=<?php echo $encoded_permalink; ?>"></a>
 
 								</header>
 
-								<?php the_content(); ?>
+								<?php if ( ( $contest_prize = trim( get_post_meta( get_the_ID(), 'prizes-desc', true ) ) ) ) : ?>
+									<h4>What you win:</h4>
+									<?php echo wpautop( $contest_prize ); ?>
+								<?php endif; ?>
 
-								other metabox content goes here
+								<?php the_content(); ?>
 
 							</section>
 
 
-							<section class="col__inner--right">
-								<?php
-
-								$form = get_post_meta( get_the_ID(), 'embedded_form', true );
-								$error = GreaterMediaFormbuilderRender::render( get_the_ID(), $form );
-								if ( is_wp_error( $error ) ) :
-									echo '<p>', $error->get_error_message(), '</p>';
-								endif;
-
-								?>
+							<section id="contest-form" class="col__inner--right">
+								LOADING... <?php //TODO: replace with a spinner ?>
 							</section>
 
 						</article>

@@ -1,6 +1,3 @@
-/*! Greater Media Contests - v1.0.0
- * http://10up.com/
- * Copyright (c) 2014; * Licensed GPLv2+ */
 document.addEventListener("DOMContentLoaded", function() {
 	var args = {
 		selector: '#contest_embedded_form'

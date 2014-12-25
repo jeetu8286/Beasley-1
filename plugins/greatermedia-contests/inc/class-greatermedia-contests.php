@@ -10,11 +10,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class GreaterMediaContests {
 
-	const CPT_SLUG = 'contest';
+	const CPT_SLUG = GMR_CONTEST_CPT;
 
 	function __construct() {
 
-		add_action( 'init', array( $this, 'register_contest_post_type' ) );
 		add_action( 'init', array( $this, 'register_contest_type_taxonomy' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 		add_action( 'restrict_manage_posts', array( $this, 'admin_contest_type_filter' ) );
@@ -87,53 +86,6 @@ class GreaterMediaContests {
 		}
 
 		echo '</div></div>';
-
-	}
-
-	/**
-	 * Register a Custom Post Type representing a contest
-	 * @uses register_post_type
-	 */
-	public function register_contest_post_type() {
-
-		$labels = array(
-			'name'               => _x( 'Contests', 'Post Type General Name', 'greatermedia_contests' ),
-			'singular_name'      => _x( 'Contest', 'Post Type Singular Name', 'greatermedia_contests' ),
-			'menu_name'          => __( 'Contests', 'greatermedia_contests' ),
-			'parent_item_colon'  => __( 'Parent Contest:', 'greatermedia_contests' ),
-			'all_items'          => __( 'All Contests', 'greatermedia_contests' ),
-			'view_item'          => __( 'View Contest', 'greatermedia_contests' ),
-			'add_new_item'       => __( 'Add New Contest', 'greatermedia_contests' ),
-			'add_new'            => __( 'Add New', 'greatermedia_contests' ),
-			'edit_item'          => __( 'Edit Contest', 'greatermedia_contests' ),
-			'update_item'        => __( 'Update Contest', 'greatermedia_contests' ),
-			'search_items'       => __( 'Search Contests', 'greatermedia_contests' ),
-			'not_found'          => __( 'Not found', 'greatermedia_contests' ),
-			'not_found_in_trash' => __( 'Not found in Trash', 'greatermedia_contests' ),
-		);
-		$args   = array(
-			'label'               => __( 'contest', 'greatermedia_contests' ),
-			'description'         => __( 'Contest', 'greatermedia_contests' ),
-			'labels'              => $labels,
-			'supports'            => array( 'title', 'editor', 'thumbnail' ),
-			'taxonomies'          => array( 'contest_type' ),
-			'hierarchical'        => false,
-			'public'              => true,
-			'show_ui'             => true,
-			'show_in_menu'        => true,
-			'show_in_nav_menus'   => true,
-			'show_in_admin_bar'   => true,
-			'menu_position'       => 5,
-			'menu_icon'           => 'dashicons-forms',
-			'can_export'          => true,
-			'has_archive'         => true,
-			'exclude_from_search' => false,
-			'publicly_queryable'  => true,
-			'capability_type'     => 'post',
-		);
-
-		register_post_type( self::CPT_SLUG, $args );
-		add_post_type_support( 'contest', 'timed-content' );
 
 	}
 
