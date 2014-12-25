@@ -119,11 +119,16 @@ function gmr_contests_process_action() {
  * @action gmr_contest_load
  */
 function gmr_contests_render_form() {
-	$form = get_post_meta( get_the_ID(), 'embedded_form', true );
-	$error = GreaterMediaFormbuilderRender::render( get_the_ID(), $form );
-	if ( is_wp_error( $error ) ) :
-		echo '<p>', $error->get_error_message(), '</p>';
-	endif;
+	$contest_id = get_the_ID();
+	if ( function_exists( 'has_user_entered_contest' ) && has_user_entered_contest( $contest_id ) ) {
+		echo '<p>You have already entered this contest!</p>';
+	} else {
+		$form = get_post_meta( $contest_id, 'embedded_form', true );
+		$error = GreaterMediaFormbuilderRender::render( $contest_id, $form );
+		if ( is_wp_error( $error ) ) {
+			echo '<p>', $error->get_error_message(), '</p>';
+		}
+	}
 }
 
 /**
