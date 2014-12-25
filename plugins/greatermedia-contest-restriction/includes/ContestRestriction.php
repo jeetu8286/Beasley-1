@@ -16,7 +16,7 @@ class ContestRestriction {
 
 	public function enqueue_scripts() {
 		global $post;
-		if( isset( $post->ID ) && $post->post_type == GreaterMediaContests::CPT_SLUG ) {
+		if( isset( $post->ID ) && $post->post_type == GMR_CONTEST_CPT ) {
 			$post_id = $post->ID;
 			$min_age = get_post_meta( $post_id, '_min_age', true );
 			$max_entries = get_post_meta( $post_id, '_max_entries', true );
@@ -31,7 +31,7 @@ class ContestRestriction {
 		$post = get_post( $post_id );
 		$post_type = $post->post_type;
 
-		if( $post->post_type == GreaterMediaContests::CPT_SLUG ) {
+		if( $post->post_type == GMR_CONTEST_CPT ) {
 			$return = '';
 
 			$member_only = get_post_meta( $post_id, '_member_only', true );

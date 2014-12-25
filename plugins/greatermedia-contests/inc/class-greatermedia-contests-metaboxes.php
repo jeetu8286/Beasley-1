@@ -39,7 +39,7 @@ class GreaterMediaContestsMetaboxes {
 			return;
 		}
 
-		if ( $post && 'contest' === $post->post_type ) {
+		if ( $post && GMR_CONTEST_CPT === $post->post_type ) {
 
 			wp_enqueue_style( 'formbuilder' );
 			wp_enqueue_style( 'datetimepicker' );
@@ -294,9 +294,9 @@ class GreaterMediaContestsMetaboxes {
 	 */
 	public function add_meta_boxes() {
 
-		add_meta_box( 'rules', 'Contest Rules', array( $this, 'rules_meta_box' ), GreaterMediaContests::CPT_SLUG, 'normal', 'default', array() );
-		add_meta_box( 'form', 'Form', array( $this, 'contest_embedded_form' ), GreaterMediaContests::CPT_SLUG, 'advanced', 'default', array() );
-		add_meta_box( 'gallery', 'Gallery', array( $this, 'gallery_meta_box' ), GreaterMediaContests::CPT_SLUG, 'side' );
+		add_meta_box( 'rules', 'Contest Rules', array( $this, 'rules_meta_box' ), GMR_CONTEST_CPT, 'normal', 'default', array() );
+		add_meta_box( 'form', 'Form', array( $this, 'contest_embedded_form' ), GMR_CONTEST_CPT, 'advanced', 'default', array() );
+		add_meta_box( 'gallery', 'Gallery', array( $this, 'gallery_meta_box' ), GMR_CONTEST_CPT, 'side' );
 
 	}
 
@@ -370,7 +370,7 @@ class GreaterMediaContestsMetaboxes {
 		}
 
 		// Make sure the post type is correct
-		if ( 'contest' !== $post->post_type ) {
+		if ( GMR_CONTEST_CPT !== $post->post_type ) {
 			return;
 		}
 

@@ -10,9 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class GreaterMediaContests {
 
-	const CPT_SLUG = GMR_CONTEST_CPT;
-
-	function __construct() {
+	public function __construct() {
 
 		add_action( 'init', array( $this, 'register_contest_type_taxonomy' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
@@ -34,7 +32,7 @@ class GreaterMediaContests {
 	 * @access public
 	 */
 	public function update_admin_menu() {
-		remove_submenu_page( 'edit.php?post_type=' . self::CPT_SLUG, 'post-new.php?post_type=' . self::CPT_SLUG );
+		remove_submenu_page( 'edit.php?post_type=' . GMR_CONTEST_CPT, 'post-new.php?post_type=' . GMR_CONTEST_CPT );
 	}
 
 	/**
@@ -49,8 +47,8 @@ class GreaterMediaContests {
 	public function adjust_current_admin_menu() {
 		global $parent_file, $submenu_file, $typenow, $pagenow;
 
-		if ( in_array( $pagenow, array( 'post-new.php', 'post.php' ) ) && in_array( $typenow, array( self::CPT_SLUG, 'listener_submissions' ) ) ) {
-			$parent_file = 'edit.php?post_type=' . self::CPT_SLUG;
+		if ( in_array( $pagenow, array( 'post-new.php', 'post.php' ) ) && in_array( $typenow, array( GMR_CONTEST_CPT, 'listener_submissions' ) ) ) {
+			$parent_file = 'edit.php?post_type=' . GMR_CONTEST_CPT;
 			$submenu_file = 'edit.php?post_type=' . $typenow;
 		}
 	}
@@ -63,7 +61,7 @@ class GreaterMediaContests {
 
 		global $post;
 
-		if ( ! isset( $post ) || 'contest' !== $post->post_type ) {
+		if ( ! isset( $post ) || GMR_CONTEST_CPT !== $post->post_type ) {
 			return;
 		}
 
@@ -81,7 +79,7 @@ class GreaterMediaContests {
 
 		global $post;
 
-		if ( ! isset( $post ) || 'contest' !== $post->post_type ) {
+		if ( ! isset( $post ) || GMR_CONTEST_CPT !== $post->post_type ) {
 			return;
 		}
 
@@ -124,7 +122,7 @@ class GreaterMediaContests {
 			'show_tagcloud'     => false,
 		);
 
-		register_taxonomy( 'contest_type', array( 'contest' ), $args );
+		register_taxonomy( 'contest_type', array( GMR_CONTEST_CPT ), $args );
 
 		$this->maybe_seed_contest_type_taxonomy();
 
@@ -181,7 +179,7 @@ class GreaterMediaContests {
 		global $typenow;
 		$contest_type_tax_id = 0;
 
-		if ( 'contest' !== $typenow || ! is_admin() ) {
+		if ( GMR_CONTEST_CPT !== $typenow || ! is_admin() ) {
 			return;
 		}
 
@@ -222,7 +220,7 @@ class GreaterMediaContests {
 
 		$contest_type_tax_id = isset( $_GET['type_filter'] ) ? intval( $_GET['type_filter'] ) : 0;
 
-		if ( 'contest' !== $typenow || ! is_admin() || empty( $contest_type_tax_id ) ) {
+		if ( GMR_CONTEST_CPT !== $typenow || ! is_admin() || empty( $contest_type_tax_id ) ) {
 			return;
 		}
 
@@ -248,8 +246,7 @@ class GreaterMediaContests {
 	 * @return array The array of extended post types.
 	 */
 	public function extend_live_link_suggestion_post_types( $post_types ) {
-		$post_types[] = 'contest';
-
+		$post_types[] = GMR_CONTEST_CPT;
 		return $post_types;
 	}
 
