@@ -166,15 +166,22 @@ function gmr_contests_render_form( $skip_age = false ) {
 	// check the max entries limit
 	$max_entries = get_post_meta( $contest_id, 'contest-max-entries', true );
 	if ( $max_entries > 0 ) {
-		$query = new WP_Query( array(
-			'post_type'      => 'contest_entry',
-			'post_status'    => 'any',
-			'post_parent'    => $contest_id,
-			'posts_per_page' => 1,
-			'fields'         => 'ids',
-		) );
+		$transient = 'contest_entries_' . $contest_id;
+		$contest_entries_count = get_transient( $transient );
+		if ( false === $contest_entries_count ) {
+			$query = new WP_Query( array(
+				'post_type'      => 'contest_entry',
+				'post_status'    => 'any',
+				'post_parent'    => $contest_id,
+				'posts_per_page' => 1,
+				'fields'         => 'ids',
+			) );
 
-		if ( $query->found_posts >= $max_entries ) {
+			$contest_entries_count = $query->found_posts;
+			set_transient( $transient, $contest_entries_count, DAY_IN_SECONDS );
+		}
+
+		if ( $contest_entries_count >= $max_entries ) {
 			echo '<p>This contest has reached maximum number of entries!</p>';
 			return;
 		}
@@ -265,6 +272,7 @@ function gmr_contests_process_form_submission() {
 	gmr_contests_handle_submitted_files( $submitted_files, $entry );
 
 	do_action( 'greatermedia_contest_entry_save', $entry );
+	delete_transient( 'contest_entries_' . $contest_id );
 
 	echo wpautop( get_post_meta( $contest_id, 'form-thankyou', true ) );
 }
