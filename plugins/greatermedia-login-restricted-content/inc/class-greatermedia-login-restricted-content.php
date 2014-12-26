@@ -17,7 +17,6 @@ class GreaterMediaLoginRestrictedContent extends VisualShortcode {
 		);
 
 		add_action( 'post_submitbox_misc_actions', array( $this, 'post_submitbox_misc_actions' ), 30, 0 );
-		add_action( 'wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ), 20, 0 );
 		add_action( 'plugins_loaded', array( $this, 'plugins_loaded' ) );
 		add_action( 'save_post', array( $this, 'save_post' ) );
@@ -97,19 +96,6 @@ class GreaterMediaLoginRestrictedContent extends VisualShortcode {
 			wp_localize_script( 'greatermedia-lc-admin-js', 'GreaterMediaLoginRestrictedContent', $settings );
 
 		}
-	}
-
-	/**
-	 * Enqueue JavaScript and CSS for public-facing functionality
-	 */
-	public function wp_enqueue_scripts() {
-
-		// Public-facing page
-		wp_enqueue_script( 'greatermedia-lc', trailingslashit( GREATER_MEDIA_LOGIN_RESTRICTED_CONTENT_URL ) . 'js/greatermedia-login-restricted-content.js', array(
-			'jquery',
-			'underscore'
-		), false, true );
-
 	}
 
 	/**
