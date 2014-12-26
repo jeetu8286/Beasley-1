@@ -24,6 +24,11 @@ include 'inc/class-greatermedia-contests-rewrites.php';
 include 'inc/class-greatermedia-contest-entry.php';
 include 'inc/class-greatermedia-contest-entry-embedded-form.php';
 include 'inc/class-greatermedia-formbuilder-render.php';
+include 'inc/class-greatermedia-ugc.php';
+include 'inc/class-greatermedia-uggallery.php';
+include 'inc/class-greatermedia-ugimage.php';
+include 'inc/class-greatermedia-uglink.php';
+include 'inc/class-ugc-moderation-table.php';
 
 if ( is_admin() ) {
 	include 'inc/class-greatermedia-contests-metaboxes.php';
@@ -31,6 +36,7 @@ if ( is_admin() ) {
 }
 
 if ( defined( 'WP_CLI' ) && WP_CLI ) {
+	include 'inc/class-greatermedia-ugc-wp-cli.php';
 	include 'inc/class-greatermedia-contests-wp-cli.php';
 }
 

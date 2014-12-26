@@ -12,13 +12,17 @@ module.exports = function (grunt) {
 						' * Licensed GPLv2+' +
 						' */\n'
 			},
-			frontend: {
+			frontend_contest: {
 				src: ['js/src/greatermedia-contests.js'],
 				dest: 'js/greatermedia-contests.js'
 			},
-			backend: {
+			backend_contest: {
 				src: ['js/src/greatermedia-contests-admin.js'],
 				dest: 'js/greatermedia-contests-admin.js'
+			},
+			backend_moderation: {
+				src: ['js/src/greatermedia-ugc-moderation.js'],
+				dest: 'js/greatermedia-ugc-moderation.js'
 			}
 		},
 		jshint: {
@@ -37,12 +41,16 @@ module.exports = function (grunt) {
 				globals: {
 					exports: true,
 					module: false,
+					twttr: false,
 					jQuery: false,
 					document: false,
 					window: false,
 					console: false,
+					setTimeout: false,
 					GreaterMediaContests: false,
 					GreaterMediaContestsForm: false,
+					GreaterMediaAdminNotifier: false,
+					GreaterMediaUGC: false,
 					Formbuilder: false,
 					FormData: false
 				}
@@ -51,6 +59,7 @@ module.exports = function (grunt) {
 		uglify: {
 			all: {
 				files: {
+					'js/greatermedia-ugc-moderation.min.js': ['js/greatermedia-ugc-moderation.js'],
 					'js/greatermedia-contests-admin.min.js': ['js/greatermedia-contests-admin.js'],
 					'js/greatermedia-contests.min.js': ['js/greatermedia-contests.js']
 				},
@@ -74,6 +83,7 @@ module.exports = function (grunt) {
 					style: 'compressed'
 				},
 				files: {
+					'css/greatermedia-ugc-moderation.css': 'css/src/greatermedia-ugc-moderation.scss',
 					'css/greatermedia-contests.css': 'css/src/greatermedia-contests.scss',
 					'css/greatermedia-contests-admin.css': 'css/src/greatermedia-contests-admin.scss'
 				}
