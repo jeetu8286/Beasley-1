@@ -15,6 +15,8 @@ add_action( 'gmr_contest_reject-age', 'gmr_contests_reject_user_age' );
 add_filter( 'gmr_contest_submissions_query', 'gmr_contests_submissions_query' );
 add_filter( 'post_type_link', 'gmr_contests_get_submission_permalink', 10, 2 );
 add_filter( 'request', 'gmr_contests_unpack_vars' );
+add_filter( 'gmr_contest_next_submission', 'gmr_contests_get_next_submission', 10, 2 );
+add_filter( 'gmr_contest_prev_submission', 'gmr_contests_get_prev_submission', 10, 2 );
 
 /**
  * Registers custom post types related to contests area.
@@ -450,4 +452,77 @@ function gmr_contests_unpack_vars( $query_vars ) {
 	}
 
 	return $query_vars;
+}
+
+/**
+ * Returns next submission post object.
+ *
+ * @filter gmr_contest_next_submission 10 2
+ * @param WP_Post $next_submission The next submission post object.
+ * @param int $submission_id The submission id.
+ * @return WP_Post The submission post object on success, otherwise NULL.
+ */
+function gmr_contests_get_next_submission( $next_submission, $submission_id ) {
+	return gmr_contests_get_adjacent_submission( $next_submission, $submission_id, 'next' );
+}
+
+/**
+ * Returns previous submission post object.
+ * 
+ * @filter gmr_contest_prev_submission 10 2
+ * @param WP_Post $prev_submission The previous submission post object.
+ * @param int $submission_id The submission id.
+ * @return WP_Post The submission post object on success, otherwise NULL.
+ */
+function gmr_contests_get_prev_submission( $prev_submission, $submission_id ) {
+	return gmr_contests_get_adjacent_submission( $prev_submission, $submission_id, 'prev' );
+}
+
+/**
+ * Returns adjacent submission post object. Can either be next or previous post.
+ *
+ * @param WP_Post $adjacent_submission
+ * @param int $submission_id The current submission id.
+ * @param string $next_or_prev Whether to retrieve next or previous post.
+ * @return WP_Post Post object on success, otherwise NULL.
+ */
+function gmr_contests_get_adjacent_submission( $adjacent_submission, $submission_id, $next_or_prev = 'next' ) {
+	// do nothing if adjacent submission is already found
+	if ( $adjacent_submission && is_a( $adjacent_submission, 'WP_Post' ) ) {
+		return $adjacent_submission;
+	}
+
+	// do nothing if post not found or has wrong post type
+	$submission = get_post( $submission_id );
+	if ( ! $submission || GMR_SUBMISSIONS_CPT != $submission->post_type ) {
+		return null;
+	}
+
+	$order = 'DESC';
+	$before_or_after = 'before';
+	if ( $next_or_prev == 'prev' ) {
+		$order = 'ASC';
+		$before_or_after = 'after';
+	}
+
+	// fetch adjacent submission id
+	$query = new WP_Query( array(
+		'post_type'           => GMR_SUBMISSIONS_CPT,
+		'post_parent'         => $submission->post_parent,
+		'fields'              => 'ids',
+		'no_found_rows'       => true,
+		'ignore_sticky_posts' => true,
+		'posts_per_page'      => 1,
+		'order'               => $order,
+		'orderby'             => 'date',
+		'date_query'          => array(
+			array(
+				$before_or_after => $submission->post_date,
+				'inclusive'      => false,
+				'column'         => 'post_date',
+			),
+		),
+	) );
+
+	return $query->have_posts() ? get_post( $query->next_post() ) : null;
 }
