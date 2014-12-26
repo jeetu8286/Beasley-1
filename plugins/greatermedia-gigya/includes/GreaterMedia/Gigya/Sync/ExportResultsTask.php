@@ -156,6 +156,8 @@ class ExportResultsTask extends SyncTask {
 		$segment_id = $this->get_sentinel()->get_email_segment_id();
 		if ( is_numeric( $segment_id ) ) {
 			return intval( $segment_id );
+		} else {
+			return $segment_id;
 		}
 	}
 
