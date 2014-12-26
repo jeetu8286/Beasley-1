@@ -205,6 +205,7 @@ class GreaterMediaAgeRestrictedContent extends VisualShortcode {
 
 		$current_url     = home_url( add_query_arg( array(), $wp->request ) );
 		$login_url = gigya_profile_path( 'login', array( 'dest' => $current_url ) );
+		$current_url = '/' . trim( $wp->request, '/' );
 
 		if ( ( '18plus' === $age_restriction ) && ( !is_gigya_user_logged_in() || 18 > absint( get_gigya_user_field( 'age' ) ) ) ) {
 			ob_start();
