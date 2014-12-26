@@ -261,12 +261,12 @@ CSS;
 	/**
 	 * Render this shortcode in the page content
 	 *
-	 * @param             $atts    Shortcode attributes
+	 * @param             $attributes    Shortcode attributes
 	 * @param string|null $content Shortcode content
 	 *
 	 * @return string HTML rendered from the shortcode
 	 * @see http://codex.wordpress.org/Function_Reference/add_shortcode
 	 */
-	abstract function process_shortcode( $atts, $content = null );
+	abstract function process_shortcode( $attributes, $content = null );
 
 }
