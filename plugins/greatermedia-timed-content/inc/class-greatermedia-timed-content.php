@@ -86,8 +86,8 @@ class GreaterMediaTimedContent extends VisualShortcode {
 			// Enqueue JavaScript
 			if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
 
-				wp_enqueue_script( 'date-format', trailingslashit( GREATER_MEDIA_TIMED_CONTENT_URL ) . 'bower_components/date.format/date.format.js', array(), null, true );
-				wp_enqueue_script( 'date-toisostring', trailingslashit( GREATER_MEDIA_TIMED_CONTENT_URL ) . 'js/vendor/date-toisostring.js', array(), null, true );
+				wp_enqueue_script( 'date-format' );
+				wp_enqueue_script( 'date-toisostring' );
 				wp_enqueue_script( 'greatermedia-tc-admin-js', trailingslashit( GREATER_MEDIA_TIMED_CONTENT_URL ) . 'js/greatermedia-timed-content-admin.js', array(
 					'jquery',
 					'date-format'
