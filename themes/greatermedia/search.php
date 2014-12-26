@@ -16,14 +16,32 @@ get_header(); ?>
 
 			<section class="content">
 
-				<h2 class="page__title"><?php printf( __( 'Search Results for: %s', 'greatermedia' ), '<span class="search__term">' . get_search_query() . '</span>' ); ?></h2>
+				<?php if ( have_posts() ) :
+					$count = $wp_query->found_posts;
+				?>
 
-				<?php do_action( 'keyword_search_result' ); ?>
+					<h2 class="search__results--count"><?php echo intval( $count ); ?><?php _e( ' Results Found', 'greatermedia' ); ?></h2>
+					<h3 class="search__keyword"><?php printf( __( 'Keyword: %s', 'greatermedia' ), '<span class="search__keyword--term">' . get_search_query() . '</span>' ); ?></h3>
+					<div class="keyword__search--results">
 
-				<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
-				<article id="post-<?php the_ID(); ?>" <?php post_class( 'cf' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
+						<?php do_action( 'keyword_search_result' ); ?>
 
-					<h2 class="entry__title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
+					</div>
+
+					<h2 class="search__title"><?php _e( 'Relevant Search Results', 'greatermedia' ); ?></h2>
+					<?php while ( have_posts() ) : the_post();
+				?>
+
+				<?php
+					$title = get_the_title();
+					$keys= explode(" ",$s);
+					$title = preg_replace('/('.implode('|', $keys) .')/iu', '<span class="search__result--term">\0</span>', $title);
+					?>
+				<article id="post-<?php the_ID(); ?>" <?php post_class( 'search__result' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
+
+					<time datetime="<?php the_time( 'c' ); ?>" class="search__result--date"><?php the_time( 'M j, Y' ); ?></time>
+
+					<h3 class="search__result--title"><a href="<?php the_permalink(); ?>"><?php echo $title ?></a></h3>
 
 				</article>
 				<?php endwhile; ?>

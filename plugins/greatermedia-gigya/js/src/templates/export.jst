@@ -1,0 +1,24 @@
+<div id="misc-publishing-actions" style="margin-bottom: 0.5em;">
+
+	<div class="misc-pub-section misc-pub-post-status">
+		<label for="post_status">Status:</label>
+		<span id="post-status-display"><%- statusText %></span>
+	</div>
+
+	<div class="misc-pub-section curtime misc-pub-curtime">
+		<span id="visibility"> View MyEmma Segment:
+			<% if (emailSegmentID) { %>
+				<a href="<%- emailSegmentURL %>" target="_blank">
+					<b><%- emailSegmentID %></b>
+				</a>
+			<% } else { %>
+					<b>N/A</b>
+			<% } %>
+		</span>
+	</div>
+
+	<div class="misc-pub-section curtime misc-pub-curtime" style="padding-bottom: 1em;">
+		<span id="timestamp"> Last Export: <b><%- lastExport %></b></span>
+	</div>
+
+</div>

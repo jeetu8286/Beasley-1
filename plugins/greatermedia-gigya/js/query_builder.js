@@ -253,6 +253,31 @@ __p += '\n';
 return __p
 };
 
+this["JST"]["src/templates/export.jst"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
+with (obj) {
+__p += '<div id="misc-publishing-actions" style="margin-bottom: 0.5em;">\n\n\t<div class="misc-pub-section misc-pub-post-status">\n\t\t<label for="post_status">Status:</label>\n\t\t<span id="post-status-display">' +
+__e( statusText ) +
+'</span>\n\t</div>\n\n\t<div class="misc-pub-section curtime misc-pub-curtime">\n\t\t<span id="visibility"> View MyEmma Segment:\n\t\t\t';
+ if (emailSegmentID) { ;
+__p += '\n\t\t\t\t<a href="' +
+__e( emailSegmentURL ) +
+'" target="_blank">\n\t\t\t\t\t<b>' +
+__e( emailSegmentID ) +
+'</b>\n\t\t\t\t</a>\n\t\t\t';
+ } else { ;
+__p += '\n\t\t\t\t\t<b>N/A</b>\n\t\t\t';
+ } ;
+__p += '\n\t\t</span>\n\t</div>\n\n\t<div class="misc-pub-section curtime misc-pub-curtime" style="padding-bottom: 1em;">\n\t\t<span id="timestamp"> Last Export: <b>' +
+__e( lastExport ) +
+'</b></span>\n\t</div>\n\n</div>\n';
+
+}
+return __p
+};
+
 this["JST"]["src/templates/favorite_constraint.jst"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
@@ -819,16 +844,19 @@ FACEBOOK_FAVORITE_TYPES = [
 
 var AVAILABLE_CONSTRAINTS = [
 
+
 	/* System Fields */
 	{
 		type: 'system:createdTimestamp',
 		valueType: 'date',
-		value: '01/01/2012'
+		value: '01/01/2012',
+		operator: 'greater than',
 	},
 	{
 		type: 'system:lastLoginTimestamp',
 		valueType: 'date',
-		value: '01/01/2014'
+		value: '01/01/2014',
+		operator: 'greater than',
 	},
 	{
 		type: 'system:isActive',
@@ -891,11 +919,14 @@ var AVAILABLE_CONSTRAINTS = [
 		valueType: 'string',
 		value: '01001'
 	},
+
+	/*
 	{
 		type: 'profile:timezone',
 		valueType: 'string',
 		value: 'America/New_York',
 	},
+	*/
 
 	// Facebook
 	{
@@ -917,8 +948,24 @@ var AVAILABLE_CONSTRAINTS = [
 		valueType: 'string',
 		entryTypeID: -1,
 		entryFieldID: -1
-	}
+	},
 
+	{
+		type: 'data:comment_count',
+		valueType: 'integer',
+		value: 0,
+	},
+	{
+		type: 'data:comment_status',
+		valueType: 'boolean',
+		value: true,
+	},
+	{
+		type: 'action:comment_date',
+		valueType: 'date',
+		value: '01/01/2014',
+		operator: 'greater than',
+	},
 ];
 
 /* Constraint Meta */
@@ -1297,6 +1344,23 @@ var AVAILABLE_CONSTRAINTS_META = [
 	{
 		type: 'record:contest',
 		title: 'Contest Entry'
+	},
+
+	{
+		type: 'data:comment_count',
+		title: 'Comment Count'
+	},
+	{
+		type: 'data:comment_status',
+		title: 'Comment Status',
+		choices: [
+			{ label: 'Has Commented', value: true },
+			{ label: 'Has Not Commented', value: false }
+		]
+	},
+	{
+		type: 'action:comment_date',
+		title: 'Comment Date'
 	}
 
 ];
@@ -1336,6 +1400,82 @@ var QueryResult = Backbone.Model.extend({
 
 	defaults: {
 		email: ''
+	}
+
+});
+
+var MemberQueryStatus = Backbone.Model.extend({
+
+	defaults: {
+		memberQueryID: -1
+	},
+
+	initialize: function(attr, opts) {
+		Backbone.Model.prototype.initialize.call(this, attr, opts);
+
+		this.intervalID = -1;
+		this.delay      = 3; // seconds
+		this.pollFunc   = $.proxy(this.poll, this);
+
+		this.startPoll();
+	},
+
+	getStatusCode: function() {
+		return this.get('statusCode');
+	},
+
+	getMemberQueryID: function() {
+		return this.get('memberQueryID');
+	},
+
+	getEmailSegmentID: function() {
+		return this.get('emailSegmentID');
+	},
+
+	getLastExport: function() {
+		return this.get('lastExport');
+	},
+
+	getProgress: function() {
+		return this.get('progress');
+	},
+
+	refresh: function() {
+		var params = {
+			member_query_id: this.getMemberQueryID()
+		};
+
+		ajaxApi.request('member_query_status', params)
+			.then($.proxy(this.didRefresh, this))
+			.fail($.proxy(this.didRefreshError, this));
+	},
+
+	didRefresh: function(response) {
+		if (response.success) {
+			this.set(response.data);
+			this.trigger('refreshSuccess');
+
+			if (this.get('statusCode') === 'running') {
+				this.startPoll();
+			} else if (response.data.errors) {
+				this.trigger('refreshError', response.data.errors[0]);
+			}
+		} else {
+			this.didRefreshError(response);
+		}
+	},
+
+	didRefreshError: function(response) {
+		this.trigger('refreshError', response.data);
+	},
+
+	startPoll: function() {
+		clearTimeout(this.intervalID);
+		this.intervalID = setTimeout(this.pollFunc, this.delay * 1000);
+	},
+
+	poll: function() {
+		this.refresh();
 	}
 
 });
@@ -1698,6 +1838,13 @@ var ConstraintView = Backbone.View.extend({
 		'not equals',
 	],
 
+	dateOperators: [
+		'greater than',
+		'greater than or equal to',
+		'less than',
+		'less than or equal to'
+	],
+
 	nonFullTextTypes: [
 		'profile:zip',
 		'profile:state',
@@ -1716,6 +1863,8 @@ var ConstraintView = Backbone.View.extend({
 			}
 		} else if (valueType === 'boolean') {
 			return this.booleanOperators;
+		} else if (valueType === 'date') {
+			return this.dateOperators;
 		} else {
 			return this.allOperators;
 		}
@@ -1989,7 +2138,7 @@ var PreviewView = Backbone.View.extend({
 		this.listenTo(this.collection, 'searchTimeout', this.didSearchTimeout);
 
 		Backbone.View.prototype.initialize.call(this, options);
-		this.search();
+		//this.search();
 		this.previewEnabled = true;
 
 		this.stepper = new Stepper('didStep', this);
@@ -2131,6 +2280,143 @@ var QueryResultsView = Backbone.CollectionView.extend({
 	modelView: QueryResultItemView
 });
 
+var ExportView = Backbone.View.extend({
+
+	template: getTemplate('export'),
+
+	initialize: function(options) {
+		Backbone.View.prototype.initialize.call(this, options);
+		this.listenTo(this.model, 'change', this.render);
+	},
+
+	render: function() {
+		var data = this.getStatusJSON();
+		data.view = this;
+
+		var html = this.template(data);
+
+		this.$el.html(html);
+		this.$el.css('visibility', 'visible');
+	},
+
+	getStatusJSON: function() {
+		var meta = {};
+		var statusCode = this.model.getStatusCode();
+
+		if (statusCode === 'pending') {
+			meta.statusText = 'Pending';
+		} else if (statusCode === 'running') {
+			meta.statusText = this.model.getProgress() + "% Completed ...";
+		} else if (statusCode === 'completed') {
+			meta.statusText = 'Completed';
+		}
+
+
+		var lastExport = this.model.getLastExport();
+
+		if (lastExport) {
+			meta.lastExport      = this.toHumanTime(this.model.getLastExport());
+			meta.emailSegmentID  = this.model.getEmailSegmentID();
+			meta.emailSegmentURL = this.toEmmaGroupURL(meta.emailSegmentID);
+		} else {
+			meta.lastExport = 'Never';
+			meta.emailSegmentID = false;
+		}
+
+		return meta;
+	},
+
+	toEmmaGroupURL: function(groupID) {
+		return 'https://app.e2ma.net/app2/audience/list/active/' + groupID + '/';
+	},
+
+	monthNames: [
+		"January", "February", "March", "April", "May", "June",
+		"July", "August", "September", "October", "November", "December"
+	],
+
+	toHumanTime: function(timestamp) {
+		var time   = new Date(timestamp * 1000);
+		var month  = time.getMonth();
+		var monthName = this.monthNames[month];
+		monthName = monthName.substring(0, 3);
+
+		var day    = time.getDay();
+		var year   = time.getFullYear();
+		var hour   = time.getHours();
+		if (hour < 10) hour = '0' + hour;
+
+		var min    = time.getMinutes();
+		if (min < 10) min = '0' + min;
+
+		var sec    = time.getSeconds();
+		if (sec < 10) sec = '0' + sec;
+
+		var output = monthName + ' ' + day + ', ' + year + ' @ ' + hour + ':' + min + ':' + sec;
+
+		return output;
+	},
+
+	getStatusText: function() {
+		return 'statusText';
+	},
+
+	getEmailSegmentID: function() {
+		return 'segment123';
+	},
+
+	getLastExport: function() {
+		return '1 minute ago';
+	}
+
+});
+
+var ExportMenuView = Backbone.View.extend({
+
+	events: {
+		'click .export-button': 'didClickExport'
+	},
+
+	initialize: function(options) {
+		Backbone.View.prototype.initialize.call(this, options);
+	},
+
+	render: function() {
+		var $submitButton = this.getSubmitButton();
+		$submitButton.val('Save');
+		$submitButton.toggleClass('button-primary', false);
+
+		var $exportButton = $('<input name="export" type="button" class="button button-primary button-large export-button" id="export-button" value="Export">');
+		$exportButton.insertBefore($submitButton);
+	},
+
+	getSubmitButton: function() {
+		return $('#publish', this.$el);
+	},
+
+	getPublishForm: function() {
+		return this.getSubmitButton().parents('form:first');
+	},
+
+	didClickExport: function(event) {
+		var exportField = $('<input>').attr({
+			type: 'hidden',
+			name: 'export_member_query',
+			value: '1'
+		});
+
+		var form = this.getPublishForm();
+		exportField.appendTo(form);
+
+		var button = this.getSubmitButton();
+		button.trigger('click');
+
+		return false;
+	},
+
+
+});
+
 var $ = jQuery;
 var QueryBuilderApp = function() {
 	$(document).ready($.proxy(this.initialize, this));
@@ -2146,6 +2432,7 @@ QueryBuilderApp.prototype = {
 		var availableConstraints = new ConstraintCollection(AVAILABLE_CONSTRAINTS);
 		var activeConstraints    = new ConstraintCollection(loadedConstraints);
 		var queryResults         = new QueryResultCollection([], { activeConstraints: activeConstraints });
+		var memberQueryStatus    = new MemberQueryStatus(member_query_meta.status_meta);
 
 		var toolbarView = new ToolbarView({
 			el: $('#query_builder_toolbar'),
@@ -2168,6 +2455,16 @@ QueryBuilderApp.prototype = {
 			collection: queryResults
 		});
 
+		var exportView = new ExportView({
+			el: $('#submitdiv #minor-publishing'),
+			model: memberQueryStatus
+		});
+
+		var exportMenuView = new ExportMenuView({
+			el: $('#submitdiv #major-publishing-actions'),
+			model: memberQueryStatus
+		});
+
 		$('#query_builder_metabox').toggleClass('loading', false);
 		$('#query_builder_metabox .loading-indicator').remove();
 
@@ -2175,8 +2472,13 @@ QueryBuilderApp.prototype = {
 		activeConstraintsView.render();
 		previewView.render();
 		queryResultsView.render();
+		exportView.render();
+		exportMenuView.render();
 
 		activeConstraints.save();
+
+		$('.wrap-preloader').remove();
+		$('.wrap').css('display', 'block');
 	},
 
 };
