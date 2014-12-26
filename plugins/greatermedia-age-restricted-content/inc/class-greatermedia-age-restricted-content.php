@@ -165,10 +165,10 @@ class GreaterMediaAgeRestrictedContent extends VisualShortcode {
 		$html .= '<div class="age-restriction-wrap">';
 		$html .= '<label for="ar_status" class="screen-reader-text">' . __( 'Status', 'greatermedia-age-restricted-content' ) . '</label>';
 		$html .= '<fieldset id="ar_status"' . $tab_index_attribute . ">\n";
-		$html .= '<p><input type="radio" name="ar_status" value="18+" ' . checked( '18+', $age_restriction, false ) . ' />' .
+		$html .= '<p><input type="radio" name="ar_status" value="18plus" ' . checked( '18plus', $age_restriction, false ) . ' />' .
 		         __( '18+', 'greatermedia-age-restricted-content' ) .
 		         '</p>';
-		$html .= '<p><input type="radio" name="ar_status" value="21+" ' . checked( '21+', $age_restriction, false ) . ' />' .
+		$html .= '<p><input type="radio" name="ar_status" value="21plus" ' . checked( '21plus', $age_restriction, false ) . ' />' .
 		         __( '21+', 'greatermedia-age-restricted-content' ) .
 		         '</p>';
 		$html .= '<p><input type="radio" name="ar_status" value="" ' . ( empty( $age_restriction ) ? 'checked="checked"' : '' ) . ' />' .
@@ -196,17 +196,26 @@ class GreaterMediaAgeRestrictedContent extends VisualShortcode {
 	 */
 	public function process_shortcode( array $attributes, $content = null ) {
 
+		global $wp;
 		if ( isset( $attributes['status'] ) ) {
 			$age_restriction = self::sanitize_age_restriction( $attributes['status'] );
 		} else {
 			$age_restriction = '';
 		}
 
-		if ( ( '18plus' === $age_restriction ) && ! is_gigya_user_logged_in() ) {
-			return '';
-		} elseif ( ( '21plus' === $age_restriction ) && is_gigya_user_logged_in() ) {
-			return '';
+		$current_url     = home_url( add_query_arg( array(), $wp->request ) );
+		$login_url = gigya_profile_path( 'login', array( 'dest' => $current_url ) );
+
+		if ( ( '18plus' === $age_restriction ) && ( !is_gigya_user_logged_in() || 18 <= absint( get_gigya_user_field( 'age' ) ) ) ) {
+			ob_start();
+			include GREATER_MEDIA_AGE_RESTRICTED_CONTENT_PATH . '/tpl/age-restricted-shortcode-render.tpl.php';
+			return ob_get_clean();
+		} elseif ( ( '21plus' === $age_restriction ) && ( !is_gigya_user_logged_in() || 21 <= absint( get_gigya_user_field( 'age' ) ) ) ) {
+			ob_start();
+			include GREATER_MEDIA_AGE_RESTRICTED_CONTENT_PATH . '/tpl/age-restricted-shortcode-render.tpl.php';
+			return ob_get_clean();
 		}
+
 
 		// Fall-through, return content as-is
 		return $content;
@@ -267,11 +276,11 @@ class GreaterMediaAgeRestrictedContent extends VisualShortcode {
 		$age_restriction = self::sanitize_age_restriction( get_post_meta( $post->ID, 'post_age_restriction', true ) );
 		$current_url     = home_url( add_query_arg( array(), $wp->request ) );
 
-		if ( ( '18plus' === $age_restriction ) && ( 18 <= absint( get_gigya_user_field( 'age' ) ) ) ) {
+		if ( ( '18plus' === $age_restriction ) && ( !is_gigya_user_logged_in() || 18 <= absint( get_gigya_user_field( 'age' ) ) ) ) {
 			include GREATER_MEDIA_AGE_RESTRICTED_CONTENT_PATH . '/tpl/age-restricted-post-render.tpl.php';
 
 			return;
-		} elseif ( ( '21plus' === $age_restriction ) && ( 21 <= absint( get_gigya_user_field( 'age' ) ) ) ) {
+		} elseif ( ( '21plus' === $age_restriction ) && ( !is_gigya_user_logged_in() || 21 <= absint( get_gigya_user_field( 'age' ) ) ) ) {
 			include GREATER_MEDIA_AGE_RESTRICTED_CONTENT_PATH . '/tpl/age-restricted-post-render.tpl.php';
 
 			return;

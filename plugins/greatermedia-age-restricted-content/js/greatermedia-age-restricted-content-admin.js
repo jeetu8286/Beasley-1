@@ -26,9 +26,9 @@ jQuery(function () {
 				return ('undefined' !== typeof GreaterMediaAgeRestrictedContentAdmin) ? GreaterMediaAgeRestrictedContent.strings['No restriction'] : 'No restriction';
 			}
 
-			if ('18+' === age_restriction) {
+			if ('18plus' === age_restriction) {
 				return ('undefined' !== typeof GreaterMediaAgeRestrictedContentAdmin) ? GreaterMediaAgeRestrictedContent.strings['18+'] : '18+';
-			} else if ('21+' === age_restriction) {
+			} else if ('21plus' === age_restriction) {
 				return ('undefined' !== typeof GreaterMediaAgeRestrictedContentAdmin) ? GreaterMediaAgeRestrictedContent.strings['21+'] : '21+';
 			} else {
 				return ('undefined' !== typeof GreaterMediaAgeRestrictedContentAdmin) ? GreaterMediaAgeRestrictedContent.strings['No restriction'] : 'No restriction';
@@ -75,7 +75,7 @@ jQuery(function () {
 					 * view_edit_popup_onsubmit() method will need to map these labels back to their respective
 					 * values.
 					 */
-					values: [{text: '18+', value: '18+'}, {text: '21+', value: '21+'}],
+					values: [{text: '18+', value: '18plus'}, {text: '21+', value: '21plus'}],
 					value : value
 				}
 			];
@@ -100,10 +100,10 @@ jQuery(function () {
 				if ('undefined' === typeof GreaterMediaAgeRestrictedContentAdmin || 'undefined' === typeof GreaterMediaAgeRestrictedContentAdmin['strings']) {
 
 					// Default translation
-					if ('18+' === status_description) {
-						return '18+';
-					} else if ('21+' === status_description) {
-						return '21+';
+					if ('18plus' === status_description) {
+						return '18plus';
+					} else if ('21plus' === status_description) {
+						return '21plus';
 					}
 					else {
 						return '';
@@ -113,10 +113,10 @@ jQuery(function () {
 				else {
 
 					//  Translated strings
-					if (GreaterMediaAgeRestrictedContent.strings['18+'] === status_description) {
-						return '18+';
-					} else if (GreaterMediaAgeRestrictedContent.strings['21+'] === status_description) {
-						return '21+';
+					if (GreaterMediaAgeRestrictedContent.strings['18plus'] === status_description) {
+						return '18plus';
+					} else if (GreaterMediaAgeRestrictedContent.strings['21plus'] === status_description) {
+						return '21plus';
 					}
 					else {
 						return '';
