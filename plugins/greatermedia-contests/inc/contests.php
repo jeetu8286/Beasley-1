@@ -366,6 +366,7 @@ function gmr_contests_get_entries_count( $contest_id ) {
  *
  * @filter gmr_contest_submissions_query
  * @global int $submission_paged The submissions archive page number.
+ * @param int|WP_Query The contest id or submissions query.
  * @return WP_Query The entries query.
  */
 function gmr_contests_submissions_query( $contest_id = null ) {
