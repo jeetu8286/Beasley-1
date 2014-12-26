@@ -12,7 +12,9 @@ add_action( 'gmr_contest_confirm-age', 'gmr_contests_confirm_user_age' );
 add_action( 'gmr_contest_reject-age', 'gmr_contests_reject_user_age' );
 
 // filter hooks
-add_filter( 'gmr_contest_submissions_query', 'gmr_contest_submissions_query' );
+add_filter( 'gmr_contest_submissions_query', 'gmr_contests_submissions_query' );
+add_filter( 'post_type_link', 'gmr_contests_get_submission_permalink', 10, 2 );
+add_filter( 'request', 'gmr_contests_unpack_vars' );
 
 /**
  * Registers custom post types related to contests area.
@@ -60,6 +62,7 @@ function gmr_contests_register_post_type() {
  */
 function gmr_contests_register_endpoint() {
 	add_rewrite_endpoint( 'action', EP_GMR_CONTEST );
+	add_rewrite_endpoint( 'submission', EP_GMR_CONTEST );
 }
 
 /**
@@ -364,7 +367,7 @@ function gmr_contests_get_entries_count( $contest_id ) {
  * @filter gmr_contest_submissions_query
  * @return WP_Query The entries query.
  */
-function gmr_contest_submissions_query( $contest_id = null ) {
+function gmr_contests_submissions_query( $contest_id = null ) {
 	if ( is_a( $contest_id, 'WP_Query' ) ) {
 		return $contest_id;
 	}
@@ -378,4 +381,57 @@ function gmr_contest_submissions_query( $contest_id = null ) {
 		'post_parent'    => $contest_id,
 		'posts_per_page' => 2,
 	) );
+}
+
+/**
+ * Builds permalink for contest submission object.
+ *
+ * @filter post_type_link 10 2
+ * @param string $post_link The initial permalink
+ * @param WP_Post $post The post object.
+ * @return string The submission permalink.
+ */
+function gmr_contests_get_submission_permalink( $post_link, $post ) {
+	if ( GMR_SUBMISSIONS_CPT == $post->post_type ) {
+		$contest_link = get_permalink( $post->post_parent );
+		if ( $contest_link ) {
+			return trailingslashit( $contest_link ) . 'submission/' . $post->post_name . '/';
+		}
+	}
+
+	return $post_link;
+}
+
+/**
+ * Unpacks query vars for contest submission page.
+ *
+ * @filter request
+ * @param array $query_vars The array of initial query vars.
+ * @return array The array of unpacked query vars.
+ */
+function gmr_contests_unpack_vars( $query_vars ) {
+	// do nothing if it is wrong page
+	if ( empty( $query_vars[ GMR_CONTEST_CPT ] ) || empty( $query_vars['submission'] ) ) {
+		return $query_vars;
+	}
+
+	$query = new WP_Query( array(
+		'post_type'           => GMR_CONTEST_CPT,
+		'name'                => $query_vars[ GMR_CONTEST_CPT ],
+		'fields'              => 'ids',
+		'posts_per_page'      => 1,
+		'ignore_sticky_posts' => true,
+		'no_found_rows'       => true,
+	) );
+
+	if ( ! $query->have_posts() ) {
+		return $query_vars;
+	}
+
+	return array(
+		GMR_SUBMISSIONS_CPT => $query_vars['submission'],
+		'post_type'         => GMR_SUBMISSIONS_CPT,
+		'name'              => $query_vars['submission'],
+		'post_parent'       => $query->next_post(),
+	);
 }
