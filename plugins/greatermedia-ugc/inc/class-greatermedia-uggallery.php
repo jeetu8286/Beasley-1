@@ -2,7 +2,15 @@
 
 class GreaterMediaUserGeneratedGallery extends GreaterMediaUserGeneratedContent {
 
-	const POST_FORMAT = 'gallery';
+	/**
+	 * Returns post format.
+	 *
+	 * @access protected
+	 * @return string The post format.
+	 */
+	protected function get_post_format() {
+		return 'gallery';
+	}
 
 	/**
 	 * Get gallery attachments for this post

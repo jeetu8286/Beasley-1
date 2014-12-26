@@ -33,3 +33,22 @@
 .contest-attr--categories {
 
 }
+
+.contest-submissions {
+	clear: both;
+}
+
+.contest-submissions--title {
+
+}
+
+.contest-submissions--list {
+	margin: 0;
+	padding: 0;
+}
+
+.contest-submission {
+	margin: 0 1em 1em 0;
+	list-style: none;
+	display: inline-block;
+}

@@ -20,8 +20,6 @@ class GreaterMediaUserGeneratedContent {
 
 	protected static $subclasses;
 
-	const POST_FORMAT = '';
-
 	/**
 	 * Constructor is protected so it's only called from the factory method for_post_id() or a child class
 	 *
@@ -57,6 +55,16 @@ class GreaterMediaUserGeneratedContent {
 	}
 
 	/**
+	 * Returns post format.
+	 *
+	 * @access protected
+	 * @return string The post format.
+	 */
+	protected function get_post_format() {
+		return '';
+	}
+
+	/**
 	 * Generate a 32-character ID
 	 * @return string GUID
 	 * @see http://guid.us/GUID/PHP
@@ -89,22 +97,21 @@ class GreaterMediaUserGeneratedContent {
 	public function save() {
 
 		if ( empty( $this->post->ID ) ) {
-
 			$this->post->post_status = 'pending';
-			$post_id                 = wp_insert_post( get_object_vars( $this->post ), true );
-
+			$post_id = wp_insert_post( get_object_vars( $this->post ), true );
 		} else {
 			$post_id = wp_update_post( get_object_vars( $this->post ) );
 		}
 
-		// Set the post format. Done with a taxonomy term, so this needs to happen after the post is saved.
-		if ( '' !== static::POST_FORMAT ) {
-			set_post_format( $this->post, static::POST_FORMAT );
-		}
-
 		// Refresh the local copies of the data
 		$this->post_id = intval( $post_id );
-		$this->post    = get_post( $this->post_id );
+		$this->post = get_post( $this->post_id );
+
+		// Set the post format. Done with a taxonomy term, so this needs to happen after the post is saved.
+		$format = $this->get_post_format();
+		if ( ! empty( $format ) ) {
+			set_post_format( $this->post, $format );
+		}
 
 		return $this->post_id;
 
@@ -205,7 +212,7 @@ class GreaterMediaUserGeneratedContent {
 			'label'               => __( 'user_generated_content', 'greatermedia_ugc' ),
 			'description'         => __( 'Listener Submissions', 'greatermedia_ugc' ),
 			'labels'              => $labels,
-			'supports'            => array( 'title', 'editor', 'custom-fields', 'post-formats', ),
+			'supports'            => array( 'title', 'editor', 'custom-fields', 'post-formats', 'thumbnail' ),
 			'hierarchical'        => false,
 			'public'              => true,
 			'show_ui'             => true,
@@ -486,10 +493,9 @@ class GreaterMediaUserGeneratedContent {
 	 */
 	public static function for_post_id( $post_id ) {
 
-		$post_formats = wp_get_post_terms( $post_id, 'post_format' );
-		$post_format  = array_pop( $post_formats );
+		$post_format = get_post_format( $post_id );
 		if ( $post_format ) {
-			$potential_subclass_name = 'GreaterMediaUserGenerated' . ucfirst( $post_format->name );
+			$potential_subclass_name = 'GreaterMediaUserGenerated' . ucfirst( $post_format );
 		}
 
 		if ( isset( $potential_subclass_name ) && is_subclass_of( $potential_subclass_name, __CLASS__ ) ) {
@@ -540,12 +546,7 @@ class GreaterMediaUserGeneratedContent {
 	 */
 	public function contest() {
 
-		$contest_entry = get_post( $this->post->post_parent );
-		if ( $contest_entry && ! empty( $contest_entry->post_parent ) ) {
-			return get_post( $contest_entry->post_parent );
-		}
-
-		return null;
+		return get_post( $this->post->post_parent );
 		
 	}
 

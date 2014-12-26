@@ -11,6 +11,9 @@ add_action( 'gmr_contest_submit', 'gmr_contests_process_form_submission' );
 add_action( 'gmr_contest_confirm-age', 'gmr_contests_confirm_user_age' );
 add_action( 'gmr_contest_reject-age', 'gmr_contests_reject_user_age' );
 
+// filter hooks
+add_filter( 'gmr_contest_submissions_query', 'gmr_contest_submissions_query' );
+
 /**
  * Registers custom post types related to contests area.
  *
@@ -165,26 +168,9 @@ function gmr_contests_render_form( $skip_age = false ) {
 
 	// check the max entries limit
 	$max_entries = get_post_meta( $contest_id, 'contest-max-entries', true );
-	if ( $max_entries > 0 ) {
-		$transient = 'contest_entries_' . $contest_id;
-		$contest_entries_count = get_transient( $transient );
-		if ( false === $contest_entries_count ) {
-			$query = new WP_Query( array(
-				'post_type'      => 'contest_entry',
-				'post_status'    => 'any',
-				'post_parent'    => $contest_id,
-				'posts_per_page' => 1,
-				'fields'         => 'ids',
-			) );
-
-			$contest_entries_count = $query->found_posts;
-			set_transient( $transient, $contest_entries_count, DAY_IN_SECONDS );
-		}
-
-		if ( $contest_entries_count >= $max_entries ) {
-			echo '<p>This contest has reached maximum number of entries!</p>';
-			return;
-		}
+	if ( $max_entries > 0 && gmr_contests_get_entries_count( $contest_id ) >= $max_entries ) {
+		echo '<p>This contest has reached maximum number of entries!</p>';
+		return;
 	}
 
 	// check if user has to be logged in
@@ -294,37 +280,36 @@ function gmr_contests_handle_submitted_files( array $submitted_files, GreaterMed
 		return;
 	}
 
-	if ( 1 === count( $submitted_files['images'] ) ) {
-		// Single image. Create a GreaterMediaUserGeneratedImage.
-		$ugc = GreaterMediaUserGeneratedContent::for_data_type( 'image' );
-		$ugc->post->post_parent = $entry->post_id();
-		$ugc->save();
+	$thumbnail = null;
+	$data_type = count( $submitted_files['images'] ) == 1 ? 'image' : 'gallery';
 
-		reset( $submitted_files );
-		$upload_field = key( $submitted_files['images'] );
+	$ugc = GreaterMediaUserGeneratedContent::for_data_type( $data_type );
+	$ugc->post->post_parent = $entry->post->post_parent;
+	
+	switch ( $data_type ) {
+		case 'image':
+			reset( $submitted_files );
+			$upload_field = key( $submitted_files['images'] );
+			$thumbnail = media_handle_upload( $upload_field, $entry->post->post_parent, array( 'post_status' => 'private' ) );
 
-		$attachment_id = media_handle_upload( $upload_field, $entry->post->post_parent, array( 'post_status' => 'private' ) );
+			$ugc->post->post_content = wp_get_attachment_image( $thumbnail, 'full' );
+			break;
 
-		$ugc->post->post_content = wp_get_attachment_image( $attachment_id, 'full' );
-		$ugc->save();
+		case 'gallery':
+			$attachment_ids = array();
+			foreach ( array_keys( $submitted_files['images'] ) as $upload_field ) {
+				$attachment_ids[] = media_handle_upload( $upload_field, $entry->post->post_parent, array( 'post_status' => 'private' ) );
+			}
+			$thumbnail = $attachment_ids[0];
 
-		set_post_thumbnail( $ugc->post->ID, $attachment_id );
-	} else {
-		// Multiple images. Create a GreaterMediaUserGeneratedGallery.
-		$ugc = GreaterMediaUserGeneratedContent::for_data_type( 'gallery' );
-		$ugc->post->post_parent = $entry->post_id();
-		$ugc->save();
-
-		$attachment_ids = array();
-		foreach ( array_keys( $submitted_files['images'] ) as $upload_field ) {
-			$attachment_ids[] = media_handle_upload( $upload_field, $entry->post->post_parent, array( 'post_status' => 'private' ) );
-		}
-
-		$ugc->post->post_content = '[gallery ids="' . implode( ',', $attachment_ids ) . '"]';
-		$ugc->save();
-
-		set_post_thumbnail( $ugc->post->ID, $attachment_ids[0] );
+			$ugc->post->post_content = '[gallery ids="' . implode( ',', $attachment_ids ) . '"]';
+			break;
 	}
+
+	$ugc->save();
+
+	set_post_thumbnail( $ugc->post->ID, $thumbnail );
+	update_post_meta( $ugc->post->ID, 'contest_entry_id', $entry->post_id() );
 }
 
 /**
@@ -346,4 +331,51 @@ function gmr_contests_get_gigya_entrant_id_and_name() {
 	}
 
 	return array( $entrant_reference, $entrant_name );
+}
+
+/**
+ * Returns the amount of contest entries.
+ *
+ * @param int $contest_id The contest id.
+ * @return int The contest entries amount.
+ */
+function gmr_contests_get_entries_count( $contest_id ) {
+	$transient = 'contest_entries_' . $contest_id;
+	$contest_entries_count = get_transient( $transient );
+	if ( false === $contest_entries_count ) {
+		$query = new WP_Query( array(
+			'post_type'      => 'contest_entry',
+			'post_status'    => 'any',
+			'post_parent'    => $contest_id,
+			'posts_per_page' => 1,
+			'fields'         => 'ids',
+		) );
+
+		$contest_entries_count = $query->found_posts;
+		set_transient( $transient, $contest_entries_count, DAY_IN_SECONDS );
+	}
+
+	return $contest_entries_count;
+}
+
+/**
+ * Returns contest entries query.
+ *
+ * @filter gmr_contest_submissions_query
+ * @return WP_Query The entries query.
+ */
+function gmr_contest_submissions_query( $contest_id = null ) {
+	if ( is_a( $contest_id, 'WP_Query' ) ) {
+		return $contest_id;
+	}
+
+	if ( is_null( $contest_id ) ) {
+		$contest_id = get_the_ID();
+	}
+	
+	return new WP_Query( array(
+		'post_type'      => 'listener_submissions',
+		'post_parent'    => $contest_id,
+		'posts_per_page' => 2,
+	) );
 }

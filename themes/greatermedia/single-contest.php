@@ -52,6 +52,8 @@ get_header(); ?>
 								LOADING... <?php //TODO: replace with a spinner ?>
 							</section>
 
+							<?php get_template_part( 'partials/contest', 'submissions' ); ?>
+
 						</article>
 
 					<?php endwhile;

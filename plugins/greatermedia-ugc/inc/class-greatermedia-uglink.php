@@ -2,12 +2,20 @@
 
 class GreaterMediaUserGeneratedLink extends GreaterMediaUserGeneratedContent {
 
-	const POST_FORMAT = 'link';
-
 	function __construct( $post_id = null ) {
 
 		parent::__construct( $post_id );
 
+	}
+
+	/**
+	 * Returns post format.
+	 * 
+	 * @access protected
+	 * @return string The post format.
+	 */
+	protected function get_post_format() {
+		return 'link';
 	}
 
 	public static function retrieve_link_preview( $post_content ) {

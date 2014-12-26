@@ -4345,6 +4345,18 @@ category: Components - Ads
 .single__featured-img--contest {
   margin-bottom: 2em; }
 
+.contest-submissions {
+  clear: both; }
+
+.contest-submissions--list {
+  margin: 0;
+  padding: 0; }
+
+.contest-submission {
+  margin: 0 1em 1em 0;
+  list-style: none;
+  display: inline-block; }
+
 /*doc
 ---
 title: Podcast Excerpt
