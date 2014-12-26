@@ -16,6 +16,8 @@ define( 'GREATER_MEDIA_CONTESTS_PATH', dirname( __FILE__ ) );
 define( 'GREATER_MEDIA_CONTESTS_VERSION', '1.0.0' );
 
 define( 'GMR_CONTEST_CPT', 'contest' );
+define( 'GMR_SUBMISSIONS_CPT', 'listener_submissions' );
+
 define( 'EP_GMR_CONTEST', EP_PAGES << 1 );
 
 include 'inc/contests.php';

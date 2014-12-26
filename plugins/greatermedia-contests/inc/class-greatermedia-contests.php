@@ -47,7 +47,7 @@ class GreaterMediaContests {
 	public function adjust_current_admin_menu() {
 		global $parent_file, $submenu_file, $typenow, $pagenow;
 
-		if ( in_array( $pagenow, array( 'post-new.php', 'post.php' ) ) && in_array( $typenow, array( GMR_CONTEST_CPT, 'listener_submissions' ) ) ) {
+		if ( in_array( $pagenow, array( 'post-new.php', 'post.php' ) ) && in_array( $typenow, array( GMR_CONTEST_CPT, GMR_SUBMISSIONS_CPT ) ) ) {
 			$parent_file = 'edit.php?post_type=' . GMR_CONTEST_CPT;
 			$submenu_file = 'edit.php?post_type=' . $typenow;
 		}

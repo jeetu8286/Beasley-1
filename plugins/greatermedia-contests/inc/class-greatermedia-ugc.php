@@ -37,7 +37,7 @@ class GreaterMediaUserGeneratedContent {
 			$this->post->post_title   = self::getGUID();
 			$this->post->post_content = '';
 			$this->post->post_excerpt = '';
-			$this->post->post_type    = 'listener_submissions';
+			$this->post->post_type    = GMR_SUBMISSIONS_CPT;
 
 		} else {
 
@@ -226,7 +226,7 @@ class GreaterMediaUserGeneratedContent {
 			'capability_type'     => 'page',
 		);
 
-		register_post_type( 'listener_submissions', $args );
+		register_post_type( GMR_SUBMISSIONS_CPT, $args );
 
 	}
 
@@ -243,7 +243,7 @@ class GreaterMediaUserGeneratedContent {
 	 * @return boolean Initial flag if a post type is not a listener submission pt, otherwise FALSE.
 	 */
 	public static function remove_copy_to_live_link_action( $add_copy_action, WP_Post $post ) {
-		return 'listener_submissions' != $post->post_type ? $add_copy_action : false;
+		return GMR_SUBMISSIONS_CPT != $post->post_type ? $add_copy_action : false;
 	}
 
 	/**
@@ -332,6 +332,7 @@ class GreaterMediaUserGeneratedContent {
 		}
 
 		$output = get_query_var( 'output' );
+		$redirect = admin_url( 'edit.php?page=moderate-ugc&post_type=' . GMR_SUBMISSIONS_CPT );
 
 		if ( 'approve' === $ugc_action ) {
 
@@ -350,20 +351,8 @@ class GreaterMediaUserGeneratedContent {
 
 			if ( '.json' === $output ) {
 				wp_send_json_success( array( 'ids' => $ugc_id ) );
-			} else {
-				// Default to interactive moderation. Redirect back to the Moderation screen.
-				wp_redirect(
-					add_query_arg(
-						'page',
-						'moderate-ugc',
-						add_query_arg(
-							'post_type',
-							'listener_submissions',
-							admin_url( 'edit.php' )
-						)
-					)
-				);
 			}
+			
 		} elseif ( 'gallery-delete' === $ugc_action ) {
 
 			$ugc_id = intval( get_query_var( 'ugc' ) );
@@ -400,19 +389,9 @@ class GreaterMediaUserGeneratedContent {
 
 			if ( '.json' === $output ) {
 				wp_send_json_success( array( 'ids' => $ugc_id ) );
-			} else {
-				wp_redirect(
-					add_query_arg(
-						'page',
-						'moderate-ugc',
-						add_query_arg(
-							'post_type',
-							'listener_submissions',
-							admin_url( 'edit.php' )
-						)
-					) . '#ugc-' . $ugc_id
-				);
 			}
+			
+			$redirect .= '#ugc-' . $ugc_id;
 
 		} elseif ( 'bulk' === $ugc_action ) {
 
@@ -442,45 +421,20 @@ class GreaterMediaUserGeneratedContent {
 
 				if ( '.json' === $output ) {
 					wp_send_json_success( array( $$ugc_ids ) );
-				} else {
-					// Default to interactive moderation. Redirect back to the Moderation screen.
-					wp_redirect(
-						add_query_arg(
-							'page',
-							'moderate-ugc',
-							add_query_arg(
-								'post_type',
-								'listener_submissions',
-								admin_url( 'edit.php' )
-							)
-						)
-
-					);
-
-				}
+				} 
 
 			} elseif ( 'trash' === $action ) {
 
 				// Trash each post
 				array_map( 'wp_trash_post', $ugc_ids );
 
-				// Redirect back to the Moderation screen
-				wp_redirect(
-					add_query_arg(
-						'page',
-						'moderate-ugc',
-						add_query_arg(
-							'post_type',
-							'listener_submissions',
-							admin_url( 'edit.php' )
-						)
-					)
-
-				);
-
 			}
 
 		}
+
+		// Default to interactive moderation. Redirect back to the Moderation screen.
+		wp_redirect( $redirect );
+		exit;
 
 	}
 

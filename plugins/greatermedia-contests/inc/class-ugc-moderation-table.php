@@ -68,7 +68,7 @@ class GreaterMediaUserGeneratedContentModerationTable extends WP_List_Table {
 
 		$this->query = new WP_Query(
 			array(
-				'post_type'   => 'listener_submissions',
+				'post_type'   => GMR_SUBMISSIONS_CPT,
 				'post_status' => 'pending',
 				'order'       => 'DESC',
 				'orderby'     => 'date',

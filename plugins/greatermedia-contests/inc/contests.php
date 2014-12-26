@@ -374,7 +374,7 @@ function gmr_contest_submissions_query( $contest_id = null ) {
 	}
 	
 	return new WP_Query( array(
-		'post_type'      => 'listener_submissions',
+		'post_type'      => GMR_SUBMISSIONS_CPT,
 		'post_parent'    => $contest_id,
 		'posts_per_page' => 2,
 	) );
