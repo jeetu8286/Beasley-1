@@ -89,7 +89,7 @@ class ExportResultsTask extends SyncTask {
 		$api    = $this->get_emma_api();
 		$params = array(
 			'members'   => $members,
-			'group_ids' => array( $segment_id )
+			'group_ids' => array( intval( $segment_id ) )
 		);
 
 		$response = $api->membersBatchAdd( $params );
