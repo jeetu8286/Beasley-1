@@ -27,4 +27,11 @@ if ( ! $submissions_query || ! $submissions_query->have_posts() ) {
 	</ul>
 </section>
 
+<?php echo paginate_links( array(
+	'base'    => str_replace( PHP_INT_MAX, '%#%', esc_url( get_pagenum_link( PHP_INT_MAX ) ) ),
+	'format'  => '?paged=%#%',
+	'current' => max( 1, $submissions_query->get( 'paged' ) ),
+	'total'   => $submissions_query->max_num_pages,
+) ); ?>
+
 <?php wp_reset_postdata(); ?>

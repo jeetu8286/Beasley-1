@@ -365,9 +365,12 @@ function gmr_contests_get_entries_count( $contest_id ) {
  * Returns contest entries query.
  *
  * @filter gmr_contest_submissions_query
+ * @global int $submission_paged The submissions archive page number.
  * @return WP_Query The entries query.
  */
 function gmr_contests_submissions_query( $contest_id = null ) {
+	global $submission_paged;
+	
 	if ( is_a( $contest_id, 'WP_Query' ) ) {
 		return $contest_id;
 	}
@@ -379,7 +382,8 @@ function gmr_contests_submissions_query( $contest_id = null ) {
 	return new WP_Query( array(
 		'post_type'      => GMR_SUBMISSIONS_CPT,
 		'post_parent'    => $contest_id,
-		'posts_per_page' => 2,
+		'posts_per_page' => 10,
+		'paged'          => $submission_paged,
 	) );
 }
 
@@ -406,32 +410,43 @@ function gmr_contests_get_submission_permalink( $post_link, $post ) {
  * Unpacks query vars for contest submission page.
  *
  * @filter request
+ * @global int $submission_paged The submissions archive page number.
  * @param array $query_vars The array of initial query vars.
  * @return array The array of unpacked query vars.
  */
 function gmr_contests_unpack_vars( $query_vars ) {
-	// do nothing if it is wrong page
-	if ( empty( $query_vars[ GMR_CONTEST_CPT ] ) || empty( $query_vars['submission'] ) ) {
+	global $submission_paged;
+	
+	if ( empty( $query_vars[ GMR_CONTEST_CPT ] ) ) {
 		return $query_vars;
 	}
 
-	$query = new WP_Query( array(
-		'post_type'           => GMR_CONTEST_CPT,
-		'name'                => $query_vars[ GMR_CONTEST_CPT ],
-		'fields'              => 'ids',
-		'posts_per_page'      => 1,
-		'ignore_sticky_posts' => true,
-		'no_found_rows'       => true,
-	) );
-
-	if ( ! $query->have_posts() ) {
-		return $query_vars;
+	if ( ! empty( $query_vars['paged'] ) ) {
+		$submission_paged = $query_vars['paged'];
+		unset( $query_vars['paged'] );
 	}
 
-	return array(
-		GMR_SUBMISSIONS_CPT => $query_vars['submission'],
-		'post_type'         => GMR_SUBMISSIONS_CPT,
-		'name'              => $query_vars['submission'],
-		'post_parent'       => $query->next_post(),
-	);
+	if ( ! empty( $query_vars['submission'] ) ) {
+		$query = new WP_Query( array(
+			'post_type'           => GMR_CONTEST_CPT,
+			'name'                => $query_vars[ GMR_CONTEST_CPT ],
+			'fields'              => 'ids',
+			'posts_per_page'      => 1,
+			'ignore_sticky_posts' => true,
+			'no_found_rows'       => true,
+		) );
+
+		if ( ! $query->have_posts() ) {
+			return $query_vars;
+		}
+
+		return array(
+			GMR_SUBMISSIONS_CPT => $query_vars['submission'],
+			'post_type'         => GMR_SUBMISSIONS_CPT,
+			'name'              => $query_vars['submission'],
+			'post_parent'       => $query->next_post(),
+		);
+	}
+
+	return $query_vars;
 }
