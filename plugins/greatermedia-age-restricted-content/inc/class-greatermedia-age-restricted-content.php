@@ -28,7 +28,7 @@ class GreaterMediaAgeRestrictedContent extends VisualShortcode {
 		 * and catch unwrapped shortcode output, like this plugin's.
 		 */
 		add_filter( 'the_content', 'wpautop', 20 );
-		
+
 	}
 
 	/**
@@ -78,23 +78,23 @@ class GreaterMediaAgeRestrictedContent extends VisualShortcode {
 			// Settings & translation strings used by the JavaScript code
 			$settings = array(
 				'templates'          => array(
-					'tinymce'           => file_get_contents( trailingslashit( GREATER_MEDIA_AGE_RESTRICTED_CONTENT_PATH ) . 'tpl/tinymce-view-template.js' ),
+					'tinymce'         => file_get_contents( trailingslashit( GREATER_MEDIA_AGE_RESTRICTED_CONTENT_PATH ) . 'tpl/tinymce-view-template.js' ),
 					'age_restriction' => self::touch_age_restriction( 1, $age_restriction ),
 				),
 				'rendered_templates' => array(),
 				'strings'            => array(
 					'Age Restricted Content' => __( 'Age Restricted Content', 'greatermedia-age-restricted-content' ),
-					'Restricted to'                  => __( 'Restricted to', 'greatermedia-age-restricted-content' ),
+					'Restricted to'          => __( 'Restricted to', 'greatermedia-age-restricted-content' ),
 					/**
 					 * Separate string for "Must be:" with a colon because the colon may be used differently in
 					 * a different locale
 					 */
-					'Restricted to:'                 => __( 'Restricted to:', 'greatermedia-age-restricted-content' ),
-					'18+'                => __( '18+', 'greatermedia-age-restricted-content' ),
-					'21+'               => __( '21+', 'greatermedia-age-restricted-content' ),
-					'Content'                  => __( 'Content', 'greatermedia-age-restricted-content' ),
-					'Status'                   => __( 'Status', 'greatermedia-age-restricted-content' ),
-					'No restriction'           => __( 'No restriction', 'greatermedia-age-restricted-content' ),
+					'Restricted to:'         => __( 'Restricted to:', 'greatermedia-age-restricted-content' ),
+					'18+'                    => __( '18+', 'greatermedia-age-restricted-content' ),
+					'21+'                    => __( '21+', 'greatermedia-age-restricted-content' ),
+					'Content'                => __( 'Content', 'greatermedia-age-restricted-content' ),
+					'Status'                 => __( 'Status', 'greatermedia-age-restricted-content' ),
+					'No restriction'         => __( 'No restriction', 'greatermedia-age-restricted-content' ),
 				),
 			);
 
@@ -140,7 +140,7 @@ class GreaterMediaAgeRestrictedContent extends VisualShortcode {
 	 * Print out HTML form date elements for editing post or comment publish date.
 	 *
 	 * @param int|bool $edit              Accepts 1|true for editing the date, 0|false for adding the date.
-	 * @param int      $age_restriction Current age restriction setting
+	 * @param int      $age_restriction   Current age restriction setting
 	 * @param int      $tab_index         Starting tab index
 	 * @param int      $multi             Optional. Whether the additional fields and buttons should be added.
 	 *                                    Default 0|false.
@@ -265,13 +265,13 @@ class GreaterMediaAgeRestrictedContent extends VisualShortcode {
 		global $post, $wp;
 
 		$age_restriction = self::sanitize_age_restriction( get_post_meta( $post->ID, 'post_age_restriction', true ) );
-		$current_url       = home_url( add_query_arg( array(), $wp->request ) );
+		$current_url     = home_url( add_query_arg( array(), $wp->request ) );
 
-		if ( ( '18plus' === $age_restriction ) && ! is_gigya_user_logged_in() ) {
+		if ( ( '18plus' === $age_restriction ) && ( 18 <= absint( get_gigya_user_field( 'age' ) ) ) ) {
 			include GREATER_MEDIA_AGE_RESTRICTED_CONTENT_PATH . '/tpl/age-restricted-post-render.tpl.php';
 
 			return;
-		} elseif ( ( '21plus' === $age_restriction ) && is_gigya_user_logged_in() ) {
+		} elseif ( ( '21plus' === $age_restriction ) && ( 21 <= absint( get_gigya_user_field( 'age' ) ) ) ) {
 			include GREATER_MEDIA_AGE_RESTRICTED_CONTENT_PATH . '/tpl/age-restricted-post-render.tpl.php';
 
 			return;
