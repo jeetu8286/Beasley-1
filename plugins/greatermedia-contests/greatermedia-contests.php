@@ -36,7 +36,6 @@ if ( is_admin() ) {
 }
 
 if ( defined( 'WP_CLI' ) && WP_CLI ) {
-	include 'inc/class-greatermedia-ugc-wp-cli.php';
 	include 'inc/class-greatermedia-contests-wp-cli.php';
 }
 
