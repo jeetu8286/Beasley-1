@@ -141,13 +141,13 @@
 
 				// load more items when clicking a "load more" button or scroll down
 				// to the button
-				if ($loadMore) {
+				if ($loadMore.length > 0) {
 					$loadMore.on('click', function() {
 						loadItems();
 						return false;
 					});
 
-					$(settings.loadMore).waypoint({
+					$loadMore.waypoint({
 						offset: settings.loadMoreWaypointOffset,
 						triggerOnce: false,
 						handler: function(direction) {
