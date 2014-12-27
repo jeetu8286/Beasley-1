@@ -422,7 +422,7 @@ function gmr_contests_submissions_query( $contest_id = null ) {
  * @return string The submission permalink.
  */
 function gmr_contests_get_submission_permalink( $post_link, $post ) {
-	if ( GMR_SUBMISSIONS_CPT == $post->post_type ) {
+	if ( GMR_SUBMISSIONS_CPT == $post->post_type && ! empty( $post->post_parent ) ) {
 		$contest_link = get_permalink( $post->post_parent );
 		if ( $contest_link ) {
 			return trailingslashit( $contest_link ) . 'submission/' . $post->post_name . '/';

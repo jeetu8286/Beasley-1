@@ -193,37 +193,34 @@ class GreaterMediaUserGeneratedContent {
 	public static function user_generated_content() {
 
 		$labels = array(
-			'name'               => _x( 'Listener Submissions', 'Post Type General Name', 'greatermedia_ugc' ),
-			'singular_name'      => _x( 'Listener Submission', 'Post Type Singular Name', 'greatermedia_ugc' ),
-			'menu_name'          => __( 'Listener Submissions', 'greatermedia_ugc' ),
-			'parent_item_colon'  => __( 'Parent Submission:', 'greatermedia_ugc' ),
-			'all_items'          => __( 'All Submissions', 'greatermedia_ugc' ),
-			'view_item'          => __( 'View Submission', 'greatermedia_ugc' ),
-			'add_new_item'       => __( 'Add New Submission', 'greatermedia_ugc' ),
-			'add_new'            => __( 'Add New', 'greatermedia_ugc' ),
-			'edit_item'          => __( 'Edit Submission', 'greatermedia_ugc' ),
-			'update_item'        => __( 'Update Submission', 'greatermedia_ugc' ),
-			'search_items'       => __( 'Search Submission', 'greatermedia_ugc' ),
-			'not_found'          => __( 'Not found', 'greatermedia_ugc' ),
-			'not_found_in_trash' => __( 'Not found in Trash', 'greatermedia_ugc' ),
+			'name'               => 'Listener Submissions',
+			'singular_name'      => 'Listener Submission',
+			'menu_name'          => 'Listener Submissions',
+			'parent_item_colon'  => 'Parent Submission:',
+			'all_items'          => 'All Submissions',
+			'view_item'          => 'View Submission',
+			'add_new_item'       => 'Add New Submission',
+			'add_new'            => 'Add New',
+			'edit_item'          => 'Edit Submission',
+			'update_item'        => 'Update Submission',
+			'search_items'       => 'Search Submission',
+			'not_found'          => 'Not found',
+			'not_found_in_trash' => 'Not found in Trash',
 		);
 
 		$args   = array(
-			'label'               => __( 'user_generated_content', 'greatermedia_ugc' ),
-			'description'         => __( 'Listener Submissions', 'greatermedia_ugc' ),
+			'label'               => 'Listener Submissions', 'greatermedia_ugc',
 			'labels'              => $labels,
 			'supports'            => array( 'title', 'editor', 'post-formats', 'thumbnail' ),
 			'hierarchical'        => false,
 			'public'              => true,
-			'show_ui'             => true,
 			'show_in_menu'        => false,
 			'show_in_nav_menus'   => false,
-			'show_in_admin_bar'   => false,
 			'can_export'          => true,
 			'has_archive'         => false,
 			'exclude_from_search' => true,
-			'publicly_queryable'  => true,
 			'capability_type'     => 'page',
+			'rewrite'             => array( 'slug' => 'contest-submission' ),
 		);
 
 		register_post_type( GMR_SUBMISSIONS_CPT, $args );
