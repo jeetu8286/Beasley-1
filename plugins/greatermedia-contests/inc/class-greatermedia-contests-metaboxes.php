@@ -35,9 +35,9 @@ class GreaterMediaContestsMetaboxes {
 		}
 
 		if ( $post && GMR_CONTEST_CPT === $post->post_type ) {
-
 			wp_enqueue_style( 'formbuilder' );
 			wp_enqueue_style( 'datetimepicker' );
+			wp_enqueue_style( 'font-awesome' );
 
 			wp_enqueue_script( 'ie8-node-enum' );
 			wp_enqueue_script( 'jquery-scrollwindowto' );
@@ -47,15 +47,33 @@ class GreaterMediaContestsMetaboxes {
 
 			wp_enqueue_script( 'formbuilder' );
 			wp_enqueue_script( 'rivets' );
-			wp_enqueue_style( 'font-awesome' );
+
+			$form = @json_decode( get_post_meta( $post->ID, 'embedded_form', true ), true );
+			if ( empty( $form ) ) {
+				$form = array(
+					array(
+						'cid'           => 'c5',
+						'label'         => 'Name',
+						'field_type'    => 'text',
+						'required'      => true,
+						'sticky'        => true,
+						'field_options' => array( 'size' => 'medium' ),
+					),
+					array(
+						'cid'           => 'c9',
+						'label'         => 'Email Address',
+						'field_type'    => 'email',
+						'required'      => true,
+						'sticky'        => true,
+						'field_options' => array( 'sticky' => true ),
+					),
+				);
+			}
 
 			wp_enqueue_script( 'greatermedia-contests-admin', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'js/contests-admin.js', array( 'formbuilder' ), false, true );
-			$embedded_form = get_post_meta( $post->ID, 'embedded_form', true );
-			$settings      = array(
-				'form' => trim( $embedded_form, '"' ),
-			);
-			wp_localize_script( 'greatermedia-contests-admin', 'GreaterMediaContestsForm', $settings );
-
+			wp_localize_script( 'greatermedia-contests-admin', 'GreaterMediaContestsForm', array(
+				'form' => $form,
+			) );
 		};
 	}
 
@@ -339,12 +357,12 @@ class GreaterMediaContestsMetaboxes {
 	 * Render an embedded form editor on the Contest editor
 	 */
 	public function contest_embedded_form() {
-
-		// Add an nonce field so we can check for it later.
 		wp_nonce_field( 'contest_form_meta_box', 'contest_form_meta_box' );
-		include trailingslashit( GREATER_MEDIA_CONTESTS_PATH ) . 'tpl/contest-form-meta-box.tpl.php';
-		do_settings_sections( 'greatermedia-contest-form' );
 
+		?><div id="contest_embedded_form"></div>
+		<input type="hidden" id="contest_embedded_form_data" name="contest_embedded_form"><?php
+
+		do_settings_sections( 'greatermedia-contest-form' );
 	}
 
 	/**

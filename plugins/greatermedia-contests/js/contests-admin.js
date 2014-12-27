@@ -2,23 +2,11 @@
  * http://10up.com/
  * Copyright (c) 2014; * Licensed GPLv2+ */
 document.addEventListener("DOMContentLoaded", function() {
-	var args = {
-		selector: '#contest_embedded_form'
-	},
-
-	// Every contest form includes Name and Email address fields by default
-	default_form = '[{"label":"Name","field_type":"text","required":true,"sticky":"true","field_options":{"size":"medium"},"cid":"c5"},{"label":"Email Address","field_type":"email","required":true,"sticky":"true","field_options":{"sticky":true},"cid":"c9"}]';
-
-	if (GreaterMediaContestsForm.form) {
-		args.bootstrapData = JSON.parse(GreaterMediaContestsForm.form);
-	}
-	else {
-		args.bootstrapData = JSON.parse(default_form);
-	}
-
-	args.controls = [];
-
-	var formbuilder = new Formbuilder(args);
+	var formbuilder = new Formbuilder({
+		selector: '#contest_embedded_form',
+		bootstrapData: GreaterMediaContestsForm.form,
+		controls: []
+	});
 
 	formbuilder.on('save', function (payload) {
 		// payload is a JSON string representation of the form
