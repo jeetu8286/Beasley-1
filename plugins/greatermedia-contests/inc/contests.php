@@ -15,6 +15,7 @@ add_action( 'gmr_contest_reject-age', 'gmr_contests_reject_user_age' );
 add_filter( 'gmr_contest_submissions_query', 'gmr_contests_submissions_query' );
 add_filter( 'post_type_link', 'gmr_contests_get_submission_permalink', 10, 2 );
 add_filter( 'request', 'gmr_contests_unpack_vars' );
+add_filter( 'post_thumbnail_html', 'gmr_contests_post_thumbnail_html', 10, 5 );
 
 /**
  * Registers custom post types related to contests area.
@@ -122,7 +123,7 @@ function gmr_contests_process_action() {
 
 			?><li class="contest-submission">
 				<a class="contest-submission--link" href="<?php the_permalink(); ?>">
-					<?php echo wp_get_attachment_image( get_post_thumbnail_id() ); ?>
+					<?php the_post_thumbnail(); ?>
 					Username
 				</a>
 			</li><?php
@@ -475,4 +476,28 @@ function gmr_contests_unpack_vars( $query_vars ) {
 	}
 
 	return $query_vars;
+}
+
+/**
+ *
+ * @filter post_thumbnail_html 10 5
+ * @param type $html
+ * @param type $post_id
+ * @param type $post_thumbnail_id
+ * @param type $size
+ * @param type $attr
+ * @return type
+ */
+function gmr_contests_post_thumbnail_html( $html, $post_id, $post_thumbnail_id, $size, $attr ) {
+	$post = get_post( $post_id );
+	if ( GMR_SUBMISSIONS_CPT != $post->post_type ) {
+		return $html;
+	}
+
+	$image = wp_get_attachment_image_src( $post_thumbnail_id, $size );
+	if ( empty( $image ) ) {
+		return $html;
+	}
+
+	return sprintf( '<div class="contest-submission--thumbnail" style="background-image:url(%s)"></div>', $image[0] );
 }

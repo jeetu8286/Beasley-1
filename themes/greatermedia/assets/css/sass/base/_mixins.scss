@@ -157,14 +157,9 @@
 	zoom: 1;
 }
 
-@mixin border-radius($radius...) {
-	// defining prefixes so we can use them in mixins below
-	$prefixes:      ("-webkit", "-moz", "-ms", "-o",  "");
-	@each $prefix in $prefixes {
-		#{$prefix}-border-radius: $radius;
-	}
-
-	border-radius: $radius;
+@mixin box-sizing($sizing) {
+	-moz-box-sizing: $sizing;
+	box-sizing: $sizing;
 }
 
 // Mixin to create a css gradient

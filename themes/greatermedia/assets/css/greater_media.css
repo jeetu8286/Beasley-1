@@ -691,7 +691,6 @@ img {
       left: auto;
       width: 225px;
       height: 100%;
-      -webkit-box-sizing: border-box;
       -moz-box-sizing: border-box;
       box-sizing: border-box;
       cursor: default; } }
@@ -4358,21 +4357,62 @@ category: Components - Ads
 .contest-submissions--list {
   margin: 0;
   padding: 0; }
+  .contest-submissions--list:before, .contest-submissions--list:after {
+    content: " ";
+    display: table; }
+  .contest-submissions--list:after {
+    clear: both; }
 
 .contest-submissions--load-more {
+  display: inline-block;
+  line-height: 1;
+  padding: 0.5em 1em;
+  margin-right: .5em;
+  outline: none;
+  background-color: #d22228;
+  border: 1px solid #d22228;
+  font-family: "Open Sans", sans-serif;
+  font-size: 0.88889em;
+  color: #ffffff !important;
+  text-transform: uppercase;
+  cursor: pointer;
+  -webkit-border-radius: 1em;
+  -moz-border-radius: 1em;
+  -ms-border-radius: 1em;
+  -o-border-radius: 1em;
+  -border-radius: 1em;
+  border-radius: 1em;
   clear: both;
   margin: 1em auto 0;
   display: block; }
+  .contest-submissions--load-more:hover, .contest-submissions--load-more:focus {
+    background-color: #aa1c20;
+    border-color: #aa1c20;
+    color: #ffffff; }
+  .contest-submissions--load-more:last-of-type {
+    margin-right: 0; }
+  .contest-submissions--load-more:last-of-type {
+    margin-right: auto; }
 
-.contest-submission--link,
-.contest-submission--link > img {
+.contest-submission--link {
   border: none;
   outline: none;
   display: block;
   position: relative; }
 
+.contest-submission--thumbnail {
+  height: 117px;
+  background-position: center center;
+  background-repeat: no-repeat;
+  -webkit-background-size: cover;
+  background-size: cover; }
+
 .contest-submission {
-  margin: 0 0.5em 1em 0.5em;
+  width: 20%;
+  margin: 0;
+  padding: 0 0.25em 1em;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
   list-style: none;
   float: left;
   vertical-align: top; }
@@ -6040,7 +6080,6 @@ category: Components - Gallery Archive
   width: 28px;
   height: 28px;
   margin-right: 1em;
-  -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   color: #929497;

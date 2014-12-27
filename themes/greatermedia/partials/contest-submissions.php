@@ -37,7 +37,7 @@ if ( ! $submissions_query || ! $submissions_query->have_posts() ) {
 			<?php $submissions_query->the_post(); ?>
 			<li class="contest-submission">
 				<a class="contest-submission--link" href="<?php the_permalink(); ?>">
-					<?php echo wp_get_attachment_image( get_post_thumbnail_id() ); ?>
+					<?php the_post_thumbnail(); ?>
 					Username
 				</a>
 			</li>

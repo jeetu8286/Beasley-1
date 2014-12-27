@@ -46,26 +46,41 @@
 .contest-submissions--list {
 	margin: 0;
 	padding: 0;
+	@include clearfix;
 }
 
 .contest-submissions--load-more {
+	@include btn($btn-bg, $color-text-white, $btn-bg, 0.5em, 1em, ms(-1));
+	@include border-radius(1em);
 	clear: both;
 	margin: 1em auto 0;
 	display: block;
-}
 
-.contest-submission--link {
-	&,
-	> img {
-		border: none;
-		outline: none;
-		display: block;
-		position: relative;
+	&:last-of-type{
+		margin-right: auto;
 	}
 }
 
+.contest-submission--link {
+	border: none;
+	outline: none;
+	display: block;
+	position: relative;
+}
+
+.contest-submission--thumbnail {
+	height: 117px;
+	background-position: center center;
+	background-repeat: no-repeat;
+	-webkit-background-size: cover;
+	background-size: cover;
+}
+
 .contest-submission {
-	margin: 0 0.5em 1em 0.5em;
+	width: 20%;
+	margin: 0;
+	padding: 0 0.25em 1em;
+	@include box-sizing(border-box);
 	list-style: none;
 	float: left;
 	vertical-align: top;
