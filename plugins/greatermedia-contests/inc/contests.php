@@ -106,7 +106,7 @@ function gmr_contests_enqueue_front_scripts() {
  */
 function gmr_contests_process_action() {
 	global $submission_paged;
-	
+
 	// do nothing if it is a regular request
 	if ( ! is_singular( GMR_CONTEST_CPT ) ) {
 		return;
@@ -120,13 +120,7 @@ function gmr_contests_process_action() {
 
 		while ( $query->have_posts() ) :
 			$query->the_post();
-
-			?><li class="contest-submission">
-				<a class="contest-submission--link" href="<?php the_permalink(); ?>">
-					<?php the_post_thumbnail(); ?>
-					Username
-				</a>
-			</li><?php
+			get_template_part( 'partials/contest', 'submission' );
 		endwhile;
 		exit;
 	}
@@ -338,7 +332,11 @@ function gmr_contests_handle_submitted_files( array $submitted_files, GreaterMed
 	$ugc->save();
 
 	set_post_thumbnail( $ugc->post->ID, $thumbnail );
-	update_post_meta( $ugc->post->ID, 'contest_entry_id', $entry->post_id() );
+	
+	add_post_meta( $ugc->post->ID, 'contest_entry_id', $entry->post_id() );
+	if ( function_exists( 'get_gigya_user_id' ) ) {
+		add_post_meta( $ugc->post->ID, 'gigya_user_id', get_gigya_user_id() );
+	}
 }
 
 /**

@@ -35,12 +35,7 @@ if ( ! $submissions_query || ! $submissions_query->have_posts() ) {
 	<ul class="contest-submissions--list">
 		<?php while ( $submissions_query->have_posts() ) : ?>
 			<?php $submissions_query->the_post(); ?>
-			<li class="contest-submission">
-				<a class="contest-submission--link" href="<?php the_permalink(); ?>">
-					<?php the_post_thumbnail(); ?>
-					Username
-				</a>
-			</li>
+			<?php get_template_part( 'partials/contest', 'submission' ); ?>
 		<?php endwhile; ?>
 	</ul>
 

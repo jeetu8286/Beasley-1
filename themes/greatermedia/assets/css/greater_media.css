@@ -4413,6 +4413,17 @@ category: Components - Ads
       background-repeat: no-repeat;
       -webkit-background-size: cover;
       background-size: cover; }
+    .contest-submission .contest-submission--link .contest-submission--date,
+    .contest-submission .contest-submission--link .contest-submission--author {
+      text-align: center;
+      line-height: 1.5em;
+      display: block; }
+    .contest-submission .contest-submission--link .contest-submission--author {
+      color: #282827;
+      font-size: 0.88889em; }
+    .contest-submission .contest-submission--link .contest-submission--date {
+      color: #929497;
+      font-size: 0.79012em; }
   .contest-submission.expanded .contest-submission--link:after {
     top: auto;
     border: solid transparent;
@@ -4424,14 +4435,14 @@ category: Components - Ads
     border-bottom-color: #ddd;
     border-width: 1em;
     left: 50%;
-    margin: 0.5em 0 0 -15px; }
+    margin: -0.75em 0 0 -15px; }
   .contest-submission .contest-submission--expander {
     position: absolute;
     background: #ddd;
     top: auto;
     left: 0;
     width: 100%;
-    margin-top: 0.25em;
+    margin-top: 1em;
     text-align: left;
     height: 0;
     overflow: hidden;
@@ -4477,8 +4488,10 @@ category: Components - Ads
       clear: both; }
     .contest-submission .contest-submission--thumbnail {
       height: 129px; }
+    .contest-submission.expanded .contest-submission--link:after {
+      margin-top: -1em; }
     .contest-submission .contest-submission--expander {
-      margin-top: 0.5em; } }
+      margin-top: 0.75em; } }
 @media screen and (min-width: 1024px) {
   .contest-submission {
     width: 25%;
