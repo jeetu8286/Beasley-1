@@ -61,32 +61,27 @@
 	}
 }
 
-.contest-submission--link {
-	border: none;
-	outline: none;
-	display: block;
-	position: relative;
-}
-
-.contest-submission--thumbnail {
-	height: 117px;
-	background-position: center center;
-	background-repeat: no-repeat;
-	-webkit-background-size: cover;
-	background-size: cover;
-}
-
 .contest-submission {
-	width: 20%;
+	width: 100%;
 	margin: 0;
 	padding: 0 0.25em 1em;
 	@include box-sizing(border-box);
 	list-style: none;
-	float: left;
 	vertical-align: top;
 
-	&:nth-child(5n+1) {
-		clear: both;
+	.contest-submission--link {
+		border: none;
+		outline: none;
+		display: block;
+		position: relative;
+
+		.contest-submission--thumbnail {
+			height: 156px;
+			background-position: center center;
+			background-repeat: no-repeat;
+			-webkit-background-size: cover;
+			background-size: cover;
+		}
 	}
 
 	&.expanded {
@@ -104,51 +99,134 @@
 			margin: 0.5em 0 0 -15px;
 		}
 	}
-}
 
-.contest-submission--expander {
-    position: absolute;
-    background: #ddd;
-    top: auto;
-    left: 0;
-    width: 100%;
-    margin-top: 1em;
-    text-align: left;
-    height: 0;
-    overflow: hidden;
-	z-index: 10;
-}
-
-.contest-submission--expander-inner {
-    padding: 50px 30px;
-    height: 100%;
-}
-
-.contest-submission--close {
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    top: 20px;
-    right: 20px;
-    cursor: pointer;
-
-	&:before,
-	&:after {
-		content: '';
+	.contest-submission--expander {
 		position: absolute;
+		background: #ddd;
+		top: auto;
+		left: 0;
 		width: 100%;
-		top: 50%;
-		height: 1px;
-		background: #888;
-		transform: rotate(45deg);
-	}
+		margin-top: 0.25em;
+		text-align: left;
+		height: 0;
+		overflow: hidden;
+		z-index: 10;
 
-	&::after {
-		transform: rotate(-45deg);
+		.contest-submission--expander-inner {
+			padding: 50px 30px;
+			height: 100%;
+		}
+
+		.contest-submission--close {
+			position: absolute;
+			width: 40px;
+			height: 40px;
+			top: 20px;
+			right: 20px;
+			cursor: pointer;
+
+			&:before,
+			&:after {
+				content: '';
+				position: absolute;
+				width: 100%;
+				top: 50%;
+				height: 1px;
+				background: #888;
+				transform: rotate(45deg);
+			}
+
+			&::after {
+				transform: rotate(-45deg);
+			}
+
+			&:hover::before,
+			&:hover::after {
+				background: #333;
+			}
+		}
 	}
-	
-	&:hover::before,
-	&:hover::after {
-		background: #333;
+}
+
+@include bp(small) {
+	.contest-submission {
+		width: 50%;
+		float: left;
+		
+		&:nth-child(2n+1) {
+			clear: both;
+		}
+
+		.contest-submission--thumbnail {
+			height: 118px;
+		}
+	}
+}
+
+@include bp(medium) {
+	.contest-submission {
+		width: 33.333333333333336%;
+		float: left;
+
+		&:nth-child(2n+1) {
+			clear: none;
+		}
+
+		&:nth-child(3n+1) {
+			clear: both;
+		}
+
+		.contest-submission--thumbnail {
+			height: 129px;
+		}
+
+		.contest-submission--expander {
+			margin-top: 0.5em;
+		}
+	}
+}
+
+@include bp(large) {
+	.contest-submission {
+		width: 25%;
+		float: left;
+
+		&:nth-child(2n+1),
+		&:nth-child(3n+1) {
+			clear: none;
+		}
+
+		&:nth-child(4n+1) {
+			clear: both;
+		}
+
+		.contest-submission--thumbnail {
+			height: 145px;
+		}
+
+		.contest-submission--expander {
+			margin-top: 1em;
+		}
+	}
+}
+
+@include bp(x-large) {
+	.contest-submission {
+		width: 20%;
+		float: left;
+
+		&:nth-child(2n+1),
+		&:nth-child(3n+1),
+		&:nth-child(4n+1) {
+			clear: none;
+		}
+
+		&:nth-child(5n+1) {
+			clear: both;
+		}
+
+		.contest-submission--thumbnail {
+			height: 117px;
+		}
 	}
 }

@@ -4394,30 +4394,25 @@ category: Components - Ads
   .contest-submissions--load-more:last-of-type {
     margin-right: auto; }
 
-.contest-submission--link {
-  border: none;
-  outline: none;
-  display: block;
-  position: relative; }
-
-.contest-submission--thumbnail {
-  height: 117px;
-  background-position: center center;
-  background-repeat: no-repeat;
-  -webkit-background-size: cover;
-  background-size: cover; }
-
 .contest-submission {
-  width: 20%;
+  width: 100%;
   margin: 0;
   padding: 0 0.25em 1em;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   list-style: none;
-  float: left;
   vertical-align: top; }
-  .contest-submission:nth-child(5n+1) {
-    clear: both; }
+  .contest-submission .contest-submission--link {
+    border: none;
+    outline: none;
+    display: block;
+    position: relative; }
+    .contest-submission .contest-submission--link .contest-submission--thumbnail {
+      height: 156px;
+      background-position: center center;
+      background-repeat: no-repeat;
+      -webkit-background-size: cover;
+      background-size: cover; }
   .contest-submission.expanded .contest-submission--link:after {
     top: auto;
     border: solid transparent;
@@ -4430,43 +4425,82 @@ category: Components - Ads
     border-width: 1em;
     left: 50%;
     margin: 0.5em 0 0 -15px; }
-
-.contest-submission--expander {
-  position: absolute;
-  background: #ddd;
-  top: auto;
-  left: 0;
-  width: 100%;
-  margin-top: 1em;
-  text-align: left;
-  height: 0;
-  overflow: hidden;
-  z-index: 10; }
-
-.contest-submission--expander-inner {
-  padding: 50px 30px;
-  height: 100%; }
-
-.contest-submission--close {
-  position: absolute;
-  width: 40px;
-  height: 40px;
-  top: 20px;
-  right: 20px;
-  cursor: pointer; }
-  .contest-submission--close:before, .contest-submission--close:after {
-    content: '';
+  .contest-submission .contest-submission--expander {
     position: absolute;
+    background: #ddd;
+    top: auto;
+    left: 0;
     width: 100%;
-    top: 50%;
-    height: 1px;
-    background: #888;
-    transform: rotate(45deg); }
-  .contest-submission--close::after {
-    transform: rotate(-45deg); }
-  .contest-submission--close:hover::before, .contest-submission--close:hover::after {
-    background: #333; }
+    margin-top: 0.25em;
+    text-align: left;
+    height: 0;
+    overflow: hidden;
+    z-index: 10; }
+    .contest-submission .contest-submission--expander .contest-submission--expander-inner {
+      padding: 50px 30px;
+      height: 100%; }
+    .contest-submission .contest-submission--expander .contest-submission--close {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      top: 20px;
+      right: 20px;
+      cursor: pointer; }
+      .contest-submission .contest-submission--expander .contest-submission--close:before, .contest-submission .contest-submission--expander .contest-submission--close:after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        top: 50%;
+        height: 1px;
+        background: #888;
+        transform: rotate(45deg); }
+      .contest-submission .contest-submission--expander .contest-submission--close::after {
+        transform: rotate(-45deg); }
+      .contest-submission .contest-submission--expander .contest-submission--close:hover::before, .contest-submission .contest-submission--expander .contest-submission--close:hover::after {
+        background: #333; }
 
+@media screen and (min-width: 480px) {
+  .contest-submission {
+    width: 50%;
+    float: left; }
+    .contest-submission:nth-child(2n+1) {
+      clear: both; }
+    .contest-submission .contest-submission--thumbnail {
+      height: 118px; } }
+@media screen and (min-width: 768px) {
+  .contest-submission {
+    width: 33.333333333333336%;
+    float: left; }
+    .contest-submission:nth-child(2n+1) {
+      clear: none; }
+    .contest-submission:nth-child(3n+1) {
+      clear: both; }
+    .contest-submission .contest-submission--thumbnail {
+      height: 129px; }
+    .contest-submission .contest-submission--expander {
+      margin-top: 0.5em; } }
+@media screen and (min-width: 1024px) {
+  .contest-submission {
+    width: 25%;
+    float: left; }
+    .contest-submission:nth-child(2n+1), .contest-submission:nth-child(3n+1) {
+      clear: none; }
+    .contest-submission:nth-child(4n+1) {
+      clear: both; }
+    .contest-submission .contest-submission--thumbnail {
+      height: 145px; }
+    .contest-submission .contest-submission--expander {
+      margin-top: 1em; } }
+@media screen and (min-width: 1400px) {
+  .contest-submission {
+    width: 20%;
+    float: left; }
+    .contest-submission:nth-child(2n+1), .contest-submission:nth-child(3n+1), .contest-submission:nth-child(4n+1) {
+      clear: none; }
+    .contest-submission:nth-child(5n+1) {
+      clear: both; }
+    .contest-submission .contest-submission--thumbnail {
+      height: 117px; } }
 /*doc
 ---
 title: Podcast Excerpt
