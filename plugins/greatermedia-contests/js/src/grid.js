@@ -19,7 +19,10 @@
 			settings = {
 				minHeight: 500,
 				speed: 350,
-				easing: 'ease'
+				easing: 'ease',
+				loadMore: null,
+				loadMoreWaypointOffset: '150%',
+				loadMoreUrlCallback: null
 			};
 		
 		// the settings..
@@ -28,10 +31,14 @@
 		$grids.each(function() {
 			var $grid = $(this), // list of items
 				$items = $grid.children('li'), // the items
+				$loadMore = $(settings.loadMore),
 				current = -1, // current expanded item's index
 				previewPos = -1, // position (top) of the expanded item used to know if the preview will expand in a different row
 				scrollExtra = 0, // extra amount of pixels to scroll the window
-				marginExpanded = 10; // extra margin when expanded (between preview overlay and the next items)
+				marginExpanded = 10, // extra margin when expanded (between preview overlay and the next items)
+				itemsCountOnPage = $items.length,
+				loadMoreIteration = 1,
+				loadMoreLocked = false;
 
 			function init() {
 				// preload all images
@@ -60,6 +67,45 @@
 				});
 
 				initItemsEvents($newitems);
+			}
+
+			function loadItems() {
+				var callbackUrl;
+				
+				if ($.isFunction(settings.loadMoreUrlCallback)) {
+					if (loadMoreLocked) {
+						return;
+					}
+
+					callbackUrl = settings.loadMoreUrlCallback(loadMoreIteration);
+					if (!callbackUrl) {
+						return;
+					}
+
+					loadMoreLocked = true;
+					loadMoreIteration++;
+
+					$loadMore.addClass('loading');
+
+					$.get(callbackUrl, function(data) {
+						var newItems = $($.trim(data));
+
+						if (newItems.length > 0) {
+							$grid.append(newItems);
+							addItems(newItems);
+
+							if (newItems.length >= itemsCountOnPage) {
+								loadMoreLocked = false;
+								$loadMore.removeClass('loading');
+								$.waypoints('refresh');
+							} else {
+								$loadMore.hide();
+							}
+						} else {
+							$loadMore.hide();
+						}
+					});
+				}
 			}
 
 			// saves the item´s offset top and height (if saveheight is true)
@@ -92,6 +138,27 @@
 						hidePreview();
 					}
 				});
+
+				// load more items when clicking a "load more" button or scroll down
+				// to the button
+				if ($loadMore) {
+					$loadMore.on('click', function() {
+						loadItems();
+						return false;
+					});
+
+					$(settings.loadMore).waypoint({
+						offset: settings.loadMoreWaypointOffset,
+						triggerOnce: false,
+						handler: function(direction) {
+							if (direction === 'down') {
+								loadItems();
+							}
+						}
+					});
+
+					$.waypoints('refresh');
+				}
 			}
 
 			function initItemsEvents($items) {

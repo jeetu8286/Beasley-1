@@ -416,7 +416,10 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 			settings = {
 				minHeight: 500,
 				speed: 350,
-				easing: 'ease'
+				easing: 'ease',
+				loadMore: null,
+				loadMoreWaypointOffset: '150%',
+				loadMoreUrlCallback: null
 			};
 		
 		// the settings..
@@ -425,10 +428,14 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 		$grids.each(function() {
 			var $grid = $(this), // list of items
 				$items = $grid.children('li'), // the items
+				$loadMore = $(settings.loadMore),
 				current = -1, // current expanded item's index
 				previewPos = -1, // position (top) of the expanded item used to know if the preview will expand in a different row
 				scrollExtra = 0, // extra amount of pixels to scroll the window
-				marginExpanded = 10; // extra margin when expanded (between preview overlay and the next items)
+				marginExpanded = 10, // extra margin when expanded (between preview overlay and the next items)
+				itemsCountOnPage = $items.length,
+				loadMoreIteration = 1,
+				loadMoreLocked = false;
 
 			function init() {
 				// preload all images
@@ -457,6 +464,45 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 				});
 
 				initItemsEvents($newitems);
+			}
+
+			function loadItems() {
+				var callbackUrl;
+				
+				if ($.isFunction(settings.loadMoreUrlCallback)) {
+					if (loadMoreLocked) {
+						return;
+					}
+
+					callbackUrl = settings.loadMoreUrlCallback(loadMoreIteration);
+					if (!callbackUrl) {
+						return;
+					}
+
+					loadMoreLocked = true;
+					loadMoreIteration++;
+
+					$loadMore.addClass('loading');
+
+					$.get(callbackUrl, function(data) {
+						var newItems = $($.trim(data));
+
+						if (newItems.length > 0) {
+							$grid.append(newItems);
+							addItems(newItems);
+
+							if (newItems.length >= itemsCountOnPage) {
+								loadMoreLocked = false;
+								$loadMore.removeClass('loading');
+								$.waypoints('refresh');
+							} else {
+								$loadMore.hide();
+							}
+						} else {
+							$loadMore.hide();
+						}
+					});
+				}
 			}
 
 			// saves the item´s offset top and height (if saveheight is true)
@@ -489,6 +535,27 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 						hidePreview();
 					}
 				});
+
+				// load more items when clicking a "load more" button or scroll down
+				// to the button
+				if ($loadMore) {
+					$loadMore.on('click', function() {
+						loadItems();
+						return false;
+					});
+
+					$(settings.loadMore).waypoint({
+						offset: settings.loadMoreWaypointOffset,
+						triggerOnce: false,
+						handler: function(direction) {
+							if (direction === 'down') {
+								loadItems();
+							}
+						}
+					});
+
+					$.waypoints('refresh');
+				}
 			}
 
 			function initItemsEvents($items) {
@@ -723,8 +790,6 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 						scrollVal = previewOffsetT;
 					}
 
-					console.log(adminBarHeight);
-
 					$body.animate({scrollTop: scrollVal - adminBarHeight}, settings.speed);
 				},
 
@@ -744,11 +809,11 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 		return $grids;
 	};
 })(jQuery, Modernizr);
-(function ($) {
+(function($, gmr) {
 	var __ready = function() {
-		var container = $(GreaterMediaContests.selectors.container);
+		var container = $(gmr.selectors.container);
 
-		container.on('submit', GreaterMediaContests.selectors.form, function() {
+		container.on('submit', gmr.selectors.form, function() {
 			var form = $(this);
 
 			if (!form.parsley || form.parsley().isValid()) {
@@ -771,7 +836,7 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 				});
 
 				$.ajax({
-					url: GreaterMediaContests.endpoints.submit,
+					url: gmr.endpoints.submit,
 					type: 'post',
 					data: form_data,
 					processData: false, // Don't process the files
@@ -785,21 +850,28 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 			return false;
 		});
 
-		container.on('click', GreaterMediaContests.selectors.yes_age, function() {
-			container.load(GreaterMediaContests.endpoints.confirm_age);
+		container.on('click', gmr.selectors.yes_age, function() {
+			container.load(gmr.endpoints.confirm_age);
 			return false;
 		});
 		
-		container.on('click', GreaterMediaContests.selectors.no_age, function() {
-			container.load(GreaterMediaContests.endpoints.reject_age);
+		container.on('click', gmr.selectors.no_age, function() {
+			container.load(gmr.endpoints.reject_age);
 			return false;
 		});
 
-		container.load(GreaterMediaContests.endpoints.load);
+		container.load(gmr.endpoints.load);
+
+		$('.contest-submissions--list').gridPreview({
+			loadMore: '.contest-submissions--load-more',
+			loadMoreUrlCallback: function(page) {
+				return gmr.endpoints.infinite + (page + 1) + '/';
+			}
+		});
 	};
 
 	$(document).bind('pjax:end', __ready).ready(__ready);
-})(jQuery);
+})(jQuery, GreaterMediaContests);
 
 /**
  * Set up date pickers for browsers without a native control
@@ -903,76 +975,3 @@ document.addEventListener("DOMContentLoaded", function () {
 	}
 
 }, false );
-(function ($, gmr) {
-	var load_infinite,
-		document_ready,
-		min_count,
-		load_more,
-		submissions_list,
-		infinite_id = 1,
-		infinite_lock = false;
-
-	load_infinite = function () {
-		if (true === infinite_lock) {
-			return;
-		}
-
-		infinite_lock = true;
-		load_more.addClass('loading');
-
-		infinite_id++;
-		$.get(gmr.endpoints.infinite + infinite_id + '/', function(data) {
-			var galleries = $.trim(data);
-
-			if (galleries.length > 0) {
-				submissions_list.append(galleries);
-				submissions_list.gridPreview();
-				
-				if ($(galleries).find('> *').length >= min_count) {
-					$.waypoints('refresh');
-					infinite_lock = false;
-					load_more.removeClass('loading');
-				} else {
-					load_more.hide();
-				}
-			} else {
-				load_more.hide();
-			}
-		});
-	};
-
-	document_ready = function() {
-		submissions_list = $('.contest-submissions--list');
-		submissions_list.gridPreview();
-		min_count = submissions_list.find('> *').length;
-
-//		submissions_list.on('click', '.contest-submission--link', function() {
-//			var li = $(this).parent();
-//
-//			submissions_list.find('.expanded div').remove();
-//			submissions_list.find('.expanded').removeClass('expanded');
-//
-//			li.addClass('expanded');
-//			li.append($('#contest-submissions--tmpl').html());
-//
-//			return false;
-//		});
-		
-		load_more = $('.contest-submissions--load-more');
-		load_more.on('click', load_infinite);
-
-		$('.footer').waypoint({
-			offset: '150%',
-			triggerOnce: false,
-			handler: function(direction) {
-				if (direction === 'down') {
-					load_infinite();
-				}
-			}
-		});
-
-		$.waypoints('refresh');
-	};
-
-	$(document).bind('pjax:end', document_ready).ready(document_ready);
-})(jQuery, GreaterMediaContests);

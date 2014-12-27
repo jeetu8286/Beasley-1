@@ -19,8 +19,7 @@ module.exports = function (grunt) {
 					'js/vendor/debouncedresize.js',
 					'js/vendor/imagesloaded.js',
 					'js/src/grid.js',
-					'js/src/contests.js',
-					'js/src/submissions.js'
+					'js/src/contests.js'
 				],
 				dest: 'js/contests.js'
 			},

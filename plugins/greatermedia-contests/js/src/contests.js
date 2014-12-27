@@ -1,8 +1,8 @@
-(function ($) {
+(function($, gmr) {
 	var __ready = function() {
-		var container = $(GreaterMediaContests.selectors.container);
+		var container = $(gmr.selectors.container);
 
-		container.on('submit', GreaterMediaContests.selectors.form, function() {
+		container.on('submit', gmr.selectors.form, function() {
 			var form = $(this);
 
 			if (!form.parsley || form.parsley().isValid()) {
@@ -25,7 +25,7 @@
 				});
 
 				$.ajax({
-					url: GreaterMediaContests.endpoints.submit,
+					url: gmr.endpoints.submit,
 					type: 'post',
 					data: form_data,
 					processData: false, // Don't process the files
@@ -39,21 +39,28 @@
 			return false;
 		});
 
-		container.on('click', GreaterMediaContests.selectors.yes_age, function() {
-			container.load(GreaterMediaContests.endpoints.confirm_age);
+		container.on('click', gmr.selectors.yes_age, function() {
+			container.load(gmr.endpoints.confirm_age);
 			return false;
 		});
 		
-		container.on('click', GreaterMediaContests.selectors.no_age, function() {
-			container.load(GreaterMediaContests.endpoints.reject_age);
+		container.on('click', gmr.selectors.no_age, function() {
+			container.load(gmr.endpoints.reject_age);
 			return false;
 		});
 
-		container.load(GreaterMediaContests.endpoints.load);
+		container.load(gmr.endpoints.load);
+
+		$('.contest-submissions--list').gridPreview({
+			loadMore: '.contest-submissions--load-more',
+			loadMoreUrlCallback: function(page) {
+				return gmr.endpoints.infinite + (page + 1) + '/';
+			}
+		});
 	};
 
 	$(document).bind('pjax:end', __ready).ready(__ready);
-})(jQuery);
+})(jQuery, GreaterMediaContests);
 
 /**
  * Set up date pickers for browsers without a native control
