@@ -51,7 +51,7 @@
 
 		container.load(gmr.endpoints.load);
 
-		$('.contest-submissions--list').gridPreview({
+		$('.contest-submissions--list').grid({
 			loadMore: '.contest-submissions--load-more',
 			loadMoreUrlCallback: function(page) {
 				return gmr.endpoints.infinite + (page + 1) + '/';

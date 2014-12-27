@@ -5,6 +5,7 @@ add_action( 'init', 'gmr_contests_register_post_type' );
 add_action( 'init', 'gmr_contests_register_endpoint' );
 add_action( 'wp_enqueue_scripts', 'gmr_contests_enqueue_front_scripts' );
 add_action( 'template_redirect', 'gmr_contests_process_action' );
+add_action( 'template_redirect', 'gmr_contests_process_submission_action' );
 
 add_action( 'gmr_contest_load', 'gmr_contests_render_form' );
 add_action( 'gmr_contest_submit', 'gmr_contests_process_form_submission' );
@@ -99,6 +100,48 @@ function gmr_contests_enqueue_front_scripts() {
 }
 
 /**
+ * Sets cache headers.
+ *
+ * @param int $max_age Max age for cache.
+ */
+function gmr_contests_cache_headers( $max_age = 3600 ) {
+	$now = current_time( 'timestamp', 1 );
+	$actual_date = gmdate( DATE_COOKIE, $now );
+	$expire_date = gmdate( DATE_COOKIE, $now + $max_age );
+
+	header( "Date: {$actual_date}" );
+	header( "Expires: {$expire_date}" );
+	header( "Pragma: cache" );
+	header( "Cache-Control: max-age={$max_age}" );
+	header( "User-Cache-Control: max-age={$max_age}" );
+}
+
+/**
+ * Processes contest submission page request via AJAX.
+ *
+ * @action template_redirect
+ */
+function gmr_contests_process_submission_action() {
+	// do nothing if it is a regular request
+	if ( ! is_singular( GMR_SUBMISSIONS_CPT ) ) {
+		return;
+	}
+
+	// define doing AJAX if it was not defined yet
+	if( ! defined( 'DOING_AJAX' ) && ! empty( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && strtolower( $_SERVER['HTTP_X_REQUESTED_WITH'] ) == 'xmlhttprequest' ) {
+		define( 'DOING_AJAX', true );
+	}
+
+	if ( DOING_AJAX ) {
+		gmr_contests_cache_headers( YEAR_IN_SECONDS );
+		
+		the_post();
+		get_template_part( 'partials/submission', 'preview' );
+		exit;
+	}
+}
+
+/**
  * Processes contest actions triggered from front end.
  *
  * @action template_redirect
@@ -112,7 +155,12 @@ function gmr_contests_process_action() {
 		return;
 	}
 
-	if ( ! empty( $submission_paged ) ) {
+	// define doing AJAX if it was not defined yet
+	if( ! defined( 'DOING_AJAX' ) && ! empty( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && strtolower( $_SERVER['HTTP_X_REQUESTED_WITH'] ) == 'xmlhttprequest' ) {
+		define( 'DOING_AJAX', true );
+	}
+
+	if ( ! empty( $submission_paged ) && DOING_AJAX ) {
 		$query = gmr_contests_submissions_query( get_the_ID() );
 		if ( ! $query->have_posts() ) {
 			exit;
@@ -120,7 +168,7 @@ function gmr_contests_process_action() {
 
 		while ( $query->have_posts() ) :
 			$query->the_post();
-			get_template_part( 'partials/contest', 'submission' );
+			get_template_part( 'partials/submission', 'tile' );
 		endwhile;
 		exit;
 	}
@@ -130,11 +178,6 @@ function gmr_contests_process_action() {
 		// disable batcache if it is activated
 		if ( function_exists( 'batcache_cancel' ) ) {
 			batcache_cancel();
-		}
-
-		// define doing AJAX if it was not defined yet
-		if( ! defined( 'DOING_AJAX' ) && ! empty( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && strtolower( $_SERVER['HTTP_X_REQUESTED_WITH'] ) == 'xmlhttprequest' ) {
-			define( 'DOING_AJAX', true );
 		}
 
 		// disble HTTP cache
@@ -235,11 +278,7 @@ function gmr_contests_render_form( $skip_age = false ) {
 	}
 
 	// render the form
-	$form = get_post_meta( $contest_id, 'embedded_form', true );
-	$error = GreaterMediaFormbuilderRender::render( $contest_id, $form );
-	if ( is_wp_error( $error ) ) {
-		echo '<p>', $error->get_error_message(), '</p>';
-	}
+	GreaterMediaFormbuilderRender::render( $contest_id );
 }
 
 /**

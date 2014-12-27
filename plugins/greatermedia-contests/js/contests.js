@@ -410,7 +410,7 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 		transEndEventName = transEndEventNames[Modernizr.prefixed('transition')],
 		support = Modernizr.csstransitions; // support for csstransitions
 
-	$.fn.gridPreview = function(config) {
+	$.fn.grid = function(config) {
 		var $grids = $(this),
 			adminBarHeight = $('#wpadminbar').height() || 0,
 			settings = {
@@ -432,7 +432,7 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 				current = -1, // current expanded item's index
 				previewPos = -1, // position (top) of the expanded item used to know if the preview will expand in a different row
 				scrollExtra = 0, // extra amount of pixels to scroll the window
-				marginExpanded = 10, // extra margin when expanded (between preview overlay and the next items)
+				marginExpanded = 70, // extra margin when expanded (between preview overlay and the next items)
 				itemsCountOnPage = $items.length,
 				loadMoreIteration = 1,
 				loadMoreLocked = false;
@@ -559,7 +559,7 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 			}
 
 			function initItemsEvents($items) {
-				$items.on('click', 'span.contest-submission--close', function () {
+				$items.on('click', 'span.preview-close', function () {
 					hidePreview();
 					return false;
 				});
@@ -635,16 +635,10 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 
 			Preview.prototype = {
 				create: function () {
-					// create Preview structure:
-					this.$title = $('<h3></h3>');
-					this.$description = $('<p></p>');
-					this.$href = $('<a href="#">Visit website</a>');
-					this.$details = $('<div class="contest-submission--details"></div>').append(this.$title, this.$description, this.$href);
-					this.$loading = $('<div class="contest-submission--loading"></div>');
-					this.$fullimage = $('<div class="contest-submission--fullimg"></div>').append(this.$loading);
-					this.$closePreview = $('<span class="contest-submission--close"></span>');
-					this.$previewInner = $('<div class="contest-submission--expander-inner"></div>').append(this.$closePreview, this.$fullimage, this.$details);
-					this.$previewEl = $('<div class="contest-submission--expander"></div>').append(this.$previewInner);
+					// create Preview container:
+					this.$closePreview = $('<span class="preview-close"></span>');
+					this.$previewInner = $('<div class="preview-inner"></div>').append(this.$closePreview);
+					this.$previewEl = $('<div class="preview"></div>').append(this.$previewInner);
 					// append preview element to the item
 					this.$item.append(this.getEl());
 					// set the transitions for the preview and the item
@@ -654,6 +648,8 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 				},
 				
 				update: function ($item) {
+					var $previewInner, $itemEl, content;
+					
 					if ($item) {
 						this.$item = $item;
 					}
@@ -670,39 +666,20 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 					// update current value
 					current = this.$item.index();
 
+					// reset preview inner element
+					$previewInner = this.$previewInner;
+					$previewInner.html(this.$closePreview);
+
 					// update preview's content
-					var $itemEl = this.$item.children('a'),
-						eldata = {
-							href: $itemEl.attr('href'),
-							largesrc: $itemEl.data('largesrc'),
-							title: $itemEl.data('title'),
-							description: $itemEl.data('description')
-						};
-
-					this.$title.html(eldata.title);
-					this.$description.html(eldata.description);
-					this.$href.attr('href', eldata.href);
-
-					var self = this;
-
-					// remove the current image in the preview
-					if (typeof self.$largeImg !== 'undefined') {
-						self.$largeImg.remove();
-					}
-
-					// preload large image and add it to the preview
-					// for smaller screens we don't display the large image (the media query will hide the fullimage wrapper)
-					if (self.$fullimage.is(':visible')) {
-						this.$loading.show();
-						$('<img/>').load(function () {
-							var $img = $(this);
-							if ($img.attr('src') === self.$item.children('a').data('largesrc')) {
-								self.$loading.hide();
-								self.$fullimage.find('img').remove();
-								self.$largeImg = $img.fadeIn(350);
-								self.$fullimage.append(self.$largeImg);
-							}
-						}).attr('src', eldata.largesrc);
+					$itemEl = this.$item.children('a');
+					content = $itemEl.data('content');
+					if (!content) {
+						$.get($itemEl.attr('href'), function(response) {
+							$itemEl.data('content', response);
+							$previewInner.append(response);
+						});
+					} else {
+						$previewInner.append(content);
 					}
 				},
 
@@ -862,7 +839,7 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 
 		container.load(gmr.endpoints.load);
 
-		$('.contest-submissions--list').gridPreview({
+		$('.contest-submissions--list').grid({
 			loadMore: '.contest-submissions--load-more',
 			loadMoreUrlCallback: function(page) {
 				return gmr.endpoints.infinite + (page + 1) + '/';

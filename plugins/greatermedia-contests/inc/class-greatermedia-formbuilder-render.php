@@ -106,16 +106,45 @@ class GreaterMediaFormbuilderRender {
 		return $tags;
 	}
 
+	public static function parse_entry( $contest_id, $entry_id ) {
+		$form = get_post_meta( $contest_id, 'embedded_form', true );
+		if ( empty( $form ) ) {
+			return array();
+		}
+
+		if ( is_string( $form ) ) {
+			$clean_form = trim( $form, '"' );
+			$form = json_decode( $clean_form );
+		}
+
+		$contest_entry = get_post_meta( $entry_id, 'entry_reference', true );
+		if ( empty( $contest_entry ) ) {
+			return array();
+		}
+
+		$results = array();
+		$contest_entry = @json_decode( $contest_entry, true );
+		foreach ( $form as $field ) {
+			if ( isset( $contest_entry[ $field->cid ] ) ) {
+				$results[ $field->label ] = $contest_entry[ $field->cid ];
+			}
+		}
+
+		return $results;
+	}
+
 	/**
 	 * Render a form attached to a given post
 	 *
-	 * @param int    $post_id Post ID
-	 * @param string $form    JSON-encoded form data
-	 *
-	 * @uses render_text
+	 * @param int $post_id Post ID
 	 */
-	public static function render( $post_id, $form ) {
+	public static function render( $post_id ) {
 
+		$form = get_post_meta( $post_id, 'embedded_form', true );
+		if ( empty( $form ) ) {
+			return;
+		}
+		
 		if ( is_string( $form ) ) {
 			$clean_form = trim( $form, '"' );
 			$form = json_decode( $clean_form );

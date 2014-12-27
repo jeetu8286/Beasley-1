@@ -117,7 +117,31 @@
 		}
 	}
 
-	.contest-submission--expander {
+	.contest-submission--entries {
+		@include clearfix;
+		
+		dt,
+		dd {
+			float: left;
+		}
+		
+		dt {
+			clear: both;
+			display: inline-block;
+			margin-right: 0.5em;
+			font-weight: bold;
+
+			&::after {
+				content: ': ';
+			}
+		}
+
+		dd {
+			margin: 0;
+		}
+	}
+
+	.preview {
 		position: absolute;
 		background: #ddd;
 		top: auto;
@@ -129,12 +153,12 @@
 		overflow: hidden;
 		z-index: 10;
 
-		.contest-submission--expander-inner {
+		.preview-inner {
 			padding: 50px 30px;
 			height: 100%;
 		}
 
-		.contest-submission--close {
+		.preview-close {
 			position: absolute;
 			width: 40px;
 			height: 40px;
@@ -203,7 +227,7 @@
 			}
 		}
 
-		.contest-submission--expander {
+		.preview {
 			margin-top: 0.75em;
 		}
 	}
@@ -227,7 +251,7 @@
 			height: 145px;
 		}
 
-		.contest-submission--expander {
+		.preview {
 			margin-top: 1em;
 		}
 	}

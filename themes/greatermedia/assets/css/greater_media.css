@@ -4436,7 +4436,24 @@ category: Components - Ads
     border-width: 1em;
     left: 50%;
     margin: -0.75em 0 0 -15px; }
-  .contest-submission .contest-submission--expander {
+  .contest-submission .contest-submission--entries:before, .contest-submission .contest-submission--entries:after {
+    content: " ";
+    display: table; }
+  .contest-submission .contest-submission--entries:after {
+    clear: both; }
+  .contest-submission .contest-submission--entries dt,
+  .contest-submission .contest-submission--entries dd {
+    float: left; }
+  .contest-submission .contest-submission--entries dt {
+    clear: both;
+    display: inline-block;
+    margin-right: 0.5em;
+    font-weight: bold; }
+    .contest-submission .contest-submission--entries dt::after {
+      content: ': '; }
+  .contest-submission .contest-submission--entries dd {
+    margin: 0; }
+  .contest-submission .preview {
     position: absolute;
     background: #ddd;
     top: auto;
@@ -4447,17 +4464,17 @@ category: Components - Ads
     height: 0;
     overflow: hidden;
     z-index: 10; }
-    .contest-submission .contest-submission--expander .contest-submission--expander-inner {
+    .contest-submission .preview .preview-inner {
       padding: 50px 30px;
       height: 100%; }
-    .contest-submission .contest-submission--expander .contest-submission--close {
+    .contest-submission .preview .preview-close {
       position: absolute;
       width: 40px;
       height: 40px;
       top: 20px;
       right: 20px;
       cursor: pointer; }
-      .contest-submission .contest-submission--expander .contest-submission--close:before, .contest-submission .contest-submission--expander .contest-submission--close:after {
+      .contest-submission .preview .preview-close:before, .contest-submission .preview .preview-close:after {
         content: '';
         position: absolute;
         width: 100%;
@@ -4465,9 +4482,9 @@ category: Components - Ads
         height: 1px;
         background: #888;
         transform: rotate(45deg); }
-      .contest-submission .contest-submission--expander .contest-submission--close::after {
+      .contest-submission .preview .preview-close::after {
         transform: rotate(-45deg); }
-      .contest-submission .contest-submission--expander .contest-submission--close:hover::before, .contest-submission .contest-submission--expander .contest-submission--close:hover::after {
+      .contest-submission .preview .preview-close:hover::before, .contest-submission .preview .preview-close:hover::after {
         background: #333; }
 
 @media screen and (min-width: 480px) {
@@ -4490,7 +4507,7 @@ category: Components - Ads
       height: 129px; }
     .contest-submission.expanded .contest-submission--link:after {
       margin-top: -1em; }
-    .contest-submission .contest-submission--expander {
+    .contest-submission .preview {
       margin-top: 0.75em; } }
 @media screen and (min-width: 1024px) {
   .contest-submission {
@@ -4502,7 +4519,7 @@ category: Components - Ads
       clear: both; }
     .contest-submission .contest-submission--thumbnail {
       height: 145px; }
-    .contest-submission .contest-submission--expander {
+    .contest-submission .preview {
       margin-top: 1em; } }
 @media screen and (min-width: 1400px) {
   .contest-submission {
