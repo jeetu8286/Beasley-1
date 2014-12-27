@@ -43,9 +43,9 @@
 			function init() {
 				// preload all images
 				$grid.imagesLoaded(function () {
-					// save item´s size and offset
+					// save item's size and offset
 					saveItemInfo(true);
-					// get window´s size
+					// get window's size
 					getWinSize();
 					// initialize some events
 					initEvents();
@@ -108,29 +108,29 @@
 				}
 			}
 
-			// saves the item´s offset top and height (if saveheight is true)
+			// saves the item's offset top and height (if saveheight is true)
 			function saveItemInfo(saveheight) {
 				$items.each(function () {
 					var $item = $(this);
 					$item.data('offsetTop', $item.offset().top);
 					if (saveheight) {
-						$item.data('height', $item.height());
+						$item.data('height', $item.outerHeight());
 					}
 				});
 			}
 
 			function initEvents() {
-				// when clicking an item, show the preview with the item´s info and large image.
+				// when clicking an item, show the preview with the item's info and large image.
 				// close the item if already expanded.
-				// also close if clicking on the item´s cross
+				// also close if clicking on the item's cross
 				initItemsEvents($items);
 
-				// on window resize get the window´s size again
+				// on window resize get the window's size again
 				// reset some values..
 				$window.on('debouncedresize', function () {
 					scrollExtra = 0;
 					previewPos = -1;
-					// save item´s offset
+					// save item's offset
 					saveItemInfo();
 					getWinSize();
 					var preview = $.data(this, 'preview');
@@ -187,16 +187,16 @@
 
 			function showPreview($item) {
 				var preview = $.data(this, 'preview'),
-					// item´s offset top
+					// item's offset top
 					position = $item.data('offsetTop');
 
 				scrollExtra = 0;
 
-				// if a preview exists and previewPos is different (different row) from item´s top then close it
+				// if a preview exists and previewPos is different (different row) from item's top then close it
 				if (typeof preview !== 'undefined') {
 					// not in the same row
 					if (previewPos !== position) {
-						// if position > previewPos then we need to take te current preview´s height in consideration when scrolling the window
+						// if position > previewPos then we need to take te current preview's height in consideration when scrolling the window
 						if (position > previewPos) {
 							scrollExtra = preview.height;
 						}
@@ -273,7 +273,7 @@
 					// update current value
 					current = this.$item.index();
 
-					// update preview´s content
+					// update preview's content
 					var $itemEl = this.$item.children('a'),
 						eldata = {
 							href: $itemEl.attr('href'),
@@ -294,7 +294,7 @@
 					}
 
 					// preload large image and add it to the preview
-					// for smaller screens we don´t display the large image (the media query will hide the fullimage wrapper)
+					// for smaller screens we don't display the large image (the media query will hide the fullimage wrapper)
 					if (self.$fullimage.is(':visible')) {
 						this.$loading.show();
 						$('<img/>').load(function () {
