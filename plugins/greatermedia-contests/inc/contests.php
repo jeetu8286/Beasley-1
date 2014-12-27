@@ -15,8 +15,6 @@ add_action( 'gmr_contest_reject-age', 'gmr_contests_reject_user_age' );
 add_filter( 'gmr_contest_submissions_query', 'gmr_contests_submissions_query' );
 add_filter( 'post_type_link', 'gmr_contests_get_submission_permalink', 10, 2 );
 add_filter( 'request', 'gmr_contests_unpack_vars' );
-add_filter( 'gmr_contest_next_submission', 'gmr_contests_get_next_submission', 10, 2 );
-add_filter( 'gmr_contest_prev_submission', 'gmr_contests_get_prev_submission', 10, 2 );
 
 /**
  * Registers custom post types related to contests area.
@@ -80,7 +78,7 @@ function gmr_contests_enqueue_front_scripts() {
 			
 		wp_enqueue_style( 'greatermedia-contests', "{$base_path}css/greatermedia-contests.css", array( 'datetimepicker', 'parsleyjs' ), GREATER_MEDIA_CONTESTS_VERSION );
 		
-		wp_enqueue_script( 'greatermedia-contests', "{$base_path}js/greatermedia-contests{$postfix}.js", array( 'jquery', 'datetimepicker', 'parsleyjs', 'parsleyjs-words' ), GREATER_MEDIA_CONTESTS_VERSION, true );
+		wp_enqueue_script( 'greatermedia-contests', "{$base_path}js/contests{$postfix}.js", array( 'jquery', 'datetimepicker', 'parsleyjs', 'parsleyjs-words' ), GREATER_MEDIA_CONTESTS_VERSION, true );
 		wp_localize_script( 'greatermedia-contests', 'GreaterMediaContests', array(
 			'selectors' => array(
 				'container' => '#contest-form',
@@ -93,6 +91,7 @@ function gmr_contests_enqueue_front_scripts() {
 				'submit'      => "{$permalink}/action/submit/",
 				'confirm_age' => "{$permalink}/action/confirm-age/",
 				'reject_age'  => "{$permalink}/action/reject-age/",
+				'infinite'    => "{$permalink}/page/",
 			),
 		) );
 	}
@@ -102,30 +101,54 @@ function gmr_contests_enqueue_front_scripts() {
  * Processes contest actions triggered from front end.
  *
  * @action template_redirect
+ * @global int $submission_paged The submissions archive page number.
  */
 function gmr_contests_process_action() {
+	global $submission_paged;
+	
 	// do nothing if it is a regular request
-	$action = get_query_var( 'action' );
-	if ( ! is_singular( GMR_CONTEST_CPT ) || empty( $action ) ) {
+	if ( ! is_singular( GMR_CONTEST_CPT ) ) {
 		return;
 	}
 
-	// disable batcache if it is activated
-	if ( function_exists( 'batcache_cancel' ) ) {
-		batcache_cancel();
+	if ( ! empty( $submission_paged ) ) {
+		$query = gmr_contests_submissions_query( get_the_ID() );
+		if ( ! $query->have_posts() ) {
+			exit;
+		}
+
+		while ( $query->have_posts() ) :
+			$query->the_post();
+
+			?><li class="contest-submission">
+				<a class="contest-submission--link" href="<?php the_permalink(); ?>">
+					<?php echo wp_get_attachment_image( get_post_thumbnail_id() ); ?>
+					Username
+				</a>
+			</li><?php
+		endwhile;
+		exit;
 	}
 
-	// define doing AJAX if it was not defined yet
-	if( ! defined( 'DOING_AJAX' ) && ! empty( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && strtolower( $_SERVER['HTTP_X_REQUESTED_WITH'] ) == 'xmlhttprequest' ) {
-		define( 'DOING_AJAX', true );
+	$action = get_query_var( 'action' );
+	if ( ! empty( $action ) ) {
+		// disable batcache if it is activated
+		if ( function_exists( 'batcache_cancel' ) ) {
+			batcache_cancel();
+		}
+
+		// define doing AJAX if it was not defined yet
+		if( ! defined( 'DOING_AJAX' ) && ! empty( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && strtolower( $_SERVER['HTTP_X_REQUESTED_WITH'] ) == 'xmlhttprequest' ) {
+			define( 'DOING_AJAX', true );
+		}
+
+		// disble HTTP cache
+		nocache_headers();
+
+		// do contest action
+		do_action( "gmr_contest_{$action}" );
+		exit;
 	}
-
-	// disble HTTP cache
-	nocache_headers();
-
-	// do contest action
-	do_action( "gmr_contest_{$action}" );
-	exit;
 }
 
 /**
@@ -385,7 +408,7 @@ function gmr_contests_submissions_query( $contest_id = null ) {
 	return new WP_Query( array(
 		'post_type'      => GMR_SUBMISSIONS_CPT,
 		'post_parent'    => $contest_id,
-		'posts_per_page' => 10,
+		'posts_per_page' => 5,
 		'paged'          => $submission_paged,
 	) );
 }
@@ -452,77 +475,4 @@ function gmr_contests_unpack_vars( $query_vars ) {
 	}
 
 	return $query_vars;
-}
-
-/**
- * Returns next submission post object.
- *
- * @filter gmr_contest_next_submission 10 2
- * @param WP_Post $next_submission The next submission post object.
- * @param int $submission_id The submission id.
- * @return WP_Post The submission post object on success, otherwise NULL.
- */
-function gmr_contests_get_next_submission( $next_submission, $submission_id ) {
-	return gmr_contests_get_adjacent_submission( $next_submission, $submission_id, 'next' );
-}
-
-/**
- * Returns previous submission post object.
- * 
- * @filter gmr_contest_prev_submission 10 2
- * @param WP_Post $prev_submission The previous submission post object.
- * @param int $submission_id The submission id.
- * @return WP_Post The submission post object on success, otherwise NULL.
- */
-function gmr_contests_get_prev_submission( $prev_submission, $submission_id ) {
-	return gmr_contests_get_adjacent_submission( $prev_submission, $submission_id, 'prev' );
-}
-
-/**
- * Returns adjacent submission post object. Can either be next or previous post.
- *
- * @param WP_Post $adjacent_submission
- * @param int $submission_id The current submission id.
- * @param string $next_or_prev Whether to retrieve next or previous post.
- * @return WP_Post Post object on success, otherwise NULL.
- */
-function gmr_contests_get_adjacent_submission( $adjacent_submission, $submission_id, $next_or_prev = 'next' ) {
-	// do nothing if adjacent submission is already found
-	if ( $adjacent_submission && is_a( $adjacent_submission, 'WP_Post' ) ) {
-		return $adjacent_submission;
-	}
-
-	// do nothing if post not found or has wrong post type
-	$submission = get_post( $submission_id );
-	if ( ! $submission || GMR_SUBMISSIONS_CPT != $submission->post_type ) {
-		return null;
-	}
-
-	$order = 'DESC';
-	$before_or_after = 'before';
-	if ( $next_or_prev == 'prev' ) {
-		$order = 'ASC';
-		$before_or_after = 'after';
-	}
-
-	// fetch adjacent submission id
-	$query = new WP_Query( array(
-		'post_type'           => GMR_SUBMISSIONS_CPT,
-		'post_parent'         => $submission->post_parent,
-		'fields'              => 'ids',
-		'no_found_rows'       => true,
-		'ignore_sticky_posts' => true,
-		'posts_per_page'      => 1,
-		'order'               => $order,
-		'orderby'             => 'date',
-		'date_query'          => array(
-			array(
-				$before_or_after => $submission->post_date,
-				'inclusive'      => false,
-				'column'         => 'post_date',
-			),
-		),
-	) );
-
-	return $query->have_posts() ? get_post( $query->next_post() ) : null;
 }

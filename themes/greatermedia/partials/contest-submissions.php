@@ -15,23 +15,36 @@ if ( ! $submissions_query || ! $submissions_query->have_posts() ) {
 
 <section class="contest-submissions">
 	<h4 class="contest-submissions--title">All Entries</h4>
+
+	<script id="contest-submissions--tmpl" type="text/html">
+		<div class="contest-submission--expander">
+			<div class="contest-submission--expander-inner">
+				<span class="contest-submission--close"></span>
+				<div class="contest-submission--fullimg">
+					<div class="contest-submission--loading"></div>
+				</div>
+				<div class="contest-submission--details">
+					<h3>Veggies sunt bona vobis</h3>
+					<p>Komatsuna prairie turnip wattle seed artichoke mustard horseradish taro rutabaga ricebean carrot black-eyed pea turnip greens beetroot yarrow watercress kombu.</p>
+					<a href="http://cargocollective.com/jaimemartinez/">Visit website</a>
+				</div>
+			</div>
+		</div>
+	</script>
+
 	<ul class="contest-submissions--list">
 		<?php while ( $submissions_query->have_posts() ) : ?>
 			<?php $submissions_query->the_post(); ?>
 			<li class="contest-submission">
-				<a href="<?php the_permalink(); ?>">
+				<a class="contest-submission--link" href="<?php the_permalink(); ?>">
 					<?php echo wp_get_attachment_image( get_post_thumbnail_id() ); ?>
+					Username
 				</a>
 			</li>
 		<?php endwhile; ?>
 	</ul>
-</section>
 
-<?php echo paginate_links( array(
-	'base'    => str_replace( PHP_INT_MAX, '%#%', esc_url( get_pagenum_link( PHP_INT_MAX ) ) ),
-	'format'  => '?paged=%#%',
-	'current' => max( 1, $submissions_query->get( 'paged' ) ),
-	'total'   => $submissions_query->max_num_pages,
-) ); ?>
+	<button type="button" class="contest-submissions--load-more">Load More</button>
+</section>
 
 <?php wp_reset_postdata(); ?>

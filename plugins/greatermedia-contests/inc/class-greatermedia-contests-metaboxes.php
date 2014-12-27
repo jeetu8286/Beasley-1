@@ -49,7 +49,7 @@ class GreaterMediaContestsMetaboxes {
 			wp_enqueue_script( 'rivets' );
 			wp_enqueue_style( 'font-awesome' );
 
-			wp_enqueue_script( 'greatermedia-contests-admin', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'js/greatermedia-contests-admin.js', array( 'formbuilder' ), false, true );
+			wp_enqueue_script( 'greatermedia-contests-admin', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'js/contests-admin.js', array( 'formbuilder' ), false, true );
 			$embedded_form = get_post_meta( $post->ID, 'embedded_form', true );
 			$settings      = array(
 				'form' => trim( $embedded_form, '"' ),

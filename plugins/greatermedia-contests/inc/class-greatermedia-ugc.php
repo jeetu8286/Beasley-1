@@ -257,7 +257,7 @@ class GreaterMediaUserGeneratedContent {
 	public static function admin_enqueue_scripts() {
 
 		wp_enqueue_style( 'greatermedia-ugc', GREATER_MEDIA_CONTESTS_URL . 'css/greatermedia-ugc-moderation.css', null, GREATER_MEDIA_CONTESTS_VERSION );
-		wp_enqueue_script( 'greatermedia-ugc', GREATER_MEDIA_CONTESTS_URL . 'js/greatermedia-ugc-moderation.js', array( 'jquery' ), GREATER_MEDIA_CONTESTS_VERSION );
+		wp_enqueue_script( 'greatermedia-ugc', GREATER_MEDIA_CONTESTS_URL . 'js/ugc-moderation.js', array( 'jquery' ), GREATER_MEDIA_CONTESTS_VERSION );
 
 		ob_start();
 		include trailingslashit( GREATER_MEDIA_CONTESTS_PATH ) . 'tpl/moderation-approved-row.tpl.php';

@@ -36,6 +36,7 @@
 
 .contest-submissions {
 	clear: both;
+	position: relative;
 }
 
 .contest-submissions--title {
@@ -47,8 +48,92 @@
 	padding: 0;
 }
 
+.contest-submissions--load-more {
+	clear: both;
+	margin: 1em auto 0;
+	display: block;
+}
+
+.contest-submission--link {
+	&,
+	> img {
+		border: none;
+		outline: none;
+		display: block;
+		position: relative;
+	}
+}
+
 .contest-submission {
-	margin: 0 1em 1em 0;
+	margin: 0 0.5em 1em 0.5em;
 	list-style: none;
-	display: inline-block;
+	float: left;
+	vertical-align: top;
+
+	&:nth-child(5n+1) {
+		clear: both;
+	}
+
+	&.expanded {
+		.contest-submission--link:after {
+			top: auto;
+			border: solid transparent;
+			content: " ";
+			height: 0;
+			width: 0;
+			position: absolute;
+			pointer-events: none;
+			border-bottom-color: #ddd;
+			border-width: 1em;
+			left: 50%;
+			margin: 0.5em 0 0 -15px;
+		}
+	}
+}
+
+.contest-submission--expander {
+    position: absolute;
+    background: #ddd;
+    top: auto;
+    left: 0;
+    width: 100%;
+    margin-top: 1em;
+    text-align: left;
+    height: 0;
+    overflow: hidden;
+	z-index: 10;
+}
+
+.contest-submission--expander-inner {
+    padding: 50px 30px;
+    height: 100%;
+}
+
+.contest-submission--close {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+
+	&:before,
+	&:after {
+		content: '';
+		position: absolute;
+		width: 100%;
+		top: 50%;
+		height: 1px;
+		background: #888;
+		transform: rotate(45deg);
+	}
+
+	&::after {
+		transform: rotate(-45deg);
+	}
+	
+	&:hover::before,
+	&:hover::after {
+		background: #333;
+	}
 }

@@ -591,9 +591,10 @@ img {
   margin-left: auto;
   margin-right: auto;
   padding-right: 0; }
+  .container:before, .container:after {
+    content: " ";
+    display: table; }
   .container:after {
-    content: "";
-    display: table;
     clear: both; }
   @media screen and (min-width: 768px) {
     .container {
@@ -601,18 +602,20 @@ img {
       margin-left: auto;
       margin-right: auto;
       padding-right: 225px; }
+      .container:before, .container:after {
+        content: " ";
+        display: table; }
       .container:after {
-        content: "";
-        display: table;
         clear: both; } }
   @media screen and (min-width: 1400px) {
     .container {
       max-width: 1400px;
       margin-left: auto;
       margin-right: auto; }
+      .container:before, .container:after {
+        content: " ";
+        display: table; }
       .container:after {
-        content: "";
-        display: table;
         clear: both; } }
 
 .main, .home__highlights {
@@ -713,9 +716,10 @@ img {
 
 .row {
   display: block; }
+  .row:before, .row:after {
+    content: " ";
+    display: table; }
   .row:after {
-    content: "";
-    display: table;
     clear: both; }
 
 .col__inner--right {
@@ -1357,17 +1361,19 @@ Curated posts for Featured Articles
 .featured__article {
   padding-bottom: 34px;
   display: block; }
+  .featured__article:before, .featured__article:after {
+    content: " ";
+    display: table; }
   .featured__article:after {
-    content: "";
-    display: table;
     clear: both; }
 
 .featured__content {
   padding-bottom: 34px;
   display: block; }
+  .featured__content:before, .featured__content:after {
+    content: " ";
+    display: table; }
   .featured__content:after {
-    content: "";
-    display: table;
     clear: both; }
   @media screen and (min-width: 1024px) {
     .featured__content {
@@ -2839,7 +2845,7 @@ Link posts contain a link to an external site. They can also optionally have a f
 */
 .hentry {
   margin-bottom: 58px;
-  overflow: auto; }
+  /*overflow: auto;*/ }
   @media screen and (min-width: 768px) {
     .hentry {
       margin-bottom: 90px; } }
@@ -4346,16 +4352,80 @@ category: Components - Ads
   margin-bottom: 2em; }
 
 .contest-submissions {
-  clear: both; }
+  clear: both;
+  position: relative; }
 
 .contest-submissions--list {
   margin: 0;
   padding: 0; }
 
+.contest-submissions--load-more {
+  clear: both;
+  margin: 1em auto 0;
+  display: block; }
+
+.contest-submission--link,
+.contest-submission--link > img {
+  border: none;
+  outline: none;
+  display: block;
+  position: relative; }
+
 .contest-submission {
-  margin: 0 1em 1em 0;
+  margin: 0 0.5em 1em 0.5em;
   list-style: none;
-  display: inline-block; }
+  float: left;
+  vertical-align: top; }
+  .contest-submission:nth-child(5n+1) {
+    clear: both; }
+  .contest-submission.expanded .contest-submission--link:after {
+    top: auto;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-bottom-color: #ddd;
+    border-width: 1em;
+    left: 50%;
+    margin: 0.5em 0 0 -15px; }
+
+.contest-submission--expander {
+  position: absolute;
+  background: #ddd;
+  top: auto;
+  left: 0;
+  width: 100%;
+  margin-top: 1em;
+  text-align: left;
+  height: 0;
+  overflow: hidden;
+  z-index: 10; }
+
+.contest-submission--expander-inner {
+  padding: 50px 30px;
+  height: 100%; }
+
+.contest-submission--close {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  top: 20px;
+  right: 20px;
+  cursor: pointer; }
+  .contest-submission--close:before, .contest-submission--close:after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    height: 1px;
+    background: #888;
+    transform: rotate(45deg); }
+  .contest-submission--close::after {
+    transform: rotate(-45deg); }
+  .contest-submission--close:hover::before, .contest-submission--close:hover::after {
+    background: #333; }
 
 /*doc
 ---
@@ -4406,9 +4476,10 @@ category: Components - Shows
 */
 .podcast {
   display: block; }
+  .podcast:before, .podcast:after {
+    content: " ";
+    display: table; }
   .podcast:after {
-    content: "";
-    display: table;
     clear: both; }
 
 .podcast__play {
@@ -4523,9 +4594,10 @@ category: Components - Shows
   width: 100%;
   display: block;
   color: #ffffff; }
+  .show__header:before, .show__header:after {
+    content: " ";
+    display: table; }
   .show__header:after {
-    content: "";
-    display: table;
     clear: both; }
   .show__header > div {
     vertical-align: middle; }
@@ -4656,9 +4728,10 @@ category: Components - Shows
 */
 .show__features {
   display: block; }
+  .show__features:before, .show__features:after {
+    content: " ";
+    display: table; }
   .show__features:after {
-    content: "";
-    display: table;
     clear: both; }
 
 .show__feature {
@@ -5330,9 +5403,10 @@ category: Components - Gallery Archive
 
 .gallery__slides {
   display: block; }
+  .gallery__slides:before, .gallery__slides:after {
+    content: " ";
+    display: table; }
   .gallery__slides:after {
-    content: "";
-    display: table;
     clear: both; }
 
 .gallery__slide--images {
@@ -6025,18 +6099,20 @@ category: Components - Shows
   max-width: 71.875em;
   margin-left: auto;
   margin-right: auto; }
+  .show__personalities:before, .show__personalities:after {
+    content: " ";
+    display: table; }
   .show__personalities:after {
-    content: "";
-    display: table;
     clear: both; }
 
 .personality {
   margin: 4em 0;
   position: relative;
   display: block; }
+  .personality:before, .personality:after {
+    content: " ";
+    display: table; }
   .personality:after {
-    content: "";
-    display: table;
     clear: both; }
 
 .personality__avatar {

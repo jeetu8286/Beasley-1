@@ -195,7 +195,24 @@
 //
 //
 @mixin box-shadow($top, $left, $blur, $color, $inset:"") {
-  -webkit-box-shadow:$top $left $blur $color #{$inset};
-  -moz-box-shadow:$top $left $blur $color #{$inset};
-  box-shadow:$top $left $blur $color #{$inset};
+	-webkit-box-shadow:$top $left $blur $color #{$inset};
+	-moz-box-shadow:$top $left $blur $color #{$inset};
+	box-shadow:$top $left $blur $color #{$inset};
+}
+
+// Mixin to add clearfix behavior to an element
+//
+// @example scss - CSS clearfix
+// @include clearfix();
+//
+@mixin clearfix() {
+	&:before,
+	&:after {
+		content: " ";
+		display: table;
+	}
+
+	&:after {
+		clear: both;
+	}
 }
