@@ -44,18 +44,56 @@
 }
 
 .post-type-contest {
-	#restrictions {
-		p {
-			margin-top: 0;
+	#contest-settings {
+		.inside {
+			padding: 0;
+		}
 
-			&:last-child {
-				margin-bottom: 0;
+		ul.tabs {
+			margin: 0 0 10px;
+			padding: 0 12px;
+			list-style: none;
+			border-bottom: 1px solid #ccc;
+
+			li {
+				margin: 0 5px -1px 0;
+				padding: 0;
+				display: inline-block;
+				border: 1px solid #ccc;
+				background-color: #eee;
+
+				&.active {
+					border-bottom-color: white;
+					background-color: white;
+				}
+
+				a {
+					display: block;
+					padding: 5px 10px;
+					text-decoration: none;
+
+					&:focus {
+						box-shadow: none;
+					}
+				}
 			}
 		}
 
-		label {
-			display: block;
-			font-weight: bold;
+		div.tab {
+			padding: 15px 12px;
+			display: none;
+
+			&.active {
+				display: block;
+			}
+
+			.fb-save-wrapper {
+				display: none;
+			}
+
+			.form-table th {
+				width: 250px;
+			}
 		}
 	}
 }

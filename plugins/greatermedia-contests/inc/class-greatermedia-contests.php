@@ -16,8 +16,6 @@ class GreaterMediaContests {
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 		add_action( 'restrict_manage_posts', array( $this, 'admin_contest_type_filter' ) );
 		add_action( 'pre_get_posts', array( $this, 'admin_filter_contest_list' ) );
-		add_action( 'edit_form_after_title', array( $this, 'myprefix_edit_form_after_title' ) );
-		add_action( 'edit_form_after_editor', array( $this, 'myprefix_edit_form_after_editor' ) );
 		add_action( 'dbx_post_advanced', array( $this, 'adjust_current_admin_menu' ) );
 
 		add_filter( 'gmr_live_link_suggestion_post_types', array( $this, 'extend_live_link_suggestion_post_types' ) );
@@ -40,40 +38,6 @@ class GreaterMediaContests {
 			$parent_file = 'edit.php?post_type=' . GMR_CONTEST_CPT;
 			$submenu_file = 'edit.php?post_type=' . $typenow;
 		}
-	}
-	
-	/**
-	 * Render markup to enclose the post content/body field in a fake metabox (for visual consistency) with a headline.
-	 * Implements edit_form_after_title action.
-	 */
-	public function myprefix_edit_form_after_title() {
-
-		global $post;
-
-		if ( ! isset( $post ) || GMR_CONTEST_CPT !== $post->post_type ) {
-			return;
-		}
-
-		echo '<div id="contest_editor" class="postbox">';
-		echo '<h3>' . __( 'Introduction', 'greatermedia_contests' ) . '</h3>';
-		echo '<div class="inside">';
-
-	}
-
-	/**
-	 * Render markup to finish rendering the fake metabox around the post content/body field.
-	 * Implements edit_form_after_editor action.
-	 */
-	public function myprefix_edit_form_after_editor() {
-
-		global $post;
-
-		if ( ! isset( $post ) || GMR_CONTEST_CPT !== $post->post_type ) {
-			return;
-		}
-
-		echo '</div></div>';
-
 	}
 
 	/**

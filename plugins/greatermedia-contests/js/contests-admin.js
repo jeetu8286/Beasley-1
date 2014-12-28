@@ -1,22 +1,34 @@
 /*! Greater Media Contests - v1.0.0
  * http://10up.com/
  * Copyright (c) 2014; * Licensed GPLv2+ */
-document.addEventListener("DOMContentLoaded", function() {
-	var formbuilder = new Formbuilder({
-		selector: '#contest_embedded_form',
-		bootstrapData: GreaterMediaContestsForm.form,
-		controls: []
+(function ($) {
+	$(document).ready(function () {
+		var formbuilder = new Formbuilder({
+			selector: '#contest_embedded_form',
+			bootstrapData: GreaterMediaContestsForm.form,
+			controls: []
+		});
+
+		formbuilder.on('save', function (payload) {
+			// payload is a JSON string representation of the form
+			$('#contest_embedded_form_data').val(encodeURIComponent(JSON.stringify(JSON.parse(payload).fields)));
+		});
+
+		// Default the hidden field with the form data loaded from the server
+		$('#contest_embedded_form_data').val(encodeURIComponent(JSON.stringify(GreaterMediaContestsForm.form)));
+
+		$('#contest-settings ul.tabs a').click(function() {
+			$('#contest-settings ul.tabs li.active').removeClass('active');
+			$(this).parent().addClass('active');
+			
+			$('#contest-settings div.tab.active').removeClass('active');
+			$('#contest-settings').find($(this).attr('href')).addClass('active');
+			return false;
+		});
+
+		$('#contest-settings div.tab').addClass('active').removeClass('active').filter(':first').addClass('active');
 	});
-
-	formbuilder.on('save', function (payload) {
-		// payload is a JSON string representation of the form
-		document.getElementById('contest_embedded_form_data').value = encodeURIComponent(JSON.stringify(JSON.parse(payload).fields));
-	});
-
-	// Default the hidden field with the form data loaded from the server
-	document.getElementById('contest_embedded_form_data').value = encodeURIComponent(JSON.stringify(GreaterMediaContestsForm.form));
-
-}, false );
+})(jQuery);
 
 /**
  * Set up date pickers for browsers without a native control
