@@ -60,7 +60,7 @@ class GreaterMediaContestsMetaboxes {
 						'field_options' => array( 'size' => 'medium' ),
 					),
 					array(
-						'cid'           => 'c9',
+						'cid'           => 'c6',
 						'label'         => 'Email Address',
 						'field_type'    => 'email',
 						'required'      => true,

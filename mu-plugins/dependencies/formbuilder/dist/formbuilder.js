@@ -471,6 +471,7 @@
       this.$el.find(".fb-edit-field-wrapper").html($newEditEl);
       this.$el.find(".fb-tabs a[data-target=\"#editField\"]").click();
       this.scrollLeftWrapper($responseFieldEl);
+      this.formBuilder.trigger('showEditView', $newEditEl, model);
       return this;
     };
 

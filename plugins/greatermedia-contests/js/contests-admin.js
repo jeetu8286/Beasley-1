@@ -9,6 +9,15 @@
 			controls: []
 		});
 
+		formbuilder.on('showEditView', function($el, model) {
+			console.log(model);
+			if (model.cid === 'c5' || model.cid === 'c6') {
+				$el.find('input[data-rv-checked="model.required"]')
+				   .prop('checked', true)
+				   .attr('disabled', 'disabled');
+			}
+		});
+
 		formbuilder.on('save', function (payload) {
 			// payload is a JSON string representation of the form
 			$('#contest_embedded_form_data').val(encodeURIComponent(JSON.stringify(JSON.parse(payload).fields)));
@@ -25,8 +34,6 @@
 			$('#contest-settings').find($(this).attr('href')).addClass('active');
 			return false;
 		});
-
-		$('#contest-settings div.tab').addClass('active').removeClass('active').filter(':first').addClass('active');
 	});
 })(jQuery);
 
