@@ -4345,6 +4345,26 @@ category: Components - Ads
 .single__featured-img--contest {
   margin-bottom: 2em; }
 
+.tribe-events-button {
+  display: inline-block;
+  line-height: 1;
+  padding: 0.25em 1em;
+  margin-right: .5em;
+  outline: none;
+  background-color: #d22228;
+  border: 1px solid #d22228;
+  font-family: "Open Sans", sans-serif;
+  font-size: 0.88889em;
+  color: #ffffff !important;
+  text-transform: uppercase;
+  cursor: pointer; }
+  .tribe-events-button:hover, .tribe-events-button:focus {
+    background-color: #aa1c20;
+    border-color: #aa1c20;
+    color: #ffffff; }
+  .tribe-events-button:last-of-type {
+    margin-right: 0; }
+
 /*doc
 ---
 title: Podcast Excerpt
