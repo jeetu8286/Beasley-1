@@ -1062,7 +1062,8 @@ blockquote p {
   margin: 0;
   list-style: none; }
 
-.header__nav ul li, .header__account ul li {
+.header__nav > ul > li,
+.header__account > ul > li {
   padding: 0;
   margin: 0;
   list-style: none;
@@ -1085,15 +1086,48 @@ blockquote p {
 .header__nav ul li ul {
   display: none; }
 
-.header__nav ul li:hover ul {
+.header__nav > ul > li:hover:after {
+  content: ' ';
   display: block;
+  position: relative;
+  bottom: 40px;
+  right: -40px;
+  float: right;
+  width: 40px;
+  height: 40px; }
+
+.header__nav ul li:hover .sub-menu, .header__nav ul li:hover .sub-menu--full-width {
+  display: block; }
+
+.sub-menu, .sub-menu--full-width {
   position: absolute;
-  left: 0;
-  width: 1400px;
-  height: 292px;
+  border-top: 7px solid #d22228;
   background-color: #ffffff;
-  border-top: 7px solid #d0d2d3;
-  z-index: 9999; }
+  color: #000000;
+  padding: 1em;
+  min-width: 300px;
+  z-index: 5000000;
+  /* IAB z-index standard for drop nav is 5000000 - 5999999 */ }
+  .sub-menu li, .sub-menu--full-width li {
+    display: block; }
+  .sub-menu a, .sub-menu--full-width a {
+    color: #000000;
+    /*
+     * Important used here to override a declaration on .header__nav ul li a
+     * We could make the selector more specific here, but I felt it was important
+     * to keep this as a component (e.g. context independent). - TD
+     */
+    padding: 1em !important; }
+    .sub-menu a:hover, .sub-menu--full-width a:hover {
+      color: #ffffff; }
+    .sub-menu a:visited, .sub-menu--full-width a:visited {
+      color: #000000; }
+
+.sub-menu--full-width {
+  width: 1400px; }
+
+.sub-menu--full-width li {
+  width: 32%; }
 
 .content__heading {
   margin-top: 0;
@@ -2532,10 +2566,7 @@ Community Highlights and Events
       top: 82px;
       right: 0;
       width: 250px;
-      height: 118px;
-      border-top: 7px solid #d22228;
-      background-color: #ffffff;
-      z-index: 99999; } }
+      height: 118px; } }
 
 .header__account--open {
   display: block; }
@@ -4344,6 +4375,141 @@ category: Components - Ads
 
 .single__featured-img--contest {
   margin-bottom: 2em; }
+
+.contest__description {
+  margin-bottom: 40px; }
+
+.contest__description:last-of-type {
+  margin-bottom: 0; }
+
+.contest__prize--title {
+  margin: 0 0 18px;
+  font-family: "Droid Sans", sans-serif;
+  font-size: 1.60181em;
+  color: #d22228; }
+
+.contest__form--heading {
+  margin: 0 0 30px;
+  font-family: "Droid Sans", sans-serif;
+  font-size: 1.60181em; }
+
+.contest__form--row {
+  margin-bottom: 30px; }
+
+.contest__form--label {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px; }
+
+.contest__form fieldset label {
+  display: block;
+  width: 100%;
+  margin-left: 0;
+  margin-bottom: 10px; }
+
+.contest__form input[type="text"], .contest__form input[type="url"], .contest__form input[type="email"], .contest__form input[type="number"], .contest__form textarea {
+  width: 100%;
+  padding: 18px 20px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  border: none;
+  outline: none;
+  background-color: #d0d2d3;
+  font-family: "Open Sans", sans-serif;
+  color: #282827; }
+
+.contest__form input[type="submit"] {
+  display: inline-block;
+  line-height: 1;
+  padding: 0.625em 1em;
+  margin-right: .5em;
+  outline: none;
+  background-color: #d22228;
+  border: 1px solid #d22228;
+  font-family: "Open Sans", sans-serif;
+  font-size: 1.60181em;
+  color: #ffffff !important;
+  text-transform: uppercase;
+  cursor: pointer;
+  width: 100%;
+  -webkit-border-radius: 28px;
+  -moz-border-radius: 28px;
+  -ms-border-radius: 28px;
+  -o-border-radius: 28px;
+  -border-radius: 28px;
+  border-radius: 28px;
+  text-transform: uppercase; }
+  .contest__form input[type="submit"]:hover, .contest__form input[type="submit"]:focus {
+    background-color: #aa1c20;
+    border-color: #aa1c20;
+    color: #ffffff; }
+  .contest__form input[type="submit"]:last-of-type {
+    margin-right: 0; }
+
+.contest__form input[type="submit"]:hover {
+  display: inline-block;
+  line-height: 1;
+  padding: 0.625em 1em;
+  margin-right: .5em;
+  outline: none;
+  background-color: #f5ed7f;
+  border: 1px solid #f5ed7f;
+  font-family: "Open Sans", sans-serif;
+  font-size: 1.60181em;
+  color: #000000 !important;
+  text-transform: uppercase;
+  cursor: pointer; }
+  .contest__form input[type="submit"]:hover:hover, .contest__form input[type="submit"]:hover:focus {
+    background-color: #f2e754;
+    border-color: #f2e754;
+    color: #000000; }
+  .contest__form input[type="submit"]:hover:last-of-type {
+    margin-right: 0; }
+
+.contest__form input[type="submit"]:active {
+  display: inline-block;
+  line-height: 1;
+  padding: 0.625em 1em;
+  margin-right: .5em;
+  outline: none;
+  background-color: #000000;
+  border: 1px solid #000000;
+  font-family: "Open Sans", sans-serif;
+  font-size: 1.60181em;
+  color: #ffffff !important;
+  text-transform: uppercase;
+  cursor: pointer; }
+  .contest__form input[type="submit"]:active:hover, .contest__form input[type="submit"]:active:focus {
+    background-color: black;
+    border-color: black;
+    color: #ffffff; }
+  .contest__form input[type="submit"]:active:last-of-type {
+    margin-right: 0; }
+
+.contest__form select {
+  width: 174px;
+  padding: 18px 20px;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  -o-border-radius: 0;
+  -border-radius: 0;
+  border-radius: 0;
+  border: none;
+  outline: none;
+  background-color: #d0d2d3;
+  background-image: url(../../images/select-arrow.png);
+  background-repeat: no-repeat;
+  background-position: 90% center;
+  background-size: auto 10px;
+  font-family: "Open Sans", sans-serif;
+  color: #282827;
+  display: inline-block;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  cursor: pointer; }
 
 .tribe-events-button {
   display: inline-block;

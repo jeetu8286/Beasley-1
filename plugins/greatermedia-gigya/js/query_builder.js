@@ -260,7 +260,7 @@ function print() { __p += __j.call(arguments, '') }
 with (obj) {
 __p += '<div id="misc-publishing-actions" style="margin-bottom: 0.5em;">\n\n\t<div class="misc-pub-section misc-pub-post-status">\n\t\t<label for="post_status">Status:</label>\n\t\t<span id="post-status-display">' +
 __e( statusText ) +
-'</span>\n\t</div>\n\n\t<div class="misc-pub-section curtime misc-pub-curtime">\n\t\t<span id="visibility"> View MyEmma Segment:\n\t\t\t';
+'</span>\n\t</div>\n\n\t<div class="misc-pub-section curtime misc-pub-curtime">\n\t\t<span id="visibility"> View MyEmma Group:\n\t\t\t';
  if (emailSegmentID) { ;
 __p += '\n\t\t\t\t<a href="' +
 __e( emailSegmentURL ) +
@@ -2379,6 +2379,7 @@ var ExportMenuView = Backbone.View.extend({
 
 	initialize: function(options) {
 		Backbone.View.prototype.initialize.call(this, options);
+		this.listenTo(this.model, 'change', this.updateExportButton);
 	},
 
 	render: function() {
@@ -2388,6 +2389,7 @@ var ExportMenuView = Backbone.View.extend({
 
 		var $exportButton = $('<input name="export" type="button" class="button button-primary button-large export-button" id="export-button" value="Export">');
 		$exportButton.insertBefore($submitButton);
+		this.updateExportButton();
 	},
 
 	getSubmitButton: function() {
@@ -2399,6 +2401,9 @@ var ExportMenuView = Backbone.View.extend({
 	},
 
 	didClickExport: function(event) {
+		var disabled = this.model.getStatusCode() === 'running';
+		if (disabled) return;
+
 		var exportField = $('<input>').attr({
 			type: 'hidden',
 			name: 'export_member_query',
@@ -2414,6 +2419,12 @@ var ExportMenuView = Backbone.View.extend({
 		return false;
 	},
 
+	updateExportButton: function() {
+		var disabled = this.model.getStatusCode() === 'running';
+
+		$exportButton = $('#export-button');
+		$exportButton.toggleClass('disabled', disabled);
+	}
 
 });
 
