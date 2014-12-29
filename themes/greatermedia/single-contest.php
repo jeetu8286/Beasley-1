@@ -40,7 +40,7 @@ get_header(); ?>
 
 								<?php if ( ( $contest_prize = trim( get_post_meta( get_the_ID(), 'prizes-desc', true ) ) ) ) : ?>
 									<div class="contest__description">
-										<h3 class="contest__prize--title">What you win:</h3>
+										<h3 class="contest__prize--title"><?php _e( 'What you win:', 'greatermedia' ); ?></h3>
 										<?php echo wpautop( $contest_prize ); ?>
 									</div>
 								<?php endif; ?>
@@ -55,7 +55,7 @@ get_header(); ?>
 								<div class="contest__description">
 									<p>
 										<a class="contest-attr--rules-toggler" href="#" data-toggle="collapse" data-target="#contest-rules" data-alt-text="Hide Contest Rules">
-											Show Contest Rules
+											<?php _e( 'Show Contest Rules', 'greatermedia' ); ?>
 										</a>
 									</p>
 									
@@ -64,6 +64,31 @@ get_header(); ?>
 								<?php endif; ?>
 
 								<?php the_content(); ?>
+
+								<footer class="entry__footer">
+
+									<div class="entry__categories">
+										<div class="entry__list--title"><?php _e( 'Category', 'greatermedia' ); ?></div>
+										<ul class="entry__list--categories">
+											<?php echo get_the_term_list( $post->ID, 'category', '<li class="entry__list--item">', ',</li><li class="entry__list--item">', '</li>' ); ?>
+										</ul>
+									</div>
+
+									<div class="entry__tags">
+										<div class="entry__list--title"><?php _e( 'Tags', 'greatermedia' ); ?></div>
+										<ul class="entry__list--tags">
+											<?php echo get_the_term_list( $post->ID, 'post_tag', '<li class="entry__list--item">', ',</li><li class="entry__list--item">', '</li>' ); ?>
+										</ul>
+									</div>
+
+									<div class="entry__shows">
+										<div class="entry__list--title"><?php _e( 'Shows', 'greatermedia' ); ?></div>
+										<ul class="entry__list--shows">
+											<?php echo get_the_term_list( $post->ID, '_shows', '<li class="entry__list--item">', ',</li><li class="entry__list--item">', '</li>' ); ?>
+										</ul>
+									</div>
+
+								</footer>
 
 							</section>
 
