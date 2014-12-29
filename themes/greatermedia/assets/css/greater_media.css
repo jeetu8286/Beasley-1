@@ -4366,9 +4366,17 @@ category: Components - Ads
   margin-bottom: 30px; }
 
 .contest__form--label {
+  display: block;
+  width: 100%;
   margin-bottom: 10px; }
 
-.contest__form input[type="text"], .contest__form input[type="url"], .contest__form input[type="email"] {
+.contest__form fieldset label {
+  display: block;
+  width: 100%;
+  margin-left: 0;
+  margin-bottom: 10px; }
+
+.contest__form input[type="text"], .contest__form input[type="url"], .contest__form input[type="email"], .contest__form input[type="number"], .contest__form textarea {
   width: 100%;
   padding: 18px 20px;
   -webkit-box-sizing: border-box;
@@ -4447,6 +4455,30 @@ category: Components - Ads
     color: #ffffff; }
   .contest__form input[type="submit"]:active:last-of-type {
     margin-right: 0; }
+
+.contest__form select {
+  width: 174px;
+  padding: 18px 20px;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  -o-border-radius: 0;
+  -border-radius: 0;
+  border-radius: 0;
+  border: none;
+  outline: none;
+  background-color: #d0d2d3;
+  background-image: url(../../images/select-arrow.png);
+  background-repeat: no-repeat;
+  background-position: 90% center;
+  background-size: auto 10px;
+  font-family: "Open Sans", sans-serif;
+  color: #282827;
+  display: inline-block;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  cursor: pointer; }
 
 /*doc
 ---
