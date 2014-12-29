@@ -4514,22 +4514,26 @@ category: Components - Ads
 .tribe-events-button {
   display: inline-block;
   line-height: 1;
-  padding: 0.25em 1em;
+  padding: .25em 1em;
   margin-right: .5em;
   outline: none;
-  background-color: #d22228;
-  border: 1px solid #d22228;
+  background-color: #d22228 !important;
+  border: 1px solid #d22228 !important;
   font-family: "Open Sans", sans-serif;
   font-size: 0.88889em;
   color: #ffffff !important;
   text-transform: uppercase;
   cursor: pointer; }
-  .tribe-events-button:hover, .tribe-events-button:focus {
-    background-color: #aa1c20;
-    border-color: #aa1c20;
-    color: #ffffff; }
-  .tribe-events-button:last-of-type {
-    margin-right: 0; }
+
+.tribe-events-button:hover {
+  background-color: #f5ed7f !important;
+  border: 1px solid #f5ed7f !important;
+  color: #000000 !important; }
+
+.tribe-events-button:active {
+  background-color: #000000 !important;
+  border: 1px solid #000000 !important;
+  color: #ffffff !important; }
 
 /*doc
 ---

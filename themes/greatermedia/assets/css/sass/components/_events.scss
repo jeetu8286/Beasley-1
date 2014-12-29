@@ -1,3 +1,26 @@
 .tribe-events-button {
-	@include btn($btn-bg, $color-text-white, $btn-bg, .25em, 1em, ms(-1));
+	display: inline-block;
+	line-height: 1;
+	padding: .25em 1em;
+	margin-right: .5em;
+	outline: none;
+	background-color: $btn-bg !important;
+	border: 1px solid $btn-bg !important;
+	font-family: $open-sans;
+	font-size: ms(-1);
+	color: $color-text-white !important;
+	text-transform: uppercase;
+	cursor: pointer;
+}
+
+.tribe-events-button:hover {
+	background-color: $btn-hover !important;
+	border: 1px solid $btn-hover !important;
+	color: $color-text-black !important;
+}
+
+.tribe-events-button:active {
+	background-color: $btn-active !important;
+	border: 1px solid $btn-active !important;
+	color: $color-text-white !important;
 }
