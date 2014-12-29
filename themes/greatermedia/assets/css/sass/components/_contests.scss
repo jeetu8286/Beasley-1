@@ -151,7 +151,11 @@
 
 	.contest-submission--entries {
 		@include clearfix;
-		
+
+		dl {
+			margin-top: 0;
+		}
+
 		dt,
 		dd {
 			float: left;

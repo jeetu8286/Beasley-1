@@ -11,7 +11,11 @@
 					?><dt><?php echo esc_html( $label ); ?></dt>
 					<dd><?php echo esc_html( $value ); ?></dd><?php
 				endforeach;
-			?></dl><?php
+			?></dl>
+
+			<p>
+				Submitted by <?php echo esc_html( gmr_contest_submission_get_author() ); ?> On <?php echo get_the_date( '', $contest_entry_id ); ?>
+			</p><?php
 		endif;
 	endif;
 ?></section>

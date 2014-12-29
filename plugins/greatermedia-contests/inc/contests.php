@@ -562,3 +562,30 @@ function gmr_contests_post_thumbnail_html( $html, $post_id, $post_thumbnail_id, 
 
 	return sprintf( '<div class="contest-submission--thumbnail" style="background-image:url(%s)"></div>', $image[0] );
 }
+
+/**
+ * Return contest submission author.
+ *
+ * @param int $submission_id The contest submission id.
+ * @return string The author name if available.
+ */
+function gmr_contest_submission_get_author( $submission_id = null ) {
+	if ( empty( $submission_id ) ) {
+		$submission_id = get_the_ID();
+	}
+	
+	$author = 'guest';
+	if ( function_exists( 'get_gigya_user_profile' ) && ( $gigya_uid = get_post_meta( get_the_ID(), 'gigya_user_id', true ) ) ) {
+		$profile = get_gigya_user_profile( $gigya_uid );
+		if ( ! empty( $profile ) ) {
+			$profile = filter_var_array( $profile, array(
+				'firstName' => FILTER_DEFAULT,
+				'lastName'  => FILTER_DEFAULT,
+			) );
+
+			$author = "{$profile['firstName']} {$profile['lastName']}";
+		}
+	}
+
+	return $author;
+}

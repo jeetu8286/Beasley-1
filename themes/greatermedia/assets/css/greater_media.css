@@ -4483,6 +4483,8 @@ category: Components - Ads
     display: table; }
   .contest-submission .contest-submission--entries:after {
     clear: both; }
+  .contest-submission .contest-submission--entries dl {
+    margin-top: 0; }
   .contest-submission .contest-submission--entries dt,
   .contest-submission .contest-submission--entries dd {
     float: left; }
