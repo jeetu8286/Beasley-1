@@ -567,7 +567,7 @@ img {
 #site-wrap {
   max-width: 100%;
   margin: 0 auto;
-  background-color: black; }
+  background-color: #000000; }
 
 .page-wrap {
   -webkit-transform: translate(0, 0);
@@ -581,7 +581,7 @@ img {
   -moz-transition: all 500ms ease-in-out;
   transition: all 500ms ease-in-out;
   overflow: hidden;
-  background-color: black; }
+  background-color: #000000; }
   @media screen and (min-width: 768px) {
     .page-wrap {
       padding-bottom: 0; } }
@@ -619,10 +619,10 @@ img {
   float: left;
   width: 100%;
   margin: 0;
-  background-color: black; }
+  background-color: #000000; }
 
 .main .container {
-  background-color: white; }
+  background-color: #ffffff; }
 
 .content {
   float: left;
@@ -676,8 +676,8 @@ img {
   right: 0;
   left: 0;
   width: 100%;
-  background-color: black;
-  color: white;
+  background-color: #000000;
+  color: #ffffff;
   cursor: pointer; }
   @media screen and (min-width: 768px) {
     .live-player {
@@ -703,7 +703,7 @@ img {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: black;
+  background-color: #000000;
   content: "";
   z-index: 10; }
 
@@ -757,13 +757,13 @@ html {
   width: 100%;
   height: 100%;
   margin: 0 auto;
-  background-color: black; }
+  background-color: #000000; }
 
 body {
   width: 100%;
   height: 100%;
   margin: 0 auto;
-  background-color: black; }
+  background-color: #000000; }
 
 * {
   -webkit-tap-highlight-color: transparent; }
@@ -817,7 +817,7 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
     color: #aa1c20; }
 
 .featured__content--title a:link, .featured__content--title a:visited, .featured__article--title a:link, .featured__article--title a:visited, .highlights__community--title a:link, .highlights__community--title a:visited {
-  color: white; }
+  color: #ffffff; }
 .featured__content--title a:hover, .featured__content--title a:focus, .featured__content--title a:active, .featured__article--title a:hover, .featured__article--title a:focus, .featured__article--title a:active, .highlights__community--title a:hover, .highlights__community--title a:focus, .highlights__community--title a:active {
   color: #aa1c20; }
 
@@ -889,7 +889,7 @@ blockquote {
   padding: 8px .625em;
   margin: 24px .625em;
   border-left: 10px solid #d0d2d3;
-  quotes: "\201C" "\201D" "\2018" "\2019";
+  quotes: "“" "”" "‘" "’";
   color: #404041;
   font-style: italic; }
 
@@ -915,7 +915,7 @@ blockquote p {
   -webkit-transition: all 500ms ease-in-out;
   -moz-transition: all 500ms ease-in-out;
   transition: all 500ms ease-in-out;
-  background-color: black;
+  background-color: #000000;
   cursor: pointer;
   z-index: 2; }
   @media screen and (min-width: 768px) {
@@ -931,7 +931,7 @@ blockquote p {
   -webkit-transition: all 500ms ease-in-out;
   -moz-transition: all 500ms ease-in-out;
   transition: all 500ms ease-in-out;
-  background: white;
+  background: #ffffff;
   content: ""; }
 
 .mobile-nav__toggle--span:before {
@@ -943,7 +943,7 @@ blockquote p {
   -webkit-transition: all 500ms ease-in-out;
   -moz-transition: all 500ms ease-in-out;
   transition: all 500ms ease-in-out;
-  background: white;
+  background: #ffffff;
   content: ""; }
 
 .mobile-nav__toggle--span:after {
@@ -955,7 +955,7 @@ blockquote p {
   -webkit-transition: all 500ms ease-in-out;
   -moz-transition: all 500ms ease-in-out;
   transition: all 500ms ease-in-out;
-  background: white;
+  background: #ffffff;
   content: ""; }
 
 .mobile-nav {
@@ -971,7 +971,7 @@ blockquote p {
   -webkit-transition: all 500ms ease-in-out;
   -moz-transition: all 500ms ease-in-out;
   transition: all 500ms ease-in-out;
-  background-color: black;
+  background-color: #000000;
   border-right: 1px solid #d0d2d3;
   z-index: 1; }
   @media screen and (min-width: 768px) {
@@ -1040,7 +1040,7 @@ blockquote p {
   padding: 18px 1.25em;
   line-height: 1;
   font-size: 1.26563em;
-  color: white; }
+  color: #ffffff; }
 
 .mobile-nav__list a:hover, .mobile-nav__list a:focus, .mobile-nav__list a:active {
   background-color: #d22228; }
@@ -1071,10 +1071,10 @@ blockquote p {
   font-size: 1em; }
 
 .header__main a, .header__main a:visited {
-  color: white; }
+  color: #ffffff; }
 
 .header__main a:hover, .header__main a:active {
-  color: white; }
+  color: #ffffff; }
 
 .header__nav ul li a, .header__nav ul li a:link, .header__nav ul li a:visited {
   display: block;
@@ -1086,29 +1086,45 @@ blockquote p {
 .header__nav ul li ul {
   display: none; }
 
-.header__nav ul li:hover .sub-menu {
+.header__nav > ul > li:hover:after {
+  content: ' ';
+  display: block;
+  position: relative;
+  bottom: 40px;
+  right: -40px;
+  float: right;
+  width: 40px;
+  height: 40px; }
+
+.header__nav ul li:hover .sub-menu, .header__nav ul li:hover .sub-menu--full-width {
   display: block; }
+
+.sub-menu, .sub-menu--full-width {
+  position: absolute;
+  border-top: 7px solid #d22228;
+  background-color: #ffffff;
+  color: #000000;
+  padding: 1em;
+  min-width: 300px;
+  z-index: 5000000;
+  /* IAB z-index standard for drop nav is 5000000 - 5999999 */ }
+  .sub-menu li, .sub-menu--full-width li {
+    display: block; }
+  .sub-menu a, .sub-menu--full-width a {
+    color: #000000;
+    /*
+     * Important used here to override a declaration on .header__nav ul li a
+     * We could make the selector more specific here, but I felt it was important
+     * to keep this as a component (e.g. context independent). - TD
+     */
+    padding: 1em !important; }
+    .sub-menu a:hover, .sub-menu--full-width a:hover {
+      color: #ffffff; }
+    .sub-menu a:visited, .sub-menu--full-width a:visited {
+      color: #000000; }
 
 .sub-menu--full-width {
   width: 1400px; }
-
-.sub-menu {
-  position: absolute;
-  border-top: 7px solid #d22228;
-  background-color: white;
-  color: black;
-  padding: 1em;
-  z-index: 5000000;
-  /* IAB z-index standard for drop nav is 5000000 - 5999999 */
-  min-width: 300px; }
-  .sub-menu li {
-    display: block; }
-  .sub-menu a {
-    color: black;
-    padding-top: 1em;
-    padding-bottom: 1em; }
-    .sub-menu a:hover {
-      color: white; }
 
 .sub-menu--full-width li {
   width: 32%; }
@@ -1137,7 +1153,7 @@ blockquote p {
   width: 42px;
   height: 42px;
   font-size: 2.625em;
-  color: white; }
+  color: #ffffff; }
 
 .entry__thumbnail--video:before {
   content: "\e613"; }
@@ -1547,7 +1563,7 @@ Curated posts for Featured Articles
         margin-right: 0; } }
 
 .featured__article--heading a, .featured__article--heading a:visited {
-  color: white; }
+  color: #ffffff; }
 
 .featured__article--heading a:hover, .featured__article--heading a:focus {
   color: #f5ed7f; }
@@ -1793,7 +1809,7 @@ Curated posts for Featured Articles
       margin-bottom: 13px; } }
 
 .featured__content--title a:link, .featured__content--title a:visited {
-  color: white; }
+  color: #ffffff; }
 
 .featured__content--title a:hover, .featured__content--title a:focus {
   color: #f5ed7f; }
@@ -1822,7 +1838,7 @@ Curated posts for Featured Articles
   border: 1px solid #d22228;
   font-family: "Open Sans", sans-serif;
   font-size: 0.88889em;
-  color: white !important;
+  color: #ffffff !important;
   text-transform: uppercase;
   cursor: pointer;
   -webkit-border-radius: 1.5em;
@@ -1835,7 +1851,7 @@ Curated posts for Featured Articles
   .featured__content--btn:hover, .featured__content--btn:focus {
     background-color: #aa1c20;
     border-color: #aa1c20;
-    color: white; }
+    color: #ffffff; }
   .featured__content--btn:last-of-type {
     margin-right: 0; }
 
@@ -1849,13 +1865,13 @@ Curated posts for Featured Articles
   border: 1px solid #f5ed7f;
   font-family: "Open Sans", sans-serif;
   font-size: 0.88889em;
-  color: black !important;
+  color: #000000 !important;
   text-transform: uppercase;
   cursor: pointer; }
   .featured__content--btn:hover:hover, .featured__content--btn:hover:focus {
     background-color: #f2e754;
     border-color: #f2e754;
-    color: black; }
+    color: #000000; }
   .featured__content--btn:hover:last-of-type {
     margin-right: 0; }
 
@@ -1865,17 +1881,17 @@ Curated posts for Featured Articles
   padding: 0.25em 1.5em;
   margin-right: .5em;
   outline: none;
-  background-color: black;
-  border: 1px solid black;
+  background-color: #000000;
+  border: 1px solid #000000;
   font-family: "Open Sans", sans-serif;
   font-size: 0.88889em;
-  color: white !important;
+  color: #ffffff !important;
   text-transform: uppercase;
   cursor: pointer; }
   .featured__content--btn:active:hover, .featured__content--btn:active:focus {
     background-color: black;
     border-color: black;
-    color: white; }
+    color: #ffffff; }
   .featured__content--btn:active:last-of-type {
     margin-right: 0; }
 
@@ -2144,7 +2160,7 @@ Community Highlights and Events
   margin: 0;
   font-size: 1em;
   font-weight: normal;
-  color: white;
+  color: #ffffff;
   text-align: center; }
 
 .highlights__events {
@@ -2196,7 +2212,7 @@ Community Highlights and Events
   width: 100%;
   height: 57px;
   margin-bottom: 24px;
-  background-color: white;
+  background-color: #ffffff;
   overflow: hidden; }
   @media screen and (min-width: 480px) {
     .highlights__event--item {
@@ -2371,7 +2387,7 @@ Community Highlights and Events
   width: 100%;
   height: 70px;
   padding: 0;
-  background-color: black;
+  background-color: #000000;
   border-bottom: 1px solid #282827; }
   @media screen and (min-width: 768px) {
     .header__main {
@@ -2508,7 +2524,7 @@ Community Highlights and Events
   display: block;
   float: right;
   margin: 0 auto;
-  color: white;
+  color: #ffffff;
   text-align: center;
   cursor: pointer; }
   @media screen and (min-width: 768px) {
@@ -2520,7 +2536,7 @@ Community Highlights and Events
 @media screen and (min-width: 768px) {
   .header__account:hover {
     background-color: #d22228;
-    color: white; } }
+    color: #ffffff; } }
 
 .header__account--btn {
   display: block;
@@ -2604,7 +2620,7 @@ Community Highlights and Events
   width: 100%;
   margin: 0 auto;
   overflow: auto;
-  background-color: black; }
+  background-color: #000000; }
 
 .footer a:link, .footer a:visited {
   color: #929497; }
@@ -2613,7 +2629,7 @@ Community Highlights and Events
   color: #d22228; }
 
 .footer .container {
-  background-color: white; }
+  background-color: #ffffff; }
 
 .footer__content {
   float: left;
@@ -2621,7 +2637,7 @@ Community Highlights and Events
   margin-right: 7.42297%;
   width: 100%;
   padding: 40px 5.5%;
-  background-color: white;
+  background-color: #ffffff;
   border-top: 1px solid #d0d2d3;
   color: #929497; }
   .footer__content:last-child {
@@ -3058,7 +3074,7 @@ Link posts contain a link to an external site. They can also optionally have a f
   -border-radius: 3px;
   border-radius: 3px;
   background-color: #d0d2d3;
-  color: white; }
+  color: #ffffff; }
 
 .entry__comments--count a:link:after, .entry__comments--count a:visited:after {
   position: absolute;
@@ -3089,8 +3105,8 @@ Link posts contain a link to an external site. They can also optionally have a f
 
 .entry__comments--count a:active {
   display: block;
-  background-color: black;
-  color: white; }
+  background-color: #000000;
+  color: #ffffff; }
 
 .entry__comments--count a:active:after {
   position: absolute;
@@ -3664,7 +3680,7 @@ category: Components
 .live-player__stream--current.open {
   display: block;
   background-color: #191919;
-  color: white;
+  color: #ffffff;
   z-index: 10; }
 
 .live-player__stream--current:after {
@@ -3755,7 +3771,7 @@ category: Components
   background-color: #191919; }
 
 .live-player__stream--item:hover {
-  background-color: black; }
+  background-color: #000000; }
 
 .live-player__stream--name {
   float: left;
@@ -3826,7 +3842,7 @@ category: Components
   border: 1px solid #d22228;
   font-family: "Open Sans", sans-serif;
   font-size: 0.88889em;
-  color: white !important;
+  color: #ffffff !important;
   text-transform: uppercase;
   cursor: pointer;
   -webkit-border-radius: 1em;
@@ -3838,7 +3854,7 @@ category: Components
   .live-stream__listen-now--btn:hover, .podcast__download:hover, .live-stream__listen-now--btn:focus, .podcast__download:focus {
     background-color: #aa1c20;
     border-color: #aa1c20;
-    color: white; }
+    color: #ffffff; }
   .live-stream__listen-now--btn:last-of-type, .podcast__download:last-of-type {
     margin-right: 0; }
 
@@ -4525,7 +4541,7 @@ category: Components - Shows
   padding: 2em;
   width: 100%;
   display: block;
-  color: white; }
+  color: #ffffff; }
   .show__header:after {
     content: "";
     display: table;
@@ -4592,7 +4608,7 @@ category: Components - Shows
     .show__nav li:hover, .show__nav li.current-menu-item {
       text-decoration: underline; }
   .show__nav a {
-    color: white;
+    color: #ffffff;
     text-transform: uppercase; }
 
 .show__title {
@@ -4614,8 +4630,8 @@ category: Components - Shows
   .show__meta em {
     display: block; }
   .show__meta .social-share-link {
-    color: white;
-    border: 1px solid white;
+    color: #ffffff;
+    border: 1px solid #ffffff;
     margin-top: 1em; }
 
 /*doc
@@ -4699,7 +4715,7 @@ category: Components - Shows
 
 .show__feature--desc {
   background-color: #191919;
-  color: white;
+  color: #ffffff;
   padding: 1em 2em 1em; }
 
 /*doc
@@ -4821,12 +4837,12 @@ These are examples of Social Share Links for single articles. (TODO: replace wit
 
 */
 a.social-share-link {
-  color: black;
+  color: #000000;
   display: inline-block;
   width: 40px;
   height: 40px;
   font-size: 20px;
-  border: 1px solid black;
+  border: 1px solid #000000;
   border-radius: 50%;
   padding: 9px; }
   a.social-share-link:hover {
@@ -4854,7 +4870,7 @@ a.social-share-link {
   color: #d0d2d3; }
 
 .social__link a:active {
-  color: white; }
+  color: #ffffff; }
 
 .social__link--facebook:before {
   content: "\e60f"; }
@@ -4923,7 +4939,7 @@ category: Components - Article
   width: 100%;
   height: 40px;
   padding: 0 20px;
-  border-top: 1px solid black;
+  border-top: 1px solid #000000;
   background-color: transparent; }
   @media screen and (min-width: 768px) {
     .header__search--form {
@@ -4933,7 +4949,7 @@ category: Components - Article
       width: 100%;
       height: 132px;
       padding: 16px 2.5%;
-      background-color: white;
+      background-color: #ffffff;
       border-top: none;
       -webkit-transition: all 0.5s ease-in-out;
       -moz-transition: all 0.5s ease-in-out;
@@ -4976,10 +4992,10 @@ category: Components - Article
   @media screen and (min-width: 768px) {
     .header__search--input {
       height: 100px;
-      background-color: white !important;
+      background-color: #ffffff !important;
       outline: none;
       font-size: 2.2807em;
-      color: black;
+      color: #000000;
       text-align: center; }
       .header__search--input::-webkit-input-placeholder {
         color: #d0d2d3; }
@@ -5002,7 +5018,7 @@ category: Components - Article
     .header__search--submit {
       width: 10%;
       height: 100px;
-      color: black; } }
+      color: #000000; } }
 
 .header__search--submit:before {
   font-size: 1.125em;
@@ -5155,7 +5171,7 @@ category: Components - Article
   color: #d22228; }
 
 .search__result--title a:hover, .search__result--title a:focus, .search__result--title a:active {
-  color: black; }
+  color: #000000; }
 
 .search__result--term {
   font-weight: bold; }
@@ -5644,7 +5660,7 @@ category: Components - Gallery Archive
   font-family: "Open Sans", sans-serif;
   font-size: 1.125em;
   font-weight: lighter;
-  color: white;
+  color: #ffffff;
   text-transform: uppercase; }
   @media screen and (min-width: 1024px) {
     .gallery__prev--btn, .gallery__next--btn {
@@ -5833,7 +5849,7 @@ category: Components - Gallery Archive
       height: 100px; } }
 
 .gallery__paging--prev:hover, .gallery__paging--next:hover {
-  color: white; }
+  color: #ffffff; }
 
 .gallery__paging--prev:active, .gallery__paging--next:active {
   color: #d22228; }
@@ -5941,7 +5957,7 @@ category: Components - Gallery Archive
   top: 24px;
   right: 24px;
   font-size: 3.24732em;
-  color: white; }
+  color: #ffffff; }
 
 .gallery-grid__album:before {
   width: 0;
@@ -6426,3 +6442,5 @@ select {
   max-width: 100%;
   height: auto;
   margin: 0 auto; }
+
+/*# sourceMappingURL=greater_media.css.map */
