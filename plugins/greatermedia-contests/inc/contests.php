@@ -16,7 +16,7 @@ add_action( 'gmr_contest_reject-age', 'gmr_contests_reject_user_age' );
 add_filter( 'gmr_contest_submissions_query', 'gmr_contests_submissions_query' );
 add_filter( 'post_type_link', 'gmr_contests_get_submission_permalink', 10, 2 );
 add_filter( 'request', 'gmr_contests_unpack_vars' );
-add_filter( 'post_thumbnail_html', 'gmr_contests_post_thumbnail_html', 10, 5 );
+add_filter( 'post_thumbnail_html', 'gmr_contests_post_thumbnail_html', 10, 4 );
 
 /**
  * Registers custom post types related to contests area.
@@ -538,16 +538,16 @@ function gmr_contests_unpack_vars( $query_vars ) {
 }
 
 /**
+ * Substitutes original thumbnail on a special thumbnail for contest submissions.
  *
- * @filter post_thumbnail_html 10 5
- * @param type $html
- * @param type $post_id
- * @param type $post_thumbnail_id
- * @param type $size
- * @param type $attr
- * @return type
+ * @filter post_thumbnail_html 10 4
+ * @param string $html Original thumbnail html.
+ * @param int $post_id The contest submission id.
+ * @param int $post_thumbnail_id The thumbnail id.
+ * @param string $size The size of thumbnail.
+ * @return string The html of a thumbnail.
  */
-function gmr_contests_post_thumbnail_html( $html, $post_id, $post_thumbnail_id, $size, $attr ) {
+function gmr_contests_post_thumbnail_html( $html, $post_id, $post_thumbnail_id, $size ) {
 	$post = get_post( $post_id );
 	if ( GMR_SUBMISSIONS_CPT != $post->post_type ) {
 		return $html;
