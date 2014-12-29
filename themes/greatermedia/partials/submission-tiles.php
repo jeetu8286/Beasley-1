@@ -23,7 +23,7 @@ if ( ! $submissions_query || ! $submissions_query->have_posts() ) {
 		<?php endwhile; ?>
 	</ul>
 
-	<button type="button" class="contest-submissions--load-more">Load More</button>
+	<button type="button" class="contest-submissions--load-more"><i class="fa fa-refresh fa-spin"></i> Load More</button>
 </section>
 
 <?php wp_reset_postdata(); ?>

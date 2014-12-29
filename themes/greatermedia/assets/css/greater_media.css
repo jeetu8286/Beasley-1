@@ -4350,6 +4350,43 @@ category: Components - Ads
 .single__featured-img--contest {
   margin-bottom: 2em; }
 
+.contest-attr--rules {
+  padding: 2em;
+  margin: 0 0 1.5em;
+  border: 1px solid #ddd;
+  background-color: whitesmoke;
+  font-size: 0.88889em; }
+  .contest-attr--rules p {
+    margin-bottom: 0.75em; }
+    .contest-attr--rules p:last-child {
+      margin-bottom: 0; }
+
+.contest-attr--rules-toggler {
+  display: inline-block;
+  line-height: 1;
+  padding: 0.5em 1em;
+  margin-right: .5em;
+  outline: none;
+  background-color: #d22228;
+  border: 1px solid #d22228;
+  font-family: "Open Sans", sans-serif;
+  font-size: 0.79012em;
+  color: #ffffff !important;
+  text-transform: uppercase;
+  cursor: pointer;
+  -webkit-border-radius: 1em;
+  -moz-border-radius: 1em;
+  -ms-border-radius: 1em;
+  -o-border-radius: 1em;
+  -border-radius: 1em;
+  border-radius: 1em; }
+  .contest-attr--rules-toggler:hover, .contest-attr--rules-toggler:focus {
+    background-color: #aa1c20;
+    border-color: #aa1c20;
+    color: #ffffff; }
+  .contest-attr--rules-toggler:last-of-type {
+    margin-right: 0; }
+
 .contest-submissions {
   clear: both;
   position: relative; }
@@ -4393,6 +4430,11 @@ category: Components - Ads
     margin-right: 0; }
   .contest-submissions--load-more:last-of-type {
     margin-right: auto; }
+  .contest-submissions--load-more .fa {
+    display: none;
+    margin-right: 0.5em; }
+  .contest-submissions--load-more.loading .fa {
+    display: inline-block; }
 
 .contest-submission {
   width: 100%;

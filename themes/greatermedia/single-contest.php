@@ -43,6 +43,16 @@ get_header(); ?>
 									<?php echo wpautop( $contest_prize ); ?>
 								<?php endif; ?>
 
+								<?php if ( ( $contest_rules = trim( get_post_meta( get_the_ID(), 'rules-desc', true ) ) ) ) : ?>
+									<p>
+										<a class="contest-attr--rules-toggler" href="#" data-toggle="collapse" data-target="#contest-rules" data-alt-text="Hide Contest Rules">
+											Show Contest Rules
+										</a>
+									</p>
+									
+									<div id="contest-rules" class="contest-attr--rules" style="display:none;"><?php echo wpautop( $contest_rules ); ?></div>
+								<?php endif; ?>
+
 								<?php the_content(); ?>
 
 							</section>

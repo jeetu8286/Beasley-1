@@ -18,6 +18,27 @@
 
 }
 
+.contest-attr--rules {
+	padding: 2em;
+	margin: 0 0 1.5em;
+	border: 1px solid #ddd;
+	background-color: whitesmoke;
+	font-size: ms(-1);
+
+	p {
+		margin-bottom: 0.75em;
+		
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+}
+
+.contest-attr--rules-toggler {
+	@include btn($btn-bg, $color-text-white, $btn-bg, 0.5em, 1em, ms(-2));
+	@include border-radius(1em);
+}
+
 .contest-attr--excerpt {
 
 }
@@ -58,6 +79,17 @@
 
 	&:last-of-type{
 		margin-right: auto;
+	}
+
+	.fa {
+		display: none;
+		margin-right: 0.5em;
+	}
+
+	&.loading {
+		.fa {
+			display: inline-block;
+		}
 	}
 }
 
