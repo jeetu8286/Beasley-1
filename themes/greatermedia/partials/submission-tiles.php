@@ -6,11 +6,16 @@
  * @since 0.1.0
  */
 
+// do nothing if there are no submisions
 $submissions_query = apply_filters( 'gmr_contest_submissions_query', null );
 if ( ! $submissions_query || ! $submissions_query->have_posts() ) {
 	return;
 }
 
+// enqueue gallery script
+wp_enqueue_script( 'gmr-gallery' );
+
+// render submissions layout
 ?>
 
 <section class="contest-submissions">

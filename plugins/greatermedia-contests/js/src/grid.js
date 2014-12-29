@@ -22,7 +22,9 @@
 				easing: 'ease',
 				loadMore: null,
 				loadMoreWaypointOffset: '150%',
-				loadMoreUrlCallback: null
+				loadMoreUrl: null,
+				loadedMore: null,
+				previewLoaded: null
 			};
 		
 		// the settings..
@@ -72,12 +74,12 @@
 			function loadItems() {
 				var callbackUrl;
 				
-				if ($.isFunction(settings.loadMoreUrlCallback)) {
+				if ($.isFunction(settings.loadMoreUrl)) {
 					if (loadMoreLocked) {
 						return;
 					}
 
-					callbackUrl = settings.loadMoreUrlCallback(loadMoreIteration);
+					callbackUrl = settings.loadMoreUrl(loadMoreIteration);
 					if (!callbackUrl) {
 						return;
 					}
@@ -98,6 +100,10 @@
 								loadMoreLocked = false;
 								$loadMore.removeClass('loading');
 								$.waypoints('refresh');
+
+								if ($.isFunction(settings.loadedMore)) {
+									settings.loadedMore(newItems);
+								}
 							} else {
 								$loadMore.hide();
 							}
@@ -280,9 +286,17 @@
 						$.get($itemEl.attr('href'), function(response) {
 							$itemEl.data('content', response);
 							$previewInner.append(response);
+
+							if ($.isFunction(settings.previewLoaded)) {
+								settings.previewLoaded($previewInner);
+							}
 						});
 					} else {
 						$previewInner.append(content);
+
+						if ($.isFunction(settings.previewLoaded)) {
+							settings.previewLoaded($previewInner);
+						}
 					}
 				},
 

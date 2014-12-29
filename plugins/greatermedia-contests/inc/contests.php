@@ -154,6 +154,8 @@ function gmr_contests_process_submission_action() {
 
 	if ( DOING_AJAX ) {
 		gmr_contests_cache_headers( YEAR_IN_SECONDS );
+
+		add_filter( 'gmr_gallery_use_hash', '__return_false' );
 		
 		the_post();
 		get_template_part( 'partials/submission', 'preview' );

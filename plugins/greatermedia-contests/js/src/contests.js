@@ -1,3 +1,4 @@
+/* globals GMR_Gallery:false */
 (function($, gmr) {
 	var __ready = function() {
 		var container = $(gmr.selectors.container);
@@ -53,7 +54,20 @@
 
 		$('.contest-submissions--list').grid({
 			loadMore: '.contest-submissions--load-more',
-			loadMoreUrlCallback: function(page) {
+			previewLoaded: function() {
+				// init new gallery
+				if ($.fn.cycle) {
+					$('.cycle-slideshow').cycle({
+						next: '.gallery__next--btn'
+					});
+				}
+
+				// bind gallery events
+				if (GMR_Gallery) {
+					GMR_Gallery.bindEvents();
+				}
+			},
+			loadMoreUrl: function(page) {
 				return gmr.endpoints.infinite + (page + 1) + '/';
 			}
 		});
