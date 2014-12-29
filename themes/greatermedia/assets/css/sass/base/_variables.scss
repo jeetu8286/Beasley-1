@@ -95,12 +95,12 @@ $gallery-grid-text: $gray;
 
 $footer-text: $gray;
 
-$btn-bg: $cardinal;
-$btn-hover: $yellow;
-$btn-active: $black;
-$btn-muted: $gray;
-$btn-muted-hover: $cardinal;
-$btn-muted-active: $black;
+$btn-bg: $cardinal !default;
+$btn-hover: $yellow !default;
+$btn-active: $black !default;
+$btn-muted: $gray !default;
+$btn-muted-hover: $cardinal !default;
+$btn-muted-active: $black !default;
 
 $social-hover: $heath;
 
