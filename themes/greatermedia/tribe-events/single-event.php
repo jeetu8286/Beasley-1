@@ -36,15 +36,6 @@ $event_id = get_the_ID();
 
 	<?php the_title( '<h2 class="tribe-events-single-event-title summary entry-title">', '</h2>' ); ?>
 
-	<div class="tribe-events-schedule updated published tribe-clearfix">
-		<h2 class="entry__title"><?php the_title(); ?></h2>
-		<?php echo tribe_events_event_schedule_details( $event_id, '<h3>', '</h3>' ); ?>
-		<?php if ( tribe_get_cost() ) : ?>
-			<span class="tribe-events-divider">|</span>
-			<span class="tribe-events-cost"><?php echo tribe_get_cost( null, true ) ?></span>
-		<?php endif; ?>
-	</div>
-
 	<!-- Event header -->
 	<div id="tribe-events-header" <?php tribe_events_the_header_attributes() ?>>
 		<!-- Navigation -->
@@ -59,6 +50,19 @@ $event_id = get_the_ID();
 
 	<?php while ( have_posts() ) :  the_post(); ?>
 		<div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+
+			<?php if ( has_post_thumbnail() ) { ?>
+
+				<div class="event__thumbnail">
+					<?php the_post_thumbnail( 'gmr-event-thumbnail', array( 'class' => 'single__featured-img' ) ); ?>
+				</div>
+			<?php
+			}
+			?>
+
+			<?php echo tribe_event_featured_image( $event_id, 'full', false ); ?>
+
+			<h2 class="entry__title"><a href="<?php the_permalink(); ?>" title="<?php the_title() ?>" rel="bookmark"><?php the_title(); ?></a></h2>
 			<!-- Event featured image, but exclude link -->
 			<?php echo tribe_event_featured_image( $event_id, 'full', false ); ?>
 
