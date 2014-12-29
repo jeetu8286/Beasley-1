@@ -1,0 +1,39 @@
+
+.header__nav ul li:hover .sub-menu {
+	display: block;
+}
+
+
+
+.sub-menu--full-width {
+	width: $max-site-width;
+}
+
+.sub-menu {
+	position: absolute;
+	border-top: 7px solid $color-text-red;
+	background-color: $primary-bg;
+	color: $color-text-black;
+	padding: 1em;
+	min-width: 300px;
+	z-index: 5000000; /* IAB z-index standard for drop nav is 5000000 - 5999999 */
+
+	li {
+		display: block;
+	}
+
+	a {
+		color: $color-text-black;
+		padding-top: 1em;
+		padding-bottom: 1em;
+
+		&:hover {
+			color: $color-text-white;
+		}
+	}
+
+}
+
+	.sub-menu--full-width li {
+		width: 32%;
+	}
