@@ -22,9 +22,7 @@ class GreaterMediaMegaMenuAdmin {
 	 */
 	public static $options = array(
 		''      => 'Standard',
-		'fw-mc' => 'Full-width, multi-column',
-		'fw-pi' => 'Full-width with preview images',
-		'fw-la' => 'Full-width with latest articles'
+		'fw' => 'Full-width, four column',
 	);
 
 	/**
