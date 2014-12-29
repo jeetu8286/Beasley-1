@@ -30,7 +30,7 @@ get_header(); ?>
 									<?php $encoded_title = urlencode( get_the_title() ); ?>
 
 									<time class="entry__date" datetime="<?php echo get_the_time(); ?>"><?php the_date( 'F j' ); ?></time>
-									<h2 class="entry__title" itemprop="headline"><?php the_title(); ?></h2>
+									<h2 class="entry__title" itemprop="headline"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
 
 									<a class="icon-facebook social-share-link" href="http://www.facebook.com/sharer/sharer.php?u=<?php echo $encoded_permalink; ?>&title=<?php echo $encoded_title; ?>"></a>
 									<a class="icon-twitter social-share-link" href="http://twitter.com/home?status=<?php echo $encoded_title; ?>+<?php echo $encoded_permalink; ?>"></a>
@@ -39,11 +39,20 @@ get_header(); ?>
 								</header>
 
 								<?php if ( ( $contest_prize = trim( get_post_meta( get_the_ID(), 'prizes-desc', true ) ) ) ) : ?>
-									<h4>What you win:</h4>
-									<?php echo wpautop( $contest_prize ); ?>
+									<div class="contest__description">
+										<h3 class="contest__prize--title">What you win:</h3>
+										<?php echo wpautop( $contest_prize ); ?>
+									</div>
+								<?php endif; ?>
+
+								<?php if ( ( $enter = trim( get_post_meta( get_the_ID(), 'how-to-enter-desc', true ) ) ) ) : ?>
+									<div class="contest__description">
+										<?php echo wpautop( $enter ); ?>
+									</div>
 								<?php endif; ?>
 
 								<?php if ( ( $contest_rules = trim( get_post_meta( get_the_ID(), 'rules-desc', true ) ) ) ) : ?>
+								<div class="contest__description">
 									<p>
 										<a class="contest-attr--rules-toggler" href="#" data-toggle="collapse" data-target="#contest-rules" data-alt-text="Hide Contest Rules">
 											Show Contest Rules
@@ -51,6 +60,7 @@ get_header(); ?>
 									</p>
 									
 									<div id="contest-rules" class="contest-attr--rules" style="display:none;"><?php echo wpautop( $contest_rules ); ?></div>
+								</div>
 								<?php endif; ?>
 
 								<?php the_content(); ?>
@@ -58,7 +68,7 @@ get_header(); ?>
 							</section>
 
 
-							<section id="contest-form" class="col__inner--right">
+							<section id="contest-form" class="col__inner--right contest__form">
 								LOADING... <?php //TODO: replace with a spinner ?>
 							</section>
 

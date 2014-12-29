@@ -150,7 +150,8 @@ class GreaterMediaFormbuilderRender {
 			$form = json_decode( $clean_form );
 		}
 
-		$html = '<form action="" method="post" enctype="multipart/form-data" class="' . esc_attr( self::FORM_CLASS ) . '" data-parsley-validate>';
+		$html = '<h3 class="contest__form--heading">Enter Here to Win</h3>';
+		$html .= '<form method="post" enctype="multipart/form-data" class="' . esc_attr( self::FORM_CLASS ) . '" data-parsley-validate>';
 
 		foreach ( $form as $field ) {
 
@@ -158,9 +159,11 @@ class GreaterMediaFormbuilderRender {
 
 			// Make sure the field type has been implemented/is valid
 			if ( method_exists( __CLASS__, $renderer_method ) ) {
+				$html .= '<div class="contest__form--row">';
 				$html .= wp_kses( self::$renderer_method( $post_id, $field ), self::allowed_tags() );
+				$html .= '</div>';
 			}
-			
+
 		}
 
 		$submit_text = get_post_meta( $post_id, 'form-submitbutton', true );
@@ -192,6 +195,7 @@ class GreaterMediaFormbuilderRender {
 
 		$label_tag_attributes = array(
 			'for' => $field_id,
+			'class' => 'contest__form--label'
 		);
 
 		$label = ( isset( $field->label ) ) ? $field->label : '';
