@@ -235,7 +235,7 @@ category: Components - Gallery Archive
 	@include transition(opacity 200ms linear);
 	top: 50% !important;
 	left: 50% !important;
-	transform: translate(-50%, -50%);
+	@include transform(translate(-50%, -50%));
 	background-repeat: no-repeat;
 	background-position: center center;
 	@include bp(small) {
