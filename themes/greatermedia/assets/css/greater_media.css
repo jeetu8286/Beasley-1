@@ -2686,26 +2686,6 @@ Community Highlights and Events
       .footer__content:last-child {
         margin-right: 0; } }
 
-.footer__logo {
-  font-size: 1.60181em;
-  font-weight: lighter;
-  color: #929497;
-  text-transform: uppercase; }
-  @media screen and (min-width: 1024px) {
-    .footer__logo {
-      float: left;
-      display: block;
-      margin-right: 2.35765%;
-      width: 14.70196%; }
-      .footer__logo:last-child {
-        margin-right: 0; } }
-
-.footer__logo a:link, .footer__logo a:visited {
-  color: #929497; }
-
-.footer__logo a:hover, .footer__logo a:focus, .footer__logo a:active {
-  color: #d22228; }
-
 .footer__copyright {
   padding: 13px 0;
   font-size: 0.70233em; }
@@ -2714,7 +2694,7 @@ Community Highlights and Events
       float: left;
       display: block;
       margin-right: 2.35765%;
-      width: 23.23176%; }
+      width: 40.29137%; }
       .footer__copyright:last-child {
         margin-right: 0; } }
 
@@ -2723,6 +2703,21 @@ Community Highlights and Events
 
 .footer__copyright--span:last-of-type {
   padding-left: 5px; }
+
+.footer__copyright--logo {
+  font-size: 2.3em;
+  line-height: 1.2;
+  margin-bottom: .25em;
+  font-weight: lighter;
+  color: #929497;
+  text-transform: uppercase; }
+  .footer__copyright--logo a:link,
+  .footer__copyright--logo a:visited {
+    color: #929497; }
+  .footer__copyright--logo a:hover,
+  .footer__copyright--logo a:focus,
+  .footer__copyright--logo a:active {
+    color: #d22228; }
 
 @media screen and (min-width: 1024px) {
   .footer__menu {
