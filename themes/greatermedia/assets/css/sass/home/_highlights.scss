@@ -282,10 +282,21 @@ Community Highlights and Events
 	a {
 		display: block;
 		box-sizing: content-box; // So we can set the height relative to line height.
-		height: 1.5em; // Exactly one line high. 
+
+		max-height: 1.5em; // Exactly one line high. 
 		white-space: nowrap;
   		overflow: hidden;
 		text-overflow: ellipsis;
+		
+		@include bp(small) {
+			max-height: 4.5em; // Three lines.
+			white-space: normal;
+		}
+		
+		@include bp(large) {
+			max-height: 1.5em; // Back to one line. 
+			white-space: nowrap;			
+		}
 	}
 }
 

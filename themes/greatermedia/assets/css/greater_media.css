@@ -2182,10 +2182,18 @@ Community Highlights and Events
   .highlights__community--title a {
     display: block;
     box-sizing: content-box;
-    height: 1.5em;
+    max-height: 1.5em;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis; }
+    @media screen and (min-width: 480px) {
+      .highlights__community--title a {
+        max-height: 4.5em;
+        white-space: normal; } }
+    @media screen and (min-width: 1024px) {
+      .highlights__community--title a {
+        max-height: 1.5em;
+        white-space: nowrap; } }
 
 .highlights__events {
   float: left;
