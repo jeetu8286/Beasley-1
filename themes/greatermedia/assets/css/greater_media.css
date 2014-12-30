@@ -2139,6 +2139,8 @@ Community Highlights and Events
   width: 100%;
   height: 100%;
   overflow: hidden; }
+  .highlights__community--thumb img {
+    width: 100%; }
 
 .highlights__community--thumb a {
   display: block; }
