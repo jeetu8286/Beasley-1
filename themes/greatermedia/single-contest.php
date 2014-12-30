@@ -57,17 +57,7 @@ get_header(); ?>
 								echo '</div>';
 								?>
 
-								<footer class="entry__footer">
-									<?php
-
-									// If comments are open or we have at least one comment, load up the comment template.
-									if ( comments_open() || get_comments_number() ) {
-										comments_template();
-									}
-
-									?>
-
-								</footer>
+								<?php get_template_part( 'partials/post', 'footer' ); ?>
 
 							</section>
 
