@@ -106,14 +106,14 @@
 									'link_after'      => '',
 									'items_wrap'      => '<ul id="%1$s" class="%2$s">%3$s</ul>',
 									'depth'           => 0,
-									'walker'          => ''
+									'walker'          => new GreaterMediaNavWalker
 								);
 								wp_nav_menu( $main_nav );
 								?>
 								<div class="header__secondary">
 									<div class="header__account">
 										<i class="header__account--btn"></i>
-										<div class="header__account--links">
+										<div class="header__account--links sub-menu">
 										</div>
 									</div>
 									<div id="header__search" class="header__search">
