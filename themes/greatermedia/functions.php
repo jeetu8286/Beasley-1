@@ -322,3 +322,11 @@ function greatermedia_excerpt_more( $more ) {
 	return '';
 }
 add_filter( 'excerpt_more', 'greatermedia_excerpt_more' );
+
+/**
+ * Hide live player sidebar
+ */
+add_action( 'gmlp_player_popup_template', 'greatermedia_popup_payer_hide_livesidebar' );
+function greatermedia_popup_payer_hide_livesidebar(){
+	add_filter( 'load_greatermedia_livepress_sidebar', '__return_false' );
+}

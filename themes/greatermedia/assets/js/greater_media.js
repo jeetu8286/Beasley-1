@@ -55,6 +55,34 @@
 			elem.attachEvent ('on'+eventType,handler);
 	}
 
+    /**
+     * Toggles a class to the Live Play Stream Select box when the box is clicked
+     */
+    function toggleStreamSelect() {
+        livePlayerStreamSelect.classList.toggle( 'open' );
+    }
+    addEventHandler(livePlayerStreamSelect,elemClick,toggleStreamSelect);
+
+    /**
+     * Selects a Live Player Stream
+     */
+    function selectStream() {
+        var selected_stream = this.querySelector( '.live-player__stream--name' ).textContent;
+
+        livePlayerCurrentName.textContent = selected_stream;
+        document.dispatchEvent( new CustomEvent( 'live-player-stream-changed', { 'detail': selected_stream } ) );
+    }
+
+    for ( var i = 0; i < livePlayerStreams.length; i++ ) {
+        addEventHandler(livePlayerStreams[i],elemClick,selectStream);
+    }
+    /**
+     * from Js Window resize script is not neccessary on popupPlayer window
+     */
+    if( document.getElementById( 'popup-player-livestream' ) ){
+        return;
+    }
+
 	/**
 	 * detects various positions of the screen on scroll to deliver states of the live player
 	 *
@@ -182,7 +210,7 @@
 	playLp = new lpAction(playBtn, lpListenNow, lpNowPlaying);
 	pauseLp = new lpAction(pauseBtn, lpNowPlaying, lpListenNow);
 	resumeLp = new lpAction(resumeBtn, lpListenNow, lpNowPlaying);
-	
+
 	/**
 	 * Toggles a class to the body when the mobile nav button is clicked
 	 */
@@ -190,28 +218,6 @@
 		body.classList.toggle( 'mobile-nav--open' );
 	}
 	addEventHandler(mobileNavButton,elemClick,toggleNavButton);
-	
-	/**
-	 * Toggles a class to the Live Play Stream Select box when the box is clicked
-	 */
-	function toggleStreamSelect() {
-		livePlayerStreamSelect.classList.toggle( 'open' );
-	}
-	addEventHandler(livePlayerStreamSelect,elemClick,toggleStreamSelect);
-	
-	/**
-	 * Selects a Live Player Stream
-	 */
-	function selectStream() {
-		var selected_stream = this.querySelector( '.live-player__stream--name' ).textContent;
-
-		livePlayerCurrentName.textContent = selected_stream;
-		document.dispatchEvent( new CustomEvent( 'live-player-stream-changed', { 'detail': selected_stream } ) );
-	}
-
-	for ( var i = 0; i < livePlayerStreams.length; i++ ) {
-		addEventHandler(livePlayerStreams[i],elemClick,selectStream);
-	}
 
 	/**
 	 * Toggles a class to the live links when the live player `On Air` is clicked on smaller screens
