@@ -1425,6 +1425,8 @@ Curated posts for Featured Articles
   background-color: #270e10; }
   .featured__article--image:last-child {
     margin-right: 0; }
+  .featured__article--image img {
+    width: 100%; }
   @media screen and (min-width: 480px) {
     .featured__article--image {
       float: left;

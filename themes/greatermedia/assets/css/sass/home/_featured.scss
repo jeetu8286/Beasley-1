@@ -113,6 +113,9 @@ Curated posts for Featured Articles
 	max-height: 100px;
 	overflow: hidden;
 	background-color: $featured-secondary-bg;
+	img {
+		width: 100%;
+	}
 	@include bp(small) {
 		@include span-columns(6 of 6);
 		@include omega;
