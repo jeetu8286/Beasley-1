@@ -94,7 +94,7 @@
 						        <?php wp_reset_query(); ?>
 					        </section>
 
-							<section class="show__latest-crap cf">
+							<section class="show__live-links cf">
 					        	<h2 class="section-header">Latest Crap</h2>
 								<ul>
 									<li class="live-link__type--standard">
@@ -170,10 +170,13 @@
 					        $main_query = \GreaterMedia\Shows\get_show_main_query();
 					        while( $main_query->have_posts() ): $main_query->the_post(); ?>
 						        <article <?php post_class( 'cf' ); ?>>
-							        <section class="entry__meta">
+							        <section class="entry__meta<?php if ( !has_post_thumbnail() ) echo '--fullwidth'; ?>">
 								        <time class="entry__date" datetime="<?php the_time( 'c' ); ?>"><?php the_time( 'd F' ); ?></time>
 
 								        <h2 class="entry__title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
+							        
+										<?php the_excerpt(); ?>
+
 							        </section>
 
 							        <?php if ( has_post_thumbnail() ) : ?>
