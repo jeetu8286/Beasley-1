@@ -64,9 +64,15 @@
 	background-color: $secondary-bg;
 	border-right: 1px solid $primary-border;
 	z-index: 1;
+	overflow-y: auto;
 	@include bp(medium) {
 		display: none;
 	}
+}
+
+.admin-bar .mobile-nav {
+	top: 46px;
+	height: calc( 100% - 46px ); /* doesn't work in IE8, but probably ok. Just don't edit the site and expect the front-end to be bug-free in IE8 */
 }
 
 .mobile-nav--open {
@@ -130,9 +136,8 @@
 }
 
 .mobile-nav .social__list {
-	position: absolute;
-	bottom: 0;
 	padding: 18px 0;
+	width: 100%;
 }
 
 .mobile-nav .social__link {

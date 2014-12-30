@@ -973,10 +973,16 @@ blockquote p {
   transition: all 500ms ease-in-out;
   background-color: #000000;
   border-right: 1px solid #d0d2d3;
-  z-index: 1; }
+  z-index: 1;
+  overflow-y: auto; }
   @media screen and (min-width: 768px) {
     .mobile-nav {
       display: none; } }
+
+.admin-bar .mobile-nav {
+  top: 46px;
+  height: calc( 100% - 46px );
+  /* doesn't work in IE8, but probably ok. Just don't edit the site and expect the front-end to be bug-free in IE8 */ }
 
 .mobile-nav--open {
   overflow: hidden; }
@@ -1046,9 +1052,8 @@ blockquote p {
   background-color: #d22228; }
 
 .mobile-nav .social__list {
-  position: absolute;
-  bottom: 0;
-  padding: 18px 0; }
+  padding: 18px 0;
+  width: 100%; }
 
 .mobile-nav .social__link {
   margin: 0 0 0 1.25em;
@@ -1086,60 +1091,7 @@ blockquote p {
 .header__nav ul li ul {
   display: none; }
 
-.header__nav > ul > li:hover:after {
-  content: ' ';
-  display: block;
-  position: relative;
-  bottom: 40px;
-  right: -40px;
-  float: right;
-  width: 40px;
-  height: 40px; }
-
-.header__nav ul li:hover .sub-menu, .header__nav ul li:hover .format-fw > ul {
-  display: block; }
-
-.header__nav .sub-menu, .header__nav .format-fw > ul {
-  position: absolute;
-  border-top: 7px solid #d22228;
-  background-color: #ffffff;
-  color: #000000;
-  min-width: 300px;
-  z-index: 5000000;
-  /* IAB z-index standard for drop nav is 5000000 - 5999999 */ }
-  .header__nav .sub-menu li, .header__nav .format-fw > ul li {
-    display: block; }
-  .header__nav .sub-menu a, .header__nav .format-fw > ul a {
-    color: #000000;
-    /*
-     * Important used here to override a declaration on .header__nav ul li a
-     * We could make the selector more specific here, but I felt it was important
-     * to keep this as a component (e.g. context independent). - TD
-     */
-    padding: 1em !important; }
-    .header__nav .sub-menu a:visited, .header__nav .format-fw > ul a:visited {
-      color: #000000; }
-    .header__nav .sub-menu a:hover, .header__nav .format-fw > ul a:hover {
-      color: #ffffff; }
-
-/**
- * Full-width
- */
-.format-fw > ul {
-  width: 1400px;
-  left: 0;
-  padding: 1em; }
-
-.format-fw > ul > li {
-  width: 32.666%;
-  /* 100% - 2% (for margins, below) / 3 (3 columns) */
-  float: left; }
-
-.format-fw > ul > li:not(:nth-child(3n+1)) {
-  border-left: 1px solid #d0d2d3;
-  padding-left: 1%;
-  margin-left: 1%; }
-
+/* No files to import found in layout/sub-menus/**\/.scss */
 .content__heading {
   margin-top: 0;
   margin-bottom: 24px;
