@@ -5088,7 +5088,7 @@ category: Components - Article
   background-color: transparent; }
   @media screen and (min-width: 768px) {
     .header__search--form {
-      position: absolute;
+      position: fixed;
       top: 0;
       left: 0;
       width: 100%;
@@ -5105,6 +5105,8 @@ category: Components - Article
       -o-transform: translate(0, -100%);
       transform: translate(0, -100%);
       z-index: 1000; } }
+  .logged-in .header__search--form {
+    top: 32px; }
 
 .header__search--open {
   -webkit-transition: all 0.5s ease-in-out;
