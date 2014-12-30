@@ -185,7 +185,17 @@
 							        </section>
 							        <?php endif; ?>
 
-							        <?php get_template_part( 'partials/post', 'footer' ); ?>
+									<footer class="entry__footer">
+
+										<?php
+										$category = get_the_category();
+
+										if( isset( $category[0] ) ){
+											echo '<a href="' . esc_url( get_category_link($category[0]->term_id ) ) . '" class="entry__footer--category">' . esc_html( $category[0]->cat_name ) . '</a>';
+										}
+										?>
+
+									</footer>
 						        </article>
 					        <?php endwhile; ?>
 					        <?php wp_reset_query(); ?>
