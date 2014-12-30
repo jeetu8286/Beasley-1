@@ -1099,7 +1099,7 @@ blockquote p {
 .header__nav ul li:hover .sub-menu, .header__nav ul li:hover .format-fw > ul {
   display: block; }
 
-.sub-menu, .format-fw > ul {
+.header__nav .sub-menu, .header__nav .format-fw > ul {
   position: absolute;
   border-top: 7px solid #d22228;
   background-color: #ffffff;
@@ -1107,9 +1107,9 @@ blockquote p {
   min-width: 300px;
   z-index: 5000000;
   /* IAB z-index standard for drop nav is 5000000 - 5999999 */ }
-  .sub-menu li, .format-fw > ul li {
+  .header__nav .sub-menu li, .header__nav .format-fw > ul li {
     display: block; }
-  .sub-menu a, .format-fw > ul a {
+  .header__nav .sub-menu a, .header__nav .format-fw > ul a {
     color: #000000;
     /*
      * Important used here to override a declaration on .header__nav ul li a
@@ -1117,9 +1117,9 @@ blockquote p {
      * to keep this as a component (e.g. context independent). - TD
      */
     padding: 1em !important; }
-    .sub-menu a:visited, .format-fw > ul a:visited {
+    .header__nav .sub-menu a:visited, .header__nav .format-fw > ul a:visited {
       color: #000000; }
-    .sub-menu a:hover, .format-fw > ul a:hover {
+    .header__nav .sub-menu a:hover, .header__nav .format-fw > ul a:hover {
       color: #ffffff; }
 
 /**
@@ -2392,7 +2392,8 @@ Community Highlights and Events
   transform: translateY(-100%); }
 
 .header .container {
-  padding: 0 .714285714286%; }
+  padding: 0 .714285714286%;
+  position: relative; }
 
 .header__main {
   width: 100%;
@@ -4352,7 +4353,8 @@ category: Components - Ads
   .ad__leaderboard.desktop {
     display: none; }
   .ad__leaderboard.mobile {
-    display: block; }
+    display: block;
+    padding: 0; }
   @media screen and (min-width: 768px) {
     .ad__leaderboard {
       height: 132px; }
@@ -5154,7 +5156,6 @@ category: Components - Article
 .header__search--submit {
   position: relative;
   float: right;
-  width: 14px;
   height: 40px;
   border: none;
   background-color: transparent;
