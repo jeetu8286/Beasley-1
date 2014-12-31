@@ -59,10 +59,21 @@ category: Base
 /**
  * Helpers
  */
-.cf:after {
+.cf:after, .mobile-nav .menu-item-has-children:after {
   content: "";
   display: table;
   clear: both; }
+
+/**
+ * Hides text from sighted users
+ */
+.screen-reader-text {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden; }
 
 /*! normalize.css v3.0.2 | MIT License | git.io/normalize */
 /**
@@ -572,9 +583,9 @@ img {
   transform: translate(0, 0);
   width: 100%;
   padding-bottom: 58px;
-  -webkit-transition: all 500ms ease-in-out;
-  -moz-transition: all 500ms ease-in-out;
-  transition: all 500ms ease-in-out;
+  -webkit-transition: all 100ms ease-out;
+  -moz-transition: all 100ms ease-out;
+  transition: all 100ms ease-out;
   overflow: hidden;
   background-color: #000000; }
   @media screen and (min-width: 768px) {
@@ -963,15 +974,21 @@ blockquote p {
   -ms-transform: translate(-100%, 0);
   -o-transform: translate(-100%, 0);
   transform: translate(-100%, 0);
-  -webkit-transition: all 500ms ease-in-out;
-  -moz-transition: all 500ms ease-in-out;
-  transition: all 500ms ease-in-out;
+  -webkit-transition: all 100ms ease-out;
+  -moz-transition: all 100ms ease-out;
+  transition: all 100ms ease-out;
   background-color: #000000;
   border-right: 1px solid #d0d2d3;
-  z-index: 1; }
+  z-index: 1;
+  overflow-y: auto; }
   @media screen and (min-width: 768px) {
     .mobile-nav {
       display: none; } }
+
+.admin-bar .mobile-nav {
+  top: 46px;
+  height: calc( 100% - 46px );
+  /* doesn't work in IE8, but probably ok. Just don't edit the site and expect the front-end to be bug-free in IE8 */ }
 
 .mobile-nav--open {
   overflow: hidden; }
@@ -1009,9 +1026,9 @@ blockquote p {
   -o-transform: translate(78%, 0);
   transform: translate(78%, 0);
   width: 100%;
-  -webkit-transition: all 500ms ease-in-out;
-  -moz-transition: all 500ms ease-in-out;
-  transition: all 500ms ease-in-out; }
+  -webkit-transition: all 100ms ease-out;
+  -moz-transition: all 100ms ease-out;
+  transition: all 100ms ease-out; }
 
 .mobile-nav--open .page-wrap:before {
   position: absolute;
@@ -1028,7 +1045,9 @@ blockquote p {
 .mobile-nav__list .menu-item {
   padding: 0;
   margin: 0;
-  border-bottom: 1px solid #282827; }
+  border-bottom: 1px solid #282827;
+  line-height: 0;
+  /* the anchor inside the <li> provides all the box model sizing */ }
 
 .mobile-nav__list a:link, .mobile-nav__list a:visited {
   display: block;
@@ -1041,9 +1060,8 @@ blockquote p {
   background-color: #d22228; }
 
 .mobile-nav .social__list {
-  position: absolute;
-  bottom: 0;
-  padding: 18px 0; }
+  padding: 18px 0;
+  width: 100%; }
 
 .mobile-nav .social__link {
   margin: 0 0 0 1.25em;
@@ -1075,7 +1093,10 @@ blockquote p {
   display: block;
   padding: 33px 1.125em 32px; }
 
-.header__nav ul li a:hover, .header__nav ul li a:focus, .header__nav ul li a:active {
+.header__nav ul li a:hover,
+.header__nav ul li a:focus,
+.header__nav ul li a:active,
+.header__nav ul li:hover {
   background-color: #d22228; }
 
 .header__nav ul li ul {
@@ -1094,7 +1115,9 @@ blockquote p {
 .header__nav ul li:hover .sub-menu, .header__nav ul li:hover .format-fw > ul {
   display: block; }
 
-.sub-menu, .format-fw > ul {
+.header__nav .sub-menu, .header__nav .format-fw > ul,
+.header__account--links.sub-menu,
+.header__nav .format-fw > ul.header__account--links {
   position: absolute;
   border-top: 7px solid #d22228;
   background-color: #ffffff;
@@ -1102,9 +1125,13 @@ blockquote p {
   min-width: 300px;
   z-index: 5000000;
   /* IAB z-index standard for drop nav is 5000000 - 5999999 */ }
-  .sub-menu li, .format-fw > ul li {
+  .header__nav .sub-menu li, .header__nav .format-fw > ul li,
+  .header__account--links.sub-menu li,
+  .header__nav .format-fw > ul.header__account--links li {
     display: block; }
-  .sub-menu a, .format-fw > ul a {
+  .header__nav .sub-menu a, .header__nav .format-fw > ul a,
+  .header__account--links.sub-menu a,
+  .header__nav .format-fw > ul.header__account--links a {
     color: #000000;
     /*
      * Important used here to override a declaration on .header__nav ul li a
@@ -1112,25 +1139,73 @@ blockquote p {
      * to keep this as a component (e.g. context independent). - TD
      */
     padding: 1em !important; }
-    .sub-menu a:visited, .format-fw > ul a:visited {
+    .header__nav .sub-menu a:visited, .header__nav .format-fw > ul a:visited,
+    .header__account--links.sub-menu a:visited,
+    .header__nav .format-fw > ul.header__account--links a:visited {
       color: #000000; }
-    .sub-menu a:hover, .format-fw > ul a:hover {
+    .header__nav .sub-menu a:hover, .header__nav .format-fw > ul a:hover,
+    .header__account--links.sub-menu a:hover,
+    .header__nav .format-fw > ul.header__account--links a:hover {
       color: #ffffff; }
 
-/**
- * Full-width
- */
-.format-fw > ul {
+.mobile-nav .sub-menu, .mobile-nav .header__nav .format-fw > ul, .header__nav .mobile-nav .format-fw > ul {
+  -webkit-transition: left 100ms ease-out;
+  -moz-transition: left 100ms ease-out;
+  transition: left 100ms ease-out;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  left: -100%;
+  top: 0;
+  bottom: 0;
+  background-color: #fff;
+  padding: 0; }
+  .mobile-nav .sub-menu li, .mobile-nav .header__nav .format-fw > ul li, .header__nav .mobile-nav .format-fw > ul li {
+    list-style-type: none;
+    border: none; }
+  .mobile-nav .sub-menu a, .mobile-nav .header__nav .format-fw > ul a, .header__nav .mobile-nav .format-fw > ul a {
+    color: #000; }
+.mobile-nav .sub-menu.is-visible, .mobile-nav .header__nav .format-fw > ul.is-visible, .header__nav .mobile-nav .format-fw > ul.is-visible {
+  display: block;
+  left: 0; }
+.mobile-nav .menu-item-has-children > a:first-child {
+  float: left;
+  width: 75%; }
+.mobile-nav .show-subnavigation {
+  float: right;
+  width: 25%;
+  text-align: center;
+  border-left: 1px solid #282827; }
+.mobile-nav .mobile-menu-submenu-header {
+  background-color: #d22228;
+  color: #fff;
+  padding: 18px 1.25em; }
+.mobile-nav a.mobile-menu-submenu-back-link {
+  display: inline-block;
+  width: 33%;
+  padding: 0;
+  color: #fff; }
+  .mobile-nav a.mobile-menu-submenu-back-link:before {
+    position: relative;
+    bottom: -0.09em;
+    /* optical, vertical, centering next to "Back" */ }
+.mobile-nav .mobile-menu-submenu-heading {
+  display: inline-block;
+  width: 65%;
+  text-align: right;
+  line-height: 1;
+  font-size: 1.60181em;
+  color: #fff; }
+
+.header__nav .format-fw > ul {
   width: 1400px;
   left: 0;
   padding: 1em; }
-
-.format-fw > ul > li {
+.header__nav .format-fw > ul > li {
   width: 32.666%;
   /* 100% - 2% (for margins, below) / 3 (3 columns) */
   float: left; }
-
-.format-fw > ul > li:not(:nth-child(3n+1)) {
+.header__nav .format-fw > ul > li:not(:nth-child(3n+1)) {
   border-left: 1px solid #d0d2d3;
   padding-left: 1%;
   margin-left: 1%; }
@@ -2387,7 +2462,8 @@ Community Highlights and Events
   transform: translateY(-100%); }
 
 .header .container {
-  padding: 0 .714285714286%; }
+  padding: 0 .714285714286%;
+  position: relative; }
 
 .header__main {
   width: 100%;
@@ -4388,7 +4464,8 @@ category: Components - Ads
   .ad__leaderboard.desktop {
     display: none; }
   .ad__leaderboard.mobile {
-    display: block; }
+    display: block;
+    padding: 0; }
   @media screen and (min-width: 768px) {
     .ad__leaderboard {
       height: 132px; }
@@ -5196,7 +5273,6 @@ category: Components - Article
 .header__search--submit {
   position: relative;
   float: right;
-  width: 14px;
   height: 40px;
   border: none;
   background-color: transparent;
