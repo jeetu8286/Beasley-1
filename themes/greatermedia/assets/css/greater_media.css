@@ -1701,7 +1701,7 @@ Curated posts for Featured Articles
   height: 90px;
   margin-bottom: 27px;
   overflow: hidden;
-  background: #d0d2d3; }
+  background: #f1f1f3; }
   .featured__content--block:last-child {
     margin-right: 0; }
   @media screen and (min-width: 480px) {
@@ -1896,12 +1896,19 @@ Curated posts for Featured Articles
       margin-bottom: 13px; } }
 
 .featured__content--title a:link, .featured__content--title a:visited {
-  color: #ffffff; }
+  color: #282827; }
 
 .featured__content--title a:hover, .featured__content--title a:focus {
-  color: #f5ed7f; }
+  color: #aa1c20; }
 
 .featured__content--title a:active {
+  color: #831519; }
+
+.home__featured .featured__content--title a:link, .home__featured .featured__content--title a:visited {
+  color: #ffffff; }
+.home__featured .featured__content--title a:hover, .home__featured .featured__content--title a:focus {
+  color: #f5ed7f; }
+.home__featured .featured__content--title a:active {
   color: #f2e754; }
 
 .featured__content--link {
@@ -2071,7 +2078,7 @@ Community Highlights and Events
 */
 .home__highlights {
   padding: 1em;
-  background-color: #d0d2d3; }
+  background-color: #f1f1f3; }
   @media screen and (min-width: 768px) {
     .home__highlights {
       padding: 48px; } }
