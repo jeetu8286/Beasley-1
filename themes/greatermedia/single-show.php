@@ -22,7 +22,7 @@
 								<a href="<?php the_permalink(); ?>">
 									<div class="show__feature">
 										<?php if ( has_post_thumbnail() ) : ?>
-											<?php the_post_thumbnail( array( 570,315 ) ); ?>
+											<?php the_post_thumbnail( 'gmr-show-featured-primary' ); ?>
 										<?php endif; ?>
 										<div class="show__feature--desc">
 											<h3><?php the_title(); ?></h3>
@@ -37,7 +37,7 @@
 									<a href="<?php the_permalink(); ?>">
 										<div class="show__feature">
 											<?php if ( has_post_thumbnail() ) : ?>
-												<?php the_post_thumbnail( array( 570,315 ) ); ?>
+												<?php the_post_thumbnail( 'gmr-show-featured-secondary' ); ?>
 											<?php endif; ?>
 											<div class="show__feature--desc">
 												<h3><?php the_title(); ?></h3>
