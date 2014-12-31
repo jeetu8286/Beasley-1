@@ -590,6 +590,10 @@ img {
   background-color: #000000; }
   @media screen and (min-width: 768px) {
     .page-wrap {
+      -webkit-transform: none;
+      -moz-transform: none;
+      -ms-transform: none;
+      -o-transform: none;
       transform: none;
       padding-bottom: 0; } }
 
@@ -1103,7 +1107,8 @@ blockquote p {
 .header__nav ul li ul {
   display: none; }
 
-.header__nav > ul > li:hover:after {
+/* Psuedo element helps with selection by preventing the menu from collapsing on just a bit of a mouse-out */
+.header__nav .menu-item-has-children:hover:after {
   content: ' ';
   display: block;
   position: relative;
@@ -2633,7 +2638,7 @@ Community Highlights and Events
   /* set explicitly to visually match menu open/close on mobile */
   position: relative;
   top: -2px;
-  /* optical alignment with baseline of mobile open/close */ }
+  /* alignment with baseline of mobile open/close */ }
   @media screen and (min-width: 768px) {
     .header__account--btn:before {
       font-size: 1.125em;
