@@ -1135,6 +1135,19 @@ blockquote p {
   padding-left: 1%;
   margin-left: 1%; }
 
+.page-template-front-page-php .content {
+  float: left;
+  display: block;
+  margin-right: 2.35765%;
+  width: 100%;
+  margin-left: 0%;
+  padding: 1em; }
+  .page-template-front-page-php .content:last-child {
+    margin-right: 0; }
+  @media screen and (min-width: 768px) {
+    .page-template-front-page-php .content {
+      padding: 48px; } }
+
 .content__heading {
   margin-top: 0;
   margin-bottom: 24px;
