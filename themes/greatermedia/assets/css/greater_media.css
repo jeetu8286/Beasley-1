@@ -2950,7 +2950,8 @@ Link posts contain a link to an external site. They can also optionally have a f
         margin-right: 0; } }
 
 .entry__footer--category:link, .entry__footer--category:visited {
-  float: right;
+  text-align: right;
+  display: inline-block;
   line-height: 1;
   font-family: "Droid Sans", sans-serif;
   font-weight: bold;
@@ -3492,16 +3493,28 @@ Link posts contain a link to an external site. They can also optionally have a f
   margin-top: 0;
   line-height: 1; }
 
-.page-template-front-page-php .hentry {
-  margin-bottom: 30px; }
+.page-template-front-page-php .entry__date,
+.page-template-front-page-php .entry__excerpt {
+  display: none; }
 .page-template-front-page-php .entry__title {
-  margin-bottom: 0.5em; }
+  margin-bottom: 0.5em;
+  text-align: center; }
 .page-template-front-page-php .entry__thumbnail {
   text-align: center;
   margin-bottom: 0;
   padding-bottom: 0; }
   .page-template-front-page-php .entry__thumbnail img {
     display: inline-block; }
+.page-template-front-page-php .entry__footer {
+  text-align: center; }
+@media screen and (min-width: 480px) {
+  .page-template-front-page-php .entry__date,
+  .page-template-front-page-php .entry__excerpt {
+    display: block; }
+  .page-template-front-page-php .entry__title {
+    text-align: left; }
+  .page-template-front-page-php .entry__footer {
+    text-align: right; } }
 @media screen and (min-width: 768px) {
   .page-template-front-page-php .entry__title {
     margin-bottom: 0.4em; }

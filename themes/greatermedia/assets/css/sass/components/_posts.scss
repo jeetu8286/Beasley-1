@@ -189,7 +189,8 @@ Link posts contain a link to an external site. They can also optionally have a f
 }
 
 .entry__footer--category:link, .entry__footer--category:visited {
-	float: right;
+	text-align: right;
+	display: inline-block; 
 	line-height: 1;
 	font-family: $droid-sans;
 	font-weight: bold;
@@ -551,11 +552,16 @@ Link posts contain a link to an external site. They can also optionally have a f
 // Tighter spacing for home page 
 .page-template-front-page-php {
 	.hentry {
-		margin-bottom: 30px;
+		
+	}
+	.entry__date,
+	.entry__excerpt {
+		display: none; 
 	}
 	.entry__title {
 		margin-bottom: 0.5em;
-	}
+		text-align: center;
+	}	
 	.entry__thumbnail {
 		text-align: center;
 		margin-bottom: 0;
@@ -563,6 +569,22 @@ Link posts contain a link to an external site. They can also optionally have a f
 		
 		img {
 			display: inline-block; 
+		}
+	}
+	.entry__footer {
+		text-align: center;
+	}
+	
+	@include bp(small) {
+		.entry__date,
+		.entry__excerpt {
+			display: block;
+		}
+		.entry__title {
+			text-align: left;
+		}
+		.entry__footer {
+			text-align: right;
 		}
 	}
 	
