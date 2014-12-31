@@ -1289,6 +1289,37 @@ blockquote p {
     .entry--audio__meta {
       width: 75.113636363636%; } }
 
+.page-template-front-page-php .entry__date,
+.page-template-front-page-php .entry__excerpt {
+  display: none; }
+.page-template-front-page-php .entry__title {
+  margin-bottom: 0.5em;
+  text-align: center; }
+.page-template-front-page-php .entry__thumbnail {
+  text-align: center;
+  margin-bottom: 0;
+  padding-bottom: 0; }
+  .page-template-front-page-php .entry__thumbnail img {
+    display: inline-block; }
+.page-template-front-page-php .entry__footer {
+  text-align: center; }
+@media screen and (min-width: 480px) {
+  .page-template-front-page-php .entry__date,
+  .page-template-front-page-php .entry__excerpt {
+    display: block; }
+  .page-template-front-page-php .entry__title {
+    text-align: left; }
+  .page-template-front-page-php .entry__footer {
+    text-align: right; } }
+@media screen and (min-width: 768px) {
+  .page-template-front-page-php .entry__title {
+    margin-bottom: 0.4em; }
+  .page-template-front-page-php .entry__thumbnail {
+    padding-top: 0.5em;
+    padding-bottom: 0; }
+  .page-template-front-page-php .entry__excerpt p {
+    margin: 0; } }
+
 /*doc
 ---
 title: Featured Articles
@@ -3492,37 +3523,6 @@ Link posts contain a link to an external site. They can also optionally have a f
 .entry__cdrelease--content .entry__title {
   margin-top: 0;
   line-height: 1; }
-
-.page-template-front-page-php .entry__date,
-.page-template-front-page-php .entry__excerpt {
-  display: none; }
-.page-template-front-page-php .entry__title {
-  margin-bottom: 0.5em;
-  text-align: center; }
-.page-template-front-page-php .entry__thumbnail {
-  text-align: center;
-  margin-bottom: 0;
-  padding-bottom: 0; }
-  .page-template-front-page-php .entry__thumbnail img {
-    display: inline-block; }
-.page-template-front-page-php .entry__footer {
-  text-align: center; }
-@media screen and (min-width: 480px) {
-  .page-template-front-page-php .entry__date,
-  .page-template-front-page-php .entry__excerpt {
-    display: block; }
-  .page-template-front-page-php .entry__title {
-    text-align: left; }
-  .page-template-front-page-php .entry__footer {
-    text-align: right; } }
-@media screen and (min-width: 768px) {
-  .page-template-front-page-php .entry__title {
-    margin-bottom: 0.4em; }
-  .page-template-front-page-php .entry__thumbnail {
-    padding-top: 0.5em;
-    padding-bottom: 0; }
-  .page-template-front-page-php .entry__excerpt p {
-    margin: 0; } }
 
 .alignleft, img.alignleft {
   display: block;
