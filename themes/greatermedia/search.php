@@ -31,9 +31,10 @@ get_header(); ?>
 					$term_label = 'Keyword:';
 				?>
 
-				<h3 class="search__keyword"><?php printf( __( '%s %s', 'greatermedia' ), $term_label, '<span class="search__keyword--term">' . get_search_query() . '</span>' ); ?></h3>
 
 				<?php if( $keyword_post_id != 0 ): ?>
+				<h3 class="search__keyword"><?php printf( __( '%s %s', 'greatermedia' ), $term_label, '<span class="search__keyword--term">' . get_search_query() . '</span>' ); ?></h3>
+
 				<div class="keyword__search--results">
 
 					<?php do_action( 'keyword_search_result' ); ?>
@@ -71,8 +72,8 @@ get_header(); ?>
 
 					<div class="posts-pagination">
 
-						<div class="posts-pagination--previous"><?php next_posts_link( '<i class="fa fa-angle-double-left"></i>Previous' ); ?></div>
-						<div class="posts-pagination--next"><?php previous_posts_link( 'Next<i class="fa fa-angle-double-right"></i>' ); ?></div>
+						<div class="posts-pagination--previous"><?php previous_posts_link( '<i class="fa fa-angle-double-left"></i>Previous' ); ?></div>
+						<div class="posts-pagination--next"><?php next_posts_link( 'Next<i class="fa fa-angle-double-right"></i>' ); ?></div>
 
 					</div>
 
@@ -82,13 +83,13 @@ get_header(); ?>
 
 						<header class="article-header">
 
-							<h1><?php _e( 'Oops, Post Not Found!', 'greatermedia' ); ?></h1>
+							<h1><?php _e( 'No Results Found!', 'greatermedia' ); ?></h1>
 
 						</header>
 
 						<section class="entry-content">
 
-							<p><?php _e( 'Uh Oh. Something is missing. Try double checking things.', 'greatermedia' ); ?></p>
+							<p><?php _e( 'Try searching for something else, or click one of the links above.', 'greatermedia' ); ?></p>
 
 						</section>
 

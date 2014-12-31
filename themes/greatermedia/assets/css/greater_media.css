@@ -3524,7 +3524,9 @@ Link posts contain a link to an external site. They can also optionally have a f
 
 .posts-pagination {
   width: 100%;
-  font-size: 0.88889em; }
+  font-size: 0.88889em;
+  float: left;
+  margin-top: 3em; }
 
 .posts-pagination--previous {
   float: left;
