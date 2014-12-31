@@ -40,9 +40,16 @@ class GreaterMediaMobileNavWalker extends Walker_Nav_Menu {
 	 */
 	public function start_el( &$output, $item, $depth = 0, $args = array(), $id = 0 ) {
 
+		// Iterate item count or reset if needed
+		if ( $depth != 0 ) {
+			self::$item_count_in_sub_menu ++;
+		} else {
+			self::$item_count_in_sub_menu = 0;
+		}
+
 		if ( 1 === self::$item_count_in_sub_menu && $depth === 1 ) {
 			$output .= '<li class="mobile-menu-submenu-header">';
-			$output .= '<a href="#" class="mobile-menu-submen-back-link icon-arrow-prev">Back</a>';
+			$output .= '<a href="#" class="mobile-menu-submenu-back-link icon-arrow-prev">Back</a>';
 			$output .= '<span class="mobile-menu-submenu-heading">' . esc_html( $item->menu_item_parent_title ) . '</span>';
 			$output .= '</li>';
 		}
@@ -132,8 +139,9 @@ class GreaterMediaMobileNavWalker extends Walker_Nav_Menu {
 
 		/* if an item has sub-navigation, expose it via an arrow */
 		if ( in_array( 'menu-item-has-children', $item->classes ) ) {
-			$item_output .= '<div class="show-subnavigation icon-arrow-next">';
-			$item_output .= '<span class="screen-reader-text">Expand Sub-Navigation</span></div>';
+			$item_output .= '<a href="#" class="show-subnavigation icon-arrow-next">';
+			$item_output .= '<span class="screen-reader-text">Expand Sub-Navigation</span>';
+			$item_output .= '</a>';
 		}
 
 
@@ -153,16 +161,7 @@ class GreaterMediaMobileNavWalker extends Walker_Nav_Menu {
 		 */
 		$output .= apply_filters( 'walker_nav_menu_start_el', $item_output, $item, $depth, $args );
 
-		// Iterate item count and reset depth
-		if ( $depth === self::$current_depth ) {
-			self::$item_count_in_sub_menu ++;
-		} else {
-			self::$item_count_in_sub_menu = 0;
-		}
-
-		self::$current_depth = $depth;
 	}
-
 
 }
 
@@ -176,12 +175,7 @@ add_action( 'after_setup_theme', function() {
 
 				// Get the associated parent item
 				$matching_parents = (array) wp_filter_object_list( $sorted_menu_items, array( 'ID' => $item->menu_item_parent ), 'and', 'post_title' );
-
-
 				$item->menu_item_parent_title = array_shift( $matching_parents );
-				//$sorted_menu_items[$id]['menu_item_parent_title'] = 'hello';
-				echo "<br>";
-				//$item->menu_item_parent_title = $sorted_menu_items[$item->menu_item_parent]->post_title;
 			}
 		}
 

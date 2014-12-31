@@ -121,6 +121,7 @@
 	padding: 0;
 	margin: 0;
 	border-bottom: 1px solid $header-border;
+	line-height: 0; /* the anchor inside the <li> provides all the box model sizing */
 }
 
 .mobile-nav__list a:link, .mobile-nav__list a:visited {
