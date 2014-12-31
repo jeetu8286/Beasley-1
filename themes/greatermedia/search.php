@@ -24,11 +24,11 @@ get_header(); ?>
 						$count += 1;
 					}
 
-					echo '<h2 class="search__results--count">' . intval( $count ) . ' ';
-					_e( 'Results Found', 'greatermedia' );
-					echo '</h2>';
+					// echo '<h2 class="search__results--count">' . intval( $count ) . ' ';
+					// _e( 'Results Found', 'greatermedia' );
+					// echo '</h2>';
 
-					$term_label = $keyword_post_id ? 'Keyword:' : 'Search term:';
+					$term_label = 'Keyword:';
 				?>
 
 				<h3 class="search__keyword"><?php printf( __( '%s %s', 'greatermedia' ), $term_label, '<span class="search__keyword--term">' . get_search_query() . '</span>' ); ?></h3>
@@ -42,9 +42,20 @@ get_header(); ?>
 
 				<?php endif; ?>
 
-				<h2 class="search__title"><?php _e( 'Relevant Search Results', 'greatermedia' ); ?></h2>
+<!-- 				<h2 class="search__title"><?php _e( 'Relevant Search Results', 'greatermedia' ); ?></h2>
+ -->
+				<?php if ( have_posts() ) :
 
-				<?php if ( have_posts() ) : while ( have_posts() ) : the_post();
+					$term_label = intval($count) . ' Search Results for:'; ?>
+
+					<h3 class="search__keyword"><?php printf( __( '%s %s', 'greatermedia' ), $term_label, '<span class="search__keyword--term">' . get_search_query() . '</span>' ); ?></h3>
+
+				<?php
+					while ( have_posts() ) : the_post();
+				?>
+
+
+				<?php
 					$title = get_the_title();
 					$keys= explode(" ",$s);
 					$title = preg_replace('/('.implode('|', $keys) .')/iu', '<span class="search__result--term">\0</span>', $title);

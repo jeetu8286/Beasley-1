@@ -5228,7 +5228,6 @@ category: Components - Article
   padding: 0;
   margin-top: 26px;
   margin-bottom: 0;
-  font-size: 1.125em;
   color: #404041;
   text-transform: uppercase; }
 
@@ -5236,7 +5235,7 @@ category: Components - Article
   color: #d22228; }
 
 .keyword__search--results {
-  margin-bottom: 26px; }
+  margin-bottom: 4em; }
 
 .search__title {
   padding-bottom: 12px;
