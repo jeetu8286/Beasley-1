@@ -1369,7 +1369,7 @@ Curated posts for Featured Articles
       margin-right: 3.57866%;
       width: 100%;
       margin-right: 0;
-      padding: 55px 48px; }
+      padding: 55px 48px 0; }
       .home__featured:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 1024px) {
@@ -1379,6 +1379,7 @@ Curated posts for Featured Articles
       margin-right: 2.35765%;
       width: 100%;
       margin-right: 0;
+      padding-bottom: 55px;
       background: url(../../images/featured-bg.png) repeat center center #561015;
       background-size: auto 40%; }
       .home__featured:last-child {
@@ -1640,9 +1641,8 @@ Curated posts for Featured Articles
     .featured__content--block {
       float: left;
       display: block;
-      margin-right: 7.42297%;
-      width: 100%;
-      margin-right: 0;
+      margin-right: 2.35765%;
+      width: 31.76157%;
       height: 100%; }
       .featured__content--block:last-child {
         margin-right: 0; } }
@@ -1719,8 +1719,7 @@ Curated posts for Featured Articles
         margin-right: 0; } }
 
 .featured__content--image img {
-  height: 100%;
-  width: auto;
+  width: 100%;
   max-width: none; }
   @media screen and (min-width: 768px) {
     .featured__content--image img {
@@ -1796,17 +1795,17 @@ Curated posts for Featured Articles
   -webkit-box-orient: vertical;
   text-overflow: ellipsis;
   font-family: "Open Sans", sans-serif;
-  font-size: 1em; }
+  font-size: 1.26563em; }
   @media screen and (min-width: 480px) {
     .featured__content--title {
       height: 48px;
       margin-bottom: 5px;
-      font-size: 1.125em; } }
+      font-size: 1.26563em; } }
   @media screen and (min-width: 768px) {
     .featured__content--title {
-      height: 100%;
-      margin-bottom: 8px;
-      overflow: auto; } }
+      overflow: auto;
+      margin-bottom: 0;
+      font-size: 1.125em; } }
   @media screen and (min-width: 1024px) {
     .featured__content--title {
       height: 52px;
@@ -1832,7 +1831,7 @@ Curated posts for Featured Articles
   @media screen and (min-width: 480px) {
     .featured__content--link {
       text-align: right; } }
-  @media screen and (min-width: 1024px) {
+  @media screen and (min-width: 768px) {
     .featured__content--link {
       text-align: center; } }
 
