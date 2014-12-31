@@ -56,11 +56,6 @@ category: Base
   padding: 0;
   margin: 0; }
 
-.entry__categories, .entry__tags, .entry__tags a {
-  color: #929497;
-  font-size: 1.125em;
-  font-style: italic; }
-
 /**
  * Helpers
  */
@@ -3017,7 +3012,8 @@ Link posts contain a link to an external site. They can also optionally have a f
       float: left;
       display: block;
       margin-right: 2.35765%;
-      width: 100%; }
+      width: 100%;
+      padding-top: 40px; }
       .entry__footer:last-child {
         margin-right: 0; } }
 
@@ -3072,41 +3068,81 @@ Link posts contain a link to an external site. They can also optionally have a f
   padding-left: 1.875em;
   font-size: 0.79012em; }
 
-.entry__categories, .entry__tags {
-  margin-bottom: 8px; }
+.entry__categories, .entry__tags, .entry__shows {
+  overflow: auto;
+  clear: both;
+  margin-bottom: 28px;
+  font-size: 0.88889em;
+  color: #929497; }
 
-.entry__list {
+.entry__list, .entry__list--categories, .entry__list--tags, .entry__list--shows, .entry__list--show {
+  display: inline-block;
   padding: 0;
   margin: 0;
-  list-style: none;
-  font-size: 0.79012em; }
+  list-style: none; }
 
-.entry__list:before, .entry__list--categories:before, .entry__list--tags:before {
+.entry__list:before {
   margin-right: .25em;
   text-transform: uppercase; }
 
 .entry__list--item {
-  padding: 0;
-  margin-right: 1em;
+  padding: 0 2px 0 0;
   list-style: none;
   display: inline-block; }
 
 .entry__list--item:last-of-type {
-  margin: 0; }
+  padding: 0; }
 
-.entry__list--item:after {
-  margin-left: 1em;
-  content: "|"; }
+.entry__list--item a, .entry__list--item a:visited, .entry__list--show a, .entry__list--show a:visited {
+  color: #929497; }
 
-.entry__list--item:last-of-type:after {
-  margin: 0;
-  content: ""; }
+.entry__list--item a:hover, .entry__list--item a:focus, .entry__list--item a:active, .entry__list--show a:hover, .entry__list--show a:focus, .entry__list--show a:active {
+  color: #aa1c20; }
 
-.entry__list--categories:before {
-  content: "Categories:"; }
+.entry__list--title {
+  display: inline-block;
+  float: left;
+  font-weight: 800; }
 
-.entry__list--tags:before {
-  content: "Tags:"; }
+.entry__list--title:after {
+  margin: 0 14px 0 18px;
+  content: "/"; }
+
+.entry__list--categories, .entry__list--tags, .entry__list--shows {
+  float: left; }
+
+.entry__list--show {
+  float: left;
+  margin-right: 30px; }
+
+.entry__list--show:last-of-type {
+  margin-right: 0; }
+
+.entry__show--logo {
+  display: inline-block;
+  float: left;
+  width: 24px;
+  height: 24px;
+  margin: 0 14px;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  -border-radius: 50%;
+  border-radius: 50%;
+  background-color: #282827; }
+
+.entry__show--logo img {
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  -border-radius: 50%;
+  border-radius: 50%; }
+
+.entry__show--name {
+  display: inline-block;
+  padding: 3px 0; }
 
 .entry__comments {
   float: left;
@@ -4704,7 +4740,8 @@ category: Components - Shows
     margin: 0;
     clear: both; }
   .podcast__meta time {
-    float: left; }
+    float: left;
+    margin-right: 1em; }
 
 .show-attr--name {
   position: absolute;
@@ -4980,22 +5017,22 @@ category: Components - Shows
   .show__favorites .featured__content--block:last-child {
     margin-right: 0; }
 
-.show__latest-crap {
+.show__live-links {
   position: relative; }
-  .show__latest-crap ul {
+  .show__live-links ul {
     margin-top: 0;
     padding-left: 2em; }
-  .show__latest-crap li[class^="live-link__type"] {
+  .show__live-links li[class^="live-link__type"] {
     margin-bottom: 1em; }
-    .show__latest-crap li[class^="live-link__type"]:before {
+    .show__live-links li[class^="live-link__type"]:before {
       position: absolute;
       left: -30px;
       top: 8px; }
-    .show__latest-crap li[class^="live-link__type"] a {
+    .show__live-links li[class^="live-link__type"] a {
       color: #404041; }
-      .show__latest-crap li[class^="live-link__type"] a:hover {
+      .show__live-links li[class^="live-link__type"] a:hover {
         color: #aa1c20; }
-  .show__latest-crap .more-btn {
+  .show__live-links .more-btn {
     left: 40%;
     right: auto;
     top: 0;
@@ -5165,7 +5202,7 @@ category: Components - Article
   background-color: transparent; }
   @media screen and (min-width: 768px) {
     .header__search--form {
-      position: absolute;
+      position: fixed;
       top: 0;
       left: 0;
       width: 100%;
@@ -5173,20 +5210,25 @@ category: Components - Article
       padding: 16px 2.5%;
       background-color: #ffffff;
       border-top: none;
-      -webkit-transition: all 0.5s ease-in-out;
-      -moz-transition: all 0.5s ease-in-out;
-      transition: all 0.5s ease-in-out;
+      -webkit-transition: all 200ms ease-in-out;
+      -moz-transition: all 200ms ease-in-out;
+      transition: all 200ms ease-in-out;
       -webkit-transform: translate(0, -100%);
       -moz-transform: translate(0, -100%);
       -ms-transform: translate(0, -100%);
       -o-transform: translate(0, -100%);
       transform: translate(0, -100%);
       z-index: 1000; } }
+  .logged-in .header__search--form {
+    top: 32px; }
+
+.header__search--label {
+  cursor: pointer; }
 
 .header__search--open {
-  -webkit-transition: all 0.5s ease-in-out;
-  -moz-transition: all 0.5s ease-in-out;
-  transition: all 0.5s ease-in-out;
+  -webkit-transition: all 200ms ease-in-out;
+  -moz-transition: all 200ms ease-in-out;
+  transition: all 200ms ease-in-out;
   -webkit-transform: translate(0, 0);
   -moz-transform: translate(0, 0);
   -ms-transform: translate(0, 0);
@@ -5682,9 +5724,14 @@ category: Components - Gallery Archive
   transition: opacity 200ms linear;
   top: 50% !important;
   left: 50% !important;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
   background-repeat: no-repeat;
-  background-position: center center; }
+  background-position: center center;
+  background-size: cover; }
   @media screen and (min-width: 480px) {
     .gallery__slide--image {
       height: 320px; } }
