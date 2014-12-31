@@ -3502,6 +3502,25 @@ Link posts contain a link to an external site. They can also optionally have a f
   margin-top: 0;
   line-height: 1; }
 
+.page-template-front-page-php .hentry {
+  margin-bottom: 30px; }
+.page-template-front-page-php .entry__title {
+  margin-bottom: 0.5em; }
+.page-template-front-page-php .entry__thumbnail {
+  text-align: center;
+  margin-bottom: 0;
+  padding-bottom: 0; }
+  .page-template-front-page-php .entry__thumbnail img {
+    display: inline-block; }
+@media screen and (min-width: 768px) {
+  .page-template-front-page-php .entry__title {
+    margin-bottom: 0.4em; }
+  .page-template-front-page-php .entry__thumbnail {
+    padding-top: 0.5em;
+    padding-bottom: 0; }
+  .page-template-front-page-php .entry__excerpt p {
+    margin: 0; } }
+
 .alignleft, img.alignleft {
   display: block;
   margin: 0 1em 16px;
