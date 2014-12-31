@@ -53,10 +53,11 @@
 	//position: relative;
 
 	.sub-menu {
-		display: none;
+		@include transition(left 100ms ease-out);
 		position: absolute;
 		height: 100%;
 		width: 100%;
+		left: -100%;
 		top: 0;
 		bottom: 0;
 		background-color: #fff;
@@ -74,6 +75,7 @@
 
 	.sub-menu.is-visible {
 		display: block;
+		left: 0;
 	}
 
 	.menu-item-has-children {

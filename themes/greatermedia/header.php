@@ -53,7 +53,7 @@
 						'container'       => '',
 						'container_class' => '',
 						'container_id'    => '',
-						'menu_class'      => 'mobile-nav__list',
+						'menu_class'      => 'mobile-nav__list js-mobile-sub-menus',
 						'menu_id'         => '',
 						'echo'            => true,
 						'fallback_cb'     => 'wp_page_menu',

@@ -60,7 +60,7 @@
 	width: 78%;
 	height: 100%;
 	@include transform(translate(-100%, 0));
-	@include transition(all 500ms ease-in-out);
+	@include transition(all 100ms ease-out);
 	background-color: $secondary-bg;
 	border-right: 1px solid $primary-border;
 	z-index: 1;
@@ -100,7 +100,7 @@
 .mobile-nav--open .page-wrap {
 	@include transform(translate(78%, 0));
 	width: 100%;
-	@include transition(all 500ms ease-in-out);
+	@include transition(all 100ms ease-out);
 }
 
 .mobile-nav--open .page-wrap:before {
@@ -179,7 +179,10 @@
 	padding: 33px 1.125em 32px;
 }
 
-.header__nav ul li a:hover, .header__nav ul li a:focus, .header__nav ul li a:active {
+.header__nav ul li a:hover,
+.header__nav ul li a:focus,
+.header__nav ul li a:active,
+.header__nav ul li:hover {
 	background-color: $header-nav-bg;
 }
 

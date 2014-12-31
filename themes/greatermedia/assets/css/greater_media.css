@@ -588,9 +588,9 @@ img {
   transform: translate(0, 0);
   width: 100%;
   padding-bottom: 58px;
-  -webkit-transition: all 500ms ease-in-out;
-  -moz-transition: all 500ms ease-in-out;
-  transition: all 500ms ease-in-out;
+  -webkit-transition: all 100ms ease-in-out;
+  -moz-transition: all 100ms ease-in-out;
+  transition: all 100ms ease-in-out;
   overflow: hidden;
   background-color: #000000; }
   @media screen and (min-width: 768px) {
@@ -979,9 +979,9 @@ blockquote p {
   -ms-transform: translate(-100%, 0);
   -o-transform: translate(-100%, 0);
   transform: translate(-100%, 0);
-  -webkit-transition: all 500ms ease-in-out;
-  -moz-transition: all 500ms ease-in-out;
-  transition: all 500ms ease-in-out;
+  -webkit-transition: all 100ms ease-out;
+  -moz-transition: all 100ms ease-out;
+  transition: all 100ms ease-out;
   background-color: #000000;
   border-right: 1px solid #d0d2d3;
   z-index: 1;
@@ -1031,9 +1031,9 @@ blockquote p {
   -o-transform: translate(78%, 0);
   transform: translate(78%, 0);
   width: 100%;
-  -webkit-transition: all 500ms ease-in-out;
-  -moz-transition: all 500ms ease-in-out;
-  transition: all 500ms ease-in-out; }
+  -webkit-transition: all 100ms ease-out;
+  -moz-transition: all 100ms ease-out;
+  transition: all 100ms ease-out; }
 
 .mobile-nav--open .page-wrap:before {
   position: absolute;
@@ -1098,7 +1098,10 @@ blockquote p {
   display: block;
   padding: 33px 1.125em 32px; }
 
-.header__nav ul li a:hover, .header__nav ul li a:focus, .header__nav ul li a:active {
+.header__nav ul li a:hover,
+.header__nav ul li a:focus,
+.header__nav ul li a:active,
+.header__nav ul li:hover {
   background-color: #d22228; }
 
 .header__nav ul li ul {
@@ -1151,10 +1154,13 @@ blockquote p {
       color: #ffffff; }
 
 .mobile-nav .sub-menu, .mobile-nav .header__nav .format-fw > ul, .header__nav .mobile-nav .format-fw > ul {
-  display: none;
+  -webkit-transition: left 100ms ease-out;
+  -moz-transition: left 100ms ease-out;
+  transition: left 100ms ease-out;
   position: absolute;
   height: 100%;
   width: 100%;
+  left: -100%;
   top: 0;
   bottom: 0;
   background-color: #fff;
@@ -1165,7 +1171,8 @@ blockquote p {
   .mobile-nav .sub-menu a, .mobile-nav .header__nav .format-fw > ul a, .header__nav .mobile-nav .format-fw > ul a {
     color: #000; }
 .mobile-nav .sub-menu.is-visible, .mobile-nav .header__nav .format-fw > ul.is-visible, .header__nav .mobile-nav .format-fw > ul.is-visible {
-  display: block; }
+  display: block;
+  left: 0; }
 .mobile-nav .menu-item-has-children > a:first-child {
   float: left;
   width: 75%; }
