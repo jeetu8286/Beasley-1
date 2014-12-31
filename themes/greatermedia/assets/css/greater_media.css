@@ -472,7 +472,7 @@ category: Base - Typography
   src: url("../fonts/icon-font/gmr-icons.eot?#iefixc8o1sf") format("embedded-opentype"), url("../fonts/icon-font/gmr-icons.woff?c8o1sf") format("woff"), url("../fonts/icon-font/gmr-icons.ttf?c8o1sf") format("truetype"), url("../fonts/icon-font/gmr-icons.svg?c8o1sf#gmr-icons") format("svg");
   font-weight: normal;
   font-style: normal; }
-[class^="icon-"], [class*=" icon-"], .entry__thumbnail--video:before, .entry__thumbnail--events:before, .entry__thumbnail--audio:before, .header__account--btn:before, .header__search--btn:before, .live-link__song:before, .live-link__type--audio:before, .live-link__type--gallery:before, .live-link__type--image:before, .live-link__type--link:before, .live-link__type--standard:before, .live-link__type--video:before, .social__link--facebook:before, .social__link--twitter:before, .social__link--google-plus:before, .social__link--youtube:before, .social__link--instagram:before, .header__search--submit:before, .gallery__prev--btn:before, .gallery__next--btn:after, .gallery__paging--prev, .gallery__paging--next, .gallery-grid__album {
+[class^="icon-"], [class*=" icon-"], .entry__thumbnail--video:before, .entry__thumbnail--events:before, .entry__thumbnail--audio:before, .header__search--btn:before, .live-link__song:before, .live-link__type--audio:before, .live-link__type--gallery:before, .live-link__type--image:before, .live-link__type--link:before, .live-link__type--standard:before, .live-link__type--video:before, .social__link--facebook:before, .social__link--twitter:before, .social__link--google-plus:before, .social__link--youtube:before, .social__link--instagram:before, .header__search--submit:before, .gallery__prev--btn:before, .gallery__next--btn:after, .gallery__paging--prev, .gallery__paging--next, .gallery-grid__album {
   font-family: 'gmr-icons';
   speak: none;
   font-style: normal;
@@ -2566,8 +2566,8 @@ Community Highlights and Events
 
 .header__secondary {
   position: absolute;
-  top: 25px;
-  right: 20px;
+  top: 22px;
+  right: 0;
   line-height: 1;
   text-align: right; }
   @media screen and (min-width: 768px) {
@@ -2625,25 +2625,23 @@ Community Highlights and Events
 
 .header__account--btn {
   display: block;
-  margin: 0 auto; }
+  margin: 0 auto;
+  text-align: center; }
   @media screen and (min-width: 768px) {
     .header__account--btn {
       height: 82px;
       width: 64px;
       padding: 32px 0; } }
 
-.header__account--btn:before {
-  content: "\e60a";
-  font-size: 28px;
-  /* set explicitly to visually match menu open/close on mobile */
-  position: relative;
-  top: -2px;
-  /* alignment with baseline of mobile open/close */ }
+/** An image is shown if the current user is logged in and Gigya gives us a thumbnail URL **/
+.header__account--btn img {
+  display: inline-block;
+  max-height: 28px;
+  width: auto;
+  border: 1px solid white; }
   @media screen and (min-width: 768px) {
-    .header__account--btn:before {
-      font-size: 1.125em;
-      position: static;
-      top: 0; } }
+    .header__account--btn img {
+      max-height: 20px; } }
 
 .header__account--links {
   display: none; }
@@ -2684,7 +2682,7 @@ Community Highlights and Events
       display: block;
       float: right;
       height: 82px;
-      margin-right: 46px; } }
+      margin-right: 2em; } }
 
 .header__search--span {
   display: none; }
