@@ -90,11 +90,11 @@
 .header__secondary {
 	position: absolute;
 	top: 22px;
-	right: 0;
+	right: 20px;
 	line-height: 1;
 	text-align: right;
 	@include bp(medium) {
-		//position: relative;
+		right: 0;
 		@include span-columns(3);
 		@include omega;
 		top: auto;
@@ -117,7 +117,6 @@
 	float: right;
 	margin: 0 auto;
 	color: $color-text-white;
-	text-align: center;
 	cursor: pointer;
 	@include bp(medium) {
 		width: 64px;
@@ -165,10 +164,9 @@
 	@include bp(medium) {
 		position: absolute;
 		display: block;
-		top: 82px;
+		top: 80px;
 		right: 0;
-		width: 250px;
-		height: 118px;
+		min-width: 300px;
 	}
 }
 

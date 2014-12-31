@@ -1094,14 +1094,23 @@ blockquote p {
 .header__main a:hover, .header__main a:active {
   color: #ffffff; }
 
-.header__nav ul li a, .header__nav ul li a:link, .header__nav ul li a:visited {
+.header__nav ul li a,
+.header__nav ul li a:link,
+.header__nav ul li a:visited,
+.header__account ul li a,
+.header__account ul li a:link,
+.header__account ul li a:visited {
   display: block;
   padding: 33px 1.125em 32px; }
 
 .header__nav ul li a:hover,
 .header__nav ul li a:focus,
 .header__nav ul li a:active,
-.header__nav ul li:hover {
+.header__nav ul li:hover,
+.header__account ul li a:hover,
+.header__account ul li a:focus,
+.header__account ul li a:active,
+.header__account ul li:hover {
   background-color: #d22228; }
 
 .header__nav ul li ul {
@@ -2567,11 +2576,12 @@ Community Highlights and Events
 .header__secondary {
   position: absolute;
   top: 22px;
-  right: 0;
+  right: 20px;
   line-height: 1;
   text-align: right; }
   @media screen and (min-width: 768px) {
     .header__secondary {
+      right: 0;
       float: left;
       display: block;
       margin-right: 3.57866%;
@@ -2610,7 +2620,6 @@ Community Highlights and Events
   float: right;
   margin: 0 auto;
   color: #ffffff;
-  text-align: center;
   cursor: pointer; }
   @media screen and (min-width: 768px) {
     .header__account {
@@ -2652,10 +2661,9 @@ Community Highlights and Events
     .header__account:hover .header__account--links {
       position: absolute;
       display: block;
-      top: 82px;
+      top: 80px;
       right: 0;
-      width: 250px;
-      height: 118px; } }
+      min-width: 300px; } }
 
 .header__account--open {
   display: block; }

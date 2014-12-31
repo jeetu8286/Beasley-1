@@ -120,14 +120,22 @@
 											$url     = gigya_profile_path( 'settings' );
 											$class   = '';
 											$profile = get_gigya_user_profile();
+
 											if ( isset( $profile['thumbnailURL'] ) && ! empty( $profile['thumbnailURL'] ) ) {
 												$img = $profile['thumbnailURL'];
+											}
+
+											if ( isset( $profile['firstName'] ) && ! empty ( $profile['firstName'] ) ) {
+												$title = 'Thanks for listening, ' . $profile['firstName'] . '!';
+											} else {
+												$title = 'Thanks for listening!';
 											}
 
 										} else {
 											$url   = gigya_profile_path( 'login' );
 											$class = '';
 											$text  = '';
+											$title = '';
 										}
 										?>
 
@@ -135,7 +143,7 @@
 										   class="header__account--btn <?php echo esc_attr( $class ); ?>">
 											<?php
 											if ( isset( $img ) && ! empty( $img ) ) {
-												echo '<img src="' . esc_url( $img ) . '" title="Thanks for listening!">';
+												echo '<img src="' . esc_url( $img ) . '" title="' . esc_attr( $title ) . '">';
 											} else {
 												echo '<span class="icon-user"></span>';
 											}
@@ -149,16 +157,19 @@
 												<li>
 													<a href="<?php echo esc_url( gigya_profile_path( 'settings' ) ); ?>">
 														Edit Account
-													</a></li>
+													</a>
+												</li>
 												<li>
 													<a href="<?php echo esc_url( gigya_profile_path( 'logout' ) ); ?>">
 														Logout
-													</a></li>
+													</a>
+												</li>
 											<?php else: ?>
 												<li>
 													<a href="<?php echo gigya_profile_path( 'login' ); ?>">
 														Login/Register
-													</a></li>
+													</a>
+												</li>
 											<?php endif; ?>
 										</ul>
 									</div>
