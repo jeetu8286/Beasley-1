@@ -5229,7 +5229,8 @@ category: Components - Article
       -ms-transform: translate(0, -100%);
       -o-transform: translate(0, -100%);
       transform: translate(0, -100%);
-      z-index: 1000; } }
+      z-index: 5000000;
+      /* IAB z-index standards for nav drop downs. Prevents an ad from being over top unless it's a full-screen ad */ } }
   .logged-in .header__search--form {
     top: 32px; }
 
@@ -5270,8 +5271,7 @@ category: Components - Article
       background-color: #ffffff !important;
       outline: none;
       font-size: 2.2807em;
-      color: #000000;
-      text-align: center; }
+      color: #000000; }
       .header__search--input::-webkit-input-placeholder {
         color: #d0d2d3; }
       .header__search--input::-moz-placeholder {
