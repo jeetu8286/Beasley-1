@@ -24,6 +24,7 @@ function(a){"use strict";a.extend(a.fn.cycle.defaults,{tmplRegex:"{{((.)?.*?)}}"
 		$document = $( document ),
 		$window = $( window ),
 		slideshow = $( '.gallery__slide--images.cycle-slideshow' ),
+		metaSlideshow = $('.gallery__content.cycle-slideshow'),
 		gallery = document.querySelectorAll( '.gallery' ),
 		main = document.querySelector( '.gallery__slide--images' ),
 		$gallery = $( gallery ),
@@ -71,6 +72,7 @@ function(a){"use strict";a.extend(a.fn.cycle.defaults,{tmplRegex:"{{((.)?.*?)}}"
 				index = $this.data( 'cycle-index' );
 
 			slideshow.cycle( 'goto', index );
+			metaSlideshow.cycle( 'goto', index );
 		} );
 
 		// Make sure we disable other hashchange events that attempt to capture manual hash changes.
