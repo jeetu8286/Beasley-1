@@ -5,7 +5,6 @@
 		$document = $( document ),
 		$window = $( window ),
 		slideshow = $( '.gallery__slide--images.cycle-slideshow' ),
-		metaSlideshow = $('.gallery__content.cycle-slideshow'),
 		gallery = document.querySelectorAll( '.gallery' ),
 		main = document.querySelector( '.gallery__slide--images' ),
 		$gallery = $( gallery ),
@@ -53,7 +52,7 @@
 				index = $this.data( 'cycle-index' );
 
 			slideshow.cycle( 'goto', index );
-			metaSlideshow.cycle( 'goto', index );
+			$caption.cycle( 'goto', index );
 		} );
 
 		// Make sure we disable other hashchange events that attempt to capture manual hash changes.
