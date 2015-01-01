@@ -26,8 +26,8 @@
 		 * Make sure thumbnails are updated before the slideshow cycles.
 		 */
 		slideshow.on( 'cycle-before', function ( event, optionHash ) {
-			update_thumbnails( optionHash.nextSlide );
-			$caption.cycle( 'goto', optionHash.nextSlide );
+			update_thumbnails(optionHash.nextSlide); // nextSlide = incoming slide. could be backward
+			//$caption.cycle( 'goto', optionHash.nextSlide );
 		} );
 
 		/**
@@ -154,7 +154,7 @@
 		$thumbnails_group.remove();
 		$( '.gallery__previews div' ).each( function() {
 			var $this = $( this );
-			if ( undefined == $this.attr( 'id' ) ) {
+			if ( undefined === $this.attr( 'id' ) ) {
 				$this.remove();
 			}
 		} );
@@ -210,21 +210,9 @@
 
 		$( '.gallery-toolbar .fa-twitter' ).attr( 'href', url_twitter );
 		$( '.gallery-toolbar .fa-facebook' ).attr( 'href', url_facebook );
-		$( '.gallery-toolbar .fa-linkedin' ).attr( 'href', url_linkedin );
 		$( '.gallery-toolbar .short-url' ).html( '<a href="' + share_url + '">' + share_url + '</a>' );
 	}
 
 	bind_events();
-
-	// Some galleries are set to be in widescreen by default
-	if ( isWidescreen() ) {
-		expand_wide();
-	}
-
-	window.GMR_Gallery = {
-		isFullscreen: isFullscreen,
-		expand      : expand_full,
-		collapse    : collapse_full
-	};
 
 })( jQuery, window );

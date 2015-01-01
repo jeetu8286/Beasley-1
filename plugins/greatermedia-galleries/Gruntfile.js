@@ -25,6 +25,7 @@ module.exports = function( grunt ) {
 				'assets/js/test/**/*.js'
 			],
 			options: {
+				browser: true,
 				curly:   true,
 				eqeqeq:  true,
 				immed:   true,
@@ -35,6 +36,7 @@ module.exports = function( grunt ) {
 				undef:   true,
 				boss:    true,
 				eqnull:  true,
+				jquery:  true,
 				globals: {
 					exports: true,
 					module:  false
