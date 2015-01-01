@@ -550,8 +550,7 @@ category: Components - Gallery Archive
 	height: 130px;
 	padding: 20px 0;
 	overflow: auto;
-	border-top: 1px solid $primary-text;
-	background-color: $light-gray;
+	border-top: 1px solid $primary-border;
 
 	.single-gmr_gallery & {
 		height: 145px;

@@ -6117,8 +6117,7 @@ category: Components - Gallery Archive
   height: 130px;
   padding: 20px 0;
   overflow: auto;
-  border-top: 1px solid #404041;
-  background-color: #d0d2d3; }
+  border-top: 1px solid #d0d2d3; }
   .gallery__thumbnails:last-child {
     margin-right: 0; }
   .single-gmr_gallery .gallery__thumbnails {
