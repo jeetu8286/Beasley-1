@@ -13,6 +13,7 @@ module.exports = function( grunt ) {
 			},
 			greater_media: {
 				src: [
+					'assets/js/src/mobile-sub-menus.js',
 					'assets/js/src/greater_media.js'
 				],
 				dest: 'assets/js/greater_media.js'
@@ -86,6 +87,13 @@ module.exports = function( grunt ) {
 			}
 		},
 		watch:  {
+
+			livereload: {
+				files  : ['assets/css/**/*.css'],
+				options: {
+					livereload: true
+				}
+			},
 
 			sass: {
 				files: ['assets/css/sass/**/*.scss'],

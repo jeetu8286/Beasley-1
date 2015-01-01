@@ -19,6 +19,7 @@
 
 .header .container {
 	padding: 0 .714285714286%;
+	position: relative;
 }
 
 .header__main {
@@ -88,16 +89,15 @@
 // container for secondary navigation -- gigya registration, social links, search
 .header__secondary {
 	position: absolute;
-	top: 25px;
+	top: 22px;
 	right: 20px;
 	line-height: 1;
 	text-align: right;
 	@include bp(medium) {
-		position: relative;
+		right: 0;
 		@include span-columns(3);
 		@include omega;
 		top: auto;
-		right: auto;
 		height: 82px;
 		@include transform(none);
 	}
@@ -113,12 +113,10 @@
 
 // container for account links
 .header__account {
-	position: relative;
 	display: block;
 	float: right;
 	margin: 0 auto;
 	color: $color-text-white;
-	text-align: center;
 	cursor: pointer;
 	@include bp(medium) {
 		width: 64px;
@@ -137,6 +135,7 @@
 .header__account--btn {
 	display: block;
 	margin: 0 auto;
+	text-align: center;
 	@include bp(medium) {
 		height: 82px;
 		width: 64px;
@@ -144,12 +143,15 @@
 	}
 }
 
-.header__account--btn:before {
-	@extend %gmr-icons;
-	font-size: ms(3);
-	content: "\e60a";
+/** An image is shown if the current user is logged in and Gigya gives us a thumbnail URL **/
+.header__account--btn img {
+	display: inline-block;
+	max-height: 28px;
+	width: auto;
+	border: 1px solid white;
+
 	@include bp(medium) {
-		font-size: ms(1);
+		max-height: 20px;
 	}
 }
 
@@ -162,10 +164,9 @@
 	@include bp(medium) {
 		position: absolute;
 		display: block;
-		top: 82px;
+		top: 80px;
 		right: 0;
-		width: 250px;
-		height: 118px;
+		min-width: 300px;
 	}
 }
 
@@ -199,7 +200,7 @@
 		display: block;
 		float: right;
 		height: 82px;
-		margin-right: 46px;
+		margin-right: 2em;
 	}
 }
 
