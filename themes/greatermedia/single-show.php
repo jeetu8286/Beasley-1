@@ -94,8 +94,10 @@
 						        <?php wp_reset_query(); ?>
 					        </section>
 
+					        <?php do_action( 'acm_tag', 'mrec-lists' ); ?>
+
 							<section class="show__live-links cf">
-					        	<h2 class="section-header">Latest Crap</h2>
+					        	<h2 class="section-header">Live Links</h2>
 								<ul>
 									<li class="live-link__type--standard">
 										<div class="live-link__title">

@@ -83,7 +83,10 @@ Curated posts for Featured Articles
 	@include bp(large) {
 		@include span-columns(12);
 		@include omega;
-		background: url(../../images/featured-bg.png) repeat center center $featured-primary-bg;
+		background-image: url(../../images/featured-bg.png);
+		background-repeat: repeat;
+		background-position: center center;
+		background-color: $featured-primary-bg;
 		background-size: auto 40%;
 	}
 	@include bp(x-large) {
