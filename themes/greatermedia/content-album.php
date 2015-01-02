@@ -38,9 +38,24 @@
 			</article>
 
 			<?php
-			// todo Children Galleries Should Go Here!
-			?>
-			Children Galleries Here
+			$post_id = get_query_var( 'post_id' );
+
+			$children_args = array(
+				'post_type' => GreaterMediaGalleryCPT::GALLERY_POST_TYPE,
+				'post_parent' => $post_id,
+				'fields' => 'title',
+				'limit' => 1000,
+				'orderby' => 'menu_order',
+				'order' => 'ASC',
+			);
+
+			$children_galleries = get_posts( $children_args );
+
+			foreach ( $children_galleries as $post ) : setup_postdata( $post ); ?>
+
+				<?php the_title(); ?>
+			<?php endforeach;
+			wp_reset_postdata();?>
 
 		</section>
 
