@@ -805,14 +805,33 @@ category: Components - Gallery Archive
 }
 
 .gallery-grid__column {
-	float: left;
-	width: 23.5%;
-	margin-right: 2%;
+	@include span-columns(4);
+	margin-bottom: 0;
 	overflow: auto;
+
+	@include bp(small) {
+		@include span-columns(6);
+	}
+
+	@include bp(medium) {
+		@include span-columns(4);
+	}
+
+
+	@include bp(large) {
+		@include span-columns(3);
+	}
+
+	@include bp(x-large) {
+		@include span-columns(3);
+	}
+
 }
 
 .gallery-grid__column:nth-of-type(4n+4) {
-	margin-right: 0%;
+	@include bp(large) {
+		margin-right: 0;
+	}
 }
 
 .gallery-grid__thumbnail {
