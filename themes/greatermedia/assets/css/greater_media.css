@@ -6357,6 +6357,10 @@ category: Components - Gallery Archive
   .single-gmr_gallery .gallery__slide--active {
     border-color: #d0d2d3; }
 
+.gallery__archive {
+  padding-top: 3.625em;
+  padding-bottom: 3.625em; }
+
 .gallery__featured, .gallery__grid {
   float: left;
   display: block;

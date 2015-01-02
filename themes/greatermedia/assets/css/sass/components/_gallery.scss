@@ -801,6 +801,8 @@ category: Components - Gallery Archive
 
 .gallery__archive {
 	@extend %content;
+	padding-top: 3.625em;
+	padding-bottom: 3.625em;
 }
 
 .gallery__featured, .gallery__grid {
