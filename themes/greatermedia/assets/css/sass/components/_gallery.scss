@@ -799,50 +799,43 @@ category: Components - Gallery Archive
 	}
 }
 
-.gallery__featured {
+.gallery__archive {
 	@extend %content;
 }
 
-.gallery__featured--item {
-	@include span-columns(4);
-
+.gallery__featured {
+	@include span-columns(4 of 4);
 	@include bp(small) {
-		@include span-columns(6);
+		@include span-columns(6 of 6);
 	}
-
 	@include bp(medium) {
-		@include span-columns(6);
+		@include span-columns(4 of 4);
 	}
-
 	@include bp(large) {
-		@include span-columns(9);
+		@include span-columns(10 of 10);
 	}
-
 	@include bp(x-large) {
-		@include span-columns(9);
+		@include span-columns(10 of 10);
 	}
 }
 
-.gallery__featured--secondary {
-	@include span-columns(4);
-
-	@include bp(small) {
-		@include span-columns(6);
-	}
+.gallery__featured--primary {
+	float: left;
+	width: 100%;
 
 	@include bp(medium) {
-		@include span-columns(2);
-		@include omega;
+		width: 66%;
+		margin-right: 4%;
 	}
 
-	@include bp(large) {
-		@include span-columns(3);
-		@include omega;
-	}
+}
 
-	@include bp(x-large) {
-		@include span-columns(3);
-		@include omega;
+.gallery__featured--secondary {
+	float: left;
+	width: 100%;
+
+	@include bp(medium) {
+		width: 30%;
 	}
 }
 
@@ -864,11 +857,6 @@ category: Components - Gallery Archive
 	.gallery__featured--secondary & {
 		font-size: ms(1);
 	}
-}
-
-.gallery__grid {
-	@extend %content;
-	overflow: auto;
 }
 
 .gallery__grid--column {
