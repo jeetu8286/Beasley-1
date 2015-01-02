@@ -4846,22 +4846,6 @@ category: Components - Shows
         background-repeat: no-repeat;
         background-size: cover; } }
 
-.show__mask {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: #561015;
-  opacity: 0.5;
-  filter: alpha(opacity=50);
-  -moz-opacity: 0.5;
-  -khtml-opacity: 0.5;
-  zoom: 1;
-  display: none; }
-  .has-thumbnail .show__mask {
-    display: block; }
-
 .show__cast {
   width: 100%;
   height: 100%; }
@@ -4911,14 +4895,22 @@ category: Components - Shows
     display: block;
     text-align: center; }
     .show__nav li a {
-      font-size: 1.60181em; }
+      font-size: 1.60181em;
+      font-weight: bold;
+      padding: 9px;
+      border-radius: 20px;
+      display: inline-block; }
+      .show__nav li a:hover {
+        background-color: #ffffff;
+        color: #aa1c20; }
     @media screen and (min-width: 768px) {
       .show__nav li {
         display: inline-block; }
         .show__nav li a {
           font-size: 1em; } }
-    .show__nav li:hover, .show__nav li.current-menu-item {
-      text-decoration: underline; }
+    .show__nav li.current-menu-item a {
+      background-color: #ffffff;
+      color: #aa1c20; }
   .show__nav a {
     color: #ffffff;
     text-transform: uppercase; }
@@ -5039,6 +5031,9 @@ category: Components - Shows
   background-color: #191919;
   color: #ffffff;
   padding: 1em 2em 1em; }
+  .show__feature--desc time {
+    text-transform: uppercase;
+    color: #929497; }
 
 /*doc
 ---
