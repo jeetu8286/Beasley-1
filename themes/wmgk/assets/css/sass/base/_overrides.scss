@@ -13,3 +13,12 @@
 .live-links {
 	border-top: 1px solid white;
 }
+
+.single-gmr_gallery .gallery__paging--prev,
+.single-gmr_gallery .gallery__paging--next {
+	color: $light-gray;
+
+	&:hover {
+		color: $cardinal;
+	}
+}
