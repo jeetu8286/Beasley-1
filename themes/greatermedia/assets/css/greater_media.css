@@ -635,24 +635,24 @@ img {
 .main .container {
   background-color: #ffffff; }
 
-.content {
+.content, .gallery-grid {
   float: left;
   display: block;
   margin-right: 7.42297%;
   width: 100%;
   padding: 2em 7.0833333333335%; }
-  .content:last-child {
+  .content:last-child, .gallery-grid:last-child {
     margin-right: 0; }
   @media screen and (min-width: 480px) {
-    .content {
+    .content, .gallery-grid {
       float: left;
       display: block;
       margin-right: 4.82916%;
       width: 100%; }
-      .content:last-child {
+      .content:last-child, .gallery-grid:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 768px) {
-    .content {
+    .content, .gallery-grid {
       float: left;
       display: block;
       margin-right: 4.82916%;
@@ -660,25 +660,25 @@ img {
       margin-left: 17.47153%;
       padding-right: 0;
       padding-left: 0; }
-      .content:last-child {
+      .content:last-child, .gallery-grid:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 1024px) {
-    .content {
+    .content, .gallery-grid {
       float: left;
       display: block;
       margin-right: 2.35765%;
       width: 82.94039%;
       margin-left: 8.5298%; }
-      .content:last-child {
+      .content:last-child, .gallery-grid:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 1400px) {
-    .content {
+    .content, .gallery-grid {
       float: left;
       display: block;
       margin-right: 2.35765%;
       width: 82.94039%;
       margin-left: 8.5298%; }
-      .content:last-child {
+      .content:last-child, .gallery-grid:last-child {
         margin-right: 0; } }
 
 .live-player {
@@ -6358,7 +6358,6 @@ category: Components - Gallery Archive
     border-color: #d0d2d3; }
 
 .gallery-grid {
-  width: 100%;
   overflow: auto; }
 
 .gallery-grid__column {

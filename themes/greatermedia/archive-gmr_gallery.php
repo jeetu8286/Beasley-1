@@ -14,51 +14,25 @@ get_header(); ?>
 
 		<div class="container">
 
-			<section class="content">
+			<section class="gallery-grid">
 
-				<h2 class="content__heading">Latest from WMMR</h2>
+				<h2 class="entry__title" itemprop="headline"><?php _e( 'Galleries', 'greatermedia' ); ?></h2>
 
 				<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
 
-					<article id="post-<?php the_ID(); ?>" <?php post_class( 'cf' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
+					<article id="post-<?php the_ID(); ?>" <?php post_class( 'gallery-grid__column' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
 
-						<?php
+						<div class="gallery-grid__thumbnail">
+							<a href="<?php the_permalink(); ?>">
+								<?php the_post_thumbnail( 'gmr-gallery-grid-thumb' ); ?>
+							</a>
+						</div>
 
-							if ( has_post_format( 'video' ) ) {
-
-								get_template_part( 'partials/post', 'video' );
-
-							} elseif ( has_post_format( 'audio') ) {
-
-								get_template_part( 'partials/post', 'audio' );
-
-							} elseif ( has_post_format( 'link') ) {
-
-								get_template_part( 'partials/post', 'link' );
-
-							} elseif ( has_post_format( 'gallery') ) {
-
-								get_template_part( 'partials/post', 'gallery' );
-
-							} else {
-
-								get_template_part( 'partials/post', 'standard' );
-
-							}
-
-						?>
-
-						<footer class="entry__footer">
-
-							<?php
-								$category = get_the_category();
-
-								if( isset( $category[0] ) ){
-									echo '<a href="' . esc_url( get_category_link($category[0]->term_id ) ) . '" class="entry__footer--category">' . esc_html( $category[0]->cat_name ) . '</a>';
-								}
-							?>
-
-						</footer>
+						<div class="gallery-grid__meta">
+							<h3 class="gallery-grid__title">
+								<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+							</h3>
+						</div>
 
 					</article>
 
@@ -90,138 +64,6 @@ get_header(); ?>
 					</article>
 
 				<?php endif; ?>
-
-			</section>
-
-			<section class="gallery-grid">
-
-				<div class="gallery-grid__column">
-
-					<div class="gallery-grid__thumbnail">
-						<a href="#">
-							<img src="http://placehold.it/254x186">
-						</a>
-					</div>
-
-					<div class="gallery-grid__meta">
-						<h3 class="gallery-grid__title">
-							<a href="#"><?php _e( 'Title Goes Here', 'greatermedia' ); ?></a>
-						</h3>
-					</div>
-
-				</div>
-
-				<div class="gallery-grid__column">
-
-					<div class="gallery-grid__thumbnail">
-						<a href="#">
-							<img src="http://placehold.it/254x186">
-						</a>
-					</div>
-
-					<div class="gallery-grid__meta">
-						<h3 class="gallery-grid__title">
-							<a href="#"><?php _e( 'Title Goes Here', 'greatermedia' ); ?></a>
-						</h3>
-					</div>
-
-				</div>
-
-				<div class="gallery-grid__column">
-
-					<div class="gallery-grid__thumbnail">
-						<a href="#">
-							<img src="http://placehold.it/254x186">
-						</a>
-					</div>
-
-					<div class="gallery-grid__meta">
-						<h3 class="gallery-grid__title">
-							<a href="#"><?php _e( 'Title Goes Here', 'greatermedia' ); ?></a>
-						</h3>
-					</div>
-
-				</div>
-
-				<div class="gallery-grid__column">
-
-					<div class="gallery-grid__thumbnail">
-						<a href="#">
-							<img src="http://placehold.it/254x186">
-						</a>
-					</div>
-
-					<div class="gallery-grid__meta">
-						<h3 class="gallery-grid__title">
-							<a href="#"><?php _e( 'Title Goes Here', 'greatermedia' ); ?></a>
-						</h3>
-					</div>
-
-				</div>
-
-				<div class="gallery-grid__column">
-
-					<div class="gallery-grid__thumbnail">
-						<a href="#">
-							<img src="http://placehold.it/254x186">
-						</a>
-					</div>
-
-					<div class="gallery-grid__meta">
-						<h3 class="gallery-grid__title">
-							<a href="#"><?php _e( 'Title Goes Here', 'greatermedia' ); ?></a>
-						</h3>
-					</div>
-
-				</div>
-
-				<div class="gallery-grid__column">
-
-					<div class="gallery-grid__thumbnail">
-						<a href="#">
-							<img src="http://placehold.it/254x186">
-						</a>
-					</div>
-
-					<div class="gallery-grid__meta">
-						<h3 class="gallery-grid__title">
-							<a href="#"><?php _e( 'Title Goes Here', 'greatermedia' ); ?></a>
-						</h3>
-					</div>
-
-				</div>
-
-				<div class="gallery-grid__column">
-
-					<div class="gallery-grid__thumbnail">
-						<a href="#">
-							<img src="http://placehold.it/254x186">
-						</a>
-					</div>
-
-					<div class="gallery-grid__meta">
-						<h3 class="gallery-grid__title">
-							<a href="#"><?php _e( 'Title Goes Here', 'greatermedia' ); ?></a>
-						</h3>
-					</div>
-
-				</div>
-
-				<div class="gallery-grid__column">
-
-					<div class="gallery-grid__thumbnail">
-						<a href="#">
-							<img src="http://placehold.it/254x186">
-						</a>
-					</div>
-
-					<div class="gallery-grid__meta">
-						<h3 class="gallery-grid__title">
-							<a href="#"><?php _e( 'Title Goes Here', 'greatermedia' ); ?></a>
-						</h3>
-					</div>
-
-				</div>
 
 			</section>
 

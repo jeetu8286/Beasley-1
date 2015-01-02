@@ -58,6 +58,7 @@ function greatermedia_setup() {
 	add_image_size( 'gmr-gallery-thumbnail',    100,    100             ); // thumbnails for the gallery
 	add_image_size( 'gmr-featured-primary',     2800,   1000,   true    ); // image for primary featured post on front page
 	add_image_size( 'gmr-featured-secondary',   400,    400,    true    ); // thumbnails for secondary featured posts on front page
+	add_image_size( 'gmr-gallery-grid-thumb',   254,    186,    true    ); // thumbnail for gallery grid areas
 
 	// Update this as appropriate content types are created and we want this functionality
 	add_post_type_support( 'post', 'timed-content' );

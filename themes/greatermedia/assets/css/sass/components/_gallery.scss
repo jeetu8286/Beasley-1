@@ -800,7 +800,7 @@ category: Components - Gallery Archive
 }
 
 .gallery-grid {
-	width: 100%;
+	@extend %content;
 	overflow: auto;
 }
 
