@@ -47,11 +47,11 @@ category: Base
 ```
 
 */
-.entry__event--details, .footer__nav--list, .gallery__grid--pagination--list {
+.entry__event--details, .footer__nav--list, .gallery__grid--pagination-list {
   padding: 0;
   margin: 0; }
 
-.entry__event--item, .footer__nav--list .menu-item, .live-player__stream--item, .gallery__grid--pagination--item {
+.entry__event--item, .footer__nav--list .menu-item, .live-player__stream--item, .gallery__grid--pagination-list li {
   list-style: none;
   padding: 0;
   margin: 0; }
@@ -6412,13 +6412,27 @@ category: Components - Gallery Archive
     .gallery__featured--secondary {
       width: 30%; } }
 
+.gallery__featured--item {
+  margin-bottom: 0; }
+  .gallery__featured--secondary .gallery__featured--item {
+    margin-bottom: 30px; }
+
+.gallery__featured--secondary .gallery__featured--item:last-of-type {
+  margin-bottom: 0; }
+
 .gallery__featured--thumbnail {
   width: 100%; }
 
+.gallery__featured--thumbnail a {
+  display: block; }
+
 .gallery__featured--caption {
   width: 100%;
+  height: 96px;
   padding: 20px;
   background-color: #f2f2f2; }
+  .gallery__featured--secondary .gallery__featured--caption {
+    height: 83px; }
 
 .gallery__featured--title {
   margin: 0;
@@ -6504,7 +6518,7 @@ category: Components - Gallery Archive
   overflow: auto;
   text-align: center; }
 
-.gallery__grid--pagination--item {
+.gallery__grid--pagination-list li {
   list-style: none;
   display: inline-block;
   width: 28px;
@@ -6516,19 +6530,19 @@ category: Components - Gallery Archive
   color: #929497;
   text-align: center; }
 
-.gallery__grid--pagination--item a, .gallery__grid--pagination--item a:visited {
+.gallery__grid--pagination-list li a, .gallery__grid--pagination-list li a:visited {
   display: block;
   width: 26px;
   height: 26px;
   color: #929497; }
 
-.gallery__grid--pagination--item a:hover, .gallery__grid--pagination--item a:focus {
+.gallery__grid--pagination-list li a:hover, .gallery__grid--pagination-list li a:focus {
   color: #d22228; }
 
-.gallery__grid--pagination--item a:active {
+.gallery__grid--pagination-list li a:active {
   color: #404041; }
 
-.gallery__grid--pagination--current {
+.gallery__grid--pagination-current {
   border: 1px solid #929497;
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
@@ -6537,11 +6551,11 @@ category: Components - Gallery Archive
   -border-radius: 50%;
   border-radius: 50%; }
 
-.gallery__grid--pagination--current:hover, .gallery__grid--pagination--current:focus {
+.gallery__grid--pagination-current:hover, .gallery__grid--pagination-current:focus {
   border-color: #d22228;
   color: #d22228; }
 
-.gallery__grid--pagination--current:active {
+.gallery__grid--pagination-current:active {
   border-color: #404041;
   color: #404041; }
 

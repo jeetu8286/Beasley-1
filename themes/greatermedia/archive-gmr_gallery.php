@@ -32,7 +32,7 @@ get_header(); ?>
 
 					endwhile;
 
-						//rws_page_navi();
+						greatermedia_gallery_album_nav();
 
 						wp_reset_postdata();
 

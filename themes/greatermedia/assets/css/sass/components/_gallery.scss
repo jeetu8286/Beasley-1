@@ -839,14 +839,37 @@ category: Components - Gallery Archive
 	}
 }
 
+.gallery__featured--item {
+	margin-bottom: 0;
+
+	.gallery__featured--secondary & {
+		margin-bottom: 30px;
+	}
+}
+
+.gallery__featured--item:last-of-type {
+	.gallery__featured--secondary & {
+		margin-bottom: 0;
+	}
+}
+
 .gallery__featured--thumbnail {
 	width: 100%;
 }
 
+.gallery__featured--thumbnail a {
+	display: block;
+}
+
 .gallery__featured--caption {
 	width: 100%;
+	height: 96px;
 	padding: 20px;
 	background-color: $gallery-featured-bg;
+
+	.gallery__featured--secondary & {
+		height: 83px;
+	}
 }
 
 .gallery__featured--title {
@@ -927,11 +950,11 @@ category: Components - Gallery Archive
 	text-align: center;
 }
 
-.gallery__grid--pagination--list {
+.gallery__grid--pagination-list {
 	@extend %unordered-list;
 }
 
-.gallery__grid--pagination--item {
+.gallery__grid--pagination-list li {
 	list-style: none;
 	display: inline-block;
 	@extend %list-item;
@@ -944,32 +967,32 @@ category: Components - Gallery Archive
 }
 
 
-.gallery__grid--pagination--item a,.gallery__grid--pagination--item a:visited {
+.gallery__grid--pagination-list li a,.gallery__grid--pagination-list li a:visited {
 	display: block;
 	width: 26px;
 	height: 26px;
 	color: $gallery-grid-text;
 }
 
-.gallery__grid--pagination--item a:hover,.gallery__grid--pagination--item a:focus {
+.gallery__grid--pagination-list li a:hover,.gallery__grid--pagination-list li a:focus {
 	color: $primary-link;
 }
 
-.gallery__grid--pagination--item a:active {
+.gallery__grid--pagination-list li a:active {
 	color: $primary-text;
 }
 
-.gallery__grid--pagination--current {
+.gallery__grid--pagination-current {
 	border: 1px solid $gallery-grid-border;
 	@include border-radius(50%);
 }
 
-.gallery__grid--pagination--current:hover, .gallery__grid--pagination--current:focus {
+.gallery__grid--pagination-current:hover, .gallery__grid--pagination-current:focus {
 	border-color: $primary-link;
 	color: $primary-link;
 }
 
-.gallery__grid--pagination--current:active {
+.gallery__grid--pagination-current:active {
 	border-color: $primary-text;
 	color: $primary-text;
 }
