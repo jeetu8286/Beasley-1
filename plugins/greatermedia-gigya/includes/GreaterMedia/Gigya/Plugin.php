@@ -136,6 +136,7 @@ class Plugin {
 		$handlers[] = new Ajax\HasParticipatedAjaxHandler();
 		$handlers[] = new Ajax\MemberQueryStatusAjaxHandler();
 		$handlers[] = new Ajax\EmmaMemberOptoutAjaxHandler();
+		$handlers[] = new Ajax\ChangeMemberQuerySegmentAjaxHandler();
 
 		if ( is_gigya_user_logged_in() ) {
 			$handlers[] = new Ajax\SaveGigyaActionAjaxHandler();
@@ -192,16 +193,23 @@ class Plugin {
 			'query_builder', 'member_query_data', $member_query->properties
 		);
 
-		$sentinel    = new Sync\Sentinel( $member_query->post_id, array( 'mode' => 'export' ) );
+		$sentinel = new Sync\Sentinel( $member_query->post_id, array( 'mode' => 'export' ) );
+
+		if ( $sentinel->get_status_code() === 'running' && $sentinel->has_expired() ) {
+			$sentinel->set_status_code( 'completed' );
+			$sentinel->add_error( 'Error: The query timed out' );
+		}
+
 		$status_meta = $sentinel->get_status_meta();
 
 		$meta = array(
-			'ajax_url'                   => admin_url( 'admin-ajax.php' ),
-			'preview_member_query_nonce' => wp_create_nonce( 'preview_member_query' ),
-			'list_entry_types_nonce'     => wp_create_nonce( 'list_entry_types' ),
-			'list_entry_fields_nonce'    => wp_create_nonce( 'list_entry_fields' ),
-			'member_query_status_nonce'  => wp_create_nonce( 'member_query_status' ),
-			'status_meta'                => $sentinel->get_status_meta()
+			'ajax_url'                          => admin_url( 'admin-ajax.php' ),
+			'preview_member_query_nonce'        => wp_create_nonce( 'preview_member_query' ),
+			'list_entry_types_nonce'            => wp_create_nonce( 'list_entry_types' ),
+			'list_entry_fields_nonce'           => wp_create_nonce( 'list_entry_fields' ),
+			'member_query_status_nonce'         => wp_create_nonce( 'member_query_status' ),
+			'change_member_query_segment_nonce' => wp_create_nonce( 'change_member_query_segment' ),
+			'status_meta'                       => $sentinel->get_status_meta()
 		);
 
 		wp_localize_script(

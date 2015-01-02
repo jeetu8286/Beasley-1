@@ -102,6 +102,17 @@ function greatermedia_scripts_styles() {
 		array(),
 		'4.2'
 	);
+	wp_register_style(
+		'greatermedia',
+		get_template_directory_uri() . "/assets/css/greater_media{$postfix}.css",
+		array(
+			'dashicons',
+			'open-sans',
+			'droid-sans',
+			'font-awesome'
+		),
+		GREATERMEDIA_VERSION
+	);
 	wp_enqueue_script(
 		'greatermedia',
 		get_template_directory_uri() . "/assets/js/greater_media{$postfix}.js",
@@ -127,15 +138,7 @@ function greatermedia_scripts_styles() {
 		false
 	);
 	wp_enqueue_style(
-		'greatermedia',
-		get_template_directory_uri() . "/assets/css/greater_media{$postfix}.css",
-		array(
-			'dashicons',
-			'open-sans',
-			'droid-sans',
-			'font-awesome'
-		),
-		GREATERMEDIA_VERSION
+		'greatermedia'
 	);
 
 }
