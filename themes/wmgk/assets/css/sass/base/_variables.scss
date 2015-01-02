@@ -1,6 +1,21 @@
+/**
+ * Root of the parent theme's asset folder
+ */
+$asset_root: "../../../../themes/greatermedia/assets/";
+
 // child theme specific colors to use
 //
 // @author Allen Moore
 // @since 0.1.0
 //
+
+// MGK Colors:
+$color-gray-light: #f2f2f2;
+$color-gray-medium-light: #404041;
+$color-gray-medium-dark: #303030;
+
 $primary-bg: #ffffff;
+$liveplayer-bg: $color-gray-light;
+$liveplayer-color: #404041;
+$secondary-bg: $color-gray-medium-dark;
+$header-bg: $color-gray-medium-light;

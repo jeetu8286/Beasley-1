@@ -1,0 +1,15 @@
+.header {
+	border-bottom: 1px solid #58595b;
+}
+
+.home__featured {
+	@include bp(medium) {
+		background-position: left top;
+		background-color: #561015;
+		background-size: cover;
+	}
+}
+
+.live-links {
+	border-top: 1px solid white;
+}
