@@ -4880,7 +4880,8 @@ category: Components - Shows
       .show__nav:last-child {
         margin-right: 0; }
       .show__nav h1 {
-        margin-top: 0; } }
+        margin-top: 0;
+        margin-bottom: 0.6em; } }
   .show__nav ul {
     list-style-type: none;
     padding-left: 0;
@@ -4933,7 +4934,8 @@ category: Components - Shows
       .show__meta:last-child {
         margin-right: 0; } }
   .show__meta em {
-    display: block; }
+    display: block;
+    line-height: 1.5; }
   .show__meta .social-share-link {
     color: #ffffff;
     border: 1px solid #ffffff;
