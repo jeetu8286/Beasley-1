@@ -42,13 +42,13 @@
 
 		while ( have_posts() && $gallery_count < 3 ) : $gallery_count++; the_post();
 
-			if ( $gallery_count >= 2 && $gallery_count <=3 ) : ?>
+			if ( $gallery_count >= 2 && $gallery_count <= 3 ) : ?>
 
 				<article id="post-<?php the_ID(); ?>" <?php post_class( 'gallery__featured--item' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
 
 					<div class="gallery__featured--thumbnail">
 						<a href="<?php the_permalink(); ?>">
-							<?php the_post_thumbnail( 'gmr-gallery-grid-featured' ); ?>
+							<?php the_post_thumbnail( 'gmr-gallery-grid-secondary' ); ?>
 						</a>
 					</div>
 

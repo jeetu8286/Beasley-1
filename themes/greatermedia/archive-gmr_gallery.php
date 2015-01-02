@@ -26,7 +26,9 @@ get_header(); ?>
 
 				<div class="gallery__grid">
 
-					<?php if ( have_posts() ) : while ( have_posts() ) : the_post();
+					<?php
+
+					if ( have_posts() ) : while ( have_posts() ) : the_post();
 
 						get_template_part( 'partials/gallery-grid' );
 
