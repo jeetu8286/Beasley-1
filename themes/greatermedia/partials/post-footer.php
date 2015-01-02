@@ -38,13 +38,19 @@ $post_taxonomies = get_post_taxonomies();
 				<?php foreach ( get_the_terms( $the_id, ShowsCPT::SHOW_TAXONOMY ) as $show ) : ?>
 					<?php if ( ( $show = \TDS\get_related_post( $show ) ) ) : ?>
 						<li class="entry__list--show">
-							<a href="<?php echo esc_url( get_permalink( $show ) ); ?>" rel="tag">
-								<?php if ( ( $image_id = intval( get_post_meta( $show->ID, 'logo_image', true ) ) ) ) : ?>
-									<?php echo wp_get_attachment_image( $image_id, 'thumbnail', false, array( 'class' => 'entry__show--logo' ) ); ?>
-								<?php endif; ?>
-								
-								<?php echo esc_html( get_the_title( $show ) ); ?>
-							</a>
+							<?php if ( \GreaterMedia\Shows\supports_homepage( $show->ID ) ) : ?>
+								<a href="<?php echo esc_url( get_permalink( $show ) ); ?>" rel="tag">
+							<?php endif; ?>
+									
+							<?php if ( ( $image_id = intval( get_post_meta( $show->ID, 'logo_image', true ) ) ) ) : ?>
+								<?php echo wp_get_attachment_image( $image_id, 'thumbnail', false, array( 'class' => 'entry__show--logo' ) ); ?>
+							<?php endif; ?>
+
+							<?php echo esc_html( get_the_title( $show ) ); ?>
+
+							<?php if ( \GreaterMedia\Shows\supports_homepage( $show->ID ) ) : ?>
+								</a>
+							<?php endif; ?>
 						</li>
 					<?php endif; ?>
 				<?php endforeach; ?>
