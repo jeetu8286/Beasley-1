@@ -16,21 +16,45 @@ get_header(); ?>
 
 			<section class="content">
 
-				<?php if ( have_posts() ) :
+				<?php
 					$count = $wp_query->found_posts;
+					$search_query = sanitize_text_field( get_search_query() );
+					$keyword_post_id = intval( get_post_with_keyword( $search_query ) );
+					if( $keyword_post_id != 0 ) {
+						$count += 1;
+					}
+
+					// echo '<h2 class="search__results--count">' . intval( $count ) . ' ';
+					// _e( 'Results Found', 'greatermedia' );
+					// echo '</h2>';
+
+					$term_label = 'Keyword:';
 				?>
 
-					<h2 class="search__results--count"><?php echo intval( $count ); ?><?php _e( ' Results Found', 'greatermedia' ); ?></h2>
-					<h3 class="search__keyword"><?php printf( __( 'Keyword: %s', 'greatermedia' ), '<span class="search__keyword--term">' . get_search_query() . '</span>' ); ?></h3>
-					<div class="keyword__search--results">
 
-						<?php do_action( 'keyword_search_result' ); ?>
+				<?php if( $keyword_post_id != 0 ): ?>
+				<h3 class="search__keyword"><?php printf( __( '%s %s', 'greatermedia' ), $term_label, '<span class="search__keyword--term">' . get_search_query() . '</span>' ); ?></h3>
 
-					</div>
+				<div class="keyword__search--results">
 
-					<h2 class="search__title"><?php _e( 'Relevant Search Results', 'greatermedia' ); ?></h2>
-					<?php while ( have_posts() ) : the_post();
+					<?php do_action( 'keyword_search_result' ); ?>
+
+				</div>
+
+				<?php endif; ?>
+
+<!-- 				<h2 class="search__title"><?php _e( 'Relevant Search Results', 'greatermedia' ); ?></h2>
+ -->
+				<?php if ( have_posts() ) :
+
+					$term_label = intval($count) . ' Search Results for:'; ?>
+
+					<h3 class="search__keyword"><?php printf( __( '%s %s', 'greatermedia' ), $term_label, '<span class="search__keyword--term">' . get_search_query() . '</span>' ); ?></h3>
+
+				<?php
+					while ( have_posts() ) : the_post();
 				?>
+
 
 				<?php
 					$title = get_the_title();
@@ -48,28 +72,29 @@ get_header(); ?>
 
 					<div class="posts-pagination">
 
-						<div class="posts-pagination--previous"><?php next_posts_link( '<i class="fa fa-angle-double-left"></i>Previous' ); ?></div>
-						<div class="posts-pagination--next"><?php previous_posts_link( 'Next<i class="fa fa-angle-double-right"></i>' ); ?></div>
+						<div class="posts-pagination--previous"><?php previous_posts_link( '<i class="fa fa-angle-double-left"></i>Previous' ); ?></div>
+						<div class="posts-pagination--next"><?php next_posts_link( 'Next<i class="fa fa-angle-double-right"></i>' ); ?></div>
 
 					</div>
 
 				<?php else : ?>
-
+					<?php if( $keyword_post_id == 0 ): ?>
 					<article id="post-not-found" class="hentry cf">
 
 						<header class="article-header">
 
-							<h1><?php _e( 'Oops, Post Not Found!', 'greatermedia' ); ?></h1>
+							<h1><?php _e( 'No Results Found!', 'greatermedia' ); ?></h1>
 
 						</header>
 
 						<section class="entry-content">
 
-							<p><?php _e( 'Uh Oh. Something is missing. Try double checking things.', 'greatermedia' ); ?></p>
+							<p><?php _e( 'Try searching for something else, or click one of the links above.', 'greatermedia' ); ?></p>
 
 						</section>
 
 					</article>
+					<?php endif; ?>
 
 				<?php endif; ?>
 
