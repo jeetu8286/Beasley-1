@@ -13,7 +13,7 @@ $post_taxonomies = get_post_taxonomies();
 
 <footer class="entry__footer">
 
-	<?php if ( in_array( 'category', $post_taxonomies ) ) : ?>
+	<?php if ( in_array( 'category', $post_taxonomies ) && has_category() ) : ?>
 	<div class="entry__categories">
 		<div class="entry__list--title"><?php _e( 'Category', 'greatermedia' ); ?></div>
 		<ul class="entry__list--categories">
@@ -22,7 +22,7 @@ $post_taxonomies = get_post_taxonomies();
 	</div>
 	<?php endif; ?>
 
-	<?php if ( in_array( 'post_tag', $post_taxonomies ) ) : ?>
+	<?php if ( in_array( 'post_tag', $post_taxonomies ) && has_tag() ) : ?>
 	<div class="entry__tags">
 		<div class="entry__list--title"><?php _e( 'Tags', 'greatermedia' ); ?></div>
 		<ul class="entry__list--tags">
@@ -31,7 +31,7 @@ $post_taxonomies = get_post_taxonomies();
 	</div>
 	<?php endif; ?>
 
-	<?php if ( class_exists( 'ShowsCPT', false ) && in_array( ShowsCPT::SHOW_TAXONOMY, $post_taxonomies ) ) : ?>
+	<?php if ( class_exists( 'ShowsCPT', false ) && in_array( ShowsCPT::SHOW_TAXONOMY, $post_taxonomies ) && has_term( '', ShowsCPT::SHOW_TAXONOMY ) ) : ?>
 		<div class="entry__shows">
 			<div class="entry__list--title"><?php _e( 'Shows', 'greatermedia' ); ?></div>
 			<ul class="entry__list--shows">
