@@ -395,3 +395,18 @@ function greatermedia_gallery_album_nav() {
 	echo '</ul></nav>' . "\n";
 
 }
+
+/**
+ * Will not allow redirect for `gmr_album` contest type when trying to display child galleries with pagination.
+ * Taken from https://gist.github.com/madebydaniel/ca63450fb9a0e08b747a
+ *
+ * @param $redirect_url
+ *
+ * @return bool
+ */
+function greatermedia_disable_redirect_canonical( $redirect_url ){
+	if ( is_singular('gmr_album') ) $redirect_url = false;
+	return $redirect_url;
+}
+
+add_filter( 'redirect_canonical','greatermedia_disable_redirect_canonical' );

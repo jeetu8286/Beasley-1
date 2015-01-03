@@ -2980,6 +2980,8 @@ Link posts contain a link to an external site. They can also optionally have a f
   @media screen and (min-width: 768px) {
     .hentry {
       margin-bottom: 90px; } }
+  .single-gmr_album .hentry {
+    margin-bottom: 0; }
 
 .entry__thumbnail {
   position: relative;
@@ -3041,6 +3043,8 @@ Link posts contain a link to an external site. They can also optionally have a f
       padding-top: 40px; }
       .entry__footer:last-child {
         margin-right: 0; } }
+  .single-gmr_album .entry__footer {
+    border-bottom: none; }
 
 .entry__footer--category:link, .entry__footer--category:visited {
   float: right;
@@ -6409,6 +6413,8 @@ category: Components - Gallery Archive
 .gallery__archive {
   padding-top: 3.625em;
   padding-bottom: 3.625em; }
+  .single-gmr_album .gallery__archive {
+    padding-top: 1.625em; }
 
 .gallery__featured, .gallery__grid {
   float: left;

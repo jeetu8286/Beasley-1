@@ -1,8 +1,8 @@
-<?php while ( have_posts() ) : the_post(); ?>
+<div class="container">
 
-	<div class="container">
+	<?php if (have_posts()) : while ( have_posts() ) : the_post();
 
-		<?php if ( has_post_thumbnail() ) {
+		if ( has_post_thumbnail() ) {
 
 				the_post_thumbnail( 'full', array( 'class' => 'single__featured-img' ) );
 
@@ -33,46 +33,49 @@
 
 				</section>
 
-				<?php get_template_part( 'partials/post', 'footer' ); ?>
-
 			</article>
-
-			<?php
-			$post_id = get_query_var( 'post_id' );
-
-			$children_args = array(
-				'post_type' => GreaterMediaGalleryCPT::GALLERY_POST_TYPE,
-				'post_parent' => $post_id,
-				'fields' => 'title',
-				'limit' => 1000,
-				'orderby' => 'menu_order',
-				'order' => 'ASC',
-			);
-
-			$children_galleries = get_posts( $children_args );
-
-			foreach ( $children_galleries as $post ) : setup_postdata( $post ); ?>
-
-				<article id="post-<?php the_ID(); ?>" <?php post_class( 'gallery__grid--column' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
-
-					<div class="gallery__grid--thumbnail">
-						<a href="<?php the_permalink(); ?>">
-							<?php the_post_thumbnail( 'gmr-gallery-grid-thumb' ); ?>
-						</a>
-					</div>
-
-					<div class="gallery__grid--meta">
-						<h3 class="gallery__grid--title">
-							<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-						</h3>
-					</div>
-
-				</article>
-			<?php endforeach;
-			wp_reset_postdata();?>
 
 		</section>
 
-	</div>
+	<?php
+		endwhile;
+		endif;
+		wp_reset_query();
+	?>
 
-<?php endwhile; ?>
+	<section class="gallery__archive">
+
+		<div class="gallery__grid">
+
+			<?php
+
+				$gallery_content_types = array(
+					GreaterMediaGalleryCPT::GALLERY_POST_TYPE,
+					'post'
+				);
+
+				$child_galleries = array(
+					'post_type'         => $gallery_content_types,
+					'post_parent'       => $post->ID,
+					'posts_per_page'    => 16,
+					'orderby'           => 'post_date',
+					'order'             => 'DESC',
+					'paged'             => get_query_var('paged')
+				);
+
+				query_posts( $child_galleries );
+
+				while (have_posts()) : the_post();
+
+					get_template_part( 'partials/gallery-grid' );
+
+				endwhile;
+				greatermedia_gallery_album_nav();
+				wp_reset_query();
+			?>
+
+		</div>
+
+	</section>
+
+</div>

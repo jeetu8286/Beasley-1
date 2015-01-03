@@ -803,6 +803,10 @@ category: Components - Gallery Archive
 	@extend %content;
 	padding-top: 3.625em;
 	padding-bottom: 3.625em;
+
+	.single-gmr_album & {
+		padding-top: 1.625em;
+	}
 }
 
 .gallery__featured, .gallery__grid {
