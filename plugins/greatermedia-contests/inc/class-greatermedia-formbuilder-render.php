@@ -20,7 +20,7 @@ class GreaterMediaFormbuilderRender {
 	 * Retrieve a custom list of HTML tags & attributes we're allowing in a rendered form
 	 * @return array valid tags
 	 */
-	protected static function allowed_tags() {
+	public static function allowed_tags() {
 
 		static $tags;
 		if ( ! isset( $tags ) ) {
@@ -200,7 +200,7 @@ class GreaterMediaFormbuilderRender {
 	 *
 	 * @return string html
 	 */
-	protected static function render_label( stdClass $field ) {
+	public static function render_label( stdClass $field ) {
 
 		$html = '';
 
@@ -245,7 +245,7 @@ class GreaterMediaFormbuilderRender {
 	 *
 	 * @return string html
 	 */
-	protected static function render_legend( stdClass $field ) {
+	public static function render_legend( stdClass $field ) {
 
 		$html = '';
 
@@ -275,7 +275,7 @@ class GreaterMediaFormbuilderRender {
 
 	}
 
-	protected static function render_description( stdClass $field ) {
+	public static function render_description( stdClass $field ) {
 
 		$html = '';
 
@@ -311,7 +311,7 @@ class GreaterMediaFormbuilderRender {
 	 *
 	 * @return string HTML
 	 */
-	protected static function render_text( $post_id, stdClass $field ) {
+	public static function render_text( $post_id, stdClass $field ) {
 
 		$special_attributes = array();
 
@@ -352,7 +352,7 @@ class GreaterMediaFormbuilderRender {
 	 *
 	 * @return string HTML
 	 */
-	protected static function render_paragraph( $post_id, stdClass $field ) {
+	public static function render_paragraph( $post_id, stdClass $field ) {
 
 		$html     = '';
 		$field_id = 'form_field_' . $field->cid;
@@ -397,7 +397,7 @@ class GreaterMediaFormbuilderRender {
 	 *
 	 * @return string html
 	 */
-	protected static function render_dropdown( $post_id, stdClass $field ) {
+	public static function render_dropdown( $post_id, stdClass $field ) {
 
 		$html = '';
 
@@ -445,11 +445,11 @@ class GreaterMediaFormbuilderRender {
 
 	}
 
-	protected static function render_radio( $post_id, stdClass $field ) {
+	public static function render_radio( $post_id, stdClass $field ) {
 		return self::render_checkboxes( $post_id, $field, 'radio' );
 	}
 
-	protected static function render_checkboxes( $post_id, stdClass $field, $input_type = 'checkbox' ) {
+	public static function render_checkboxes( $post_id, stdClass $field, $input_type = 'checkbox' ) {
 
 		$html = '';
 
@@ -490,7 +490,7 @@ class GreaterMediaFormbuilderRender {
 	 *
 	 * @return string html
 	 */
-	protected static function render_date( $post_id, stdClass $field ) {
+	public static function render_date( $post_id, stdClass $field ) {
 		return self::render_input_tag( 'date', $post_id, $field );
 	}
 
@@ -502,7 +502,7 @@ class GreaterMediaFormbuilderRender {
 	 *
 	 * @return string html
 	 */
-	protected static function render_time( $post_id, stdClass $field ) {
+	public static function render_time( $post_id, stdClass $field ) {
 		return self::render_input_tag( 'time', $post_id, $field );
 	}
 
@@ -514,7 +514,7 @@ class GreaterMediaFormbuilderRender {
 	 *
 	 * @return string html
 	 */
-	protected static function render_website( $post_id, stdClass $field ) {
+	public static function render_website( $post_id, stdClass $field ) {
 		return self::render_input_tag( 'url', $post_id, $field );
 	}
 
@@ -526,11 +526,11 @@ class GreaterMediaFormbuilderRender {
 	 *
 	 * @return string html
 	 */
-	protected static function render_email( $post_id, stdClass $field ) {
+	public static function render_email( $post_id, stdClass $field ) {
 		return self::render_input_tag( 'email', $post_id, $field );
 	}
 
-	protected static function render_price( $post_id, stdClass $field ) {
+	public static function render_price( $post_id, stdClass $field ) {
 
 		$special_attributes = array(
 			'step'    => '0.01',
@@ -548,7 +548,7 @@ class GreaterMediaFormbuilderRender {
 	 *
 	 * @return string html
 	 */
-	protected static function render_address( $post_id, stdClass $field ) {
+	public static function render_address( $post_id, stdClass $field ) {
 
 		$html = '';
 
@@ -606,7 +606,7 @@ class GreaterMediaFormbuilderRender {
 	 *
 	 * @return string html
 	 */
-	protected static function render_file( $post_id, stdClass $field ) {
+	public static function render_file( $post_id, stdClass $field ) {
 
 		$special_attributes = array(
 			'accept' => "image/*",
@@ -626,7 +626,7 @@ class GreaterMediaFormbuilderRender {
 	 *
 	 * @return string html
 	 */
-	protected static function render_input_tag( $type, $post_id, $field, $special_attributes = null ) {
+	public static function render_input_tag( $type, $post_id, $field, $special_attributes = null ) {
 
 		if ( null === $special_attributes ) {
 			$special_attributes = array();
@@ -756,7 +756,7 @@ class GreaterMediaFormbuilderRender {
 	 *
 	 * @return string HTML
 	 */
-	protected static function get_submit_button( $text = null, $type = 'primary large', $name = 'submit', $wrap = true, $other_attributes = null ) {
+	public static function get_submit_button( $text = null, $type = 'primary large', $name = 'submit', $wrap = true, $other_attributes = null ) {
 		if ( ! is_array( $type ) ) {
 			$type = explode( ' ', $type );
 		}
@@ -810,7 +810,7 @@ class GreaterMediaFormbuilderRender {
 	 *
 	 * @return string
 	 */
-	protected static function render_single_checkbox( $cid, $field_option_index, stdClass $field_option_data, $input_type, $multiple_choices ) {
+	public static function render_single_checkbox( $cid, $field_option_index, stdClass $field_option_data, $input_type, $multiple_choices ) {
 
 		$html = '';
 
@@ -887,7 +887,7 @@ class GreaterMediaFormbuilderRender {
 	 *
 	 * @return array abbreviation => stdClass(), where value is an option for rendering by render_dropdown()
 	 */
-	protected static function get_us_states() {
+	public static function get_us_states() {
 
 		static $state_data;
 
@@ -969,7 +969,7 @@ class GreaterMediaFormbuilderRender {
 	 *
 	 * @return array
 	 */
-	protected static function paragraph_length_restriction_attributes( stdClass $field, array $textarea_tag_attributes ) {
+	public static function paragraph_length_restriction_attributes( stdClass $field, array $textarea_tag_attributes ) {
 
 		if ( isset( $field->field_options->min_max_length_units ) && 'words' === $field->field_options->min_max_length_units ) {
 
@@ -1008,7 +1008,7 @@ class GreaterMediaFormbuilderRender {
 	 * @return array
 	 * @throws InvalidArgumentException
 	 */
-	protected static function paragraph_field_size_attributes( stdClass $field, array $textarea_tag_attributes ) {
+	public static function paragraph_field_size_attributes( stdClass $field, array $textarea_tag_attributes ) {
 
 		if ( isset( $field->field_options->size ) ) {
 
