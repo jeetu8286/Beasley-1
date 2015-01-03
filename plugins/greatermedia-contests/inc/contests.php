@@ -323,6 +323,8 @@ function gmr_contests_process_form_submission() {
 		return;
 	}
 
+	require_once ABSPATH . 'wp-admin/includes/image.php';
+
 	$submitted_values = array();
 	$submitted_files  = array( 'images' => array(), 'other'  => array() );
 	
