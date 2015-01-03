@@ -214,10 +214,13 @@ function get_show_favorites_query() {
 }
 
 function get_show_live_links_query() {
+	$show = get_post();
+	$episode = \gmrs_get_current_show_episode();
+	
 	$taxonomy = get_taxonomy( \ShowsCPT::SHOW_TAXONOMY );
-	$term = \TDS\get_related_term( get_post() );
+	$term = \TDS\get_related_term( $show );
 
-	return new \WP_Query( array(
+	$args = array(
 		'post_type' => $taxonomy->object_type,
 		'tax_query' => array(
 			array(
@@ -225,7 +228,18 @@ function get_show_live_links_query() {
 				'terms'    => $term->term_id,
 			),
 		),
-	) );
+	);
+
+	if ( $episode && $show->ID == $episode->post_parent && \gmrs_is_episode_onair( $episode ) ) {
+		$args['date_query'] = array(
+			array(
+				'before' => $episode->post_date_gmt,
+				'column' => 'post_date_gmt',
+			),
+		);
+	}
+
+	return new \WP_Query( $args );
 }
 
 function get_show_main_query() {
