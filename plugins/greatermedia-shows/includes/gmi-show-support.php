@@ -213,16 +213,20 @@ function get_show_favorites_query() {
 	return $query;
 }
 
-function get_show_live_links_query() {
-	$show = get_post();
+function get_show_live_links_query( $show = null, $page = 1 ) {
+	$show = get_post( $show );
 	$episode = \gmrs_get_current_show_episode();
 	
 	$taxonomy = get_taxonomy( \ShowsCPT::SHOW_TAXONOMY );
 	$term = \TDS\get_related_term( $show );
 
 	$args = array(
-		'post_type' => $taxonomy->object_type,
-		'tax_query' => array(
+		'post_type'           => $taxonomy->object_type,
+		'paged'               => $page,
+		'posts_per_page'      => 10,
+		'ignore_sticky_posts' => true,
+		'no_found_rows'       => true,
+		'tax_query'           => array(
 			array(
 				'taxonomy' => \ShowsCPT::SHOW_TAXONOMY,
 				'terms'    => $term->term_id,

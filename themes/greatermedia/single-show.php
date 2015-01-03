@@ -114,7 +114,9 @@
 									<?php wp_reset_query(); ?>
 								</ul>
 								
-								<a class="more-btn" href="#">more</a>
+								<a id="show__live-links--more" class="more-btn" href="#">
+									<i class="fa fa-spinner fa-spin" style="display:none"></i> more
+								</a>
 					        </section>
 							<?php endif; ?>
 
