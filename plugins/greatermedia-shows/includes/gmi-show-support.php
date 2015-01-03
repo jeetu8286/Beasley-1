@@ -213,6 +213,21 @@ function get_show_favorites_query() {
 	return $query;
 }
 
+function get_show_live_links_query() {
+	$taxonomy = get_taxonomy( \ShowsCPT::SHOW_TAXONOMY );
+	$term = \TDS\get_related_term( get_post() );
+
+	return new \WP_Query( array(
+		'post_type' => $taxonomy->object_type,
+		'tax_query' => array(
+			array(
+				'taxonomy' => \ShowsCPT::SHOW_TAXONOMY,
+				'terms'    => $term->term_id,
+			),
+		),
+	) );
+}
+
 function get_show_main_query() {
 	$show_term = \TDS\get_related_term( get_the_ID() );
 	$current_page = get_query_var( 'show_section_page' ) ?: 1;
