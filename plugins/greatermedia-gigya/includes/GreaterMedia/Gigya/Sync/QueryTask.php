@@ -130,7 +130,8 @@ class QueryTask extends SyncTask {
 			$this->enqueue( $params );
 		} else if ( $this->get_sentinel()->can_compile_results() ) {
 			$params = $this->export_params();
-			$compile_results_task = new CompileResultsTask();
+			$params['cursor'] = 0;
+			$compile_results_task = new InMemoryCompileResultsTask();
 			$compile_results_task->enqueue( $params );
 		}
 	}

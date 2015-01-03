@@ -25,6 +25,7 @@ require_once( __DIR__ . '/includes/layout-chooser/class-choose-layout.php' );
 require_once( __DIR__ . '/includes/site-options/loader.php' );
 require_once( __DIR__ . '/includes/mega-menu/mega-menu-admin.php' );
 require_once( __DIR__ . '/includes/mega-menu/mega-menu-walker.php' );
+require_once( __DIR__ . '/includes/mega-menu/mega-menu-mobile-walker.php' );
 
 /**
  * Required files
@@ -52,11 +53,13 @@ function greatermedia_setup() {
 	 * Add theme support for post thumbnails
 	 */
 	add_theme_support( 'post-thumbnails' );
-	add_image_size( 'gm-article-thumbnail',     1580,   9999,   false   ); // thumbnails used for articles
-	add_image_size( 'gmr-gallery',              800,    534,    true    ); // large images for the gallery
-	add_image_size( 'gmr-gallery-thumbnail',    100,    100             ); // thumbnails for the gallery
-	add_image_size( 'gmr-featured-primary',     2800,   1000,   true    ); // image for primary featured post on front page
-	add_image_size( 'gmr-featured-secondary',   400,    400,    true    ); // thumbnails for secondary featured posts on front page
+	add_image_size( 'gm-article-thumbnail',     		1580,   9999,   false   ); // thumbnails used for articles
+	add_image_size( 'gmr-gallery',              		800,    534,    true    ); // large images for the gallery
+	add_image_size( 'gmr-gallery-thumbnail',    		100,    100             ); // thumbnails for the gallery
+	add_image_size( 'gmr-featured-primary',     		2800,   1000,   true    ); // image for primary featured post on front page
+	add_image_size( 'gmr-featured-secondary',   		400,    400,    true    ); // thumbnails for secondary featured posts on front page
+	add_image_size( 'gmr-show-featured-primary',   		570,    313,    true    ); // thumbnails for secondary featured posts on front page
+	add_image_size( 'gmr-show-featured-secondary',   	270,    118,    true    ); // thumbnails for secondary featured posts on front page
 
 	// Update this as appropriate content types are created and we want this functionality
 	add_post_type_support( 'post', 'timed-content' );
@@ -99,6 +102,17 @@ function greatermedia_scripts_styles() {
 		array(),
 		'4.2'
 	);
+	wp_register_style(
+		'greatermedia',
+		get_template_directory_uri() . "/assets/css/greater_media{$postfix}.css",
+		array(
+			'dashicons',
+			'open-sans',
+			'droid-sans',
+			'font-awesome'
+		),
+		GREATERMEDIA_VERSION
+	);
 	wp_enqueue_script(
 		'greatermedia',
 		get_template_directory_uri() . "/assets/js/greater_media{$postfix}.js",
@@ -124,15 +138,7 @@ function greatermedia_scripts_styles() {
 		false
 	);
 	wp_enqueue_style(
-		'greatermedia',
-		get_template_directory_uri() . "/assets/css/greater_media{$postfix}.css",
-		array(
-			'dashicons',
-			'open-sans',
-			'droid-sans',
-			'font-awesome'
-		),
-		GREATERMEDIA_VERSION
+		'greatermedia'
 	);
 
 }

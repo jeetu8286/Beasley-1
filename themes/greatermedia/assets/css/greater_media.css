@@ -59,10 +59,21 @@ category: Base
 /**
  * Helpers
  */
-.cf:after {
+.cf:after, .mobile-nav .menu-item-has-children:after {
   content: "";
   display: table;
   clear: both; }
+
+/**
+ * Hides text from sighted users
+ */
+.screen-reader-text {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden; }
 
 /*! normalize.css v3.0.2 | MIT License | git.io/normalize */
 /**
@@ -461,7 +472,7 @@ category: Base - Typography
   src: url("../fonts/icon-font/gmr-icons.eot?#iefixc8o1sf") format("embedded-opentype"), url("../fonts/icon-font/gmr-icons.woff?c8o1sf") format("woff"), url("../fonts/icon-font/gmr-icons.ttf?c8o1sf") format("truetype"), url("../fonts/icon-font/gmr-icons.svg?c8o1sf#gmr-icons") format("svg");
   font-weight: normal;
   font-style: normal; }
-[class^="icon-"], [class*=" icon-"], .entry__thumbnail--video:before, .entry__thumbnail--events:before, .entry__thumbnail--audio:before, .header__account--btn:before, .header__search--btn:before, .live-link__song:before, .live-link__type--audio:before, .live-link__type--gallery:before, .live-link__type--image:before, .live-link__type--link:before, .live-link__type--standard:before, .live-link__type--video:before, .social__link--facebook:before, .social__link--twitter:before, .social__link--google-plus:before, .social__link--youtube:before, .social__link--instagram:before, .header__search--submit:before, .gallery__prev--btn:before, .gallery__next--btn:after, .gallery__paging--prev, .gallery__paging--next, .gallery-grid__album {
+[class^="icon-"], [class*=" icon-"], .entry__thumbnail--video:before, .entry__thumbnail--events:before, .entry__thumbnail--audio:before, .header__search--btn:before, .live-link__song:before, .live-link__type--audio:before, .live-link__type--gallery:before, .live-link__type--image:before, .live-link__type--link:before, .live-link__type--standard:before, .live-link__type--video:before, .social__link--facebook:before, .social__link--twitter:before, .social__link--google-plus:before, .social__link--youtube:before, .social__link--instagram:before, .header__search--submit:before, .gallery__prev--btn:before, .gallery__next--btn:after, .gallery__paging--prev, .gallery__paging--next, .gallery-grid__album {
   font-family: 'gmr-icons';
   speak: none;
   font-style: normal;
@@ -572,13 +583,18 @@ img {
   transform: translate(0, 0);
   width: 100%;
   padding-bottom: 58px;
-  -webkit-transition: all 500ms ease-in-out;
-  -moz-transition: all 500ms ease-in-out;
-  transition: all 500ms ease-in-out;
+  -webkit-transition: all 100ms ease-out;
+  -moz-transition: all 100ms ease-out;
+  transition: all 100ms ease-out;
   overflow: hidden;
   background-color: #000000; }
   @media screen and (min-width: 768px) {
     .page-wrap {
+      -webkit-transform: none;
+      -moz-transform: none;
+      -ms-transform: none;
+      -o-transform: none;
+      transform: none;
       padding-bottom: 0; } }
 
 .container, .single-gmr_gallery .gallery .container {
@@ -963,15 +979,21 @@ blockquote p {
   -ms-transform: translate(-100%, 0);
   -o-transform: translate(-100%, 0);
   transform: translate(-100%, 0);
-  -webkit-transition: all 500ms ease-in-out;
-  -moz-transition: all 500ms ease-in-out;
-  transition: all 500ms ease-in-out;
+  -webkit-transition: all 100ms ease-out;
+  -moz-transition: all 100ms ease-out;
+  transition: all 100ms ease-out;
   background-color: #000000;
   border-right: 1px solid #d0d2d3;
-  z-index: 1; }
+  z-index: 1;
+  overflow-y: auto; }
   @media screen and (min-width: 768px) {
     .mobile-nav {
       display: none; } }
+
+.admin-bar .mobile-nav {
+  top: 46px;
+  height: calc( 100% - 46px );
+  /* doesn't work in IE8, but probably ok. Just don't edit the site and expect the front-end to be bug-free in IE8 */ }
 
 .mobile-nav--open {
   overflow: hidden; }
@@ -1009,9 +1031,9 @@ blockquote p {
   -o-transform: translate(78%, 0);
   transform: translate(78%, 0);
   width: 100%;
-  -webkit-transition: all 500ms ease-in-out;
-  -moz-transition: all 500ms ease-in-out;
-  transition: all 500ms ease-in-out; }
+  -webkit-transition: all 100ms ease-out;
+  -moz-transition: all 100ms ease-out;
+  transition: all 100ms ease-out; }
 
 .mobile-nav--open .page-wrap:before {
   position: absolute;
@@ -1028,7 +1050,9 @@ blockquote p {
 .mobile-nav__list .menu-item {
   padding: 0;
   margin: 0;
-  border-bottom: 1px solid #282827; }
+  border-bottom: 1px solid #282827;
+  line-height: 0;
+  /* the anchor inside the <li> provides all the box model sizing */ }
 
 .mobile-nav__list a:link, .mobile-nav__list a:visited {
   display: block;
@@ -1041,9 +1065,8 @@ blockquote p {
   background-color: #d22228; }
 
 .mobile-nav .social__list {
-  position: absolute;
-  bottom: 0;
-  padding: 18px 0; }
+  padding: 18px 0;
+  width: 100%; }
 
 .mobile-nav .social__link {
   margin: 0 0 0 1.25em;
@@ -1071,17 +1094,30 @@ blockquote p {
 .header__main a:hover, .header__main a:active {
   color: #ffffff; }
 
-.header__nav ul li a, .header__nav ul li a:link, .header__nav ul li a:visited {
+.header__nav ul li a,
+.header__nav ul li a:link,
+.header__nav ul li a:visited,
+.header__account ul li a,
+.header__account ul li a:link,
+.header__account ul li a:visited {
   display: block;
   padding: 33px 1.125em 32px; }
 
-.header__nav ul li a:hover, .header__nav ul li a:focus, .header__nav ul li a:active {
+.header__nav ul li a:hover,
+.header__nav ul li a:focus,
+.header__nav ul li a:active,
+.header__nav ul li:hover,
+.header__account ul li a:hover,
+.header__account ul li a:focus,
+.header__account ul li a:active,
+.header__account ul li:hover {
   background-color: #d22228; }
 
 .header__nav ul li ul {
   display: none; }
 
-.header__nav > ul > li:hover:after {
+/* Psuedo element helps with selection by preventing the menu from collapsing on just a bit of a mouse-out */
+.header__nav .menu-item-has-children:hover:after {
   content: ' ';
   display: block;
   position: relative;
@@ -1094,7 +1130,9 @@ blockquote p {
 .header__nav ul li:hover .sub-menu, .header__nav ul li:hover .format-fw > ul {
   display: block; }
 
-.sub-menu, .format-fw > ul {
+.header__nav .sub-menu, .header__nav .format-fw > ul,
+.header__account--links.sub-menu,
+.header__nav .format-fw > ul.header__account--links {
   position: absolute;
   border-top: 7px solid #d22228;
   background-color: #ffffff;
@@ -1102,9 +1140,13 @@ blockquote p {
   min-width: 300px;
   z-index: 5000000;
   /* IAB z-index standard for drop nav is 5000000 - 5999999 */ }
-  .sub-menu li, .format-fw > ul li {
+  .header__nav .sub-menu li, .header__nav .format-fw > ul li,
+  .header__account--links.sub-menu li,
+  .header__nav .format-fw > ul.header__account--links li {
     display: block; }
-  .sub-menu a, .format-fw > ul a {
+  .header__nav .sub-menu a, .header__nav .format-fw > ul a,
+  .header__account--links.sub-menu a,
+  .header__nav .format-fw > ul.header__account--links a {
     color: #000000;
     /*
      * Important used here to override a declaration on .header__nav ul li a
@@ -1112,25 +1154,73 @@ blockquote p {
      * to keep this as a component (e.g. context independent). - TD
      */
     padding: 1em !important; }
-    .sub-menu a:visited, .format-fw > ul a:visited {
+    .header__nav .sub-menu a:visited, .header__nav .format-fw > ul a:visited,
+    .header__account--links.sub-menu a:visited,
+    .header__nav .format-fw > ul.header__account--links a:visited {
       color: #000000; }
-    .sub-menu a:hover, .format-fw > ul a:hover {
+    .header__nav .sub-menu a:hover, .header__nav .format-fw > ul a:hover,
+    .header__account--links.sub-menu a:hover,
+    .header__nav .format-fw > ul.header__account--links a:hover {
       color: #ffffff; }
 
-/**
- * Full-width
- */
-.format-fw > ul {
+.mobile-nav .sub-menu, .mobile-nav .header__nav .format-fw > ul, .header__nav .mobile-nav .format-fw > ul {
+  -webkit-transition: left 100ms ease-out;
+  -moz-transition: left 100ms ease-out;
+  transition: left 100ms ease-out;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  left: -100%;
+  top: 0;
+  bottom: 0;
+  background-color: #fff;
+  padding: 0; }
+  .mobile-nav .sub-menu li, .mobile-nav .header__nav .format-fw > ul li, .header__nav .mobile-nav .format-fw > ul li {
+    list-style-type: none;
+    border: none; }
+  .mobile-nav .sub-menu a, .mobile-nav .header__nav .format-fw > ul a, .header__nav .mobile-nav .format-fw > ul a {
+    color: #000; }
+.mobile-nav .sub-menu.is-visible, .mobile-nav .header__nav .format-fw > ul.is-visible, .header__nav .mobile-nav .format-fw > ul.is-visible {
+  display: block;
+  left: 0; }
+.mobile-nav .menu-item-has-children > a:first-child {
+  float: left;
+  width: 75%; }
+.mobile-nav .show-subnavigation {
+  float: right;
+  width: 25%;
+  text-align: center;
+  border-left: 1px solid #282827; }
+.mobile-nav .mobile-menu-submenu-header {
+  background-color: #d22228;
+  color: #fff;
+  padding: 18px 1.25em; }
+.mobile-nav a.mobile-menu-submenu-back-link {
+  display: inline-block;
+  width: 33%;
+  padding: 0;
+  color: #fff; }
+  .mobile-nav a.mobile-menu-submenu-back-link:before {
+    position: relative;
+    bottom: -0.09em;
+    /* optical, vertical, centering next to "Back" */ }
+.mobile-nav .mobile-menu-submenu-heading {
+  display: inline-block;
+  width: 65%;
+  text-align: right;
+  line-height: 1;
+  font-size: 1.60181em;
+  color: #fff; }
+
+.header__nav .format-fw > ul {
   width: 1400px;
   left: 0;
   padding: 1em; }
-
-.format-fw > ul > li {
+.header__nav .format-fw > ul > li {
   width: 32.666%;
   /* 100% - 2% (for margins, below) / 3 (3 columns) */
   float: left; }
-
-.format-fw > ul > li:not(:nth-child(3n+1)) {
+.header__nav .format-fw > ul > li:not(:nth-child(3n+1)) {
   border-left: 1px solid #d0d2d3;
   padding-left: 1%;
   margin-left: 1%; }
@@ -1341,7 +1431,7 @@ Curated posts for Featured Articles
 					<h2 class="featured__article--title">Minshara</h2>
 				</div>
 				<div class="featured__article--excerpt">
-					MinΓÇóshaΓÇóra (min SH├ñ r╔Ö) 1. adj. the classification for a planet capable of supporting humanoid life; 2. n. electronic pop rock band from Harrisburg / Philadelphia, Pennsylvania From The Viper Room in LA to Webster Hall in NYC, Minshara has been spreading infectious pop melodies, dance grooves, and rock
+					Min•sha•ra (min SHä rə) 1. adj. the classification for a planet capable of supporting humanoid life; 2. n. electronic pop rock band from Harrisburg / Philadelphia, Pennsylvania From The Viper Room in LA to Webster Hall in NYC, Minshara has been spreading infectious pop melodies, dance grooves, and rock
 				</div>
 			</div>
 		</div>
@@ -1423,9 +1513,12 @@ Curated posts for Featured Articles
       margin-right: 2.35765%;
       width: 100%;
       margin-right: 0;
-      padding-bottom: 55px;
-      background: url(../../images/featured-bg.png) repeat center center #561015;
-      background-size: auto 40%; }
+      background-image: url(../../images/featured-bg.png);
+      background-repeat: repeat;
+      background-position: center center;
+      background-color: #561015;
+      background-size: auto 40%;
+      padding-bottom: 55px; }
       .home__featured:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 1400px) {
@@ -1667,7 +1760,7 @@ Curated posts for Featured Articles
   height: 90px;
   margin-bottom: 27px;
   overflow: hidden;
-  background: #d0d2d3; }
+  background: #f1f1f3; }
   .featured__content--block:last-child {
     margin-right: 0; }
   @media screen and (min-width: 480px) {
@@ -1860,12 +1953,19 @@ Curated posts for Featured Articles
       margin-bottom: 13px; } }
 
 .featured__content--title a:link, .featured__content--title a:visited {
-  color: #ffffff; }
+  color: #282827; }
 
 .featured__content--title a:hover, .featured__content--title a:focus {
-  color: #f5ed7f; }
+  color: #aa1c20; }
 
 .featured__content--title a:active {
+  color: #831519; }
+
+.home__featured .featured__content--title a:link, .home__featured .featured__content--title a:visited {
+  color: #ffffff; }
+.home__featured .featured__content--title a:hover, .home__featured .featured__content--title a:focus {
+  color: #f5ed7f; }
+.home__featured .featured__content--title a:active {
   color: #f2e754; }
 
 .featured__content--link {
@@ -2007,7 +2107,7 @@ Community Highlights and Events
 						</div>
 
 						<div class="highlights__event--meta">
-							<h3 class="highlights__event--title">Preston & SteveΓÇÖs Camp Out For Hunger 2014</h3>
+							<h3 class="highlights__event--title">Preston & Steve’s Camp Out For Hunger 2014</h3>
 							<time datetime="" class="highlights__event--date">Dec 1 - Dec 5</time>
 						</div>
 
@@ -2433,7 +2533,8 @@ Community Highlights and Events
   transform: translateY(-100%); }
 
 .header .container {
-  padding: 0 .714285714286%; }
+  padding: 0 .714285714286%;
+  position: relative; }
 
 .header__main {
   width: 100%;
@@ -2528,20 +2629,19 @@ Community Highlights and Events
 
 .header__secondary {
   position: absolute;
-  top: 25px;
+  top: 22px;
   right: 20px;
   line-height: 1;
   text-align: right; }
   @media screen and (min-width: 768px) {
     .header__secondary {
-      position: relative;
+      right: 0;
       float: left;
       display: block;
       margin-right: 3.57866%;
       width: 35.26334%;
       margin-right: 0;
       top: auto;
-      right: auto;
       height: 82px;
       -webkit-transform: none;
       -moz-transform: none;
@@ -2570,12 +2670,10 @@ Community Highlights and Events
         margin-right: 0; } }
 
 .header__account {
-  position: relative;
   display: block;
   float: right;
   margin: 0 auto;
   color: #ffffff;
-  text-align: center;
   cursor: pointer; }
   @media screen and (min-width: 768px) {
     .header__account {
@@ -2590,19 +2688,23 @@ Community Highlights and Events
 
 .header__account--btn {
   display: block;
-  margin: 0 auto; }
+  margin: 0 auto;
+  text-align: center; }
   @media screen and (min-width: 768px) {
     .header__account--btn {
       height: 82px;
       width: 64px;
       padding: 32px 0; } }
 
-.header__account--btn:before {
-  font-size: 1.42383em;
-  content: "\e60a"; }
+/** An image is shown if the current user is logged in and Gigya gives us a thumbnail URL **/
+.header__account--btn img {
+  display: inline-block;
+  max-height: 28px;
+  width: auto;
+  border: 1px solid white; }
   @media screen and (min-width: 768px) {
-    .header__account--btn:before {
-      font-size: 1.125em; } }
+    .header__account--btn img {
+      max-height: 20px; } }
 
 .header__account--links {
   display: none; }
@@ -2613,10 +2715,9 @@ Community Highlights and Events
     .header__account:hover .header__account--links {
       position: absolute;
       display: block;
-      top: 82px;
+      top: 80px;
       right: 0;
-      width: 250px;
-      height: 118px; } }
+      min-width: 300px; } }
 
 .header__account--open {
   display: block; }
@@ -2643,7 +2744,7 @@ Community Highlights and Events
       display: block;
       float: right;
       height: 82px;
-      margin-right: 46px; } }
+      margin-right: 2em; } }
 
 .header__search--span {
   display: none; }
@@ -2853,7 +2954,7 @@ Video posts display a video and minimal text. They can also optionally have a fe
 <article id="post-581" class="post-581 post type-post status-publish format-video has-post-thumbnail hentry category-uncategorized cf" role="article" itemscope="" itemtype="http://schema.org/BlogPosting">
 	<section class="entry--video__meta" itemprop="articleBody">
 		<time datetime="2014-11-05T00:13:14+00:00" class="entry__date">5 November</time>
-		<h2 class="entry__title"><a href="">Gladys Knight &amp; The Pips ΓÇ£Midnight Train To GeorgiaΓÇ¥</a></h2>
+		<h2 class="entry__title"><a href="">Gladys Knight &amp; The Pips “Midnight Train To Georgia”</a></h2>
 	</section>
 
 	<section class="entry--video__thumbnail">
@@ -2882,7 +2983,7 @@ Standard posts are mostly text based but can include images. They can also optio
 
 	<section class="entry--standard__meta">
 		<time datetime="2014-11-03T22:34:27+00:00" class="entry__date">3 November</time>
-		<h2 class="entry__title" itemprop="headline"><a href="http://wmmr.greatermedia.10uplabs.com/hey-its-a-blog-post/">Hey itΓÇÖs a blog post!</a></h2>
+		<h2 class="entry__title" itemprop="headline"><a href="http://wmmr.greatermedia.10uplabs.com/hey-its-a-blog-post/">Hey it’s a blog post!</a></h2>
 	</section>
 
 	<footer class="entry__footer">
@@ -2904,7 +3005,7 @@ Link posts contain a link to an external site. They can also optionally have a f
 <article id="post-886" class="post-886 post type-post status-publish format-link has-post-thumbnail hentry category-uncategorized cf" role="article" itemscope="" itemtype="http://schema.org/BlogPosting">
 	<section class="entry--link__meta" itemprop="articleBody">
 		<time datetime="2014-11-10T04:07:56+00:00" class="entry__date">10 November</time>
-		<h2 class="entry__title"><a href="">Ontario Highway 401 ΓÇô Wikipedia, the free encyclopedia</a></h2>
+		<h2 class="entry__title"><a href="">Ontario Highway 401 – Wikipedia, the free encyclopedia</a></h2>
 	</section>
 
 	<footer class="entry__footer">
@@ -2990,7 +3091,7 @@ Link posts contain a link to an external site. They can also optionally have a f
   color: #929497; }
 
 .entry__footer--category:hover, .entry__footer--category:focus, .entry__footer--category:active {
-  color: palette(base, secondary-link-hover); }
+  color: #aa1c20; }
 
 .entry__type {
   float: left;
@@ -3564,7 +3665,9 @@ Link posts contain a link to an external site. They can also optionally have a f
 
 .posts-pagination {
   width: 100%;
-  font-size: 0.88889em; }
+  font-size: 0.88889em;
+  float: left;
+  margin-top: 3em; }
 
 .posts-pagination--previous {
   float: left;
@@ -3677,7 +3780,7 @@ category: Components
 
 	<div id="live-links" class="live-links">
 		<h3 class="widget--live-player__title">Live Links</h3>
-		<div id="gmr_shows_widget-2" class="widget--live-player widget_gmr_shows_widget"><ul><li class="live-link__type--standard"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/scroll-test/">GMR-278 test</a></div></li><li class="live-link__type--standard"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/contest/daves-contest/">DaveΓÇÖs Contest</a></div></li><li class="live-link__song"><div class="live-link__song--artist">Soundgarden</div><div class="live-link__song--title">Black Hole Sun</div></li><li class="live-link__song"><div class="live-link__song--artist">The Village People</div><div class="live-link__song--title">YMCA</div></li><li class="live-link__song"><div class="live-link__song--artist">Taylor Swift</div><div class="live-link__song--title">Shake it Off</div></li><li class="live-link__song"><div class="live-link__song--artist">Pink Floyd</div><div class="live-link__song--title">Comfortably Numb</div></li><li class="live-link__type--link"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/timed-content-test/">test test</a></div></li><li class="live-link__type--standard"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/ontario-highway-401-wikipedia-the-free-encyclopedia/">Ontario Highway 401 ΓÇô Wikipedia, the free encyclopedia</a></div></li><li class="live-link__type--video"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/?post_type=gmr-live-link&amp;p=633">Gladys Knight &amp; The Pips ΓÇ£Midnight Train To GeorgiaΓÇ¥</a></div></li><li class="live-link__type--video"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/gladys-knight-the-pips-midnight-train-to-georgia/">Gladys Knight &amp; The Pips</a></div></li><li class="live-link__type--video"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/?post_type=gmr-live-link&amp;p=538">Hilarious Volleyball Triple Head Shot ΓÇô YouTube</a></div></li></ul></div>
+		<div id="gmr_shows_widget-2" class="widget--live-player widget_gmr_shows_widget"><ul><li class="live-link__type--standard"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/scroll-test/">GMR-278 test</a></div></li><li class="live-link__type--standard"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/contest/daves-contest/">Dave’s Contest</a></div></li><li class="live-link__song"><div class="live-link__song--artist">Soundgarden</div><div class="live-link__song--title">Black Hole Sun</div></li><li class="live-link__song"><div class="live-link__song--artist">The Village People</div><div class="live-link__song--title">YMCA</div></li><li class="live-link__song"><div class="live-link__song--artist">Taylor Swift</div><div class="live-link__song--title">Shake it Off</div></li><li class="live-link__song"><div class="live-link__song--artist">Pink Floyd</div><div class="live-link__song--title">Comfortably Numb</div></li><li class="live-link__type--link"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/timed-content-test/">test test</a></div></li><li class="live-link__type--standard"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/ontario-highway-401-wikipedia-the-free-encyclopedia/">Ontario Highway 401 – Wikipedia, the free encyclopedia</a></div></li><li class="live-link__type--video"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/?post_type=gmr-live-link&amp;p=633">Gladys Knight &amp; The Pips “Midnight Train To Georgia”</a></div></li><li class="live-link__type--video"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/gladys-knight-the-pips-midnight-train-to-georgia/">Gladys Knight &amp; The Pips</a></div></li><li class="live-link__type--video"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/?post_type=gmr-live-link&amp;p=538">Hilarious Volleyball Triple Head Shot – YouTube</a></div></li></ul></div>
 	</div>
 </aside>
 ```
@@ -4428,7 +4531,8 @@ category: Components - Ads
   .ad__leaderboard.desktop {
     display: none; }
   .ad__leaderboard.mobile {
-    display: block; }
+    display: block;
+    padding: 0; }
   @media screen and (min-width: 768px) {
     .ad__leaderboard {
       height: 132px; }
@@ -4757,8 +4861,6 @@ category: Components - Shows
 */
 .show__header {
   background-color: #561015;
-  background-position: center;
-  background-repeat: no-repeat;
   position: relative;
   padding: 2em;
   width: 100%;
@@ -4773,6 +4875,32 @@ category: Components - Shows
   @media screen and (min-width: 768px) {
     .show__header {
       padding: 5em 2em; } }
+  @media screen and (min-width: 1024px) {
+    .show__header {
+      background-image: url(../../images/featured-bg.png);
+      background-repeat: repeat;
+      background-position: center center;
+      background-color: #561015;
+      background-size: auto 65%; }
+      .show__header.has-thumbnail {
+        background-repeat: no-repeat;
+        background-size: cover; } }
+
+.show__mask {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #561015;
+  opacity: 0.5;
+  filter: alpha(opacity=50);
+  -moz-opacity: 0.5;
+  -khtml-opacity: 0.5;
+  zoom: 1;
+  display: none; }
+  .has-thumbnail .show__mask {
+    display: block; }
 
 .show__cast {
   width: 100%;
@@ -4806,7 +4934,9 @@ category: Components - Shows
       margin-right: 2.35765%;
       width: 48.82117%; }
       .show__nav:last-child {
-        margin-right: 0; } }
+        margin-right: 0; }
+      .show__nav h1 {
+        margin-top: 0; } }
   .show__nav ul {
     list-style-type: none;
     padding-left: 0;
@@ -4839,6 +4969,7 @@ category: Components - Shows
 
 .show__meta {
   width: 100%;
+  margin-right: 0;
   text-align: center; }
   @media screen and (min-width: 768px) {
     .show__meta {
@@ -4855,6 +4986,15 @@ category: Components - Shows
     color: #ffffff;
     border: 1px solid #ffffff;
     margin-top: 1em; }
+    .show__meta .social-share-link:hover, .show__meta .social-share-link:active {
+      background: #ffffff; }
+
+.show__featured-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: -1; }
 
 /*doc
 ---
@@ -4979,6 +5119,10 @@ category: Components - Shows
   background: none; }
   .show__favorites .featured__content--block:last-child {
     margin-right: 0; }
+.show__favorites .featured__content--title a:link, .show__favorites .featured__content--title a:visited {
+  color: #404041; }
+.show__favorites .featured__content--title a:hover, .show__favorites .featured__content--title a:active {
+  color: #aa1c20; }
 
 .show__live-links {
   position: relative; }
@@ -5048,7 +5192,7 @@ name: social-share-buttons
 category: Components
 ---
 
-These are examples of Social Share Links for single articles. (TODO: replace with working social icons from icomoon)
+These are examples of Social Share Links for single articles.
 
 ```html_example
 <a href="http://www.facebook.com/sharer/sharer.php?u=[URL]&title=[TITLE]" class="icon-facebook social-share-link"></a>
@@ -5056,7 +5200,6 @@ These are examples of Social Share Links for single articles. (TODO: replace wit
 <a href="https://plus.google.com/share?url=[URL]" class="icon-google-plus social-share-link"></a>
 <a href="" class="icon-volume-up social-share-link"></a>
 ```
-
 */
 a.social-share-link {
   color: #000000;
@@ -5236,7 +5379,6 @@ category: Components - Article
 .header__search--submit {
   position: relative;
   float: right;
-  width: 14px;
   height: 40px;
   border: none;
   background-color: transparent;
@@ -5268,7 +5410,7 @@ category: Components - Article
   padding: 0;
   margin-top: 26px;
   margin-bottom: 0;
-  font-size: 1.125em;
+  font-size: 1.26563em;
   color: #404041;
   text-transform: uppercase; }
 
@@ -5276,7 +5418,7 @@ category: Components - Article
   color: #d22228; }
 
 .keyword__search--results {
-  margin-bottom: 26px; }
+  margin-bottom: 4em; }
 
 .search__title {
   padding-bottom: 12px;
