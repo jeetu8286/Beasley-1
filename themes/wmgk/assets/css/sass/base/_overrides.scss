@@ -30,11 +30,38 @@
 	color: lighten($color-gray-medium-dark,50%);
 	@include border-radius(1em);
 
-	ul {
+	li {
+		background-color: transparent;
+		height: auto;
+	}
+
+	.live-player__stream--available {
 		display: none;
 	}
 
-	li {
+	.live-player__stream--current.open {
 		background-color: transparent;
 	}
+
+	.live-player__stream--current.open .live-player__stream--available {
+		position: relative;
+		display: block;
+		background-color: transparent;
+		color: $dark-gray;
+		top: auto;
+		border-top: 1px solid darken($color-gray-light, 10%);
+
+		&:after {
+			background: transparent;
+		}
+
+		li:hover {
+			color: $light-gray;
+		}
+
+		li:last-child {
+			@include border-bottom-radius(1em);
+		}
+	}
+
 }
