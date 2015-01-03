@@ -810,7 +810,7 @@ class GreaterMediaFormbuilderRender {
 	 *
 	 * @return string
 	 */
-	public static function render_single_checkbox( $cid, $field_option_index, stdClass $field_option_data, $input_type, $multiple_choices ) {
+	public static function render_single_checkbox( $cid, $field_option_index, stdClass $field_option_data, $input_type, $multiple_choices = false ) {
 
 		$html = '';
 
