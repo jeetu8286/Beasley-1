@@ -636,50 +636,9 @@ img {
   background-color: #ffffff; }
 
 .content {
-  float: left;
-  display: block;
-  margin-right: 7.42297%;
   width: 100%;
-  padding: 2em 7.0833333333335%; }
-  .content:last-child {
-    margin-right: 0; }
-  @media screen and (min-width: 480px) {
-    .content {
-      float: left;
-      display: block;
-      margin-right: 4.82916%;
-      width: 100%; }
-      .content:last-child {
-        margin-right: 0; } }
-  @media screen and (min-width: 768px) {
-    .content {
-      float: left;
-      display: block;
-      margin-right: 4.82916%;
-      width: 65.05695%;
-      margin-left: 17.47153%;
-      padding-right: 0;
-      padding-left: 0; }
-      .content:last-child {
-        margin-right: 0; } }
-  @media screen and (min-width: 1024px) {
-    .content {
-      float: left;
-      display: block;
-      margin-right: 2.35765%;
-      width: 82.94039%;
-      margin-left: 8.5298%; }
-      .content:last-child {
-        margin-right: 0; } }
-  @media screen and (min-width: 1400px) {
-    .content {
-      float: left;
-      display: block;
-      margin-right: 2.35765%;
-      width: 82.94039%;
-      margin-left: 8.5298%; }
-      .content:last-child {
-        margin-right: 0; } }
+  margin-right: 0;
+  padding: 2em; }
 
 .live-player {
   position: fixed;
