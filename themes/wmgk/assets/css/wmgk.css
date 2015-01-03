@@ -6945,4 +6945,18 @@ select {
   .single-gmr_gallery .gallery__paging--next:hover {
     color: #d22228; }
 
+.live-player__stream {
+  width: auto;
+  margin: 10px;
+  border: 1px solid #b0b0b0;
+  color: #b0b0b0;
+  -webkit-border-radius: 1em;
+  -moz-border-radius: 1em;
+  -ms-border-radius: 1em;
+  -o-border-radius: 1em;
+  -border-radius: 1em;
+  border-radius: 1em; }
+  .live-player__stream li {
+    background-color: transparent; }
+
 /*# sourceMappingURL=wmgk.css.map */

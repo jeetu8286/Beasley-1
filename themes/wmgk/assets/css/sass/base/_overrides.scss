@@ -22,3 +22,19 @@
 		color: $cardinal;
 	}
 }
+
+.live-player__stream {
+	width: auto;
+	margin: 10px;
+	border: 1px solid lighten($color-gray-medium-dark,50%);
+	color: lighten($color-gray-medium-dark,50%);
+	@include border-radius(1em);
+
+	ul {
+		display: none;
+	}
+
+	li {
+		background-color: transparent;
+	}
+}
