@@ -61,6 +61,8 @@ function greatermedia_setup() {
 	add_image_size( 'gmr-gallery-grid-featured',    1200,   800,    true    );
 	add_image_size( 'gmr-gallery-grid-secondary',   560,    300,    true    );
 	add_image_size( 'gmr-gallery-grid-thumb',       500,    368,    true    ); // thumbnail for gallery grid areas
+	add_image_size( 'gmr-show-featured-primary',   		570,    313,    true    ); // thumbnails for secondary featured posts on front page
+	add_image_size( 'gmr-show-featured-secondary',   	270,    118,    true    ); // thumbnails for secondary featured posts on front page
 
 	// Update this as appropriate content types are created and we want this functionality
 	add_post_type_support( 'post', 'timed-content' );
@@ -103,6 +105,17 @@ function greatermedia_scripts_styles() {
 		array(),
 		'4.2'
 	);
+	wp_register_style(
+		'greatermedia',
+		get_template_directory_uri() . "/assets/css/greater_media{$postfix}.css",
+		array(
+			'dashicons',
+			'open-sans',
+			'droid-sans',
+			'font-awesome'
+		),
+		GREATERMEDIA_VERSION
+	);
 	wp_enqueue_script(
 		'greatermedia',
 		get_template_directory_uri() . "/assets/js/greater_media{$postfix}.js",
@@ -128,15 +141,7 @@ function greatermedia_scripts_styles() {
 		false
 	);
 	wp_enqueue_style(
-		'greatermedia',
-		get_template_directory_uri() . "/assets/css/greater_media{$postfix}.css",
-		array(
-			'dashicons',
-			'open-sans',
-			'droid-sans',
-			'font-awesome'
-		),
-		GREATERMEDIA_VERSION
+		'greatermedia'
 	);
 
 }
