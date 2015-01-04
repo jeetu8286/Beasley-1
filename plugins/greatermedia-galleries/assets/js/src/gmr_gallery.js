@@ -29,8 +29,8 @@
 		 * Make sure thumbnails are updated before the slideshow cycles.
 		 */
 		slideshow.on( 'cycle-before', function ( event, optionHash ) {
-			update_thumbnails( optionHash.nextSlide );
-			$caption.cycle( 'goto', optionHash.nextSlide );
+			update_thumbnails(optionHash.nextSlide); // nextSlide = incoming slide. could be backward
+			//$caption.cycle( 'goto', optionHash.nextSlide );
 		} );
 
 		/**
@@ -55,6 +55,7 @@
 				index = $this.data( 'cycle-index' );
 
 			slideshow.cycle( 'goto', index );
+			$caption.cycle( 'goto', index );
 		} );
 
 		// Make sure we disable other hashchange events that attempt to capture manual hash changes.
@@ -214,7 +215,6 @@
 
 		$( '.gallery-toolbar .fa-twitter' ).attr( 'href', url_twitter );
 		$( '.gallery-toolbar .fa-facebook' ).attr( 'href', url_facebook );
-		$( '.gallery-toolbar .fa-linkedin' ).attr( 'href', url_linkedin );
 		$( '.gallery-toolbar .short-url' ).html( '<a href="' + share_url + '">' + share_url + '</a>' );
 	}
 
