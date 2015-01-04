@@ -1,8 +1,15 @@
 <?php
 
-$gallery_content_types = array(
-	'gmr_gallery'
-);
+if ( 'show' == get_post_type() ) {
+	$gallery_content_types = array(
+		'gmr_gallery',
+		'gmr_album'
+	);
+} else {
+	$gallery_content_types = array(
+		'gmr_gallery',
+	);
+}
 
 $excluded_primary = false;
 $excluded_secondary = false;
