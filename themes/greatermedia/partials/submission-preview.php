@@ -36,7 +36,7 @@
 			</div>
 		<?php else : ?>
 			<p>
-				You must be logged in to enter the contest!
+				You must be logged in to vote for the submission!
 				<a href="<?php echo esc_url( gmr_contests_get_login_url( parse_url( get_permalink( get_post_field( 'post_parent', null ) ), PHP_URL_PATH ) ) ) ?>">Sign in here</a>.
 			</p>
 		<?php endif; ?>
