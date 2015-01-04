@@ -2054,9 +2054,6 @@ Community Highlights and Events
   .highlights__community--thumb img {
     width: 100%; }
 
-.highlights__community--thumb a {
-  display: block; }
-
 .highlights__community--thumb:after {
   position: absolute;
   top: 50%;
@@ -2074,30 +2071,31 @@ Community Highlights and Events
   content: ""; }
 
 .highlights__community--title {
-  background-color: black;
-  background-image: -webkit-gradient(linear, left top, left bottom, from(transparent), to(black));
-  background-image: -webkit-linear-gradient(top, transparent, black);
-  background-image: -moz-linear-gradient(top, transparent, black);
-  background-image: -o-linear-gradient(top, transparent, black);
-  background-image: linear-gradient(to bottom, transparent, black);
+  background-color: #191919;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(transparent), to(#191919));
+  background-image: -webkit-linear-gradient(top, transparent, #191919);
+  background-image: -moz-linear-gradient(top, transparent, #191919);
+  background-image: -o-linear-gradient(top, transparent, #191919);
+  background-image: linear-gradient(to bottom, transparent, #191919);
   background-color: transparent;
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 10px;
+  padding: 2.25em 0.809em 0.75em;
   margin: 0;
   font-size: 1em;
   font-weight: normal;
   color: #ffffff;
-  text-align: center; }
-  .highlights__community--title a {
-    display: block;
-    box-sizing: content-box;
-    max-height: 1.5em;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis; }
+  text-align: center;
+  box-sizing: content-box;
+  line-height: 1.5;
+  max-height: 1.5em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; }
+  .highlights__community--item:hover .highlights__community--title {
+    color: #aa1c20; }
 
 .highlights__events {
   padding-top: 1.5em;
