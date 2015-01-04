@@ -267,7 +267,7 @@ function gmr_contests_render_form( $skip_age = false ) {
 	$gigya_logged_in_exists = function_exists( 'is_gigya_user_logged_in' );
 	$members_only = get_post_meta( $contest_id, 'contest-members-only', true );
 	if ( $members_only && $gigya_logged_in_exists && ! is_gigya_user_logged_in() ) {
-		echo '<p>You must be logged in to enter the contest! <a href="', esc_url( gmr_contests_get_login_url() ), '">Sign in here</a></p>';
+		echo '<p>You must be logged in to enter the contest! <a href="', esc_url( gmr_contests_get_login_url() ), '">Sign in here</a>.</p>';
 		return;
 	}
 
@@ -303,16 +303,17 @@ function gmr_contests_render_form( $skip_age = false ) {
 /**
  * Returns login URL for a contest page.
  *
+ * @param string $redirect The redirect URL.
  * @return string The login page URL.
  */
-function gmr_contests_get_login_url() {
-	$login_url = '#';
-	if ( function_exists( 'gigya_profile_path' ) ) {
-		$login_url = parse_url( get_permalink(), PHP_URL_PATH );
-		$login_url = gigya_profile_path( 'login', array( 'dest' => $login_url ) );
+function gmr_contests_get_login_url( $redirect = null ) {
+	if ( is_null( $redirect ) ) {
+		$redirect = parse_url( get_permalink(), PHP_URL_PATH );
 	}
 
-	return $login_url;
+	return function_exists( 'gigya_profile_path' )
+		? gigya_profile_path( 'login', array( 'dest' => $redirect ) )
+		: '#';
 }
 
 /**
