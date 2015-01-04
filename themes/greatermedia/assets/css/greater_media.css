@@ -5040,6 +5040,16 @@ category: Components - Ads
     .contest-submission .contest-submission--link .contest-submission--date {
       color: #929497;
       font-size: 0.79012em; }
+    .contest-submission .contest-submission--link .contest-submission--rating {
+      position: absolute;
+      top: 0;
+      right: 0px;
+      color: #ffffff;
+      background-color: #282827;
+      padding: 5px 10px;
+      line-height: 1em;
+      border-bottom-left-radius: 0.5em;
+      font-size: 0.79012em; }
   .contest-submission.expanded .contest-submission--link:after {
     top: auto;
     border: solid transparent;
@@ -5052,25 +5062,27 @@ category: Components - Ads
     border-width: 1em;
     left: 50%;
     margin: -0.75em 0 0 -15px; }
-  .contest-submission .contest-submission--entries:before, .contest-submission .contest-submission--entries:after {
-    content: " ";
-    display: table; }
-  .contest-submission .contest-submission--entries:after {
-    clear: both; }
-  .contest-submission .contest-submission--entries dl {
+  .contest-submission .contest-submission--entries {
     margin-top: 0; }
-  .contest-submission .contest-submission--entries dt,
-  .contest-submission .contest-submission--entries dd {
-    float: left; }
-  .contest-submission .contest-submission--entries dt {
-    clear: both;
-    display: inline-block;
-    margin-right: 0.5em;
-    font-weight: bold; }
-    .contest-submission .contest-submission--entries dt::after {
-      content: ': '; }
-  .contest-submission .contest-submission--entries dd {
-    margin: 0; }
+    .contest-submission .contest-submission--entries:before, .contest-submission .contest-submission--entries:after {
+      content: " ";
+      display: table; }
+    .contest-submission .contest-submission--entries:after {
+      clear: both; }
+    .contest-submission .contest-submission--entries dl {
+      margin-top: 0; }
+    .contest-submission .contest-submission--entries dt,
+    .contest-submission .contest-submission--entries dd {
+      float: left; }
+    .contest-submission .contest-submission--entries dt {
+      clear: both;
+      display: inline-block;
+      margin-right: 0.5em;
+      font-weight: bold; }
+      .contest-submission .contest-submission--entries dt::after {
+        content: ': '; }
+    .contest-submission .contest-submission--entries dd {
+      margin: 0; }
   .contest-submission .preview {
     position: absolute;
     background: #ddd;
@@ -5087,8 +5099,8 @@ category: Components - Ads
       height: 100%; }
     .contest-submission .preview .preview-close {
       position: absolute;
-      width: 40px;
-      height: 40px;
+      width: 30px;
+      height: 30px;
       top: 10px;
       right: 10px;
       cursor: pointer; }
