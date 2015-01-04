@@ -8,7 +8,7 @@
 
 			<?php get_template_part( 'show-header' ); ?>
 
-			<section class="content">
+			<section class="gallery__archive">
 
 				<div class="galleries">
 

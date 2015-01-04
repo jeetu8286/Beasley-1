@@ -5,6 +5,11 @@ if ( 'show' == get_post_type() ) {
 		'gmr_gallery',
 		'gmr_album'
 	);
+	global $post;
+	$post_id = $post->ID;
+
+	$terms = wp_get_object_terms($post_id,'_shows');
+	$post_ids = get_objects_in_term($terms[0]->term_id,'_shows');
 } else {
 	$gallery_content_types = array(
 		'gmr_gallery',
@@ -13,12 +18,6 @@ if ( 'show' == get_post_type() ) {
 
 $excluded_primary = false;
 $excluded_secondary = false;
-
-global $post;
-$post_id = $post->ID;
-
-$terms = wp_get_object_terms($post_id,'_shows');
-$post_ids = get_objects_in_term($terms[0]->term_id,'_shows');
 
 if ( ! get_query_var( 'paged' ) || get_query_var( 'paged' ) < 2 ) { ?>
 
@@ -34,6 +33,9 @@ if ( ! get_query_var( 'paged' ) || get_query_var( 'paged' ) < 2 ) { ?>
 				'taxonomy'          => '_shows',
 				'term'              => $terms[0]->slug,
 				'posts_per_page'    => 1,
+				'orderby'           => 'date',
+				'order'             => 'DESC',
+				'post_parent'       => '0',
 			);
 
 		} else {
@@ -41,6 +43,9 @@ if ( ! get_query_var( 'paged' ) || get_query_var( 'paged' ) < 2 ) { ?>
 			$primary_args = array(
 				'post_type'         => $gallery_content_types,
 				'posts_per_page'    => 1,
+				'orderby'           => 'date',
+				'order'             => 'DESC',
+				'post_parent'       => '0',
 			);
 
 		}
@@ -80,6 +85,9 @@ if ( ! get_query_var( 'paged' ) || get_query_var( 'paged' ) < 2 ) { ?>
 				'taxonomy'          => '_shows',
 				'term'              => $terms[0]->slug,
 				'posts_per_page'    => 2,
+				'orderby'           => 'date',
+				'order'             => 'DESC',
+				'post_parent'       => '0',
 			);
 
 		} else {
@@ -88,6 +96,9 @@ if ( ! get_query_var( 'paged' ) || get_query_var( 'paged' ) < 2 ) { ?>
 				'post_type'         => $gallery_content_types,
 				'post__not_in'      => $excluded_primary,
 				'posts_per_page'    => 2,
+				'orderby'           => 'date',
+				'order'             => 'DESC',
+				'post_parent'       => '0',
 			);
 
 		}
@@ -144,16 +155,22 @@ if ( ! get_query_var( 'paged' ) || get_query_var( 'paged' ) < 2 ) { ?>
 			'taxonomy'          => '_shows',
 			'term'              => $terms[0]->slug,
 			'posts_per_page'    => 16,
-			'paged'             => $paged
+			'paged'             => $paged,
+			'orderby'           => 'date',
+			'order'             => 'DESC',
+			'post_parent'       => '0',
 		);
 
 	} else {
 
 		$grid_args = array(
-			'post_type'      => $gallery_content_types,
-			'posts_per_page' => 16,
-			'post__not_in'   => $excluded,
-			'paged'          => $paged
+			'post_type'         => $gallery_content_types,
+			'posts_per_page'    => 16,
+			'post__not_in'      => $excluded,
+			'paged'             => $paged,
+			'orderby'           => 'date',
+			'order'             => 'DESC',
+			'post_parent'       => '0'
 		);
 
 	}

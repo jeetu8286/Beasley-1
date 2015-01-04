@@ -336,25 +336,25 @@ add_filter( 'excerpt_more', 'greatermedia_excerpt_more' );
 /**
  * Add's a numbered pagination when called. This also allows total control of classes being used.
  */
-function greatermedia_gallery_album_nav() {
+/* function greatermedia_gallery_album_nav() {
 
 	if( is_singular() )
 		return;
 
 	global $wp_query;
 
-	/** Stop execution if there's only 1 page */
+	// Stop execution if there's only 1 page
 	if( $wp_query->max_num_pages <= 1 )
 		return;
 
 	$paged = get_query_var( 'paged' ) ? absint( get_query_var( 'paged' ) ) : 1;
 	$max   = intval( $wp_query->max_num_pages );
 
-	/** Add current page to the array */
+	// Add current page to the array
 	if ( $paged >= 1 )
 		$links[] = $paged;
 
-	/** Add the pages around the current page to the array */
+	// Add the pages around the current page to the array
 	if ( $paged >= 3 ) {
 		$links[] = $paged - 1;
 		$links[] = $paged - 2;
@@ -367,7 +367,7 @@ function greatermedia_gallery_album_nav() {
 
 	echo '<nav class="gallery__grid--pagination"><ul class="gallery__grid--pagination-list">' . "\n";
 
-	/** Link to first page, plus ellipses if necessary */
+	// Link to first page, plus ellipses if necessary
 	if ( ! in_array( 1, $links ) ) {
 		$class = 1 == $paged ? ' class="gallery__grid--pagination-current"' : '';
 
@@ -377,14 +377,14 @@ function greatermedia_gallery_album_nav() {
 			echo '<li class="gallery__grid--pagination-item">…</li>';
 	}
 
-	/** Link to current page, plus 2 pages in either direction if necessary */
+	// Link to current page, plus 2 pages in either direction if necessary
 	sort( $links );
 	foreach ( (array) $links as $link ) {
 		$class = $paged == $link ? ' class="gallery__grid--pagination-current"' : '';
 		printf( '<li%s><a href="%s">%s</a></li>' . "\n", $class, esc_url( get_pagenum_link( $link ) ), $link );
 	}
 
-	/** Link to last page, plus ellipses if necessary */
+	// Link to last page, plus ellipses if necessary
 	if ( ! in_array( $max, $links ) ) {
 		if ( ! in_array( $max - 1, $links ) )
 			echo '<li>…</li>' . "\n";
@@ -395,6 +395,26 @@ function greatermedia_gallery_album_nav() {
 
 	echo '</ul></nav>' . "\n";
 
+} */
+
+function greatermedia_gallery_album_nav() {
+	global $wp_query;
+	$bignum = 999999999;
+	if ( $wp_query->max_num_pages <= 1 )
+		return;
+	echo '<nav class="pagination">';
+	echo paginate_links( array(
+		'base'      => str_replace( $bignum, '%#%', esc_url( get_pagenum_link( $bignum ) ) ),
+		'format'    => '',
+		'current'   => max( 1, get_query_var( 'paged' ) ),
+		'total'     => $wp_query->max_num_pages,
+		'prev_text' => '<i class="fa fa-caret-left"></i>',
+		'next_text' => '<i class="fa fa-caret-right"></i>',
+		'type'      => 'list',
+		'end_size'  => 2,
+		'mid_size'  => 1
+	) );
+	echo '</nav>';
 }
 
 /**
