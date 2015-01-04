@@ -681,7 +681,7 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 					$itemEl = self.$item.children('a');
 					content = $itemEl.data('content');
 					if (!content) {
-						$.get($itemEl.attr('href'), function(response) {
+						$.get($itemEl.attr('href'), {ajax: 'true'}, function(response) {
 							$itemEl.data('content', response);
 							$previewInner.append(response);
 
