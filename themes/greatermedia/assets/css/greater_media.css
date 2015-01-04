@@ -448,11 +448,11 @@ category: Base - Typography
 <span class="icon-music"></span>
 <span class="icon-play-circle"></span>
 <span class="icon-play"></span>
-<span class="icon-stop"></span>
 <span class="icon-plus"></span>
 <span class="icon-post"></span>
 <span class="icon-radio"></span>
 <span class="icon-user"></span>
+<span class="icon-stop"></span>
 <span class="icon-volume"></span>
 <span class="icon-volume-mute"></span>
 <span class="icon-volume-up"></span>
@@ -460,6 +460,17 @@ category: Base - Typography
 <span class="icon-twitter"></span>
 <span class="icon-google-plus"></span>
 <span class="icon-search"></span>
+<span class="icon-post-format-video"></span>
+<span class="icon-post-format-events"></span>
+<span class="icon-post-format-audio"></span>
+<span class="icon-instagram"></span>
+<span class="icon-youtube"></span>
+<span class="icon-arrow-next"></span>
+<span class="icon-arrow-prev"></span>
+<span class="icon-post-format-gallery"></span>
+<span class="icon-post-format-link"></span>
+<span class="icon-post-format-video2"></span>
+<span class="icon-post-format-image"></span>
 ```
 
 */
@@ -468,8 +479,8 @@ category: Base - Typography
  */
 @font-face {
   font-family: 'gmr-icons';
-  src: url("../fonts/icon-font/gmr-icons.eot?c8o1sf");
-  src: url("../fonts/icon-font/gmr-icons.eot?#iefixc8o1sf") format("embedded-opentype"), url("../fonts/icon-font/gmr-icons.woff?c8o1sf") format("woff"), url("../fonts/icon-font/gmr-icons.ttf?c8o1sf") format("truetype"), url("../fonts/icon-font/gmr-icons.svg?c8o1sf#gmr-icons") format("svg");
+  src: url("../fonts/icon-font/gmr-icons.eot?jmqkgs");
+  src: url("../fonts/icon-font/gmr-icons.eot?#iefixjmqkgs") format("embedded-opentype"), url("../fonts/icon-font/gmr-icons.woff?jmqkgs") format("woff"), url("../fonts/icon-font/gmr-icons.ttf?jmqkgs") format("truetype"), url("../fonts/icon-font/gmr-icons.svg?jmqkgs#gmr-icons") format("svg");
   font-weight: normal;
   font-style: normal; }
 [class^="icon-"], [class*=" icon-"], .entry__thumbnail--video:before, .entry__thumbnail--events:before, .entry__thumbnail--audio:before, .header__search--btn:before, .live-link__song:before, .live-link__type--audio:before, .live-link__type--gallery:before, .live-link__type--image:before, .live-link__type--link:before, .live-link__type--standard:before, .live-link__type--video:before, .social__link--facebook:before, .social__link--twitter:before, .social__link--google-plus:before, .social__link--youtube:before, .social__link--instagram:before, .header__search--submit:before, .gallery__prev--btn:before, .gallery__next--btn:after, .gallery__paging--prev, .gallery__paging--next, .gallery-grid__album {
@@ -505,20 +516,20 @@ category: Base - Typography
 .icon-play:before {
   content: "\e606"; }
 
-.icon-stop:before {
-  content: "\e60b"; }
-
 .icon-plus:before {
   content: "\e607"; }
 
 .icon-post:before {
   content: "\e608"; }
 
+.icon-radio:before {
+  content: "\e609"; }
+
 .icon-user:before {
   content: "\e60a"; }
 
-.icon-radio:before {
-  content: "\e609"; }
+.icon-stop:before {
+  content: "\e60b"; }
 
 .icon-volume:before {
   content: "\e60c"; }
@@ -538,12 +549,6 @@ category: Base - Typography
 .icon-google-plus:before {
   content: "\e611"; }
 
-.icon-youtube:before {
-  content: "\e617"; }
-
-.icon-instagram:before {
-  content: "\e616"; }
-
 .icon-search:before {
   content: "\e612"; }
 
@@ -556,14 +561,29 @@ category: Base - Typography
 .icon-post-format-audio:before {
   content: "\e615"; }
 
+.icon-instagram:before {
+  content: "\e616"; }
+
+.icon-youtube:before {
+  content: "\e617"; }
+
 .icon-arrow-next:before {
   content: "\e618"; }
 
 .icon-arrow-prev:before {
   content: "\e619"; }
 
-.icon-album:before {
+.icon-post-format-gallery:before {
   content: "\e61a"; }
+
+.icon-post-format-link:before {
+  content: "\e61b"; }
+
+.icon-post-format-video2:before {
+  content: "\e61c"; }
+
+.icon-post-format-image:before {
+  content: "\e61d"; }
 
 img {
   max-width: 100%;
@@ -1503,7 +1523,12 @@ Curated posts for Featured Articles
       margin-right: 3.57866%;
       width: 100%;
       margin-right: 0;
-      padding: 3em 3.236em; }
+      padding: 3em 3.236em;
+      background-image: url(../../images/featured-bg.png);
+      background-repeat: repeat;
+      background-position: center center;
+      background-color: #561015;
+      background-size: auto 40%; }
       .home__featured:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 1024px) {
@@ -1512,12 +1537,7 @@ Curated posts for Featured Articles
       display: block;
       margin-right: 2.35765%;
       width: 100%;
-      margin-right: 0;
-      background-image: url(../../images/featured-bg.png);
-      background-repeat: repeat;
-      background-position: center center;
-      background-color: #561015;
-      background-size: auto 40%; }
+      margin-right: 0; }
       .home__featured:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 1400px) {

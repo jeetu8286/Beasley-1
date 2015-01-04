@@ -79,15 +79,15 @@ Curated posts for Featured Articles
 		@include span-columns(8);
 		@include omega;
 		padding: $base-line-height * 2 $gutter * 2;
-	}
-	@include bp(large) {
-		@include span-columns(12);
-		@include omega;
 		background-image: url(../../images/featured-bg.png);
 		background-repeat: repeat;
 		background-position: center center;
 		background-color: $featured-primary-bg;
 		background-size: auto 40%;
+	}
+	@include bp(large) {
+		@include span-columns(12);
+		@include omega;
 	}
 	@include bp(x-large) {
 		@include span-columns(12);
