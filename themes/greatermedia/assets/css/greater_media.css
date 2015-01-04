@@ -6038,11 +6038,22 @@ category: Components - Gallery Archive
   outline: none; }
 
 .gallery__next--btn:after {
+  position: absolute;
+  top: 9px;
+  right: 14px;
   font-size: 1.125em;
   content: "\e618"; }
   @media screen and (min-width: 1024px) {
     .gallery__next--btn:after {
+      top: auto;
+      right: 30px;
       font-size: 1.42383em; } }
+
+.gallery__next--span {
+  margin-right: 16px; }
+  @media screen and (min-width: 1024px) {
+    .gallery__next--span {
+      margin-right: 38px; } }
 
 .gallery__count {
   line-height: 1;
