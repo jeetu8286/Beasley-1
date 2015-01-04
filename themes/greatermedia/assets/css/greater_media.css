@@ -1483,7 +1483,7 @@ Curated posts for Featured Articles
   margin-right: 7.42297%;
   width: 100%;
   margin-right: 0;
-  padding: 40px 20px;
+  padding: 1.5em 0.809em;
   background-color: #561015; }
   .home__featured:last-child {
     margin-right: 0; }
@@ -1503,7 +1503,7 @@ Curated posts for Featured Articles
       margin-right: 3.57866%;
       width: 100%;
       margin-right: 0;
-      padding: 55px 48px 0; }
+      padding: 3em 3.236em; }
       .home__featured:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 1024px) {
@@ -1517,8 +1517,7 @@ Curated posts for Featured Articles
       background-repeat: repeat;
       background-position: center center;
       background-color: #561015;
-      background-size: auto 40%;
-      padding-bottom: 55px; }
+      background-size: auto 40%; }
       .home__featured:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 1400px) {
@@ -1527,13 +1526,11 @@ Curated posts for Featured Articles
       display: block;
       margin-right: 2.35765%;
       width: 100%;
-      margin-right: 0;
-      padding: 40px; }
+      margin-right: 0; }
       .home__featured:last-child {
         margin-right: 0; } }
 
 .featured__article {
-  padding-bottom: 34px;
   display: block; }
   .featured__article:after {
     content: "";
@@ -1541,15 +1538,12 @@ Curated posts for Featured Articles
     clear: both; }
 
 .featured__content {
-  padding-bottom: 34px;
+  padding-bottom: 0;
   display: block; }
   .featured__content:after {
     content: "";
     display: table;
     clear: both; }
-  @media screen and (min-width: 1024px) {
-    .featured__content {
-      padding-bottom: 0; } }
 
 .featured__article--image {
   float: left;
@@ -1576,7 +1570,7 @@ Curated posts for Featured Articles
   margin-right: 7.42297%;
   width: 100%;
   margin-right: 0;
-  padding: 15px 3.928571428572%;
+  padding: 1em 1.618em;
   overflow: auto;
   background: #d0d2d3; }
   .featured__article--content:last-child {
@@ -1587,8 +1581,7 @@ Curated posts for Featured Articles
       display: block;
       margin-right: 4.82916%;
       width: 100%;
-      margin-right: 0;
-      padding: 15px 4.941176470588%; }
+      margin-right: 0; }
       .featured__article--content:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 768px) {
@@ -1634,7 +1627,7 @@ Curated posts for Featured Articles
   font-family: "Open Sans", sans-serif;
   font-size: 1.26563em;
   line-height: 1.3;
-  font-weight: normal; }
+  font-weight: bold; }
   .featured__article--heading:last-child {
     margin-right: 0; }
   @media screen and (min-width: 480px) {
@@ -1693,24 +1686,13 @@ Curated posts for Featured Articles
   margin-right: 7.42297%;
   width: 100%;
   margin-right: 0;
-  height: 90px;
-  margin-bottom: 27px;
   overflow: hidden;
-  background: #f1f1f3; }
+  background: #f1f1f3;
+  height: 100px;
+  margin: 1.5em 0 0; }
   .featured__content--block:last-child {
     margin-right: 0; }
   @media screen and (min-width: 480px) {
-    .featured__content--block {
-      float: left;
-      display: block;
-      margin-right: 7.42297%;
-      width: 100%;
-      margin-right: 0;
-      height: 95px;
-      margin-bottom: 25px; }
-      .featured__content--block:last-child {
-        margin-right: 0; } }
-  @media screen and (min-width: 768px) {
     .featured__content--block {
       float: left;
       display: block;
@@ -1725,18 +1707,8 @@ Curated posts for Featured Articles
       display: block;
       margin-right: 2.35765%;
       width: 31.76157%;
-      height: 100px;
-      margin-bottom: 0;
-      overflow: visible; }
-      .featured__content--block:last-child {
-        margin-right: 0; } }
-  @media screen and (min-width: 1400px) {
-    .featured__content--block {
-      float: left;
-      display: block;
-      margin-right: 2.35765%;
-      width: 31.76157%;
-      height: 106px; }
+      height: 110px;
+      margin-top: 2.25em; }
       .featured__content--block:last-child {
         margin-right: 0; } }
   .home__featured .featured__content--block {
@@ -1751,26 +1723,37 @@ Curated posts for Featured Articles
   display: block;
   margin-right: 2.35765%;
   width: 31.76157%;
-  height: 100%;
-  overflow: hidden; }
+  overflow: hidden;
+  position: relative;
+  height: 100%; }
   .featured__content--image:last-child {
     margin-right: 0; }
+  .featured__content--image img {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 100%;
+    transform: translate(-50%, -50%); }
+    @media (max-width: 350px) {
+      .featured__content--image img {
+        width: auto;
+        height: 100%;
+        max-width: none;
+        max-height: none; } }
+    @media screen and (min-width: 1024px) {
+      .featured__content--image img {
+        width: auto;
+        height: 100%;
+        max-width: none;
+        max-height: none; } }
   @media screen and (min-width: 480px) {
-    .featured__content--image {
-      float: left;
-      display: block;
-      margin-right: 2.35765%;
-      width: 31.76157%; }
-      .featured__content--image:last-child {
-        margin-right: 0; } }
-  @media screen and (min-width: 768px) {
     .featured__content--image {
       float: left;
       display: block;
       margin-right: 7.42297%;
       width: 100%;
       margin-right: 0;
-      height: 138px; }
+      padding-top: 66.6%; }
       .featured__content--image:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 1024px) {
@@ -1779,7 +1762,7 @@ Curated posts for Featured Articles
       display: block;
       margin-right: 2.35765%;
       width: 31.76157%;
-      height: 100%; }
+      padding-top: 0; }
       .featured__content--image:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 1400px) {
@@ -1791,28 +1774,13 @@ Curated posts for Featured Articles
       .featured__content--image:last-child {
         margin-right: 0; } }
 
-.featured__content--image img {
-  width: 100%;
-  max-width: none; }
-  @media screen and (min-width: 768px) {
-    .featured__content--image img {
-      height: auto;
-      width: 100%;
-      max-width: 100%; } }
-  @media screen and (min-width: 1024px) {
-    .featured__content--image img {
-      height: 100%;
-      width: auto;
-      max-width: none; } }
-
 .featured__content--meta {
   float: left;
   display: block;
   margin-right: 2.35765%;
   width: 65.88078%;
-  margin-right: 0;
-  padding: 10px;
-  font-size: 0.79012em;
+  padding: 0.8em 0.809em;
+  font-size: 1.26563em;
   font-weight: lighter;
   overflow: hidden; }
   .featured__content--meta:last-child {
@@ -1821,72 +1789,38 @@ Curated posts for Featured Articles
     .featured__content--meta {
       float: left;
       display: block;
-      margin-right: 2.35765%;
-      width: 65.88078%;
-      margin-right: 0; }
+      margin-right: 7.42297%;
+      width: 100%;
+      min-height: 6.8em; }
       .featured__content--meta:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 768px) {
     .featured__content--meta {
-      float: left;
-      display: block;
-      margin-right: 7.42297%;
-      width: 100%;
-      margin-right: 0; }
-      .featured__content--meta:last-child {
-        margin-right: 0; } }
+      font-size: 1.125em; } }
   @media screen and (min-width: 1024px) {
     .featured__content--meta {
       float: left;
       display: block;
       margin-right: 2.35765%;
       width: 65.88078%;
-      margin-right: 0; }
-      .featured__content--meta:last-child {
-        margin-right: 0; } }
-  @media screen and (min-width: 1400px) {
-    .featured__content--meta {
-      float: left;
-      display: block;
-      margin-right: 2.35765%;
-      width: 65.88078%;
-      margin-right: 0; }
+      min-height: none; }
       .featured__content--meta:last-child {
         margin-right: 0; } }
   .home__featured .featured__content--meta {
     color: #929497; }
 
 .featured__content--title {
+  font-size: 1em;
   display: block;
-  display: -webkit-box;
   width: 100%;
-  height: 38px;
-  margin: 0 auto 13px;
+  margin: 0 auto .15em;
   line-height: 1.25;
+  max-height: 2.5em;
   overflow: hidden;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   text-overflow: ellipsis;
-  font-family: "Open Sans", sans-serif;
-  font-size: 1.26563em; }
-  @media screen and (min-width: 480px) {
-    .featured__content--title {
-      height: 48px;
-      margin-bottom: 5px;
-      font-size: 1.26563em; } }
-  @media screen and (min-width: 768px) {
-    .featured__content--title {
-      overflow: auto;
-      margin-bottom: 0;
-      font-size: 1.125em; } }
-  @media screen and (min-width: 1024px) {
-    .featured__content--title {
-      height: 52px;
-      overflow: hidden; } }
-  @media screen and (min-width: 1400px) {
-    .featured__content--title {
-      height: 52px;
-      margin-bottom: 13px; } }
+  font-family: "Open Sans", sans-serif; }
 
 .featured__content--title a:link, .featured__content--title a:visited {
   color: #282827; }
@@ -1904,27 +1838,16 @@ Curated posts for Featured Articles
 .home__featured .featured__content--title a:active {
   color: #f2e754; }
 
-.featured__content--link {
-  width: 100%;
-  height: 19px;
-  text-align: center; }
-  @media screen and (min-width: 480px) {
-    .featured__content--link {
-      text-align: right; } }
-  @media screen and (min-width: 768px) {
-    .featured__content--link {
-      text-align: center; } }
-
 .featured__content--btn {
   display: inline-block;
   line-height: 1;
-  padding: 0.25em 1.5em;
+  padding: 0.25em 1.2em;
   margin-right: .5em;
   outline: none;
   background-color: #d22228;
   border: 1px solid #d22228;
   font-family: "Open Sans", sans-serif;
-  font-size: 0.88889em;
+  font-size: 0.7em;
   color: #ffffff !important;
   text-transform: uppercase;
   cursor: pointer;
@@ -1934,7 +1857,8 @@ Curated posts for Featured Articles
   -o-border-radius: 1.5em;
   -border-radius: 1.5em;
   border-radius: 1.5em;
-  text-transform: uppercase; }
+  text-transform: uppercase;
+  white-space: nowrap; }
   .featured__content--btn:hover, .featured__content--btn:focus {
     background-color: #aa1c20;
     border-color: #aa1c20;
@@ -1945,13 +1869,13 @@ Curated posts for Featured Articles
 .featured__content--btn:hover {
   display: inline-block;
   line-height: 1;
-  padding: 0.25em 1.5em;
+  padding: 0.25em 1.2em;
   margin-right: .5em;
   outline: none;
   background-color: #f5ed7f;
   border: 1px solid #f5ed7f;
   font-family: "Open Sans", sans-serif;
-  font-size: 0.88889em;
+  font-size: 0.7em;
   color: #000000 !important;
   text-transform: uppercase;
   cursor: pointer; }
@@ -1965,13 +1889,13 @@ Curated posts for Featured Articles
 .featured__content--btn:active {
   display: inline-block;
   line-height: 1;
-  padding: 0.25em 1.5em;
+  padding: 0.25em 1.2em;
   margin-right: .5em;
   outline: none;
   background-color: #000000;
   border: 1px solid #000000;
   font-family: "Open Sans", sans-serif;
-  font-size: 0.88889em;
+  font-size: 0.7em;
   color: #ffffff !important;
   text-transform: uppercase;
   cursor: pointer; }
