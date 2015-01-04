@@ -19,6 +19,9 @@ html {
   -moz-box-sizing: inherit;
   box-sizing: inherit; }
 
+/**
+ * Path from processed styles to /assets
+ */
 .hologram-color-swatch {
   width: 200px;
   height: 200px;
