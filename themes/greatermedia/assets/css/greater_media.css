@@ -2986,6 +2986,10 @@ Link posts contain a link to an external site. They can also optionally have a f
 .entry__thumbnail {
   position: relative;
   padding-bottom: 32px; }
+  .single-gmr_album .entry__thumbnail {
+    width: 100%;
+    padding-top: 2em;
+    padding-bottom: 3.625em; }
 
 .entry__content {
   padding: 1.5em 0;
@@ -6623,19 +6627,20 @@ category: Components - Gallery Archive
 .gallery__grid--pagination-list li {
   list-style: none;
   display: inline-block;
-  width: 28px;
   height: 28px;
-  margin-right: 1em;
+  margin-right: 1.45em;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+  font-size: 0.88889em;
   color: #929497;
   text-align: center; }
 
 .gallery__grid--pagination-list li a, .gallery__grid--pagination-list li a:visited {
   display: block;
-  width: 26px;
   height: 26px;
+  padding: 6px 0;
+  line-height: 1;
   color: #929497; }
 
 .gallery__grid--pagination-list li a:hover, .gallery__grid--pagination-list li a:focus {
@@ -6660,6 +6665,12 @@ category: Components - Gallery Archive
 .gallery__grid--pagination-current:active {
   border-color: #404041;
   color: #404041; }
+
+.gallery__grid--pagination-current a, .gallery__grid--pagination-current a:visited {
+  display: block;
+  width: 26px;
+  padding: 6px 0;
+  line-height: 1; }
 
 /*doc
 ---

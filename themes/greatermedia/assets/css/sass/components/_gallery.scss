@@ -1010,10 +1010,10 @@ category: Components - Gallery Archive
 	list-style: none;
 	display: inline-block;
 	@extend %list-item;
-	width: 28px;
 	height: 28px;
-	margin-right: 1em;
+	margin-right: 1.45em;
 	@include box-sizing(border-box);
+	font-size: ms(-1);
 	color: $gallery-grid-text;
 	text-align: center;
 }
@@ -1021,8 +1021,9 @@ category: Components - Gallery Archive
 
 .gallery__grid--pagination-list li a,.gallery__grid--pagination-list li a:visited {
 	display: block;
-	width: 26px;
 	height: 26px;
+	padding: 6px 0;
+	line-height: 1;
 	color: $gallery-grid-text;
 }
 
@@ -1047,4 +1048,11 @@ category: Components - Gallery Archive
 .gallery__grid--pagination-current:active {
 	border-color: $primary-text;
 	color: $primary-text;
+}
+
+.gallery__grid--pagination-current a,.gallery__grid--pagination-current a:visited {
+	display: block;
+	width: 26px;
+	padding: 6px 0;
+	line-height: 1;
 }
