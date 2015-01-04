@@ -2603,12 +2603,23 @@ Community Highlights and Events
   padding: 8px 0 7px; }
 
 .footer__menu .social__link {
-  height: 22px;
-  margin: 0 0 0 30px;
-  font-size: 1.26563em; }
-
-.footer__menu .social__link:last-child {
   margin: 0 0 0 30px; }
+  .footer__menu .social__link a {
+    box-sizing: content-box;
+    display: inline-block;
+    padding: 5px 4px 3px;
+    width: 22px;
+    height: 22px;
+    line-height: 22px;
+    font-size: 1.26563em;
+    border: 1px solid #929497;
+    border-radius: 100px;
+    text-align: center; }
+    .footer__menu .social__link a:hover {
+      border-color: #d22228;
+      color: #d22228; }
+  .footer__menu .social__link:last-child {
+    margin: 0 0 0 30px; }
 
 /*doc
 ---
