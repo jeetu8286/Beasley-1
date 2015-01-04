@@ -1,73 +1,17 @@
-<div class="gallery__featured">
+<article id="post-<?php the_ID(); ?>" <?php post_class( 'gallery__featured--item' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
 
-	<div class="gallery__featured--primary">
+	<div class="gallery__featured--thumbnail">
+		<a href="<?php the_permalink(); ?>">
+			<?php the_post_thumbnail( 'gmr-gallery-grid-featured' ); ?>
+		</a>
+	</div>
 
-	<?php
-		$gallery_count = 0;
+	<div class="gallery__featured--caption">
 
-		while ( have_posts() && $gallery_count < 3 ) : $gallery_count++; the_post();
-
-		if ( $gallery_count == 1 ) : ?>
-
-		<article id="post-<?php the_ID(); ?>" <?php post_class( 'gallery__featured--item' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
-
-			<div class="gallery__featured--thumbnail">
-				<a href="<?php the_permalink(); ?>">
-					<?php the_post_thumbnail( 'gmr-gallery-grid-featured' ); ?>
-				</a>
-			</div>
-
-			<div class="gallery__featured--caption">
-
-				<h3 class="gallery__featured--title">
-					<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-				</h3>
-
-			</div>
-
-		</article>
-
-	<?php
-		endif;
-		wp_reset_postdata();
-		endwhile;
-	?>
+		<h3 class="gallery__featured--title">
+			<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+		</h3>
 
 	</div>
 
-	<div class="gallery__featured--secondary">
-
-		<?php
-		$gallery_count = 0;
-
-		while ( have_posts() && $gallery_count < 3 ) : $gallery_count++; the_post();
-
-			if ( $gallery_count >= 2 && $gallery_count <= 3 ) : ?>
-
-				<article id="post-<?php the_ID(); ?>" <?php post_class( 'gallery__featured--item' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
-
-					<div class="gallery__featured--thumbnail">
-						<a href="<?php the_permalink(); ?>">
-							<?php the_post_thumbnail( 'gmr-gallery-grid-secondary' ); ?>
-						</a>
-					</div>
-
-					<div class="gallery__featured--caption">
-
-						<h3 class="gallery__featured--title">
-							<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-						</h3>
-
-					</div>
-
-				</article>
-
-			<?php
-			endif;
-			wp_reset_postdata();
-		endwhile;
-		?>
-
-	</div>
-
-</div>
+</article>
