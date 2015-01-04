@@ -379,6 +379,8 @@ function gmr_contests_handle_submitted_files( array $submitted_files, GreaterMed
 		return;
 	}
 
+	require_once ABSPATH . 'wp-admin/includes/media.php';
+
 	$thumbnail = null;
 	$data_type = count( $submitted_files['images'] ) == 1 ? 'image' : 'gallery';
 
