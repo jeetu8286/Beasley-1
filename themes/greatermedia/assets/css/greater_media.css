@@ -1557,54 +1557,18 @@ Curated posts for Featured Articles
   margin-right: 7.42297%;
   width: 100%;
   margin-right: 0;
-  height: 100%;
-  max-height: 100px;
   overflow: hidden;
-  background-color: #270e10; }
+  background-color: #270e10;
+  position: relative;
+  padding-top: 35.71%; }
   .featured__article--image:last-child {
     margin-right: 0; }
   .featured__article--image img {
-    width: 100%; }
-  @media screen and (min-width: 480px) {
-    .featured__article--image {
-      float: left;
-      display: block;
-      margin-right: 4.82916%;
-      width: 100%;
-      margin-right: 0;
-      max-height: 200px; }
-      .featured__article--image:last-child {
-        margin-right: 0; } }
-  @media screen and (min-width: 768px) {
-    .featured__article--image {
-      float: left;
-      display: block;
-      margin-right: 3.57866%;
-      width: 100%;
-      margin-right: 0;
-      max-height: 256px; }
-      .featured__article--image:last-child {
-        margin-right: 0; } }
-  @media screen and (min-width: 1024px) {
-    .featured__article--image {
-      float: left;
-      display: block;
-      margin-right: 2.35765%;
-      width: 100%;
-      margin-right: 0;
-      max-height: 300px; }
-      .featured__article--image:last-child {
-        margin-right: 0; } }
-  @media screen and (min-width: 1400px) {
-    .featured__article--image {
-      float: left;
-      display: block;
-      margin-right: 2.35765%;
-      width: 100%;
-      margin-right: 0;
-      max-height: 343px; }
-      .featured__article--image:last-child {
-        margin-right: 0; } }
+    width: 100%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%); }
 
 .featured__article--content {
   float: left;

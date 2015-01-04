@@ -113,32 +113,16 @@ Curated posts for Featured Articles
 .featured__article--image {
 	@include span-columns(4 of 4);
 	@include omega;
-	height: 100%;
-	max-height: 100px;
 	overflow: hidden;
-	background-color: $featured-secondary-bg;
+	background-color: $featured-secondary-bg;	
+	position: relative;  
+	padding-top: 35.71%;	
 	img {
 		width: 100%;
-	}
-	@include bp(small) {
-		@include span-columns(6 of 6);
-		@include omega;
-		max-height: 200px;
-	}
-	@include bp(medium) {
-		@include span-columns(8 of 8);
-		@include omega;
-		max-height: 256px;
-	}
-	@include bp(large) {
-		@include span-columns(12 of 12);
-		@include omega;
-		max-height: 300px;
-	}
-	@include bp(x-large) {
-		@include span-columns(12 of 12);
-		@include omega;
-		max-height: 343px;
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
 	}
 }
 
