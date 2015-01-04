@@ -113,6 +113,8 @@ function gmr_contests_enqueue_front_scripts() {
 				'submit'      => "{$permalink}/action/submit/",
 				'confirm_age' => "{$permalink}/action/confirm-age/",
 				'reject_age'  => "{$permalink}/action/reject-age/",
+				'vote'        => "{$permalink}/action/vote/",
+				'unvote'      => "{$permalink}/action/unvote/",
 				'infinite'    => "{$permalink}/page/",
 			),
 		) );
@@ -148,8 +150,8 @@ function gmr_contests_process_submission_action() {
 	}
 
 	// define doing AJAX if it was not defined yet
-	if( ! defined( 'DOING_AJAX' ) && ! empty( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && strtolower( $_SERVER['HTTP_X_REQUESTED_WITH'] ) == 'xmlhttprequest' ) {
-		define( 'DOING_AJAX', true );
+	if( ! defined( 'DOING_AJAX' ) ) {
+		define( 'DOING_AJAX', ! empty( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && strtolower( $_SERVER['HTTP_X_REQUESTED_WITH'] ) == 'xmlhttprequest' );
 	}
 
 	if ( DOING_AJAX ) {
@@ -570,7 +572,7 @@ function gmr_contests_post_thumbnail_html( $html, $post_id, $post_thumbnail_id, 
 		return $html;
 	}
 
-	return sprintf( '<div class="contest-submission--thumbnail" style="background-image:url(%s)"></div>', $image[0] );
+	return sprintf( '<div class="contest__submission--thumbnail" style="background-image:url(%s)"></div>', $image[0] );
 }
 
 /**

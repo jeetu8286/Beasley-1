@@ -210,22 +210,22 @@
 	}
 }
 
-.contest-submissions {
+.contest__submissions {
 	clear: both;
 	position: relative;
 }
 
-.contest-submissions--title {
+.contest__submissions--title {
 
 }
 
-.contest-submissions--list {
+.contest__submissions--list {
 	margin: 0;
 	padding: 0;
 	@include clearfix;
 }
 
-.contest-submissions--load-more {
+.contest__submissions--load-more {
 	@include btn($btn-bg, $color-text-white, $btn-bg, 0.5em, 1em, ms(-1));
 	@include border-radius(1em);
 	clear: both;
@@ -248,7 +248,7 @@
 	}
 }
 
-.contest-submission {
+.contest__submission {
 	width: 100%;
 	margin: 0;
 	padding: 0 0.25em 1em;
@@ -256,13 +256,13 @@
 	list-style: none;
 	vertical-align: top;
 
-	.contest-submission--link {
+	.contest__submission--link {
 		border: none;
 		outline: none;
 		display: block;
 		position: relative;
 
-		.contest-submission--thumbnail {
+		.contest__submission--thumbnail {
 			height: 156px;
 			background-position: center center;
 			background-repeat: no-repeat;
@@ -270,24 +270,24 @@
 			background-size: cover;
 		}
 
-		.contest-submission--date,
-		.contest-submission--author {
+		.contest__submission--date,
+		.contest__submission--author {
 			text-align: center;
 			line-height: 1.5em;
 			display: block;
 		}
 
-		.contest-submission--author {
+		.contest__submission--author {
 			color: $dark-gray;
 			font-size: ms(-1);
 		}
 
-		.contest-submission--date {
+		.contest__submission--date {
 			color: $gray;
 			font-size: ms(-2);
 		}
 
-		.contest-submission--rating {
+		.contest__submission--rating {
 			position: absolute;
 			top: 0;
 			right: 0px;
@@ -301,7 +301,7 @@
 	}
 
 	&.expanded {
-		.contest-submission--link:after {
+		.contest__submission--link:after {
 			top: auto;
 			border: solid transparent;
 			content: " ";
@@ -316,8 +316,13 @@
 		}
 	}
 
-	.contest-submission--entries {
-		margin-top: 0;
+	.col__inner--right {
+		*:first-child {
+			margin-top: 0;
+		}
+	}
+
+	.contest__submission--entries {
 		@include clearfix;
 
 		dl {
@@ -342,6 +347,32 @@
 
 		dd {
 			margin: 0;
+		}
+	}
+
+	.contest__submission--author {
+		font-size: ms(-1);
+		font-style: italic;
+		color: $gray;
+	}
+
+	.contest__submission--vote,
+	.contest__submission--unvote {
+		@include btn($btn-bg, $color-text-white, $btn-bg, 0.5em, 1em, ms(-1));
+		@include border-radius(1em);
+	}
+
+	.contest__submission--unvote {
+		display: none;
+	}
+
+	&.voted {
+		.contest__submission--vote {
+			display: none;
+		}
+
+		.contest__submission--unvote {
+			display: inline-block;
 		}
 	}
 
@@ -421,7 +452,7 @@
 }
 
 @include bp(small) {
-	.contest-submission {
+	.contest__submission {
 		width: 50%;
 		float: left;
 		
@@ -429,14 +460,14 @@
 			clear: both;
 		}
 
-		.contest-submission--thumbnail {
+		.contest__submission--thumbnail {
 			height: 118px;
 		}
 	}
 }
 
 @include bp(medium) {
-	.contest-submission {
+	.contest__submission {
 		width: 33.333333333333336%;
 		float: left;
 
@@ -448,12 +479,12 @@
 			clear: both;
 		}
 
-		.contest-submission--thumbnail {
+		.contest__submission--thumbnail {
 			height: 129px;
 		}
 
 		&.expanded {
-			.contest-submission--link:after {
+			.contest__submission--link:after {
 				margin-top: -1em;
 			}
 		}
@@ -465,7 +496,7 @@
 }
 
 @include bp(large) {
-	.contest-submission {
+	.contest__submission {
 		width: 25%;
 		float: left;
 
@@ -478,7 +509,7 @@
 			clear: both;
 		}
 
-		.contest-submission--thumbnail {
+		.contest__submission--thumbnail {
 			height: 145px;
 		}
 
@@ -489,7 +520,7 @@
 }
 
 @include bp(x-large) {
-	.contest-submission {
+	.contest__submission {
 		width: 20%;
 		float: left;
 
@@ -503,7 +534,7 @@
 			clear: both;
 		}
 
-		.contest-submission--thumbnail {
+		.contest__submission--thumbnail {
 			height: 117px;
 		}
 	}

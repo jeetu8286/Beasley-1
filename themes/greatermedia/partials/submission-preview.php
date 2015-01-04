@@ -8,7 +8,7 @@
 	if ( $contest_entry_id && class_exists( 'GreaterMediaFormbuilderRender', false ) ) :
 		$fields = GreaterMediaFormbuilderRender::parse_entry( get_post()->post_parent, $contest_entry_id );
 		if ( ! empty( $fields ) ) : ?>
-			<dl class="contest-submission--entries">
+			<dl class="contest__submission--entries">
 				<?php foreach ( $fields as $field ) : ?>
 					<dt><?php echo esc_html( $field['label'] ); ?></dt>
 					<dd>
@@ -16,10 +16,20 @@
 					</dd>
 				<?php endforeach; ?>
 			</dl>
-
-			<p>
-				Submitted by <?php echo esc_html( gmr_contest_submission_get_author() ); ?> On <?php echo get_the_date( '', $contest_entry_id ); ?>
-			</p>
 		<?php endif; ?>
 	<?php endif; ?>
+
+	<p class="contest__submission--author">
+		Submitted by <?php echo esc_html( gmr_contest_submission_get_author() ); ?> On <?php echo get_the_date( '', $contest_entry_id ); ?>
+	</p>
+
+	<div>
+		<a class="contest__submission--vote" href="#">
+			<i class="fa fa-thumbs-o-up"></i> Vote
+		</a>
+		
+		<a class="contest__submission--unvote" href="#">
+			<i class="fa fa-thumbs-o-down"></i> Unvote
+		</a>
+	</div>
 </section>
