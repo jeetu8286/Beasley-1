@@ -429,7 +429,7 @@ category: Components - Shows
 			@include bp(medium) {
 				left: -30px;
 				top: 8px;
-				font-size: inherit;
+				font-size: ms(-1);
 			}
 
 		}
@@ -458,7 +458,7 @@ category: Components - Shows
 			right: auto;
 			top: 0;
 			bottom: auto;
-			font-size: inherit;
+			font-size: ms(-1);
 		}
 	}
 }

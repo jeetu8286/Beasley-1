@@ -4422,7 +4422,7 @@ category: Components
     font-size: 1.25em; }
     @media screen and (min-width: 768px) {
       .content .live-link__title {
-        font-size: inherit; } }
+        font-size: 0.88889em; } }
 
 .live-link__title a:link, .live-link__title a:visited {
   color: #d0d2d3; }
@@ -5139,7 +5139,7 @@ category: Components - Shows
         .show__live-links li[class^="live-link__type"]:before {
           left: -30px;
           top: 8px;
-          font-size: inherit; } }
+          font-size: 0.88889em; } }
     .show__live-links li[class^="live-link__type"] a {
       color: #404041; }
       .show__live-links li[class^="live-link__type"] a:hover {
@@ -5159,7 +5159,7 @@ category: Components - Shows
         right: auto;
         top: 0;
         bottom: auto;
-        font-size: inherit; } }
+        font-size: 0.88889em; } }
 
 .more-btn {
   position: absolute;
