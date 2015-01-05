@@ -120,6 +120,14 @@
 	}
 
 	.column-gigya {
-		width: 150px;
+		width: 175px;
+
+		.dashicons-awards {
+			color: green;
+		}
+
+		.unmark-winner a {
+			color: red;
+		}
 	}
 }
