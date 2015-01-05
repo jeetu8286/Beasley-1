@@ -3406,7 +3406,10 @@ Link posts contain a link to an external site. They can also optionally have a f
 
 .entry2__thumbnail {
   margin-bottom: 1.125em;
-  position: relative; }
+  position: relative;
+  background-size: 100%;
+  background-size: cover;
+  background-position: center center; }
   @media screen and (min-width: 480px) {
     .entry2__thumbnail {
       float: left;
@@ -3430,16 +3433,6 @@ Link posts contain a link to an external site. They can also optionally have a f
     padding-top: 66.666%; }
   .has-excerpt .entry2__thumbnail:after {
     padding-top: 75%; }
-  .entry2__thumbnail img {
-    position: absolute;
-    width: 100%;
-    left: 50%;
-    top: 50%;
-    -webkit-transform: translate(-50%, -50%);
-    -moz-transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
-    -o-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%); }
 
 .entry2__meta {
   text-align: center; }
