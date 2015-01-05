@@ -22,17 +22,22 @@ get_header(); ?>
 						<article id="post-<?php the_ID(); ?>" <?php post_class( 'cf' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
 
 							<header class="entry-header">
-
+								<?php
+								global $post;
+								$series_slug = $post->post_name;
+								$feed_url = home_url( '/' ) . '?feed=podcast&podcast_series=' . $series_slug;
+								?>
 								<h2 class="entry-title" itemprop="headline"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
+								<?php echo '<a class="podcast__subscribe" href="' . $feed_url . '" target="_blank">Subscribe</a>'; ?>
 
 							</header>
 
-							<?php GMP_Player::render_podcasts(); ?>
+							<?php $podcast_obj = GMP_Player::render_podcasts(); ?>
 
 						</article>
 
 					<?php endwhile;
-
+					echo GMP_Player::custom_pagination( $podcast_obj->max_num_pages );
 					else : ?>
 
 						<article id="post-not-found" class="hentry cf">

@@ -13,28 +13,25 @@
 				<div class="podcasts">
 
 					<h2>Podcasts</h2>
-
+					<?php
+					global $post;
+					$series_slug = $post->post_name;
+					$feed_url = home_url( '/' ) . '?feed=podcast&podcast_series=' . $series_slug;
+					echo '<a href="' . $feed_url . '" target="_blank">Subscribe</a>';
+					?>
 					<?php
 					$podcast_query = \GreaterMedia\Shows\get_show_podcast_query();
 
 					while( $podcast_query->have_posts() ) : $podcast_query->the_post(); ?>
 						<article id="post-<?php the_ID(); ?>" <?php post_class( 'cf podcast' ); ?> role="article" itemscope itemtype="http://schema.org/OnDemandEvent">
 
-							<div class="podcast__play">
-								<button class="podcast__btn--play"></button>
-								<span class="podcast__runtime">RUNTIME</span><?php // todo Podcasts: runtime ?>
-							</div>
-							<div class="podcast__meta">
-								<time datetime="<?php the_time( 'c' ); ?>"><?php the_time( 'd F' ); ?></time>
-								<button class="podcast__download">Download</button><?php // todo Podcasts: Download ?>
-								<h3><?php the_title(); ?></h3>
-								<?php the_excerpt(); ?>
-							</div>
+							<?php $podcast_obj = GMP_Player::render_podcasts(); ?>
 
 						</article>
 						
 					<?php
 					endwhile;
+					echo GMP_Player::custom_pagination( $podcast_obj->max_num_pages );
 					wp_reset_query();
 					?>
 
