@@ -6697,6 +6697,7 @@ category: Components - Gallery Archive
     border-color: #404041;
     background-color: #282827; }
   .single-contest .gallery__thumbnails {
+    height: 93px;
     margin-top: 0px; }
   @media screen and (min-width: 480px) {
     .gallery__thumbnails {
@@ -6862,6 +6863,8 @@ category: Components - Gallery Archive
       height: 85px; }
       .single-gmr_gallery .gallery__previews--group {
         height: 100px; } }
+  .single-contest .gallery__previews--group {
+    height: 52px; }
 
 .gallery__slide--preview {
   display: inline-block;
