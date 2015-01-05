@@ -19,13 +19,24 @@ get_header();
 			get_template_part( 'partials/frontpage', 'highlights' );
 		?>
 
-			<section class="entries">
+			<section class="entries">				
+				<div class="ad__leaderboard desktop">
+					<img src='http://placehold.it/728x90'>
+					<?php // do_action( 'acm_tag', 'leaderboard-body' ); ?>
+				</div>
 
 				<h2 class="content__heading">Latest from WMGK</h2>
 
-				<?php
-
-				if ( have_posts() ) : while ( have_posts() ) : the_post(); 
+				<?php $post_count = 0; ?>
+				<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
+				
+					<?php 
+					if ( 0 == ++$post_count % 5 ): 
+					?>
+						<div class='entry2-ad-wrap'>
+					<?php endif; ?>
+				
+					<?php 
 					$post_classes = array( 'entry2' );
 					if ( ! empty( trim( $post->post_excerpt ) ) ) {
 						$post_classes[] = 'has-excerpt'; 
@@ -33,7 +44,7 @@ get_header();
 					if ( has_post_thumbnail() || 'tribe_events' == $post->post_type ) {
 						$post_classes[] = 'has-thumbnail';
 					}
-				?>
+					?>
 
 					<article id="post-<?php the_ID(); ?>" <?php post_class( $post_classes ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
 						<?php 
@@ -87,6 +98,16 @@ get_header();
 							?>
 						</footer>
 					</article>
+					
+					<?php if ( 0 == $post_count % 5 ):	?>
+							<div class='entry2-ad-wrap__ad mobile'>
+								<img src='http://placehold.it/180x150'>
+							</div>						
+							<div class='entry2-ad-wrap__ad desktop'>
+								<img src='http://placehold.it/300x250'>
+							</div>						
+						</div>
+					<?php endif; ?>
 
 				<?php endwhile; ?>
 
