@@ -4742,6 +4742,24 @@ category: Components - Shows
     float: left;
     margin-right: 1em; }
 
+.single-show .highlights__events {
+  width: 100%; }
+  @media screen and (min-width: 1024px) {
+    .single-show .highlights__events {
+      border-top: 1px solid #d0d2d3;
+      border-bottom: 1px solid #d0d2d3;
+      padding: 1em 0 2em; } }
+.single-show .highlights__event--item {
+  background-color: #f1f1f3; }
+  @media screen and (min-width: 1024px) {
+    .single-show .highlights__event--item {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 31.76157%; }
+      .single-show .highlights__event--item:last-child {
+        margin-right: 0; } }
+
 .show-attr--name {
   position: absolute;
   top: 50%;
@@ -5159,7 +5177,7 @@ category: Components - Shows
         right: auto;
         top: 0;
         bottom: auto;
-        font-size: 0.88889em; } }
+        font-size: 0.75em; } }
 
 .more-btn {
   position: absolute;
