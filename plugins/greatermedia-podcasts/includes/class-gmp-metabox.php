@@ -13,7 +13,7 @@ class GMP_Meta {
 
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_box' ) );
 		add_action( 'save_post', array( $this, 'save_meta_box' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts_styles' ) );
+		//add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts_styles' ) );
 
 	}
 
@@ -29,7 +29,7 @@ class GMP_Meta {
 		if ( in_array( $post_type, $post_types ) ) {
 			add_meta_box(
 				'gmp_episodes_meta_box'
-				, __( 'Podcast Episode Audio', 'gmpodcasts' )
+				, __( 'Podcast Episode Details', 'gmpodcasts' )
 				, array( $this, 'render_meta_box_content' )
 				, $post_type
 				, 'side'
@@ -62,9 +62,14 @@ class GMP_Meta {
 		}
 
 		/* OK, its safe for us to save the data now. */
+		$checked = sanitize_text_field( $_POST[ 'gmp_audio_downloadable' ] );
+
+		if( $checked != 'on' ) {
+			$checked = 'off';
+		}
 
 		// Sanitize and save the user input.
-		update_post_meta( $post_id, 'gmp_audio_file_meta_key', esc_url_raw( $_POST[ 'gmp_audio_file' ] ) );
+		update_post_meta( $post_id, 'gmp_audio_downloadable', esc_attr( $checked ) );
 	}
 
 	/**
@@ -78,22 +83,22 @@ class GMP_Meta {
 		wp_nonce_field( 'gmp_episodes_meta_box', 'gmp_episodes_meta_box_nonce' );
 
 		// Use get_post_meta to retrieve an existing value from the database.
-		$gmp_file = get_post_meta( $post->ID, 'gmp_audio_file_meta_key', true );
+		$gmp_file = get_post_meta( $post->ID, 'gmp_audio_downloadable', true );
+
+		// if no post meta set downloadable this is done for import script
+		if( $gmp_file == 'off' ) {
+			$checked = '';
+		} else {
+			$checked = 'checked';
+		}
 
 		?>
 
 		<div class="gmp-meta-row">
 			<div class="gmp-meta-row-content gmp-upload">
-				<label for="gmp_audio_file" class="gmp-meta-row-label"><?php _e( 'Audio URL:', 'gmpodcasts' ); ?></label>
-				<input type="hidden" id="gmp_audio_file" name="gmp_audio_file" value="<?php if ( isset ( $gmp_file) ) echo esc_url_raw( $gmp_file ); ?>" />
-				<div id="gmp-audio-location" class="hidden">
-					<input type="text" id="gmp_audio_file_location" name="gmp_audio_file_location" value="<?php if ( isset ( $gmp_file ) ) echo esc_url_raw( $gmp_file ); ?>" />
-				</div>
-				<div id="gmp-audio-upload-button" class="hide-if-no-js gmp-upload-button">
-					<a title="Remove Footer Image" href="javascript:;" id="gmp_audio_file_button" class="button"><?php _e( 'Upload Audio', 'gmpodcasts' ); ?></a>
-				</div>
-				<div id="gmp-audio-remove-button" class="hidden gmp-upload-button">
-					<a title="Remove Footer Image" href="javascript:;" id="gmp_audio_file_remove" class="button"><?php _e( 'Remove featured image', 'gmpodcasts' ); ?></a>
+				<div id="gmp-audio-location">
+					<label for="gmp_audio_downloadable" class="gmp-meta-row-label"><?php _e( 'Downloadable:', 'gmpodcasts' ); ?></label>
+					<input type="checkbox" id="gmp_audio_downloadable" name="gmp_audio_downloadable" <?php echo $checked; ?>/>
 				</div>
 			</div>
 		</div>
@@ -117,4 +122,4 @@ class GMP_Meta {
 
 }
 
-new GMP_Meta();
+//$GMP_Meta = new GMP_Meta();
