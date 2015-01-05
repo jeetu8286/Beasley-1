@@ -279,7 +279,7 @@ Curated posts for Featured Articles
 		@include span-columns(4 of 12);
 	}
 	@include bp(medium) {
-		@include span-columns(4 of 4);
+		@include span-columns(4 of 12);
 		@include omega;
 		height: 138px;
 	}
@@ -320,7 +320,7 @@ Curated posts for Featured Articles
 		@include omega;
 	}
 	@include bp(medium) {
-		@include span-columns(4 of 4);
+		@include span-columns(8 of 12);
 		@include omega;
 	}
 	@include bp(large) {
