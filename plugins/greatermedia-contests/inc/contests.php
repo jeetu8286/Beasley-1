@@ -720,3 +720,53 @@ function gmr_contests_add_table_row_actions( $actions, WP_Post $post ) {
 
 	return $actions;
 }
+
+/**
+ * Returns classes string for a submission.
+ *
+ * @param string|array $class The default class for a submission block.
+ * @return string The submission classes.
+ */
+function gmr_contests_submission_class( $class ) {
+	$classes = array();
+	$post = get_post();
+
+	if ( gmr_contests_is_user_voted_for_submission( $post ) ) {
+		$classes[] = 'voted';
+	}
+
+	if ( gmr_contests_is_submission_winner( $post ) ) {
+		$classes[] = 'winner';
+	}
+	
+	if ( ! empty( $class ) ) {
+		$classes = array_merge( $classes, ! is_array( $class ) ? $class = preg_split( '#\s+#', $class ) : $class );
+	}
+
+	return implode( ' ', array_unique( $classes ) );
+}
+
+/**
+ * Determines whether submission has been selected as a winner.
+ *
+ * @param WP_Post|int $submission The submission object or id.
+ * @return boolean TRUE if submission has been selected as a winner, otherwise FALSE.
+ */
+function gmr_contests_is_submission_winner( $submission = null ) {
+	$submission = get_post( $submission );
+	if ( ! $submission || GMR_SUBMISSIONS_CPT != $submission->post_type ) {
+		return false;
+	}
+
+	$entry_id = get_post_meta( $submission->ID, 'contest_entry_id', true );
+	if ( ! $entry_id ) {
+		return false;
+	}
+
+	$gigya_id = trim( get_post_meta( $entry_id, 'entrant_reference', true ) );
+	if ( empty( $gigya_id ) ) {
+		return false;
+	}
+
+	return in_array( "{$entry_id}:{$gigya_id}", get_post_meta( $submission->post_parent, 'winner' ) );
+}
