@@ -54,6 +54,9 @@ function greatermedia_setup() {
 	 */
 	add_theme_support( 'post-thumbnails' );
 	add_image_size( 'gm-article-thumbnail',     		1580,   9999,   false   ); // thumbnails used for articles
+	add_image_size( 'gm-entry-thumbnail-1-1' ,          500,    500,    true    );
+	add_image_size( 'gm-entry-thumbnail-4-3' ,          400,    300,    true    );
+	// add_image_size( 'gm-entry-thumbnail-3-2' ,          500,    500,    true    );
 	add_image_size( 'gmr-gallery',              		800,    534,    true    ); // large images for the gallery
 	add_image_size( 'gmr-gallery-thumbnail',    		100,    100             ); // thumbnails for the gallery
 	add_image_size( 'gmr-featured-primary',     		2800,   1000,   true    ); // image for primary featured post on front page
