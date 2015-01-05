@@ -48,13 +48,15 @@
 	padding: 10px 0;
 	line-height: 1;
 	@include bp(medium) {
-		@include span-columns(2);
+		@include span-columns(1);
+		height: 82px;
+		padding: 12px 0 13px;
 	}
 	@include bp(large) {
-		@include span-columns(2);
+		@include span-columns(1);
 	}
 	@include bp(x-large) {
-		@include span-columns(2);
+		@include span-columns(1);
 	}
 }
 
@@ -74,13 +76,13 @@
 	display: none;
 	line-height: 1;
 	@include bp(medium) {
-		@include span-columns(3);
+		@include span-columns(4);
 	}
 	@include bp(large) {
-		@include span-columns(7);
+		@include span-columns(8);
 	}
 	@include bp(x-large) {
-		@include span-columns(7);
+		@include span-columns(8);
 	}
 }
 

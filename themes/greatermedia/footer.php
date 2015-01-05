@@ -10,11 +10,11 @@
 <footer class="footer" role="contentinfo">
 	<div class="container">
 		<div class="footer__content">
+			<div class="footer__logo">
+				<a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php bloginfo( 'name' ); ?></a>
+			</div>
 			<div class="footer__copyright">
-				<div class="footer__copyright--logo">
-					<a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php bloginfo( 'name' ); ?></a>
-				</div>
-				<span class="footer__copyright--span"><?php _e( '&copy;', 'greatermedia' ); ?> <?php bloginfo( 'name' ); ?></span><?php _e( '-', 'greatermedia' ); ?><span class="footer__copyright--span"><a href="http://www.greatermedia.com/"><?php _e( 'Greater Media', 'greatermedia' ); ?></a></span>
+				<span class="footer__copyright--span"><?php _e( 'Copyright (c) ', 'greatermedia' ); ?><?php bloginfo( 'name' ); ?></span><?php _e( '-', 'greatermedia' ); ?><span class="footer__copyright--span"><a href="http://www.greatermedia.com/"><?php _e( 'Greater Media', 'greatermedia' ); ?></a></span>
 			</div>
 			<div class="footer__menu">
 				<?php do_action( 'gmr_social' ); ?>

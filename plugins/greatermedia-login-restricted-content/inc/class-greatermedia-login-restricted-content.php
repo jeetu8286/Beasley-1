@@ -262,24 +262,19 @@ class GreaterMediaLoginRestrictedContent extends VisualShortcode {
 
 		global $post, $wp;
 
-		// do nothing if the $post variable is not set
-		if ( empty( $post ) ) {
-			return $content;
-		}
-
 		$login_restriction = self::sanitize_login_restriction( get_post_meta( $post->ID, 'post_login_restriction', true ) );
 		$current_url = '/' . trim( $wp->request, '/' );
 
 		if ( ( 'logged-in' === $login_restriction ) && ! is_gigya_user_logged_in() ) {
-			ob_start();
 			$login_url   = gigya_profile_path( 'login', array( 'dest' => $current_url ) );
 			include GREATER_MEDIA_LOGIN_RESTRICTED_CONTENT_PATH . '/tpl/login-restricted-post-render.tpl.php';
-			return ob_get_clean();
+
+			return;
 		} elseif ( ( 'logged-out' === $login_restriction ) && is_gigya_user_logged_in() ) {
-			ob_start();
 			$logout_url   = gigya_profile_path( 'logout', array( 'dest' => $current_url ) );
 			include GREATER_MEDIA_LOGIN_RESTRICTED_CONTENT_PATH . '/tpl/logout-restricted-post-render.tpl.php';
-			return ob_get_clean();
+
+			return;
 		}
 
 		// Fall-through, return content as-is
