@@ -835,7 +835,7 @@ category: Components - Gallery Archive
 	.gallery__featured--secondary & {
 		margin-bottom: 20px;
 		@include bp(medium) {
-			margin-bottom: 19px;
+			margin-bottom: 18px;
 		}
 		@include bp(large) {
 			margin-bottom: 28px;
@@ -871,7 +871,7 @@ category: Components - Gallery Archive
 		padding: 16px 20px 20px;
 	}
 	.gallery__featured--secondary & {
-		height: 49px;
+		height: 48px;
 		@include bp(large) {
 			height: 75px;
 		}
