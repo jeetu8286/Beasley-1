@@ -437,18 +437,19 @@ function gmr_contests_process_form_submission() {
 	}
 
 	require_once ABSPATH . 'wp-admin/includes/image.php';
+	require_once ABSPATH . 'wp-admin/includes/media.php';
+	require_once ABSPATH . 'wp-admin/includes/file.php';
 
-	$submitted_values = array();
-	$submitted_files  = array( 'images' => array(), 'other'  => array() );
+	$submitted_values = $submitted_files  = array();
 	
 	$contest_id = get_the_ID();
 	$form = @json_decode( get_post_meta( $contest_id, 'embedded_form', true ) );
 	foreach ( $form as $field ) {
 		$post_array_key = 'form_field_' . $field->cid;
 		if ( 'file' === $field->field_type ) {
-			if ( isset( $_FILES[ $post_array_key ] ) ) {
-				$file_type_index = file_is_valid_image( $_FILES[ $post_array_key ]['tmp_name'] ) ? 'images' : 'other';
-				$submitted_files[ $file_type_index ][ $post_array_key ] = $_FILES[ $post_array_key ];
+			if ( isset( $_FILES[ $post_array_key ] ) && file_is_valid_image( $_FILES[ $post_array_key ]['tmp_name'] ) ) {
+				$file_id = media_handle_upload( $post_array_key, $contest_id, array( 'post_status' => 'private' ) );
+				$submitted_files[ $field->cid ] = $submitted_values[ $field->cid ] = $file_id;
 			}
 		} else if ( isset( $_POST[ $post_array_key ] ) ) {
 			if ( is_scalar( $_POST[ $post_array_key ] ) ) {
@@ -479,42 +480,25 @@ function gmr_contests_process_form_submission() {
  * @param GreaterMediaContestEntry $entry
  */
 function gmr_contests_handle_submitted_files( array $submitted_files, GreaterMediaContestEntry $entry ) {
-	/**
-	 * Ignoring the "other" files per GMR-343
-	 * "There's no reason for Contest or Survey upload fields to allow any filetypes other than images. Aside
-	 * from security considerations, it also becomes much more complex to manage user generated content if it's
-	 * anything beside photos."
-	 */
-	if ( empty( $submitted_files['images'] ) ) {
+	if ( empty( $submitted_files ) ) {
 		return;
 	}
 
-	require_once ABSPATH . 'wp-admin/includes/media.php';
-	require_once ABSPATH . 'wp-admin/includes/file.php';
-
 	$thumbnail = null;
-	$data_type = count( $submitted_files['images'] ) == 1 ? 'image' : 'gallery';
+	$data_type = count( $submitted_files ) == 1 ? 'image' : 'gallery';
 
 	$ugc = GreaterMediaUserGeneratedContent::for_data_type( $data_type );
 	$ugc->post->post_parent = $entry->post->post_parent;
 	
+	reset( $submitted_files );
+	$thumbnail = current( $submitted_files );
+	
 	switch ( $data_type ) {
 		case 'image':
-			reset( $submitted_files );
-			$upload_field = key( $submitted_files['images'] );
-			$thumbnail = media_handle_upload( $upload_field, $entry->post->post_parent, array( 'post_status' => 'private' ) );
-
-			$ugc->post->post_content = wp_get_attachment_image( $thumbnail, 'full' );
+			$ugc->post->post_content = wp_get_attachment_image( current( $submitted_files ), 'full' );
 			break;
-
 		case 'gallery':
-			$attachment_ids = array();
-			foreach ( array_keys( $submitted_files['images'] ) as $upload_field ) {
-				$attachment_ids[] = media_handle_upload( $upload_field, $entry->post->post_parent, array( 'post_status' => 'private' ) );
-			}
-			$thumbnail = $attachment_ids[0];
-
-			$ugc->post->post_content = '[gallery ids="' . implode( ',', $attachment_ids ) . '"]';
+			$ugc->post->post_content = '[gallery ids="' . implode( ',', $submitted_files ) . '"]';
 			break;
 	}
 

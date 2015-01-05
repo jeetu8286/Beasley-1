@@ -89,6 +89,7 @@ class GreaterMediaContests {
 
 		unset( $columns['title'], $columns['date'] );
 
+		$columns['gigya'] = 'Gigya User';
 		foreach ( $form as $field ) {
 			$columns[ $field->cid ] = $field->label;
 		}
@@ -108,7 +109,12 @@ class GreaterMediaContests {
 		$entry = get_post( $post_id );
 		$fields = GreaterMediaFormbuilderRender::parse_entry( $entry->post_parent, $entry->ID );
 		if ( isset( $fields[ $column_name ] ) ) {
-			echo esc_html( $fields[ $column_name ]['value'] );
+			$value = $fields[ $column_name ]['value'];
+			if ( 'file' == $fields[ $column_name ]['type'] ) {
+				echo wp_get_attachment_image( $value, array( 75, 75 ) );
+			} elseif ( is_string( $value ) ) {
+				echo esc_html( $value );
+			}
 		} else {
 			echo '&#8212;';
 		}

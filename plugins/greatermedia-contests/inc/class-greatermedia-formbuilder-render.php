@@ -139,15 +139,17 @@ class GreaterMediaFormbuilderRender {
 			if ( isset( $contest_entry[ $field->cid ] ) ) {
 				if ( $field->field_type != 'radio' ) {
 					$results[ $field->cid ] = array(
+						'type'  => $field->field_type,
 						'label' => $field->label,
 						'value' => $contest_entry[ $field->cid ],
 					);
 				} else {
 					$results[ $field->cid ] = array(
+						'type'  => $field->field_type,
 						'label' => $field->label,
 						'value' => ! empty( $field->field_options->options[ $contest_entry[ $field->cid ] ] )
 							? $field->field_options->options[ $contest_entry[ $field->cid ] ]->label
-							: ""
+							: "",
 					);
 				}
 			}
