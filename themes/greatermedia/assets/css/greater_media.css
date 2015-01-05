@@ -4882,11 +4882,11 @@ category: Components - Shows
       margin-right: 0; }
       .show__nav:last-child {
         margin-right: 0; }
-      .show__nav h1 {
+      .show__nav .show__title {
         margin-top: 0;
         margin-bottom: 0.6em; }
       .show__nav ul {
-        top: auto;
+        top: 47%;
         display: inline-block; } }
   @media screen and (min-width: 1024px) {
     .show__nav {

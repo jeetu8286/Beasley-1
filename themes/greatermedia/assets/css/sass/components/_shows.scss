@@ -158,13 +158,13 @@ category: Components - Shows
 		@include span-columns(8 of 12);
 		@include omega;
 
-		h1 {
+		.show__title {
 			margin-top: 0;
 			margin-bottom: 0.6em;
 		}
 
 		ul {
-			top: auto;
+			top: 47%;
 			display: inline-block;
 		}
 	}
