@@ -36,7 +36,6 @@ get_header();
 				?>
 
 					<article id="post-<?php the_ID(); ?>" <?php post_class( $post_classes ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
-						
 						<?php if ( has_post_thumbnail() || 'tribe_events' == $post->post_type ) : ?>
 							<section class="entry2__thumbnail <?php // greatermedia_post_formats(); ?>">
 								<a href="<?php the_permalink(); ?>">
