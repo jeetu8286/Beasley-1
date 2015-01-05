@@ -330,6 +330,11 @@ Community Highlights and Events
 		// Back to two lines. 
 		max-height: 2.5em;
 	}
+	
+	// Highlight on hover
+	.highlights__event--item:hover & {
+		color: $primary-link-hover;
+	}
 }
 
 .highlights__event--date {

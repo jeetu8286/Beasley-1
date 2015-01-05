@@ -2271,6 +2271,8 @@ Community Highlights and Events
   @media (min-width: 1250px) {
     .highlights__event--title {
       max-height: 2.5em; } }
+  .highlights__event--item:hover .highlights__event--title {
+    color: #aa1c20; }
 
 .highlights__event--date {
   display: block;
