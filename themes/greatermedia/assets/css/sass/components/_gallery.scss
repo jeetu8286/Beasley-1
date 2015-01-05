@@ -838,7 +838,7 @@ category: Components - Gallery Archive
 			margin-bottom: 19px;
 		}
 		@include bp(large) {
-			margin-bottom: 29px;
+			margin-bottom: 28px;
 		}
 		@include bp(x-large) {
 			margin-bottom: 42px;
@@ -873,7 +873,7 @@ category: Components - Gallery Archive
 	.gallery__featured--secondary & {
 		height: 49px;
 		@include bp(large) {
-			height: 77px;
+			height: 75px;
 		}
 		@include bp(x-large) {
 			height: 91px;

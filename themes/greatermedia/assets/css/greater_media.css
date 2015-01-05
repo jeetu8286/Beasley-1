@@ -6452,7 +6452,7 @@ category: Components - Gallery Archive
         margin-bottom: 19px; } }
     @media screen and (min-width: 1024px) {
       .gallery__featured--secondary .gallery__featured--item {
-        margin-bottom: 29px; } }
+        margin-bottom: 28px; } }
     @media screen and (min-width: 1400px) {
       .gallery__featured--secondary .gallery__featured--item {
         margin-bottom: 42px; } }
@@ -6479,7 +6479,7 @@ category: Components - Gallery Archive
     height: 49px; }
     @media screen and (min-width: 1024px) {
       .gallery__featured--secondary .gallery__featured--caption {
-        height: 77px; } }
+        height: 75px; } }
     @media screen and (min-width: 1400px) {
       .gallery__featured--secondary .gallery__featured--caption {
         height: 91px; } }
