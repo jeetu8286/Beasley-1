@@ -54,10 +54,12 @@ function greatermedia_setup() {
 	 */
 	add_theme_support( 'post-thumbnails' );
 	add_image_size( 'gm-article-thumbnail',     		1580,   9999,   false   ); // thumbnails used for articles
+	add_image_size( 'gm-entry-thumbnail-1-1' ,          500,    500,    true    );
+	add_image_size( 'gm-entry-thumbnail-4-3' ,          500,    375,    true    );
 	add_image_size( 'gmr-gallery',              		800,    534,    true    ); // large images for the gallery
 	add_image_size( 'gmr-gallery-thumbnail',    		100,    100             ); // thumbnails for the gallery
-	add_image_size( 'gmr-featured-primary',     		2800,   1000,   true    ); // image for primary featured post on front page
-	add_image_size( 'gmr-featured-secondary',   		400,    400,    true    ); // thumbnails for secondary featured posts on front page
+	add_image_size( 'gmr-featured-primary',     		1600,   572,    true    ); // image for primary featured post on front page
+	add_image_size( 'gmr-featured-secondary',   		336,    224,    true    ); // thumbnails for secondary featured posts on front page
 	add_image_size( 'gmr-show-featured-primary',   		570,    313,    true    ); // thumbnails for secondary featured posts on front page
 	add_image_size( 'gmr-show-featured-secondary',   	270,    118,    true    ); // thumbnails for secondary featured posts on front page
 
@@ -232,6 +234,43 @@ function get_post_with_keyword( $query_arg ) {
 		}
 	}
 	return 0;
+}
+
+/**
+ * Get the URL of a post's thumbnail.  
+ * 
+ * @param string|array Thumbnail size.
+ * @param int Post ID. Defaults to current post. 
+ */
+function gm_get_post_thumbnail_url( $size = 'thumbnail', $post_id = null ) {
+	$thumbnail_id = get_post_thumbnail_id( $post_id );
+
+	if ( $thumbnail_id ) {
+		return gm_get_thumbnail_url( $thumbnail_id, $size );
+	}
+}
+
+/**
+ * Output the escaped URL of a post's thumbnail.  
+ * 
+ * @param string|array Thumbnail size.
+ * @param int Post ID. Defaults to current post. 
+ */
+function gm_post_thumbnail_url( $size = 'thumbnail', $post_id = null ) {
+	echo esc_url( gm_get_post_thumbnail_url( $size, $post_id ) );
+}
+
+/**
+ * Get the URL of an attachment thumbnail. 
+ * 
+ * @param id $attachment_id
+ * @return null|string URL if found, null otherwise. 
+ */
+function gm_get_thumbnail_url( $attachment_id, $size ) {
+	$src = wp_get_attachment_image_src( $attachment_id, $size );
+	if ( $src ) {
+		return $src[0]; 
+	}	
 }
 
 /**
