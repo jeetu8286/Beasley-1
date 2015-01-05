@@ -251,6 +251,16 @@ function gm_get_post_thumbnail_url( $size = 'thumbnail', $post_id = null ) {
 }
 
 /**
+ * Output the escaped URL of a post's thumbnail.  
+ * 
+ * @param string|array Thumbnail size.
+ * @param int Post ID. Defaults to current post. 
+ */
+function gm_post_thumbnail_url( $size = 'thumbnail', $post_id = null ) {
+	echo esc_url( gm_get_post_thumbnail_url( $size, $post_id ) );
+}
+
+/**
  * Get the URL of an attachment thumbnail. 
  * 
  * @param id $attachment_id
