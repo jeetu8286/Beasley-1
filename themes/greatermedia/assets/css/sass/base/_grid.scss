@@ -67,25 +67,16 @@ img {
 }
 
 .content, %content {
-	@include span-columns(4);
-	padding: 2em 7.0833333333335%;
-	@include bp(small) {
-		@include span-columns(6);
-	}
-	@include bp(medium) {
-		@include span-columns(4 of 6);
-		@include shift(1);
-		padding-right: 0;
-		padding-left: 0;
-	}
-	@include bp(large) {
-		@include span-columns(10 of 12);
-		@include shift(1);
-	}
-	@include bp(x-large) {
-		@include span-columns(10 of 12);
-		@include shift(1);
-	}
+	@include fill-parent;
+	@include omega;
+	padding: 2em;
+
+	// @include bp(medium) {
+	// }
+	// @include bp(large) {
+	// }
+	// @include bp(x-large) {
+	// }
 }
 
 .live-player {
@@ -94,8 +85,8 @@ img {
 	right: 0;
 	left: 0;
 	width: 100%;
-	background-color: $secondary-bg;
-	color: $secondary-text;
+	background-color: $liveplayer-bg;
+	color: $liveplayer-color;
 	cursor: pointer;
 	@include bp(medium){
 		position: absolute;
@@ -119,7 +110,7 @@ img {
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background-color: $secondary-bg;
+	//background-color: $secondary-bg;
 	content: "";
 	z-index: 10;
 }
