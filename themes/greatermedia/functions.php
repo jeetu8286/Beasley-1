@@ -85,28 +85,29 @@ add_action( 'after_setup_theme', 'greatermedia_setup' );
  */
 function greatermedia_scripts_styles() {
 	$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
+	$baseurl = untrailingslashit( get_template_directory_uri() );
 
 	wp_register_style(
 		'open-sans',
 		'http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,700',
 		array(),
-		GREATERMEDIA_VERSION
+		null
 	);
 	wp_register_style(
 		'droid-sans',
 		'http://fonts.googleapis.com/css?family=Droid+Sans:400,700',
 		array(),
-		GREATERMEDIA_VERSION
+		null
 	);
 	wp_register_style(
 		'font-awesome',
 		'//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css',
 		array(),
-		'4.2'
+		null
 	);
 	wp_register_style(
 		'greatermedia',
-		get_template_directory_uri() . "/assets/css/greater_media{$postfix}.css",
+		"{$baseurl}/assets/css/greater_media{$postfix}.css",
 		array(
 			'dashicons',
 			'open-sans',
@@ -117,7 +118,7 @@ function greatermedia_scripts_styles() {
 	);
 	wp_enqueue_script(
 		'greatermedia',
-		get_template_directory_uri() . "/assets/js/greater_media{$postfix}.js",
+		"{$baseurl}/assets/js/greater_media{$postfix}.js",
 		array(
 			'underscore',
 			'classlist-polyfill'
@@ -127,14 +128,14 @@ function greatermedia_scripts_styles() {
 	);
 	wp_enqueue_script(
 		'respond.js',
-		get_template_directory_uri() . '/assets/js/vendor/respond.min.js',
+		"{$baseurl}/assets/js/vendor/respond.min.js",
 		array(),
 		'1.4.2',
 		false
 	);
 	wp_enqueue_script(
 		'html5shiv',
-		get_template_directory_uri() . '/assets/js/vendor/html5shiv-printshiv.js',
+		"{$baseurl}/assets/js/vendor/html5shiv-printshiv.js",
 		array(),
 		'3.7.2',
 		false
@@ -330,3 +331,27 @@ function greatermedia_excerpt_more( $more ) {
 	return '';
 }
 add_filter( 'excerpt_more', 'greatermedia_excerpt_more' );
+
+if ( ! function_exists( 'greatermedia_load_more' ) ) :
+	/**
+	 * Adds load more button.
+	 *
+	 * @global int $paged The current archive page number.
+	 */
+	function greatermedia_load_more() {
+		global $paged;
+		
+		$script_id = 'greatermedia-load-more';
+		$baseurl = untrailingslashit( get_template_directory_uri() );
+		$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
+
+		wp_enqueue_script( $script_id, "{$baseurl}/assets/js/greater_media_load_more{$postfix}.js", array( 'jquery' ), GREATERMEDIA_VERSION, true );
+		wp_localize_script( $script_id, 'gmr_load_more', array(
+			'pattern'   => str_replace( PHP_INT_MAX, '{{page}}', get_pagenum_link( PHP_INT_MAX ) ),
+			'page'      => $paged,
+			'not_found' => 'All content shown',
+		) );
+		
+		get_template_part( 'partials/load-more' );
+	}
+endif;

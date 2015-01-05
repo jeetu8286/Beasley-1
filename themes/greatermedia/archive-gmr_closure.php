@@ -54,10 +54,7 @@ get_header(); ?>
 					</div>
 				</div>
 		<?php endwhile; ?>
-			<div class="posts-pagination">
-				<div class="posts-pagination--previous"><?php next_posts_link( '<i class="fa fa-angle-double-left"></i>Previous' ); ?></div>
-				<div class="posts-pagination--next"><?php previous_posts_link( 'Next<i class="fa fa-angle-double-right"></i>' ); ?></div>
-			</div>
+			<?php get_template_part( 'partials/pagination' ); ?>
 	<?php else : ?>
 
 	<article id="post-not-found" class="hentry cf">
