@@ -19,6 +19,7 @@ add_filter( 'gmr_contest_submissions_query', 'gmr_contests_submissions_query' );
 add_filter( 'post_type_link', 'gmr_contests_get_submission_permalink', 10, 2 );
 add_filter( 'request', 'gmr_contests_unpack_vars' );
 add_filter( 'post_thumbnail_html', 'gmr_contests_post_thumbnail_html', 10, 4 );
+add_filter( 'post_row_actions', 'gmr_contests_add_table_row_actions', 10, 2 );
 
 /**
  * Registers custom post types related to contests area.
@@ -559,7 +560,7 @@ function gmr_contests_get_entries_count( $contest_id ) {
 	$contest_entries_count = get_transient( $transient );
 	if ( false === $contest_entries_count ) {
 		$query = new WP_Query( array(
-			'post_type'      => 'contest_entry',
+			'post_type'      => GMR_CONTEST_ENTRY_CPT,
 			'post_status'    => 'any',
 			'post_parent'    => $contest_id,
 			'posts_per_page' => 1,
@@ -713,4 +714,25 @@ function gmr_contest_submission_get_author( $submission_id = null ) {
 	}
 
 	return $author;
+}
+
+/**
+ * Adds table row actions to contest records.
+ *
+ * @filter post_row_actions
+ * @param array $actions The initial array of post actions.
+ * @param WP_Post $post The post object.
+ * @return array The array of post actions.
+ */
+function gmr_contests_add_table_row_actions( $actions, WP_Post $post ) {
+	// do nothing if it is not a contest object
+	if ( GMR_CONTEST_CPT != $post->post_type ) {
+		return $actions;
+	}
+
+	// add contest winners action
+	$link = admin_url( 'edit.php?post_type=contest_entry&contest_id=' . $post->ID );
+	$actions['gmr-contest-winner'] = '<a href="' . esc_url( $link ) . '">Entries</a>';
+
+	return $actions;
 }

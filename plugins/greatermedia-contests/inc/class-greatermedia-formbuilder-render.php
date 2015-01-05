@@ -16,6 +16,8 @@ class GreaterMediaFormbuilderRender {
 	const TEXTAREA_SIZE_MEDIUM = '5';
 	const TEXTAREA_SIZE_LARGE = '10';
 
+	private static $_entries = array();
+
 	/**
 	 * Retrieve a custom list of HTML tags & attributes we're allowing in a rendered form
 	 * @return array valid tags
@@ -108,6 +110,14 @@ class GreaterMediaFormbuilderRender {
 	}
 
 	public static function parse_entry( $contest_id, $entry_id ) {
+		if ( isset( self::$_entries[ $contest_id ][ $entry_id ] ) ) {
+			return self::$_entries[ $contest_id ][ $entry_id ];
+		}
+
+		if ( ! isset( self::$_entries[ $contest_id ] ) ) {
+			self::$_entries[ $contest_id ] = array();
+		}
+
 		$form = get_post_meta( $contest_id, 'embedded_form', true );
 		if ( empty( $form ) ) {
 			return array();
@@ -143,7 +153,9 @@ class GreaterMediaFormbuilderRender {
 			}
 		}
 
-		return $results;
+		self::$_entries[ $contest_id ][ $entry_id ] = $results;
+
+		return self::$_entries[ $contest_id ][ $entry_id ];
 	}
 
 	/**

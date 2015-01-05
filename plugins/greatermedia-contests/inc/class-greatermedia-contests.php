@@ -11,32 +11,106 @@ if ( ! defined( 'ABSPATH' ) ) {
 class GreaterMediaContests {
 
 	public function __construct() {
-
 		add_action( 'init', array( $this, 'register_contest_type_taxonomy' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 		add_action( 'restrict_manage_posts', array( $this, 'admin_contest_type_filter' ) );
 		add_action( 'pre_get_posts', array( $this, 'admin_filter_contest_list' ) );
-		add_action( 'dbx_post_advanced', array( $this, 'adjust_current_admin_menu' ) );
+		add_action( 'pre_get_posts', array( $this, 'adjust_contest_entries_query' ) );
+		add_action( 'manage_' . GMR_CONTEST_ENTRY_CPT . '_posts_custom_column', array( $this, 'render_contest_entry_column' ), 10, 2 );
 
+		add_filter( 'manage_' . GMR_CONTEST_ENTRY_CPT . '_posts_columns', array( $this, 'filter_contest_entry_columns_list' ) );
+		add_filter( 'parent_file', array( $this, 'adjust_current_admin_menu' ) );
 		add_filter( 'gmr_live_link_suggestion_post_types', array( $this, 'extend_live_link_suggestion_post_types' ) );
-		
 	}
 	
 	/**
-	 * Selects proper admin menu items for contests and submission pages.
+	 * Adjustes parent and submenu files.
 	 *
-	 * @action dbx_post_advanced
-	 * @global string $parent_file The current parent menu page.
+	 * @filter parent_file
 	 * @global string $submenu_file The current submenu page.
 	 * @global string $typenow The current post type.
 	 * @global string $pagenow The current admin page.
+	 * @return string The parent file.
 	 */
-	public function adjust_current_admin_menu() {
-		global $parent_file, $submenu_file, $typenow, $pagenow;
+	public function adjust_current_admin_menu( $parent_file ) {
+		global $submenu_file, $typenow, $pagenow;
 
-		if ( in_array( $pagenow, array( 'post-new.php', 'post.php' ) ) && in_array( $typenow, array( GMR_SUBMISSIONS_CPT ) ) ) {
+		if ( in_array( $pagenow, array( 'post-new.php', 'post.php' ) ) && GMR_SUBMISSIONS_CPT == $typenow ) {
 			$parent_file = 'edit.php?post_type=' . GMR_CONTEST_CPT;
 			$submenu_file = 'edit.php?post_type=' . $typenow;
+		} elseif ( GMR_CONTEST_ENTRY_CPT == $typenow && 'edit.php' == $pagenow ) {
+			$parent_file = 'edit.php?post_type=' . GMR_CONTEST_CPT;
+			$submenu_file = 'edit.php?post_type=' . GMR_CONTEST_CPT;
+		}
+
+		return $parent_file;
+	}
+
+	/**
+	 * Adjustes contest entries query to display entries only for selected contest.
+	 *
+	 * @action pre_get_posts
+	 * @global string $typenow The current post type.
+	 * @global string $pagenow The current admin page.
+	 * @param WP_Query $query The contest entry query.
+	 */
+	public function adjust_contest_entries_query( WP_Query $query ) {
+		global $typenow, $pagenow;
+
+		if ( GMR_CONTEST_ENTRY_CPT == $typenow && 'edit.php' == $pagenow && $query->is_main_query() ) {
+			$contest = filter_input( INPUT_GET, 'contest_id', FILTER_VALIDATE_INT, array( 'options' => array( 'min_range' => 1 ) ) );
+			if ( $contest && ( $contest = get_post( $contest ) ) && GMR_CONTEST_CPT == $contest->post_type ) {
+				$query->set( 'post_parent', $contest->ID );
+			}
+		}
+	}
+
+	/**
+	 * Adds columns to the contest entries table.
+	 *
+	 * @param array $columns Initial array of columns.
+	 * @return array The array of columns.
+	 */
+	public function filter_contest_entry_columns_list( $columns ) {
+		$contest = filter_input( INPUT_GET, 'contest_id', FILTER_VALIDATE_INT, array( 'options' => array( 'min_range' => 1 ) ) );
+		if ( ! $contest || ! ( $contest = get_post( $contest ) ) || GMR_CONTEST_CPT != $contest->post_type ) {
+			return $columns;
+		}
+
+		$form = get_post_meta( $contest->ID, 'embedded_form', true );
+		if ( empty( $form ) ) {
+			return $columns;
+		}
+
+		if ( is_string( $form ) ) {
+			$clean_form = trim( $form, '"' );
+			$form = json_decode( $clean_form );
+		}
+
+		unset( $columns['title'], $columns['date'] );
+
+		foreach ( $form as $field ) {
+			$columns[ $field->cid ] = $field->label;
+		}
+
+		$columns['date'] = 'Date';
+
+		return $columns;
+	}
+
+	/**
+	 * Renders custom columns for the contest entries table.
+	 *
+	 * @param string $column_name The column name which is gonna be rendered.
+	 * @param int $post_id The post id.
+	 */
+	public function render_contest_entry_column( $column_name, $post_id ) {
+		$entry = get_post( $post_id );
+		$fields = GreaterMediaFormbuilderRender::parse_entry( $entry->post_parent, $entry->ID );
+		if ( isset( $fields[ $column_name ] ) ) {
+			echo esc_html( $fields[ $column_name ]['value'] );
+		} else {
+			echo '&#8212;';
 		}
 	}
 
@@ -45,23 +119,22 @@ class GreaterMediaContests {
 	 * @uses register_taxonomy
 	 */
 	public function register_contest_type_taxonomy() {
-
 		$labels = array(
-			'name'                       => _x( 'Contest Types', 'Taxonomy General Name', 'greatermedia_contests' ),
-			'singular_name'              => _x( 'Contest Type', 'Taxonomy Singular Name', 'greatermedia_contests' ),
-			'menu_name'                  => __( 'Contest Type', 'greatermedia_contests' ),
-			'all_items'                  => __( 'All Contest Types', 'greatermedia_contests' ),
-			'parent_item'                => __( 'Parent Contest Type', 'greatermedia_contests' ),
-			'parent_item_colon'          => __( 'Parent Contest Type:', 'greatermedia_contests' ),
-			'new_item_name'              => __( 'New Contest Type Name', 'greatermedia_contests' ),
-			'add_new_item'               => __( 'Add New Contest Type', 'greatermedia_contests' ),
-			'edit_item'                  => __( 'Edit Contest Type', 'greatermedia_contests' ),
-			'update_item'                => __( 'Update Contest Type', 'greatermedia_contests' ),
-			'separate_items_with_commas' => __( 'Separate items with commas', 'greatermedia_contests' ),
-			'search_items'               => __( 'Search Contest Types', 'greatermedia_contests' ),
-			'add_or_remove_items'        => __( 'Add or remove contest types', 'greatermedia_contests' ),
-			'choose_from_most_used'      => __( 'Choose from the most used contest types', 'greatermedia_contests' ),
-			'not_found'                  => __( 'Not Found', 'greatermedia_contests' ),
+			'name'                       => 'Contest Types',
+			'singular_name'              => 'Contest Type',
+			'menu_name'                  => 'Contest Type',
+			'all_items'                  => 'All Contest Types',
+			'parent_item'                => 'Parent Contest Type',
+			'parent_item_colon'          => 'Parent Contest Type:',
+			'new_item_name'              => 'New Contest Type Name',
+			'add_new_item'               => 'Add New Contest Type',
+			'edit_item'                  => 'Edit Contest Type',
+			'update_item'                => 'Update Contest Type',
+			'separate_items_with_commas' => 'Separate items with commas',
+			'search_items'               => 'Search Contest Types',
+			'add_or_remove_items'        => 'Add or remove contest types',
+			'choose_from_most_used'      => 'Choose from the most used contest types',
+			'not_found'                  => 'Not Found',
 		);
 
 		$args = array(
@@ -78,7 +151,6 @@ class GreaterMediaContests {
 		register_taxonomy( 'contest_type', array( GMR_CONTEST_CPT ), $args );
 
 		$this->maybe_seed_contest_type_taxonomy();
-
 	}
 
 	/**
@@ -89,36 +161,19 @@ class GreaterMediaContests {
 	 * @uses set_option
 	 */
 	public function maybe_seed_contest_type_taxonomy() {
-
 		$seeded = get_option( 'contest_type_seeded', false );
-
 		if ( $seeded ) {
 			return;
 		}
 
-		wp_insert_term(
-			'On Air',
-			'contest_type',
-			array(
-				'description' => 'On-air contests generally require a call or, perhaps, text message, from the entrant. The specific requirements and number to text or call can be written directly in the "how to enter" section of the contest.',
-			)
-		);
+		wp_insert_term( 'On Air', 'contest_type', array( 'description' => 'On-air contests generally require a call or, perhaps, text message, from the entrant. The specific requirements and number to text or call can be written directly in the "how to enter" section of the contest.' ) );
+		wp_insert_term( 'Online', 'contest_type', array( 'description' => '' ) );
 
-		wp_insert_term(
-			'Online',
-			'contest_type',
-			array(
-				'description' => '',
-			)
-		);
-
-		delete_option( 'contest_type_seeded' );
-		add_option( 'contest_type_seeded', true, '', true );
+		update_option( 'contest_type_seeded', 1 );
 
 		if ( class_exists( 'GreaterMediaAdminNotifier' ) ) {
 			GreaterMediaAdminNotifier::message( __( 'Seeded "Contest Types" taxonomy.', 'greatermedia_contests' ) );
 		}
-
 	}
 
 	public function admin_enqueue_scripts() {
