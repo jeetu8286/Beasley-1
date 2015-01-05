@@ -7,16 +7,17 @@
 			text-transform: uppercase;
 			font-size: 1em;
 		}
-	}
-
-	.featured__content {
-		margin: 2em 0;
 
 		&:hover {
 			.featured__content--title {
 				color: $secondary-link-hover;
 			}
 		}
+
+	}
+
+	.featured__content {
+		margin: 2em 0;
 	}
 
 	.featured__content--title {
@@ -418,6 +419,15 @@ category: Components - Shows
 		@include span-columns(12 of 12);
 		margin-bottom: 1em;
 		background: none;
+
+	}
+
+	.featured__content--image img {
+		@include bp(medium) {
+			height: 100%;
+			width: auto;
+			max-width: none;
+		}
 	}
 
 	.featured__content--title {

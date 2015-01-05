@@ -4748,10 +4748,10 @@ category: Components - Shows
   .single-show .featured__content--block .highlights__event--date {
     text-transform: uppercase;
     font-size: 1em; }
+  .single-show .featured__content--block:hover .featured__content--title {
+    color: #aa1c20; }
 .single-show .featured__content {
   margin: 2em 0; }
-  .single-show .featured__content:hover .featured__content--title {
-    color: #aa1c20; }
 .single-show .featured__content--title {
   color: #282827; }
 
@@ -5131,6 +5131,11 @@ category: Components - Shows
   background: none; }
   .show__favorites .featured__content--block:last-child {
     margin-right: 0; }
+@media screen and (min-width: 768px) {
+  .show__favorites .featured__content--image img {
+    height: 100%;
+    width: auto;
+    max-width: none; } }
 .show__favorites .featured__content--title a:link, .show__favorites .featured__content--title a:visited {
   color: #404041; }
 .show__favorites .featured__content--title a:hover, .show__favorites .featured__content--title a:active {
