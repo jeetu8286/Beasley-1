@@ -93,8 +93,7 @@ class GreaterMediaContests {
 		foreach ( $form as $field ) {
 			$columns[ $field->cid ] = $field->label;
 		}
-
-		$columns['date'] = 'Date';
+		$columns['submitted'] = 'Submitted';
 
 		return $columns;
 	}
@@ -107,16 +106,29 @@ class GreaterMediaContests {
 	 */
 	public function render_contest_entry_column( $column_name, $post_id ) {
 		$entry = get_post( $post_id );
-		$fields = GreaterMediaFormbuilderRender::parse_entry( $entry->post_parent, $entry->ID );
-		if ( isset( $fields[ $column_name ] ) ) {
-			$value = $fields[ $column_name ]['value'];
-			if ( 'file' == $fields[ $column_name ]['type'] ) {
-				echo wp_get_attachment_image( $value, array( 75, 75 ) );
-			} elseif ( is_string( $value ) ) {
-				echo esc_html( $value );
-			}
+		if ( 'gigya' == $column_name ) {
+			echo '<b>', esc_html( get_post_meta( $post_id, 'entrant_name', true ) ), '</b>';
+			echo '<div class="row-actions visible">';
+				echo '<span class="select-winner">';
+					echo '<a href="#">Mark as Winner</a>';
+				echo '</span>';
+			echo '</div>';
+		} elseif ( 'submitted' == $column_name ) {
+			$format = 'M j, Y H:i';
+			$date = mysql2date( $format, $entry->post_date );
+			echo nl2br( $date );
 		} else {
-			echo '&#8212;';
+			$fields = GreaterMediaFormbuilderRender::parse_entry( $entry->post_parent, $entry->ID );
+			if ( isset( $fields[ $column_name ] ) ) {
+				$value = $fields[ $column_name ]['value'];
+				if ( 'file' == $fields[ $column_name ]['type'] ) {
+					echo wp_get_attachment_image( $value, array( 75, 75 ) );
+				} elseif ( is_string( $value ) ) {
+					echo esc_html( $value );
+				}
+			} else {
+				echo '&#8212;';
+			}
 		}
 	}
 
