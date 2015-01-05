@@ -2040,8 +2040,8 @@ Community Highlights and Events
     .highlights__community {
       float: left;
       display: block;
-      margin-right: 2.35765%;
-      width: 65.88078%;
+      margin-right: 1.87727%;
+      width: 59.24909%;
       padding-top: 2.25em; }
       .highlights__community:last-child {
         margin-right: 0; } }
@@ -2071,6 +2071,14 @@ Community Highlights and Events
         margin-left: 0; }
       .highlights__community--item:nth-of-type(3) {
         display: block; } }
+  @media screen and (min-width: 1024px) {
+    .highlights__community--item {
+      float: left;
+      display: block;
+      margin-right: 3.16844%;
+      width: 31.22104%; }
+      .highlights__community--item:last-child {
+        margin-right: 0; } }
 
 .highlights__community--thumb {
   position: relative;
@@ -2143,8 +2151,8 @@ Community Highlights and Events
       padding-top: 2.25em;
       float: left;
       display: block;
-      margin-right: 2.35765%;
-      width: 31.76157%;
+      margin-right: 1.87727%;
+      width: 38.87364%;
       clear: none; }
       .highlights__events:last-child {
         margin-right: 0; } }
@@ -2173,15 +2181,15 @@ Community Highlights and Events
         margin-right: 0; } }
   @media screen and (min-width: 768px) {
     .highlights__event--item {
-      font-size: 1.125em; } }
+      font-size: 1em; } }
   @media screen and (min-width: 1024px) {
     .highlights__event--item {
       float: left;
       display: block;
-      margin-right: 7.42297%;
+      margin-right: 4.82916%;
       width: 100%;
       height: 0;
-      padding-bottom: 30.4%;
+      padding-bottom: 21.5%;
       margin: 0 0 5%; }
       .highlights__event--item:last-child {
         margin-right: 0; } }
@@ -2223,9 +2231,16 @@ Community Highlights and Events
         max-height: none; } }
   @media screen and (min-width: 1024px) {
     .highlights__event--thumb {
+      float: left;
+      display: block;
+      margin-right: 4.82916%;
+      width: 30.11389%;
+      width: 21.5%;
       position: absolute;
       left: 0;
-      top: 0; } }
+      top: 0; }
+      .highlights__event--thumb:last-child {
+        margin-right: 0; } }
 
 .highlights__event--meta {
   float: left;
@@ -2238,14 +2253,14 @@ Community Highlights and Events
     margin-right: 0; }
   @media screen and (min-width: 1024px) {
     .highlights__event--meta {
-      position: absolute;
-      left: 34.94306%;
-      top: 0; } }
+      width: auto;
+      margin-left: 26.32916%;
+      padding-top: 3%; } }
 
 .highlights__event--title {
   font-size: 1em;
   color: #404041;
-  margin: 0 0 .15em;
+  margin: 0 0 .4em;
   overflow: hidden;
   line-height: 1.25;
   max-height: 2.5em; }
