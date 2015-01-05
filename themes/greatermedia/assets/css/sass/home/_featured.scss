@@ -159,6 +159,12 @@ Curated posts for Featured Articles
 	font-size: ms(2);
 	line-height: 1.3;
 	font-weight: bold;
+	color: $color-text-white;
+	
+	.featured__article:hover & {
+		color: $color-text-yellow;
+	}
+	
 	@include bp(small) {
 		font-size: ms(3); 
 	}
@@ -310,6 +316,11 @@ Curated posts for Featured Articles
 	-webkit-box-orient: vertical;
 	text-overflow: ellipsis;
 	font-family: $open-sans;
+	color: $color-text-white;
+	
+	.featured__content--block:hover & {
+		color: $color-text-yellow;
+	}
 }
 
 .featured__content--title a:link, .featured__content--title a:visited {
@@ -350,10 +361,10 @@ Curated posts for Featured Articles
 	white-space: nowrap;
 }
 
-.featured__content--btn:hover {
+.featured__content--block:hover .featured__content--btn {
 	@include btn($btn-hover, $color-text-black, $btn-hover, .25em, 1.2em, .7em);
 }
 
-.featured__content--btn:active {
+.featured__content--block:active .featured__content--btn {
 	@include btn($btn-active, $color-text-white, $btn-active, .25em, 1.2em, .7em);
 }
