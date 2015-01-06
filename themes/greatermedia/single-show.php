@@ -108,7 +108,7 @@
 							<div class="featured__content--block">
 				                <?php if ( has_post_thumbnail() ): ?>
 					                <div class="featured__content--image">
-						                <a href="<?php the_permalink(); ?>"><?php the_post_thumbnail( array( 400, 400 ) ); ?></a>
+						                <a href="<?php the_permalink(); ?>"><?php the_post_thumbnail( 'thumbnail' ); ?></a>
 					                </div>
 								<?php endif; ?>
 				                <div class="featured__content--meta">
@@ -161,7 +161,10 @@
 					        <?php endwhile; ?>
 					        <?php wp_reset_query(); ?>
 
-					        <div class="show-main-paging"><?php echo \GreaterMedia\Shows\get_show_endpoint_pagination_links( $main_query ); ?></div>
+<!-- 					        <div class="show-main-paging">
+					        <?php echo \GreaterMedia\Shows\get_show_endpoint_pagination_links( $main_query ); ?>
+					        </div>
+ -->					        
 				        </section>
 
 			        </div>

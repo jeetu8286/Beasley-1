@@ -4430,7 +4430,7 @@ category: Components
   font-weight: normal; }
   .content .live-link__title {
     font-size: 1.25em; }
-    @media screen and (min-width: 768px) {
+    @media screen and (min-width: 1024px) {
       .content .live-link__title {
         font-size: 0.88889em; } }
 
@@ -4753,7 +4753,7 @@ category: Components - Shows
     margin-right: 1em; }
 
 .single-show .featured__content {
-  margin: 2em 0; }
+  margin: 0.75em 0 1em; }
 .single-show .featured__content--block {
   width: 100%;
   margin-top: 1em;
@@ -4773,6 +4773,10 @@ category: Components - Shows
     text-transform: uppercase; }
   .single-show .featured__content--block:hover .featured__content--title {
     color: #aa1c20; }
+.single-show .featured__content--image img {
+  width: auto;
+  height: 100%;
+  max-width: none; }
 @media screen and (min-width: 480px) {
   .single-show .featured__content--image {
     float: left;
@@ -4846,7 +4850,7 @@ category: Components - Shows
 .show__header {
   background-color: #561015;
   position: relative;
-  padding: 1.5em 0.809em;
+  padding: 4em 1em;
   width: 100%;
   display: block;
   color: #ffffff; }
@@ -4917,25 +4921,34 @@ category: Components - Shows
     .show__nav li.current-menu-item a {
       background-color: #ffffff;
       color: #aa1c20; }
+  @media screen and (min-width: 768px) {
+    .show__nav {
+      margin-bottom: 1em; }
+      .show__nav .show__title {
+        margin-bottom: 0; }
+      .show__nav ul {
+        display: inline-block;
+        padding-left: 0;
+        text-align: center;
+        position: relative;
+        margin: 0;
+        width: 100%;
+        list-style-type: none; } }
   @media screen and (min-width: 1024px) {
     .show__nav {
       width: 55%;
       float: left;
       margin-top: 1.5em;
+      margin-bottom: 0;
       text-align: left;
-      padding-left: 2em; }
+      padding-left: 3em; }
       .show__nav .show__title {
         margin-top: 0;
         margin-bottom: 0.6em; }
       .show__nav ul {
-        list-style-type: none;
-        padding-left: 0;
         text-align: justify;
-        margin: 0;
         margin-left: -9px;
-        position: relative;
-        width: auto;
-        display: inline-block; }
+        width: auto; }
       .show__nav ul:after {
         content: "";
         width: 100%;
@@ -5146,13 +5159,16 @@ category: Components - Shows
   margin-right: 2.35765%;
   width: 100%;
   margin-bottom: 1em;
-  background: none; }
+  margin-top: 0;
+  background: none;
+  padding-top: 0; }
   .show__favorites .featured__content--block:last-child {
     margin-right: 0; }
-@media screen and (min-width: 768px) {
+  @media screen and (min-width: 1024px) {
+    .show__favorites .featured__content--block {
+      margin-top: 0em; } }
+@media screen and (min-width: 1024px) {
   .show__favorites .featured__content--image img {
-    height: 100%;
-    width: auto;
     max-width: none; } }
 .show__favorites .featured__content--title a:link, .show__favorites .featured__content--title a:visited {
   color: #404041; }

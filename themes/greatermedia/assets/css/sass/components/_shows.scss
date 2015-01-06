@@ -1,6 +1,6 @@
 .single-show {
 	.featured__content {
-		margin: 2em 0;
+		margin: 0.75em 0 1em;
 	}
 
 	.featured__content--block {
@@ -29,6 +29,12 @@
 	}
 
 	.featured__content--image {
+		img {
+			width: auto;
+			height: 100%;
+			max-width: none;
+		}
+
 		@include bp(small) {
 			@include span-columns(4 of 12);
 			padding-top: 0;
@@ -104,7 +110,7 @@ category: Components - Shows
 .show__header {
 	background-color: rgb(86, 16, 21);
 	position: relative;
-	padding: $base-line-height $gutter / 2;
+	padding: 4em 1em;
 	@include fill-parent();
 	@include row();
 	@include display-context(table);
@@ -197,12 +203,31 @@ category: Components - Shows
 
 	}
 
+	@include bp(medium) {
+		margin-bottom: 1em;
+
+		.show__title {
+			margin-bottom: 0;
+		}
+
+		ul {
+			display: inline-block;
+			padding-left: 0;
+			text-align: center;
+			position: relative;
+			margin: 0;
+			width: 100%;
+			list-style-type: none;
+		}
+	}
+
 	@include bp(large) {
 		width: 55%;
 		float: left;
 		margin-top: 1.5em;
+		margin-bottom: 0;
 		text-align: left;
-		padding-left: 2em;
+		padding-left: 3em;
 
 		.show__title {
 			margin-top: 0;
@@ -211,14 +236,9 @@ category: Components - Shows
 
 
 		ul {
-			list-style-type: none;
-			padding-left: 0;
 			text-align: justify;
-			margin: 0;
 			margin-left: -9px;
-			position: relative;
 			width: auto;
-			display: inline-block;
 		}
 
 		// this psuedo element makes the text-align: justify work on the <ul>. via: http://stackoverflow.com/a/16901348
@@ -471,14 +491,22 @@ category: Components - Shows
 	.featured__content--block {
 		@include span-columns(12 of 12);
 		margin-bottom: 1em;
+		margin-top: 0;
 		background: none;
+		padding-top: 0;
 
+		@include bp(large) {
+			margin-top: 0em;
+	}
 	}
 
 	.featured__content--image img {
-		@include bp(medium) {
-			height: 100%;
-			width: auto;
+		// @include bp(medium) {
+		// 	height: auto;
+		// 	width: 100%;
+		// }
+
+		@include bp(large) {
 			max-width: none;
 		}
 	}
