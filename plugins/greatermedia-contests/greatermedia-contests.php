@@ -31,6 +31,9 @@ include 'inc/class-greatermedia-uggallery.php';
 include 'inc/class-greatermedia-ugimage.php';
 include 'inc/class-greatermedia-uglink.php';
 include 'inc/class-ugc-moderation-table.php';
+include 'inc/class-greatermedia-surveys.php';
+include 'inc/class-greatermedia-survey-form-render.php';
+include 'inc/class-greatermedia-survey-entry.php';
 
 if ( is_admin() ) {
 	include 'inc/class-greatermedia-contests-metaboxes.php';
@@ -41,8 +44,5 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 	include 'inc/class-greatermedia-contests-wp-cli.php';
 }
 
-include trailingslashit( __DIR__ ) . 'inc/class-greatermedia-surveys.php';
-include trailingslashit( __DIR__ ) . 'inc/class-greatermedia-survey-form-render.php';
-include trailingslashit( __DIR__ ) . 'inc/class-greatermedia-survey-entry.php';
 register_activation_hook( __FILE__, 'flush_rewrite_rules' );
 register_deactivation_hook( __FILE__, 'flush_rewrite_rules' );
