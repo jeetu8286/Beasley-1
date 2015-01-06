@@ -50,7 +50,7 @@ module.exports = function (grunt) {
 					module: false,
 					twttr: false,
 					jQuery: false,
-					Modernizr: false,
+					gridModernizr: false,
 					Grid: true,
 					document: false,
 					window: false,

@@ -13,7 +13,7 @@ https://github.com/imakewebthings/jquery-waypoints/blob/master/licenses.txt
 
 
 
-window.Modernizr = (function( window, document, undefined ) {
+window.gridModernizr = (function( window, document, undefined ) {
 
     var version = '2.8.3',
 
@@ -801,7 +801,7 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 
 		return $grids;
 	};
-})(jQuery, Modernizr);
+})(jQuery, gridModernizr);
 (function($, gmr) {
 	var __ready, gridPreviewLoaded, gridLoadMoreUrl, gridUpdateRating;
 
