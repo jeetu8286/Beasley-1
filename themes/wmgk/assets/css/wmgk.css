@@ -5074,25 +5074,6 @@ category: Components - Ads
     margin: -0.75em 0 0 -15px; }
   .contest__submission .col__inner--right *:first-child {
     margin-top: 0; }
-  .contest__submission .contest__submission--entries:before, .contest__submission .contest__submission--entries:after {
-    content: " ";
-    display: table; }
-  .contest__submission .contest__submission--entries:after {
-    clear: both; }
-  .contest__submission .contest__submission--entries dl {
-    margin-top: 0; }
-  .contest__submission .contest__submission--entries dt,
-  .contest__submission .contest__submission--entries dd {
-    float: left; }
-  .contest__submission .contest__submission--entries dt {
-    clear: both;
-    display: inline-block;
-    margin-right: 0.5em;
-    font-weight: bold; }
-    .contest__submission .contest__submission--entries dt::after {
-      content: ': '; }
-  .contest__submission .contest__submission--entries dd {
-    margin: 0; }
   .contest__submission .contest__submission--author {
     font-size: 0.88889em;
     font-style: italic;
@@ -5164,8 +5145,16 @@ category: Components - Ads
         top: 50%;
         height: 1px;
         background: #888;
+        -webkit-transform: rotate(45deg);
+        -moz-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        -o-transform: rotate(45deg);
         transform: rotate(45deg); }
       .contest__submission .preview .preview-close::after {
+        -webkit-transform: rotate(-45deg);
+        -moz-transform: rotate(-45deg);
+        -ms-transform: rotate(-45deg);
+        -o-transform: rotate(-45deg);
         transform: rotate(-45deg); }
       .contest__submission .preview .preview-close:hover::before, .contest__submission .preview .preview-close:hover::after {
         background: #333; }
@@ -5182,6 +5171,29 @@ category: Components - Ads
       .contest__submission .preview .gallery .container .gallery__slide--images {
         margin-top: 0;
         margin-bottom: 0; }
+
+.contest__submission--entries-title {
+  margin-bottom: 0; }
+
+.contest__submission--entries:before, .contest__submission--entries:after {
+  content: " ";
+  display: table; }
+.contest__submission--entries:after {
+  clear: both; }
+.contest__submission--entries dl {
+  margin-top: 0; }
+.contest__submission--entries dt,
+.contest__submission--entries dd {
+  float: left; }
+.contest__submission--entries dt {
+  clear: both;
+  display: inline-block;
+  margin-right: 0.5em;
+  font-weight: bold; }
+  .contest__submission--entries dt::after {
+    content: ': '; }
+.contest__submission--entries dd {
+  margin: 0; }
 
 @media screen and (min-width: 480px) {
   .contest__submission {
