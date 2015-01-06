@@ -45,7 +45,7 @@
 	 */
 	if (is_gigya_user_logged_in()) {
 		if ($.support.pjax) {
-			$(document).pjax('a:not(.ab-item)', '.page-wrap', {'fragment': '.page-wrap', 'maxCacheLength': 500, 'timeout' : 5000});
+			$(document).pjax('a:not(.ab-item)', '.main', {'fragment': '.main', 'maxCacheLength': 500, 'timeout' : 5000});
 		}
 	}
 
