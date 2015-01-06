@@ -4752,7 +4752,8 @@ category: Components - Shows
     margin-right: 0; }
   .podcast__meta h3 {
     margin: 0;
-    clear: both; }
+    clear: both;
+    display: inline-block; }
   .podcast__meta time {
     float: left;
     margin-right: 1em; }
@@ -4761,7 +4762,8 @@ category: Components - Shows
   background-color: #fff;
   border: 1px solid grey;
   color: grey !important;
-  text-transform: none; }
+  text-transform: none;
+  margin-left: 10px; }
 
 .podcast__subscribe {
   margin-left: 5px;
