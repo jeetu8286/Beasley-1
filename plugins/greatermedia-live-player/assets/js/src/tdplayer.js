@@ -160,11 +160,6 @@
 
 	}
 
-
-	if (gmr.logged_in) {
-		$(document).pjax('a:not(.ab-item)', 'div.page-wrap', {'fragment': 'div.page-wrap', 'maxCacheLength': 500, 'timeout' : 5000});
-	}
-
 	function setPlayingStyles() {
 		if ( null === tdContainer ) {
 			// gigya user is logged out, so everythign is different ಠ_ಠ - Should we force login for inline audio as well??

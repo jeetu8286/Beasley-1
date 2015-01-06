@@ -16,168 +16,13 @@ class GreaterMediaFormbuilderRender {
 	const TEXTAREA_SIZE_MEDIUM = '5';
 	const TEXTAREA_SIZE_LARGE = '10';
 
-	private function __construct() {
-		// Use the public static methods. Don't instantiate this class directly.
-	}
-
-	/**
-	 * Register WordPress actions & filters
-	 */
-	public static function register_actions() {
-
-		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-			// Register AJAX handlers
-			add_action( 'wp_ajax_enter_contest', array( __CLASS__, 'process_form_submission' ) );
-			add_action( 'wp_ajax_nopriv_enter_contest', array( __CLASS__, 'process_form_submission' ) );
-		} else {
-			// Register a generic POST handler for if/when there's a fallback from the AJAX method
-			add_action( 'wp', array( __CLASS__, 'process_form_submission' ) );
-		}
-
-		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'wp_enqueue_scripts' ) );
-
-	}
-
-	/**
-	 * Enqueue scripts & styles
-	 * Implements wp_enqueue_scripts action
-	 */
-	public static function wp_enqueue_scripts() {
-
-		wp_enqueue_script( 'parsleyjs' );
-		wp_enqueue_style( 'parsleyjs' );
-		wp_enqueue_script( 'parsleyjs-words' );
-
-		wp_enqueue_script( 'greatermedia-contests', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'js/greatermedia-contests.js', array( 'jquery' ), false, true );
-		$settings = array(
-			'form_class' => self::FORM_CLASS,
-			'ajax_url'   => admin_url( 'admin-ajax.php' ),
-		);
-		wp_localize_script( 'greatermedia-contests', 'GreaterMediaContests', $settings );
-
-		wp_enqueue_script( 'datetimepicker' );
-		wp_enqueue_style( 'datetimepicker' );
-		wp_enqueue_style( 'greatermedia-contests', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'css/greatermedia-contests.css' );
-
-	}
-
-	/**
-	 * @uses do_action
-	 * @uses wp_send_json_success
-	 */
-	public static function process_form_submission() {
-
-		try {
-
-			if ( 'POST' !== strtoupper( $_SERVER['REQUEST_METHOD'] ) ) {
-				throw new InvalidArgumentException( 'Request should be a POST' );
-			}
-
-			if ( ! isset( $_POST['contest_id'] ) ) {
-				throw new InvalidArgumentException( 'Missing contest_id' );
-			}
-
-			$contest_id = absint( $_POST['contest_id'] );
-			if ( empty( $contest_id ) ) {
-				throw new InvalidArgumentException( 'Invalid contest_id' );
-			}
-
-			$contest = get_post( $contest_id );
-			if ( empty( $contest ) ) {
-				throw new InvalidArgumentException( 'No contest found with given ID' );
-			}
-
-			if ( 'contest' !== $contest->post_type ) {
-				throw new InvalidArgumentException( 'contest_id does not reference a contest' );
-			}
-
-			list( $entrant_reference, $entrant_name ) = self::entrant_id_and_name();
-
-
-			// Pretty sure this is our form submission at this point
-			$form = json_decode( get_post_meta( $contest_id, 'embedded_form', true ) );
-			if ( empty( $form ) ) {
-				throw new InvalidArgumentException( 'Contest is missing an embedded form' );
-			}
-
-			$submitted_values = array();
-			$submitted_files  = array(
-				'images' => array(),
-				'other'  => array(),
-			);
-			foreach ( $form as $field ) {
-
-				$post_array_key = 'form_field_' . $field->cid;
-
-				if ( 'file' === $field->field_type ) {
-
-					if ( isset( $_FILES[ $post_array_key ] ) ) {
-						$file_type_index                                        = self::file_type_index( $_FILES[ $post_array_key ]['tmp_name'] );
-						$submitted_files[ $file_type_index ][ $post_array_key ] = $_FILES[ $post_array_key ];
-					}
-
-				} else if ( isset( $_POST[ $post_array_key ] ) ) {
-
-					if ( is_scalar( $_POST[ $post_array_key ] ) ) {
-						$submitted_values[ $field->cid ] = sanitize_text_field( $_POST[ $post_array_key ] );
-					} else if ( is_array( $_POST[ $post_array_key ] ) ) {
-						$submitted_values[ $field->cid ] = array_map( 'sanitize_text_field', $_POST[ $post_array_key ] );
-					}
-
-				}
-
-			}
-
-			$entry = GreaterMediaContestEntryEmbeddedForm::create_for_data(
-				$contest_id,
-				$entrant_name,
-				$entrant_reference,
-				GreaterMediaContestEntry::ENTRY_SOURCE_EMBEDDED_FORM,
-				json_encode( $submitted_values )
-			);
-
-			$entry->save();
-
-			self::handle_submitted_files( $submitted_files, $entry );
-
-			do_action( 'greatermedia_contest_entry_save', $entry );
-
-			if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-				$response          = new stdClass();
-				$response->message = get_post_meta( $contest_id, 'form-thankyou', true );
-				wp_send_json_success( $response );
-				exit();
-			} else {
-
-				/**
-				 * If we've fallen back to an old-school non-AJAX POST,
-				 * use a constant to communicate status to the rendering function
-				 * since this class isn't meant to be instantiated.
-				 */
-				define( 'CONTEST_' . $contest_id . '_SUCCESS', true );
-
-			}
-
-		} catch ( InvalidArgumentException $e ) {
-
-			if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-				$response          = new stdClass();
-				$response->message = $e->getMessage();
-				wp_send_json_error( $response );
-				exit();
-			} else {
-				return;
-			}
-
-		}
-
-	}
+	private static $_entries = array();
 
 	/**
 	 * Retrieve a custom list of HTML tags & attributes we're allowing in a rendered form
 	 * @return array valid tags
 	 */
-	protected static function allowed_tags() {
+	public static function allowed_tags() {
 
 		static $tags;
 		if ( ! isset( $tags ) ) {
@@ -186,6 +31,7 @@ class GreaterMediaFormbuilderRender {
 
 			$tags['fieldset'] = array();
 			$tags['hr']       = array();
+			$tags['abbr']     = array( 'title' => 1 );
 
 			// Add form tags
 			$tags['input'] = array(
@@ -263,77 +109,99 @@ class GreaterMediaFormbuilderRender {
 		return $tags;
 	}
 
-	/**
-	 * Render a form attached to a given post
-	 *
-	 * @param int    $post_id Post ID
-	 * @param string $form    JSON-encoded form data
-	 *
-	 * @uses render_text
-	 */
-	public static function render( $post_id, $form ) {
+	public static function parse_entry( $contest_id, $entry_id ) {
+		if ( isset( self::$_entries[ $contest_id ][ $entry_id ] ) ) {
+			return self::$_entries[ $contest_id ][ $entry_id ];
+		}
 
-		$html = '';
+		if ( ! isset( self::$_entries[ $contest_id ] ) ) {
+			self::$_entries[ $contest_id ] = array();
+		}
 
-		if ( ! is_numeric( $post_id ) ) {
-			throw new InvalidArgumentException( '$post_id must be an integer post ID' );
+		$form = get_post_meta( $contest_id, 'embedded_form', true );
+		if ( empty( $form ) ) {
+			return array();
 		}
 
 		if ( is_string( $form ) ) {
 			$clean_form = trim( $form, '"' );
-			$form       = json_decode( $clean_form );
+			$form = json_decode( $clean_form );
 		}
 
-		if ( null === $form ) {
-			throw new InvalidArgumentException( '$form parameter is invalid' );
+		$contest_entry = get_post_meta( $entry_id, 'entry_reference', true );
+		if ( empty( $contest_entry ) ) {
+			return array();
 		}
 
-		if ( ! is_array( $form ) ) {
-			throw new InvalidArgumentException( '$form should be a JSON string or an Object' );
-		}
-
-		if ( defined( 'CONTEST_' . $post_id . '_SUCCESS' ) && 'CONTEST_' . $post_id . '_SUCCESS' ) {
-
-			/**
-			 * Fallback to rendering the thank-you message on the server side.
-			 * This should be OK since a POST won't be cached.
-			 */
-			$html .= '<p>' .
-			         get_post_meta( $post_id, 'form-thankyou', true ) .
-			         '</p>';
-
-		} else {
-
-			$html .= '<form action="" method="post" enctype="multipart/form-data" class="' . esc_attr( self::FORM_CLASS ) . '" data-parsley-validate>' .
-			         '<input type="hidden" name="action" value="enter_contest" />' .
-			         '<input type="hidden" name="contest_id" value="' . absint( $post_id ) . '" />';
-
-			foreach ( $form as $field ) {
-
-				$renderer_method = 'render_' . $field->field_type;
-
-				// Make sure the field type has been implemented/is valid
-				if ( ! method_exists( __CLASS__, $renderer_method ) ) {
-					throw new InvalidArgumentException( sprintf( 'Form field %s has unimplemented field type %s', wp_kses_data( $field->cid ), wp_kses_data( $field->field_type ) ) );
+		$results = array();
+		$contest_entry = @json_decode( $contest_entry, true );
+		foreach ( $form as $field ) {
+			if ( isset( $contest_entry[ $field->cid ] ) ) {
+				if ( $field->field_type != 'radio' ) {
+					$results[ $field->cid ] = array(
+						'type'  => $field->field_type,
+						'label' => $field->label,
+						'value' => $contest_entry[ $field->cid ],
+					);
+				} else {
+					$results[ $field->cid ] = array(
+						'type'  => $field->field_type,
+						'label' => $field->label,
+						'value' => ! empty( $field->field_options->options[ $contest_entry[ $field->cid ] ] )
+							? $field->field_options->options[ $contest_entry[ $field->cid ] ]->label
+							: "",
+					);
 				}
+			}
+		}
 
+		self::$_entries[ $contest_id ][ $entry_id ] = $results;
+
+		return self::$_entries[ $contest_id ][ $entry_id ];
+	}
+
+	/**
+	 * Render a form attached to a given post
+	 *
+	 * @param int $post_id Post ID
+	 */
+	public static function render( $post_id ) {
+
+		$form = get_post_meta( $post_id, 'embedded_form', true );
+		if ( empty( $form ) ) {
+			return;
+		}
+		
+		if ( is_string( $form ) ) {
+			$clean_form = trim( $form, '"' );
+			$form = json_decode( $clean_form );
+		}
+
+		$html = '<h3 class="contest__form--heading">Enter Here to Win</h3>';
+		$html .= '<form method="post" enctype="multipart/form-data" class="' . esc_attr( self::FORM_CLASS ) . '" data-parsley-validate>';
+
+		foreach ( $form as $field ) {
+
+			$renderer_method = 'render_' . $field->field_type;
+
+			// Make sure the field type has been implemented/is valid
+			if ( method_exists( __CLASS__, $renderer_method ) ) {
 				$html .= '<div class="contest__form--row">';
 				$html .= wp_kses( self::$renderer_method( $post_id, $field ), self::allowed_tags() );
 				$html .= '</div>';
-
 			}
-
-			$submit_text = get_post_meta( $post_id, 'form-submitbutton', true );
-			if ( empty( $submit_text ) ) {
-				// If you change this string, be sure to get all the places it's used in this class
-				$submit_text = __( 'Submit', 'greatermedia_contests' );
-			}
-
-			$html .= self::get_submit_button( $submit_text, null, null, true );
-
-			$html .= '</form>';
 
 		}
+
+		$submit_text = get_post_meta( $post_id, 'form-submitbutton', true );
+		if ( empty( $submit_text ) ) {
+			// If you change this string, be sure to get all the places it's used in this class
+			$submit_text = __( 'Submit', 'greatermedia_contests' );
+		}
+
+		$html .= self::get_submit_button( $submit_text, null, null, true );
+
+		$html .= '</form>';
 
 		echo $html;
 
@@ -346,7 +214,7 @@ class GreaterMediaFormbuilderRender {
 	 *
 	 * @return string html
 	 */
-	protected static function render_label( stdClass $field ) {
+	public static function render_label( stdClass $field ) {
 
 		$html = '';
 
@@ -357,7 +225,7 @@ class GreaterMediaFormbuilderRender {
 			'class' => 'contest__form--label'
 		);
 
-		$label = ( isset( $field->label ) ) ? $field->label : '';
+		$label = ( isset( $field->label ) ) ? esc_html( $field->label ) : '';
 
 		// Give the theme a chance to alter the attributes for the input field
 		$label_tag_attributes = apply_filters( 'gm_form_text_label_attrs', $label_tag_attributes );
@@ -367,13 +235,17 @@ class GreaterMediaFormbuilderRender {
 
 		if ( ! empty( $label ) ) {
 
+			if ( ! empty( $field->required ) ) {
+				$label .= ' <abbr title="required">*</abbr>';
+			}
+			
 			$html .= '<label ';
 
 			foreach ( $label_tag_attributes as $attribute => $value ) {
 				$html .= wp_kses_data( $attribute ) . '="' . esc_attr( $value ) . '" ';
 			}
 
-			$html .= '>' . wp_kses_data( $label ) . '</label>';
+			$html .= '>' . $label . '</label>';
 
 		}
 
@@ -387,7 +259,7 @@ class GreaterMediaFormbuilderRender {
 	 *
 	 * @return string html
 	 */
-	protected static function render_legend( stdClass $field ) {
+	public static function render_legend( stdClass $field ) {
 
 		$html = '';
 
@@ -417,7 +289,7 @@ class GreaterMediaFormbuilderRender {
 
 	}
 
-	protected static function render_description( stdClass $field ) {
+	public static function render_description( stdClass $field ) {
 
 		$html = '';
 
@@ -453,7 +325,7 @@ class GreaterMediaFormbuilderRender {
 	 *
 	 * @return string HTML
 	 */
-	protected static function render_text( $post_id, stdClass $field ) {
+	public static function render_text( $post_id, stdClass $field ) {
 
 		$special_attributes = array();
 
@@ -494,7 +366,7 @@ class GreaterMediaFormbuilderRender {
 	 *
 	 * @return string HTML
 	 */
-	protected static function render_paragraph( $post_id, stdClass $field ) {
+	public static function render_paragraph( $post_id, stdClass $field ) {
 
 		$html     = '';
 		$field_id = 'form_field_' . $field->cid;
@@ -522,6 +394,7 @@ class GreaterMediaFormbuilderRender {
 			$html .= wp_kses_data( $attribute ) . '="' . esc_attr( $value ) . '" ';
 		}
 		$html .= ' >';
+		$html .= esc_textarea( get_gigya_user_contest_data( $field->cid ) );
 		$html .= '</textarea>';
 
 		$html .= self::render_description( $field );
@@ -538,11 +411,12 @@ class GreaterMediaFormbuilderRender {
 	 *
 	 * @return string html
 	 */
-	protected static function render_dropdown( $post_id, stdClass $field ) {
+	public static function render_dropdown( $post_id, stdClass $field ) {
 
 		$html = '';
 
 		$field_id = 'form_field_' . $field->cid;
+		$field_value = get_gigya_user_contest_data( $field->cid, null );
 
 		$select_tag_attributes = array(
 			'id'   => $field_id,
@@ -570,7 +444,11 @@ class GreaterMediaFormbuilderRender {
 		}
 
 		foreach ( $field->field_options->options as $option_index => $option_data ) {
-			$html .= '<option value="' . esc_attr( $option_data->label ) . '" ' . selected( 1, $option_data->checked, false ) . '>' . wp_kses_data( $option_data->label ) . '</option>';
+			$selected = is_null( $field_value )
+				? selected( $option_data->checked, 1, false )
+				: selected( $option_data->label, $field_value, false );
+			
+			$html .= '<option value="' . esc_attr( $option_data->label ) . '"' . $selected . '>' . wp_kses_data( $option_data->label ) . '</option>';
 		}
 
 		$html .= '</select>';
@@ -581,11 +459,11 @@ class GreaterMediaFormbuilderRender {
 
 	}
 
-	protected static function render_radio( $post_id, stdClass $field ) {
+	public static function render_radio( $post_id, stdClass $field ) {
 		return self::render_checkboxes( $post_id, $field, 'radio' );
 	}
 
-	protected static function render_checkboxes( $post_id, stdClass $field, $input_type = 'checkbox' ) {
+	public static function render_checkboxes( $post_id, stdClass $field, $input_type = 'checkbox' ) {
 
 		$html = '';
 
@@ -594,15 +472,13 @@ class GreaterMediaFormbuilderRender {
 		$html .= self::render_legend( $field );
 
 		if ( isset( $field->field_options->options ) && is_array( $field->field_options->options ) ) {
+			$multiple_choices = $input_type == 'checkbox' && count( $field->field_options->options ) > 1;
 			foreach ( $field->field_options->options as $field_option_index => $field_option_data ) {
-
-				$html .= self::render_single_checkbox( $field->cid, $field_option_index, $field_option_data, $input_type );
-
+				$html .= self::render_single_checkbox( $field->cid, $field_option_index, $field_option_data, $input_type, $multiple_choices );
 			}
 		}
 
 		if ( isset( $field->field_options->include_other_option ) && true == $field->field_options->include_other_option ) {
-
 			$other_option_data = new stdClass();
 
 			$other_option_data->label   = __( 'Other', 'greatermedia_contests' );
@@ -610,7 +486,6 @@ class GreaterMediaFormbuilderRender {
 			$other_option_data->other   = true;
 
 			$html .= self::render_single_checkbox( $field->cid, 'other', $other_option_data, $input_type );
-
 		}
 
 		$html .= self::render_description( $field );
@@ -629,7 +504,7 @@ class GreaterMediaFormbuilderRender {
 	 *
 	 * @return string html
 	 */
-	protected static function render_date( $post_id, stdClass $field ) {
+	public static function render_date( $post_id, stdClass $field ) {
 		return self::render_input_tag( 'date', $post_id, $field );
 	}
 
@@ -641,7 +516,7 @@ class GreaterMediaFormbuilderRender {
 	 *
 	 * @return string html
 	 */
-	protected static function render_time( $post_id, stdClass $field ) {
+	public static function render_time( $post_id, stdClass $field ) {
 		return self::render_input_tag( 'time', $post_id, $field );
 	}
 
@@ -653,7 +528,7 @@ class GreaterMediaFormbuilderRender {
 	 *
 	 * @return string html
 	 */
-	protected static function render_website( $post_id, stdClass $field ) {
+	public static function render_website( $post_id, stdClass $field ) {
 		return self::render_input_tag( 'url', $post_id, $field );
 	}
 
@@ -665,11 +540,11 @@ class GreaterMediaFormbuilderRender {
 	 *
 	 * @return string html
 	 */
-	protected static function render_email( $post_id, stdClass $field ) {
+	public static function render_email( $post_id, stdClass $field ) {
 		return self::render_input_tag( 'email', $post_id, $field );
 	}
 
-	protected static function render_price( $post_id, stdClass $field ) {
+	public static function render_price( $post_id, stdClass $field ) {
 
 		$special_attributes = array(
 			'step'    => '0.01',
@@ -687,7 +562,7 @@ class GreaterMediaFormbuilderRender {
 	 *
 	 * @return string html
 	 */
-	protected static function render_address( $post_id, stdClass $field ) {
+	public static function render_address( $post_id, stdClass $field ) {
 
 		$html = '';
 
@@ -714,6 +589,9 @@ class GreaterMediaFormbuilderRender {
 		$state_field->cid .= '[state]';
 		$state_field->label = 'State';
 		unset( $state_field->field_options->description );
+		if ( empty( $state_field->field_options ) ) {
+			$state_field->field_options = new stdClass();
+		}
 		$state_field->field_options->options = self::get_us_states();
 		$html .= self::render_dropdown( $post_id, $state_field );
 
@@ -745,7 +623,7 @@ class GreaterMediaFormbuilderRender {
 	 *
 	 * @return string html
 	 */
-	protected static function render_file( $post_id, stdClass $field ) {
+	public static function render_file( $post_id, stdClass $field ) {
 
 		$special_attributes = array(
 			'accept' => "image/*",
@@ -765,7 +643,7 @@ class GreaterMediaFormbuilderRender {
 	 *
 	 * @return string html
 	 */
-	protected static function render_input_tag( $type = 'text', $post_id, stdClass $field, Array $special_attributes = null ) {
+	public static function render_input_tag( $type, $post_id, $field, $special_attributes = null ) {
 
 		if ( null === $special_attributes ) {
 			$special_attributes = array();
@@ -778,9 +656,10 @@ class GreaterMediaFormbuilderRender {
 		$field_id = 'form_field_' . $field->cid;
 
 		$input_tag_attributes = array_merge( $special_attributes, array(
-			'id'   => $field_id,
-			'name' => $field_id,
-			'type' => $type,
+			'id'    => $field_id,
+			'name'  => $field_id,
+			'type'  => $type,
+			'value' => get_gigya_user_contest_data( $field->cid ),
 		) );
 
 		if ( isset( $field->required ) && $field->required ) {
@@ -894,7 +773,7 @@ class GreaterMediaFormbuilderRender {
 	 *
 	 * @return string HTML
 	 */
-	protected static function get_submit_button( $text = null, $type = 'primary large', $name = 'submit', $wrap = true, $other_attributes = null ) {
+	public static function get_submit_button( $text = null, $type = 'primary large', $name = 'submit', $wrap = true, $other_attributes = null ) {
 		if ( ! is_array( $type ) ) {
 			$type = explode( ' ', $type );
 		}
@@ -931,8 +810,7 @@ class GreaterMediaFormbuilderRender {
 			$attributes = $other_attributes;
 		}
 
-		$button = '<input type="submit" name="' . esc_attr( $name ) . '" id="' . esc_attr( $id ) . '" class="' . esc_attr( $class );
-		$button .= '" value="' . esc_attr( $text ) . '" ' . $attributes . ' />';
+		$button = '<button type="submit" name="' . esc_attr( $name ) . '" id="' . esc_attr( $id ) . '" class="' . esc_attr( $class ) . '" ' . $attributes . '><i class="fa fa-spinner fa-spin"></i> ' . esc_attr( $text ) . '</button>';
 
 		if ( $wrap ) {
 			$button = '<p class="submit">' . $button . '</p>';
@@ -949,11 +827,7 @@ class GreaterMediaFormbuilderRender {
 	 *
 	 * @return string
 	 */
-	protected static function render_single_checkbox( $cid, $field_option_index, stdClass $field_option_data, $input_type ) {
-
-		if ( 'checkbox' !== $input_type && 'radio' !== $input_type ) {
-			throw new InvalidArgumentException( 'Input type must be checkbox or radio' );
-		}
+	public static function render_single_checkbox( $cid, $field_option_index, stdClass $field_option_data, $input_type, $multiple_choices = false ) {
 
 		$html = '';
 
@@ -961,7 +835,7 @@ class GreaterMediaFormbuilderRender {
 
 		$input_tag_attributes = array(
 			'id'    => $field_id,
-			'name'  => 'form_field_' . $cid . '[]',
+			'name'  => 'form_field_' . $cid . ( $multiple_choices ? '[]' : '' ),
 			'type'  => $input_type,
 			'value' => $field_option_index,
 		);
@@ -987,17 +861,19 @@ class GreaterMediaFormbuilderRender {
 
 		$html .= '<div>';
 
-		$html .= '<input ';
-		foreach ( $input_tag_attributes as $attribute => $value ) {
-			$html .= wp_kses_data( $attribute ) . '="' . esc_attr( $value ) . '" ';
-		}
-		$html .= ' />';
-
 		$html .= '<label ';
 		foreach ( $label_tag_attributes as $attribute => $value ) {
 			$html .= wp_kses_data( $attribute ) . '="' . esc_attr( $value ) . '" ';
 		}
-		$html .= '>' . $label . '</label>';
+		$html .= '>';
+
+		$html .= '<input ';
+		foreach ( $input_tag_attributes as $attribute => $value ) {
+			$html .= wp_kses_data( $attribute ) . '="' . esc_attr( $value ) . '" ';
+		}
+		$html .= '> ';
+
+		$html .= $label . '</label>';
 
 		if ( isset( $field_option_data->other ) && $field_option_data->other ) {
 
@@ -1028,7 +904,7 @@ class GreaterMediaFormbuilderRender {
 	 *
 	 * @return array abbreviation => stdClass(), where value is an option for rendering by render_dropdown()
 	 */
-	protected static function get_us_states() {
+	public static function get_us_states() {
 
 		static $state_data;
 
@@ -1103,40 +979,6 @@ class GreaterMediaFormbuilderRender {
 	}
 
 	/**
-	 * Get Gigya ID and build name, from Gigya session data if available
-	 *
-	 * @return array
-	 */
-	protected static function entrant_id_and_name() {
-
-		if ( class_exists( 'GreaterMedia\Gigya\GigyaSession' ) ) {
-
-			$gigya_session = \GreaterMedia\Gigya\GigyaSession::get_instance();
-			$gigya_id      = $gigya_session->get_user_id();
-			if ( ! empty( $gigya_id ) ) {
-
-				$entrant_reference = $gigya_id;
-				$entrant_name      = $gigya_session->get_key( 'firstName' ) . ' ' . $gigya_session->get_key( 'lastName' );
-
-			} else {
-
-				$entrant_name      = 'Anonymous Listener';
-				$entrant_reference = null;
-
-			}
-
-		} else {
-
-			$entrant_name      = 'Anonymous Listener';
-			$entrant_reference = null;
-
-		}
-
-		return array( $entrant_reference, $entrant_name );
-
-	}
-
-	/**
 	 * Set the appropriate attributes for character/word restrictions on a paragraph form field
 	 *
 	 * @param stdClass $field
@@ -1144,7 +986,7 @@ class GreaterMediaFormbuilderRender {
 	 *
 	 * @return array
 	 */
-	protected static function paragraph_length_restriction_attributes( stdClass $field, array $textarea_tag_attributes ) {
+	public static function paragraph_length_restriction_attributes( stdClass $field, array $textarea_tag_attributes ) {
 
 		if ( isset( $field->field_options->min_max_length_units ) && 'words' === $field->field_options->min_max_length_units ) {
 
@@ -1183,7 +1025,7 @@ class GreaterMediaFormbuilderRender {
 	 * @return array
 	 * @throws InvalidArgumentException
 	 */
-	protected static function paragraph_field_size_attributes( stdClass $field, array $textarea_tag_attributes ) {
+	public static function paragraph_field_size_attributes( stdClass $field, array $textarea_tag_attributes ) {
 
 		if ( isset( $field->field_options->size ) ) {
 
@@ -1209,87 +1051,4 @@ class GreaterMediaFormbuilderRender {
 
 	}
 
-	/**
-	 * Identify what type of file an upload is so it can be handled appropriately
-	 *
-	 * @param $filename path to filename
-	 *
-	 * @return string 'images'|'other'
-	 */
-	protected static function file_type_index( $filename ) {
-
-		if ( file_is_valid_image( $filename ) ) {
-			return 'images';
-		} else {
-			return 'other';
-		}
-
-	}
-
-	/**
-	 * @param array                    $submitted_files
-	 * @param GreaterMediaContestEntry $entry
-	 *
-	 * @return GreaterMediaUserGeneratedContent|null
-	 */
-	protected static function handle_submitted_files( array $submitted_files, GreaterMediaContestEntry $entry ) {
-
-		/**
-		 * Ignoring the "other" files per GMR-343
-		 * "There's no reason for Contest or Survey upload fields to allow any filetypes other than images. Aside
-		 * from security considerations, it also becomes much more complex to manage user generated content if it's
-		 * anything beside photos."
-		 */
-		if ( empty( $submitted_files['images'] ) ) {
-
-			// No need to create UGC
-			return null;
-
-		} elseif ( 1 === count( $submitted_files['images'] ) ) {
-
-			// Single image. Create a GreaterMediaUserGeneratedImage.
-			$ugc                    = GreaterMediaUserGeneratedContent::for_data_type( 'image' );
-			$ugc->post->post_parent = $entry->post_id();
-			$ugc_post_id            = $ugc->save();
-
-			$upload_field = array_keys( $submitted_files['images'] )[0];
-			$upload_data  = array_values( $submitted_files['images'] )[0];
-
-			$attachment_id = media_handle_upload(
-				$upload_field,
-				$ugc_post_id
-			);
-
-			$ugc->post->post_content = wp_get_attachment_image( $attachment_id, 'full' );
-
-			$ugc->save();
-
-		} else {
-
-			// Multiple images. Create a GreaterMediaUserGeneratedGallery.
-			$ugc                    = GreaterMediaUserGeneratedContent::for_data_type( 'gallery' );
-			$ugc->post->post_parent = $entry->post_id();
-			$ugc_post_id            = $ugc->save();
-
-			$attachment_ids = array();
-			foreach($submitted_files['images'] as $upload_field => $upload_data) {
-
-				$attachment_ids[] = media_handle_upload(
-					$upload_field,
-					$ugc_post_id
-				);
-			}
-
-			$ugc->post->post_content = '[gallery ids="' . implode( ',', $attachment_ids ) . '"]';
-
-			$ugc->save();
-
-		}
-
-		return $ugc;
-
-	}
-
 }
-
-GreaterMediaFormbuilderRender::register_actions();
