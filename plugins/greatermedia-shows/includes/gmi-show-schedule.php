@@ -494,7 +494,7 @@ function gmrs_show_color( $show_id, $opacity ) {
  */
 function gmrs_get_current_show_episode( $time = false ) {
 	if ( ! $time ) {
-		$time = time();
+		$time = current_time( 'timestamp', 1 );
 	}
 	
 	$query = new WP_Query();
@@ -538,6 +538,25 @@ function gmrs_get_current_show() {
 	}
 
 	return null;
+}
+
+/**
+ * Determines whether the episode is on air or not.
+ *
+ * @param WP_Post $episode The episode object.
+ * @return boolean TRUE if the episode is on air, otherwise FALSE.
+ */
+function gmrs_is_episode_onair( WP_Post $episode ) {
+	$started = strtotime( $episode->post_date_gmt );
+	$interval = $episode->menu_order;
+	if ( empty( $started ) || empty( $interval ) ) {
+		return false;
+	}
+
+	$current_time = current_time( 'timestamp', 1 );
+	$ended = $started + $interval;
+	
+	return $started <= $current_time && $current_time <= $ended;
 }
 
 /**

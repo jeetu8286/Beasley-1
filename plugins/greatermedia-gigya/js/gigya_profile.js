@@ -310,6 +310,11 @@
 						this.controller.redirect('/');
 						return;
 					}
+				} else {
+					if (currentPage === 'account') {
+						this.controller.redirect('/members/login?dest=%2Fmembers%2Faccount');
+						return;
+					}
 				}
 
 				this.screenSetView = new GigyaScreenSetView(
@@ -341,10 +346,10 @@
 		getCurrentScreenSet: function() {
 			switch (this.getCurrentPage()) {
 				case 'account':
-					return 'GMR-ProfileUpdate';
+					return this.config.gigya_account_screenset;
 
 				default:
-					return 'GMR-RegistrationLogin';
+					return this.config.gigya_auth_screenset;
 			}
 		}
 
