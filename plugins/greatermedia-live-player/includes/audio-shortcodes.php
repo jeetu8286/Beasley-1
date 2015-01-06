@@ -81,11 +81,12 @@ class GMR_Audio_Shortcodes {
 		$new_html .= '<time datetime="' . get_the_time( 'c' ) . '">' . get_the_time( 'd F' ) . '</time><br/>';
 		$new_html .= '<h3>' . get_the_title() . '</h3>';
 		if( $parent_podcast_id && is_singular( ShowsCPT::SHOW_CPT ) ) {
-			$new_html .= '<a href="' . get_permalink( $parent_podcast_id ) . '" target="_blank">'. $parent_podcast->post_title .'</a>';
+			$new_html .= '<p>'. $parent_podcast->post_title;
 			if( $itunes_url != '' ) {
 				$new_html .= '<a class="podcast__subscribe" href="' . esc_url( $itunes_url ) . '" target="_blank">Subscribe</a>';
 			}
 			$new_html .= '<a href="' . $feed_url . '" target="_blank"><span class="dashicons dashicons-rss"></span></a>';
+			$new_html .= '</p>';
 		}
 		$new_html .= '<p>' . get_the_excerpt() . '</p>' ;
 		$new_html .= '</div>';
