@@ -5106,7 +5106,9 @@ category: Components - Shows
       .show__feature--desc h3 {
         font-size: 1.125em; }
       .show__feature--primary .show__feature--desc h3 {
-        font-size: 2.02729em; } }
+        font-size: 2.02729em; }
+      .show__feature--desc time {
+        font-size: 0.88889em; } }
 
 /*doc
 ---
