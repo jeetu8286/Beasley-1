@@ -8,8 +8,8 @@ module.exports = function (grunt) {
 				stripBanners: true,
 				banner: '/*! <%= pkg.title %> - v<%= pkg.version %>\n' +
 						' * <%= pkg.homepage %>\n' +
-						' * Copyright (c) <%= grunt.template.today("yyyy") %>;' +
-						' * Licensed GPLv2+' +
+						' * Copyright (c) <%= grunt.template.today("yyyy") %>;\n' +
+						' * Licensed GPLv2+\n' +
 						' */\n'
 			},
 			frontend_contest: {
@@ -91,8 +91,8 @@ module.exports = function (grunt) {
 				options: {
 					banner: '/*! <%= pkg.title %> - v<%= pkg.version %>\n' +
 							' * <%= pkg.homepage %>\n' +
-							' * Copyright (c) <%= grunt.template.today("yyyy") %>;' +
-							' * Licensed GPLv2+' +
+							' * Copyright (c) <%= grunt.template.today("yyyy") %>;\n' +
+							' * Licensed GPLv2+\n' +
 							' */\n',
 					mangle: {
 						except: ['jQuery']
