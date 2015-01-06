@@ -88,9 +88,7 @@ class GreaterMediaSurveys {
 			'can_export'          => true,
 			'rewrite'             => true,
 			'capability_type'     => 'post',
-			'supports'            => array(
-				'title', 'editor'
-			)
+			'supports'            => array( 'title', 'editor', 'thumbnail' ),
 		);
 
 		register_post_type( GMR_SURVEY_CPT, $args );
