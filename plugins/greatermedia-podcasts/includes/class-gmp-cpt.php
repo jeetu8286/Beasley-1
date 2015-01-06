@@ -92,7 +92,9 @@ class GMP_CPT {
 
 		register_taxonomy( 'keywords', array( self::EPISODE_POST_TYPE ), array( 'hierarchical' => false , 'label' => 'Keywords' , 'singular_label' => 'Keyword' , 'rewrite' => true) );
 
-		TDS\add_relationship( self::PODCAST_POST_TYPE, 'series' );
+		if( taxonomy_exists( 'series' ) ) {
+			TDS\add_relationship( self::PODCAST_POST_TYPE, 'series' );
+		}
 	}
 
 	/**

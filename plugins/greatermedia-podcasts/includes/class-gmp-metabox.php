@@ -24,7 +24,7 @@ class GMP_Meta {
 	 */
 	public function add_meta_box( $post_type ) {
 
-		$post_types = array( 'episode' );
+		$post_types = array( GMP_CPT::PODCAST_POST_TYPE );
 
 		if ( in_array( $post_type, $post_types ) ) {
 			add_meta_box(
@@ -62,14 +62,10 @@ class GMP_Meta {
 		}
 
 		/* OK, its safe for us to save the data now. */
-		$checked = sanitize_text_field( $_POST[ 'gmp_audio_downloadable' ] );
-
-		if( $checked != 'on' ) {
-			$checked = 'off';
-		}
+		$itunes_url = esc_url_raw( $_POST[ 'gmp_podcast_itunes_url' ] );
 
 		// Sanitize and save the user input.
-		update_post_meta( $post_id, 'gmp_audio_downloadable', esc_attr( $checked ) );
+		update_post_meta( $post_id, 'gmp_podcast_itunes_url', esc_url( $itunes_url ) );
 	}
 
 	/**
@@ -83,22 +79,15 @@ class GMP_Meta {
 		wp_nonce_field( 'gmp_episodes_meta_box', 'gmp_episodes_meta_box_nonce' );
 
 		// Use get_post_meta to retrieve an existing value from the database.
-		$gmp_file = get_post_meta( $post->ID, 'gmp_audio_downloadable', true );
-
-		// if no post meta set downloadable this is done for import script
-		if( $gmp_file == 'off' ) {
-			$checked = '';
-		} else {
-			$checked = 'checked';
-		}
+		$itunes_url = esc_url_raw( get_post_meta( $post->ID, 'gmp_podcast_itunes_url', true ) );
 
 		?>
 
 		<div class="gmp-meta-row">
 			<div class="gmp-meta-row-content gmp-upload">
 				<div id="gmp-audio-location">
-					<label for="gmp_audio_downloadable" class="gmp-meta-row-label"><?php _e( 'Downloadable:', 'gmpodcasts' ); ?></label>
-					<input type="checkbox" id="gmp_audio_downloadable" name="gmp_audio_downloadable" <?php echo $checked; ?>/>
+					<label for="gmp_podcast_itunes_url" class="gmp-meta-row-label"><?php _e( 'iTunes Feed URL:', 'gmpodcasts' ); ?></label>
+					<input type="text" id="gmp_podcast_itunes_url" name="gmp_podcast_itunes_url" value="<?php echo esc_url( $itunes_url ); ?>"/>
 				</div>
 			</div>
 		</div>
@@ -114,12 +103,11 @@ class GMP_Meta {
 
 		$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 
-		wp_enqueue_media();
-		wp_enqueue_script( 'gmp-admin-js', GMPODCASTS_URL . "/assets/js/gmp_admin{$postfix}.js", array( 'jquery' ), GMPODCASTS_VERSION, true );
+		/*wp_enqueue_media();
+		wp_enqueue_script( 'gmp-admin-js', GMPODCASTS_URL . "/assets/js/gmp_admin{$postfix}.js", array( 'jquery' ), GMPODCASTS_VERSION, true );*/
 		wp_enqueue_style( 'gmp-admin-style', GMPODCASTS_URL . "/assets/css/gmp_admin{$postfix}.css", array(), GMPODCASTS_VERSION );
-
 	}
 
 }
 
-//$GMP_Meta = new GMP_Meta();
+$GMP_Meta = new GMP_Meta();
