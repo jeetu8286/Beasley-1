@@ -4764,6 +4764,7 @@ category: Components - Shows
   text-transform: none; }
 
 .podcast__subscribe {
+  margin-left: 5px;
   text-transform: none; }
 
 .show-attr--name {
