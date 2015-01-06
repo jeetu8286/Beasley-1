@@ -1024,11 +1024,13 @@
 	};
 
 	var playCustomInlineAudio = function( src ) {
+		pjaxInit();
 		setInlineAudioSrc( src );
 		resumeCustomInlineAudio();
 	};
 
 	var pauseCustomInlineAudio = function() {
+		pjaxStop();
 		customAudio.pause();
 		resetInlineAudioStates();
 		setPausedStyles();
@@ -1038,6 +1040,7 @@
 	Same as pausing, but sets the "Playing" state to false, to allow resuming live player audio
 	 */
 	var stopCustomInlineAudio = function() {
+		pjaxStop();
 		customAudio.pause();
 		resetInlineAudioStates();
 		playingCustomAudio = false;
@@ -1119,6 +1122,32 @@
 			$meFallbacks.mediaelementplayer();
 			$customInterfaces.hide();
 		}
+	}
+
+	function pjaxInit() {
+		if (is_gigya_user_logged_in()) {
+			if ($.support.pjax) {
+				$(document).pjax('a:not(.ab-item)', '.main', {
+					'fragment': '.main',
+					'maxCacheLength': 500,
+					'timeout': 5000
+				});
+			}
+		} else if (gmlp.logged_in) {
+			if ($.support.pjax) {
+				$(document).pjax('a:not(.ab-item)', '.page-wrap', {
+					'fragment': '.page-wrap',
+					'maxCacheLength': 500,
+					'timeout': 5000
+				});
+			}
+		}
+	}
+
+	function pjaxStop() {
+		$(document).on('pjax:click', function(event) {
+			event.preventDefault()
+		});
 	}
 
 	initCustomAudioPlayer();
