@@ -138,12 +138,9 @@ category: Components - Shows
 	@include fill-parent;
 	height: 100%;
 
-	@include bp(medium) {
-		@include span-columns(4 of 12);
-	}
-
 	@include bp(large) {
-		@include span-columns(2 of 12);
+		width: 150px;
+		float: left;
 	}
 
 	img {
@@ -162,11 +159,6 @@ category: Components - Shows
 	}
 
 	ul {
-		position: absolute;
-		width: 100%;
-		text-align: center;
-		left: 0;
-		top: 100%;
 		display: none;
 	}
 
@@ -205,26 +197,18 @@ category: Components - Shows
 
 	}
 
-	@include bp(medium) {
-		padding-left: 4em;
+	@include bp(large) {
+		width: 55%;
+		float: left;
+		margin-top: 1.5em;
 		text-align: left;
-		@include span-columns(8 of 12);
-		@include omega;
+		padding-left: 2em;
 
 		.show__title {
 			margin-top: 0;
 			margin-bottom: 0.6em;
 		}
 
-		ul {
-			top: 47%;
-			display: inline-block;
-		}
-	}
-
-
-	@include bp(large) {
-		@include span-columns(6 of 12);
 
 		ul {
 			list-style-type: none;
@@ -234,6 +218,7 @@ category: Components - Shows
 			margin-left: -9px;
 			position: relative;
 			width: auto;
+			display: inline-block;
 		}
 
 		// this psuedo element makes the text-align: justify work on the <ul>. via: http://stackoverflow.com/a/16901348
@@ -285,19 +270,14 @@ category: Components - Shows
 
 .show__meta {
 	@include fill-parent;
-	@include omega;
 	text-align: center;
-
-	@include bp(medium) {
-		@include span-columns(12 of 12);
-		text-align: center;
-		margin-top: 6em;
-	}
+	float: none;
 
 	@include bp(large) {
-		@include span-columns(4 of 12);
+		width: 20%;
+		float: right;
 		text-align: right;
-		margin-top: 0;
+		margin-top: 1.5em;
 	}
 
 	em {
