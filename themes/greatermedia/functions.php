@@ -355,3 +355,26 @@ if ( ! function_exists( 'greatermedia_load_more' ) ) :
 		get_template_part( 'partials/load-more' );
 	}
 endif;
+
+if ( ! function_exists( 'greatermedia_load_more_template' ) ) :
+	/**
+	 * Processes load more requrests.
+	 */
+	function greatermedia_load_more_template() {
+		// do nothing if it is not an ajax request or it is not paged
+		if ( ! filter_input( INPUT_GET, 'ajax', FILTER_VALIDATE_BOOLEAN ) || ! is_paged() ) {
+			return;
+		}
+
+		if ( is_archive() ) {
+			get_template_part( 'partials/loop/archive', get_queried_object()->name );
+			exit;
+		}
+
+		if ( is_front_page() ) {
+			get_template_part( 'partials/loop/front-page' );
+			exit;
+		}
+	}
+endif;
+add_action( 'template_redirect', 'greatermedia_load_more_template' );
