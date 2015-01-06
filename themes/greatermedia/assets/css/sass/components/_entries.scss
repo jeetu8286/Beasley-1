@@ -210,6 +210,10 @@
 .type-tribe_events {
 	.entry2__thumbnail {
 		background: $btn-bg;
+		
+		&:after {
+			background-color: rgba($btn-bg, .6);
+		}
 	}
 	
 	.entry2__thumbnail--event-date {	

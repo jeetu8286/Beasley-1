@@ -3557,6 +3557,8 @@ Link posts contain a link to an external site. They can also optionally have a f
 
 .type-tribe_events .entry2__thumbnail {
   background: #d22228; }
+  .type-tribe_events .entry2__thumbnail:after {
+    background-color: rgba(210, 34, 40, 0.6); }
 .type-tribe_events .entry2__thumbnail--event-date {
   font-size: 1em;
   line-height: 1;
