@@ -22,6 +22,9 @@
 	function bind_events() {
 		var hashChange = false;
 
+		slideshow = $( '.gallery__slide--images.cycle-slideshow' );
+		$slide_paging_previews = $( '.gallery__previews' );
+
 		/**
 		 * Make sure thumbnails are updated before the slideshow cycles.
 		 */
@@ -208,6 +211,7 @@
 		}
 		var url_twitter  = 'http://twitter.com/home?status=' + share_url + '%20-%20' + share_title;
 		var url_facebook = 'http://www.facebook.com/sharer.php?u=' + share_url + '&amp;t=' + share_title;
+		var url_linkedin = '#';
 
 		$( '.gallery-toolbar .fa-twitter' ).attr( 'href', url_twitter );
 		$( '.gallery-toolbar .fa-facebook' ).attr( 'href', url_facebook );
@@ -215,5 +219,9 @@
 	}
 
 	bind_events();
+
+	window.GMR_Gallery = {
+		bindEvents  : bind_events
+	};
 
 })( jQuery, window );
