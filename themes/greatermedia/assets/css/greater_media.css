@@ -3968,7 +3968,7 @@ category: Components
       display: block;
       height: 23px; } }
 
-.live-stream__listen-now--btn, .podcast__download {
+.live-stream__listen-now--btn, .podcast__download, .podcast__subscribe {
   display: inline-block;
   line-height: 1;
   padding: 0.25em 1em;
@@ -3987,11 +3987,11 @@ category: Components
   -o-border-radius: 1em;
   -border-radius: 1em;
   border-radius: 1em; }
-  .live-stream__listen-now--btn:hover, .podcast__download:hover, .live-stream__listen-now--btn:focus, .podcast__download:focus {
+  .live-stream__listen-now--btn:hover, .podcast__download:hover, .podcast__subscribe:hover, .live-stream__listen-now--btn:focus, .podcast__download:focus, .podcast__subscribe:focus {
     background-color: #aa1c20;
     border-color: #aa1c20;
     color: #ffffff; }
-  .live-stream__listen-now--btn:last-of-type, .podcast__download:last-of-type {
+  .live-stream__listen-now--btn:last-of-type, .podcast__download:last-of-type, .podcast__subscribe:last-of-type {
     margin-right: 0; }
 
 .live-stream__now-playing--btn {
@@ -4756,6 +4756,15 @@ category: Components - Shows
   .podcast__meta time {
     float: left;
     margin-right: 1em; }
+
+.podcast__download {
+  background-color: #fff;
+  border: 1px solid grey;
+  color: grey !important;
+  text-transform: none; }
+
+.podcast__subscribe {
+  text-transform: none; }
 
 .show-attr--name {
   position: absolute;
