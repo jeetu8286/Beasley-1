@@ -10,7 +10,7 @@
 		if ( ! empty( $fields ) ) : ?>
 			<dl class="contest__submission--entries">
 				<?php foreach ( $fields as $field ) : ?>
-					<?php if ( 'file' != $field['type'] ) : ?>
+					<?php if ( 'file' != $field['type'] && 'email' != $field['type'] ) : ?>
 						<dt>
 							<?php echo esc_html( $field['label'] ); ?>
 						</dt>
