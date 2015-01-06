@@ -58,7 +58,8 @@
 		scrollObject = {},
 		searchForm = document.getElementById( 'header__search--form'),
 		searchBtn = document.getElementById( 'header__search'),
-		searchInput = document.getElementById( 'header-search');
+		searchInput = document.getElementById( 'header-search'),
+		collapseToggle = document.querySelector('*[data-toggle="collapse"]');
 
 	/**
 	 * global variables for event types to use in conjunction with `addEventHandler` function
@@ -219,7 +220,29 @@
 		body.classList.toggle( 'mobile-nav--open' );
 	}
 	addEventHandler(mobileNavButton,elemClick,toggleNavButton);
-	
+
+	/**
+	 * Toggles a target element.
+	 * 
+	 * @param {MouseEvent} e
+	 */
+	function toggleCollapsedElement(e) {
+		var target = document.querySelector(this.getAttribute('data-target')),
+			currentText = this.innerText,
+			newText = this.getAttribute('data-alt-text');
+
+		e.preventDefault();
+
+		target.style.display = target.style.display != 'none' ? 'none' : 'block';
+
+		this.innerText = newText;
+		this.setAttribute('data-alt-text', currentText);
+	}
+	if (collapseToggle != null) {
+		addEventHandler(collapseToggle, elemClick, toggleCollapsedElement);
+	}
+
+
 	/**
 	 * Toggles a class to the Live Play Stream Select box when the box is clicked
 	 */
@@ -340,8 +363,9 @@
 	 *
 	 * @param e
 	 */
-	function showSearch() {
+	function showSearch(e) {
 		if (searchForm !== null) {
+			e.preventDefault();
 			searchForm.classList.toggle('header__search--open');
 			searchInput.focus();
 		}
@@ -352,8 +376,9 @@
 	 *
 	 * @param e
 	 */
-	function closeSearch() {
+	function closeSearch(e) {
 		if (searchForm !== null && searchForm.classList.contains('header__search--open')) {
+			e.preventDefault();
 			searchForm.classList.remove('header__search--open');
 		}
 	}
