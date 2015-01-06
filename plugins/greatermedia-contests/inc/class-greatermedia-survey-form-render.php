@@ -128,7 +128,7 @@ class GreaterMediaSurveyFormRender {
 				throw new InvalidArgumentException( 'survey_id does not reference a contest' );
 			}
 
-			list( $entrant_reference, $entrant_name ) = GreaterMediaFormbuilderRender::entrant_id_and_name();
+			list( $entrant_reference, $entrant_name ) = gmr_contests_get_gigya_entrant_id_and_name();
 
 			// Pretty sure this is our form submission at this point
 			$form = json_decode( get_post_meta( $survey_id, 'survey_embedded_form', true ) );
