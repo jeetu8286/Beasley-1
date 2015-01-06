@@ -60,6 +60,10 @@ class GMR_Audio_Shortcodes {
 			$parent_podcast = false;
 		}
 
+		$series = get_post( $parent_podcast_id );
+		$series_slug = $series->post_name;
+		$feed_url = home_url( '/' ) . '?feed=podcast&podcast_series=' . $series_slug;
+
 		$downloadable = get_post_meta( $post_id, 'gmp_audio_downloadable', true );
 		$new_html = '';
 
@@ -78,7 +82,10 @@ class GMR_Audio_Shortcodes {
 		$new_html .= '<h3>' . get_the_title() . '</h3>';
 		if( $parent_podcast_id && is_singular( ShowsCPT::SHOW_CPT ) ) {
 			$new_html .= '<a href="' . get_permalink( $parent_podcast_id ) . '" target="_blank">'. $parent_podcast->post_title .'</a>';
-			$new_html .= '<a class="podcast__subscribe" href="' . esc_url( $itunes_url ) . '" target="_blank">Subscribe</a>';
+			if( $itunes_url != '' ) {
+				$new_html .= '<a class="podcast__subscribe" href="' . esc_url( $itunes_url ) . '" target="_blank">Subscribe</a>';
+			}
+			$new_html .= '<a href="' . $feed_url . '" target="_blank"><span class="dashicons dashicons-rss"></span></a>';
 		}
 		$new_html .= '<p>' . get_the_excerpt() . '</p>' ;
 		$new_html .= '</div>';
