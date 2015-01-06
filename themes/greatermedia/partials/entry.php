@@ -7,8 +7,10 @@
  * covers them all. 
  */
 
+global $post;
 $post_classes = array( 'entry2' );
-if ( ! empty( trim( $post->post_excerpt ) ) ) {
+$trimmed_excerpt = trim( $post->post_excerpt );
+if ( ! empty( $trimmed_excerpt ) ) {
 	$post_classes[] = 'has-excerpt'; 
 } 
 if ( has_post_thumbnail() || 'tribe_events' == $post->post_type ) {
@@ -43,7 +45,7 @@ if ( has_post_thumbnail() || 'tribe_events' == $post->post_type ) {
 		<?php endif; ?>
 		<h2 class="entry2__title" itemprop="headline"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
 		
-		<?php if ( ! empty( trim( $post->post_excerpt ) ) ): ?>
+		<?php if ( ! empty( $trimmed_excerpt ) ): ?>
 			<div class="entry2__excerpt">
 				<?php the_excerpt(); ?>
 			</div>
