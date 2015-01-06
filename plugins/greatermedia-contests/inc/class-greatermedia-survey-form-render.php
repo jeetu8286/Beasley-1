@@ -14,8 +14,8 @@ class GreaterMediaSurveyFormRender {
 	const FORM_CLASS = 'survey_entry_form';
 
 	public static function init() {
-		self::$post            = new WP_Post( new stdClass() );
-		self::$post            = 'survey_response';
+		self::$post = new WP_Post( new stdClass() );
+		self::$post->post_type = GMR_SURVEY_RESPONSE_CPT;
 		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 			// Register AJAX handlers
 			add_action( 'wp_ajax_enter_survey', array( __CLASS__, 'process_form_submission' ) );
