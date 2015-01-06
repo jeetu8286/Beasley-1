@@ -340,15 +340,11 @@
 	 *
 	 * @param e
 	 */
-	function showSearch(e) {
-		e = e || window.event;
+	function showSearch() {
 		if (searchForm !== null) {
 			searchForm.classList.toggle('header__search--open');
 			searchInput.focus();
 		}
-		e.cancelBubble = true;
-		if (e.stopPropagation)
-			e.stopPropagation();
 	}
 
 	/**
@@ -356,14 +352,10 @@
 	 *
 	 * @param e
 	 */
-	function closeSearch(e) {
-		e = e || window.event;
+	function closeSearch() {
 		if (searchForm !== null && searchForm.classList.contains('header__search--open')) {
 			searchForm.classList.remove('header__search--open');
 		}
-		e.cancelBubble = true;
-		if (e.stopPropagation)
-			e.stopPropagation();
 	}
 
 	/**
@@ -371,7 +363,6 @@
 	 */
 	if (searchBtn !== null) {
 		searchBtn.addEventListener('click', showSearch, false);
-		pageWrap.addEventListener('click', closeSearch, false);
 		/**
 		 * An event listener is also in place for the header search form so that when a user clicks inside of it, it will
 		 * not hide. This is key because the header search for sits within the element that the click event that closes the
