@@ -7,12 +7,6 @@
  * covers them all. 
  */
 
-if ( 0 == ++$post_count % 5 ): 
-?>
-	<div class='entry2-ad-wrap'>
-<?php endif; ?>
-
-<?php 
 $post_classes = array( 'entry2' );
 if ( ! empty( trim( $post->post_excerpt ) ) ) {
 	$post_classes[] = 'has-excerpt'; 
@@ -74,13 +68,3 @@ if ( has_post_thumbnail() || 'tribe_events' == $post->post_type ) {
 		?>
 	</footer>
 </article>
-
-<?php if ( 0 == $post_count % 5 ):	?>
-		<div class='entry2-ad-wrap__ad mobile'>
-			<img src='http://placehold.it/180x150'>
-		</div>						
-		<div class='entry2-ad-wrap__ad desktop'>
-			<img src='http://placehold.it/300x250'>
-		</div>						
-	</div>
-<?php endif; ?>
