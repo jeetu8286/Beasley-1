@@ -65,7 +65,6 @@
 	top: 50%;
 	@include transform(translateY(-50%));
 	@include bp(medium){
-		//max-height: 57px;
 		text-align: left;
 	}
 }
@@ -136,10 +135,12 @@
 	display: block;
 	margin: 0 auto;
 	text-align: center;
+	font-size: 25px;
 	@include bp(medium) {
 		height: 82px;
 		width: 64px;
 		padding: 32px 0;
+		font-size: ms(1);
 	}
 }
 
