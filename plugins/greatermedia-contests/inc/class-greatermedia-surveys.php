@@ -26,6 +26,8 @@ class GreaterMediaSurveys {
 			$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 
 			wp_enqueue_style( 'formbuilder' );
+			wp_enqueue_style( 'datetimepicker' );
+			wp_enqueue_style( 'font-awesome' );
 
 			wp_enqueue_script( 'jquery-ui-core' );
 			wp_enqueue_script( 'jquery-ui-draggable' );
@@ -43,7 +45,7 @@ class GreaterMediaSurveys {
 
 			$embedded_form = get_post_meta( $post->ID, 'survey_embedded_form', true );
 			wp_localize_script( 'greatermedia-surveys-admin', 'GreaterMediaContestsForm', array(
-				'form' => trim( $embedded_form, '"' ),
+				'form' => json_decode( trim( $embedded_form, '"' ), true ),
 			) );
 		}
 
@@ -95,17 +97,7 @@ class GreaterMediaSurveys {
 	}
 
 	public function add_meta_boxes() {
-
-		add_meta_box(
-			'form',
-			'Form',
-			array( $this, 'survey_form_builder' ),
-			'survey',
-			'advanced',
-			'high',
-			array()
-		);
-
+		add_meta_box( 'form', 'Form', array( $this, 'survey_form_builder' ), 'survey', 'normal' );
 	}
 
 	public function survey_form_builder() {

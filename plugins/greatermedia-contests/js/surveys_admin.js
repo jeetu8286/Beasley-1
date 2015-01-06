@@ -3,39 +3,28 @@
  * Copyright (c) 2015;
  * Licensed GPLv2+
  */
-document.addEventListener(
-	"DOMContentLoaded",
-	function () {
+(function ($, gmr, JSON) {
+	$(document).ready(function() {
+		var formbuilder = new Formbuilder({
+			selector: '#survey_embedded_form',
+			bootstrapData: gmr.form,
+			controls: ['address', 'checkboxes', 'date', 'dropdown', 'email', 'number', 'paragraph', 'price', 'radio', 'section_break', 'text', 'time', 'website' ]
+		});
 
-		var args = {
-			"selector": '#survey_embedded_form'
-		};
-
-		if (GreaterMediaContestsForm.form) {
-			args.bootstrapData = JSON.parse(GreaterMediaContestsForm.form);
-		}
-		
-		args.controls = ['address', 'checkboxes', 'date', 'dropdown', 'email', 'number', 'paragraph', 'price', 'radio', 'section_break', 'text', 'time', 'website' ];
-
-		var formbuilder = new Formbuilder(args);
-		formbuilder.on('save', function (payload) {
+		formbuilder.on('save', function(payload) {
 			// payload is a JSON string representation of the form
-			document.getElementById('survey_embedded_form_data').value = encodeURIComponent(JSON.stringify(JSON.parse(payload).fields));
+			$('#survey_embedded_form_data').val(encodeURIComponent(JSON.stringify(JSON.parse(payload).fields)));
 		});
 
 		// Default the hidden field with the form data loaded from the server
-		document.getElementById('survey_embedded_form_data').value = encodeURIComponent(JSON.stringify(GreaterMediaContestsForm.form));
-
-	},
-	false
-);
+		$('#survey_embedded_form_data').val(encodeURIComponent(JSON.stringify(gmr.form)));
+	});
+})(jQuery, GreaterMediaContestsForm, JSON);
 
 /**
  * Set up date pickers for browsers without a native control
  */
-document.addEventListener(
-	"DOMContentLoaded",
-	function () {
+document.addEventListener("DOMContentLoaded", function() {
 		/**
 		 * Generate a list of supported input types (text, date, range, etc.).
 		 * Adapted from Modernizr, which is MIT licensed
@@ -100,6 +89,4 @@ document.addEventListener(
 			);
 		}
 
-	},
-	false
-);
+	}, false);
