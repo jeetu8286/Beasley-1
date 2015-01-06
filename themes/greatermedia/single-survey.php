@@ -43,7 +43,7 @@ get_header(); ?>
 							</section>
 
 
-							<section class="col__inner--right">
+							<section class="col__inner--right contest__form">
 								<?php
 
 								$form = get_post_meta( get_the_ID(), 'survey_embedded_form', true );

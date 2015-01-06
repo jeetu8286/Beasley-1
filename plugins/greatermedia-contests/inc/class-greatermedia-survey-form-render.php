@@ -81,11 +81,11 @@ class GreaterMediaSurveyFormRender {
 				$renderer_method = 'render_' . $field->field_type;
 
 				// Make sure the field type has been implemented/is valid
-				if ( ! method_exists( 'GreaterMediaFormbuilderRender', $renderer_method ) ) {
-					throw new InvalidArgumentException( sprintf( 'Form field %s has unimplemented field type %s', wp_kses_data( $field->cid ), wp_kses_data( $field->field_type ) ) );
+				if ( method_exists( 'GreaterMediaFormbuilderRender', $renderer_method ) ) {
+					$html .= '<div class="contest__form--row">';
+					$html .= wp_kses( GreaterMediaFormbuilderRender::$renderer_method( $post_id, $field ), GreaterMediaFormbuilderRender::allowed_tags() );
+					$html .= '</div>';
 				}
-
-				$html .= wp_kses( GreaterMediaFormbuilderRender::$renderer_method( $post_id, $field ), GreaterMediaFormbuilderRender::allowed_tags() );
 
 			}
 
