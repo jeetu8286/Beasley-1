@@ -75,7 +75,7 @@ class GMR_Audio_Shortcodes {
 			$new_html .= '<a href="' . esc_attr( $mp3_src ) . '" download="' . esc_attr( $mp3_src ) . '" class="podcast__download" download>Download</a>';
 		}
 		$new_html .= '<p>' . get_the_excerpt() . '</p>' ;
-		if( $parent_podcast_id ) {
+		if( $parent_podcast_id && is_singular( ShowsCPT::SHOW_CPT ) ) {
 			$new_html .= '<a href="' . get_permalink( $parent_podcast_id ) . '" target="_blank">'. $parent_podcast->post_title .'</a>';
 			$new_html .= '<a class="podcast__subscribe" href="' . esc_url( $itunes_url ) . '" target="_blank">Subscribe</a>';
 		}
