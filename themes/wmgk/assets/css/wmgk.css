@@ -32,6 +32,14 @@ html {
 /**
  * Path from processed styles to /assets
  */
+/**
+ * Padding to th left, top, and bottom of the header logo
+ * Can be adjusted if needed for a better look
+ * e.g. for a square logo or one that needs to be just a touch larger
+ * any more specific adjustments will need to adjust the padding on .header__logo
+ *
+ * @type length
+ */
 .hologram-color-swatch {
   width: 200px;
   height: 200px;
@@ -2309,42 +2317,37 @@ Community Highlights and Events
   width: 100%;
   margin-right: 0;
   height: 70px;
-  padding: 10px 0;
-  line-height: 1; }
+  padding: 18px 0;
+  line-height: 1;
+  position: relative; }
   .header__logo:last-child {
     margin-right: 0; }
   @media screen and (min-width: 768px) {
     .header__logo {
+      height: 82px;
       float: left;
       display: block;
       margin-right: 3.57866%;
-      width: 22.316%; }
-      .header__logo:last-child {
-        margin-right: 0; } }
-  @media screen and (min-width: 1024px) {
-    .header__logo {
-      float: left;
-      display: block;
-      margin-right: 2.35765%;
-      width: 14.70196%; }
-      .header__logo:last-child {
-        margin-right: 0; } }
-  @media screen and (min-width: 1400px) {
-    .header__logo {
-      float: left;
-      display: block;
-      margin-right: 2.35765%;
-      width: 14.70196%; }
+      width: 22.316%;
+      padding-left: 18px; }
       .header__logo:last-child {
         margin-right: 0; } }
 
 .header__logo--img {
   margin: 0 auto;
-  max-height: 50px;
-  text-align: center; }
-  @media screen and (min-width: 1024px) {
+  max-height: 100%;
+  max-width: 100%;
+  height: auto;
+  width: auto;
+  position: relative;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  -o-transform: translateY(-50%);
+  transform: translateY(-50%); }
+  @media screen and (min-width: 768px) {
     .header__logo--img {
-      max-height: 57px;
       text-align: left; } }
 
 .header__nav {
