@@ -5041,18 +5041,6 @@ category: Components - Shows
     display: table;
     clear: both; }
 
-.show__feature {
-  margin-bottom: 2em; }
-  .show__feature h3 {
-    margin-top: 0;
-    margin-bottom: 0.5em;
-    font-size: 1.5em; }
-  .show__feature img {
-    width: 100%;
-    height: auto; }
-  .show__feature time {
-    font-size: 1.25em; }
-
 @media screen and (min-width: 1024px) {
   .show__feature--primary {
     float: left;
@@ -5060,9 +5048,7 @@ category: Components - Shows
     margin-right: 2.35765%;
     width: 65.88078%; }
     .show__feature--primary:last-child {
-      margin-right: 0; }
-    .show__feature--primary h3 {
-      font-size: 2em; } }
+      margin-right: 0; } }
 
 @media screen and (min-width: 1024px) {
   .show__feature--secondary {
@@ -5072,19 +5058,55 @@ category: Components - Shows
     width: 31.76157%;
     margin-right: 0; }
     .show__feature--secondary:last-child {
-      margin-right: 0; }
-    .show__feature--secondary h3 {
-      font-size: 1em; }
-    .show__feature--secondary time {
-      font-size: 0.8em; } }
+      margin-right: 0; } }
+
+.show__feature {
+  margin-bottom: 5.5%; }
+  .show__feature .thumbnail {
+    background-color: #282827;
+    padding-bottom: 66%;
+    background-position: center center;
+    background-size: 100%;
+    background-size: cover; }
+    .show__feature .thumbnail .inner-wrap {
+      position: absolute;
+      left: 0;
+      top: 0; }
+  @media screen and (min-width: 1024px) {
+    .show__feature {
+      padding-bottom: 75%;
+      position: relative; }
+      .show__feature .thumbnail {
+        position: absolute;
+        width: 100%;
+        left: 0;
+        top: 0; } }
 
 .show__feature--desc {
   background-color: #191919;
-  color: #ffffff;
-  padding: 1em 2em 1em; }
+  color: #ffffff; }
+  .show__feature--desc h3 {
+    margin: 0;
+    font-size: 1.42383em;
+    line-height: 1.2; }
+  .show__feature--primary .show__feature--desc h3 {
+    font-size: 1.80203em; }
   .show__feature--desc time {
+    font-size: 1em;
     text-transform: uppercase;
     color: #929497; }
+  .show__feature--desc .inner-wrap {
+    padding: 1.5em 1.618em; }
+  @media screen and (min-width: 1024px) {
+    .show__feature--desc {
+      position: absolute;
+      width: 100%;
+      left: 0;
+      bottom: 0; }
+      .show__feature--desc h3 {
+        font-size: 1.125em; }
+      .show__feature--primary .show__feature--desc h3 {
+        font-size: 2.02729em; } }
 
 /*doc
 ---
