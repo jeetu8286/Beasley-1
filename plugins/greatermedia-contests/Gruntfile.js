@@ -19,7 +19,8 @@ module.exports = function (grunt) {
 					'js/vendor/debouncedresize.js',
 					'js/vendor/imagesloaded.js',
 					'js/src/grid.js',
-					'js/src/contests.js'
+					'js/src/contests.js',
+					'js/src/datepicker.js'
 				],
 				dest: 'js/contests.js'
 			},
@@ -30,6 +31,17 @@ module.exports = function (grunt) {
 			backend_moderation: {
 				src: ['js/src/ugc-moderation.js'],
 				dest: 'js/ugc-moderation.js'
+			},
+			frontend_survey: {
+				src: [
+					'js/src/surveys.js',
+					'js/src/datepicker.js'
+				],
+				dest: 'js/surveys.js'
+			},
+			backend_survey: {
+				src: ['js/src/surveys_admin.js'],
+				dest: 'js/surveys_admin.js'
 			}
 		},
 		jshint: {
@@ -60,6 +72,7 @@ module.exports = function (grunt) {
 					GreaterMediaContests: false,
 					GreaterMediaContestsForm: false,
 					GreaterMediaAdminNotifier: false,
+					GreaterMediaSurveys: false,
 					GreaterMediaUGC: false,
 					Formbuilder: false,
 					FormData: false
@@ -69,6 +82,8 @@ module.exports = function (grunt) {
 		uglify: {
 			all: {
 				files: {
+					'js/surveys.min.js': ['js/surveys.js'],
+					'js/surveys_admin.min.js': ['js/surveys_admin.js'],
 					'js/ugc-moderation.min.js': ['js/ugc-moderation.js'],
 					'js/contests-admin.min.js': ['js/contests-admin.js'],
 					'js/contests.min.js': ['js/contests.js']

@@ -29,12 +29,14 @@ class GreaterMediaSurveyFormRender {
 	}
 
 	public static function wp_enqueue_scripts() {
-		wp_enqueue_script( 'greatermedia-surveys', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'js/greater_media_surveys.js', array( 'jquery' ), false, true );
-		$settings = array(
+		$base_path = trailingslashit( GREATER_MEDIA_CONTESTS_URL );
+		$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
+
+		wp_enqueue_script( 'greatermedia-surveys', "{$base_path}js/surveys{$postfix}.js", array( 'jquery' ), false, true );
+		wp_localize_script( 'greatermedia-surveys', 'GreaterMediaSurveys', array(
 			'form_class' => self::FORM_CLASS,
 			'ajax_url'   => admin_url( 'admin-ajax.php' ),
-		);
-		wp_localize_script( 'greatermedia-surveys', 'GreaterMediaSurveys', $settings );
+		) );
 	}
 
 	public static function render( $post_id, $form ) {

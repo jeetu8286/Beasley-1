@@ -1,15 +1,3 @@
-/*! Greater Media Surveys - v0.0.1
- * http://wordpress.org/plugins
- * Copyright (c) 2014; * Licensed GPLv2+ */
-/*global GreaterMediaContestsForm:false,
-$:false,
-jQuery:false,
-wp:false,
-console:false,
-syndication_ajax:false,
-alert:false,
-document:false,
-Formbuilder:false*/
 /**
  * Set up formbuilder control
  */

@@ -957,10 +957,6 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 
 	$(document).bind('pjax:end', __ready).ready(__ready);
 })(jQuery, GreaterMediaContests);
-
-/**
- * Set up date pickers for browsers without a native control
- */
 document.addEventListener("DOMContentLoaded", function () {
 	/**
 	 * Generate a list of supported input types (text, date, range, etc.).

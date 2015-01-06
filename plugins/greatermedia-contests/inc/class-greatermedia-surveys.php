@@ -24,12 +24,14 @@ class GreaterMediaSurveys {
 		global $post;
 
 		if( $post && $post->post_type === self::$survey_slug ) {
+			$base_path = trailingslashit( GREATER_MEDIA_CONTESTS_URL );
+			$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 
 			wp_enqueue_style( 'formbuilder' );
 
 			wp_enqueue_script( 'jquery-ui-core' );
 			wp_enqueue_script( 'jquery-ui-draggable' );
-			wp_enqueue_script( 'jquery-scrollwindowto', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'bower_components/jquery.scrollWindowTo/index.js', array( 'jquery' ) );
+			wp_enqueue_script( 'jquery-scrollwindowto', "{$base_path}bower_components/jquery.scrollWindowTo/index.js", array( 'jquery' ) );
 			wp_enqueue_script( 'underscore' );
 			wp_enqueue_script( 'underscore-mixin-deepextend' );
 			wp_enqueue_script( 'backbone' );
@@ -41,7 +43,7 @@ class GreaterMediaSurveys {
 			wp_enqueue_script( 'formbuilder' );
 				wp_enqueue_script(
 					'greatermedia-surveys-admin'
-					, GREATER_MEDIA_CONTESTS_URL . "/js/greater_media_surveys_admin.js"
+					, "{$base_path}/js/surveys_admin{$postfix}.js"
 					, array( 'formbuilder' )
 					, false
 					, true );
