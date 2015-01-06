@@ -1,11 +1,23 @@
 .single-show {
+	.featured__content {
+		margin: 2em 0;
+	}
+
 	.featured__content--block {
+		@include fill-parent;
 		margin-top: 1em;
 		margin-bottom: 1em;
 
+		@include bp(small) {
+			@include fill-parent;
+		}
+
+		@include bp(large) {
+			@include span-columns(4 of 12);
+		}
+
 		.highlights__event--date {
 			text-transform: uppercase;
-			font-size: 1em;
 		}
 
 		&:hover {
@@ -16,12 +28,30 @@
 
 	}
 
-	.featured__content {
-		margin: 2em 0;
+	.featured__content--image {
+		@include bp(small) {
+			@include span-columns(4 of 12);
+			padding-top: 0;
+		}
+
+		// @include bp(large) {
+		// 	@include span-columns(4 of 12);
+		// 	padding-top: 0;
+		// }
+	}
+
+	.featured__content--meta {
+		@include bp(small) {
+			@include span-columns(8 of 12);
+		}
+		// @include bp(large) {
+		// 	@include span-columns(8 of 12);
+		// }
 	}
 
 	.featured__content--title {
 		color: $secondary-border;
+		margin-bottom: 0.5em;
 	}
 }
 
@@ -459,7 +489,7 @@ category: Components - Shows
 			top: 14px;
 			font-size: 1.25em;
 
-			@include bp(medium) {
+			@include bp(large) {
 				left: -30px;
 				top: 8px;
 				font-size: ms(-1);
@@ -485,7 +515,7 @@ category: Components - Shows
 		font-size: 1em;
 		color: $primary-text;
 
-		@include bp(medium) {
+		@include bp(large) {
 			position: absolute;
 			left: 40%;
 			right: auto;

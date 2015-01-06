@@ -4709,18 +4709,47 @@ category: Components - Shows
     float: left;
     margin-right: 1em; }
 
-.single-show .featured__content--block {
-  margin-top: 1em;
-  margin-bottom: 1em; }
-  .single-show .featured__content--block .highlights__event--date {
-    text-transform: uppercase;
-    font-size: 1em; }
-  .single-show .featured__content--block:hover .featured__content--title {
-    color: #aa1c20; }
 .single-show .featured__content {
   margin: 2em 0; }
+.single-show .featured__content--block {
+  width: 100%;
+  margin-top: 1em;
+  margin-bottom: 1em; }
+  @media screen and (min-width: 480px) {
+    .single-show .featured__content--block {
+      width: 100%; } }
+  @media screen and (min-width: 1024px) {
+    .single-show .featured__content--block {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 31.76157%; }
+      .single-show .featured__content--block:last-child {
+        margin-right: 0; } }
+  .single-show .featured__content--block .highlights__event--date {
+    text-transform: uppercase; }
+  .single-show .featured__content--block:hover .featured__content--title {
+    color: #aa1c20; }
+@media screen and (min-width: 480px) {
+  .single-show .featured__content--image {
+    float: left;
+    display: block;
+    margin-right: 2.35765%;
+    width: 31.76157%;
+    padding-top: 0; }
+    .single-show .featured__content--image:last-child {
+      margin-right: 0; } }
+@media screen and (min-width: 480px) {
+  .single-show .featured__content--meta {
+    float: left;
+    display: block;
+    margin-right: 2.35765%;
+    width: 65.88078%; }
+    .single-show .featured__content--meta:last-child {
+      margin-right: 0; } }
 .single-show .featured__content--title {
-  color: #282827; }
+  color: #282827;
+  margin-bottom: 0.5em; }
 
 .show-attr--name {
   position: absolute;
@@ -5126,7 +5155,7 @@ category: Components - Shows
       left: -24px;
       top: 14px;
       font-size: 1.25em; }
-      @media screen and (min-width: 768px) {
+      @media screen and (min-width: 1024px) {
         .show__live-links li[class^="live-link__type"]:before {
           left: -30px;
           top: 8px;
@@ -5143,7 +5172,7 @@ category: Components - Shows
     bottom: auto;
     font-size: 1em;
     color: #404041; }
-    @media screen and (min-width: 768px) {
+    @media screen and (min-width: 1024px) {
       .show__live-links .more-btn {
         position: absolute;
         left: 40%;
