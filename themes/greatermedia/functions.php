@@ -137,6 +137,13 @@ function greatermedia_scripts_styles() {
 		'3.7.2',
 		false
 	);
+	wp_enqueue_script(
+		'greatermedia-load-more',
+		"{$baseurl}/assets/js/greater_media_load_more{$postfix}.js",
+		array( 'jquery' ),
+		GREATERMEDIA_VERSION,
+		true
+	);
 	wp_enqueue_style(
 		'greatermedia'
 	);
@@ -328,30 +335,6 @@ function greatermedia_excerpt_more( $more ) {
 	return '';
 }
 add_filter( 'excerpt_more', 'greatermedia_excerpt_more' );
-
-if ( ! function_exists( 'greatermedia_load_more' ) ) :
-	/**
-	 * Adds load more button.
-	 *
-	 * @global int $paged The current archive page number.
-	 */
-	function greatermedia_load_more() {
-		global $paged;
-		
-		$script_id = 'greatermedia-load-more';
-		$baseurl = untrailingslashit( get_template_directory_uri() );
-		$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
-
-		wp_enqueue_script( $script_id, "{$baseurl}/assets/js/greater_media_load_more{$postfix}.js", array( 'jquery' ), GREATERMEDIA_VERSION, true );
-		wp_localize_script( $script_id, 'gmr_load_more', array(
-			'pattern'   => str_replace( PHP_INT_MAX, '{{page}}', get_pagenum_link( PHP_INT_MAX ) ),
-			'page'      => $paged,
-			'not_found' => 'All content shown',
-		) );
-		
-		get_template_part( 'partials/load-more' );
-	}
-endif;
 
 if ( ! function_exists( 'greatermedia_load_more_template' ) ) :
 	/**

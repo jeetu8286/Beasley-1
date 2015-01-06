@@ -3490,8 +3490,7 @@ Link posts contain a link to an external site. They can also optionally have a f
 .posts-pagination--previous {
   float: left;
   width: 50%;
-  text-align: left;
-  display: none; }
+  text-align: left; }
 
 .posts-pagination--previous .fa {
   margin-right: .5em; }
@@ -3499,8 +3498,7 @@ Link posts contain a link to an external site. They can also optionally have a f
 .posts-pagination--next {
   float: right;
   width: 50%;
-  text-align: right;
-  display: none; }
+  text-align: right; }
 
 .posts-pagination--next .fa {
   margin-left: .5em; }
@@ -3523,7 +3521,8 @@ Link posts contain a link to an external site. They can also optionally have a f
   -ms-border-radius: 1em;
   -o-border-radius: 1em;
   -border-radius: 1em;
-  border-radius: 1em; }
+  border-radius: 1em;
+  display: none; }
   .posts-pagination--load-more:hover, .posts-pagination--load-more:focus {
     background-color: #aa1c20;
     border-color: #aa1c20;
@@ -3554,10 +3553,16 @@ Link posts contain a link to an external site. They can also optionally have a f
     .posts-pagination--load-more:disabled:last-of-type {
       margin-right: 0; }
 
-.no-js .posts-pagination--previous,
-.no-js .posts-pagination--next {
+.posts-pagination.front-pagination .posts-pagination--previous,
+.posts-pagination.front-pagination .posts-pagination--next {
+  display: none; }
+.posts-pagination.front-pagination .posts-pagination--load-more {
+  display: inline; }
+
+.no-js .front-pagination .posts-pagination--previous,
+.no-js .front-pagination .posts-pagination--next {
   display: inline-block; }
-.no-js .posts-pagination--load-more {
+.no-js .front-pagination .posts-pagination--load-more {
   display: none; }
 
 .entries {
