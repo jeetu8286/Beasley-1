@@ -32,14 +32,6 @@ html {
 /**
  * Path from processed styles to /assets
  */
-/**
- * Padding to th left, top, and bottom of the header logo
- * Can be adjusted if needed for a better look
- * e.g. for a square logo or one that needs to be just a touch larger
- * any more specific adjustments will need to adjust the padding on .header__logo
- *
- * @type length
- */
 .hologram-color-swatch {
   width: 200px;
   height: 200px;
@@ -988,9 +980,6 @@ blockquote p {
   z-index: 2; }
   @media screen and (min-width: 768px) {
     .mobile-nav__toggle {
-      top: 25px; } }
-  @media screen and (min-width: 1024px) {
-    .mobile-nav__toggle {
       display: none; } }
 
 .mobile-nav__toggle--span {
@@ -1046,20 +1035,14 @@ blockquote p {
   border-right: 1px solid #d0d2d3;
   z-index: 1;
   overflow-y: auto; }
-  @media screen and (min-width: 1024px) {
+  @media screen and (min-width: 768px) {
     .mobile-nav {
       display: none; } }
 
 .admin-bar .mobile-nav {
-  top: 32px;
-  height: calc( 100% - 32px );
-  /* doesn't work in IE8, but probably ok. Just don't edit the site and expect the front-end to be bug-free in IE8 */
-  /* Matches, exactly, the media query for the admin bar, so when it changes height, the menu also does */ }
-  @media screen and (max-width: 782px) {
-    .admin-bar .mobile-nav {
-      top: 46px;
-      height: calc(100% - 46px);
-      /* doesn't work in IE8, but probably ok. Just don't edit the site and expect the front-end to be bug-free in IE8 */ } }
+  top: 46px;
+  height: calc( 100% - 46px );
+  /* doesn't work in IE8, but probably ok. Just don't edit the site and expect the front-end to be bug-free in IE8 */ }
 
 .mobile-nav--open {
   overflow: hidden; }
@@ -1266,7 +1249,7 @@ blockquote p {
   width: 33%;
   padding: 0;
   color: #fff; }
-  .mobile-nav a.mobile-menu-submenu-back-link .icon-arrow-prev:before {
+  .mobile-nav a.mobile-menu-submenu-back-link:before {
     position: relative;
     bottom: -0.09em;
     /* optical, vertical, centering next to "Back" */ }
@@ -1757,7 +1740,7 @@ Curated posts for Featured Articles
   width: 100%;
   margin-right: 0;
   overflow: hidden;
-  background: #f1f1f3;
+  background: #fff;
   height: 100px;
   margin: 1.5em 0 0; }
   .featured__content--block:last-child {
@@ -2072,8 +2055,8 @@ Community Highlights and Events
 */
 .home__highlights {
   padding: 0 0.809em 1.5em;
-  background-color: #f1f1f3;
-  border-bottom: 1px solid #e9e9ec; }
+  background-color: #fff;
+  border-bottom: 1px solid #f7f7f7; }
   @media screen and (min-width: 768px) {
     .home__highlights {
       padding: 0 3.236em 3em; } }
@@ -2386,51 +2369,56 @@ Community Highlights and Events
   width: 100%;
   margin-right: 0;
   height: 70px;
-  padding: 18px 0;
-  line-height: 1;
-  position: relative; }
+  padding: 10px 0;
+  line-height: 1; }
   .header__logo:last-child {
     margin-right: 0; }
   @media screen and (min-width: 768px) {
     .header__logo {
-      max-width: 200px;
-      height: 82px; } }
+      float: left;
+      display: block;
+      margin-right: 3.57866%;
+      width: 22.316%; }
+      .header__logo:last-child {
+        margin-right: 0; } }
   @media screen and (min-width: 1024px) {
     .header__logo {
       float: left;
       display: block;
       margin-right: 2.35765%;
-      width: 14.70196%;
-      padding-left: 18px; }
+      width: 14.70196%; }
+      .header__logo:last-child {
+        margin-right: 0; } }
+  @media screen and (min-width: 1400px) {
+    .header__logo {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 14.70196%; }
       .header__logo:last-child {
         margin-right: 0; } }
 
 .header__logo--img {
   margin: 0 auto;
-  max-height: 100%;
-  max-width: 100%;
-  height: auto;
-  width: auto;
-  position: relative;
-  top: 50%;
-  -webkit-transform: translateY(-50%);
-  -moz-transform: translateY(-50%);
-  -ms-transform: translateY(-50%);
-  -o-transform: translateY(-50%);
-  transform: translateY(-50%); }
-  @media screen and (min-width: 768px) {
-    .header__logo--img {
-      margin-left: 70px;
-      /* space enough for the mobile menu */
-      text-align: left; } }
+  max-height: 50px;
+  text-align: center; }
   @media screen and (min-width: 1024px) {
     .header__logo--img {
-      margin-left: auto; } }
+      max-height: 57px;
+      text-align: left; } }
 
 .header__nav {
   height: 82px;
   display: none;
   line-height: 1; }
+  @media screen and (min-width: 768px) {
+    .header__nav {
+      float: left;
+      display: block;
+      margin-right: 3.57866%;
+      width: 35.26334%; }
+      .header__nav:last-child {
+        margin-right: 0; } }
   @media screen and (min-width: 1024px) {
     .header__nav {
       float: left;
@@ -2510,17 +2498,12 @@ Community Highlights and Events
 .header__account--btn {
   display: block;
   margin: 0 auto;
-  text-align: center;
-  font-size: 25px; }
+  text-align: center; }
   @media screen and (min-width: 768px) {
     .header__account--btn {
       height: 82px;
       width: 64px;
-      padding: 32px 0;
-      font-size: 1.42383em; } }
-  @media screen and (min-width: 1024px) {
-    .header__account--btn {
-      font-size: 1.125em; } }
+      padding: 32px 0; } }
 
 /** An image is shown if the current user is logged in and Gigya gives us a thumbnail URL **/
 .header__account--btn img {
@@ -2581,9 +2564,6 @@ Community Highlights and Events
       height: 82px;
       padding: 36px 0;
       margin-left: .625em;
-      font-size: 1em; } }
-  @media screen and (min-width: 1024px) {
-    .header__search--span {
       font-size: 0.79012em; } }
 
 .header__search--btn {
@@ -2593,11 +2573,8 @@ Community Highlights and Events
   padding: 34px 0 30px; }
 
 .header__search--btn:before {
-  font-size: 1.42383em;
+  font-size: 1.125em;
   content: "\e612"; }
-  @media screen and (min-width: 1024px) {
-    .header__search--btn:before {
-      font-size: 1.125em; } }
 
 .footer {
   width: 100%;
@@ -7606,8 +7583,7 @@ select {
       border-bottom-left-radius: 1em;
       border-bottom-right-radius: 1em; }
 
-@media screen and (min-width: 768px) {
-  .header__logo {
-    top: -7px; } }
+.home__highlights {
+  border-bottom-color: #d0d2d3; }
 
 /*# sourceMappingURL=wmgk.css.map */
