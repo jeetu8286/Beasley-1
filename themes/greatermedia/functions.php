@@ -384,7 +384,7 @@ if ( ! function_exists( 'greatermedia_load_more_template' ) ) :
 		
 		$loop_partial = sanitize_text_field( $_REQUEST['loop_partial'] ); 
 		if ( ! $loop_partial ) {
-			$loop_partial = 'partials/loop/archive'; 
+			$loop_partial = 'partials/loop'; 
 		}
 		
 		get_template_part( $loop_partial ); 

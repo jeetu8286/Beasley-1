@@ -6,7 +6,7 @@
  * @since   0.1.0
  */
 
-greatermedia_set_ajax_loop_partial( 'partials/loop/front-page' );
+greatermedia_set_ajax_loop_partial( 'partials/loop' );
 get_header();
 
 ?>
