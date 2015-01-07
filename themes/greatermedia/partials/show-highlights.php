@@ -13,10 +13,10 @@
 
 			<div class="highlights__community">
 
-				<h2 class="highlights__heading"><?php //bloginfo( 'name' ); ?><?php _e( ' Community Highlights', 'greatermedia' ); ?></h2>
+				<h2 class="highlights__heading"><?php //bloginfo( 'name' ); ?><?php _e( ' Our Favorites', 'greatermedia' ); ?></h2>
 
 				<?php
-				$hp_comm_query = \GreaterMedia\HomepageCuration\get_community_query();
+				$hp_comm_query = \GreaterMedia\Shows\get_show_favorites_query();
 				while( $hp_comm_query->have_posts() ) : $hp_comm_query->the_post(); ?>
 					<div class="highlights__community--item">
 						<a href="<?php the_permalink(); ?>">
@@ -33,13 +33,16 @@
 				<?php wp_reset_query(); ?>
 			</div>
 
-			<div class="highlights__events">
+
+			<?php
+			global $post;
+			$events = \GreaterMedia\Shows\get_show_events();
+			if ( $events ) { ?>
+				<div class="highlights__events">
 
 				<h2 class="highlights__heading"><?php _e( 'Upcoming Events', 'greatermedia' ); ?></h2>
 
-				<?php
-				$events_query = \GreaterMedia\HomepageCuration\get_events_query();
-				while( $events_query->have_posts() ) : $events_query->the_post(); ?>
+				<?php foreach( $events as $post ): setup_postdata( $post ); ?>
 					<div class="highlights__event--item">
 						<a href="<?php the_permalink(); ?>">
 							<?php if ( has_post_thumbnail() ) : ?>
@@ -65,10 +68,11 @@
 							</div>
 						</a>
 					</div>
-				<?php endwhile; ?>
+				<?php endforeach; ?>
 				<?php wp_reset_query(); ?>
+				</div>
+			<?php } ?>
 
-			</div>
 
 		</div>
 
