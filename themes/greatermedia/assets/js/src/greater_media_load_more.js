@@ -2,8 +2,13 @@
 	var __ready, reset_page = true, pagenums = {};
 
 	__ready = function() {
+		var $button = $('.posts-pagination--load-more');
+		
+		if ( ! $button.length ) {
+			return; 
+		}
+				
 		var sync = false,
-			$button = $('.posts-pagination--load-more'),
 			url = $button.data('url'),
 			page = parseInt($button.data('page')); 
 			loop_partial = greatermedia_load_more.loop_partial;
@@ -11,6 +16,11 @@
 		if (reset_page) {
 			pagenums[url] = !isNaN(page) && page > 0 ? page : 1;
 		}
+		
+		// Hide the normal next/previous links
+		$( '.posts-pagination--previous, .posts-pagination--next' ).hide();
+		// Show our nice button. 
+		$button.show(); 
 
 		$button.click(function() {
 			var $self = $(this);

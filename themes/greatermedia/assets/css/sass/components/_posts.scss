@@ -612,7 +612,7 @@ Link posts contain a link to an external site. They can also optionally have a f
 	width: 100%;
 	font-size: ms(-1);
 	float: left;
-	margin-top: 3em;
+	margin: 0 0 $base-line-height; 
 	text-align: center;
 }
 
@@ -639,7 +639,7 @@ Link posts contain a link to an external site. They can also optionally have a f
 .posts-pagination--load-more {
 	@include btn($btn-bg, $color-text-white, $btn-bg, 0.5em, 1em, ms(-1));
 	@include border-radius(1em);
-	// display: none;
+	display: none;
 
 	.fa {
 		display: none;
