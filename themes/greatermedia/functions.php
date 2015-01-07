@@ -9,14 +9,14 @@
  * theme's file, so the child theme functions would be used.
  *
  * @package Greater Media
- * @since   0.1.0
+ * @since   0.1.3
  */
 
 // Useful global constants
 /**
  *
  */
-define( 'GREATERMEDIA_VERSION', '0.1.0' );
+define( 'GREATERMEDIA_VERSION', '0.1.3' );
 
 add_theme_support( 'homepage-curation' );
 
@@ -25,6 +25,7 @@ require_once( __DIR__ . '/includes/layout-chooser/class-choose-layout.php' );
 require_once( __DIR__ . '/includes/site-options/loader.php' );
 require_once( __DIR__ . '/includes/mega-menu/mega-menu-admin.php' );
 require_once( __DIR__ . '/includes/mega-menu/mega-menu-walker.php' );
+require_once( __DIR__ . '/includes/mega-menu/mega-menu-mobile-walker.php' );
 
 /**
  * Required files
@@ -48,25 +49,24 @@ function greatermedia_setup() {
 	 */
 	load_theme_textdomain( 'greatermedia', get_template_directory() . '/languages' );
 
-	/**
-	 * Add theme support for post thumbnails
-	 */
+	// Add theme support for post thumbnails
 	add_theme_support( 'post-thumbnails' );
-	add_image_size( 'gm-article-thumbnail',     1580,   9999,   false   ); // thumbnails used for articles
-	add_image_size( 'gmr-gallery',              800,    534,    true    ); // large images for the gallery
-	add_image_size( 'gmr-gallery-thumbnail',    100,    100             ); // thumbnails for the gallery
-	add_image_size( 'gmr-featured-primary',     2800,   1000,   true    ); // image for primary featured post on front page
-	add_image_size( 'gmr-featured-secondary',   400,    400,    true    ); // thumbnails for secondary featured posts on front page
-	add_image_size( 'gmr-event-thumbnail',      2800,   1000,   true    ); // thumbnails for single events
+	add_image_size( 'gm-article-thumbnail',     		1580,   9999,   false   ); // thumbnails used for articles
+	add_image_size( 'gm-entry-thumbnail-1-1' ,          500,    500,    true    );
+	add_image_size( 'gm-entry-thumbnail-4-3' ,          500,    375,    true    );
+	add_image_size( 'gmr-gallery',              		800,    534,    true    ); // large images for the gallery
+	add_image_size( 'gmr-gallery-thumbnail',    		100,    100             ); // thumbnails for the gallery
+	add_image_size( 'gmr-featured-primary',     		1600,   572,    true    ); // image for primary featured post on front page
+	add_image_size( 'gmr-featured-secondary',   		336,    224,    true    ); // thumbnails for secondary featured posts on front page
+	add_image_size( 'gmr-show-featured-primary',   		708,    389,    true    ); // thumbnails for secondary featured posts on front page
+	add_image_size( 'gmr-show-featured-secondary',   	322,    141,    true    ); // thumbnails for secondary featured posts on front page
 
 	// Update this as appropriate content types are created and we want this functionality
 	add_post_type_support( 'post', 'timed-content' );
 	add_post_type_support( 'post', 'login-restricted-content' );
 	add_post_type_support( 'post', 'age-restricted-content' );
 
-	/**
-	 * Add theme support for post-formats
-	 */
+	// Add theme support for post-formats
 	$formats = array( 'gallery', 'link', 'image', 'video', 'audio' );
 	add_theme_support( 'post-formats', $formats );
 
@@ -84,7 +84,7 @@ function greatermedia_scripts_styles() {
 
 	wp_register_style(
 		'open-sans',
-		'http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,700',
+		'http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,800italic,400,300,700,800',
 		array(),
 		GREATERMEDIA_VERSION
 	);
@@ -99,6 +99,17 @@ function greatermedia_scripts_styles() {
 		'//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css',
 		array(),
 		'4.2'
+	);
+	wp_register_style(
+		'greatermedia',
+		get_template_directory_uri() . "/assets/css/greater_media{$postfix}.css",
+		array(
+			'dashicons',
+			'open-sans',
+			'droid-sans',
+			'font-awesome'
+		),
+		GREATERMEDIA_VERSION
 	);
 	wp_enqueue_script(
 		'greatermedia',
@@ -125,15 +136,7 @@ function greatermedia_scripts_styles() {
 		false
 	);
 	wp_enqueue_style(
-		'greatermedia',
-		get_template_directory_uri() . "/assets/css/greater_media{$postfix}.css",
-		array(
-			'dashicons',
-			'open-sans',
-			'droid-sans',
-			'font-awesome'
-		),
-		GREATERMEDIA_VERSION
+		'greatermedia'
 	);
 
 }
@@ -227,6 +230,43 @@ function get_post_with_keyword( $query_arg ) {
 		}
 	}
 	return 0;
+}
+
+/**
+ * Get the URL of a post's thumbnail.  
+ * 
+ * @param string|array Thumbnail size.
+ * @param int Post ID. Defaults to current post. 
+ */
+function gm_get_post_thumbnail_url( $size = 'thumbnail', $post_id = null ) {
+	$thumbnail_id = get_post_thumbnail_id( $post_id );
+
+	if ( $thumbnail_id ) {
+		return gm_get_thumbnail_url( $thumbnail_id, $size );
+	}
+}
+
+/**
+ * Output the escaped URL of a post's thumbnail.  
+ * 
+ * @param string|array Thumbnail size.
+ * @param int Post ID. Defaults to current post. 
+ */
+function gm_post_thumbnail_url( $size = 'thumbnail', $post_id = null ) {
+	echo esc_url( gm_get_post_thumbnail_url( $size, $post_id ) );
+}
+
+/**
+ * Get the URL of an attachment thumbnail. 
+ * 
+ * @param id $attachment_id
+ * @return null|string URL if found, null otherwise. 
+ */
+function gm_get_thumbnail_url( $attachment_id, $size ) {
+	$src = wp_get_attachment_image_src( $attachment_id, $size );
+	if ( $src ) {
+		return $src[0]; 
+	}	
 }
 
 /**

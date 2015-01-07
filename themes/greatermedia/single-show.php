@@ -21,12 +21,18 @@
 							<div class="show__feature--primary">
 								<a href="<?php the_permalink(); ?>">
 									<div class="show__feature">
-										<?php if ( has_post_thumbnail() ) : ?>
-											<?php the_post_thumbnail( array( 570,315 ) ); ?>
-										<?php endif; ?>
+										<div class='show-feature__thumbnail'>
+											<?php if ( has_post_thumbnail() ) : ?>
+												<div class='thumbnail' style='background-image: url(<?php gm_post_thumbnail_url( 'gmr-show-featured-primary' ); ?>)'></div>
+											<?php else: ?>
+												<div class='thumbnail thumbnail-placeholder' style=''></div>
+											<?php endif; ?>
+										</div>
 										<div class="show__feature--desc">
-											<h3><?php the_title(); ?></h3>
-											<time class="show__feature--date" datetime="<?php the_time( 'c' ); ?>"><?php the_time( 'd M' ); ?></time>
+											<div class='inner-wrap'>
+												<h3><?php the_title(); ?></h3>
+												<time class="show__feature--date" datetime="<?php the_time( 'c' ); ?>"><?php the_time( 'M j' ); ?></time>
+											</div>
 										</div>
 									</div>
 								</a>
@@ -36,12 +42,18 @@
 								<?php while( $featured_query->have_posts() ): $featured_query->the_post(); ?>
 									<a href="<?php the_permalink(); ?>">
 										<div class="show__feature">
-											<?php if ( has_post_thumbnail() ) : ?>
-												<?php the_post_thumbnail( array( 570,315 ) ); ?>
-											<?php endif; ?>
+											<div class='show-feature__thumbnail'>
+												<?php if ( has_post_thumbnail() ) : ?>
+													<div class='thumbnail' style='background-image: url(<?php gm_post_thumbnail_url( 'gmr-show-featured-primary' ); ?>)'></div>
+												<?php else: ?>
+													<div class='thumbnail thumbnail-placeholder' style=''></div>
+												<?php endif; ?>
+											</div>
 											<div class="show__feature--desc">
-												<h3><?php the_title(); ?></h3>
-												<time class="show__feature--date" datetime="<?php the_time( 'c' ); ?>"><?php the_time( 'd M' ); ?></time>
+												<div class='inner-wrap'>
+													<h3><?php the_title(); ?></h3>
+												<time class="show__feature--date" datetime="<?php the_time( 'c' ); ?>"><?php the_time( 'M j' ); ?></time>
+												</div>
 											</div>
 										</div>
 									</a>
@@ -52,114 +64,41 @@
 						<?php wp_reset_query(); ?>
 					<?php endif; ?>
 
-					<div class="featured__content">
-						<?php
-						global $post;
-						$events = \GreaterMedia\Shows\get_show_events();
-						foreach( $events as $post ): setup_postdata( $post ); ?>
-							<div class="featured__content--block">
-								<?php if ( has_post_thumbnail() ) : ?>
-									<div class="featured__content--image">
-										<a href="<?php the_permalink(); ?>"><?php the_post_thumbnail( array( 400, 400 ) ); // todo custom size for this? ?></a>
-									</div>
-								<?php endif; ?>
-								<div class="featured__content--meta">
-									<h3 class="featured__content--title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
-								</div>
-							</div>
-						<?php endforeach; ?>
-						<?php wp_reset_query(); ?>
-			        </div>
+				
+					<?php get_template_part( 'partials/show-highlights' ); ?>
+				    
 
 			        <div class="row">
 
 				        <aside class="inner-right-col">
-					        <section class="show__favorites cf">
-					        	<h2 class="section-header">Our Favorites</h2>
-						        <?php
-						        $fav_query = \GreaterMedia\Shows\get_show_favorites_query();
-								while( $fav_query->have_posts() ): $fav_query->the_post();
-						        ?>
-								<div class="featured__content--block">
-					                <?php if ( has_post_thumbnail() ): ?>
-						                <div class="featured__content--image">
-							                <a href="<?php the_permalink(); ?>"><?php the_post_thumbnail( array( 400, 400 ) ); ?></a>
-						                </div>
-									<?php endif; ?>
-					                <div class="featured__content--meta">
-					                    <h3 class="featured__content--title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
-					                </div>
-					            </div>
-								<?php endwhile; ?>
-						        <?php wp_reset_query(); ?>
-					        </section>
+					        <?php do_action( 'acm_tag', 'mrec-lists' ); ?>
 
-							<section class="show__latest-crap cf">
-					        	<h2 class="section-header">Latest Crap</h2>
+							<?php
+							$live_links_query = \GreaterMedia\Shows\get_show_live_links_query();
+							if ( $live_links_query->have_posts() ) :
+								$live_link_archive = \GreaterMedia\Shows\get_live_links_permalink( get_the_ID() );
+							?>
+							<section class="show__live-links cf">
+					        	<h2 class="section-header">Live Links</h2>
 								<ul>
-									<li class="live-link__type--standard">
-										<div class="live-link__title">
-											<a href=
-											"http://wmmr.greatermedia.10uplabs.com/scroll-test/">GMR-278
-											test</a>
-										</div>
-									</li>
-
-
-									<li class="live-link__type--standard">
-										<div class="live-link__title">
-											<a href=
-											"http://wmmr.greatermedia.10uplabs.com/contest/daves-contest/">Dave’s
-											Contest</a>
-										</div>
-									</li>
-
-									<li class="live-link__type--link">
-										<div class="live-link__title">
-											<a href=
-											"http://wmmr.greatermedia.10uplabs.com/timed-content-test/">test
-											test</a>
-										</div>
-									</li>
-
-
-									<li class="live-link__type--standard">
-										<div class="live-link__title">
-											<a href=
-											"http://wmmr.greatermedia.10uplabs.com/ontario-highway-401-wikipedia-the-free-encyclopedia/">
-											Ontario Highway 401 – Wikipedia, the free encyclopedia</a>
-										</div>
-									</li>
-
-
-									<li class="live-link__type--video">
-										<div class="live-link__title">
-											<a href=
-											"http://wmmr.greatermedia.10uplabs.com/?post_type=gmr-live-link&amp;p=633">
-											Gladys Knight &amp; The Pips “Midnight Train To Georgia”</a>
-										</div>
-									</li>
-
-
-									<li class="live-link__type--video">
-										<div class="live-link__title">
-											<a href=
-											"http://wmmr.greatermedia.10uplabs.com/gladys-knight-the-pips-midnight-train-to-georgia/">
-											Gladys Knight &amp; The Pips</a>
-										</div>
-									</li>
-
-
-									<li class="live-link__type--video">
-										<div class="live-link__title">
-											<a href=
-											"http://wmmr.greatermedia.10uplabs.com/?post_type=gmr-live-link&amp;p=538">
-											Hilarious Volleyball Triple Head Shot – YouTube</a>
-										</div>
-									</li>
+									<?php while ( $live_links_query->have_posts() ) : ?>
+										<?php $live_links_query->the_post(); ?>
+										<li class="live-link__type--<?php echo ( $format = get_post_format() ) ? $format : 'standard'; ?>">
+											<div class="live-link__title">
+												<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+											</div>
+										</li>
+									<?php endwhile; ?>
+									<?php wp_reset_query(); ?>
 								</ul>
-								<a class="more-btn" href="">more</a>
+
 					        </section>
+					        
+					        <div class="show__live-links--more">
+								<a class="more-btn" href="<?php echo $live_link_archive; ?>">more</a>
+					        </div>
+
+							<?php endif; ?>
 
 				        </aside>
 
@@ -169,27 +108,12 @@
 					        <?php
 					        $main_query = \GreaterMedia\Shows\get_show_main_query();
 					        while( $main_query->have_posts() ): $main_query->the_post(); ?>
-						        <article <?php post_class( 'cf' ); ?>>
-							        <section class="entry__meta">
-								        <time class="entry__date" datetime="<?php the_time( 'c' ); ?>"><?php the_time( 'd F' ); ?></time>
+						        
+								<?php get_template_part('partials/entry'); ?>
 
-								        <h2 class="entry__title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
-							        </section>
-
-							        <?php if ( has_post_thumbnail() ) : ?>
-							        <section class="entry__thumbnail entry__thumbnail--standard">
-								        <a href="<?php the_permalink(); ?>"><?php the_post_thumbnail( array( 300, 580 ) ); // todo probably define an image size for this? ?></a>
-							        </section>
-							        <?php endif; ?>
-
-							        <footer class="entry__footer">
-								        <?php get_template_part( 'partials/category-list' ); ?>
-							        </footer>
-						        </article>
 					        <?php endwhile; ?>
 					        <?php wp_reset_query(); ?>
 
-					        <div class="show-main-paging"><?php echo \GreaterMedia\Shows\get_show_endpoint_pagination_links( $main_query ); ?></div>
 				        </section>
 
 			        </div>

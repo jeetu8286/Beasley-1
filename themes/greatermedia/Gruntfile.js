@@ -1,18 +1,19 @@
-module.exports = function( grunt ) {
+module.exports = function (grunt) {
 	'use strict';
 
 	// Load all grunt tasks
 	require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
 	// Project configuration
-	grunt.initConfig( {
-		pkg:    grunt.file.readJSON( 'package.json' ),
+	grunt.initConfig({
+		pkg: grunt.file.readJSON('package.json'),
 		concat: {
 			options: {
 				stripBanners: true
 			},
 			greater_media: {
 				src: [
+					'assets/js/src/mobile-sub-menus.js',
 					'assets/js/src/greater_media.js'
 				],
 				dest: 'assets/js/greater_media.js'
@@ -56,11 +57,7 @@ module.exports = function( grunt ) {
 				}
 			}
 		},
-		test:   {
-			files: ['assets/js/test/**/*.js']
-		},
-
-		sass:   {
+		sass: {
 			options: {
 				require: 'sass-globbing'
 			},
@@ -73,42 +70,45 @@ module.exports = function( grunt ) {
 				}
 			}
 		},
-
 		cssmin: {
 			minify: {
 				expand: true,
-
 				cwd: 'assets/css/',
-				src: ['greater_media.css', 'greater_media_admin.css', 'gm_admin.css','gm_tinymce.css'],
-
+				src: ['greater_media.css', 'greater_media_admin.css', 'gm_admin.css', 'gm_tinymce.css'],
 				dest: 'assets/css/',
 				ext: '.min.css'
 			}
 		},
 		watch:  {
 
+			livereload: {
+				files  : ['assets/css/**/*.css'],
+				options: {
+					livereload: true
+				}
+			},
+
 			sass: {
 				files: ['assets/css/sass/**/*.scss'],
-				tasks: ['sass', 'cssmin'],
+				tasks: ['css'],
 				options: {
 					debounceDelay: 500
 				}
 			},
-
 			scripts: {
 				files: ['assets/js/src/**/*.js', 'assets/js/vendor/**/*.js'],
-				tasks: ['jshint', 'concat', 'uglify'],
+				tasks: ['js'],
 				options: {
 					debounceDelay: 500
 				}
 			}
 		}
-	} );
+	});
 
-	// Default task.
-
-	grunt.registerTask( 'default', ['jshint', 'concat', 'uglify', 'sass', 'cssmin'] );
-
+	// Default tasks
+	grunt.registerTask('css', ['sass', 'cssmin']);
+	grunt.registerTask('js', ['jshint', 'concat', 'uglify']);
+	grunt.registerTask('default', ['js', 'css']);
 
 	grunt.util.linefeed = '\n';
 };

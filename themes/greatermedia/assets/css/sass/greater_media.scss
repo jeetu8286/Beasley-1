@@ -24,10 +24,12 @@
 // Main layout components: menu, typography, etc.
 @import "layout/typography";
 @import "layout/menus";
-@import "layout/sub-menus";
+@import "layout/sub-menus/sub-menus";
+@import "layout/sub-menus/format-full-width";
 
 // Home
 @import "home/blog-roll";
+@import "home/blog-roll-new";
 @import "home/featured";
 @import "home/highlights";
 
@@ -35,6 +37,7 @@
 @import "components/header";
 @import "components/footer";
 @import "components/posts";
+@import "components/entries"; // Temporary!
 @import "components/sidebar";
 @import "components/liveplayer";
 @import "components/breaking-news";
@@ -53,6 +56,7 @@
 @import "components/gallery";
 @import "components/personalities";
 @import "components/forms";
+@import "components/profile";
 
 // Custom styles only used on single pages
 @import "pages/single";

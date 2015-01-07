@@ -2,7 +2,7 @@
 /*
 Plugin Name: Gravity Forms + Custom Post Types
 Plugin URI: http://themergency.com/plugins/gravity-forms-custom-post-types/
-Description: Allows a simple way to map a Gravity Form post entry to a custom post type. Also include custom taxonomies.
+Description: Allows a simple way to map a Gravity Form post entry to a custom post type. Also include custom taxonomies. CONTAINS A BUG FIX BY 10up.
 Version: 3.0.1
 Author: Brad Vincent
 Author URI: http://themergency.com/
@@ -115,10 +115,12 @@ class GFCPTAddon {
         return plugins_url(null, __FILE__);
     }
 
-    /*
+    /**
      * Returns the physical path of the plugin's root folder
+	 *
+	 * @see https://wordpress.org/support/topic/php-strict-error-2 Strict standard issue has been fixed.
      */
-    protected function get_base_path(){
+    protected static function get_base_path(){
         $folder = basename(dirname(__FILE__));
         return WP_PLUGIN_DIR . '/' . $folder;
     }
@@ -150,4 +152,3 @@ class GFCPTAddon {
             return true;
     }
 }
-?>

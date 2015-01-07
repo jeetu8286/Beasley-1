@@ -14,9 +14,11 @@ class AnnouncementsDashboardWidget {
 	{
 		if( defined( 'GMR_CONTENT_SITE_ID' ) ) {
 			$this->content_site_id = GMR_CONTENT_SITE_ID;
-		} else {
+		} elseif ( is_multisite() ) {
 			$this->content_site_id = get_current_site()->blog_id;
 			add_action( 'admin_notices', array( $this, 'add_notice_for_undefined' ) );
+		} else {
+			$this->content_site_id = get_current_blog_id();
 		}
 		add_action( 'wp_dashboard_setup', array( $this, 'add_dashboard_widgets' ) );
 	}

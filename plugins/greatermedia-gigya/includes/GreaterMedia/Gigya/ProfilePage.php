@@ -19,7 +19,7 @@ class ProfilePage {
 		add_action(
 			'template_include', array( $this, 'render_if_profile_page' ), 99
 		);
-
+		add_filter( 'body_class', array( $this, 'add_profile_page_to_body_class' ), null, 2 );
 		add_action(
 			'wp_title', array( $this, 'change_page_title' ), 99
 		);
@@ -48,6 +48,28 @@ class ProfilePage {
 		return $template;
 	}
 
+	/**
+	 * Add classes to <body> to make profile pages easier to style.
+	 *
+	 * Adds a generic 'profile-page' class.
+	 * Adds a class specific for the type of profile page that is being viewed.
+	 *
+	 * @param $classes array of classes to add to <body>
+	 * @param $class
+	 * @return array
+	 */
+	public function add_profile_page_to_body_class( $classes, $class ) {
+
+		$profile_page = get_query_var( 'profile_page' );
+
+		if ( isset( $profile_page ) && ! empty( $profile_page ) ) {
+			$classes[] = 'profile-page';
+			$classes[] = sanitize_html_class( 'profile-page-' . $profile_page );
+		}
+
+		return $classes;
+	}
+
 	public function render( $page_path, $template ) {
 		$page_name        = $this->get_profile_page_name( $page_path );
 		$profile_template = $this->get_profile_page_template( $page_name );
@@ -65,7 +87,10 @@ class ProfilePage {
 	}
 
 	public function load_scripts( $page_name ) {
-		$api_key = $this->get_gigya_api_key();
+		$api_key                 = $this->get_gigya_api_key();
+		$settings                = $this->get_member_query_settings();
+		$gigya_auth_screenset    = $settings['gigya_auth_screenset'];
+		$gigya_account_screenset = $settings['gigya_account_screenset'];
 
 		if ( $api_key === '' ) {
 			error_log( 'Fatal Error: Gigya API Key not found.' );
@@ -89,8 +114,25 @@ class ProfilePage {
 		);
 
 		$meta = array(
-			'ajax_url'     => admin_url( 'admin-ajax.php' ),
-			'current_page' => $page_name,
+			'ajax_url'                => admin_url( 'admin-ajax.php' ),
+			'current_page'            => $page_name,
+			'gigya_auth_screenset'    => $gigya_auth_screenset,
+			'gigya_account_screenset' => $gigya_account_screenset,
+
+			'join_header' => get_option( 'gmr_join_page_heading', '' ),
+			'join_message' => get_option( 'gmr_join_page_message', '' ),
+
+			'login_header' => get_option( 'gmr_login_page_heading', '' ),
+			'login_message' => get_option( 'gmr_login_page_message', '' ),
+
+			'forgot-password_header' => get_option( 'gmr_password_page_heading', '' ),
+			'forgot-password_message' => get_option( 'gmr_password_page_message', '' ),
+
+			'account_header' => get_option( 'gmr_account_page_heading', '' ),
+			'account_message' => get_option( 'gmr_account_page_message', '' ),
+
+			'cookies-required_header' => get_option( 'gmr_cookies_page_heading', '' ),
+			'cookies-required_message' => get_option( 'gmr_cookies_page_message', '' ),
 		);
 
 		wp_localize_script(
@@ -101,7 +143,7 @@ class ProfilePage {
 	public function load_styles() {
 		wp_enqueue_style(
 			'gigya_profile',
-			get_stylesheet_directory_uri() . '/profile/profile.css',
+			get_template_directory_uri() . '/profile/profile.css',
 			array(),
 			GMR_GIGYA_VERSION,
 			'all'
@@ -136,23 +178,31 @@ class ProfilePage {
 
 	public function get_profile_page_template( $page_name ) {
 		if ( in_array( $page_name, $this->allowed_pages ) ) {
-			$endpoint = $this->get_profile_endpoint();
-			return get_stylesheet_directory() . "/profile/{$page_name}.php";
+			$template =  locate_template( array(
+				"profile/{$page_name}.php", // $page_name is whitelisted
+				"profile/profile.php" // generic template for profile pages
+			) );
+			return $template;
 		} else {
 			return null;
 		}
 	}
 
-	public function get_gigya_api_key() {
+	public function get_member_query_settings() {
 		$settings = get_option( 'member_query_settings' );
 
 		if ( $settings !== false ) {
-			$settings = json_decode( $settings, true );
-			if ( array_key_exists( 'gigya_api_key', $settings ) ) {
-				return $settings['gigya_api_key'];
-			} else {
-				return '';
-			}
+			return json_decode( $settings, true );
+		} else {
+			return array();
+		}
+	}
+
+	public function get_gigya_api_key() {
+		$settings = $this->get_member_query_settings();
+
+		if ( array_key_exists( 'gigya_api_key', $settings ) ) {
+			return $settings['gigya_api_key'];
 		} else {
 			return '';
 		}

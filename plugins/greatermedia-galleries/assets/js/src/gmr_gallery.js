@@ -22,12 +22,15 @@
 	function bind_events() {
 		var hashChange = false;
 
+		slideshow = $( '.gallery__slide--images.cycle-slideshow' );
+		$slide_paging_previews = $( '.gallery__previews' );
+
 		/**
 		 * Make sure thumbnails are updated before the slideshow cycles.
 		 */
 		slideshow.on( 'cycle-before', function ( event, optionHash ) {
-			update_thumbnails( optionHash.nextSlide );
-			$caption.cycle( 'goto', optionHash.nextSlide );
+			update_thumbnails(optionHash.nextSlide); // nextSlide = incoming slide. could be backward
+			//$caption.cycle( 'goto', optionHash.nextSlide );
 		} );
 
 		/**
@@ -52,6 +55,7 @@
 				index = $this.data( 'cycle-index' );
 
 			slideshow.cycle( 'goto', index );
+			$caption.cycle( 'goto', index );
 		} );
 
 		// Make sure we disable other hashchange events that attempt to capture manual hash changes.
@@ -154,7 +158,7 @@
 		$thumbnails_group.remove();
 		$( '.gallery__previews div' ).each( function() {
 			var $this = $( this );
-			if ( undefined == $this.attr( 'id' ) ) {
+			if ( undefined === $this.attr( 'id' ) ) {
 				$this.remove();
 			}
 		} );
@@ -207,24 +211,17 @@
 		}
 		var url_twitter  = 'http://twitter.com/home?status=' + share_url + '%20-%20' + share_title;
 		var url_facebook = 'http://www.facebook.com/sharer.php?u=' + share_url + '&amp;t=' + share_title;
+		var url_linkedin = '#';
 
 		$( '.gallery-toolbar .fa-twitter' ).attr( 'href', url_twitter );
 		$( '.gallery-toolbar .fa-facebook' ).attr( 'href', url_facebook );
-		$( '.gallery-toolbar .fa-linkedin' ).attr( 'href', url_linkedin );
 		$( '.gallery-toolbar .short-url' ).html( '<a href="' + share_url + '">' + share_url + '</a>' );
 	}
 
 	bind_events();
 
-	// Some galleries are set to be in widescreen by default
-	if ( isWidescreen() ) {
-		expand_wide();
-	}
-
 	window.GMR_Gallery = {
-		isFullscreen: isFullscreen,
-		expand      : expand_full,
-		collapse    : collapse_full
+		bindEvents  : bind_events
 	};
 
 })( jQuery, window );
