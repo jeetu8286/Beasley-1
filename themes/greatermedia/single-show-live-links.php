@@ -23,35 +23,38 @@
 						$current_date = get_the_time( 'M j' );
 						$live_links_query->rewind_posts();
 						?>
+						<div class="live-links-group">
+							<div class="group-date">
+								<?php echo esc_html( $current_date ); ?>
+							</div>
 
-						<div class="group-date">
-							<?php echo esc_html( $current_date ); ?>
-						</div>
-
-						<ul class="ll-archive-list">
-							<?php while ( $live_links_query->have_posts() ) : $live_links_query->the_post(); ?>
-								<?php
-								$date = get_the_time( 'M j' );
-								if ( $date != $current_date ) {
-									$current_date = $date;
-									// New Date - Close the UL, Render Date, Reopen UL
-									?>
-									</ul>
-									<div class="group-date">
-										<?php echo esc_html( $current_date ); ?>
-									</div>
-									<ul class="ll-archive-list">
+							<ul class="ll-archive-list">
+								<?php while ( $live_links_query->have_posts() ) : $live_links_query->the_post(); ?>
 									<?php
-								}
-								?>
-								<li class="live-link__type--<?php echo ( $format = get_post_format() ) ? $format : 'standard'; ?>">
-									<div class="live-link__title">
-										<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+									$date = get_the_time( 'M j' );
+									if ( $date != $current_date ) {
+										$current_date = $date;
+										// New Date - Close the UL, Render Date, Reopen UL
+										?>
+										</ul>
 									</div>
-								</li>
-							<?php endwhile; ?>
-							<?php wp_reset_query(); ?>
-						</ul>
+									<div class="live-links-group">
+										<div class="group-date">
+											<?php echo esc_html( $current_date ); ?>
+										</div>
+										<ul class="ll-archive-list">
+									<?php
+									}
+									?>
+									<li class="live-link__type--<?php echo ( $format = get_post_format() ) ? $format : 'standard'; ?>">
+										<div class="live-link__title">
+											<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+										</div>
+									</li>
+								<?php endwhile; ?>
+								<?php wp_reset_query(); ?>
+							</ul>
+						</div>
 
 					<?php endif; ?>
 
