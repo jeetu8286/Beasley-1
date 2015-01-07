@@ -7536,6 +7536,28 @@ select {
       .profile-page .profile-page__sidebar p {
         display: block; } }
 
+.show__live-links .group-date {
+  float: left;
+  display: block;
+  margin-right: 2.35765%;
+  width: 14.70196%;
+  font-size: 3em;
+  font-weight: 700;
+  color: #929497;
+  clear: both;
+  margin-top: 24px; }
+  .show__live-links .group-date:last-child {
+    margin-right: 0; }
+.show__live-links .ll-archive-list {
+  float: left;
+  display: block;
+  margin-right: 2.35765%;
+  width: 82.94039%;
+  margin-right: 0;
+  margin-top: 24px; }
+  .show__live-links .ll-archive-list:last-child {
+    margin-right: 0; }
+
 /**
  * Single Page Styles
  */

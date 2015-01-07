@@ -12,7 +12,7 @@
 
 				<section class="show__live-links cf">
 
-					<h2 class="section-header">Live Links Archive</h2>
+					<h2>Live Links Archive</h2>
 
 					<?php
 					$live_links_query = \GreaterMedia\Shows\get_show_live_links_archive_query();
@@ -28,7 +28,7 @@
 							<?php echo esc_html( $current_date ); ?>
 						</div>
 
-						<ul>
+						<ul class="ll-archive-list">
 							<?php while ( $live_links_query->have_posts() ) : $live_links_query->the_post(); ?>
 								<?php
 								$date = get_the_time( 'M j' );
@@ -40,7 +40,7 @@
 									<div class="group-date">
 										<?php echo esc_html( $current_date ); ?>
 									</div>
-									<ul>
+									<ul class="ll-archive-list">
 									<?php
 								}
 								?>
