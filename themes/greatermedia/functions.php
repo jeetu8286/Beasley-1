@@ -9,14 +9,14 @@
  * theme's file, so the child theme functions would be used.
  *
  * @package Greater Media
- * @since   0.1.0
+ * @since   0.1.3
  */
 
 // Useful global constants
 /**
  *
  */
-define( 'GREATERMEDIA_VERSION', '0.1.0' );
+define( 'GREATERMEDIA_VERSION', '0.1.3' );
 
 add_theme_support( 'homepage-curation' );
 
@@ -49,9 +49,7 @@ function greatermedia_setup() {
 	 */
 	load_theme_textdomain( 'greatermedia', get_template_directory() . '/languages' );
 
-	/**
-	 * Add theme support for post thumbnails
-	 */
+	// Add theme support for post thumbnails
 	add_theme_support( 'post-thumbnails' );
 	add_image_size( 'gm-article-thumbnail',     		1580,   9999,   false   ); // thumbnails used for articles
 	add_image_size( 'gm-entry-thumbnail-1-1' ,          500,    500,    true    );
@@ -68,9 +66,7 @@ function greatermedia_setup() {
 	add_post_type_support( 'post', 'login-restricted-content' );
 	add_post_type_support( 'post', 'age-restricted-content' );
 
-	/**
-	 * Add theme support for post-formats
-	 */
+	// Add theme support for post-formats
 	$formats = array( 'gallery', 'link', 'image', 'video', 'audio' );
 	add_theme_support( 'post-formats', $formats );
 
@@ -88,7 +84,7 @@ function greatermedia_scripts_styles() {
 
 	wp_register_style(
 		'open-sans',
-		'http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,700',
+		'http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,800italic,400,300,700,800',
 		array(),
 		GREATERMEDIA_VERSION
 	);

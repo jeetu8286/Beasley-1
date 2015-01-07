@@ -164,19 +164,20 @@ function get_show_events() {
 	$show_term = \TDS\get_related_term( get_the_ID() );
 
 	$event_args = array(
-		'eventDisplay'=>'upcoming',
-		'tax_query' => array(
-			'relation' => 'AND',
+		'posts_per_page' => 3,
+		'eventDisplay'   => 'list',
+		'tax_query'      => array(
+			'relation'   => 'AND',
 			array(
 				'taxonomy' => \ShowsCPT::SHOW_TAXONOMY,
-				'field' => 'term_taxonomy_id',
-				'terms' => $show_term->term_taxonomy_id,
+				'field'    => 'term_taxonomy_id',
+				'terms'    => $show_term->term_taxonomy_id,
 			)
 		),
 		'posts_per_page' => 2,
 	);
 
-	if ( ! function_exists( '\tribe_get_events' ) ) {
+	if ( !function_exists( '\tribe_get_events' ) ) {
 		return array();
 	}
 
@@ -244,6 +245,40 @@ function get_show_live_links_query( $show = null, $page = 1 ) {
 	}
 
 	return new \WP_Query( $args );
+}
+
+function get_show_live_links_archive_query() {
+	$episode = \gmrs_get_current_show_episode();
+
+	$show_term = \TDS\get_related_term( get_the_ID() );
+
+	$current_page = get_query_var( 'show_section_page' ) ?: 1;
+
+	$args = array(
+		'post_type' => GMR_LIVE_LINK_CPT,
+		'paged' => $current_page,
+		'posts_per_page' => 30,
+		'ignore_sticky_posts' => true,
+		'tax_query' => array(
+			array(
+				'taxonomy' => \ShowsCPT::SHOW_TAXONOMY,
+				'terms'    => $show_term->term_id,
+			),
+		),
+	);
+
+	if ( $episode && get_the_ID() == $episode->post_parent && \gmrs_is_episode_onair( $episode ) ) {
+		$args['date_query'] = array(
+			array(
+				'before' => $episode->post_date_gmt,
+				'column' => 'post_date_gmt',
+			),
+		);
+	}
+
+	$query = new \WP_Query( $args );
+
+	return $query;
 }
 
 function get_show_main_query() {

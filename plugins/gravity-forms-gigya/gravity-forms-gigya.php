@@ -68,8 +68,8 @@ class GMR_Gform {
 	 * * @param  string $form_tag
 	 */
 	public static function gmi_form_tag( $form_tag ) {
-		if ( is_singular( GreaterMediaContests::CPT_SLUG ) ) {
-			$form_tag = str_replace( "<form ", "<form class='hide' ", $form_tag );
+		if ( is_singular( GMR_CONTEST_CPT ) ) {
+			$form_tag = str_replace( "<form ", '<form class="hide" ', $form_tag );
 		}
 
 		return $form_tag;
@@ -81,7 +81,7 @@ class GMR_Gform {
 	 * * @param  array $form Gravity Forms form object {@link http://www.gravityhelp.com/documentation/page/Developer_Docs#Form_Object}
 	 */
 	public static function gmi_pre_render_form( $form ) {
-		if ( is_singular( GreaterMediaContests::CPT_SLUG ) ) {
+		if ( is_singular( GMR_CONTEST_CPT ) ) {
 			?>
 			<div id="gigya-login-wrap">
 
@@ -1324,7 +1324,7 @@ class GMR_Gform {
 		</script><?php
 
 		// Generate Contest Entry if on contest and gigya user data exists
-		if ( is_singular( GreaterMediaContests::CPT_SLUG ) && ( ! empty( $_POST['gigya_name'] ) && ! empty( $_POST['gigya_UID'] ) ) ) {
+		if ( is_singular( GMR_CONTEST_CPT ) && ( ! empty( $_POST['gigya_name'] ) && ! empty( $_POST['gigya_UID'] ) ) ) {
 			$gf_contest_entry = GreaterMediaContestEntry::create_for_data( get_the_ID(), esc_html( $_POST['gigya_name'] ), esc_html( $_POST['gigya_UID'] ), 'gravity-forms', get_permalink() );
 			$gf_contest_entry->save();
 		}
