@@ -5819,6 +5819,7 @@ category: Components - Shows
   color: #aa1c20; }
 
 .show__live-links {
+  margin-top: 20px;
   position: relative;
   float: left;
   display: block;
