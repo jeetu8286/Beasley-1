@@ -251,11 +251,11 @@ function get_show_live_links_archive_query() {
 
 	$show_term = \TDS\get_related_term( get_the_ID() );
 
-	$page = 1;// @todo page
+	$current_page = get_query_var( 'show_section_page' ) ?: 1;
 
 	$args = array(
 		'post_type' => GMR_LIVE_LINK_CPT,
-		'paged' => $page,
+		'paged' => $current_page,
 		'posts_per_page' => 30,
 		'ignore_sticky_posts' => true,
 		'tax_query' => array(
