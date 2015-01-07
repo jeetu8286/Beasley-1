@@ -59,6 +59,22 @@
 		color: $secondary-border;
 		margin-bottom: 0.5em;
 	}
+
+	.home__highlights {
+		background-color: transparent;
+		border-bottom: none;
+		padding: 0;
+	}
+
+	@include bp(large) {
+		.highlights__community, .highlights__events {
+			padding-top: 0;
+		}
+	}
+
+	.highlights__event--item {
+		background-color: $highlights-bg;
+	}
 }
 
 .show-attr--name {
