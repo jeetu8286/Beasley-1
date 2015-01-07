@@ -1740,7 +1740,7 @@ Curated posts for Featured Articles
   width: 100%;
   margin-right: 0;
   overflow: hidden;
-  background: #f1f1f3;
+  background: #fff;
   height: 100px;
   margin: 1.5em 0 0; }
   .featured__content--block:last-child {
@@ -2055,8 +2055,8 @@ Community Highlights and Events
 */
 .home__highlights {
   padding: 0 0.809em 1.5em;
-  background-color: #f1f1f3;
-  border-bottom: 1px solid #e9e9ec; }
+  background-color: #fff;
+  border-bottom: 1px solid #f7f7f7; }
   @media screen and (min-width: 768px) {
     .home__highlights {
       padding: 0 3.236em 3em; } }
@@ -7582,5 +7582,8 @@ select {
     .live-player__stream .live-player__stream--current.open .live-player__stream--available li:last-child {
       border-bottom-left-radius: 1em;
       border-bottom-right-radius: 1em; }
+
+.home__highlights {
+  border-bottom-color: #d0d2d3; }
 
 /*# sourceMappingURL=wmgk.css.map */
