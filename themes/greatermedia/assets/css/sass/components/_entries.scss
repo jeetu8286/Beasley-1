@@ -57,7 +57,8 @@
 		@include span-columns(6 of 6);
 		@include omega;
 		 
-		.has-post-thumbnail & {
+		.has-post-thumbnail &,
+		.type-tribe_events & {
 			@include span-columns(4 of 6);
 			@include omega; 
 		}
@@ -259,7 +260,8 @@
 	.entry2__meta {
 		@include span-columns(4 of 6);
 	}
-		.entry2.has-post-thumbnail .entry2__meta {
+		.entry2.has-post-thumbnail .entry2__meta, 
+		.entry2.type-tribe_events .entry2__meta {
 			@include span-columns(2 of 6);
 		}
 	
