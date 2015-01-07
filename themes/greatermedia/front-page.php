@@ -17,7 +17,11 @@ get_header();
 			<?php get_template_part( 'partials/frontpage', 'featured' ); ?>
 			<?php get_template_part( 'partials/frontpage', 'highlights' ); ?>
 
-			<section class="entries">
+			<section class="entries">				
+				<div class="ad__leaderboard desktop">
+					<img src='http://placehold.it/728x90'>
+					<?php // do_action( 'acm_tag', 'leaderboard-body' ); ?>
+				</div>
 
 				<h2 class="content__heading">Latest from WMGK</h2>
 

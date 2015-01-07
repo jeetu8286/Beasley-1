@@ -65,3 +65,12 @@
 	}
 
 }
+
+.header__logo {
+	@include bp(medium) {
+		top: -7px;
+	}
+}
+.home__highlights {
+	border-bottom-color: $primary-border;
+}
