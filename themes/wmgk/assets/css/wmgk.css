@@ -3903,7 +3903,10 @@ category: Components
   height: auto; }
 
 .live-player--open .live-player__stream {
-  display: block; }
+  width: 90%;
+  display: block;
+  margin: 10px 5%;
+  z-index: 100; }
 
 .live-player__stream--list {
   padding: 0;
@@ -4335,12 +4338,18 @@ category: Components
   display: block; }
 
 .on-air__title, .up-next__title {
-  margin-bottom: 10px;
-  font-size: 0.88889em; }
+  display: inline-block; }
+  @media screen and (min-width: 768px) {
+    .on-air__title, .up-next__title {
+      margin-bottom: 10px;
+      font-size: 0.88889em; } }
 
 .on-air__show, .up-next__show {
-  font-size: 0.88889em;
-  text-transform: uppercase; }
+  display: inline-block; }
+  @media screen and (min-width: 768px) {
+    .on-air__show, .up-next__show {
+      font-size: 0.88889em;
+      text-transform: uppercase; } }
 
 .now-playing {
   display: none;
