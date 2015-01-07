@@ -268,9 +268,7 @@
 
 		detachAdListeners();
 		attachAdListeners();
-
 		player.stop();
-		player.skipAd();
 		player.playAd('vastAd', {url: vastUrl});
 	}
 
@@ -321,6 +319,7 @@
 			setPlayingStyles();
 		} else {
 			var station = gmr.callsign;
+			var vastUrl = gmr.streamUrl;
 			if (station == '') {
 				alert('Please enter a Station');
 				return;
@@ -395,6 +394,11 @@
 	function seekLive() {
 		player.seekLive();
 		setPlayingStyles();
+	}
+
+	function skipAd()
+	{
+		player.skipAd();
 	}
 
 	function loadNpApi() {

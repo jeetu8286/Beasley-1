@@ -139,6 +139,18 @@ function greatermedia_scripts_styles() {
 		'greatermedia'
 	);
 
+	if ( class_exists( 'Tribe_Template_Factory' ) && method_exists( 'Tribe_Template_Factory', 'asset_package' ) ) {
+		// jquery-resize
+		Tribe_Template_Factory::asset_package( 'jquery-resize' );
+
+		// smoothness
+		Tribe_Template_Factory::asset_package( 'smoothness' );
+
+		// Tribe Calendar JS
+		Tribe_Template_Factory::asset_package( 'calendar-script' );
+
+		Tribe_Template_Factory::asset_package( 'events-css' );
+	}
 }
 
 add_action( 'wp_enqueue_scripts', 'greatermedia_scripts_styles');
