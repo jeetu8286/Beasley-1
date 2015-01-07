@@ -57,7 +57,7 @@
 		@include span-columns(6 of 6);
 		@include omega;
 		 
-		.has-thumbnail & {
+		.has-post-thumbnail & {
 			@include span-columns(4 of 6);
 			@include omega; 
 		}
@@ -154,7 +154,7 @@
 }
 
 // Layout tweaks for audio posts.
-.entry2.format-audio.has-thumbnail {
+.entry2.format-audio.has-post-thumbnail {
 	@include bp(small) {
 		.entry2__thumbnail {
 			@include span-columns(2 of 9);
@@ -259,7 +259,7 @@
 	.entry2__meta {
 		@include span-columns(4 of 6);
 	}
-		.entry2.has-thumbnail .entry2__meta {
+		.entry2.has-post-thumbnail .entry2__meta {
 			@include span-columns(2 of 6);
 		}
 	
