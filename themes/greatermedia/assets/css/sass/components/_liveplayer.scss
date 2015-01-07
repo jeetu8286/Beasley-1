@@ -758,6 +758,14 @@ category: Components
 	font-size: ms(-1);
 	font-weight: normal;
 	color: $color-gray-light;
+
+	.content & {
+		font-size: 1.25em;
+
+		@include bp(large) {
+			font-size: ms(-1);
+		}
+	}
 }
 
 .live-link__title a:link, .live-link__title a:visited {
