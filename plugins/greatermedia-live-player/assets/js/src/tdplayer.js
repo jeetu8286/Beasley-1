@@ -158,6 +158,10 @@
 			pauseStream();
 		});
 
+		if (listenNow != null) {
+			addEventHandler(listenNow,elemClick,playLiveStream);
+		}
+
 	}
 
 	function setPlayingStyles() {
