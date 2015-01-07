@@ -5,7 +5,8 @@
 		var sync = false,
 			$button = $('.posts-pagination--load-more'),
 			url = $button.data('url'),
-			page = parseInt($button.data('page'));
+			page = parseInt($button.data('page')); 
+			loop_partial = greatermedia_load_more.loop_partial;
 
 		if (reset_page) {
 			pagenums[url] = !isNaN(page) && page > 0 ? page : 1;
@@ -22,7 +23,7 @@
 				// if we don't do it and enabled HTTP caching, then we might encounter
 				// unpleasant condition when users see cached version of a page loaded by AJAX
 				// instead of normal one.
-				$.get(url.replace('{{page}}', ++pagenums[url]), {ajax: 1}).done(function(response) {
+				$.get(url.replace('{{page}}', ++pagenums[url]), {ajax: 1, loop_partial: loop_partial }).done(function(response) {
 					sync = false;
 					$self.removeClass('loading');
 
