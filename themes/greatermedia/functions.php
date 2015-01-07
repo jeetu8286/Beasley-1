@@ -9,14 +9,14 @@
  * theme's file, so the child theme functions would be used.
  *
  * @package Greater Media
- * @since   0.1.0
+ * @since   0.1.3
  */
 
 // Useful global constants
 /**
  *
  */
-define( 'GREATERMEDIA_VERSION', '0.1.0' );
+define( 'GREATERMEDIA_VERSION', '0.1.3' );
 
 add_theme_support( 'homepage-curation' );
 
@@ -49,9 +49,7 @@ function greatermedia_setup() {
 	 */
 	load_theme_textdomain( 'greatermedia', get_template_directory() . '/languages' );
 
-	/**
-	 * Add theme support for post thumbnails
-	 */
+	// Add theme support for post thumbnails
 	add_theme_support( 'post-thumbnails' );
 	add_image_size( 'gm-article-thumbnail',     		1580,   9999,   false   ); // thumbnails used for articles
 	add_image_size( 'gm-entry-thumbnail-1-1' ,          500,    500,    true    );
@@ -60,21 +58,15 @@ function greatermedia_setup() {
 	add_image_size( 'gmr-gallery-thumbnail',    		100,    100             ); // thumbnails for the gallery
 	add_image_size( 'gmr-featured-primary',     		1600,   572,    true    ); // image for primary featured post on front page
 	add_image_size( 'gmr-featured-secondary',   		336,    224,    true    ); // thumbnails for secondary featured posts on front page
-	add_image_size( 'gmr-gallery-grid-featured',        1200,   800,    true    );
-	add_image_size( 'gmr-gallery-grid-secondary',       560,    300,    true    );
-	add_image_size( 'gmr-gallery-grid-thumb',           500,    368,    true    ); // thumbnail for gallery grid areas
-	add_image_size( 'gmr-album-thumbnail',              1876,   576,    true    ); // thumbnail for albums
-	add_image_size( 'gmr-show-featured-primary',   		570,    313,    true    ); // thumbnails for secondary featured posts on front page
-	add_image_size( 'gmr-show-featured-secondary',   	270,    118,    true    ); // thumbnails for secondary featured posts on front page
+	add_image_size( 'gmr-show-featured-primary',   		708,    389,    true    ); // thumbnails for secondary featured posts on front page
+	add_image_size( 'gmr-show-featured-secondary',   	322,    141,    true    ); // thumbnails for secondary featured posts on front page
 
 	// Update this as appropriate content types are created and we want this functionality
 	add_post_type_support( 'post', 'timed-content' );
 	add_post_type_support( 'post', 'login-restricted-content' );
 	add_post_type_support( 'post', 'age-restricted-content' );
 
-	/**
-	 * Add theme support for post-formats
-	 */
+	// Add theme support for post-formats
 	$formats = array( 'gallery', 'link', 'image', 'video', 'audio' );
 	add_theme_support( 'post-formats', $formats );
 
@@ -92,7 +84,7 @@ function greatermedia_scripts_styles() {
 
 	wp_register_style(
 		'open-sans',
-		'http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,700',
+		'http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,800italic,400,300,700,800',
 		array(),
 		GREATERMEDIA_VERSION
 	);
@@ -241,6 +233,43 @@ function get_post_with_keyword( $query_arg ) {
 }
 
 /**
+ * Get the URL of a post's thumbnail.  
+ * 
+ * @param string|array Thumbnail size.
+ * @param int Post ID. Defaults to current post. 
+ */
+function gm_get_post_thumbnail_url( $size = 'thumbnail', $post_id = null ) {
+	$thumbnail_id = get_post_thumbnail_id( $post_id );
+
+	if ( $thumbnail_id ) {
+		return gm_get_thumbnail_url( $thumbnail_id, $size );
+	}
+}
+
+/**
+ * Output the escaped URL of a post's thumbnail.  
+ * 
+ * @param string|array Thumbnail size.
+ * @param int Post ID. Defaults to current post. 
+ */
+function gm_post_thumbnail_url( $size = 'thumbnail', $post_id = null ) {
+	echo esc_url( gm_get_post_thumbnail_url( $size, $post_id ) );
+}
+
+/**
+ * Get the URL of an attachment thumbnail. 
+ * 
+ * @param id $attachment_id
+ * @return null|string URL if found, null otherwise. 
+ */
+function gm_get_thumbnail_url( $attachment_id, $size ) {
+	$src = wp_get_attachment_image_src( $attachment_id, $size );
+	if ( $src ) {
+		return $src[0]; 
+	}	
+}
+
+/**
  * Custom action to add keyword search results
  */
 function get_results_for_keyword() {
@@ -334,23 +363,3 @@ function greatermedia_excerpt_more( $more ) {
 	return '';
 }
 add_filter( 'excerpt_more', 'greatermedia_excerpt_more' );
-
-/**
- * By default, when trying to navigate through galleries of an album, pagination will not work. This function disables
- * canonical redirection for single posts for the specified content types. In this instance, we are forcing that
- * redirection be disabled for the `gmr_album` content type.
- *
- * @since 0.1.0
- *
- * @link https://gist.github.com/madebydaniel/ca63450fb9a0e08b747a
- *
- * @param $redirect_url
- *
- * @return bool
- */
-function greatermedia_disable_redirect_canonical( $redirect_url ){
-	if ( is_singular('gmr_album') ) $redirect_url = false;
-	return $redirect_url;
-}
-
-add_filter( 'redirect_canonical','greatermedia_disable_redirect_canonical' );
