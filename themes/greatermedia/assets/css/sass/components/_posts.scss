@@ -612,12 +612,14 @@ Link posts contain a link to an external site. They can also optionally have a f
 	width: 100%;
 	font-size: ms(-1);
 	float: left;
-	margin-top: 3em;
+	margin: 0 0 $base-line-height; 
+	text-align: center;
 }
 
 .posts-pagination--previous {
 	float: left;
 	width: 50%;
+	text-align: left;
 }
 
 .posts-pagination--previous .fa {
@@ -633,3 +635,27 @@ Link posts contain a link to an external site. They can also optionally have a f
 .posts-pagination--next .fa {
 	margin-left: .5em;
 }
+
+.posts-pagination--load-more {
+	@include btn($btn-bg, $color-text-white, $btn-bg, 0.5em, 1em, ms(-1));
+	@include border-radius(1em);
+	display: none;
+	
+	.fa {
+		margin-right: 0.4em;
+	}
+
+	// Animations don't work on elements that are initially not visible, so we
+	// make it visible by default but use the .is-loaded flag to signal that 
+	// loading is done and the icon can go away.
+	&.is-loaded {
+		.fa {
+			display: none;  
+		}
+	}
+
+	&:disabled {
+		@include btn($gray, $color-text-white, $gray, 0.5em, 1em, ms(-1));
+	}
+}
+
