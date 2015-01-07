@@ -58,7 +58,8 @@
 		scrollObject = {},
 		searchForm = document.getElementById( 'header__search--form'),
 		searchBtn = document.getElementById( 'header__search'),
-		searchInput = document.getElementById( 'header-search');
+		searchInput = document.getElementById( 'header-search'),
+		collapseToggle = document.querySelector('*[data-toggle="collapse"]');
 
 	/**
 	 * global variables for event types to use in conjunction with `addEventHandler` function
@@ -219,7 +220,29 @@
 		body.classList.toggle( 'mobile-nav--open' );
 	}
 	addEventHandler(mobileNavButton,elemClick,toggleNavButton);
-	
+
+	/**
+	 * Toggles a target element.
+	 * 
+	 * @param {MouseEvent} e
+	 */
+	function toggleCollapsedElement(e) {
+		var target = document.querySelector(this.getAttribute('data-target')),
+			currentText = this.innerText,
+			newText = this.getAttribute('data-alt-text');
+
+		e.preventDefault();
+
+		target.style.display = target.style.display != 'none' ? 'none' : 'block';
+
+		this.innerText = newText;
+		this.setAttribute('data-alt-text', currentText);
+	}
+	if (collapseToggle != null) {
+		addEventHandler(collapseToggle, elemClick, toggleCollapsedElement);
+	}
+
+
 	/**
 	 * Toggles a class to the Live Play Stream Select box when the box is clicked
 	 */
@@ -341,14 +364,11 @@
 	 * @param e
 	 */
 	function showSearch(e) {
-		e = e || window.event;
 		if (searchForm !== null) {
+			e.preventDefault();
 			searchForm.classList.toggle('header__search--open');
 			searchInput.focus();
 		}
-		e.cancelBubble = true;
-		if (e.stopPropagation)
-			e.stopPropagation();
 	}
 
 	/**
@@ -357,13 +377,10 @@
 	 * @param e
 	 */
 	function closeSearch(e) {
-		e = e || window.event;
 		if (searchForm !== null && searchForm.classList.contains('header__search--open')) {
+			e.preventDefault();
 			searchForm.classList.remove('header__search--open');
 		}
-		e.cancelBubble = true;
-		if (e.stopPropagation)
-			e.stopPropagation();
 	}
 
 	/**
@@ -371,7 +388,6 @@
 	 */
 	if (searchBtn !== null) {
 		searchBtn.addEventListener('click', showSearch, false);
-		pageWrap.addEventListener('click', closeSearch, false);
 		/**
 		 * An event listener is also in place for the header search form so that when a user clicks inside of it, it will
 		 * not hide. This is key because the header search for sits within the element that the click event that closes the
