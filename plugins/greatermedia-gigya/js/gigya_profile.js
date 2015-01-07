@@ -354,7 +354,6 @@
 
 		didAfterScreen: function(event) {
 			this.scrollToTop();
-			console.log('didAfterScreen', event.currentScreen);
 			if (event.currentScreen === 'gigya-update-profile-screen') {
 				this.registerLogoutButton();
 			}
@@ -384,7 +383,6 @@
 				scrollTop: target.offset().top
 			};
 
-			//console.log('animate', params);
 			root.animate(params, 500);
 		},
 
