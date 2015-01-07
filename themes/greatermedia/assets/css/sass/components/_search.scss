@@ -18,10 +18,10 @@
 		@include transition(all 200ms ease-in-out);
 		@include transform(translate(0, -100%));
 		z-index: 1000;
-	}
 
-	.logged-in & {
-		top: 32px;
+		.logged-in & {
+			top: 32px;
+		}
 	}
 }
 
