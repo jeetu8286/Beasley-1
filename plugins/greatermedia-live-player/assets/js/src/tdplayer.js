@@ -202,6 +202,7 @@
 	function loggedInGigyaUser() {
 		if (is_gigya_user_logged_in() ) {
 			if( Cookies.get( "gmlp_play_button_pushed" ) == 1 ) {
+				pjaxInit();
 				playLiveStream();
 				Cookies.set( "gmlp_play_button_pushed", 0 );
 			}
