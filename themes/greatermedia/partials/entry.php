@@ -44,9 +44,8 @@ if ( has_post_thumbnail() || 'tribe_events' == $post->post_type ) {
 				
 		<?php if ( 'tribe_events' == $post->post_type ): ?>
 			<ul class="entry2__event--details">
-				<?php 
-				// @todo I should probably be a function, because this type of 
-				// crazy doesn't belong in the main template files.
+				<?php
+				// Put start time, venue, and cost on one line, separated by commas.  
 				echo esc_html( implode(', ', array_filter( array( tribe_get_start_time(), tribe_get_venue(), tribe_get_cost() ) ) ) );
 				?>
 			</ul>
