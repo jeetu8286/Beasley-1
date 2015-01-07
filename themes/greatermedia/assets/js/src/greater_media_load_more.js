@@ -27,7 +27,7 @@
 
 			if (!sync) {
 				sync = true;
-				$self.addClass('loading');
+				$self.removeClass('is-loaded');
 
 				// let's use ?ajax=1 to distinguish AJAX and non AJAX requests
 				// if we don't do it and enabled HTTP caching, then we might encounter
@@ -35,7 +35,7 @@
 				// instead of normal one.
 				$.get(url.replace('{{page}}', ++pagenums[url]), {ajax: 1, loop_partial: loop_partial }).done(function(response) {
 					sync = false;
-					$self.removeClass('loading');
+					$self.addClass('is-loaded');
 
 					$($('<div>' + $.trim(response) + '</div>').html()).insertBefore($button.parents('.posts-pagination'));
 				}).fail(function() {
