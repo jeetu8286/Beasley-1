@@ -741,7 +741,7 @@ category: Components
 
 .live-link__type--gallery:before {
 	@extend %live-link__icon;
-	content: "\e602";
+	content: "\e61a";
 }
 
 .live-link__type--image:before {
@@ -761,7 +761,7 @@ category: Components
 
 .live-link__type--video:before {
 	@extend %live-link__icon;
-	content: "\e604";
+	content: "\e613";
 }
 
 .live-link__title {
