@@ -2,7 +2,7 @@
 
 // action hooks
 add_action( 'init', 'gmr_contests_register_post_type' );
-add_action( 'init', 'gmr_contests_register_rewrites_and_endpoints' );
+add_action( 'init', 'gmr_contests_register_rewrites_and_endpoints', 100 );
 add_action( 'wp_enqueue_scripts', 'gmr_contests_enqueue_front_scripts', 100 );
 add_action( 'template_redirect', 'gmr_contests_process_action' );
 add_action( 'template_redirect', 'gmr_contests_process_submission_action' );
@@ -63,7 +63,7 @@ function gmr_contests_register_post_type() {
 /**
  * Registers rewrites and endpoints for contests related tasks.
  *
- * @action init
+ * @action init 100
  * @global WP_Rewrite $wp_rewrite The rewrite API object.
  */
 function gmr_contests_register_rewrites_and_endpoints() {
@@ -79,8 +79,8 @@ function gmr_contests_register_rewrites_and_endpoints() {
 	}
 
 	// add endpoints
-	add_rewrite_endpoint( 'action', EP_GMR_CONTEST );
-	add_rewrite_endpoint( 'submission', EP_GMR_CONTEST );
+	add_rewrite_endpoint( 'action', EP_GMR_CONTEST | EP_GMR_SURVEY );
+	add_rewrite_endpoint( 'submission', EP_GMR_CONTEST | EP_GMR_SURVEY );
 
 	// flush rewrite rules only if our rules is not registered
 	$all_registered_rules = $wp_rewrite->wp_rewrite_rules();
