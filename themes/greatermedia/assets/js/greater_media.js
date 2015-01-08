@@ -40,6 +40,7 @@
 		header = document.getElementById( 'header' ),
 		headerHeight = header.offsetHeight,
 		livePlayer = document.getElementById( 'live-player__sidebar' ),
+		livePlayerStream = document.querySelector('.live-player__stream');
 		livePlayerStreamSelect = document.querySelector( '.live-player__stream--current' ),
 		livePlayerStreamSelectHeight = livePlayerStreamSelect.offsetHeight,
 		livePlayerCurrentName = livePlayerStreamSelect.querySelector( '.live-player__stream--current-name' ),
@@ -58,7 +59,8 @@
 		scrollObject = {},
 		searchForm = document.getElementById( 'header__search--form'),
 		searchBtn = document.getElementById( 'header__search'),
-		searchInput = document.getElementById( 'header-search');
+		searchInput = document.getElementById( 'header-search'),
+		collapseToggle = document.querySelector('*[data-toggle="collapse"]');
 
 	/**
 	 * global variables for event types to use in conjunction with `addEventHandler` function
@@ -170,6 +172,41 @@
 	}
 
 	/**
+	 * adds some styles to the live player that would be called at mobile breakpoints. This is added specifically to
+	 * deal with a window being resized.
+	 */
+	function livePlayerMobileReset() {
+		livePlayer.style.position = 'fixed';
+		livePlayer.style.top = 'auto';
+		livePlayer.style.bottom = '0';
+		livePlayer.style.right = '0';
+		livePlayer.style.left = '0';
+		livePlayer.style.height = 'auto';
+	}
+
+	/**
+	 * adds some styles to the live player that would be called at desktop breakpoints. This is added specifically to
+	 * deal with a window being resized.
+	 */
+	function livePlayerDesktopReset() {
+		livePlayer.classList.contains('live-player--init');
+		livePlayer.style.left = 'auto';
+		livePlayer.style.bottom = 'auto';
+		if( window.innerWidth >= 1385 || this.document.documentElement.clientWidth >= 1385 || this.document.body.clientWidth >= 1385 ) {
+			livePlayer.style.right = 'calc(50% - 700px)';
+		} else {
+			livePlayer.style.right = '0';
+		}
+		if ( body.classList.contains( 'logged-in' ) ) {
+			livePlayer.style.top = headerHeight + wpAdminHeight + 'px';
+			livePlayer.style.height = windowHeight - wpAdminHeight - headerHeight + 'px';
+		} else {
+			livePlayer.style.top = headerHeight + 'px';
+			livePlayer.style.height = windowHeight - headerHeight + 'px';
+		}
+	}
+
+	/**
 	 * creates a re-usable variable that will call a button name, element to hide, and element to display
 	 *
 	 * @param btn
@@ -219,12 +256,35 @@
 		body.classList.toggle( 'mobile-nav--open' );
 	}
 	addEventHandler(mobileNavButton,elemClick,toggleNavButton);
-	
+
+	/**
+	 * Toggles a target element.
+	 * 
+	 * @param {MouseEvent} e
+	 */
+	function toggleCollapsedElement(e) {
+		var target = document.querySelector(this.getAttribute('data-target')),
+			currentText = this.innerText,
+			newText = this.getAttribute('data-alt-text');
+
+		e.preventDefault();
+
+		target.style.display = target.style.display != 'none' ? 'none' : 'block';
+
+		this.innerText = newText;
+		this.setAttribute('data-alt-text', currentText);
+	}
+	if (collapseToggle != null) {
+		addEventHandler(collapseToggle, elemClick, toggleCollapsedElement);
+	}
+
+
 	/**
 	 * Toggles a class to the Live Play Stream Select box when the box is clicked
 	 */
 	function toggleStreamSelect() {
 		livePlayerStreamSelect.classList.toggle( 'open' );
+		livePlayerStream.classList.toggle('open');
 	}
 	addEventHandler(livePlayerStreamSelect,elemClick,toggleStreamSelect);
 	
@@ -329,9 +389,18 @@
 			if(liveLinksWidget != null) {
 				addEventHandler(liveLinksWidget,elemClick,liveLinksClose);
 			}
+			if(livePlayer != null) {
+				livePlayerMobileReset();
+			}
 		}
 		if ( window.innerWidth >= 768 ) {
-			addEventHandler(window,elemLoad,livePlayerInit);
+			if(livePlayer != null) {
+				livePlayerDesktopReset();
+				addEventHandler(window,elemScroll,function() {
+					scrollDebounce();
+					scrollThrottle();
+				});
+			}
 		}
 	}
 
@@ -341,14 +410,11 @@
 	 * @param e
 	 */
 	function showSearch(e) {
-		e = e || window.event;
 		if (searchForm !== null) {
+			e.preventDefault();
 			searchForm.classList.toggle('header__search--open');
 			searchInput.focus();
 		}
-		e.cancelBubble = true;
-		if (e.stopPropagation)
-			e.stopPropagation();
 	}
 
 	/**
@@ -357,13 +423,10 @@
 	 * @param e
 	 */
 	function closeSearch(e) {
-		e = e || window.event;
 		if (searchForm !== null && searchForm.classList.contains('header__search--open')) {
+			e.preventDefault();
 			searchForm.classList.remove('header__search--open');
 		}
-		e.cancelBubble = true;
-		if (e.stopPropagation)
-			e.stopPropagation();
 	}
 
 	/**
@@ -371,7 +434,6 @@
 	 */
 	if (searchBtn !== null) {
 		searchBtn.addEventListener('click', showSearch, false);
-		pageWrap.addEventListener('click', closeSearch, false);
 		/**
 		 * An event listener is also in place for the header search form so that when a user clicks inside of it, it will
 		 * not hide. This is key because the header search for sits within the element that the click event that closes the
@@ -396,6 +458,11 @@
 		resizeDebounce = _.debounce(resizeWindow, 50),
 		resizeThrottle = _.throttle(resizeWindow, 50);
 
+	addEventHandler(window,elemResize,function() {
+		resizeDebounce();
+		resizeThrottle();
+	});
+
 	/**
 	 * functions being run at specific window widths.
 	 */
@@ -412,10 +479,6 @@
 		if(liveLinksWidget != null) {
 			addEventHandler(liveLinksWidget,elemClick,liveLinksClose);
 		}
-		addEventHandler(window,elemResize,function() {
-			resizeDebounce();
-			resizeThrottle();
-		});
 	} else {
 		addEventHandler(window,elemLoad,function() {
 			livePlayerInit();

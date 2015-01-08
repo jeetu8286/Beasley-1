@@ -17,6 +17,9 @@
 	cursor: pointer;
 	z-index: 2;
 	@include bp(medium) {
+		top: 25px;
+	}
+	@include bp(large) {
 		display: none;
 	}
 }
@@ -65,14 +68,21 @@
 	border-right: 1px solid $primary-border;
 	z-index: 1;
 	overflow-y: auto;
-	@include bp(medium) {
+	@include bp(large) {
 		display: none;
 	}
 }
 
+
 .admin-bar .mobile-nav {
-	top: 46px;
-	height: calc( 100% - 46px ); /* doesn't work in IE8, but probably ok. Just don't edit the site and expect the front-end to be bug-free in IE8 */
+	top: 32px;
+	height: calc( 100% - 32px ); /* doesn't work in IE8, but probably ok. Just don't edit the site and expect the front-end to be bug-free in IE8 */
+
+	/* Matches, exactly, the media query for the admin bar, so when it changes height, the menu also does */
+	@media screen and (max-width: 782px) {
+		top: 46px;
+		height: calc(100% - 46px); /* doesn't work in IE8, but probably ok. Just don't edit the site and expect the front-end to be bug-free in IE8 */
+	}
 }
 
 .mobile-nav--open {
