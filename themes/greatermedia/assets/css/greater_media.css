@@ -8151,7 +8151,9 @@ select {
 .ui-menu .ui-menu-item {
   position: relative;
   cursor: pointer;
-  min-height: 0; }
+  min-height: 0;
+  color: #000000;
+  padding: 1em; }
 
 .ui-autocomplete {
   position: absolute;
@@ -8164,10 +8166,6 @@ select {
   width: 100%;
   top: 100%;
   left: 0; }
-
-.ui-menu-item {
-  color: #000000;
-  padding: 1em; }
 
 .ui-state-focus {
   color: #ffffff; }
