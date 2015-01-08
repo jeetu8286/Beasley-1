@@ -49,8 +49,6 @@ class GMR_Audio_Shortcodes {
 			$metadata = $metadata_defaults;
 		}
 
-		ob_start();
-
 		$hash = md5( $mp3_src );
 		$parent_podcast_id = wp_get_post_parent_id( $post_id );
 		if( $parent_podcast_id ) {
@@ -95,7 +93,6 @@ class GMR_Audio_Shortcodes {
 		update_post_meta( $post_id, 'enclosure', esc_attr( $mp3_src ) );
 		update_post_meta( $post_id, 'duration', esc_html( $metadata['length_formatted'] ) );
 
-		//$new_html .= ob_get_clean();
 		return $new_html;
 	}
 
