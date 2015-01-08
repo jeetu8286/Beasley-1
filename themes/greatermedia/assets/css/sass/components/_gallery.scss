@@ -863,41 +863,50 @@ category: Components - Gallery Archive
 }
 
 .gallery__featured--primary {
-	float: left;
-	width: 100%;
-
-	@include bp(medium) {
-		width: 66%;
-		margin-right: 4%;
+	@include bp(large) {
+		@include span-columns(8 of 12);
 	}
 
 }
 
 .gallery__featured--secondary {
-	float: left;
-	width: 100%;
-
-	@include bp(medium) {
-		width: 30%;
+	@include bp(large) {
+		@include span-columns(8 of 12);
 	}
 }
 
 .gallery__featured--item {
-	margin-bottom: 20px;
-
-	@include bp(medium) {
-		margin-bottom: 0;
+	margin-bottom: 5.6%;
+	
+ 	.thumbnail {
+		background-color: $dark-gray;
+		padding-bottom: 66%;
+		background-position: center center; 
+		background-size: 100%; 
+		background-size: cover;
+				 
+		.inner-wrap {
+			position: absolute;
+			left: 0;
+			top: 0;
+		}
 	}
-	.gallery__featured--secondary & {
-		margin-bottom: 20px;
-		@include bp(medium) {
-			margin-bottom: 18px;
+
+	&:hover {
+		h3 {
+			color: $primary-link-hover;
 		}
-		@include bp(large) {
-			margin-bottom: 28px;
-		}
-		@include bp(x-large) {
-			margin-bottom: 42px;
+	}
+	
+	@include bp(large) {
+		padding-bottom: 75%;
+		position: relative;
+		
+		.thumbnail {
+			position: absolute;
+			width: 100%;
+			left: 0; 
+			top: 0;
 		}
 	}
 }

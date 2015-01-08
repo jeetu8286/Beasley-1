@@ -7432,37 +7432,47 @@ category: Components - Gallery Archive
 .gallery__featured {
   padding-bottom: 48px; }
 
-.gallery__featured--primary {
-  float: left;
-  width: 100%; }
-  @media screen and (min-width: 768px) {
-    .gallery__featured--primary {
-      width: 66%;
-      margin-right: 4%; } }
+@media screen and (min-width: 1024px) {
+  .gallery__featured--primary {
+    float: left;
+    display: block;
+    margin-right: 2.35765%;
+    width: 65.88078%; }
+    .gallery__featured--primary:last-child {
+      margin-right: 0; } }
 
-.gallery__featured--secondary {
-  float: left;
-  width: 100%; }
-  @media screen and (min-width: 768px) {
-    .gallery__featured--secondary {
-      width: 30%; } }
+@media screen and (min-width: 1024px) {
+  .gallery__featured--secondary {
+    float: left;
+    display: block;
+    margin-right: 2.35765%;
+    width: 65.88078%; }
+    .gallery__featured--secondary:last-child {
+      margin-right: 0; } }
 
 .gallery__featured--item {
-  margin-bottom: 20px; }
-  @media screen and (min-width: 768px) {
+  margin-bottom: 5.6%; }
+  .gallery__featured--item .thumbnail {
+    background-color: #282827;
+    padding-bottom: 66%;
+    background-position: center center;
+    background-size: 100%;
+    background-size: cover; }
+    .gallery__featured--item .thumbnail .inner-wrap {
+      position: absolute;
+      left: 0;
+      top: 0; }
+  .gallery__featured--item:hover h3 {
+    color: #aa1c20; }
+  @media screen and (min-width: 1024px) {
     .gallery__featured--item {
-      margin-bottom: 0; } }
-  .gallery__featured--secondary .gallery__featured--item {
-    margin-bottom: 20px; }
-    @media screen and (min-width: 768px) {
-      .gallery__featured--secondary .gallery__featured--item {
-        margin-bottom: 18px; } }
-    @media screen and (min-width: 1024px) {
-      .gallery__featured--secondary .gallery__featured--item {
-        margin-bottom: 28px; } }
-    @media screen and (min-width: 1400px) {
-      .gallery__featured--secondary .gallery__featured--item {
-        margin-bottom: 42px; } }
+      padding-bottom: 75%;
+      position: relative; }
+      .gallery__featured--item .thumbnail {
+        position: absolute;
+        width: 100%;
+        left: 0;
+        top: 0; } }
 
 .gallery__featured--secondary .gallery__featured--item:last-of-type {
   margin-bottom: 0; }
