@@ -6389,9 +6389,9 @@ category: Components - Article
       transform: translate(0, -200%);
       /* 200% ensures it's out of the way of the .wp-admin bar */
       z-index: 5000000;
-      /* IAB z-index standards for nav drop downs. Prevents an ad from being over top unless it's a full-screen ad */ } }
-  .logged-in .header__search--form {
-    top: 32px; }
+      /* IAB z-index standards for nav drop downs. Prevents an ad from being over top unless it's a full-screen ad */ }
+      .logged-in .header__search--form {
+        top: 32px; } }
 
 .header__search--label {
   cursor: pointer; }
