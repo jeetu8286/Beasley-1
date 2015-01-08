@@ -137,19 +137,32 @@ class GreaterMediaFormbuilderRender {
 		$contest_entry = @json_decode( $contest_entry, true );
 		foreach ( $form as $field ) {
 			if ( isset( $contest_entry[ $field->cid ] ) ) {
-				if ( $field->field_type != 'radio' ) {
-					$results[ $field->cid ] = array(
-						'type'  => $field->field_type,
-						'label' => $field->label,
-						'value' => $contest_entry[ $field->cid ],
-					);
-				} else {
+				if ( 'radio' == $field->field_type ) {
 					$results[ $field->cid ] = array(
 						'type'  => $field->field_type,
 						'label' => $field->label,
 						'value' => ! empty( $field->field_options->options[ $contest_entry[ $field->cid ] ] )
 							? $field->field_options->options[ $contest_entry[ $field->cid ] ]->label
-							: "",
+							: $contest_entry[ $field->cid ],
+					);
+				} elseif ( 'checkboxes' == $field->field_type && is_array( $contest_entry[ $field->cid ] ) ) {
+					$values = array();
+					foreach ( $contest_entry[ $field->cid ] as $value ) {
+						$values[] = ! empty( $field->field_options->options[ $value ] )
+							? $field->field_options->options[ $value ]->label
+							: $value;
+					}
+
+					$results[ $field->cid ] = array(
+						'type'  => $field->field_type,
+						'label' => $field->label,
+						'value' => $values,
+					);
+				} else {
+					$results[ $field->cid ] = array(
+						'type'  => $field->field_type,
+						'label' => $field->label,
+						'value' => $contest_entry[ $field->cid ],
 					);
 				}
 			}
@@ -235,7 +248,7 @@ class GreaterMediaFormbuilderRender {
 
 		if ( ! empty( $label ) ) {
 
-			if ( ! empty( $field->required ) ) {
+			if ( ! empty( $field->required ) && 'section_break' != $field->field_type ) {
 				$label .= ' <abbr title="required">*</abbr>';
 			}
 			
@@ -479,7 +492,7 @@ class GreaterMediaFormbuilderRender {
 			$other_option_data->checked = false;
 			$other_option_data->other   = true;
 
-			$html .= self::render_single_checkbox( $field->cid, 'other', $other_option_data, $input_type );
+			$html .= self::render_single_checkbox( $field->cid, 'other', $other_option_data, $input_type, $multiple_choices );
 		}
 
 		$html .= self::render_description( $field );

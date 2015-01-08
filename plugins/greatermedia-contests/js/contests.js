@@ -896,11 +896,9 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 			container.find(gmr.selectors.form).each(function() {
 				var $form = $(this),
 					firstName = get_gigya_user_field('firstName'),
-					lastName = get_gigya_user_field('lastName'),
-					email = get_gigya_user_field('email');
+					lastName = get_gigya_user_field('lastName');
 
 				$form.find('input[type="text"]:first').val(firstName + ' ' + lastName);
-				$form.find('input[type="email"]:first').val(email);
 			});
 		}
 	};
