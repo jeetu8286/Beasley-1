@@ -9,7 +9,30 @@
  */
 class GreaterMediaNavWalker extends Walker_Nav_Menu {
 
-	public static function get_parent_format( $item_id ) {
+	public static function format_small_previews_link( $item ) {
+
+		$return = '';
+		// Try to find an image to use.
+		$src = get_post_meta( $item->object_id, 'logo_image', true );
+		if ( ! empty( $src ) && $src ) {
+			$return .= wp_get_attachment_image( absint( $src ) );
+		} else if ( has_post_thumbnail( $item->object_id ) ) {
+			$return .= get_the_post_thumbnail( $item->object_id, 'thumbnail' );
+		}
+
+		$return .= '<div class="group">';
+		$return .= apply_filters( 'the_title', $item->title, $item->ID );
+
+		// Try to find some meta text to use
+		if ( 'show' === $item->object ) {
+			$return .= '<span class="meta-text">show time</span>'; // @todo placeholder
+		} else if ( 'tribe_events' === $item->object && function_exists( 'tribe_get_start_date' ) ) {
+			$return .= '<span class="meta-text">' . tribe_get_start_date( $item->object_id ) . '</span>';
+		}
+
+		$return .= '</div>';
+
+		return $return;
 
 	}
 
@@ -112,26 +135,7 @@ class GreaterMediaNavWalker extends Walker_Nav_Menu {
 		 * @todo check performance here, may want to query all the object_ids at once so they are cached.
 		 */
 		if ( 'sp' === $parent_format ) {
-
-			// Try to find an image to use.
-			$src = get_post_meta( $item->object_id, 'logo_image', true );
-			if ( ! empty( $src ) && $src ) {
-				$item_output .= wp_get_attachment_image( absint( $src ) );
-			} else if ( has_post_thumbnail( $item->object_id ) ) {
-				$item_output .= get_the_post_thumbnail( $item->object_id, 'thumbnail' );
-			}
-
-			$item_output .= '<div class="group">';
-			$item_output .= apply_filters( 'the_title', $item->title, $item->ID );
-
-			// Try to find some meta text to use
-			if ( 'show' === $item->object ) {
-				$item_output .= '<span class="meta-text">show time</span>'; // @todo placeholder
-			} else if ( 'tribe_events' === $item->object && function_exists( 'tribe_get_start_date' ) ) {
-				$item_output .= '<span class="meta-text">' . tribe_get_start_date( $item->object_id )  . '</span>';
-			}
-
-			$item_output .= '</div>';
+			$item_output .= self::format_small_previews_link( $item );
 		} else {
 			/** This filter is documented in wp-includes/post-template.php */
 			$item_output .= $args->link_before . apply_filters( 'the_title', $item->title, $item->ID ) . $args->link_after;
