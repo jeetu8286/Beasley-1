@@ -44,9 +44,10 @@ if ( has_post_thumbnail() || 'tribe_events' == $post->post_type ) {
 				
 		<?php if ( 'tribe_events' == $post->post_type ): ?>
 			<ul class="entry2__event--details">
-				<li class="entry2__event--item"><?php echo tribe_get_start_time(); ?></li>
-				<li class="entry2__event--item"><?php echo tribe_get_venue(); ?></li>
-				<li class="entry2__event--item"><?php echo tribe_get_cost(); ?></li>
+				<?php
+				// Put start time, venue, and cost on one line, separated by commas.  
+				echo esc_html( implode(', ', array_filter( array( tribe_get_start_time(), tribe_get_venue(), tribe_get_cost() ) ) ) );
+				?>
 			</ul>
 		<?php else: ?>
 			<div class="entry2__excerpt">
