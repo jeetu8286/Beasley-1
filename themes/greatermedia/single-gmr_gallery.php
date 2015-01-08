@@ -68,6 +68,8 @@ get_header(); ?>
 								</section>
 
 							<?php endif; ?>
+							
+						<?php } ?>
 
 				</article>
 
