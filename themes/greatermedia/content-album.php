@@ -2,11 +2,7 @@
 
 	<?php if (have_posts()) : while ( have_posts() ) : the_post(); ?>
 
-		<section class="content">
-
-			<article id="post-<?php the_ID(); ?>" <?php post_class( 'cf' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
-
-				<?php if ( has_post_thumbnail() ) { ?>
+		<?php if ( has_post_thumbnail() ) { ?>
 
 					<div class="entry__thumbnail">
 
@@ -15,6 +11,11 @@
 					</div>
 
 				<?php } ?>
+				<section class="content">
+
+			<article id="post-<?php the_ID(); ?>" <?php post_class( 'cf' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
+
+				
 
 				<div class="ad__inline--right">
 					<?php do_action( 'acm_tag', 'mrec-body' ); ?>

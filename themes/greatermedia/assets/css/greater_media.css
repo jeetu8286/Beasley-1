@@ -2816,9 +2816,7 @@ Link posts contain a link to an external site. They can also optionally have a f
   position: relative;
   padding-bottom: 32px; }
   .single-gmr_album .entry__thumbnail {
-    width: 100%;
-    padding-top: 2em;
-    padding-bottom: 3.625em; }
+    width: 100%; }
 
 .entry__content {
   padding: 1.5em 0;
