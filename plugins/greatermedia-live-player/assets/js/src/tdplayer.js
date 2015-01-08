@@ -133,11 +133,8 @@
 
 	function initControlsUi() {
 
-		// custom call to use button instead of input for styling purposes
-		var podcastButton = $('.mejs-play');
-
 		if (playBtn != null) {
-			addEventHandler(playBtn,elemClick,playLiveStream);
+			addEventHandler(playBtn,elemClick,playLiveStreamWithPreRoll);
 		}
 
 		if (pauseBtn != null) {
@@ -151,12 +148,6 @@
 		if (clearDebug != null) {
 			addEventHandler(clearDebug,elemClick,clearDebugInfo);
 		}
-
-		podcastButton.click(function () {
-			pauseBtn.hide();
-			resumeBtn.show();
-			pauseStream();
-		});
 
 		if (listenNow != null) {
 			addEventHandler(listenNow,elemClick,playLiveStream);
@@ -203,10 +194,24 @@
 		resumeBtn.style.display = 'block';
 	}
 
+	function changePlayerState() {
+		if (is_gigya_user_logged_in()) {
+			playBtn.addEventListener('click', function() {
+				playLiveStreamWithPreRoll();
+			});
+		} else {
+			playBtn.addEventListener('click', function() {
+				window.location.href = gigyaLogin;
+			});
+		}
+	}
+
+	changePlayerState();
+
 	function loggedInGigyaUser() {
 		if (is_gigya_user_logged_in() ) {
 			if( Cookies.get( "gmlp_play_button_pushed" ) == 1 ) {
-				playLiveStream();
+				playLiveStreamWithPreRoll();
 				Cookies.set( "gmlp_play_button_pushed", 0 );
 			}
 			/*)
