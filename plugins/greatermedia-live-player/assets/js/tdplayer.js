@@ -1,7 +1,7 @@
 (function ($, window, undefined) {
 	"use strict";
 
-	var tech = getUrlVars()['tech'] || 'flash_html5';
+	var tech = getUrlVars()['tech'] || 'html5_flash';
 	var aSyncCuePointFallback = getUrlVars()['aSyncCuePointFallback'] == 'false' ? false : true;
 
 	var player; /* TD player instance */
