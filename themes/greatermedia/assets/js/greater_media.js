@@ -159,13 +159,6 @@
 		}
 		livePlayer.classList.remove( 'live-player--fixed' );
 		livePlayer.classList.add( 'live-player--init' );
-		livePlayer.style.position = 'absolute';
-		livePlayer.style.left = 'auto';
-		if( window.innerWidth >= 1385 || this.document.documentElement.clientWidth >= 1385 || this.document.body.clientWidth >= 1385 ) {
-			livePlayer.style.right = 'calc(50% - 700px)';
-		} else {
-			livePlayer.style.right = '0';
-		}
 	}
 
 	function liveLinksAddHeight() {
@@ -178,13 +171,31 @@
 		liveLinksWidget.style.height = liveLinksWidgetHeight + 'px';
 	}
 
-	function livePlayerReset() {
+	function livePlayerMobileReset() {
 		livePlayer.style.position = 'fixed';
 		livePlayer.style.top = 'auto';
 		livePlayer.style.bottom = '0';
 		livePlayer.style.right = '0';
 		livePlayer.style.left = '0';
 		livePlayer.style.height = 'auto';
+	}
+
+	function livePlayerDesktopReset() {
+		livePlayer.classList.contains('live-player--init');
+		livePlayer.style.left = 'auto';
+		livePlayer.style.bottom = 'auto';
+		if (window.innerWidth >= 1385 || this.document.documentElement.clientWidth >= 1385 || this.document.body.clientWidth >= 1385) {
+			livePlayer.style.right = 'calc(50% - 700px);';
+		} else {
+			livePlayer.style.right = '0';
+		}
+		if ( body.classList.contains( 'logged-in' ) ) {
+			livePlayer.style.top = headerHeight + wpAdminHeight + 'px';
+			livePlayer.style.height = windowHeight - wpAdminHeight - headerHeight + 'px';
+		} else {
+			livePlayer.style.top = headerHeight + 'px';
+			livePlayer.style.height = windowHeight - headerHeight + 'px';
+		}
 	}
 
 	/**
@@ -371,12 +382,12 @@
 				addEventHandler(liveLinksWidget,elemClick,liveLinksClose);
 			}
 			if(livePlayer != null) {
-				livePlayerReset();
+				livePlayerMobileReset();
 			}
 		}
 		if ( window.innerWidth >= 768 ) {
 			if(livePlayer != null) {
-				livePlayerInit();
+				livePlayerDesktopReset();
 			}
 		}
 	}
@@ -435,6 +446,11 @@
 		resizeDebounce = _.debounce(resizeWindow, 50),
 		resizeThrottle = _.throttle(resizeWindow, 50);
 
+	addEventHandler(window,elemResize,function() {
+		resizeDebounce();
+		resizeThrottle();
+	});
+
 	/**
 	 * functions being run at specific window widths.
 	 */
@@ -463,10 +479,5 @@
 			scrollThrottle();
 		});
 	}
-
-	addEventHandler(window,elemResize,function() {
-		resizeDebounce();
-		resizeThrottle();
-	});
 
 })();

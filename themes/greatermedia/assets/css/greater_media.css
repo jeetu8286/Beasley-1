@@ -3827,6 +3827,9 @@ category: Components
     .logged-in .live-player--fixed {
       top: 32px; } }
 
+.live-player--init {
+  position: absolute; }
+
 .live-player--open .page-wrap:before {
   position: absolute;
   top: 0;
