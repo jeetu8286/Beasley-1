@@ -58,6 +58,9 @@ class GMR_Audio_Shortcodes {
 			$parent_podcast = false;
 		}
 
+		//get podcast featured image
+		$featured_image = wp_get_attachment_url( get_post_thumbnail_id( $parent_podcast_id ) );
+
 		$series = get_post( $parent_podcast_id );
 		$series_slug = $series->post_name;
 		$feed_url = home_url( '/' ) . '?feed=podcast&podcast_series=' . $series_slug;
@@ -74,9 +77,12 @@ class GMR_Audio_Shortcodes {
 			$new_html .= '<a href="' . esc_attr( $mp3_src ) . '" download="' . esc_attr( $mp3_src ) . '" class="podcast__download--btn" download>Download</a>';
 			$new_html .= '</div>';
 		}
+		if( $featured_image ) {
+			$new_html .= '<img src="' . $featured_image . '" class="podcast__img">';	
+		}
 		$new_html .= '</div>';
 		$new_html .= '<div class="podcast__meta">';
-		$new_html .= '<time class="podcast__date" datetime="' . get_the_time( 'c' ) . '">' . get_the_time( 'F d' ) . '</time>';
+		$new_html .= '<time class="podcast__date" datetime="' . get_the_time( 'c' ) . '">' . get_the_time( 'F j' ) . '</time>';
 		$new_html .= '<h3 class="podcast__title">' . get_the_title() . '</h3>';
 		if( $parent_podcast_id && is_singular( ShowsCPT::SHOW_CPT ) ) {
 			$new_html .= '<div class="podcast__parent"><div class="podcast__parent--title">'. esc_html( $parent_podcast->post_title ) . '</div>';
