@@ -22,7 +22,7 @@ get_header(); ?>
 
 				<?php if ( have_posts() ) :  ?>
 
-					<?php get_template_part( 'partials/loop/archive' ); ?>
+					<?php get_template_part( 'partials/loop' ); ?>
 					<?php get_template_part( 'partials/pagination' ); ?>
 
 				<?php else : ?>

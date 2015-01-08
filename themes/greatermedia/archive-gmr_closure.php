@@ -37,7 +37,7 @@ get_header(); ?>
 					
 			<?php if ( have_posts() ) : ?>
 
-				<?php get_template_part( 'partials/loop/archive', 'gmr_closure' ); ?>
+				<?php get_template_part( 'partials/loop', 'gmr_closure' ); ?>
 				<?php get_template_part( 'partials/pagination' ); ?>
 
 			<?php else : ?>
