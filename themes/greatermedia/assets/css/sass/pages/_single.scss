@@ -9,3 +9,8 @@
  	background-size: cover; 
  	background-position: center center;
  }
+
+.page__title {
+	@extend .entry__title;
+	text-transform: uppercase;
+}
