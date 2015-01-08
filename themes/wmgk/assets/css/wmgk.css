@@ -1106,17 +1106,51 @@ blockquote p {
   -o-transform: translate(78%, 0);
   transform: translate(78%, 0);
   width: 100%;
-  -webkit-transition: all 100ms ease-out;
-  -moz-transition: all 100ms ease-out;
-  transition: all 100ms ease-out; }
+  -webkit-transition: -webkit-transform 100ms ease-out;
+  -moz-transition: -moz-transform 100ms ease-out;
+  transition: transform 100ms ease-out;
+  position: fixed; }
 
+.mobile-nav--open .header__search--open {
+  -webkit-transform: translate(78%, 0);
+  -moz-transform: translate(78%, 0);
+  -ms-transform: translate(78%, 0);
+  -o-transform: translate(78%, 0);
+  transform: translate(78%, 0); }
+
+.mobile-nav--open .header__search--form {
+  position: fixed;
+  -webkit-transform: translate(78%);
+  -moz-transform: translate(78%);
+  -ms-transform: translate(78%);
+  -o-transform: translate(78%);
+  transform: translate(78%); }
+  @media screen and (min-width: 768px) {
+    .mobile-nav--open .header__search--form {
+      -webkit-transform: translate(78%, -200%);
+      -moz-transform: translate(78%, -200%);
+      -ms-transform: translate(78%, -200%);
+      -o-transform: translate(78%, -200%);
+      transform: translate(78%, -200%); } }
+
+.mobile-nav--open .footer {
+  display: none; }
+
+.mobile-nav--open .page-wrap {
+  top: 40px; }
+
+/**
+ * Provides an overlay mask to help focus attention on the menu
+ * z-index is 2 so that it sits under the close button, but above most content
+ */
 .mobile-nav--open .page-wrap:before {
   position: absolute;
   top: 0;
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.4);
-  content: " "; }
+  content: " ";
+  z-index: 2; }
 
 .mobile-nav__list {
   padding: 0;
@@ -1191,6 +1225,15 @@ blockquote p {
 .header__nav ul li ul {
   display: none; }
 
+/**
+ * Z-indexes
+ *
+ * IAB standards for z-indexes set the baseline, with drop nav occupying a range between 5000000 and 5999999
+ * Within that range, we're stepping by 100s.
+ * The overlay mask sits at the bottom of the range: 5000000
+ * Above the top level menu item is the sub-menu and top level menu item (only while hovered) at 5000100
+ *
+ */
 /* Psuedo element helps with selection by preventing the menu from collapsing on just a bit of a mouse-out */
 .header__nav .menu-item-has-children:hover:after {
   content: ' ';
@@ -1201,6 +1244,38 @@ blockquote p {
   float: right;
   width: 40px;
   height: 40px; }
+
+.overlay-mask {
+  visibility: hidden;
+  background-color: rgba(0, 0, 0, 0.333);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5000000;
+  /* IAB z-index standard for drop nav is 5000000 - 5999999 */
+  opacity: 0;
+  -webkit-transition: visibility 0s linear, opacity 100ms ease-out;
+  -moz-transition: visibility 0s linear, opacity 100ms ease-out;
+  transition: visibility 0s linear, opacity 100ms ease-out; }
+  .overlay-mask.is-visible {
+    visibility: visible;
+    opacity: 1;
+    -webkit-transition: visibility 0s linear, opacity 100ms ease-out;
+    -moz-transition: visibility 0s linear, opacity 100ms ease-out;
+    transition: visibility 0s linear, opacity 100ms ease-out; }
+
+/**
+ * This is not ideal, we should be doing this on the top level <li>
+ * Unfortunately, doing so means that the full-width menus, aren't. They are 100% the width of the <li>
+ * Which is no good. So here we are.
+ */
+.header__nav {
+  position: relative; }
+  .header__nav:hover {
+    z-index: 5000100;
+    /* IAB z-index standard for drop nav is 5000000 - 5999999 */ }
 
 .header__nav ul li:hover .sub-menu, .header__nav ul li:hover .format-fw > ul {
   display: block; }
@@ -1213,7 +1288,7 @@ blockquote p {
   background-color: #fff;
   color: #000000;
   min-width: 300px;
-  z-index: 5000000;
+  z-index: 5000100;
   /* IAB z-index standard for drop nav is 5000000 - 5999999 */ }
   .header__nav .sub-menu li, .header__nav .format-fw > ul li,
   .header__account--links.sub-menu li,
@@ -2339,7 +2414,8 @@ Community Highlights and Events
   float: left;
   display: block;
   margin-right: 7.42297%;
-  width: 100%;
+  width: 46.28851%;
+  margin-left: 26.85574%;
   margin-right: 0;
   height: 70px;
   padding: 18px 0;
@@ -2349,6 +2425,7 @@ Community Highlights and Events
     margin-right: 0; }
   @media screen and (min-width: 768px) {
     .header__logo {
+      margin-left: 0%;
       max-width: 200px;
       height: 82px; } }
   @media screen and (min-width: 1024px) {
@@ -2467,7 +2544,7 @@ Community Highlights and Events
   display: block;
   margin: 0 auto;
   text-align: center;
-  font-size: 25px; }
+  font-size: 30px; }
   @media screen and (min-width: 768px) {
     .header__account--btn {
       height: 82px;
@@ -6445,6 +6522,7 @@ category: Components - Article
   float: right;
   height: 40px;
   border: none;
+  width: 14px;
   background-color: transparent;
   color: #929497; }
   @media screen and (min-width: 768px) {
