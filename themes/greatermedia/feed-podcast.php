@@ -24,7 +24,7 @@ if( $protection && $protection == 'on' ) {
 		$message = $message_option;
 	}
 
-	$no_access_message = esc_html( '<div style="text-align:center;font-family:sans-serif;border:1px solid red;background:pink;padding:20px 0;color:red;">' . $message . '</div>' );
+	$no_access_message = '<div style="text-align:center;font-family:sans-serif;border:1px solid red;background:pink;padding:20px 0;color:red;">' . esc_html( $message ) . '</div>';
 
 	// Request password and give access if correct
 	if ( ! isset( $_SERVER['PHP_AUTH_USER'] ) && ! isset( $_SERVER['PHP_AUTH_PW'] ) ) {
@@ -303,7 +303,7 @@ echo '<?xml version="1.0" encoding="' . get_option('blog_charset') . '"?'.'>'; ?
 		<description><![CDATA[<?php the_excerpt_rss(); ?>]]></description>
 		<itunes:subtitle><?php echo esc_html( $itunes_excerpt ); ?></itunes:subtitle>
 		<content:encoded><![CDATA[<?php echo esc_html( $content ); ?>]]></content:encoded>
-		<itunes:summary><?php echo $itunes_summary; ?></itunes:summary>
+		<itunes:summary><?php echo esc_html( $itunes_summary ); ?></itunes:summary>
 		<enclosure url="<?php echo esc_url( $enclosure ); ?>" length="<?php echo esc_attr( $size ); ?>" type="<?php echo esc_attr( $mime_type ); ?>"></enclosure>
 		<itunes:explicit><?php echo esc_html( $explicit_flag ); ?></itunes:explicit>
 		<itunes:block><?php echo esc_html( $block_flag ); ?></itunes:block>
