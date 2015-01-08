@@ -184,8 +184,8 @@
 		livePlayer.classList.contains('live-player--init');
 		livePlayer.style.left = 'auto';
 		livePlayer.style.bottom = 'auto';
-		if (window.innerWidth >= 1385 || this.document.documentElement.clientWidth >= 1385 || this.document.body.clientWidth >= 1385) {
-			livePlayer.style.right = 'calc(50% - 700px);';
+		if( window.innerWidth >= 1385 || this.document.documentElement.clientWidth >= 1385 || this.document.body.clientWidth >= 1385 ) {
+			livePlayer.style.right = 'calc(50% - 700px)';
 		} else {
 			livePlayer.style.right = '0';
 		}
@@ -388,6 +388,10 @@
 		if ( window.innerWidth >= 768 ) {
 			if(livePlayer != null) {
 				livePlayerDesktopReset();
+				addEventHandler(window,elemScroll,function() {
+					scrollDebounce();
+					scrollThrottle();
+				});
 			}
 		}
 	}
