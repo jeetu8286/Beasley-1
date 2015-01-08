@@ -386,7 +386,7 @@
 
 	function resumeStream() {
 		if ( true === playingCustomAudio ) {
-			resumeCustomInlineAudio();
+			resumeInlineAudio();
 		} else {
 			if (livePlaying) {
 				player.resume();
@@ -1032,6 +1032,17 @@
 		playingCustomAudio = true;
 		stopLiveStreamIfPlaying();
 		customAudio.play();
+		setPlayerTrackName();
+		setPlayerArtist();
+		setPlayingStyles();
+		resetInlineAudioStates();
+		setInlineAudioStates();
+	};
+
+	var resumeInlineAudio = function() {
+		playingCustomAudio = true;
+		stopLiveStreamIfPlaying();
+		customAudio.resume();
 		setPlayerTrackName();
 		setPlayerArtist();
 		setPlayingStyles();
