@@ -8219,6 +8219,29 @@ select {
     .show__live-links .ll-archive-list:last-child {
       margin-right: 0; } }
 
+.adblock--detected {
+  display: none;
+  -webkit-transition: background 500ms ease-in-out;
+  -moz-transition: background 500ms ease-in-out;
+  transition: background 500ms ease-in-out; }
+
+.live-stream__container.vast__pre-roll .adblock--detected {
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 640px;
+  height: 250px;
+  padding: 20px;
+  background-color: #fff;
+  font-size: 1.26563em;
+  color: #404041;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%); }
+
 /**
  * Single Page Styles
  */
