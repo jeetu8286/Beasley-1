@@ -72,6 +72,7 @@ class GMR_Show_Metaboxes {
 
 		add_meta_box( 'show_featured', 'Featured', array( $this, 'render_featured_meta_box' ), ShowsCPT::SHOW_CPT, 'advanced', 'high' );
 		add_meta_box( 'show_favorites', 'Favorites', array( $this, 'render_favorites_meta_box' ), ShowsCPT::SHOW_CPT, 'advanced', 'high' );
+		add_meta_box( 'show_time', 'Show Times', array( $this, 'render_show_times_meta_box' ), ShowsCPT::SHOW_CPT, 'side' );
 	}
 
 	/**
@@ -223,6 +224,22 @@ class GMR_Show_Metaboxes {
 	}
 
 	/**
+	 * Render a meta box to enter a show times string for use throughout the site
+	 * @param $post WP_Post
+	 */
+	public function render_show_times_meta_box( $post ) {
+		$show_times = get_post_meta( $post->ID, 'show_times', true );
+		?>
+		<label>Show times
+		<input type="text" name="show_times" class="widefat" value="<?php echo esc_attr( $show_times ); ?>" placeholder="Weekdays at 9am">
+		</label>
+		<p class="description">
+			A simple description for when this show is on air. Used alongside show titles. Independent from the official show schedule.
+		</p>
+		<?php
+	}
+
+	/**
 	 * Saves the captured data.
 	 *
 	 * @action save_post
@@ -268,6 +285,12 @@ class GMR_Show_Metaboxes {
 		if ( isset( $_POST['gmr-favorite-post-ids'] ) ) {
 			$favorite_ids = implode( ',', array_map( 'intval', explode( ',', $_POST['gmr-favorite-post-ids'] ) ) );
 			update_post_meta( $post_id, 'gmr_favorite_post_ids', $favorite_ids );
+		}
+
+		if ( isset( $_POST['show_times'] ) && ! empty( $_POST['show_times'] ) ) {
+			update_post_meta( $post_id, 'show_times', sanitize_text_field( $_POST['show_times'] ) );
+		} else {
+			delete_post_meta( $post_id, 'show_times' );
 		}
 	}
 
