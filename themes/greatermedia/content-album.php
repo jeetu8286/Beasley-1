@@ -4,14 +4,15 @@
 
 		<?php if ( has_post_thumbnail() ) { ?>
 
-					<div class="entry__thumbnail">
+			<div class="entry__thumbnail">
 
-						<?php the_post_thumbnail( 'gmr-album-thumbnail', array( 'class' => 'single__featured-img' ) ); ?>
+				<?php the_post_thumbnail( 'gmr-album-thumbnail', array( 'class' => 'single__featured-img' ) ); ?>
 
-					</div>
+			</div>
 
-				<?php } ?>
-				<section class="content">
+		<?php } ?>
+		
+		<section class="content">
 
 			<article id="post-<?php the_ID(); ?>" <?php post_class( 'cf' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
 
