@@ -1,7 +1,6 @@
 %format-fw {
 	& > ul {
 		@extend .sub-menu;
-		width: $max-site-width;
 		left: 0;
 		padding: 1em;
 	}

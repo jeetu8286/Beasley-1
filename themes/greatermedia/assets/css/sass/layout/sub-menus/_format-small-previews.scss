@@ -29,8 +29,12 @@
 		vertical-align: middle;
 	}
 
-	li {
+	li a {
 		min-height: 71px; /* the 40px img (below) + the padding, so that all the containers are the same height and flow */
+	}
+
+	.mobile-menu-submenu-header a {
+		min-height: 0;
 	}
 
 	li img {

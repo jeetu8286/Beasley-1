@@ -1293,7 +1293,6 @@ blockquote p {
   color: #fff; }
 
 .header__nav .format-fw > ul, .header__nav .format-sp > ul {
-  width: 1400px;
   left: 0;
   padding: 1em; }
 .header__nav .format-fw > ul > li, .header__nav .format-sp > ul > li {
@@ -1320,9 +1319,11 @@ blockquote p {
 .format-sp li .group {
   display: inline-block;
   vertical-align: middle; }
-.format-sp li {
+.format-sp li a {
   min-height: 71px;
   /* the 40px img (below) + the padding, so that all the containers are the same height and flow */ }
+.format-sp .mobile-menu-submenu-header a {
+  min-height: 0; }
 .format-sp li img {
   display: inline-block;
   vertical-align: middle;
