@@ -23,7 +23,7 @@
 .overlay-mask {
 	visibility: hidden;
 	background-color: rgba(0, 0, 0, .333);
-	position: absolute;
+	position: fixed;
 	top: 0;
 	left: 0;
 	width: 100%;
