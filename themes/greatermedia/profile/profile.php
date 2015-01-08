@@ -190,11 +190,11 @@ $months = array(
 				<ul class="member-groups-list">
 					<li>
 						<input type="checkbox" name="data.vipGroup" checked="checked" />
-						<label class="label-email-list">VIP Newsletter</label>
+						<label class="label-email-list">@Work Network Newsletter</label>
 					</li>
 					<li>
 						<input type="checkbox" name="data.bigFrigginDealGroup" checked="checked">
-						<label class="label-email-list">Big Friggin' Deal</label>
+						<label class="label-email-list">MGK's Discount Deal</label>
 					</li>
 					<li>
 						<input type="checkbox" name="data.birthdayGreetingsGroup" checked="checked">
@@ -291,15 +291,15 @@ $months = array(
 
 				<ul class="member-groups-list">
 					<li>
-						<input type="checkbox" name="data.vipGroup" />
-						<label class="label-email-list">VIP Newsletter</label>
+						<input type="checkbox" name="data.vipGroup" checked="checked" />
+						<label class="label-email-list">@Work Network Newsletter</label>
 					</li>
 					<li>
-						<input type="checkbox" name="data.bigFrigginDealGroup">
-						<label class="label-email-list">Big Friggin' Deal</label>
+						<input type="checkbox" name="data.bigFrigginDealGroup" checked="checked">
+						<label class="label-email-list">MGK's Discount Deal</label>
 					</li>
 					<li>
-						<input type="checkbox" name="data.birthdayGreetingsGroup">
+						<input type="checkbox" name="data.birthdayGreetingsGroup" checked="checked">
 						<label class="label-email-list">Birthday Greetings</label>
 					</li>
 				</ul>
