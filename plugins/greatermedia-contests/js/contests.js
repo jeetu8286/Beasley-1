@@ -828,14 +828,7 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 
 		// init new gallery
 		if ($.fn.cycle) {
-			$previewInner.find('.cycle-slideshow').cycle({
-				next: '.gallery__next--btn'
-			});
-		}
-
-		// bind gallery events
-		if (typeof GMR_Gallery !== 'undefined') {
-			GMR_Gallery.bindEvents();
+			$previewInner.find('.cycle-slideshow').cycle();
 		}
 
 		// bind vote click event

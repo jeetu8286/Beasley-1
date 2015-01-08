@@ -41,7 +41,7 @@ function(a){"use strict";a.extend(a.fn.cycle.defaults,{tmplRegex:"{{((.)?.*?)}}"
 		/**
 		 * Bind the gallery full screen toggle
 		 */
-		function bind_events() {
+		$(document).on('cycle-bootstrap', function() {
 			var hashChange = false;
 
 			slideshow = $( '.gallery__slide--images.cycle-slideshow' );
@@ -108,7 +108,7 @@ function(a){"use strict";a.extend(a.fn.cycle.defaults,{tmplRegex:"{{((.)?.*?)}}"
 			} );
 
 			$window.resize( responsive_thumbnails );
-		}
+		});
 
 		/**
 		 * Are we on a mobile browser (or anything smaller than 768px)?
@@ -239,12 +239,6 @@ function(a){"use strict";a.extend(a.fn.cycle.defaults,{tmplRegex:"{{((.)?.*?)}}"
 			$( '.gallery-toolbar .fa-facebook' ).attr( 'href', url_facebook );
 			$( '.gallery-toolbar .short-url' ).html( '<a href="' + share_url + '">' + share_url + '</a>' );
 		}
-
-		bind_events();
-
-		window.GMR_Gallery = {
-			bindEvents  : bind_events
-		};
 	};
 
 	$document.bind('pjax:end', function() {
