@@ -24,6 +24,14 @@
 		}
 	}
 
+.article__thumbnail {
+	width: 100%;
+	padding-bottom: 66%;
+	background-size: 100%;
+	background-size: cover; 
+	background-position: center center;
+}
+
 .article__content {
 	margin-bottom: 1.5em;
 	

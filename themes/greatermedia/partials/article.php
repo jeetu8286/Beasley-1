@@ -2,12 +2,9 @@
 
 	<div class="container">
 
-		<?php if ( has_post_thumbnail() ) {
-
-				the_post_thumbnail( 'full', array( 'class' => 'single__featured-img' ) );
-
-			}
-		?>
+		<?php if ( has_post_thumbnail() ): ?>
+			<div class="article__thumbnail" style='background-image: url(<?php gm_post_thumbnail_url( 'full' ); ?>)'></div>
+		<?php endif; ?>
 
 		<section class="content">
 

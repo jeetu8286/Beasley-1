@@ -3822,6 +3822,13 @@ Link posts contain a link to an external site. They can also optionally have a f
     .article__title {
       font-size: 2.2807em; } }
 
+.article__thumbnail {
+  width: 100%;
+  padding-bottom: 66%;
+  background-size: 100%;
+  background-size: cover;
+  background-position: center center; }
+
 .article__content {
   margin-bottom: 1.5em;
   font-size: 16px;
@@ -6478,6 +6485,13 @@ a.social-share-link {
   @media screen and (min-width: 768px) {
     .article__title {
       font-size: 2.2807em; } }
+
+.article__thumbnail {
+  width: 100%;
+  padding-bottom: 66%;
+  background-size: 100%;
+  background-size: cover;
+  background-position: center center; }
 
 .article__content {
   margin-bottom: 1.5em;
