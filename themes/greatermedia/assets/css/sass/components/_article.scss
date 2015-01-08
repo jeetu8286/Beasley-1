@@ -182,6 +182,16 @@
 		font-size: ms(-2);
 		text-align: left;
 	}
+	// Override the default provided by _typography.scss
+	blockquote {
+		background: url(../../images/article__blockquote-icon.svg) no-repeat 0 .35em;
+		border: none;
+		padding: 0 0 0 4em;
+		
+		&, p {
+			color: $medium-dark-gray;
+		}
+	}
 }
 
 .article__comments {
