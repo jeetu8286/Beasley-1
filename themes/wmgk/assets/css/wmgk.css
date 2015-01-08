@@ -4869,6 +4869,77 @@ category: Components - Ads
 .contest__restrictions .contest__restriction--one-entry,
 .contest__restrictions .contest__restriction--signin {
   display: none; }
+.contest__restrictions .contest__restriction--finished p,
+.contest__restrictions .contest__restriction--max-entries p,
+.contest__restrictions .contest__restriction--not-started p,
+.contest__restrictions .contest__restriction--age-fails p,
+.contest__restrictions .contest__restriction--one-entry p {
+  display: inline-block;
+  line-height: 1;
+  padding: 0.5em 1em;
+  margin-right: .5em;
+  outline: none;
+  background-color: #d22228;
+  border: 1px solid #d22228;
+  font-family: "Open Sans", sans-serif;
+  font-size: 0.88889em;
+  color: #ffffff !important;
+  text-transform: uppercase;
+  cursor: pointer;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  -border-radius: 3px;
+  border-radius: 3px; }
+  .contest__restrictions .contest__restriction--finished p:hover, .contest__restrictions .contest__restriction--finished p:focus,
+  .contest__restrictions .contest__restriction--max-entries p:hover,
+  .contest__restrictions .contest__restriction--max-entries p:focus,
+  .contest__restrictions .contest__restriction--not-started p:hover,
+  .contest__restrictions .contest__restriction--not-started p:focus,
+  .contest__restrictions .contest__restriction--age-fails p:hover,
+  .contest__restrictions .contest__restriction--age-fails p:focus,
+  .contest__restrictions .contest__restriction--one-entry p:hover,
+  .contest__restrictions .contest__restriction--one-entry p:focus {
+    background-color: #aa1c20;
+    border-color: #aa1c20;
+    color: #ffffff; }
+  .contest__restrictions .contest__restriction--finished p:last-of-type,
+  .contest__restrictions .contest__restriction--max-entries p:last-of-type,
+  .contest__restrictions .contest__restriction--not-started p:last-of-type,
+  .contest__restrictions .contest__restriction--age-fails p:last-of-type,
+  .contest__restrictions .contest__restriction--one-entry p:last-of-type {
+    margin-right: 0; }
+.contest__restrictions .contest__restriction--age p:first-child {
+  font-weight: bold; }
+.contest__restrictions .contest__restriction--signin p {
+  font-weight: bold; }
+  .contest__restrictions .contest__restriction--signin p a {
+    display: inline-block;
+    line-height: 1;
+    padding: 0.5em 1em;
+    margin-right: .5em;
+    outline: none;
+    background-color: #d22228;
+    border: 1px solid #d22228;
+    font-family: "Open Sans", sans-serif;
+    font-size: 0.88889em;
+    color: #ffffff !important;
+    text-transform: uppercase;
+    cursor: pointer;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -ms-border-radius: 3px;
+    -o-border-radius: 3px;
+    -border-radius: 3px;
+    border-radius: 3px;
+    font-weight: normal; }
+    .contest__restrictions .contest__restriction--signin p a:hover, .contest__restrictions .contest__restriction--signin p a:focus {
+      background-color: #aa1c20;
+      border-color: #aa1c20;
+      color: #ffffff; }
+    .contest__restrictions .contest__restriction--signin p a:last-of-type {
+      margin-right: 0; }
 .contest__restrictions.age .contest__restriction--age {
   display: block; }
 .contest__restrictions.age-fails .contest__restriction--age-fails {
@@ -4886,15 +4957,13 @@ category: Components - Ads
 
 .contest__restriction--min-age-yes,
 .contest__restriction--min-age-no {
-  display: block !important;
+  display: inline-block;
   line-height: 1;
-  padding: .25em 1em;
-  margin-top: 0 !important;
-  margin-bottom: 1em !important;
-  margin-right: 0 !important;
+  padding: 0.625em 1em;
+  margin-right: .5em;
   outline: none;
-  background-color: #d22228 !important;
-  border: 1px solid #d22228 !important;
+  background-color: #d22228;
+  border: 1px solid #d22228;
   font-family: "Open Sans", sans-serif;
   font-size: 0.88889em;
   color: #ffffff !important;
@@ -4906,25 +4975,64 @@ category: Components - Ads
   -o-border-radius: 3px;
   -border-radius: 3px;
   border-radius: 3px; }
-  @media screen and (min-width: 768px) {
-    .contest__restriction--min-age-yes,
-    .contest__restriction--min-age-no {
-      display: inline-block !important;
-      margin-bottom: 0 !important;
-      margin-right: .5em !important; } }
+  .contest__restriction--min-age-yes:hover, .contest__restriction--min-age-yes:focus,
+  .contest__restriction--min-age-no:hover,
+  .contest__restriction--min-age-no:focus {
+    background-color: #aa1c20;
+    border-color: #aa1c20;
+    color: #ffffff; }
   .contest__restriction--min-age-yes:last-of-type,
   .contest__restriction--min-age-no:last-of-type {
-    margin-right: 0 !important; }
+    margin-right: 0; }
   .contest__restriction--min-age-yes:hover,
   .contest__restriction--min-age-no:hover {
-    background-color: #f5ed7f !important;
-    border: 1px solid #f5ed7f !important;
-    color: #000000 !important; }
+    display: inline-block;
+    line-height: 1;
+    padding: 0.625em 1em;
+    margin-right: .5em;
+    outline: none;
+    background-color: #f5ed7f;
+    border: 1px solid #f5ed7f;
+    font-family: "Open Sans", sans-serif;
+    font-size: 0.88889em;
+    color: #000000 !important;
+    text-transform: uppercase;
+    cursor: pointer; }
+    .contest__restriction--min-age-yes:hover:hover, .contest__restriction--min-age-yes:hover:focus,
+    .contest__restriction--min-age-no:hover:hover,
+    .contest__restriction--min-age-no:hover:focus {
+      background-color: #f2e754;
+      border-color: #f2e754;
+      color: #000000; }
+    .contest__restriction--min-age-yes:hover:last-of-type,
+    .contest__restriction--min-age-no:hover:last-of-type {
+      margin-right: 0; }
   .contest__restriction--min-age-yes:active,
   .contest__restriction--min-age-no:active {
-    background-color: #000000 !important;
-    border: 1px solid #000000 !important;
-    color: #ffffff !important; }
+    display: inline-block;
+    line-height: 1;
+    padding: 0.625em 1em;
+    margin-right: .5em;
+    outline: none;
+    background-color: #000000;
+    border: 1px solid #000000;
+    font-family: "Open Sans", sans-serif;
+    font-size: 0.88889em;
+    color: #ffffff !important;
+    text-transform: uppercase;
+    cursor: pointer; }
+    .contest__restriction--min-age-yes:active:hover, .contest__restriction--min-age-yes:active:focus,
+    .contest__restriction--min-age-no:active:hover,
+    .contest__restriction--min-age-no:active:focus {
+      background-color: black;
+      border-color: black;
+      color: #ffffff; }
+    .contest__restriction--min-age-yes:active:last-of-type,
+    .contest__restriction--min-age-no:active:last-of-type {
+      margin-right: 0; }
+  .contest__restriction--min-age-yes:last-of-type,
+  .contest__restriction--min-age-no:last-of-type {
+    margin-right: 0; }
 
 .contest-attr--rules {
   padding: 2em;

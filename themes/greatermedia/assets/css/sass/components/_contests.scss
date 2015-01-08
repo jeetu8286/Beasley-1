@@ -105,6 +105,29 @@
 		display: none;
 	}
 
+	.contest__restriction--finished p,
+	.contest__restriction--max-entries p,
+	.contest__restriction--not-started p,
+	.contest__restriction--age-fails p,
+	.contest__restriction--one-entry p {
+		@include btn($btn-bg, $color-text-white, $btn-bg, 0.5em, 1em, ms(-1));
+		@include border-radius(3px);
+	}
+
+	.contest__restriction--age p:first-child {
+		font-weight: bold;
+	}
+
+	.contest__restriction--signin p {
+		font-weight: bold;
+
+		a {
+			@include btn($btn-bg, $color-text-white, $btn-bg, 0.5em, 1em, ms(-1));
+			@include border-radius(3px);
+			font-weight: normal;
+		}
+	}
+
 	&.age .contest__restriction--age {
 		display: block;
 	}
@@ -136,42 +159,19 @@
 
 .contest__restriction--min-age-yes,
 .contest__restriction--min-age-no {
-	display: block !important;
-	line-height: 1;
-	padding: .25em 1em;
-	margin-top: 0 !important;
-	margin-bottom: 1em !important;
-	margin-right: 0 !important;
-	outline: none;
-	background-color: $btn-bg !important;
-	border: 1px solid $btn-bg !important;
-	font-family: $open-sans;
-	font-size: ms(-1);
-	color: $color-text-white !important;
-	text-transform: uppercase;
-	cursor: pointer;
+	@include btn($btn-bg, $color-text-white, $btn-bg, .625em, 1em, ms(-1));
 	@include border-radius(3px);
 
-	@include bp(medium) {
-		display: inline-block !important;
-		margin-bottom: 0 !important;
-		margin-right: .5em !important;
-	}
-
-	&:last-of-type {
-		margin-right: 0 !important;
-	}
-
 	&:hover {
-		background-color: $btn-hover !important;
-		border: 1px solid $btn-hover !important;
-		color: $color-text-black !important;
+		@include btn($btn-hover, $color-text-black, $btn-hover, .625em, 1em, ms(-1));
 	}
 
 	&:active {
-		background-color: $btn-active !important;
-		border: 1px solid $btn-active !important;
-		color: $color-text-white !important;
+		@include btn($btn-active, $color-text-white, $btn-active, .625em, 1em, ms(-1));
+	}
+
+	&:last-of-type {
+		margin-right: 0;
 	}
 }
 

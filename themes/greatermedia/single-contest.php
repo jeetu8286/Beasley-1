@@ -71,7 +71,10 @@ get_header(); ?>
 								</div>
 
 								<div class="contest__restriction--signin">
-									<p>You must be signed in to enter the contest! <a href="<?php echo esc_url( gmr_contests_get_login_url() ); ?>">Sign in here</a>.</p>
+									<p>
+										You must be signed in to enter the contest!
+										<a href="<?php echo esc_url( gmr_contests_get_login_url() ); ?>">Sign in here</a>
+									</p>
 								</div>
 
 								<div class="contest__restriction--one-entry">
@@ -115,9 +118,7 @@ get_header(); ?>
 						</section>
 
 
-						<section id="contest-form" class="col__inner--right contest__form"<?php gmr_contest_container_attributes(); ?>>
-							LOADING... <?php //TODO: replace with a spinner ?>
-						</section>
+						<section id="contest-form" class="col__inner--right contest__form"<?php gmr_contest_container_attributes(); ?>></section>
 
 						<?php get_template_part( 'partials/submission', 'tiles' ); ?>
 
