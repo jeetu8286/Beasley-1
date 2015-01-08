@@ -1256,18 +1256,24 @@ blockquote p {
     -moz-transition: visibility 0s linear, opacity 100ms ease-out;
     transition: visibility 0s linear, opacity 100ms ease-out; }
 
-.header__nav .menu-item-has-children {
+/**
+ * This is not ideal, we should be doing this on the top level <li>
+ * Unfortunately, doing so means that the full-width menus, aren't. They are 100% the width of the <li>
+ * Which is no good. So here we are.
+ */
+.header__main {
   position: relative; }
-  .header__nav .menu-item-has-children:hover {
+  .header__main:hover {
     z-index: 5000100;
     /* IAB z-index standard for drop nav is 5000000 - 5999999 */ }
 
-.header__nav ul li:hover .sub-menu, .header__nav ul li:hover .format-fw > ul {
+.header__nav ul li:hover .sub-menu, .header__nav ul li:hover .format-fw > ul, .header__nav ul li:hover .format-sp > ul {
   display: block; }
 
-.header__nav .sub-menu, .header__nav .format-fw > ul,
+.header__nav .sub-menu, .header__nav .format-fw > ul, .header__nav .format-sp > ul,
 .header__account--links.sub-menu,
-.header__nav .format-fw > ul.header__account--links {
+.header__nav .format-fw > ul.header__account--links,
+.header__nav .format-sp > ul.header__account--links {
   position: absolute;
   border-top: 7px solid #d22228;
   background-color: #ffffff;
@@ -1275,13 +1281,15 @@ blockquote p {
   min-width: 300px;
   z-index: 5000100;
   /* IAB z-index standard for drop nav is 5000000 - 5999999 */ }
-  .header__nav .sub-menu li, .header__nav .format-fw > ul li,
+  .header__nav .sub-menu li, .header__nav .format-fw > ul li, .header__nav .format-sp > ul li,
   .header__account--links.sub-menu li,
-  .header__nav .format-fw > ul.header__account--links li {
+  .header__nav .format-fw > ul.header__account--links li,
+  .header__nav .format-sp > ul.header__account--links li {
     display: block; }
-  .header__nav .sub-menu a, .header__nav .format-fw > ul a,
+  .header__nav .sub-menu a, .header__nav .format-fw > ul a, .header__nav .format-sp > ul a,
   .header__account--links.sub-menu a,
-  .header__nav .format-fw > ul.header__account--links a {
+  .header__nav .format-fw > ul.header__account--links a,
+  .header__nav .format-sp > ul.header__account--links a {
     color: #000000;
     /*
      * Important used here to override a declaration on .header__nav ul li a
@@ -1289,16 +1297,18 @@ blockquote p {
      * to keep this as a component (e.g. context independent). - TD
      */
     padding: 1em !important; }
-    .header__nav .sub-menu a:visited, .header__nav .format-fw > ul a:visited,
+    .header__nav .sub-menu a:visited, .header__nav .format-fw > ul a:visited, .header__nav .format-sp > ul a:visited,
     .header__account--links.sub-menu a:visited,
-    .header__nav .format-fw > ul.header__account--links a:visited {
+    .header__nav .format-fw > ul.header__account--links a:visited,
+    .header__nav .format-sp > ul.header__account--links a:visited {
       color: #000000; }
-    .header__nav .sub-menu a:hover, .header__nav .format-fw > ul a:hover,
+    .header__nav .sub-menu a:hover, .header__nav .format-fw > ul a:hover, .header__nav .format-sp > ul a:hover,
     .header__account--links.sub-menu a:hover,
-    .header__nav .format-fw > ul.header__account--links a:hover {
+    .header__nav .format-fw > ul.header__account--links a:hover,
+    .header__nav .format-sp > ul.header__account--links a:hover {
       color: #ffffff; }
 
-.mobile-nav .sub-menu, .mobile-nav .header__nav .format-fw > ul, .header__nav .mobile-nav .format-fw > ul {
+.mobile-nav .sub-menu, .mobile-nav .header__nav .format-fw > ul, .header__nav .mobile-nav .format-fw > ul, .mobile-nav .header__nav .format-sp > ul, .header__nav .mobile-nav .format-sp > ul {
   -webkit-transition: left 100ms ease-out;
   -moz-transition: left 100ms ease-out;
   transition: left 100ms ease-out;
@@ -1310,12 +1320,12 @@ blockquote p {
   bottom: 0;
   background-color: #fff;
   padding: 0; }
-  .mobile-nav .sub-menu li, .mobile-nav .header__nav .format-fw > ul li, .header__nav .mobile-nav .format-fw > ul li {
+  .mobile-nav .sub-menu li, .mobile-nav .header__nav .format-fw > ul li, .header__nav .mobile-nav .format-fw > ul li, .mobile-nav .header__nav .format-sp > ul li, .header__nav .mobile-nav .format-sp > ul li {
     list-style-type: none;
     border: none; }
-  .mobile-nav .sub-menu a, .mobile-nav .header__nav .format-fw > ul a, .header__nav .mobile-nav .format-fw > ul a {
+  .mobile-nav .sub-menu a, .mobile-nav .header__nav .format-fw > ul a, .header__nav .mobile-nav .format-fw > ul a, .mobile-nav .header__nav .format-sp > ul a, .header__nav .mobile-nav .format-sp > ul a {
     color: #000; }
-.mobile-nav .sub-menu.is-visible, .mobile-nav .header__nav .format-fw > ul.is-visible, .header__nav .mobile-nav .format-fw > ul.is-visible {
+.mobile-nav .sub-menu.is-visible, .mobile-nav .header__nav .format-fw > ul.is-visible, .header__nav .mobile-nav .format-fw > ul.is-visible, .mobile-nav .header__nav .format-sp > ul.is-visible, .header__nav .mobile-nav .format-sp > ul.is-visible {
   display: block;
   left: 0; }
 .mobile-nav .menu-item-has-children > a:first-child {
@@ -1347,18 +1357,46 @@ blockquote p {
   font-size: 1.60181em;
   color: #fff; }
 
-.header__nav .format-fw > ul {
-  width: 1400px;
+.header__nav .format-fw > ul, .header__nav .format-sp > ul {
   left: 0;
-  padding: 1em; }
-.header__nav .format-fw > ul > li {
+  padding: 1em;
+  width: 100%; }
+.header__nav .format-fw > ul > li, .header__nav .format-sp > ul > li {
   width: 32.666%;
   /* 100% - 2% (for margins, below) / 3 (3 columns) */
   float: left; }
-.header__nav .format-fw > ul > li:not(:nth-child(3n+1)) {
+.header__nav .format-fw > ul > li:not(:nth-child(3n+1)), .header__nav .format-sp > ul > li:not(:nth-child(3n+1)) {
   border-left: 1px solid #d0d2d3;
   padding-left: 1%;
   margin-left: 1%; }
+
+.format-sp a:hover {
+  color: #ffffff; }
+  .format-sp a:hover .meta-text {
+    color: #ffffff; }
+.format-sp .meta-text {
+  display: block;
+  font-size: 0.79012em;
+  color: #404041;
+  margin-top: .5em; }
+  .format-sp .meta-text .times {
+    display: inline-block;
+    margin-left: .75em; }
+.format-sp li .group {
+  display: inline-block;
+  vertical-align: middle; }
+.format-sp li a {
+  min-height: 71px;
+  /* the 40px img (below) + the padding, so that all the containers are the same height and flow */ }
+.format-sp .mobile-menu-submenu-header a {
+  min-height: 0; }
+.format-sp li img {
+  display: inline-block;
+  vertical-align: middle;
+  border-radius: 50%;
+  margin-right: 1em;
+  max-height: 40px;
+  width: auto; }
 
 .content__heading {
   margin-top: 0;
@@ -2529,7 +2567,7 @@ Community Highlights and Events
   display: block;
   margin: 0 auto;
   text-align: center;
-  font-size: 25px; }
+  font-size: 30px; }
   @media screen and (min-width: 768px) {
     .header__account--btn {
       height: 82px;
@@ -6223,6 +6261,7 @@ category: Components - Shows
   color: #aa1c20; }
 
 .show__live-links {
+  margin-top: 20px;
   position: relative;
   float: left;
   display: block;
@@ -8231,11 +8270,25 @@ select {
   .profile-page .profile-page__sidebar {
     background-color: #561015;
     color: #ffffff;
-    background-image: url("../../images/default-texture.png");
+    background: url("../../images/profile_bg.jpg");
     text-align: center; }
+    @media screen and (min-width: 320px) {
+      .profile-page .profile-page__sidebar {
+        background-size: cover; } }
+    @media screen and (min-width: 480px) {
+      .profile-page .profile-page__sidebar {
+        background-size: cover; } }
+    @media screen and (min-width: 768px) {
+      .profile-page .profile-page__sidebar {
+        background-size: cover; } }
     @media screen and (min-width: 1024px) {
       .profile-page .profile-page__sidebar {
-        text-align: left; } }
+        text-align: left;
+        background-position: 50% 50%; } }
+    @media screen and (min-width: 1400px) {
+      .profile-page .profile-page__sidebar {
+        text-align: left;
+        background-position: 50% 50%; } }
   .profile-page .profile-page__sidebar h1 {
     text-transform: uppercase; }
   .profile-page .profile-page__sidebar p {
@@ -8280,6 +8333,1260 @@ select {
     margin-top: 36px; }
     .show__live-links .ll-archive-list:last-child {
       margin-right: 0; } }
+
+/*doc
+---
+title: LiveFyre Comments
+name: livefyre-comments
+category: Components - Article
+---
+
+```none_example
+
+<div id="livecomments">
+        <div class="fyre fyre-width-small">
+            <div class="fyre-widget">
+                <iframe frameborder="0" src=
+                "http://www.livefyre.com/v3/tracking/http%3A%2F%2Fanswers.livefyre.com%2Fdemos%2Fcomments%2F"
+                style=
+                "position: absolute; height: 1px; width: 1px; z-index: 99999; background-color: transparent;">
+                </iframe>
+
+                <div class="fyre-featured-content-wrapper" style=
+                "display: none"></div>
+
+                <div class="fyre-stream-stats">
+                    <div class="fyre-comment-count">
+                        <span>9 comments</span>
+                    </div>
+
+                    <div class="fyre-help">
+                        <div class="fyre-box-wrapper">
+                            <a href="http://livefyre.com" target=
+                            "_blank"><img class="fyre-logo-drop" src=
+                            "http://zor.fyre.co/wjs/v3.0.1416890156/images/down_arrow.png"><img alt="Livefyre"
+                            class="fyre-logo-help" src=
+                            "http://zor.fyre.co/wjs/v3.0.1416890156/images/lf-logo.png"></a>
+
+                            <ul class="fyre-box-list">
+                                <li>
+                                    <a href="http://livefyre.com" target=
+                                    "_blank" title="Get Livefyre">Get
+                                    Livefyre</a>
+                                </li>
+
+                                <li>
+                                    <a href="http://support.livefyre.com"
+                                    target="_blank" title="FAQ">FAQ</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fyre-auth">
+                    <div class="fyre-login-bar">
+                        <a class="fyre-user-loggedout" rel="nofollow">Sign
+                        in</a>
+                    </div>
+
+                    <div class="fyre-live-container">
+                        <div class="fyre-livecount">
+                            <em class="fyre-stream-livecount">3 people
+                            listening</em>
+                        </div>
+
+                        <div class="fyre-listener-avatars">
+                            <a class=
+                            "fyre-follower fyre-follower-123-client-solutions-fyre-co"
+                            data-id="123@client-solutions.fyre.co" href=""
+                            title="MrTesterTest"><img alt="MrTesterTest"
+                            onerror=
+                            "javascript:this.src='http:\/\/avatars.fyre.co\/a\/anon\/50.jpg';"
+                            src=
+                            "http://avatars.fyre.co/a/anon/50.jpg"></a><a class="fyre-follower fyre-follower-456-client-solutions-fyre-co"
+                            data-id="456@client-solutions.fyre.co" href=""
+                            title="Answers Account"><img alt="Answers Account"
+                            onerror=
+                            "javascript:this.src='http:\/\/avatars.fyre.co\/a\/anon\/50.jpg';"
+                            src="http://avatars.fyre.co/a/anon/50.jpg"></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fyre-editor">
+                    <div class=
+                    "fyre-editor-container fyre-editor-container-focus">
+                        <div class=
+                        "fyre-editor-editable editable fyre-editor-field"
+                        contenteditable="true" id="fyre-editor-16">
+                            <p>&nbsp;</p>
+                        </div><span class="fyre-editor-spinner" style=
+                        "display: none;"></span>
+
+                        <div class="fyre-editor-preview"></div>
+
+                        <div class="fyre-editor-media-drawer" style=
+                        "display: none;"></div>
+
+                        <div class="fyre-editor-toolbar">
+                            <div class=
+                            "fyre-mention-menu fyre-mention-menu-vertical"
+                            style="-webkit-user-select: none; display: none;">
+                                <div class="fyre-mention-menu-filter" style=
+                                "-webkit-user-select: none;">
+                                    <div style="-webkit-user-select: none;">
+                                    </div><input style=
+                                    "-webkit-user-select: none;" tabindex="-1"
+                                    type="text">
+                                </div>
+
+                                <div class="fyre-mention-menu-content" id=
+                                ":2t.content-el" style=
+                                "-webkit-user-select: none;">
+                                    <div class=
+                                    "goog-control goog-control-disabled" id=
+                                    ":2q" style="-webkit-user-select: none;">
+                                    </div>
+
+                                    <div class=
+                                    "goog-control goog-control-disabled" id=
+                                    ":2r" style="-webkit-user-select: none;">
+                                    </div>
+
+                                    <div class=
+                                    "goog-control goog-control-disabled" id=
+                                    ":2s" style="-webkit-user-select: none;">
+                                    </div>
+
+                                    <div class=
+                                    "fyre-mention-item fyre-mention-item-twitter"
+                                    id=":2u" style=
+                                    "-webkit-user-select: none; display: none;">
+                                    <img class="fyre-mention-item-avatar"
+                                        src="http://avatars.fyre.co/a/anon/50.jpg">
+
+                                        <h4 class=
+                                        "fyre-mention-item-display-name">
+                                        </h4><span class=
+                                        "fyre-mention-item-twitter"></span>
+                                    </div>
+
+                                    <div class=
+                                    "fyre-mention-item fyre-mention-item-livefyre"
+                                    id=":2v" style=
+                                    "-webkit-user-select: none; display: none;">
+                                    <img class="fyre-mention-item-avatar"
+                                        src="http://avatars.fyre.co/a/anon/50.jpg">
+
+                                        <h4 class=
+                                        "fyre-mention-item-display-name">
+                                        </h4><span class=
+                                        "fyre-mention-item-livefyre"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="goog-toolbar goog-toolbar-horizontal"
+                            style="-webkit-user-select: none;">
+                                <div class=
+                                "goog-toolbar-separator goog-inline-block" id=
+                                ":2n" style="-webkit-user-select: none;">
+                                    &nbsp;
+                                </div>
+
+                                <div class=
+                                "goog-inline-block fyre-button-left fyre-format-button"
+                                id=":2p" style="-webkit-user-select: none;">
+                                    <div class=
+                                    "goog-inline-block fyre-button-left-outer-box">
+                                    <div class=
+                                    "goog-inline-block fyre-button-left-inner-box">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class=
+                                "goog-inline-block fyre-button-left fyre-mention-button"
+                                id=":2x" style="-webkit-user-select: none;">
+                                    <div class=
+                                    "goog-inline-block fyre-button-left-outer-box">
+                                    <div class=
+                                    "goog-inline-block fyre-button-left-inner-box">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class=
+                                "goog-inline-block fyre-button-left fyre-embed-button"
+                                id=":2z" style="-webkit-user-select: none;">
+                                    <div class=
+                                    "goog-inline-block fyre-button-left-outer-box">
+                                    <div class=
+                                    "goog-inline-block fyre-button-left-inner-box">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class=
+                                "goog-inline-block fyre-button-left fyre-raw-button"
+                                id=":31" style=
+                                "-webkit-user-select: none; display: none;">
+                                    <div class=
+                                    "goog-inline-block fyre-button-left-outer-box">
+                                    <div class=
+                                    "goog-inline-block fyre-button-left-inner-box">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class=
+                                "goog-inline-block fyre-button-left fyre-follow-button"
+                                id=":33" style="-webkit-user-select: none;">
+                                    <div class=
+                                    "goog-inline-block fyre-button-left-outer-box">
+                                    <div class=
+                                    "goog-inline-block fyre-button-left-inner-box">
+                                        + Follow
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class=
+                                "goog-inline-block fyre-button-right fyre-share-button"
+                                id=":35" style="-webkit-user-select: none;">
+                                    <div class=
+                                    "goog-inline-block fyre-button-right-outer-box">
+                                    <div class=
+                                    "goog-inline-block fyre-button-right-inner-box">
+                                        Share<label class=
+                                        "fyre-share-counter fyre-share-empty"></label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class=
+                                "goog-inline-block fyre-button-right fyre-post-button fyre-post-button-new"
+                                id=":37" style="-webkit-user-select: none;">
+                                    <div class=
+                                    "goog-inline-block fyre-button-right-outer-box">
+                                    <div class=
+                                    "goog-inline-block fyre-button-right-inner-box">
+                                        Post comment as...
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="fyre-comment-preview" style="display: none;">
+                        <h5>Custom HTML Preview<span class=
+                        "fyre-icon-remove"></span></h5>
+
+                        <div class=
+                        "fyre-roundedpanel-content fyre-comment-preview-content">
+                        <article class="fyre-comment-article">
+                                <div class="fyre-comment">
+                                    <div class="fyre-comment-raw-html"></div>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fyre-input-box-collapsed"></div>
+
+                <div class="fyre-stream-header">
+                    <div class="fyre-content-loading" style="display: none;">
+                        Loading
+                    </div>
+
+                    <div class="fyre-stream-sort">
+                        <div class="fyre-stream-sort-options">
+                            <a class=
+                            "fyre-stream-sort-newest fyre-stream-sort-selected">
+                            Newest</a> <span class=
+                            "fyre-stream-sort-bar">|</span> <a class=
+                            "fyre-stream-sort-oldest">Oldest</a> <span class=
+                            "fyre-stream-sort-bar">|</span> <a class=
+                            "fyre-stream-sort-top-comments">Top Comments</a>
+                        </div><a class="fyre-stream-sort-back"></a>
+                    </div>
+                </div>
+
+                <div class="fyre-comment-stream">
+                    <div class="fyre-stream-content">
+                        <article class=
+                        "fyre-comment-article fyre-comment-source-5"
+                        data-author-id="456@client-solutions.fyre.co"
+                        data-message-id="241568291" style="">
+                            <div class="fyre-comment-wrapper">
+                                <div class="fyre-comment-user" data-author-id=
+                                "456@client-solutions.fyre.co" data-from=
+                                "Answers Account">
+                                    <a class="fyre-comment-author" href=
+                                    ""><img alt="Answers Account" class=
+                                    "fyre-user-avatar" onerror=
+                                    "javascript:this.src='http:\/\/avatars.fyre.co\/a\/anon\/50.jpg';"
+                                    src=
+                                    "http://avatars.fyre.co/a/anon/50.jpg"></a>
+
+                                    <div class=
+                                    "fyre-comment-socialsync fyre-comment-from-undefined">
+                                    </div>
+
+                                    <div class="fyre-comment-highlight"></div>
+                                </div>
+
+                                <header class="fyre-comment-head">
+                                    <a class=
+                                    "fyre-comment-username"><span>Answers
+                                    Account</span></a> <span class=
+                                    "fyre-comment-user-rating" style=
+                                    "display: none;">5pts</span><span class=
+                                    "fyre-comment-tag fyre-featured" style=
+                                    "display: none;"><span class=
+                                    "fyre-featured-icon"></span><span class=
+                                    "fyre-featured-text">Featured</span><br></span>
+                                    <meta content="2014-11-26T18:11:02.000Z">
+                                    <time class="fyre-comment-date">1 hour
+                                    ago</time><span class=
+                                    "fyre-comment-archive"></span>
+
+                                    <div class="fyre-comment-premod"></div>
+
+                                    <div class="fyre-flag-list"></div>
+                                </header>
+
+                                <section class="fyre-comment-body">
+                                    <div class="fyre-comment">
+                                        <p>tjkgghjjhj</p>
+                                    </div>
+                                </section>
+
+                                <footer class="fyre-comment-footer">
+                                    <div class="fyre-comment-actions">
+                                        <a class="fyre-flag-link" title=
+                                        "Flag"><span></span>Flag</a><a class=
+                                        "fyre-share-link" title=
+                                        "Share"><span></span>Share</a>
+                                    </div><span class=
+                                    "fyre-comment-like"><span class=
+                                    "fyre-comment-like-count"></span><span class="fyre-comment-like-imgs"></span><a class="fyre-comment-like-btn fyre-comment-action-button">Like</a></span><a class="fyre-comment-reply fyre-comment-action-button">Reply</a>
+
+                                    <div class="fyre-editor" style=
+                                    "display: none;"></div>
+                                </footer>
+                            </div>
+
+                            <div class="fyre-comment-divider">
+                                <a class="fyre-comment-collapse" style=
+                                "display: none;" title="Toggle Collapse"></a>
+
+                                <div class="fyre-comment-divider"></div>
+                            </div>
+
+                            <div class="fyre-outer-comment-container">
+                                <div class=
+                                "fyre-comment-container fyre-comment-replies fyre-comment-replies-indent">
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="fyre-comment-article" data-author-id=
+                        "undefined" data-message-id="239843665" style="">
+                            <div class="fyre-comment-wrapper" style=
+                            "display: none;">
+                                <section class="fyre-comment-deleted">
+                                    <p>This comment has been deleted</p>
+                                </section>
+                            </div>
+
+                            <div class="fyre-comment-divider" style=
+                            "display: none;">
+                                <a class="fyre-comment-collapse" style=
+                                "display: none;" title="Toggle Collapse"></a>
+
+                                <div class="fyre-comment-divider"></div>
+                            </div>
+
+                            <div class="fyre-outer-comment-container">
+                                <div class=
+                                "fyre-comment-container fyre-comment-replies fyre-comment-replies-indent">
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="fyre-comment-article" data-author-id=
+                        "undefined" data-message-id="237838438" style="">
+                            <div class="fyre-comment-wrapper" style=
+                            "display: none;">
+                                <section class="fyre-comment-deleted">
+                                    <p>This comment has been deleted</p>
+                                </section>
+                            </div>
+
+                            <div class="fyre-comment-divider" style=
+                            "display: none;">
+                                <a class="fyre-comment-collapse" style=
+                                "display: none;" title="Toggle Collapse"></a>
+
+                                <div class="fyre-comment-divider"></div>
+                            </div>
+
+                            <div class="fyre-outer-comment-container">
+                                <div class=
+                                "fyre-comment-container fyre-comment-replies fyre-comment-replies-indent">
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class=
+                        "fyre-comment-article fyre-comment-source-0"
+                        data-author-id="456@client-solutions.fyre.co"
+                        data-message-id="237838139" style="">
+                            <div class="fyre-comment-wrapper">
+                                <div class="fyre-comment-user" data-author-id=
+                                "456@client-solutions.fyre.co" data-from=
+                                "Answers Account">
+                                    <a class="fyre-comment-author" href=
+                                    ""><img alt="Answers Account" class=
+                                    "fyre-user-avatar" onerror=
+                                    "javascript:this.src='http:\/\/avatars.fyre.co\/a\/anon\/50.jpg';"
+                                    src=
+                                    "http://avatars.fyre.co/a/anon/50.jpg"></a>
+
+                                    <div class=
+                                    "fyre-comment-socialsync fyre-comment-from-undefined">
+                                    </div>
+
+                                    <div class="fyre-comment-highlight"></div>
+                                </div>
+
+                                <header class="fyre-comment-head">
+                                    <a class=
+                                    "fyre-comment-username"><span>Answers
+                                    Account</span></a> <span class=
+                                    "fyre-comment-user-rating" style=
+                                    "display: none;">5pts</span><span class=
+                                    "fyre-comment-tag fyre-featured" style=
+                                    "display: none;"><span class=
+                                    "fyre-featured-icon"></span><span class=
+                                    "fyre-featured-text">Featured</span><br></span>
+                                    <meta content="2014-11-18T21:04:21.000Z">
+                                    <time class="fyre-comment-date">8 days
+                                    ago</time><span class=
+                                    "fyre-comment-archive"></span>
+
+                                    <div class="fyre-comment-premod"></div>
+
+                                    <div class="fyre-flag-list"></div>
+                                </header>
+
+                                <section class="fyre-comment-body">
+                                    <div class="fyre-comment">
+                                        <p>ola</p>
+                                    </div>
+                                </section>
+
+                                <footer class="fyre-comment-footer">
+                                    <div class="fyre-comment-actions">
+                                        <a class="fyre-flag-link" title=
+                                        "Flag"><span></span>Flag</a><a class=
+                                        "fyre-share-link" title=
+                                        "Share"><span></span>Share</a>
+                                    </div><span class=
+                                    "fyre-comment-like"><span class=
+                                    "fyre-comment-like-count"></span><span class="fyre-comment-like-imgs"></span><a class="fyre-comment-like-btn fyre-comment-action-button">Like</a></span><a class="fyre-comment-reply fyre-comment-action-button">Reply</a>
+
+                                    <div class="fyre-editor" style=
+                                    "display: none;"></div>
+                                </footer>
+                            </div>
+
+                            <div class="fyre-comment-divider">
+                                <a class="fyre-comment-collapse" style=
+                                "display: none;" title="Toggle Collapse"></a>
+
+                                <div class="fyre-comment-divider"></div>
+                            </div>
+
+                            <div class="fyre-outer-comment-container">
+                                <div class=
+                                "fyre-comment-container fyre-comment-replies fyre-comment-replies-indent">
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class=
+                        "fyre-comment-article fyre-comment-source-5"
+                        data-author-id="456@client-solutions.fyre.co"
+                        data-message-id="234386993" style="">
+                            <div class="fyre-comment-wrapper">
+                                <div class="fyre-comment-user" data-author-id=
+                                "456@client-solutions.fyre.co" data-from=
+                                "Answers Account">
+                                    <a class="fyre-comment-author" href=
+                                    ""><img alt="Answers Account" class=
+                                    "fyre-user-avatar" onerror=
+                                    "javascript:this.src='http:\/\/avatars.fyre.co\/a\/anon\/50.jpg';"
+                                    src=
+                                    "http://avatars.fyre.co/a/anon/50.jpg"></a>
+
+                                    <div class=
+                                    "fyre-comment-socialsync fyre-comment-from-undefined">
+                                    </div>
+
+                                    <div class="fyre-comment-highlight"></div>
+                                </div>
+
+                                <header class="fyre-comment-head">
+                                    <a class=
+                                    "fyre-comment-username"><span>Answers
+                                    Account</span></a> <span class=
+                                    "fyre-comment-user-rating" style=
+                                    "display: none;">5pts</span><span class=
+                                    "fyre-comment-tag fyre-featured" style=
+                                    "display: none;"><span class=
+                                    "fyre-featured-icon"></span><span class=
+                                    "fyre-featured-text">Featured</span><br></span>
+                                    <meta content="2014-11-10T16:56:58.000Z">
+                                    <time class="fyre-comment-date">Nov 10,
+                                    2014</time><span class=
+                                    "fyre-comment-archive"></span>
+
+                                    <div class="fyre-comment-premod"></div>
+
+                                    <div class="fyre-flag-list"></div>
+                                </header>
+
+                                <section class="fyre-comment-body">
+                                    <div class="fyre-comment">
+                                        <p>test</p>
+                                    </div>
+                                </section>
+
+                                <footer class="fyre-comment-footer">
+                                    <div class="fyre-comment-actions">
+                                        <a class="fyre-flag-link" title=
+                                        "Flag"><span></span>Flag</a><a class=
+                                        "fyre-share-link" title=
+                                        "Share"><span></span>Share</a>
+                                    </div><span class=
+                                    "fyre-comment-like"><span class=
+                                    "fyre-comment-like-count"></span><span class="fyre-comment-like-imgs"></span><a class="fyre-comment-like-btn fyre-comment-action-button">Like</a></span><a class="fyre-comment-reply fyre-comment-action-button">Reply</a>
+
+                                    <div class="fyre-editor" style=
+                                    "display: none;"></div>
+                                </footer>
+                            </div>
+
+                            <div class="fyre-comment-divider">
+                                <a class="fyre-comment-collapse" style=
+                                "display: none;" title="Toggle Collapse"></a>
+
+                                <div class="fyre-comment-divider"></div>
+                            </div>
+
+                            <div class="fyre-outer-comment-container">
+                                <div class=
+                                "fyre-comment-container fyre-comment-replies fyre-comment-replies-indent">
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class=
+                        "fyre-comment-article fyre-comment-source-5"
+                        data-author-id="456@client-solutions.fyre.co"
+                        data-message-id="233046465" style="">
+                            <div class="fyre-comment-wrapper">
+                                <div class="fyre-comment-user" data-author-id=
+                                "456@client-solutions.fyre.co" data-from=
+                                "Answers Account">
+                                    <a class="fyre-comment-author" href=
+                                    ""><img alt="Answers Account" class=
+                                    "fyre-user-avatar" onerror=
+                                    "javascript:this.src='http:\/\/avatars.fyre.co\/a\/anon\/50.jpg';"
+                                    src=
+                                    "http://avatars.fyre.co/a/anon/50.jpg"></a>
+
+                                    <div class=
+                                    "fyre-comment-socialsync fyre-comment-from-undefined">
+                                    </div>
+
+                                    <div class="fyre-comment-highlight"></div>
+                                </div>
+
+                                <header class="fyre-comment-head">
+                                    <a class=
+                                    "fyre-comment-username"><span>Answers
+                                    Account</span></a> <span class=
+                                    "fyre-comment-user-rating" style=
+                                    "display: none;">5pts</span><span class=
+                                    "fyre-comment-tag fyre-featured" style=
+                                    "display: none;"><span class=
+                                    "fyre-featured-icon"></span><span class=
+                                    "fyre-featured-text">Featured</span><br></span>
+                                    <meta content="2014-11-06T17:08:06.000Z">
+                                    <time class="fyre-comment-date">Nov 6,
+                                    2014</time><span class=
+                                    "fyre-comment-archive"></span>
+
+                                    <div class="fyre-comment-premod"></div>
+
+                                    <div class="fyre-flag-list"></div>
+                                </header>
+
+                                <section class="fyre-comment-body">
+                                    <div class="fyre-comment">
+                                        <p>safdsdf</p>
+                                    </div>
+                                </section>
+
+                                <footer class="fyre-comment-footer">
+                                    <div class="fyre-comment-actions">
+                                        <a class="fyre-flag-link" title=
+                                        "Flag"><span></span>Flag</a><a class=
+                                        "fyre-share-link" title=
+                                        "Share"><span></span>Share</a>
+                                    </div><span class=
+                                    "fyre-comment-like"><span class=
+                                    "fyre-comment-like-count"></span><span class="fyre-comment-like-imgs"></span><a class="fyre-comment-like-btn fyre-comment-action-button">Like</a></span><a class="fyre-comment-reply fyre-comment-action-button">Reply</a>
+
+                                    <div class="fyre-editor" style=
+                                    "display: none;"></div>
+                                </footer>
+                            </div>
+
+                            <div class="fyre-comment-divider">
+                                <a class="fyre-comment-collapse" style=
+                                "display: none;" title="Toggle Collapse"></a>
+
+                                <div class="fyre-comment-divider"></div>
+                            </div>
+
+                            <div class="fyre-outer-comment-container">
+                                <div class=
+                                "fyre-comment-container fyre-comment-replies fyre-comment-replies-indent">
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class=
+                        "fyre-comment-article fyre-comment-source-5"
+                        data-author-id="456@client-solutions.fyre.co"
+                        data-message-id="230488046" style="">
+                            <div class="fyre-comment-wrapper">
+                                <div class="fyre-comment-user" data-author-id=
+                                "456@client-solutions.fyre.co" data-from=
+                                "Answers Account">
+                                    <a class="fyre-comment-author" href=
+                                    ""><img alt="Answers Account" class=
+                                    "fyre-user-avatar" onerror=
+                                    "javascript:this.src='http:\/\/avatars.fyre.co\/a\/anon\/50.jpg';"
+                                    src=
+                                    "http://avatars.fyre.co/a/anon/50.jpg"></a>
+
+                                    <div class=
+                                    "fyre-comment-socialsync fyre-comment-from-undefined">
+                                    </div>
+
+                                    <div class="fyre-comment-highlight"></div>
+                                </div>
+
+                                <header class="fyre-comment-head">
+                                    <a class=
+                                    "fyre-comment-username"><span>Answers
+                                    Account</span></a> <span class=
+                                    "fyre-comment-user-rating" style=
+                                    "display: none;">5pts</span><span class=
+                                    "fyre-comment-tag fyre-featured" style=
+                                    "display: none;"><span class=
+                                    "fyre-featured-icon"></span><span class=
+                                    "fyre-featured-text">Featured</span><br></span>
+                                    <meta content="2014-10-30T17:45:42.000Z">
+                                    <time class="fyre-comment-date">Oct 30,
+                                    2014</time><span class=
+                                    "fyre-comment-archive"></span>
+
+                                    <div class="fyre-comment-premod"></div>
+
+                                    <div class="fyre-flag-list"></div>
+                                </header>
+
+                                <section class="fyre-comment-body">
+                                    <div class="fyre-comment">
+                                        <p>oi</p>
+                                    </div>
+                                </section>
+
+                                <footer class="fyre-comment-footer">
+                                    <div class="fyre-comment-actions">
+                                        <a class="fyre-flag-link" title=
+                                        "Flag"><span></span>Flag</a><a class=
+                                        "fyre-share-link" title=
+                                        "Share"><span></span>Share</a>
+                                    </div><span class=
+                                    "fyre-comment-like"><span class=
+                                    "fyre-comment-like-count"></span><span class="fyre-comment-like-imgs"></span><a class="fyre-comment-like-btn fyre-comment-action-button">Like</a></span><a class="fyre-comment-reply fyre-comment-action-button">Reply</a>
+
+                                    <div class="fyre-editor" style=
+                                    "display: none;"></div>
+                                </footer>
+                            </div>
+
+                            <div class="fyre-comment-divider">
+                                <a class="fyre-comment-collapse" style=
+                                "display: none;" title="Toggle Collapse"></a>
+
+                                <div class="fyre-comment-divider"></div>
+                            </div>
+
+                            <div class="fyre-outer-comment-container">
+                                <div class=
+                                "fyre-comment-container fyre-comment-replies fyre-comment-replies-indent">
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class=
+                        "fyre-comment-article fyre-comment-source-5"
+                        data-author-id="456@client-solutions.fyre.co"
+                        data-message-id="227911814" style="">
+                            <div class="fyre-comment-wrapper">
+                                <div class="fyre-comment-user" data-author-id=
+                                "456@client-solutions.fyre.co" data-from=
+                                "Answers Account">
+                                    <a class="fyre-comment-author" href=
+                                    ""><img alt="Answers Account" class=
+                                    "fyre-user-avatar" onerror=
+                                    "javascript:this.src='http:\/\/avatars.fyre.co\/a\/anon\/50.jpg';"
+                                    src=
+                                    "http://avatars.fyre.co/a/anon/50.jpg"></a>
+
+                                    <div class=
+                                    "fyre-comment-socialsync fyre-comment-from-undefined">
+                                    </div>
+
+                                    <div class="fyre-comment-highlight"></div>
+                                </div>
+
+                                <header class="fyre-comment-head">
+                                    <a class=
+                                    "fyre-comment-username"><span>Answers
+                                    Account</span></a> <span class=
+                                    "fyre-comment-user-rating" style=
+                                    "display: none;">5pts</span><span class=
+                                    "fyre-comment-tag fyre-featured" style=
+                                    "display: none;"><span class=
+                                    "fyre-featured-icon"></span><span class=
+                                    "fyre-featured-text">Featured</span><br></span>
+                                    <meta content="2014-10-23T21:09:28.000Z">
+                                    <time class="fyre-comment-date">Oct 23,
+                                    2014</time><span class=
+                                    "fyre-comment-archive"></span>
+
+                                    <div class="fyre-comment-premod"></div>
+
+                                    <div class="fyre-flag-list"></div>
+                                </header>
+
+                                <section class="fyre-comment-body">
+                                    <div class="fyre-comment">
+                                        <p>test</p>
+                                    </div>
+                                </section>
+
+                                <footer class="fyre-comment-footer">
+                                    <div class="fyre-comment-actions">
+                                        <a class="fyre-flag-link" title=
+                                        "Flag"><span></span>Flag</a><a class=
+                                        "fyre-share-link" title=
+                                        "Share"><span></span>Share</a>
+                                    </div><span class=
+                                    "fyre-comment-like"><span class=
+                                    "fyre-comment-like-count"></span><span class="fyre-comment-like-imgs"></span><a class="fyre-comment-like-btn fyre-comment-action-button">Like</a></span><a class="fyre-comment-reply fyre-comment-action-button">Reply</a>
+
+                                    <div class="fyre-editor" style=
+                                    "display: none;"></div>
+                                </footer>
+                            </div>
+
+                            <div class="fyre-comment-divider">
+                                <a class="fyre-comment-collapse" style=
+                                "display: none;" title="Toggle Collapse"></a>
+
+                                <div class="fyre-comment-divider"></div>
+                            </div>
+
+                            <div class="fyre-outer-comment-container">
+                                <div class=
+                                "fyre-comment-container fyre-comment-replies fyre-comment-replies-indent">
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="fyre-comment-article" data-author-id=
+                        "undefined" data-message-id="227777614" style="">
+                            <div class="fyre-comment-wrapper" style=
+                            "display: none;">
+                                <section class="fyre-comment-deleted">
+                                    <p>This comment has been deleted</p>
+                                </section>
+                            </div>
+
+                            <div class="fyre-comment-divider" style=
+                            "display: none;">
+                                <a class="fyre-comment-collapse" style=
+                                "display: none;" title="Toggle Collapse"></a>
+
+                                <div class="fyre-comment-divider"></div>
+                            </div>
+
+                            <div class="fyre-outer-comment-container">
+                                <div class=
+                                "fyre-comment-container fyre-comment-replies fyre-comment-replies-indent">
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="fyre-comment-article" data-author-id=
+                        "undefined" data-message-id="227777551" style="">
+                            <div class="fyre-comment-wrapper" style=
+                            "display: none;">
+                                <section class="fyre-comment-deleted">
+                                    <p>This comment has been deleted</p>
+                                </section>
+                            </div>
+
+                            <div class="fyre-comment-divider" style=
+                            "display: none;">
+                                <a class="fyre-comment-collapse" style=
+                                "display: none;" title="Toggle Collapse"></a>
+
+                                <div class="fyre-comment-divider"></div>
+                            </div>
+
+                            <div class="fyre-outer-comment-container">
+                                <div class=
+                                "fyre-comment-container fyre-comment-replies fyre-comment-replies-indent">
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="fyre-comment-article" data-author-id=
+                        "undefined" data-message-id="223353010" style="">
+                            <div class="fyre-comment-wrapper" style=
+                            "display: none;">
+                                <section class="fyre-comment-deleted">
+                                    <p>This comment has been deleted</p>
+                                </section>
+                            </div>
+
+                            <div class="fyre-comment-divider" style=
+                            "display: none;">
+                                <a class="fyre-comment-collapse" style=
+                                "display: none;" title="Toggle Collapse"></a>
+
+                                <div class="fyre-comment-divider"></div>
+                            </div>
+
+                            <div class="fyre-outer-comment-container">
+                                <div class=
+                                "fyre-comment-container fyre-comment-replies fyre-comment-replies-indent">
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="fyre-comment-article" data-author-id=
+                        "undefined" data-message-id="215147623" style="">
+                            <div class="fyre-comment-wrapper" style=
+                            "display: none;">
+                                <section class="fyre-comment-deleted">
+                                    <p>This comment has been deleted</p>
+                                </section>
+                            </div>
+
+                            <div class="fyre-comment-divider" style=
+                            "display: none;">
+                                <a class="fyre-comment-collapse" style=
+                                "display: none;" title="Toggle Collapse"></a>
+
+                                <div class="fyre-comment-divider"></div>
+                            </div>
+
+                            <div class="fyre-outer-comment-container">
+                                <div class=
+                                "fyre-comment-container fyre-comment-replies fyre-comment-replies-indent">
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="fyre-comment-article" data-author-id=
+                        "undefined" data-message-id="211138359" style="">
+                            <div class="fyre-comment-wrapper" style=
+                            "display: none;">
+                                <section class="fyre-comment-deleted">
+                                    <p>This comment has been deleted</p>
+                                </section>
+                            </div>
+
+                            <div class="fyre-comment-divider" style=
+                            "display: none;">
+                                <a class="fyre-comment-collapse" style=
+                                "display: none;" title="Toggle Collapse"></a>
+
+                                <div class="fyre-comment-divider"></div>
+                            </div>
+
+                            <div class="fyre-outer-comment-container">
+                                <div class=
+                                "fyre-comment-container fyre-comment-replies fyre-comment-replies-indent">
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="fyre-comment-article" data-author-id=
+                        "undefined" data-message-id="211138033" style="">
+                            <div class="fyre-comment-wrapper" style=
+                            "display: none;">
+                                <section class="fyre-comment-deleted">
+                                    <p>This comment has been deleted</p>
+                                </section>
+                            </div>
+
+                            <div class="fyre-comment-divider" style=
+                            "display: none;">
+                                <a class="fyre-comment-collapse" style=
+                                "display: none;" title="Toggle Collapse"></a>
+
+                                <div class="fyre-comment-divider"></div>
+                            </div>
+
+                            <div class="fyre-outer-comment-container">
+                                <div class=
+                                "fyre-comment-container fyre-comment-replies fyre-comment-replies-indent">
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class=
+                        "fyre-comment-article fyre-comment-source-5"
+                        data-author-id="123@client-solutions.fyre.co"
+                        data-message-id="211136987" style="">
+                            <div class="fyre-comment-wrapper">
+                                <div class="fyre-comment-user" data-author-id=
+                                "123@client-solutions.fyre.co" data-from=
+                                "MrTesterTest">
+                                    <a class="fyre-comment-author" href=
+                                    ""><img alt="MrTesterTest" class=
+                                    "fyre-user-avatar" onerror=
+                                    "javascript:this.src='http:\/\/avatars.fyre.co\/a\/anon\/50.jpg';"
+                                    src=
+                                    "http://avatars.fyre.co/a/anon/50.jpg"></a>
+
+                                    <div class=
+                                    "fyre-comment-socialsync fyre-comment-from-undefined">
+                                    </div>
+
+                                    <div class="fyre-comment-highlight"></div>
+                                </div>
+
+                                <header class="fyre-comment-head">
+                                    <a class=
+                                    "fyre-comment-username"><span>MrTesterTest</span></a>
+                                    <span class="fyre-comment-user-rating"
+                                    style=
+                                    "display: none;">5pts</span><span class=
+                                    "fyre-comment-tag fyre-featured" style=
+                                    "display: none;"><span class=
+                                    "fyre-featured-icon"></span><span class=
+                                    "fyre-featured-text">Featured</span><br></span>
+                                    <meta content="2014-09-10T21:09:21.000Z">
+                                    <time class="fyre-comment-date">Sep 10,
+                                    2014</time><span class=
+                                    "fyre-comment-archive"></span>
+
+                                    <div class="fyre-comment-premod"></div>
+
+                                    <div class="fyre-flag-list"></div>
+                                </header>
+
+                                <section class="fyre-comment-body">
+                                    <div class="fyre-comment">
+                                        <p></p>
+
+                                        <p>test</p>
+
+                                        <p><br></p>
+                                        <p>
+                                    </div>
+                                </section>
+
+                                <footer class="fyre-comment-footer">
+                                    <div class="fyre-comment-actions">
+                                        <a class="fyre-flag-link" title=
+                                        "Flag"><span></span>Flag</a><a class=
+                                        "fyre-share-link" title=
+                                        "Share"><span></span>Share</a>
+                                    </div><span class=
+                                    "fyre-comment-like"><span class=
+                                    "fyre-comment-like-count"></span><span class="fyre-comment-like-imgs"></span><a class="fyre-comment-like-btn fyre-comment-action-button">Like</a></span><a class="fyre-comment-reply fyre-comment-action-button">Reply</a>
+
+                                    <div class="fyre-editor" style=
+                                    "display: none;"></div>
+                                </footer>
+                            </div>
+
+                            <div class="fyre-comment-divider">
+                                <a class="fyre-comment-collapse" style=
+                                "display: none;" title="Toggle Collapse"></a>
+
+                                <div class="fyre-comment-divider"></div>
+                            </div>
+
+                            <div class="fyre-outer-comment-container">
+                                <div class=
+                                "fyre-comment-container fyre-comment-replies fyre-comment-replies-indent">
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class=
+                        "fyre-comment-article fyre-comment-source-5"
+                        data-author-id="123@client-solutions.fyre.co"
+                        data-message-id="211136939" style="">
+                            <div class="fyre-comment-wrapper">
+                                <div class="fyre-comment-user" data-author-id=
+                                "123@client-solutions.fyre.co" data-from=
+                                "MrTesterTest">
+                                    <a class="fyre-comment-author" href=
+                                    ""><img alt="MrTesterTest" class=
+                                    "fyre-user-avatar" onerror=
+                                    "javascript:this.src='http:\/\/avatars.fyre.co\/a\/anon\/50.jpg';"
+                                    src=
+                                    "http://avatars.fyre.co/a/anon/50.jpg"></a>
+
+                                    <div class=
+                                    "fyre-comment-socialsync fyre-comment-from-undefined">
+                                    </div>
+
+                                    <div class="fyre-comment-highlight"></div>
+                                </div>
+
+                                <header class="fyre-comment-head">
+                                    <a class=
+                                    "fyre-comment-username"><span>MrTesterTest</span></a>
+                                    <span class="fyre-comment-user-rating"
+                                    style=
+                                    "display: none;">5pts</span><span class=
+                                    "fyre-comment-tag fyre-featured" style=
+                                    "display: none;"><span class=
+                                    "fyre-featured-icon"></span><span class=
+                                    "fyre-featured-text">Featured</span><br></span>
+                                    <meta content="2014-09-10T21:09:14.000Z">
+                                    <time class="fyre-comment-date">Sep 10,
+                                    2014</time><span class=
+                                    "fyre-comment-archive"></span>
+
+                                    <div class="fyre-comment-premod"></div>
+
+                                    <div class="fyre-flag-list"></div>
+                                </header>
+
+                                <section class="fyre-comment-body">
+                                    <div class="fyre-comment">
+                                        <p>teste</p>
+                                    </div>
+                                </section>
+
+                                <footer class="fyre-comment-footer">
+                                    <div class="fyre-comment-actions">
+                                        <a class="fyre-flag-link" title=
+                                        "Flag"><span></span>Flag</a><a class=
+                                        "fyre-share-link" title=
+                                        "Share"><span></span>Share</a>
+                                    </div><span class=
+                                    "fyre-comment-like"><span class=
+                                    "fyre-comment-like-count"></span><span class="fyre-comment-like-imgs"></span><a class="fyre-comment-like-btn fyre-comment-action-button">Like</a></span><a class="fyre-comment-reply fyre-comment-action-button">Reply</a>
+
+                                    <div class="fyre-editor" style=
+                                    "display: none;"></div>
+                                </footer>
+                            </div>
+
+                            <div class="fyre-comment-divider">
+                                <a class="fyre-comment-collapse" style=
+                                "display: none;" title="Toggle Collapse"></a>
+
+                                <div class="fyre-comment-divider"></div>
+                            </div>
+
+                            <div class="fyre-outer-comment-container">
+                                <div class=
+                                "fyre-comment-container fyre-comment-replies fyre-comment-replies-indent">
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class=
+                        "fyre-comment-article fyre-comment-source-5"
+                        data-author-id="123@client-solutions.fyre.co"
+                        data-message-id="211136907" style="">
+                            <div class="fyre-comment-wrapper">
+                                <div class="fyre-comment-user" data-author-id=
+                                "123@client-solutions.fyre.co" data-from=
+                                "MrTesterTest">
+                                    <a class="fyre-comment-author" href=
+                                    ""><img alt="MrTesterTest" class=
+                                    "fyre-user-avatar" onerror=
+                                    "javascript:this.src='http:\/\/avatars.fyre.co\/a\/anon\/50.jpg';"
+                                    src=
+                                    "http://avatars.fyre.co/a/anon/50.jpg"></a>
+
+                                    <div class=
+                                    "fyre-comment-socialsync fyre-comment-from-undefined">
+                                    </div>
+
+                                    <div class="fyre-comment-highlight"></div>
+                                </div>
+
+                                <header class="fyre-comment-head">
+                                    <a class=
+                                    "fyre-comment-username"><span>MrTesterTest</span></a>
+                                    <span class="fyre-comment-user-rating"
+                                    style=
+                                    "display: none;">5pts</span><span class=
+                                    "fyre-comment-tag fyre-featured" style=
+                                    "display: none;"><span class=
+                                    "fyre-featured-icon"></span><span class=
+                                    "fyre-featured-text">Featured</span><br></span>
+                                    <meta content="2014-09-10T21:09:09.000Z">
+                                    <time class="fyre-comment-date">Sep 10,
+                                    2014</time><span class=
+                                    "fyre-comment-archive"></span>
+
+                                    <div class="fyre-comment-premod"></div>
+
+                                    <div class="fyre-flag-list"></div>
+                                </header>
+
+                                <section class="fyre-comment-body">
+                                    <div class="fyre-comment">
+                                        <p>tset</p>
+                                    </div>
+                                </section>
+
+                                <footer class="fyre-comment-footer">
+                                    <div class="fyre-comment-actions">
+                                        <a class="fyre-flag-link" title=
+                                        "Flag"><span></span>Flag</a><a class=
+                                        "fyre-share-link" title=
+                                        "Share"><span></span>Share</a>
+                                    </div><span class=
+                                    "fyre-comment-like"><span class=
+                                    "fyre-comment-like-count"></span><span class="fyre-comment-like-imgs"></span><a class="fyre-comment-like-btn fyre-comment-action-button">Like</a></span><a class="fyre-comment-reply fyre-comment-action-button">Reply</a>
+
+                                    <div class="fyre-editor" style=
+                                    "display: none;"></div>
+                                </footer>
+                            </div>
+
+                            <div class="fyre-comment-divider">
+                                <a class="fyre-comment-collapse" style=
+                                "display: none;" title="Toggle Collapse"></a>
+
+                                <div class="fyre-comment-divider"></div>
+                            </div>
+
+                            <div class="fyre-outer-comment-container">
+                                <div class=
+                                "fyre-comment-container fyre-comment-replies fyre-comment-replies-indent">
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="fyre-comment-article" data-author-id=
+                        "undefined" data-message-id="210341244" style="">
+                            <div class="fyre-comment-wrapper" style=
+                            "display: none;">
+                                <section class="fyre-comment-deleted">
+                                    <p>This comment has been deleted</p>
+                                </section>
+                            </div>
+
+                            <div class="fyre-comment-divider" style=
+                            "display: none;">
+                                <a class="fyre-comment-collapse" style=
+                                "display: none;" title="Toggle Collapse"></a>
+
+                                <div class="fyre-comment-divider"></div>
+                            </div>
+
+                            <div class="fyre-outer-comment-container">
+                                <div class=
+                                "fyre-comment-container fyre-comment-replies fyre-comment-replies-indent">
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="fyre-comment-article" data-author-id=
+                        "undefined" data-message-id="208936696" style="">
+                            <div class="fyre-comment-wrapper" style=
+                            "display: none;">
+                                <section class="fyre-comment-deleted">
+                                    <p>This comment has been deleted</p>
+                                </section>
+                            </div>
+
+                            <div class="fyre-comment-divider" style=
+                            "display: none;">
+                                <a class="fyre-comment-collapse" style=
+                                "display: none;" title="Toggle Collapse"></a>
+
+                                <div class="fyre-comment-divider"></div>
+                            </div>
+
+                            <div class="fyre-outer-comment-container">
+                                <div class=
+                                "fyre-comment-container fyre-comment-replies fyre-comment-replies-indent">
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+
+                    <div class="fyre-stream-content-not-found"></div>
+
+                    <div class="fyre-stream-more" style="display: none;">
+                        <div class="fyre-stream-more-container">
+                            <div class="fyre-text">
+                                Show More Comments
+                            </div>
+
+                            <div class="fyre-spinner">
+                                <div class="fyre-ball">
+                                    <!--[if IE]><img src="http://zor.fyre.co/wjs/v3.0.1416890156/images/fyre-spinner-ball.gif" alt="" /><![endif]--><!--[if !IE]><!--><img alt=""
+                                    src=
+                                    "http://zor.fyre.co/wjs/v3.0.1416890156/images/fyre-spinner-ball.png"><!--<![endif]-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fyre-top-content-stream"></div>
+
+                <div class="fyre-thread-breakout-stream"></div>
+
+                <div class="fyre-stream-menu-container"></div>
+            </div>
+        </div>
+    </div>
+```
+*/
+#livefyre-comments .fyre img {
+  display: inline; }
 
 /**
  * Single Page Styles
