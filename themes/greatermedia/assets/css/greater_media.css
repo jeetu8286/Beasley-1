@@ -3472,11 +3472,13 @@ Link posts contain a link to an external site. They can also optionally have a f
   width: 100%;
   font-size: 0.88889em;
   float: left;
-  margin-top: 3em; }
+  margin: 0 0 1.5em;
+  text-align: center; }
 
 .posts-pagination--previous {
   float: left;
-  width: 50%; }
+  width: 50%;
+  text-align: left; }
 
 .posts-pagination--previous .fa {
   margin-right: .5em; }
@@ -3488,6 +3490,56 @@ Link posts contain a link to an external site. They can also optionally have a f
 
 .posts-pagination--next .fa {
   margin-left: .5em; }
+
+.posts-pagination--load-more {
+  display: inline-block;
+  line-height: 1;
+  padding: 0.5em 1em;
+  margin-right: .5em;
+  outline: none;
+  background-color: #d22228;
+  border: 1px solid #d22228;
+  font-family: "Open Sans", sans-serif;
+  font-size: 0.88889em;
+  color: #ffffff !important;
+  text-transform: uppercase;
+  cursor: pointer;
+  -webkit-border-radius: 1em;
+  -moz-border-radius: 1em;
+  -ms-border-radius: 1em;
+  -o-border-radius: 1em;
+  -border-radius: 1em;
+  border-radius: 1em;
+  display: none; }
+  .posts-pagination--load-more:hover, .posts-pagination--load-more:focus {
+    background-color: #aa1c20;
+    border-color: #aa1c20;
+    color: #ffffff; }
+  .posts-pagination--load-more:last-of-type {
+    margin-right: 0; }
+  .posts-pagination--load-more .fa {
+    margin-right: 0.4em; }
+  .posts-pagination--load-more.is-loaded .fa {
+    display: none; }
+  .posts-pagination--load-more:disabled {
+    display: inline-block;
+    line-height: 1;
+    padding: 0.5em 1em;
+    margin-right: .5em;
+    outline: none;
+    background-color: #929497;
+    border: 1px solid #929497;
+    font-family: "Open Sans", sans-serif;
+    font-size: 0.88889em;
+    color: #ffffff !important;
+    text-transform: uppercase;
+    cursor: pointer; }
+    .posts-pagination--load-more:disabled:hover, .posts-pagination--load-more:disabled:focus {
+      background-color: #7b7d80;
+      border-color: #7b7d80;
+      color: #ffffff; }
+    .posts-pagination--load-more:disabled:last-of-type {
+      margin-right: 0; }
 
 .entries {
   float: left;
@@ -4541,7 +4593,7 @@ category: Components
   content: "\e604"; }
 
 .live-link__type--gallery:before {
-  content: "\e602"; }
+  content: "\e61a"; }
 
 .live-link__type--image:before {
   content: "\e600"; }
@@ -4553,7 +4605,7 @@ category: Components
   content: "\e608"; }
 
 .live-link__type--video:before {
-  content: "\e604"; }
+  content: "\e613"; }
 
 .live-link__title {
   display: block;
@@ -8117,6 +8169,43 @@ select {
     @media screen and (min-width: 768px) {
       .profile-page .profile-page__sidebar p {
         display: block; } }
+
+.show__live-links .live-links-group {
+  display: block; }
+  .show__live-links .live-links-group:before, .show__live-links .live-links-group:after {
+    content: " ";
+    display: table; }
+  .show__live-links .live-links-group:after {
+    clear: both; }
+  @media screen and (min-width: 1024px) {
+    .show__live-links .live-links-group {
+      margin-bottom: 3em; } }
+.show__live-links .group-date {
+  font-size: 3.24732em;
+  font-weight: 700;
+  color: #929497; }
+  @media screen and (min-width: 1024px) {
+    .show__live-links .group-date {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 23.23176%;
+      clear: both;
+      margin-top: 24px; }
+      .show__live-links .group-date:last-child {
+        margin-right: 0; } }
+.show__live-links .ll-archive-list li {
+  margin-bottom: 2em; }
+@media screen and (min-width: 1024px) {
+  .show__live-links .ll-archive-list {
+    float: left;
+    display: block;
+    margin-right: 2.35765%;
+    width: 74.41059%;
+    margin-right: 0;
+    margin-top: 36px; }
+    .show__live-links .ll-archive-list:last-child {
+      margin-right: 0; } }
 
 /**
  * Single Page Styles
