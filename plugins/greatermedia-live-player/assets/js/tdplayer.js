@@ -133,10 +133,6 @@
 
 	function initControlsUi() {
 
-		if (playBtn != null) {
-			addEventHandler(playBtn,elemClick,playLiveStreamWithPreRoll);
-		}
-
 		if (pauseBtn != null) {
 			addEventHandler(pauseBtn,elemClick,pauseStream);
 		}
@@ -149,15 +145,11 @@
 			addEventHandler(clearDebug,elemClick,clearDebugInfo);
 		}
 
-		if (listenNow != null) {
-			addEventHandler(listenNow,elemClick,playLiveStream);
-		}
-
 	}
 
 	function setPlayingStyles() {
 		if ( null === tdContainer ) {
-			// gigya user is logged out, so everythign is different ಠ_ಠ - Should we force login for inline audio as well??
+			// gigya user is logged out, so everything is different ಠ_ಠ - Should we force login for inline audio as well??
 			return;
 		}
 
@@ -171,7 +163,7 @@
 
 	function setStoppedStyles() {
 		if ( null === tdContainer ) {
-			// gigya user is logged out, so everythign is different ಠ_ಠ - Should we force login for inline audio as well??
+			// gigya user is logged out, so everything is different ಠ_ಠ - Should we force login for inline audio as well??
 			return;
 		}
 
@@ -183,7 +175,7 @@
 
 	function setPausedStyles() {
 		if ( null === tdContainer ) {
-			// gigya user is logged out, so everythign is different ಠ_ಠ - Should we force login for inline audio as well??
+			// gigya user is logged out, so everything is different ಠ_ಠ - Should we force login for inline audio as well??
 			return;
 		}
 
@@ -196,13 +188,23 @@
 
 	function changePlayerState() {
 		if (is_gigya_user_logged_in()) {
-			playBtn.addEventListener('click', function() {
-				playLiveStreamWithPreRoll();
-			});
+			if (playBtn != null) {
+				addEventHandler(playBtn, 'click', playLiveStreamWithPreRoll());
+			}
+			if (listenNow != null) {
+				addEventHandler(listenNow, 'click', playLiveStreamWithPreRoll());
+			}
 		} else {
-			playBtn.addEventListener('click', function() {
-				window.location.href = gigyaLogin;
-			});
+			if (playBtn != null) {
+				addEventHandler(playBtn, 'click', function () {
+					window.location.href = gigyaLogin;
+				});
+			}
+			if (listenNow != null) {
+				addEventHandler(listenNow, 'click', function () {
+					window.location.href = gigyaLogin;
+				});
+			}
 		}
 	}
 
