@@ -6,6 +6,7 @@ add_action( 'init', 'gmr_contests_register_rewrites_and_endpoints' );
 add_action( 'wp_enqueue_scripts', 'gmr_contests_enqueue_front_scripts', 100 );
 add_action( 'template_redirect', 'gmr_contests_process_action' );
 add_action( 'template_redirect', 'gmr_contests_process_submission_action' );
+add_action( 'manage_' . GMR_CONTEST_CPT . '_posts_custom_column', 'gmr_contests_render_contest_column', 10, 2 );
 
 add_action( 'gmr_contest_load', 'gmr_contests_render_form' );
 add_action( 'gmr_contest_submit', 'gmr_contests_process_form_submission' );
@@ -20,6 +21,7 @@ add_filter( 'post_type_link', 'gmr_contests_get_submission_permalink', 10, 2 );
 add_filter( 'request', 'gmr_contests_unpack_vars' );
 add_filter( 'post_thumbnail_html', 'gmr_contests_post_thumbnail_html', 10, 4 );
 add_filter( 'post_row_actions', 'gmr_contests_add_table_row_actions', 10, 2 );
+add_filter( 'manage_' . GMR_CONTEST_CPT . '_posts_columns', 'gmr_contests_filter_contest_columns_list' );
 
 /**
  * Registers custom post types related to contests area.
@@ -742,7 +744,7 @@ function gmr_contests_add_table_row_actions( $actions, WP_Post $post ) {
 
 	// add contest winners action
 	$link = admin_url( 'edit.php?post_type=contest_entry&contest_id=' . $post->ID );
-	$actions['gmr-contest-winner'] = '<a href="' . esc_url( $link ) . '">Entries</a>';
+	$actions['gmr-contest-winner'] = '<a href="' . esc_url( $link ) . '">Winners</a>';
 
 	return $actions;
 }
@@ -795,4 +797,45 @@ function gmr_contests_is_submission_winner( $submission = null ) {
 	}
 
 	return in_array( "{$entry_id}:{$gigya_id}", get_post_meta( $submission->post_parent, 'winner' ) );
+}
+
+/**
+ * Adds columns to the contests table.
+ *
+ * @filter manage_contest_posts_columns
+ * @param array $columns Initial array of columns.
+ * @return array The array of columns.
+ */
+function gmr_contests_filter_contest_columns_list( $columns ) {
+	// put just after the title column
+	$cut_mark = array_search( 'title', array_keys( $columns ) ) + 1;
+
+	$columns = array_merge(
+		array_slice( $columns, 0, $cut_mark ),
+		array(
+			'start_date'  => 'Start Date',
+			'finish_date' => 'Finish Date',
+		),
+		array_slice( $columns, $cut_mark )
+	);
+
+	$columns['date'] = 'Created Date';
+
+	return $columns;
+}
+
+/**
+ * Renders custom columns for the contests table.
+ *
+ * @param string $column_name The column name which is gonna be rendered.
+ * @param int $post_id The post id.
+ */
+function gmr_contests_render_contest_column( $column_name, $post_id ) {
+	if ( 'start_date' == $column_name ) {
+		$timestamp = (int) get_post_meta( $post_id, 'contest-start', true );
+		echo ! empty( $timestamp ) ? date( get_option( 'date_format' ), $timestamp ) : '&#8212;';
+	} elseif ( 'finish_date' == $column_name ) {
+		$timestamp = (int) get_post_meta( $post_id, 'contest-end', true );
+		echo ! empty( $timestamp ) ? date( get_option( 'date_format' ), $timestamp ) : '&#8212;';
+	}
 }
