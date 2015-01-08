@@ -4,6 +4,20 @@
 
 $page_heading = 'Login';
 $page_message = 'Membership gives you access to all areas of the site, including full membership-only contests and the ability to submit content to share with the site and other members.';
+$months = array(
+	'January',
+	'February',
+	'March',
+	'April',
+	'May',
+	'June',
+	'July',
+	'August',
+	'September',
+	'October',
+	'November',
+	'December',
+);
 
 ?>
 
@@ -140,6 +154,26 @@ $page_message = 'Membership gives you access to all areas of the site, including
 					<?php } ?>
 				</select>
 
+				<span class="gigya-error-msg" data-bound-to="profile.birthMonth" ></span>
+				<label>Month of Birth:</label>
+				<select name="profile.birthMonth">
+					<?php foreach ( $months as $month_num => $month_name ) { ?>
+						<option value="<?php echo esc_attr( $month_num + 1 ); ?>">
+						<?php echo esc_html( $month_name ); ?>
+						</option>
+					<?php } ?>
+				</select>
+
+				<span class="gigya-error-msg" data-bound-to="profile.birthDay" ></span>
+				<label>Day of Birth:</label>
+				<select name="profile.birthDay">
+					<?php foreach ( range( 1, 31 ) as $day_num ) { ?>
+						<option value="<?php echo esc_attr( $day_num ); ?>">
+						<?php echo esc_html( $day_num ); ?>
+						</option>
+					<?php } ?>
+				</select>
+
 				<span class="gigya-error-msg" data-bound-to="profile.zip" ></span>
 				<input type="text" name="profile.zip" placeholder="ZIP Code" />
 
@@ -210,11 +244,31 @@ $page_message = 'Membership gives you access to all areas of the site, including
 				<label>Last Name:</label>
 				<input type="text" name="profile.lastName" />
 
-				<span class="gigya-error-msg" data-bound-to="profile.lastName" ></span>
+				<span class="gigya-error-msg" data-bound-to="profile.birthYear" ></span>
 				<label>Year of Birth:</label>
 				<select name="profile.birthYear">
 					<?php foreach ( range( 1920, date( 'Y' ) ) as $year ) { ?>
 						<option value="<?php echo esc_attr( $year ); ?>"><?php echo esc_html( $year ); ?></option>
+					<?php } ?>
+				</select>
+
+				<span class="gigya-error-msg" data-bound-to="profile.birthMonth" ></span>
+				<label>Month of Birth:</label>
+				<select name="profile.birthMonth">
+					<?php foreach ( $months as $month_num => $month_name ) { ?>
+						<option value="<?php echo esc_attr( $month_num + 1 ); ?>">
+						<?php echo esc_html( $month_name ); ?>
+						</option>
+					<?php } ?>
+				</select>
+
+				<span class="gigya-error-msg" data-bound-to="profile.birthDay" ></span>
+				<label>Day of Birth:</label>
+				<select name="profile.birthDay">
+					<?php foreach ( range( 1, 31 ) as $day_num ) { ?>
+						<option value="<?php echo esc_attr( $day_num ); ?>">
+						<?php echo esc_html( $day_num ); ?>
+						</option>
 					<?php } ?>
 				</select>
 
