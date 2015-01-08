@@ -25,7 +25,10 @@ class GreaterMediaNavWalker extends Walker_Nav_Menu {
 
 		// Try to find some meta text to use
 		if ( 'show' === $item->object ) {
-			$return .= '<span class="meta-text">show time</span>'; // @todo placeholder
+			$times = get_post_meta( $item->object_id, 'show_times', true );
+			if ( ! empty( $times ) ) {
+				$return .= '<span class="meta-text">' . esc_html( $times ) . '</span>';
+			}
 		} else if ( 'tribe_events' === $item->object && function_exists( 'tribe_get_start_date' ) ) {
 			$return .= '<span class="meta-text">' . tribe_get_start_date( $item->object_id ) . '</span>';
 		}
