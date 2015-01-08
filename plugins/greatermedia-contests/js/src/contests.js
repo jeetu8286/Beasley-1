@@ -73,6 +73,8 @@
 
 			return false;
 		});
+
+		$(document).trigger('contest:preview-loaded');
 	};
 
 	gridLoadMoreUrl = function(page) {

@@ -878,6 +878,8 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 
 			return false;
 		});
+
+		$(document).trigger('contest:preview-loaded');
 	};
 
 	gridLoadMoreUrl = function(page) {

@@ -41,7 +41,7 @@ function(a){"use strict";a.extend(a.fn.cycle.defaults,{tmplRegex:"{{((.)?.*?)}}"
 		/**
 		 * Bind the gallery full screen toggle
 		 */
-		$(document).on('cycle-bootstrap', function() {
+		function bind_events() {
 			var hashChange = false;
 
 			slideshow = $( '.gallery__slide--images.cycle-slideshow' );
@@ -108,7 +108,7 @@ function(a){"use strict";a.extend(a.fn.cycle.defaults,{tmplRegex:"{{((.)?.*?)}}"
 			} );
 
 			$window.resize( responsive_thumbnails );
-		});
+		}
 
 		/**
 		 * Are we on a mobile browser (or anything smaller than 768px)?
@@ -239,12 +239,16 @@ function(a){"use strict";a.extend(a.fn.cycle.defaults,{tmplRegex:"{{((.)?.*?)}}"
 			$( '.gallery-toolbar .fa-facebook' ).attr( 'href', url_facebook );
 			$( '.gallery-toolbar .short-url' ).html( '<a href="' + share_url + '">' + share_url + '</a>' );
 		}
+
+		bind_events();
 	};
 
 	$document.bind('pjax:end', function() {
 		$document.find('.cycle-slideshow').cycle();
 		__ready();
 	});
+
+	$document.bind('contest:preview-loaded', __ready);
 	
 	$document.ready(__ready);
 })(jQuery, window);
