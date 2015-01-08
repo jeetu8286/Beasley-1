@@ -179,11 +179,8 @@ $months = array(
 
 				<span class="gigya-error-msg" data-bound-to="profile.gender" ></span>
 				<label>Gender:</label>
-				<select name="profile.gender">
-					<option value="m">Male</option>
-					<option value="f">Female</option>
-					<option value="u">Unknown</option>
-				</select>
+				<label class="inline-label"><input type="radio" name="profile.gender" value="m" />Male</label>
+				<label class="inline-label"><input type="radio" name="profile.gender" value="f" />Female</label>
 
 				<h2>Email Subscriptions</h2>
 
@@ -278,11 +275,8 @@ $months = array(
 
 				<span class="gigya-error-msg" data-bound-to="profile.gender" ></span>
 				<label>Gender:</label>
-				<select name="profile.gender">
-					<option value="m">Male</option>
-					<option value="f">Female</option>
-					<option value="u">Unknown</option>
-				</select>
+				<label class="inline-label"><input type="radio" name="profile.gender" value="m" />Male</label>
+				<label class="inline-label"><input type="radio" name="profile.gender" value="f" />Female</label>
 
 				<h2>Password</h2>
 				<a href="#" data-switch-screen="gigya-change-password-screen">Change your password.</a>
