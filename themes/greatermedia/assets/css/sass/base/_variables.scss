@@ -17,6 +17,7 @@ $extra-light-gray: #f1f1f3;
 $light-gray: #d0d2d3;
 $gray: #929497;
 $medium-gray: #404041;
+$medium-dark-gray: #6d6e70;
 $dark-gray: #282827;
 $darker-gray: #191919;
 $yellow: #f5ed7f;
@@ -75,6 +76,10 @@ $color-text-red: $cardinal !default;
 $color-text-yellow: $yellow !default;
 
 $color-gray: $gray !default;
+$color-gray-extra-light: $extra-light-gray !default;
+$color-gray-light: $light-gray !default;
+$color-gray-medium: $medium-gray !default;
+$color-gray-darker: $darker-gray !default;
 
 $primary-bg: $white !default;
 $primary-text: $color-text-gray !default;
@@ -95,8 +100,8 @@ $header-bg: $darker-gray !default;
 $header-border: $dark-gray !default;
 $header-nav-bg: $cardinal !default;
 
-$liveplayer-bg: $darker-gray !default;
-$liveplayer-color: $color-text-white !default;
+$liveplayer-bg: $black !default;
+$liveplayer-color: lighten($color-gray-medium, 20%) !default;
 
 $featured-primary-bg: $heath !default;
 $featured-secondary-bg: $coffee-bean !default;
@@ -112,6 +117,7 @@ $gallery-thumbs-bg: $dark-gray !default;
 $gallery-border: $medium-gray !default;
 $gallery-grid-border: $gray !default;
 $gallery-grid-text: $gray !default;
+$gallery-featured-bg: #f2f2f2 !default;
 
 $footer-text: $gray !default;
 
