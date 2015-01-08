@@ -208,7 +208,7 @@ $months = array(
 					<option value="2">more than 3 hours</option>
 				</select>
 
-				<label>When you're listening to the radio, about what percentage of time do you spend listening to 93.3 WMMR?</label>
+				<label>When you're listening to the radio, about what percentage of time do you spend listening to 102.9 WMGK?</label>
 				<select name="data.listeningLoyalty">
 					<?php foreach ( range( 0, 100, 10 ) as $percent ) { ?>
 						<option value="<?php echo esc_attr( $percent ); ?>"><?php echo esc_html( $percent . '%' ); ?></option>
