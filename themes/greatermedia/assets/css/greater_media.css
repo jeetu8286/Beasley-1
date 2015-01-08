@@ -1212,15 +1212,15 @@ blockquote p {
   z-index: 5000000;
   /* IAB z-index standard for drop nav is 5000000 - 5999999 */
   opacity: 0;
-  -webkit-transition: visibility 0s linear, opacity 150ms ease-out;
-  -moz-transition: visibility 0s linear, opacity 150ms ease-out;
-  transition: visibility 0s linear, opacity 150ms ease-out; }
+  -webkit-transition: visibility 0s linear, opacity 100ms ease-out;
+  -moz-transition: visibility 0s linear, opacity 100ms ease-out;
+  transition: visibility 0s linear, opacity 100ms ease-out; }
   .overlay-mask.is-visible {
     visibility: visible;
     opacity: 1;
-    -webkit-transition: visibility 0s linear, opacity 150ms ease-out;
-    -moz-transition: visibility 0s linear, opacity 150ms ease-out;
-    transition: visibility 0s linear, opacity 150ms ease-out; }
+    -webkit-transition: visibility 0s linear, opacity 100ms ease-out;
+    -moz-transition: visibility 0s linear, opacity 100ms ease-out;
+    transition: visibility 0s linear, opacity 100ms ease-out; }
 
 .header__nav .menu-item-has-children {
   position: relative; }
