@@ -22,6 +22,7 @@ add_filter( 'request', 'gmr_contests_unpack_vars' );
 add_filter( 'post_thumbnail_html', 'gmr_contests_post_thumbnail_html', 10, 4 );
 add_filter( 'post_row_actions', 'gmr_contests_add_table_row_actions', 10, 2 );
 add_filter( 'manage_' . GMR_CONTEST_CPT . '_posts_columns', 'gmr_contests_filter_contest_columns_list' );
+add_filter( 'post_row_actions', 'gmr_contests_filter_contest_actions', PHP_INT_MAX, 2 );
 
 /**
  * Registers custom post types related to contests area.
@@ -838,4 +839,29 @@ function gmr_contests_render_contest_column( $column_name, $post_id ) {
 		$timestamp = (int) get_post_meta( $post_id, 'contest-end', true );
 		echo ! empty( $timestamp ) ? date( get_option( 'date_format' ), $timestamp ) : '&#8212;';
 	}
+}
+
+/**
+ * Filters contest actions at the contests table.
+ *
+ * @filter post_row_actions PHP_INT_MAX 2
+ * @param array $actions The initial array of actions.
+ * @param WP_Post $post The actual contest object.
+ * @return array Filtered array of actions.
+ */
+function gmr_contests_filter_contest_actions( $actions, WP_Post $post ) {
+	// do nothing if it is not a contest post
+	if ( GMR_CONTEST_CPT != $post->post_type ) {
+		return $actions;
+	}
+
+	// unset redundant actions
+	unset( $actions['inline hide-if-no-js'], $actions['edit_as_new_draft'], $actions['clone'] );
+
+	// move delete link to the end of actions list
+	$delete_link = $actions['delete'];
+	unset( $actions['delete'] );
+	$actions['delete'] = $delete_link;
+
+	return $actions;
 }
