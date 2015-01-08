@@ -479,8 +479,8 @@ function gmr_contests_process_form_submission() {
 
 			} else if ( is_array( $_POST[ $field_key ] ) ) {
 
-				$array_data = $_POST[ $field_key ];
-				foreach ( $array_data as &$value ) {
+				$array_data = array();
+				foreach ( $_POST[ $field_key ] as $value ) {
 					if ( 'checkboxes' == $field->field_type && 'other' == $value ) {
 						if ( empty( $_POST[ "{$field_key}_other_value" ] ) ) {
 							continue;
@@ -489,7 +489,7 @@ function gmr_contests_process_form_submission() {
 						$value = $_POST[ "{$field_key}_other_value" ];
 					}
 
-					$value = sanitize_text_field( $value );
+					$array_data[] = sanitize_text_field( $value );
 				}
 				
 				$submitted_values[ $field->cid ] = $array_data;
