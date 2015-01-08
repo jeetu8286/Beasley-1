@@ -23,6 +23,7 @@ class GreaterMediaMegaMenuAdmin {
 	public static $options = array(
 		''      => 'Standard',
 		'fw' => 'Full-width, four column',
+		'sp' => 'Small Previews'
 	);
 
 	/**
