@@ -1,8 +1,8 @@
 /* globals GMR_Gallery:false */
-(function($, gmr) {
-	var __ready, gridPreviewLoaded, gridLoadMoreUrl, gridUpdateRating, container, gridContainer;
+(function($) {
+	var $document = $(document), container, gridContainer;
 
-	gridUpdateRating = function($item, delta) {
+	var gridUpdateRating = function($item, delta) {
 		var rating = parseInt($item.text().replace(/\D+/g, ''));
 
 		if (isNaN(rating)) {
@@ -15,7 +15,7 @@
 		$item.text(rating);
 	};
 
-	gridPreviewLoaded = function(submission) {
+	var gridPreviewLoaded = function(submission) {
 		var $previewInner = submission.$previewInner,
 			$item = submission.$item,
 			$rating = $item.find('.contest__submission--rating b'),
@@ -82,15 +82,15 @@
 		});
 	};
 
-	gridLoadMoreUrl = function(page) {
+	var gridLoadMoreUrl = function(page) {
 		return container.data('infinite') + (page + 1) + '/';
 	};
 
-	__ready = function() {
-		container = $(gmr.selectors.container);
-		gridContainer = $(gmr.selectors.grid);
+	var __ready = function() {
+		container = $('#contest-form');
+		gridContainer = $('.contest__submissions--list');
 
-		container.on('submit', gmr.selectors.form, function() {
+		$('#contest-form form').submit(function() {
 			var form = $(this);
 
 			if (!form.parsley || form.parsley().isValid()) {
@@ -134,28 +134,52 @@
 			return false;
 		});
 
-		container.on('click', gmr.selectors.yes_age, function() {
-			container.load(container.data('confirm-age'));
+		var showRestriction = function(restriction) {
+			var $restrictions = $('.contest__restrictions');
+
+			$restrictions.attr('class', 'contest__restrictions');
+			if (restriction) {
+				$restrictions.addClass(restriction);
+			}
+		};
+
+		var loadContainerState = function(url) {
+			$.get(url, function(response) {
+				var restriction = null;
+				
+				if (response.success) {
+					container.html(response.data.html);
+					$('.type-contest.collapsed').removeClass('collapsed');
+				} else {
+					restriction = response.data.restriction;
+				}
+
+				showRestriction(restriction);
+			});
+		};
+
+		$('.contest__restriction--min-age-yes').click(function() {
+			loadContainerState(container.data('confirm-age'));
 			return false;
 		});
 		
-		container.on('click', gmr.selectors.no_age, function() {
-			container.load(container.data('reject-age'));
+		$('.contest__restriction--min-age-no').click(function() {
+			showRestriction('age-fails');
 			return false;
 		});
 
 		if (container.length > 0) {
-			container.load(container.data('load'));
+			loadContainerState(container.data('load'));
 		}
 
 		if (gridContainer.length > 0) {
 			gridContainer.grid({
-				loadMore: gmr.selectors.grid_more,
+				loadMore: '.contest__submissions--load-more',
 				previewLoaded: gridPreviewLoaded,
 				loadMoreUrl: gridLoadMoreUrl
 			});
 		}
 	};
 
-	$(document).bind('pjax:end', __ready).ready(__ready);
-})(jQuery, GreaterMediaContests);
+	$document.bind('pjax:end', __ready).ready(__ready);
+})(jQuery);

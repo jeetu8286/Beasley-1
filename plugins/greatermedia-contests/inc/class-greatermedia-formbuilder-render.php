@@ -180,7 +180,7 @@ class GreaterMediaFormbuilderRender {
 		}
 
 		$html = '<h3 class="contest__form--heading">Enter Here to Win</h3>';
-		$html .= '<form method="post" enctype="multipart/form-data" class="' . esc_attr( self::FORM_CLASS ) . '" data-parsley-validate>';
+		$html .= '<form method="post" enctype="multipart/form-data" data-parsley-validate>';
 
 		foreach ( $form as $field ) {
 
@@ -205,7 +205,7 @@ class GreaterMediaFormbuilderRender {
 
 		$html .= '</form>';
 
-		echo $html;
+		return $html;
 
 	}
 

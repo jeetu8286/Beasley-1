@@ -22,6 +22,29 @@
 	margin: 0 auto;
 }
 
+.type-contest,
+.type-survey {
+	.col__inner--left {
+		border-right-width: 0;
+	}
+
+	&.collapsed {
+		.col__inner--left {
+			width: 100%;
+			margin-right: 0;
+			padding-right: 0;
+		}
+		
+		.col__inner--right {
+			display: none;
+		}
+
+		.contest__entry--link {
+			display: none;
+		}
+	}
+}
+
 .contest__entry--link {
 	display: block;
 	margin-bottom: 2em;
@@ -69,6 +92,87 @@
 
 .contest__form--row {
 	margin-bottom: 30px;
+}
+
+.contest__restrictions {
+	.contest__restriction--age,
+	.contest__restriction--age-fails,
+	.contest__restriction--finished,
+	.contest__restriction--max-entries,
+	.contest__restriction--not-started,
+	.contest__restriction--one-entry,
+	.contest__restriction--signin {
+		display: none;
+	}
+
+	&.age .contest__restriction--age {
+		display: block;
+	}
+
+	&.age-fails .contest__restriction--age-fails {
+		display: block;
+	}
+
+	&.finished .contest__restriction--finished {
+		display: block;
+	}
+
+	&.max-entries .contest__restriction--max-entries {
+		display: block;
+	}
+
+	&.not-started .contest__restriction--not-started {
+		display: block;
+	}
+
+	&.one-entry .contest__restriction--one-entry {
+		display: block;
+	}
+
+	&.signin .contest__restriction--signin {
+		display: block;
+	}
+}
+
+.contest__restriction--min-age-yes,
+.contest__restriction--min-age-no {
+	display: block !important;
+	line-height: 1;
+	padding: .25em 1em;
+	margin-top: 0 !important;
+	margin-bottom: 1em !important;
+	margin-right: 0 !important;
+	outline: none;
+	background-color: $btn-bg !important;
+	border: 1px solid $btn-bg !important;
+	font-family: $open-sans;
+	font-size: ms(-1);
+	color: $color-text-white !important;
+	text-transform: uppercase;
+	cursor: pointer;
+	@include border-radius(3px);
+
+	@include bp(medium) {
+		display: inline-block !important;
+		margin-bottom: 0 !important;
+		margin-right: .5em !important;
+	}
+
+	&:last-of-type {
+		margin-right: 0 !important;
+	}
+
+	&:hover {
+		background-color: $btn-hover !important;
+		border: 1px solid $btn-hover !important;
+		color: $color-text-black !important;
+	}
+
+	&:active {
+		background-color: $btn-active !important;
+		border: 1px solid $btn-active !important;
+		color: $color-text-white !important;
+	}
 }
 
 .contest-attr--rules {
