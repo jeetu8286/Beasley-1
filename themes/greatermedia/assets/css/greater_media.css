@@ -494,7 +494,7 @@ category: Base - Typography
   src: url("../fonts/icon-font/gmr-icons.eot?#iefixjmqkgs") format("embedded-opentype"), url("../fonts/icon-font/gmr-icons.woff?jmqkgs") format("woff"), url("../fonts/icon-font/gmr-icons.ttf?jmqkgs") format("truetype"), url("../fonts/icon-font/gmr-icons.svg?jmqkgs#gmr-icons") format("svg");
   font-weight: normal;
   font-style: normal; }
-[class^="icon-"], [class*=" icon-"], .entry__thumbnail--video:before, .entry__thumbnail--events:before, .entry__thumbnail--audio:before, .header__search--btn:before, .format-audio .entry2__thumbnail a, .format-gallery .entry2__thumbnail a, .format-video .entry2__thumbnail a, .type-tribe_events .entry2__thumbnail a, .live-link__song:before, .live-link__type--audio:before, .live-link__type--gallery:before, .live-link__type--image:before, .live-link__type--link:before, .live-link__type--standard:before, .live-link__type--video:before, .social__link--facebook:before, .social__link--twitter:before, .social__link--google-plus:before, .social__link--youtube:before, .social__link--instagram:before, .header__search--submit:before, .gallery__prev--btn:before, .gallery__next--btn:after, .gallery__paging--prev, .gallery__paging--next, .gallery-grid__album {
+[class^="icon-"], [class*=" icon-"], .entry__thumbnail--video:before, .entry__thumbnail--events:before, .entry__thumbnail--audio:before, .header__search--btn:before, .format-audio .entry2__thumbnail a, .format-gallery .entry2__thumbnail a, .format-video .entry2__thumbnail a, .type-tribe_events .entry2__thumbnail a, .live-link__song:before, .live-link__type--audio:before, .live-link__type--gallery:before, .live-link__type--image:before, .live-link__type--link:before, .live-link__type--standard:before, .live-link__type--video:before, .header__search--submit:before, .gallery__prev--btn:before, .gallery__next--btn:after, .gallery__paging--prev, .gallery__paging--next, .gallery-grid__album {
   font-family: 'gmr-icons';
   speak: none;
   font-style: normal;
@@ -5950,7 +5950,7 @@ a.social-share-link {
   margin: 0 1.25em 0 0;
   list-style: none;
   display: inline-block;
-  font-size: 1em; }
+  font-size: 18px; }
 
 .social__link:last-child {
   margin: 0; }
@@ -5964,22 +5964,12 @@ a.social-share-link {
 .social__link a:active {
   color: #ffffff; }
 
-.social__link--facebook:before {
-  content: "\e60f"; }
-
-.social__link--twitter:before {
-  content: "\e610"; }
-
-.social__link--google-plus:before {
-  content: "\e611";
+.social-share-link:before {
   position: relative;
   top: 1px; }
-
-.social__link--youtube:before {
-  content: "\e617"; }
-
-.social__link--instagram:before {
-  content: "\e616"; }
+.social-share-link.icon-google-plus:before {
+  left: 1px;
+  top: 2px; }
 
 /*doc
 ---
