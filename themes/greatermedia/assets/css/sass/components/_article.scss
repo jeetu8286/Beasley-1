@@ -1,64 +1,49 @@
 .article {}
 
-.article__date {
-	display: block;
-	margin-bottom: 0.75em; 
-	font-size: ms(0); 
-	
-	@include bp(medium) {
-		font-size: ms(-1); 
-	}
+.article__header {
+	margin-bottom: 2em; 
 }
-
-.article__title {
-	font-size: ms(9);
-	line-height: 1.2;
-	margin: 0 0 0.65em;
-	
-	@include bp(medium) {
-		font-size: ms(7);
+	.article__date {
+		display: block;
+		margin-bottom: 0.5em; 
+		font-size: ms(0); 
+		text-transform: uppercase; 
+		color: $gray;
+		
+		@include bp(medium) {
+			font-size: ms(-1); 
+		}
+	}	
+	.article__title {
+		font-size: ms(9);
+		line-height: 1.2;
+		margin: 0 0 0.65em;
+		
+		@include bp(medium) {
+			font-size: ms(7);
+		}
 	}
-}
 
 .article__content {
-	font-size: ms(1);
+	margin-bottom: 1.5em;
+	
+	// Using pixel-based size for now rather than fighting with the theme's
+	// relative sizing (where I will have to add sizes for all breakpoints). 	
+	font-size: 16px;
+	line-height: 1.6;
+	
+	@include bp(large) {
+		margin-bottom: 4.5em;
+	}
 }
 
 .article__footer {
 	@include span-columns(4);
-	margin: 3em 0;
+	margin: 0 0 3em;
 	padding: 0;
-	border-bottom: 1px solid $primary-border;
-	@include bp(small) {
-		@include span-columns(6);
-	}
-	@include bp(medium) {
-		@include span-columns(8);
-	}
-	@include bp(large) {
-		@include span-columns(12);
-		padding-top: 40px;
-	}
-
-	.single-gmr_album & {
-		border-bottom: none;
-	}
-}
-	.article__footer--category:link, .article__footer--category:visited {
-		text-align: right;
-		display: inline-block; 
-		line-height: 1;
-		font-family: $droid-sans;
-		font-weight: bold;
-		color: $secondary-heading;
-	}
-	
-	.article__footer--category:hover, .article__footer--category:focus, .article__footer--category:active {
-		color: $secondary-link-hover;
-	}
-	
-	
-
+	border: none; 
+	line-height: 1.5;
+}	
 
 .article__categories, .article__tags, .article__shows {
 	overflow: auto;
@@ -73,25 +58,20 @@
 }
 
 .article__list, %article__list {
-	display: inline-block;
+	display: inline;
 	padding: 0;
 	margin: 0;
 	list-style: none;
 }
 	.article__list:before, %article__list--before {
-		margin-right: .25em;
 		text-transform: uppercase;
 	}
 	
 	.article__list--item, %article__list--item {
-		padding: 0 2px 0 0;
-		margin-right: 1em;
+		display: inline; 
 		list-style: none;
-		display: inline-block;
+		margin-right: .5em;
 	}
-		.article__list--item:last-of-type{
-			padding: 0;
-		}
 		.article__list--item a, .article__list--item a:visited, .article__list--show a, .article__list--show a:visited {
 			color: $gray;
 		}
@@ -101,38 +81,29 @@
 			
 	.article__list--title {
 		display: inline-block;
-		float: left;
 		font-weight: 800;
 	}
 		.article__list--title:after {
-			margin: 0 1.5em;
 			content: "/";
+			margin: 0 .25em 0 .5em;
 		}
 
 	.article__list--categories, .article__list--tags, .article__list--shows {
 		@extend %article__list;
-		float: left;
 	}
 
 	.article__list--show {
 		@extend %article__list;
-		float: left;
-		margin-right: 1.5em;
+		margin-right: .5em;
+		display: inline-block;
 	}
-		.article__list--show:last-of-type {
-			margin-right: 0;
-		
-			&::after {
-				content: '';
-			}
-		}
 
 	.article__show--logo {
 		display: inline-block;
 		float: left;
 		width: 24px;
 		height: 24px;
-		margin: 0 .75em 0 0;
+		margin-right: .5em;
 		@include border-radius(50%);
 		background-color: $secondary-border;
 	}	
@@ -141,8 +112,21 @@
 		}		
 		.article__show--name {
 			display: inline-block;
-			padding: 3px 0;
 		}
+		
+	// Bump up the spacing at larger breakpoints
+	@include bp(large) {
+		.article__list--item,
+		%article__list--item,
+		.article__list--show,
+		.article__show--logo {
+			margin-right: 1.5em;
+		}
+		
+		.article__list--title:after {
+			margin: 0 1.25em 0 1.5em;
+		}
+	} 
 
 
 .article__content {
@@ -186,6 +170,6 @@
 	}
 }
 
-#comments {
-	margin-top: 4em; 	
+.article__comments {
+	margin: 3em 0; 	
 }
