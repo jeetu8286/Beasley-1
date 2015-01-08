@@ -51,6 +51,7 @@
 	position: relative;
 	
 	@include bp(medium) {
+		@include shift(0);
 		max-width: 200px;
 		height: 82px;
 	}
