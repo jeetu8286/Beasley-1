@@ -1,7 +1,6 @@
-<article id="post-<?php the_ID(); ?>" <?php post_class( 'gallery__featured--item' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
-
-	<div class="gallery__featured--thumbnail">
-		<a href="<?php the_permalink(); ?>">
+<a href="<?php the_permalink(); ?>">
+	<div class="gallery__feature">
+		<div class="gallery__featured--thumbnail">
 			<?php if ( 'gmr_album' == get_post_type() ) { ?>
 				<div class="gallery__grid--album"></div>
 			<?php } ?>
@@ -10,15 +9,14 @@
 			<?php else: ?>
 				<div class='thumbnail thumbnail-placeholder' style=''></div>
 			<?php endif; ?>
-		</a>
+		</div>
+		<div class="gallery__featured--caption">
+			<div class="inner-wrap">
+				<h3 class="gallery__featured--title">
+					<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+				</h3>
+			</div>
+		</div>
 	</div>
 
-	<div class="gallery__featured--caption">
-
-		<h3 class="gallery__featured--title">
-			<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-		</h3>
-
-	</div>
-
-</article>
+</a>
