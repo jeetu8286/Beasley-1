@@ -1,4 +1,4 @@
-.format-fw {
+%format-fw {
 	& > ul {
 		@extend .sub-menu;
 		width: $max-site-width;
@@ -17,4 +17,8 @@
 		margin-left: 1%;
 	}
 
+}
+
+.header__nav .format-fw {
+	@extend %format-fw;
 }

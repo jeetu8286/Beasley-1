@@ -1,6 +1,8 @@
-.format-sp {
-	@extend .format-fw;
+.header__nav .format-sp {
+	@extend %format-fw;
+}
 
+.format-sp {
 	a:hover {
 		color: $color-text-white;
 
