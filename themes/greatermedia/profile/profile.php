@@ -141,7 +141,7 @@ $page_message = 'Membership gives you access to all areas of the site, including
 				</select>
 
 				<span class="gigya-error-msg" data-bound-to="profile.zip" ></span>
-				<input type="text" name="profile.zip" placeholder="Postcode" />
+				<input type="text" name="profile.zip" placeholder="ZIP Code" />
 
 				<span class="gigya-error-msg" data-bound-to="profile.gender" ></span>
 				<label>Gender:</label>
@@ -219,7 +219,7 @@ $page_message = 'Membership gives you access to all areas of the site, including
 				</select>
 
 				<span class="gigya-error-msg" data-bound-to="profile.zip" ></span>
-				<label>Postcode:</label>
+				<label>ZIP Code:</label>
 				<input type="text" name="profile.zip" />
 
 				<span class="gigya-error-msg" data-bound-to="profile.gender" ></span>
