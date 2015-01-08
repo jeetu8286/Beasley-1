@@ -171,6 +171,10 @@
 		liveLinksWidget.style.height = liveLinksWidgetHeight + 'px';
 	}
 
+	/**
+	 * adds some styles to the live player that would be called at mobile breakpoints. This is added specifically to
+	 * deal with a window being resized.
+	 */
 	function livePlayerMobileReset() {
 		livePlayer.style.position = 'fixed';
 		livePlayer.style.top = 'auto';
@@ -180,6 +184,10 @@
 		livePlayer.style.height = 'auto';
 	}
 
+	/**
+	 * adds some styles to the live player that would be called at desktop breakpoints. This is added specifically to
+	 * deal with a window being resized.
+	 */
 	function livePlayerDesktopReset() {
 		livePlayer.classList.contains('live-player--init');
 		livePlayer.style.left = 'auto';
