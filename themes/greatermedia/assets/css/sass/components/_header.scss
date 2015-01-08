@@ -42,7 +42,8 @@
 }
 
 .header__logo{
-	@include span-columns(4);
+	@include span-columns(2);
+	@include shift(1);
 	@include omega;
 	height: 70px;
 	padding: $header-logo-padding 0;
