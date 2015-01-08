@@ -9,6 +9,9 @@
  */
 class GreaterMediaNavWalker extends Walker_Nav_Menu {
 
+	public static function get_parent_format( $item_id ) {
+
+	}
 
 	/**
 	 * Start the element output.
@@ -30,6 +33,7 @@ class GreaterMediaNavWalker extends Walker_Nav_Menu {
 		$classes[] = 'menu-item-' . $item->ID;
 
 		$format = GreaterMediaMegaMenuAdmin::get_nav_menu_format( $item->ID );
+		$parent_format = GreaterMediaMegaMenuAdmin::get_nav_menu_format( $item->menu_item_parent );
 
 		if ( $format ) {
 			$classes[] = 'format-' . esc_attr( $format );
@@ -102,8 +106,37 @@ class GreaterMediaNavWalker extends Walker_Nav_Menu {
 
 		$item_output = $args->before;
 		$item_output .= '<a' . $attributes . '>';
-		/** This filter is documented in wp-includes/post-template.php */
-		$item_output .= $args->link_before . apply_filters( 'the_title', $item->title, $item->ID ) . $args->link_after;
+
+		/**
+		 * Format: Small Previews
+		 * @todo check performance here, may want to query all the object_ids at once so they are cached.
+		 */
+		if ( 'sp' === $parent_format ) {
+
+			// Try to find an image to use.
+			$src = get_post_meta( $item->object_id, 'logo_image', true );
+			if ( ! empty( $src ) && $src ) {
+				$item_output .= wp_get_attachment_image( absint( $src ) );
+			} else if ( has_post_thumbnail( $item->object_id ) ) {
+				$item_output .= get_the_post_thumbnail( $item->object_id, 'thumbnail' );
+			}
+
+			$item_output .= '<div class="group">';
+			$item_output .= apply_filters( 'the_title', $item->title, $item->ID );
+
+			// Try to find some meta text to use
+			if ( 'show' === $item->object ) {
+				$item_output .= '<span class="meta-text">show time</span>'; // @todo placeholder
+			} else if ( 'tribe_events' === $item->object && function_exists( 'tribe_get_start_date' ) ) {
+				$item_output .= '<span class="meta-text">' . tribe_get_start_date( $item->object_id )  . '</span>';
+			}
+
+			$item_output .= '</div>';
+		} else {
+			/** This filter is documented in wp-includes/post-template.php */
+			$item_output .= $args->link_before . apply_filters( 'the_title', $item->title, $item->ID ) . $args->link_after;
+		}
+
 		$item_output .= '</a>';
 		$item_output .= $args->after;
 
