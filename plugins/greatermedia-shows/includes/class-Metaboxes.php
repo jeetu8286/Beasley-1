@@ -228,12 +228,25 @@ class GMR_Show_Metaboxes {
 	 * @param $post WP_Post
 	 */
 	public function render_show_times_meta_box( $post ) {
+		$show_days = get_post_meta( $post->ID, 'show_days', true );
 		$show_times = get_post_meta( $post->ID, 'show_times', true );
 		?>
-		<label>Show times
-		<input type="text" name="show_times" class="widefat" value="<?php echo esc_attr( $show_times ); ?>" placeholder="Weekdays at 9am">
-		</label>
-		<p class="description">
+		<table class="form-table">
+			<tr>
+				<td><label>Days</label></td>
+				<td>
+					<input type="text" name="show_days" class="widefat" value="<?php echo esc_attr( $show_days ); ?>" placeholder="Weekdays">
+				</td>
+			</tr>
+			<tr>
+				<td><label>Times</label></td>
+				<td>
+					<input type="text" name="show_times" class="widefat" value="<?php echo esc_attr( $show_times ); ?>" placeholder="5:30am - 10:30am">
+				</td>
+			</tr>
+		</table>
+
+			<p class="description">
 			A simple description for when this show is on air. Used alongside show titles. Independent from the official show schedule.
 		</p>
 		<?php
@@ -292,6 +305,13 @@ class GMR_Show_Metaboxes {
 		} else {
 			delete_post_meta( $post_id, 'show_times' );
 		}
+
+		if ( isset( $_POST['show_days'] ) && ! empty( $_POST['show_days'] ) ) {
+			update_post_meta( $post_id, 'show_days', sanitize_text_field( $_POST['show_days'] ) );
+		} else {
+			delete_post_meta( $post_id, 'show_days' );
+		}
+
 	}
 
 	/**

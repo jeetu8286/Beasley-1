@@ -17,6 +17,11 @@
 		font-size: ms(-2);
 		color: $color-text-gray;
 		margin-top: .5em;
+
+		.times {
+			display: inline-block;
+			margin-left: .75em;
+		}
 	}
 
 	li .group {

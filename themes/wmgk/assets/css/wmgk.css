@@ -1314,6 +1314,9 @@ blockquote p {
   font-size: 0.79012em;
   color: #404041;
   margin-top: .5em; }
+  .format-sp .meta-text .times {
+    display: inline-block;
+    margin-left: .75em; }
 .format-sp li .group {
   display: inline-block;
   vertical-align: middle; }
