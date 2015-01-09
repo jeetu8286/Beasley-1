@@ -549,6 +549,7 @@ category: Components
 .on-air__title, .up-next__title {
 	display: inline-block;
 	@include bp(medium) {
+		display: block;
 		margin-bottom: 10px;
 		font-size: ms(-1);
 	}
@@ -557,6 +558,7 @@ category: Components
 .on-air__show, .up-next__show {
 	display: inline-block;
 	@include bp(medium) {
+		display: block;
 		font-size: ms(-1);
 		text-transform: uppercase;
 	}
