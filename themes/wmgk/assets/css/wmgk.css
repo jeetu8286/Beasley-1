@@ -3662,12 +3662,6 @@ Link posts contain a link to an external site. They can also optionally have a f
   text-transform: uppercase;
   cursor: pointer;
   border-radius: 100em;
-  -webkit-border-radius: 1em;
-  -moz-border-radius: 1em;
-  -ms-border-radius: 1em;
-  -o-border-radius: 1em;
-  -border-radius: 1em;
-  border-radius: 1em;
   display: none; }
   .posts-pagination--load-more:hover, .posts-pagination--load-more:focus {
     background-color: #aa1c20;
@@ -4768,6 +4762,7 @@ category: Components
   display: inline-block; }
   @media screen and (min-width: 768px) {
     .on-air__title, .up-next__title {
+      display: block;
       margin-bottom: 10px;
       font-size: 0.88889em; } }
 
@@ -4775,6 +4770,7 @@ category: Components
   display: inline-block; }
   @media screen and (min-width: 768px) {
     .on-air__show, .up-next__show {
+      display: block;
       font-size: 0.88889em;
       text-transform: uppercase; } }
 
@@ -5216,43 +5212,7 @@ category: Components - Ads
 .contest__restrictions .contest__restriction--not-started p,
 .contest__restrictions .contest__restriction--age-fails p,
 .contest__restrictions .contest__restriction--one-entry p {
-  display: inline-block;
-  line-height: 1;
-  padding: 0.5em 1em;
-  margin-right: .5em;
-  outline: none;
-  background-color: #d22228;
-  border: 1px solid #d22228;
-  font-family: "Open Sans", sans-serif;
-  font-size: 0.88889em;
-  color: #ffffff !important;
-  text-transform: uppercase;
-  cursor: pointer;
-  border-radius: 100em;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  -o-border-radius: 3px;
-  -border-radius: 3px;
-  border-radius: 3px; }
-  .contest__restrictions .contest__restriction--finished p:hover, .contest__restrictions .contest__restriction--finished p:focus,
-  .contest__restrictions .contest__restriction--max-entries p:hover,
-  .contest__restrictions .contest__restriction--max-entries p:focus,
-  .contest__restrictions .contest__restriction--not-started p:hover,
-  .contest__restrictions .contest__restriction--not-started p:focus,
-  .contest__restrictions .contest__restriction--age-fails p:hover,
-  .contest__restrictions .contest__restriction--age-fails p:focus,
-  .contest__restrictions .contest__restriction--one-entry p:hover,
-  .contest__restrictions .contest__restriction--one-entry p:focus {
-    background-color: #aa1c20;
-    border-color: #aa1c20;
-    color: #ffffff; }
-  .contest__restrictions .contest__restriction--finished p:last-of-type,
-  .contest__restrictions .contest__restriction--max-entries p:last-of-type,
-  .contest__restrictions .contest__restriction--not-started p:last-of-type,
-  .contest__restrictions .contest__restriction--age-fails p:last-of-type,
-  .contest__restrictions .contest__restriction--one-entry p:last-of-type {
-    margin-right: 0; }
+  font-weight: bold; }
 .contest__restrictions .contest__restriction--age p:first-child {
   font-weight: bold; }
 .contest__restrictions .contest__restriction--signin p:first-child {
@@ -6547,7 +6507,8 @@ a.podcast__rss:active {
   .single-show .highlights__community, .single-show .highlights__events {
     padding-top: 0; } }
 .single-show .highlights__heading {
-  font-size: 1.125em; }
+  font-size: 1.125em;
+  color: #929497; }
 .single-show .highlights__event--item {
   background-color: #F1F1F3; }
 .single-show .highlights__community--item:hover .highlights__community--title {
@@ -8699,6 +8660,19 @@ category: Components - Shows
     -o-border-radius: 50%;
     -border-radius: 50%;
     border-radius: 50%; }
+
+.personality__meta {
+  float: none;
+  width: auto; }
+  @media screen and (min-width: 768px) {
+    .personality__meta {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 74.41059%;
+      margin-right: 0; }
+      .personality__meta:last-child {
+        margin-right: 0; } }
 
 /*doc
 ---
