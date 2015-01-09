@@ -6362,6 +6362,14 @@ a.podcast__rss:active {
 @media screen and (min-width: 1024px) {
   .single-show .inner-left-col {
     padding-right: 25px; } }
+.single-show .entry2__meta {
+  float: none !important;
+  width: auto !important; }
+.single-show .entry2__thumbnail {
+  margin-bottom: 0.5em; }
+.single-show .format-standard .entry2__thumbnail {
+  margin-top: 1.75em;
+  margin-left: 0.75em; }
 
 .show-attr--name {
   position: absolute;
@@ -8338,17 +8346,11 @@ category: Components - Shows
 
 */
 .show__personalities {
-  max-width: 71.875em;
-  margin-left: auto;
-  margin-right: auto; }
-  .show__personalities:before, .show__personalities:after {
-    content: " ";
-    display: table; }
-  .show__personalities:after {
-    clear: both; }
+  background-color: #fff;
+  margin-top: -8em; }
 
 .personality {
-  margin: 4em 0;
+  padding: 4em 3em;
   position: relative;
   display: block; }
   .personality:before, .personality:after {
@@ -8356,6 +8358,8 @@ category: Components - Shows
     display: table; }
   .personality:after {
     clear: both; }
+  .personality .more-btn {
+    display: none; }
 
 .personality__avatar {
   float: left;
@@ -8381,27 +8385,6 @@ category: Components - Shows
     -o-border-radius: 50%;
     -border-radius: 50%;
     border-radius: 50%; }
-
-.personality__meta {
-  overflow: hidden;
-  height: 8em;
-  float: left;
-  display: block;
-  margin-right: 2.35765%;
-  width: 65.88078%;
-  margin-right: 0; }
-  .personality__meta:last-child {
-    margin-right: 0; }
-  @media screen and (min-width: 768px) {
-    .personality__meta {
-      height: 12em;
-      float: left;
-      display: block;
-      margin-right: 2.35765%;
-      width: 74.41059%;
-      margin-right: 0; }
-      .personality__meta:last-child {
-        margin-right: 0; } }
 
 /*doc
 ---
