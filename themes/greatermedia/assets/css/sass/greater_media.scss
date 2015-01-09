@@ -39,6 +39,7 @@
 @import "components/footer";
 @import "components/posts";
 @import "components/entries"; // Temporary!
+@import "components/article"; 
 @import "components/sidebar";
 @import "components/liveplayer";
 @import "components/breaking-news";
@@ -61,6 +62,7 @@
 @import "components/shows-live-links";
 @import "components/adblock";
 @import "components/livefyre-comments";
+@import "components/related-posts";
 
 // Custom styles only used on single pages
 @import "pages/single";

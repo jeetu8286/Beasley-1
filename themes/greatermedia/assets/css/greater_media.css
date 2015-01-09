@@ -500,7 +500,7 @@ category: Base - Typography
   src: url("../fonts/icon-font/gmr-icons.eot?#iefix-myn1wz") format("embedded-opentype"), url("../fonts/icon-font/gmr-icons.woff?-myn1wz") format("woff"), url("../fonts/icon-font/gmr-icons.ttf?-myn1wz") format("truetype"), url("../fonts/icon-font/gmr-icons.svg?-myn1wz#icomoon") format("svg");
   font-weight: normal;
   font-style: normal; }
-[class^="icon-"], [class*=" icon-"], .entry__thumbnail--video:before, .entry__thumbnail--events:before, .entry__thumbnail--audio:before, .header__search--btn:before, .format-audio .entry2__thumbnail a, .format-gallery .entry2__thumbnail a, .format-video .entry2__thumbnail a, .type-contest .entry2__thumbnail a, .type-tribe_events .entry2__thumbnail a, .live-link__song:before, .live-link__type--audio:before, .live-link__type--gallery:before, .live-link__type--image:before, .live-link__type--link:before, .live-link__type--standard:before, .live-link__type--video:before, .social__link--facebook:before, .social__link--twitter:before, .social__link--google-plus:before, .social__link--youtube:before, .social__link--instagram:before, .header__search--submit:before, .gallery__prev--btn:before, .gallery__next--btn:after, .gallery__paging--prev, .gallery__paging--next, .gallery__grid--album {
+[class^="icon-"], [class*=" icon-"], .entry__thumbnail--video:before, .entry__thumbnail--events:before, .entry__thumbnail--audio:before, .header__search--btn:before, .format-audio .entry2__thumbnail a, .format-gallery .entry2__thumbnail a, .format-video .entry2__thumbnail a, .type-contest .entry2__thumbnail a, .type-tribe_events .entry2__thumbnail a, .live-link__song:before, .live-link__type--audio:before, .live-link__type--gallery:before, .live-link__type--image:before, .live-link__type--link:before, .live-link__type--standard:before, .live-link__type--video:before, .social__link--facebook, .social__link--twitter, .social__link--google-plus:before, .social__link--youtube:before, .social__link--instagram:before, .header__search--submit:before, .gallery__prev--btn:before, .gallery__next--btn:after, .gallery__paging--prev, .gallery__paging--next, .gallery__grid--album {
   font-family: 'gmr-icons';
   speak: none;
   font-style: normal;
@@ -557,13 +557,13 @@ category: Base - Typography
 .icon-volume-up:before {
   content: "\e60e"; }
 
-.icon-facebook:before {
+.icon-facebook:before, .social__link--facebook:before {
   content: "\e60f"; }
 
-.icon-twitter:before {
+.icon-twitter:before, .social__link--twitter:before {
   content: "\e610"; }
 
-.icon-google-plus:before {
+.icon-google-plus:before, .social__link--google-plus:before {
   content: "\e611"; }
 
 .icon-search:before {
@@ -578,10 +578,10 @@ category: Base - Typography
 .icon-post-format-audio:before, .format-audio .entry2__thumbnail a:before {
   content: "\e615"; }
 
-.icon-instagram:before {
+.icon-instagram:before, .social__link--instagram:before {
   content: "\e616"; }
 
-.icon-youtube:before {
+.icon-youtube:before, .social__link--youtube:before {
   content: "\e617"; }
 
 .icon-arrow-next:before {
@@ -2812,24 +2812,14 @@ Community Highlights and Events
   float: right;
   padding: 4px 0 7px; }
 
-.footer__menu .social__link {
-  margin: 0 0 0 30px; }
-  .footer__menu .social__link a {
-    box-sizing: content-box;
-    display: inline-block;
-    padding: 5px 4px 3px;
-    width: 22px;
-    height: 22px;
-    line-height: 22px;
-    font-size: 1.26563em;
-    border: 1px solid #929497;
-    border-radius: 100px;
-    text-align: center; }
-    .footer__menu .social__link a:hover {
-      border-color: #d22228;
-      color: #d22228; }
-  .footer__menu .social__link:last-child {
-    margin: 0 0 0 30px; }
+.footer__menu a.social__link {
+  border-color: #929497;
+  color: #929497;
+  margin-right: 0;
+  margin-left: 6px; }
+  .footer__menu a.social__link:hover {
+    border-color: #d22228;
+    color: #d22228; }
 
 /*doc
 ---
@@ -2961,6 +2951,18 @@ Link posts contain a link to an external site. They can also optionally have a f
       margin-bottom: 90px; } }
   .single-gmr_album .hentry {
     margin-bottom: 0; }
+
+.entry__header {
+  margin-bottom: 2em; }
+
+.entry__featured-image {
+  width: 100%;
+  height: auto;
+  margin-bottom: 1em; }
+
+.entry__title, .page__title {
+  margin: 0;
+  margin-bottom: 1em; }
 
 .entry__thumbnail {
   position: relative;
@@ -3584,39 +3586,33 @@ Link posts contain a link to an external site. They can also optionally have a f
   margin-top: 0;
   line-height: 1; }
 
-.alignleft, img.alignleft {
+.entry-content .alignleft, .entry-content img.alignleft {
   display: block;
   margin: 0 1em 16px;
   float: left; }
-
-.alignright, img.alignright {
+.entry-content .alignright, .entry-content img.alignright {
   display: block;
   margin: 0 0 16px 1em;
   float: right; }
-
-.aligncenter, img.aligncenter {
+.entry-content .aligncenter, .entry-content img.aligncenter {
   margin: 0 auto 1em; }
-
-.size-auto,
-.size-full,
-.size-large,
-.size-medium,
-.size-thumbnail {
+.entry-content .size-auto,
+.entry-content .size-full,
+.entry-content .size-large,
+.entry-content .size-medium,
+.entry-content .size-thumbnail {
   max-width: 100%;
   height: auto; }
-
-.wp-caption {
+.entry-content .wp-caption {
   max-width: 100%;
   padding: 0;
   margin: 0 0 16px;
   background: #d0d2d3; }
-
-.wp-caption img {
+.entry-content .wp-caption img {
   width: 100%;
   margin-bottom: 0;
   max-width: 100%; }
-
-.wp-caption p.wp-caption-text {
+.entry-content .wp-caption p.wp-caption-text {
   padding: 16px 1.25em 20px;
   margin: 4px .5em;
   font-size: 0.79012em;
@@ -3979,6 +3975,174 @@ Link posts contain a link to an external site. They can also optionally have a f
   .entry2-ad-wrap .entry2.format-standard .entry2__thumbnail {
     float: left;
     margin-right: 3.236em; } }
+
+.article__header {
+  margin-bottom: 2em; }
+
+.article__date {
+  display: block;
+  margin-bottom: 0.5em;
+  font-size: 1em;
+  text-transform: uppercase;
+  color: #929497; }
+  @media screen and (min-width: 768px) {
+    .article__date {
+      font-size: 0.88889em; } }
+
+.article__title {
+  font-size: 2.88651em;
+  line-height: 1.2;
+  margin: 0 0 0.65em; }
+  @media screen and (min-width: 768px) {
+    .article__title {
+      font-size: 2.2807em; } }
+
+.article__thumbnail {
+  width: 100%;
+  padding-bottom: 66%;
+  background-size: 100%;
+  background-size: cover;
+  background-position: center center; }
+
+.article__content {
+  margin-bottom: 1.5em;
+  font-size: 16px;
+  line-height: 1.6; }
+  @media screen and (min-width: 1024px) {
+    .article__content {
+      margin-bottom: 4.5em; } }
+
+@media screen and (min-width: 1024px) {
+  .article .ad__inline--right {
+    margin-left: 3.236em; } }
+
+.article__footer {
+  float: left;
+  display: block;
+  margin-right: 7.42297%;
+  width: 100%;
+  margin: 0 0 3em;
+  padding: 0;
+  border: none;
+  line-height: 1.5; }
+  .article__footer:last-child {
+    margin-right: 0; }
+
+.article__categories, .article__tags, .article__shows {
+  overflow: auto;
+  clear: both;
+  margin-bottom: 1.25em;
+  font-size: 1.125em;
+  color: #929497; }
+  @media screen and (min-width: 768px) {
+    .article__categories, .article__tags, .article__shows {
+      font-size: 0.88889em; } }
+
+.article__list, .article__list--categories, .article__list--tags, .article__list--shows, .article__list--show {
+  display: inline;
+  padding: 0;
+  margin: 0;
+  list-style: none; }
+
+.article__list:before {
+  text-transform: uppercase; }
+
+.article__list--item {
+  display: inline;
+  list-style: none;
+  margin-right: .5em; }
+
+.article__list--item a, .article__list--item a:visited, .article__list--show a, .article__list--show a:visited {
+  color: #929497; }
+
+.article__list--item a:hover, .article__list--item a:focus, .article__list--item a:active, .article__list--show a:hover, .article__list--show a:focus, .article__list--show a:active {
+  color: #aa1c20; }
+
+.article__list--title {
+  display: inline-block;
+  font-weight: 800; }
+
+.article__list--title:after {
+  content: "/";
+  margin: 0 .25em 0 .5em; }
+
+.article__list--show {
+  margin-right: .5em;
+  display: inline-block; }
+
+.article__show--logo {
+  display: inline-block;
+  float: left;
+  width: 24px;
+  height: 24px;
+  margin-right: .5em;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  -border-radius: 50%;
+  border-radius: 50%;
+  background-color: #282827; }
+
+.article__show--logo img {
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  -border-radius: 50%;
+  border-radius: 50%; }
+
+.article__show--name {
+  display: inline-block; }
+
+@media screen and (min-width: 1024px) {
+  .article__list--item,
+  .article__list--show,
+  .article__show--logo {
+    margin-right: 1.5em; }
+
+  .article__list--title:after {
+    margin: 0 1.25em 0 1.5em; } }
+.article__content .alignleft, .article__content img.alignleft {
+  display: block;
+  margin: 0 1em 16px;
+  float: left; }
+.article__content .alignright, .article__content img.alignright {
+  display: block;
+  margin: 0 0 16px 1em;
+  float: right; }
+.article__content .aligncenter, .article__content img.aligncenter {
+  margin: 0 auto 1em; }
+.article__content .size-auto,
+.article__content .size-full,
+.article__content .size-large,
+.article__content .size-medium,
+.article__content .size-thumbnail {
+  max-width: 100%;
+  height: auto; }
+.article__content .wp-caption {
+  max-width: 100%;
+  padding: 0;
+  margin: 0 0 16px;
+  background: #d0d2d3; }
+.article__content .wp-caption img {
+  width: 100%;
+  margin-bottom: 0;
+  max-width: 100%; }
+.article__content .wp-caption p.wp-caption-text {
+  padding: 16px 1.25em 20px;
+  margin: 4px .5em;
+  font-size: 0.79012em;
+  text-align: left; }
+.article__content blockquote {
+  background: url(../../images/article__blockquote-icon.svg) no-repeat 0 0.35em;
+  border: none;
+  padding: 0 0 0 4em; }
+  .article__content blockquote, .article__content blockquote p {
+    color: #6d6e70; }
+
+.article__comments {
+  margin: 3em 0; }
 
 .ad-unit--300--250 {
   position: relative;
@@ -6346,7 +6510,7 @@ a.podcast__rss:active {
 .single-show .highlights__heading {
   font-size: 1.125em; }
 .single-show .highlights__event--item {
-  background-color: #f1f1f3; }
+  background-color: #F1F1F3; }
 .single-show .highlights__community--item:hover .highlights__community--title {
   color: #f5ed7f; }
 @media screen and (min-width: 1024px) {
@@ -6844,32 +7008,35 @@ These are examples of Social Share Links for single articles.
 <a href="" class="icon-volume-up social-share-link"></a>
 ```
 */
-a.social-share-link {
-  color: #000000;
-  display: inline-block;
-  width: 40px;
-  height: 40px;
-  font-size: 20px;
-  border: 1px solid #000000;
-  border-radius: 50%;
-  padding: 9px;
-  margin-right: 0.25em; }
-  a.social-share-link:last-of-type {
-    margin-right: 0; }
-  a.social-share-link:hover {
-    color: #561015; }
-
 .social__list {
   padding: 33px 0;
   margin: 0;
   list-style: none; }
+  .social__list li {
+    display: inline-block;
+    margin: 0;
+    padding: 0; }
 
-.social__link {
+a.social__link {
   padding: 0;
   margin: 0 1.25em 0 0;
   list-style: none;
   display: inline-block;
-  font-size: 1em; }
+  font-size: 18px;
+  color: #404041;
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  border: 1px solid #404041;
+  border-radius: 50%;
+  padding: 9px;
+  margin-right: 6px; }
+  a.social__link:last-of-type {
+    margin-right: 0; }
+  a.social__link:hover {
+    color: #d22228;
+    border-color: #d22228; }
 
 .social__link:last-child {
   margin: 0; }
@@ -6883,67 +7050,181 @@ a.social-share-link {
 .social__link a:active {
   color: #ffffff; }
 
-.social__link--facebook:before {
-  content: "\e60f"; }
+.social__link:before {
+  position: relative;
+  top: 1px; }
+.social__link.icon-google-plus:before, .social__link.social__link--google-plus:before {
+  left: 1px;
+  top: 2px; }
 
-.social__link--twitter:before {
-  content: "\e610"; }
-
-.social__link--google-plus:before {
-  content: "\e611"; }
-
-.social__link--youtube:before {
-  content: "\e617"; }
-
-.social__link--instagram:before {
-  content: "\e616"; }
-
-/*doc
----
-title: Article Header
-name: article-header
-category: Components - Article
----
-
-```html_example
-<img src="http://placehold.it/600x400&amp;text=image" alt="placeholder" class="entry__featured-image">
-<header class="entry__header">
-	<time datetime="2014-11-10T20:11:28+00:00" class="entry__date">10 November</time>
-    <h2 class="entry__title"><a href="">Test Show Post</a></h2>
-</header>
-<a href="http://www.facebook.com/sharer/sharer.php?u=[URL]&title=[TITLE]" class="icon-facebook social-share-link"></a>
-<a href="http://twitter.com/home?status=[TITLE]+[URL]" class="icon-twitter social-share-link"></a>
-<a href="https://plus.google.com/share?url=[URL]" class="icon-google-plus social-share-link"></a>
-<a href="" class="icon-volume-up social-share-link"></a>
-```
-
-*/
-.entry__header {
+.article__header {
   margin-bottom: 2em; }
 
-.entry__featured-image {
+.article__date {
+  display: block;
+  margin-bottom: 0.5em;
+  font-size: 1em;
+  text-transform: uppercase;
+  color: #929497; }
+  @media screen and (min-width: 768px) {
+    .article__date {
+      font-size: 0.88889em; } }
+
+.article__title {
+  font-size: 2.88651em;
+  line-height: 1.2;
+  margin: 0 0 0.65em; }
+  @media screen and (min-width: 768px) {
+    .article__title {
+      font-size: 2.2807em; } }
+
+.article__thumbnail {
   width: 100%;
-  height: auto;
-  margin-bottom: 1em; }
+  padding-bottom: 66%;
+  background-size: 100%;
+  background-size: cover;
+  background-position: center center; }
 
-.entry__title, .page__title {
+.article__content {
+  margin-bottom: 1.5em;
+  font-size: 16px;
+  line-height: 1.6; }
+  @media screen and (min-width: 1024px) {
+    .article__content {
+      margin-bottom: 4.5em; } }
+
+@media screen and (min-width: 1024px) {
+  .article .ad__inline--right {
+    margin-left: 3.236em; } }
+
+.article__footer {
+  float: left;
+  display: block;
+  margin-right: 7.42297%;
+  width: 100%;
+  margin: 0 0 3em;
+  padding: 0;
+  border: none;
+  line-height: 1.5; }
+  .article__footer:last-child {
+    margin-right: 0; }
+
+.article__categories, .article__tags, .article__shows {
+  overflow: auto;
+  clear: both;
+  margin-bottom: 1.25em;
+  font-size: 1.125em;
+  color: #929497; }
+  @media screen and (min-width: 768px) {
+    .article__categories, .article__tags, .article__shows {
+      font-size: 0.88889em; } }
+
+.article__list, .article__list--categories, .article__list--tags, .article__list--shows, .article__list--show {
+  display: inline;
+  padding: 0;
   margin: 0;
-  margin-bottom: 1em; }
+  list-style: none; }
 
-/*doc
----
-title: Article Footer
-name: article-footer
-category: Components - Article
----
+.article__list:before {
+  text-transform: uppercase; }
 
-```html_example
-<footer class="entry__tags">
-	<a href="">Category</a> / <a href="">tag one</a>,<a href="">tag two</a>,<a href="">tag three</a>
-</footer>
-```
+.article__list--item {
+  display: inline;
+  list-style: none;
+  margin-right: .5em; }
 
-*/
+.article__list--item a, .article__list--item a:visited, .article__list--show a, .article__list--show a:visited {
+  color: #929497; }
+
+.article__list--item a:hover, .article__list--item a:focus, .article__list--item a:active, .article__list--show a:hover, .article__list--show a:focus, .article__list--show a:active {
+  color: #aa1c20; }
+
+.article__list--title {
+  display: inline-block;
+  font-weight: 800; }
+
+.article__list--title:after {
+  content: "/";
+  margin: 0 .25em 0 .5em; }
+
+.article__list--show {
+  margin-right: .5em;
+  display: inline-block; }
+
+.article__show--logo {
+  display: inline-block;
+  float: left;
+  width: 24px;
+  height: 24px;
+  margin-right: .5em;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  -border-radius: 50%;
+  border-radius: 50%;
+  background-color: #282827; }
+
+.article__show--logo img {
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  -border-radius: 50%;
+  border-radius: 50%; }
+
+.article__show--name {
+  display: inline-block; }
+
+@media screen and (min-width: 1024px) {
+  .article__list--item,
+  .article__list--show,
+  .article__show--logo {
+    margin-right: 1.5em; }
+
+  .article__list--title:after {
+    margin: 0 1.25em 0 1.5em; } }
+.article__content .alignleft, .article__content img.alignleft {
+  display: block;
+  margin: 0 1em 16px;
+  float: left; }
+.article__content .alignright, .article__content img.alignright {
+  display: block;
+  margin: 0 0 16px 1em;
+  float: right; }
+.article__content .aligncenter, .article__content img.aligncenter {
+  margin: 0 auto 1em; }
+.article__content .size-auto,
+.article__content .size-full,
+.article__content .size-large,
+.article__content .size-medium,
+.article__content .size-thumbnail {
+  max-width: 100%;
+  height: auto; }
+.article__content .wp-caption {
+  max-width: 100%;
+  padding: 0;
+  margin: 0 0 16px;
+  background: #d0d2d3; }
+.article__content .wp-caption img {
+  width: 100%;
+  margin-bottom: 0;
+  max-width: 100%; }
+.article__content .wp-caption p.wp-caption-text {
+  padding: 16px 1.25em 20px;
+  margin: 4px .5em;
+  font-size: 0.79012em;
+  text-align: left; }
+.article__content blockquote {
+  background: url(../../images/article__blockquote-icon.svg) no-repeat 0 0.35em;
+  border: none;
+  padding: 0 0 0 4em; }
+  .article__content blockquote, .article__content blockquote p {
+    color: #6d6e70; }
+
+.article__comments {
+  margin: 3em 0; }
+
 .header__search--form {
   display: block;
   position: relative;
@@ -10138,6 +10419,115 @@ category: Components - Article
 */
 #livefyre-comments .fyre img {
   display: inline; }
+
+/*doc
+---
+title: Related Post
+name: related-post
+category: Components - Article
+---
+
+```html_example
+<article class="related-post">
+	<div class="related-post__img">
+		<img src="http://placehold.it/267x200" alt="4:3" />
+	</div>
+	<div class="related-post__meta">
+		<p class="related-post__title">Lorem ipsum dolor sit amet, consectetur adipisicing elit Lorem ipsum dolor sit amet</p>
+		<time class="related-post__date" datetime="2014-01-15">15 JAN</time>
+	</div>
+</article>
+```
+
+*/
+@media screen and (min-width: 480px) {
+  .related-posts {
+    margin-right: -2%; } }
+.related-posts .related-post:nth-child(n+0) {
+  display: none; }
+.related-posts .related-post:nth-child(-n+4) {
+  display: block; }
+@media screen and (min-width: 480px) {
+  .related-posts .related-post {
+    float: left;
+    display: block;
+    margin-right: 4.82916%;
+    width: 47.58542%;
+    width: 48%;
+    margin-right: 2%; }
+    .related-posts .related-post:last-child {
+      margin-right: 0; }
+    .related-posts .related-post:nth-child(-n+4) {
+      display: block; } }
+@media screen and (min-width: 768px) {
+  .related-posts .related-post {
+    float: left;
+    display: block;
+    margin-right: 3.16844%;
+    width: 31.22104%;
+    width: 31.3333%;
+    margin-right: 2%; }
+    .related-posts .related-post:last-child {
+      margin-right: 0; }
+    .related-posts .related-post:nth-child(-n+6) {
+      display: block; } }
+@media screen and (min-width: 1024px) {
+  .related-posts .related-post {
+    float: left;
+    display: block;
+    margin-right: 2.35765%;
+    width: 23.23176%;
+    width: 23%;
+    margin-right: 2%; }
+    .related-posts .related-post:last-child {
+      margin-right: 0; }
+    .related-posts .related-post:nth-child(-n+8) {
+      display: block; } }
+
+.related-posts__title {
+  color: #929497;
+  font-family: "Open Sans", sans-serif;
+  font-weight: lighter; }
+
+.related-post {
+  display: block;
+  background: #282827;
+  color: #ffffff;
+  margin-bottom: 1.5em; }
+
+.related-post__img .thumbnail {
+  background-position: center center;
+  background-size: 100%;
+  background-size: cover;
+  padding-bottom: 66.666%; }
+
+.related-post__meta {
+  padding: 1.5em 1.618em;
+  font-family: "Open Sans", sans-serif;
+  font-weight: lighter; }
+
+.related-post__title {
+  font-size: 22px;
+  line-height: 1.5;
+  height: 4.5em;
+  overflow: hidden;
+  color: #ffffff; }
+  @media screen and (min-width: 480px) {
+    .related-post__title {
+      font-size: 16px;
+      line-height: 1.4;
+      height: 4.2em; } }
+
+.related-post__date {
+  display: block;
+  font-size: 14px;
+  margin-top: 1.5em;
+  color: #929497;
+  text-transform: uppercase; }
+
+.related-post:hover .related-post__title,
+.related-post:hover .related-post__date {
+  color: #f5ed7f; }
 
 /**
  * Single Page Styles
