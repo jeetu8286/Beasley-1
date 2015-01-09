@@ -187,6 +187,7 @@
 		background: url( $asset-root + '../images/article__blockquote-icon.svg') no-repeat 0 .35em;
 		border: none;
 		padding: 0 0 0 4em;
+		min-height: 6.4em; // Four lines, assuming line height of 1.6.
 		
 		&, p {
 			color: $medium-dark-gray;

@@ -4141,7 +4141,8 @@ Link posts contain a link to an external site. They can also optionally have a f
 .article__content blockquote {
   background: url("../../../../themes/greatermedia/assets/../images/article__blockquote-icon.svg") no-repeat 0 0.35em;
   border: none;
-  padding: 0 0 0 4em; }
+  padding: 0 0 0 4em;
+  min-height: 6.4em; }
   .article__content blockquote, .article__content blockquote p {
     color: #6d6e70; }
 
@@ -7305,7 +7306,8 @@ a.social-share-link {
 .article__content blockquote {
   background: url("../../../../themes/greatermedia/assets/../images/article__blockquote-icon.svg") no-repeat 0 0.35em;
   border: none;
-  padding: 0 0 0 4em; }
+  padding: 0 0 0 4em;
+  min-height: 6.4em; }
   .article__content blockquote, .article__content blockquote p {
     color: #6d6e70; }
 
