@@ -18,7 +18,7 @@
 		header = document.getElementById( 'header' ),
 		headerHeight = header.offsetHeight,
 		livePlayer = document.getElementById( 'live-player__sidebar' ),
-		livePlayerStream = document.querySelector('.live-player__stream');
+		livePlayerStream = document.querySelector('.live-player__stream'),
 		livePlayerStreamSelect = document.querySelector( '.live-player__stream--current' ),
 		livePlayerStreamSelectHeight = livePlayerStreamSelect.offsetHeight,
 		livePlayerCurrentName = livePlayerStreamSelect.querySelector( '.live-player__stream--current-name' ),
@@ -469,5 +469,19 @@
 			scrollThrottle();
 		});
 	}
+
+	function init_menu_overlay() {
+		var $menu = jQuery(document.querySelector('.header__nav--list')),
+				$overlay = jQuery(document.querySelector('.overlay-mask'));
+
+		$menu.on('mouseover', '.menu-item-has-children', function (e) {
+			$overlay.addClass('is-visible');
+		});
+		$menu.on('mouseout', '.menu-item-has-children', function (e) {
+			$overlay.removeClass('is-visible');
+		});
+	}
+
+	init_menu_overlay();
 
 })();
