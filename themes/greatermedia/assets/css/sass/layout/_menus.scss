@@ -201,6 +201,7 @@
 	list-style: none;
 	display: inline-block;
 	font-size: ms(0);
+	float: left;
 }
 
 .header__main a, .header__main a:visited {
@@ -230,6 +231,10 @@
 .header__account ul li a:active,
 .header__account ul li:hover {
 	background-color: $header-nav-bg;
+}
+
+ul.sub-menu li:hover {
+	background-color: transparent;
 }
 
 // main header navigation mega-menu dropdowns
