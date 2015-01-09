@@ -4,8 +4,6 @@
 			<div class="entry2__thumbnail--end-date">
 				<?php $end_date = get_post_meta( get_the_ID(), 'contest-end', true );
 						$time = time();
-						echo $end_date;
-						echo $time;
 				?>
 				<?php if ( ! empty( $end_date ) && $end_date > $time ) : ?>
 					<div class="entry2__thumbnail--day-of-week">Ends <?php echo date( 'l', $end_date ); ?></div>
