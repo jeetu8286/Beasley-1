@@ -1389,8 +1389,6 @@ ul.sub-menu li:hover, .header__nav .format-fw > ul li:hover, .header__nav .forma
   border-left: 1px solid #d0d2d3;
   padding-left: 1%;
   margin-left: 1%; }
-.header__nav .format-fw > ul > li:nth-child(3n+1), .header__nav .format-sp > ul > li:nth-child(3n+1) {
-  clear: left; }
 
 .format-sp a:hover {
   color: #ffffff; }
@@ -1423,6 +1421,9 @@ ul.sub-menu li:hover, .header__nav .format-fw > ul li:hover, .header__nav .forma
   margin-right: 1em;
   max-height: 40px;
   width: auto; }
+
+.sub-menu li, .header__nav .format-fw > ul li, .header__nav .format-sp > ul li {
+  height: 80px; }
 
 .content__heading {
   margin-top: 0;
