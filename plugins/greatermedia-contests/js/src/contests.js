@@ -155,8 +155,8 @@
 				var restriction = null;
 				
 				if (response.success) {
-					fillForm();
 					container.html(response.data.html);
+					fillForm();
 					$('.type-contest.collapsed').removeClass('collapsed');
 				} else {
 					restriction = response.data.restriction;
