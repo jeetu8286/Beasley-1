@@ -147,6 +147,26 @@ function greatermedia_scripts_styles() {
 		'greatermedia'
 	);
 
+	/**
+	 * this is a fix to resolve conflicts with styles and javascript for The Events Calendar plugin that will not
+	 * load once pjax has been activated. We are checking to see if the `Tribe_Template_Factory` class exists and if
+	 * the function `asset_package` exists within `Tribe_Template_Factory`. If the class and function exists, we then
+	 * call the javascript and css necessary on the front end.
+	 *
+	 * @see `wp_content/plugins/the-events-calendar/lib/the-events-calendar.class.php` lines 2235 - 2244
+	 */
+	if ( class_exists( 'Tribe_Template_Factory' ) && method_exists( 'Tribe_Template_Factory', 'asset_package' ) ) {
+		// jquery-resize
+		Tribe_Template_Factory::asset_package( 'jquery-resize' );
+
+		// smoothness
+		Tribe_Template_Factory::asset_package( 'smoothness' );
+
+		// Tribe Calendar JS
+		Tribe_Template_Factory::asset_package( 'calendar-script' );
+
+		Tribe_Template_Factory::asset_package( 'events-css' );
+	}
 }
 
 add_action( 'wp_enqueue_scripts', 'greatermedia_scripts_styles');
@@ -377,41 +397,71 @@ if ( ! function_exists( 'greatermedia_load_more_template' ) ) :
 	 * Processes load more requrests.
 	 */
 	function greatermedia_load_more_template() {
-		// do nothing if it is not an ajax request or it is not paged
-		if ( ! filter_input( INPUT_GET, 'ajax', FILTER_VALIDATE_BOOLEAN ) || ! is_paged() ) {
+		// Do nothing if it is not an ajax request. We no longer need to check
+		// if it's paged because it functions the same regardless.
+		if ( ! filter_input( INPUT_GET, 'ajax', FILTER_VALIDATE_BOOLEAN ) ) {
 			return;
 		}
-		
+
 		$partial_slug = sanitize_text_field( $_REQUEST['partial_slug'] );
 		if ( ! $partial_slug ) {
-			$partial_slug = 'partials/loop'; 
+			$partial_slug = 'partials/loop';
 		}
 
 		$partial_name = sanitize_text_field( $_REQUEST['partial_name'] );
-		
-		get_template_part( $partial_slug, $partial_name ); 
+
+		get_template_part( $partial_slug, $partial_name );
 		exit;
 	}
-	
+
 endif;
 add_action( 'template_redirect', 'greatermedia_load_more_template' );
 
-function greatermedia_set_ajax_loop_partial( $partial_slug, $partial_name = '' ) {
-	global $greatermedia_load_more_partial; 
-	
-	$greatermedia_load_more_partial = array( 
-		'slug' => $partial_slug, 
-		'name' => $partial_name,
-	); 
-}
+function greatermedia_load_more_button( $partial_slug = null, $partial_name = null, $query_or_page_link_template = null, $next_page = null ) {
 
-add_action( 'wp_enqueue_scripts', function () {
-	global $greatermedia_load_more_partial; 
-	
-	if ( empty( $greatermedia_load_more_partial ) ) {
-		$greatermedia_load_more_partial = array( 'slug' => '', 'name' => '' ); 
+	global $wp_query;
+
+	if ( ! $query_or_page_link_template ) {
+		$query_or_page_link_template = $wp_query;
 	}
-	
-	wp_localize_script( 'greatermedia-load-more', 'greatermedia_load_more_partial', $greatermedia_load_more_partial );
-}, 100 );
 
+	if ( $query_or_page_link_template instanceof WP_Query ) {
+		$temp_wp_query = $wp_query;
+
+		$wp_query = $query_or_page_link_template;
+		$page_link_template = str_replace( PHP_INT_MAX, '%d', get_pagenum_link( PHP_INT_MAX ) );
+
+		if ( ! $next_page ) {
+			$next_page = max( 2, $wp_query->query_vars['paged'] + 1);
+		}
+
+		$wp_query = $temp_wp_query;
+	} else {
+		$page_link_template = (string) $query_or_page_link_template;
+	}
+
+	if ( ! $next_page ) {
+		$next_page = 2;
+	}
+
+	$default_page_link = sprintf( $page_link_template, $next_page );
+
+	$partial_name = (string) $partial_name;
+	$partial_slug = (string) $partial_slug;
+
+	?>
+	<div class='posts-pagination'>
+		<a
+			class="button posts-pagination--load-more is-loaded"
+			href='<?php echo esc_url( $default_page_link ); ?>'
+			data-page-link-template="<?php echo esc_url( $page_link_template ); ?>"
+			data-page="<?php echo esc_attr( $next_page ); ?>"
+			data-partial-slug='<?php echo esc_attr( $partial_slug ); ?>'
+			data-partial-name='<?php echo esc_attr( $partial_name ); ?>'
+			data-not-found="All content shown"
+			>
+			<i class="fa fa-spin fa-refresh"></i> Load More
+		</a>
+	</div>
+<?php
+}
