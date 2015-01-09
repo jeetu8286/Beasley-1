@@ -42,8 +42,6 @@
 	}
 }
 
-
-
 .footer__copyright {
 	padding: 13px 0;
 	font-size: ms(-3);
@@ -82,6 +80,9 @@
 }
 
 .footer__menu {
+	@include bp(medium) {
+		padding: 26px 0 13px;
+	}
 	@include bp(large) {
 		@include span-columns(7 of 12);
 	}
@@ -90,6 +91,7 @@
 .footer__nav {
 	@include bp(medium){
 		float: right;
+		padding-top: 24px;
 	}
 }
 
@@ -97,6 +99,9 @@
 	@extend %unordered-list;
 	padding: 13px 0;
 	font-size: ms(-3);
+	@include bp(medium) {
+		padding: 0;
+	}
 }
 
 .footer__nav--list .menu-item {
@@ -115,7 +120,7 @@
 .footer__menu .social__list {
 	@include bp(medium) {
 		float: right;
-		padding: 4px 0 7px;
+		padding: 0;
 	}
 }
 

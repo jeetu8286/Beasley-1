@@ -2803,6 +2803,9 @@ Community Highlights and Events
   .footer__copyright--logo a:active {
     color: #d22228; }
 
+@media screen and (min-width: 768px) {
+  .footer__menu {
+    padding: 26px 0 13px; } }
 @media screen and (min-width: 1024px) {
   .footer__menu {
     float: left;
@@ -2814,11 +2817,15 @@ Community Highlights and Events
 
 @media screen and (min-width: 768px) {
   .footer__nav {
-    float: right; } }
+    float: right;
+    padding-top: 24px; } }
 
 .footer__nav--list {
   padding: 13px 0;
   font-size: 0.70233em; }
+  @media screen and (min-width: 768px) {
+    .footer__nav--list {
+      padding: 0; } }
 
 .footer__nav--list .menu-item {
   display: inline-block;
@@ -2833,7 +2840,7 @@ Community Highlights and Events
 @media screen and (min-width: 768px) {
   .footer__menu .social__list {
     float: right;
-    padding: 4px 0 7px; } }
+    padding: 0; } }
 
 .footer__menu a.social__link {
   border-color: #929497;
