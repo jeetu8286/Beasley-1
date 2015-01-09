@@ -7041,6 +7041,37 @@ category: Components - Shows
     color: #aa1c20;
     border: 1px solid #aa1c20; }
 
+.shows__schedule .shows__schedule--days {
+  overflow-x: hidden; }
+  .shows__schedule .shows__schedule--days:before, .shows__schedule .shows__schedule--days:after {
+    content: " ";
+    display: table; }
+  .shows__schedule .shows__schedule--days:after {
+    clear: both; }
+.shows__schedule .shows__schedule--day {
+  width: 14%;
+  float: left; }
+.shows__schedule .shows__schedule--dayofweek {
+  border-bottom: 2px solid #000;
+  text-align: center;
+  padding: 1em 0; }
+.shows__schedule .shows__schedule--episodes {
+  position: relative; }
+  .shows__schedule .shows__schedule--episodes .shows__schedule--hour {
+    height: 60px;
+    border-bottom: 1px solid #f1f1f3;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    font-size: 0.70233em;
+    color: #f1f1f3; }
+  .shows__schedule .shows__schedule--episodes:hover .shows__schedule--hour {
+    border-bottom-color: #d0d2d3;
+    color: #d0d2d3; }
+.shows__schedule .shows__schedule--episode {
+  position: absolute;
+  left: 0;
+  right: 0; }
+
 .widget--live-player {
   margin: 0 1em 1em; }
 

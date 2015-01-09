@@ -677,3 +677,31 @@ category: Components - Shows
 .show-attr--tags {
 
 }
+
+.shows__schedule {
+	.shows__schedule--days {
+		@include clearfix;
+		overflow-x: hidden;
+	}
+
+	.shows__schedule--day {
+		width: 14.285714285714286%;
+		float: left;
+	}
+
+	.shows__schedule--dayofweek {
+		border-bottom: 2px solid #000;
+		text-align: center;
+		padding: 1em 0;
+	}
+
+	.shows__schedule--episodes {
+		position: relative;
+	}
+
+	.shows__schedule--episode {
+		position: absolute;
+		left: 0;
+		right: 0;
+	}
+}
