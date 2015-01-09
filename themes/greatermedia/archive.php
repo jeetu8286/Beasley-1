@@ -8,8 +8,6 @@
  * @todo this template file still needs to be layed out according to the design
  */
 
-greatermedia_set_ajax_loop_partial( 'partials/loop/archive' ); 
-
 get_header(); ?>
 
 	<main class="main" role="main">
@@ -18,11 +16,15 @@ get_header(); ?>
 
 			<section class="content">
 
-				<h2 class="content__heading">Latest from WMMR</h2>
+				<h2 class="content__heading">
+					<?php $object = get_queried_object(); ?>
+					Latest <?php echo ! empty( $object->labels->name ) ? esc_html( strtolower( $object->labels->name ) ) : ''; ?> from <?php bloginfo( 'name' ); ?>
+				</h2>
 
 				<?php if ( have_posts() ) :  ?>
 
 					<?php get_template_part( 'partials/loop' ); ?>
+					<?php greatermedia_load_more_button( 'partials/loop' ); ?>
 					<?php get_template_part( 'partials/pagination' ); ?>
 
 				<?php else : ?>
