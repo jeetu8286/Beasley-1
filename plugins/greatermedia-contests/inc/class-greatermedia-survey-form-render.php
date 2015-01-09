@@ -11,7 +11,6 @@ if ( ! defined( 'WPINC' ) ) {
 class GreaterMediaSurveyFormRender {
 
 	public static $post;
-	const FORM_CLASS = 'survey_entry_form';
 
 	public static function init() {
 		self::$post = new WP_Post( new stdClass() );
@@ -25,12 +24,6 @@ class GreaterMediaSurveyFormRender {
 		$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 
 		wp_enqueue_script( 'greatermedia-surveys', "{$base_path}js/surveys{$postfix}.js", array( 'jquery' ), GREATER_MEDIA_CONTESTS_VERSION, true );
-		wp_localize_script( 'greatermedia-surveys', 'GreaterMediaSurveys', array(
-			'selectors' => array(
-				'container' => '#survey-form',
-				'form'      => '.' . self::FORM_CLASS,
-			),
-		) );
 	}
 
 	public static function render( $post_id ) {
@@ -57,7 +50,7 @@ class GreaterMediaSurveyFormRender {
 
 		} else {
 
-			$html .= '<form method="post" enctype="multipart/form-data" data-parsley-validate class="' . esc_attr( self::FORM_CLASS ) . '">';
+			$html .= '<form method="post" enctype="multipart/form-data" data-parsley-validate>';
 
 			foreach ( $form as $field ) {
 
@@ -78,7 +71,7 @@ class GreaterMediaSurveyFormRender {
 
 		}
 
-		echo $html;
+		return $html;
 	}
 
 }
