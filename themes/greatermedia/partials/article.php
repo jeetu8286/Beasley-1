@@ -43,8 +43,9 @@
 					</div>
 				<?php } ?>
 				
+
 				<?php if ( function_exists( 'related_posts' ) ): ?>
-					<?php related_posts(); ?>
+					<?php related_posts( array( 'template' => 'partials/related-posts.php' ) ); ?>
 				<?php endif; ?>
 				
 			</article>			
