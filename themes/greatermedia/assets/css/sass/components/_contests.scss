@@ -109,9 +109,7 @@
 	.contest__restriction--not-started p,
 	.contest__restriction--age-fails p,
 	.contest__restriction--one-entry p {
-		// @todo not a button!
-		@include btn($btn-bg, $color-text-white, $btn-bg, 0.5em, 1em, ms(-1));
-		@include border-radius(3px);
+		font-weight: bold; 
 	}
 
 	.contest__restriction--age p:first-child {

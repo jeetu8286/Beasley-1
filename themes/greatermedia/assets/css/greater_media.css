@@ -5206,43 +5206,7 @@ category: Components - Ads
 .contest__restrictions .contest__restriction--not-started p,
 .contest__restrictions .contest__restriction--age-fails p,
 .contest__restrictions .contest__restriction--one-entry p {
-  display: inline-block;
-  line-height: 1;
-  padding: 0.5em 1em;
-  margin-right: .5em;
-  outline: none;
-  background-color: #d22228;
-  border: 1px solid #d22228;
-  font-family: "Open Sans", sans-serif;
-  font-size: 0.88889em;
-  color: #ffffff !important;
-  text-transform: uppercase;
-  cursor: pointer;
-  border-radius: 100em;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  -o-border-radius: 3px;
-  -border-radius: 3px;
-  border-radius: 3px; }
-  .contest__restrictions .contest__restriction--finished p:hover, .contest__restrictions .contest__restriction--finished p:focus,
-  .contest__restrictions .contest__restriction--max-entries p:hover,
-  .contest__restrictions .contest__restriction--max-entries p:focus,
-  .contest__restrictions .contest__restriction--not-started p:hover,
-  .contest__restrictions .contest__restriction--not-started p:focus,
-  .contest__restrictions .contest__restriction--age-fails p:hover,
-  .contest__restrictions .contest__restriction--age-fails p:focus,
-  .contest__restrictions .contest__restriction--one-entry p:hover,
-  .contest__restrictions .contest__restriction--one-entry p:focus {
-    background-color: #aa1c20;
-    border-color: #aa1c20;
-    color: #ffffff; }
-  .contest__restrictions .contest__restriction--finished p:last-of-type,
-  .contest__restrictions .contest__restriction--max-entries p:last-of-type,
-  .contest__restrictions .contest__restriction--not-started p:last-of-type,
-  .contest__restrictions .contest__restriction--age-fails p:last-of-type,
-  .contest__restrictions .contest__restriction--one-entry p:last-of-type {
-    margin-right: 0; }
+  font-weight: bold; }
 .contest__restrictions .contest__restriction--age p:first-child {
   font-weight: bold; }
 .contest__restrictions .contest__restriction--signin p:first-child {
