@@ -494,7 +494,7 @@ category: Base - Typography
   src: url("../fonts/icon-font/gmr-icons.eot?#iefixjmqkgs") format("embedded-opentype"), url("../fonts/icon-font/gmr-icons.woff?jmqkgs") format("woff"), url("../fonts/icon-font/gmr-icons.ttf?jmqkgs") format("truetype"), url("../fonts/icon-font/gmr-icons.svg?jmqkgs#gmr-icons") format("svg");
   font-weight: normal;
   font-style: normal; }
-[class^="icon-"], [class*=" icon-"], .entry__thumbnail--video:before, .entry__thumbnail--events:before, .entry__thumbnail--audio:before, .header__search--btn:before, .format-audio .entry2__thumbnail a, .format-gallery .entry2__thumbnail a, .format-video .entry2__thumbnail a, .type-tribe_events .entry2__thumbnail a, .live-link__song:before, .live-link__type--audio:before, .live-link__type--gallery:before, .live-link__type--image:before, .live-link__type--link:before, .live-link__type--standard:before, .live-link__type--video:before, .header__search--submit:before, .gallery__prev--btn:before, .gallery__next--btn:after, .gallery__paging--prev, .gallery__paging--next, .gallery__grid--album {
+[class^="icon-"], [class*=" icon-"], .entry__thumbnail--video:before, .entry__thumbnail--events:before, .entry__thumbnail--audio:before, .header__search--btn:before, .format-audio .entry2__thumbnail a, .format-gallery .entry2__thumbnail a, .format-video .entry2__thumbnail a, .type-tribe_events .entry2__thumbnail a, .live-link__song:before, .live-link__type--audio:before, .live-link__type--gallery:before, .live-link__type--image:before, .live-link__type--link:before, .live-link__type--standard:before, .live-link__type--video:before, .social__link--facebook, .social__link--twitter, .social__link--google-plus:before, .social__link--youtube:before, .social__link--instagram:before, .header__search--submit:before, .gallery__prev--btn:before, .gallery__next--btn:after, .gallery__paging--prev, .gallery__paging--next, .gallery__grid--album {
   font-family: 'gmr-icons';
   speak: none;
   font-style: normal;
@@ -551,13 +551,13 @@ category: Base - Typography
 .icon-volume-up:before {
   content: "\e60e"; }
 
-.icon-facebook:before {
+.icon-facebook:before, .social__link--facebook:before {
   content: "\e60f"; }
 
-.icon-twitter:before {
+.icon-twitter:before, .social__link--twitter:before {
   content: "\e610"; }
 
-.icon-google-plus:before {
+.icon-google-plus:before, .social__link--google-plus:before {
   content: "\e611"; }
 
 .icon-search:before {
@@ -572,10 +572,10 @@ category: Base - Typography
 .icon-post-format-audio:before, .format-audio .entry2__thumbnail a:before {
   content: "\e615"; }
 
-.icon-instagram:before {
+.icon-instagram:before, .social__link--instagram:before {
   content: "\e616"; }
 
-.icon-youtube:before {
+.icon-youtube:before, .social__link--youtube:before {
   content: "\e617"; }
 
 .icon-arrow-next:before {
@@ -2661,24 +2661,14 @@ Community Highlights and Events
   float: right;
   padding: 4px 0 7px; }
 
-.footer__menu .social__link {
-  margin: 0 0 0 30px; }
-  .footer__menu .social__link a {
-    box-sizing: content-box;
-    display: inline-block;
-    padding: 5px 4px 3px;
-    width: 22px;
-    height: 22px;
-    line-height: 22px;
-    font-size: 1.26563em;
-    border: 1px solid #929497;
-    border-radius: 100px;
-    text-align: center; }
-    .footer__menu .social__link a:hover {
-      border-color: #d22228;
-      color: #d22228; }
-  .footer__menu .social__link:last-child {
-    margin: 0 0 0 30px; }
+.footer__menu a.social__link {
+  border-color: #929497;
+  color: #929497;
+  margin-right: 0;
+  margin-left: 6px; }
+  .footer__menu a.social__link:hover {
+    border-color: #d22228;
+    color: #d22228; }
 
 /*doc
 ---
@@ -6424,7 +6414,21 @@ These are examples of Social Share Links for single articles.
 <a href="" class="icon-volume-up social-share-link"></a>
 ```
 */
-a.social-share-link {
+.social__list {
+  padding: 33px 0;
+  margin: 0;
+  list-style: none; }
+  .social__list li {
+    display: inline-block;
+    margin: 0;
+    padding: 0; }
+
+a.social__link {
+  padding: 0;
+  margin: 0 1.25em 0 0;
+  list-style: none;
+  display: inline-block;
+  font-size: 18px;
   color: #404041;
   display: inline-block;
   width: 40px;
@@ -6434,23 +6438,11 @@ a.social-share-link {
   border-radius: 50%;
   padding: 9px;
   margin-right: 0.25em; }
-  a.social-share-link:last-of-type {
+  a.social__link:last-of-type {
     margin-right: 0; }
-  a.social-share-link:hover {
+  a.social__link:hover {
     color: #d22228;
     border-color: #d22228; }
-
-.social__list {
-  padding: 33px 0;
-  margin: 0;
-  list-style: none; }
-
-.social__link {
-  padding: 0;
-  margin: 0 1.25em 0 0;
-  list-style: none;
-  display: inline-block;
-  font-size: 18px; }
 
 .social__link:last-child {
   margin: 0; }
@@ -6464,10 +6456,10 @@ a.social-share-link {
 .social__link a:active {
   color: #ffffff; }
 
-.social-share-link:before {
+.social__link:before {
   position: relative;
   top: 1px; }
-.social-share-link.icon-google-plus:before {
+.social__link.icon-google-plus:before, .social__link.social__link--google-plus:before {
   left: 1px;
   top: 2px; }
 
