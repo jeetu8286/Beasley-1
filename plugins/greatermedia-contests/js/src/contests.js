@@ -1,4 +1,4 @@
-/* globals GMR_Gallery:false */
+/* globals is_gigya_user_logged_in:false, get_gigya_user_field:false */
 (function($) {
 	var $document = $(document), container, gridContainer;
 
@@ -23,14 +23,7 @@
 
 		// init new gallery
 		if ($.fn.cycle) {
-			$previewInner.find('.cycle-slideshow').cycle({
-				next: '.gallery__next--btn'
-			});
-		}
-
-		// bind gallery events
-		if (typeof GMR_Gallery !== 'undefined') {
-			GMR_Gallery.bindEvents();
+			$previewInner.find('.cycle-slideshow').cycle();
 		}
 
 		// bind vote click event
@@ -80,10 +73,24 @@
 
 			return false;
 		});
+
+		$document.trigger('contest:preview-loaded');
 	};
 
 	var gridLoadMoreUrl = function(page) {
 		return container.data('infinite') + (page + 1) + '/';
+	};
+
+	var fillForm = function() {
+		if ($.isFunction(is_gigya_user_logged_in) && $.isFunction(get_gigya_user_field) && is_gigya_user_logged_in()) {
+			container.find('form').each(function() {
+				var $form = $(this),
+					firstName = get_gigya_user_field('firstName'),
+					lastName = get_gigya_user_field('lastName');
+
+				$form.find('input[type="text"]:first').val(firstName + ' ' + lastName);
+			});
+		}
 	};
 
 	var __ready = function() {
@@ -148,6 +155,7 @@
 				var restriction = null;
 				
 				if (response.success) {
+					fillForm();
 					container.html(response.data.html);
 					$('.type-contest.collapsed').removeClass('collapsed');
 				} else {

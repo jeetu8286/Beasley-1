@@ -500,8 +500,8 @@ category: Base - Typography
  */
 @font-face {
   font-family: 'gmr-icons';
-  src: url("../../../../themes/greatermedia/assets/fonts/icon-font/gmr-icons.eot?jmqkgs");
-  src: url("../../../../themes/greatermedia/assets/fonts/icon-font/gmr-icons.eot?#iefixjmqkgs") format("embedded-opentype"), url("../../../../themes/greatermedia/assets/fonts/icon-font/gmr-icons.woff?jmqkgs") format("woff"), url("../../../../themes/greatermedia/assets/fonts/icon-font/gmr-icons.ttf?jmqkgs") format("truetype"), url("../../../../themes/greatermedia/assets/fonts/icon-font/gmr-icons.svg?jmqkgs#gmr-icons") format("svg");
+  src: url("../../../../themes/greatermedia/assets/fonts/icon-font/gmr-icons.eot?-7cndw");
+  src: url("../../../../themes/greatermedia/assets/fonts/icon-font/gmr-icons.eot?#iefix-7cndw") format("embedded-opentype"), url("../../../../themes/greatermedia/assets/fonts/icon-font/gmr-icons.woff?-7cndw") format("woff"), url("../../../../themes/greatermedia/assets/fonts/icon-font/gmr-icons.ttf?-7cndw") format("truetype"), url("../../../../themes/greatermedia/assets/fonts/icon-font/gmr-icons.svg?-7cndw#gmr-icons") format("svg");
   font-weight: normal;
   font-style: normal; }
 [class^="icon-"], [class*=" icon-"], .entry__thumbnail--video:before, .entry__thumbnail--events:before, .entry__thumbnail--audio:before, .header__search--btn:before, .format-audio .entry2__thumbnail a, .format-gallery .entry2__thumbnail a, .format-video .entry2__thumbnail a, .type-contest .entry2__thumbnail a, .type-tribe_events .entry2__thumbnail a, .live-link__song:before, .live-link__type--audio:before, .live-link__type--gallery:before, .live-link__type--image:before, .live-link__type--link:before, .live-link__type--standard:before, .live-link__type--video:before, .social__link--facebook:before, .social__link--twitter:before, .social__link--google-plus:before, .social__link--youtube:before, .social__link--instagram:before, .header__search--submit:before, .gallery__prev--btn:before, .gallery__next--btn:after, .gallery__paging--prev, .gallery__paging--next, .gallery__grid--album {
@@ -605,6 +605,12 @@ category: Base - Typography
 
 .icon-post-format-image:before {
   content: "\e61d"; }
+
+.icon-download-arrow:before {
+  content: "\e61e"; }
+
+.icon-pause:before {
+  content: "\e61f"; }
 
 img {
   max-width: 100%;
@@ -2861,8 +2867,7 @@ Link posts contain a link to an external site. They can also optionally have a f
   display: block;
   margin-right: 7.42297%;
   width: 100%;
-  padding: 16px 0;
-  border-bottom: 1px solid #d0d2d3; }
+  padding: 16px 0; }
   .entry__footer:last-child {
     margin-right: 0; }
   @media screen and (min-width: 480px) {
@@ -2909,6 +2914,10 @@ Link posts contain a link to an external site. They can also optionally have a f
 
 .entry__footer--category:hover, .entry__footer--category:focus, .entry__footer--category:active {
   color: #aa1c20; }
+
+.entry__related-posts {
+  width: 100%;
+  float: left; }
 
 .entry__type {
   float: left;
@@ -4184,7 +4193,7 @@ category: Components
       display: block;
       padding-bottom: 26px; } }
 
-.live-stream__listen-now--btn, .podcast__download {
+.live-stream__listen-now--btn, .podcast__subscribe {
   display: inline-block;
   line-height: 1;
   padding: 0.5em 1em;
@@ -4203,12 +4212,14 @@ category: Components
   -o-border-radius: 1em;
   -border-radius: 1em;
   border-radius: 1em;
-  font-weight: 700; }
-  .live-stream__listen-now--btn:hover, .podcast__download:hover, .live-stream__listen-now--btn:focus, .podcast__download:focus {
+  margin-right: 0;
+  font-weight: 700;
+  z-index: 1; }
+  .live-stream__listen-now--btn:hover, .podcast__subscribe:hover, .live-stream__listen-now--btn:focus, .podcast__subscribe:focus {
     background-color: #aa1c20;
     border-color: #aa1c20;
     color: #ffffff; }
-  .live-stream__listen-now--btn:last-of-type, .podcast__download:last-of-type {
+  .live-stream__listen-now--btn:last-of-type, .podcast__subscribe:last-of-type {
     margin-right: 0; }
 
 .live-stream__now-playing--btn {
@@ -4238,6 +4249,13 @@ category: Components
     color: #d22228; }
   .live-stream__now-playing--btn:last-of-type {
     margin-right: 0; }
+
+.live-stream__login {
+  padding-bottom: 3px;
+  margin-right: 0;
+  font-weight: 700;
+  font-size: 0.79012em;
+  color: #d22228; }
 
 .live-stream__resume {
   height: 48px;
@@ -4363,6 +4381,9 @@ category: Components
   height: 100%;
   background-color: rgba(0, 0, 0, 0.75);
   z-index: 20000; }
+
+.live-stream__container--player {
+  height: 0; }
 
 .live-stream__container.vast__pre-roll .live-stream__container--player {
   position: absolute;
@@ -4490,7 +4511,7 @@ category: Components
 
 .now-playing__title {
   margin: 0 0 4px;
-  line-height: 1;
+  line-height: 1.4;
   font-size: 1em;
   font-weight: lighter;
   color: #d22228; }
@@ -5873,7 +5894,8 @@ category: Components - Shows
 
 */
 .podcast {
-  display: block; }
+  display: block;
+  margin-bottom: 68px; }
   .podcast:before, .podcast:after {
     content: " ";
     display: table; }
@@ -5884,18 +5906,45 @@ category: Components - Shows
   float: left;
   display: block;
   margin-right: 2.35765%;
-  width: 14.70196%; }
+  width: 14.70196%;
+  margin-top: 4px; }
   .podcast__play:last-child {
     margin-right: 0; }
 
+.podcast__cover {
+  width: 100%;
+  height: 0;
+  padding-bottom: 100%;
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-size: auto 100%;
+  position: relative; }
+
 .podcast__btn--play,
 .podcast__btn--pause {
-  position: relative; }
+  position: absolute;
+  width: 45%;
+  margin: 0px;
+  position: absolute;
+  top: 28%;
+  left: 28%;
+  height: 45%;
+  border-width: 3px;
+  background-color: rgba(255, 255, 255, 0.5); }
+
+.podcast__btn--play:hover, .podcast__btn--pause:focus {
+  border-color: #aa1c20;
+  color: #aa1c20; }
+
+.podcast__btn--play:active {
+  border-color: #000000;
+  color: #000000; }
 
 .podcast__btn--play, .podcast__btn--pause, .podcast__runtime {
   display: block;
   margin: 0 auto;
-  text-align: center; }
+  text-align: center;
+  padding-top: 1em; }
 
 .podcast__btn--play:before,
 .podcast__btn--pause:before {
@@ -5907,7 +5956,11 @@ category: Components - Shows
   -ms-transform: translate(-50%, -50%);
   -o-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
-  font-family: "gmr-icons" !important; }
+  font-family: "gmr-icons" !important;
+  font-size: 1.80203em; }
+
+.podcast__btn--play:before {
+  left: 55%; }
 
 .podcast__btn--play:before {
   content: "\e606" !important; }
@@ -5917,7 +5970,7 @@ category: Components - Shows
 .podcast__btn--pause {
   display: none; }
   .podcast__btn--pause:before {
-    content: "\e60b" !important; }
+    content: "\e61f" !important; }
   .podcast__btn--pause.playing {
     display: block; }
 
@@ -5925,15 +5978,185 @@ category: Components - Shows
   float: left;
   display: block;
   margin-right: 2.35765%;
-  width: 82.94039%; }
+  width: 74.41059%; }
   .podcast__meta:last-child {
     margin-right: 0; }
   .podcast__meta h3 {
-    margin: 0;
-    clear: both; }
-  .podcast__meta time {
-    float: left;
-    margin-right: 1em; }
+    margin: 10px 0 15px; }
+
+.podcast__title {
+  margin: 20px 0 26px;
+  line-height: 1;
+  font-size: 1.80203em; }
+
+.podcast__parent {
+  margin-bottom: 10px; }
+
+.podcast__parent--title {
+  display: inline-block;
+  font-weight: bold; }
+
+.podcast__date {
+  font-size: 0.79012em;
+  color: #929497;
+  text-transform: uppercase; }
+
+a.podcast__rss:link, a.podcast__rss:visited {
+  display: inline-block;
+  line-height: 1;
+  padding: 0.5em 1em;
+  margin-right: .5em;
+  outline: none;
+  background-color: transparent;
+  border: 1px solid #929497;
+  font-family: "Open Sans", sans-serif;
+  font-size: 0.88889em;
+  color: #929497 !important;
+  text-transform: uppercase;
+  cursor: pointer;
+  -webkit-border-radius: 1em;
+  -moz-border-radius: 1em;
+  -ms-border-radius: 1em;
+  -o-border-radius: 1em;
+  -border-radius: 1em;
+  border-radius: 1em;
+  display: inline-block;
+  margin-left: 10px;
+  font-weight: normal;
+  text-transform: none; }
+  a.podcast__rss:link:hover, a.podcast__rss:link:focus, a.podcast__rss:visited:hover, a.podcast__rss:visited:focus {
+    background-color: transparent;
+    border-color: #7b7d80;
+    color: #929497; }
+  a.podcast__rss:link:last-of-type, a.podcast__rss:visited:last-of-type {
+    margin-right: 0; }
+
+a.podcast__rss:hover, a.podcast__rss:focus {
+  display: inline-block;
+  line-height: 1;
+  padding: 0.5em 1em;
+  margin-right: .5em;
+  outline: none;
+  background-color: #d22228;
+  border: 1px solid #d22228;
+  font-family: "Open Sans", sans-serif;
+  font-size: 0.88889em;
+  color: #ffffff !important;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-transform: none; }
+  a.podcast__rss:hover:hover, a.podcast__rss:hover:focus, a.podcast__rss:focus:hover, a.podcast__rss:focus:focus {
+    background-color: #aa1c20;
+    border-color: #aa1c20;
+    color: #ffffff; }
+  a.podcast__rss:hover:last-of-type, a.podcast__rss:focus:last-of-type {
+    margin-right: 0; }
+
+a.podcast__rss:active {
+  display: inline-block;
+  line-height: 1;
+  padding: 0.5em 1em;
+  margin-right: .5em;
+  outline: none;
+  background-color: #000000;
+  border: 1px solid #000000;
+  font-family: "Open Sans", sans-serif;
+  font-size: 0.88889em;
+  color: #ffffff !important;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-transform: none; }
+  a.podcast__rss:active:hover, a.podcast__rss:active:focus {
+    background-color: black;
+    border-color: black;
+    color: #ffffff; }
+  a.podcast__rss:active:last-of-type {
+    margin-right: 0; }
+
+.podcast__desc {
+  font-size: 0.88889em; }
+
+.podcast__download {
+  width: 100%;
+  padding-top: 1em;
+  margin: 0 auto;
+  text-align: center; }
+
+.podcast__download--btn {
+  display: inline-block;
+  line-height: 1;
+  padding: 0.5em 1em;
+  margin-right: .5em;
+  outline: none;
+  background-color: transparent;
+  border: 1px solid #929497;
+  font-family: "Open Sans", sans-serif;
+  font-size: 0.88889em;
+  color: #929497 !important;
+  text-transform: uppercase;
+  cursor: pointer;
+  -webkit-border-radius: 1em;
+  -moz-border-radius: 1em;
+  -ms-border-radius: 1em;
+  -o-border-radius: 1em;
+  -border-radius: 1em;
+  border-radius: 1em;
+  text-transform: none; }
+  .podcast__download--btn:hover, .podcast__download--btn:focus {
+    background-color: transparent;
+    border-color: #7b7d80;
+    color: #929497; }
+  .podcast__download--btn:last-of-type {
+    margin-right: 0; }
+
+.podcast__download--btn:hover {
+  display: inline-block;
+  line-height: 1;
+  padding: 0.5em 1em;
+  margin-right: .5em;
+  outline: none;
+  background-color: #d22228;
+  border: 1px solid #d22228;
+  font-family: "Open Sans", sans-serif;
+  font-size: 0.88889em;
+  color: #ffffff !important;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-transform: none; }
+  .podcast__download--btn:hover:hover, .podcast__download--btn:hover:focus {
+    background-color: #aa1c20;
+    border-color: #aa1c20;
+    color: #ffffff; }
+  .podcast__download--btn:hover:last-of-type {
+    margin-right: 0; }
+
+.podcast__download--btn:active {
+  display: inline-block;
+  line-height: 1;
+  padding: 0.5em 1em;
+  margin-right: .5em;
+  outline: none;
+  background-color: #000000;
+  border: 1px solid #000000;
+  font-family: "Open Sans", sans-serif;
+  font-size: 0.88889em;
+  color: #ffffff !important;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-transform: none; }
+  .podcast__download--btn:active:hover, .podcast__download--btn:active:focus {
+    background-color: black;
+    border-color: black;
+    color: #ffffff; }
+  .podcast__download--btn:active:last-of-type {
+    margin-right: 0; }
+
+.podcast__subscribe {
+  margin: 0 0 0 10px;
+  text-transform: none; }
+
+.gmr-mediaelement-fallback {
+  max-height: 100px; }
 
 .single-show .featured__content {
   margin: 0.75em 0 1em; }
@@ -6610,9 +6833,9 @@ category: Components - Article
       transform: translate(0, -200%);
       /* 200% ensures it's out of the way of the .wp-admin bar */
       z-index: 5000000;
-      /* IAB z-index standards for nav drop downs. Prevents an ad from being over top unless it's a full-screen ad */ } }
-  .logged-in .header__search--form {
-    top: 32px; }
+      /* IAB z-index standards for nav drop downs. Prevents an ad from being over top unless it's a full-screen ad */ }
+      .logged-in .header__search--form {
+        top: 32px; } }
 
 .header__search--label {
   cursor: pointer; }
@@ -8453,6 +8676,98 @@ select {
     margin-top: 36px; }
     .show__live-links .ll-archive-list:last-child {
       margin-right: 0; } }
+
+.adblock--detected {
+  display: none;
+  -webkit-transition: background 500ms ease-in-out;
+  -moz-transition: background 500ms ease-in-out;
+  transition: background 500ms ease-in-out; }
+
+.live-stream__container.vast__pre-roll .adblock--detected {
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 640px;
+  height: 250px;
+  padding: 20px;
+  background-color: #fff;
+  font-size: 1.26563em;
+  color: #404041;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%); }
+
+.adblock--detected__close {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: inline-block;
+  line-height: 1;
+  padding: 0.5em 1em;
+  margin-right: .5em;
+  outline: none;
+  background-color: #d22228;
+  border: 1px solid #d22228;
+  font-family: "Open Sans", sans-serif;
+  font-size: 0.88889em;
+  color: #ffffff !important;
+  text-transform: uppercase;
+  cursor: pointer;
+  -webkit-border-radius: 1em;
+  -moz-border-radius: 1em;
+  -ms-border-radius: 1em;
+  -o-border-radius: 1em;
+  -border-radius: 1em;
+  border-radius: 1em; }
+  .adblock--detected__close:hover, .adblock--detected__close:focus {
+    background-color: #aa1c20;
+    border-color: #aa1c20;
+    color: #ffffff; }
+  .adblock--detected__close:last-of-type {
+    margin-right: 0; }
+
+.adblock--detected__close:hover {
+  display: inline-block;
+  line-height: 1;
+  padding: 0.5em 1em;
+  margin-right: .5em;
+  outline: none;
+  background-color: #f5ed7f;
+  border: 1px solid #f5ed7f;
+  font-family: "Open Sans", sans-serif;
+  font-size: 0.88889em;
+  color: #ffffff !important;
+  text-transform: uppercase;
+  cursor: pointer; }
+  .adblock--detected__close:hover:hover, .adblock--detected__close:hover:focus {
+    background-color: #f2e754;
+    border-color: #f2e754;
+    color: #ffffff; }
+  .adblock--detected__close:hover:last-of-type {
+    margin-right: 0; }
+
+.adblock--detected__close:active {
+  display: inline-block;
+  line-height: 1;
+  padding: 0.5em 1em;
+  margin-right: .5em;
+  outline: none;
+  background-color: #000000;
+  border: 1px solid #000000;
+  font-family: "Open Sans", sans-serif;
+  font-size: 0.88889em;
+  color: #ffffff !important;
+  text-transform: uppercase;
+  cursor: pointer; }
+  .adblock--detected__close:active:hover, .adblock--detected__close:active:focus {
+    background-color: black;
+    border-color: black;
+    color: #ffffff; }
+  .adblock--detected__close:active:last-of-type {
+    margin-right: 0; }
 
 /*doc
 ---

@@ -828,14 +828,7 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 
 		// init new gallery
 		if ($.fn.cycle) {
-			$previewInner.find('.cycle-slideshow').cycle({
-				next: '.gallery__next--btn'
-			});
-		}
-
-		// bind gallery events
-		if (typeof GMR_Gallery !== 'undefined') {
-			GMR_Gallery.bindEvents();
+			$previewInner.find('.cycle-slideshow').cycle();
 		}
 
 		// bind vote click event
@@ -885,17 +878,31 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 
 			return false;
 		});
+
+		$document.trigger('contest:preview-loaded');
 	};
 
 	var gridLoadMoreUrl = function(page) {
 		return container.data('infinite') + (page + 1) + '/';
 	};
 
+	var fillForm = function() {
+		if ($.isFunction(is_gigya_user_logged_in) && $.isFunction(get_gigya_user_field) && is_gigya_user_logged_in()) {
+			container.find('form').each(function() {
+				var $form = $(this),
+					firstName = get_gigya_user_field('firstName'),
+					lastName = get_gigya_user_field('lastName');
+
+				$form.find('input[type="text"]:first').val(firstName + ' ' + lastName);
+			});
+		}
+	};
+
 	var __ready = function() {
 		container = $('#contest-form');
 		gridContainer = $('.contest__submissions--list');
 
-		$document.on('submit', '#contest-form form', function() {
+		$('#contest-form form').submit(function() {
 			var form = $(this);
 
 			if (!form.parsley || form.parsley().isValid()) {
@@ -953,6 +960,7 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 				var restriction = null;
 				
 				if (response.success) {
+					fillForm();
 					container.html(response.data.html);
 					$('.type-contest.collapsed').removeClass('collapsed');
 				} else {
@@ -963,7 +971,7 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 			});
 		};
 
-		$document.on('click', '.contest__restriction--min-age-yes', function() {
+		$('.contest__restriction--min-age-yes').click(function() {
 			loadContainerState(container.data('confirm-age'));
 			return false;
 		});
@@ -988,6 +996,7 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 
 	$document.bind('pjax:end', __ready).ready(__ready);
 })(jQuery);
+
 document.addEventListener("DOMContentLoaded", function () {
 	/**
 	 * Generate a list of supported input types (text, date, range, etc.).
