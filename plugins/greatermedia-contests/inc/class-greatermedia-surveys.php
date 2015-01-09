@@ -88,7 +88,7 @@ class GreaterMediaSurveys {
 			'has_archive'         => true,
 			'query_var'           => true,
 			'can_export'          => true,
-			'rewrite'             => true,
+			'rewrite'             => array( 'slug' => 'survey', 'ep_mask' => EP_GMR_SURVEY ),
 			'capability_type'     => 'post',
 			'supports'            => array( 'title', 'editor', 'thumbnail' ),
 		);
@@ -156,7 +156,7 @@ class GreaterMediaSurveys {
 
 		// time to save the form
 		if( isset( $_POST['survey_embedded_form'] ) ) {
-			$form = json_encode( json_decode( urldecode( $_POST['survey_embedded_form'] ) ) );
+			$form = addslashes( json_encode( json_decode( urldecode( $_POST['survey_embedded_form'] ) ) ) );
 			update_post_meta( $post_id, 'survey_embedded_form', $form );
 		}
 
