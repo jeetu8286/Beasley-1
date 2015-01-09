@@ -1908,7 +1908,7 @@ Curated posts for Featured Articles
   width: 100%;
   margin-right: 0;
   overflow: hidden;
-  background: #fff;
+  background: #5a5a5a;
   height: 100px;
   margin: 1.5em 0 0; }
   .featured__content--block:last-child {
@@ -2204,8 +2204,8 @@ Community Highlights and Events
 */
 .home__highlights {
   padding: 0 0.809em 1.5em;
-  background-color: #fff;
-  border-bottom: 1px solid #f7f7f7; }
+  background-color: #5a5a5a;
+  border-bottom: 1px solid #525252; }
   @media screen and (min-width: 768px) {
     .home__highlights {
       padding: 0 3.236em 3em; } }
@@ -6356,7 +6356,7 @@ a.podcast__rss:active {
 .single-show .highlights__heading {
   font-size: 1.125em; }
 .single-show .highlights__event--item {
-  background-color: #fff; }
+  background-color: #5a5a5a; }
 .single-show .highlights__community--item:hover .highlights__community--title {
   color: #f5ed7f; }
 @media screen and (min-width: 1024px) {
@@ -6666,7 +6666,7 @@ category: Components - Shows
 
 .show__feature--desc {
   background-color: #F1F1F3;
-  color: #404041; }
+  color: #ffffff; }
   .show__feature--desc h3 {
     margin: 0;
     font-size: 1.42383em;
@@ -6676,7 +6676,7 @@ category: Components - Shows
   .show__feature--desc time {
     font-size: 1em;
     text-transform: uppercase;
-    color: #404041; }
+    color: #ffffff; }
   .show__feature--desc .inner-wrap {
     padding: 1.5em 1.618em; }
   @media screen and (min-width: 1024px) {
@@ -8167,7 +8167,7 @@ category: Components - Gallery Archive
 
 .gallery__featured--caption {
   background-color: #F1F1F3;
-  color: #404041; }
+  color: #ffffff; }
   .gallery__featured--caption h3 {
     margin: 0;
     font-size: 1.42383em;
@@ -8177,7 +8177,7 @@ category: Components - Gallery Archive
   .gallery__featured--caption time {
     font-size: 1em;
     text-transform: uppercase;
-    color: #404041; }
+    color: #ffffff; }
   .gallery__featured--caption .inner-wrap {
     padding: 1.5em 1.618em; }
   @media screen and (min-width: 1024px) {
@@ -10244,5 +10244,14 @@ category: Components - Article
 
 .home__highlights {
   border-bottom-color: #d0d2d3; }
+
+.highlights__event--item {
+  background-color: #f2f2f2; }
+
+.highlights__event--title, .highlights__event--date {
+  color: #404041; }
+
+.highlights__heading {
+  color: #ffffff; }
 
 /*# sourceMappingURL=wmgk.css.map */
