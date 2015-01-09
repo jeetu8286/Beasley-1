@@ -492,6 +492,12 @@ category: Base - Typography
 <span class="icon-post-format-link"></span>
 <span class="icon-post-format-video2"></span>
 <span class="icon-post-format-image"></span>
+<span class="icon-video-camera"></span>
+<span class="icon-gallery"></span>
+<span class="icon-ticket"></span>
+<span class="icon-contest"></span>
+<span class="icon-pause"></span>
+<span class="icon-download-arrow"></span>
 ```
 
 */
@@ -500,11 +506,11 @@ category: Base - Typography
  */
 @font-face {
   font-family: 'gmr-icons';
-  src: url("../../../../themes/greatermedia/assets/fonts/icon-font/gmr-icons.eot?jmqkgs");
-  src: url("../../../../themes/greatermedia/assets/fonts/icon-font/gmr-icons.eot?#iefixjmqkgs") format("embedded-opentype"), url("../../../../themes/greatermedia/assets/fonts/icon-font/gmr-icons.woff?jmqkgs") format("woff"), url("../../../../themes/greatermedia/assets/fonts/icon-font/gmr-icons.ttf?jmqkgs") format("truetype"), url("../../../../themes/greatermedia/assets/fonts/icon-font/gmr-icons.svg?jmqkgs#gmr-icons") format("svg");
+  src: url("../../../../themes/greatermedia/assets/fonts/icon-font/gmr-icons.eot?-myn1wz");
+  src: url("../../../../themes/greatermedia/assets/fonts/icon-font/gmr-icons.eot?#iefix-myn1wz") format("embedded-opentype"), url("../../../../themes/greatermedia/assets/fonts/icon-font/gmr-icons.woff?-myn1wz") format("woff"), url("../../../../themes/greatermedia/assets/fonts/icon-font/gmr-icons.ttf?-myn1wz") format("truetype"), url("../../../../themes/greatermedia/assets/fonts/icon-font/gmr-icons.svg?-myn1wz#icomoon") format("svg");
   font-weight: normal;
   font-style: normal; }
-[class^="icon-"], [class*=" icon-"], .entry__thumbnail--video:before, .entry__thumbnail--events:before, .entry__thumbnail--audio:before, .header__search--btn:before, .format-audio .entry2__thumbnail a, .format-gallery .entry2__thumbnail a, .format-video .entry2__thumbnail a, .type-tribe_events .entry2__thumbnail a, .live-link__song:before, .live-link__type--audio:before, .live-link__type--gallery:before, .live-link__type--image:before, .live-link__type--link:before, .live-link__type--standard:before, .live-link__type--video:before, .social__link--facebook:before, .social__link--twitter:before, .social__link--google-plus:before, .social__link--youtube:before, .social__link--instagram:before, .header__search--submit:before, .gallery__prev--btn:before, .gallery__next--btn:after, .gallery__paging--prev, .gallery__paging--next, .gallery__grid--album {
+[class^="icon-"], [class*=" icon-"], .entry__thumbnail--video:before, .entry__thumbnail--events:before, .entry__thumbnail--audio:before, .header__search--btn:before, .format-audio .entry2__thumbnail a, .format-gallery .entry2__thumbnail a, .format-video .entry2__thumbnail a, .type-contest .entry2__thumbnail a, .type-tribe_events .entry2__thumbnail a, .live-link__song:before, .live-link__type--audio:before, .live-link__type--gallery:before, .live-link__type--image:before, .live-link__type--link:before, .live-link__type--standard:before, .live-link__type--video:before, .social__link--facebook, .social__link--twitter, .social__link--google-plus:before, .social__link--youtube:before, .social__link--instagram:before, .header__search--submit:before, .gallery__prev--btn:before, .gallery__next--btn:after, .gallery__paging--prev, .gallery__paging--next, .gallery__grid--album {
   font-family: 'gmr-icons';
   speak: none;
   font-style: normal;
@@ -561,13 +567,13 @@ category: Base - Typography
 .icon-volume-up:before {
   content: "\e60e"; }
 
-.icon-facebook:before {
+.icon-facebook:before, .social__link--facebook:before {
   content: "\e60f"; }
 
-.icon-twitter:before {
+.icon-twitter:before, .social__link--twitter:before {
   content: "\e610"; }
 
-.icon-google-plus:before {
+.icon-google-plus:before, .social__link--google-plus:before {
   content: "\e611"; }
 
 .icon-search:before {
@@ -582,10 +588,10 @@ category: Base - Typography
 .icon-post-format-audio:before, .format-audio .entry2__thumbnail a:before {
   content: "\e615"; }
 
-.icon-instagram:before {
+.icon-instagram:before, .social__link--instagram:before {
   content: "\e616"; }
 
-.icon-youtube:before {
+.icon-youtube:before, .social__link--youtube:before {
   content: "\e617"; }
 
 .icon-arrow-next:before {
@@ -605,6 +611,24 @@ category: Base - Typography
 
 .icon-post-format-image:before {
   content: "\e61d"; }
+
+.icon-download-arrow:before {
+  content: "\e61e"; }
+
+.icon-pause:before {
+  content: "\e61f"; }
+
+.icon-video-camera:before {
+  content: "\e620"; }
+
+.icon-gallery:before {
+  content: "\e621"; }
+
+.icon-ticket:before {
+  content: "\e622"; }
+
+.icon-contest:before, .type-contest .entry2__thumbnail a:before {
+  content: "\e623"; }
 
 img {
   max-width: 100%;
@@ -877,14 +901,20 @@ category: Base - Typography
 <h6>H6. Nworb Kciuq eht</h6>
 ```
 */
-h1, .h1, .type-tribe_events .entry2__thumbnail--event-date, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
+h1, .h1, .type-tribe_events .entry2__thumbnail--event-date, .type-contest .entry2__thumbnail--end-date,
+.type-contest .entry2__thumbnail--start-date, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
   line-height: 1.5;
   font-family: "Droid Sans", sans-serif;
   text-rendering: optimizelegibility;
   font-weight: bold; }
-  h1 a:link, h1 a:visited, .h1 a:link, .type-tribe_events .entry2__thumbnail--event-date a:link, .h1 a:visited, .type-tribe_events .entry2__thumbnail--event-date a:visited, h2 a:link, h2 a:visited, .h2 a:link, .h2 a:visited, h3 a:link, h3 a:visited, .h3 a:link, .h3 a:visited, h4 a:link, h4 a:visited, .h4 a:link, .h4 a:visited, h5 a:link, h5 a:visited, .h5 a:link, .h5 a:visited, h6 a:link, h6 a:visited, .h6 a:link, .h6 a:visited {
+  h1 a:link, h1 a:visited, .h1 a:link, .type-tribe_events .entry2__thumbnail--event-date a:link, .type-contest .entry2__thumbnail--end-date a:link,
+  .type-contest .entry2__thumbnail--start-date a:link, .h1 a:visited, .type-tribe_events .entry2__thumbnail--event-date a:visited, .type-contest .entry2__thumbnail--end-date a:visited,
+  .type-contest .entry2__thumbnail--start-date a:visited, h2 a:link, h2 a:visited, .h2 a:link, .h2 a:visited, h3 a:link, h3 a:visited, .h3 a:link, .h3 a:visited, h4 a:link, h4 a:visited, .h4 a:link, .h4 a:visited, h5 a:link, h5 a:visited, .h5 a:link, .h5 a:visited, h6 a:link, h6 a:visited, .h6 a:link, .h6 a:visited {
     color: #404041; }
-  h1 a:hover, h1 a:focus, h1 a:active, .h1 a:hover, .type-tribe_events .entry2__thumbnail--event-date a:hover, .h1 a:focus, .type-tribe_events .entry2__thumbnail--event-date a:focus, .h1 a:active, .type-tribe_events .entry2__thumbnail--event-date a:active, h2 a:hover, h2 a:focus, h2 a:active, .h2 a:hover, .h2 a:focus, .h2 a:active, h3 a:hover, h3 a:focus, h3 a:active, .h3 a:hover, .h3 a:focus, .h3 a:active, h4 a:hover, h4 a:focus, h4 a:active, .h4 a:hover, .h4 a:focus, .h4 a:active, h5 a:hover, h5 a:focus, h5 a:active, .h5 a:hover, .h5 a:focus, .h5 a:active, h6 a:hover, h6 a:focus, h6 a:active, .h6 a:hover, .h6 a:focus, .h6 a:active {
+  h1 a:hover, h1 a:focus, h1 a:active, .h1 a:hover, .type-tribe_events .entry2__thumbnail--event-date a:hover, .type-contest .entry2__thumbnail--end-date a:hover,
+  .type-contest .entry2__thumbnail--start-date a:hover, .h1 a:focus, .type-tribe_events .entry2__thumbnail--event-date a:focus, .type-contest .entry2__thumbnail--end-date a:focus,
+  .type-contest .entry2__thumbnail--start-date a:focus, .h1 a:active, .type-tribe_events .entry2__thumbnail--event-date a:active, .type-contest .entry2__thumbnail--end-date a:active,
+  .type-contest .entry2__thumbnail--start-date a:active, h2 a:hover, h2 a:focus, h2 a:active, .h2 a:hover, .h2 a:focus, .h2 a:active, h3 a:hover, h3 a:focus, h3 a:active, .h3 a:hover, .h3 a:focus, .h3 a:active, h4 a:hover, h4 a:focus, h4 a:active, .h4 a:hover, .h4 a:focus, .h4 a:active, h5 a:hover, h5 a:focus, h5 a:active, .h5 a:hover, .h5 a:focus, .h5 a:active, h6 a:hover, h6 a:focus, h6 a:active, .h6 a:hover, .h6 a:focus, .h6 a:active {
     color: #aa1c20; }
 
 .featured__content--title a:link, .featured__content--title a:visited, .featured__article--title a:link, .featured__article--title a:visited, .highlights__community--title a:link, .highlights__community--title a:visited {
@@ -892,7 +922,8 @@ h1, .h1, .type-tribe_events .entry2__thumbnail--event-date, h2, .h2, h3, .h3, h4
 .featured__content--title a:hover, .featured__content--title a:focus, .featured__content--title a:active, .featured__article--title a:hover, .featured__article--title a:focus, .featured__article--title a:active, .highlights__community--title a:hover, .highlights__community--title a:focus, .highlights__community--title a:active {
   color: #aa1c20; }
 
-h1, .h1, .type-tribe_events .entry2__thumbnail--event-date {
+h1, .h1, .type-tribe_events .entry2__thumbnail--event-date, .type-contest .entry2__thumbnail--end-date,
+.type-contest .entry2__thumbnail--start-date {
   font-size: 2.2807em; }
 
 h2, .h2 {
@@ -1106,17 +1137,51 @@ blockquote p {
   -o-transform: translate(78%, 0);
   transform: translate(78%, 0);
   width: 100%;
-  -webkit-transition: all 100ms ease-out;
-  -moz-transition: all 100ms ease-out;
-  transition: all 100ms ease-out; }
+  -webkit-transition: -webkit-transform 100ms ease-out;
+  -moz-transition: -moz-transform 100ms ease-out;
+  transition: transform 100ms ease-out;
+  position: fixed; }
 
+.mobile-nav--open .header__search--open {
+  -webkit-transform: translate(78%, 0);
+  -moz-transform: translate(78%, 0);
+  -ms-transform: translate(78%, 0);
+  -o-transform: translate(78%, 0);
+  transform: translate(78%, 0); }
+
+.mobile-nav--open .header__search--form {
+  position: fixed;
+  -webkit-transform: translate(78%);
+  -moz-transform: translate(78%);
+  -ms-transform: translate(78%);
+  -o-transform: translate(78%);
+  transform: translate(78%); }
+  @media screen and (min-width: 768px) {
+    .mobile-nav--open .header__search--form {
+      -webkit-transform: translate(78%, -200%);
+      -moz-transform: translate(78%, -200%);
+      -ms-transform: translate(78%, -200%);
+      -o-transform: translate(78%, -200%);
+      transform: translate(78%, -200%); } }
+
+.mobile-nav--open .footer {
+  display: none; }
+
+.mobile-nav--open .page-wrap {
+  top: 40px; }
+
+/**
+ * Provides an overlay mask to help focus attention on the menu
+ * z-index is 2 so that it sits under the close button, but above most content
+ */
 .mobile-nav--open .page-wrap:before {
   position: absolute;
   top: 0;
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.4);
-  content: " "; }
+  content: " ";
+  z-index: 2; }
 
 .mobile-nav__list {
   padding: 0;
@@ -1161,7 +1226,8 @@ blockquote p {
   margin: 0;
   list-style: none;
   display: inline-block;
-  font-size: 1em; }
+  font-size: 1em;
+  float: left; }
 
 .header__main a, .header__main a:visited {
   color: #ffffff; }
@@ -1188,9 +1254,21 @@ blockquote p {
 .header__account ul li:hover {
   background-color: #d22228; }
 
+ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw > ul li:not(.mobile-menu-submenu-header):hover, .header__nav .format-sp > ul li:not(.mobile-menu-submenu-header):hover {
+  background-color: transparent; }
+
 .header__nav ul li ul {
   display: none; }
 
+/**
+ * Z-indexes
+ *
+ * IAB standards for z-indexes set the baseline, with drop nav occupying a range between 5000000 and 5999999
+ * Within that range, we're stepping by 100s.
+ * The overlay mask sits at the bottom of the range: 5000000
+ * Above the top level menu item is the sub-menu and top level menu item (only while hovered) at 5000100
+ *
+ */
 /* Psuedo element helps with selection by preventing the menu from collapsing on just a bit of a mouse-out */
 .header__nav .menu-item-has-children:hover:after {
   content: ' ';
@@ -1202,26 +1280,61 @@ blockquote p {
   width: 40px;
   height: 40px; }
 
-.header__nav ul li:hover .sub-menu, .header__nav ul li:hover .format-fw > ul {
+.overlay-mask {
+  visibility: hidden;
+  background-color: rgba(0, 0, 0, 0.333);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5000000;
+  /* IAB z-index standard for drop nav is 5000000 - 5999999 */
+  opacity: 0;
+  -webkit-transition: visibility 0s linear, opacity 100ms ease-out;
+  -moz-transition: visibility 0s linear, opacity 100ms ease-out;
+  transition: visibility 0s linear, opacity 100ms ease-out; }
+  .overlay-mask.is-visible {
+    visibility: visible;
+    opacity: 1;
+    -webkit-transition: visibility 0s linear, opacity 100ms ease-out;
+    -moz-transition: visibility 0s linear, opacity 100ms ease-out;
+    transition: visibility 0s linear, opacity 100ms ease-out; }
+
+/**
+ * This is not ideal, we should be doing this on the top level <li>
+ * Unfortunately, doing so means that the full-width menus, aren't. They are 100% the width of the <li>
+ * Which is no good. So here we are.
+ */
+.header__main {
+  position: relative; }
+  .header__main:hover {
+    z-index: 5000100;
+    /* IAB z-index standard for drop nav is 5000000 - 5999999 */ }
+
+.header__nav ul li:hover .sub-menu, .header__nav ul li:hover .format-fw > ul, .header__nav ul li:hover .format-sp > ul {
   display: block; }
 
-.header__nav .sub-menu, .header__nav .format-fw > ul,
+.header__nav .sub-menu, .header__nav .format-fw > ul, .header__nav .format-sp > ul,
 .header__account--links.sub-menu,
-.header__nav .format-fw > ul.header__account--links {
+.header__nav .format-fw > ul.header__account--links,
+.header__nav .format-sp > ul.header__account--links {
   position: absolute;
   border-top: 7px solid #d22228;
   background-color: #fff;
   color: #000000;
   min-width: 300px;
-  z-index: 5000000;
+  z-index: 5000100;
   /* IAB z-index standard for drop nav is 5000000 - 5999999 */ }
-  .header__nav .sub-menu li, .header__nav .format-fw > ul li,
+  .header__nav .sub-menu li, .header__nav .format-fw > ul li, .header__nav .format-sp > ul li,
   .header__account--links.sub-menu li,
-  .header__nav .format-fw > ul.header__account--links li {
+  .header__nav .format-fw > ul.header__account--links li,
+  .header__nav .format-sp > ul.header__account--links li {
     display: block; }
-  .header__nav .sub-menu a, .header__nav .format-fw > ul a,
+  .header__nav .sub-menu a, .header__nav .format-fw > ul a, .header__nav .format-sp > ul a,
   .header__account--links.sub-menu a,
-  .header__nav .format-fw > ul.header__account--links a {
+  .header__nav .format-fw > ul.header__account--links a,
+  .header__nav .format-sp > ul.header__account--links a {
     color: #000000;
     /*
      * Important used here to override a declaration on .header__nav ul li a
@@ -1229,16 +1342,18 @@ blockquote p {
      * to keep this as a component (e.g. context independent). - TD
      */
     padding: 1em !important; }
-    .header__nav .sub-menu a:visited, .header__nav .format-fw > ul a:visited,
+    .header__nav .sub-menu a:visited, .header__nav .format-fw > ul a:visited, .header__nav .format-sp > ul a:visited,
     .header__account--links.sub-menu a:visited,
-    .header__nav .format-fw > ul.header__account--links a:visited {
+    .header__nav .format-fw > ul.header__account--links a:visited,
+    .header__nav .format-sp > ul.header__account--links a:visited {
       color: #000000; }
-    .header__nav .sub-menu a:hover, .header__nav .format-fw > ul a:hover,
+    .header__nav .sub-menu a:hover, .header__nav .format-fw > ul a:hover, .header__nav .format-sp > ul a:hover,
     .header__account--links.sub-menu a:hover,
-    .header__nav .format-fw > ul.header__account--links a:hover {
+    .header__nav .format-fw > ul.header__account--links a:hover,
+    .header__nav .format-sp > ul.header__account--links a:hover {
       color: #ffffff; }
 
-.mobile-nav .sub-menu, .mobile-nav .header__nav .format-fw > ul, .header__nav .mobile-nav .format-fw > ul {
+.mobile-nav .sub-menu, .mobile-nav .header__nav .format-fw > ul, .header__nav .mobile-nav .format-fw > ul, .mobile-nav .header__nav .format-sp > ul, .header__nav .mobile-nav .format-sp > ul {
   -webkit-transition: left 100ms ease-out;
   -moz-transition: left 100ms ease-out;
   transition: left 100ms ease-out;
@@ -1250,14 +1365,16 @@ blockquote p {
   bottom: 0;
   background-color: #fff;
   padding: 0; }
-  .mobile-nav .sub-menu li, .mobile-nav .header__nav .format-fw > ul li, .header__nav .mobile-nav .format-fw > ul li {
+  .mobile-nav .sub-menu li:not(.mobile-menu-submenu-header), .mobile-nav .header__nav .format-fw > ul li:not(.mobile-menu-submenu-header), .header__nav .mobile-nav .format-fw > ul li:not(.mobile-menu-submenu-header), .mobile-nav .header__nav .format-sp > ul li:not(.mobile-menu-submenu-header), .header__nav .mobile-nav .format-sp > ul li:not(.mobile-menu-submenu-header) {
     list-style-type: none;
-    border: none; }
-  .mobile-nav .sub-menu a, .mobile-nav .header__nav .format-fw > ul a, .header__nav .mobile-nav .format-fw > ul a {
+    border: none;
+    background-color: #fff; }
+  .mobile-nav .sub-menu a, .mobile-nav .header__nav .format-fw > ul a, .header__nav .mobile-nav .format-fw > ul a, .mobile-nav .header__nav .format-sp > ul a, .header__nav .mobile-nav .format-sp > ul a {
     color: #000; }
-.mobile-nav .sub-menu.is-visible, .mobile-nav .header__nav .format-fw > ul.is-visible, .header__nav .mobile-nav .format-fw > ul.is-visible {
+.mobile-nav .sub-menu.is-visible, .mobile-nav .header__nav .format-fw > ul.is-visible, .header__nav .mobile-nav .format-fw > ul.is-visible, .mobile-nav .header__nav .format-sp > ul.is-visible, .header__nav .mobile-nav .format-sp > ul.is-visible {
   display: block;
-  left: 0; }
+  left: 0;
+  z-index: 1; }
 .mobile-nav .menu-item-has-children > a:first-child {
   float: left;
   width: 75%; }
@@ -1287,18 +1404,50 @@ blockquote p {
   font-size: 1.60181em;
   color: #fff; }
 
-.header__nav .format-fw > ul {
-  width: 1400px;
+.header__nav .format-fw > ul, .header__nav .format-sp > ul {
   left: 0;
-  padding: 1em; }
-.header__nav .format-fw > ul > li {
+  padding: 1em;
+  width: 100%; }
+.header__nav .format-fw > ul > li, .header__nav .format-sp > ul > li {
   width: 32.666%;
   /* 100% - 2% (for margins, below) / 3 (3 columns) */
   float: left; }
-.header__nav .format-fw > ul > li:not(:nth-child(3n+1)) {
+.header__nav .format-fw > ul > li:not(:nth-child(3n+1)), .header__nav .format-sp > ul > li:not(:nth-child(3n+1)) {
   border-left: 1px solid #d0d2d3;
   padding-left: 1%;
   margin-left: 1%; }
+
+.format-sp a:hover {
+  color: #ffffff; }
+  .format-sp a:hover .meta-text {
+    color: #ffffff; }
+.format-sp .meta-text {
+  display: block;
+  font-size: 0.79012em;
+  color: #404041;
+  margin-top: .5em; }
+  .format-sp .meta-text .times {
+    display: inline-block;
+    margin-left: .75em; }
+.format-sp li .group {
+  display: inline-block;
+  vertical-align: middle;
+  width: 70%; }
+  @media screen and (min-width: 1024px) {
+    .format-sp li .group {
+      width: 80%; } }
+.format-sp li a {
+  min-height: 71px;
+  /* the 40px img (below) + the padding, so that all the containers are the same height and flow */ }
+.format-sp .mobile-menu-submenu-header a {
+  min-height: 0; }
+.format-sp li img {
+  display: inline-block;
+  vertical-align: middle;
+  border-radius: 50%;
+  margin-right: 1em;
+  max-height: 40px;
+  width: auto; }
 
 .content__heading {
   margin-top: 0;
@@ -1759,7 +1908,7 @@ Curated posts for Featured Articles
   width: 100%;
   margin-right: 0;
   overflow: hidden;
-  background: #fff;
+  background: #5a5a5a;
   height: 100px;
   margin: 1.5em 0 0; }
   .featured__content--block:last-child {
@@ -2055,8 +2204,8 @@ Community Highlights and Events
 */
 .home__highlights {
   padding: 0 0.809em 1.5em;
-  background-color: #fff;
-  border-bottom: 1px solid #f7f7f7; }
+  background-color: #5a5a5a;
+  border-bottom: 1px solid #525252; }
   @media screen and (min-width: 768px) {
     .home__highlights {
       padding: 0 3.236em 3em; } }
@@ -2339,7 +2488,8 @@ Community Highlights and Events
   float: left;
   display: block;
   margin-right: 7.42297%;
-  width: 100%;
+  width: 46.28851%;
+  margin-left: 26.85574%;
   margin-right: 0;
   height: 70px;
   padding: 18px 0;
@@ -2349,6 +2499,7 @@ Community Highlights and Events
     margin-right: 0; }
   @media screen and (min-width: 768px) {
     .header__logo {
+      margin-left: 0%;
       max-width: 200px;
       height: 82px; } }
   @media screen and (min-width: 1024px) {
@@ -2467,7 +2618,7 @@ Community Highlights and Events
   display: block;
   margin: 0 auto;
   text-align: center;
-  font-size: 25px; }
+  font-size: 30px; }
   @media screen and (min-width: 768px) {
     .header__account--btn {
       height: 82px;
@@ -2671,24 +2822,14 @@ Community Highlights and Events
   float: right;
   padding: 4px 0 7px; }
 
-.footer__menu .social__link {
-  margin: 0 0 0 30px; }
-  .footer__menu .social__link a {
-    box-sizing: content-box;
-    display: inline-block;
-    padding: 5px 4px 3px;
-    width: 22px;
-    height: 22px;
-    line-height: 22px;
-    font-size: 1.26563em;
-    border: 1px solid #929497;
-    border-radius: 100px;
-    text-align: center; }
-    .footer__menu .social__link a:hover {
-      border-color: #d22228;
-      color: #d22228; }
-  .footer__menu .social__link:last-child {
-    margin: 0 0 0 30px; }
+.footer__menu a.social__link {
+  border-color: #929497;
+  color: #929497;
+  margin-right: 0;
+  margin-left: 6px; }
+  .footer__menu a.social__link:hover {
+    border-color: #d22228;
+    color: #d22228; }
 
 /*doc
 ---
@@ -2821,6 +2962,18 @@ Link posts contain a link to an external site. They can also optionally have a f
   .single-gmr_album .hentry {
     margin-bottom: 0; }
 
+.entry__header {
+  margin-bottom: 2em; }
+
+.entry__featured-image {
+  width: 100%;
+  height: auto;
+  margin-bottom: 1em; }
+
+.entry__title, .page__title {
+  margin: 0;
+  margin-bottom: 1em; }
+
 .entry__thumbnail {
   position: relative;
   padding-bottom: 32px; }
@@ -2854,8 +3007,7 @@ Link posts contain a link to an external site. They can also optionally have a f
   display: block;
   margin-right: 7.42297%;
   width: 100%;
-  padding: 16px 0;
-  border-bottom: 1px solid #d0d2d3; }
+  padding: 16px 0; }
   .entry__footer:last-child {
     margin-right: 0; }
   @media screen and (min-width: 480px) {
@@ -2886,7 +3038,7 @@ Link posts contain a link to an external site. They can also optionally have a f
   .single-gmr_album .entry__footer {
     border-bottom: none; }
 
-.contest .entry__footer {
+.survey .entry__footer {
   border-bottom: none; }
 
 .contest .entry__footer {
@@ -2902,6 +3054,10 @@ Link posts contain a link to an external site. They can also optionally have a f
 
 .entry__footer--category:hover, .entry__footer--category:focus, .entry__footer--category:active {
   color: #aa1c20; }
+
+.entry__related-posts {
+  width: 100%;
+  float: left; }
 
 .entry__type {
   float: left;
@@ -3440,39 +3596,33 @@ Link posts contain a link to an external site. They can also optionally have a f
   margin-top: 0;
   line-height: 1; }
 
-.alignleft, img.alignleft {
+.entry-content .alignleft, .entry-content img.alignleft {
   display: block;
   margin: 0 1em 16px;
   float: left; }
-
-.alignright, img.alignright {
+.entry-content .alignright, .entry-content img.alignright {
   display: block;
   margin: 0 0 16px 1em;
   float: right; }
-
-.aligncenter, img.aligncenter {
+.entry-content .aligncenter, .entry-content img.aligncenter {
   margin: 0 auto 1em; }
-
-.size-auto,
-.size-full,
-.size-large,
-.size-medium,
-.size-thumbnail {
+.entry-content .size-auto,
+.entry-content .size-full,
+.entry-content .size-large,
+.entry-content .size-medium,
+.entry-content .size-thumbnail {
   max-width: 100%;
   height: auto; }
-
-.wp-caption {
+.entry-content .wp-caption {
   max-width: 100%;
   padding: 0;
   margin: 0 0 16px;
   background: #d0d2d3; }
-
-.wp-caption img {
+.entry-content .wp-caption img {
   width: 100%;
   margin-bottom: 0;
   max-width: 100%; }
-
-.wp-caption p.wp-caption-text {
+.entry-content .wp-caption p.wp-caption-text {
   padding: 16px 1.25em 20px;
   margin: 4px .5em;
   font-size: 0.79012em;
@@ -3482,11 +3632,13 @@ Link posts contain a link to an external site. They can also optionally have a f
   width: 100%;
   font-size: 0.88889em;
   float: left;
-  margin-top: 3em; }
+  margin: 0 0 1.5em;
+  text-align: center; }
 
 .posts-pagination--previous {
   float: left;
-  width: 50%; }
+  width: 50%;
+  text-align: left; }
 
 .posts-pagination--previous .fa {
   margin-right: .5em; }
@@ -3498,6 +3650,56 @@ Link posts contain a link to an external site. They can also optionally have a f
 
 .posts-pagination--next .fa {
   margin-left: .5em; }
+
+.posts-pagination--load-more {
+  display: inline-block;
+  line-height: 1;
+  padding: 0.5em 1em;
+  margin-right: .5em;
+  outline: none;
+  background-color: #d22228;
+  border: 1px solid #d22228;
+  font-family: "Open Sans", sans-serif;
+  font-size: 0.88889em;
+  color: #ffffff !important;
+  text-transform: uppercase;
+  cursor: pointer;
+  -webkit-border-radius: 1em;
+  -moz-border-radius: 1em;
+  -ms-border-radius: 1em;
+  -o-border-radius: 1em;
+  -border-radius: 1em;
+  border-radius: 1em;
+  display: none; }
+  .posts-pagination--load-more:hover, .posts-pagination--load-more:focus {
+    background-color: #aa1c20;
+    border-color: #aa1c20;
+    color: #ffffff; }
+  .posts-pagination--load-more:last-of-type {
+    margin-right: 0; }
+  .posts-pagination--load-more .fa {
+    margin-right: 0.4em; }
+  .posts-pagination--load-more.is-loaded .fa {
+    display: none; }
+  .posts-pagination--load-more:disabled {
+    display: inline-block;
+    line-height: 1;
+    padding: 0.5em 1em;
+    margin-right: .5em;
+    outline: none;
+    background-color: #929497;
+    border: 1px solid #929497;
+    font-family: "Open Sans", sans-serif;
+    font-size: 0.88889em;
+    color: #ffffff !important;
+    text-transform: uppercase;
+    cursor: pointer; }
+    .posts-pagination--load-more:disabled:hover, .posts-pagination--load-more:disabled:focus {
+      background-color: #7b7d80;
+      border-color: #7b7d80;
+      color: #ffffff; }
+    .posts-pagination--load-more:disabled:last-of-type {
+      margin-right: 0; }
 
 .entries {
   float: left;
@@ -3518,9 +3720,13 @@ Link posts contain a link to an external site. They can also optionally have a f
   margin-right: 4.82916%;
   width: 100%;
   margin-right: 0;
-  margin-bottom: 2.25em; }
+  margin-bottom: 2.25em;
+  border-bottom: 1px solid #d0d2d3;
+  text-align: center; }
   .entry2:last-child {
     margin-right: 0; }
+  .entry2:last-of-type {
+    border-bottom: none; }
 
 .entry2__thumbnail {
   margin-bottom: 1.125em;
@@ -3564,13 +3770,13 @@ Link posts contain a link to an external site. They can also optionally have a f
       text-align: left; }
       .entry2__meta:last-child {
         margin-right: 0; }
-      .has-thumbnail .entry2__meta {
+      .has-post-thumbnail .entry2__meta, .type-contest .entry2__meta, .type-tribe_events .entry2__meta {
         float: left;
         display: block;
         margin-right: 4.82916%;
         width: 65.05695%;
         margin-right: 0; }
-        .has-thumbnail .entry2__meta:last-child {
+        .has-post-thumbnail .entry2__meta:last-child, .type-contest .entry2__meta:last-child, .type-tribe_events .entry2__meta:last-child {
           margin-right: 0; } }
 
 .entry2__date {
@@ -3611,7 +3817,6 @@ Link posts contain a link to an external site. They can also optionally have a f
 .entry2__footer {
   margin-top: 2.25em;
   padding: 0 0 0.75em;
-  border-bottom: 1px solid #d0d2d3;
   text-align: center;
   margin-right: 0;
   float: left;
@@ -3646,25 +3851,25 @@ Link posts contain a link to an external site. They can also optionally have a f
     margin-right: 0; } }
 
 @media screen and (min-width: 480px) {
-  .entry2.format-audio.has-thumbnail .entry2__thumbnail {
+  .entry2.format-audio.has-post-thumbnail .entry2__thumbnail {
     float: left;
     display: block;
     margin-right: 3.16844%;
     width: 19.75788%; }
-    .entry2.format-audio.has-thumbnail .entry2__thumbnail:last-child {
+    .entry2.format-audio.has-post-thumbnail .entry2__thumbnail:last-child {
       margin-right: 0; }
-    .entry2.format-audio.has-thumbnail .entry2__thumbnail:after {
+    .entry2.format-audio.has-post-thumbnail .entry2__thumbnail:after {
       padding-top: 100%; }
-  .entry2.format-audio.has-thumbnail .entry2__meta {
+  .entry2.format-audio.has-post-thumbnail .entry2__meta {
     float: left;
     display: block;
     margin-right: 3.16844%;
     width: 77.07368%;
     margin-right: 0; }
-    .entry2.format-audio.has-thumbnail .entry2__meta:last-child {
+    .entry2.format-audio.has-post-thumbnail .entry2__meta:last-child {
       margin-right: 0; } }
 
-.format-audio .entry2__thumbnail a:before, .format-gallery .entry2__thumbnail a:before, .format-video .entry2__thumbnail a:before, .type-tribe_events .entry2__thumbnail a:before {
+.format-audio .entry2__thumbnail a:before, .format-gallery .entry2__thumbnail a:before, .format-video .entry2__thumbnail a:before, .type-contest .entry2__thumbnail a:before, .type-tribe_events .entry2__thumbnail a:before {
   position: absolute;
   left: 0;
   top: 0;
@@ -3676,10 +3881,10 @@ Link posts contain a link to an external site. They can also optionally have a f
   z-index: 30;
   font-size: 4em; }
   @media screen and (min-width: 480px) {
-    .format-audio .entry2__thumbnail a:before, .format-gallery .entry2__thumbnail a:before, .format-video .entry2__thumbnail a:before, .type-tribe_events .entry2__thumbnail a:before {
+    .format-audio .entry2__thumbnail a:before, .format-gallery .entry2__thumbnail a:before, .format-video .entry2__thumbnail a:before, .type-contest .entry2__thumbnail a:before, .type-tribe_events .entry2__thumbnail a:before {
       font-size: 2.5em; } }
   @media screen and (min-width: 1024px) {
-    .format-audio .entry2__thumbnail a:before, .format-gallery .entry2__thumbnail a:before, .format-video .entry2__thumbnail a:before, .type-tribe_events .entry2__thumbnail a:before {
+    .format-audio .entry2__thumbnail a:before, .format-gallery .entry2__thumbnail a:before, .format-video .entry2__thumbnail a:before, .type-contest .entry2__thumbnail a:before, .type-tribe_events .entry2__thumbnail a:before {
       font-size: 3em; } }
 
 .type-tribe_events .entry2__thumbnail {
@@ -3702,6 +3907,32 @@ Link posts contain a link to an external site. They can also optionally have a f
   font-size: 2.5em;
   margin-top: .15em; }
 
+.type-contest .entry2__thumbnail {
+  background-color: rgba(210, 34, 40, 0.8); }
+  .type-contest .entry2__thumbnail:after {
+    background-color: rgba(210, 34, 40, 0.5); }
+.type-contest .entry2__thumbnail--end-date,
+.type-contest .entry2__thumbnail--start-date {
+  font-size: 1em;
+  line-height: 1;
+  text-transform: uppercase;
+  color: #fff;
+  position: absolute;
+  padding: 4% 6%;
+  z-index: 20; }
+.type-contest .entry2__thumbnail--end-date {
+  right: 0;
+  bottom: 0;
+  text-align: right; }
+.type-contest .entry2__thumbnail--start-date {
+  left: 0;
+  top: 0; }
+.type-contest .entry2__thumbnail--day-of-week {
+  font-weight: normal; }
+.type-contest .entry2__thumbnail--month-and-day {
+  font-size: 2em;
+  margin-top: .15em; }
+
 .entry2-ad-wrap {
   clear: both;
   position: relative; }
@@ -3720,12 +3951,16 @@ Link posts contain a link to an external site. They can also optionally have a f
     width: 65.05695%; }
     .entry2-ad-wrap .entry2__meta:last-child {
       margin-right: 0; }
-  .entry2-ad-wrap .entry2.has-thumbnail .entry2__meta {
+  .entry2-ad-wrap .entry2.has-post-thumbnail .entry2__meta,
+  .entry2-ad-wrap .entry2.type-contest .entry2__meta,
+  .entry2-ad-wrap .entry2.type-tribe_events .entry2__meta {
     float: left;
     display: block;
     margin-right: 4.82916%;
     width: 30.11389%; }
-    .entry2-ad-wrap .entry2.has-thumbnail .entry2__meta:last-child {
+    .entry2-ad-wrap .entry2.has-post-thumbnail .entry2__meta:last-child,
+    .entry2-ad-wrap .entry2.type-contest .entry2__meta:last-child,
+    .entry2-ad-wrap .entry2.type-tribe_events .entry2__meta:last-child {
       margin-right: 0; }
   .entry2-ad-wrap .entry2-ad-wrap__ad {
     float: left;
@@ -3750,6 +3985,174 @@ Link posts contain a link to an external site. They can also optionally have a f
   .entry2-ad-wrap .entry2.format-standard .entry2__thumbnail {
     float: left;
     margin-right: 3.236em; } }
+
+.article__header {
+  margin-bottom: 2em; }
+
+.article__date {
+  display: block;
+  margin-bottom: 0.5em;
+  font-size: 1em;
+  text-transform: uppercase;
+  color: #929497; }
+  @media screen and (min-width: 768px) {
+    .article__date {
+      font-size: 0.88889em; } }
+
+.article__title {
+  font-size: 2.88651em;
+  line-height: 1.2;
+  margin: 0 0 0.65em; }
+  @media screen and (min-width: 768px) {
+    .article__title {
+      font-size: 2.2807em; } }
+
+.article__thumbnail {
+  width: 100%;
+  padding-bottom: 66%;
+  background-size: 100%;
+  background-size: cover;
+  background-position: center center; }
+
+.article__content {
+  margin-bottom: 1.5em;
+  font-size: 16px;
+  line-height: 1.6; }
+  @media screen and (min-width: 1024px) {
+    .article__content {
+      margin-bottom: 4.5em; } }
+
+@media screen and (min-width: 1024px) {
+  .article .ad__inline--right {
+    margin-left: 3.236em; } }
+
+.article__footer {
+  float: left;
+  display: block;
+  margin-right: 7.42297%;
+  width: 100%;
+  margin: 0 0 3em;
+  padding: 0;
+  border: none;
+  line-height: 1.5; }
+  .article__footer:last-child {
+    margin-right: 0; }
+
+.article__categories, .article__tags, .article__shows {
+  overflow: auto;
+  clear: both;
+  margin-bottom: 1.25em;
+  font-size: 1.125em;
+  color: #929497; }
+  @media screen and (min-width: 768px) {
+    .article__categories, .article__tags, .article__shows {
+      font-size: 0.88889em; } }
+
+.article__list, .article__list--categories, .article__list--tags, .article__list--shows, .article__list--show {
+  display: inline;
+  padding: 0;
+  margin: 0;
+  list-style: none; }
+
+.article__list:before {
+  text-transform: uppercase; }
+
+.article__list--item {
+  display: inline;
+  list-style: none;
+  margin-right: .5em; }
+
+.article__list--item a, .article__list--item a:visited, .article__list--show a, .article__list--show a:visited {
+  color: #929497; }
+
+.article__list--item a:hover, .article__list--item a:focus, .article__list--item a:active, .article__list--show a:hover, .article__list--show a:focus, .article__list--show a:active {
+  color: #aa1c20; }
+
+.article__list--title {
+  display: inline-block;
+  font-weight: 800; }
+
+.article__list--title:after {
+  content: "/";
+  margin: 0 .25em 0 .5em; }
+
+.article__list--show {
+  margin-right: .5em;
+  display: inline-block; }
+
+.article__show--logo {
+  display: inline-block;
+  float: left;
+  width: 24px;
+  height: 24px;
+  margin-right: .5em;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  -border-radius: 50%;
+  border-radius: 50%;
+  background-color: #282827; }
+
+.article__show--logo img {
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  -border-radius: 50%;
+  border-radius: 50%; }
+
+.article__show--name {
+  display: inline-block; }
+
+@media screen and (min-width: 1024px) {
+  .article__list--item,
+  .article__list--show,
+  .article__show--logo {
+    margin-right: 1.5em; }
+
+  .article__list--title:after {
+    margin: 0 1.25em 0 1.5em; } }
+.article__content .alignleft, .article__content img.alignleft {
+  display: block;
+  margin: 0 1em 16px;
+  float: left; }
+.article__content .alignright, .article__content img.alignright {
+  display: block;
+  margin: 0 0 16px 1em;
+  float: right; }
+.article__content .aligncenter, .article__content img.aligncenter {
+  margin: 0 auto 1em; }
+.article__content .size-auto,
+.article__content .size-full,
+.article__content .size-large,
+.article__content .size-medium,
+.article__content .size-thumbnail {
+  max-width: 100%;
+  height: auto; }
+.article__content .wp-caption {
+  max-width: 100%;
+  padding: 0;
+  margin: 0 0 16px;
+  background: #d0d2d3; }
+.article__content .wp-caption img {
+  width: 100%;
+  margin-bottom: 0;
+  max-width: 100%; }
+.article__content .wp-caption p.wp-caption-text {
+  padding: 16px 1.25em 20px;
+  margin: 4px .5em;
+  font-size: 0.79012em;
+  text-align: left; }
+.article__content blockquote {
+  background: url(../../images/article__blockquote-icon.svg) no-repeat 0 0.35em;
+  border: none;
+  padding: 0 0 0 4em; }
+  .article__content blockquote, .article__content blockquote p {
+    color: #6d6e70; }
+
+.article__comments {
+  margin: 3em 0; }
 
 .ad-unit--300--250 {
   position: relative;
@@ -4096,7 +4499,7 @@ category: Components
       display: block;
       padding-bottom: 26px; } }
 
-.live-stream__listen-now--btn, .podcast__download {
+.live-stream__listen-now--btn, .podcast__subscribe {
   display: inline-block;
   line-height: 1;
   padding: 0.5em 1em;
@@ -4115,12 +4518,14 @@ category: Components
   -o-border-radius: 1em;
   -border-radius: 1em;
   border-radius: 1em;
-  font-weight: 700; }
-  .live-stream__listen-now--btn:hover, .podcast__download:hover, .live-stream__listen-now--btn:focus, .podcast__download:focus {
+  margin-right: 0;
+  font-weight: 700;
+  z-index: 1; }
+  .live-stream__listen-now--btn:hover, .podcast__subscribe:hover, .live-stream__listen-now--btn:focus, .podcast__subscribe:focus {
     background-color: #aa1c20;
     border-color: #aa1c20;
     color: #ffffff; }
-  .live-stream__listen-now--btn:last-of-type, .podcast__download:last-of-type {
+  .live-stream__listen-now--btn:last-of-type, .podcast__subscribe:last-of-type {
     margin-right: 0; }
 
 .live-stream__now-playing--btn {
@@ -4150,6 +4555,13 @@ category: Components
     color: #d22228; }
   .live-stream__now-playing--btn:last-of-type {
     margin-right: 0; }
+
+.live-stream__login {
+  padding-bottom: 3px;
+  margin-right: 0;
+  font-weight: 700;
+  font-size: 0.79012em;
+  color: #d22228; }
 
 .live-stream__resume {
   height: 48px;
@@ -4275,6 +4687,9 @@ category: Components
   height: 100%;
   background-color: rgba(0, 0, 0, 0.75);
   z-index: 20000; }
+
+.live-stream__container--player {
+  height: 0; }
 
 .live-stream__container.vast__pre-roll .live-stream__container--player {
   position: absolute;
@@ -4402,7 +4817,7 @@ category: Components
 
 .now-playing__title {
   margin: 0 0 4px;
-  line-height: 1;
+  line-height: 1.4;
   font-size: 1em;
   font-weight: lighter;
   color: #d22228; }
@@ -4551,7 +4966,7 @@ category: Components
   content: "\e604"; }
 
 .live-link__type--gallery:before {
-  content: "\e602"; }
+  content: "\e621"; }
 
 .live-link__type--image:before {
   content: "\e600"; }
@@ -4563,7 +4978,7 @@ category: Components
   content: "\e608"; }
 
 .live-link__type--video:before {
-  content: "\e604"; }
+  content: "\e620"; }
 
 .live-link__title {
   display: block;
@@ -4696,6 +5111,21 @@ category: Components - Ads
 .single__featured-img--contest {
   margin: 0 auto; }
 
+.type-contest .col__inner--left,
+.type-survey .col__inner--left {
+  border-right-width: 0; }
+.type-contest.collapsed .col__inner--left,
+.type-survey.collapsed .col__inner--left {
+  width: 100%;
+  margin-right: 0;
+  padding-right: 0; }
+.type-contest.collapsed .col__inner--right,
+.type-survey.collapsed .col__inner--right {
+  display: none; }
+.type-contest.collapsed .contest__entry--link,
+.type-survey.collapsed .contest__entry--link {
+  display: none; }
+
 .contest__entry--link {
   display: block;
   margin-bottom: 2em; }
@@ -4791,6 +5221,178 @@ category: Components - Ads
 
 .contest__form--row {
   margin-bottom: 30px; }
+
+.contest__restrictions .contest__restriction--age,
+.contest__restrictions .contest__restriction--age-fails,
+.contest__restrictions .contest__restriction--finished,
+.contest__restrictions .contest__restriction--max-entries,
+.contest__restrictions .contest__restriction--not-started,
+.contest__restrictions .contest__restriction--one-entry,
+.contest__restrictions .contest__restriction--signin {
+  display: none; }
+.contest__restrictions .contest__restriction--finished p,
+.contest__restrictions .contest__restriction--max-entries p,
+.contest__restrictions .contest__restriction--not-started p,
+.contest__restrictions .contest__restriction--age-fails p,
+.contest__restrictions .contest__restriction--one-entry p {
+  display: inline-block;
+  line-height: 1;
+  padding: 0.5em 1em;
+  margin-right: .5em;
+  outline: none;
+  background-color: #d22228;
+  border: 1px solid #d22228;
+  font-family: "Open Sans", sans-serif;
+  font-size: 0.88889em;
+  color: #ffffff !important;
+  text-transform: uppercase;
+  cursor: pointer;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  -border-radius: 3px;
+  border-radius: 3px; }
+  .contest__restrictions .contest__restriction--finished p:hover, .contest__restrictions .contest__restriction--finished p:focus,
+  .contest__restrictions .contest__restriction--max-entries p:hover,
+  .contest__restrictions .contest__restriction--max-entries p:focus,
+  .contest__restrictions .contest__restriction--not-started p:hover,
+  .contest__restrictions .contest__restriction--not-started p:focus,
+  .contest__restrictions .contest__restriction--age-fails p:hover,
+  .contest__restrictions .contest__restriction--age-fails p:focus,
+  .contest__restrictions .contest__restriction--one-entry p:hover,
+  .contest__restrictions .contest__restriction--one-entry p:focus {
+    background-color: #aa1c20;
+    border-color: #aa1c20;
+    color: #ffffff; }
+  .contest__restrictions .contest__restriction--finished p:last-of-type,
+  .contest__restrictions .contest__restriction--max-entries p:last-of-type,
+  .contest__restrictions .contest__restriction--not-started p:last-of-type,
+  .contest__restrictions .contest__restriction--age-fails p:last-of-type,
+  .contest__restrictions .contest__restriction--one-entry p:last-of-type {
+    margin-right: 0; }
+.contest__restrictions .contest__restriction--age p:first-child {
+  font-weight: bold; }
+.contest__restrictions .contest__restriction--signin p:first-child {
+  font-weight: bold; }
+.contest__restrictions .contest__restriction--signin a {
+  display: inline-block;
+  line-height: 1;
+  padding: 0.5em 1em;
+  margin-right: .5em;
+  outline: none;
+  background-color: #d22228;
+  border: 1px solid #d22228;
+  font-family: "Open Sans", sans-serif;
+  font-size: 0.88889em;
+  color: #ffffff !important;
+  text-transform: uppercase;
+  cursor: pointer;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  -border-radius: 3px;
+  border-radius: 3px; }
+  .contest__restrictions .contest__restriction--signin a:hover, .contest__restrictions .contest__restriction--signin a:focus {
+    background-color: #aa1c20;
+    border-color: #aa1c20;
+    color: #ffffff; }
+  .contest__restrictions .contest__restriction--signin a:last-of-type {
+    margin-right: 0; }
+.contest__restrictions.age .contest__restriction--age {
+  display: block; }
+.contest__restrictions.age-fails .contest__restriction--age-fails {
+  display: block; }
+.contest__restrictions.finished .contest__restriction--finished {
+  display: block; }
+.contest__restrictions.max-entries .contest__restriction--max-entries {
+  display: block; }
+.contest__restrictions.not-started .contest__restriction--not-started {
+  display: block; }
+.contest__restrictions.one-entry .contest__restriction--one-entry {
+  display: block; }
+.contest__restrictions.signin .contest__restriction--signin {
+  display: block; }
+
+.contest__restriction--min-age-yes,
+.contest__restriction--min-age-no {
+  display: inline-block;
+  line-height: 1;
+  padding: 0.625em 1em;
+  margin-right: .5em;
+  outline: none;
+  background-color: #d22228;
+  border: 1px solid #d22228;
+  font-family: "Open Sans", sans-serif;
+  font-size: 0.88889em;
+  color: #ffffff !important;
+  text-transform: uppercase;
+  cursor: pointer;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  -border-radius: 3px;
+  border-radius: 3px; }
+  .contest__restriction--min-age-yes:hover, .contest__restriction--min-age-yes:focus,
+  .contest__restriction--min-age-no:hover,
+  .contest__restriction--min-age-no:focus {
+    background-color: #aa1c20;
+    border-color: #aa1c20;
+    color: #ffffff; }
+  .contest__restriction--min-age-yes:last-of-type,
+  .contest__restriction--min-age-no:last-of-type {
+    margin-right: 0; }
+  .contest__restriction--min-age-yes:hover,
+  .contest__restriction--min-age-no:hover {
+    display: inline-block;
+    line-height: 1;
+    padding: 0.625em 1em;
+    margin-right: .5em;
+    outline: none;
+    background-color: #f5ed7f;
+    border: 1px solid #f5ed7f;
+    font-family: "Open Sans", sans-serif;
+    font-size: 0.88889em;
+    color: #000000 !important;
+    text-transform: uppercase;
+    cursor: pointer; }
+    .contest__restriction--min-age-yes:hover:hover, .contest__restriction--min-age-yes:hover:focus,
+    .contest__restriction--min-age-no:hover:hover,
+    .contest__restriction--min-age-no:hover:focus {
+      background-color: #f2e754;
+      border-color: #f2e754;
+      color: #000000; }
+    .contest__restriction--min-age-yes:hover:last-of-type,
+    .contest__restriction--min-age-no:hover:last-of-type {
+      margin-right: 0; }
+  .contest__restriction--min-age-yes:active,
+  .contest__restriction--min-age-no:active {
+    display: inline-block;
+    line-height: 1;
+    padding: 0.625em 1em;
+    margin-right: .5em;
+    outline: none;
+    background-color: #000000;
+    border: 1px solid #000000;
+    font-family: "Open Sans", sans-serif;
+    font-size: 0.88889em;
+    color: #ffffff !important;
+    text-transform: uppercase;
+    cursor: pointer; }
+    .contest__restriction--min-age-yes:active:hover, .contest__restriction--min-age-yes:active:focus,
+    .contest__restriction--min-age-no:active:hover,
+    .contest__restriction--min-age-no:active:focus {
+      background-color: black;
+      border-color: black;
+      color: #ffffff; }
+    .contest__restriction--min-age-yes:active:last-of-type,
+    .contest__restriction--min-age-no:active:last-of-type {
+      margin-right: 0; }
+  .contest__restriction--min-age-yes:last-of-type,
+  .contest__restriction--min-age-no:last-of-type {
+    margin-right: 0; }
 
 .contest-attr--rules {
   padding: 2em;
@@ -5598,7 +6200,8 @@ category: Components - Shows
 
 */
 .podcast {
-  display: block; }
+  display: block;
+  margin-bottom: 68px; }
   .podcast:before, .podcast:after {
     content: " ";
     display: table; }
@@ -5609,18 +6212,45 @@ category: Components - Shows
   float: left;
   display: block;
   margin-right: 2.35765%;
-  width: 14.70196%; }
+  width: 14.70196%;
+  margin-top: 4px; }
   .podcast__play:last-child {
     margin-right: 0; }
 
+.podcast__cover {
+  width: 100%;
+  height: 0;
+  padding-bottom: 100%;
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-size: auto 100%;
+  position: relative; }
+
 .podcast__btn--play,
 .podcast__btn--pause {
-  position: relative; }
+  position: absolute;
+  width: 45%;
+  margin: 0px;
+  position: absolute;
+  top: 28%;
+  left: 28%;
+  height: 45%;
+  border-width: 3px;
+  background-color: rgba(255, 255, 255, 0.5); }
+
+.podcast__btn--play:hover, .podcast__btn--pause:focus {
+  border-color: #aa1c20;
+  color: #aa1c20; }
+
+.podcast__btn--play:active {
+  border-color: #000000;
+  color: #000000; }
 
 .podcast__btn--play, .podcast__btn--pause, .podcast__runtime {
   display: block;
   margin: 0 auto;
-  text-align: center; }
+  text-align: center;
+  padding-top: 1em; }
 
 .podcast__btn--play:before,
 .podcast__btn--pause:before {
@@ -5632,7 +6262,11 @@ category: Components - Shows
   -ms-transform: translate(-50%, -50%);
   -o-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
-  font-family: "gmr-icons" !important; }
+  font-family: "gmr-icons" !important;
+  font-size: 1.80203em; }
+
+.podcast__btn--play:before {
+  left: 55%; }
 
 .podcast__btn--play:before {
   content: "\e606" !important; }
@@ -5642,7 +6276,7 @@ category: Components - Shows
 .podcast__btn--pause {
   display: none; }
   .podcast__btn--pause:before {
-    content: "\e60b" !important; }
+    content: "\e61f" !important; }
   .podcast__btn--pause.playing {
     display: block; }
 
@@ -5650,15 +6284,256 @@ category: Components - Shows
   float: left;
   display: block;
   margin-right: 2.35765%;
-  width: 82.94039%; }
+  width: 74.41059%; }
   .podcast__meta:last-child {
     margin-right: 0; }
   .podcast__meta h3 {
+    margin: 10px 0 15px; }
+
+.podcast__title {
+  margin: 20px 0 26px;
+  line-height: 1;
+  font-size: 1.80203em; }
+
+.podcast__parent {
+  margin-bottom: 10px; }
+
+.podcast__parent--title {
+  display: inline-block;
+  font-weight: bold; }
+
+.podcast__date {
+  font-size: 0.79012em;
+  color: #929497;
+  text-transform: uppercase; }
+
+a.podcast__rss:link, a.podcast__rss:visited {
+  display: inline-block;
+  line-height: 1;
+  padding: 0.5em 1em;
+  margin-right: .5em;
+  outline: none;
+  background-color: transparent;
+  border: 1px solid #929497;
+  font-family: "Open Sans", sans-serif;
+  font-size: 0.88889em;
+  color: #929497 !important;
+  text-transform: uppercase;
+  cursor: pointer;
+  -webkit-border-radius: 1em;
+  -moz-border-radius: 1em;
+  -ms-border-radius: 1em;
+  -o-border-radius: 1em;
+  -border-radius: 1em;
+  border-radius: 1em;
+  display: inline-block;
+  margin-left: 10px;
+  font-weight: normal;
+  text-transform: none; }
+  a.podcast__rss:link:hover, a.podcast__rss:link:focus, a.podcast__rss:visited:hover, a.podcast__rss:visited:focus {
+    background-color: transparent;
+    border-color: #7b7d80;
+    color: #929497; }
+  a.podcast__rss:link:last-of-type, a.podcast__rss:visited:last-of-type {
+    margin-right: 0; }
+
+a.podcast__rss:hover, a.podcast__rss:focus {
+  display: inline-block;
+  line-height: 1;
+  padding: 0.5em 1em;
+  margin-right: .5em;
+  outline: none;
+  background-color: #d22228;
+  border: 1px solid #d22228;
+  font-family: "Open Sans", sans-serif;
+  font-size: 0.88889em;
+  color: #ffffff !important;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-transform: none; }
+  a.podcast__rss:hover:hover, a.podcast__rss:hover:focus, a.podcast__rss:focus:hover, a.podcast__rss:focus:focus {
+    background-color: #aa1c20;
+    border-color: #aa1c20;
+    color: #ffffff; }
+  a.podcast__rss:hover:last-of-type, a.podcast__rss:focus:last-of-type {
+    margin-right: 0; }
+
+a.podcast__rss:active {
+  display: inline-block;
+  line-height: 1;
+  padding: 0.5em 1em;
+  margin-right: .5em;
+  outline: none;
+  background-color: #000000;
+  border: 1px solid #000000;
+  font-family: "Open Sans", sans-serif;
+  font-size: 0.88889em;
+  color: #ffffff !important;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-transform: none; }
+  a.podcast__rss:active:hover, a.podcast__rss:active:focus {
+    background-color: black;
+    border-color: black;
+    color: #ffffff; }
+  a.podcast__rss:active:last-of-type {
+    margin-right: 0; }
+
+.podcast__desc {
+  font-size: 0.88889em; }
+
+.podcast__download {
+  width: 100%;
+  padding-top: 1em;
+  margin: 0 auto;
+  text-align: center; }
+
+.podcast__download--btn {
+  display: inline-block;
+  line-height: 1;
+  padding: 0.5em 1em;
+  margin-right: .5em;
+  outline: none;
+  background-color: transparent;
+  border: 1px solid #929497;
+  font-family: "Open Sans", sans-serif;
+  font-size: 0.88889em;
+  color: #929497 !important;
+  text-transform: uppercase;
+  cursor: pointer;
+  -webkit-border-radius: 1em;
+  -moz-border-radius: 1em;
+  -ms-border-radius: 1em;
+  -o-border-radius: 1em;
+  -border-radius: 1em;
+  border-radius: 1em;
+  text-transform: none; }
+  .podcast__download--btn:hover, .podcast__download--btn:focus {
+    background-color: transparent;
+    border-color: #7b7d80;
+    color: #929497; }
+  .podcast__download--btn:last-of-type {
+    margin-right: 0; }
+
+.podcast__download--btn:hover {
+  display: inline-block;
+  line-height: 1;
+  padding: 0.5em 1em;
+  margin-right: .5em;
+  outline: none;
+  background-color: #d22228;
+  border: 1px solid #d22228;
+  font-family: "Open Sans", sans-serif;
+  font-size: 0.88889em;
+  color: #ffffff !important;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-transform: none; }
+  .podcast__download--btn:hover:hover, .podcast__download--btn:hover:focus {
+    background-color: #aa1c20;
+    border-color: #aa1c20;
+    color: #ffffff; }
+  .podcast__download--btn:hover:last-of-type {
+    margin-right: 0; }
+
+.podcast__download--btn:active {
+  display: inline-block;
+  line-height: 1;
+  padding: 0.5em 1em;
+  margin-right: .5em;
+  outline: none;
+  background-color: #000000;
+  border: 1px solid #000000;
+  font-family: "Open Sans", sans-serif;
+  font-size: 0.88889em;
+  color: #ffffff !important;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-transform: none; }
+  .podcast__download--btn:active:hover, .podcast__download--btn:active:focus {
+    background-color: black;
+    border-color: black;
+    color: #ffffff; }
+  .podcast__download--btn:active:last-of-type {
+    margin-right: 0; }
+
+.podcast__subscribe {
+  margin: 0 0 0 10px;
+  text-transform: none; }
+
+.gmr-mediaelement-fallback {
+  max-height: 100px; }
+
+.podcast-player--compact {
+  position: relative;
+  border: 1px solid #d0d2d3;
+  border-width: 1px 0;
+  margin: 1.5em 0;
+  padding: 1em 0;
+  display: table; }
+  .podcast-player--compact .podcast__play,
+  .podcast-player--compact .podcast__meta {
+    float: none;
+    display: table-cell;
+    width: auto;
+    vertical-align: middle; }
+  .podcast-player--compact .podcast__play {
+    width: 1px; }
+  .podcast-player--compact .podcast__cover {
+    width: 50px;
+    height: 50px;
+    padding: 0; }
+  .podcast-player--compact .podcast__btn--play,
+  .podcast-player--compact .podcast__btn--pause {
+    border-width: 2px;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0; }
+    .podcast-player--compact .podcast__btn--play:before,
+    .podcast-player--compact .podcast__btn--pause:before {
+      font-size: 150%; }
+  .podcast-player--compact .podcast__runtime {
+    position: absolute;
+    right: 0;
+    top: .2em;
+    font-size: 20px;
+    font-weight: lighter;
+    color: #929497;
+    display: none; }
+  .podcast-player--compact .podcast__meta {
+    display: table-cell;
+    vertical-align: middle;
+    padding-left: 1em; }
+  .podcast-player--compact .podcast__title {
     margin: 0;
-    clear: both; }
-  .podcast__meta time {
-    float: left;
-    margin-right: 1em; }
+    font-size: 1.42383em;
+    line-height: 1.4; }
+  .podcast-player--compact .gmr-mediaelement-fallback {
+    display: none; }
+  @media screen and (min-width: 768px) {
+    .podcast-player--compact .podcast-player {
+      padding: 1.5em .5em; }
+    .podcast-player--compact .podcast__runtime {
+      display: block; }
+    .podcast-player--compact .podcast__cover {
+      width: 80px;
+      height: 80px;
+      padding: 0; }
+    .podcast-player--compact .podcast__btn--play,
+    .podcast-player--compact .podcast__btn--pause {
+      border-width: 3px; }
+      .podcast-player--compact .podcast__btn--play:before,
+      .podcast-player--compact .podcast__btn--pause:before {
+        font-size: 200%; }
+    .podcast-player--compact .podcast__meta {
+      padding-left: 1.5em;
+      padding-right: 8em; }
+    .podcast-player--compact .podcast__title {
+      font-size: 1.80203em; } }
+  @media screen and (min-width: 1024px) {
+    .podcast-player--compact .podcast-player {
+      max-width: 60%; } }
 
 .single-show .featured__content {
   margin: 0.75em 0 1em; }
@@ -5714,14 +6589,23 @@ category: Components - Shows
   .single-show .highlights__community, .single-show .highlights__events {
     padding-top: 0; } }
 .single-show .highlights__heading {
-  font-size: 1.125em; }
+  font-size: 1.125em;
+  color: #929497; }
 .single-show .highlights__event--item {
-  background-color: #fff; }
+  background-color: #F1F1F3; }
 .single-show .highlights__community--item:hover .highlights__community--title {
   color: #f5ed7f; }
 @media screen and (min-width: 1024px) {
   .single-show .inner-left-col {
     padding-right: 25px; } }
+.single-show .entry2__meta {
+  float: none !important;
+  width: auto !important; }
+.single-show .entry2__thumbnail {
+  margin-bottom: 0.5em; }
+.single-show .format-standard .entry2__thumbnail {
+  margin-top: 1.75em;
+  margin-left: 0.75em; }
 
 .show-attr--name {
   position: absolute;
@@ -5837,7 +6721,7 @@ category: Components - Shows
       text-transform: uppercase; }
       .show__nav li a:hover {
         background-color: #ffffff;
-        color: #aa1c20; }
+        color: #561015; }
     @media screen and (min-width: 768px) {
       .show__nav li {
         display: inline-block; }
@@ -5925,7 +6809,9 @@ category: Components - Shows
     border: 1px solid #ffffff;
     margin-top: 1em; }
     .show__meta .social-share-link:hover, .show__meta .social-share-link:active {
-      background: #ffffff; }
+      color: #561015;
+      background: #ffffff;
+      border-color: #ffffff; }
 
 .show__featured-img {
   position: absolute;
@@ -6107,6 +6993,7 @@ category: Components - Shows
   color: #aa1c20; }
 
 .show__live-links {
+  margin-top: 20px;
   position: relative;
   float: left;
   display: block;
@@ -6205,34 +7092,41 @@ These are examples of Social Share Links for single articles.
 <a href="" class="icon-volume-up social-share-link"></a>
 ```
 */
-a.social-share-link {
-  color: #000000;
-  display: inline-block;
-  width: 40px;
-  height: 40px;
-  font-size: 20px;
-  border: 1px solid #000000;
-  border-radius: 50%;
-  padding: 9px;
-  margin-right: 0.25em; }
-  a.social-share-link:last-of-type {
-    margin-right: 0; }
-  a.social-share-link:hover {
-    color: #561015; }
-
 .social__list {
   padding: 33px 0;
   margin: 0;
   list-style: none; }
+  .social__list li {
+    display: inline-block;
+    margin: 0;
+    padding: 0; }
 
-.social__link {
+a.social__link,
+a.social-share-link {
   padding: 0;
   margin: 0 1.25em 0 0;
   list-style: none;
   display: inline-block;
-  font-size: 1em; }
+  font-size: 18px;
+  color: #404041;
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  border: 1px solid #404041;
+  border-radius: 50%;
+  padding: 9px;
+  margin-right: 6px; }
+  a.social__link:last-of-type,
+  a.social-share-link:last-of-type {
+    margin-right: 0; }
+  a.social__link:hover,
+  a.social-share-link:hover {
+    color: #d22228;
+    border-color: #d22228; }
 
-.social__link:last-child {
+.social__link:last-child,
+.social-sharing-link {
   margin: 0; }
 
 .social__link a, .social__link a:visited {
@@ -6244,67 +7138,184 @@ a.social-share-link {
 .social__link a:active {
   color: #ffffff; }
 
-.social__link--facebook:before {
-  content: "\e60f"; }
+.social__link:before,
+.social-sharing-link:before {
+  position: relative;
+  top: 1px; }
+.social__link.icon-google-plus:before, .social__link.social__link--google-plus:before,
+.social-sharing-link.icon-google-plus:before,
+.social-sharing-link.social__link--google-plus:before {
+  left: 1px;
+  top: 2px; }
 
-.social__link--twitter:before {
-  content: "\e610"; }
-
-.social__link--google-plus:before {
-  content: "\e611"; }
-
-.social__link--youtube:before {
-  content: "\e617"; }
-
-.social__link--instagram:before {
-  content: "\e616"; }
-
-/*doc
----
-title: Article Header
-name: article-header
-category: Components - Article
----
-
-```html_example
-<img src="http://placehold.it/600x400&amp;text=image" alt="placeholder" class="entry__featured-image">
-<header class="entry__header">
-	<time datetime="2014-11-10T20:11:28+00:00" class="entry__date">10 November</time>
-    <h2 class="entry__title"><a href="">Test Show Post</a></h2>
-</header>
-<a href="http://www.facebook.com/sharer/sharer.php?u=[URL]&title=[TITLE]" class="icon-facebook social-share-link"></a>
-<a href="http://twitter.com/home?status=[TITLE]+[URL]" class="icon-twitter social-share-link"></a>
-<a href="https://plus.google.com/share?url=[URL]" class="icon-google-plus social-share-link"></a>
-<a href="" class="icon-volume-up social-share-link"></a>
-```
-
-*/
-.entry__header {
+.article__header {
   margin-bottom: 2em; }
 
-.entry__featured-image {
+.article__date {
+  display: block;
+  margin-bottom: 0.5em;
+  font-size: 1em;
+  text-transform: uppercase;
+  color: #929497; }
+  @media screen and (min-width: 768px) {
+    .article__date {
+      font-size: 0.88889em; } }
+
+.article__title {
+  font-size: 2.88651em;
+  line-height: 1.2;
+  margin: 0 0 0.65em; }
+  @media screen and (min-width: 768px) {
+    .article__title {
+      font-size: 2.2807em; } }
+
+.article__thumbnail {
   width: 100%;
-  height: auto;
-  margin-bottom: 1em; }
+  padding-bottom: 66%;
+  background-size: 100%;
+  background-size: cover;
+  background-position: center center; }
 
-.entry__title, .page__title {
+.article__content {
+  margin-bottom: 1.5em;
+  font-size: 16px;
+  line-height: 1.6; }
+  @media screen and (min-width: 1024px) {
+    .article__content {
+      margin-bottom: 4.5em; } }
+
+@media screen and (min-width: 1024px) {
+  .article .ad__inline--right {
+    margin-left: 3.236em; } }
+
+.article__footer {
+  float: left;
+  display: block;
+  margin-right: 7.42297%;
+  width: 100%;
+  margin: 0 0 3em;
+  padding: 0;
+  border: none;
+  line-height: 1.5; }
+  .article__footer:last-child {
+    margin-right: 0; }
+
+.article__categories, .article__tags, .article__shows {
+  overflow: auto;
+  clear: both;
+  margin-bottom: 1.25em;
+  font-size: 1.125em;
+  color: #929497; }
+  @media screen and (min-width: 768px) {
+    .article__categories, .article__tags, .article__shows {
+      font-size: 0.88889em; } }
+
+.article__list, .article__list--categories, .article__list--tags, .article__list--shows, .article__list--show {
+  display: inline;
+  padding: 0;
   margin: 0;
-  margin-bottom: 1em; }
+  list-style: none; }
 
-/*doc
----
-title: Article Footer
-name: article-footer
-category: Components - Article
----
+.article__list:before {
+  text-transform: uppercase; }
 
-```html_example
-<footer class="entry__tags">
-	<a href="">Category</a> / <a href="">tag one</a>,<a href="">tag two</a>,<a href="">tag three</a>
-</footer>
-```
+.article__list--item {
+  display: inline;
+  list-style: none;
+  margin-right: .5em; }
 
-*/
+.article__list--item a, .article__list--item a:visited, .article__list--show a, .article__list--show a:visited {
+  color: #929497; }
+
+.article__list--item a:hover, .article__list--item a:focus, .article__list--item a:active, .article__list--show a:hover, .article__list--show a:focus, .article__list--show a:active {
+  color: #aa1c20; }
+
+.article__list--title {
+  display: inline-block;
+  font-weight: 800; }
+
+.article__list--title:after {
+  content: "/";
+  margin: 0 .25em 0 .5em; }
+
+.article__list--show {
+  margin-right: .5em;
+  display: inline-block; }
+
+.article__show--logo {
+  display: inline-block;
+  float: left;
+  width: 24px;
+  height: 24px;
+  margin-right: .5em;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  -border-radius: 50%;
+  border-radius: 50%;
+  background-color: #282827; }
+
+.article__show--logo img {
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  -border-radius: 50%;
+  border-radius: 50%; }
+
+.article__show--name {
+  display: inline-block; }
+
+@media screen and (min-width: 1024px) {
+  .article__list--item,
+  .article__list--show,
+  .article__show--logo {
+    margin-right: 1.5em; }
+
+  .article__list--title:after {
+    margin: 0 1.25em 0 1.5em; } }
+.article__content .alignleft, .article__content img.alignleft {
+  display: block;
+  margin: 0 1em 16px;
+  float: left; }
+.article__content .alignright, .article__content img.alignright {
+  display: block;
+  margin: 0 0 16px 1em;
+  float: right; }
+.article__content .aligncenter, .article__content img.aligncenter {
+  margin: 0 auto 1em; }
+.article__content .size-auto,
+.article__content .size-full,
+.article__content .size-large,
+.article__content .size-medium,
+.article__content .size-thumbnail {
+  max-width: 100%;
+  height: auto; }
+.article__content .wp-caption {
+  max-width: 100%;
+  padding: 0;
+  margin: 0 0 16px;
+  background: #d0d2d3; }
+.article__content .wp-caption img {
+  width: 100%;
+  margin-bottom: 0;
+  max-width: 100%; }
+.article__content .wp-caption p.wp-caption-text {
+  padding: 16px 1.25em 20px;
+  margin: 4px .5em;
+  font-size: 0.79012em;
+  text-align: left; }
+.article__content blockquote {
+  background: url(../../images/article__blockquote-icon.svg) no-repeat 0 0.35em;
+  border: none;
+  padding: 0 0 0 4em; }
+  .article__content blockquote, .article__content blockquote p {
+    color: #6d6e70; }
+
+.article__comments {
+  margin: 3em 0; }
+
 .header__search--form {
   display: block;
   position: relative;
@@ -6334,9 +7345,9 @@ category: Components - Article
       transform: translate(0, -200%);
       /* 200% ensures it's out of the way of the .wp-admin bar */
       z-index: 5000000;
-      /* IAB z-index standards for nav drop downs. Prevents an ad from being over top unless it's a full-screen ad */ } }
-  .logged-in .header__search--form {
-    top: 32px; }
+      /* IAB z-index standards for nav drop downs. Prevents an ad from being over top unless it's a full-screen ad */ }
+      .logged-in .header__search--form {
+        top: 32px; } }
 
 .header__search--label {
   cursor: pointer; }
@@ -6390,6 +7401,7 @@ category: Components - Article
   float: right;
   height: 40px;
   border: none;
+  width: 14px;
   background-color: transparent;
   color: #929497; }
   @media screen and (min-width: 768px) {
@@ -7425,133 +8437,131 @@ category: Components - Gallery Archive
   .gallery__back--btn:last-of-type {
     margin-right: 0; }
 
-.gallery__featured, .gallery__grid {
+.gallery__grid {
   float: left;
   display: block;
   margin-right: 7.42297%;
   width: 100%;
   margin-right: 0; }
-  .gallery__featured:last-child, .gallery__grid:last-child {
+  .gallery__grid:last-child {
     margin-right: 0; }
   @media screen and (min-width: 480px) {
-    .gallery__featured, .gallery__grid {
+    .gallery__grid {
       float: left;
       display: block;
       margin-right: 4.82916%;
       width: 100%;
       margin-right: 0; }
-      .gallery__featured:last-child, .gallery__grid:last-child {
+      .gallery__grid:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 768px) {
-    .gallery__featured, .gallery__grid {
+    .gallery__grid {
       float: left;
       display: block;
       margin-right: 7.42297%;
       width: 100%;
       margin-right: 0; }
-      .gallery__featured:last-child, .gallery__grid:last-child {
+      .gallery__grid:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 1024px) {
-    .gallery__featured, .gallery__grid {
+    .gallery__grid {
       float: left;
       display: block;
       margin-right: 2.84259%;
       width: 100%;
       margin-right: 0; }
-      .gallery__featured:last-child, .gallery__grid:last-child {
+      .gallery__grid:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 1400px) {
-    .gallery__featured, .gallery__grid {
+    .gallery__grid {
       float: left;
       display: block;
       margin-right: 2.84259%;
       width: 100%;
       margin-right: 0; }
-      .gallery__featured:last-child, .gallery__grid:last-child {
+      .gallery__grid:last-child {
         margin-right: 0; } }
 
 .gallery__featured {
-  padding-bottom: 48px; }
+  display: block; }
+  .gallery__featured:before, .gallery__featured:after {
+    content: " ";
+    display: table; }
+  .gallery__featured:after {
+    clear: both; }
 
-.gallery__featured--primary {
-  float: left;
-  width: 100%; }
-  @media screen and (min-width: 768px) {
-    .gallery__featured--primary {
-      width: 66%;
-      margin-right: 4%; } }
+@media screen and (min-width: 1024px) {
+  .gallery__featured--primary {
+    float: left;
+    display: block;
+    margin-right: 2.35765%;
+    width: 65.88078%; }
+    .gallery__featured--primary:last-child {
+      margin-right: 0; } }
 
-.gallery__featured--secondary {
-  float: left;
-  width: 100%; }
-  @media screen and (min-width: 768px) {
-    .gallery__featured--secondary {
-      width: 30%; } }
-
-.gallery__featured--item {
-  margin-bottom: 20px; }
-  @media screen and (min-width: 768px) {
-    .gallery__featured--item {
-      margin-bottom: 0; } }
-  .gallery__featured--secondary .gallery__featured--item {
-    margin-bottom: 20px; }
-    @media screen and (min-width: 768px) {
-      .gallery__featured--secondary .gallery__featured--item {
-        margin-bottom: 18px; } }
-    @media screen and (min-width: 1024px) {
-      .gallery__featured--secondary .gallery__featured--item {
-        margin-bottom: 28px; } }
-    @media screen and (min-width: 1400px) {
-      .gallery__featured--secondary .gallery__featured--item {
-        margin-bottom: 42px; } }
-
-.gallery__featured--secondary .gallery__featured--item:last-of-type {
-  margin-bottom: 0; }
+@media screen and (min-width: 1024px) {
+  .gallery__featured--secondary {
+    float: left;
+    display: block;
+    margin-right: 2.35765%;
+    width: 31.76157%; }
+    .gallery__featured--secondary:last-child {
+      margin-right: 0; } }
 
 .gallery__featured--thumbnail {
-  position: relative;
-  width: 100%; }
+  position: relative; }
 
-.gallery__featured--thumbnail a {
-  display: block; }
+.gallery__feature {
+  margin-bottom: 5.6%; }
+  .gallery__feature .thumbnail {
+    background-color: #282827;
+    padding-bottom: 66%;
+    background-position: center center;
+    background-size: 100%;
+    background-size: cover; }
+    .gallery__feature .thumbnail .inner-wrap {
+      position: absolute;
+      left: 0;
+      top: 0; }
+  .gallery__feature:hover h3 {
+    color: #aa1c20; }
+  @media screen and (min-width: 1024px) {
+    .gallery__feature {
+      padding-bottom: 75%;
+      position: relative; }
+      .gallery__feature .thumbnail {
+        position: absolute;
+        width: 100%;
+        left: 0;
+        top: 0; } }
 
 .gallery__featured--caption {
-  width: 100%;
-  height: 60px;
-  padding: 10px;
-  background-color: #f2f2f2; }
+  background-color: #F1F1F3;
+  color: #ffffff; }
+  .gallery__featured--caption h3 {
+    margin: 0;
+    font-size: 1.42383em;
+    line-height: 1.2; }
+  .show__feature--primary .gallery__featured--caption h3 {
+    font-size: 1.80203em; }
+  .gallery__featured--caption time {
+    font-size: 1em;
+    text-transform: uppercase;
+    color: #ffffff; }
+  .gallery__featured--caption .inner-wrap {
+    padding: 1.5em 1.618em; }
   @media screen and (min-width: 1024px) {
     .gallery__featured--caption {
-      height: 96px;
-      padding: 16px 20px 20px; } }
-  .gallery__featured--secondary .gallery__featured--caption {
-    height: 48px; }
-    @media screen and (min-width: 1024px) {
-      .gallery__featured--secondary .gallery__featured--caption {
-        padding: 10px;
-        height: 75px; } }
-    @media screen and (min-width: 1400px) {
-      .gallery__featured--secondary .gallery__featured--caption {
-        padding: 16px 20px 20px;
-        height: 91px; } }
-
-.gallery__featured--title {
-  margin: 0;
-  line-height: 1.4;
-  font-family: "Open Sans", sans-serif;
-  font-weight: lighter;
-  font-size: 1.42383em; }
-  .gallery__featured--secondary .gallery__featured--title {
-    font-size: 1.60181em; }
-    @media screen and (min-width: 768px) {
-      .gallery__featured--secondary .gallery__featured--title {
+      position: absolute;
+      width: 100%;
+      left: 0;
+      bottom: 0; }
+      .gallery__featured--caption h3 {
+        font-size: 1.125em; }
+      .show__feature--primary .gallery__featured--caption h3 {
+        font-size: 2.02729em; }
+      .gallery__featured--caption time {
         font-size: 0.88889em; } }
-    @media screen and (min-width: 1024px) {
-      .gallery__featured--secondary .gallery__featured--title {
-        font-size: 1em; } }
-    @media screen and (min-width: 1400px) {
-      .gallery__featured--secondary .gallery__featured--title {
-        font-size: 1.125em; } }
 
 .gallery__grid--column {
   float: left;
@@ -7612,7 +8622,8 @@ category: Components - Gallery Archive
   top: 10px;
   right: 10px;
   font-size: 3.24732em;
-  color: #ffffff; }
+  color: #ffffff;
+  z-index: 1; }
 
 .gallery__grid--album:before {
   width: 0;
@@ -7697,17 +8708,11 @@ category: Components - Shows
 
 */
 .show__personalities {
-  max-width: 71.875em;
-  margin-left: auto;
-  margin-right: auto; }
-  .show__personalities:before, .show__personalities:after {
-    content: " ";
-    display: table; }
-  .show__personalities:after {
-    clear: both; }
+  background-color: #fff;
+  margin-top: -8em; }
 
 .personality {
-  margin: 4em 0;
+  padding: 4em 3em;
   position: relative;
   display: block; }
   .personality:before, .personality:after {
@@ -7715,6 +8720,8 @@ category: Components - Shows
     display: table; }
   .personality:after {
     clear: both; }
+  .personality .more-btn {
+    display: none; }
 
 .personality__avatar {
   float: left;
@@ -7742,18 +8749,10 @@ category: Components - Shows
     border-radius: 50%; }
 
 .personality__meta {
-  overflow: hidden;
-  height: 8em;
-  float: left;
-  display: block;
-  margin-right: 2.35765%;
-  width: 65.88078%;
-  margin-right: 0; }
-  .personality__meta:last-child {
-    margin-right: 0; }
+  float: none;
+  width: auto; }
   @media screen and (min-width: 768px) {
     .personality__meta {
-      height: 12em;
       float: left;
       display: block;
       margin-right: 2.35765%;
@@ -8115,11 +9114,25 @@ select {
   .profile-page .profile-page__sidebar {
     background-color: #561015;
     color: #ffffff;
-    background-image: url("../../../../themes/greatermedia/assets/../images/default-texture.png");
+    background: url("../../../../themes/greatermedia/assets/../images/profile_bg.jpg");
     text-align: center; }
+    @media screen and (min-width: 320px) {
+      .profile-page .profile-page__sidebar {
+        background-size: cover; } }
+    @media screen and (min-width: 480px) {
+      .profile-page .profile-page__sidebar {
+        background-size: cover; } }
+    @media screen and (min-width: 768px) {
+      .profile-page .profile-page__sidebar {
+        background-size: cover; } }
     @media screen and (min-width: 1024px) {
       .profile-page .profile-page__sidebar {
-        text-align: left; } }
+        text-align: left;
+        background-position: 50% 50%; } }
+    @media screen and (min-width: 1400px) {
+      .profile-page .profile-page__sidebar {
+        text-align: left;
+        background-position: 50% 50%; } }
   .profile-page .profile-page__sidebar h1 {
     text-transform: uppercase; }
   .profile-page .profile-page__sidebar p {
@@ -8127,6 +9140,1498 @@ select {
     @media screen and (min-width: 768px) {
       .profile-page .profile-page__sidebar p {
         display: block; } }
+
+.show__live-links .live-links-group {
+  display: block; }
+  .show__live-links .live-links-group:before, .show__live-links .live-links-group:after {
+    content: " ";
+    display: table; }
+  .show__live-links .live-links-group:after {
+    clear: both; }
+  @media screen and (min-width: 1024px) {
+    .show__live-links .live-links-group {
+      margin-bottom: 3em; } }
+.show__live-links .group-date {
+  font-size: 3.24732em;
+  font-weight: 700;
+  color: #929497; }
+  @media screen and (min-width: 1024px) {
+    .show__live-links .group-date {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 23.23176%;
+      clear: both;
+      margin-top: 24px; }
+      .show__live-links .group-date:last-child {
+        margin-right: 0; } }
+.show__live-links .ll-archive-list li {
+  margin-bottom: 2em; }
+@media screen and (min-width: 1024px) {
+  .show__live-links .ll-archive-list {
+    float: left;
+    display: block;
+    margin-right: 2.35765%;
+    width: 74.41059%;
+    margin-right: 0;
+    margin-top: 36px; }
+    .show__live-links .ll-archive-list:last-child {
+      margin-right: 0; } }
+
+.adblock--detected {
+  display: none;
+  -webkit-transition: background 500ms ease-in-out;
+  -moz-transition: background 500ms ease-in-out;
+  transition: background 500ms ease-in-out; }
+
+.live-stream__container.vast__pre-roll .adblock--detected {
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 640px;
+  height: 250px;
+  padding: 20px;
+  background-color: #fff;
+  font-size: 1.26563em;
+  color: #404041;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%); }
+
+.adblock--detected__close {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: inline-block;
+  line-height: 1;
+  padding: 0.5em 1em;
+  margin-right: .5em;
+  outline: none;
+  background-color: #d22228;
+  border: 1px solid #d22228;
+  font-family: "Open Sans", sans-serif;
+  font-size: 0.88889em;
+  color: #ffffff !important;
+  text-transform: uppercase;
+  cursor: pointer;
+  -webkit-border-radius: 1em;
+  -moz-border-radius: 1em;
+  -ms-border-radius: 1em;
+  -o-border-radius: 1em;
+  -border-radius: 1em;
+  border-radius: 1em; }
+  .adblock--detected__close:hover, .adblock--detected__close:focus {
+    background-color: #aa1c20;
+    border-color: #aa1c20;
+    color: #ffffff; }
+  .adblock--detected__close:last-of-type {
+    margin-right: 0; }
+
+.adblock--detected__close:hover {
+  display: inline-block;
+  line-height: 1;
+  padding: 0.5em 1em;
+  margin-right: .5em;
+  outline: none;
+  background-color: #f5ed7f;
+  border: 1px solid #f5ed7f;
+  font-family: "Open Sans", sans-serif;
+  font-size: 0.88889em;
+  color: #ffffff !important;
+  text-transform: uppercase;
+  cursor: pointer; }
+  .adblock--detected__close:hover:hover, .adblock--detected__close:hover:focus {
+    background-color: #f2e754;
+    border-color: #f2e754;
+    color: #ffffff; }
+  .adblock--detected__close:hover:last-of-type {
+    margin-right: 0; }
+
+.adblock--detected__close:active {
+  display: inline-block;
+  line-height: 1;
+  padding: 0.5em 1em;
+  margin-right: .5em;
+  outline: none;
+  background-color: #000000;
+  border: 1px solid #000000;
+  font-family: "Open Sans", sans-serif;
+  font-size: 0.88889em;
+  color: #ffffff !important;
+  text-transform: uppercase;
+  cursor: pointer; }
+  .adblock--detected__close:active:hover, .adblock--detected__close:active:focus {
+    background-color: black;
+    border-color: black;
+    color: #ffffff; }
+  .adblock--detected__close:active:last-of-type {
+    margin-right: 0; }
+
+/*doc
+---
+title: LiveFyre Comments
+name: livefyre-comments
+category: Components - Article
+---
+
+```none_example
+
+<div id="livecomments">
+        <div class="fyre fyre-width-small">
+            <div class="fyre-widget">
+                <iframe frameborder="0" src=
+                "http://www.livefyre.com/v3/tracking/http%3A%2F%2Fanswers.livefyre.com%2Fdemos%2Fcomments%2F"
+                style=
+                "position: absolute; height: 1px; width: 1px; z-index: 99999; background-color: transparent;">
+                </iframe>
+
+                <div class="fyre-featured-content-wrapper" style=
+                "display: none"></div>
+
+                <div class="fyre-stream-stats">
+                    <div class="fyre-comment-count">
+                        <span>9 comments</span>
+                    </div>
+
+                    <div class="fyre-help">
+                        <div class="fyre-box-wrapper">
+                            <a href="http://livefyre.com" target=
+                            "_blank"><img class="fyre-logo-drop" src=
+                            "http://zor.fyre.co/wjs/v3.0.1416890156/images/down_arrow.png"><img alt="Livefyre"
+                            class="fyre-logo-help" src=
+                            "http://zor.fyre.co/wjs/v3.0.1416890156/images/lf-logo.png"></a>
+
+                            <ul class="fyre-box-list">
+                                <li>
+                                    <a href="http://livefyre.com" target=
+                                    "_blank" title="Get Livefyre">Get
+                                    Livefyre</a>
+                                </li>
+
+                                <li>
+                                    <a href="http://support.livefyre.com"
+                                    target="_blank" title="FAQ">FAQ</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fyre-auth">
+                    <div class="fyre-login-bar">
+                        <a class="fyre-user-loggedout" rel="nofollow">Sign
+                        in</a>
+                    </div>
+
+                    <div class="fyre-live-container">
+                        <div class="fyre-livecount">
+                            <em class="fyre-stream-livecount">3 people
+                            listening</em>
+                        </div>
+
+                        <div class="fyre-listener-avatars">
+                            <a class=
+                            "fyre-follower fyre-follower-123-client-solutions-fyre-co"
+                            data-id="123@client-solutions.fyre.co" href=""
+                            title="MrTesterTest"><img alt="MrTesterTest"
+                            onerror=
+                            "javascript:this.src='http:\/\/avatars.fyre.co\/a\/anon\/50.jpg';"
+                            src=
+                            "http://avatars.fyre.co/a/anon/50.jpg"></a><a class="fyre-follower fyre-follower-456-client-solutions-fyre-co"
+                            data-id="456@client-solutions.fyre.co" href=""
+                            title="Answers Account"><img alt="Answers Account"
+                            onerror=
+                            "javascript:this.src='http:\/\/avatars.fyre.co\/a\/anon\/50.jpg';"
+                            src="http://avatars.fyre.co/a/anon/50.jpg"></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fyre-editor">
+                    <div class=
+                    "fyre-editor-container fyre-editor-container-focus">
+                        <div class=
+                        "fyre-editor-editable editable fyre-editor-field"
+                        contenteditable="true" id="fyre-editor-16">
+                            <p>&nbsp;</p>
+                        </div><span class="fyre-editor-spinner" style=
+                        "display: none;"></span>
+
+                        <div class="fyre-editor-preview"></div>
+
+                        <div class="fyre-editor-media-drawer" style=
+                        "display: none;"></div>
+
+                        <div class="fyre-editor-toolbar">
+                            <div class=
+                            "fyre-mention-menu fyre-mention-menu-vertical"
+                            style="-webkit-user-select: none; display: none;">
+                                <div class="fyre-mention-menu-filter" style=
+                                "-webkit-user-select: none;">
+                                    <div style="-webkit-user-select: none;">
+                                    </div><input style=
+                                    "-webkit-user-select: none;" tabindex="-1"
+                                    type="text">
+                                </div>
+
+                                <div class="fyre-mention-menu-content" id=
+                                ":2t.content-el" style=
+                                "-webkit-user-select: none;">
+                                    <div class=
+                                    "goog-control goog-control-disabled" id=
+                                    ":2q" style="-webkit-user-select: none;">
+                                    </div>
+
+                                    <div class=
+                                    "goog-control goog-control-disabled" id=
+                                    ":2r" style="-webkit-user-select: none;">
+                                    </div>
+
+                                    <div class=
+                                    "goog-control goog-control-disabled" id=
+                                    ":2s" style="-webkit-user-select: none;">
+                                    </div>
+
+                                    <div class=
+                                    "fyre-mention-item fyre-mention-item-twitter"
+                                    id=":2u" style=
+                                    "-webkit-user-select: none; display: none;">
+                                    <img class="fyre-mention-item-avatar"
+                                        src="http://avatars.fyre.co/a/anon/50.jpg">
+
+                                        <h4 class=
+                                        "fyre-mention-item-display-name">
+                                        </h4><span class=
+                                        "fyre-mention-item-twitter"></span>
+                                    </div>
+
+                                    <div class=
+                                    "fyre-mention-item fyre-mention-item-livefyre"
+                                    id=":2v" style=
+                                    "-webkit-user-select: none; display: none;">
+                                    <img class="fyre-mention-item-avatar"
+                                        src="http://avatars.fyre.co/a/anon/50.jpg">
+
+                                        <h4 class=
+                                        "fyre-mention-item-display-name">
+                                        </h4><span class=
+                                        "fyre-mention-item-livefyre"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="goog-toolbar goog-toolbar-horizontal"
+                            style="-webkit-user-select: none;">
+                                <div class=
+                                "goog-toolbar-separator goog-inline-block" id=
+                                ":2n" style="-webkit-user-select: none;">
+                                    &nbsp;
+                                </div>
+
+                                <div class=
+                                "goog-inline-block fyre-button-left fyre-format-button"
+                                id=":2p" style="-webkit-user-select: none;">
+                                    <div class=
+                                    "goog-inline-block fyre-button-left-outer-box">
+                                    <div class=
+                                    "goog-inline-block fyre-button-left-inner-box">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class=
+                                "goog-inline-block fyre-button-left fyre-mention-button"
+                                id=":2x" style="-webkit-user-select: none;">
+                                    <div class=
+                                    "goog-inline-block fyre-button-left-outer-box">
+                                    <div class=
+                                    "goog-inline-block fyre-button-left-inner-box">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class=
+                                "goog-inline-block fyre-button-left fyre-embed-button"
+                                id=":2z" style="-webkit-user-select: none;">
+                                    <div class=
+                                    "goog-inline-block fyre-button-left-outer-box">
+                                    <div class=
+                                    "goog-inline-block fyre-button-left-inner-box">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class=
+                                "goog-inline-block fyre-button-left fyre-raw-button"
+                                id=":31" style=
+                                "-webkit-user-select: none; display: none;">
+                                    <div class=
+                                    "goog-inline-block fyre-button-left-outer-box">
+                                    <div class=
+                                    "goog-inline-block fyre-button-left-inner-box">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class=
+                                "goog-inline-block fyre-button-left fyre-follow-button"
+                                id=":33" style="-webkit-user-select: none;">
+                                    <div class=
+                                    "goog-inline-block fyre-button-left-outer-box">
+                                    <div class=
+                                    "goog-inline-block fyre-button-left-inner-box">
+                                        + Follow
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class=
+                                "goog-inline-block fyre-button-right fyre-share-button"
+                                id=":35" style="-webkit-user-select: none;">
+                                    <div class=
+                                    "goog-inline-block fyre-button-right-outer-box">
+                                    <div class=
+                                    "goog-inline-block fyre-button-right-inner-box">
+                                        Share<label class=
+                                        "fyre-share-counter fyre-share-empty"></label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class=
+                                "goog-inline-block fyre-button-right fyre-post-button fyre-post-button-new"
+                                id=":37" style="-webkit-user-select: none;">
+                                    <div class=
+                                    "goog-inline-block fyre-button-right-outer-box">
+                                    <div class=
+                                    "goog-inline-block fyre-button-right-inner-box">
+                                        Post comment as...
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="fyre-comment-preview" style="display: none;">
+                        <h5>Custom HTML Preview<span class=
+                        "fyre-icon-remove"></span></h5>
+
+                        <div class=
+                        "fyre-roundedpanel-content fyre-comment-preview-content">
+                        <article class="fyre-comment-article">
+                                <div class="fyre-comment">
+                                    <div class="fyre-comment-raw-html"></div>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fyre-input-box-collapsed"></div>
+
+                <div class="fyre-stream-header">
+                    <div class="fyre-content-loading" style="display: none;">
+                        Loading
+                    </div>
+
+                    <div class="fyre-stream-sort">
+                        <div class="fyre-stream-sort-options">
+                            <a class=
+                            "fyre-stream-sort-newest fyre-stream-sort-selected">
+                            Newest</a> <span class=
+                            "fyre-stream-sort-bar">|</span> <a class=
+                            "fyre-stream-sort-oldest">Oldest</a> <span class=
+                            "fyre-stream-sort-bar">|</span> <a class=
+                            "fyre-stream-sort-top-comments">Top Comments</a>
+                        </div><a class="fyre-stream-sort-back"></a>
+                    </div>
+                </div>
+
+                <div class="fyre-comment-stream">
+                    <div class="fyre-stream-content">
+                        <article class=
+                        "fyre-comment-article fyre-comment-source-5"
+                        data-author-id="456@client-solutions.fyre.co"
+                        data-message-id="241568291" style="">
+                            <div class="fyre-comment-wrapper">
+                                <div class="fyre-comment-user" data-author-id=
+                                "456@client-solutions.fyre.co" data-from=
+                                "Answers Account">
+                                    <a class="fyre-comment-author" href=
+                                    ""><img alt="Answers Account" class=
+                                    "fyre-user-avatar" onerror=
+                                    "javascript:this.src='http:\/\/avatars.fyre.co\/a\/anon\/50.jpg';"
+                                    src=
+                                    "http://avatars.fyre.co/a/anon/50.jpg"></a>
+
+                                    <div class=
+                                    "fyre-comment-socialsync fyre-comment-from-undefined">
+                                    </div>
+
+                                    <div class="fyre-comment-highlight"></div>
+                                </div>
+
+                                <header class="fyre-comment-head">
+                                    <a class=
+                                    "fyre-comment-username"><span>Answers
+                                    Account</span></a> <span class=
+                                    "fyre-comment-user-rating" style=
+                                    "display: none;">5pts</span><span class=
+                                    "fyre-comment-tag fyre-featured" style=
+                                    "display: none;"><span class=
+                                    "fyre-featured-icon"></span><span class=
+                                    "fyre-featured-text">Featured</span><br></span>
+                                    <meta content="2014-11-26T18:11:02.000Z">
+                                    <time class="fyre-comment-date">1 hour
+                                    ago</time><span class=
+                                    "fyre-comment-archive"></span>
+
+                                    <div class="fyre-comment-premod"></div>
+
+                                    <div class="fyre-flag-list"></div>
+                                </header>
+
+                                <section class="fyre-comment-body">
+                                    <div class="fyre-comment">
+                                        <p>tjkgghjjhj</p>
+                                    </div>
+                                </section>
+
+                                <footer class="fyre-comment-footer">
+                                    <div class="fyre-comment-actions">
+                                        <a class="fyre-flag-link" title=
+                                        "Flag"><span></span>Flag</a><a class=
+                                        "fyre-share-link" title=
+                                        "Share"><span></span>Share</a>
+                                    </div><span class=
+                                    "fyre-comment-like"><span class=
+                                    "fyre-comment-like-count"></span><span class="fyre-comment-like-imgs"></span><a class="fyre-comment-like-btn fyre-comment-action-button">Like</a></span><a class="fyre-comment-reply fyre-comment-action-button">Reply</a>
+
+                                    <div class="fyre-editor" style=
+                                    "display: none;"></div>
+                                </footer>
+                            </div>
+
+                            <div class="fyre-comment-divider">
+                                <a class="fyre-comment-collapse" style=
+                                "display: none;" title="Toggle Collapse"></a>
+
+                                <div class="fyre-comment-divider"></div>
+                            </div>
+
+                            <div class="fyre-outer-comment-container">
+                                <div class=
+                                "fyre-comment-container fyre-comment-replies fyre-comment-replies-indent">
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="fyre-comment-article" data-author-id=
+                        "undefined" data-message-id="239843665" style="">
+                            <div class="fyre-comment-wrapper" style=
+                            "display: none;">
+                                <section class="fyre-comment-deleted">
+                                    <p>This comment has been deleted</p>
+                                </section>
+                            </div>
+
+                            <div class="fyre-comment-divider" style=
+                            "display: none;">
+                                <a class="fyre-comment-collapse" style=
+                                "display: none;" title="Toggle Collapse"></a>
+
+                                <div class="fyre-comment-divider"></div>
+                            </div>
+
+                            <div class="fyre-outer-comment-container">
+                                <div class=
+                                "fyre-comment-container fyre-comment-replies fyre-comment-replies-indent">
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="fyre-comment-article" data-author-id=
+                        "undefined" data-message-id="237838438" style="">
+                            <div class="fyre-comment-wrapper" style=
+                            "display: none;">
+                                <section class="fyre-comment-deleted">
+                                    <p>This comment has been deleted</p>
+                                </section>
+                            </div>
+
+                            <div class="fyre-comment-divider" style=
+                            "display: none;">
+                                <a class="fyre-comment-collapse" style=
+                                "display: none;" title="Toggle Collapse"></a>
+
+                                <div class="fyre-comment-divider"></div>
+                            </div>
+
+                            <div class="fyre-outer-comment-container">
+                                <div class=
+                                "fyre-comment-container fyre-comment-replies fyre-comment-replies-indent">
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class=
+                        "fyre-comment-article fyre-comment-source-0"
+                        data-author-id="456@client-solutions.fyre.co"
+                        data-message-id="237838139" style="">
+                            <div class="fyre-comment-wrapper">
+                                <div class="fyre-comment-user" data-author-id=
+                                "456@client-solutions.fyre.co" data-from=
+                                "Answers Account">
+                                    <a class="fyre-comment-author" href=
+                                    ""><img alt="Answers Account" class=
+                                    "fyre-user-avatar" onerror=
+                                    "javascript:this.src='http:\/\/avatars.fyre.co\/a\/anon\/50.jpg';"
+                                    src=
+                                    "http://avatars.fyre.co/a/anon/50.jpg"></a>
+
+                                    <div class=
+                                    "fyre-comment-socialsync fyre-comment-from-undefined">
+                                    </div>
+
+                                    <div class="fyre-comment-highlight"></div>
+                                </div>
+
+                                <header class="fyre-comment-head">
+                                    <a class=
+                                    "fyre-comment-username"><span>Answers
+                                    Account</span></a> <span class=
+                                    "fyre-comment-user-rating" style=
+                                    "display: none;">5pts</span><span class=
+                                    "fyre-comment-tag fyre-featured" style=
+                                    "display: none;"><span class=
+                                    "fyre-featured-icon"></span><span class=
+                                    "fyre-featured-text">Featured</span><br></span>
+                                    <meta content="2014-11-18T21:04:21.000Z">
+                                    <time class="fyre-comment-date">8 days
+                                    ago</time><span class=
+                                    "fyre-comment-archive"></span>
+
+                                    <div class="fyre-comment-premod"></div>
+
+                                    <div class="fyre-flag-list"></div>
+                                </header>
+
+                                <section class="fyre-comment-body">
+                                    <div class="fyre-comment">
+                                        <p>ola</p>
+                                    </div>
+                                </section>
+
+                                <footer class="fyre-comment-footer">
+                                    <div class="fyre-comment-actions">
+                                        <a class="fyre-flag-link" title=
+                                        "Flag"><span></span>Flag</a><a class=
+                                        "fyre-share-link" title=
+                                        "Share"><span></span>Share</a>
+                                    </div><span class=
+                                    "fyre-comment-like"><span class=
+                                    "fyre-comment-like-count"></span><span class="fyre-comment-like-imgs"></span><a class="fyre-comment-like-btn fyre-comment-action-button">Like</a></span><a class="fyre-comment-reply fyre-comment-action-button">Reply</a>
+
+                                    <div class="fyre-editor" style=
+                                    "display: none;"></div>
+                                </footer>
+                            </div>
+
+                            <div class="fyre-comment-divider">
+                                <a class="fyre-comment-collapse" style=
+                                "display: none;" title="Toggle Collapse"></a>
+
+                                <div class="fyre-comment-divider"></div>
+                            </div>
+
+                            <div class="fyre-outer-comment-container">
+                                <div class=
+                                "fyre-comment-container fyre-comment-replies fyre-comment-replies-indent">
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class=
+                        "fyre-comment-article fyre-comment-source-5"
+                        data-author-id="456@client-solutions.fyre.co"
+                        data-message-id="234386993" style="">
+                            <div class="fyre-comment-wrapper">
+                                <div class="fyre-comment-user" data-author-id=
+                                "456@client-solutions.fyre.co" data-from=
+                                "Answers Account">
+                                    <a class="fyre-comment-author" href=
+                                    ""><img alt="Answers Account" class=
+                                    "fyre-user-avatar" onerror=
+                                    "javascript:this.src='http:\/\/avatars.fyre.co\/a\/anon\/50.jpg';"
+                                    src=
+                                    "http://avatars.fyre.co/a/anon/50.jpg"></a>
+
+                                    <div class=
+                                    "fyre-comment-socialsync fyre-comment-from-undefined">
+                                    </div>
+
+                                    <div class="fyre-comment-highlight"></div>
+                                </div>
+
+                                <header class="fyre-comment-head">
+                                    <a class=
+                                    "fyre-comment-username"><span>Answers
+                                    Account</span></a> <span class=
+                                    "fyre-comment-user-rating" style=
+                                    "display: none;">5pts</span><span class=
+                                    "fyre-comment-tag fyre-featured" style=
+                                    "display: none;"><span class=
+                                    "fyre-featured-icon"></span><span class=
+                                    "fyre-featured-text">Featured</span><br></span>
+                                    <meta content="2014-11-10T16:56:58.000Z">
+                                    <time class="fyre-comment-date">Nov 10,
+                                    2014</time><span class=
+                                    "fyre-comment-archive"></span>
+
+                                    <div class="fyre-comment-premod"></div>
+
+                                    <div class="fyre-flag-list"></div>
+                                </header>
+
+                                <section class="fyre-comment-body">
+                                    <div class="fyre-comment">
+                                        <p>test</p>
+                                    </div>
+                                </section>
+
+                                <footer class="fyre-comment-footer">
+                                    <div class="fyre-comment-actions">
+                                        <a class="fyre-flag-link" title=
+                                        "Flag"><span></span>Flag</a><a class=
+                                        "fyre-share-link" title=
+                                        "Share"><span></span>Share</a>
+                                    </div><span class=
+                                    "fyre-comment-like"><span class=
+                                    "fyre-comment-like-count"></span><span class="fyre-comment-like-imgs"></span><a class="fyre-comment-like-btn fyre-comment-action-button">Like</a></span><a class="fyre-comment-reply fyre-comment-action-button">Reply</a>
+
+                                    <div class="fyre-editor" style=
+                                    "display: none;"></div>
+                                </footer>
+                            </div>
+
+                            <div class="fyre-comment-divider">
+                                <a class="fyre-comment-collapse" style=
+                                "display: none;" title="Toggle Collapse"></a>
+
+                                <div class="fyre-comment-divider"></div>
+                            </div>
+
+                            <div class="fyre-outer-comment-container">
+                                <div class=
+                                "fyre-comment-container fyre-comment-replies fyre-comment-replies-indent">
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class=
+                        "fyre-comment-article fyre-comment-source-5"
+                        data-author-id="456@client-solutions.fyre.co"
+                        data-message-id="233046465" style="">
+                            <div class="fyre-comment-wrapper">
+                                <div class="fyre-comment-user" data-author-id=
+                                "456@client-solutions.fyre.co" data-from=
+                                "Answers Account">
+                                    <a class="fyre-comment-author" href=
+                                    ""><img alt="Answers Account" class=
+                                    "fyre-user-avatar" onerror=
+                                    "javascript:this.src='http:\/\/avatars.fyre.co\/a\/anon\/50.jpg';"
+                                    src=
+                                    "http://avatars.fyre.co/a/anon/50.jpg"></a>
+
+                                    <div class=
+                                    "fyre-comment-socialsync fyre-comment-from-undefined">
+                                    </div>
+
+                                    <div class="fyre-comment-highlight"></div>
+                                </div>
+
+                                <header class="fyre-comment-head">
+                                    <a class=
+                                    "fyre-comment-username"><span>Answers
+                                    Account</span></a> <span class=
+                                    "fyre-comment-user-rating" style=
+                                    "display: none;">5pts</span><span class=
+                                    "fyre-comment-tag fyre-featured" style=
+                                    "display: none;"><span class=
+                                    "fyre-featured-icon"></span><span class=
+                                    "fyre-featured-text">Featured</span><br></span>
+                                    <meta content="2014-11-06T17:08:06.000Z">
+                                    <time class="fyre-comment-date">Nov 6,
+                                    2014</time><span class=
+                                    "fyre-comment-archive"></span>
+
+                                    <div class="fyre-comment-premod"></div>
+
+                                    <div class="fyre-flag-list"></div>
+                                </header>
+
+                                <section class="fyre-comment-body">
+                                    <div class="fyre-comment">
+                                        <p>safdsdf</p>
+                                    </div>
+                                </section>
+
+                                <footer class="fyre-comment-footer">
+                                    <div class="fyre-comment-actions">
+                                        <a class="fyre-flag-link" title=
+                                        "Flag"><span></span>Flag</a><a class=
+                                        "fyre-share-link" title=
+                                        "Share"><span></span>Share</a>
+                                    </div><span class=
+                                    "fyre-comment-like"><span class=
+                                    "fyre-comment-like-count"></span><span class="fyre-comment-like-imgs"></span><a class="fyre-comment-like-btn fyre-comment-action-button">Like</a></span><a class="fyre-comment-reply fyre-comment-action-button">Reply</a>
+
+                                    <div class="fyre-editor" style=
+                                    "display: none;"></div>
+                                </footer>
+                            </div>
+
+                            <div class="fyre-comment-divider">
+                                <a class="fyre-comment-collapse" style=
+                                "display: none;" title="Toggle Collapse"></a>
+
+                                <div class="fyre-comment-divider"></div>
+                            </div>
+
+                            <div class="fyre-outer-comment-container">
+                                <div class=
+                                "fyre-comment-container fyre-comment-replies fyre-comment-replies-indent">
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class=
+                        "fyre-comment-article fyre-comment-source-5"
+                        data-author-id="456@client-solutions.fyre.co"
+                        data-message-id="230488046" style="">
+                            <div class="fyre-comment-wrapper">
+                                <div class="fyre-comment-user" data-author-id=
+                                "456@client-solutions.fyre.co" data-from=
+                                "Answers Account">
+                                    <a class="fyre-comment-author" href=
+                                    ""><img alt="Answers Account" class=
+                                    "fyre-user-avatar" onerror=
+                                    "javascript:this.src='http:\/\/avatars.fyre.co\/a\/anon\/50.jpg';"
+                                    src=
+                                    "http://avatars.fyre.co/a/anon/50.jpg"></a>
+
+                                    <div class=
+                                    "fyre-comment-socialsync fyre-comment-from-undefined">
+                                    </div>
+
+                                    <div class="fyre-comment-highlight"></div>
+                                </div>
+
+                                <header class="fyre-comment-head">
+                                    <a class=
+                                    "fyre-comment-username"><span>Answers
+                                    Account</span></a> <span class=
+                                    "fyre-comment-user-rating" style=
+                                    "display: none;">5pts</span><span class=
+                                    "fyre-comment-tag fyre-featured" style=
+                                    "display: none;"><span class=
+                                    "fyre-featured-icon"></span><span class=
+                                    "fyre-featured-text">Featured</span><br></span>
+                                    <meta content="2014-10-30T17:45:42.000Z">
+                                    <time class="fyre-comment-date">Oct 30,
+                                    2014</time><span class=
+                                    "fyre-comment-archive"></span>
+
+                                    <div class="fyre-comment-premod"></div>
+
+                                    <div class="fyre-flag-list"></div>
+                                </header>
+
+                                <section class="fyre-comment-body">
+                                    <div class="fyre-comment">
+                                        <p>oi</p>
+                                    </div>
+                                </section>
+
+                                <footer class="fyre-comment-footer">
+                                    <div class="fyre-comment-actions">
+                                        <a class="fyre-flag-link" title=
+                                        "Flag"><span></span>Flag</a><a class=
+                                        "fyre-share-link" title=
+                                        "Share"><span></span>Share</a>
+                                    </div><span class=
+                                    "fyre-comment-like"><span class=
+                                    "fyre-comment-like-count"></span><span class="fyre-comment-like-imgs"></span><a class="fyre-comment-like-btn fyre-comment-action-button">Like</a></span><a class="fyre-comment-reply fyre-comment-action-button">Reply</a>
+
+                                    <div class="fyre-editor" style=
+                                    "display: none;"></div>
+                                </footer>
+                            </div>
+
+                            <div class="fyre-comment-divider">
+                                <a class="fyre-comment-collapse" style=
+                                "display: none;" title="Toggle Collapse"></a>
+
+                                <div class="fyre-comment-divider"></div>
+                            </div>
+
+                            <div class="fyre-outer-comment-container">
+                                <div class=
+                                "fyre-comment-container fyre-comment-replies fyre-comment-replies-indent">
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class=
+                        "fyre-comment-article fyre-comment-source-5"
+                        data-author-id="456@client-solutions.fyre.co"
+                        data-message-id="227911814" style="">
+                            <div class="fyre-comment-wrapper">
+                                <div class="fyre-comment-user" data-author-id=
+                                "456@client-solutions.fyre.co" data-from=
+                                "Answers Account">
+                                    <a class="fyre-comment-author" href=
+                                    ""><img alt="Answers Account" class=
+                                    "fyre-user-avatar" onerror=
+                                    "javascript:this.src='http:\/\/avatars.fyre.co\/a\/anon\/50.jpg';"
+                                    src=
+                                    "http://avatars.fyre.co/a/anon/50.jpg"></a>
+
+                                    <div class=
+                                    "fyre-comment-socialsync fyre-comment-from-undefined">
+                                    </div>
+
+                                    <div class="fyre-comment-highlight"></div>
+                                </div>
+
+                                <header class="fyre-comment-head">
+                                    <a class=
+                                    "fyre-comment-username"><span>Answers
+                                    Account</span></a> <span class=
+                                    "fyre-comment-user-rating" style=
+                                    "display: none;">5pts</span><span class=
+                                    "fyre-comment-tag fyre-featured" style=
+                                    "display: none;"><span class=
+                                    "fyre-featured-icon"></span><span class=
+                                    "fyre-featured-text">Featured</span><br></span>
+                                    <meta content="2014-10-23T21:09:28.000Z">
+                                    <time class="fyre-comment-date">Oct 23,
+                                    2014</time><span class=
+                                    "fyre-comment-archive"></span>
+
+                                    <div class="fyre-comment-premod"></div>
+
+                                    <div class="fyre-flag-list"></div>
+                                </header>
+
+                                <section class="fyre-comment-body">
+                                    <div class="fyre-comment">
+                                        <p>test</p>
+                                    </div>
+                                </section>
+
+                                <footer class="fyre-comment-footer">
+                                    <div class="fyre-comment-actions">
+                                        <a class="fyre-flag-link" title=
+                                        "Flag"><span></span>Flag</a><a class=
+                                        "fyre-share-link" title=
+                                        "Share"><span></span>Share</a>
+                                    </div><span class=
+                                    "fyre-comment-like"><span class=
+                                    "fyre-comment-like-count"></span><span class="fyre-comment-like-imgs"></span><a class="fyre-comment-like-btn fyre-comment-action-button">Like</a></span><a class="fyre-comment-reply fyre-comment-action-button">Reply</a>
+
+                                    <div class="fyre-editor" style=
+                                    "display: none;"></div>
+                                </footer>
+                            </div>
+
+                            <div class="fyre-comment-divider">
+                                <a class="fyre-comment-collapse" style=
+                                "display: none;" title="Toggle Collapse"></a>
+
+                                <div class="fyre-comment-divider"></div>
+                            </div>
+
+                            <div class="fyre-outer-comment-container">
+                                <div class=
+                                "fyre-comment-container fyre-comment-replies fyre-comment-replies-indent">
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="fyre-comment-article" data-author-id=
+                        "undefined" data-message-id="227777614" style="">
+                            <div class="fyre-comment-wrapper" style=
+                            "display: none;">
+                                <section class="fyre-comment-deleted">
+                                    <p>This comment has been deleted</p>
+                                </section>
+                            </div>
+
+                            <div class="fyre-comment-divider" style=
+                            "display: none;">
+                                <a class="fyre-comment-collapse" style=
+                                "display: none;" title="Toggle Collapse"></a>
+
+                                <div class="fyre-comment-divider"></div>
+                            </div>
+
+                            <div class="fyre-outer-comment-container">
+                                <div class=
+                                "fyre-comment-container fyre-comment-replies fyre-comment-replies-indent">
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="fyre-comment-article" data-author-id=
+                        "undefined" data-message-id="227777551" style="">
+                            <div class="fyre-comment-wrapper" style=
+                            "display: none;">
+                                <section class="fyre-comment-deleted">
+                                    <p>This comment has been deleted</p>
+                                </section>
+                            </div>
+
+                            <div class="fyre-comment-divider" style=
+                            "display: none;">
+                                <a class="fyre-comment-collapse" style=
+                                "display: none;" title="Toggle Collapse"></a>
+
+                                <div class="fyre-comment-divider"></div>
+                            </div>
+
+                            <div class="fyre-outer-comment-container">
+                                <div class=
+                                "fyre-comment-container fyre-comment-replies fyre-comment-replies-indent">
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="fyre-comment-article" data-author-id=
+                        "undefined" data-message-id="223353010" style="">
+                            <div class="fyre-comment-wrapper" style=
+                            "display: none;">
+                                <section class="fyre-comment-deleted">
+                                    <p>This comment has been deleted</p>
+                                </section>
+                            </div>
+
+                            <div class="fyre-comment-divider" style=
+                            "display: none;">
+                                <a class="fyre-comment-collapse" style=
+                                "display: none;" title="Toggle Collapse"></a>
+
+                                <div class="fyre-comment-divider"></div>
+                            </div>
+
+                            <div class="fyre-outer-comment-container">
+                                <div class=
+                                "fyre-comment-container fyre-comment-replies fyre-comment-replies-indent">
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="fyre-comment-article" data-author-id=
+                        "undefined" data-message-id="215147623" style="">
+                            <div class="fyre-comment-wrapper" style=
+                            "display: none;">
+                                <section class="fyre-comment-deleted">
+                                    <p>This comment has been deleted</p>
+                                </section>
+                            </div>
+
+                            <div class="fyre-comment-divider" style=
+                            "display: none;">
+                                <a class="fyre-comment-collapse" style=
+                                "display: none;" title="Toggle Collapse"></a>
+
+                                <div class="fyre-comment-divider"></div>
+                            </div>
+
+                            <div class="fyre-outer-comment-container">
+                                <div class=
+                                "fyre-comment-container fyre-comment-replies fyre-comment-replies-indent">
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="fyre-comment-article" data-author-id=
+                        "undefined" data-message-id="211138359" style="">
+                            <div class="fyre-comment-wrapper" style=
+                            "display: none;">
+                                <section class="fyre-comment-deleted">
+                                    <p>This comment has been deleted</p>
+                                </section>
+                            </div>
+
+                            <div class="fyre-comment-divider" style=
+                            "display: none;">
+                                <a class="fyre-comment-collapse" style=
+                                "display: none;" title="Toggle Collapse"></a>
+
+                                <div class="fyre-comment-divider"></div>
+                            </div>
+
+                            <div class="fyre-outer-comment-container">
+                                <div class=
+                                "fyre-comment-container fyre-comment-replies fyre-comment-replies-indent">
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="fyre-comment-article" data-author-id=
+                        "undefined" data-message-id="211138033" style="">
+                            <div class="fyre-comment-wrapper" style=
+                            "display: none;">
+                                <section class="fyre-comment-deleted">
+                                    <p>This comment has been deleted</p>
+                                </section>
+                            </div>
+
+                            <div class="fyre-comment-divider" style=
+                            "display: none;">
+                                <a class="fyre-comment-collapse" style=
+                                "display: none;" title="Toggle Collapse"></a>
+
+                                <div class="fyre-comment-divider"></div>
+                            </div>
+
+                            <div class="fyre-outer-comment-container">
+                                <div class=
+                                "fyre-comment-container fyre-comment-replies fyre-comment-replies-indent">
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class=
+                        "fyre-comment-article fyre-comment-source-5"
+                        data-author-id="123@client-solutions.fyre.co"
+                        data-message-id="211136987" style="">
+                            <div class="fyre-comment-wrapper">
+                                <div class="fyre-comment-user" data-author-id=
+                                "123@client-solutions.fyre.co" data-from=
+                                "MrTesterTest">
+                                    <a class="fyre-comment-author" href=
+                                    ""><img alt="MrTesterTest" class=
+                                    "fyre-user-avatar" onerror=
+                                    "javascript:this.src='http:\/\/avatars.fyre.co\/a\/anon\/50.jpg';"
+                                    src=
+                                    "http://avatars.fyre.co/a/anon/50.jpg"></a>
+
+                                    <div class=
+                                    "fyre-comment-socialsync fyre-comment-from-undefined">
+                                    </div>
+
+                                    <div class="fyre-comment-highlight"></div>
+                                </div>
+
+                                <header class="fyre-comment-head">
+                                    <a class=
+                                    "fyre-comment-username"><span>MrTesterTest</span></a>
+                                    <span class="fyre-comment-user-rating"
+                                    style=
+                                    "display: none;">5pts</span><span class=
+                                    "fyre-comment-tag fyre-featured" style=
+                                    "display: none;"><span class=
+                                    "fyre-featured-icon"></span><span class=
+                                    "fyre-featured-text">Featured</span><br></span>
+                                    <meta content="2014-09-10T21:09:21.000Z">
+                                    <time class="fyre-comment-date">Sep 10,
+                                    2014</time><span class=
+                                    "fyre-comment-archive"></span>
+
+                                    <div class="fyre-comment-premod"></div>
+
+                                    <div class="fyre-flag-list"></div>
+                                </header>
+
+                                <section class="fyre-comment-body">
+                                    <div class="fyre-comment">
+                                        <p></p>
+
+                                        <p>test</p>
+
+                                        <p><br></p>
+                                        <p>
+                                    </div>
+                                </section>
+
+                                <footer class="fyre-comment-footer">
+                                    <div class="fyre-comment-actions">
+                                        <a class="fyre-flag-link" title=
+                                        "Flag"><span></span>Flag</a><a class=
+                                        "fyre-share-link" title=
+                                        "Share"><span></span>Share</a>
+                                    </div><span class=
+                                    "fyre-comment-like"><span class=
+                                    "fyre-comment-like-count"></span><span class="fyre-comment-like-imgs"></span><a class="fyre-comment-like-btn fyre-comment-action-button">Like</a></span><a class="fyre-comment-reply fyre-comment-action-button">Reply</a>
+
+                                    <div class="fyre-editor" style=
+                                    "display: none;"></div>
+                                </footer>
+                            </div>
+
+                            <div class="fyre-comment-divider">
+                                <a class="fyre-comment-collapse" style=
+                                "display: none;" title="Toggle Collapse"></a>
+
+                                <div class="fyre-comment-divider"></div>
+                            </div>
+
+                            <div class="fyre-outer-comment-container">
+                                <div class=
+                                "fyre-comment-container fyre-comment-replies fyre-comment-replies-indent">
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class=
+                        "fyre-comment-article fyre-comment-source-5"
+                        data-author-id="123@client-solutions.fyre.co"
+                        data-message-id="211136939" style="">
+                            <div class="fyre-comment-wrapper">
+                                <div class="fyre-comment-user" data-author-id=
+                                "123@client-solutions.fyre.co" data-from=
+                                "MrTesterTest">
+                                    <a class="fyre-comment-author" href=
+                                    ""><img alt="MrTesterTest" class=
+                                    "fyre-user-avatar" onerror=
+                                    "javascript:this.src='http:\/\/avatars.fyre.co\/a\/anon\/50.jpg';"
+                                    src=
+                                    "http://avatars.fyre.co/a/anon/50.jpg"></a>
+
+                                    <div class=
+                                    "fyre-comment-socialsync fyre-comment-from-undefined">
+                                    </div>
+
+                                    <div class="fyre-comment-highlight"></div>
+                                </div>
+
+                                <header class="fyre-comment-head">
+                                    <a class=
+                                    "fyre-comment-username"><span>MrTesterTest</span></a>
+                                    <span class="fyre-comment-user-rating"
+                                    style=
+                                    "display: none;">5pts</span><span class=
+                                    "fyre-comment-tag fyre-featured" style=
+                                    "display: none;"><span class=
+                                    "fyre-featured-icon"></span><span class=
+                                    "fyre-featured-text">Featured</span><br></span>
+                                    <meta content="2014-09-10T21:09:14.000Z">
+                                    <time class="fyre-comment-date">Sep 10,
+                                    2014</time><span class=
+                                    "fyre-comment-archive"></span>
+
+                                    <div class="fyre-comment-premod"></div>
+
+                                    <div class="fyre-flag-list"></div>
+                                </header>
+
+                                <section class="fyre-comment-body">
+                                    <div class="fyre-comment">
+                                        <p>teste</p>
+                                    </div>
+                                </section>
+
+                                <footer class="fyre-comment-footer">
+                                    <div class="fyre-comment-actions">
+                                        <a class="fyre-flag-link" title=
+                                        "Flag"><span></span>Flag</a><a class=
+                                        "fyre-share-link" title=
+                                        "Share"><span></span>Share</a>
+                                    </div><span class=
+                                    "fyre-comment-like"><span class=
+                                    "fyre-comment-like-count"></span><span class="fyre-comment-like-imgs"></span><a class="fyre-comment-like-btn fyre-comment-action-button">Like</a></span><a class="fyre-comment-reply fyre-comment-action-button">Reply</a>
+
+                                    <div class="fyre-editor" style=
+                                    "display: none;"></div>
+                                </footer>
+                            </div>
+
+                            <div class="fyre-comment-divider">
+                                <a class="fyre-comment-collapse" style=
+                                "display: none;" title="Toggle Collapse"></a>
+
+                                <div class="fyre-comment-divider"></div>
+                            </div>
+
+                            <div class="fyre-outer-comment-container">
+                                <div class=
+                                "fyre-comment-container fyre-comment-replies fyre-comment-replies-indent">
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class=
+                        "fyre-comment-article fyre-comment-source-5"
+                        data-author-id="123@client-solutions.fyre.co"
+                        data-message-id="211136907" style="">
+                            <div class="fyre-comment-wrapper">
+                                <div class="fyre-comment-user" data-author-id=
+                                "123@client-solutions.fyre.co" data-from=
+                                "MrTesterTest">
+                                    <a class="fyre-comment-author" href=
+                                    ""><img alt="MrTesterTest" class=
+                                    "fyre-user-avatar" onerror=
+                                    "javascript:this.src='http:\/\/avatars.fyre.co\/a\/anon\/50.jpg';"
+                                    src=
+                                    "http://avatars.fyre.co/a/anon/50.jpg"></a>
+
+                                    <div class=
+                                    "fyre-comment-socialsync fyre-comment-from-undefined">
+                                    </div>
+
+                                    <div class="fyre-comment-highlight"></div>
+                                </div>
+
+                                <header class="fyre-comment-head">
+                                    <a class=
+                                    "fyre-comment-username"><span>MrTesterTest</span></a>
+                                    <span class="fyre-comment-user-rating"
+                                    style=
+                                    "display: none;">5pts</span><span class=
+                                    "fyre-comment-tag fyre-featured" style=
+                                    "display: none;"><span class=
+                                    "fyre-featured-icon"></span><span class=
+                                    "fyre-featured-text">Featured</span><br></span>
+                                    <meta content="2014-09-10T21:09:09.000Z">
+                                    <time class="fyre-comment-date">Sep 10,
+                                    2014</time><span class=
+                                    "fyre-comment-archive"></span>
+
+                                    <div class="fyre-comment-premod"></div>
+
+                                    <div class="fyre-flag-list"></div>
+                                </header>
+
+                                <section class="fyre-comment-body">
+                                    <div class="fyre-comment">
+                                        <p>tset</p>
+                                    </div>
+                                </section>
+
+                                <footer class="fyre-comment-footer">
+                                    <div class="fyre-comment-actions">
+                                        <a class="fyre-flag-link" title=
+                                        "Flag"><span></span>Flag</a><a class=
+                                        "fyre-share-link" title=
+                                        "Share"><span></span>Share</a>
+                                    </div><span class=
+                                    "fyre-comment-like"><span class=
+                                    "fyre-comment-like-count"></span><span class="fyre-comment-like-imgs"></span><a class="fyre-comment-like-btn fyre-comment-action-button">Like</a></span><a class="fyre-comment-reply fyre-comment-action-button">Reply</a>
+
+                                    <div class="fyre-editor" style=
+                                    "display: none;"></div>
+                                </footer>
+                            </div>
+
+                            <div class="fyre-comment-divider">
+                                <a class="fyre-comment-collapse" style=
+                                "display: none;" title="Toggle Collapse"></a>
+
+                                <div class="fyre-comment-divider"></div>
+                            </div>
+
+                            <div class="fyre-outer-comment-container">
+                                <div class=
+                                "fyre-comment-container fyre-comment-replies fyre-comment-replies-indent">
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="fyre-comment-article" data-author-id=
+                        "undefined" data-message-id="210341244" style="">
+                            <div class="fyre-comment-wrapper" style=
+                            "display: none;">
+                                <section class="fyre-comment-deleted">
+                                    <p>This comment has been deleted</p>
+                                </section>
+                            </div>
+
+                            <div class="fyre-comment-divider" style=
+                            "display: none;">
+                                <a class="fyre-comment-collapse" style=
+                                "display: none;" title="Toggle Collapse"></a>
+
+                                <div class="fyre-comment-divider"></div>
+                            </div>
+
+                            <div class="fyre-outer-comment-container">
+                                <div class=
+                                "fyre-comment-container fyre-comment-replies fyre-comment-replies-indent">
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="fyre-comment-article" data-author-id=
+                        "undefined" data-message-id="208936696" style="">
+                            <div class="fyre-comment-wrapper" style=
+                            "display: none;">
+                                <section class="fyre-comment-deleted">
+                                    <p>This comment has been deleted</p>
+                                </section>
+                            </div>
+
+                            <div class="fyre-comment-divider" style=
+                            "display: none;">
+                                <a class="fyre-comment-collapse" style=
+                                "display: none;" title="Toggle Collapse"></a>
+
+                                <div class="fyre-comment-divider"></div>
+                            </div>
+
+                            <div class="fyre-outer-comment-container">
+                                <div class=
+                                "fyre-comment-container fyre-comment-replies fyre-comment-replies-indent">
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+
+                    <div class="fyre-stream-content-not-found"></div>
+
+                    <div class="fyre-stream-more" style="display: none;">
+                        <div class="fyre-stream-more-container">
+                            <div class="fyre-text">
+                                Show More Comments
+                            </div>
+
+                            <div class="fyre-spinner">
+                                <div class="fyre-ball">
+                                    <!--[if IE]><img src="http://zor.fyre.co/wjs/v3.0.1416890156/images/fyre-spinner-ball.gif" alt="" /><![endif]--><!--[if !IE]><!--><img alt=""
+                                    src=
+                                    "http://zor.fyre.co/wjs/v3.0.1416890156/images/fyre-spinner-ball.png"><!--<![endif]-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fyre-top-content-stream"></div>
+
+                <div class="fyre-thread-breakout-stream"></div>
+
+                <div class="fyre-stream-menu-container"></div>
+            </div>
+        </div>
+    </div>
+```
+*/
+#livefyre-comments .fyre img {
+  display: inline; }
+
+/*doc
+---
+title: Related Post
+name: related-post
+category: Components - Article
+---
+
+```html_example
+<article class="related-post">
+	<div class="related-post__img">
+		<img src="http://placehold.it/267x200" alt="4:3" />
+	</div>
+	<div class="related-post__meta">
+		<p class="related-post__title">Lorem ipsum dolor sit amet, consectetur adipisicing elit Lorem ipsum dolor sit amet</p>
+		<time class="related-post__date" datetime="2014-01-15">15 JAN</time>
+	</div>
+</article>
+```
+
+*/
+@media screen and (min-width: 480px) {
+  .related-posts {
+    margin-right: -2%; } }
+.related-posts .related-post:nth-child(n+0) {
+  display: none; }
+.related-posts .related-post:nth-child(-n+4) {
+  display: block; }
+@media screen and (min-width: 480px) {
+  .related-posts .related-post {
+    float: left;
+    display: block;
+    margin-right: 4.82916%;
+    width: 47.58542%;
+    width: 48%;
+    margin-right: 2%; }
+    .related-posts .related-post:last-child {
+      margin-right: 0; }
+    .related-posts .related-post:nth-child(-n+4) {
+      display: block; } }
+@media screen and (min-width: 768px) {
+  .related-posts .related-post {
+    float: left;
+    display: block;
+    margin-right: 3.16844%;
+    width: 31.22104%;
+    width: 31.3333%;
+    margin-right: 2%; }
+    .related-posts .related-post:last-child {
+      margin-right: 0; }
+    .related-posts .related-post:nth-child(-n+6) {
+      display: block; } }
+@media screen and (min-width: 1024px) {
+  .related-posts .related-post {
+    float: left;
+    display: block;
+    margin-right: 2.35765%;
+    width: 23.23176%;
+    width: 23%;
+    margin-right: 2%; }
+    .related-posts .related-post:last-child {
+      margin-right: 0; }
+    .related-posts .related-post:nth-child(-n+8) {
+      display: block; } }
+
+.related-posts__title {
+  color: #929497;
+  font-family: "Open Sans", sans-serif;
+  font-weight: lighter; }
+
+.related-post {
+  display: block;
+  background: #282827;
+  color: #ffffff;
+  margin-bottom: 1.5em; }
+
+.related-post__img .thumbnail {
+  background-position: center center;
+  background-size: 100%;
+  background-size: cover;
+  padding-bottom: 66.666%; }
+
+.related-post__meta {
+  padding: 1.5em 1.618em;
+  font-family: "Open Sans", sans-serif;
+  font-weight: lighter; }
+
+.related-post__title {
+  font-size: 22px;
+  line-height: 1.5;
+  height: 4.5em;
+  overflow: hidden;
+  color: #ffffff; }
+  @media screen and (min-width: 480px) {
+    .related-post__title {
+      font-size: 16px;
+      line-height: 1.4;
+      height: 4.2em; } }
+
+.related-post__date {
+  display: block;
+  font-size: 14px;
+  margin-top: 1.5em;
+  color: #929497;
+  text-transform: uppercase; }
+
+.related-post:hover .related-post__title,
+.related-post:hover .related-post__date {
+  color: #f5ed7f; }
 
 /**
  * Single Page Styles
@@ -8206,5 +10711,14 @@ select {
 
 .home__highlights {
   border-bottom-color: #d0d2d3; }
+
+.highlights__event--item {
+  background-color: #f2f2f2; }
+
+.highlights__event--title, .highlights__event--date {
+  color: #404041; }
+
+.highlights__heading {
+  color: #ffffff; }
 
 /*# sourceMappingURL=wmgk.css.map */

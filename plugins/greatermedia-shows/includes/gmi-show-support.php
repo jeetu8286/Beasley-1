@@ -110,16 +110,19 @@ function get_show_podcast_query() {
 	$show_podcasts = new \WP_Query( $show_podcasts_args );
 
 	$possible_parents = $show_podcasts->posts;
+	if( !empty( $possible_parents) ) {
+		$podcast_args = array(
+			'post_type' => \GMP_CPT::EPISODE_POST_TYPE,
+			'post_parent__in' => $possible_parents,
+			'paged' => $current_page,
+		);
 
-	$podcast_args = array(
-		'post_type' => \GMP_CPT::EPISODE_POST_TYPE,
-		'post_parent__in' => $possible_parents,
-		'paged' => $current_page,
-	);
+		$podcast_query = new \WP_Query( $podcast_args );
 
-	$podcast_query = new \WP_Query( $podcast_args );
-
-	return $podcast_query;
+		return $podcast_query;
+	} else {
+		return new \WP_Query();
+	}
 }
 
 /**
@@ -244,7 +247,7 @@ function get_show_live_links_query( $show = null, $page = 1 ) {
 	$term = \TDS\get_related_term( $show );
 
 	$args = array(
-		'post_type'           => $taxonomy->object_type,
+		'post_type'			  => GMR_LIVE_LINK_CPT,
 		'paged'               => $page,
 		'posts_per_page'      => 10,
 		'ignore_sticky_posts' => true,

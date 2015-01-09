@@ -335,7 +335,9 @@ category: Components
 .live-stream__listen-now--btn {
 	@include btn($btn-bg, $color-text-white, $btn-bg, .5em, 1em, ms(-1));
 	@include border-radius(1em);
+	margin-right: 0;
 	font-weight: 700;
+	z-index: 1;
 }
 
 .live-stream__now-playing--btn {
@@ -343,6 +345,14 @@ category: Components
 	display: none;
 	@include border-radius(1em);
 	font-weight: 700;
+}
+
+.live-stream__login {
+	padding-bottom: 3px;
+	margin-right: 0;
+	font-weight: 700;
+	font-size: ms(-2);
+	color: $color-text-red;
 }
 
 .live-stream__resume {
@@ -443,6 +453,10 @@ category: Components
 	height: 100%;
 	background-color: rgba(0,0,0,.75);
 	z-index: 20000;
+}
+
+.live-stream__container--player {
+	height: 0;
 }
 
 .live-stream__container.vast__pre-roll .live-stream__container--player {
@@ -573,7 +587,7 @@ category: Components
 
 .now-playing__title {
 	margin: 0 0 4px;
-	line-height: 1;
+	line-height: 1.4;
 	font-size: ms(0);
 	font-weight: lighter;
 	color: $color-text-red;
@@ -741,7 +755,7 @@ category: Components
 
 .live-link__type--gallery:before {
 	@extend %live-link__icon;
-	content: "\e602";
+	content: "\e621";
 }
 
 .live-link__type--image:before {
@@ -761,7 +775,7 @@ category: Components
 
 .live-link__type--video:before {
 	@extend %live-link__icon;
-	content: "\e604";
+	content: "\e620";
 }
 
 .live-link__title {
