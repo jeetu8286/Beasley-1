@@ -51,6 +51,10 @@ function add_rewrites() {
  * Checks for Homepage support (applies to about also), in addition to Galleries, Podcasts, and Videos.
  */
 function template_redirect() {
+	if ( is_post_type_archive( \ShowsCPT::SHOW_CPT ) ) {
+		return;
+	}
+
 	if ( get_post_type() !== \ShowsCPT::SHOW_CPT ) {
 		return;
 	}
