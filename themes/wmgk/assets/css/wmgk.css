@@ -3670,12 +3670,6 @@ Link posts contain a link to an external site. They can also optionally have a f
   color: #ffffff !important;
   text-transform: uppercase;
   cursor: pointer;
-  -webkit-border-radius: 1em;
-  -moz-border-radius: 1em;
-  -ms-border-radius: 1em;
-  -o-border-radius: 1em;
-  -border-radius: 1em;
-  border-radius: 1em;
   display: none; }
   .posts-pagination--load-more:hover, .posts-pagination--load-more:focus {
     background-color: #aa1c20;
@@ -4780,6 +4774,7 @@ category: Components
   display: inline-block; }
   @media screen and (min-width: 768px) {
     .on-air__title, .up-next__title {
+      display: block;
       margin-bottom: 10px;
       font-size: 0.88889em; } }
 
@@ -4787,6 +4782,7 @@ category: Components
   display: inline-block; }
   @media screen and (min-width: 768px) {
     .on-air__show, .up-next__show {
+      display: block;
       font-size: 0.88889em;
       text-transform: uppercase; } }
 
