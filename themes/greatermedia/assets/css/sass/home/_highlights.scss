@@ -163,13 +163,9 @@ Community Highlights and Events
 	// Force aspect ratio.
 	padding-top: 100%;
 	
-	img {
-		position: absolute;
-		left: 50%;
-		top: 50%;
-		width: 100%;
-		@include transform(translate(-50%, -50%));
-	}
+	background-size: 100%;
+	background-size: cover; 
+	background-position: center center;
 }
 
 .highlights__community--thumb:after {
@@ -264,30 +260,9 @@ Community Highlights and Events
 	position: relative; 
 	height: 100%;
 	overflow: hidden; 
-	
-	img {
-		position: absolute;
-		left: 50%;
-		top: 50%;
-		width: 100%;
-		@include transform(translate(-50%, -50%));
-		
-		// Special hack to just stretch images vertically at really small sizes 
-		// where the container is likely to be taller than wider.
-		@media ( max-width: 350px ) { 
-			width: auto;
-			height: 100%;
-			max-width: none;
-			max-height: none;
-		}
-		
-		@include bp(small) {
-			width: auto;
-			height: 100%;
-			max-width: none;
-			max-height: none;
-		}
-	}
+	background-size: 100%;
+	background-size: cover;
+	background-position: center center;
 	
 	@include bp(large) {
 		@include span-columns(2 of 6);
@@ -312,7 +287,7 @@ Community Highlights and Events
 
 .highlights__event--title {
 	font-size: ms(0);
-	color: $highlights-heading;
+	color: $medium-dark-gray;
 	margin: 0 0 .3em;
 	
 	// Never show more than two lines of text (layout will break).
@@ -323,7 +298,6 @@ Community Highlights and Events
 	@include bp(large) {
 		// One line of text at this breakpoint because we need to fit the date.
 		max-height: 1.25em;
-		font-weight: normal;
 	}
 	
 	@media(min-width: 1250px) {

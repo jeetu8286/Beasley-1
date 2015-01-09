@@ -26,6 +26,83 @@
 	init();
 
 })(jQuery, window);
+(function($) {
+
+	var ProfileMenuApp = function() {
+
+	};
+
+	ProfileMenuApp.prototype = {
+
+		run: function() {
+			var $container = $('.header__account--container');
+			$container.append(this.getMenu());
+
+			var $avatar = $('.header__account--btn');
+			$avatar.attr('href', this.getAvatarLink());
+
+			var thumbnailURL = this.getThumbnailURL();
+			if (thumbnailURL) {
+				var $img = $('<img />', { src: thumbnailURL });
+				$avatar.html($img);
+			}
+		},
+
+		getAvatarLink: function() {
+			var endpoint = is_gigya_user_logged_in() ? 'account' : 'login';
+			return gigya_profile_path(endpoint);
+		},
+
+		getThumbnailURL: function() {
+			return get_gigya_user_field('thumbnailURL');
+		},
+
+		getMenu: function() {
+			var menu  = this.getMenuLabels();
+			var n     = menu.length;
+			var $menu = $('<ul class="header__account--links sub-menu"></ul>');
+			var $li, $a, item;
+
+			for ( var i = 0; i < n; i++ ) {
+				item = menu[i];
+				$li = $('<li></li>');
+
+				$a = $('<a></a>', { href: gigya_profile_path(item.endpoint) });
+				$a.text(item.label);
+				$li.append($a);
+
+				$menu.append($li);
+			}
+
+			return $menu;
+		},
+
+		getMenuLabels: function() {
+			var menu;
+
+			if (is_gigya_user_logged_in()) {
+				menu = [
+					{ label: 'Edit Account' , endpoint: 'account' } ,
+					{ label: 'Logout'       , endpoint: 'logout' }
+				];
+			} else {
+				menu = [
+					{ label: 'Login/Register', endpoint: 'login' }
+				];
+			}
+
+			return menu;
+		}
+
+	};
+
+	$(document).ready(function() {
+		var app = new ProfileMenuApp();
+		app.run();
+	});
+
+}(jQuery));
+
 (function() {
 
 	/**
@@ -40,6 +117,7 @@
 		header = document.getElementById( 'header' ),
 		headerHeight = header.offsetHeight,
 		livePlayer = document.getElementById( 'live-player__sidebar' ),
+		livePlayerStream = document.querySelector('.live-player__stream');
 		livePlayerStreamSelect = document.querySelector( '.live-player__stream--current' ),
 		livePlayerStreamSelectHeight = livePlayerStreamSelect.offsetHeight,
 		livePlayerCurrentName = livePlayerStreamSelect.querySelector( '.live-player__stream--current-name' ),
@@ -171,6 +249,41 @@
 	}
 
 	/**
+	 * adds some styles to the live player that would be called at mobile breakpoints. This is added specifically to
+	 * deal with a window being resized.
+	 */
+	function livePlayerMobileReset() {
+		livePlayer.style.position = 'fixed';
+		livePlayer.style.top = 'auto';
+		livePlayer.style.bottom = '0';
+		livePlayer.style.right = '0';
+		livePlayer.style.left = '0';
+		livePlayer.style.height = 'auto';
+	}
+
+	/**
+	 * adds some styles to the live player that would be called at desktop breakpoints. This is added specifically to
+	 * deal with a window being resized.
+	 */
+	function livePlayerDesktopReset() {
+		livePlayer.classList.contains('live-player--init');
+		livePlayer.style.left = 'auto';
+		livePlayer.style.bottom = 'auto';
+		if( window.innerWidth >= 1385 || this.document.documentElement.clientWidth >= 1385 || this.document.body.clientWidth >= 1385 ) {
+			livePlayer.style.right = 'calc(50% - 700px)';
+		} else {
+			livePlayer.style.right = '0';
+		}
+		if ( body.classList.contains( 'logged-in' ) ) {
+			livePlayer.style.top = headerHeight + wpAdminHeight + 'px';
+			livePlayer.style.height = windowHeight - wpAdminHeight - headerHeight + 'px';
+		} else {
+			livePlayer.style.top = headerHeight + 'px';
+			livePlayer.style.height = windowHeight - headerHeight + 'px';
+		}
+	}
+
+	/**
 	 * creates a re-usable variable that will call a button name, element to hide, and element to display
 	 *
 	 * @param btn
@@ -248,6 +361,7 @@
 	 */
 	function toggleStreamSelect() {
 		livePlayerStreamSelect.classList.toggle( 'open' );
+		livePlayerStream.classList.toggle('open');
 	}
 	addEventHandler(livePlayerStreamSelect,elemClick,toggleStreamSelect);
 	
@@ -352,9 +466,18 @@
 			if(liveLinksWidget != null) {
 				addEventHandler(liveLinksWidget,elemClick,liveLinksClose);
 			}
+			if(livePlayer != null) {
+				livePlayerMobileReset();
+			}
 		}
 		if ( window.innerWidth >= 768 ) {
-			addEventHandler(window,elemLoad,livePlayerInit);
+			if(livePlayer != null) {
+				livePlayerDesktopReset();
+				addEventHandler(window,elemScroll,function() {
+					scrollDebounce();
+					scrollThrottle();
+				});
+			}
 		}
 	}
 
@@ -412,6 +535,11 @@
 		resizeDebounce = _.debounce(resizeWindow, 50),
 		resizeThrottle = _.throttle(resizeWindow, 50);
 
+	addEventHandler(window,elemResize,function() {
+		resizeDebounce();
+		resizeThrottle();
+	});
+
 	/**
 	 * functions being run at specific window widths.
 	 */
@@ -428,10 +556,6 @@
 		if(liveLinksWidget != null) {
 			addEventHandler(liveLinksWidget,elemClick,liveLinksClose);
 		}
-		addEventHandler(window,elemResize,function() {
-			resizeDebounce();
-			resizeThrottle();
-		});
 	} else {
 		addEventHandler(window,elemLoad,function() {
 			livePlayerInit();

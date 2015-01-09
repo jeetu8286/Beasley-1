@@ -1,4 +1,4 @@
-/*! Greater Media Contests - v1.0.3
+/*! Greater Media Contests - v1.0.4
  * http://10up.com/
  * Copyright (c) 2015;
  * Licensed GPLv2+
@@ -805,7 +805,7 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 	};
 })(jQuery, gridModernizr);
 (function($, gmr) {
-	var __ready, gridPreviewLoaded, gridLoadMoreUrl, gridUpdateRating;
+	var __ready, gridPreviewLoaded, gridLoadMoreUrl, gridUpdateRating, container, gridContainer, fillForm;
 
 	gridUpdateRating = function($item, delta) {
 		var rating = parseInt($item.text().replace(/\D+/g, ''));
@@ -828,14 +828,7 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 
 		// init new gallery
 		if ($.fn.cycle) {
-			$previewInner.find('.cycle-slideshow').cycle({
-				next: '.gallery__next--btn'
-			});
-		}
-
-		// bind gallery events
-		if (GMR_Gallery) {
-			GMR_Gallery.bindEvents();
+			$previewInner.find('.cycle-slideshow').cycle();
 		}
 
 		// bind vote click event
@@ -848,7 +841,7 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 				sync_vote = true;
 				$icon.attr('class', 'fa fa-spinner fa-spin');
 
-				$.post(gmr.endpoints.vote, {ugc: $this.data('id')}, function(response) {
+				$.post(container.data('vote'), {ugc: $this.data('id')}, function(response) {
 					sync_vote = false;
 					$icon.attr('class', classes);
 
@@ -872,7 +865,7 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 				sync_vote = true;
 				$icon.attr('class', 'fa fa-spinner fa-spin');
 
-				$.post(gmr.endpoints.unvote, {ugc: $this.data('id')}, function(response) {
+				$.post(container.data('unvote'), {ugc: $this.data('id')}, function(response) {
 					sync_vote = false;
 					$icon.attr('class', classes);
 					
@@ -885,14 +878,29 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 
 			return false;
 		});
+
+		$(document).trigger('contest:preview-loaded');
 	};
 
 	gridLoadMoreUrl = function(page) {
-		return gmr.endpoints.infinite + (page + 1) + '/';
+		return container.data('infinite') + (page + 1) + '/';
+	};
+
+	fillForm = function() {
+		if ($.isFunction(is_gigya_user_logged_in) && $.isFunction(get_gigya_user_field) && is_gigya_user_logged_in()) {
+			container.find(gmr.selectors.form).each(function() {
+				var $form = $(this),
+					firstName = get_gigya_user_field('firstName'),
+					lastName = get_gigya_user_field('lastName');
+
+				$form.find('input[type="text"]:first').val(firstName + ' ' + lastName);
+			});
+		}
 	};
 
 	__ready = function() {
-		var container = $(gmr.selectors.container);
+		container = $(gmr.selectors.container);
+		gridContainer = $(gmr.selectors.grid);
 
 		container.on('submit', gmr.selectors.form, function() {
 			var form = $(this);
@@ -924,7 +932,7 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 				form.find('i.fa').show();
 
 				$.ajax({
-					url: gmr.endpoints.submit,
+					url: container.data('submit'),
 					type: 'post',
 					data: form_data,
 					processData: false, // Don't process the files
@@ -939,26 +947,31 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 		});
 
 		container.on('click', gmr.selectors.yes_age, function() {
-			container.load(gmr.endpoints.confirm_age);
+			container.load(container.data('confirm-age'), fillForm);
 			return false;
 		});
 		
 		container.on('click', gmr.selectors.no_age, function() {
-			container.load(gmr.endpoints.reject_age);
+			container.load(container.data('reject-age'));
 			return false;
 		});
 
-		container.load(gmr.endpoints.load);
+		if (container.length > 0) {
+			container.load(container.data('load'), fillForm);
+		}
 
-		$('.contest__submissions--list').grid({
-			loadMore: '.contest__submissions--load-more',
-			previewLoaded: gridPreviewLoaded,
-			loadMoreUrl: gridLoadMoreUrl
-		});
+		if (gridContainer.length > 0) {
+			gridContainer.grid({
+				loadMore: gmr.selectors.grid_more,
+				previewLoaded: gridPreviewLoaded,
+				loadMoreUrl: gridLoadMoreUrl
+			});
+		}
 	};
 
 	$(document).bind('pjax:end', __ready).ready(__ready);
 })(jQuery, GreaterMediaContests);
+
 document.addEventListener("DOMContentLoaded", function () {
 	/**
 	 * Generate a list of supported input types (text, date, range, etc.).

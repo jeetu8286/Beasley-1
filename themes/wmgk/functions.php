@@ -9,11 +9,11 @@
  * theme's file, so the child theme functions would be used.
  *
  * @package WMGK
- * @since   0.1.0
+ * @since   0.1.1
  */
 
 // Useful global constants
-define( 'WMGK_VERSION', '0.1.0' );
+define( 'WMGK_VERSION', '0.1.1' );
 
 /**
  * Set up theme defaults and register supported WordPress features.
@@ -45,7 +45,7 @@ function wmgk_scripts_styles() {
 
 	wp_enqueue_script(
 		'wmgk',
-		get_template_directory_uri() . "/assets/js/wmgk{$postfix}.js",
+		get_stylesheet_directory_uri() . "/assets/js/wmgk{$postfix}.js",
 		array(),
 		WMGK_VERSION,
 		true
