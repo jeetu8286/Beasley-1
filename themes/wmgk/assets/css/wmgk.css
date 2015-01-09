@@ -2316,8 +2316,8 @@ Community Highlights and Events
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis; }
-  .highlights__community--item:hover .highlights__community--title {
-    color: #aa1c20; }
+  a:hover .highlights__community--title {
+    color: #f5ed7f; }
 
 .highlights__events {
   padding-top: 1.5em;
@@ -2369,6 +2369,12 @@ Community Highlights and Events
       margin: 0 0 5%; }
       .highlights__event--item:last-child {
         margin-right: 0; } }
+  .highlights__event--item a {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0; }
 
 .highlights__event--item:last-of-type {
   margin-bottom: 0; }
@@ -2427,7 +2433,7 @@ Community Highlights and Events
   @media (min-width: 1250px) {
     .highlights__event--title {
       max-height: 2.5em; } }
-  .highlights__event--item:hover .highlights__event--title {
+  a:hover .highlights__event--title {
     color: #aa1c20; }
 
 .highlights__event--date {
@@ -10703,10 +10709,13 @@ category: Components - Article
   border-bottom-color: #d0d2d3; }
 
 .highlights__event--item {
-  background-color: #f2f2f2; }
+  background-color: #8c8c8c;
+  color: #ffffff; }
 
 .highlights__event--title, .highlights__event--date {
-  color: #404041; }
+  color: #ffffff; }
+  a:hover .highlights__event--title, a:hover .highlights__event--date {
+    color: #f5ed7f; }
 
 .highlights__heading {
   color: #ffffff; }
