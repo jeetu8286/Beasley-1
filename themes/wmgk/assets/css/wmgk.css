@@ -8386,25 +8386,6 @@ category: Components - Shows
     -border-radius: 50%;
     border-radius: 50%; }
 
-.personality__meta {
-  float: left;
-  display: block;
-  margin-right: 2.35765%;
-  width: 65.88078%;
-  margin-right: 0;
-  transition: height 0.2s; }
-  .personality__meta:last-child {
-    margin-right: 0; }
-  @media screen and (min-width: 768px) {
-    .personality__meta {
-      float: left;
-      display: block;
-      margin-right: 2.35765%;
-      width: 74.41059%;
-      margin-right: 0; }
-      .personality__meta:last-child {
-        margin-right: 0; } }
-
 /*doc
 ---
 title: Form Fields
