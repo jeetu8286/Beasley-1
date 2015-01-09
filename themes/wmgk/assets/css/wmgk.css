@@ -492,6 +492,12 @@ category: Base - Typography
 <span class="icon-post-format-link"></span>
 <span class="icon-post-format-video2"></span>
 <span class="icon-post-format-image"></span>
+<span class="icon-video-camera"></span>
+<span class="icon-gallery"></span>
+<span class="icon-ticket"></span>
+<span class="icon-contest"></span>
+<span class="icon-pause"></span>
+<span class="icon-download-arrow"></span>
 ```
 
 */
@@ -500,8 +506,8 @@ category: Base - Typography
  */
 @font-face {
   font-family: 'gmr-icons';
-  src: url("../../../../themes/greatermedia/assets/fonts/icon-font/gmr-icons.eot?-7cndw");
-  src: url("../../../../themes/greatermedia/assets/fonts/icon-font/gmr-icons.eot?#iefix-7cndw") format("embedded-opentype"), url("../../../../themes/greatermedia/assets/fonts/icon-font/gmr-icons.woff?-7cndw") format("woff"), url("../../../../themes/greatermedia/assets/fonts/icon-font/gmr-icons.ttf?-7cndw") format("truetype"), url("../../../../themes/greatermedia/assets/fonts/icon-font/gmr-icons.svg?-7cndw#gmr-icons") format("svg");
+  src: url("../../../../themes/greatermedia/assets/fonts/icon-font/gmr-icons.eot?-myn1wz");
+  src: url("../../../../themes/greatermedia/assets/fonts/icon-font/gmr-icons.eot?#iefix-myn1wz") format("embedded-opentype"), url("../../../../themes/greatermedia/assets/fonts/icon-font/gmr-icons.woff?-myn1wz") format("woff"), url("../../../../themes/greatermedia/assets/fonts/icon-font/gmr-icons.ttf?-myn1wz") format("truetype"), url("../../../../themes/greatermedia/assets/fonts/icon-font/gmr-icons.svg?-myn1wz#icomoon") format("svg");
   font-weight: normal;
   font-style: normal; }
 [class^="icon-"], [class*=" icon-"], .entry__thumbnail--video:before, .entry__thumbnail--events:before, .entry__thumbnail--audio:before, .header__search--btn:before, .format-audio .entry2__thumbnail a, .format-gallery .entry2__thumbnail a, .format-video .entry2__thumbnail a, .type-contest .entry2__thumbnail a, .type-tribe_events .entry2__thumbnail a, .live-link__song:before, .live-link__type--audio:before, .live-link__type--gallery:before, .live-link__type--image:before, .live-link__type--link:before, .live-link__type--standard:before, .live-link__type--video:before, .social__link--facebook:before, .social__link--twitter:before, .social__link--google-plus:before, .social__link--youtube:before, .social__link--instagram:before, .header__search--submit:before, .gallery__prev--btn:before, .gallery__next--btn:after, .gallery__paging--prev, .gallery__paging--next, .gallery__grid--album {
@@ -611,6 +617,18 @@ category: Base - Typography
 
 .icon-pause:before {
   content: "\e61f"; }
+
+.icon-video-camera:before {
+  content: "\e620"; }
+
+.icon-gallery:before {
+  content: "\e621"; }
+
+.icon-ticket:before {
+  content: "\e622"; }
+
+.icon-contest:before {
+  content: "\e623"; }
 
 img {
   max-width: 100%;
@@ -1890,7 +1908,7 @@ Curated posts for Featured Articles
   width: 100%;
   margin-right: 0;
   overflow: hidden;
-  background: #fff;
+  background: #5a5a5a;
   height: 100px;
   margin: 1.5em 0 0; }
   .featured__content--block:last-child {
@@ -2186,8 +2204,8 @@ Community Highlights and Events
 */
 .home__highlights {
   padding: 0 0.809em 1.5em;
-  background-color: #fff;
-  border-bottom: 1px solid #f7f7f7; }
+  background-color: #5a5a5a;
+  border-bottom: 1px solid #525252; }
   @media screen and (min-width: 768px) {
     .home__highlights {
       padding: 0 3.236em 3em; } }
@@ -3706,9 +3724,13 @@ Link posts contain a link to an external site. They can also optionally have a f
   margin-right: 4.82916%;
   width: 100%;
   margin-right: 0;
-  margin-bottom: 2.25em; }
+  margin-bottom: 2.25em;
+  border-bottom: 1px solid #d0d2d3;
+  text-align: center; }
   .entry2:last-child {
     margin-right: 0; }
+  .entry2:last-of-type {
+    border-bottom: none; }
 
 .entry2__thumbnail {
   margin-bottom: 1.125em;
@@ -3799,7 +3821,6 @@ Link posts contain a link to an external site. They can also optionally have a f
 .entry2__footer {
   margin-top: 2.25em;
   padding: 0 0 0.75em;
-  border-bottom: 1px solid #d0d2d3;
   text-align: center;
   margin-right: 0;
   float: left;
@@ -6335,7 +6356,7 @@ a.podcast__rss:active {
 .single-show .highlights__heading {
   font-size: 1.125em; }
 .single-show .highlights__event--item {
-  background-color: #fff; }
+  background-color: #5a5a5a; }
 .single-show .highlights__community--item:hover .highlights__community--title {
   color: #f5ed7f; }
 @media screen and (min-width: 1024px) {
@@ -6653,7 +6674,7 @@ category: Components - Shows
 
 .show__feature--desc {
   background-color: #F1F1F3;
-  color: #404041; }
+  color: #ffffff; }
   .show__feature--desc h3 {
     margin: 0;
     font-size: 1.42383em;
@@ -6663,7 +6684,7 @@ category: Components - Shows
   .show__feature--desc time {
     font-size: 1em;
     text-transform: uppercase;
-    color: #404041; }
+    color: #ffffff; }
   .show__feature--desc .inner-wrap {
     padding: 1.5em 1.618em; }
   @media screen and (min-width: 1024px) {
@@ -8154,7 +8175,7 @@ category: Components - Gallery Archive
 
 .gallery__featured--caption {
   background-color: #F1F1F3;
-  color: #404041; }
+  color: #ffffff; }
   .gallery__featured--caption h3 {
     margin: 0;
     font-size: 1.42383em;
@@ -8164,7 +8185,7 @@ category: Components - Gallery Archive
   .gallery__featured--caption time {
     font-size: 1em;
     text-transform: uppercase;
-    color: #404041; }
+    color: #ffffff; }
   .gallery__featured--caption .inner-wrap {
     padding: 1.5em 1.618em; }
   @media screen and (min-width: 1024px) {
@@ -10225,5 +10246,14 @@ category: Components - Article
 
 .home__highlights {
   border-bottom-color: #d0d2d3; }
+
+.highlights__event--item {
+  background-color: #f2f2f2; }
+
+.highlights__event--title, .highlights__event--date {
+  color: #404041; }
+
+.highlights__heading {
+  color: #ffffff; }
 
 /*# sourceMappingURL=wmgk.css.map */

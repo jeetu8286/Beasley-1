@@ -61,6 +61,12 @@ function greatermedia_setup() {
 	add_image_size( 'gmr-show-featured-primary',   		708,    389,    true    ); // thumbnails for secondary featured posts on front page
 	add_image_size( 'gmr-show-featured-secondary',   	322,    141,    true    ); // thumbnails for secondary featured posts on front page
 
+	/* Images for the Gallery Grid ---- DO NOT DELETE ---- */
+	add_image_size( 'gmr-gallery-grid-featured',        1200,   800,    true    );
+	add_image_size( 'gmr-gallery-grid-secondary',       560,    300,    true    );
+	add_image_size( 'gmr-gallery-grid-thumb',           500,    368,    true    ); // thumbnail for gallery grid areas
+	add_image_size( 'gmr-album-thumbnail',              1876,   576,    true    ); // thumbnail for albums
+
 	// Update this as appropriate content types are created and we want this functionality
 	add_post_type_support( 'post', 'timed-content' );
 	add_post_type_support( 'post', 'login-restricted-content' );
@@ -388,7 +394,7 @@ add_action( 'wp_head', 'greatermedia_remove_jetpack_share' );
  * @return string
  */
 function greatermedia_excerpt_more( $more ) {
-	return '';
+	return '&hellip;';
 }
 add_filter( 'excerpt_more', 'greatermedia_excerpt_more' );
 
