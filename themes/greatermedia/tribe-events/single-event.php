@@ -24,27 +24,9 @@ $event_id = get_the_ID();
 		<a href="<?php echo tribe_get_events_link() ?>"> <?php _e( '&laquo; All Events', 'tribe-events-calendar' ) ?></a>
 	</div>
 
-	<!-- Notices -->
-	<?php tribe_events_the_notices() ?>
-
-	<?php the_title( '<h2 class="tribe-events-single-event-title summary entry-title">', '</h2>' ); ?>
-
-	<!-- Event header -->
-	<div id="tribe-events-header" <?php tribe_events_the_header_attributes() ?>>
-		<!-- Navigation -->
-		<h3 class="tribe-events-visuallyhidden"><?php _e( 'Event Navigation', 'tribe-events-calendar' ) ?></h3>
-		<ul class="tribe-events-sub-nav">
-			<li class="tribe-events-nav-previous"><?php tribe_the_prev_event_link( '<span>&laquo;</span> %title%' ) ?></li>
-			<li class="tribe-events-nav-next"><?php tribe_the_next_event_link( '%title% <span>&raquo;</span>' ) ?></li>
-		</ul>
-		<!-- .tribe-events-sub-nav -->
-	</div>
-	<!-- #tribe-events-header -->
-
 	<?php while ( have_posts() ) :  the_post(); ?>
 		<div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 
-			<?php echo tribe_event_featured_image( $event_id, 'full', false ); ?>
 
 			<h2 class="entry__title"><a href="<?php the_permalink(); ?>" title="<?php the_title() ?>" rel="bookmark"><?php the_title(); ?></a></h2>
 
@@ -58,13 +40,6 @@ $event_id = get_the_ID();
 			<?php
 			}
 			?>
-
-			<!-- Event content -->
-			<?php do_action( 'tribe_events_single_event_before_the_content' ) ?>
-			<div class="tribe-events-single-event-description tribe-events-content entry-content description">
-				<?php the_content(); ?>
-			</div>
-			<!-- .tribe-events-single-event-description -->
 
 			<!-- Event meta -->
 			<?php do_action( 'tribe_events_single_event_before_the_meta' ) ?>
@@ -82,6 +57,12 @@ $event_id = get_the_ID();
 			}
 			?>
 			<?php do_action( 'tribe_events_single_event_after_the_meta' ) ?>
+			<!-- Event content -->
+			<?php do_action( 'tribe_events_single_event_before_the_content' ) ?>
+			<div class="tribe-events-single-event-description tribe-events-content entry-content description">
+				<?php the_content(); ?>
+			</div>
+			<!-- .tribe-events-single-event-description -->
 		</div> <!-- #post-x -->
 		<?php if ( get_post_type() == TribeEvents::POSTTYPE && tribe_get_option( 'showComments', false ) ) comments_template() ?>
 	<?php endwhile; ?>
