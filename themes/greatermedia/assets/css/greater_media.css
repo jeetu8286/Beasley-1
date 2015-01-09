@@ -4792,7 +4792,7 @@ category: Components
   content: "\e604"; }
 
 .live-link__type--gallery:before {
-  content: "\e61a"; }
+  content: "\e621"; }
 
 .live-link__type--image:before {
   content: "\e600"; }
@@ -4804,7 +4804,7 @@ category: Components
   content: "\e608"; }
 
 .live-link__type--video:before {
-  content: "\e613"; }
+  content: "\e620"; }
 
 .live-link__title {
   display: block;
