@@ -2,14 +2,14 @@
 	<section class="entry2__thumbnail" style="background-image: url('<?php echo has_post_thumbnail() ? esc_url( gm_get_post_thumbnail_url( 'gm-entry-thumbnail-4-3' ) ) : ''; ?>')">
 		<a href="<?php the_permalink(); ?>">
 			<div class="entry2__thumbnail--end-date">
-				<?php $end_date = get_post_meta( get_the_ID(), 'contest-end', true );
-						$time = time();
-				?>
-				<?php if ( ! empty( $end_date ) && $end_date > $time ) : ?>
-					<div class="entry2__thumbnail--day-of-week">Ends <?php echo date( 'l', $end_date ); ?></div>
-					<div class="entry2__thumbnail--month-and-day"><?php echo date( 'M j', $end_date ); ?></div>
-				<?php elseif ( ! empty( $end_date ) && $end_date < $time ) : ?>
-					<div class="entry2__thumbnail--month-and-day">Ended</div>
+				<?php $end_date = get_post_meta( get_the_ID(), 'contest-end', true ); ?>
+				<?php if ( ! empty( $end_date ) ) : ?>
+					<?php if ( $end_date > current_time( 'timestamp', 1 ) ) : ?>
+						<div class="entry2__thumbnail--day-of-week">Ends <?php echo date( 'l', $end_date ); ?></div>
+						<div class="entry2__thumbnail--month-and-day"><?php echo date( 'M j', $end_date ); ?></div>
+					<?php else : ?>
+						<div class="entry2__thumbnail--month-and-day">Ended</div>
+					<?php endif; ?>
 				<?php endif; ?>
 			</div>
 		</a>
