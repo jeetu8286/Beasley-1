@@ -423,6 +423,12 @@ function gmr_contests_unvote_for_submission() {
 	wp_send_json_success();
 }
 
+/**
+ * Determines whether contest is started or not.
+ *
+ * @param int|WP_Post $contest_id The contest object or id.
+ * @return boolean TRUE if contest has not been started yet, otherwise FALSE.
+ */
 function gmr_contest_is_not_started( $contest_id = null ) {
 	if ( ! $contest_id ) {
 		$contest_id = get_the_ID();
@@ -434,6 +440,12 @@ function gmr_contest_is_not_started( $contest_id = null ) {
 	return $start > 0 && $start > $now;
 }
 
+/**
+ * Determines whether contest is finished or not.
+ *
+ * @param int|WP_Post $contest_id The contest object or id.
+ * @return boolean TRUE if contest is finished, otherwise FALSE.
+ */
 function gmr_contest_is_finished( $contest_id = null ) {
 	if ( ! $contest_id ) {
 		$contest_id = get_the_ID();
@@ -445,6 +457,12 @@ function gmr_contest_is_finished( $contest_id = null ) {
 	return $end > 0 && $now > $end;
 }
 
+/**
+ * Determines whether contest reached the maximum entries or not.
+ *
+ * @param int|WP_Post $contest_id The contest object or id.
+ * @return boolean TRUE if contest reached the maximum entries, otherwise FALSE.
+ */
 function gmr_contest_has_max_entries( $contest_id = null ) {
 	if ( ! $contest_id ) {
 		$contest_id = get_the_ID();
@@ -456,6 +474,12 @@ function gmr_contest_has_max_entries( $contest_id = null ) {
 	return $max_entries > 0 && $current_entries >= $max_entries;
 }
 
+/**
+ * Determines whether contest requires only signed in users or not.
+ *
+ * @param int|WP_Post $contest_id The contest object or id.
+ * @return boolean TRUE if contest requires signed in users, otherwise FALSE.
+ */
 function gmr_contest_allows_members_only( $contest_id = null ) {
 	if ( ! $contest_id ) {
 		$contest_id = get_the_ID();
