@@ -61,7 +61,13 @@ get_header(); ?>
 												 data-hover-color="<?php echo gmrs_show_color( $episode->post_parent, 0.4 ) ?>">
 
 												<div class="shows__schedule--episode-title">
-													<?php echo esc_html( $episode->post_title ); ?>
+													<?php if ( \GreaterMedia\Shows\supports_homepage( $episode->post_parent ) ) : ?>
+														<a href="<?php echo esc_url( get_permalink( $episode->post_parent ) ); ?>">
+															<?php echo esc_html( $episode->post_title ); ?>
+														</a>
+													<?php else : ?>
+														<?php echo esc_html( $episode->post_title ); ?>
+													<?php endif; ?>
 												</div>
 
 												<div class="shows__schedule--episode-time">
