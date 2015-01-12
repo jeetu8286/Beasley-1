@@ -1400,12 +1400,16 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
   width: 100%; }
 .header__nav .format-fw > ul > li, .header__nav .format-sp > ul > li {
   width: 32.666%;
-  /* 100% - 2% (for margins, below) / 3 (3 columns) */
-  float: left; }
+  float: none;
+  display: inline-block;
+  vertical-align: top; }
+  .header__nav .format-fw > ul > li > a, .header__nav .format-sp > ul > li > a {
+    float: left;
+    width: 100%; }
 .header__nav .format-fw > ul > li:not(:nth-child(3n+1)), .header__nav .format-sp > ul > li:not(:nth-child(3n+1)) {
   border-left: 1px solid #d0d2d3;
   padding-left: 1%;
-  margin-left: 1%; }
+  margin-left: 0.65%; }
 
 .format-sp a:hover {
   color: #ffffff; }
