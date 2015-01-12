@@ -24,6 +24,18 @@ add_filter( 'request', 'gmr_contests_unpack_vars' );
 add_filter( 'post_thumbnail_html', 'gmr_contests_post_thumbnail_html', 10, 4 );
 add_filter( 'post_row_actions', 'gmr_contests_add_table_row_actions', 10, 2 );
 
+/**
+ * Removes delete_post(s) capabilities for public contests or contest entries.
+ *
+ * @filter map_meta_cap
+ * @global string $pagenow The current page.
+ * @global string $typenow The current type.
+ * @param array $caps The array of user capabilities.
+ * @param string $cap The current capability to check against.
+ * @param int $user_id The current user id.
+ * @param array $args Additional parameters.
+ * @return array The array of allowed capabilities.
+ */
 function gmr_contests_map_meta_cap( $caps, $cap, $user_id, $args ) {
 	global $pagenow, $typenow;
 
