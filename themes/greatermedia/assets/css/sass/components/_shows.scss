@@ -708,6 +708,7 @@ category: Components - Shows
 	border-right: 1px solid $light-gray;
 	@include box-sizing(border-box);
 	@include show-schedule-columns(1);
+	@include user-select(none);
 }
 
 @include bp(small) {
@@ -752,6 +753,10 @@ category: Components - Shows
 	right: 0;
 	border-bottom: 1px solid $light-gray;
 	padding: 1em;
+
+	&:hover {
+		background-color: $extra-light-gray;
+	}
 }
 
 .shows__schedule--episode-title {
@@ -767,6 +772,7 @@ category: Components - Shows
 	position: absolute;
 	left: 0;
 	right: 0;
-	border: 2px solid $cardinal;
+	z-index: 9999999;
+	border: 1px solid $cardinal;
 	margin-right: -1px;
 }
