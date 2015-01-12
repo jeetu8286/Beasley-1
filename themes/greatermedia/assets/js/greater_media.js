@@ -426,8 +426,8 @@
 				document.body.style.overflow = 'hidden';
 				html.style.overflow = 'hidden';
 			} else {
-				document.body.style.overflow = 'auto';
-				html.style.overflow = 'auto';
+				document.body.style.overflow = 'initial';
+				html.style.overflow = 'initial';
 			}
 		}
 	}
