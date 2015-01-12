@@ -291,9 +291,11 @@ category: Components
 // live player area
 .live-player__container {
 	overflow: hidden;
+	border-bottom: 1px solid $secondary-border;
 	@include bp(medium) {
 		padding: 20px 0 0;
 		overflow: visible;
+		border-bottom: none;
 	}
 }
 
@@ -698,7 +700,6 @@ category: Components
 .live-links {
 	display: none;
 	padding: 16px 0 0;
-	border-top: 1px solid $secondary-border;
 	text-align: center;
 	@include bp(medium) {
 		display: block;
@@ -708,13 +709,15 @@ category: Components
 		margin: 0;
 		overflow: hidden;
 		overflow-y: scroll;
+		border-top: 1px solid $secondary-border;
 	}
 }
 
 .live-player--open .live-links {
 	display: block;
+	height: auto !important;
 	max-height: 48vh;
-	padding-top: 52px;
+	margin-top: 43px;
 	overflow: hidden;
 	overflow-y: scroll;
 	@include bp(small) {

@@ -4457,11 +4457,13 @@ category: Components
   color: #929497; }
 
 .live-player__container {
-  overflow: hidden; }
+  overflow: hidden;
+  border-bottom: 1px solid #282827; }
   @media screen and (min-width: 768px) {
     .live-player__container {
       padding: 20px 0 0;
-      overflow: visible; } }
+      overflow: visible;
+      border-bottom: none; } }
 
 .live-stream {
   float: right;
@@ -4915,7 +4917,6 @@ category: Components
 .live-links {
   display: none;
   padding: 16px 0 0;
-  border-top: 1px solid #282827;
   text-align: center; }
   @media screen and (min-width: 768px) {
     .live-links {
@@ -4925,12 +4926,14 @@ category: Components
       padding-left: 1em;
       margin: 0;
       overflow: hidden;
-      overflow-y: scroll; } }
+      overflow-y: scroll;
+      border-top: 1px solid #282827; } }
 
 .live-player--open .live-links {
   display: block;
+  height: auto !important;
   max-height: 48vh;
-  padding-top: 52px;
+  margin-top: 43px;
   overflow: hidden;
   overflow-y: scroll; }
   @media screen and (min-width: 480px) {
@@ -10660,7 +10663,7 @@ category: Components - Article
     background-size: cover; } }
 
 .live-links {
-  border-top: 1px solid white; }
+  border-top: 0; }
 
 .single-gmr_gallery .gallery__paging--prev,
 .single-gmr_gallery .gallery__paging--next {
@@ -10680,7 +10683,10 @@ category: Components - Article
   -o-border-radius: 1em;
   -border-radius: 1em;
   border-radius: 1em;
-  background-color: transparent; }
+  background-color: #f2f2f2; }
+  @media screen and (min-width: 768px) {
+    .live-player__stream {
+      background-color: transparent; } }
   .live-player__stream li {
     background-color: transparent;
     height: auto; }
@@ -10704,6 +10710,9 @@ category: Components - Article
     .live-player__stream .live-player__stream--current.open .live-player__stream--available li:last-child {
       border-bottom-left-radius: 1em;
       border-bottom-right-radius: 1em; }
+
+.live-player__container {
+  border-bottom: 1px solid white; }
 
 .now-playing__artist {
   color: #303030; }

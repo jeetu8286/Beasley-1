@@ -279,13 +279,15 @@
 	}
 
 	function liveLinksAddHeight() {
-		var liveLinksWidgetHeight = liveLinksWidget.offsetHeight;
-		if ( body.classList.contains( 'logged-in' ) ) {
-			liveLinks.style.height = windowHeight - headerHeight - wpAdminHeight - livePlayerStreamSelectHeight - liveStreamHeight - 36 + 'px';
-		} else {
-			liveLinks.style.height = windowHeight - headerHeight - livePlayerStreamSelectHeight - liveStreamHeight - 36 + 'px';
+		if ( window.innerWidth >= 768 ) {
+			var liveLinksWidgetHeight = liveLinksWidget.offsetHeight;
+			if (body.classList.contains('logged-in')) {
+				liveLinks.style.height = windowHeight - headerHeight - wpAdminHeight - livePlayerStreamSelectHeight - liveStreamHeight - 36 + 'px';
+			} else {
+				liveLinks.style.height = windowHeight - headerHeight - livePlayerStreamSelectHeight - liveStreamHeight - 36 + 'px';
+			}
+			liveLinksWidget.style.height = liveLinksWidgetHeight + 'px';
 		}
-		liveLinksWidget.style.height = liveLinksWidgetHeight + 'px';
 	}
 
 	/**
