@@ -2503,13 +2503,18 @@ class GMedia_Migration extends WP_CLI_Command {
 				foreach ( $podcasts->Channel->Item as $podcast_item ) {
 					$episode_title = trim( (string) $podcast_item['ItemTitle'] );
 					$episode_title = strtolower( $episode_title );
+
+					$episode_date = (string) $podcast_item['UTCDateCreated'];
+					$episode_date_mod = (string) $podcast_item['UTCDateModified'];
+
+
 					$episode = array(
 						'post_type'     => 'episode',
 						'post_status'   => 'publish',
 						'post_title'    => ucwords( $episode_title ),
 						'post_content'  => trim( (string) $podcast_item['ItemDescription'] ),
-						'post_date'     => (string) $single_channel['UTCDateCreated'],
-						'post_modified' => (string) $single_channel['UTCDateLastModified'],
+						'post_date'     => $episode_date,
+						'post_modified' => $episode_date_mod,
 						'post_parent'   => $wp_id
 					);
 
