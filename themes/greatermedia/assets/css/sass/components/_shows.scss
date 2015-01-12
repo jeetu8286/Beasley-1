@@ -687,6 +687,20 @@ category: Components - Shows
 	@for $i from 1 through 7 {
 		#{'&'}:nth-child(#{$i}) {
 			left: $shedule-column-width * ($i - 1);
+
+			@if $visible-columns < $i {
+				&.fixed {
+					.shows__schedule--dayofweek {
+						display: none;
+					}
+				}
+			} @else {
+				&.fixed {
+					.shows__schedule--dayofweek {
+						display: block;
+					}
+				}
+			}
 		}
 	}
 }
@@ -697,7 +711,6 @@ category: Components - Shows
 	overflow: hidden;
 	height: 1499px;
 	border-left: 1px solid $light-gray;
-	border-top: 1px solid $light-gray;
 	@include box-sizing(border-box);
 }
 
@@ -736,16 +749,22 @@ category: Components - Shows
 }
 
 .shows__schedule--dayofweek {
+	background: $primary-bg;
+	border-top: 1px solid $primary-border;
 	border-bottom: 2px solid $black;
 	text-align: center;
 	padding: 15px 0;
-	margin: 0 -1px;
 	height: 54px;
 	@include box-sizing(border-box);
+	z-index: 99999;
 	position: absolute;
 	left: 0;
 	right: 0;
 	top: 0;
+}
+
+.shows__schedule--day.fixed .shows__schedule--dayofweek {
+	position: fixed;
 }
 
 .shows__schedule--episodes {
@@ -758,7 +777,7 @@ category: Components - Shows
 	position: absolute;
 	left: 0;
 	right: 0;
-	border-bottom: 1px solid $light-gray;
+	border-bottom: 1px solid $primary-border;
 	padding: 0.5em 1em;
 
 	&:hover {
@@ -775,7 +794,7 @@ category: Components - Shows
 	overflow: hidden;
 
 	&.not-link {
-		color: $black;
+		color: $color-text-black;
 		cursor: default;
 	}
 }
@@ -789,7 +808,7 @@ category: Components - Shows
 	position: absolute;
 	left: 0;
 	right: 0;
-	z-index: 9999999;
+	z-index: 9999;
 	border: 1px solid $cardinal;
 	margin: 0 -1px;
 }
