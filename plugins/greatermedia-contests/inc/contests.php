@@ -17,11 +17,44 @@ add_action( 'gmr_contest_vote', 'gmr_contests_vote_for_submission' );
 add_action( 'gmr_contest_unvote', 'gmr_contests_unvote_for_submission' );
 
 // filter hooks
+add_filter( 'map_meta_cap', 'gmr_contests_map_meta_cap', 10, 4 );
 add_filter( 'gmr_contest_submissions_query', 'gmr_contests_submissions_query' );
 add_filter( 'post_type_link', 'gmr_contests_get_submission_permalink', 10, 2 );
 add_filter( 'request', 'gmr_contests_unpack_vars' );
 add_filter( 'post_thumbnail_html', 'gmr_contests_post_thumbnail_html', 10, 4 );
 add_filter( 'post_row_actions', 'gmr_contests_add_table_row_actions', 10, 2 );
+
+function gmr_contests_map_meta_cap( $caps, $cap, $user_id, $args ) {
+	global $pagenow, $typenow;
+
+	if ( ! in_array( $typenow, array( GMR_CONTEST_CPT, GMR_CONTEST_ENTRY_CPT ) ) ) {
+		return $caps;
+	}
+
+	if ( ! in_array( $pagenow, array( 'edit.php', 'post.php' ) ) ) {
+		return $caps;
+	}
+
+	if ( in_array( $cap, array( 'delete_post', 'delete_posts' ) ) ) {
+		if ( is_array( $args ) && ! empty( $args ) ) {
+			// let's allow removal for non public contests
+			$post = get_post( current( $args ) );
+			if ( $post && GMR_CONTEST_CPT == $post->post_type ) {
+				$status = get_post_status_object( $post->post_status );
+				if ( $status && ! $status->public ) {
+					return $caps;
+				}
+			}
+		}
+
+		$caps[] = 'do_not_allow';
+		
+		unset( $caps[ array_search( 'delete_post', $caps ) ] );
+		unset( $caps[ array_search( 'delete_posts', $caps ) ] );
+	}
+	
+	return $caps;
+}
 
 /**
  * Prevents started contest or contest entry deletion.
@@ -277,8 +310,7 @@ function _gmr_contests_get_submission_for_voting_actions() {
 		wp_send_json_error();
 	}
 
-	$query = new WP_Query();
-	$submissions = $query->query( array(
+	$query = new WP_Query();$submissions = $query->query( array(
 		'posts_per_page'      => 1,
 		'ignore_sticky_posts' => true,
 		'no_found_rows'       => true,
