@@ -1,21 +1,6 @@
 .contest__thumbnail {
-	@include span-columns(4 of 4);
-	background-color: lighten($primary-border, 9%);
+	@include proportional-thumbnail( 66% );
 	margin: 0 auto 2em;
-	text-align: center;
-
-	@include bp(small) {
-		@include span-columns(6 of 6);
-	}
-	@include bp(medium) {
-		@include span-columns(8 of 8);
-	}
-	@include bp(large) {
-		@include span-columns(8 of 8);
-	}
-	@include bp(x-large) {
-		@include span-columns(8 of 8);
-	}
 }
 
 .single__featured-img--contest {
@@ -295,7 +280,7 @@
 		border: none;
 		outline: none;
 		background-color: $form-bg;
-		background-image: url(../../images/select-arrow.png);
+		background-image: url($asset-root + '../images/select-arrow.png');
 		background-repeat: no-repeat;
 		background-position: 90% center;
 		background-size: auto 10px;
