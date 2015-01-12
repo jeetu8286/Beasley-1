@@ -20,11 +20,17 @@ get_header(); ?>
 
 				<?php 
 
-				$episodes = gmrs_get_scheduled_episodes();
+				$offset = get_option( 'gmt_offset' ) * HOUR_IN_SECONDS;
+				
+				$now = current_time( 'timestamp' );
+				$today = $now - $now % DAY_IN_SECONDS - $offset; // remote time fraction and offset from current time
+				$from = date( DATE_ISO8601, $today );
+				$to = date( DATE_ISO8601, $today + 7 * DAY_IN_SECONDS - 1 ); // -1 second to exclude next week show
+
+				$episodes = gmrs_get_scheduled_episodes( $from, $to );
 
 				$days = array();
-				$start = current( get_weekstartend( date( DATE_ISO8601 ) ) );
-				$offset = get_option( 'gmt_offset' ) * HOUR_IN_SECONDS;
+				$start = $today + $offset;
 
 				?>
 
@@ -35,10 +41,12 @@ get_header(); ?>
 							<div class="shows__schedule--day">
 
 								<div class="shows__schedule--dayofweek">
-									<?php echo date( 'l', $start ); ?>
+									<?php echo date( 'D, M jS', $start ); ?>
 								</div>
 
 								<div class="shows__schedule--episodes">
+									<div class="shows__schedule--now" style="top:<?php echo ( $now % DAY_IN_SECONDS ) * 60 / HOUR_IN_SECONDS; ?>px"></div>
+
 									<?php $day = date( 'N', $start ); ?>
 									<?php if ( ! empty( $episodes[ $day ] ) ) : ?>
 										<?php for ( $j = 0, $len = count( $episodes[ $day ] ); $j < $len; $j++ ) :
@@ -46,21 +54,20 @@ get_header(); ?>
 											$styles = array(
 												'top:' . ( ( strtotime( $episode->post_date ) % DAY_IN_SECONDS ) * 60 / HOUR_IN_SECONDS ) . 'px',
 												'height:' . ( $episode->menu_order * 60 / HOUR_IN_SECONDS ) . 'px',
-												'background-color:' . gmrs_show_color( $episode->post_parent, 0.15 ),
-												'border-color:' . gmrs_show_color( $episode->post_parent, 0.75 ),
 											);
 
 											?><div class="shows__schedule--episode"
 												 style="<?php echo implode( ';', $styles ) ?>"
 												 data-hover-color="<?php echo gmrs_show_color( $episode->post_parent, 0.4 ) ?>">
 
-												<small>
-													<?php echo date( 'M d', strtotime( $episode->post_date_gmt ) + $offset ); ?><br>
-													<?php echo date( 'h:i A', strtotime( $episode->post_date_gmt ) + $offset ); ?><br>
-													<?php echo date( 'h:i A', strtotime( $episode->post_date_gmt ) + $episode->menu_order + $offset ); ?><br>
-												</small>
+												<div class="shows__schedule--episode-title">
+													<?php echo esc_html( $episode->post_title ); ?>
+												</div>
 
-												<b><?php echo esc_html( $episode->post_title ); ?></b>
+												<div class="shows__schedule--episode-time">
+													<?php echo date( 'h:i A', strtotime( $episode->post_date_gmt ) + $offset ); ?> -
+													<?php echo date( 'h:i A', strtotime( $episode->post_date_gmt ) + $episode->menu_order + $offset ); ?>
+												</div>
 											</div>
 										<?php endfor; ?>
 									<?php endif; ?>
