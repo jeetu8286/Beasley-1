@@ -175,7 +175,9 @@
 		searchForm = document.getElementById( 'header__search--form'),
 		searchBtn = document.getElementById( 'header__search'),
 		searchInput = document.getElementById( 'header-search'),
-		collapseToggle = document.querySelector('*[data-toggle="collapse"]');
+		collapseToggle = document.querySelector('*[data-toggle="collapse"]'),
+		breakingNewsBanner = document.getElementById('breaking-news-banner'),
+		breakNewsHeight = breakingNewsBanner.offsetHeight;
 
 	/**
 	 * global variables for event types to use in conjunction with `addEventHandler` function
