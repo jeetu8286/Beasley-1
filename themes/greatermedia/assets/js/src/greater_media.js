@@ -174,10 +174,14 @@
 	 * deal with a window being resized.
 	 */
 	function livePlayerDesktopReset() {
+		if (body.classList.contains('live-player--open') ) {
+			body.classList.remove('live-player--open');
+		}
 		if (livePlayer.classList.contains('live-player--mobile')) {
 			livePlayer.classList.remove('live-player--mobile');
 		}
 		livePlayer.classList.add('live-player--init');
+		liveLinksMobileState();
 		if( window.innerWidth >= 1385 || this.document.documentElement.clientWidth >= 1385 || this.document.body.clientWidth >= 1385 ) {
 			livePlayer.style.right = 'calc(50% - 700px)';
 		} else {
@@ -281,51 +285,23 @@
 		addEventHandler(livePlayerStreams[i],elemClick,selectStream);
 	}
 
-	/**
-	 * Toggles a class to the live links when the live player `On Air` is clicked on smaller screens
-	 */
-	function onAirClick() {
-		if ( window.innerWidth <= 767 ) {
-			body.classList.toggle('live-player--open');
-			if (body.classList.contains('live-player--open')) {
-				document.body.style.overflow = 'hidden';
-				html.style.overflow = 'hidden';
-			} else {
-				document.body.style.overflow = 'initial';
-				html.style.overflow = 'initial';
-			}
+	function liveLinksMobileState() {
+		if (body.classList.contains('live-player--open')) {
+			document.body.style.overflow = 'hidden';
+			html.style.overflow = 'hidden';
+		} else {
+			document.body.style.overflow = 'initial';
+			html.style.overflow = 'initial';
 		}
 	}
 
 	/**
-	 * Toggles a class to the live links when the live player `Up Next` is clicked on smaller screens
+	 * Toggles a class to the body when an element is clicked on small screens.
 	 */
-	function upNextClick() {
+	function openLivePlayer() {
 		if ( window.innerWidth <= 767 ) {
 			body.classList.toggle('live-player--open');
-			if (body.classList.contains('live-player--open')) {
-				body.style.overflow = 'hidden';
-				html.style.overflow = 'hidden';
-			} else {
-				body.style.overflow = 'auto';
-				html.style.overflow = 'auto';
-			}
-		}
-	}
-
-	/**
-	 * Toggles a class to the live links when the live player `Now Playing` is clicked on smaller screens
-	 */
-	function nowPlayingClick() {
-		if ( window.innerWidth <= 767 ) {
-			body.classList.toggle('live-player--open');
-			if (body.classList.contains('live-player--open')) {
-				body.style.overflow = 'auto';
-				html.style.overflow = 'auto';
-			} else {
-				body.style.overflow = 'hidden';
-				html.style.overflow = 'hidden';
-			}
+			liveLinksMobileState();
 		}
 	}
 
@@ -337,6 +313,7 @@
 			if (body.classList.contains('live-player--open')) {
 				body.classList.remove('live-player--open');
 			}
+			liveLinksMobileState();
 		}
 	}
 
@@ -436,20 +413,7 @@
 	/**
 	 * functions being run at specific window widths.
 	 */
-	if( window.innerWidth <= 767 ) {
-		if(onAir != null) {
-			addEventHandler(onAir,elemClick,onAirClick);
-		}
-		if(upNext != null) {
-			addEventHandler(upNext,elemClick,upNextClick);
-		}
-		if(nowPlaying != null) {
-			addEventHandler(nowPlaying,elemClick,nowPlayingClick);
-		}
-		if(liveLinksWidget != null) {
-			addEventHandler(liveLinksWidget,elemClick,liveLinksClose);
-		}
-	} else {
+	if( window.innerWidth >= 768 ) {
 		addEventHandler(window,elemLoad,function() {
 			livePlayerInit();
 			if(liveLinksWidget != null) {
@@ -463,13 +427,13 @@
 	}
 
 	if(onAir != null) {
-		addEventHandler(onAir,elemClick,onAirClick);
+		addEventHandler(onAir,elemClick,openLivePlayer);
 	}
 	if(upNext != null) {
-		addEventHandler(upNext,elemClick,upNextClick);
+		addEventHandler(upNext,elemClick,openLivePlayer);
 	}
 	if(nowPlaying != null) {
-		addEventHandler(nowPlaying,elemClick,nowPlayingClick);
+		addEventHandler(nowPlaying,elemClick,openLivePlayer);
 	}
 	if(liveLinksWidget != null) {
 		addEventHandler(liveLinksWidget,elemClick,liveLinksClose);
