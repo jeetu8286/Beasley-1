@@ -17,7 +17,7 @@ class Thumbnail_Filter
 		if ( '_thumbnail_id' == $key && ! $this->_filtering_meta ) {
 			$this->_filtering_meta = true;
 		
-			$thumbnail_id = get_post_meta($object_id, $key, $single);
+			$thumbnail_id = get_post_meta( $post_id, $key, $single );
 		
 			if ( ! $thumbnail_id ) {
 				// Try to get one from cache. 
