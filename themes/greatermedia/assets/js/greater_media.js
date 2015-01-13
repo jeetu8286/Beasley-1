@@ -157,7 +157,6 @@
 		livePlayer = document.getElementById( 'live-player__sidebar' ),
 		livePlayerStream = document.querySelector('.live-player__stream'),
 		livePlayerStreamSelect = document.querySelector( '.live-player__stream--current' ),
-		livePlayerStreamSelectHeight = livePlayerStreamSelect.offsetHeight,
 		livePlayerCurrentName = livePlayerStreamSelect.querySelector( '.live-player__stream--current-name' ),
 		livePlayerStreams = livePlayerStreamSelect.querySelectorAll( '.live-player__stream--item' ),
 		wpAdminHeight = 32,
@@ -168,7 +167,6 @@
 		liveLink = document.querySelector( '.live-link__title'),
 		liveLinksWidget = document.querySelector( '.widget--live-player' ),
 		liveStream = document.getElementById( 'live-player' ),
-		liveStreamHeight = liveStream.offsetHeight,
 		windowHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0),
 		windowWidth = this.innerWidth || this.document.documentElement.clientWidth || this.document.body.clientWidth || 0,
 		scrollObject = {},
@@ -179,18 +177,18 @@
 		breakingNewsBanner = document.getElementById('breaking-news-banner');
 
 
+	/**
+	 * function to dynamically calculate the offsetHeight of an element
+	 *
+	 * @param elem
+	 * @returns {number}
+	 */
 	function elemHeight(elem) {
 		return elem.offsetHeight;
 
 		if (elem == header && breakingNewsBanner != null && breakingNewsBanner.parentNode != elem ) {
 			elem += breakingNewsBanner.offsetHeight;
 		}
-	}
-	/**
-	 * append the height of the Breaking News Banner to the `headerHeight` variable if the banner is available
-	 */
-	if (breakingNewsBanner != null && breakingNewsBanner.parentNode != header) {
-		headerHeight += breakingNewsBanner.offsetHeight;
 	}
 
 	/**
@@ -224,11 +222,11 @@
 		if (body.classList.contains('logged-in')) {
 			livePlayer.style.top = wpAdminHeight + elemHeight(header) + 'px';
 			livePlayer.style.height = windowHeight - wpAdminHeight - elemHeight(header) + 'px';
-			liveLinks.style.height = windowHeight - wpAdminHeight - elemHeight(header) - livePlayerStreamSelectHeight - liveStreamHeight - 36 + 'px';
+			liveLinks.style.height = windowHeight - wpAdminHeight - elemHeight(header) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - 36 + 'px';
 		} else {
 			livePlayer.style.top = elemHeight(header) + 'px';
 			livePlayer.style.height = windowHeight - elemHeight(header) + 'px';
-			liveLinks.style.height = windowHeight - elemHeight(header) - livePlayerStreamSelectHeight - liveStreamHeight - 36 + 'px';
+			liveLinks.style.height = windowHeight - elemHeight(header) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - 36 + 'px';
 		}
 		livePlayer.classList.remove('live-player--fixed');
 		livePlayer.classList.add('live-player--init');
@@ -240,10 +238,10 @@
 	function lpPosScrollInit() {
 		if (body.classList.contains('logged-in')) {
 			livePlayer.style.top = elemHeight(header) + wpAdminHeight + 'px';
-			liveLinks.style.height = windowHeight - wpAdminHeight - livePlayerStreamSelectHeight - liveStreamHeight - 36 + 'px';
+			liveLinks.style.height = windowHeight - wpAdminHeight - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - 36 + 'px';
 		} else {
 			livePlayer.style.top = elemHeight(header) + 'px';
-			liveLinks.style.height = windowHeight - livePlayerStreamSelectHeight - liveStreamHeight - 36 + 'px';
+			liveLinks.style.height = windowHeight - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - 36 + 'px';
 		}
 		livePlayer.style.height = '100%';
 		livePlayer.classList.remove('live-player--fixed');
@@ -257,11 +255,11 @@
 		if (body.classList.contains('logged-in')) {
 			livePlayer.style.top = wpAdminHeight + 'px';
 			livePlayer.style.height = windowHeight - wpAdminHeight + 'px';
-			liveLinks.style.height = windowHeight - wpAdminHeight - livePlayerStreamSelectHeight - liveStreamHeight - 36 + 'px';
+			liveLinks.style.height = windowHeight - wpAdminHeight - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - 36 + 'px';
 		} else {
 			livePlayer.style.top = '0px';
 			livePlayer.style.height = windowHeight + 'px';
-			liveLinks.style.height = windowHeight - livePlayerStreamSelectHeight - liveStreamHeight - 36 + 'px';
+			liveLinks.style.height = windowHeight - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - 36 + 'px';
 		}
 		livePlayer.classList.remove('live-player--init');
 		livePlayer.classList.add('live-player--fixed');
@@ -312,13 +310,12 @@
 	 */
 	function liveLinksAddHeight() {
 		if ( window.innerWidth >= 768 ) {
-			var liveLinksWidgetHeight = liveLinksWidget.offsetHeight;
 			if (body.classList.contains('logged-in')) {
-				liveLinks.style.height = windowHeight - elemHeight(header) - wpAdminHeight - livePlayerStreamSelectHeight - liveStreamHeight - 36 + 'px';
+				liveLinks.style.height = windowHeight - elemHeight(header) - wpAdminHeight - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - 36 + 'px';
 			} else {
-				liveLinks.style.height = windowHeight - elemHeight(header) - livePlayerStreamSelectHeight - liveStreamHeight - 36 + 'px';
+				liveLinks.style.height = windowHeight - elemHeight(header) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - 36 + 'px';
 			}
-			liveLinksWidget.style.height = liveLinksWidgetHeight + 'px';
+			liveLinksWidget.style.height = elemHeight(liveLinksWidget) + 'px';
 		}
 	}
 
