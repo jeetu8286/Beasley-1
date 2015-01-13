@@ -1,4 +1,9 @@
 <?php
+/**
+ * Thumbnail Size
+ * 
+ * Registers a thumbnail size for use in the thumbnail column.
+ */
 
 namespace Greater_Media\Posts_Screen_Thumbnails;
 

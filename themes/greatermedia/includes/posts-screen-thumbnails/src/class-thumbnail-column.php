@@ -10,7 +10,7 @@ namespace Greater_Media\Posts_Screen_Thumbnails;
 
 class Thumbnail_Column {
 
-	private $_post_type; 
+	private $_post_types; 
 	
 	private $_thumbnail_size;
 
@@ -19,17 +19,22 @@ class Thumbnail_Column {
 	/**
 	 * Register the thumbnail column for a post type. 
 	 * 
-	 * @param string $post_type
+	 * @param string|array $post_types Post type, array of post types, or "all"
 	 * @param array|string $thumbnail_size
 	 */
-	public function __construct( $post_type = 'post', $thumbnail_size = 'greater_media/thumbnail_column' )
+	public function __construct( $post_types = 'all', $thumbnail_size = 'greater_media/thumbnail_column' )
 	{
-		$this->_post_type = $post_type;
+		if ( 'all' == $post_types ) {
+			$this->_post_types = $post_types; 
+		} else {
+			$this->_post_types = (array) $post_types; 
+		}
+		
 		$this->_thumbnail_size = $thumbnail_size; 
 		$this->_column_name = 'greater_media_thumbnail';  
 		
-		add_filter( 'manage_' . $this->_post_type . '_posts_columns', array( $this, 'filter_columns' ) );
-		add_action( 'manage_' . $this->_post_type . '_posts_custom_column', array( $this, 'do_custom_column' ), 10, 2 );
+		add_filter( 'manage_posts_columns', array( $this, 'filter_columns' ), 10, 2 );
+		add_action( 'manage_posts_custom_column', array( $this, 'do_custom_column' ), 10, 2 );
 		add_action( 'admin_head', array( $this, 'admin_head' ) ); 
 	}
 
@@ -39,8 +44,13 @@ class Thumbnail_Column {
 	 * @param array $columns
 	 * @return array 
 	 */
-	public function filter_columns( $columns )
+	public function filter_columns( $columns, $post_type )
 	{
+		// Make sure this is a post type we're handling. 
+		if ( ! $this->_check_post_type( $post_type ) ) {
+			return $columns; 
+		}		
+		
 		// Put the thumbnail right after the checkbox.
 		$columns = array_merge(
 			array_slice( $columns, 0, 1 ),
@@ -59,12 +69,20 @@ class Thumbnail_Column {
 	 */
 	public function do_custom_column( $column_name, $post_id )
 	{
-		if ( $this->_column_name == $column_name ) {
-			if (current_user_can('edit_post', $post_id)) {
-				echo "<a href='", get_edit_post_link( $post_id ), "'>", get_the_post_thumbnail( $post_id, $this->_thumbnail_size ), "</a>";
-			} else {
-				echo get_the_post_thumbnail( $post_id, $this->_thumbnail_size );
-			}
+		// Make sure this is our column. 
+		if ( $this->_column_name != $column_name ) {
+			return;
+		}
+		
+		// Make sure we have a thumbnail. 
+		if ( ! has_post_thumbnail( $post_id ) ) {
+			return; 
+		}
+		
+		if (current_user_can('edit_post', $post_id)) {
+			echo "<a href='", get_edit_post_link( $post_id ), "'>", get_the_post_thumbnail( $post_id, $this->_thumbnail_size ), "</a>";
+		} else {
+			echo get_the_post_thumbnail( $post_id, $this->_thumbnail_size );
 		}
 	}
 	
@@ -93,4 +111,15 @@ class Thumbnail_Column {
 		</style>
 		<?php 
 	}
+	
+	/**
+	 * Check that the post type is registered as one we are handling. 
+	 * 
+	 * @param string $type
+	 * @return boolean
+	 */
+	protected function _check_post_type( $type ) 
+	{
+		return ( 'all' == $this->_post_types || in_array( $type, $this->_post_types ) );
+	} 
 }
