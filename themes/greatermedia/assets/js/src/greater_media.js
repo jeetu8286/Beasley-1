@@ -472,16 +472,55 @@
 
 	function init_menu_overlay() {
 		var $menu = jQuery(document.querySelector('.header__nav--list')),
-				$overlay = jQuery(document.querySelector('.overlay-mask'));
+			$secondary = jQuery(document.querySelector('.header__secondary')),
+			$overlay = jQuery(document.querySelector('.overlay-mask'));
 
-		$menu.on('mouseover', '.menu-item-has-children', function (e) {
+		$menu.on('mouseover', '.menu-item-has-children, .header__account--small', function (e) {
 			$overlay.addClass('is-visible');
 		});
-		$menu.on('mouseout', '.menu-item-has-children', function (e) {
+		$menu.on('mouseout', '.menu-item-has-children, .header__account--small', function (e) {
+			$overlay.removeClass('is-visible');
+		});
+
+		$secondary.on('mouseover', '.header__account--small', function (e) {
+			$overlay.addClass('is-visible');
+		});
+		$secondary.on('mouseout', '.header__account--small', function (e) {
 			$overlay.removeClass('is-visible');
 		});
 	}
 
 	init_menu_overlay();
+
+	function personality_toggle() {
+		var $button = jQuery('.person-toggle');
+			start = jQuery('.personality__meta').first().height(); // get the height of the meta before we start, basically tells us whether we're using the mobile or desktop height
+
+		$button.on('click', function (e) {
+			var $this = $(this);
+				$parent = $this.parent().parent('.personality');
+				$meta = $this.siblings('.personality__meta');
+				curr = $meta.height();
+				auto = $meta.css('height', 'auto').height(),
+				offset = '';
+
+			$parent.toggleClass('open');
+			// if( $parent.hasClass('open') ) {
+			// 	$meta.height(curr).animate({height: auto * 0.69}, 1000); // the 0.69 adjusts for the difference in height due to the overflow: visible wrapping the text
+			// } else {
+			// 	$meta.height(curr).animate({height: start}, 1000);
+			// }
+
+
+			if($this.hasClass('active')) {
+				$this.text('More');
+			} else {
+				$this.text('Less');
+			}
+			$this.toggleClass('active');
+		});
+	}
+
+	personality_toggle();
 
 })();

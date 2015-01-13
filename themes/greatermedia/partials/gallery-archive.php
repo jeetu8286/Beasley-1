@@ -1,209 +1,161 @@
 <h2 class="page__title" itemprop="headline"><?php _e( 'Photos', 'greatermedia' ); ?></h2>
 <?php
+/*
+ * Will have post IDs of posts we've rendered on the page, to avoid duplication. There is a rare case that can pop
+ * up that seems to be from using have_posts() multiple times, where rewind_posts() gets called right as we start
+ * the final query. Tracking IDs allows us to be sure we don't accidentally render the bottom section as a duplicate
+ * of the top section for these rare cases.
+ */
+$rendered_posts = array();
+
+/*
+ * Posts per page is 16, for the main section.
+ *
+ * On the first page, we get a large primary and two smaller secondary items, so posts per page goes up to 19.
+ * On pages after page 1, we get only 16 items, but the overall offset is 3, to account for the 3 extra items on page 1.
+ *
+ * Here, we calculate those values!
+ */
+if ( 'show' == get_post_type() ) {
+	// Show section endpoints use a custom pagination param, since default paged would cause issues with primary show navigation
+	$page = get_query_var( 'show_section_page' ) ? get_query_var( 'show_section_page' ) : 1;
+} else {
+	$page = get_query_var( 'paged' ) ? get_query_var( 'paged' ) : 1;
+}
+
+if ( $page > 1 ) {
+	$per_page = 16;
+	$offset = 3;
+} else {
+	$per_page = 19;
+	$offset = 0;
+}
+
+$query_args = array(
+	'post_type' => array( 'gmr_gallery', 'gmr_album' ),
+	'orderby' => 'date',
+	'order' => 'DESC',
+	'post_parent' => '0',
+	'posts_per_page' => $per_page,
+	'offset' => $offset,
+);
 
 if ( 'show' == get_post_type() ) {
-	$gallery_content_types = array(
-		'gmr_gallery',
-		'gmr_album'
-	);
-	global $post;
-	$post_id = $post->ID;
+	$term = \TDS\get_related_term( get_the_ID() );
 
-	$terms = wp_get_object_terms($post_id,'_shows');
-	$post_ids = get_objects_in_term($terms[0]->term_id,'_shows');
-} else {
-	$gallery_content_types = array(
-		'gmr_gallery',
-		'gmr_album'
+	$query_args['tax_query'] = array(
+		array(
+			'taxonomy' => '_shows',
+			'field' => 'slug',
+			'terms' => $term->slug,
+		)
 	);
 }
 
-$excluded_primary = false;
-$excluded_secondary = false;
+$query = new WP_Query( $query_args );
 
-if ( ! get_query_var( 'paged' ) || get_query_var( 'paged' ) < 2 ) { ?>
+if ( $query->have_posts() ) :
 
-	<div class="gallery__featured">
+	if ( $page < 2 ) { ?>
 
-		<?php
+		<div class="gallery__featured">
 
-		if ( 'show' == get_post_type() ) {
+			<div class="gallery__featured--primary">
 
-			$primary_args = array(
-				'post_type'         => $gallery_content_types, // The assumes the post types match
-				'post__in'          => $post_ids,
-				'taxonomy'          => '_shows',
-				'term'              => $terms[0]->slug,
-				'posts_per_page'    => 1,
-				'orderby'           => 'date',
-				'order'             => 'DESC',
-				'post_parent'       => '0',
-			);
+				<?php if ($query->have_posts() ) : $query->the_post();
 
-		} else {
+					$rendered_posts[ get_the_ID() ] = get_the_ID();
 
-			$primary_args = array(
-				'post_type'         => $gallery_content_types,
-				'posts_per_page'    => 1,
-				'orderby'           => 'date',
-				'order'             => 'DESC',
-				'post_parent'       => '0',
-			);
+					get_template_part( 'partials/gallery-featured', 'primary' );
 
-		}
+				endif;
 
-		$primary_query = new WP_Query( $primary_args );
+				?>
 
-		?>
+			</div>
 
-		<div class="gallery__featured--primary">
+			<div class="gallery__featured--secondary">
 
-			<?php if ($primary_query->have_posts() ) : while ( $primary_query->have_posts() ): $primary_query->the_post();
+				<?php
+				$secondary_count = 0;
+				if ( $query->have_posts() ) :
 
-				get_template_part( 'partials/gallery-featured', 'primary' );
+					while ( $query->have_posts() && $secondary_count < 2 ): $query->the_post();
 
-				$excluded_primary[] = get_the_ID();
+						if ( in_array( get_the_ID(), $rendered_posts ) ) {
+							continue;
+						}
 
-			endwhile;
+						$rendered_posts[ get_the_ID() ] = get_the_ID();
 
-				wp_reset_postdata();
+						$secondary_count++;
 
-			else :
+						get_template_part( 'partials/gallery-featured', 'secondary' );
 
-			endif;
+					endwhile;
 
-			?>
+				endif;
+
+				?>
+
+			</div>
 
 		</div>
 
+	<?php } ?>
+
+	<div class="gallery__grid">
+
 		<?php
 
-		if ( 'show' == get_post_type() ) {
+		if ( $query->have_posts() ) :
 
-			$secondary_args = array(
-				'post_type'         => $gallery_content_types, // The assumes the post types match
-				'post__in'          => $post_ids,
-				'taxonomy'          => '_shows',
-				'term'              => $terms[0]->slug,
-				'posts_per_page'    => 2,
-				'orderby'           => 'date',
-				'order'             => 'DESC',
-				'post_parent'       => '0',
-				'offset'            => 1
-			);
+			while ( $query->have_posts() ) : $query->the_post();
 
-		} else {
+				if ( in_array( get_the_ID(), $rendered_posts ) ) {
+					continue;
+				}
 
-			$secondary_args = array(
-				'post_type'         => $gallery_content_types,
-				'post__not_in'      => $excluded_primary,
-				'posts_per_page'    => 2,
-				'orderby'           => 'date',
-				'order'             => 'DESC',
-				'post_parent'       => '0',
-			);
+				$rendered_posts[ get_the_ID() ] = get_the_ID();
 
-		}
-
-		$secondary_query = new WP_Query( $secondary_args );
-
-		?>
-
-		<div class="gallery__featured--secondary">
-
-			<?php if ($secondary_query->have_posts() ) : while ( $secondary_query->have_posts() ): $secondary_query->the_post();
-
-				get_template_part( 'partials/gallery-featured', 'secondary' );
-
-				$excluded_secondary[] = get_the_ID();
+				get_template_part( 'partials/gallery-grid' );
 
 			endwhile;
 
-				wp_reset_postdata();
-
-			else :
-
-			endif;
-
-			?>
-
-		</div>
+		endif; ?>
 
 	</div>
 
-<?php } ?>
+	<?php wp_reset_postdata(); ?>
 
-<div class="gallery__grid">
+<?php else : ?>
 
-	<?php
+<article id="post-not-found" class="hentry cf">
 
-	$excluded = false;
+	<header class="article-header">
 
-	$paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
+		<?php if ( 'show' == get_post_type() ) { ?>
 
-	if ( 'show' == get_post_type() ) {
+		<h2 class="entry__title"><?php the_title(); ?><?php _e( ' does not have galleries...yet!', 'greatermedia' ); ?></h2>
 
-		$grid_args = array(
-			'post_type'         => $gallery_content_types, // The assumes the post types match
-			'post__in'          => $post_ids,
-			'taxonomy'          => '_shows',
-			'term'              => $terms[0]->slug,
-			'posts_per_page'    => 16,
-			'paged'             => $paged,
-			'orderby'           => 'date',
-			'order'             => 'DESC',
-			'post_parent'       => '0',
-			'offset'            => 3
-		);
+		<?php } else { ?>
 
-	} else {
+		<h2 class="entry__title"><?php _e( 'There are currently no galleries', 'greatermedia' ); ?></h2>
 
-		if ( ! get_query_var( 'paged' ) || get_query_var( 'paged' ) < 2 ) {
-			$excluded = array_merge(
-				$excluded_primary,
-				$excluded_secondary
-			);
-		}
+		<?php } ?>
 
-		$grid_args = array(
-			'post_type'         => $gallery_content_types,
-			'posts_per_page'    => 16,
-			'post__not_in'      => $excluded,
-			'paged'             => $paged,
-			'orderby'           => 'date',
-			'order'             => 'DESC',
-			'post_parent'       => '0'
-		);
+	</header>
 
-	}
+	<?php if ( 'show' == get_post_type() ) { ?>
 
-	$grid_query = new WP_Query( $grid_args );
+	<section class="entry__content">
 
-	if ( $grid_query->have_posts() ) : while ( $grid_query->have_posts() ) : $grid_query->the_post();
+		<a href="<?php the_permalink(); ?>" class="gallery__back--btn">Back</a>
 
-		get_template_part( 'partials/gallery-grid' );
+	</section>
 
-	endwhile;
-		
-		wp_reset_postdata();
+	<?php } ?>
 
-	else : ?>
+</article>
 
-		<article id="post-not-found" class="hentry cf">
-			<header class="article-header">
-				<?php if ( 'show' == get_post_type() ) { ?>
-					<h2 class="entry__title"><?php the_title(); ?><?php _e( ' does not have galleries...yet!', 'greatermedia' ); ?></h2>
-				<?php } else { ?>
-					<h2 class="entry__title"><?php _e( 'There are currently no galleries', 'greatermedia' ); ?></h2>
-				<?php } ?>
-			</header>
-			<?php if ( 'show' == get_post_type() ) { ?>
-				<section class="entry__content">
-					<a href="<?php the_permalink(); ?>" class="gallery__back--btn">Back</a>
-				</section>
-			<?php } ?>
-		</article>
-
-	<?php endif; ?>
-
-</div>
+<?php endif; ?>
