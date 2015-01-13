@@ -19,11 +19,13 @@ class GMRImageAttr {
 	 * @return $form_fields, modified form fields
 	 */
 	public static function attachment_field_credit( $form_fields, $post ) {
+		$gmr_img_attr = get_image_attribution($post->ID);
+
 		$form_fields['gmr_image_attribution'] = array(
-			'label' => 'Image Attribution',
+			'value' => $gmr_img_attr ? $gmr_img_attr : '',
+			'label' => __( 'Image Attribution' ),
 			'input' => 'text',
-			'value' => get_post_meta( $post->ID, 'gmr_image_attribution', true ),
-			'helps' => 'If provided, image attribution will display',
+			'helps' =>  __( 'If provided, image attribution will display' ),
 		);
 
 		return $form_fields;
@@ -44,6 +46,36 @@ class GMRImageAttr {
 
 		return $post;
 	}
+
+	/**
+	 * Custom function to call the caption plus the custom harris photo credit along with front end code
+	 */
+
+	public static function harris_caption() {
+
+		$get_photo_credit = get_post_meta( get_post_thumbnail_id(), 'harris_publications_photo_credit', true );
+
+		if ( ! empty( $get_description ) || ! empty( $get_photo_credit ) ) :
+			echo '<div class="post-thumbnail-caption">';
+
+			if ( ! empty( $get_description ) ) :
+				echo wp_kses_post( $get_description );
+			endif;
+
+			if ( ! empty( $get_description ) && ! empty( $get_photo_credit ) ) :
+				echo '<span class="caption-separator">|</span>';
+			endif;
+
+			if ( ! empty( $get_photo_credit ) ) :
+				echo '<span class="img-credit">Photo by ' . wp_kses_post( $get_photo_credit ) . '</span>';
+			endif;
+
+			echo '</div>';
+
+		endif;
+
+	}
+
 
 }
 
