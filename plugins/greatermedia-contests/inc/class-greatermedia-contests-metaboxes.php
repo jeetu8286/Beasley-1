@@ -31,9 +31,6 @@ class GreaterMediaContestsMetaboxes {
 			case 'onair':
 				$contest_type_label = 'On Air';
 				break;
-			case 'both':
-				$contest_type_label = 'On Air & Online';
-				break;
 			case 'online':
 			default:
 				$contest_type_label = 'Online';
@@ -50,7 +47,6 @@ class GreaterMediaContestsMetaboxes {
 			<div class="radio-select hide-if-js">
 				<label><input type="radio" name="contest_type" value="online"<?php checked( $contest_type, 'online' ); ?>> Online</label><br>
 				<label><input type="radio" name="contest_type" value="onair"<?php checked( $contest_type, 'onair' ); ?>> On Air</label><br>
-				<label><input type="radio" name="contest_type" value="both"<?php checked( $contest_type, 'both' ); ?>> On Air &amp; Online</label><br>
 
 				<p>
 					<a href="#" class="save-radio hide-if-no-js button"><?php esc_html_e( 'OK' ) ?></a>
@@ -224,12 +220,17 @@ class GreaterMediaContestsMetaboxes {
 		$post_id = $post->ID;
 
 		wp_nonce_field( 'contest_meta_boxes', '__contest_nonce' );
+
+		$contset_type = get_post_meta( $post->ID, 'contest_type', true );
+		$is_onair = 'onair' == $contset_type;
 		
 		?><ul class="tabs">
 			<li class="active"><a href="#what-you-win">What You Win</a></li>
 			<li><a href="#how-to-enter">How to Enter</a></li>
 			<li><a href="#contest-rules">Official Contest Rules</a></li>
-			<li><a href="#contest-form">Form</a></li>
+			<?php if ( ! $is_onair ) : ?>
+				<li><a href="#contest-form">Form</a></li>
+			<?php endif; ?>
 			<li><a href="#restrictions">Restrictions</a></li>
 		</ul>
 
@@ -245,11 +246,13 @@ class GreaterMediaContestsMetaboxes {
 			<?php wp_editor( get_post_meta( $post_id, 'rules-desc', true ), 'greatermedia_contest_rules' ); ?>
 		</div>
 
+		<?php if ( ! $is_onair ) : ?>
 		<div id="contest-form" class="tab">
 			<div id="contest_embedded_form"></div>
 			<input type="hidden" id="contest_embedded_form_data" name="contest_embedded_form">
 			<?php do_settings_sections( 'greatermedia-contest-form' ); ?>
 		</div>
+		<?php endif; ?>
 
 		<div id="restrictions" class="tab">
 			<?php $this->_restrictions_settings( $post ); ?>
@@ -374,36 +377,44 @@ class GreaterMediaContestsMetaboxes {
 			return;
 		}
 
-		/**
-		 * Update the form's meta field
-		 * The form JSON has slashes in it which need to be stripped out.
-		 * json_decode() and json_encode() are used here to sanitize the JSON & keep out invalid values
-		 */
-		$form = addslashes( json_encode( json_decode( urldecode( $_POST['contest_embedded_form'] ) ) ) );
-		// PHP's json_encode() may add quotes around the encoded string. Remove them.
-		$form = trim( $form, '"' );
-		update_post_meta( $post_id, 'embedded_form', $form );
+		if ( isset( $_POST['contest_embedded_form'] ) ) {
+			/**
+			 * Update the form's meta field
+			 * The form JSON has slashes in it which need to be stripped out.
+			 * json_decode() and json_encode() are used here to sanitize the JSON & keep out invalid values
+			 */
+			$form = addslashes( json_encode( json_decode( urldecode( $_POST['contest_embedded_form'] ) ) ) );
+			// PHP's json_encode() may add quotes around the encoded string. Remove them.
+			$form = trim( $form, '"' );
+			update_post_meta( $post_id, 'embedded_form', $form );
+		}
 
 		// Update the form's "submit button" text
-		$form_title = isset( $_POST['greatermedia_contest_form_title'] ) ? $_POST['greatermedia_contest_form_title'] : '';
-		if ( empty( $form_title ) ) {
-			$form_title = 'Enter Here to Win';
+		if ( isset( $_POST['greatermedia_contest_form_title'] ) ) {
+			$form_title = $_POST['greatermedia_contest_form_title'];
+			if ( empty( $form_title ) ) {
+				$form_title = 'Enter Here to Win';
+			}
+			update_post_meta( $post_id, 'form-title', sanitize_text_field( $form_title ) );
 		}
-		update_post_meta( $post_id, 'form-title', sanitize_text_field( $form_title ) );
 
 		// Update the form's "submit button" text
-		$submit_text = isset( $_POST['greatermedia_contest_form_submit'] ) ? $_POST['greatermedia_contest_form_submit'] : '';
-		if ( empty( $submit_text ) ) {
-			$submit_text = 'Submit';
+		if ( isset( $_POST['greatermedia_contest_form_submit'] ) ) {
+			$submit_text = $_POST['greatermedia_contest_form_submit'];
+			if ( empty( $submit_text ) ) {
+				$submit_text = 'Submit';
+			}
+			update_post_meta( $post_id, 'form-submitbutton', sanitize_text_field( $submit_text ) );
 		}
-		update_post_meta( $post_id, 'form-submitbutton', sanitize_text_field( $submit_text ) );
 
 		// Update the form's "thank you" message
-		$thank_you = isset( $_POST['greatermedia_contest_form_thankyou'] ) ? $_POST['greatermedia_contest_form_thankyou'] : '';
-		if ( empty( $thank_you ) ) {
-			$thank_you = 'Thanks for entering!';
+		if ( isset( $_POST['greatermedia_contest_form_thankyou'] ) ) {
+			$thank_you = $_POST['greatermedia_contest_form_thankyou'];
+			if ( empty( $thank_you ) ) {
+				$thank_you = 'Thanks for entering!';
+			}
+			update_post_meta( $post_id, 'form-thankyou', sanitize_text_field( $thank_you ) );
 		}
-		update_post_meta( $post_id, 'form-thankyou', sanitize_text_field( $thank_you ) );
 
 		// Update the contest rules meta fields
 		update_post_meta( $post_id, 'prizes-desc', wp_kses_post( $_POST['greatermedia_contest_prizes'] ) );
