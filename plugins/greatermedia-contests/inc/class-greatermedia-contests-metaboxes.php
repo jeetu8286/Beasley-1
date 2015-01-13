@@ -31,6 +31,9 @@ class GreaterMediaContestsMetaboxes {
 			case 'onair':
 				$contest_type_label = 'On Air';
 				break;
+			case 'both':
+				$contest_type_label = 'On Air & Online';
+				break;
 			case 'online':
 			default:
 				$contest_type_label = 'Online';
@@ -47,6 +50,7 @@ class GreaterMediaContestsMetaboxes {
 			<div class="radio-select hide-if-js">
 				<label><input type="radio" name="contest_type" value="online"<?php checked( $contest_type, 'online' ); ?>> Online</label><br>
 				<label><input type="radio" name="contest_type" value="onair"<?php checked( $contest_type, 'onair' ); ?>> On Air</label><br>
+				<label><input type="radio" name="contest_type" value="both"<?php checked( $contest_type, 'both' ); ?>> On Air &amp; Online</label><br>
 
 				<p>
 					<a href="#" class="save-radio hide-if-no-js button"><?php esc_html_e( 'OK' ) ?></a>
