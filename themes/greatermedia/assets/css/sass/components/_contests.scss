@@ -293,59 +293,61 @@
 		appearance:none;
 		cursor:pointer;
 	}
-}
 
-.contest__form--user-info {
-	background-color: $extra-light-gray;
-	border: 1px solid $light-gray;
-	padding: 15px;
-	margin: 0 0 30px;
-	position: relative;
+	.contest__submission--entries,
+	.contest__form--user-info {
+		background-color: $extra-light-gray;
+		border: 1px solid $light-gray;
+		padding: 15px;
+		margin: 0 0 30px;
+		position: relative;
 
-	a {
-		position: absolute;
-		top: 15px;
-		right: 15px;
-		font-size: ms(-2);
-		line-height: 1em;
-	}
+		a {
+			position: absolute;
+			top: 15px;
+			right: 15px;
+			font-size: ms(-2);
+			line-height: 1em;
+		}
 
-	i {
-		font-size: ms(-2);
-		line-height: 1em;
-		margin-bottom: 15px;
-		display: block;
-	}
+		i {
+			font-size: ms(-2);
+			line-height: 1em;
+			margin-bottom: 15px;
+			display: block;
+		}
 
-	.contest__form--row {
-		margin-bottom: 15px;
+		.contest__form--row {
+			margin-bottom: 15px;
 
-		&:last-child {
-			margin-bottom: 0;
+			&:last-child {
+				margin-bottom: 0;
+			}
+		}
+
+		dl, dt, dd {
+			margin: 0;
+			padding: 0;
+		}
+
+		dt {
+			margin-top: 1em;
+			line-height: 1.25em;
+			font-size: ms(-2);
+			color: $color-text-gray;
+
+			&:first-child {
+				margin-top: 0;
+			}
+		}
+
+		dd {
+			color: $color-text-black;
+			font-weight: bold;
+			font-size: ms(-1);
 		}
 	}
 
-	dl, dt, dd {
-		margin: 0;
-		padding: 0;
-	}
-
-	dt {
-		margin-top: 1em;
-		line-height: 1.25em;
-		font-size: ms(-2);
-		color: $color-text-gray;
-
-		&:first-child {
-			margin-top: 0;
-		}
-	}
-
-	dd {
-		color: $color-text-black;
-		font-weight: bold;
-		font-size: ms(-1);
-	}
 }
 
 .contest__submissions {
@@ -592,7 +594,7 @@
 }
 
 .contest__submission--entries-title {
-	margin-bottom: 0;
+	margin-bottom: 15px;
 }
 
 .contest__submission--entries {
