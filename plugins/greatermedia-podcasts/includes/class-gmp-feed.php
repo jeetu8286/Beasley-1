@@ -11,8 +11,6 @@ if ( ! defined( 'WPINC' ) ) {
 class GMPFeed {
 
 	public static function init() {
-		add_action( 'template_redirect' , array( __CLASS__, 'gmp_feed_template' ) , 1 );
-
 		if( self::is_podcast_feed() ) {
 
 			// Prevent feed from returning a 404 error when no posts are present on site
@@ -27,6 +25,7 @@ class GMPFeed {
 		}
 		return false;
 	}
+
 	public static function gmp_prevent_404() {
 		global $wp_query;
 
