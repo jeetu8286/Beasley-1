@@ -97,7 +97,12 @@ class GMPFeed {
 
 			$prefix = $wpdb->prefix;
 
-			$attachment = $wpdb->get_col($wpdb->prepare( 'SELECT ID FROM ' . $prefix . 'posts' . ' WHERE guid="' . $attachment . '";' ) );
+			$attachment = $wpdb->get_col(
+				$wpdb->prepare(
+					"SELECT ID FROM {$prefix}posts WHERE guid=%s",
+					$attachment
+				)
+			);
 
 			if( $attachment[0] ) {
 				$id = $attachment[0];
