@@ -498,17 +498,18 @@
 
 		$button.on('click', function (e) {
 			var $this = $(this);
-				$parent = $this.parent('.personality');
+				$parent = $this.parent().parent('.personality');
 				$meta = $this.siblings('.personality__meta');
 				curr = $meta.height();
-				auto = $meta.css('height', 'auto').height();
+				auto = $meta.css('height', 'auto').height(),
+				offset = '';
 
 			$parent.toggleClass('open');
-			if( $parent.hasClass('open') ) {
-				$meta.height(curr).animate({height: auto * 0.69}, 1000); // the 0.69 adjusts for the difference in height due to the overflow: visible wrapping the text
-			} else {
-				$meta.height(curr).animate({height: start}, 1000);
-			}
+			// if( $parent.hasClass('open') ) {
+			// 	$meta.height(curr).animate({height: auto * 0.69}, 1000); // the 0.69 adjusts for the difference in height due to the overflow: visible wrapping the text
+			// } else {
+			// 	$meta.height(curr).animate({height: start}, 1000);
+			// }
 
 
 			if($this.hasClass('active')) {
