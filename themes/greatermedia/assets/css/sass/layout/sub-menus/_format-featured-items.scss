@@ -1,0 +1,39 @@
+.header__nav .format-fi {
+
+	& > ul {
+		@extend .sub-menu;
+		left: 0;
+		padding: 1em;
+		width: 100%;
+	}
+
+
+	/* Yes, I'm in over-specific selector hell */
+	ul.header__nav-submenu--features,
+	ul.header__nav-submenu--list {
+		display: inline-block;
+		vertical-align: top;
+	}
+
+	.header__nav-submenu--list {
+		width: 33%;
+
+		li {
+			display: inline-block;
+			vertical-align: top;
+			width: 49%;
+		}
+	}
+
+	.header__nav-submenu--features {
+		@extend .cf;
+		width: 66%;
+
+		li {
+			display: block;
+			width: 25%;
+			float: left;
+		}
+	}
+
+}
