@@ -16,33 +16,11 @@ class GreaterMediaMobileNavWalker extends Walker_Nav_Menu {
 
 	public function __construct() {
 		if ( false === self::$filters_called ) {
-			add_filter( 'wp_nav_menu_objects', array( __CLASS__, 'add_menu_item_data' ), null, 2 );
+			add_filter( 'wp_nav_menu_objects', array( 'GreaterMediaNavWalker', 'add_menu_item_data' ), null, 2 );
 			self::$filters_called = true;
 		}
 	}
 
-	/**
-	 * Iterates over an array of menu items. Adds data (menu_item_parent_title) to the item object
-	 * if the current item is a child.
-	 *
-	 * @param $sorted_menu_items array
-	 * @param $args              array
-	 *
-	 * @return array
-	 */
-	public static function add_menu_item_data( $sorted_menu_items, $args ) {
-		foreach ( $sorted_menu_items as $id => &$item ) {
-			// check if the $item has a parent $item.
-			if ( ! empty( $item->menu_item_parent ) ) {
-
-				// Get the associated parent item
-				$matching_parents             = (array) wp_filter_object_list( $sorted_menu_items, array( 'ID' => $item->menu_item_parent ), 'and', 'post_title' );
-				$item->menu_item_parent_title = array_shift( $matching_parents );
-			}
-		}
-
-		return $sorted_menu_items;
-	}
 
 	/**
 	 * This number iterates for each item until $current_depth changes at which point it resets to 0
