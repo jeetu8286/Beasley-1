@@ -216,6 +216,10 @@
 			this.redirect('/');
 		},
 
+		didProfileUpdate: function() {
+			ajaxApi.request('update_account', {});
+		},
+
 		profileForResponse: function(response) {
 			var profile = {
 				UID       : response.UID,
@@ -425,6 +429,8 @@
 				this.registerLogoutButton();
 			} else if (event.currentScreen === 'gigya-register-complete-screen') {
 				this.controller.willRegister = true;
+			} else if ( event.currentScreen === 'gigya-update-profile-success-screen' ) {
+				this.controller.didProfileUpdate();
 			}
 		},
 

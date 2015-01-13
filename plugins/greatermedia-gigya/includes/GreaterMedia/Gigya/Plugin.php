@@ -154,6 +154,7 @@ class Plugin {
 		if ( is_gigya_user_logged_in() ) {
 			$handlers[] = new Ajax\SaveGigyaActionAjaxHandler();
 			$handlers[] = new Ajax\RegisterAccountAjaxHandler();
+			$handlers[] = new Ajax\UpdateAccountAjaxHandler();
 		}
 
 		foreach ( $handlers as $handler ) {
@@ -165,8 +166,11 @@ class Plugin {
 		$launcher = new Sync\Launcher();
 		$launcher->register();
 
-		$actionPublisher = new Action\Publisher();
-		$actionPublisher->register();
+		$action_publisher = new Action\Publisher();
+		$action_publisher->register();
+
+		$emma_group_sync_task = new Sync\EmmaGroupSyncTask();
+		$emma_group_sync_task->register();
 	}
 
 	/**
