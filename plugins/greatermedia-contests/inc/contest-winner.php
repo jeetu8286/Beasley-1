@@ -8,6 +8,8 @@ add_action( 'admin_menu', 'gmr_contests_register_winners_page' );
 add_action( 'admin_action_gmr_promote_winner', 'gmr_contest_promote_winner' );
 add_action( 'admin_action_gmr_unpromote_entry', 'gmr_contest_unpromote_entry' );
 add_action( 'admin_action_gmr_disqualify_entry', 'gmr_contest_disqualify_entry' );
+add_action( 'admin_action_gmr_mark_winner', 'gmr_contest_mark_as_winner' );
+add_action( 'admin_action_gmr_unmark_winner', 'gmr_contest_unmark_as_winner' );
 
 // filter hooks
 add_filter( 'post_row_actions', 'gmr_contests_add_table_row_actions', 10, 2 );
@@ -179,6 +181,44 @@ function gmr_contests_adjust_winners_page_admin_menu( $parent_file ) {
 	}
 
 	return $parent_file;
+}
+
+/**
+ * Marks an entry as winner.
+ *
+ * @action gmr_mark_winner
+ */
+function gmr_contest_mark_as_winner() {
+	check_admin_referer( 'gmr_mark_winner' );
+
+	$entry = filter_input( INPUT_GET, 'entry_id', FILTER_VALIDATE_INT );
+	if ( ! $entry || ! ( $entry = get_post( $entry ) ) || GMR_CONTEST_ENTRY_CPT != $entry->post_type ) {
+		wp_die( 'Entry has not been found.' );
+	}
+
+	update_post_meta( $entry->ID, 'entry_status', 'winner' );
+
+	wp_redirect( wp_get_referer() );
+	exit;
+}
+
+/**
+ * Unmarks an entry as winner.
+ *
+ * @action gmr_unmark_winner
+ */
+function gmr_contest_unmark_as_winner() {
+	check_admin_referer( 'gmr_unmark_winner' );
+
+	$entry = filter_input( INPUT_GET, 'entry_id', FILTER_VALIDATE_INT );
+	if ( ! $entry || ! ( $entry = get_post( $entry ) ) || GMR_CONTEST_ENTRY_CPT != $entry->post_type ) {
+		wp_die( 'Entry has not been found.' );
+	}
+
+	delete_post_meta( $entry->ID, 'entry_status' );
+
+	wp_redirect( wp_get_referer() );
+	exit;
 }
 
 /**
@@ -387,9 +427,6 @@ class GMR_Contest_Entries_Table extends WP_List_Table {
  */
 class GMR_Contest_Winners_Table extends GMR_Contest_Entries_Table {
 
-	const STATUS_PROMOTED = 'promoted';
-	const STATUS_WINNER   = 'winner';
-
 	public function __construct( $contest_id, $status ) {
 		parent::__construct( array(
 			'contest_id' => $contest_id,
@@ -400,14 +437,20 @@ class GMR_Contest_Winners_Table extends GMR_Contest_Entries_Table {
 
 	protected function _get_actions( WP_Post $entry ) {
 		$actions = array();
-		if ( self::STATUS_PROMOTED == $this->_args['status'] ) {
+		if ( 'promoted' == $this->_args['status'] ) {
+			$mark_winner = admin_url( 'admin.php?action=gmr_mark_winner&entry_id=' . $entry->ID );
+			$mark_winner = wp_nonce_url( $mark_winner, 'gmr_mark_winner' );
+
 			$unpromote = admin_url( 'admin.php?action=gmr_unpromote_entry&entry_id=' . $entry->ID );
 			$unpromote = wp_nonce_url( $unpromote, 'gmr_unpromote_entry' );
 			
-			$actions['mark-winner'] = '<a href="' . esc_url( $unpromote ) . '">Mark as Winner</a>';
+			$actions['mark-winner'] = '<a href="' . esc_url( $mark_winner ) . '">Mark as Winner</a>';
 			$actions['unpromote-winner'] = '<a href="' . esc_url( $unpromote ) . '">Unmark as Potential Winner</a>';
 		} else {
-			
+			$unmark_winner = admin_url( 'admin.php?action=gmr_unmark_winner&entry_id=' . $entry->ID );
+			$unmark_winner = wp_nonce_url( $unmark_winner, 'gmr_unmark_winner' );
+
+			$actions['unmark-winner'] = '<a href="' . esc_url( $unmark_winner ) . '">Unmark Winner</a>';
 		}
 
 		return $this->row_actions( $actions );
