@@ -28,12 +28,60 @@
 	.header__nav-submenu--features {
 		@extend .cf;
 		width: 66%;
+		border-left: 1px solid $primary-border;
 
 		li {
 			display: block;
 			width: 25%;
 			float: left;
+			padding: 2%;
 		}
+
+		 a {
+			 padding: 0;
+		 }
 	}
 
+	p {
+		margin-top: .5em;
+	}
+
+	.entry2__thumbnail {
+		float: none;
+		margin: 0;
+		width: 100%;
+
+		@include bp(small) {
+			float: none;
+			margin: 0;
+			width: 100%;
+		}
+
+		a {
+			position: absolute;
+			width: 100%;
+			left: 0;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			z-index: 20;
+		}
+
+		// Force aspect ratio
+		position: relative;
+
+		&:after {
+			content: '';
+			display: block;
+			padding-top: 66.666%;
+		}
+
+		.has-excerpt &:after {
+			padding-top: 75%;
+		}
+
+		background-size: 100%;
+		background-size: cover;
+		background-position: center center;
+	}
 }

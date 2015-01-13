@@ -316,29 +316,31 @@ class GreaterMediaNavWalker extends Walker_Nav_Menu {
 		 */
 		if ( self::$doing_featured_item_menu ):
 			ob_start();
+
+			$featured_items = new WP_Query( array(
+				'posts_per_page' => 4
+			) );
 			?>
-				<ul class="header__nav-submenu--features">
-					<li>
-						<img src="http://placehold.it/180x100">
+			<ul class="header__nav-submenu--features">
+			<?php
+			while ( $featured_items->have_posts() ):
+				$featured_items->the_post();
 
-						<p>U2 Scheduled for Week-long stint on something or other</p>
-					</li>
-					<li>
-						<img src="http://placehold.it/180x100">
 
-						<p>U2 Scheduled for Week-long stint on something or other</p>
-					</li>
-					<li>
-						<img src="http://placehold.it/180x100">
-
-						<p>U2 Scheduled for Week-long stint on something or other</p>
-					</li>
-					<li>
-						<img src="http://placehold.it/180x100">
-
-						<p>U2 Scheduled for Week-long stint on something or other</p>
-					</li>
-				</ul>
+				?>
+				<li>
+					<a href="<?php the_permalink(); ?>">
+					<div class="entry2__thumbnail format-<?php echo get_post_format(); ?>"
+					     style="background-image: url(<?php gm_post_thumbnail_url( 'gm-entry-thumbnail-4-3' ); ?>);">
+					</div>
+					<p><?php the_title(); ?></p>
+					</a>
+				</li>
+			<?php
+			endwhile;
+			wp_reset_postdata();
+			?>
+			</ul>
 			</li>
 			<?php
 

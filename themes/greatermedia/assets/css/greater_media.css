@@ -1461,11 +1461,44 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
       vertical-align: top;
       width: 49%; }
   .header__nav .format-fi .header__nav-submenu--features {
-    width: 66%; }
+    width: 66%;
+    border-left: 1px solid #d0d2d3; }
     .header__nav .format-fi .header__nav-submenu--features li {
       display: block;
       width: 25%;
-      float: left; }
+      float: left;
+      padding: 2%; }
+    .header__nav .format-fi .header__nav-submenu--features a {
+      padding: 0; }
+  .header__nav .format-fi p {
+    margin-top: .5em; }
+  .header__nav .format-fi .entry2__thumbnail {
+    float: none;
+    margin: 0;
+    width: 100%;
+    position: relative;
+    background-size: 100%;
+    background-size: cover;
+    background-position: center center; }
+    @media screen and (min-width: 480px) {
+      .header__nav .format-fi .entry2__thumbnail {
+        float: none;
+        margin: 0;
+        width: 100%; } }
+    .header__nav .format-fi .entry2__thumbnail a {
+      position: absolute;
+      width: 100%;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 20; }
+    .header__nav .format-fi .entry2__thumbnail:after {
+      content: '';
+      display: block;
+      padding-top: 66.666%; }
+    .has-excerpt .header__nav .format-fi .entry2__thumbnail:after {
+      padding-top: 75%; }
 
 .content__heading {
   margin-top: 0;
