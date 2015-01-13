@@ -142,8 +142,20 @@
 	}
 }
 
-.header__account--small {
+.header__account--mobile {
 	display: block;
+
+	@include bp(medium) {
+		display: none;
+	}
+}
+
+.header__account--small {
+	display: none;
+
+	@include bp(medium) {
+		display: block;
+	}
 
 	@include bp(x-large) {
 		display: none;

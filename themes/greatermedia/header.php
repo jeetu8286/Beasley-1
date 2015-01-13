@@ -114,6 +114,15 @@
 							wp_nav_menu( $main_nav );
 							?>
 							<div class="header__secondary">
+								<div class="header__account header__account--mobile">
+									<a href="#" class="header__account--btn">
+										<span class="icon-user"></span>
+									</a>
+
+									<div class="header__account--container">
+
+									</div>
+								</div>
 								<div class="header__account header__account--small">
 									<a href="#" class="header__account--btn">
 										<span class="icon-user"></span>

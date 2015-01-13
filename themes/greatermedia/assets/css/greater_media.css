@@ -2648,8 +2648,17 @@ Community Highlights and Events
     .header__account {
       width: auto; } }
 
-.header__account--small {
+.header__account--mobile {
   display: block; }
+  @media screen and (min-width: 768px) {
+    .header__account--mobile {
+      display: none; } }
+
+.header__account--small {
+  display: none; }
+  @media screen and (min-width: 768px) {
+    .header__account--small {
+      display: block; } }
   @media screen and (min-width: 1400px) {
     .header__account--small {
       display: none; } }
