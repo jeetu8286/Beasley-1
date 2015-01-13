@@ -13,7 +13,7 @@
 
 			<div class="highlights__community">
 
-				<h2 class="highlights__heading"><?php //bloginfo( 'name' ); ?><?php _e( ' Community Highlights', 'greatermedia' ); ?></h2>
+				<h2 class="highlights__heading"><?php bloginfo( 'name' ); ?> Community Highlights</h2>
 
 				<?php
 				$hp_comm_query = \GreaterMedia\HomepageCuration\get_community_query();
@@ -35,7 +35,11 @@
 
 			<div class="highlights__events">
 
-				<h2 class="highlights__heading"><?php _e( 'Upcoming Events', 'greatermedia' ); ?></h2>
+				<div>
+					<h2 class="highlights__heading"><?php _e( 'Upcoming Events', 'greatermedia' ); ?></h2>
+					
+					<a class='highlights__events--more-btn' href='<?php echo esc_url( home_url( '/events/' ) ); ?>'>More</a>
+				</div>
 
 				<?php
 				$events_query = \GreaterMedia\HomepageCuration\get_events_query();

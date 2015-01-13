@@ -1,5 +1,7 @@
 (function($) {
 
+	var ajaxApi = new WpAjaxApi(window.gigya_profile_meta);
+
 	var GigyaSessionStore = function() {
 		this.cookieValue = {};
 	};
@@ -20,11 +22,18 @@
 		},
 
 		save: function(persistent) {
+			var options = this.getCookieOptions(persistent);
+
 			Cookies.set(
 				this.getCookieName(),
 				this.serialize(this.cookieValue),
-				this.getCookieOptions(persistent)
+				options
 			);
+
+			// if you've just logged in, assuming that the previous
+			// livefyre token is now invalid, it will auto-refresh the
+			// next time you visit a page that supports comments
+			Cookies.expire('livefyre_token', options);
 		},
 
 		load: function() {
@@ -32,7 +41,7 @@
 				return;
 			}
 
-			var cookieText  = Cookies.get(this.getCookieName());
+			var cookieText   = Cookies.get(this.getCookieName());
 			this.cookieValue = this.deserialize(cookieText);
 		},
 
@@ -43,6 +52,7 @@
 			};
 
 			Cookies.expire(this.getCookieName(), options);
+			Cookies.expire('livefyre_token', options);
 			this.cookieValue = {};
 		},
 
@@ -68,7 +78,6 @@
 		},
 
 		getCookieTimeout: function(persistent) {
-			// TODO: must mirror gigya sessions
 			if (persistent) {
 				return 365 * 24 * 60 * 60; // 1 year
 			} else {
@@ -133,8 +142,8 @@
 		},
 
 		register: function(profile) {
-			// TODO: Trigger DS.Store sync callback
 			this.login(profile);
+			return ajaxApi.request('register_account', {});
 		},
 
 		login: function(profile) {
@@ -144,7 +153,7 @@
 				}
 			}
 
-			this.store.save();
+			this.store.save(true);
 		},
 
 		logout: function() {
@@ -190,13 +199,25 @@
 
 		didRegister: function(response) {
 			var profile = this.profileForResponse(response);
-			this.session.register(profile);
-			this.redirect('/');
+			var self    = this;
+
+			this.session.register(profile)
+				.then(function() {
+					self.redirect('/');
+				})
+				.fail(function() {
+					// TODO: What to do if account_register failed?
+					self.redirect('/');
+				});
 		},
 
 		didLogout: function() {
 			this.session.logout();
 			this.redirect('/');
+		},
+
+		didProfileUpdate: function() {
+			ajaxApi.request('update_account', {});
 		},
 
 		profileForResponse: function(response) {
@@ -406,6 +427,10 @@
 			this.scrollToTop();
 			if (event.currentScreen === 'gigya-update-profile-screen') {
 				this.registerLogoutButton();
+			} else if (event.currentScreen === 'gigya-register-complete-screen') {
+				this.controller.willRegister = true;
+			} else if ( event.currentScreen === 'gigya-update-profile-success-screen' ) {
+				this.controller.didProfileUpdate();
 			}
 		},
 
