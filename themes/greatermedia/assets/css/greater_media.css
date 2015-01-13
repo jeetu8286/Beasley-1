@@ -637,7 +637,7 @@ img {
   -o-transform: translate(0, 0);
   transform: translate(0, 0);
   width: 100%;
-  padding-bottom: 58px;
+  padding-bottom: 0;
   -webkit-transition: all 100ms ease-out;
   -moz-transition: all 100ms ease-out;
   transition: all 100ms ease-out;
@@ -649,8 +649,7 @@ img {
       -moz-transform: none;
       -ms-transform: none;
       -o-transform: none;
-      transform: none;
-      padding-bottom: 0; } }
+      transform: none; } }
 
 .container, .single-gmr_gallery .gallery .container {
   max-width: 100%;
@@ -8673,8 +8672,14 @@ category: Components - Shows
 
 */
 .show__personalities {
+  display: block;
   background-color: #ffffff;
-  margin-top: -8em; }
+  margin-top: -6em; }
+  .show__personalities:before, .show__personalities:after {
+    content: " ";
+    display: table; }
+  .show__personalities:after {
+    clear: both; }
 
 .personality {
   padding: 4em 3em;
@@ -8685,8 +8690,14 @@ category: Components - Shows
     display: table; }
   .personality:after {
     clear: both; }
+  .personality.open {
+    background-color: #d0d2d3; }
   .personality .more-btn {
-    display: none; }
+    right: 40%;
+    bottom: 20px; }
+    @media screen and (min-width: 768px) {
+      .personality .more-btn {
+        bottom: 40px; } }
 
 .personality__avatar {
   float: left;
@@ -8715,14 +8726,21 @@ category: Components - Shows
 
 .personality__meta {
   float: none;
-  width: auto; }
+  width: auto;
+  height: 10em;
+  overflow: hidden;
+  transition: all 100ms ease-out 0s; }
+  .personality.open .personality__meta {
+    height: auto;
+    overflow: visible; }
   @media screen and (min-width: 768px) {
     .personality__meta {
       float: left;
       display: block;
       margin-right: 2.35765%;
       width: 74.41059%;
-      margin-right: 0; }
+      margin-right: 0;
+      height: 12em; }
       .personality__meta:last-child {
         margin-right: 0; } }
 
