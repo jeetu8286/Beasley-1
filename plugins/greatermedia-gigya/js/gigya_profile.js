@@ -76,7 +76,6 @@
 		},
 
 		getCookieTimeout: function(persistent) {
-			// TODO: must mirror gigya sessions
 			if (persistent) {
 				return 365 * 24 * 60 * 60; // 1 year
 			} else {

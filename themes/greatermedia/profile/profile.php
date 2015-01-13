@@ -57,7 +57,12 @@ $emma_groups = json_decode( $emma_groups, true );
 
 				<a href="#" class="link-button" data-switch-screen="gigya-forgot-password-screen">Forgot Password?</a>
 				<input type="submit" name="submit" value="Login" />
+
 			</form>
+
+			<h3 class="new-account-msg">Don't have an account?
+			<a href="#" class="link-button" data-switch-screen="gigya-register-screen">Register here.</a>
+			</h3>
 		</div>
 
 		<div class="gigya-screen" id="gigya-forgot-password-screen" data-responsive="true">
