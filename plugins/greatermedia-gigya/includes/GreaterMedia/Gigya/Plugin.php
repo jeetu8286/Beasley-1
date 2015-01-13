@@ -96,7 +96,7 @@ class Plugin {
 				'data'                        => array(
 					'ajax_url'                => admin_url( 'admin-ajax.php' ),
 					'save_gigya_action_nonce' => wp_create_nonce( 'save_gigya_action' ),
-					'has_participated_nonce'  => wp_create_nonce( 'has_participated' )
+					'has_participated_nonce'  => wp_create_nonce( 'has_participated' ),
 				)
 			);
 
@@ -132,7 +132,6 @@ class Plugin {
 		//$handlers[] = new Ajax\GigyaLoginAjaxHandler();
 		//$handlers[] = new Ajax\GigyaLogoutAjaxHandler();
 		$handlers[] = new Ajax\PreviewResultsAjaxHandler();
-		$handlers[] = new Ajax\RegisterAjaxHandler();
 		$handlers[] = new Ajax\ListEntryTypesAjaxHandler();
 		$handlers[] = new Ajax\ListEntryFieldsAjaxHandler();
 		$handlers[] = new Ajax\ChangeGigyaSettingsAjaxHandler();
@@ -154,6 +153,7 @@ class Plugin {
 		// anyone can hit and use to add actions to DS.Store
 		if ( is_gigya_user_logged_in() ) {
 			$handlers[] = new Ajax\SaveGigyaActionAjaxHandler();
+			$handlers[] = new Ajax\RegisterAccountAjaxHandler();
 		}
 
 		foreach ( $handlers as $handler ) {
