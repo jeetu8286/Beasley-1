@@ -1,9 +1,10 @@
 <?php
-/**
- * This will add an additional field to the native WordPress media uploader.
- * This will allow the editor to add photo credits to each image.
- */
 
+/**
+ * Class GMRImageAttr
+ *
+ * add a custom field to images for image attribution in the media modal and media library
+ */
 class GMRImageAttr {
 
 	public static function init() {
@@ -46,36 +47,6 @@ class GMRImageAttr {
 
 		return $post;
 	}
-
-	/**
-	 * Custom function to call the caption plus the custom harris photo credit along with front end code
-	 */
-
-	public static function harris_caption() {
-
-		$get_photo_credit = get_post_meta( get_post_thumbnail_id(), 'harris_publications_photo_credit', true );
-
-		if ( ! empty( $get_description ) || ! empty( $get_photo_credit ) ) :
-			echo '<div class="post-thumbnail-caption">';
-
-			if ( ! empty( $get_description ) ) :
-				echo wp_kses_post( $get_description );
-			endif;
-
-			if ( ! empty( $get_description ) && ! empty( $get_photo_credit ) ) :
-				echo '<span class="caption-separator">|</span>';
-			endif;
-
-			if ( ! empty( $get_photo_credit ) ) :
-				echo '<span class="img-credit">Photo by ' . wp_kses_post( $get_photo_credit ) . '</span>';
-			endif;
-
-			echo '</div>';
-
-		endif;
-
-	}
-
 
 }
 
