@@ -2668,7 +2668,11 @@ Community Highlights and Events
   display: none; }
   @media screen and (min-width: 1400px) {
     .header__account--large {
-      display: block; } }
+      display: block; }
+      .header__account--large .header__account--container {
+        display: none; }
+      .header__account--large.logged-in .header__account--container {
+        display: block; } }
 
 @media screen and (min-width: 768px) {
   .header__account:hover {
@@ -4221,8 +4225,6 @@ Link posts contain a link to an external site. They can also optionally have a f
     margin: 25.6px 0;
     line-height: 1.5;
     letter-spacing: normal; }
-  .article__content h1 {
-    font-size: 2.02729em; }
   .article__content h1 {
     font-size: 1.80203em; }
   .article__content h2 {

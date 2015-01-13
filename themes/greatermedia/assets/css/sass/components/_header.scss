@@ -167,6 +167,16 @@
 
 	@include bp(x-large) {
 		display: block;
+
+		.header__account--container {
+			display: none;
+		}
+
+		&.logged-in {
+			.header__account--container {
+				display: block;
+			}
+		}
 	}
 }
 
