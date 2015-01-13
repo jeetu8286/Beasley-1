@@ -20,11 +20,18 @@
 		},
 
 		save: function(persistent) {
+			var options = this.getCookieOptions(persistent);
+
 			Cookies.set(
 				this.getCookieName(),
 				this.serialize(this.cookieValue),
-				this.getCookieOptions(persistent)
+				options
 			);
+
+			// if you've just logged in, assuming that the previous
+			// livefyre token is now invalid, it will auto-refresh the
+			// next time you visit a page that supports comments
+			Cookies.expire('livefyre_token', options);
 		},
 
 		load: function() {
@@ -32,7 +39,7 @@
 				return;
 			}
 
-			var cookieText  = Cookies.get(this.getCookieName());
+			var cookieText   = Cookies.get(this.getCookieName());
 			this.cookieValue = this.deserialize(cookieText);
 		},
 
@@ -43,6 +50,7 @@
 			};
 
 			Cookies.expire(this.getCookieName(), options);
+			Cookies.expire('livefyre_token', options);
 			this.cookieValue = {};
 		},
 
@@ -144,7 +152,7 @@
 				}
 			}
 
-			this.store.save();
+			this.store.save(true);
 		},
 
 		logout: function() {

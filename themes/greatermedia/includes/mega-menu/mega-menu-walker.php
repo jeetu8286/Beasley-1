@@ -25,8 +25,12 @@ class GreaterMediaNavWalker extends Walker_Nav_Menu {
 
 		// Try to find some meta text to use
 		if ( 'show' === $item->object ) {
-			$days = get_post_meta( $item->object_id, 'show_days', true );
-			$times = get_post_meta( $item->object_id, 'show_times', true );
+			/**
+			 * @todo create helper function or do_action to keep this from failing.
+			 */
+			$object_id = $item->object_id;
+			$days = \GreaterMedia\Shows\get_show_days( $object_id );
+			$times = \GreaterMedia\Shows\get_show_times( $object_id );
 
 			if ( ! empty( $days ) || ! empty( $times ) ) {
 				$return .= '<div class="meta-text">';
