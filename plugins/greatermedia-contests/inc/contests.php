@@ -532,9 +532,7 @@ function gmr_contests_process_form_submission() {
 		}
 	}
 
-	list( $entrant_reference, $entrant_name ) = gmr_contests_get_gigya_entrant_id_and_name();
-
-	$entry = GreaterMediaContestEntryEmbeddedForm::create_for_data( $contest_id, $entrant_name, $entrant_reference, GreaterMediaContestEntry::ENTRY_SOURCE_EMBEDDED_FORM, json_encode( $submitted_values ) );
+	$entry = ContestEntryEmbeddedForm::create_for_data( $contest_id, json_encode( $submitted_values ) );
 	$entry->save();
 
 	gmr_contests_handle_submitted_files( $submitted_files, $entry );
@@ -595,10 +593,12 @@ function gmr_contests_handle_submitted_files( array $submitted_files, GreaterMed
 
 	set_post_thumbnail( $ugc->post->ID, $thumbnail );
 	
-	add_post_meta( $ugc->post->ID, 'contest_entry_id', $entry->post_id() );
+	add_post_meta( $ugc->post->ID, 'contest_entry_id', $entry->post->ID );
 	if ( function_exists( 'get_gigya_user_id' ) ) {
 		add_post_meta( $ugc->post->ID, 'gigya_user_id', get_gigya_user_id() );
 	}
+	
+	update_post_meta( $entry->post->ID, 'submission_id', $ugc->post->ID );
 }
 
 /**
@@ -765,28 +765,22 @@ function gmr_contests_post_thumbnail_html( $html, $post_id, $post_thumbnail_id, 
 /**
  * Return contest submission author.
  *
- * @param int $submission_id The contest submission id.
+ * @param int|WP_Post $submission The contest submission id or object.
  * @return string The author name if available.
  */
-function gmr_contest_submission_get_author( $submission_id = null ) {
-	if ( empty( $submission_id ) ) {
-		$submission_id = get_the_ID();
-	}
-	
-	$author = 'guest';
-	if ( function_exists( 'get_gigya_user_profile' ) && ( $gigya_uid = get_post_meta( get_the_ID(), 'gigya_user_id', true ) ) ) {
-		$profile = get_gigya_user_profile( $gigya_uid );
-		if ( ! empty( $profile ) ) {
-			$profile = filter_var_array( $profile, array(
-				'firstName' => FILTER_DEFAULT,
-				'lastName'  => FILTER_DEFAULT,
-			) );
-
-			$author = "{$profile['firstName']} {$profile['lastName']}";
+function gmr_contest_submission_get_author( $submission = null ) {
+	$submission = get_post( $submission );
+	if ( $submission ) {
+		$entry = get_post_meta( $submission->ID, 'contest_entry_id', true );
+		if ( $entry ) {
+			$username = trim( get_post_meta( $entry, 'entrant_name', true ) );
+			if ( $username ) {
+				return $username;
+			}
 		}
 	}
 
-	return $author;
+	return 'guest';
 }
 
 /**
