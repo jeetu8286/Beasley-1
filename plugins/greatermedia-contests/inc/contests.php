@@ -929,3 +929,25 @@ function gmr_contests_is_submission_winner( $submission = null ) {
 
 	return in_array( "{$entry_id}:{$gigya_id}", get_post_meta( $submission->post_parent, 'winner' ) );
 }
+
+/**
+ * Returns contest type label of a certain contest.
+ *
+ * @param int|WP_Post $contest The contest post object or id.
+ * @return string The contest type label.
+ */
+function gmr_contest_get_type_label( $contest = null ) {
+	$contest = get_post( $contest );
+
+	switch ( get_post_meta( get_the_ID(), 'contest_type', true ) ) {
+		case 'onair':
+			return 'On Air';
+		case 'both':
+			return 'On Air & Online';
+		case 'online':
+		default:
+			return 'Online';
+	}
+
+	return '';
+}
