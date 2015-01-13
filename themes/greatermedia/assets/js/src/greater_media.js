@@ -16,7 +16,7 @@
 		mobileNavButton = document.querySelector( '.mobile-nav__toggle' ),
 		pageWrap = document.getElementById( 'page-wrap' ),
 		header = document.getElementById( 'header' ),
-		headerHeight = header.offsetHeight,
+		headerHeight,
 		livePlayer = document.getElementById( 'live-player__sidebar' ),
 		livePlayerStream = document.querySelector('.live-player__stream'),
 		livePlayerStreamSelect = document.querySelector( '.live-player__stream--current' ),
@@ -41,11 +41,19 @@
 		collapseToggle = document.querySelector('*[data-toggle="collapse"]'),
 		breakingNewsBanner = document.getElementById('breaking-news-banner');
 
+
 	/**
-	 * append the height of the Breaking News Banner to the `headerHeight` variable if the banner is available
+	 * function to dynamically calculate the offsetHeight of an element
+	 *
+	 * @param elem
+	 * @returns {number}
 	 */
-	if (breakingNewsBanner != null && breakingNewsBanner.parentNode != header) {
-		headerHeight += breakingNewsBanner.offsetHeight;
+	function elemHeight(elem) {
+		return elem.offsetHeight;
+
+		if (elem == header && breakingNewsBanner != null && breakingNewsBanner.parentNode != elem ) {
+			elem += breakingNewsBanner.offsetHeight;
+		}
 	}
 
 	/**
@@ -77,13 +85,13 @@
 	 */
 	function lpPosBase() {
 		if (body.classList.contains('logged-in')) {
-			livePlayer.style.top = wpAdminHeight + headerHeight + 'px';
-			livePlayer.style.height = windowHeight - wpAdminHeight - headerHeight + 'px';
-			liveLinks.style.height = windowHeight - wpAdminHeight - headerHeight - livePlayerStreamSelectHeight - liveStreamHeight - 36 + 'px';
+			livePlayer.style.top = wpAdminHeight + elemHeight(header) + 'px';
+			livePlayer.style.height = windowHeight - wpAdminHeight - elemHeight(header) + 'px';
+			liveLinks.style.height = windowHeight - wpAdminHeight - elemHeight(header) - livePlayerStreamSelectHeight - liveStreamHeight - 36 + 'px';
 		} else {
-			livePlayer.style.top = headerHeight + 'px';
-			livePlayer.style.height = windowHeight - headerHeight + 'px';
-			liveLinks.style.height = windowHeight - headerHeight - livePlayerStreamSelectHeight - liveStreamHeight - 36 + 'px';
+			livePlayer.style.top = elemHeight(header) + 'px';
+			livePlayer.style.height = windowHeight - elemHeight(header) + 'px';
+			liveLinks.style.height = windowHeight - elemHeight(header) - livePlayerStreamSelectHeight - liveStreamHeight - 36 + 'px';
 		}
 		livePlayer.classList.remove('live-player--fixed');
 		livePlayer.classList.add('live-player--init');
@@ -94,10 +102,10 @@
 	 */
 	function lpPosScrollInit() {
 		if (body.classList.contains('logged-in')) {
-			livePlayer.style.top = headerHeight + wpAdminHeight + 'px';
+			livePlayer.style.top = elemHeight(header) + wpAdminHeight + 'px';
 			liveLinks.style.height = windowHeight - wpAdminHeight - livePlayerStreamSelectHeight - liveStreamHeight - 36 + 'px';
 		} else {
-			livePlayer.style.top = headerHeight + 'px';
+			livePlayer.style.top = elemHeight(header) + 'px';
 			liveLinks.style.height = windowHeight - livePlayerStreamSelectHeight - liveStreamHeight - 36 + 'px';
 		}
 		livePlayer.style.height = '100%';
@@ -151,9 +159,9 @@
 
 			if (scrollObject.y === 0) {
 				lpPosBase();
-			} else if (scrollObject.y >= 1 && scrollObject.y <= headerHeight) {
+			} else if (scrollObject.y >= 1 && scrollObject.y <= elemHeight(header)) {
 				lpPosScrollInit();
-			} else if (scrollObject.y >= headerHeight) {
+			} else if (scrollObject.y >= elemHeight(header)) {
 				lpPosNoHeader();
 			} else {
 				lpPosDefault();
@@ -169,9 +177,9 @@
 		if ( window.innerWidth >= 768 ) {
 			var liveLinksWidgetHeight = liveLinksWidget.offsetHeight;
 			if (body.classList.contains('logged-in')) {
-				liveLinks.style.height = windowHeight - headerHeight - wpAdminHeight - livePlayerStreamSelectHeight - liveStreamHeight - 36 + 'px';
+				liveLinks.style.height = windowHeight - elemHeight(header) - wpAdminHeight - livePlayerStreamSelectHeight - liveStreamHeight - 36 + 'px';
 			} else {
-				liveLinks.style.height = windowHeight - headerHeight - livePlayerStreamSelectHeight - liveStreamHeight - 36 + 'px';
+				liveLinks.style.height = windowHeight - elemHeight(header) - livePlayerStreamSelectHeight - liveStreamHeight - 36 + 'px';
 			}
 			liveLinksWidget.style.height = liveLinksWidgetHeight + 'px';
 		}
