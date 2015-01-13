@@ -212,28 +212,38 @@ class GreaterMediaContestsMetaboxes {
 	}
 
 	private function _restrictions_settings( WP_Post $post ) {
+		$post_status = get_post_status_object( $post->post_status );
+		
 		?><table class="form-table">
 			<tr>
 				<th scope="row"><label for="greatermedia_contest_start">Start date</label></th>
 				<td>
-					<?php $this->render_date_field( array(
-						'post_id' => $post->ID,
-						'id'      => 'greatermedia_contest_start',
-						'name'    => 'greatermedia_contest_start',
-						'value'   => get_post_meta( $post->ID, 'contest-start', true )
-					) ); ?>
+					<?php if ( ! $post_status->public ) : ?>
+						<?php $this->render_date_field( array(
+							'post_id' => $post->ID,
+							'id'      => 'greatermedia_contest_start',
+							'name'    => 'greatermedia_contest_start',
+							'value'   => get_post_meta( $post->ID, 'contest-start', true )
+						) ); ?>
+					<?php else : ?>
+						<b><?php echo date( get_option( 'date_format' ), get_post_meta( $post->ID, 'contest-start', true ) ); ?></b>
+					<?php endif; ?>
 				</td>
 			</tr>
 
 			<tr>
 				<th scope="row"><label for="greatermedia_contest_end">End date</label></th>
 				<td>
-					<?php $this->render_date_field( array(
-						'post_id' => $post->ID,
-						'id'      => 'greatermedia_contest_end',
-						'name'    => 'greatermedia_contest_end',
-						'value'   => get_post_meta( $post->ID, 'contest-end', true )
-					) ); ?>
+					<?php if ( ! $post_status->public ) : ?>
+						<?php $this->render_date_field( array(
+							'post_id' => $post->ID,
+							'id'      => 'greatermedia_contest_end',
+							'name'    => 'greatermedia_contest_end',
+							'value'   => get_post_meta( $post->ID, 'contest-end', true ),
+						) ); ?>
+					<?php else : ?>
+						<b><?php echo date( get_option( 'date_format' ), get_post_meta( $post->ID, 'contest-end', true ) ); ?></b>
+					<?php endif; ?>
 				</td>
 			</tr>
 
@@ -354,8 +364,14 @@ class GreaterMediaContestsMetaboxes {
 		update_post_meta( $post_id, 'prizes-desc', wp_kses_post( $_POST['greatermedia_contest_prizes'] ) );
 		update_post_meta( $post_id, 'how-to-enter-desc', wp_kses_post( $_POST['greatermedia_contest_enter'] ) );
 		update_post_meta( $post_id, 'rules-desc', wp_kses_post( $_POST['greatermedia_contest_rules'] ) );
-		update_post_meta( $post_id, 'contest-start', strtotime( $_POST['greatermedia_contest_start'] ) );
-		update_post_meta( $post_id, 'contest-end', strtotime( $_POST['greatermedia_contest_end'] ) );
+
+		if ( ! empty( $_POST['greatermedia_contest_start'] ) ) {
+			update_post_meta( $post_id, 'contest-start', strtotime( $_POST['greatermedia_contest_start'] ) );
+		}
+
+		if ( ! empty( $_POST['greatermedia_contest_end'] ) ) {
+			update_post_meta( $post_id, 'contest-end', strtotime( $_POST['greatermedia_contest_end'] ) );
+		}
 
 		$members_only = filter_input( INPUT_POST, 'greatermedia_contest_members_only', FILTER_VALIDATE_BOOLEAN );
 		update_post_meta( $post_id, 'contest-members-only', $members_only );
