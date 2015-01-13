@@ -1,9 +1,13 @@
 <?php
 
+// include list table class file if it hasn't been included yet
+require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
+
 // action hooks
 add_action( 'admin_menu', 'gmr_contests_register_winners_page' );
 add_action( 'admin_action_gmr_promote_winner', 'gmr_contest_promote_winner' );
 add_action( 'admin_action_gmr_unpromote_entry', 'gmr_contest_unpromote_entry' );
+add_action( 'admin_action_gmr_disqualify_entry', 'gmr_contest_disqualify_entry' );
 
 // filter hooks
 add_filter( 'post_row_actions', 'gmr_contests_add_table_row_actions', 10, 2 );
@@ -79,28 +83,25 @@ function gmr_contests_render_winner_page() {
 		),
 	) );
 
-	$winners_table = new GMR_Contest_Winners_Table( $contest->ID, GMR_Contest_Winners_Table::STATUS_WINNER );
+	$winners_table = new GMR_Contest_Winners_Table( $contest->ID, 'winner' );
 	$winners_table->prepare_items();
 
-	$promoted_table = new GMR_Contest_Winners_Table( $contest->ID, GMR_Contest_Winners_Table::STATUS_PROMOTED );
+	$promoted_table = new GMR_Contest_Winners_Table( $contest->ID, 'promoted' );
 	$promoted_table->prepare_items();
 
-	$load_entries = filter_input( INPUT_GET, 'load', FILTER_VALIDATE_BOOLEAN );
-	if ( $load_entries ) {
-		$entries_table = new GMR_Contest_Entries_Table( array(
-			'contest_id' => $contest->ID,
-			'entries'    => $entries,
-			'gender'     => $gender,
-			'aged_from'  => $aged_from,
-			'aged_to'    => $aged_to,
-			'exclude'    => array_merge(
-				wp_list_pluck( $winners_table->items, 'ID' ),
-				wp_list_pluck( $promoted_table->items, 'ID' )
-			),
-		) );
+	$entries_table = new GMR_Contest_Entries_Table( array(
+		'contest_id' => $contest->ID,
+		'entries'    => $entries,
+		'gender'     => $gender,
+		'aged_from'  => $aged_from,
+		'aged_to'    => $aged_to,
+		'exclude'    => array_merge(
+			wp_list_pluck( $winners_table->items, 'ID' ),
+			wp_list_pluck( $promoted_table->items, 'ID' )
+		),
+	) );
 
-		$entries_table->prepare_items();
-	}
+	$entries_table->prepare_items();
 
 	?><div id="contest-winner-selection" class="wrap">
 		<h2>
@@ -125,7 +126,6 @@ function gmr_contests_render_winner_page() {
 		<form id="winners-query-form">
 			<input type="hidden" name="page" value="<?php echo $_REQUEST['page']; ?>">
 			<input type="hidden" name="contest_id" value="<?php echo $contest->ID; ?>">
-			<input type="hidden" name="load" value="1">
 
 			<input type="submit" class="button button-primary" value="Select Winner(s)">
 
@@ -137,7 +137,7 @@ function gmr_contests_render_winner_page() {
 				<option value="m"<?php selected( 'm', $gender ); ?>>Male Only</option>
 				<option value="f"<?php selected( 'f', $gender ); ?>>Female Only</option>
 			</select>
-			winners aged from
+			entries aged from
 			<select name="aged_from">
 				<option value="">---</option>
 				<?php for ( $i = 12; $i <= 55; $i++ ) : ?>
@@ -158,9 +158,7 @@ function gmr_contests_render_winner_page() {
 			</select>
 		</form>
 
-		<?php if ( $load_entries ) : ?>
-			<?php $entries_table->display(); ?>
-		<?php endif; ?>
+		<?php $entries_table->display(); ?>
 	</div><?php
 }
 
@@ -221,8 +219,24 @@ function gmr_contest_unpromote_entry() {
 	exit;
 }
 
-// include list table class file if it hasn't been included yet
-require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
+/**
+ * Disqualifies the entry.
+ *
+ * @action admin_action_gmr_disqualify_entry
+ */
+function gmr_contest_disqualify_entry() {
+	check_admin_referer( 'gmr_disqualify_entry' );
+
+	$entry = filter_input( INPUT_GET, 'entry_id', FILTER_VALIDATE_INT );
+	if ( ! $entry || ! ( $entry = get_post( $entry ) ) || GMR_CONTEST_ENTRY_CPT != $entry->post_type ) {
+		wp_die( 'Entry has not been found.' );
+	}
+
+	wp_trash_post( $entry->ID );
+
+	wp_redirect( wp_get_referer() );
+	exit;
+}
 
 /**
  * Contest entries table.
@@ -278,9 +292,12 @@ class GMR_Contest_Entries_Table extends WP_List_Table {
 		$promote = admin_url( 'admin.php?action=gmr_promote_winner&entry_id=' . $entry->ID );
 		$promote = wp_nonce_url( $promote, 'gmr_promote_winner' );
 
+		$disqualify = admin_url( 'admin.php?action=gmr_disqualify_entry&entry_id=' . $entry->ID );
+		$disqualify = wp_nonce_url( $disqualify, 'gmr_disqualify_entry' );
+
 		return $this->row_actions( array(
 			'promote'    => '<a href="' . esc_url( $promote ) . '">Potential Winner</a>',
-			'disqualify' => '<a href="#">Disqualify</a>',
+			'disqualify' => '<a href="' . esc_url( $disqualify ) . '" onclick="return confirm(\'Do you really want to disqualify this entry?\');">Disqualify</a>',
 		) );
 	}
 
