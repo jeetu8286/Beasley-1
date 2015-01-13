@@ -145,9 +145,16 @@ function greatermedia_scripts_styles() {
 		false
 	);
 	wp_enqueue_script(
+		'jquery-waypoints',
+		"{$baseurl}/assets/js/vendor/waypoints/lib/jquery.waypoints{$postfix}.js",
+		array( 'jquery' ),
+		GREATERMEDIA_VERSION,
+		true
+	);
+	wp_enqueue_script(
 		'greatermedia-load-more',
 		"{$baseurl}/assets/js/greater_media_load_more{$postfix}.js",
-		array( 'jquery' ),
+		array( 'jquery', 'jquery-waypoints' ),
 		GREATERMEDIA_VERSION,
 		true
 	);
