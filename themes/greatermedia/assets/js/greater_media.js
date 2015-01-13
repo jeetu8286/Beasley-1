@@ -176,8 +176,14 @@
 		searchBtn = document.getElementById( 'header__search'),
 		searchInput = document.getElementById( 'header-search'),
 		collapseToggle = document.querySelector('*[data-toggle="collapse"]'),
-		breakingNewsBanner = document.getElementById('breaking-news-banner'),
-		breakNewsHeight = breakingNewsBanner.offsetHeight;
+		breakingNewsBanner = document.getElementById('breaking-news-banner');
+
+	/**
+	 * append the height of the Breaking News Banner to the `headerHeight` variable if the banner is available
+	 */
+	if (breakingNewsBanner != null && breakingNewsBanner.parentNode != header) {
+		headerHeight += breakingNewsBanner.offsetHeight;
+	}
 
 	/**
 	 * global variables for event types to use in conjunction with `addEventHandler` function
@@ -204,6 +210,63 @@
 	}
 
 	/**
+	 * function for the initial state of the live player and scroll position one
+	 */
+	function lpPosBase() {
+		if (body.classList.contains('logged-in')) {
+			livePlayer.style.top = wpAdminHeight + headerHeight + 'px';
+			livePlayer.style.height = windowHeight - wpAdminHeight - headerHeight + 'px';
+			liveLinks.style.height = windowHeight - wpAdminHeight - headerHeight - livePlayerStreamSelectHeight - liveStreamHeight - 36 + 'px';
+		} else {
+			livePlayer.style.top = headerHeight + 'px';
+			livePlayer.style.height = windowHeight - headerHeight + 'px';
+			liveLinks.style.height = windowHeight - headerHeight - livePlayerStreamSelectHeight - liveStreamHeight - 36 + 'px';
+		}
+		livePlayer.classList.remove('live-player--fixed');
+		livePlayer.classList.add('live-player--init');
+	}
+
+	/**
+	 * function for the live player when a user starts scrolling and the header is not in view
+	 */
+	function lpPosScrollInit() {
+		if (body.classList.contains('logged-in')) {
+			livePlayer.style.top = headerHeight + wpAdminHeight + 'px';
+			liveLinks.style.height = windowHeight - wpAdminHeight - livePlayerStreamSelectHeight - liveStreamHeight - 36 + 'px';
+		} else {
+			livePlayer.style.top = headerHeight + 'px';
+			liveLinks.style.height = windowHeight - livePlayerStreamSelectHeight - liveStreamHeight - 36 + 'px';
+		}
+		livePlayer.style.height = '100%';
+		livePlayer.classList.remove('live-player--fixed');
+		livePlayer.classList.add('live-player--init');
+	}
+
+	/**
+	 * function for the live player when the header is no longer in view
+	 */
+	function lpPosNoHeader() {
+		if (body.classList.contains('logged-in')) {
+			livePlayer.style.top = wpAdminHeight + 'px';
+			livePlayer.style.height = windowHeight - wpAdminHeight + 'px';
+			liveLinks.style.height = windowHeight - wpAdminHeight - livePlayerStreamSelectHeight - liveStreamHeight - 36 + 'px';
+		} else {
+			livePlayer.style.top = '0px';
+			livePlayer.style.height = windowHeight + 'px';
+			liveLinks.style.height = windowHeight - livePlayerStreamSelectHeight - liveStreamHeight - 36 + 'px';
+		}
+		livePlayer.classList.remove('live-player--init');
+		livePlayer.classList.add('live-player--fixed');
+	}
+
+	/**
+	 * default height for the live player
+	 */
+	function lpPosDefault() {
+		livePlayer.style.height = '100%';
+	}
+
+	/**
 	 * detects various positions of the screen on scroll to deliver states of the live player
 	 *
 	 * y scroll position === `0`: the live player will be absolute positioned with a top location value based
@@ -224,62 +287,21 @@
 			};
 
 			if (scrollObject.y === 0) {
-				if (body.classList.contains('logged-in')) {
-					livePlayer.style.top = headerHeight + wpAdminHeight + 'px';
-					livePlayer.style.height = windowHeight - wpAdminHeight - headerHeight + 'px';
-					liveLinks.style.height = windowHeight - headerHeight - wpAdminHeight - livePlayerStreamSelectHeight - liveStreamHeight - 36 + 'px';
-				} else {
-					livePlayer.style.top = headerHeight + 'px';
-					livePlayer.style.height = windowHeight - headerHeight + 'px';
-					liveLinks.style.height = windowHeight - headerHeight - livePlayerStreamSelectHeight - liveStreamHeight - 36 + 'px';
-				}
-				livePlayer.classList.remove('live-player--fixed');
-				livePlayer.classList.add('live-player--init');
+				lpPosBase();
 			} else if (scrollObject.y >= 1 && scrollObject.y <= headerHeight) {
-				if (body.classList.contains('logged-in')) {
-					livePlayer.style.top = headerHeight + wpAdminHeight + 'px';
-					liveLinks.style.height = windowHeight - wpAdminHeight - livePlayerStreamSelectHeight - liveStreamHeight - 36 + 'px';
-				} else {
-					livePlayer.style.top = headerHeight + 'px';
-					liveLinks.style.height = windowHeight - livePlayerStreamSelectHeight - liveStreamHeight - 36 + 'px';
-				}
-				livePlayer.style.height = '100%';
-				livePlayer.classList.remove('live-player--fixed');
-				livePlayer.classList.add('live-player--init');
+				lpPosScrollInit();
 			} else if (scrollObject.y >= headerHeight) {
-				if (body.classList.contains('logged-in')) {
-					livePlayer.style.top = wpAdminHeight + 'px';
-					livePlayer.style.height = windowHeight - wpAdminHeight + 'px';
-					liveLinks.style.height = windowHeight - wpAdminHeight - livePlayerStreamSelectHeight - liveStreamHeight - 36 + 'px';
-				} else {
-					livePlayer.style.top = '0px';
-					livePlayer.style.height = windowHeight + 'px';
-					liveLinks.style.height = windowHeight - livePlayerStreamSelectHeight - liveStreamHeight - 36 + 'px';
-				}
-				livePlayer.classList.remove('live-player--init');
-				livePlayer.classList.add('live-player--fixed');
+				lpPosNoHeader();
 			} else {
-				livePlayer.style.height = '100%';
+				lpPosDefault();
 			}
 		}
 	}
 
 	/**
-	 * adds a class to the live player that causes it to return to it's original state while also removing the class
-	 * that causes the live player to become fixed to the top of the window
+	 * detects the height of the live links widget if the browser window is 768px wide or more, then adds a height to
+	 * the live links
 	 */
-	function livePlayerInit() {
-		if ( body.classList.contains( 'logged-in' ) ) {
-			livePlayer.style.top = headerHeight + wpAdminHeight + 'px';
-			livePlayer.style.height = windowHeight - wpAdminHeight - headerHeight + 'px';
-		} else {
-			livePlayer.style.top = headerHeight + 'px';
-			livePlayer.style.height = windowHeight - headerHeight + 'px';
-		}
-		livePlayer.classList.remove( 'live-player--fixed' );
-		livePlayer.classList.add( 'live-player--init' );
-	}
-
 	function liveLinksAddHeight() {
 		if ( window.innerWidth >= 768 ) {
 			var liveLinksWidgetHeight = liveLinksWidget.offsetHeight;
@@ -486,7 +508,7 @@
 		if ( window.innerWidth >= 768 ) {
 			if(livePlayer != null) {
 				livePlayerDesktopReset();
-				livePlayerInit();
+				lpPosBase();
 				addEventHandler(window,elemScroll,function() {
 					scrollDebounce();
 					scrollThrottle();
@@ -554,7 +576,7 @@
 	 */
 	if( window.innerWidth >= 768 ) {
 		addEventHandler(window,elemLoad,function() {
-			livePlayerInit();
+			lpPosBase();
 			if(liveLinksWidget != null) {
 				liveLinksAddHeight();
 			}
