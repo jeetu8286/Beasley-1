@@ -7,12 +7,57 @@ if ( ! defined( 'ABSPATH' ) ) {
 class GreaterMediaContestsMetaboxes {
 
 	public function __construct() {
-
+		add_action( 'post_submitbox_misc_actions', array( $this, 'post_submitbox_misc_actions' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'register_settings_fields' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
 		add_action( 'save_post', array( $this, 'save_post' ) );
+	}
 
+	/**
+	 * Displays contest settings.
+	 *
+	 * @action post_submitbox_misc_actions
+	 */
+	public function post_submitbox_misc_actions() {
+		global $typenow;
+		if ( GMR_CONTEST_CPT != $typenow ) {
+			return;
+		}
+
+		$post = get_post();
+		$contest_type = get_post_meta( $post->ID, 'contest_type', true );
+		switch ( $contest_type ) {
+			case 'onair':
+				$contest_type_label = 'On Air';
+				break;
+			case 'both':
+				$contest_type_label = 'On Air & Online';
+				break;
+			case 'online':
+			default:
+				$contest_type_label = 'Online';
+				$contest_type = 'online';
+				break;
+		}
+
+
+		?><div id="contest-type" class="misc-pub-section misc-pub-gmr-contest mis-pub-radio">
+			Contest Type:
+			<span class="post-pub-section-value radio-value"><?php echo esc_html( $contest_type_label ); ?></span>
+			<a href="#" class="edit-radio hide-if-no-js" style="display: inline;"><span aria-hidden="true">Edit</span></a>
+
+			<div class="radio-select hide-if-js">
+				<label><input type="radio" name="contest_type" value="online"<?php checked( $contest_type, 'online' ); ?>> Online</label><br>
+				<label><input type="radio" name="contest_type" value="onair"<?php checked( $contest_type, 'onair' ); ?>> On Air</label><br>
+				<label><input type="radio" name="contest_type" value="both"<?php checked( $contest_type, 'both' ); ?>> On Air &amp; Online</label><br>
+
+				<p>
+					<a href="#" class="save-radio hide-if-no-js button"><?php esc_html_e( 'OK' ) ?></a>
+					<a href="#" class="cancel-radio hide-if-no-js button-cancel"><?php esc_html_e( 'Cancel' ) ?></a>
+				</p>
+			</div>
+		</div><?php
 	}
 
 	/**
@@ -364,6 +409,7 @@ class GreaterMediaContestsMetaboxes {
 		update_post_meta( $post_id, 'prizes-desc', wp_kses_post( $_POST['greatermedia_contest_prizes'] ) );
 		update_post_meta( $post_id, 'how-to-enter-desc', wp_kses_post( $_POST['greatermedia_contest_enter'] ) );
 		update_post_meta( $post_id, 'rules-desc', wp_kses_post( $_POST['greatermedia_contest_rules'] ) );
+		update_post_meta( $post_id, 'contest_type', filter_input( INPUT_POST, 'contest_type' ) );
 
 		if ( ! empty( $_POST['greatermedia_contest_start'] ) ) {
 			update_post_meta( $post_id, 'contest-start', strtotime( $_POST['greatermedia_contest_start'] ) );
