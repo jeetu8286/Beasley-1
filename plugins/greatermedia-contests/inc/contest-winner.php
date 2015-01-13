@@ -2,6 +2,8 @@
 
 // action hooks
 add_action( 'admin_menu', 'gmr_contests_register_winners_page' );
+add_action( 'admin_action_gmr_promote_winner', 'gmr_contest_promote_winner' );
+add_action( 'admin_action_gmr_unpromote_entry', 'gmr_contest_unpromote_entry' );
 
 // filter hooks
 add_filter( 'post_row_actions', 'gmr_contests_add_table_row_actions', 10, 2 );
@@ -77,15 +79,28 @@ function gmr_contests_render_winner_page() {
 		),
 	) );
 
-	$table = new GMR_Contest_Winners_Table( array(
-		'contest_id' => $contest->ID,
-		'entries'    => $entries,
-		'gender'     => $gender,
-		'aged_from'  => $aged_from,
-		'aged_to'    => $aged_to,
-	) );
+	$winners_table = new GMR_Contest_Winners_Table( $contest->ID, GMR_Contest_Winners_Table::STATUS_WINNER );
+	$winners_table->prepare_items();
 
-	$table->prepare_items();
+	$promoted_table = new GMR_Contest_Winners_Table( $contest->ID, GMR_Contest_Winners_Table::STATUS_PROMOTED );
+	$promoted_table->prepare_items();
+
+	$load_entries = filter_input( INPUT_GET, 'load', FILTER_VALIDATE_BOOLEAN );
+	if ( $load_entries ) {
+		$entries_table = new GMR_Contest_Entries_Table( array(
+			'contest_id' => $contest->ID,
+			'entries'    => $entries,
+			'gender'     => $gender,
+			'aged_from'  => $aged_from,
+			'aged_to'    => $aged_to,
+			'exclude'    => array_merge(
+				wp_list_pluck( $winners_table->items, 'ID' ),
+				wp_list_pluck( $promoted_table->items, 'ID' )
+			),
+		) );
+
+		$entries_table->prepare_items();
+	}
 
 	?><div id="contest-winner-selection" class="wrap">
 		<h2>
@@ -95,9 +110,22 @@ function gmr_contests_render_winner_page() {
 			</a>
 		</h2>
 
+		<?php if ( count( $winners_table->items ) > 0 ) : ?>
+			<h3>Selected Winners</h3>
+			<?php $winners_table->display(); ?>
+		<?php endif; ?>
+
+		<?php if ( count( $promoted_table->items ) > 0 ) : ?>
+			<h3>Potential Winners</h3>
+			<?php $promoted_table->display(); ?>
+		<?php endif; ?>
+
+		<h3>Find Entries:</h3>
+
 		<form id="winners-query-form">
 			<input type="hidden" name="page" value="<?php echo $_REQUEST['page']; ?>">
 			<input type="hidden" name="contest_id" value="<?php echo $contest->ID; ?>">
+			<input type="hidden" name="load" value="1">
 
 			<input type="submit" class="button button-primary" value="Select Winner(s)">
 
@@ -130,7 +158,9 @@ function gmr_contests_render_winner_page() {
 			</select>
 		</form>
 
-		<?php $table->display(); ?>
+		<?php if ( $load_entries ) : ?>
+			<?php $entries_table->display(); ?>
+		<?php endif; ?>
 	</div><?php
 }
 
@@ -153,13 +183,51 @@ function gmr_contests_adjust_winners_page_admin_menu( $parent_file ) {
 	return $parent_file;
 }
 
+/**
+ * Promotes an entry to potential winner status.
+ *
+ * @action gmr_promote_winner
+ */
+function gmr_contest_promote_winner() {
+	check_admin_referer( 'gmr_promote_winner' );
+
+	$entry = filter_input( INPUT_GET, 'entry_id', FILTER_VALIDATE_INT );
+	if ( ! $entry || ! ( $entry = get_post( $entry ) ) || GMR_CONTEST_ENTRY_CPT != $entry->post_type ) {
+		wp_die( 'Entry has not been found.' );
+	}
+
+	update_post_meta( $entry->ID, 'entry_status', 'promoted' );
+
+	wp_redirect( wp_get_referer() );
+	exit;
+}
+
+/**
+ * Unmarks potential winner entry.
+ *
+ * @action gmr_unpromote_entry
+ */
+function gmr_contest_unpromote_entry() {
+	check_admin_referer( 'gmr_unpromote_entry' );
+
+	$entry = filter_input( INPUT_GET, 'entry_id', FILTER_VALIDATE_INT );
+	if ( ! $entry || ! ( $entry = get_post( $entry ) ) || GMR_CONTEST_ENTRY_CPT != $entry->post_type ) {
+		wp_die( 'Entry has not been found.' );
+	}
+
+	delete_post_meta( $entry->ID, 'entry_status' );
+
+	wp_redirect( wp_get_referer() );
+	exit;
+}
+
 // include list table class file if it hasn't been included yet
 require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
 
 /**
- * Contest winners table.
+ * Contest entries table.
  */
-class GMR_Contest_Winners_Table extends WP_List_Table {
+class GMR_Contest_Entries_Table extends WP_List_Table {
 
 	public function prepare_items() {
 		$sortable = $this->get_sortable_columns();
@@ -171,8 +239,10 @@ class GMR_Contest_Winners_Table extends WP_List_Table {
 			'post_parent'         => $this->_args['contest_id'],
 			'posts_per_page'      => $this->_args['entries'],
 			'ignore_sticky_posts' => true,
+			'no_found_rows'       => true,
 			'orderby'             => 'rand',
 			'meta_query'          => array( 'relation' => 'AND' ),
+			'post__not_in'        => isset( $this->_args['exclude'] ) ? $this->_args['exclude'] : array(),
 		);
 
 		if ( ! empty( $this->_args['gender'] ) ) {
@@ -204,14 +274,18 @@ class GMR_Contest_Winners_Table extends WP_List_Table {
 		$this->items = $query->query( $args );
 	}
 
+	protected function _get_actions( WP_Post $entry ) {
+		$promote = admin_url( 'admin.php?action=gmr_promote_winner&entry_id=' . $entry->ID );
+		$promote = wp_nonce_url( $promote, 'gmr_promote_winner' );
+
+		return $this->row_actions( array(
+			'promote'    => '<a href="' . esc_url( $promote ) . '">Potential Winner</a>',
+			'disqualify' => '<a href="#">Disqualify</a>',
+		) );
+	}
+
 	public function column_name( WP_Post $entry ) {
-		$author = gmr_contest_get_entry_author( $entry->ID );
-		$actions = array(
-			'mark-winner' => '<a href="#">Mark as Winner</a>',
-			'disqualify'  => '<a href="#">Disqualify</a>',
-		);
-		
-		return '<b>' . $author . '</b>' . $this->row_actions( $actions );
+		return '<b>' . gmr_contest_get_entry_author( $entry->ID ) . '</b>' . $this->_get_actions( $entry );
 	}
 
 	public function column_gender( WP_Post $entry ) {
@@ -283,6 +357,71 @@ class GMR_Contest_Winners_Table extends WP_List_Table {
 		$columns['submitted'] = 'Submitted';
 
 		return $columns;
+	}
+
+	public function no_items() {
+		echo 'No entries found.';
+	}
+
+}
+
+/**
+ * Contest (potential) winners table.
+ */
+class GMR_Contest_Winners_Table extends GMR_Contest_Entries_Table {
+
+	const STATUS_PROMOTED = 'promoted';
+	const STATUS_WINNER   = 'winner';
+
+	public function __construct( $contest_id, $status ) {
+		parent::__construct( array(
+			'contest_id' => $contest_id,
+			'status'     => $status,
+			'plural'     => 'contest-winners',
+		) );
+	}
+
+	protected function _get_actions( WP_Post $entry ) {
+		$actions = array();
+		if ( self::STATUS_PROMOTED == $this->_args['status'] ) {
+			$unpromote = admin_url( 'admin.php?action=gmr_unpromote_entry&entry_id=' . $entry->ID );
+			$unpromote = wp_nonce_url( $unpromote, 'gmr_unpromote_entry' );
+			
+			$actions['mark-winner'] = '<a href="' . esc_url( $unpromote ) . '">Mark as Winner</a>';
+			$actions['unpromote-winner'] = '<a href="' . esc_url( $unpromote ) . '">Unmark as Potential Winner</a>';
+		} else {
+			
+		}
+
+		return $this->row_actions( $actions );
+	}
+
+	public function prepare_items() {
+		$sortable = $this->get_sortable_columns();
+		$this->_column_headers = array( $this->get_columns(), array(), $sortable );
+
+		$args = array(
+			'post_type'           => GMR_CONTEST_ENTRY_CPT,
+			'post_status'         => 'any',
+			'post_parent'         => $this->_args['contest_id'],
+			'posts_per_page'      => -1,
+			'ignore_sticky_posts' => true,
+			'no_found_rows'       => true,
+			'meta_key'            => 'entry_status',
+			'meta_value'          => $this->_args['status'],
+		);
+
+		$query = new WP_Query();
+		$this->items = $query->query( $args );
+	}
+
+	public function get_columns() {
+		return array(
+			'name'      => 'Name',
+			'email'     => 'Email',
+			'gender'    => 'Gender',
+			'submitted' => 'Submitted',
+		);
 	}
 
 }
