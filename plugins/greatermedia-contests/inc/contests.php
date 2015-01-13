@@ -19,7 +19,6 @@ add_filter( 'gmr_contest_submissions_query', 'gmr_contests_submissions_query' );
 add_filter( 'post_type_link', 'gmr_contests_get_submission_permalink', 10, 2 );
 add_filter( 'request', 'gmr_contests_unpack_vars' );
 add_filter( 'post_thumbnail_html', 'gmr_contests_post_thumbnail_html', 10, 4 );
-add_filter( 'post_row_actions', 'gmr_contests_add_table_row_actions', 10, 2 );
 add_filter( 'manage_' . GMR_CONTEST_CPT . '_posts_columns', 'gmr_contests_filter_contest_columns_list' );
 add_filter( 'post_row_actions', 'gmr_contests_filter_contest_actions', PHP_INT_MAX, 2 );
 
@@ -791,27 +790,6 @@ function gmr_contest_submission_get_author( $submission_id = null ) {
 }
 
 /**
- * Adds table row actions to contest records.
- *
- * @filter post_row_actions
- * @param array $actions The initial array of post actions.
- * @param WP_Post $post The post object.
- * @return array The array of post actions.
- */
-function gmr_contests_add_table_row_actions( $actions, WP_Post $post ) {
-	// do nothing if it is not a contest object
-	if ( GMR_CONTEST_CPT != $post->post_type ) {
-		return $actions;
-	}
-
-	// add contest winners action
-	$link = admin_url( 'edit.php?post_type=contest_entry&contest_id=' . $post->ID );
-	$actions['gmr-contest-winner'] = '<a href="' . esc_url( $link ) . '">Winners</a>';
-
-	return $actions;
-}
-
-/**
  * Returns classes string for a submission.
  *
  * @param string|array $class The default class for a submission block.
@@ -919,10 +897,14 @@ function gmr_contests_filter_contest_actions( $actions, WP_Post $post ) {
 	// unset redundant actions
 	unset( $actions['inline hide-if-no-js'], $actions['edit_as_new_draft'], $actions['clone'] );
 
-	// move delete link to the end of actions list
-	$delete_link = $actions['delete'];
-	unset( $actions['delete'] );
-	$actions['delete'] = $delete_link;
+	// move trash/delete link to the end of actions list if it exists
+	foreach ( array( 'trash', 'delete' ) as $key ) {
+		if ( isset( $actions[ $key ] ) ) {
+			$link = $actions[ $key ];
+			unset( $actions[ $key ] );
+			$actions[ $key ] = $link;
+		}
+	}
 
 	return $actions;
 }
