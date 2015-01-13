@@ -98,7 +98,7 @@ function gmr_contests_prevent_hard_delete( $post, $post_status = null ) {
 	}
 
 	// check entry
-	if ( GMR_CONTEST_ENTRY_CPT == $post->post_type ) {
+	if ( GMR_CONTEST_ENTRY_CPT == $post->post_type && apply_filters( 'gmr_prevent_contest_entry_removal', true ) ) {
 		wp_die( 'You can not delete or trash contest entry.', '', array( 'back_link' => true ) );
 	}
 }

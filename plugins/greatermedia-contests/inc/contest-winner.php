@@ -272,7 +272,9 @@ function gmr_contest_disqualify_entry() {
 		wp_die( 'Entry has not been found.' );
 	}
 
+	add_filter( 'gmr_prevent_contest_entry_removal', '__return_false' );
 	wp_trash_post( $entry->ID );
+	remove_filter( 'gmr_prevent_contest_entry_removal', '__return_false' );
 
 	wp_redirect( wp_get_referer() );
 	exit;
