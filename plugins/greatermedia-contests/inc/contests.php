@@ -773,27 +773,53 @@ function gmr_contest_submission_get_author( $submission = null ) {
 	if ( $submission ) {
 		$entry = get_post_meta( $submission->ID, 'contest_entry_id', true );
 		if ( $entry ) {
-			if ( 'get_gigya_user_profile' ) {
-				try {
-					$gigya_id = get_post_meta( $entry, 'entrant_reference', true );
-					if ( $gigya_id && ( $profile = get_gigya_user_profile( $gigya_id ) ) ) {
-						return trim( sprintf(
-							'%s %s',
-							isset( $profile['firstName'] ) ? $profile['firstName'] : '',
-							isset( $profile['lastName'] ) ? $profile['lastName'] : ''
-						) );
-					}
-				} catch( Exception $e ) {}
-			}
-			
-			$username = trim( get_post_meta( $entry, 'entrant_name', true ) );
-			if ( $username ) {
-				return $username;
-			}
+			return gmr_contest_get_entry_author( $entry );
 		}
 	}
 
 	return 'guest';
+}
+
+/**
+ * Return contest entry author name.
+ *
+ * @param int $entry_id The contest entry id.
+ * @return string The author name.
+ */
+function gmr_contest_get_entry_author( $entry_id ) {
+	if ( function_exists( 'get_gigya_user_profile' ) ) {
+		try {
+			$gigya_id = get_post_meta( $entry_id, 'entrant_reference', true );
+			if ( $gigya_id && ( $profile = get_gigya_user_profile( $gigya_id ) ) ) {
+				return trim( sprintf(
+					'%s %s',
+					isset( $profile['firstName'] ) ? $profile['firstName'] : '',
+					isset( $profile['lastName'] ) ? $profile['lastName'] : ''
+				) );
+			}
+		} catch( Exception $e ) {}
+	}
+
+	$username = trim( get_post_meta( $entry_id, 'entrant_name', true ) );
+	if ( $username ) {
+		return $username;
+	}
+
+	return 'guest';
+}
+
+function gmr_contest_get_entry_author_email( $entry_id ) {
+	$email = get_post_meta( $entry_id, 'entrant_email', true );
+	if ( function_exists( 'get_gigya_user_profile' ) ) {
+		try {
+			$gigya_id = get_post_meta( $entry_id, 'entrant_reference', true );
+			if ( $gigya_id && ( $profile = get_gigya_user_profile( $gigya_id ) ) && isset( $profile['email'] ) ) {
+				$email = $profile['email'];
+			}
+		} catch( Exception $e ) {}
+	}
+
+	return $email;
 }
 
 /**

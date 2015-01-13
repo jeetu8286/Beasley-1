@@ -69,7 +69,8 @@ class ContestEntryEmbeddedForm extends GreaterMediaContestEntry {
 			$this->entrant_reference = get_gigya_user_id();
 			$this->entrant_name = trim( sprintf( '%s %s', self::_get_user_field( 'firstName' ), self::_get_user_field( 'lastName' ) ) );
 			$this->entrant_email = self::_get_user_field( 'email' );
-			$this->entrant_gender = self::_get_user_field( 'gender' );
+			$gender = self::_get_user_field( 'gender' );
+			$this->entrant_gender = $gender != 'u' ? $gender : null;
 			$this->entrant_zip = self::_get_user_field( 'zip' );
 			$this->entrant_birth_year = self::_get_user_field( 'birthYear' );
 			$this->entrant_birth_date = strtotime( sprintf(
