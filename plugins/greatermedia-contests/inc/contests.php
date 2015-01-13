@@ -773,6 +773,19 @@ function gmr_contest_submission_get_author( $submission = null ) {
 	if ( $submission ) {
 		$entry = get_post_meta( $submission->ID, 'contest_entry_id', true );
 		if ( $entry ) {
+			if ( 'get_gigya_user_profile' ) {
+				try {
+					$gigya_id = get_post_meta( $entry, 'entrant_reference', true );
+					if ( $gigya_id && ( $profile = get_gigya_user_profile( $gigya_id ) ) ) {
+						return trim( sprintf(
+							'%s %s',
+							isset( $profile['firstName'] ) ? $profile['firstName'] : '',
+							isset( $profile['lastName'] ) ? $profile['lastName'] : ''
+						) );
+					}
+				} catch( Exception $e ) {}
+			}
+			
 			$username = trim( get_post_meta( $entry, 'entrant_name', true ) );
 			if ( $username ) {
 				return $username;
