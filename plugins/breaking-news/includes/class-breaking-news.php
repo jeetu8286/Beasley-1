@@ -144,8 +144,10 @@ if ( !class_exists( "Breaking_News" ) ) {
 			?>
 				<a href="<?php the_permalink(); ?>">
 					<div id="breaking-news-banner" class="breaking-news-banner">
-						<span class="breaking-news-banner__title"><?php the_title(); ?>:</span> 
-						<span class="breaking-news-banner__excerpt"><?php echo wp_kses_post( $this->get_post_excerpt( $post, 25 ) ); ?></span>
+						<div class='breaking-news-banner__inner'>
+							<span class="breaking-news-banner__title"><?php the_title(); ?>:</span> 
+							<span class="breaking-news-banner__excerpt"><?php echo wp_kses_post( $this->get_post_excerpt( $post, 25 ) ); ?></span>
+						</div>
 					</div>
 				</a>
 			<?php
@@ -172,8 +174,10 @@ if ( !class_exists( "Breaking_News" ) ) {
 				?>
 					<a href="<?php the_permalink(); ?>">
 						<div id="breaking-news-banner" class="breaking-news-banner">
-							<span class="breaking-news-banner__title"><?php the_title(); ?>:</span> 
-							<span class="breaking-news-banner__excerpt"><?php echo wp_kses_post( $this->get_post_excerpt( $post, 25 ) ); ?></span>
+							<div class='breaking-news-banner__inner'>
+								<span class="breaking-news-banner__title"><?php the_title(); ?>:</span> 
+								<span class="breaking-news-banner__excerpt"><?php echo wp_kses_post( $this->get_post_excerpt( $post, 25 ) ); ?></span>
+							</div>						
 						</div>
 					</a>
 				<?php
