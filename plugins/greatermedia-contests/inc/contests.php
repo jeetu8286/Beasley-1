@@ -140,7 +140,7 @@ function gmr_contests_register_post_type() {
 		'label'               => 'Contests',
 		'labels'              => $labels,
 		'supports'            => array( 'title', 'editor', 'thumbnail' ),
-		'taxonomies'          => array( 'contest_type', 'category', 'post_tag' ),
+		'taxonomies'          => array( 'category', 'post_tag' ),
 		'public'              => true,
 		'menu_position'       => 5,
 		'menu_icon'           => 'dashicons-forms',
