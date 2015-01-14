@@ -222,6 +222,7 @@ class GreaterMediaContestsMetaboxes {
 
 	public function contest_settings_metabox( WP_Post $post ) {
 		$post_id = $post->ID;
+		$post_status = get_post_status_object( $post->post_status );
 
 		wp_nonce_field( 'contest_meta_boxes', '__contest_nonce' );
 
@@ -252,8 +253,12 @@ class GreaterMediaContestsMetaboxes {
 
 		<?php if ( ! $is_onair ) : ?>
 		<div id="contest-form" class="tab">
-			<div id="contest_embedded_form"></div>
-			<input type="hidden" id="contest_embedded_form_data" name="contest_embedded_form">
+			<?php if ( ! $post_status->public ) : ?>
+				<div id="contest_embedded_form"></div>
+				<input type="hidden" id="contest_embedded_form_data" name="contest_embedded_form">
+			<?php else : ?>
+				<b>Contest form builder is locked.</b>
+			<?php endif; ?>
 			<?php do_settings_sections( 'greatermedia-contest-form' ); ?>
 		</div>
 		<?php endif; ?>
