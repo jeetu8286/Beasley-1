@@ -186,6 +186,7 @@
 
 		playBtn.style.display = 'block';
 		pauseBtn.style.display = 'none';
+		resumeBtn.style.display = 'none';
 		listenNow.style.display = 'inline-block';
 		loginListen.style.display = 'none';
 		nowPlaying.style.display = 'none';
