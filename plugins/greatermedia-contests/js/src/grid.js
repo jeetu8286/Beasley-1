@@ -404,4 +404,4 @@
 
 		return $grids;
 	};
-})(jQuery, gridModernizr);
+})(jQuery, Modernizr);

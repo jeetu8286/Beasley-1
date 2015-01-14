@@ -7,12 +7,57 @@ if ( ! defined( 'ABSPATH' ) ) {
 class GreaterMediaContestsMetaboxes {
 
 	public function __construct() {
-
+		add_action( 'post_submitbox_misc_actions', array( $this, 'post_submitbox_misc_actions' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'register_settings_fields' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
 		add_action( 'save_post', array( $this, 'save_post' ) );
+	}
 
+	/**
+	 * Displays contest settings.
+	 *
+	 * @action post_submitbox_misc_actions
+	 */
+	public function post_submitbox_misc_actions() {
+		global $typenow;
+		if ( GMR_CONTEST_CPT != $typenow ) {
+			return;
+		}
+
+		$post = get_post();
+		$contest_type = get_post_meta( $post->ID, 'contest_type', true );
+		switch ( $contest_type ) {
+			case 'onair':
+				$contest_type_label = 'On Air';
+				break;
+			case 'both':
+				$contest_type_label = 'On Air & Online';
+				break;
+			case 'online':
+			default:
+				$contest_type_label = 'Online';
+				$contest_type = 'online';
+				break;
+		}
+
+
+		?><div id="contest-type" class="misc-pub-section misc-pub-gmr-contest mis-pub-radio">
+			Contest Type:
+			<span class="post-pub-section-value radio-value"><?php echo esc_html( $contest_type_label ); ?></span>
+			<a href="#" class="edit-radio hide-if-no-js" style="display: inline;"><span aria-hidden="true">Edit</span></a>
+
+			<div class="radio-select hide-if-js">
+				<label><input type="radio" name="contest_type" value="online"<?php checked( $contest_type, 'online' ); ?>> Online</label><br>
+				<label><input type="radio" name="contest_type" value="onair"<?php checked( $contest_type, 'onair' ); ?>> On Air</label><br>
+				<label><input type="radio" name="contest_type" value="both"<?php checked( $contest_type, 'both' ); ?>> On Air &amp; Online</label><br>
+
+				<p>
+					<a href="#" class="save-radio hide-if-no-js button"><?php esc_html_e( 'OK' ) ?></a>
+					<a href="#" class="cancel-radio hide-if-no-js button-cancel"><?php esc_html_e( 'Cancel' ) ?></a>
+				</p>
+			</div>
+		</div><?php
 	}
 
 	/**
@@ -43,7 +88,6 @@ class GreaterMediaContestsMetaboxes {
 			wp_enqueue_style( 'font-awesome' );
 
 			wp_enqueue_script( 'ie8-node-enum' );
-			wp_enqueue_script( 'jquery-scrollwindowto' );
 			wp_enqueue_script( 'underscore-mixin-deepextend' );
 			wp_enqueue_script( 'backbone-deep-model' );
 			wp_enqueue_script( 'datetimepicker' );
@@ -53,30 +97,16 @@ class GreaterMediaContestsMetaboxes {
 
 			$form = @json_decode( get_post_meta( $post->ID, 'embedded_form', true ), true );
 			if ( empty( $form ) ) {
-				$form = array(
-					array(
-						'cid'           => 'c5',
-						'label'         => 'Name',
-						'field_type'    => 'text',
-						'required'      => true,
-						'sticky'        => true,
-						'field_options' => array( 'size' => 'medium' ),
-					),
-					array(
-						'cid'           => 'c6',
-						'label'         => 'Email Address',
-						'field_type'    => 'email',
-						'required'      => true,
-						'sticky'        => true,
-						'field_options' => array( 'sticky' => true ),
-					),
-				);
+				$form = array();
+			} else {
+				// backward compatibility: we need to be able to delete any fields
+				foreach ( $form as &$sticky ) {
+					unset( $sticky['sticky'] );
+				}
 			}
 
 			wp_enqueue_script( 'greatermedia-contests-admin', "{$base_path}js/contests-admin{$postfix}.js", array( 'formbuilder' ), false, true );
-			wp_localize_script( 'greatermedia-contests-admin', 'GreaterMediaContestsForm', array(
-				'form' => $form,
-			) );
+			wp_localize_script( 'greatermedia-contests-admin', 'GreaterMediaContestsForm', array( 'form' => $form ) );
 		};
 	}
 
@@ -191,14 +221,20 @@ class GreaterMediaContestsMetaboxes {
 
 	public function contest_settings_metabox( WP_Post $post ) {
 		$post_id = $post->ID;
+		$post_status = get_post_status_object( $post->post_status );
 
 		wp_nonce_field( 'contest_meta_boxes', '__contest_nonce' );
+
+		$contset_type = get_post_meta( $post->ID, 'contest_type', true );
+		$is_onair = 'onair' == $contset_type;
 		
 		?><ul class="tabs">
 			<li class="active"><a href="#what-you-win">What You Win</a></li>
 			<li><a href="#how-to-enter">How to Enter</a></li>
 			<li><a href="#contest-rules">Official Contest Rules</a></li>
-			<li><a href="#contest-form">Form</a></li>
+			<?php if ( ! $is_onair ) : ?>
+				<li><a href="#contest-form">Form</a></li>
+			<?php endif; ?>
 			<li><a href="#restrictions">Restrictions</a></li>
 		</ul>
 
@@ -214,11 +250,17 @@ class GreaterMediaContestsMetaboxes {
 			<?php wp_editor( get_post_meta( $post_id, 'rules-desc', true ), 'greatermedia_contest_rules' ); ?>
 		</div>
 
+		<?php if ( ! $is_onair ) : ?>
 		<div id="contest-form" class="tab">
-			<div id="contest_embedded_form"></div>
-			<input type="hidden" id="contest_embedded_form_data" name="contest_embedded_form">
+			<?php if ( ! $post_status->public ) : ?>
+				<div id="contest_embedded_form"></div>
+				<input type="hidden" id="contest_embedded_form_data" name="contest_embedded_form">
+			<?php else : ?>
+				<b>Contest form builder is locked.</b>
+			<?php endif; ?>
 			<?php do_settings_sections( 'greatermedia-contest-form' ); ?>
 		</div>
+		<?php endif; ?>
 
 		<div id="restrictions" class="tab">
 			<?php $this->_restrictions_settings( $post ); ?>
@@ -226,28 +268,41 @@ class GreaterMediaContestsMetaboxes {
 	}
 
 	private function _restrictions_settings( WP_Post $post ) {
+		$post_status = get_post_status_object( $post->post_status );
+
+		$started = get_post_meta( $post->ID, 'contest-start', true );
+		$ended = get_post_meta( $post->ID, 'contest-end', true );
+		
 		?><table class="form-table">
 			<tr>
 				<th scope="row"><label for="greatermedia_contest_start">Start date</label></th>
 				<td>
-					<?php $this->render_date_field( array(
-						'post_id' => $post->ID,
-						'id'      => 'greatermedia_contest_start',
-						'name'    => 'greatermedia_contest_start',
-						'value'   => get_post_meta( $post->ID, 'contest-start', true )
-					) ); ?>
+					<?php if ( ! $post_status->public ) : ?>
+						<?php $this->render_date_field( array(
+							'post_id' => $post->ID,
+							'id'      => 'greatermedia_contest_start',
+							'name'    => 'greatermedia_contest_start',
+							'value'   => get_post_meta( $post->ID, 'contest-start', true )
+						) ); ?>
+					<?php else : ?>
+						<b><?php echo ! empty( $started ) ? date( get_option( 'date_format' ), get_post_meta( $post->ID, 'contest-start', true ) ) : '&#8212;'; ?></b>
+					<?php endif; ?>
 				</td>
 			</tr>
 
 			<tr>
 				<th scope="row"><label for="greatermedia_contest_end">End date</label></th>
 				<td>
-					<?php $this->render_date_field( array(
-						'post_id' => $post->ID,
-						'id'      => 'greatermedia_contest_end',
-						'name'    => 'greatermedia_contest_end',
-						'value'   => get_post_meta( $post->ID, 'contest-end', true )
-					) ); ?>
+					<?php if ( ! $post_status->public ) : ?>
+						<?php $this->render_date_field( array(
+							'post_id' => $post->ID,
+							'id'      => 'greatermedia_contest_end',
+							'name'    => 'greatermedia_contest_end',
+							'value'   => get_post_meta( $post->ID, 'contest-end', true ),
+						) ); ?>
+					<?php else : ?>
+						<b><?php echo ! empty( $ended ) ? date( get_option( 'date_format' ), get_post_meta( $post->ID, 'contest-end', true ) ) : '&#8212;'; ?></b>
+					<?php endif; ?>
 				</td>
 			</tr>
 
@@ -333,43 +388,58 @@ class GreaterMediaContestsMetaboxes {
 			return;
 		}
 
-		/**
-		 * Update the form's meta field
-		 * The form JSON has slashes in it which need to be stripped out.
-		 * json_decode() and json_encode() are used here to sanitize the JSON & keep out invalid values
-		 */
-		$form = addslashes( json_encode( json_decode( urldecode( $_POST['contest_embedded_form'] ) ) ) );
-		// PHP's json_encode() may add quotes around the encoded string. Remove them.
-		$form = trim( $form, '"' );
-		update_post_meta( $post_id, 'embedded_form', $form );
+		if ( isset( $_POST['contest_embedded_form'] ) ) {
+			/**
+			 * Update the form's meta field
+			 * The form JSON has slashes in it which need to be stripped out.
+			 * json_decode() and json_encode() are used here to sanitize the JSON & keep out invalid values
+			 */
+			$form = addslashes( json_encode( json_decode( urldecode( $_POST['contest_embedded_form'] ) ) ) );
+			// PHP's json_encode() may add quotes around the encoded string. Remove them.
+			$form = trim( $form, '"' );
+			update_post_meta( $post_id, 'embedded_form', $form );
+		}
 
 		// Update the form's "submit button" text
-		$form_title = isset( $_POST['greatermedia_contest_form_title'] ) ? $_POST['greatermedia_contest_form_title'] : '';
-		if ( empty( $form_title ) ) {
-			$form_title = 'Enter Here to Win';
+		if ( isset( $_POST['greatermedia_contest_form_title'] ) ) {
+			$form_title = $_POST['greatermedia_contest_form_title'];
+			if ( empty( $form_title ) ) {
+				$form_title = 'Enter Here to Win';
+			}
+			update_post_meta( $post_id, 'form-title', sanitize_text_field( $form_title ) );
 		}
-		update_post_meta( $post_id, 'form-title', sanitize_text_field( $form_title ) );
 
 		// Update the form's "submit button" text
-		$submit_text = isset( $_POST['greatermedia_contest_form_submit'] ) ? $_POST['greatermedia_contest_form_submit'] : '';
-		if ( empty( $submit_text ) ) {
-			$submit_text = 'Submit';
+		if ( isset( $_POST['greatermedia_contest_form_submit'] ) ) {
+			$submit_text = $_POST['greatermedia_contest_form_submit'];
+			if ( empty( $submit_text ) ) {
+				$submit_text = 'Submit';
+			}
+			update_post_meta( $post_id, 'form-submitbutton', sanitize_text_field( $submit_text ) );
 		}
-		update_post_meta( $post_id, 'form-submitbutton', sanitize_text_field( $submit_text ) );
 
 		// Update the form's "thank you" message
-		$thank_you = isset( $_POST['greatermedia_contest_form_thankyou'] ) ? $_POST['greatermedia_contest_form_thankyou'] : '';
-		if ( empty( $thank_you ) ) {
-			$thank_you = 'Thanks for entering!';
+		if ( isset( $_POST['greatermedia_contest_form_thankyou'] ) ) {
+			$thank_you = $_POST['greatermedia_contest_form_thankyou'];
+			if ( empty( $thank_you ) ) {
+				$thank_you = 'Thanks for entering!';
+			}
+			update_post_meta( $post_id, 'form-thankyou', sanitize_text_field( $thank_you ) );
 		}
-		update_post_meta( $post_id, 'form-thankyou', sanitize_text_field( $thank_you ) );
 
 		// Update the contest rules meta fields
 		update_post_meta( $post_id, 'prizes-desc', wp_kses_post( $_POST['greatermedia_contest_prizes'] ) );
 		update_post_meta( $post_id, 'how-to-enter-desc', wp_kses_post( $_POST['greatermedia_contest_enter'] ) );
 		update_post_meta( $post_id, 'rules-desc', wp_kses_post( $_POST['greatermedia_contest_rules'] ) );
-		update_post_meta( $post_id, 'contest-start', strtotime( $_POST['greatermedia_contest_start'] ) );
-		update_post_meta( $post_id, 'contest-end', strtotime( $_POST['greatermedia_contest_end'] ) );
+		update_post_meta( $post_id, 'contest_type', filter_input( INPUT_POST, 'contest_type' ) );
+
+		if ( ! empty( $_POST['greatermedia_contest_start'] ) ) {
+			update_post_meta( $post_id, 'contest-start', strtotime( $_POST['greatermedia_contest_start'] ) );
+		}
+
+		if ( ! empty( $_POST['greatermedia_contest_end'] ) ) {
+			update_post_meta( $post_id, 'contest-end', strtotime( $_POST['greatermedia_contest_end'] ) );
+		}
 
 		$members_only = filter_input( INPUT_POST, 'greatermedia_contest_members_only', FILTER_VALIDATE_BOOLEAN );
 		update_post_meta( $post_id, 'contest-members-only', $members_only );
