@@ -484,20 +484,24 @@ category: Components
 	padding: 0;
 }
 
-.live-stream--podcast__progress {
+.inline-audio__progress-bar {
 	width: 85%;
-	height: 3px;
 	margin: 0 auto;
-	@include border-radius(1px);
+	position: relative;
+	height: 3px;
 	background-color: $medium-gray;
+	color:#fff;
+	@include border-radius(1px);
 }
 
-.live-stream--podcast__progress-current {
-	float: left;
-	width: 80%;
+.inline-audio__progress {
+	position: absolute;
+	top: 0;
+	left: 0;
+	display:inline-block;
 	height: 3px;
-	@include border-radius(1px);
 	background-color: $btn-bg;
+	@include border-radius(1px);
 }
 
 .live-stream--podcast__time {

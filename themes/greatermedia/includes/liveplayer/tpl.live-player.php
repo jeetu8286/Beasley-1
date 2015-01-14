@@ -59,6 +59,9 @@ if ( empty( $active_stream ) ) {
 				<div id="live-stream__now-playing" class="live-stream__now-playing--btn"><?php _e( 'Now Playing', 'greatermedia' ); ?></div>
 				<div id="live-stream__listen-now" class="live-stream__listen-now--btn"><?php _e( 'Listen Live', 'greatermedia' ); ?></div>
 			</div>
+			<div id="inline-audio__progress-bar" class="inline-audio__progress-bar">
+				<span id="inline-audio__progress" class="inline-audio__progress"></span>
+			</div>
 			<div id="nowPlaying" class="now-playing">
 				<div id="trackInfo" class="now-playing__info"></div>
 				<div id="npeInfo"></div>

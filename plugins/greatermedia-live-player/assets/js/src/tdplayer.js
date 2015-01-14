@@ -1225,8 +1225,18 @@
 		});
 	}
 
+	function updateAudioProgress() {
+		var progress = document.getElementById('inline-audio__progress');
+		var value = 0;
+		if (customAudio.currentTime > 0) {
+			value = Math.floor((100 / customAudio.duration) * customAudio.currentTime);
+		}
+		progress.style.width = value + "%";
+	}
+
 	initCustomAudioPlayer();
 	initInlineAudioUI();
+	customAudio.addEventListener('timeupdate', updateAudioProgress, false);
 	// Ensures our listeners work even after a PJAX load
 	$(document).on( 'pjax:end', function() {
 		initInlineAudioUI();
