@@ -382,9 +382,13 @@ this["JST"]["src/templates/query_result_item.jst"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<tr>\n\t<td>\n\t\t<a href="#" class="open-member-page-text">' +
-__e( email ) +
-'</a>\n\t\t<a href="#" alt="f105" class="dashicons dashicons-external open-member-page"></a>\n\t</td>\n</tr>\n';
+__p += '<span class="preview-result-name">\n\t' +
+__e( fields.first_name ) +
+' ' +
+__e( fields.last_name ) +
+'\n</span>\n<span class="preview-result-email">\n\t' +
+__e( view.domainFor(email) ) +
+'\n</span>\n';
 
 }
 return __p
@@ -841,6 +845,24 @@ FACEBOOK_FAVORITE_TYPES = [
 	{ label: 'Activities' , value: 'activities' } ,
 	{ label: 'Books'      , value: 'books'      }
 ];
+
+var getSubscribedToListChoices = function() {
+	var emmaGroups = window.member_query_meta.emma_groups;
+	var n          = emmaGroups.length;
+	var choices    = [];
+
+	for (var i = 0; i < n; i++) {
+		group = emmaGroups[i];
+		choice = {
+			label: group.group_name,
+			value: group.group_id
+		};
+
+		choices.push(choice);
+	}
+
+	return choices;
+};
 
 var AVAILABLE_CONSTRAINTS = [
 
@@ -1393,11 +1415,7 @@ var AVAILABLE_CONSTRAINTS_META = [
 	{
 		type: 'data:subscribedToList',
 		title: 'Subscribed To List',
-		choices: [
-			{ label: 'VIP Newsletter', value: '2129171' },
-			{ label: 'Birthday Greetings', value: '2131219' },
-			{ label: "MMR's VIP Big Friggin' Deal", value: '2130195' },
-		]
+		choices: getSubscribedToListChoices(),
 	},
 	{
 		type: 'data:listeningFrequency',
@@ -1461,7 +1479,8 @@ var AVAILABLE_CONSTRAINTS_META_MAP = {};
 var QueryResult = Backbone.Model.extend({
 
 	defaults: {
-		email: ''
+		email: '',
+		fields: {}
 	}
 
 });
@@ -1759,7 +1778,7 @@ var QueryResultCollection = Backbone.Collection.extend({
 	},
 
 	didClearError: function(response) {
-		console.log('didClearError', response);
+		//console.log('didClearError', response);
 	}
 });
 
@@ -2371,9 +2390,15 @@ var QueryResultItemView = Backbone.CollectionView.extend({
 
 	render: function() {
 		var data = this.model.toJSON();
+		data.view = this;
 		var html = this.template(data);
 
 		this.$el.html(html);
+	},
+
+	domainFor: function(email) {
+		var atIndex = email.indexOf('@');
+		return email.substring(atIndex);
 	}
 });
 
