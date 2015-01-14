@@ -2524,12 +2524,6 @@ Community Highlights and Events
       height: 82px;
       border-top: 1px solid #282827; } }
 
-#breaking-news-banner {
-  display: none; }
-  @media screen and (min-width: 768px) {
-    #breaking-news-banner {
-      display: block; } }
-
 .header__logo {
   float: left;
   display: block;
@@ -5075,9 +5069,45 @@ category: Components
       height: auto;
       overflow: auto; } }
 
-.breaking-news {
-  width: 100%;
-  overflow: auto; }
+.breaking-news-banner {
+  padding: 10px 0; }
+
+.breaking-news-banner__inner {
+  padding: 0 20px;
+  margin: 0 auto;
+  max-width: 1400px;
+  font-size: 14px;
+  line-height: 22px; }
+  @media screen and (min-width: 480px) {
+    .breaking-news-banner__inner {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      height: 22px; } }
+  @media screen and (min-width: 768px) {
+    .breaking-news-banner__inner {
+      font-size: 15px; } }
+  @media screen and (min-width: 1024px) {
+    .breaking-news-banner__inner {
+      font-size: 16px;
+      padding: 0 1.618em; } }
+
+.breaking-news-banner__title {
+  color: #f5ed7f;
+  text-transform: uppercase; }
+
+.breaking-news-banner__excerpt {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  height: 22px; }
+  @media screen and (min-width: 480px) {
+    .breaking-news-banner__excerpt {
+      display: inline; } }
+
+a:hover .breaking-news-banner {
+  color: #f5ed7f; }
 
 /*doc
 ---
@@ -7098,6 +7128,25 @@ category: Components - Shows
   .more-btn:hover {
     color: #aa1c20;
     border: 1px solid #aa1c20; }
+
+.show__paging {
+  clear: both;
+  width: 100%;
+  font-size: 0.88889em;
+  margin: 0 0 1.5em;
+  text-align: center; }
+  .show__paging .page-numbers {
+    display: none; }
+    .show__paging .page-numbers.next, .show__paging .page-numbers.prev {
+      display: inline; }
+  .show__paging .prev {
+    float: left;
+    width: 50%;
+    text-align: left; }
+  .show__paging .next {
+    float: right;
+    width: 50%;
+    text-align: right; }
 
 .widget--live-player {
   margin: 0 1em 1em; }
