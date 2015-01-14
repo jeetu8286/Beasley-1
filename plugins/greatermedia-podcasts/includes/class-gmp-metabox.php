@@ -87,20 +87,20 @@ class GMP_Meta {
 
 
 		$gmp_subtitle =  sanitize_text_field( $_POST['gmp_subtitle'] );
-		update_post_meta( $post_id, 'gmp_subtitle', esc_html( $gmp_subtitle ) );
+		update_post_meta( $post_id, 'gmp_subtitle', $gmp_subtitle );
 
 		$gmp_subtitle =  sanitize_text_field( $_POST['gmp_explicit'] );
-		update_post_meta( $post_id, 'gmp_explicit', esc_html( $gmp_subtitle ) );
+		update_post_meta( $post_id, 'gmp_explicit', $gmp_subtitle );
 
 		$gmp_category =  sanitize_text_field( $_POST['gmp_category'] );
-		update_post_meta( $post_id, 'gmp_category', esc_html( $gmp_category ) );
-		
+		update_post_meta( $post_id, 'gmp_category', $gmp_category );
+
 		$gmp_sub_category =  sanitize_text_field( $_POST['gmp_sub_category'] );
-		update_post_meta( $post_id, 'gmp_sub_category', esc_html( $gmp_sub_category ) );
+		update_post_meta( $post_id, 'gmp_sub_category', $gmp_sub_category );
 
 		$gmp_author =  sanitize_text_field( $_POST['gmp_author'] );
-		update_post_meta( $post_id, 'gmp_author', esc_html( $gmp_author ) );
-	
+		update_post_meta( $post_id, 'gmp_author', $gmp_author );
+
 	}
 
 
@@ -123,10 +123,10 @@ class GMP_Meta {
 
 		/* OK, its safe for us to save the data now. */
 		$gmp_episode_explicit =  sanitize_text_field( $_POST['gmp_episode_explicit'] );
-		update_post_meta( $post_id, 'gmp_episode_explicit', esc_html( $gmp_episode_explicit ) );
+		update_post_meta( $post_id, 'gmp_episode_explicit', $gmp_episode_explicit );
 
 		$gmp_block =  sanitize_text_field( $_POST['gmp_block'] );
-		update_post_meta( $post_id, 'gmp_block', esc_html( $gmp_block ) );
+		update_post_meta( $post_id, 'gmp_block', $gmp_block );
 	}
 
 	/**
