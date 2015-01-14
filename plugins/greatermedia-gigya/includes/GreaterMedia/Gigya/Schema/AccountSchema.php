@@ -210,6 +210,10 @@ class AccountSchema {
 					'writeAccess' => 'clientModify',
 					'required' => false,
 				),
+				'social_share_count' => array(
+					'writeAccess' => 'clientModify',
+					'required' => false,
+				),
 				'listeningFrequency' => array(
 					'writeAccess' => 'clientModify',
 					'required' => false,
@@ -219,6 +223,16 @@ class AccountSchema {
 					'required' => false,
 				),
 				'actions' => array(
+					'writeAccess' => 'clientModify',
+					'required' => false,
+					'arrayOp' => 'push',
+				),
+				'subscribedToList' => array(
+					'writeAccess' => 'clientModify',
+					'required' => false,
+					'arrayOp' => 'push',
+				),
+				'contestsWon' => array(
 					'writeAccess' => 'clientModify',
 					'required' => false,
 					'arrayOp' => 'push',
