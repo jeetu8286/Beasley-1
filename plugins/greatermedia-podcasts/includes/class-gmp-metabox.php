@@ -101,6 +101,10 @@ class GMP_Meta {
 		$gmp_author =  sanitize_text_field( $_POST['gmp_author'] );
 		update_post_meta( $post_id, 'gmp_author', $gmp_author );
 
+		$podcast_feed = esc_url_raw( $_POST['gmp_podcast_feed'] );
+		update_post_meta( $post_id, 'gmp_podcast_feed', esc_url_raw( $podcast_feed ) );
+
+
 	}
 
 
@@ -146,14 +150,20 @@ class GMP_Meta {
 		$gmp_category = sanitize_text_field( get_post_meta( $post->ID, 'gmp_category', true ) );
 		$gmp_sub_category = sanitize_text_field( get_post_meta( $post->ID, 'gmp_sub_category', true ) );
 		$gmp_author = sanitize_text_field( get_post_meta( $post->ID, 'gmp_author', true ) );
+		$podcast_feed = esc_url( get_post_meta( $post->ID, 'gmp_podcast_feed', true ) );
 		?>
 
 		<div class="gmp-meta-row">
 			<div class="gmp-meta-row-content gmp-upload">
-				<div id="gmp-audio-location">
 					<label for="gmp_podcast_itunes_url" class="gmp-meta-row-label"><?php _e( 'iTunes Feed URL:', 'gmpodcasts' ); ?></label>
 					<input type="text" id="gmp_podcast_itunes_url" name="gmp_podcast_itunes_url" value="<?php echo esc_url( $itunes_url ); ?>"/>
-				</div>
+			</div>
+		</div>
+		<br>
+		<div class="gmp-meta-row">
+			<div class="gmp-meta-row-content gmp-upload">
+					<label for="gmp_podcast_feed" class="gmp-meta-row-label"><?php _e( 'Custom Podcast Feed URL:', 'gmpodcasts' ); ?></label>
+					<input type="text" id="gmp_podcast_feed" name="gmp_podcast_feed" value="<?php echo esc_url( $podcast_feed ); ?>"/>
 			</div>
 		</div>
 		<br>
