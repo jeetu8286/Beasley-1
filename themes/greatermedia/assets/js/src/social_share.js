@@ -125,7 +125,7 @@
 		},
 
 		getShareUrl: function() {
-			return location.href;
+			return [location.protocol, '//', location.host, location.pathname].join('');
 		},
 
 		getShareAction: function(article, params) {
