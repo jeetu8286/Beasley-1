@@ -4322,7 +4322,17 @@ category: Components
       top: 32px; } }
 
 .live-player--init {
-  position: absolute; }
+  position: absolute;
+  left: auto;
+  bottom: auto; }
+
+.live-player--mobile {
+  position: fixed !important;
+  top: auto !important;
+  bottom: 0 !important;
+  right: 0 !important;
+  left: 0 !important;
+  height: auto !important; }
 
 .live-player--open .page-wrap:before {
   position: absolute;
@@ -4509,11 +4519,13 @@ category: Components
   color: #929497; }
 
 .live-player__container {
-  overflow: hidden; }
+  overflow: hidden;
+  border-bottom: 1px solid #282827; }
   @media screen and (min-width: 768px) {
     .live-player__container {
       padding: 20px 0 0;
-      overflow: visible; } }
+      overflow: visible;
+      border-bottom: none; } }
 
 .live-stream {
   float: right;
@@ -4952,7 +4964,6 @@ category: Components
 .live-links {
   display: none;
   padding: 16px 0 0;
-  border-top: 1px solid #282827;
   text-align: center; }
   @media screen and (min-width: 768px) {
     .live-links {
@@ -4962,12 +4973,14 @@ category: Components
       padding-left: 1em;
       margin: 0;
       overflow: hidden;
-      overflow-y: scroll; } }
+      overflow-y: scroll;
+      border-top: 1px solid #282827; } }
 
 .live-player--open .live-links {
   display: block;
+  height: auto !important;
   max-height: 48vh;
-  padding-top: 52px;
+  margin-top: 43px;
   overflow: hidden;
   overflow-y: scroll; }
   @media screen and (min-width: 480px) {
@@ -10661,69 +10674,31 @@ category: Components - Article
 .related-post:hover .related-post__date {
   color: #f5ed7f; }
 
-/*doc
----
-title: Mobile Podcats
-name: mobile-podcasts
-category: Components
----
+.error__background {
+  background: url("../../images/404.jpg") center top no-repeat #000000;
+  position: relative;
+  background-position: center center;
+  background-size: 100%;
+  background-size: cover; }
+  .error__background:after {
+    content: '';
+    display: block;
+    padding-top: 30%; }
 
-```html_example
-<article class="post-278038 episode type-episode status-publish hentry cf podcast" id="post-278038">
-	<div class="podcast-player">
-		<div class="podcast__play mp3-ecf1b0c62f7add40fb28e33ac6c54a07">
-			<div class="podcast__cover" style="background-image: url(http://beta.wmgk.com/wp-content/uploads/sites/2/2014/12/JDB_Show-0011.jpg);">
-				<button class="podcast__btn--play" data-mp3-artist="John DeBella Show" data-mp3-hash="ecf1b0c62f7add40fb28e33ac6c54a07" data-mp3-src="http://beta.wmgk.com/wp-content/uploads/sites/2/2015/01/John_DeBella_Jim_Breuer_12_22_14.mp3" data-mp3-title="Comedian Jim Breuer In Our Stocking"></button><button class="podcast__btn--pause"></button>
-			</div><span class="podcast__runtime">3:37</span>
+.error {
+  margin: .125em 0 4.5em; }
 
-			<div class="podcast__download">
-				<a class="podcast__download--btn" href="http://beta.wmgk.com/wp-content/uploads/sites/2/2015/01/John_DeBella_Jim_Breuer_12_22_14.mp3">Download</a>
-				<a class="podcast__subscribe show-mobile" href="https://itunes.apple.com/us/podcast/john-debella/id599173693?i=162599399&amp;mt=2" target="_blank">Subscribe in iTunes</a>
-				<a class="podcast__rss show-mobile" href="http://beta.wmgk.com/?feed=podcast&amp;podcast_series=john-debella-show" target="_blank">Podcast Feed</a>
-			</div>
-		</div>
+.error__title {
+  margin: 0;
+  line-height: 1;
+  font-size: 1.60181em; }
 
-		<div class="podcast__meta">
-			<time class="podcast__date" datetime="2015-01-08T20:27:37+00:00">January 8</time>
+.error__title--span {
+  color: #d22228; }
 
-			<h3 class="podcast__title">Comedian Jim Breuer In Our Stocking</h3>
-
-			<div class="podcast__parent--title podcast__parent--title--mobile show-mobile">
-					John DeBella Show
-			</div>
-
-			<div class="podcast__parent hide-mobile">
-				<div class="podcast__parent--title">
-					John DeBella Show
-				</div>
-				<a class="podcast__subscribe" href="https://itunes.apple.com/us/podcast/john-debella/id599173693?i=162599399&amp;mt=2" target="_blank">Subscribe in iTunes</a>
-				<a class="podcast__rss" href="http://beta.wmgk.com/?feed=podcast&amp;podcast_series=john-debella-show" target="_blank">Podcast Feed</a>
-			</div>
-
-			<div class="podcast__desc">
-				He joined us right off the bat for this Christmas week in December, and comedian Jim Breuer has been getting very festive with his family back home. Today he told us about his kid’s relationship with Santa, imagined what Ozzy would be like as Old St. Nick, and accidentally touched a sore spot of John’s!…
-			</div>
-		</div>
-
-		<div class="gmr-mediaelement-fallback">
-			<!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
-			<audio class="wp-audio-shortcode" controls="controls" id="audio-278038-1" preload="none" style="width: 100%; visibility: hidden;">
-			<source src="http://beta.wmgk.com/wp-content/uploads/sites/2/2015/01/John_DeBella_Jim_Breuer_12_22_14.mp3?_=1" type="audio/mpeg"><a href="http://beta.wmgk.com/wp-content/uploads/sites/2/2015/01/John_DeBella_Jim_Breuer_12_22_14.mp3">http://beta.wmgk.com/wp-content/uploads/sites/2/2015/01/John_DeBella_Jim_Breuer_12_22_14.mp3</a></audio>
-		</div>
-	</div>
-</article>
-```
-*/
-.podcast .hide-mobile {
-  display: none !important; }
-  @media screen and (min-width: 1024px) {
-    .podcast .hide-mobile {
-      display: block !important; } }
-.podcast .show-mobile {
-  display: block !important; }
-  @media screen and (min-width: 1024px) {
-    .podcast .show-mobile {
-      display: none !important; } }
+.error__content {
+  margin-top: 1.33em;
+  font-size: 1.125em; }
 
 /**
  * Single Page Styles
