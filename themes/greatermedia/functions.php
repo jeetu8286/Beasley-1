@@ -489,7 +489,12 @@ function hide_seo_columns() {
     $current_user = wp_get_current_user();
     
     $hidden = array( 'wpseo-score',  'wpseo-title', 'wpseo-metadesc', 'wpseo-focuskw' );
-    update_user_meta( $current_user->ID, 'manage' . $currentScreen->id . 'columnshidden', $hidden );
+    $first = get_user_meta( $current_user->ID, "screen-defaults-{$currentScreen->id}", true ); 
+
+    if( !$first ) {
+    	update_user_meta( $current_user->ID, 'manage' . $currentScreen->id . 'columnshidden', $hidden );
+    	update_user_meta( $current_user->ID, "screen-defaults-{$currentScreen->id}", true );
+    }
 }
 
 /**
