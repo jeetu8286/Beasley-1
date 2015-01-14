@@ -88,7 +88,6 @@ class GreaterMediaContestsMetaboxes {
 			wp_enqueue_style( 'font-awesome' );
 
 			wp_enqueue_script( 'ie8-node-enum' );
-			wp_enqueue_script( 'jquery-scrollwindowto' );
 			wp_enqueue_script( 'underscore-mixin-deepextend' );
 			wp_enqueue_script( 'backbone-deep-model' );
 			wp_enqueue_script( 'datetimepicker' );
