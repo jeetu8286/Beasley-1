@@ -1,7 +1,8 @@
 <?php
 
-// include list table class file if it hasn't been included yet
+// include list table class files if it hasn't been included yet
 require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
+require_once ABSPATH . 'wp-admin/includes/class-wp-posts-list-table.php';
 
 // action hooks
 add_action( 'admin_menu', 'gmr_contests_register_winners_page' );
@@ -73,7 +74,7 @@ function gmr_contests_render_winner_page() {
 	$post_type_object = get_post_type_object( $post_type );
 
 	// create table class
-	$wp_list_table = _get_list_table( 'WP_Posts_List_Table', array( 'screen' => GMR_CONTEST_ENTRY_CPT ) );
+	$wp_list_table = new GMR_Contest_Entries_Table( array( 'screen' => GMR_CONTEST_ENTRY_CPT, 'plural' => 'entry_id' ) );
 	$wp_list_table->prepare_items();
 
 	?><div id="contest-winner-selection" class="wrap">
@@ -84,10 +85,7 @@ function gmr_contests_render_winner_page() {
 		</h2>
 
 		<form id="posts-filter">
-			<input type="hidden" name="post_status" class="post_status_page" value="<?php echo ! empty( $_REQUEST['post_status'] ) ? esc_attr( $_REQUEST['post_status'] ) : 'all'; ?>">
-
-			<?php $wp_list_table->search_box( $post_type_object->labels->search_items, 'post' ); ?>
-
+			<?php wp_nonce_field( 'gmr_contest_entries' ) ?>
 			<?php $wp_list_table->display(); ?>
 		</form>
 	</div><?php
@@ -110,4 +108,70 @@ function gmr_contests_adjust_winners_page_admin_menu( $parent_file ) {
 	}
 
 	return $parent_file;
+}
+
+/**
+ * Contest entries table.
+ */
+class GMR_Contest_Entries_Table extends WP_Posts_List_Table {
+
+	/**
+	 * Renders bulk actions dropdown at the top of the table.
+	 *
+	 * @access protected
+	 * @param string $which The area where to render dropdown.
+	 */
+	protected function bulk_actions( $which = '' ) {
+		if ( 'top' == $which ) {
+			parent::bulk_actions( $which );
+		}
+	}
+
+	/**
+	 * Returns bulk actions array.
+	 *
+	 * @access protected
+	 * @return array The array of bulk actions.
+	 */
+	protected function get_bulk_actions() {
+		return array( 'gmr_contest_entry_mark_bulk_winners' => 'Mark as Winner' );
+	}
+
+	/**
+	 * Displays view switcher. Disabled for current table.
+	 *
+	 * @access protected
+	 * @param string $current_mode The view switcher mode.
+	 */
+	protected function view_switcher( $current_mode ) {
+	}
+
+	/**
+	 * Displays extra table navigation. Disabled for current table.
+	 *
+	 * @access protected
+	 * @param string $which The area where to render extra navigation.
+	 */
+	protected function extra_tablenav( $which ) {
+	}
+
+	/**
+	 * Generate the table navigation above or below the table
+	 *
+	 * @access protected
+	 * @param string $which
+	 */
+	protected function display_tablenav( $which ) {
+		if ( 'top' == $which ) :
+			?><div class="tablenav <?php echo esc_attr( $which ); ?>">
+				<div class="alignleft actions bulkactions">
+					<?php $this->bulk_actions( $which ); ?>
+				</div>
+				<?php $this->extra_tablenav( $which ); ?>
+				<?php $this->pagination( $which ); ?>
+				<br class="clear">
+			</div><?php
+		endif;
+	}
+	
 }

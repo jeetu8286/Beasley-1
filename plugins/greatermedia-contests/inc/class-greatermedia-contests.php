@@ -15,6 +15,7 @@ class GreaterMediaContests {
 		add_action( 'pre_get_posts', array( $this, 'adjust_contest_entries_query' ) );
 		add_action( 'manage_' . GMR_CONTEST_ENTRY_CPT . '_posts_custom_column', array( $this, 'render_contest_entry_column' ), 10, 2 );
 		add_action( 'admin_action_gmr_contest_entry_mark_winner', array( $this, 'mark_contest_winner' ) );
+		add_action( 'admin_action_gmr_contest_entry_mark_bulk_winners', array( $this, 'mark_bulk_contest_winner' ) );
 		add_action( 'admin_action_gmr_contest_entry_unmark_winner', array( $this, 'unmark_contest_winner' ) );
 
 		add_filter( 'manage_' . GMR_CONTEST_ENTRY_CPT . '_posts_columns', array( $this, 'filter_contest_entry_columns_list' ) );
@@ -99,6 +100,17 @@ class GreaterMediaContests {
 	}
 
 	/**
+	 * Adds contest entry to the winners list.
+	 *
+	 * @access protected
+	 * @param WP_Post $entry The contest entry object.
+	 */
+	protected function _add_entry_to_winners( $entry ) {
+		$gigya_id = get_post_meta( $entry->ID, 'entrant_reference', true );
+		add_post_meta( $entry->post_parent, 'winner', "{$entry->ID}:{$gigya_id}" );
+	}
+
+	/**
 	 * Marks contest winner.
 	 */
 	public function mark_contest_winner() {
@@ -109,8 +121,27 @@ class GreaterMediaContests {
 			wp_die( 'Contest entry was not found.' );
 		}
 
-		$gigya_id = get_post_meta( $entry->ID, 'entrant_reference', true );
-		add_post_meta( $entry->post_parent, 'winner', "{$entry->ID}:{$gigya_id}" );
+		$this->_add_entry_to_winners( $entry );
+		
+		wp_redirect( wp_get_referer() );
+		exit;
+	}
+
+	/**
+	 * Marks multiple entries as winner.
+	 */
+	public function mark_bulk_contest_winner() {
+		check_admin_referer( 'gmr_contest_entries' );
+
+		$entries = isset( $_GET['post'] ) ? (array) $_GET['post'] : array();
+		$entries = array_filter( array_map( 'intval', $entries ) );
+		foreach ( $entries as $entry_id ) {
+			if ( ! $entry_id || ! ( $entry = get_post( $entry_id ) ) || GMR_CONTEST_ENTRY_CPT != $entry->post_type ) {
+				continue;
+			}
+
+			$this->_add_entry_to_winners( $entry );
+		}
 
 		wp_redirect( wp_get_referer() );
 		exit;
