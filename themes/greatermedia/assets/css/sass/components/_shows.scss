@@ -693,3 +693,32 @@ category: Components - Shows
 .show-attr--tags {
 
 }
+
+.show__paging {
+	clear: both; 
+	width: 100%;
+	font-size: ms(-1);
+	margin: 0 0 $base-line-height; 
+	text-align: center;
+	
+	.page-numbers {
+		display: none;
+		
+		&.next, 
+		&.prev {
+			display: inline;
+		} 
+	}
+	
+	.prev {
+		float: left;
+		width: 50%;
+		text-align: left;
+	}
+	
+	.next {
+		float: right;
+		width: 50%;
+		text-align: right;
+	}
+}
