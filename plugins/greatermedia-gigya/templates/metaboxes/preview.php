@@ -3,8 +3,10 @@
 <div class="preview-member-query-results">
 	<p class='count-status'></p>
 
-	<table class="widefat member-query-results">
-	</table>
+	<ul class="member-query-results">
+		<li>
+		</li>
+	</ul>
 </div>
 
 <div id="major-publishing-actions" class="preview-member-query">
