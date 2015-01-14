@@ -106,6 +106,159 @@
 
 }(jQuery));
 
+(function($) {
+
+	var findElementByClassPrefix = function($node, prefix) {
+		var classList = $node.attr('class').split(' ');
+		var n         = classList.length;
+		var className;
+
+		for (var i = 0; i < n; i++) {
+			className = classList[i];
+			if (className.indexOf(prefix) === 0) {
+				return className;
+			}
+		}
+
+		return null;
+	};
+
+	var ArticleFinder = function() {
+
+	};
+
+	ArticleFinder.prototype = {
+
+		find: function() {
+			var selector = this.getSelector();
+			var $article = $(selector);
+
+			if ( $article.length === 1 ) {
+				return this.getArticleFromNode($article);
+			} else {
+				return null;
+			}
+		},
+
+		getSelector: function() {
+			return '.main .content .article';
+		},
+
+		getArticleFromNode: function($article) {
+			var article = {
+				id       : this.getArticleID($article),
+				postType : this.getArticlePostType($article)
+			};
+
+			if (article.id !== null && article.postType !== null) {
+				return article;
+			} else {
+				return null;
+			}
+		},
+
+		getArticleID: function($article) {
+			var id = $article.attr('id');
+			var startsWithPost = id.indexOf('post-') === 0;
+			var articleID;
+
+			if (startsWithPost) {
+				return id.substring(5);
+			} else {
+				return null;
+			}
+		},
+
+		getArticlePostType: function($article) {
+			var postTypeClass = findElementByClassPrefix($article, 'type-');
+			if (postTypeClass !== null) {
+				return postTypeClass.substring(5);
+			} else {
+				return null;
+			}
+		}
+
+	};
+
+	var ShareLogger  = function() {
+		var self     = this;
+		var selector = this.getShareSelector();
+		var logger   = function(event) { return self.didShareClick(event); };
+
+		$(selector).click(logger);
+	};
+
+	ShareLogger.prototype = {
+
+		share: function(action) {
+			save_gigya_action(action);
+		},
+
+		didShareClick: function(event) {
+			var selector = this.getShareSelector();
+			var article  = this.getCurrentArticle();
+			var $link    = $(event.target);
+
+			if (article !== null) {
+				var params = {
+					network : this.getShareNetwork($link),
+					url     : this.getShareUrl()
+				};
+
+				var action  = this.getShareAction(article, params);
+				this.share(action);
+			}
+
+			return true;
+		},
+
+		getShareSelector: function() {
+			return 'a.social__link';
+		},
+
+		getCurrentArticle: function() {
+			var finder = new ArticleFinder();
+			return finder.find();
+		},
+
+		getShareNetwork: function($link) {
+			var iconClass = findElementByClassPrefix($link, 'icon-');
+
+			if (iconClass !== null) {
+				return iconClass.substring(5);
+			} else {
+				return null;
+			}
+		},
+
+		getShareUrl: function() {
+			return [location.protocol, '//', location.host, location.pathname].join('');
+		},
+
+		getShareAction: function(article, params) {
+			var action = {
+				actionType: 'action:social_share',
+				actionID: article.id,
+				actionData: [
+					{ name: 'network', value: params.network },
+					{ name: 'url', value: params.url }
+				]
+			};
+
+			return action;
+		}
+
+	};
+
+	$(document).ready(function() {
+		var shareLogger = new ShareLogger();
+	});
+
+	/* exports */
+	window.ArticleFinder = ArticleFinder;
+
+}(jQuery));
+
 (function($, location) {
 	var $document = $(document),
 		classes = {},
@@ -156,11 +309,10 @@
 		mobileNavButton = document.querySelector( '.mobile-nav__toggle' ),
 		pageWrap = document.getElementById( 'page-wrap' ),
 		header = document.getElementById( 'header' ),
-		headerHeight = header.offsetHeight,
+		headerHeight,
 		livePlayer = document.getElementById( 'live-player__sidebar' ),
 		livePlayerStream = document.querySelector('.live-player__stream'),
 		livePlayerStreamSelect = document.querySelector( '.live-player__stream--current' ),
-		livePlayerStreamSelectHeight = livePlayerStreamSelect.offsetHeight,
 		livePlayerCurrentName = livePlayerStreamSelect.querySelector( '.live-player__stream--current-name' ),
 		livePlayerStreams = livePlayerStreamSelect.querySelectorAll( '.live-player__stream--item' ),
 		wpAdminHeight = 32,
@@ -171,14 +323,29 @@
 		liveLink = document.querySelector( '.live-link__title'),
 		liveLinksWidget = document.querySelector( '.widget--live-player' ),
 		liveStream = document.getElementById( 'live-player' ),
-		liveStreamHeight = liveStream.offsetHeight,
 		windowHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0),
 		windowWidth = this.innerWidth || this.document.documentElement.clientWidth || this.document.body.clientWidth || 0,
 		scrollObject = {},
 		searchForm = document.getElementById( 'header__search--form'),
 		searchBtn = document.getElementById( 'header__search'),
 		searchInput = document.getElementById( 'header-search'),
-		collapseToggle = document.querySelector('*[data-toggle="collapse"]');
+		collapseToggle = document.querySelector('*[data-toggle="collapse"]'),
+		breakingNewsBanner = document.getElementById('breaking-news-banner');
+
+
+	/**
+	 * function to dynamically calculate the offsetHeight of an element
+	 *
+	 * @param elem
+	 * @returns {number}
+	 */
+	function elemHeight(elem) {
+		if (elem == header && breakingNewsBanner != null && breakingNewsBanner.parentNode != header ) {
+			return elem.offsetHeight + breakingNewsBanner.offsetHeight;
+		} else {
+			return elem.offsetHeight;
+		}
+	}
 
 	/**
 	 * global variables for event types to use in conjunction with `addEventHandler` function
@@ -205,6 +372,63 @@
 	}
 
 	/**
+	 * function for the initial state of the live player and scroll position one
+	 */
+	function lpPosBase() {
+		if (body.classList.contains('logged-in')) {
+			livePlayer.style.top = wpAdminHeight + elemHeight(header) + 'px';
+			livePlayer.style.height = windowHeight - wpAdminHeight - elemHeight(header) + 'px';
+			liveLinks.style.height = windowHeight - wpAdminHeight - elemHeight(header) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - 36 + 'px';
+		} else {
+			livePlayer.style.top = elemHeight(header) + 'px';
+			livePlayer.style.height = windowHeight - elemHeight(header) + 'px';
+			liveLinks.style.height = windowHeight - elemHeight(header) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - 36 + 'px';
+		}
+		livePlayer.classList.remove('live-player--fixed');
+		livePlayer.classList.add('live-player--init');
+	}
+
+	/**
+	 * function for the live player when a user starts scrolling and the header is not in view
+	 */
+	function lpPosScrollInit() {
+		if (body.classList.contains('logged-in')) {
+			livePlayer.style.top = elemHeight(header) + wpAdminHeight + 'px';
+			liveLinks.style.height = windowHeight - wpAdminHeight - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - 36 + 'px';
+		} else {
+			livePlayer.style.top = elemHeight(header) + 'px';
+			liveLinks.style.height = windowHeight - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - 36 + 'px';
+		}
+		livePlayer.style.height = '100%';
+		livePlayer.classList.remove('live-player--fixed');
+		livePlayer.classList.add('live-player--init');
+	}
+
+	/**
+	 * function for the live player when the header is no longer in view
+	 */
+	function lpPosNoHeader() {
+		if (body.classList.contains('logged-in')) {
+			livePlayer.style.top = wpAdminHeight + 'px';
+			livePlayer.style.height = windowHeight - wpAdminHeight + 'px';
+			liveLinks.style.height = windowHeight - wpAdminHeight - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - 36 + 'px';
+		} else {
+			livePlayer.style.top = '0px';
+			livePlayer.style.height = windowHeight + 'px';
+			liveLinks.style.height = windowHeight - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - 36 + 'px';
+		}
+		livePlayer.classList.remove('live-player--init');
+		livePlayer.classList.add('live-player--fixed');
+	}
+
+	/**
+	 * default height for the live player
+	 */
+	function lpPosDefault() {
+		livePlayer.style.height = '100%';
+	}
+
+	/**
 	 * detects various positions of the screen on scroll to deliver states of the live player
 	 *
 	 * y scroll position === `0`: the live player will be absolute positioned with a top location value based
@@ -218,75 +442,37 @@
 	 * all other states will cause the live player to have a height of 100%;.
 	 */
 	function getScrollPosition() {
-		scrollObject = {
-			x: window.pageXOffset,
-			y: window.pageYOffset
-		};
+		if ( window.innerWidth >= 768 ) {
+			scrollObject = {
+				x: window.pageXOffset,
+				y: window.pageYOffset
+			};
 
-		if( scrollObject.y === 0 ) {
-			if ( body.classList.contains( 'logged-in' ) ) {
-				livePlayer.style.top = headerHeight + wpAdminHeight + 'px';
-				livePlayer.style.height = windowHeight - wpAdminHeight - headerHeight + 'px';
-				liveLinks.style.height = windowHeight - headerHeight - wpAdminHeight - livePlayerStreamSelectHeight - liveStreamHeight - 36 + 'px';
+			if (scrollObject.y === 0) {
+				lpPosBase();
+			} else if (scrollObject.y >= 1 && scrollObject.y <= elemHeight(header)) {
+				lpPosScrollInit();
+			} else if (scrollObject.y >= elemHeight(header)) {
+				lpPosNoHeader();
 			} else {
-				livePlayer.style.top = headerHeight + 'px';
-				livePlayer.style.height = windowHeight - headerHeight + 'px';
-				liveLinks.style.height = windowHeight - headerHeight - livePlayerStreamSelectHeight - liveStreamHeight - 36 + 'px';
+				lpPosDefault();
 			}
-			livePlayer.classList.remove( 'live-player--fixed' );
-			livePlayer.classList.add( 'live-player--init' );
-		} else if ( scrollObject.y >= 1 && scrollObject.y <= headerHeight ){
-			if ( body.classList.contains( 'logged-in' ) ) {
-				livePlayer.style.top = headerHeight + wpAdminHeight + 'px';
-				liveLinks.style.height = windowHeight - wpAdminHeight - livePlayerStreamSelectHeight - liveStreamHeight - 36 + 'px';
-			} else {
-				livePlayer.style.top = headerHeight + 'px';
-				liveLinks.style.height = windowHeight - livePlayerStreamSelectHeight - liveStreamHeight - 36 + 'px';
-			}
-			livePlayer.style.height = '100%';
-			livePlayer.classList.remove( 'live-player--fixed' );
-			livePlayer.classList.add( 'live-player--init' );
-		} else if ( scrollObject.y >= headerHeight ) {
-			if ( body.classList.contains( 'logged-in' ) ) {
-				livePlayer.style.top = wpAdminHeight + 'px';
-				livePlayer.style.height = windowHeight - wpAdminHeight + 'px';
-				liveLinks.style.height = windowHeight - wpAdminHeight - livePlayerStreamSelectHeight - liveStreamHeight - 36 + 'px';
-			} else {
-				livePlayer.style.top = '0px';
-				livePlayer.style.height = windowHeight + 'px';
-				liveLinks.style.height = windowHeight - livePlayerStreamSelectHeight - liveStreamHeight - 36 + 'px';
-			}
-			livePlayer.classList.remove( 'live-player--init' );
-			livePlayer.classList.add( 'live-player--fixed' );
-		} else {
-			livePlayer.style.height = '100%';
 		}
 	}
 
 	/**
-	 * adds a class to the live player that causes it to return to it's original state while also removing the class
-	 * that causes the live player to become fixed to the top of the window
+	 * detects the height of the live links widget if the browser window is 768px wide or more, then adds a height to
+	 * the live links
 	 */
-	function livePlayerInit() {
-		if ( body.classList.contains( 'logged-in' ) ) {
-			livePlayer.style.top = headerHeight + wpAdminHeight + 'px';
-			livePlayer.style.height = windowHeight - wpAdminHeight - headerHeight + 'px';
-		} else {
-			livePlayer.style.top = headerHeight + 'px';
-			livePlayer.style.height = windowHeight - headerHeight + 'px';
-		}
-		livePlayer.classList.remove( 'live-player--fixed' );
-		livePlayer.classList.add( 'live-player--init' );
-	}
-
 	function liveLinksAddHeight() {
-		var liveLinksWidgetHeight = liveLinksWidget.offsetHeight;
-		if ( body.classList.contains( 'logged-in' ) ) {
-			liveLinks.style.height = windowHeight - headerHeight - wpAdminHeight - livePlayerStreamSelectHeight - liveStreamHeight - 36 + 'px';
-		} else {
-			liveLinks.style.height = windowHeight - headerHeight - livePlayerStreamSelectHeight - liveStreamHeight - 36 + 'px';
+		if ( window.innerWidth >= 768 ) {
+			if (body.classList.contains('logged-in')) {
+				liveLinks.style.height = windowHeight - elemHeight(header) - wpAdminHeight - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - 36 + 'px';
+			} else {
+				liveLinks.style.height = windowHeight - elemHeight(header) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - 36 + 'px';
+			}
+			liveLinksWidget.style.height = elemHeight(liveLinksWidget) + 'px';
 		}
-		liveLinksWidget.style.height = liveLinksWidgetHeight + 'px';
 	}
 
 	/**
@@ -294,12 +480,15 @@
 	 * deal with a window being resized.
 	 */
 	function livePlayerMobileReset() {
-		livePlayer.style.position = 'fixed';
-		livePlayer.style.top = 'auto';
-		livePlayer.style.bottom = '0';
-		livePlayer.style.right = '0';
-		livePlayer.style.left = '0';
-		livePlayer.style.height = 'auto';
+		if (livePlayer !=  null) {
+			if (livePlayer.classList.contains('live-player--init')) {
+				livePlayer.classList.remove('live-player--init');
+			}
+			if (livePlayer.classList.contains('live-player--fixed')) {
+				livePlayer.classList.remove('live-player--fixed');
+			}
+			livePlayer.classList.add('live-player--mobile');
+		}
 	}
 
 	/**
@@ -307,20 +496,18 @@
 	 * deal with a window being resized.
 	 */
 	function livePlayerDesktopReset() {
-		livePlayer.classList.contains('live-player--init');
-		livePlayer.style.left = 'auto';
-		livePlayer.style.bottom = 'auto';
+		if (body.classList.contains('live-player--open') ) {
+			body.classList.remove('live-player--open');
+		}
+		if (livePlayer.classList.contains('live-player--mobile')) {
+			livePlayer.classList.remove('live-player--mobile');
+		}
+		liveLinksMobileState();
+		setTimeout(getScrollPosition, 1000);
 		if( window.innerWidth >= 1385 || this.document.documentElement.clientWidth >= 1385 || this.document.body.clientWidth >= 1385 ) {
 			livePlayer.style.right = 'calc(50% - 700px)';
 		} else {
 			livePlayer.style.right = '0';
-		}
-		if ( body.classList.contains( 'logged-in' ) ) {
-			livePlayer.style.top = headerHeight + wpAdminHeight + 'px';
-			livePlayer.style.height = windowHeight - wpAdminHeight - headerHeight + 'px';
-		} else {
-			livePlayer.style.top = headerHeight + 'px';
-			livePlayer.style.height = windowHeight - headerHeight + 'px';
 		}
 	}
 
@@ -366,7 +553,7 @@
 	playLp = new lpAction(playBtn, lpListenNow, lpNowPlaying);
 	pauseLp = new lpAction(pauseBtn, lpNowPlaying, lpListenNow);
 	resumeLp = new lpAction(resumeBtn, lpListenNow, lpNowPlaying);
-	
+
 	/**
 	 * Toggles a class to the body when the mobile nav button is clicked
 	 */
@@ -377,7 +564,7 @@
 
 	/**
 	 * Toggles a target element.
-	 * 
+	 *
 	 * @param {MouseEvent} e
 	 */
 	function toggleCollapsedElement(e) {
@@ -396,7 +583,6 @@
 		addEventHandler(collapseToggle, elemClick, toggleCollapsedElement);
 	}
 
-
 	/**
 	 * Toggles a class to the Live Play Stream Select box when the box is clicked
 	 */
@@ -405,7 +591,7 @@
 		livePlayerStream.classList.toggle('open');
 	}
 	addEventHandler(livePlayerStreamSelect,elemClick,toggleStreamSelect);
-	
+
 	/**
 	 * Selects a Live Player Stream
 	 */
@@ -420,45 +606,23 @@
 		addEventHandler(livePlayerStreams[i],elemClick,selectStream);
 	}
 
-	/**
-	 * Toggles a class to the live links when the live player `On Air` is clicked on smaller screens
-	 */
-	function onAirClick() {
-		body.classList.toggle( 'live-player--open' );
-		if (body.classList.contains( 'live-player--open')) {
+	function liveLinksMobileState() {
+		if (body.classList.contains('live-player--open')) {
 			document.body.style.overflow = 'hidden';
 			html.style.overflow = 'hidden';
 		} else {
-			document.body.style.overflow = 'auto';
-			html.style.overflow = 'auto';
+			document.body.style.overflow = 'initial';
+			html.style.overflow = 'initial';
 		}
 	}
 
 	/**
-	 * Toggles a class to the live links when the live player `Up Next` is clicked on smaller screens
+	 * Toggles a class to the body when an element is clicked on small screens.
 	 */
-	function upNextClick() {
-		body.classList.toggle( 'live-player--open' );
-		if (body.classList.contains( 'live-player--open')) {
-			body.style.overflow = 'hidden';
-			html.style.overflow = 'hidden';
-		} else {
-			body.style.overflow = 'auto';
-			html.style.overflow = 'auto';
-		}
-	}
-
-	/**
-	 * Toggles a class to the live links when the live player `Now Playing` is clicked on smaller screens
-	 */
-	function nowPlayingClick() {
-		body.classList.toggle( 'live-player--open' );
-		if (body.classList.contains( 'live-player--open')) {
-			body.style.overflow = 'auto';
-			html.style.overflow = 'auto';
-		} else {
-			body.style.overflow = 'hidden';
-			html.style.overflow = 'hidden';
+	function openLivePlayer() {
+		if ( window.innerWidth <= 767 ) {
+			body.classList.toggle('live-player--open');
+			liveLinksMobileState();
 		}
 	}
 
@@ -466,8 +630,29 @@
 	 * Closes the live links
 	 */
 	function liveLinksClose() {
-		if (body.classList.contains( 'live-player--open')) {
-			body.classList.remove('live-player--open');
+		if ( window.innerWidth <= 767 ) {
+			if (body.classList.contains('live-player--open')) {
+				body.classList.remove('live-player--open');
+			}
+			liveLinksMobileState();
+		}
+	}
+
+	function playerActive() {
+		if ( window.innerWidth <= 767 ) {
+			body.classList.add('live-player--active');
+			nowPlaying.style.display = 'block';
+			upNext.style.display = 'none';
+			onAir.style.display = 'none';
+		}
+	}
+
+	function playerNotActive() {
+		if ( window.innerWidth <= 767 ) {
+			body.classList.remove( 'live-player--active' );
+			nowPlaying.style.display = 'none';
+			upNext.style.display = 'block';
+			onAir.style.display = 'block';
 		}
 	}
 
@@ -476,37 +661,6 @@
 	 */
 	function resizeWindow() {
 		if( window.innerWidth <= 767 ) {
-			if(onAir != null) {
-				addEventHandler(onAir,elemClick,onAirClick);
-			}
-			if(upNext != null) {
-				addEventHandler(upNext,elemClick,upNextClick);
-			}
-			if(nowPlaying != null) {
-				addEventHandler(nowPlaying,elemClick,nowPlayingClick);
-			}
-			if(playBtn != null || resumeBtn != null) {
-				var playerActive;
-				playerActive = function() {
-					body.classList.add( 'live-player--active' );
-					nowPlaying.style.display = 'block';
-					upNext.style.display = 'none';
-					onAir.style.display = 'none';
-				};
-				addEventHandler(playBtn,elemClick,playerActive);
-				addEventHandler(resumeBtn,elemClick,playerActive);
-			}
-			if(pauseBtn != null) {
-				addEventHandler(pauseBtn,elemClick,function() {
-					body.classList.remove( 'live-player--active' );
-					nowPlaying.style.display = 'none';
-					upNext.style.display = 'block';
-					onAir.style.display = 'block';
-				});
-			}
-			if(liveLinksWidget != null) {
-				addEventHandler(liveLinksWidget,elemClick,liveLinksClose);
-			}
 			if(livePlayer != null) {
 				livePlayerMobileReset();
 			}
@@ -576,30 +730,12 @@
 		resizeDebounce = _.debounce(resizeWindow, 50),
 		resizeThrottle = _.throttle(resizeWindow, 50);
 
-	addEventHandler(window,elemResize,function() {
-		resizeDebounce();
-		resizeThrottle();
-	});
-
 	/**
 	 * functions being run at specific window widths.
 	 */
-	if( window.innerWidth <= 767 ) {
-		if(onAir != null) {
-			addEventHandler(onAir,elemClick,onAirClick);
-		}
-		if(upNext != null) {
-			addEventHandler(upNext,elemClick,upNextClick);
-		}
-		if(nowPlaying != null) {
-			addEventHandler(nowPlaying,elemClick,nowPlayingClick);
-		}
-		if(liveLinksWidget != null) {
-			addEventHandler(liveLinksWidget,elemClick,liveLinksClose);
-		}
-	} else {
+	if( window.innerWidth >= 768 ) {
 		addEventHandler(window,elemLoad,function() {
-			livePlayerInit();
+			lpPosBase();
 			if(liveLinksWidget != null) {
 				liveLinksAddHeight();
 			}
@@ -609,6 +745,31 @@
 			scrollThrottle();
 		});
 	}
+
+	if(onAir != null) {
+		addEventHandler(onAir,elemClick,openLivePlayer);
+	}
+	if(upNext != null) {
+		addEventHandler(upNext,elemClick,openLivePlayer);
+	}
+	if(nowPlaying != null) {
+		addEventHandler(nowPlaying,elemClick,openLivePlayer);
+	}
+	if(liveLinksWidget != null) {
+		addEventHandler(liveLinksWidget,elemClick,liveLinksClose);
+	}
+	if(playBtn != null || resumeBtn != null) {
+		addEventHandler(playBtn,elemClick,playerActive);
+		addEventHandler(resumeBtn,elemClick,playerActive);
+	}
+	if(pauseBtn != null) {
+		addEventHandler(pauseBtn,elemClick,playerNotActive);
+	}
+
+	addEventHandler(window,elemResize,function() {
+		resizeDebounce();
+		resizeThrottle();
+	});
 
 	function init_menu_overlay() {
 		var $menu = jQuery(document.querySelector('.header__nav--list')),
