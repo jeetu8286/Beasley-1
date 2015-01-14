@@ -50,13 +50,12 @@ class GreaterMediaContests {
 	 *
 	 * @action pre_get_posts
 	 * @global string $typenow The current post type.
-	 * @global string $pagenow The current admin page.
 	 * @param WP_Query $query The contest entry query.
 	 */
 	public function adjust_contest_entries_query( WP_Query $query ) {
-		global $typenow, $pagenow;
+		global $typenow;
 
-		if ( GMR_CONTEST_ENTRY_CPT == $typenow && 'edit.php' == $pagenow && $query->is_main_query() ) {
+		if ( GMR_CONTEST_ENTRY_CPT == $typenow && 'gmr-contest-winner' == filter_input( INPUT_GET, 'page' ) && $query->is_main_query() ) {
 			$contest = filter_input( INPUT_GET, 'contest_id', FILTER_VALIDATE_INT, array( 'options' => array( 'min_range' => 1 ) ) );
 			if ( $contest && ( $contest = get_post( $contest ) ) && GMR_CONTEST_CPT == $contest->post_type ) {
 				$query->set( 'post_parent', $contest->ID );
