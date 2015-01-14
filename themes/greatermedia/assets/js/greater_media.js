@@ -35,6 +35,9 @@
 	ProfileMenuApp.prototype = {
 
 		run: function() {
+			var $largeLink = $('.header__account--large');
+			$largeLink.toggleClass('logged-in', is_gigya_user_logged_in());
+
 			var $container = $('.header__account--container');
 			$container.append(this.getMenu());
 
@@ -619,15 +622,24 @@
 			$overlay.removeClass('is-visible');
 		});
 
-		$secondary.on('mouseover', '.header__account--small', function (e) {
+		$secondary.on('mouseover', '.header__account--small, .header__account--large.logged-in', function (e) {
 			$overlay.addClass('is-visible');
 		});
-		$secondary.on('mouseout', '.header__account--small', function (e) {
+		$secondary.on('mouseout', '.header__account--small, .header__account--large.logged-in', function (e) {
 			$overlay.removeClass('is-visible');
 		});
 	}
 
 	init_menu_overlay();
+
+	jQuery( function( $ ) {
+		$('.popup').on( 'click', function(ev) {
+			ev.preventDefault();
+			var x = screen.width/2 - 700/2;
+			var y = screen.height/2 - 450/2;
+			window.open( $(this).attr('href'), $(this).attr('href'), 'height=485,width=700,scrollbars=yes, resizable=yes,left='+x+ ',top='+y);
+		});
+	});
 
 	function personality_toggle() {
 		var $button = jQuery('.person-toggle');
