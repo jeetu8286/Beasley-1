@@ -40,14 +40,12 @@ class GMRImageAttr {
 	 * @param $attachment array, attachment fields from $_POST form
 	 * @return $post array, modified post data
 	 */
-
 	public static function attachment_field_credit_save( $post, $attachment ) {
 		if( isset( $attachment['gmr_image_attribution'] ) )
 			update_post_meta( $post['ID'], 'gmr_image_attribution', $attachment['gmr_image_attribution'] );
 
 		return $post;
 	}
-
 }
 
 GMRImageAttr::init();
