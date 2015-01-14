@@ -43,6 +43,7 @@
 
 	<body <?php body_class(); ?>>
 		<div id="site-wrap" class="site-wrap">
+			<?php do_action( 'show_breaking_news_banner' ); ?>
 			<nav id="mobile-nav" class="mobile-nav">
 				<?php
 				$mobile_nav = array(
@@ -73,7 +74,6 @@
 			</div>
 			<div id="page-wrap" class="page-wrap">
 				<header id="header" class="header" role="banner">
-					<?php do_action( 'show_breaking_news_banner' ); ?>
 					<div class="container">
 						<div class="ad__leaderboard desktop">
 							<?php do_action( 'acm_tag', 'leaderboard-top-of-site' ); ?>
@@ -137,6 +137,9 @@
 										<span class="icon-user"></span>
 										<span class="header__account--span">Login or Register</span>
 									</a>
+									<div class="header__account--container">
+
+									</div>
 								</div>
 								<div id="header__search" class="header__search">
 									<label for="s" class="header__search--label"><i class="header__search--btn"></i><div class="header__search--span"><?php _e( 'Keyword Search', 'greatermedia' ); ?></div></label>

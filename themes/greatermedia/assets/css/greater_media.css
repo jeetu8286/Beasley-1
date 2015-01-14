@@ -2514,12 +2514,6 @@ Community Highlights and Events
       height: 82px;
       border-top: 1px solid #282827; } }
 
-#breaking-news-banner {
-  display: none; }
-  @media screen and (min-width: 768px) {
-    #breaking-news-banner {
-      display: block; } }
-
 .header__logo {
   float: left;
   display: block;
@@ -2576,20 +2570,9 @@ Community Highlights and Events
   line-height: 1; }
   @media screen and (min-width: 1024px) {
     .header__nav {
-      float: left;
       display: block;
-      margin-right: 2.35765%;
-      width: 57.35098%; }
-      .header__nav:last-child {
-        margin-right: 0; } }
-  @media screen and (min-width: 1400px) {
-    .header__nav {
       float: left;
-      display: block;
-      margin-right: 2.35765%;
-      width: 57.35098%; }
-      .header__nav:last-child {
-        margin-right: 0; } }
+      width: auto; } }
 
 .header__secondary {
   position: absolute;
@@ -2600,38 +2583,16 @@ Community Highlights and Events
   @media screen and (min-width: 768px) {
     .header__secondary {
       right: 0;
-      float: left;
-      display: block;
-      margin-right: 3.57866%;
-      width: 35.26334%;
-      margin-right: 0;
       top: auto;
       height: 82px;
+      float: right;
+      width: auto;
+      position: relative;
       -webkit-transform: none;
       -moz-transform: none;
       -ms-transform: none;
       -o-transform: none;
-      transform: none; }
-      .header__secondary:last-child {
-        margin-right: 0; } }
-  @media screen and (min-width: 1024px) {
-    .header__secondary {
-      float: left;
-      display: block;
-      margin-right: 2.35765%;
-      width: 23.23176%;
-      margin-right: 0; }
-      .header__secondary:last-child {
-        margin-right: 0; } }
-  @media screen and (min-width: 1400px) {
-    .header__secondary {
-      float: left;
-      display: block;
-      margin-right: 2.35765%;
-      width: 40.29137%;
-      margin-right: 0; }
-      .header__secondary:last-child {
-        margin-right: 0; } }
+      transform: none; } }
 
 .header__account {
   display: block;
@@ -2645,7 +2606,7 @@ Community Highlights and Events
       width: 64px;
       height: 82px;
       color: #929497; } }
-  @media screen and (min-width: 1400px) {
+  @media screen and (min-width: 1200px) {
     .header__account {
       width: auto; } }
 
@@ -2660,15 +2621,19 @@ Community Highlights and Events
   @media screen and (min-width: 768px) {
     .header__account--small {
       display: block; } }
-  @media screen and (min-width: 1400px) {
+  @media screen and (min-width: 1200px) {
     .header__account--small {
       display: none; } }
 
 .header__account--large {
   display: none; }
-  @media screen and (min-width: 1400px) {
+  @media screen and (min-width: 1200px) {
     .header__account--large {
-      display: block; } }
+      display: block; }
+      .header__account--large .header__account--container {
+        display: none; }
+      .header__account--large.logged-in .header__account--container {
+        display: block; } }
 
 @media screen and (min-width: 768px) {
   .header__account:hover {
@@ -2689,7 +2654,7 @@ Community Highlights and Events
   @media screen and (min-width: 1024px) {
     .header__account--btn {
       font-size: 1.125em; } }
-  @media screen and (min-width: 1400px) {
+  @media screen and (min-width: 1200px) {
     .header__account--btn {
       width: auto;
       padding: 32px 16px; }
@@ -2700,7 +2665,7 @@ Community Highlights and Events
 .header__account--span {
   font-family: "Open Sans", sans-serif;
   color: #d0d2d3; }
-  @media screen and (min-width: 1400px) {
+  @media screen and (min-width: 1200px) {
     .header__account--span {
       font-size: 12.65px;
       padding-left: 12px; } }
@@ -2753,7 +2718,7 @@ Community Highlights and Events
       display: block;
       float: right;
       height: 82px;
-      margin-right: 2em; } }
+      margin-right: 1em; } }
 
 .header__search--span {
   display: none; }
@@ -4222,8 +4187,6 @@ Link posts contain a link to an external site. They can also optionally have a f
     line-height: 1.5;
     letter-spacing: normal; }
   .article__content h1 {
-    font-size: 2.02729em; }
-  .article__content h1 {
     font-size: 1.80203em; }
   .article__content h2 {
     font-size: 1.60181em; }
@@ -4353,7 +4316,17 @@ category: Components
       top: 32px; } }
 
 .live-player--init {
-  position: absolute; }
+  position: absolute;
+  left: auto;
+  bottom: auto; }
+
+.live-player--mobile {
+  position: fixed !important;
+  top: auto !important;
+  bottom: 0 !important;
+  right: 0 !important;
+  left: 0 !important;
+  height: auto !important; }
 
 .live-player--open .page-wrap:before {
   position: absolute;
@@ -4540,11 +4513,13 @@ category: Components
   color: #929497; }
 
 .live-player__container {
-  overflow: hidden; }
+  overflow: hidden;
+  border-bottom: 1px solid #282827; }
   @media screen and (min-width: 768px) {
     .live-player__container {
       padding: 20px 0 0;
-      overflow: visible; } }
+      overflow: visible;
+      border-bottom: none; } }
 
 .live-stream {
   float: right;
@@ -4983,7 +4958,6 @@ category: Components
 .live-links {
   display: none;
   padding: 16px 0 0;
-  border-top: 1px solid #282827;
   text-align: center; }
   @media screen and (min-width: 768px) {
     .live-links {
@@ -4993,12 +4967,14 @@ category: Components
       padding-left: 1em;
       margin: 0;
       overflow: hidden;
-      overflow-y: scroll; } }
+      overflow-y: scroll;
+      border-top: 1px solid #282827; } }
 
 .live-player--open .live-links {
   display: block;
+  height: auto !important;
   max-height: 48vh;
-  padding-top: 52px;
+  margin-top: 43px;
   overflow: hidden;
   overflow-y: scroll; }
   @media screen and (min-width: 480px) {
@@ -5082,9 +5058,45 @@ category: Components
       height: auto;
       overflow: auto; } }
 
-.breaking-news {
-  width: 100%;
-  overflow: auto; }
+.breaking-news-banner {
+  padding: 10px 0; }
+
+.breaking-news-banner__inner {
+  padding: 0 20px;
+  margin: 0 auto;
+  max-width: 1400px;
+  font-size: 14px;
+  line-height: 22px; }
+  @media screen and (min-width: 480px) {
+    .breaking-news-banner__inner {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      height: 22px; } }
+  @media screen and (min-width: 768px) {
+    .breaking-news-banner__inner {
+      font-size: 15px; } }
+  @media screen and (min-width: 1024px) {
+    .breaking-news-banner__inner {
+      font-size: 16px;
+      padding: 0 1.618em; } }
+
+.breaking-news-banner__title {
+  color: #f5ed7f;
+  text-transform: uppercase; }
+
+.breaking-news-banner__excerpt {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  height: 22px; }
+  @media screen and (min-width: 480px) {
+    .breaking-news-banner__excerpt {
+      display: inline; } }
+
+a:hover .breaking-news-banner {
+  color: #f5ed7f; }
 
 /*doc
 ---
@@ -7031,6 +7043,25 @@ category: Components - Shows
   .more-btn:hover {
     color: #aa1c20;
     border: 1px solid #aa1c20; }
+
+.show__paging {
+  clear: both;
+  width: 100%;
+  font-size: 0.88889em;
+  margin: 0 0 1.5em;
+  text-align: center; }
+  .show__paging .page-numbers {
+    display: none; }
+    .show__paging .page-numbers.next, .show__paging .page-numbers.prev {
+      display: inline; }
+  .show__paging .prev {
+    float: left;
+    width: 50%;
+    text-align: left; }
+  .show__paging .next {
+    float: right;
+    width: 50%;
+    text-align: right; }
 
 .widget--live-player {
   margin: 0 1em 1em; }
@@ -10654,6 +10685,32 @@ category: Components - Article
 .related-post:hover .related-post__title,
 .related-post:hover .related-post__date {
   color: #f5ed7f; }
+
+.error__background {
+  background: url("../../images/404.jpg") center top no-repeat #000000;
+  position: relative;
+  background-position: center center;
+  background-size: 100%;
+  background-size: cover; }
+  .error__background:after {
+    content: '';
+    display: block;
+    padding-top: 30%; }
+
+.error {
+  margin: .125em 0 4.5em; }
+
+.error__title {
+  margin: 0;
+  line-height: 1;
+  font-size: 1.60181em; }
+
+.error__title--span {
+  color: #d22228; }
+
+.error__content {
+  margin-top: 1.33em;
+  font-size: 1.125em; }
 
 /**
  * Single Page Styles
