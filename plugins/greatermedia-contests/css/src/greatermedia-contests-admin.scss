@@ -161,3 +161,22 @@
 #contest-type::before {
 	content: "\f314";
 }
+
+#contest-winner-selection {
+	.unmark-winner {
+		a {
+			color: red;
+		}
+	}
+
+	.column-_gmr_thumbmail {
+		width: 80px;
+	}
+
+	.column-_gmr_email a {
+		display: block;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		overflow: hidden;
+	}
+}

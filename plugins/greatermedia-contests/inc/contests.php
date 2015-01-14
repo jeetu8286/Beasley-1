@@ -697,24 +697,21 @@ function gmr_contests_handle_submitted_files( array $submitted_files, GreaterMed
 }
 
 /**
- * Get Gigya ID and build name, from Gigya session data if available
+ * Returns submission associated with contest entry.
  *
- * @return array
+ * @param WP_Post|int $entry The contest entry object or id.
+ * @return WP_Post The submission object on success, otherwise NULL.
  */
-function gmr_contests_get_gigya_entrant_id_and_name() {
-	$entrant_name = 'Anonymous Listener';
-	$entrant_reference = null;
-	
-	if ( class_exists( '\GreaterMedia\Gigya\GigyaSession' ) ) {
-		$gigya_session = \GreaterMedia\Gigya\GigyaSession::get_instance();
-		$gigya_id = $gigya_session->get_user_id();
-		if ( ! empty( $gigya_id ) ) {
-			$entrant_reference = $gigya_id;
-			$entrant_name      = $gigya_session->get_key( 'firstName' ) . ' ' . $gigya_session->get_key( 'lastName' );
+function get_contest_entry_submission( $entry = null ) {
+	$entry = get_post( $entry );
+	if ( $entry && GMR_CONTEST_ENTRY_CPT == $entry->post_type ) {
+		$submission_id = get_post_meta( $entry->ID, 'submission_id', true );
+		if ( $submission_id && ( $submission = get_post( $submission_id ) ) && GMR_SUBMISSIONS_CPT == $submission->post_type ) {
+			return $submission;
 		}
 	}
 
-	return array( $entrant_reference, $entrant_name );
+	return null;
 }
 
 /**

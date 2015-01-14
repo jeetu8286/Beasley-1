@@ -87,15 +87,20 @@ class GreaterMediaContests {
 
 		unset( $columns['title'], $columns['date'] );
 
-		$columns['gigya'] = 'Gigya User';
-		foreach ( $form as $field ) {
-			$columns[ $field->cid ] = $field->label;
-		}
-		$columns['submitted'] = 'Submitted';
+		$columns['_gmr_thumbmail'] = 'Thumbnail';
+		$columns['_gmr_username'] = 'Submitted by';
+		$columns['_gmr_email'] = 'Email';
+//		foreach ( $form as $field ) {
+//			$columns[ "_gmr_form_{$field->cid}" ] = $field->label;
+//		}
+		$columns['_gmr_submitted'] = 'Submitted on';
 
 		return $columns;
 	}
 
+	/**
+	 * Marks contest winner.
+	 */
 	public function mark_contest_winner() {
 		check_admin_referer( 'contest_entry_mark_winner' );
 
@@ -105,16 +110,15 @@ class GreaterMediaContests {
 		}
 
 		$gigya_id = get_post_meta( $entry->ID, 'entrant_reference', true );
-		if ( empty( $gigya_id ) ) {
-			wp_die( 'Gigya user has not been found.' );
-		}
-
 		add_post_meta( $entry->post_parent, 'winner', "{$entry->ID}:{$gigya_id}" );
 
 		wp_redirect( wp_get_referer() );
 		exit;
 	}
 
+	/**
+	 * Unmarks contest winner.
+	 */
 	public function unmark_contest_winner() {
 		check_admin_referer( 'contest_entry_unmark_winner' );
 
@@ -124,10 +128,6 @@ class GreaterMediaContests {
 		}
 
 		$gigya_id = get_post_meta( $entry->ID, 'entrant_reference', true );
-		if ( empty( $gigya_id ) ) {
-			wp_die( 'Gigya user has not been found.' );
-		}
-
 		delete_post_meta( $entry->post_parent, 'winner', "{$entry->ID}:{$gigya_id}" );
 		
 		wp_redirect( wp_get_referer() );
@@ -142,51 +142,77 @@ class GreaterMediaContests {
 	 */
 	public function render_contest_entry_column( $column_name, $post_id ) {
 		$entry = get_post( $post_id );
+
+		if ( '_gmr_thumbmail' == $column_name ) {
+
+			$thumbnail = false;
+			$submission = get_contest_entry_submission( $post_id );
+			if ( $submission ) {
+				$thumbnail = get_post_thumbnail_id( $submission->ID ) ;
+			}
+			
+			if ( $thumbnail ) {
+				echo wp_get_attachment_image( $thumbnail, array( 75, 75 ) );
+			} else {
+				echo '<img width="75" src="http://placehold.it/75&text=noimage" class="attachment-75x75">';
+			}
 		
-		if ( 'gigya' == $column_name ) {
+		} elseif ( '_gmr_username' == $column_name ) {
 
 			$gigya_id = get_post_meta( $post_id, 'entrant_reference', true );
 			$winners = get_post_meta( $entry->post_parent, 'winner' );
 			$is_winner = in_array( "{$post_id}:{$gigya_id}", $winners );
 
 			echo '<b>';
-				echo esc_html( get_post_meta( $post_id, 'entrant_name', true ) );
+				echo esc_html( gmr_contest_get_entry_author( $post_id ) );
 				if ( $is_winner ) :
 					echo ' <span class="dashicons dashicons-awards"></span>';
 				endif;
 			echo '</b>';
 
-			if ( ! empty( $gigya_id ) ) :
-				echo '<div class="row-actions">';
-					if ( $is_winner ) :
-						$action_link = admin_url( 'admin.php?action=gmr_contest_entry_unmark_winner&entry=' . $post_id );
-						$action_link = wp_nonce_url( $action_link, 'contest_entry_unmark_winner' );
+			echo '<div class="row-actions">';
+				if ( $is_winner ) :
+					$action_link = admin_url( 'admin.php?action=gmr_contest_entry_unmark_winner&entry=' . $post_id );
+					$action_link = wp_nonce_url( $action_link, 'contest_entry_unmark_winner' );
 
-						echo '<span class="unmark-winner">';
-							echo '<a href="', esc_url( $action_link ), '">Unmark as Winner</a>';
-						echo '</span>';
-					else :
-						$action_link = admin_url( 'admin.php?action=gmr_contest_entry_mark_winner&entry=' . $post_id );
-						$action_link = wp_nonce_url( $action_link, 'contest_entry_mark_winner' );
+					echo '<span class="unmark-winner">';
+						echo '<a href="', esc_url( $action_link ), '">Unmark as Winner</a>';
+					echo '</span>';
+				else :
+					$action_link = admin_url( 'admin.php?action=gmr_contest_entry_mark_winner&entry=' . $post_id );
+					$action_link = wp_nonce_url( $action_link, 'contest_entry_mark_winner' );
 
-						echo '<span class="mark-winner">';
-							echo '<a href="', esc_url( $action_link ), '">Mark as Winner</a>';
-						echo '</span>';
-					endif;
-				echo '</div>';
-			endif;
+					echo '<span class="mark-winner">';
+						echo '<a href="', esc_url( $action_link ), '">Mark as a Winner</a>';
+					echo '</span>';
+				endif;
+			echo '</div>';
 
-		} elseif ( 'submitted' == $column_name ) {
+		} elseif ( '_gmr_email' == $column_name ) {
 
-			echo mysql2date( 'M j, Y H:i', $entry->post_date );
+			$email = gmr_contest_get_entry_author_email( $post_id );
+			if ( ! filter_var( $email, FILTER_VALIDATE_EMAIL ) ) {
+				echo '&#8212;';
+			} else {
+				printf( '<a href="mailto:%1$s" title="%1$s">%1$s</a>', $email );
+			}
+
+		} elseif ( '_gmr_submitted' == $column_name ) {
+			
+			printf(
+				'<span title="%s">%s ago</span>',
+				mysql2date( 'M j, Y H:i', $entry->post_date ),
+				human_time_diff( strtotime( $entry->post_date ), current_time( 'timestamp' ) )
+			);
 			
 		} else {
 
+			$form_column_name = substr( $column_name, strlen( '_gmr_form_' ) );
 			$fields = GreaterMediaFormbuilderRender::parse_entry( $entry->post_parent, $entry->ID );
-			if ( isset( $fields[ $column_name ] ) ) {
+			if ( isset( $fields[ $form_column_name ] ) ) {
 
-				$value = $fields[ $column_name ]['value'];
-				if ( 'file' == $fields[ $column_name ]['type'] ) {
+				$value = $fields[ $form_column_name ]['value'];
+				if ( 'file' == $fields[ $form_column_name ]['type'] ) {
 					echo wp_get_attachment_image( $value, array( 75, 75 ) );
 				} elseif ( is_array( $value ) ) {
 					echo implode( ', ', array_map( 'esc_html', $value ) );
