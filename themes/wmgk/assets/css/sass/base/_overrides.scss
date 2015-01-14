@@ -87,3 +87,27 @@
 .home__highlights {
 	border-bottom-color: $primary-border;
 }
+
+.highlights__events--more-btn {
+	&:hover {
+		color: $yellow !important;
+		border-color: $yellow;
+	} 
+}
+
+.highlights__event--item {
+	background-color: #8c8c8c;
+	color: $white; 
+}
+
+.highlights__event--title, .highlights__event--date {
+	color: $white;
+	
+	a:hover & {
+		color: $yellow; 
+	}
+}
+
+.highlights__heading {
+	color: $highlights-heading;
+}

@@ -26,6 +26,7 @@ require_once( __DIR__ . '/includes/site-options/loader.php' );
 require_once( __DIR__ . '/includes/mega-menu/mega-menu-admin.php' );
 require_once( __DIR__ . '/includes/mega-menu/mega-menu-walker.php' );
 require_once( __DIR__ . '/includes/mega-menu/mega-menu-mobile-walker.php' );
+require_once( __DIR__ . '/includes/gallery-post-thumbnails/loader.php' );
 
 /**
  * Required files
@@ -60,6 +61,13 @@ function greatermedia_setup() {
 	add_image_size( 'gmr-featured-secondary',   		336,    224,    true    ); // thumbnails for secondary featured posts on front page
 	add_image_size( 'gmr-show-featured-primary',   		708,    389,    true    ); // thumbnails for secondary featured posts on front page
 	add_image_size( 'gmr-show-featured-secondary',   	322,    141,    true    ); // thumbnails for secondary featured posts on front page
+	add_image_size( 'gm-related-post',   				300,    200,    true    );
+
+	/* Images for the Gallery Grid ---- DO NOT DELETE ---- */
+	add_image_size( 'gmr-gallery-grid-featured',        1200,   800,    true    );
+	add_image_size( 'gmr-gallery-grid-secondary',       560,    300,    true    );
+	add_image_size( 'gmr-gallery-grid-thumb',           500,    368,    true    ); // thumbnail for gallery grid areas
+	add_image_size( 'gmr-album-thumbnail',              1876,   576,    true    ); // thumbnail for albums
 
 	// Update this as appropriate content types are created and we want this functionality
 	add_post_type_support( 'post', 'timed-content' );
@@ -146,7 +154,7 @@ function greatermedia_scripts_styles() {
 	wp_enqueue_style(
 		'greatermedia'
 	);
-
+	
 	/**
 	 * this is a fix to resolve conflicts with styles and javascript for The Events Calendar plugin that will not
 	 * load once pjax has been activated. We are checking to see if the `Tribe_Template_Factory` class exists and if
@@ -170,6 +178,14 @@ function greatermedia_scripts_styles() {
 }
 
 add_action( 'wp_enqueue_scripts', 'greatermedia_scripts_styles');
+
+/**
+ * Unload YARPP stylesheets.  
+ */
+add_action( 'get_footer', function () {
+ 	wp_dequeue_style( 'yarppRelatedCss' );
+ 	wp_dequeue_style( 'yarpp-thumbnails-yarpp-thumbnail' );
+} );
 
 /**
  * Add humans.txt to the <head> element.
@@ -388,7 +404,7 @@ add_action( 'wp_head', 'greatermedia_remove_jetpack_share' );
  * @return string
  */
 function greatermedia_excerpt_more( $more ) {
-	return '';
+	return '&hellip;';
 }
 add_filter( 'excerpt_more', 'greatermedia_excerpt_more' );
 
@@ -465,3 +481,24 @@ function greatermedia_load_more_button( $partial_slug = null, $partial_name = nu
 	</div>
 <?php
 }
+
+/**
+ * function to globally remove post type support for custom fields for all post types
+ */
+function greatermedia_remove_custom_fields() {
+
+	// return a list of all post types
+	$post_types = get_post_types();
+
+	/**
+	 * go through each post type, check if the post type supports custom fields, if the post types does support
+	 * custom fields, remove support
+	 */
+	foreach ( $post_types as $post_type ) {
+		if (post_type_supports( $post_type, 'custom-fields' ) ) {
+			remove_post_type_support( $post_type, 'custom-fields' );
+		}
+	}
+
+}
+add_action( 'init' , 'greatermedia_remove_custom_fields', 10 );

@@ -1,19 +1,35 @@
-.header__nav {
-	.format-fw > ul {
+%format-fw {
+	& > ul {
 		@extend .sub-menu;
-		width: $max-site-width;
 		left: 0;
-		padding: 1em;
+		padding: 1%;
+		width: 100%;
 	}
 
-	.format-fw > ul > li {
-		width: 32.666%; /* 100% - 2% (for margins, below) / 3 (3 columns) */
-		float: left;
+	& > ul > li {
+		width: 32%; // 100% - 2% - 2% (for margins, below and padding of ul above) / 3 (3 columns)
+		float: none;
+		display: inline-block;
+		vertical-align: top;
+
+		& > a {
+			float: left;
+			width: 100%;
+		}
 	}
 
-	.format-fw > ul > li:not(:nth-child(3n+1)) {
+	& > ul > li:not(:nth-child(3n+1)) {
 		border-left: 1px solid $primary-border;
 		padding-left: 1%;
 		margin-left: 1%;
 	}
+
+	& > ul > li:nth-child(3n+1) {
+		clear: left;
+	}
+
+}
+
+.header__nav .format-fw {
+	@extend %format-fw;
 }

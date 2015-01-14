@@ -20,7 +20,9 @@ class CommentsApp {
 		}
 
 		$comments_data = array(
-			'data' => $this->get_comments_data()
+			'ajax_url'                      => admin_url( 'admin-ajax.php' ),
+			'get_livefyre_auth_token_nonce' => wp_create_nonce( 'get_livefyre_auth_token' ),
+			'data'                          => $this->get_comments_data()
 		);
 
 		wp_enqueue_script(
@@ -32,7 +34,7 @@ class CommentsApp {
 		wp_enqueue_script(
 			'livefyre_comments',
 			plugins_url( 'js/comments_app.js', GMR_LIVEFYRE_PLUGIN_FILE ),
-			array( 'livefyre_loader', 'jquery', 'wp_ajax_api' ),
+			array( 'livefyre_loader', 'jquery', 'wp_ajax_api', 'cookies-js' ),
 			GMR_LIVEFYRE_VERSION
 		);
 
@@ -117,7 +119,7 @@ class CommentsApp {
 	}
 
 	function has_comments( $post ) {
-		return ! is_null( $post );
+		return ! is_null( $post ) && ! is_preview();
 	}
 
 	function tokens_for_post( $post ) {
