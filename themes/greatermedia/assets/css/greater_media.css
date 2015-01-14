@@ -5093,8 +5093,7 @@ category: Components
   height: 22px; }
   @media screen and (min-width: 480px) {
     .breaking-news-banner__excerpt {
-      display: inline;
-      white-space: normal; } }
+      display: inline; } }
 
 a:hover .breaking-news-banner {
   color: #f5ed7f; }
