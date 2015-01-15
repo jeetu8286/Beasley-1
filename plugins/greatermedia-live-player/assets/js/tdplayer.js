@@ -33,7 +33,6 @@
 	var adBlockClose = document.getElementById('close-adblock');
 	var loginListen = document.getElementById('live-stream__login');
 	var onAir = document.getElementById('on-air');
-	var audioTime = document.getElementById('audio__time');
 	var streamStatus = document.getElementById('live-stream__status');
 
 	/**
@@ -224,12 +223,13 @@
 	}
 
 	function setInlineAudioUX() {
+		var audioTime = document.querySelectorAll('.audio__time'), i;
 		if (onAir != null) {
 			onAir.style.display = 'none';
 		}
 
-		if (audioTime != null) {
-			audioTime.classList.add('playing');
+		for (i = 0; i < audioTime.length; ++i) {
+			audioTime[i].classList.add('playing');
 		}
 
 		if (streamStatus != null) {
@@ -1315,47 +1315,52 @@
 	 * calculates the time of an inline audio element and outputs the duration as a % displayed in the progress bar
 	 */
 	function audioUpdateProgress() {
-		var progress = document.getElementById('audio__progress'),
+		var progress = document.querySelectorAll('.audio__progress'), i,
 			value = 0;
-		if (customAudio.currentTime > 0) {
-			value = Math.floor((100 / customAudio.duration) * customAudio.currentTime);
+		for (i = 0; i < progress.length; ++i) {
+			if (customAudio.currentTime > 0) {
+				value = Math.floor((100 / customAudio.duration) * customAudio.currentTime);
+			}
+			progress[i].style.width = value + "%";
 		}
-		progress.style.width = value + "%";
 	}
 
 	/**
 	 * calculates the time of an inline audio element and outputs the time remaining
 	 */
 	function audioTimeRemaining() {
-		var timeleft = document.getElementById('audio__time--remaining'),
+		var timeleft = document.querySelectorAll('.audio__time--remaining'), i,
 			duration = parseInt(customAudio.duration),
 			currentTime = parseInt(customAudio.currentTime),
 			timeLeft = duration - currentTime,
 			s, m;
 
+		for (i = 0; i < timeleft.length; ++i) {
+			s = timeLeft % 60;
+			m = Math.floor( timeLeft / 60 ) % 60;
 
-		s = timeLeft % 60;
-		m = Math.floor( timeLeft / 60 ) % 60;
+			s = s < 10 ? "0"+s : s;
+			m = m < 10 ? +m : m;
 
-		s = s < 10 ? "0"+s : s;
-		m = m < 10 ? +m : m;
-
-		timeleft.innerHTML = m+":"+s;
+			timeleft[i].innerHTML = m+":"+s;
+		}
 	}
 
 	/**
 	 * calculates the time of an inline audio element and outputs the time that has elapsed
 	 */
 	function audioTimeElapsed() {
-		var timeline = document.getElementById('audio__time--elapsed'),
+		var timeline = document.querySelectorAll('.audio__time--elapsed'),
 			s = parseInt(customAudio.currentTime % 60),
 			m = parseInt((customAudio.currentTime / 60) % 60);
 
-		if (s < 10) {
-			timeline.innerHTML = m + ':0' + s;
-		}
-		else {
-			timeline.innerHTML = m + ':' + s;
+		for (i = 0; i < timeline.length; ++i) {
+			if (s < 10) {
+				timeline[i].innerHTML = m + ':0' + s;
+			}
+			else {
+				timeline[i].innerHTML = m + ':' + s;
+			}
 		}
 	}
 
