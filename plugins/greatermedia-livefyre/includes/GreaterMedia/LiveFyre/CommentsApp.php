@@ -17,7 +17,9 @@ class CommentsApp {
 			'the_content', array( $this, 'render_collection_config' )
 		);
 
-		$this->initialize_livefyre();
+		if ( ! is_admin() ) {
+			$this->initialize_livefyre();
+		}
 	}
 
 	function change_comments_template( $template_path ) {
