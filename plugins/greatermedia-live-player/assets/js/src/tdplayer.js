@@ -1366,7 +1366,7 @@
 	 * calculates the time of an inline audio element and outputs the time that has elapsed
 	 */
 	function audioTimeElapsed() {
-		var timeline = document.querySelectorAll('.audio__time--elapsed'),
+		var timeline = document.querySelectorAll('.audio__time--elapsed'), i,
 			s = parseInt(customAudio.currentTime % 60),
 			m = parseInt((customAudio.currentTime / 60) % 60);
 
