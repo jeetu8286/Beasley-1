@@ -81,7 +81,6 @@ class GMP_Meta {
 
 		/* OK, its safe for us to save the data now. */
 		$itunes_url = esc_url_raw( $_POST[ 'gmp_podcast_itunes_url' ] );
-
 		// Sanitize and save the user input.
 		update_post_meta( $post_id, 'gmp_podcast_itunes_url', esc_url_raw( $itunes_url ) );
 
@@ -126,10 +125,19 @@ class GMP_Meta {
 		}
 
 		/* OK, its safe for us to save the data now. */
-		$gmp_episode_explicit =  sanitize_text_field( $_POST['gmp_episode_explicit'] );
+		if( isset( $_POST['gmp_episode_explicit'] ) ) {
+			$gmp_episode_explicit =  sanitize_text_field( $_POST['gmp_episode_explicit'] );
+		} else {
+			$gmp_episode_explicit =  '';
+		}
 		update_post_meta( $post_id, 'gmp_episode_explicit', $gmp_episode_explicit );
 
-		$gmp_block =  sanitize_text_field( $_POST['gmp_block'] );
+		if( isset( $_POST['gmp_block'] ) ) {
+			$gmp_block =  sanitize_text_field( $_POST['gmp_block'] );
+		} else {
+			$gmp_block =  '';
+		}
+
 		update_post_meta( $post_id, 'gmp_block', $gmp_block );
 	}
 
