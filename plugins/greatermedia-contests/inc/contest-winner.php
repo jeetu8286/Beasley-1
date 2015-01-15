@@ -201,7 +201,7 @@ class GMR_Contest_Entries_Table extends WP_Posts_List_Table {
 
 		if ( $which == 'top' ) :
 			?><div class="alignleft actions">
-				<input type="text" name="random" size="3" value="<?php echo esc_attr( $random ); ?>">
+				<input type="text" name="random" size="3" value="<?php echo ! empty( $random ) ? esc_attr( $random ) : 1; ?>">
 				<?php submit_button( 'Random Entries', 'button', 'get_random', false ); ?>
 				<?php if ( $random ) : ?>
 					<?php submit_button( 'All Entries', 'apply', 'get_all', false ); ?>
