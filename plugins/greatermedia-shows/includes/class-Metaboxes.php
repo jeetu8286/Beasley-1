@@ -6,6 +6,8 @@
  */
 class GMR_Show_Metaboxes {
 
+	private $_restricted_posts = null;
+
 	/**
 	 * Constructor.
 	 *
@@ -180,6 +182,33 @@ class GMR_Show_Metaboxes {
 		echo '</div>';
 	}
 
+	private function _get_restricted_post_ids() {
+		if ( is_null( $this->_restricted_posts ) ) {
+			$query = new \WP_Query();
+			$this->_restricted_posts = $query->query( array(
+				'post_type'           => 'any',
+				'post_status'         => 'any',
+				'posts_per_page'      => 50,
+				'ignore_sticky_posts' => true,
+				'no_found_rows'       => true,
+				'fields'              => 'ids',
+				'meta_query'          => array(
+					'relation' => 'OR',
+					array(
+						'key'     => 'post_age_restriction',
+						'compare' => 'EXISTS',
+					),
+					array(
+						'key'     => 'post_login_restriction',
+						'compare' => 'EXISTS',
+					),
+				),
+			) );
+		}
+
+		return $this->_restricted_posts;
+	}
+
 	public function render_featured_meta_box( WP_Post $post ) {
 		if ( ! function_exists( 'pf_render' ) ) {
 			?><p>Please install the <a href="http://github.com/10up/post-finder">"post-finder"</a> plugin.</p><?php
@@ -190,7 +219,8 @@ class GMR_Show_Metaboxes {
 		$options = array(
 			'args' => array(
 				'post_type' => array( 'post', 'tribe_events' ),
-				'meta_key' => '_thumbnail_id',
+				'meta_key'  => '_thumbnail_id',
+				'exclude'   => $this->_get_restricted_post_ids(),
 			),
 			'limit' => 3,
 		);
@@ -212,7 +242,8 @@ class GMR_Show_Metaboxes {
 		$options = array(
 			'args' => array(
 				'post_type' => array( 'post' ),
-				'meta_key' => '_thumbnail_id',
+				'meta_key'  => '_thumbnail_id',
+				'exclude'   => $this->_get_restricted_post_ids(),
 			),
 			'limit' => 10,
 		);
