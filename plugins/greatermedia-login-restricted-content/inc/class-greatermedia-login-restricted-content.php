@@ -26,8 +26,11 @@ class GreaterMediaLoginRestrictedContent extends VisualShortcode {
 	}
 
 	public function untrim_restricted_markup( $text, $num_words, $more, $original_text ) {
-		if ( mb_stripos( $original_text, 'login-restricted-shield-' ) !== false ) {
-			return str_replace( PHP_EOL, '', $original_text );
+		$anchors = array( 'login-restricted-shield-', 'logout-restricted-shield-' );
+		foreach ( $anchors as $anchor ) {
+			if ( mb_stripos( $original_text, $anchor ) !== false ) {
+				return str_replace( PHP_EOL, '', $original_text );
+			}
 		}
 
 		return $text;
