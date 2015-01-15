@@ -87,7 +87,20 @@ function gmr_contests_render_winner_page() {
 
 	// create table class
 	$wp_list_table = new GMR_Contest_Entries_Table( array( 'screen' => GMR_CONTEST_ENTRY_CPT, 'plural' => 'entry_id' ) );
-	$wp_list_table->prepare_items();
+	if ( filter_input( INPUT_GET, 'noheader', FILTER_VALIDATE_BOOLEAN ) ) {
+		$redirect = wp_get_referer();
+
+		$action = $wp_list_table->current_action();
+		if ( $action ) {
+			do_action( 'admin_action_' . $action );
+		} else {
+			$random = isset( $_GET['get_random'] ) ? filter_input( INPUT_GET, 'random', FILTER_VALIDATE_INT ) : false;
+			$redirect = add_query_arg( 'random', $random, $redirect );
+		}
+
+		wp_redirect( $redirect );
+		exit;
+	}
 
 	// winners table
 	$winners = new GMR_Contest_Winners_Table( array( 'contest_id' => $contest->ID ) );
@@ -108,7 +121,12 @@ function gmr_contests_render_winner_page() {
 		<?php endif; ?>
 
 		<form id="posts-filter">
-			<?php wp_nonce_field( 'gmr_contest_entries' ) ?>
+			<input type="hidden" name="noheader" value="true">
+			<input type="hidden" name="page" value="<?php echo esc_html( filter_input( INPUT_GET, 'page' ) ); ?>">
+			<input type="hidden" name="contest_id" value="<?php echo esc_attr( $contest->ID ); ?>">
+			<?php wp_nonce_field( 'gmr_contest_entries' ); ?>
+
+			<?php $wp_list_table->prepare_items(); ?>
 			<?php $wp_list_table->display(); ?>
 		</form>
 	</div><?php
@@ -173,16 +191,21 @@ class GMR_Contest_Entries_Table extends WP_Posts_List_Table {
 	 * Displays extra table navigation. Disabled for current table.
 	 *
 	 * @access protected
+	 * @global WP_Query $wp_query
 	 * @param string $which The area where to render extra navigation.
 	 */
 	protected function extra_tablenav( $which ) {
-		$random = filter_input( INPUT_GET, 'random', FILTER_VALIDATE_INT, array( 'options' => array( 'min_range' => 1 ) ) );
+		global $wp_query;
 		
+		$random = filter_input( INPUT_GET, 'random', FILTER_VALIDATE_INT, array( 'options' => array( 'min_range' => 1 ) ) );
+
 		if ( $which == 'top' ) :
 			?><div class="alignleft actions">
-				<a class="button button-primary" href="<?php echo esc_url( add_query_arg( 'random', 3 ) ); ?>">Load 3 Random Entries</a>
+				<input type="text" name="random" size="3" value="<?php echo esc_attr( $random ); ?>">
+				<?php submit_button( 'Random Entries', 'button', 'get_random', false ); ?>
 				<?php if ( $random ) : ?>
-					<a class="button" href="<?php echo esc_url( add_query_arg( 'random', false ) ); ?>">See All Entries</a>
+					<?php submit_button( 'All Entries', 'apply', 'get_all', false ); ?>
+					<i style="margin-left:1em;">Currently showing <?php echo esc_html( $random ); ?> entries of <?php echo $wp_query->found_posts ?>.</i>
 				<?php endif; ?>
 			</div><?php
 		endif;

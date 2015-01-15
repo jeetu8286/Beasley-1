@@ -142,7 +142,7 @@ class GreaterMediaContests {
 
 		$this->_add_entry_to_winners( $entry );
 		
-		wp_redirect( wp_get_referer() );
+		wp_redirect( add_query_arg( 'random', false, wp_get_referer() ) );
 		exit;
 	}
 
@@ -162,7 +162,7 @@ class GreaterMediaContests {
 			$this->_add_entry_to_winners( $entry );
 		}
 
-		wp_redirect( wp_get_referer() );
+		wp_redirect( add_query_arg( 'random', false, wp_get_referer() ) );
 		exit;
 	}
 
@@ -180,7 +180,7 @@ class GreaterMediaContests {
 		$gigya_id = get_post_meta( $entry->ID, 'entrant_reference', true );
 		delete_post_meta( $entry->post_parent, 'winner', "{$entry->ID}:{$gigya_id}" );
 		
-		wp_redirect( wp_get_referer() );
+		wp_redirect( add_query_arg( 'random', false, wp_get_referer() ) );
 		exit;
 	}
 
