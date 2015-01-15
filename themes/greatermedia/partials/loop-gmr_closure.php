@@ -19,4 +19,4 @@
 			<p><?php echo esc_html( $closure_type ); ?></p>
 		</div>
 	</article>
-<?php endwhile;
+<?php endwhile; ?>
