@@ -7466,7 +7466,8 @@ a.social-share-link {
   -moz-transform: translate(0, 0);
   -ms-transform: translate(0, 0);
   -o-transform: translate(0, 0);
-  transform: translate(0, 0); }
+  transform: translate(0, 0);
+  z-index: 5100000; }
 
 .header__search--input {
   float: left;

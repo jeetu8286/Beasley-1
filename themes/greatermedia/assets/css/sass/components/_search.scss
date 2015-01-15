@@ -33,6 +33,7 @@
 .header__search--open {
 	@include transition(all 200ms ease-in-out);
 	@include transform(translate(0, 0));
+  	z-index: 5100000; // Higher than .overlay-mask.
 }
 
 .header__search--input {

@@ -33,6 +33,7 @@
 		var max_results = 6;
 		var search = new Keyword_Search( GMRKeywords );
 		var $search_field = $( '#header-search' );
+		var $overlay = $( '.overlay-mask' );
 
 		var item_template = _.template( $( '#keyword-search-item-template' ).html() );
 		var body_template = _.template( $( '#keyword-search-body-template' ).html() );
@@ -59,6 +60,7 @@
 			// Bail if we don't have any items, and make sure the container is hidden.
 			if ( ! items || ! items.length ) {
 				$container.hide();
+				$overlay.removeClass( 'is-visible' );
 				return;
 			}
 
@@ -76,6 +78,7 @@
 
 			// Display the container.
 			$container.show();
+			$overlay.addClass( 'is-visible' );
 		} );
 	} );
 
