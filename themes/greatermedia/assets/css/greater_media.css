@@ -698,6 +698,7 @@ img {
   padding: 1.5em 0.809em; }
   @media screen and (min-width: 768px) {
     .content, .gallery__archive {
+      min-height: 800px;
       padding: 3em 3.236em; } }
 
 .live-player {
@@ -891,19 +892,19 @@ category: Base - Typography
 ```
 */
 h1, .h1, .type-tribe_events .entry2__thumbnail--event-date, .type-contest .entry2__thumbnail--end-date,
-.type-contest .entry2__thumbnail--start-date, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
+.type-contest .entry2__thumbnail--contest-type, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
   line-height: 1.5;
   font-family: "Droid Sans", sans-serif;
   text-rendering: optimizelegibility;
   font-weight: bold; }
   h1 a:link, h1 a:visited, .h1 a:link, .type-tribe_events .entry2__thumbnail--event-date a:link, .type-contest .entry2__thumbnail--end-date a:link,
-  .type-contest .entry2__thumbnail--start-date a:link, .h1 a:visited, .type-tribe_events .entry2__thumbnail--event-date a:visited, .type-contest .entry2__thumbnail--end-date a:visited,
-  .type-contest .entry2__thumbnail--start-date a:visited, h2 a:link, h2 a:visited, .h2 a:link, .h2 a:visited, h3 a:link, h3 a:visited, .h3 a:link, .h3 a:visited, h4 a:link, h4 a:visited, .h4 a:link, .h4 a:visited, h5 a:link, h5 a:visited, .h5 a:link, .h5 a:visited, h6 a:link, h6 a:visited, .h6 a:link, .h6 a:visited {
+  .type-contest .entry2__thumbnail--contest-type a:link, .h1 a:visited, .type-tribe_events .entry2__thumbnail--event-date a:visited, .type-contest .entry2__thumbnail--end-date a:visited,
+  .type-contest .entry2__thumbnail--contest-type a:visited, h2 a:link, h2 a:visited, .h2 a:link, .h2 a:visited, h3 a:link, h3 a:visited, .h3 a:link, .h3 a:visited, h4 a:link, h4 a:visited, .h4 a:link, .h4 a:visited, h5 a:link, h5 a:visited, .h5 a:link, .h5 a:visited, h6 a:link, h6 a:visited, .h6 a:link, .h6 a:visited {
     color: #404041; }
   h1 a:hover, h1 a:focus, h1 a:active, .h1 a:hover, .type-tribe_events .entry2__thumbnail--event-date a:hover, .type-contest .entry2__thumbnail--end-date a:hover,
-  .type-contest .entry2__thumbnail--start-date a:hover, .h1 a:focus, .type-tribe_events .entry2__thumbnail--event-date a:focus, .type-contest .entry2__thumbnail--end-date a:focus,
-  .type-contest .entry2__thumbnail--start-date a:focus, .h1 a:active, .type-tribe_events .entry2__thumbnail--event-date a:active, .type-contest .entry2__thumbnail--end-date a:active,
-  .type-contest .entry2__thumbnail--start-date a:active, h2 a:hover, h2 a:focus, h2 a:active, .h2 a:hover, .h2 a:focus, .h2 a:active, h3 a:hover, h3 a:focus, h3 a:active, .h3 a:hover, .h3 a:focus, .h3 a:active, h4 a:hover, h4 a:focus, h4 a:active, .h4 a:hover, .h4 a:focus, .h4 a:active, h5 a:hover, h5 a:focus, h5 a:active, .h5 a:hover, .h5 a:focus, .h5 a:active, h6 a:hover, h6 a:focus, h6 a:active, .h6 a:hover, .h6 a:focus, .h6 a:active {
+  .type-contest .entry2__thumbnail--contest-type a:hover, .h1 a:focus, .type-tribe_events .entry2__thumbnail--event-date a:focus, .type-contest .entry2__thumbnail--end-date a:focus,
+  .type-contest .entry2__thumbnail--contest-type a:focus, .h1 a:active, .type-tribe_events .entry2__thumbnail--event-date a:active, .type-contest .entry2__thumbnail--end-date a:active,
+  .type-contest .entry2__thumbnail--contest-type a:active, h2 a:hover, h2 a:focus, h2 a:active, .h2 a:hover, .h2 a:focus, .h2 a:active, h3 a:hover, h3 a:focus, h3 a:active, .h3 a:hover, .h3 a:focus, .h3 a:active, h4 a:hover, h4 a:focus, h4 a:active, .h4 a:hover, .h4 a:focus, .h4 a:active, h5 a:hover, h5 a:focus, h5 a:active, .h5 a:hover, .h5 a:focus, .h5 a:active, h6 a:hover, h6 a:focus, h6 a:active, .h6 a:hover, .h6 a:focus, .h6 a:active {
     color: #aa1c20; }
 
 .featured__content--title a:link, .featured__content--title a:visited, .featured__article--title a:link, .featured__article--title a:visited, .highlights__community--title a:link, .highlights__community--title a:visited {
@@ -912,7 +913,7 @@ h1, .h1, .type-tribe_events .entry2__thumbnail--event-date, .type-contest .entry
   color: #aa1c20; }
 
 h1, .h1, .type-tribe_events .entry2__thumbnail--event-date, .type-contest .entry2__thumbnail--end-date,
-.type-contest .entry2__thumbnail--start-date {
+.type-contest .entry2__thumbnail--contest-type {
   font-size: 2.2807em; }
 
 h2, .h2 {
@@ -1012,7 +1013,6 @@ blockquote p {
   -webkit-transition: all 500ms ease-in-out;
   -moz-transition: all 500ms ease-in-out;
   transition: all 500ms ease-in-out;
-  background-color: #000000;
   cursor: pointer;
   z-index: 2; }
   @media screen and (min-width: 768px) {
@@ -2514,12 +2514,6 @@ Community Highlights and Events
       height: 82px;
       border-top: 1px solid #282827; } }
 
-#breaking-news-banner {
-  display: none; }
-  @media screen and (min-width: 768px) {
-    #breaking-news-banner {
-      display: block; } }
-
 .header__logo {
   float: left;
   display: block;
@@ -3947,7 +3941,7 @@ Link posts contain a link to an external site. They can also optionally have a f
   .type-contest .entry2__thumbnail:after {
     background-color: rgba(210, 34, 40, 0.5); }
 .type-contest .entry2__thumbnail--end-date,
-.type-contest .entry2__thumbnail--start-date {
+.type-contest .entry2__thumbnail--contest-type {
   font-size: 1em;
   line-height: 1;
   text-transform: uppercase;
@@ -3959,7 +3953,8 @@ Link posts contain a link to an external site. They can also optionally have a f
   right: 0;
   bottom: 0;
   text-align: right; }
-.type-contest .entry2__thumbnail--start-date {
+.type-contest .entry2__thumbnail--contest-type {
+  font-weight: normal;
   left: 0;
   top: 0; }
 .type-contest .entry2__thumbnail--day-of-week {
@@ -5079,9 +5074,45 @@ category: Components
       height: auto;
       overflow: auto; } }
 
-.breaking-news {
-  width: 100%;
-  overflow: auto; }
+.breaking-news-banner {
+  padding: 10px 0; }
+
+.breaking-news-banner__inner {
+  padding: 0 20px;
+  margin: 0 auto;
+  max-width: 1400px;
+  font-size: 14px;
+  line-height: 22px; }
+  @media screen and (min-width: 480px) {
+    .breaking-news-banner__inner {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      height: 22px; } }
+  @media screen and (min-width: 768px) {
+    .breaking-news-banner__inner {
+      font-size: 15px; } }
+  @media screen and (min-width: 1024px) {
+    .breaking-news-banner__inner {
+      font-size: 16px;
+      padding: 0 1.618em; } }
+
+.breaking-news-banner__title {
+  color: #f5ed7f;
+  text-transform: uppercase; }
+
+.breaking-news-banner__excerpt {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  height: 22px; }
+  @media screen and (min-width: 480px) {
+    .breaking-news-banner__excerpt {
+      display: inline; } }
+
+a:hover .breaking-news-banner {
+  color: #f5ed7f; }
 
 /*doc
 ---
@@ -5150,6 +5181,33 @@ category: Components - Ads
 .single__featured-img--contest {
   margin: 0 auto; }
 
+.type-contest .entry__title--tag,
+.type-survey .entry__title--tag {
+  display: inline-block;
+  line-height: 1;
+  padding: 0.25em 0.45em;
+  margin-right: .5em;
+  outline: none;
+  background-color: #d0d2d3;
+  border: 1px solid #d0d2d3;
+  font-family: "Open Sans", sans-serif;
+  font-size: 0.6243em;
+  color: #ffffff !important;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 100em;
+  font-size: 50%;
+  font-weight: normal;
+  padding-bottom: 0.15em; }
+  .type-contest .entry__title--tag:hover, .type-contest .entry__title--tag:focus,
+  .type-survey .entry__title--tag:hover,
+  .type-survey .entry__title--tag:focus {
+    background-color: #b8bbbd;
+    border-color: #b8bbbd;
+    color: #ffffff; }
+  .type-contest .entry__title--tag:last-of-type,
+  .type-survey .entry__title--tag:last-of-type {
+    margin-right: 0; }
 .type-contest .col__inner--left,
 .type-survey .col__inner--left {
   border-right-width: 0; }
@@ -5489,6 +5547,15 @@ category: Components - Ads
     border-bottom: 0;
     color: #d22228; }
 
+.contest__form--description {
+  display: block;
+  width: 100%;
+  margin: 5px 0 0;
+  line-height: 1em;
+  font-size: 0.79012em;
+  font-style: italic;
+  color: #404041; }
+
 .contest__form fieldset legend,
 .contest__form fieldset label {
   display: block;
@@ -5499,12 +5566,13 @@ category: Components - Ads
 .contest__form input[type="url"],
 .contest__form input[type="email"],
 .contest__form input[type="number"],
+.contest__form input[type="date"],
 .contest__form textarea {
   width: 100%;
   padding: 18px 20px;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  border: none;
+  border: 1px solid transparent;
   outline: none;
   background-color: #d0d2d3;
   font-family: "Open Sans", sans-serif;
@@ -5609,6 +5677,80 @@ category: Components - Ads
   -moz-appearance: none;
   appearance: none;
   cursor: pointer; }
+.contest__form input.parsley-error,
+.contest__form select.parsley-error,
+.contest__form textarea.parsley-error {
+  border-color: rgba(255, 0, 0, 0.5);
+  background-color: rgba(255, 0, 0, 0.15);
+  color: #d22228; }
+.contest__form .parsley-errors-list {
+  margin: 0.5em 0;
+  padding: 0;
+  list-style-type: none;
+  font-size: 0.88889em;
+  line-height: 1em;
+  opacity: 0;
+  filter: alpha(opacity=0);
+  -moz-opacity: 0;
+  -khtml-opacity: 0;
+  zoom: 1;
+  -webkit-transition: all 0.3s ease-in;
+  -moz-transition: all 0.3s ease-in;
+  transition: all 0.3s ease-in; }
+  .contest__form .parsley-errors-list.filled {
+    opacity: 1;
+    filter: alpha(opacity=100);
+    -moz-opacity: 1;
+    -khtml-opacity: 1;
+    zoom: 1; }
+  .contest__form .parsley-errors-list li {
+    color: #d22228; }
+.contest__form .contest__submission--entries,
+.contest__form .contest__form--user-info {
+  background-color: #f1f1f3;
+  border: 1px solid #d0d2d3;
+  padding: 15px;
+  margin: 0 0 30px;
+  position: relative; }
+  .contest__form .contest__submission--entries a,
+  .contest__form .contest__form--user-info a {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 0.79012em;
+    line-height: 1em; }
+  .contest__form .contest__submission--entries i,
+  .contest__form .contest__form--user-info i {
+    font-size: 0.79012em;
+    line-height: 1em;
+    margin-bottom: 15px;
+    display: block; }
+  .contest__form .contest__submission--entries .contest__form--row,
+  .contest__form .contest__form--user-info .contest__form--row {
+    margin-bottom: 15px; }
+    .contest__form .contest__submission--entries .contest__form--row:last-child,
+    .contest__form .contest__form--user-info .contest__form--row:last-child {
+      margin-bottom: 0; }
+  .contest__form .contest__submission--entries dl, .contest__form .contest__submission--entries dt, .contest__form .contest__submission--entries dd,
+  .contest__form .contest__form--user-info dl,
+  .contest__form .contest__form--user-info dt,
+  .contest__form .contest__form--user-info dd {
+    margin: 0;
+    padding: 0; }
+  .contest__form .contest__submission--entries dt,
+  .contest__form .contest__form--user-info dt {
+    margin-top: 1em;
+    line-height: 1.25em;
+    font-size: 0.79012em;
+    color: #404041; }
+    .contest__form .contest__submission--entries dt:first-child,
+    .contest__form .contest__form--user-info dt:first-child {
+      margin-top: 0; }
+  .contest__form .contest__submission--entries dd,
+  .contest__form .contest__form--user-info dd {
+    color: #000000;
+    font-weight: bold;
+    font-size: 0.88889em; }
 
 .contest__submissions {
   clear: both;
@@ -5761,7 +5903,7 @@ category: Components - Ads
     display: block; }
   .contest__submission .preview {
     position: absolute;
-    background: #ddd;
+    background: #f1f1f3;
     top: auto;
     height: auto;
     left: 0;
@@ -5815,27 +5957,27 @@ category: Components - Ads
         margin-bottom: 0; }
 
 .contest__submission--entries-title {
-  margin-bottom: 0; }
+  margin-bottom: 15px; }
 
-.contest__submission--entries:before, .contest__submission--entries:after {
-  content: " ";
-  display: table; }
-.contest__submission--entries:after {
-  clear: both; }
-.contest__submission--entries dl {
-  margin-top: 0; }
-.contest__submission--entries dt,
-.contest__submission--entries dd {
-  float: left; }
-.contest__submission--entries dt {
-  clear: both;
-  display: inline-block;
-  margin-right: 0.5em;
-  font-weight: bold; }
-  .contest__submission--entries dt::after {
-    content: ': '; }
-.contest__submission--entries dd {
-  margin: 0; }
+.contest__submission--entries {
+  margin: 0 0 30px;
+  padding: 0; }
+  .contest__submission--entries dt, .contest__submission--entries dd {
+    margin: 0;
+    padding: 0; }
+  .contest__submission--entries dt {
+    margin-top: 1em;
+    line-height: 1.25em;
+    font-size: 0.79012em;
+    color: #404041; }
+    .contest__submission--entries dt::after {
+      content: ': '; }
+    .contest__submission--entries dt:first-child {
+      margin-top: 0; }
+  .contest__submission--entries dd {
+    color: #000000;
+    font-weight: bold;
+    font-size: 0.88889em; }
 
 @media screen and (min-width: 480px) {
   .contest__submission {
@@ -6189,10 +6331,17 @@ category: Components - Shows
   float: left;
   display: block;
   margin-right: 2.35765%;
-  width: 14.70196%;
-  margin-top: 4px; }
+  width: 31.76157%; }
   .podcast__play:last-child {
     margin-right: 0; }
+  @media screen and (min-width: 1024px) {
+    .podcast__play {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 14.70196%; }
+      .podcast__play:last-child {
+        margin-right: 0; } }
 
 .podcast__cover {
   width: 100%;
@@ -6201,7 +6350,8 @@ category: Components - Shows
   background-repeat: no-repeat;
   background-position: center top;
   background-size: auto 100%;
-  position: relative; }
+  position: relative;
+  margin-bottom: 1em; }
 
 .podcast__btn--play,
 .podcast__btn--pause {
@@ -6257,20 +6407,39 @@ category: Components - Shows
   .podcast__btn--pause.playing {
     display: block; }
 
+.podcast__runtime {
+  padding-top: 0;
+  padding-bottom: 1em; }
+
 .podcast__meta {
   float: left;
   display: block;
   margin-right: 2.35765%;
-  width: 74.41059%; }
+  width: 65.88078%;
+  margin-right: 0;
+  padding-left: 1em; }
   .podcast__meta:last-child {
     margin-right: 0; }
-  .podcast__meta h3 {
-    margin: 10px 0 15px; }
+  @media screen and (min-width: 1024px) {
+    .podcast__meta {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 82.94039%;
+      margin-right: 0; }
+      .podcast__meta:last-child {
+        margin-right: 0; } }
 
 .podcast__title {
-  margin: 20px 0 26px;
-  line-height: 1;
-  font-size: 1.80203em; }
+  font-size: 1.42383em;
+  line-height: 1.25;
+  margin: 0;
+  clear: left; }
+  @media screen and (min-width: 1024px) {
+    .podcast__title {
+      margin: 20px 0 26px;
+      line-height: 1;
+      font-size: 1.80203em; } }
 
 .podcast__parent {
   margin-bottom: 10px; }
@@ -6281,6 +6450,9 @@ category: Components - Shows
 
 .podcast__date {
   font-size: 0.79012em;
+  line-height: 1;
+  float: left;
+  margin-bottom: 10px;
   color: #929497;
   text-transform: uppercase; }
 
@@ -6358,9 +6530,16 @@ a.podcast__rss:active {
 
 .podcast__download {
   width: 100%;
-  padding-top: 1em;
+  padding-top: 0;
   margin: 0 auto;
   text-align: center; }
+  .podcast__download a {
+    width: 100% !important;
+    margin: 0 0 10px !important; }
+    @media screen and (min-width: 1024px) {
+      .podcast__download a {
+        width: auto !important;
+        margin: 10px 0 !important; } }
 
 .podcast__download--btn {
   display: inline-block;
@@ -6512,6 +6691,46 @@ a.podcast__rss:active {
     .podcast-player--compact .podcast-player {
       max-width: 60%; } }
 
+.login-restricted-login-btn,
+.logout-restricted-login-btn,
+.age-restricted-login-btn {
+  display: inline-block;
+  line-height: 1;
+  padding: 0.45em 1em;
+  margin-right: .5em;
+  outline: none;
+  background-color: #d22228;
+  border: 1px solid #d22228;
+  font-family: "Open Sans", sans-serif;
+  font-size: 0.88889em;
+  color: #ffffff !important;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 100em; }
+  .login-restricted-login-btn:hover, .login-restricted-login-btn:focus,
+  .logout-restricted-login-btn:hover,
+  .logout-restricted-login-btn:focus,
+  .age-restricted-login-btn:hover,
+  .age-restricted-login-btn:focus {
+    background-color: #aa1c20;
+    border-color: #aa1c20;
+    color: #ffffff; }
+  .login-restricted-login-btn:last-of-type,
+  .logout-restricted-login-btn:last-of-type,
+  .age-restricted-login-btn:last-of-type {
+    margin-right: 0; }
+
+.entry2__excerpt .login-restricted-login-btn,
+.entry2__excerpt .logout-restricted-login-btn,
+.entry2__excerpt .age-restricted-login-btn {
+  margin: 1em 0; }
+
+@media screen and (min-width: 768px) {
+  .single-show .content {
+    padding: 1.5em 0.809em; } }
+@media screen and (min-width: 1200px) {
+  .single-show .content {
+    padding: 3em 3.236em; } }
 .single-show .featured__content {
   margin: 0.75em 0 1em; }
 .single-show .featured__content--block {
@@ -6562,6 +6781,8 @@ a.podcast__rss:active {
   border-bottom: none;
   padding: 0;
   margin-bottom: 3em; }
+.single-show .highlights__events .highlights__heading {
+  display: block; }
 @media screen and (min-width: 1024px) {
   .single-show .highlights__community, .single-show .highlights__events {
     padding-top: 0; } }
@@ -6570,11 +6791,12 @@ a.podcast__rss:active {
   color: #929497; }
 .single-show .highlights__event--item {
   background-color: #F1F1F3; }
+  .single-show .highlights__event--item .highlights__event--title, .single-show .highlights__event--item .highlights__event--date {
+    color: #404041; }
+  .single-show .highlights__event--item .highlights__event--title:hover {
+    color: #aa1c20; }
 .single-show .highlights__community--item:hover .highlights__community--title {
   color: #f5ed7f; }
-@media screen and (min-width: 1024px) {
-  .single-show .inner-left-col {
-    padding-right: 25px; } }
 .single-show .entry2__meta {
   float: none !important;
   width: auto !important; }
@@ -6927,16 +7149,25 @@ category: Components - Shows
   font-size: 1.125em; }
 @media screen and (min-width: 1024px) {
   .show__blogroll {
+    width: 100%;
+    padding-right: 330px; } }
+@media screen and (min-width: 1200px) {
+  .show__blogroll {
     float: left;
     display: block;
     margin-right: 2.35765%;
-    width: 65.88078%; }
+    width: 65.88078%;
+    padding-right: 25px; }
     .show__blogroll:last-child {
       margin-right: 0; } }
 
 .inner-right-col {
   float: none; }
   @media screen and (min-width: 1024px) {
+    .inner-right-col {
+      float: right;
+      width: 300px; } }
+  @media screen and (min-width: 1200px) {
     .inner-right-col {
       float: left;
       display: block;
@@ -7028,6 +7259,25 @@ category: Components - Shows
   .more-btn:hover {
     color: #aa1c20;
     border: 1px solid #aa1c20; }
+
+.show__paging {
+  clear: both;
+  width: 100%;
+  font-size: 0.88889em;
+  margin: 0 0 1.5em;
+  text-align: center; }
+  .show__paging .page-numbers {
+    display: none; }
+    .show__paging .page-numbers.next, .show__paging .page-numbers.prev {
+      display: inline; }
+  .show__paging .prev {
+    float: left;
+    width: 50%;
+    text-align: left; }
+  .show__paging .next {
+    float: right;
+    width: 50%;
+    text-align: right; }
 
 .widget--live-player {
   margin: 0 1em 1em; }
@@ -8727,7 +8977,7 @@ category: Components - Shows
     clear: both; }
 
 .personality {
-  padding: 1.5em 3em;
+  padding: 1.5em;
   margin-bottom: 2em;
   position: relative;
   display: block; }
@@ -8738,6 +8988,9 @@ category: Components - Shows
     clear: both; }
   .personality.open {
     background-color: #d0d2d3; }
+  @media screen and (min-width: 768px) {
+    .personality {
+      padding: 1.5em 3em; } }
 
 .personality__avatar {
   float: left;
@@ -8769,20 +9022,25 @@ category: Components - Shows
 .personality__meta {
   float: none;
   width: auto;
-  height: 10em;
-  overflow: hidden;
   transition: all 100ms ease-out 0s; }
-  .personality.open .personality__meta {
-    overflow: visible;
-    height: auto; }
+  .personality__meta p + p {
+    display: none; }
+    .personality.open .personality__meta p + p {
+      display: block; }
+  .personality__meta .more-btn {
+    right: auto;
+    bottom: auto;
+    position: relative;
+    left: 0; }
+  .personality__meta.not-has-hidden .more-btn {
+    display: none; }
   @media screen and (min-width: 768px) {
     .personality__meta {
       float: left;
       display: block;
       margin-right: 2.35765%;
       width: 74.41059%;
-      margin-right: 0;
-      height: 12em; }
+      margin-right: 0; }
       .personality__meta:last-child {
         margin-right: 0; } }
 
@@ -8791,10 +9049,6 @@ category: Components - Shows
   width: 100%;
   text-align: center;
   padding-top: 1em; }
-  .personality__btn .more-btn {
-    right: auto;
-    bottom: auto;
-    position: relative; }
 
 /*doc
 ---
@@ -10690,6 +10944,88 @@ category: Components - Article
 .error__content {
   margin-top: 1.33em;
   font-size: 1.125em; }
+
+/*doc
+---
+title: Mobile Podcats
+name: mobile-podcasts
+category: Components
+---
+
+```html_example
+<article class="post-278038 episode type-episode status-publish hentry cf podcast" id="post-278038">
+	<div class="podcast-player">
+		<div class="podcast__play mp3-ecf1b0c62f7add40fb28e33ac6c54a07">
+			<div class="podcast__cover" style="background-image: url(http://beta.wmgk.com/wp-content/uploads/sites/2/2014/12/JDB_Show-0011.jpg);">
+				<button class="podcast__btn--play" data-mp3-artist="John DeBella Show" data-mp3-hash="ecf1b0c62f7add40fb28e33ac6c54a07" data-mp3-src="http://beta.wmgk.com/wp-content/uploads/sites/2/2015/01/John_DeBella_Jim_Breuer_12_22_14.mp3" data-mp3-title="Comedian Jim Breuer In Our Stocking"></button><button class="podcast__btn--pause"></button>
+			</div><span class="podcast__runtime">3:37</span>
+
+			<div class="podcast__download">
+				<a class="podcast__download--btn" href="http://beta.wmgk.com/wp-content/uploads/sites/2/2015/01/John_DeBella_Jim_Breuer_12_22_14.mp3">Download</a>
+				<a class="podcast__subscribe show-mobile" href="https://itunes.apple.com/us/podcast/john-debella/id599173693?i=162599399&amp;mt=2" target="_blank">Subscribe in iTunes</a>
+				<a class="podcast__rss show-mobile" href="http://beta.wmgk.com/?feed=podcast&amp;podcast_series=john-debella-show" target="_blank">Podcast Feed</a>
+			</div>
+		</div>
+
+		<div class="podcast__meta">
+			<time class="podcast__date" datetime="2015-01-08T20:27:37+00:00">January 8</time>
+
+			<h3 class="podcast__title">Comedian Jim Breuer In Our Stocking</h3>
+
+			<div class="podcast__parent--title podcast__parent--title--mobile show-mobile">
+					John DeBella Show
+			</div>
+
+			<div class="podcast__parent hide-mobile">
+				<div class="podcast__parent--title">
+					John DeBella Show
+				</div>
+				<a class="podcast__subscribe" href="https://itunes.apple.com/us/podcast/john-debella/id599173693?i=162599399&amp;mt=2" target="_blank">Subscribe in iTunes</a>
+				<a class="podcast__rss" href="http://beta.wmgk.com/?feed=podcast&amp;podcast_series=john-debella-show" target="_blank">Podcast Feed</a>
+			</div>
+
+			<div class="podcast__desc">
+				He joined us right off the bat for this Christmas week in December, and comedian Jim Breuer has been getting very festive with his family back home. Today he told us about his kid’s relationship with Santa, imagined what Ozzy would be like as Old St. Nick, and accidentally touched a sore spot of John’s!…
+			</div>
+		</div>
+
+		<div class="gmr-mediaelement-fallback">
+			<!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+			<audio class="wp-audio-shortcode" controls="controls" id="audio-278038-1" preload="none" style="width: 100%; visibility: hidden;">
+			<source src="http://beta.wmgk.com/wp-content/uploads/sites/2/2015/01/John_DeBella_Jim_Breuer_12_22_14.mp3?_=1" type="audio/mpeg"><a href="http://beta.wmgk.com/wp-content/uploads/sites/2/2015/01/John_DeBella_Jim_Breuer_12_22_14.mp3">http://beta.wmgk.com/wp-content/uploads/sites/2/2015/01/John_DeBella_Jim_Breuer_12_22_14.mp3</a></audio>
+		</div>
+	</div>
+</article>
+```
+*/
+.podcast .hide-mobile {
+  display: none !important; }
+  @media screen and (min-width: 1024px) {
+    .podcast .hide-mobile {
+      display: block !important; } }
+.podcast .show-mobile {
+  display: block !important; }
+  @media screen and (min-width: 1024px) {
+    .podcast .show-mobile {
+      display: none !important; } }
+
+.song__archive {
+  list-style: none; }
+  .song__archive li {
+    position: relative;
+    margin-bottom: 1em; }
+  .song__archive .icon-music:before {
+    position: absolute;
+    left: -30px; }
+  .song__archive .song__title, .song__archive .song__artist {
+    display: block;
+    margin: 0px;
+    font-family: "Open Sans",sans-serif;
+    font-size: 0.88889em; }
+  .song__archive .song__title {
+    margin-bottom: 6px;
+    font-size: 1em;
+    font-weight: bold; }
 
 /**
  * Single Page Styles
