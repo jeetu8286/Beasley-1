@@ -5542,6 +5542,15 @@ category: Components - Ads
     border-bottom: 0;
     color: #d22228; }
 
+.contest__form--description {
+  display: block;
+  width: 100%;
+  margin: 5px 0 0;
+  line-height: 1em;
+  font-size: 0.79012em;
+  font-style: italic;
+  color: #404041; }
+
 .contest__form fieldset legend,
 .contest__form fieldset label {
   display: block;
@@ -5558,7 +5567,7 @@ category: Components - Ads
   padding: 18px 20px;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  border: none;
+  border: 1px solid transparent;
   outline: none;
   background-color: #d0d2d3;
   font-family: "Open Sans", sans-serif;
@@ -5663,6 +5672,34 @@ category: Components - Ads
   -moz-appearance: none;
   appearance: none;
   cursor: pointer; }
+.contest__form input.parsley-error,
+.contest__form select.parsley-error,
+.contest__form textarea.parsley-error {
+  border-color: rgba(255, 0, 0, 0.5);
+  background-color: rgba(255, 0, 0, 0.15);
+  color: #d22228; }
+.contest__form .parsley-errors-list {
+  margin: 0.5em 0;
+  padding: 0;
+  list-style-type: none;
+  font-size: 0.88889em;
+  line-height: 1em;
+  opacity: 0;
+  filter: alpha(opacity=0);
+  -moz-opacity: 0;
+  -khtml-opacity: 0;
+  zoom: 1;
+  -webkit-transition: all 0.3s ease-in;
+  -moz-transition: all 0.3s ease-in;
+  transition: all 0.3s ease-in; }
+  .contest__form .parsley-errors-list.filled {
+    opacity: 1;
+    filter: alpha(opacity=100);
+    -moz-opacity: 1;
+    -khtml-opacity: 1;
+    zoom: 1; }
+  .contest__form .parsley-errors-list li {
+    color: #d22228; }
 .contest__form .contest__submission--entries,
 .contest__form .contest__form--user-info {
   background-color: #f1f1f3;
