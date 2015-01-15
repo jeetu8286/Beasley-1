@@ -160,7 +160,7 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 	};
 
 })(jQuery);
-(function ($, Modernizr) {
+(function ($, Modernizr, Waypoint) {
 	var $window = $(window),
 		winsize,
 		$body = $('html, body'),
@@ -261,7 +261,7 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 							if (newItems.length >= itemsCountOnPage) {
 								loadMoreLocked = false;
 								$loadMore.removeClass('loading');
-								$.waypoints('refresh');
+								Waypoint.refreshAll();
 
 								if ($.isFunction(settings.loadedMore)) {
 									settings.loadedMore(newItems);
@@ -325,7 +325,7 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 						}
 					});
 
-					$.waypoints('refresh');
+					Waypoint.refreshAll();
 				}
 			}
 
@@ -566,7 +566,7 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 
 		return $grids;
 	};
-})(jQuery, Modernizr);
+})(jQuery, Modernizr, Waypoint);
 (function($) {
 	var $document = $(document), container, gridContainer;
 
