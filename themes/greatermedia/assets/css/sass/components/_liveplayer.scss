@@ -314,6 +314,10 @@ category: Components
 		padding: 23px 0 0;
 		text-align: center;
 	}
+
+	&.audio__playing {
+		padding-top: 0;
+	}
 }
 
 .live-player--active .live-stream {
@@ -447,6 +451,10 @@ category: Components
 	@include transform(translate(-50%, -50%));
 	font-family: $icon-font !important;
 	content: "\e60b" !important;
+
+	.live-stream.audio__playing & {
+		content: "\e61f" !important;
+	}
 }
 
 .live-stream__container {
@@ -482,27 +490,6 @@ category: Components
 	width: 0;
 	height: 0;
 	padding: 0;
-}
-
-.live-stream--podcast__progress {
-	width: 85%;
-	height: 3px;
-	margin: 0 auto;
-	@include border-radius(1px);
-	background-color: $medium-gray;
-}
-
-.live-stream--podcast__progress-current {
-	float: left;
-	width: 80%;
-	height: 3px;
-	@include border-radius(1px);
-	background-color: $btn-bg;
-}
-
-.live-stream--podcast__time {
-	width: 85%;
-	margin: 0 auto;
 }
 
 .live-stream--podcast__start, .live-stream--podcast__end {
@@ -817,12 +804,64 @@ category: Components
 	color: $primary-link;
 }
 
-// @todo remove when done doing gigya testing
-.live-stream__test {
-	height: 0;
-	overflow: hidden;
-	@include bp(medium) {
-		height: auto;
-		overflow: auto;
+.audio__time {
+	display: none;
+	@include opacity(0);
+	width: 85%;
+	overflow: auto;
+	padding-bottom: 23px;
+	margin: 0 auto;
+	font-size: ms(-3);
+	@include transition(visibility 0s linear 500ms, opacity 1s ease-in-out);
+
+	.podcast-player & {
+		@include fill-parent;
+		padding-bottom: 14px;
 	}
+
+	.podcast-player.podcast-player--compact & {
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		padding-left: 102px;
+	}
+
+	&.playing {
+		display: block;
+		@include opacity(1);
+		@include transition(all 1s ease-in-out);
+	}
+}
+
+.audio__progress-bar {
+	@include fill-parent;
+	position: relative;
+	height: 3px;
+	background-color: $medium-gray;
+	color:#fff;
+	@include border-radius(2px);
+}
+
+.audio__progress {
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: inline-block;
+	height: 3px;
+	background-color: $btn-bg;
+	@include border-radius(2px);
+}
+
+.audio__time--elapsed {
+	float: left;
+	width: 50%;
+	padding-top: 8px;
+	text-align: left;
+}
+
+.audio__time--remaining {
+	float: left;
+	width: 50%;
+	padding-top: 8px;
+	text-align: right;
 }

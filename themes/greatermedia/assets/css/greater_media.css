@@ -4537,6 +4537,8 @@ category: Components
       width: auto;
       padding: 23px 0 0;
       text-align: center; } }
+  .live-stream.audio__playing {
+    padding-top: 0; }
 
 .live-player--active .live-stream {
   width: 100%;
@@ -4719,6 +4721,8 @@ category: Components
   transform: translate(-50%, -50%);
   font-family: "gmr-icons" !important;
   content: "\e60b" !important; }
+  .live-stream.audio__playing .live-stream__btn--pause:before {
+    content: "\e61f" !important; }
 
 .live-stream__container {
   width: 0;
@@ -4755,34 +4759,6 @@ category: Components
   width: 0;
   height: 0;
   padding: 0; }
-
-.live-stream--podcast__progress {
-  width: 85%;
-  height: 3px;
-  margin: 0 auto;
-  -webkit-border-radius: 1px;
-  -moz-border-radius: 1px;
-  -ms-border-radius: 1px;
-  -o-border-radius: 1px;
-  -border-radius: 1px;
-  border-radius: 1px;
-  background-color: #404041; }
-
-.live-stream--podcast__progress-current {
-  float: left;
-  width: 80%;
-  height: 3px;
-  -webkit-border-radius: 1px;
-  -moz-border-radius: 1px;
-  -ms-border-radius: 1px;
-  -o-border-radius: 1px;
-  -border-radius: 1px;
-  border-radius: 1px;
-  background-color: #d22228; }
-
-.live-stream--podcast__time {
-  width: 85%;
-  margin: 0 auto; }
 
 .live-stream--podcast__start, .live-stream--podcast__end {
   float: left;
@@ -5051,13 +5027,78 @@ category: Components
 .live-link__title a:hover, .live-link__title a:focus, .live-link__title a:active {
   color: #d22228; }
 
-.live-stream__test {
-  height: 0;
-  overflow: hidden; }
-  @media screen and (min-width: 768px) {
-    .live-stream__test {
-      height: auto;
-      overflow: auto; } }
+.audio__time {
+  display: none;
+  opacity: 0;
+  filter: alpha(opacity=0);
+  -moz-opacity: 0;
+  -khtml-opacity: 0;
+  zoom: 1;
+  width: 85%;
+  overflow: auto;
+  padding-bottom: 23px;
+  margin: 0 auto;
+  font-size: 0.70233em;
+  -webkit-transition: visibility 0s linear 500ms, opacity 1s ease-in-out;
+  -moz-transition: visibility 0s linear 500ms, opacity 1s ease-in-out;
+  transition: visibility 0s linear 500ms, opacity 1s ease-in-out; }
+  .podcast-player .audio__time {
+    width: 100%;
+    padding-bottom: 14px; }
+  .podcast-player.podcast-player--compact .audio__time {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    padding-left: 102px; }
+  .audio__time.playing {
+    display: block;
+    opacity: 1;
+    filter: alpha(opacity=100);
+    -moz-opacity: 1;
+    -khtml-opacity: 1;
+    zoom: 1;
+    -webkit-transition: all 1s ease-in-out;
+    -moz-transition: all 1s ease-in-out;
+    transition: all 1s ease-in-out; }
+
+.audio__progress-bar {
+  width: 100%;
+  position: relative;
+  height: 3px;
+  background-color: #404041;
+  color: #fff;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -o-border-radius: 2px;
+  -border-radius: 2px;
+  border-radius: 2px; }
+
+.audio__progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: inline-block;
+  height: 3px;
+  background-color: #d22228;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -o-border-radius: 2px;
+  -border-radius: 2px;
+  border-radius: 2px; }
+
+.audio__time--elapsed {
+  float: left;
+  width: 50%;
+  padding-top: 8px;
+  text-align: left; }
+
+.audio__time--remaining {
+  float: left;
+  width: 50%;
+  padding-top: 8px;
+  text-align: right; }
 
 .breaking-news-banner {
   padding: 10px 0; }
@@ -6337,6 +6378,10 @@ category: Components - Shows
   background-size: auto 100%;
   position: relative;
   margin-bottom: 1em; }
+  .podcast-player.playing .podcast__cover {
+    margin-bottom: 4px; }
+  .podcast-player.podcast-player--compact .podcast__cover {
+    margin-bottom: 0; }
 
 .podcast__btn--play,
 .podcast__btn--pause {
@@ -6395,6 +6440,8 @@ category: Components - Shows
 .podcast__runtime {
   padding-top: 0;
   padding-bottom: 1em; }
+  .podcast-player.playing .podcast__runtime {
+    display: none; }
 
 .podcast__meta {
   float: left;
@@ -6525,6 +6572,9 @@ a.podcast__rss:active {
       .podcast__download a {
         width: auto !important;
         margin: 10px 0 !important; } }
+    @media screen and (min-width: 1024px) {
+      .podcast-player.playing .podcast__download a {
+        margin-top: 0 !important; } }
 
 .podcast__download--btn {
   display: inline-block;
@@ -6607,11 +6657,12 @@ a.podcast__rss:active {
 
 .podcast-player--compact {
   position: relative;
+  display: block;
+  width: 92.5%;
   border: 1px solid #d0d2d3;
   border-width: 1px 0;
   margin: 1.5em 0;
-  padding: 1em 0;
-  display: table; }
+  padding: 1em 0; }
   .podcast-player--compact .podcast__play,
   .podcast-player--compact .podcast__meta {
     float: none;
