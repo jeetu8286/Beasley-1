@@ -24,7 +24,7 @@ function gmr_contest_view_entries_link() {
 	$post = get_post();
 	$post_status = get_post_status_object( $post->post_status );
 
-	if ( $post_status->public ) :
+	if ( GMR_CONTEST_CPT == $post->post_type && $post_status->public ) :
 		echo '<div id="contest-entries-link">';
 			echo '<a class="button" href="', admin_url( 'admin.php?page=gmr-contest-winner&contest_id=' . $post->ID ), '">View Entries</a>';
 		echo '</div>';
