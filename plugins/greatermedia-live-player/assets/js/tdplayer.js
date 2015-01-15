@@ -1267,12 +1267,14 @@
 				var $play = $(e.currentTarget);
 
 				playCustomInlineAudio( $play.attr( 'data-mp3-src' ) );
+				$play.animate({volume: 1}, 2000);
 
 				resetInlineAudioStates();
 
 				setCustomAudioMetadata( $play.attr( 'data-mp3-title' ), $play.attr( 'data-mp3-artist' ), $play.attr('data-mp3-hash') );
 			});
 
+			$content.animate({volume: 0}, 2000);
 			$content.on('click', '.podcast__btn--pause', pauseCustomInlineAudio );
 		} else {
 			var $meFallbacks = $('.gmr-mediaelement-fallback audio'),
@@ -1354,6 +1356,20 @@
 		}
 		else {
 			timeline.innerHTML = m + ':' + s;
+		}
+	}
+
+	function fadeOutInlineAudio() {
+		if (true === playingCustomAudio) {
+			customAudio.animate({volume: 0}, 2000);
+			customAudio.pause();
+		}
+	}
+
+	function fadeInInlineAudio() {
+		if (false === playingCustomAudio) {
+			customAudio.play();
+			customAudio.animate({volume: 1}, 2000);
 		}
 	}
 

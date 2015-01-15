@@ -314,6 +314,10 @@ category: Components
 		padding: 23px 0 0;
 		text-align: center;
 	}
+
+	&.audio__playing {
+		padding-top: 0;
+	}
 }
 
 .live-player--active .live-stream {
@@ -486,48 +490,6 @@ category: Components
 	width: 0;
 	height: 0;
 	padding: 0;
-}
-
-.audio__time {
-	display: none;
-	width: 85%;
-	margin: 0 auto;
-	font-size: ms(-3);
-
-	&.playing {
-		display: block;
-	}
-}
-
-.audio__progress-bar {
-	@include fill-parent;
-	position: relative;
-	height: 3px;
-	background-color: $medium-gray;
-	color:#fff;
-	@include border-radius(2px);
-}
-
-.audio__progress {
-	position: absolute;
-	top: 0;
-	left: 0;
-	display: inline-block;
-	height: 3px;
-	background-color: $btn-bg;
-	@include border-radius(2px);
-}
-
-.audio__time--elapsed {
-	float: left;
-	width: 50%;
-	text-align: left;
-}
-
-.audio__time--remaining {
-	float: left;
-	width: 50%;
-	text-align: right;
 }
 
 .live-stream--podcast__start, .live-stream--podcast__end {
@@ -842,12 +804,48 @@ category: Components
 	color: $primary-link;
 }
 
-// @todo remove when done doing gigya testing
-.live-stream__test {
-	height: 0;
-	overflow: hidden;
-	@include bp(medium) {
-		height: auto;
-		overflow: auto;
+.audio__time {
+	display: none;
+	width: 85%;
+	overflow: auto;
+	padding-bottom: 23px;
+	margin: 0 auto;
+	font-size: ms(-3);
+
+	&.playing {
+		display: block;
 	}
+}
+
+.audio__progress-bar {
+	@include fill-parent;
+	position: relative;
+	height: 3px;
+	background-color: $medium-gray;
+	color:#fff;
+	@include border-radius(2px);
+}
+
+.audio__progress {
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: inline-block;
+	height: 3px;
+	background-color: $btn-bg;
+	@include border-radius(2px);
+}
+
+.audio__time--elapsed {
+	float: left;
+	width: 50%;
+	padding-top: 8px;
+	text-align: left;
+}
+
+.audio__time--remaining {
+	float: left;
+	width: 50%;
+	padding-top: 8px;
+	text-align: right;
 }
