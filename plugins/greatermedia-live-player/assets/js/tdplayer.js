@@ -410,9 +410,6 @@
 			showAdBlockDetect();
 			setTimeout(postVastAd, 15000);
 		} else {
-			if ( false === playingCustomAudio) {
-				resetInlineAudioUX();
-			}
 			var station = gmr.callsign;
 			if (station == '') {
 				alert('Please enter a Station');
@@ -450,9 +447,6 @@
 			showAdBlockDetect();
 			setTimeout(postVastAd, 15000);
 		} else {
-			if ( false === playingCustomAudio) {
-				resetInlineAudioUX();
-			}
 			var station = gmr.callsign;
 			if (station == '') {
 				alert('Please enter a Station');
@@ -476,9 +470,6 @@
 
 			setPlayingStyles();
 		} else {
-			if ( false === playingCustomAudio) {
-				resetInlineAudioUX();
-			}
 			var station = gmr.callsign;
 			var vastUrl = gmr.streamUrl;
 			if (station == '') {
