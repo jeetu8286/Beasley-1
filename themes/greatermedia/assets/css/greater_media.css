@@ -698,6 +698,7 @@ img {
   padding: 1.5em 0.809em; }
   @media screen and (min-width: 768px) {
     .content, .gallery__archive {
+      min-height: 800px;
       padding: 3em 3.236em; } }
 
 .live-player {
@@ -2514,12 +2515,6 @@ Community Highlights and Events
       height: 82px;
       border-top: 1px solid #282827; } }
 
-#breaking-news-banner {
-  display: none; }
-  @media screen and (min-width: 768px) {
-    #breaking-news-banner {
-      display: block; } }
-
 .header__logo {
   float: left;
   display: block;
@@ -2576,20 +2571,9 @@ Community Highlights and Events
   line-height: 1; }
   @media screen and (min-width: 1024px) {
     .header__nav {
-      float: left;
       display: block;
-      margin-right: 2.35765%;
-      width: 57.35098%; }
-      .header__nav:last-child {
-        margin-right: 0; } }
-  @media screen and (min-width: 1400px) {
-    .header__nav {
       float: left;
-      display: block;
-      margin-right: 2.35765%;
-      width: 57.35098%; }
-      .header__nav:last-child {
-        margin-right: 0; } }
+      width: auto; } }
 
 .header__secondary {
   position: absolute;
@@ -2600,38 +2584,16 @@ Community Highlights and Events
   @media screen and (min-width: 768px) {
     .header__secondary {
       right: 0;
-      float: left;
-      display: block;
-      margin-right: 3.57866%;
-      width: 35.26334%;
-      margin-right: 0;
       top: auto;
       height: 82px;
+      float: right;
+      width: auto;
+      position: relative;
       -webkit-transform: none;
       -moz-transform: none;
       -ms-transform: none;
       -o-transform: none;
-      transform: none; }
-      .header__secondary:last-child {
-        margin-right: 0; } }
-  @media screen and (min-width: 1024px) {
-    .header__secondary {
-      float: left;
-      display: block;
-      margin-right: 2.35765%;
-      width: 23.23176%;
-      margin-right: 0; }
-      .header__secondary:last-child {
-        margin-right: 0; } }
-  @media screen and (min-width: 1400px) {
-    .header__secondary {
-      float: left;
-      display: block;
-      margin-right: 2.35765%;
-      width: 40.29137%;
-      margin-right: 0; }
-      .header__secondary:last-child {
-        margin-right: 0; } }
+      transform: none; } }
 
 .header__account {
   display: block;
@@ -2645,7 +2607,7 @@ Community Highlights and Events
       width: 64px;
       height: 82px;
       color: #929497; } }
-  @media screen and (min-width: 1400px) {
+  @media screen and (min-width: 1200px) {
     .header__account {
       width: auto; } }
 
@@ -2660,15 +2622,19 @@ Community Highlights and Events
   @media screen and (min-width: 768px) {
     .header__account--small {
       display: block; } }
-  @media screen and (min-width: 1400px) {
+  @media screen and (min-width: 1200px) {
     .header__account--small {
       display: none; } }
 
 .header__account--large {
   display: none; }
-  @media screen and (min-width: 1400px) {
+  @media screen and (min-width: 1200px) {
     .header__account--large {
-      display: block; } }
+      display: block; }
+      .header__account--large .header__account--container {
+        display: none; }
+      .header__account--large.logged-in .header__account--container {
+        display: block; } }
 
 @media screen and (min-width: 768px) {
   .header__account:hover {
@@ -2689,7 +2655,7 @@ Community Highlights and Events
   @media screen and (min-width: 1024px) {
     .header__account--btn {
       font-size: 1.125em; } }
-  @media screen and (min-width: 1400px) {
+  @media screen and (min-width: 1200px) {
     .header__account--btn {
       width: auto;
       padding: 32px 16px; }
@@ -2700,7 +2666,7 @@ Community Highlights and Events
 .header__account--span {
   font-family: "Open Sans", sans-serif;
   color: #d0d2d3; }
-  @media screen and (min-width: 1400px) {
+  @media screen and (min-width: 1200px) {
     .header__account--span {
       font-size: 12.65px;
       padding-left: 12px; } }
@@ -2753,7 +2719,7 @@ Community Highlights and Events
       display: block;
       float: right;
       height: 82px;
-      margin-right: 2em; } }
+      margin-right: 1em; } }
 
 .header__search--span {
   display: none; }
@@ -4222,8 +4188,6 @@ Link posts contain a link to an external site. They can also optionally have a f
     line-height: 1.5;
     letter-spacing: normal; }
   .article__content h1 {
-    font-size: 2.02729em; }
-  .article__content h1 {
     font-size: 1.80203em; }
   .article__content h2 {
     font-size: 1.60181em; }
@@ -4353,7 +4317,17 @@ category: Components
       top: 32px; } }
 
 .live-player--init {
-  position: absolute; }
+  position: absolute;
+  left: auto;
+  bottom: auto; }
+
+.live-player--mobile {
+  position: fixed !important;
+  top: auto !important;
+  bottom: 0 !important;
+  right: 0 !important;
+  left: 0 !important;
+  height: auto !important; }
 
 .live-player--open .page-wrap:before {
   position: absolute;
@@ -4540,11 +4514,13 @@ category: Components
   color: #929497; }
 
 .live-player__container {
-  overflow: hidden; }
+  overflow: hidden;
+  border-bottom: 1px solid #282827; }
   @media screen and (min-width: 768px) {
     .live-player__container {
       padding: 20px 0 0;
-      overflow: visible; } }
+      overflow: visible;
+      border-bottom: none; } }
 
 .live-stream {
   float: right;
@@ -4983,7 +4959,6 @@ category: Components
 .live-links {
   display: none;
   padding: 16px 0 0;
-  border-top: 1px solid #282827;
   text-align: center; }
   @media screen and (min-width: 768px) {
     .live-links {
@@ -4993,12 +4968,14 @@ category: Components
       padding-left: 1em;
       margin: 0;
       overflow: hidden;
-      overflow-y: scroll; } }
+      overflow-y: scroll;
+      border-top: 1px solid #282827; } }
 
 .live-player--open .live-links {
   display: block;
+  height: auto !important;
   max-height: 48vh;
-  padding-top: 52px;
+  margin-top: 43px;
   overflow: hidden;
   overflow-y: scroll; }
   @media screen and (min-width: 480px) {
@@ -5082,9 +5059,45 @@ category: Components
       height: auto;
       overflow: auto; } }
 
-.breaking-news {
-  width: 100%;
-  overflow: auto; }
+.breaking-news-banner {
+  padding: 10px 0; }
+
+.breaking-news-banner__inner {
+  padding: 0 20px;
+  margin: 0 auto;
+  max-width: 1400px;
+  font-size: 14px;
+  line-height: 22px; }
+  @media screen and (min-width: 480px) {
+    .breaking-news-banner__inner {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      height: 22px; } }
+  @media screen and (min-width: 768px) {
+    .breaking-news-banner__inner {
+      font-size: 15px; } }
+  @media screen and (min-width: 1024px) {
+    .breaking-news-banner__inner {
+      font-size: 16px;
+      padding: 0 1.618em; } }
+
+.breaking-news-banner__title {
+  color: #f5ed7f;
+  text-transform: uppercase; }
+
+.breaking-news-banner__excerpt {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  height: 22px; }
+  @media screen and (min-width: 480px) {
+    .breaking-news-banner__excerpt {
+      display: inline; } }
+
+a:hover .breaking-news-banner {
+  color: #f5ed7f; }
 
 /*doc
 ---
@@ -6192,10 +6205,17 @@ category: Components - Shows
   float: left;
   display: block;
   margin-right: 2.35765%;
-  width: 14.70196%;
-  margin-top: 4px; }
+  width: 31.76157%; }
   .podcast__play:last-child {
     margin-right: 0; }
+  @media screen and (min-width: 1024px) {
+    .podcast__play {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 14.70196%; }
+      .podcast__play:last-child {
+        margin-right: 0; } }
 
 .podcast__cover {
   width: 100%;
@@ -6204,7 +6224,8 @@ category: Components - Shows
   background-repeat: no-repeat;
   background-position: center top;
   background-size: auto 100%;
-  position: relative; }
+  position: relative;
+  margin-bottom: 1em; }
 
 .podcast__btn--play,
 .podcast__btn--pause {
@@ -6260,20 +6281,39 @@ category: Components - Shows
   .podcast__btn--pause.playing {
     display: block; }
 
+.podcast__runtime {
+  padding-top: 0;
+  padding-bottom: 1em; }
+
 .podcast__meta {
   float: left;
   display: block;
   margin-right: 2.35765%;
-  width: 74.41059%; }
+  width: 65.88078%;
+  margin-right: 0;
+  padding-left: 1em; }
   .podcast__meta:last-child {
     margin-right: 0; }
-  .podcast__meta h3 {
-    margin: 10px 0 15px; }
+  @media screen and (min-width: 1024px) {
+    .podcast__meta {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 82.94039%;
+      margin-right: 0; }
+      .podcast__meta:last-child {
+        margin-right: 0; } }
 
 .podcast__title {
-  margin: 20px 0 26px;
-  line-height: 1;
-  font-size: 1.80203em; }
+  font-size: 1.42383em;
+  line-height: 1.25;
+  margin: 0;
+  clear: left; }
+  @media screen and (min-width: 1024px) {
+    .podcast__title {
+      margin: 20px 0 26px;
+      line-height: 1;
+      font-size: 1.80203em; } }
 
 .podcast__parent {
   margin-bottom: 10px; }
@@ -6284,6 +6324,9 @@ category: Components - Shows
 
 .podcast__date {
   font-size: 0.79012em;
+  line-height: 1;
+  float: left;
+  margin-bottom: 10px;
   color: #929497;
   text-transform: uppercase; }
 
@@ -6361,9 +6404,16 @@ a.podcast__rss:active {
 
 .podcast__download {
   width: 100%;
-  padding-top: 1em;
+  padding-top: 0;
   margin: 0 auto;
   text-align: center; }
+  .podcast__download a {
+    width: 100% !important;
+    margin: 0 0 10px !important; }
+    @media screen and (min-width: 1024px) {
+      .podcast__download a {
+        width: auto !important;
+        margin: 10px 0 !important; } }
 
 .podcast__download--btn {
   display: inline-block;
@@ -6515,6 +6565,12 @@ a.podcast__rss:active {
     .podcast-player--compact .podcast-player {
       max-width: 60%; } }
 
+@media screen and (min-width: 768px) {
+  .single-show .content {
+    padding: 1.5em 0.809em; } }
+@media screen and (min-width: 1200px) {
+  .single-show .content {
+    padding: 3em 3.236em; } }
 .single-show .featured__content {
   margin: 0.75em 0 1em; }
 .single-show .featured__content--block {
@@ -6565,6 +6621,8 @@ a.podcast__rss:active {
   border-bottom: none;
   padding: 0;
   margin-bottom: 3em; }
+.single-show .highlights__events .highlights__heading {
+  display: block; }
 @media screen and (min-width: 1024px) {
   .single-show .highlights__community, .single-show .highlights__events {
     padding-top: 0; } }
@@ -6573,11 +6631,12 @@ a.podcast__rss:active {
   color: #929497; }
 .single-show .highlights__event--item {
   background-color: #F1F1F3; }
+  .single-show .highlights__event--item .highlights__event--title, .single-show .highlights__event--item .highlights__event--date {
+    color: #404041; }
+  .single-show .highlights__event--item .highlights__event--title:hover {
+    color: #aa1c20; }
 .single-show .highlights__community--item:hover .highlights__community--title {
   color: #f5ed7f; }
-@media screen and (min-width: 1024px) {
-  .single-show .inner-left-col {
-    padding-right: 25px; } }
 .single-show .entry2__meta {
   float: none !important;
   width: auto !important; }
@@ -6930,16 +6989,25 @@ category: Components - Shows
   font-size: 1.125em; }
 @media screen and (min-width: 1024px) {
   .show__blogroll {
+    width: 100%;
+    padding-right: 330px; } }
+@media screen and (min-width: 1200px) {
+  .show__blogroll {
     float: left;
     display: block;
     margin-right: 2.35765%;
-    width: 65.88078%; }
+    width: 65.88078%;
+    padding-right: 25px; }
     .show__blogroll:last-child {
       margin-right: 0; } }
 
 .inner-right-col {
   float: none; }
   @media screen and (min-width: 1024px) {
+    .inner-right-col {
+      float: right;
+      width: 300px; } }
+  @media screen and (min-width: 1200px) {
     .inner-right-col {
       float: left;
       display: block;
@@ -7031,6 +7099,25 @@ category: Components - Shows
   .more-btn:hover {
     color: #aa1c20;
     border: 1px solid #aa1c20; }
+
+.show__paging {
+  clear: both;
+  width: 100%;
+  font-size: 0.88889em;
+  margin: 0 0 1.5em;
+  text-align: center; }
+  .show__paging .page-numbers {
+    display: none; }
+    .show__paging .page-numbers.next, .show__paging .page-numbers.prev {
+      display: inline; }
+  .show__paging .prev {
+    float: left;
+    width: 50%;
+    text-align: left; }
+  .show__paging .next {
+    float: right;
+    width: 50%;
+    text-align: right; }
 
 .widget--live-player {
   margin: 0 1em 1em; }
@@ -8717,7 +8804,7 @@ category: Components - Shows
     clear: both; }
 
 .personality {
-  padding: 1.5em 3em;
+  padding: 1.5em;
   margin-bottom: 2em;
   position: relative;
   display: block; }
@@ -8728,6 +8815,9 @@ category: Components - Shows
     clear: both; }
   .personality.open {
     background-color: #d0d2d3; }
+  @media screen and (min-width: 768px) {
+    .personality {
+      padding: 1.5em 3em; } }
 
 .personality__avatar {
   float: left;
@@ -8759,20 +8849,25 @@ category: Components - Shows
 .personality__meta {
   float: none;
   width: auto;
-  height: 10em;
-  overflow: hidden;
   transition: all 100ms ease-out 0s; }
-  .personality.open .personality__meta {
-    overflow: visible;
-    height: auto; }
+  .personality__meta p + p {
+    display: none; }
+    .personality.open .personality__meta p + p {
+      display: block; }
+  .personality__meta .more-btn {
+    right: auto;
+    bottom: auto;
+    position: relative;
+    left: 0; }
+  .personality__meta.not-has-hidden .more-btn {
+    display: none; }
   @media screen and (min-width: 768px) {
     .personality__meta {
       float: left;
       display: block;
       margin-right: 2.35765%;
       width: 74.41059%;
-      margin-right: 0;
-      height: 12em; }
+      margin-right: 0; }
       .personality__meta:last-child {
         margin-right: 0; } }
 
@@ -8781,10 +8876,6 @@ category: Components - Shows
   width: 100%;
   text-align: center;
   padding-top: 1em; }
-  .personality__btn .more-btn {
-    right: auto;
-    bottom: auto;
-    position: relative; }
 
 /*doc
 ---
@@ -10654,6 +10745,114 @@ category: Components - Article
 .related-post:hover .related-post__title,
 .related-post:hover .related-post__date {
   color: #f5ed7f; }
+
+.error__background {
+  background: url("../../images/404.jpg") center top no-repeat #000000;
+  position: relative;
+  background-position: center center;
+  background-size: 100%;
+  background-size: cover; }
+  .error__background:after {
+    content: '';
+    display: block;
+    padding-top: 30%; }
+
+.error {
+  margin: .125em 0 4.5em; }
+
+.error__title {
+  margin: 0;
+  line-height: 1;
+  font-size: 1.60181em; }
+
+.error__title--span {
+  color: #d22228; }
+
+.error__content {
+  margin-top: 1.33em;
+  font-size: 1.125em; }
+
+/*doc
+---
+title: Mobile Podcats
+name: mobile-podcasts
+category: Components
+---
+
+```html_example
+<article class="post-278038 episode type-episode status-publish hentry cf podcast" id="post-278038">
+	<div class="podcast-player">
+		<div class="podcast__play mp3-ecf1b0c62f7add40fb28e33ac6c54a07">
+			<div class="podcast__cover" style="background-image: url(http://beta.wmgk.com/wp-content/uploads/sites/2/2014/12/JDB_Show-0011.jpg);">
+				<button class="podcast__btn--play" data-mp3-artist="John DeBella Show" data-mp3-hash="ecf1b0c62f7add40fb28e33ac6c54a07" data-mp3-src="http://beta.wmgk.com/wp-content/uploads/sites/2/2015/01/John_DeBella_Jim_Breuer_12_22_14.mp3" data-mp3-title="Comedian Jim Breuer In Our Stocking"></button><button class="podcast__btn--pause"></button>
+			</div><span class="podcast__runtime">3:37</span>
+
+			<div class="podcast__download">
+				<a class="podcast__download--btn" href="http://beta.wmgk.com/wp-content/uploads/sites/2/2015/01/John_DeBella_Jim_Breuer_12_22_14.mp3">Download</a>
+				<a class="podcast__subscribe show-mobile" href="https://itunes.apple.com/us/podcast/john-debella/id599173693?i=162599399&amp;mt=2" target="_blank">Subscribe in iTunes</a>
+				<a class="podcast__rss show-mobile" href="http://beta.wmgk.com/?feed=podcast&amp;podcast_series=john-debella-show" target="_blank">Podcast Feed</a>
+			</div>
+		</div>
+
+		<div class="podcast__meta">
+			<time class="podcast__date" datetime="2015-01-08T20:27:37+00:00">January 8</time>
+
+			<h3 class="podcast__title">Comedian Jim Breuer In Our Stocking</h3>
+
+			<div class="podcast__parent--title podcast__parent--title--mobile show-mobile">
+					John DeBella Show
+			</div>
+
+			<div class="podcast__parent hide-mobile">
+				<div class="podcast__parent--title">
+					John DeBella Show
+				</div>
+				<a class="podcast__subscribe" href="https://itunes.apple.com/us/podcast/john-debella/id599173693?i=162599399&amp;mt=2" target="_blank">Subscribe in iTunes</a>
+				<a class="podcast__rss" href="http://beta.wmgk.com/?feed=podcast&amp;podcast_series=john-debella-show" target="_blank">Podcast Feed</a>
+			</div>
+
+			<div class="podcast__desc">
+				He joined us right off the bat for this Christmas week in December, and comedian Jim Breuer has been getting very festive with his family back home. Today he told us about his kid’s relationship with Santa, imagined what Ozzy would be like as Old St. Nick, and accidentally touched a sore spot of John’s!…
+			</div>
+		</div>
+
+		<div class="gmr-mediaelement-fallback">
+			<!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+			<audio class="wp-audio-shortcode" controls="controls" id="audio-278038-1" preload="none" style="width: 100%; visibility: hidden;">
+			<source src="http://beta.wmgk.com/wp-content/uploads/sites/2/2015/01/John_DeBella_Jim_Breuer_12_22_14.mp3?_=1" type="audio/mpeg"><a href="http://beta.wmgk.com/wp-content/uploads/sites/2/2015/01/John_DeBella_Jim_Breuer_12_22_14.mp3">http://beta.wmgk.com/wp-content/uploads/sites/2/2015/01/John_DeBella_Jim_Breuer_12_22_14.mp3</a></audio>
+		</div>
+	</div>
+</article>
+```
+*/
+.podcast .hide-mobile {
+  display: none !important; }
+  @media screen and (min-width: 1024px) {
+    .podcast .hide-mobile {
+      display: block !important; } }
+.podcast .show-mobile {
+  display: block !important; }
+  @media screen and (min-width: 1024px) {
+    .podcast .show-mobile {
+      display: none !important; } }
+
+.song__archive {
+  list-style: none; }
+  .song__archive li {
+    position: relative;
+    margin-bottom: 1em; }
+  .song__archive .icon-music:before {
+    position: absolute;
+    left: -30px; }
+  .song__archive .song__title, .song__archive .song__artist {
+    display: block;
+    margin: 0px;
+    font-family: "Open Sans",sans-serif;
+    font-size: 0.88889em; }
+  .song__archive .song__title {
+    margin-bottom: 6px;
+    font-size: 1em;
+    font-weight: bold; }
 
 /**
  * Single Page Styles
