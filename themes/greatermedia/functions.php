@@ -527,3 +527,24 @@ function greatermedia_remove_custom_fields() {
 
 }
 add_action( 'init' , 'greatermedia_remove_custom_fields', 10 );
+
+function add_google_analytics() {
+	?>
+	<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	ga('create', 'UA-58625709-1', 'auto');
+
+	
+	if( is_gigya_user_logged_in() ) {
+		ga( 'set', '&uid', get_gigya_user_id() );
+	}
+
+	ga('send', 'pageview');
+	</script>
+	<?php
+}
+add_action( 'wp_head' , 'add_google_analytics' );
