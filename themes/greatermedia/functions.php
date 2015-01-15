@@ -543,7 +543,7 @@ function add_google_analytics() {
 		ga( 'set', '&uid', get_gigya_user_id() );
 	}
 
-	$(document).on('pjax:end', function() {
+	jQuery(document).on('pjax:end', function() {
 		ga('send', 'pageview');
 	});
 	</script>
