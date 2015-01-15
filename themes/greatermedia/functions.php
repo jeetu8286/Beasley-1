@@ -547,6 +547,7 @@ function add_google_analytics() {
 	jQuery(document).on('pjax:end', function() {
 		ga('send', 'pageview');
 	});
+	ga('send', 'pageview');
 	</script>
 	<?php
 }
