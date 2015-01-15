@@ -38,7 +38,7 @@ get_header(); ?>
 			<?php if ( have_posts() ) : ?>
 
 				<?php get_template_part( 'partials/loop', 'gmr_closure' ); ?>
-				<?php greatermedia_load_more_button( array( 'partial_slug' => 'partials/loop', 'auto_load' => true ) ); ?>
+				<?php greatermedia_load_more_button( array( 'partial_slug' => 'partials/loop', 'partial_name' => 'gmr_closure', 'auto_load' => true ) ); ?>
 				<?php get_template_part( 'partials/pagination' ); ?>
 				
 			<?php else : ?>
