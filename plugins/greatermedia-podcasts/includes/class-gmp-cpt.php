@@ -49,7 +49,7 @@ class GMP_CPT {
 		$labels = array(
 			'name'                => _x( 'Podcasts', 'Post Type General Name', 'gmpodcasts' ),
 			'singular_name'       => _x( 'Podcast', 'Post Type Singular Name', 'gmpodcasts' ),
-			'menu_name'           => __( 'Podcast/Episode', 'gmpodcasts' ),
+			'menu_name'           => __( 'Podcast', 'gmpodcasts' ),
 			'parent_item_colon'   => __( 'Parent Item:', 'gmpodcasts' ),
 			'all_items'           => __( 'Podcasts', 'gmpodcasts' ),
 			'view_item'           => __( 'View Podcast', 'gmpodcasts' ),
@@ -106,7 +106,7 @@ class GMP_CPT {
 		$labels = array(
 			'name'                => _x( 'Episodes', 'Post Type General Name', 'gmpodcasts' ),
 			'singular_name'       => _x( 'Episode', 'Post Type Singular Name', 'gmpodcasts' ),
-			'menu_name'           => __( 'Podcast/Episode', 'gmpodcasts' ),
+			'menu_name'           => __( 'Podcast', 'gmpodcasts' ),
 			'parent_item_colon'   => __( 'Parent Item:', 'gmpodcasts' ),
 			'all_items'           => __( 'Episodes', 'gmpodcasts' ),
 			'view_item'           => __( 'View Episode', 'gmpodcasts' ),
