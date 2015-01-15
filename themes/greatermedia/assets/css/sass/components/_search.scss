@@ -69,6 +69,11 @@
 	width: 14px;
 	background-color: transparent;
 	color: $secondary-heading;
+
+	&:hover, &:focus {
+		color: $primary-link;
+	}
+
 	@include bp(medium) {
 		width: 10%;
 		height: 100px;
@@ -222,7 +227,24 @@ body.search-results .posts-pagination {
 	.keyword-search-item {
 		border-bottom: 1px solid $extra-light-gray; 
 		padding: 1em 0;
-	}		
+		color: $color-text-black;
+	}
+		.keyword-search-item__article {
+			color: $primary-link;
+		}
+
+		// Hover states
+		a:hover,
+		a:focus {
+			.keyword-search-item {
+				background: $cardinal;
+			}
+			.keyword-search-item__keyword,
+			.keyword-search-item__article {
+				color: $white;
+			}
+		}
+
 		// at larger breakpoints
 		@include bp(medium) {
 			.keyword-search-item__keyword {
