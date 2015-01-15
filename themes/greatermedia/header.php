@@ -71,28 +71,22 @@
 			</nav>
 			<div id="header__search--form" class="header__search--form">
 				<?php get_template_part( 'searchform', 'header' ); ?>
-				<script type='text/template'>
-					<div class='keyword-search'>				
-						<div class='keyword-search__header'>
-							3 keyword matches found
-						</div>
-					
-						<div class='keyword-search-item'>
-							<div class='keyword-search-item__keyword'>Keyword: <strong>Test</strong></div>
-							<div class='keyword-search-item__article'><a href='http://example.com/'>This is the article title</a></div> 
-						</div>
-						<div class='keyword-search-item'>
-							<div class='keyword-search-item__keyword'>Keyword: <strong>Test</strong></div>
-							<div class='keyword-search-item__article'><a href='http://example.com/'>This is the article title</a></div> 
-						</div>
-						<div class='keyword-search-item'>
-							<div class='keyword-search-item__keyword'>Keyword: <strong>Test</strong></div>
-							<div class='keyword-search-item__article'><a href='http://example.com/'>This is the article title</a></div> 
-						</div>
-						
+				<div id="keyword-search-container"></div>
+				<script type='text/template' id="keyword-search-body-template">
+					<div class='keyword-search'>
+						<div class='keyword-search__header'></div>
+
+						<div class='keyword-search__items'></div>
+
 						<div class='keyword-search__footer'>
-							<a class='keyword-search__btn' href='#'>Search All Content</a>
-						</div>				
+							<button class='keyword-search__btn' href='#'>Search All Content</button>
+						</div>
+					</div>
+				</script>
+				<script type="text/template" id="keyword-search-item-template">
+					<div class='keyword-search-item'>
+						<div class='keyword-search-item__keyword'>Keyword: <strong><%= keyword %></strong></div>
+						<div class='keyword-search-item__article'><a href='http://example.com/'><%= title %></a></div>
 					</div>
 				</script>
 			</div>
