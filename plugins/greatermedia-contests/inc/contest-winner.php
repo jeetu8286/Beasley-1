@@ -22,10 +22,13 @@ add_filter( 'parent_file', 'gmr_contests_adjust_winners_page_admin_menu' );
  */
 function gmr_contest_view_entries_link() {
 	$post = get_post();
-	
-	echo '<div id="contest-entries">';
-		echo '<a href="', admin_url( 'admin.php?page=gmr-contest-winner&contest_id=' . $post->ID ), '">View Entries</a>';
-	echo '</div>';
+	$post_status = get_post_status_object( $post->post_status );
+
+	if ( $post_status->public ) :
+		echo '<div id="contest-entries-link">';
+			echo '<a class="button" href="', admin_url( 'admin.php?page=gmr-contest-winner&contest_id=' . $post->ID ), '">View Entries</a>';
+		echo '</div>';
+	endif;
 }
 
 /**
@@ -201,7 +204,7 @@ class GMR_Contest_Entries_Table extends WP_Posts_List_Table {
 
 		if ( $which == 'top' ) :
 			?><div class="alignleft actions">
-				<input type="text" name="random" size="3" value="<?php echo esc_attr( $random ); ?>">
+				<input type="text" name="random" size="3" value="<?php echo ! empty( $random ) ? esc_attr( $random ) : 1; ?>">
 				<?php submit_button( 'Random Entries', 'button', 'get_random', false ); ?>
 				<?php if ( $random ) : ?>
 					<?php submit_button( 'All Entries', 'apply', 'get_all', false ); ?>
