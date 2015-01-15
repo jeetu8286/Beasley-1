@@ -21,13 +21,24 @@ class GreaterMediaKeywordAutocomplete {
 			, GMKEYWORDS_VERSION
 		);
 
-		$keywords = GreaterMedia_Keyword_Admin::get_keyword_options( GreaterMedia_Keyword_Admin::$plugin_slug . '_option_name' );
-		if( is_array( $keywords ) ) {
-			$keywords_array = array();
-			foreach( $keywords as $keyword ) {
-				array_push( $keywords_array, $keyword['keyword'] );
-			}
+		$keywords = (array) GreaterMedia_Keyword_Admin::get_keyword_options( GreaterMedia_Keyword_Admin::$plugin_slug . '_option_name' );
+		
+		$keywords_array = array(); 
+
+		// Generate the keyword list for use by the search script. Note that we
+		// are getting fresh title and permalink data in case a post's title or
+		// URL has changed since the last time the keywords were updated.
+		foreach( $keywords as $keyword ) {
+			$keywords_array[] = array(
+				'keyword' => $keyword['keyword'],
+				'id' => (int) $keyword['post_id'],
+				'title' => get_the_title( $keyword['post_id'] ),
+				'url' => get_permalink( $keyword['post_id'] ),
+			);
 		}
+
+		// Cap the list for safety.
+		$keywords_array = array_slice( $keywords_array, 0, 100 );
 
 		wp_localize_script(
 			GreaterMedia_Keyword_Admin::$plugin_slug . '-autocomplete-script'
