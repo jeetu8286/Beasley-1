@@ -359,6 +359,11 @@ category: Components
 	margin-right: 0;
 	font-weight: 700;
 	z-index: 1;
+
+	.audio__playing & {
+		padding: .75em 2.5em;
+		@include transition-delay(1s);
+	}
 }
 
 .live-stream__now-playing--btn {

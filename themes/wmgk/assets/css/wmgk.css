@@ -4606,6 +4606,8 @@ category: Components
     color: #ffffff; }
   .live-stream__listen-now--btn:last-of-type, .podcast__subscribe:last-of-type {
     margin-right: 0; }
+  .audio__playing .live-stream__listen-now--btn, .audio__playing .podcast__subscribe {
+    padding: 1em 2.5em; }
 
 .live-stream__now-playing--btn {
   display: inline-block;
