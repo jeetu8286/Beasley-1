@@ -712,6 +712,13 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 				
 				if (response.success) {
 					container.html(response.data.html);
+
+					$('#contest-form form').parsley({
+						classHandler: function(field) {
+							console.log(arguments);
+						}
+					});
+					
 					$('.type-contest.collapsed').removeClass('collapsed');
 				} else {
 					restriction = response.data.restriction;
