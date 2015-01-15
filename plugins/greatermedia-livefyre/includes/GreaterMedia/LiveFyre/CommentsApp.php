@@ -29,7 +29,7 @@ class CommentsApp {
 	}
 
 	function needs_collection_config() {
-		if ( is_single() ) {
+		if ( $this->is_livefyre_configured() && is_single() ) {
 			$post = $this->get_current_post();
 			return ! is_null( $post ) && post_type_supports( $post->post_type, 'comments' );
 		} else {
@@ -114,7 +114,7 @@ class CommentsApp {
 	function get_livefyre_option( $name ) {
 		$options = $this->get_livefyre_options();
 
-		if ( array_key_exists( $name, $options ) ) {
+		if ( $options !== false && array_key_exists( $name, $options ) ) {
 			return $options[ $name ];
 		} else {
 			return '';
