@@ -537,7 +537,7 @@ class GMedia_Migration extends WP_CLI_Command {
 		$old_filename = $upload_dir . '/wp-content/uploads/' . $filename;
 
 		if( !$this->check_file( $old_filename ) ) {
-			if( strpos( $this->site_url,'wmgk' ) ) {
+			if( strpos( $this->site_url,'wmgk' ) !== false ) {
 				$old_filename = 'http://media.wmgk.com/' . $filename;
 			} else {
 				$old_filename = trailingslashit( $this->site_url ) . $filename;
