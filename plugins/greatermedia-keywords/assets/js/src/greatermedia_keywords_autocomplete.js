@@ -1,7 +1,7 @@
 // Silence jslint warning about _ being undefined.
 /*global _ */
 
-(function ( window, undefined ) {
+jQuery( function ( $ ) {
 	'use strict';
 
 	function Keyword_Search( keywords ) {
@@ -28,55 +28,58 @@
 		return search_term.trim().toLowerCase().replace( /[^a-z0-9]+/g, '' );
 	};
 
-	jQuery( function ( $ ) {
-		// Wire things together.
-		var max_results = 6;
-		var search = new Keyword_Search( GMRKeywords );
-		var $search_field = $( '#header-search' );
+	function handle_search_field_change() {
+		var items = search.search( $search_field.val() );
 
-		var item_template = _.template( $( '#keyword-search-item-template' ).html() );
-		var body_template = _.template( $( '#keyword-search-body-template' ).html() );
+		// Bail if we don't have any items, and make sure the container is hidden.
+		if ( ! items || ! items.length ) {
+			$container.hide();
+			return;
+		}
 
-		// Add the body to the page, making sure the container is hidden.
-		var $container = $( '#keyword-search-container' );
-		$container.hide();
-		$container.append( $( body_template() ) );
+		// Trim results
+		items = items.slice( 0, max_results );
 
-		// Reference header and item list for later.
-		var $header = $container.find( '.keyword-search__header' );
-		var $item_list = $container.find( '.keyword-search__items' );
+		// Update header.
+		$header.html( items.length > 1 ? items.length + ' keyword matches found' : '1 keyword match found' );
 
-		// Hook up the button.
-		$container.find( '.keyword-search__btn' ).click( function() {
-			$( '#header-search' ).parent( 'form' ).submit();
+		// Update the item list.
+		$item_list.empty();
+		_.each( items, function ( item ) {
+			$item_list.append( $( item_template( item ) ) );
 		} );
 
-		// Hook up the search field.
-		$search_field.on( 'keyup', function () {
+		// Display the container.
+		$container.show();
+	}
 
-			var items = search.search( $( this ).val() );
+	// Wire things together.
+	var max_results = 6;
+	var search = new Keyword_Search( GMRKeywords );
+	var $search_field = $( '#header-search' );
 
-			// Bail if we don't have any items, and make sure the container is hidden.
-			if ( ! items || ! items.length ) {
-				$container.hide();
-				return;
-			}
+	var item_template = _.template( $( '#keyword-search-item-template' ).html() );
+	var body_template = _.template( $( '#keyword-search-body-template' ).html() );
 
-			// Trim results
-			items = items.slice( 0, max_results );
+	// Add the body to the page, making sure the container is hidden.
+	var $container = $( '#keyword-search-container' );
+	$container.hide();
+	$container.append( $( body_template() ) );
 
-			// Update header.
-			$header.html( items.length > 1 ? items.length + ' keyword matches found' : '1 keyword match found' );
+	// Reference header and item list for later.
+	var $header = $container.find( '.keyword-search__header' );
+	var $item_list = $container.find( '.keyword-search__items' );
 
-			// Update the item list.
-			$item_list.empty();
-			_.each( items, function ( item ) {
-				$item_list.append( $( item_template( item ) ) );
-			} );
-
-			// Display the container.
-			$container.show();
-		} );
+	// Hook up the button.
+	$container.find( '.keyword-search__btn' ).click( function() {
+		$( '#header-search' ).parent( 'form' ).submit();
 	} );
 
-})( this );
+	// Hook up the search field handler.
+	$search_field.on( 'keyup', handle_search_field_change );
+
+	// Finally, run at least once whenever the search field is opened.
+	$search_field.one( 'focus', function() {
+		handle_search_field_change();
+	});
+} );
