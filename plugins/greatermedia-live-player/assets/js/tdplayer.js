@@ -186,6 +186,7 @@
 
 		playBtn.style.display = 'block';
 		pauseBtn.style.display = 'none';
+		resumeBtn.style.display = 'none';
 		listenNow.style.display = 'inline-block';
 		loginListen.style.display = 'none';
 		nowPlaying.style.display = 'none';
@@ -205,13 +206,29 @@
 		resumeBtn.style.display = 'block';
 	}
 
+	var listenLiveStopCustomInlineAudio = function() {
+		if (true === playingCustomAudio) {
+			customAudio.pause();
+			resetInlineAudioStates();
+			playingCustomAudio = false;
+			setStoppedStyles();
+		}
+		if (Cookies.get('gmr_play_live_audio') == 1) {
+			playLiveStream();
+		} else {
+			playLiveStreamWithPreRoll();
+		}
+	};
+
 	function changePlayerState() {
 		if (is_gigya_user_logged_in()) {
-			if (playBtn != null) {
+			if (playBtn != null && Cookies.get('gmr_play_live_audio') == 1) {
 				addEventHandler(playBtn, elemClick, playLiveStream);
+			} else if (playBtn != null) {
+				addEventHandler(playBtn, elemClick, playLiveStreamWithPreRoll);
 			}
 			if (listenNow != null) {
-				addEventHandler(listenNow, elemClick, resumeLiveStream);
+				addEventHandler(listenNow, elemClick, listenLiveStopCustomInlineAudio);
 			}
 		} else {
 			if (playBtn != null) {
@@ -252,9 +269,11 @@
 	function postVastAd() {
 		var preRoll = document.getElementById('live-stream__container');
 
-		if(preRoll != null) {
+		if (preRoll != null) {
 			preRoll.classList.remove('vast__pre-roll');
 		}
+		Cookies('gmr_play_live_audio', undefined);
+		Cookies('gmr_play_live_audio', 1, {expires: 86400});
 	}
 
 	function streamVastAd() {
