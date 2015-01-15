@@ -6783,8 +6783,7 @@ a.podcast__rss:active {
 
 .podcast-player--compact {
   position: relative;
-  display: block;
-  width: 92.5%;
+  display: table;
   border: 1px solid #d0d2d3;
   border-width: 1px 0;
   margin: 1.5em 0;
