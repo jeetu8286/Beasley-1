@@ -4558,11 +4558,20 @@ category: Components
   display: block; }
 
 .live-stream__status {
-  display: none; }
+  display: none;
+  -webkit-transition: all 1s ease-in-out;
+  -moz-transition: all 1s ease-in-out;
+  transition: all 1s ease-in-out; }
   @media screen and (min-width: 768px) {
     .live-stream__status {
       display: block;
       padding-bottom: 26px; } }
+  .live-stream__status.audio__playing {
+    -webkit-transform: translate(0, -140px);
+    -moz-transform: translate(0, -140px);
+    -ms-transform: translate(0, -140px);
+    -o-transform: translate(0, -140px);
+    transform: translate(0, -140px); }
 
 .live-stream__listen-now--btn, .podcast__subscribe {
   display: inline-block;

@@ -343,9 +343,14 @@ category: Components
 
 .live-stream__status {
 	display: none;
+	@include transition(all 1s ease-in-out);
 	@include bp(medium) {
 		display: block;
 		padding-bottom: 26px;
+	}
+
+	&.audio__playing {
+		@include transform(translate(0, -140px));
 	}
 }
 
