@@ -5267,6 +5267,9 @@ category: Components - Ads
       float: right;
       margin: 0 0 1em 1em; } }
 
+.closures {
+  margin-bottom: 2em; }
+
 .closure {
   border: 1px solid #d0d2d3;
   border-bottom: none;
