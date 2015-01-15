@@ -18,9 +18,12 @@
 	var currentStation = ''; /* String - Current station played */
 
 	var tdContainer = document.getElementById('td_container');
+	var liveStream = document.querySelector('.live-stream');
 	var playBtn = document.getElementById('playButton');
 	var pauseBtn = document.getElementById('pauseButton');
 	var resumeBtn= document.getElementById('resumeButton');
+	var podcastPlayBtn = document.querySelector('.podcast__btn--play');
+	var podcastPauseBtn = document.querySelector('.podcast__btn--pause');
 	var listenNow = document.getElementById('live-stream__listen-now');
 	var nowPlaying = document.getElementById('live-stream__now-playing');
 	var $trackInfo = $(document.getElementById('trackInfo'));
@@ -29,6 +32,9 @@
 	var adBlockCheck = document.getElementById('ad-check');
 	var adBlockClose = document.getElementById('close-adblock');
 	var loginListen = document.getElementById('live-stream__login');
+	var onAir = document.getElementById('on-air');
+	var audioTime = document.getElementById('audio__time');
+	var streamStatus = document.getElementById('live-stream__status');
 
 	/**
 	 * global variables for event types to use in conjunction with `addEventHandler` function
@@ -161,6 +167,10 @@
 			addEventHandler(clearDebug,elemClick,clearDebugInfo);
 		}
 
+		if (nowPlaying != null) {
+			addEventHandler(nowPlaying,elemClick,stopStream);
+		}
+
 	}
 
 	function setPlayingStyles() {
@@ -173,9 +183,16 @@
 		playBtn.style.display = 'none';
 		resumeBtn.style.display = 'none';
 		pauseBtn.style.display = 'block';
-		listenNow.style.display = 'none';
 		loginListen.style.display = 'none';
-		nowPlaying.style.display = 'inline-block';
+		if (true === playingCustomAudio) {
+			nowPlaying.style.display = 'none';
+			listenNow.style.display = 'inline-block';
+		} else {
+			nowPlaying.style.display = 'inline-block';
+			listenNow.style.display = 'none';
+		}
+
+
 	}
 
 	function setStoppedStyles() {
@@ -204,6 +221,42 @@
 		loginListen.style.display = 'none';
 		nowPlaying.style.display = 'none';
 		resumeBtn.style.display = 'block';
+	}
+
+	function setInlineAudioUX() {
+		if (onAir != null) {
+			onAir.style.display = 'none';
+		}
+
+		if (audioTime != null) {
+			audioTime.classList.add('playing');
+		}
+
+		if (streamStatus != null) {
+			liveStream.insertBefore(streamStatus, liveStream.childNodes[0]);
+		}
+
+		if (liveStream != null) {
+			liveStream.classList.add('audio__playing');
+		}
+	}
+
+	function resetInlineAudioUX() {
+		if (onAir != null) {
+			onAir.style.display = 'block';
+		}
+
+		if (audioTime != null && audioTime.classList.contains('playing')) {
+			audioTime.classList.remove('playing');
+		}
+
+		if (streamStatus != null) {
+			liveStream.insertBefore(streamStatus, liveStream.childNodes[3]);
+		}
+
+		if (liveStream != null) {
+			liveStream.classList.remove('audio__playing');
+		}
 	}
 
 	var listenLiveStopCustomInlineAudio = function() {
@@ -333,6 +386,9 @@
 			showAdBlockDetect();
 			setTimeout(postVastAd, 15000);
 		} else {
+			if ( false === playingCustomAudio) {
+				resetInlineAudioUX();
+			}
 			var station = gmr.callsign;
 			if (station == '') {
 				alert('Please enter a Station');
@@ -370,6 +426,9 @@
 			showAdBlockDetect();
 			setTimeout(postVastAd, 15000);
 		} else {
+			if ( false === playingCustomAudio) {
+				resetInlineAudioUX();
+			}
 			var station = gmr.callsign;
 			if (station == '') {
 				alert('Please enter a Station');
@@ -393,6 +452,9 @@
 
 			setPlayingStyles();
 		} else {
+			if ( false === playingCustomAudio) {
+				resetInlineAudioUX();
+			}
 			var station = gmr.callsign;
 			var vastUrl = gmr.streamUrl;
 			if (station == '') {
@@ -1111,6 +1173,7 @@
 		setPlayingStyles();
 		resetInlineAudioStates();
 		setInlineAudioStates();
+		setInlineAudioUX();
 	};
 
 	var playCustomInlineAudio = function( src ) {
@@ -1128,6 +1191,7 @@
 		customAudio.pause();
 		resetInlineAudioStates();
 		setPausedStyles();
+		resetInlineAudioUX();
 	};
 
 	/*
@@ -1139,6 +1203,7 @@
 		resetInlineAudioStates();
 		playingCustomAudio = false;
 		setStoppedStyles();
+		resetInlineAudioUX();
 	};
 
 	var setPlayerTrackName = function() {
@@ -1244,18 +1309,70 @@
 		});
 	}
 
-	function updateAudioProgress() {
-		var progress = document.getElementById('inline-audio__progress');
-		var value = 0;
+	/**
+	 * calculates the time of an inline audio element and outputs the duration as a % displayed in the progress bar
+	 */
+	function audioUpdateProgress() {
+		var progress = document.getElementById('audio__progress'),
+			value = 0;
 		if (customAudio.currentTime > 0) {
 			value = Math.floor((100 / customAudio.duration) * customAudio.currentTime);
 		}
 		progress.style.width = value + "%";
 	}
 
+	/**
+	 * calculates the time of an inline audio element and outputs the time remaining
+	 */
+	function audioTimeRemaining() {
+		var timeleft = document.getElementById('audio__time--remaining'),
+			duration = parseInt(customAudio.duration),
+			currentTime = parseInt(customAudio.currentTime),
+			timeLeft = duration - currentTime,
+			s, m;
+
+
+		s = timeLeft % 60;
+		m = Math.floor( timeLeft / 60 ) % 60;
+
+		s = s < 10 ? "0"+s : s;
+		m = m < 10 ? +m : m;
+
+		timeleft.innerHTML = m+":"+s;
+	}
+
+	/**
+	 * calculates the time of an inline audio element and outputs the time that has elapsed
+	 */
+	function audioTimeElapsed() {
+		var timeline = document.getElementById('audio__time--elapsed'),
+			s = parseInt(customAudio.currentTime % 60),
+			m = parseInt((customAudio.currentTime / 60) % 60);
+
+		if (s < 10) {
+			timeline.innerHTML = m + ':0' + s;
+		}
+		else {
+			timeline.innerHTML = m + ':' + s;
+		}
+	}
+
 	initCustomAudioPlayer();
 	initInlineAudioUI();
-	customAudio.addEventListener('timeupdate', updateAudioProgress, false);
+
+	/**
+	 * event listeners for customAudio time
+	 */
+	customAudio.addEventListener('timeupdate', function(){
+		audioUpdateProgress();
+		audioTimeElapsed();
+		audioTimeRemaining();
+	}, false);
+
+	addEventHandler(podcastPlayBtn,elemClick,setInlineAudioUX);
+
+	addEventHandler(podcastPauseBtn,elemClick,pauseCustomInlineAudio);
+
 	// Ensures our listeners work even after a PJAX load
 	$(document).on( 'pjax:end', function() {
 		initInlineAudioUI();

@@ -447,6 +447,10 @@ category: Components
 	@include transform(translate(-50%, -50%));
 	font-family: $icon-font !important;
 	content: "\e60b" !important;
+
+	.live-stream.audio__playing & {
+		content: "\e61f" !important;
+	}
 }
 
 .live-stream__container {
@@ -484,29 +488,46 @@ category: Components
 	padding: 0;
 }
 
-.inline-audio__progress-bar {
+.audio__time {
+	display: none;
 	width: 85%;
 	margin: 0 auto;
+	font-size: ms(-3);
+
+	&.playing {
+		display: block;
+	}
+}
+
+.audio__progress-bar {
+	@include fill-parent;
 	position: relative;
 	height: 3px;
 	background-color: $medium-gray;
 	color:#fff;
-	@include border-radius(1px);
+	@include border-radius(2px);
 }
 
-.inline-audio__progress {
+.audio__progress {
 	position: absolute;
 	top: 0;
 	left: 0;
-	display:inline-block;
+	display: inline-block;
 	height: 3px;
 	background-color: $btn-bg;
-	@include border-radius(1px);
+	@include border-radius(2px);
 }
 
-.live-stream--podcast__time {
-	width: 85%;
-	margin: 0 auto;
+.audio__time--elapsed {
+	float: left;
+	width: 50%;
+	text-align: left;
+}
+
+.audio__time--remaining {
+	float: left;
+	width: 50%;
+	text-align: right;
 }
 
 .live-stream--podcast__start, .live-stream--podcast__end {
