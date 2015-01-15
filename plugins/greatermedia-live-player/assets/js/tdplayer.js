@@ -288,8 +288,8 @@
 		if (true === playingCustomAudio) {
 			customAudio.pause();
 			resetInlineAudioStates();
+			resetInlineAudioUX();
 			playingCustomAudio = false;
-			setStoppedStyles();
 		}
 		if (Cookies.get('gmr_play_live_audio') == 1) {
 			playLiveStream();
@@ -405,7 +405,6 @@
 		pjaxInit();
 		if ( true === playingCustomAudio ) {
 			resumeCustomInlineAudio();
-			setPlayingStyles();
 		} else if (adBlockCheck == undefined) {
 			preVastAd();
 			showAdBlockDetect();
@@ -427,7 +426,7 @@
 			}
 
 			player.play({station: station, timeShift: true});
-			setPlayingStyles();
+			setTimeout(setPlayingStyles, 1000);
 		}
 	}
 
@@ -467,7 +466,7 @@
 			}
 
 			player.play({station: station, timeShift: true});
-			setPlayingStyles();
+			setTimeout(setPlayingStyles, 1000);
 		}
 	}
 
@@ -506,7 +505,7 @@
 					}
 
 					player.play({station: station, timeShift: true});
-					setPlayingStyles();
+					setTimeout(setPlayingStyles, 1000);
 
 				});
 			} else if (player.attachEvent) {
@@ -519,7 +518,7 @@
 					}
 
 					player.play({station: station, timeShift: true});
-					setPlayingStyles();
+					setTimeout(setPlayingStyles, 1000);
 				});
 			}
 		}

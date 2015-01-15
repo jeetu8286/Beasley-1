@@ -359,6 +359,7 @@ category: Components
 	margin-right: 0;
 	font-weight: 700;
 	z-index: 1;
+	@include transition(all 200ms ease-in-out);
 
 	.audio__playing & {
 		padding: .75em 2.5em;
@@ -370,6 +371,7 @@ category: Components
 	@include btn(transparent, $color-text-red, $btn-bg, .5em, 1em, ms(-1));
 	display: none;
 	font-weight: 700;
+	@include transition(background 200ms ease-in-out);
 }
 
 .live-stream__login {
@@ -378,6 +380,7 @@ category: Components
 	font-weight: 700;
 	font-size: ms(-2);
 	color: $color-text-red;
+	@include transition(all 200ms ease-in-out);
 }
 
 .live-stream__resume {
