@@ -24,6 +24,28 @@ function register_settings() {
 	// Can hook into this to add more post types
 	$homepage_curation_post_types = apply_filters( 'gmr-homepage-curation-post-types', array( 'post', 'tribe_events' ) );
 
+	// Fetch restricted post ids
+	$query = new \WP_Query();
+	$restricted_posts = $query->query( array(
+		'post_type'           => 'any',
+		'post_status'         => 'any',
+		'posts_per_page'      => 50,
+		'ignore_sticky_posts' => true,
+		'no_found_rows'       => true,
+		'fields'              => 'ids',
+		'meta_query'          => array(
+			'relation' => 'OR',
+			array(
+				'key'     => 'post_age_restriction',
+				'compare' => 'EXISTS',
+			),
+			array(
+				'key'     => 'post_login_restriction',
+				'compare' => 'EXISTS',
+			),
+		),
+	) );
+
 	// Homepage Featured
 	$option_name = 'gmr-homepage-featured';
 	$render_args = array(
@@ -31,7 +53,8 @@ function register_settings() {
 		'pf_options' => array(
 			'args' => array(
 				'post_type' => $homepage_curation_post_types,
-				'meta_key' => '_thumbnail_id', // Forces the posts to have a featured image
+				'meta_key'  => '_thumbnail_id', // Forces the posts to have a featured image
+				'exclude'   => $restricted_posts,
 			),
 			'limit' => 4,
 		),
@@ -47,7 +70,8 @@ function register_settings() {
 		'pf_options' => array(
 			'args' => array(
 				'post_type' => $homepage_curation_post_types,
-				'meta_key' => '_thumbnail_id', // Forces the posts to have a featured image
+				'meta_key'  => '_thumbnail_id', // Forces the posts to have a featured image
+				'exclude'   => $restricted_posts,
 			),
 			'limit' => 3,
 		),
