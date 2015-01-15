@@ -92,16 +92,6 @@ class GreaterMediaContests {
 			return $columns;
 		}
 
-		$form = get_post_meta( $contest->ID, 'embedded_form', true );
-		if ( empty( $form ) ) {
-			return $columns;
-		}
-
-		if ( is_string( $form ) ) {
-			$clean_form = trim( $form, '"' );
-			$form = json_decode( $clean_form );
-		}
-
 		unset( $columns['title'], $columns['date'] );
 
 		if ( gmr_contest_has_files( $contest->ID ) ) {
@@ -110,9 +100,6 @@ class GreaterMediaContests {
 		
 		$columns['_gmr_username'] = 'Submitted by';
 		$columns['_gmr_email'] = 'Email';
-//		foreach ( $form as $field ) {
-//			$columns[ "_gmr_form_{$field->cid}" ] = $field->label;
-//		}
 		$columns['_gmr_submitted'] = 'Submitted on';
 
 		return $columns;
