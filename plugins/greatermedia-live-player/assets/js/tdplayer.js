@@ -33,7 +33,8 @@
 	var adBlockCheck = document.getElementById('ad-check');
 	var adBlockClose = document.getElementById('close-adblock');
 	var loginListen = document.getElementById('live-stream__login');
-	var onAir = document.getElementById('on-air');
+	var onAirTitle = document.querySelector('.on-air__title');
+	var onAirShow = document.querySelector('.on-air__show');
 	var streamStatus = document.getElementById('live-stream__status');
 
 	/**
@@ -229,8 +230,12 @@
 
 	function setInlineAudioUX() {
 		var audioTime = document.querySelectorAll('.audio__time'), i;
-		if (onAir != null) {
-			onAir.style.display = 'none';
+		if (onAirTitle != null) {
+			onAirTitle.style.display = 'none';
+		}
+
+		if (onAirShow != null) {
+			onAirShow.style.display = 'none';
 		}
 
 		if (podcastPlayer != null) {
@@ -242,7 +247,7 @@
 		}
 
 		if (streamStatus != null) {
-			liveStream.insertBefore(streamStatus, liveStream.childNodes[0]);
+			streamStatus.classList.add('audio__playing');
 		}
 
 		if (liveStream != null) {
@@ -252,8 +257,12 @@
 
 	function resetInlineAudioUX() {
 		var audioTime = document.querySelectorAll('.audio__time'), i;
-		if (onAir != null) {
-			onAir.style.display = 'block';
+		if (onAirTitle != null) {
+			onAirTitle.style.display = 'block';
+		}
+
+		if (onAirShow != null) {
+			onAirShow.style.display = 'block';
 		}
 
 		if (podcastPlayer != null) {
@@ -267,7 +276,7 @@
 		}
 
 		if (streamStatus != null) {
-			liveStream.insertBefore(streamStatus, liveStream.childNodes[3]);
+			streamStatus.classList.remove('audio__playing');
 		}
 
 		if (liveStream != null) {
