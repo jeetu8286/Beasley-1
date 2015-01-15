@@ -19,6 +19,7 @@
 
 	var tdContainer = document.getElementById('td_container');
 	var liveStream = document.querySelector('.live-stream');
+	var liveStreamPlayer = document.querySelector('.live-stream__player');
 	var playBtn = document.getElementById('playButton');
 	var pauseBtn = document.getElementById('pauseButton');
 	var resumeBtn= document.getElementById('resumeButton');
@@ -246,6 +247,10 @@
 			audioTime[i].classList.add('playing');
 		}
 
+		if (liveStreamPlayer != null) {
+			liveStreamPlayer.classList.add('audio__playing');
+		}
+
 		if (streamStatus != null) {
 			streamStatus.classList.add('audio__playing');
 		}
@@ -273,6 +278,10 @@
 			if (audioTime[i] != null && audioTime[i].classList.contains('playing')) {
 				audioTime[i].classList.remove('playing');
 			}
+		}
+
+		if (liveStreamPlayer != null) {
+			liveStreamPlayer.classList.remove('audio__playing');
 		}
 
 		if (streamStatus != null) {
@@ -410,9 +419,6 @@
 			showAdBlockDetect();
 			setTimeout(postVastAd, 15000);
 		} else {
-			if ( false === playingCustomAudio) {
-				resetInlineAudioUX();
-			}
 			var station = gmr.callsign;
 			if (station == '') {
 				alert('Please enter a Station');
@@ -450,9 +456,6 @@
 			showAdBlockDetect();
 			setTimeout(postVastAd, 15000);
 		} else {
-			if ( false === playingCustomAudio) {
-				resetInlineAudioUX();
-			}
 			var station = gmr.callsign;
 			if (station == '') {
 				alert('Please enter a Station');
@@ -476,9 +479,6 @@
 
 			setPlayingStyles();
 		} else {
-			if ( false === playingCustomAudio) {
-				resetInlineAudioUX();
-			}
 			var station = gmr.callsign;
 			var vastUrl = gmr.streamUrl;
 			if (station == '') {
@@ -1158,10 +1158,6 @@
 		$('#debugInformation').html('');
 	}
 
-
-
-
-
 	/* Inline Audio Support */
 	var stopLiveStreamIfPlaying = function() {
 		if ( "undefined" !== typeof player && "undefined" !== typeof player.stop ) {
@@ -1194,8 +1190,8 @@
 		customAudio.play();
 		setPlayerTrackName();
 		setPlayerArtist();
-		setPlayingStyles();
 		resetInlineAudioStates();
+		setTimeout(setPlayingStyles, 2000);
 		setInlineAudioStates();
 		setInlineAudioUX();
 	};
