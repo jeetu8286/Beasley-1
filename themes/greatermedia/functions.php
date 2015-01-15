@@ -13,10 +13,15 @@
  */
 
 // Useful global constants
-/**
- *
+/*
+ * Add this constant to wp-config and set value to "dev" to trigger time() as the cache buster on css/js that use this,
+ * instead of the version - useful for dev, especially when cloudflare or other cdn's are involved
  */
-define( 'GREATERMEDIA_VERSION', '0.1.3' );
+if ( defined( 'GMR_PARENT_ENV' ) && 'dev' == GMR_PARENT_ENV ) {
+	define( 'GREATERMEDIA_VERSION', time() );
+} else {
+	define( 'GREATERMEDIA_VERSION', '0.1.3' );
+}
 
 add_theme_support( 'homepage-curation' );
 
