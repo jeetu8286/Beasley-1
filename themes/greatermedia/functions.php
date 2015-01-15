@@ -544,7 +544,9 @@ function add_google_analytics() {
 		ga( 'set', '&uid', get_gigya_user_id() );
 	}
 
-	ga('send', 'pageview');
+	jQuery(document).on('pjax:end', function() {
+		ga('send', 'pageview');
+	});
 	</script>
 	<?php
 }
