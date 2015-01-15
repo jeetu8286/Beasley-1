@@ -1,5 +1,7 @@
 (function($) {
 
+	var ajaxApi = new WpAjaxApi(window.gigya_profile_meta);
+
 	var GigyaSessionStore = function() {
 		this.cookieValue = {};
 	};
@@ -76,7 +78,6 @@
 		},
 
 		getCookieTimeout: function(persistent) {
-			// TODO: must mirror gigya sessions
 			if (persistent) {
 				return 365 * 24 * 60 * 60; // 1 year
 			} else {
@@ -141,8 +142,8 @@
 		},
 
 		register: function(profile) {
-			// TODO: Trigger DS.Store sync callback
 			this.login(profile);
+			return ajaxApi.request('register_account', {});
 		},
 
 		login: function(profile) {
@@ -198,13 +199,25 @@
 
 		didRegister: function(response) {
 			var profile = this.profileForResponse(response);
-			this.session.register(profile);
-			this.redirect('/');
+			var self    = this;
+
+			this.session.register(profile)
+				.then(function() {
+					self.redirect('/');
+				})
+				.fail(function() {
+					// TODO: What to do if account_register failed?
+					self.redirect('/');
+				});
 		},
 
 		didLogout: function() {
 			this.session.logout();
 			this.redirect('/');
+		},
+
+		didProfileUpdate: function() {
+			ajaxApi.request('update_account', {});
 		},
 
 		profileForResponse: function(response) {
@@ -414,6 +427,10 @@
 			this.scrollToTop();
 			if (event.currentScreen === 'gigya-update-profile-screen') {
 				this.registerLogoutButton();
+			} else if (event.currentScreen === 'gigya-register-complete-screen') {
+				this.controller.willRegister = true;
+			} else if ( event.currentScreen === 'gigya-update-profile-success-screen' ) {
+				this.controller.didProfileUpdate();
 			}
 		},
 
@@ -579,7 +596,7 @@
 		var anchor;
 
 		for (var key in params) {
-			if (params.hasOwnProperty(key)) {
+			if (params.hasOwnProperty(key) && params[key]) {
 				value = params[key];
 				value = escapeValue(value);
 				key   = escapeValue(key);
@@ -591,12 +608,41 @@
 		return output.join('&');
 	};
 
-	var endpoint = 'members';
+	var endpoint       = 'members';
+	var actionFromPath = function(path) {
+		var a = document.createElement('a');
+		a.href = path;
+
+		var pathname = a.pathname;
+		var parts    = pathname.split('/');
+		var total    = parts.length;
+
+		if (parts[total-1] === '') {
+			return parts[total-2];
+		} else {
+			return parts[total-1];
+		}
+	};
 
 	window.gigya_profile_path = function(action, params) {
-		var path = '/' + endpoint + '/' + action;
+		if (!params) {
+			params = {};
+		}
 
-		if (params) {
+		if (!params.dest && action === 'login') {
+			params.dest = location.pathname;
+		}
+
+		var path       = '/' + endpoint + '/' + action;
+		var destAction = actionFromPath(params.dest);
+
+		if (action === destAction) {
+			params.dest = undefined;
+		}
+
+		var query = build_query(params);
+
+		if (query !== '') {
 			return path + '?' + build_query(params);
 		} else {
 			return path;
