@@ -43,7 +43,23 @@
 	margin-top: 1em;
 }
 
+.contest-form-info {
+	background-color: steelblue;
+	color: white;
+	padding: 0.5em 1em;
+	margin-bottom: 2em;
+}
+
 .post-type-contest {
+	#duplicate-action {
+		margin-bottom: 1em;
+	}
+	
+	#contest-entries-link {
+		float: left;
+		margin-top: 1px;
+	}
+
 	#contest-settings {
 		.inside {
 			padding: 0;
@@ -129,5 +145,54 @@
 		.unmark-winner a {
 			color: red;
 		}
+	}
+}
+
+.misc-pub-gmr-contest {
+	&::before {
+		font: 400 20px/1 dashicons;
+		speak: none;
+		display: inline-block;
+		padding: 0 2px 0 0;
+		top: 0;
+		left: -1px;
+		position: relative;
+		vertical-align: top;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+		text-decoration: none !important;
+		color: #888;
+	}
+
+	.post-pub-section-value {
+		font-weight: 600;
+	}
+
+	.radio-select,
+	.checkbox-select {
+		margin-top: 1em;
+	}
+}
+
+#contest-type::before {
+	content: "\f314";
+}
+
+#contest-winner-selection {
+	.unmark-winner {
+		a {
+			color: red;
+		}
+	}
+
+	.column-_gmr_thumbmail {
+		width: 80px;
+	}
+
+	.column-_gmr_email a {
+		display: block;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		overflow: hidden;
 	}
 }
