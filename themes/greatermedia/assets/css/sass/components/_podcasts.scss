@@ -352,8 +352,7 @@ a.podcast__rss:active {
 // Compact player
 .podcast-player--compact {
 	position: relative;
-	display: block;
-	width: 92.5%;
+	display: table;
 	border: 1px solid $light-gray;
 	border-width: 1px 0;
 	margin: 1.5em 0;
