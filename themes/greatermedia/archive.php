@@ -37,6 +37,7 @@ get_header(); ?>
 						while( have_posts() ) : the_post();
 
 						$link = get_post_meta($post->ID, 'purchase_link', true);
+						$link = esc_url($link);
 						$artist = get_post_meta($post->ID, 'artist', true);
 
 						echo '<li class="song__item icon-music">';
@@ -81,6 +82,10 @@ get_header(); ?>
 					</article>
 
 				<?php endif; ?>
+
+				<div class="ad__inline--right mobile">
+					<?php do_action( 'acm_tag_gmr_variant', 'mrec-body', 'mobile' ); ?>
+				</div>
 
 			</section>
 
