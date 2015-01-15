@@ -100,7 +100,7 @@ function sanitize_post_finder( $unsanitized ) {
 
 /* The settings page */
 function add_settings_page() {
-	add_menu_page( 'Homepage Curation', 'Homepage Curation', 'edit_others_posts', get_settings_page_slug(), __NAMESPACE__ . '\render_homepage_curation', 'dashicons-admin-home', '2.88' );
+	add_menu_page( 'Homepage Curation', 'Homepage', 'edit_others_posts', get_settings_page_slug(), __NAMESPACE__ . '\render_homepage_curation', 'dashicons-admin-home', '2.88' );
 }
 
 function render_homepage_curation() {
