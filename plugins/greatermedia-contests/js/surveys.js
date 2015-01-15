@@ -3,9 +3,35 @@
  * Copyright (c) 2015;
  * Licensed GPLv2+
  */
-(function ($, gmr) {
+(function ($) {
 	var __ready = function () {
-		$('.' + gmr.form_class).submit(function() {
+		var container = $('#survey-form');
+
+		var showRestriction = function(restriction) {
+			var $restrictions = $('.contest__restrictions');
+
+			$restrictions.attr('class', 'contest__restrictions');
+			if (restriction) {
+				$restrictions.addClass(restriction);
+			}
+		};
+		
+		var loadContainerState = function(url) {
+			$.get(url, function(response) {
+				var restriction = null;
+
+				if (response.success) {
+					container.html(response.data.html);
+					$('.type-survey.collapsed').removeClass('collapsed');
+				} else {
+					restriction = response.data.restriction;
+				}
+
+				showRestriction(restriction);
+			});
+		};
+		
+		container.on('submit', 'form', function() {
 			var form = $(this);
 
 			if (!form.parsley || form.parsley().isValid()) {
@@ -35,29 +61,27 @@
 				form.find('i.fa').show();
 
 				$.ajax({
-					url: gmr.ajax_url,
+					url: container.data('submit'),
 					type: 'post',
 					data: form_data,
 					processData: false, // Don't process the files
 					contentType: false, // Set content type to false as jQuery will tell the server its a query string request
-					dataType: 'json',
-					success: function (data, textStatus, jqXHR) {
-						if ('success' === textStatus && data.data.message) {
-							var wrapper = document.createElement('p');
-							wrapper.class = 'survey_thank_you';
-							wrapper.innerText = data.data.message;
-							form.replaceWith(wrapper);
-						}
+					success: function(data) {
+						container.html(data);
 					}
 				});
 			}
 
 			return false;
 		});
+		
+		if (container.length > 0) {
+			loadContainerState(container.data('load'));
+		}
 	};
 
 	$(document).bind('pjax:end', __ready).ready(__ready);
-})(jQuery, GreaterMediaSurveys);
+})(jQuery);
 document.addEventListener("DOMContentLoaded", function () {
 	/**
 	 * Generate a list of supported input types (text, date, range, etc.).

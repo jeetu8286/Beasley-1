@@ -14,8 +14,6 @@ module.exports = function (grunt) {
 			},
 			frontend_contest: {
 				src: [
-					'js/vendor/waypoint.js',
-					'js/vendor/modernizr.js',
 					'js/vendor/debouncedresize.js',
 					'js/vendor/imagesloaded.js',
 					'js/src/grid.js',
@@ -69,10 +67,8 @@ module.exports = function (grunt) {
 					console: false,
 					setTimeout: false,
 					confirm: false,
-					GreaterMediaContests: false,
 					GreaterMediaContestsForm: false,
 					GreaterMediaAdminNotifier: false,
-					GreaterMediaSurveys: false,
 					GreaterMediaUGC: false,
 					Formbuilder: false,
 					FormData: false

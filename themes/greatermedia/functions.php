@@ -13,10 +13,15 @@
  */
 
 // Useful global constants
-/**
- *
+/*
+ * Add this constant to wp-config and set value to "dev" to trigger time() as the cache buster on css/js that use this,
+ * instead of the version - useful for dev, especially when cloudflare or other cdn's are involved
  */
-define( 'GREATERMEDIA_VERSION', '0.1.3' );
+if ( defined( 'GMR_PARENT_ENV' ) && 'dev' == GMR_PARENT_ENV ) {
+	define( 'GREATERMEDIA_VERSION', time() );
+} else {
+	define( 'GREATERMEDIA_VERSION', '0.1.3' );
+}
 
 add_theme_support( 'homepage-curation' );
 
@@ -26,6 +31,8 @@ require_once( __DIR__ . '/includes/site-options/loader.php' );
 require_once( __DIR__ . '/includes/mega-menu/mega-menu-admin.php' );
 require_once( __DIR__ . '/includes/mega-menu/mega-menu-walker.php' );
 require_once( __DIR__ . '/includes/mega-menu/mega-menu-mobile-walker.php' );
+require_once( __DIR__ . '/includes/gallery-post-thumbnails/loader.php' );
+require_once( __DIR__ . '/includes/posts-screen-thumbnails/loader.php' );
 
 /**
  * Required files
@@ -60,6 +67,13 @@ function greatermedia_setup() {
 	add_image_size( 'gmr-featured-secondary',   		336,    224,    true    ); // thumbnails for secondary featured posts on front page
 	add_image_size( 'gmr-show-featured-primary',   		708,    389,    true    ); // thumbnails for secondary featured posts on front page
 	add_image_size( 'gmr-show-featured-secondary',   	322,    141,    true    ); // thumbnails for secondary featured posts on front page
+	add_image_size( 'gm-related-post',   				300,    200,    true    );
+
+	/* Images for the Gallery Grid ---- DO NOT DELETE ---- */
+	add_image_size( 'gmr-gallery-grid-featured',        1200,   800,    true    );
+	add_image_size( 'gmr-gallery-grid-secondary',       560,    300,    true    );
+	add_image_size( 'gmr-gallery-grid-thumb',           500,    368,    true    ); // thumbnail for gallery grid areas
+	add_image_size( 'gmr-album-thumbnail',              1876,   576,    true    ); // thumbnail for albums
 
 	// Update this as appropriate content types are created and we want this functionality
 	add_post_type_support( 'post', 'timed-content' );
@@ -139,17 +153,45 @@ function greatermedia_scripts_styles() {
 	wp_enqueue_script(
 		'greatermedia-load-more',
 		"{$baseurl}/assets/js/greater_media_load_more{$postfix}.js",
-		array( 'jquery' ),
+		array( 'jquery', 'jquery-waypoints' ),
 		GREATERMEDIA_VERSION,
 		true
 	);
 	wp_enqueue_style(
 		'greatermedia'
 	);
+	
+	/**
+	 * this is a fix to resolve conflicts with styles and javascript for The Events Calendar plugin that will not
+	 * load once pjax has been activated. We are checking to see if the `Tribe_Template_Factory` class exists and if
+	 * the function `asset_package` exists within `Tribe_Template_Factory`. If the class and function exists, we then
+	 * call the javascript and css necessary on the front end.
+	 *
+	 * @see `wp_content/plugins/the-events-calendar/lib/the-events-calendar.class.php` lines 2235 - 2244
+	 */
+	if ( class_exists( 'Tribe_Template_Factory' ) && method_exists( 'Tribe_Template_Factory', 'asset_package' ) ) {
+		// jquery-resize
+		Tribe_Template_Factory::asset_package( 'jquery-resize' );
 
+		// smoothness
+		Tribe_Template_Factory::asset_package( 'smoothness' );
+
+		// Tribe Calendar JS
+		Tribe_Template_Factory::asset_package( 'calendar-script' );
+
+		Tribe_Template_Factory::asset_package( 'events-css' );
+	}
 }
 
 add_action( 'wp_enqueue_scripts', 'greatermedia_scripts_styles');
+
+/**
+ * Unload YARPP stylesheets.  
+ */
+add_action( 'get_footer', function () {
+ 	wp_dequeue_style( 'yarppRelatedCss' );
+ 	wp_dequeue_style( 'yarpp-thumbnails-yarpp-thumbnail' );
+} );
 
 /**
  * Add humans.txt to the <head> element.
@@ -368,7 +410,7 @@ add_action( 'wp_head', 'greatermedia_remove_jetpack_share' );
  * @return string
  */
 function greatermedia_excerpt_more( $more ) {
-	return '';
+	return '&hellip;';
 }
 add_filter( 'excerpt_more', 'greatermedia_excerpt_more' );
 
@@ -378,70 +420,107 @@ if ( ! function_exists( 'greatermedia_load_more_template' ) ) :
 	 */
 	function greatermedia_load_more_template() {
 		// Do nothing if it is not an ajax request. We no longer need to check
-		// if it's paged because it functions the same regardless.  
+		// if it's paged because it functions the same regardless.
 		if ( ! filter_input( INPUT_GET, 'ajax', FILTER_VALIDATE_BOOLEAN ) ) {
 			return;
 		}
-		
-		$partial_slug = sanitize_text_field( $_REQUEST['partial_slug'] );
-		if ( ! $partial_slug ) {
-			$partial_slug = 'partials/loop'; 
-		}
 
-		$partial_name = sanitize_text_field( $_REQUEST['partial_name'] );
-		
-		get_template_part( $partial_slug, $partial_name ); 
+		$partial_slug = isset( $_REQUEST['partial_slug'] ) ? sanitize_text_field( $_REQUEST['partial_slug'] ) : 'partials/loop';
+		$partial_name = isset( $_REQUEST['partial_name'] ) ? sanitize_text_field( $_REQUEST['partial_name'] ) : '';
+
+		get_template_part( $partial_slug, $partial_name );
 		exit;
 	}
-	
+
 endif;
 add_action( 'template_redirect', 'greatermedia_load_more_template' );
 
-function greatermedia_load_more_button( $partial_slug = null, $partial_name = null, $query_or_page_link_template = null, $next_page = null ) {
-		
-	global $wp_query; 
-	
-	if ( ! $query_or_page_link_template ) {
-		$query_or_page_link_template = $wp_query; 
-	} 
-	
-	if ( $query_or_page_link_template instanceof WP_Query ) {
-		$temp_wp_query = $wp_query;  
-		
-		$wp_query = $query_or_page_link_template; 
-		$page_link_template = str_replace( PHP_INT_MAX, '%d', get_pagenum_link( PHP_INT_MAX ) );
-		
-		if ( ! $next_page ) {
-			$next_page = max( 2, $wp_query->query_vars['paged'] + 1);  
-		}
-		
-		$wp_query = $temp_wp_query; 
-	} else {
-		$page_link_template = (string) $query_or_page_link_template; 
-	}
-	
-	if ( ! $next_page ) {
-		$next_page = 2; 
-	} 
-	
-	$default_page_link = sprintf( $page_link_template, $next_page );  
-	
-	$partial_name = (string) $partial_name; 
-	$partial_slug = (string) $partial_slug; 
+function greatermedia_load_more_button( $args = array() ) {
 
+	global $wp_query;
+	
+	// $partial_slug = null, $partial_name = null, $query_or_page_link_template = null, $next_page = null
+	$args = wp_parse_args( $args, array(
+		'partial_slug' => '',
+		'partial_name' => '',
+		'query' => null,
+		'page_link_template' => null,
+		'next_page' => null,
+		'auto_load' => false,
+	) ); 
+
+	if ( ! $args['query'] && ! $args['page_link_template'] ) {
+		$args['query'] = $wp_query;
+	}
+
+	if ( $args['query'] && $args['query'] instanceof WP_Query ) {
+		$temp_wp_query = $wp_query;
+
+		$wp_query = $args['query'];
+		$args['page_link_template'] = str_replace( PHP_INT_MAX, '%d', get_pagenum_link( PHP_INT_MAX ) );
+
+		if ( ! $args['next_page'] ) {
+			$args['next_page'] = max( 2, $wp_query->query_vars['paged'] + 1);
+		}
+
+		$wp_query = $temp_wp_query;
+	} 
+	
+	if ( ! $args['next_page'] ) {
+		$args['next_page'] = 2;
+	}
+
+	$default_page_link = sprintf( $args['page_link_template'], $args['next_page'] );
 	?>
-		<div class='posts-pagination'>
-			<a 
-				class="button posts-pagination--load-more is-loaded"
-				href='<?php echo esc_url( $default_page_link ); ?>'
-				data-page-link-template="<?php echo esc_url( $page_link_template ); ?>"
-				data-page="<?php echo esc_attr( $next_page ); ?>"
-				data-partial-slug='<?php echo esc_attr( $partial_slug ); ?>'
-				data-partial-name='<?php echo esc_attr( $partial_name ); ?>'
-				data-not-found="All content shown"
+	<div class='posts-pagination'>
+		<a
+			class="button posts-pagination--load-more is-loaded"
+			href='<?php echo esc_url( $default_page_link ); ?>'
+			data-page-link-template="<?php echo esc_url( $args['page_link_template'] ); ?>"
+			data-page="<?php echo esc_attr( $args['next_page'] ); ?>"
+			data-partial-slug='<?php echo esc_attr( $args['partial_slug'] ); ?>'
+			data-partial-name='<?php echo esc_attr( $args['partial_name'] ); ?>'
+			data-auto-load='<?php echo intval( $args['auto_load'] ); ?>'
+			data-not-found="All content shown"
 			>
-				<i class="fa fa-spin fa-refresh"></i> Load More
-			</a>
-		</div>
-	<?php 
+			<i class="fa fa-spin fa-refresh"></i> Load More
+		</a>
+	</div>
+<?php
 }
+
+add_action( 'current_screen', 'hide_seo_columns' );
+function hide_seo_columns() {
+
+    $currentScreen = get_current_screen();
+    $current_user = wp_get_current_user();
+    
+    $hidden = array( 'wpseo-score',  'wpseo-title', 'wpseo-metadesc', 'wpseo-focuskw' );
+    $first = get_user_meta( $current_user->ID, "screen-defaults-{$currentScreen->id}", true ); 
+
+    if( !$first ) {
+    	update_user_meta( $current_user->ID, 'manage' . $currentScreen->id . 'columnshidden', $hidden );
+    	update_user_meta( $current_user->ID, "screen-defaults-{$currentScreen->id}", true );
+    }
+}
+
+/**
+ * function to globally remove post type support for custom fields for all post types
+ */
+function greatermedia_remove_custom_fields() {
+
+	// return a list of all post types
+	$post_types = get_post_types();
+
+	/**
+	 * go through each post type, check if the post type supports custom fields, if the post types does support
+	 * custom fields, remove support
+	 */
+	foreach ( $post_types as $post_type ) {
+		if (post_type_supports( $post_type, 'custom-fields' ) ) {
+			remove_post_type_support( $post_type, 'custom-fields' );
+		}
+	}
+
+}
+add_action( 'init' , 'greatermedia_remove_custom_fields', 10 );

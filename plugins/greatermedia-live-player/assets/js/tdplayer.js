@@ -26,6 +26,9 @@
 	var $trackInfo = $(document.getElementById('trackInfo'));
 	var gigyaLogin = gmr.homeUrl + "members/login";
 	var clearDebug = document.getElementById('clearDebug');
+	var adBlockCheck = document.getElementById('ad-check');
+	var adBlockClose = document.getElementById('close-adblock');
+	var loginListen = document.getElementById('live-stream__login');
 
 	/**
 	 * global variables for event types to use in conjunction with `addEventHandler` function
@@ -59,9 +62,21 @@
 		initPlayer();
 	};
 
+	function calcTechPriority() {
+		if (bowser.firefox) {
+			return ['Flash'];
+		} else if (bowser.safari) {
+			return ['Html5'];
+		} else {
+			return ['Html5', 'Flash'];
+		}
+	}
+
 	function initPlayer() {
-		var techPriority;
-		switch (tech) {
+		var techPriority = calcTechPriority();
+		console.log('+++ initPlayer - techPriority = ', techPriority);
+		/*
+		switch ( tech ) {
 			case 'html5_flash' :
 				techPriority = ['Html5', 'Flash'];
 				break;
@@ -77,6 +92,7 @@
 				break;
 
 		}
+		*/
 
 		/* TD player configuration object used to create player instance */
 		var tdPlayerConfig = {
@@ -85,7 +101,7 @@
 					id: 'MediaPlayer',
 					playerId: 'td_container',
 					isDebug: true,
-					techPriority:['Html5', 'Flash'],
+					techPriority: ['Flash', 'Html5'],
 					timeShift: { // timeShifting is currently available on Flash only. Leaving for HTML5 future
 						active: 0, /* 1 = active, 0 = inactive */
 						max_listening_time: 35 /* If max_listening_time is undefined, the default value will be 30 minutes */
@@ -133,13 +149,6 @@
 
 	function initControlsUi() {
 
-		// custom call to use button instead of input for styling purposes
-		var podcastButton = $('.mejs-play');
-
-		if (playBtn != null) {
-			addEventHandler(playBtn,elemClick,playLiveStream);
-		}
-
 		if (pauseBtn != null) {
 			addEventHandler(pauseBtn,elemClick,pauseStream);
 		}
@@ -152,17 +161,11 @@
 			addEventHandler(clearDebug,elemClick,clearDebugInfo);
 		}
 
-		podcastButton.click(function () {
-			pauseBtn.hide();
-			resumeBtn.show();
-			pauseStream();
-		});
-
 	}
 
 	function setPlayingStyles() {
 		if ( null === tdContainer ) {
-			// gigya user is logged out, so everythign is different ಠ_ಠ - Should we force login for inline audio as well??
+			// gigya user is logged out, so everything is different ಠ_ಠ - Should we force login for inline audio as well??
 			return;
 		}
 
@@ -171,75 +174,87 @@
 		resumeBtn.style.display = 'none';
 		pauseBtn.style.display = 'block';
 		listenNow.style.display = 'none';
+		loginListen.style.display = 'none';
 		nowPlaying.style.display = 'inline-block';
 	}
 
 	function setStoppedStyles() {
 		if ( null === tdContainer ) {
-			// gigya user is logged out, so everythign is different ಠ_ಠ - Should we force login for inline audio as well??
+			// gigya user is logged out, so everything is different ಠ_ಠ - Should we force login for inline audio as well??
 			return;
 		}
 
 		playBtn.style.display = 'block';
 		pauseBtn.style.display = 'none';
+		resumeBtn.style.display = 'none';
 		listenNow.style.display = 'inline-block';
+		loginListen.style.display = 'none';
 		nowPlaying.style.display = 'none';
 	}
 
 	function setPausedStyles() {
 		if ( null === tdContainer ) {
-			// gigya user is logged out, so everythign is different ಠ_ಠ - Should we force login for inline audio as well??
+			// gigya user is logged out, so everything is different ಠ_ಠ - Should we force login for inline audio as well??
 			return;
 		}
 
 		playBtn.style.display = 'none';
 		pauseBtn.style.display = 'none';
 		listenNow.style.display = 'inline-block';
+		loginListen.style.display = 'none';
 		nowPlaying.style.display = 'none';
 		resumeBtn.style.display = 'block';
 	}
 
+	var listenLiveStopCustomInlineAudio = function() {
+		if (true === playingCustomAudio) {
+			customAudio.pause();
+			resetInlineAudioStates();
+			playingCustomAudio = false;
+			setStoppedStyles();
+		}
+		if (Cookies.get('gmr_play_live_audio') == 1) {
+			playLiveStream();
+		} else {
+			playLiveStreamWithPreRoll();
+		}
+	};
+
+	function changePlayerState() {
+		if (is_gigya_user_logged_in()) {
+			if (playBtn != null && Cookies.get('gmr_play_live_audio') == 1) {
+				addEventHandler(playBtn, elemClick, playLiveStream);
+			} else if (playBtn != null) {
+				addEventHandler(playBtn, elemClick, playLiveStreamWithPreRoll);
+			}
+			if (listenNow != null) {
+				addEventHandler(listenNow, elemClick, listenLiveStopCustomInlineAudio);
+			}
+		} else {
+			if (playBtn != null) {
+				addEventHandler(playBtn, 'click', function () {
+					window.location.href = gigyaLogin;
+				});
+			}
+			if (listenNow != null) {
+				addEventHandler(listenNow, 'click', function () {
+					window.location.href = gigyaLogin;
+				});
+			}
+		}
+	}
+
+	changePlayerState();
+
 	function loggedInGigyaUser() {
 		if (is_gigya_user_logged_in() ) {
+			setStoppedStyles();
 			if( Cookies.get( "gmlp_play_button_pushed" ) == 1 ) {
-				playLiveStream();
+				playLiveStreamWithPreRoll();
 				Cookies.set( "gmlp_play_button_pushed", 0 );
+			} else {
+				console.log("--- Log In with Gigya ---");
 			}
-			/*)
-			 console.log("--- You are logged in, so now enjoy some music ---");
-			 addEventHandler(playBtn,elemClick,playLiveStreamWithPreRoll);
-			 if (player.addEventListener) {
-			 player.addEventListener('ad-playback-complete', function() {
-			 postVastAd();
-			 console.log("--- ad complete ---");
-			 playLiveStream();
-			 });
-			 } else if (player.attachEvent) {
-			 player.attachEvent('ad-playback-complete', function() {
-			 postVastAd();
-			 console.log("--- ad complete ---");
-			 playLiveStream();
-			 });
-			 } */
-		} /* else if (document.referrer == gigyaLogin && is_gigya_user_logged_in()) {
-			console.log("--- You are just logged in, so now enjoy some music ---");
-			preVastAd();
-			streamVastAd();
-			if (player.addEventListener) {
-				player.addEventListener('ad-playback-complete', function() {
-					postVastAd();
-					console.log("--- ad complete ---");
-					playLiveStream();
-				});
-			} else if (player.attachEvent) {
-				player.attachEvent('ad-playback-complete', function() {
-					postVastAd();
-					console.log("--- ad complete ---");
-					playLiveStream();
-				});
-			}
-		} */ else {
-			console.log("--- Log In with Gigya ---");
 		}
 	}
 
@@ -254,9 +269,11 @@
 	function postVastAd() {
 		var preRoll = document.getElementById('live-stream__container');
 
-		if(preRoll != null) {
+		if (preRoll != null) {
 			preRoll.classList.remove('vast__pre-roll');
 		}
+		Cookies('gmr_play_live_audio', undefined);
+		Cookies('gmr_play_live_audio', 1, {expires: 86400});
 	}
 
 	function streamVastAd() {
@@ -264,10 +281,28 @@
 
 		detachAdListeners();
 		attachAdListeners();
-
 		player.stop();
-		player.skipAd();
 		player.playAd('vastAd', {url: vastUrl});
+	}
+
+	/**
+	 * @todo add a close option for the ad block detection modal
+	 */
+	function showAdBlockDetect() {
+		var preRoll = document.querySelector('.vast__pre-roll');
+
+		if(preRoll != null) {
+			preRoll.innerHTML = '<div class="adblock--detected"><div class="adblock--detected__notice">We\'ve detected that you\'re using <strong>AdBlock Plus</strong> or some other adblocking software. In order to have the best viewing experience, please diasable AdBlock.</div></div>';
+		}
+	}
+
+	function closeAdBlockDetect() {
+		var preRoll = document.getElementById('live-stream__container');
+
+		while (preRoll.hasChildNodes()) {
+			preRoll.removeChild(preRoll.firstChild);
+		}
+		preRoll.classList.remove('vast__pre-roll')
 	}
 
 	var currentStream = $('.live-player__stream--current-name');
@@ -289,8 +324,14 @@
 	});
 
 	function playLiveStream() {
+		pjaxInit();
 		if ( true === playingCustomAudio ) {
 			resumeCustomInlineAudio();
+			setPlayingStyles();
+		} else if (adBlockCheck == undefined) {
+			preVastAd();
+			showAdBlockDetect();
+			setTimeout(postVastAd, 15000);
 		} else {
 			var station = gmr.callsign;
 			if (station == '') {
@@ -300,13 +341,50 @@
 
 			debug('playLiveStream - station=' + station);
 
-			if (livePlaying)
+			if (livePlaying) {
 				player.stop();
+			}
 
 			player.play({station: station, timeShift: true});
+			setPlayingStyles();
 		}
+	}
 
-		setPlayingStyles();
+	function resumeLiveStream() {
+		pjaxInit();
+		if ( true === playingCustomAudio ) {
+			var station = currentStream.text();
+
+			if (livePlaying) {
+				player.stop();
+			}
+
+			stopCustomInlineAudio();
+
+			player.play({station: station, timeShift: true});
+
+			setPlayingStyles();
+
+		} else if (adBlockCheck == undefined) {
+			preVastAd();
+			showAdBlockDetect();
+			setTimeout(postVastAd, 15000);
+		} else {
+			var station = gmr.callsign;
+			if (station == '') {
+				alert('Please enter a Station');
+				return;
+			}
+
+			debug('playLiveStream - station=' + station);
+
+			if (livePlaying) {
+				player.stop();
+			}
+
+			player.play({station: station, timeShift: true});
+			setPlayingStyles();
+		}
 	}
 
 	function playLiveStreamWithPreRoll() {
@@ -316,6 +394,7 @@
 			setPlayingStyles();
 		} else {
 			var station = gmr.callsign;
+			var vastUrl = gmr.streamUrl;
 			if (station == '') {
 				alert('Please enter a Station');
 				return;
@@ -324,7 +403,12 @@
 			debug('playLiveStream - station=' + station);
 
 			preVastAd();
-			streamVastAd();
+			if (adBlockCheck == undefined) {
+				showAdBlockDetect();
+				setTimeout(postVastAd, 15000);
+			} else {
+				streamVastAd();
+			}
 			if (player.addEventListener) {
 				player.addEventListener('ad-playback-complete', function () {
 					postVastAd();
@@ -336,6 +420,7 @@
 
 					player.play({station: station, timeShift: true});
 					setPlayingStyles();
+
 				});
 			} else if (player.attachEvent) {
 				player.attachEvent('ad-playback-complete', function () {
@@ -390,6 +475,11 @@
 	function seekLive() {
 		player.seekLive();
 		setPlayingStyles();
+	}
+
+	function skipAd()
+	{
+		player.skipAd();
 	}
 
 	function loadNpApi() {
@@ -1024,11 +1114,17 @@
 	};
 
 	var playCustomInlineAudio = function( src ) {
-		setInlineAudioSrc( src );
+		pjaxInit();
+
+		// Only set the src if its different than what is already there, so we can resume the audio with the inline buttons
+		if ( src !== customAudio.src ) {
+			setInlineAudioSrc( src );
+		}
 		resumeCustomInlineAudio();
 	};
 
 	var pauseCustomInlineAudio = function() {
+		pjaxStop();
 		customAudio.pause();
 		resetInlineAudioStates();
 		setPausedStyles();
@@ -1038,6 +1134,7 @@
 	Same as pausing, but sets the "Playing" state to false, to allow resuming live player audio
 	 */
 	var stopCustomInlineAudio = function() {
+		pjaxStop();
 		customAudio.pause();
 		resetInlineAudioStates();
 		playingCustomAudio = false;
@@ -1119,6 +1216,32 @@
 			$meFallbacks.mediaelementplayer();
 			$customInterfaces.hide();
 		}
+	}
+
+	function pjaxInit() {
+		if (is_gigya_user_logged_in()) {
+			if ($.support.pjax) {
+				$(document).pjax('a:not(.ab-item)', '.main', {
+					'fragment': '.main',
+					'maxCacheLength': 500,
+					'timeout': 5000
+				});
+			}
+		} else if (gmlp.logged_in) {
+			if ($.support.pjax) {
+				$(document).pjax('a:not(.ab-item)', '.page-wrap', {
+					'fragment': '.page-wrap',
+					'maxCacheLength': 500,
+					'timeout': 5000
+				});
+			}
+		}
+	}
+
+	function pjaxStop() {
+		$(document).on('pjax:click', function(event) {
+			event.preventDefault()
+		});
 	}
 
 	initCustomAudioPlayer();

@@ -23,12 +23,12 @@ get_header();
 					<?php // do_action( 'acm_tag', 'leaderboard-body' ); ?>
 				</div>
 
-				<h2 class="content__heading">Latest from WMGK</h2>
+				<h2 class="content__heading">Latest from <?php bloginfo( 'name' ); ?></h2>
 
 				<?php if ( have_posts() ) : ?>
 
 					<?php get_template_part( 'partials/loop', 'front-page' ); ?>
-					<?php greatermedia_load_more_button( 'partials/loop' ); ?>
+					<?php greatermedia_load_more_button( array( 'partial_slug' => 'partials/loop', 'auto_load' => true ) ); ?>
 					<?php get_template_part( 'partials/pagination' ); ?>
 
 				<?php else : ?>
