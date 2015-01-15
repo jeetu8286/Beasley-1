@@ -1,6 +1,7 @@
 (function($) {
 
 	var CommentsConfig = function() {
+		this.collectionCache = {};
 	};
 
 	CommentsConfig.prototype = {
@@ -9,8 +10,21 @@
 			return window.livefyre_comments_data.data;
 		},
 
+		hasCachedCollectionConfig: function() {
+			return !!this.collectionCache[location.href];
+		},
+
+		getCachedCollectionConfig: function() {
+			return this.collectionCache[location.href];
+		},
+
 		getCollectionConfig: function() {
-			return window.livefyre_collection_data;
+			if (!this.hasCachedCollectionConfig()) {
+				var data = JSON.parse(JSON.stringify(window.livefyre_collection_data));
+				this.collectionCache[location.href] = window.livefyre_collection_data;
+			}
+
+			return this.getCachedCollectionConfig();
 		},
 
 		getNetworkConfig: function() {
@@ -95,7 +109,12 @@
 		var self = this;
 
 		$(document).on('pjax:end', function() {
+			console.log('pjax:end fired');
 			self.start();
+		});
+
+		$(document).on('pjax:popstate', function() {
+			console.log('popstate fired');
 		});
 	};
 
@@ -108,7 +127,7 @@
 		},
 
 		authorize: function() {
-			if (is_gigya_user_logged_in()) {
+			if (is_gigya_user_logged_in() && this.authToken === '') {
 				this.ajaxApi.request('get_livefyre_auth_token', {})
 					.then($.proxy(this.didAuthorize, this))
 					.fail($.proxy(this.didAuthorizeError, this));
