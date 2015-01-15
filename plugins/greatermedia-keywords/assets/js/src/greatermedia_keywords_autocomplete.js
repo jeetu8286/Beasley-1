@@ -51,7 +51,6 @@
 			$( '#header-search' ).parent( 'form' ).submit();
 		} );
 
-		console.log('setting up');
 		// Hook up the search field.
 		$search_field.on( 'keyup', function () {
 
@@ -79,6 +78,5 @@
 			$container.show();
 		} );
 	} );
-
 
 })( this );

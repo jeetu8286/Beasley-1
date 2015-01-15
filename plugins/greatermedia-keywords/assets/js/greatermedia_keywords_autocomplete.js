@@ -1,12 +1,6 @@
-/**
- * Greater Media Keyword Search
- *
- * Integrates keyword search with the default header search.
- *
- * Please note: Currently this is very dependent on templates in the theme, and
- * specific ID and class names.
- */
-
+/*! GreaterMedia Keywords - v0.0.1
+ * http://wordpress.org/plugins
+ * Copyright (c) 2015; * Licensed GPLv2+ */
 // Silence jslint warning about _ being undefined.
 /*global _ */
 
@@ -60,7 +54,6 @@
 			$( '#header-search' ).parent( 'form' ).submit();
 		} );
 
-		console.log('setting up');
 		// Hook up the search field.
 		$search_field.on( 'keyup', function () {
 
@@ -88,6 +81,5 @@
 			$container.show();
 		} );
 	} );
-
 
 })( this );
