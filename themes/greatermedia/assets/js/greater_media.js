@@ -304,6 +304,8 @@
 	 *
 	 * @type {HTMLElement}
 	 */
+	var $ = jQuery;
+
 	var body = document.querySelector( 'body' ),
 		html = document.querySelector( 'html'),
 		mobileNavButton = document.querySelector( '.mobile-nav__toggle' ),
@@ -698,6 +700,7 @@
 		if (searchForm !== null && searchForm.classList.contains('header__search--open')) {
 			e.preventDefault();
 			searchForm.classList.remove('header__search--open');
+			$(searchInput).val('');
 		}
 	}
 
@@ -716,11 +719,11 @@
 		});
 	}
 
-	window.onkeydown = function(e){
+	$(window).keydown(function(e){
 		if(e.keyCode === 27){
-			closeSearch();
+			closeSearch(e);
 		}
-	};
+	});
 
 	/**
 	 * variables that define debounce and throttling for window resizing and scrolling
