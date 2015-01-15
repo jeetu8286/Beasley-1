@@ -806,14 +806,30 @@ category: Components
 
 .audio__time {
 	display: none;
+	@include opacity(0);
 	width: 85%;
 	overflow: auto;
 	padding-bottom: 23px;
 	margin: 0 auto;
 	font-size: ms(-3);
+	@include transition(visibility 0s linear 500ms, opacity 1s ease-in-out);
+
+	.podcast-player & {
+		@include fill-parent;
+		padding-bottom: 14px;
+	}
+
+	.podcast-player.podcast-player--compact & {
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		padding-left: 102px;
+	}
 
 	&.playing {
 		display: block;
+		@include opacity(1);
+		@include transition(all 1s ease-in-out);
 	}
 }
 
