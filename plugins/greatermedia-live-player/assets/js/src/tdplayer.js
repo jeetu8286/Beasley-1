@@ -18,9 +18,14 @@
 	var currentStation = ''; /* String - Current station played */
 
 	var tdContainer = document.getElementById('td_container');
+	var liveStream = document.querySelector('.live-stream');
+	var liveStreamPlayer = document.querySelector('.live-stream__player');
 	var playBtn = document.getElementById('playButton');
 	var pauseBtn = document.getElementById('pauseButton');
 	var resumeBtn= document.getElementById('resumeButton');
+	var podcastPlayBtn = document.querySelector('.podcast__btn--play');
+	var podcastPauseBtn = document.querySelector('.podcast__btn--pause');
+	var podcastPlayer = document.querySelector('.podcast-player');
 	var listenNow = document.getElementById('live-stream__listen-now');
 	var nowPlaying = document.getElementById('live-stream__now-playing');
 	var $trackInfo = $(document.getElementById('trackInfo'));
@@ -29,6 +34,9 @@
 	var adBlockCheck = document.getElementById('ad-check');
 	var adBlockClose = document.getElementById('close-adblock');
 	var loginListen = document.getElementById('live-stream__login');
+	var onAirTitle = document.querySelector('.on-air__title');
+	var onAirShow = document.querySelector('.on-air__show');
+	var streamStatus = document.getElementById('live-stream__status');
 
 	/**
 	 * global variables for event types to use in conjunction with `addEventHandler` function
@@ -161,6 +169,10 @@
 			addEventHandler(clearDebug,elemClick,clearDebugInfo);
 		}
 
+		if (nowPlaying != null) {
+			addEventHandler(nowPlaying,elemClick,stopStream);
+		}
+
 	}
 
 	function setPlayingStyles() {
@@ -173,9 +185,16 @@
 		playBtn.style.display = 'none';
 		resumeBtn.style.display = 'none';
 		pauseBtn.style.display = 'block';
-		listenNow.style.display = 'none';
 		loginListen.style.display = 'none';
-		nowPlaying.style.display = 'inline-block';
+		if (true === playingCustomAudio) {
+			nowPlaying.style.display = 'none';
+			listenNow.style.display = 'inline-block';
+		} else {
+			nowPlaying.style.display = 'inline-block';
+			listenNow.style.display = 'none';
+		}
+
+
 	}
 
 	function setStoppedStyles() {
@@ -201,17 +220,85 @@
 		playBtn.style.display = 'none';
 		pauseBtn.style.display = 'none';
 		listenNow.style.display = 'inline-block';
-		loginListen.style.display = 'none';
+		if (! is_gigya_user_logged_in()) {
+			loginListen.style.display = 'block';
+		} else {
+			loginListen.style.display = 'none';
+		}
 		nowPlaying.style.display = 'none';
 		resumeBtn.style.display = 'block';
+	}
+
+	function setInlineAudioUX() {
+		var audioTime = document.querySelectorAll('.audio__time'), i;
+		if (onAirTitle != null) {
+			onAirTitle.style.display = 'none';
+		}
+
+		if (onAirShow != null) {
+			onAirShow.style.display = 'none';
+		}
+
+		if (podcastPlayer != null) {
+			podcastPlayer.classList.add('playing');
+		}
+
+		for (i = 0; i < audioTime.length; ++i) {
+			audioTime[i].classList.add('playing');
+		}
+
+		if (liveStreamPlayer != null) {
+			liveStreamPlayer.classList.add('audio__playing');
+		}
+
+		if (streamStatus != null) {
+			streamStatus.classList.add('audio__playing');
+		}
+
+		if (liveStream != null) {
+			liveStream.classList.add('audio__playing');
+		}
+	}
+
+	function resetInlineAudioUX() {
+		var audioTime = document.querySelectorAll('.audio__time'), i;
+		if (onAirTitle != null) {
+			onAirTitle.style.display = 'block';
+		}
+
+		if (onAirShow != null) {
+			onAirShow.style.display = 'block';
+		}
+
+		if (podcastPlayer != null) {
+			podcastPlayer.classList.remove('playing');
+		}
+
+		for (i = 0; i < audioTime.length; ++i) {
+			if (audioTime[i] != null && audioTime[i].classList.contains('playing')) {
+				audioTime[i].classList.remove('playing');
+			}
+		}
+
+		if (liveStreamPlayer != null) {
+			liveStreamPlayer.classList.remove('audio__playing');
+		}
+
+		if (streamStatus != null) {
+			streamStatus.classList.remove('audio__playing');
+		}
+
+		if (liveStream != null) {
+			liveStream.classList.remove('audio__playing');
+		}
 	}
 
 	var listenLiveStopCustomInlineAudio = function() {
 		if (true === playingCustomAudio) {
 			customAudio.pause();
 			resetInlineAudioStates();
+			resetInlineAudioUX();
 			playingCustomAudio = false;
-			setStoppedStyles();
 		}
 		if (Cookies.get('gmr_play_live_audio') == 1) {
 			playLiveStream();
@@ -327,7 +414,6 @@
 		pjaxInit();
 		if ( true === playingCustomAudio ) {
 			resumeCustomInlineAudio();
-			setPlayingStyles();
 		} else if (adBlockCheck == undefined) {
 			preVastAd();
 			showAdBlockDetect();
@@ -346,7 +432,7 @@
 			}
 
 			player.play({station: station, timeShift: true});
-			setPlayingStyles();
+			setTimeout(setPlayingStyles, 1000);
 		}
 	}
 
@@ -383,7 +469,7 @@
 			}
 
 			player.play({station: station, timeShift: true});
-			setPlayingStyles();
+			setTimeout(setPlayingStyles, 1000);
 		}
 	}
 
@@ -419,7 +505,7 @@
 					}
 
 					player.play({station: station, timeShift: true});
-					setPlayingStyles();
+					setTimeout(setPlayingStyles, 1000);
 
 				});
 			} else if (player.attachEvent) {
@@ -432,7 +518,7 @@
 					}
 
 					player.play({station: station, timeShift: true});
-					setPlayingStyles();
+					setTimeout(setPlayingStyles, 1000);
 				});
 			}
 		}
@@ -1072,10 +1158,6 @@
 		$('#debugInformation').html('');
 	}
 
-
-
-
-
 	/* Inline Audio Support */
 	var stopLiveStreamIfPlaying = function() {
 		if ( "undefined" !== typeof player && "undefined" !== typeof player.stop ) {
@@ -1108,9 +1190,10 @@
 		customAudio.play();
 		setPlayerTrackName();
 		setPlayerArtist();
-		setPlayingStyles();
 		resetInlineAudioStates();
+		setTimeout(setPlayingStyles, 1000);
 		setInlineAudioStates();
+		setInlineAudioUX();
 	};
 
 	var playCustomInlineAudio = function( src ) {
@@ -1128,6 +1211,7 @@
 		customAudio.pause();
 		resetInlineAudioStates();
 		setPausedStyles();
+		resetInlineAudioUX();
 	};
 
 	/*
@@ -1139,6 +1223,7 @@
 		resetInlineAudioStates();
 		playingCustomAudio = false;
 		setStoppedStyles();
+		resetInlineAudioUX();
 	};
 
 	var setPlayerTrackName = function() {
@@ -1202,12 +1287,14 @@
 				var $play = $(e.currentTarget);
 
 				playCustomInlineAudio( $play.attr( 'data-mp3-src' ) );
+				$play.animate({volume: 1}, 2000);
 
 				resetInlineAudioStates();
 
 				setCustomAudioMetadata( $play.attr( 'data-mp3-title' ), $play.attr( 'data-mp3-artist' ), $play.attr('data-mp3-hash') );
 			});
 
+			$content.animate({volume: 0}, 2000);
 			$content.on('click', '.podcast__btn--pause', pauseCustomInlineAudio );
 		} else {
 			var $meFallbacks = $('.gmr-mediaelement-fallback audio'),
@@ -1244,8 +1331,89 @@
 		});
 	}
 
+	/**
+	 * calculates the time of an inline audio element and outputs the duration as a % displayed in the progress bar
+	 */
+	function audioUpdateProgress() {
+		var progress = document.querySelectorAll('.audio__progress'), i,
+			value = 0;
+		for (i = 0; i < progress.length; ++i) {
+			if (customAudio.currentTime > 0) {
+				value = Math.floor((100 / customAudio.duration) * customAudio.currentTime);
+			}
+			progress[i].style.width = value + "%";
+		}
+	}
+
+	/**
+	 * calculates the time of an inline audio element and outputs the time remaining
+	 */
+	function audioTimeRemaining() {
+		var timeleft = document.querySelectorAll('.audio__time--remaining'), i,
+			duration = parseInt(customAudio.duration),
+			currentTime = parseInt(customAudio.currentTime),
+			timeLeft = duration - currentTime,
+			s, m;
+
+		for (i = 0; i < timeleft.length; ++i) {
+			s = timeLeft % 60;
+			m = Math.floor( timeLeft / 60 ) % 60;
+
+			s = s < 10 ? "0"+s : s;
+			m = m < 10 ? +m : m;
+
+			timeleft[i].innerHTML = m+":"+s;
+		}
+	}
+
+	/**
+	 * calculates the time of an inline audio element and outputs the time that has elapsed
+	 */
+	function audioTimeElapsed() {
+		var timeline = document.querySelectorAll('.audio__time--elapsed'), i,
+			s = parseInt(customAudio.currentTime % 60),
+			m = parseInt((customAudio.currentTime / 60) % 60);
+
+		for (i = 0; i < timeline.length; ++i) {
+			if (s < 10) {
+				timeline[i].innerHTML = m + ':0' + s;
+			}
+			else {
+				timeline[i].innerHTML = m + ':' + s;
+			}
+		}
+	}
+
+	function fadeOutInlineAudio() {
+		if (true === playingCustomAudio) {
+			customAudio.animate({volume: 0}, 2000);
+			customAudio.pause();
+		}
+	}
+
+	function fadeInInlineAudio() {
+		if (false === playingCustomAudio) {
+			customAudio.play();
+			customAudio.animate({volume: 1}, 2000);
+		}
+	}
+
 	initCustomAudioPlayer();
 	initInlineAudioUI();
+
+	/**
+	 * event listeners for customAudio time
+	 */
+	customAudio.addEventListener('timeupdate', function(){
+		audioUpdateProgress();
+		audioTimeElapsed();
+		audioTimeRemaining();
+	}, false);
+
+	addEventHandler(podcastPlayBtn,elemClick,setInlineAudioUX);
+
+	addEventHandler(podcastPauseBtn,elemClick,pauseCustomInlineAudio);
+
 	// Ensures our listeners work even after a PJAX load
 	$(document).on( 'pjax:end', function() {
 		initInlineAudioUI();

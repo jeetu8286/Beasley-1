@@ -61,6 +61,7 @@ module.exports = function (grunt) {
 					twttr: false,
 					jQuery: false,
 					Modernizr: false,
+					Waypoint: false,
 					Grid: true,
 					document: false,
 					window: false,

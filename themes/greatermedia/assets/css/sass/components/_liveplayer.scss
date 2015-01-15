@@ -314,6 +314,10 @@ category: Components
 		padding: 23px 0 0;
 		text-align: center;
 	}
+
+	&.audio__playing {
+		padding-top: 0;
+	}
 }
 
 .live-player--active .live-stream {
@@ -325,6 +329,10 @@ category: Components
 	display: block;
 	@include bp(medium) {
 		padding-bottom: 23px;
+	}
+
+	&.audio__playing {
+		padding-bottom: 0;
 	}
 }
 
@@ -339,9 +347,18 @@ category: Components
 
 .live-stream__status {
 	display: none;
+	@include transition(all 1s ease-in-out);
 	@include bp(medium) {
+		position: relative;
+		@include transform(translate(0, 0));
 		display: block;
 		padding-bottom: 26px;
+		text-align: center;
+	}
+
+	&.audio__playing {
+		position: relative;
+		@include transform(translate(0, -140px));
 	}
 }
 
@@ -350,12 +367,21 @@ category: Components
 	margin-right: 0;
 	font-weight: 700;
 	z-index: 1;
+	@include transition(all 200ms ease-in-out);
+
+	.audio__playing & {
+		padding: .75em 2.5em;
+		@include transition(all 200ms ease-in-out);
+		@include transition-delay(1s);
+	}
 }
 
 .live-stream__now-playing--btn {
 	@include btn(transparent, $color-text-red, $btn-bg, .5em, 1em, ms(-1));
 	display: none;
+	margin-right: 0;
 	font-weight: 700;
+	@include transition(background 200ms ease-in-out);
 }
 
 .live-stream__login {
@@ -364,6 +390,7 @@ category: Components
 	font-weight: 700;
 	font-size: ms(-2);
 	color: $color-text-red;
+	@include transition(all 200ms ease-in-out);
 }
 
 .live-stream__resume {
@@ -446,7 +473,12 @@ category: Components
 	left: 50%;
 	@include transform(translate(-50%, -50%));
 	font-family: $icon-font !important;
+	font-size: ms(2);
 	content: "\e60b" !important;
+
+	.live-stream__player.audio__playing & {
+		content: "\e61f" !important;
+	}
 }
 
 .live-stream__container {
@@ -484,27 +516,6 @@ category: Components
 	padding: 0;
 }
 
-.live-stream--podcast__progress {
-	width: 85%;
-	height: 3px;
-	margin: 0 auto;
-	@include border-radius(1px);
-	background-color: $medium-gray;
-}
-
-.live-stream--podcast__progress-current {
-	float: left;
-	width: 80%;
-	height: 3px;
-	@include border-radius(1px);
-	background-color: $btn-bg;
-}
-
-.live-stream--podcast__time {
-	width: 85%;
-	margin: 0 auto;
-}
-
 .live-stream--podcast__start, .live-stream--podcast__end {
 	float: left;
 	width: 50%;
@@ -520,7 +531,25 @@ category: Components
 
 .live-stream__controls {
 	position: relative;
-	text-align: center;
+	float: right;
+	width: 14.375%; // 46px
+	padding: 12px 3.75% 12px 0; // 12px
+	text-align: right;
+	@include bp(small) {
+		width: 9.583333333333%; // 46px
+		padding-right: 2.5%; // 12px
+	}
+	@include bp(medium) {
+		float: none;
+		width: auto;
+		padding: 23px 0 0;
+		text-align: center;
+	}
+
+	&.audio__playing {
+		padding-top: 0;
+
+	}
 }
 
 .live-player--open .live-stream__controls {
@@ -817,12 +846,64 @@ category: Components
 	color: $primary-link;
 }
 
-// @todo remove when done doing gigya testing
-.live-stream__test {
-	height: 0;
-	overflow: hidden;
-	@include bp(medium) {
-		height: auto;
-		overflow: auto;
+.audio__time {
+	display: none;
+	@include opacity(0);
+	width: 85%;
+	overflow: auto;
+	padding-bottom: 23px;
+	margin: 0 auto;
+	font-size: ms(-3);
+	@include transition(visibility 0s linear 500ms, opacity 1s ease-in-out);
+
+	.podcast-player & {
+		@include fill-parent;
+		padding-bottom: 14px;
 	}
+
+	.podcast-player.podcast-player--compact & {
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		padding-left: 102px;
+	}
+
+	&.playing {
+		display: block;
+		@include opacity(1);
+		@include transition(all 1s ease-in-out);
+	}
+}
+
+.audio__progress-bar {
+	@include fill-parent;
+	position: relative;
+	height: 3px;
+	background-color: $medium-gray;
+	color:#fff;
+	@include border-radius(2px);
+}
+
+.audio__progress {
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: inline-block;
+	height: 3px;
+	background-color: $btn-bg;
+	@include border-radius(2px);
+}
+
+.audio__time--elapsed {
+	float: left;
+	width: 50%;
+	padding-top: 8px;
+	text-align: left;
+}
+
+.audio__time--remaining {
+	float: left;
+	width: 50%;
+	padding-top: 8px;
+	text-align: right;
 }
