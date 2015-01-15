@@ -37,18 +37,17 @@ get_header(); ?>
 						while( have_posts() ) : the_post();
 
 						$link = get_post_meta($post->ID, 'purchase_link', true);
-						$link = esc_url($link);
 						$artist = get_post_meta($post->ID, 'artist', true);
 
 						echo '<li class="song__item icon-music">';
 						if ( $link ) {
-							echo '<a href="'.$link.'">';
+							echo '<a href="' . esc_url( $link ) . '">';
 						}
-						echo '<span class="song__title">'.get_the_title().'</span>';
+						echo '<span class="song__title">' . get_the_title() . '</span>';
 						if ( $link ) {
 							echo '</a>';
 						}
-						echo '<span class="song__artist">'.$artist.'</span>';
+						echo '<span class="song__artist">' . esc_html( $artist ) . '</span>';
 						echo '</li>';
 
 						endwhile; ?>
