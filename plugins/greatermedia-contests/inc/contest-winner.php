@@ -22,10 +22,13 @@ add_filter( 'parent_file', 'gmr_contests_adjust_winners_page_admin_menu' );
  */
 function gmr_contest_view_entries_link() {
 	$post = get_post();
-	
-	echo '<div id="contest-entries">';
-		echo '<a href="', admin_url( 'admin.php?page=gmr-contest-winner&contest_id=' . $post->ID ), '">View Entries</a>';
-	echo '</div>';
+	$post_status = get_post_status_object( $post->post_status );
+
+	if ( $post_status->public ) :
+		echo '<div id="contest-entries-link">';
+			echo '<a class="button" href="', admin_url( 'admin.php?page=gmr-contest-winner&contest_id=' . $post->ID ), '">View Entries</a>';
+		echo '</div>';
+	endif;
 }
 
 /**
