@@ -7964,6 +7964,9 @@ a.social-share-link {
 .search__result--term {
   font-weight: bold; }
 
+body.search-results .posts-pagination {
+  margin-top: 3em; }
+
 .keyword-search {
   clear: both;
   line-height: 1.5;

@@ -196,6 +196,10 @@
 	font-weight: bold;
 }
 
+body.search-results .posts-pagination {
+	margin-top: $base-line-height * 2;
+}
+
 .keyword-search {
 	clear: both; 
 	line-height: 1.5;

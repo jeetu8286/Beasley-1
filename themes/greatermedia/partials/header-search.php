@@ -22,7 +22,7 @@
 	<script type="text/template" id="keyword-search-item-template">
 		<div class='keyword-search-item'>
 			<div class='keyword-search-item__keyword'>Keyword: <strong><%= keyword %></strong></div>
-			<div class='keyword-search-item__article'><a href='http://example.com/'><%= title %></a></div>
+			<div class='keyword-search-item__article'><a href='<%= url %>'><%= title %></a></div>
 		</div>
 	</script>
 </div>
