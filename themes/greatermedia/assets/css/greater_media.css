@@ -698,6 +698,7 @@ img {
   padding: 1.5em 0.809em; }
   @media screen and (min-width: 768px) {
     .content, .gallery__archive {
+      min-height: 800px;
       padding: 3em 3.236em; } }
 
 .live-player {
@@ -10834,6 +10835,24 @@ category: Components
   @media screen and (min-width: 1024px) {
     .podcast .show-mobile {
       display: none !important; } }
+
+.song__archive {
+  list-style: none; }
+  .song__archive li {
+    position: relative;
+    margin-bottom: 1em; }
+  .song__archive .icon-music:before {
+    position: absolute;
+    left: -30px; }
+  .song__archive .song__title, .song__archive .song__artist {
+    display: block;
+    margin: 0px;
+    font-family: "Open Sans",sans-serif;
+    font-size: 0.88889em; }
+  .song__archive .song__title {
+    margin-bottom: 6px;
+    font-size: 1em;
+    font-weight: bold; }
 
 /**
  * Single Page Styles
