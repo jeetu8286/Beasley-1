@@ -4,8 +4,6 @@
  * Date: 20.11.2014
  */
 
-$posts = $this::get_post_for_keywords();
-
 $options = self::get_keyword_options( $this::$plugin_slug . '_option_name' );
 ?>
 <div class="wrap">
@@ -26,7 +24,7 @@ $options = self::get_keyword_options( $this::$plugin_slug . '_option_name' );
 			foreach ( $options as $key => $value ): ?>
 				<tr>
 					<td><?php echo esc_html( $value['keyword'] ); ?></td>
-					<td><?php echo esc_html( $value['post_title'] ); ?></td>
+					<td><?php echo esc_html( get_the_title( $value['post_id'] ) ); ?></td>
 					<td><a data-postid="<?php echo esc_attr( $value['post_id'] ); ?>" class="submitdelete" href="#">delete</a></td>
 				</tr>
 		<?php endforeach;
@@ -50,13 +48,18 @@ $options = self::get_keyword_options( $this::$plugin_slug . '_option_name' );
 					<input type="text" id="keyword" name="keyword" size="25" />
 				</td>
 				<td>
-					<select id="linked_content" name="linked_content" style="width: 300px;">
-						<?php foreach ($posts as $post) : ?>
-							<option value="<?php echo esc_attr( $post->ID ) . ',' . esc_attr( $post->post_title ); ?>">
-								<?php echo esc_html( $post->post_title ); ?>
-							</option>
-						<?php endforeach; ?>
-					</select>
+					<div>
+						<label for="linked_content_search">Search for a post</label>
+						<input type="text" id="linked_content_search" size="25" autocomplete="off" />
+						<ul id="linked_content_item_container"></ul>
+					</div>
+
+					<script type="text/template" id="linked_content_item_template">
+						<li>
+							<input type="radio" name="linked_content" value="<%= id %>" id="linked_content_item_<%= id %>">
+							<label for="linked_content_item_<%= id %>"><%= title %></label>
+						</li>
+					</script>
 				</td>
 				<td>
 					<input type="submit" value="Add" class="button"/>
