@@ -142,7 +142,6 @@ class GreaterMediaMegaMenuAdmin {
 			}
 		}
 
-		else { echo 'SDFSDFSDF'; }
 	}
 
 	/**

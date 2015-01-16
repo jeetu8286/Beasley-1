@@ -323,6 +323,7 @@ class GreaterMediaNavWalker extends Walker_Nav_Menu {
 			?>
 			<ul class="header__nav-submenu--features">
 			<?php
+
 			while ( $featured_items->have_posts() ):
 				$featured_items->the_post();
 
