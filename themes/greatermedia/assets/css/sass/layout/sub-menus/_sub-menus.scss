@@ -113,7 +113,12 @@
 		}
 
 		a {
-			color: #000;
+			&:link, &:visited {
+				color: #000;
+			}
+			&:hover, &:active {
+				color: #fff;
+			}
 		}
 	}
 
@@ -149,7 +154,10 @@
 		display: inline-block;
 		width: 33%;
 		padding: 0;
-		color: #fff;
+
+		&:link, &:visited {
+			color: #fff;			
+		}
 
 		.icon-arrow-prev:before {
 			position: relative;
