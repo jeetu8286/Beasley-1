@@ -8,8 +8,6 @@
 tr.delete {
   background-color: #ed3939; }
 
-.keywords td {
-  width: 30%; }
 .keywords a.submitdelete {
   color: #ed3939; }
 
@@ -24,5 +22,23 @@ tr.delete {
   vertical-align: top; }
 .keyword_meta span.keyword {
   font-weight: 600; }
+
+.post-search.is-loading .spinner {
+  display: inline-block;
+  float: none;
+  position: relative;
+  margin: 0;
+  top: .3em; }
+
+.post-search__list {
+  padding: 0 .5em;
+  height: 12.5em;
+  overflow: auto;
+  border: 1px solid #bbb; }
+  .is-loading .post-search__list {
+    opacity: 0.5; }
+
+.post-search__list-item {
+  margin: .5em 0; }
 
 /*# sourceMappingURL=greatermedia_keywords.css.map */
