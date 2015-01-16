@@ -13,10 +13,15 @@
  */
 
 // Useful global constants
-/**
- *
+/*
+ * Add this constant to wp-config and set value to "dev" to trigger time() as the cache buster on css/js that use this,
+ * instead of the version - useful for dev, especially when cloudflare or other cdn's are involved
  */
-define( 'GREATERMEDIA_VERSION', '0.1.3' );
+if ( defined( 'GMR_PARENT_ENV' ) && 'dev' == GMR_PARENT_ENV ) {
+	define( 'GREATERMEDIA_VERSION', time() );
+} else {
+	define( 'GREATERMEDIA_VERSION', '0.1.3' );
+}
 
 add_theme_support( 'homepage-curation' );
 
@@ -27,6 +32,7 @@ require_once( __DIR__ . '/includes/mega-menu/mega-menu-admin.php' );
 require_once( __DIR__ . '/includes/mega-menu/mega-menu-walker.php' );
 require_once( __DIR__ . '/includes/mega-menu/mega-menu-mobile-walker.php' );
 require_once( __DIR__ . '/includes/gallery-post-thumbnails/loader.php' );
+require_once( __DIR__ . '/includes/image-attributes/loader.php');
 require_once( __DIR__ . '/includes/posts-screen-thumbnails/loader.php' );
 
 /**
@@ -484,13 +490,31 @@ function greatermedia_load_more_button( $args = array() ) {
 <?php
 }
 
+add_action( 'current_screen', 'hide_seo_columns' );
+function hide_seo_columns() {
+
+    $currentScreen = get_current_screen();
+    $current_user = wp_get_current_user();
+    
+    $hidden = array( 'wpseo-score',  'wpseo-title', 'wpseo-metadesc', 'wpseo-focuskw' );
+    $first = get_user_meta( $current_user->ID, "screen-defaults-{$currentScreen->id}", true ); 
+
+    if( !$first ) {
+    	update_user_meta( $current_user->ID, 'manage' . $currentScreen->id . 'columnshidden', $hidden );
+    	update_user_meta( $current_user->ID, "screen-defaults-{$currentScreen->id}", true );
+    }
+}
+
 /**
  * function to globally remove post type support for custom fields for all post types
  */
 function greatermedia_remove_custom_fields() {
 
-	// return a list of all post types
-	$post_types = get_post_types();
+	$post_types = array(
+		'post',
+		'page',
+		'tribe_events'
+	);
 
 	/**
 	 * go through each post type, check if the post type supports custom fields, if the post types does support
