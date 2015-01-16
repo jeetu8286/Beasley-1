@@ -69,11 +69,11 @@ if ( !class_exists( "Breaking_News" ) ) {
 
 			<div id="breaking-news-meta-fields">
 				<div id="breaking-news-meta" class="misc-pub-section">
-					<input type="checkbox" name="breaking_news_option" id="breaking_news_option" value="1" <?php checked( 1, $is_breaking_news ); ?> /> <label for="breaking_news_option"><?php _e( 'Breaking News', 'breaking_news' ); ?></label>
+					<input type="checkbox" name="breaking_news_option" id="breaking_news_option" value="1" <?php checked( 1, $is_breaking_news ); ?> /> <label for="breaking_news_option"><?php _e( 'Show Breaking News alert', 'breaking_news' ); ?></label>
 				</div>
 
 				<div id="site-wide-notification-meta" class="misc-pub-section">
-					<input type="checkbox" name="site_wide_notification_option" id="site_wide_notification_option" value="1" <?php checked( 1, $show_site_wide_notification ); ?> /> <label for="site_wide_notification_option"><?php _e( 'Site-wide Notification', 'breaking_news' ); ?></label>
+					<input type="checkbox" name="site_wide_notification_option" id="site_wide_notification_option" value="1" <?php checked( 1, $show_site_wide_notification ); ?> /> <label for="site_wide_notification_option"><?php _e( 'Show site-wide', 'breaking_news' ); ?></label>
 				</div>
 			</div>
 
