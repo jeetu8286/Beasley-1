@@ -52,7 +52,7 @@ class ShowsCPT {
 	public function register_post_type() {
 		register_post_type( self::SHOW_CPT, array(
 			'public'              => true,
-			'menu_position'       => 5,
+			'menu_position'       => 37,
 			'menu_icon'           => 'dashicons-megaphone',
 			'has_archive'         => true,
 			'supports'            => array( 'title', 'editor', 'author', 'thumbnail', 'comments', 'revisions' ),
