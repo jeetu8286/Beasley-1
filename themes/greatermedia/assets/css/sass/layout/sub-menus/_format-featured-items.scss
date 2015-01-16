@@ -24,6 +24,7 @@
 			display: inline-block;
 			vertical-align: top;
 			width: 49%;
+			line-height: 1.25em;
 		}
 	}
 
@@ -53,6 +54,10 @@
 		 a {
 			 padding: 0 !important;
 		 }
+
+		p {
+			line-height: 1.25em;
+		}
 	}
 
 	p {

@@ -1481,7 +1481,8 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
     .header__nav .format-fi .header__nav-submenu--list li {
       display: inline-block;
       vertical-align: top;
-      width: 49%; }
+      width: 49%;
+      line-height: 1.25em; }
   .header__nav .format-fi .header__nav-submenu--features {
     width: 66%;
     border-left: 1px solid #d0d2d3; }
@@ -1496,6 +1497,8 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
         color: #aa1c20; }
     .header__nav .format-fi .header__nav-submenu--features a {
       padding: 0 !important; }
+    .header__nav .format-fi .header__nav-submenu--features p {
+      line-height: 1.25em; }
   .header__nav .format-fi p {
     margin-top: .5em; }
   .header__nav .format-fi .entry2__thumbnail {
