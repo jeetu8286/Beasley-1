@@ -47,7 +47,7 @@ get_header(); ?>
 				<h3 class="search__keyword"><?php printf( __( '%s %s', 'greatermedia' ), $term_label, '<span class="search__keyword--term">' . get_search_query() . '</span>' ); ?></h3>
 
 				<?php get_template_part( 'partials/loop', 'search' ); ?>
-				<?php greatermedia_load_more_button( array( 'partial_slug' => 'partials/loop-search', 'auto_load' => true ) ); ?>
+				<?php greatermedia_load_more_button( array( 'partial_slug' => 'partials/loop-search' ) ); ?>
 				<?php get_template_part( 'partials/pagination' ); ?>
 
 			<?php else : ?>
