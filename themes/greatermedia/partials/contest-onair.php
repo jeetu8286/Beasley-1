@@ -2,10 +2,6 @@
 
 <article id="post-<?php the_ID(); ?>" <?php post_class( 'cf collapsed' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
 
-	<?php if ( has_post_thumbnail() ) : ?>
-		<div class="contest__thumbnail" style='background-image: url(<?php gm_post_thumbnail_url( 'gmr-contest-thumbnail' ); ?>)'></div>
-	<?php endif; ?>
-
 	<header class="entry__header">
 		<?php $encoded_permalink = urlencode( get_permalink() ); ?>
 		<?php $encoded_title = urlencode( get_the_title() ); ?>
