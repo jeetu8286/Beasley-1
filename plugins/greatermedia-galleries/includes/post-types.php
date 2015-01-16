@@ -66,7 +66,7 @@ class GreaterMediaGalleryCPT {
 			'show_in_menu'        => true,
 			'show_in_nav_menus'   => true,
 			'show_in_admin_bar'   => true,
-			'menu_position'       => 5,
+			'menu_position'       => 30,
 			'menu_icon'           => 'dashicons-format-gallery',
 			'can_export'          => true,
 			'has_archive'         => true,
