@@ -6383,7 +6383,7 @@ category: Components - Shows
 .podcast__runtime {
   padding-top: 0;
   padding-bottom: 1em; }
-  .podcast-player.playing .podcast__runtime {
+  .podcast__runtime.playing {
     display: none; }
 
 .podcast__meta {
