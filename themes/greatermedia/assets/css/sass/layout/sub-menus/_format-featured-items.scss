@@ -47,7 +47,6 @@
 
 				p {
 					color: $primary-link-hover;
-					line-height: 1.25em;
 				}
 			}
 		}
@@ -55,6 +54,10 @@
 		 a {
 			 padding: 0 !important;
 		 }
+
+		p {
+			line-height: 1.25em;
+		}
 	}
 
 	p {

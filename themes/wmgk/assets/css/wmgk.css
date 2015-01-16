@@ -1501,10 +1501,11 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
       .header__nav .format-fi .header__nav-submenu--features li:hover a {
         background-color: transparent; }
       .header__nav .format-fi .header__nav-submenu--features li:hover p {
-        color: #aa1c20;
-        line-height: 1.25em; }
+        color: #aa1c20; }
     .header__nav .format-fi .header__nav-submenu--features a {
       padding: 0 !important; }
+    .header__nav .format-fi .header__nav-submenu--features p {
+      line-height: 1.25em; }
   .header__nav .format-fi p {
     margin-top: .5em; }
   .header__nav .format-fi .entry2__thumbnail {
