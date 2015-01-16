@@ -48,6 +48,7 @@ img {
 	@include bp(medium) {
 		@include outer-container(100%);
 		padding-right: 225px;
+		min-height: 800px;
 	}
 	
 	@include bp(x-large) {
