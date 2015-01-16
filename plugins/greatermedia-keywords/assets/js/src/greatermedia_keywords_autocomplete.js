@@ -80,6 +80,10 @@ jQuery( function ( $ ) {
 		$context.keydown( function( e ) {
 			if ( 38 === e.which || 40 === e.which ) { // Up and down
 				self.is_navigating = true;
+
+				self.$items.addClass( 'is-navigating' )
+					.removeClass( 'is-hoverable' );
+
 				e.preventDefault();
 				e.stopPropagation();
 
@@ -93,15 +97,20 @@ jQuery( function ( $ ) {
 					self.position_change_callback( self.position );
 				}
 			} else if ( 27 === e.which ) { // Escape key
+				self.$items.removeClass( 'is-navigating' )
+					.addClass( 'is-hoverable' );
 				self.cancel();
 				e.preventDefault();
 				e.stopPropagation();
 			} else {
+				self.$items.removeClass( 'is-navigating' )
+					.addClass( 'is-hoverable' );
 				self.is_navigating = false;
 			}
 		} );
 
 		$items.find( 'is-highlighted' ).removeClass( 'is-highlighted' );
+		$items.addClass( 'is-hoverable' );
 	}
 
 	Arrow_Key_Navigator.prototype.cancel = function () {
@@ -177,7 +186,7 @@ jQuery( function ( $ ) {
 	$search_field.on( 'keyup', function () {
 		if ( ! key_nav.is_navigating ) {
 			handle_search_field_change();
-		} 
+		}
 	} );
 
 	// Finally, run at least once whenever the search field is opened.
