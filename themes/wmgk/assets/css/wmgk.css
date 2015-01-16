@@ -7832,6 +7832,8 @@ a.social-share-link {
   width: 14px;
   background-color: transparent;
   color: #929497; }
+  .header__search--submit:hover, .header__search--submit:focus {
+    color: #d22228; }
   @media screen and (min-width: 768px) {
     .header__search--submit {
       width: 10%;
@@ -8016,7 +8018,23 @@ body.search-results .posts-pagination {
 
 .keyword-search-item {
   border-bottom: 1px solid #f1f1f3;
-  padding: 1em 0; }
+  padding: 1em 0;
+  color: #000000; }
+
+.keyword-search-item__article {
+  color: #d22228; }
+
+.is-hoverable a:hover .keyword-search-item,
+.is-hoverable a:focus .keyword-search-item,
+.is-highlighted .keyword-search-item {
+  background: #d22228; }
+.is-hoverable a:hover .keyword-search-item__keyword,
+.is-hoverable a:hover .keyword-search-item__article,
+.is-hoverable a:focus .keyword-search-item__keyword,
+.is-hoverable a:focus .keyword-search-item__article,
+.is-highlighted .keyword-search-item__keyword,
+.is-highlighted .keyword-search-item__article {
+  color: #ffffff; }
 
 @media screen and (min-width: 768px) {
   .keyword-search-item__keyword {
