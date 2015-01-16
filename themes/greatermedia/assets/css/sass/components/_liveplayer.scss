@@ -478,6 +478,27 @@ category: Components
 	@include transform(translate(-50%, -50%));
 }
 
+.pre-roll__notification {
+	display: none;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 640px;
+	margin-top: 165px;
+	@include opacity(.9);
+	@include transform(translate(-50%, -50%));
+	@include transition(all 1s ease-in-out 2s);
+	padding: .5em 1em;
+	background-color: $secondary-bg;
+	font-size: ms(-2);
+	color: $color-text-white;
+
+	.live-stream__container.vast__pre-roll & {
+		display: block;
+		z-index: 20010;
+	}
+}
+
 .live-stream__container--player.stream__active {
 	width: 0;
 	height: 0;
