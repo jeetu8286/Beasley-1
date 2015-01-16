@@ -152,7 +152,7 @@ class GMP_CPT {
 	}
 
 	public static function parent_metabox( \WP_Post $post ) {
-		add_meta_box( 'episode-parent', 'Podcast', array( __CLASS__, 'render_parent_metabox' ), $post->post_type, 'side' );
+		add_meta_box( 'gmr-episode-parent', 'Podcast', array( __CLASS__, 'render_parent_metabox' ), $post->post_type, 'side', 'high' );
 	}
 
 	public static function render_parent_metabox( \WP_Post $post ) {
