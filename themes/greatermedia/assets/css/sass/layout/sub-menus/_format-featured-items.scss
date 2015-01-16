@@ -103,11 +103,20 @@
 .format-fi {
 
 	.menu__featured-post--mobile {
+		float: left;
+		width: 100%;
 
 		a {
 			border-bottom: 1px solid $primary-border;
 			padding: 0;
-			margin: 18px 1.25em 0;
+			margin: 18px 5% 0;
+			float: left;
+			width: 90%;
+
+			@include bp(small) {
+				padding-bottom: 20px;
+				margin: 18px 1.25em 0;
+			}
 
 			&:hover {
 				background-color: transparent;
@@ -116,6 +125,10 @@
 					color: $primary-link-hover;
 				}
 			}
+		}
+
+		& + li {
+			clear: left;
 		}
 
 	}
