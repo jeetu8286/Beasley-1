@@ -7064,6 +7064,14 @@ a.podcast__rss:active {
 .entry2__excerpt .age-restricted-login-btn {
   margin: 1em 0; }
 
+.age-restricted-shield--inline {
+  background: #f1f1f3;
+  margin: 1.5em 0;
+  padding: 0.5em 1.618em;
+  text-align: center; }
+  .age-restricted-shield--inline p {
+    margin: 1em 0; }
+
 @media screen and (min-width: 768px) {
   .single-show .content {
     padding: 1.5em 0.809em; } }
