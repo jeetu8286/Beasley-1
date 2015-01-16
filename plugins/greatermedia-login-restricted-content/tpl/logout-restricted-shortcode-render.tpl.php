@@ -1,6 +1,6 @@
 <div class="logout-restricted-shield logout-restricted-shield--inline" id="logout-restricted-shield-<?php the_ID(); ?>">
 	<p>
-		The following is restricted to non members only
+		This content is restricted to non-members only
 	</p>
 
 	<p>

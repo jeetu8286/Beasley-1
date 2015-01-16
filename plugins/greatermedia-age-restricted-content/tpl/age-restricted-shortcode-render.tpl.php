@@ -1,6 +1,6 @@
 <div class="age-restricted-shield age-restricted-shield--inline" id="age-restricted-shield-<?php the_ID(); ?>">
 	<p>
-		The following is restricted to members
+		This content is restricted to members
 		<?php if ( '18plus' === $age_restriction ) : ?>
 			18+
 		<?php elseif ( '21plus' === $age_restriction ) : ?>
