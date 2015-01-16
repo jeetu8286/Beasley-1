@@ -262,14 +262,17 @@
 		var eventTarget = event.target;
 		var podcastCover = eventTarget.parentNode;
 		var audioCurrent = podcastCover.nextElementSibling;
+		var runtime = audioCurrent.nextElementSibling;
 
 		if (podcastPlayer != null) {
 			audioCurrent.classList.add('playing__current');
+			runtime.classList.add('playing');
 		}
 	}
 
 	function resetInlineAudioUX() {
 		var audioTime = document.querySelectorAll('.audio__time'), i;
+		var runtime = document.querySelectorAll('.podcast__runtime'), i;
 		if (onAirTitle != null) {
 			onAirTitle.style.display = 'block';
 		}
@@ -297,6 +300,12 @@
 
 		if (livePlayer != null) {
 			livePlayer.classList.remove('playing');
+		}
+
+		for (i = 0; i < runtime.length; ++i) {
+			if (runtime[i] != null && runtime[i].classList.contains('playing')) {
+				runtime[i].classList.remove('playing');
+			}
 		}
 	}
 

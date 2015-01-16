@@ -150,7 +150,7 @@ category: Components - Shows
 	padding-top: 0;
 	padding-bottom: 1em;
 
-	.podcast-player.playing & {
+	&.playing {
 		display: none;
 	}
 }
