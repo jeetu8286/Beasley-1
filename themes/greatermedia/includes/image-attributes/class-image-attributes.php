@@ -15,9 +15,10 @@ class GMRImageAttr {
 	/**
 	 * Add Image Attribution fields to media uploader
 	 *
-	 * @param $form_fields array, fields to include in attachment form
-	 * @param $post object, attachment record in database
-	 * @return $form_fields, modified form fields
+	 * @param array $form_fields Fields to include in attachment form
+	 * @param WP_Post $post Attachment record in database
+	 *
+	 * @return array Modified form fields
 	 */
 	public static function attachment_field_credit( $form_fields, $post ) {
 		$gmr_img_attr = get_image_attribution($post->ID);
@@ -36,9 +37,10 @@ class GMRImageAttr {
 	/**
 	 * Save values of Image Attribution in the media uploader
 	 *
-	 * @param $post array, the post data for database
-	 * @param $attachment array, attachment fields from $_POST form
-	 * @return $post array, modified post data
+	 * @param array $post The post data for database
+	 * @param array $attachment Attachment fields from $_POST form
+	 *
+	 * @return array Modified post data
 	 */
 	public static function attachment_field_credit_save( $post, $attachment ) {
 
