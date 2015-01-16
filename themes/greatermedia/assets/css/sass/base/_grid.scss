@@ -37,6 +37,7 @@ img {
 	background-color: $secondary-bg;
 	@include bp(medium) {
 		@include transform(none);
+		min-height: 800px;
 	}
 }
 
@@ -46,7 +47,6 @@ img {
 
 	@include bp(medium) {
 		@include outer-container(100%);
-		min-height: 800px;
 		padding-right: 225px;
 	}
 	
