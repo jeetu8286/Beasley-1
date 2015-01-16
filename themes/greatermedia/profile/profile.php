@@ -22,6 +22,63 @@ $months = array(
 $emma_groups = get_option( 'emma_groups' );
 $emma_groups = json_decode( $emma_groups, true );
 
+$state_names = array(
+	array( 'label' => 'Alabama', 'value' => 'AL' ),
+	array( 'label' => 'Alaska', 'value' => 'AK' ),
+	array( 'label' => 'Arizona', 'value' => 'AZ' ),
+	array( 'label' => 'Arkansas', 'value' => 'AR' ),
+	array( 'label' => 'California', 'value' => 'CA' ),
+	array( 'label' => 'Colorado', 'value' => 'CO' ),
+	array( 'label' => 'Connecticut', 'value' => 'CT' ),
+	array( 'label' => 'Delaware', 'value' => 'DE' ),
+	array( 'label' => 'District of Columbia', 'value' => 'DC' ),
+	array( 'label' => 'Florida', 'value' => 'FL' ),
+	array( 'label' => 'Georgia', 'value' => 'GA' ),
+	array( 'label' => 'Hawaii', 'value' => 'HI' ),
+	array( 'label' => 'Idaho', 'value' => 'ID' ),
+	array( 'label' => 'Illinois', 'value' => 'IL' ),
+	array( 'label' => 'Indiana', 'value' => 'IN' ),
+	array( 'label' => 'Iowa', 'value' => 'IA' ),
+	array( 'label' => 'Kansas', 'value' => 'KS' ),
+	array( 'label' => 'Kentucky', 'value' => 'KY' ),
+	array( 'label' => 'Louisiana', 'value' => 'LA' ),
+	array( 'label' => 'Maine', 'value' => 'ME' ),
+	array( 'label' => 'Maryland', 'value' => 'MD' ),
+	array( 'label' => 'Massachusetts', 'value' => 'MA' ),
+	array( 'label' => 'Michigan', 'value' => 'MI' ),
+	array( 'label' => 'Minnesota', 'value' => 'MN' ),
+	array( 'label' => 'Mississippi', 'value' => 'MS' ),
+	array( 'label' => 'Missouri', 'value' => 'MO' ),
+	array( 'label' => 'Montana', 'value' => 'MT' ),
+	array( 'label' => 'Nebraska', 'value' => 'NE' ),
+	array( 'label' => 'Nevada', 'value' => 'NV' ),
+	array( 'label' => 'New Hampshire', 'value' => 'NH' ),
+	array( 'label' => 'New Jersey', 'value' => 'NJ' ),
+	array( 'label' => 'New Mexico', 'value' => 'NM' ),
+	array( 'label' => 'New York', 'value' => 'NY' ),
+	array( 'label' => 'North Carolina', 'value' => 'NC' ),
+	array( 'label' => 'North Dakota', 'value' => 'ND' ),
+	array( 'label' => 'Ohio', 'value' => 'OH' ),
+	array( 'label' => 'Oklahoma', 'value' => 'OK' ),
+	array( 'label' => 'Oregon', 'value' => 'OR' ),
+	array( 'label' => 'Pennsylvania', 'value' => 'PA' ),
+	array( 'label' => 'Rhode Island', 'value' => 'RI' ),
+	array( 'label' => 'South Carolina', 'value' => 'SC' ),
+	array( 'label' => 'South Dakota', 'value' => 'SD' ),
+	array( 'label' => 'Tennessee', 'value' => 'TN' ),
+	array( 'label' => 'Texas', 'value' => 'TX' ),
+	array( 'label' => 'Utah', 'value' => 'UT' ),
+	array( 'label' => 'Vermont', 'value' => 'VT' ),
+	array( 'label' => 'Virginia', 'value' => 'VA' ),
+	array( 'label' => 'Washington', 'value' => 'WA' ),
+	array( 'label' => 'West Virginia', 'value' => 'WV' ),
+	array( 'label' => 'Wisconsin', 'value' => 'WI' ),
+	array( 'label' => 'Wyoming', 'value' => 'WY' ),
+	array( 'label' => 'Armed Forces Americas', 'value' => 'AA' ),
+	array( 'label' => 'Armed Forces Europe', 'value' => 'AE' ),
+	array( 'label' => 'Armed Forces Pacific', 'value' => 'AP' ),
+);
+
 ?>
 
 	<div class="gigya-screen-set" id="GMR-CustomScreenSet" style="display:none" data-on-pending-registration-screen="gigya-register-complete-screen">
@@ -190,6 +247,18 @@ $emma_groups = json_decode( $emma_groups, true );
 				<label class="inline-label"><input type="radio" name="profile.gender" value="m" />Male</label>
 				<label class="inline-label"><input type="radio" name="profile.gender" value="f" />Female</label>
 
+				<span class="gigya-error-msg" data-bound-to="profile.state" ></span>
+				<label>State:</label>
+				<select name="profile.state">
+					<?php foreach ( $state_names as $state ) { ?>
+						<option value="<?php echo esc_attr( $state['value'] ); ?>"><?php echo esc_html( $state['label'] ); ?></option>
+					<?php } ?>
+				</select>
+
+				<span class="gigya-error-msg" data-bound-to="profile.city" ></span>
+				<label>City:</label>
+				<input type="text" name="profile.city" />
+
 				<h2>Email Subscriptions</h2>
 
 				<ul class="member-groups-list">
@@ -284,6 +353,18 @@ $emma_groups = json_decode( $emma_groups, true );
 				<label class="gender-label">Gender:</label>
 				<label class="inline-label"><input type="radio" name="profile.gender" value="m" />Male</label>
 				<label class="inline-label"><input type="radio" name="profile.gender" value="f" />Female</label>
+
+				<span class="gigya-error-msg" data-bound-to="profile.state" ></span>
+				<label>State:</label>
+				<select name="profile.state">
+					<?php foreach ( $state_names as $state ) { ?>
+						<option value="<?php echo esc_attr( $state['value'] ); ?>"><?php echo esc_html( $state['label'] ); ?></option>
+					<?php } ?>
+				</select>
+
+				<span class="gigya-error-msg" data-bound-to="profile.city" ></span>
+				<label>City:</label>
+				<input type="text" name="profile.city" />
 
 				<h2>Password</h2>
 				<a href="#" data-switch-screen="gigya-change-password-screen">Change your password.</a>
