@@ -571,3 +571,12 @@ function greatermedia_get_fallback_thumbnail_id( $meta_value, $object_id, $meta_
 	return $meta_value;
 }
 add_filter( 'get_post_metadata', 'greatermedia_get_fallback_thumbnail_id', 10, 4 );
+
+/**
+ * Deactivates Tribe Events filter at dashboard drafts widget.
+ */
+function greatermedia_deactivate_tribe_warning_on_dashboard( $option_value ) {
+	remove_filter( 'get_post_time', array( 'TribeEventsTemplates', 'event_date_to_pubDate' ), 10, 3 );
+	return $option_value;
+}
+add_filter( 'get_user_option_dashboard_quick_press_last_post_id', 'greatermedia_deactivate_tribe_warning_on_dashboard' );
