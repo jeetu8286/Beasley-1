@@ -131,13 +131,15 @@ class GMR_Audio_Shortcodes {
 		}
 		$new_html .= '<button class="podcast__btn--pause"></button>';
 		$new_html .= '</div>';
-		$new_html .= '<div id="audio__time" class="audio__time">';
-		$new_html .= '<div id="audio__progress-bar" class="audio__progress-bar">';
-		$new_html .= '<span id="audio__progress" class="audio__progress"></span>';
-		$new_html .= '</div>';
-		$new_html .= '<div id="audio__time--elapsed" class="audio__time--elapsed"></div>';
-		$new_html .= '<div id="audio__time--remaining" class="audio__time--remaining"></div>';
-		$new_html .= '</div>';
+		if ( $is_podcast ) {
+			$new_html .= '<div id="audio__time" class="audio__time">';
+			$new_html .= '<div id="audio__progress-bar" class="audio__progress-bar">';
+			$new_html .= '<span id="audio__progress" class="audio__progress"></span>';
+			$new_html .= '</div>';
+			$new_html .= '<div id="audio__time--elapsed" class="audio__time--elapsed"></div>';
+			$new_html .= '<div id="audio__time--remaining" class="audio__time--remaining"></div>';
+			$new_html .= '</div>';
+		}
 		$new_html .= '<span class="podcast__runtime">' . esc_html( $metadata['length_formatted'] ) . '</span>';
 		if( $is_podcast && ( $downloadable == 'on' || $downloadable == '' ) ) {
 			$new_html .= '<div class="podcast__download">';
@@ -172,6 +174,15 @@ class GMR_Audio_Shortcodes {
 		}
 		if ( $is_podcast ) {		
 			$new_html .= '<div class="podcast__desc">' . get_the_excerpt() . '</div>' ;
+		}
+		if ( ! $is_podcast ) {
+			$new_html .= '<div id="audio__time" class="audio__time">';
+			$new_html .= '<div id="audio__progress-bar" class="audio__progress-bar">';
+			$new_html .= '<span id="audio__progress" class="audio__progress"></span>';
+			$new_html .= '</div>';
+			$new_html .= '<div id="audio__time--elapsed" class="audio__time--elapsed"></div>';
+			$new_html .= '<div id="audio__time--remaining" class="audio__time--remaining"></div>';
+			$new_html .= '</div>';
 		}
 		$new_html .= '</div>'; // .podcast__meta
 		$new_html .= '<div class="gmr-mediaelement-fallback">' . $html . '</div>';

@@ -17,6 +17,7 @@
 	var companions; /* VAST companion banner object */
 	var currentStation = ''; /* String - Current station played */
 
+	var body = document.querySelector( 'body' );
 	var tdContainer = document.getElementById('td_container');
 	var livePlayer = document.getElementById('live-player');
 	var liveStreamPlayer = document.querySelector('.live-stream__player');
@@ -38,6 +39,7 @@
 	var onAirTitle = document.querySelector('.on-air__title');
 	var onAirShow = document.querySelector('.on-air__show');
 	var streamStatus = document.getElementById('live-stream__status');
+	var nowPlayingInfo = document.getElementById('nowPlaying');
 
 	/**
 	 * global variables for event types to use in conjunction with `addEventHandler` function
@@ -256,16 +258,30 @@
 		if (livePlayer != null) {
 			livePlayer.classList.add('playing');
 		}
+
+		if (nowPlayingInfo != null) {
+			nowPlayingInfo.classList.add('playing');
+		}
 	}
 
 	function nearestPodcastPlaying(event) {
 		var eventTarget = event.target;
 		var podcastCover = eventTarget.parentNode;
 		var audioCurrent = podcastCover.nextElementSibling;
-		var runtime = audioCurrent.nextElementSibling;
+		var runtimeCurrent = audioCurrent.nextElementSibling;
+		var audioTime = document.querySelectorAll('.audio__time'), i;
+		var runtime = document.querySelector('.podcast__runtime')
 
-		if (podcastPlayer != null) {
+		if (podcastPlayer != null && body.classList.contains('page-template-single-show-podcasts-php')) {
 			audioCurrent.classList.add('playing__current');
+			runtimeCurrent.classList.add('playing');
+		} else {
+			for (i = 0; i < audioTime.length; ++i) {
+				if (audioTime[i] != null) {
+					audioTime[i].classList.add('playing');
+					audioTime[i].classList.add('playing__current');
+				}
+			}
 			runtime.classList.add('playing');
 		}
 	}
@@ -306,6 +322,10 @@
 			if (runtime[i] != null && runtime[i].classList.contains('playing')) {
 				runtime[i].classList.remove('playing');
 			}
+		}
+
+		if (nowPlayingInfo != null) {
+			nowPlayingInfo.classList.remove('playing');
 		}
 	}
 
