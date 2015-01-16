@@ -70,7 +70,7 @@ class GreaterMediaClosuresCPT {
 			'show_ui'             => true,
 			'show_in_menu'        => true,
 			'show_in_admin_bar'   => true,
-			'menu_position'       => null,
+			'menu_position'       => 42,
 			'menu_icon'           => 'dashicons-welcome-comments',
 			'show_in_nav_menus'   => true,
 			'publicly_queryable'  => true,
