@@ -1,4 +1,4 @@
-<div class="logout-restricted-shield logout-restricted-shield--inline" id="logout-restricted-shield-<?php echo esc_attr( $post->ID ); ?>">
+<div class="logout-restricted-shield logout-restricted-shield--inline" id="logout-restricted-shield-<?php the_ID(); ?>">
 	<p>
 		The following is restricted to non members only
 	</p>

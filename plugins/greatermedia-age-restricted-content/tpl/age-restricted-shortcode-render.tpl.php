@@ -1,4 +1,4 @@
-<div class="age-restricted-shield age-restricted-shield--inline" id="age-restricted-shield-<?php echo esc_attr( $post->ID ); ?>">
+<div class="age-restricted-shield age-restricted-shield--inline" id="age-restricted-shield-<?php the_ID(); ?>">
 	<p>
 		The following is restricted to members
 		<?php if ( '18plus' === $age_restriction ) : ?>
