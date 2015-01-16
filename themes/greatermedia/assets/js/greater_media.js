@@ -720,7 +720,6 @@
 			$( searchForm )
 				.toggleClass('header__search--open')
 				.on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', function () {
-					console.log('transition done'); 
 					searchInput.focus();
 					$(searchInput).select();  
 				} );			
