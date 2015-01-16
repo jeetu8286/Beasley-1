@@ -6,7 +6,7 @@
 	@include bp(medium) {
 		background-position: left top;
 		background-color: #561015;
-		background-size: cover;
+		// background-size: cover; // Leave this out unless we want big crosshatches on WMGK. If we do want that, be sure to also add this to the .show__header
 	}
 }
 
@@ -118,4 +118,13 @@
 
 .highlights__heading {
 	color: $highlights-heading;
+}
+
+.audio__progress-bar {
+	background-color: $gray;
+}
+
+.type-contest .entry__title--tag {
+	background-color: $light-gray;
+	border-color: $light-gray;
 }

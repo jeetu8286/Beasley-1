@@ -163,6 +163,7 @@ class MemberQueryPostType {
 			'capability_type'    => 'page',
 			'has_archive'        => false,
 			'hierarchical'       => false,
+			'menu_position'	     => 55,
 		);
 	}
 

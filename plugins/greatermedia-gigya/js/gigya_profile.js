@@ -156,6 +156,11 @@
 			this.store.save(true);
 		},
 
+		update: function(profile) {
+			this.store.clear();
+			this.login(profile);
+		},
+
 		logout: function() {
 			this.store.clear();
 		},
@@ -216,7 +221,14 @@
 			this.redirect('/');
 		},
 
-		didProfileUpdate: function() {
+		didProfileUpdate: function(profile) {
+			var response = {
+				UID: this.session.getUserID(),
+				profile: profile
+			};
+
+			var profile_to_update = this.profileForResponse(response);
+			this.session.update(profile_to_update);
 			ajaxApi.request('update_account', {});
 		},
 
@@ -226,7 +238,7 @@
 				firstName : response.profile.firstName,
 				lastName  : response.profile.lastName,
 				age       : response.profile.age,
-				zip       : response.zip
+				zip       : response.profile.zip
 			};
 
 			if (response.profile.thumbnailURL) {
@@ -430,8 +442,34 @@
 			} else if (event.currentScreen === 'gigya-register-complete-screen') {
 				this.controller.willRegister = true;
 			} else if ( event.currentScreen === 'gigya-update-profile-success-screen' ) {
-				this.controller.didProfileUpdate();
+				var profile = this.profileFromEvent(event);
+				this.controller.didProfileUpdate(profile);
 			}
+		},
+
+		profileFromEvent: function(event) {
+			var profile     = event.profile;
+			var new_profile = event.response.requestParams.profile;
+
+			for (var field in new_profile) {
+				if (new_profile.hasOwnProperty(field) && profile.hasOwnProperty(field)) {
+					profile[field] = new_profile[field];
+				}
+			}
+
+			if (new_profile.birthYear) {
+				profile.age = this.calcAge(new_profile.birthYear);
+			}
+
+			return profile;
+		},
+
+		calcAge: function(birthYear) {
+			var date        = new Date();
+			var currentYear = date.getFullYear();
+			var age         = Math.max(0, currentYear - birthYear);
+
+			return age;
 		},
 
 		registerLogoutButton: function() {
@@ -629,7 +667,7 @@
 			params = {};
 		}
 
-		if (!params.dest && action === 'login') {
+		if (!params.dest && (action === 'login' || action === 'logout')) {
 			params.dest = location.pathname;
 		}
 

@@ -188,11 +188,7 @@ class ProfilePage {
 
 	public function get_profile_page_template( $page_name ) {
 		if ( in_array( $page_name, $this->allowed_pages ) ) {
-			$template =  locate_template( array(
-				"profile/{$page_name}.php", // $page_name is whitelisted
-				"profile/profile.php" // generic template for profile pages
-			) );
-			return $template;
+			return locate_template( array( 'profile/profile.php' ) );
 		} else {
 			return null;
 		}
