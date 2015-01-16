@@ -77,10 +77,14 @@ class GreaterMediaMegaMenuAdmin {
 					<?php
 					}
 					?>
+
 				</select>
 			</label>
 		</p>
 	<?php
+		if ( $format == 'fi' ) {
+			echo 'Post Picker';
+		}
 	}
 
 	/**
