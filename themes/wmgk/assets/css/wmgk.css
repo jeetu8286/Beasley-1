@@ -4546,8 +4546,6 @@ category: Components
       padding: 20px 0 26px;
       overflow: visible;
       border-bottom: none; } }
-  .live-player__container.playing {
-    padding-bottom: 0; }
 
 .live-stream {
   float: right;
