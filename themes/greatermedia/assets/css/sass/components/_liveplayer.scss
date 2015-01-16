@@ -347,7 +347,7 @@ category: Components
 
 .live-stream__status {
 	display: none;
-	@include transition(all 1s ease-in-out);
+	@include transition(all 500ms ease-in-out);
 	@include bp(medium) {
 		position: absolute;
 		top: 216px;
@@ -373,7 +373,6 @@ category: Components
 	@include transition(all 200ms ease-in-out);
 
 	.audio__playing & {
-		padding: .75em 2.5em;
 		@include transition(all 200ms ease-in-out);
 		@include transition-delay(1s);
 	}
@@ -477,7 +476,7 @@ category: Components
 	@include transform(translate(-50%, -50%));
 	font-family: $icon-font !important;
 	font-size: ms(2);
-	content: "\e60b" !important;
+	content: "\e61f" !important;
 
 	.live-stream__player.audio__playing & {
 		content: "\e61f" !important;
@@ -883,7 +882,7 @@ category: Components
 	overflow: hidden;
 	margin: 0 auto;
 	font-size: ms(-3);
-	@include transition(opacity 500ms ease-in-out 0s,height 500ms ease-in-out 0s);
+	@include transition(opacity 200ms ease-in-out 0s,height 200ms ease-in-out 0s);
 
 	.podcast-player & {
 		@include fill-parent;
@@ -899,7 +898,7 @@ category: Components
 		height: 41px;
 		visibility: visible;
 		@include opacity(1);
-		@include transition(opacity 500ms ease-in-out 0s,height 500ms ease-in-out 0s);
+		@include transition(opacity 200ms ease-in-out 0s,height 200ms ease-in-out 0s);
 	}
 
 	.live-player__container.playing &  {
@@ -908,7 +907,7 @@ category: Components
 		margin-top: 23px;
 		visibility: visible;
 		@include opacity(1);
-		@include transition(opacity 500ms ease-in-out 0s,height 500ms ease-in-out 0s);
+		@include transition(opacity 200ms ease-in-out 0s,height 200ms ease-in-out 0s);
 	}
 }
 
