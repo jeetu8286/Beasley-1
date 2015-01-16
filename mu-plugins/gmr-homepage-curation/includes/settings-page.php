@@ -24,6 +24,28 @@ function register_settings() {
 	// Can hook into this to add more post types
 	$homepage_curation_post_types = apply_filters( 'gmr-homepage-curation-post-types', array( 'post', 'tribe_events' ) );
 
+	// Fetch restricted post ids
+	$query = new \WP_Query();
+	$restricted_posts = $query->query( array(
+		'post_type'           => $homepage_curation_post_types,
+		'post_status'         => 'any',
+		'posts_per_page'      => 50,
+		'ignore_sticky_posts' => true,
+		'no_found_rows'       => true,
+		'fields'              => 'ids',
+		'meta_query'          => array(
+			'relation' => 'OR',
+			array(
+				'key'     => 'post_age_restriction',
+				'compare' => 'EXISTS',
+			),
+			array(
+				'key'     => 'post_login_restriction',
+				'compare' => 'EXISTS',
+			),
+		),
+	) );
+
 	// Homepage Featured
 	$option_name = 'gmr-homepage-featured';
 	$render_args = array(
@@ -31,7 +53,8 @@ function register_settings() {
 		'pf_options' => array(
 			'args' => array(
 				'post_type' => $homepage_curation_post_types,
-				'meta_key' => '_thumbnail_id', // Forces the posts to have a featured image
+				'meta_key'  => '_thumbnail_id', // Forces the posts to have a featured image
+				'exclude'   => $restricted_posts,
 			),
 			'limit' => 4,
 		),
@@ -47,7 +70,8 @@ function register_settings() {
 		'pf_options' => array(
 			'args' => array(
 				'post_type' => $homepage_curation_post_types,
-				'meta_key' => '_thumbnail_id', // Forces the posts to have a featured image
+				'meta_key'  => '_thumbnail_id', // Forces the posts to have a featured image
+				'exclude'   => $restricted_posts,
 			),
 			'limit' => 3,
 		),
@@ -56,6 +80,30 @@ function register_settings() {
 	register_setting( get_settings_section(), $option_name, __NAMESPACE__ . '\sanitize_post_finder' );
 
 
+	// Fetch restricted post ids
+	$query = new \WP_Query();
+	$future_events = $query->query( array(
+		'post_type'           => 'tribe_events',
+		'post_status'         => array( 'publish', 'future', 'private' ),
+		'posts_per_page'      => 2,
+		'ignore_sticky_posts' => true,
+		'no_found_rows'       => true,
+		'fields'              => 'ids',
+		'suppress_filters'    => true, // have to suppress filters otherwise it won't work
+		'meta_key'            => '_EventStartDate',
+		'meta_type'           => 'DATETIME',
+		'orderby'             => 'meta_value',
+		'order'               => 'ASC',
+		'meta_query'          => array(
+			array(
+				'key'     => '_EventStartDate',
+				'value'   => current_time( 'mysql' ),
+				'type'    => 'DATETIME',
+				'compare' => '>',
+			),
+		),
+	) );
+
 	// Events - This section is optional - Either curated, or falls back. If you only curate one, we only show one. May be nice in the future to fill up to the max required, but that could also be confusing.
 	$option_name = 'gmr-homepage-events';
 	$render_args = array(
@@ -63,6 +111,7 @@ function register_settings() {
 		'pf_options' => array(
 			'args' => array(
 				'post_type' => array( 'tribe_events' ),
+				'include'   => $future_events,
 			),
 			'limit' => 2,
 		),
@@ -100,7 +149,7 @@ function sanitize_post_finder( $unsanitized ) {
 
 /* The settings page */
 function add_settings_page() {
-	add_menu_page( 'Homepage Curation', 'Homepage Curation', 'edit_others_posts', get_settings_page_slug(), __NAMESPACE__ . '\render_homepage_curation', 'dashicons-admin-home', '2.88' );
+	add_menu_page( 'Homepage Curation', 'Homepage', 'edit_others_posts', get_settings_page_slug(), __NAMESPACE__ . '\render_homepage_curation', 'dashicons-admin-home', '2.88' );
 }
 
 function render_homepage_curation() {

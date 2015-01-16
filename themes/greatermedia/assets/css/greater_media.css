@@ -5349,8 +5349,7 @@ category: Components - Ads
   position: relative;
   background-position: center center;
   background-size: 100%;
-  background-size: cover;
-  margin: 0 auto 2em; }
+  background-size: cover; }
   .contest__thumbnail:after {
     content: '';
     display: block;
