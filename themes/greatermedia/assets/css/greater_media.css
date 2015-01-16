@@ -4578,9 +4578,9 @@ category: Components
 
 .live-stream__status {
   display: none;
-  -webkit-transition: all 1s ease-in-out;
-  -moz-transition: all 1s ease-in-out;
-  transition: all 1s ease-in-out; }
+  -webkit-transition: all 500ms ease-in-out;
+  -moz-transition: all 500ms ease-in-out;
+  transition: all 500ms ease-in-out; }
   @media screen and (min-width: 768px) {
     .live-stream__status {
       position: absolute;
@@ -4622,7 +4622,6 @@ category: Components
   .live-stream__listen-now--btn:last-of-type, .podcast__subscribe:last-of-type {
     margin-right: 0; }
   .audio__playing .live-stream__listen-now--btn, .audio__playing .podcast__subscribe {
-    padding: .75em 2.5em;
     -webkit-transition: all 200ms ease-in-out;
     -moz-transition: all 200ms ease-in-out;
     transition: all 200ms ease-in-out;
@@ -4770,7 +4769,7 @@ category: Components
   transform: translate(-50%, -50%);
   font-family: "gmr-icons" !important;
   font-size: 1.26563em;
-  content: "\e60b" !important; }
+  content: "\e61f" !important; }
   .live-stream__player.audio__playing .live-stream__btn--pause:before {
     content: "\e61f" !important; }
 
@@ -5106,9 +5105,9 @@ category: Components
   overflow: hidden;
   margin: 0 auto;
   font-size: 0.70233em;
-  -webkit-transition: opacity 500ms ease-in-out 0s, height 500ms ease-in-out 0s;
-  -moz-transition: opacity 500ms ease-in-out 0s, height 500ms ease-in-out 0s;
-  transition: opacity 500ms ease-in-out 0s, height 500ms ease-in-out 0s; }
+  -webkit-transition: opacity 200ms ease-in-out 0s, height 200ms ease-in-out 0s;
+  -moz-transition: opacity 200ms ease-in-out 0s, height 200ms ease-in-out 0s;
+  transition: opacity 200ms ease-in-out 0s, height 200ms ease-in-out 0s; }
   .podcast-player .audio__time {
     width: 100%; }
   .podcast-player.podcast-player--compact .audio__time {
@@ -5123,9 +5122,9 @@ category: Components
     -moz-opacity: 1;
     -khtml-opacity: 1;
     zoom: 1;
-    -webkit-transition: opacity 500ms ease-in-out 0s, height 500ms ease-in-out 0s;
-    -moz-transition: opacity 500ms ease-in-out 0s, height 500ms ease-in-out 0s;
-    transition: opacity 500ms ease-in-out 0s, height 500ms ease-in-out 0s; }
+    -webkit-transition: opacity 200ms ease-in-out 0s, height 200ms ease-in-out 0s;
+    -moz-transition: opacity 200ms ease-in-out 0s, height 200ms ease-in-out 0s;
+    transition: opacity 200ms ease-in-out 0s, height 200ms ease-in-out 0s; }
   .live-player__container.playing .audio__time {
     display: block;
     height: 41px;
@@ -5136,9 +5135,9 @@ category: Components
     -moz-opacity: 1;
     -khtml-opacity: 1;
     zoom: 1;
-    -webkit-transition: opacity 500ms ease-in-out 0s, height 500ms ease-in-out 0s;
-    -moz-transition: opacity 500ms ease-in-out 0s, height 500ms ease-in-out 0s;
-    transition: opacity 500ms ease-in-out 0s, height 500ms ease-in-out 0s; }
+    -webkit-transition: opacity 200ms ease-in-out 0s, height 200ms ease-in-out 0s;
+    -moz-transition: opacity 200ms ease-in-out 0s, height 200ms ease-in-out 0s;
+    transition: opacity 200ms ease-in-out 0s, height 200ms ease-in-out 0s; }
 
 .audio__progress-bar {
   width: 100%;

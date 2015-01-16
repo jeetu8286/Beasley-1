@@ -262,6 +262,12 @@
 		if (nowPlayingInfo != null) {
 			nowPlayingInfo.classList.add('playing');
 		}
+
+		if (listenNow != null) {
+			setTimeout(function() {
+				listenNow.innerHTML = 'Switch to Live Stream';
+			}, 1000);
+		}
 	}
 
 	function nearestPodcastPlaying(event) {
@@ -330,11 +336,16 @@
 	}
 
 	var listenLiveStopCustomInlineAudio = function() {
+		var listenNowText = listenNow.textContent;
+
 		if (true === playingCustomAudio) {
 			customAudio.pause();
 			resetInlineAudioStates();
 			resetInlineAudioUX();
 			playingCustomAudio = false;
+		}
+		if (listenNowText === 'Switch to Live Stream') {
+			listenNow.innerHTML = 'Listen Live';
 		}
 		if (Cookies.get('gmr_play_live_audio') == 1) {
 			playLiveStream();
@@ -1247,7 +1258,6 @@
 		customAudio.pause();
 		resetInlineAudioStates();
 		setPausedStyles();
-		resetInlineAudioUX();
 	};
 
 	/*
