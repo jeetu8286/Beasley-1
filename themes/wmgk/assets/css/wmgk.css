@@ -1728,7 +1728,7 @@ Curated posts for Featured Articles
       width: 100%;
       margin-right: 0;
       padding: 3em 3.236em;
-      background-image: url("../../../../themes/greatermedia/assets/../images/featured-bg.png");
+      background-image: url("../../images/featured-bg.png");
       background-repeat: repeat;
       background-position: center center;
       background-color: #561015;
@@ -6873,7 +6873,7 @@ category: Components - Shows
       padding: 6.472em 3.236em; } }
   @media screen and (min-width: 1024px) {
     .show__header {
-      background-image: url("../../../../themes/greatermedia/assets/../images/featured-bg.png");
+      background-image: url("../../images/featured-bg.png");
       background-repeat: repeat;
       background-position: center center;
       background-color: #561015;
@@ -11026,8 +11026,7 @@ category: Components
 @media screen and (min-width: 768px) {
   .home__featured {
     background-position: left top;
-    background-color: #561015;
-    background-size: cover; } }
+    background-color: #561015; } }
 
 .live-links {
   border-top: 0; }
