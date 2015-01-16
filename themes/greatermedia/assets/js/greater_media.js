@@ -687,10 +687,19 @@
 	function showSearch(e) {
 		if (searchForm !== null) {
 			e.preventDefault();
-			searchForm.classList.toggle('header__search--open');
-			$overlay.addClass('is-visible');
-			searchInput.focus();
-			$(searchInput).select();
+			$overlay.addClass( 'is-visible' )
+			
+			// Now, show the search form, but don't set focus until the transition
+			// animation is complete. This is because Webkit browsers scroll to 
+			// the element when it gets focus, and they scroll to it where it was
+			// before the transition started. 
+			$( searchForm )
+				.toggleClass('header__search--open')
+				.on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', function () {
+					console.log('transition done'); 
+					searchInput.focus();
+					$(searchInput).select();  
+				} );			
 		}
 	}
 
