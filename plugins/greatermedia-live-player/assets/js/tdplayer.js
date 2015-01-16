@@ -18,7 +18,7 @@
 	var currentStation = ''; /* String - Current station played */
 
 	var tdContainer = document.getElementById('td_container');
-	var liveStream = document.querySelector('.live-stream');
+	var livePlayer = document.getElementById('live-player');
 	var liveStreamPlayer = document.querySelector('.live-stream__player');
 	var playBtn = document.getElementById('playButton');
 	var pauseBtn = document.getElementById('pauseButton');
@@ -255,8 +255,8 @@
 			streamStatus.classList.add('audio__playing');
 		}
 
-		if (liveStream != null) {
-			liveStream.classList.add('audio__playing');
+		if (livePlayer != null) {
+			livePlayer.classList.add('playing');
 		}
 	}
 
@@ -288,8 +288,8 @@
 			streamStatus.classList.remove('audio__playing');
 		}
 
-		if (liveStream != null) {
-			liveStream.classList.remove('audio__playing');
+		if (livePlayer != null) {
+			livePlayer.classList.remove('playing');
 		}
 	}
 
@@ -1191,7 +1191,7 @@
 		setPlayerTrackName();
 		setPlayerArtist();
 		resetInlineAudioStates();
-		setTimeout(setPlayingStyles, 2000);
+		setTimeout(setPlayingStyles, 1000);
 		setInlineAudioStates();
 		setInlineAudioUX();
 	};
@@ -1287,14 +1287,12 @@
 				var $play = $(e.currentTarget);
 
 				playCustomInlineAudio( $play.attr( 'data-mp3-src' ) );
-				$play.animate({volume: 1}, 2000);
 
 				resetInlineAudioStates();
 
 				setCustomAudioMetadata( $play.attr( 'data-mp3-title' ), $play.attr( 'data-mp3-artist' ), $play.attr('data-mp3-hash') );
 			});
 
-			$content.animate({volume: 0}, 2000);
 			$content.on('click', '.podcast__btn--pause', pauseCustomInlineAudio );
 		} else {
 			var $meFallbacks = $('.gmr-mediaelement-fallback audio'),
@@ -1418,6 +1416,8 @@
 	$(document).on( 'pjax:end', function() {
 		initInlineAudioUI();
 		setInlineAudioStates();
+		addEventHandler(podcastPlayBtn,elemClick,setInlineAudioUX);
+		addEventHandler(podcastPauseBtn,elemClick,pauseCustomInlineAudio);
 	});
 
 })(jQuery, window);

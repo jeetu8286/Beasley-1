@@ -726,6 +726,7 @@ category: Components
 .live-links {
 	display: none;
 	padding: 16px 0 0;
+	background-color: $liveplayer-bg;
 	text-align: center;
 	@include bp(medium) {
 		display: block;
@@ -868,7 +869,7 @@ category: Components
 		padding-left: 102px;
 	}
 
-	&.playing {
+	.podcast-player.playing &, .live-player__container.playing &  {
 		display: block;
 		@include opacity(1);
 		@include transition(all 1s ease-in-out);

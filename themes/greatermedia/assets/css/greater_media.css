@@ -4988,6 +4988,7 @@ category: Components
 .live-links {
   display: none;
   padding: 16px 0 0;
+  background-color: #000000;
   text-align: center; }
   @media screen and (min-width: 768px) {
     .live-links {
@@ -5103,7 +5104,7 @@ category: Components
     right: 0;
     bottom: 0;
     padding-left: 102px; }
-  .audio__time.playing {
+  .podcast-player.playing .audio__time, .live-player__container.playing .audio__time {
     display: block;
     opacity: 1;
     filter: alpha(opacity=100);
