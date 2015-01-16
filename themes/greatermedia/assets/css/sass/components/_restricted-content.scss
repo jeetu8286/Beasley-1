@@ -11,3 +11,14 @@
 		margin: 1em 0;
 	}
 }
+
+.age-restricted-shield--inline {
+	background: $extra-light-gray;
+	margin: $base-line-height 0;
+	padding: .5em $gutter;
+	text-align: center; 
+	
+	p {
+		margin: 1em 0; 
+	}
+}
