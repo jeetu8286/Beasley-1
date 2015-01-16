@@ -4814,6 +4814,35 @@ category: Components
   -o-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%); }
 
+.pre-roll__notification {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 640px;
+  margin-top: 165px;
+  opacity: 0.9;
+  filter: alpha(opacity=90);
+  -moz-opacity: 0.9;
+  -khtml-opacity: 0.9;
+  zoom: 1;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  -webkit-transition: all 1s ease-in-out 2s;
+  -moz-transition: all 1s ease-in-out 2s;
+  transition: all 1s ease-in-out 2s;
+  padding: .5em 1em;
+  background-color: #303030;
+  font-size: 0.79012em;
+  color: #ffffff;
+  text-align: center; }
+  .live-stream__container.vast__pre-roll .pre-roll__notification {
+    display: block;
+    z-index: 20010; }
+
 .live-stream__container--player.stream__active {
   width: 0;
   height: 0;
