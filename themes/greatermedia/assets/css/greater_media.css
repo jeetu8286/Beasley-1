@@ -4791,7 +4791,8 @@ category: Components
   padding: .5em 1em;
   background-color: #000000;
   font-size: 0.79012em;
-  color: #ffffff; }
+  color: #ffffff;
+  text-align: center; }
   .live-stream__container.vast__pre-roll .pre-roll__notification {
     display: block;
     z-index: 20010; }
