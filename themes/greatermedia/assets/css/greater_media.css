@@ -7752,7 +7752,6 @@ a.social-share-link {
       padding: 16px 2.5%;
       background-color: #ffffff;
       border-top: none;
-      border-bottom: 1px solid #000000;
       -webkit-transition: all 200ms ease-in-out;
       -moz-transition: all 200ms ease-in-out;
       transition: all 200ms ease-in-out;
@@ -8005,11 +8004,16 @@ body.search-results .posts-pagination {
 .keyword-search__header {
   font-weight: bold;
   border-bottom: 5px solid #d0d2d3;
-  padding-bottom: 1em; }
+  margin: 0 -.5em;
+  padding: 0 .5em 1em; }
+
+.keyword-search__items > a {
+  display: block; }
 
 .keyword-search-item {
   border-bottom: 1px solid #f1f1f3;
-  padding: 1em 0;
+  margin: 0 -.5em;
+  padding: 1em .5em;
   color: #000000; }
 
 .keyword-search-item__article {
