@@ -1363,8 +1363,10 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
     list-style-type: none;
     border: none;
     background-color: #ffffff; }
-  .mobile-nav .sub-menu a, .mobile-nav .header__nav .format-fw > ul a, .header__nav .mobile-nav .format-fw > ul a, .mobile-nav .header__nav .format-sp > ul a, .header__nav .mobile-nav .format-sp > ul a, .mobile-nav .header__nav .format-fi > ul a, .header__nav .mobile-nav .format-fi > ul a {
+  .mobile-nav .sub-menu a:link, .mobile-nav .header__nav .format-fw > ul a:link, .header__nav .mobile-nav .format-fw > ul a:link, .mobile-nav .header__nav .format-sp > ul a:link, .header__nav .mobile-nav .format-sp > ul a:link, .mobile-nav .header__nav .format-fi > ul a:link, .header__nav .mobile-nav .format-fi > ul a:link, .mobile-nav .sub-menu a:visited, .mobile-nav .header__nav .format-fw > ul a:visited, .header__nav .mobile-nav .format-fw > ul a:visited, .mobile-nav .header__nav .format-sp > ul a:visited, .header__nav .mobile-nav .format-sp > ul a:visited, .mobile-nav .header__nav .format-fi > ul a:visited, .header__nav .mobile-nav .format-fi > ul a:visited {
     color: #000; }
+  .mobile-nav .sub-menu a:hover, .mobile-nav .header__nav .format-fw > ul a:hover, .header__nav .mobile-nav .format-fw > ul a:hover, .mobile-nav .header__nav .format-sp > ul a:hover, .header__nav .mobile-nav .format-sp > ul a:hover, .mobile-nav .header__nav .format-fi > ul a:hover, .header__nav .mobile-nav .format-fi > ul a:hover, .mobile-nav .sub-menu a:active, .mobile-nav .header__nav .format-fw > ul a:active, .header__nav .mobile-nav .format-fw > ul a:active, .mobile-nav .header__nav .format-sp > ul a:active, .header__nav .mobile-nav .format-sp > ul a:active, .mobile-nav .header__nav .format-fi > ul a:active, .header__nav .mobile-nav .format-fi > ul a:active {
+    color: #fff; }
 .mobile-nav .sub-menu.is-visible, .mobile-nav .header__nav .format-fw > ul.is-visible, .header__nav .mobile-nav .format-fw > ul.is-visible, .mobile-nav .header__nav .format-sp > ul.is-visible, .header__nav .mobile-nav .format-sp > ul.is-visible, .mobile-nav .header__nav .format-fi > ul.is-visible, .header__nav .mobile-nav .format-fi > ul.is-visible {
   display: block;
   left: 0;
@@ -1384,8 +1386,9 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
 .mobile-nav a.mobile-menu-submenu-back-link {
   display: inline-block;
   width: 33%;
-  padding: 0;
-  color: #fff; }
+  padding: 0; }
+  .mobile-nav a.mobile-menu-submenu-back-link:link, .mobile-nav a.mobile-menu-submenu-back-link:visited {
+    color: #fff; }
   .mobile-nav a.mobile-menu-submenu-back-link .icon-arrow-prev:before {
     position: relative;
     bottom: -0.09em;
@@ -1458,9 +1461,11 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
   .header__nav .format-fi ul.header__nav-submenu--features,
   .header__nav .format-fi ul.header__nav-submenu--list {
     display: inline-block;
-    vertical-align: top; }
+    vertical-align: top;
+    float: left; }
   .header__nav .format-fi .header__nav-submenu--list {
-    width: 33%; }
+    width: 33%;
+    padding-right: 1em; }
     .header__nav .format-fi .header__nav-submenu--list li {
       display: inline-block;
       vertical-align: top;
@@ -1508,6 +1513,15 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
       padding-top: 66.666%; }
     .has-excerpt .header__nav .format-fi .entry2__thumbnail:after {
       padding-top: 75%; }
+
+.format-fi .menu__featured-post--mobile a {
+  border-bottom: 1px solid #d0d2d3;
+  padding: 0;
+  margin: 18px 1.25em 0; }
+  .format-fi .menu__featured-post--mobile a:hover {
+    background-color: transparent; }
+    .format-fi .menu__featured-post--mobile a:hover p {
+      color: #aa1c20; }
 
 .content__heading {
   margin-top: 0;

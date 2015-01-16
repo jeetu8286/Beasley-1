@@ -13,10 +13,12 @@
 	ul.header__nav-submenu--list {
 		display: inline-block;
 		vertical-align: top;
+		float: left;
 	}
 
 	.header__nav-submenu--list {
 		width: 33%;
+		padding-right: 1em;
 
 		li {
 			display: inline-block;
@@ -94,5 +96,27 @@
 		background-size: 100%;
 		background-size: cover;
 		background-position: center center;
+	}
+
+}
+
+.format-fi {
+
+	.menu__featured-post--mobile {
+
+		a {
+			border-bottom: 1px solid $primary-border;
+			padding: 0;
+			margin: 18px 1.25em 0;
+
+			&:hover {
+				background-color: transparent;
+
+				p {
+					color: $primary-link-hover;
+				}
+			}
+		}
+
 	}
 }
