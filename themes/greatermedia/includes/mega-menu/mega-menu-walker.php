@@ -9,6 +9,82 @@
  */
 class GreaterMediaNavWalker extends Walker_Nav_Menu {
 
+	/**
+	 * Keeps track of if we are currently doing a featured item menu
+	 *
+	 * Allows us to do stuff in methods that don't let us inspect any item properties
+	 * This will normally be false
+	 * If we're currently in a featured item menu it will store that menu item's ID.
+	 *
+	 * @var bool | integer
+	 */
+	public static $current_featured_item_menu = false;
+
+	/**
+	 * Keeps track of the current item's parent ID
+	 * @var int
+	 */
+	public static $current_parent_item = 0;
+
+	/**
+	 * Keeps a count of how many items have been output for a given $current_parent_item
+	 * Works in conjunction with the added item property sibling_count to determine how far we are
+	 * through a given subnav. Only works 2 levels — a third level would reset the count.
+	 * @var int
+	 */
+	public static $count = 0;
+
+	/**
+	 * Keeps track of the WordPress filters to see if they've been called/attached previously.
+	 * @var bool
+	 */
+	static $filters_called = false;
+
+	public function __construct() {
+		if ( false === self::$filters_called ) {
+			add_filter( 'wp_nav_menu_objects', array( __CLASS__, 'add_menu_item_data' ), null, 2 );
+			self::$filters_called = true;
+		}
+	}
+
+	/**
+	 * Iterates over an array of menu items. Adds data (menu_item_parent_title) to the item object
+	 * if the current item is a child.
+	 *
+	 * Also adds a count of how many siblings are present (siblings_count) to the item object.
+	 *
+	 * @param $sorted_menu_items array
+	 * @param $args              array
+	 *
+	 * @return array
+	 */
+	public static function add_menu_item_data( $sorted_menu_items, $args ) {
+		foreach ( $sorted_menu_items as $id => &$item ) {
+			// check if the $item has a parent $item.
+			if ( ! empty( $item->menu_item_parent ) ) {
+
+				// Get the associated parent item and assign it to the new property menu_item_parent_title
+				$matching_parents = (array) wp_filter_object_list( $sorted_menu_items, array( 'ID' => $item->menu_item_parent ), 'and', 'post_title' );
+				$item->menu_item_parent_title = array_shift( $matching_parents );
+
+				// Find out how many items also have this parent and add it to the new property siblings_count
+				$siblings = count( wp_filter_object_list( $sorted_menu_items,array( 'menu_item_parent' => $item->menu_item_parent ), 'and', 'ID' ) );
+				$item->siblings_count = (int) $siblings;
+
+			}
+		}
+
+		return $sorted_menu_items;
+	}
+
+	/**
+	 * Formatting helper for the small previews anchor.
+	 * Includes the current item's title, image, and some meta data.
+	 *
+	 * @param $item
+	 *
+	 * @return string
+	 */
 	public static function format_small_previews_link( $item ) {
 
 		$return = '';
@@ -71,8 +147,39 @@ class GreaterMediaNavWalker extends Walker_Nav_Menu {
 		$format = GreaterMediaMegaMenuAdmin::get_nav_menu_format( $item->ID );
 		$parent_format = GreaterMediaMegaMenuAdmin::get_nav_menu_format( $item->menu_item_parent );
 
+		/**
+		 * This is for the 'music' or Featured Item nav menu.
+		 * It adds some markup if this is the first item in the sub menu.
+		 *
+		 * Markup goal for the subnav of a featured item nav menu:
+		 * <ul class="subnav">
+		 *   <li>
+		 *     <ul class="header__nav-submenu--list"></ul>
+		 *     <ul class="header__nav-submenu--features"></ul>
+		 *   </li>
+		 * </ul>
+		 *
+		 * To achieve this markup is complex, spanning a few different methods and class property flags.
+		 * We start the nonsense here:
+		 */
+		if ( self::$current_featured_item_menu && self::$current_parent_item !== $item->menu_item_parent ) {
+			$output .= '<li><ul class="header__nav-submenu--list">';
+			self::$current_parent_item = $item->menu_item_parent;
+			self::$count = 1;
+		} else {
+			self::$count++;
+		}
+
 		if ( $format ) {
 			$classes[] = 'format-' . esc_attr( $format );
+		}
+
+		/*
+		 * Setting the doing_featured_item_menu flag here kicks in different markup (see above)
+		 * for sub-menu items and also allows us to build the featured items itself.
+		 */
+		if ( 'fi' === $format ) {
+			self::$current_featured_item_menu = $item->ID;
 		}
 
 		/**
@@ -172,6 +279,96 @@ class GreaterMediaNavWalker extends Walker_Nav_Menu {
 		 * @param array  $args        An array of {@see wp_nav_menu()} arguments.
 		 */
 		$output .= apply_filters( 'walker_nav_menu_start_el', $item_output, $item, $depth, $args );
+	}
+
+	/**
+	 * Ends the element output, if needed.
+	 *
+	 * @see   Walker::end_el()
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param string $output Passed by reference. Used to append additional content.
+	 * @param object $item   Page data object. Not used.
+	 * @param int    $depth  Depth of page. Not Used.
+	 * @param array  $args   An array of arguments. @see wp_nav_menu()
+	 */
+	public function end_el( &$output, $item, $depth = 0, $args = array() ) {
+		$output .= "</li>\n";
+
+		// We close the menu for the featured item menu's list. But not the featured items
+		if ( self::$count === $item->siblings_count && self::$current_featured_item_menu ) {
+			$output .= '</ul>';
+		}
+	}
+
+	/**
+	 * Ends the list of after the elements are added.
+	 *
+	 * @see   Walker::end_lvl()
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param string $output Passed by reference. Used to append additional content.
+	 * @param int    $depth  Depth of menu item. Used for padding.
+	 * @param array  $args   An array of arguments. @see wp_nav_menu()
+	 */
+	public function end_lvl( &$output, $depth = 0, $args = array() ) {
+
+		/*
+		 * Actually build the featured item menu and close the submenu <li>
+		 */
+		if ( self::$current_featured_item_menu ):
+			ob_start();
+
+			$featured_items_query = array(
+				'posts_per_page' => 4
+			);
+
+			$featured_item_ids = get_post_meta( self::$current_featured_item_menu, 'gmr_music_menu', true );
+
+
+			if ( ! empty( $featured_item_ids ) ) {
+				$featured_items_query['post__in'] = explode( ',', $featured_item_ids );
+				$featured_items_query['post_type'] = array( 'post', 'contest', 'gmr_gallery', 'gmr_album' );
+				$featured_items_query['orderby'] = 'post__in';
+			}
+
+			$featured_items = new WP_Query( $featured_items_query );
+			?>
+			<ul class="header__nav-submenu--features">
+			<?php
+
+			while ( $featured_items->have_posts() ):
+				$featured_items->the_post();
+
+
+				?>
+				<li>
+					<a href="<?php the_permalink(); ?>">
+					<div class="entry2__thumbnail format-<?php echo get_post_format(); ?>"
+					     style="background-image: url(<?php gm_post_thumbnail_url( 'gm-entry-thumbnail-4-3' ); ?>);">
+					</div>
+					<p><?php the_title(); ?></p>
+					</a>
+				</li>
+			<?php
+			endwhile;
+			wp_reset_postdata();
+			?>
+			</ul>
+			</li>
+			<?php
+
+			$output .= ob_get_clean();
+
+			// Set the flag to false now that we are not doing a featured item menu anymore.
+			self::$current_featured_item_menu = false;
+
+		endif;
+
+		$indent = str_repeat( "\t", $depth );
+		$output .= "$indent</ul>\n";
 	}
 
 }
