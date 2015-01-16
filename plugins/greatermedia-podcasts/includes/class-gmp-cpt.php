@@ -325,7 +325,7 @@ class GMP_CPT {
 		</ol>
 
 		<p>
-			The audio will be extracted from any text writen, which will be used as a teaser for the episode and in the rss feed.
+			The audio will be extracted from any text, which will be used as a teaser for the episode and in the rss feed.
 		</p>
 
 
