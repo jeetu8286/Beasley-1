@@ -21,6 +21,22 @@ class GreaterMediaMobileNavWalker extends Walker_Nav_Menu {
 		}
 	}
 
+	/**
+	 * Keeps track of if we are currently doing a featured item menu
+	 *
+	 * Allows us to do stuff in methods that don't let us inspect any item properties
+	 * This will normally be false
+	 * If we're currently in a featured item menu it will store that menu item's ID.
+	 *
+	 * @var bool | integer
+	 */
+	public static $current_featured_item_menu = false;
+
+	/**
+	 * Keeps track of the current item's parent ID
+	 * @var int
+	 */
+	public static $current_parent_item = 0;
 
 	/**
 	 * This number iterates for each item until $current_depth changes at which point it resets to 0
@@ -53,6 +69,8 @@ class GreaterMediaMobileNavWalker extends Walker_Nav_Menu {
 	 * @param int    $id     Current item ID.
 	 */
 	public function start_el( &$output, $item, $depth = 0, $args = array(), $id = 0 ) {
+		$format = GreaterMediaMegaMenuAdmin::get_nav_menu_format( $item->ID );
+		$parent_format = GreaterMediaMegaMenuAdmin::get_nav_menu_format( $item->menu_item_parent );
 
 		// Iterate item count or reset if needed
 		if ( $depth != 0 ) {
@@ -60,6 +78,7 @@ class GreaterMediaMobileNavWalker extends Walker_Nav_Menu {
 		} else {
 			self::$item_count_in_sub_menu = 0;
 		}
+
 
 		if ( 1 === self::$item_count_in_sub_menu && $depth === 1 ) {
 			$output .= '<li class="mobile-menu-submenu-header">';
@@ -72,9 +91,6 @@ class GreaterMediaMobileNavWalker extends Walker_Nav_Menu {
 
 		$classes   = empty( $item->classes ) ? array() : (array) $item->classes;
 		$classes[] = 'menu-item-' . $item->ID;
-
-		$format = GreaterMediaMegaMenuAdmin::get_nav_menu_format( $item->ID );
-		$parent_format = GreaterMediaMegaMenuAdmin::get_nav_menu_format( $item->menu_item_parent );
 
 		if ( $format ) {
 			$classes[] = 'format-' . esc_attr( $format );
@@ -153,8 +169,16 @@ class GreaterMediaMobileNavWalker extends Walker_Nav_Menu {
 		 * @todo check performance here, may want to query all the object_ids at once so they are cached.
 		 */
 		if ( 'sp' === $parent_format ) {
+
 			$item_output .= GreaterMediaNavWalker::format_small_previews_link( $item );
+
+		} elseif ( 'fi' === $parent_format && 2 === self::$item_count_in_sub_menu ) {
+
+			// code
+			$item_output .= 'poop';
+
 		} else {
+
 			/** This filter is documented in wp-includes/post-template.php */
 			$item_output .= $args->link_before . apply_filters( 'the_title', $item->title, $item->ID ) . $args->link_after;
 		}
@@ -168,7 +192,6 @@ class GreaterMediaMobileNavWalker extends Walker_Nav_Menu {
 			$item_output .= '<span class="screen-reader-text">Expand Sub-Navigation</span>';
 			$item_output .= '</a>';
 		}
-
 
 		/**
 		 * Filter a menu item's starting output.
