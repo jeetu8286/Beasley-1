@@ -186,6 +186,25 @@ function greatermedia_scripts_styles() {
 add_action( 'wp_enqueue_scripts', 'greatermedia_scripts_styles');
 
 /**
+ * Add custom admin stylesheet.  
+ */
+function greatermedia_admin_styles() {
+	$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
+	$baseurl = untrailingslashit( get_template_directory_uri() );
+
+	wp_register_style(
+		'gmr-admin-styles',
+		"{$baseurl}/assets/css/gm_admin{$postfix}.css",
+		array(),
+		GREATERMEDIA_VERSION
+	);
+
+	wp_enqueue_style( 'gmr-admin-styles' );
+}
+
+add_action( 'admin_enqueue_scripts', 'greatermedia_admin_styles' );
+
+/**
  * Unload YARPP stylesheets.  
  */
 add_action( 'get_footer', function () {
