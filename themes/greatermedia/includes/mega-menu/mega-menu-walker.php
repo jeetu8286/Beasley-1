@@ -11,10 +11,14 @@ class GreaterMediaNavWalker extends Walker_Nav_Menu {
 
 	/**
 	 * Keeps track of if we are currently doing a featured item menu
+	 *
 	 * Allows us to do stuff in methods that don't let us inspect any item properties
-	 * @var bool
+	 * This will normally be false
+	 * If we're currently in a featured item menu it will store that menu item's ID.
+	 *
+	 * @var bool | integer
 	 */
-	public static $doing_featured_item_menu = false;
+	public static $current_featured_item_menu = false;
 
 	/**
 	 * Keeps track of the current item's parent ID
@@ -158,7 +162,7 @@ class GreaterMediaNavWalker extends Walker_Nav_Menu {
 		 * To achieve this markup is complex, spanning a few different methods and class property flags.
 		 * We start the nonsense here:
 		 */
-		if ( self::$doing_featured_item_menu && self::$current_parent_item !== $item->menu_item_parent ) {
+		if ( self::$current_featured_item_menu && self::$current_parent_item !== $item->menu_item_parent ) {
 			$output .= '<li><ul class="header__nav-submenu--list">';
 			self::$current_parent_item = $item->menu_item_parent;
 			self::$count = 1;
@@ -175,7 +179,7 @@ class GreaterMediaNavWalker extends Walker_Nav_Menu {
 		 * for sub-menu items and also allows us to build the featured items itself.
 		 */
 		if ( 'fi' === $format ) {
-			self::$doing_featured_item_menu = true;
+			self::$current_featured_item_menu = $item->ID;
 		}
 
 		/**
@@ -293,7 +297,7 @@ class GreaterMediaNavWalker extends Walker_Nav_Menu {
 		$output .= "</li>\n";
 
 		// We close the menu for the featured item menu's list. But not the featured items
-		if ( self::$count === $item->siblings_count && self::$doing_featured_item_menu ) {
+		if ( self::$count === $item->siblings_count && self::$current_featured_item_menu ) {
 			$output .= '</ul>';
 		}
 	}
@@ -314,12 +318,21 @@ class GreaterMediaNavWalker extends Walker_Nav_Menu {
 		/*
 		 * Actually build the featured item menu and close the submenu <li>
 		 */
-		if ( self::$doing_featured_item_menu ):
+		if ( self::$current_featured_item_menu ):
 			ob_start();
 
-			$featured_items = new WP_Query( array(
+			$featured_items_query = array(
 				'posts_per_page' => 4
-			) );
+			);
+
+			$featured_item_ids = get_post_meta( self::$current_featured_item_menu, 'gmr_music_menu', true );
+
+
+			if ( ! empty( $featured_item_ids ) ) {
+				$featured_items_query['post__in'] = explode( ',', $featured_item_ids );
+			}
+
+			$featured_items = new WP_Query( $featured_items_query );
 			?>
 			<ul class="header__nav-submenu--features">
 			<?php
@@ -348,7 +361,7 @@ class GreaterMediaNavWalker extends Walker_Nav_Menu {
 			$output .= ob_get_clean();
 
 			// Set the flag to false now that we are not doing a featured item menu anymore.
-			self::$doing_featured_item_menu = false;
+			self::$current_featured_item_menu = false;
 
 		endif;
 
