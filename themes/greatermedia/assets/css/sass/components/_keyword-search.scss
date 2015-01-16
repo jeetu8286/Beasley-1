@@ -14,12 +14,14 @@
 	.keyword-search__header {
 		font-weight: bold;
 		border-bottom: 5px solid $light-gray;
-		padding-bottom: 1em;
+		margin: 0 -.5em;
+		padding: 0 .5em 1em;
 	}
 
 	.keyword-search-item {
 		border-bottom: 1px solid $extra-light-gray;
-		padding: 1em 0;
+		margin: 0 -.5em;
+		padding: 1em .5em;
 		color: $color-text-black;
 	}
 		.keyword-search-item__article {
