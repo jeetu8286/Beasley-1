@@ -271,7 +271,7 @@ class GreaterMedia_Keyword_Admin {
 
 		$posts = get_posts( array(
 			'post_type'         =>  self::$supported_post_types,
-			'posts_per_page'    =>  20,
+			'posts_per_page'    =>  30,
 			'post_status'       =>  'publish',
 			's'                 =>  $search_term,
 		) );
