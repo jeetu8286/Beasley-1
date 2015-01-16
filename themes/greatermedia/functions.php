@@ -563,6 +563,7 @@ function add_google_analytics() {
 	}
 
 	jQuery(document).on('pjax:end', function() {
+		ga('set', 'location', window.location.href);
 		ga('send', 'pageview');
 	});
 	ga('send', 'pageview');
