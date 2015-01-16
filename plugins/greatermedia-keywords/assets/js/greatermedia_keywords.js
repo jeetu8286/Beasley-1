@@ -8,42 +8,41 @@
 	'use strict';
 
 	jQuery( function( $ ) {
-
-
-		// supa search
-		function Fancy_Search() {
-
-		}
-
-		new Fancy_Search();
-
-		var $container = $( '#linked_content_item_container' );
-		var item_template = _.template( $( '#linked_content_item_template' ).html() );
-
-		function search( term ) {
-
-			$.getJSON( ajaxurl, {
-				action: 'greater_media/keywords/get_posts',
-				s: term
-			} )
-				.done( function ( res ) {
-					console.log('new stuff... clearing');
-					$container.empty();
-					_.each( res.data, function ( item ) {
-						$container.append( $( item_template( item ) ) );
-					} );
+		
+		$( '.post-search' ).each( function () {
+			
+			var $post_search = $( this );
+			var $search_item_container = $( '.post-search__list' );
+			var search_item_template = _.template( $( '.post-search__list-item-template' ).html() );
+	
+			function do_search( term ) {
+				$post_search.addClass( 'is-loading' );
+				
+				$.getJSON( ajaxurl, {
+					action: 'greater_media/keywords/get_posts',
+					s: term
 				} )
-			;
-		}
-
-
-		$( '#linked_content_search' ).keyup( _.debounce( function () {
-			search( $( this ).val() );
-		}, 1000 ) );
-
-		search( '' );
-
-
+					.done( function ( res ) {
+						$search_item_container.empty();
+						
+						_.each( res.data, function ( item ) {
+							$search_item_container.append( $( search_item_template( item ) ) );
+						} );
+						
+						$post_search.removeClass( 'is-loading' );
+					} )
+				;
+			}
+	
+			// Handle search field changes. 
+			$( '#linked_content_search' ).keyup( _.debounce( function () {
+				do_search( $( this ).val() );
+			}, 500 ) );
+			
+			// Start off with a blank search which will just return recent posts.
+			do_search( '' ); 
+		} );
+		
 
 		$('.submitdelete').on( 'click', function( event ) {
 			event.preventDefault();

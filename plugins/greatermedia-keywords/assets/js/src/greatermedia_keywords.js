@@ -13,32 +13,40 @@
 	'use strict';
 
 	jQuery( function( $ ) {
-
-		var $search_item_container = $( '#linked_content_item_container' );
-		var search_item_template = _.template( $( '#linked_content_item_template' ).html() );
-
-		function do_search( term ) {
-			$search_item_container.addClass( 'is-loading' );
+		
+		$( '.post-search' ).each( function () {
 			
-			$.getJSON( ajaxurl, {
-				action: 'greater_media/keywords/get_posts',
-				s: term
-			} )
-				.done( function ( res ) {
-					$search_item_container.empty();
-					
-					_.each( res.data, function ( item ) {
-						$search_item_container.append( $( search_item_template( item ) ) );
-					} );
-					
-					$search_item_container.removeClass( 'is-loading' );
+			var $post_search = $( this );
+			var $search_item_container = $( '.post-search__list' );
+			var search_item_template = _.template( $( '.post-search__list-item-template' ).html() );
+	
+			function do_search( term ) {
+				$post_search.addClass( 'is-loading' );
+				
+				$.getJSON( ajaxurl, {
+					action: 'greater_media/keywords/get_posts',
+					s: term
 				} )
-			;
-		}
-
-		$( '#linked_content_search' ).keyup( _.debounce( function () {
-			search( $( this ).val() );
-		}, 500 ) );
+					.done( function ( res ) {
+						$search_item_container.empty();
+						
+						_.each( res.data, function ( item ) {
+							$search_item_container.append( $( search_item_template( item ) ) );
+						} );
+						
+						$post_search.removeClass( 'is-loading' );
+					} )
+				;
+			}
+	
+			// Handle search field changes. 
+			$( '#linked_content_search' ).keyup( _.debounce( function () {
+				do_search( $( this ).val() );
+			}, 500 ) );
+			
+			// Start off with a blank search which will just return recent posts.
+			do_search( '' ); 
+		} );
 		
 
 		$('.submitdelete').on( 'click', function( event ) {
