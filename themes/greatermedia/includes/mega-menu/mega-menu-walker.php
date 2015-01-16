@@ -330,6 +330,7 @@ class GreaterMediaNavWalker extends Walker_Nav_Menu {
 
 			if ( ! empty( $featured_item_ids ) ) {
 				$featured_items_query['post__in'] = explode( ',', $featured_item_ids );
+				$featured_items_query['post_type'] = array( 'post', 'contest', 'gmr_gallery', 'gmr_album' );
 			}
 
 			$featured_items = new WP_Query( $featured_items_query );

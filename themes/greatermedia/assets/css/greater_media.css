@@ -1473,8 +1473,12 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
       width: 25%;
       float: left;
       padding: 2%; }
+      .header__nav .format-fi .header__nav-submenu--features li:hover a {
+        background-color: transparent; }
+      .header__nav .format-fi .header__nav-submenu--features li:hover p {
+        color: #aa1c20; }
     .header__nav .format-fi .header__nav-submenu--features a {
-      padding: 0; }
+      padding: 0 !important; }
   .header__nav .format-fi p {
     margin-top: .5em; }
   .header__nav .format-fi .entry2__thumbnail {

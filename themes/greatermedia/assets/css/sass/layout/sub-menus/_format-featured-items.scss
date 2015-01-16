@@ -35,10 +35,21 @@
 			width: 25%;
 			float: left;
 			padding: 2%;
+
+			&:hover {
+
+				a {
+					background-color: transparent;
+				}
+
+				p {
+					color: $primary-link-hover;
+				}
+			}
 		}
 
 		 a {
-			 padding: 0;
+			 padding: 0 !important;
 		 }
 	}
 

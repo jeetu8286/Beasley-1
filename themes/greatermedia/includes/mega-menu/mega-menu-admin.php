@@ -90,7 +90,7 @@ class GreaterMediaMegaMenuAdmin {
 			$values = get_post_meta( $item_id, 'gmr_music_menu', true );
 
 			// Can hook into this to add more post types
-			$post_types = apply_filters( 'gmr-music-menu-post-types', array( 'post', 'tribe_events' ) );
+			$post_types = apply_filters( 'gmr-music-menu-post-types', array( 'post', 'contest', 'gmr_gallery', 'gmr_album' ) );
 
 			$options =  array(
 				'args' => array(
