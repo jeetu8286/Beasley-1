@@ -4543,9 +4543,11 @@ category: Components
   border-bottom: 1px solid #282827; }
   @media screen and (min-width: 768px) {
     .live-player__container {
-      padding: 20px 0 0;
+      padding: 20px 0 26px;
       overflow: visible;
       border-bottom: none; } }
+  .live-player__container.playing {
+    padding-bottom: 0; }
 
 .live-stream {
   float: right;
@@ -4601,7 +4603,7 @@ category: Components
       margin: 0 auto;
       text-align: center; } }
   .live-stream__status.audio__playing {
-    top: 60px; }
+    top: 66px; }
 
 .live-stream__listen-now--btn, .podcast__subscribe {
   display: inline-block;
@@ -4935,7 +4937,6 @@ category: Components
   color: #f1f1f3; }
   @media screen and (min-width: 768px) {
     .now-playing__artist {
-      padding-bottom: 30px;
       font-size: 0.79012em; } }
 
 .live-player__volume {

@@ -293,9 +293,13 @@ category: Components
 	overflow: hidden;
 	border-bottom: 1px solid $secondary-border;
 	@include bp(medium) {
-		padding: 20px 0 0;
+		padding: 20px 0 26px;
 		overflow: visible;
 		border-bottom: none;
+	}
+
+	&.playing {
+		padding-bottom: 0;
 	}
 }
 
@@ -652,7 +656,6 @@ category: Components
 	font-weight: lighter;
 	color: $color-gray-extra-light;
 	@include bp(medium) {
-		padding-bottom: 30px;
 		font-size: ms(-2);
 	}
 }
