@@ -235,7 +235,8 @@ body.search-results .posts-pagination {
 
 		// Hover states
 		a:hover,
-		a:focus {
+		a:focus,
+		.is-highlighted {
 			.keyword-search-item {
 				background: $cardinal;
 			}

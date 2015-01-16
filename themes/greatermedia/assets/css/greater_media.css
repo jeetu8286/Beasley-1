@@ -7694,12 +7694,15 @@ body.search-results .posts-pagination {
   color: #d22228; }
 
 a:hover .keyword-search-item,
-a:focus .keyword-search-item {
+a:focus .keyword-search-item,
+.is-highlighted .keyword-search-item {
   background: #d22228; }
 a:hover .keyword-search-item__keyword,
 a:hover .keyword-search-item__article,
 a:focus .keyword-search-item__keyword,
-a:focus .keyword-search-item__article {
+a:focus .keyword-search-item__article,
+.is-highlighted .keyword-search-item__keyword,
+.is-highlighted .keyword-search-item__article {
   color: #ffffff; }
 
 @media screen and (min-width: 768px) {
