@@ -42,9 +42,9 @@ class GMRImageAttr {
 	 */
 	public static function attachment_field_credit_save( $post, $attachment ) {
 
-		$image_attribute = wp_filter_post_kses( $attachment['gmr_image_attribution'] );
-
 		if( isset( $attachment['gmr_image_attribution'] ) ) {
+
+			$image_attribute = wp_filter_post_kses( $attachment['gmr_image_attribution'] );
 
 			update_post_meta( $post['ID'], 'gmr_image_attribution', $image_attribute );
 
