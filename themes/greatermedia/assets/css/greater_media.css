@@ -666,7 +666,8 @@ img {
       max-width: 100%;
       margin-left: auto;
       margin-right: auto;
-      padding-right: 225px; }
+      padding-right: 225px;
+      min-height: 800px; }
       .container:before, .container:after, .single-gmr_gallery .gallery .container:before, .single-gmr_gallery .gallery .container:after {
         content: " ";
         display: table; }
@@ -698,7 +699,6 @@ img {
   padding: 1.5em 0.809em; }
   @media screen and (min-width: 768px) {
     .content, .gallery__archive {
-      min-height: 800px;
       padding: 3em 3.236em; } }
 
 .live-player {
@@ -2501,7 +2501,8 @@ Community Highlights and Events
 
 .header .container {
   padding: 0 .714285714286%;
-  position: relative; }
+  position: relative;
+  min-height: 0; }
 
 .header__main {
   width: 100%;
@@ -2760,7 +2761,8 @@ Community Highlights and Events
   color: #d22228; }
 
 .footer .container {
-  background-color: #ffffff; }
+  background-color: #ffffff;
+  min-height: 0; }
 
 .footer__content {
   float: left;
