@@ -190,7 +190,7 @@ function gmr_ll_register_post_type() {
 		'can_export'           => false,
 		'menu_position'        => 5,
 		'menu_icon'            => 'dashicons-admin-links',
-		'supports'             => array( 'title', 'post-formats', 'thumbnail' ),
+		'supports'             => array( 'title', 'post-formats' ),
 		'taxonomies'           => apply_filters( 'gmr_live_link_taxonomies', array() ),
 		'register_meta_box_cb' => 'gmr_ll_register_meta_boxes',
 		'label'                => 'Live Links',

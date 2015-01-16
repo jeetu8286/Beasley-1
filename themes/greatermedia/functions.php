@@ -305,11 +305,16 @@ function get_post_with_keyword( $query_arg ) {
 /**
  * Get the URL of a post's thumbnail.  
  * 
- * @param string|array Thumbnail size.
- * @param int Post ID. Defaults to current post. 
+ * @param string|array $size Thumbnail size.
+ * @param int $post_id Post ID. Defaults to current post.
+ * @param bool $use_fallback Determines whether to use fallback image if thumbnmail doesn't exist.
+ * @return string Thumbnail URL on success, otherwise NULL.
  */
-function gm_get_post_thumbnail_url( $size = 'thumbnail', $post_id = null ) {
+function gm_get_post_thumbnail_url( $size = 'thumbnail', $post_id = null, $use_fallback = false ) {
 	$thumbnail_id = get_post_thumbnail_id( $post_id );
+	if ( ! $thumbnail_id && $use_fallback ) {
+		$thumbnail_id = greatermedia_get_fallback_thumbnail_id( $post_id );
+	}
 
 	if ( $thumbnail_id ) {
 		return gm_get_thumbnail_url( $thumbnail_id, $size );
@@ -319,11 +324,12 @@ function gm_get_post_thumbnail_url( $size = 'thumbnail', $post_id = null ) {
 /**
  * Output the escaped URL of a post's thumbnail.  
  * 
- * @param string|array Thumbnail size.
- * @param int Post ID. Defaults to current post. 
+ * @param string|array $size Thumbnail size.
+ * @param int $post_id Post ID. Defaults to current post.
+ * @param bool $use_fallback Determines whether to use fallback image if thumbnmail doesn't exist.
  */
-function gm_post_thumbnail_url( $size = 'thumbnail', $post_id = null ) {
-	echo esc_url( gm_get_post_thumbnail_url( $size, $post_id ) );
+function gm_post_thumbnail_url( $size = 'thumbnail', $post_id = null, $use_fallback = false ) {
+	echo esc_url( gm_get_post_thumbnail_url( $size, $post_id, $use_fallback ) );
 }
 
 /**
@@ -547,6 +553,30 @@ function greatermedia_remove_custom_fields() {
 
 }
 add_action( 'init' , 'greatermedia_remove_custom_fields', 10 );
+
+/**
+ * Returns fallback image id for a post.
+ * 
+ * @param int|WP_Post|null $post_id The post id or object to return fallback for.
+ * @return int The fallback image id.
+ */
+function greatermedia_get_fallback_thumbnail_id( $post_id = null ) {
+	$post = get_post( $post_id );
+	if ( ! $post ) {
+		return null;
+	}
+
+	return intval( get_option( $post->post_type . '_fallback' ) );
+}
+
+/**
+ * Deactivates Tribe Events filter at dashboard drafts widget.
+ */
+function greatermedia_deactivate_tribe_warning_on_dashboard( $option_value ) {
+	remove_filter( 'get_post_time', array( 'TribeEventsTemplates', 'event_date_to_pubDate' ), 10, 3 );
+	return $option_value;
+}
+add_filter( 'get_user_option_dashboard_quick_press_last_post_id', 'greatermedia_deactivate_tribe_warning_on_dashboard' );
 
 function add_google_analytics() {
 	?>
