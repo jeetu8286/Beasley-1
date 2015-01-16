@@ -24,6 +24,7 @@
 			display: inline-block;
 			vertical-align: top;
 			width: 49%;
+			line-height: 1.25em;
 		}
 	}
 
@@ -46,6 +47,7 @@
 
 				p {
 					color: $primary-link-hover;
+					line-height: 1.25em;
 				}
 			}
 		}
