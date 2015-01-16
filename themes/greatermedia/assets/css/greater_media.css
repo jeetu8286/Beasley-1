@@ -666,6 +666,7 @@ img {
       max-width: 100%;
       margin-left: auto;
       margin-right: auto;
+      min-height: 800px;
       padding-right: 225px; }
       .container:before, .container:after, .single-gmr_gallery .gallery .container:before, .single-gmr_gallery .gallery .container:after {
         content: " ";
@@ -698,7 +699,6 @@ img {
   padding: 1.5em 0.809em; }
   @media screen and (min-width: 768px) {
     .content, .gallery__archive {
-      min-height: 800px;
       padding: 3em 3.236em; } }
 
 .live-player {
