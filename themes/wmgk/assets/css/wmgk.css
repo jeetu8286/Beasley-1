@@ -659,7 +659,8 @@ img {
       -moz-transform: none;
       -ms-transform: none;
       -o-transform: none;
-      transform: none; } }
+      transform: none;
+      min-height: 800px; } }
 
 .container, .single-gmr_gallery .gallery .container {
   max-width: 100%;
