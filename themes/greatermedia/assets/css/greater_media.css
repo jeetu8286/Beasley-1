@@ -7830,6 +7830,9 @@ body.search-results .posts-pagination {
   margin: 0 -.5em;
   padding: 0 .5em 1em; }
 
+.keyword-search__items > a {
+  display: block; }
+
 .keyword-search-item {
   border-bottom: 1px solid #f1f1f3;
   margin: 0 -.5em;

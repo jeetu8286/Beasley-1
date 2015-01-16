@@ -17,6 +17,11 @@
 		margin: 0 -.5em;
 		padding: 0 .5em 1em;
 	}
+	
+	// Fix ugly looking :focus border in some browsers. 
+	.keyword-search__items > a {
+		display: block; 
+	}
 
 	.keyword-search-item {
 		border-bottom: 1px solid $extra-light-gray;
