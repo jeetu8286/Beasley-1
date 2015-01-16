@@ -547,6 +547,49 @@ function greatermedia_remove_custom_fields() {
 }
 add_action( 'init' , 'greatermedia_remove_custom_fields', 10 );
 
+/**
+ * Filters post meta values to return fallback thumbnail image if original thumbnail
+ * has not been set.
+ * 
+ * @param type $meta_value The original meta value.
+ * @param type $object_id The post id.
+ * @param type $meta_key The meta key.
+ * @param type $single Determines whether to return single value or array.
+ * @return mixed The fallback thumbnail id or orininal meta value.
+ */
+function greatermedia_get_fallback_thumbnail_id( $meta_value, $object_id, $meta_key, $single ) {
+	// do nothing if it is not thumbnail id request
+	if ( '_thumbnail_id' != $meta_key ) {
+		return $meta_value;
+	}
+
+	// hack to check if original thumnail exists or not
+	$meta_cache = wp_cache_get($object_id, 'post_meta');
+	if ( ! $meta_cache ) {
+		$meta_cache = update_meta_cache( 'post', array( $object_id ) );
+		$meta_cache = $meta_cache[$object_id];
+	}
+
+	if ( isset( $meta_cache[ $meta_key ] ) ) {
+		if ( $single ) {
+			$meta_value = maybe_unserialize( $meta_cache[ $meta_key ][0] );
+		} else {
+			$meta_value = array_map('maybe_unserialize', $meta_cache[ $meta_key ] );
+		}
+	}
+
+	// if original thumbnail doesn't exist, then try to fetch fallback image
+	if ( empty( $meta_value ) ) {
+		$post = get_post( $object_id );
+		if ( $post ) {
+			$meta_value = intval( get_option( $post->post_type . '_fallback' ) );
+		}
+	}
+
+	return $meta_value;
+}
+add_filter( 'get_post_metadata', 'greatermedia_get_fallback_thumbnail_id', 10, 4 );
+
 function add_google_analytics() {
 	?>
 	<script>
