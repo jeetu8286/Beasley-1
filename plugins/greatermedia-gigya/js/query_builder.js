@@ -950,11 +950,13 @@ var AVAILABLE_CONSTRAINTS = [
 		type: 'profile:city',
 		valueType: 'string'
 	},
+	/*
 	{
 		type: 'profile:country',
 		valueType: 'string',
 		value: 'United States'
 	},
+	*/
 	{
 		type: 'profile:zip',
 		valueType: 'string',
@@ -1086,6 +1088,7 @@ var AVAILABLE_CONSTRAINTS_META = [
 		type: 'profile:birthYear',
 		title: 'Birth Year'
 	},
+	/*
 	{
 		type: 'profile:country',
 		title: 'Country',
@@ -1299,6 +1302,7 @@ var AVAILABLE_CONSTRAINTS_META = [
 			{ label: 'Zimbabwe',                          value: 'Zimbabwe'           } ,
 		]
 	},
+	*/
 	{
 		type: 'profile:zip',
 		title: 'Zip Code'
