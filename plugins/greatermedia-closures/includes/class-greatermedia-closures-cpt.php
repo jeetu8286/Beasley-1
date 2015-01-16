@@ -66,7 +66,7 @@ class GreaterMediaClosuresCPT {
 			'hierarchical'        => false,
 			'description'         => 'description',
 			'taxonomies'          => array(),
-			'public'              => true,
+			'public'              => false,
 			'show_ui'             => true,
 			'show_in_menu'        => true,
 			'show_in_admin_bar'   => true,
