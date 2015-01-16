@@ -5104,7 +5104,7 @@ category: Components
     right: 0;
     bottom: 0;
     padding-left: 102px; }
-  .podcast-player.playing .audio__time, .live-player__container.playing .audio__time {
+  .audio__time.playing__current, .live-player__container.playing .audio__time {
     display: block;
     opacity: 1;
     filter: alpha(opacity=100);

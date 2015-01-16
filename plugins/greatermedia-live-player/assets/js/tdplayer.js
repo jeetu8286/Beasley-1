@@ -26,6 +26,7 @@
 	var podcastPlayBtn = document.querySelector('.podcast__btn--play');
 	var podcastPauseBtn = document.querySelector('.podcast__btn--pause');
 	var podcastPlayer = document.querySelector('.podcast-player');
+	var podcastPlaying = document.querySelector('.podcast__btn--play.playing');
 	var listenNow = document.getElementById('live-stream__listen-now');
 	var nowPlaying = document.getElementById('live-stream__now-playing');
 	var $trackInfo = $(document.getElementById('trackInfo'));
@@ -231,16 +232,13 @@
 
 	function setInlineAudioUX() {
 		var audioTime = document.querySelectorAll('.audio__time'), i;
+
 		if (onAirTitle != null) {
 			onAirTitle.style.display = 'none';
 		}
 
 		if (onAirShow != null) {
 			onAirShow.style.display = 'none';
-		}
-
-		if (podcastPlayer != null) {
-			podcastPlayer.classList.add('playing');
 		}
 
 		for (i = 0; i < audioTime.length; ++i) {
@@ -260,6 +258,16 @@
 		}
 	}
 
+	function nearestPodcastPlaying(event) {
+		var eventTarget = event.target;
+		var podcastCover = eventTarget.parentNode;
+		var audioCurrent = podcastCover.nextElementSibling;
+
+		if (podcastPlayer != null) {
+			audioCurrent.classList.add('playing__current');
+		}
+	}
+
 	function resetInlineAudioUX() {
 		var audioTime = document.querySelectorAll('.audio__time'), i;
 		if (onAirTitle != null) {
@@ -270,13 +278,12 @@
 			onAirShow.style.display = 'block';
 		}
 
-		if (podcastPlayer != null) {
-			podcastPlayer.classList.remove('playing');
-		}
-
 		for (i = 0; i < audioTime.length; ++i) {
 			if (audioTime[i] != null && audioTime[i].classList.contains('playing')) {
 				audioTime[i].classList.remove('playing');
+			}
+			if (audioTime[i] != null && audioTime[i].classList.contains('playing__current')) {
+				audioTime[i].classList.remove('playing__current');
 			}
 		}
 
@@ -1285,6 +1292,8 @@
 
 			$content.on('click', '.podcast__btn--play', function(e) {
 				var $play = $(e.currentTarget);
+
+				nearestPodcastPlaying(e);
 
 				playCustomInlineAudio( $play.attr( 'data-mp3-src' ) );
 
