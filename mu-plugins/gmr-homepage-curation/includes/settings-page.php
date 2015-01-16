@@ -27,7 +27,7 @@ function register_settings() {
 	// Fetch restricted post ids
 	$query = new \WP_Query();
 	$restricted_posts = $query->query( array(
-		'post_type'           => 'any',
+		'post_type'           => $homepage_curation_post_types,
 		'post_status'         => 'any',
 		'posts_per_page'      => 50,
 		'ignore_sticky_posts' => true,

@@ -22,9 +22,22 @@ add_filter( 'map_meta_cap', 'gmr_contests_map_meta_cap', 10, 4 );
 add_filter( 'gmr_contest_submissions_query', 'gmr_contests_submissions_query' );
 add_filter( 'post_type_link', 'gmr_contests_get_submission_permalink', 10, 2 );
 add_filter( 'request', 'gmr_contests_unpack_vars' );
+add_filter( 'gmr-homepage-curation-post-types', 'gmr_contest_register_homepage_curration_post_type' );
 add_filter( 'post_thumbnail_html', 'gmr_contests_post_thumbnail_html', 10, 4 );
 add_filter( 'manage_' . GMR_CONTEST_CPT . '_posts_columns', 'gmr_contests_filter_contest_columns_list' );
 add_filter( 'post_row_actions', 'gmr_contests_filter_contest_actions', PHP_INT_MAX, 2 );
+
+/**
+ * Registers contest post type in the homepage curration types list.
+ *
+ * @filter gmr-homepage-curation-post-types
+ * @param array $types Array of already registered types.
+ * @return array Extended array of post types.
+ */
+function gmr_contest_register_homepage_curration_post_type( $types ) {
+	$types[] = GMR_CONTEST_CPT;
+	return $types;
+}
 
 /**
  * Removes delete_post(s) capabilities for public contests or contest entries.

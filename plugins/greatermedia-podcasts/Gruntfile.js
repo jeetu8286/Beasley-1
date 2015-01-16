@@ -18,6 +18,12 @@ module.exports = function( grunt ) {
 				],
 				dest: 'assets/js/gmp_admin.js'
 			},
+			gmp_admin_episode: {
+				src: [
+					'assets/js/admin/episode.js'
+				],
+				dest: 'assets/js/gmp_admin_episode.js'
+			},
 			gmp: {
 				src: [
 					'assets/js/src/gmp.js'
@@ -52,6 +58,7 @@ module.exports = function( grunt ) {
 			all: {
 				files: {
 					'assets/js/gmp_admin.min.js': ['assets/js/gmp_admin.js'],
+					'assets/js/gmp_admin_episode.min.js': ['assets/js/gmp_admin_episode.js'],
 					'assets/js/gmp.min.js': ['assets/js/gmp.js']
 				},
 				options: {

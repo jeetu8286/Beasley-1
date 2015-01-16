@@ -309,6 +309,9 @@ function get_post_with_keyword( $query_arg ) {
  */
 function gm_get_post_thumbnail_url( $size = 'thumbnail', $post_id = null ) {
 	$thumbnail_id = get_post_thumbnail_id( $post_id );
+	if ( ! $thumbnail_id ) {
+		$thumbnail_id = greatermedia_get_fallback_thumbnail_id( $post_id );
+	}
 
 	if ( $thumbnail_id ) {
 		return gm_get_thumbnail_url( $thumbnail_id, $size );
@@ -547,6 +550,30 @@ function greatermedia_remove_custom_fields() {
 }
 add_action( 'init' , 'greatermedia_remove_custom_fields', 10 );
 
+/**
+ * Returns fallback image id for a post.
+ * 
+ * @param int|WP_Post|null $post_id The post id or object to return fallback for.
+ * @return int The fallback image id.
+ */
+function greatermedia_get_fallback_thumbnail_id( $post_id = null ) {
+	$post = get_post( $post_id );
+	if ( ! $post ) {
+		return null;
+	}
+
+	return intval( get_option( $post->post_type . '_fallback' ) );
+}
+
+/**
+ * Deactivates Tribe Events filter at dashboard drafts widget.
+ */
+function greatermedia_deactivate_tribe_warning_on_dashboard( $option_value ) {
+	remove_filter( 'get_post_time', array( 'TribeEventsTemplates', 'event_date_to_pubDate' ), 10, 3 );
+	return $option_value;
+}
+add_filter( 'get_user_option_dashboard_quick_press_last_post_id', 'greatermedia_deactivate_tribe_warning_on_dashboard' );
+
 function add_google_analytics() {
 	?>
 	<script>
@@ -555,14 +582,14 @@ function add_google_analytics() {
 		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-	ga('create', 'UA-58625709-1', 'auto');
-
+	ga('create', 'UA-804109-43', 'auto');
 	
 	if( is_gigya_user_logged_in() ) {
 		ga( 'set', '&uid', get_gigya_user_id() );
 	}
 
 	jQuery(document).on('pjax:end', function() {
+		ga('set', 'location', window.location.href);
 		ga('send', 'pageview');
 	});
 	ga('send', 'pageview');

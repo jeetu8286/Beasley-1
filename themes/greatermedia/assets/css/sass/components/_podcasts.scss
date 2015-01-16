@@ -149,9 +149,14 @@ category: Components - Shows
 .podcast__runtime {
 	padding-top: 0;
 	padding-bottom: 1em;
+	@include opacity(1);
+	@include transition(all 200ms ease-in-out);
 
 	&.playing {
-		display: none;
+		height: 0;
+		padding-bottom: 0;
+		@include opacity(0);
+		@include transition(all 200ms ease-in-out);
 	}
 }
 
@@ -415,7 +420,15 @@ a.podcast__rss:active {
 			padding: 1.5em .5em;
 		}
 			.podcast__runtime {
-				display: block; 
+				display: block;
+				@include opacity(1);
+				@include transition(all 1s ease-in-out);
+
+				&.playing {
+					position: absolute;
+					@include opacity(0);
+					@include transform(translate(-120px, 105px));
+				}
 			}
 			.podcast__cover {
 				width: 80px;

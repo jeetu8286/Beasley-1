@@ -293,7 +293,7 @@ category: Components
 	overflow: hidden;
 	border-bottom: 1px solid $secondary-border;
 	@include bp(medium) {
-		padding: 20px 0 0;
+		padding: 20px 0 26px;
 		overflow: visible;
 		border-bottom: none;
 	}
@@ -349,16 +349,19 @@ category: Components
 	display: none;
 	@include transition(all 1s ease-in-out);
 	@include bp(medium) {
-		position: relative;
-		@include transform(translate(0, 0));
+		position: absolute;
+		top: 216px;
+		left: auto;
+		right: auto;
 		display: block;
+		width: 100%;
 		padding-bottom: 26px;
+		margin: 0 auto;
 		text-align: center;
 	}
 
 	&.audio__playing {
-		position: relative;
-		@include transform(translate(0, -140px));
+		top: 66px;
 	}
 }
 
@@ -616,8 +619,12 @@ category: Components
 		float: none;
 		width: 100%;
 		height: auto;
-		padding: 0 1em;
+		padding: 56px 1em 0;
 		text-align: center;
+	}
+
+	&.playing {
+		padding-top: 0;
 	}
 }
 
@@ -645,7 +652,6 @@ category: Components
 	font-weight: lighter;
 	color: $color-gray-extra-light;
 	@include bp(medium) {
-		padding-bottom: 30px;
 		font-size: ms(-2);
 	}
 }
@@ -848,31 +854,39 @@ category: Components
 }
 
 .audio__time {
-	display: none;
+	visibility: hidden;
 	@include opacity(0);
 	width: 85%;
-	overflow: auto;
-	padding-bottom: 23px;
+	height: 0;
+	overflow: hidden;
 	margin: 0 auto;
 	font-size: ms(-3);
-	@include transition(visibility 0s linear 500ms, opacity 1s ease-in-out);
+	@include transition(opacity 500ms ease-in-out 0s,height 500ms ease-in-out 0s);
 
 	.podcast-player & {
 		@include fill-parent;
-		padding-bottom: 14px;
 	}
 
 	.podcast-player.podcast-player--compact & {
-		position: absolute;
-		right: 0;
-		bottom: 0;
-		padding-left: 102px;
+		padding-top: 12px;
+		padding-bottom: 0;
 	}
 
-	&.playing__current, .live-player__container.playing &  {
+	&.playing__current {
 		display: block;
+		height: 41px;
+		visibility: visible;
 		@include opacity(1);
-		@include transition(all 1s ease-in-out);
+		@include transition(opacity 500ms ease-in-out 0s,height 500ms ease-in-out 0s);
+	}
+
+	.live-player__container.playing &  {
+		display: block;
+		height: 41px;
+		margin-top: 23px;
+		visibility: visible;
+		@include opacity(1);
+		@include transition(opacity 500ms ease-in-out 0s,height 500ms ease-in-out 0s);
 	}
 }
 

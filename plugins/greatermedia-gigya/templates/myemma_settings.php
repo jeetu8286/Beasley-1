@@ -102,7 +102,7 @@
 				<label for="emma_group_id">MyEmma Group ID (Leave blank to create a new group)</label>
 				<input type="text" name="emma_group_id" value="" id="emma_group_id" />
 
-				<label for="gigya_field_key">Gigya Field Key</label>
+				<label for="gigya_field_key">Gigya Field Key (Must only contain letters and numbers)</label>
 				<input type="text" name="gigya_field_key" value="" id="gigya_field_key" />
 
 				<input type="submit" value="Create" class="button button-primary create-group-button" />
