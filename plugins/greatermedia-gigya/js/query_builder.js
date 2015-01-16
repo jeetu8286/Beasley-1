@@ -380,13 +380,22 @@ return __p
 
 this["JST"]["src/templates/query_result_item.jst"] = function(obj) {
 obj || (obj = {});
-var __t, __p = '', __e = _.escape;
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
 with (obj) {
-__p += '<span class="preview-result-name">\n\t' +
+__p += '<span class="preview-result-name">\n\t';
+ if (fields.first_name || fields.last_name) { ;
+__p += '\n\t\t' +
 __e( fields.first_name ) +
 ' ' +
 __e( fields.last_name ) +
-'\n</span>\n<span class="preview-result-email">\n\t' +
+'\n\t';
+ } else { ;
+__p += '\n\t\tN/A\n\t';
+ } ;
+__p += '\n</span>\n<span class="preview-result-email" title="' +
+__e( email ) +
+'">\n\t' +
 __e( view.domainFor(email) ) +
 '\n</span>\n';
 
