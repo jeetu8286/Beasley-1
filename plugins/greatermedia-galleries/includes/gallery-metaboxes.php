@@ -115,7 +115,7 @@ class GreaterMediaGalleryMetaboxes {
 		</ol>
 
 		<p>
-			All the gallery images will be pulled out and shown above the gallery title and any text.
+			All the gallery images will be extracted and displayed above the gallery title and any text.
 		</p>
 
 
