@@ -18,7 +18,7 @@ class Sentinel {
 
 	function get_task_meta( $key ) {
 		if ( ! $this->cache_cleared ) {
-			update_meta_cache( 'post', $this->member_query_id );
+			wp_cache_delete( $this->member_query_id, 'post_meta' );
 			$this->cache_cleared = true;
 		}
 
