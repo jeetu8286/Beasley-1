@@ -24,6 +24,8 @@ class Plugin {
 	function initialize_admin_menu() {
 		$settings_page = new Settings\Page();
 		$settings_page->register();
+
+		remove_menu_page( 'edit-comments.php' );
 	}
 
 	function register_ajax_handlers() {
