@@ -23,11 +23,7 @@ class CommentsApp {
 	}
 
 	function change_comments_template( $template_path ) {
-		if ( ! $this->is_livefyre_configured() ) {
-			return $template_path;
-		} else {
-			return $this->get_comments_template_path();
-		}
+		return $this->get_comments_template_path();
 	}
 
 	function needs_collection_config() {

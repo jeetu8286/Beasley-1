@@ -125,12 +125,21 @@ class GMR_Audio_Shortcodes {
 		$new_html .= '<div class="podcast__play mp3-' . esc_attr( $hash ) . '">'; // Hash is used to ensure the inline audio can always match state of live player, even when the player is the buttons that are clicked
 		$new_html .= '<div class="podcast__cover"  style="background-image: url(' . $featured_image . ');">';
 		if ( $is_podcast ) {
-			$new_html .= '<button class="podcast__btn--play" data-mp3-src="' . esc_attr( $mp3_src ) . '" data-mp3-title="' . get_the_title() . '" data-mp3-artist="' . esc_html( $parent_podcast->post_title ) . '" data-mp3-hash="' . esc_attr( $hash ) . '"></button>';
+			$new_html .= '<button class="podcast__btn--play" data-mp3-src="' . esc_attr( $mp3_src ) . '" data-mp3-title="' . get_the_title() . '" data-mp3-artist="' . esc_html( $parent_podcast->post_title ) . ' - ' . get_the_time( 'n.j.y' ) . '" data-mp3-hash="' . esc_attr( $hash ) . '"></button>';
 		} else {
-			$new_html .= '<button class="podcast__btn--play" data-mp3-src="' . esc_attr( $mp3_src ) . '" data-mp3-title="' . esc_attr( $metadata['title'] ) . '" data-mp3-artist="' . esc_attr( $metadata['artist'] ) . '" data-mp3-hash="' . esc_attr( $hash ) . '"></button>';
+			$new_html .= '<button class="podcast__btn--play" data-mp3-src="' . esc_attr( $mp3_src ) . '" data-mp3-title="' . esc_attr( $metadata['title'] ) . '" data-mp3-artist=" " data-mp3-hash="' . esc_attr( $hash ) . '"></button>';
 		}
 		$new_html .= '<button class="podcast__btn--pause"></button>';
 		$new_html .= '</div>';
+		if ( $is_podcast ) {
+			$new_html .= '<div id="audio__time" class="audio__time">';
+			$new_html .= '<div id="audio__progress-bar" class="audio__progress-bar">';
+			$new_html .= '<span id="audio__progress" class="audio__progress"></span>';
+			$new_html .= '</div>';
+			$new_html .= '<div id="audio__time--elapsed" class="audio__time--elapsed"></div>';
+			$new_html .= '<div id="audio__time--remaining" class="audio__time--remaining"></div>';
+			$new_html .= '</div>';
+		}
 		$new_html .= '<span class="podcast__runtime">' . esc_html( $metadata['length_formatted'] ) . '</span>';
 		if( $is_podcast && ( $downloadable == 'on' || $downloadable == '' ) ) {
 			$new_html .= '<div class="podcast__download">';
@@ -165,6 +174,15 @@ class GMR_Audio_Shortcodes {
 		}
 		if ( $is_podcast ) {		
 			$new_html .= '<div class="podcast__desc">' . get_the_excerpt() . '</div>' ;
+		}
+		if ( ! $is_podcast ) {
+			$new_html .= '<div id="audio__time" class="audio__time">';
+			$new_html .= '<div id="audio__progress-bar" class="audio__progress-bar">';
+			$new_html .= '<span id="audio__progress" class="audio__progress"></span>';
+			$new_html .= '</div>';
+			$new_html .= '<div id="audio__time--elapsed" class="audio__time--elapsed"></div>';
+			$new_html .= '<div id="audio__time--remaining" class="audio__time--remaining"></div>';
+			$new_html .= '</div>';
 		}
 		$new_html .= '</div>'; // .podcast__meta
 		$new_html .= '<div class="gmr-mediaelement-fallback">' . $html . '</div>';
