@@ -28,9 +28,13 @@ class Plugin {
 		remove_menu_page( 'edit-comments.php' );
 
 		$livefyre_admin_url = $this->get_livefyre_admin_url();
-		if ( $livefyre_admin_url !== '' ) {
+		if ( $this->can_moderate_comments() && $livefyre_admin_url !== '' ) {
 			$this->add_comments_mod_menu( $livefyre_admin_url );
 		}
+	}
+
+	function can_moderate_comments() {
+		return current_user_can( 'moderate_comments' ) && current_user_can( 'import' );
 	}
 
 	function add_comments_mod_menu( $url ) {
