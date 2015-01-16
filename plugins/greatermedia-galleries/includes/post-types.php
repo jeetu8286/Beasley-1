@@ -16,6 +16,7 @@ class GreaterMediaGalleryCPT {
 		add_action( 'init', array( __CLASS__, 'album_cpt' ), 0 );
 
 		add_filter( 'gmr_live_link_suggestion_post_types', array( __CLASS__, 'extend_live_link_suggestion_post_types' ) );
+		add_filter( 'gmr-homepage-curation-post-types', array( __CLASS__, 'extend_homepage_curration_post_types' ) );
 
 		self::add_save_actions();
 	}
@@ -139,6 +140,20 @@ class GreaterMediaGalleryCPT {
 	 * @return array The array of extended post types.
 	 */
 	public static function extend_live_link_suggestion_post_types( $post_types ) {
+		$post_types[] = self::GALLERY_POST_TYPE;
+		return $post_types;
+	}
+
+	/**
+	 * Extends homepage curration post types.
+	 *
+	 * @static
+	 * @access public
+	 * @param array $post_types The array of already registered post types.
+	 * @return array The array of extended post types.
+	 */
+	public static function extend_homepage_curration_post_types( $post_types ) {
+		$post_types[] = self::ALBUM_POST_TYPE;
 		$post_types[] = self::GALLERY_POST_TYPE;
 		return $post_types;
 	}

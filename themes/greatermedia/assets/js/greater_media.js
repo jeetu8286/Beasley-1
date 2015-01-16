@@ -304,6 +304,8 @@
 	 *
 	 * @type {HTMLElement}
 	 */
+	var $ = jQuery;
+
 	var body = document.querySelector( 'body' ),
 		html = document.querySelector( 'html'),
 		mobileNavButton = document.querySelector( '.mobile-nav__toggle' ),
@@ -329,7 +331,8 @@
 		searchBtn = document.getElementById( 'header__search'),
 		searchInput = document.getElementById( 'header-search'),
 		collapseToggle = document.querySelector('*[data-toggle="collapse"]'),
-		breakingNewsBanner = document.getElementById('breaking-news-banner');
+		breakingNewsBanner = document.getElementById('breaking-news-banner'),
+		$overlay = $('.overlay-mask');
 
 
 	/**
@@ -708,8 +711,18 @@
 	function showSearch(e) {
 		if (searchForm !== null) {
 			e.preventDefault();
-			searchForm.classList.toggle('header__search--open');
-			searchInput.focus();
+			$overlay.addClass( 'is-visible' )
+			
+			// Now, show the search form, but don't set focus until the transition
+			// animation is complete. This is because Webkit browsers scroll to 
+			// the element when it gets focus, and they scroll to it where it was
+			// before the transition started. 
+			$( searchForm )
+				.toggleClass('header__search--open')
+				.on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', function () {
+					searchInput.focus();
+					$(searchInput).select();  
+				} );			
 		}
 	}
 
@@ -722,6 +735,7 @@
 		if (searchForm !== null && searchForm.classList.contains('header__search--open')) {
 			e.preventDefault();
 			searchForm.classList.remove('header__search--open');
+			$overlay.removeClass('is-visible');
 		}
 	}
 
@@ -740,11 +754,21 @@
 		});
 	}
 
-	window.onkeydown = function(e){
-		if(e.keyCode === 27){
-			closeSearch();
+	/**
+	 * Close the search box when user presses escape.
+	 */
+	$(window).keydown(function (e) {
+		if (e.keyCode === 27){
+			closeSearch(e);
 		}
-	};
+	});
+
+	/**
+	 * Close the search box (if open) if the user clicks on the overlay.
+	 */
+	$overlay.click(function (e) {
+		closeSearch(e);
+	});
 
 	/**
 	 * variables that define debounce and throttling for window resizing and scrolling

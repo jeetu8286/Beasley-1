@@ -70,7 +70,7 @@ category: Base
 /**
  * Helpers
  */
-.cf:after, .mobile-nav .menu-item-has-children:after, .contest__submission .preview .preview-inner:after, .profile-page .profile-page__container:after {
+.cf:after, .mobile-nav .menu-item-has-children:after, .header__nav .format-fi .header__nav-submenu--features:after, .contest__submission .preview .preview-inner:after, .profile-page .profile-page__container:after {
   content: "";
   display: table;
   clear: both; }
@@ -1240,10 +1240,11 @@ blockquote p {
 .header__account ul li a:hover,
 .header__account ul li a:focus,
 .header__account ul li a:active,
-.header__account ul li:hover {
+.header__account ul li:hover,
+.ui-menu .ui-state-focus {
   background-color: #d22228; }
 
-ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw > ul li:not(.mobile-menu-submenu-header):hover, .header__nav .format-sp > ul li:not(.mobile-menu-submenu-header):hover {
+ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw > ul li:not(.mobile-menu-submenu-header):hover, .header__nav .format-sp > ul li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fi > ul li:not(.mobile-menu-submenu-header):hover {
   background-color: transparent; }
 
 .header__nav ul li ul {
@@ -1301,13 +1302,15 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
     z-index: 5000100;
     /* IAB z-index standard for drop nav is 5000000 - 5999999 */ }
 
-.header__nav ul li:hover .sub-menu, .header__nav ul li:hover .format-fw > ul, .header__nav ul li:hover .format-sp > ul {
+.header__nav ul li:hover .sub-menu, .header__nav ul li:hover .format-fw > ul, .header__nav ul li:hover .format-sp > ul, .header__nav ul li:hover .format-fi > ul {
   display: block; }
 
-.header__nav .sub-menu, .header__nav .format-fw > ul, .header__nav .format-sp > ul,
+.header__nav .sub-menu, .header__nav .format-fw > ul, .header__nav .format-sp > ul, .header__nav .format-fi > ul,
 .header__account--links.sub-menu,
 .header__nav .format-fw > ul.header__account--links,
-.header__nav .format-sp > ul.header__account--links {
+.header__nav .format-sp > ul.header__account--links,
+.header__nav .format-fi > ul.header__account--links,
+.ui-menu {
   position: absolute;
   border-top: 7px solid #d22228;
   background-color: #ffffff;
@@ -1315,15 +1318,19 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
   min-width: 300px;
   z-index: 5000100;
   /* IAB z-index standard for drop nav is 5000000 - 5999999 */ }
-  .header__nav .sub-menu li, .header__nav .format-fw > ul li, .header__nav .format-sp > ul li,
+  .header__nav .sub-menu li, .header__nav .format-fw > ul li, .header__nav .format-sp > ul li, .header__nav .format-fi > ul li,
   .header__account--links.sub-menu li,
   .header__nav .format-fw > ul.header__account--links li,
-  .header__nav .format-sp > ul.header__account--links li {
+  .header__nav .format-sp > ul.header__account--links li,
+  .header__nav .format-fi > ul.header__account--links li,
+  .ui-menu li {
     display: block; }
-  .header__nav .sub-menu a, .header__nav .format-fw > ul a, .header__nav .format-sp > ul a,
+  .header__nav .sub-menu a, .header__nav .format-fw > ul a, .header__nav .format-sp > ul a, .header__nav .format-fi > ul a,
   .header__account--links.sub-menu a,
   .header__nav .format-fw > ul.header__account--links a,
-  .header__nav .format-sp > ul.header__account--links a {
+  .header__nav .format-sp > ul.header__account--links a,
+  .header__nav .format-fi > ul.header__account--links a,
+  .ui-menu a {
     color: #000000;
     /*
      * Important used here to override a declaration on .header__nav ul li a
@@ -1331,18 +1338,22 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
      * to keep this as a component (e.g. context independent). - TD
      */
     padding: 1em !important; }
-    .header__nav .sub-menu a:visited, .header__nav .format-fw > ul a:visited, .header__nav .format-sp > ul a:visited,
+    .header__nav .sub-menu a:visited, .header__nav .format-fw > ul a:visited, .header__nav .format-sp > ul a:visited, .header__nav .format-fi > ul a:visited,
     .header__account--links.sub-menu a:visited,
     .header__nav .format-fw > ul.header__account--links a:visited,
-    .header__nav .format-sp > ul.header__account--links a:visited {
+    .header__nav .format-sp > ul.header__account--links a:visited,
+    .header__nav .format-fi > ul.header__account--links a:visited,
+    .ui-menu a:visited {
       color: #000000; }
-    .header__nav .sub-menu a:hover, .header__nav .format-fw > ul a:hover, .header__nav .format-sp > ul a:hover,
+    .header__nav .sub-menu a:hover, .header__nav .format-fw > ul a:hover, .header__nav .format-sp > ul a:hover, .header__nav .format-fi > ul a:hover,
     .header__account--links.sub-menu a:hover,
     .header__nav .format-fw > ul.header__account--links a:hover,
-    .header__nav .format-sp > ul.header__account--links a:hover {
+    .header__nav .format-sp > ul.header__account--links a:hover,
+    .header__nav .format-fi > ul.header__account--links a:hover,
+    .ui-menu a:hover {
       color: #ffffff; }
 
-.mobile-nav .sub-menu, .mobile-nav .header__nav .format-fw > ul, .header__nav .mobile-nav .format-fw > ul, .mobile-nav .header__nav .format-sp > ul, .header__nav .mobile-nav .format-sp > ul {
+.mobile-nav .sub-menu, .mobile-nav .header__nav .format-fw > ul, .header__nav .mobile-nav .format-fw > ul, .mobile-nav .header__nav .format-sp > ul, .header__nav .mobile-nav .format-sp > ul, .mobile-nav .header__nav .format-fi > ul, .header__nav .mobile-nav .format-fi > ul {
   -webkit-transition: left 100ms ease-out;
   -moz-transition: left 100ms ease-out;
   transition: left 100ms ease-out;
@@ -1354,13 +1365,15 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
   bottom: 0;
   background-color: #fff;
   padding: 0; }
-  .mobile-nav .sub-menu li:not(.mobile-menu-submenu-header), .mobile-nav .header__nav .format-fw > ul li:not(.mobile-menu-submenu-header), .header__nav .mobile-nav .format-fw > ul li:not(.mobile-menu-submenu-header), .mobile-nav .header__nav .format-sp > ul li:not(.mobile-menu-submenu-header), .header__nav .mobile-nav .format-sp > ul li:not(.mobile-menu-submenu-header) {
+  .mobile-nav .sub-menu li:not(.mobile-menu-submenu-header), .mobile-nav .header__nav .format-fw > ul li:not(.mobile-menu-submenu-header), .header__nav .mobile-nav .format-fw > ul li:not(.mobile-menu-submenu-header), .mobile-nav .header__nav .format-sp > ul li:not(.mobile-menu-submenu-header), .header__nav .mobile-nav .format-sp > ul li:not(.mobile-menu-submenu-header), .mobile-nav .header__nav .format-fi > ul li:not(.mobile-menu-submenu-header), .header__nav .mobile-nav .format-fi > ul li:not(.mobile-menu-submenu-header) {
     list-style-type: none;
     border: none;
     background-color: #ffffff; }
-  .mobile-nav .sub-menu a, .mobile-nav .header__nav .format-fw > ul a, .header__nav .mobile-nav .format-fw > ul a, .mobile-nav .header__nav .format-sp > ul a, .header__nav .mobile-nav .format-sp > ul a {
+  .mobile-nav .sub-menu a:link, .mobile-nav .header__nav .format-fw > ul a:link, .header__nav .mobile-nav .format-fw > ul a:link, .mobile-nav .header__nav .format-sp > ul a:link, .header__nav .mobile-nav .format-sp > ul a:link, .mobile-nav .header__nav .format-fi > ul a:link, .header__nav .mobile-nav .format-fi > ul a:link, .mobile-nav .sub-menu a:visited, .mobile-nav .header__nav .format-fw > ul a:visited, .header__nav .mobile-nav .format-fw > ul a:visited, .mobile-nav .header__nav .format-sp > ul a:visited, .header__nav .mobile-nav .format-sp > ul a:visited, .mobile-nav .header__nav .format-fi > ul a:visited, .header__nav .mobile-nav .format-fi > ul a:visited {
     color: #000; }
-.mobile-nav .sub-menu.is-visible, .mobile-nav .header__nav .format-fw > ul.is-visible, .header__nav .mobile-nav .format-fw > ul.is-visible, .mobile-nav .header__nav .format-sp > ul.is-visible, .header__nav .mobile-nav .format-sp > ul.is-visible {
+  .mobile-nav .sub-menu a:hover, .mobile-nav .header__nav .format-fw > ul a:hover, .header__nav .mobile-nav .format-fw > ul a:hover, .mobile-nav .header__nav .format-sp > ul a:hover, .header__nav .mobile-nav .format-sp > ul a:hover, .mobile-nav .header__nav .format-fi > ul a:hover, .header__nav .mobile-nav .format-fi > ul a:hover, .mobile-nav .sub-menu a:active, .mobile-nav .header__nav .format-fw > ul a:active, .header__nav .mobile-nav .format-fw > ul a:active, .mobile-nav .header__nav .format-sp > ul a:active, .header__nav .mobile-nav .format-sp > ul a:active, .mobile-nav .header__nav .format-fi > ul a:active, .header__nav .mobile-nav .format-fi > ul a:active {
+    color: #fff; }
+.mobile-nav .sub-menu.is-visible, .mobile-nav .header__nav .format-fw > ul.is-visible, .header__nav .mobile-nav .format-fw > ul.is-visible, .mobile-nav .header__nav .format-sp > ul.is-visible, .header__nav .mobile-nav .format-sp > ul.is-visible, .mobile-nav .header__nav .format-fi > ul.is-visible, .header__nav .mobile-nav .format-fi > ul.is-visible {
   display: block;
   left: 0;
   z-index: 1; }
@@ -1379,8 +1392,9 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
 .mobile-nav a.mobile-menu-submenu-back-link {
   display: inline-block;
   width: 33%;
-  padding: 0;
-  color: #fff; }
+  padding: 0; }
+  .mobile-nav a.mobile-menu-submenu-back-link:link, .mobile-nav a.mobile-menu-submenu-back-link:visited {
+    color: #fff; }
   .mobile-nav a.mobile-menu-submenu-back-link .icon-arrow-prev:before {
     position: relative;
     bottom: -0.09em;
@@ -1404,7 +1418,8 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
   vertical-align: top; }
   .header__nav .format-fw > ul > li > a, .header__nav .format-sp > ul > li > a {
     float: left;
-    width: 100%; }
+    width: 100%;
+    line-height: 1.25em; }
 .header__nav .format-fw > ul > li:not(:nth-child(3n+1)), .header__nav .format-sp > ul > li:not(:nth-child(3n+1)) {
   border-left: 1px solid #d0d2d3;
   padding-left: 1%;
@@ -1427,7 +1442,8 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
 .format-sp li .group {
   display: inline-block;
   vertical-align: middle;
-  width: 70%; }
+  width: 70%;
+  line-height: 1.25em; }
   @media screen and (min-width: 1024px) {
     .format-sp li .group {
       width: 80%; } }
@@ -1443,6 +1459,80 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
   margin-right: 1em;
   max-height: 40px;
   width: auto; }
+
+.header__nav .format-fi {
+  /* Yes, I'm in over-specific selector hell */ }
+  .header__nav .format-fi > ul {
+    left: 0;
+    padding: 1em;
+    width: 100%; }
+  .header__nav .format-fi ul.header__nav-submenu--features,
+  .header__nav .format-fi ul.header__nav-submenu--list {
+    display: inline-block;
+    vertical-align: top;
+    float: left; }
+  .header__nav .format-fi .header__nav-submenu--list {
+    width: 33%;
+    padding-right: 1em; }
+    .header__nav .format-fi .header__nav-submenu--list li {
+      display: inline-block;
+      vertical-align: top;
+      width: 49%;
+      line-height: 1.25em; }
+  .header__nav .format-fi .header__nav-submenu--features {
+    width: 66%;
+    border-left: 1px solid #d0d2d3; }
+    .header__nav .format-fi .header__nav-submenu--features li {
+      display: block;
+      width: 25%;
+      float: left;
+      padding: 2%; }
+      .header__nav .format-fi .header__nav-submenu--features li:hover a {
+        background-color: transparent; }
+      .header__nav .format-fi .header__nav-submenu--features li:hover p {
+        color: #aa1c20; }
+    .header__nav .format-fi .header__nav-submenu--features a {
+      padding: 0 !important; }
+    .header__nav .format-fi .header__nav-submenu--features p {
+      line-height: 1.25em; }
+  .header__nav .format-fi p {
+    margin-top: .5em; }
+  .header__nav .format-fi .entry2__thumbnail {
+    float: none;
+    margin: 0;
+    width: 100%;
+    position: relative;
+    background-size: 100%;
+    background-size: cover;
+    background-position: center center; }
+    @media screen and (min-width: 480px) {
+      .header__nav .format-fi .entry2__thumbnail {
+        float: none;
+        margin: 0;
+        width: 100%; } }
+    .header__nav .format-fi .entry2__thumbnail a {
+      position: absolute;
+      width: 100%;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 20; }
+    .header__nav .format-fi .entry2__thumbnail:after {
+      content: '';
+      display: block;
+      padding-top: 66.666%; }
+    .has-excerpt .header__nav .format-fi .entry2__thumbnail:after {
+      padding-top: 75%; }
+
+.format-fi .menu__featured-post--mobile a {
+  border-bottom: 1px solid #d0d2d3;
+  padding: 0;
+  margin: 18px 1.25em 0; }
+  .format-fi .menu__featured-post--mobile a:hover {
+    background-color: transparent; }
+    .format-fi .menu__featured-post--mobile a:hover p {
+      color: #aa1c20; }
 
 .content__heading {
   margin-top: 0;
@@ -1593,6 +1683,8 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
     .entry--audio__meta {
       width: 75.113636363636%; } }
 
+.page-template-front-page-php .ad__in-loop {
+  margin: 1.5em 0; }
 .page-template-front-page-php .entry__date,
 .page-template-front-page-php .entry__excerpt {
   display: none; }
@@ -5300,6 +5392,18 @@ category: Components - Ads
       float: right;
       margin: 0 0 1em 1em; } }
 
+.ad__in-loop {
+  text-align: center; }
+
+.ad__in-loop--desktop {
+  display: none; }
+
+@media (min-width: 1051px) {
+  .ad__in-loop--mobile {
+    display: none; }
+
+  .ad__in-loop--desktop {
+    display: block; } }
 .closures {
   margin-bottom: 2em; }
 
@@ -5349,8 +5453,7 @@ category: Components - Ads
   position: relative;
   background-position: center center;
   background-size: 100%;
-  background-size: cover;
-  margin: 0 auto 2em; }
+  background-size: cover; }
   .contest__thumbnail:after {
     content: '';
     display: block;
@@ -7819,7 +7922,7 @@ a.social-share-link {
   display: block;
   position: relative;
   width: 100%;
-  height: 40px;
+  min-height: 40px;
   padding: 0 20px;
   border-top: 1px solid #000000;
   background-color: transparent; }
@@ -7829,11 +7932,10 @@ a.social-share-link {
       top: 0;
       left: 0;
       width: 100%;
-      height: 132px;
+      height: auto;
       padding: 16px 2.5%;
       background-color: #ffffff;
       border-top: none;
-      border-bottom: 1px solid #000000;
       -webkit-transition: all 200ms ease-in-out;
       -moz-transition: all 200ms ease-in-out;
       transition: all 200ms ease-in-out;
@@ -7859,7 +7961,8 @@ a.social-share-link {
   -moz-transform: translate(0, 0);
   -ms-transform: translate(0, 0);
   -o-transform: translate(0, 0);
-  transform: translate(0, 0); }
+  transform: translate(0, 0);
+  z-index: 5100000; }
 
 .header__search--input {
   float: left;
@@ -7903,6 +8006,8 @@ a.social-share-link {
   width: 14px;
   background-color: transparent;
   color: #929497; }
+  .header__search--submit:hover, .header__search--submit:focus {
+    color: #d22228; }
   @media screen and (min-width: 768px) {
     .header__search--submit {
       width: 10%;
@@ -8064,6 +8169,84 @@ a.social-share-link {
 
 .search__result--term {
   font-weight: bold; }
+
+body.search-results .posts-pagination {
+  margin-top: 3em; }
+
+.keyword-search {
+  clear: both;
+  line-height: 1.5;
+  margin: 0 -20px;
+  padding: 1.5em 20px;
+  background: #ffffff;
+  border-top: 1px solid #d0d2d3; }
+  @media screen and (min-width: 768px) {
+    .keyword-search {
+      margin: 0 -2.5%;
+      padding: 1.5em 2.5% .5em; } }
+
+.keyword-search__header {
+  font-weight: bold;
+  border-bottom: 5px solid #d0d2d3;
+  margin: 0 -.5em;
+  padding: 0 .5em 1em; }
+
+.keyword-search__items > a {
+  display: block; }
+
+.keyword-search-item {
+  border-bottom: 1px solid #f1f1f3;
+  margin: 0 -.5em;
+  padding: 1em .5em;
+  color: #000000; }
+
+.keyword-search-item__article {
+  color: #d22228; }
+
+.is-hoverable a:hover .keyword-search-item,
+.is-hoverable a:focus .keyword-search-item,
+.is-highlighted .keyword-search-item {
+  background: #d22228; }
+.is-hoverable a:hover .keyword-search-item__keyword,
+.is-hoverable a:hover .keyword-search-item__article,
+.is-hoverable a:focus .keyword-search-item__keyword,
+.is-hoverable a:focus .keyword-search-item__article,
+.is-highlighted .keyword-search-item__keyword,
+.is-highlighted .keyword-search-item__article {
+  color: #ffffff; }
+
+@media screen and (min-width: 768px) {
+  .keyword-search-item__keyword {
+    display: inline-block;
+    min-width: 12em; }
+
+  .keyword-search-item__article {
+    display: inline-block; } }
+.keyword-search__btn {
+  display: inline-block;
+  line-height: 1;
+  padding: 0.5em 1em;
+  margin-right: .5em;
+  outline: none;
+  background-color: #d22228;
+  border: 1px solid #d22228;
+  font-family: "Open Sans", sans-serif;
+  font-size: 0.88889em;
+  color: #ffffff !important;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 100em;
+  text-transform: none; }
+  .keyword-search__btn:hover, .keyword-search__btn:focus {
+    background-color: #aa1c20;
+    border-color: #aa1c20;
+    color: #ffffff; }
+  .keyword-search__btn:last-of-type {
+    margin-right: 0; }
+
+.keyword-search__footer {
+  margin-top: 1.5em;
+  text-align: center; }
 
 /* Styles for the Gallery page and widget */
 /*doc
@@ -9616,6 +9799,35 @@ select {
   background: #929497;
   border: none;
   width: 100%; }
+
+.ui-menu {
+  list-style-type: none;
+  margin: 0;
+  padding: 0; }
+
+.ui-menu .ui-menu-item {
+  position: relative;
+  cursor: pointer;
+  min-height: 0;
+  color: #000000;
+  padding: 1em; }
+
+.ui-menu .ui-menu-item.ui-state-focus {
+  color: #ffffff;
+  background: #d22228;
+  border: none; }
+
+.ui-autocomplete {
+  position: absolute;
+  top: 0;
+  left: 0;
+  cursor: default; }
+
+.header__search--form .ui-autocomplete {
+  background-color: #ffffff;
+  width: 100%;
+  top: 100%;
+  left: 0; }
 
 .profile-page {
   /**
