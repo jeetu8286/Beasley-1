@@ -145,7 +145,7 @@ function gmr_contests_register_post_type() {
 		'supports'            => array( 'title', 'editor', 'thumbnail' ),
 		'taxonomies'          => array( 'category', 'post_tag' ),
 		'public'              => true,
-		'menu_position'       => 5,
+		'menu_position'       => 32,
 		'menu_icon'           => 'dashicons-forms',
 		'can_export'          => true,
 		'has_archive'         => 'contests',
