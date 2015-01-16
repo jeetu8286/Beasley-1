@@ -204,13 +204,14 @@ class GreaterMediaLoginRestrictedContent extends VisualShortcode {
 
 		if ( ( 'logged-in' === $login_restriction ) && ! is_gigya_user_logged_in() ) {
 			ob_start();
+			
 			include GREATER_MEDIA_LOGIN_RESTRICTED_CONTENT_PATH . '/tpl/login-restricted-shortcode-render.tpl.php';
-			include GREATER_MEDIA_LOGIN_RESTRICTED_CONTENT_PATH . '/tpl/logout-restricted-shortcode-render.tpl.php';
 			
 			return ob_get_clean();
 		} elseif ( ( 'logged-out' === $login_restriction ) && is_gigya_user_logged_in() ) {
 			ob_start();
 			
+			include GREATER_MEDIA_LOGIN_RESTRICTED_CONTENT_PATH . '/tpl/logout-restricted-shortcode-render.tpl.php';
 			
 			return ob_get_clean();
 		}
