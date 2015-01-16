@@ -30,6 +30,7 @@ class GMP_CPT {
 		add_filter( 'ss_podcasting_episode_fields', array( __CLASS__, 'remove_audio_imputs' ) );
 		add_filter( 'manage_edit-' . self::PODCAST_POST_TYPE . '_columns', array( __CLASS__, 'show_feed_url_as_column' ), 10, 1 );
 		add_action( 'manage_posts_custom_column' , array( __CLASS__ , 'add_feed_url_column' ) , 1 , 2 );
+		add_action( 'edit_form_after_title', array( __CLASS__, 'inline_instructions' ) );
 	}
 
 	public static function add_save_post_actions() {
@@ -303,6 +304,34 @@ class GMP_CPT {
 
 		return $count;
     }
+
+	/**
+	 * Output instructions on creating a podcast episode.
+	 */
+	public static function inline_instructions( $post ) {
+
+		// These instructions are about adding audio when the overwhelming purpose of the post is audio
+		// therefore, it's only applicable to podcast episodes.
+		if ( self::EPISODE_POST_TYPE !== $post->post_type ) {
+			return;
+		}
+
+		?>
+		<h3>To add episode audio:</h3>
+		<ol>
+			<li>Click the <strong>Add Media</strong> button</li>
+			<li>Upload or select an audio file</li>
+			<li>Insert the audio file into the post</li>
+		</ol>
+
+		<p>
+			The audio will be extracted from any text writen, which will be used as a teaser for the episode and in the rss feed.
+		</p>
+
+
+		<?php
+
+	}
 
 }
 
