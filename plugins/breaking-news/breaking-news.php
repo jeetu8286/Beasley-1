@@ -52,7 +52,8 @@ include __DIR__ . '/includes/class-breaking-news.php';
  * @return bool
  */
 function breaking_news_item_is_available() {
-	if ( ! empty( Breaking_News::get_latest_breaking_news_item() ) ) {
+	$breaking_news = Breaking_News::get_latest_breaking_news_item();
+	if ( ! empty( $breaking_news ) ) {
 		return true;
 	}
 

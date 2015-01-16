@@ -32,6 +32,7 @@ require_once( __DIR__ . '/includes/mega-menu/mega-menu-admin.php' );
 require_once( __DIR__ . '/includes/mega-menu/mega-menu-walker.php' );
 require_once( __DIR__ . '/includes/mega-menu/mega-menu-mobile-walker.php' );
 require_once( __DIR__ . '/includes/gallery-post-thumbnails/loader.php' );
+require_once( __DIR__ . '/includes/image-attributes/loader.php');
 require_once( __DIR__ . '/includes/posts-screen-thumbnails/loader.php' );
 
 /**
@@ -509,8 +510,11 @@ function hide_seo_columns() {
  */
 function greatermedia_remove_custom_fields() {
 
-	// return a list of all post types
-	$post_types = get_post_types();
+	$post_types = array(
+		'post',
+		'page',
+		'tribe_events'
+	);
 
 	/**
 	 * go through each post type, check if the post type supports custom fields, if the post types does support
