@@ -536,8 +536,7 @@ function add_google_analytics() {
 		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-	ga('create', 'UA-58625709-1', 'auto');
-
+	ga('create', 'UA-804109-43', 'auto');
 	
 	if( is_gigya_user_logged_in() ) {
 		ga( 'set', '&uid', get_gigya_user_id() );
