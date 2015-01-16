@@ -304,12 +304,14 @@ function get_post_with_keyword( $query_arg ) {
 /**
  * Get the URL of a post's thumbnail.  
  * 
- * @param string|array Thumbnail size.
- * @param int Post ID. Defaults to current post. 
+ * @param string|array $size Thumbnail size.
+ * @param int $post_id Post ID. Defaults to current post.
+ * @param bool $use_fallback Determines whether to use fallback image if thumbnmail doesn't exist.
+ * @return string Thumbnail URL on success, otherwise NULL.
  */
-function gm_get_post_thumbnail_url( $size = 'thumbnail', $post_id = null ) {
+function gm_get_post_thumbnail_url( $size = 'thumbnail', $post_id = null, $use_fallback = false ) {
 	$thumbnail_id = get_post_thumbnail_id( $post_id );
-	if ( ! $thumbnail_id ) {
+	if ( ! $thumbnail_id && $use_fallback ) {
 		$thumbnail_id = greatermedia_get_fallback_thumbnail_id( $post_id );
 	}
 
@@ -321,11 +323,12 @@ function gm_get_post_thumbnail_url( $size = 'thumbnail', $post_id = null ) {
 /**
  * Output the escaped URL of a post's thumbnail.  
  * 
- * @param string|array Thumbnail size.
- * @param int Post ID. Defaults to current post. 
+ * @param string|array $size Thumbnail size.
+ * @param int $post_id Post ID. Defaults to current post.
+ * @param bool $use_fallback Determines whether to use fallback image if thumbnmail doesn't exist.
  */
-function gm_post_thumbnail_url( $size = 'thumbnail', $post_id = null ) {
-	echo esc_url( gm_get_post_thumbnail_url( $size, $post_id ) );
+function gm_post_thumbnail_url( $size = 'thumbnail', $post_id = null, $use_fallback = false ) {
+	echo esc_url( gm_get_post_thumbnail_url( $size, $post_id, $use_fallback ) );
 }
 
 /**
