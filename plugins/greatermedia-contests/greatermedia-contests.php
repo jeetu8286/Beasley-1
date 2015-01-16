@@ -25,6 +25,7 @@ define( 'EP_GMR_CONTEST', EP_PAGES << 1 );
 define( 'EP_GMR_SURVEY', EP_PAGES << 2 );
 
 include 'inc/contests.php';
+include 'inc/contest-winner.php';
 include 'inc/surveys.php';
 include 'inc/class-greatermedia-contests.php';
 include 'inc/class-greatermedia-contest-entry.php';
@@ -41,7 +42,6 @@ include 'inc/class-greatermedia-survey-entry.php';
 
 if ( is_admin() ) {
 	include 'inc/class-greatermedia-contests-metaboxes.php';
-	include 'inc/class-greatermedia-contests-template-actions.php';
 }
 
 if ( defined( 'WP_CLI' ) && WP_CLI ) {

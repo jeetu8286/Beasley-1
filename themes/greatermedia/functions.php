@@ -509,8 +509,11 @@ function hide_seo_columns() {
  */
 function greatermedia_remove_custom_fields() {
 
-	// return a list of all post types
-	$post_types = get_post_types();
+	$post_types = array(
+		'post',
+		'page',
+		'tribe_events'
+	);
 
 	/**
 	 * go through each post type, check if the post type supports custom fields, if the post types does support
