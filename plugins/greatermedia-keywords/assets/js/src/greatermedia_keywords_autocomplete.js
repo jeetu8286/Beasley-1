@@ -96,7 +96,7 @@ jQuery( function ( $ ) {
 				if ( self.position_change_callback ) {
 					self.position_change_callback( self.position );
 				}
-			} else if ( 27 === e.which ) { // Escape key
+			} else if ( 27 === e.which && self.is_navigating ) { // Escape key
 				self.$items.removeClass( 'is-navigating' )
 					.addClass( 'is-hoverable' );
 				self.cancel();
