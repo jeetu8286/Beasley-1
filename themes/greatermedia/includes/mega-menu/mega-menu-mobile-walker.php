@@ -172,10 +172,44 @@ class GreaterMediaMobileNavWalker extends Walker_Nav_Menu {
 
 			$item_output .= GreaterMediaNavWalker::format_small_previews_link( $item );
 
-		} elseif ( 'fi' === $parent_format && 2 === self::$item_count_in_sub_menu ) {
+		} elseif ( 'fi' === $parent_format && 1 === self::$item_count_in_sub_menu ) {
+			ob_start();
 
-			// code
-			$item_output .= 'poop';
+			$current_featured_item_menu = $item->ID;
+
+			$featured_items_query = array(
+				'posts_per_page' => 1
+			);
+
+			$featured_item_ids = get_post_meta( self::$current_featured_item_menu, 'gmr_music_menu', true );
+
+			if ( ! empty( $featured_item_ids ) ) {
+				$featured_items_query['post__in'] = explode( ',', $featured_item_ids );
+				$featured_items_query['post_type'] = array( 'post', 'contest', 'gmr_gallery', 'gmr_album' );
+				$featured_items_query['posts_per_page'] = 1;
+			}
+
+			$featured_items = new WP_Query( $featured_items_query );
+
+			while ( $featured_items->have_posts() ) : $featured_items->the_post(); ?>
+
+				<li class="menu__featured-post--mobile">
+					<a href="<?php the_permalink(); ?>">
+					<div class="entry2__thumbnail format-<?php echo get_post_format(); ?>"
+					     style="background-image: url(<?php gm_post_thumbnail_url( 'gm-entry-thumbnail-4-3' ); ?>);">
+					</div>
+					<p><?php the_title(); ?></p>
+					</a>
+				</li>
+
+			<?php endwhile;
+			wp_reset_postdata();
+
+			$item_output .= ob_get_clean();
+
+			self::$current_featured_item_menu = false;
+
+			$item_output .= $args->link_before . apply_filters( 'the_title', $item->title, $item->ID ) . $args->link_after;
 
 		} else {
 
