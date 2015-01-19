@@ -1,0 +1,283 @@
+<?php
+
+// action hooks
+add_action( 'admin_menu', 'gmr_surveys_register_responses_page' );
+add_action( 'post_submitbox_start', 'gmr_survey_view_responses_link' );
+add_action( 'manage_' . GMR_SURVEY_RESPONSE_CPT . '_posts_custom_column', 'gmr_surveys_render_survey_response_column', 10, 2 );
+add_action( 'pre_get_posts', 'gmr_survey_adjust_survey_responses_query' );
+
+// filter hooks
+add_filter( 'post_row_actions', 'gmr_surveys_add_table_row_actions', PHP_INT_MAX, 2 );
+add_filter( 'parent_file', 'gmr_surveys_adjust_responses_page_admin_menu' );
+add_filter( 'parent_file', 'gmr_surveys_adjust_current_admin_menu' );
+
+/**
+ * Renders link to access survey responses.
+ */
+function gmr_survey_view_responses_link() {
+	$post = get_post();
+	$post_status = get_post_status_object( $post->post_status );
+
+	if ( GMR_SURVEY_CPT == $post->post_type && $post_status->public ) :
+		echo '<div id="survey-responses-link">';
+			echo '<a class="button" href="', admin_url( 'admin.php?page=gmr-survey-response&survey_id=' . $post->ID ), '">View Responses</a>';
+		echo '</div>';
+	endif;
+}
+
+/**
+ * Adds table row actions to survey records.
+ *
+ * @filter post_row_actions
+ * @param array $actions The initial array of post actions.
+ * @param WP_Post $post The post object.
+ * @return array The array of post actions.
+ */
+function gmr_surveys_add_table_row_actions( $actions, WP_Post $post ) {
+	// do nothing if it is not a survey object
+	if ( GMR_SURVEY_CPT != $post->post_type ) {
+		return $actions;
+	}
+
+	// add survey responses action
+	$link = admin_url( 'admin.php?page=gmr-survey-response&survey_id=' . $post->ID );
+	$actions['gmr-survey-response'] = '<a href="' . esc_url( $link ) . '">Responses</a>';
+
+	// unset redundant actions
+	unset( $actions['inline hide-if-no-js'], $actions['edit_as_new_draft'], $actions['clone'] );
+
+	// move trash/delete link to the end of actions list if it exists
+	foreach ( array( 'trash', 'delete' ) as $key ) {
+		if ( isset( $actions[ $key ] ) ) {
+			$link = $actions[ $key ];
+			unset( $actions[ $key ] );
+			$actions[ $key ] = $link;
+		}
+	}
+
+	return $actions;
+}
+
+/**
+ * Registers survey response page in the system.
+ *
+ * @action admin_menu
+ * @global array $_registered_pages The array of already registered pages.
+ */
+function gmr_surveys_register_responses_page() {
+	global $_registered_pages;
+
+	$page_hook = get_plugin_page_hookname( 'gmr-survey-response', '' );
+	$_registered_pages[ $page_hook ] = true;
+
+	add_action( $page_hook, 'gmr_surveys_render_response_page' );
+}
+
+/**
+ * Renders survey response selection page.
+ *
+ * @global string $typenow The current post type.
+ * @global string $post_type_object The current post type object.
+ */
+function gmr_surveys_render_response_page() {
+	global $typenow, $post_type_object;
+
+	$survey = filter_input( INPUT_GET, 'survey_id', FILTER_VALIDATE_INT );
+	if ( ! $survey || ! ( $survey = get_post( $survey ) ) || GMR_SURVEY_CPT != $survey->post_type ) {
+		wp_die( 'Survey has not been found.' );
+	}
+
+	// fake post type to make standard WP_Posts_List_Table class working properly
+	$_GET['post_type'] = GMR_SURVEY_RESPONSE_CPT;
+
+	// override globals to make posts table class working properly
+	$post_type = $typenow = GMR_SURVEY_RESPONSE_CPT;
+	$post_type_object = get_post_type_object( $post_type );
+
+	// create table class
+	$wp_list_table = new GMR_Survey_Responses_Table( array( 'screen' => GMR_CONTEST_ENTRY_CPT, 'plural' => 'response_id' ) );
+	if ( filter_input( INPUT_GET, 'noheader', FILTER_VALIDATE_BOOLEAN ) ) {
+		$redirect = wp_get_referer();
+
+		$action = $wp_list_table->current_action();
+		if ( $action ) {
+			do_action( 'admin_action_' . $action );
+		}
+
+		wp_redirect( $redirect );
+		exit;
+	}
+
+	?><div id="survey-response-selection" class="wrap">
+		<h2>
+			Responses:
+			<a href="<?php echo get_edit_post_link( $survey->ID ); ?>"><?php echo esc_html( $survey->post_title ); ?></a>
+			<a class="add-new-h2" href="<?php echo esc_url( admin_url( 'edit.php?post_type=' . GMR_SURVEY_CPT ) ); ?>">All Surveys</a>
+		</h2>
+
+		<form id="posts-filter">
+			<input type="hidden" name="noheader" value="true">
+			<input type="hidden" name="page" value="<?php echo esc_html( filter_input( INPUT_GET, 'page' ) ); ?>">
+			<input type="hidden" name="survey_id" value="<?php echo esc_attr( $survey->ID ); ?>">
+			<?php wp_nonce_field( 'gmr_survey_responses' ); ?>
+
+			<?php $wp_list_table->prepare_items(); ?>
+			<?php $wp_list_table->display(); ?>
+		</form>
+	</div><?php
+}
+
+/**
+ * Adjustes parent and submenu files.
+ *
+ * @filter parent_file
+ * @global string $submenu_file The current submenu page.
+ * @param string $parent_file The parent file name.
+ * @return string The parent file.
+ */
+function gmr_surveys_adjust_responses_page_admin_menu( $parent_file ) {
+	global $submenu_file;
+
+	if ( ! empty( $_REQUEST['page'] ) && 'gmr-survey-response' == $_REQUEST['page'] ) {
+		$parent_file = 'edit.php?post_type=' . GMR_SURVEY_CPT;
+		$submenu_file = 'edit.php?post_type=' . GMR_SURVEY_CPT;
+	}
+
+	return $parent_file;
+}
+
+/**
+ * Renders custom columns for the survey responses table.
+ *
+ * @param string $column_name The column name which is gonna be rendered.
+ * @param int $post_id The post id.
+ */
+function gmr_surveys_render_survey_response_column( $column_name, $post_id ) {
+}
+
+/**
+ * Adjustes survey responses query to display responses only for selected survey.
+ *
+ * @action pre_get_posts
+ * @global string $typenow The current post type.
+ * @param WP_Query $query The survey response query.
+ */
+function gmr_survey_adjust_survey_responses_query( WP_Query $query ) {
+	global $typenow;
+
+	if ( GMR_SURVEY_RESPONSE_CPT == $typenow && 'gmr-survey-response' == filter_input( INPUT_GET, 'page' ) && $query->is_main_query() ) {
+		$survey = filter_input( INPUT_GET, 'survey_id', FILTER_VALIDATE_INT, array( 'options' => array( 'min_range' => 1 ) ) );
+		if ( $survey && ( $survey = get_post( $survey ) ) && GMR_SURVEY_CPT == $survey->post_type ) {
+			$responses = get_post_meta( $survey->ID, 'response' );
+			if ( ! empty( $responses ) ) {
+				$responses = array();
+				foreach ( $responses as $response ) {
+					$responses[] = current( explode( ':', $response, 2 ) );
+				}
+
+				$query->set( 'post__not_in', $responses );
+			}
+
+			$query->set( 'post_parent', $survey->ID );
+		}
+	}
+}
+
+/**
+ * Adjustes parent and submenu files.
+ *
+ * @filter parent_file
+ * @global string $submenu_file The current submenu page.
+ * @global string $typenow The current post type.
+ * @global string $pagenow The current admin page.
+ * @return string The parent file.
+ */
+function gmr_surveys_adjust_current_admin_menu( $parent_file ) {
+	global $submenu_file, $typenow, $pagenow;
+
+//	if ( GMR_CONTEST_ENTRY_CPT == $typenow && 'edit.php' == $pagenow ) {
+//		$parent_file = 'edit.php?post_type=' . GMR_SURVEY_CPT;
+//		$submenu_file = 'edit.php?post_type=' . GMR_SURVEY_CPT;
+//	}
+
+	return $parent_file;
+}
+
+/**
+ * Survey responses table.
+ */
+class GMR_Survey_Responses_Table extends WP_Posts_List_Table {
+
+	/**
+	 * Renders bulk actions dropdown at the top of the table.
+	 *
+	 * @access protected
+	 * @param string $which The area where to render dropdown.
+	 */
+	protected function bulk_actions( $which = '' ) {
+		if ( 'top' == $which ) {
+			parent::bulk_actions( $which );
+		}
+	}
+
+	/**
+	 * Returns bulk actions array.
+	 *
+	 * @access protected
+	 * @return array The array of bulk actions.
+	 */
+	protected function get_bulk_actions() {
+		return array();
+	}
+
+	/**
+	 * Displays view switcher. Disabled for current table.
+	 *
+	 * @access protected
+	 * @param string $current_mode The view switcher mode.
+	 */
+	protected function view_switcher( $current_mode ) {
+	}
+
+	/**
+	 * Displays extra table navigation. Disabled for current table.
+	 *
+	 * @access protected
+	 * @global WP_Query $wp_query
+	 * @param string $which The area where to render extra navigation.
+	 */
+	protected function extra_tablenav( $which ) {
+	}
+
+	/**
+	 * Generate the table navigation above or below the table
+	 *
+	 * @access protected
+	 * @param string $which
+	 */
+	protected function display_tablenav( $which ) {
+		if ( 'top' == $which ) :
+			?><div class="tablenav <?php echo esc_attr( $which ); ?>">
+				<div class="alignleft actions bulkactions">
+					<?php $this->bulk_actions( $which ); ?>
+				</div>
+				<?php $this->extra_tablenav( $which ); ?>
+				<?php $this->pagination( $which ); ?>
+				<br class="clear">
+			</div><?php
+		endif;
+	}
+
+	/**
+	 * Returns columns array.
+	 *
+	 * @access public
+	 * @return array The array of columns.
+	 */
+	public function get_columns() {
+		$columns = parent::get_columns();
+
+		return $columns;
+	}
+
+}

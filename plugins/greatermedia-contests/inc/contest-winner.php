@@ -1,9 +1,5 @@
 <?php
 
-// include list table class files if it hasn't been included yet
-require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
-require_once ABSPATH . 'wp-admin/includes/class-wp-posts-list-table.php';
-
 // action hooks
 add_action( 'admin_menu', 'gmr_contests_register_winners_page' );
 add_action( 'post_submitbox_start', 'gmr_contest_view_entries_link' );
