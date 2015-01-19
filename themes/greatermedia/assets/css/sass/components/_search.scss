@@ -60,7 +60,8 @@
 	}
 }
 
-.header__search--submit {
+.header__search--submit,
+.header__search--cancel{
 	position: relative;
 	float: right;
 	height: 40px;
@@ -68,11 +69,8 @@
 	width: 14px;
 	background-color: transparent;
 	color: $secondary-heading;
+	padding: 0;
 	
-	.header__search--open & {
-		display: none; 
-	}
-
 	&:hover, &:focus {
 		color: $primary-link;
 	}
@@ -81,45 +79,27 @@
 		width: 10%;
 		height: 100px;
 		color: $color-text-black;
+		font-size: ms(5);
 	}
 }
 
-.header__search--submit:before {
-	@extend %gmr-icons;
-	font-size: ms(1);
-	content: "\e612";
-	@include bp(medium) {
-		font-size: ms(5);
+.header__search--submit {
+	@extend .gmr-icon, .icon-search; 
+	
+	// Hide when the panel is open. 
+	.header__search--open & {
+		display: none;
 	}
 }
 
 .header__search--cancel {
 	@extend .gmr-icon, .icon-close;
-	font-size: ms(1);
-	position: relative;
-	float: right;
-	height: 40px;
-	border: none;
-	width: 14px;
-	background-color: transparent;
-	color: $secondary-heading;
 	
-	display: none;
-	
+	// Only show when the panel is open. 
+	display: none;	
 	.header__search--open & {
-		display: block; 
+		display: block;
 	}
-	
-	&:hover, &:focus {
-		color: $primary-link;
-	}
-	
-	@include bp(medium) {
-		font-size: ms(5);
-		width: 10%;
-		height: 100px;
-		color: $color-text-black;
-	}	
 }
 
 .search__results--count {
