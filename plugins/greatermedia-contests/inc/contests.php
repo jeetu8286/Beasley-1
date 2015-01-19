@@ -53,7 +53,7 @@ function gmr_contests_admin_enqueue_scripts() {
 	);
 
 	if ( in_array( $typenow, $types ) || in_array( $page, $pages ) ) {
-		wp_enqueue_style( 'greatermedia-contests-admin', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'css/greatermedia-contests-admin.css' );
+		wp_enqueue_style( 'greatermedia-contests-admin', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'css/greatermedia-contests-admin.css', null, GREATER_MEDIA_CONTESTS_VERSION );
 	}
 }
 
