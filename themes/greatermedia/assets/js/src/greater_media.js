@@ -18,7 +18,6 @@
 		mobileNavButton = document.querySelector( '.mobile-nav__toggle' ),
 		pageWrap = document.getElementById( 'page-wrap' ),
 		header = document.getElementById( 'header' ),
-		headerHeight,
 		livePlayer = document.getElementById( 'live-player__sidebar' ),
 		livePlayerStream = document.querySelector('.live-player__stream'),
 		livePlayerStreamSelect = document.querySelector( '.live-player__stream--current' ),
@@ -49,11 +48,21 @@
 	 * @returns {number}
 	 */
 	function elemHeight(elem) {
-		if (elem == header && breakingNewsBanner != null && breakingNewsBanner.parentNode != header ) {
+		if (elem != null && elem === header && breakingNewsBanner != null) {
 			return elem.offsetHeight + breakingNewsBanner.offsetHeight;
 		} else {
 			return elem.offsetHeight;
 		}
+	}
+
+	function elemTopOffset(elem) {
+		if (elem != null) {
+			return elem.offsetTop;
+		}
+	}
+
+	function elemHeightOffset(elem) {
+		return elemHeight(elem) - elemTopOffset(elem);
 	}
 	
 	function windowHeight(elem) {
@@ -111,7 +120,7 @@
 		if (body.classList.contains('logged-in')) {
 			livePlayer.style.top = wpAdminHeight + elemHeight(header) + 'px';
 			livePlayer.style.height = windowHeight(window) - wpAdminHeight - elemHeight(header) + 'px';
-			liveLinks.style.height = windowHeight(window) - wpAdminHeight - elemHeight(header) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - 36 + 'px';
+			liveLinks.style.height = windowHeight(window) - wpAdminHeight - elemHeight(header) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - 16 + 'px';
 		} else {
 			livePlayer.style.top = elemHeight(header) + 'px';
 			livePlayer.style.height = windowHeight(window) - elemHeight(header) + 'px';
@@ -126,13 +135,13 @@
 	 */
 	function lpPosScrollInit() {
 		if (body.classList.contains('logged-in')) {
-			livePlayer.style.top = elemHeight(header) + wpAdminHeight + 'px';
-			livePlayer.style.height = windowHeight(window) - wpAdminHeight - elemHeight(header) + 'px';
-			liveLinks.style.height = windowHeight(livePlayer) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) + 'px';
+			livePlayer.style.top =  wpAdminHeight + elemHeight(header) + 'px';
+			livePlayer.style.height = windowHeight(window) - wpAdminHeight - 36 + 'px';
+			liveLinks.style.height = windowHeight(window) - elemTopOffset(header) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) + 'px';
 		} else {
 			livePlayer.style.top = elemHeight(header) + 'px';
 			livePlayer.style.height = windowHeight(window) - wpAdminHeight - elemHeight(header) + 'px';
-			liveLinks.style.height = windowHeight(window) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - 36 + 'px';
+			liveLinks.style.height = windowHeight(window) - elemHeightOffset(header) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - 16 + 'px';
 		}
 		livePlayer.classList.remove('live-player--fixed');
 		livePlayer.classList.add('live-player--init');
@@ -145,11 +154,11 @@
 		if (body.classList.contains('logged-in')) {
 			livePlayer.style.top = wpAdminHeight + 'px';
 			livePlayer.style.height = windowHeight(window) - wpAdminHeight + 'px';
-			liveLinks.style.height = windowHeight(window) - wpAdminHeight - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - 36 + 'px';
+			liveLinks.style.height = windowHeight(window) - wpAdminHeight - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - 16 + 'px';
 		} else {
 			livePlayer.style.top = '0px';
 			livePlayer.style.height = windowHeight(window) + 'px';
-			liveLinks.style.height = windowHeight(window) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - 36 + 'px';
+			liveLinks.style.height = windowHeight(window) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - 16 + 'px';
 		}
 		livePlayer.classList.remove('live-player--init');
 		livePlayer.classList.add('live-player--fixed');
@@ -182,7 +191,7 @@
 				y: window.pageYOffset
 			};
 
-			if (scrollObject.y === 0) {
+			if (scrollObject.y == 0) {
 				lpPosBase();
 			} else if (scrollObject.y >= 1 && elementInViewport(header)) {
 				lpPosScrollInit();
@@ -200,11 +209,6 @@
 	 */
 	function liveLinksAddHeight() {
 		if ( window.innerWidth >= 768 ) {
-			if (body.classList.contains('logged-in')) {
-				liveLinks.style.height = windowHeight(window) - elemHeight(header) - wpAdminHeight - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) + 'px';
-			} else {
-				liveLinks.style.height = windowHeight(window) - elemHeight(header) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) + 'px';
-			}
 			liveLinksWidget.style.height = elemHeight(liveLinksWidget) + 'px';
 		}
 	}
