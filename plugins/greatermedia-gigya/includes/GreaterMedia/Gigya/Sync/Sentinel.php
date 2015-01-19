@@ -8,13 +8,20 @@ class Sentinel {
 	public $meta_prefix = 'mqsm'; // member_query_sync_meta
 	public $params;
 	public $timeout = 900; // 15 minutes
+	public $cache_cleared = false;
 
 	function __construct( $member_query_id, $params = array() ) {
 		$this->member_query_id = $member_query_id;
 		$this->params          = $params;
+		$this->cache_cleared = false;
 	}
 
 	function get_task_meta( $key ) {
+		if ( ! $this->cache_cleared ) {
+			wp_cache_delete( $this->member_query_id, 'post_meta' );
+			$this->cache_cleared = true;
+		}
+
 		$key   = "{$this->meta_prefix}_$key";
 		$value = get_post_meta( $this->member_query_id, $key, true );
 

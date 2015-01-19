@@ -12,15 +12,25 @@ get_header(); ?>
 
 	<div class="container">
 
-		<section class="content">
+		<?php  if ( have_posts() ) : ?>
 
-			<?php  if ( have_posts() ) : ?>
+			<?php while ( have_posts() ) : the_post(); ?>
+		
+				<?php if ( has_post_thumbnail() ) : ?>
+					<div class="contest__thumbnail" style="background-image:url(<?php gm_post_thumbnail_url( 'gmr-contest-thumbnail' ); ?>)">
+						<?php image_attribution(); ?>
+					</div>
+				<?php endif; ?>
 
-				<?php while ( have_posts() ) : the_post(); ?>
+				<section class="content">
 					<?php get_template_part( 'partials/contest', get_post_meta( $post->ID, 'contest_type', true ) ); ?>
-				<?php endwhile; ?>
+				</section>
 
-			<?php else : ?>
+			<?php endwhile; ?>
+		
+		<?php else : ?>
+
+			<section class="content">
 
 				<article id="post-not-found" class="hentry cf">
 
@@ -34,9 +44,9 @@ get_header(); ?>
 
 				</article>
 
-			<?php endif; ?>
+			</section>
 
-		</section>
+		<?php endif; ?>
 
 	</div>
 

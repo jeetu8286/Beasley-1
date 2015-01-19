@@ -7,7 +7,7 @@
 			$thumbnail_size = 'gm-entry-thumbnail-4-3';
 		}
 	?>
-		<section class="entry2__thumbnail" style='background-image: url(<?php gm_post_thumbnail_url( $thumbnail_size ); ?>)'>
+		<section class="entry2__thumbnail" style='background-image: url(<?php gm_post_thumbnail_url( $thumbnail_size, null, true ); ?>)'>
 			<a href="<?php the_permalink(); ?>">
 				<div class='entry2__thumbnail--event-date'>
 					<div class='entry2__thumbnail--day-of-week'><?php echo tribe_get_start_date( get_the_ID(), false, 'l' ); ?></div>
