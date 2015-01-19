@@ -136,7 +136,7 @@
 	function lpPosScrollInit() {
 		if (body.classList.contains('logged-in')) {
 			livePlayer.style.top =  wpAdminHeight + elemHeight(header) + 'px';
-			livePlayer.style.height = windowHeight(window) - wpAdminHeight - 36 + 'px';
+			livePlayer.style.height = windowHeight(window) - wpAdminHeight + 'px';
 			liveLinks.style.height = windowHeight(window) - elemTopOffset(header) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) + 'px';
 		} else {
 			livePlayer.style.top = elemHeight(header) + 'px';
