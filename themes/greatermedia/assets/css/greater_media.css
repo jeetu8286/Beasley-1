@@ -2750,7 +2750,7 @@ Community Highlights and Events
         display: none; }
       .header__account--large.logged-in .header__account--container {
         display: block; }
-      .gmr_user .header__account--large .header__account--container {
+      .gmr-user .header__account--large .header__account--container {
         display: block; } }
 
 @media screen and (min-width: 768px) {
@@ -4830,7 +4830,7 @@ category: Components
   -webkit-transition: all 200ms ease-in-out;
   -moz-transition: all 200ms ease-in-out;
   transition: all 200ms ease-in-out; }
-  .gmr_user .live-stream__login {
+  .gmr-user .live-stream__login {
     display: none; }
 
 .live-stream__resume {
