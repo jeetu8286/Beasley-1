@@ -5,18 +5,17 @@
 		<button type="submit" id="searchsubmit" class="header__search--submit"></button>
 		<button class="header__search--cancel"></button>
 	</form>
-
-	<div id="keyword-search-container"></div>
+	
+	<div class="header-search-body">
+		<div id="keyword-search-container"></div>
+	
+		<button class='header-search__search-all-btn' href='#'>Search All Content</button>
+	</div>
 
 	<script type='text/template' id="keyword-search-body-template">
 		<div class='keyword-search'>
 			<div class='keyword-search__header'></div>
-
 			<div class='keyword-search__items'></div>
-
-			<div class='keyword-search__footer'>
-				<button class='keyword-search__btn' href='#'>Search All Content</button>
-			</div>
 		</div>
 	</script>
 

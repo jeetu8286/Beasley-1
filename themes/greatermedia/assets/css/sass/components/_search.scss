@@ -12,7 +12,7 @@
 		left: 0;
 		width: 100%;
 		height: auto;
-		padding: 16px 2.5%;
+		padding: 16px 2.5% 0;
 		background-color: $primary-bg;
 		border-top: none;
 		@include transition(all 200ms ease-in-out);
@@ -101,6 +101,25 @@
 		display: block;
 	}
 }
+
+.header-search-body {
+	background: $primary-bg;
+	text-align: center;
+	margin: 0 -20px;
+	padding: $base-line-height 20px;
+	clear: both;
+	
+	@include bp(medium) {
+		margin: 0 -2.5%;
+		padding: $base-line-height 2.5%;
+	}
+}
+
+.header-search__search-all-btn {
+	@include btn($btn-bg, $color-text-white, $btn-bg, 0.5em, 1em, ms(-1));
+	text-transform: none;
+}
+
 
 .search__results--count {
 	padding-bottom: 12px;
