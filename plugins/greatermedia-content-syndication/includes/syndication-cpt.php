@@ -642,15 +642,16 @@ class SyndicationCPT {
 			echo '<h4>' . esc_html( $name ) . '</h4>';
 
 			if( !empty( $allterms[0] ) ) {
+				echo '<select name="subscription_default_terms-' . esc_attr( $label )
+				     . '[]" multiple class="subscription_defaults" style="width: 300px;">'
+				     . '<option></option>';
 				foreach( $allterms as $index => $term ) {
 					foreach( $term as $single_term ) {
-						$checked = in_array( $single_term->term_id, $terms) ? 'yes' : 'no';
-						echo '<label for="subscription_default_terms-' . esc_attr( $label ) . '[]">';
-						echo '<input name="subscription_default_terms-' . esc_attr( $label ) . '[]" id="subscription_default_terms" type="checkbox" ', checked( $checked, 'yes' )
-						, ' value="' . intval( $single_term->term_id ) .'">' . esc_html( $single_term->name );
-						echo '</label><br/>';
+						echo '<option', in_array( $single_term->term_id, $terms) ? ' selected="selected"' : ''
+						, ' value="' . intval( $single_term->term_id ) .'">' . esc_html( $single_term->name ) . '</option>';
 					}
 				}
+				echo '</select>';
 			} else {
 				echo "No existing term";
 			}
