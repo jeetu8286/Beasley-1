@@ -1,13 +1,13 @@
-<div class="age-restricted-shield age-restricted-shield--inline" id="age-restricted-shield-<?php echo esc_attr( $post->ID ); ?>">
+<div class="age-restricted-shield age-restricted-shield--inline" id="age-restricted-shield-<?php the_ID(); ?>">
 	<p>
-		The following is restricted to members
+		This content is restricted to members
 		<?php if ( '18plus' === $age_restriction ) : ?>
 			18+
 		<?php elseif ( '21plus' === $age_restriction ) : ?>
 			21+
 		<?php endif; ?>
 		<?php if ( ! is_gigya_user_logged_in() ) : ?>
-			&#8212; login to view this content.
+			&#8212; log in to view this content.
 		<?php endif; ?>
 	</p>
 	
