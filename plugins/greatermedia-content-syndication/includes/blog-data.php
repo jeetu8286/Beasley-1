@@ -69,7 +69,6 @@ class BlogData {
 
 	public static function run( $syndication_id, $offset = 0 ) {
 			$result = self::QueryContentSite( $syndication_id, $offset );
-
 			$taxonomy_names = get_object_taxonomies( 'post', 'objects' );
 			$defaults = array(
 				'status'    =>  get_post_meta( $syndication_id, 'subscription_post_status', true ),
@@ -162,7 +161,7 @@ class BlogData {
 			}
 
 			$tax_query['taxonomy'] = $enabled_taxonomy;
-			$tax_query['field'] = 'name';
+			$tax_query['field'] = 'slug';
 			$tax_query['terms'] = $subscription_filter;
 			$tax_query['operator'] = 'AND';
 

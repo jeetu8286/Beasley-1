@@ -8,7 +8,7 @@ class SyndicationCPT {
 
 	private $post_type = 'subscription';
 
-	private $supported_subscriptions = array( 'post', 'content-kit' );
+	private $supported_subscriptions = array( 'post', 'content-kit', 'contest', 'survey', 'gmr_gallery', 'gmr_album' );
 
 	public function __construct() {
 		add_action( 'init', array( $this, 'register_syndication_cpt' ) );
@@ -499,7 +499,6 @@ class SyndicationCPT {
 
 		foreach( $this->supported_subscriptions as $type ) {
 			echo '<p>';
-
 			if( post_type_exists( $type ) ) {
 				$cpt_obj = get_post_type_object( $type );
 
