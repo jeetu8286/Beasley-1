@@ -9,7 +9,6 @@ add_action( 'pre_get_posts', 'gmr_survey_adjust_survey_responses_query' );
 // filter hooks
 add_filter( 'post_row_actions', 'gmr_surveys_add_table_row_actions', PHP_INT_MAX, 2 );
 add_filter( 'parent_file', 'gmr_surveys_adjust_responses_page_admin_menu' );
-add_filter( 'parent_file', 'gmr_surveys_adjust_current_admin_menu' );
 
 /**
  * Renders link to access survey responses.
@@ -153,6 +152,32 @@ function gmr_surveys_adjust_responses_page_admin_menu( $parent_file ) {
  * @param int $post_id The post id.
  */
 function gmr_surveys_render_survey_response_column( $column_name, $post_id ) {
+	$response = get_post( $post_id );
+
+	if ( '_gmr_username' == $column_name ) {
+
+		echo '<b>';
+			echo esc_html( gmr_contest_get_entry_author( $post_id ) );
+		echo '</b>';
+
+	} elseif ( '_gmr_email' == $column_name ) {
+
+		$email = gmr_contest_get_entry_author_email( $post_id );
+		if ( ! filter_var( $email, FILTER_VALIDATE_EMAIL ) ) {
+			echo '&#8212;';
+		} else {
+			printf( '<a href="mailto:%1$s" title="%1$s">%1$s</a>', $email );
+		}
+
+	} elseif ( '_gmr_submitted' == $column_name ) {
+
+		printf(
+			'<span title="%s">%s ago</span>',
+			mysql2date( 'M j, Y H:i', $response->post_date ),
+			human_time_diff( strtotime( $response->post_date ), current_time( 'timestamp' ) )
+		);
+
+	}
 }
 
 /**
@@ -168,39 +193,9 @@ function gmr_survey_adjust_survey_responses_query( WP_Query $query ) {
 	if ( GMR_SURVEY_RESPONSE_CPT == $typenow && 'gmr-survey-response' == filter_input( INPUT_GET, 'page' ) && $query->is_main_query() ) {
 		$survey = filter_input( INPUT_GET, 'survey_id', FILTER_VALIDATE_INT, array( 'options' => array( 'min_range' => 1 ) ) );
 		if ( $survey && ( $survey = get_post( $survey ) ) && GMR_SURVEY_CPT == $survey->post_type ) {
-			$responses = get_post_meta( $survey->ID, 'response' );
-			if ( ! empty( $responses ) ) {
-				$responses = array();
-				foreach ( $responses as $response ) {
-					$responses[] = current( explode( ':', $response, 2 ) );
-				}
-
-				$query->set( 'post__not_in', $responses );
-			}
-
 			$query->set( 'post_parent', $survey->ID );
 		}
 	}
-}
-
-/**
- * Adjustes parent and submenu files.
- *
- * @filter parent_file
- * @global string $submenu_file The current submenu page.
- * @global string $typenow The current post type.
- * @global string $pagenow The current admin page.
- * @return string The parent file.
- */
-function gmr_surveys_adjust_current_admin_menu( $parent_file ) {
-	global $submenu_file, $typenow, $pagenow;
-
-//	if ( GMR_CONTEST_ENTRY_CPT == $typenow && 'edit.php' == $pagenow ) {
-//		$parent_file = 'edit.php?post_type=' . GMR_SURVEY_CPT;
-//		$submenu_file = 'edit.php?post_type=' . GMR_SURVEY_CPT;
-//	}
-
-	return $parent_file;
 }
 
 /**
@@ -276,6 +271,12 @@ class GMR_Survey_Responses_Table extends WP_Posts_List_Table {
 	 */
 	public function get_columns() {
 		$columns = parent::get_columns();
+
+		unset( $columns['title'], $columns['date'] );
+
+		$columns['_gmr_username'] = 'Submitted by';
+		$columns['_gmr_email'] = 'Email';
+		$columns['_gmr_submitted'] = 'Submitted on';
 
 		return $columns;
 	}

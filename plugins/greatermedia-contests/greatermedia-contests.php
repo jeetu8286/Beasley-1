@@ -35,7 +35,6 @@ include 'inc/class-greatermedia-ugimage.php';
 include 'inc/class-greatermedia-uglink.php';
 include 'inc/class-ugc-moderation-table.php';
 include 'inc/class-greatermedia-surveys.php';
-include 'inc/class-greatermedia-survey-form-render.php';
 include 'inc/class-greatermedia-survey-entry.php';
 
 if ( is_admin() ) {
