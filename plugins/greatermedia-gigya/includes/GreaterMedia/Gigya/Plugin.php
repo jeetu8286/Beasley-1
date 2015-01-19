@@ -139,6 +139,7 @@ class Plugin {
 		$handlers[] = new Ajax\MemberQueryStatusAjaxHandler();
 		$handlers[] = new Ajax\EmmaMemberOptoutAjaxHandler();
 		$handlers[] = new Ajax\ChangeMemberQuerySegmentAjaxHandler();
+		$handlers[] = new Ajax\ResetPasswordAjaxHandler();
 
 		// MyEmma
 		$handlers[] = new \GreaterMedia\MyEmma\Ajax\ChangeMyEmmaSettings();
