@@ -72,4 +72,21 @@
 		closeSearch(e);
 	});
 	
+	/**
+	 * PJAX workaround. PJAX is set to only handle links when they're clicked,
+	 * so to get the form to work over PJAX we need to create a fake link and 
+	 * then click it. Clunky but it is the quick fix for now. 
+	 */
+	$( searchForm ).find( 'form' ).submit( function ( e ) {
+		e.preventDefault();		
+		
+		$( '<a></a>' )
+			.attr( 'href', $( this ).attr( 'action' ) + '?s=' + $( this ).find( 'input[name=s]' ).val() )
+			.appendTo( $( this ) )
+			.click()
+		;
+		
+		closeSearch( e );
+	} );
+	
 })();
