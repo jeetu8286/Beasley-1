@@ -21,6 +21,9 @@ $months = array(
 
 $emma_groups = get_option( 'emma_groups' );
 $emma_groups = json_decode( $emma_groups, true );
+if ( ! $emma_groups ) {
+	$emma_groups = array();
+}
 
 $state_names = array(
 	array( 'label' => 'Alabama', 'value' => 'AL' ),
