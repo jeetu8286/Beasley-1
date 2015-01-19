@@ -147,6 +147,33 @@
 	}
 }
 
+.post-type-survey {
+	#survey-responses-link {
+		float: right;
+		margin-top: -22px;
+		margin-bottom: 5px;
+	}
+
+	.fb-save-wrapper {
+		display: none;
+	}
+
+	.fb-tabs {
+		li {
+			margin-bottom: 0;
+		}
+	}
+
+	.fb-right,
+	.fb-left {
+		padding-top: 0;
+	}
+
+	.form-table th {
+		width: 250px;
+	}
+}
+
 .misc-pub-gmr-contest {
 	&::before {
 		font: 400 20px/1 dashicons;

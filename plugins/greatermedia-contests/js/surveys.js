@@ -1,4 +1,4 @@
-/*! Greater Media Contests - v1.0.4
+/*! Greater Media Contests - v1.0.5
  * http://10up.com/
  * Copyright (c) 2015;
  * Licensed GPLv2+
@@ -67,7 +67,12 @@
 					processData: false, // Don't process the files
 					contentType: false, // Set content type to false as jQuery will tell the server its a query string request
 					success: function(data) {
+						var scroll_to = container.offset().top - 10;
+
 						container.html(data);
+
+						scroll_to -= $('#wpadminbar').height();
+						$('html, body').animate({scrollTop: scroll_to}, 200);
 					}
 				});
 			}
