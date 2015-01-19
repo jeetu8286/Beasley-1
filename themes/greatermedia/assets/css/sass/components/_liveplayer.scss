@@ -297,6 +297,14 @@ category: Components
 		overflow: visible;
 		border-bottom: none;
 	}
+
+	&.playing {
+		height: 90px;
+
+		@include bp(medium) {
+			height: auto;
+		}
+	}
 }
 
 .live-stream {
@@ -320,11 +328,6 @@ category: Components
 	}
 }
 
-.live-player--active .live-stream {
-	width: 100%;
-	padding: 12px 3.75%; // 12px
-}
-
 .live-stream__player {
 	display: block;
 	@include bp(medium) {
@@ -338,7 +341,13 @@ category: Components
 
 .live-player--active .live-stream__player {
 	float: right;
-	width: 11.5%;
+	width: 14.375%; // 46px
+	padding: 12px 3.75% 12px 0; // 12px
+	text-align: right;
+	@include bp(small) {
+		width: 9.583333333333%; // 46px
+		padding-right: 2.5%; // 12px
+	}
 }
 
 .live-stream__player.open {
@@ -576,8 +585,13 @@ category: Components
 	}
 }
 
-.live-player--open .live-stream__controls {
-	width: 11.486486486486%; // 34px
+.live-player--active .live-stream__controls {
+	@include fill-parent;
+	padding: 0;
+	@include bp(small) {
+		@include fill-parent;
+		padding-right: 0;
+	}
 }
 
 .live-stream__btn--resume, .live-stream__btn--pause {
@@ -587,7 +601,7 @@ category: Components
 .on-air, .up-next {
 	float: left;
 	width: 78.125%; // 250px
-	padding: 23px 0 22px 3.75%; // 12px
+	padding: 22px 0 22px 3.75%; // 12px
 	margin-right: 3.75%; // 12px
 	line-height: 1;
 	@include bp(small) {
@@ -603,10 +617,18 @@ category: Components
 		margin: 0;
 		text-align: center;
 	}
+
+	.live-player__container .playing & {
+		display: none;
+	}
 }
 
 .live-player--open .on-air, .live-player--open .up-next {
 	display: block;
+}
+
+.live-player--active .on-air, .live-player--active .up-next {
+	display: none;
 }
 
 .on-air__title, .up-next__title {
@@ -630,10 +652,9 @@ category: Components
 .now-playing {
 	display: none;
 	float: left;
-	width: 88.513513513514%; // 262px
-	height: 34px;
-	padding: 8px 1em 0 0;
-	margin: 0;
+	width: 78.125%; // 250px
+	padding: 16px 1em 0 0;
+	margin-left: 3.75%; // 12px
 	text-align: left;
 	@include bp(medium) {
 		display: block;
@@ -641,38 +662,43 @@ category: Components
 		width: 100%;
 		height: auto;
 		padding: 56px 1em 0;
+		margin-left: 0;
 		text-align: center;
 	}
 
 	&.playing {
+		position: absolute;
+		top: 16px;
+		left: 0;
+		display: block;
 		padding-top: 0;
 	}
 }
 
 .live-player--active .now-playing {
-	width: 80%;
-	padding-right: 0;
+	display: block;
 }
 
 .now-playing__title {
-	margin: 0 0 4px;
-	line-height: 1.4;
+	margin: 0 0 8px;
+	line-height: 1;
 	font-size: ms(0);
 	font-weight: lighter;
 	color: $color-text-red;
 	@include bp(medium) {
 		margin-bottom: 10px;
+		line-height: 1.4;
 		font-size: ms(1);
 	}
 }
 
 .now-playing__artist {
-	margin: 0 0 4px;
 	line-height: 1;
 	font-size: ms(-3);
 	font-weight: lighter;
 	color: $color-gray-extra-light;
 	@include bp(medium) {
+		margin: 0 0 4px;
 		font-size: ms(-2);
 	}
 }
@@ -877,12 +903,16 @@ category: Components
 .audio__time {
 	visibility: hidden;
 	@include opacity(0);
-	width: 85%;
+	width: 78.125%;
 	height: 0;
 	overflow: hidden;
 	margin: 0 auto;
 	font-size: ms(-3);
 	@include transition(opacity 200ms ease-in-out 0s,height 200ms ease-in-out 0s);
+
+	@include bp(medium) {
+		width: 85%;
+	}
 
 	.podcast-player & {
 		@include fill-parent;
@@ -902,9 +932,14 @@ category: Components
 	}
 
 	.live-player__container.playing &  {
+		position: absolute;
+		top: 56px;
+		left: auto;
+		right: auto;
 		display: block;
+		width: 92.5%;
 		height: 41px;
-		margin-top: 23px;
+		margin: 0 3.75%;
 		visibility: visible;
 		@include opacity(1);
 		@include transition(opacity 200ms ease-in-out 0s,height 200ms ease-in-out 0s);
