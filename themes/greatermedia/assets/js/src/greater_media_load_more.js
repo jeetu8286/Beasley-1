@@ -1,3 +1,4 @@
+/* globals tribe_ev:false */
 (function ($) {
 	var __ready, reset_page = true, pagenums = {};
 
@@ -44,7 +45,7 @@
 					$self.removeClass('is-loaded');
 	
 					// let's use ?ajax=1 to distinguish AJAX and non AJAX requests
-					// if we don't do it and enabled HTTP caching, then we might encounter
+					// if we don't do it and HTTP cache is enabled, then we might encounter
 					// unpleasant condition when users see cached version of a page loaded by AJAX
 					// instead of normal one.
 					$.get(page_link_template.replace('%d', pagenums[page_link_template]), {ajax: 1, partial_slug: partial_slug, partial_name: partial_name }).done(function(response) {
@@ -69,6 +70,10 @@
 			});
 		}); 
 	};
+
+	if (tribe_ev && tribe_ev.events) {
+		$(tribe_ev.events).bind('tribe_ev_ajaxSuccess', __ready);
+	}
 
 	$(document).bind('pjax:end', function(e, xhr) {
 		reset_page = xhr !== null;

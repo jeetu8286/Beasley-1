@@ -1,3 +1,9 @@
+.events-archive {
+	#tribe-events-pg-template {
+		max-width: 100%;
+	}
+}
+
 .event__thumbnail {
 	@include span-columns(4 of 4);
 	background-color: lighten($primary-border, 9%);
