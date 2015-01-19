@@ -311,13 +311,18 @@ function get_post_with_keyword( $query_arg ) {
  */
 function gm_get_post_thumbnail_url( $size = 'thumbnail', $post_id = null, $use_fallback = false ) {
 	$thumbnail_id = get_post_thumbnail_id( $post_id );
-	if ( ! $thumbnail_id && $use_fallback ) {
-		$thumbnail_id = greatermedia_get_fallback_thumbnail_id( $post_id );
+	if ( $thumbnail_id && ( $url = gm_get_thumbnail_url( $thumbnail_id, $size ) ) ) {
+		return $url;
 	}
 
-	if ( $thumbnail_id ) {
-		return gm_get_thumbnail_url( $thumbnail_id, $size );
+	if ( $use_fallback ) {
+		$thumbnail_id = greatermedia_get_fallback_thumbnail_id( $post_id );
+		if ( $thumbnail_id ) {
+			return gm_get_thumbnail_url( $thumbnail_id, $size );
+		}
 	}
+
+	return null;
 }
 
 /**
@@ -341,7 +346,9 @@ function gm_get_thumbnail_url( $attachment_id, $size ) {
 	$src = wp_get_attachment_image_src( $attachment_id, $size );
 	if ( $src ) {
 		return $src[0]; 
-	}	
+	}
+
+	return null;
 }
 
 /**
@@ -497,15 +504,15 @@ function greatermedia_load_more_button( $args = array() ) {
 
 	$default_page_link = sprintf( $args['page_link_template'], $args['next_page'] );
 	?>
-	<div class='posts-pagination'>
+	<div class="posts-pagination">
 		<a
 			class="button posts-pagination--load-more is-loaded"
-			href='<?php echo esc_url( $default_page_link ); ?>'
+			href="<?php echo esc_url( $default_page_link ); ?>"
 			data-page-link-template="<?php echo esc_url( $args['page_link_template'] ); ?>"
 			data-page="<?php echo esc_attr( $args['next_page'] ); ?>"
-			data-partial-slug='<?php echo esc_attr( $args['partial_slug'] ); ?>'
-			data-partial-name='<?php echo esc_attr( $args['partial_name'] ); ?>'
-			data-auto-load='<?php echo intval( $args['auto_load'] ); ?>'
+			data-partial-slug="<?php echo esc_attr( $args['partial_slug'] ); ?>"
+			data-partial-name="<?php echo esc_attr( $args['partial_name'] ); ?>"
+			data-auto-load="<?php echo intval( $args['auto_load'] ); ?>"
 			data-not-found="All content shown"
 			>
 			<i class="fa fa-spin fa-refresh"></i> Load More
