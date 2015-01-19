@@ -7144,13 +7144,17 @@ a.podcast__rss:active {
 .entry2__excerpt .age-restricted-login-btn {
   margin: 1em 0; }
 
-.age-restricted-shield--inline {
+.age-restricted-shield--inline,
+.login-restricted-shield--inline,
+.logout-restricted-shield--inline {
   background: #f1f1f3;
   margin: 1.5em 0;
-  padding: 0.5em 1.618em;
+  padding: 1.5em 1.618em;
   text-align: center; }
-  .age-restricted-shield--inline p {
-    margin: 1em 0; }
+  .age-restricted-shield--inline p,
+  .login-restricted-shield--inline p,
+  .logout-restricted-shield--inline p {
+    margin: .75em 0; }
 
 @media screen and (min-width: 768px) {
   .single-show .content {

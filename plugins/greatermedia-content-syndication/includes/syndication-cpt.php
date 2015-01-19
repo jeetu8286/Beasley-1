@@ -8,7 +8,7 @@ class SyndicationCPT {
 
 	private $post_type = 'subscription';
 
-	private $supported_subscriptions = array( 'post', 'content-kit' );
+	private $supported_subscriptions = array( 'post', 'content-kit', 'contest', 'survey', 'gmr_gallery', 'gmr_album' );
 
 	public function __construct() {
 		add_action( 'init', array( $this, 'register_syndication_cpt' ) );
@@ -499,7 +499,6 @@ class SyndicationCPT {
 
 		foreach( $this->supported_subscriptions as $type ) {
 			echo '<p>';
-
 			if( post_type_exists( $type ) ) {
 				$cpt_obj = get_post_type_object( $type );
 
@@ -554,19 +553,20 @@ class SyndicationCPT {
 
 			echo '<select ' . $disabled . ' ' .$multiple . ' id="' . esc_attr( $taxonomy )
 			     . '" name="subscription_filter_terms-' . esc_attr( $taxonomy )
-			     . '[]" class="subscription_terms" style="width: 300px;">';
+			     . '[]" class="subscription_terms" style="width: 300px;">'
+			     . '<option></option>';
 			foreach( $terms as $single_term ) {
 				echo '<option', in_array( $single_term->name, $filter_terms) ? ' selected="selected"' : ''
 				, ' value="' . esc_attr( $single_term->name ) .'">' . esc_html( $single_term->name ) . '</option>';
 			}
 
 			echo '</select>';
-			echo '</p>';
 			if( $multiple != 'single' ) {
 				echo '<span class="description">Create a filter using one or more Tags</span>';
 			} else {
 				echo '<span class="description">Create a filter using a single ' . ucfirst( $taxonomy ) .'</span>';
 			}
+			echo '</p>';
 		}
 
 		echo '<input type="hidden" id="enabled_filter_taxonomy" name="enabled_filter_taxonomy" value="' . $enabled_filter. '">';
@@ -642,15 +642,16 @@ class SyndicationCPT {
 			echo '<h4>' . esc_html( $name ) . '</h4>';
 
 			if( !empty( $allterms[0] ) ) {
+				echo '<select name="subscription_default_terms-' . esc_attr( $label )
+				     . '[]" multiple class="subscription_defaults" style="width: 300px;">'
+				     . '<option></option>';
 				foreach( $allterms as $index => $term ) {
 					foreach( $term as $single_term ) {
-						$checked = in_array( $single_term->term_id, $terms) ? 'yes' : 'no';
-						echo '<label for="subscription_default_terms-' . esc_attr( $label ) . '[]">';
-						echo '<input name="subscription_default_terms-' . esc_attr( $label ) . '[]" id="subscription_default_terms" type="checkbox" ', checked( $checked, 'yes' )
-						, ' value="' . intval( $single_term->term_id ) .'">' . esc_html( $single_term->name );
-						echo '</label><br/>';
+						echo '<option', in_array( $single_term->term_id, $terms) ? ' selected="selected"' : ''
+						, ' value="' . intval( $single_term->term_id ) .'">' . esc_html( $single_term->name ) . '</option>';
 					}
 				}
+				echo '</select>';
 			} else {
 				echo "No existing term";
 			}
@@ -667,7 +668,9 @@ class SyndicationCPT {
 		echo '</div>';
 		echo '<button data-postid="' . intval( $post->ID )
 		     . '" name="syndicate_now" id="syndicate_now" class="button button-primary button-large"'
-		     . '>Syndicate</button>';
+		     . '>Syndicate</button><br/>';
+		echo '<br/>';
+		echo '<span class="description">Click here to run syndication immediately.</span>';
 	}
 
 }
