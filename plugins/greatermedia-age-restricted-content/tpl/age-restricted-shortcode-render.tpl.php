@@ -7,7 +7,7 @@
 			21+
 		<?php endif; ?>
 		<?php if ( ! is_gigya_user_logged_in() ) : ?>
-			&#8212; login to view this content.
+			&#8212; log in to view this content.
 		<?php endif; ?>
 	</p>
 	
