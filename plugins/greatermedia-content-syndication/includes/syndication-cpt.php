@@ -554,7 +554,8 @@ class SyndicationCPT {
 
 			echo '<select ' . $disabled . ' ' .$multiple . ' id="' . esc_attr( $taxonomy )
 			     . '" name="subscription_filter_terms-' . esc_attr( $taxonomy )
-			     . '[]" class="subscription_terms" style="width: 300px;">';
+			     . '[]" class="subscription_terms" style="width: 300px;">'
+			     . '<option></option>';
 			foreach( $terms as $single_term ) {
 				echo '<option', in_array( $single_term->name, $filter_terms) ? ' selected="selected"' : ''
 				, ' value="' . esc_attr( $single_term->name ) .'">' . esc_html( $single_term->name ) . '</option>';
@@ -667,7 +668,9 @@ class SyndicationCPT {
 		echo '</div>';
 		echo '<button data-postid="' . intval( $post->ID )
 		     . '" name="syndicate_now" id="syndicate_now" class="button button-primary button-large"'
-		     . '>Syndicate</button>';
+		     . '>Syndicate</button><br/>';
+		echo '<br/>';
+		echo '<span class="description">Click here to run syndication immediately.</span>';
 	}
 
 }
