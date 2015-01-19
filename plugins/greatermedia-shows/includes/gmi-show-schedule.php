@@ -16,7 +16,7 @@ add_filter( 'gmr_blogroll_widget_item', 'gmrs_get_blogroll_widget_episode_item' 
  * @param WP_Post $post Currently published episode.
  */
 function gmrs_prolong_show_episode( $post ) {
-	if ( ShowsCPT::EPISODE_CPT != $post->post_type || $post->ping_status > 0 ) {
+	if ( ShowsCPT::EPISODE_CPT != $post->post_type || get_post_meta( $post->ID, 'repeat-episode', true ) < 1 ) {
 		return;
 	}
 
@@ -119,7 +119,7 @@ function gmrs_add_show_episode() {
 	}
 
 	$interval = $data['end_time'] - $data['start_time'];
-	$episode = gmrs_get_current_show_episode( $start_date_gmt );
+	$episode = gmrs_get_show_episode_at( $start_date_gmt );
 	if ( $episode ) {
 		$episode_start_date = strtotime( $episode->post_date_gmt );
 		$episode_end_date = $episode_start_date + $episode->menu_order;
@@ -143,16 +143,20 @@ function gmrs_add_show_episode() {
 			continue;
 		}
 
-		$inserted += wp_insert_post( array(
+		$post_id = wp_insert_post( array(
 			'post_title'    => $show->post_title,
 			'post_type'     => ShowsCPT::EPISODE_CPT,
 			'post_status'   => 'future',
 			'post_date'     => date( DATE_ISO8601, $start_date ),
 			'post_date_gmt' => date( DATE_ISO8601, $start_date_gmt ),
 			'post_parent'   => $show->ID,
-			'ping_status'   => $data['repeat'] ? 1 : -1,
 			'menu_order'    => $interval,
 		) );
+
+		if ( $post_id ) {
+			$inserted++;
+			add_post_meta( $post_id, 'repeat-episode', $data['repeat'] ? 1 : 0 );
+		}
 	}
 
 	// enable back Edit Flow influence
@@ -487,16 +491,16 @@ function gmrs_show_color( $show_id, $opacity ) {
 }
 
 /**
- * Returns current show episode.
+ * Returns show episode at a certain time.
  *
  * @param int $time Optional timestamp which determines current time in the system. Could be used to get an episode before another one.
  * @return WP_Post|null The show episode object on success, otherwise NULL.
  */
-function gmrs_get_current_show_episode( $time = false ) {
+function gmrs_get_show_episode_at( $time = false ) {
 	if ( ! $time ) {
 		$time = current_time( 'timestamp', 1 );
 	}
-	
+
 	$query = new WP_Query();
 	$episodes = $query->query( array(
 		'post_type'           => ShowsCPT::EPISODE_CPT,
@@ -519,7 +523,7 @@ function gmrs_get_current_show_episode( $time = false ) {
 	if ( empty( $episodes ) ) {
 		return null;
 	}
-	
+
 	$episode = current( $episodes );
 	$started = strtotime( $episode->post_date_gmt );
 	$finished = $started + $episode->menu_order;
@@ -528,12 +532,22 @@ function gmrs_get_current_show_episode( $time = false ) {
 }
 
 /**
- * Returns current show.
+ * Returns current show episode.
  *
+ * @return WP_Post|null The show episode object on success, otherwise NULL.
+ */
+function gmrs_get_current_show_episode() {
+	return gmrs_get_show_episode_at( false );
+}
+
+/**
+ * Returns a show at a certain time.
+ *
+ * @param int $time Optional timestamp which determines current time in the system. Could be used to get an episode before another one.
  * @return WP_Post|null The show object on success, otherwise NULL.
  */
-function gmrs_get_current_show() {
-	$episode = gmrs_get_current_show_episode();
+function gmrs_get_show_at( $time = false ) {
+	$episode = gmrs_get_show_episode_at( $time );
 	if ( ! empty( $episode ) ) {
 		$show = get_post( $episode->post_parent );
 		if ( $show && ShowsCPT::SHOW_CPT == $show->post_type ) {
@@ -542,6 +556,40 @@ function gmrs_get_current_show() {
 	}
 
 	return null;
+}
+
+/**
+ * Returns current show.
+ *
+ * @return WP_Post|null The show object on success, otherwise NULL.
+ */
+function gmrs_get_current_show() {
+	return gmrs_get_show_at( false );
+}
+
+/**
+ * Returns the next show.
+ *
+ * @return WP_Post|null The next show object on success, otherwise NULL.
+ */
+function gmrs_get_next_show() {
+	$current_episode = gmrs_get_show_episode_at( false );
+	if ( ! $current_episode ) {
+		return null;
+	}
+
+	$finished = strtotime( $current_episode->post_date_gmt ) + $current_episode->menu_order;
+	$next_episode = gmrs_get_show_episode_at( $finished + MINUTE_IN_SECONDS );
+	if ( ! $next_episode || ! $next_episode->post_parent ) {
+		return null;
+	}
+
+	$next_show = get_post( $next_episode->post_parent );
+	if ( ! $next_show || ShowsCPT::SHOW_CPT != $next_show->post_type ) {
+		return null;
+	}
+
+	return $next_show;
 }
 
 /**
