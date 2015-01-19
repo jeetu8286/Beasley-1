@@ -600,3 +600,23 @@ function add_google_analytics() {
 	<?php
 }
 add_action( 'wp_head' , 'add_google_analytics' );
+
+/**
+ * adds an additional body class if a user is authenticated with gigya
+ *
+ * @param $classes
+ *
+ * @return array
+ */
+function greatermedia_add_gigya_body_class( $classes ) {
+
+	$classes[] = '';
+
+	if ( is_gigya_user_logged_in() ) {
+		$classes[] = 'gmr_user';
+	}
+
+	return $classes;
+
+}
+add_filter( 'body_class', 'greatermedia_add_gigya_body_class' );

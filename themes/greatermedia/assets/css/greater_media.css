@@ -1362,6 +1362,9 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
     .ui-menu a:hover {
       color: #ffffff; }
 
+.header__account--container {
+  display: none; }
+
 .mobile-nav .sub-menu, .mobile-nav .header__nav .format-fw > ul, .header__nav .mobile-nav .format-fw > ul, .mobile-nav .header__nav .format-sp > ul, .header__nav .mobile-nav .format-sp > ul, .mobile-nav .header__nav .format-fi > ul, .header__nav .mobile-nav .format-fi > ul {
   -webkit-transition: left 100ms ease-out;
   -moz-transition: left 100ms ease-out;
@@ -2746,6 +2749,8 @@ Community Highlights and Events
       .header__account--large .header__account--container {
         display: none; }
       .header__account--large.logged-in .header__account--container {
+        display: block; }
+      .gmr_user .header__account--large .header__account--container {
         display: block; } }
 
 @media screen and (min-width: 768px) {
@@ -4769,6 +4774,7 @@ category: Components
     margin-right: 0; }
 
 .live-stream__login {
+  display: block;
   padding-bottom: 3px;
   margin-right: 0;
   font-weight: 700;
@@ -4777,6 +4783,8 @@ category: Components
   -webkit-transition: all 200ms ease-in-out;
   -moz-transition: all 200ms ease-in-out;
   transition: all 200ms ease-in-out; }
+  .gmr_user .live-stream__login {
+    display: none; }
 
 .live-stream__resume {
   height: 48px;
