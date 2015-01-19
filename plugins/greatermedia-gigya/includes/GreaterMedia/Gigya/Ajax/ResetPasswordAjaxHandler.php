@@ -35,8 +35,9 @@ class ResetPasswordAjaxHandler extends AjaxHandler {
 		if ( $response->getErrorCode() === 0 ) {
 			return true;
 		} else {
-			throw new \Exception( 'Error: Invalid reset password link' );
-			//throw new \Exception( $response->getResponseMessage() );
+			$response_text = $response->getResponseText();
+			$json          = json_decode( $response_text, true );
+			throw new \Exception( 'Error: ' . $json['errorDetails'] );
 		}
 
 		return true;
