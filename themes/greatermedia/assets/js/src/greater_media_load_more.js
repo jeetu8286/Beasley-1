@@ -1,3 +1,4 @@
+/* globals tribe_ev:false */
 (function ($) {
 	var __ready, reset_page = true, pagenums = {};
 
@@ -69,6 +70,10 @@
 			});
 		}); 
 	};
+
+	if (tribe_ev && tribe_ev.events) {
+		$(tribe_ev.events).bind('tribe_ev_ajaxSuccess', __ready);
+	}
 
 	$(document).bind('pjax:end', function(e, xhr) {
 		reset_page = xhr !== null;
