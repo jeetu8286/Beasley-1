@@ -6314,6 +6314,9 @@ category: Components - Ads
       clear: both; }
     .contest__submission .contest__submission--thumbnail {
       height: 117px; } }
+.events-archive #tribe-events-pg-template {
+  max-width: 100%; }
+
 .event__thumbnail {
   float: left;
   display: block;
