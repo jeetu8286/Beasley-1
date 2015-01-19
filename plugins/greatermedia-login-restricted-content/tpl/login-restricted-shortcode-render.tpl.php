@@ -1,6 +1,6 @@
-<div class="login-restricted-shield" id="login-restricted-shield-<?php the_ID(); ?>">
+<div class="login-restricted-shield login-restricted-shield--inline" id="login-restricted-shield-<?php the_ID(); ?>">
 	<p>
-		The following is restricted to members only
+		This content is restricted to members only
 	</p>
 
 	<p>
