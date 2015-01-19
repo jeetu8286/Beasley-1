@@ -19,7 +19,7 @@ function gmr_survey_view_responses_link() {
 
 	if ( GMR_SURVEY_CPT == $post->post_type && $post_status->public ) :
 		echo '<div id="survey-responses-link">';
-			echo '<a class="button" href="', admin_url( 'admin.php?page=gmr-survey-response&survey_id=' . $post->ID ), '">View Responses</a>';
+			echo '<a class="button" href="', admin_url( 'admin.php?page=gmr-survey-responses&survey_id=' . $post->ID ), '">View Responses</a>';
 		echo '</div>';
 	endif;
 }
@@ -39,7 +39,7 @@ function gmr_surveys_add_table_row_actions( $actions, WP_Post $post ) {
 	}
 
 	// add survey responses action
-	$link = admin_url( 'admin.php?page=gmr-survey-response&survey_id=' . $post->ID );
+	$link = admin_url( 'admin.php?page=gmr-survey-responses&survey_id=' . $post->ID );
 	$actions['gmr-survey-response'] = '<a href="' . esc_url( $link ) . '">Responses</a>';
 
 	// unset redundant actions
@@ -66,7 +66,7 @@ function gmr_surveys_add_table_row_actions( $actions, WP_Post $post ) {
 function gmr_surveys_register_responses_page() {
 	global $_registered_pages;
 
-	$page_hook = get_plugin_page_hookname( 'gmr-survey-response', '' );
+	$page_hook = get_plugin_page_hookname( 'gmr-survey-responses', '' );
 	$_registered_pages[ $page_hook ] = true;
 
 	add_action( $page_hook, 'gmr_surveys_render_response_page' );

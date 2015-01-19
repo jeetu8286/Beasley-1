@@ -147,6 +147,14 @@
 	}
 }
 
+.post-type-survey {
+	#survey-responses-link {
+		float: right;
+		margin-top: -22px;
+		margin-bottom: 5px;
+	}
+}
+
 .misc-pub-gmr-contest {
 	&::before {
 		font: 400 20px/1 dashicons;

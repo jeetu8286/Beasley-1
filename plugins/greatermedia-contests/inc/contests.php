@@ -33,9 +33,28 @@ add_filter( 'gmr_live_link_suggestion_post_types', 'gmr_contests_extend_live_lin
  * Enqueues admin styles.
  *
  * @action admin_enqueue_scripts.
+ * @global string $typenow The current post type.
  */
 function gmr_contests_admin_enqueue_scripts() {
-	wp_enqueue_style( 'greatermedia-contests-admin', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'css/greatermedia-contests-admin.css' );
+	global $typenow;
+
+	$types = array(
+		GMR_SURVEY_CPT,
+		GMR_SURVEY_RESPONSE_CPT,
+		GMR_CONTEST_CPT,
+		GMR_CONTEST_ENTRY_CPT,
+		GMR_SUBMISSIONS_CPT,
+	);
+
+	$page = filter_input( INPUT_GET, 'page' );
+	$pages = array(
+		'gmr-contest-winner',
+		'gmr-survey-responses',
+	);
+
+	if ( in_array( $typenow, $types ) || in_array( $page, $pages ) ) {
+		wp_enqueue_style( 'greatermedia-contests-admin', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'css/greatermedia-contests-admin.css' );
+	}
 }
 
 /**
