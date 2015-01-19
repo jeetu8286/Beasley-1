@@ -54,7 +54,7 @@
 						$($('<div>' + $.trim(response) + '</div>').html()).insertBefore($button.parents('.posts-pagination'));
 						
 						// Increment page number
-						pagenmus[page_link_template]++;
+						pagenums[page_link_template]++;
 						
 						// Refresh Waypoint context, if any. 
 						if ( waypoint_context ) {
