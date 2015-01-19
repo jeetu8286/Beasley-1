@@ -413,11 +413,11 @@
 		if (body.classList.contains('logged-in')) {
 			livePlayer.style.top = wpAdminHeight + elemHeight(header) + 'px';
 			livePlayer.style.height = windowHeight(window) - wpAdminHeight - elemHeight(header) + 'px';
-			liveLinks.style.height = windowHeight(window) - wpAdminHeight - elemHeight(header) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - 16 + 'px';
+			liveLinks.style.height = windowHeight(window) - wpAdminHeight - elemHeight(header) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) + 'px';
 		} else {
 			livePlayer.style.top = elemHeight(header) + 'px';
 			livePlayer.style.height = windowHeight(window) - elemHeight(header) + 'px';
-			liveLinks.style.height = windowHeight(window) - elemHeight(header) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - 36 + 'px';
+			liveLinks.style.height = windowHeight(window) - elemHeight(header) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) + 'px';
 		}
 		livePlayer.classList.remove('live-player--fixed');
 		livePlayer.classList.add('live-player--init');
@@ -434,7 +434,7 @@
 		} else {
 			livePlayer.style.top = elemHeight(header) + 'px';
 			livePlayer.style.height = windowHeight(window) - wpAdminHeight - elemHeight(header) + 'px';
-			liveLinks.style.height = windowHeight(window) - elemHeightOffset(header) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - 16 + 'px';
+			liveLinks.style.height = windowHeight(window) - elemHeightOffset(header) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) + 'px';
 		}
 		livePlayer.classList.remove('live-player--fixed');
 		livePlayer.classList.add('live-player--init');
@@ -447,11 +447,11 @@
 		if (body.classList.contains('logged-in')) {
 			livePlayer.style.top = wpAdminHeight + 'px';
 			livePlayer.style.height = windowHeight(window) - wpAdminHeight + 'px';
-			liveLinks.style.height = windowHeight(window) - wpAdminHeight - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - 16 + 'px';
+			liveLinks.style.height = windowHeight(window) - wpAdminHeight - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) + 'px';
 		} else {
 			livePlayer.style.top = '0px';
 			livePlayer.style.height = windowHeight(window) + 'px';
-			liveLinks.style.height = windowHeight(window) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - 16 + 'px';
+			liveLinks.style.height = windowHeight(window) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) + 'px';
 		}
 		livePlayer.classList.remove('live-player--init');
 		livePlayer.classList.add('live-player--fixed');
