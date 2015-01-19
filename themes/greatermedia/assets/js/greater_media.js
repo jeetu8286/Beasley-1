@@ -675,18 +675,12 @@
 	function playerActive() {
 		if ( window.innerWidth <= 767 ) {
 			body.classList.add('live-player--active');
-			nowPlaying.style.display = 'block';
-			upNext.style.display = 'none';
-			onAir.style.display = 'none';
 		}
 	}
 
 	function playerNotActive() {
 		if ( window.innerWidth <= 767 ) {
 			body.classList.remove( 'live-player--active' );
-			nowPlaying.style.display = 'none';
-			upNext.style.display = 'block';
-			onAir.style.display = 'block';
 		}
 	}
 
