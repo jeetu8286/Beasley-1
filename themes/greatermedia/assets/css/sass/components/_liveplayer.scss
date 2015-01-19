@@ -290,9 +290,12 @@ category: Components
 
 // live player area
 .live-player__container {
+	height: 58px;
 	overflow: hidden;
 	border-bottom: 1px solid $secondary-border;
+	@include transition(opacity 200ms ease-in-out 0s,height 200ms ease-in-out 0s);
 	@include bp(medium) {
+		height: auto;
 		padding: 20px 0 26px;
 		overflow: visible;
 		border-bottom: none;
@@ -300,6 +303,7 @@ category: Components
 
 	&.playing {
 		height: 90px;
+		@include transition(opacity 200ms ease-in-out 0s,height 200ms ease-in-out 0s);
 
 		@include bp(medium) {
 			height: auto;
@@ -355,10 +359,10 @@ category: Components
 }
 
 .live-stream__status {
+	position: absolute;
 	display: none;
 	@include transition(all 500ms ease-in-out);
 	@include bp(medium) {
-		position: absolute;
 		top: 216px;
 		left: auto;
 		right: auto;
@@ -370,20 +374,37 @@ category: Components
 	}
 
 	&.audio__playing {
-		top: 66px;
+		display: block;
+		top: 54px;
+		right: 3.75%;
+
+		@include bp(medium) {
+			top: 66px;
+			right: auto;
+		}
 	}
 }
 
 .live-stream__listen-now--btn {
-	@include btn($btn-bg, $color-text-white, $btn-bg, .5em, 1em, ms(-1));
+	@include btn($btn-bg, $color-text-white, $btn-bg, .25em, .5em, ms(-1));
 	margin-right: 0;
 	font-weight: 700;
 	z-index: 1;
 	@include transition(all 200ms ease-in-out);
 
+	@include bp(medium) {
+		@include btn($btn-bg, $color-text-white, $btn-bg, .5em, 1em, ms(-1));
+	}
+
 	.audio__playing & {
+		max-width: 100px;
 		@include transition(all 200ms ease-in-out);
 		@include transition-delay(1s);
+		text-align: center;
+
+		@include bp(medium) {
+			max-width: none;
+		}
 	}
 }
 
@@ -618,17 +639,21 @@ category: Components
 		text-align: center;
 	}
 
-	.live-player__container .playing & {
+	.live-player__container.playing & {
+		display: none;
+
+		@include bp(medium) {
+			display: block;
+		}
+	}
+
+	.live-player--active & {
 		display: none;
 	}
-}
 
-.live-player--open .on-air, .live-player--open .up-next {
-	display: block;
-}
-
-.live-player--active .on-air, .live-player--active .up-next {
-	display: none;
+	.live-player--open & {
+		display: block;
+	}
 }
 
 .on-air__title, .up-next__title {
@@ -637,6 +662,12 @@ category: Components
 		display: block;
 		margin-bottom: 10px;
 		font-size: ms(-1);
+	}
+
+	.live-player__container.playing & {
+		@include bp(medium) {
+			display: none;
+		}
 	}
 }
 
@@ -666,12 +697,24 @@ category: Components
 		text-align: center;
 	}
 
+	.live-player--active & {
+		display: block;
+	}
+
 	&.playing {
 		position: absolute;
-		top: 16px;
+		top: 56px;
 		left: 0;
 		display: block;
+		width: 60%;
 		padding-top: 0;
+
+		@include bp(medium) {
+			position: relative;
+			top: auto;
+			left: auto;
+			width: 100%;
+		}
 	}
 }
 
@@ -689,6 +732,14 @@ category: Components
 		margin-bottom: 10px;
 		line-height: 1.4;
 		font-size: ms(1);
+	}
+
+	.playing & {
+		margin-bottom: 4px;
+
+		@include bp(medium) {
+			margin-bottom: 10px;
+		}
 	}
 }
 
@@ -903,7 +954,7 @@ category: Components
 .audio__time {
 	visibility: hidden;
 	@include opacity(0);
-	width: 78.125%;
+	width: 75%;
 	height: 0;
 	overflow: hidden;
 	margin: 0 auto;
@@ -933,16 +984,22 @@ category: Components
 
 	.live-player__container.playing &  {
 		position: absolute;
-		top: 56px;
+		top: 16px;
 		left: auto;
 		right: auto;
 		display: block;
-		width: 92.5%;
-		height: 41px;
-		margin: 0 3.75%;
+		height: 26px;
+		margin: 0 0 0 3.75%;
 		visibility: visible;
 		@include opacity(1);
 		@include transition(opacity 200ms ease-in-out 0s,height 200ms ease-in-out 0s);
+
+		@include bp(medium) {
+			position: relative;
+			top: initial;
+			height: 41px;
+			margin: 23px auto 0;
+		}
 	}
 }
 

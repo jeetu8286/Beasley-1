@@ -235,14 +235,6 @@
 	function setInlineAudioUX() {
 		var audioTime = document.querySelectorAll('.audio__time'), i;
 
-		if (onAirTitle != null) {
-			onAirTitle.style.display = 'none';
-		}
-
-		if (onAirShow != null) {
-			onAirShow.style.display = 'none';
-		}
-
 		for (i = 0; i < audioTime.length; ++i) {
 			audioTime[i].classList.add('playing');
 		}
@@ -295,13 +287,6 @@
 	function resetInlineAudioUX() {
 		var audioTime = document.querySelectorAll('.audio__time'), i;
 		var runtime = document.querySelectorAll('.podcast__runtime'), i;
-		if (onAirTitle != null) {
-			onAirTitle.style.display = 'block';
-		}
-
-		if (onAirShow != null) {
-			onAirShow.style.display = 'block';
-		}
 
 		for (i = 0; i < audioTime.length; ++i) {
 			if (audioTime[i] != null && audioTime[i].classList.contains('playing')) {
