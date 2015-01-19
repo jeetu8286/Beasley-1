@@ -500,7 +500,7 @@ category: Base - Typography
   src: url("../fonts/icon-font/gmr-icons.eot?#iefix-2fhr6q") format("embedded-opentype"), url("../fonts/icon-font/gmr-icons.woff?-2fhr6q") format("woff"), url("../fonts/icon-font/gmr-icons.ttf?-2fhr6q") format("truetype"), url("../fonts/icon-font/gmr-icons.svg?-2fhr6q#icomoon") format("svg");
   font-weight: normal;
   font-style: normal; }
-[class^="icon-"], [class*=" icon-"], .entry__thumbnail--video:before, .entry__thumbnail--events:before, .entry__thumbnail--audio:before, .header__search--btn:before, .format-audio .entry2__thumbnail a, .format-gallery .entry2__thumbnail a, .format-video .entry2__thumbnail a, .type-contest .entry2__thumbnail a, .type-tribe_events .entry2__thumbnail a, .live-link__song:before, .live-link__type--audio:before, .live-link__type--gallery:before, .live-link__type--image:before, .live-link__type--link:before, .live-link__type--standard:before, .live-link__type--video:before, .social__link--facebook, .social__link--twitter, .social__link--google-plus:before, .social__link--youtube:before, .social__link--instagram:before, .header__search--submit:before, .gallery__prev--btn:before, .gallery__next--btn:after, .gallery__paging--prev, .gallery__paging--next, .gallery__grid--album, .gmr-icon, .header__search--cancel {
+[class^="icon-"], [class*=" icon-"], .entry__thumbnail--video:before, .entry__thumbnail--events:before, .entry__thumbnail--audio:before, .header__search--btn:before, .format-audio .entry2__thumbnail a, .format-gallery .entry2__thumbnail a, .format-video .entry2__thumbnail a, .type-contest .entry2__thumbnail a, .type-tribe_events .entry2__thumbnail a, .live-link__song:before, .live-link__type--audio:before, .live-link__type--gallery:before, .live-link__type--image:before, .live-link__type--link:before, .live-link__type--standard:before, .live-link__type--video:before, .social__link--facebook, .social__link--twitter, .social__link--google-plus:before, .social__link--youtube:before, .social__link--instagram:before, .gallery__prev--btn:before, .gallery__next--btn:after, .gallery__paging--prev, .gallery__paging--next, .gallery__grid--album, .gmr-icon, .header__search--submit, .header__search--cancel {
   font-family: 'gmr-icons';
   speak: none;
   font-style: normal;
@@ -566,7 +566,7 @@ category: Base - Typography
 .icon-google-plus:before, .social__link--google-plus:before {
   content: "\e611"; }
 
-.icon-search:before {
+.icon-search:before, .header__search--submit:before {
   content: "\e612"; }
 
 .icon-post-format-video:before, .format-video .entry2__thumbnail a:before {
@@ -8000,7 +8000,8 @@ a.social-share-link {
       .header__search--input:-ms-input-placeholder {
         color: #d0d2d3; } }
 
-.header__search--submit {
+.header__search--submit,
+.header__search--cancel {
   position: relative;
   float: right;
   height: 40px;
@@ -8008,43 +8009,25 @@ a.social-share-link {
   width: 14px;
   background-color: transparent;
   color: #929497; }
-  .header__search--open .header__search--submit {
-    display: none; }
-  .header__search--submit:hover, .header__search--submit:focus {
+  .header__search--submit:hover, .header__search--submit:focus,
+  .header__search--cancel:hover,
+  .header__search--cancel:focus {
     color: #d22228; }
   @media screen and (min-width: 768px) {
-    .header__search--submit {
+    .header__search--submit,
+    .header__search--cancel {
       width: 10%;
       height: 100px;
-      color: #000000; } }
-
-.header__search--submit:before {
-  font-size: 1.125em;
-  content: "\e612"; }
-  @media screen and (min-width: 768px) {
-    .header__search--submit:before {
+      color: #000000;
       font-size: 1.80203em; } }
 
+.header__search--open .header__search--submit {
+  display: none; }
+
 .header__search--cancel {
-  font-size: 1.125em;
-  position: relative;
-  float: right;
-  height: 40px;
-  border: none;
-  width: 14px;
-  background-color: transparent;
-  color: #929497;
   display: none; }
   .header__search--open .header__search--cancel {
     display: block; }
-  .header__search--cancel:hover, .header__search--cancel:focus {
-    color: #d22228; }
-  @media screen and (min-width: 768px) {
-    .header__search--cancel {
-      font-size: 1.80203em;
-      width: 10%;
-      height: 100px;
-      color: #000000; } }
 
 .search__results--count {
   padding-bottom: 12px;
