@@ -8008,7 +8008,8 @@ a.social-share-link {
   border: none;
   width: 14px;
   background-color: transparent;
-  color: #929497; }
+  color: #929497;
+  padding: 0; }
   .header__search--submit:hover, .header__search--submit:focus,
   .header__search--cancel:hover,
   .header__search--cancel:focus {
