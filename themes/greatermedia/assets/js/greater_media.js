@@ -718,11 +718,11 @@
 			// the element when it gets focus, and they scroll to it where it was
 			// before the transition started. 
 			$( searchForm )
-				.toggleClass('header__search--open')
+				.addClass('header__search--open')
 				.on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', function () {
 					searchInput.focus();
 					$(searchInput).select();  
-				} );			
+				} );
 		}
 	}
 
@@ -770,6 +770,14 @@
 		closeSearch(e);
 	});
 
+	/**
+	 * Close the search box (if open) if the user clicks the close button.
+	 */
+	$( searchForm ).find( '.header__search--cancel' ).click( function ( e ) {
+		e.preventDefault();
+		closeSearch( e );
+	} ); 
+	
 	/**
 	 * variables that define debounce and throttling for window resizing and scrolling
 	 */

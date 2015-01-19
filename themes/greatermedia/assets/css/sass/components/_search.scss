@@ -68,6 +68,10 @@
 	width: 14px;
 	background-color: transparent;
 	color: $secondary-heading;
+	
+	.header__search--open & {
+		display: none; 
+	}
 
 	&:hover, &:focus {
 		color: $primary-link;
@@ -87,6 +91,35 @@
 	@include bp(medium) {
 		font-size: ms(5);
 	}
+}
+
+.header__search--cancel {
+	@extend .gmr-icon, .icon-close;
+	font-size: ms(1);
+	position: relative;
+	float: right;
+	height: 40px;
+	border: none;
+	width: 14px;
+	background-color: transparent;
+	color: $secondary-heading;
+	
+	display: none;
+	
+	.header__search--open & {
+		display: block; 
+	}
+	
+	&:hover, &:focus {
+		color: $primary-link;
+	}
+	
+	@include bp(medium) {
+		font-size: ms(5);
+		width: 10%;
+		height: 100px;
+		color: $color-text-black;
+	}	
 }
 
 .search__results--count {
