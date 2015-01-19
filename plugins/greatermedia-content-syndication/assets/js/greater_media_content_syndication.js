@@ -1,6 +1,6 @@
 /*! Greater Media Content Syndication - v0.0.1
  * http://wordpress.org/plugins
- * Copyright (c) 2014; * Licensed GPLv2+ */
+ * Copyright (c) 2015; * Licensed GPLv2+ */
 /*global $:false, jQuery:false, wp:false, console:false, syndication_ajax:false, alert:false */
 ( function( window, undefined ) {
 	'use strict';

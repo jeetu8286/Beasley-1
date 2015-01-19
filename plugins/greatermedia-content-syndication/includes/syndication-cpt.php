@@ -562,12 +562,12 @@ class SyndicationCPT {
 			}
 
 			echo '</select>';
-			echo '</p>';
 			if( $multiple != 'single' ) {
 				echo '<span class="description">Create a filter using one or more Tags</span>';
 			} else {
 				echo '<span class="description">Create a filter using a single ' . ucfirst( $taxonomy ) .'</span>';
 			}
+			echo '</p>';
 		}
 
 		echo '<input type="hidden" id="enabled_filter_taxonomy" name="enabled_filter_taxonomy" value="' . $enabled_filter. '">';
