@@ -27,7 +27,6 @@ define( 'EP_GMR_SURVEY', EP_PAGES << 2 );
 include 'inc/contests.php';
 include 'inc/contest-winner.php';
 include 'inc/surveys.php';
-include 'inc/class-greatermedia-contests.php';
 include 'inc/class-greatermedia-contest-entry.php';
 include 'inc/class-greatermedia-contest-entry-embedded-form.php';
 include 'inc/class-greatermedia-formbuilder-render.php';

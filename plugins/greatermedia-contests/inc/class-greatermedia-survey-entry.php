@@ -78,7 +78,7 @@ class GreaterMediaSurveyEntry {
 			'labels'              => $labels,
 			'public'              => false,
 			'show_ui'             => true,
-			'show_in_menu'        => 'edit.php?post_type=' . GMR_SURVEY_CPT,
+			'show_in_menu'        => false,
 			'show_in_admin_bar'   => false,
 			'query_var'           => false,
 			'can_export'          => false,
