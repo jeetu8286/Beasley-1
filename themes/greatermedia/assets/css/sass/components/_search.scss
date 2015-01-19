@@ -6,6 +6,7 @@
 	padding: 0 20px;
 	border-top: 1px solid $secondary-bg;
 	background-color: transparent;
+	
 	@include bp(medium) {
 		position: fixed;
 		top: 0;
@@ -30,9 +31,12 @@
 }
 
 .header__search--open {
-	@include transition(all 200ms ease-in-out);
-	@include transform(translate(0, 0));
   	z-index: 5100000; // Higher than .overlay-mask.
+	
+	@include bp(medium) {
+		@include transition(all 200ms ease-in-out);
+		@include transform(translate(0, 0));		
+	}
 }
 
 .header__search--input {
@@ -108,6 +112,12 @@
 	margin: 0 -20px;
 	padding: $base-line-height 20px;
 	clear: both;
+	
+	display: none; 
+	
+	.header__search--open & {
+		display: block;
+	}
 	
 	@include bp(medium) {
 		margin: 0 -2.5%;

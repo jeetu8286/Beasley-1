@@ -7956,15 +7956,17 @@ a.social-share-link {
   cursor: pointer; }
 
 .header__search--open {
-  -webkit-transition: all 200ms ease-in-out;
-  -moz-transition: all 200ms ease-in-out;
-  transition: all 200ms ease-in-out;
-  -webkit-transform: translate(0, 0);
-  -moz-transform: translate(0, 0);
-  -ms-transform: translate(0, 0);
-  -o-transform: translate(0, 0);
-  transform: translate(0, 0);
   z-index: 5100000; }
+  @media screen and (min-width: 768px) {
+    .header__search--open {
+      -webkit-transition: all 200ms ease-in-out;
+      -moz-transition: all 200ms ease-in-out;
+      transition: all 200ms ease-in-out;
+      -webkit-transform: translate(0, 0);
+      -moz-transform: translate(0, 0);
+      -ms-transform: translate(0, 0);
+      -o-transform: translate(0, 0);
+      transform: translate(0, 0); } }
 
 .header__search--input {
   float: left;
@@ -8035,7 +8037,10 @@ a.social-share-link {
   text-align: center;
   margin: 0 -20px;
   padding: 1.5em 20px;
-  clear: both; }
+  clear: both;
+  display: none; }
+  .header__search--open .header-search-body {
+    display: block; }
   @media screen and (min-width: 768px) {
     .header-search-body {
       margin: 0 -2.5%;

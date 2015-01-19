@@ -837,7 +837,7 @@
 			// the element when it gets focus, and they scroll to it where it was
 			// before the transition started. 
 			$( searchForm )
-				.toggleClass('header__search--open')
+				.addClass('header__search--open')
 				.on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', function () {
 					searchInput.focus();
 					$(searchInput).select();
@@ -855,6 +855,7 @@
 			e.preventDefault();
 			searchForm.classList.remove('header__search--open');
 			$overlay.removeClass('is-visible');
+			$( searchForm ).parent().focus();
 		}
 	}
 	
@@ -872,6 +873,24 @@
 			e.stopPropagation();
 		});
 	}
+	
+	// Show search if the field has focus.
+	$( searchInput ).focus( showSearch ); 
+	
+	function checkSearchField () {
+		var $search_body = $( searchForm ).find( '.header-search-body' );
+		
+		// Show the body only if there's text in the search field.
+		if ( $( searchInput ).val().length ) {
+			$search_body.show();
+		} else {
+			$search_body.hide();
+		}
+	}
+	
+	$( searchInput ).keyup( checkSearchField );
+	
+	checkSearchField(); 
 	
 	/**
 	 * Close the search box when user presses escape.
