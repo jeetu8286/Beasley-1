@@ -395,7 +395,7 @@ category: Components
 	color: $color-text-red;
 	@include transition(all 200ms ease-in-out);
 
-	.gmr_user & {
+	.gmr-user & {
 		display: none;
 	}
 }

@@ -613,7 +613,7 @@ function greatermedia_add_gigya_body_class( $classes ) {
 	$classes[] = '';
 
 	if ( is_gigya_user_logged_in() ) {
-		$classes[] = 'gmr_user';
+		$classes[] = 'gmr-user';
 	}
 
 	return $classes;
