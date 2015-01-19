@@ -35,7 +35,6 @@
 	var clearDebug = document.getElementById('clearDebug');
 	var adBlockCheck = document.getElementById('ad-check');
 	var adBlockClose = document.getElementById('close-adblock');
-	var loginListen = document.getElementById('live-stream__login');
 	var onAirTitle = document.querySelector('.on-air__title');
 	var onAirShow = document.querySelector('.on-air__show');
 	var streamStatus = document.getElementById('live-stream__status');
@@ -188,7 +187,6 @@
 		playBtn.style.display = 'none';
 		resumeBtn.style.display = 'none';
 		pauseBtn.style.display = 'block';
-		loginListen.style.display = 'none';
 		if (true === playingCustomAudio) {
 			nowPlaying.style.display = 'none';
 			listenNow.style.display = 'inline-block';
@@ -210,7 +208,6 @@
 		pauseBtn.style.display = 'none';
 		resumeBtn.style.display = 'none';
 		listenNow.style.display = 'inline-block';
-		loginListen.style.display = 'none';
 		nowPlaying.style.display = 'none';
 	}
 
@@ -223,11 +220,6 @@
 		playBtn.style.display = 'none';
 		pauseBtn.style.display = 'none';
 		listenNow.style.display = 'inline-block';
-		if (! is_gigya_user_logged_in()) {
-			loginListen.style.display = 'block';
-		} else {
-			loginListen.style.display = 'none';
-		}
 		nowPlaying.style.display = 'none';
 		resumeBtn.style.display = 'block';
 	}

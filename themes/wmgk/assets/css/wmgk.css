@@ -4759,6 +4759,7 @@ category: Components
     margin-right: 0; }
 
 .live-stream__login {
+  display: block;
   padding-bottom: 3px;
   margin-right: 0;
   font-weight: 700;
@@ -4767,6 +4768,8 @@ category: Components
   -webkit-transition: all 200ms ease-in-out;
   -moz-transition: all 200ms ease-in-out;
   transition: all 200ms ease-in-out; }
+  .gmr_user .live-stream__login {
+    display: none; }
 
 .live-stream__resume {
   height: 48px;
