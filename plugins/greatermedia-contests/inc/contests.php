@@ -10,6 +10,7 @@ add_action( 'manage_' . GMR_CONTEST_CPT . '_posts_custom_column', 'gmr_contests_
 add_action( 'before_delete_post', 'gmr_contests_prevent_hard_delete' );
 add_action( 'wp_trash_post', 'gmr_contests_prevent_hard_delete' );
 add_action( 'transition_post_status', 'gmr_contests_prevent_trash_transition', 10, 3 );
+add_action( 'admin_enqueue_scripts', 'gmr_contests_admin_enqueue_scripts' );
 
 add_action( 'gmr_contest_load', 'gmr_contests_render_form' );
 add_action( 'gmr_contest_submit', 'gmr_contests_process_form_submission' );
@@ -26,6 +27,16 @@ add_filter( 'gmr-homepage-curation-post-types', 'gmr_contest_register_homepage_c
 add_filter( 'post_thumbnail_html', 'gmr_contests_post_thumbnail_html', 10, 4 );
 add_filter( 'manage_' . GMR_CONTEST_CPT . '_posts_columns', 'gmr_contests_filter_contest_columns_list' );
 add_filter( 'post_row_actions', 'gmr_contests_filter_contest_actions', PHP_INT_MAX, 2 );
+add_filter( 'gmr_live_link_suggestion_post_types', 'gmr_contests_extend_live_link_suggestion_post_types' );
+
+/**
+ * Enqueues admin styles.
+ *
+ * @action admin_enqueue_scripts.
+ */
+function gmr_contests_admin_enqueue_scripts() {
+	wp_enqueue_style( 'greatermedia-contests-admin', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'css/greatermedia-contests-admin.css' );
+}
 
 /**
  * Registers contest post type in the homepage curration types list.
@@ -1104,4 +1115,15 @@ function gmr_contest_has_files( $contest ) {
 	}
 
 	return false;
+}
+
+/**
+ * Extends live link suggestion post types.
+ *
+ * @param array $post_types The array of already registered post types.
+ * @return array The array of extended post types.
+ */
+function extend_live_link_suggestion_post_types( $post_types ) {
+	$post_types[] = GMR_CONTEST_CPT;
+	return $post_types;
 }

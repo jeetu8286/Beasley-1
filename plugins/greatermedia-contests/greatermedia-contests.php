@@ -25,9 +25,7 @@ define( 'EP_GMR_CONTEST', EP_PAGES << 1 );
 define( 'EP_GMR_SURVEY', EP_PAGES << 2 );
 
 include 'inc/contests.php';
-include 'inc/contest-winner.php';
 include 'inc/surveys.php';
-include 'inc/class-greatermedia-contests.php';
 include 'inc/class-greatermedia-contest-entry.php';
 include 'inc/class-greatermedia-contest-entry-embedded-form.php';
 include 'inc/class-greatermedia-formbuilder-render.php';
@@ -37,11 +35,16 @@ include 'inc/class-greatermedia-ugimage.php';
 include 'inc/class-greatermedia-uglink.php';
 include 'inc/class-ugc-moderation-table.php';
 include 'inc/class-greatermedia-surveys.php';
-include 'inc/class-greatermedia-survey-form-render.php';
 include 'inc/class-greatermedia-survey-entry.php';
 
 if ( is_admin() ) {
+	// include list table class files if it hasn't been included yet
+	require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
+	require_once ABSPATH . 'wp-admin/includes/class-wp-posts-list-table.php';
+
 	include 'inc/class-greatermedia-contests-metaboxes.php';
+	include 'inc/contest-winner.php';
+	include 'inc/survey-responses.php';
 }
 
 if ( defined( 'WP_CLI' ) && WP_CLI ) {
