@@ -15,6 +15,10 @@
 			placeholder: "Select term"
 		});
 
+		$(".subscription_defaults").select2({
+			placeholder: "Select term"
+		});
+
 		// perform syndication
 		$("#syndicate_now").on( 'click', function(event) {
 			event.preventDefault();

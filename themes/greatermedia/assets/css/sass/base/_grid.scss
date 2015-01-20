@@ -47,6 +47,7 @@ img {
 	@include bp(medium) {
 		@include outer-container(100%);
 		padding-right: 225px;
+		min-height: 800px;
 	}
 	
 	@include bp(x-large) {
@@ -71,7 +72,6 @@ img {
 	padding: $base-line-height $gutter / 2;
 
 	@include bp(medium) {
-		min-height: 800px;
 		padding: $base-line-height * 2 $gutter * 2;
 	}
 	// @include bp(large) {
@@ -91,7 +91,7 @@ img {
 	cursor: pointer;
 	@include bp(medium){
 		position: absolute;
-		top: 238px;
+		top: 252px;
 		bottom: auto;
 		right: 0;
 		left: auto;
@@ -111,14 +111,15 @@ img {
 	left: 0;
 	width: 100%;
 	height: 100%;
-	//background-color: $secondary-bg;
+	background-color: $liveplayer-bg;
 	content: "";
 	z-index: 10;
 }
 
 .logged-in .live-player {
 	@include media(min-width 782px) {
-		top: 270px;
+		top: 289px;
+		top: 289px;
 	}
 }
 
