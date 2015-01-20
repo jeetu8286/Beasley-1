@@ -4322,6 +4322,11 @@ Link posts contain a link to an external site. They can also optionally have a f
     .image__attribution {
       top: auto;
       bottom: 10px; } }
+  .image__attribution a, .image__attribution a:visited {
+    color: #d0d2d3;
+    text-decoration: underline; }
+  .image__attribution a:hover, .image__attribution a:active, .image__attribution a:focus {
+    color: #aa1c20; }
 
 .ad-unit--300--250 {
   position: relative;
@@ -7929,6 +7934,11 @@ a.social-share-link {
     .image__attribution {
       top: auto;
       bottom: 10px; } }
+  .image__attribution a, .image__attribution a:visited {
+    color: #d0d2d3;
+    text-decoration: underline; }
+  .image__attribution a:hover, .image__attribution a:active, .image__attribution a:focus {
+    color: #aa1c20; }
 
 .header__search--form {
   display: block;
