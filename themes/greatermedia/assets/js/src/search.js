@@ -13,6 +13,11 @@
 	 */
 	function showSearch(e) {
 		e.preventDefault();
+		
+		if ( $searchContainer.hasClass( 'header__search--open' ) ) {
+			return; 
+		}
+		
 		$overlay.addClass( 'is-visible' )
 		
 		// Now, show the search form, but don't set focus until the transition
@@ -33,9 +38,13 @@
 	 */
 	function closeSearch(e) {
 		e.preventDefault();
+		
+		if ( ! $searchContainer.hasClass( 'header__search--open' ) ) {
+			return;
+		}
+		
 		$searchContainer.removeClass( 'header__search--open' );
 		$overlay.removeClass('is-visible');
-		$searchContainer.parent().focus();		
 	}
 	
 	/**
@@ -44,7 +53,11 @@
 	$searchBtn.click( showSearch ); 
 	
 	// Show search if the field has focus.
-	$searchInput.focus( showSearch ); 
+	$searchInput.click( function ( e ) {
+		if ( ! $searchContainer.hasClass( 'header__search--open' ) ) {
+			showSearch(e);			
+		}
+	}  ); 
 	
 	function checkSearchField () {
 		var $search_body = $searchContainer.find( '.header-search-body' );
