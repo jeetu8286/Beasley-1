@@ -46,8 +46,8 @@ if ( empty( $active_stream ) ) {
 		*/ ?>
 
 		<div id="on-air" class="on-air">
-			<?php if ( ( $show = gmrs_get_current_show() ) ) : ?>
-				<div class="on-air__title">On Air:</div>
+			<?php if ( ( $show = gmrs_get_show_at( current_time( 'timestamp', 1 ) + 10 * MINUTE_IN_SECONDS ) ) ) : ?>
+				<div class="on-air__title"><?php _e( 'On Air:', 'greatermedia' ); ?></div>
 				<div class="on-air__show"><?php echo esc_html( $show->post_title ); ?></div>
 			<?php endif; ?>
 		</div>
