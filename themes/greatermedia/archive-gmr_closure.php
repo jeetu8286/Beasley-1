@@ -27,7 +27,9 @@ get_header(); ?>
 				$published_posts = wp_count_posts( GreaterMediaClosuresCPT::CLOSURE_CPT_SLUG );
 				if( isset( $published_posts->publish ) ) {
 					?>
-					<div class="closure-entry-title" ><?php echo intval( $published_posts->publish ) . ' reported closures'; ?></div>
+					<div class="closure-entry-title" >
+						<?php echo intval( $published_posts->publish ) . ' reported closures'; ?>
+					</div>
 					<div class="closure-attr--date">
 						<p>Last updated: <?php echo date('m/d/Y \a\t G:i', $last_updated); ?></p>
 					</div>
@@ -38,6 +40,12 @@ get_header(); ?>
 			<?php if ( have_posts() ) : ?>
 
 			<section class="closures">
+
+				<div class="closures_header">
+					<div class="closures_header_name">Name</div>
+					<div class="closures_header_location">Location</div>
+					<div class="closures_header_reported">Reported</div>
+				</div>
 
 				<?php get_template_part( 'partials/loop', 'gmr_closure' ); ?>
 
