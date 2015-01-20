@@ -52,6 +52,8 @@ class BlogData {
 		// get nonce from ajax post
 		$nonce = $_POST['syndication_nonce'];
 
+		$total = 0;
+
 		// verify nonce, with predifined
 		if ( ! wp_verify_nonce( $nonce, 'perform-syndication-nonce' ) ) {
 			die ( ':P' );
@@ -61,20 +63,31 @@ class BlogData {
 		if( isset( $_POST['syndication_id'] ) && is_numeric( $_POST['syndication_id'] ) ) {
 			$syndication_id = intval( $_POST['syndication_id'] );
 
-			self::run( $syndication_id );
+			$total = self::run( $syndication_id );
 		}
-
+		if( $total ) {
+			echo $total;
+		} else {
+			echo 0;
+		}
 		die();
 	}
 
 	public static function run( $syndication_id, $offset = 0 ) {
 			$result = self::QueryContentSite( $syndication_id, $offset );
-			$taxonomy_names = get_object_taxonomies( 'post', 'objects' );
+			$taxonomy_names = SyndicationCPT::$support_default_tax;
 			$defaults = array(
 				'status'    =>  get_post_meta( $syndication_id, 'subscription_post_status', true ),
 			);
 
+			$max_pages = $result['max_pages'];
+			$total_posts = $result['found_posts'];
+
+			unset( $result['max_pages'] );
+			unset( $result['found_posts'] );
+
 			foreach( $taxonomy_names as $taxonomy ) {
+				$taxonomy = get_taxonomy( $taxonomy );
 				$label = $taxonomy->name;
 
 				// Use get_post_meta to retrieve an existing value from the database.
@@ -105,9 +118,13 @@ class BlogData {
 		set_transient( 'syndication_imported_posts', $imported_post_ids, WEEK_IN_SECONDS * 4 );
 
 		$offset += 1;
-		if( $result['max_pages'] > $offset )  {
+		if( $max_pages > $offset )  {
 			self::run( $syndication_id, $offset );
 		}
+
+		update_option( 'syndication_last_performed', current_time( 'timestamp', 1 ) );
+
+		return $total_posts;
 	}
 
 	/**
@@ -180,6 +197,7 @@ class BlogData {
 		}
 
 		$result['max_pages'] = $wp_custom_query->max_num_pages;
+		$result['found_posts'] = $wp_custom_query->found_posts;
 
 		restore_current_blog();
 
