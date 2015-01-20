@@ -4523,9 +4523,9 @@ category: Components
   cursor: pointer; }
   @media screen and (min-width: 768px) {
     .live-player__stream {
-      position: relative;
+      top: auto;
       display: block;
-      top: auto; } }
+      width: calc(100% - 20px); } }
 
 .live-player__stream li {
   height: auto; }
@@ -4660,6 +4660,7 @@ category: Components
     .live-player__container {
       height: auto;
       padding: 20px 0 26px;
+      margin-top: 46px;
       overflow: visible;
       border-bottom: none; } }
   .live-player__container.playing {
