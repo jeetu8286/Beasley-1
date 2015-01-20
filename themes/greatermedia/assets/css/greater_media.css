@@ -3810,8 +3810,7 @@ Link posts contain a link to an external site. They can also optionally have a f
   color: #ffffff !important;
   text-transform: uppercase;
   cursor: pointer;
-  border-radius: 100em;
-  display: none; }
+  border-radius: 100em; }
   .posts-pagination--load-more:hover, .posts-pagination--load-more:focus {
     background-color: #aa1c20;
     border-color: #aa1c20;

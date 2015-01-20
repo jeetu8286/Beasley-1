@@ -16,12 +16,7 @@
 			if (reset_page) {
 				pagenums[page_link_template] = !isNaN(page) && page > 0 ? page : 1;
 			}
-			
-			// Hide the normal next/previous links
-			$( '.posts-pagination--previous, .posts-pagination--next' ).hide();
-			// Show our nice button. 
-			$button.show(); 
-			
+
 			// If auto_load is set, create a Waypoint that will trigger the button
 			// when it is reached. 
 			var waypoint_context = null; 
