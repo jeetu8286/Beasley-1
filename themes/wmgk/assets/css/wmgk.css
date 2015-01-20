@@ -11551,10 +11551,7 @@ category: Components
     .live-player__stream .live-player__stream--current.open .live-player__stream--available .live-player__stream--item {
       background-color: #f2f2f2; }
       .live-player__stream .live-player__stream--current.open .live-player__stream--available .live-player__stream--item:hover {
-        background-color: #303030;
-        color: #d0d2d3; }
-    .live-player__stream .live-player__stream--current.open .live-player__stream--available .live-player__stream--desc:hover {
-      color: #d0d2d3; }
+        background-color: #d0d2d3; }
     .live-player__stream .live-player__stream--current.open .live-player__stream--available li:last-child {
       border-bottom-left-radius: 1em;
       border-bottom-right-radius: 1em; }

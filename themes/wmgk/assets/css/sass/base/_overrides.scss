@@ -53,13 +53,8 @@
 			background-color: $liveplayer-bg;
 
 			&:hover {
-				background-color: $color-gray-medium-dark;
-				color: $light-gray;
+				background-color: $light-gray;
 			}
-		}
-
-		.live-player__stream--desc:hover {
-			color: $light-gray;
 		}
 
 		li:last-child {
