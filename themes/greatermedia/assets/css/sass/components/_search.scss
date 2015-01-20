@@ -2,7 +2,7 @@
 	display: block;
 	position: relative;
 	width: 100%;
-	height: 40px;
+	min-height: 40px;
 	padding: 0 20px;
 	border-top: 1px solid $secondary-bg;
 	background-color: transparent;
@@ -11,18 +11,17 @@
 		top: 0;
 		left: 0;
 		width: 100%;
-		height: 132px;
+		height: auto;
 		padding: 16px 2.5%;
 		background-color: $primary-bg;
 		border-top: none;
-		border-bottom: 1px solid $secondary-bg;
 		@include transition(all 200ms ease-in-out);
 		@include transform(translate(0, -200%)); /* 200% ensures it's out of the way of the .wp-admin bar */
 		z-index: 5000000; /* IAB z-index standards for nav drop downs. Prevents an ad from being over top unless it's a full-screen ad */
-	}
 
-	.logged-in & {
-		top: 32px;
+		.logged-in & {
+			top: 32px
+		}
 	}
 }
 
@@ -33,6 +32,7 @@
 .header__search--open {
 	@include transition(all 200ms ease-in-out);
 	@include transform(translate(0, 0));
+  	z-index: 5100000; // Higher than .overlay-mask.
 }
 
 .header__search--input {
@@ -65,8 +65,14 @@
 	float: right;
 	height: 40px;
 	border: none;
+	width: 14px;
 	background-color: transparent;
 	color: $secondary-heading;
+
+	&:hover, &:focus {
+		color: $primary-link;
+	}
+
 	@include bp(medium) {
 		width: 10%;
 		height: 100px;
@@ -192,4 +198,8 @@
 
 .search__result--term {
 	font-weight: bold;
+}
+
+body.search-results .posts-pagination {
+	margin-top: $base-line-height * 2;
 }

@@ -1,4 +1,4 @@
-/*! Greater Media Contests - v1.0.4
+/*! Greater Media Contests - v1.0.5
  * http://10up.com/
  * Copyright (c) 2015;
  * Licensed GPLv2+
@@ -13,11 +13,11 @@
 
 		formbuilder.on('save', function(payload) {
 			// payload is a JSON string representation of the form
-			$('#survey_embedded_form_data').val(encodeURIComponent(JSON.stringify(JSON.parse(payload).fields)));
+			$('#survey_embedded_form_data').val(encodeURIComponent(JSON.stringify(JSON.parse(payload).fields)).replace(/'/g, "%27"));
 		});
 
 		// Default the hidden field with the form data loaded from the server
-		$('#survey_embedded_form_data').val(encodeURIComponent(JSON.stringify(gmr.form)));
+		$('#survey_embedded_form_data').val(encodeURIComponent(JSON.stringify(gmr.form)).replace(/'/g, "%27"));
 	});
 })(jQuery, GreaterMediaContestsForm, JSON);
 

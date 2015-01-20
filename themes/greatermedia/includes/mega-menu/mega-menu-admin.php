@@ -23,6 +23,8 @@ class GreaterMediaMegaMenuAdmin {
 	public static $options = array(
 		''      => 'Standard',
 		'fw' => 'Full-width, four column',
+		'sp' => 'Small Previews',
+		'fi' => 'Featured Items'
 	);
 
 	/**
@@ -75,10 +77,30 @@ class GreaterMediaMegaMenuAdmin {
 					<?php
 					}
 					?>
+
 				</select>
 			</label>
 		</p>
 	<?php
+		if ( $format == 'fi' ) {
+			// Name for the HTML Input
+			$input_name = "gmr-music-menu-input[{$item_id}]";
+
+			// The currently selected posts - menu items are just a post type, so post meta
+			$values = get_post_meta( $item_id, 'gmr_music_menu', true );
+
+			// Can hook into this to add more post types
+			$post_types = apply_filters( 'gmr-music-menu-post-types', array( 'post', 'contest', 'gmr_gallery', 'gmr_album' ) );
+
+			$options =  array(
+				'args' => array(
+					'post_type' => $post_types,
+				),
+				'limit' => 4,
+			);
+
+			\pf_render( $input_name, $values, $options );
+		}
 	}
 
 	/**
@@ -107,6 +129,19 @@ class GreaterMediaMegaMenuAdmin {
 			}
 		}
 
+		if ( isset( $_POST['gmr-music-menu-input'] ) ) {
+			foreach ( $_POST['gmr-music-menu-input'] as $menu_item_id => $curated_ids ) {
+				if ( ! empty( $curated_ids ) ) {
+					// Explode comma separated IDs, Sanitize with intval, then implode back to comma separated
+					$curated_ids = implode( ',', array_map( 'intval', explode( ',', $curated_ids ) ) );
+					update_post_meta( $menu_item_id, 'gmr_music_menu', $curated_ids ); // $nav_menu_format checked against whitelist
+				} else {
+					delete_post_meta( $menu_item_id, 'gmr_music_menu' );
+				}
+
+			}
+		}
+
 	}
 
 	/**
@@ -126,7 +161,7 @@ class GreaterMediaMegaMenuAdmin {
 		$format = get_post_meta( $nav_item_id, self::$meta_key, true );
 
 		// check against whitelist
-		if ( array_key_exists( $format, self::$options ) && ! empty( $format ) ) {
+		if ( ! empty( $format ) && array_key_exists( $format, self::$options ) ) {
 			return $format;
 		} else {
 			return false;

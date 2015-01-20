@@ -1,25 +1,39 @@
 .contest__thumbnail {
-	@include span-columns(4 of 4);
-	background-color: lighten($primary-border, 9%);
-	margin: 0 auto 2em;
-	text-align: center;
-
-	@include bp(small) {
-		@include span-columns(6 of 6);
-	}
-	@include bp(medium) {
-		@include span-columns(8 of 8);
-	}
-	@include bp(large) {
-		@include span-columns(8 of 8);
-	}
-	@include bp(x-large) {
-		@include span-columns(8 of 8);
-	}
+	@include proportional-thumbnail( 66% );
 }
 
 .single__featured-img--contest {
 	margin: 0 auto;
+}
+
+.type-contest,
+.type-survey {
+	.entry__title--tag {
+		@include btn($color-gray-light, $color-text-white, $color-gray-light, .25em, .45em, ms(-4));
+		font-size: 50%;
+		font-weight: normal;
+		padding-bottom: 0.15em;
+	}
+
+	.col__inner--left {
+		border-right-width: 0;
+	}
+
+	&.collapsed {
+		.col__inner--left {
+			width: 100%;
+			margin-right: 0;
+			padding-right: 0;
+		}
+		
+		.col__inner--right {
+			display: none;
+		}
+
+		.contest__entry--link {
+			display: none;
+		}
+	}
 }
 
 .contest__entry--link {
@@ -33,7 +47,6 @@
 .contest__entry--btn {
 	@include btn($btn-bg, $color-text-white, $btn-bg, .5em, 1em, ms(1));
 	width: 100%;
-	@include border-radius(17px);
 	text-transform: uppercase;
 	text-align: center;
 }
@@ -71,6 +84,85 @@
 	margin-bottom: 30px;
 }
 
+.contest__restrictions {
+	.contest__restriction--age,
+	.contest__restriction--age-fails,
+	.contest__restriction--finished,
+	.contest__restriction--max-entries,
+	.contest__restriction--not-started,
+	.contest__restriction--one-entry,
+	.contest__restriction--signin {
+		display: none;
+	}
+
+	.contest__restriction--finished p,
+	.contest__restriction--max-entries p,
+	.contest__restriction--not-started p,
+	.contest__restriction--age-fails p,
+	.contest__restriction--one-entry p {
+		font-weight: bold; 
+	}
+
+	.contest__restriction--age p:first-child {
+		font-weight: bold;
+	}
+
+	.contest__restriction--signin {
+		p:first-child {
+			font-weight: bold;
+		}
+
+		a {
+			@include btn($btn-bg, $color-text-white, $btn-bg, 0.5em, 1em, ms(-1));
+		}
+	}
+
+	&.age .contest__restriction--age {
+		display: block;
+	}
+
+	&.age-fails .contest__restriction--age-fails {
+		display: block;
+	}
+
+	&.finished .contest__restriction--finished {
+		display: block;
+	}
+
+	&.max-entries .contest__restriction--max-entries {
+		display: block;
+	}
+
+	&.not-started .contest__restriction--not-started {
+		display: block;
+	}
+
+	&.one-entry .contest__restriction--one-entry {
+		display: block;
+	}
+
+	&.signin .contest__restriction--signin {
+		display: block;
+	}
+}
+
+.contest__restriction--min-age-yes,
+.contest__restriction--min-age-no {
+	@include btn($btn-bg, $color-text-white, $btn-bg, .625em, 1em, ms(-1));
+
+	&:hover {
+		@include btn($btn-hover, $color-text-black, $btn-hover, .625em, 1em, ms(-1));
+	}
+
+	&:active {
+		@include btn($btn-active, $color-text-white, $btn-active, .625em, 1em, ms(-1));
+	}
+
+	&:last-of-type {
+		margin-right: 0;
+	}
+}
+
 .contest-attr--rules {
 	padding: 2em;
 	margin: 0 0 1.5em;
@@ -90,7 +182,6 @@
 
 .contest-attr--rules-toggler {
 	@include btn($btn-muted, $color-text-white, $btn-muted, 0.5em, 1em, ms(-2));
-	@include border-radius(1em);
 }
 
 .contest-attr--rules-toggler:hover {
@@ -143,6 +234,16 @@
 	}
 }
 
+.contest__form--description {
+	display: block;
+	width: 100%;
+	margin: 5px 0 0;
+	line-height: 1em;
+	font-size: ms(-2);
+	font-style: italic;
+	color: $color-text-gray;
+}
+
 .contest__form {
 	fieldset {
 		legend,
@@ -158,11 +259,12 @@
 	input[type="url"],
 	input[type="email"],
 	input[type="number"],
+	input[type="date"],
 	textarea {
 		width: 100%;
 		padding: 18px 20px;
 		@include box-sizing(border-box);
-		border: none;
+		border: 1px solid transparent;
 		outline: none;
 		background-color: $form-bg;
 		font-family: $open-sans;
@@ -173,7 +275,6 @@
 	input[type="submit"] {
 		@include btn($btn-bg, $color-text-white, $btn-bg, .625em, 1em, ms(3));
 		width: 100%;
-		@include border-radius(28px);
 		text-transform: uppercase;
 
 		&:hover {
@@ -196,7 +297,7 @@
 		border: none;
 		outline: none;
 		background-color: $form-bg;
-		background-image: url(../../images/select-arrow.png);
+		background-image: url($asset-root + '../images/select-arrow.png');
 		background-repeat: no-repeat;
 		background-position: 90% center;
 		background-size: auto 10px;
@@ -207,6 +308,88 @@
 		-moz-appearance:none;
 		appearance:none;
 		cursor:pointer;
+	}
+
+	input,
+	select,
+	textarea {
+		&.parsley-error {
+			border-color: rgba(255, 0, 0, 0.5);
+			background-color: rgba(255, 0, 0, 0.15);
+			color: $cardinal;
+		}
+	}
+
+	.parsley-errors-list {
+		margin: 0.5em 0;
+		padding: 0;
+		list-style-type: none;
+		font-size: ms(-1);
+		line-height: 1em;
+		@include opacity(0);
+		@include transition(all .3s ease-in);
+
+		&.filled {
+			@include opacity(1);
+		}
+
+		li {
+			color: $cardinal;
+		}
+	}
+
+	.contest__submission--entries,
+	.contest__form--user-info {
+		background-color: $extra-light-gray;
+		border: 1px solid $light-gray;
+		padding: 15px;
+		margin: 0 0 30px;
+		position: relative;
+
+		a {
+			position: absolute;
+			top: 15px;
+			right: 15px;
+			font-size: ms(-2);
+			line-height: 1em;
+		}
+
+		i {
+			font-size: ms(-2);
+			line-height: 1em;
+			margin-bottom: 15px;
+			display: block;
+		}
+
+		.contest__form--row {
+			margin-bottom: 15px;
+
+			&:last-child {
+				margin-bottom: 0;
+			}
+		}
+
+		dl, dt, dd {
+			margin: 0;
+			padding: 0;
+		}
+
+		dt {
+			margin-top: 1em;
+			line-height: 1.25em;
+			font-size: ms(-2);
+			color: $color-text-gray;
+
+			&:first-child {
+				margin-top: 0;
+			}
+		}
+
+		dd {
+			color: $color-text-black;
+			font-weight: bold;
+			font-size: ms(-1);
+		}
 	}
 }
 
@@ -227,7 +410,6 @@
 
 .contest__submissions--load-more {
 	@include btn($btn-bg, $color-text-white, $btn-bg, 0.5em, 1em, ms(-1));
-	@include border-radius(1em);
 	clear: both;
 	margin: 1em auto 0;
 	display: block;
@@ -352,7 +534,6 @@
 	.contest__submission--vote,
 	.contest__submission--unvote {
 		@include btn($btn-bg, $color-text-white, $btn-bg, 0.5em, 1em, ms(-1));
-		@include border-radius(1em);
 	}
 
 	.contest__submission--unvote {
@@ -381,7 +562,7 @@
 
 	.preview {
 		position: absolute;
-		background: #ddd;
+		background: $extra-light-gray;
 		top: auto;
 		height: auto;
 		left: 0;
@@ -456,34 +637,37 @@
 }
 
 .contest__submission--entries-title {
-	margin-bottom: 0;
+	margin-bottom: 15px;
 }
 
 .contest__submission--entries {
-	@include clearfix;
+	margin: 0 0 30px;
+	padding: 0;
 
-	dl {
-		margin-top: 0;
-	}
-
-	dt,
-	dd {
-		float: left;
+	dt, dd {
+		margin: 0;
+		padding: 0;
 	}
 
 	dt {
-		clear: both;
-		display: inline-block;
-		margin-right: 0.5em;
-		font-weight: bold;
+		margin-top: 1em;
+		line-height: 1.25em;
+		font-size: ms(-2);
+		color: $color-text-gray;
 
 		&::after {
 			content: ': ';
 		}
+
+		&:first-child {
+			margin-top: 0;
+		}
 	}
 
 	dd {
-		margin: 0;
+		color: $color-text-black;
+		font-weight: bold;
+		font-size: ms(-1);
 	}
 }
 

@@ -11,6 +11,7 @@ class ProfilePage {
 		'account',
 		'forgot-password',
 		'cookies-required',
+		'reset-password',
 	);
 
 	public function register() {
@@ -87,10 +88,7 @@ class ProfilePage {
 	}
 
 	public function load_scripts( $page_name ) {
-		$api_key                 = $this->get_gigya_api_key();
-		$settings                = $this->get_member_query_settings();
-		$gigya_auth_screenset    = $settings['gigya_auth_screenset'];
-		$gigya_account_screenset = $settings['gigya_account_screenset'];
+		$api_key = $this->get_gigya_api_key();
 
 		if ( $api_key === '' ) {
 			error_log( 'Fatal Error: Gigya API Key not found.' );
@@ -98,9 +96,19 @@ class ProfilePage {
 		}
 
 		wp_enqueue_script(
+			'gigya_config',
+			plugins_url( 'js/gigya_config.js', GMR_GIGYA_PLUGIN_FILE ),
+			array(),
+			GMR_GIGYA_VERSION,
+			true
+		);
+
+		$protocol = is_ssl() ? 'https' : 'http';
+
+		wp_enqueue_script(
 			'gigya_socialize',
-			"http://cdn.gigya.com/JS/gigya.js?apiKey={$api_key}",
-			array( 'jquery', 'cookies-js', 'underscore' ),
+			"{$protocol}://cdn.gigya.com/JS/gigya.js?apiKey={$api_key}",
+			array( 'jquery', 'cookies-js', 'underscore', 'gigya_config' ),
 			GMR_GIGYA_VERSION,
 			true
 		);
@@ -108,22 +116,26 @@ class ProfilePage {
 		wp_enqueue_script(
 			'gigya_profile',
 			plugins_url( 'js/gigya_profile.js', GMR_GIGYA_PLUGIN_FILE ),
-			array( 'gigya_socialize' ),
+			array( 'gigya_socialize', 'wp_ajax_api' ),
 			GMR_GIGYA_VERSION,
 			true
 		);
 
 		$meta = array(
-			'ajax_url'                => admin_url( 'admin-ajax.php' ),
-			'current_page'            => $page_name,
-			'gigya_auth_screenset'    => $gigya_auth_screenset,
-			'gigya_account_screenset' => $gigya_account_screenset,
+			'ajax_url'               => admin_url( 'admin-ajax.php' ),
+			'register_account_nonce' => wp_create_nonce( 'register_account' ),
+			'update_account_nonce'   => wp_create_nonce( 'update_account' ),
+			'reset_password_nonce'   => wp_create_nonce( 'reset_password' ),
+			'current_page'           => $page_name,
 
 			'join_header' => get_option( 'gmr_join_page_heading', '' ),
 			'join_message' => get_option( 'gmr_join_page_message', '' ),
 
 			'login_header' => get_option( 'gmr_login_page_heading', '' ),
 			'login_message' => get_option( 'gmr_login_page_message', '' ),
+
+			'logout_header' => get_option( 'gmr_logout_page_heading', '' ),
+			'logout_message' => get_option( 'gmr_logout_page_message', '' ),
 
 			'forgot-password_header' => get_option( 'gmr_password_page_heading', '' ),
 			'forgot-password_message' => get_option( 'gmr_password_page_message', '' ),
@@ -178,11 +190,7 @@ class ProfilePage {
 
 	public function get_profile_page_template( $page_name ) {
 		if ( in_array( $page_name, $this->allowed_pages ) ) {
-			$template =  locate_template( array(
-				"profile/{$page_name}.php", // $page_name is whitelisted
-				"profile/profile.php" // generic template for profile pages
-			) );
-			return $template;
+			return locate_template( array( 'profile/profile.php' ) );
 		} else {
 			return null;
 		}

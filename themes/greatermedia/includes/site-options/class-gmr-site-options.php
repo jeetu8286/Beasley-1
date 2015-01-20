@@ -36,10 +36,6 @@ class GreaterMediaSiteOptions {
 		return self::$_instance;
 	}
 
-	public function __construct() {
-		// I don't do anything
-	}
-
 	/**
 	 * Sets up actions and filters.
 	 */
@@ -75,6 +71,19 @@ class GreaterMediaSiteOptions {
 
 
 	public function register_settings() {
+		// Fallback Thumbnails Section
+		add_settings_section( 'greatermedia_fallback_thumbnails', 'Fallback Thumbnails', array( $this, 'render_fallback_section_info' ), 'media' );
+
+		$callback = array( $this, 'render_fallback_image_field' );
+		$types = get_post_types( array( 'public' => true ), 'object' );
+		foreach ( $types as $type => $type_object ) {
+			if ( post_type_supports( $type, 'thumbnail' ) ) {
+				$option_name = "{$type}_fallback";
+				add_settings_field( $option_name, $type_object->label, $callback, 'media', 'greatermedia_fallback_thumbnails', array( 'option_name' => $option_name ) );
+				register_setting( 'media', $option_name, 'intval' );
+			}
+		}
+
 		// Settings Section
 		add_settings_section( 'greatermedia_site_settings', 'Station Site', array( $this, 'render_site_settings_section' ), $this->_settings_page_hook );
 
@@ -84,11 +93,39 @@ class GreaterMediaSiteOptions {
 		register_setting( self::option_group, 'gmr_youtube_url', 'esc_url_raw' );
 		register_setting( self::option_group, 'gmr_instagram_name', 'sanitize_text_field' );
 		register_setting( self::option_group, 'gmr_site_logo', 'intval' );
+		register_setting( self::option_group, 'gmr_site_favicon', 'intval' );
 
 		/**
 		 * Allows us to register extra settings that are not necessarily always present on all child sites.
 		 */
 		do_action( 'greatermedia-settings-register-settings', self::option_group );
+	}
+
+	public function render_fallback_section_info() {
+		echo '<p>Select fallback images which will be used as thumbnails when original thumbnail of a post will not be selected.</p>';
+	}
+
+	public function render_fallback_image_field( $args ) {
+		$name = $args['option_name'];
+
+		$image = '';
+		$image_id = intval( get_option( $name ) );
+		if ( $image_id ) {
+			$image = current( (array) wp_get_attachment_image_src( $image_id, 'medium' ) );
+		}
+
+		$img_id = $name . '-fallback-image';
+		$input_id = $img_id . '-id';
+		echo '<input id="', esc_attr( $input_id ), '" name="', esc_attr( $name ), '" type="hidden" value="', esc_attr( $image_id ), '">';
+		echo '<img id="', esc_attr( $img_id ), '" src="', esc_attr( $image ), '" style="width:100px;height:auto">';
+		echo '<div>';
+			echo '<a href="#" class="select-fallback-image button button-primary" data-img="#', esc_attr( $img_id ), '" data-input="#', esc_attr( $input_id ), '">';
+				echo 'Choose Image';
+			echo '</a> ';
+			echo '<a href="#" class="remove-fallback-image button" data-img="#', esc_attr( $img_id ), '" data-input="#', esc_attr( $input_id ), '" style="', ! $image_id ? 'display:none' : '', '">';
+				echo 'Remove Image';
+			echo '</a>';
+		echo '</div>';
 	}
 
 	public function render_site_settings_section() {
@@ -97,10 +134,15 @@ class GreaterMediaSiteOptions {
 		$youtube = get_option( 'gmr_youtube_url', '' );
 		$instagram = get_option( 'gmr_instagram_name', '' );
 		$site_logo_id = GreaterMediaSiteOptionsHelperFunctions::get_site_logo_id();
+		$site_favicon_id = GreaterMediaSiteOptionsHelperFunctions::get_site_favicon_id();
 
 		?>
 
 		<?php self::render_image_select( 'Site Logo', 'gmr_site_logo', $site_logo_id ); ?>
+
+		<hr/>
+
+		<?php self::render_image_select( 'Site Fav Icon', 'gmr_site_favicon', $site_favicon_id ); ?>
 
 		<hr/>
 

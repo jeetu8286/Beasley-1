@@ -34,47 +34,35 @@ get_header(); ?>
 					<?php
 				}
 				?>
-			<?php if ( have_posts() ) : while ( have_posts() ) : the_post();
-				$closure_type = get_post_meta( get_the_ID(), 'gmedia_closure_type', true );
-				$closure_entity_type = get_post_meta( get_the_ID(), 'gmedia_closure_entity_type', true );
-				$closure_general_location = get_post_meta( get_the_ID(), 'gmedia_closure_general_location', true );
-			?>
-				<div class="closure cf">
-					<div class="closure-attr--entity">
-						<p><?php the_title(); ?></p>
-						<div class="closure-attr--entity_name">
-							<p><?php echo esc_html( $closure_entity_type ); ?></p>
-						</div>
-					</div>
-					<div class="closure-attr--entity_location">
-						<p><?php echo esc_html( $closure_general_location ); ?></p>
-					</div>
-					<div class="closure-attr--type">
-						<p><?php echo esc_html( $closure_type ); ?></p>
-					</div>
-				</div>
-		<?php endwhile; ?>
-			<div class="posts-pagination">
-				<div class="posts-pagination--previous"><?php next_posts_link( '<i class="fa fa-angle-double-left"></i>Previous' ); ?></div>
-				<div class="posts-pagination--next"><?php previous_posts_link( 'Next<i class="fa fa-angle-double-right"></i>' ); ?></div>
-			</div>
-	<?php else : ?>
+					
+			<?php if ( have_posts() ) : ?>
 
-	<article id="post-not-found" class="hentry cf">
+			<section class="closures">
 
-		<header class="article-header">
+				<?php get_template_part( 'partials/loop', 'gmr_closure' ); ?>
 
-			<h1><?php _e( 'No Closures Found!', 'greatermedia' ); ?></h1>
+			</section>
+			
+				<?php greatermedia_load_more_button( array( 'partial_slug' => 'partials/loop', 'partial_name' => 'gmr_closure', 'auto_load' => true ) ); ?>
+				<?php get_template_part( 'partials/pagination' ); ?>
+				
+			<?php else : ?>
 
-		</header>
+				<article id="post-not-found" class="hentry cf">
 
-	</article>
+					<header class="article-header">
 
-<?php endif; ?>
+						<h1><?php _e( 'No Closures Found!', 'greatermedia' ); ?></h1>
 
-</section>
+					</header>
 
-</div>
+				</article>
+
+			<?php endif; ?>
+
+		</section>
+
+	</div>
 
 </main>
 

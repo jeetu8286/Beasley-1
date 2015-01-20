@@ -318,7 +318,7 @@ function gmrs_render_episode_schedule_page() {
 			</select>
 			till
 			<select name="end_time">
-				<?php for ( $i = 1; $i < $count; $i++ ) : ?>
+				<?php for ( $i = 1; $i <= $count; $i++ ) : ?>
 					<?php $time = HOUR_IN_SECONDS * $precision * $i; ?>
 					<option value="<?php echo $time; ?>"<?php selected( $time, $active['end_time'] ); ?>>
 						<?php echo date( 'h:i A', $time ); ?>
@@ -519,8 +519,12 @@ function gmrs_get_current_show_episode( $time = false ) {
 	if ( empty( $episodes ) ) {
 		return null;
 	}
+	
+	$episode = current( $episodes );
+	$started = strtotime( $episode->post_date_gmt );
+	$finished = $started + $episode->menu_order;
 
-	return current( $episodes );
+	return $started < $time && $time < $finished ? $episode : null;
 }
 
 /**

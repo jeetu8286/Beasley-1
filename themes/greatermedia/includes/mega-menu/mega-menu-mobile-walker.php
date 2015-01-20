@@ -16,33 +16,27 @@ class GreaterMediaMobileNavWalker extends Walker_Nav_Menu {
 
 	public function __construct() {
 		if ( false === self::$filters_called ) {
-			add_filter( 'wp_nav_menu_objects', array( __CLASS__, 'add_menu_item_data' ), null, 2 );
+			add_filter( 'wp_nav_menu_objects', array( 'GreaterMediaNavWalker', 'add_menu_item_data' ), null, 2 );
 			self::$filters_called = true;
 		}
 	}
 
 	/**
-	 * Iterates over an array of menu items. Adds data (menu_item_parent_title) to the item object
-	 * if the current item is a child.
+	 * Keeps track of if we are currently doing a featured item menu
 	 *
-	 * @param $sorted_menu_items array
-	 * @param $args              array
+	 * Allows us to do stuff in methods that don't let us inspect any item properties
+	 * This will normally be false
+	 * If we're currently in a featured item menu it will store that menu item's ID.
 	 *
-	 * @return array
+	 * @var bool | integer
 	 */
-	public static function add_menu_item_data( $sorted_menu_items, $args ) {
-		foreach ( $sorted_menu_items as $id => &$item ) {
-			// check if the $item has a parent $item.
-			if ( ! empty( $item->menu_item_parent ) ) {
+	public static $current_featured_item_menu = false;
 
-				// Get the associated parent item
-				$matching_parents             = (array) wp_filter_object_list( $sorted_menu_items, array( 'ID' => $item->menu_item_parent ), 'and', 'post_title' );
-				$item->menu_item_parent_title = array_shift( $matching_parents );
-			}
-		}
-
-		return $sorted_menu_items;
-	}
+	/**
+	 * Keeps track of the current item's parent ID
+	 * @var int
+	 */
+	public static $current_parent_item = 0;
 
 	/**
 	 * This number iterates for each item until $current_depth changes at which point it resets to 0
@@ -75,6 +69,8 @@ class GreaterMediaMobileNavWalker extends Walker_Nav_Menu {
 	 * @param int    $id     Current item ID.
 	 */
 	public function start_el( &$output, $item, $depth = 0, $args = array(), $id = 0 ) {
+		$format = GreaterMediaMegaMenuAdmin::get_nav_menu_format( $item->ID );
+		$parent_format = GreaterMediaMegaMenuAdmin::get_nav_menu_format( $item->menu_item_parent );
 
 		// Iterate item count or reset if needed
 		if ( $depth != 0 ) {
@@ -83,6 +79,7 @@ class GreaterMediaMobileNavWalker extends Walker_Nav_Menu {
 			self::$item_count_in_sub_menu = 0;
 		}
 
+
 		if ( 1 === self::$item_count_in_sub_menu && $depth === 1 ) {
 			$output .= '<li class="mobile-menu-submenu-header">';
 			$output .= '<a href="#" class="mobile-menu-submenu-back-link"><span class="icon-arrow-prev"></span>Back</a>';
@@ -90,12 +87,52 @@ class GreaterMediaMobileNavWalker extends Walker_Nav_Menu {
 			$output .= '</li>';
 		}
 
+		if ( 'fi' === $parent_format && 1 === self::$item_count_in_sub_menu && $depth === 1 ) {
+
+			$featured_items_query = array(
+				'posts_per_page' => 1
+			);
+
+			$featured_item_ids = get_post_meta( $item->menu_item_parent, 'gmr_music_menu', true );
+
+			if ( ! empty( $featured_item_ids ) ) {
+				$featured_items_query['post__in']       = explode( ',', $featured_item_ids );
+				$featured_items_query['post_type']      = array(
+					'post',
+					'contest',
+					'gmr_gallery',
+					'gmr_album'
+				);
+			}
+
+			$featured_items = new WP_Query( $featured_items_query );
+
+			ob_start();
+			while ( $featured_items->have_posts() ) :
+				$featured_items->the_post();
+				?>
+
+				<li class="menu__featured-post--mobile">
+					<a href="<?php the_permalink(); ?>">
+						<div class="entry2__thumbnail format-<?php echo get_post_format(); ?>"
+						     style="background-image: url(<?php gm_post_thumbnail_url( 'gm-entry-thumbnail-4-3' ); ?>);">
+						</div>
+						<p><?php the_title(); ?></p>
+					</a>
+				</li>
+
+			<?php endwhile;
+			wp_reset_postdata();
+
+			$output .= ob_get_clean();
+
+		}
+
+
 		$indent = ( $depth ) ? str_repeat( "\t", $depth ) : '';
 
 		$classes   = empty( $item->classes ) ? array() : (array) $item->classes;
 		$classes[] = 'menu-item-' . $item->ID;
-
-		$format = GreaterMediaMegaMenuAdmin::get_nav_menu_format( $item->ID );
 
 		if ( $format ) {
 			$classes[] = 'format-' . esc_attr( $format );
@@ -168,8 +205,21 @@ class GreaterMediaMobileNavWalker extends Walker_Nav_Menu {
 
 		$item_output = $args->before;
 		$item_output .= '<a' . $attributes . '>';
-		/** This filter is documented in wp-includes/post-template.php */
-		$item_output .= $args->link_before . apply_filters( 'the_title', $item->title, $item->ID ) . $args->link_after;
+
+		/**
+		 * Format: Small Previews
+		 * @todo check performance here, may want to query all the object_ids at once so they are cached.
+		 */
+		if ( 'sp' === $parent_format ) {
+
+			$item_output .= GreaterMediaNavWalker::format_small_previews_link( $item );
+
+		} else {
+
+			/** This filter is documented in wp-includes/post-template.php */
+			$item_output .= $args->link_before . apply_filters( 'the_title', $item->title, $item->ID ) . $args->link_after;
+		}
+
 		$item_output .= '</a>';
 		$item_output .= $args->after;
 
@@ -179,7 +229,6 @@ class GreaterMediaMobileNavWalker extends Walker_Nav_Menu {
 			$item_output .= '<span class="screen-reader-text">Expand Sub-Navigation</span>';
 			$item_output .= '</a>';
 		}
-
 
 		/**
 		 * Filter a menu item's starting output.

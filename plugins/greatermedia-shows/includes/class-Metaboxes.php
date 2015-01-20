@@ -6,6 +6,8 @@
  */
 class GMR_Show_Metaboxes {
 
+	private $_restricted_posts = null;
+
 	/**
 	 * Constructor.
 	 *
@@ -72,6 +74,7 @@ class GMR_Show_Metaboxes {
 
 		add_meta_box( 'show_featured', 'Featured', array( $this, 'render_featured_meta_box' ), ShowsCPT::SHOW_CPT, 'advanced', 'high' );
 		add_meta_box( 'show_favorites', 'Favorites', array( $this, 'render_favorites_meta_box' ), ShowsCPT::SHOW_CPT, 'advanced', 'high' );
+		add_meta_box( 'show_time', 'Show Times', array( $this, 'render_show_times_meta_box' ), ShowsCPT::SHOW_CPT, 'side' );
 	}
 
 	/**
@@ -179,6 +182,33 @@ class GMR_Show_Metaboxes {
 		echo '</div>';
 	}
 
+	private function _get_restricted_post_ids() {
+		if ( is_null( $this->_restricted_posts ) ) {
+			$query = new \WP_Query();
+			$this->_restricted_posts = $query->query( array(
+				'post_type'           => 'any',
+				'post_status'         => 'any',
+				'posts_per_page'      => 50,
+				'ignore_sticky_posts' => true,
+				'no_found_rows'       => true,
+				'fields'              => 'ids',
+				'meta_query'          => array(
+					'relation' => 'OR',
+					array(
+						'key'     => 'post_age_restriction',
+						'compare' => 'EXISTS',
+					),
+					array(
+						'key'     => 'post_login_restriction',
+						'compare' => 'EXISTS',
+					),
+				),
+			) );
+		}
+
+		return $this->_restricted_posts;
+	}
+
 	public function render_featured_meta_box( WP_Post $post ) {
 		if ( ! function_exists( 'pf_render' ) ) {
 			?><p>Please install the <a href="http://github.com/10up/post-finder">"post-finder"</a> plugin.</p><?php
@@ -189,7 +219,8 @@ class GMR_Show_Metaboxes {
 		$options = array(
 			'args' => array(
 				'post_type' => array( 'post', 'tribe_events' ),
-				'meta_key' => '_thumbnail_id',
+				'meta_key'  => '_thumbnail_id',
+				'exclude'   => $this->_get_restricted_post_ids(),
 			),
 			'limit' => 3,
 		);
@@ -211,7 +242,8 @@ class GMR_Show_Metaboxes {
 		$options = array(
 			'args' => array(
 				'post_type' => array( 'post' ),
-				'meta_key' => '_thumbnail_id',
+				'meta_key'  => '_thumbnail_id',
+				'exclude'   => $this->_get_restricted_post_ids(),
 			),
 			'limit' => 10,
 		);
@@ -220,6 +252,35 @@ class GMR_Show_Metaboxes {
 		<p>These items require featured images. If an item is not present, make sure a featured image is assigned.</p>
 		<?php
 		pf_render( 'gmr-favorite-post-ids', $favorite_posts, $options );
+	}
+
+	/**
+	 * Render a meta box to enter a show times string for use throughout the site
+	 * @param $post WP_Post
+	 */
+	public function render_show_times_meta_box( $post ) {
+		$show_days = get_post_meta( $post->ID, 'show_days', true );
+		$show_times = get_post_meta( $post->ID, 'show_times', true );
+		?>
+		<table class="form-table">
+			<tr>
+				<td><label>Days</label></td>
+				<td>
+					<input type="text" name="show_days" class="widefat" value="<?php echo esc_attr( $show_days ); ?>" placeholder="Weekdays">
+				</td>
+			</tr>
+			<tr>
+				<td><label>Times</label></td>
+				<td>
+					<input type="text" name="show_times" class="widefat" value="<?php echo esc_attr( $show_times ); ?>" placeholder="5:30am - 10:30am">
+				</td>
+			</tr>
+		</table>
+
+			<p class="description">
+			A simple description for when this show is on air. Used alongside show titles. Independent from the official show schedule.
+		</p>
+		<?php
 	}
 
 	/**
@@ -269,6 +330,19 @@ class GMR_Show_Metaboxes {
 			$favorite_ids = implode( ',', array_map( 'intval', explode( ',', $_POST['gmr-favorite-post-ids'] ) ) );
 			update_post_meta( $post_id, 'gmr_favorite_post_ids', $favorite_ids );
 		}
+
+		if ( isset( $_POST['show_times'] ) && ! empty( $_POST['show_times'] ) ) {
+			update_post_meta( $post_id, 'show_times', sanitize_text_field( $_POST['show_times'] ) );
+		} else {
+			delete_post_meta( $post_id, 'show_times' );
+		}
+
+		if ( isset( $_POST['show_days'] ) && ! empty( $_POST['show_days'] ) ) {
+			update_post_meta( $post_id, 'show_days', sanitize_text_field( $_POST['show_days'] ) );
+		} else {
+			delete_post_meta( $post_id, 'show_days' );
+		}
+
 	}
 
 	/**

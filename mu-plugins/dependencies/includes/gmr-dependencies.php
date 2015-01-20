@@ -76,21 +76,15 @@ class GmrDependencies {
 			true
 		);
 
-		if(defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) {
-			$formbuilder_js_url = GMRDEPENDENCIES_URL . "/formbuilder/dist/formbuilder.js";
-		}
-		else {
-			$formbuilder_js_url = GMRDEPENDENCIES_URL . "/formbuilder/dist/formbuilder-min.js";
-		}
-
 		wp_register_script(
 			'formbuilder',
-			$formbuilder_js_url,
+			defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG
+				? GMRDEPENDENCIES_URL . "/formbuilder/dist/formbuilder.js"
+				: GMRDEPENDENCIES_URL . "/formbuilder/dist/formbuilder-min.js",
 			array(
 				'jquery',
 				'jquery-ui-core',
 				'jquery-ui-draggable',
-				'jquery-scrollwindowto',
 				'underscore',
 				'underscore-mixin-deepextend',
 				'backbone',
@@ -169,7 +163,7 @@ class GmrDependencies {
 			true
 		);
 
-		wp_enqueue_style(
+		wp_register_style(
 			'parsleyjs',
 			GMRDEPENDENCIES_URL  . '/parsleyjs/src/parsley.css',
 			array(),
@@ -196,6 +190,29 @@ class GmrDependencies {
 				true
 			);
 		}
+
+		wp_register_script(
+			'adblock-detect',
+			GMRDEPENDENCIES_URL . 'adblock-detect/advert.js',
+			array(),
+			false,
+			true
+		);
+		
+		wp_register_script(
+			'waypoints',
+			GMRDEPENDENCIES_URL . "waypoints/lib/noframework.waypoints{$postfix}.js",
+			array(),
+			false,
+			true
+		);
+		wp_register_script(
+			'jquery-waypoints',
+			GMRDEPENDENCIES_URL . "waypoints/lib/jquery.waypoints{$postfix}.js",
+			array( 'jquery' ),
+			false,
+			true
+		);
 
 		wp_register_style( 'jquery-ui', GMRDEPENDENCIES_URL . '/jquery-ui-theme/jquery-ui.min.css' );
 		wp_register_style( 'jquery-ui-accordion', GMRDEPENDENCIES_URL . '/jquery-ui-theme/jquery.ui.accordion.min.css', array( 'jquery-ui' ) );

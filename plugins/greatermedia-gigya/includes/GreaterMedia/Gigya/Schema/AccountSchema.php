@@ -45,23 +45,31 @@ class AccountSchema {
 				),
 				'gender' => array(
 					'writeAccess' => 'clientModify',
-					'required' => false,
+					'required' => true,
+				),
+				'birthYear' => array(
+					'writeAccess' => 'clientModify',
+					'required' => true,
 				),
 				'birthDay' => array(
 					'writeAccess' => 'clientModify',
-					'required' => false,
+					'required' => true,
 				),
 				'birthMonth' => array(
 					'writeAccess' => 'clientModify',
-					'required' => false,
+					'required' => true,
+				),
+				'zip' => array(
+					'writeAccess' => 'clientModify',
+					'required' => true,
 				),
 				'state' => array(
 					'writeAccess' => 'clientModify',
-					'required' => false,
+					'required' => true,
 				),
 				'city' => array(
 					'writeAccess' => 'clientModify',
-					'required' => false,
+					'required' => true,
 				),
 				'address' => array(
 					'writeAccess' => 'clientModify',
@@ -190,7 +198,44 @@ class AccountSchema {
 					'writeAccess' => 'clientModify',
 					'required' => false,
 				),
-				'actions' => array(
+				'vipGroup' => array(
+					'writeAccess' => 'clientModify',
+					'required' => false,
+				),
+				'bigFrigginDealGroup' => array(
+					'writeAccess' => 'clientModify',
+					'required' => false,
+				),
+				'birthdayGreetingsGroup' => array(
+					'writeAccess' => 'clientModify',
+					'required' => false,
+				),
+				'optout' => array(
+					'writeAccess' => 'clientModify',
+					'required' => false,
+				),
+				'comment_count' => array(
+					'writeAccess' => 'clientModify',
+					'required' => false,
+				),
+				'social_share_count' => array(
+					'writeAccess' => 'clientModify',
+					'required' => false,
+				),
+				'listeningFrequency' => array(
+					'writeAccess' => 'clientModify',
+					'required' => false,
+				),
+				'listeningLoyalty' => array(
+					'writeAccess' => 'clientModify',
+					'required' => false,
+				),
+				'subscribedToList' => array(
+					'writeAccess' => 'clientModify',
+					'required' => false,
+					'arrayOp' => 'push',
+				),
+				'contestsWon' => array(
 					'writeAccess' => 'clientModify',
 					'required' => false,
 					'arrayOp' => 'push',

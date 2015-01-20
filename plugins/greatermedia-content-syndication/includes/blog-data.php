@@ -12,12 +12,39 @@ class BlogData {
 		'collection'    =>  'single',
 	);
 
-	public static $content_site_id = 1;
+	public static $content_site_id;
 
 	public static function init() {
+		add_action( 'init', array( __CLASS__, 'get_content_site_id' ), 1 );
 		add_action( 'admin_init', array( __CLASS__, 'register_subscription_setting' ) );
-		self::$content_site_id = defined( 'GMR_CONTENT_SITE_ID' ) ? GMR_CONTENT_SITE_ID : self::$content_site_id;
 		add_action( 'wp_ajax_syndicate-now', array( __CLASS__, 'syndicate_now' ) );
+		add_action( 'admin_notices', array( __CLASS__, 'add_notice_for_undefined' ) );
+	}
+
+	public static function add_notice_for_undefined() {
+		if( !defined( 'GMR_CONTENT_SITE_ID' ) ) {
+		?>
+		<div class="error">
+			<p>
+				No Content Factory site ID is defined!
+				Using default ID <?php echo self::$content_site_id; ?>!
+				Please define GMR_CONTENT_SITE_ID in config
+			</p>
+
+		</div>
+		<?php
+		}
+	}
+
+	public static function get_content_site_id() {
+
+		if( defined( 'GMR_CONTENT_SITE_ID' ) ) {
+			self::$content_site_id = GMR_CONTENT_SITE_ID;
+		} elseif ( is_multisite() ) {
+			self::$content_site_id = get_current_site()->blog_id;
+		} else {
+			self::$content_site_id = 1;
+		}
 	}
 
 	public static function syndicate_now() {
@@ -42,7 +69,6 @@ class BlogData {
 
 	public static function run( $syndication_id, $offset = 0 ) {
 			$result = self::QueryContentSite( $syndication_id, $offset );
-
 			$taxonomy_names = get_object_taxonomies( 'post', 'objects' );
 			$defaults = array(
 				'status'    =>  get_post_meta( $syndication_id, 'subscription_post_status', true ),
@@ -135,7 +161,7 @@ class BlogData {
 			}
 
 			$tax_query['taxonomy'] = $enabled_taxonomy;
-			$tax_query['field'] = 'name';
+			$tax_query['field'] = 'slug';
 			$tax_query['terms'] = $subscription_filter;
 			$tax_query['operator'] = 'AND';
 
