@@ -651,17 +651,7 @@ function gmrs_get_next_show() {
 	}
 
 	$finished = strtotime( $current_episode->post_date_gmt ) + $current_episode->menu_order;
-	$next_episode = gmrs_get_show_episode_at( $finished + MINUTE_IN_SECONDS );
-	if ( ! $next_episode || ! $next_episode->post_parent ) {
-		return null;
-	}
-
-	$next_show = get_post( $next_episode->post_parent );
-	if ( ! $next_show || ShowsCPT::SHOW_CPT != $next_show->post_type ) {
-		return null;
-	}
-
-	return $next_show;
+	return gmrs_get_show_at( $finished + MINUTE_IN_SECONDS );
 }
 
 /**

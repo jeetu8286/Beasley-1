@@ -1,4 +1,51 @@
 (function ($) {
+	// we don't need to use pjax:end event here
+	$(document).ready(function() {
+		var $onair = $('#on-air'),
+			schedule = [],
+			current_show = {},
+			track_schedule, update_onair;
+
+		if ($onair.length == 0) {
+			return;
+		}
+
+		update_onair = function(title, show) {
+			$onair.html('<div class="on-air__title">' + title + ':</div><div class="on-air__show">' + show + '</div>');
+		};
+
+		track_schedule = function() {
+			var now = new Date(),
+				next = new Date(now.getTime() + 10 * 60 * 1000), // 10 minutes later
+				starts, ends;
+
+			for (var i = 0; i < schedule.length; i++) {
+				starts = new Date(schedule[i].starts * 1000);
+				ends = new Date(schedule[i].ends * 1000);
+				
+				if (starts <= now && now <= ends) {
+					current_show = schedule[i];
+					update_onair('On Air', schedule[i].title);
+				}
+
+				if (starts <= next && next <= ends && schedule[i].title != current_show.title) {
+					update_onair('Up Next', schedule[i].title);
+				}
+			}
+		};
+		
+		$.get($onair.data('endpoint'), function(response) {
+			if (response.success && $.isArray(response.data)) {
+				schedule = response.data;
+				
+				track_schedule();
+				setInterval(track_schedule, 1000);
+			}
+		});
+	});
+})(jQuery);
+
+(function ($) {
 	var $window = $(window);
 
 	var __ready = function() {
