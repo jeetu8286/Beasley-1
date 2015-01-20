@@ -45,6 +45,7 @@
 		
 		$searchContainer.removeClass( 'header__search--open' );
 		$overlay.removeClass('is-visible');
+		document.activeElement.blur();
 	}
 	
 	/**
@@ -54,19 +55,17 @@
 	
 	// Show search if the field has focus.
 	$searchInput.click( function ( e ) {
-		if ( ! $searchContainer.hasClass( 'header__search--open' ) ) {
-			showSearch(e);			
-		}
-	}  ); 
+		showSearch( e);
+	} ); 
 	
 	function checkSearchField () {
 		var $search_body = $searchContainer.find( '.header-search-body' );
 		
 		// Show the body only if there's text in the search field.
 		if ( $searchInput.val().length ) {
-			$search_body.show();
+			$search_body.addClass( 'is-visible' );
 		} else {
-			$search_body.hide();
+			$search_body.removeClass( 'is-visible' );
 		}
 	}
 	
@@ -80,9 +79,7 @@
 	$(window).keydown(function (e) {
 		if (e.keyCode === 27){
 			closeSearch(e);
-		}
-		
-		
+		}		
 	});
 	
 	/**

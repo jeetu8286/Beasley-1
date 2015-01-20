@@ -115,7 +115,7 @@
 	
 	display: none; 
 	
-	.header__search--open & {
+	.header__search--open &.is-visible {
 		display: block;
 	}
 	

@@ -8055,7 +8055,7 @@ a.social-share-link {
   padding: 1.5em 20px;
   clear: both;
   display: none; }
-  .header__search--open .header-search-body {
+  .header__search--open .header-search-body.is-visible {
     display: block; }
   @media screen and (min-width: 768px) {
     .header-search-body {
