@@ -375,13 +375,10 @@ category: Components
 	}
 
 	&.audio__playing {
-		display: block;
-		top: 54px;
-		right: 3.75%;
 
 		@include bp(medium) {
+			display: block;
 			top: 66px;
-			right: auto;
 		}
 	}
 }
@@ -498,7 +495,7 @@ category: Components
 .live-stream__btn--play:before, .live-stream__btn--resume:before, .live-stream__btn--login:before {
 	position: absolute;
 	top: 50%;
-	left: 50%;
+	left: 55%;
 	@include transform(translate(-50%, -50%));
 	font-family: $icon-font !important;
 	font-size: ms(2);
@@ -628,7 +625,7 @@ category: Components
 .on-air, .up-next {
 	float: left;
 	width: 78.125%; // 250px
-	padding: 22px 0 22px 3.75%; // 12px
+	padding: 16px 0 16px 3.75%; // 12px
 	margin-right: 3.75%; // 12px
 	line-height: 1;
 	@include bp(small) {
@@ -663,11 +660,15 @@ category: Components
 }
 
 .on-air__title, .up-next__title {
-	display: inline-block;
+	display: block;
+	margin: 0 0 4px;
+	line-height: 1;
+	font-size: ms(-3);
+	font-weight: lighter;
 	@include bp(medium) {
-		display: block;
 		margin-bottom: 10px;
 		font-size: ms(-1);
+		font-weight: normal;
 	}
 
 	.live-player__container.playing & {
@@ -678,10 +679,13 @@ category: Components
 }
 
 .on-air__show, .up-next__show {
-	display: inline-block;
+	display: block;
+	line-height: 1;
+	font-size: ms(0);
+	font-weight: lighter;
 	@include bp(medium) {
-		display: block;
 		font-size: ms(-1);
+		font-weight: normal;
 		text-transform: uppercase;
 	}
 }
@@ -709,7 +713,7 @@ category: Components
 
 	&.playing {
 		position: absolute;
-		top: 56px;
+		top: 16px;
 		left: 0;
 		display: block;
 		width: 60%;
@@ -960,7 +964,7 @@ category: Components
 .audio__time {
 	visibility: hidden;
 	@include opacity(0);
-	width: 75%;
+	width: 92.5%;
 	height: 0;
 	overflow: hidden;
 	margin: 0 auto;
@@ -990,7 +994,7 @@ category: Components
 
 	.live-player__container.playing &  {
 		position: absolute;
-		top: 16px;
+		top: 56px;
 		left: auto;
 		right: auto;
 		display: block;
