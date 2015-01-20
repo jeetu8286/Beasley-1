@@ -2851,14 +2851,10 @@ class GMedia_Migration extends WP_CLI_Command {
 			// process terms
 
 			if( !empty( $contest_title_matches ) && $contest_title_matches[1] ) {
-				$contest_term['name'] = $contest_title_matches[2];
-				$contest_term['desc'] = "";
-
-				$contest_cat_id = $this->process_term( $contest_term, 'contest_type', 'contest' );
-
-				if ( $contest_cat_id ) {
-					wp_set_post_terms( $wp_id, array( $contest_cat_id ), 'contest_type', false );
-				}
+				$type = sanitize_text_field( $contest_title_matches[2] );
+				$type = strtolower( $type );
+				$type = str_replace( '-', '', $type );
+				update_post_meta( $wp_id, 'contest_type', $type );
 			}
 
 			if( isset($contest['ContestCategory'])  ) {
