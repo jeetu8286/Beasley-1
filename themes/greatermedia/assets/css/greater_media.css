@@ -719,7 +719,7 @@ img {
   @media screen and (min-width: 768px) {
     .live-player {
       position: absolute;
-      top: 238px;
+      top: 252px;
       bottom: auto;
       right: 0;
       left: auto;
@@ -739,12 +739,14 @@ img {
   left: 0;
   width: 100%;
   height: 100%;
+  background-color: #000000;
   content: "";
   z-index: 10; }
 
 @media screen and (min-width: 782px) {
   .logged-in .live-player {
-    top: 270px; } }
+    top: 289px;
+    top: 289px; } }
 
 .row {
   display: block; }
@@ -1358,6 +1360,9 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
     .header__nav .format-fi > ul.header__account--links a:hover,
     .ui-menu a:hover {
       color: #ffffff; }
+
+.header__account--container {
+  display: none; }
 
 .mobile-nav .sub-menu, .mobile-nav .header__nav .format-fw > ul, .header__nav .mobile-nav .format-fw > ul, .mobile-nav .header__nav .format-sp > ul, .header__nav .mobile-nav .format-sp > ul, .mobile-nav .header__nav .format-fi > ul, .header__nav .mobile-nav .format-fi > ul {
   -webkit-transition: left 100ms ease-out;
@@ -2723,6 +2728,8 @@ Community Highlights and Events
   @media screen and (min-width: 1200px) {
     .header__account--small {
       display: none; } }
+  .header__account--small:hover .header__account--container {
+    display: block; }
 
 .header__account--large {
   display: none; }
@@ -2732,6 +2739,8 @@ Community Highlights and Events
       .header__account--large .header__account--container {
         display: none; }
       .header__account--large.logged-in .header__account--container {
+        display: block; }
+      .gmr-user .header__account--large .header__account--container {
         display: block; } }
 
 @media screen and (min-width: 768px) {
@@ -4755,6 +4764,7 @@ category: Components
     margin-right: 0; }
 
 .live-stream__login {
+  display: block;
   padding-bottom: 3px;
   margin-right: 0;
   font-weight: 700;
@@ -4763,6 +4773,8 @@ category: Components
   -webkit-transition: all 200ms ease-in-out;
   -moz-transition: all 200ms ease-in-out;
   transition: all 200ms ease-in-out; }
+  .gmr-user .live-stream__login {
+    display: none; }
 
 .live-stream__resume {
   height: 48px;
@@ -7058,13 +7070,17 @@ a.podcast__rss:active {
 .entry2__excerpt .age-restricted-login-btn {
   margin: 1em 0; }
 
-.age-restricted-shield--inline {
+.age-restricted-shield--inline,
+.login-restricted-shield--inline,
+.logout-restricted-shield--inline {
   background: #f1f1f3;
   margin: 1.5em 0;
-  padding: 0.5em 1.618em;
+  padding: 1.5em 1.618em;
   text-align: center; }
-  .age-restricted-shield--inline p {
-    margin: 1em 0; }
+  .age-restricted-shield--inline p,
+  .login-restricted-shield--inline p,
+  .logout-restricted-shield--inline p {
+    margin: .75em 0; }
 
 @media screen and (min-width: 768px) {
   .single-show .content {
