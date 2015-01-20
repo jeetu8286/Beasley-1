@@ -45,12 +45,27 @@ if ( empty( $active_stream ) ) {
 		</div>
 		*/ ?>
 
-		<div id="on-air" class="on-air">
-			<?php if ( ( $show = gmrs_get_show_at( current_time( 'timestamp', 1 ) + 10 * MINUTE_IN_SECONDS ) ) ) : ?>
-				<div class="on-air__title"><?php _e( 'On Air:', 'greatermedia' ); ?></div>
-				<div class="on-air__show"><?php echo esc_html( $show->post_title ); ?></div>
-			<?php endif; ?>
-		</div>
+		<div id="on-air" class="on-air"><?php
+
+			$next_show = null;
+			$show = gmrs_get_current_show();
+			if ( $show && $show->ends <= current_time( 'timestamp', 1 ) + 10 * MINUTE_IN_SECONDS ) {
+				$next_show = gmrs_get_next_show();
+			}
+
+			if ( $next_show ) :
+				
+				?><div class="on-air__title"><?php _e( 'Up Next:', 'greatermedia' ); ?></div>
+				<div class="on-air__show"><?php echo esc_html( $next_show->post_title ); ?></div><?php
+
+			elseif ( $show ) :
+
+				?><div class="on-air__title"><?php _e( 'On Air:', 'greatermedia' ); ?></div>
+				<div class="on-air__show"><?php echo esc_html( $show->post_title ); ?></div><?php
+
+			endif;
+
+		?></div>
 
 		<?php do_action( 'gm_live_player' ); ?>
 		<div id="live-stream__status" class="live-stream__status">

@@ -582,7 +582,29 @@ function gmrs_get_show_episode_at( $time = false ) {
  * @return WP_Post|null The show episode object on success, otherwise NULL.
  */
 function gmrs_get_current_show_episode() {
-	return gmrs_get_show_episode_at( false );
+	$transient = 'current_show_episode';
+	$current_episode = get_transient( $transient );
+	if ( $current_episode ) {
+		return get_post( $current_episode );
+	}
+
+	// current show might be undefined, so we should return NULL in this case.
+	if ( $current_episode === null ) {
+		return null;
+	}
+
+	$current_episode = gmrs_get_show_episode_at( false );
+	if ( ! $current_episode ) {
+		// current show is undefined, so create empty transient for a minute and
+		// then recheck it again if a new episode starts
+		set_transient( $transient, null, MINUTE_IN_SECONDS );
+		return null;
+	}
+
+	$expiration = strtotime( $current_episode->post_date_gmt ) + $current_episode->menu_order - current_time( 'timestamp', 1 );
+	set_transient( $transient, $current_episode->ID, $expiration );
+
+	return $current_episode;
 }
 
 /**
@@ -592,10 +614,15 @@ function gmrs_get_current_show_episode() {
  * @return WP_Post|null The show object on success, otherwise NULL.
  */
 function gmrs_get_show_at( $time = false ) {
-	$episode = gmrs_get_show_episode_at( $time );
+	$episode = $time 
+		? gmrs_get_show_episode_at( $time )
+		: gmrs_get_current_show_episode();
+	
 	if ( ! empty( $episode ) ) {
 		$show = get_post( $episode->post_parent );
 		if ( $show && ShowsCPT::SHOW_CPT == $show->post_type ) {
+			$show->starts = strtotime( $episode->post_date_gmt );
+			$show->ends = $show->starts + $episode->menu_order;
 			return $show;
 		}
 	}
@@ -618,7 +645,7 @@ function gmrs_get_current_show() {
  * @return WP_Post|null The next show object on success, otherwise NULL.
  */
 function gmrs_get_next_show() {
-	$current_episode = gmrs_get_show_episode_at( false );
+	$current_episode = gmrs_get_current_show_episode();
 	if ( ! $current_episode ) {
 		return null;
 	}
