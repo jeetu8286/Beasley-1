@@ -2730,6 +2730,8 @@ Community Highlights and Events
   @media screen and (min-width: 1200px) {
     .header__account--small {
       display: none; } }
+  .header__account--small:hover .header__account--container {
+    display: block; }
 
 .header__account--large {
   display: none; }
