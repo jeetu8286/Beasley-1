@@ -417,12 +417,17 @@ category: Components
 }
 
 .live-stream__login {
+	display: block;
 	padding-bottom: 3px;
 	margin-right: 0;
 	font-weight: 700;
 	font-size: ms(-2);
 	color: $color-text-red;
 	@include transition(all 200ms ease-in-out);
+
+	.gmr-user & {
+		display: none;
+	}
 }
 
 .live-stream__resume {
