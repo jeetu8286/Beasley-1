@@ -45,17 +45,7 @@
 	/**
 	 * Event listeners to run on click to show and close the search.
 	 */
-	if (searchBtn !== null) {
-		searchBtn.addEventListener('click', showSearch, false);
-		/**
-		 * An event listener is also in place for the header search form so that when a user clicks inside of it, it will
-		 * not hide. This is key because the header search for sits within the element that the click event that closes the
-		 * search. If this is event listener is not in place and a user clicks within the search area, it will close.
-		 */
-		searchForm.addEventListener('click', function(e) {
-			e.stopPropagation();
-		});
-	}
+	$( searchBtn ).click( showSearch ); 
 	
 	// Show search if the field has focus.
 	$( searchInput ).focus( showSearch ); 
