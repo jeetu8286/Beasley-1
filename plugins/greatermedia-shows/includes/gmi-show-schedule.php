@@ -6,9 +6,42 @@ add_action( 'admin_enqueue_scripts', 'gmrs_enqueue_episode_scripts' );
 add_action( 'admin_action_gmr_add_show_episode', 'gmrs_add_show_episode' );
 add_action( 'admin_action_gmr_delete_show_episode', 'gmrs_delete_show_episode' );
 add_action( 'future_to_publish', 'gmrs_prolong_show_episode' );
+add_action( 'admin_bar_menu', 'gmrs_add_admin_bar_items', 100 );
 
 // filter hooks
 add_filter( 'gmr_blogroll_widget_item', 'gmrs_get_blogroll_widget_episode_item' );
+
+/**
+ * Adds view/edit show schedule links to the admin bar menu.
+ *
+ * @action admin_bar_menu 100
+ * @param WP_Admin_Bar $admin_bar The admin bar object.
+ */
+function gmrs_add_admin_bar_items( WP_Admin_Bar $admin_bar ) {
+	if ( is_admin() ) {
+		if ( isset( $_REQUEST['page'] ) && 'episode-schedule' == $_REQUEST['page'] ) {
+			$admin_bar->add_menu( array(
+				'id' => 'view-show-schedule',
+				'title' => 'View Show Schedule',
+				'href' => get_post_type_archive_link( ShowsCPT::SHOW_CPT ),
+				'meta' => array(
+					'title' => 'View Show Schedule',
+				),
+			) );
+		}
+	} else {
+		if ( is_post_type_archive( ShowsCPT::SHOW_CPT ) ) {
+			$admin_bar->add_menu( array(
+				'id' => 'edit-show-schedule',
+				'title' => 'Edit Show Schedule',
+				'href' => admin_url( '/edit.php?page=episode-schedule&post_type=' . ShowsCPT::SHOW_CPT ),
+				'meta' => array(
+					'title' => 'Edit Show Schedule',
+				),
+			) );
+		}
+	}
+}
 
 /**
  * Creates new episode each time the current one is published.
@@ -92,9 +125,11 @@ function gmrs_add_show_episode() {
 	}
 
 	$offset = get_option( 'gmt_offset' ) * HOUR_IN_SECONDS;
+	$now = current_time( 'timestamp', 1 );
+	$today_gmt = $now - $now % DAY_IN_SECONDS - $offset;
 	$start_date = $date + $data['start_time'];
 	$start_date_gmt = $start_date - $offset;
-	if ( $start_date_gmt < time() ) {
+	if ( $start_date_gmt < $today_gmt ) {
 		wp_die( 'Please, select a date in the future.', '', array( 'back_link' => true ) );
 	}
 	
@@ -267,6 +302,7 @@ function gmrs_render_episode_schedule_page() {
 	);
 
 	?><div id="show-schedule" class="wrap">
+		<small class="code" style="float:right">(current time: <?php echo date( get_option( 'time_format' ), current_time( 'timestamp' ) ); ?>)</small>
 		<h2>Show Schedule</h2>
 
 		<?php foreach ( array( 'created', 'deleted' ) as $action ) : ?>
@@ -406,11 +442,20 @@ function gmrs_render_episode_schedule_page() {
 /**
  * Returns scheduled episodes.
  *
- * @param int $show_id The show id.
+ * @param string $from The "from" date in GMT.
+ * @param string $to The "to" date in GMT.
  * @return array The array of scheduled episodes.
  */
-function gmrs_get_scheduled_episodes() {
+function gmrs_get_scheduled_episodes( $from = null, $to = null) {
 	$query = new WP_Query();
+
+	if ( empty( $from ) ) {
+		$from = date( DATE_ISO8601, time() );
+	}
+
+	if ( empty( $to ) ) {
+		$to = date( 'Y-m-d 23:59:59', strtotime( '+1 week' ) );
+	}
 	
 	$posts = $query->query( array(
 		'post_type'           => ShowsCPT::EPISODE_CPT,
@@ -422,8 +467,8 @@ function gmrs_get_scheduled_episodes() {
 		'order'               => 'ASC',
 		'date_query'          => array(
 			array(
-				'after'     => date( DATE_ISO8601, time() ),
-				'before'    => date( 'Y-m-d 23:59:59', strtotime( '+1 week' ) ),
+				'after'     => $from,
+				'before'    => $to,
 				'inclusive' => true,
 				'column'    => 'post_date_gmt'
 			),
@@ -537,7 +582,29 @@ function gmrs_get_show_episode_at( $time = false ) {
  * @return WP_Post|null The show episode object on success, otherwise NULL.
  */
 function gmrs_get_current_show_episode() {
-	return gmrs_get_show_episode_at( false );
+	$transient = 'current_show_episode';
+	$current_episode = get_transient( $transient );
+	if ( $current_episode ) {
+		return get_post( $current_episode );
+	}
+
+	// current show might be undefined, so we should return NULL in this case.
+	if ( $current_episode === null ) {
+		return null;
+	}
+
+	$current_episode = gmrs_get_show_episode_at( false );
+	if ( ! $current_episode ) {
+		// current show is undefined, so create empty transient for a minute and
+		// then recheck it again if a new episode starts
+		set_transient( $transient, null, MINUTE_IN_SECONDS );
+		return null;
+	}
+
+	$expiration = strtotime( $current_episode->post_date_gmt ) + $current_episode->menu_order - current_time( 'timestamp', 1 );
+	set_transient( $transient, $current_episode->ID, $expiration );
+
+	return $current_episode;
 }
 
 /**
@@ -547,10 +614,15 @@ function gmrs_get_current_show_episode() {
  * @return WP_Post|null The show object on success, otherwise NULL.
  */
 function gmrs_get_show_at( $time = false ) {
-	$episode = gmrs_get_show_episode_at( $time );
+	$episode = $time 
+		? gmrs_get_show_episode_at( $time )
+		: gmrs_get_current_show_episode();
+	
 	if ( ! empty( $episode ) ) {
 		$show = get_post( $episode->post_parent );
 		if ( $show && ShowsCPT::SHOW_CPT == $show->post_type ) {
+			$show->starts = strtotime( $episode->post_date_gmt );
+			$show->ends = $show->starts + $episode->menu_order;
 			return $show;
 		}
 	}
@@ -573,23 +645,13 @@ function gmrs_get_current_show() {
  * @return WP_Post|null The next show object on success, otherwise NULL.
  */
 function gmrs_get_next_show() {
-	$current_episode = gmrs_get_show_episode_at( false );
+	$current_episode = gmrs_get_current_show_episode();
 	if ( ! $current_episode ) {
 		return null;
 	}
 
 	$finished = strtotime( $current_episode->post_date_gmt ) + $current_episode->menu_order;
-	$next_episode = gmrs_get_show_episode_at( $finished + MINUTE_IN_SECONDS );
-	if ( ! $next_episode || ! $next_episode->post_parent ) {
-		return null;
-	}
-
-	$next_show = get_post( $next_episode->post_parent );
-	if ( ! $next_show || ShowsCPT::SHOW_CPT != $next_show->post_type ) {
-		return null;
-	}
-
-	return $next_show;
+	return gmrs_get_show_at( $finished + MINUTE_IN_SECONDS );
 }
 
 /**

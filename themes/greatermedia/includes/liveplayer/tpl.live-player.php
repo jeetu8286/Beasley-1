@@ -45,11 +45,8 @@ if ( empty( $active_stream ) ) {
 		</div>
 		*/ ?>
 
-		<div id="on-air" class="on-air">
-			<?php if ( ( $show = gmrs_get_show_at( current_time( 'timestamp', 1 ) + 10 * MINUTE_IN_SECONDS ) ) ) : ?>
-				<div class="on-air__title"><?php _e( 'On Air:', 'greatermedia' ); ?></div>
-				<div class="on-air__show"><?php echo esc_html( $show->post_title ); ?></div>
-			<?php endif; ?>
+		<div id="on-air" class="on-air" data-endpoint="<?php echo esc_url( home_url( '/on-air/' ) ); ?>">
+			<i class="fa fa-spin fa-spinner fa-2x"></i>
 		</div>
 
 		<?php do_action( 'gm_live_player' ); ?>
