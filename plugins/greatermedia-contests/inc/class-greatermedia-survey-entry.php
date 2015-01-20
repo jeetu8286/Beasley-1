@@ -78,7 +78,7 @@ class GreaterMediaSurveyEntry {
 			'labels'              => $labels,
 			'public'              => false,
 			'show_ui'             => true,
-			'show_in_menu'        => 'edit.php?post_type=' . GMR_SURVEY_CPT,
+			'show_in_menu'        => false,
 			'show_in_admin_bar'   => false,
 			'query_var'           => false,
 			'can_export'          => false,
@@ -111,20 +111,6 @@ class GreaterMediaSurveyEntry {
 			$entry = new GreaterMediaSurveyEntry( null, $survey_id );
 		} else {
 			$entry = new self( null, $survey_id );
-		}
-
-
-		if ( ! is_scalar( $entrant_name ) ) {
-			throw new UnexpectedValueException( 'Entrant Name must be a scalar value' );
-		}
-
-		if ( ! is_scalar( $entry_source ) ) {
-			throw new UnexpectedValueException( 'Entry Source must be a scalar value' );
-		}
-
-		// This is an assumption. We can always get rid of this check.
-		if ( ! is_scalar( $entry_reference ) ) {
-			throw new UnexpectedValueException( 'Entry Reference must be a scalar value' );
 		}
 
 		$entry->entrant_name      = $entrant_name;

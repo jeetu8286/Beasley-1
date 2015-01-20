@@ -58,10 +58,13 @@
 	 * @param handler
 	 */
 	function addEventHandler(elem,eventType,handler) {
-		if (elem.addEventListener)
-			elem.addEventListener (eventType,handler,false);
-		else if (elem.attachEvent)
-			elem.attachEvent ('on'+eventType,handler);
+		if (elem != null) {
+			if (elem.addEventListener) {
+				elem.addEventListener(eventType, handler, false);
+			} else if (elem.attachEvent) {
+				elem.attachEvent('on' + eventType, handler);
+			}
+		}
 	}
 
 	/**
