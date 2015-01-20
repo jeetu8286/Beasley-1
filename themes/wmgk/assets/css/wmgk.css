@@ -4515,9 +4515,9 @@ category: Components
   cursor: pointer; }
   @media screen and (min-width: 768px) {
     .live-player__stream {
-      position: relative;
+      top: auto;
       display: block;
-      top: auto; } }
+      width: calc(100% - 20px); } }
 
 .live-player__stream li {
   height: auto; }
@@ -4647,6 +4647,7 @@ category: Components
   @media screen and (min-width: 768px) {
     .live-player__container {
       padding: 20px 0 26px;
+      margin-top: 46px;
       overflow: visible;
       border-bottom: none; } }
 
@@ -11527,8 +11528,6 @@ category: Components
     color: #d22228; }
 
 .live-player__stream {
-  width: auto;
-  margin: 10px;
   border: 1px solid #b0b0b0;
   color: #b0b0b0;
   -webkit-border-radius: 1em;
@@ -11538,28 +11537,23 @@ category: Components
   -border-radius: 1em;
   border-radius: 1em;
   background-color: #f2f2f2; }
-  @media screen and (min-width: 768px) {
-    .live-player__stream {
-      background-color: transparent; } }
   .live-player__stream li {
-    background-color: transparent;
     height: auto; }
   .live-player__stream .live-player__stream--available {
     display: none; }
-  .live-player__stream .live-player__stream--current.open {
-    background-color: transparent; }
   .live-player__stream .live-player__stream--current.open .live-player__stream--available {
-    position: relative;
-    display: block;
-    background-color: transparent;
     color: #282827;
-    top: auto;
     border-top: 1px solid #d8d8d8; }
     .live-player__stream .live-player__stream--current.open .live-player__stream--available:after {
       background: transparent; }
     .live-player__stream .live-player__stream--current.open .live-player__stream--available .live-player__stream--item, .live-player__stream .live-player__stream--current.open .live-player__stream--available .live-player__stream--desc {
       color: #282827; }
-    .live-player__stream .live-player__stream--current.open .live-player__stream--available .live-player__stream--item:hover, .live-player__stream .live-player__stream--current.open .live-player__stream--available .live-player__stream--name:hover, .live-player__stream .live-player__stream--current.open .live-player__stream--available .live-player__stream--desc:hover {
+    .live-player__stream .live-player__stream--current.open .live-player__stream--available .live-player__stream--item {
+      background-color: #f2f2f2; }
+      .live-player__stream .live-player__stream--current.open .live-player__stream--available .live-player__stream--item:hover {
+        background-color: #303030;
+        color: #d0d2d3; }
+    .live-player__stream .live-player__stream--current.open .live-player__stream--available .live-player__stream--desc:hover {
       color: #d0d2d3; }
     .live-player__stream .live-player__stream--current.open .live-player__stream--available li:last-child {
       border-bottom-left-radius: 1em;
