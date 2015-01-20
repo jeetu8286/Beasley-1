@@ -176,3 +176,7 @@ select:-webkit-autofill {
     -webkit-box-shadow: 0 0 0px 1000px white inset;
 }
 
+#gigya-reset-link-password-screen .reset-link-password-error-msg {
+	margin-bottom: 1em;
+	font-size: 1.2em;
+}

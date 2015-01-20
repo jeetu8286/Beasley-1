@@ -12,13 +12,15 @@
 	}
 }
 
-.age-restricted-shield--inline {
+.age-restricted-shield--inline,
+.login-restricted-shield--inline,
+.logout-restricted-shield--inline {
 	background: $extra-light-gray;
 	margin: $base-line-height 0;
-	padding: .5em $gutter;
+	padding: 1.5em $gutter;
 	text-align: center; 
 	
 	p {
-		margin: 1em 0; 
+		margin: .75em 0; 
 	}
 }
