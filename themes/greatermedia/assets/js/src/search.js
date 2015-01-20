@@ -72,7 +72,18 @@
 		if (e.keyCode === 27){
 			closeSearch(e);
 		}
+		
+		
 	});
+	
+	/**
+	 * Handle enter key for Safari. 
+	 */
+	$( searchForm ).find( 'form' ).keydown( function ( e ) {
+		if ( 13 === e.keyCode ) {
+			$( this ).submit(); 
+		}
+	} );
 	
 	/**
 	 * Close the search box (if open) if the user clicks on the overlay.
