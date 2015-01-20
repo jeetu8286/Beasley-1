@@ -520,7 +520,6 @@ function greatermedia_load_more_button( $args = array() ) {
 			data-partial-slug='<?php echo esc_attr( $args['partial_slug'] ); ?>'
 			data-partial-name='<?php echo esc_attr( $args['partial_name'] ); ?>'
 			data-auto-load='<?php echo intval( $args['auto_load'] ); ?>'
-			data-not-found="All content shown"
 			>
 			<i class="fa fa-spin fa-refresh"></i> Load More
 		</a>

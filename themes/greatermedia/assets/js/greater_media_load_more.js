@@ -69,7 +69,7 @@
 							waypoint_context.refresh(); 
 						}
 					}).fail(function() {
-						$self.attr('disabled', 'disabled').text($self.data('not-found'));
+						$self.hide();
 					});
 				}
 				
