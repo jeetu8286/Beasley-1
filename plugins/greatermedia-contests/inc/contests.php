@@ -1142,7 +1142,7 @@ function gmr_contest_has_files( $contest ) {
  * @param array $post_types The array of already registered post types.
  * @return array The array of extended post types.
  */
-function extend_live_link_suggestion_post_types( $post_types ) {
+function gmr_contests_extend_live_link_suggestion_post_types( $post_types ) {
 	$post_types[] = GMR_CONTEST_CPT;
 	return $post_types;
 }
