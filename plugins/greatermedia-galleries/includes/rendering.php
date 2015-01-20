@@ -179,6 +179,10 @@ class GreaterMediaGallery {
 	 * @return string Rendered HTML for the gallery
 	 */
 	public static function render_gallery_from_query( \WP_Query $gallery ) {
+		static $gallery_key = -1; 
+		
+		$gallery_key++; 
+		
 		ob_start();
 		if ( $gallery->have_posts() ):
 			$main_post_id = get_queried_object_id();
@@ -191,8 +195,8 @@ class GreaterMediaGallery {
 						<div class="gallery__slide--images cycle-slideshow"
 						     data-cycle-log="false"
 						     data-slides="> .gallery__slide--image"
-						     data-cycle-prev=".gallery__prev--btn"
-						     data-cycle-next=".gallery__next--btn"
+						     data-cycle-prev=".gallery_<?php echo intval( $gallery_key ); ?>_prev"
+						     data-cycle-next=".gallery_<?php echo intval( $gallery_key ); ?>_next"
 						     data-cycle-timeout="0"
 						     data-cycle-caption="#gallery__count"
 						     data-cycle-caption-template="<?php echo esc_attr( $image_count_text ); ?>"
@@ -222,6 +226,7 @@ class GreaterMediaGallery {
 
 								$image = wp_get_attachment_image_src( get_the_ID(), array( 775, 516 ), false );
 								$image_url = $image[0];
+								$image_attribution = get_post_meta( get_the_ID(), 'gmr_image_attribution', true );
 								?>
 								<div class="gallery__slide--image"
 									<?php
@@ -230,6 +235,15 @@ class GreaterMediaGallery {
 									}
 									?>
 									 style="background-image: url(<?php echo esc_url( $image_url ); ?>);">
+									<?php
+
+										if ( ! empty( $image_attribution ) ) {
+											echo '<div class="image__attribution">';
+											echo wp_kses_post( $image_attribution );
+											echo '</div>';
+										}
+
+									?>
 								</div>
 							<?php
 
@@ -242,8 +256,8 @@ class GreaterMediaGallery {
 						<div class="gallery__content cycle-slideshow"
 						     data-cycle-log="false"
 						     data-cycle-slides="> div"
-						     data-cycle-prev=".gallery__prev--btn"
-						     data-cycle-next=".gallery__next--btn"
+						     data-cycle-prev="#gallery_<?php echo intval( $gallery_key ); ?>_prev"
+						     data-cycle-next="#gallery_<?php echo intval( $gallery_key ); ?>_next"
 						     data-cycle-timeout="0"
 						     data-cycle-manual-speed="1"
 						     data-cycle-auto-height=container>
@@ -276,7 +290,7 @@ class GreaterMediaGallery {
 									<h2 class="gallery__slide--title"><?php the_title(); ?></h2>
 
 									<div class="gallery__prev">
-										<button type="button" class="gallery__prev--btn slide-overlay-control-nohide">
+										<button type="button" class="gallery_<?php echo intval( $gallery_key ); ?>_prev gallery__prev--btn slide-overlay-control-nohide">
 											<span class="gallery__prev--span"><?php _e( 'Prev', 'greatermedia' ); ?></span>
 										</button>
 									</div>
@@ -298,7 +312,7 @@ class GreaterMediaGallery {
 									</div>
 
 									<div class="gallery__next">
-										<button type="button" class="gallery__next--btn slide-overlay-control-nohide">
+										<button type="button" class="gallery_<?php echo intval( $gallery_key ); ?>_next gallery__next--btn slide-overlay-control-nohide">
 											<span class="gallery__next--span"><?php _e( 'Next', 'greatermedia' ); ?></span>
 										</button>
 									</div>

@@ -1,3 +1,21 @@
+var getSubscribedToListChoices = function() {
+	var emmaGroups = window.member_query_meta.emma_groups;
+	var n          = emmaGroups.length;
+	var choices    = [];
+
+	for (var i = 0; i < n; i++) {
+		group = emmaGroups[i];
+		choice = {
+			label: group.group_name,
+			value: group.group_id
+		};
+
+		choices.push(choice);
+	}
+
+	return choices;
+};
+
 var AVAILABLE_CONSTRAINTS = [
 
 
@@ -75,11 +93,13 @@ var AVAILABLE_CONSTRAINTS = [
 		type: 'profile:city',
 		valueType: 'string'
 	},
+	/*
 	{
 		type: 'profile:country',
 		valueType: 'string',
 		value: 'United States'
 	},
+	*/
 	{
 		type: 'profile:zip',
 		valueType: 'string',
@@ -142,6 +162,22 @@ var AVAILABLE_CONSTRAINTS = [
 		value: '01/01/2014',
 		operator: 'greater than',
 	},
+	{
+		type: 'data:social_share_count',
+		valueType: 'integer',
+		value: 0,
+	},
+	{
+		type: 'data:social_share_status',
+		valueType: 'boolean',
+		value: true,
+	},
+	{
+		type: 'action:social_share',
+		valueType: 'string',
+		value: '',
+		operator: 'contains',
+	},
 ];
 
 /* Constraint Meta */
@@ -195,6 +231,7 @@ var AVAILABLE_CONSTRAINTS_META = [
 		type: 'profile:birthYear',
 		title: 'Birth Year'
 	},
+	/*
 	{
 		type: 'profile:country',
 		title: 'Country',
@@ -408,6 +445,7 @@ var AVAILABLE_CONSTRAINTS_META = [
 			{ label: 'Zimbabwe',                          value: 'Zimbabwe'           } ,
 		]
 	},
+	*/
 	{
 		type: 'profile:zip',
 		title: 'Zip Code'
@@ -549,11 +587,7 @@ var AVAILABLE_CONSTRAINTS_META = [
 	{
 		type: 'data:subscribedToList',
 		title: 'Subscribed To List',
-		choices: [
-			{ label: 'VIP Newsletter', value: '2129171' },
-			{ label: 'Birthday Greetings', value: '2131219' },
-			{ label: "MMR's VIP Big Friggin' Deal", value: '2130195' },
-		]
+		choices: getSubscribedToListChoices(),
 	},
 	{
 		type: 'data:listeningFrequency',
@@ -580,6 +614,22 @@ var AVAILABLE_CONSTRAINTS_META = [
 			{ label: '90%', value: '90' },
 			{ label: '100%', value: '100' },
 		]
+	},
+	{
+		type: 'data:social_share_count',
+		title: 'Social Share Count'
+	},
+	{
+		type: 'data:social_share_status',
+		title: 'Social Share Status',
+		choices: [
+			{ label: 'Has Shared', value: true },
+			{ label: 'Has Not Shared', value: false }
+		]
+	},
+	{
+		type: 'action:social_share',
+		title: 'Social Share URL'
 	},
 ];
 

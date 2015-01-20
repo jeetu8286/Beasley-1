@@ -8,6 +8,12 @@
 	ProfileMenuApp.prototype = {
 
 		run: function() {
+			var $body = $('body');
+			var $largeLink = $('.header__account--large');
+			if ($body.hasClass('gmr-user')) {
+				$largeLink.toggleClass('logged-in');
+			}
+
 			var $container = $('.header__account--container');
 			$container.append(this.getMenu());
 

@@ -1,4 +1,14 @@
 .single-show {
+	.content {
+		@include bp(medium) {
+			padding: $base-line-height $gutter / 2;
+		}
+
+		@include bp(larger) {
+			padding: $base-line-height * 2 $gutter * 2;
+		}
+	}
+
 	.featured__content {
 		margin: 0.75em 0 1em;
 	}
@@ -67,6 +77,10 @@
 		margin-bottom: 3em;
 	}
 
+	.highlights__events .highlights__heading {
+		display: block;
+	}
+
 	@include bp(large) {
 		.highlights__community, .highlights__events {
 			padding-top: 0;
@@ -80,17 +94,19 @@
 
 	.highlights__event--item {
 		background-color: #F1F1F3;
+
+		.highlights__event--title, .highlights__event--date {
+			color: $primary-heading;
+		}
+		
+		.highlights__event--title:hover {
+			color: $primary-link-hover;
+		}
 	}
 
 	.highlights__community--item:hover {
 		.highlights__community--title {
 			color: $btn-hover;
-		}
-	}
-
-	.inner-left-col {
-		@include bp(large) {
-			padding-right: 25px;
 		}
 	}
 
@@ -180,7 +196,7 @@ category: Components - Shows
 	}
 
 	@include bp(large) {
-		background-image: url(../../images/featured-bg.png);
+		background-image: url('../../images/featured-bg.png');
 		background-repeat: repeat;
 		background-position: center center;
 		background-color: $featured-primary-bg;
@@ -532,9 +548,15 @@ category: Components - Shows
 	.section-header {
 		font-size: ms(1);
 	}
-	
+
 	@include bp(large) {
+		width: 100%;
+		padding-right: 330px;
+	}
+	
+	@include bp(larger) {
 		@include span-columns(8 of 12);
+		padding-right: 25px;
 	}
 }
 
@@ -542,6 +564,11 @@ category: Components - Shows
 	float: none;
 
 	@include bp(large) {
+		float: right;
+		width: 300px;
+	}
+
+	@include bp(larger) {
 		@include span-columns(4 of 12);
 		@include omega;
 		float: right;
@@ -677,4 +704,33 @@ category: Components - Shows
 
 .show-attr--tags {
 
+}
+
+.show__paging {
+	clear: both; 
+	width: 100%;
+	font-size: ms(-1);
+	margin: 0 0 $base-line-height; 
+	text-align: center;
+	
+	.page-numbers {
+		display: none;
+		
+		&.next, 
+		&.prev {
+			display: inline;
+		} 
+	}
+	
+	.prev {
+		float: left;
+		width: 50%;
+		text-align: left;
+	}
+	
+	.next {
+		float: right;
+		width: 50%;
+		text-align: right;
+	}
 }

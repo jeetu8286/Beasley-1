@@ -380,11 +380,24 @@ return __p
 
 this["JST"]["src/templates/query_result_item.jst"] = function(obj) {
 obj || (obj = {});
-var __t, __p = '', __e = _.escape;
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
 with (obj) {
-__p += '<tr>\n\t<td>\n\t\t<a href="#" class="open-member-page-text">' +
+__p += '<span class="preview-result-name">\n\t';
+ if (fields.first_name || fields.last_name) { ;
+__p += '\n\t\t' +
+__e( fields.first_name ) +
+' ' +
+__e( fields.last_name ) +
+'\n\t';
+ } else { ;
+__p += '\n\t\tN/A\n\t';
+ } ;
+__p += '\n</span>\n<span class="preview-result-email" title="' +
 __e( email ) +
-'</a>\n\t\t<a href="#" alt="f105" class="dashicons dashicons-external open-member-page"></a>\n\t</td>\n</tr>\n';
+'">\n\t' +
+__e( view.domainFor(email) ) +
+'\n</span>\n';
 
 }
 return __p
@@ -842,6 +855,24 @@ FACEBOOK_FAVORITE_TYPES = [
 	{ label: 'Books'      , value: 'books'      }
 ];
 
+var getSubscribedToListChoices = function() {
+	var emmaGroups = window.member_query_meta.emma_groups;
+	var n          = emmaGroups.length;
+	var choices    = [];
+
+	for (var i = 0; i < n; i++) {
+		group = emmaGroups[i];
+		choice = {
+			label: group.group_name,
+			value: group.group_id
+		};
+
+		choices.push(choice);
+	}
+
+	return choices;
+};
+
 var AVAILABLE_CONSTRAINTS = [
 
 
@@ -919,11 +950,13 @@ var AVAILABLE_CONSTRAINTS = [
 		type: 'profile:city',
 		valueType: 'string'
 	},
+	/*
 	{
 		type: 'profile:country',
 		valueType: 'string',
 		value: 'United States'
 	},
+	*/
 	{
 		type: 'profile:zip',
 		valueType: 'string',
@@ -986,6 +1019,22 @@ var AVAILABLE_CONSTRAINTS = [
 		value: '01/01/2014',
 		operator: 'greater than',
 	},
+	{
+		type: 'data:social_share_count',
+		valueType: 'integer',
+		value: 0,
+	},
+	{
+		type: 'data:social_share_status',
+		valueType: 'boolean',
+		value: true,
+	},
+	{
+		type: 'action:social_share',
+		valueType: 'string',
+		value: '',
+		operator: 'contains',
+	},
 ];
 
 /* Constraint Meta */
@@ -1039,6 +1088,7 @@ var AVAILABLE_CONSTRAINTS_META = [
 		type: 'profile:birthYear',
 		title: 'Birth Year'
 	},
+	/*
 	{
 		type: 'profile:country',
 		title: 'Country',
@@ -1252,6 +1302,7 @@ var AVAILABLE_CONSTRAINTS_META = [
 			{ label: 'Zimbabwe',                          value: 'Zimbabwe'           } ,
 		]
 	},
+	*/
 	{
 		type: 'profile:zip',
 		title: 'Zip Code'
@@ -1393,11 +1444,7 @@ var AVAILABLE_CONSTRAINTS_META = [
 	{
 		type: 'data:subscribedToList',
 		title: 'Subscribed To List',
-		choices: [
-			{ label: 'VIP Newsletter', value: '2129171' },
-			{ label: 'Birthday Greetings', value: '2131219' },
-			{ label: "MMR's VIP Big Friggin' Deal", value: '2130195' },
-		]
+		choices: getSubscribedToListChoices(),
 	},
 	{
 		type: 'data:listeningFrequency',
@@ -1424,6 +1471,22 @@ var AVAILABLE_CONSTRAINTS_META = [
 			{ label: '90%', value: '90' },
 			{ label: '100%', value: '100' },
 		]
+	},
+	{
+		type: 'data:social_share_count',
+		title: 'Social Share Count'
+	},
+	{
+		type: 'data:social_share_status',
+		title: 'Social Share Status',
+		choices: [
+			{ label: 'Has Shared', value: true },
+			{ label: 'Has Not Shared', value: false }
+		]
+	},
+	{
+		type: 'action:social_share',
+		title: 'Social Share URL'
 	},
 ];
 
@@ -1461,7 +1524,8 @@ var AVAILABLE_CONSTRAINTS_META_MAP = {};
 var QueryResult = Backbone.Model.extend({
 
 	defaults: {
-		email: ''
+		email: '',
+		fields: {}
 	}
 
 });
@@ -1759,7 +1823,7 @@ var QueryResultCollection = Backbone.Collection.extend({
 	},
 
 	didClearError: function(response) {
-		console.log('didClearError', response);
+		//console.log('didClearError', response);
 	}
 });
 
@@ -1939,7 +2003,8 @@ var ConstraintView = Backbone.View.extend({
 		'profile:zip',
 		'profile:state',
 		'profile:country',
-		'profile:timezone'
+		'profile:timezone',
+		'action:social_share',
 	],
 
 	enumOperators: [
@@ -2207,6 +2272,11 @@ var ActiveConstraintsView = Backbone.CollectionView.extend({
 		}
 	},
 
+	initialize: function(options) {
+		Backbone.CollectionView.prototype.initialize.call(this, options);
+		this.listenTo(this.collection, 'add', this.didAdd);
+	},
+
 	copyConstraint: function(event, constraint) {
 		var newConstraint = constraint.clone();
 		var index         = this.collection.indexOf(constraint);
@@ -2216,7 +2286,25 @@ var ActiveConstraintsView = Backbone.CollectionView.extend({
 
 	removeConstraint: function(event, constraint) {
 		this.collection.remove(constraint);
-	}
+	},
+
+	render: function() {
+		Backbone.CollectionView.prototype.render.call(this);
+	},
+
+	didAdd: function(model) {
+		var view = this.viewManager.findByModel(model);
+		this.scrollTo(view.$el);
+	},
+
+	scrollTo: function($target) {
+		var root   = $('html, body');
+		var params = {
+			scrollTop: $target.offset().top - 60 // admin bar offset
+		};
+
+		root.animate(params, 500);
+	},
 
 });
 
@@ -2371,9 +2459,15 @@ var QueryResultItemView = Backbone.CollectionView.extend({
 
 	render: function() {
 		var data = this.model.toJSON();
+		data.view = this;
 		var html = this.template(data);
 
 		this.$el.html(html);
+	},
+
+	domainFor: function(email) {
+		var atIndex = email.indexOf('@');
+		return email.substring(atIndex);
 	}
 });
 

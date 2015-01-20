@@ -45,23 +45,31 @@ class AccountSchema {
 				),
 				'gender' => array(
 					'writeAccess' => 'clientModify',
-					'required' => false,
+					'required' => true,
+				),
+				'birthYear' => array(
+					'writeAccess' => 'clientModify',
+					'required' => true,
 				),
 				'birthDay' => array(
 					'writeAccess' => 'clientModify',
-					'required' => false,
+					'required' => true,
 				),
 				'birthMonth' => array(
 					'writeAccess' => 'clientModify',
-					'required' => false,
+					'required' => true,
+				),
+				'zip' => array(
+					'writeAccess' => 'clientModify',
+					'required' => true,
 				),
 				'state' => array(
 					'writeAccess' => 'clientModify',
-					'required' => false,
+					'required' => true,
 				),
 				'city' => array(
 					'writeAccess' => 'clientModify',
-					'required' => false,
+					'required' => true,
 				),
 				'address' => array(
 					'writeAccess' => 'clientModify',
@@ -210,6 +218,10 @@ class AccountSchema {
 					'writeAccess' => 'clientModify',
 					'required' => false,
 				),
+				'social_share_count' => array(
+					'writeAccess' => 'clientModify',
+					'required' => false,
+				),
 				'listeningFrequency' => array(
 					'writeAccess' => 'clientModify',
 					'required' => false,
@@ -218,7 +230,12 @@ class AccountSchema {
 					'writeAccess' => 'clientModify',
 					'required' => false,
 				),
-				'actions' => array(
+				'subscribedToList' => array(
+					'writeAccess' => 'clientModify',
+					'required' => false,
+					'arrayOp' => 'push',
+				),
+				'contestsWon' => array(
 					'writeAccess' => 'clientModify',
 					'required' => false,
 					'arrayOp' => 'push',

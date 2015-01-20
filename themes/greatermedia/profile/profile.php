@@ -19,6 +19,69 @@ $months = array(
 	'December',
 );
 
+$emma_groups = get_option( 'emma_groups' );
+$emma_groups = json_decode( $emma_groups, true );
+if ( ! $emma_groups ) {
+	$emma_groups = array();
+}
+
+$state_names = array(
+	array( 'label' => 'Alabama', 'value' => 'AL' ),
+	array( 'label' => 'Alaska', 'value' => 'AK' ),
+	array( 'label' => 'Arizona', 'value' => 'AZ' ),
+	array( 'label' => 'Arkansas', 'value' => 'AR' ),
+	array( 'label' => 'California', 'value' => 'CA' ),
+	array( 'label' => 'Colorado', 'value' => 'CO' ),
+	array( 'label' => 'Connecticut', 'value' => 'CT' ),
+	array( 'label' => 'Delaware', 'value' => 'DE' ),
+	array( 'label' => 'District of Columbia', 'value' => 'DC' ),
+	array( 'label' => 'Florida', 'value' => 'FL' ),
+	array( 'label' => 'Georgia', 'value' => 'GA' ),
+	array( 'label' => 'Hawaii', 'value' => 'HI' ),
+	array( 'label' => 'Idaho', 'value' => 'ID' ),
+	array( 'label' => 'Illinois', 'value' => 'IL' ),
+	array( 'label' => 'Indiana', 'value' => 'IN' ),
+	array( 'label' => 'Iowa', 'value' => 'IA' ),
+	array( 'label' => 'Kansas', 'value' => 'KS' ),
+	array( 'label' => 'Kentucky', 'value' => 'KY' ),
+	array( 'label' => 'Louisiana', 'value' => 'LA' ),
+	array( 'label' => 'Maine', 'value' => 'ME' ),
+	array( 'label' => 'Maryland', 'value' => 'MD' ),
+	array( 'label' => 'Massachusetts', 'value' => 'MA' ),
+	array( 'label' => 'Michigan', 'value' => 'MI' ),
+	array( 'label' => 'Minnesota', 'value' => 'MN' ),
+	array( 'label' => 'Mississippi', 'value' => 'MS' ),
+	array( 'label' => 'Missouri', 'value' => 'MO' ),
+	array( 'label' => 'Montana', 'value' => 'MT' ),
+	array( 'label' => 'Nebraska', 'value' => 'NE' ),
+	array( 'label' => 'Nevada', 'value' => 'NV' ),
+	array( 'label' => 'New Hampshire', 'value' => 'NH' ),
+	array( 'label' => 'New Jersey', 'value' => 'NJ' ),
+	array( 'label' => 'New Mexico', 'value' => 'NM' ),
+	array( 'label' => 'New York', 'value' => 'NY' ),
+	array( 'label' => 'North Carolina', 'value' => 'NC' ),
+	array( 'label' => 'North Dakota', 'value' => 'ND' ),
+	array( 'label' => 'Ohio', 'value' => 'OH' ),
+	array( 'label' => 'Oklahoma', 'value' => 'OK' ),
+	array( 'label' => 'Oregon', 'value' => 'OR' ),
+	array( 'label' => 'Pennsylvania', 'value' => 'PA' ),
+	array( 'label' => 'Rhode Island', 'value' => 'RI' ),
+	array( 'label' => 'South Carolina', 'value' => 'SC' ),
+	array( 'label' => 'South Dakota', 'value' => 'SD' ),
+	array( 'label' => 'Tennessee', 'value' => 'TN' ),
+	array( 'label' => 'Texas', 'value' => 'TX' ),
+	array( 'label' => 'Utah', 'value' => 'UT' ),
+	array( 'label' => 'Vermont', 'value' => 'VT' ),
+	array( 'label' => 'Virginia', 'value' => 'VA' ),
+	array( 'label' => 'Washington', 'value' => 'WA' ),
+	array( 'label' => 'West Virginia', 'value' => 'WV' ),
+	array( 'label' => 'Wisconsin', 'value' => 'WI' ),
+	array( 'label' => 'Wyoming', 'value' => 'WY' ),
+	array( 'label' => 'Armed Forces Americas', 'value' => 'AA' ),
+	array( 'label' => 'Armed Forces Europe', 'value' => 'AE' ),
+	array( 'label' => 'Armed Forces Pacific', 'value' => 'AP' ),
+);
+
 ?>
 
 	<div class="gigya-screen-set" id="GMR-CustomScreenSet" style="display:none" data-on-pending-registration-screen="gigya-register-complete-screen">
@@ -54,7 +117,12 @@ $months = array(
 
 				<a href="#" class="link-button" data-switch-screen="gigya-forgot-password-screen">Forgot Password?</a>
 				<input type="submit" name="submit" value="Login" />
+
 			</form>
+
+			<h3 class="new-account-msg">Don't have an account?
+			<a href="#" class="link-button" data-switch-screen="gigya-register-screen">Register here.</a>
+			</h3>
 		</div>
 
 		<div class="gigya-screen" id="gigya-forgot-password-screen" data-responsive="true">
@@ -178,25 +246,36 @@ $months = array(
 				<input type="text" name="profile.zip" placeholder="ZIP Code" />
 
 				<span class="gigya-error-msg" data-bound-to="profile.gender" ></span>
-				<label>Gender:</label>
+				<label class="gender-label">Gender:</label>
 				<label class="inline-label"><input type="radio" name="profile.gender" value="m" />Male</label>
 				<label class="inline-label"><input type="radio" name="profile.gender" value="f" />Female</label>
+
+				<span class="gigya-error-msg" data-bound-to="profile.state" ></span>
+				<label>State:</label>
+				<select name="profile.state">
+					<?php foreach ( $state_names as $state ) { ?>
+						<option value="<?php echo esc_attr( $state['value'] ); ?>"><?php echo esc_html( $state['label'] ); ?></option>
+					<?php } ?>
+				</select>
+
+				<span class="gigya-error-msg" data-bound-to="profile.city" ></span>
+				<label>City:</label>
+				<input type="text" name="profile.city" />
 
 				<h2>Email Subscriptions</h2>
 
 				<ul class="member-groups-list">
-					<li>
-						<input type="checkbox" name="data.vipGroup" checked="checked" />
-						<label class="label-email-list">@Work Network Newsletter</label>
-					</li>
-					<li>
-						<input type="checkbox" name="data.bigFrigginDealGroup" checked="checked">
-						<label class="label-email-list">MGK's Discount Deal</label>
-					</li>
-					<li>
-						<input type="checkbox" name="data.birthdayGreetingsGroup" checked="checked">
-						<label class="label-email-list">Birthday Greetings</label>
-					</li>
+					<?php foreach ( $emma_groups as $emma_group ) { ?>
+						<li>
+							<input
+								type="checkbox"
+								name="data.<?php echo esc_attr( $emma_group['field_key'] ) ?>"
+								checked="checked" />
+							<label class="label-email-list">
+								<?php echo esc_html( $emma_group['group_name'] ) ?>
+							</label>
+						</li>
+					<?php } ?>
 				</ul>
 
 				<h2>Radio Listening Questions:</h2>
@@ -274,9 +353,21 @@ $months = array(
 				<input type="text" name="profile.zip" />
 
 				<span class="gigya-error-msg" data-bound-to="profile.gender" ></span>
-				<label>Gender:</label>
+				<label class="gender-label">Gender:</label>
 				<label class="inline-label"><input type="radio" name="profile.gender" value="m" />Male</label>
 				<label class="inline-label"><input type="radio" name="profile.gender" value="f" />Female</label>
+
+				<span class="gigya-error-msg" data-bound-to="profile.state" ></span>
+				<label>State:</label>
+				<select name="profile.state">
+					<?php foreach ( $state_names as $state ) { ?>
+						<option value="<?php echo esc_attr( $state['value'] ); ?>"><?php echo esc_html( $state['label'] ); ?></option>
+					<?php } ?>
+				</select>
+
+				<span class="gigya-error-msg" data-bound-to="profile.city" ></span>
+				<label>City:</label>
+				<input type="text" name="profile.city" />
 
 				<h2>Password</h2>
 				<a href="#" data-switch-screen="gigya-change-password-screen">Change your password.</a>
@@ -284,18 +375,16 @@ $months = array(
 				<h2>Email Subscriptions</h2>
 
 				<ul class="member-groups-list">
-					<li>
-						<input type="checkbox" name="data.vipGroup" checked="checked" />
-						<label class="label-email-list">@Work Network Newsletter</label>
-					</li>
-					<li>
-						<input type="checkbox" name="data.bigFrigginDealGroup" checked="checked">
-						<label class="label-email-list">MGK's Discount Deal</label>
-					</li>
-					<li>
-						<input type="checkbox" name="data.birthdayGreetingsGroup" checked="checked">
-						<label class="label-email-list">Birthday Greetings</label>
-					</li>
+					<?php foreach ( $emma_groups as $emma_group ) { ?>
+						<li>
+							<input
+								type="checkbox"
+								name="data.<?php echo esc_attr( $emma_group['field_key'] ) ?>" />
+							<label class="label-email-list">
+								<?php echo esc_html( $emma_group['group_name'] ) ?>
+							</label>
+						</li>
+					<?php } ?>
 				</ul>
 
 				<a href="#" class="link-button logout-button">&laquo; Logout</a>
@@ -318,7 +407,7 @@ $months = array(
 				<input type="password" name="newPassword" />
 
 				<span class="gigya-error-msg" data-bound-to="passwordRetype" ></span>
-				<label>Choose a new password:</label>
+				<label>Retype new password:</label>
 				<input type="password" name="passwordRetype" />
 
 				<a href="#" class="link-button" data-switch-screen="gigya-update-profile-screen">&laquo; Back</a>
@@ -336,6 +425,36 @@ $months = array(
 			<h2>Password Changed Successfully.</h2>
 
 			<a href="#" class="link-button" data-switch-screen="gigya-update-profile-screen">&laquo; Back</a>
+		</div>
+
+		<div class="gigya-screen" id="gigya-reset-link-password-screen" data-responsive="true">
+			<h2>Reset Your Password</h2>
+
+			<form class="gigya-profile-form" id="gigya-reset-link-password-form">
+				<span class="gigya-error-msg reset-link-password-error-msg"></span>
+
+				<span class="gigya-error-msg" data-bound-to="newPassword" ></span>
+				<label>Choose a new password:</label>
+				<input type="password" name="newPassword" />
+
+				<span class="gigya-error-msg" data-bound-to="passwordRetype" ></span>
+				<label>Confirm new password:</label>
+				<input type="password" name="passwordRetype" />
+
+				<input type="submit" name="submit" value="Reset" />
+			</form>
+
+			<a href="#" class="link-button" data-switch-screen="gigya-login-screen">&laquo; Back</a>
+		</div>
+
+		<div class="gigya-screen" id="gigya-reset-link-password-progress-screen" data-responsive="true">
+			<h2>Resetting Password ...</h2>
+		</div>
+
+		<div class="gigya-screen" id="gigya-reset-link-password-success-screen" data-responsive="true">
+			<h2>Password Reset Successfully</h2>
+
+			<a href="#" class="link-button" data-switch-screen="gigya-login-screen">&laquo; Back to Login</a>
 		</div>
 
 	</div><!-- end screenset --!>

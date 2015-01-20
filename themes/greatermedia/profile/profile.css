@@ -102,6 +102,19 @@
 	display: inline-block;
 }
 
+#profile-content .gender-label {
+	margin-bottom: 0.5em;
+}
+
+#profile-content .gigya-screen .new-account-msg {
+	margin-top: 2em;
+}
+
+#profile-content .gigya-screen .new-account-msg a {
+	color: #d22228;
+	display: inline;
+}
+
 /* Gigya Overrides */
 #profile-content_content[style] {
 	width: 100% !important;
@@ -161,4 +174,9 @@ input:-webkit-autofill,
 textarea:-webkit-autofill,
 select:-webkit-autofill {
     -webkit-box-shadow: 0 0 0px 1000px white inset;
+}
+
+#gigya-reset-link-password-screen .reset-link-password-error-msg {
+	margin-bottom: 1em;
+	font-size: 1.2em;
 }

@@ -13,19 +13,26 @@
  */
 
 // Useful global constants
-/**
- *
+/*
+ * Add this constant to wp-config and set value to "dev" to trigger time() as the cache buster on css/js that use this,
+ * instead of the version - useful for dev, especially when cloudflare or other cdn's are involved
  */
-define( 'GREATERMEDIA_VERSION', '0.1.3' );
+if ( defined( 'GMR_PARENT_ENV' ) && 'dev' == GMR_PARENT_ENV ) {
+	define( 'GREATERMEDIA_VERSION', time() );
+} else {
+	define( 'GREATERMEDIA_VERSION', '0.1.3' );
+}
 
 add_theme_support( 'homepage-curation' );
 
 require_once( __DIR__ . '/includes/liveplayer/loader.php' );
-require_once( __DIR__ . '/includes/layout-chooser/class-choose-layout.php' );
 require_once( __DIR__ . '/includes/site-options/loader.php' );
 require_once( __DIR__ . '/includes/mega-menu/mega-menu-admin.php' );
 require_once( __DIR__ . '/includes/mega-menu/mega-menu-walker.php' );
 require_once( __DIR__ . '/includes/mega-menu/mega-menu-mobile-walker.php' );
+require_once( __DIR__ . '/includes/gallery-post-thumbnails/loader.php' );
+require_once( __DIR__ . '/includes/image-attributes/loader.php');
+require_once( __DIR__ . '/includes/posts-screen-thumbnails/loader.php' );
 
 /**
  * Required files
@@ -146,7 +153,7 @@ function greatermedia_scripts_styles() {
 	wp_enqueue_script(
 		'greatermedia-load-more',
 		"{$baseurl}/assets/js/greater_media_load_more{$postfix}.js",
-		array( 'jquery' ),
+		array( 'jquery', 'jquery-waypoints' ),
 		GREATERMEDIA_VERSION,
 		true
 	);
@@ -177,6 +184,25 @@ function greatermedia_scripts_styles() {
 }
 
 add_action( 'wp_enqueue_scripts', 'greatermedia_scripts_styles');
+
+/**
+ * Add custom admin stylesheet.  
+ */
+function greatermedia_admin_styles() {
+	$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
+	$baseurl = untrailingslashit( get_template_directory_uri() );
+
+	wp_register_style(
+		'gmr-admin-styles',
+		"{$baseurl}/assets/css/gm_admin{$postfix}.css",
+		array(),
+		GREATERMEDIA_VERSION
+	);
+
+	wp_enqueue_style( 'gmr-admin-styles' );
+}
+
+add_action( 'admin_enqueue_scripts', 'greatermedia_admin_styles' );
 
 /**
  * Unload YARPP stylesheets.  
@@ -278,11 +304,16 @@ function get_post_with_keyword( $query_arg ) {
 /**
  * Get the URL of a post's thumbnail.  
  * 
- * @param string|array Thumbnail size.
- * @param int Post ID. Defaults to current post. 
+ * @param string|array $size Thumbnail size.
+ * @param int $post_id Post ID. Defaults to current post.
+ * @param bool $use_fallback Determines whether to use fallback image if thumbnmail doesn't exist.
+ * @return string Thumbnail URL on success, otherwise NULL.
  */
-function gm_get_post_thumbnail_url( $size = 'thumbnail', $post_id = null ) {
+function gm_get_post_thumbnail_url( $size = 'thumbnail', $post_id = null, $use_fallback = false ) {
 	$thumbnail_id = get_post_thumbnail_id( $post_id );
+	if ( ! $thumbnail_id && $use_fallback ) {
+		$thumbnail_id = greatermedia_get_fallback_thumbnail_id( $post_id );
+	}
 
 	if ( $thumbnail_id ) {
 		return gm_get_thumbnail_url( $thumbnail_id, $size );
@@ -292,11 +323,12 @@ function gm_get_post_thumbnail_url( $size = 'thumbnail', $post_id = null ) {
 /**
  * Output the escaped URL of a post's thumbnail.  
  * 
- * @param string|array Thumbnail size.
- * @param int Post ID. Defaults to current post. 
+ * @param string|array $size Thumbnail size.
+ * @param int $post_id Post ID. Defaults to current post.
+ * @param bool $use_fallback Determines whether to use fallback image if thumbnmail doesn't exist.
  */
-function gm_post_thumbnail_url( $size = 'thumbnail', $post_id = null ) {
-	echo esc_url( gm_get_post_thumbnail_url( $size, $post_id ) );
+function gm_post_thumbnail_url( $size = 'thumbnail', $post_id = null, $use_fallback = false ) {
+	echo esc_url( gm_get_post_thumbnail_url( $size, $post_id, $use_fallback ) );
 }
 
 /**
@@ -418,12 +450,8 @@ if ( ! function_exists( 'greatermedia_load_more_template' ) ) :
 			return;
 		}
 
-		$partial_slug = sanitize_text_field( $_REQUEST['partial_slug'] );
-		if ( ! $partial_slug ) {
-			$partial_slug = 'partials/loop';
-		}
-
-		$partial_name = sanitize_text_field( $_REQUEST['partial_name'] );
+		$partial_slug = isset( $_REQUEST['partial_slug'] ) ? sanitize_text_field( $_REQUEST['partial_slug'] ) : 'partials/loop';
+		$partial_name = isset( $_REQUEST['partial_name'] ) ? sanitize_text_field( $_REQUEST['partial_name'] ) : '';
 
 		get_template_part( $partial_slug, $partial_name );
 		exit;
@@ -432,47 +460,52 @@ if ( ! function_exists( 'greatermedia_load_more_template' ) ) :
 endif;
 add_action( 'template_redirect', 'greatermedia_load_more_template' );
 
-function greatermedia_load_more_button( $partial_slug = null, $partial_name = null, $query_or_page_link_template = null, $next_page = null ) {
+function greatermedia_load_more_button( $args = array() ) {
 
 	global $wp_query;
+	
+	// $partial_slug = null, $partial_name = null, $query_or_page_link_template = null, $next_page = null
+	$args = wp_parse_args( $args, array(
+		'partial_slug' => '',
+		'partial_name' => '',
+		'query' => null,
+		'page_link_template' => null,
+		'next_page' => null,
+		'auto_load' => false,
+	) ); 
 
-	if ( ! $query_or_page_link_template ) {
-		$query_or_page_link_template = $wp_query;
+	if ( ! $args['query'] && ! $args['page_link_template'] ) {
+		$args['query'] = $wp_query;
 	}
 
-	if ( $query_or_page_link_template instanceof WP_Query ) {
+	if ( $args['query'] && $args['query'] instanceof WP_Query ) {
 		$temp_wp_query = $wp_query;
 
-		$wp_query = $query_or_page_link_template;
-		$page_link_template = str_replace( PHP_INT_MAX, '%d', get_pagenum_link( PHP_INT_MAX ) );
+		$wp_query = $args['query'];
+		$args['page_link_template'] = str_replace( PHP_INT_MAX, '%d', get_pagenum_link( PHP_INT_MAX ) );
 
-		if ( ! $next_page ) {
-			$next_page = max( 2, $wp_query->query_vars['paged'] + 1);
+		if ( ! $args['next_page'] ) {
+			$args['next_page'] = max( 2, $wp_query->query_vars['paged'] + 1);
 		}
 
 		$wp_query = $temp_wp_query;
-	} else {
-		$page_link_template = (string) $query_or_page_link_template;
+	} 
+	
+	if ( ! $args['next_page'] ) {
+		$args['next_page'] = 2;
 	}
 
-	if ( ! $next_page ) {
-		$next_page = 2;
-	}
-
-	$default_page_link = sprintf( $page_link_template, $next_page );
-
-	$partial_name = (string) $partial_name;
-	$partial_slug = (string) $partial_slug;
-
+	$default_page_link = sprintf( $args['page_link_template'], $args['next_page'] );
 	?>
 	<div class='posts-pagination'>
 		<a
 			class="button posts-pagination--load-more is-loaded"
 			href='<?php echo esc_url( $default_page_link ); ?>'
-			data-page-link-template="<?php echo esc_url( $page_link_template ); ?>"
-			data-page="<?php echo esc_attr( $next_page ); ?>"
-			data-partial-slug='<?php echo esc_attr( $partial_slug ); ?>'
-			data-partial-name='<?php echo esc_attr( $partial_name ); ?>'
+			data-page-link-template="<?php echo esc_url( $args['page_link_template'] ); ?>"
+			data-page="<?php echo esc_attr( $args['next_page'] ); ?>"
+			data-partial-slug='<?php echo esc_attr( $args['partial_slug'] ); ?>'
+			data-partial-name='<?php echo esc_attr( $args['partial_name'] ); ?>'
+			data-auto-load='<?php echo intval( $args['auto_load'] ); ?>'
 			data-not-found="All content shown"
 			>
 			<i class="fa fa-spin fa-refresh"></i> Load More
@@ -480,3 +513,110 @@ function greatermedia_load_more_button( $partial_slug = null, $partial_name = nu
 	</div>
 <?php
 }
+
+add_action( 'current_screen', 'hide_seo_columns' );
+function hide_seo_columns() {
+
+    $currentScreen = get_current_screen();
+    $current_user = wp_get_current_user();
+    
+    $hidden = array( 'wpseo-score',  'wpseo-title', 'wpseo-metadesc', 'wpseo-focuskw' );
+    $first = get_user_meta( $current_user->ID, "screen-defaults-{$currentScreen->id}", true ); 
+
+    if( !$first ) {
+    	update_user_meta( $current_user->ID, 'manage' . $currentScreen->id . 'columnshidden', $hidden );
+    	update_user_meta( $current_user->ID, "screen-defaults-{$currentScreen->id}", true );
+    }
+}
+
+/**
+ * function to globally remove post type support for custom fields for all post types
+ */
+function greatermedia_remove_custom_fields() {
+
+	$post_types = array(
+		'post',
+		'page',
+		'tribe_events'
+	);
+
+	/**
+	 * go through each post type, check if the post type supports custom fields, if the post types does support
+	 * custom fields, remove support
+	 */
+	foreach ( $post_types as $post_type ) {
+		if (post_type_supports( $post_type, 'custom-fields' ) ) {
+			remove_post_type_support( $post_type, 'custom-fields' );
+		}
+	}
+
+}
+add_action( 'init' , 'greatermedia_remove_custom_fields', 10 );
+
+/**
+ * Returns fallback image id for a post.
+ * 
+ * @param int|WP_Post|null $post_id The post id or object to return fallback for.
+ * @return int The fallback image id.
+ */
+function greatermedia_get_fallback_thumbnail_id( $post_id = null ) {
+	$post = get_post( $post_id );
+	if ( ! $post ) {
+		return null;
+	}
+
+	return intval( get_option( $post->post_type . '_fallback' ) );
+}
+
+/**
+ * Deactivates Tribe Events filter at dashboard drafts widget.
+ */
+function greatermedia_deactivate_tribe_warning_on_dashboard( $option_value ) {
+	remove_filter( 'get_post_time', array( 'TribeEventsTemplates', 'event_date_to_pubDate' ), 10, 3 );
+	return $option_value;
+}
+add_filter( 'get_user_option_dashboard_quick_press_last_post_id', 'greatermedia_deactivate_tribe_warning_on_dashboard' );
+
+function add_google_analytics() {
+	?>
+	<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	ga('create', 'UA-804109-43', 'auto');
+	
+	if( is_gigya_user_logged_in() ) {
+		ga( 'set', '&uid', get_gigya_user_id() );
+	}
+
+	jQuery(document).on('pjax:end', function() {
+		ga('set', 'location', window.location.href);
+		ga('send', 'pageview');
+	});
+	ga('send', 'pageview');
+	</script>
+	<?php
+}
+add_action( 'wp_head' , 'add_google_analytics' );
+
+/**
+ * adds an additional body class if a user is authenticated with gigya
+ *
+ * @param $classes
+ *
+ * @return array
+ */
+function greatermedia_add_gigya_body_class( $classes ) {
+
+	$classes[] = '';
+
+	if ( is_gigya_user_logged_in() ) {
+		$classes[] = 'gmr-user';
+	}
+
+	return $classes;
+
+}
+add_filter( 'body_class', 'greatermedia_add_gigya_body_class' );
