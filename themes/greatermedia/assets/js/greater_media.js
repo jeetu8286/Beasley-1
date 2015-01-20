@@ -924,6 +924,13 @@
 	} );
 	
 	/**
+	 * Make "Search All Content" button trigger form submit.
+	 */
+	$( searchForm ).find( '.header-search__search-all-btn' ).click( function () {
+		$( searchForm ).find( 'form' ).submit(); 	
+	} );
+	
+	/**
 	 * PJAX workaround. PJAX is set to only handle links when they're clicked,
 	 * so to get the form to work over PJAX we need to create a fake link and 
 	 * then click it. Clunky but it is the quick fix for now. 
