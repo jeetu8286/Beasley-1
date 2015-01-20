@@ -241,7 +241,7 @@ class GreaterMediaGallery {
 										if ( ! empty( $image_attribution ) ) {
 											if ( $img_link ) {
 												echo '<div class="image__attribution">';
-												echo '<a href="' . wp_kses_post( $image_attribution ) . '">Credit</a>';
+												echo '<a href="' . wp_kses_post( $image_attribution ) . '">Photo Credit</a>';
 												echo '</div>';
 											} else {
 												echo '<div class="image__attribution">';
