@@ -108,6 +108,7 @@ class BlogData {
 					, $single_post['featured']
 					, $single_post['attachments']
 					, $single_post['galleries']
+					, $single_post['term_tax']
 					)
 				);
 			}
@@ -211,13 +212,21 @@ class BlogData {
 			$media = get_attached_media( 'image', $single_result->ID );
 			$featured = wp_get_attachment_image_src( get_post_thumbnail_id( $single_result->ID ), 'full' );
 			$galleries = get_post_galleries( $single_result->ID, false );
+			$taxonomies = get_object_taxonomies( $single_result->post_type );
+			$term_tax = array();
+			foreach( $taxonomies as $taxonomy ) {
+				if( !in_array( $taxonomy, SyndicationCPT::$support_default_tax ) ) {
+					$term_tax[$taxonomy][] = wp_get_post_terms( $single_result->ID, $taxonomy, array("fields" => "names") );
+				}
+			}
 
 			return array(
 				'post_obj'      =>  $single_result,
 				'post_metas'    =>  $metas,
 				'attachments'   =>  $media,
 				'featured'      =>  $featured[0],
-				'galleries'      =>  $galleries
+				'galleries'     =>  $galleries,
+				'term_tax'      =>  $term_tax
 			);
 	}
 
@@ -232,7 +241,7 @@ class BlogData {
 	 *
 	 * @return int|\WP_Error
 	 */
-	public static function ImportPosts( $post, $metas = [], $defaults, $featured = null, $attachments = [], $galleries = [] ) {
+	public static function ImportPosts( $post, $metas = [], $defaults, $featured = null, $attachments = [], $galleries = [], $term_tax = [] ) {
 
 		$post_name = sanitize_title( $post->post_name );
 		$post_title = sanitize_text_field( $post->post_title );
@@ -305,6 +314,14 @@ class BlogData {
 				'blog_id' => self::$content_site_id
 			);
 			update_post_meta( $post_id, 'syndication_old_data', serialize( $post_data ) );
+
+			if( !empty( $term_tax ) ) {
+				foreach ( $term_tax as $taxonomy => $terms ) {
+					if( !empty( $terms[0] ) ) {
+						wp_set_post_terms( $post_id, $terms[0], $taxonomy, true );
+					}
+				}
+			}
 
 			if( $updated == 1 ) {
 				self::AssignDefaultTerms( $post_id, $defaults );

@@ -338,26 +338,6 @@ class SyndicationCPT {
 			,'high'
 		);
 
-		/*add_meta_box(
-			'subscription_type'
-			,__( 'Choose subscription type', 'greatermedia' )
-			,array( $this, 'render_subscription_type' )
-			,$this->post_type
-			,'advanced'
-			,'high'
-		);*/
-
-		/*add_meta_box(
-			'filter_metaboxes'
-			,__( 'Filters  - please choose one', 'greatermedia' )
-			,array( $this, 'render_filter_metabox' )
-			,$this->post_type
-			,'advanced'
-			,'high'
-		);*/
-
-		//$taxonomy_names = get_object_taxonomies( 'post', 'objects' );
-
 		add_meta_box(
 			'subscription_default_metabox'
 			,__( 'Defaults' )
@@ -366,17 +346,6 @@ class SyndicationCPT {
 			,'advanced'
 			,'high'
 		);
-
-
-		// Temp metabox to perform syndication
-		/*add_meta_box(
-			'syndicate'
-			,__( 'Syndication control' )
-			,array( $this, 'render_syndication_control' )
-			,$this->post_type
-			,'side'
-			,'default'
-		);*/
 	}
 
 	/**
