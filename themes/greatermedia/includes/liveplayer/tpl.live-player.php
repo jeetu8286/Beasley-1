@@ -69,17 +69,8 @@ if ( empty( $active_stream ) ) {
 			<div id="trackInfo" class="now-playing__info"></div>
 			<div id="npeInfo"></div>
 		</div>
-
-		<?php /*
-			<div class="live-stream">
-				<div class="live-stream__login--actions">
-					<a href="<?php echo esc_url( home_url( '/members/login' ) ); ?>" class="live-stream__btn--login"><span class="live-stream__btn--label"><?php _e( 'Login to Listen Live', 'greatermedia' ); ?></span></a>
-				</div>
-				<div class="live-stream__status">
-					<a href="<?php echo esc_url( home_url( '/members/login' ) ); ?>" id="live-stream__listen-now" class="live-stream__listen-now--btn"><?php _e( 'Listen Live', 'greatermedia' ); ?></a>
-				</div>
-			</div>
-		*/ ?>
+		<div id="live-stream--inactive" class="live-stream--inactive"></div>
+		<div id="live-player--more" class="live-player--more">...</div>
 
 	</div>
 

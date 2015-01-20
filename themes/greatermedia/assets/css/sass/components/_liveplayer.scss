@@ -360,7 +360,9 @@ category: Components
 
 .live-stream__status {
 	position: absolute;
-	display: none;
+	top: 15px;
+	right: 3.75%;
+	display: block;
 	@include transition(all 500ms ease-in-out);
 	@include bp(medium) {
 		top: 216px;
@@ -380,17 +382,26 @@ category: Components
 			top: 66px;
 		}
 	}
+
+	.gmr-user & {
+		display: none;
+
+		@include bp(medium) {
+			display: block;
+		}
+	}
 }
 
 .live-stream__listen-now--btn {
-	@include btn($btn-bg, $color-text-white, $btn-bg, .25em, .5em, ms(-1));
-	margin-right: 0;
-	font-weight: 700;
-	z-index: 1;
-	@include transition(all 200ms ease-in-out);
+	display: none;
 
 	@include bp(medium) {
+		display: block;
+		margin-right: 0;
 		@include btn($btn-bg, $color-text-white, $btn-bg, .5em, 1em, ms(-1));
+		font-weight: 700;
+		z-index: 1;
+		@include transition(all 200ms ease-in-out);
 	}
 
 	.audio__playing & {
@@ -415,12 +426,26 @@ category: Components
 
 .live-stream__login {
 	display: block;
-	padding-bottom: 3px;
-	margin-right: 0;
+	width: 100px;
+	height: 28px;
+	padding: 0.25em 0 0 1em;
+	@include border-radius(3em);
+	background-color: $btn-bg;
+	outline: none;
 	font-weight: 700;
-	font-size: ms(-2);
-	color: $color-text-red;
+	font-size: ms(-1);
+	color: $color-text-white;
 	@include transition(all 200ms ease-in-out);
+
+	@include bp(medium) {
+		width: auto;
+		height: auto;
+		padding: 0 0 3px 0;
+		@include border-radius(0);
+		background-color: transparent;
+		margin-right: 0;
+		color: $color-text-red;
+	}
 
 	.gmr-user & {
 		display: none;
@@ -450,7 +475,7 @@ category: Components
 	height: 34px;
 	margin: 0 auto;
 	@include border-radius(50%);
-	background-color: transparent;
+	background-color: $liveplayer-bg;
 	border: 2px solid $btn-bg;
 	outline: none;
 	font-size: 1.25em;
@@ -462,9 +487,11 @@ category: Components
 	text-rendering: auto;
 	color: $color-text-red;
 	cursor: pointer;
+	z-index: 1;
 	@include bp(medium) {
 		width: 56px;
 		height: 56px;
+		z-index: initial;
 	}
 }
 
@@ -513,6 +540,15 @@ category: Components
 	.live-stream__player.audio__playing & {
 		content: "\e61f" !important;
 	}
+}
+
+.live-stream--inactive {
+	position: absolute;
+	top: 0;
+	right: 0;
+	@extend %live-stream__btn;
+	border-color: $btn-inactive;
+	color: $btn-inactive;
 }
 
 .live-stream__container {
@@ -623,14 +659,14 @@ category: Components
 
 .on-air, .up-next {
 	float: left;
-	width: 78.125%; // 250px
-	padding: 16px 0 16px 3.75%; // 12px
-	margin-right: 3.75%; // 12px
+	width: 60%;
+	padding: 16px 0 16px 3.75%;
+	margin-right: 3.75%;
 	line-height: 1;
 	@include bp(small) {
 		width: 85.416666666667%; // 410px
-		padding-left: 2.5%; // 12px
-		margin-right: 2.5%; // 12px
+		padding-left: 2.5%;
+		margin-right: 2.5%;
 	}
 	@include bp(medium) {
 		float: none;
@@ -655,6 +691,14 @@ category: Components
 
 	.live-player--open & {
 		display: block;
+	}
+
+	.gmr-user & {
+		width: 78.125%;
+
+		@include bp(medium) {
+			width: 100%;
+		}
 	}
 }
 
@@ -833,6 +877,18 @@ category: Components
 	border-right: none;
 	border-left: none;
 	font-size: ms(-2);
+}
+
+.live-player--more {
+	display: block;
+	float: right;
+	width: 8%;
+	height: 58px;
+	color: $btn-inactive;
+
+	@include bp(medium) {
+		display: none;
+	}
 }
 
 // live links

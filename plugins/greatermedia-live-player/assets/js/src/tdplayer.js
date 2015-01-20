@@ -30,6 +30,7 @@
 	var podcastPlaying = document.querySelector('.podcast__btn--play.playing');
 	var listenNow = document.getElementById('live-stream__listen-now');
 	var nowPlaying = document.getElementById('live-stream__now-playing');
+	var listenLogin = document.getElementById('live-stream__login');
 	var $trackInfo = $(document.getElementById('trackInfo'));
 	var gigyaLogin = gmr.homeUrl + "members/login";
 	var clearDebug = document.getElementById('clearDebug');
@@ -356,6 +357,11 @@
 			}
 			if (listenNow != null) {
 				addEventHandler(listenNow, 'click', function () {
+					window.location.href = gigyaLogin;
+				});
+			}
+			if (listenLogin != null && window.innerWidth <= 767) {
+				addEventHandler(listenLogin, 'click', function() {
 					window.location.href = gigyaLogin;
 				});
 			}
