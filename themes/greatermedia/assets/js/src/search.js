@@ -100,6 +100,9 @@
 	 * PJAX workaround. PJAX is set to only handle links when they're clicked,
 	 * so to get the form to work over PJAX we need to create a fake link and 
 	 * then click it. Clunky but it is the quick fix for now. 
+	 * 
+	 * Note that we are calling click() on the DOM object, not the jQuery 
+	 * object. This is the only way to get this to work on Safari. 
 	 */
 	$( searchForm ).find( 'form' ).submit( function ( e ) {
 		e.preventDefault();		
@@ -107,7 +110,7 @@
 		$( '<a></a>' )
 			.attr( 'href', $( this ).attr( 'action' ) + '?s=' + $( this ).find( 'input[name=s]' ).val() )
 			.appendTo( $( this ) )
-			.click()
+			.get( 0 ).click() // Note we are triggering click on the DOM object, not the jQuery object.
 		;
 		
 		closeSearch( e );
