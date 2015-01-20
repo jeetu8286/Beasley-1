@@ -20,6 +20,7 @@
 .header .container {
 	padding: 0 .714285714286%;
 	position: relative;
+	min-height: 0;
 }
 
 .header__main {
@@ -153,6 +154,14 @@
 	@include bp(larger) { // Bourbon Neat mixin for media queries
 		display: none;
 	}
+
+	&:hover {
+
+		.header__account--container {
+			display: block;
+		}
+		
+	}
 }
 
 .header__account--large {
@@ -166,6 +175,12 @@
 		}
 
 		&.logged-in {
+			.header__account--container {
+				display: block;
+			}
+		}
+
+		.gmr-user & {
 			.header__account--container {
 				display: block;
 			}

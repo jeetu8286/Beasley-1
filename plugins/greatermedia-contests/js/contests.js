@@ -1,4 +1,4 @@
-/*! Greater Media Contests - v1.0.4
+/*! Greater Media Contests - v1.0.5
  * http://10up.com/
  * Copyright (c) 2015;
  * Licensed GPLv2+
@@ -160,7 +160,7 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 	};
 
 })(jQuery);
-(function ($, Modernizr) {
+(function ($, Modernizr, Waypoint) {
 	var $window = $(window),
 		winsize,
 		$body = $('html, body'),
@@ -261,7 +261,7 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 							if (newItems.length >= itemsCountOnPage) {
 								loadMoreLocked = false;
 								$loadMore.removeClass('loading');
-								$.waypoints('refresh');
+								Waypoint.refreshAll();
 
 								if ($.isFunction(settings.loadedMore)) {
 									settings.loadedMore(newItems);
@@ -325,7 +325,7 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 						}
 					});
 
-					$.waypoints('refresh');
+					Waypoint.refreshAll();
 				}
 			}
 
@@ -566,7 +566,7 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 
 		return $grids;
 	};
-})(jQuery, gridModernizr);
+})(jQuery, Modernizr, Waypoint);
 (function($) {
 	var $document = $(document), container, gridContainer;
 
@@ -649,18 +649,6 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 		return container.data('infinite') + (page + 1) + '/';
 	};
 
-	var fillForm = function() {
-		if ($.isFunction(is_gigya_user_logged_in) && $.isFunction(get_gigya_user_field) && is_gigya_user_logged_in()) {
-			container.find('form').each(function() {
-				var $form = $(this),
-					firstName = get_gigya_user_field('firstName'),
-					lastName = get_gigya_user_field('lastName');
-
-				$form.find('input[type="text"]:first').val(firstName + ' ' + lastName);
-			});
-		}
-	};
-
 	var __ready = function() {
 		container = $('#contest-form');
 		gridContainer = $('.contest__submissions--list');
@@ -724,7 +712,9 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 				
 				if (response.success) {
 					container.html(response.data.html);
-					fillForm();
+
+					$('#contest-form form').parsley();
+					
 					$('.type-contest.collapsed').removeClass('collapsed');
 				} else {
 					restriction = response.data.restriction;

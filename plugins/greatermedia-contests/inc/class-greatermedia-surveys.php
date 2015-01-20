@@ -68,7 +68,7 @@ class GreaterMediaSurveys {
 			'not_found'           => 'No surveys found',
 			'not_found_in_trash'  => 'No surveys found in Trash',
 			'parent_item_colon'   => 'Parent Survey:',
-			'menu_name'           => 'All Surveys',
+			'menu_name'           => 'Surveys',
 		);
 
 		$args = array(
@@ -80,7 +80,7 @@ class GreaterMediaSurveys {
 			'show_ui'             => true,
 			'show_in_menu'        => true,
 			'show_in_admin_bar'   => true,
-			'menu_position'       => null,
+			'menu_position'       => 33,
 			'menu_icon'           => 'dashicons-welcome-write-blog',
 			'show_in_nav_menus'   => true,
 			'publicly_queryable'  => true,

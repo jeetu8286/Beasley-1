@@ -30,6 +30,7 @@ class GMP_CPT {
 		add_filter( 'ss_podcasting_episode_fields', array( __CLASS__, 'remove_audio_imputs' ) );
 		add_filter( 'manage_edit-' . self::PODCAST_POST_TYPE . '_columns', array( __CLASS__, 'show_feed_url_as_column' ), 10, 1 );
 		add_action( 'manage_posts_custom_column' , array( __CLASS__ , 'add_feed_url_column' ) , 1 , 2 );
+		add_action( 'edit_form_after_title', array( __CLASS__, 'inline_instructions' ) );
 	}
 
 	public static function add_save_post_actions() {
@@ -49,7 +50,7 @@ class GMP_CPT {
 		$labels = array(
 			'name'                => _x( 'Podcasts', 'Post Type General Name', 'gmpodcasts' ),
 			'singular_name'       => _x( 'Podcast', 'Post Type Singular Name', 'gmpodcasts' ),
-			'menu_name'           => __( 'Podcast/Episode', 'gmpodcasts' ),
+			'menu_name'           => __( 'Podcasts', 'gmpodcasts' ),
 			'parent_item_colon'   => __( 'Parent Item:', 'gmpodcasts' ),
 			'all_items'           => __( 'Podcasts', 'gmpodcasts' ),
 			'view_item'           => __( 'View Podcast', 'gmpodcasts' ),
@@ -76,10 +77,10 @@ class GMP_CPT {
 			'hierarchical'        => false,
 			'public'              => true,
 			'show_ui'             => true,
-			'show_in_menu'        => true,
+			'show_in_menu'        => 'edit.php?post_type=' . self::EPISODE_POST_TYPE,
 			'show_in_nav_menus'   => true,
 			'show_in_admin_bar'   => true,
-			'menu_position'       => 5,
+			'menu_position'       => 40,
 			'menu_icon'           => 'dashicons-microphone',
 			'can_export'          => true,
 			'has_archive'         => true,
@@ -106,7 +107,7 @@ class GMP_CPT {
 		$labels = array(
 			'name'                => _x( 'Episodes', 'Post Type General Name', 'gmpodcasts' ),
 			'singular_name'       => _x( 'Episode', 'Post Type Singular Name', 'gmpodcasts' ),
-			'menu_name'           => __( 'Podcast/Episode', 'gmpodcasts' ),
+			'menu_name'           => __( 'Podcasts', 'gmpodcasts' ),
 			'parent_item_colon'   => __( 'Parent Item:', 'gmpodcasts' ),
 			'all_items'           => __( 'Episodes', 'gmpodcasts' ),
 			'view_item'           => __( 'View Episode', 'gmpodcasts' ),
@@ -133,10 +134,10 @@ class GMP_CPT {
 			'hierarchical'        => false,
 			'public'              => true,
 			'show_ui'             => true,
-			'show_in_menu'        => 'edit.php?post_type=' . self::PODCAST_POST_TYPE,
+			'show_in_menu'        => true,
 			'show_in_nav_menus'   => true,
 			'show_in_admin_bar'   => true,
-			'menu_position'       => 5,
+			'menu_position'       => 40,
 			'menu_icon'           => 'dashicons-microphone',
 			'can_export'          => true,
 			'has_archive'         => true,
@@ -151,7 +152,7 @@ class GMP_CPT {
 	}
 
 	public static function parent_metabox( \WP_Post $post ) {
-		add_meta_box( 'episode-parent', 'Podcast', array( __CLASS__, 'render_parent_metabox' ), $post->post_type, 'side' );
+		add_meta_box( 'gmr-episode-parent', 'Podcast', array( __CLASS__, 'render_parent_metabox' ), $post->post_type, 'side', 'high' );
 	}
 
 	public static function render_parent_metabox( \WP_Post $post ) {
@@ -264,7 +265,10 @@ class GMP_CPT {
             case 'series_feed_url':
             	$series = get_post( $post_id );
             	$series_slug = $series->post_name;
-            	$feed_url = home_url( '/' ) . '?feed=podcast&podcast_series=' . $series_slug;
+				$feed_url = esc_url_raw( get_post_meta( $post_id, 'gmp_podcast_feed', true ) );
+	            if( !$feed_url || $feed_url == '' || strlen( $feed_url ) == 0 ) {
+		            $feed_url = home_url( '/' ) . '?feed=podcast&podcast_series=' . $series_slug;
+	            }
                 echo '<a href="' . esc_url( $feed_url ) . '" target="_blank">' . esc_url( $feed_url ) . '</a>';
             break;
             case 'episodes':
@@ -300,6 +304,34 @@ class GMP_CPT {
 
 		return $count;
     }
+
+	/**
+	 * Output instructions on creating a podcast episode.
+	 */
+	public static function inline_instructions( $post ) {
+
+		// These instructions are about adding audio when the overwhelming purpose of the post is audio
+		// therefore, it's only applicable to podcast episodes.
+		if ( self::EPISODE_POST_TYPE !== $post->post_type ) {
+			return;
+		}
+
+		?>
+		<h3>To add episode audio:</h3>
+		<ol>
+			<li>Click the <strong>Add Media</strong> button</li>
+			<li>Upload or select an audio file</li>
+			<li>Insert the audio file into the post</li>
+		</ol>
+
+		<p>
+			The audio will be extracted from any text, which will be used as a teaser for the episode and in the rss feed.
+		</p>
+
+
+		<?php
+
+	}
 
 }
 
