@@ -505,6 +505,13 @@ function greatermedia_load_more_button( $args = array() ) {
 		$wp_query = $temp_wp_query;
 	} 
 	
+	// Bail if we're basing this off a query and we can see there are no more 
+	// posts to load.
+	if ( $args['query'] && $args['next_page'] > $args['query']->max_num_pages ) {
+		return; 
+	}	
+	
+	
 	if ( ! $args['next_page'] ) {
 		$args['next_page'] = 2;
 	}
