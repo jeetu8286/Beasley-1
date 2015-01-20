@@ -44,8 +44,7 @@
 }
 
 .contest-form-info {
-	background-color: steelblue;
-	color: white;
+	background-color: whitesmoke;
 	padding: 0.5em 1em;
 	margin-bottom: 2em;
 }
@@ -145,6 +144,33 @@
 		.unmark-winner a {
 			color: red;
 		}
+	}
+}
+
+.post-type-survey {
+	#survey-responses-link {
+		float: right;
+		margin-top: -22px;
+		margin-bottom: 5px;
+	}
+
+	.fb-save-wrapper {
+		display: none;
+	}
+
+	.fb-tabs {
+		li {
+			margin-bottom: 0;
+		}
+	}
+
+	.fb-right,
+	.fb-left {
+		padding-top: 0;
+	}
+
+	.form-table th {
+		width: 250px;
 	}
 }
 

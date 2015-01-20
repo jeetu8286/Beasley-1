@@ -44,6 +44,8 @@ class GreaterMedia_Keyword_Admin {
 		add_action( 'admin_menu', array( $this, 'add_plugin_admin_menu' ) );
 		add_action( 'admin_init', array( $this, 'save_settings' ) );
 
+		add_action( 'wp_ajax_greater_media/keywords/get_posts', array( $this, 'get_posts' ) );
+
 		add_action( 'wp_ajax_delete_keyword', array( $this, 'delete_keyword' ) );
 	}
 
@@ -61,7 +63,6 @@ class GreaterMedia_Keyword_Admin {
 	public function enqueue_admin_scripts( $page_slug ) {
 
 		if ( $this->_page_slug == $page_slug ) {
-			wp_enqueue_script( 'select2');
 			wp_enqueue_script( 'jquery-effects-core');
 			wp_enqueue_script( 'jquery-effects-slide');
 
@@ -81,6 +82,7 @@ class GreaterMedia_Keyword_Admin {
 				)
 			);
 		}
+
 	}
 
 
@@ -149,26 +151,28 @@ class GreaterMedia_Keyword_Admin {
 
 		if ( isset( $_POST["save_keyword_settings"] ) && current_user_can('manage_options') ) {
 
-			$linked_content = isset( $_POST['linked_content'] ) ? sanitize_text_field( $_POST['linked_content'] ) : '';
+			$linked_content = isset( $_POST['linked_content'] ) ? intval( $_POST['linked_content'] ) : 0;
 			$keyword = isset( $_POST['keyword'] )? sanitize_text_field( $_POST['keyword'] ) : '';
 			$keyword_key = strtolower( $keyword );
-
-			$linked_content = explode( ',', $linked_content );
-
+			
 			if( $keyword == '' ) {
-				echo '<div id="message" class="error"><p>Keyword can\'t be empty!</p></div>';
+				echo '<div id="message" class="error"><p>Keyword can&rsquo;t be empty.</p></div>';
 				return false;
 			}
 
 			if( is_array( $pairs ) && array_key_exists( $keyword_key, $pairs ) ) {
-				echo '<div id="message" class="error"><p>Keyword ' . esc_html( $keyword ) . ' already used!</p></div>';
+				echo '<div id="message" class="error"><p>Keyword ' . esc_html( $keyword ) . ' already used.</p></div>';
+				return false;
+			}
+			
+			if( ! $linked_content ) {
+				echo '<div id="message" class="error"><p>Please select a post.</p></div>';
 				return false;
 			}
 
 			$pairs[$keyword_key] = array(
 				'keyword'       =>  $keyword,
-				'post_id'       =>  intval( $linked_content[0] ),
-				'post_title'    =>  sanitize_text_field( $linked_content[1] )
+				'post_id'       =>  $linked_content,
 			);
 
 			if( self::add_or_update( $this::$plugin_slug . '_option_name', $pairs ) ) {
@@ -259,33 +263,28 @@ class GreaterMedia_Keyword_Admin {
 		return $options;
 	}
 
-	public static function get_post_for_keywords() {
-		$posts  =   array();
+	public static function get_posts() {
 
-		$args   =   array(
+		$res = array();
+
+		$search_term = isset( $_REQUEST['s'] ) ? sanitize_text_field( $_REQUEST['s'] ) : '';
+
+		$posts = get_posts( array(
 			'post_type'         =>  self::$supported_post_types,
-			'posts_per_page'    =>  500,
+			'posts_per_page'    =>  30,
 			'post_status'       =>  'publish',
-		);
+			's'                 =>  $search_term,
+		) );
 
-		$query = new WP_Query( $args );
-
-		foreach( $query->posts as $post ) {
-			$posts[] = $post;
-		}
-		$page = 1;
-		if( $query->max_num_pages > 1 ) {
-			while( $page < $query->max_num_pages ) {
-				$args['offset'] = $page * 500;
-				$query = new WP_Query( $args );
-				foreach( $query->posts as $post ) {
-					$posts[] = $post;
-				}
-				$page++;
-			}
+		foreach ( $posts as $post ) {
+			$res[] = array(
+				'id' => (int) $post->ID,
+				'title' => $post->post_title,
+			);
 		}
 
-		return $posts;
+		wp_send_json_success( $res );
+		exit;
 	}
 }
 

@@ -65,11 +65,11 @@ class AccountSchema {
 				),
 				'state' => array(
 					'writeAccess' => 'clientModify',
-					'required' => false,
+					'required' => true,
 				),
 				'city' => array(
 					'writeAccess' => 'clientModify',
-					'required' => false,
+					'required' => true,
 				),
 				'address' => array(
 					'writeAccess' => 'clientModify',

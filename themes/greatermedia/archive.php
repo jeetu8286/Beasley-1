@@ -16,11 +16,6 @@ get_header(); ?>
 
 			<section class="content">
 
-				<div class="ad__inline--right desktop">
-					<?php // 'desktop' is a variant, can call a 'mobile' variant elsewhere if we need it, but never the same variant twice ?>
-					<?php do_action( 'acm_tag_gmr_variant', 'mrec-body', 'desktop' ); ?>
-				</div>
-
 				<h2 class="content__heading">
 					<?php $object = get_queried_object(); ?>
 					Latest <?php echo ! empty( $object->labels->name ) ? esc_html( strtolower( $object->labels->name ) ) : ''; ?> from <?php bloginfo( 'name' ); ?>
@@ -83,10 +78,6 @@ get_header(); ?>
 					</article>
 
 				<?php endif; ?>
-
-				<div class="ad__inline--right mobile">
-					<?php do_action( 'acm_tag_gmr_variant', 'mrec-body', 'mobile' ); ?>
-				</div>
 
 			</section>
 

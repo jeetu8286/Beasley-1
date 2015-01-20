@@ -11,6 +11,7 @@ class ProfilePage {
 		'account',
 		'forgot-password',
 		'cookies-required',
+		'reset-password',
 	);
 
 	public function register() {
@@ -124,6 +125,7 @@ class ProfilePage {
 			'ajax_url'               => admin_url( 'admin-ajax.php' ),
 			'register_account_nonce' => wp_create_nonce( 'register_account' ),
 			'update_account_nonce'   => wp_create_nonce( 'update_account' ),
+			'reset_password_nonce'   => wp_create_nonce( 'reset_password' ),
 			'current_page'           => $page_name,
 
 			'join_header' => get_option( 'gmr_join_page_heading', '' ),
@@ -188,11 +190,7 @@ class ProfilePage {
 
 	public function get_profile_page_template( $page_name ) {
 		if ( in_array( $page_name, $this->allowed_pages ) ) {
-			$template =  locate_template( array(
-				"profile/{$page_name}.php", // $page_name is whitelisted
-				"profile/profile.php" // generic template for profile pages
-			) );
-			return $template;
+			return locate_template( array( 'profile/profile.php' ) );
 		} else {
 			return null;
 		}
