@@ -11,7 +11,7 @@ get_header(); ?>
 	<div class="container">
 
 		<section class="content">
-			<h1 itemprop="headline">CLOSURES</h1>
+			<h1 itemprop="headline">Closures</h1>
 			<?php
 				$args = array(
 					'numberposts' => 1,
