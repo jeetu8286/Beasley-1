@@ -204,6 +204,9 @@
 			nowPlaying.style.display = 'inline-block';
 			listenNow.style.display = 'none';
 		}
+		if (pauseBtn.classList.contains('live-player__muted')) {
+			pauseBtn.classList.remove('live-player__muted');
+		}
 
 
 	}
@@ -219,6 +222,7 @@
 		}
 		listenNow.style.display = 'inline-block';
 		nowPlaying.style.display = 'none';
+		pauseBtn.classList.add('live-player__muted');
 	}
 
 	function setPausedStyles() {
@@ -234,6 +238,7 @@
 		}
 		listenNow.style.display = 'inline-block';
 		nowPlaying.style.display = 'none';
+		pauseBtn.classList.add('live-player__muted');
 		if (resumeBtn.classList.contains('live-player__muted')) {
 			resumeBtn.classList.remove('live-player__muted');
 		}
