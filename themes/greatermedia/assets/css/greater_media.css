@@ -6329,6 +6329,8 @@ category: Components - Ads
       height: 117px; } }
 .events-archive #tribe-events-pg-template {
   max-width: 100%; }
+.events-archive .tribe-events-day-time-slot {
+  clear: both; }
 
 .event__thumbnail {
   float: left;

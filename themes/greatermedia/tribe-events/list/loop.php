@@ -27,14 +27,3 @@ while ( have_posts() ) :
 endwhile;
 
 do_action( 'tribe_events_after_loop' );
-
-if ( tribe_has_next_event() ) :
-	$_request = $_REQUEST;
-	$_request['tribe_paged'] = '%d';
-
-	greatermedia_load_more_button( array(
-		'partial_slug'       => 'tribe-events/list/loop',
-		'auto_load'          => true,
-		'page_link_template' => add_query_arg( $_request, tribe_get_events_link() ),
-	) );
-endif;

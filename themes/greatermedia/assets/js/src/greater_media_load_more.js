@@ -4,10 +4,8 @@
 
 	__ready = function() {
 		$('.posts-pagination--load-more').each(function () {
-					
-			var $button = $(this);
-			
-			var loading = false,
+			var $button = $(this),
+				loading = false,
 				page_link_template = $button.data('page-link-template'),
 				page = parseInt($button.data('page')),
 				partial_slug = $button.data('partial-slug'),
@@ -31,6 +29,13 @@
 					offset: 'bottom-in-view'
 				});
 			}
+
+			var hide_button = function() {
+				$button.hide();
+				if (waypoint_context) {
+					waypoint_context.destroy();
+				}
+			};
 	
 			$button.click(function() {
 				var $self = $(this);
@@ -57,15 +62,13 @@
 						}
 												
 						if ( ! response.post_count || pagenums[page_link_template] > response.max_num_pages ) {
-							$self.hide(); 
-						}
-						
-						// Refresh Waypoint context, if any. 
-						if ( waypoint_context ) {
+							hide_button();
+						} else if ( waypoint_context ) {
+							// Refresh Waypoint context, if any.
 							waypoint_context.refresh(); 
 						}
 					}).fail(function() {
-						$self.hide();
+						hide_button();
 					});
 				}
 				
