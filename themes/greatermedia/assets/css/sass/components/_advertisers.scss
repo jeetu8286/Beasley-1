@@ -1,0 +1,26 @@
+.advertiser {
+	@include span-columns(4);
+
+	@include bp(small) {
+		@include span-columns(6);
+	}
+
+	@include bp(medium) {
+		@include span-columns(4);
+		@include pad();
+	}
+
+	@include bp(large) {
+		@include span-columns(6);
+		@include pad();
+	}
+
+	@include bp(x-large) {
+		@include span-columns(6);
+		@include pad();
+	}
+
+	&:nth-of-type(2n+2) {
+		@include omega;
+	}
+}
