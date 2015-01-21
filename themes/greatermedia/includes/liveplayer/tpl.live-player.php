@@ -52,6 +52,8 @@ if ( empty( $active_stream ) ) {
 			<?php endif; ?>
 		</div>
 
+		<div id="live-player--more" class="live-player--more"><?php _e( '...', 'greatermedia' ); ?></div>
+
 		<?php do_action( 'gm_live_player' ); ?>
 		<div id="live-stream__status" class="live-stream__status">
 			<div id="live-stream__login" class="live-stream__login"><?php _e( 'Log In To', 'greatermedia' ); ?></div>
@@ -70,7 +72,6 @@ if ( empty( $active_stream ) ) {
 			<div id="npeInfo"></div>
 		</div>
 		<div id="live-stream--inactive" class="live-stream--inactive"></div>
-		<div id="live-player--more" class="live-player--more">...</div>
 
 	</div>
 

@@ -36,6 +36,7 @@
 	var clearDebug = document.getElementById('clearDebug');
 	var adBlockCheck = document.getElementById('ad-check');
 	var adBlockClose = document.getElementById('close-adblock');
+	var onAir = document.getElementById('on-air');
 	var onAirTitle = document.querySelector('.on-air__title');
 	var onAirShow = document.querySelector('.on-air__show');
 	var streamStatus = document.getElementById('live-stream__status');
@@ -264,9 +265,9 @@
 		var audioCurrent = podcastCover.nextElementSibling;
 		var runtimeCurrent = audioCurrent.nextElementSibling;
 		var audioTime = document.querySelectorAll('.audio__time'), i;
-		var runtime = document.querySelector('.podcast__runtime')
+		var runtime = document.querySelector('.podcast__runtime');
 
-		if (podcastPlayer != null && body.classList.contains('page-template-single-show-podcasts-php')) {
+		if (podcastPlayer != null && body.classList.contains('single-show')) {
 			audioCurrent.classList.add('playing__current');
 			runtimeCurrent.classList.add('playing');
 		} else {
@@ -1264,10 +1265,12 @@
 
 	var setPlayerTrackName = function() {
 		var template = _.template('<div class="now-playing__title"><%- title %></div>'),
-			$trackTitleDiv = $('.now-playing__title');
+			$trackTitleDiv = $('.now-playing__title'),
+			$trackTitleWrap = '<div class="audio__title">',
+			$time = '</div><div class="audio__time"><span class="audio__time--inline">(</span><div class="audio__time--elapsed"></div><span class="audio__time--inline"> / </span><div class="audio__time--remaining"></div><span class="audio__time--inline">)</span></div>';
 
 		if ( $trackTitleDiv.length > 0 ) {
-			$trackTitleDiv.text( customTrack );
+			$trackTitleDiv.html( $trackTitleWrap + customTrack + $time );
 		} else {
 			$trackInfo.prepend( template({ title: customTrack }) );
 		}
