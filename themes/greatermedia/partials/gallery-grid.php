@@ -13,12 +13,7 @@
 		<h3 class="gallery__grid--title">
 			<a href="<?php the_permalink(); ?>">
 				<?php
-				$thetitle = explode( ' ', get_the_title() );
-				$output = array_slice( $thetitle, 0, 15 );
-				echo implode( ' ', $output );
-				if( $thetitle > 15 ) {
-					echo '...';
-				}
+				the_title();
 				?>
 			</a>
 		</h3>
