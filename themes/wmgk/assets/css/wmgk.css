@@ -4016,25 +4016,23 @@ Link posts contain a link to an external site. They can also optionally have a f
     .entry2.format-audio.has-post-thumbnail .entry2__meta:last-child {
       margin-right: 0; } }
 
-.format-audio .entry2__thumbnail a, .format-gallery .entry2__thumbnail a, .format-video .entry2__thumbnail a, .type-contest .entry2__thumbnail a, .type-tribe_events .entry2__thumbnail a {
-  font-size: 10%; }
-  .format-audio .entry2__thumbnail a:before, .format-gallery .entry2__thumbnail a:before, .format-video .entry2__thumbnail a:before, .type-contest .entry2__thumbnail a:before, .type-tribe_events .entry2__thumbnail a:before {
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    padding: 3%;
-    text-align: right;
-    color: #fff;
-    z-index: 30;
-    font-size: 4em; }
-    @media screen and (min-width: 480px) {
-      .format-audio .entry2__thumbnail a:before, .format-gallery .entry2__thumbnail a:before, .format-video .entry2__thumbnail a:before, .type-contest .entry2__thumbnail a:before, .type-tribe_events .entry2__thumbnail a:before {
-        font-size: 2.5em; } }
-    @media screen and (min-width: 1024px) {
-      .format-audio .entry2__thumbnail a:before, .format-gallery .entry2__thumbnail a:before, .format-video .entry2__thumbnail a:before, .type-contest .entry2__thumbnail a:before, .type-tribe_events .entry2__thumbnail a:before {
-        font-size: 3em; } }
+.format-audio .entry2__thumbnail a:before, .format-gallery .entry2__thumbnail a:before, .format-video .entry2__thumbnail a:before, .type-contest .entry2__thumbnail a:before, .type-tribe_events .entry2__thumbnail a:before {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  padding: 3%;
+  text-align: right;
+  color: #fff;
+  z-index: 30;
+  font-size: 4em; }
+  @media screen and (min-width: 480px) {
+    .format-audio .entry2__thumbnail a:before, .format-gallery .entry2__thumbnail a:before, .format-video .entry2__thumbnail a:before, .type-contest .entry2__thumbnail a:before, .type-tribe_events .entry2__thumbnail a:before {
+      font-size: 2.5em; } }
+  @media screen and (min-width: 1024px) {
+    .format-audio .entry2__thumbnail a:before, .format-gallery .entry2__thumbnail a:before, .format-video .entry2__thumbnail a:before, .type-contest .entry2__thumbnail a:before, .type-tribe_events .entry2__thumbnail a:before {
+      font-size: 3em; } }
 
 .type-tribe_events .entry2__thumbnail {
   background-color: #d22228; }
@@ -8851,7 +8849,7 @@ category: Components - Gallery Archive
   position: absolute;
   top: 8px;
   left: 14px;
-  font-size: 0.85rem;
+  font-size: 1.125em;
   content: "\e619"; }
   .single-contest .gallery__prev--btn:before {
     top: 8px;
@@ -8873,7 +8871,7 @@ category: Components - Gallery Archive
   position: absolute;
   top: 8px;
   right: 14px;
-  font-size: 0.85rem;
+  font-size: 1.125em;
   content: "\e618"; }
   .single-contest .gallery__next--btn:after {
     top: 8px;
