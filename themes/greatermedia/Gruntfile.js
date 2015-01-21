@@ -23,7 +23,8 @@ module.exports = function (grunt) {
 					'assets/js/src/profile.js',
 					'assets/js/src/social_share.js',
 					'assets/js/src/greater_media_pjax.js',
-					'assets/js/src/greater_media.js'
+					'assets/js/src/greater_media.js',
+					'assets/js/src/search.js'
 				],
 				dest: 'assets/js/greater_media.js'
 			},

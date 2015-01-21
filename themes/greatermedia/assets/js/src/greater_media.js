@@ -18,7 +18,6 @@
 		mobileNavButton = document.querySelector( '.mobile-nav__toggle' ),
 		pageWrap = document.getElementById( 'page-wrap' ),
 		header = document.getElementById( 'header' ),
-		headerHeight,
 		livePlayer = document.getElementById( 'live-player__sidebar' ),
 		livePlayerStream = document.querySelector('.live-player__stream'),
 		livePlayerStreamSelect = document.querySelector( '.live-player__stream--current' ),
@@ -34,9 +33,6 @@
 		liveStream = document.getElementById( 'live-player' ),
 		windowWidth = this.innerWidth || this.document.documentElement.clientWidth || this.document.body.clientWidth || 0,
 		scrollObject = {},
-		searchForm = document.getElementById( 'header__search--form'),
-		searchBtn = document.getElementById( 'header__search'),
-		searchInput = document.getElementById( 'header-search'),
 		collapseToggle = document.querySelector('*[data-toggle="collapse"]'),
 		breakingNewsBanner = document.getElementById('breaking-news-banner'),
 		$overlay = $('.overlay-mask');
@@ -49,11 +45,21 @@
 	 * @returns {number}
 	 */
 	function elemHeight(elem) {
-		if (elem == header && breakingNewsBanner != null && breakingNewsBanner.parentNode != header ) {
+		if (elem != null && elem === header && breakingNewsBanner != null) {
 			return elem.offsetHeight + breakingNewsBanner.offsetHeight;
 		} else {
 			return elem.offsetHeight;
 		}
+	}
+
+	function elemTopOffset(elem) {
+		if (elem != null) {
+			return elem.offsetTop;
+		}
+	}
+
+	function elemHeightOffset(elem) {
+		return elemHeight(elem) - elemTopOffset(elem);
 	}
 	
 	function windowHeight(elem) {
@@ -111,11 +117,11 @@
 		if (body.classList.contains('logged-in')) {
 			livePlayer.style.top = wpAdminHeight + elemHeight(header) + 'px';
 			livePlayer.style.height = windowHeight(window) - wpAdminHeight - elemHeight(header) + 'px';
-			liveLinks.style.height = windowHeight(window) - wpAdminHeight - elemHeight(header) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - 36 + 'px';
+			liveLinks.style.height = windowHeight(window) - wpAdminHeight - elemHeight(header) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) + 'px';
 		} else {
 			livePlayer.style.top = elemHeight(header) + 'px';
 			livePlayer.style.height = windowHeight(window) - elemHeight(header) + 'px';
-			liveLinks.style.height = windowHeight(window) - elemHeight(header) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - 36 + 'px';
+			liveLinks.style.height = windowHeight(window) - elemHeight(header) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) + 'px';
 		}
 		livePlayer.classList.remove('live-player--fixed');
 		livePlayer.classList.add('live-player--init');
@@ -126,13 +132,13 @@
 	 */
 	function lpPosScrollInit() {
 		if (body.classList.contains('logged-in')) {
-			livePlayer.style.top = elemHeight(header) + wpAdminHeight + 'px';
-			livePlayer.style.height = windowHeight(window) - wpAdminHeight - elemHeight(header) + 'px';
-			liveLinks.style.height = windowHeight(livePlayer) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) + 'px';
+			livePlayer.style.top =  wpAdminHeight + elemHeight(header) + 'px';
+			livePlayer.style.height = windowHeight(window) - wpAdminHeight + 'px';
+			liveLinks.style.height = windowHeight(window) - elemTopOffset(header) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) + 'px';
 		} else {
 			livePlayer.style.top = elemHeight(header) + 'px';
 			livePlayer.style.height = windowHeight(window) - wpAdminHeight - elemHeight(header) + 'px';
-			liveLinks.style.height = windowHeight(window) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - 36 + 'px';
+			liveLinks.style.height = windowHeight(window) - elemHeightOffset(header) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) + 'px';
 		}
 		livePlayer.classList.remove('live-player--fixed');
 		livePlayer.classList.add('live-player--init');
@@ -145,11 +151,11 @@
 		if (body.classList.contains('logged-in')) {
 			livePlayer.style.top = wpAdminHeight + 'px';
 			livePlayer.style.height = windowHeight(window) - wpAdminHeight + 'px';
-			liveLinks.style.height = windowHeight(window) - wpAdminHeight - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - 36 + 'px';
+			liveLinks.style.height = windowHeight(window) - wpAdminHeight - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) + 'px';
 		} else {
 			livePlayer.style.top = '0px';
 			livePlayer.style.height = windowHeight(window) + 'px';
-			liveLinks.style.height = windowHeight(window) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - 36 + 'px';
+			liveLinks.style.height = windowHeight(window) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) + 'px';
 		}
 		livePlayer.classList.remove('live-player--init');
 		livePlayer.classList.add('live-player--fixed');
@@ -182,7 +188,7 @@
 				y: window.pageYOffset
 			};
 
-			if (scrollObject.y === 0) {
+			if (scrollObject.y == 0) {
 				lpPosBase();
 			} else if (scrollObject.y >= 1 && elementInViewport(header)) {
 				lpPosScrollInit();
@@ -200,11 +206,6 @@
 	 */
 	function liveLinksAddHeight() {
 		if ( window.innerWidth >= 768 ) {
-			if (body.classList.contains('logged-in')) {
-				liveLinks.style.height = windowHeight(window) - elemHeight(header) - wpAdminHeight - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) + 'px';
-			} else {
-				liveLinks.style.height = windowHeight(window) - elemHeight(header) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) + 'px';
-			}
 			liveLinksWidget.style.height = elemHeight(liveLinksWidget) + 'px';
 		}
 	}
@@ -410,73 +411,8 @@
 		}
 	}
 
-	/**
-	 * A function to show the header search when an event is targeted.
-	 *
-	 * @param e
-	 */
-	function showSearch(e) {
-		if (searchForm !== null) {
-			e.preventDefault();
-			$overlay.addClass( 'is-visible' )
-			
-			// Now, show the search form, but don't set focus until the transition
-			// animation is complete. This is because Webkit browsers scroll to 
-			// the element when it gets focus, and they scroll to it where it was
-			// before the transition started. 
-			$( searchForm )
-				.toggleClass('header__search--open')
-				.on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', function () {
-					searchInput.focus();
-					$(searchInput).select();  
-				} );			
-		}
-	}
 
-	/**
-	 * A function to hide the header search when an event is targeted.
-	 *
-	 * @param e
-	 */
-	function closeSearch(e) {
-		if (searchForm !== null && searchForm.classList.contains('header__search--open')) {
-			e.preventDefault();
-			searchForm.classList.remove('header__search--open');
-			$overlay.removeClass('is-visible');
-		}
-	}
-
-	/**
-	 * Event listeners to run on click to show and close the search.
-	 */
-	if (searchBtn !== null) {
-		searchBtn.addEventListener('click', showSearch, false);
-		/**
-		 * An event listener is also in place for the header search form so that when a user clicks inside of it, it will
-		 * not hide. This is key because the header search for sits within the element that the click event that closes the
-		 * search. If this is event listener is not in place and a user clicks within the search area, it will close.
-		 */
-		searchForm.addEventListener('click', function(e) {
-			e.stopPropagation();
-		});
-	}
-
-	/**
-	 * Close the search box when user presses escape.
-	 */
-	$(window).keydown(function (e) {
-		if (e.keyCode === 27){
-			closeSearch(e);
-		}
-	});
-
-	/**
-	 * Close the search box (if open) if the user clicks on the overlay.
-	 */
-	$overlay.click(function (e) {
-		closeSearch(e);
-	});
-
+	
 	/**
 	 * variables that define debounce and throttling for window resizing and scrolling
 	 */
