@@ -21,7 +21,9 @@ get_header(); ?>
 					<?php echo ! empty( $object->labels->name ) ? esc_html( strtolower( $object->labels->name ) ) : ''; ?>
 				</h2>
 
-				<?php
+				<div class="advertisers">
+
+					<?php
 
 					$advertiser_args = array(
 						'post_type' => GMR_ADVERTISER_CPT,
@@ -33,31 +35,33 @@ get_header(); ?>
 
 					if ( $advertiser_query->have_posts() ) : while ( $advertiser_query->have_posts() ) : $advertiser_query->the_post();
 
-				?>
+						?>
 
-					<?php get_template_part( 'partials/loop', 'advertiser' ); ?>
+						<?php get_template_part( 'partials/loop', 'advertiser' ); ?>
 
-				<?php endwhile; ?>
+					<?php endwhile; ?>
 
-				<?php else : ?>
+					<?php else : ?>
 
-					<article id="post-not-found" class="hentry cf">
+						<article id="post-not-found" class="hentry cf">
 
-						<header class="article-header">
+							<header class="article-header">
 
-							<h1><?php _e( 'Oops, Post Not Found!', 'greatermedia' ); ?></h1>
+								<h1><?php _e( 'Oops, Post Not Found!', 'greatermedia' ); ?></h1>
 
-						</header>
+							</header>
 
-						<section class="entry-content">
+							<section class="entry-content">
 
-							<p><?php _e( 'Uh Oh. Something is missing. Try double checking things.', 'greatermedia' ); ?></p>
+								<p><?php _e( 'Uh Oh. Something is missing. Try double checking things.', 'greatermedia' ); ?></p>
 
-						</section>
+							</section>
 
-					</article>
+						</article>
 
-				<?php endif; ?>
+					<?php endif; ?>
+
+				</div>
 
 			</section>
 

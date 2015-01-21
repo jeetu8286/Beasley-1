@@ -9,7 +9,7 @@
 
 		<div class="advertiser__logo">
 
-			<a href="<?php echo esc_url( $advertiser_link ); ?>"><?php the_post_thumbnail(); ?></a>
+			<a href="<?php echo esc_url( $advertiser_link ); ?>"><?php the_post_thumbnail( 'gmr-advertiser' ); ?></a>
 
 		</div>
 

@@ -1,26 +1,68 @@
-.advertiser {
-	@include span-columns(4);
+.advertisers {
+	@include fill-parent;
+	overflow: auto;
+	border: 1px solid $primary-border;
+	background-color: $color-gray-light;
+}
 
-	@include bp(small) {
-		@include span-columns(6);
-	}
+.advertiser {
+	position: relative;
+	display: block;
+	float: left;
+	width: 100%;
+	padding: 2em;
+	border-bottom: 1px solid $primary-border;
+	background-color: white;
 
 	@include bp(medium) {
-		@include span-columns(4);
-		@include pad();
+		width: 50%;
+		height: 200px;
+		border-right: 1px solid $primary-border;
 	}
 
 	@include bp(large) {
-		@include span-columns(6);
-		@include pad();
-	}
-
-	@include bp(x-large) {
-		@include span-columns(6);
-		@include pad();
+		height: 270px;
 	}
 
 	&:nth-of-type(2n+2) {
-		@include omega;
+		border-right: none;
 	}
+
+	&:last-of-type {
+		border-bottom: none;
+	}
+}
+
+.advertiser__logo,
+.advertiser__name {
+	margin: 0 auto;
+	text-align: center;
+
+	@include bp(medium) {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		@include transform(translate(-50%, -50%));
+
+		a {
+			display: block;
+		}
+	}
+}
+
+.advertiser__logo img {
+	margin: 0 auto;
+}
+
+.advertiser__name a,
+.advertiser__name a:visited {
+	font-size: ms(5);
+	font-weight: bold;
+	color: $primary-text;
+}
+
+.advertiser__name a:hover,
+.advertiser__name a:active,
+.advertiser__name a:focus {
+	color: $primary-link-hover;
 }

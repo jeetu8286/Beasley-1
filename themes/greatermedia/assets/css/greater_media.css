@@ -11523,50 +11523,65 @@ category: Components
     font-size: 1em;
     font-weight: bold; }
 
+.advertisers {
+  width: 100%;
+  overflow: auto;
+  border: 1px solid #d0d2d3;
+  background-color: #d0d2d3; }
+
 .advertiser {
-  float: left;
+  position: relative;
   display: block;
-  margin-right: 7.42297%;
-  width: 100%; }
-  .advertiser:last-child {
-    margin-right: 0; }
-  @media screen and (min-width: 480px) {
-    .advertiser {
-      float: left;
-      display: block;
-      margin-right: 4.82916%;
-      width: 100%; }
-      .advertiser:last-child {
-        margin-right: 0; } }
+  float: left;
+  width: 100%;
+  padding: 2em;
+  border-bottom: 1px solid #d0d2d3;
+  background-color: white; }
   @media screen and (min-width: 768px) {
     .advertiser {
-      float: left;
-      display: block;
-      margin-right: 3.57866%;
-      width: 48.21067%;
-      padding: 2.35765%; }
-      .advertiser:last-child {
-        margin-right: 0; } }
+      width: 50%;
+      height: 200px;
+      border-right: 1px solid #d0d2d3; } }
   @media screen and (min-width: 1024px) {
     .advertiser {
-      float: left;
-      display: block;
-      margin-right: 2.35765%;
-      width: 48.82117%;
-      padding: 2.35765%; }
-      .advertiser:last-child {
-        margin-right: 0; } }
-  @media screen and (min-width: 1400px) {
-    .advertiser {
-      float: left;
-      display: block;
-      margin-right: 2.35765%;
-      width: 48.82117%;
-      padding: 2.35765%; }
-      .advertiser:last-child {
-        margin-right: 0; } }
+      height: 270px; } }
   .advertiser:nth-of-type(2n+2) {
-    margin-right: 0; }
+    border-right: none; }
+  .advertiser:last-of-type {
+    border-bottom: none; }
+
+.advertiser__logo,
+.advertiser__name {
+  margin: 0 auto;
+  text-align: center; }
+  @media screen and (min-width: 768px) {
+    .advertiser__logo,
+    .advertiser__name {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      -webkit-transform: translate(-50%, -50%);
+      -moz-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+      -o-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%); }
+      .advertiser__logo a,
+      .advertiser__name a {
+        display: block; } }
+
+.advertiser__logo img {
+  margin: 0 auto; }
+
+.advertiser__name a,
+.advertiser__name a:visited {
+  font-size: 1.80203em;
+  font-weight: bold;
+  color: #404041; }
+
+.advertiser__name a:hover,
+.advertiser__name a:active,
+.advertiser__name a:focus {
+  color: #aa1c20; }
 
 /**
  * Single Page Styles
