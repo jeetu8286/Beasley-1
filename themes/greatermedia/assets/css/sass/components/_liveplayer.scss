@@ -945,6 +945,7 @@ category: Components
 
 		@include bp(medium) {
 			@include fill-parent;
+			padding: 56px 1em 0;
 			margin-left: 0;
 		}
 	}
@@ -965,10 +966,6 @@ category: Components
 			width: 100%;
 		}
 	}
-}
-
-.live-player--active .now-playing {
-	display: block;
 }
 
 .now-playing__info {

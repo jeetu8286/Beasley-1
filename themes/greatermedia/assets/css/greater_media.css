@@ -5323,6 +5323,7 @@ category: Components
     @media screen and (min-width: 768px) {
       .live-player--active .now-playing {
         width: 100%;
+        padding: 56px 1em 0;
         margin-left: 0; } }
   .now-playing.playing {
     position: absolute;
@@ -5338,9 +5339,6 @@ category: Components
         top: auto;
         left: auto;
         width: 100%; } }
-
-.live-player--active .now-playing {
-  display: block; }
 
 .now-playing.playing .now-playing__info, .live-player--active .now-playing__info {
   position: absolute;

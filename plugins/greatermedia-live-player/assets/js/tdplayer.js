@@ -503,8 +503,9 @@
 				listenLiveStopCustomInlineAudio();
 			}
 
+			body.classList.add('live-player--active');
 			player.play({station: station, timeShift: true});
-			setTimeout(setPlayingStyles, 1000);
+			setTimeout(setPlayingStyles, 50);
 			setTimeout(replaceNPInfo, 2000);
 		}
 	}
@@ -528,6 +529,7 @@
 				player.stop();
 			}
 
+			body.classList.add('live-player--active');
 			player.play({station: station, timeShift: true});
 			setPlayingStyles();
 			setTimeout(replaceNPInfo, 2000);
@@ -565,8 +567,9 @@
 						player.stop();
 					}
 
+					body.classList.add('live-player--active');
 					player.play({station: station, timeShift: true});
-					setTimeout(setPlayingStyles, 1000);
+					setTimeout(setPlayingStyles, 50);
 					setTimeout(replaceNPInfo, 2000);
 				});
 			} else if (player.attachEvent) {
@@ -578,8 +581,9 @@
 						player.stop();
 					}
 
+					body.classList.add('live-player--active');
 					player.play({station: station, timeShift: true});
-					setTimeout(setPlayingStyles, 1000);
+					setTimeout(setPlayingStyles, 50);
 					setTimeout(replaceNPInfo, 2000);
 				});
 			}
@@ -593,6 +597,9 @@
 			player.stop();
 		}
 
+		if (body.classList.contains('live-player--active')) {
+			body.classList.remove('live-player--active');
+		}
 		setStoppedStyles();
 	}
 
@@ -603,6 +610,9 @@
 			player.pause();
 		}
 
+		if (body.classList.contains('live-player--active')) {
+			body.classList.remove('live-player--active');
+		}
 		setPausedStyles();
 	}
 
