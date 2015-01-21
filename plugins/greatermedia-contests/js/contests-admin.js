@@ -9,7 +9,7 @@
 			var formbuilder = new Formbuilder({
 				selector: '#contest_embedded_form',
 				bootstrapData: GreaterMediaContestsForm.form,
-				controls: ['address', 'checkboxes', 'date', 'dropdown', 'email', 'paragraph', 'radio', 'section_break', 'text', 'website']
+				controls: ['address', 'checkboxes', 'date', 'dropdown', 'email', 'paragraph', 'radio', 'section_break', 'text', 'website', 'file']
 			});
 
 			formbuilder.on('save', function (payload) {
