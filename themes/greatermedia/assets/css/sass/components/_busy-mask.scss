@@ -1,6 +1,6 @@
 .busy-mask {
 	visibility: hidden;
-	background-color: rgba(0, 0, 0, .75);
+	background-color: rgba( 0, 0, 0, .75 );
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -8,12 +8,11 @@
 	height: 100%;
 	z-index: 10000000;
 	opacity: 0;
-	@include transition(visibility 0s linear, opacity 100ms ease-out);
+	@include transition( visibility 0s 50ms, opacity 50ms linear );
 	
-	body.is-busy &,
-	&.is-visible {
+	body.is-busy & {
 		visibility: visible;
 		opacity: 1;
-		@include transition(visibility 0s linear, opacity 100ms ease-out);
+		@include transition( opacity 250ms linear );
 	}
 }
