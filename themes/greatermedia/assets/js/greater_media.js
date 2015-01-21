@@ -582,7 +582,6 @@
 	 *
 	 * @type {lpAction}
 	 */
-	pauseLp = new lpAction(pauseBtn, lpNowPlaying, lpListenNow);
 	resumeLp = new lpAction(resumeBtn, lpListenNow, lpNowPlaying);
 
 	/**
@@ -673,15 +672,11 @@
 	}
 
 	function playerActive() {
-		if (window.innerWidth <= 767) {
-			body.classList.add('live-player--active');
-		}
+		body.classList.add('live-player--active');
 	}
 
 	function playerNotActive() {
-		if (window.innerWidth <= 767) {
-			body.classList.remove('live-player--active');
-		}
+		body.classList.remove('live-player--active');
 	}
 
 	/**

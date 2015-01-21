@@ -4550,6 +4550,14 @@ category: Components
   margin: 10px 5%;
   z-index: 100; }
 
+.live-player--active.live-player--open .live-player__stream {
+  width: 40%;
+  left: auto;
+  right: 0;
+  display: block;
+  margin: 10px 5%;
+  z-index: 100; }
+
 .live-player__stream--list {
   padding: 0;
   margin: 0; }
@@ -4683,10 +4691,6 @@ category: Components
   width: 14.375%;
   padding: 12px 3.75% 12px 0;
   text-align: right; }
-  @media screen and (min-width: 480px) {
-    .live-stream {
-      width: 9.583333333333%;
-      padding-right: 2.5%; } }
   @media screen and (min-width: 768px) {
     .live-stream {
       float: none;
@@ -4699,23 +4703,27 @@ category: Components
 .live-stream__player {
   position: absolute;
   right: 39px;
-  display: block;
   width: 34px;
+  height: 58px;
   padding: 12px 0;
   margin-right: 5px;
-  -webkit-transition: all 500ms ease-in-out;
-  -moz-transition: all 500ms ease-in-out;
-  transition: all 500ms ease-in-out; }
+  -webkit-transition: width 500ms ease-in-out;
+  -moz-transition: width 500ms ease-in-out;
+  transition: width 500ms ease-in-out; }
   @media screen and (min-width: 768px) {
     .live-stream__player {
       position: relative;
       right: auto;
       width: 100%;
+      height: auto;
       padding: 0 0 23px;
       margin-right: 0; } }
   .live-stream__player.audio__playing {
     width: 73px;
-    padding-bottom: 0; }
+    padding-bottom: 0;
+    -webkit-transition: width 500ms ease-in-out;
+    -moz-transition: width 500ms ease-in-out;
+    transition: width 500ms ease-in-out; }
     @media screen and (min-width: 768px) {
       .live-stream__player.audio__playing {
         width: 100%;
@@ -4727,7 +4735,7 @@ category: Components
 .live-stream__status {
   position: absolute;
   top: 15px;
-  right: 39px;
+  right: 45px;
   display: block;
   -webkit-transition: all 500ms ease-in-out;
   -moz-transition: all 500ms ease-in-out;
@@ -4742,10 +4750,12 @@ category: Components
       padding-bottom: 26px;
       margin: 0 auto;
       text-align: center; } }
-  @media screen and (min-width: 768px) {
-    .live-stream__status.audio__playing {
-      display: block;
-      top: 66px; } }
+  .live-stream__status.audio__playing {
+    display: none; }
+    @media screen and (min-width: 768px) {
+      .live-stream__status.audio__playing {
+        display: block;
+        top: 66px; } }
   .gmr-user .live-stream__status {
     display: none; }
     @media screen and (min-width: 768px) {
@@ -5004,7 +5014,10 @@ category: Components
   transform-style: preserve-3d;
   -webkit-transition: 500ms;
   -moz-transition: 500ms;
-  transition: 500ms; }
+  transition: 500ms;
+  -webkit-transition-delay: 1s;
+  -moz-transition-delay: 1s;
+  transition-delay: 1s; }
   .live-stream__player.audio__playing .live-stream__btn--play {
     display: block;
     position: absolute;
@@ -5028,9 +5041,9 @@ category: Components
     -ms-transform-style: preserve-3d;
     -o-transform-style: preserve-3d;
     transform-style: preserve-3d;
-    -webkit-transition: 500ms;
-    -moz-transition: 500ms;
-    transition: 500ms; }
+    -webkit-transition: 200ms;
+    -moz-transition: 200ms;
+    transition: 200ms; }
     .live-stream__btn--play.live-player__login:before {
       left: 50%;
       content: "\e626" !important; }
@@ -5039,19 +5052,34 @@ category: Components
         display: none;
         position: relative;
         right: auto; } }
-  .live-stream__btn--play.muted {
-    -webkit-transition: 100ms;
-    -moz-transition: 100ms;
-    transition: 100ms; }
+  .live-player--active .live-stream__btn--play {
+    display: none; }
+  .live-stream__btn--play.live-player__muted {
+    display: none; }
 
-.live-stream__player.audio__playing .live-stream__btn--pause {
-  display: block;
-  position: absolute;
-  left: 0; }
+.live-stream__btn--pause {
+  display: none;
+  visibility: hidden;
+  float: left;
+  -webkit-transition: all 2s ease-in-out 500ms;
+  -moz-transition: all 2s ease-in-out 500ms;
+  transition: all 2s ease-in-out 500ms; }
   @media screen and (min-width: 768px) {
-    .live-stream__player.audio__playing .live-stream__btn--pause {
-      position: relative;
-      left: auto; } }
+    .live-stream__btn--pause {
+      float: none; } }
+  .live-stream__player.audio__playing .live-stream__btn--pause {
+    display: block;
+    visibility: visible;
+    float: left;
+    -webkit-transition: all 2s ease-in-out 500ms;
+    -moz-transition: all 2s ease-in-out 500ms;
+    transition: all 2s ease-in-out 500ms; }
+    @media screen and (min-width: 768px) {
+      .live-stream__player.audio__playing .live-stream__btn--pause {
+        float: none; } }
+  .live-player--active .live-stream__btn--pause {
+    display: block;
+    visibility: visible; }
 
 .live-stream__btn--resume.resume__audio {
   display: block;
@@ -5061,6 +5089,8 @@ category: Components
     .live-stream__btn--resume.resume__audio {
       position: relative;
       left: auto; } }
+.live-stream__btn--resume.live-player__muted {
+  display: none; }
 
 .live-stream--inactive {
   position: relative;
@@ -5170,10 +5200,6 @@ category: Components
   position: relative;
   width: 100%;
   text-align: right; }
-  @media screen and (min-width: 480px) {
-    .live-stream__controls {
-      width: 9.583333333333%;
-      padding-right: 2.5%; } }
   @media screen and (min-width: 768px) {
     .live-stream__controls {
       float: none;
@@ -5186,10 +5212,10 @@ category: Components
 .live-player--active .live-stream__controls {
   width: 100%;
   padding: 0; }
-  @media screen and (min-width: 480px) {
+  @media screen and (min-width: 768px) {
     .live-player--active .live-stream__controls {
       width: 100%;
-      padding-right: 0; } }
+      padding-top: 23px; } }
 
 .live-stream__btn--resume, .live-stream__btn--pause {
   display: none; }
@@ -5199,11 +5225,6 @@ category: Components
   width: calc(100% - 144px);
   padding: 16px 0 16px 3.75%;
   line-height: 1; }
-  @media screen and (min-width: 480px) {
-    .on-air, .up-next {
-      width: 85.416666666667%;
-      padding-left: 2.5%;
-      margin-right: 2.5%; } }
   @media screen and (min-width: 768px) {
     .on-air, .up-next {
       float: none;
@@ -5218,7 +5239,15 @@ category: Components
       .live-player__container.playing .on-air, .live-player__container.playing .up-next {
         display: block; } }
   .live-player--active .on-air, .live-player--active .up-next {
-    display: none; }
+    display: block;
+    position: absolute;
+    top: 52px;
+    width: 50%; }
+    @media screen and (min-width: 768px) {
+      .live-player--active .on-air, .live-player--active .up-next {
+        display: block;
+        width: 100%;
+        top: auto; } }
   .gmr-user .on-air, .gmr-user .up-next {
     width: calc(100% - 144px); }
     @media screen and (min-width: 768px) {
@@ -5268,6 +5297,9 @@ category: Components
   .live-player--active .now-playing {
     display: block;
     width: calc(100% - 78px); }
+    @media screen and (min-width: 768px) {
+      .live-player--active .now-playing {
+        width: 100%; } }
   .now-playing.playing {
     position: absolute;
     top: 0;

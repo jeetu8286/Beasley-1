@@ -191,12 +191,12 @@
 		tdContainer.classList.add('stream__active');
 		if (true === playingCustomAudio && window.innerWidth <= 767) {
 			playBtn.classList.add('live-player__login');
-			playBtn.classList.add('muted');
 		} else {
-			playBtn.style.display = 'none';
+			playBtn.classList.add('live-player__muted');
 		}
-		resumeBtn.style.display = 'none';
-		pauseBtn.style.display = 'block';
+		if (! resumeBtn.classList.contains('live-player__muted')) {
+			resumeBtn.classList.add('live-player__muted');
+		}
 		if (true === playingCustomAudio) {
 			nowPlaying.style.display = 'none';
 			listenNow.style.display = 'inline-block';
@@ -214,9 +214,9 @@
 			return;
 		}
 
-		playBtn.style.display = 'block';
-		pauseBtn.style.display = 'none';
-		resumeBtn.style.display = 'none';
+		if (! resumeBtn.classList.contains('live-player__muted')) {
+			resumeBtn.classList.add('live-player__muted');
+		}
 		listenNow.style.display = 'inline-block';
 		nowPlaying.style.display = 'none';
 	}
@@ -229,14 +229,14 @@
 
 		if (true === playingCustomAudio && window.innerWidth <= 767) {
 			playBtn.classList.add('live-player__login');
-			playBtn.classList.add('muted');
 		} else {
-			playBtn.style.display = 'none';
+			playBtn.classList.add('live-player__muted');
 		}
-		pauseBtn.style.display = 'none';
 		listenNow.style.display = 'inline-block';
 		nowPlaying.style.display = 'none';
-		resumeBtn.style.display = 'block';
+		if (resumeBtn.classList.contains('live-player__muted')) {
+			resumeBtn.classList.remove('live-player__muted');
+		}
 		resumeBtn.classList.add('resume__audio');
 	}
 
@@ -461,9 +461,7 @@
 
 	function playLiveStream() {
 		pjaxInit();
-		if ( true === playingCustomAudio ) {
-			resumeCustomInlineAudio();
-		} else if (adBlockCheck == undefined) {
+		if (adBlockCheck == undefined) {
 			preVastAd();
 			showAdBlockDetect();
 			setTimeout(postVastAd, 15000);
@@ -478,6 +476,10 @@
 
 			if (livePlaying) {
 				player.stop();
+			}
+
+			if ( true === playingCustomAudio ) {
+				listenLiveStopCustomInlineAudio();
 			}
 
 			player.play({station: station, timeShift: true});
@@ -487,9 +489,7 @@
 
 	function resumeLiveStream() {
 		pjaxInit();
-		if ( true === playingCustomAudio ) {
-			resumeCustomInlineAudio();
-		} else if (adBlockCheck == undefined) {
+		if (adBlockCheck == undefined) {
 			preVastAd();
 			showAdBlockDetect();
 			setTimeout(postVastAd, 15000);
@@ -507,7 +507,7 @@
 			}
 
 			player.play({station: station, timeShift: true});
-			setTimeout(setPlayingStyles, 1000);
+			setPlayingStyles();
 		}
 	}
 
