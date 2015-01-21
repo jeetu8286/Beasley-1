@@ -1,12 +1,11 @@
-.busy-mask {
+.main .busy-mask {
 	visibility: hidden;
-	background-color: rgba( 0, 0, 0, .75 );
-	position: fixed;
+	background-color: rgba( #fff, .85 );
+	position: absolute;
 	top: 0;
 	left: 0;
-	width: 100%;
-	height: 100%;
-	z-index: 10000000;
+	right: 0;
+	bottom: 0;
 	opacity: 0;
 	@include transition( visibility 0s 50ms, opacity 50ms linear );
 	
