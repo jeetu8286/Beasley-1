@@ -2,7 +2,7 @@
 
 // action hooks
 add_action( 'admin_menu', 'gmr_surveys_register_responses_page' );
-add_action( 'post_submitbox_start', 'gmr_survey_view_responses_link' );
+add_action( 'post_submitbox_start', 'gmr_survey_view_responses_link', 1 );
 add_action( 'manage_' . GMR_SURVEY_RESPONSE_CPT . '_posts_custom_column', 'gmr_surveys_render_survey_response_column', 10, 2 );
 add_action( 'pre_get_posts', 'gmr_survey_adjust_survey_responses_query' );
 
