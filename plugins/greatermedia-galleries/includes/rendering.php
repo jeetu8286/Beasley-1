@@ -227,6 +227,7 @@ class GreaterMediaGallery {
 								$image = wp_get_attachment_image_src( get_the_ID(), array( 775, 516 ), false );
 								$image_url = $image[0];
 								$image_attribution = get_post_meta( get_the_ID(), 'gmr_image_attribution', true );
+								$img_link = filter_var( $image_attribution, FILTER_VALIDATE_URL );
 								?>
 								<div class="gallery__slide--image"
 									<?php
@@ -238,9 +239,15 @@ class GreaterMediaGallery {
 									<?php
 
 										if ( ! empty( $image_attribution ) ) {
-											echo '<div class="image__attribution">';
-											echo wp_kses_post( $image_attribution );
-											echo '</div>';
+											if ( $img_link ) {
+												echo '<div class="image__attribution">';
+												echo '<a href="' . wp_kses_post( $image_attribution ) . '">Photo Credit</a>';
+												echo '</div>';
+											} else {
+												echo '<div class="image__attribution">';
+												echo wp_kses_post( $image_attribution );
+												echo '</div>';
+											}
 										}
 
 									?>
