@@ -11,7 +11,16 @@
 
 	<div class="gallery__grid--meta">
 		<h3 class="gallery__grid--title">
-			<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+			<a href="<?php the_permalink(); ?>">
+				<?php
+				$thetitle = explode( ' ', get_the_title() );
+				$output = array_slice( $thetitle, 0, 15 );
+				echo implode( ' ', $output );
+				if( $thetitle > 15 ) {
+					echo '...';
+				}
+				?>
+			</a>
 		</h3>
 	</div>
 
