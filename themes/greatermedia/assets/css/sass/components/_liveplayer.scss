@@ -326,19 +326,29 @@ category: Components
 }
 
 .live-stream__player {
+	position: absolute;
+	right: 39px;
 	display: block;
-	float: right;
 	width: 34px;
 	padding: 12px 0;
 	margin-right: 5px;
+	@include transition(all 500ms ease-in-out);
 	@include bp(medium) {
+		position: relative;
+		right: auto;
 		width: 100%;
 		padding: 0 0 23px;
 		margin-right: 0;
 	}
 
 	&.audio__playing {
+		width: 73px;
 		padding-bottom: 0;
+
+		@include bp(medium) {
+			width: 100%;
+			padding: 0 0 23px;
+		}
 	}
 }
 
@@ -497,8 +507,33 @@ category: Components
 
 .live-stream__btn--login  {
 	position: relative;
-	display: block;
+	float: right;
+	display: none;
+	width: 34px;
+	height: 34px;
+	padding: 0;
+	margin: 12px 5px 12px 0;
 	@extend %live-stream__btn;
+	border-color: $btn-inactive;
+	color: $btn-inactive;
+
+	&:before {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		@include transform(translate(-50%, -50%));
+		font-family: $icon-font !important;
+		font-size: ms(2);
+		content: "\e626";
+	}
+
+	.live-player__container.playing & {
+		display: block;
+
+		@include bp(medium) {
+			display: none;
+		}
+	}
 }
 
 .live-stream__btn--play, .live-stream__btn--resume, .live-stream__btn--pause {
@@ -506,7 +541,7 @@ category: Components
 	@extend %live-stream__btn;
 }
 
-.live-stream__btn--play:before, .live-stream__btn--resume:before, .live-stream__btn--login:before {
+.live-stream__btn--play:before, .live-stream__btn--resume:before {
 	position: absolute;
 	top: 50%;
 	left: 55%;
@@ -530,14 +565,108 @@ category: Components
 	}
 }
 
+.live-stream__btn--play {
+	@include transform(rotateX(180deg));
+	@include transform-style(preserve-3d);
+	@include transition(500ms);
+
+	.live-stream__player.audio__playing & {
+		display: block;
+		position: absolute;
+		right: 0;
+
+		@include bp(medium) {
+			display: none;
+			position: relative;
+			right: auto;
+		}
+	}
+
+
+	&.live-player__login {
+		display: block;
+		border-color: $btn-inactive;
+		color: $btn-inactive;
+		@include transform(rotateX(0deg));
+		@include transform-style(preserve-3d);
+		@include transition(500ms);
+
+		&:before {
+			left: 50%;
+			content: "\e626" !important;
+		}
+
+		@include bp(medium) {
+			display: none;
+			position: relative;
+			right: auto;
+		}
+	}
+
+	&.muted {
+
+		@include transition(100ms);
+	}
+
+}
+
+.live-stream__btn--pause {
+
+	.live-stream__player.audio__playing & {
+		display: block;
+		position: absolute;
+		left: 0;
+
+		@include bp(medium) {
+			position: relative;
+			left: auto;
+		}
+	}
+}
+
+.live-stream__btn--resume {
+
+	&.resume__audio {
+		display: block;
+		position: absolute;
+		left: 0;
+
+		@include bp(medium) {
+			position: relative;
+			left: auto;
+		}
+	}
+}
+
 .live-stream--inactive {
-	position: absolute;
-	top: 0;
-	right: 0;
+	position: relative;
+	float: right;
 	display: none;
+	width: 34px;
+	height: 34px;
+	padding: 0;
+	margin: 12px 5px 12px 0;
 	@extend %live-stream__btn;
 	border-color: $btn-inactive;
 	color: $btn-inactive;
+
+	&:before {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		@include transform(translate(-50%, -50%));
+		font-family: $icon-font !important;
+		font-size: ms(2);
+		content: "\e626";
+	}
+
+	.live-player__container.playing & {
+		display: block;
+
+		@include bp(medium) {
+			display: none;
+		}
+	}
 }
 
 .live-stream__container {
@@ -737,11 +866,12 @@ category: Components
 
 	&.playing {
 		position: absolute;
-		top: 16px;
-		left: 3.75%;
+		top: 0;
+		left: 0;
 		display: block;
-		width: 72%;
-		padding-top: 0;
+		width: calc(100% - 110px);
+		height: 58px;
+		padding: 0 0 0 3.75%;
 
 		@include bp(medium) {
 			position: relative;
@@ -754,6 +884,22 @@ category: Components
 
 .live-player--active .now-playing {
 	display: block;
+}
+
+.now-playing__info {
+
+	.now-playing.playing & {
+		position: absolute;
+		top: 50%;
+		@include transform(translate(0, -50%));
+
+		@include bp(medium) {
+			position: relative;
+			top: auto;
+			@include transform(translate(0, 0));
+		}
+	}
+
 }
 
 .now-playing__title {

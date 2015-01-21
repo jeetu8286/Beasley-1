@@ -286,7 +286,6 @@
 	 *
 	 * @type {lpAction}
 	 */
-	playLp = new lpAction(playBtn, lpListenNow, lpNowPlaying);
 	pauseLp = new lpAction(pauseBtn, lpNowPlaying, lpListenNow);
 	resumeLp = new lpAction(resumeBtn, lpListenNow, lpNowPlaying);
 

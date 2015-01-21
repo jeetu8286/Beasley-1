@@ -169,7 +169,7 @@
 		}
 
 		if (resumeBtn != null) {
-			addEventHandler(resumeBtn,elemClick,resumeStream);
+			addEventHandler(resumeBtn,elemClick,resumeLiveStream);
 		}
 
 		if (clearDebug != null) {
@@ -189,7 +189,12 @@
 		}
 
 		tdContainer.classList.add('stream__active');
-		playBtn.style.display = 'none';
+		if (true === playingCustomAudio && window.innerWidth <= 767) {
+			playBtn.classList.add('live-player__login');
+			playBtn.classList.add('muted');
+		} else {
+			playBtn.style.display = 'none';
+		}
 		resumeBtn.style.display = 'none';
 		pauseBtn.style.display = 'block';
 		if (true === playingCustomAudio) {
@@ -222,11 +227,17 @@
 			return;
 		}
 
-		playBtn.style.display = 'none';
+		if (true === playingCustomAudio && window.innerWidth <= 767) {
+			playBtn.classList.add('live-player__login');
+			playBtn.classList.add('muted');
+		} else {
+			playBtn.style.display = 'none';
+		}
 		pauseBtn.style.display = 'none';
 		listenNow.style.display = 'inline-block';
 		nowPlaying.style.display = 'none';
 		resumeBtn.style.display = 'block';
+		resumeBtn.classList.add('resume__audio');
 	}
 
 	function setInlineAudioUX() {
@@ -477,18 +488,7 @@
 	function resumeLiveStream() {
 		pjaxInit();
 		if ( true === playingCustomAudio ) {
-			var station = currentStream.text();
-
-			if (livePlaying) {
-				player.stop();
-			}
-
-			stopCustomInlineAudio();
-
-			player.play({station: station, timeShift: true});
-
-			setPlayingStyles();
-
+			resumeCustomInlineAudio();
 		} else if (adBlockCheck == undefined) {
 			preVastAd();
 			showAdBlockDetect();
