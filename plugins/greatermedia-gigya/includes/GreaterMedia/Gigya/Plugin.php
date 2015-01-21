@@ -96,7 +96,7 @@ class Plugin {
 				'data'                        => array(
 					'ajax_url'                => admin_url( 'admin-ajax.php' ),
 					'save_gigya_action_nonce' => wp_create_nonce( 'save_gigya_action' ),
-					'has_participated_nonce'  => wp_create_nonce( 'has_participated' )
+					'has_participated_nonce'  => wp_create_nonce( 'has_participated' ),
 				)
 			);
 
@@ -115,6 +115,9 @@ class Plugin {
 	public function initialize_admin_menu() {
 		$settings_page = new SettingsPage();
 		$settings_page->register();
+
+		$emma_settings_page = new \GreaterMedia\MyEmma\SettingsPage();
+		$emma_settings_page->register();
 	}
 
 	/**
@@ -129,16 +132,30 @@ class Plugin {
 		//$handlers[] = new Ajax\GigyaLoginAjaxHandler();
 		//$handlers[] = new Ajax\GigyaLogoutAjaxHandler();
 		$handlers[] = new Ajax\PreviewResultsAjaxHandler();
-		$handlers[] = new Ajax\RegisterAjaxHandler();
 		$handlers[] = new Ajax\ListEntryTypesAjaxHandler();
 		$handlers[] = new Ajax\ListEntryFieldsAjaxHandler();
 		$handlers[] = new Ajax\ChangeGigyaSettingsAjaxHandler();
 		$handlers[] = new Ajax\HasParticipatedAjaxHandler();
 		$handlers[] = new Ajax\MemberQueryStatusAjaxHandler();
 		$handlers[] = new Ajax\EmmaMemberOptoutAjaxHandler();
+		$handlers[] = new Ajax\ChangeMemberQuerySegmentAjaxHandler();
+		$handlers[] = new Ajax\ResetPasswordAjaxHandler();
 
+		// MyEmma
+		$handlers[] = new \GreaterMedia\MyEmma\Ajax\ChangeMyEmmaSettings();
+		$handlers[] = new \GreaterMedia\MyEmma\Ajax\ListMyEmmaWebhooks();
+		$handlers[] = new \GreaterMedia\MyEmma\Ajax\UpdateMyEmmaWebhooks();
+		$handlers[] = new \GreaterMedia\MyEmma\Ajax\AddMyEmmaGroup();
+		$handlers[] = new \GreaterMedia\MyEmma\Ajax\RemoveMyEmmaGroup();
+		$handlers[] = new \GreaterMedia\MyEmma\Ajax\UpdateMyEmmaGroup();
+
+		// TODO: Verify that this is OK? This conditional is a
+		// basic security measure, else we have an open endpoint that
+		// anyone can hit and use to add actions to DS.Store
 		if ( is_gigya_user_logged_in() ) {
 			$handlers[] = new Ajax\SaveGigyaActionAjaxHandler();
+			$handlers[] = new Ajax\RegisterAccountAjaxHandler();
+			$handlers[] = new Ajax\UpdateAccountAjaxHandler();
 		}
 
 		foreach ( $handlers as $handler ) {
@@ -150,8 +167,11 @@ class Plugin {
 		$launcher = new Sync\Launcher();
 		$launcher->register();
 
-		$actionPublisher = new Action\Publisher();
-		$actionPublisher->register();
+		$action_publisher = new Action\Publisher();
+		$action_publisher->register();
+
+		$emma_group_sync_task = new Sync\EmmaGroupSyncTask();
+		$emma_group_sync_task->register();
 	}
 
 	/**
@@ -192,21 +212,40 @@ class Plugin {
 			'query_builder', 'member_query_data', $member_query->properties
 		);
 
-		$sentinel    = new Sync\Sentinel( $member_query->post_id, array( 'mode' => 'export' ) );
+		$sentinel = new Sync\Sentinel( $member_query->post_id, array( 'mode' => 'export' ) );
+
+		if ( $sentinel->get_status_code() === 'running' && $sentinel->has_expired() ) {
+			$sentinel->set_status_code( 'completed' );
+			$sentinel->add_error( 'Error: The query timed out' );
+		}
+
 		$status_meta = $sentinel->get_status_meta();
 
 		$meta = array(
-			'ajax_url'                   => admin_url( 'admin-ajax.php' ),
-			'preview_member_query_nonce' => wp_create_nonce( 'preview_member_query' ),
-			'list_entry_types_nonce'     => wp_create_nonce( 'list_entry_types' ),
-			'list_entry_fields_nonce'    => wp_create_nonce( 'list_entry_fields' ),
-			'member_query_status_nonce'  => wp_create_nonce( 'member_query_status' ),
-			'status_meta'                => $sentinel->get_status_meta()
+			'ajax_url'                          => admin_url( 'admin-ajax.php' ),
+			'preview_member_query_nonce'        => wp_create_nonce( 'preview_member_query' ),
+			'list_entry_types_nonce'            => wp_create_nonce( 'list_entry_types' ),
+			'list_entry_fields_nonce'           => wp_create_nonce( 'list_entry_fields' ),
+			'member_query_status_nonce'         => wp_create_nonce( 'member_query_status' ),
+			'change_member_query_segment_nonce' => wp_create_nonce( 'change_member_query_segment' ),
+			'status_meta'                       => $sentinel->get_status_meta(),
+			'emma_groups'                       => $this->get_emma_groups(),
 		);
 
 		wp_localize_script(
 			'query_builder', 'member_query_meta', $meta
 		);
+	}
+
+	function get_emma_groups() {
+		$emma_groups = get_option( 'emma_groups' );
+		$emma_groups = json_decode( $emma_groups, true );
+
+		if ( ! is_array( $emma_groups ) ) {
+			$emma_groups = array();
+		}
+
+		return $emma_groups;
 	}
 
 	function initialize_member_query_styles( $member_query ) {

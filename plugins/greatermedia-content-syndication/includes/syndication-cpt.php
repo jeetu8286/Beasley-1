@@ -8,7 +8,12 @@ class SyndicationCPT {
 
 	private $post_type = 'subscription';
 
-	private $supported_subscriptions = array( 'post', 'content-kit' );
+	private $supported_subscriptions = array( 'post', 'content-kit', 'contest', 'survey', 'gmr_gallery', 'gmr_album' );
+
+	public static $support_default_tax = array(
+		'_shows',
+		'category'
+	);
 
 	public function __construct() {
 		add_action( 'init', array( $this, 'register_syndication_cpt' ) );
@@ -18,6 +23,9 @@ class SyndicationCPT {
 		add_action( 'admin_head-post.php', array( $this, 'hide_publishing_actions' ) );
 		add_action( 'admin_head-post-new.php', array( $this, 'hide_publishing_actions' ) );
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_box' ) );
+		add_action( 'edit_form_after_title', array( $this, 'render_subscription_type' ) );
+		add_action( 'edit_form_after_title', array( $this, 'render_filter_metabox' ) );
+		//add_action( 'edit_form_after_title', array( $this, 'render_defaults_metabox' ) );
 		add_action( 'post_submitbox_misc_actions', array( $this, 'custom_publish_meta' ) );
 		add_action( 'save_post', array( $this, 'save' ) );
 		add_action( 'manage_subscription_posts_custom_column' , array( $this, 'subscription_column_data' ), 10, 2 );
@@ -205,7 +213,7 @@ class SyndicationCPT {
 			'show_ui'             => true,
 			'show_in_menu'        => true,
 			'show_in_admin_bar'   => true,
-			'menu_position'       => 75,
+			'menu_position'       => 67,
 			'menu_icon'           => 'dashicons-rss',
 			'show_in_nav_menus'   => true,
 			'publicly_queryable'  => false,
@@ -331,26 +339,6 @@ class SyndicationCPT {
 		);
 
 		add_meta_box(
-			'subscription_type'
-			,__( 'Choose subscription type', 'greatermedia' )
-			,array( $this, 'render_subscription_type' )
-			,$this->post_type
-			,'advanced'
-			,'high'
-		);
-
-		add_meta_box(
-			'filter_metaboxes'
-			,__( 'Filters  - please choose one', 'greatermedia' )
-			,array( $this, 'render_filter_metabox' )
-			,$this->post_type
-			,'advanced'
-			,'high'
-		);
-
-		//$taxonomy_names = get_object_taxonomies( 'post', 'objects' );
-
-		add_meta_box(
 			'subscription_default_metabox'
 			,__( 'Defaults' )
 			,array( $this, 'render_defaults_metabox' )
@@ -358,23 +346,14 @@ class SyndicationCPT {
 			,'advanced'
 			,'high'
 		);
-
-
-		// Temp metabox to perform syndication
-		add_meta_box(
-			'syndicate'
-			,__( 'Syndication control' )
-			,array( $this, 'render_syndication_control' )
-			,$this->post_type
-			,'side'
-			,'default'
-		);
 	}
 
 	/**
 	 * Save the meta when the post is saved.
 	 *
 	 * @param int $post_id The ID of the post being saved.
+	 *
+	 * @return int
 	 */
 	public function save( $post_id ) {
 
@@ -494,29 +473,35 @@ class SyndicationCPT {
 
 	public function render_subscription_type( $post ) {
 
+		if( $post->post_type == $this->post_type ) {
+
 		$subscription_type = get_post_meta( $post->ID, 'subscription_type', true );
 		$checked = '';
-
+		echo '<div class="subscription_type">';
+		echo '<label for="subscription_type">Choose subscription type</label>';
+		echo '<select name="subscription_type" id="subscription_type" class="subscription_defaults" style="width: 300px;">';
 		foreach( $this->supported_subscriptions as $type ) {
 			echo '<p>';
-
 			if( post_type_exists( $type ) ) {
 				$cpt_obj = get_post_type_object( $type );
 
 				if( $subscription_type != '' ) {
-					$checked = $subscription_type == $type ? 'checked' : '';
+					$checked = $subscription_type == $type ? 'selected="selected"' : '';
 				} elseif( $type == 'post') {
-					$checked = 'checked';
+					$checked = 'selected="selected"';
 				} else {
 					$checked = '';
 				}
 
-				echo '<input ' . esc_attr( $checked ) . ' type="radio" name="subscription_type" value="' . esc_attr( $type ) . '">';
-				echo '<label for"' . esc_attr( $type ) . '">' . esc_html( $cpt_obj->labels->name ) . '</label>';
-				echo '</p>';
+				echo '<option ' . $checked . ' value="' . esc_attr( $type ) . '">'
+				. esc_html( $cpt_obj->labels->name ) . '</option>';
 			}
+			echo '</p>';
 		}
-
+		echo '</select>';
+		echo '<span class="description">Choose post type you want to subscribe to</span>';
+		echo '</div>';
+		}
 	}
 
 	/**
@@ -526,50 +511,54 @@ class SyndicationCPT {
 	 */
 	public function render_filter_metabox( $post ) {
 
-		$allterms = BlogData::getTerms();
+		if( $post->post_type == $this->post_type ) {
+			$allterms = BlogData::getTerms();
 
-		// Add an nonce field so we can check for it later.
-		wp_nonce_field( 'save_subscription_status', 'subscription_custom_nonce' );
+			// Add an nonce field so we can check for it later.
+			wp_nonce_field( 'save_subscription_status', 'subscription_custom_nonce' );
+			echo '<div id="filter_metaboxes">';
+			foreach ( $allterms as $taxonomy => $terms ) {
+				// Use get_post_meta to retrieve an existing value from the database.
+				$filter_terms   = get_post_meta( $post->ID, 'subscription_filter_terms-' . $taxonomy, true );
+				$filter_terms   = explode( ',', $filter_terms );
+				$enabled_filter = get_post_meta( $post->ID, 'subscription_enabled_filter', true );
 
-		foreach( $allterms as $taxonomy => $terms ) {
-			// Use get_post_meta to retrieve an existing value from the database.
-			$filter_terms = get_post_meta( $post->ID, 'subscription_filter_terms-' . $taxonomy , true );
-			$filter_terms = explode( ',', $filter_terms );
-			$enabled_filter = get_post_meta( $post->ID, 'subscription_enabled_filter' , true );
+				// get taxonomy label
+				$taxonomy_obj  = get_taxonomies( array( 'name' => $taxonomy ), 'object' );
+				$taxonomy_name = $taxonomy_obj[ $taxonomy ]->label;
 
-			// get taxonomy label
-			$taxonomy_obj = get_taxonomies( array( 'name' => $taxonomy ), 'object' );
-			$taxonomy_name = $taxonomy_obj[$taxonomy]->label;
+				$multiple = BlogData::$taxonomies[ $taxonomy ];
+				$disabled = $enabled_filter == $taxonomy ? '' : 'disabled';
+				$checked  = $enabled_filter == $taxonomy ? 'checked' : '';
 
-			$multiple = BlogData::$taxonomies[$taxonomy];
-			$disabled = $enabled_filter == $taxonomy ? '' : 'disabled';
-			$checked =  $enabled_filter == $taxonomy ? 'checked' : '';
+				// Display the form, using the current value.
+				echo '<p>';
+				echo '<input ' . esc_attr( $checked ) . ' data-enabled="' . esc_attr( $taxonomy ) . '" class="enabled_filter" type="radio" name="enabled_filter" />';
+				echo '<label for="subscription_filter_terms">';
+				esc_html_e( $taxonomy_name, 'greatermedia' );
+				echo '</label> ';
 
-			// Display the form, using the current value.
-			echo '<p>';
-			echo '<input ' . esc_attr( $checked ) . ' data-enabled="' . esc_attr( $taxonomy ). '" class="enabled_filter" type="radio" name="enabled_filter" />';
-			echo '<label for="subscription_filter_terms">';
-			esc_html_e( $taxonomy_name, 'greatermedia' );
-			echo '</label> ';
+				echo '<select ' . $disabled . ' ' . $multiple . ' id="' . esc_attr( $taxonomy )
+				     . '" name="subscription_filter_terms-' . esc_attr( $taxonomy )
+				     . '[]" class="subscription_terms" style="width: 300px;">'
+				     . '<option></option>';
+				foreach ( $terms as $single_term ) {
+					echo '<option', in_array( $single_term->name, $filter_terms ) ? ' selected="selected"' : ''
+					, ' value="' . esc_attr( $single_term->name ) . '">' . esc_html( $single_term->name ) . '</option>';
+				}
 
-			echo '<select ' . $disabled . ' ' .$multiple . ' id="' . esc_attr( $taxonomy )
-			     . '" name="subscription_filter_terms-' . esc_attr( $taxonomy )
-			     . '[]" class="subscription_terms" style="width: 300px;">';
-			foreach( $terms as $single_term ) {
-				echo '<option', in_array( $single_term->name, $filter_terms) ? ' selected="selected"' : ''
-				, ' value="' . esc_attr( $single_term->name ) .'">' . esc_html( $single_term->name ) . '</option>';
+				echo '</select>';
+				if ( $multiple != 'single' ) {
+					echo '<span class="description">Create a filter using one or more Tags</span>';
+				} else {
+					echo '<span class="description">Create a filter using a single ' . ucfirst( $taxonomy ) . '</span>';
+				}
+				echo '</p>';
 			}
 
-			echo '</select>';
-			echo '</p>';
-			if( $multiple != 'single' ) {
-				echo '<span class="description">Create a filter using one or more Tags</span>';
-			} else {
-				echo '<span class="description">Create a filter using a single ' . ucfirst( $taxonomy ) .'</span>';
-			}
+			echo '<input type="hidden" id="enabled_filter_taxonomy" name="enabled_filter_taxonomy" value="' . $enabled_filter . '">';
+			echo '</div>';
 		}
-
-		echo '<input type="hidden" id="enabled_filter_taxonomy" name="enabled_filter_taxonomy" value="' . $enabled_filter. '">';
 	}
 
 	/**
@@ -577,8 +566,17 @@ class SyndicationCPT {
 	 */
 	public function custom_publish_meta() {
 		global $post;
+
+		$last_syndicated = get_option( 'syndication_last_performed', 0 );
+		if( $last_syndicated == 0 ) {
+			$last_syndicated = 'never';
+		} else {
+			$last_syndicated = date( 'Y-m-d H:i:s', $last_syndicated );
+			$last_syndicated = get_date_from_gmt( $last_syndicated, 'M j, Y @ G:i' );
+		}
+
 		if ( get_post_type($post) == $this->post_type ) {
-			echo '<div class="misc-pub-section misc-pub-section-last">';
+			echo '<div class="misc-pub-section curtime syndication misc-pub-section-last">';
 
 				wp_nonce_field( 'save_subscription_status', 'subscription_custom_nonce' );
 
@@ -590,6 +588,20 @@ class SyndicationCPT {
 				echo '<input type="radio" name="active_inactive" id="active_inactive-inactive" value="draft" '
 				     . checked( $val,'draft', false)
 				     . '/> <label for="active_inactive-inactive" class="select-it">Inactive</label>';
+
+				echo '<p>';
+				echo '<span id="timestamp" class="timestamp">Last checked: ';
+				echo '<b>' . $last_syndicated . '</b><span>';
+				echo '</p>';
+
+				echo '<div id="syndication_status">';
+				echo '</div>';
+				echo '<button data-postid="' . intval( $post->ID )
+				     . '" name="syndicate_now" id="syndicate_now" class="button button-large"'
+				     . '>Check for new content now</button><br/>';
+				echo '<span class="description">Please save your changes before using this!</span>';
+				echo '<br/>';
+
 			echo '</div>';
 		}
 	}
@@ -606,23 +618,36 @@ class SyndicationCPT {
 		// get default status from meta
 		$default_status = get_post_meta( $post->ID, 'subscription_post_status', 'true');
 
-		// post status metabox
-		echo '<p><label for="subscription_post_status">';
-		esc_html_e( 'Status', 'greatermedia' );
-		echo '</label> ';
+		if( !in_array( $default_status, $list_status ) ) {
+			$default_status = 'draft';
+		}
 
-		echo '<select name="subscription_post_status" id="subscription_post_status" style="width: 300px;">';
-			foreach( $list_status as $status ) {
-				echo '<option', esc_attr( $status == $default_status ? ' selected="selected"' : '' )
-				, ' value="' . esc_attr( $status ) .'">' . esc_html( ucfirst( $status ) ) . '</option>';
-			}
-		echo '</select></p>';
+		echo '<div class="subscription_post_status">';
+		// post status metabox
+		echo '<h4>';
+		esc_html_e( 'Status', 'greatermedia' );
+		echo '</h4>';
+
+		foreach( $list_status as $status ) {
+			echo '<div class="subscription_status">';
+			echo '<label for="subscription_post_status-' . $status . '">';
+			echo esc_html( ucfirst( $status ) );
+			echo '</label>';
+			echo '<input type="radio" name="subscription_post_status" id="subscription_post_status-' . $status . '" value="'
+			 . esc_attr( $status ) . '" '
+		     . checked( $status, $default_status, false)
+		     . ' />';
+			echo '</div>';
+		}
+		echo '</div>';
 
 		// get all taxonomies of "post"
-		$taxonomy_names = get_object_taxonomies( 'post', 'objects' );
+		//$taxonomy_names = get_object_taxonomies( 'post', 'objects' );
 
-		foreach( $taxonomy_names as $taxonomy ) {
-			//$taxonomy = $taxonomy['args']['taxonomy'];
+		foreach( self::$support_default_tax as $taxonomy_label ) {
+
+			$taxonomy = get_taxonomy( $taxonomy_label );
+
 			$name = $taxonomy->label;
 			$label = $taxonomy->name;
 
@@ -642,15 +667,16 @@ class SyndicationCPT {
 			echo '<h4>' . esc_html( $name ) . '</h4>';
 
 			if( !empty( $allterms[0] ) ) {
+				echo '<select name="subscription_default_terms-' . esc_attr( $label )
+				     . '[]" multiple class="subscription_defaults" style="width: 300px;">'
+				     . '<option></option>';
 				foreach( $allterms as $index => $term ) {
 					foreach( $term as $single_term ) {
-						$checked = in_array( $single_term->term_id, $terms) ? 'yes' : 'no';
-						echo '<label for="subscription_default_terms-' . esc_attr( $label ) . '[]">';
-						echo '<input name="subscription_default_terms-' . esc_attr( $label ) . '[]" id="subscription_default_terms" type="checkbox" ', checked( $checked, 'yes' )
-						, ' value="' . intval( $single_term->term_id ) .'">' . esc_html( $single_term->name );
-						echo '</label><br/>';
+						echo '<option', in_array( $single_term->term_id, $terms) ? ' selected="selected"' : ''
+						, ' value="' . intval( $single_term->term_id ) .'">' . esc_html( $single_term->name ) . '</option>';
 					}
 				}
+				echo '</select>';
 			} else {
 				echo "No existing term";
 			}
@@ -667,7 +693,9 @@ class SyndicationCPT {
 		echo '</div>';
 		echo '<button data-postid="' . intval( $post->ID )
 		     . '" name="syndicate_now" id="syndicate_now" class="button button-primary button-large"'
-		     . '>Syndicate</button>';
+		     . '>Syndicate</button><br/>';
+		echo '<br/>';
+		echo '<span class="description">Click here to run syndication immediately.</span>';
 	}
 
 }

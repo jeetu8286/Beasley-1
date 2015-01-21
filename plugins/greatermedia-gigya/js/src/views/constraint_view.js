@@ -127,7 +127,13 @@ var ConstraintView = Backbone.View.extend({
 		'profile:zip',
 		'profile:state',
 		'profile:country',
-		'profile:timezone'
+		'profile:timezone',
+		'action:social_share',
+	],
+
+	enumOperators: [
+		'contains',
+		'not contains',
 	],
 
 	operatorsFor: function(valueType, type) {
@@ -143,6 +149,8 @@ var ConstraintView = Backbone.View.extend({
 			return this.booleanOperators;
 		} else if (valueType === 'date') {
 			return this.dateOperators;
+		} else if (valueType === 'enum') {
+			return this.enumOperators;
 		} else {
 			return this.allOperators;
 		}

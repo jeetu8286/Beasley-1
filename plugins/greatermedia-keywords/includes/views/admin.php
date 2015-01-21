@@ -4,8 +4,6 @@
  * Date: 20.11.2014
  */
 
-$posts = $this::get_post_for_keywords();
-
 $options = self::get_keyword_options( $this::$plugin_slug . '_option_name' );
 ?>
 <div class="wrap">
@@ -26,7 +24,7 @@ $options = self::get_keyword_options( $this::$plugin_slug . '_option_name' );
 			foreach ( $options as $key => $value ): ?>
 				<tr>
 					<td><?php echo esc_html( $value['keyword'] ); ?></td>
-					<td><?php echo esc_html( $value['post_title'] ); ?></td>
+					<td><?php echo esc_html( get_the_title( $value['post_id'] ) ); ?></td>
 					<td><a data-postid="<?php echo esc_attr( $value['post_id'] ); ?>" class="submitdelete" href="#">delete</a></td>
 				</tr>
 		<?php endforeach;
@@ -36,34 +34,44 @@ $options = self::get_keyword_options( $this::$plugin_slug . '_option_name' );
 
 	<form method="post" action="">
 		<?php wp_nonce_field( 'save_new_keyword', 'save_new_keyword' ); ?>
+		
+		<h3 class="title">Add new keyword</h3>
+		
 		<table class="form-table keywords">
 			<tr>
-				<td><h3>Add new keyword</h3></td>
+				<th>Keyword</th>
+				<td>
+					<input type="text" id="keyword" name="keyword" size="25" class="regular-text" />
+				</td>
 			</tr>
 			<tr>
-				<td>Keyword</td>
-				<td>Linked Content</td>
-				<td></td>
-			</tr>
-			<tr>
-				<td>
-					<input type="text" id="keyword" name="keyword" size="25" />
-				</td>
-				<td>
-					<select id="linked_content" name="linked_content" style="width: 300px;">
-						<?php foreach ($posts as $post) : ?>
-							<option value="<?php echo esc_attr( $post->ID ) . ',' . esc_attr( $post->post_title ); ?>">
-								<?php echo esc_html( $post->post_title ); ?>
-							</option>
-						<?php endforeach; ?>
-					</select>
-				</td>
-				<td>
-					<input type="submit" value="Add" class="button"/>
+				<th>Linked Post</th>
+				<td>					
+					<div class="post-search">
+						<p>
+							<label for="linked_content_search">Search for a post:</label> <br />
+							<input type="text" id="linked_content_search" size="25" autocomplete="off" class="post-search__search-field regular-text" />
+							<span class="spinner"></span>
+						</p>
+						
+						<ul class="post-search__list regular-text"></ul>
+						
+						<script type="text/template" class="post-search__list-item-template">
+							<li class="post-search__list-item">
+								<input type="radio" name="linked_content" value="<%= id %>" id="linked_content_item_<%= id %>" />
+								<label for="linked_content_item_<%= id %>"><%= title %></label>
+							</li>
+						</script>
+						
+					</div>
 				</td>
 			</tr>
 		</table>
-		<input type="hidden" name="save_keyword_settings" value="Y" />
+		
+		<p class="submit">
+			<input type="submit" value="Add" class="button button-primary"/>
+			<input type="hidden" name="save_keyword_settings" value="Y" />			
+		</p>
 	</form>
 
 </div>

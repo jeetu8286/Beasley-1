@@ -1,20 +1,35 @@
-<?php while ( have_posts() ) : the_post(); ?>
+<div class="container">
 
-	<div class="container">
+	<?php if (have_posts()) : while ( have_posts() ) : the_post(); ?>
 
-		<?php if ( has_post_thumbnail() ) {
+		<?php if ( has_post_thumbnail() ) { ?>
 
-				the_post_thumbnail( 'full', array( 'class' => 'single__featured-img' ) );
+			<div class="entry__thumbnail">
 
-			}
-		?>
+				<?php the_post_thumbnail( 'gmr-album-thumbnail', array( 'class' => 'single__featured-img' ) ); ?>
 
+				<?php
+
+					$image_attr = image_attribution();
+
+					if ( ! empty( $image_attr ) ) {
+						echo $image_attr;
+					}
+
+				?>
+
+			</div>
+
+		<?php } ?>
+		
 		<section class="content">
 
 			<article id="post-<?php the_ID(); ?>" <?php post_class( 'cf' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
 
+				
+
 				<div class="ad__inline--right">
-					<img src="http://placehold.it/300x250&amp;text=inline ad">
+					<?php do_action( 'acm_tag', 'mrec-body' ); ?>
 				</div>
 
 				<header class="entry__header">
@@ -33,17 +48,49 @@
 
 				</section>
 
-				<?php get_template_part( 'partials/post', 'footer' ); ?>
-
 			</article>
-
-			<?php
-			// todo Children Galleries Should Go Here!
-			?>
-			Children Galleries Here
 
 		</section>
 
-	</div>
+	<?php
+		endwhile;
+		endif;
+		wp_reset_query();
+	?>
 
-<?php endwhile; ?>
+	<section class="gallery__archive">
+
+		<div class="gallery__grid">
+
+			<?php
+
+				$gallery_content_types = array(
+					GreaterMediaGalleryCPT::GALLERY_POST_TYPE,
+					'post'
+				);
+
+				$child_galleries = array(
+					'post_type'         => $gallery_content_types,
+					'post_parent'       => $post->ID,
+					'posts_per_page'    => 16,
+					'orderby'           => 'post_date',
+					'order'             => 'DESC',
+					'paged'             => get_query_var('paged')
+				);
+
+				$gallery_query = new WP_Query( $child_galleries );
+
+				while ($gallery_query->have_posts()) : $gallery_query->the_post();
+
+					get_template_part( 'partials/gallery-grid' );
+
+				endwhile;
+
+				wp_reset_query();
+			?>
+
+		</div>
+
+	</section>
+
+</div>

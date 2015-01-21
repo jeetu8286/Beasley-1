@@ -13,7 +13,7 @@ add_action( 'template_include', __NAMESPACE__ . '\filter_template' );
  * @return array
  */
 function get_sections() {
-	return array( 'about', 'podcasts', 'galleries', 'videos' );
+	return array( 'about', 'podcasts', 'galleries', 'videos', 'live-links' );
 }
 
 /**
@@ -51,7 +51,7 @@ function add_rewrites() {
  * Checks for Homepage support (applies to about also), in addition to Galleries, Podcasts, and Videos.
  */
 function template_redirect() {
-	if ( get_post_type() !== \ShowsCPT::SHOW_CPT ) {
+	if ( get_post_type() !== \ShowsCPT::SHOW_CPT || ! is_singular( \ShowsCPT::SHOW_CPT ) ) {
 		return;
 	}
 
@@ -73,6 +73,9 @@ function template_redirect() {
 				$allowed = supports_videos( get_the_ID() );
 				break;
 			case 'about':
+				// no break
+			case 'live-links':
+				// no break
 			default:
 				// These are just allowed through, as long as homepage is enabled, which it is if we're this far
 				$allowed = true;

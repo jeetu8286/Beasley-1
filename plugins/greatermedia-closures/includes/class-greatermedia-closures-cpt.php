@@ -21,6 +21,7 @@ class GreaterMediaClosuresCPT {
 		add_action( 'init', array( __CLASS__, 'gmedia_closures_entity_type' ) );
 		add_action( 'admin_menu', array( __CLASS__, 'gmedia_closures_remove_metaboxes' ) );
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'gmedia_enqueue_scripts' ) );
+		add_action( 'pre_get_posts', array( __CLASS__, 'change_closures_archive_order' ) );
 
 		add_filter( 'enter_title_here', array( __CLASS__, 'gmedia_closures_change_title_text' ) );
 	}
@@ -29,6 +30,14 @@ class GreaterMediaClosuresCPT {
 		if( is_post_type_archive( self::CLOSURE_CPT_SLUG ) ) {
 			$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 			wp_enqueue_style( 'gmedia_closures_styles', GMCLOSURES_URL . 'assets/css/greater_media_closures' . $postfix  . '.css' );
+
+		}
+	}
+
+	public static function change_closures_archive_order( $query ) {
+		if ( is_post_type_archive( self::CLOSURE_CPT_SLUG ) && $query->is_main_query() ) {
+			$query->set( 'orderby', 'post_title' );
+			$query->set( 'order', 'ASC' );
 		}
 	}
 
@@ -57,11 +66,11 @@ class GreaterMediaClosuresCPT {
 			'hierarchical'        => false,
 			'description'         => 'description',
 			'taxonomies'          => array(),
-			'public'              => true,
+			'public'              => false,
 			'show_ui'             => true,
 			'show_in_menu'        => true,
 			'show_in_admin_bar'   => true,
-			'menu_position'       => null,
+			'menu_position'       => 42,
 			'menu_icon'           => 'dashicons-welcome-comments',
 			'show_in_nav_menus'   => true,
 			'publicly_queryable'  => true,
@@ -69,7 +78,7 @@ class GreaterMediaClosuresCPT {
 			'has_archive'         => true,
 			'query_var'           => true,
 			'can_export'          => true,
-			'rewrite'             => true,
+			'rewrite'             => array( 'slug' => 'closures' ),
 			'capability_type'     => 'post',
 			'supports'            => array(
 				'title'
@@ -117,7 +126,7 @@ class GreaterMediaClosuresCPT {
 
 		register_taxonomy( self::CLOSURE_TYPE_SLUG, array( self::CLOSURE_CPT_SLUG ), $args );
 	}
-	
+
 	/**
 	 * Create a taxonomy for closure entity types
 	 */

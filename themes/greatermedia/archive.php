@@ -16,60 +16,47 @@ get_header(); ?>
 
 			<section class="content">
 
-				<h2 class="content__heading">Latest from WMMR</h2>
+				<h2 class="content__heading">
+					<?php $object = get_queried_object(); ?>
+					Latest <?php echo ! empty( $object->labels->name ) ? esc_html( strtolower( $object->labels->name ) ) : ''; ?> from <?php bloginfo( 'name' ); ?>
+				</h2>
 
-				<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
+				<?php if ( have_posts() ) :  ?>
 
-					<article id="post-<?php the_ID(); ?>" <?php post_class( 'cf' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
+					<?php if ( is_post_type_archive( 'songs' ) ) : ?>
 
-						<?php
+					<ul class="song__archive">
 
-							if ( has_post_format( 'video' ) ) {
+					<?php
 
-								get_template_part( 'partials/post', 'video' );
+						while( have_posts() ) : the_post();
 
-							} elseif ( has_post_format( 'audio') ) {
+						$link = get_post_meta($post->ID, 'purchase_link', true);
+						$artist = get_post_meta($post->ID, 'artist', true);
 
-								get_template_part( 'partials/post', 'audio' );
+						echo '<li class="song__item icon-music">';
+						if ( $link ) {
+							echo '<a href="' . esc_url( $link ) . '">';
+						}
+						echo '<span class="song__title">' . get_the_title() . '</span>';
+						if ( $link ) {
+							echo '</a>';
+						}
+						echo '<span class="song__artist">' . esc_html( $artist ) . '</span>';
+						echo '</li>';
 
-							} elseif ( has_post_format( 'link') ) {
+						endwhile; ?>
 
-								get_template_part( 'partials/post', 'link' );
+					</ul>
 
-							} elseif ( has_post_format( 'gallery') ) {
+					<?php else : ?>
 
-								get_template_part( 'partials/post', 'gallery' );
+						<?php get_template_part( 'partials/loop' ); ?>
 
-							} else {
+					<?php endif; ?>
 
-								get_template_part( 'partials/post', 'standard' );
+						<?php greatermedia_load_more_button( array( 'partial_slug' => 'partials/loop', 'auto_load' => true ) ); ?>
 
-							}
-
-						?>
-
-						<footer class="entry__footer">
-
-							<?php
-								$category = get_the_category();
-
-								if( isset( $category[0] ) ){
-									echo '<a href="' . esc_url( get_category_link($category[0]->term_id ) ) . '" class="entry__footer--category">' . esc_html( $category[0]->cat_name ) . '</a>';
-								}
-							?>
-
-						</footer>
-
-					</article>
-
-				<?php endwhile; ?>
-
-					<div class="posts-pagination">
-
-						<div class="posts-pagination--previous"><?php next_posts_link( '<i class="fa fa-angle-double-left"></i>Previous' ); ?></div>
-						<div class="posts-pagination--next"><?php previous_posts_link( 'Next<i class="fa fa-angle-double-right"></i>' ); ?></div>
-
-					</div>
 
 				<?php else : ?>
 

@@ -5,7 +5,7 @@ name: social-share-buttons
 category: Components
 ---
 
-These are examples of Social Share Links for single articles. (TODO: replace with working social icons from icomoon)
+These are examples of Social Share Links for single articles.
 
 ```html_example
 <a href="http://www.facebook.com/sharer/sharer.php?u=[URL]&title=[TITLE]" class="icon-facebook social-share-link"></a>
@@ -13,39 +13,50 @@ These are examples of Social Share Links for single articles. (TODO: replace wit
 <a href="https://plus.google.com/share?url=[URL]" class="icon-google-plus social-share-link"></a>
 <a href="" class="icon-volume-up social-share-link"></a>
 ```
-
 */
-
-a.social-share-link {
-	color: $black;
-	display: inline-block;
-	width: 40px;
-	height: 40px;
-	font-size: 20px;
-	border: 1px solid $black;
-	border-radius: 50%;
-	padding: 9px;
-
-	&:hover {
-		color: $social-hover;
-	}
-}
 
 .social__list {
 	padding: 33px 0;
 	margin: 0;
 	list-style: none;
+	
+	li {
+		display: inline-block;
+		margin: 0;
+		padding: 0;
+	}
 }
 
-.social__link {
+a.social__link,
+a.social-share-link {
 	padding: 0;
 	margin: 0 1.25em 0 0;
 	list-style: none;
 	display: inline-block;
-	font-size: ms(0);
+	font-size: 18px;
+	
+	color: $social-color;
+	display: inline-block;
+	width: 40px;
+	height: 40px;
+	font-size: 20px;
+	border: 1px solid $social-color;
+	border-radius: 50%;
+	padding: 9px;
+	margin-right: 6px;
+
+	&:last-of-type {
+		margin-right: 0;
+	}
+
+	&:hover {	
+		color: $social-hover;
+		border-color: $social-hover; 
+	}	
 }
 
-.social__link:last-child {
+.social__link:last-child,
+.social-sharing-link {
 	margin: 0;
 }
 
@@ -61,27 +72,35 @@ a.social-share-link {
 	color: $color-text-white;
 }
 
-.social__link--facebook:before {
-	@extend %gmr-icons;
-	content: "\e60f";
+.social__link--facebook {
+	@extend %gmr-icons, .icon-facebook;
 }
 
-.social__link--twitter:before {
-	@extend %gmr-icons;
-	content: "\e610";
+.social__link--twitter {
+	@extend %gmr-icons, .icon-twitter; 
 }
 
 .social__link--google-plus:before {
-	@extend %gmr-icons;
-	content: "\e611";
+	@extend %gmr-icons, .icon-google-plus; 
 }
 
 .social__link--youtube:before {
-	@extend %gmr-icons;
-	content: "\e617";
+	@extend %gmr-icons, .icon-youtube;
 }
 
 .social__link--instagram:before {
-	@extend %gmr-icons;
-	content: "\e616";
+	@extend %gmr-icons, .icon-instagram;
+}
+
+.social__link,
+.social-sharing-link {
+	&:before {
+		position: relative;
+		top: 1px; 
+	}
+	
+	&.icon-google-plus:before {
+		left: 1px;
+		top: 2px;
+	}
 }

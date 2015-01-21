@@ -9,22 +9,30 @@
  * theme's file, so the child theme functions would be used.
  *
  * @package Greater Media
- * @since   0.1.0
+ * @since   0.1.3
  */
 
 // Useful global constants
-/**
- *
+/*
+ * Add this constant to wp-config and set value to "dev" to trigger time() as the cache buster on css/js that use this,
+ * instead of the version - useful for dev, especially when cloudflare or other cdn's are involved
  */
-define( 'GREATERMEDIA_VERSION', '0.1.0' );
+if ( defined( 'GMR_PARENT_ENV' ) && 'dev' == GMR_PARENT_ENV ) {
+	define( 'GREATERMEDIA_VERSION', time() );
+} else {
+	define( 'GREATERMEDIA_VERSION', '0.1.3' );
+}
 
 add_theme_support( 'homepage-curation' );
 
 require_once( __DIR__ . '/includes/liveplayer/loader.php' );
-require_once( __DIR__ . '/includes/layout-chooser/class-choose-layout.php' );
 require_once( __DIR__ . '/includes/site-options/loader.php' );
 require_once( __DIR__ . '/includes/mega-menu/mega-menu-admin.php' );
 require_once( __DIR__ . '/includes/mega-menu/mega-menu-walker.php' );
+require_once( __DIR__ . '/includes/mega-menu/mega-menu-mobile-walker.php' );
+require_once( __DIR__ . '/includes/gallery-post-thumbnails/loader.php' );
+require_once( __DIR__ . '/includes/image-attributes/loader.php');
+require_once( __DIR__ . '/includes/posts-screen-thumbnails/loader.php' );
 
 /**
  * Required files
@@ -48,24 +56,31 @@ function greatermedia_setup() {
 	 */
 	load_theme_textdomain( 'greatermedia', get_template_directory() . '/languages' );
 
-	/**
-	 * Add theme support for post thumbnails
-	 */
+	// Add theme support for post thumbnails
 	add_theme_support( 'post-thumbnails' );
 	add_image_size( 'gm-article-thumbnail',     1580,   9999,   false   ); // thumbnails used for articles
+	add_image_size( 'gm-entry-thumbnail-1-1' ,          500,    500,    true    );
+	add_image_size( 'gm-entry-thumbnail-4-3' ,          500,    375,    true    );
 	add_image_size( 'gmr-gallery',              800,    534,    true    ); // large images for the gallery
 	add_image_size( 'gmr-gallery-thumbnail',    100,    100             ); // thumbnails for the gallery
-	add_image_size( 'gmr-featured-primary',     2800,   1000,   true    ); // image for primary featured post on front page
-	add_image_size( 'gmr-featured-secondary',   400,    400,    true    ); // thumbnails for secondary featured posts on front page
+	add_image_size( 'gmr-featured-primary',     		1600,   572,    true    ); // image for primary featured post on front page
+	add_image_size( 'gmr-featured-secondary',   		336,    224,    true    ); // thumbnails for secondary featured posts on front page
+	add_image_size( 'gmr-show-featured-primary',   		708,    389,    true    ); // thumbnails for secondary featured posts on front page
+	add_image_size( 'gmr-show-featured-secondary',   	322,    141,    true    ); // thumbnails for secondary featured posts on front page
+	add_image_size( 'gm-related-post',   				300,    200,    true    );
+
+	/* Images for the Gallery Grid ---- DO NOT DELETE ---- */
+	add_image_size( 'gmr-gallery-grid-featured',        1200,   800,    true    );
+	add_image_size( 'gmr-gallery-grid-secondary',       560,    300,    true    );
+	add_image_size( 'gmr-gallery-grid-thumb',           500,    368,    true    ); // thumbnail for gallery grid areas
+	add_image_size( 'gmr-album-thumbnail',              1876,   576,    true    ); // thumbnail for albums
 
 	// Update this as appropriate content types are created and we want this functionality
 	add_post_type_support( 'post', 'timed-content' );
 	add_post_type_support( 'post', 'login-restricted-content' );
 	add_post_type_support( 'post', 'age-restricted-content' );
 
-	/**
-	 * Add theme support for post-formats
-	 */
+	// Add theme support for post-formats
 	$formats = array( 'gallery', 'link', 'image', 'video', 'audio' );
 	add_theme_support( 'post-formats', $formats );
 
@@ -80,28 +95,40 @@ add_action( 'after_setup_theme', 'greatermedia_setup' );
  */
 function greatermedia_scripts_styles() {
 	$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
+	$baseurl = untrailingslashit( get_template_directory_uri() );
 
 	wp_register_style(
 		'open-sans',
-		'http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,700',
+		'http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,800italic,400,300,700,800',
 		array(),
-		GREATERMEDIA_VERSION
+		null
 	);
 	wp_register_style(
 		'droid-sans',
 		'http://fonts.googleapis.com/css?family=Droid+Sans:400,700',
 		array(),
-		GREATERMEDIA_VERSION
+		null
 	);
 	wp_register_style(
 		'font-awesome',
 		'//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css',
 		array(),
-		'4.2'
+		null
+	);
+	wp_register_style(
+		'greatermedia',
+		"{$baseurl}/assets/css/greater_media{$postfix}.css",
+		array(
+			'dashicons',
+			'open-sans',
+			'droid-sans',
+			'font-awesome'
+		),
+		GREATERMEDIA_VERSION
 	);
 	wp_enqueue_script(
 		'greatermedia',
-		get_template_directory_uri() . "/assets/js/greater_media{$postfix}.js",
+		"{$baseurl}/assets/js/greater_media{$postfix}.js",
 		array(
 			'underscore',
 			'classlist-polyfill'
@@ -111,33 +138,79 @@ function greatermedia_scripts_styles() {
 	);
 	wp_enqueue_script(
 		'respond.js',
-		get_template_directory_uri() . '/assets/js/vendor/respond.min.js',
+		"{$baseurl}/assets/js/vendor/respond.min.js",
 		array(),
 		'1.4.2',
 		false
 	);
 	wp_enqueue_script(
 		'html5shiv',
-		get_template_directory_uri() . '/assets/js/vendor/html5shiv-printshiv.js',
+		"{$baseurl}/assets/js/vendor/html5shiv-printshiv.js",
 		array(),
 		'3.7.2',
 		false
 	);
-	wp_enqueue_style(
-		'greatermedia',
-		get_template_directory_uri() . "/assets/css/greater_media{$postfix}.css",
-		array(
-			'dashicons',
-			'open-sans',
-			'droid-sans',
-			'font-awesome'
-		),
-		GREATERMEDIA_VERSION
+	wp_enqueue_script(
+		'greatermedia-load-more',
+		"{$baseurl}/assets/js/greater_media_load_more{$postfix}.js",
+		array( 'jquery', 'jquery-waypoints' ),
+		GREATERMEDIA_VERSION,
+		true
 	);
+	wp_enqueue_style(
+		'greatermedia'
+	);
+	
+	/**
+	 * this is a fix to resolve conflicts with styles and javascript for The Events Calendar plugin that will not
+	 * load once pjax has been activated. We are checking to see if the `Tribe_Template_Factory` class exists and if
+	 * the function `asset_package` exists within `Tribe_Template_Factory`. If the class and function exists, we then
+	 * call the javascript and css necessary on the front end.
+	 *
+	 * @see `wp_content/plugins/the-events-calendar/lib/the-events-calendar.class.php` lines 2235 - 2244
+	 */
+	if ( class_exists( 'Tribe_Template_Factory' ) && method_exists( 'Tribe_Template_Factory', 'asset_package' ) ) {
+		// jquery-resize
+		Tribe_Template_Factory::asset_package( 'jquery-resize' );
 
+		// smoothness
+		Tribe_Template_Factory::asset_package( 'smoothness' );
+
+		// Tribe Calendar JS
+		Tribe_Template_Factory::asset_package( 'calendar-script' );
+
+		Tribe_Template_Factory::asset_package( 'events-css' );
+	}
 }
 
 add_action( 'wp_enqueue_scripts', 'greatermedia_scripts_styles');
+
+/**
+ * Add custom admin stylesheet.  
+ */
+function greatermedia_admin_styles() {
+	$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
+	$baseurl = untrailingslashit( get_template_directory_uri() );
+
+	wp_register_style(
+		'gmr-admin-styles',
+		"{$baseurl}/assets/css/gm_admin{$postfix}.css",
+		array(),
+		GREATERMEDIA_VERSION
+	);
+
+	wp_enqueue_style( 'gmr-admin-styles' );
+}
+
+add_action( 'admin_enqueue_scripts', 'greatermedia_admin_styles' );
+
+/**
+ * Unload YARPP stylesheets.  
+ */
+add_action( 'get_footer', function () {
+ 	wp_dequeue_style( 'yarppRelatedCss' );
+ 	wp_dequeue_style( 'yarpp-thumbnails-yarpp-thumbnail' );
+} );
 
 /**
  * Add humans.txt to the <head> element.
@@ -226,6 +299,49 @@ function get_post_with_keyword( $query_arg ) {
 		}
 	}
 	return 0;
+}
+
+/**
+ * Get the URL of a post's thumbnail.  
+ * 
+ * @param string|array $size Thumbnail size.
+ * @param int $post_id Post ID. Defaults to current post.
+ * @param bool $use_fallback Determines whether to use fallback image if thumbnmail doesn't exist.
+ * @return string Thumbnail URL on success, otherwise NULL.
+ */
+function gm_get_post_thumbnail_url( $size = 'thumbnail', $post_id = null, $use_fallback = false ) {
+	$thumbnail_id = get_post_thumbnail_id( $post_id );
+	if ( ! $thumbnail_id && $use_fallback ) {
+		$thumbnail_id = greatermedia_get_fallback_thumbnail_id( $post_id );
+	}
+
+	if ( $thumbnail_id ) {
+		return gm_get_thumbnail_url( $thumbnail_id, $size );
+	}
+}
+
+/**
+ * Output the escaped URL of a post's thumbnail.  
+ * 
+ * @param string|array $size Thumbnail size.
+ * @param int $post_id Post ID. Defaults to current post.
+ * @param bool $use_fallback Determines whether to use fallback image if thumbnmail doesn't exist.
+ */
+function gm_post_thumbnail_url( $size = 'thumbnail', $post_id = null, $use_fallback = false ) {
+	echo esc_url( gm_get_post_thumbnail_url( $size, $post_id, $use_fallback ) );
+}
+
+/**
+ * Get the URL of an attachment thumbnail. 
+ * 
+ * @param id $attachment_id
+ * @return null|string URL if found, null otherwise. 
+ */
+function gm_get_thumbnail_url( $attachment_id, $size ) {
+	$src = wp_get_attachment_image_src( $attachment_id, $size );
+	if ( $src ) {
+		return $src[0]; 
+	}	
 }
 
 /**
@@ -319,9 +435,220 @@ add_action( 'wp_head', 'greatermedia_remove_jetpack_share' );
  * @return string
  */
 function greatermedia_excerpt_more( $more ) {
-	return '';
+	return '&hellip;';
 }
 add_filter( 'excerpt_more', 'greatermedia_excerpt_more' );
+
+if ( ! function_exists( 'greatermedia_load_more_template' ) ) :
+	/**
+	 * Processes load more requrests.
+	 */
+	function greatermedia_load_more_template() {
+		// Do nothing if it is not an ajax request. We no longer need to check
+		// if it's paged because it functions the same regardless.
+		if ( ! filter_input( INPUT_GET, 'ajax', FILTER_VALIDATE_BOOLEAN ) ) {
+			return;
+		}
+
+		$partial_slug = isset( $_REQUEST['partial_slug'] ) ? sanitize_text_field( $_REQUEST['partial_slug'] ) : 'partials/loop';
+		$partial_name = isset( $_REQUEST['partial_name'] ) ? sanitize_text_field( $_REQUEST['partial_name'] ) : '';
+
+		global $wp_query; 
+		
+		ob_start(); 
+		
+		get_template_part( $partial_slug, $partial_name );
+		
+		$html = ob_get_clean();
+		
+		wp_send_json( array( 
+			'paged' => $wp_query->query_vars['paged'], 
+			'max_num_pages' => $wp_query->max_num_pages,
+			'post_count' => $wp_query->post_count,
+			'html' => $html,
+		) );
+		
+		exit;
+	}
+
+endif;
+add_action( 'template_redirect', 'greatermedia_load_more_template' );
+
+function greatermedia_load_more_button( $args = array() ) {
+
+	global $wp_query;
+	
+	// $partial_slug = null, $partial_name = null, $query_or_page_link_template = null, $next_page = null
+	$args = wp_parse_args( $args, array(
+		'partial_slug' => '',
+		'partial_name' => '',
+		'query' => null,
+		'page_link_template' => null,
+		'next_page' => null,
+		'auto_load' => false,
+	) ); 
+
+	if ( ! $args['query'] && ! $args['page_link_template'] ) {
+		$args['query'] = $wp_query;
+	}
+
+	if ( $args['query'] && $args['query'] instanceof WP_Query ) {
+		$temp_wp_query = $wp_query;
+
+		$wp_query = $args['query'];
+		$args['page_link_template'] = str_replace( PHP_INT_MAX, '%d', get_pagenum_link( PHP_INT_MAX ) );
+
+		if ( ! $args['next_page'] ) {
+			$args['next_page'] = max( 2, $wp_query->query_vars['paged'] + 1);
+		}
+
+		$wp_query = $temp_wp_query;
+	} 
+	
+	// Bail if we're basing this off a query and we can see there are no more 
+	// posts to load.
+	if ( $args['query'] && $args['next_page'] > $args['query']->max_num_pages ) {
+		return; 
+	}	
+	
+	
+	if ( ! $args['next_page'] ) {
+		$args['next_page'] = 2;
+	}
+
+	$default_page_link = sprintf( $args['page_link_template'], $args['next_page'] );
+	?>
+	<div class='posts-pagination'>
+		<a
+			class="button posts-pagination--load-more is-loaded"
+			href='<?php echo esc_url( $default_page_link ); ?>'
+			data-page-link-template="<?php echo esc_url( $args['page_link_template'] ); ?>"
+			data-page="<?php echo esc_attr( $args['next_page'] ); ?>"
+			data-partial-slug='<?php echo esc_attr( $args['partial_slug'] ); ?>'
+			data-partial-name='<?php echo esc_attr( $args['partial_name'] ); ?>'
+			data-auto-load='<?php echo intval( $args['auto_load'] ); ?>'
+			>
+			<i class="fa fa-spin fa-refresh"></i> Load More
+		</a>
+	</div>
+<?php
+}
+
+add_action( 'current_screen', 'hide_seo_columns' );
+function hide_seo_columns() {
+
+    $currentScreen = get_current_screen();
+    $current_user = wp_get_current_user();
+    
+    $hidden = array( 'wpseo-score',  'wpseo-title', 'wpseo-metadesc', 'wpseo-focuskw' );
+    $first = get_user_meta( $current_user->ID, "screen-defaults-{$currentScreen->id}", true ); 
+
+    if( !$first ) {
+    	update_user_meta( $current_user->ID, 'manage' . $currentScreen->id . 'columnshidden', $hidden );
+    	update_user_meta( $current_user->ID, "screen-defaults-{$currentScreen->id}", true );
+    }
+}
+
+/**
+ * function to globally remove post type support for custom fields for all post types
+ */
+function greatermedia_remove_custom_fields() {
+
+	$post_types = array(
+		'post',
+		'page',
+		'tribe_events'
+	);
+
+	/**
+	 * go through each post type, check if the post type supports custom fields, if the post types does support
+	 * custom fields, remove support
+	 */
+	foreach ( $post_types as $post_type ) {
+		if (post_type_supports( $post_type, 'custom-fields' ) ) {
+			remove_post_type_support( $post_type, 'custom-fields' );
+		}
+	}
+
+}
+add_action( 'init' , 'greatermedia_remove_custom_fields', 10 );
+
+/**
+ * Returns fallback image id for a post.
+ * 
+ * @param int|WP_Post|null $post_id The post id or object to return fallback for.
+ * @return int The fallback image id.
+ */
+function greatermedia_get_fallback_thumbnail_id( $post_id = null ) {
+	$post = get_post( $post_id );
+	if ( ! $post ) {
+		return null;
+	}
+
+	return intval( get_option( $post->post_type . '_fallback' ) );
+}
+
+/**
+ * Deactivates Tribe Events filter at dashboard drafts widget.
+ */
+function greatermedia_deactivate_tribe_warning_on_dashboard( $option_value ) {
+	remove_filter( 'get_post_time', array( 'TribeEventsTemplates', 'event_date_to_pubDate' ), 10, 3 );
+	return $option_value;
+}
+add_filter( 'get_user_option_dashboard_quick_press_last_post_id', 'greatermedia_deactivate_tribe_warning_on_dashboard' );
+
+function add_google_analytics() {
+	?>
+	<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	ga('create', 'UA-804109-43', 'auto');
+	
+	if( is_gigya_user_logged_in() ) {
+		ga( 'set', '&uid', get_gigya_user_id() );
+	}
+
+	jQuery(document).on('pjax:end', function() {
+		ga('set', 'location', window.location.href);
+		ga('send', 'pageview');
+	});
+	ga('send', 'pageview');
+	</script>
+	<?php
+}
+add_action( 'wp_head' , 'add_google_analytics' );
+
+/**
+ * adds an additional body class if a user is authenticated with gigya
+ *
+ * @param $classes
+ *
+ * @return array
+ */
+function greatermedia_add_gigya_body_class( $classes ) {
+
+	$classes[] = '';
+
+	if ( is_gigya_user_logged_in() ) {
+		$classes[] = 'gmr-user';
+	}
+
+	return $classes;
+
+}
+add_filter( 'body_class', 'greatermedia_add_gigya_body_class' );
+
+/**
+ * Show more posts that usual for gmr_closure archives. 
+ */
+add_action( 'parse_query', function ( WP_Query $query ) {
+	if ( $query->is_main_query() && $query->is_post_type_archive( 'gmr_closure' ) ) {
+		$query->query_vars['posts_per_page'] = 30;
+	}
+} );
 
 /**
  * Hide live player sidebar

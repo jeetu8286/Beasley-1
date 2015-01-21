@@ -260,17 +260,17 @@ function print() { __p += __j.call(arguments, '') }
 with (obj) {
 __p += '<div id="misc-publishing-actions" style="margin-bottom: 0.5em;">\n\n\t<div class="misc-pub-section misc-pub-post-status">\n\t\t<label for="post_status">Status:</label>\n\t\t<span id="post-status-display">' +
 __e( statusText ) +
-'</span>\n\t</div>\n\n\t<div class="misc-pub-section curtime misc-pub-curtime">\n\t\t<span id="visibility"> View MyEmma Group:\n\t\t\t';
+'</span>\n\t</div>\n\n\t<div class="misc-pub-section curtime misc-pub-curtime">\n\t\t<span id="visibility"> MyEmma Group:\n\t\t\t';
  if (emailSegmentID) { ;
 __p += '\n\t\t\t\t<a href="' +
 __e( emailSegmentURL ) +
-'" target="_blank">\n\t\t\t\t\t<b>' +
+'" target="_blank" class=\'email-segment-url\'>\n\t\t\t\t\t<b>' +
 __e( emailSegmentID ) +
 '</b>\n\t\t\t\t</a>\n\t\t\t';
  } else { ;
 __p += '\n\t\t\t\t\t<b>N/A</b>\n\t\t\t';
  } ;
-__p += '\n\t\t</span>\n\t</div>\n\n\t<div class="misc-pub-section curtime misc-pub-curtime" style="padding-bottom: 1em;">\n\t\t<span id="timestamp"> Last Export: <b>' +
+__p += '\n\t\t\t<a href="#" class="edit-segment-id-button">Edit</a>\n\t\t\t<div class="edit-segment-id" style="display:none">\n\t\t\t\t<p>\n\t\t\t\t\t<input type="text" name="segment_id" value="" id="email-segment-id" />\n\t\t\t\t</p>\n\t\t\t\t<p>\n\t\t\t\t\t<a href="#" class="button change-segment-id-button">OK</a>\n\t\t\t\t\t<a href="#" class="button-cancel cancel-segment-id-button">Cancel</a>\n\t\t\t\t\t<span class="spinner"></span>\n\t\t\t\t\t<span class="error-message"></span>\n\t\t\t\t</p>\n\t\t\t</div>\n\t\t</span>\n\t</div>\n\n\t<div class="misc-pub-section curtime misc-pub-curtime" style="padding-bottom: 1em;">\n\t\t<span id="timestamp"> Last Export: <b>' +
 __e( lastExport ) +
 '</b></span>\n\t</div>\n\n</div>\n';
 
@@ -380,11 +380,24 @@ return __p
 
 this["JST"]["src/templates/query_result_item.jst"] = function(obj) {
 obj || (obj = {});
-var __t, __p = '', __e = _.escape;
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
 with (obj) {
-__p += '<tr>\n\t<td>\n\t\t<a href="#" class="open-member-page-text">' +
+__p += '<span class="preview-result-name">\n\t';
+ if (fields.first_name || fields.last_name) { ;
+__p += '\n\t\t' +
+__e( fields.first_name ) +
+' ' +
+__e( fields.last_name ) +
+'\n\t';
+ } else { ;
+__p += '\n\t\tN/A\n\t';
+ } ;
+__p += '\n</span>\n<span class="preview-result-email" title="' +
 __e( email ) +
-'</a>\n\t\t<a href="#" alt="f105" class="dashicons dashicons-external open-member-page"></a>\n\t</td>\n</tr>\n';
+'">\n\t' +
+__e( view.domainFor(email) ) +
+'\n</span>\n';
 
 }
 return __p
@@ -842,6 +855,24 @@ FACEBOOK_FAVORITE_TYPES = [
 	{ label: 'Books'      , value: 'books'      }
 ];
 
+var getSubscribedToListChoices = function() {
+	var emmaGroups = window.member_query_meta.emma_groups;
+	var n          = emmaGroups.length;
+	var choices    = [];
+
+	for (var i = 0; i < n; i++) {
+		group = emmaGroups[i];
+		choice = {
+			label: group.group_name,
+			value: group.group_id
+		};
+
+		choices.push(choice);
+	}
+
+	return choices;
+};
+
 var AVAILABLE_CONSTRAINTS = [
 
 
@@ -877,6 +908,11 @@ var AVAILABLE_CONSTRAINTS = [
 		type: 'data:optout',
 		valueType: 'boolean',
 		value: true,
+	},
+	{
+		type: 'data:subscribedToList',
+		valueType: 'enum',
+		operator: 'contains',
 	},
 
 	/* Profile fields */
@@ -914,11 +950,13 @@ var AVAILABLE_CONSTRAINTS = [
 		type: 'profile:city',
 		valueType: 'string'
 	},
+	/*
 	{
 		type: 'profile:country',
 		valueType: 'string',
 		value: 'United States'
 	},
+	*/
 	{
 		type: 'profile:zip',
 		valueType: 'string',
@@ -946,6 +984,16 @@ var AVAILABLE_CONSTRAINTS = [
 		category: 'Any Category',
 		value: ''
 	},
+	{
+		type: 'data:listeningFrequency',
+		valueType: 'string',
+		value: '0',
+	},
+	{
+		type: 'data:listeningLoyalty',
+		valueType: 'string',
+		value: '0',
+	},
 
 	/* Contests */
 	{
@@ -970,6 +1018,22 @@ var AVAILABLE_CONSTRAINTS = [
 		valueType: 'date',
 		value: '01/01/2014',
 		operator: 'greater than',
+	},
+	{
+		type: 'data:social_share_count',
+		valueType: 'integer',
+		value: 0,
+	},
+	{
+		type: 'data:social_share_status',
+		valueType: 'boolean',
+		value: true,
+	},
+	{
+		type: 'action:social_share',
+		valueType: 'string',
+		value: '',
+		operator: 'contains',
 	},
 ];
 
@@ -1024,6 +1088,7 @@ var AVAILABLE_CONSTRAINTS_META = [
 		type: 'profile:birthYear',
 		title: 'Birth Year'
 	},
+	/*
 	{
 		type: 'profile:country',
 		title: 'Country',
@@ -1237,6 +1302,7 @@ var AVAILABLE_CONSTRAINTS_META = [
 			{ label: 'Zimbabwe',                          value: 'Zimbabwe'           } ,
 		]
 	},
+	*/
 	{
 		type: 'profile:zip',
 		title: 'Zip Code'
@@ -1375,6 +1441,53 @@ var AVAILABLE_CONSTRAINTS_META = [
 			{ label: 'No', value: false }
 		]
 	},
+	{
+		type: 'data:subscribedToList',
+		title: 'Subscribed To List',
+		choices: getSubscribedToListChoices(),
+	},
+	{
+		type: 'data:listeningFrequency',
+		title: 'Listening Frequency',
+		choices: [
+			{ label: 'Less than 1 hour', value: '0' },
+			{ label: '1 to 3 hours', value: '1' },
+			{ label: 'more than 3 hours', value: '2' }
+		]
+	},
+	{
+		type: 'data:listeningLoyalty',
+		title: 'Listening Loyalty',
+		choices: [
+			{ label: '0%', value: '0' },
+			{ label: '10%', value: '10' },
+			{ label: '20%', value: '20' },
+			{ label: '30%', value: '30' },
+			{ label: '40%', value: '40' },
+			{ label: '50%', value: '50' },
+			{ label: '60%', value: '60' },
+			{ label: '70%', value: '70' },
+			{ label: '80%', value: '80' },
+			{ label: '90%', value: '90' },
+			{ label: '100%', value: '100' },
+		]
+	},
+	{
+		type: 'data:social_share_count',
+		title: 'Social Share Count'
+	},
+	{
+		type: 'data:social_share_status',
+		title: 'Social Share Status',
+		choices: [
+			{ label: 'Has Shared', value: true },
+			{ label: 'Has Not Shared', value: false }
+		]
+	},
+	{
+		type: 'action:social_share',
+		title: 'Social Share URL'
+	},
 ];
 
 var AVAILABLE_CONSTRAINTS_META_MAP = {};
@@ -1411,7 +1524,8 @@ var AVAILABLE_CONSTRAINTS_META_MAP = {};
 var QueryResult = Backbone.Model.extend({
 
 	defaults: {
-		email: ''
+		email: '',
+		fields: {}
 	}
 
 });
@@ -1488,6 +1602,31 @@ var MemberQueryStatus = Backbone.Model.extend({
 
 	poll: function() {
 		this.refresh();
+	},
+
+	changeEmailSegmentID: function(segmentID) {
+		var params = {
+			member_query_id: this.getMemberQueryID(),
+			email_segment_id: segmentID
+		};
+
+		this.trigger('changeSegmentStart');
+		ajaxApi.request('change_member_query_segment', params)
+			.then($.proxy(this.didChangeSegment, this))
+			.fail($.proxy(this.didChangeSegmentError, this));
+	},
+
+	didChangeSegment: function(response) {
+		if (response.success) {
+			this.set({'emailSegmentID': response.data});
+			this.trigger('changeSegmentSuccess');
+		} else {
+			this.didChangeSegmentError(response);
+		}
+	},
+
+	didChangeSegmentError: function(response) {
+		this.trigger('changeSegmentError', response.data);
 	}
 
 });
@@ -1625,6 +1764,9 @@ var QueryResultCollection = Backbone.Collection.extend({
 			if (response.data.complete) {
 				if ( ! response.data.errors ) {
 					this.totalResults = response.data.total;
+					if (this.totalResults < 5 && response.data.users.length < this.totalResults) {
+						this.totalResults = response.data.users.length;
+					}
 					this.reset(response.data.users);
 					this.trigger('searchSuccess');
 					this.clear();
@@ -1681,7 +1823,7 @@ var QueryResultCollection = Backbone.Collection.extend({
 	},
 
 	didClearError: function(response) {
-		console.log('didClearError', response);
+		//console.log('didClearError', response);
 	}
 });
 
@@ -1861,7 +2003,13 @@ var ConstraintView = Backbone.View.extend({
 		'profile:zip',
 		'profile:state',
 		'profile:country',
-		'profile:timezone'
+		'profile:timezone',
+		'action:social_share',
+	],
+
+	enumOperators: [
+		'contains',
+		'not contains',
 	],
 
 	operatorsFor: function(valueType, type) {
@@ -1877,6 +2025,8 @@ var ConstraintView = Backbone.View.extend({
 			return this.booleanOperators;
 		} else if (valueType === 'date') {
 			return this.dateOperators;
+		} else if (valueType === 'enum') {
+			return this.enumOperators;
 		} else {
 			return this.allOperators;
 		}
@@ -2122,6 +2272,11 @@ var ActiveConstraintsView = Backbone.CollectionView.extend({
 		}
 	},
 
+	initialize: function(options) {
+		Backbone.CollectionView.prototype.initialize.call(this, options);
+		this.listenTo(this.collection, 'add', this.didAdd);
+	},
+
 	copyConstraint: function(event, constraint) {
 		var newConstraint = constraint.clone();
 		var index         = this.collection.indexOf(constraint);
@@ -2131,7 +2286,25 @@ var ActiveConstraintsView = Backbone.CollectionView.extend({
 
 	removeConstraint: function(event, constraint) {
 		this.collection.remove(constraint);
-	}
+	},
+
+	render: function() {
+		Backbone.CollectionView.prototype.render.call(this);
+	},
+
+	didAdd: function(model) {
+		var view = this.viewManager.findByModel(model);
+		this.scrollTo(view.$el);
+	},
+
+	scrollTo: function($target) {
+		var root   = $('html, body');
+		var params = {
+			scrollTop: $target.offset().top - 60 // admin bar offset
+		};
+
+		root.animate(params, 500);
+	},
 
 });
 
@@ -2220,6 +2393,9 @@ var PreviewView = Backbone.View.extend({
 		var previewButton = $('.preview-member-query-button', this.el);
 		previewButton.toggleClass('disabled', !enabled);
 
+		var previewSpinner = $('.preview-spinner', this.el);
+		previewSpinner.css('display', enabled ? 'none' : 'inline');
+
 		this.previewEnabled = enabled;
 	},
 
@@ -2283,9 +2459,15 @@ var QueryResultItemView = Backbone.CollectionView.extend({
 
 	render: function() {
 		var data = this.model.toJSON();
+		data.view = this;
 		var html = this.template(data);
 
 		this.$el.html(html);
+	},
+
+	domainFor: function(email) {
+		var atIndex = email.indexOf('@');
+		return email.substring(atIndex);
 	}
 });
 
@@ -2297,9 +2479,20 @@ var ExportView = Backbone.View.extend({
 
 	template: getTemplate('export'),
 
+	events: {
+		'click .edit-segment-id-button': 'didEditSegmentClick',
+		'click .change-segment-id-button': 'didChangeSegmentClick',
+		'click .cancel-segment-id-button': 'didCancelSegmentClick',
+	},
+
 	initialize: function(options) {
 		Backbone.View.prototype.initialize.call(this, options);
 		this.listenTo(this.model, 'change', this.render);
+		this.listenTo(this.model, 'changeSegmentStart', this.didChangeSegmentStart);
+		this.listenTo(this.model, 'changeSegmentSuccess', this.didChangeSegmentSuccess);
+		this.listenTo(this.model, 'changeSegmentError', this.didChangeSegmentError);
+		this.listenTo(this.model, 'refreshSuccess', this.updateEditEnabled);
+		this.listenTo(this.model, 'refreshError', this.updateEditEnabled);
 	},
 
 	render: function() {
@@ -2370,16 +2563,84 @@ var ExportView = Backbone.View.extend({
 		return output;
 	},
 
-	getStatusText: function() {
-		return 'statusText';
+	showChangeSegment: function() {
+		var self = this;
+		$editSegmentID = $('.edit-segment-id', this.$el);
+		$editSegmentID.show( 'fast', function() {
+			var emailSegmentID  = self.model.getEmailSegmentID() || '';
+			var $emailSegmentID = $('#email-segment-id');
+			var currentValue = $emailSegmentID.val();
+
+			if (currentValue === '' && emailSegmentID !== '') {
+				$emailSegmentID.val(emailSegmentID);
+			}
+
+			$emailSegmentID.focus();
+		});
+
+		this.setErrorMessage('');
 	},
 
-	getEmailSegmentID: function() {
-		return 'segment123';
+	hideChangeSegment: function() {
+		$editSegmentID = $('.edit-segment-id', this.$el);
+		$editSegmentID.hide( 'fast' );
 	},
 
-	getLastExport: function() {
-		return '1 minute ago';
+	didEditSegmentClick: function(event) {
+		$editButton = $('.edit-segment-id-button', this.$el);
+		var enabled = this.model.getStatusCode() !== 'running';
+
+		if (enabled) {
+			this.showChangeSegment();
+			return false;
+		}
+	},
+
+	didChangeSegmentClick: function(event) {
+		var $emailSegmentID = $('#email-segment-id');
+		var segmentID = $emailSegmentID.val();
+		if (segmentID !== '') {
+			this.model.changeEmailSegmentID(segmentID);
+		} else {
+			this.setErrorMessage('Invalid Segment ID');
+			$emailSegmentID.focus();
+		}
+		return false;
+	},
+
+	didCancelSegmentClick: function(event) {
+		this.hideChangeSegment();
+	},
+
+	setErrorMessage: function(message) {
+		var $message = $('.error-message', this.$el);
+		$message.text(message);
+	},
+
+	setSpinnerEnabled: function(enabled) {
+		var $spinner = $('.spinner', this.$el);
+		$spinner.css('display', enabled ? 'inline' : 'none');
+	},
+
+	didChangeSegmentStart: function() {
+		this.setSpinnerEnabled(true);
+		this.setErrorMessage('');
+	},
+
+	didChangeSegmentSuccess: function() {
+		this.hideChangeSegment();
+		this.setSpinnerEnabled(false);
+	},
+
+	didChangeSegmentError: function(message) {
+		this.setErrorMessage(message);
+		this.setSpinnerEnabled(false);
+	},
+
+	updateEditEnabled: function() {
+		$editButton = $('.edit-segment-id-button', this.$el);
+		var enabled = this.model.getStatusCode() !== 'running';
+		$editButton.toggleClass('disabled', !enabled);
 	}
 
 });

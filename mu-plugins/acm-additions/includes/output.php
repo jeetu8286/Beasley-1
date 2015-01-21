@@ -67,10 +67,13 @@ function render_tag( $output_html, $tag_id ) {
 	if ( is_null( $random_number ) ) {
 		$random_number =  str_pad( rand( 0, 999999999999999 ), 15, rand( 0, 9 ), STR_PAD_LEFT );
 	}
+	
+	$uniqid = uniqid();
+	
 	ob_start();
 
 	?>
-	<div id="%openx_id%_%tag%<?php echo esc_attr( $variant_id ); ?>">
+	<div id="%openx_id%_%tag%<?php echo esc_attr( $variant_id ); ?>_<?php echo esc_attr( $uniqid ); ?>">
 		<noscript>
 			<iframe id="9ee0446165" name="9ee0446165" src="//ox-d.greatermedia.com/w/1.0/afr?auid=%openx_id%&cb=<?php echo intval( $random_number ) ?>" frameborder="0" scrolling="no">
 				<a href="http://ox-d.greatermedia.com/w/1.0/rc?cs=9ee0446165&cb=<?php echo intval( $random_number ); ?>" >
@@ -95,7 +98,7 @@ function render_tag( $output_html, $tag_id ) {
 		if ( maxWidthOk && minWidthOk ) {
 			var OX_ads = OX_ads || [];
 			OX_ads.push({
-				slot_id: "%openx_id%_%tag%<?php echo esc_js( $variant_id ); ?>",
+				slot_id: "%openx_id%_%tag%<?php echo esc_js( $variant_id ); ?>_<?php echo esc_attr( $uniqid ); ?>",
 				auid: "%openx_id%"
 			});
 		}

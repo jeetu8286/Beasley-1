@@ -19,6 +19,8 @@
 
 .header .container {
 	padding: 0 .714285714286%;
+	position: relative;
+	min-height: 0;
 }
 
 .header__main {
@@ -33,39 +35,44 @@
 	}
 }
 
-#breaking-news-banner {
-	display: none;
-	@include bp(medium) {
-		display: block;
-	}
-}
-
 .header__logo{
-	@include span-columns(4);
+	@include span-columns(2);
+	@include shift(1);
 	@include omega;
 	height: 70px;
-	padding: 10px 0;
+	padding: $header-logo-padding 0;
 	line-height: 1;
+	position: relative;
+	
 	@include bp(medium) {
-		@include span-columns(1);
+		@include shift(0);
+		max-width: 200px;
 		height: 82px;
-		padding: 12px 0 13px;
 	}
+
 	@include bp(large) {
-		@include span-columns(1);
-	}
-	@include bp(x-large) {
-		@include span-columns(1);
+		@include span-columns(2);
+		padding-left: $header-logo-padding;
 	}
 }
 
 .header__logo--img{
 	margin: 0 auto;
-	max-height: 50px;
-	text-align: center;
-	@include bp(large){
-		max-height: 57px;
+	max-height: 100%;
+	max-width: 100%;
+	height: auto;
+	width: auto;
+	position: relative;
+	top: 50%;
+	@include transform(translateY(-50%));
+
+	@include bp(medium){
+		margin-left: 70px; /* space enough for the mobile menu */
 		text-align: left;
+	}
+
+	@include bp(large) {
+		margin-left: auto;
 	}
 }
 
@@ -74,56 +81,110 @@
 	height: 82px;
 	display: none;
 	line-height: 1;
-	@include bp(medium) {
-		@include span-columns(4);
-	}
+
 	@include bp(large) {
-		@include span-columns(8);
-	}
-	@include bp(x-large) {
-		@include span-columns(8);
+		display: block;
+		float: left;
+		width: auto;
 	}
 }
 
 // container for secondary navigation -- gigya registration, social links, search
 .header__secondary {
 	position: absolute;
-	top: 25px;
+	top: 22px;
 	right: 20px;
 	line-height: 1;
 	text-align: right;
 	@include bp(medium) {
-		position: relative;
-		@include span-columns(3);
-		@include omega;
+		right: 0;
 		top: auto;
-		right: auto;
 		height: 82px;
+		float: right;
+		width: auto;
+		position: relative;
 		@include transform(none);
 	}
-	@include bp(large) {
-		@include span-columns(3);
-		@include omega;
-	}
-	@include bp(x-large) {
-		@include span-columns(3);
-		@include omega;
-	}
+	// @include bp(large) {
+	// 	@include span-columns(3);
+	// 	@include omega;
+	// }
+	// @include bp(larger) {
+	// 	@include span-columns(4);
+	// 	@include omega;
+	// }
 }
 
 // container for account links
 .header__account {
-	position: relative;
 	display: block;
 	float: right;
 	margin: 0 auto;
 	color: $color-text-white;
-	text-align: center;
 	cursor: pointer;
+	font-family: $open-sans;
 	@include bp(medium) {
 		width: 64px;
 		height: 82px;
 		color: $secondary-heading;
+	}
+
+	@include bp(larger) {
+		width: auto;
+
+
+	}
+}
+
+.header__account--mobile {
+	display: block;
+
+	@include bp(medium) {
+		display: none;
+	}
+}
+
+.header__account--small {
+	display: none;
+
+	@include bp(medium) {
+		display: block;
+	}
+
+	@include bp(larger) { // Bourbon Neat mixin for media queries
+		display: none;
+	}
+
+	&:hover {
+
+		.header__account--container {
+			display: block;
+		}
+		
+	}
+}
+
+.header__account--large {
+	display: none;
+
+	@include bp(larger) {
+		display: block;
+
+		.header__account--container {
+			display: none;
+		}
+
+		&.logged-in {
+			.header__account--container {
+				display: block;
+			}
+		}
+
+		.gmr-user & {
+			.header__account--container {
+				display: block;
+			}
+		}
 	}
 }
 
@@ -137,19 +198,50 @@
 .header__account--btn {
 	display: block;
 	margin: 0 auto;
+	text-align: center;
+	font-size: 30px;
+
 	@include bp(medium) {
 		height: 82px;
 		width: 64px;
 		padding: 32px 0;
+		font-size: ms(3);
+	}
+
+	@include bp(large) {
+		font-size: ms(1);
+	}
+
+	@include bp(larger) {
+		width: auto;
+		padding: 32px 16px;
+
+		> span {
+			display: table-cell;
+			vertical-align: middle;
+		}
 	}
 }
 
-.header__account--btn:before {
-	@extend %gmr-icons;
-	font-size: ms(3);
-	content: "\e60a";
+.header__account--span {
+	font-family: $open-sans;
+	color: $light-gray;
+
+	@include bp(larger) {
+		font-size: 12.65px;
+		padding-left: 12px;
+	}
+}
+
+/** An image is shown if the current user is logged in and Gigya gives us a thumbnail URL **/
+.header__account--btn img {
+	display: inline-block;
+	max-height: 28px;
+	width: auto;
+	border: 1px solid white;
+
 	@include bp(medium) {
-		font-size: ms(1);
+		max-height: 20px;
 	}
 }
 
@@ -162,10 +254,9 @@
 	@include bp(medium) {
 		position: absolute;
 		display: block;
-		top: 82px;
+		top: 80px;
 		right: 0;
-		width: 250px;
-		height: 118px;
+		min-width: 300px;
 	}
 }
 
@@ -199,7 +290,7 @@
 		display: block;
 		float: right;
 		height: 82px;
-		margin-right: 46px;
+		margin-right: 1em;
 	}
 }
 
@@ -211,6 +302,10 @@
 		height: 82px;
 		padding: 36px 0;
 		margin-left: .625em;
+		font-size: ms(0);
+	}
+
+	@include bp(large) {
 		font-size: ms(-2);
 	}
 }
@@ -224,6 +319,10 @@
 
 .header__search--btn:before {
 	@extend %gmr-icons;
-	font-size: ms(1);
+	font-size: ms(3);
 	content: "\e612";
+
+	@include bp(large) {
+		font-size: ms(1);
+	}
 }

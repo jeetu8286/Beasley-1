@@ -12,6 +12,19 @@ add_filter( 'manage_' . GMR_LIVE_STREAM_CPT . '_posts_columns', 'gmr_streams_fil
 add_filter( 'gmr_live_player_streams', 'gmr_streams_get_public_streams' );
 add_filter( 'post_type_link', 'gmr_streams_get_stream_permalink', 10, 2 );
 add_filter( 'request', 'gmr_streams_unpack_vars' );
+add_filter( 'gmr_live_link_suggestion_post_types', 'gmr_streams_add_suggestion_post_type' );
+
+/**
+ * Registers live stream post types in the live links suggestions post types array.
+ *
+ * @filter gmr_live_link_suggestion_post_types
+ * @param array $post_types The array of already registered post types.
+ * @return array The extended version of incoming array, which contains live stream post type.
+ */
+function gmr_streams_add_suggestion_post_type( $post_types ) {
+	$post_types[] = GMR_LIVE_STREAM_CPT;
+	return $post_types;
+}
 
 /**
  * Builds permalink for Live Stream object.
@@ -101,6 +114,7 @@ function gmr_streams_register_post_type() {
 		'publicly_queryable'   => false,
 		'show_ui'              => true,
 		'show_in_nav_menus'    => false,
+		'show_in_menu'         => 'options-general.php',
 		'rewrite'              => false,
 		'query_var'            => false,
 		'can_export'           => false,
@@ -120,7 +134,7 @@ function gmr_streams_register_post_type() {
 			'new_item'           => 'New Stream',
 			'edit_item'          => 'Edit Stream',
 			'view_item'          => 'View Stream',
-			'all_items'          => 'Streams',
+			'all_items'          => 'Live Streams',
 			'search_items'       => 'Search Streams',
 			'parent_item_colon'  => 'Parent Streams:',
 			'not_found'          => 'No links found.',

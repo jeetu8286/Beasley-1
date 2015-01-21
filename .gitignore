@@ -20,6 +20,7 @@ plugins/duplicate-post/
 plugins/ooyala-video-browser/
 plugins/simple-page-ordering/
 plugins/tag-pages/
+plugins/regenerate-thumbnails/
 themes/index.php
 themes/twentyfourteen
 upgrade/
@@ -46,3 +47,5 @@ plugins/jetpack/
 /plugins/greatermedia-live-stream/node_modules/
 plugins/ubermenu/
 plugins/cpt-archives-in-nav-menus
+/mu-plugins/dependencies/formbuilder/bower_components/
+plugins/seriously-simple-podcasting/

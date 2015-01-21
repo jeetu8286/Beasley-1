@@ -12,23 +12,9 @@ if ( !class_exists( "Breaking_News" ) ) {
 	    	add_action( 'save_post', array( $this, 'save_breaking_news_meta_option' ) );
 	    	add_action( 'send_breaking_news_notices', array( $this, 'send_breaking_news_notices' ) );
 	    	add_action( 'show_breaking_news_banner', array( $this, 'show_breaking_news_banner' ) );
-	    	add_action( 'show_latest_breaking_news_item', array( $this, 'show_latest_breaking_news_item' ) );
+	    	add_action( 'show_latest_breaking_news_item', array( $this, 'show_breaking_news_banner' ) );
 	    	add_action( 'wp_enqueue_scripts', array( $this, 'breaking_news_enqueue_scripts' ) );
-	    	add_action( 'admin_enqueue_scripts', array( $this, 'breaking_news_admin_enqueue_scripts' ) );
 	    }
-
-	    /**
-	     * Enqueue supporing admin scripts.
-	     *
-	     * @return void
-	     */
-	    public function breaking_news_admin_enqueue_scripts() {
-	    	$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
-
-	    	if ( 'post' === get_post_type() ) {
-				wp_enqueue_script( 'breaking-news-admin-js', BREAKING_NEWS_URL . "assets/js/breaking-news{$postfix}.js", array( 'jquery'), BREAKING_NEWS_VERSION, true );
-			}
-		}
 
 	    /**
 	     * Enqueue supporing front-end scripts.
@@ -58,22 +44,10 @@ if ( !class_exists( "Breaking_News" ) ) {
 			wp_nonce_field( 'save_breaking_news_meta', 'breaking_news_nonce' );
 
 			$is_breaking_news = self::sanitize_boolean( get_post_meta( $post->ID, '_is_breaking_news', true ) );
-			$show_site_wide_notification = self::sanitize_boolean( get_post_meta( $post->ID, '_show_in_site_wide_notification', true ) );
 			?>
-
-			<style>
-				#post-body #site-wide-notification-meta {
-					padding-left: 35px;
-				}
-			</style>
-
 			<div id="breaking-news-meta-fields">
 				<div id="breaking-news-meta" class="misc-pub-section">
-					<input type="checkbox" name="breaking_news_option" id="breaking_news_option" value="1" <?php checked( 1, $is_breaking_news ); ?> /> <label for="breaking_news_option"><?php _e( 'Breaking News', 'breaking_news' ); ?></label>
-				</div>
-
-				<div id="site-wide-notification-meta" class="misc-pub-section">
-					<input type="checkbox" name="site_wide_notification_option" id="site_wide_notification_option" value="1" <?php checked( 1, $show_site_wide_notification ); ?> /> <label for="site_wide_notification_option"><?php _e( 'Site-wide Notification', 'breaking_news' ); ?></label>
+					<input type="checkbox" name="breaking_news_option" id="breaking_news_option" value="1" <?php checked( 1, $is_breaking_news ); ?> /> <label for="breaking_news_option"><?php _e( 'Breaking News Alert', 'breaking_news' ); ?></label>
 				</div>
 			</div>
 
@@ -87,11 +61,9 @@ if ( !class_exists( "Breaking_News" ) ) {
 		 * @return void
 		 */
 		public function save_breaking_news_meta_option( $post_id ) {
-			global $post;
 
 			// Defaults
 			$is_breaking_news = 0;
-			$show_site_wide_notification = 0;
 
 			if ( ! isset( $_POST['breaking_news_nonce'] ) || ! wp_verify_nonce( $_POST['breaking_news_nonce' ], 'save_breaking_news_meta' ) ) {
 				return;
@@ -109,17 +81,7 @@ if ( !class_exists( "Breaking_News" ) ) {
 				$is_breaking_news = $this->sanitize_boolean( $_POST['breaking_news_option'] );
 			}
 
-			if ( isset( $_POST['site_wide_notification_option'] ) ) {
-				$show_site_wide_notification = $this->sanitize_boolean( $_POST['site_wide_notification_option'] );
-			}
-
-			// If the post isn't breaking news, don't enable the site-wide notification either.
-			if ( 0 === $is_breaking_news ) {
-				$show_site_wide_notification = 0;
-			}
-
 			update_post_meta( $post_id, '_is_breaking_news', $is_breaking_news );
-			update_post_meta( $post_id, '_show_in_site_wide_notification', $show_site_wide_notification );
 
 			// Send notices
 			if ( 1 === $is_breaking_news ) {
@@ -135,52 +97,26 @@ if ( !class_exists( "Breaking_News" ) ) {
 		public function show_breaking_news_banner() {
 			global $post;
 			$post = $this->get_latest_breaking_news_item();
+			
+			// Bail if no post.
+			if ( ! $post ) {
+				return; 
+			}
 
-			if ( ! empty( $post ) ) {
-				$show_banner = self::sanitize_boolean( get_post_meta( $post->ID, '_show_in_site_wide_notification', true ) );
-
-				if ( 1 === $show_banner ) {
-					setup_postdata( $post );
+			setup_postdata( $post );
+			
 			?>
-					<div id="breaking-news-banner">
-						<div class="breaking-news-item">
-							<a href="<?php the_permalink(); ?>">
-								<span class="title"><?php the_title(); ?>:</span> <span class="excerpt"><?php echo wp_kses_post( $this->get_post_excerpt( $post, 25 ) ); ?></span>
-							</a>
+				<a href="<?php the_permalink(); ?>">
+					<div id="breaking-news-banner" class="breaking-news-banner">
+						<div class='breaking-news-banner__inner'>
+							<span class="breaking-news-banner__title"><?php the_title(); ?>:</span> 
+							<span class="breaking-news-banner__excerpt"><?php echo wp_kses_post( $this->get_post_excerpt( $post, 25 ) ); ?></span>
 						</div>
 					</div>
+				</a>
 			<?php
-					wp_reset_postdata();
-				}
-			}
-		}
-
-		/**
-		 * Show latest breaking news item on homepage or somewhere else. To override, add a function called breaking_news_get_latest_item() to override.
-		 *
-		 * @return void
-		 */
-		public function show_latest_breaking_news_item() {
-			global $post;
-
-			if ( function_exists( 'breaking_news_get_latest_item' ) ) {
-				breaking_news_get_latest_item();
-			} else {
-				$post = $this->get_latest_breaking_news_item();
-
-				if ( ! empty( $post ) ) {
-					setup_postdata( $post );
-				?>
-					<div id="latest-breaking-news-item">
-						<div class="breaking-news-item">
-							<h2><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
-							<p><?php echo wp_kses_post( $this->get_post_excerpt( $post, 50 ) ); ?></p>
-						</div>
-					</div>
-				<?php
-					wp_reset_postdata();
-				}
-			}
+			
+			wp_reset_postdata();
 		}
 
 		/**

@@ -6,13 +6,58 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class GreaterMediaContestsMetaboxes {
 
-	function __construct() {
-
+	public function __construct() {
+		add_action( 'post_submitbox_misc_actions', array( $this, 'post_submitbox_misc_actions' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'register_settings_fields' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
 		add_action( 'save_post', array( $this, 'save_post' ) );
+	}
 
+	/**
+	 * Displays contest settings.
+	 *
+	 * @action post_submitbox_misc_actions
+	 */
+	public function post_submitbox_misc_actions() {
+		global $typenow;
+		if ( GMR_CONTEST_CPT != $typenow ) {
+			return;
+		}
+
+		$post = get_post();
+		$contest_type = get_post_meta( $post->ID, 'contest_type', true );
+		switch ( $contest_type ) {
+			case 'onair':
+				$contest_type_label = 'On Air';
+				break;
+			case 'both':
+				$contest_type_label = 'On Air & Online';
+				break;
+			case 'online':
+			default:
+				$contest_type_label = 'Online';
+				$contest_type = 'online';
+				break;
+		}
+
+
+		?><div id="contest-type" class="misc-pub-section misc-pub-gmr-contest mis-pub-radio">
+			Contest Type:
+			<span class="post-pub-section-value radio-value"><?php echo esc_html( $contest_type_label ); ?></span>
+			<a href="#" class="edit-radio hide-if-no-js" style="display: inline;"><span aria-hidden="true">Edit</span></a>
+
+			<div class="radio-select hide-if-js">
+				<label><input type="radio" name="contest_type" value="online"<?php checked( $contest_type, 'online' ); ?>> Online</label><br>
+				<label><input type="radio" name="contest_type" value="onair"<?php checked( $contest_type, 'onair' ); ?>> On Air</label><br>
+				<label><input type="radio" name="contest_type" value="both"<?php checked( $contest_type, 'both' ); ?>> On Air &amp; Online</label><br>
+
+				<p>
+					<a href="#" class="save-radio hide-if-no-js button"><?php esc_html_e( 'OK' ) ?></a>
+					<a href="#" class="cancel-radio hide-if-no-js button-cancel"><?php esc_html_e( 'Cancel' ) ?></a>
+				</p>
+			</div>
+		</div><?php
 	}
 
 	/**
@@ -23,11 +68,6 @@ class GreaterMediaContestsMetaboxes {
 
 		global $post;
 
-		// Make sure this is an admin screen
-		if ( ! is_admin() ) {
-			return;
-		}
-
 		// Make sure this is the post editor
 		$current_screen = get_current_screen();
 		if ( 'post' !== $current_screen->base ) {
@@ -39,28 +79,34 @@ class GreaterMediaContestsMetaboxes {
 			return;
 		}
 
-		if ( $post && 'contest' === $post->post_type ) {
+		if ( $post && GMR_CONTEST_CPT === $post->post_type ) {
+			$base_path = trailingslashit( GREATER_MEDIA_CONTESTS_URL );
+			$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 
 			wp_enqueue_style( 'formbuilder' );
 			wp_enqueue_style( 'datetimepicker' );
+			wp_enqueue_style( 'font-awesome' );
 
 			wp_enqueue_script( 'ie8-node-enum' );
-			wp_enqueue_script( 'jquery-scrollwindowto' );
 			wp_enqueue_script( 'underscore-mixin-deepextend' );
 			wp_enqueue_script( 'backbone-deep-model' );
 			wp_enqueue_script( 'datetimepicker' );
 
 			wp_enqueue_script( 'formbuilder' );
 			wp_enqueue_script( 'rivets' );
-			wp_enqueue_style( 'font-awesome' );
 
-			wp_enqueue_script( 'greatermedia-contests-admin', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'js/greatermedia-contests-admin.js', array( 'formbuilder' ), false, true );
-			$embedded_form = get_post_meta( $post->ID, 'embedded_form', true );
-			$settings      = array(
-				'form' => trim( $embedded_form, '"' ),
-			);
-			wp_localize_script( 'greatermedia-contests-admin', 'GreaterMediaContestsForm', $settings );
+			$form = @json_decode( get_post_meta( $post->ID, 'embedded_form', true ), true );
+			if ( empty( $form ) ) {
+				$form = array();
+			} else {
+				// backward compatibility: we need to be able to delete any fields
+				foreach ( $form as &$sticky ) {
+					unset( $sticky['sticky'] );
+				}
+			}
 
+			wp_enqueue_script( 'greatermedia-contests-admin', "{$base_path}js/contests-admin{$postfix}.js", array( 'formbuilder' ), false, true );
+			wp_localize_script( 'greatermedia-contests-admin', 'GreaterMediaContestsForm', array( 'form' => $form ) );
 		};
 	}
 
@@ -71,13 +117,7 @@ class GreaterMediaContestsMetaboxes {
 	public function register_settings_fields() {
 
 		// Make sure this is an admin screen
-		if ( ! is_admin() ) {
-			return;
-		}
-
-		// Make sure this is the post editor
-		$current_screen = get_current_screen();
-		if ( 'post' !== $current_screen->base ) {
+		if ( ! is_admin() || 'post' !== get_current_screen()->base ) {
 			return;
 		}
 
@@ -88,152 +128,34 @@ class GreaterMediaContestsMetaboxes {
 
 		$post_id = absint( $GLOBALS['post']->ID );
 
-		add_settings_section(
-			'greatermedia-contest-rules',
-			null,
-			array( $this, 'render_generic_settings_section' ),
-			'greatermedia-contest-rules'
-		);
+		add_settings_section( 'greatermedia-contest-form', null, '__return_false', 'greatermedia-contest-form' );
 
-		add_settings_section(
-			'greatermedia-contest-form',
-			null,
-			array( $this, 'render_generic_settings_section' ),
-			'greatermedia-contest-form'
-		);
-
-		add_settings_field(
-			'contest-start-date',
-			'Start Date',
-			array( $this, 'render_date_field' ),
-			'greatermedia-contest-rules',
-			'greatermedia-contest-rules',
-			array(
-				'post_id' => $post_id,
-				'id'      => 'greatermedia_contest_start',
-				'name'    => 'greatermedia_contest_start',
-				'value'   => get_post_meta( $post_id, 'contest-start', true )
-			)
-		);
-
-		add_settings_field(
-			'contest-end-date',
-			'End Date',
-			array( $this, 'render_date_field' ),
-			'greatermedia-contest-rules',
-			'greatermedia-contest-rules',
-			array(
-				'post_id' => $post_id,
-				'id'      => 'greatermedia_contest_end',
-				'name'    => 'greatermedia_contest_end',
-				'value'   => get_post_meta( $post_id, 'contest-end', true )
-			)
-		);
-
-		add_settings_field(
-			'prizes-desc',
-			'What You Win',
-			array( $this, 'render_wysiwyg' ),
-			'greatermedia-contest-rules',
-			'greatermedia-contest-rules',
-			array(
-				'post_id' => $post_id,
-				'id'      => 'greatermedia_contest_prizes',
-				'name'    => 'greatermedia_contest_prizes',
-				'value'   => get_post_meta( $post_id, 'prizes-desc', true )
-			)
-		);
-
-		add_settings_field(
-			'enter-desc',
-			'How to Enter',
-			array( $this, 'render_wysiwyg' ),
-			'greatermedia-contest-rules',
-			'greatermedia-contest-rules',
-			array(
-				'post_id' => $post_id,
-				'id'      => 'greatermedia_contest_enter',
-				'name'    => 'greatermedia_contest_enter',
-				'value'   => get_post_meta( $post_id, 'how-to-enter-desc', true )
-			)
-		);
-
-		add_settings_field(
-			'rules-desc',
-			'Official Contest Rules',
-			array( $this, 'render_wysiwyg' ),
-			'greatermedia-contest-rules',
-			'greatermedia-contest-rules',
-			array(
-				'post_id' => $post_id,
-				'id'      => 'greatermedia_contest_rules',
-				'name'    => 'greatermedia_contest_rules',
-				'value'   => get_post_meta( $post_id, 'rules-desc', true )
-			)
-		);
+		$form_title = get_post_meta( $post_id, 'form-title', true );
+		add_settings_field( 'form-title', 'Form Title Text', array( $this, 'render_input' ), 'greatermedia-contest-form', 'greatermedia-contest-form', array(
+			'post_id' => $post_id,
+			'id'      => 'greatermedia_contest_form_title',
+			'name'    => 'greatermedia_contest_form_title',
+			'size'    => 50,
+			'value'   => ! empty( $form_title ) ? $form_title : 'Enter Here to Win',
+		) );
 
 		$submit_text = get_post_meta( $post_id, 'form-submitbutton', true );
-		if ( empty( $submit_text ) ) {
-			// If you change this string, be sure to get all the places it's used in this class
-			$submit_text = __( 'Submit', 'greatermedia_contests' );
-		}
-
-		add_settings_field(
-			'form-submitbutton',
-			'Submit Button Text',
-			array( $this, 'render_input' ),
-			'greatermedia-contest-form',
-			'greatermedia-contest-form',
-			array(
-				'post_id' => $post_id,
-				'id'      => 'greatermedia_contest_form_submit',
-				'name'    => 'greatermedia_contest_form_submit',
-				'size'    => 50,
-				'value'   => $submit_text
-			)
-		);
+		add_settings_field( 'form-submitbutton', 'Submit Button Text', array( $this, 'render_input' ), 'greatermedia-contest-form', 'greatermedia-contest-form', array(
+			'post_id' => $post_id,
+			'id'      => 'greatermedia_contest_form_submit',
+			'name'    => 'greatermedia_contest_form_submit',
+			'size'    => 50,
+			'value'   => ! empty( $submit_text ) ? $submit_text : 'Submit',
+		) );
 
 		$thank_you = get_post_meta( $post_id, 'form-thankyou', true );
-		if ( empty( $thank_you ) ) {
-			// If you change this string, be sure to get all the places it's used in this class
-			$thank_you = __( 'Thanks for entering!', 'greatermedia_contests' );
-		}
-
-		add_settings_field(
-			'form-thankyou',
-			'"Thank You" Message',
-			array( $this, 'render_input' ),
-			'greatermedia-contest-form',
-			'greatermedia-contest-form',
-			array(
-				'post_id' => $post_id,
-				'id'      => 'greatermedia_contest_form_thankyou',
-				'name'    => 'greatermedia_contest_form_thankyou',
-				'size'    => 50,
-				'value'   => $thank_you
-			)
-		);
-
-	}
-
-	/**
-	 * Render instructions for the settings section
-	 */
-	public function render_generic_settings_section() {
-		// No special rendering
-	}
-
-	/**
-	 * Render a WYSIWYG editor meta field
-	 *
-	 * @param array $args
-	 */
-	public function render_wysiwyg( array $args ) {
-
-		wp_editor(
-			isset( $args['value'] ) ? sanitize_text_field( $args['value'] ) : '',
-			$args['id']
-		);
+		add_settings_field( 'form-thankyou', '"Thank You" Message', array( $this, 'render_input' ), 'greatermedia-contest-form', 'greatermedia-contest-form', array(
+			'post_id' => $post_id,
+			'id'      => 'greatermedia_contest_form_thankyou',
+			'name'    => 'greatermedia_contest_form_thankyou',
+			'size'    => 50,
+			'value'   => ! empty( $thank_you ) ? $thank_you : 'Thanks for entering!',
+		) );
 
 	}
 
@@ -284,7 +206,7 @@ class GreaterMediaContestsMetaboxes {
 			$size_attr = '';
 		}
 
-		echo '<input type="' . esc_attr( $args['type'] ) . '" id="' . esc_attr( $args['id'] ) . '" name="' . esc_attr( $args['name'] ) . '" value="' . esc_attr( $args['value'] ) . '" ' . $size_attr . ' />';
+		echo '<input type="' . esc_attr( $args['type'] ) . '" id="' . esc_attr( $args['id'] ) . '" name="' . esc_attr( $args['name'] ) . '" value="' . esc_attr( $args['value'] ) . '" ' . $size_attr . '>';
 
 	}
 
@@ -293,49 +215,149 @@ class GreaterMediaContestsMetaboxes {
 	 * Implements add_meta_boxes action
 	 */
 	public function add_meta_boxes() {
-
-		add_meta_box(
-			'rules',
-			'Contest Rules',
-			array( $this, 'rules_meta_box' ),
-			'contest',
-			'normal',
-			'default',
-			array()
-		);
-
-		add_meta_box(
-			'form',
-			'Form',
-			array( $this, 'contest_embedded_form' ),
-			'contest',
-			'advanced',
-			'default',
-			array()
-		);
-
+		add_meta_box( 'contest-settings', 'Settings', array( $this, 'contest_settings_metabox' ), GMR_CONTEST_CPT, 'normal' );
+		add_meta_box( 'gallery', 'Gallery', array( $this, 'gallery_meta_box' ), GMR_CONTEST_CPT, 'side' );
 	}
 
-	/**
-	 * Render the "rules" meta box on the Contest editor
-	 */
-	public function rules_meta_box() {
+	public function contest_settings_metabox( WP_Post $post ) {
+		$post_id = $post->ID;
+		$post_status = get_post_status_object( $post->post_status );
 
-		// Add an nonce field so we can check for it later.
-		wp_nonce_field( 'contest_rules_meta_box', 'contest_rules_meta_box' );
-		do_settings_sections( 'greatermedia-contest-rules' );
+		wp_nonce_field( 'contest_meta_boxes', '__contest_nonce' );
 
+		$contset_type = get_post_meta( $post->ID, 'contest_type', true );
+		$is_onair = 'onair' == $contset_type;
+		
+		?><ul class="tabs">
+			<li class="active"><a href="#what-you-win">What You Win</a></li>
+			<li><a href="#how-to-enter">How to Enter</a></li>
+			<li><a href="#contest-rules">Official Contest Rules</a></li>
+			<?php if ( ! $is_onair ) : ?>
+				<li><a href="#contest-form">Form</a></li>
+			<?php endif; ?>
+			<li><a href="#restrictions">Restrictions</a></li>
+		</ul>
+
+		<div id="what-you-win" class="tab active">
+			<?php wp_editor( get_post_meta( $post_id, 'prizes-desc', true ), 'greatermedia_contest_prizes' ); ?>
+		</div>
+
+		<div id="how-to-enter" class="tab">
+			<?php wp_editor( get_post_meta( $post_id, 'how-to-enter-desc', true ), 'greatermedia_contest_enter' ); ?>
+		</div>
+
+		<div id="contest-rules" class="tab">
+			<?php wp_editor( get_post_meta( $post_id, 'rules-desc', true ), 'greatermedia_contest_rules' ); ?>
+		</div>
+
+		<?php if ( ! $is_onair ) : ?>
+		<div id="contest-form" class="tab">
+			<?php if ( ! $post_status->public ) : ?>
+				<div class="contest-form-info">Name, Email Address, Date of Birth and Zipcode fields will be added automatically to every contest.</div>
+				
+				<div id="contest_embedded_form"></div>
+				<input type="hidden" id="contest_embedded_form_data" name="contest_embedded_form">
+			<?php else : ?>
+				<b>Contest form builder is locked.</b>
+			<?php endif; ?>
+			<?php do_settings_sections( 'greatermedia-contest-form' ); ?>
+		</div>
+		<?php endif; ?>
+
+		<div id="restrictions" class="tab">
+			<?php $this->_restrictions_settings( $post ); ?>
+		</div><?php
 	}
 
-	/**
-	 * Render an embedded form editor on the Contest editor
-	 */
-	public function contest_embedded_form() {
+	private function _restrictions_settings( WP_Post $post ) {
+		$post_status = get_post_status_object( $post->post_status );
 
-		// Add an nonce field so we can check for it later.
-		wp_nonce_field( 'contest_form_meta_box', 'contest_form_meta_box' );
-		include trailingslashit( GREATER_MEDIA_CONTESTS_PATH ) . 'tpl/contest-form-meta-box.tpl.php';
-		do_settings_sections( 'greatermedia-contest-form' );
+		$started = get_post_meta( $post->ID, 'contest-start', true );
+		$ended = get_post_meta( $post->ID, 'contest-end', true );
+		
+		?><table class="form-table">
+			<tr>
+				<th scope="row"><label for="greatermedia_contest_start">Start date</label></th>
+				<td>
+					<?php if ( ! $post_status->public ) : ?>
+						<?php $this->render_date_field( array(
+							'post_id' => $post->ID,
+							'id'      => 'greatermedia_contest_start',
+							'name'    => 'greatermedia_contest_start',
+							'value'   => get_post_meta( $post->ID, 'contest-start', true )
+						) ); ?>
+					<?php else : ?>
+						<b><?php echo ! empty( $started ) ? date( get_option( 'date_format' ), get_post_meta( $post->ID, 'contest-start', true ) ) : '&#8212;'; ?></b>
+					<?php endif; ?>
+				</td>
+			</tr>
+
+			<tr>
+				<th scope="row"><label for="greatermedia_contest_end">End date</label></th>
+				<td>
+					<?php if ( ! $post_status->public ) : ?>
+						<?php $this->render_date_field( array(
+							'post_id' => $post->ID,
+							'id'      => 'greatermedia_contest_end',
+							'name'    => 'greatermedia_contest_end',
+							'value'   => get_post_meta( $post->ID, 'contest-end', true ),
+						) ); ?>
+					<?php else : ?>
+						<b><?php echo ! empty( $ended ) ? date( get_option( 'date_format' ), get_post_meta( $post->ID, 'contest-end', true ) ) : '&#8212;'; ?></b>
+					<?php endif; ?>
+				</td>
+			</tr>
+
+			<tr>
+				<th scope="row"><label for="greatermedia_contest_members_only">Who can enter</label></th>
+				<td>
+					<select id="greatermedia_contest_members_only" name="greatermedia_contest_members_only">
+						<option value="0">Members and guests</option>
+						<option value="1"<?php selected( get_post_meta( $post->ID, 'contest-members-only', true ) ); ?>>Members only</option>
+					</select>
+				</td>
+			</tr>
+
+			<tr>
+				<th scope="row"><label for="greatermedia_contest_single_entry">Entries per person</label></th>
+				<td>
+					<select id="greatermedia_contest_single_entry" name="greatermedia_contest_single_entry">
+						<option value="1">One Entry Per Person</option>
+						<option value="0"<?php selected( get_post_meta( $post->ID, 'contest-single-entry', true ), false ); ?>>No Limit</option>
+					</select>
+				</td>
+			</tr>
+
+			<tr>
+				<th scope="row"><label for="greatermedia_contest_max_entries">Total entries for the contest</label></th>
+				<td>
+					<input type="text" id="greatermedia_contest_max_entries" name="greatermedia_contest_max_entries" value="<?php echo esc_attr( get_post_meta( $post->ID, 'contest-max-entries', true ) ); ?>">
+				</td>
+			</tr>
+
+			<tr>
+				<th scope="row"><label for="greatermedia_contest_min_age">Minimum age to enter</label></th>
+				<td>
+					<input type="text" id="greatermedia_contest_min_age" name="greatermedia_contest_min_age" value="<?php echo esc_attr( get_post_meta( $post->ID, 'contest-min-age', true ) ); ?>">
+				</td>
+			</tr>
+		</table><?php
+	}
+
+	public function gallery_meta_box( WP_Post $post ) {
+		
+		$images = get_children( array(
+			'numberposts'    => 500, // do we need more?
+			'post_parent'    => $post->ID,
+			'post_type'      => 'attachment',
+			'post_mime_type' => 'image',
+			'post_status'    => 'inherit',
+		) );
+
+		?><input type="text" class="widefat" readonly disabled value="<?php echo esc_attr( '[gallery ids="' . implode( ',', array_keys( $images ) ) . '"]' ); ?>">
+		<span class="description">
+			To create a standalone gallery of the entries, copy the content of this field, create a new Gallery post, then paste it in the content for that Gallery.
+		</span><?php
 
 	}
 
@@ -348,18 +370,8 @@ class GreaterMediaContestsMetaboxes {
 
 		$post = get_post( $post_id );
 
-		// Check if our nonces are set.
-		if ( ! isset( $_POST['contest_form_meta_box'] ) || ! isset( $_POST['contest_rules_meta_box'] ) ) {
-			return;
-		}
-
 		// Verify that the form nonce is valid.
-		if ( ! wp_verify_nonce( $_POST['contest_form_meta_box'], 'contest_form_meta_box' ) ) {
-			return;
-		}
-
-		// Verify that the rules nonce is valid
-		if ( ! wp_verify_nonce( $_POST['contest_rules_meta_box'], 'contest_rules_meta_box' ) ) {
+		if ( ! wp_verify_nonce( filter_input( INPUT_POST, '__contest_nonce' ), 'contest_meta_boxes' ) ) {
 			return;
 		}
 
@@ -369,7 +381,7 @@ class GreaterMediaContestsMetaboxes {
 		}
 
 		// Make sure the post type is correct
-		if ( 'contest' !== $post->post_type ) {
+		if ( GMR_CONTEST_CPT !== $post->post_type ) {
 			return;
 		}
 
@@ -378,39 +390,70 @@ class GreaterMediaContestsMetaboxes {
 			return;
 		}
 
-		/**
-		 * Update the form's meta field
-		 * The form JSON has slashes in it which need to be stripped out.
-		 * json_decode() and json_encode() are used here to sanitize the JSON & keep out invalid values
-		 */
-		$form = json_encode( json_decode( urldecode( $_POST['contest_embedded_form'] ) ) );
-		// PHP's json_encode() may add quotes around the encoded string. Remove them.
-		$form = trim( $form, '"' );
-		update_post_meta( $post_id, 'embedded_form', $form );
+		if ( isset( $_POST['contest_embedded_form'] ) ) {
+			/**
+			 * Update the form's meta field
+			 * The form JSON has slashes in it which need to be stripped out.
+			 * json_decode() and json_encode() are used here to sanitize the JSON & keep out invalid values
+			 */
+			$form = addslashes( json_encode( json_decode( urldecode( $_POST['contest_embedded_form'] ) ) ) );
+			// PHP's json_encode() may add quotes around the encoded string. Remove them.
+			$form = trim( $form, '"' );
+			update_post_meta( $post_id, 'embedded_form', $form );
+		}
 
 		// Update the form's "submit button" text
-		$submit_text = isset( $_POST['greatermedia_contest_form_submit'] ) ? $_POST['greatermedia_contest_form_submit'] : '';
-		if ( empty( $submit_text ) ) {
-			// If you change this string, be sure to get all the places it's used in this class
-			$submit_button = __( 'Submit', 'greatermedia_contests' );
+		if ( isset( $_POST['greatermedia_contest_form_title'] ) ) {
+			$form_title = $_POST['greatermedia_contest_form_title'];
+			if ( empty( $form_title ) ) {
+				$form_title = 'Enter Here to Win';
+			}
+			update_post_meta( $post_id, 'form-title', sanitize_text_field( $form_title ) );
 		}
-		update_post_meta( $post_id, 'form-submitbutton', sanitize_text_field( $submit_text ) );
+
+		// Update the form's "submit button" text
+		if ( isset( $_POST['greatermedia_contest_form_submit'] ) ) {
+			$submit_text = $_POST['greatermedia_contest_form_submit'];
+			if ( empty( $submit_text ) ) {
+				$submit_text = 'Submit';
+			}
+			update_post_meta( $post_id, 'form-submitbutton', sanitize_text_field( $submit_text ) );
+		}
 
 		// Update the form's "thank you" message
-		$thank_you = isset( $_POST['greatermedia_contest_form_thankyou'] ) ? $_POST['greatermedia_contest_form_thankyou'] : '';
-		if ( empty( $thank_you ) ) {
-			// If you change this string, be sure to get all the places it's used in this class
-			$thank_you = __( 'Thanks for entering!', 'greatermedia_contests' );
+		if ( isset( $_POST['greatermedia_contest_form_thankyou'] ) ) {
+			$thank_you = $_POST['greatermedia_contest_form_thankyou'];
+			if ( empty( $thank_you ) ) {
+				$thank_you = 'Thanks for entering!';
+			}
+			update_post_meta( $post_id, 'form-thankyou', sanitize_text_field( $thank_you ) );
 		}
-		update_post_meta( $post_id, 'form-thankyou', sanitize_text_field( $thank_you ) );
 
 		// Update the contest rules meta fields
 		update_post_meta( $post_id, 'prizes-desc', wp_kses_post( $_POST['greatermedia_contest_prizes'] ) );
 		update_post_meta( $post_id, 'how-to-enter-desc', wp_kses_post( $_POST['greatermedia_contest_enter'] ) );
 		update_post_meta( $post_id, 'rules-desc', wp_kses_post( $_POST['greatermedia_contest_rules'] ) );
-		update_post_meta( $post_id, 'contest-start', strtotime( $_POST['greatermedia_contest_start'] ) );
-		update_post_meta( $post_id, 'contest-end', strtotime( $_POST['greatermedia_contest_end'] ) );
+		update_post_meta( $post_id, 'contest_type', filter_input( INPUT_POST, 'contest_type' ) );
 
+		if ( ! empty( $_POST['greatermedia_contest_start'] ) ) {
+			update_post_meta( $post_id, 'contest-start', strtotime( $_POST['greatermedia_contest_start'] ) );
+		}
+
+		if ( ! empty( $_POST['greatermedia_contest_end'] ) ) {
+			update_post_meta( $post_id, 'contest-end', strtotime( $_POST['greatermedia_contest_end'] ) );
+		}
+
+		$members_only = filter_input( INPUT_POST, 'greatermedia_contest_members_only', FILTER_VALIDATE_BOOLEAN );
+		update_post_meta( $post_id, 'contest-members-only', $members_only );
+
+		$single_entry = filter_input( INPUT_POST, 'greatermedia_contest_single_entry', FILTER_VALIDATE_BOOLEAN );
+		update_post_meta( $post_id, 'contest-single-entry', $single_entry );
+
+		$max_etries = filter_input( INPUT_POST, 'greatermedia_contest_max_entries', FILTER_VALIDATE_INT, array( 'options' => array( 'min_range' => 1, 'default' => '' ) ) );
+		update_post_meta( $post_id, 'contest-max-entries', $max_etries );
+
+		$min_age = filter_input( INPUT_POST, 'greatermedia_contest_min_age', FILTER_VALIDATE_INT, array( 'options' => array( 'min_range' => 1, 'default' => '' ) ) );
+		update_post_meta( $post_id, 'contest-min-age', $min_age );
 	}
 
 }

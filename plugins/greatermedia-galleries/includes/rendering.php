@@ -20,6 +20,26 @@ class GreaterMediaGallery {
 
 		// Remove gallery shortcodes from content, since we have these at the top of single-page
 		add_filter( 'the_content', array( __CLASS__, 'strip_for_single_gallery' ) );
+
+		// Register scripts
+		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'register_scripts' ) );
+	}
+
+	/**
+	 * Registers gallery scripts to use on the front end.
+	 *
+	 * @static
+	 * @access public
+	 * @action wp_enqueue_scripts
+	 */
+	public static function register_scripts() {
+		$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
+
+		/* all js files are being concatenated into a single js file.
+		 * This include all js files for cycle2, located in `assets/js/vendor/cycle2/`
+		 * and `gmr_gallery.js`, located in `assets/js/src/`
+		 */
+		wp_enqueue_script( 'gmr-gallery', GREATER_MEDIA_GALLERIES_URL . "assets/js/gmr_gallery{$postfix}.js", array( 'jquery' ), GREATER_MEDIA_GALLERIES_VERSION, true );
 	}
 
 	/**
@@ -159,29 +179,13 @@ class GreaterMediaGallery {
 	 * @return string Rendered HTML for the gallery
 	 */
 	public static function render_gallery_from_query( \WP_Query $gallery ) {
+		static $gallery_key = -1; 
+		
+		$gallery_key++; 
+		
 		ob_start();
 		if ( $gallery->have_posts() ):
-			$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
-
-			/* all js files are being concatenated into a single js file.
-			 * This include all js files for cycle2, located in `assets/js/vendor/cycle2/`
-			 * and `gmr_gallery.js`, located in `assets/js/src/`
-			 */
-			wp_register_script(
-				'gmr-gallery',
-				GREATER_MEDIA_GALLERIES_URL . "assets/js/gmr_gallery{$postfix}.js",
-				array(
-					'jquery'
-				),
-				GREATER_MEDIA_GALLERIES_VERSION,
-				true
-			);
-			wp_enqueue_script(
-				'gmr-gallery'
-			);
-
-			$main_post_id         = get_queried_object_id();
-
+			$main_post_id = get_queried_object_id();
 			$thumbnails_per_page = 8;
 			$image_count_text = sprintf( __( '%s of %s', 'greatermedia' ), '{{slideNum}}', '{{slideCount}}' );
 			?>
@@ -191,8 +195,8 @@ class GreaterMediaGallery {
 						<div class="gallery__slide--images cycle-slideshow"
 						     data-cycle-log="false"
 						     data-slides="> .gallery__slide--image"
-						     data-cycle-prev=".gallery__prev--btn"
-						     data-cycle-next=".gallery__next--btn"
+						     data-cycle-prev=".gallery_<?php echo intval( $gallery_key ); ?>_prev"
+						     data-cycle-next=".gallery_<?php echo intval( $gallery_key ); ?>_next"
 						     data-cycle-timeout="0"
 						     data-cycle-caption="#gallery__count"
 						     data-cycle-caption-template="<?php echo esc_attr( $image_count_text ); ?>"
@@ -211,12 +215,19 @@ class GreaterMediaGallery {
 								$slide_link = get_permalink( $main_post_id ) . '#' . $slide_hash;
 
 								$attr = array(
-									'data-cycle-hash'           => get_post_field( 'post_name', get_the_ID() ),
 									'data-cycle-slide_shorturl' => $slide_link,
 									'data-cycle-slide_title'    => urlencode( get_the_title() ),
 								);
+
+								$use_hash = apply_filters( 'gmr_gallery_use_hash', true );
+								if ( $use_hash ) {
+									$attr['data-cycle-hash'] = $slide_hash;
+								}
+
 								$image = wp_get_attachment_image_src( get_the_ID(), array( 775, 516 ), false );
 								$image_url = $image[0];
+								$image_attribution = get_post_meta( get_the_ID(), 'gmr_image_attribution', true );
+								$img_link = filter_var( $image_attribution, FILTER_VALIDATE_URL );
 								?>
 								<div class="gallery__slide--image"
 									<?php
@@ -225,6 +236,21 @@ class GreaterMediaGallery {
 									}
 									?>
 									 style="background-image: url(<?php echo esc_url( $image_url ); ?>);">
+									<?php
+
+										if ( ! empty( $image_attribution ) ) {
+											if ( $img_link ) {
+												echo '<div class="image__attribution">';
+												echo '<a href="' . wp_kses_post( $image_attribution ) . '">Photo Credit</a>';
+												echo '</div>';
+											} else {
+												echo '<div class="image__attribution">';
+												echo wp_kses_post( $image_attribution );
+												echo '</div>';
+											}
+										}
+
+									?>
 								</div>
 							<?php
 
@@ -237,41 +263,81 @@ class GreaterMediaGallery {
 						<div class="gallery__content cycle-slideshow"
 						     data-cycle-log="false"
 						     data-cycle-slides="> div"
-						     data-cycle-prev=".gallery__prev--btn"
-						     data-cycle-next=".gallery__next--btn"
+						     data-cycle-prev="#gallery_<?php echo intval( $gallery_key ); ?>_prev"
+						     data-cycle-next="#gallery_<?php echo intval( $gallery_key ); ?>_next"
 						     data-cycle-timeout="0"
 						     data-cycle-manual-speed="1"
 						     data-cycle-auto-height=container>
 							<?php
-							while ( $gallery->have_posts() ){
+							while ( $gallery->have_posts() ):
 								global $post;
 								$gallery->the_post();
 								$slide_hash = get_post_field( 'post_name', get_the_ID() );
 								$slide_link = get_permalink( $main_post_id ) . '#' . $slide_hash;
 								$image_title = get_the_title( $post ); // title of the gallery image
-								echo '<div class="gallery__slide--content" data-cycle-hash="' . $slide_hash . '">';
-								echo '<h2 class="gallery__slide--title">';
-								echo $image_title;
-								echo '</h2>';
-								echo '<div class="gallery__social">';
-								echo '<a class="icon-facebook social-share-link" href="http://www.facebook.com/sharer/sharer.php?u=' . esc_url( $slide_link ) . '&title=' . esc_attr( $image_title ) . '"></a>';
-								echo '<a class="icon-twitter social-share-link" href="http://twitter.com/home?status=' . esc_attr( $image_title ) . '+' . esc_url( $slide_link ) . '"></a>';
-								echo '<a class="icon-google-plus social-share-link" href="https://plus.google.com/share?url=' . esc_url( $slide_link ) . '"></a>';
-								echo '</div>';
-								echo '</div>';
-							}
+
+								$share_fb_url = add_query_arg( array(
+									'u' => $slide_link,
+									'title' => get_the_title()
+								), 'http://facebook.com/sharer/sharer.php' );
+
+								$share_twitter_url = add_query_arg( array (
+									'status' => get_the_title() . ' ' . $slide_link
+								), 'http://twitter.com/home' );
+
+								$share_google_url = add_query_arg( array (
+									'url' => $slide_link
+								), 'https://plus.google.com/share' );
+								?>
+								<div class="gallery__slide--content"
+									 <?php if ( $use_hash ) : ?>
+									 data-cycle-hash="<?php echo esc_attr( $slide_hash ); ?>"
+									 <?php endif; ?>
+									 >
+									<h2 class="gallery__slide--title"><?php the_title(); ?></h2>
+
+									<div class="gallery__prev">
+										<button type="button" class="gallery_<?php echo intval( $gallery_key ); ?>_prev gallery__prev--btn slide-overlay-control-nohide">
+											<span class="gallery__prev--span"><?php _e( 'Prev', 'greatermedia' ); ?></span>
+										</button>
+									</div>
+
+									<div class="gallery__social-and-count">
+										<div class="gallery__social">
+											<a class="icon-facebook social-share-link"
+											   href="<?php echo esc_url( $share_fb_url ); ?>"></a>
+											<a class="icon-twitter social-share-link"
+											   href="<?php echo esc_url( $share_twitter_url ); ?>"></a>
+											<a class="icon-google-plus social-share-link"
+											   href="<?php echo esc_url( $share_google_url ); ?>"></a>
+										</div>
+										<div class="gallery_count">
+											<?php echo absint( $gallery->current_post + 1 ); ?>
+											of
+											<?php echo absint( $gallery->found_posts ); ?>
+										</div>
+									</div>
+
+									<div class="gallery__next">
+										<button type="button" class="gallery_<?php echo intval( $gallery_key ); ?>_next gallery__next--btn slide-overlay-control-nohide">
+											<span class="gallery__next--span"><?php _e( 'Next', 'greatermedia' ); ?></span>
+										</button>
+									</div>
+
+									<div class="gallery__social--mobile">
+										<a class="icon-facebook social-share-link"
+										   href="<?php echo esc_url( $share_fb_url ); ?>"></a>
+										<a class="icon-twitter social-share-link"
+										   href="<?php echo esc_url( $share_twitter_url ); ?>"></a>
+										<a class="icon-google-plus social-share-link"
+										   href="<?php echo esc_url( $share_google_url ); ?>"></a>
+									</div>
+								</div>
+
+								<?php
+							endwhile;
 							$gallery->rewind_posts();
 							?>
-						</div>
-						<div class="gallery__progress">
-							<div class="gallery__prev">
-								<button type="button" class="gallery__prev--btn slide-overlay-control-nohide"><span class="gallery__prev--span"><?php _e( 'Prev', 'greatermedia'); ?></span></button>
-							</div>
-							<div id="gallery__count" class="gallery__count">
-							</div>
-							<div class="gallery__next">
-								<button type="button" class="gallery__next--btn slide-overlay-control-nohide"><span class="gallery__next--span"><?php _e( 'Next', 'greatermedia'); ?></span></button>
-							</div>
 						</div>
 					</div>
 					<div class="gallery__thumbnails">
@@ -303,23 +369,29 @@ class GreaterMediaGallery {
 										echo '</div><div class="gallery__previews--group">';
 									}
 
-									echo '<div id="preview-' . $image_count . '" class="gallery__slide--preview" style="background-image: url(' . esc_url( $thumb_url[0] ) . ');" data-cycle-hash="' . get_post_field( 'post_name', get_the_ID() ) . '" data-cycle-index="' . esc_attr( $image_count ) . '"></div>';
+									echo '<div id="preview-', $image_count, '" class="gallery__slide--preview" style="background-image: url(', esc_url( $thumb_url[0] ), ');"';
+									if ( $use_hash ) {
+										echo ' data-cycle-hash="', get_post_field( 'post_name', get_the_ID() ), '"';
+									}
+									echo ' data-cycle-index="', esc_attr( $image_count ), '"></div>';
 									$image_count++;
 								}
 								$gallery->rewind_posts();
 								?>
 							</div>
 						</div>
-						<div class="gallery__paging gallery__paging--left">
-							<div class="slide-paging-arrows carousel-controls">
-								<button type="button" class="gallery__paging--prev"></button>
+						<?php if ($image_count >= 9) { ?>
+							<div class="gallery__paging gallery__paging--left">
+								<div class="slide-paging-arrows carousel-controls">
+									<button type="button" class="gallery__paging--prev"></button>
+								</div>
 							</div>
-						</div>
-						<div class="gallery__paging gallery__paging--right">
-							<div class="slide-paging-arrows carousel-controls">
-								<button type="button" class="gallery__paging--next"></button>
+							<div class="gallery__paging gallery__paging--right">
+								<div class="slide-paging-arrows carousel-controls">
+									<button type="button" class="gallery__paging--next"></button>
+								</div>
 							</div>
-						</div>
+						<?php } ?>
 					</div> <!-- / gallery sidebar -->
 
 					<?php wp_reset_postdata(); ?>

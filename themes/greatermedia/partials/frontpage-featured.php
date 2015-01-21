@@ -12,17 +12,24 @@
 
 		if ( $hp_featured_query->have_posts() ) : $hp_featured_query->the_post(); ?>
 			<div class="featured__article">
-				<div class="featured__article--image">
-					<a href="<?php the_permalink(); ?>">
-						<?php the_post_thumbnail( 'gmr-featured-primary' ); ?>
-					</a>
-				</div>
-				<div class="featured__article--content">
-					<div class="featured__article--heading">
-						<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+				<a href="<?php the_permalink(); ?>">
+					<div class="featured__article--image" style='background-image: url(<?php gm_post_thumbnail_url( 'gmr-featured-primary' ) ?>)'>
+						<?php
+
+							$image_attr = image_attribution();
+
+							if ( ! empty( $image_attr ) ) {
+								echo $image_attr;
+							}
+
+						?>
 					</div>
-					<div class="featured__article--excerpt"><?php the_excerpt(); ?></div>
-				</div>
+					<div class="featured__article--content">
+						<div class="featured__article--heading">
+							<?php the_title(); ?>
+						</div>
+					</div>
+				</a>
 			</div>
 		<?php endif; ?>
 		<?php // if we still have more posts (we almost always will), render the 3 below the main section ?>
@@ -30,15 +37,15 @@
 			<div class="featured__content">
 				<?php while ( $hp_featured_query->have_posts() ) : $hp_featured_query->the_post(); ?>
 					<div class="featured__content--block">
-						<div class="featured__content--image">
-							<a href="<?php the_permalink(); ?>"><?php the_post_thumbnail( 'gmr-featured-secondary' ); ?></a>
-						</div>
-						<div class="featured__content--meta">
-							<h2 class="featured__content--title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
-							<div class="featured__content--link">
-								<a href="<?php the_permalink(); ?>" class="featured__content--btn">Read More</a>
+						<a href="<?php the_permalink(); ?>">
+							<div class="featured__content--image" style='background-image: url(<?php gm_post_thumbnail_url( 'gmr-featured-secondary' ) ?>)'></div>
+							<div class="featured__content--meta">
+								<h2 class="featured__content--title"><?php the_title(); ?></h2>
+								<div class="featured__content--link">
+									<span class="featured__content--btn">Read More</span>
+								</div>
 							</div>
-						</div>
+						</a>
 					</div>
 				<?php endwhile; ?>
 			</div>
