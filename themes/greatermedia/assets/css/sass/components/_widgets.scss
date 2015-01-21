@@ -1,5 +1,9 @@
 .widget--live-player {
 	margin: 0 1em 1em;
+
+	.live-player--open & {
+		margin-bottom: 58px;
+	}
 }
 
 .widget--live-player__title {
