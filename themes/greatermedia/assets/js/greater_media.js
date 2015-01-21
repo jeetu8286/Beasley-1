@@ -425,9 +425,6 @@
 		liveStream = document.getElementById( 'live-player' ),
 		windowWidth = this.innerWidth || this.document.documentElement.clientWidth || this.document.body.clientWidth || 0,
 		scrollObject = {},
-		searchForm = document.getElementById( 'header__search--form'),
-		searchBtn = document.getElementById( 'header__search'),
-		searchInput = document.getElementById( 'header-search'),
 		collapseToggle = document.querySelector('*[data-toggle="collapse"]'),
 		breakingNewsBanner = document.getElementById('breaking-news-banner'),
 		$overlay = $('.overlay-mask');
@@ -806,73 +803,8 @@
 		}
 	}
 
-	/**
-	 * A function to show the header search when an event is targeted.
-	 *
-	 * @param e
-	 */
-	function showSearch(e) {
-		if (searchForm !== null) {
-			e.preventDefault();
-			$overlay.addClass( 'is-visible' )
-			
-			// Now, show the search form, but don't set focus until the transition
-			// animation is complete. This is because Webkit browsers scroll to 
-			// the element when it gets focus, and they scroll to it where it was
-			// before the transition started. 
-			$( searchForm )
-				.toggleClass('header__search--open')
-				.on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', function () {
-					searchInput.focus();
-					$(searchInput).select();  
-				} );			
-		}
-	}
 
-	/**
-	 * A function to hide the header search when an event is targeted.
-	 *
-	 * @param e
-	 */
-	function closeSearch(e) {
-		if (searchForm !== null && searchForm.classList.contains('header__search--open')) {
-			e.preventDefault();
-			searchForm.classList.remove('header__search--open');
-			$overlay.removeClass('is-visible');
-		}
-	}
-
-	/**
-	 * Event listeners to run on click to show and close the search.
-	 */
-	if (searchBtn !== null) {
-		searchBtn.addEventListener('click', showSearch, false);
-		/**
-		 * An event listener is also in place for the header search form so that when a user clicks inside of it, it will
-		 * not hide. This is key because the header search for sits within the element that the click event that closes the
-		 * search. If this is event listener is not in place and a user clicks within the search area, it will close.
-		 */
-		searchForm.addEventListener('click', function(e) {
-			e.stopPropagation();
-		});
-	}
-
-	/**
-	 * Close the search box when user presses escape.
-	 */
-	$(window).keydown(function (e) {
-		if (e.keyCode === 27){
-			closeSearch(e);
-		}
-	});
-
-	/**
-	 * Close the search box (if open) if the user clicks on the overlay.
-	 */
-	$overlay.click(function (e) {
-		closeSearch(e);
-	});
-
+	
 	/**
 	 * variables that define debounce and throttling for window resizing and scrolling
 	 */
@@ -984,4 +916,141 @@
 
 	personality_toggle();
 
+})();
+
+(function() {
+	var $ = jQuery,
+		$searchContainer = $( '#header__search--form '),
+		$searchForm = $( '#header__search--form ' ).find( 'form' ),
+		$searchBtn = $( '#header__search'),
+		$searchInput = $( '#header-search' ),
+		$overlay = $('.overlay-mask' );
+	
+	/**
+	 * A function to show the header search when an event is targeted.
+	 *
+	 * @param e
+	 */
+	function showSearch(e) {
+		e.preventDefault();
+		
+		if ( $searchContainer.hasClass( 'header__search--open' ) ) {
+			return; 
+		}
+		
+		$overlay.addClass( 'is-visible' )
+		
+		// Now, show the search form, but don't set focus until the transition
+		// animation is complete. This is because Webkit browsers scroll to 
+		// the element when it gets focus, and they scroll to it where it was
+		// before the transition started. 
+		$searchContainer
+			.addClass('header__search--open')
+			.on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', function () {
+				$searchInput.focus().select();
+			} );
+	}
+	
+	/**
+	 * A function to hide the header search when an event is targeted.
+	 *
+	 * @param e
+	 */
+	function closeSearch(e) {
+		e.preventDefault();
+		
+		if ( ! $searchContainer.hasClass( 'header__search--open' ) ) {
+			return;
+		}
+		
+		$searchContainer.removeClass( 'header__search--open' );
+		$overlay.removeClass('is-visible');
+		document.activeElement.blur();
+	}
+	
+	/**
+	 * Event listeners to run on click to show and close the search.
+	 */
+	$searchBtn.click( showSearch ); 
+	
+	// Show search if the field has focus.
+	$searchInput.click( function ( e ) {
+		showSearch( e);
+	} ); 
+	
+	function checkSearchField () {
+		var $search_body = $searchContainer.find( '.header-search-body' );
+		
+		// Show the body only if there's text in the search field.
+		if ( $searchInput.val().length ) {
+			$search_body.addClass( 'is-visible' );
+		} else {
+			$search_body.removeClass( 'is-visible' );
+		}
+	}
+	
+	$searchInput.keyup( checkSearchField );
+	
+	checkSearchField(); 
+	
+	/**
+	 * Close the search box when user presses escape.
+	 */
+	$(window).keydown(function (e) {
+		if (e.keyCode === 27){
+			closeSearch(e);
+		}		
+	});
+	
+	/**
+	 * Handle enter key for Safari. 
+	 */
+	$searchForm.keydown( function ( e ) {
+		if ( 13 === e.keyCode ) {
+			$( this ).submit(); 
+		}
+	} );
+	
+	/**
+	 * Close the search box (if open) if the user clicks on the overlay.
+	 */
+	$overlay.click(function (e) {
+		closeSearch(e);
+	});
+	
+	/**
+	 * Close the search box (if open) if the user clicks the close button.
+	 */
+	$searchContainer.find( '.header__search--cancel' ).click( function ( e ) {
+		e.preventDefault();
+		closeSearch( e );
+	} );
+	
+	/**
+	 * Make "Search All Content" button trigger form submit.
+	 */
+	$searchContainer.find( '.header-search__search-all-btn' ).click( function () {
+		$searchForm.submit(); 	
+	} );
+	
+	/**
+	 * PJAX workaround. PJAX is set to only handle links when they're clicked,
+	 * so to get the form to work over PJAX we need to create a fake link and 
+	 * then click it. Clunky but it is the quick fix for now. 
+	 * 
+	 * Note that we are calling click() on the DOM object, not the jQuery 
+	 * object. This is the only way to get this to work on Safari. 
+	 */
+	$searchForm.submit( function ( e ) {
+		e.preventDefault();		
+		
+		$( '<a></a>' )
+			.attr( 'href', $( this ).attr( 'action' ) + '?s=' + $( this ).find( 'input[name=s]' ).val() )
+			.appendTo( $( this ) )
+			.get( 0 ).click() // Note we are triggering click on the DOM object, not the jQuery object.
+		;
+		
+		closeSearch( e );
+	} );
+	
 })();

@@ -453,7 +453,21 @@ if ( ! function_exists( 'greatermedia_load_more_template' ) ) :
 		$partial_slug = isset( $_REQUEST['partial_slug'] ) ? sanitize_text_field( $_REQUEST['partial_slug'] ) : 'partials/loop';
 		$partial_name = isset( $_REQUEST['partial_name'] ) ? sanitize_text_field( $_REQUEST['partial_name'] ) : '';
 
+		global $wp_query; 
+		
+		ob_start(); 
+		
 		get_template_part( $partial_slug, $partial_name );
+		
+		$html = ob_get_clean();
+		
+		wp_send_json( array( 
+			'paged' => $wp_query->query_vars['paged'], 
+			'max_num_pages' => $wp_query->max_num_pages,
+			'post_count' => $wp_query->post_count,
+			'html' => $html,
+		) );
+		
 		exit;
 	}
 
@@ -491,6 +505,13 @@ function greatermedia_load_more_button( $args = array() ) {
 		$wp_query = $temp_wp_query;
 	} 
 	
+	// Bail if we're basing this off a query and we can see there are no more 
+	// posts to load.
+	if ( $args['query'] && $args['next_page'] > $args['query']->max_num_pages ) {
+		return; 
+	}	
+	
+	
 	if ( ! $args['next_page'] ) {
 		$args['next_page'] = 2;
 	}
@@ -506,7 +527,6 @@ function greatermedia_load_more_button( $args = array() ) {
 			data-partial-slug='<?php echo esc_attr( $args['partial_slug'] ); ?>'
 			data-partial-name='<?php echo esc_attr( $args['partial_name'] ); ?>'
 			data-auto-load='<?php echo intval( $args['auto_load'] ); ?>'
-			data-not-found="All content shown"
 			>
 			<i class="fa fa-spin fa-refresh"></i> Load More
 		</a>
@@ -620,3 +640,12 @@ function greatermedia_add_gigya_body_class( $classes ) {
 
 }
 add_filter( 'body_class', 'greatermedia_add_gigya_body_class' );
+
+/**
+ * Show more posts that usual for gmr_closure archives. 
+ */
+add_action( 'parse_query', function ( WP_Query $query ) {
+	if ( $query->is_main_query() && $query->is_post_type_archive( 'gmr_closure' ) ) {
+		$query->query_vars['posts_per_page'] = 30;
+	}
+} );
