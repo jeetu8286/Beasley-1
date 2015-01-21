@@ -482,7 +482,11 @@
 
 	function playLiveStream() {
 		pjaxInit();
-		if (adBlockCheck == undefined) {
+		if ( true === playingCustomAudio ) {
+			resumeCustomInlineAudio();
+
+			setPlayingStyles();
+		} else if (adBlockCheck == undefined) {
 			preVastAd();
 			showAdBlockDetect();
 			setTimeout(postVastAd, 15000);
@@ -512,7 +516,11 @@
 
 	function resumeLiveStream() {
 		pjaxInit();
-		if (adBlockCheck == undefined) {
+		if ( true === playingCustomAudio ) {
+			resumeCustomInlineAudio();
+
+			setPlayingStyles();
+		} else if (adBlockCheck == undefined) {
 			preVastAd();
 			showAdBlockDetect();
 			setTimeout(postVastAd, 15000);
