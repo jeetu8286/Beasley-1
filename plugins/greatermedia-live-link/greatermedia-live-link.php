@@ -11,7 +11,7 @@ define( 'GMR_LIVE_LINK_CPT', 'gmr-live-link' );
 
 // action hooks
 add_action( 'init', 'gmr_ll_register_post_type', PHP_INT_MAX );
-add_action( 'save_post', 'gmr_ll_save_redirect_meta_box_data', PHP_INT_MAX );
+add_action( 'save_post', 'gmr_ll_save_redirect_meta_box_data', 11 );
 add_action( 'save_post', 'gmr_ll_update_live_link_title' );
 add_action( 'manage_' . GMR_LIVE_LINK_CPT . '_posts_custom_column', 'gmr_ll_render_custom_column', 10, 2 );
 add_action( 'admin_action_gmr_ll_copy', 'gmr_ll_handle_copy_post_to_live_link' );
@@ -43,7 +43,7 @@ function gmr_ll_update_live_link_title( $post_id ) {
 
 	// do nothing if it is live link post
 	$post = get_post( $post_id );
-	if ( ! $post || GMR_LIVE_LINK_CPT == $post->post_title ) {
+	if ( ! $post || GMR_LIVE_LINK_CPT == $post->post_type ) {
 		return;
 	}
 
@@ -259,7 +259,7 @@ function gmr_ll_render_redirect_meta_box( WP_Post $post ) {
 /**
  * Saves redirection link.
  *
- * @action save_post
+ * @action save_post 11
  * @param int $post_id The post id.
  */
 function gmr_ll_save_redirect_meta_box_data( $post_id ) {
@@ -290,7 +290,7 @@ function gmr_ll_save_redirect_meta_box_data( $post_id ) {
 	update_post_meta( $post_id, 'redirect', $redirect );
 
 	// deactivate this action to prevent infinite loop
-	remove_action( 'save_post', 'gmr_ll_save_redirect_meta_box_data', PHP_INT_MAX );
+	remove_action( 'save_post', 'gmr_ll_save_redirect_meta_box_data', 11 );
 
 	// set live link post parent to its realted post id
 	if ( is_numeric( $redirect ) ) {

@@ -24,19 +24,12 @@
 }
 
 .live-player__stream {
-	width: auto;
-	margin: 10px;
 	border: 1px solid lighten($color-gray-medium-dark,50%);
 	color: lighten($color-gray-medium-dark,50%);
 	@include border-radius(1em);
 	background-color: $liveplayer-bg;
 
-	@include bp(medium) {
-		background-color: transparent;
-	}
-
 	li {
-		background-color: transparent;
 		height: auto;
 	}
 
@@ -44,16 +37,8 @@
 		display: none;
 	}
 
-	.live-player__stream--current.open {
-		background-color: transparent;
-	}
-
 	.live-player__stream--current.open .live-player__stream--available {
-		position: relative;
-		display: block;
-		background-color: transparent;
 		color: $dark-gray;
-		top: auto;
 		border-top: 1px solid darken($color-gray-light, 10%);
 
 		&:after {
@@ -64,8 +49,12 @@
 			color: $dark-gray;
 		}
 
-		.live-player__stream--item:hover, .live-player__stream--name:hover, .live-player__stream--desc:hover {
-			color: $light-gray;
+		.live-player__stream--item {
+			background-color: $liveplayer-bg;
+
+			&:hover {
+				background-color: $light-gray;
+			}
 		}
 
 		li:last-child {
