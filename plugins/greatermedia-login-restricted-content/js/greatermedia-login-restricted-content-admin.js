@@ -28,8 +28,6 @@ jQuery(function () {
 
 			if ('logged-in' === $login_restriction) {
 				return ('undefined' !== typeof GreaterMediaLoginRestrictedContent) ? GreaterMediaLoginRestrictedContent.strings['Logged in'] : 'Logged in';
-			} else if ('logged-out' === $login_restriction) {
-				return ('undefined' !== typeof GreaterMediaLoginRestrictedContent) ? GreaterMediaLoginRestrictedContent.strings['Logged out'] : 'Logged out';
 			} else {
 				return ('undefined' !== typeof GreaterMediaLoginRestrictedContent) ? GreaterMediaLoginRestrictedContent.strings['No restriction'] : 'No restriction';
 			}
@@ -75,7 +73,7 @@ jQuery(function () {
 					 * view_edit_popup_onsubmit() method will need to map these labels back to their respective
 					 * values.
 					 */
-					values: [{text: 'Logged in', value: 'Logged in'}, {text: 'Logged out', value: 'Logged out'}],
+					values: [{text: 'Logged in', value: 'Logged in'}],
 					value : value
 				}
 			];
@@ -102,8 +100,6 @@ jQuery(function () {
 					// Default translation
 					if ('Logged in' === status_description) {
 						return 'logged-in';
-					} else if ('Logged out' === status_description) {
-						return 'logged-out';
 					}
 					else {
 						return 'logged-in';
@@ -115,8 +111,6 @@ jQuery(function () {
 					//  Translated strings
 					if (GreaterMediaLoginRestrictedContent.strings['Logged in'] === status_description) {
 						return 'logged-in';
-					} else if (GreaterMediaLoginRestrictedContent.strings['Logged out'] === status_description) {
-						return 'logged-out';
 					}
 					else {
 						return 'logged-in';
