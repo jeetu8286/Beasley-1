@@ -58,11 +58,11 @@ function greatermedia_setup() {
 
 	// Add theme support for post thumbnails
 	add_theme_support( 'post-thumbnails' );
-	add_image_size( 'gm-article-thumbnail',     1580,   9999,   false   ); // thumbnails used for articles
+	add_image_size( 'gm-article-thumbnail',     		1580,   9999,   false   ); // thumbnails used for articles
 	add_image_size( 'gm-entry-thumbnail-1-1' ,          500,    500,    true    );
 	add_image_size( 'gm-entry-thumbnail-4-3' ,          500,    375,    true    );
-	add_image_size( 'gmr-gallery',              800,    534,    true    ); // large images for the gallery
-	add_image_size( 'gmr-gallery-thumbnail',    100,    100             ); // thumbnails for the gallery
+	add_image_size( 'gmr-gallery',              		800,    534,    true    ); // large images for the gallery
+	add_image_size( 'gmr-gallery-thumbnail',    		100,    100             ); // thumbnails for the gallery
 	add_image_size( 'gmr-featured-primary',     		1600,   572,    true    ); // image for primary featured post on front page
 	add_image_size( 'gmr-featured-secondary',   		336,    224,    true    ); // thumbnails for secondary featured posts on front page
 	add_image_size( 'gmr-show-featured-primary',   		708,    389,    true    ); // thumbnails for secondary featured posts on front page
@@ -649,11 +649,3 @@ add_action( 'parse_query', function ( WP_Query $query ) {
 		$query->query_vars['posts_per_page'] = 30;
 	}
 } );
-
-/**
- * Hide live player sidebar
- */
-add_action( 'gmlp_player_popup_template', 'greatermedia_popup_payer_hide_livesidebar' );
-function greatermedia_popup_payer_hide_livesidebar(){
-	add_filter( 'load_greatermedia_livepress_sidebar', '__return_false' );
-}
