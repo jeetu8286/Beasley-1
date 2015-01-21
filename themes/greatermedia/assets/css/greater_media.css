@@ -5634,7 +5634,8 @@ category: Components
     visibility: visible;
     width: auto;
     height: auto;
-    margin: 0 0 0 3px; }
+    margin: 0 0 0 3px;
+    color: #404041; }
     @media screen and (min-width: 768px) {
       .live-player__container.playing .now-playing__title .audio__time {
         display: none;
