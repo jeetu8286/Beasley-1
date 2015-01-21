@@ -735,9 +735,14 @@ category: Components
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	width: 640px;
-	height: 480px;
+	width: 280px;
+	height: 210px;
 	@include transform(translate(-50%, -50%));
+
+	@include bp(medium) {
+		width: 640px;
+		height: 480px;
+	}
 }
 
 .pre-roll__notification {
@@ -745,8 +750,8 @@ category: Components
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	width: 640px;
-	margin-top: 165px;
+	width: 280px;
+	margin-top: 85px;
 	@include opacity(.9);
 	@include transform(translate(-50%, -50%));
 	@include transition(all 1s ease-in-out 2s);
@@ -755,6 +760,11 @@ category: Components
 	font-size: ms(-2);
 	color: $color-text-white;
 	text-align: center;
+
+	@include bp(medium) {
+		width: 640px;
+		margin-top: 165px;
+	}
 
 	.live-stream__container.vast__pre-roll & {
 		display: block;

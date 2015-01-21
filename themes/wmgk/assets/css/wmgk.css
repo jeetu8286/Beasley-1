@@ -5149,21 +5149,25 @@ category: Components
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 640px;
-  height: 480px;
+  width: 280px;
+  height: 210px;
   -webkit-transform: translate(-50%, -50%);
   -moz-transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
   -o-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%); }
+  @media screen and (min-width: 768px) {
+    .live-stream__container.vast__pre-roll .live-stream__container--player {
+      width: 640px;
+      height: 480px; } }
 
 .pre-roll__notification {
   display: none;
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 640px;
-  margin-top: 165px;
+  width: 280px;
+  margin-top: 85px;
   opacity: 0.9;
   filter: alpha(opacity=90);
   -moz-opacity: 0.9;
@@ -5182,6 +5186,10 @@ category: Components
   font-size: 0.79012em;
   color: #ffffff;
   text-align: center; }
+  @media screen and (min-width: 768px) {
+    .pre-roll__notification {
+      width: 640px;
+      margin-top: 165px; } }
   .live-stream__container.vast__pre-roll .pre-roll__notification {
     display: block;
     z-index: 20010; }
