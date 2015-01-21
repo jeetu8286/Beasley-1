@@ -28,7 +28,7 @@
 	left: 0;
 	width: 100%;
 	height: 100%;
-	z-index: 5000000; /* IAB z-index standard for drop nav is 5000000 - 5999999 */
+	z-index: 6000000; /* IAB z-index standard for drop nav is 5000000 - 5999999 */
 	opacity: 0;
 	@include transition(visibility 0s linear, opacity 100ms ease-out);
 
