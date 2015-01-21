@@ -33,9 +33,6 @@
 		liveStream = document.getElementById( 'live-player' ),
 		windowWidth = this.innerWidth || this.document.documentElement.clientWidth || this.document.body.clientWidth || 0,
 		scrollObject = {},
-		searchForm = document.getElementById( 'header__search--form'),
-		searchBtn = document.getElementById( 'header__search'),
-		searchInput = document.getElementById( 'header-search'),
 		collapseToggle = document.querySelector('*[data-toggle="collapse"]'),
 		breakingNewsBanner = document.getElementById('breaking-news-banner'),
 		$overlay = $('.overlay-mask');
@@ -113,7 +110,7 @@
 			elem.attachEvent ('on'+eventType,handler);
 	}
 
-	/**
+    /**
 	 * function for the initial state of the live player and scroll position one
 	 */
 	function lpPosBase() {
@@ -172,6 +169,34 @@
 	}
 
 	/**
+     * Toggles a class to the Live Play Stream Select box when the box is clicked
+     */
+    function toggleStreamSelect() {
+        livePlayerStreamSelect.classList.toggle( 'open' );
+    }
+    addEventHandler(livePlayerStreamSelect,elemClick,toggleStreamSelect);
+
+    /**
+     * Selects a Live Player Stream
+     */
+    function selectStream() {
+        var selected_stream = this.querySelector( '.live-player__stream--name' ).textContent;
+
+        livePlayerCurrentName.textContent = selected_stream;
+        document.dispatchEvent( new CustomEvent( 'live-player-stream-changed', { 'detail': selected_stream } ) );
+    }
+
+    for ( var i = 0; i < livePlayerStreams.length; i++ ) {
+        addEventHandler(livePlayerStreams[i],elemClick,selectStream);
+    }
+    /**
+     * from Js Window resize script is not neccessary on popupPlayer window
+     */
+    if( document.getElementById( 'popup-player-livestream' ) ){
+        return;
+    }
+
+	/**
 	 * detects various positions of the screen on scroll to deliver states of the live player
 	 *
 	 * y scroll position === `0`: the live player will be absolute positioned with a top location value based
@@ -186,10 +211,10 @@
 	 */
 	function getScrollPosition() {
 		if ( window.innerWidth >= 768 ) {
-			scrollObject = {
-				x: window.pageXOffset,
-				y: window.pageYOffset
-			};
+		scrollObject = {
+			x: window.pageXOffset,
+			y: window.pageYOffset
+		};
 
 			if (scrollObject.y == 0) {
 				lpPosBase();
@@ -200,8 +225,8 @@
 			} else {
 				lpPosDefault();
 			}
-		}
-	}
+			}
+			}
 
 	/**
 	 * detects the height of the live links widget if the browser window is 768px wide or more, then adds a height to
@@ -221,10 +246,10 @@
 		if (livePlayer !=  null) {
 			if (livePlayer.classList.contains('live-player--init')) {
 				livePlayer.classList.remove('live-player--init');
-			}
+		}
 			if (livePlayer.classList.contains('live-player--fixed')) {
 				livePlayer.classList.remove('live-player--fixed');
-			}
+	}
 			livePlayer.classList.add('live-player--mobile');
 		}
 	}
@@ -370,29 +395,29 @@
 	function liveLinksClose() {
 		if ( window.innerWidth <= 767 ) {
 			if (body.classList.contains('live-player--open')) {
-				body.classList.remove('live-player--open');
-			}
-			liveLinksMobileState();
+			body.classList.remove('live-player--open');
 		}
+			liveLinksMobileState();
+	}
 	}
 
 	function playerActive() {
 		if ( window.innerWidth <= 767 ) {
 			body.classList.add('live-player--active');
-			nowPlaying.style.display = 'block';
-			upNext.style.display = 'none';
-			onAir.style.display = 'none';
-		}
+					nowPlaying.style.display = 'block';
+					upNext.style.display = 'none';
+					onAir.style.display = 'none';
+			}
 	}
 
 	function playerNotActive() {
 		if ( window.innerWidth <= 767 ) {
-			body.classList.remove( 'live-player--active' );
-			nowPlaying.style.display = 'none';
-			upNext.style.display = 'block';
-			onAir.style.display = 'block';
-		}
-	}
+					body.classList.remove( 'live-player--active' );
+					nowPlaying.style.display = 'none';
+					upNext.style.display = 'block';
+					onAir.style.display = 'block';
+			}
+			}
 
 	/**
 	 * Resize Window function for when a user scales down their browser window below 767px
@@ -401,7 +426,7 @@
 		if( window.innerWidth <= 767 ) {
 			if(livePlayer != null) {
 				livePlayerMobileReset();
-			}
+		}
 		} else {
 			if(livePlayer != null) {
 				livePlayerDesktopReset();
@@ -410,77 +435,12 @@
 					scrollThrottle();
 				});
 				liveLinksAddHeight();
-			}
+	}
 		}
 	}
 
-	/**
-	 * A function to show the header search when an event is targeted.
-	 *
-	 * @param e
-	 */
-	function showSearch(e) {
-		if (searchForm !== null) {
-			e.preventDefault();
-			$overlay.addClass( 'is-visible' )
-			
-			// Now, show the search form, but don't set focus until the transition
-			// animation is complete. This is because Webkit browsers scroll to 
-			// the element when it gets focus, and they scroll to it where it was
-			// before the transition started. 
-			$( searchForm )
-				.toggleClass('header__search--open')
-				.on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', function () {
-					searchInput.focus();
-					$(searchInput).select();  
-				} );			
-		}
-	}
 
-	/**
-	 * A function to hide the header search when an event is targeted.
-	 *
-	 * @param e
-	 */
-	function closeSearch(e) {
-		if (searchForm !== null && searchForm.classList.contains('header__search--open')) {
-			e.preventDefault();
-			searchForm.classList.remove('header__search--open');
-			$overlay.removeClass('is-visible');
-		}
-	}
-
-	/**
-	 * Event listeners to run on click to show and close the search.
-	 */
-	if (searchBtn !== null) {
-		searchBtn.addEventListener('click', showSearch, false);
-		/**
-		 * An event listener is also in place for the header search form so that when a user clicks inside of it, it will
-		 * not hide. This is key because the header search for sits within the element that the click event that closes the
-		 * search. If this is event listener is not in place and a user clicks within the search area, it will close.
-		 */
-		searchForm.addEventListener('click', function(e) {
-			e.stopPropagation();
-		});
-	}
-
-	/**
-	 * Close the search box when user presses escape.
-	 */
-	$(window).keydown(function (e) {
-		if (e.keyCode === 27){
-			closeSearch(e);
-		}
-	});
-
-	/**
-	 * Close the search box (if open) if the user clicks on the overlay.
-	 */
-	$overlay.click(function (e) {
-		closeSearch(e);
-	});
-
+	
 	/**
 	 * variables that define debounce and throttling for window resizing and scrolling
 	 */
@@ -505,18 +465,18 @@
 		});
 	}
 
-	if(onAir != null) {
+		if(onAir != null) {
 		addEventHandler(onAir,elemClick,openLivePlayer);
-	}
-	if(upNext != null) {
+		}
+		if(upNext != null) {
 		addEventHandler(upNext,elemClick,openLivePlayer);
-	}
-	if(nowPlaying != null) {
+		}
+		if(nowPlaying != null) {
 		addEventHandler(nowPlaying,elemClick,openLivePlayer);
-	}
-	if(liveLinksWidget != null) {
-		addEventHandler(liveLinksWidget,elemClick,liveLinksClose);
-	}
+		}
+		if(liveLinksWidget != null) {
+			addEventHandler(liveLinksWidget,elemClick,liveLinksClose);
+		}
 	if(playBtn != null || resumeBtn != null) {
 		addEventHandler(playBtn,elemClick,playerActive);
 		addEventHandler(resumeBtn,elemClick,playerActive);
@@ -525,10 +485,10 @@
 		addEventHandler(pauseBtn,elemClick,playerNotActive);
 	}
 
-	addEventHandler(window,elemResize,function() {
-		resizeDebounce();
-		resizeThrottle();
-	});
+		addEventHandler(window,elemResize,function() {
+			resizeDebounce();
+			resizeThrottle();
+		});
 
 	function init_menu_overlay() {
 		var $menu = jQuery(document.querySelector('.header__nav--list')),
@@ -548,7 +508,7 @@
 		$secondary.on('mouseout', '.header__account--small, .header__account--large.logged-in', function (e) {
 			$overlay.removeClass('is-visible');
 		});
-	}
+			}
 
 	init_menu_overlay();
 
@@ -559,7 +519,7 @@
 			var y = screen.height/2 - 450/2;
 			window.open( $(this).attr('href'), $(this).attr('href'), 'height=485,width=700,scrollbars=yes, resizable=yes,left='+x+ ',top='+y);
 		});
-	});
+		});
 
 	function personality_toggle() {
 		var $button = jQuery('.person-toggle');
@@ -585,7 +545,7 @@
 				$this.text('More');
 			} else {
 				$this.text('Less');
-			}
+	}
 			$this.toggleClass('active');
 		});
 	}

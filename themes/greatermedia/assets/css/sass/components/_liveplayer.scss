@@ -168,10 +168,15 @@ category: Components
 	color: $liveplayer-color;
 	cursor: pointer;
 	@include bp(medium) {
-		position: relative;
-		display: block;
 		top: auto;
+		display: block;
+		width: calc(100% - 20px);
 	}
+}
+#popup-player-livestream .live-player__stream{
+  position: relative;
+  display: block;
+  top: auto;
 }
 
 .live-player__stream li {
@@ -294,9 +299,14 @@ category: Components
 	border-bottom: 1px solid $secondary-border;
 	@include bp(medium) {
 		padding: 20px 0 26px;
+		margin-top: 46px;
 		overflow: visible;
 		border-bottom: none;
 	}
+}
+#popup-player-livestream .live-player__container{
+    margin: 1em 0 0;
+    overflow: visible;
 }
 
 .live-stream {
@@ -319,6 +329,12 @@ category: Components
 		padding-top: 0;
 	}
 }
+#popup-player-livestream .live-stream{
+  float: none;
+  width: auto;
+  padding: 23px 0 1em;
+  text-align: center;
+}
 
 .live-player--active .live-stream {
 	width: 100%;
@@ -334,6 +350,9 @@ category: Components
 	&.audio__playing {
 		padding-bottom: 0;
 	}
+}
+#popup-player-livestream .live-stream__player{
+  padding-bottom: 23px;
 }
 
 .live-player--active .live-stream__player {
@@ -364,7 +383,10 @@ category: Components
 		top: 66px;
 	}
 }
-
+#popup-player-livestream .live-stream__status{
+  display: block;
+  height: 23px;
+}
 .live-stream__listen-now--btn {
 	@include btn($btn-bg, $color-text-white, $btn-bg, .5em, 1em, ms(-1));
 	margin-right: 0;
@@ -440,7 +462,10 @@ category: Components
 		height: 56px;
 	}
 }
-
+#popup-player-livestream %live-stream__btn{
+  width: 54px;
+  height: 54px;
+}
 .live-stream__btn--label {
 	position: absolute !important;
 	clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
@@ -451,6 +476,9 @@ category: Components
 	@include bp(medium) {
 		padding-bottom: 22px;
 	}
+}
+#popup-player-livestream .live-stream__login--actions{
+  padding-bottom: 23px;
 }
 
 .live-stream__btn--login  {
@@ -572,7 +600,7 @@ category: Components
 		float: none;
 		width: auto;
 		padding: 23px 0 0;
-		text-align: center;
+	text-align: center;
 	}
 
 	&.audio__playing {
@@ -609,7 +637,16 @@ category: Components
 		text-align: center;
 	}
 }
-
+#popup-player-livestream {
+  .on-air, .up-next{
+    float: none;
+    width: 100%;
+    height: 48px;
+    padding: 0 1em;
+    margin: 0;
+    text-align: center;
+  }
+}
 .live-player--open .on-air, .live-player--open .up-next {
 	display: block;
 }
@@ -621,6 +658,12 @@ category: Components
 		margin-bottom: 10px;
 		font-size: ms(-1);
 	}
+}
+#popup-player-livestream{
+  .on-air__title, .up-next__title {
+    margin-right: .25em;
+    font-size: ms(-3);
+  }
 }
 
 .on-air__show, .up-next__show {
@@ -653,7 +696,15 @@ category: Components
 		padding-top: 0;
 	}
 }
-
+#popup-player-livestream .now-playing {
+  display: block;
+  float: none;
+  width: 100%;
+  height: auto;
+  padding: 0 1em;
+  margin: 1em 0 0;
+  text-align: center;
+}
 .live-player--active .now-playing {
 	width: 80%;
 	padding-right: 0;
@@ -670,6 +721,9 @@ category: Components
 		font-size: ms(1);
 	}
 }
+#popup-player-livestream .now-playing__title{
+  font-size: ms(1);
+}
 
 .now-playing__artist {
 	margin: 0 0 4px;
@@ -681,6 +735,9 @@ category: Components
 		font-size: ms(-2);
 	}
 }
+#popup-player-livestream .now-playing__artist{
+  font-size: ms(-2);
+}
 
 // volume controls and level
 .live-player__volume {
@@ -690,6 +747,11 @@ category: Components
 		width: 95%;
 		margin: 0 2.5%;
 	}
+}
+#popup-player-livestream .live-player__volume {
+  display: block;
+  width: 95%;
+  margin: 0 2.5%;
 }
 
 .live-player__volume--btn {
@@ -771,6 +833,15 @@ category: Components
 		border-top: 1px solid $secondary-border;
 	}
 }
+#popup-player-livestream .live-links{
+  display: block;
+  height: 100%;
+  padding-right: 1em;
+  padding-left: 1em;
+  margin: 16px 0 0;
+  overflow: hidden;
+  overflow-y: scroll;
+}
 
 .live-player--open .live-links {
 	display: block;
@@ -785,6 +856,12 @@ category: Components
 		overflow-y: scroll;
 		-webkit-touch-overflow:scroll
 	}
+}
+#popup-player-livestream .live-player--open .live-links{
+  max-height: 35vh;
+  overflow: hidden;
+  overflow-y: scroll;
+  -webkit-touch-overflow:scroll
 }
 
 %live-link__icon {
@@ -877,6 +954,12 @@ category: Components
 
 .live-link__title a:hover, .live-link__title a:focus, .live-link__title a:active {
 	color: $primary-link;
+}
+
+#popup-player-livestream .live-player {
+    position: inherit;
+    width: auto;
+    right: auto;
 }
 
 .audio__time {

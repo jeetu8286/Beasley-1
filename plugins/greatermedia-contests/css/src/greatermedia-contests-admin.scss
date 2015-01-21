@@ -150,8 +150,16 @@
 .post-type-survey {
 	#survey-responses-link {
 		float: right;
-		margin-top: -22px;
 		margin-bottom: 5px;
+	}
+
+	#delete-action {
+		float: left;
+	}
+
+	#publishing-action {
+		float: right;
+		clear: right;
 	}
 
 	.fb-save-wrapper {
@@ -171,6 +179,14 @@
 
 	.form-table th {
 		width: 250px;
+	}
+}
+
+@media screen and (max-width: 782px) {
+	.post-type-survey {
+		#survey-responses-link {
+			margin-bottom: 0;
+		}
 	}
 }
 

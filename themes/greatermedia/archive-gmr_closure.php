@@ -52,7 +52,6 @@ get_header(); ?>
 			</section>
 			
 				<?php greatermedia_load_more_button( array( 'partial_slug' => 'partials/loop', 'partial_name' => 'gmr_closure', 'auto_load' => true ) ); ?>
-				<?php get_template_part( 'partials/pagination' ); ?>
 				
 			<?php else : ?>
 
