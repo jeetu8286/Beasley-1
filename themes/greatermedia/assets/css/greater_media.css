@@ -9228,7 +9228,7 @@ category: Components - Gallery Archive
   position: absolute;
   top: 8px;
   left: 14px;
-  font-size: 1.125em;
+  font-size: 0.85rem;
   content: "\e619"; }
   .single-contest .gallery__prev--btn:before {
     top: 8px;
@@ -9250,7 +9250,7 @@ category: Components - Gallery Archive
   position: absolute;
   top: 8px;
   right: 14px;
-  font-size: 1.125em;
+  font-size: 0.85rem;
   content: "\e618"; }
   .single-contest .gallery__next--btn:after {
     top: 8px;
