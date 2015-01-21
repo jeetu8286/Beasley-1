@@ -9318,7 +9318,7 @@ category: Components - Gallery Archive
   margin-right: 7.42297%;
   width: 100%;
   margin-bottom: 22px;
-  overflow: auto; }
+  overflow: hidden; }
   .gallery__grid--column:last-child {
     margin-right: 0; }
   @media screen and (min-width: 480px) {
