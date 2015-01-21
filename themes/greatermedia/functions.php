@@ -531,9 +531,9 @@ function greatermedia_load_more_button( $args = array() ) {
 			href="<?php echo esc_url( $default_page_link ); ?>"
 			data-page-link-template="<?php echo esc_url( $args['page_link_template'] ); ?>"
 			data-page="<?php echo esc_attr( $args['next_page'] ); ?>"
-			data-partial-slug="<?php echo esc_attr( $args['partial_slug'] ); ?>"
-			data-partial-name="<?php echo esc_attr( $args['partial_name'] ); ?>"
-			data-auto-load="<?php echo intval( $args['auto_load'] ); ?>"
+			data-partial-slug='<?php echo esc_attr( $args['partial_slug'] ); ?>'
+			data-partial-name='<?php echo esc_attr( $args['partial_name'] ); ?>'
+			data-auto-load='<?php echo intval( $args['auto_load'] ); ?>'
 			>
 			<i class="fa fa-spin fa-refresh"></i> Load More
 		</a>
