@@ -4325,6 +4325,8 @@ Link posts contain a link to an external site. They can also optionally have a f
     font-weight: bold;
     font-size: 1em;
     line-height: 1.6; }
+  .article__content .livefyre-poll {
+    margin: 1.5em 0; }
 
 .article__comments {
   margin: 3em 0; }
@@ -8327,6 +8329,8 @@ a.social-share-link {
     font-weight: bold;
     font-size: 1em;
     line-height: 1.6; }
+  .article__content .livefyre-poll {
+    margin: 1.5em 0; }
 
 .article__comments {
   margin: 3em 0; }

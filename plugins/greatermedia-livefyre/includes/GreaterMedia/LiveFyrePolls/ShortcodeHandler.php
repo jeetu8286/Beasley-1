@@ -25,12 +25,14 @@ class ShortcodeHandler
 			'env' => $atts['env'],
 		);
 		
+		$uniqid = uniqid(); 
+		
 		ob_start(); 
 		
 		?>
-		<div id="lf-poll-<?php echo esc_attr( $atts['poll_id'] ); ?>"></div>
+		<div class="livefyre-poll" id="lf-poll-<?php echo esc_attr( $uniqid ); ?>"></div>
 		<script type="text/javascript" src="//cdn.livefyre.com/Livefyre.js"></script>
-		<script type="text/javascript" >Livefyre.require(["poll#uat"],function(a){(new a(<?php echo json_encode( $code_atts ); ?>)).render(document.getElementById("lf-poll-<?php echo esc_js( $atts['poll_id'] ); ?>"))});</script>
+		<script type="text/javascript" >Livefyre.require(["poll#uat"],function(a){(new a(<?php echo json_encode( $code_atts ); ?>)).render(document.getElementById("lf-poll-<?php echo esc_js( $uniqid ); ?>"))});</script>			
 		<?php
 		
 		return ob_get_clean(); 
