@@ -6,6 +6,7 @@
 	padding: 0 20px;
 	border-top: 1px solid $secondary-bg;
 	background-color: transparent;
+	
 	@include bp(medium) {
 		position: fixed;
 		top: 0;
@@ -30,9 +31,12 @@
 }
 
 .header__search--open {
-	@include transition(all 200ms ease-in-out);
-	@include transform(translate(0, 0));
   	z-index: 5100000; // Higher than .overlay-mask.
+	
+	@include bp(medium) {
+		@include transition(all 200ms ease-in-out);
+		@include transform(translate(0, 0));		
+	}
 }
 
 .header__search--input {
@@ -60,7 +64,8 @@
 	}
 }
 
-.header__search--submit {
+.header__search--submit,
+.header__search--cancel{
 	position: relative;
 	float: right;
 	height: 40px;
@@ -68,7 +73,8 @@
 	width: 14px;
 	background-color: transparent;
 	color: $secondary-heading;
-
+	padding: 0;
+	
 	&:hover, &:focus {
 		color: $primary-link;
 	}
@@ -77,17 +83,53 @@
 		width: 10%;
 		height: 100px;
 		color: $color-text-black;
-	}
-}
-
-.header__search--submit:before {
-	@extend %gmr-icons;
-	font-size: ms(1);
-	content: "\e612";
-	@include bp(medium) {
 		font-size: ms(5);
 	}
 }
+
+.header__search--submit {
+	@extend .gmr-icon, .icon-search; 
+	
+	// Hide when the panel is open. 
+	.header__search--open & {
+		display: none;
+	}
+}
+
+.header__search--cancel {
+	@extend .gmr-icon, .icon-close;
+	
+	// Only show when the panel is open. 
+	display: none;	
+	.header__search--open & {
+		display: block;
+	}
+}
+
+.header-search-body {
+	background: $primary-bg;
+	text-align: center;
+	margin: 0 -20px;
+	padding: $base-line-height 20px;
+	clear: both;
+	
+	display: none; 
+	
+	.header__search--open &.is-visible {
+		display: block;
+	}
+	
+	@include bp(medium) {
+		margin: 0 -2.5%;
+		padding: $base-line-height 2.5%;
+	}
+}
+
+.header-search__search-all-btn {
+	@include btn($btn-bg, $color-text-white, $btn-bg, 0.5em, 1em, ms(-1));
+	text-transform: none;
+}
+
 
 .search__results--count {
 	padding-bottom: 12px;

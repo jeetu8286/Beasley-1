@@ -15,6 +15,10 @@
 			placeholder: "Select term"
 		});
 
+		$(".subscription_defaults").select2({
+			placeholder: "Select term"
+		});
+
 		// perform syndication
 		$("#syndicate_now").on( 'click', function(event) {
 			event.preventDefault();
@@ -27,10 +31,14 @@
 					syndication_nonce: syndication_ajax.syndication_nonce
 				},
 				beforeSend: function() {
-					$('#syndication_status').html( 'Syndication Started' );
+					$('#syndication_status').html( 'Checking...' );
 				},
 				success: function(response) {
-					$('#syndication_status').html( 'Syndication Finished' );
+					if( Math.floor( response ) !== 0 ) {
+						$('#syndication_status').html( 'Imported ' + response + ' item(s).');
+					} else {
+						$('#syndication_status').html( 'No match found!');
+					}
 				}
 			});
 		});

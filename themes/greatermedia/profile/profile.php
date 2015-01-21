@@ -21,6 +21,9 @@ $months = array(
 
 $emma_groups = get_option( 'emma_groups' );
 $emma_groups = json_decode( $emma_groups, true );
+if ( ! $emma_groups ) {
+	$emma_groups = array();
+}
 
 $state_names = array(
 	array( 'label' => 'Alabama', 'value' => 'AL' ),
@@ -404,7 +407,7 @@ $state_names = array(
 				<input type="password" name="newPassword" />
 
 				<span class="gigya-error-msg" data-bound-to="passwordRetype" ></span>
-				<label>Choose a new password:</label>
+				<label>Retype new password:</label>
 				<input type="password" name="passwordRetype" />
 
 				<a href="#" class="link-button" data-switch-screen="gigya-update-profile-screen">&laquo; Back</a>
@@ -422,6 +425,36 @@ $state_names = array(
 			<h2>Password Changed Successfully.</h2>
 
 			<a href="#" class="link-button" data-switch-screen="gigya-update-profile-screen">&laquo; Back</a>
+		</div>
+
+		<div class="gigya-screen" id="gigya-reset-link-password-screen" data-responsive="true">
+			<h2>Reset Your Password</h2>
+
+			<form class="gigya-profile-form" id="gigya-reset-link-password-form">
+				<span class="gigya-error-msg reset-link-password-error-msg"></span>
+
+				<span class="gigya-error-msg" data-bound-to="newPassword" ></span>
+				<label>Choose a new password:</label>
+				<input type="password" name="newPassword" />
+
+				<span class="gigya-error-msg" data-bound-to="passwordRetype" ></span>
+				<label>Confirm new password:</label>
+				<input type="password" name="passwordRetype" />
+
+				<input type="submit" name="submit" value="Reset" />
+			</form>
+
+			<a href="#" class="link-button" data-switch-screen="gigya-login-screen">&laquo; Back</a>
+		</div>
+
+		<div class="gigya-screen" id="gigya-reset-link-password-progress-screen" data-responsive="true">
+			<h2>Resetting Password ...</h2>
+		</div>
+
+		<div class="gigya-screen" id="gigya-reset-link-password-success-screen" data-responsive="true">
+			<h2>Password Reset Successfully</h2>
+
+			<a href="#" class="link-button" data-switch-screen="gigya-login-screen">&laquo; Back to Login</a>
 		</div>
 
 	</div><!-- end screenset --!>
