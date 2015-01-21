@@ -167,10 +167,35 @@ category: Components
 	background-color: $color-gray-darker;
 	color: $liveplayer-color;
 	cursor: pointer;
+	@include transition(all 500ms ease-in-out);
 	@include bp(medium) {
 		top: auto;
 		display: block;
 		width: calc(100% - 20px);
+	}
+
+	.live-player--open & {
+		width: 90%;
+		display: block;
+		margin: 10px 5%;
+		z-index: 100;
+	}
+
+	.live-player--active.live-player--open & {
+		width: 40%;
+		left: auto;
+		right: 0;
+		display: block;
+		margin: 10px 5%;
+		z-index: 100;
+
+		&.full__width {
+			width: 90%;
+		}
+	}
+
+	&.full__width {
+		width: 90%;
 	}
 }
 
@@ -178,21 +203,6 @@ category: Components
 	height: auto;
 }
 
-.live-player--open .live-player__stream {
-	width: 90%;
-	display: block;
-	margin: 10px 5%;
-	z-index: 100;
-}
-
-.live-player--active.live-player--open .live-player__stream {
-	width: 40%;
-	left: auto;
-	right: 0;
-	display: block;
-	margin: 10px 5%;
-	z-index: 100;
-}
 
 .live-player__stream--list {
 	padding: 0;
@@ -208,13 +218,14 @@ category: Components
 	overflow: visible;
 	line-height: 1;
 	font-size: ms(-1);
-}
 
-.live-player__stream--current.open {
-	display: block;
-	color: $liveplayer-color;
-	//color: $color-text-white;
-	z-index: 10;
+	&.open {
+		display: block;
+		color: $liveplayer-color;
+		//color: $color-text-white;
+		z-index: 10;
+	}
+
 }
 
 .live-player__stream--current:after {
@@ -849,6 +860,7 @@ category: Components
 		position: absolute;
 		top: 52px;
 		width: 50%;
+		@include transition(all 500ms ease-in-out);
 
 		@include bp(medium) {
 			position: relative;
@@ -864,6 +876,11 @@ category: Components
 		@include bp(medium) {
 			width: 100%;
 		}
+	}
+
+	&.on-air__npe {
+		top: 0;
+		@include transition(all 500ms ease-in-out);
 	}
 }
 
@@ -921,11 +938,14 @@ category: Components
 	}
 
 	.live-player--active & {
+		position: relative;
 		display: block;
 		width: calc(100% - 78px);
+		padding: 0 0 0 3.75%;
 
 		@include bp(medium) {
 			@include fill-parent;
+			margin-left: 0;
 		}
 	}
 
@@ -953,7 +973,7 @@ category: Components
 
 .now-playing__info {
 
-	.now-playing.playing & {
+	.now-playing.playing &, .live-player--active & {
 		position: absolute;
 		top: 50%;
 		@include transform(translate(0, -50%));

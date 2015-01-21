@@ -41,6 +41,8 @@
 	var onAirShow = document.querySelector('.on-air__show');
 	var streamStatus = document.getElementById('live-stream__status');
 	var nowPlayingInfo = document.getElementById('nowPlaying');
+	var trackInfo = document.getElementById('trackInfo');
+	var liveStreamSelector = document.querySelector('.live-player__stream');
 
 	/**
 	 * global variables for event types to use in conjunction with `addEventHandler` function
@@ -333,6 +335,18 @@
 		}
 	}
 
+	function replaceNPInfo() {
+		if (window.innerWidth <= 767) {
+			if (trackInfo.innerHTML === '') {
+				onAir.classList.add('on-air__npe');
+				liveStreamSelector.classList.add('full__width');
+			} else if (onAir.classList.contains('on-air__npe')){
+				onAir.classList.remove('on-air__npe');
+				liveStreamSelector.classList.remove('full__width');
+			}
+		}
+	}
+
 	var listenLiveStopCustomInlineAudio = function() {
 		var listenNowText = listenNow.textContent;
 		var nowPlayingTitle = document.getElementById('trackInfo');
@@ -456,12 +470,14 @@
 			player.stop();
 
 		if ( true === playingCustomAudio ) {
-			stopCustomInlineAudio();
+			listenLiveStopCustomInlineAudio();
 		}
 
 		player.play({station: station, timeShift: true});
 
+		body.classList.add('live-player--active');
 		setPlayingStyles();
+		setTimeout(replaceNPInfo, 2000);
 	});
 
 	function playLiveStream() {
@@ -489,6 +505,7 @@
 
 			player.play({station: station, timeShift: true});
 			setTimeout(setPlayingStyles, 1000);
+			setTimeout(replaceNPInfo, 2000);
 		}
 	}
 
@@ -513,6 +530,7 @@
 
 			player.play({station: station, timeShift: true});
 			setPlayingStyles();
+			setTimeout(replaceNPInfo, 2000);
 		}
 	}
 
@@ -549,7 +567,7 @@
 
 					player.play({station: station, timeShift: true});
 					setTimeout(setPlayingStyles, 1000);
-
+					setTimeout(replaceNPInfo, 2000);
 				});
 			} else if (player.attachEvent) {
 				player.attachEvent('ad-playback-complete', function () {
@@ -562,6 +580,7 @@
 
 					player.play({station: station, timeShift: true});
 					setTimeout(setPlayingStyles, 1000);
+					setTimeout(replaceNPInfo, 2000);
 				});
 			}
 		}
