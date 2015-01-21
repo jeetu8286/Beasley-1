@@ -21,6 +21,9 @@ $months = array(
 
 $emma_groups = get_option( 'emma_groups' );
 $emma_groups = json_decode( $emma_groups, true );
+if ( ! $emma_groups ) {
+	$emma_groups = array();
+}
 
 $state_names = array(
 	array( 'label' => 'Alabama', 'value' => 'AL' ),
@@ -79,9 +82,35 @@ $state_names = array(
 	array( 'label' => 'Armed Forces Pacific', 'value' => 'AP' ),
 );
 
+function get_gigya_verify_email_message() {
+	if ( array_key_exists( 'errorCode', $_GET ) ) {
+		$error_code = $_GET['errorCode'];
+		preg_match( '~^(\d+)~', $error_code, $matches );
+		$error_num = trim( $matches[1] );
+
+		if ( $error_num === '0' ) {
+			return 'Your email was verified successfully and your Account has been activated.';
+		} else {
+			$message = substr( $error_code, strlen( $error_num ) );
+			$message = str_replace( '\"', '', $message );
+			$message = 'Error: Could not verify your email: ' . $message;
+			$message = esc_html( $message );
+
+			return "<span class='error'>$message</span>";
+		}
+	} else {
+		return '';
+	}
+}
+
 ?>
 
-	<div class="gigya-screen-set" id="GMR-CustomScreenSet" style="display:none" data-on-pending-registration-screen="gigya-register-complete-screen">
+	<div
+		class="gigya-screen-set"
+		id="GMR-CustomScreenSet"
+		style="display:none"
+		data-on-pending-registration-screen="gigya-register-complete-screen"
+		data-on-pending-verification-screen="gigya-resend-verification-code-screen">
 		<div class="gigya-screen" id="gigya-login-screen" data-responsive="true">
 			<h2>Login to Your Account</h2>
 			<h3>Login with your social network</h3>
@@ -306,7 +335,11 @@ $state_names = array(
 				<span class="gigya-error-msg login-error-msg" data-bound-to="gigya-profile-form"></span>
 				<span class="gigya-error-msg" data-bound-to="profile.email" ></span>
 
-				<label>Email:</label>
+				<label>Email:
+					<a href="#"
+						class="link-button verify-email-link"
+						data-switch-screen="gigya-resend-verification-code-update-screen">Verify Email</a>
+				</label>
 				<input type="text" name="profile.email" />
 
 				<span class="gigya-error-msg" data-bound-to="profile.firstName" ></span>
@@ -404,7 +437,7 @@ $state_names = array(
 				<input type="password" name="newPassword" />
 
 				<span class="gigya-error-msg" data-bound-to="passwordRetype" ></span>
-				<label>Choose a new password:</label>
+				<label>Retype new password:</label>
 				<input type="password" name="passwordRetype" />
 
 				<a href="#" class="link-button" data-switch-screen="gigya-update-profile-screen">&laquo; Back</a>
@@ -423,6 +456,88 @@ $state_names = array(
 
 			<a href="#" class="link-button" data-switch-screen="gigya-update-profile-screen">&laquo; Back</a>
 		</div>
+
+		<div class="gigya-screen" id="gigya-reset-link-password-screen" data-responsive="true">
+			<h2>Reset Your Password</h2>
+
+			<form class="gigya-profile-form" id="gigya-reset-link-password-form">
+				<span class="gigya-error-msg reset-link-password-error-msg"></span>
+
+				<span class="gigya-error-msg" data-bound-to="newPassword" ></span>
+				<label>Choose a new password:</label>
+				<input type="password" name="newPassword" />
+
+				<span class="gigya-error-msg" data-bound-to="passwordRetype" ></span>
+				<label>Confirm new password:</label>
+				<input type="password" name="passwordRetype" />
+
+				<input type="submit" name="submit" value="Reset" />
+			</form>
+
+			<a href="#" class="link-button" data-switch-screen="gigya-login-screen">&laquo; Back</a>
+		</div>
+
+		<div class="gigya-screen" id="gigya-reset-link-password-progress-screen" data-responsive="true">
+			<h2>Resetting Password ...</h2>
+		</div>
+
+		<div class="gigya-screen" id="gigya-reset-link-password-success-screen" data-responsive="true">
+			<h2>Password Reset Successfully</h2>
+
+			<a href="#" class="link-button" data-switch-screen="gigya-login-screen">&laquo; Back to Login</a>
+		</div>
+
+		<div class="gigya-screen" id="gigya-resend-verification-code-screen" data-responsive="true">
+			<h2>Email Verification</h2>
+			<h3>Your email has not been verified. Please check your inbox for the verification email.</h3>
+
+			<form class="gigya-resend-verification-code-form" id="gigya-resend-verification-code-form" data-on-success-screen="gigya-resend-verification-code-success-screen">
+				<span class="gigya-error-msg login-error-msg" data-bound-to="gigya-resend-verification-code-form"></span>
+
+				<span class="gigya-error-msg" data-bound-to="email" placeholder="Email:" ></span>
+				<input type="text" name="email" placeholder="Email" id="resend-email" />
+
+				<a href="#" class="link-button" data-switch-screen="gigya-login-screen">&laquo; Back</a>
+				<input type="submit" name="submit" value="Resend Verification" />
+			</form>
+		</div>
+
+		<div class="gigya-screen" id="gigya-resend-verification-code-success-screen" data-responsive="true">
+			<h2>Email Verification</h2>
+			<h3>A confirmation email has been sent to you with a link to activate your account.</h3>
+
+			<a href="#" class="link-button" data-switch-screen="gigya-login-screen">&laquo; Back to Login</a>
+		</div>
+
+		<div class="gigya-screen" id="gigya-resend-verification-code-update-screen" data-responsive="true">
+			<h2>Email Verification</h2>
+			<h3>Your email has not been verified. Please check your inbox for the verification email.</h3>
+
+			<form class="gigya-resend-verification-code-form" id="gigya-resend-verification-code-form" data-on-success-screen="gigya-resend-verification-code-update-success-screen">
+				<span class="gigya-error-msg login-error-msg" data-bound-to="gigya-resend-verification-code-form"></span>
+
+				<span class="gigya-error-msg" data-bound-to="email" placeholder="Email:" ></span>
+				<input type="text" name="email" placeholder="Email" id="resend-email" />
+
+				<a href="#" class="link-button" data-switch-screen="gigya-update-profile-screen">&laquo; Back</a>
+				<input type="submit" name="submit" value="Resend Verification" />
+			</form>
+		</div>
+
+		<div class="gigya-screen" id="gigya-resend-verification-code-update-success-screen" data-responsive="true">
+			<h2>Email Verification</h2>
+			<h3>A confirmation email has been sent to you with a link to activate your account.</h3>
+
+			<a href="#" class="link-button" data-switch-screen="gigya-update-profile-screen">&laquo; Back</a>
+		</div>
+
+		<div class="gigya-screen" id="gigya-verify-email-screen" data-responsive="true">
+			<h2>Email Verification</h2>
+			<h3><?php echo get_gigya_verify_email_message(); ?></h3>
+
+			<a href="#" class="link-button" data-switch-screen="gigya-login-screen">&laquo; Back to Login</a>
+		</div>
+
 
 	</div><!-- end screenset --!>
 

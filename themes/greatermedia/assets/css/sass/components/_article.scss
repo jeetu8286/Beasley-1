@@ -246,4 +246,13 @@
 		top: auto;
 		bottom: 10px;
 	}
+
+	a, a:visited {
+		color: $secondary-link;
+		text-decoration: underline;
+	}
+
+	a:hover, a:active, a:focus {
+		color: $secondary-link-hover;
+	}
 }

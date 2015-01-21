@@ -7,6 +7,7 @@ use GreaterMedia\Gigya\GigyaRequest;
 use GreaterMedia\Gigya\Schema\AccountSchema;
 use GreaterMedia\Gigya\Schema\ActionsSchema;
 use Faker\Factory;
+use TijsVerkoyen\CssToInlineStyles\CssToInlineStyles;
 
 /**
  * Set of commands to seed fake users into Gigya.
@@ -264,6 +265,45 @@ class GigyaCommand extends \WP_CLI_Command {
 			\WP_CLI::success( 'Query Failed' );
 			\WP_CLI::log( $response_text );
 		}
+	}
+
+	public function build_email_templates( $args, $opts ) {
+		$html   = GMR_GIGYA_PATH . 'templates/email/verify-email.html';
+		$css    = GMR_GIGYA_PATH . 'templates/email/email.css';
+		$output = GMR_GIGYA_PATH . 'templates/email/export/verify-email.html';
+		$substitutions = array(
+			'%emailVerificationLink%' => '$emailVerificationLink',
+			'%fromAddress%' => '<noreply@wmgk.com>',
+		);
+
+		$this->build_email_template( $html, $css, $output, $substitutions );
+
+		$html   = GMR_GIGYA_PATH . 'templates/email/reset-password.html';
+		$output = GMR_GIGYA_PATH . 'templates/email/export/reset-password.html';
+		$substitutions = array(
+			'%pwResetLink%' => '$pwResetLink',
+			'%fromAddress%' => '<noreply@wmgk.com>',
+		);
+
+		$this->build_email_template( $html, $css, $output, $substitutions );
+
+		\WP_CLI::success( 'Email Templates exported successfully.' );
+	}
+
+	private function build_email_template( $html, $css, $output, $substitutions  ) {
+		$html = file_get_contents( $html );
+		$css  = file_get_contents( $css );
+
+		$inliner = new CssToInlineStyles();
+		$inliner->setHTML( $html );
+		$inliner->setCSS( $css );
+
+		$content = $inliner->convert();
+		foreach ( $substitutions as $placeholder => $subst ) {
+			$content = str_replace( $placeholder, $subst, $content );
+		}
+
+		file_put_contents( $output, $content );
 	}
 
 }
