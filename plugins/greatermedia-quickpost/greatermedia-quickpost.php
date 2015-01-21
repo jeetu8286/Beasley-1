@@ -433,6 +433,7 @@ class GMR_QuickPost {
 								<input type="hidden" id="original_post_status" name="original_post_status" value="draft">
 								<input type="hidden" id="prev_status" name="prev_status" value="draft">
 								<input type="hidden" id="post_id" name="post_id" value="<?php echo (int) $post_id; ?>">
+								<input type="hidden" name="origin" value="<?php echo esc_attr( $url ); ?>">
 
 								<!-- This div holds the photo metadata -->
 								<div class="photolist"></div>
@@ -840,16 +841,23 @@ class GMR_QuickPost {
 
 		$upload = false;
 		if ( current_user_can( 'upload_files' ) ) {
+			$origin = filter_input( INPUT_POST, 'origin', FILTER_VALIDATE_URL );
+			
 			if ( ! empty( $_POST['photo_src'] ) ) {
 				foreach ( (array) $_POST['photo_src'] as $key => $image ) {
 					// See if files exist in content - we don't want to upload non-used selected files.
 					if ( strpos( $_POST['content'], htmlspecialchars( $image ) ) !== false ) {
+						$attachment_id = false;
 						$desc = isset( $_POST['photo_description'][$key] ) ? $_POST['photo_description'][$key] : '';
-						$upload = media_sideload_image( $image, $post_id, $desc );
+						$upload = $this->_download_image( $image, $post_id, $desc, $attachment_id );
 
-						// Replace the POSTED content <img> with correct uploaded ones. Regex contains fix for Magic Quotes
 						if ( !is_wp_error( $upload ) ) {
+							// Replace the POSTED content <img> with correct uploaded ones. Regex contains fix for Magic Quotes
 							$content = preg_replace( '/<img ([^>]*)src=\\\?(\"|\')' . preg_quote( htmlspecialchars( $image ), '/' ) . '\\\?(\2)([^>\/]*)\/*>/is', $upload, $content );
+							// Save image attribution
+							if ( $origin && $attachment_id ) {
+								add_post_meta( $attachment_id, 'gmr_image_attribution', $origin );
+							}
 						}
 					}
 				}
@@ -858,19 +866,12 @@ class GMR_QuickPost {
 			// featured image
 			$featured_image = filter_input( INPUT_POST, 'featured_image', FILTER_VALIDATE_URL );
 			if ( ! empty( $featured_image ) ) {
-				preg_match( '/[^\?]+\.(jpe?g|jpe|png)\b/i', $featured_image, $matches );
-
-				$file_array = array();
-				$file_array['name'] = basename( $matches[0] );
-				$file_array['tmp_name'] = download_url( $featured_image );
-				if ( strpos( $file_array['name'], '.' ) === false ) {
-					$file_array['name'] = $file_array['name'] . '.jpg';
-				}
-
-				if ( ! is_wp_error( $file_array['tmp_name'] ) ) {
-					$id = media_handle_sideload( $file_array, $post_id, '' );
-					if ( ! is_wp_error( $id ) ) {
-						set_post_thumbnail( $post_id, $id );
+				$thumbnail_id = false;
+				$downloaded = $this->_download_image( $featured_image, $post_id, '', $thumbnail_id );
+				if ( ! is_wp_error( $downloaded ) && $thumbnail_id ) {
+					set_post_thumbnail( $post_id, $thumbnail_id );
+					if ( $origin ) {
+						add_post_meta( $thumbnail_id, 'gmr_image_attribution', $origin );
 					}
 				}
 			}
@@ -906,6 +907,50 @@ class GMR_QuickPost {
 		do_action( 'gmr_quickpost_post_created', $post_id );
 
 		return $post_id;
+	}
+
+	/**
+	 * Download an image from the specified URL and attach it to a post.
+	 *
+	 * @param string $file The URL of the image to download
+	 * @param int $post_id The post ID the media is to be associated with
+	 * @param string $desc Optional. Description of the image
+	 * @return string|WP_Error Populated HTML img tag on success
+	 */
+	private function _download_image( $file, $post_id, $desc = null, &$attachment_id = null ) {
+		if ( ! empty( $file ) ) {
+			// Set variables for storage, fix file filename for query strings.
+			preg_match( '/[^\?]+\.(jpe?g|jpe|gif|png)\b/i', $file, $matches );
+			$file_array = array();
+			$file_array['name'] = basename( $matches[0] );
+
+			// Download file to temp location.
+			$file_array['tmp_name'] = download_url( $file );
+
+			// If error storing temporarily, return the error.
+			if ( is_wp_error( $file_array['tmp_name'] ) ) {
+				return $file_array['tmp_name'];
+			}
+
+			// Do the validation and storage stuff.
+			$attachment_id = $id = media_handle_sideload( $file_array, $post_id, $desc );
+
+			// If error storing permanently, unlink.
+			if ( is_wp_error( $id ) ) {
+				$attachment_id = null;
+				@unlink( $file_array['tmp_name'] );
+				return $id;
+			}
+
+			$src = wp_get_attachment_url( $id );
+		}
+
+		// Finally check to make sure the file has been saved, then return the HTML.
+		if ( ! empty( $src ) ) {
+			$alt = isset( $desc ) ? esc_attr( $desc ) : '';
+			$html = "<img src='$src' alt='$alt'>";
+			return $html;
+		}
 	}
 
 	/**
