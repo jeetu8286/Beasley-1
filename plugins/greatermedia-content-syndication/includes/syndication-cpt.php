@@ -682,6 +682,7 @@ class SyndicationCPT {
 			}
 
 			if( $taxonomy_label == 'category' ) {
+				echo '<br>';
 				echo '<span class="description">These will be added categories already set on imported content.</span>';
 			}
 			unset($allterms);
