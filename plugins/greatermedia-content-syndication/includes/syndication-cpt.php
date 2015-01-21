@@ -599,7 +599,7 @@ class SyndicationCPT {
 				echo '<button data-postid="' . intval( $post->ID )
 				     . '" name="syndicate_now" id="syndicate_now" class="button button-large"'
 				     . '>Check for new content now</button><br/>';
-				echo '<span class="description">Please save your changes before using this!</span>';
+				echo '<span class="description">Unsaved changes won\'t be used!</span>';
 				echo '<br/>';
 
 			echo '</div>';
@@ -683,6 +683,10 @@ class SyndicationCPT {
 
 			unset($allterms);
 			$allterms = array();
+			if( $taxonomy_label == 'category' ) {
+				echo '<br>';
+				echo '<span class="description">These will be added categories already set on imported content.</span>';
+			}
 			echo '</p>';
 		}
 	}
