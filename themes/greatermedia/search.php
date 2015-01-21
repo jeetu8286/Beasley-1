@@ -48,7 +48,6 @@ get_header(); ?>
 
 				<?php get_template_part( 'partials/loop', 'search' ); ?>
 				<?php greatermedia_load_more_button( array( 'partial_slug' => 'partials/loop-search' ) ); ?>
-				<?php get_template_part( 'partials/pagination' ); ?>
 
 			<?php else : ?>
 				<?php if( $keyword_post_id == 0 ): ?>

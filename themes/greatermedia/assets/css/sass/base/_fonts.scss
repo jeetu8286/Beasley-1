@@ -56,16 +56,16 @@ $icon-font:     'gmr-icons';
 
 @font-face {
 	font-family: 'gmr-icons';
-	src:url('#{$asset-root}fonts/icon-font/gmr-icons.eot?-myn1wz');
-	src:url('#{$asset-root}fonts/icon-font/gmr-icons.eot?#iefix-myn1wz') format('embedded-opentype'),
-		url('#{$asset-root}fonts/icon-font/gmr-icons.woff?-myn1wz') format('woff'),
-		url('#{$asset-root}fonts/icon-font/gmr-icons.ttf?-myn1wz') format('truetype'),
-		url('#{$asset-root}fonts/icon-font/gmr-icons.svg?-myn1wz#icomoon') format('svg');
+	src:url('#{$asset-root}fonts/icon-font/gmr-icons.eot?-2fhr6q');
+	src:url('#{$asset-root}fonts/icon-font/gmr-icons.eot?#iefix-2fhr6q') format('embedded-opentype'),
+		url('#{$asset-root}fonts/icon-font/gmr-icons.woff?-2fhr6q') format('woff'),
+		url('#{$asset-root}fonts/icon-font/gmr-icons.ttf?-2fhr6q') format('truetype'),
+		url('#{$asset-root}fonts/icon-font/gmr-icons.svg?-2fhr6q#icomoon') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
 
-[class^="icon-"], [class*=" icon-"], %gmr-icons {
+[class^="icon-"], [class*=" icon-"], %gmr-icons, .gmr-icon {
 	font-family: 'gmr-icons';
 	speak: none;
 	font-style: normal;
@@ -73,7 +73,7 @@ $icon-font:     'gmr-icons';
 	font-variant: normal;
 	text-transform: none;
 	line-height: 1;
-
+	
 	/* Better Font Rendering =========== */
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
@@ -222,3 +222,12 @@ $icon-font:     'gmr-icons';
 .icon-contest:before {
 	content: "\e623";
 }
+
+.icon-close:before {
+	content: "\e624";
+}
+
+.icon-close-circle:before {
+	content: "\e625";
+}
+

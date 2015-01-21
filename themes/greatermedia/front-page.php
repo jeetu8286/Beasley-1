@@ -26,7 +26,6 @@ get_header();
 
 					<?php get_template_part( 'partials/loop', 'front-page' ); ?>
 					<?php greatermedia_load_more_button( array( 'partial_slug' => 'partials/loop', 'auto_load' => true ) ); ?>
-					<?php get_template_part( 'partials/pagination' ); ?>
 
 				<?php else : ?>
 
