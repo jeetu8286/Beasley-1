@@ -7104,7 +7104,8 @@ a.podcast__rss:active {
   color: #ffffff !important;
   text-transform: uppercase;
   cursor: pointer;
-  border-radius: 100em; }
+  border-radius: 100em;
+  text-transform: none; }
   .login-restricted-login-btn:hover, .login-restricted-login-btn:focus,
   .logout-restricted-login-btn:hover,
   .logout-restricted-login-btn:focus,
