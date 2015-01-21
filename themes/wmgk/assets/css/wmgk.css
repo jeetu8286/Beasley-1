@@ -745,7 +745,10 @@ img {
       max-height: none;
       -moz-box-sizing: border-box;
       box-sizing: border-box;
-      cursor: default; } }
+      cursor: default;
+      -webkit-transition: none;
+      -moz-transition: none;
+      transition: none; } }
   @media screen and (min-width: 1400px) {
     .live-player {
       right: -webkit-calc(50% - 700px);

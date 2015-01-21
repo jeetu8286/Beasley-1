@@ -102,6 +102,7 @@ img {
 		max-height: none;
 		@include box-sizing(border-box);
 		cursor: default;
+		@include transition(none);
 	}
 	@include bp(x-large) {
 		@include calc(right, '50% - 700px');
