@@ -30,7 +30,7 @@ class ShortcodeHandler
 		ob_start(); 
 		
 		?>
-		<div class="livefire-poll" id="lf-poll-<?php echo esc_attr( $uniqid ); ?>"></div>
+		<div class="livefyre-poll" id="lf-poll-<?php echo esc_attr( $uniqid ); ?>"></div>
 		<script type="text/javascript" src="//cdn.livefyre.com/Livefyre.js"></script>
 		<script type="text/javascript" >Livefyre.require(["poll#uat"],function(a){(new a(<?php echo json_encode( $code_atts ); ?>)).render(document.getElementById("lf-poll-<?php echo esc_js( $uniqid ); ?>"))});</script>			
 		<?php
