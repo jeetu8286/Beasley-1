@@ -457,6 +457,10 @@ category: Components
 	.gmr-user & {
 		display: none;
 	}
+
+	.live-stream__status.audio__playing & {
+		display: none;
+	}
 }
 
 .live-stream__resume {
@@ -642,11 +646,19 @@ category: Components
 		@include bp(medium) {
 			float: none;
 		}
+
+		&.live-player__muted {
+			display: none;
+		}
 	}
 
 	.live-player--active & {
 		display: block;
 		visibility: visible;
+	}
+
+	&.live-player__muted {
+		display: none;
 	}
 }
 
@@ -829,6 +841,7 @@ category: Components
 		width: 50%;
 
 		@include bp(medium) {
+			position: relative;
 			display: block;
 			@include fill-parent;
 			top: auto;
@@ -873,12 +886,19 @@ category: Components
 		font-weight: normal;
 		text-transform: uppercase;
 	}
+
+	.live-player__container.playing & {
+		@include bp(medium) {
+			display: none;
+		}
+	}
 }
 
 .now-playing {
 	display: none;
 	float: left;
 	width: calc(100% - 144px);
+	height: 58px;
 	padding: 16px 1em 0 0;
 	text-align: left;
 	@include bp(medium) {
