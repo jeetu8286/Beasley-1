@@ -11,7 +11,7 @@ get_header(); ?>
 	<div class="container">
 
 		<section class="content">
-			<h1 itemprop="headline">CLOSURES</h1>
+			<h1 itemprop="headline">Closures</h1>
 			<?php
 				$args = array(
 					'numberposts' => 1,
@@ -27,7 +27,9 @@ get_header(); ?>
 				$published_posts = wp_count_posts( GreaterMediaClosuresCPT::CLOSURE_CPT_SLUG );
 				if( isset( $published_posts->publish ) ) {
 					?>
-					<div class="closure-entry-title" ><?php echo intval( $published_posts->publish ) . ' reported closures'; ?></div>
+					<div class="closure-entry-title" >
+						<?php echo intval( $published_posts->publish ) . ' reported closures'; ?>
+					</div>
 					<div class="closure-attr--date">
 						<p>Last updated: <?php echo date('m/d/Y \a\t G:i', $last_updated); ?></p>
 					</div>
@@ -39,12 +41,17 @@ get_header(); ?>
 
 			<section class="closures">
 
+				<div class="closures_header">
+					<div class="closures_header_name">Name</div>
+					<div class="closures_header_location">Location</div>
+					<div class="closures_header_reported">Reported</div>
+				</div>
+
 				<?php get_template_part( 'partials/loop', 'gmr_closure' ); ?>
 
 			</section>
 			
 				<?php greatermedia_load_more_button( array( 'partial_slug' => 'partials/loop', 'partial_name' => 'gmr_closure', 'auto_load' => true ) ); ?>
-				<?php get_template_part( 'partials/pagination' ); ?>
 				
 			<?php else : ?>
 

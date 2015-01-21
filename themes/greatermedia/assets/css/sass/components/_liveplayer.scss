@@ -168,9 +168,9 @@ category: Components
 	color: $liveplayer-color;
 	cursor: pointer;
 	@include bp(medium) {
-		position: relative;
-		display: block;
 		top: auto;
+		display: block;
+		width: calc(100% - 20px);
 	}
 }
 
@@ -294,6 +294,7 @@ category: Components
 	border-bottom: 1px solid $secondary-border;
 	@include bp(medium) {
 		padding: 20px 0 26px;
+		margin-top: 46px;
 		overflow: visible;
 		border-bottom: none;
 	}
