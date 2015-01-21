@@ -666,3 +666,11 @@ function add_ie_stylesheet() {
 	<?php
 }
 add_action( 'wp_head', 'add_ie_stylesheet' );
+
+/**
+ * Hide live player sidebar
+ */
+add_action( 'gmlp_player_popup_template', 'greatermedia_popup_payer_hide_livesidebar' );
+function greatermedia_popup_payer_hide_livesidebar(){
+	add_filter( 'load_greatermedia_livepress_sidebar', '__return_false' );
+}

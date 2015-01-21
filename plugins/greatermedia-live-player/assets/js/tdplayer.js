@@ -43,6 +43,7 @@
 	var nowPlayingInfo = document.getElementById('nowPlaying');
 	var trackInfo = document.getElementById('trackInfo');
 	var liveStreamSelector = document.querySelector('.live-player__stream');
+	var playerPopupWindow = null;
 
 	/**
 	 * global variables for event types to use in conjunction with `addEventHandler` function
@@ -76,7 +77,11 @@
 	 */
 	window.tdPlayerApiReady = function () {
 		console.log("--- TD Player API Loaded ---")
-		initPlayer();
+		if ( is_player_popup_required() ){
+			load_player_popup();
+		} else {
+			initPlayer();
+		}
 	};
 
 	function calcTechPriority() {
@@ -1502,5 +1507,21 @@
 		addEventHandler(podcastPlayBtn,elemClick,setInlineAudioUX);
 		addEventHandler(podcastPauseBtn,elemClick,pauseCustomInlineAudio);
 	});
-
+	
+	function is_player_popup_required() {
+		/** For testing return true **/
+		return ( "undefined" !== typeof Modernizr  && false === Modernizr.history && "" === gmlp.is_popup );
+	}
+	
+	function load_player_popup(){
+		jQuery('#playButton').click(function(){
+			if ( playerPopupWindow == null || playerPopupWindow.closed) {
+				//create new, since none is open
+				playerPopupWindow = window.open(gmlp.popup_url, "livestreaming", "toolbar=no, scrollbars=no, resizable=no, top=500, left=500, width=400, height=400");
+			} else {
+				playerPopupWindow.focus();
+			}
+		})
+		
+	}
 })(jQuery, window);
