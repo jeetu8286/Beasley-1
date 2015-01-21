@@ -6845,6 +6845,7 @@ a.podcast__rss:hover, a.podcast__rss:focus {
   text-transform: uppercase;
   cursor: pointer;
   border-radius: 100em;
+  background-color: #d22228 !important;
   text-transform: none; }
   a.podcast__rss:hover:hover, a.podcast__rss:hover:focus, a.podcast__rss:focus:hover, a.podcast__rss:focus:focus {
     background-color: #aa1c20;
