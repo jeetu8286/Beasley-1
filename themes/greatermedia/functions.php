@@ -620,3 +620,12 @@ function greatermedia_add_gigya_body_class( $classes ) {
 
 }
 add_filter( 'body_class', 'greatermedia_add_gigya_body_class' );
+
+/**
+ * Show more posts that usual for gmr_closure archives. 
+ */
+add_action( 'parse_query', function ( WP_Query $query ) {
+	if ( $query->is_main_query() && $query->is_post_type_archive( 'gmr_closure' ) ) {
+		$query->query_vars['posts_per_page'] = 30;
+	}
+} );
