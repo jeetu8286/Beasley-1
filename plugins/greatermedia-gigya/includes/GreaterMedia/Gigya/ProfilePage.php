@@ -12,6 +12,7 @@ class ProfilePage {
 		'forgot-password',
 		'cookies-required',
 		'reset-password',
+		'verify-email',
 	);
 
 	public function register() {

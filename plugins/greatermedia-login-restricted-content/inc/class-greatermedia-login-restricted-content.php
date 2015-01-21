@@ -20,7 +20,8 @@ class GreaterMediaLoginRestrictedContent extends VisualShortcode {
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ), 20, 0 );
 		add_action( 'save_post', array( $this, 'save_post' ) );
 		
-		add_filter( 'the_content', array( $this, 'the_content' ) );
+		add_filter( 'the_excerpt', array( $this, 'the_content' ), 100 );
+		add_filter( 'the_content', array( $this, 'the_content' ), 100 );
 		add_filter( 'wp_trim_words', array( $this, 'untrim_restricted_markup' ), 10, 4 );
 		
 	}
@@ -89,11 +90,9 @@ class GreaterMediaLoginRestrictedContent extends VisualShortcode {
 					 */
 					'Must be:'                 => __( 'Must be:', 'greatermedia-login-restricted-content' ),
 					'logged in'                => __( 'logged in', 'greatermedia-login-restricted-content' ),
-					'logged out'               => __( 'logged out', 'greatermedia-login-restricted-content' ),
 					'Content'                  => __( 'Content', 'greatermedia-login-restricted-content' ),
 					'Status'                   => __( 'Status', 'greatermedia-login-restricted-content' ),
 					'Logged in'                => __( 'Logged in', 'greatermedia-login-restricted-content' ),
-					'Logged out'               => __( 'Logged out', 'greatermedia-login-restricted-content' ),
 					'No restriction'           => __( 'No restriction', 'greatermedia-login-restricted-content' ),
 				),
 			);
@@ -168,9 +167,6 @@ class GreaterMediaLoginRestrictedContent extends VisualShortcode {
 		$html .= '<p><input type="radio" name="lr_status" value="logged-in" ' . checked( 'logged-in', $login_restriction, false ) . ' />' .
 		         __( 'Logged in', 'greatermedia-login-restricted-content' ) .
 		         '</p>';
-		$html .= '<p><input type="radio" name="lr_status" value="logged-out" ' . checked( 'logged-out', $login_restriction, false ) . ' />' .
-		         __( 'Logged out', 'greatermedia-login-restricted-content' ) .
-		         '</p>';
 		$html .= '<p><input type="radio" name="lr_status" value="" ' . ( empty( $login_restriction ) ? 'checked="checked"' : '' ) . ' />' .
 		         __( 'No restriction', 'greatermedia-login-restricted-content' ) .
 		         '</p>';
@@ -208,13 +204,7 @@ class GreaterMediaLoginRestrictedContent extends VisualShortcode {
 			include GREATER_MEDIA_LOGIN_RESTRICTED_CONTENT_PATH . '/tpl/login-restricted-shortcode-render.tpl.php';
 			
 			return ob_get_clean();
-		} elseif ( ( 'logged-out' === $login_restriction ) && is_gigya_user_logged_in() ) {
-			ob_start();
-			
-			include GREATER_MEDIA_LOGIN_RESTRICTED_CONTENT_PATH . '/tpl/logout-restricted-shortcode-render.tpl.php';
-			
-			return ob_get_clean();
-		}
+		} 
 
 		/**
 		 * wpautop usually runs before shortcode processing, meaning the shortcodes'
@@ -263,8 +253,6 @@ class GreaterMediaLoginRestrictedContent extends VisualShortcode {
 
 		if ( 'logged-in' === $login_restriction ) {
 			return __( 'Logged in', 'greatermedia-login-restricted-content' );
-		} else if ( 'logged-out' === $login_restriction ) {
-			return __( 'Logged out', 'greatermedia-login-restricted-content' );
 		} else {
 			return __( 'No restriction', 'greatermedia-login-restricted-content' );
 		}
@@ -287,11 +275,7 @@ class GreaterMediaLoginRestrictedContent extends VisualShortcode {
 			ob_start();
 			include GREATER_MEDIA_LOGIN_RESTRICTED_CONTENT_PATH . '/tpl/login-restricted-post-render.tpl.php';
 			return ob_get_clean();
-		} elseif ( ( 'logged-out' === $login_restriction ) && is_gigya_user_logged_in() ) {
-			ob_start();
-			include GREATER_MEDIA_LOGIN_RESTRICTED_CONTENT_PATH . '/tpl/logout-restricted-post-render.tpl.php';
-			return ob_get_clean();
-		}
+		} 
 
 		// Fall-through, return content as-is
 		return $content;

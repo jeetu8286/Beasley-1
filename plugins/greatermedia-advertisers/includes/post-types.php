@@ -42,7 +42,7 @@ function gmr_advertisers_register_post_type() {
  * Registers advertisers meta boxes.
  */
 function gmr_advertisers_register_meta_boxes() {
-	add_meta_box( 'advertiser-link', 'Link', 'gmr_advertisers_render_link_metabox', GMR_ADVERTISER_CPT, 'side', 'high' );
+	add_meta_box( 'advertiser-link', 'Advertiser URL', 'gmr_advertisers_render_link_metabox', GMR_ADVERTISER_CPT, 'side', 'core' );
 }
 
 /**

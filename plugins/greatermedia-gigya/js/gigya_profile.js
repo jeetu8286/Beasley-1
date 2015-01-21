@@ -318,6 +318,7 @@
 		this.didErrorHandler        = $.proxy(this.didError, this);
 		this.didLogoutClickHandler  = $.proxy(this.didLogoutClick, this);
 		this.didBeforeSubmitHandler = $.proxy(this.didBeforeSubmit, this);
+		this.didFieldChangeHandler  = $.proxy(this.didFieldChange, this);
 
 		this.loadLabels();
 	};
@@ -366,6 +367,7 @@
 				onAfterScreenLoad: this.didAfterScreenHandler,
 				onError: this.didErrorHandler,
 				onBeforeSubmit: this.didBeforeSubmitHandler,
+				onFieldChanged: this.didFieldChangeHandler
 			});
 
 			if (name === 'gigya-logout-screen') {
@@ -413,6 +415,13 @@
 				case 'gigya-reset-link-password-success-screen':
 					return 'reset-password';
 
+				case 'gigya-verify-email-screen':
+				case 'gigya-resend-verification-code-screen':
+				case 'gigya-resend-verification-code-success-screen':
+				case 'gigya-resend-verification-code-update-screen':
+				case 'gigya-resend-verification-code-update-success-screen':
+					return 'verify-email';
+
 				default:
 					throw new Error( 'Unknown activeScreenID: ' + this.activeScreenID );
 			}
@@ -425,6 +434,7 @@
 			'forgot-password' : 'gigya-forgot-password-screen',
 			'account'         : 'gigya-update-profile-screen',
 			'reset-password'  : 'gigya-reset-link-password-screen',
+			'verify-email'    : 'gigya-verify-email-screen',
 		},
 
 		screenLabels: {
@@ -451,6 +461,10 @@
 			'reset-password': {
 				header: 'Reset Password',
 				message: 'Enter your new password to reset it.'
+			},
+			'verify-email': {
+				header: 'Email Verification',
+				message: 'Please verify that your profile email belongs to you.'
 			}
 		},
 
@@ -471,22 +485,39 @@
 
 		didAfterScreen: function(event) {
 			this.activeScreenID = event.currentScreen;
-
 			this.scrollToTop();
-			if (event.currentScreen === 'gigya-update-profile-screen') {
-				this.registerLogoutButton();
-			} else if (event.currentScreen === 'gigya-register-complete-screen') {
-				this.controller.willRegister = true;
-			} else if (event.currentScreen === 'gigya-update-profile-success-screen') {
-				var profile = this.profileFromEvent(event);
-				this.controller.didProfileUpdate(profile);
-			} else if (event.currentScreen === 'gigya-reset-link-password-screen') {
-				if (this.controller.resetError) {
-					var $errorMsg = $('#gigya-reset-link-password-screen .reset-link-password-error-msg');
-					$errorMsg.text(this.controller.resetError);
-					$errorMsg.css('display', 'block');
-					$errorMsg.css('visibility', 'visible');
-				}
+
+			switch (event.currentScreen) {
+				case 'gigya-update-profile-screen':
+					this.registerLogoutButton();
+					break;
+
+				case 'gigya-register-complete-screen':
+					this.controller.willRegister = true;
+					break;
+
+				case 'gigya-update-profile-success-screen':
+					var profile = this.profileFromEvent(event);
+					this.controller.didProfileUpdate(profile);
+					break;
+
+				case 'gigya-reset-link-password-screen':
+					if (this.controller.resetError) {
+						var $errorMsg = $('#gigya-reset-link-password-screen .reset-link-password-error-msg');
+						$errorMsg.text(this.controller.resetError);
+						$errorMsg.css('display', 'block');
+						$errorMsg.css('visibility', 'visible');
+					}
+					break;
+
+				case 'gigya-resend-verification-code-screen':
+				case 'gigya-resend-verification-code-update-screen':
+					if (event.profile.email) {
+						var $resendEmail = $('#resend-email');
+						$resendEmail.val(event.profile.email);
+					}
+					break;
+
 			}
 		},
 
@@ -583,6 +614,13 @@
 			if (event.form === 'gigya-reset-link-password-form') {
 				this.controller.resetPassword(event.formData.newPassword);
 				return false;
+			}
+		},
+
+		didFieldChange: function(event) {
+			if (event.screen === 'gigya-update-profile-screen' && event.field === 'profile.email') {
+				var $link = $('.verify-email-link');
+				$link.css('display', 'inline-block');
 			}
 		}
 
