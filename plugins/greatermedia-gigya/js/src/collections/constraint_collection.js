@@ -1,10 +1,11 @@
 var ConstraintCollection = Backbone.Collection.extend({
 
 	model: function(attr, options) {
-		var kind  = ConstraintCollection.kindForType(attr.type);
-		var klass = ConstraintCollection.typesMap[kind] || Constraint;
+		var kind     = ConstraintCollection.kindForType(attr.type);
+		var klass    = ConstraintCollection.typesMap[kind] || Constraint;
+		var instance = new klass(attr, options);
 
-		return new klass(attr, options);
+		return instance;
 	},
 
 	initialize: function(models, options) {
@@ -33,6 +34,8 @@ var ConstraintCollection = Backbone.Collection.extend({
 				return 'likes';
 			} else if (subType === 'favorites') {
 				return 'favorites';
+			} else if (subType.match(/_list$/)) {
+				return 'list';
 			} else {
 				return typeList[0];
 			}
@@ -41,12 +44,13 @@ var ConstraintCollection = Backbone.Collection.extend({
 		}
 	},
 
-	typesMap: {
-		'system': Constraint,
-		'profile': ProfileConstraint,
-		'record': EntryConstraint,
-		'likes': LikeConstraint,
-		'favorites': FavoriteConstraint
+	typesMap        : {
+		'system'    : Constraint,
+		'profile'   : ProfileConstraint,
+		'record'    : EntryConstraint,
+		'likes'     : LikeConstraint,
+		'favorites' : FavoriteConstraint,
+		'list'      : ListConstraint,
 	}
 
 });

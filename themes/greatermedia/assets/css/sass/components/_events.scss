@@ -1,3 +1,13 @@
+.events-archive {
+	#tribe-events-pg-template {
+		max-width: 100%;
+	}
+
+	.tribe-events-day-time-slot {
+		clear: both;
+	}
+}
+
 .event__thumbnail {
 	@include span-columns(4 of 4);
 	background-color: lighten($primary-border, 9%);
