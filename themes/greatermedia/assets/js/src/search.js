@@ -53,9 +53,13 @@
 	 */
 	$searchBtn.click( showSearch ); 
 	
-	// Show search if the field has focus.
-	$searchInput.click( function ( e ) {
-		showSearch( e);
+	/**
+	 * Open search if user clicks on it.
+	 */
+	$searchInput.add( $searchForm.find( 'button[type=submit]' ) ).click( function ( e ) {
+		if ( ! $searchContainer.hasClass( '.header__search--open' ) ) {
+			showSearch( e );			
+		}
 	} ); 
 	
 	function checkSearchField () {
