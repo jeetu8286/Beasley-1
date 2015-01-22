@@ -15,6 +15,9 @@ function gmr_livefyre_main_real() {
 
 	$plugin = new \GreaterMedia\LiveFyre\Plugin();
 	$plugin->enable();
+	
+	new \GreaterMedia\LiveFyrePolls\ContentFilter();
+	new \GreaterMedia\LiveFyrePolls\ShortcodeHandler();
 }
 
 function gmr_livefyre_main() {

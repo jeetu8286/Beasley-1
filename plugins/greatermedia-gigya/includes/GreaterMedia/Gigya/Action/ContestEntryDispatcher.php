@@ -48,7 +48,7 @@ class ContestEntryDispatcher {
 
 		foreach ( $entry_reference as $key => $value ) {
 			$item = array(
-				'name'  => $key,
+				'name'  => (string) $key,
 				'value' => $value,
 			);
 

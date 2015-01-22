@@ -6,9 +6,6 @@
 		<?php elseif ( '21plus' === $age_restriction ) : ?>
 			21+
 		<?php endif; ?>
-		<?php if ( ! is_gigya_user_logged_in() ) : ?>
-			&#8212; log in to view this content.
-		<?php endif; ?>
 	</p>
 	
 	<?php if ( ! is_gigya_user_logged_in() ) : ?>
