@@ -16,7 +16,8 @@
 .profile-page
 .profile-page__sidebar,
 .profile-page__content {
-	display: block;
+	display: table-cell;
+	vertical-align: middle;
 	width: 50%;
-	float: left;
+	padding: 83px 32px;
 }
