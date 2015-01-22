@@ -422,6 +422,8 @@
 		liveLinks = document.getElementById( 'live-links' ),
 		liveLink = document.querySelector( '.live-link__title'),
 		liveLinksWidget = document.querySelector( '.widget--live-player' ),
+		liveLinksWidgetTitle = document.querySelector('.widget--live-player__title'),
+		liveLinksWidgetContent = liveLinksWidget.innerHTML,
 		liveStream = document.getElementById( 'live-player' ),
 		windowWidth = this.innerWidth || this.document.documentElement.clientWidth || this.document.body.clientWidth || 0,
 		scrollObject = {},
@@ -510,10 +512,12 @@
 			livePlayer.style.top = wpAdminHeight + elemHeight(header) + 'px';
 			livePlayer.style.height = windowHeight(window) - wpAdminHeight - elemHeight(header) + 'px';
 			liveLinks.style.height = windowHeight(window) - wpAdminHeight - elemHeight(header) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) + 'px';
+			liveLinksWidget.style.maxHeight = windowHeight(window) - wpAdminHeight - elemHeight(header) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - elemHeight(liveLinksWidgetTitle) + 'px';
 		} else {
 			livePlayer.style.top = elemHeight(header) + 'px';
 			livePlayer.style.height = windowHeight(window) - elemHeight(header) + 'px';
 			liveLinks.style.height = windowHeight(window) - elemHeight(header) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) + 'px';
+			liveLinksWidget.style.maxHeight = windowHeight(window) - elemHeight(header) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - elemHeight(liveLinksWidgetTitle) + 'px';
 		}
 		livePlayer.classList.remove('live-player--fixed');
 		livePlayer.classList.add('live-player--init');
@@ -527,10 +531,12 @@
 			livePlayer.style.top =  wpAdminHeight + elemHeight(header) + 'px';
 			livePlayer.style.height = windowHeight(window) - wpAdminHeight + 'px';
 			liveLinks.style.height = windowHeight(window) - elemTopOffset(header) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) + 'px';
+			liveLinksWidget.style.maxHeight = windowHeight(window) - elemTopOffset(header) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - elemHeight(liveLinksWidgetTitle) + 'px';
 		} else {
 			livePlayer.style.top = elemHeight(header) + 'px';
 			livePlayer.style.height = windowHeight(window) - wpAdminHeight - elemHeight(header) + 'px';
 			liveLinks.style.height = windowHeight(window) - elemHeightOffset(header) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) + 'px';
+			liveLinksWidget.style.maxHeight = windowHeight(window) - elemHeightOffset(header) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - elemHeight(liveLinksWidgetTitle) + 'px';
 		}
 		livePlayer.classList.remove('live-player--fixed');
 		livePlayer.classList.add('live-player--init');
@@ -544,10 +550,12 @@
 			livePlayer.style.top = wpAdminHeight + 'px';
 			livePlayer.style.height = windowHeight(window) - wpAdminHeight + 'px';
 			liveLinks.style.height = windowHeight(window) - wpAdminHeight - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) + 'px';
+			liveLinksWidget.style.maxHeight = windowHeight(window) - wpAdminHeight - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - elemHeight(liveLinksWidgetTitle) + 'px';
 		} else {
 			livePlayer.style.top = '0px';
 			livePlayer.style.height = windowHeight(window) + 'px';
 			liveLinks.style.height = windowHeight(window) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) + 'px';
+			liveLinksWidget.style.maxHeight = windowHeight(window) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - elemHeight(liveLinksWidgetTitle) + 'px';
 		}
 		livePlayer.classList.remove('live-player--init');
 		livePlayer.classList.add('live-player--fixed');
@@ -589,16 +597,6 @@
 			} else {
 				lpPosDefault();
 			}
-		}
-	}
-
-	/**
-	 * detects the height of the live links widget if the browser window is 768px wide or more, then adds a height to
-	 * the live links
-	 */
-	function liveLinksAddHeight() {
-		if ( window.innerWidth >= 768 ) {
-			liveLinksWidget.style.height = elemHeight(liveLinksWidget) + 'px';
 		}
 	}
 
@@ -798,7 +796,6 @@
 					scrollDebounce();
 					scrollThrottle();
 				});
-				liveLinksAddHeight();
 			}
 		}
 	}
@@ -819,9 +816,6 @@
 	if( window.innerWidth >= 768 ) {
 		addEventHandler(window,elemLoad,function() {
 			lpPosBase();
-			if(liveLinksWidget != null) {
-				liveLinksAddHeight();
-			}
 		});
 		addEventHandler(window,elemScroll,function() {
 			scrollDebounce();
