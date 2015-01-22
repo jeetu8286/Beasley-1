@@ -20,7 +20,8 @@ class GreaterMediaAgeRestrictedContent extends VisualShortcode {
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ), 20, 0 );
 		add_action( 'save_post', array( $this, 'save_post' ) );
 		
-		add_filter( 'the_content', array( $this, 'the_content' ) );
+		add_filter( 'the_excerpt', array( $this, 'the_content' ), 100 );
+		add_filter( 'the_content', array( $this, 'the_content' ), 100 );
 		add_filter( 'wp_trim_words', array( $this, 'untrim_restricted_markup' ), 10, 4 );
 
 	}

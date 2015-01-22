@@ -378,6 +378,51 @@ __p += '\n\t</select>\n</div>\n';
 return __p
 };
 
+this["JST"]["src/templates/list_constraint.jst"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
+with (obj) {
+__p += '<ul class="constraint-toolbar">\n\t<li>\n\t\t<a\n\t\t\talt="f105"\n\t\t\tclass="dashicons dashicons-admin-page copy-constraint"\n\t\t\thref="#"\n\t\t\ttitle="Duplicate"\n\t\t/>\n\n\t\t<a\n\t\t\talt="f105"\n\t\t\tclass="dashicons dashicons-trash remove-constraint"\n\t\t\thref="#"\n\t\t\ttitle="Remove"\n\t\t/>\n\t</li>\n</ul>\n\n<p class="constraint-title">\n\t' +
+__e( title ) +
+'\n</p>\n\n';
+ if (view.hasChoices()) { ;
+__p += '\n\t<select class="constraint-value" style="width: 81%">\n\t\t';
+ _.each(choices, function(choiceItem) { ;
+__p += '\n\t\t<option value="' +
+__e( choiceItem.value ) +
+'" ' +
+((__t = ( choiceItem.value == value ? 'selected="selected"' : ''  )) == null ? '' : __t) +
+'">\n\t\t' +
+__e( choiceItem.label ) +
+'\n\t\t</option>\n\t\t';
+ }) ;
+__p += '\n\t</select>\n';
+ } else if (valueType === 'integer' || valueType === 'float') { ;
+__p += '\n\t<input type="number" class="constraint-value constraint-value-text" value="' +
+__e( value ) +
+'" />\n';
+ } else { ;
+__p += '\n\t<input type="text" class="constraint-value constraint-value-text" value="' +
+__e( value ) +
+'" />\n';
+ } ;
+__p += '\n\n<select class="constraint-conjunction" style="width: 15%">\n\t';
+ _.each(view.conjunctions, function(conjunctionItem) { ;
+__p += '\n\t<option value="' +
+__e( conjunctionItem ) +
+'" ' +
+((__t = ( conjunctionItem === conjunction ? 'selected="selected"' : ''  )) == null ? '' : __t) +
+'">\n\t' +
+__e( conjunctionItem ) +
+'\n\t</option>\n\t';
+ }) ;
+__p += '\n</select>\n';
+
+}
+return __p
+};
+
 this["JST"]["src/templates/query_result_item.jst"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
@@ -825,6 +870,86 @@ FACEBOOK_CATEGORIES = [
 
 }());
 
+var ListConstraint = Constraint.extend({
+
+	defaults        : {
+		type        : 'data:foo_list',
+		operator    : 'contains',
+		conjunction : 'and',
+		valueType   : 'string',
+		value       : '',
+	},
+
+	initialize: function(attr, opts) {
+		this.choicesLoaded = false;
+		Constraint.prototype.initialize.call(this, attr, opts);
+
+		this.listChoices = new Backbone.Collection([]);
+		this.loadList();
+	},
+
+	getListTypeName: function() {
+		var type    = this.get('type');
+		var parts   = type.split(':');
+		var subType = parts[1];
+
+		return subType.replace('_list', '');
+	},
+
+	getChoices: function() {
+		return this.listChoices;
+	},
+
+	loadList: function() {
+		var type   = this.getListTypeName();
+		var params = { 'type': type };
+
+		this.trigger('loadListStart');
+
+		if (ListConstraint.cache[type]) {
+			this.didLoadList(ListConstraint.cache[type]);
+		} else {
+			ajaxApi.request('get_choices_for_constraint_type', params)
+				.then($.proxy(this.didLoadList, this))
+				.fail($.proxy(this.didLoadListError, this));
+		}
+	},
+
+	didLoadList: function(response) {
+		if (response.success) {
+			var choices = response.data;
+			ListConstraint.cache[this.getListTypeName()] = response;
+
+			this.listChoices.reset(choices, { silent: true });
+
+			if ( this.get('value') === '' && choices.length > 0 ) {
+				this.set('value', choices[0].value);
+			}
+
+			this.choicesLoaded = true;
+			this.trigger('loadListSuccess', this.listChoices);
+		} else {
+			this.didLoadListError(response);
+		}
+	},
+
+	didLoadListError: function(response) {
+		this.trigger('loadListError', response.data);
+	},
+
+	toViewJSON: function() {
+		var json = Constraint.prototype.toViewJSON.call(this);
+		if (this.choicesLoaded) {
+			json.choices = this.getChoices().toJSON();
+		}
+
+		return json;
+	}
+
+});
+
+ListConstraint.cache = {};
+
 var FavoriteConstraint = Constraint.extend({
 
 	defaults        : {
@@ -1002,11 +1127,17 @@ var AVAILABLE_CONSTRAINTS = [
 		entryTypeID: -1,
 		entryFieldID: -1
 	},
+	{
+		type: 'data:contest_list',
+		valueType: 'enum',
+		value: ''
+	},
+
 
 	{
 		type: 'data:comment_count',
 		valueType: 'integer',
-		value: 0,
+		value: 1,
 	},
 	{
 		type: 'data:comment_status',
@@ -1022,7 +1153,7 @@ var AVAILABLE_CONSTRAINTS = [
 	{
 		type: 'data:social_share_count',
 		valueType: 'integer',
-		value: 0,
+		value: 1,
 	},
 	{
 		type: 'data:social_share_status',
@@ -1034,6 +1165,70 @@ var AVAILABLE_CONSTRAINTS = [
 		valueType: 'string',
 		value: '',
 		operator: 'contains',
+	},
+
+	{
+		type: 'data:member_query_message_open_list',
+		valueType: 'list',
+		value: '',
+	},
+	{
+		type: 'data:member_query_message_open_status',
+		valueType: 'boolean',
+		value: true,
+	},
+	{
+		type: 'data:member_query_message_open_count',
+		valueType: 'integer',
+		value: 1,
+	},
+
+	{
+		type: 'data:member_query_message_click_list',
+		valueType: 'list',
+		value: '',
+	},
+	{
+		type: 'data:member_query_message_click_status',
+		valueType: 'boolean',
+		value: true,
+	},
+	{
+		type: 'data:member_query_message_click_count',
+		valueType: 'integer',
+		value: 1,
+	},
+
+	{
+		type: 'data:static_group_message_open_list',
+		valueType: 'list',
+		value: true,
+	},
+	{
+		type: 'data:static_group_message_open_status',
+		valueType: 'boolean',
+		value: true,
+	},
+	{
+		type: 'data:static_group_message_open_count',
+		valueType: 'integer',
+		value: 1,
+	},
+
+	{
+		type: 'data:static_group_message_click_list',
+		valueType: 'boolean',
+		value: true,
+	},
+	{
+		type: 'data:static_group_message_click_status',
+		valueType: 'boolean',
+		value: true,
+	},
+	{
+		type: 'data:static_group_message_click_count',
+		valueType: 'integer',
+		value: 1,
 	},
 ];
 
@@ -1416,6 +1611,12 @@ var AVAILABLE_CONSTRAINTS_META = [
 		type: 'record:contest',
 		title: 'Contest Entry'
 	},
+	{
+		type: 'data:contest_list',
+		title: 'Contest Participation',
+		choices: [
+		]
+	},
 
 	{
 		type: 'data:comment_count',
@@ -1487,6 +1688,79 @@ var AVAILABLE_CONSTRAINTS_META = [
 	{
 		type: 'action:social_share',
 		title: 'Social Share URL'
+	},
+
+	{
+		type: 'data:member_query_message_open_list',
+		title: 'Member Query Email Open',
+		choices: []
+	},
+	{
+		type: 'data:member_query_message_open_count',
+		title: 'Member Query Email Open Count',
+		choices: []
+	},
+	{
+		type: 'data:member_query_message_open_status',
+		title: 'Member Query Email Open Status',
+		choices: [
+			{ label: 'Has Opened', value: true },
+			{ label: 'Has Not Opened', value: false }
+		]
+	},
+
+	{
+		type: 'data:member_query_message_click_list',
+		title: 'Member Query Email Click',
+		choices: []
+	},
+	{
+		type: 'data:member_query_message_click_count',
+		title: 'Member Query Email Click Count'
+	},
+	{
+		type: 'data:member_query_message_click_status',
+		title: 'Member Query Email Click Status',
+		choices: [
+			{ label: 'Has Clicked', value: true },
+			{ label: 'Has Not Clicked', value: false }
+		]
+	},
+
+	{
+		type: 'data:static_group_message_open_list',
+		title: 'Static Group Email Open',
+		choices: []
+	},
+	{
+		type: 'data:static_group_message_open_count',
+		title: 'Static Group Email Open Count'
+	},
+	{
+		type: 'data:static_group_message_open_status',
+		title: 'Static Group Email Open Status',
+		choices: [
+			{ label: 'Has Opened', value: true },
+			{ label: 'Has Not Opened', value: false }
+		]
+	},
+
+	{
+		type: 'data:static_group_message_click_list',
+		title: 'Static Group Email Click',
+		choices: []
+	},
+	{
+		type: 'data:static_group_message_click_count',
+		title: 'Static Group Email Click Count'
+	},
+	{
+		type: 'data:static_group_message_click_status',
+		title: 'Static Group Email Click Status',
+		choices: [
+			{ label: 'Has Clicked', value: true },
+			{ label: 'Has Not Clicked', value: false }
+		]
 	},
 ];
 
@@ -1644,10 +1918,11 @@ var EntryFieldCollection = Backbone.Collection.extend({
 var ConstraintCollection = Backbone.Collection.extend({
 
 	model: function(attr, options) {
-		var kind  = ConstraintCollection.kindForType(attr.type);
-		var klass = ConstraintCollection.typesMap[kind] || Constraint;
+		var kind     = ConstraintCollection.kindForType(attr.type);
+		var klass    = ConstraintCollection.typesMap[kind] || Constraint;
+		var instance = new klass(attr, options);
 
-		return new klass(attr, options);
+		return instance;
 	},
 
 	initialize: function(models, options) {
@@ -1676,6 +1951,8 @@ var ConstraintCollection = Backbone.Collection.extend({
 				return 'likes';
 			} else if (subType === 'favorites') {
 				return 'favorites';
+			} else if (subType.match(/_list$/)) {
+				return 'list';
 			} else {
 				return typeList[0];
 			}
@@ -1684,12 +1961,13 @@ var ConstraintCollection = Backbone.Collection.extend({
 		}
 	},
 
-	typesMap: {
-		'system': Constraint,
-		'profile': ProfileConstraint,
-		'record': EntryConstraint,
-		'likes': LikeConstraint,
-		'favorites': FavoriteConstraint
+	typesMap        : {
+		'system'    : Constraint,
+		'profile'   : ProfileConstraint,
+		'record'    : EntryConstraint,
+		'likes'     : LikeConstraint,
+		'favorites' : FavoriteConstraint,
+		'list'      : ListConstraint,
 	}
 
 });
@@ -2203,6 +2481,30 @@ var LikeConstraintView = ConstraintView.extend({
 
 });
 
+var ListConstraintView = ConstraintView.extend({
+
+	template: getTemplate('list_constraint'),
+
+	initialize: function(model, opts) {
+		ConstraintView.prototype.initialize.call(this, model, opts);
+
+		this.listenTo(this.model, 'loadListStart', this.didLoadListStart);
+		this.listenTo(this.model, 'loadListSuccess', this.didLoadListSuccess);
+		this.listenTo(this.model, 'loadListError', this.didLoadListError);
+	},
+
+	didLoadListStart: function() {
+	},
+
+	didLoadListSuccess: function(choices) {
+		this.render();
+	},
+
+	didLoadListError: function(message) {
+	}
+
+});
+
 var FavoriteConstraintView = ConstraintView.extend({
 
 	template: getTemplate('favorite_constraint'),
@@ -2266,6 +2568,9 @@ var ActiveConstraintsView = Backbone.CollectionView.extend({
 
 			case 'favorites':
 				return FavoriteConstraintView;
+
+			case 'list':
+				return ListConstraintView;
 
 			default:
 				return ConstraintView;

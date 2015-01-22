@@ -22,6 +22,9 @@ var ActiveConstraintsView = Backbone.CollectionView.extend({
 			case 'favorites':
 				return FavoriteConstraintView;
 
+			case 'list':
+				return ListConstraintView;
+
 			default:
 				return ConstraintView;
 		}

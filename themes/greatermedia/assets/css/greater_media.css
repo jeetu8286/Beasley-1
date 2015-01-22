@@ -1748,7 +1748,7 @@ Curated posts for Featured Articles
 					<h2 class="featured__article--title">Minshara</h2>
 				</div>
 				<div class="featured__article--excerpt">
-					MinΓÇóshaΓÇóra (min SH├ñ r╔Ö) 1. adj. the classification for a planet capable of supporting humanoid life; 2. n. electronic pop rock band from Harrisburg / Philadelphia, Pennsylvania From The Viper Room in LA to Webster Hall in NYC, Minshara has been spreading infectious pop melodies, dance grooves, and rock
+					Min•sha•ra (min SHä rə) 1. adj. the classification for a planet capable of supporting humanoid life; 2. n. electronic pop rock band from Harrisburg / Philadelphia, Pennsylvania From The Viper Room in LA to Webster Hall in NYC, Minshara has been spreading infectious pop melodies, dance grooves, and rock
 				</div>
 			</div>
 		</div>
@@ -2271,7 +2271,7 @@ Community Highlights and Events
 						</div>
 
 						<div class="highlights__event--meta">
-							<h3 class="highlights__event--title">Preston & SteveΓÇÖs Camp Out For Hunger 2014</h3>
+							<h3 class="highlights__event--title">Preston & Steve’s Camp Out For Hunger 2014</h3>
 							<time datetime="" class="highlights__event--date">Dec 1 - Dec 5</time>
 						</div>
 
@@ -3044,7 +3044,7 @@ Video posts display a video and minimal text. They can also optionally have a fe
 <article id="post-581" class="post-581 post type-post status-publish format-video has-post-thumbnail hentry category-uncategorized cf" role="article" itemscope="" itemtype="http://schema.org/BlogPosting">
 	<section class="entry--video__meta" itemprop="articleBody">
 		<time datetime="2014-11-05T00:13:14+00:00" class="entry__date">5 November</time>
-		<h2 class="entry__title"><a href="">Gladys Knight &amp; The Pips ΓÇ£Midnight Train To GeorgiaΓÇ¥</a></h2>
+		<h2 class="entry__title"><a href="">Gladys Knight &amp; The Pips “Midnight Train To Georgia”</a></h2>
 	</section>
 
 	<section class="entry--video__thumbnail">
@@ -3073,7 +3073,7 @@ Standard posts are mostly text based but can include images. They can also optio
 
 	<section class="entry--standard__meta">
 		<time datetime="2014-11-03T22:34:27+00:00" class="entry__date">3 November</time>
-		<h2 class="entry__title" itemprop="headline"><a href="http://wmmr.greatermedia.10uplabs.com/hey-its-a-blog-post/">Hey itΓÇÖs a blog post!</a></h2>
+		<h2 class="entry__title" itemprop="headline"><a href="http://wmmr.greatermedia.10uplabs.com/hey-its-a-blog-post/">Hey it’s a blog post!</a></h2>
 	</section>
 
 	<footer class="entry__footer">
@@ -3095,7 +3095,7 @@ Link posts contain a link to an external site. They can also optionally have a f
 <article id="post-886" class="post-886 post type-post status-publish format-link has-post-thumbnail hentry category-uncategorized cf" role="article" itemscope="" itemtype="http://schema.org/BlogPosting">
 	<section class="entry--link__meta" itemprop="articleBody">
 		<time datetime="2014-11-10T04:07:56+00:00" class="entry__date">10 November</time>
-		<h2 class="entry__title"><a href="">Ontario Highway 401 ΓÇô Wikipedia, the free encyclopedia</a></h2>
+		<h2 class="entry__title"><a href="">Ontario Highway 401 – Wikipedia, the free encyclopedia</a></h2>
 	</section>
 
 	<footer class="entry__footer">
@@ -4311,6 +4311,8 @@ Link posts contain a link to an external site. They can also optionally have a f
     font-weight: bold;
     font-size: 1em;
     line-height: 1.6; }
+  .article__content .livefyre-poll {
+    margin: 1.5em 0; }
 
 .article__comments {
   margin: 3em 0; }
@@ -4429,7 +4431,7 @@ category: Components
 
 	<div id="live-links" class="live-links">
 		<h3 class="widget--live-player__title">Live Links</h3>
-		<div id="gmr_shows_widget-2" class="widget--live-player widget_gmr_shows_widget"><ul><li class="live-link__type--standard"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/scroll-test/">GMR-278 test</a></div></li><li class="live-link__type--standard"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/contest/daves-contest/">DaveΓÇÖs Contest</a></div></li><li class="live-link__song"><div class="live-link__song--artist">Soundgarden</div><div class="live-link__song--title">Black Hole Sun</div></li><li class="live-link__song"><div class="live-link__song--artist">The Village People</div><div class="live-link__song--title">YMCA</div></li><li class="live-link__song"><div class="live-link__song--artist">Taylor Swift</div><div class="live-link__song--title">Shake it Off</div></li><li class="live-link__song"><div class="live-link__song--artist">Pink Floyd</div><div class="live-link__song--title">Comfortably Numb</div></li><li class="live-link__type--link"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/timed-content-test/">test test</a></div></li><li class="live-link__type--standard"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/ontario-highway-401-wikipedia-the-free-encyclopedia/">Ontario Highway 401 ΓÇô Wikipedia, the free encyclopedia</a></div></li><li class="live-link__type--video"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/?post_type=gmr-live-link&amp;p=633">Gladys Knight &amp; The Pips ΓÇ£Midnight Train To GeorgiaΓÇ¥</a></div></li><li class="live-link__type--video"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/gladys-knight-the-pips-midnight-train-to-georgia/">Gladys Knight &amp; The Pips</a></div></li><li class="live-link__type--video"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/?post_type=gmr-live-link&amp;p=538">Hilarious Volleyball Triple Head Shot ΓÇô YouTube</a></div></li></ul></div>
+		<div id="gmr_shows_widget-2" class="widget--live-player widget_gmr_shows_widget"><ul><li class="live-link__type--standard"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/scroll-test/">GMR-278 test</a></div></li><li class="live-link__type--standard"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/contest/daves-contest/">Dave’s Contest</a></div></li><li class="live-link__song"><div class="live-link__song--artist">Soundgarden</div><div class="live-link__song--title">Black Hole Sun</div></li><li class="live-link__song"><div class="live-link__song--artist">The Village People</div><div class="live-link__song--title">YMCA</div></li><li class="live-link__song"><div class="live-link__song--artist">Taylor Swift</div><div class="live-link__song--title">Shake it Off</div></li><li class="live-link__song"><div class="live-link__song--artist">Pink Floyd</div><div class="live-link__song--title">Comfortably Numb</div></li><li class="live-link__type--link"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/timed-content-test/">test test</a></div></li><li class="live-link__type--standard"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/ontario-highway-401-wikipedia-the-free-encyclopedia/">Ontario Highway 401 – Wikipedia, the free encyclopedia</a></div></li><li class="live-link__type--video"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/?post_type=gmr-live-link&amp;p=633">Gladys Knight &amp; The Pips “Midnight Train To Georgia”</a></div></li><li class="live-link__type--video"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/gladys-knight-the-pips-midnight-train-to-georgia/">Gladys Knight &amp; The Pips</a></div></li><li class="live-link__type--video"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/?post_type=gmr-live-link&amp;p=538">Hilarious Volleyball Triple Head Shot – YouTube</a></div></li></ul></div>
 	</div>
 </aside>
 ```
@@ -6366,6 +6368,11 @@ category: Components - Ads
       clear: both; }
     .contest__submission .contest__submission--thumbnail {
       height: 117px; } }
+.events-archive #tribe-events-pg-template {
+  max-width: 100%; }
+.events-archive .tribe-events-day-time-slot {
+  clear: both; }
+
 .event__thumbnail {
   float: left;
   display: block;
@@ -7095,7 +7102,8 @@ a.podcast__rss:active {
   color: #ffffff !important;
   text-transform: uppercase;
   cursor: pointer;
-  border-radius: 100em; }
+  border-radius: 100em;
+  text-transform: none; }
   .login-restricted-login-btn:hover, .login-restricted-login-btn:focus,
   .logout-restricted-login-btn:hover,
   .logout-restricted-login-btn:focus,
@@ -7680,6 +7688,243 @@ category: Components - Shows
     width: 50%;
     text-align: right; }
 
+.shows__schedule--days {
+  position: relative;
+  overflow: hidden;
+  height: 1499px;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
+  .shows__schedule--days:before, .shows__schedule--days:after {
+    content: " ";
+    display: table; }
+  .shows__schedule--days:after {
+    clear: both; }
+
+.shows__schedule--day {
+  top: 0;
+  left: 0;
+  position: absolute;
+  border: 1px solid #d0d2d3;
+  border-left-width: 0;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 100%;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none; }
+  .shows__schedule--day:nth-child(1) {
+    left: 0%; }
+    .shows__schedule--day:nth-child(1).fixed .shows__schedule--dayofweek {
+      display: block; }
+  .shows__schedule--day:nth-child(2) {
+    left: 100%; }
+    .shows__schedule--day:nth-child(2).fixed .shows__schedule--dayofweek {
+      display: none; }
+  .shows__schedule--day:nth-child(3) {
+    left: 200%; }
+    .shows__schedule--day:nth-child(3).fixed .shows__schedule--dayofweek {
+      display: none; }
+  .shows__schedule--day:nth-child(4) {
+    left: 300%; }
+    .shows__schedule--day:nth-child(4).fixed .shows__schedule--dayofweek {
+      display: none; }
+  .shows__schedule--day:nth-child(5) {
+    left: 400%; }
+    .shows__schedule--day:nth-child(5).fixed .shows__schedule--dayofweek {
+      display: none; }
+  .shows__schedule--day:nth-child(6) {
+    left: 500%; }
+    .shows__schedule--day:nth-child(6).fixed .shows__schedule--dayofweek {
+      display: none; }
+  .shows__schedule--day:nth-child(7) {
+    left: 600%; }
+    .shows__schedule--day:nth-child(7).fixed .shows__schedule--dayofweek {
+      display: none; }
+  .shows__schedule--day:first-child {
+    border-left-width: 1px; }
+    .shows__schedule--day:first-child.fixed .shows__schedule--dayofweek {
+      border-left: 1px solid #d0d2d3; }
+
+@media screen and (min-width: 480px) {
+  .shows__schedule--day {
+    width: 50%; }
+    .shows__schedule--day:nth-child(1) {
+      left: 0%; }
+      .shows__schedule--day:nth-child(1).fixed .shows__schedule--dayofweek {
+        display: block; }
+    .shows__schedule--day:nth-child(2) {
+      left: 50%; }
+      .shows__schedule--day:nth-child(2).fixed .shows__schedule--dayofweek {
+        display: block; }
+    .shows__schedule--day:nth-child(3) {
+      left: 100%; }
+      .shows__schedule--day:nth-child(3).fixed .shows__schedule--dayofweek {
+        display: none; }
+    .shows__schedule--day:nth-child(4) {
+      left: 150%; }
+      .shows__schedule--day:nth-child(4).fixed .shows__schedule--dayofweek {
+        display: none; }
+    .shows__schedule--day:nth-child(5) {
+      left: 200%; }
+      .shows__schedule--day:nth-child(5).fixed .shows__schedule--dayofweek {
+        display: none; }
+    .shows__schedule--day:nth-child(6) {
+      left: 250%; }
+      .shows__schedule--day:nth-child(6).fixed .shows__schedule--dayofweek {
+        display: none; }
+    .shows__schedule--day:nth-child(7) {
+      left: 300%; }
+      .shows__schedule--day:nth-child(7).fixed .shows__schedule--dayofweek {
+        display: none; } }
+@media screen and (min-width: 768px) {
+  .shows__schedule--day {
+    width: 33.33333%; }
+    .shows__schedule--day:nth-child(1) {
+      left: 0%; }
+      .shows__schedule--day:nth-child(1).fixed .shows__schedule--dayofweek {
+        display: block; }
+    .shows__schedule--day:nth-child(2) {
+      left: 33.33333%; }
+      .shows__schedule--day:nth-child(2).fixed .shows__schedule--dayofweek {
+        display: block; }
+    .shows__schedule--day:nth-child(3) {
+      left: 66.66667%; }
+      .shows__schedule--day:nth-child(3).fixed .shows__schedule--dayofweek {
+        display: block; }
+    .shows__schedule--day:nth-child(4) {
+      left: 100%; }
+      .shows__schedule--day:nth-child(4).fixed .shows__schedule--dayofweek {
+        display: none; }
+    .shows__schedule--day:nth-child(5) {
+      left: 133.33333%; }
+      .shows__schedule--day:nth-child(5).fixed .shows__schedule--dayofweek {
+        display: none; }
+    .shows__schedule--day:nth-child(6) {
+      left: 166.66667%; }
+      .shows__schedule--day:nth-child(6).fixed .shows__schedule--dayofweek {
+        display: none; }
+    .shows__schedule--day:nth-child(7) {
+      left: 200%; }
+      .shows__schedule--day:nth-child(7).fixed .shows__schedule--dayofweek {
+        display: none; } }
+@media screen and (min-width: 1024px) {
+  .shows__schedule--day {
+    width: 25%; }
+    .shows__schedule--day:nth-child(1) {
+      left: 0%; }
+      .shows__schedule--day:nth-child(1).fixed .shows__schedule--dayofweek {
+        display: block; }
+    .shows__schedule--day:nth-child(2) {
+      left: 25%; }
+      .shows__schedule--day:nth-child(2).fixed .shows__schedule--dayofweek {
+        display: block; }
+    .shows__schedule--day:nth-child(3) {
+      left: 50%; }
+      .shows__schedule--day:nth-child(3).fixed .shows__schedule--dayofweek {
+        display: block; }
+    .shows__schedule--day:nth-child(4) {
+      left: 75%; }
+      .shows__schedule--day:nth-child(4).fixed .shows__schedule--dayofweek {
+        display: block; }
+    .shows__schedule--day:nth-child(5) {
+      left: 100%; }
+      .shows__schedule--day:nth-child(5).fixed .shows__schedule--dayofweek {
+        display: none; }
+    .shows__schedule--day:nth-child(6) {
+      left: 125%; }
+      .shows__schedule--day:nth-child(6).fixed .shows__schedule--dayofweek {
+        display: none; }
+    .shows__schedule--day:nth-child(7) {
+      left: 150%; }
+      .shows__schedule--day:nth-child(7).fixed .shows__schedule--dayofweek {
+        display: none; } }
+@media screen and (min-width: 1400px) {
+  .shows__schedule--day {
+    width: 20%; }
+    .shows__schedule--day:nth-child(1) {
+      left: 0%; }
+      .shows__schedule--day:nth-child(1).fixed .shows__schedule--dayofweek {
+        display: block; }
+    .shows__schedule--day:nth-child(2) {
+      left: 20%; }
+      .shows__schedule--day:nth-child(2).fixed .shows__schedule--dayofweek {
+        display: block; }
+    .shows__schedule--day:nth-child(3) {
+      left: 40%; }
+      .shows__schedule--day:nth-child(3).fixed .shows__schedule--dayofweek {
+        display: block; }
+    .shows__schedule--day:nth-child(4) {
+      left: 60%; }
+      .shows__schedule--day:nth-child(4).fixed .shows__schedule--dayofweek {
+        display: block; }
+    .shows__schedule--day:nth-child(5) {
+      left: 80%; }
+      .shows__schedule--day:nth-child(5).fixed .shows__schedule--dayofweek {
+        display: block; }
+    .shows__schedule--day:nth-child(6) {
+      left: 100%; }
+      .shows__schedule--day:nth-child(6).fixed .shows__schedule--dayofweek {
+        display: none; }
+    .shows__schedule--day:nth-child(7) {
+      left: 120%; }
+      .shows__schedule--day:nth-child(7).fixed .shows__schedule--dayofweek {
+        display: none; } }
+.shows__schedule--dayofweek {
+  background: #ffffff;
+  border-bottom: 2px solid #000000;
+  text-align: center;
+  padding: 15px 0;
+  height: 54px;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  z-index: 99999;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0; }
+
+.shows__schedule--day.fixed .shows__schedule--dayofweek {
+  position: fixed;
+  border-top: 1px solid #d0d2d3; }
+
+.shows__schedule--episodes {
+  position: relative;
+  height: 1440px;
+  margin-top: 54px; }
+
+.shows__schedule--episode {
+  position: absolute;
+  left: 0;
+  right: 0;
+  border-bottom: 1px solid #d0d2d3;
+  padding: 0.5em 1em; }
+  .shows__schedule--episode:hover {
+    background-color: #f1f1f3; }
+
+.shows__schedule--episode-title a {
+  display: block;
+  font-weight: bold;
+  font-size: 0.79012em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden; }
+  .shows__schedule--episode-title a.not-link {
+    color: #000000;
+    cursor: default; }
+
+.shows__schedule--episode-time {
+  font-size: 0.70233em;
+  cursor: default; }
+
+.shows__schedule--now {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  border: 1px solid #d22228;
+  margin: 0 -1px; }
+
 .widget--live-player {
   margin: 0 1em 1em; }
 
@@ -7963,6 +8208,8 @@ a.social-share-link {
     font-weight: bold;
     font-size: 1em;
     line-height: 1.6; }
+  .article__content .livefyre-poll {
+    margin: 1.5em 0; }
 
 .article__comments {
   margin: 3em 0; }
@@ -11520,7 +11767,7 @@ category: Components
 			</div>
 
 			<div class="podcast__desc">
-				He joined us right off the bat for this Christmas week in December, and comedian Jim Breuer has been getting very festive with his family back home. Today he told us about his kidΓÇÖs relationship with Santa, imagined what Ozzy would be like as Old St. Nick, and accidentally touched a sore spot of JohnΓÇÖs!ΓÇª
+				He joined us right off the bat for this Christmas week in December, and comedian Jim Breuer has been getting very festive with his family back home. Today he told us about his kid’s relationship with Santa, imagined what Ozzy would be like as Old St. Nick, and accidentally touched a sore spot of John’s!…
 			</div>
 		</div>
 
