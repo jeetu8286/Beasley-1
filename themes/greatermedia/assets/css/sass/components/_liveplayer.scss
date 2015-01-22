@@ -1245,13 +1245,13 @@ category: Components
 .live-link__song--title {
 	padding-top: 6px;
 	font-size: em(13px);
-	font-weight: lighter;
+	font-weight: bold;
 	color: $secondary-link;
 }
 
 .live-link__type--audio:before {
 	@extend %live-link__icon;
-	content: "\e604";
+	content: "\e60c";
 }
 
 .live-link__type--gallery:before {
@@ -1276,7 +1276,7 @@ category: Components
 
 .live-link__type--video:before {
 	@extend %live-link__icon;
-	content: "\e620";
+	content: "\e605";
 }
 
 .live-link__type--show {

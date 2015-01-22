@@ -5613,11 +5613,11 @@ category: Components
 .live-link__song--title {
   padding-top: 6px;
   font-size: 0.8125em;
-  font-weight: lighter;
+  font-weight: bold;
   color: #d0d2d3; }
 
 .live-link__type--audio:before {
-  content: "\e604"; }
+  content: "\e60c"; }
 
 .live-link__type--gallery:before {
   content: "\e621"; }
@@ -5632,7 +5632,7 @@ category: Components
   content: "\e608"; }
 
 .live-link__type--video:before {
-  content: "\e620"; }
+  content: "\e605"; }
 
 .live-link__type--show {
   border-top: 1px solid #282827;
