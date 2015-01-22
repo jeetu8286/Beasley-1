@@ -1167,11 +1167,12 @@ category: Components
 
 // live links
 .live-links {
-	display: none;
+	visibility: hidden;
 	padding: 16px 0 0;
 	background-color: $liveplayer-bg;
 	text-align: center;
 	@include bp(medium) {
+		visibility: visible;
 		display: block;
 		height: 100%;
 		margin: 0;
@@ -1189,6 +1190,7 @@ category: Components
 }
 
 .live-player--open .live-links {
+	visibility: visible;
 	display: block;
 	height: auto !important;
 	max-height: 48vh;

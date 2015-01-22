@@ -5544,12 +5544,13 @@ category: Components
       display: none; } }
 
 .live-links {
-  display: none;
+  visibility: hidden;
   padding: 16px 0 0;
   background-color: #000000;
   text-align: center; }
   @media screen and (min-width: 768px) {
     .live-links {
+      visibility: visible;
       display: block;
       height: 100%;
       margin: 0;
@@ -5565,6 +5566,7 @@ category: Components
   overflow-y: scroll; }
 
 .live-player--open .live-links {
+  visibility: visible;
   display: block;
   height: auto !important;
   max-height: 48vh;
