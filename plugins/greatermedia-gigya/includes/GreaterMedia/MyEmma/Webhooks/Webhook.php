@@ -14,6 +14,10 @@ abstract class Webhook extends AjaxHandler {
 		return 'myemma_webhook_' . $this->get_event_name();
 	}
 
+	function is_public() {
+		return true;
+	}
+
 	function get_url() {
 		$ajax_url = admin_url( 'admin-ajax.php' );
 		$params   = array(
@@ -47,6 +51,8 @@ abstract class Webhook extends AjaxHandler {
 		if ( ! defined( 'PHPUNIT_RUNNER' ) ) {
 			$json   = file_get_contents( 'php://input' );
 			$params = json_decode( $json, true );
+
+			return $params;
 		} else {
 			return $this->params;
 		}
