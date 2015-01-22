@@ -5208,11 +5208,11 @@ category: Components
 .live-link__song--title {
   padding-top: 6px;
   font-size: 0.8125em;
-  font-weight: lighter;
+  font-weight: bold;
   color: #d0d2d3; }
 
 .live-link__type--audio:before {
-  content: "\e604"; }
+  content: "\e60c"; }
 
 .live-link__type--gallery:before {
   content: "\e621"; }
@@ -5227,7 +5227,7 @@ category: Components
   content: "\e608"; }
 
 .live-link__type--video:before {
-  content: "\e620"; }
+  content: "\e605"; }
 
 .live-link__title {
   display: block;
@@ -11884,6 +11884,17 @@ category: Components
 
 .live-link__title, .live-link__title a:link, .live-link__title a:visited {
   color: #58595B; }
+
+.live-link__song:before {
+  color: #6d6e70; }
+
+.live-link__song--artist {
+  color: #6d6e70; }
+
+.live-link__song--title {
+  color: #282827; }
+  .live-link__song--title a, .live-link__song--title a:visited {
+    color: #191919; }
 
 @media screen and (min-width: 768px) {
   .header__logo {

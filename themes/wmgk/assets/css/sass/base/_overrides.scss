@@ -76,6 +76,22 @@
 	color: $color-gray-medium;
 }
 
+.live-link__song:before {
+	color: $medium-dark-gray;
+}
+
+.live-link__song--artist {
+	color: $medium-dark-gray;
+}
+
+.live-link__song--title {
+	color: $dark-gray;
+
+	a, a:visited {
+		color: $darker-gray;
+	}
+}
+
 .header__logo {
 	@include bp(medium) {
 		top: -7px;
