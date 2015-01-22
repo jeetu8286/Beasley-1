@@ -1,0 +1,22 @@
+/* HEADER */
+
+.header__search--form {
+	display: none;
+}
+.header__search--open {
+	display: block;
+}
+
+.mobile-nav {
+	display: none;
+}
+
+
+/* GIGYA PROFILE PAGES */
+
+.profile-page__sidebar,
+.profile-page__content {
+	display: block;
+	width: 100%;
+	float: left;
+}
