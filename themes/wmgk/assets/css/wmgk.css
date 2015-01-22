@@ -1305,7 +1305,7 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
   width: 40px;
   height: 40px; }
 
-.overlay-mask {
+.menu-overlay-mask {
   visibility: hidden;
   background-color: rgba(0, 0, 0, 0.333);
   position: fixed;
@@ -1319,7 +1319,7 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
   -webkit-transition: visibility 0s linear, opacity 100ms ease-out;
   -moz-transition: visibility 0s linear, opacity 100ms ease-out;
   transition: visibility 0s linear, opacity 100ms ease-out; }
-  .overlay-mask.is-visible {
+  .menu-overlay-mask.is-visible {
     visibility: visible;
     opacity: 1;
     -webkit-transition: visibility 0s linear, opacity 100ms ease-out;
@@ -8761,7 +8761,7 @@ a.social-share-link {
   cursor: pointer; }
 
 .header__search--open {
-  z-index: 5100000; }
+  z-index: 6000001; }
   @media screen and (min-width: 768px) {
     .header__search--open {
       -webkit-transition: all 200ms ease-in-out;
@@ -8872,6 +8872,27 @@ a.social-share-link {
     color: #ffffff; }
   .header-search__search-all-btn:last-of-type {
     margin-right: 0; }
+
+.header-search-overlay-mask {
+  visibility: hidden;
+  background-color: rgba(0, 0, 0, 0.333);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 6000000;
+  /* IAB z-index standard for drop nav is 5000000 - 5999999 */
+  opacity: 0;
+  -webkit-transition: visibility 0s linear, opacity 100ms ease-out;
+  -moz-transition: visibility 0s linear, opacity 100ms ease-out;
+  transition: visibility 0s linear, opacity 100ms ease-out; }
+  .header-search-overlay-mask.is-visible {
+    visibility: visible;
+    opacity: 1;
+    -webkit-transition: visibility 0s linear, opacity 100ms ease-out;
+    -moz-transition: visibility 0s linear, opacity 100ms ease-out;
+    transition: visibility 0s linear, opacity 100ms ease-out; }
 
 .search__results--count {
   padding-bottom: 12px;

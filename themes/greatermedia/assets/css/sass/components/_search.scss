@@ -31,7 +31,7 @@
 }
 
 .header__search--open {
-  	z-index: 5100000; // Higher than .overlay-mask.
+  	z-index: 6000001; // Higher than .header-search-overlay-mask.
 	
 	@include bp(medium) {
 		@include transition(all 200ms ease-in-out);
@@ -128,6 +128,25 @@
 .header-search__search-all-btn {
 	@include btn($btn-bg, $color-text-white, $btn-bg, 0.5em, 1em, ms(-1));
 	text-transform: none;
+}
+
+.header-search-overlay-mask {
+	visibility: hidden;
+	background-color: rgba(0, 0, 0, .333);
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 6000000; /* IAB z-index standard for drop nav is 5000000 - 5999999 */
+	opacity: 0;
+	@include transition(visibility 0s linear, opacity 100ms ease-out);
+	
+	&.is-visible {
+		visibility: visible;
+		opacity: 1;
+		@include transition(visibility 0s linear, opacity 100ms ease-out);
+	}
 }
 
 
