@@ -3899,7 +3899,7 @@ Link posts contain a link to an external site. They can also optionally have a f
       margin-bottom: 0; }
       .entry2__thumbnail:last-child {
         margin-right: 0; } }
-  .entry2__thumbnail a {
+  .entry2__thumbnail a:not(.image__attribution--link) {
     position: absolute;
     width: 100%;
     left: 0;
