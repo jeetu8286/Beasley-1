@@ -137,7 +137,7 @@ class Plugin {
 		$handlers[] = new Ajax\ChangeGigyaSettingsAjaxHandler();
 		$handlers[] = new Ajax\HasParticipatedAjaxHandler();
 		$handlers[] = new Ajax\MemberQueryStatusAjaxHandler();
-		$handlers[] = new Ajax\EmmaMemberOptoutAjaxHandler();
+		//$handlers[] = new Ajax\EmmaMemberOptoutAjaxHandler();
 		$handlers[] = new Ajax\ChangeMemberQuerySegmentAjaxHandler();
 		$handlers[] = new Ajax\ResetPasswordAjaxHandler();
 
@@ -157,6 +157,11 @@ class Plugin {
 			$handlers[] = new Ajax\RegisterAccountAjaxHandler();
 			$handlers[] = new Ajax\UpdateAccountAjaxHandler();
 		}
+
+		// Webhooks
+		$handlers[] = new \GreaterMedia\MyEmma\Webhooks\MemberOptout();
+		$handlers[] = new \GreaterMedia\MyEmma\Webhooks\MessageOpen();
+		$handlers[] = new \GreaterMedia\MyEmma\Webhooks\MessageClick();
 
 		foreach ( $handlers as $handler ) {
 			$handler->register();
