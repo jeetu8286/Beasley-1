@@ -539,7 +539,7 @@ function get_gigya_verify_email_message() {
 		</div>
 
 
-	</div><!-- end screenset --!>
+	</div><!--end screenset -->
 
 	<main class="main" role="main">
 
@@ -547,7 +547,6 @@ function get_gigya_verify_email_message() {
 
 			<div class="profile-page__sidebar">
 
-				<!-- WIP - needs to mirror the JS -->
 				<h1 class="profile-header">
 					<span class="profile-header-text"></span>
 					<span class="profile-header-sep" style="display:none">/</span>
