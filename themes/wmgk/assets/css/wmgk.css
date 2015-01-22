@@ -5602,6 +5602,8 @@ category: Components
   width: 0;
   height: 0;
   color: #d22228; }
+  .live-link__song:hover:before, .live-link__type--audio:hover:before, .live-link__type--gallery:hover:before, .live-link__type--image:hover:before, .live-link__type--link:hover:before, .live-link__type--standard:hover:before, .live-link__type--video:hover:before {
+    color: #000000; }
 
 .live-link__type--audio, .live-link__type--gallery, .live-link__type--image, .live-link__type--link, .live-link__type--standard, .live-link__type--video {
   display: block;
@@ -5615,6 +5617,9 @@ category: Components
   content: "\e604";
   color: #d0d2d3; }
 
+.live-link__song:hover:before {
+  color: #d22228; }
+
 .live-link__song--artist {
   padding-top: 6px;
   font-size: 0.75em;
@@ -5625,6 +5630,8 @@ category: Components
   font-size: 0.8125em;
   font-weight: bold;
   color: #d0d2d3; }
+  .live-link__song--title a:hover, .live-link__song--title a:focus, .live-link__song--title a:active {
+    color: #d22228; }
 
 .live-link__type--audio:before {
   content: "\e60c"; }
@@ -12438,6 +12445,14 @@ category: Components
   color: #282827; }
   .live-link__song--title a, .live-link__song--title a:visited {
     color: #191919; }
+  .live-link__song--title a:hover, .live-link__song--title a:focus, .live-link__song--title a:active {
+    color: #d22228; }
+
+.live-link__title a:link, .live-link__title a:visited {
+  color: #58595B; }
+
+.live-link__title a:hover, .live-link__title a:focus, .live-link__title a:active {
+  color: #d22228; }
 
 @media screen and (min-width: 768px) {
   .header__logo {
