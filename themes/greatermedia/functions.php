@@ -311,13 +311,18 @@ function get_post_with_keyword( $query_arg ) {
  */
 function gm_get_post_thumbnail_url( $size = 'thumbnail', $post_id = null, $use_fallback = false ) {
 	$thumbnail_id = get_post_thumbnail_id( $post_id );
-	if ( ! $thumbnail_id && $use_fallback ) {
-		$thumbnail_id = greatermedia_get_fallback_thumbnail_id( $post_id );
+	if ( $thumbnail_id && ( $url = gm_get_thumbnail_url( $thumbnail_id, $size ) ) ) {
+		return $url;
 	}
 
-	if ( $thumbnail_id ) {
-		return gm_get_thumbnail_url( $thumbnail_id, $size );
+	if ( $use_fallback ) {
+		$thumbnail_id = greatermedia_get_fallback_thumbnail_id( $post_id );
+		if ( $thumbnail_id ) {
+			return gm_get_thumbnail_url( $thumbnail_id, $size );
+		}
 	}
+
+	return null;
 }
 
 /**
@@ -341,7 +346,9 @@ function gm_get_thumbnail_url( $attachment_id, $size ) {
 	$src = wp_get_attachment_image_src( $attachment_id, $size );
 	if ( $src ) {
 		return $src[0]; 
-	}	
+	}
+
+	return null;
 }
 
 /**
@@ -518,10 +525,10 @@ function greatermedia_load_more_button( $args = array() ) {
 
 	$default_page_link = sprintf( $args['page_link_template'], $args['next_page'] );
 	?>
-	<div class='posts-pagination'>
+	<div class="posts-pagination">
 		<a
 			class="button posts-pagination--load-more is-loaded"
-			href='<?php echo esc_url( $default_page_link ); ?>'
+			href="<?php echo esc_url( $default_page_link ); ?>"
 			data-page-link-template="<?php echo esc_url( $args['page_link_template'] ); ?>"
 			data-page="<?php echo esc_attr( $args['next_page'] ); ?>"
 			data-partial-slug='<?php echo esc_attr( $args['partial_slug'] ); ?>'
@@ -649,3 +656,70 @@ add_action( 'parse_query', function ( WP_Query $query ) {
 		$query->query_vars['posts_per_page'] = 30;
 	}
 } );
+
+/**
+ * Create a nicely formatted and more specific title element text for output
+ * in head of document, based on current view.
+ *
+ * @global int $paged WordPress archive pagination page count.
+ * @global int $page  WordPress paginated post page count.
+ * @param string $title Default title text for current view.
+ * @param string $sep Optional separator.
+ * @return string The filtered title.
+ */
+function twentyfourteen_wp_title( $title, $sep ) {
+	global $paged, $page;
+
+	if ( is_feed() ) {
+		return $title;
+	}
+
+	// Add the site name.
+	$title .= get_bloginfo( 'name', 'display' );
+
+	// Add the site description for the home/front page.
+	$site_description = get_bloginfo( 'description', 'display' );
+	if ( $site_description && ( is_home() || is_front_page() ) ) {
+		$title = "$title $sep $site_description";
+	}
+
+	// Add a page number if necessary.
+	if ( ( $paged >= 2 || $page >= 2 ) && ! is_404() ) {
+		$title = "$title $sep Page " . max( $paged, $page );
+	}
+
+	return $title;
+}
+add_filter( 'wp_title', 'twentyfourteen_wp_title', 10, 2 );
+
+/**
+ * Updates tribe events archive title.
+ *
+ * @global WP_Query $wp_query The main query.
+ * @param string $title The initial title.
+ * @return string Updated title.
+ */
+function greatermedia_events_title( $title ) {
+	global $wp_query;
+
+	// If there's a date selected in the tribe bar, show the date range of the currently showing events
+	if ( ! tribe_is_month() && isset( $_REQUEST['tribe-bar-date'] ) && $wp_query->have_posts() ) {
+		if ( $wp_query->get( 'paged' ) > 1 ) {
+			// if we're on page 1, show the selected tribe-bar-date as the first date in the range
+			$first_event_date = tribe_get_start_date( $wp_query->posts[0], false );
+		} else {
+			//otherwise show the start date of the first event in the results
+			$first_event_date =  tribe_event_format_date( $_REQUEST['tribe-bar-date'], false );
+		}
+
+		$title = 'Events from ' . $first_event_date;
+	}
+
+	// day view title
+	if ( tribe_is_day() ) {
+		$title = 'Events for ' . date_i18n( tribe_get_date_format( true ), strtotime( $wp_query->get( 'start_date' ) ) );
+	}
+
+	return $title;
+}
+add_filter( 'tribe_get_events_title', 'greatermedia_events_title' );
