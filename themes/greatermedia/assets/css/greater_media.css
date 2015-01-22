@@ -5435,7 +5435,7 @@ category: Components - Ads
 .closure {
   padding: 10px;
   padding-left: 0;
-  border-bottom: 0.14em solid rgba(128, 128, 128, 0.2); }
+  border-bottom: 1px solid rgba(128, 128, 128, 0.2); }
 
 .closure p {
   margin: 0;
@@ -5483,7 +5483,8 @@ category: Components - Ads
   padding: 10px;
   padding-left: 0;
   text-transform: uppercase;
-  font-weight: 900; }
+  font-weight: bold;
+  font-family: "Droid Sans", sans-serif; }
 
 .closures_header:after {
   content: "";
