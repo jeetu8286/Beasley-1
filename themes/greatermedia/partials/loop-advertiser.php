@@ -4,10 +4,10 @@
 
 ?>
 
-<article class="advertiser cf">
+<article class="sponsor cf">
 	<?php if ( has_post_thumbnail() ) { ?>
 
-		<div class="advertiser__logo">
+		<div class="sponsor__logo">
 
 			<a href="<?php echo esc_url( $advertiser_link ); ?>"><?php the_post_thumbnail( 'gmr-advertiser' ); ?></a>
 
@@ -15,7 +15,7 @@
 
 	<?php } else { ?>
 
-		<div class="advertiser__name">
+		<div class="sponsor__name">
 
 			<a href="<?php echo esc_url( $advertiser_link ); ?>"><?php the_title(); ?></a>
 

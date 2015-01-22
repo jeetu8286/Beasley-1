@@ -16,12 +16,9 @@ get_header(); ?>
 
 			<section class="content">
 
-				<h2 class="content__heading">
-					<?php $object = get_queried_object(); ?>
-					<?php echo ! empty( $object->labels->name ) ? esc_html( strtolower( $object->labels->name ) ) : ''; ?>
-				</h2>
+				<h2 class="sponsors__heading"><?php _e( 'Advertisers', 'greatermedia' ); ?></h2>
 
-				<div class="advertisers">
+				<div class="sponsors">
 
 					<?php
 
@@ -32,12 +29,22 @@ get_header(); ?>
 					);
 
 					$advertiser_query = new WP_Query( $advertiser_args );
+					$i = 1;
 
+					echo '<div class="sponsors__row">';
 					if ( $advertiser_query->have_posts() ) : while ( $advertiser_query->have_posts() ) : $advertiser_query->the_post();
 
 						?>
 
-						<?php get_template_part( 'partials/loop', 'advertiser' ); ?>
+						<?php get_template_part( 'partials/loop', 'advertiser' );
+
+						if ( $i % 2 == 0 ) {
+							echo '</div><div class="sponsors__row">';
+						}
+
+						$i++;
+
+						?>
 
 					<?php endwhile; ?>
 
@@ -60,6 +67,7 @@ get_header(); ?>
 						</article>
 
 					<?php endif; ?>
+					</div>
 
 				</div>
 

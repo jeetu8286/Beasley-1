@@ -1572,7 +1572,7 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
   .format-fi .menu__featured-post--mobile + li {
     clear: left; }
 
-.content__heading {
+.content__heading, .sponsors__heading {
   margin-top: 0;
   margin-bottom: 1.5em;
   font-family: "Open Sans", sans-serif;
@@ -1581,10 +1581,10 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
   text-align: center;
   color: #929497; }
   @media screen and (min-width: 480px) {
-    .content__heading {
+    .content__heading, .sponsors__heading {
       text-align: left; } }
   @media screen and (min-width: 768px) {
-    .content__heading {
+    .content__heading, .sponsors__heading {
       font-size: 1.26563em; } }
 
 .entry__thumbnail {
@@ -5903,7 +5903,7 @@ category: Components - Ads
 .closure {
   padding: 10px;
   padding-left: 0;
-  border-bottom: 0.14em solid rgba(128, 128, 128, 0.2); }
+  border-bottom: 1px solid rgba(128, 128, 128, 0.2); }
 
 .closure p {
   margin: 0;
@@ -5951,7 +5951,8 @@ category: Components - Ads
   padding: 10px;
   padding-left: 0;
   text-transform: uppercase;
-  font-weight: 900; }
+  font-weight: bold;
+  font-family: "Droid Sans", sans-serif; }
 
 .closures_header:after {
   content: "";
@@ -12274,40 +12275,56 @@ category: Components
     font-size: 60px;
     color: #bbb; }
 
-.advertisers {
+.sponsors {
   width: 100%;
   overflow: auto;
   border: 1px solid #d0d2d3;
-  background-color: #d0d2d3; }
+  border-bottom: none; }
 
-.advertiser {
+.sponsors__heading {
+  font-family: "Droid Sans", sans-serif;
+  font-size: 1.80203em;
+  font-weight: bold;
+  color: #404041; }
+
+.sponsors__row {
+  width: 100%;
+  overflow: auto;
+  background-color: #d0d2d3; }
+  @media screen and (min-width: 768px) {
+    .sponsors__row {
+      border-bottom: 1px solid #d0d2d3; } }
+
+.sponsor {
   position: relative;
   display: block;
   float: left;
   width: 100%;
   padding: 2em;
-  border-bottom: 1px solid #d0d2d3;
-  background-color: white; }
+  background-color: white;
+  border-bottom: 1px solid #d0d2d3; }
   @media screen and (min-width: 768px) {
-    .advertiser {
+    .sponsor {
       width: 50%;
       height: 200px;
+      border-bottom: none;
       border-right: 1px solid #d0d2d3; } }
   @media screen and (min-width: 1024px) {
-    .advertiser {
+    .sponsor {
       height: 270px; } }
-  .advertiser:nth-of-type(2n+2) {
+  .sponsor:nth-of-type(2n+2) {
     border-right: none; }
-  .advertiser:last-of-type {
-    border-bottom: none; }
+  .sponsor:nth-of-type(-n+2) {
+    border-top: none; }
 
-.advertiser__logo,
-.advertiser__name {
+.sponsor__logo,
+.sponsor__name {
   margin: 0 auto;
-  text-align: center; }
+  text-align: center;
+  font-family: "Droid Sans", sans-serif; }
   @media screen and (min-width: 768px) {
-    .advertiser__logo,
-    .advertiser__name {
+    .sponsor__logo,
+    .sponsor__name {
       position: absolute;
       top: 50%;
       left: 50%;
@@ -12316,22 +12333,22 @@ category: Components
       -ms-transform: translate(-50%, -50%);
       -o-transform: translate(-50%, -50%);
       transform: translate(-50%, -50%); }
-      .advertiser__logo a,
-      .advertiser__name a {
+      .sponsor__logo a,
+      .sponsor__name a {
         display: block; } }
 
-.advertiser__logo img {
+.sponsor__logo img {
   margin: 0 auto; }
 
-.advertiser__name a,
-.advertiser__name a:visited {
+.sponsor__name a,
+.sponsor__name a:visited {
   font-size: 1.80203em;
   font-weight: bold;
   color: #404041; }
 
-.advertiser__name a:hover,
-.advertiser__name a:active,
-.advertiser__name a:focus {
+.sponsor__name a:hover,
+.sponsor__name a:active,
+.sponsor__name a:focus {
   color: #aa1c20; }
 
 /**
