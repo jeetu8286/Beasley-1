@@ -45,6 +45,9 @@
 </footer>
 </div> <!-- / site-wrap -->
 <div class="overlay-mask"></div>
+<div class="busy-mask">
+	<i class="fa fa-spinner fa-spin"></i>
+</div>
 <?php wp_footer(); ?>
 </body>
 </html>

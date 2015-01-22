@@ -35,11 +35,6 @@
 
 		current_url = location.href;
 	});
-	
-	/**
-	 * Add the busy mask element to the .main element.
-	 */
-	$( '<div class="busy-mask"></div>' ).appendTo( $( '.main' ) ); 
 
 	/**
 	 * Add "is-busy" class to the body when a Pjax request starts.
