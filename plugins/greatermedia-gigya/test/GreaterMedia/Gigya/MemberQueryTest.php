@@ -636,4 +636,33 @@ class MemberQueryTest extends \WP_UnitTestCase {
 		$this->assertEquals( $constraints, $member_query->get_constraints() );
 	}
 
+	/* inferred status constraint */
+	function test_it_can_build_clause_for_true_status_constraint() {
+		$constraint = array(
+			'type'        => 'data:comment_status',
+			'operator'    => 'equals',
+			'conjunction' => 'and',
+			'valueType'   => 'boolean',
+			'value'       => true,
+		);
+
+		$actual = $this->query->clause_for_constraint( $constraint );
+		$expected = 'data.comment_count > 0';
+		$this->assertEquals( $expected, $actual );
+	}
+
+	function test_it_can_build_clause_for_false_status_constraint() {
+		$constraint = array(
+			'type'        => 'data:comment_status',
+			'operator'    => 'equals',
+			'conjunction' => 'and',
+			'valueType'   => 'boolean',
+			'value'       => false,
+		);
+
+		$actual = $this->query->clause_for_constraint( $constraint );
+		$expected = 'data.comment_count = 0 or data.comment_count is null';
+		$this->assertEquals( $expected, $actual );
+	}
+
 }
