@@ -664,6 +664,9 @@ function add_ie_stylesheet() {
 	<!--[if lt IE 10]>
 	<link rel="stylesheet" href="<?php bloginfo('template_directory'); ?>/assets/css/ie9.css"/>
 	<![endif]-->
+	<!--[if lt IE 9]>
+	<link rel="stylesheet" href="<?php bloginfo('template_directory'); ?>/assets/css/ie8.css"/>
+	<![endif]-->
 	<?php
 }
 add_action( 'wp_head', 'add_ie_stylesheet' );
