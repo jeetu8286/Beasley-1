@@ -27,9 +27,9 @@ class CronTasks {
 		$active_subscriptions = BlogData::GetActiveSubscriptions();
 		foreach ( $active_subscriptions as $active_subscription ) {
 			BlogData::run( $active_subscription->ID );
+			update_post_meta( $active_subscription->ID, 'syndication_last_performed', current_time( 'timestamp', 1 ) );
 		}
-
-		update_option( 'syndication_last_performed', current_time( 'timestamp', 1 ) );
+		//update_option( 'syndication_last_performed', current_time( 'timestamp', 1 ) );
 	}
 
 	/**
