@@ -655,14 +655,13 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 
 		$document.on('submit', '#contest-form form', function() {
 			var form = $(this),
-				iframe;
+				iframe, iframe_onload;
 
 			if (!form.parsley || form.parsley().isValid()) {
 				form.find('input, textarea, select, button').attr('readonly', 'readonly');
 				form.find('i.fa').show();
 
-				iframe = document.getElementById('theiframe');
-				iframe.onload = function() {
+				iframe_onload = function() {
 					var iframe_document = iframe.contentDocument || iframe.contentWindow.document,
 						iframe_body = iframe_document.getElementsByTagName('body')[0],
 						scroll_to = container.offset().top - $('#wpadminbar').height() - 10;
@@ -671,6 +670,13 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 					$('html, body').animate({scrollTop: scroll_to}, 200);
 				};
 
+				iframe = document.getElementById('theiframe');
+				if (iframe.addEventListener) {
+					iframe.addEventListener('load', iframe_onload, false);
+				} else if (iframe.attachEvent) {
+					iframe.attachEvent('onload', iframe_onload);
+				}
+				
 				return true;
 			}
 
