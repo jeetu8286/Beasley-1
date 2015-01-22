@@ -15,7 +15,7 @@ abstract class Webhook extends AjaxHandler {
 	}
 
 	function get_url() {
-		$ajax_url = admin_url( 'admin_ajax.php' );
+		$ajax_url = admin_url( 'admin-ajax.php' );
 		$params   = array(
 			'action'     => $this->get_action(),
 			'auth_token' => $this->get_required_auth_token()
