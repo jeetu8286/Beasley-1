@@ -1174,11 +1174,7 @@ category: Components
 	@include bp(medium) {
 		display: block;
 		height: 100%;
-		padding-right: 1em;
-		padding-left: 1em;
 		margin: 0;
-		overflow: hidden;
-		overflow-y: scroll;
 		border-top: 1px solid $secondary-border;
 	}
 }

@@ -5552,11 +5552,7 @@ category: Components
     .live-links {
       display: block;
       height: 100%;
-      padding-right: 1em;
-      padding-left: 1em;
       margin: 0;
-      overflow: hidden;
-      overflow-y: scroll;
       border-top: 1px solid #282827; } }
 
 #popup-player-livestream .live-links {
@@ -8366,7 +8362,11 @@ category: Components - Shows
   margin: 0 -1px; }
 
 .widget--live-player {
-  margin: 0 1em 1em; }
+  padding: 0 1em;
+  margin: 0 0 1em;
+  height: 100% !important;
+  overflow: hidden;
+  overflow-y: scroll; }
   .live-player--open .widget--live-player {
     margin-bottom: 58px; }
 
