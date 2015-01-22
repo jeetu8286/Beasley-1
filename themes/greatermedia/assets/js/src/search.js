@@ -26,7 +26,7 @@
 		// before the transition started. 
 		$searchContainer
 			.addClass('header__search--open')
-			.on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', function () {
+			.one('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', function () {
 				$searchInput.focus().select();
 			} );
 	}
