@@ -1555,7 +1555,7 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
     .format-fi .menu__featured-post--mobile a:hover p {
       color: #aa1c20; }
 
-.content__heading {
+.content__heading, .sponsors__heading {
   margin-top: 0;
   margin-bottom: 1.5em;
   font-family: "Open Sans", sans-serif;
@@ -1564,10 +1564,10 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
   text-align: center;
   color: #929497; }
   @media screen and (min-width: 480px) {
-    .content__heading {
+    .content__heading, .sponsors__heading {
       text-align: left; } }
   @media screen and (min-width: 768px) {
-    .content__heading {
+    .content__heading, .sponsors__heading {
       font-size: 1.26563em; } }
 
 .entry__thumbnail {
@@ -11818,6 +11818,80 @@ category: Components
     margin-bottom: 6px;
     font-size: 1em;
     font-weight: bold; }
+
+.sponsors {
+  width: 100%;
+  overflow: auto;
+  border: 1px solid #d0d2d3;
+  border-bottom: none; }
+
+.sponsors__heading {
+  font-family: "Droid Sans", sans-serif;
+  font-size: 1.80203em;
+  font-weight: bold;
+  color: #404041; }
+
+.sponsors__row {
+  width: 100%;
+  overflow: auto;
+  background-color: #f2f2f2; }
+  @media screen and (min-width: 768px) {
+    .sponsors__row {
+      border-bottom: 1px solid #d0d2d3; } }
+
+.sponsor {
+  position: relative;
+  display: block;
+  float: left;
+  width: 100%;
+  padding: 2em;
+  background-color: white;
+  border-bottom: 1px solid #d0d2d3; }
+  @media screen and (min-width: 768px) {
+    .sponsor {
+      width: 50%;
+      height: 200px;
+      border-bottom: none;
+      border-right: 1px solid #d0d2d3; } }
+  @media screen and (min-width: 1024px) {
+    .sponsor {
+      height: 270px; } }
+  .sponsor:nth-of-type(2n+2) {
+    border-right: none; }
+
+.sponsor__logo,
+.sponsor__name {
+  margin: 0 auto;
+  text-align: center;
+  font-family: "Droid Sans", sans-serif; }
+  @media screen and (min-width: 768px) {
+    .sponsor__logo,
+    .sponsor__name {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      -webkit-transform: translate(-50%, -50%);
+      -moz-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+      -o-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%); }
+      .sponsor__logo a,
+      .sponsor__name a {
+        display: block; } }
+
+.sponsor__logo img {
+  margin: 0 auto; }
+
+.sponsor__name a,
+.sponsor__name a:visited {
+  font-size: 1.80203em;
+  font-weight: bold;
+  color: #404041; }
+
+.sponsor__name a:hover,
+.sponsor__name a:active,
+.sponsor__name a:focus {
+  color: #aa1c20; }
 
 /**
  * Single Page Styles

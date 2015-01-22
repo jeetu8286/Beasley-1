@@ -68,6 +68,7 @@ function greatermedia_setup() {
 	add_image_size( 'gmr-show-featured-primary',   		708,    389,    true    ); // thumbnails for secondary featured posts on front page
 	add_image_size( 'gmr-show-featured-secondary',   	322,    141,    true    ); // thumbnails for secondary featured posts on front page
 	add_image_size( 'gm-related-post',   				300,    200,    true    );
+	add_image_size( 'gmr-advertiser',                   400,    9999,   false   );
 
 	/* Images for the Gallery Grid ---- DO NOT DELETE ---- */
 	add_image_size( 'gmr-gallery-grid-featured',        1200,   800,    true    );
