@@ -86,47 +86,24 @@
 		gridContainer = $('.contest__submissions--list');
 
 		$document.on('submit', '#contest-form form', function() {
-			var form = $(this);
+			var form = $(this),
+				iframe;
 
 			if (!form.parsley || form.parsley().isValid()) {
-				var form_data = new FormData();
-				
-				form.find('input').each(function() {
-					var input = this;
-
-					if ('file' === input.type) {
-						$(this.files).each(function(key, value) {
-							form_data.append(input.name, value);
-						});
-					} else if ('radio' === input.type || 'checkbox' === input.type) {
-						if (input.checked) {
-							form_data.append(input.name, input.value);
-						}
-					} else {
-						form_data.append(input.name, input.value);
-					}
-				});
-
-				form.find('textarea, select').each(function() {
-					form_data.append(this.name, this.value);
-				});
-
-				form.find('input, textarea, select, button').attr('disabled', 'disabled');
+				form.find('input, textarea, select, button').attr('readonly', 'readonly');
 				form.find('i.fa').show();
 
-				$.ajax({
-					url: container.data('submit'),
-					type: 'post',
-					data: form_data,
-					processData: false, // Don't process the files
-					contentType: false, // Set content type to false as jQuery will tell the server its a query string request
-					success: function(data) {
-						var scroll_to = container.offset().top - $('#wpadminbar').height() - 10;
+				iframe = document.getElementById('theiframe');
+				iframe.onload = function() {
+					var iframe_document = iframe.contentDocument || iframe.contentWindow.document,
+						iframe_body = iframe_document.getElementsByTagName('body')[0],
+						scroll_to = container.offset().top - $('#wpadminbar').height() - 10;
 
-						container.html(data);
-						$('html, body').animate({scrollTop: scroll_to}, 200);
-					}
-				});
+					container.html(iframe_body.innerHTML);
+					$('html, body').animate({scrollTop: scroll_to}, 200);
+				};
+
+				return true;
 			}
 
 			return false;
