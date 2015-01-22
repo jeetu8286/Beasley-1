@@ -23,12 +23,15 @@
 		// Now, show the search form, but don't set focus until the transition
 		// animation is complete. This is because Webkit browsers scroll to 
 		// the element when it gets focus, and they scroll to it where it was
-		// before the transition started. 
-		$searchContainer
-			.addClass('header__search--open')
-			.one('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', function () {
+		// before the transition started.		
+		if ( '0s' !== $searchContainer.css('transitionDuration') ) {
+			$searchContainer.one('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', function () {
 				$searchInput.focus().select();
 			} );
+		} else {
+			$searchInput.focus().select();			
+		}
+		$searchContainer.addClass('header__search--open'); 
 	}
 	
 	/**
@@ -56,11 +59,7 @@
 	/**
 	 * Open search if user clicks on it.
 	 */
-	$searchInput.add( $searchForm.find( 'button[type=submit]' ) ).click( function ( e ) {
-		if ( ! $searchContainer.hasClass( '.header__search--open' ) ) {
-			showSearch( e );			
-		}
-	} ); 
+	$searchInput.add( $searchForm.find( 'button[type=submit]' ) ).click( showSearch );
 	
 	function checkSearchField () {
 		var $search_body = $searchContainer.find( '.header-search-body' );
