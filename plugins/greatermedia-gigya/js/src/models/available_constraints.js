@@ -145,6 +145,12 @@ var AVAILABLE_CONSTRAINTS = [
 		entryTypeID: -1,
 		entryFieldID: -1
 	},
+	{
+		type: 'data:contest_list',
+		valueType: 'enum',
+		value: ''
+	},
+
 
 	{
 		type: 'data:comment_count',
@@ -180,6 +186,11 @@ var AVAILABLE_CONSTRAINTS = [
 	},
 
 	{
+		type: 'data:member_query_message_open_list',
+		valueType: 'list',
+		value: '',
+	},
+	{
 		type: 'data:member_query_message_open_status',
 		valueType: 'boolean',
 		value: true,
@@ -188,6 +199,12 @@ var AVAILABLE_CONSTRAINTS = [
 		type: 'data:member_query_message_open_count',
 		valueType: 'integer',
 		value: 1,
+	},
+
+	{
+		type: 'data:member_query_message_click_list',
+		valueType: 'list',
+		value: '',
 	},
 	{
 		type: 'data:member_query_message_click_status',
@@ -201,6 +218,11 @@ var AVAILABLE_CONSTRAINTS = [
 	},
 
 	{
+		type: 'data:static_group_message_open_list',
+		valueType: 'list',
+		value: true,
+	},
+	{
 		type: 'data:static_group_message_open_status',
 		valueType: 'boolean',
 		value: true,
@@ -209,6 +231,12 @@ var AVAILABLE_CONSTRAINTS = [
 		type: 'data:static_group_message_open_count',
 		valueType: 'integer',
 		value: 1,
+	},
+
+	{
+		type: 'data:static_group_message_click_list',
+		valueType: 'boolean',
+		value: true,
 	},
 	{
 		type: 'data:static_group_message_click_status',
@@ -601,6 +629,12 @@ var AVAILABLE_CONSTRAINTS_META = [
 		type: 'record:contest',
 		title: 'Contest Entry'
 	},
+	{
+		type: 'data:contest_list',
+		title: 'Contest Participation',
+		choices: [
+		]
+	},
 
 	{
 		type: 'data:comment_count',
@@ -675,8 +709,14 @@ var AVAILABLE_CONSTRAINTS_META = [
 	},
 
 	{
+		type: 'data:member_query_message_open_list',
+		title: 'Member Query Email Open',
+		choices: []
+	},
+	{
 		type: 'data:member_query_message_open_count',
-		title: 'Member Query Email Open Count'
+		title: 'Member Query Email Open Count',
+		choices: []
 	},
 	{
 		type: 'data:member_query_message_open_status',
@@ -685,6 +725,12 @@ var AVAILABLE_CONSTRAINTS_META = [
 			{ label: 'Has Opened', value: true },
 			{ label: 'Has Not Opened', value: false }
 		]
+	},
+
+	{
+		type: 'data:member_query_message_click_list',
+		title: 'Member Query Email Click',
+		choices: []
 	},
 	{
 		type: 'data:member_query_message_click_count',
@@ -700,6 +746,11 @@ var AVAILABLE_CONSTRAINTS_META = [
 	},
 
 	{
+		type: 'data:static_group_message_open_list',
+		title: 'Static Group Email Open',
+		choices: []
+	},
+	{
 		type: 'data:static_group_message_open_count',
 		title: 'Static Group Email Open Count'
 	},
@@ -710,6 +761,12 @@ var AVAILABLE_CONSTRAINTS_META = [
 			{ label: 'Has Opened', value: true },
 			{ label: 'Has Not Opened', value: false }
 		]
+	},
+
+	{
+		type: 'data:static_group_message_click_list',
+		title: 'Static Group Email Click',
+		choices: []
 	},
 	{
 		type: 'data:static_group_message_click_count',

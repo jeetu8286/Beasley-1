@@ -665,4 +665,19 @@ class MemberQueryTest extends \WP_UnitTestCase {
 		$this->assertEquals( $expected, $actual );
 	}
 
+	/* enum constraint */
+	function test_it_can_build_clause_for_list_constraint() {
+		$constraint = array(
+			'type'        => 'data:contest_list',
+			'operator'    => 'contains',
+			'conjunction' => 'and',
+			'valueType'   => 'enum',
+			'value'       => '123',
+		);
+
+		$actual   = $this->query->clause_for_constraint( $constraint );
+		$expected = "data.contest_list contains '123'";
+		$this->assertEquals( $expected, $actual );
+	}
+
 }
