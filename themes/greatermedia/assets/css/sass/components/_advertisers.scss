@@ -1,22 +1,41 @@
-.advertisers {
+.sponsors {
 	@include fill-parent;
 	overflow: auto;
 	border: 1px solid $primary-border;
-	background-color: $color-gray-light;
+	border-bottom: none;
 }
 
-.advertiser {
+.sponsors__heading {
+	@extend .content__heading;
+	font-family: $droid-sans;
+	font-size: ms(5);
+	font-weight: bold;
+	color: $primary-text;
+}
+
+.sponsors__row {
+	@include fill-parent;
+	overflow: auto;
+	background-color: $color-gray-light;
+
+	@include bp(medium) {
+		border-bottom: 1px solid $primary-border;
+	}
+}
+
+.sponsor {
 	position: relative;
 	display: block;
 	float: left;
 	width: 100%;
 	padding: 2em;
-	border-bottom: 1px solid $primary-border;
 	background-color: white;
+	border-bottom: 1px solid $primary-border;
 
 	@include bp(medium) {
 		width: 50%;
 		height: 200px;
+		border-bottom: none;
 		border-right: 1px solid $primary-border;
 	}
 
@@ -28,15 +47,16 @@
 		border-right: none;
 	}
 
-	&:last-of-type {
-		border-bottom: none;
+	&:nth-of-type(-n+2) {
+		border-top: none;
 	}
 }
 
-.advertiser__logo,
-.advertiser__name {
+.sponsor__logo,
+.sponsor__name {
 	margin: 0 auto;
 	text-align: center;
+	font-family: $droid-sans;
 
 	@include bp(medium) {
 		position: absolute;
@@ -50,19 +70,19 @@
 	}
 }
 
-.advertiser__logo img {
+.sponsor__logo img {
 	margin: 0 auto;
 }
 
-.advertiser__name a,
-.advertiser__name a:visited {
+.sponsor__name a,
+.sponsor__name a:visited {
 	font-size: ms(5);
 	font-weight: bold;
 	color: $primary-text;
 }
 
-.advertiser__name a:hover,
-.advertiser__name a:active,
-.advertiser__name a:focus {
+.sponsor__name a:hover,
+.sponsor__name a:active,
+.sponsor__name a:focus {
 	color: $primary-link-hover;
 }

@@ -1582,7 +1582,7 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
   .format-fi .menu__featured-post--mobile + li {
     clear: left; }
 
-.content__heading {
+.content__heading, .sponsors__heading {
   margin-top: 0;
   margin-bottom: 1.5em;
   font-family: "Open Sans", sans-serif;
@@ -1591,10 +1591,10 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
   text-align: center;
   color: #929497; }
   @media screen and (min-width: 480px) {
-    .content__heading {
+    .content__heading, .sponsors__heading {
       text-align: left; } }
   @media screen and (min-width: 768px) {
-    .content__heading {
+    .content__heading, .sponsors__heading {
       font-size: 1.26563em; } }
 
 .entry__thumbnail {
@@ -1785,7 +1785,7 @@ Curated posts for Featured Articles
 					<h2 class="featured__article--title">Minshara</h2>
 				</div>
 				<div class="featured__article--excerpt">
-					MinΓÇóshaΓÇóra (min SH├ñ r╔Ö) 1. adj. the classification for a planet capable of supporting humanoid life; 2. n. electronic pop rock band from Harrisburg / Philadelphia, Pennsylvania From The Viper Room in LA to Webster Hall in NYC, Minshara has been spreading infectious pop melodies, dance grooves, and rock
+					Min•sha•ra (min SHä rə) 1. adj. the classification for a planet capable of supporting humanoid life; 2. n. electronic pop rock band from Harrisburg / Philadelphia, Pennsylvania From The Viper Room in LA to Webster Hall in NYC, Minshara has been spreading infectious pop melodies, dance grooves, and rock
 				</div>
 			</div>
 		</div>
@@ -2308,7 +2308,7 @@ Community Highlights and Events
 						</div>
 
 						<div class="highlights__event--meta">
-							<h3 class="highlights__event--title">Preston & SteveΓÇÖs Camp Out For Hunger 2014</h3>
+							<h3 class="highlights__event--title">Preston & Steve’s Camp Out For Hunger 2014</h3>
 							<time datetime="" class="highlights__event--date">Dec 1 - Dec 5</time>
 						</div>
 
@@ -3081,7 +3081,7 @@ Video posts display a video and minimal text. They can also optionally have a fe
 <article id="post-581" class="post-581 post type-post status-publish format-video has-post-thumbnail hentry category-uncategorized cf" role="article" itemscope="" itemtype="http://schema.org/BlogPosting">
 	<section class="entry--video__meta" itemprop="articleBody">
 		<time datetime="2014-11-05T00:13:14+00:00" class="entry__date">5 November</time>
-		<h2 class="entry__title"><a href="">Gladys Knight &amp; The Pips ΓÇ£Midnight Train To GeorgiaΓÇ¥</a></h2>
+		<h2 class="entry__title"><a href="">Gladys Knight &amp; The Pips “Midnight Train To Georgia”</a></h2>
 	</section>
 
 	<section class="entry--video__thumbnail">
@@ -3110,7 +3110,7 @@ Standard posts are mostly text based but can include images. They can also optio
 
 	<section class="entry--standard__meta">
 		<time datetime="2014-11-03T22:34:27+00:00" class="entry__date">3 November</time>
-		<h2 class="entry__title" itemprop="headline"><a href="http://wmmr.greatermedia.10uplabs.com/hey-its-a-blog-post/">Hey itΓÇÖs a blog post!</a></h2>
+		<h2 class="entry__title" itemprop="headline"><a href="http://wmmr.greatermedia.10uplabs.com/hey-its-a-blog-post/">Hey it’s a blog post!</a></h2>
 	</section>
 
 	<footer class="entry__footer">
@@ -3132,7 +3132,7 @@ Link posts contain a link to an external site. They can also optionally have a f
 <article id="post-886" class="post-886 post type-post status-publish format-link has-post-thumbnail hentry category-uncategorized cf" role="article" itemscope="" itemtype="http://schema.org/BlogPosting">
 	<section class="entry--link__meta" itemprop="articleBody">
 		<time datetime="2014-11-10T04:07:56+00:00" class="entry__date">10 November</time>
-		<h2 class="entry__title"><a href="">Ontario Highway 401 ΓÇô Wikipedia, the free encyclopedia</a></h2>
+		<h2 class="entry__title"><a href="">Ontario Highway 401 – Wikipedia, the free encyclopedia</a></h2>
 	</section>
 
 	<footer class="entry__footer">
@@ -4474,7 +4474,7 @@ category: Components
 
 	<div id="live-links" class="live-links">
 		<h3 class="widget--live-player__title">Live Links</h3>
-		<div id="gmr_shows_widget-2" class="widget--live-player widget_gmr_shows_widget"><ul><li class="live-link__type--standard"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/scroll-test/">GMR-278 test</a></div></li><li class="live-link__type--standard"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/contest/daves-contest/">DaveΓÇÖs Contest</a></div></li><li class="live-link__song"><div class="live-link__song--artist">Soundgarden</div><div class="live-link__song--title">Black Hole Sun</div></li><li class="live-link__song"><div class="live-link__song--artist">The Village People</div><div class="live-link__song--title">YMCA</div></li><li class="live-link__song"><div class="live-link__song--artist">Taylor Swift</div><div class="live-link__song--title">Shake it Off</div></li><li class="live-link__song"><div class="live-link__song--artist">Pink Floyd</div><div class="live-link__song--title">Comfortably Numb</div></li><li class="live-link__type--link"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/timed-content-test/">test test</a></div></li><li class="live-link__type--standard"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/ontario-highway-401-wikipedia-the-free-encyclopedia/">Ontario Highway 401 ΓÇô Wikipedia, the free encyclopedia</a></div></li><li class="live-link__type--video"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/?post_type=gmr-live-link&amp;p=633">Gladys Knight &amp; The Pips ΓÇ£Midnight Train To GeorgiaΓÇ¥</a></div></li><li class="live-link__type--video"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/gladys-knight-the-pips-midnight-train-to-georgia/">Gladys Knight &amp; The Pips</a></div></li><li class="live-link__type--video"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/?post_type=gmr-live-link&amp;p=538">Hilarious Volleyball Triple Head Shot ΓÇô YouTube</a></div></li></ul></div>
+		<div id="gmr_shows_widget-2" class="widget--live-player widget_gmr_shows_widget"><ul><li class="live-link__type--standard"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/scroll-test/">GMR-278 test</a></div></li><li class="live-link__type--standard"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/contest/daves-contest/">Dave’s Contest</a></div></li><li class="live-link__song"><div class="live-link__song--artist">Soundgarden</div><div class="live-link__song--title">Black Hole Sun</div></li><li class="live-link__song"><div class="live-link__song--artist">The Village People</div><div class="live-link__song--title">YMCA</div></li><li class="live-link__song"><div class="live-link__song--artist">Taylor Swift</div><div class="live-link__song--title">Shake it Off</div></li><li class="live-link__song"><div class="live-link__song--artist">Pink Floyd</div><div class="live-link__song--title">Comfortably Numb</div></li><li class="live-link__type--link"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/timed-content-test/">test test</a></div></li><li class="live-link__type--standard"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/ontario-highway-401-wikipedia-the-free-encyclopedia/">Ontario Highway 401 – Wikipedia, the free encyclopedia</a></div></li><li class="live-link__type--video"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/?post_type=gmr-live-link&amp;p=633">Gladys Knight &amp; The Pips “Midnight Train To Georgia”</a></div></li><li class="live-link__type--video"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/gladys-knight-the-pips-midnight-train-to-georgia/">Gladys Knight &amp; The Pips</a></div></li><li class="live-link__type--video"><div class="live-link__title"><a href="http://wmmr.greatermedia.10uplabs.com/?post_type=gmr-live-link&amp;p=538">Hilarious Volleyball Triple Head Shot – YouTube</a></div></li></ul></div>
 	</div>
 </aside>
 ```
@@ -12216,7 +12216,7 @@ category: Components
 			</div>
 
 			<div class="podcast__desc">
-				He joined us right off the bat for this Christmas week in December, and comedian Jim Breuer has been getting very festive with his family back home. Today he told us about his kidΓÇÖs relationship with Santa, imagined what Ozzy would be like as Old St. Nick, and accidentally touched a sore spot of JohnΓÇÖs!ΓÇª
+				He joined us right off the bat for this Christmas week in December, and comedian Jim Breuer has been getting very festive with his family back home. Today he told us about his kid’s relationship with Santa, imagined what Ozzy would be like as Old St. Nick, and accidentally touched a sore spot of John’s!…
 			</div>
 		</div>
 
@@ -12285,40 +12285,56 @@ category: Components
     font-size: 60px;
     color: #bbb; }
 
-.advertisers {
+.sponsors {
   width: 100%;
   overflow: auto;
   border: 1px solid #d0d2d3;
-  background-color: #f2f2f2; }
+  border-bottom: none; }
 
-.advertiser {
+.sponsors__heading {
+  font-family: "Droid Sans", sans-serif;
+  font-size: 1.80203em;
+  font-weight: bold;
+  color: #404041; }
+
+.sponsors__row {
+  width: 100%;
+  overflow: auto;
+  background-color: #f2f2f2; }
+  @media screen and (min-width: 768px) {
+    .sponsors__row {
+      border-bottom: 1px solid #d0d2d3; } }
+
+.sponsor {
   position: relative;
   display: block;
   float: left;
   width: 100%;
   padding: 2em;
-  border-bottom: 1px solid #d0d2d3;
-  background-color: white; }
+  background-color: white;
+  border-bottom: 1px solid #d0d2d3; }
   @media screen and (min-width: 768px) {
-    .advertiser {
+    .sponsor {
       width: 50%;
       height: 200px;
+      border-bottom: none;
       border-right: 1px solid #d0d2d3; } }
   @media screen and (min-width: 1024px) {
-    .advertiser {
+    .sponsor {
       height: 270px; } }
-  .advertiser:nth-of-type(2n+2) {
+  .sponsor:nth-of-type(2n+2) {
     border-right: none; }
-  .advertiser:last-of-type {
-    border-bottom: none; }
+  .sponsor:nth-of-type(-n+2) {
+    border-top: none; }
 
-.advertiser__logo,
-.advertiser__name {
+.sponsor__logo,
+.sponsor__name {
   margin: 0 auto;
-  text-align: center; }
+  text-align: center;
+  font-family: "Droid Sans", sans-serif; }
   @media screen and (min-width: 768px) {
-    .advertiser__logo,
-    .advertiser__name {
+    .sponsor__logo,
+    .sponsor__name {
       position: absolute;
       top: 50%;
       left: 50%;
@@ -12327,22 +12343,22 @@ category: Components
       -ms-transform: translate(-50%, -50%);
       -o-transform: translate(-50%, -50%);
       transform: translate(-50%, -50%); }
-      .advertiser__logo a,
-      .advertiser__name a {
+      .sponsor__logo a,
+      .sponsor__name a {
         display: block; } }
 
-.advertiser__logo img {
+.sponsor__logo img {
   margin: 0 auto; }
 
-.advertiser__name a,
-.advertiser__name a:visited {
+.sponsor__name a,
+.sponsor__name a:visited {
   font-size: 1.80203em;
   font-weight: bold;
   color: #404041; }
 
-.advertiser__name a:hover,
-.advertiser__name a:active,
-.advertiser__name a:focus {
+.sponsor__name a:hover,
+.sponsor__name a:active,
+.sponsor__name a:focus {
   color: #aa1c20; }
 
 /**
