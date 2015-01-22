@@ -55,6 +55,16 @@
 	background-position: center center;
 }
 
+	.entry2__thumbnail__overlay {
+		background-color: $btn-bg;
+		@include opacity(0.6); 
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;		
+	}
+
 .entry2__meta {
 	@include bp(small) {
 		@include span-columns(6 of 6);
@@ -217,10 +227,6 @@
 .type-tribe_events {
 	.entry2__thumbnail {
 		background-color: $btn-bg;
-		
-		&:after {
-			background-color: rgba($btn-bg, .6);
-		}
 	}
 	
 	.entry2__thumbnail--event-date {	
@@ -247,11 +253,7 @@
 // Special handling for date information in contest thumbnail
 .type-contest {
 	.entry2__thumbnail {
-		background-color: rgba($btn-bg, .8);
-
-		&:after {
-			background-color: rgba($btn-bg, .5);
-		}
+		background-color: $btn-bg;
 	}
 
 	.entry2__thumbnail--end-date,
