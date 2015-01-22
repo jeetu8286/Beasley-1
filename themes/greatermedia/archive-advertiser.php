@@ -23,9 +23,10 @@ get_header(); ?>
 					<?php
 
 					$advertiser_args = array(
-						'post_type' => GMR_ADVERTISER_CPT,
-						'orderby'   => 'menu_order date',
-						'order'     => 'ASC'
+						'post_type'         => GMR_ADVERTISER_CPT,
+						'orderby'           => 'menu_order date',
+						'order'             => 'ASC',
+						'posts_per_page'    => 30
 					);
 
 					$advertiser_query = new WP_Query( $advertiser_args );
