@@ -1,0 +1,6 @@
+.profile-page__sidebar,
+.profile-page__content {
+	display: block;
+	width: 100%;
+	float: left;
+}
