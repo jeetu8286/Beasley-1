@@ -21,9 +21,11 @@ module.exports = function (grunt) {
 				src: [
 					'assets/js/src/mobile-sub-menus.js',
 					'assets/js/src/profile.js',
+					'assets/js/src/show-schedule.js',
 					'assets/js/src/social_share.js',
 					'assets/js/src/greater_media_pjax.js',
-					'assets/js/src/greater_media.js'
+					'assets/js/src/greater_media.js',
+					'assets/js/src/search.js'
 				],
 				dest: 'assets/js/greater_media.js'
 			},

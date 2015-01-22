@@ -1,12 +1,11 @@
+/* globals tribe_ev:false */
 (function ($) {
 	var __ready, reset_page = true, pagenums = {};
 
 	__ready = function() {
 		$('.posts-pagination--load-more').each(function () {
-					
-			var $button = $(this);
-			
-			var loading = false,
+			var $button = $(this),
+				loading = false,
 				page_link_template = $button.data('page-link-template'),
 				page = parseInt($button.data('page')),
 				partial_slug = $button.data('partial-slug'),
@@ -16,12 +15,7 @@
 			if (reset_page) {
 				pagenums[page_link_template] = !isNaN(page) && page > 0 ? page : 1;
 			}
-			
-			// Hide the normal next/previous links
-			$( '.posts-pagination--previous, .posts-pagination--next' ).hide();
-			// Show our nice button. 
-			$button.show(); 
-			
+
 			// If auto_load is set, create a Waypoint that will trigger the button
 			// when it is reached. 
 			var waypoint_context = null; 
@@ -35,6 +29,13 @@
 					offset: 'bottom-in-view'
 				});
 			}
+
+			var hide_button = function() {
+				$button.hide();
+				if (waypoint_context) {
+					waypoint_context.destroy();
+				}
+			};
 	
 			$button.click(function() {
 				var $self = $(this);
@@ -44,24 +45,30 @@
 					$self.removeClass('is-loaded');
 	
 					// let's use ?ajax=1 to distinguish AJAX and non AJAX requests
-					// if we don't do it and enabled HTTP caching, then we might encounter
+					// if we don't do it and HTTP cache is enabled, then we might encounter
 					// unpleasant condition when users see cached version of a page loaded by AJAX
 					// instead of normal one.
 					$.get(page_link_template.replace('%d', pagenums[page_link_template]), {ajax: 1, partial_slug: partial_slug, partial_name: partial_name }).done(function(response) {
+						// We're done loading now.
 						loading = false;
 						$self.addClass('is-loaded');
+						
+						if ( response.post_count ) {
+							// Add content to page. 
+							$($('<div>' + $.trim(response.html) + '</div>').html()).insertBefore($button.parents('.posts-pagination'));							
 	
-						$($('<div>' + $.trim(response) + '</div>').html()).insertBefore($button.parents('.posts-pagination'));
-						
-						// Increment page number
-						pagenums[page_link_template]++;
-						
-						// Refresh Waypoint context, if any. 
-						if ( waypoint_context ) {
+							// Increment page number
+							pagenums[page_link_template]++;						
+						}
+												
+						if ( ! response.post_count || pagenums[page_link_template] > response.max_num_pages ) {
+							hide_button();
+						} else if ( waypoint_context ) {
+							// Refresh Waypoint context, if any.
 							waypoint_context.refresh(); 
-						}						
+						}
 					}).fail(function() {
-						$self.attr('disabled', 'disabled').text($self.data('not-found'));
+						hide_button();
 					});
 				}
 				
@@ -69,6 +76,10 @@
 			});
 		}); 
 	};
+
+	if (tribe_ev && tribe_ev.events) {
+		$(tribe_ev.events).bind('tribe_ev_ajaxSuccess', __ready);
+	}
 
 	$(document).bind('pjax:end', function(e, xhr) {
 		reset_page = xhr !== null;

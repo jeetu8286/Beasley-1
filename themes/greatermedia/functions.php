@@ -311,13 +311,18 @@ function get_post_with_keyword( $query_arg ) {
  */
 function gm_get_post_thumbnail_url( $size = 'thumbnail', $post_id = null, $use_fallback = false ) {
 	$thumbnail_id = get_post_thumbnail_id( $post_id );
-	if ( ! $thumbnail_id && $use_fallback ) {
-		$thumbnail_id = greatermedia_get_fallback_thumbnail_id( $post_id );
+	if ( $thumbnail_id && ( $url = gm_get_thumbnail_url( $thumbnail_id, $size ) ) ) {
+		return $url;
 	}
 
-	if ( $thumbnail_id ) {
-		return gm_get_thumbnail_url( $thumbnail_id, $size );
+	if ( $use_fallback ) {
+		$thumbnail_id = greatermedia_get_fallback_thumbnail_id( $post_id );
+		if ( $thumbnail_id ) {
+			return gm_get_thumbnail_url( $thumbnail_id, $size );
+		}
 	}
+
+	return null;
 }
 
 /**
@@ -341,7 +346,9 @@ function gm_get_thumbnail_url( $attachment_id, $size ) {
 	$src = wp_get_attachment_image_src( $attachment_id, $size );
 	if ( $src ) {
 		return $src[0]; 
-	}	
+	}
+
+	return null;
 }
 
 /**
@@ -453,7 +460,21 @@ if ( ! function_exists( 'greatermedia_load_more_template' ) ) :
 		$partial_slug = isset( $_REQUEST['partial_slug'] ) ? sanitize_text_field( $_REQUEST['partial_slug'] ) : 'partials/loop';
 		$partial_name = isset( $_REQUEST['partial_name'] ) ? sanitize_text_field( $_REQUEST['partial_name'] ) : '';
 
+		global $wp_query; 
+		
+		ob_start(); 
+		
 		get_template_part( $partial_slug, $partial_name );
+		
+		$html = ob_get_clean();
+		
+		wp_send_json( array( 
+			'paged' => $wp_query->query_vars['paged'], 
+			'max_num_pages' => $wp_query->max_num_pages,
+			'post_count' => $wp_query->post_count,
+			'html' => $html,
+		) );
+		
 		exit;
 	}
 
@@ -491,22 +512,28 @@ function greatermedia_load_more_button( $args = array() ) {
 		$wp_query = $temp_wp_query;
 	} 
 	
+	// Bail if we're basing this off a query and we can see there are no more 
+	// posts to load.
+	if ( $args['query'] && $args['next_page'] > $args['query']->max_num_pages ) {
+		return; 
+	}	
+	
+	
 	if ( ! $args['next_page'] ) {
 		$args['next_page'] = 2;
 	}
 
 	$default_page_link = sprintf( $args['page_link_template'], $args['next_page'] );
 	?>
-	<div class='posts-pagination'>
+	<div class="posts-pagination">
 		<a
 			class="button posts-pagination--load-more is-loaded"
-			href='<?php echo esc_url( $default_page_link ); ?>'
+			href="<?php echo esc_url( $default_page_link ); ?>"
 			data-page-link-template="<?php echo esc_url( $args['page_link_template'] ); ?>"
 			data-page="<?php echo esc_attr( $args['next_page'] ); ?>"
 			data-partial-slug='<?php echo esc_attr( $args['partial_slug'] ); ?>'
 			data-partial-name='<?php echo esc_attr( $args['partial_name'] ); ?>'
 			data-auto-load='<?php echo intval( $args['auto_load'] ); ?>'
-			data-not-found="All content shown"
 			>
 			<i class="fa fa-spin fa-refresh"></i> Load More
 		</a>
@@ -620,3 +647,12 @@ function greatermedia_add_gigya_body_class( $classes ) {
 
 }
 add_filter( 'body_class', 'greatermedia_add_gigya_body_class' );
+
+/**
+ * Show more posts that usual for gmr_closure archives. 
+ */
+add_action( 'parse_query', function ( WP_Query $query ) {
+	if ( $query->is_main_query() && $query->is_post_type_archive( 'gmr_closure' ) ) {
+		$query->query_vars['posts_per_page'] = 30;
+	}
+} );

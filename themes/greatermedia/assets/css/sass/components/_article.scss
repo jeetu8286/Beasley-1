@@ -227,6 +227,10 @@
 		font-size: 1em; 
 		line-height: $line-height;
 	}
+	
+	.livefyre-poll {
+		margin: 1.5em 0;
+	}
 }
 
 .article__comments {
@@ -245,5 +249,14 @@
 	@include bp(medium) {
 		top: auto;
 		bottom: 10px;
+	}
+
+	a, a:visited {
+		color: $secondary-link;
+		text-decoration: underline;
+	}
+
+	a:hover, a:active, a:focus {
+		color: $secondary-link-hover;
 	}
 }

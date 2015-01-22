@@ -2,6 +2,7 @@
 .logout-restricted-login-btn,
 .age-restricted-login-btn {
 	@include btn($btn-bg, $color-text-white, $btn-bg, .45em, 1em, ms(-1));
+	text-transform: none;
 }
 
 .entry2__excerpt {

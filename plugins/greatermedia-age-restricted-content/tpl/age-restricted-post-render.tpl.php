@@ -1,9 +1,6 @@
 <div class="age-restricted-shield" id="age-restricted-shield-<?php echo esc_attr( $post->ID ); ?>">
 	<p>
 		The following is restricted to members <?php echo esc_html( $age_restriction ); ?>
-		<?php if ( ! is_gigya_user_logged_in() ) : ?>
-			&#8212; log in to view this content.
-		<?php endif; ?>
 	</p>
 
 	<?php if ( ! is_gigya_user_logged_in() ) : ?>
