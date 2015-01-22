@@ -500,7 +500,7 @@ category: Base - Typography
   src: url("../fonts/icon-font/gmr-icons.eot?#iefix-2ikn7k") format("embedded-opentype"), url("../fonts/icon-font/gmr-icons.woff?-2ikn7k") format("woff"), url("../fonts/icon-font/gmr-icons.ttf?-2ikn7k") format("truetype"), url("../fonts/icon-font/gmr-icons.svg?-2ikn7k#icomoon") format("svg");
   font-weight: normal;
   font-style: normal; }
-[class^="icon-"], [class*=" icon-"], .entry__thumbnail--video:before, .entry__thumbnail--events:before, .entry__thumbnail--audio:before, .header__search--btn:before, .format-audio .entry2__thumbnail a, .format-gallery .entry2__thumbnail a, .format-video .entry2__thumbnail a, .type-contest .entry2__thumbnail a, .type-tribe_events .entry2__thumbnail a, .live-link__song:before, .live-link__type--audio:before, .live-link__type--gallery:before, .live-link__type--image:before, .live-link__type--link:before, .live-link__type--standard:before, .live-link__type--video:before, .social__link--facebook, .social__link--twitter, .social__link--google-plus:before, .social__link--youtube:before, .social__link--instagram:before, .gallery__prev--btn:before, .gallery__next--btn:after, .gallery__paging--prev, .gallery__paging--next, .gallery__grid--album, .gmr-icon, .header__search--submit, .header__search--cancel {
+[class^="icon-"], [class*=" icon-"], .entry__thumbnail--video:before, .entry__thumbnail--events:before, .entry__thumbnail--audio:before, .header__search--btn:before, .format-audio .entry2__thumbnail a, .format-gallery .entry2__thumbnail a, .format-video .entry2__thumbnail a, .type-contest .entry2__thumbnail a, .type-tribe_events .entry2__thumbnail a, .live-link__song:before, .live-link__type--audio:before, .live-link__type--gallery:before, .live-link__type--image:before, .live-link__type--link:before, .live-link__type--standard:before, .live-link__type--video:before, .social__link--facebook, .social__link--twitter, .social__link--google-plus:before, .social__link--youtube:before, .social__link--instagram:before, .gallery__prev--btn:before, .gallery__next--btn:after, .gallery__paging--prev, .gallery__paging--next, .gallery__grid--album, .gmr-icon, .contest__submission .preview .preview-close, .header__search--submit, .header__search--cancel {
   font-family: 'gmr-icons';
   speak: none;
   font-style: normal;
@@ -620,7 +620,7 @@ category: Base - Typography
 .icon-contest:before, .type-contest .entry2__thumbnail a:before {
   content: "\e623"; }
 
-.icon-close:before, .header__search--cancel:before {
+.icon-close:before, .contest__submission .preview .preview-close:before, .header__search--cancel:before {
   content: "\e624"; }
 
 .icon-close-circle:before {
@@ -6723,31 +6723,13 @@ category: Components - Ads
       height: 100%; }
     .contest__submission .preview .preview-close {
       position: absolute;
-      width: 30px;
-      height: 30px;
       top: 10px;
       right: 10px;
-      cursor: pointer; }
-      .contest__submission .preview .preview-close:before, .contest__submission .preview .preview-close:after {
-        content: '';
-        position: absolute;
-        width: 100%;
-        top: 50%;
-        height: 1px;
-        background: #888;
-        -webkit-transform: rotate(45deg);
-        -moz-transform: rotate(45deg);
-        -ms-transform: rotate(45deg);
-        -o-transform: rotate(45deg);
-        transform: rotate(45deg); }
-      .contest__submission .preview .preview-close::after {
-        -webkit-transform: rotate(-45deg);
-        -moz-transform: rotate(-45deg);
-        -ms-transform: rotate(-45deg);
-        -o-transform: rotate(-45deg);
-        transform: rotate(-45deg); }
-      .contest__submission .preview .preview-close:hover::before, .contest__submission .preview .preview-close:hover::after {
-        background: #333; }
+      cursor: pointer;
+      color: #aaa;
+      font-size: 25px; }
+      .contest__submission .preview .preview-close:hover {
+        color: #555; }
     .contest__submission .preview .gallery .container {
       padding: 0;
       margin: 0; }
