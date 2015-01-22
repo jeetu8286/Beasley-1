@@ -95,7 +95,7 @@ class GreaterMediaLoginRestrictedContent extends VisualShortcode {
 					'Status'                   => __( 'Status', 'greatermedia-login-restricted-content' ),
 					'Logged in'                => __( 'Logged in', 'greatermedia-login-restricted-content' ),
 					'Logged out'               => __( 'Logged out', 'greatermedia-login-restricted-content' ),
-					'No restriction'           => __( 'No restriction', 'greatermedia-login-restricted-content' ),
+					'No restriction'           => __( 'None', 'greatermedia-login-restricted-content' ),
 				),
 			);
 
@@ -173,7 +173,7 @@ class GreaterMediaLoginRestrictedContent extends VisualShortcode {
 		         __( 'Logged out', 'greatermedia-login-restricted-content' ) .
 		         '</p>';
 		$html .= '<p><input type="radio" name="lr_status" value="" ' . ( empty( $login_restriction ) ? 'checked="checked"' : '' ) . ' />' .
-		         __( 'No restriction', 'greatermedia-login-restricted-content' ) .
+		         __( 'None', 'greatermedia-login-restricted-content' ) .
 		         '</p>';
 		$html .= '<input type="hidden" id="hidden_login_restriction" name="hidden_login_restriction" value="' . esc_attr( $login_restriction ) . '" />';
 		$html .= '</fieldset>';
@@ -263,7 +263,7 @@ class GreaterMediaLoginRestrictedContent extends VisualShortcode {
 		} else if ( 'logged-out' === $login_restriction ) {
 			return __( 'Logged out', 'greatermedia-login-restricted-content' );
 		} else {
-			return __( 'No restriction', 'greatermedia-login-restricted-content' );
+			return __( 'None', 'greatermedia-login-restricted-content' );
 		}
 
 	}
