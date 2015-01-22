@@ -12443,7 +12443,7 @@ category: Components
   background-color: #929497; }
 
 .live-link__type--show {
-  border-top: 1px solid #C5C5BC;
+  border-top: 1px solid #fff;
   margin-left: -30px;
   margin-right: -30px;
   background: none; }
