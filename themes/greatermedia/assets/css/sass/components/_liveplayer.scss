@@ -793,6 +793,10 @@ category: Components
 	width: 0;
 	height: 0;
 	color: $color-text-red;
+
+	&:hover {
+		color: $color-text-black;
+	}
 }
 
 .live-link__type--audio, .live-link__type--gallery, .live-link__type--image, .live-link__type--link, .live-link__type--standard, .live-link__type--video {
@@ -811,6 +815,10 @@ category: Components
 	color: $secondary-link;
 }
 
+.live-link__song:hover:before {
+	color: $primary-link;
+}
+
 .live-link__song--artist {
 	padding-top: 6px;
 	font-size: em(12px);
@@ -822,6 +830,10 @@ category: Components
 	font-size: em(13px);
 	font-weight: bold;
 	color: $secondary-link;
+
+	a:hover, a:focus, a:active {
+		color: $color-text-red;
+	}
 }
 
 .live-link__type--audio:before {

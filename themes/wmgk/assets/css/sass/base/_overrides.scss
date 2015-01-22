@@ -90,6 +90,18 @@
 	a, a:visited {
 		color: $darker-gray;
 	}
+
+	a:hover, a:focus, a:active {
+		color: $color-text-red;
+	}
+}
+
+.live-link__title a:link, .live-link__title a:visited {
+	color: $color-gray-medium;
+}
+
+.live-link__title a:hover, .live-link__title a:focus, .live-link__title a:active {
+	color: $primary-link;
 }
 
 .header__logo {
