@@ -13,10 +13,10 @@
 
 
 /* GIGYA PROFILE PAGES */
-
+.profile-page
 .profile-page__sidebar,
 .profile-page__content {
 	display: block;
-	width: 100%;
+	width: 50%;
 	float: left;
 }
