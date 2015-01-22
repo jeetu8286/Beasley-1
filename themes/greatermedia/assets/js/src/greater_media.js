@@ -465,7 +465,7 @@
 	function init_menu_overlay() {
 		var $menu = jQuery(document.querySelector('.header__nav--list')),
 			$secondary = jQuery(document.querySelector('.header__secondary')),
-			$overlay = jQuery(document.querySelector('.overlay-mask'));
+			$overlay = jQuery(document.querySelector('.menu-overlay-mask'));
 
 		$menu.on('mouseover', '.menu-item-has-children, .header__account--small', function (e) {
 			$overlay.addClass('is-visible');

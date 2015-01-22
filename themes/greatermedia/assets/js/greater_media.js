@@ -857,7 +857,7 @@
 	function init_menu_overlay() {
 		var $menu = jQuery(document.querySelector('.header__nav--list')),
 			$secondary = jQuery(document.querySelector('.header__secondary')),
-			$overlay = jQuery(document.querySelector('.overlay-mask'));
+			$overlay = jQuery(document.querySelector('.menu-overlay-mask'));
 
 		$menu.on('mouseover', '.menu-item-has-children, .header__account--small', function (e) {
 			$overlay.addClass('is-visible');
@@ -924,7 +924,7 @@
 		$searchForm = $( '#header__search--form ' ).find( 'form' ),
 		$searchBtn = $( '#header__search'),
 		$searchInput = $( '#header-search' ),
-		$overlay = $('.overlay-mask' );
+		$overlay = $('.header-search-overlay-mask' );
 	
 	/**
 	 * A function to show the header search when an event is targeted.

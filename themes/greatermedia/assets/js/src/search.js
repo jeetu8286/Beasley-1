@@ -4,7 +4,7 @@
 		$searchForm = $( '#header__search--form ' ).find( 'form' ),
 		$searchBtn = $( '#header__search'),
 		$searchInput = $( '#header-search' ),
-		$overlay = $('.overlay-mask' );
+		$overlay = $('.header-search-overlay-mask' );
 	
 	/**
 	 * A function to show the header search when an event is targeted.
