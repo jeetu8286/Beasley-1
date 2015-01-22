@@ -475,7 +475,7 @@
 
 		player.play({station: station, timeShift: true});
 
-		body.classList.add('live-player--active');
+		livePlayer.classList.add('live-player--active');
 		setPlayingStyles();
 		setTimeout(replaceNPInfo, 2000);
 	});
@@ -507,9 +507,9 @@
 				listenLiveStopCustomInlineAudio();
 			}
 
-			body.classList.add('live-player--active');
+			livePlayer.classList.add('live-player--active');
 			player.play({station: station, timeShift: true});
-			setTimeout(setPlayingStyles, 50);
+			setPlayingStyles();
 			setTimeout(replaceNPInfo, 2000);
 		}
 	}
@@ -537,7 +537,7 @@
 				player.stop();
 			}
 
-			body.classList.add('live-player--active');
+			livePlayer.classList.add('live-player--active');
 			player.play({station: station, timeShift: true});
 			setPlayingStyles();
 			setTimeout(replaceNPInfo, 2000);
@@ -575,9 +575,9 @@
 						player.stop();
 					}
 
-					body.classList.add('live-player--active');
+					livePlayer.classList.add('live-player--active');
 					player.play({station: station, timeShift: true});
-					setTimeout(setPlayingStyles, 50);
+					setPlayingStyles();
 					setTimeout(replaceNPInfo, 2000);
 				});
 			} else if (player.attachEvent) {
@@ -589,9 +589,9 @@
 						player.stop();
 					}
 
-					body.classList.add('live-player--active');
+					livePlayer.classList.add('live-player--active');
 					player.play({station: station, timeShift: true});
-					setTimeout(setPlayingStyles, 50);
+					setPlayingStyles();
 					setTimeout(replaceNPInfo, 2000);
 				});
 			}
@@ -605,8 +605,8 @@
 			player.stop();
 		}
 
-		if (body.classList.contains('live-player--active')) {
-			body.classList.remove('live-player--active');
+		if (livePlayer.classList.contains('live-player--active')) {
+			livePlayer.classList.remove('live-player--active');
 		}
 		setStoppedStyles();
 	}
@@ -618,8 +618,8 @@
 			player.pause();
 		}
 
-		if (body.classList.contains('live-player--active')) {
-			body.classList.remove('live-player--active');
+		if (livePlayer.classList.contains('live-player--active')) {
+			livePlayer.classList.remove('live-player--active');
 		}
 		setPausedStyles();
 	}
@@ -1271,7 +1271,7 @@
 		setPlayerTrackName();
 		setPlayerArtist();
 		resetInlineAudioStates();
-		setTimeout(setPlayingStyles, 1000);
+		setPlayingStyles();
 		setInlineAudioStates();
 		setInlineAudioUX();
 	};
