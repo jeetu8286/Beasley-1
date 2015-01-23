@@ -68,6 +68,7 @@ function greatermedia_setup() {
 	add_image_size( 'gmr-show-featured-primary',   		708,    389,    true    ); // thumbnails for secondary featured posts on front page
 	add_image_size( 'gmr-show-featured-secondary',   	322,    141,    true    ); // thumbnails for secondary featured posts on front page
 	add_image_size( 'gm-related-post',   				300,    200,    true    );
+	add_image_size( 'gmr-advertiser',                   400,    9999,   false   );
 
 	/* Images for the Gallery Grid ---- DO NOT DELETE ---- */
 	add_image_size( 'gmr-gallery-grid-featured',        1200,   800,    true    );
@@ -657,15 +658,79 @@ add_action( 'parse_query', function ( WP_Query $query ) {
 	}
 } );
 
+
 function add_ie_stylesheet() {
 	?>
 	<!--[if lt IE 10]>
 	<link rel="stylesheet" href="<?php bloginfo('template_directory'); ?>/assets/css/ie9.css"/>
 	<![endif]-->
-	<!--[if lt IE 9]>
-	<link rel="stylesheet" href="<?php bloginfo('template_directory'); ?>/assets/css/ie8.css"/>
-	<![endif]-->
 	<?php
 }
 add_action( 'wp_head', 'add_ie_stylesheet' );
 
+/**
+ * Create a nicely formatted and more specific title element text for output
+ * in head of document, based on current view.
+ *
+ * @global int $paged WordPress archive pagination page count.
+ * @global int $page  WordPress paginated post page count.
+ * @param string $title Default title text for current view.
+ * @param string $sep Optional separator.
+ * @return string The filtered title.
+ */
+function twentyfourteen_wp_title( $title, $sep ) {
+	global $paged, $page;
+
+	if ( is_feed() ) {
+		return $title;
+	}
+
+	// Add the site name.
+	$title .= get_bloginfo( 'name', 'display' );
+
+	// Add the site description for the home/front page.
+	$site_description = get_bloginfo( 'description', 'display' );
+	if ( $site_description && ( is_home() || is_front_page() ) ) {
+		$title = "$title $sep $site_description";
+	}
+
+	// Add a page number if necessary.
+	if ( ( $paged >= 2 || $page >= 2 ) && ! is_404() ) {
+		$title = "$title $sep Page " . max( $paged, $page );
+	}
+
+	return $title;
+}
+add_filter( 'wp_title', 'twentyfourteen_wp_title', 10, 2 );
+
+/**
+ * Updates tribe events archive title.
+ *
+ * @global WP_Query $wp_query The main query.
+ * @param string $title The initial title.
+ * @return string Updated title.
+ */
+function greatermedia_events_title( $title ) {
+	global $wp_query;
+
+	// If there's a date selected in the tribe bar, show the date range of the currently showing events
+	if ( ! tribe_is_month() && isset( $_REQUEST['tribe-bar-date'] ) && $wp_query->have_posts() ) {
+		if ( $wp_query->get( 'paged' ) > 1 ) {
+			// if we're on page 1, show the selected tribe-bar-date as the first date in the range
+			$first_event_date = tribe_get_start_date( $wp_query->posts[0], false );
+		} else {
+			//otherwise show the start date of the first event in the results
+			$first_event_date =  tribe_event_format_date( $_REQUEST['tribe-bar-date'], false );
+		}
+
+		$title = 'Events from ' . $first_event_date;
+	}
+
+	// day view title
+	if ( tribe_is_day() ) {
+		$title = 'Events for ' . date_i18n( tribe_get_date_format( true ), strtotime( $wp_query->get( 'start_date' ) ) );
+	}
+
+	return $title;
+}
+add_filter( 'tribe_get_events_title', 'greatermedia_events_title' );
