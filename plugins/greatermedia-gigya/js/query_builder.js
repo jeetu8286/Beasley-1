@@ -3059,6 +3059,7 @@ QueryBuilderApp.prototype = {
 		var activeConstraintsView = new ActiveConstraintsView({
 			el: $('#active_constraints'),
 			collection: activeConstraints,
+			sortable: true,
 		});
 
 		var previewView = new PreviewView({
