@@ -222,7 +222,6 @@ class GreaterMediaFormbuilderRender {
 	 * @param bool $use_user_info Determines whether to show user info or not.
 	 */
 	public static function render( $post_id, $form = null, $use_user_info = true ) {
-
 		if ( ! $form  ) {
 			$form = get_post_meta( $post_id, 'embedded_form', true );
 			if ( empty( $form ) ) {
@@ -234,13 +233,16 @@ class GreaterMediaFormbuilderRender {
 			}
 		}
 
+		$permalink = untrailingslashit( get_permalink( $post_id ) );
+
 		$html = '';
 		$title = get_post_meta( $post_id, 'form-title', true );
 		if ( ! empty( $title ) ) {
 			$html .= '<h3 class="contest__form--heading">' . esc_html( $title ) . '</h3>';
 		}
 
-		$html .= '<form novalidate method="post" enctype="multipart/form-data">';
+		$html .= '<iframe id="theiframe" name="theiframe" style="width:1px;height:1px;border:none;display:none"></iframe>';
+		$html .= '<form action="' . esc_url( $permalink ) . '/action/submit/" target="theiframe" method="post" enctype="multipart/form-data" novalidate>';
 
 		if ( $use_user_info ) {
 			$html .= '<div class="contest__form--user-info">';
@@ -286,11 +288,9 @@ class GreaterMediaFormbuilderRender {
 		}
 
 		$html .= self::get_submit_button( $submit_text, null, null, true );
-
 		$html .= '</form>';
 
 		return $html;
-
 	}
 
 	/**
