@@ -200,8 +200,6 @@ class GreaterMediaGallery {
 						     data-cycle-timeout="0"
 						     data-cycle-caption="#gallery__count"
 						     data-cycle-caption-template="<?php echo esc_attr( $image_count_text ); ?>"
-						     data-cycle-center-horz="true"
-						     data-cycle-center-vert="true"
 						     data-cycle-manual-speed="200"
 						     data-cycle-swipe="true"
 						     data-cycle-fx="scrollHorz"
