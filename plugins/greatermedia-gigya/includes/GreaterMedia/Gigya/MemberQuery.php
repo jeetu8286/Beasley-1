@@ -414,6 +414,8 @@ class MemberQuery {
 					return $this->clause_for_subscribed_to_list_constraint( $constraint );
 				} else if ( $subType === 'email_engagement_tally' ) {
 					return $this->clause_for_email_engagement_tally_constraint( $constraint );
+				} else if ( $subType === 'email_engagement' ) {
+					return $this->clause_for_email_engagement_constraint( $constraint );
 				} else {
 					return $this->clause_for_data_constraint( $constraint );
 				}
@@ -737,6 +739,31 @@ class MemberQuery {
 	}
 
 	public function clause_for_email_engagement_tally_constraint( $constraint ) {
+		$type       = $constraint['type'];
+		$value      = $constraint['value'];
+		$valueType  = $constraint['valueType'];
+		$operator   = $constraint['operator'];
+		$event_name = $constraint['event_name'];
+		$query      = '';
+
+		if ( $value !== 0 ) {
+			$query .= "data.email_{$event_name}_count";
+			$query .= ' ';
+			$query .= $this->operator_for( $operator );
+			$query .= ' ';
+			$query .= $this->value_for( $value, 'integer' );
+		} else {
+			if ( $operator === 'equals' ) {
+				$query .= "data.email_{$event_name}_count is null";
+			} else {
+				$query .= "data.email_{$event_name}_count != 0";
+			}
+		}
+
+		return $query;
+	}
+
+	public function clause_for_email_engagement_constraint( $constraint ) {
 		$type      = $constraint['type'];
 		$value     = $constraint['value'];
 		$valueType = $constraint['valueType'];
@@ -744,15 +771,18 @@ class MemberQuery {
 		$event_name = $constraint['event_name'];
 		$query     = '';
 
-		$query .= "data.email_{$event_name}_count";
-		$query .= ' ';
-		$query .= $this->operator_for( $operator );
-		$query .= ' ';
-		$query .= $this->value_for( $value, $valueType );
-
-		if ( $value === 0 ) {
-			$query .= ' or ';
-			$query .= "data.email_{$event_name}_count is null";
+		if ( $value !== 'any' ) {
+			$query .= "data.email_{$event_name}_list";
+			$query .= ' ';
+			$query .= $this->operator_for( $operator );
+			$query .= ' ';
+			$query .= $this->value_for( $value, 'string' );
+		} else {
+			if ( $operator === 'contains' ) {
+				$query .= "data.email_{$event_name}_count > 0";
+			} else {
+				$query .= "data.email_{$event_name}_count is null";
+			}
 		}
 
 		return $query;

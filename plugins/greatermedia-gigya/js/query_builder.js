@@ -153,6 +153,75 @@ __p += '\n\t</select>\n</li>\n';
 return __p
 };
 
+this["JST"]["src/templates/email_engagement.jst"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
+with (obj) {
+__p += '<ul class="constraint-toolbar">\n\t<li>\n\t\t<a\n\t\t\talt="f105"\n\t\t\tclass="dashicons dashicons-admin-page copy-constraint"\n\t\t\thref="#"\n\t\t\ttitle="Duplicate"\n\t\t/>\n\n\t\t<a\n\t\t\talt="f105"\n\t\t\tclass="dashicons dashicons-trash remove-constraint"\n\t\t\thref="#"\n\t\t\ttitle="Remove"\n\t\t/>\n\t</li>\n</ul>\n\n<p class="constraint-title">\n\t' +
+__e( title ) +
+'\n</p>\n\n<div class="email-engagement">\n\t<select class="email-event">\n\t\t';
+ _.each(choices, function(choiceItem) { ;
+__p += '\n\t\t<option value="' +
+__e( choiceItem.value ) +
+'" ' +
+((__t = ( choiceItem.value == event_name ? 'selected="selected"' : ''  )) == null ? '' : __t) +
+'">\n\t\t' +
+__e( choiceItem.label ) +
+'\n\t\t</option>\n\t\t';
+ }) ;
+__p += '\n\t</select>\n\n\t<select class="constraint-operator">\n\t\t';
+ _.each(view.operatorsFor(valueType, type), function(operatorItem) { ;
+__p += '\n\t\t<option value="' +
+__e( operatorItem ) +
+'" ' +
+((__t = ( operatorItem === operator ? 'selected="selected"' : ''  )) == null ? '' : __t) +
+'">\n\t\t' +
+__e( operatorItem ) +
+'\n\t\t</option>\n\t\t';
+ }) ;
+__p += '\n\t</select>\n\n\t<select class="constraint-value">\n\t\t';
+ if (groupsLoaded) { ;
+__p += '\n\t\t\t<option value="any">Any Mailing List</option>\n\t\t\t<optgroup label="Mailing Lists">\n\t\t\t\t';
+ _.each(staticGroups, function(groupItem) { ;
+__p += '\n\t\t\t\t<option value="' +
+__e( groupItem.value ) +
+'" ' +
+((__t = ( groupItem.value == value ? 'selected="selected"' : ''  )) == null ? '' : __t) +
+'">\n\t\t\t\t' +
+__e( groupItem.label ) +
+'\n\t\t\t\t</option>\n\t\t\t\t';
+ }) ;
+__p += '\n\t\t\t</optgroup>\n\t\t\t<optgroup label="Member Query Lists">\n\t\t\t\t';
+ _.each(memberQueryGroups, function(groupItem) { ;
+__p += '\n\t\t\t\t<option value="' +
+__e( groupItem.value ) +
+'" ' +
+((__t = ( groupItem.value == value ? 'selected="selected"' : ''  )) == null ? '' : __t) +
+'">\n\t\t\t\t' +
+__e( groupItem.label ) +
+'\n\t\t\t\t</option>\n\t\t\t\t';
+ }) ;
+__p += '\n\t\t\t</optgroup>\n\t\t';
+ } else { ;
+__p += '\n\t\t\t<option value="">Loading ...</option>\n\t\t';
+ } ;
+__p += '\n\t</select>\n\n\t<select class="constraint-conjunction">\n\t\t';
+ _.each(view.conjunctions, function(conjunctionItem) { ;
+__p += '\n\t\t<option value="' +
+__e( conjunctionItem ) +
+'" ' +
+((__t = ( conjunctionItem === conjunction ? 'selected="selected"' : ''  )) == null ? '' : __t) +
+'">\n\t\t' +
+__e( conjunctionItem ) +
+'\n\t\t</option>\n\t\t';
+ }) ;
+__p += '\n\t</select>\n</div>\n\n<div class="conjunction-guide">\n\t<p><span class="arrow-down"></span>OR any of the following conditions</p>\n</div>\n\n';
+
+}
+return __p
+};
+
 this["JST"]["src/templates/email_engagement_tally.jst"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
@@ -1024,6 +1093,74 @@ var EmailEngagementTallyConstraint = Constraint.extend({
 
 });
 
+var EmailEngagementConstraint = Constraint.extend({
+
+	defaults        : {
+		type        : 'data:email_engagement',
+		operator    : 'equals',
+		conjunction : 'and',
+		valueType   : 'integer',
+		value       : '',
+		event_name  : 'message_click',
+		groups      : [],
+	},
+
+	initialize: function(attr, opts) {
+		this.groupsLoaded      = false;
+		this.staticGroups      = new Backbone.Collection([]);
+		this.memberQueryGroups = new Backbone.Collection([]);
+
+		Constraint.prototype.initialize.call(this, attr, opts);
+	},
+
+	getGroups: function() {
+		return this.groups;
+	},
+
+	loadGroups: function() {
+		var params = { type: 'email_engagement' };
+
+		this.trigger('loadGroupsStart');
+
+		ajaxApi.request('get_choices_for_constraint_type', params)
+			.then($.proxy(this.didLoadGroups, this))
+			.fail($.proxy(this.didLoadGroupsError, this));
+	},
+
+	didLoadGroups: function(response) {
+		if (response.success) {
+			var choices = response.data;
+			this.staticGroups.reset(choices['static'], { silent: true });
+			this.memberQueryGroups.reset(choices.member_query, { silent: true });
+
+			this.groupsLoaded = true;
+			this.trigger('loadGroupsSuccess', this.groups);
+		} else {
+			this.didLoadGroupsError(response.data);
+		}
+	},
+
+	didLoadGroupsError: function(response) {
+		this.trigger('didLoadGroupsError', response.data);
+	},
+
+	toViewJSON: function() {
+		var json = Constraint.prototype.toViewJSON.call(this);
+		json.groupsLoaded = this.groupsLoaded;
+
+		if (this.groupsLoaded) {
+			json.staticGroups      = this.staticGroups.toJSON();
+			json.memberQueryGroups = this.memberQueryGroups.toJSON();
+		} else {
+			json.staticGroups      = [];
+			json.memberQueryGroups = [];
+		}
+
+		return json;
+	}
+
+});
+
 var FavoriteConstraint = Constraint.extend({
 
 	defaults        : {
@@ -1079,6 +1216,12 @@ var AVAILABLE_CONSTRAINTS = [
 		type: 'data:email_engagement_tally',
 		valueType: 'integer',
 		value: '1',
+		operator: 'equals',
+	},
+	{
+		type: 'data:email_engagement',
+		valueType: 'enum',
+		value: '',
 		operator: 'equals',
 	},
 	/* System Fields */
@@ -1851,6 +1994,14 @@ var AVAILABLE_CONSTRAINTS_META = [
 			{ label: 'Opens', value: 'message_open' },
 			{ label: 'Clickthroughs', value: 'message_click' },
 		]
+	},
+	{
+		type: 'data:email_engagement',
+		title: 'Email List Engagement',
+		choices: [
+			{ label: 'Has opened', value: 'message_open' },
+			{ label: 'Has clicked through', value: 'message_click' },
+		]
 	}
 ];
 
@@ -2043,6 +2194,8 @@ var ConstraintCollection = Backbone.Collection.extend({
 				return 'favorites';
 			} else if (subType === 'email_engagement_tally') {
 				return 'email_engagement_tally';
+			} else if (subType === 'email_engagement') {
+				return 'email_engagement';
 			} else if (subType.match(/_list$/)) {
 				return 'list';
 			} else {
@@ -2061,6 +2214,7 @@ var ConstraintCollection = Backbone.Collection.extend({
 		'favorites' : FavoriteConstraint,
 		'list'      : ListConstraint,
 		'email_engagement_tally': EmailEngagementTallyConstraint,
+		'email_engagement': EmailEngagementConstraint,
 	}
 
 });
@@ -2626,6 +2780,44 @@ var EmailEngagementTallyConstraintView = ConstraintView.extend({
 
 });
 
+var EmailEngagementConstraintView = ConstraintView.extend({
+
+	template: getTemplate('email_engagement'),
+
+	initialize: function(model, opts) {
+		ConstraintView.prototype.initialize.call(this, model, opts);
+
+		this.listenTo(this.model, 'loadGroupsStart', this.didLoadGroupsStart);
+		this.listenTo(this.model, 'loadGroupsSuccess', this.didLoadGroupsSuccess);
+		this.listenTo(this.model, 'loadGroupsError', this.didLoadGroupsError);
+
+		this.model.loadGroups();
+	},
+
+	updateConstraint: function(constraint) {
+		var operator    = $('.constraint-operator', this.el).val();
+		var conjunction = $('.constraint-conjunction', this.el).val();
+		var value       = $('.constraint-value', this.el).val();
+		var event_name  = $('.email-event', this.el).val();
+		value           = this.parseValue(value, constraint.get('valueType'));
+
+		var changes     = {
+			operator: operator,
+			value: value,
+			conjunction: conjunction,
+			event_name: event_name,
+		};
+
+		constraint.set(changes);
+		this.renderConjunctionGuide();
+	},
+
+	didLoadGroupsSuccess: function(groups) {
+		this.render();
+	},
+
+});
+
 var ListConstraintView = ConstraintView.extend({
 
 	template: getTemplate('list_constraint'),
@@ -2722,6 +2914,9 @@ var ActiveConstraintsView = Backbone.CollectionView.extend({
 
 			case 'email_engagement_tally':
 				return EmailEngagementTallyConstraintView;
+
+			case 'email_engagement':
+				return EmailEngagementConstraintView;
 
 			default:
 				return ConstraintView;

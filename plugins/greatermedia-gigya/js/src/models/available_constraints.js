@@ -25,6 +25,12 @@ var AVAILABLE_CONSTRAINTS = [
 		value: '1',
 		operator: 'equals',
 	},
+	{
+		type: 'data:email_engagement',
+		valueType: 'enum',
+		value: '',
+		operator: 'equals',
+	},
 	/* System Fields */
 	{
 		type: 'system:createdTimestamp',
@@ -794,6 +800,14 @@ var AVAILABLE_CONSTRAINTS_META = [
 		choices: [
 			{ label: 'Opens', value: 'message_open' },
 			{ label: 'Clickthroughs', value: 'message_click' },
+		]
+	},
+	{
+		type: 'data:email_engagement',
+		title: 'Email List Engagement',
+		choices: [
+			{ label: 'Has opened', value: 'message_open' },
+			{ label: 'Has clicked through', value: 'message_click' },
 		]
 	}
 ];

@@ -28,6 +28,9 @@ var ActiveConstraintsView = Backbone.CollectionView.extend({
 			case 'email_engagement_tally':
 				return EmailEngagementTallyConstraintView;
 
+			case 'email_engagement':
+				return EmailEngagementConstraintView;
+
 			default:
 				return ConstraintView;
 		}

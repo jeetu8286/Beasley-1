@@ -300,3 +300,13 @@
 .email-engagement-tally .email-event {
 	width: 35%;
 }
+
+.email-engagement .email-event {
+	width: 50%;
+	display: block;
+	margin: 1em 0;
+}
+
+.email-engagement .constraint-value {
+	width: 50%;
+}
