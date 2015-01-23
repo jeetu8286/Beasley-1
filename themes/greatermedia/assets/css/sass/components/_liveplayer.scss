@@ -568,7 +568,7 @@ category: Components
 .live-stream__btn--play:before, .live-stream__btn--resume:before {
 	position: absolute;
 	top: 50%;
-	left: 55%;
+	left: 54%;
 	@include transform(translate(-50%, -50%));
 	font-family: $icon-font !important;
 	font-size: ms(2);
