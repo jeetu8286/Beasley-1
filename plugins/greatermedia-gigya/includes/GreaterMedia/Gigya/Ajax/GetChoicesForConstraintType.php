@@ -15,6 +15,9 @@ class GetChoicesForConstraintType extends AjaxHandler {
 			case 'contest':
 				return $this->get_contest_choices();
 
+			case 'email_engagement':
+				return $this->get_email_group_choices();
+
 			case 'member_query':
 			case 'member_query_message_open':
 			case 'member_query_message_click':
@@ -79,6 +82,15 @@ class GetChoicesForConstraintType extends AjaxHandler {
 				'value' => strval( $group['group_id'] )
 			);
 		}
+
+		return $choices;
+	}
+
+	function get_email_group_choices() {
+		$choices = array(
+			'static' => $this->get_static_group_choices(),
+			'member_query' => $this->get_member_query_choices(),
+		);
 
 		return $choices;
 	}
