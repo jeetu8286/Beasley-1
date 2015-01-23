@@ -2062,6 +2062,7 @@ Curated posts for Featured Articles
   height: 100%;
   background-size: 100%;
   background-size: cover;
+  background-repeat: no-repeat;
   background-position: center center; }
   .featured__content--image:last-child {
     margin-right: 0; }
@@ -3920,7 +3921,8 @@ Link posts contain a link to an external site. They can also optionally have a f
   position: relative;
   background-size: 100%;
   background-size: cover;
-  background-position: center center; }
+  background-position: center center;
+  background-repeat: no-repeat; }
   @media screen and (min-width: 480px) {
     .entry2__thumbnail {
       float: left;
@@ -4196,7 +4198,8 @@ Link posts contain a link to an external site. They can also optionally have a f
   position: relative;
   background-position: center center;
   background-size: 100%;
-  background-size: cover; }
+  background-size: cover;
+  background-repeat: no-repeat; }
   .article__thumbnail:after {
     content: '';
     display: block;
@@ -5509,11 +5512,7 @@ category: Components
       visibility: visible;
       display: block;
       height: 100%;
-      padding-right: 1em;
-      padding-left: 1em;
       margin: 0;
-      overflow: hidden;
-      overflow-y: scroll;
       border-top: 1px solid #282827; } }
 
 .live-player--open .live-links {
@@ -5932,7 +5931,8 @@ category: Components - Ads
   position: relative;
   background-position: center center;
   background-size: 100%;
-  background-size: cover; }
+  background-size: cover;
+  background-repeat: no-repeat; }
   .contest__thumbnail:after {
     content: '';
     display: block;
@@ -8306,7 +8306,11 @@ category: Components - Shows
   margin: 0 -1px; }
 
 .widget--live-player {
-  margin: 0 1em 1em; }
+  padding: 0 1em;
+  margin: 0 0 1em;
+  height: 100% !important;
+  overflow: hidden;
+  overflow-y: scroll; }
   .live-player--open .widget--live-player {
     margin-bottom: 58px; }
 
@@ -8428,7 +8432,8 @@ a.social-share-link {
   position: relative;
   background-position: center center;
   background-size: 100%;
-  background-size: cover; }
+  background-size: cover;
+  background-repeat: no-repeat; }
   .article__thumbnail:after {
     content: '';
     display: block;
@@ -9917,7 +9922,9 @@ category: Components - Gallery Archive
       position: absolute;
       left: 0;
       top: 0; }
-  .gallery__feature:hover h3 {
+  .gallery__feature .gallery__featured--title {
+    color: #404041; }
+  .gallery__feature:hover .gallery__featured--title {
     color: #aa1c20; }
   @media screen and (min-width: 1024px) {
     .gallery__feature {
@@ -10557,7 +10564,8 @@ select {
       min-height: 800px; } }
   .profile-page .profile-page__sidebar,
   .profile-page .profile-page__content {
-    padding: 1em 7.0833333333335%; }
+    padding: 1em 7.0833333333335%;
+    background-color: #ffffff; }
     @media screen and (min-width: 1024px) {
       .profile-page .profile-page__sidebar,
       .profile-page .profile-page__content {
@@ -10568,7 +10576,7 @@ select {
   .profile-page .profile-page__sidebar {
     background-color: #561015;
     color: #ffffff;
-    background: url("../../images/profile_bg.jpg");
+    background-image: url("../../images/profile_bg.jpg");
     text-align: center; }
     @media screen and (min-width: 320px) {
       .profile-page .profile-page__sidebar {
@@ -12089,7 +12097,8 @@ category: Components - Article
   position: relative;
   background-position: center center;
   background-size: 100%;
-  background-size: cover; }
+  background-size: cover;
+  background-repeat: no-repeat; }
   .error__background:after {
     content: '';
     display: block;
