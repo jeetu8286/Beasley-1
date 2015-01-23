@@ -44,7 +44,8 @@
 	</div>
 </footer>
 </div> <!-- / site-wrap -->
-<div class="overlay-mask"></div>
+<div class="menu-overlay-mask"></div>
+<div class="header-search-overlay-mask"></div>
 <div class="busy-mask">
 	<i class="fa fa-spinner fa-spin"></i>
 </div>

@@ -11,7 +11,11 @@
 
 	<div class="gallery__grid--meta">
 		<h3 class="gallery__grid--title">
-			<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+			<a href="<?php the_permalink(); ?>">
+				<?php
+				the_title();
+				?>
+			</a>
 		</h3>
 	</div>
 
