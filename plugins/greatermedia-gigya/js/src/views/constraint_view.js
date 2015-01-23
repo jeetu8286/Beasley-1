@@ -5,7 +5,8 @@ var ConstraintView = Backbone.View.extend({
 	events: {
 		'click .copy-constraint': 'didCopyClick',
 		'click .remove-constraint': 'didRemoveClick',
-		'change': 'didChange'
+		'change': 'didChange',
+		'change .conjunction-guide': 'renderConjunctionGuide',
 	},
 
 	initialize: function(options) {
@@ -35,6 +36,14 @@ var ConstraintView = Backbone.View.extend({
 		$operatorField.select2();
 		$conjunctionField.select2();
 		*/
+
+	   this.renderConjunctionGuide();
+	},
+
+	renderConjunctionGuide: function() {
+	   var $conjunctionGuide = $('.conjunction-guide', this.el);
+	   var hasGuide = this.model.get('conjunction') === 'or';
+	   $conjunctionGuide.css('display', hasGuide ? 'block' : 'none');
 	},
 
 	didCopyClick: function(event) {
@@ -65,6 +74,7 @@ var ConstraintView = Backbone.View.extend({
 
 		//console.log('updateConstraint', changes);
 		constraint.set(changes);
+		this.renderConjunctionGuide();
 	},
 
 	parseValue: function(value, valueType) {

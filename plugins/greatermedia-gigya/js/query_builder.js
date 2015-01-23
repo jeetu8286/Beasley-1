@@ -102,7 +102,7 @@ __e( conjunctionItem ) +
 __e( conjunctionItem ) +
 '\n\t</option>\n\t';
  }) ;
-__p += '\n</select>\n';
+__p += '\n</select>\n\n<div class="conjunction-guide">\n\t<p><span class="arrow-down"></span>OR any of the following conditions</p>\n</div>\n\n';
 
 }
 return __p
@@ -317,17 +317,17 @@ __e( operatorItem ) +
  }) ;
 __p += '\n\t</select>\n\n\t<input type="text" class="constraint-value constraint-value-text" value="' +
 __e( value ) +
-'" />\n\n</div>\n\n<select class="constraint-conjunction">\n\t';
+'" />\n\n\t<select class="constraint-conjunction">\n\t\t';
  _.each(view.conjunctions, function(conjunctionItem) { ;
-__p += '\n\t<option value="' +
+__p += '\n\t\t<option value="' +
 __e( conjunctionItem ) +
 '" ' +
 ((__t = ( conjunctionItem === conjunction ? 'selected="selected"' : ''  )) == null ? '' : __t) +
-'">\n\t' +
+'">\n\t\t' +
 __e( conjunctionItem ) +
-'\n\t</option>\n\t';
+'\n\t\t</option>\n\t\t';
  }) ;
-__p += '\n</select>\n\n';
+__p += '\n\t</select>\n</div>\n\n<div class="conjunction-guide">\n\t<p><span class="arrow-down"></span>OR any of the following conditions</p>\n</div>\n';
 
 }
 return __p
@@ -340,7 +340,7 @@ function print() { __p += __j.call(arguments, '') }
 with (obj) {
 __p += '<ul class="constraint-toolbar">\n\t<li>\n\t\t<a\n\t\t\talt="f105"\n\t\t\tclass="dashicons dashicons-admin-page copy-constraint"\n\t\t\thref="#"\n\t\t\ttitle="Duplicate"\n\t\t/>\n\n\t\t<a\n\t\t\talt="f105"\n\t\t\tclass="dashicons dashicons-trash remove-constraint"\n\t\t\thref="#"\n\t\t\ttitle="Remove"\n\t\t/>\n\t</li>\n</ul>\n\n<p class="constraint-title">\n\t' +
 __e( title ) +
-'\n</p>\n\n<div class="entry-select-group">\n\t<label><strong>Category: </strong></label>\n\t<select class="like-category" style="width: 100%">\n\t\t';
+'\n</p>\n\n<div class="entry-select-group">\n\t<label><strong>Category: </strong></label>\n\t<select class="like-category">\n\t\t';
  _.each(categories, function(categoryItem) { ;
 __p += '\n\t\t<option value="' +
 __e( categoryItem.value ) +
@@ -362,17 +362,17 @@ __e( operatorItem ) +
  }) ;
 __p += '\n\t</select>\n\n\t<input type="text" class="constraint-value constraint-value-text" value="' +
 __e( value ) +
-'" />\n\n</div>\n\n<select class="constraint-conjunction">\n\t';
+'" />\n\n\t<select class="constraint-conjunction">\n\t\t';
  _.each(view.conjunctions, function(conjunctionItem) { ;
-__p += '\n\t<option value="' +
+__p += '\n\t\t<option value="' +
 __e( conjunctionItem ) +
 '" ' +
 ((__t = ( conjunctionItem === conjunction ? 'selected="selected"' : ''  )) == null ? '' : __t) +
-'">\n\t' +
+'">\n\t\t' +
 __e( conjunctionItem ) +
-'\n\t</option>\n\t';
+'\n\t\t</option>\n\t\t';
  }) ;
-__p += '\n</select>\n';
+__p += '\n\t</select>\n</div>\n\n<div class="conjunction-guide">\n\t<p><span class="arrow-down"></span>OR any of the following conditions</p>\n</div>\n';
 
 }
 return __p
@@ -427,7 +427,7 @@ __e( conjunctionItem ) +
 __e( conjunctionItem ) +
 '\n\t</option>\n\t';
  }) ;
-__p += '\n</select>\n';
+__p += '\n</select>\n\n<div class="conjunction-guide">\n\t<p><span class="arrow-down"></span>OR any of the following conditions</p>\n</div>\n';
 
 }
 return __p
@@ -2171,7 +2171,8 @@ var ConstraintView = Backbone.View.extend({
 	events: {
 		'click .copy-constraint': 'didCopyClick',
 		'click .remove-constraint': 'didRemoveClick',
-		'change': 'didChange'
+		'change': 'didChange',
+		'change .conjunction-guide': 'renderConjunctionGuide',
 	},
 
 	initialize: function(options) {
@@ -2201,6 +2202,14 @@ var ConstraintView = Backbone.View.extend({
 		$operatorField.select2();
 		$conjunctionField.select2();
 		*/
+
+	   this.renderConjunctionGuide();
+	},
+
+	renderConjunctionGuide: function() {
+	   var $conjunctionGuide = $('.conjunction-guide', this.el);
+	   var hasGuide = this.model.get('conjunction') === 'or';
+	   $conjunctionGuide.css('display', hasGuide ? 'block' : 'none');
 	},
 
 	didCopyClick: function(event) {
@@ -2231,6 +2240,7 @@ var ConstraintView = Backbone.View.extend({
 
 		//console.log('updateConstraint', changes);
 		constraint.set(changes);
+		this.renderConjunctionGuide();
 	},
 
 	parseValue: function(value, valueType) {
@@ -2501,6 +2511,7 @@ var LikeConstraintView = ConstraintView.extend({
 		};
 
 		constraint.set(changes);
+		this.renderConjunctionGuide();
 	},
 
 });
@@ -2566,6 +2577,7 @@ var FavoriteConstraintView = ConstraintView.extend({
 		};
 
 		constraint.set(changes);
+		this.renderConjunctionGuide();
 	},
 
 

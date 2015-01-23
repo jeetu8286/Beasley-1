@@ -55,13 +55,15 @@
 
 	<input type="text" class="constraint-value constraint-value-text" value="<%- value %>" />
 
+	<select class="constraint-conjunction">
+		<% _.each(view.conjunctions, function(conjunctionItem) { %>
+		<option value="<%- conjunctionItem %>" <%= conjunctionItem === conjunction ? 'selected="selected"' : ''  %>">
+		<%- conjunctionItem %>
+		</option>
+		<% }) %>
+	</select>
 </div>
 
-<select class="constraint-conjunction">
-	<% _.each(view.conjunctions, function(conjunctionItem) { %>
-	<option value="<%- conjunctionItem %>" <%= conjunctionItem === conjunction ? 'selected="selected"' : ''  %>">
-	<%- conjunctionItem %>
-	</option>
-	<% }) %>
-</select>
-
+<div class="conjunction-guide">
+	<p><span class="arrow-down"></span>OR any of the following conditions</p>
+</div>
