@@ -60,7 +60,7 @@ function print() { __p += __j.call(arguments, '') }
 with (obj) {
 __p += '<ul class="constraint-toolbar">\n\t<li>\n\t\t<a\n\t\t\talt="f105"\n\t\t\tclass="dashicons dashicons-admin-page copy-constraint"\n\t\t\thref="#"\n\t\t\ttitle="Duplicate"\n\t\t/>\n\n\t\t<a\n\t\t\talt="f105"\n\t\t\tclass="dashicons dashicons-trash remove-constraint"\n\t\t\thref="#"\n\t\t\ttitle="Remove"\n\t\t/>\n\t</li>\n</ul>\n\n<p class="constraint-title">\n\t' +
 __e( title ) +
-'\n</p>\n\n<select class="constraint-operator" style="width: 35%">\n\t';
+'\n</p>\n\n<select class="constraint-operator">\n\t';
  _.each(view.operatorsFor(valueType, type), function(operatorItem) { ;
 __p += '\n\t<option value="' +
 __e( operatorItem ) +
@@ -72,7 +72,7 @@ __e( operatorItem ) +
  }) ;
 __p += '\n</select>\n\n';
  if (view.hasChoices()) { ;
-__p += '\n\t<select class="constraint-value" style="width: 45%">\n\t\t';
+__p += '\n\t<select class="constraint-value">\n\t\t';
  _.each(choices, function(choiceItem) { ;
 __p += '\n\t\t<option value="' +
 __e( choiceItem.value ) +
@@ -92,7 +92,7 @@ __p += '\n\t<input type="text" class="constraint-value constraint-value-text" va
 __e( value ) +
 '" />\n';
  } ;
-__p += '\n\n<select class="constraint-conjunction" style="width: 15%">\n\t';
+__p += '\n\n<select class="constraint-conjunction">\n\t';
  _.each(view.conjunctions, function(conjunctionItem) { ;
 __p += '\n\t<option value="' +
 __e( conjunctionItem ) +
@@ -168,7 +168,7 @@ obj || (obj = {});
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 with (obj) {
-__p += '<label><strong>Select Answer: </strong></label>\n<select class="constraint-operator" style="width: 35%">\n\t';
+__p += '<label><strong>Select Answer: </strong></label>\n<select class="constraint-operator">\n\t';
  _.each(view.operatorsFor(valueType), function(operatorItem) { ;
 __p += '\n\t<option value="' +
 __e( operatorItem ) +
@@ -180,7 +180,7 @@ __e( operatorItem ) +
  }) ;
 __p += '\n</select>\n\n';
  if (view.hasChoices()) { ;
-__p += '\n\t<select class="constraint-value" style="width: 45%">\n\t\t';
+__p += '\n\t<select class="constraint-value">\n\t\t';
  _.each(choices, function(choiceItem) { ;
 __p += '\n\t\t<option value="' +
 __e( choiceItem.value ) +
@@ -204,7 +204,7 @@ __p += '\n\t<input type="text" class="constraint-value constraint-value-text" va
 __e( value ) +
 '" />\n';
  } ;
-__p += '\n\n<select class="constraint-conjunction" style="width: 15%">\n\t';
+__p += '\n\n<select class="constraint-conjunction">\n\t';
  _.each(view.conjunctions, function(conjunctionItem) { ;
 __p += '\n\t<option value="' +
 __e( conjunctionItem ) +
@@ -226,7 +226,7 @@ var __t, __p = '', __e = _.escape;
 with (obj) {
 __p += '<ul class="constraint-toolbar">\n\t<li>\n\t\t<a\n\t\t\talt="f105"\n\t\t\tclass="dashicons dashicons-admin-page copy-constraint"\n\t\t\thref="#"\n\t\t\ttitle="Duplicate"\n\t\t/>\n\n\t\t<a\n\t\t\talt="f105"\n\t\t\tclass="dashicons dashicons-trash remove-constraint"\n\t\t\thref="#"\n\t\t\ttitle="Remove"\n\t\t/>\n\t</li>\n</ul>\n\n<p class="constraint-title">\n\t' +
 __e( title ) +
-'\n</p>\n\n<div class="entry-select-group">\n\t<label><strong>Select Contest: </strong></label>\n\t<select class="entry-select-choice entry-select-type">\n\t</select>\n</div>\n\n<div class="entry-select-group">\n\t<label><strong>Select Question: </strong></label>\n\t<select class="entry-select-choice entry-select-field">\n\t</select>\n</div>\n\n<div class="entry-answer-group">\n\t<label><strong>Loading ... </strong></label>\n</div>\n';
+'\n</p>\n\n<div class="entry-select-group">\n\t<label><strong>Select Contest: </strong></label>\n\t<select class="entry-select-choice entry-select-type">\n\t</select>\n</div>\n\n<div class="entry-select-group">\n\t<label><strong>Select Question: </strong></label>\n\t<select class="entry-select-choice entry-select-field">\n\t</select>\n</div>\n\n<div class="entry-answer-group">\n\t<label><strong>Loading ... </strong></label>\n\t<p>&nbsp;</p>\n</div>\n';
 
 }
 return __p
@@ -285,7 +285,7 @@ function print() { __p += __j.call(arguments, '') }
 with (obj) {
 __p += '<ul class="constraint-toolbar">\n\t<li>\n\t\t<a\n\t\t\talt="f105"\n\t\t\tclass="dashicons dashicons-admin-page copy-constraint"\n\t\t\thref="#"\n\t\t\ttitle="Duplicate"\n\t\t/>\n\n\t\t<a\n\t\t\talt="f105"\n\t\t\tclass="dashicons dashicons-trash remove-constraint"\n\t\t\thref="#"\n\t\t\ttitle="Remove"\n\t\t/>\n\t</li>\n</ul>\n\n<p class="constraint-title">\n\t' +
 __e( title ) +
-'\n</p>\n\n<div class="entry-select-group">\n\t<label><strong>Favorite Type: </strong></label>\n\t<select class="favorite-type" style="width: 100%">\n\t\t';
+'\n</p>\n\n<div class="entry-select-group">\n\t<label><strong>Favorite Type: </strong></label>\n\t<select class="favorite-type">\n\t\t';
  _.each(favoriteTypes, function(favoriteItem) { ;
 __p += '\n\t\t<option value="' +
 __e( favoriteItem.value ) +
@@ -295,7 +295,7 @@ __e( favoriteItem.value ) +
 __e( favoriteItem.label ) +
 '\n\t\t</option>\n\t\t';
  }) ;
-__p += '\n\t</select>\n</div>\n\n<div class="entry-select-group">\n\t<label><strong>Category: </strong></label>\n\t<select class="favorite-category" style="width: 100%">\n\t\t';
+__p += '\n\t</select>\n</div>\n\n<div class="entry-select-group">\n\t<label><strong>Category: </strong></label>\n\t<select class="favorite-category">\n\t\t';
  _.each(categories, function(categoryItem) { ;
 __p += '\n\t\t<option value="' +
 __e( categoryItem.value ) +
@@ -305,7 +305,7 @@ __e( categoryItem.value ) +
 __e( categoryItem.label ) +
 '\n\t\t</option>\n\t\t';
  }) ;
-__p += '\n\t</select>\n</div>\n\n<div class="entry-answer-group">\n\t<label><strong>Favorite: </strong></label>\n\n\t<select class="constraint-operator" style="width: 35%">\n\t\t';
+__p += '\n\t</select>\n</div>\n\n<div class="entry-answer-group">\n\t<label><strong>Favorite: </strong></label>\n\n\t<select class="constraint-operator">\n\t\t';
  _.each(view.operatorsFor(valueType), function(operatorItem) { ;
 __p += '\n\t\t<option value="' +
 __e( operatorItem ) +
@@ -317,17 +317,17 @@ __e( operatorItem ) +
  }) ;
 __p += '\n\t</select>\n\n\t<input type="text" class="constraint-value constraint-value-text" value="' +
 __e( value ) +
-'" />\n\n\t<select class="constraint-conjunction" style="width: 15%">\n\t\t';
+'" />\n\n</div>\n\n<select class="constraint-conjunction">\n\t';
  _.each(view.conjunctions, function(conjunctionItem) { ;
-__p += '\n\t\t<option value="' +
+__p += '\n\t<option value="' +
 __e( conjunctionItem ) +
 '" ' +
 ((__t = ( conjunctionItem === conjunction ? 'selected="selected"' : ''  )) == null ? '' : __t) +
-'">\n\t\t' +
+'">\n\t' +
 __e( conjunctionItem ) +
-'\n\t\t</option>\n\t\t';
+'\n\t</option>\n\t';
  }) ;
-__p += '\n\t</select>\n</div>\n\n';
+__p += '\n</select>\n\n';
 
 }
 return __p
@@ -350,7 +350,7 @@ __e( categoryItem.value ) +
 __e( categoryItem.label ) +
 '\n\t\t</option>\n\t\t';
  }) ;
-__p += '\n\t</select>\n</div>\n\n<div class="entry-answer-group">\n\t<label><strong>Like: </strong></label>\n\n\t<select class="constraint-operator" style="width: 35%">\n\t\t';
+__p += '\n\t</select>\n</div>\n\n<div class="entry-answer-group">\n\t<label><strong>Like: </strong></label>\n\n\t<select class="constraint-operator">\n\t\t';
  _.each(view.operatorsFor(valueType), function(operatorItem) { ;
 __p += '\n\t\t<option value="' +
 __e( operatorItem ) +
@@ -362,17 +362,17 @@ __e( operatorItem ) +
  }) ;
 __p += '\n\t</select>\n\n\t<input type="text" class="constraint-value constraint-value-text" value="' +
 __e( value ) +
-'" />\n\n\t<select class="constraint-conjunction" style="width: 15%">\n\t\t';
+'" />\n\n</div>\n\n<select class="constraint-conjunction">\n\t';
  _.each(view.conjunctions, function(conjunctionItem) { ;
-__p += '\n\t\t<option value="' +
+__p += '\n\t<option value="' +
 __e( conjunctionItem ) +
 '" ' +
 ((__t = ( conjunctionItem === conjunction ? 'selected="selected"' : ''  )) == null ? '' : __t) +
-'">\n\t\t' +
+'">\n\t' +
 __e( conjunctionItem ) +
-'\n\t\t</option>\n\t\t';
+'\n\t</option>\n\t';
  }) ;
-__p += '\n\t</select>\n</div>\n';
+__p += '\n</select>\n';
 
 }
 return __p
@@ -385,7 +385,7 @@ function print() { __p += __j.call(arguments, '') }
 with (obj) {
 __p += '<ul class="constraint-toolbar">\n\t<li>\n\t\t<a\n\t\t\talt="f105"\n\t\t\tclass="dashicons dashicons-admin-page copy-constraint"\n\t\t\thref="#"\n\t\t\ttitle="Duplicate"\n\t\t/>\n\n\t\t<a\n\t\t\talt="f105"\n\t\t\tclass="dashicons dashicons-trash remove-constraint"\n\t\t\thref="#"\n\t\t\ttitle="Remove"\n\t\t/>\n\t</li>\n</ul>\n\n<p class="constraint-title">\n\t' +
 __e( title ) +
-'\n</p>\n\n<select class="constraint-operator" style="width: 35%">\n\t';
+'\n</p>\n\n<select class="constraint-operator">\n\t';
  _.each(view.operatorsFor(valueType, type), function(operatorItem) { ;
 __p += '\n\t<option value="' +
 __e( operatorItem ) +
@@ -397,7 +397,7 @@ __e( operatorItem ) +
  }) ;
 __p += '\n</select>\n\n';
  if (view.hasChoices()) { ;
-__p += '\n\t<select class="constraint-value" style="width: 45%">\n\t\t';
+__p += '\n\t<select class="constraint-value">\n\t\t';
  _.each(choices, function(choiceItem) { ;
 __p += '\n\t\t<option value="' +
 __e( choiceItem.value ) +
@@ -417,7 +417,7 @@ __p += '\n\t<input type="text" class="constraint-value constraint-value-text" va
 __e( value ) +
 '" />\n';
  } ;
-__p += '\n\n<select class="constraint-conjunction" style="width: 15%">\n\t';
+__p += '\n\n<select class="constraint-conjunction">\n\t';
  _.each(view.conjunctions, function(conjunctionItem) { ;
 __p += '\n\t<option value="' +
 __e( conjunctionItem ) +

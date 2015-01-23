@@ -44,8 +44,16 @@
 .active_constraints li {
 	border: 1px solid #ccc;
 	background-color: #F8F8F8;
-	padding: 1em;
-	margin: 0 1em 1em 1em;
+	padding: 1em 1em 1em 1em;
+	margin: 0 1em 4em 1em;
+}
+
+.active_constraints li>div {
+	margin-bottom: -2em;
+}
+
+.active_constraints li:last-child .constraint-conjunction {
+	visibility: hidden;
 }
 
 .active_constraints p {
@@ -229,4 +237,22 @@
 
 #post-body #timestamp:before {
 	content: '\f504' !important;
+}
+
+.constraint-conjunction {
+	position: relative;
+	top: 2em;
+	left: 45%;
+}
+
+.constraint-operator {
+	width: 30%;
+}
+
+.constraint-value {
+	width: 68.3%;
+}
+
+.favorite-type, .favorite-category {
+	width: 100%;
 }
