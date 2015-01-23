@@ -44,7 +44,8 @@
 	</div>
 </footer>
 </div> <!-- / site-wrap -->
-<div class="overlay-mask"></div>
+<div class="menu-overlay-mask"></div>
+<div class="header-search-overlay-mask"></div>
 <?php wp_footer(); ?>
 </body>
 </html>

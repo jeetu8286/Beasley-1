@@ -118,10 +118,12 @@ class EmmaGroupSyncer {
 		$api           = $this->get_emma_api();
 		$gigya_account = $this->get_gigya_account();
 		$member = array(
-			'email'      => $email,
-			'fields' => array(
-				'first_name' => $gigya_account['profile']['firstName'],
-				'last_name'  => $gigya_account['profile']['lastName'],
+			'email'             => $email,
+			'fields'            => array(
+				'first_name'    => $gigya_account['profile']['firstName'],
+				'last_name'     => $gigya_account['profile']['lastName'],
+				'birthday'      => $this->get_birth_day( $gigya_account['profile'] ),
+				'gigya_user_id' => $gigya_account['UID'],
 			)
 		);
 
@@ -129,6 +131,10 @@ class EmmaGroupSyncer {
 		$json     = json_decode( $response, true );
 
 		return $json['member_id'];
+	}
+
+	function get_birth_day( $profile ) {
+		return $profile['birthMonth'] . '/' . $profile['birthDay'] . '/' . $profile['birthYear'];
 	}
 
 	function get_emma_user_id() {
