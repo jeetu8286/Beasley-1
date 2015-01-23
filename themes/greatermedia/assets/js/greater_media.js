@@ -395,6 +395,20 @@
 
 		current_url = location.href;
 	});
+
+	/**
+	 * Add "is-busy" class to the body when a Pjax request starts.
+	 */
+	$document.bind( 'pjax:start', function () {
+		$( 'body').addClass( 'is-busy' );
+	} );
+
+	/**
+	 * Remove the "is-busy" class from the body when a Pjax request ends.
+	 */
+	$document.bind( 'pjax:end', function () {
+		$( 'body').removeClass( 'is-busy' );
+	} );
 })(jQuery, location);
 (function() {
 
