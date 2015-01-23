@@ -302,20 +302,20 @@
 	 * @param {MouseEvent} e
 	 */
 	function toggleCollapsedElement(e) {
-		var target = document.querySelector(this.getAttribute('data-target')),
-			currentText = this.innerText,
-			newText = this.getAttribute('data-alt-text');
+		var target = $($(this).attr('data-target')).get(0),
+			currentText = $(this).html(),
+			newText = $(this).attr('data-alt-text');
 
 		e.preventDefault();
 
 		target.style.display = target.style.display != 'none' ? 'none' : 'block';
 
-		this.innerText = newText;
-		this.setAttribute('data-alt-text', currentText);
+		$(this).html(newText);
+		$(this).attr('data-alt-text', currentText);
 	}
 
 	if (collapseToggle != null) {
-		addEventHandler(collapseToggle, elemClick, toggleCollapsedElement);
+		$(collapseToggle ).click(toggleCollapsedElement);
 	}
 
 	/**
@@ -343,7 +343,7 @@
 	}
 
 	function liveLinksMobileState() {
-		if (body.classList.contains('live-player--open')) {
+		if ( $('body').hasClass('live-player--open')) {
 			document.body.style.overflow = 'hidden';
 			html.style.overflow = 'hidden';
 		} else {
@@ -457,7 +457,7 @@
 	function init_menu_overlay() {
 		var $menu = jQuery(document.querySelector('.header__nav--list')),
 			$secondary = jQuery(document.querySelector('.header__secondary')),
-			$overlay = jQuery(document.querySelector('.overlay-mask'));
+			$overlay = jQuery(document.querySelector('.menu-overlay-mask'));
 
 		$menu.on('mouseover', '.menu-item-has-children, .header__account--small', function (e) {
 			$overlay.addClass('is-visible');
