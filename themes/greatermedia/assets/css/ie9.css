@@ -10,10 +10,12 @@
   margin-top: 2px; }
 
 .type-contest .entry2__thumbnail--end-date, .type-contest .entry2__thumbnail--contest-type {
+  font-size: 16px;
   font-size: 1rem; }
 
 .entry2__thumbnail--event-date,
 .entry2__thumbnail--contest-type {
+  font-size: 16px !important;
   font-size: 1rem !important; }
 
 .highlights__community--title {
