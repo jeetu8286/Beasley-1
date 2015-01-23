@@ -57,6 +57,7 @@
 }
 
 .active_constraints li:last-child .constraint-conjunction {
+	opacity: 1;
 	visibility: hidden;
 }
 
@@ -254,9 +255,11 @@
 }
 
 .constraint-value {
-	width: 68.3%;
+	width: 67%;
 }
 
 .favorite-type, .favorite-category {
 	width: 100%;
 }
+
+
