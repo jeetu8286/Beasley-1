@@ -162,11 +162,7 @@ Community Highlights and Events
 	overflow: hidden;
 	
 	// Force aspect ratio.
-	padding-top: 100%;
-	
-	background-size: 100%;
-	background-size: cover; 
-	background-position: center center;
+	@include propotional-thumbnail( 100% );
 }
 
 .highlights__community--thumb:after {
@@ -293,12 +289,7 @@ Community Highlights and Events
 .highlights__event--thumb {
 	@include span-columns(2 of 6);
 	
-	position: relative; 
-	height: 100%;
-	overflow: hidden; 
-	background-size: 100%;
-	background-size: cover;
-	background-position: center center;
+	@include propotional-thumbnail( 100% );
 	
 	@include bp(large) {
 		@include span-columns(2 of 6);
