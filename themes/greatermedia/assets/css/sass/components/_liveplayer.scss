@@ -1223,9 +1223,10 @@ category: Components
 	}
 }
 
-.live-link__type--audio, .live-link__type--gallery, .live-link__type--image, .live-link__type--link, .live-link__type--standard, .live-link__type--video {
+.live-link__type--audio, .live-link__type--gallery, .live-link__type--image, .live-link__type--link, .live-link__type--standard, .live-link__type--video, .live-link__song {
 	display: block;
 	position: relative;
+	padding: 13px 25px;
 }
 
 .live-link__song {
@@ -1296,9 +1297,9 @@ category: Components
 }
 
 .live-link__type--show {
-	border-top: 1px solid #282827;
-	margin-left: -30px;
-	margin-right: -30px;
+	padding-top: 16px;
+	padding-bottom: 16px;
+	border-bottom: 1px solid #282827;
 	background: -webkit-linear-gradient(rgba(50, 48, 48, 0.35), rgb(0, 0, 0)); /* For Safari 5.1 to 6.0 */
 	background: -o-linear-gradient(rgba(50, 48, 48, 0.35), rgb(0, 0, 0)); /* For Opera 11.1 to 12.0 */
 	background: -moz-linear-gradient(rgba(50, 48, 48, 0.35), rgb(0, 0, 0)); /* For Firefox 3.6 to 15 */
@@ -1320,6 +1321,10 @@ category: Components
 		@include bp(large) {
 			font-size: ms(-1);
 		}
+	}
+
+	.live-link__type--show & {
+		padding-top: 0;
 	}
 }
 
