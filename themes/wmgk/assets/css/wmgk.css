@@ -4745,9 +4745,9 @@ category: Components
   height: 58px;
   padding: 12px 0;
   margin-right: 5px;
-  -webkit-transition: width 500ms ease-in-out;
-  -moz-transition: width 500ms ease-in-out;
-  transition: width 500ms ease-in-out; }
+  -webkit-transition: width 200ms ease-in-out 200ms;
+  -moz-transition: width 200ms ease-in-out 200ms;
+  transition: width 200ms ease-in-out 200ms; }
   @media screen and (min-width: 768px) {
     .live-stream__player {
       position: relative;
@@ -4759,9 +4759,9 @@ category: Components
   .live-stream__player.audio__playing {
     width: 73px;
     padding-bottom: 0;
-    -webkit-transition: width 500ms ease-in-out;
-    -moz-transition: width 500ms ease-in-out;
-    transition: width 500ms ease-in-out; }
+    -webkit-transition: width 200ms ease-in-out 200ms;
+    -moz-transition: width 200ms ease-in-out 200ms;
+    transition: width 200ms ease-in-out 200ms; }
     @media screen and (min-width: 768px) {
       .live-stream__player.audio__playing {
         width: 100%;
@@ -5016,7 +5016,7 @@ category: Components
 .live-stream__btn--play:before, .live-stream__btn--resume:before {
   position: absolute;
   top: 50%;
-  left: 55%;
+  left: 54%;
   -webkit-transform: translate(-50%, -50%);
   -moz-transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
@@ -5055,9 +5055,9 @@ category: Components
   -webkit-transition: 500ms;
   -moz-transition: 500ms;
   transition: 500ms;
-  -webkit-transition-delay: 1s;
-  -moz-transition-delay: 1s;
-  transition-delay: 1s; }
+  -webkit-transition-delay: 200ms;
+  -moz-transition-delay: 200ms;
+  transition-delay: 200ms; }
   .live-stream__player.audio__playing .live-stream__btn--play {
     display: block;
     position: absolute;
@@ -5083,7 +5083,10 @@ category: Components
     transform-style: preserve-3d;
     -webkit-transition: 200ms;
     -moz-transition: 200ms;
-    transition: 200ms; }
+    transition: 200ms;
+    -webkit-transition-delay: 300ms;
+    -moz-transition-delay: 300ms;
+    transition-delay: 300ms; }
     .live-stream__btn--play.live-player__login:before {
       left: 50%;
       content: "\e626" !important; }
@@ -5101,9 +5104,9 @@ category: Components
   display: none;
   visibility: hidden;
   float: left;
-  -webkit-transition: all 2s ease-in-out 500ms;
-  -moz-transition: all 2s ease-in-out 500ms;
-  transition: all 2s ease-in-out 500ms; }
+  -webkit-transition: all 500ms ease-in-out 500ms;
+  -moz-transition: all 500ms ease-in-out 500ms;
+  transition: all 500ms ease-in-out 500ms; }
   @media screen and (min-width: 768px) {
     .live-stream__btn--pause {
       float: none; } }
@@ -5111,9 +5114,9 @@ category: Components
     display: block;
     visibility: visible;
     float: left;
-    -webkit-transition: all 2s ease-in-out 500ms;
-    -moz-transition: all 2s ease-in-out 500ms;
-    transition: all 2s ease-in-out 500ms; }
+    -webkit-transition: all 500ms ease-in-out 500ms;
+    -moz-transition: all 500ms ease-in-out 500ms;
+    transition: all 500ms ease-in-out 500ms; }
     @media screen and (min-width: 768px) {
       .live-stream__player.audio__playing .live-stream__btn--pause {
         float: none; } }
@@ -5125,12 +5128,12 @@ category: Components
   .live-stream__btn--pause.live-player__muted {
     display: none; }
 
-.live-stream__btn--resume.resume__audio {
+.live-stream__btn--resume.resume__audio, .live-stream__btn--resume.resume__live {
   display: block;
   position: absolute;
   left: 0; }
   @media screen and (min-width: 768px) {
-    .live-stream__btn--resume.resume__audio {
+    .live-stream__btn--resume.resume__audio, .live-stream__btn--resume.resume__live {
       position: relative;
       left: auto; } }
 .live-stream__btn--resume.live-player__muted {
@@ -7145,7 +7148,7 @@ category: Components - Shows
   font-size: 1.80203em; }
 
 .podcast__btn--play:before {
-  left: 55%; }
+  left: 54%; }
 
 .podcast__btn--play:before {
   content: "\e606" !important; }

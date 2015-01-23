@@ -854,7 +854,6 @@
 		addEventHandler(liveLinksWidget, elemClick, liveLinksClose);
 	}
 	if (playBtn != null || resumeBtn != null) {
-		addEventHandler(playBtn, elemClick, playerActive);
 		addEventHandler(resumeBtn, elemClick, playerActive);
 	}
 	if (pauseBtn != null) {
