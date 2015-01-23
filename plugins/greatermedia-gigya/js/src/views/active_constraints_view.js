@@ -5,7 +5,7 @@ var ActiveConstraintsView = Backbone.CollectionView.extend({
 
 	events: {
 		'copyConstraint': 'copyConstraint',
-		'removeConstraint': 'removeConstraint'
+		'removeConstraint': 'removeConstraint',
 	},
 
 	_getModelViewConstructor: function(model) {
@@ -25,6 +25,12 @@ var ActiveConstraintsView = Backbone.CollectionView.extend({
 			case 'list':
 				return ListConstraintView;
 
+			case 'email_engagement_tally':
+				return EmailEngagementTallyConstraintView;
+
+			case 'email_engagement':
+				return EmailEngagementConstraintView;
+
 			default:
 				return ConstraintView;
 		}
@@ -33,6 +39,7 @@ var ActiveConstraintsView = Backbone.CollectionView.extend({
 	initialize: function(options) {
 		Backbone.CollectionView.prototype.initialize.call(this, options);
 		this.listenTo(this.collection, 'add', this.didAdd);
+		this.listenTo(this, 'sortStop', this.didSortStop);
 	},
 
 	copyConstraint: function(event, constraint) {
@@ -43,7 +50,14 @@ var ActiveConstraintsView = Backbone.CollectionView.extend({
 	},
 
 	removeConstraint: function(event, constraint) {
-		this.collection.remove(constraint);
+		var view    = this.viewManager.findByModel(constraint);
+		var $el     = view.$el;
+		var $parent = $el.parent();
+
+		var self = this;
+		$parent.slideUp(function() {
+			self.collection.remove(constraint);
+		});
 	},
 
 	render: function() {
@@ -52,7 +66,16 @@ var ActiveConstraintsView = Backbone.CollectionView.extend({
 
 	didAdd: function(model) {
 		var view = this.viewManager.findByModel(model);
-		this.scrollTo(view.$el);
+		var $el = view.$el;
+		//var $parent = $el.parent();
+
+		this.scrollTo($el);
+
+		$el.css('opacity', 0);
+		$el.animate({opacity: 1}, 500);
+
+		var $parent = $el.parent();
+		$parent.fadeIn();
 	},
 
 	scrollTo: function($target) {
@@ -63,5 +86,9 @@ var ActiveConstraintsView = Backbone.CollectionView.extend({
 
 		root.animate(params, 500);
 	},
+
+	didSortStop: function(event) {
+		this.collection.save();
+	}
 
 });
