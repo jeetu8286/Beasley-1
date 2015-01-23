@@ -20,7 +20,8 @@
 }
  
 .entry2__thumbnail {	
-	margin-bottom: $base-line-height * .75; 
+	margin-bottom: $base-line-height * .75;
+	@include proportional-thumbnail( 66% );
 	
  	@include bp(small) {
 		@include span-columns(2 of 6);
@@ -39,21 +40,10 @@
 	
 	// Force aspect ratio 
 	position: relative;
-	
-	&:after {
-		content: '';
-		display: block;
-		padding-top: 66.666%;
-	}
-	
+		
 	.has-excerpt &:after {
-		padding-top: 75%;
+		@include proportional-thumbnail( 75% );
 	}
-	
-	background-size: 100%;
-	background-size: cover;
-	background-position: center center;
-	background-repeat: no-repeat;
 }
 
 	.entry2__thumbnail__overlay {
