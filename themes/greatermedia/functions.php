@@ -9,7 +9,7 @@
  * theme's file, so the child theme functions would be used.
  *
  * @package Greater Media
- * @since   0.1.3
+ * @since   0.1.0
  */
 
 // Useful global constants
@@ -20,7 +20,7 @@
 if ( defined( 'GMR_PARENT_ENV' ) && 'dev' == GMR_PARENT_ENV ) {
 	define( 'GREATERMEDIA_VERSION', time() );
 } else {
-	define( 'GREATERMEDIA_VERSION', '0.1.3' );
+	define( 'GREATERMEDIA_VERSION', '0.1.4' );
 }
 
 add_theme_support( 'homepage-curation' );
