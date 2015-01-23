@@ -1,3 +1,21 @@
+var getSubscribedToListChoices = function() {
+	var emmaGroups = window.member_query_meta.emma_groups;
+	var n          = emmaGroups.length;
+	var choices    = [];
+
+	for (var i = 0; i < n; i++) {
+		group = emmaGroups[i];
+		choice = {
+			label: group.group_name,
+			value: group.group_id
+		};
+
+		choices.push(choice);
+	}
+
+	return choices;
+};
+
 var AVAILABLE_CONSTRAINTS = [
 
 
@@ -75,11 +93,13 @@ var AVAILABLE_CONSTRAINTS = [
 		type: 'profile:city',
 		valueType: 'string'
 	},
+	/*
 	{
 		type: 'profile:country',
 		valueType: 'string',
 		value: 'United States'
 	},
+	*/
 	{
 		type: 'profile:zip',
 		valueType: 'string',
@@ -125,11 +145,17 @@ var AVAILABLE_CONSTRAINTS = [
 		entryTypeID: -1,
 		entryFieldID: -1
 	},
+	{
+		type: 'data:contest_list',
+		valueType: 'enum',
+		value: ''
+	},
+
 
 	{
 		type: 'data:comment_count',
 		valueType: 'integer',
-		value: 0,
+		value: 1,
 	},
 	{
 		type: 'data:comment_status',
@@ -141,6 +167,86 @@ var AVAILABLE_CONSTRAINTS = [
 		valueType: 'date',
 		value: '01/01/2014',
 		operator: 'greater than',
+	},
+	{
+		type: 'data:social_share_count',
+		valueType: 'integer',
+		value: 1,
+	},
+	{
+		type: 'data:social_share_status',
+		valueType: 'boolean',
+		value: true,
+	},
+	{
+		type: 'action:social_share',
+		valueType: 'string',
+		value: '',
+		operator: 'contains',
+	},
+
+	{
+		type: 'data:member_query_message_open_list',
+		valueType: 'list',
+		value: '',
+	},
+	{
+		type: 'data:member_query_message_open_status',
+		valueType: 'boolean',
+		value: true,
+	},
+	{
+		type: 'data:member_query_message_open_count',
+		valueType: 'integer',
+		value: 1,
+	},
+
+	{
+		type: 'data:member_query_message_click_list',
+		valueType: 'list',
+		value: '',
+	},
+	{
+		type: 'data:member_query_message_click_status',
+		valueType: 'boolean',
+		value: true,
+	},
+	{
+		type: 'data:member_query_message_click_count',
+		valueType: 'integer',
+		value: 1,
+	},
+
+	{
+		type: 'data:static_group_message_open_list',
+		valueType: 'list',
+		value: true,
+	},
+	{
+		type: 'data:static_group_message_open_status',
+		valueType: 'boolean',
+		value: true,
+	},
+	{
+		type: 'data:static_group_message_open_count',
+		valueType: 'integer',
+		value: 1,
+	},
+
+	{
+		type: 'data:static_group_message_click_list',
+		valueType: 'boolean',
+		value: true,
+	},
+	{
+		type: 'data:static_group_message_click_status',
+		valueType: 'boolean',
+		value: true,
+	},
+	{
+		type: 'data:static_group_message_click_count',
+		valueType: 'integer',
+		value: 1,
 	},
 ];
 
@@ -195,6 +301,7 @@ var AVAILABLE_CONSTRAINTS_META = [
 		type: 'profile:birthYear',
 		title: 'Birth Year'
 	},
+	/*
 	{
 		type: 'profile:country',
 		title: 'Country',
@@ -408,6 +515,7 @@ var AVAILABLE_CONSTRAINTS_META = [
 			{ label: 'Zimbabwe',                          value: 'Zimbabwe'           } ,
 		]
 	},
+	*/
 	{
 		type: 'profile:zip',
 		title: 'Zip Code'
@@ -521,6 +629,12 @@ var AVAILABLE_CONSTRAINTS_META = [
 		type: 'record:contest',
 		title: 'Contest Entry'
 	},
+	{
+		type: 'data:contest_list',
+		title: 'Contest Participation',
+		choices: [
+		]
+	},
 
 	{
 		type: 'data:comment_count',
@@ -549,11 +663,7 @@ var AVAILABLE_CONSTRAINTS_META = [
 	{
 		type: 'data:subscribedToList',
 		title: 'Subscribed To List',
-		choices: [
-			{ label: 'VIP Newsletter', value: '2129171' },
-			{ label: 'Birthday Greetings', value: '2131219' },
-			{ label: "MMR's VIP Big Friggin' Deal", value: '2130195' },
-		]
+		choices: getSubscribedToListChoices(),
 	},
 	{
 		type: 'data:listeningFrequency',
@@ -579,6 +689,95 @@ var AVAILABLE_CONSTRAINTS_META = [
 			{ label: '80%', value: '80' },
 			{ label: '90%', value: '90' },
 			{ label: '100%', value: '100' },
+		]
+	},
+	{
+		type: 'data:social_share_count',
+		title: 'Social Share Count'
+	},
+	{
+		type: 'data:social_share_status',
+		title: 'Social Share Status',
+		choices: [
+			{ label: 'Has Shared', value: true },
+			{ label: 'Has Not Shared', value: false }
+		]
+	},
+	{
+		type: 'action:social_share',
+		title: 'Social Share URL'
+	},
+
+	{
+		type: 'data:member_query_message_open_list',
+		title: 'Member Query Email Open',
+		choices: []
+	},
+	{
+		type: 'data:member_query_message_open_count',
+		title: 'Member Query Email Open Count',
+		choices: []
+	},
+	{
+		type: 'data:member_query_message_open_status',
+		title: 'Member Query Email Open Status',
+		choices: [
+			{ label: 'Has Opened', value: true },
+			{ label: 'Has Not Opened', value: false }
+		]
+	},
+
+	{
+		type: 'data:member_query_message_click_list',
+		title: 'Member Query Email Click',
+		choices: []
+	},
+	{
+		type: 'data:member_query_message_click_count',
+		title: 'Member Query Email Click Count'
+	},
+	{
+		type: 'data:member_query_message_click_status',
+		title: 'Member Query Email Click Status',
+		choices: [
+			{ label: 'Has Clicked', value: true },
+			{ label: 'Has Not Clicked', value: false }
+		]
+	},
+
+	{
+		type: 'data:static_group_message_open_list',
+		title: 'Static Group Email Open',
+		choices: []
+	},
+	{
+		type: 'data:static_group_message_open_count',
+		title: 'Static Group Email Open Count'
+	},
+	{
+		type: 'data:static_group_message_open_status',
+		title: 'Static Group Email Open Status',
+		choices: [
+			{ label: 'Has Opened', value: true },
+			{ label: 'Has Not Opened', value: false }
+		]
+	},
+
+	{
+		type: 'data:static_group_message_click_list',
+		title: 'Static Group Email Click',
+		choices: []
+	},
+	{
+		type: 'data:static_group_message_click_count',
+		title: 'Static Group Email Click Count'
+	},
+	{
+		type: 'data:static_group_message_click_status',
+		title: 'Static Group Email Click Status',
+		choices: [
+			{ label: 'Has Clicked', value: true },
+			{ label: 'Has Not Clicked', value: false }
 		]
 	},
 ];

@@ -13,7 +13,6 @@
 	@include omega; 
 	margin-bottom: $base-line-height * 1.5;
 	border-bottom: 1px solid $primary-border;
-	text-align: center;
 
 	&:last-of-type {
 		border-bottom: none;
@@ -28,7 +27,7 @@
 		margin-bottom: 0; 
 	}
 	
-	a {
+	a:not(.image__attribution--link) {
 		position: absolute;
 		width: 100%;
 		left: 0;
@@ -56,9 +55,17 @@
 	background-position: center center;
 }
 
+	.entry2__thumbnail__overlay {
+		background-color: $btn-bg;
+		@include opacity(0.6); 
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;		
+	}
+
 .entry2__meta {
-	text-align: center;
-	
 	@include bp(small) {
 		@include span-columns(6 of 6);
 		@include omega;
@@ -69,8 +76,6 @@
 			@include span-columns(4 of 6);
 			@include omega; 
 		}
-		
-		text-align: left; 
 	}
 }
 	.entry2__date {
@@ -97,10 +102,7 @@
 	}
 	
 	.entry2__excerpt {
-		// Hide by default
 		margin: .75em 0 0;
-		display: none; 
-		text-align: left;
 		
 		p {
 			margin: 0;
@@ -121,12 +123,8 @@
 .entry2__footer {
 	margin-top: $base-line-height * 1.5;
 	padding: 0 0 $base-line-height / 2;
-	text-align: center;
 	
 	@include omega; 
-	@include bp(small) {
-		text-align: left;
-	}
 	@include span-columns(4);
 }
 	.entry2__footer--category:link, .entry2__footer--category:visited {
@@ -229,13 +227,9 @@
 .type-tribe_events {
 	.entry2__thumbnail {
 		background-color: $btn-bg;
-		
-		&:after {
-			background-color: rgba($btn-bg, .6);
-		}
 	}
 	
-	.entry2__thumbnail--event-date {	
+	.entry2__thumbnail--event-date {
 		@extend .h1;
 		font-size: ms(0); 
 		line-height: 1;
@@ -259,15 +253,11 @@
 // Special handling for date information in contest thumbnail
 .type-contest {
 	.entry2__thumbnail {
-		background-color: rgba($btn-bg, .8);
-
-		&:after {
-			background-color: rgba($btn-bg, .5);
-		}
+		background-color: $btn-bg;
 	}
 
 	.entry2__thumbnail--end-date,
-	.entry2__thumbnail--start-date {
+	.entry2__thumbnail--contest-type {
 		@extend .h1;
 		font-size: ms(0);
 		line-height: 1;
@@ -284,7 +274,8 @@
 		text-align: right;
 	}
 	
-	.entry2__thumbnail--start-date {
+	.entry2__thumbnail--contest-type {
+		font-weight: normal;
 		left: 0;
 		top: 0;
 	}

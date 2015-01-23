@@ -6,12 +6,12 @@
 	@include bp(medium) {
 		background-position: left top;
 		background-color: #561015;
-		background-size: cover;
+		// background-size: cover; // Leave this out unless we want big crosshatches on WMGK. If we do want that, be sure to also add this to the .show__header
 	}
 }
 
 .live-links {
-	border-top: 1px solid white;
+	border-top: 0;
 }
 
 .single-gmr_gallery .gallery__paging--prev,
@@ -24,15 +24,12 @@
 }
 
 .live-player__stream {
-	width: auto;
-	margin: 10px;
 	border: 1px solid lighten($color-gray-medium-dark,50%);
 	color: lighten($color-gray-medium-dark,50%);
 	@include border-radius(1em);
-	background-color: transparent;
+	background-color: $liveplayer-bg;
 
 	li {
-		background-color: transparent;
 		height: auto;
 	}
 
@@ -40,16 +37,8 @@
 		display: none;
 	}
 
-	.live-player__stream--current.open {
-		background-color: transparent;
-	}
-
 	.live-player__stream--current.open .live-player__stream--available {
-		position: relative;
-		display: block;
-		background-color: transparent;
 		color: $dark-gray;
-		top: auto;
 		border-top: 1px solid darken($color-gray-light, 10%);
 
 		&:after {
@@ -60,8 +49,12 @@
 			color: $dark-gray;
 		}
 
-		.live-player__stream--item:hover, .live-player__stream--name:hover, .live-player__stream--desc:hover {
-			color: $light-gray;
+		.live-player__stream--item {
+			background-color: $liveplayer-bg;
+
+			&:hover {
+				background-color: $light-gray;
+			}
 		}
 
 		li:last-child {
@@ -71,12 +64,44 @@
 
 }
 
+.live-player__container {
+	border-bottom: 1px solid white;
+}
+
 .now-playing__artist {
 	color: $color-gray-medium-dark;
 }
 
 .live-link__title, .live-link__title a:link, .live-link__title a:visited {
 	color: $color-gray-medium;
+}
+
+.live-link__song:before {
+	color: $medium-dark-gray;
+}
+
+.live-link__song--artist {
+	color: $medium-dark-gray;
+}
+
+.live-link__song--title {
+	color: $dark-gray;
+
+	a, a:visited {
+		color: $darker-gray;
+	}
+
+	a:hover, a:focus, a:active {
+		color: $color-text-red;
+	}
+}
+
+.live-link__title a:link, .live-link__title a:visited {
+	color: $color-gray-medium;
+}
+
+.live-link__title a:hover, .live-link__title a:focus, .live-link__title a:active {
+	color: $primary-link;
 }
 
 .header__logo {
@@ -88,14 +113,35 @@
 	border-bottom-color: $primary-border;
 }
 
+.highlights__events--more-btn {
+	&:hover {
+		color: $yellow !important;
+		border-color: $yellow;
+	} 
+}
+
 .highlights__event--item {
-	background-color: $color-gray-light;
+	background-color: #8c8c8c;
+	color: $white; 
 }
 
 .highlights__event--title, .highlights__event--date {
-	color: $medium-gray;
+	color: $white;
+	
+	a:hover & {
+		color: $yellow; 
+	}
 }
 
 .highlights__heading {
 	color: $highlights-heading;
+}
+
+.audio__progress-bar {
+	background-color: $gray;
+}
+
+.type-contest .entry__title--tag {
+	background-color: $light-gray;
+	border-color: $light-gray;
 }

@@ -22,9 +22,17 @@ var ActiveConstraintsView = Backbone.CollectionView.extend({
 			case 'favorites':
 				return FavoriteConstraintView;
 
+			case 'list':
+				return ListConstraintView;
+
 			default:
 				return ConstraintView;
 		}
+	},
+
+	initialize: function(options) {
+		Backbone.CollectionView.prototype.initialize.call(this, options);
+		this.listenTo(this.collection, 'add', this.didAdd);
 	},
 
 	copyConstraint: function(event, constraint) {
@@ -36,6 +44,24 @@ var ActiveConstraintsView = Backbone.CollectionView.extend({
 
 	removeConstraint: function(event, constraint) {
 		this.collection.remove(constraint);
-	}
+	},
+
+	render: function() {
+		Backbone.CollectionView.prototype.render.call(this);
+	},
+
+	didAdd: function(model) {
+		var view = this.viewManager.findByModel(model);
+		this.scrollTo(view.$el);
+	},
+
+	scrollTo: function($target) {
+		var root   = $('html, body');
+		var params = {
+			scrollTop: $target.offset().top - 60 // admin bar offset
+		};
+
+		root.animate(params, 500);
+	},
 
 });

@@ -13,9 +13,14 @@
 			</li>
 		<?php endif; ?>
 		<?php if ( ! empty( $contest ) ) : ?>
-			<li class="contest"><a href="<?php echo get_permalink( $contest->ID ); ?>">
+			<li class="contest">
+				<a href="<?php echo get_edit_post_link( $contest->ID ); ?>">
 					<?php echo get_the_title( $contest->ID ); ?>
-				</a></li>
+				</a>
+			</li>
+			<li>
+				<a href="<?php echo admin_url( 'admin.php?page=gmr-contest-winner&contest_id=' . $contest->ID ); ?>">View All Entries</a>
+			</li>
 		<?php endif; ?>
 		<li class="post-date"><?php echo get_the_date( 'm/d/Y', $post->ID ); ?></li>
 	</ul>

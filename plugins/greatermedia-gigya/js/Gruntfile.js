@@ -13,6 +13,7 @@ module.exports = function(grunt) {
 					'src/models/profile_constraint.js',
 					'src/models/entry_constraint.js',
 					'src/models/like_constraint.js',
+					'src/models/list_constraint.js',
 					'src/models/favorite_constraint.js',
 					'src/models/available_constraints.js',
 					'src/models/query_result.js',
@@ -28,6 +29,7 @@ module.exports = function(grunt) {
 					'src/views/constraint_view.js',
 					'src/views/entry_constraint_view.js',
 					'src/views/like_constraint_view.js',
+					'src/views/list_constraint_view.js',
 					'src/views/favorite_constraint_view.js',
 					'src/views/active_constraints_view.js',
 					'src/views/preview_view.js',
@@ -69,6 +71,18 @@ module.exports = function(grunt) {
 			}
 		},
 
+		cssmin: {
+			dist: {
+				files: [{
+					expand: true,
+					cwd: '../css',
+					src: ['*.css', '!*.min.css'],
+					dest: '../css/',
+					ext: '.min.css'
+				}]
+			}
+		},
+
 		clean: {
 			src: ["templates.js"]
 		}
@@ -79,9 +93,10 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-jst');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-clean');
+	grunt.loadNpmTasks('grunt-contrib-cssmin');
 
 	grunt.registerTask('build_templates', ['clean', 'jst']);
 	grunt.registerTask('build', ['build_templates', 'concat']);
-	grunt.registerTask('dist', ['build', 'uglify']);
+	grunt.registerTask('dist', ['build', 'uglify', 'cssmin']);
 	grunt.registerTask('default', ['build']);
 };

@@ -1,4 +1,14 @@
 .single-show {
+	.content {
+		@include bp(medium) {
+			padding: $base-line-height $gutter / 2;
+		}
+
+		@include bp(larger) {
+			padding: $base-line-height * 2 $gutter * 2;
+		}
+	}
+
 	.featured__content {
 		margin: 0.75em 0 1em;
 	}
@@ -67,6 +77,10 @@
 		margin-bottom: 3em;
 	}
 
+	.highlights__events .highlights__heading {
+		display: block;
+	}
+
 	@include bp(large) {
 		.highlights__community, .highlights__events {
 			padding-top: 0;
@@ -80,17 +94,19 @@
 
 	.highlights__event--item {
 		background-color: #F1F1F3;
+
+		.highlights__event--title, .highlights__event--date {
+			color: $primary-heading;
+		}
+		
+		.highlights__event--title:hover {
+			color: $primary-link-hover;
+		}
 	}
 
 	.highlights__community--item:hover {
 		.highlights__community--title {
 			color: $btn-hover;
-		}
-	}
-
-	.inner-left-col {
-		@include bp(large) {
-			padding-right: 25px;
 		}
 	}
 
@@ -180,7 +196,7 @@ category: Components - Shows
 	}
 
 	@include bp(large) {
-		background-image: url(../../images/featured-bg.png);
+		background-image: url('../../images/featured-bg.png');
 		background-repeat: repeat;
 		background-position: center center;
 		background-color: $featured-primary-bg;
@@ -532,9 +548,15 @@ category: Components - Shows
 	.section-header {
 		font-size: ms(1);
 	}
-	
+
 	@include bp(large) {
+		width: 100%;
+		padding-right: 330px;
+	}
+	
+	@include bp(larger) {
 		@include span-columns(8 of 12);
+		padding-right: 25px;
 	}
 }
 
@@ -542,6 +564,11 @@ category: Components - Shows
 	float: none;
 
 	@include bp(large) {
+		float: right;
+		width: 300px;
+	}
+
+	@include bp(larger) {
 		@include span-columns(4 of 12);
 		@include omega;
 		float: right;
@@ -677,4 +704,177 @@ category: Components - Shows
 
 .show-attr--tags {
 
+}
+
+.show__paging {
+	clear: both; 
+	width: 100%;
+	font-size: ms(-1);
+	margin: 0 0 $base-line-height; 
+	text-align: center;
+	
+	.page-numbers {
+		display: none;
+		
+		&.next, 
+		&.prev {
+			display: inline;
+		} 
+	}
+	
+	.prev {
+		float: left;
+		width: 50%;
+		text-align: left;
+	}
+	
+	.next {
+		float: right;
+		width: 50%;
+		text-align: right;
+	}
+}
+
+@mixin show-schedule-columns($visible-columns) {
+	$shedule-column-width: 100% / $visible-columns;
+
+	width: $shedule-column-width;
+
+	@for $i from 1 through 7 {
+		#{'&'}:nth-child(#{$i}) {
+			left: $shedule-column-width * ($i - 1);
+
+			@if $visible-columns < $i {
+				&.fixed {
+					.shows__schedule--dayofweek {
+						display: none;
+					}
+				}
+			} @else {
+				&.fixed {
+					.shows__schedule--dayofweek {
+						display: block;
+					}
+				}
+			}
+		}
+	}
+}
+
+.shows__schedule--days {
+	@include clearfix;
+	position: relative;
+	overflow: hidden;
+	height: 1499px;
+	@include box-sizing(border-box);
+}
+
+.shows__schedule--day {
+	top: 0;
+	left: 0;
+	position: absolute;
+	border: 1px solid $light-gray;
+	border-left-width: 0;
+	@include box-sizing(border-box);
+	@include show-schedule-columns(1);
+	@include user-select(none);
+
+	&:first-child {
+		border-left-width: 1px;
+
+		&.fixed {
+			.shows__schedule--dayofweek {
+				border-left: 1px solid $light-gray;
+			}
+		}
+	}
+}
+
+@include bp(small) {
+	.shows__schedule--day {
+		@include show-schedule-columns(2);
+	}
+}
+
+@include bp(medium) {
+	.shows__schedule--day {
+		@include show-schedule-columns(3);
+	}
+}
+
+@include bp(large) {
+	.shows__schedule--day {
+		@include show-schedule-columns(4);
+	}
+}
+
+@include bp(x-large) {
+	.shows__schedule--day {
+		@include show-schedule-columns(5);
+	}
+}
+
+.shows__schedule--dayofweek {
+	background: $primary-bg;
+	border-bottom: 2px solid $black;
+	text-align: center;
+	padding: 15px 0;
+	height: 54px;
+	@include box-sizing(border-box);
+	z-index: 99999;
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+}
+
+.shows__schedule--day.fixed .shows__schedule--dayofweek {
+	position: fixed;
+	border-top: 1px solid $primary-border;
+}
+
+.shows__schedule--episodes {
+	position: relative;
+	height: 1440px;
+	margin-top: 54px;
+}
+
+.shows__schedule--episode {
+	position: absolute;
+	left: 0;
+	right: 0;
+	border-bottom: 1px solid $primary-border;
+	padding: 0.5em 1em;
+
+	&:hover {
+		background-color: $extra-light-gray;
+	}
+}
+
+.shows__schedule--episode-title a {
+	display: block;
+	font-weight: bold;
+	font-size: ms(-2);
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+
+	&.not-link {
+		color: $color-text-black;
+		cursor: default;
+	}
+}
+
+.shows__schedule--episode-time {
+	font-size: ms(-3);
+	cursor: default;
+}
+
+.shows__schedule--now {
+	position: absolute;
+	left: 0;
+	right: 0;
+	z-index: 9999;
+	border: 1px solid $cardinal;
+	margin: 0 -1px;
 }

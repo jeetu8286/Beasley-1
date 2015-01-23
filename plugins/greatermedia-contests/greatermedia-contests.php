@@ -2,7 +2,7 @@
 /*
 Plugin Name: Greater Media Contests
 Description: Contest Features
-Version: 1.0.4
+Version: 1.0.6
 Author: 10up
 Author URI: http://10up.com
 */
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 define( 'GREATER_MEDIA_CONTESTS_URL', plugin_dir_url( __FILE__ ) );
 define( 'GREATER_MEDIA_CONTESTS_PATH', dirname( __FILE__ ) );
-define( 'GREATER_MEDIA_CONTESTS_VERSION', '1.0.4' );
+define( 'GREATER_MEDIA_CONTESTS_VERSION', '1.0.6' );
 
 define( 'GMR_CONTEST_CPT',         'contest' );
 define( 'GMR_CONTEST_ENTRY_CPT',   'contest_entry' );
@@ -26,7 +26,6 @@ define( 'EP_GMR_SURVEY', EP_PAGES << 2 );
 
 include 'inc/contests.php';
 include 'inc/surveys.php';
-include 'inc/class-greatermedia-contests.php';
 include 'inc/class-greatermedia-contest-entry.php';
 include 'inc/class-greatermedia-contest-entry-embedded-form.php';
 include 'inc/class-greatermedia-formbuilder-render.php';
@@ -36,12 +35,16 @@ include 'inc/class-greatermedia-ugimage.php';
 include 'inc/class-greatermedia-uglink.php';
 include 'inc/class-ugc-moderation-table.php';
 include 'inc/class-greatermedia-surveys.php';
-include 'inc/class-greatermedia-survey-form-render.php';
 include 'inc/class-greatermedia-survey-entry.php';
 
 if ( is_admin() ) {
+	// include list table class files if it hasn't been included yet
+	require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
+	require_once ABSPATH . 'wp-admin/includes/class-wp-posts-list-table.php';
+
 	include 'inc/class-greatermedia-contests-metaboxes.php';
-	include 'inc/class-greatermedia-contests-template-actions.php';
+	include 'inc/contest-winner.php';
+	include 'inc/survey-responses.php';
 }
 
 if ( defined( 'WP_CLI' ) && WP_CLI ) {

@@ -12,7 +12,9 @@
 		playButton = $('#playButton'),
 		pauseButton = $('#pauseButton'),
 		resumeButton = $('#resumeButton'),
-		podcastPlay = $('.podcast__btn--play');
+		podcastPlay = $('.podcast__btn--play'),
+		listenNow = $('#live-stream__listen-now'),
+		accountLogin = $('.header__account--btn');
 	/**
 	 * global variables for event types to use in conjunction with `addEventHandler` function
 	 * @type {string}
@@ -31,10 +33,11 @@
 	 * @param handler
 	 */
 	function addEventHandler(elem,eventType,handler) {
-		if (elem.addEventListener)
-			elem.addEventListener (eventType,handler,false);
-		else if (elem.attachEvent)
-			elem.attachEvent ('on'+eventType,handler);
+		if (elem.addEventListener) {
+			elem.addEventListener(eventType, handler, false);
+		} else if (elem.attachEvent) {
+			elem.attachEvent('on' + eventType, handler);
+		}
 	}
 
 	var enablePjax = function() {
@@ -73,7 +76,6 @@
 		if (is_gigya_user_logged_in()) {
 			if ($.support.pjax) {
 				$(document).pjax('a:not(.ab-item)', '.main', {
-					url: $(this).attr('href'),
 					'fragment': '.main',
 					'maxCacheLength': 500,
 					'timeout': 5000
@@ -82,7 +84,6 @@
 		} else if (gmlp.logged_in) {
 			if ($.support.pjax) {
 				$(document).pjax('a:not(.ab-item)', '.page-wrap', {
-					url: $(this).attr('href'),
 					'fragment': '.page-wrap',
 					'maxCacheLength': 500,
 					'timeout': 5000
@@ -93,7 +94,7 @@
 
 	function pjaxStop() {
 		$(document).on('pjax:click', function(event) {
-			event.preventDefault()
+			event.preventDefault();
 		});
 	}
 
@@ -112,11 +113,26 @@
 		pjaxInit();
 	});
 
-	$('.live-stream').on( 'click', function() {
-		/* Act on the event */
+	playButton.on( 'click', function() {
 		if( !is_gigya_user_logged_in() ) {
-			Cookies.set( "gmlp_play_button_pushed", 1 );
+			Cookies.set('gmlp_play_button_pushed', 1);
+			Cookies.set('gmr_play_live_audio', 0);
 		}
 	});
+
+	listenNow.on( 'click', function() {
+		if( !is_gigya_user_logged_in() ) {
+			Cookies.set('gmlp_play_button_pushed', 1);
+			Cookies.set('gmr_play_live_audio', 0);
+		}
+	});
+
+	accountLogin.on( 'click', function() {
+		if( !is_gigya_user_logged_in() ) {
+			Cookies.set('gmr_play_live_audio', 0);
+		}
+	});
+
+
 
 } )(jQuery,window);

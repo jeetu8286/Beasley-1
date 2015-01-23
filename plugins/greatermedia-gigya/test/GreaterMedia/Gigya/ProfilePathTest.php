@@ -18,22 +18,22 @@ class ProfilePathTest extends \WP_UnitTestCase {
 
 	function test_it_can_build_path_for_login_action() {
 		$actual = $this->path->path_for( 'login' );
-		$this->assertEquals( '/members/login', $actual );
+		$this->assertEquals( '/members/login?dest=%2F', $actual );
 	}
 
 	function test_it_can_build_path_for_logout_action() {
 		$actual = $this->path->path_for( 'logout' );
-		$this->assertEquals( '/members/logout', $actual );
+		$this->assertEquals( '/members/logout?dest=%2F', $actual );
 	}
 
-	function test_it_can_build_path_for_register_action() {
-		$actual = $this->path->path_for( 'register' );
-		$this->assertEquals( '/members/register', $actual );
+	function test_it_can_build_path_for_join_action() {
+		$actual = $this->path->path_for( 'join' );
+		$this->assertEquals( '/members/join', $actual );
 	}
 
-	function test_it_can_build_path_for_settings_action() {
-		$actual = $this->path->path_for( 'settings' );
-		$this->assertEquals( '/members/settings', $actual );
+	function test_it_can_build_path_for_account_action() {
+		$actual = $this->path->path_for( 'account' );
+		$this->assertEquals( '/members/account', $actual );
 	}
 
 	function test_it_can_build_path_for_forgot_password_action() {

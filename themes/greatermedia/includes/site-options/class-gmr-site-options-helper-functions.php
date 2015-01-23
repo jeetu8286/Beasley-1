@@ -13,6 +13,7 @@ class GreaterMediaSiteOptionsHelperFunctions {
 		add_action( 'gmr_social_youtube', array( __CLASS__, 'youtube_link' ) );
 		add_action( 'gmr_social_instagram', array( __CLASS__, 'instagram_link' ) );
 		add_action( 'gmr_social', array( __CLASS__, 'social_links' ) );
+		add_action( 'wp_head', array( __CLASS__, 'site_favicon' ) );
 	}
 
 	public static function get_site_logo_id() {
@@ -28,6 +29,31 @@ class GreaterMediaSiteOptionsHelperFunctions {
 			if ( $site_logo ) {
 				echo '<img src="' . esc_url( $site_logo[0] ) . '" alt="' . get_bloginfo( 'name' ) . ' | ' . get_bloginfo( 'description' ) . '" class="header__logo--img">';
 			}
+		}
+	}
+
+	public static function get_site_favicon_id() {
+		$site_favicon_id = get_option( 'gmr_site_favicon', 0 );
+
+		return $site_favicon_id;
+	}
+
+	public static function site_favicon() {
+		$site_favicon_id = self::get_site_favicon_id();
+		if ( $site_favicon_id ) {
+			$site_favicon = wp_get_attachment_image_src( $site_favicon_id, 'full' );
+			if ( $site_favicon ) { ?>
+
+				<link rel="apple-touch-icon" href="<?php echo esc_url( $site_favicon[0] ); ?>" />
+				<link rel="apple-touch-icon" href="<?php echo esc_url( $site_favicon[0] ); ?>" sizes="76x76" />
+				<link rel="apple-touch-icon" href="<?php echo esc_url( $site_favicon[0] ); ?>" sizes="120x120" />
+				<link rel="apple-touch-icon" href="<?php echo esc_url( $site_favicon[0] ); ?>" sizes="152x152" />
+				<link rel="icon" href="<?php echo esc_url( $site_favicon[0] ); ?>" />
+				<!--[if IE]>
+				<link rel="shortcut icon" href="<?php echo esc_url( $site_favicon[0] ); ?>" />
+				<![endif]-->
+
+			<?php }
 		}
 	}
 
@@ -56,16 +82,16 @@ class GreaterMediaSiteOptionsHelperFunctions {
 
 		echo '<ul class="social__list">';
 		if( $facebook ) {
-			echo '<li><a class="social__link icon-facebook" href="' . esc_url( $facebook ) . '"></a></li>';
+			echo '<li><a class="social__link icon-facebook" target="_blank" href="' . esc_url( $facebook ) . '"></a></li>';
 		}
 		if( $twitter ) {
-			echo '<li><a class="social__link icon-twitter" href="https://twitter.com/' . esc_html( $twitter ) . '"></a></li>';
+			echo '<li><a class="social__link icon-twitter" target="_blank" href="https://twitter.com/' . esc_html( $twitter ) . '"></a></li>';
 		}
 		if( $youtube ) {
-			echo '<li><a class="social__link icon-youtube" href="' . esc_url( $youtube ) . '"></a></li>';
+			echo '<li><a class="social__link icon-youtube" target="_blank" href="' . esc_url( $youtube ) . '"></a></li>';
 		}
 		if( $instagram ) {
-			echo '<li><a class="social__link icon-instagram" href="http://instagram.com/' . esc_url( $instagram ) . '"></a></li>';
+			echo '<li><a class="social__link icon-instagram" target="_blank" href="http://instagram.com/' . esc_url( $instagram ) . '"></a></li>';
 		}
 		echo '</ul>';
 

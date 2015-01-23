@@ -20,43 +20,80 @@ category: Components - Shows
 */
 
 .show__personalities {
-	// @include row();
+	@include row();
 	background-color: $primary-bg;
-	margin-top: -8em;
+	margin-top: -4em;
+	margin-bottom: 10%;
 }
 
 .personality {
-	padding: 4em 3em;
+	padding: 1.5em;
+	margin-bottom: 2em;
 	position: relative;
 	@include row();
 
-	.more-btn {
-		// right: 40%;
-		// bottom: 40px;
-		display: none;
+	&.open {
+		background-color: $primary-border;
+	}
+
+	@include bp(medium) {
+		padding: 1.5em 3em;
 	}
 }
 
 .personality__avatar {
 	@include span-columns(4 of 12);
+	margin-bottom: 2.35765%;
+
+	img {
+		@include border-radius(50%);
+		width: 80%;
+		height: auto;
+	}
 
 	@include bp(medium) {
 		@include span-columns(3 of 12);
+		margin-bottom: 0;
 	}
 
-	img {
-		width: 80%;
-		height: auto;
-		@include border-radius(50%);
-	}
 }
 
 .personality__meta {
 	float: none;
 	width: auto;
+	transition: all 100ms ease-out 0s;
+
+	p + p {
+		display: none;
+
+		.personality.open & {
+			display: block;
+		}
+	}
+	
+	.more-btn {
+		right: auto;
+		bottom: auto;
+		position: relative;
+		left: 0;
+	}
+
+	&.not-has-hidden {
+		.more-btn {
+			display: none;
+		}
+	}
 
 	@include bp(medium) {
 		@include span-columns(9 of 12);
 		@include omega;
 	}
+}
+
+.personality__btn {
+	float: left;
+	width: 100%;
+	text-align: center;
+	padding-top: 1em;
+
 }

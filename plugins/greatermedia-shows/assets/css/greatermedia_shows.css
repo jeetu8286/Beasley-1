@@ -21,9 +21,7 @@
   #schedule-form select,
   #schedule-form input[type="text"] {
     box-shadow: none;
-    border: 0;
-    border-bottom: 1px dashed #ccc;
-    font-weight: bold; }
+    border: none; }
   #schedule-form input[type="submit"] {
     float: right; }
 
