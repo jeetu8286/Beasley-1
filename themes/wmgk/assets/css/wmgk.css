@@ -9896,7 +9896,9 @@ category: Components - Gallery Archive
       position: absolute;
       left: 0;
       top: 0; }
-  .gallery__feature:hover h3 {
+  .gallery__feature .gallery__featured--title {
+    color: #404041; }
+  .gallery__feature:hover .gallery__featured--title {
     color: #aa1c20; }
   @media screen and (min-width: 1024px) {
     .gallery__feature {
