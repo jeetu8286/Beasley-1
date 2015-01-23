@@ -15,9 +15,7 @@
 	select,
 	input[type="text"] {
 		box-shadow: none;
-		border: 0;
-		border-bottom: 1px dashed #ccc;
-		font-weight: bold;
+		border: none;
 	}
 
 	input[type="submit"] {

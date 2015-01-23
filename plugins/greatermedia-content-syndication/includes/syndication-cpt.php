@@ -567,13 +567,7 @@ class SyndicationCPT {
 	public function custom_publish_meta() {
 		global $post;
 
-		$last_syndicated = get_option( 'syndication_last_performed', 0 );
-		if( $last_syndicated == 0 ) {
-			$last_syndicated = 'never';
-		} else {
-			$last_syndicated = date( 'Y-m-d H:i:s', $last_syndicated );
-			$last_syndicated = get_date_from_gmt( $last_syndicated, 'M j, Y @ G:i' );
-		}
+		//$last_syndicated = get_option( 'syndication_last_performed', 0 );
 
 		if ( get_post_type($post) == $this->post_type ) {
 			echo '<div class="misc-pub-section curtime syndication misc-pub-section-last">';
@@ -590,17 +584,24 @@ class SyndicationCPT {
 				     . '/> <label for="active_inactive-inactive" class="select-it">Inactive</label>';
 
 				echo '<p>';
-				echo '<span id="timestamp" class="timestamp">Last checked: ';
-				echo '<b>' . $last_syndicated . '</b><span>';
+				$last_syndicated = get_post_meta( $post->ID, 'syndication_last_performed', true );
+				if( $last_syndicated ) {
+					$last_syndicated = date( 'Y-m-d H:i:s', $last_syndicated );
+					$last_syndicated = get_date_from_gmt( $last_syndicated, 'M j, Y @ G:i' );
+					echo '<span id="timestamp" class="timestamp">Last checked: ';
+					echo '<b>' . $last_syndicated . '</b><span>';
+				}
 				echo '</p>';
 
 				echo '<div id="syndication_status">';
 				echo '</div>';
-				echo '<button data-postid="' . intval( $post->ID )
+				if( $post->post_status == 'publish' || $post->post_status == 'draft' ) {
+					echo '<button data-postid="' . intval( $post->ID )
 				     . '" name="syndicate_now" id="syndicate_now" class="button button-large"'
 				     . '>Check for new content now</button><br/>';
-				echo '<span class="description">Please save your changes before using this!</span>';
-				echo '<br/>';
+					echo '<span class="description">Unsaved changes won\'t be used.</span>';
+					echo '<br/>';
+				}
 
 			echo '</div>';
 		}
@@ -681,6 +682,10 @@ class SyndicationCPT {
 				echo "No existing term";
 			}
 
+			if( $taxonomy_label == 'category' ) {
+				echo '<br>';
+				echo '<span class="description">These will be added to categories already set on imported content.</span>';
+			}
 			unset($allterms);
 			$allterms = array();
 			echo '</p>';

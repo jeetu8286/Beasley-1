@@ -998,7 +998,7 @@ category: Components - Gallery Archive
 .gallery__grid--column {
 	@include span-columns(4);
 	margin-bottom: 22px;
-	overflow: auto;
+	overflow: hidden;
 
 	@include bp(small) {
 		@include span-columns(6);

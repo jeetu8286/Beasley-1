@@ -3,10 +3,8 @@
 
 	__ready = function() {
 		$('.posts-pagination--load-more').each(function () {
-					
-			var $button = $(this);
-			
-			var loading = false,
+			var $button = $(this),
+				loading = false,
 				page_link_template = $button.data('page-link-template'),
 				page = parseInt($button.data('page')),
 				partial_slug = $button.data('partial-slug'),
@@ -21,15 +19,27 @@
 			// when it is reached. 
 			var waypoint_context = null; 
 			if ( auto_load ) {
-				$button.waypoint({
-					handler: function(direction) {
-						// Store the Waypoint context so we can refresh it later.
-						waypoint_context = this.context; 
+				try {					
+					$button.waypoint({
+						handler: function(direction) {
+							// Store the Waypoint context so we can refresh it later.
+							waypoint_context = this.context; 
 						$button.trigger('click'); 
-					},
-					offset: 'bottom-in-view'
-				});
+						},
+						offset: 'bottom-in-view'
+					});
+				} catch ( e ) {
+					// Waypoints not supported, disable autoload. 
+					auto_load = false; 
+				}
 			}
+
+			var hide_button = function() {
+				$button.hide();
+				if (waypoint_context) {
+					waypoint_context.destroy();
+				}
+			};
 	
 			$button.click(function() {
 				var $self = $(this);
@@ -39,7 +49,7 @@
 					$self.removeClass('is-loaded');
 	
 					// let's use ?ajax=1 to distinguish AJAX and non AJAX requests
-					// if we don't do it and enabled HTTP caching, then we might encounter
+					// if we don't do it and HTTP cache is enabled, then we might encounter
 					// unpleasant condition when users see cached version of a page loaded by AJAX
 					// instead of normal one.
 					$.get(page_link_template.replace('%d', pagenums[page_link_template]), {ajax: 1, partial_slug: partial_slug, partial_name: partial_name }).done(function(response) {
@@ -56,15 +66,13 @@
 						}
 												
 						if ( ! response.post_count || pagenums[page_link_template] > response.max_num_pages ) {
-							$self.hide(); 
-						}
-						
-						// Refresh Waypoint context, if any. 
-						if ( waypoint_context ) {
+							hide_button();
+						} else if ( waypoint_context ) {
+							// Refresh Waypoint context, if any.
 							waypoint_context.refresh(); 
 						}
 					}).fail(function() {
-						$self.hide();
+						hide_button();
 					});
 				}
 				
@@ -72,6 +80,10 @@
 			});
 		}); 
 	};
+
+	if (tribe_ev && tribe_ev.events) {
+		$(tribe_ev.events).bind('tribe_ev_ajaxSuccess', __ready);
+	}
 
 	$(document).bind('pjax:end', function(e, xhr) {
 		reset_page = xhr !== null;

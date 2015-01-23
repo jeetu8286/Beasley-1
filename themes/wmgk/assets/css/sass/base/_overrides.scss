@@ -76,6 +76,34 @@
 	color: $color-gray-medium;
 }
 
+.live-link__song:before {
+	color: $medium-dark-gray;
+}
+
+.live-link__song--artist {
+	color: $medium-dark-gray;
+}
+
+.live-link__song--title {
+	color: $dark-gray;
+
+	a, a:visited {
+		color: $darker-gray;
+	}
+
+	a:hover, a:focus, a:active {
+		color: $color-text-red;
+	}
+}
+
+.live-link__title a:link, .live-link__title a:visited {
+	color: $color-gray-medium;
+}
+
+.live-link__title a:hover, .live-link__title a:focus, .live-link__title a:active {
+	color: $primary-link;
+}
+
 .header__logo {
 	@include bp(medium) {
 		top: -7px;

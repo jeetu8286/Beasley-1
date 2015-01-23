@@ -16,6 +16,8 @@ function gmr_advertisers_register_post_type() {
 		'has_archive'          => 'advertisers',
 		'show_in_nav_menus'    => false,
 		'menu_position'        => 41,
+		'capability_type'      => 'page',
+		'hierarchical'         => true,
 		'menu_icon'            => 'dashicons-tickets-alt',
 		'supports'             => array( 'title', 'editor', 'thumbnail' ),
 		'register_meta_box_cb' => 'gmr_advertisers_register_meta_boxes',

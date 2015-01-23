@@ -109,6 +109,114 @@
 
 }(jQuery));
 
+(function ($) {
+	// we don't need to use pjax:end event here
+	$(document).ready(function() {
+		var $onair = $('#on-air'),
+			schedule = [],
+			fallback = '',
+			current_show = {},
+			track_schedule, update_onair;
+
+		if ($onair.length == 0) {
+			return;
+		}
+
+		update_onair = function(title, show) {
+			$onair.find('.on-air__title').text(title);
+			$onair.find('.on-air__show').text(show);
+		};
+
+		track_schedule = function() {
+			var now = new Date(),
+				next = new Date(now.getTime() + 10 * 60 * 1000), // 10 minutes later
+				found = false,
+				starts, ends;
+
+			for (var i = 0; i < schedule.length; i++) {
+				starts = new Date(schedule[i].starts * 1000);
+				ends = new Date(schedule[i].ends * 1000);
+				
+				if (starts <= now && now <= ends) {
+					current_show = schedule[i];
+					update_onair('On Air:', schedule[i].title);
+					found = true;
+				}
+
+				if (starts <= next && next <= ends && schedule[i].title != current_show.title) {
+					update_onair('Up Next:', schedule[i].title);
+					found = true;
+				}
+			}
+
+			if (!found) {
+				update_onair('', fallback);
+			}
+		};
+		
+		$.get($onair.data('endpoint'), function(response) {
+			if (response.success && response.data) {
+				fallback = response.data.tagline || '';
+				if ($.isArray(schedule)) {
+					schedule = response.data.schedule;
+				}
+				
+				track_schedule();
+				setInterval(track_schedule, 1000);
+			}
+		});
+	});
+})(jQuery);
+
+(function ($) {
+	var $window = $(window);
+
+	var __ready = function() {
+		var $days = $('.shows__schedule--day'),
+			header_bottom = $('#wpadminbar').outerHeight(),
+			on_scroll;
+
+		on_scroll = function() {
+			var scroll_top = $window.scrollTop();
+			
+			$days.each(function() {
+				var $day = $(this),
+					$weekday = $day.find('.shows__schedule--dayofweek'),
+					day_top = $day.offset().top,
+					day_left = $day.offset().left,
+					day_bottom = $day.height() + $day.offset().top,
+					own_height = $weekday.height(),
+					top;
+
+				if (scroll_top + header_bottom >= day_top) {
+					$day.addClass('fixed');
+
+					top = scroll_top + header_bottom + own_height >= day_bottom
+						? day_bottom - scroll_top - own_height
+						: header_bottom;
+
+					$weekday.width($day.width()).css({
+						top: top + 'px',
+						left: day_left + 'px'
+					});
+				} else {
+					$day.removeClass('fixed');
+					$weekday.width('auto').css({
+						top: '0px',
+						left: '0px'
+					});
+				}
+			});
+		};
+
+		$window.resize(on_scroll);
+		$window.scroll(on_scroll);
+
+		on_scroll();
+	};
+
+	$(document).bind('pjax:end', __ready).ready(__ready);
+})(jQuery);
 (function($) {
 
 	var findElementByClassPrefix = function($node, prefix) {
@@ -299,8 +407,22 @@
 
 		current_url = location.href;
 	});
+
+	/**
+	 * Add "is-busy" class to the body when a Pjax request starts.
+	 */
+	$document.bind( 'pjax:start', function () {
+		$( 'body').addClass( 'is-busy' );
+	} );
+
+	/**
+	 * Remove the "is-busy" class from the body when a Pjax request ends.
+	 */
+	$document.bind( 'pjax:end', function () {
+		$( 'body').removeClass( 'is-busy' );
+	} );
 })(jQuery, location);
-(function() {
+(function () {
 
 	/**
 	 * global variables
@@ -309,30 +431,30 @@
 	 */
 	var $ = jQuery;
 
-	var body = document.querySelector( 'body' ),
-		html = document.querySelector( 'html'),
-		mobileNavButton = document.querySelector( '.mobile-nav__toggle' ),
-		pageWrap = document.getElementById( 'page-wrap' ),
-		header = document.getElementById( 'header' ),
-		livePlayer = document.getElementById( 'live-player__sidebar' ),
+	var body = document.querySelector('body'),
+		html = document.querySelector('html'),
+		mobileNavButton = document.querySelector('.mobile-nav__toggle'),
+		pageWrap = document.getElementById('page-wrap'),
+		header = document.getElementById('header'),
+		livePlayer = document.getElementById('live-player__sidebar'),
 		livePlayerStream = document.querySelector('.live-player__stream'),
-		livePlayerStreamSelect = document.querySelector( '.live-player__stream--current' ),
-		livePlayerCurrentName = livePlayerStreamSelect.querySelector( '.live-player__stream--current-name' ),
-		livePlayerStreams = livePlayerStreamSelect.querySelectorAll( '.live-player__stream--item' ),
+		livePlayerStreamSelect = document.querySelector('.live-player__stream--current'),
+		livePlayerCurrentName = livePlayerStreamSelect.querySelector('.live-player__stream--current-name'),
+		livePlayerStreams = livePlayerStreamSelect.querySelectorAll('.live-player__stream--item'),
 		wpAdminHeight = 32,
-		onAir = document.getElementById( 'on-air' ),
-		upNext = document.getElementById( 'up-next'),
-		nowPlaying = document.getElementById( 'nowPlaying' ),
-		liveLinks = document.getElementById( 'live-links' ),
-		liveLink = document.querySelector( '.live-link__title'),
-		liveLinksWidget = document.querySelector( '.widget--live-player' ),
-		liveStream = document.getElementById( 'live-player' ),
+		onAir = document.getElementById('on-air'),
+		upNext = document.getElementById('up-next'),
+		nowPlaying = document.getElementById('nowPlaying'),
+		liveLinks = document.getElementById('live-links'),
+		liveLink = document.querySelector('.live-link__title'),
+		liveLinksWidget = document.querySelector('.widget--live-player'),
+		liveStream = document.getElementById('live-player'),
 		windowWidth = this.innerWidth || this.document.documentElement.clientWidth || this.document.body.clientWidth || 0,
 		scrollObject = {},
 		collapseToggle = document.querySelector('*[data-toggle="collapse"]'),
 		breakingNewsBanner = document.getElementById('breaking-news-banner'),
-		$overlay = $('.overlay-mask');
-
+		$overlay = $('.overlay-mask'),
+		livePlayerMore = document.getElementById('live-player--more');
 
 	/**
 	 * function to dynamically calculate the offsetHeight of an element
@@ -357,7 +479,7 @@
 	function elemHeightOffset(elem) {
 		return elemHeight(elem) - elemTopOffset(elem);
 	}
-	
+
 	function windowHeight(elem) {
 		return Math.max(document.documentElement.clientHeight, elem.innerHeight || 0);
 	}
@@ -368,17 +490,17 @@
 		var width = elem.offsetWidth;
 		var height = elem.offsetHeight;
 
-		while(elem.offsetParent) {
+		while (elem.offsetParent) {
 			elem = elem.offsetParent;
 			top += elem.offsetTop;
 			left += elem.offsetLeft;
 		}
 
 		return (
-			top < (window.pageYOffset + window.innerHeight) &&
-			left < (window.pageXOffset + window.innerWidth) &&
-			(top + height) > window.pageYOffset &&
-			(left + width) > window.pageXOffset
+		top < (window.pageYOffset + window.innerHeight) &&
+		left < (window.pageXOffset + window.innerWidth) &&
+		(top + height) > window.pageYOffset &&
+		(left + width) > window.pageXOffset
 		);
 	}
 
@@ -399,11 +521,11 @@
 	 * @param eventType
 	 * @param handler
 	 */
-	function addEventHandler(elem,eventType,handler) {
+	function addEventHandler(elem, eventType, handler) {
 		if (elem.addEventListener)
-			elem.addEventListener (eventType,handler,false);
+			elem.addEventListener(eventType, handler, false);
 		else if (elem.attachEvent)
-			elem.attachEvent ('on'+eventType,handler);
+			elem.attachEvent('on' + eventType, handler);
 	}
 
 	/**
@@ -428,7 +550,7 @@
 	 */
 	function lpPosScrollInit() {
 		if (body.classList.contains('logged-in')) {
-			livePlayer.style.top =  wpAdminHeight + elemHeight(header) + 'px';
+			livePlayer.style.top = wpAdminHeight + elemHeight(header) + 'px';
 			livePlayer.style.height = windowHeight(window) - wpAdminHeight + 'px';
 			liveLinks.style.height = windowHeight(window) - elemTopOffset(header) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) + 'px';
 		} else {
@@ -478,7 +600,7 @@
 	 * all other states will cause the live player to have a height of 100%;.
 	 */
 	function getScrollPosition() {
-		if ( window.innerWidth >= 768 ) {
+		if (window.innerWidth >= 768) {
 			scrollObject = {
 				x: window.pageXOffset,
 				y: window.pageYOffset
@@ -488,7 +610,7 @@
 				lpPosBase();
 			} else if (scrollObject.y >= 1 && elementInViewport(header)) {
 				lpPosScrollInit();
-			} else if (! elementInViewport(header)) {
+			} else if (!elementInViewport(header)) {
 				lpPosNoHeader();
 			} else {
 				lpPosDefault();
@@ -501,7 +623,7 @@
 	 * the live links
 	 */
 	function liveLinksAddHeight() {
-		if ( window.innerWidth >= 768 ) {
+		if (window.innerWidth >= 768) {
 			liveLinksWidget.style.height = elemHeight(liveLinksWidget) + 'px';
 		}
 	}
@@ -511,7 +633,7 @@
 	 * deal with a window being resized.
 	 */
 	function livePlayerMobileReset() {
-		if (livePlayer !=  null) {
+		if (livePlayer != null) {
 			if (livePlayer.classList.contains('live-player--init')) {
 				livePlayer.classList.remove('live-player--init');
 			}
@@ -527,7 +649,7 @@
 	 * deal with a window being resized.
 	 */
 	function livePlayerDesktopReset() {
-		if (body.classList.contains('live-player--open') ) {
+		if (body.classList.contains('live-player--open')) {
 			body.classList.remove('live-player--open');
 		}
 		if (livePlayer.classList.contains('live-player--mobile')) {
@@ -535,7 +657,7 @@
 		}
 		liveLinksMobileState();
 		setTimeout(getScrollPosition, 1000);
-		if( window.innerWidth >= 1385 || this.document.documentElement.clientWidth >= 1385 || this.document.body.clientWidth >= 1385 ) {
+		if (window.innerWidth >= 1385 || this.document.documentElement.clientWidth >= 1385 || this.document.body.clientWidth >= 1385) {
 			livePlayer.style.right = 'calc(50% - 700px)';
 		} else {
 			livePlayer.style.right = '0';
@@ -549,7 +671,7 @@
 	 * @param elemHide
 	 * @param elemDisplay
 	 */
-	var lpAction = function(btn, elemHide, elemDisplay) {
+	var lpAction = function (btn, elemHide, elemDisplay) {
 		this.btn = btn;
 		this.elemHide = elemHide;
 		this.elemDisplay = elemDisplay;
@@ -558,9 +680,9 @@
 	/**
 	 * this function will create a re-usable function to hide and display elements based on lpAction
 	 */
-	lpAction.prototype.playAction = function() {
+	lpAction.prototype.playAction = function () {
 		var that = this; // `this`, when registering an event handler, won't ref the method's parent object, so a var it is
-		addEventHandler(that.btn,elemClick,function() {
+		addEventHandler(that.btn, elemClick, function () {
 			that.elemHide.style.display = 'none';
 			that.elemDisplay.style.display = 'inline-block';
 		});
@@ -581,17 +703,16 @@
 	 *
 	 * @type {lpAction}
 	 */
-	playLp = new lpAction(playBtn, lpListenNow, lpNowPlaying);
-	pauseLp = new lpAction(pauseBtn, lpNowPlaying, lpListenNow);
 	resumeLp = new lpAction(resumeBtn, lpListenNow, lpNowPlaying);
 
 	/**
 	 * Toggles a class to the body when the mobile nav button is clicked
 	 */
 	function toggleNavButton() {
-		body.classList.toggle( 'mobile-nav--open' );
+		body.classList.toggle('mobile-nav--open');
 	}
-	addEventHandler(mobileNavButton,elemClick,toggleNavButton);
+
+	addEventHandler(mobileNavButton, elemClick, toggleNavButton);
 
 	/**
 	 * Toggles a target element.
@@ -599,46 +720,48 @@
 	 * @param {MouseEvent} e
 	 */
 	function toggleCollapsedElement(e) {
-		var target = document.querySelector(this.getAttribute('data-target')),
-			currentText = this.innerText,
-			newText = this.getAttribute('data-alt-text');
+		var target = $($(this).attr('data-target')).get(0),
+			currentText = $(this).html(),
+			newText = $(this).attr('data-alt-text');
 
 		e.preventDefault();
 
 		target.style.display = target.style.display != 'none' ? 'none' : 'block';
 
-		this.innerText = newText;
-		this.setAttribute('data-alt-text', currentText);
+		$(this).html(newText);
+		$(this).attr('data-alt-text', currentText);
 	}
+
 	if (collapseToggle != null) {
-		addEventHandler(collapseToggle, elemClick, toggleCollapsedElement);
+		$(collapseToggle ).click(toggleCollapsedElement);
 	}
 
 	/**
 	 * Toggles a class to the Live Play Stream Select box when the box is clicked
 	 */
 	function toggleStreamSelect() {
-		livePlayerStreamSelect.classList.toggle( 'open' );
+		livePlayerStreamSelect.classList.toggle('open');
 		livePlayerStream.classList.toggle('open');
 	}
-	addEventHandler(livePlayerStreamSelect,elemClick,toggleStreamSelect);
+
+	addEventHandler(livePlayerStreamSelect, elemClick, toggleStreamSelect);
 
 	/**
 	 * Selects a Live Player Stream
 	 */
 	function selectStream() {
-		var selected_stream = this.querySelector( '.live-player__stream--name' ).textContent;
+		var selected_stream = this.querySelector('.live-player__stream--name').textContent;
 
 		livePlayerCurrentName.textContent = selected_stream;
-		document.dispatchEvent( new CustomEvent( 'live-player-stream-changed', { 'detail': selected_stream } ) );
+		document.dispatchEvent(new CustomEvent('live-player-stream-changed', {'detail': selected_stream}));
 	}
 
-	for ( var i = 0; i < livePlayerStreams.length; i++ ) {
-		addEventHandler(livePlayerStreams[i],elemClick,selectStream);
+	for (var i = 0; i < livePlayerStreams.length; i++) {
+		addEventHandler(livePlayerStreams[i], elemClick, selectStream);
 	}
 
 	function liveLinksMobileState() {
-		if (body.classList.contains('live-player--open')) {
+		if ( $('body').hasClass('live-player--open')) {
 			document.body.style.overflow = 'hidden';
 			html.style.overflow = 'hidden';
 		} else {
@@ -651,7 +774,7 @@
 	 * Toggles a class to the body when an element is clicked on small screens.
 	 */
 	function openLivePlayer() {
-		if ( window.innerWidth <= 767 ) {
+		if (window.innerWidth <= 767) {
 			body.classList.toggle('live-player--open');
 			liveLinksMobileState();
 		}
@@ -661,7 +784,7 @@
 	 * Closes the live links
 	 */
 	function liveLinksClose() {
-		if ( window.innerWidth <= 767 ) {
+		if (window.innerWidth <= 767) {
 			if (body.classList.contains('live-player--open')) {
 				body.classList.remove('live-player--open');
 			}
@@ -670,35 +793,25 @@
 	}
 
 	function playerActive() {
-		if ( window.innerWidth <= 767 ) {
-			body.classList.add('live-player--active');
-			nowPlaying.style.display = 'block';
-			upNext.style.display = 'none';
-			onAir.style.display = 'none';
-		}
+		body.classList.add('live-player--active');
 	}
 
 	function playerNotActive() {
-		if ( window.innerWidth <= 767 ) {
-			body.classList.remove( 'live-player--active' );
-			nowPlaying.style.display = 'none';
-			upNext.style.display = 'block';
-			onAir.style.display = 'block';
-		}
+		body.classList.remove('live-player--active');
 	}
 
 	/**
 	 * Resize Window function for when a user scales down their browser window below 767px
 	 */
 	function resizeWindow() {
-		if( window.innerWidth <= 767 ) {
-			if(livePlayer != null) {
+		if (window.innerWidth <= 767) {
+			if (livePlayer != null) {
 				livePlayerMobileReset();
 			}
 		} else {
-			if(livePlayer != null) {
+			if (livePlayer != null) {
 				livePlayerDesktopReset();
-				addEventHandler(window,elemScroll,function() {
+				addEventHandler(window, elemScroll, function () {
 					scrollDebounce();
 					scrollThrottle();
 				});
@@ -707,8 +820,6 @@
 		}
 	}
 
-
-	
 	/**
 	 * variables that define debounce and throttling for window resizing and scrolling
 	 */
@@ -720,40 +831,43 @@
 	/**
 	 * functions being run at specific window widths.
 	 */
-	if( window.innerWidth >= 768 ) {
-		addEventHandler(window,elemLoad,function() {
+	if (window.innerWidth >= 768) {
+		addEventHandler(window, elemLoad, function () {
 			lpPosBase();
-			if(liveLinksWidget != null) {
+			if (liveLinksWidget != null) {
 				liveLinksAddHeight();
 			}
 		});
-		addEventHandler(window,elemScroll,function() {
+		addEventHandler(window, elemScroll, function () {
 			scrollDebounce();
 			scrollThrottle();
 		});
 	}
 
-	if(onAir != null) {
-		addEventHandler(onAir,elemClick,openLivePlayer);
+	if (onAir != null) {
+		addEventHandler(onAir, elemClick, openLivePlayer);
 	}
-	if(upNext != null) {
-		addEventHandler(upNext,elemClick,openLivePlayer);
+	if (upNext != null) {
+		addEventHandler(upNext, elemClick, openLivePlayer);
 	}
-	if(nowPlaying != null) {
-		addEventHandler(nowPlaying,elemClick,openLivePlayer);
+	if (nowPlaying != null) {
+		addEventHandler(nowPlaying, elemClick, openLivePlayer);
 	}
-	if(liveLinksWidget != null) {
-		addEventHandler(liveLinksWidget,elemClick,liveLinksClose);
+	if (livePlayerMore != null) {
+		addEventHandler(livePlayerMore, 'click', openLivePlayer);
 	}
-	if(playBtn != null || resumeBtn != null) {
-		addEventHandler(playBtn,elemClick,playerActive);
-		addEventHandler(resumeBtn,elemClick,playerActive);
+	if (liveLinksWidget != null) {
+		addEventHandler(liveLinksWidget, elemClick, liveLinksClose);
 	}
-	if(pauseBtn != null) {
-		addEventHandler(pauseBtn,elemClick,playerNotActive);
+	if (playBtn != null || resumeBtn != null) {
+		addEventHandler(playBtn, elemClick, playerActive);
+		addEventHandler(resumeBtn, elemClick, playerActive);
+	}
+	if (pauseBtn != null) {
+		addEventHandler(pauseBtn, elemClick, playerNotActive);
 	}
 
-	addEventHandler(window,elemResize,function() {
+	addEventHandler(window, elemResize, function () {
 		resizeDebounce();
 		resizeThrottle();
 	});
@@ -761,7 +875,7 @@
 	function init_menu_overlay() {
 		var $menu = jQuery(document.querySelector('.header__nav--list')),
 			$secondary = jQuery(document.querySelector('.header__secondary')),
-			$overlay = jQuery(document.querySelector('.overlay-mask'));
+			$overlay = jQuery(document.querySelector('.menu-overlay-mask'));
 
 		$menu.on('mouseover', '.menu-item-has-children, .header__account--small', function (e) {
 			$overlay.addClass('is-visible');
@@ -780,25 +894,25 @@
 
 	init_menu_overlay();
 
-	jQuery( function( $ ) {
-		$('.popup').on( 'click', function(ev) {
+	jQuery(function ($) {
+		$('.popup').on('click', function (ev) {
 			ev.preventDefault();
-			var x = screen.width/2 - 700/2;
-			var y = screen.height/2 - 450/2;
-			window.open( $(this).attr('href'), $(this).attr('href'), 'height=485,width=700,scrollbars=yes, resizable=yes,left='+x+ ',top='+y);
+			var x = screen.width / 2 - 700 / 2;
+			var y = screen.height / 2 - 450 / 2;
+			window.open($(this).attr('href'), $(this).attr('href'), 'height=485,width=700,scrollbars=yes, resizable=yes,left=' + x + ',top=' + y);
 		});
 	});
 
 	function personality_toggle() {
 		var $button = jQuery('.person-toggle');
-			start = jQuery('.personality__meta').first().height(); // get the height of the meta before we start, basically tells us whether we're using the mobile or desktop height
+		start = jQuery('.personality__meta').first().height(); // get the height of the meta before we start, basically tells us whether we're using the mobile or desktop height
 
 		$button.on('click', function (e) {
 			var $this = $(this);
-				$parent = $this.parent().parent('.personality');
-				$meta = $this.siblings('.personality__meta');
-				curr = $meta.height();
-				auto = $meta.css('height', 'auto').height(),
+			$parent = $this.parent().parent('.personality');
+			$meta = $this.siblings('.personality__meta');
+			curr = $meta.height();
+			auto = $meta.css('height', 'auto').height(),
 				offset = '';
 
 			$parent.toggleClass('open');
@@ -809,7 +923,7 @@
 			// }
 
 
-			if($this.hasClass('active')) {
+			if ($this.hasClass('active')) {
 				$this.text('More');
 			} else {
 				$this.text('Less');
@@ -828,7 +942,7 @@
 		$searchForm = $( '#header__search--form ' ).find( 'form' ),
 		$searchBtn = $( '#header__search'),
 		$searchInput = $( '#header-search' ),
-		$overlay = $('.overlay-mask' );
+		$overlay = $('.header-search-overlay-mask' );
 	
 	/**
 	 * A function to show the header search when an event is targeted.
@@ -847,12 +961,15 @@
 		// Now, show the search form, but don't set focus until the transition
 		// animation is complete. This is because Webkit browsers scroll to 
 		// the element when it gets focus, and they scroll to it where it was
-		// before the transition started. 
-		$searchContainer
-			.addClass('header__search--open')
-			.on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', function () {
+		// before the transition started.		
+		if ( '0s' !== $searchContainer.css('transitionDuration') ) {
+			$searchContainer.one('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', function () {
 				$searchInput.focus().select();
 			} );
+		} else {
+			$searchInput.focus().select();			
+		}
+		$searchContainer.addClass('header__search--open'); 
 	}
 	
 	/**
@@ -877,10 +994,10 @@
 	 */
 	$searchBtn.click( showSearch ); 
 	
-	// Show search if the field has focus.
-	$searchInput.click( function ( e ) {
-		showSearch( e);
-	} ); 
+	/**
+	 * Open search if user clicks on it.
+	 */
+	$searchInput.add( $searchForm.find( 'button[type=submit]' ) ).click( showSearch );
 	
 	function checkSearchField () {
 		var $search_body = $searchContainer.find( '.header-search-body' );
