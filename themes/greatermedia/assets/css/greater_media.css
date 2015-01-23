@@ -4172,7 +4172,8 @@ Link posts contain a link to an external site. They can also optionally have a f
   position: relative;
   background-position: center center;
   background-size: 100%;
-  background-size: cover; }
+  background-size: cover;
+  background-repeat: no-repeat; }
   .article__thumbnail:after {
     content: '';
     display: block;
@@ -5903,7 +5904,8 @@ category: Components - Ads
   position: relative;
   background-position: center center;
   background-size: 100%;
-  background-size: cover; }
+  background-size: cover;
+  background-repeat: no-repeat; }
   .contest__thumbnail:after {
     content: '';
     display: block;
@@ -8399,7 +8401,8 @@ a.social-share-link {
   position: relative;
   background-position: center center;
   background-size: 100%;
-  background-size: cover; }
+  background-size: cover;
+  background-repeat: no-repeat; }
   .article__thumbnail:after {
     content: '';
     display: block;
@@ -12063,7 +12066,8 @@ category: Components - Article
   position: relative;
   background-position: center center;
   background-size: 100%;
-  background-size: cover; }
+  background-size: cover;
+  background-repeat: no-repeat; }
   .error__background:after {
     content: '';
     display: block;
