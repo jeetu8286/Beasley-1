@@ -429,7 +429,6 @@
 		breakingNewsBanner = document.getElementById('breaking-news-banner'),
 		$overlay = $('.overlay-mask');
 
-
 	/**
 	 * function to dynamically calculate the offsetHeight of an element
 	 *
@@ -695,19 +694,19 @@
 	 * @param {MouseEvent} e
 	 */
 	function toggleCollapsedElement(e) {
-		var target = document.querySelector(this.getAttribute('data-target')),
-			currentText = this.innerText,
-			newText = this.getAttribute('data-alt-text');
+		var target = $($(this).attr('data-target')).get(0),
+			currentText = $(this).html(),
+			newText = $(this).attr('data-alt-text');
 
 		e.preventDefault();
 
 		target.style.display = target.style.display != 'none' ? 'none' : 'block';
 
-		this.innerText = newText;
-		this.setAttribute('data-alt-text', currentText);
+		$(this).html(newText);
+		$(this).attr('data-alt-text', currentText);
 	}
 	if (collapseToggle != null) {
-		addEventHandler(collapseToggle, elemClick, toggleCollapsedElement);
+		$(collapseToggle ).click(toggleCollapsedElement);
 	}
 
 	/**
@@ -734,7 +733,7 @@
 	}
 
 	function liveLinksMobileState() {
-		if (body.classList.contains('live-player--open')) {
+		if ( $('body').hasClass('live-player--open')) {
 			document.body.style.overflow = 'hidden';
 			html.style.overflow = 'hidden';
 		} else {
@@ -803,8 +802,6 @@
 		}
 	}
 
-
-	
 	/**
 	 * variables that define debounce and throttling for window resizing and scrolling
 	 */
@@ -857,7 +854,7 @@
 	function init_menu_overlay() {
 		var $menu = jQuery(document.querySelector('.header__nav--list')),
 			$secondary = jQuery(document.querySelector('.header__secondary')),
-			$overlay = jQuery(document.querySelector('.overlay-mask'));
+			$overlay = jQuery(document.querySelector('.menu-overlay-mask'));
 
 		$menu.on('mouseover', '.menu-item-has-children, .header__account--small', function (e) {
 			$overlay.addClass('is-visible');
@@ -924,7 +921,7 @@
 		$searchForm = $( '#header__search--form ' ).find( 'form' ),
 		$searchBtn = $( '#header__search'),
 		$searchInput = $( '#header-search' ),
-		$overlay = $('.overlay-mask' );
+		$overlay = $('.header-search-overlay-mask' );
 	
 	/**
 	 * A function to show the header search when an event is targeted.
@@ -943,12 +940,15 @@
 		// Now, show the search form, but don't set focus until the transition
 		// animation is complete. This is because Webkit browsers scroll to 
 		// the element when it gets focus, and they scroll to it where it was
-		// before the transition started. 
-		$searchContainer
-			.addClass('header__search--open')
-			.on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', function () {
+		// before the transition started.		
+		if ( '0s' !== $searchContainer.css('transitionDuration') ) {
+			$searchContainer.one('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', function () {
 				$searchInput.focus().select();
 			} );
+		} else {
+			$searchInput.focus().select();			
+		}
+		$searchContainer.addClass('header__search--open'); 
 	}
 	
 	/**
@@ -973,10 +973,10 @@
 	 */
 	$searchBtn.click( showSearch ); 
 	
-	// Show search if the field has focus.
-	$searchInput.click( function ( e ) {
-		showSearch( e);
-	} ); 
+	/**
+	 * Open search if user clicks on it.
+	 */
+	$searchInput.add( $searchForm.find( 'button[type=submit]' ) ).click( showSearch );
 	
 	function checkSearchField () {
 		var $search_body = $searchContainer.find( '.header-search-body' );

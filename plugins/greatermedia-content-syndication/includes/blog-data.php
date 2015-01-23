@@ -16,7 +16,6 @@ class BlogData {
 
 	public static function init() {
 		add_action( 'init', array( __CLASS__, 'get_content_site_id' ), 1 );
-		add_action( 'admin_init', array( __CLASS__, 'register_subscription_setting' ) );
 		add_action( 'wp_ajax_syndicate-now', array( __CLASS__, 'syndicate_now' ) );
 		add_action( 'admin_notices', array( __CLASS__, 'add_notice_for_undefined' ) );
 	}
@@ -74,7 +73,7 @@ class BlogData {
 	}
 
 	public static function run( $syndication_id, $offset = 0 ) {
-			$result = self::QueryContentSite( $syndication_id, $offset );
+			$result = self::QueryContentSite( $syndication_id, '', $offset );
 			$taxonomy_names = SyndicationCPT::$support_default_tax;
 			$defaults = array(
 				'status'    =>  get_post_meta( $syndication_id, 'subscription_post_status', true ),
@@ -123,7 +122,8 @@ class BlogData {
 			self::run( $syndication_id, $offset );
 		}
 
-		update_option( 'syndication_last_performed', current_time( 'timestamp', 1 ) );
+		//update_option( 'syndication_last_performed', current_time( 'timestamp', 1 ) );
+		update_post_meta( $syndication_id, 'syndication_last_performed', current_time( 'timestamp', 1 ) );
 
 		return $total_posts;
 	}
@@ -142,8 +142,13 @@ class BlogData {
 		$result = array();
 
 		if( $start_date == '' ) {
-			$last_queried = get_option( 'syndication_last_performed', 0);
-			$last_queried = date( 'Y-m-d H:i:s', $last_queried );
+			//$last_queried = get_option( 'syndication_last_performed', 0);
+			$last_queried = get_post_meta( $subscription_id, 'syndication_last_performed', true );
+			if( $last_queried ) {
+				$last_queried = date( 'Y-m-d H:i:s', $last_queried );
+			} else {
+				$last_queried = date( 'Y-m-d H:i:s', 0 );
+			}
 		} else {
 			$last_queried = $start_date;
 		}
@@ -208,16 +213,14 @@ class BlogData {
 	// Rgister setting to store last syndication timestamp
 	public static function PostDataExtractor( $post_type, $single_result ) {
 
-			$metas	= get_metadata( $post_type, $single_result->ID, true );
+			$metas	= get_metadata( 'post', $single_result->ID, '', true );
 			$media = get_attached_media( 'image', $single_result->ID );
 			$featured = wp_get_attachment_image_src( get_post_thumbnail_id( $single_result->ID ), 'full' );
 			$galleries = get_post_galleries( $single_result->ID, false );
-			$taxonomies = get_object_taxonomies( $single_result->post_type );
+			$taxonomies = get_object_taxonomies( $single_result );
 			$term_tax = array();
 			foreach( $taxonomies as $taxonomy ) {
-				if( !in_array( $taxonomy, SyndicationCPT::$support_default_tax ) ) {
-					$term_tax[$taxonomy][] = wp_get_post_terms( $single_result->ID, $taxonomy, array("fields" => "names") );
-				}
+				$term_tax[$taxonomy][] = wp_get_object_terms( $single_result->ID, $taxonomy, array("fields" => "names") );
 			}
 
 			return array(
@@ -285,8 +288,7 @@ class BlogData {
 				wp_update_post( $args );
 				if( !empty( $metas ) ) {
 					foreach ( $metas as $meta_key => $meta_value ) {
-						$meta_value = sanitize_text_field( $meta_value );
-						update_post_meta( $post_id, $meta_key, $meta_value );
+						update_post_meta( $post_id, $meta_key, sanitize_text_field( $meta_value[0] ) );
 					}
 				}
 				$updated = 2;
@@ -295,7 +297,7 @@ class BlogData {
 			$post_id = wp_insert_post( $args );
 			if( is_numeric( $post_id ) && !empty( $metas ) ) {
 				foreach ( $metas as $meta_key => $meta_value ) {
-					update_post_meta( $post_id, $meta_key, $meta_value );
+					update_post_meta( $post_id, $meta_key, sanitize_text_field( $meta_value[0] ) );
 				}
 			}
 			$updated = 1;
@@ -317,8 +319,23 @@ class BlogData {
 
 			if( !empty( $term_tax ) ) {
 				foreach ( $term_tax as $taxonomy => $terms ) {
-					if( !empty( $terms[0] ) ) {
-						wp_set_post_terms( $post_id, $terms[0], $taxonomy, true );
+					if( !empty( $terms[0] ) && taxonomy_exists( $taxonomy ) ) {
+						if( !is_taxonomy_hierarchical( $taxonomy) ) {
+							wp_set_object_terms( $post_id, $terms[0], $taxonomy, true );
+						} else {
+							foreach ($terms[0] as $term_name) {
+								$term_id = term_exists( $term_name, $taxonomy );
+								if( $term_id ) {
+									$category = get_term_by( 'name', $term_name, $taxonomy );
+									wp_set_object_terms( $post_id, $category->term_id, $taxonomy, true );
+								} else {
+									$new_term = wp_insert_term( $term_name, $taxonomy );
+									if( !is_wp_error( $new_term) ) {
+										wp_set_object_terms( $post_id, $new_term['term_id'], $taxonomy, true );
+									}
+								}
+							}
+						}
 					}
 				}
 			}
@@ -497,10 +514,6 @@ class BlogData {
 				);
 			}
 		}
-	}
-
-	public static function register_subscription_setting() {
-		register_setting( 'syndication_last_performed', 'syndication_last_performed', 'intval' );
 	}
 
 	/**

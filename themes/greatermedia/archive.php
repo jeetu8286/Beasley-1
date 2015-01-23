@@ -18,36 +18,36 @@ get_header(); ?>
 
 				<h2 class="content__heading">
 					<?php $object = get_queried_object(); ?>
-					Latest <?php echo ! empty( $object->labels->name ) ? esc_html( strtolower( $object->labels->name ) ) : ''; ?> from <?php bloginfo( 'name' ); ?>
+					<?php echo ! empty( $object->labels->name ) ? esc_html( strtolower( $object->labels->name ) ) : ''; ?>
 				</h2>
 
 				<?php if ( have_posts() ) :  ?>
 
 					<?php if ( is_post_type_archive( 'songs' ) ) : ?>
 
-					<ul class="song__archive">
+						<ul class="song__archive">
 
-					<?php
+							<?php
 
-						while( have_posts() ) : the_post();
+							while( have_posts() ) : the_post();
 
-						$link = get_post_meta($post->ID, 'purchase_link', true);
-						$artist = get_post_meta($post->ID, 'artist', true);
+								$link = get_post_meta($post->ID, 'purchase_link', true);
+								$artist = get_post_meta($post->ID, 'artist', true);
 
-						echo '<li class="song__item icon-music">';
-						if ( $link ) {
-							echo '<a href="' . esc_url( $link ) . '">';
-						}
-						echo '<span class="song__title">' . get_the_title() . '</span>';
-						if ( $link ) {
-							echo '</a>';
-						}
-						echo '<span class="song__artist">' . esc_html( $artist ) . '</span>';
-						echo '</li>';
+								echo '<li class="song__item icon-music">';
+								if ( $link ) {
+									echo '<a href="' . esc_url( $link ) . '">';
+								}
+								echo '<span class="song__title">' . get_the_title() . '</span>';
+								if ( $link ) {
+									echo '</a>';
+								}
+								echo '<span class="song__artist">' . esc_html( $artist ) . '</span>';
+								echo '</li>';
 
-						endwhile; ?>
+							endwhile; ?>
 
-					</ul>
+						</ul>
 
 					<?php else : ?>
 
@@ -55,7 +55,7 @@ get_header(); ?>
 
 					<?php endif; ?>
 
-						<?php greatermedia_load_more_button( array( 'partial_slug' => 'partials/loop', 'auto_load' => true ) ); ?>
+					<?php greatermedia_load_more_button( array( 'partial_slug' => 'partials/loop', 'auto_load' => true ) ); ?>
 
 
 				<?php else : ?>
