@@ -2084,6 +2084,7 @@ Curated posts for Featured Articles
   height: 100%;
   background-size: 100%;
   background-size: cover;
+  background-repeat: no-repeat;
   background-position: center center; }
   .featured__content--image:last-child {
     margin-right: 0; }
@@ -3916,7 +3917,8 @@ Link posts contain a link to an external site. They can also optionally have a f
   position: relative;
   background-size: 100%;
   background-size: cover;
-  background-position: center center; }
+  background-position: center center;
+  background-repeat: no-repeat; }
   @media screen and (min-width: 480px) {
     .entry2__thumbnail {
       float: left;
@@ -9991,7 +9993,9 @@ category: Components - Gallery Archive
       position: absolute;
       left: 0;
       top: 0; }
-  .gallery__feature:hover h3 {
+  .gallery__feature .gallery__featured--title {
+    color: #404041; }
+  .gallery__feature:hover .gallery__featured--title {
     color: #aa1c20; }
   @media screen and (min-width: 1024px) {
     .gallery__feature {
