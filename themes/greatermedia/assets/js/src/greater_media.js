@@ -37,7 +37,6 @@
 		breakingNewsBanner = document.getElementById('breaking-news-banner'),
 		$overlay = $('.overlay-mask');
 
-
 	/**
 	 * function to dynamically calculate the offsetHeight of an element
 	 *
@@ -411,8 +410,6 @@
 		}
 	}
 
-
-	
 	/**
 	 * variables that define debounce and throttling for window resizing and scrolling
 	 */
