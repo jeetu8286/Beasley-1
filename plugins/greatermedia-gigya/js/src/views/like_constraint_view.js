@@ -30,6 +30,7 @@ var LikeConstraintView = ConstraintView.extend({
 		};
 
 		constraint.set(changes);
+		this.renderConjunctionGuide();
 	},
 
 });

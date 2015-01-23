@@ -724,5 +724,5 @@ function gmrs_get_blogroll_widget_episode_item( $item ) {
 	$post_date = strtotime( $episode->post_date_gmt ) + get_option( 'gmt_offset' ) * HOUR_IN_SECONDS;
 	$post_date = date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $post_date );
 
-	return sprintf( '<div class="live-link__type--standard"><div class="live-link__title" title="%s">%s</div></div>', esc_attr( $post_date ), $item );
+	return sprintf( '<div class="live-link__type--show"><div class="live-link__title" title="%s">%s</div></div>', esc_attr( $post_date ), $item );
 }
