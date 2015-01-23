@@ -1720,7 +1720,8 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
       width: 75.113636363636%; } }
 
 .page-template-front-page-php .ad__in-loop {
-  margin: 1.5em 0; }
+  margin: 1.5em 0;
+  clear: both; }
 .page-template-front-page-php .entry__date,
 .page-template-front-page-php .entry__excerpt {
   display: none; }
