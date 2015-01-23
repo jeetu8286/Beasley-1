@@ -760,6 +760,7 @@ category: Components - Gallery Archive
 	@include opacity(.5);
 	@include transition(opacity 200ms linear);
 	background-size: cover;
+	background-repeat: no-repeat;
 	cursor: pointer;
 	.single-gmr_gallery & {
 		width: 100px;
@@ -883,10 +884,7 @@ category: Components - Gallery Archive
 	
  	.thumbnail {
 		background-color: $dark-gray;
-		padding-bottom: 66%;
-		background-position: center center; 
-		background-size: 100%; 
-		background-size: cover;
+		@include proportional-thumbnail( 66% );
 				 
 		.inner-wrap {
 			position: absolute;

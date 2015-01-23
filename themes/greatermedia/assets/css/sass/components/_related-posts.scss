@@ -89,10 +89,7 @@ category: Components - Article
 
 	.related-post__img {
 		.thumbnail {
-			background-position: center center;
-			background-size: 100%;
-			background-size: cover; 
-			padding-bottom: 66.666%;
+			@include proportional-thumbnail( 66% );
 		}
 	}
 

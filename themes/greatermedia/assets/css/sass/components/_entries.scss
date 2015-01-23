@@ -20,7 +20,8 @@
 }
  
 .entry2__thumbnail {	
-	margin-bottom: $base-line-height * .75; 
+	margin-bottom: $base-line-height * .75;
+	@include proportional-thumbnail( 66% );
 	
  	@include bp(small) {
 		@include span-columns(2 of 6);
@@ -28,7 +29,7 @@
 	}
 	
 	.has-excerpt &:after {
-		padding-top: 75%;
+		@include proportional-thumbnail( 75% );
 	}
 	
 	position: relative;

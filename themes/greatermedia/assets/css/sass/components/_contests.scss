@@ -445,11 +445,12 @@
 		position: relative;
 
 		.contest__submission--thumbnail {
-			height: 156px;
-			background-position: center center;
-			background-repeat: no-repeat;
-			-webkit-background-size: cover;
-			background-size: cover;
+			// height: 156px;
+			// background-position: center center;
+			// background-repeat: no-repeat;
+			// -webkit-background-size: cover;
+			// background-size: cover;
+			@include proportional-thumbnail( 156px );
 		}
 
 		.contest__submission--date,
