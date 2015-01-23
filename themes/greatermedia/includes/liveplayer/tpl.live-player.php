@@ -46,7 +46,8 @@ if ( empty( $active_stream ) ) {
 		*/ ?>
 
 		<div id="on-air" class="on-air" data-endpoint="<?php echo esc_url( home_url( '/on-air/' ) ); ?>">
-			<i class="fa fa-spin fa-spinner fa-2x"></i>
+			<div class="on-air__title"></div>
+			<div class="on-air__show"></div>
 		</div>
 
 		<div id="live-player--more" class="live-player--more"><?php _e( '...', 'greatermedia' ); ?></div>
