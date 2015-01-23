@@ -5547,8 +5547,10 @@ category: Components
   content: "\e604";
   color: #d0d2d3; }
 
-.live-link__song:hover:before {
-  color: #d22228; }
+.live-link__song:hover {
+  color: #aa1c20; }
+  .live-link__song:hover:before {
+    color: #aa1c20; }
 
 .live-link__song--artist {
   padding-top: 6px;
@@ -5560,8 +5562,6 @@ category: Components
   font-size: 0.8125em;
   font-weight: bold;
   color: #d0d2d3; }
-  .live-link__song--title a:hover, .live-link__song--title a:focus, .live-link__song--title a:active {
-    color: #d22228; }
 
 .live-link__type--audio:before {
   content: "\e60c"; }
