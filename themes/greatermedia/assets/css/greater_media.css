@@ -5509,11 +5509,7 @@ category: Components
       visibility: visible;
       display: block;
       height: 100%;
-      padding-right: 1em;
-      padding-left: 1em;
       margin: 0;
-      overflow: hidden;
-      overflow-y: scroll;
       border-top: 1px solid #282827; } }
 
 .live-player--open .live-links {
@@ -5536,7 +5532,7 @@ category: Components
   height: 0;
   color: #d22228; }
   .live-link__song:hover:before, .live-link__type--audio:hover:before, .live-link__type--gallery:hover:before, .live-link__type--image:hover:before, .live-link__type--link:hover:before, .live-link__type--standard:hover:before, .live-link__type--video:hover:before {
-    color: #000000; }
+    color: #aa1c20; }
 
 .live-link__type--audio, .live-link__type--gallery, .live-link__type--image, .live-link__type--link, .live-link__type--standard, .live-link__type--video {
   display: block;
@@ -5550,8 +5546,12 @@ category: Components
   content: "\e604";
   color: #d0d2d3; }
 
-.live-link__song:hover:before {
-  color: #d22228; }
+.live-link__song:hover {
+  color: #aa1c20; }
+  .live-link__song:hover:before {
+    color: #aa1c20; }
+  .live-link__song:hover .live-link__song--title {
+    color: #aa1c20; }
 
 .live-link__song--artist {
   padding-top: 6px;
@@ -5563,8 +5563,6 @@ category: Components
   font-size: 0.8125em;
   font-weight: bold;
   color: #d0d2d3; }
-  .live-link__song--title a:hover, .live-link__song--title a:focus, .live-link__song--title a:active {
-    color: #d22228; }
 
 .live-link__type--audio:before {
   content: "\e60c"; }
@@ -5615,7 +5613,7 @@ category: Components
   color: #d0d2d3; }
 
 .live-link__title a:hover, .live-link__title a:focus, .live-link__title a:active {
-  color: #d22228; }
+  color: #aa1c20; }
 
 .audio__time {
   display: none;
@@ -8305,7 +8303,11 @@ category: Components - Shows
   margin: 0 -1px; }
 
 .widget--live-player {
-  margin: 0 1em 1em; }
+  padding: 0 1em;
+  margin: 0 0 1em;
+  height: 100% !important;
+  overflow: hidden;
+  overflow-y: scroll; }
   .live-player--open .widget--live-player {
     margin-bottom: 58px; }
 
