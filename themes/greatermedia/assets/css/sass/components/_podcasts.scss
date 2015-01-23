@@ -212,6 +212,7 @@ a.podcast__rss:link, a.podcast__rss:visited {
 
 a.podcast__rss:hover, a.podcast__rss:focus {
 	@include btn($btn-bg, $color-text-white, $btn-bg, .5em, 1em, ms(-1));
+	background-color: $btn-bg !important;
 	text-transform: none;
 }
 

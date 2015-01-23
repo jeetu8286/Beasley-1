@@ -430,7 +430,6 @@
 		$overlay = $('.overlay-mask'),
 		livePlayerMore = document.getElementById('live-player--more');
 
-
 	/**
 	 * function to dynamically calculate the offsetHeight of an element
 	 *
@@ -794,7 +793,6 @@
 			}
 		}
 	}
-
 
 	/**
 	 * variables that define debounce and throttling for window resizing and scrolling

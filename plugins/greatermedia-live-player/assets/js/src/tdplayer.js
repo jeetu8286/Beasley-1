@@ -1,3 +1,12 @@
+/**
+ * This is a forked version of the tdplayer.js file from http://player.listenlive.co/api/2.5/js/tdplayer.js
+ *
+ * This file was modified to fit the unique functionality of the GMR sites including the integration of inline audio
+ * and podcasts playing in the live player area. This file also adds support for older browsers that do not support
+ * the `addEventListener` method. The core functions for the Triton API are using `addEventListener`. To add support,
+ * conditionals were added that would use `attachEvent` if `addEventListener` is not supported. A custom function --
+ * `addEventHandler` -- that will handle the switch is also being used throughout.
+ */
 (function ($, window, undefined) {
 	"use strict";
 
