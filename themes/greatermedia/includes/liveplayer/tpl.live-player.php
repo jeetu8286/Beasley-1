@@ -45,36 +45,30 @@ if ( empty( $active_stream ) ) {
 		</div>
 		*/ ?>
 
-		<div id="on-air" class="on-air">
-			<?php if ( ( $show = gmrs_get_current_show() ) ) : ?>
-				<div class="on-air__title">On Air:</div>
-				<div class="on-air__show"><?php echo esc_html( $show->post_title ); ?></div>
-			<?php endif; ?>
-		</div>
-		
-		<div class="live-stream">
-			<?php do_action( 'gm_live_player' ); ?>
-			<div class="live-stream__status">
-				<div id="live-stream__login" class="live-stream__login"><?php _e( 'Log In To', 'greatermedia' ); ?></div>
-				<div id="live-stream__now-playing" class="live-stream__now-playing--btn"><?php _e( 'Now Playing', 'greatermedia' ); ?></div>
-				<div id="live-stream__listen-now" class="live-stream__listen-now--btn"><?php _e( 'Listen Live', 'greatermedia' ); ?></div>
-			</div>
-			<div id="nowPlaying" class="now-playing">
-				<div id="trackInfo" class="now-playing__info"></div>
-				<div id="npeInfo"></div>
-			</div>
+		<div id="on-air" class="on-air" data-endpoint="<?php echo esc_url( home_url( '/on-air/' ) ); ?>">
+			<div class="on-air__title"></div>
+			<div class="on-air__show"></div>
 		</div>
 
-		<?php /*
-			<div class="live-stream">
-				<div class="live-stream__login--actions">
-					<a href="<?php echo esc_url( home_url( '/members/login' ) ); ?>" class="live-stream__btn--login"><span class="live-stream__btn--label"><?php _e( 'Login to Listen Live', 'greatermedia' ); ?></span></a>
-				</div>
-				<div class="live-stream__status">
-					<a href="<?php echo esc_url( home_url( '/members/login' ) ); ?>" id="live-stream__listen-now" class="live-stream__listen-now--btn"><?php _e( 'Listen Live', 'greatermedia' ); ?></a>
-				</div>
+		<div id="live-player--more" class="live-player--more"><?php _e( '...', 'greatermedia' ); ?></div>
+		<?php do_action( 'gm_live_player' ); ?>
+		<div id="audio__time" class="audio__time">
+			<div id="audio__progress-bar" class="audio__progress-bar">
+				<span id="audio__progress" class="audio__progress"></span>
 			</div>
-		*/ ?>
+			<div id="audio__time--elapsed" class="audio__time--elapsed"></div>
+			<div id="audio__time--remaining" class="audio__time--remaining"></div>
+		</div>
+		<div id="nowPlaying" class="now-playing">
+			<div id="trackInfo" class="now-playing__info"></div>
+			<div id="npeInfo"></div>
+		</div>
+
+		<div id="live-stream__status" class="live-stream__status">
+			<div id="live-stream__login" class="live-stream__login"><?php _e( 'Log In To', 'greatermedia' ); ?></div>
+			<div id="live-stream__now-playing" class="live-stream__now-playing--btn"><?php _e( 'Now Playing', 'greatermedia' ); ?></div>
+			<div id="live-stream__listen-now" class="live-stream__listen-now--btn"><?php _e( 'Listen Live', 'greatermedia' ); ?></div>
+		</div>
 
 	</div>
 

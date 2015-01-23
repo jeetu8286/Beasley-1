@@ -10,6 +10,7 @@ add_action( 'manage_' . GMR_CONTEST_CPT . '_posts_custom_column', 'gmr_contests_
 add_action( 'before_delete_post', 'gmr_contests_prevent_hard_delete' );
 add_action( 'wp_trash_post', 'gmr_contests_prevent_hard_delete' );
 add_action( 'transition_post_status', 'gmr_contests_prevent_trash_transition', 10, 3 );
+add_action( 'admin_enqueue_scripts', 'gmr_contests_admin_enqueue_scripts' );
 
 add_action( 'gmr_contest_load', 'gmr_contests_render_form' );
 add_action( 'gmr_contest_submit', 'gmr_contests_process_form_submission' );
@@ -22,9 +23,51 @@ add_filter( 'map_meta_cap', 'gmr_contests_map_meta_cap', 10, 4 );
 add_filter( 'gmr_contest_submissions_query', 'gmr_contests_submissions_query' );
 add_filter( 'post_type_link', 'gmr_contests_get_submission_permalink', 10, 2 );
 add_filter( 'request', 'gmr_contests_unpack_vars' );
+add_filter( 'gmr-homepage-curation-post-types', 'gmr_contest_register_homepage_curration_post_type' );
 add_filter( 'post_thumbnail_html', 'gmr_contests_post_thumbnail_html', 10, 4 );
 add_filter( 'manage_' . GMR_CONTEST_CPT . '_posts_columns', 'gmr_contests_filter_contest_columns_list' );
 add_filter( 'post_row_actions', 'gmr_contests_filter_contest_actions', PHP_INT_MAX, 2 );
+add_filter( 'gmr_live_link_suggestion_post_types', 'gmr_contests_extend_live_link_suggestion_post_types' );
+
+/**
+ * Enqueues admin styles.
+ *
+ * @action admin_enqueue_scripts.
+ * @global string $typenow The current post type.
+ */
+function gmr_contests_admin_enqueue_scripts() {
+	global $typenow;
+
+	$types = array(
+		GMR_SURVEY_CPT,
+		GMR_SURVEY_RESPONSE_CPT,
+		GMR_CONTEST_CPT,
+		GMR_CONTEST_ENTRY_CPT,
+		GMR_SUBMISSIONS_CPT,
+	);
+
+	$page = filter_input( INPUT_GET, 'page' );
+	$pages = array(
+		'gmr-contest-winner',
+		'gmr-survey-responses',
+	);
+
+	if ( in_array( $typenow, $types ) || in_array( $page, $pages ) ) {
+		wp_enqueue_style( 'greatermedia-contests-admin', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'css/greatermedia-contests-admin.css', null, GREATER_MEDIA_CONTESTS_VERSION );
+	}
+}
+
+/**
+ * Registers contest post type in the homepage curration types list.
+ *
+ * @filter gmr-homepage-curation-post-types
+ * @param array $types Array of already registered types.
+ * @return array Extended array of post types.
+ */
+function gmr_contest_register_homepage_curration_post_type( $types ) {
+	$types[] = GMR_CONTEST_CPT;
+	return $types;
+}
 
 /**
  * Removes delete_post(s) capabilities for public contests or contest entries.
@@ -145,7 +188,7 @@ function gmr_contests_register_post_type() {
 		'supports'            => array( 'title', 'editor', 'thumbnail' ),
 		'taxonomies'          => array( 'category', 'post_tag' ),
 		'public'              => true,
-		'menu_position'       => 5,
+		'menu_position'       => 32,
 		'menu_icon'           => 'dashicons-forms',
 		'can_export'          => true,
 		'has_archive'         => 'contests',
@@ -217,7 +260,6 @@ function gmr_contest_container_attributes( $post = null ) {
 
 	$endpoints = array(
 		'load'        => "{$permalink_action}/load/",
-		'submit'      => "{$permalink_action}/submit/",
 		'confirm-age' => "{$permalink_action}/confirm-age/",
 		'vote'        => "{$permalink_action}/vote/",
 		'unvote'      => "{$permalink_action}/unvote/",
@@ -635,24 +677,29 @@ function gmr_contests_process_form_submission() {
 	do_action( 'greatermedia_contest_entry_save', $entry );
 	delete_transient( 'contest_entries_' . $contest_id );
 
-	echo wpautop( get_post_meta( $contest_id, 'form-thankyou', true ) );
+	echo '<html>';
+		echo '<head></head>';
+		echo '<body>';
+			echo wpautop( get_post_meta( $contest_id, 'form-thankyou', true ) );
 
-	$fields = GreaterMediaFormbuilderRender::parse_entry( $contest_id, $entry->post_id(), null, true );
-	if ( ! empty( $fields ) ) :
-		?><h4 class="contest__submission--entries-title">Here is your submission:</h4>
-		<dl class="contest__submission--entries">
-			<?php foreach ( $fields as $field ) : ?>
-				<?php if ( 'file' != $field['type'] ) : ?>
-					<dt>
-						<?php echo esc_html( $field['label'] ); ?>
-					</dt>
-					<dd>
-						<?php echo esc_html( is_array( $field['value'] ) ? implode( ', ', $field['value'] ) : $field['value'] ); ?>
-					</dd>
-				<?php endif; ?>
-			<?php endforeach; ?>
-		</dl><?php
-	endif;
+			$fields = GreaterMediaFormbuilderRender::parse_entry( $contest_id, $entry->post_id(), null, true );
+			if ( ! empty( $fields ) ) :
+				?><h4 class="contest__submission--entries-title">Here is your submission:</h4>
+				<dl class="contest__submission--entries">
+					<?php foreach ( $fields as $field ) : ?>
+						<?php if ( 'file' != $field['type'] ) : ?>
+							<dt>
+								<?php echo esc_html( $field['label'] ); ?>
+							</dt>
+							<dd>
+								<?php echo esc_html( is_array( $field['value'] ) ? implode( ', ', $field['value'] ) : $field['value'] ); ?>
+							</dd>
+						<?php endif; ?>
+					<?php endforeach; ?>
+				</dl><?php
+			endif;
+		echo '</body>';
+	echo '</html>';
 }
 
 /**
@@ -1091,4 +1138,15 @@ function gmr_contest_has_files( $contest ) {
 	}
 
 	return false;
+}
+
+/**
+ * Extends live link suggestion post types.
+ *
+ * @param array $post_types The array of already registered post types.
+ * @return array The array of extended post types.
+ */
+function gmr_contests_extend_live_link_suggestion_post_types( $post_types ) {
+	$post_types[] = GMR_CONTEST_CPT;
+	return $post_types;
 }

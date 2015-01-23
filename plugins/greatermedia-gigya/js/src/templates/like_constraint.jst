@@ -22,7 +22,7 @@
 
 <div class="entry-select-group">
 	<label><strong>Category: </strong></label>
-	<select class="like-category" style="width: 100%">
+	<select class="like-category">
 		<% _.each(categories, function(categoryItem) { %>
 		<option value="<%- categoryItem.value %>" <%= categoryItem.value == category ? 'selected="selected"' : ''  %>">
 		<%- categoryItem.label %>
@@ -34,7 +34,7 @@
 <div class="entry-answer-group">
 	<label><strong>Like: </strong></label>
 
-	<select class="constraint-operator" style="width: 35%">
+	<select class="constraint-operator">
 		<% _.each(view.operatorsFor(valueType), function(operatorItem) { %>
 		<option value="<%- operatorItem %>" <%= operatorItem === operator ? 'selected="selected"' : ''  %>">
 		<%- operatorItem %>
@@ -44,11 +44,15 @@
 
 	<input type="text" class="constraint-value constraint-value-text" value="<%- value %>" />
 
-	<select class="constraint-conjunction" style="width: 15%">
+	<select class="constraint-conjunction">
 		<% _.each(view.conjunctions, function(conjunctionItem) { %>
 		<option value="<%- conjunctionItem %>" <%= conjunctionItem === conjunction ? 'selected="selected"' : ''  %>">
 		<%- conjunctionItem %>
 		</option>
 		<% }) %>
 	</select>
+</div>
+
+<div class="conjunction-guide">
+	<p><span class="arrow-down"></span>OR any of the following conditions</p>
 </div>

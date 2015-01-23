@@ -21,10 +21,96 @@ $months = array(
 
 $emma_groups = get_option( 'emma_groups' );
 $emma_groups = json_decode( $emma_groups, true );
+if ( ! $emma_groups ) {
+	$emma_groups = array();
+}
+
+$state_names = array(
+	array( 'label' => 'Alabama', 'value' => 'AL' ),
+	array( 'label' => 'Alaska', 'value' => 'AK' ),
+	array( 'label' => 'Arizona', 'value' => 'AZ' ),
+	array( 'label' => 'Arkansas', 'value' => 'AR' ),
+	array( 'label' => 'California', 'value' => 'CA' ),
+	array( 'label' => 'Colorado', 'value' => 'CO' ),
+	array( 'label' => 'Connecticut', 'value' => 'CT' ),
+	array( 'label' => 'Delaware', 'value' => 'DE' ),
+	array( 'label' => 'District of Columbia', 'value' => 'DC' ),
+	array( 'label' => 'Florida', 'value' => 'FL' ),
+	array( 'label' => 'Georgia', 'value' => 'GA' ),
+	array( 'label' => 'Hawaii', 'value' => 'HI' ),
+	array( 'label' => 'Idaho', 'value' => 'ID' ),
+	array( 'label' => 'Illinois', 'value' => 'IL' ),
+	array( 'label' => 'Indiana', 'value' => 'IN' ),
+	array( 'label' => 'Iowa', 'value' => 'IA' ),
+	array( 'label' => 'Kansas', 'value' => 'KS' ),
+	array( 'label' => 'Kentucky', 'value' => 'KY' ),
+	array( 'label' => 'Louisiana', 'value' => 'LA' ),
+	array( 'label' => 'Maine', 'value' => 'ME' ),
+	array( 'label' => 'Maryland', 'value' => 'MD' ),
+	array( 'label' => 'Massachusetts', 'value' => 'MA' ),
+	array( 'label' => 'Michigan', 'value' => 'MI' ),
+	array( 'label' => 'Minnesota', 'value' => 'MN' ),
+	array( 'label' => 'Mississippi', 'value' => 'MS' ),
+	array( 'label' => 'Missouri', 'value' => 'MO' ),
+	array( 'label' => 'Montana', 'value' => 'MT' ),
+	array( 'label' => 'Nebraska', 'value' => 'NE' ),
+	array( 'label' => 'Nevada', 'value' => 'NV' ),
+	array( 'label' => 'New Hampshire', 'value' => 'NH' ),
+	array( 'label' => 'New Jersey', 'value' => 'NJ' ),
+	array( 'label' => 'New Mexico', 'value' => 'NM' ),
+	array( 'label' => 'New York', 'value' => 'NY' ),
+	array( 'label' => 'North Carolina', 'value' => 'NC' ),
+	array( 'label' => 'North Dakota', 'value' => 'ND' ),
+	array( 'label' => 'Ohio', 'value' => 'OH' ),
+	array( 'label' => 'Oklahoma', 'value' => 'OK' ),
+	array( 'label' => 'Oregon', 'value' => 'OR' ),
+	array( 'label' => 'Pennsylvania', 'value' => 'PA' ),
+	array( 'label' => 'Rhode Island', 'value' => 'RI' ),
+	array( 'label' => 'South Carolina', 'value' => 'SC' ),
+	array( 'label' => 'South Dakota', 'value' => 'SD' ),
+	array( 'label' => 'Tennessee', 'value' => 'TN' ),
+	array( 'label' => 'Texas', 'value' => 'TX' ),
+	array( 'label' => 'Utah', 'value' => 'UT' ),
+	array( 'label' => 'Vermont', 'value' => 'VT' ),
+	array( 'label' => 'Virginia', 'value' => 'VA' ),
+	array( 'label' => 'Washington', 'value' => 'WA' ),
+	array( 'label' => 'West Virginia', 'value' => 'WV' ),
+	array( 'label' => 'Wisconsin', 'value' => 'WI' ),
+	array( 'label' => 'Wyoming', 'value' => 'WY' ),
+	array( 'label' => 'Armed Forces Americas', 'value' => 'AA' ),
+	array( 'label' => 'Armed Forces Europe', 'value' => 'AE' ),
+	array( 'label' => 'Armed Forces Pacific', 'value' => 'AP' ),
+);
+
+function get_gigya_verify_email_message() {
+	if ( array_key_exists( 'errorCode', $_GET ) ) {
+		$error_code = $_GET['errorCode'];
+		preg_match( '~^(\d+)~', $error_code, $matches );
+		$error_num = trim( $matches[1] );
+
+		if ( $error_num === '0' ) {
+			return 'Your email was verified successfully and your Account has been activated.';
+		} else {
+			$message = substr( $error_code, strlen( $error_num ) );
+			$message = str_replace( '\"', '', $message );
+			$message = 'Error: Could not verify your email: ' . $message;
+			$message = esc_html( $message );
+
+			return "<span class='error'>$message</span>";
+		}
+	} else {
+		return '';
+	}
+}
 
 ?>
 
-	<div class="gigya-screen-set" id="GMR-CustomScreenSet" style="display:none" data-on-pending-registration-screen="gigya-register-complete-screen">
+	<div
+		class="gigya-screen-set"
+		id="GMR-CustomScreenSet"
+		style="display:none"
+		data-on-pending-registration-screen="gigya-register-complete-screen"
+		data-on-pending-verification-screen="gigya-resend-verification-code-screen">
 		<div class="gigya-screen" id="gigya-login-screen" data-responsive="true">
 			<h2>Login to Your Account</h2>
 			<h3>Login with your social network</h3>
@@ -190,6 +276,18 @@ $emma_groups = json_decode( $emma_groups, true );
 				<label class="inline-label"><input type="radio" name="profile.gender" value="m" />Male</label>
 				<label class="inline-label"><input type="radio" name="profile.gender" value="f" />Female</label>
 
+				<span class="gigya-error-msg" data-bound-to="profile.state" ></span>
+				<label>State:</label>
+				<select name="profile.state">
+					<?php foreach ( $state_names as $state ) { ?>
+						<option value="<?php echo esc_attr( $state['value'] ); ?>"><?php echo esc_html( $state['label'] ); ?></option>
+					<?php } ?>
+				</select>
+
+				<span class="gigya-error-msg" data-bound-to="profile.city" ></span>
+				<label>City:</label>
+				<input type="text" name="profile.city" />
+
 				<h2>Email Subscriptions</h2>
 
 				<ul class="member-groups-list">
@@ -237,7 +335,11 @@ $emma_groups = json_decode( $emma_groups, true );
 				<span class="gigya-error-msg login-error-msg" data-bound-to="gigya-profile-form"></span>
 				<span class="gigya-error-msg" data-bound-to="profile.email" ></span>
 
-				<label>Email:</label>
+				<label>Email:
+					<a href="#"
+						class="link-button verify-email-link"
+						data-switch-screen="gigya-resend-verification-code-update-screen">Verify Email</a>
+				</label>
 				<input type="text" name="profile.email" />
 
 				<span class="gigya-error-msg" data-bound-to="profile.firstName" ></span>
@@ -285,6 +387,18 @@ $emma_groups = json_decode( $emma_groups, true );
 				<label class="inline-label"><input type="radio" name="profile.gender" value="m" />Male</label>
 				<label class="inline-label"><input type="radio" name="profile.gender" value="f" />Female</label>
 
+				<span class="gigya-error-msg" data-bound-to="profile.state" ></span>
+				<label>State:</label>
+				<select name="profile.state">
+					<?php foreach ( $state_names as $state ) { ?>
+						<option value="<?php echo esc_attr( $state['value'] ); ?>"><?php echo esc_html( $state['label'] ); ?></option>
+					<?php } ?>
+				</select>
+
+				<span class="gigya-error-msg" data-bound-to="profile.city" ></span>
+				<label>City:</label>
+				<input type="text" name="profile.city" />
+
 				<h2>Password</h2>
 				<a href="#" data-switch-screen="gigya-change-password-screen">Change your password.</a>
 
@@ -323,7 +437,7 @@ $emma_groups = json_decode( $emma_groups, true );
 				<input type="password" name="newPassword" />
 
 				<span class="gigya-error-msg" data-bound-to="passwordRetype" ></span>
-				<label>Choose a new password:</label>
+				<label>Retype new password:</label>
 				<input type="password" name="passwordRetype" />
 
 				<a href="#" class="link-button" data-switch-screen="gigya-update-profile-screen">&laquo; Back</a>
@@ -343,7 +457,89 @@ $emma_groups = json_decode( $emma_groups, true );
 			<a href="#" class="link-button" data-switch-screen="gigya-update-profile-screen">&laquo; Back</a>
 		</div>
 
-	</div><!-- end screenset --!>
+		<div class="gigya-screen" id="gigya-reset-link-password-screen" data-responsive="true">
+			<h2>Reset Your Password</h2>
+
+			<form class="gigya-profile-form" id="gigya-reset-link-password-form">
+				<span class="gigya-error-msg reset-link-password-error-msg"></span>
+
+				<span class="gigya-error-msg" data-bound-to="newPassword" ></span>
+				<label>Choose a new password:</label>
+				<input type="password" name="newPassword" />
+
+				<span class="gigya-error-msg" data-bound-to="passwordRetype" ></span>
+				<label>Confirm new password:</label>
+				<input type="password" name="passwordRetype" />
+
+				<input type="submit" name="submit" value="Reset" />
+			</form>
+
+			<a href="#" class="link-button" data-switch-screen="gigya-login-screen">&laquo; Back</a>
+		</div>
+
+		<div class="gigya-screen" id="gigya-reset-link-password-progress-screen" data-responsive="true">
+			<h2>Resetting Password ...</h2>
+		</div>
+
+		<div class="gigya-screen" id="gigya-reset-link-password-success-screen" data-responsive="true">
+			<h2>Password Reset Successfully</h2>
+
+			<a href="#" class="link-button" data-switch-screen="gigya-login-screen">&laquo; Back to Login</a>
+		</div>
+
+		<div class="gigya-screen" id="gigya-resend-verification-code-screen" data-responsive="true">
+			<h2>Email Verification</h2>
+			<h3>Your email has not been verified. Please check your inbox for the verification email.</h3>
+
+			<form class="gigya-resend-verification-code-form" id="gigya-resend-verification-code-form" data-on-success-screen="gigya-resend-verification-code-success-screen">
+				<span class="gigya-error-msg login-error-msg" data-bound-to="gigya-resend-verification-code-form"></span>
+
+				<span class="gigya-error-msg" data-bound-to="email" placeholder="Email:" ></span>
+				<input type="text" name="email" placeholder="Email" id="resend-email" />
+
+				<a href="#" class="link-button" data-switch-screen="gigya-login-screen">&laquo; Back</a>
+				<input type="submit" name="submit" value="Resend Verification" />
+			</form>
+		</div>
+
+		<div class="gigya-screen" id="gigya-resend-verification-code-success-screen" data-responsive="true">
+			<h2>Email Verification</h2>
+			<h3>A confirmation email has been sent to you with a link to activate your account.</h3>
+
+			<a href="#" class="link-button" data-switch-screen="gigya-login-screen">&laquo; Back to Login</a>
+		</div>
+
+		<div class="gigya-screen" id="gigya-resend-verification-code-update-screen" data-responsive="true">
+			<h2>Email Verification</h2>
+			<h3>Your email has not been verified. Please check your inbox for the verification email.</h3>
+
+			<form class="gigya-resend-verification-code-form" id="gigya-resend-verification-code-form" data-on-success-screen="gigya-resend-verification-code-update-success-screen">
+				<span class="gigya-error-msg login-error-msg" data-bound-to="gigya-resend-verification-code-form"></span>
+
+				<span class="gigya-error-msg" data-bound-to="email" placeholder="Email:" ></span>
+				<input type="text" name="email" placeholder="Email" id="resend-email" />
+
+				<a href="#" class="link-button" data-switch-screen="gigya-update-profile-screen">&laquo; Back</a>
+				<input type="submit" name="submit" value="Resend Verification" />
+			</form>
+		</div>
+
+		<div class="gigya-screen" id="gigya-resend-verification-code-update-success-screen" data-responsive="true">
+			<h2>Email Verification</h2>
+			<h3>A confirmation email has been sent to you with a link to activate your account.</h3>
+
+			<a href="#" class="link-button" data-switch-screen="gigya-update-profile-screen">&laquo; Back</a>
+		</div>
+
+		<div class="gigya-screen" id="gigya-verify-email-screen" data-responsive="true">
+			<h2>Email Verification</h2>
+			<h3><?php echo get_gigya_verify_email_message(); ?></h3>
+
+			<a href="#" class="link-button" data-switch-screen="gigya-login-screen">&laquo; Back to Login</a>
+		</div>
+
+
+	</div><!--end screenset -->
 
 	<main class="main" role="main">
 
@@ -351,7 +547,6 @@ $emma_groups = json_decode( $emma_groups, true );
 
 			<div class="profile-page__sidebar">
 
-				<!-- WIP - needs to mirror the JS -->
 				<h1 class="profile-header">
 					<span class="profile-header-text"></span>
 					<span class="profile-header-sep" style="display:none">/</span>

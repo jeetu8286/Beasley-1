@@ -11,7 +11,7 @@ define( 'GMR_LIVE_LINK_CPT', 'gmr-live-link' );
 
 // action hooks
 add_action( 'init', 'gmr_ll_register_post_type', PHP_INT_MAX );
-add_action( 'save_post', 'gmr_ll_save_redirect_meta_box_data', PHP_INT_MAX );
+add_action( 'save_post', 'gmr_ll_save_redirect_meta_box_data', 11 );
 add_action( 'save_post', 'gmr_ll_update_live_link_title' );
 add_action( 'manage_' . GMR_LIVE_LINK_CPT . '_posts_custom_column', 'gmr_ll_render_custom_column', 10, 2 );
 add_action( 'admin_action_gmr_ll_copy', 'gmr_ll_handle_copy_post_to_live_link' );
@@ -43,7 +43,7 @@ function gmr_ll_update_live_link_title( $post_id ) {
 
 	// do nothing if it is live link post
 	$post = get_post( $post_id );
-	if ( ! $post || GMR_LIVE_LINK_CPT == $post->post_title ) {
+	if ( ! $post || GMR_LIVE_LINK_CPT == $post->post_type ) {
 		return;
 	}
 
@@ -190,7 +190,7 @@ function gmr_ll_register_post_type() {
 		'can_export'           => false,
 		'menu_position'        => 5,
 		'menu_icon'            => 'dashicons-admin-links',
-		'supports'             => array( 'title', 'post-formats', 'thumbnail' ),
+		'supports'             => array( 'title', 'post-formats' ),
 		'taxonomies'           => apply_filters( 'gmr_live_link_taxonomies', array() ),
 		'register_meta_box_cb' => 'gmr_ll_register_meta_boxes',
 		'label'                => 'Live Links',
@@ -259,7 +259,7 @@ function gmr_ll_render_redirect_meta_box( WP_Post $post ) {
 /**
  * Saves redirection link.
  *
- * @action save_post
+ * @action save_post 11
  * @param int $post_id The post id.
  */
 function gmr_ll_save_redirect_meta_box_data( $post_id ) {
@@ -290,7 +290,7 @@ function gmr_ll_save_redirect_meta_box_data( $post_id ) {
 	update_post_meta( $post_id, 'redirect', $redirect );
 
 	// deactivate this action to prevent infinite loop
-	remove_action( 'save_post', 'gmr_ll_save_redirect_meta_box_data', PHP_INT_MAX );
+	remove_action( 'save_post', 'gmr_ll_save_redirect_meta_box_data', 11 );
 
 	// set live link post parent to its realted post id
 	if ( is_numeric( $redirect ) ) {
@@ -552,9 +552,27 @@ function gmr_ll_output_blogroll_widget_live_link_item( $item ) {
 	}
 	
 	$link = gmr_ll_get_redirect_link( get_the_ID() );
+
+	$post_id = get_the_ID();
+	
+	if ( has_post_format( 'gallery', $post_id ) ) {
+		$format = 'gallery';
+	} elseif ( has_post_format( 'link', $post_id ) ) {
+		$format = 'link';
+	} elseif ( has_post_format( 'image', $post_id ) ) {
+		$format = 'image';
+	} elseif ( has_post_format( 'video', $post_id ) ) {
+		$format = 'video';
+	} elseif ( has_post_format( 'audio', $post_id ) ) {
+		$format = 'audio';
+	} else {
+		$format = 'standard';
+	}
+
 	if ( $link ) {
 		$item = sprintf(
-			'<div class="live-link__type--standard"><div class="live-link__title"><a href="%s">%s</a></div></div>',
+			'<div class="live-link__type--%s"><div class="live-link__title"><a href="%s">%s</a></div></div>',
+			$format,
 			esc_url( $link ),
 			get_the_title()
 		);

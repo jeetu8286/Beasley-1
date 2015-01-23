@@ -20,7 +20,19 @@ class Publisher extends Task {
 
 	public $counter_actions = array(
 		'comment',
+		'contest',
 		'social_share',
+
+		'email_message_open',
+		'email_message_click',
+	);
+
+	public $list_actions = array(
+		'contest',
+		'social_share',
+
+		'email_message_open',
+		'email_message_click',
 	);
 
 	function get_task_name() {
@@ -55,20 +67,7 @@ class Publisher extends Task {
 			$json = json_decode( $response_text, true );
 
 			if ( is_array( $json ) ) {
-				$subtype = $this->action_subtype_for( $action['actionType'] );
-
-				if ( $this->is_counter_action( $subtype ) ) {
-					$counter_name = $subtype . '_count';
-
-					try {
-						$this->increment_counter( $uid, $counter_name );
-					} catch ( \Exception $e ) {
-						// probably don't need to retry counter increments,
-						// TODO: confirm
-						error_log( "Failed to increment counter: $counter_name " . $e->getMessage() );
-					}
-				}
-
+				$this->update_profile_data( $uid, $action );
 				return $json;
 			} else {
 				throw new \Exception(
@@ -77,6 +76,7 @@ class Publisher extends Task {
 			}
 		} else {
 			$error_message = $this->error_message_for( $response );
+
 			throw new \Exception(
 				"ActionPublisher: Store Failed - {$data} - " . $error_message
 			);
@@ -84,63 +84,47 @@ class Publisher extends Task {
 
 	}
 
-	function increment_counter( $uid, $counter_name ) {
-		$data    = $this->get_new_account_data( $uid, $counter_name );
-		$request = new GigyaRequest( null, null, 'accounts.setAccountInfo' );
-		$request->setParam( 'UID', $uid );
-		$request->setParam( 'data', json_encode( $data ) );
-		$response = $request->send();
+	function update_profile_data( $uid, $action ) {
+		$data            = get_gigya_user_profile_data( $uid );
+		$action_sub_type = $this->action_subtype_for( $action['actionType'] );
+		$counter_name    = $action_sub_type . '_count';
+		$list_name       = $action_sub_type . '_list';
+		$action_id       = strval( $action['actionID'] );
 
-		if ( $response->getErrorCode() === 0 ) {
-			$response_text = $response->getResponseText();
-			$json          = json_decode( $response_text, true );
-
-			if ( is_array( $json ) ) {
-				return $json;
+		if ( $this->is_counter_action( $action_sub_type ) ) {
+			if ( array_key_exists( $counter_name, $data ) ) {
+				$counter = intval( $data[ $counter_name ] );
+				$counter++;
 			} else {
-				throw new \Exception( 'Invalid Gigya JSON: ' . $response_text );
+				$counter = 1;
 			}
-		} else {
-			throw new \Exception( "Failed to update counter for: {$uid} - {$response_text}" );
-		}
-	}
 
-	function get_new_account_data( $uid, $counter_name ) {
-		$account_info = $this->get_account_info( $uid );
-		$data         = $account_info['data'];
-
-		if ( array_key_exists( $counter_name, $data ) ) {
-			$count = intval( $data[ $counter_name ] );
-			$data[ $counter_name ] = $count + 1;
-		} else {
-			$data[ $counter_name ] = 1;
+			$data[ $counter_name ] = $counter;
 		}
 
-		return $data;
-	}
+		if ( $this->is_list_action( $action_sub_type ) ) {
+			if ( array_key_exists( $list_name, $data ) ) {
+				$list = $data[ $list_name ];
 
-	function get_account_info( $uid ) {
-		$request = new GigyaRequest( null, null, 'accounts.getAccountInfo' );
-		$request->setParam( 'UID', $uid );
-
-		$response      = $request->send();
-		$response_text = $response->getResponseText();
-
-		if ( $response->getErrorCode() === 0 ) {
-			$json          = json_decode( $response_text, true );
-
-			if ( is_array( $json ) ) {
-				return $json;
+				if ( ! in_array( $action_id, $list ) ) {
+					$list[] = $action_id;
+				}
 			} else {
-				throw new \Exception( 'Invalid Gigya JSON: ' . $response_text );
+				$list = array( $action_id );
 			}
-		} else {
-			throw new \Exception( "Failed to get account info for: {$uid} - $response_text" );
+
+			$data[ $list_name ] = $list;
 		}
+
+		set_gigya_user_profile_data( $uid, $data );
 	}
 
 	function is_counter_action( $counter_name ) {
 		return in_array( $counter_name, $this->counter_actions );
+	}
+
+	function is_list_action( $counter_name ) {
+		return in_array( $counter_name, $this->list_actions );
 	}
 
 	function action_subtype_for( $action_type ) {

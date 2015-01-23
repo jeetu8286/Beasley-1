@@ -21,7 +21,7 @@
 		<?php // Google Chrome Frame for IE ?>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-		<title><?php wp_title( '' ); ?></title>
+		<title><?php wp_title( '|', true, 'right' ); ?></title>
 
 		<?php // mobile meta ?>
 		<meta name="HandheldFriendly" content="True">
@@ -69,9 +69,9 @@
 
 				do_action( 'gmr_social' ); ?>
 			</nav>
-			<div id="header__search--form" class="header__search--form">
-				<?php get_template_part( 'searchform', 'header' ); ?>
-			</div>
+
+			<?php get_template_part( 'partials/header-search' ); ?>
+
 			<div id="page-wrap" class="page-wrap">
 				<header id="header" class="header" role="banner">
 					<div class="container">

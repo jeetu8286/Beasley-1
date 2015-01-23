@@ -64,6 +64,9 @@ class GreaterMediaContestEntry {
 		update_post_meta( $post_id, 'entry_source', $this->entry_source );
 		update_post_meta( $post_id, 'entry_reference', $this->entry_reference );
 
+		// delete moderation count transient
+		delete_transient( 'gmr-moderation-count' );
+
 	}
 
 	/**

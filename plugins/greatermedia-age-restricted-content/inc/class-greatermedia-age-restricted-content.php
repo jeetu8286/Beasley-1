@@ -20,7 +20,8 @@ class GreaterMediaAgeRestrictedContent extends VisualShortcode {
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ), 20, 0 );
 		add_action( 'save_post', array( $this, 'save_post' ) );
 		
-		add_filter( 'the_content', array( $this, 'the_content' ) );
+		add_filter( 'the_excerpt', array( $this, 'the_content' ), 100 );
+		add_filter( 'the_content', array( $this, 'the_content' ), 100 );
 		add_filter( 'wp_trim_words', array( $this, 'untrim_restricted_markup' ), 10, 4 );
 
 	}
@@ -89,7 +90,7 @@ class GreaterMediaAgeRestrictedContent extends VisualShortcode {
 					'21+'                    => __( '21+', 'greatermedia-age-restricted-content' ),
 					'Content'                => __( 'Content', 'greatermedia-age-restricted-content' ),
 					'Status'                 => __( 'Status', 'greatermedia-age-restricted-content' ),
-					'No restriction'         => __( 'No restriction', 'greatermedia-age-restricted-content' ),
+					'No restriction'         => __( 'None', 'greatermedia-age-restricted-content' ),
 				),
 			);
 
@@ -167,7 +168,7 @@ class GreaterMediaAgeRestrictedContent extends VisualShortcode {
 		         __( '21+', 'greatermedia-age-restricted-content' ) .
 		         '</p>';
 		$html .= '<p><input type="radio" name="ar_status" value="" ' . ( empty( $age_restriction ) ? 'checked="checked"' : '' ) . ' />' .
-		         __( 'No restriction', 'greatermedia-age-restricted-content' ) .
+		         __( 'None', 'greatermedia-age-restricted-content' ) .
 		         '</p>';
 		$html .= '<input type="hidden" id="hidden_age_restriction" name="hidden_age_restriction" value="' . esc_attr( $age_restriction ) . '" />';
 		$html .= '</fieldset>';
@@ -263,7 +264,7 @@ class GreaterMediaAgeRestrictedContent extends VisualShortcode {
 		} else if ( '21plus' === $age_restriction ) {
 			return __( '21+', 'greatermedia-age-restricted-content' );
 		} else {
-			return __( 'No restriction', 'greatermedia-age-restricted-content' );
+			return __( 'None', 'greatermedia-age-restricted-content' );
 		}
 
 	}

@@ -895,10 +895,12 @@ category: Components - Gallery Archive
 		}
 	}
 
-	&:hover {
-		h3 {
-			color: $primary-link-hover;
-		}
+	.gallery__featured--title {
+		color: $primary-heading;
+	}
+
+	&:hover .gallery__featured--title {
+		color: $primary-link-hover;
 	}
 	
 	@include bp(large) {
@@ -974,31 +976,10 @@ category: Components - Gallery Archive
 	}
 }
 
-// .gallery__featured--title {
-// 	margin: 0;
-// 	line-height: 1.4;
-// 	font-family: $open-sans;
-// 	font-weight: lighter;
-// 	font-size: ms(3);
-
-// 	.gallery__featured--secondary & {
-// 		font-size: ms(4);
-// 		@include bp(medium) {
-// 			font-size: ms(-1);
-// 		}
-// 		@include bp(large) {
-// 			font-size: ms(0);
-// 		}
-// 		@include bp(x-large) {
-// 			font-size: ms(1);
-// 		}
-// 	}
-// }
-
 .gallery__grid--column {
 	@include span-columns(4);
 	margin-bottom: 22px;
-	overflow: auto;
+	overflow: hidden;
 
 	@include bp(small) {
 		@include span-columns(6);

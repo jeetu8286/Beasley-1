@@ -1,4 +1,4 @@
-/*! Greater Media Contests - v1.0.4
+/*! Greater Media Contests - v1.0.6
  * http://10up.com/
  * Copyright (c) 2015;
  * Licensed GPLv2+
@@ -32,44 +32,30 @@
 		};
 		
 		container.on('submit', 'form', function() {
-			var form = $(this);
+			var form = $(this),
+				iframe, iframe_onload;
 
 			if (!form.parsley || form.parsley().isValid()) {
-				var form_data = new FormData();
-
-				form.find('input').each(function() {
-					var input = this;
-
-					if ('file' === input.type) {
-						$(this.files).each(function(key, value) {
-							form_data.append(input.name, value);
-						});
-					} else if ('radio' === input.type || 'checkbox' === input.type) {
-						if (input.checked) {
-							form_data.append(input.name, input.value);
-						}
-					} else {
-						form_data.append(input.name, input.value);
-					}
-				});
-
-				form.find('textarea, select').each(function() {
-					form_data.append(this.name, this.value);
-				});
-
-				form.find('input, textarea, select, button').attr('disabled', 'disabled');
+				form.find('input, textarea, select, button').attr('readonly', 'readonly');
 				form.find('i.fa').show();
 
-				$.ajax({
-					url: container.data('submit'),
-					type: 'post',
-					data: form_data,
-					processData: false, // Don't process the files
-					contentType: false, // Set content type to false as jQuery will tell the server its a query string request
-					success: function(data) {
-						container.html(data);
-					}
-				});
+				iframe_onload = function() {
+					var iframe_document = iframe.contentDocument || iframe.contentWindow.document,
+						iframe_body = iframe_document.getElementsByTagName('body')[0],
+						scroll_to = container.offset().top - $('#wpadminbar').height() - 10;
+
+					container.html(iframe_body.innerHTML);
+					$('html, body').animate({scrollTop: scroll_to}, 200);
+				};
+
+				iframe = document.getElementById('theiframe');
+				if (iframe.addEventListener) {
+					iframe.addEventListener('load', iframe_onload, false);
+				} else if (iframe.attachEvent) {
+					iframe.attachEvent('onload', iframe_onload);
+				}
+
+				return true;
 			}
 
 			return false;
@@ -82,71 +68,69 @@
 
 	$(document).bind('pjax:end', __ready).ready(__ready);
 })(jQuery);
-document.addEventListener("DOMContentLoaded", function () {
-	/**
-	 * Generate a list of supported input types (text, date, range, etc.).
-	 * Adapted from Modernizr, which is MIT licensed
-	 * @see http://modernizr.com/
-	 */
-	function get_supported_input_types() {
+(function ($) {
+	$(document).ready(function () {
+		/**
+		 * Generate a list of supported input types (text, date, range, etc.).
+		 * Adapted from Modernizr, which is MIT licensed
+		 * @see http://modernizr.com/
+		 */
+		function get_supported_input_types() {
 
-		var inputElem = document.createElement('input'),
-			docElement = document.documentElement,
-			inputs = {},
-			smile = ':)';
+			var inputElem = document.createElement('input'),
+				docElement = document.documentElement,
+				inputs = {},
+				smile = ':)';
 
-		return (function (props) {
+			return (function (props) {
 
-			for (var i = 0, bool, inputElemType, defaultView, len = props.length; i < len; i++) {
+				for (var i = 0, bool, inputElemType, defaultView, len = props.length; i < len; i++) {
 
-				inputElem.setAttribute('type', inputElemType = props[i]);
-				bool = inputElem.type !== 'text';
+					inputElem.setAttribute('type', inputElemType = props[i]);
+					bool = inputElem.type !== 'text';
 
-				if (bool) {
+					if (bool) {
 
-					inputElem.value = smile;
-					inputElem.style.cssText = 'position:absolute;visibility:hidden;';
+						inputElem.value = smile;
+						inputElem.style.cssText = 'position:absolute;visibility:hidden;';
 
-					if (/^range$/.test(inputElemType) && inputElem.style.WebkitAppearance !== undefined) {
+						if (/^range$/.test(inputElemType) && inputElem.style.WebkitAppearance !== undefined) {
 
-						docElement.appendChild(inputElem);
-						defaultView = document.defaultView;
+							docElement.appendChild(inputElem);
+							defaultView = document.defaultView;
 
-						bool = defaultView.getComputedStyle &&
-						defaultView.getComputedStyle(inputElem, null).WebkitAppearance !== 'textfield' &&
-						(inputElem.offsetHeight !== 0);
+							bool = defaultView.getComputedStyle &&
+							defaultView.getComputedStyle(inputElem, null).WebkitAppearance !== 'textfield' &&
+							(inputElem.offsetHeight !== 0);
 
-						docElement.removeChild(inputElem);
+							docElement.removeChild(inputElem);
 
-					} else if (/^(search|tel)$/.test(inputElemType)) {
-					} else if (/^(url|email)$/.test(inputElemType)) {
-						bool = inputElem.checkValidity && inputElem.checkValidity() === false;
+						} else if (/^(search|tel)$/.test(inputElemType)) {
+						} else if (/^(url|email)$/.test(inputElemType)) {
+							bool = inputElem.checkValidity && inputElem.checkValidity() === false;
 
-					} else {
-						bool = inputElem.value !== smile;
+						} else {
+							bool = inputElem.value !== smile;
+						}
 					}
+
+					inputs[props[i]] = !!bool;
 				}
 
-				inputs[props[i]] = !!bool;
-			}
+				return inputs;
 
-			return inputs;
+			})('search tel url email datetime date month week time datetime-local number range color'.split(' '));
+		}
 
-		})('search tel url email datetime date month week time datetime-local number range color'.split(' '));
-	}
-
-	// Add datepickers for start & end dates if not supported natively
-	var supported_input_types = get_supported_input_types();
-	if (!supported_input_types.hasOwnProperty('date') || false === supported_input_types.date) {
-		jQuery('input[type=date]').datetimepicker(
-			{
+		// Add datepickers for start & end dates if not supported natively
+		var supported_input_types = get_supported_input_types();
+		if (!supported_input_types.hasOwnProperty('date') || false === supported_input_types.date) {
+			$('input[type=date]').datetimepicker({
 				timepicker: false,
 				format    : 'm/d/Y'
-			}
-		);
+			});
 
-		jQuery('input[type=time]').datetimepicker(
-			{
+			$('input[type=time]').datetimepicker({
 				datepicker: false,
 				format    : 'g:i A',
 				formatTime: 'g:i A',
@@ -176,8 +160,7 @@ document.addEventListener("DOMContentLoaded", function () {
 					'10:00 PM', '10:30 PM',
 					'11:00 PM', '11:30 PM'
 				]
-			}
-		);
-	}
-
-}, false );
+			});
+		}
+	});
+})(jQuery);

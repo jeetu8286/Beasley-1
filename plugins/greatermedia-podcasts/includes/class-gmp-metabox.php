@@ -14,10 +14,67 @@ class GMP_Meta {
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_box' ) );
 		add_action( 'save_post', array( $this, 'save_meta_box' ) );
 
-		add_action( 'add_meta_boxes', array( $this, 'add_episode_meta_box' ) );
+		add_action( 'post_submitbox_misc_actions', array( $this, 'post_submitbox_misc_actions' ) );
 		add_action( 'save_post', array( $this, 'save_episode_meta_box' ) );
-		//add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts_styles' ) );
+		
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts_styles' ) );
 
+	}
+
+	/**
+	 * Displays episode settings.
+	 *
+	 * @action post_submitbox_misc_actions
+	 */
+	public function post_submitbox_misc_actions() {
+		global $typenow;
+		if ( GMP_CPT::EPISODE_POST_TYPE != $typenow ) {
+			return;
+		}
+
+		$post = get_post();
+
+		// Add an nonce field so we can check for it later.
+		wp_nonce_field( 'gmp_episodes_meta_box', 'gmp_episodes_meta_box_nonce' );
+
+		// Use get_post_meta to retrieve an existing value from the database.
+		$gmp_explicit = sanitize_text_field( get_post_meta( $post->ID, 'gmp_episode_explicit', true ) );
+		$gmp_explicit = filter_var( $gmp_explicit, FILTER_VALIDATE_BOOLEAN );
+
+		$gmp_block = sanitize_text_field( get_post_meta( $post->ID, 'gmp_block', true ) );
+		$gmp_block = filter_var( $gmp_block, FILTER_VALIDATE_BOOLEAN );
+
+		?><div id="episode-explicit" class="misc-pub-section misc-pub-gmr-podcast mis-pub-radio">
+			Explicit:
+			<span class="post-pub-section-value radio-value"><?php echo $gmp_explicit ? 'Yes' : 'No'; ?></span>
+			<a href="#" class="edit-radio hide-if-no-js" style="display: inline;"><span aria-hidden="true">Edit</span></a>
+
+			<div class="radio-select hide-if-js">
+				<label><input type="radio" name="gmp_episode_explicit" value="on"<?php checked( $gmp_explicit, true ); ?>> Yes</label><br>
+				<label><input type="radio" name="gmp_episode_explicit" value="off"<?php checked( $gmp_explicit, false ); ?>> No</label><br>
+
+				<p>
+					<a href="#" class="save-radio hide-if-no-js button"><?php esc_html_e( 'OK' ) ?></a>
+					<a href="#" class="cancel-radio hide-if-no-js button-cancel"><?php esc_html_e( 'Cancel' ) ?></a>
+				</p>
+			</div>
+		</div>
+
+		<div id="episode-block-from-feed" class="misc-pub-section misc-pub-gmr-podcast mis-pub-radio">
+			Block From Feed:
+			<span class="post-pub-section-value radio-value"><?php echo $gmp_block ? 'Yes' : 'No'; ?></span>
+			<a href="#" class="edit-radio hide-if-no-js" style="display: inline;"><span aria-hidden="true">Edit</span></a>
+
+			<div class="radio-select hide-if-js">
+				<label><input type="radio" name="gmp_block" value="on"<?php checked( $gmp_block, true ); ?>> Yes</label><br>
+				<label><input type="radio" name="gmp_block" value="off"<?php checked( $gmp_block, false ); ?>> No</label><br>
+
+				<p>
+					<a href="#" class="save-radio hide-if-no-js button"><?php esc_html_e( 'OK' ) ?></a>
+					<a href="#" class="cancel-radio hide-if-no-js button-cancel"><?php esc_html_e( 'Cancel' ) ?></a>
+				</p>
+			</div>
+		</div><?php
 	}
 
 	/**
@@ -40,21 +97,6 @@ class GMP_Meta {
 			);
 		}
 
-	}
-
-	public function add_episode_meta_box( $post_type ) {
-		$post_types = array( GMP_CPT::EPISODE_POST_TYPE );
-
-		if ( in_array( $post_type, $post_types ) ) {
-			add_meta_box(
-				'gmp_episodes_meta_box'
-				, __( 'Episode Details', 'gmpodcasts' )
-				, array( $this, 'render_episode_meta_box_content' )
-				, $post_type
-				, 'side'
-				, 'high'
-			);
-		}
 	}
 
 	/**
@@ -125,17 +167,15 @@ class GMP_Meta {
 		}
 
 		/* OK, its safe for us to save the data now. */
+		$gmp_episode_explicit =  '';
 		if( isset( $_POST['gmp_episode_explicit'] ) ) {
 			$gmp_episode_explicit =  sanitize_text_field( $_POST['gmp_episode_explicit'] );
-		} else {
-			$gmp_episode_explicit =  '';
 		}
 		update_post_meta( $post_id, 'gmp_episode_explicit', $gmp_episode_explicit );
 
+		$gmp_block =  '';
 		if( isset( $_POST['gmp_block'] ) ) {
 			$gmp_block =  sanitize_text_field( $_POST['gmp_block'] );
-		} else {
-			$gmp_block =  '';
 		}
 
 		update_post_meta( $post_id, 'gmp_block', $gmp_block );
@@ -224,45 +264,21 @@ class GMP_Meta {
 
 	}
 
-
-	public function render_episode_meta_box_content( $post ) {
-		
-		// Add an nonce field so we can check for it later.
-		wp_nonce_field( 'gmp_episodes_meta_box', 'gmp_episodes_meta_box_nonce' );
-
-		// Use get_post_meta to retrieve an existing value from the database.
-		$gmp_explicit = sanitize_text_field( get_post_meta( $post->ID, 'gmp_episode_explicit', true ) );
-		$gmp_block = sanitize_text_field( get_post_meta( $post->ID, 'gmp_block', true ) );
-
-		?>
-		<div class="gmp-meta-row">
-			<div class="gmp-meta-row-content gmp-upload">
-				<label for="gmp_episode_explicit" class="gmp-meta-row-label"><?php _e( 'Explicit:', 'gmpodcasts' ); ?></label>
-				<input type="checkbox" id="gmp_episode_explicit" name="gmp_episode_explicit" <?php checked( 'on', $gmp_explicit, true ); ?>/>
-			</div>
-		</div>
-		<br>
-
-		<div class="gmp-meta-row">
-			<div class="gmp-meta-row-content gmp-upload">
-				<label for="gmp_block" class="gmp-meta-row-label"><?php _e( 'Block From Feed:', 'gmpodcasts' ); ?></label>
-				<input type="checkbox" id="gmp_block" name="gmp_block" <?php checked( 'on', $gmp_block, true ); ?>/>
-			</div>
-		</div>
-
-	<?php
-	}
-
 	/**
 	 * Enqueue scripts and styles for Admin
 	 */
 	public function enqueue_scripts_styles() {
+		global $pagenow, $typenow;
 
 		$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 
-		/*wp_enqueue_media();
-		wp_enqueue_script( 'gmp-admin-js', GMPODCASTS_URL . "/assets/js/gmp_admin{$postfix}.js", array( 'jquery' ), GMPODCASTS_VERSION, true );*/
-		wp_enqueue_style( 'gmp-admin-style', GMPODCASTS_URL . "/assets/css/gmp_admin{$postfix}.css", array(), GMPODCASTS_VERSION );
+//		wp_enqueue_media();
+//		wp_enqueue_script( 'gmp-admin-js', GMPODCASTS_URL . "/assets/js/gmp_admin{$postfix}.js", array( 'jquery' ), GMPODCASTS_VERSION, true );
+
+		if ( in_array( $pagenow, array( 'post.php', 'post-new.php' ) ) && GMP_CPT::EPISODE_POST_TYPE == $typenow ) {
+			wp_enqueue_style( 'gmp-admin-style', GMPODCASTS_URL . "/assets/css/gmp_admin{$postfix}.css", null, GMPODCASTS_VERSION );
+			wp_enqueue_script( 'gmp-admin-episode-js', GMPODCASTS_URL . "/assets/js/gmp_admin_episode{$postfix}.js", array( 'jquery' ), GMPODCASTS_VERSION, true );
+		}
 	}
 
 }

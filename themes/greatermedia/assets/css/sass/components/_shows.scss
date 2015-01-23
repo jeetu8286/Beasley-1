@@ -196,7 +196,7 @@ category: Components - Shows
 	}
 
 	@include bp(large) {
-		background-image: url($asset-root + '../images/featured-bg.png');
+		background-image: url('../../images/featured-bg.png');
 		background-repeat: repeat;
 		background-position: center center;
 		background-color: $featured-primary-bg;
@@ -733,4 +733,148 @@ category: Components - Shows
 		width: 50%;
 		text-align: right;
 	}
+}
+
+@mixin show-schedule-columns($visible-columns) {
+	$shedule-column-width: 100% / $visible-columns;
+
+	width: $shedule-column-width;
+
+	@for $i from 1 through 7 {
+		#{'&'}:nth-child(#{$i}) {
+			left: $shedule-column-width * ($i - 1);
+
+			@if $visible-columns < $i {
+				&.fixed {
+					.shows__schedule--dayofweek {
+						display: none;
+					}
+				}
+			} @else {
+				&.fixed {
+					.shows__schedule--dayofweek {
+						display: block;
+					}
+				}
+			}
+		}
+	}
+}
+
+.shows__schedule--days {
+	@include clearfix;
+	position: relative;
+	overflow: hidden;
+	height: 1499px;
+	@include box-sizing(border-box);
+}
+
+.shows__schedule--day {
+	top: 0;
+	left: 0;
+	position: absolute;
+	border: 1px solid $light-gray;
+	border-left-width: 0;
+	@include box-sizing(border-box);
+	@include show-schedule-columns(1);
+	@include user-select(none);
+
+	&:first-child {
+		border-left-width: 1px;
+
+		&.fixed {
+			.shows__schedule--dayofweek {
+				border-left: 1px solid $light-gray;
+			}
+		}
+	}
+}
+
+@include bp(small) {
+	.shows__schedule--day {
+		@include show-schedule-columns(2);
+	}
+}
+
+@include bp(medium) {
+	.shows__schedule--day {
+		@include show-schedule-columns(3);
+	}
+}
+
+@include bp(large) {
+	.shows__schedule--day {
+		@include show-schedule-columns(4);
+	}
+}
+
+@include bp(x-large) {
+	.shows__schedule--day {
+		@include show-schedule-columns(5);
+	}
+}
+
+.shows__schedule--dayofweek {
+	background: $primary-bg;
+	border-bottom: 2px solid $black;
+	text-align: center;
+	padding: 15px 0;
+	height: 54px;
+	@include box-sizing(border-box);
+	z-index: 99999;
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+}
+
+.shows__schedule--day.fixed .shows__schedule--dayofweek {
+	position: fixed;
+	border-top: 1px solid $primary-border;
+}
+
+.shows__schedule--episodes {
+	position: relative;
+	height: 1440px;
+	margin-top: 54px;
+}
+
+.shows__schedule--episode {
+	position: absolute;
+	left: 0;
+	right: 0;
+	border-bottom: 1px solid $primary-border;
+	padding: 0.5em 1em;
+
+	&:hover {
+		background-color: $extra-light-gray;
+	}
+}
+
+.shows__schedule--episode-title a {
+	display: block;
+	font-weight: bold;
+	font-size: ms(-2);
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+
+	&.not-link {
+		color: $color-text-black;
+		cursor: default;
+	}
+}
+
+.shows__schedule--episode-time {
+	font-size: ms(-3);
+	cursor: default;
+}
+
+.shows__schedule--now {
+	position: absolute;
+	left: 0;
+	right: 0;
+	z-index: 9999;
+	border: 1px solid $cardinal;
+	margin: 0 -1px;
 }

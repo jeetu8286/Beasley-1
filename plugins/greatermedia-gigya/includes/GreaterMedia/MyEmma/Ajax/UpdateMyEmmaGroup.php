@@ -23,7 +23,7 @@ class UpdateMyEmmaGroup extends AjaxHandler {
 		}
 
 		if ( empty( $field_key ) || ! ctype_alnum( $field_key ) ) {
-			throw new \Exception( 'Error: Gigya Field key must be alphanumeric' );
+			throw new \Exception( 'Error: Gigya Field key can contain only letters and numbers' );
 		} else {
 			$this->update_schema( $field_key );
 		}
