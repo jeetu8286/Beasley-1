@@ -676,7 +676,7 @@ category: Components
 
 .live-stream__btn--resume {
 
-	&.resume__audio {
+	&.resume__audio, &.resume__live {
 		display: block;
 		position: absolute;
 		left: 0;

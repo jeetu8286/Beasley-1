@@ -51,11 +51,6 @@ if ( empty( $active_stream ) ) {
 
 		<div id="live-player--more" class="live-player--more"><?php _e( '...', 'greatermedia' ); ?></div>
 		<?php do_action( 'gm_live_player' ); ?>
-		<div id="live-stream__status" class="live-stream__status">
-			<div id="live-stream__login" class="live-stream__login"><?php _e( 'Log In To', 'greatermedia' ); ?></div>
-			<div id="live-stream__now-playing" class="live-stream__now-playing--btn"><?php _e( 'Now Playing', 'greatermedia' ); ?></div>
-			<div id="live-stream__listen-now" class="live-stream__listen-now--btn"><?php _e( 'Listen Live', 'greatermedia' ); ?></div>
-		</div>
 		<div id="audio__time" class="audio__time">
 			<div id="audio__progress-bar" class="audio__progress-bar">
 				<span id="audio__progress" class="audio__progress"></span>
@@ -66,6 +61,12 @@ if ( empty( $active_stream ) ) {
 		<div id="nowPlaying" class="now-playing">
 			<div id="trackInfo" class="now-playing__info"></div>
 			<div id="npeInfo"></div>
+		</div>
+
+		<div id="live-stream__status" class="live-stream__status">
+			<div id="live-stream__login" class="live-stream__login"><?php _e( 'Log In To', 'greatermedia' ); ?></div>
+			<div id="live-stream__now-playing" class="live-stream__now-playing--btn"><?php _e( 'Now Playing', 'greatermedia' ); ?></div>
+			<div id="live-stream__listen-now" class="live-stream__listen-now--btn"><?php _e( 'Listen Live', 'greatermedia' ); ?></div>
 		</div>
 
 	</div>

@@ -201,6 +201,9 @@
 		if (! resumeBtn.classList.contains('live-player__muted')) {
 			resumeBtn.classList.add('live-player__muted');
 		}
+		if (resumeBtn.classList.contains('resume__live')) {
+			resumeBtn.classList.remove('resume__live');
+		}
 		if (true === playingCustomAudio) {
 			nowPlaying.style.display = 'none';
 			listenNow.style.display = 'inline-block';
@@ -221,8 +224,9 @@
 			return;
 		}
 
-		if (! resumeBtn.classList.contains('live-player__muted')) {
-			resumeBtn.classList.add('live-player__muted');
+		if (resumeBtn.classList.contains('live-player__muted')) {
+			resumeBtn.classList.remove('live-player__muted');
+			resumeBtn.classList.add('resume__live');
 		}
 		listenNow.style.display = 'inline-block';
 		nowPlaying.style.display = 'none';
@@ -245,6 +249,7 @@
 		pauseBtn.classList.add('live-player__muted');
 		if (resumeBtn.classList.contains('live-player__muted')) {
 			resumeBtn.classList.remove('live-player__muted');
+			resumeBtn.classList.add('resume__live');
 		}
 		resumeBtn.classList.add('resume__audio');
 	}
@@ -366,21 +371,15 @@
 			listenNow.innerHTML = 'Listen Live';
 		}
 		if (window.innerWidth >= 768) {
-			if (Cookies.get('gmr_play_live_audio') == 1) {
-				playLiveStream();
-			} else {
-				playLiveStreamWithPreRoll();
-			}
+			playLiveStream();
 		}
 	};
 
 	function changePlayerState() {
 		if (is_gigya_user_logged_in()) {
 			if (window.innerWidth >= 768) {
-				if (playBtn != null && Cookies.get('gmr_play_live_audio') == 1) {
+				if (playBtn != null) {
 					addEventHandler(playBtn, elemClick, playLiveStream);
-				} else if (playBtn != null) {
-					addEventHandler(playBtn, elemClick, playLiveStreamWithPreRoll);
 				}
 			} else {
 				if (playBtn != null) {
@@ -416,7 +415,7 @@
 			setStoppedStyles();
 			if( Cookies.get( "gmlp_play_button_pushed" ) == 1 ) {
 				if (window.innerWidth >= 768) {
-					playLiveStreamWithPreRoll();
+					playLiveStream();
 				} else {
 					playLiveStreamMobile();
 				}
@@ -568,6 +567,8 @@
 	}
 
 	function playLiveStream() {
+		var station = gmr.callsign;
+
 		pjaxInit();
 		if ( true === playingCustomAudio ) {
 			resumeCustomInlineAudio();
@@ -577,8 +578,47 @@
 			preVastAd();
 			showAdBlockDetect();
 			setTimeout(postVastAd, 15000);
+		} else if (Cookies.get('gmr_play_live_audio') == 0) {
+
+			if (station == '') {
+				alert('Please enter a Station');
+				return;
+			}
+
+			debug('playLiveStream - station=' + station);
+
+			preVastAd();
+			streamVastAd();
+			if (player.addEventListener) {
+				player.addEventListener('ad-playback-complete', function () {
+					postVastAd();
+					console.log("--- ad complete ---");
+
+					if (livePlaying) {
+						player.stop();
+					}
+
+					livePlayer.classList.add('live-player--active');
+					player.play({station: station, timeShift: true});
+					setPlayingStyles();
+					setTimeout(replaceNPInfo, 2000);
+				});
+			} else if (player.attachEvent) {
+				player.attachEvent('ad-playback-complete', function () {
+					postVastAd();
+					console.log("--- ad complete ---");
+
+					if (livePlaying) {
+						player.stop();
+					}
+
+					livePlayer.classList.add('live-player--active');
+					player.play({station: station, timeShift: true});
+					setPlayingStyles();
+					setTimeout(replaceNPInfo, 2000);
+				});
+			}
 		} else {
-			var station = gmr.callsign;
 			if (station == '') {
 				alert('Please enter a Station');
 				return;
