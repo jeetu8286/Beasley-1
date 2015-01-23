@@ -354,7 +354,7 @@ class GreaterMediaUserGeneratedContent {
 		delete_transient( 'gmr-moderation-count' );
 
 		$output = get_query_var( 'output' );
-		$redirect = admin_url( 'edit.php?page=moderate-ugc&post_type=' . GMR_SUBMISSIONS_CPT );
+		$redirect = admin_url( 'edit.php?page=moderate-ugc&post_type=' . GMR_CONTEST_CPT );
 
 		if ( 'approve' === $ugc_action ) {
 
