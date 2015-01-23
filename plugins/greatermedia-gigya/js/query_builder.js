@@ -226,7 +226,7 @@ var __t, __p = '', __e = _.escape;
 with (obj) {
 __p += '<ul class="constraint-toolbar">\n\t<li>\n\t\t<a\n\t\t\talt="f105"\n\t\t\tclass="dashicons dashicons-admin-page copy-constraint"\n\t\t\thref="#"\n\t\t\ttitle="Duplicate"\n\t\t/>\n\n\t\t<a\n\t\t\talt="f105"\n\t\t\tclass="dashicons dashicons-trash remove-constraint"\n\t\t\thref="#"\n\t\t\ttitle="Remove"\n\t\t/>\n\t</li>\n</ul>\n\n<p class="constraint-title">\n\t' +
 __e( title ) +
-'\n</p>\n\n<div class="entry-select-group">\n\t<label><strong>Select Contest: </strong></label>\n\t<select class="entry-select-choice entry-select-type">\n\t</select>\n</div>\n\n<div class="entry-select-group">\n\t<label><strong>Select Question: </strong></label>\n\t<select class="entry-select-choice entry-select-field">\n\t</select>\n</div>\n\n<div class="entry-answer-group">\n\t<label><strong>Loading ... </strong></label>\n\t<p>&nbsp;</p>\n</div>\n';
+'\n</p>\n\n<div class="entry-select-group">\n\t<label><strong>Select Contest: </strong></label>\n\t<select class="entry-select-choice entry-select-type">\n\t</select>\n</div>\n\n<div class="entry-select-group">\n\t<label><strong>Select Question: </strong></label>\n\t<select class="entry-select-choice entry-select-field">\n\t</select>\n</div>\n\n<div class="entry-answer-group">\n\t<label><strong>Loading ... </strong></label>\n\t<p>&nbsp;</p>\n</div>\n\n<div class="conjunction-guide">\n\t<p><span class="arrow-down"></span>OR any of the following conditions</p>\n</div>\n';
 
 }
 return __p
@@ -1137,7 +1137,8 @@ var AVAILABLE_CONSTRAINTS = [
 		type: 'record:contest',
 		valueType: 'string',
 		entryTypeID: -1,
-		entryFieldID: -1
+		entryFieldID: -1,
+		conjunction: 'or',
 	},
 	{
 		type: 'data:contest_list',
@@ -2467,6 +2468,7 @@ var EntryConstraintView = ConstraintView.extend({
 		//console.log('updateConstraint', changes);
 		constraint.set(changes);
 		this.renderEntryAnswer();
+		this.renderConjunctionGuide();
 	},
 
 	hasChoices: function() {

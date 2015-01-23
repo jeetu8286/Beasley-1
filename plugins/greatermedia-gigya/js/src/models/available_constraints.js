@@ -143,7 +143,8 @@ var AVAILABLE_CONSTRAINTS = [
 		type: 'record:contest',
 		valueType: 'string',
 		entryTypeID: -1,
-		entryFieldID: -1
+		entryFieldID: -1,
+		conjunction: 'or',
 	},
 	{
 		type: 'data:contest_list',
