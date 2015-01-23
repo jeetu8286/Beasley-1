@@ -84,6 +84,8 @@
 			return ['Flash'];
 		} else if (bowser.safari) {
 			return ['Html5'];
+		} else if (bowser.chrome) {
+			return ['Flash'];
 		} else {
 			return ['Html5', 'Flash'];
 		}
@@ -118,7 +120,7 @@
 					id: 'MediaPlayer',
 					playerId: 'td_container',
 					isDebug: true,
-					techPriority: ['Flash', 'Html5'],
+					techPriority: techPriority,
 					timeShift: { // timeShifting is currently available on Flash only. Leaving for HTML5 future
 						active: 0, /* 1 = active, 0 = inactive */
 						max_listening_time: 35 /* If max_listening_time is undefined, the default value will be 30 minutes */
@@ -433,9 +435,7 @@
 
 	function streamVastAd() {
 		var vastUrl = gmr.streamUrl;
-
-		detachAdListeners();
-		attachAdListeners();
+		
 		player.stop();
 		player.playAd('vastAd', {url: vastUrl});
 	}
