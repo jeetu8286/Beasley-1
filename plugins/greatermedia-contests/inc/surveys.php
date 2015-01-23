@@ -61,8 +61,7 @@ function gmr_survey_container_attributes( $post = null ) {
 	$permalink = untrailingslashit( get_permalink( $post->ID ) );
 
 	$endpoints = array(
-		'load'        => "{$permalink}/action/load/",
-		'submit'      => "{$permalink}/action/submit/",
+		'load' => "{$permalink}/action/load/",
 	);
 
 	foreach ( $endpoints as $attribute => $value ) {
@@ -135,26 +134,31 @@ function gmr_surveys_process_form_submission() {
 
 	do_action( 'greatermedia_survey_entry_save', $entry );
 
-	$thankyou = get_post_meta( $survey_id, 'form-thankyou', true );
-	$thankyou = $thankyou ? $thankyou : "Thanks for your response!";
-	echo wpautop( $thankyou );
+	echo '<html>';
+		echo '<head></head>';
+		echo '<body>';
+			$thankyou = get_post_meta( $survey_id, 'form-thankyou', true );
+			$thankyou = $thankyou ? $thankyou : "Thanks for your response!";
+			echo wpautop( $thankyou );
 
-	$fields = GreaterMediaFormbuilderRender::parse_entry( $survey_id, $entry->post->ID, $form );
-	if ( ! empty( $fields ) ) :
-		?><h4 class="contest__submission--entries-title">Here is your response:</h4>
-		<dl class="contest__submission--entries">
-			<?php foreach ( $fields as $field ) : ?>
-				<?php if ( 'file' != $field['type'] ) : ?>
-					<dt>
-						<?php echo esc_html( $field['label'] ); ?>
-					</dt>
-					<dd>
-						<?php echo esc_html( is_array( $field['value'] ) ? implode( ', ', $field['value'] ) : $field['value'] ); ?>
-					</dd>
-				<?php endif; ?>
-			<?php endforeach; ?>
-		</dl><?php
-	endif;
+			$fields = GreaterMediaFormbuilderRender::parse_entry( $survey_id, $entry->post->ID, $form );
+			if ( ! empty( $fields ) ) :
+				?><h4 class="contest__submission--entries-title">Here is your response:</h4>
+				<dl class="contest__submission--entries">
+					<?php foreach ( $fields as $field ) : ?>
+						<?php if ( 'file' != $field['type'] ) : ?>
+							<dt>
+								<?php echo esc_html( $field['label'] ); ?>
+							</dt>
+							<dd>
+								<?php echo esc_html( is_array( $field['value'] ) ? implode( ', ', $field['value'] ) : $field['value'] ); ?>
+							</dd>
+						<?php endif; ?>
+					<?php endforeach; ?>
+				</dl><?php
+			endif;
+		echo '</body>';
+	echo '</html>';
 }
 
 /**
