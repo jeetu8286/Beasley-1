@@ -3939,7 +3939,16 @@ Link posts contain a link to an external site. They can also optionally have a f
 
 .entry2__thumbnail {
   margin-bottom: 1.125em;
+  position: relative;
+  background-position: center center;
+  background-size: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
   position: relative; }
+  .entry2__thumbnail:after {
+    content: '';
+    display: block;
+    padding-top: 66%; }
   @media screen and (min-width: 480px) {
     .entry2__thumbnail {
       float: left;
@@ -3950,7 +3959,15 @@ Link posts contain a link to an external site. They can also optionally have a f
       .entry2__thumbnail:last-child {
         margin-right: 0; } }
   .has-excerpt .entry2__thumbnail:after {
-    padding-top: 75%; }
+    position: relative;
+    background-position: center center;
+    background-size: 100%;
+    background-size: cover;
+    background-repeat: no-repeat; }
+    .has-excerpt .entry2__thumbnail:after:after {
+      content: '';
+      display: block;
+      padding-top: 75%; }
 
 .entry2__thumbnail__image {
   position: relative;
