@@ -1219,7 +1219,7 @@ category: Components
 	color: $color-text-red;
 
 	&:hover {
-		color: $color-text-black;
+		color: $primary-link-hover;
 	}
 }
 
@@ -1239,8 +1239,17 @@ category: Components
 	color: $secondary-link;
 }
 
-.live-link__song:hover:before {
-	color: $primary-link;
+.live-link__song:hover {
+
+	color: $primary-link-hover;
+
+	&:before {
+		color: $primary-link-hover;
+	}
+
+	.live-link__song--title {
+		color: $primary-link-hover;
+	}
 }
 
 .live-link__song--artist {
@@ -1254,10 +1263,6 @@ category: Components
 	font-size: em(13px);
 	font-weight: bold;
 	color: $secondary-link;
-
-	a:hover, a:focus, a:active {
-		color: $color-text-red;
-	}
 }
 
 .live-link__type--audio:before {
@@ -1323,7 +1328,7 @@ category: Components
 }
 
 .live-link__title a:hover, .live-link__title a:focus, .live-link__title a:active {
-	color: $primary-link;
+	color: $primary-link-hover;
 }
 
 #popup-player-livestream .live-player {
