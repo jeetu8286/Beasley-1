@@ -8,7 +8,34 @@ jQuery(function () {
 
 		module.create_popup_title = GreaterMediaLoginRestrictedContent.strings['Login Restricted Content'];
 		module.edit_popup_title = GreaterMediaLoginRestrictedContent.strings['Login Restricted Content'];
-		
+
+		module.button_onclick = function() {
+			// Do nothing
+		}
+
+		/**
+		 * Returns a translated description of a login restriction
+		 *
+		 * @param string $login_restriction
+		 *
+		 * @return string description
+		 */
+		function login_restriction_description($login_restriction) {
+
+			if ('string' !== typeof $login_restriction) {
+				return ('undefined' !== typeof GreaterMediaLoginRestrictedContent) ? GreaterMediaLoginRestrictedContent.strings['No restriction'] : 'No restriction';
+			}
+
+			if ('logged-in' === $login_restriction) {
+				return ('undefined' !== typeof GreaterMediaLoginRestrictedContent) ? GreaterMediaLoginRestrictedContent.strings['Logged in'] : 'Logged in';
+			} else if ('logged-out' === $login_restriction) {
+				return ('undefined' !== typeof GreaterMediaLoginRestrictedContent) ? GreaterMediaLoginRestrictedContent.strings['Logged out'] : 'Logged out';
+			} else {
+				return ('undefined' !== typeof GreaterMediaLoginRestrictedContent) ? GreaterMediaLoginRestrictedContent.strings['No restriction'] : 'No restriction';
+			}
+
+		}
+
 		module.view_gethtml = function () {
 
 			var attrs = this.shortcode.attrs.named,
@@ -24,17 +51,85 @@ jQuery(function () {
 			return this.template(options);
 
 		};
-		
+
+		module.view_edit_popup_body_fields = function (parsed_shortcode) {
+
+			var value;
+
+			if (parsed_shortcode && undefined !== parsed_shortcode) {
+				value = login_restriction_description(parsed_shortcode.attrs.named.status);
+			}
+			else {
+				value = login_restriction_description('logged-in');
+			}
+
+			return [
+				{
+					type  : 'listbox',
+					id    : 'gm-login-restricted-status',
+					name  : 'status',
+					label : ('undefined' !== typeof GreaterMediaLoginRestrictedContent) ? GreaterMediaLoginRestrictedContent.strings['Must be'] : 'Must be',
+					/**
+					 * After you select something from a ComboBox, TinyMCE shows the *value* of the selected
+					 * option, not the text, making it the most backward ComboBox I've ever met. The
+					 * view_edit_popup_onsubmit() method will need to map these labels back to their respective
+					 * values.
+					 */
+					values: [{text: 'Logged in', value: 'Logged in'}, {text: 'Logged out', value: 'Logged out'}],
+					value : value
+				}
+			];
+
+		};
+
 		/**
-		 * Process toolbar button click event.
+		 * Process form submission event from the popup.
 		 *
 		 * @param Event submit_event
 		 * @returns {{status: *}}
 		 */
-		module.toolbar_button_action = function (submit_event) {
-			return {
-				status: 'logged-in'
+		module.view_edit_popup_onsubmit = function (submit_event) {
+
+			/**
+			 * Map backwards ComboBox values (actually the labels) to valid values
+			 * @param status_description a possibly translated combo box value description (not the value)
+			 * @return string proper value
+ 			 */
+			function login_restriction_desc_to_value(status_description) {
+
+				if ('undefined' === typeof GreaterMediaLoginRestrictedContent || 'undefined' === typeof GreaterMediaLoginRestrictedContent['strings']) {
+
+					// Default translation
+					if ('Logged in' === status_description) {
+						return 'logged-in';
+					} else if ('Logged out' === status_description) {
+						return 'logged-out';
+					}
+					else {
+						return 'logged-in';
+					}
+
+				}
+				else {
+
+					//  Translated strings
+					if (GreaterMediaLoginRestrictedContent.strings['Logged in'] === status_description) {
+						return 'logged-in';
+					} else if (GreaterMediaLoginRestrictedContent.strings['Logged out'] === status_description) {
+						return 'logged-out';
+					}
+					else {
+						return 'logged-in';
+					}
+
+				}
+
 			}
+
+			return {
+				status: login_restriction_desc_to_value(submit_event.data.status)
+			};
+
 		};
 
 		// Implement the postbox feature

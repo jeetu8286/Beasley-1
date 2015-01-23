@@ -1545,7 +1545,7 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
     .format-fi .menu__featured-post--mobile a:hover p {
       color: #aa1c20; }
 
-.content__heading {
+.content__heading, .sponsors__heading {
   margin-top: 0;
   margin-bottom: 1.5em;
   font-family: "Open Sans", sans-serif;
@@ -1554,10 +1554,10 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
   text-align: center;
   color: #929497; }
   @media screen and (min-width: 480px) {
-    .content__heading {
+    .content__heading, .sponsors__heading {
       text-align: left; } }
   @media screen and (min-width: 768px) {
-    .content__heading {
+    .content__heading, .sponsors__heading {
       font-size: 1.26563em; } }
 
 .entry__thumbnail {
@@ -5177,6 +5177,8 @@ category: Components
   width: 0;
   height: 0;
   color: #d22228; }
+  .live-link__song:hover:before, .live-link__type--audio:hover:before, .live-link__type--gallery:hover:before, .live-link__type--image:hover:before, .live-link__type--link:hover:before, .live-link__type--standard:hover:before, .live-link__type--video:hover:before {
+    color: #000000; }
 
 .live-link__type--audio, .live-link__type--gallery, .live-link__type--image, .live-link__type--link, .live-link__type--standard, .live-link__type--video {
   display: block;
@@ -5190,6 +5192,9 @@ category: Components
   content: "\e604";
   color: #d0d2d3; }
 
+.live-link__song:hover:before {
+  color: #d22228; }
+
 .live-link__song--artist {
   padding-top: 6px;
   font-size: 0.75em;
@@ -5198,11 +5203,13 @@ category: Components
 .live-link__song--title {
   padding-top: 6px;
   font-size: 0.8125em;
-  font-weight: lighter;
+  font-weight: bold;
   color: #d0d2d3; }
+  .live-link__song--title a:hover, .live-link__song--title a:focus, .live-link__song--title a:active {
+    color: #d22228; }
 
 .live-link__type--audio:before {
-  content: "\e604"; }
+  content: "\e60c"; }
 
 .live-link__type--gallery:before {
   content: "\e621"; }
@@ -5217,7 +5224,7 @@ category: Components
   content: "\e608"; }
 
 .live-link__type--video:before {
-  content: "\e620"; }
+  content: "\e605"; }
 
 .live-link__title {
   display: block;
@@ -5435,7 +5442,7 @@ category: Components - Ads
 .closure {
   padding: 10px;
   padding-left: 0;
-  border-bottom: 0.14em solid rgba(128, 128, 128, 0.2); }
+  border-bottom: 1px solid rgba(128, 128, 128, 0.2); }
 
 .closure p {
   margin: 0;
@@ -5483,7 +5490,8 @@ category: Components - Ads
   padding: 10px;
   padding-left: 0;
   text-transform: uppercase;
-  font-weight: 900; }
+  font-weight: bold;
+  font-family: "Droid Sans", sans-serif; }
 
 .closures_header:after {
   content: "";
@@ -11807,6 +11815,80 @@ category: Components
     margin-bottom: 6px;
     font-size: 1em;
     font-weight: bold; }
+
+.sponsors {
+  width: 100%;
+  overflow: auto;
+  border: 1px solid #d0d2d3;
+  border-bottom: none; }
+
+.sponsors__heading {
+  font-family: "Droid Sans", sans-serif;
+  font-size: 1.80203em;
+  font-weight: bold;
+  color: #404041; }
+
+.sponsors__row {
+  width: 100%;
+  overflow: auto;
+  background-color: #d0d2d3; }
+  @media screen and (min-width: 768px) {
+    .sponsors__row {
+      border-bottom: 1px solid #d0d2d3; } }
+
+.sponsor {
+  position: relative;
+  display: block;
+  float: left;
+  width: 100%;
+  padding: 2em;
+  background-color: white;
+  border-bottom: 1px solid #d0d2d3; }
+  @media screen and (min-width: 768px) {
+    .sponsor {
+      width: 50%;
+      height: 200px;
+      border-bottom: none;
+      border-right: 1px solid #d0d2d3; } }
+  @media screen and (min-width: 1024px) {
+    .sponsor {
+      height: 270px; } }
+  .sponsor:nth-of-type(2n+2) {
+    border-right: none; }
+
+.sponsor__logo,
+.sponsor__name {
+  margin: 0 auto;
+  text-align: center;
+  font-family: "Droid Sans", sans-serif; }
+  @media screen and (min-width: 768px) {
+    .sponsor__logo,
+    .sponsor__name {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      -webkit-transform: translate(-50%, -50%);
+      -moz-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+      -o-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%); }
+      .sponsor__logo a,
+      .sponsor__name a {
+        display: block; } }
+
+.sponsor__logo img {
+  margin: 0 auto; }
+
+.sponsor__name a,
+.sponsor__name a:visited {
+  font-size: 1.80203em;
+  font-weight: bold;
+  color: #404041; }
+
+.sponsor__name a:hover,
+.sponsor__name a:active,
+.sponsor__name a:focus {
+  color: #aa1c20; }
 
 /**
  * Single Page Styles
