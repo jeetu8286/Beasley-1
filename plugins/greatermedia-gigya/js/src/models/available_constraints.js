@@ -119,13 +119,15 @@ var AVAILABLE_CONSTRAINTS = [
 		type: 'profile:likes',
 		valueType: 'string',
 		category: 'Any Category',
-		value: ''
+		value: '',
+		conjunction: 'and',
 	},
 	{
 		type: 'profile:favorites',
 		valueType: 'string',
 		category: 'Any Category',
-		value: ''
+		value: '',
+		conjunction: 'and',
 	},
 	{
 		type: 'data:listeningFrequency',
@@ -143,7 +145,8 @@ var AVAILABLE_CONSTRAINTS = [
 		type: 'record:contest',
 		valueType: 'string',
 		entryTypeID: -1,
-		entryFieldID: -1
+		entryFieldID: -1,
+		conjunction: 'or',
 	},
 	{
 		type: 'data:contest_list',
@@ -185,6 +188,20 @@ var AVAILABLE_CONSTRAINTS = [
 		operator: 'contains',
 	},
 
+	{
+		type: 'data:email_engagement_tally',
+		valueType: 'integer',
+		value: '1',
+		operator: 'equals',
+	},
+	{
+		type: 'data:email_engagement',
+		valueType: 'enum',
+		value: 'any',
+		operator: 'equals',
+	},
+
+	/*
 	{
 		type: 'data:member_query_message_open_list',
 		valueType: 'list',
@@ -248,6 +265,7 @@ var AVAILABLE_CONSTRAINTS = [
 		valueType: 'integer',
 		value: 1,
 	},
+	*/
 ];
 
 /* Constraint Meta */
@@ -708,6 +726,7 @@ var AVAILABLE_CONSTRAINTS_META = [
 		title: 'Social Share URL'
 	},
 
+	/*
 	{
 		type: 'data:member_query_message_open_list',
 		title: 'Member Query Email Open',
@@ -780,6 +799,24 @@ var AVAILABLE_CONSTRAINTS_META = [
 			{ label: 'Has Not Clicked', value: false }
 		]
 	},
+	*/
+
+	{
+		type: 'data:email_engagement_tally',
+		title: 'Aggregate Email List Engagement',
+		choices: [
+			{ label: 'Opens', value: 'message_open' },
+			{ label: 'Clickthroughs', value: 'message_click' },
+		]
+	},
+	{
+		type: 'data:email_engagement',
+		title: 'Email List Engagement',
+		choices: [
+			{ label: 'Has opened', value: 'message_open' },
+			{ label: 'Has clicked through', value: 'message_click' },
+		]
+	}
 ];
 
 var AVAILABLE_CONSTRAINTS_META_MAP = {};

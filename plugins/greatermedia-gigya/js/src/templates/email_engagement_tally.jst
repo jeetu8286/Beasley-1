@@ -20,29 +20,28 @@
 	<%- title %>
 </p>
 
-<div class="entry-select-group">
-	<label><strong>Category: </strong></label>
-	<select class="like-category">
-		<% _.each(categories, function(categoryItem) { %>
-		<option value="<%- categoryItem.value %>" <%= categoryItem.value == category ? 'selected="selected"' : ''  %>">
-		<%- categoryItem.label %>
-		</option>
-		<% }) %>
-	</select>
-</div>
+<p>
+	<em>On any email in any list</em>
+</p>
 
-<div class="entry-answer-group">
-	<label><strong>Like: </strong></label>
-
+<div class="email-engagement-tally">
 	<select class="constraint-operator">
-		<% _.each(view.operatorsFor(valueType), function(operatorItem) { %>
+		<% _.each(view.operatorsFor(valueType, type), function(operatorItem) { %>
 		<option value="<%- operatorItem %>" <%= operatorItem === operator ? 'selected="selected"' : ''  %>">
 		<%- operatorItem %>
 		</option>
 		<% }) %>
 	</select>
 
-	<input type="text" class="constraint-value constraint-value-text" value="<%- value %>" />
+	<input type="number" class="constraint-value constraint-value-text" value="<%- value %>" />
+
+	<select class="email-event">
+		<% _.each(choices, function(choiceItem) { %>
+		<option value="<%- choiceItem.value %>" <%= choiceItem.value == event_name ? 'selected="selected"' : ''  %>">
+		<%- choiceItem.label %>
+		</option>
+		<% }) %>
+	</select>
 
 	<select class="constraint-conjunction">
 		<% _.each(view.conjunctions, function(conjunctionItem) { %>
@@ -56,3 +55,4 @@
 <div class="conjunction-guide">
 	<p><span class="arrow-down"></span>OR any of the following conditions</p>
 </div>
+

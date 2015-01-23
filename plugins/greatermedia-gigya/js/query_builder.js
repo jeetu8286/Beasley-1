@@ -102,7 +102,7 @@ __e( conjunctionItem ) +
 __e( conjunctionItem ) +
 '\n\t</option>\n\t';
  }) ;
-__p += '\n</select>\n';
+__p += '\n</select>\n\n<div class="conjunction-guide">\n\t<p><span class="arrow-down"></span>OR any of the following conditions</p>\n</div>\n\n';
 
 }
 return __p
@@ -148,6 +148,120 @@ __e( conjunction ) +
 '\n\t\t</option>\n\t\t';
  }) ;
 __p += '\n\t</select>\n</li>\n';
+
+}
+return __p
+};
+
+this["JST"]["src/templates/email_engagement.jst"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
+with (obj) {
+__p += '<ul class="constraint-toolbar">\n\t<li>\n\t\t<a\n\t\t\talt="f105"\n\t\t\tclass="dashicons dashicons-admin-page copy-constraint"\n\t\t\thref="#"\n\t\t\ttitle="Duplicate"\n\t\t/>\n\n\t\t<a\n\t\t\talt="f105"\n\t\t\tclass="dashicons dashicons-trash remove-constraint"\n\t\t\thref="#"\n\t\t\ttitle="Remove"\n\t\t/>\n\t</li>\n</ul>\n\n<p class="constraint-title">\n\t' +
+__e( title ) +
+'\n</p>\n\n<div class="email-engagement">\n\t<select class="email-event">\n\t\t';
+ _.each(choices, function(choiceItem) { ;
+__p += '\n\t\t<option value="' +
+__e( choiceItem.value ) +
+'" ' +
+((__t = ( choiceItem.value == event_name ? 'selected="selected"' : ''  )) == null ? '' : __t) +
+'">\n\t\t' +
+__e( choiceItem.label ) +
+'\n\t\t</option>\n\t\t';
+ }) ;
+__p += '\n\t</select>\n\n\t<select class="constraint-operator">\n\t\t';
+ _.each(view.operatorsFor(valueType, type), function(operatorItem) { ;
+__p += '\n\t\t<option value="' +
+__e( operatorItem ) +
+'" ' +
+((__t = ( operatorItem === operator ? 'selected="selected"' : ''  )) == null ? '' : __t) +
+'">\n\t\t' +
+__e( operatorItem ) +
+'\n\t\t</option>\n\t\t';
+ }) ;
+__p += '\n\t</select>\n\n\t<select class="constraint-value">\n\t\t';
+ if (groupsLoaded) { ;
+__p += '\n\t\t\t<option value="any">Any Mailing List</option>\n\t\t\t<optgroup label="Mailing Lists">\n\t\t\t\t';
+ _.each(staticGroups, function(groupItem) { ;
+__p += '\n\t\t\t\t<option value="' +
+__e( groupItem.value ) +
+'" ' +
+((__t = ( groupItem.value == value ? 'selected="selected"' : ''  )) == null ? '' : __t) +
+'">\n\t\t\t\t' +
+__e( groupItem.label ) +
+'\n\t\t\t\t</option>\n\t\t\t\t';
+ }) ;
+__p += '\n\t\t\t</optgroup>\n\t\t\t<optgroup label="Member Query Lists">\n\t\t\t\t';
+ _.each(memberQueryGroups, function(groupItem) { ;
+__p += '\n\t\t\t\t<option value="' +
+__e( groupItem.value ) +
+'" ' +
+((__t = ( groupItem.value == value ? 'selected="selected"' : ''  )) == null ? '' : __t) +
+'">\n\t\t\t\t' +
+__e( groupItem.label ) +
+'\n\t\t\t\t</option>\n\t\t\t\t';
+ }) ;
+__p += '\n\t\t\t</optgroup>\n\t\t';
+ } else { ;
+__p += '\n\t\t\t<option value="">Loading ...</option>\n\t\t';
+ } ;
+__p += '\n\t</select>\n\n\t<select class="constraint-conjunction">\n\t\t';
+ _.each(view.conjunctions, function(conjunctionItem) { ;
+__p += '\n\t\t<option value="' +
+__e( conjunctionItem ) +
+'" ' +
+((__t = ( conjunctionItem === conjunction ? 'selected="selected"' : ''  )) == null ? '' : __t) +
+'">\n\t\t' +
+__e( conjunctionItem ) +
+'\n\t\t</option>\n\t\t';
+ }) ;
+__p += '\n\t</select>\n</div>\n\n<div class="conjunction-guide">\n\t<p><span class="arrow-down"></span>OR any of the following conditions</p>\n</div>\n\n';
+
+}
+return __p
+};
+
+this["JST"]["src/templates/email_engagement_tally.jst"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
+with (obj) {
+__p += '<ul class="constraint-toolbar">\n\t<li>\n\t\t<a\n\t\t\talt="f105"\n\t\t\tclass="dashicons dashicons-admin-page copy-constraint"\n\t\t\thref="#"\n\t\t\ttitle="Duplicate"\n\t\t/>\n\n\t\t<a\n\t\t\talt="f105"\n\t\t\tclass="dashicons dashicons-trash remove-constraint"\n\t\t\thref="#"\n\t\t\ttitle="Remove"\n\t\t/>\n\t</li>\n</ul>\n\n<p class="constraint-title">\n\t' +
+__e( title ) +
+'\n</p>\n\n<p>\n\t<em>On any email in any list</em>\n</p>\n\n<div class="email-engagement-tally">\n\t<select class="constraint-operator">\n\t\t';
+ _.each(view.operatorsFor(valueType, type), function(operatorItem) { ;
+__p += '\n\t\t<option value="' +
+__e( operatorItem ) +
+'" ' +
+((__t = ( operatorItem === operator ? 'selected="selected"' : ''  )) == null ? '' : __t) +
+'">\n\t\t' +
+__e( operatorItem ) +
+'\n\t\t</option>\n\t\t';
+ }) ;
+__p += '\n\t</select>\n\n\t<input type="number" class="constraint-value constraint-value-text" value="' +
+__e( value ) +
+'" />\n\n\t<select class="email-event">\n\t\t';
+ _.each(choices, function(choiceItem) { ;
+__p += '\n\t\t<option value="' +
+__e( choiceItem.value ) +
+'" ' +
+((__t = ( choiceItem.value == event_name ? 'selected="selected"' : ''  )) == null ? '' : __t) +
+'">\n\t\t' +
+__e( choiceItem.label ) +
+'\n\t\t</option>\n\t\t';
+ }) ;
+__p += '\n\t</select>\n\n\t<select class="constraint-conjunction">\n\t\t';
+ _.each(view.conjunctions, function(conjunctionItem) { ;
+__p += '\n\t\t<option value="' +
+__e( conjunctionItem ) +
+'" ' +
+((__t = ( conjunctionItem === conjunction ? 'selected="selected"' : ''  )) == null ? '' : __t) +
+'">\n\t\t' +
+__e( conjunctionItem ) +
+'\n\t\t</option>\n\t\t';
+ }) ;
+__p += '\n\t</select>\n</div>\n\n<div class="conjunction-guide">\n\t<p><span class="arrow-down"></span>OR any of the following conditions</p>\n</div>\n\n';
 
 }
 return __p
@@ -226,7 +340,7 @@ var __t, __p = '', __e = _.escape;
 with (obj) {
 __p += '<ul class="constraint-toolbar">\n\t<li>\n\t\t<a\n\t\t\talt="f105"\n\t\t\tclass="dashicons dashicons-admin-page copy-constraint"\n\t\t\thref="#"\n\t\t\ttitle="Duplicate"\n\t\t/>\n\n\t\t<a\n\t\t\talt="f105"\n\t\t\tclass="dashicons dashicons-trash remove-constraint"\n\t\t\thref="#"\n\t\t\ttitle="Remove"\n\t\t/>\n\t</li>\n</ul>\n\n<p class="constraint-title">\n\t' +
 __e( title ) +
-'\n</p>\n\n<div class="entry-select-group">\n\t<label><strong>Select Contest: </strong></label>\n\t<select class="entry-select-choice entry-select-type">\n\t</select>\n</div>\n\n<div class="entry-select-group">\n\t<label><strong>Select Question: </strong></label>\n\t<select class="entry-select-choice entry-select-field">\n\t</select>\n</div>\n\n<div class="entry-answer-group">\n\t<label><strong>Loading ... </strong></label>\n\t<p>&nbsp;</p>\n</div>\n';
+'\n</p>\n\n<div class="entry-select-group">\n\t<label><strong>Select Contest: </strong></label>\n\t<select class="entry-select-choice entry-select-type">\n\t</select>\n</div>\n\n<div class="entry-select-group">\n\t<label><strong>Select Question: </strong></label>\n\t<select class="entry-select-choice entry-select-field">\n\t</select>\n</div>\n\n<div class="entry-answer-group">\n\t<label><strong>Loading ... </strong></label>\n\t<p>&nbsp;</p>\n</div>\n\n<div class="conjunction-guide">\n\t<p><span class="arrow-down"></span>OR any of the following conditions</p>\n</div>\n';
 
 }
 return __p
@@ -317,17 +431,17 @@ __e( operatorItem ) +
  }) ;
 __p += '\n\t</select>\n\n\t<input type="text" class="constraint-value constraint-value-text" value="' +
 __e( value ) +
-'" />\n\n</div>\n\n<select class="constraint-conjunction">\n\t';
+'" />\n\n\t<select class="constraint-conjunction">\n\t\t';
  _.each(view.conjunctions, function(conjunctionItem) { ;
-__p += '\n\t<option value="' +
+__p += '\n\t\t<option value="' +
 __e( conjunctionItem ) +
 '" ' +
 ((__t = ( conjunctionItem === conjunction ? 'selected="selected"' : ''  )) == null ? '' : __t) +
-'">\n\t' +
+'">\n\t\t' +
 __e( conjunctionItem ) +
-'\n\t</option>\n\t';
+'\n\t\t</option>\n\t\t';
  }) ;
-__p += '\n</select>\n\n';
+__p += '\n\t</select>\n</div>\n\n<div class="conjunction-guide">\n\t<p><span class="arrow-down"></span>OR any of the following conditions</p>\n</div>\n';
 
 }
 return __p
@@ -340,7 +454,7 @@ function print() { __p += __j.call(arguments, '') }
 with (obj) {
 __p += '<ul class="constraint-toolbar">\n\t<li>\n\t\t<a\n\t\t\talt="f105"\n\t\t\tclass="dashicons dashicons-admin-page copy-constraint"\n\t\t\thref="#"\n\t\t\ttitle="Duplicate"\n\t\t/>\n\n\t\t<a\n\t\t\talt="f105"\n\t\t\tclass="dashicons dashicons-trash remove-constraint"\n\t\t\thref="#"\n\t\t\ttitle="Remove"\n\t\t/>\n\t</li>\n</ul>\n\n<p class="constraint-title">\n\t' +
 __e( title ) +
-'\n</p>\n\n<div class="entry-select-group">\n\t<label><strong>Category: </strong></label>\n\t<select class="like-category" style="width: 100%">\n\t\t';
+'\n</p>\n\n<div class="entry-select-group">\n\t<label><strong>Category: </strong></label>\n\t<select class="like-category">\n\t\t';
  _.each(categories, function(categoryItem) { ;
 __p += '\n\t\t<option value="' +
 __e( categoryItem.value ) +
@@ -362,17 +476,17 @@ __e( operatorItem ) +
  }) ;
 __p += '\n\t</select>\n\n\t<input type="text" class="constraint-value constraint-value-text" value="' +
 __e( value ) +
-'" />\n\n</div>\n\n<select class="constraint-conjunction">\n\t';
+'" />\n\n\t<select class="constraint-conjunction">\n\t\t';
  _.each(view.conjunctions, function(conjunctionItem) { ;
-__p += '\n\t<option value="' +
+__p += '\n\t\t<option value="' +
 __e( conjunctionItem ) +
 '" ' +
 ((__t = ( conjunctionItem === conjunction ? 'selected="selected"' : ''  )) == null ? '' : __t) +
-'">\n\t' +
+'">\n\t\t' +
 __e( conjunctionItem ) +
-'\n\t</option>\n\t';
+'\n\t\t</option>\n\t\t';
  }) ;
-__p += '\n</select>\n';
+__p += '\n\t</select>\n</div>\n\n<div class="conjunction-guide">\n\t<p><span class="arrow-down"></span>OR any of the following conditions</p>\n</div>\n';
 
 }
 return __p
@@ -427,7 +541,7 @@ __e( conjunctionItem ) +
 __e( conjunctionItem ) +
 '\n\t</option>\n\t';
  }) ;
-__p += '\n</select>\n';
+__p += '\n</select>\n\n<div class="conjunction-guide">\n\t<p><span class="arrow-down"></span>OR any of the following conditions</p>\n</div>\n';
 
 }
 return __p
@@ -962,6 +1076,91 @@ var ListConstraint = Constraint.extend({
 
 ListConstraint.cache = {};
 
+var EmailEngagementTallyConstraint = Constraint.extend({
+
+	defaults        : {
+		type        : 'data:email_engagement_tally',
+		operator    : 'equals',
+		conjunction : 'and',
+		valueType   : 'integer',
+		value       : '',
+		event_name  : 'message_click',
+	},
+
+	initialize: function(attr, opts) {
+		Constraint.prototype.initialize.call(this, attr, opts);
+	},
+
+});
+
+var EmailEngagementConstraint = Constraint.extend({
+
+	defaults        : {
+		type        : 'data:email_engagement',
+		operator    : 'equals',
+		conjunction : 'and',
+		valueType   : 'integer',
+		value       : '',
+		event_name  : 'message_click',
+		groups      : [],
+	},
+
+	initialize: function(attr, opts) {
+		this.groupsLoaded      = false;
+		this.staticGroups      = new Backbone.Collection([]);
+		this.memberQueryGroups = new Backbone.Collection([]);
+
+		Constraint.prototype.initialize.call(this, attr, opts);
+	},
+
+	getGroups: function() {
+		return this.groups;
+	},
+
+	loadGroups: function() {
+		var params = { type: 'email_engagement' };
+
+		this.trigger('loadGroupsStart');
+
+		ajaxApi.request('get_choices_for_constraint_type', params)
+			.then($.proxy(this.didLoadGroups, this))
+			.fail($.proxy(this.didLoadGroupsError, this));
+	},
+
+	didLoadGroups: function(response) {
+		if (response.success) {
+			var choices = response.data;
+			this.staticGroups.reset(choices['static'], { silent: true });
+			this.memberQueryGroups.reset(choices.member_query, { silent: true });
+
+			this.groupsLoaded = true;
+			this.trigger('loadGroupsSuccess', this.groups);
+		} else {
+			this.didLoadGroupsError(response.data);
+		}
+	},
+
+	didLoadGroupsError: function(response) {
+		this.trigger('didLoadGroupsError', response.data);
+	},
+
+	toViewJSON: function() {
+		var json = Constraint.prototype.toViewJSON.call(this);
+		json.groupsLoaded = this.groupsLoaded;
+
+		if (this.groupsLoaded) {
+			json.staticGroups      = this.staticGroups.toJSON();
+			json.memberQueryGroups = this.memberQueryGroups.toJSON();
+		} else {
+			json.staticGroups      = [];
+			json.memberQueryGroups = [];
+		}
+
+		return json;
+	}
+
+});
+
 var FavoriteConstraint = Constraint.extend({
 
 	defaults        : {
@@ -1113,13 +1312,15 @@ var AVAILABLE_CONSTRAINTS = [
 		type: 'profile:likes',
 		valueType: 'string',
 		category: 'Any Category',
-		value: ''
+		value: '',
+		conjunction: 'and',
 	},
 	{
 		type: 'profile:favorites',
 		valueType: 'string',
 		category: 'Any Category',
-		value: ''
+		value: '',
+		conjunction: 'and',
 	},
 	{
 		type: 'data:listeningFrequency',
@@ -1137,7 +1338,8 @@ var AVAILABLE_CONSTRAINTS = [
 		type: 'record:contest',
 		valueType: 'string',
 		entryTypeID: -1,
-		entryFieldID: -1
+		entryFieldID: -1,
+		conjunction: 'or',
 	},
 	{
 		type: 'data:contest_list',
@@ -1179,6 +1381,20 @@ var AVAILABLE_CONSTRAINTS = [
 		operator: 'contains',
 	},
 
+	{
+		type: 'data:email_engagement_tally',
+		valueType: 'integer',
+		value: '1',
+		operator: 'equals',
+	},
+	{
+		type: 'data:email_engagement',
+		valueType: 'enum',
+		value: 'any',
+		operator: 'equals',
+	},
+
+	/*
 	{
 		type: 'data:member_query_message_open_list',
 		valueType: 'list',
@@ -1242,6 +1458,7 @@ var AVAILABLE_CONSTRAINTS = [
 		valueType: 'integer',
 		value: 1,
 	},
+	*/
 ];
 
 /* Constraint Meta */
@@ -1702,6 +1919,7 @@ var AVAILABLE_CONSTRAINTS_META = [
 		title: 'Social Share URL'
 	},
 
+	/*
 	{
 		type: 'data:member_query_message_open_list',
 		title: 'Member Query Email Open',
@@ -1774,6 +1992,24 @@ var AVAILABLE_CONSTRAINTS_META = [
 			{ label: 'Has Not Clicked', value: false }
 		]
 	},
+	*/
+
+	{
+		type: 'data:email_engagement_tally',
+		title: 'Aggregate Email List Engagement',
+		choices: [
+			{ label: 'Opens', value: 'message_open' },
+			{ label: 'Clickthroughs', value: 'message_click' },
+		]
+	},
+	{
+		type: 'data:email_engagement',
+		title: 'Email List Engagement',
+		choices: [
+			{ label: 'Has opened', value: 'message_open' },
+			{ label: 'Has clicked through', value: 'message_click' },
+		]
+	}
 ];
 
 var AVAILABLE_CONSTRAINTS_META_MAP = {};
@@ -1963,6 +2199,10 @@ var ConstraintCollection = Backbone.Collection.extend({
 				return 'likes';
 			} else if (subType === 'favorites') {
 				return 'favorites';
+			} else if (subType === 'email_engagement_tally') {
+				return 'email_engagement_tally';
+			} else if (subType === 'email_engagement') {
+				return 'email_engagement';
 			} else if (subType.match(/_list$/)) {
 				return 'list';
 			} else {
@@ -1980,6 +2220,8 @@ var ConstraintCollection = Backbone.Collection.extend({
 		'likes'     : LikeConstraint,
 		'favorites' : FavoriteConstraint,
 		'list'      : ListConstraint,
+		'email_engagement_tally': EmailEngagementTallyConstraint,
+		'email_engagement': EmailEngagementConstraint,
 	}
 
 });
@@ -2171,7 +2413,8 @@ var ConstraintView = Backbone.View.extend({
 	events: {
 		'click .copy-constraint': 'didCopyClick',
 		'click .remove-constraint': 'didRemoveClick',
-		'change': 'didChange'
+		'change': 'didChange',
+		'change .conjunction-guide': 'renderConjunctionGuide',
 	},
 
 	initialize: function(options) {
@@ -2201,6 +2444,14 @@ var ConstraintView = Backbone.View.extend({
 		$operatorField.select2();
 		$conjunctionField.select2();
 		*/
+
+	   this.renderConjunctionGuide();
+	},
+
+	renderConjunctionGuide: function() {
+	   var $conjunctionGuide = $('.conjunction-guide', this.el);
+	   var hasGuide = this.model.get('conjunction') === 'or';
+	   $conjunctionGuide.css('display', hasGuide ? 'block' : 'none');
 	},
 
 	didCopyClick: function(event) {
@@ -2231,6 +2482,7 @@ var ConstraintView = Backbone.View.extend({
 
 		//console.log('updateConstraint', changes);
 		constraint.set(changes);
+		this.renderConjunctionGuide();
 	},
 
 	parseValue: function(value, valueType) {
@@ -2457,6 +2709,7 @@ var EntryConstraintView = ConstraintView.extend({
 		//console.log('updateConstraint', changes);
 		constraint.set(changes);
 		this.renderEntryAnswer();
+		this.renderConjunctionGuide();
 	},
 
 	hasChoices: function() {
@@ -2501,6 +2754,73 @@ var LikeConstraintView = ConstraintView.extend({
 		};
 
 		constraint.set(changes);
+		this.renderConjunctionGuide();
+	},
+
+});
+
+var EmailEngagementTallyConstraintView = ConstraintView.extend({
+
+	template: getTemplate('email_engagement_tally'),
+
+	initialize: function(model, opts) {
+		ConstraintView.prototype.initialize.call(this, model, opts);
+	},
+
+	updateConstraint: function(constraint) {
+		var operator    = $('.constraint-operator', this.el).val();
+		var conjunction = $('.constraint-conjunction', this.el).val();
+		var value       = $('.constraint-value', this.el).val();
+		var event_name  = $('.email-event', this.el).val();
+		value           = this.parseValue(value, constraint.get('valueType'));
+
+		var changes     = {
+			operator: operator,
+			value: value,
+			conjunction: conjunction,
+			event_name: event_name,
+		};
+
+		constraint.set(changes);
+		this.renderConjunctionGuide();
+	},
+
+});
+
+var EmailEngagementConstraintView = ConstraintView.extend({
+
+	template: getTemplate('email_engagement'),
+
+	initialize: function(model, opts) {
+		ConstraintView.prototype.initialize.call(this, model, opts);
+
+		this.listenTo(this.model, 'loadGroupsStart', this.didLoadGroupsStart);
+		this.listenTo(this.model, 'loadGroupsSuccess', this.didLoadGroupsSuccess);
+		this.listenTo(this.model, 'loadGroupsError', this.didLoadGroupsError);
+
+		this.model.loadGroups();
+	},
+
+	updateConstraint: function(constraint) {
+		var operator    = $('.constraint-operator', this.el).val();
+		var conjunction = $('.constraint-conjunction', this.el).val();
+		var value       = $('.constraint-value', this.el).val();
+		var event_name  = $('.email-event', this.el).val();
+		value           = this.parseValue(value, constraint.get('valueType'));
+
+		var changes     = {
+			operator: operator,
+			value: value,
+			conjunction: conjunction,
+			event_name: event_name,
+		};
+
+		constraint.set(changes);
+		this.renderConjunctionGuide();
+	},
+
+	didLoadGroupsSuccess: function(groups) {
+		this.render();
 	},
 
 });
@@ -2566,6 +2886,7 @@ var FavoriteConstraintView = ConstraintView.extend({
 		};
 
 		constraint.set(changes);
+		this.renderConjunctionGuide();
 	},
 
 
@@ -2598,6 +2919,12 @@ var ActiveConstraintsView = Backbone.CollectionView.extend({
 			case 'list':
 				return ListConstraintView;
 
+			case 'email_engagement_tally':
+				return EmailEngagementTallyConstraintView;
+
+			case 'email_engagement':
+				return EmailEngagementConstraintView;
+
 			default:
 				return ConstraintView;
 		}
@@ -2617,7 +2944,14 @@ var ActiveConstraintsView = Backbone.CollectionView.extend({
 	},
 
 	removeConstraint: function(event, constraint) {
-		this.collection.remove(constraint);
+		var view    = this.viewManager.findByModel(constraint);
+		var $el     = view.$el;
+		var $parent = $el.parent();
+
+		var self = this;
+		$parent.slideUp(function() {
+			self.collection.remove(constraint);
+		});
 	},
 
 	render: function() {
@@ -2632,7 +2966,10 @@ var ActiveConstraintsView = Backbone.CollectionView.extend({
 		this.scrollTo($el);
 
 		$el.css('opacity', 0);
-		$el.animate({opacity: 1}, { duration: 200 });
+		$el.animate({opacity: 1}, 500);
+
+		var $parent = $el.parent();
+		$parent.fadeIn();
 	},
 
 	scrollTo: function($target) {
