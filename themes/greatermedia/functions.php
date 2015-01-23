@@ -658,6 +658,16 @@ add_action( 'parse_query', function ( WP_Query $query ) {
 	}
 } );
 
+
+function add_ie_stylesheet() {
+	?>
+	<!--[if lt IE 10]>
+	<link rel="stylesheet" href="<?php bloginfo('template_directory'); ?>/assets/css/ie9.css"/>
+	<![endif]-->
+	<?php
+}
+add_action( 'wp_head', 'add_ie_stylesheet' );
+
 /**
  * Create a nicely formatted and more specific title element text for output
  * in head of document, based on current view.
