@@ -220,7 +220,7 @@ var AVAILABLE_CONSTRAINTS = [
 	{
 		type: 'data:static_group_message_open_list',
 		valueType: 'list',
-		value: true,
+		value: '',
 	},
 	{
 		type: 'data:static_group_message_open_status',
@@ -236,7 +236,7 @@ var AVAILABLE_CONSTRAINTS = [
 	{
 		type: 'data:static_group_message_click_list',
 		valueType: 'boolean',
-		value: true,
+		value: '',
 	},
 	{
 		type: 'data:static_group_message_click_status',

@@ -11,9 +11,6 @@ var ListConstraint = Constraint.extend({
 	initialize: function(attr, opts) {
 		this.choicesLoaded = false;
 		Constraint.prototype.initialize.call(this, attr, opts);
-
-		this.listChoices = new Backbone.Collection([]);
-		this.loadList();
 	},
 
 	getListTypeName: function() {
@@ -25,6 +22,11 @@ var ListConstraint = Constraint.extend({
 	},
 
 	getChoices: function() {
+		if (!this.listChoices) {
+			this.listChoices = new Backbone.Collection([]);
+			this.loadList();
+		}
+
 		return this.listChoices;
 	},
 

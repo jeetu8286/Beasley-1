@@ -385,9 +385,19 @@ function print() { __p += __j.call(arguments, '') }
 with (obj) {
 __p += '<ul class="constraint-toolbar">\n\t<li>\n\t\t<a\n\t\t\talt="f105"\n\t\t\tclass="dashicons dashicons-admin-page copy-constraint"\n\t\t\thref="#"\n\t\t\ttitle="Duplicate"\n\t\t/>\n\n\t\t<a\n\t\t\talt="f105"\n\t\t\tclass="dashicons dashicons-trash remove-constraint"\n\t\t\thref="#"\n\t\t\ttitle="Remove"\n\t\t/>\n\t</li>\n</ul>\n\n<p class="constraint-title">\n\t' +
 __e( title ) +
-'\n</p>\n\n';
+'\n</p>\n\n<select class="constraint-operator" style="width: 35%">\n\t';
+ _.each(view.operatorsFor(valueType, type), function(operatorItem) { ;
+__p += '\n\t<option value="' +
+__e( operatorItem ) +
+'" ' +
+((__t = ( operatorItem === operator ? 'selected="selected"' : ''  )) == null ? '' : __t) +
+'">\n\t' +
+__e( operatorItem ) +
+'\n\t</option>\n\t';
+ }) ;
+__p += '\n</select>\n\n';
  if (view.hasChoices()) { ;
-__p += '\n\t<select class="constraint-value" style="width: 81%">\n\t\t';
+__p += '\n\t<select class="constraint-value" style="width: 45%">\n\t\t';
  _.each(choices, function(choiceItem) { ;
 __p += '\n\t\t<option value="' +
 __e( choiceItem.value ) +
@@ -883,9 +893,6 @@ var ListConstraint = Constraint.extend({
 	initialize: function(attr, opts) {
 		this.choicesLoaded = false;
 		Constraint.prototype.initialize.call(this, attr, opts);
-
-		this.listChoices = new Backbone.Collection([]);
-		this.loadList();
 	},
 
 	getListTypeName: function() {
@@ -897,6 +904,11 @@ var ListConstraint = Constraint.extend({
 	},
 
 	getChoices: function() {
+		if (!this.listChoices) {
+			this.listChoices = new Backbone.Collection([]);
+			this.loadList();
+		}
+
 		return this.listChoices;
 	},
 
@@ -1202,7 +1214,7 @@ var AVAILABLE_CONSTRAINTS = [
 	{
 		type: 'data:static_group_message_open_list',
 		valueType: 'list',
-		value: true,
+		value: '',
 	},
 	{
 		type: 'data:static_group_message_open_status',
@@ -1218,7 +1230,7 @@ var AVAILABLE_CONSTRAINTS = [
 	{
 		type: 'data:static_group_message_click_list',
 		valueType: 'boolean',
-		value: true,
+		value: '',
 	},
 	{
 		type: 'data:static_group_message_click_status',
@@ -2290,6 +2302,16 @@ var ConstraintView = Backbone.View.extend({
 		'not contains',
 	],
 
+	enumOperators: [
+		'contains',
+		'not contains',
+	],
+
+	listOperators: [
+		'contains',
+		'not contains',
+	],
+
 	operatorsFor: function(valueType, type) {
 		if (valueType === 'integer' || valueType === 'float') {
 			return this.numericOperators;
@@ -2305,6 +2327,8 @@ var ConstraintView = Backbone.View.extend({
 			return this.dateOperators;
 		} else if (valueType === 'enum') {
 			return this.enumOperators;
+		} else if (valueType === 'list') {
+			return this.listOperators;
 		} else {
 			return this.allOperators;
 		}
@@ -2491,6 +2515,8 @@ var ListConstraintView = ConstraintView.extend({
 		this.listenTo(this.model, 'loadListStart', this.didLoadListStart);
 		this.listenTo(this.model, 'loadListSuccess', this.didLoadListSuccess);
 		this.listenTo(this.model, 'loadListError', this.didLoadListError);
+
+		var choices = this.model.getChoices();
 	},
 
 	didLoadListStart: function() {
