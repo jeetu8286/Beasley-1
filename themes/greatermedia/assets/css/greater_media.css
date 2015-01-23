@@ -2885,9 +2885,12 @@ Community Highlights and Events
 
 .footer {
   width: 100%;
-  margin: 0 auto;
+  margin: 0 auto 58px;
   overflow: auto;
   background-color: #000000; }
+  @media screen and (min-width: 768px) {
+    .footer {
+      margin: 0 auto; } }
 
 .footer a:link, .footer a:visited {
   color: #929497; }
@@ -5134,12 +5137,12 @@ category: Components
   .live-stream__btn--pause.live-player__muted {
     display: none; }
 
-.live-stream__btn--resume.resume__audio {
+.live-stream__btn--resume.resume__audio, .live-stream__btn--resume.resume__live {
   display: block;
   position: absolute;
   left: 0; }
   @media screen and (min-width: 768px) {
-    .live-stream__btn--resume.resume__audio {
+    .live-stream__btn--resume.resume__audio, .live-stream__btn--resume.resume__live {
       position: relative;
       left: auto; } }
 .live-stream__btn--resume.live-player__muted {
