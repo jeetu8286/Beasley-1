@@ -34,7 +34,7 @@
 <div class="entry-answer-group">
 	<label><strong>Like: </strong></label>
 
-	<select class="constraint-operator" style="width: 35%">
+	<select class="constraint-operator">
 		<% _.each(view.operatorsFor(valueType), function(operatorItem) { %>
 		<option value="<%- operatorItem %>" <%= operatorItem === operator ? 'selected="selected"' : ''  %>">
 		<%- operatorItem %>
@@ -44,11 +44,12 @@
 
 	<input type="text" class="constraint-value constraint-value-text" value="<%- value %>" />
 
-	<select class="constraint-conjunction" style="width: 15%">
-		<% _.each(view.conjunctions, function(conjunctionItem) { %>
-		<option value="<%- conjunctionItem %>" <%= conjunctionItem === conjunction ? 'selected="selected"' : ''  %>">
-		<%- conjunctionItem %>
-		</option>
-		<% }) %>
-	</select>
 </div>
+
+<select class="constraint-conjunction">
+	<% _.each(view.conjunctions, function(conjunctionItem) { %>
+	<option value="<%- conjunctionItem %>" <%= conjunctionItem === conjunction ? 'selected="selected"' : ''  %>">
+	<%- conjunctionItem %>
+	</option>
+	<% }) %>
+</select>
