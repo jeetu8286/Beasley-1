@@ -247,7 +247,30 @@ class GreaterMediaUserGeneratedContent {
 	 * Add custom admin pages to the admin menu
 	 */
 	public static function admin_menu() {
-		add_submenu_page( 'edit.php?post_type=contest', 'Moderation', 'Moderation', 'manage_options', GreaterMediaUserGeneratedContentModerationTable::PAGE_NAME, array( __CLASS__, 'moderation_ui' ) );
+		$transient = 'gmr-moderation-count';
+		$count = get_transient( $transient );
+		if ( $count === false ) {
+			$query = new WP_Query( array(
+				'post_type'           => GMR_SUBMISSIONS_CPT,
+				'post_status'         => 'pending',
+				'ignore_sticky_posts' => true,
+				'posts_per_page'      => 1,
+				'fields'              => 'ids',
+			) );
+
+			$count = $query->found_posts;
+			set_transient( $transient, $count );
+		}
+
+		$menu = 'Moderation';
+		if ( $count > 0 ) {
+			$menu .= sprintf(
+				' <span class="update-plugins count-%1$d"><span class="update-count">%1$d</span></span>',
+				$count
+			);
+		}
+
+		add_submenu_page( 'edit.php?post_type=contest', 'Moderation', $menu, 'manage_options', GreaterMediaUserGeneratedContentModerationTable::PAGE_NAME, array( __CLASS__, 'moderation_ui' ) );
 	}
 
 	public static function admin_enqueue_scripts() {
@@ -326,6 +349,9 @@ class GreaterMediaUserGeneratedContent {
 		if ( empty( $ugc_action ) ) {
 			return;
 		}
+
+		// delete moderation count transient
+		delete_transient( 'gmr-moderation-count' );
 
 		$output = get_query_var( 'output' );
 		$redirect = admin_url( 'edit.php?page=moderate-ugc&post_type=' . GMR_SUBMISSIONS_CPT );
