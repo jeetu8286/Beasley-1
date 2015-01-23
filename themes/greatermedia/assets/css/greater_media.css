@@ -5048,7 +5048,7 @@ category: Components
 .live-stream__btn--play:before, .live-stream__btn--resume:before {
   position: absolute;
   top: 50%;
-  left: 55%;
+  left: 54%;
   -webkit-transform: translate(-50%, -50%);
   -moz-transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
@@ -7229,7 +7229,7 @@ category: Components - Shows
   font-size: 1.80203em; }
 
 .podcast__btn--play:before {
-  left: 55%; }
+  left: 54%; }
 
 .podcast__btn--play:before {
   content: "\e606" !important; }
