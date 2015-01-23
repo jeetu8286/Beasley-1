@@ -5177,6 +5177,8 @@ category: Components
   width: 0;
   height: 0;
   color: #d22228; }
+  .live-link__song:hover:before, .live-link__type--audio:hover:before, .live-link__type--gallery:hover:before, .live-link__type--image:hover:before, .live-link__type--link:hover:before, .live-link__type--standard:hover:before, .live-link__type--video:hover:before {
+    color: #000000; }
 
 .live-link__type--audio, .live-link__type--gallery, .live-link__type--image, .live-link__type--link, .live-link__type--standard, .live-link__type--video {
   display: block;
@@ -5190,6 +5192,9 @@ category: Components
   content: "\e604";
   color: #d0d2d3; }
 
+.live-link__song:hover:before {
+  color: #d22228; }
+
 .live-link__song--artist {
   padding-top: 6px;
   font-size: 0.75em;
@@ -5198,11 +5203,13 @@ category: Components
 .live-link__song--title {
   padding-top: 6px;
   font-size: 0.8125em;
-  font-weight: lighter;
+  font-weight: bold;
   color: #d0d2d3; }
+  .live-link__song--title a:hover, .live-link__song--title a:focus, .live-link__song--title a:active {
+    color: #d22228; }
 
 .live-link__type--audio:before {
-  content: "\e604"; }
+  content: "\e60c"; }
 
 .live-link__type--gallery:before {
   content: "\e621"; }
@@ -5217,7 +5224,7 @@ category: Components
   content: "\e608"; }
 
 .live-link__type--video:before {
-  content: "\e620"; }
+  content: "\e605"; }
 
 .live-link__title {
   display: block;
