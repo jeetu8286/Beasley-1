@@ -34,6 +34,8 @@ var ConstraintCollection = Backbone.Collection.extend({
 				return 'likes';
 			} else if (subType === 'favorites') {
 				return 'favorites';
+			} else if (subType === 'email_engagement_tally') {
+				return 'email_engagement_tally';
 			} else if (subType.match(/_list$/)) {
 				return 'list';
 			} else {
@@ -51,6 +53,7 @@ var ConstraintCollection = Backbone.Collection.extend({
 		'likes'     : LikeConstraint,
 		'favorites' : FavoriteConstraint,
 		'list'      : ListConstraint,
+		'email_engagement_tally': EmailEngagementTallyConstraint,
 	}
 
 });

@@ -292,3 +292,11 @@
 	margin: 0;
 	padding: 0.2em;
 }
+
+.email-engagement-tally .constraint-value {
+	width: 15%;
+}
+
+.email-engagement-tally .email-event {
+	width: 35%;
+}

@@ -412,6 +412,8 @@ class MemberQuery {
 					return $this->clause_for_optout_constraint( $constraint );
 				} else if ( $subType === 'subscribedToList' ) {
 					return $this->clause_for_subscribed_to_list_constraint( $constraint );
+				} else if ( $subType === 'email_engagement_tally' ) {
+					return $this->clause_for_email_engagement_tally_constraint( $constraint );
 				} else {
 					return $this->clause_for_data_constraint( $constraint );
 				}
@@ -733,6 +735,29 @@ class MemberQuery {
 
 		return $query;
 	}
+
+	public function clause_for_email_engagement_tally_constraint( $constraint ) {
+		$type      = $constraint['type'];
+		$value     = $constraint['value'];
+		$valueType = $constraint['valueType'];
+		$operator  = $constraint['operator'];
+		$event_name = $constraint['event_name'];
+		$query     = '';
+
+		$query .= "data.email_{$event_name}_count";
+		$query .= ' ';
+		$query .= $this->operator_for( $operator );
+		$query .= ' ';
+		$query .= $this->value_for( $value, $valueType );
+
+		if ( $value === 0 ) {
+			$query .= ' or ';
+			$query .= "data.email_{$event_name}_count is null";
+		}
+
+		return $query;
+	}
+
 	/**
 	 * Generates the GQL clause for a likes constraint specified.
 	 *

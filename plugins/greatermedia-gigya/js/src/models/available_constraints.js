@@ -19,6 +19,12 @@ var getSubscribedToListChoices = function() {
 var AVAILABLE_CONSTRAINTS = [
 
 
+	{
+		type: 'data:email_engagement_tally',
+		valueType: 'integer',
+		value: '1',
+		operator: 'equals',
+	},
 	/* System Fields */
 	{
 		type: 'system:createdTimestamp',
@@ -781,6 +787,15 @@ var AVAILABLE_CONSTRAINTS_META = [
 			{ label: 'Has Not Clicked', value: false }
 		]
 	},
+
+	{
+		type: 'data:email_engagement_tally',
+		title: 'Aggregate Email List Engagement',
+		choices: [
+			{ label: 'Opens', value: 'message_open' },
+			{ label: 'Clickthroughs', value: 'message_click' },
+		]
+	}
 ];
 
 var AVAILABLE_CONSTRAINTS_META_MAP = {};
