@@ -7,6 +7,9 @@
 
 namespace GreaterMedia\HomepageCuration;
 
+define( 'GMEDIA_HOMEPAGE_CURATION_VERSION', '1.0.0' );
+define( 'GMEDIA_HOMEPAGE_CURATION_URL', plugin_dir_url( __FILE__ ) );
+
 function load() {
 	if ( ! current_theme_supports( 'homepage-curation' ) ) {
 		return;

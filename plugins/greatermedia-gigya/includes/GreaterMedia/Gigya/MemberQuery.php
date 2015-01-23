@@ -404,14 +404,18 @@ class MemberQuery {
 			case 'data':
 				$subType = $typeList[1];
 
-				if ( $subType === 'comment_status' ) {
-					return $this->clause_for_comment_status_constraint( $constraint );
-				} else if ( $subType === 'social_share_status' ) {
-					return $this->clause_for_social_share_status_constraint( $constraint );
+				if ( preg_match( '/_status$/', $subType ) === 1 ) {
+					return $this->clause_for_status_constraint( $constraint );
+				} else if ( preg_match( '/_list/', $subType ) === 1 ) {
+					return $this->clause_for_list_constraint( $constraint );
 				} else if ( $subType === 'optout' ) {
 					return $this->clause_for_optout_constraint( $constraint );
 				} else if ( $subType === 'subscribedToList' ) {
 					return $this->clause_for_subscribed_to_list_constraint( $constraint );
+				} else if ( $subType === 'email_engagement_tally' ) {
+					return $this->clause_for_email_engagement_tally_constraint( $constraint );
+				} else if ( $subType === 'email_engagement' ) {
+					return $this->clause_for_email_engagement_constraint( $constraint );
 				} else {
 					return $this->clause_for_data_constraint( $constraint );
 				}
@@ -565,6 +569,24 @@ class MemberQuery {
 		return $query;
 	}
 
+	public function clause_for_status_constraint( $constraint ) {
+		$type          = $constraint['type'];
+		$typeParts     = explode( ':', $type );
+		$value         = $constraint['value'];
+		$valueType     = $constraint['valueType'];
+		$operator      = $constraint['operator'];
+		$dependent_type = str_replace( '_status', '_count', $typeParts[1] );
+
+		if ( $operator === 'equals' && $value ) {
+			$query = "data.{$dependent_type} > 0";
+		} else {
+			$query = "data.{$dependent_type} = 0 or data.{$dependent_type} is null";
+		}
+
+		return $query;
+	}
+
+
 	public function clause_for_comment_status_constraint( $constraint ) {
 		$type      = $constraint['type'];
 		$typeParts = explode( ':', $type );
@@ -609,6 +631,28 @@ class MemberQuery {
 		} else {
 			$query = 'data.optout != true or data.optout is null';
 		}
+
+		return $query;
+	}
+
+	public function clause_for_list_constraint( $constraint ) {
+		$type      = $constraint['type'];
+		$typeParts = explode( ':', $type );
+		$value     = $constraint['value'];
+		$valueType = $constraint['valueType'];
+		$operator  = $constraint['operator'];
+
+		if ( empty( $operator ) ) {
+			$operator = 'contains';
+		}
+
+		$query     = '';
+
+		$query .= 'data.' . $typeParts[1];
+		$query .= ' ';
+		$query .= $this->operator_for( $operator );
+		$query .= ' ';
+		$query .= $this->value_for( $value, 'string' );
 
 		return $query;
 	}
@@ -693,6 +737,57 @@ class MemberQuery {
 
 		return $query;
 	}
+
+	public function clause_for_email_engagement_tally_constraint( $constraint ) {
+		$type       = $constraint['type'];
+		$value      = $constraint['value'];
+		$valueType  = $constraint['valueType'];
+		$operator   = $constraint['operator'];
+		$event_name = $constraint['event_name'];
+		$query      = '';
+
+		if ( $value !== 0 ) {
+			$query .= "data.email_{$event_name}_count";
+			$query .= ' ';
+			$query .= $this->operator_for( $operator );
+			$query .= ' ';
+			$query .= $this->value_for( $value, 'integer' );
+		} else {
+			if ( $operator === 'equals' ) {
+				$query .= "data.email_{$event_name}_count is null";
+			} else {
+				$query .= "data.email_{$event_name}_count != 0";
+			}
+		}
+
+		return $query;
+	}
+
+	public function clause_for_email_engagement_constraint( $constraint ) {
+		$type      = $constraint['type'];
+		$value     = $constraint['value'];
+		$valueType = $constraint['valueType'];
+		$operator  = $constraint['operator'];
+		$event_name = $constraint['event_name'];
+		$query     = '';
+
+		if ( $value !== 'any' ) {
+			$query .= "data.email_{$event_name}_list";
+			$query .= ' ';
+			$query .= $this->operator_for( $operator );
+			$query .= ' ';
+			$query .= $this->value_for( $value, 'string' );
+		} else {
+			if ( $operator === 'contains' ) {
+				$query .= "data.email_{$event_name}_count > 0";
+			} else {
+				$query .= "data.email_{$event_name}_count is null";
+			}
+		}
+
+		return $query;
+	}
+
 	/**
 	 * Generates the GQL clause for a likes constraint specified.
 	 *

@@ -27,7 +27,7 @@
 		margin-bottom: 0; 
 	}
 	
-	a {
+	a:not(.image__attribution--link) {
 		position: absolute;
 		width: 100%;
 		left: 0;
@@ -229,7 +229,7 @@
 		background-color: $btn-bg;
 	}
 	
-	.entry2__thumbnail--event-date {	
+	.entry2__thumbnail--event-date {
 		@extend .h1;
 		font-size: ms(0); 
 		line-height: 1;
