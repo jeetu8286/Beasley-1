@@ -136,6 +136,16 @@ var ConstraintView = Backbone.View.extend({
 		'not contains',
 	],
 
+	enumOperators: [
+		'contains',
+		'not contains',
+	],
+
+	listOperators: [
+		'contains',
+		'not contains',
+	],
+
 	operatorsFor: function(valueType, type) {
 		if (valueType === 'integer' || valueType === 'float') {
 			return this.numericOperators;
@@ -151,6 +161,8 @@ var ConstraintView = Backbone.View.extend({
 			return this.dateOperators;
 		} else if (valueType === 'enum') {
 			return this.enumOperators;
+		} else if (valueType === 'list') {
+			return this.listOperators;
 		} else {
 			return this.allOperators;
 		}

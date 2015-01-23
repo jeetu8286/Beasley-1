@@ -20,7 +20,7 @@
 	<%- title %>
 </p>
 
-<select class="constraint-operator" style="width: 35%">
+<select class="constraint-operator">
 	<% _.each(view.operatorsFor(valueType, type), function(operatorItem) { %>
 	<option value="<%- operatorItem %>" <%= operatorItem === operator ? 'selected="selected"' : ''  %>">
 	<%- operatorItem %>
@@ -29,7 +29,7 @@
 </select>
 
 <% if (view.hasChoices()) { %>
-	<select class="constraint-value" style="width: 45%">
+	<select class="constraint-value">
 		<% _.each(choices, function(choiceItem) { %>
 		<option value="<%- choiceItem.value %>" <%= choiceItem.value == value ? 'selected="selected"' : ''  %>">
 		<%- choiceItem.label %>
@@ -42,7 +42,7 @@
 	<input type="text" class="constraint-value constraint-value-text" value="<%- value %>" />
 <% } %>
 
-<select class="constraint-conjunction" style="width: 15%">
+<select class="constraint-conjunction">
 	<% _.each(view.conjunctions, function(conjunctionItem) { %>
 	<option value="<%- conjunctionItem %>" <%= conjunctionItem === conjunction ? 'selected="selected"' : ''  %>">
 	<%- conjunctionItem %>
