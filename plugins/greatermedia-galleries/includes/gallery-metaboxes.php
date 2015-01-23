@@ -6,13 +6,17 @@
  */
 class GreaterMediaGalleryMetaboxes {
 
+	protected static $_images = array();
+
 	/**
 	 * Hook into the appropriate actions when the class is constructed.
 	 */
 	public static function init() {
+		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_scripts' ) );
 		add_action( 'add_meta_boxes', array( __CLASS__, 'add_meta_box' ) );
-		self::add_save_post_actions();
 		add_action( 'edit_form_after_title', array( __CLASS__, 'inline_instructions' ) );
+
+		self::add_save_post_actions();
 	}
 
 	public static function add_save_post_actions() {
@@ -29,13 +33,113 @@ class GreaterMediaGalleryMetaboxes {
 	 * @param $post_type
 	 */
 	public static function add_meta_box( $post_type ) {
-
 		$post_types = array( GreaterMediaGalleryCPT::GALLERY_POST_TYPE );
-
 		if ( in_array( $post_type, $post_types ) ) {
 			add_meta_box( 'gmp_albums_meta_box', 'Album', array( __CLASS__, 'render_parent_metabox' ), $post_type, 'side' );
+			add_meta_box( 'gmp_gallery_preview', 'Preview / Featured Image Selection', array( __CLASS__, 'gallery_preview' ), $post_type, 'advanced', 'core' );
+		}
+	}
+
+	/**
+	 * Enqueues admin scripts and styles.
+	 *
+	 * @global string $typenow The current type.
+	 * @global string $pagenow The current page.
+	 */
+	public static function enqueue_scripts() {
+		global $typenow, $pagenow;
+
+		if ( GreaterMediaGalleryCPT::GALLERY_POST_TYPE == $typenow && in_array( $pagenow, array( 'post.php', 'post-new.php' ) ) ) {
+			$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
+
+			wp_enqueue_style( 'gmr-gallery-admin', GREATER_MEDIA_GALLERIES_URL . "assets/css/gmr_gallery_admin{$postfix}.css", null, GREATER_MEDIA_GALLERIES_VERSION );
+
+			wp_enqueue_media();
+			wp_enqueue_script( 'gmr-gallery-admin', GREATER_MEDIA_GALLERIES_URL . "assets/js/gmr_admin{$postfix}.js", array( 'jquery' ), GREATER_MEDIA_GALLERIES_VERSION, true );
+		}
+	}
+
+	/**
+	 * Returns the images in the gallery, in the order they should be displayed.
+	 *
+	 * @param int $post_id The current post object.
+	 *
+	 * @return array Array of WP_Post objects corresponding to the gallery attachments.
+	 */
+	public static function get_images_in_order( $post_id = null ) {
+		if ( isset( self::$_images[ $post_id ] ) ) {
+			return self::$_images[ $post_id ];
 		}
 
+		if ( is_null( $post_id ) ) {
+			$post_id = get_the_ID();
+		}
+
+		$post = get_post( $post_id );
+		if ( ! $post ) {
+			return array();
+		}
+
+		$matches = array();
+		if ( ! preg_match( '/\[gallery.*?ids\=\"(.*?)\".*?\]/im', $post->post_content, $matches ) ) {
+			return array();
+		}
+
+		$attachment_ids = array_filter( array_map( 'intval', explode( ',', $matches[1] ) ) );
+		if ( empty( $attachment_ids ) ) {
+			return array();
+		}
+
+		self::$_images[ $post_id ] = get_posts( array(
+			'include'        => $attachment_ids,
+			'post_status'    => 'inherit',
+			'post_type'      => 'attachment',
+			'post_mime_type' => 'image',
+			'orderby'        => 'post__in',
+			'posts_per_page' => count( $attachment_ids ),
+			'no_found_rows'  => true,
+		) );
+
+		return self::$_images[ $post_id ];
+	}
+	
+	/**
+	 * Renders thumbnails, to preview the gallery, and select the featured image.
+	 *
+	 * @param WP_Post $post The current post object.
+	 */
+	public static function gallery_preview( $post ) {
+		$featured_image_id = get_post_thumbnail_id( $post->ID );
+		$gallery_ids = get_post_meta( $post->ID, 'gmr-gallery-ids', true );
+		$attachments = self::get_images_in_order( $post->ID );
+
+		$label = empty( $gallery_ids ) ? 'Create Gallery' : 'Edit Gallery';
+
+		wp_nonce_field( 'save-gallery', 'gmr-gallery-nonce' );
+
+		?><div class="gmr-manage-gallery-container">
+			<div class="wp-media-buttons">
+				<a href="#" id="manage-gallery-button" class="button insert-media add_media">
+					<span class="wp-media-buttons-icon"></span>
+					<?php echo esc_html( $label ); ?>
+				</a>
+			</div>
+			<input type="hidden" id="gmr-gallery-ids" name="gmr-gallery-ids" value="<?php echo esc_attr( $gallery_ids ); ?>">
+			<input type="hidden" id="gmr-featured-image" name="gmr-featured-image" value="<?php echo esc_attr( $featured_image_id ); ?>">
+		</div>
+
+		<p><strong>Select a featured image for the gallery below.</strong></p>
+
+		<div class="gallery-preview" id="gmr-gallery-images">
+			<?php foreach ( $attachments as $attachment ) : ?>
+				<div class="gallery-item attachment <?php echo $featured_image_id == $attachment->ID ? 'details selected' : ''; ?>" data-attachment-id="<?php echo esc_attr( $attachment->ID ); ?>" style="background-image:url('<?php echo esc_url( current( wp_get_attachment_image_src( $attachment->ID ) ) ); ?>')"></div>
+			<?php endforeach; ?>
+
+			<?php // Template used when re-rendering the thumbnails after updating the gallery in JS ?>
+			<script type="text/template" id="gmr-gallery-item-template">
+				<div class="gallery-item attachment {{selected_class}}" data-attachment-id="{{attachment_id}}" style="background-image: url('{{thumbnail_url}}')"></div>
+			</script>
+		</div><?php
 	}
 
 	/**

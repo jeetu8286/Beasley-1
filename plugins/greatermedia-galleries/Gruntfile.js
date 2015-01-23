@@ -15,6 +15,10 @@ module.exports = function (grunt) {
 					'assets/js/src/gmr_gallery.js'
 				],
 				dest: 'assets/js/gmr_gallery.js'
+			},
+			gmr_admin: {
+				src: ['assets/js/src/gmr_admin.js'],
+				dest: 'assets/js/gmr_admin.js'
 			}
 		},
 		jshint: {
@@ -43,6 +47,7 @@ module.exports = function (grunt) {
 					window: false,
 					document: false,
 					console: false,
+					wp: false,
 					ga: false,
 					_gaq: false
 				}
@@ -51,7 +56,8 @@ module.exports = function (grunt) {
 		uglify: {
 			all: {
 				files: {
-					'assets/js/gmr_gallery.min.js': ['assets/js/gmr_gallery.js']
+					'assets/js/gmr_gallery.min.js': ['assets/js/gmr_gallery.js'],
+					'assets/js/gmr_admin.min.js': ['assets/js/gmr_admin.js']
 				},
 				options: {
 					mangle: {

@@ -1,0 +1,26 @@
+.gmr-manage-gallery-container {
+	.wp-media-buttons {
+		float: none;
+	}
+}
+
+.gallery-preview {
+	&:before,
+	&:after {
+		content: " ";
+		display: table;
+	}
+
+	&:after {
+		clear: both;
+	}
+
+	.gallery-item {
+		width: 200px;
+		height: 150px;
+		margin: 0 8px 8px 0;
+		background-position: center center;
+		background-size: cover;
+		background-repeat: no-repeat;
+	}
+}

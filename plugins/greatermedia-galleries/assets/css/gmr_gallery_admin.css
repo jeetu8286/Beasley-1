@@ -5,6 +5,22 @@
  * Copyright (c) 2014 10up
  * Licensed under the GPLv2+ license.
  */
+.gmr-manage-gallery-container .wp-media-buttons {
+  float: none; }
+
+.gallery-preview:before, .gallery-preview:after {
+  content: " ";
+  display: table; }
+.gallery-preview:after {
+  clear: both; }
+.gallery-preview .gallery-item {
+  width: 200px;
+  height: 150px;
+  margin: 0 8px 8px 0;
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat; }
+
 .gmr__option {
   width: 100%;
   padding: 1em 0;
