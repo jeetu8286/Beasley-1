@@ -2402,10 +2402,15 @@ Community Highlights and Events
   position: relative;
   width: 100%;
   overflow: hidden;
-  padding-top: 100%;
+  position: relative;
+  background-position: center center;
   background-size: 100%;
   background-size: cover;
-  background-position: center center; }
+  background-repeat: no-repeat; }
+  .highlights__community--thumb:after {
+    content: '';
+    display: block;
+    padding-top: 100%; }
 
 .highlights__community--thumb:after {
   position: absolute;
@@ -2557,13 +2562,16 @@ Community Highlights and Events
   margin-right: 4.82916%;
   width: 30.11389%;
   position: relative;
-  height: 100%;
-  overflow: hidden;
+  background-position: center center;
   background-size: 100%;
   background-size: cover;
-  background-position: center center; }
+  background-repeat: no-repeat; }
   .highlights__event--thumb:last-child {
     margin-right: 0; }
+  .highlights__event--thumb:after {
+    content: '';
+    display: block;
+    padding-top: 100%; }
   @media screen and (min-width: 1024px) {
     .highlights__event--thumb {
       float: left;
