@@ -2617,7 +2617,14 @@ var ActiveConstraintsView = Backbone.CollectionView.extend({
 	},
 
 	removeConstraint: function(event, constraint) {
-		this.collection.remove(constraint);
+		var view    = this.viewManager.findByModel(constraint);
+		var $el     = view.$el;
+		var $parent = $el.parent();
+
+		var self = this;
+		$parent.slideUp(function() {
+			self.collection.remove(constraint);
+		});
 	},
 
 	render: function() {
@@ -2632,7 +2639,10 @@ var ActiveConstraintsView = Backbone.CollectionView.extend({
 		this.scrollTo($el);
 
 		$el.css('opacity', 0);
-		$el.animate({opacity: 1}, { duration: 200 });
+		$el.animate({opacity: 1}, 500);
+
+		var $parent = $el.parent();
+		$parent.fadeIn();
 	},
 
 	scrollTo: function($target) {
