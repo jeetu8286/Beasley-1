@@ -9,7 +9,7 @@
  * theme's file, so the child theme functions would be used.
  *
  * @package Greater Media
- * @since   0.1.3
+ * @since   0.1.0
  */
 
 // Useful global constants
@@ -20,12 +20,12 @@
 if ( defined( 'GMR_PARENT_ENV' ) && 'dev' == GMR_PARENT_ENV ) {
 	define( 'GREATERMEDIA_VERSION', time() );
 } else {
-	define( 'GREATERMEDIA_VERSION', '0.1.3' );
+	define( 'GREATERMEDIA_VERSION', '0.1.4' );
 }
 
 add_theme_support( 'homepage-curation' );
 
-require_once( __DIR__ . '/includes/liveplayer/loader.php' );
+require_once( __DIR__ . '/includes/liveplayer/class-liveplayer.php' );
 require_once( __DIR__ . '/includes/site-options/loader.php' );
 require_once( __DIR__ . '/includes/mega-menu/mega-menu-admin.php' );
 require_once( __DIR__ . '/includes/mega-menu/mega-menu-walker.php' );
@@ -657,6 +657,16 @@ add_action( 'parse_query', function ( WP_Query $query ) {
 		$query->query_vars['posts_per_page'] = 30;
 	}
 } );
+
+
+function add_ie_stylesheet() {
+	?>
+	<!--[if lt IE 10]>
+	<link rel="stylesheet" href="<?php bloginfo('template_directory'); ?>/assets/css/ie9.css"/>
+	<![endif]-->
+	<?php
+}
+add_action( 'wp_head', 'add_ie_stylesheet' );
 
 /**
  * Create a nicely formatted and more specific title element text for output
