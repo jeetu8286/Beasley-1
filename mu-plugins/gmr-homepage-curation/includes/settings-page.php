@@ -4,6 +4,7 @@ namespace GreaterMedia\HomepageCuration;
 
 add_action( 'admin_menu', __NAMESPACE__ . '\add_settings_page' );
 add_action( 'admin_init', __NAMESPACE__ . '\register_settings' );
+add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\enqueue_admin_scripts' );
 
 
 /* Define sections, page slugs, etc */
@@ -149,12 +150,13 @@ function sanitize_post_finder( $unsanitized ) {
 
 /* The settings page */
 function add_settings_page() {
-	add_menu_page( 'Homepage Curation', 'Homepage', 'edit_others_posts', get_settings_page_slug(), __NAMESPACE__ . '\render_homepage_curation', 'dashicons-admin-home', '2.88' );
+	global $gmr_homepage_curation;
+	$gmr_homepage_curation = add_menu_page( 'Homepage Curation', 'Homepage', 'edit_others_posts', get_settings_page_slug(), __NAMESPACE__ . '\render_homepage_curation', 'dashicons-admin-home', '2.88' );
 }
 
 function render_homepage_curation() {
 	?>
-	<div class="wrap">
+	<div id="homepage-curation" class="wrap">
 
 		<h2>Homepage Curation</h2>
 
@@ -170,4 +172,12 @@ function render_homepage_curation() {
 
 	</div>
 	<?php
+}
+
+function enqueue_admin_scripts( $page ) {
+	global $gmr_homepage_curation;
+	if ( $gmr_homepage_curation == $page ) {
+		wp_enqueue_style( 'homepage-curation', GMEDIA_HOMEPAGE_CURATION_URL . 'css/admin.css', null, GMEDIA_HOMEPAGE_CURATION_VERSION );
+		wp_enqueue_script( 'homepage-curation', GMEDIA_HOMEPAGE_CURATION_URL . 'js/curation.js', array( 'jquery' ), GMEDIA_HOMEPAGE_CURATION_VERSION, true );
+	}
 }

@@ -81,6 +81,14 @@
 	width: 7em;
 }
 
+#profile-content #gigya-resend-verification-code-screen input[type="submit"] {
+	width: 13em;
+}
+
+#profile-content #gigya-resend-verification-code-update-screen input[type="submit"] {
+	width: 13em;
+}
+
 #profile-content .gigya-screen input[type="submit"]:hover {
 	opacity: 0.9;
 }
@@ -157,6 +165,10 @@ div[gigid=facebook][style], div[gigid=twitter][style], div[gigid=googleplus][sty
 	width: auto;
 }
 
+#profile-content .verify-email-link {
+	display: none;
+}
+
 .profile-page__sidebar .profile-header-link {
 	color: #A85858
 }
@@ -180,3 +192,8 @@ select:-webkit-autofill {
 	margin-bottom: 1em;
 	font-size: 1.2em;
 }
+
+#gigya-verify-email-screen .error {
+	color: red;
+}
+

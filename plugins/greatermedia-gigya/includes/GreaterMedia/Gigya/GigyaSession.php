@@ -89,7 +89,7 @@ class GigyaSession {
 		}
 	}
 
-	public function set_user_data_profile( $user_id = null, $data ) {
+	public function set_user_profile_data( $user_id = null, $data ) {
 		$user_id = $this->authorize( $user_id );
 		$request = new GigyaRequest( null, null, 'accounts.setAccountInfo' );
 		$request->setParam( 'UID', $user_id );
@@ -120,7 +120,7 @@ class GigyaSession {
 		$user_data = $this->get_user_profile_data( $user_id );
 		$user_data[ $field ] = $value;
 
-		return $this->set_user_data_profile( $user_id, $user_data );
+		return $this->set_user_profile_data( $user_id, $user_data );
 	}
 
 	public function query_for_user( $user_id, $query ) {

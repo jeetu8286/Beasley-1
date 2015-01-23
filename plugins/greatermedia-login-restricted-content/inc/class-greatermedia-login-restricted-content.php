@@ -20,7 +20,8 @@ class GreaterMediaLoginRestrictedContent extends VisualShortcode {
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ), 20, 0 );
 		add_action( 'save_post', array( $this, 'save_post' ) );
 		
-		add_filter( 'the_content', array( $this, 'the_content' ) );
+		add_filter( 'the_excerpt', array( $this, 'the_content' ), 100 );
+		add_filter( 'the_content', array( $this, 'the_content' ), 100 );
 		add_filter( 'wp_trim_words', array( $this, 'untrim_restricted_markup' ), 10, 4 );
 		
 	}
@@ -172,7 +173,7 @@ class GreaterMediaLoginRestrictedContent extends VisualShortcode {
 		         __( 'Logged out', 'greatermedia-login-restricted-content' ) .
 		         '</p>';
 		$html .= '<p><input type="radio" name="lr_status" value="" ' . ( empty( $login_restriction ) ? 'checked="checked"' : '' ) . ' />' .
-		         __( 'No restriction', 'greatermedia-login-restricted-content' ) .
+		         __( 'None', 'greatermedia-login-restricted-content' ) .
 		         '</p>';
 		$html .= '<input type="hidden" id="hidden_login_restriction" name="hidden_login_restriction" value="' . esc_attr( $login_restriction ) . '" />';
 		$html .= '</fieldset>';
@@ -209,11 +210,7 @@ class GreaterMediaLoginRestrictedContent extends VisualShortcode {
 			
 			return ob_get_clean();
 		} elseif ( ( 'logged-out' === $login_restriction ) && is_gigya_user_logged_in() ) {
-			ob_start();
-			
-			include GREATER_MEDIA_LOGIN_RESTRICTED_CONTENT_PATH . '/tpl/logout-restricted-shortcode-render.tpl.php';
-			
-			return ob_get_clean();
+			return '';
 		}
 
 		/**
@@ -266,7 +263,7 @@ class GreaterMediaLoginRestrictedContent extends VisualShortcode {
 		} else if ( 'logged-out' === $login_restriction ) {
 			return __( 'Logged out', 'greatermedia-login-restricted-content' );
 		} else {
-			return __( 'No restriction', 'greatermedia-login-restricted-content' );
+			return __( 'None', 'greatermedia-login-restricted-content' );
 		}
 
 	}
@@ -288,9 +285,7 @@ class GreaterMediaLoginRestrictedContent extends VisualShortcode {
 			include GREATER_MEDIA_LOGIN_RESTRICTED_CONTENT_PATH . '/tpl/login-restricted-post-render.tpl.php';
 			return ob_get_clean();
 		} elseif ( ( 'logged-out' === $login_restriction ) && is_gigya_user_logged_in() ) {
-			ob_start();
-			include GREATER_MEDIA_LOGIN_RESTRICTED_CONTENT_PATH . '/tpl/logout-restricted-post-render.tpl.php';
-			return ob_get_clean();
+			return '';
 		}
 
 		// Fall-through, return content as-is
