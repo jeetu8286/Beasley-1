@@ -10,7 +10,20 @@ get_header(); ?>
 
 		<div class="container">
 
-			<?php the_content(); ?>
+			<?php
+
+			$landing_page_content = locate_template(array(
+				'landing-page-content/' . get_post_field( 'post_name', null, 'raw' ) . '.php',
+				'landing-page-content/' . get_post_field( 'post_name', null, 'raw' ) . '.html'
+			) );
+
+			if ( $landing_page_content ) {
+				include( $landing_page_content );
+			} else {
+				the_content();
+			}
+
+			?>
 
 		</div>
 		
