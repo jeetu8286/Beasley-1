@@ -54,6 +54,11 @@
 
 .active_constraints li>div {
 	margin-bottom: -2em;
+	cursor: move;
+}
+
+.active_constraints li>div:hover {
+	cursor: move;
 }
 
 .active_constraints li:last-child .constraint-conjunction {
