@@ -348,7 +348,7 @@ category: Components
 	height: 58px;
 	padding: 12px 0;
 	margin-right: 5px;
-	@include transition(width 500ms ease-in-out);
+	@include transition(width 200ms ease-in-out 200ms);
 	@include bp(medium) {
 		position: relative;
 		right: auto;
@@ -361,7 +361,7 @@ category: Components
 	&.audio__playing {
 		width: 73px;
 		padding-bottom: 0;
-		@include transition(width 500ms ease-in-out);
+		@include transition(width 200ms ease-in-out 200ms);
 
 		@include bp(medium) {
 			width: 100%;
@@ -593,7 +593,7 @@ category: Components
 	@include transform(rotateX(180deg));
 	@include transform-style(preserve-3d);
 	@include transition(500ms);
-	@include transition-delay(1s);
+	@include transition-delay(200ms);
 
 	.live-stream__player.audio__playing & {
 		display: block;
@@ -615,6 +615,7 @@ category: Components
 		@include transform(rotateX(0deg));
 		@include transform-style(preserve-3d);
 		@include transition(200ms);
+		@include transition-delay(300ms);
 
 		&:before {
 			left: 50%;
@@ -642,7 +643,7 @@ category: Components
 	display: none;
 	visibility: hidden;
 	float: left;
-	@include transition(all 2s ease-in-out 500ms);
+	@include transition(all 500ms ease-in-out 500ms);
 
 	@include bp(medium) {
 		float: none;
@@ -652,7 +653,7 @@ category: Components
 		display: block;
 		visibility: visible;
 		float: left;
-		@include transition(all 2s ease-in-out 500ms);
+		@include transition(all 500ms ease-in-out 500ms);
 
 		@include bp(medium) {
 			float: none;

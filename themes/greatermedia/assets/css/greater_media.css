@@ -5044,7 +5044,10 @@ category: Components
     transform-style: preserve-3d;
     -webkit-transition: 200ms;
     -moz-transition: 200ms;
-    transition: 200ms; }
+    transition: 200ms;
+    -webkit-transition-delay: 1s;
+    -moz-transition-delay: 1s;
+    transition-delay: 1s; }
     .live-stream__btn--play.live-player__login:before {
       left: 50%;
       content: "\e626" !important; }
