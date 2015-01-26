@@ -293,7 +293,9 @@ class GMR_Show_Metaboxes {
 	public function render_social_pages_meta_box( $post ) {				
 		$facebook = get_post_meta( $post->ID, 'show/social_pages/facebook', true ); 
 		$twitter = get_post_meta( $post->ID, 'show/social_pages/twitter', true );
-		$google = get_post_meta( $post->ID, 'show/social_pages/google', true ); 
+		$instagram = get_post_meta( $post->ID, 'show/social_pages/instagram', true );
+		$google = get_post_meta( $post->ID, 'show/social_pages/google', true );
+		
 		?>
 		<table class="form-table">
 			<tr>
@@ -306,6 +308,12 @@ class GMR_Show_Metaboxes {
 				<td>
 					<input type="text" name="show/social_pages/twitter" class="widefat" value="<?php echo esc_attr( $twitter ); ?>">
 				</td>
+			</tr>
+				<td><label>Instagram URL</label></td>
+				<td>
+					<input type="text" name="show/social_pages/instagram" class="widefat" value="<?php echo esc_attr( $instagram ); ?>">
+				</td>
+			</tr>
 			</tr>
 				<td><label>Google+ URL</label></td>
 				<td>
@@ -378,9 +386,10 @@ class GMR_Show_Metaboxes {
 		
 		
 		// Save social pages
-		update_post_meta( $post_id, 'show/social_pages/facebook', sanitize_url( trim( $_POST['show/social_pages/facebook' ] ) ) );
-		update_post_meta( $post_id, 'show/social_pages/twitter', sanitize_url( trim( $_POST['show/social_pages/twitter' ] ) ) );
-		update_post_meta( $post_id, 'show/social_pages/google', sanitize_url( trim( $_POST['show/social_pages/google' ] ) ) );
+		update_post_meta( $post_id, 'show/social_pages/facebook', filter_input( INPUT_POST, 'show/social_pages/facebook', FILTER_SANITIZE_URL ) );
+		update_post_meta( $post_id, 'show/social_pages/twitter', filter_input( INPUT_POST, 'show/social_pages/twitter', FILTER_SANITIZE_URL ) );
+		update_post_meta( $post_id, 'show/social_pages/instagram', filter_input( INPUT_POST, 'show/social_pages/instagram', FILTER_SANITIZE_URL ) );
+		update_post_meta( $post_id, 'show/social_pages/google', filter_input( INPUT_POST, 'show/social_pages/google', FILTER_SANITIZE_URL ) );
 	}
 
 	/**
