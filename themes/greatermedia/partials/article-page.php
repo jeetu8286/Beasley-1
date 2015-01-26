@@ -22,9 +22,7 @@
 
 			<header class="article__header">
 				<h2 class="article__title" itemprop="headline"><?php the_title(); ?></h2>
-				<a class="icon-facebook social__link popup" href="http://www.facebook.com/sharer/sharer.php?u=<?php echo urlencode( get_permalink() ); ?>&title=<?php echo urlencode( get_the_title() ); ?>"></a>
-				<a class="icon-twitter social__link popup" href="http://twitter.com/home?status=<?php echo urlencode( get_the_title() ); ?>+<?php echo urlencode( get_permalink() ); ?>"></a>
-				<a class="icon-google-plus social__link popup" href="https://plus.google.com/share?url=<?php echo urlencode( get_permalink() ); ?>"></a>
+				<?php get_template_part( 'partials/social-share' ); ?>
 			</header>
 
 			<section class="article__content" itemprop="articleBody">
