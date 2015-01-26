@@ -94,7 +94,9 @@ class ListEntryFieldsAjaxHandler extends AjaxHandler {
 		foreach ( $form_choices as $index => $form_choice ) {
 			$choices[] = array(
 				'label' => $form_choice['label'],
-				'value' => $index,
+				// KLUDGE: The form entry is stored as the value not
+				// the selection index, so using the label as the value
+				'value' => $form_choice['label'],
 			);
 		}
 
