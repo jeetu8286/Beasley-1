@@ -62,7 +62,13 @@ class GreaterMediaSiteOptionsHelperFunctions {
 	}
 
 	public static function twitter_name() {
-		return get_option( 'gmr_twitter_name', '' );
+		$twitter = get_option( 'gmr_twitter_name', '' );
+		if ( filter_var( $twitter, FILTER_VALIDATE_URL ) ) {
+			$twitter = parse_url( $twitter, PHP_URL_PATH );
+			$twitter = ltrim( $twitter, '/' );
+		}
+
+		return $twitter;
 	}
 
 	public static function youtube_link() {
@@ -70,7 +76,13 @@ class GreaterMediaSiteOptionsHelperFunctions {
 	}
 
 	public static function instagram_name() {
-		return get_option( 'gmr_instagram_name', '' );
+		$instagram = get_option( 'gmr_instagram_name', '' );
+		if ( filter_var( $instagram, FILTER_VALIDATE_URL ) ) {
+			$instagram = parse_url( $instagram, PHP_URL_PATH );
+			$instagram = ltrim( $instagram, '/' );
+		}
+
+		return $instagram;
 	}
 
 	public static function social_links() {
@@ -81,20 +93,20 @@ class GreaterMediaSiteOptionsHelperFunctions {
 		$instagram = self::instagram_name();
 
 		echo '<ul class="social__list">';
-		if( $facebook ) {
+		if ( $facebook ) {
 			echo '<li><a class="social__link icon-facebook" target="_blank" href="' . esc_url( $facebook ) . '"></a></li>';
 		}
-		if( $twitter ) {
-			echo '<li><a class="social__link icon-twitter" target="_blank" href="https://twitter.com/' . esc_html( $twitter ) . '"></a></li>';
+		if ( $twitter ) {
+			echo '<li><a class="social__link icon-twitter" target="_blank" href="' . esc_url( "https://twitter.com/{$twitter}" ) . '"></a></li>';
 		}
-		if( $youtube ) {
+		if ( $youtube ) {
 			echo '<li><a class="social__link icon-youtube" target="_blank" href="' . esc_url( $youtube ) . '"></a></li>';
 		}
-		if( $instagram ) {
-			echo '<li><a class="social__link icon-instagram" target="_blank" href="http://instagram.com/' . esc_url( $instagram ) . '"></a></li>';
+		if ( $instagram ) {
+			echo '<li><a class="social__link icon-instagram" target="_blank" href="' . esc_url( "http://instagram.com/{$instagram}" ) . '"></a></li>';
 		}
 		echo '</ul>';
-
+		
 	}
 
 }
