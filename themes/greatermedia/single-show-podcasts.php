@@ -46,7 +46,12 @@
 						</article><?php
 
 					else :
-						echo GMP_Player::custom_pagination( $podcast_query );
+						greatermedia_load_more_button( array(
+							'page_link_template' => trailingslashit( get_permalink() ) . 'podcasts/page/%d/',
+							'partial_slug'       => 'partials/loop-gmr_podcast',
+							'auto_load'          => false,
+							'query'              => $podcast_query,
+						) );
 					endif;
 
 					?>
