@@ -456,7 +456,11 @@
 	function streamVastAd() {
 		var vastUrl = gmr.streamUrl;
 
+		detachAdListeners();
+		attachAdListeners();
+
 		player.stop();
+		player.skipAd();
 		player.playAd('vastAd', {url: vastUrl});
 	}
 
@@ -912,6 +916,22 @@
 		setStatus('Ready');
 	}
 
+	function adError(e) {
+		setStatus('Ready');
+
+		console.log('--- Error in the ad ---');
+		postVastAd();
+		var station = gmr.callsign;
+		if (livePlaying) {
+			player.stop();
+		}
+
+		livePlayer.classList.add('live-player--active');
+		player.play({station: station, timeShift: true});
+		setPlayingStyles();
+		setTimeout(replaceNPInfo, 2000);
+	}
+
 	function onAdCountdown(e) {
 		debug('Ad countdown : ' + e.data.countDown + ' second(s)');
 	}
@@ -1204,14 +1224,14 @@
 	function attachAdListeners() {
 		if (player.addEventListener){
 			player.addEventListener('ad-playback-start', onAdPlaybackStart);
-			player.addEventListener('ad-playback-error', onAdPlaybackComplete);
+			player.addEventListener('ad-playback-error', adError);
 			player.addEventListener('ad-playback-complete', onAdPlaybackComplete);
 			player.addEventListener('ad-countdown', onAdCountdown);
 			player.addEventListener('vast-process-complete', onVastProcessComplete);
 			player.addEventListener('vpaid-ad-companions', onVpaidAdCompanions);
 		} else if (player.attachEvent) {
 			player.attachEvent('ad-playback-start', onAdPlaybackStart);
-			player.attachEvent('ad-playback-error', onAdPlaybackComplete);
+			player.attachEvent('ad-playback-error', adError);
 			player.attachEvent('ad-playback-complete', onAdPlaybackComplete);
 			player.attachEvent('ad-countdown', onAdCountdown);
 			player.attachEvent('vast-process-complete', onVastProcessComplete);
@@ -1222,14 +1242,14 @@
 	function detachAdListeners() {
 		if (player.removeEventListener){
 			player.removeEventListener('ad-playback-start', onAdPlaybackStart);
-			player.removeEventListener('ad-playback-error', onAdPlaybackComplete);
+			player.removeEventListener('ad-playback-error', adError);
 			player.removeEventListener('ad-playback-complete', onAdPlaybackComplete);
 			player.removeEventListener('ad-countdown', onAdCountdown);
 			player.removeEventListener('vast-process-complete', onVastProcessComplete);
 			player.removeEventListener('vpaid-ad-companions', onVpaidAdCompanions);
 		} else if (player.detachEvent) {
 			player.detachEvent('ad-playback-start', onAdPlaybackStart);
-			player.detachEvent('ad-playback-error', onAdPlaybackComplete);
+			player.detachEvent('ad-playback-error', adError);
 			player.detachEvent('ad-playback-complete', onAdPlaybackComplete);
 			player.detachEvent('ad-countdown', onAdCountdown);
 			player.detachEvent('vast-process-complete', onVastProcessComplete);
