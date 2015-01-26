@@ -102,7 +102,6 @@ Media Queries
  */
 .gmp-meta-row {
   width: 100%;
-  padding: 1em 0;
   overflow: auto;
   border-bottom: 1px solid #f5f5f5; }
   .gmp-meta-row:last-of-type {
