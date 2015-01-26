@@ -179,7 +179,9 @@ class GMR_Show_Metaboxes {
 		echo '<img src="', esc_attr( $image ), '" class="meta_box_preview_image">';
 		echo '<div style="text-align:center">';
 			echo '<a href="#" class="meta_box_upload_image_button button button-primary" rel="', $post->ID, '">Choose Image</a> ';
-			echo '<a href="#" class="meta_box_clear_image_button button">Remove Image</a>';
+			if ( $image_id ) {
+				echo '<a href="#" class="meta_box_clear_image_button button">Remove Image</a>'; 
+			}
 		echo '</div>';
 	}
 
