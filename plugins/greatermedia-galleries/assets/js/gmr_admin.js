@@ -11,7 +11,11 @@
 					containment: 'parent',
 					cursor: 'move',
 					distance: 20,
-					placeholder: 'gallery-item gallery-item-placeholder'
+					placeholder: 'gallery-item gallery-item-placeholder',
+					stop: function() {
+						var editor = typeof tinymce !== 'undefined' && tinymce.get('content');
+						editor.isNotDirty = false;
+					}
 				})
 				.disableSelection();
 		}
@@ -47,11 +51,18 @@
 		});
 
 		$add_button.click(function() {
+			var editor = typeof tinymce !== 'undefined' && tinymce.get('content');
+
+			editor.isNotDirty = false;
 			uploader.open();
+			
 			return false;
 		});
 
 		$(document).on('click', '.remove-gallery-item', function() {
+			var editor = typeof tinymce !== 'undefined' && tinymce.get('content');
+			
+			editor.isNotDirty = false;
 			$(this).parent().remove();
 		});
 	});

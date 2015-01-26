@@ -49,7 +49,8 @@ module.exports = function (grunt) {
 					console: false,
 					wp: false,
 					ga: false,
-					_gaq: false
+					_gaq: false,
+					tinymce: false
 				}
 			}
 		},
