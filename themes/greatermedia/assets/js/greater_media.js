@@ -114,6 +114,7 @@
 	$(document).ready(function() {
 		var $onair = $('#on-air'),
 			schedule = [],
+			fallback = '',
 			current_show = {},
 			track_schedule, update_onair;
 
@@ -122,12 +123,14 @@
 		}
 
 		update_onair = function(title, show) {
-			$onair.html('<div class="on-air__title">' + title + ':</div><div class="on-air__show">' + show + '</div>');
+			$onair.find('.on-air__title').text(title);
+			$onair.find('.on-air__show').text(show);
 		};
 
 		track_schedule = function() {
 			var now = new Date(),
 				next = new Date(now.getTime() + 10 * 60 * 1000), // 10 minutes later
+				found = false,
 				starts, ends;
 
 			for (var i = 0; i < schedule.length; i++) {
@@ -136,18 +139,27 @@
 				
 				if (starts <= now && now <= ends) {
 					current_show = schedule[i];
-					update_onair('On Air', schedule[i].title);
+					update_onair('On Air:', schedule[i].title);
+					found = true;
 				}
 
 				if (starts <= next && next <= ends && schedule[i].title != current_show.title) {
-					update_onair('Up Next', schedule[i].title);
+					update_onair('Up Next:', schedule[i].title);
+					found = true;
 				}
+			}
+
+			if (!found) {
+				update_onair('', fallback);
 			}
 		};
 		
 		$.get($onair.data('endpoint'), function(response) {
-			if (response.success && $.isArray(response.data)) {
-				schedule = response.data;
+			if (response.success && response.data) {
+				fallback = response.data.tagline || '';
+				if ($.isArray(schedule)) {
+					schedule = response.data.schedule;
+				}
 				
 				track_schedule();
 				setInterval(track_schedule, 1000);
@@ -430,13 +442,15 @@
 		livePlayerCurrentName = livePlayerStreamSelect.querySelector('.live-player__stream--current-name'),
 		livePlayerStreams = livePlayerStreamSelect.querySelectorAll('.live-player__stream--item'),
 		wpAdminHeight = 32,
-		onAir = document.getElementById('on-air'),
-		upNext = document.getElementById('up-next'),
-		nowPlaying = document.getElementById('nowPlaying'),
-		liveLinks = document.getElementById('live-links'),
-		liveLink = document.querySelector('.live-link__title'),
-		liveLinksWidget = document.querySelector('.widget--live-player'),
-		liveStream = document.getElementById('live-player'),
+		onAir = document.getElementById( 'on-air' ),
+		upNext = document.getElementById( 'up-next'),
+		nowPlaying = document.getElementById( 'nowPlaying' ),
+		liveLinks = document.getElementById( 'live-links' ),
+		liveLink = document.querySelector( '.live-link__title'),
+		liveLinksWidget = document.querySelector( '.widget--live-player' ),
+		liveLinksWidgetTitle = document.querySelector('.widget--live-player__title'),
+		liveLinksWidgetContent = liveLinksWidget.innerHTML,
+		liveStream = document.getElementById( 'live-player' ),
 		windowWidth = this.innerWidth || this.document.documentElement.clientWidth || this.document.body.clientWidth || 0,
 		scrollObject = {},
 		collapseToggle = document.querySelector('*[data-toggle="collapse"]'),
@@ -524,10 +538,12 @@
 			livePlayer.style.top = wpAdminHeight + elemHeight(header) + 'px';
 			livePlayer.style.height = windowHeight(window) - wpAdminHeight - elemHeight(header) + 'px';
 			liveLinks.style.height = windowHeight(window) - wpAdminHeight - elemHeight(header) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) + 'px';
+			liveLinksWidget.style.maxHeight = windowHeight(window) - wpAdminHeight - elemHeight(header) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - elemHeight(liveLinksWidgetTitle) - elemHeight(nowPlaying) + 'px';
 		} else {
 			livePlayer.style.top = elemHeight(header) + 'px';
 			livePlayer.style.height = windowHeight(window) - elemHeight(header) + 'px';
 			liveLinks.style.height = windowHeight(window) - elemHeight(header) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) + 'px';
+			liveLinksWidget.style.maxHeight = windowHeight(window) - elemHeight(header) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - elemHeight(liveLinksWidgetTitle) - elemHeight(nowPlaying) + 'px';
 		}
 		livePlayer.classList.remove('live-player--fixed');
 		livePlayer.classList.add('live-player--init');
@@ -541,10 +557,12 @@
 			livePlayer.style.top = wpAdminHeight + elemHeight(header) + 'px';
 			livePlayer.style.height = windowHeight(window) - wpAdminHeight + 'px';
 			liveLinks.style.height = windowHeight(window) - elemTopOffset(header) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) + 'px';
+			liveLinksWidget.style.maxHeight = windowHeight(window) - elemTopOffset(header) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - elemHeight(liveLinksWidgetTitle) - elemHeight(nowPlaying) + 'px';
 		} else {
 			livePlayer.style.top = elemHeight(header) + 'px';
 			livePlayer.style.height = windowHeight(window) - wpAdminHeight - elemHeight(header) + 'px';
 			liveLinks.style.height = windowHeight(window) - elemHeightOffset(header) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) + 'px';
+			liveLinksWidget.style.maxHeight = windowHeight(window) - elemHeightOffset(header) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - elemHeight(liveLinksWidgetTitle) - elemHeight(nowPlaying) + 'px';
 		}
 		livePlayer.classList.remove('live-player--fixed');
 		livePlayer.classList.add('live-player--init');
@@ -558,10 +576,12 @@
 			livePlayer.style.top = wpAdminHeight + 'px';
 			livePlayer.style.height = windowHeight(window) - wpAdminHeight + 'px';
 			liveLinks.style.height = windowHeight(window) - wpAdminHeight - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) + 'px';
+			liveLinksWidget.style.maxHeight = windowHeight(window) - wpAdminHeight - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - elemHeight(liveLinksWidgetTitle) - elemHeight(nowPlaying) + 'px';
 		} else {
 			livePlayer.style.top = '0px';
 			livePlayer.style.height = windowHeight(window) + 'px';
 			liveLinks.style.height = windowHeight(window) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) + 'px';
+			liveLinksWidget.style.maxHeight = windowHeight(window) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - elemHeight(liveLinksWidgetTitle) - elemHeight(nowPlaying) + 'px';
 		}
 		livePlayer.classList.remove('live-player--init');
 		livePlayer.classList.add('live-player--fixed');
@@ -603,16 +623,6 @@
 			} else {
 				lpPosDefault();
 			}
-		}
-	}
-
-	/**
-	 * detects the height of the live links widget if the browser window is 768px wide or more, then adds a height to
-	 * the live links
-	 */
-	function liveLinksAddHeight() {
-		if (window.innerWidth >= 768) {
-			liveLinksWidget.style.height = elemHeight(liveLinksWidget) + 'px';
 		}
 	}
 
@@ -803,7 +813,6 @@
 					scrollDebounce();
 					scrollThrottle();
 				});
-				liveLinksAddHeight();
 			}
 		}
 	}
@@ -822,9 +831,6 @@
 	if (window.innerWidth >= 768) {
 		addEventHandler(window, elemLoad, function () {
 			lpPosBase();
-			if (liveLinksWidget != null) {
-				liveLinksAddHeight();
-			}
 		});
 		addEventHandler(window, elemScroll, function () {
 			scrollDebounce();
@@ -848,7 +854,6 @@
 		addEventHandler(liveLinksWidget, elemClick, liveLinksClose);
 	}
 	if (playBtn != null || resumeBtn != null) {
-		addEventHandler(playBtn, elemClick, playerActive);
 		addEventHandler(resumeBtn, elemClick, playerActive);
 	}
 	if (pauseBtn != null) {

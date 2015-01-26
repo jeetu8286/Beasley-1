@@ -348,7 +348,7 @@ category: Components
 	height: 58px;
 	padding: 12px 0;
 	margin-right: 5px;
-	@include transition(width 500ms ease-in-out);
+	@include transition(width 200ms ease-in-out 200ms);
 	@include bp(medium) {
 		position: relative;
 		right: auto;
@@ -361,7 +361,7 @@ category: Components
 	&.audio__playing {
 		width: 73px;
 		padding-bottom: 0;
-		@include transition(width 500ms ease-in-out);
+		@include transition(width 200ms ease-in-out 200ms);
 
 		@include bp(medium) {
 			width: 100%;
@@ -568,7 +568,7 @@ category: Components
 .live-stream__btn--play:before, .live-stream__btn--resume:before {
 	position: absolute;
 	top: 50%;
-	left: 55%;
+	left: 54%;
 	@include transform(translate(-50%, -50%));
 	font-family: $icon-font !important;
 	font-size: ms(2);
@@ -593,7 +593,7 @@ category: Components
 	@include transform(rotateX(180deg));
 	@include transform-style(preserve-3d);
 	@include transition(500ms);
-	@include transition-delay(1s);
+	@include transition-delay(200ms);
 
 	.live-stream__player.audio__playing & {
 		display: block;
@@ -615,6 +615,7 @@ category: Components
 		@include transform(rotateX(0deg));
 		@include transform-style(preserve-3d);
 		@include transition(200ms);
+		@include transition-delay(300ms);
 
 		&:before {
 			left: 50%;
@@ -642,7 +643,7 @@ category: Components
 	display: none;
 	visibility: hidden;
 	float: left;
-	@include transition(all 2s ease-in-out 500ms);
+	@include transition(all 500ms ease-in-out 500ms);
 
 	@include bp(medium) {
 		float: none;
@@ -652,7 +653,7 @@ category: Components
 		display: block;
 		visibility: visible;
 		float: left;
-		@include transition(all 2s ease-in-out 500ms);
+		@include transition(all 500ms ease-in-out 500ms);
 
 		@include bp(medium) {
 			float: none;
@@ -675,7 +676,7 @@ category: Components
 
 .live-stream__btn--resume {
 
-	&.resume__audio {
+	&.resume__audio, &.resume__live {
 		display: block;
 		position: absolute;
 		left: 0;
@@ -1114,11 +1115,7 @@ category: Components
 		visibility: visible;
 		display: block;
 		height: 100%;
-		padding-right: 1em;
-		padding-left: 1em;
 		margin: 0;
-		overflow: hidden;
-		overflow-y: scroll;
 		border-top: 1px solid $secondary-border;
 	}
 }
@@ -1146,13 +1143,14 @@ category: Components
 	color: $color-text-red;
 
 	&:hover {
-		color: $color-text-black;
+		color: $primary-link-hover;
 	}
 }
 
-.live-link__type--audio, .live-link__type--gallery, .live-link__type--image, .live-link__type--link, .live-link__type--standard, .live-link__type--video {
+.live-link__type--audio, .live-link__type--gallery, .live-link__type--image, .live-link__type--link, .live-link__type--standard, .live-link__type--video, .live-link__song {
 	display: block;
 	position: relative;
+	padding: 13px 25px;
 }
 
 .live-link__song {
@@ -1166,8 +1164,17 @@ category: Components
 	color: $secondary-link;
 }
 
-.live-link__song:hover:before {
-	color: $primary-link;
+.live-link__song:hover {
+
+	color: $primary-link-hover;
+
+	&:before {
+		color: $primary-link-hover;
+	}
+
+	.live-link__song--title {
+		color: $primary-link-hover;
+	}
 }
 
 .live-link__song--artist {
@@ -1181,10 +1188,6 @@ category: Components
 	font-size: em(13px);
 	font-weight: bold;
 	color: $secondary-link;
-
-	a:hover, a:focus, a:active {
-		color: $color-text-red;
-	}
 }
 
 .live-link__type--audio:before {
@@ -1218,9 +1221,9 @@ category: Components
 }
 
 .live-link__type--show {
-	border-top: 1px solid #282827;
-	margin-left: -30px;
-	margin-right: -30px;
+	padding-top: 16px;
+	padding-bottom: 16px;
+	border-bottom: 1px solid #282827;
 	background: -webkit-linear-gradient(rgba(50, 48, 48, 0.35), rgb(0, 0, 0)); /* For Safari 5.1 to 6.0 */
 	background: -o-linear-gradient(rgba(50, 48, 48, 0.35), rgb(0, 0, 0)); /* For Opera 11.1 to 12.0 */
 	background: -moz-linear-gradient(rgba(50, 48, 48, 0.35), rgb(0, 0, 0)); /* For Firefox 3.6 to 15 */
@@ -1243,6 +1246,10 @@ category: Components
 			font-size: ms(-1);
 		}
 	}
+
+	.live-link__type--show & {
+		padding-top: 0;
+	}
 }
 
 .live-link__title a:link, .live-link__title a:visited {
@@ -1250,7 +1257,7 @@ category: Components
 }
 
 .live-link__title a:hover, .live-link__title a:focus, .live-link__title a:active {
-	color: $primary-link;
+	color: $primary-link-hover;
 }
 
 .audio__time {

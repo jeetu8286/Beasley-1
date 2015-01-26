@@ -33,6 +33,7 @@ var FavoriteConstraintView = ConstraintView.extend({
 		};
 
 		constraint.set(changes);
+		this.renderConjunctionGuide();
 	},
 
 
