@@ -13,7 +13,8 @@ class GreaterMediaLoginRestrictedContent extends VisualShortcode {
 			'GreaterMediaLoginRestrictedContentAdmin',
 			'dashicons-admin-network',
 			null,
-			__( 'Login Restriction', 'login-restricted-content' )
+			__( 'Login Restriction', 'login-restricted-content' ),
+			13
 		);
 
 		add_action( 'post_submitbox_misc_actions', array( $this, 'post_submitbox_misc_actions' ), 30, 0 );
