@@ -1565,12 +1565,18 @@
 
 		for (i = 0; i < timeleft.length; ++i) {
 			s = timeLeft % 60;
+			if (isNaN(s)) {
+				s = '00';
+			} else {
+				s = s < 10 ? "0" + s : s;
+			}
+
 			m = Math.floor( timeLeft / 60 ) % 60;
+			if (isNaN(m)) {
+				m = '0';
+			}
 
-			s = s < 10 ? "0"+s : s;
-			m = m < 10 ? +m : m;
-
-			timeleft[i].innerHTML = m+":"+s;
+			timeleft[i].innerHTML = m + ":" + s;
 		}
 	}
 
