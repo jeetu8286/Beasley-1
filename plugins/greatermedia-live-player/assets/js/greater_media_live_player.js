@@ -14,6 +14,7 @@
 		resumeButton = $('#resumeButton'),
 		podcastPlay = $('.podcast__btn--play'),
 		listenNow = $('#live-stream__listen-now'),
+		listenLogin = $('#live-stream__login'),
 		accountLogin = $('.header__account--btn');
 	/**
 	 * global variables for event types to use in conjunction with `addEventHandler` function
@@ -114,6 +115,13 @@
 	});
 
 	playButton.on( 'click', function() {
+		if( !is_gigya_user_logged_in() ) {
+			Cookies.set('gmlp_play_button_pushed', 1);
+			Cookies.set('gmr_play_live_audio', 0);
+		}
+	});
+
+	listenLogin.on( 'click', function() {
 		if( !is_gigya_user_logged_in() ) {
 			Cookies.set('gmlp_play_button_pushed', 1);
 			Cookies.set('gmr_play_live_audio', 0);
