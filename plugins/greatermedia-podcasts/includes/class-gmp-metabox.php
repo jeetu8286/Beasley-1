@@ -275,7 +275,7 @@ class GMP_Meta {
 //		wp_enqueue_media();
 //		wp_enqueue_script( 'gmp-admin-js', GMPODCASTS_URL . "/assets/js/gmp_admin{$postfix}.js", array( 'jquery' ), GMPODCASTS_VERSION, true );
 
-		if ( in_array( $pagenow, array( 'post.php', 'post-new.php' ) ) && GMP_CPT::EPISODE_POST_TYPE == $typenow ) {
+		if ( in_array( $pagenow, array( 'post.php', 'post-new.php' ) ) && ( GMP_CPT::EPISODE_POST_TYPE == $typenow || GMP_CPT::PODCAST_POST_TYPE == $typenow ) ) {
 			wp_enqueue_style( 'gmp-admin-style', GMPODCASTS_URL . "/assets/css/gmp_admin{$postfix}.css", null, GMPODCASTS_VERSION );
 			wp_enqueue_script( 'gmp-admin-episode-js', GMPODCASTS_URL . "/assets/js/gmp_admin_episode{$postfix}.js", array( 'jquery' ), GMPODCASTS_VERSION, true );
 		}
