@@ -2062,6 +2062,7 @@ Curated posts for Featured Articles
   height: 100%;
   background-size: 100%;
   background-size: cover;
+  background-repeat: no-repeat;
   background-position: center center; }
   .featured__content--image:last-child {
     margin-right: 0; }
@@ -2872,9 +2873,12 @@ Community Highlights and Events
 
 .footer {
   width: 100%;
-  margin: 0 auto;
+  margin: 0 auto 58px;
   overflow: auto;
   background-color: #000000; }
+  @media screen and (min-width: 768px) {
+    .footer {
+      margin-bottom: 0; } }
 
 .footer a:link, .footer a:visited {
   color: #929497; }
@@ -2894,7 +2898,8 @@ Community Highlights and Events
   padding: 40px 5.5%;
   background-color: #ffffff;
   border-top: 1px solid #d0d2d3;
-  color: #929497; }
+  color: #929497;
+  text-align: center; }
   .footer__content:last-child {
     margin-right: 0; }
   @media screen and (min-width: 480px) {
@@ -2910,7 +2915,8 @@ Community Highlights and Events
       float: left;
       display: block;
       margin-right: 3.57866%;
-      width: 100%; }
+      width: 100%;
+      text-align: initial; }
       .footer__content:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 1024px) {
@@ -2963,6 +2969,9 @@ Community Highlights and Events
   .footer__copyright--logo a:active {
     color: #d22228; }
 
+@media screen and (min-width: 768px) {
+  .footer__menu {
+    padding: 26px 0 13px; } }
 @media screen and (min-width: 1024px) {
   .footer__menu {
     float: left;
@@ -2972,20 +2981,32 @@ Community Highlights and Events
     .footer__menu:last-child {
       margin-right: 0; } }
 
-.footer__nav {
-  float: right; }
+@media screen and (min-width: 768px) {
+  .footer__nav {
+    float: right;
+    padding-top: 24px; } }
 
 .footer__nav--list {
   padding: 13px 0;
   font-size: 0.70233em; }
+  @media screen and (min-width: 768px) {
+    .footer__nav--list {
+      padding: 0; } }
 
 .footer__nav--list .menu-item {
   display: inline-block;
   margin-right: 2.5em; }
 
-.footer__menu .social__list {
-  float: right;
-  padding: 4px 0 7px; }
+.footer__nav--list .menu-item:last-of-type {
+  margin-right: 0; }
+  @media screen and (min-width: 768px) {
+    .footer__nav--list .menu-item:last-of-type {
+      margin-right: 2.5em; } }
+
+@media screen and (min-width: 768px) {
+  .footer__menu .social__list {
+    float: right;
+    padding: 0; } }
 
 .footer__menu a.social__link {
   border-color: #929497;
@@ -2995,6 +3016,12 @@ Community Highlights and Events
   .footer__menu a.social__link:hover {
     border-color: #d22228;
     color: #d22228; }
+
+.footer__menu li:first-of-type a.social__link {
+  margin-left: 0; }
+  @media screen and (min-width: 768px) {
+    .footer__menu li:first-of-type a.social__link {
+      margin-left: 6px; } }
 
 /*doc
 ---
@@ -3894,7 +3921,8 @@ Link posts contain a link to an external site. They can also optionally have a f
   position: relative;
   background-size: 100%;
   background-size: cover;
-  background-position: center center; }
+  background-position: center center;
+  background-repeat: no-repeat; }
   @media screen and (min-width: 480px) {
     .entry2__thumbnail {
       float: left;
@@ -4170,7 +4198,8 @@ Link posts contain a link to an external site. They can also optionally have a f
   position: relative;
   background-position: center center;
   background-size: 100%;
-  background-size: cover; }
+  background-size: cover;
+  background-repeat: no-repeat; }
   .article__thumbnail:after {
     content: '';
     display: block;
@@ -4706,9 +4735,9 @@ category: Components
   height: 58px;
   padding: 12px 0;
   margin-right: 5px;
-  -webkit-transition: width 500ms ease-in-out;
-  -moz-transition: width 500ms ease-in-out;
-  transition: width 500ms ease-in-out; }
+  -webkit-transition: width 200ms ease-in-out 200ms;
+  -moz-transition: width 200ms ease-in-out 200ms;
+  transition: width 200ms ease-in-out 200ms; }
   @media screen and (min-width: 768px) {
     .live-stream__player {
       position: relative;
@@ -4720,9 +4749,9 @@ category: Components
   .live-stream__player.audio__playing {
     width: 73px;
     padding-bottom: 0;
-    -webkit-transition: width 500ms ease-in-out;
-    -moz-transition: width 500ms ease-in-out;
-    transition: width 500ms ease-in-out; }
+    -webkit-transition: width 200ms ease-in-out 200ms;
+    -moz-transition: width 200ms ease-in-out 200ms;
+    transition: width 200ms ease-in-out 200ms; }
     @media screen and (min-width: 768px) {
       .live-stream__player.audio__playing {
         width: 100%;
@@ -4977,7 +5006,7 @@ category: Components
 .live-stream__btn--play:before, .live-stream__btn--resume:before {
   position: absolute;
   top: 50%;
-  left: 55%;
+  left: 54%;
   -webkit-transform: translate(-50%, -50%);
   -moz-transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
@@ -5016,9 +5045,9 @@ category: Components
   -webkit-transition: 500ms;
   -moz-transition: 500ms;
   transition: 500ms;
-  -webkit-transition-delay: 1s;
-  -moz-transition-delay: 1s;
-  transition-delay: 1s; }
+  -webkit-transition-delay: 200ms;
+  -moz-transition-delay: 200ms;
+  transition-delay: 200ms; }
   .live-stream__player.audio__playing .live-stream__btn--play {
     display: block;
     position: absolute;
@@ -5044,7 +5073,10 @@ category: Components
     transform-style: preserve-3d;
     -webkit-transition: 200ms;
     -moz-transition: 200ms;
-    transition: 200ms; }
+    transition: 200ms;
+    -webkit-transition-delay: 300ms;
+    -moz-transition-delay: 300ms;
+    transition-delay: 300ms; }
     .live-stream__btn--play.live-player__login:before {
       left: 50%;
       content: "\e626" !important; }
@@ -5062,9 +5094,9 @@ category: Components
   display: none;
   visibility: hidden;
   float: left;
-  -webkit-transition: all 2s ease-in-out 500ms;
-  -moz-transition: all 2s ease-in-out 500ms;
-  transition: all 2s ease-in-out 500ms; }
+  -webkit-transition: all 500ms ease-in-out 500ms;
+  -moz-transition: all 500ms ease-in-out 500ms;
+  transition: all 500ms ease-in-out 500ms; }
   @media screen and (min-width: 768px) {
     .live-stream__btn--pause {
       float: none; } }
@@ -5072,9 +5104,9 @@ category: Components
     display: block;
     visibility: visible;
     float: left;
-    -webkit-transition: all 2s ease-in-out 500ms;
-    -moz-transition: all 2s ease-in-out 500ms;
-    transition: all 2s ease-in-out 500ms; }
+    -webkit-transition: all 500ms ease-in-out 500ms;
+    -moz-transition: all 500ms ease-in-out 500ms;
+    transition: all 500ms ease-in-out 500ms; }
     @media screen and (min-width: 768px) {
       .live-stream__player.audio__playing .live-stream__btn--pause {
         float: none; } }
@@ -5086,12 +5118,12 @@ category: Components
   .live-stream__btn--pause.live-player__muted {
     display: none; }
 
-.live-stream__btn--resume.resume__audio {
+.live-stream__btn--resume.resume__audio, .live-stream__btn--resume.resume__live {
   display: block;
   position: absolute;
   left: 0; }
   @media screen and (min-width: 768px) {
-    .live-stream__btn--resume.resume__audio {
+    .live-stream__btn--resume.resume__audio, .live-stream__btn--resume.resume__live {
       position: relative;
       left: auto; } }
 .live-stream__btn--resume.live-player__muted {
@@ -5480,11 +5512,7 @@ category: Components
       visibility: visible;
       display: block;
       height: 100%;
-      padding-right: 1em;
-      padding-left: 1em;
       margin: 0;
-      overflow: hidden;
-      overflow-y: scroll;
       border-top: 1px solid #282827; } }
 
 .live-player--open .live-links {
@@ -5507,11 +5535,12 @@ category: Components
   height: 0;
   color: #d22228; }
   .live-link__song:hover:before, .live-link__type--audio:hover:before, .live-link__type--gallery:hover:before, .live-link__type--image:hover:before, .live-link__type--link:hover:before, .live-link__type--standard:hover:before, .live-link__type--video:hover:before {
-    color: #000000; }
+    color: #aa1c20; }
 
-.live-link__type--audio, .live-link__type--gallery, .live-link__type--image, .live-link__type--link, .live-link__type--standard, .live-link__type--video {
+.live-link__type--audio, .live-link__type--gallery, .live-link__type--image, .live-link__type--link, .live-link__type--standard, .live-link__type--video, .live-link__song {
   display: block;
-  position: relative; }
+  position: relative;
+  padding: 13px 25px; }
 
 .live-link__song {
   display: block;
@@ -5521,8 +5550,12 @@ category: Components
   content: "\e604";
   color: #d0d2d3; }
 
-.live-link__song:hover:before {
-  color: #d22228; }
+.live-link__song:hover {
+  color: #aa1c20; }
+  .live-link__song:hover:before {
+    color: #aa1c20; }
+  .live-link__song:hover .live-link__song--title {
+    color: #aa1c20; }
 
 .live-link__song--artist {
   padding-top: 6px;
@@ -5534,8 +5567,6 @@ category: Components
   font-size: 0.8125em;
   font-weight: bold;
   color: #d0d2d3; }
-  .live-link__song--title a:hover, .live-link__song--title a:focus, .live-link__song--title a:active {
-    color: #d22228; }
 
 .live-link__type--audio:before {
   content: "\e60c"; }
@@ -5556,9 +5587,9 @@ category: Components
   content: "\e605"; }
 
 .live-link__type--show {
-  border-top: 1px solid #282827;
-  margin-left: -30px;
-  margin-right: -30px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #282827;
   background: -webkit-linear-gradient(rgba(50, 48, 48, 0.35), black);
   /* For Safari 5.1 to 6.0 */
   background: -o-linear-gradient(rgba(50, 48, 48, 0.35), black);
@@ -5581,12 +5612,14 @@ category: Components
     @media screen and (min-width: 1024px) {
       .content .live-link__title {
         font-size: 0.88889em; } }
+  .live-link__type--show .live-link__title {
+    padding-top: 0; }
 
 .live-link__title a:link, .live-link__title a:visited {
   color: #d0d2d3; }
 
 .live-link__title a:hover, .live-link__title a:focus, .live-link__title a:active {
-  color: #d22228; }
+  color: #aa1c20; }
 
 .audio__time {
   display: none;
@@ -5901,7 +5934,8 @@ category: Components - Ads
   position: relative;
   background-position: center center;
   background-size: 100%;
-  background-size: cover; }
+  background-size: cover;
+  background-repeat: no-repeat; }
   .contest__thumbnail:after {
     content: '';
     display: block;
@@ -7107,7 +7141,7 @@ category: Components - Shows
   font-size: 1.80203em; }
 
 .podcast__btn--play:before {
-  left: 55%; }
+  left: 54%; }
 
 .podcast__btn--play:before {
   content: "\e606" !important; }
@@ -8275,7 +8309,11 @@ category: Components - Shows
   margin: 0 -1px; }
 
 .widget--live-player {
-  margin: 0 1em 1em; }
+  padding: 0;
+  margin: 0 0 1em;
+  height: 100% !important;
+  overflow: hidden;
+  overflow-y: scroll; }
   .live-player--open .widget--live-player {
     margin-bottom: 58px; }
 
@@ -8297,7 +8335,7 @@ category: Components - Shows
   list-style: none;
   display: block;
   padding: 0;
-  margin: 0 0 26px;
+  margin: 0;
   line-height: 1; }
 
 /*doc
@@ -8397,7 +8435,8 @@ a.social-share-link {
   position: relative;
   background-position: center center;
   background-size: 100%;
-  background-size: cover; }
+  background-size: cover;
+  background-repeat: no-repeat; }
   .article__thumbnail:after {
     content: '';
     display: block;
@@ -9886,7 +9925,9 @@ category: Components - Gallery Archive
       position: absolute;
       left: 0;
       top: 0; }
-  .gallery__feature:hover h3 {
+  .gallery__feature .gallery__featured--title {
+    color: #404041; }
+  .gallery__feature:hover .gallery__featured--title {
     color: #aa1c20; }
   @media screen and (min-width: 1024px) {
     .gallery__feature {
@@ -10526,7 +10567,8 @@ select {
       min-height: 800px; } }
   .profile-page .profile-page__sidebar,
   .profile-page .profile-page__content {
-    padding: 1em 7.0833333333335%; }
+    padding: 1em 7.0833333333335%;
+    background-color: #ffffff; }
     @media screen and (min-width: 1024px) {
       .profile-page .profile-page__sidebar,
       .profile-page .profile-page__content {
@@ -10537,7 +10579,7 @@ select {
   .profile-page .profile-page__sidebar {
     background-color: #561015;
     color: #ffffff;
-    background: url("../../images/profile_bg.jpg");
+    background-image: url("../../images/profile_bg.jpg");
     text-align: center; }
     @media screen and (min-width: 320px) {
       .profile-page .profile-page__sidebar {
@@ -12058,7 +12100,8 @@ category: Components - Article
   position: relative;
   background-position: center center;
   background-size: 100%;
-  background-size: cover; }
+  background-size: cover;
+  background-repeat: no-repeat; }
   .error__background:after {
     content: '';
     display: block;

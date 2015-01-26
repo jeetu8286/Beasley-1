@@ -27,7 +27,7 @@ jQuery( function ( $ ) {
 	};
 
 	Keyword_Search.prototype.normalize_search_term = function ( search_term ) {
-		return search_term.trim().toLowerCase().replace( /[^a-z0-9]+/g, '' );
+		return $.trim( search_term ).toLowerCase().replace( /[^a-z0-9]+/g, '' );
 	};
 
 	function Arrow_Key_Navigator( $items, $context, position_change_callback, cancel_callback ) {
