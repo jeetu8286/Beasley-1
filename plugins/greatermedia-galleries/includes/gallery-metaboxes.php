@@ -100,11 +100,10 @@ class GreaterMediaGalleryMetaboxes {
 
 		delete_post_meta( $post_id, 'gallery-image' );
 		if ( ! empty( $_POST['gmr-gallery-items'] ) ) {
-			foreach ( $_POST['gmr-gallery-items'] as $id => $title ) {
+			foreach ( $_POST['gmr-gallery-items'] as $id ) {
 				$attachment = wp_get_attachment_image_src( $id, 'medium' );
 				if ( ! empty( $attachment ) ) {
-					$title = strip_tags( urldecode( $title ) );
-					add_post_meta( $post_id, 'gallery-image', "{$id}:{$title}" );
+					add_post_meta( $post_id, 'gallery-image', $id );
 				}
 			}
 		}
@@ -158,14 +157,11 @@ class GreaterMediaGalleryMetaboxes {
 		}
 
 		$images = array();
-		foreach ( get_post_meta( $post->ID, 'gallery-image' ) as $image ) {
-			list( $attachment_id, $attachment_title ) = explode( ':', $image, 2 );
-			
+		foreach ( get_post_meta( $post->ID, 'gallery-image' ) as $attachment_id ) {
 			$attachment = wp_get_attachment_image_src( $attachment_id, 'medium' );
 			if ( ! empty( $attachment ) ) {
 				$images[] = array(
 					'id'    => $attachment_id,
-					'title' => $attachment_title,
 					'image' => $attachment[0],
 				);
 			}
@@ -174,7 +170,7 @@ class GreaterMediaGalleryMetaboxes {
 		?><div id="gallery-builder">
 			<script id="gallery-item-tmpl" type="text/html">
 				<li class="gallery-item gallery-image" style="background-image:url(%image%)">
-					<input type="hidden" name="gmr-gallery-items[%id%]" value="%title%">
+					<input type="hidden" name="gmr-gallery-items[]" value="%id%">
 					<a class="remove-gallery-item" href="#">
 						<span class="dashicons dashicons-trash"></span>
 					</a>
@@ -184,7 +180,7 @@ class GreaterMediaGalleryMetaboxes {
 			<ul class="gallery-preview">
 				<?php foreach ( $images as $image ) : ?>
 					<li class="gallery-item gallery-image" style="background-image:url(<?php echo esc_url( $image['image'] ); ?>)">
-						<input type="hidden" name="gmr-gallery-items[<?php echo esc_attr( $image['id'] ); ?>]" value="<?php echo esc_attr( $image['title'] ); ?>">
+						<input type="hidden" name="gmr-gallery-items[]" value="<?php echo esc_attr( $image['id'] ); ?>">
 						<a class="remove-gallery-item" href="#">
 							<span class="dashicons dashicons-trash"></span>
 						</a>

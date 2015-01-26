@@ -35,12 +35,10 @@
 					var attributes = attachment.attributes,
 						sizes = attributes.sizes,
 						size = sizes.medium || sizes.full || sizes.thumbnail,
-						title = attributes.caption || attributes.title,
 						new_item;
 
 					new_item = tmpl
 						.replace('%id%', attributes.id)
-						.replace('%title%', encodeURIComponent(title))
 						.replace('%image%', size.url);
 
 					$(new_item).insertBefore($add_button.parent());
