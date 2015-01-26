@@ -916,10 +916,14 @@
 		setStatus('Ready');
 	}
 
+	/**
+	 * Custom function to handle when a vast ad fails. This runs when there is an `ad-playback-error` event.
+	 *
+	 * @param e
+	 */
 	function adError(e) {
 		setStatus('Ready');
 
-		console.log('--- Error in the ad ---');
 		postVastAd();
 		var station = gmr.callsign;
 		if (livePlaying) {
