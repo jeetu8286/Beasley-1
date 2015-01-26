@@ -62,7 +62,13 @@ class GreaterMediaSiteOptionsHelperFunctions {
 	}
 
 	public static function twitter_name() {
-		return get_option( 'gmr_twitter_name', '' );
+		$twitter = get_option( 'gmr_twitter_name', '' );
+		if ( filter_var( $twitter, FILTER_VALIDATE_URL ) ) {
+			$twitter = parse_url( $twitter, PHP_URL_PATH );
+			$twitter = ltrim( $twitter, '/' );
+		}
+
+		return $twitter;
 	}
 
 	public static function youtube_link() {
