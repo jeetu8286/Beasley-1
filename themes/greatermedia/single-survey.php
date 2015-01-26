@@ -27,15 +27,9 @@ get_header(); ?>
 
 							<header class="entry__header">
 
-								<?php $encoded_permalink = urlencode( get_permalink() ); ?>
-								<?php $encoded_title = urlencode( get_the_title() ); ?>
-
 								<time class="entry__date" datetime="<?php echo get_the_time(); ?>"><?php the_date( 'F j' ); ?></time>
 								<h2 class="entry__title" itemprop="headline"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
-
-								<a class="icon-facebook social-share-link" href="http://www.facebook.com/sharer/sharer.php?u=<?php echo $encoded_permalink; ?>&title=<?php echo $encoded_title; ?>"></a>
-								<a class="icon-twitter social-share-link" href="http://twitter.com/home?status=<?php echo $encoded_title; ?>+<?php echo $encoded_permalink; ?>"></a>
-								<a class="icon-google-plus social-share-link" href="https://plus.google.com/share?url=<?php echo $encoded_permalink; ?>"></a>
+								<?php get_template_part( 'partials/social-share' ); ?>
 
 							</header>
 

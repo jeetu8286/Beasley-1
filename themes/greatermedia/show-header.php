@@ -47,9 +47,8 @@
 					echo '<em>' . $times . '</em>';
 				}
 			?>
-			<a href="http://www.facebook.com/sharer/sharer.php?u=[URL]&title=[TITLE]" class="icon-facebook social-share-link"></a>
-			<a href="http://twitter.com/home?status=[TITLE]+[URL]" class="icon-twitter social-share-link"></a>
-			<a href="https://plus.google.com/share?url=[URL]" class="icon-google-plus social-share-link"></a>
+			
+			<?php get_template_part( 'partials/social-share' ); ?>
 		</div>
 	</div>
 </div>
