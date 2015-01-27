@@ -22,7 +22,7 @@ class GreaterMediaGallery {
 		add_filter( 'the_content', array( __CLASS__, 'strip_for_single_gallery' ) );
 
 		// Register scripts
-		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'register_scripts' ), 9 );
+		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'register_scripts' ), 10 );
 	}
 
 	/**
