@@ -76,6 +76,7 @@
 
 		<?php if ( ( $enter = trim( get_post_meta( get_the_ID(), 'how-to-enter-desc', true ) ) ) ) : ?>
 			<div class="contest__description">
+				<h3 class="contest__prize--title"><?php _e( 'How to enter:', 'greatermedia' ); ?></h3>
 				<?php echo wpautop( $enter ); ?>
 			</div>
 		<?php endif; ?>
@@ -84,7 +85,7 @@
 		<div class="contest__description">
 			<p>
 				<a class="contest-attr--rules-toggler pjax-exclude" href="#" data-toggle="collapse" data-target="#contest-rules" data-alt-text="Hide Contest Rules">
-					<?php _e( 'Show Contest Rules', 'greatermedia' ); ?>
+					<?php _e( 'view contest rules', 'greatermedia' ); ?>
 				</a>
 			</p>
 
