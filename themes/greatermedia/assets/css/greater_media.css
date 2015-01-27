@@ -7750,10 +7750,8 @@ category: Components - Shows
   .show__header:after {
     clear: both; }
   .show__header.has-thumbnail {
-    background-repeat: no-repeat;
     background-size: 100%;
     background-size: cover;
-    background-size: 100%;
     background-position: center;
     background-repeat: no-repeat; }
   .show__header > div {
@@ -7827,7 +7825,7 @@ category: Components - Shows
         margin: 0;
         width: 100%;
         list-style-type: none; } }
-  @media screen and (min-width: 1041px) {
+  @media screen and (min-width: 1043px) {
     .show__nav {
       width: 53%;
       float: left;
@@ -7877,7 +7875,7 @@ category: Components - Shows
   width: 100%;
   text-align: center;
   float: none; }
-  @media screen and (min-width: 1041px) {
+  @media screen and (min-width: 1043px) {
     .show__meta {
       width: 25%;
       float: right;
