@@ -9965,6 +9965,8 @@ category: Components - Gallery Archive
       width: 23.23176%; }
       .gallery__grid--column:last-child {
         margin-right: 0; } }
+  .gallery__grid--column:hover .gallery__grid--title {
+    color: #aa1c20; }
 
 @media screen and (min-width: 768px) and (max-width: 1023px) {
   .gallery__grid--column:nth-of-type(2n+2) {
