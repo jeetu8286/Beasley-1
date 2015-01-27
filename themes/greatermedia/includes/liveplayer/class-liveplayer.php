@@ -97,15 +97,15 @@ class GreaterMediaLivePlayer {
 	 * @static
 	 * @access public
 	 *
-	 * @param $xml
-	 *
 	 * @return bool|mixed
 	 */
-	public static function live_stream_server( $xml ) {
+	public static function live_stream_server() {
 
 		$server = get_transient( 'gmr_livestream_server' );
 
 		if ( false === $server ) {
+
+			$xml = self::live_stream_endpoint();
 
 			$server_loc = (string)$xml->mountpoints[0]->mountpoint[0]->servers->server->ip;
 
@@ -130,15 +130,15 @@ class GreaterMediaLivePlayer {
 	 * @static
 	 * @access public
 	 *
-	 * @param $xml
-	 *
 	 * @return bool|mixed
 	 */
-	public static function live_stream_mount( $xml ) {
+	public static function live_stream_mount() {
 
 		$mount = get_transient( 'gmr_livestream_mount' );
 
 		if ( false === $mount ) {
+
+			$xml = self::live_stream_endpoint();
 
 			$mount_point = (string)$xml->mountpoints[0]->mountpoint[0]->mount;
 
@@ -166,14 +166,18 @@ class GreaterMediaLivePlayer {
 	 * @return SimpleXMLElement
 	 */
 	public static function live_stream_endpoint() {
+		// So that we save this data if we call this function multiple times in one request
+		static $data;
 
-		$active_stream = gmr_streams_get_primary_stream_callsign();
+		if ( is_null( $data ) ) {
+			$active_stream = gmr_streams_get_primary_stream_callsign();
 
-		$xmlstr = "http://playerservices.streamtheworld.com/api/livestream?version=1.8&station={$active_stream}";
+			$xmlstr = "http://playerservices.streamtheworld.com/api/livestream?version=1.8&station={$active_stream}";
 
-		$xml = wp_remote_retrieve_body( wp_remote_get( $xmlstr ) );
+			$xml = wp_remote_retrieve_body( wp_remote_get( $xmlstr ) );
 
-		$data = simplexml_load_string( $xml );
+			$data = simplexml_load_string( $xml );
+		}
 
 		return $data;
 
@@ -187,11 +191,9 @@ class GreaterMediaLivePlayer {
 	 */
 	public static function live_audio_link() {
 
-		$data = self::live_stream_endpoint();
+		$ip = self::live_stream_server();
 
-		$ip = self::live_stream_server( $data );
-
-		$mount = self::live_stream_mount( $data );
+		$mount = self::live_stream_mount();
 
 		if ( ! empty( $ip ) && ! empty( $mount ) ) {
 
