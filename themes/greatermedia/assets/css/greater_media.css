@@ -1575,6 +1575,10 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
     .content__heading, .sponsors__heading {
       font-size: 1.26563em; } }
 
+.ad__in-loop {
+  margin: 1.5em 0;
+  clear: both; }
+
 .entry__thumbnail {
   position: relative;
   float: left;
