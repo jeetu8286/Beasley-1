@@ -18,7 +18,6 @@
 					$podcast_query = \GreaterMedia\Shows\get_show_podcast_query();
 					if ( $podcast_query->have_posts() ) :
 						$pattern = get_shortcode_regex();
-						
 						while ( $podcast_query->have_posts() ) :
 							$podcast_query->the_post();
 
@@ -32,7 +31,7 @@
 									echo do_shortcode( $matches[0][0] );
 								?></article><?php
 							endif;
-						endwhile;
+					endwhile;
 						
 						wp_reset_query();
 					endif;
