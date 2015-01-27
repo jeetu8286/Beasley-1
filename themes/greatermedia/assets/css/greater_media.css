@@ -2387,7 +2387,8 @@ Community Highlights and Events
   padding-top: 100%;
   background-size: 100%;
   background-size: cover;
-  background-position: center center; }
+  background-position: center center;
+  background-repeat: no-repeat; }
 
 .highlights__community--thumb:after {
   position: absolute;
@@ -2543,7 +2544,8 @@ Community Highlights and Events
   overflow: hidden;
   background-size: 100%;
   background-size: cover;
-  background-position: center center; }
+  background-position: center center;
+  background-repeat: no-repeat; }
   .highlights__event--thumb:last-child {
     margin-right: 0; }
   @media screen and (min-width: 1024px) {
@@ -7636,6 +7638,7 @@ category: Components - Shows
 */
 .show__header {
   background-color: #561015;
+  background-repeat: repeat;
   position: relative;
   padding: 38px 1em;
   width: 100%;
@@ -7650,7 +7653,9 @@ category: Components - Shows
     background-repeat: no-repeat;
     background-size: 100%;
     background-size: cover;
-    background-position: center; }
+    background-size: 100%;
+    background-position: center;
+    background-repeat: no-repeat; }
   .show__header > div {
     vertical-align: middle; }
   @media screen and (min-width: 768px) {
@@ -7659,7 +7664,6 @@ category: Components - Shows
   @media screen and (min-width: 1024px) {
     .show__header {
       background-image: url("../../images/featured-bg.png");
-      background-repeat: repeat;
       background-position: center center;
       background-color: #561015;
       background-size: auto 65%; } }
@@ -7875,7 +7879,8 @@ category: Components - Shows
     padding-bottom: 66%;
     background-position: center center;
     background-size: 100%;
-    background-size: cover; }
+    background-size: cover;
+    background-repeat: no-repeat; }
     .show__feature .thumbnail .inner-wrap {
       position: absolute;
       left: 0;
@@ -9734,6 +9739,7 @@ category: Components - Gallery Archive
   -moz-transition: opacity 200ms linear;
   transition: opacity 200ms linear;
   background-size: cover;
+  background-repeat: no-repeat;
   cursor: pointer; }
   .single-gmr_gallery .gallery__slide--preview {
     width: 100px; }
@@ -9895,7 +9901,8 @@ category: Components - Gallery Archive
     padding-bottom: 66%;
     background-position: center center;
     background-size: 100%;
-    background-size: cover; }
+    background-size: cover;
+    background-repeat: no-repeat; }
     .gallery__feature .thumbnail .inner-wrap {
       position: absolute;
       left: 0;
@@ -10555,16 +10562,9 @@ select {
     background-color: #561015;
     color: #ffffff;
     background-image: url("../../images/profile_bg.jpg");
-    text-align: center; }
-    @media screen and (min-width: 320px) {
-      .profile-page .profile-page__sidebar {
-        background-size: cover; } }
-    @media screen and (min-width: 480px) {
-      .profile-page .profile-page__sidebar {
-        background-size: cover; } }
-    @media screen and (min-width: 768px) {
-      .profile-page .profile-page__sidebar {
-        background-size: cover; } }
+    text-align: center;
+    background-size: cover;
+    background-repeat: no-repeat; }
     @media screen and (min-width: 1024px) {
       .profile-page .profile-page__sidebar {
         text-align: left;
@@ -12040,7 +12040,8 @@ category: Components - Article
   background-position: center center;
   background-size: 100%;
   background-size: cover;
-  padding-bottom: 66.666%; }
+  padding-bottom: 66.666%;
+  background-repeat: no-repeat; }
 
 .related-post__meta {
   padding: 1.5em 1.618em;
