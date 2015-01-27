@@ -14,6 +14,14 @@ tr.delete {
 	a.submitdelete {
 		color: rgb(237, 57, 57);
 	}
+
+	th.manage-column {
+		span {
+			display: block;
+			overflow: hidden;
+			padding: 7px 7px 8px 10px;
+		}
+	}
 }
 
 .keyword_meta {
@@ -58,4 +66,3 @@ tr.delete {
 .post-search__list-item {
 	margin: .5em 0;
 }
-

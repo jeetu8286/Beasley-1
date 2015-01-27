@@ -83,7 +83,7 @@ class AffinityClub {
 				$member = new Member( $this );
 				$member->parse( $child_node );
 
-				if ( $member->is_active() ) {
+				if ( $member->is_active() && ! $member->is_facebook_member() ) {
 					$members[] = $member;
 					$real_count++;
 
