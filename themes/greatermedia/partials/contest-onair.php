@@ -2,6 +2,11 @@
 
 <article id="post-<?php the_ID(); ?>" <?php post_class( 'cf collapsed' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
 
+	<div class="ad__inline--right desktop">
+		<?php // 'desktop' is a variant, can call a 'mobile' variant elsewhere if we need it, but never the same variant twice ?>
+		<?php do_action( 'acm_tag_gmr_variant', 'mrec-body', 'desktop' ); ?>
+	</div>
+
 	<header class="entry__header">
 		<?php $encoded_permalink = urlencode( get_permalink() ); ?>
 		<?php $encoded_title = urlencode( get_the_title() ); ?>
@@ -33,15 +38,15 @@
 	<?php endif; ?>
 
 	<?php if ( ( $contest_rules = trim( get_post_meta( get_the_ID(), 'rules-desc', true ) ) ) ) : ?>
-	<div class="contest__description">
-		<p>
-			<a class="contest-attr--rules-toggler pjax-exclude" href="#" data-toggle="collapse" data-target="#contest-rules" data-alt-text="Hide Contest Rules">
-				<?php _e( 'Show Contest Rules', 'greatermedia' ); ?>
-			</a>
-		</p>
+		<div class="contest__description">
+			<p>
+				<a class="contest-attr--rules-toggler pjax-exclude" href="#" data-toggle="collapse" data-target="#contest-rules" data-alt-text="Hide Contest Rules">
+					<?php _e( 'Show Contest Rules', 'greatermedia' ); ?>
+				</a>
+			</p>
 
-		<div id="contest-rules" class="contest-attr--rules" style="display:none;"><?php echo wpautop( $contest_rules ); ?></div>
-	</div>
+			<div id="contest-rules" class="contest-attr--rules" style="display:none;"><?php echo wpautop( $contest_rules ); ?></div>
+		</div>
 	<?php endif; ?>
 
 	<?php get_template_part( 'partials/post', 'footer' ); ?>

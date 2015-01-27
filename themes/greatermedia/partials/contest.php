@@ -1,6 +1,11 @@
 <?php $contest_id = get_the_ID(); ?>
 <article id="post-<?php the_ID(); ?>" <?php post_class( 'cf collapsed' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
 
+	<div class="ad__inline--right desktop">
+		<?php // 'desktop' is a variant, can call a 'mobile' variant elsewhere if we need it, but never the same variant twice ?>
+		<?php do_action( 'acm_tag_gmr_variant', 'mrec-body', 'desktop' ); ?>
+	</div>
+	
 	<section class="col__inner--left">
 
 		<header class="entry__header">
@@ -19,7 +24,6 @@
 		</header>
 
 		<div class="contest__restrictions">
-
 			<div class="contest__restriction--not-started">
 				<p>The contest is not started yet.</p>
 			</div>
@@ -96,7 +100,6 @@
 		<?php get_template_part( 'partials/post', 'footer' ); ?>
 
 	</section>
-
 
 	<section id="contest-form" class="col__inner--right contest__form"<?php gmr_contest_container_attributes(); ?>></section>
 
