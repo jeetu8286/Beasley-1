@@ -1388,3 +1388,18 @@ category: Components
 .audio__title {
 	display: inline-block;
 }
+
+.live-audio {
+	display: none;
+	padding: 2em 0;
+	margin: 0 auto;
+	overflow: auto;
+	text-align: center;
+}
+
+a.live-audio__link {
+	padding: .5em 1em;
+	background-color: $btn-bg;
+	font-size: ms(0);
+	color: white;
+}
