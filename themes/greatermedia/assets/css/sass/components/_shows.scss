@@ -510,7 +510,11 @@ category: Components - Shows
 	}			
 	
 	.inner-wrap {
-		padding: $base-line-height $gutter; 
+		padding: $base-line-height $gutter;
+
+		.show__feature--secondary & {
+			padding: 1em;
+		}
 	}
 	
 	@include bp( large ) {
