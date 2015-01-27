@@ -3947,8 +3947,7 @@ Link posts contain a link to an external site. They can also optionally have a f
   background-size: 100%;
   background-size: cover;
   background-position: center center;
-  background-repeat: no-repeat;
-  background: red; }
+  background-repeat: no-repeat; }
   .entry2__thumbnail__image:after {
     content: '';
     display: block;

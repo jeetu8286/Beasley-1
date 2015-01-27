@@ -56,12 +56,12 @@ jQuery( function ( $ ) {
 			resume_keyboard();
 			
 			if ( null === self.position || $items.children().length !== self.stack_size ) {
-				self.position = $items.children().length + 1;
+				self.position = $items.children().length; // Put at last index + 1
 				self.stack_size =  $items.children().length;
 			}
-
+			
 			if ( 0 === self.position ) {
-				self.position = $items.children().length - 1;
+				self.position = $items.children().length - 1; // Put at last index
 			} else {
 				self.position--;
 			}
