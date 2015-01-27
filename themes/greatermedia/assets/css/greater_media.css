@@ -7984,7 +7984,8 @@ category: Components - Shows
     margin-bottom: 0;
     padding-left: 2em; }
   .show__live-links li[class^="live-link__type"] {
-    margin-bottom: 1em; }
+    margin-bottom: 1em;
+    padding: 0; }
     .show__live-links li[class^="live-link__type"]:before {
       position: absolute;
       left: -24px;
