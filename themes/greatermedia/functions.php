@@ -152,6 +152,14 @@ function greatermedia_scripts_styles() {
 		false
 	);
 	wp_enqueue_script(
+		'placeholders',
+		"{$baseurl}/assets/js/vendor/placeholders.min.js",
+		array(),
+		'3.0.2',
+		false
+	);
+
+	wp_enqueue_script(
 		'greatermedia-load-more',
 		"{$baseurl}/assets/js/greater_media_load_more{$postfix}.js",
 		array( 'jquery', 'jquery-waypoints' ),
