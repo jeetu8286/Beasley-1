@@ -115,7 +115,7 @@ class GMR_Audio_Shortcodes {
 		$downloadable = get_post_meta( $post_id, 'gmp_audio_downloadable', true );
 		$new_html = '';
 		
-		$is_podcast = is_singular( ShowsCPT::SHOW_CPT ); 
+		$is_podcast = is_singular( array( ShowsCPT::SHOW_CPT, GMP_CPT::PODCAST_POST_TYPE ) );
 
 		if ( $is_podcast ) {
 			$new_html .= '<div class="podcast-player">';

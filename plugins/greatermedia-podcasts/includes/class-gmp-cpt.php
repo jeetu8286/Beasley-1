@@ -85,7 +85,7 @@ class GMP_CPT {
 			'can_export'          => true,
 			'has_archive'         => true,
 			'exclude_from_search' => false,
-			'publicly_queryable'  => false,
+			'publicly_queryable'  => true,
 			'rewrite'             => $rewrite,
 			'capability_type'     => 'page',
 		);
@@ -142,7 +142,7 @@ class GMP_CPT {
 			'can_export'          => true,
 			'has_archive'         => true,
 			'exclude_from_search' => false,
-			'publicly_queryable'  => false,
+			'publicly_queryable'  => true,
 			'rewrite'             => $rewrite,
 			'capability_type'     => 'page',
 			'register_meta_box_cb' => array( __CLASS__, 'parent_metabox' ),
