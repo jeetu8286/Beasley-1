@@ -3962,7 +3962,7 @@ Link posts contain a link to an external site. They can also optionally have a f
   .has-excerpt .entry2__thumbnail:after {
     padding-top: 75%; }
 
-.entry2__thumbnail--image {
+.entry2__thumbnail__image {
   background-size: 100%;
   background-size: cover;
   background-position: center center;
