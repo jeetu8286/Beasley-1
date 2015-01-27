@@ -11,7 +11,9 @@ get_header(); ?>
 	<div class="container">
 
 		<section class="content">
-			<h1 itemprop="headline">Podcasts</h1>	
+			<header class="podcast__header">
+				<h1 itemprop="headline">Podcasts</h1>
+			</header>
 			<?php if ( have_posts() ) : while( have_posts() ): the_post(); ?>
 
 				<?php get_template_part( 'partials/loop', 'podcast_archive' ); ?>

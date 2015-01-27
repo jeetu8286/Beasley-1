@@ -15,8 +15,8 @@
 	$episode_date = strtotime( $recent_posts->post_date );
 ?>
 <section class="podcast__meta">
-	<h3 class="podcast__title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
-	<div class="podcast__parent--title">Latest Episode: <a href="<?php the_permalink(); ?>"><?php echo $recent_posts->post_title; ?></a></div>
+	<h3 class="podcast__title podcast__archive_title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
+	<div class="podcast__child--title">Latest Episode: <a href="<?php the_permalink(); ?>"><?php echo $recent_posts->post_title; ?></a></div>
 	<div class="podcast__desc">
 		<?php the_excerpt(); ?>
 	</div>
