@@ -2,8 +2,7 @@
 <article id="post-<?php the_ID(); ?>" <?php post_class( 'cf collapsed' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
 
 	<div class="ad__inline--right desktop">
-		<?php // 'desktop' is a variant, can call a 'mobile' variant elsewhere if we need it, but never the same variant twice ?>
-		<?php do_action( 'acm_tag_gmr_variant', 'mrec-body', 'desktop' ); ?>
+		<?php do_action( 'acm_tag', 'mrec-lists' ); ?>
 	</div>
 	
 	<section class="col__inner--left">
