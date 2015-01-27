@@ -64,11 +64,12 @@
 		height: 150px;
 		margin: 0 8px 8px 0;
 		float: left;
+		background-color: white;
 		background-position: center center;
 		background-size: cover;
 		background-repeat: no-repeat;
 		position: relative;
-		border: 2px dashed black;
+		border: 2px solid #d0d0d0;
 		cursor: pointer;
 
 		&:hover {
@@ -83,12 +84,8 @@
 			}
 		}
 
-		&.gallery-image {
-			border-style: solid;
-		}
-
 		&.gallery-item-placeholder {
-			border-style: dotted;
+			border-style: dashed;
 			display: block;
 		}
 	}
