@@ -12150,9 +12150,6 @@ category: Components
     display: table; }
   .songs__group:after {
     clear: both; }
-  @media screen and (min-width: 1024px) {
-    .songs__group {
-      margin-bottom: 2em; } }
 
 .songs__group--date {
   font-size: 3.24732em;
@@ -12164,8 +12161,7 @@ category: Components
       display: block;
       margin-right: 2.35765%;
       width: 23.23176%;
-      clear: both;
-      margin-top: 24px; }
+      clear: both; }
       .songs__group--date:last-child {
         margin-right: 0; } }
 
@@ -12176,7 +12172,7 @@ category: Components
   padding: 0; }
   @media screen and (min-width: 1024px) {
     .songs__group--list {
-      margin-top: 36px;
+      margin-top: 12px;
       float: left;
       display: block;
       margin-right: 2.35765%;
@@ -12186,6 +12182,8 @@ category: Components
         margin-right: 0; } }
   .songs__group--list li {
     margin-bottom: 0.75em; }
+    .songs__group--list li:last-child {
+      margin-bottom: 0; }
   .songs__group--list .song__time,
   .songs__group--list .song__title,
   .songs__group--list .song__artist {
@@ -12200,6 +12198,9 @@ category: Components
   .songs__group--list .song__artist {
     font-size: 0.88889em; }
 
+@media screen and (min-width: 1024px) {
+  .post-type-archive-songs .posts-pagination {
+    margin-top: 2em; } }
 .busy-mask {
   visibility: hidden;
   background-color: rgba(255, 255, 255, 0.85);

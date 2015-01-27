@@ -1,9 +1,5 @@
 .songs__group {
 	@include row();
-
-	@include bp(large) {
-		margin-bottom: 2em;
-	}
 }
 
 .songs__group--date {
@@ -14,7 +10,6 @@
 	@include bp(large) {
 		@include span-columns(3 of 12);
 		clear: both;
-		margin-top: 24px;
 	}
 
 }
@@ -26,13 +21,17 @@
 	padding: 0;
 
 	@include bp(large) {
-		margin-top: 36px;
+		margin-top: 12px;
 		@include span-columns(9 of 12);
 		@include omega;
 	}
 
 	li {
 		margin-bottom: 0.75em;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
 	}
 
 	.song__time,
@@ -54,5 +53,11 @@
 
 	.song__artist {
 		font-size: ms(-1);
+	}
+}
+
+@include bp(large) {
+	.post-type-archive-songs .posts-pagination {
+		margin-top: 2em;
 	}
 }

@@ -25,7 +25,7 @@ get_header(); ?>
 				if ( have_posts() ) : ?>
 
 					<?php get_template_part( 'partials/loop', 'songs' ); ?>
-					<?php greatermedia_load_more_button( array( 'partial_slug' => 'partials/loop-songs', 'auto_load' => false ) ); ?>
+					<?php greatermedia_load_more_button( array( 'partial_slug' => 'partials/loop-songs', 'auto_load' => true ) ); ?>
 
 				<?php else : ?>
 
