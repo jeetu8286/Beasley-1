@@ -164,8 +164,8 @@ class GMR_Audio_Shortcodes {
 			$new_html .= '<h3 class="podcast__title">' . esc_html( $metadata['title'] ) . '</h3>';			
 		}
 		if( $parent_podcast_id && $is_podcast ) {
-			$new_html .= '<div class="podcast__parent--title podcast__parent--title--mobile show-mobile">'. esc_html( $parent_podcast->post_title ) . '</div>';
-			$new_html .= '<div class="podcast__parent hide-mobile"><div class="podcast__parent--title">'. esc_html( $parent_podcast->post_title ) . '</div>';
+			$new_html .= '<div class="podcast__parent--title podcast__parent--title--mobile show-mobile"><a href="' . esc_url( get_permalink( $parent_podcast->ID) )  . '">'. esc_html( $parent_podcast->post_title ) . '</a></div>';
+			$new_html .= '<div class="podcast__parent hide-mobile"><div class="podcast__parent--title"><a href="' . esc_url( get_permalink( $parent_podcast->ID) )  . '">'. esc_html( $parent_podcast->post_title ) . '</a></div>';
 			if( $itunes_url != '' ) {
 				$new_html .= '<a class="podcast__subscribe" href="' . esc_url( $itunes_url ) . '" target="_blank">Subscribe in iTunes</a>';
 			}
