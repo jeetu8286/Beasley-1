@@ -221,6 +221,14 @@
 			vertical-align: middle;
 		}
 	}
+
+	&.avatar {
+
+		@include bp(medium) {
+			padding-top: 25px;
+			padding-bottom: 25px;
+		}
+	}
 }
 
 .header__account--span {
@@ -241,7 +249,7 @@
 	border: 1px solid white;
 
 	@include bp(medium) {
-		max-height: 20px;
+		max-height: 32px;
 	}
 }
 
