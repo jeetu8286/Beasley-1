@@ -449,7 +449,6 @@
 		liveLink = document.querySelector( '.live-link__title'),
 		liveLinksWidget = document.querySelector( '.widget--live-player' ),
 		liveLinksWidgetTitle = document.querySelector('.widget--live-player__title'),
-		liveLinksWidgetContent = liveLinksWidget.innerHTML,
 		liveStream = document.getElementById( 'live-player' ),
 		windowWidth = this.innerWidth || this.document.documentElement.clientWidth || this.document.body.clientWidth || 0,
 		scrollObject = {},
