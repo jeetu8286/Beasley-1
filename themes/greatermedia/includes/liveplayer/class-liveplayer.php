@@ -6,7 +6,7 @@ class GreaterMediaLivePlayer {
 		add_action( 'init', array( __CLASS__, 'register_endpoint' ) );
 		add_action( 'template_redirect', array( __CLASS__, 'process_onair_request' ) );
 		add_action( 'wp_footer', array( __CLASS__, 'render_live_player' ) );
-		add_action( 'gmr_live_audio_link', array( __CLASS__, 'ie8_audio_link' ) );
+		add_action( 'gmr_live_audio_link', array( __CLASS__, 'live_audio_link' ) );
 	}
 
 	public static function render_live_player() {
