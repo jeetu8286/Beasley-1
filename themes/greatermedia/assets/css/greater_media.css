@@ -9142,7 +9142,6 @@ category: Components - Gallery Archive
 
 */
 .gallery {
-  width: 100%;
   overflow: auto; }
 
 .gallery .container {
