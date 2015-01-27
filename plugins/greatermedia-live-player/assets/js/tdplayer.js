@@ -30,15 +30,19 @@
 	var podcastPlaying = document.querySelector('.podcast__btn--play.playing');
 	var listenNow = document.getElementById('live-stream__listen-now');
 	var nowPlaying = document.getElementById('live-stream__now-playing');
+	var listenLogin = document.getElementById('live-stream__login');
 	var $trackInfo = $(document.getElementById('trackInfo'));
 	var gigyaLogin = gmr.homeUrl + "members/login";
 	var clearDebug = document.getElementById('clearDebug');
 	var adBlockCheck = document.getElementById('ad-check');
 	var adBlockClose = document.getElementById('close-adblock');
+	var onAir = document.getElementById('on-air');
 	var onAirTitle = document.querySelector('.on-air__title');
 	var onAirShow = document.querySelector('.on-air__show');
 	var streamStatus = document.getElementById('live-stream__status');
 	var nowPlayingInfo = document.getElementById('nowPlaying');
+	var trackInfo = document.getElementById('trackInfo');
+	var liveStreamSelector = document.querySelector('.live-player__stream');
 
 	/**
 	 * global variables for event types to use in conjunction with `addEventHandler` function
@@ -71,7 +75,7 @@
 	 * @todo remove the console log before beta
 	 */
 	window.tdPlayerApiReady = function () {
-		console.log("--- TD Player API Loaded ---")
+		console.log("--- TD Player API Loaded ---");
 		initPlayer();
 	};
 
@@ -80,6 +84,8 @@
 			return ['Flash'];
 		} else if (bowser.safari) {
 			return ['Html5'];
+		} else if (bowser.chrome) {
+			return ['Flash'];
 		} else {
 			return ['Html5', 'Flash'];
 		}
@@ -114,7 +120,7 @@
 					id: 'MediaPlayer',
 					playerId: 'td_container',
 					isDebug: true,
-					techPriority: ['Flash', 'Html5'],
+					techPriority: techPriority,
 					timeShift: { // timeShifting is currently available on Flash only. Leaving for HTML5 future
 						active: 0, /* 1 = active, 0 = inactive */
 						max_listening_time: 35 /* If max_listening_time is undefined, the default value will be 30 minutes */
@@ -157,7 +163,7 @@
 		scriptTag.setAttribute("type", "text/javascript");
 		scriptTag.setAttribute("src", "//playerservices.live.streamtheworld.com/api/idsync.js?station=" + station);
 		document.getElementsByTagName('head')[0].appendChild(scriptTag);
-	};
+	}
 
 
 	function initControlsUi() {
@@ -167,7 +173,7 @@
 		}
 
 		if (resumeBtn != null) {
-			addEventHandler(resumeBtn,elemClick,resumeStream);
+			addEventHandler(resumeBtn,elemClick,resumeLiveStream);
 		}
 
 		if (clearDebug != null) {
@@ -187,15 +193,26 @@
 		}
 
 		tdContainer.classList.add('stream__active');
-		playBtn.style.display = 'none';
-		resumeBtn.style.display = 'none';
-		pauseBtn.style.display = 'block';
+		if (true === playingCustomAudio && window.innerWidth <= 767) {
+			playBtn.classList.add('live-player__login');
+		} else {
+			playBtn.classList.add('live-player__muted');
+		}
+		if (! resumeBtn.classList.contains('live-player__muted')) {
+			resumeBtn.classList.add('live-player__muted');
+		}
+		if (resumeBtn.classList.contains('resume__live')) {
+			resumeBtn.classList.remove('resume__live');
+		}
 		if (true === playingCustomAudio) {
 			nowPlaying.style.display = 'none';
 			listenNow.style.display = 'inline-block';
 		} else {
 			nowPlaying.style.display = 'inline-block';
 			listenNow.style.display = 'none';
+		}
+		if (pauseBtn.classList.contains('live-player__muted')) {
+			pauseBtn.classList.remove('live-player__muted');
 		}
 
 
@@ -207,11 +224,13 @@
 			return;
 		}
 
-		playBtn.style.display = 'block';
-		pauseBtn.style.display = 'none';
-		resumeBtn.style.display = 'none';
+		if (resumeBtn.classList.contains('live-player__muted')) {
+			resumeBtn.classList.remove('live-player__muted');
+			resumeBtn.classList.add('resume__live');
+		}
 		listenNow.style.display = 'inline-block';
 		nowPlaying.style.display = 'none';
+		pauseBtn.classList.add('live-player__muted');
 	}
 
 	function setPausedStyles() {
@@ -220,23 +239,23 @@
 			return;
 		}
 
-		playBtn.style.display = 'none';
-		pauseBtn.style.display = 'none';
+		if (true === playingCustomAudio && window.innerWidth <= 767) {
+			playBtn.classList.add('live-player__login');
+		} else {
+			playBtn.classList.add('live-player__muted');
+		}
 		listenNow.style.display = 'inline-block';
 		nowPlaying.style.display = 'none';
-		resumeBtn.style.display = 'block';
+		pauseBtn.classList.add('live-player__muted');
+		if (resumeBtn.classList.contains('live-player__muted')) {
+			resumeBtn.classList.remove('live-player__muted');
+			resumeBtn.classList.add('resume__live');
+		}
+		resumeBtn.classList.add('resume__audio');
 	}
 
 	function setInlineAudioUX() {
 		var audioTime = document.querySelectorAll('.audio__time'), i;
-
-		if (onAirTitle != null) {
-			onAirTitle.style.display = 'none';
-		}
-
-		if (onAirShow != null) {
-			onAirShow.style.display = 'none';
-		}
 
 		for (i = 0; i < audioTime.length; ++i) {
 			audioTime[i].classList.add('playing');
@@ -271,9 +290,9 @@
 		var audioCurrent = podcastCover.nextElementSibling;
 		var runtimeCurrent = audioCurrent.nextElementSibling;
 		var audioTime = document.querySelectorAll('.audio__time'), i;
-		var runtime = document.querySelector('.podcast__runtime')
+		var runtime = document.querySelector('.podcast__runtime');
 
-		if (podcastPlayer != null && body.classList.contains('page-template-single-show-podcasts-php')) {
+		if (podcastPlayer != null && body.classList.contains('single-show')) {
 			audioCurrent.classList.add('playing__current');
 			runtimeCurrent.classList.add('playing');
 		} else {
@@ -289,14 +308,7 @@
 
 	function resetInlineAudioUX() {
 		var audioTime = document.querySelectorAll('.audio__time'), i;
-		var runtime = document.querySelectorAll('.podcast__runtime'), i;
-		if (onAirTitle != null) {
-			onAirTitle.style.display = 'block';
-		}
-
-		if (onAirShow != null) {
-			onAirShow.style.display = 'block';
-		}
+		var runtime = document.querySelectorAll('.podcast__runtime');
 
 		for (i = 0; i < audioTime.length; ++i) {
 			if (audioTime[i] != null && audioTime[i].classList.contains('playing')) {
@@ -330,6 +342,18 @@
 		}
 	}
 
+	function replaceNPInfo() {
+		if (window.innerWidth <= 767) {
+			if (trackInfo.innerHTML === '') {
+				onAir.classList.add('on-air__npe');
+				liveStreamSelector.classList.add('full__width');
+			} else if (onAir.classList.contains('on-air__npe')){
+				onAir.classList.remove('on-air__npe');
+				liveStreamSelector.classList.remove('full__width');
+			}
+		}
+	}
+
 	var listenLiveStopCustomInlineAudio = function() {
 		var listenNowText = listenNow.textContent;
 		var nowPlayingTitle = document.getElementById('trackInfo');
@@ -346,19 +370,21 @@
 		if (listenNowText === 'Switch to Live Stream') {
 			listenNow.innerHTML = 'Listen Live';
 		}
-		if (Cookies.get('gmr_play_live_audio') == 1) {
+		if (window.innerWidth >= 768) {
 			playLiveStream();
-		} else {
-			playLiveStreamWithPreRoll();
 		}
 	};
 
 	function changePlayerState() {
 		if (is_gigya_user_logged_in()) {
-			if (playBtn != null && Cookies.get('gmr_play_live_audio') == 1) {
-				addEventHandler(playBtn, elemClick, playLiveStream);
-			} else if (playBtn != null) {
-				addEventHandler(playBtn, elemClick, playLiveStreamWithPreRoll);
+			if (window.innerWidth >= 768) {
+				if (playBtn != null) {
+					addEventHandler(playBtn, elemClick, playLiveStream);
+				}
+			} else {
+				if (playBtn != null) {
+					addEventHandler(playBtn, elemClick, playLiveStreamMobile);
+				}
 			}
 			if (listenNow != null) {
 				addEventHandler(listenNow, elemClick, listenLiveStopCustomInlineAudio);
@@ -374,6 +400,11 @@
 					window.location.href = gigyaLogin;
 				});
 			}
+			if (listenLogin != null && window.innerWidth <= 767) {
+				addEventHandler(listenLogin, 'click', function() {
+					window.location.href = gigyaLogin;
+				});
+			}
 		}
 	}
 
@@ -383,7 +414,11 @@
 		if (is_gigya_user_logged_in() ) {
 			setStoppedStyles();
 			if( Cookies.get( "gmlp_play_button_pushed" ) == 1 ) {
-				playLiveStreamWithPreRoll();
+				if (window.innerWidth >= 768) {
+					playLiveStream();
+				} else {
+					playLiveStreamMobile();
+				}
 				Cookies.set( "gmlp_play_button_pushed", 0 );
 			} else {
 				console.log("--- Log In with Gigya ---");
@@ -405,8 +440,8 @@
 		if (preRoll != null) {
 			preRoll.classList.remove('vast__pre-roll');
 		}
-		Cookies('gmr_play_live_audio', undefined);
-		Cookies('gmr_play_live_audio', 1, {expires: 86400});
+		Cookies.set('gmr_play_live_audio', undefined);
+		Cookies.set('gmr_play_live_audio', 1, {expires: 86400});
 	}
 
 	function streamVastAd() {
@@ -414,7 +449,9 @@
 
 		detachAdListeners();
 		attachAdListeners();
+
 		player.stop();
+		player.skipAd();
 		player.playAd('vastAd', {url: vastUrl});
 	}
 
@@ -435,7 +472,7 @@
 		while (preRoll.hasChildNodes()) {
 			preRoll.removeChild(preRoll.firstChild);
 		}
-		preRoll.classList.remove('vast__pre-roll')
+		preRoll.classList.remove('vast__pre-roll');
 	}
 
 	var currentStream = $('.live-player__stream--current-name');
@@ -444,29 +481,26 @@
 		console.log("--- new stream select ---");
 		var station = currentStream.text();
 
-		if (livePlaying)
+		if (livePlaying) {
 			player.stop();
+		}
 
 		if ( true === playingCustomAudio ) {
-			stopCustomInlineAudio();
+			listenLiveStopCustomInlineAudio();
 		}
 
 		player.play({station: station, timeShift: true});
 
+		livePlayer.classList.add('live-player--active');
 		setPlayingStyles();
+		setTimeout(replaceNPInfo, 2000);
 	});
 
-	function playLiveStream() {
-		pjaxInit();
-		if ( true === playingCustomAudio ) {
-			resumeCustomInlineAudio();
-		} else if (adBlockCheck == undefined) {
-			preVastAd();
-			showAdBlockDetect();
-			setTimeout(postVastAd, 15000);
-		} else {
-			var station = gmr.callsign;
-			if (station == '') {
+	function playLiveStreamMobile() {
+		var station = gmr.callsign;
+
+		if (Cookies.get('gmr_play_live_audio') == 1) {
+			if (station === '') {
 				alert('Please enter a Station');
 				return;
 			}
@@ -477,65 +511,28 @@
 				player.stop();
 			}
 
-			player.play({station: station, timeShift: true});
-			setTimeout(setPlayingStyles, 1000);
-		}
-	}
-
-	function resumeLiveStream() {
-		pjaxInit();
-		if ( true === playingCustomAudio ) {
-			var station = currentStream.text();
-
-			if (livePlaying) {
-				player.stop();
+			if ( true === playingCustomAudio ) {
+				listenLiveStopCustomInlineAudio();
 			}
 
-			stopCustomInlineAudio();
-
+			livePlayer.classList.add('live-player--active');
 			player.play({station: station, timeShift: true});
-
 			setPlayingStyles();
-
-		} else if (adBlockCheck == undefined) {
-			preVastAd();
-			showAdBlockDetect();
-			setTimeout(postVastAd, 15000);
-		} else {
-			var station = gmr.callsign;
-			if (station == '') {
+			setTimeout(replaceNPInfo, 2000);
+		} else if (Cookies.get('gmr_play_live_audio') === 0) {
+			if (station === '') {
 				alert('Please enter a Station');
 				return;
 			}
 
-			debug('playLiveStream - station=' + station);
-
-			if (livePlaying) {
-				player.stop();
-			}
-
-			player.play({station: station, timeShift: true});
-			setTimeout(setPlayingStyles, 1000);
-		}
-	}
-
-	function playLiveStreamWithPreRoll() {
-		if ( true === playingCustomAudio ) {
-			resumeCustomInlineAudio();
-
-			setPlayingStyles();
-		} else {
-			var station = gmr.callsign;
-			var vastUrl = gmr.streamUrl;
-			if (station == '') {
-				alert('Please enter a Station');
-				return;
+			if ( true === playingCustomAudio ) {
+				listenLiveStopCustomInlineAudio();
 			}
 
 			debug('playLiveStream - station=' + station);
 
 			preVastAd();
-			if (adBlockCheck == undefined) {
+			if (adBlockCheck === undefined) {
 				showAdBlockDetect();
 				setTimeout(postVastAd, 15000);
 			} else {
@@ -550,9 +547,10 @@
 						player.stop();
 					}
 
+					livePlayer.classList.add('live-player--active');
 					player.play({station: station, timeShift: true});
-					setTimeout(setPlayingStyles, 1000);
-
+					setPlayingStyles();
+					setTimeout(replaceNPInfo, 2000);
 				});
 			} else if (player.attachEvent) {
 				player.attachEvent('ad-playback-complete', function () {
@@ -563,8 +561,170 @@
 						player.stop();
 					}
 
+					livePlayer.classList.add('live-player--active');
 					player.play({station: station, timeShift: true});
-					setTimeout(setPlayingStyles, 1000);
+					setPlayingStyles();
+					setTimeout(replaceNPInfo, 2000);
+				});
+			}
+		}
+
+	}
+
+	function playLiveStream() {
+		var station = gmr.callsign;
+
+		pjaxInit();
+		if ( true === playingCustomAudio ) {
+			resumeCustomInlineAudio();
+
+			setPlayingStyles();
+		} else if (adBlockCheck === undefined) {
+			preVastAd();
+			showAdBlockDetect();
+			setTimeout(postVastAd, 15000);
+		} else if (Cookies.get('gmr_play_live_audio') != 1) {
+
+			if (station === '') {
+				alert('Please enter a Station');
+				return;
+			}
+
+			debug('playLiveStream - station=' + station);
+
+			preVastAd();
+			streamVastAd();
+			if (player.addEventListener) {
+				player.addEventListener('ad-playback-complete', function () {
+					postVastAd();
+					console.log("--- ad complete ---");
+
+					if (livePlaying) {
+						player.stop();
+					}
+
+					livePlayer.classList.add('live-player--active');
+					player.play({station: station, timeShift: true});
+					setPlayingStyles();
+					setTimeout(replaceNPInfo, 2000);
+				});
+			} else if (player.attachEvent) {
+				player.attachEvent('ad-playback-complete', function () {
+					postVastAd();
+					console.log("--- ad complete ---");
+
+					if (livePlaying) {
+						player.stop();
+					}
+
+					livePlayer.classList.add('live-player--active');
+					player.play({station: station, timeShift: true});
+					setPlayingStyles();
+					setTimeout(replaceNPInfo, 2000);
+				});
+			}
+		} else {
+			if (station === '') {
+				alert('Please enter a Station');
+				return;
+			}
+
+			debug('playLiveStream - station=' + station);
+
+			if (livePlaying) {
+				player.stop();
+			}
+
+			if ( true === playingCustomAudio ) {
+				listenLiveStopCustomInlineAudio();
+			}
+
+			livePlayer.classList.add('live-player--active');
+			player.play({station: station, timeShift: true});
+			setPlayingStyles();
+			setTimeout(replaceNPInfo, 2000);
+		}
+	}
+
+	function resumeLiveStream() {
+		pjaxInit();
+		if ( true === playingCustomAudio ) {
+			resumeCustomInlineAudio();
+
+			setPlayingStyles();
+		} else if (adBlockCheck === undefined) {
+			preVastAd();
+			showAdBlockDetect();
+			setTimeout(postVastAd, 15000);
+		} else {
+			var station = gmr.callsign;
+			if (station === '') {
+				alert('Please enter a Station');
+				return;
+			}
+
+			debug('playLiveStream - station=' + station);
+
+			if (livePlaying) {
+				player.stop();
+			}
+
+			livePlayer.classList.add('live-player--active');
+			player.play({station: station, timeShift: true});
+			setPlayingStyles();
+			setTimeout(replaceNPInfo, 2000);
+		}
+	}
+
+	function playLiveStreamWithPreRoll() {
+		if ( true === playingCustomAudio ) {
+			resumeCustomInlineAudio();
+
+			setPlayingStyles();
+		} else {
+			var station = gmr.callsign;
+			var vastUrl = gmr.streamUrl;
+			if (station === '') {
+				alert('Please enter a Station');
+				return;
+			}
+
+			debug('playLiveStream - station=' + station);
+
+			preVastAd();
+			if (adBlockCheck === undefined) {
+				showAdBlockDetect();
+				setTimeout(postVastAd, 15000);
+			} else {
+				streamVastAd();
+			}
+			if (player.addEventListener) {
+				player.addEventListener('ad-playback-complete', function () {
+					postVastAd();
+					console.log("--- ad complete ---");
+
+					if (livePlaying) {
+						player.stop();
+					}
+
+					livePlayer.classList.add('live-player--active');
+					player.play({station: station, timeShift: true});
+					setPlayingStyles();
+					setTimeout(replaceNPInfo, 2000);
+				});
+			} else if (player.attachEvent) {
+				player.attachEvent('ad-playback-complete', function () {
+					postVastAd();
+					console.log("--- ad complete ---");
+
+					if (livePlaying) {
+						player.stop();
+					}
+
+					livePlayer.classList.add('live-player--active');
+					player.play({station: station, timeShift: true});
+					setPlayingStyles();
+					setTimeout(replaceNPInfo, 2000);
 				});
 			}
 		}
@@ -577,6 +737,9 @@
 			player.stop();
 		}
 
+		if (livePlayer.classList.contains('live-player--active')) {
+			livePlayer.classList.remove('live-player--active');
+		}
 		setStoppedStyles();
 	}
 
@@ -587,6 +750,9 @@
 			player.pause();
 		}
 
+		if (livePlayer.classList.contains('live-player--active')) {
+			livePlayer.classList.remove('live-player--active');
+		}
 		setPausedStyles();
 	}
 
@@ -615,7 +781,7 @@
 	}
 
 	function loadNpApi() {
-		if ($("#songHistoryCallsignUser").val() == '') {
+		if ($("#songHistoryCallsignUser").val() === '') {
 			alert('Please enter a Callsign');
 			return;
 		}
@@ -627,7 +793,7 @@
 	}
 
 	function setVolume50() {
-		player.setVolume(.5);
+		player.setVolume(0.5);
 	}
 
 	function mute() {
@@ -639,13 +805,16 @@
 	}
 
 	function getArtistData() {
-		if (song && song.artist() != null)
+		if (song && song.artist() != null) {
 			song.artist().fetchData();
+		}
 	}
 
 	function onPlayerReady() {
 		//Return if MediaPlayer is not loaded properly...
-		if (player.MediaPlayer == undefined) return;
+		if (player.MediaPlayer === undefined) {
+			return;
+		}
 
 		//Listen on companion-load-error event
 		//companions.addEventListener("companion-load-error", onCompanionLoadError);
@@ -738,6 +907,26 @@
 		setStatus('Ready');
 	}
 
+	/**
+	 * Custom function to handle when a vast ad fails. This runs when there is an `ad-playback-error` event.
+	 *
+	 * @param e
+	 */
+	function adError(e) {
+		setStatus('Ready');
+
+		postVastAd();
+		var station = gmr.callsign;
+		if (livePlaying) {
+			player.stop();
+		}
+
+		livePlayer.classList.add('live-player--active');
+		player.play({station: station, timeShift: true});
+		setPlayingStyles();
+		setTimeout(replaceNPInfo, 2000);
+	}
+
 	function onAdCountdown(e) {
 		debug('Ad countdown : ' + e.data.countDown + ' second(s)');
 	}
@@ -771,11 +960,13 @@
 				}
 			});
 
-			if (bigboxIndex > -1)
+			if (bigboxIndex > -1) {
 				companions.loadVASTCompanionAd('td_adserver_bigbox', vastCompanions[bigboxIndex]);
+			}
 
-			if (leaderboardIndex > -1)
+			if (leaderboardIndex > -1) {
 				companions.loadVASTCompanionAd('td_adserver_leaderboard', vastCompanions[leaderboardIndex]);
+			}
 		}
 	}
 
@@ -810,11 +1001,13 @@
 		debug('Title:' + e.data.cuePoint.cueTitle + ' - Artist:' + e.data.cuePoint.artistName);
 		console.log(e);
 
-		if (currentTrackCuePoint && currentTrackCuePoint != e.data.cuePoint)
+		if (currentTrackCuePoint && currentTrackCuePoint != e.data.cuePoint) {
 			clearNpe();
+		}
 
-		if (e.data.cuePoint.nowplayingURL)
+		if (e.data.cuePoint.nowplayingURL) {
 			player.Npe.loadNpeMetadata(e.data.cuePoint.nowplayingURL, e.data.cuePoint.artistName, e.data.cuePoint.cueTitle);
+		}
 
 		currentTrackCuePoint = e.data.cuePoint;
 
@@ -924,8 +1117,9 @@
 
 		var techInfo = '<p><span class="label label-info">Api version: ' + apiVersion + ' - Technology: ' + techType;
 
-		if (player.flash.available)
+		if (player.flash.available) {
 			techInfo += ' - Your current version of flash plugin is: ' + player.flash.version.major + '.' + player.flash.version.minor + '.' + player.flash.version.rev;
+		}
 
 		techInfo += '</span></p>';
 
@@ -933,7 +1127,7 @@
 	}
 
 	function loadPwaData() {
-		if ($("#pwaCallsign").val() == '' || $("#pwaStreamId").val() == '') {
+		if ($("#pwaCallsign").val() === '' || $("#pwaStreamId").val() === '') {
 			alert('Please enter a Callsign and a streamid');
 			return;
 		}
@@ -969,7 +1163,9 @@
 	}
 
 	function playRunSpotAdById() {
-		if ($("#runSpotId").val() == '') return;
+		if ($("#runSpotId").val() === '') {
+			return;
+		}
 
 		detachAdListeners();
 		attachAdListeners();
@@ -989,7 +1185,9 @@
 	}
 
 	function playVastAdByUrl() {
-		if ($("#vastAdUrl").val() == '') return;
+		if ($("#vastAdUrl").val() === '') {
+			return;
+		}
 
 		detachAdListeners();
 		attachAdListeners();
@@ -1021,14 +1219,14 @@
 	function attachAdListeners() {
 		if (player.addEventListener){
 			player.addEventListener('ad-playback-start', onAdPlaybackStart);
-			player.addEventListener('ad-playback-error', onAdPlaybackComplete);
+			player.addEventListener('ad-playback-error', adError);
 			player.addEventListener('ad-playback-complete', onAdPlaybackComplete);
 			player.addEventListener('ad-countdown', onAdCountdown);
 			player.addEventListener('vast-process-complete', onVastProcessComplete);
 			player.addEventListener('vpaid-ad-companions', onVpaidAdCompanions);
 		} else if (player.attachEvent) {
 			player.attachEvent('ad-playback-start', onAdPlaybackStart);
-			player.attachEvent('ad-playback-error', onAdPlaybackComplete);
+			player.attachEvent('ad-playback-error', adError);
 			player.attachEvent('ad-playback-complete', onAdPlaybackComplete);
 			player.attachEvent('ad-countdown', onAdCountdown);
 			player.attachEvent('vast-process-complete', onVastProcessComplete);
@@ -1039,14 +1237,14 @@
 	function detachAdListeners() {
 		if (player.removeEventListener){
 			player.removeEventListener('ad-playback-start', onAdPlaybackStart);
-			player.removeEventListener('ad-playback-error', onAdPlaybackComplete);
+			player.removeEventListener('ad-playback-error', adError);
 			player.removeEventListener('ad-playback-complete', onAdPlaybackComplete);
 			player.removeEventListener('ad-countdown', onAdCountdown);
 			player.removeEventListener('vast-process-complete', onVastProcessComplete);
 			player.removeEventListener('vpaid-ad-companions', onVpaidAdCompanions);
 		} else if (player.detachEvent) {
 			player.detachEvent('ad-playback-start', onAdPlaybackStart);
-			player.detachEvent('ad-playback-error', onAdPlaybackComplete);
+			player.detachEvent('ad-playback-error', adError);
 			player.detachEvent('ad-playback-complete', onAdPlaybackComplete);
 			player.detachEvent('ad-countdown', onAdCountdown);
 			player.detachEvent('vast-process-complete', onVastProcessComplete);
@@ -1080,8 +1278,9 @@
 		var id = asyncData ? 'asyncData' : 'npeInfo';
 		var list = $("#" + id);
 
-		if (asyncData == false)
+		if (asyncData === false) {
 			list.html('<span class="label label-inverse">Npe Info:</span>');
+		}
 
 		list.append(songData);
 	}
@@ -1098,8 +1297,9 @@
 		for (var i = 0; i < pictures.length; i++) {
 			picturesIds.push(pictures[i].id);
 		}
-		if (picturesIds.length > 0)
+		if (picturesIds.length > 0) {
 			artist.fetchPictureByIds(picturesIds);
+		}
 
 		var songData = getArtist();
 
@@ -1113,15 +1313,16 @@
 		var songData = '<span class="label label-inverse">Photos:</span><br>';
 
 		for (var i = 0; i < pictures.length; i++) {
-			if (pictures[i].getFiles())
+			if (pictures[i].getFiles()) {
 				songData += '<a href="' + pictures[i].getFiles()[0].url + '" rel="lightbox[npe]" title="Click on the right side of the image to move forward."><img src="' + pictures[i].getFiles()[0].url + '" width="125" /></a>&nbsp;';
+			}
 		}
 
 		$("#asyncData").append(songData);
 	}
 
 	function getArtist() {
-		if (song != undefined) {
+		if (song !== undefined) {
 			var songData = '<span class="label label-inverse">Artist:</span>';
 
 			songData += '<ul><li>Artist id: ' + song.artist().id + '</li>';
@@ -1137,11 +1338,11 @@
 				songData += '<li>Album ' + ( i + 1 ) + ': ' + albums[i].getTitle() + '</li>';
 			}
 			var similars = song.artist().getSimilar();
-			for (var i = 0; i < similars.length; i++) {
+			for (i < similars.length; i++;) {
 				songData += '<li>Similar artist ' + ( i + 1 ) + ': ' + similars[i].name + '</li>';
 			}
 			var members = song.artist().getMembers();
-			for (var i = 0; i < members.length; i++) {
+			for (i < members.length; i++;) {
 				songData += '<li>Member ' + ( i + 1 ) + ': ' + members[i].name + '</li>';
 			}
 
@@ -1151,7 +1352,7 @@
 			songData += '<li>Artist biography: ' + song.artist().getBiography().substring(0, 2000) + '...</small>';
 
 			var genres = song.artist().getGenres();
-			for (var i = 0; i < genres.length; i++) {
+			for (i < genres.length; i++;) {
 				songData += '<li>Genre ' + ( i + 1 ) + ': ' + genres[i] + '</li>';
 			}
 			songData += '</ul>';
@@ -1165,10 +1366,11 @@
 	function getNPEData() {
 		var innerContent = 'NPE Data undefined';
 
-		if (song != undefined && song.album()) {
+		if (song !== undefined && song.album()) {
 			var _iTunesLink = '';
-			if (song.album().getBuyUrl() != null)
+			if (song.album().getBuyUrl() != null) {
 				_iTunesLink = '<a target="_blank" title="' + song.album().getBuyUrl() + '" href="' + song.album().getBuyUrl() + '">Buy on iTunes</a><br/>';
+			}
 
 			innerContent = '<p><b>Album:</b> ' + song.album().getTitle() + '<br/>' +
 			_iTunesLink +
@@ -1191,10 +1393,11 @@
 
 	function debug(info, error) {
 
-		if (error)
+		if (error) {
 			console.error(info);
-		else
+		} else {
 			console.log(info);
+		}
 
 		$('#debugInformation').append(info);
 		$('#debugInformation').append('\n');
@@ -1237,7 +1440,7 @@
 		setPlayerTrackName();
 		setPlayerArtist();
 		resetInlineAudioStates();
-		setTimeout(setPlayingStyles, 1000);
+		setPlayingStyles();
 		setInlineAudioStates();
 		setInlineAudioUX();
 	};
@@ -1273,10 +1476,12 @@
 
 	var setPlayerTrackName = function() {
 		var template = _.template('<div class="now-playing__title"><%- title %></div>'),
-			$trackTitleDiv = $('.now-playing__title');
+			$trackTitleDiv = $('.now-playing__title'),
+			$trackTitleWrap = '<div class="audio__title">',
+			$time = '</div><div class="audio__time"><span class="audio__time--inline">(</span><div class="audio__time--elapsed"></div><span class="audio__time--inline"> / </span><div class="audio__time--remaining"></div><span class="audio__time--inline">)</span></div>';
 
 		if ( $trackTitleDiv.length > 0 ) {
-			$trackTitleDiv.text( customTrack );
+			$trackTitleDiv.html( $trackTitleWrap + customTrack + $time );
 		} else {
 			$trackInfo.prepend( template({ title: customTrack }) );
 		}
@@ -1372,7 +1577,7 @@
 
 	function pjaxStop() {
 		$(document).on('pjax:click', function(event) {
-			event.preventDefault()
+			event.preventDefault();
 		});
 	}
 
@@ -1402,12 +1607,18 @@
 
 		for (i = 0; i < timeleft.length; ++i) {
 			s = timeLeft % 60;
+			if (isNaN(s)) {
+				s = '00';
+			} else {
+				s = s < 10 ? "0" + s : s;
+			}
+
 			m = Math.floor( timeLeft / 60 ) % 60;
+			if (isNaN(m)) {
+				m = '0';
+			}
 
-			s = s < 10 ? "0"+s : s;
-			m = m < 10 ? +m : m;
-
-			timeleft[i].innerHTML = m+":"+s;
+			timeleft[i].innerHTML = m + ":" + s;
 		}
 	}
 

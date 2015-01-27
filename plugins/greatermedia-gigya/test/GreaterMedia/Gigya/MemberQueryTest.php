@@ -680,4 +680,65 @@ class MemberQueryTest extends \WP_UnitTestCase {
 		$this->assertEquals( $expected, $actual );
 	}
 
+	/* email engagement tally */
+	function test_it_can_build_email_engagement_tally_constraint() {
+		$constraint = array(
+			'type'        => 'data:email_engagement_tally',
+			'operator'    => 'equals',
+			'conjunction' => 'and',
+			'valueType'   => 'integer',
+			'value'       => 10,
+			'event_name'  => 'message_click',
+		);
+
+		$actual   = $this->query->clause_for_constraint( $constraint );
+		$expected = 'data.email_message_click_count = 10';
+		$this->assertEquals( $expected, $actual );
+	}
+
+	function test_it_can_build_email_engagement_tally_constraint_for_zero_value() {
+		$constraint = array(
+			'type'        => 'data:email_engagement_tally',
+			'operator'    => 'equals',
+			'conjunction' => 'and',
+			'valueType'   => 'integer',
+			'value'       => 0,
+			'event_name'  => 'message_click',
+		);
+
+		$actual   = $this->query->clause_for_constraint( $constraint );
+		$expected = 'data.email_message_click_count is null';
+		$this->assertEquals( $expected, $actual );
+	}
+
+	/* email engagement */
+	function test_it_can_build_email_engagement_constraint() {
+		$constraint = array(
+			'type'        => 'data:email_engagement',
+			'operator'    => 'contains',
+			'conjunction' => 'and',
+			'valueType'   => 'enum',
+			'value'       => '123',
+			'event_name'  => 'message_click',
+		);
+
+		$actual   = $this->query->clause_for_constraint( $constraint );
+		$expected = "data.email_message_click_list contains '123'";
+		$this->assertEquals( $expected, $actual );
+	}
+
+	function test_it_can_build_email_engagement_constraint_for_any_value() {
+		$constraint = array(
+			'type'        => 'data:email_engagement',
+			'operator'    => 'contains',
+			'conjunction' => 'and',
+			'valueType'   => 'enum',
+			'value'       => 'any',
+			'event_name'  => 'message_click',
+		);
+
+		$actual   = $this->query->clause_for_constraint( $constraint );
+		$expected = "data.email_message_click_count > 0";
+		$this->assertEquals( $expected, $actual );
+	}
 }

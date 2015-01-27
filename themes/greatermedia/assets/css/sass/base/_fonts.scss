@@ -56,11 +56,11 @@ $icon-font:     'gmr-icons';
 
 @font-face {
 	font-family: 'gmr-icons';
-	src:url('#{$asset-root}fonts/icon-font/gmr-icons.eot?-2fhr6q');
-	src:url('#{$asset-root}fonts/icon-font/gmr-icons.eot?#iefix-2fhr6q') format('embedded-opentype'),
-		url('#{$asset-root}fonts/icon-font/gmr-icons.woff?-2fhr6q') format('woff'),
-		url('#{$asset-root}fonts/icon-font/gmr-icons.ttf?-2fhr6q') format('truetype'),
-		url('#{$asset-root}fonts/icon-font/gmr-icons.svg?-2fhr6q#icomoon') format('svg');
+	src:url('#{$asset-root}fonts/icon-font/gmr-icons.eot?-2ikn7k');
+	src:url('#{$asset-root}fonts/icon-font/gmr-icons.eot?#iefix-2ikn7k') format('embedded-opentype'),
+		url('#{$asset-root}fonts/icon-font/gmr-icons.woff?-2ikn7k') format('woff'),
+		url('#{$asset-root}fonts/icon-font/gmr-icons.ttf?-2ikn7k') format('truetype'),
+		url('#{$asset-root}fonts/icon-font/gmr-icons.svg?-2ikn7k#icomoon') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
@@ -231,3 +231,6 @@ $icon-font:     'gmr-icons';
 	content: "\e625";
 }
 
+.icon-radio-tower:before {
+	content: "\e626";
+}

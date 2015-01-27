@@ -11,9 +11,6 @@ var ListConstraint = Constraint.extend({
 	initialize: function(attr, opts) {
 		this.choicesLoaded = false;
 		Constraint.prototype.initialize.call(this, attr, opts);
-
-		this.listChoices = new Backbone.Collection([]);
-		this.loadList();
 	},
 
 	getListTypeName: function() {
@@ -21,15 +18,22 @@ var ListConstraint = Constraint.extend({
 		var parts   = type.split(':');
 		var subType = parts[1];
 
+		console.log('getListTypeName', type, parts, subType);
 		return subType.replace('_list', '');
 	},
 
 	getChoices: function() {
+		if (!this.listChoices) {
+			this.listChoices = new Backbone.Collection([]);
+			this.loadList();
+		}
+
 		return this.listChoices;
 	},
 
 	loadList: function() {
 		var type   = this.getListTypeName();
+		console.log('loadList: type', type);
 		var params = { 'type': type };
 
 		this.trigger('loadListStart');

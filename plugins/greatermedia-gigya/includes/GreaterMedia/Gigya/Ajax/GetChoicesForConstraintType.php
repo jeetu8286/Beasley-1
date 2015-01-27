@@ -15,6 +15,12 @@ class GetChoicesForConstraintType extends AjaxHandler {
 			case 'contest':
 				return $this->get_contest_choices();
 
+			case 'survey':
+				return $this->get_survey_choices();
+
+			case 'email_engagement':
+				return $this->get_email_group_choices();
+
 			case 'member_query':
 			case 'member_query_message_open':
 			case 'member_query_message_click':
@@ -62,6 +68,12 @@ class GetChoicesForConstraintType extends AjaxHandler {
 		);
 	}
 
+	function get_survey_choices() {
+		return $this->get_choices_for_post_type(
+			'survey', 'publish', 'survey_embedded_form'
+		);
+	}
+
 	function get_member_query_choices() {
 		return $this->get_choices_for_post_type(
 			'member_query', 'publish', 'mqsm_email_segment_id'
@@ -79,6 +91,15 @@ class GetChoicesForConstraintType extends AjaxHandler {
 				'value' => strval( $group['group_id'] )
 			);
 		}
+
+		return $choices;
+	}
+
+	function get_email_group_choices() {
+		$choices = array(
+			'static' => $this->get_static_group_choices(),
+			'member_query' => $this->get_member_query_choices(),
+		);
 
 		return $choices;
 	}

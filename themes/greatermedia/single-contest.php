@@ -18,7 +18,6 @@ get_header(); ?>
 		
 				<?php if ( has_post_thumbnail() ) : ?>
 					<div class="contest__thumbnail" style="background-image:url(<?php gm_post_thumbnail_url( 'gmr-contest-thumbnail' ); ?>)">
-						<?php image_attribution(); ?>
 					</div>
 				<?php endif; ?>
 

@@ -1,11 +1,5 @@
-.entry2__thumbnail a {
-	.format-audio &,
-	.format-gallery &,
-	.format-video &,
-	.type-contest &,
-	.type-tribe_events & {
-		font-size: 10%;
-	}
+.header__search--btn:before {
+	font-size: 1.125rem;
 }
 
 .gallery__next--btn:after,
@@ -15,11 +9,13 @@
 }
 
 .type-contest .entry2__thumbnail--end-date, .type-contest .entry2__thumbnail--contest-type {
+	font-size: 16px;
 	font-size: 1rem;
 }
 
 .entry2__thumbnail--event-date,
 .entry2__thumbnail--contest-type {
+	font-size: 16px !important;
 	font-size: 1rem !important;
 }
 

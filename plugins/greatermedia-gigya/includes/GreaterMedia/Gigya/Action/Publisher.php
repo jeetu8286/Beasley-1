@@ -21,27 +21,20 @@ class Publisher extends Task {
 	public $counter_actions = array(
 		'comment',
 		'contest',
+		'survey',
 		'social_share',
 
-		'member_query_message_open',
-		'static_group_message_open',
-		'mailing_message_open',
-
-		'member_query_message_click',
-		'static_group_message_click',
-		'mailing_message_click',
+		'email_message_open',
+		'email_message_click',
 	);
 
 	public $list_actions = array(
 		'contest',
+		'survey',
 		'social_share',
-		'member_query_message_open',
-		'static_group_message_open',
-		'mailing_message_open',
 
-		'member_query_message_click',
-		'static_group_message_click',
-		'mailing_message_click',
+		'email_message_open',
+		'email_message_click',
 	);
 
 	function get_task_name() {

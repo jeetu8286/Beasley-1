@@ -20,14 +20,19 @@
 			// when it is reached. 
 			var waypoint_context = null; 
 			if ( auto_load ) {
-				$button.waypoint({
-					handler: function(direction) {
-						// Store the Waypoint context so we can refresh it later.
-						waypoint_context = this.context; 
+				try {					
+					$button.waypoint({
+						handler: function(direction) {
+							// Store the Waypoint context so we can refresh it later.
+							waypoint_context = this.context; 
 						$button.trigger('click'); 
-					},
-					offset: 'bottom-in-view'
-				});
+						},
+						offset: 'bottom-in-view'
+					});
+				} catch ( e ) {
+					// Waypoints not supported, disable autoload. 
+					auto_load = false; 
+				}
 			}
 
 			var hide_button = function() {

@@ -86,7 +86,7 @@ class GreaterMediaClosuresMetaboxes {
 		// general location metabox
 		echo '<table>';
 		echo '<tr>';
-		echo '<td><label for="gmedia_closure_general_location">General Location:<label></td><td><input size="80" id="gmedia_closure_general_location" name="gmedia_closure_general_location" type="text" value="' . esc_html( $closure_general_location ) . '" /></td>';
+		echo '<td><label for="gmedia_closure_general_location">General Location:<label></td><td><input class="widefat" size="80" id="gmedia_closure_general_location" name="gmedia_closure_general_location" type="text" value="' . esc_html( $closure_general_location ) . '" /></td>';
 		echo '</tr>';
 		echo '<tr>';
 		echo '<td><label for="gmedia_closure_type">Closure Type:<label></td>';
@@ -101,7 +101,8 @@ class GreaterMediaClosuresMetaboxes {
 			'taxonomy'  => GreaterMediaClosuresCPT::CLOSURE_TYPE_SLUG,
 			'name'  => 'gmedia_closure_type',
 			'id'  => 'gmedia_closure_type',
-			'selected' => $selected
+			'selected' => $selected,
+			'show_option_none'   => 'none'
 		);
 		wp_dropdown_categories( $args );
 		echo '</td>';

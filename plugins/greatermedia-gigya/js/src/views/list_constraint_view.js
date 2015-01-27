@@ -8,6 +8,8 @@ var ListConstraintView = ConstraintView.extend({
 		this.listenTo(this.model, 'loadListStart', this.didLoadListStart);
 		this.listenTo(this.model, 'loadListSuccess', this.didLoadListSuccess);
 		this.listenTo(this.model, 'loadListError', this.didLoadListError);
+
+		var choices = this.model.getChoices();
 	},
 
 	didLoadListStart: function() {

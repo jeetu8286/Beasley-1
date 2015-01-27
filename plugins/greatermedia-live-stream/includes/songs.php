@@ -195,16 +195,16 @@ function gmr_songs_blogroll_widget_item( $item ) {
 		return $item;
 	}
 
-	$item = '<div class="live-link__song">';
-		$item .= '<div class="live-link__song--artist">';
-			$item .= get_post_meta( $song->ID, 'artist', true );
-		$item .= '</div>';
-		$item .= '<div class="live-link__song--title">';
-			$item .= '<a href="' . esc_url( get_permalink( $song->post_parent ) ) . '">';
+	$item = '<a href="' . esc_url( get_permalink( $song->post_parent ) ) . '">';
+		$item .= '<div class="live-link__song">';
+			$item .= '<div class="live-link__song--artist">';
+				$item .= get_post_meta( $song->ID, 'artist', true );
+			$item .= '</div>';
+			$item .= '<div class="live-link__song--title">';
 				$item .= get_the_title();
-			$item .= '</a>';
+			$item .= '</div>';
 		$item .= '</div>';
-	$item .= '</div>';
+	$item .= '</a>';
 
 	return $item;
 }

@@ -23,24 +23,18 @@ class MessageOpen extends Webhook {
 		$subject        = $this->get_subject( $params );
 		$event_name     = $this->get_event_name();
 
+		$groups_to_log  = array();
 		$member_queries = $this->get_member_queries_for_mailing( $mailing_id );
-		$this->save_message_actions(
-			"member_query_{$event_name}", $member_queries, $subject, $gigya_user_id
-		);
+		$static_groups  = $this->get_static_groups_for_mailing( $mailing_id );
+		$groups_to_log  = array_merge( $groups_to_log, $member_queries, $static_groups );
 
-		$static_groups = $this->get_static_groups_for_mailing( $mailing_id );
-		$this->save_message_actions(
-			"static_group_{$event_name}", $static_groups, $subject, $gigya_user_id
-		);
-
-		if ( count( $member_queries ) === 0 && count( $static_groups ) === 0 ) {
-			$this->save_mailing_action(
-				"mailing_{$event_name}",
-				$mailing_id,
-				$subject,
-				$gigya_user_id
-			);
+		if ( count( $groups_to_log ) === 0 ) {
+			$groups_to_log[] = $mailing_id;
 		}
+
+		$this->save_message_actions(
+			"email_{$event_name}", $groups_to_log, $subject, $gigya_user_id
+		);
 	}
 
 	function get_mailing_id( $params ) {

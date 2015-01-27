@@ -3,6 +3,7 @@
 	$(document).ready(function() {
 		var $onair = $('#on-air'),
 			schedule = [],
+			fallback = '',
 			current_show = {},
 			track_schedule, update_onair;
 
@@ -11,12 +12,14 @@
 		}
 
 		update_onair = function(title, show) {
-			$onair.html('<div class="on-air__title">' + title + ':</div><div class="on-air__show">' + show + '</div>');
+			$onair.find('.on-air__title').text(title);
+			$onair.find('.on-air__show').text(show);
 		};
 
 		track_schedule = function() {
 			var now = new Date(),
 				next = new Date(now.getTime() + 10 * 60 * 1000), // 10 minutes later
+				found = false,
 				starts, ends;
 
 			for (var i = 0; i < schedule.length; i++) {
@@ -25,18 +28,27 @@
 				
 				if (starts <= now && now <= ends) {
 					current_show = schedule[i];
-					update_onair('On Air', schedule[i].title);
+					update_onair('On Air:', schedule[i].title);
+					found = true;
 				}
 
 				if (starts <= next && next <= ends && schedule[i].title != current_show.title) {
-					update_onair('Up Next', schedule[i].title);
+					update_onair('Up Next:', schedule[i].title);
+					found = true;
 				}
+			}
+
+			if (!found) {
+				update_onair('', fallback);
 			}
 		};
 		
 		$.get($onair.data('endpoint'), function(response) {
-			if (response.success && $.isArray(response.data)) {
-				schedule = response.data;
+			if (response.success && response.data) {
+				fallback = response.data.tagline || '';
+				if ($.isArray(schedule)) {
+					schedule = response.data.schedule;
+				}
 				
 				track_schedule();
 				setInterval(track_schedule, 1000);

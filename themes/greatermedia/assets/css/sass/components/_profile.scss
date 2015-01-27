@@ -14,6 +14,7 @@
 	.profile-page__content {
 
 		padding: 1em 7.0833333333335%;
+		background-color: $primary-bg;
 
 		@include bp('large') {
 			display: table-cell;
@@ -27,7 +28,7 @@
 	.profile-page__sidebar {
 		background-color: $featured-primary-bg;
 		color: $color-text-white;
-		background: url( $asset-root + '../images/profile_bg.jpg' );
+		background-image: url( $asset-root + '../images/profile_bg.jpg' );
 		text-align: center;
 
 		@include bp('x-small') {

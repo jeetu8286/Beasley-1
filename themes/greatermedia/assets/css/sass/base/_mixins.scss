@@ -223,9 +223,15 @@
 	background-position: center center;
 	background-size: 100%;
 	background-size: cover; 
+	background-repeat: no-repeat;
 	&:after {
 		content: ''; 
 		display: block;
 		padding-top: $height-as-percentage; 
 	}
+}
+
+@mixin opacity( $opacity ) {
+	opacity: $opacity;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=#{$opacity * 100})";
 }

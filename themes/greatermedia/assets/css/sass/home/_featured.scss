@@ -240,7 +240,8 @@ Curated posts for Featured Articles
 	position: relative;
 	height: 100%;
 	background-size: 100%;
-	background-size: cover; 
+	background-size: cover;
+	background-repeat: no-repeat;
 	background-position: center center; 
 	@include bp(small) {
 		@include span-columns(4 of 4);
