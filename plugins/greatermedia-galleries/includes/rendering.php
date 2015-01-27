@@ -22,7 +22,7 @@ class GreaterMediaGallery {
 		add_filter( 'the_content', array( __CLASS__, 'strip_for_single_gallery' ) );
 
 		// Register scripts
-		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'register_scripts' ) );
+		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'register_scripts' ), 10 );
 	}
 
 	/**
@@ -39,7 +39,7 @@ class GreaterMediaGallery {
 		 * This include all js files for cycle2, located in `assets/js/vendor/cycle2/`
 		 * and `gmr_gallery.js`, located in `assets/js/src/`
 		 */
-		wp_enqueue_script( 'gmr-gallery', GREATER_MEDIA_GALLERIES_URL . "assets/js/gmr_gallery{$postfix}.js", array( 'jquery' ), GREATER_MEDIA_GALLERIES_VERSION, true );
+		wp_enqueue_script( 'gmr-gallery', GREATER_MEDIA_GALLERIES_URL . "assets/js/gmr_gallery{$postfix}.js", array( 'jquery' ), GREATER_MEDIA_GALLERIES_VERSION, false );
 	}
 
 	/**
@@ -278,18 +278,10 @@ class GreaterMediaGallery {
 								$slide_link = get_permalink( $main_post_id ) . '#' . $slide_hash;
 								$image_title = get_the_title( $post ); // title of the gallery image
 
-								$share_fb_url = add_query_arg( array(
-									'u' => $slide_link,
-									'title' => get_the_title()
-								), 'http://facebook.com/sharer/sharer.php' );
+								$share_fb_url = 'http://facebook.com/sharer/sharer.php?u=' . urlencode( $slide_link ) . '&title=' . urlencode( $image_title );
+								$share_twitter_url = 'http://twitter.com/home?status=' . urlencode( $image_title . ' ' . $slide_link );
+								$share_google_url = 'https://plus.google.com/share?url=' . urlencode( $slide_link );
 
-								$share_twitter_url = add_query_arg( array (
-									'status' => get_the_title() . ' ' . $slide_link
-								), 'http://twitter.com/home' );
-
-								$share_google_url = add_query_arg( array (
-									'url' => $slide_link
-								), 'https://plus.google.com/share' );
 								?>
 								<div class="gallery__slide--content"
 									 <?php if ( $use_hash ) : ?>
@@ -306,12 +298,9 @@ class GreaterMediaGallery {
 
 									<div class="gallery__social-and-count">
 										<div class="gallery__social">
-											<a class="icon-facebook social-share-link"
-											   href="<?php echo esc_url( $share_fb_url ); ?>"></a>
-											<a class="icon-twitter social-share-link"
-											   href="<?php echo esc_url( $share_twitter_url ); ?>"></a>
-											<a class="icon-google-plus social-share-link"
-											   href="<?php echo esc_url( $share_google_url ); ?>"></a>
+											<a class="icon-facebook social-share-link popup" href="<?php echo esc_url( $share_fb_url ); ?>"></a>
+											<a class="icon-twitter social-share-link popup" href="<?php echo esc_url( $share_twitter_url ); ?>"></a>
+											<a class="icon-google-plus social-share-link popup" href="<?php echo esc_url( $share_google_url ); ?>"></a>
 										</div>
 										<div class="gallery_count">
 											<?php echo absint( $gallery->current_post + 1 ); ?>
@@ -327,12 +316,9 @@ class GreaterMediaGallery {
 									</div>
 
 									<div class="gallery__social--mobile">
-										<a class="icon-facebook social-share-link"
-										   href="<?php echo esc_url( $share_fb_url ); ?>"></a>
-										<a class="icon-twitter social-share-link"
-										   href="<?php echo esc_url( $share_twitter_url ); ?>"></a>
-										<a class="icon-google-plus social-share-link"
-										   href="<?php echo esc_url( $share_google_url ); ?>"></a>
+										<a class="icon-facebook social-share-link popup" href="<?php echo esc_url( $share_fb_url ); ?>"></a>
+										<a class="icon-twitter social-share-link popup" href="<?php echo esc_url( $share_twitter_url ); ?>"></a>
+										<a class="icon-google-plus social-share-link popup" href="<?php echo esc_url( $share_google_url ); ?>"></a>
 									</div>
 								</div>
 
