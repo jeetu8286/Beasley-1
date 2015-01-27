@@ -12143,23 +12143,62 @@ category: Components
     .podcast .show-mobile {
       display: none !important; } }
 
-.song__archive {
-  list-style: none; }
-  .song__archive li {
-    position: relative;
-    margin-bottom: 1em; }
-  .song__archive .icon-music:before {
-    position: absolute;
-    left: -30px; }
-  .song__archive .song__title, .song__archive .song__artist {
-    display: block;
+.songs__group {
+  display: block; }
+  .songs__group:before, .songs__group:after {
+    content: " ";
+    display: table; }
+  .songs__group:after {
+    clear: both; }
+  @media screen and (min-width: 1024px) {
+    .songs__group {
+      margin-bottom: 2em; } }
+
+.songs__group--date {
+  font-size: 3.24732em;
+  font-weight: 700;
+  color: #929497; }
+  @media screen and (min-width: 1024px) {
+    .songs__group--date {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 23.23176%;
+      clear: both;
+      margin-top: 24px; }
+      .songs__group--date:last-child {
+        margin-right: 0; } }
+
+.songs__group--list {
+  list-style: none;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding: 0; }
+  @media screen and (min-width: 1024px) {
+    .songs__group--list {
+      margin-top: 36px;
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 74.41059%;
+      margin-right: 0; }
+      .songs__group--list:last-child {
+        margin-right: 0; } }
+  .songs__group--list li {
+    margin-bottom: 0.75em; }
+  .songs__group--list .song__time,
+  .songs__group--list .song__title,
+  .songs__group--list .song__artist {
     margin: 0px;
-    font-family: "Open Sans",sans-serif;
-    font-size: 0.88889em; }
-  .song__archive .song__title {
-    margin-bottom: 6px;
+    font-family: "Open Sans", sans-serif; }
+  .songs__group--list .song__title {
     font-size: 1em;
     font-weight: bold; }
+  .songs__group--list .song__time {
+    margin-right: 1em;
+    color: #d0d2d3; }
+  .songs__group--list .song__artist {
+    font-size: 0.88889em; }
 
 .busy-mask {
   visibility: hidden;

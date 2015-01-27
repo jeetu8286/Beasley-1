@@ -1,11 +1,9 @@
 <?php
 /**
- * Archive template file
+ * Songs archive template file
  *
  * @package Greater Media
  * @since   0.1.0
- *
- * @todo this template file still needs to be layed out according to the design
  */
 
 get_header(); ?>
@@ -17,29 +15,28 @@ get_header(); ?>
 			<section class="content">
 
 				<h2 class="content__heading">
-					<?php $object = get_queried_object(); ?>
-					<?php echo ! empty( $object->labels->name ) ? esc_html( strtolower( $object->labels->name ) ) : ''; ?>
-				</h2>
+					Recently played
+					<?php $call_sign = get_query_var( GMR_LIVE_STREAM_CPT ); ?>
+					<?php if ( ! empty( $call_sign ) && ! is_numeric( $call_sign ) ) : ?>
+						on <?php echo esc_html( $call_sign ); ?>
+					<?php endif; ?>
+				</h2><?php
 
-				<?php if ( have_posts() ) :  ?>
+				if ( have_posts() ) : ?>
 
-					<?php get_template_part( 'partials/loop' ); ?>
-					<?php greatermedia_load_more_button( array( 'partial_slug' => 'partials/loop', 'auto_load' => true ) ); ?>
+					<?php get_template_part( 'partials/loop', 'songs' ); ?>
+					<?php greatermedia_load_more_button( array( 'partial_slug' => 'partials/loop-songs', 'auto_load' => false ) ); ?>
 
 				<?php else : ?>
 
 					<article id="post-not-found" class="hentry cf">
 
 						<header class="article-header">
-
-							<h1><?php _e( 'Oops, Post Not Found!', 'greatermedia' ); ?></h1>
-
+							<h1><?php _e( 'Oops, Songs Not Found!', 'greatermedia' ); ?></h1>
 						</header>
 
 						<section class="entry-content">
-
 							<p><?php _e( 'Uh Oh. Something is missing. Try double checking things.', 'greatermedia' ); ?></p>
-
 						</section>
 
 					</article>
