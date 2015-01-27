@@ -2800,6 +2800,10 @@ Community Highlights and Events
       .header__account--btn > span {
         display: table-cell;
         vertical-align: middle; } }
+  @media screen and (min-width: 768px) {
+    .header__account--btn.avatar {
+      padding-top: 25px;
+      padding-bottom: 25px; } }
 
 .header__account--span {
   font-family: "Open Sans", sans-serif;
@@ -2817,7 +2821,7 @@ Community Highlights and Events
   border: 1px solid white; }
   @media screen and (min-width: 768px) {
     .header__account--btn img {
-      max-height: 20px; } }
+      max-height: 32px; } }
 
 .header__account--links {
   display: none; }

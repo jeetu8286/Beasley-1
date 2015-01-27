@@ -51,6 +51,7 @@
 			if (thumbnailURL) {
 				var $img = $('<img />', { src: thumbnailURL });
 				$avatar.html($img);
+				$avatar.addClass('avatar');
 			}
 		},
 
