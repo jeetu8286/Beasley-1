@@ -131,7 +131,6 @@ jQuery( function ( $ ) {
 			self.$items.addClass( 'is-hoverable' );
 			self.$items.find( '.is-highlighted' ).removeClass( 'is-highlighted' ); 
 			self.$last_hovered_item = $( this );
-			console.log('hovering', e);
 		} );
 
 		$items.find( '.is-highlighted' ).removeClass( 'is-highlighted' );
