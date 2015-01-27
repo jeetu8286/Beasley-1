@@ -9413,6 +9413,7 @@ category: Components - Gallery Archive
   display: block;
   margin-right: 7.42297%;
   width: 100%;
+  min-height: 127px;
   padding: 0;
   margin-bottom: 20px;
   color: #404041;
@@ -9424,7 +9425,8 @@ category: Components - Gallery Archive
       float: left;
       display: block;
       margin-right: 4.82916%;
-      width: 100%; }
+      width: 100%;
+      min-height: 120px; }
       .gallery__meta:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 768px) {
@@ -9433,6 +9435,7 @@ category: Components - Gallery Archive
       display: block;
       margin-right: 3.57866%;
       width: 100%;
+      min-height: 118px;
       padding: 0 4%; }
       .gallery__meta:last-child {
         margin-right: 0; } }
@@ -9441,7 +9444,8 @@ category: Components - Gallery Archive
       float: left;
       display: block;
       margin-right: 2.35765%;
-      width: 100%; }
+      width: 100%;
+      min-height: 120px; }
       .gallery__meta:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 1400px) {
