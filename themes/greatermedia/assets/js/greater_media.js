@@ -915,14 +915,17 @@
 
 	init_menu_overlay();
 
-	jQuery(function ($) {
-		$('.popup').on('click', function (ev) {
-			ev.preventDefault();
-			var x = screen.width / 2 - 700 / 2;
-			var y = screen.height / 2 - 450 / 2;
-			window.open($(this).attr('href'), $(this).attr('href'), 'height=485,width=700,scrollbars=yes, resizable=yes,left=' + x + ',top=' + y);
+	(function ($) {
+		$(document).on('click', '.popup', function () {
+			var href = $(this).attr('href'),
+				x = screen.width / 2 - 700 / 2,
+				y = screen.height / 2 - 450 / 2;
+			
+			window.open(href, href, 'height=485,width=700,scrollbars=yes,resizable=yes,left=' + x + ',top=' + y);
+
+			return false;
 		});
-	});
+	})(jQuery);
 
 	function personality_toggle() {
 		var $button = jQuery('.person-toggle');
