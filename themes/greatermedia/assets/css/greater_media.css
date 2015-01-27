@@ -7636,6 +7636,7 @@ category: Components - Shows
     clear: both; }
   .show__header.has-thumbnail {
     background-repeat: no-repeat;
+    background-size: 100%;
     background-size: cover;
     background-position: center; }
   .show__header > div {
@@ -7710,9 +7711,9 @@ category: Components - Shows
         margin: 0;
         width: 100%;
         list-style-type: none; } }
-  @media screen and (min-width: 1024px) {
+  @media screen and (min-width: 1041px) {
     .show__nav {
-      width: 55%;
+      width: 53%;
       float: left;
       margin-top: 1.5em;
       margin-bottom: 0;
@@ -7760,9 +7761,9 @@ category: Components - Shows
   width: 100%;
   text-align: center;
   float: none; }
-  @media screen and (min-width: 1024px) {
+  @media screen and (min-width: 1041px) {
     .show__meta {
-      width: 20%;
+      width: 25%;
       float: right;
       text-align: right;
       margin-top: 1.5em; } }
@@ -7773,7 +7774,10 @@ category: Components - Shows
   .show__meta .social-share-link {
     color: #ffffff;
     border: 1px solid #ffffff;
-    margin-top: 1em; }
+    margin-top: 1em;
+    width: 35px;
+    height: 35px;
+    font-size: 17px; }
     .show__meta .social-share-link:hover, .show__meta .social-share-link:active {
       color: #561015;
       background: #ffffff;

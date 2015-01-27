@@ -183,6 +183,7 @@ category: Components - Shows
 
 	&.has-thumbnail {
 		background-repeat: no-repeat;
+		background-size: 100%;
 		background-size: cover;
 		background-position: center;
 	}
@@ -286,8 +287,8 @@ category: Components - Shows
 		}
 	}
 
-	@include bp(large) {
-		width: 55%;
+	@media screen and (min-width: 1041px) {
+		width: 53%;
 		float: left;
 		margin-top: 1.5em;
 		margin-bottom: 0;
@@ -358,8 +359,8 @@ category: Components - Shows
 	text-align: center;
 	float: none;
 
-	@include bp(large) {
-		width: 20%;
+	@media screen and (min-width: 1041px) {
+		width: 25%;
 		float: right;
 		text-align: right;
 		margin-top: 1.5em;
@@ -375,6 +376,9 @@ category: Components - Shows
 		color: $secondary-text;
 		border: 1px solid $secondary-text;
 		margin-top: 1em;
+		width: 35px;
+		height: 35px;
+		font-size: 17px;
 
 		&:hover, &:active {
 			color: $heath;
