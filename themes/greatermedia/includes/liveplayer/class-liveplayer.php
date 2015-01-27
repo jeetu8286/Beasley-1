@@ -91,13 +91,43 @@ class GreaterMediaLivePlayer {
 		exit;
 	}
 
+	public static function live_stream_server( $xml ) {
+
+		$server = get_transient( 'gmr_livestream_server' );
+
+		if ( false === $server ) {
+
+			$server_loc = (string)$xml->mountpoints[0]->mountpoint[0]->servers->server->ip;
+
+			$server = set_transient( 'gmr_livestream_server', $server_loc, 30 * MINUTE_IN_SECONDS );
+		}
+
+		return $server;
+
+	}
+
+	public static function live_stream_mount( $xml ) {
+
+		$mount = get_transient( 'gmr_livestream_mount' );
+
+		if ( false === $mount ) {
+
+			$mount_point = (string)$xml->mountpoints[0]->mountpoint[0]->mount;
+
+			$mount = set_transient( 'gmr_livestream_mount', $mount_point, 30 * MINUTE_IN_SECONDS );
+		}
+
+		return $mount;
+
+	}
+
 	/**
 	 * Parses the live player endpoint for a server that will render a direct link to use for ie8
 	 *
 	 * @static
 	 * @access public
 	 */
-	public static function ie8_audio_link() {
+	public static function live_audio_link() {
 
 		$active_stream = gmr_streams_get_primary_stream_callsign();
 
@@ -105,9 +135,9 @@ class GreaterMediaLivePlayer {
 
 		$live_stream_config = simplexml_load_file($xmlstr);
 
-		$ip = $live_stream_config->mountpoints[0]->mountpoint[0]->servers->server->ip;
+		$ip = self::live_stream_server( $live_stream_config );
 
-		$mount = $live_stream_config->mountpoints[0]->mountpoint[0]->mount;
+		$mount = self::live_stream_mount( $live_stream_config );
 
 		echo '<div class="live-audio">';
 
