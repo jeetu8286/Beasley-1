@@ -91,6 +91,16 @@ class GreaterMediaLivePlayer {
 		exit;
 	}
 
+	/**
+	 * Returns the server location for live streaming
+	 *
+	 * @static
+	 * @access public
+	 *
+	 * @param $xml
+	 *
+	 * @return bool|mixed
+	 */
 	public static function live_stream_server( $xml ) {
 
 		$server = get_transient( 'gmr_livestream_server' );
@@ -99,13 +109,31 @@ class GreaterMediaLivePlayer {
 
 			$server_loc = (string)$xml->mountpoints[0]->mountpoint[0]->servers->server->ip;
 
+			if ( false === $server_loc ) {
+				return false;
+			}
+
 			$server = set_transient( 'gmr_livestream_server', $server_loc, 30 * MINUTE_IN_SECONDS );
+
+			if ( false === $server ) {
+				return false;
+			}
 		}
 
 		return $server;
 
 	}
 
+	/**
+	 * Returns the mount for live streaming
+	 *
+	 * @static
+	 * @access public
+	 *
+	 * @param $xml
+	 *
+	 * @return bool|mixed
+	 */
 	public static function live_stream_mount( $xml ) {
 
 		$mount = get_transient( 'gmr_livestream_mount' );
@@ -114,7 +142,15 @@ class GreaterMediaLivePlayer {
 
 			$mount_point = (string)$xml->mountpoints[0]->mountpoint[0]->mount;
 
+			if ( false === $mount_point ) {
+				return false;
+			}
+
 			$mount = set_transient( 'gmr_livestream_mount', $mount_point, 30 * MINUTE_IN_SECONDS );
+
+			if ( false === $mount ) {
+				return false;
+			}
 		}
 
 		return $mount;
@@ -122,28 +158,51 @@ class GreaterMediaLivePlayer {
 	}
 
 	/**
-	 * Parses the live player endpoint for a server that will render a direct link to use for ie8
+	 * Returns the xml endpoint as a string
+	 *
+	 * @static
+	 * @access public
+	 *
+	 * @return SimpleXMLElement
+	 */
+	public static function live_stream_endpoint() {
+
+		$active_stream = gmr_streams_get_primary_stream_callsign();
+
+		$xmlstr = "http://playerservices.streamtheworld.com/api/livestream?version=1.8&station={$active_stream}";
+
+		$xml = wp_remote_retrieve_body( wp_remote_get( $xmlstr ) );
+
+		$data = simplexml_load_string( $xml );
+
+		return $data;
+
+	}
+
+	/**
+	 * Echos a full live streaming endpoint
 	 *
 	 * @static
 	 * @access public
 	 */
 	public static function live_audio_link() {
 
-		$active_stream = gmr_streams_get_primary_stream_callsign();
+		$data = self::live_stream_endpoint();
 
-		$xmlstr = "http://playerservices.streamtheworld.com/api/livestream?version=1.8&station={$active_stream}";
+		$ip = self::live_stream_server( $data );
 
-		$live_stream_config = simplexml_load_file($xmlstr);
+		$mount = self::live_stream_mount( $data );
 
-		$ip = self::live_stream_server( $live_stream_config );
+		if ( ! empty( $ip ) && ! empty( $mount ) ) {
 
-		$mount = self::live_stream_mount( $live_stream_config );
+			$endpoint = 'http://' . $ip . '/' . $mount . '.mp3?pname=TdPlayerApi&pversion=2.5';
 
-		echo '<div class="live-audio">';
+			echo '<div class="live-audio">';
 
-		echo '<a href="http://' . $ip . '/' . $mount .'.mp3?pname=TdPlayerApi&pversion=2.5" class="live-audio__link">Listen Live</a>';
+			echo '<a href="' . esc_url( $endpoint ) . '" class="live-audio__link">Listen Live</a>';
 
-		echo '</div>';
+			echo '</div>';
+		}
 
 	}
 
