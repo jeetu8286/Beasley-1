@@ -21,6 +21,7 @@
  
 .entry2__thumbnail {	
 	margin-bottom: $base-line-height * .75; 
+	position: relative;
 	
  	@include bp(small) {
 		@include span-columns(2 of 6);
@@ -37,7 +38,6 @@
 		z-index: 20;
 	}
 	
-	position: relative;
 	
 	&:after {
 		content: '';
@@ -55,9 +55,17 @@
 	background-repeat: no-repeat;
 }
 
+	.entry2__thumbnail--image {
+		background-size: 100%;
+		background-size: cover;
+		background-position: center center;
+		background-repeat: no-repeat;
+		padding-top: 66.666%;
+	}
+
 	.entry2__thumbnail__overlay {
 		background-color: $btn-bg;
-		@include opacity(0.6); 
+		@include opacity(0.6);
 		position: absolute;
 		top: 0;
 		right: 0;
