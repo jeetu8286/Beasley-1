@@ -10,6 +10,10 @@ tr.delete {
 
 .keywords a.submitdelete {
   color: #ed3939; }
+.keywords th.manage-column span {
+  display: block;
+  overflow: hidden;
+  padding: 7px 7px 8px 10px; }
 
 .keyword_meta label {
   vertical-align: baseline; }
