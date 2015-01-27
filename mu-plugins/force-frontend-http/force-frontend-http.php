@@ -26,11 +26,10 @@ class FrontEndHttpRedirector {
 	}
 
 	function get_redirect_url() {
-		$site_url = site_url();
+		$domain   = $_SERVER['SERVER_NAME'];
 		$path     = $_SERVER['REQUEST_URI'];
-		$full_url = $site_url . $path;
 
-		return str_replace( 'https://', 'http://', $full_url );
+		return 'http://' . $domain . $path;
 	}
 
 }
