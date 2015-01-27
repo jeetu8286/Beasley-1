@@ -2,7 +2,15 @@
 	$(document).ready(function () {
 		var tmpl = $('#gallery-item-tmpl').html(),
 			$add_button = $('.add-gallery-item'),
-			uploader;
+			uploader, set_dirty;
+
+		set_dirty = function() {
+			var editor = typeof tinymce !== 'undefined' && tinymce.get('content');
+
+			if (editor) {
+				editor.isNotDirty = false;
+			}
+		};
 		
 		if ($.fn.sortable) {
 			$('.gallery-preview')
@@ -12,10 +20,7 @@
 					cursor: 'move',
 					distance: 20,
 					placeholder: 'gallery-item gallery-item-placeholder',
-					stop: function() {
-						var editor = typeof tinymce !== 'undefined' && tinymce.get('content');
-						editor.isNotDirty = false;
-					}
+					stop: set_dirty
 				})
 				.disableSelection();
 		}
@@ -51,18 +56,14 @@
 		});
 
 		$add_button.click(function() {
-			var editor = typeof tinymce !== 'undefined' && tinymce.get('content');
-
-			editor.isNotDirty = false;
+			set_dirty();
 			uploader.open();
 			
 			return false;
 		});
 
 		$(document).on('click', '.remove-gallery-item', function() {
-			var editor = typeof tinymce !== 'undefined' && tinymce.get('content');
-			
-			editor.isNotDirty = false;
+			set_dirty();
 			$(this).parent().remove();
 		});
 	});
