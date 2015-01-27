@@ -189,7 +189,8 @@ category: Components - Shows
 	margin-bottom: 10px;
 }
 
-.podcast__parent--title {
+.podcast__parent--title,
+.podcast__child--title {
 	display: inline-block;
 	font-weight: bold;
 }
@@ -459,4 +460,16 @@ a.podcast__rss:active {
 			max-width: 60%;
 		}
 	}
+}
+
+header.podcast__header {
+	padding-left: 1em;	
+}
+
+.podcast__archive_title {
+	margin-bottom: 10px;
+}
+
+.podcast__child--title {
+	margin-bottom: 10px;
 }
