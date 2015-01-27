@@ -8316,6 +8316,15 @@ category: Components - Shows
   border: 1px solid #d22228;
   margin: 0 -1px; }
 
+.gmr_gallery .entry__related-posts .section-header {
+  font-size: 1.26563em;
+  font-weight: bold;
+  color: #6d6e70; }
+  .gmr_gallery .entry__related-posts .section-header a, .gmr_gallery .entry__related-posts .section-header a:visited {
+    color: #282827; }
+  .gmr_gallery .entry__related-posts .section-header a:hover, .gmr_gallery .entry__related-posts .section-header a:active, .gmr_gallery .entry__related-posts .section-header a:focus {
+    color: #aa1c20; }
+
 .widget--live-player {
   padding: 0;
   margin: 0 0 1em;
