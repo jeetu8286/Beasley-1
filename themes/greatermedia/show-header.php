@@ -23,7 +23,7 @@
 		<div class="show__cast">
 			<?php if ( get_post_meta( $post->ID, 'logo_image', true ) ) {
 		        $src = get_post_meta( $post->ID, 'logo_image', true );
-		        echo wp_get_attachment_image( $src );
+		        echo wp_get_attachment_image( $src, 'thumbnail' );
 			} ?>
 		</div>
 		<nav class="show__nav">
