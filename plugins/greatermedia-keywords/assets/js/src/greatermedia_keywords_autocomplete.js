@@ -41,6 +41,8 @@ jQuery( function ( $ ) {
 		self.is_navigating = false;
 		self.position = null;
 		self.stack_size = $items.children().length;
+		
+		self.$last_hovered_item = null;
 
 		function _highlight_item() {
 			$items.find( '.is-highlighted' ).removeClass( 'is-highlighted' );
@@ -48,13 +50,15 @@ jQuery( function ( $ ) {
 		}
 
 		function up() {
+			resume_keyboard();
+			
 			if ( null === self.position || $items.children().length !== self.stack_size ) {
-				self.position = $items.children().length + 1;
+				self.position = $items.children().length; // Put at last index + 1
 				self.stack_size =  $items.children().length;
 			}
-
+			
 			if ( 0 === self.position ) {
-				self.position = $items.children().length - 1;
+				self.position = $items.children().length - 1; // Put at last index
 			} else {
 				self.position--;
 			}
@@ -63,6 +67,8 @@ jQuery( function ( $ ) {
 		}
 
 		function down() {
+			resume_keyboard(); 
+			
 			if ( null === self.position || $items.children().length !== self.stack_size ) {
 				self.position = -1;
 				self.stack_size =  $items.children().length;
@@ -75,6 +81,15 @@ jQuery( function ( $ ) {
 			}
 
 			_highlight_item();
+		}
+		
+		function resume_keyboard() {
+			if ( ! self.$last_hovered_item ) {
+				return; 
+			}
+			
+			self.position = self.$last_hovered_item.index();
+			self.$last_hovered_item = null; 
 		}
 
 		$context.keydown( function( e ) {
@@ -108,14 +123,21 @@ jQuery( function ( $ ) {
 				self.is_navigating = false;
 			}
 		} );
+		
+		$items.on( 'hover', '> *', function ( e ) {
+			self.$items.addClass( 'is-hoverable' );
+			self.$items.find( '.is-highlighted' ).removeClass( 'is-highlighted' ); 
+			self.$last_hovered_item = $( this );
+		} );
 
-		$items.find( 'is-highlighted' ).removeClass( 'is-highlighted' );
+		$items.find( '.is-highlighted' ).removeClass( 'is-highlighted' );
 		$items.addClass( 'is-hoverable' );
 	}
 
 	Arrow_Key_Navigator.prototype.cancel = function () {
 		this.is_navigating = false;
 		this.position = null;
+		this.$last_hovered_item = null; 
 
 		if ( this.cancel_callback ) {
 			this.cancel_callback();
