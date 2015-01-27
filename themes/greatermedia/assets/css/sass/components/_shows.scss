@@ -878,3 +878,23 @@ category: Components - Shows
 	border: 1px solid $cardinal;
 	margin: 0 -1px;
 }
+
+.entry__related-posts .section-header {
+
+	.gmr_gallery & {
+
+		font-size: ms(2);
+		font-weight: bold;
+		color: $medium-dark-gray;
+
+		a, a:visited {
+			color: $dark-gray;
+		}
+
+		a:hover, a:active, a:focus {
+			color: $primary-link-hover;
+		}
+
+	}
+
+}
