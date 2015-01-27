@@ -1,27 +1,63 @@
-.song__archive {
+.songs__group {
+	@include row();
+}
 
+.songs__group--date {
+	font-size: ms(10);
+	font-weight: 700;
+	color: $secondary-heading;
+
+	@include bp(large) {
+		@include span-columns(3 of 12);
+		clear: both;
+	}
+
+}
+
+.songs__group--list {
 	list-style: none;
+	margin-top: 0;
+	margin-bottom: 0;
+	padding: 0;
+
+	@include bp(large) {
+		margin-top: 12px;
+		@include span-columns(9 of 12);
+		@include omega;
+	}
 
 	li {
-		position: relative;
-		margin-bottom: 1em;
+		margin-bottom: 0.75em;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
 	}
 
-	.icon-music:before {
-		position: absolute;
-		left: -30px;
-	}
-
-	.song__title, .song__artist {
-		display: block;
+	.song__time,
+	.song__title,
+	.song__artist {
 		margin: 0px;
-		font-family: "Open Sans",sans-serif;
-		font-size: 0.88889em;
+		font-family: "Open Sans", sans-serif;
 	}
 
 	.song__title {
-		margin-bottom: 6px;
 		font-size: ms(0);
 		font-weight: bold;
+	}
+
+	.song__time {
+		margin-right: 1em;
+		color: $color-gray-light;
+	}
+
+	.song__artist {
+		font-size: ms(-1);
+	}
+}
+
+@include bp(large) {
+	.post-type-archive-songs .posts-pagination {
+		margin-top: 2em;
 	}
 }
