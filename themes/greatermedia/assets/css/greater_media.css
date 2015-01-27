@@ -9315,9 +9315,12 @@ category: Components - Gallery Archive
   position: relative; }
 
 .gallery__slide--content {
+  display: none;
   position: absolute;
   /* prevents a flash of all the slides displayed in flow order */
   width: 100%; }
+  .gallery__slide--content.cycle-slide-active {
+    display: block; }
 
 .gallery__slide--content.cycle-slide-active {
   opacity: 1;
