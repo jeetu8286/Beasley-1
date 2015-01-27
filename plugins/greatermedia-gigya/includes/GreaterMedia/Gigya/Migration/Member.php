@@ -118,6 +118,10 @@ class Member {
 		//return $this->marketron_status !== 'Bouncedback - Terminated';
 	}
 
+	function is_facebook_member() {
+		return ! is_null( $this->facebook_member );
+	}
+
 	function export() {
 		$account = array();
 		$account['UID'] = $this->member_id;
