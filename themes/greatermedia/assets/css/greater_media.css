@@ -500,7 +500,7 @@ category: Base - Typography
   src: url("../fonts/icon-font/gmr-icons.eot?#iefix-2ikn7k") format("embedded-opentype"), url("../fonts/icon-font/gmr-icons.woff?-2ikn7k") format("woff"), url("../fonts/icon-font/gmr-icons.ttf?-2ikn7k") format("truetype"), url("../fonts/icon-font/gmr-icons.svg?-2ikn7k#icomoon") format("svg");
   font-weight: normal;
   font-style: normal; }
-[class^="icon-"], [class*=" icon-"], .entry__thumbnail--video:before, .entry__thumbnail--events:before, .entry__thumbnail--audio:before, .header__search--btn:before, .format-audio .entry2__thumbnail a, .format-gallery .entry2__thumbnail a, .format-video .entry2__thumbnail a, .type-contest .entry2__thumbnail a, .type-tribe_events .entry2__thumbnail a, .live-link__song:before, .live-link__type--audio:before, .live-link__type--gallery:before, .live-link__type--image:before, .live-link__type--link:before, .live-link__type--standard:before, .live-link__type--video:before, .social__link--facebook, .social__link--twitter, .social__link--google-plus:before, .social__link--youtube:before, .social__link--instagram:before, .gallery__prev--btn:before, .gallery__next--btn:after, .gallery__paging--prev, .gallery__paging--next, .gallery__grid--album, .gmr-icon, .contest__submission .preview .preview-close, .header__search--submit, .header__search--cancel {
+[class^="icon-"], [class*=" icon-"], .entry__thumbnail--video:before, .entry__thumbnail--events:before, .entry__thumbnail--audio:before, .header__search--btn:before, .entry2__thumbnail__icon, .live-link__song:before, .live-link__type--audio:before, .live-link__type--gallery:before, .live-link__type--image:before, .live-link__type--link:before, .live-link__type--standard:before, .live-link__type--video:before, .social__link--facebook, .social__link--twitter, .social__link--google-plus:before, .social__link--youtube:before, .social__link--instagram:before, .gallery__prev--btn:before, .gallery__next--btn:after, .gallery__paging--prev, .gallery__paging--next, .gallery__grid--album, .gmr-icon, .contest__submission .preview .preview-close, .header__search--submit, .header__search--cancel {
   font-family: 'gmr-icons';
   speak: none;
   font-style: normal;
@@ -569,13 +569,13 @@ category: Base - Typography
 .icon-search:before, .header__search--submit:before {
   content: "\e612"; }
 
-.icon-post-format-video:before, .format-video .entry2__thumbnail a:before {
+.icon-post-format-video:before, .format-video .entry2__thumbnail__icon:before {
   content: "\e613"; }
 
-.icon-post-format-events:before, .type-tribe_events .entry2__thumbnail a:before {
+.icon-post-format-events:before, .type-tribe_events .entry2__thumbnail__icon:before {
   content: "\e614"; }
 
-.icon-post-format-audio:before, .format-audio .entry2__thumbnail a:before {
+.icon-post-format-audio:before, .format-audio .entry2__thumbnail__icon:before {
   content: "\e615"; }
 
 .icon-instagram:before, .social__link--instagram:before {
@@ -590,7 +590,7 @@ category: Base - Typography
 .icon-arrow-prev:before {
   content: "\e619"; }
 
-.icon-post-format-gallery:before, .format-gallery .entry2__thumbnail a:before {
+.icon-post-format-gallery:before, .format-gallery .entry2__thumbnail__icon:before {
   content: "\e61a"; }
 
 .icon-post-format-link:before {
@@ -617,7 +617,7 @@ category: Base - Typography
 .icon-ticket:before {
   content: "\e622"; }
 
-.icon-contest:before, .type-contest .entry2__thumbnail a:before {
+.icon-contest:before, .type-contest .entry2__thumbnail__icon:before {
   content: "\e623"; }
 
 .icon-close:before, .contest__submission .preview .preview-close:before, .header__search--cancel:before {
@@ -2395,8 +2395,7 @@ Community Highlights and Events
   padding-top: 100%;
   background-size: 100%;
   background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat; }
+  background-position: center center; }
 
 .highlights__community--thumb:after {
   position: absolute;
@@ -2552,8 +2551,7 @@ Community Highlights and Events
   overflow: hidden;
   background-size: 100%;
   background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat; }
+  background-position: center center; }
   .highlights__event--thumb:last-child {
     margin-right: 0; }
   @media screen and (min-width: 1024px) {
@@ -3937,11 +3935,7 @@ Link posts contain a link to an external site. They can also optionally have a f
 
 .entry2__thumbnail {
   margin-bottom: 1.125em;
-  position: relative;
-  background-size: 100%;
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat; }
+  position: relative; }
   @media screen and (min-width: 480px) {
     .entry2__thumbnail {
       float: left;
@@ -3951,27 +3945,20 @@ Link posts contain a link to an external site. They can also optionally have a f
       margin-bottom: 0; }
       .entry2__thumbnail:last-child {
         margin-right: 0; } }
-  .entry2__thumbnail a {
-    position: absolute;
-    width: 100%;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 20; }
-  .entry2__thumbnail:after {
-    content: '';
-    display: block;
-    padding-top: 66.666%; }
   .has-excerpt .entry2__thumbnail:after {
     padding-top: 75%; }
 
 .entry2__thumbnail__image {
+  position: relative;
   background-size: 100%;
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
-  padding-top: 66.666%; }
+  background: red; }
+  .entry2__thumbnail__image:after {
+    content: '';
+    display: block;
+    padding-top: 66.666%; }
 
 .entry2__thumbnail__overlay {
   background-color: #d22228;
@@ -3982,6 +3969,20 @@ Link posts contain a link to an external site. They can also optionally have a f
   right: 0;
   bottom: 0;
   left: 0; }
+
+.entry2__thumbnail__icon {
+  position: absolute;
+  top: .2em;
+  right: .2em;
+  color: #fff;
+  z-index: 30;
+  font-size: 4em; }
+  @media screen and (min-width: 480px) {
+    .entry2__thumbnail__icon {
+      font-size: 2.5em; } }
+  @media screen and (min-width: 1024px) {
+    .entry2__thumbnail__icon {
+      font-size: 3em; } }
 
 @media screen and (min-width: 480px) {
   .entry2__meta {
@@ -4074,8 +4075,8 @@ Link posts contain a link to an external site. They can also optionally have a f
     width: 19.75788%; }
     .entry2.format-audio.has-post-thumbnail .entry2__thumbnail:last-child {
       margin-right: 0; }
-    .entry2.format-audio.has-post-thumbnail .entry2__thumbnail:after {
-      padding-top: 100%; }
+  .entry2.format-audio.has-post-thumbnail .entry2__thumbnail__image:after {
+    padding-top: 100%; }
   .entry2.format-audio.has-post-thumbnail .entry2__meta {
     float: left;
     display: block;
@@ -4084,24 +4085,6 @@ Link posts contain a link to an external site. They can also optionally have a f
     margin-right: 0; }
     .entry2.format-audio.has-post-thumbnail .entry2__meta:last-child {
       margin-right: 0; } }
-
-.format-audio .entry2__thumbnail a:before, .format-gallery .entry2__thumbnail a:before, .format-video .entry2__thumbnail a:before, .type-contest .entry2__thumbnail a:before, .type-tribe_events .entry2__thumbnail a:before {
-  position: absolute;
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  padding: 3%;
-  text-align: right;
-  color: #fff;
-  z-index: 30;
-  font-size: 4em; }
-  @media screen and (min-width: 480px) {
-    .format-audio .entry2__thumbnail a:before, .format-gallery .entry2__thumbnail a:before, .format-video .entry2__thumbnail a:before, .type-contest .entry2__thumbnail a:before, .type-tribe_events .entry2__thumbnail a:before {
-      font-size: 2.5em; } }
-  @media screen and (min-width: 1024px) {
-    .format-audio .entry2__thumbnail a:before, .format-gallery .entry2__thumbnail a:before, .format-video .entry2__thumbnail a:before, .type-contest .entry2__thumbnail a:before, .type-tribe_events .entry2__thumbnail a:before {
-      font-size: 3em; } }
 
 .type-tribe_events .entry2__thumbnail {
   background-color: #d22228; }
@@ -6656,15 +6639,11 @@ category: Components - Ads
     display: block;
     position: relative; }
     .contest__submission .contest__submission--link .contest__submission--thumbnail {
-      position: relative;
+      height: 156px;
       background-position: center center;
-      background-size: 100%;
-      background-size: cover;
-      background-repeat: no-repeat; }
-      .contest__submission .contest__submission--link .contest__submission--thumbnail:after {
-        content: '';
-        display: block;
-        padding-top: 156px; }
+      background-repeat: no-repeat;
+      -webkit-background-size: cover;
+      background-size: cover; }
     .contest__submission .contest__submission--link .contest__submission--date,
     .contest__submission .contest__submission--link .contest__submission--author {
       text-align: center;
@@ -7752,7 +7731,6 @@ category: Components - Shows
 */
 .show__header {
   background-color: #561015;
-  background-repeat: repeat;
   position: relative;
   padding: 38px 1em;
   width: 100%;
@@ -7764,10 +7742,9 @@ category: Components - Shows
   .show__header:after {
     clear: both; }
   .show__header.has-thumbnail {
-    background-size: 100%;
+    background-repeat: no-repeat;
     background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat; }
+    background-position: center; }
   .show__header > div {
     vertical-align: middle; }
   @media screen and (min-width: 768px) {
@@ -7776,6 +7753,7 @@ category: Components - Shows
   @media screen and (min-width: 1024px) {
     .show__header {
       background-image: url("../../images/featured-bg.png");
+      background-repeat: repeat;
       background-position: center center;
       background-color: #561015;
       background-size: auto 65%; } }
@@ -7988,15 +7966,10 @@ category: Components - Shows
   margin-bottom: 5.6%; }
   .show__feature .thumbnail {
     background-color: #282827;
-    position: relative;
+    padding-bottom: 66%;
     background-position: center center;
     background-size: 100%;
-    background-size: cover;
-    background-repeat: no-repeat; }
-    .show__feature .thumbnail:after {
-      content: '';
-      display: block;
-      padding-top: 66%; }
+    background-size: cover; }
     .show__feature .thumbnail .inner-wrap {
       position: absolute;
       left: 0;
@@ -9880,7 +9853,6 @@ category: Components - Gallery Archive
   -moz-transition: opacity 200ms linear;
   transition: opacity 200ms linear;
   background-size: cover;
-  background-repeat: no-repeat;
   cursor: pointer; }
   .single-gmr_gallery .gallery__slide--preview {
     width: 100px; }
@@ -10039,15 +10011,10 @@ category: Components - Gallery Archive
   margin-bottom: 5.6%; }
   .gallery__feature .thumbnail {
     background-color: #282827;
-    position: relative;
+    padding-bottom: 66%;
     background-position: center center;
     background-size: 100%;
-    background-size: cover;
-    background-repeat: no-repeat; }
-    .gallery__feature .thumbnail:after {
-      content: '';
-      display: block;
-      padding-top: 66%; }
+    background-size: cover; }
     .gallery__feature .thumbnail .inner-wrap {
       position: absolute;
       left: 0;
@@ -10709,9 +10676,16 @@ select {
     background-color: #561015;
     color: #ffffff;
     background-image: url("../../images/profile_bg.jpg");
-    text-align: center;
-    background-size: cover;
-    background-repeat: no-repeat; }
+    text-align: center; }
+    @media screen and (min-width: 320px) {
+      .profile-page .profile-page__sidebar {
+        background-size: cover; } }
+    @media screen and (min-width: 480px) {
+      .profile-page .profile-page__sidebar {
+        background-size: cover; } }
+    @media screen and (min-width: 768px) {
+      .profile-page .profile-page__sidebar {
+        background-size: cover; } }
     @media screen and (min-width: 1024px) {
       .profile-page .profile-page__sidebar {
         text-align: left;
@@ -12184,15 +12158,10 @@ category: Components - Article
   margin-bottom: 1.5em; }
 
 .related-post__img .thumbnail {
-  position: relative;
   background-position: center center;
   background-size: 100%;
   background-size: cover;
-  background-repeat: no-repeat; }
-  .related-post__img .thumbnail:after {
-    content: '';
-    display: block;
-    padding-top: 66%; }
+  padding-bottom: 66.666%; }
 
 .related-post__meta {
   padding: 1.5em 1.618em;

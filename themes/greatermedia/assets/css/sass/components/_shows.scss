@@ -174,7 +174,6 @@ category: Components - Shows
 
 .show__header {
 	background-color: rgb(86, 16, 21);
-	background-repeat: repeat;
 	position: relative;
 	padding: 38px 1em;
 	@include fill-parent();
@@ -183,10 +182,9 @@ category: Components - Shows
 	color: $secondary-text;
 
 	&.has-thumbnail {
-		background-size: 100%;
+		background-repeat: no-repeat;
 		background-size: cover;
 		background-position: center;
-		background-repeat: no-repeat;
 	}
 
 	> div {
@@ -199,6 +197,7 @@ category: Components - Shows
 
 	@include bp(large) {
 		background-image: url('../../images/featured-bg.png');
+		background-repeat: repeat;
 		background-position: center center;
 		background-color: $featured-primary-bg;
 		background-size: auto 65%;
@@ -461,7 +460,10 @@ category: Components - Shows
 	
  	.thumbnail {
 		background-color: $dark-gray;
-		@include proportional-thumbnail( 66% );
+		padding-bottom: 66%;
+		background-position: center center; 
+		background-size: 100%; 
+		background-size: cover;
 				 
 		.inner-wrap {
 			position: absolute;
