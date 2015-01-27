@@ -52,20 +52,19 @@
   height: 150px;
   margin: 0 8px 8px 0;
   float: left;
+  background-color: white;
   background-position: center center;
   background-size: cover;
   background-repeat: no-repeat;
   position: relative;
-  border: 2px dashed black;
+  border: 2px solid #d0d0d0;
   cursor: pointer; }
   .gallery-preview .gallery-item:hover .remove-gallery-item {
     display: block; }
   .gallery-preview .gallery-item.ui-sortable-helper .remove-gallery-item {
     display: none; }
-  .gallery-preview .gallery-item.gallery-image {
-    border-style: solid; }
   .gallery-preview .gallery-item.gallery-item-placeholder {
-    border-style: dotted;
+    border-style: dashed;
     display: block; }
 
 .gmr__option {
