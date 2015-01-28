@@ -6029,7 +6029,8 @@ a.live-audio__link {
   content: ' ';
   display: block;
   position: absolute;
-  top: 0;
+  top: -2px;
+  left: -2px;
   height: 56px;
   width: 56px;
   background-color: #d22228;
