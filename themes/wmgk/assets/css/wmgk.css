@@ -7680,9 +7680,7 @@ category: Components - Shows
     background-repeat: no-repeat;
     background-size: 100%;
     background-size: cover;
-    background-size: 100%;
-    background-position: center;
-    background-repeat: no-repeat; }
+    background-position: center; }
   .show__header > div {
     vertical-align: middle; }
   @media screen and (min-width: 768px) {
