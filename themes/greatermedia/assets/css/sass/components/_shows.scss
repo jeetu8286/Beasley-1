@@ -313,9 +313,9 @@ category: Components - Shows
 
 		ul {
 			position: absolute;
-			bottom: $base-line-height * -2;
 			text-align: justify;
 			margin-left: -9px;
+			padding-top: 8px;
 			width: auto;
 		}
 	}
