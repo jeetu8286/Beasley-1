@@ -7253,7 +7253,8 @@ category: Components - Ads
   margin: 0 auto; }
 
 .event__info {
-  display: block; }
+  display: block;
+  margin-bottom: 2em; }
   .event__info:before, .event__info:after {
     content: " ";
     display: table; }
@@ -7269,7 +7270,8 @@ category: Components - Ads
     .tribe-events-single .ad__inline--right.desktop {
       display: block; } }
 .tribe-events-single .ad__inline--right.mobile {
-  display: block; }
+  display: block;
+  float: left; }
   @media screen and (min-width: 1024px) {
     .tribe-events-single .ad__inline--right.mobile {
       display: none; } }

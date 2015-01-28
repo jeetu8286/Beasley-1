@@ -34,6 +34,7 @@
 
 .event__info {
 	@include row();
+	margin-bottom: 2em;
 	
 	@include bp(large) {
 		padding-right: 320px;
@@ -50,6 +51,7 @@
 	}
 	.ad__inline--right.mobile {
 		display: block;
+		float: left;
 
 		@include bp(large) {
 			display: none;

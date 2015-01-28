@@ -80,7 +80,7 @@ $event_id = get_the_ID();
 			</div><!-- end .event__info -->
 
 			<div class="ad__inline--right mobile">
-				<?php do_action( 'acm_tag_gmr_variant', 'mrec-body', 'mobile', array( 'max_width' => 1023 ) ); ?>
+				<?php do_action( 'acm_tag_gmr_variant', 'mrec-body', 'mobile' ); ?>
 			</div>
 			<!-- .tribe-events-single-event-description -->
 		</div> <!-- #post-x -->
