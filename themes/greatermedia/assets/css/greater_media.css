@@ -8079,11 +8079,14 @@ category: Components - Shows
       display: table-cell;
       vertical-align: middle;
       text-align: left;
-      padding-left: 3em; }
+      padding-left: 3em;
+      position: relative; }
       .show__nav .show__title {
         margin-top: 0;
-        margin-bottom: 0.6em; }
+        margin-bottom: 0; }
       .show__nav ul {
+        position: absolute;
+        bottom: -3em;
         text-align: justify;
         margin-left: -9px;
         width: auto; } }

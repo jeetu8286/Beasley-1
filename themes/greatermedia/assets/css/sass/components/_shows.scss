@@ -304,14 +304,16 @@ category: Components - Shows
 		vertical-align: middle;
 		text-align: left;
 		padding-left: 3em;
+		position: relative; 
 
 		.show__title {
 			margin-top: 0;
-			margin-bottom: 0.6em;
+			margin-bottom: 0;
 		}
 
-
 		ul {
+			position: absolute;
+			bottom: $base-line-height * -2;
 			text-align: justify;
 			margin-left: -9px;
 			width: auto;
