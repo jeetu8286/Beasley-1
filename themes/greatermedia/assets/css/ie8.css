@@ -37,3 +37,8 @@
 .live-player__container {
 	display: none !important;
 }
+
+.me-cannotplay span {
+	display: inline !important;
+	height: 60px;
+}
