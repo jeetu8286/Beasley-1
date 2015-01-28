@@ -1,20 +1,23 @@
 <?php
 
+global $gmr_last_song;
+
+$date_pattern = 'M j';
 $current_date = null;
 while( have_posts() ) :
 	the_post();
 
-	$date = get_the_time( 'M j' );
+	$date = get_the_time( $date_pattern );
 	if ( $current_date != $date ) :
 		if ( ! is_null( $current_date ) ) :
 				?></ul>
 			</div><?php
 		endif;
 
-		?><div class="songs__group">
-			<div class="songs__group--date">
-				<?php echo esc_html( $date ); ?>
-			</div>
+		$not_same_date = ! $gmr_last_song || $date != get_the_time( $date_pattern, $gmr_last_song );
+
+		?><div class="songs__group<?php echo $not_same_date ? ' songs__group--new-date' : ''; ?>">
+			<div class="songs__group--date"><?php echo $not_same_date ? esc_html( $date ) : '&nbsp;'; ?></div>
 			<ul class="songs__group--list"><?php
 
 		$current_date = $date;

@@ -58,6 +58,8 @@ function gmr_streams_get_stream_permalink( $post_link, $post ) {
  * @return array The array of unpacked query vars.
  */
 function gmr_streams_unpack_vars( $query_vars ) {
+	global $gmr_last_song;
+	
 	// do nothing if it is wrong page
 	if ( empty( $query_vars[GMR_LIVE_STREAM_CPT] ) ) {
 		return $query_vars;
@@ -92,6 +94,17 @@ function gmr_streams_unpack_vars( $query_vars ) {
 		$query_vars['order'] = 'DESC';
 		$query_vars['orderby'] = 'date';
 		$query_vars['posts_per_page'] = 50;
+
+		if ( ! empty( $query_vars['paged'] ) && $query_vars['paged'] > 1 ) {
+			$qv = $query_vars;
+			$qv['paged']--;
+			$qv['fields'] = 'ids';
+
+			$songs = $query->query( $qv );
+			if ( ! empty( $songs ) ) {
+				$gmr_last_song = get_post( array_pop( $songs ) );
+			}
+		}
 	}
 
 	return $query_vars;
