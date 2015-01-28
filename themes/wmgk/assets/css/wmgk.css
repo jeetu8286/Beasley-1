@@ -4345,13 +4345,12 @@ Link posts contain a link to an external site. They can also optionally have a f
   .article__content .wp-caption {
     max-width: 100%;
     padding: 0;
-    margin: 0 0 16px;
     background: #d0d2d3; }
   .article__content .wp-caption img {
     width: 100%;
     margin-bottom: 0;
     max-width: 100%; }
-  .article__content .wp-caption p.wp-caption-text {
+  .article__content .wp-caption .wp-caption-text {
     padding: 16px 1.25em 20px;
     margin: 4px .5em;
     font-size: 0.79012em;
@@ -8615,13 +8614,12 @@ a.social-share-link {
   .article__content .wp-caption {
     max-width: 100%;
     padding: 0;
-    margin: 0 0 16px;
     background: #d0d2d3; }
   .article__content .wp-caption img {
     width: 100%;
     margin-bottom: 0;
     max-width: 100%; }
-  .article__content .wp-caption p.wp-caption-text {
+  .article__content .wp-caption .wp-caption-text {
     padding: 16px 1.25em 20px;
     margin: 4px .5em;
     font-size: 0.79012em;
