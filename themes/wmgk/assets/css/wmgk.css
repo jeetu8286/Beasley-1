@@ -8017,13 +8017,18 @@ category: Components - Shows
       background-color: #561015;
       background-size: auto 65%; } }
 
+.show__header-content {
+  display: table;
+  table-layout: fixed; }
+
 .show__cast {
   width: 100%;
   height: 100%; }
   @media screen and (min-width: 1024px) {
     .show__cast {
       width: 150px;
-      float: left; } }
+      display: table-cell;
+      vertical-align: middle; } }
   .show__cast img {
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
@@ -8036,6 +8041,8 @@ category: Components - Shows
 .show__nav {
   width: 100%;
   text-align: center; }
+  .show__nav .show__title {
+    line-height: 1.3; }
   .show__nav h1 a {
     color: #ffffff;
     text-transform: uppercase; }
@@ -8076,26 +8083,23 @@ category: Components - Shows
         margin: 0;
         width: 100%;
         list-style-type: none; } }
-  @media screen and (min-width: 1043px) {
+  @media screen and (min-width: 1024px) {
     .show__nav {
-      width: 53%;
-      float: left;
-      margin-top: 1.5em;
-      margin-bottom: 0;
+      width: 75%;
+      display: table-cell;
+      vertical-align: middle;
       text-align: left;
-      padding-left: 3em; }
+      padding-left: 3em;
+      position: relative; }
       .show__nav .show__title {
         margin-top: 0;
-        margin-bottom: 0.6em; }
+        margin-bottom: 0; }
       .show__nav ul {
+        position: absolute;
+        bottom: -3em;
         text-align: justify;
         margin-left: -9px;
-        width: auto; }
-      .show__nav ul:after {
-        content: "";
-        width: 100%;
-        display: inline-block;
-        height: 0; } }
+        width: auto; } }
 
 .show__nav--mobile {
   display: block;
@@ -8126,12 +8130,12 @@ category: Components - Shows
   width: 100%;
   text-align: center;
   float: none; }
-  @media screen and (min-width: 1043px) {
+  @media screen and (min-width: 1024px) {
     .show__meta {
       width: 25%;
-      float: right;
-      text-align: right;
-      margin-top: 1.5em; } }
+      display: table-cell;
+      vertical-align: middle;
+      text-align: right; } }
   .show__meta em {
     display: block;
     line-height: 1.5;
