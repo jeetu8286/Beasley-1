@@ -4963,7 +4963,6 @@ category: Components
   font-size: 1.25em;
   font-style: normal;
   font-weight: normal;
-  line-height: 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: auto;
@@ -5022,6 +5021,7 @@ category: Components
   position: absolute;
   top: 50%;
   left: 54%;
+  line-height: 1;
   -webkit-transform: translate(-50%, -50%);
   -moz-transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
@@ -5062,7 +5062,10 @@ category: Components
   transition: 500ms;
   -webkit-transition-delay: 200ms;
   -moz-transition-delay: 200ms;
-  transition-delay: 200ms; }
+  transition-delay: 200ms;
+  border: none;
+  background: #d22228;
+  color: #f2f2f2; }
   .live-stream__player.audio__playing .live-stream__btn--play {
     display: block;
     position: absolute;
@@ -5104,6 +5107,8 @@ category: Components
     display: none; }
   .live-stream__btn--play.live-player__muted {
     display: none; }
+  .live-stream__btn--play.play-btn--heartbeat:before {
+    top: 52%; }
 
 .live-stream__btn--pause {
   display: none;
@@ -5133,16 +5138,19 @@ category: Components
   .live-stream__btn--pause.live-player__muted {
     display: none; }
 
-.live-stream__btn--resume.resume__audio, .live-stream__btn--resume.resume__live {
-  display: block;
-  position: absolute;
-  left: 0; }
-  @media screen and (min-width: 768px) {
-    .live-stream__btn--resume.resume__audio, .live-stream__btn--resume.resume__live {
-      position: relative;
-      left: auto; } }
-.live-stream__btn--resume.live-player__muted {
-  display: none; }
+.live-stream__btn--resume {
+  background: #d22228;
+  color: #f2f2f2; }
+  .live-stream__btn--resume.resume__audio, .live-stream__btn--resume.resume__live {
+    display: block;
+    position: absolute;
+    left: 0; }
+    @media screen and (min-width: 768px) {
+      .live-stream__btn--resume.resume__audio, .live-stream__btn--resume.resume__live {
+        position: relative;
+        left: auto; } }
+  .live-stream__btn--resume.live-player__muted {
+    display: none; }
 
 .live-stream--inactive {
   position: relative;
@@ -6039,20 +6047,15 @@ a.live-audio__link {
 
 /* :not(:required) hides this rule from IE9 and below */
 .play-btn--heartbeat {
-  -webkit-animation: heartbeat 3000ms ease-out 500ms infinite normal;
-  -khtml-animation: heartbeat 3000ms ease-out 500ms infinite normal;
-  -moz-animation: heartbeat 3000ms ease-out 500ms infinite normal;
-  -ms-animation: heartbeat 3000ms ease-out 500ms infinite normal;
-  -o-animation: heartbeat 3000ms ease-out 500ms infinite normal;
-  animation: heartbeat 3000ms ease-out 500ms infinite normal;
-  display: inline-block;
-  vertical-align: middle;
-  position: relative;
+  -webkit-animation: heartbeat 3000ms ease-out 0s infinite normal;
+  -khtml-animation: heartbeat 3000ms ease-out 0s infinite normal;
+  -moz-animation: heartbeat 3000ms ease-out 0s infinite normal;
+  -ms-animation: heartbeat 3000ms ease-out 0s infinite normal;
+  -o-animation: heartbeat 3000ms ease-out 0s infinite normal;
+  animation: heartbeat 3000ms ease-out 0s infinite normal;
   width: 56px;
   height: 56px;
-  background: #d22228;
-  border-radius: 50%;
-  color: #f2f2f2; }
+  border-radius: 50%; }
 
 .play-btn--heartbeat:after {
   content: ' ';
