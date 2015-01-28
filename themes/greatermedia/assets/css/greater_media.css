@@ -8248,9 +8248,9 @@ category: Components - Shows
         margin-bottom: 0; }
       .show__nav ul {
         position: absolute;
-        bottom: -3em;
         text-align: justify;
         margin-left: -9px;
+        padding-top: 8px;
         width: auto; } }
 
 .show__nav--mobile {
