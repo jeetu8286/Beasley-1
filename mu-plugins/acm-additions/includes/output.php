@@ -92,6 +92,10 @@ function render_tag( $output_html, $tag_id ) {
 	if ( ! empty( $variant ) ) {
 		// We know this exists, because otherwise render_variant would not have set this value
 		$variant_meta = $tag_meta['variants'][ $variant ];
+		$variant_overrides = ad_variant_overrides();
+
+		// Merge the overrides and meta together, giving overrides priority to the global variant settings
+		$variant_meta = array_merge( $variant_meta, $variant_overrides );
 
 		$variant_id = '_' . $variant;
 
@@ -136,7 +140,7 @@ function render_tag( $output_html, $tag_id ) {
 	return $output;
 }
 
-function render_variant( $tag_id, $variant ) {
+function render_variant( $tag_id, $variant, $overrides = array() ) {
 	$tag_meta = get_ad_tag_meta( $tag_id );
 
 	if ( false === $tag_meta ) {
@@ -148,13 +152,15 @@ function render_variant( $tag_id, $variant ) {
 		return;
 	}
 
-	// Set our current variant
+	// Set our current variant + any overrides we may need to use
 	ad_variant( $variant );
+	ad_variant_overrides( $overrides );
 
 	// Do the ad slot
 	do_action( 'acm_tag', $tag_id );
 
-	// Clear the current variant
+	// Clear the current variant + overrides
 	ad_variant( '' );
+	ad_variant_overrides( array() );
 }
-add_action( 'acm_tag_gmr_variant', __NAMESPACE__ . '\render_variant', 10, 2 );
+add_action( 'acm_tag_gmr_variant', __NAMESPACE__ . '\render_variant', 10, 3 );
