@@ -4848,7 +4848,7 @@ category: Components
   display: block;
   height: 23px; }
 
-.live-stream__listen-now--btn, .podcast__subscribe {
+.live-stream__listen-now--btn, .podcast__subscribe, .podcast__rss {
   display: none; }
   @media screen and (min-width: 768px) {
     .live-stream__listen-now--btn, .podcast__subscribe, .podcast__rss {
