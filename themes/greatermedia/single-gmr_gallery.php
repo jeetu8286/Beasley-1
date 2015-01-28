@@ -58,7 +58,7 @@ get_header(); ?>
 
 								<section class="entry__related-posts">
 								
-									<h2 class="section-header">More Galleries in <?php echo $parent_post->post_title; ?></h2>
+									<h2 class="section-header">More Galleries in <a href="<?php echo esc_url( post_permalink( $parent_post ) ); ?>"><?php echo $parent_post->post_title; ?></a></h2>
 
 									<?php while ( $siblings->have_posts() ) : $siblings->the_post(); ?>
 

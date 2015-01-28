@@ -248,7 +248,7 @@ class GMR_Show_Metaboxes {
 				'meta_key'  => '_thumbnail_id',
 				'exclude'   => $this->_get_restricted_post_ids(),
 			),
-			'limit' => 10,
+			'limit' => 3,
 		);
 
 		?>

@@ -167,6 +167,7 @@ Community Highlights and Events
 	background-size: 100%;
 	background-size: cover; 
 	background-position: center center;
+    background-repeat: no-repeat; 
 }
 
 .highlights__community--thumb:after {
@@ -299,6 +300,7 @@ Community Highlights and Events
 	background-size: 100%;
 	background-size: cover;
 	background-position: center center;
+    background-repeat: no-repeat; 
 	
 	@include bp(large) {
 		@include span-columns(2 of 6);

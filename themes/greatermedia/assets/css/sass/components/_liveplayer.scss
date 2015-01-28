@@ -311,7 +311,7 @@ category: Components
 // live player area
 .live-player__container {
 	height: 58px;
-	overflow: hidden;
+	overflow: auto;
 	border-bottom: 1px solid $secondary-border;
 	@include transition(opacity 200ms ease-in-out 0s,height 200ms ease-in-out 0s);
 
@@ -321,6 +321,13 @@ category: Components
 		margin-top: 46px;
 		overflow: auto;
 		border-bottom: none;
+	}
+
+	&.live-player--heartbeat {
+
+		@include bp(medium) {
+			overflow: hidden;
+		}
 	}
 }
 
@@ -749,6 +756,7 @@ category: Components
 	left: 50%;
 	width: 280px;
 	height: 210px;
+	background-color: black;
 	@include transform(translate(-50%, -50%));
 
 	@include bp(medium) {
@@ -763,8 +771,7 @@ category: Components
 	top: 50%;
 	left: 50%;
 	width: 280px;
-	margin-top: 85px;
-	@include opacity(.9);
+	margin-top: 121px;
 	@include transform(translate(-50%, -50%));
 	@include transition(all 1s ease-in-out 2s);
 	padding: .5em 1em;
@@ -775,7 +782,7 @@ category: Components
 
 	@include bp(medium) {
 		width: 640px;
-		margin-top: 165px;
+		margin-top: 256px;
 	}
 
 	.live-stream__container.vast__pre-roll & {
@@ -1387,4 +1394,92 @@ category: Components
 
 .audio__title {
 	display: inline-block;
+}
+
+.live-audio {
+	display: none;
+	padding: 2em 0;
+	margin: 0 auto;
+	overflow: auto;
+	text-align: center;
+}
+
+a.live-audio__link {
+	padding: .5em 1em;
+	background-color: $btn-bg;
+	font-size: ms(0);
+	color: white;
+}
+
+$heartbeat-color: $btn-bg;
+$heartbeat-size: 56px; // must be divisible by 2 and 3
+$heartbeat-rotation: rotate(0);
+
+@mixin keyframes($name) {
+	@-webkit-keyframes #{$name} { @content }
+	@-moz-keyframes #{$name} { @content }
+	@-o-keyframes #{$name} { @content }
+	@keyframes #{$name} { @content }
+}
+
+@mixin experimental($property, $value, $moz: true, $webkit: true, $o: true, $ms: true, $khtml: true, $official: true) {
+	@if $webkit   { -webkit-#{$property} : $value; }
+	@if $khtml    {  -khtml-#{$property} : $value; }
+	@if $moz      {    -moz-#{$property} : $value; }
+	@if $ms       {     -ms-#{$property} : $value; }
+	@if $o        {      -o-#{$property} : $value; }
+	@if $official {         #{$property} : $value; }
+}
+
+@mixin animation($value) {
+	@include experimental(animation, $value);
+}
+
+@include keyframes(heartbeat) {
+	0%  { @include transform($heartbeat-rotation scale(1));   }
+	14% { @include transform($heartbeat-rotation scale(1.2)); }
+	28% { @include transform($heartbeat-rotation scale(1));   }
+	42% { @include transform($heartbeat-rotation scale(1.2)); }
+	70% { @include transform($heartbeat-rotation scale(1));   }
+}
+
+@include keyframes(heartbeat-pulse) {
+	0% { @include transform(scale(1)) }
+	14% { @include transform(scale(2)); opacity: .3 }
+	28% { @include transform(scale(3)); opacity: .1 }
+	42% { @include transform(scale(4)); opacity: 0 }
+	100% { @include transform(scale(1)); opacity: 0 }
+}
+
+/* Styles for old versions of IE */
+.play-btn--heartbeat {
+	font-family: sans-serif;
+	font-weight: 100;
+}
+
+/* :not(:required) hides this rule from IE9 and below */
+.play-btn--heartbeat {
+	@include animation(heartbeat 3000ms ease-out 0s infinite normal);
+
+	display: inline-block;
+	vertical-align: middle;
+	position: relative;
+	width: $heartbeat-size;
+	height: $heartbeat-size;
+	background: transparent;
+	border-radius: 50%;
+}
+
+.play-btn--heartbeat:after {
+	content: ' ';
+	display: block;
+	position: absolute;
+	top: -2px;
+	left: -2px;
+	height: $heartbeat-size;
+	width: $heartbeat-size;
+	background-color: $btn-bg;
+	opacity: .5;
+	border-radius: 50%;
+	@include animation( heartbeat-pulse 3000ms ease-out 0ms infinite normal );
 }

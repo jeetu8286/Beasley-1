@@ -36,6 +36,8 @@ if ( empty( $active_stream ) ) {
 		</ul>
 	</nav>
 
+	<?php do_action( 'gmr_live_audio_link' ); ?>
+
 	<div id="live-player" class="live-player__container">
 
 		<?php /*

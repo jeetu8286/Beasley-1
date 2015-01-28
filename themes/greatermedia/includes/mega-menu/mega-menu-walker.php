@@ -322,7 +322,8 @@ class GreaterMediaNavWalker extends Walker_Nav_Menu {
 			ob_start();
 
 			$featured_items_query = array(
-				'posts_per_page' => 4
+				'posts_per_page'      => 4,
+				'ignore_sticky_posts' => true,
 			);
 
 			$featured_item_ids = get_post_meta( self::$current_featured_item_menu, 'gmr_music_menu', true );
