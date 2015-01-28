@@ -184,6 +184,7 @@ category: Components - Shows
 
 	&.has-thumbnail {
 		background-repeat: no-repeat;
+		background-size: 100% auto;
 		background-size: cover;
 		background-position: center;
 	}
