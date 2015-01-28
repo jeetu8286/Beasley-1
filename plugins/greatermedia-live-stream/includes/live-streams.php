@@ -58,7 +58,7 @@ function gmr_streams_get_stream_permalink( $post_link, $post ) {
  * @return array The array of unpacked query vars.
  */
 function gmr_streams_unpack_vars( $query_vars ) {
-	global $gmr_last_song;
+	global $gmr_last_song, $gmr_moved_song;
 	
 	// do nothing if it is wrong page
 	if ( empty( $query_vars[GMR_LIVE_STREAM_CPT] ) ) {
@@ -103,6 +103,14 @@ function gmr_streams_unpack_vars( $query_vars ) {
 			$songs = $query->query( $qv );
 			if ( ! empty( $songs ) ) {
 				$gmr_last_song = get_post( array_pop( $songs ) );
+				$pre_last_song = get_post( array_pop( $songs ) );
+
+				remove_filter( 'get_post_time', array( 'TribeEventsTemplates', 'event_date_to_pubDate' ), 10, 3 );
+				
+				if ( get_the_time( 'M j', $pre_last_song ) != get_the_time( 'M j', $gmr_last_song ) ) {
+					$gmr_moved_song = $gmr_last_song;
+					$gmr_last_song = $pre_last_song;
+				}
 			}
 		}
 	}
