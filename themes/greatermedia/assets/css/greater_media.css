@@ -4764,10 +4764,10 @@ category: Components
       .gmr-user .live-stream__status {
         display: block; } }
 
-.live-stream__listen-now--btn, .podcast__subscribe {
+.live-stream__listen-now--btn, .podcast__subscribe, .podcast__rss {
   display: none; }
   @media screen and (min-width: 768px) {
-    .live-stream__listen-now--btn, .podcast__subscribe {
+    .live-stream__listen-now--btn, .podcast__subscribe, .podcast__rss {
       display: block;
       margin-right: 0;
       display: inline-block;
@@ -4788,13 +4788,13 @@ category: Components
       -webkit-transition: all 200ms ease-in-out;
       -moz-transition: all 200ms ease-in-out;
       transition: all 200ms ease-in-out; }
-      .live-stream__listen-now--btn:hover, .podcast__subscribe:hover, .live-stream__listen-now--btn:focus, .podcast__subscribe:focus {
+      .live-stream__listen-now--btn:hover, .podcast__subscribe:hover, .podcast__rss:hover, .live-stream__listen-now--btn:focus, .podcast__subscribe:focus, .podcast__rss:focus {
         background-color: #aa1c20;
         border-color: #aa1c20;
         color: #ffffff; }
-      .live-stream__listen-now--btn:last-of-type, .podcast__subscribe:last-of-type {
+      .live-stream__listen-now--btn:last-of-type, .podcast__subscribe:last-of-type, .podcast__rss:last-of-type {
         margin-right: 0; } }
-  .audio__playing .live-stream__listen-now--btn, .audio__playing .podcast__subscribe {
+  .audio__playing .live-stream__listen-now--btn, .audio__playing .podcast__subscribe, .audio__playing .podcast__rss {
     max-width: 100px;
     -webkit-transition: all 200ms ease-in-out;
     -moz-transition: all 200ms ease-in-out;
@@ -4804,7 +4804,7 @@ category: Components
     transition-delay: 1s;
     text-align: center; }
     @media screen and (min-width: 768px) {
-      .audio__playing .live-stream__listen-now--btn, .audio__playing .podcast__subscribe {
+      .audio__playing .live-stream__listen-now--btn, .audio__playing .podcast__subscribe, .audio__playing .podcast__rss {
         max-width: none; } }
 
 .live-stream__now-playing--btn {
@@ -7231,7 +7231,6 @@ a.podcast__rss:hover, a.podcast__rss:focus {
   text-transform: uppercase;
   cursor: pointer;
   border-radius: 100em;
-  background-color: #d22228 !important;
   text-transform: none; }
   a.podcast__rss:hover:hover, a.podcast__rss:hover:focus, a.podcast__rss:focus:hover, a.podcast__rss:focus:focus {
     background-color: #aa1c20;
@@ -7301,6 +7300,9 @@ a.podcast__rss:active {
   -o-border-radius: 1em;
   -border-radius: 1em;
   border-radius: 1em;
+  -webkit-transition: all 200ms linear;
+  -moz-transition: all 200ms linear;
+  transition: all 200ms linear;
   text-transform: none; }
   .podcast__download--btn:hover, .podcast__download--btn:focus {
     background-color: transparent;
@@ -7464,6 +7466,10 @@ header.podcast__header {
 .podcast__archive a.podcast__subscribe,
 .podcast__archive a.podcast__rss {
   font-size: 0.7em;
+  vertical-align: top; }
+
+.single-podcast .podcast__header a.podcast__subscribe,
+.single-podcast .podcast__header a.podcast__rss {
   vertical-align: text-bottom; }
 
 .login-restricted-login-btn,
