@@ -166,17 +166,19 @@ class GMR_Audio_Shortcodes {
 			$new_html .= '</div>';
 		}
 		$new_html .= '<span class="podcast__runtime">' . esc_html( $metadata['length_formatted'] ) . '</span>';
-		if( $is_podcast && ( $downloadable == 'on' || $downloadable == '' ) ) {
+		if( ( $is_podcast || $is_podcast_archive ) && ( $downloadable == 'on' || $downloadable == '' ) ) {
 			$new_html .= '<div class="podcast__download">';
 			if( !is_singular( GMP_CPT::PODCAST_POST_TYPE ) ) {
-				if( $parent_podcast_id && $is_podcast ) {
+				if( $parent_podcast_id && ( $is_podcast || $is_podcast_archive ) ) {
 					if( $itunes_url != '' ) {
 						$new_html .= '<a class="podcast__subscribe show-mobile" href="' . esc_url( $itunes_url ) . '" target="_blank">Subscribe in iTunes</a>';
 					}
 					$new_html .= '<a class="podcast__rss show-mobile" href="' . esc_url( $feed_url ) . '" target="_blank">Podcast Feed</a>';
 				}
 			}
-			$new_html .= '<a href="' . esc_attr( $mp3_src ) . '" download="' . esc_attr( $mp3_src ) . '" class="podcast__download--btn" download>Download</a>';
+			if( ! $is_podcast_archive) {
+				$new_html .= '<a href="' . esc_attr( $mp3_src ) . '" download="' . esc_attr( $mp3_src ) . '" class="podcast__download--btn" download>Download</a>';
+			}
 			$new_html .= '</div>';
 		}
 		// if( $featured_image ) {
