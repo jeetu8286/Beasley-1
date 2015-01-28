@@ -1,11 +1,8 @@
 <?php $contest_id = get_the_ID(); ?>
 
-<article id="post-<?php the_ID(); ?>" <?php post_class( 'cf collapsed' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
-
-	<div class="ad__inline--right desktop">
-		<?php do_action( 'acm_tag', 'mrec-body' ); ?>
-	</div>
-
+<article id="post-<?php the_ID(); ?>" <?php post_class( 'cf' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
+	
+	<section class="col__inner--left">
 	<header class="entry__header">
 		<?php $encoded_permalink = urlencode( get_permalink() ); ?>
 		<?php $encoded_title = urlencode( get_the_title() ); ?>
@@ -49,4 +46,10 @@
 	<?php endif; ?>
 
 	<?php get_template_part( 'partials/post', 'footer' ); ?>
+	</section>
+	<section class="col__inner--right">
+		<div class="ad__inline--right desktop">
+			<?php do_action( 'acm_tag', 'mrec-body' ); ?>
+		</div>
+	</section>
 </article>
