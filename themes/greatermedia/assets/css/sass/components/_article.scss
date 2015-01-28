@@ -152,7 +152,7 @@
 
 		@include bp(large) {
 			margin: 0 1em 1em 0;
-			width: 50%; /* we want stuff to wrap around, don't we? */
+			max-width: 50%; /* we want text to wrap around, don't we? */
 		}
 	}	
 	.alignright, img.alignright {
@@ -162,7 +162,7 @@
 
 		@include bp(large) {
 			margin: 0 0 1em 1em;
-			width: 50%; /* we want stuff to wrap around, don't we? */
+			max-width: 50%; /* we want text to wrap around, don't we? */
 		}
 	}	
 	.aligncenter, img.aligncenter {
