@@ -206,13 +206,19 @@ category: Components - Shows
 	}
 }
 
+.show__header-content {
+	display: table;
+	table-layout: fixed; 
+}
+
 .show__cast {
 	@include fill-parent;
 	height: 100%;
 
 	@include bp(large) {
 		width: 150px;
-		float: left;
+		display: table-cell; 
+		vertical-align: middle; 
 	}
 
 	img {
@@ -224,6 +230,10 @@ category: Components - Shows
 .show__nav {
 	@include fill-parent;
 	text-align: center;
+	
+	.show__title {
+		line-height: 1.3;
+	}
 
 	h1 a {
 		color: $secondary-text;
@@ -274,6 +284,7 @@ category: Components - Shows
 
 		.show__title {
 			margin-bottom: 0;
+			
 		}
 
 		ul {
@@ -287,32 +298,25 @@ category: Components - Shows
 		}
 	}
 
-	@media screen and (min-width: 1043px) {
-		width: 53%;
-		float: left;
-		margin-top: 1.5em;
-		margin-bottom: 0;
+	@include bp(large) {
+		width: 75%; // I understand that this doesn't make sense, because 150px + 75% + 25% doesn't make sense. But that's table layouts for ya. 
+		display: table-cell;
+		vertical-align: middle;
 		text-align: left;
 		padding-left: 3em;
+		position: relative; 
 
 		.show__title {
 			margin-top: 0;
-			margin-bottom: 0.6em;
+			margin-bottom: 0;
 		}
 
-
 		ul {
+			position: absolute;
+			bottom: $base-line-height * -2;
 			text-align: justify;
 			margin-left: -9px;
 			width: auto;
-		}
-
-		// this psuedo element makes the text-align: justify work on the <ul>. via: http://stackoverflow.com/a/16901348
-		ul:after {
-			content: "";
-			width: 100%;
-			display: inline-block;
-			height: 0;
 		}
 	}
 }
@@ -359,11 +363,11 @@ category: Components - Shows
 	text-align: center;
 	float: none;
 
-	@media screen and (min-width: 1043px) {
+	@include bp(large) {
 		width: 25%;
-		float: right;
+		display: table-cell;
+		vertical-align: middle; 
 		text-align: right;
-		margin-top: 1.5em;
 	}
 
 	em {
