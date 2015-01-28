@@ -14,7 +14,7 @@ class GreaterMediaTimedContent extends VisualShortcode {
 			'dashicons-clock',
 			null,
 			__( 'Timed Content', 'greatermedia-timed-content' ),
-			14
+			12
 		);
 
 		add_action( 'current_screen', array( $this, 'current_screen' ) );
