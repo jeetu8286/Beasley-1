@@ -38,7 +38,9 @@ tr.delete {
   padding: 0 .5em;
   height: 12.5em;
   overflow: auto;
-  border: 1px solid #bbb; }
+  border: 1px solid #bbb;
+  margin-left: 1px;
+  width: 91%; }
   .is-loading .post-search__list {
     opacity: 0.5; }
 
