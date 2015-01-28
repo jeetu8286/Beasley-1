@@ -477,10 +477,32 @@ header.podcast__header {
 .podcast__archive {
 	.podcast__date {
 		width: 100%;
+		margin-bottom: 0;
+	}
+
+	.podcast__title {
+		margin-top: 0;
+	}
+	.podcast__desc {
+		margin-bottom: 10px;
+	}
+
+	a.podcast__subscribe,
+	a.podcast__rss {
+		font-size: 0.7em;
+		vertical-align: top;
 	}
 }
 
 .podcast__archive--episode-count {
-	@extend .podcast__date;	
-	margin-top: 10px;
+	@extend .podcast__date;
+}
+
+.single-podcast {
+	.podcast__header {
+		a.podcast__subscribe,
+		a.podcast__rss {
+			vertical-align: text-bottom;
+		}	
+	}
 }
