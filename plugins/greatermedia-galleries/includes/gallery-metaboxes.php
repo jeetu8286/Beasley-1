@@ -12,7 +12,6 @@ class GreaterMediaGalleryMetaboxes {
 	public static function init() {
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_scripts' ) );
 		add_action( 'add_meta_boxes', array( __CLASS__, 'add_meta_box' ) );
-		add_action( 'edit_form_after_title', array( __CLASS__, 'inline_instructions' ) );
 		add_action( 'edit_form_after_title', array( __CLASS__, 'gallery_builder' ), 11 );
 
 		self::add_save_post_actions();
@@ -117,32 +116,6 @@ class GreaterMediaGalleryMetaboxes {
 			wp_update_post( $post );
 			self::add_save_post_actions();
 		}
-	}
-
-	/**
-	 * Output instructions on creating a gallery
-	 */
-	public static function inline_instructions( $post ) {
-		// These instructions are applicable to adding a gallery anywhere, but unlike a post
-		// it's a bit unclear where to start, so we'll only output them on the gallery post type
-		if ( GreaterMediaGalleryCPT::GALLERY_POST_TYPE !== $post->post_type ) {
-			return;
-		}
-
-		?>
-		<h3>To add a gallery:</h3>
-		<ol>
-			<li>Click the <strong>Add Media</strong> button</li>
-			<li>Select "Create Gallery" in the left menu</li>
-			<li>Upload or select photos from the media library</li>
-			<li>Click on "Create a new Gallery"</li>
-			<li>Click on "Insert Gallery"</li>
-		</ol>
-
-		<p>
-			All the gallery images will be extracted and displayed above the gallery title and any text.
-		</p>
-		<?php
 	}
 
 	/**

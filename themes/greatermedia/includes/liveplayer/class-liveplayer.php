@@ -85,7 +85,7 @@ class GreaterMediaLivePlayer {
 		}
 
 		wp_send_json_success( array(
-			'tagline'  => get_bloginfo( 'description' ),
+			'tagline'  => html_entity_decode( get_bloginfo( 'description' ), ENT_QUOTES ),
 			'schedule' => $schedule,
 		) );
 		exit;

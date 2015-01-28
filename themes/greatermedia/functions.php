@@ -152,6 +152,14 @@ function greatermedia_scripts_styles() {
 		false
 	);
 	wp_enqueue_script(
+		'placeholders',
+		"{$baseurl}/assets/js/vendor/placeholders.min.js",
+		array(),
+		'3.0.2',
+		false
+	);
+
+	wp_enqueue_script(
 		'greatermedia-load-more',
 		"{$baseurl}/assets/js/greater_media_load_more{$postfix}.js",
 		array( 'jquery', 'jquery-waypoints' ),
@@ -685,7 +693,7 @@ add_action( 'wp_head', 'add_ie_stylesheet' );
  * @param string $sep Optional separator.
  * @return string The filtered title.
  */
-function twentyfourteen_wp_title( $title, $sep ) {
+function greatermedia_wp_title( $title, $sep ) {
 	global $paged, $page;
 
 	if ( is_feed() ) {
@@ -708,7 +716,7 @@ function twentyfourteen_wp_title( $title, $sep ) {
 
 	return $title;
 }
-add_filter( 'wp_title', 'twentyfourteen_wp_title', 10, 2 );
+add_filter( 'wp_title', 'greatermedia_wp_title', 10, 2 );
 
 /**
  * Updates tribe events archive title.
