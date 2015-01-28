@@ -48,8 +48,8 @@ function wp_head() {
 			
 			if ( maxWidthOk && minWidthOk ) {
 				var OX_12345 = new OX();
-				OX_12345.addAdUnit( '537282048' );
-				OX_12345.setAdUnitSlotId( '537282048', $slot.attr( 'id' ) );
+				OX_12345.addAdUnit( $slot.data( 'openx-id' ) );
+				OX_12345.setAdUnitSlotId( $slot.data( 'openx-id' ), $slot.attr( 'id' ) );
 				OX_12345.load();
 				
 				$slot.addClass( 'gmr-ad-filled' ); 
