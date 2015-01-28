@@ -63,7 +63,7 @@ $event_id = get_the_ID();
 
 				<div class="ad__inline--right desktop">
 					<?php // 'desktop' is a variant, can call a 'mobile' variant elsewhere if we need it, but never the same variant twice ?>
-					<?php do_action( 'acm_tag_gmr_variant', 'mrec-body', 'desktop' ); ?>
+					<?php do_action( 'acm_tag_gmr_variant', 'mrec-body', 'desktop', array( 'min_width' => 1024 ) ); ?>
 				</div>
 
 				<?php the_content(); ?>
@@ -71,7 +71,7 @@ $event_id = get_the_ID();
 			</div>
 
 			<div class="ad__inline--right mobile">
-				<?php do_action( 'acm_tag_gmr_variant', 'mrec-body', 'mobile' ); ?>
+				<?php do_action( 'acm_tag_gmr_variant', 'mrec-body', 'mobile', array( 'max_width' => 1023 ) ); ?>
 			</div>
 			<!-- .tribe-events-single-event-description -->
 		</div> <!-- #post-x -->
