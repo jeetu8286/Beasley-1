@@ -7976,9 +7976,7 @@ category: Components - Shows
     background-repeat: no-repeat;
     background-size: 100%;
     background-size: cover;
-    background-size: 100%;
-    background-position: center;
-    background-repeat: no-repeat; }
+    background-position: center; }
   .show__header > div {
     vertical-align: middle; }
   @media screen and (min-width: 768px) {
@@ -8116,7 +8114,10 @@ category: Components - Shows
     margin-top: 1em;
     width: 35px;
     height: 35px;
-    font-size: 17px; }
+    font-size: 16px;
+    padding: 8px; }
+    .show__meta .social-share-link.icon-google-plus, .show__meta .social-share-link.social__link--google-plus:before {
+      padding-left: 10px; }
     .show__meta .social-share-link:hover, .show__meta .social-share-link:active {
       color: #561015;
       background: #ffffff;
@@ -12594,6 +12595,11 @@ category: Components
     transform: translate(-50%, -50%);
     font-size: 60px;
     color: #bbb; }
+  .busy-mask .fa-spin {
+    -webkit-animation: spin 1s infinite linear;
+    -moz-animation: spin 1s infinite linear;
+    -o-animation: spin 1s infinite linear;
+    animation: spin 1s infinite linear; }
 
 .sponsors {
   width: 100%;

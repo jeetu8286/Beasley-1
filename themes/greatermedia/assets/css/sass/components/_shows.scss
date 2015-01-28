@@ -186,9 +186,7 @@ category: Components - Shows
 		background-repeat: no-repeat;
 		background-size: 100%;
 		background-size: cover;
-		background-size: 100%;
 		background-position: center;
-		background-repeat: no-repeat;
 	}
 
 	> div {
@@ -380,7 +378,12 @@ category: Components - Shows
 		margin-top: 1em;
 		width: 35px;
 		height: 35px;
-		font-size: 17px;
+		font-size: 16px;
+		padding: 8px;
+
+		&.icon-google-plus {
+			padding-left: 10px;
+		}
 
 		&:hover, &:active {
 			color: $heath;
