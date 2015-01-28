@@ -24,6 +24,7 @@ add_filter( 'ajax_query_attachments_args', 'gmr_contests_adjuste_attachments_que
 add_filter( 'gmr_contest_submissions_query', 'gmr_contests_submissions_query' );
 add_filter( 'post_type_link', 'gmr_contests_get_submission_permalink', 10, 2 );
 add_filter( 'request', 'gmr_contests_unpack_vars' );
+add_filter( 'wp_link_query_args', 'gmr_contests_exclude_ugc_from_editor_links_query' );
 add_filter( 'gmr-homepage-curation-post-types', 'gmr_contest_register_homepage_curration_post_type' );
 add_filter( 'post_thumbnail_html', 'gmr_contests_post_thumbnail_html', 10, 4 );
 add_filter( 'manage_' . GMR_CONTEST_CPT . '_posts_columns', 'gmr_contests_filter_contest_columns_list' );
@@ -68,6 +69,26 @@ function gmr_contests_admin_enqueue_scripts() {
 function gmr_contest_register_homepage_curration_post_type( $types ) {
 	$types[] = GMR_CONTEST_CPT;
 	return $types;
+}
+
+/**
+ * Removes UGC from editor links query.
+ *
+ * @filter wp_link_query_args
+ * @param array $args The array of query args.
+ * @return array Adjusted array of query args.
+ */
+function gmr_contests_exclude_ugc_from_editor_links_query( $args ) {
+	if ( ! empty( $args['post_type'] ) ) {
+		$post_type = $args['post_type'];
+		if ( is_string( $post_type ) ) {
+			$post_type = array_map( 'trim', explode( ',', $post_type ) );
+		}
+
+		unset( $post_type[ array_search( GMR_SUBMISSIONS_CPT, $post_type ) ] );
+		$args['post_type'] = $post_type;
+	}
+	return $args;
 }
 
 /**
