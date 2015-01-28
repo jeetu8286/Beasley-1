@@ -1,5 +1,9 @@
 .songs__group {
 	@include row();
+
+	&.songs__group--new-date {
+		margin-top: 2em;
+	}
 }
 
 .songs__group--date {
