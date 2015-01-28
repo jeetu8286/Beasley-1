@@ -41,6 +41,13 @@ $event_id = get_the_ID();
 			}
 			?>
 
+			<div class="ad__inline--right desktop">
+				<?php // 'desktop' is a variant, can call a 'mobile' variant elsewhere if we need it, but never the same variant twice ?>
+				<?php do_action( 'acm_tag_gmr_variant', 'mrec-body', 'desktop' ); ?>
+			</div>
+
+			<div class="event__info">
+
 			<!-- Event meta -->
 			<?php do_action( 'tribe_events_single_event_before_the_meta' ) ?>
 			<?php
@@ -61,14 +68,11 @@ $event_id = get_the_ID();
 			<?php do_action( 'tribe_events_single_event_before_the_content' ) ?>
 			<div class="tribe-events-single-event-description tribe-events-content entry-content description">
 
-				<div class="ad__inline--right desktop">
-					<?php // 'desktop' is a variant, can call a 'mobile' variant elsewhere if we need it, but never the same variant twice ?>
-					<?php do_action( 'acm_tag_gmr_variant', 'mrec-body', 'desktop' ); ?>
-				</div>
-
 				<?php the_content(); ?>
 
 			</div>
+
+			</div><!-- end .event__info -->
 
 			<div class="ad__inline--right mobile">
 				<?php do_action( 'acm_tag_gmr_variant', 'mrec-body', 'mobile' ); ?>

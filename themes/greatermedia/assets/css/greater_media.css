@@ -6922,6 +6922,28 @@ category: Components - Ads
 .event__thumbnail img {
   margin: 0 auto; }
 
+.event__info {
+  display: block; }
+  .event__info:before, .event__info:after {
+    content: " ";
+    display: table; }
+  .event__info:after {
+    clear: both; }
+  @media screen and (min-width: 1024px) {
+    .event__info {
+      padding-right: 320px; } }
+
+.tribe-events-single .ad__inline--right.desktop {
+  display: none; }
+  @media screen and (min-width: 1024px) {
+    .tribe-events-single .ad__inline--right.desktop {
+      display: block; } }
+.tribe-events-single .ad__inline--right.mobile {
+  display: block; }
+  @media screen and (min-width: 1024px) {
+    .tribe-events-single .ad__inline--right.mobile {
+      display: none; } }
+
 .tribe-events-button {
   display: block !important;
   line-height: 1;
@@ -7119,6 +7141,13 @@ category: Components - Ads
 
 .tribe-events-single-section-title {
   font-family: "Open Sans", sans-serif; }
+
+.tribe-events-single-section.tribe-events-event-meta.primary.tribe-clearfix {
+  float: left !important;
+  width: 100%; }
+  .tribe-events-single-section.tribe-events-event-meta.primary.tribe-clearfix:after {
+    content: " ";
+    display: none !important; }
 
 .single-tribe_events #tribe-events-footer {
   border-top: none;
