@@ -12570,6 +12570,11 @@ category: Components
     transform: translate(-50%, -50%);
     font-size: 60px;
     color: #bbb; }
+  .busy-mask .fa-spin {
+    -webkit-animation: spin 1s infinite linear;
+    -moz-animation: spin 1s infinite linear;
+    -o-animation: spin 1s infinite linear;
+    animation: spin 1s infinite linear; }
 
 .sponsors {
   width: 100%;
