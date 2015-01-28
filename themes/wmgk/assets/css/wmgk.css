@@ -6040,6 +6040,7 @@ a.live-audio__link {
   display: block;
   position: absolute;
   top: 0;
+  left: -2px;
   height: 56px;
   width: 56px;
   background-color: #d22228;
