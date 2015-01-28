@@ -147,13 +147,23 @@
 		
 	.alignleft, img.alignleft {
 		display: block;
-		margin: 0 1em 16px;
+		margin: 0 1em 1em 1em;
 		float: left;
+
+		@include bp(large) {
+			margin: 0 1em 1em 0;
+			max-width: 50%; /* we want text to wrap around, don't we? */
+		}
 	}	
 	.alignright, img.alignright {
 		display: block;
-		margin: 0 0 16px 1em;
 		float: right;
+		margin: 0 1em 1em 1em;
+
+		@include bp(large) {
+			margin: 0 0 1em 1em;
+			max-width: 50%; /* we want text to wrap around, don't we? */
+		}
 	}	
 	.aligncenter, img.aligncenter {
 		margin: 0 auto 1em;
@@ -169,7 +179,6 @@
 	.wp-caption {
 		max-width: 100%;
 		padding: 0;
-		margin: 0 0 16px;
 		background: $primary-border;
 	}	
 	.wp-caption img {
@@ -177,7 +186,7 @@
 		margin-bottom: 0;
 		max-width: 100%;
 	}	
-	.wp-caption p.wp-caption-text {
+	.wp-caption .wp-caption-text {
 		padding: 16px 1.25em 20px;
 		margin: 4px .5em;
 		font-size: ms(-2);
