@@ -305,8 +305,8 @@
 		var runtimeCurrent = audioCurrent.nextElementSibling;
 		var audioTime = document.querySelectorAll('.audio__time'), i;
 		var runtime = document.querySelector('.podcast__runtime');
-
-		if (podcastPlayer != null && body.classList.contains('single-show')) {
+		
+		if (podcastPlayer != null && ( body.classList.contains('single-show') || body.classList.contains('post-type-archive-podcast') || body.classList.contains('single-podcast') ) ) {
 			audioCurrent.classList.add('playing__current');
 			runtimeCurrent.classList.add('playing');
 		} else {
