@@ -129,7 +129,7 @@ class Restricted_Site_Access {
 		
 		// check for the allow list, if its empty block everything
 		if ( !empty( self::$rsa_options['allowed'] ) && is_array( self::$rsa_options['allowed'] ) ) {
-			$remote_ip = $_SERVER['REMOTE_ADDR'];  //save the remote ip
+			$remote_ip = self::get_remote_ip();  //save the remote ip
 			if ( strpos( $remote_ip, '.' ) ) {
 				$remote_ip = str_replace( '::ffff:', '', $remote_ip ); //handle dual-stack addresses
 			}
@@ -379,6 +379,8 @@ class Restricted_Site_Access {
 	 * @param $args
 	 */
 	public static function settings_field_allowed( $args ) {
+		$remote_ip = self::get_remote_ip();
+
 	?>
 		<div class="hide-if-no-js">
 			<div id="ip_list">
@@ -396,7 +398,7 @@ class Restricted_Site_Access {
 				<input type="text" name="newip" id="newip" /> <input class="button" type="button" id="addip" value="<?php _e( 'Add' ); ?>" />
 				<p class="description" style="display: inline;"><label for="newip"><?php _e('Enter a single IP address or a range using a subnet prefix','restricted-site-access'); ?></label></p>
             </div>
-			<?php if ( ! empty( $_SERVER['REMOTE_ADDR'] ) ) { ?><input class="button" type="button" id="rsa_myip" value="<?php _e( 'Add My Current IP Address', 'restricted-site-access' ); ?>" style="margin-top: 5px;" data-myip="<?php echo esc_attr( $_SERVER['REMOTE_ADDR'] ); ?>" /><br /><?php } ?>
+			<?php if ( ! empty( $remote_ip ) ) { ?><input class="button" type="button" id="rsa_myip" value="<?php _e( 'Add My Current IP Address', 'restricted-site-access' ); ?>" style="margin-top: 5px;" data-myip="<?php echo esc_attr( $remote_ip ); ?>" /><br /><?php } ?>
 		</div>
 		<p class="hide-if-js"><strong><?php _e('To manage IP addresses, you must use a JavaScript enabled browser.','restricted-site-access'); ?></strong></p>
 	<?php
@@ -550,6 +552,23 @@ class Restricted_Site_Access {
 			update_option( 'blog_public', 1 );
 		}
 	}
+
+	/**
+	 * Returns remote IP address.
+	 *
+	 * @staticvar string $remote_ip
+	 * @return string The remote IP address.
+	 */
+	public static function get_remote_ip() {
+		static $remote_ip = null;
+
+		if ( is_null( $remote_ip ) ) {
+			$remote_ip = apply_filters( 'restricted_site_access_remote_ip', $_SERVER['REMOTE_ADDR'] );
+		}
+
+		return $remote_ip;
+	}
+
 }
 
 Restricted_Site_Access::get_instance();
