@@ -1556,7 +1556,7 @@ $heartbeat-rotation: rotate(0);
 	content: ' ';
 	display: block;
 	position: absolute;
-	top: 0;
+	top: -2px;
 	left: -2px;
 	height: $heartbeat-size;
 	width: $heartbeat-size;
