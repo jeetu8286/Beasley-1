@@ -473,3 +473,14 @@ header.podcast__header {
 .podcast__child--title {
 	margin-bottom: 10px;
 }
+
+.podcast__archive {
+	.podcast__date {
+		width: 100%;
+	}
+}
+
+.podcast__archive--episode-count {
+	@extend .podcast__date;	
+	margin-top: 10px;
+}

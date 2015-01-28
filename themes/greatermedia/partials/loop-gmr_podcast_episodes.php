@@ -15,6 +15,13 @@
 	</article>
 	<?php
 	endwhile;
-	greatermedia_load_more_button( array( 'page_link_template' => home_url( 'episode/page/%d/' ),  'partial_slug' => 'partials/loop-gmr_podcast_episode', 'auto_load' => false, 'query' => $query ) );
+	greatermedia_load_more_button( 
+		array( 
+			'page_link_template' => home_url( 'episode/page/%d/' ),
+			'partial_slug' => 'partials/loop-gmr_podcast_episode',
+			'auto_load' => false,
+			'query' => $query
+			) 
+		);
 	wp_reset_query();
 	?>
