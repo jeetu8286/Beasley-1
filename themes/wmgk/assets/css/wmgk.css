@@ -4344,8 +4344,8 @@ Link posts contain a link to an external site. They can also optionally have a f
     @media screen and (min-width: 1024px) {
       .article__content .alignleft, .article__content img.alignleft {
         margin: 0 1em 1em 0;
-        width: 50%;
-        /* we want stuff to wrap around, don't we? */ } }
+        max-width: 50%;
+        /* we want text to wrap around, don't we? */ } }
   .article__content .alignright, .article__content img.alignright {
     display: block;
     float: right;
@@ -4353,8 +4353,8 @@ Link posts contain a link to an external site. They can also optionally have a f
     @media screen and (min-width: 1024px) {
       .article__content .alignright, .article__content img.alignright {
         margin: 0 0 1em 1em;
-        width: 50%;
-        /* we want stuff to wrap around, don't we? */ } }
+        max-width: 50%;
+        /* we want text to wrap around, don't we? */ } }
   .article__content .aligncenter, .article__content img.aligncenter {
     margin: 0 auto 1em; }
   .article__content .size-auto,
