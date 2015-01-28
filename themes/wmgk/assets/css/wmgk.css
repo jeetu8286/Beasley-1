@@ -7465,10 +7465,20 @@ header.podcast__header {
   margin-bottom: 10px; }
 
 .podcast__archive .podcast__date, .podcast__archive .podcast__archive--episode-count {
-  width: 100%; }
+  width: 100%;
+  margin-bottom: 0; }
+.podcast__archive .podcast__title {
+  margin-top: 0; }
+.podcast__archive .podcast__desc {
+  margin-bottom: 10px; }
+.podcast__archive a.podcast__subscribe,
+.podcast__archive a.podcast__rss {
+  font-size: 0.7em;
+  vertical-align: top; }
 
-.podcast__archive--episode-count {
-  margin-top: 10px; }
+.single-podcast .podcast__header a.podcast__subscribe,
+.single-podcast .podcast__header a.podcast__rss {
+  vertical-align: text-bottom; }
 
 .login-restricted-login-btn,
 .logout-restricted-login-btn,
