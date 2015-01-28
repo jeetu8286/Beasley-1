@@ -147,13 +147,23 @@
 		
 	.alignleft, img.alignleft {
 		display: block;
-		margin: 0 1em 16px;
+		margin: 0 1em 1em 1em;
 		float: left;
+
+		@include bp(large) {
+			margin: 0 1em 1em 0;
+			width: 50%; /* we want stuff to wrap around, don't we? */
+		}
 	}	
 	.alignright, img.alignright {
 		display: block;
-		margin: 0 0 16px 1em;
 		float: right;
+		margin: 0 1em 1em 1em;
+
+		@include bp(large) {
+			margin: 0 0 1em 1em;
+			width: 50%; /* we want stuff to wrap around, don't we? */
+		}
 	}	
 	.aligncenter, img.aligncenter {
 		margin: 0 auto 1em;
