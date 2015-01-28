@@ -215,9 +215,10 @@ function get_show_featured_query() {
 	$curated_ids = explode( ',', get_post_meta( get_the_ID(), 'gmr_featured_post_ids', true ) );
 
 	$args = array(
-		'post__in' => $curated_ids,
-		'post_type' => 'any', // since we have IDs
-		'orderby' => 'post__in',
+		'post__in'            => $curated_ids,
+		'post_type'           => 'any', // since we have IDs
+		'orderby'             => 'post__in',
+		'ignore_sticky_posts' => true,
 	);
 
 	$query = new \WP_Query( $args );
@@ -229,9 +230,10 @@ function get_show_favorites_query() {
 	$curated_ids = explode( ',', get_post_meta( get_the_ID(), 'gmr_favorite_post_ids', true ) );
 
 	$args = array(
-		'post__in' => $curated_ids,
-		'post_type' => 'any', // since we have IDs
-		'orderby' => 'post__in',
+		'post__in'            => $curated_ids,
+		'post_type'           => 'any', // since we have IDs
+		'orderby'             => 'post__in',
+		'ignore_sticky_posts' => true,
 	);
 
 	$query = new \WP_Query( $args );
