@@ -6039,19 +6039,20 @@ a.live-audio__link {
 
 /* :not(:required) hides this rule from IE9 and below */
 .play-btn--heartbeat {
-  -webkit-animation: heartbeat 3000ms ease-out 0s infinite normal;
-  -khtml-animation: heartbeat 3000ms ease-out 0s infinite normal;
-  -moz-animation: heartbeat 3000ms ease-out 0s infinite normal;
-  -ms-animation: heartbeat 3000ms ease-out 0s infinite normal;
-  -o-animation: heartbeat 3000ms ease-out 0s infinite normal;
-  animation: heartbeat 3000ms ease-out 0s infinite normal;
+  -webkit-animation: heartbeat 3000ms ease-out 500ms infinite normal;
+  -khtml-animation: heartbeat 3000ms ease-out 500ms infinite normal;
+  -moz-animation: heartbeat 3000ms ease-out 500ms infinite normal;
+  -ms-animation: heartbeat 3000ms ease-out 500ms infinite normal;
+  -o-animation: heartbeat 3000ms ease-out 500ms infinite normal;
+  animation: heartbeat 3000ms ease-out 500ms infinite normal;
   display: inline-block;
   vertical-align: middle;
   position: relative;
   width: 56px;
   height: 56px;
-  background: transparent;
-  border-radius: 50%; }
+  background: #d22228;
+  border-radius: 50%;
+  color: #f2f2f2; }
 
 .play-btn--heartbeat:after {
   content: ' ';

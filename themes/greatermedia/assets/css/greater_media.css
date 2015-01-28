@@ -6040,8 +6040,9 @@ a.live-audio__link {
   position: relative;
   width: 56px;
   height: 56px;
-  background: transparent;
-  border-radius: 50%; }
+  background: #d22228;
+  border-radius: 50%;
+  color: #000000; }
 
 .play-btn--heartbeat:after {
   content: ' ';

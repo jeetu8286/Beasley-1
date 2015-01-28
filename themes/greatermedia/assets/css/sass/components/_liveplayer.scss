@@ -1466,8 +1466,9 @@ $heartbeat-rotation: rotate(0);
 	position: relative;
 	width: $heartbeat-size;
 	height: $heartbeat-size;
-	background: transparent;
+	background: $btn-bg;
 	border-radius: 50%;
+	color: $liveplayer-bg;
 }
 
 .play-btn--heartbeat:after {
