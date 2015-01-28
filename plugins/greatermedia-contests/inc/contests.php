@@ -20,6 +20,7 @@ add_action( 'gmr_contest_unvote', 'gmr_contests_unvote_for_submission' );
 
 // filter hooks
 add_filter( 'map_meta_cap', 'gmr_contests_map_meta_cap', 10, 4 );
+add_filter( 'ajax_query_attachments_args', 'gmr_contests_adjuste_attachments_query' );
 add_filter( 'gmr_contest_submissions_query', 'gmr_contests_submissions_query' );
 add_filter( 'post_type_link', 'gmr_contests_get_submission_permalink', 10, 2 );
 add_filter( 'request', 'gmr_contests_unpack_vars' );
@@ -158,6 +159,29 @@ function gmr_contests_prevent_trash_transition( $new_status, $old_status, $post 
 	if ( 'trash' == $new_status ) {
 		gmr_contests_prevent_hard_delete( $post, $old_status );
 	}
+}
+
+/**
+ * Removes "private" post status from query args for ajax request which returns
+ * images for media popup.
+ *
+ * @filter ajax_query_attachments_args
+ *
+ * @param array $args The initial array of query arguments.
+ * @return array Adjusted array of query arguments which doesn't contain "private" post status.
+ */
+function gmr_contests_adjuste_attachments_query( $args ) {
+	if ( isset( $args['post_status'] ) ) {
+		$post_status = is_array( $args['post_status'] ) 
+			? $args['post_status']
+			: explode( ',', $args['post_status'] );
+
+		unset( $post_status[ array_search( 'private', $post_status ) ] );
+
+		$args['post_status'] = $post_status;
+	}
+	
+	return $args;
 }
 
 /**
