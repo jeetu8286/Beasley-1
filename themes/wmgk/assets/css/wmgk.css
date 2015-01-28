@@ -7040,7 +7040,8 @@ category: Components - Ads
   font-family: "Open Sans", sans-serif; }
 
 .tribe-events-single-section.tribe-events-event-meta.primary.tribe-clearfix {
-  float: left !important; }
+  float: left !important;
+  width: 100%; }
   .tribe-events-single-section.tribe-events-event-meta.primary.tribe-clearfix:after {
     content: " ";
     display: none !important; }

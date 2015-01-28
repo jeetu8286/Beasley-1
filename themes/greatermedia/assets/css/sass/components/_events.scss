@@ -34,7 +34,7 @@
 
 .event__info {
 	@include row();
-
+	
 	@include bp(large) {
 		padding-right: 320px;
 	}
@@ -192,6 +192,7 @@
 
 .tribe-events-single-section.tribe-events-event-meta.primary.tribe-clearfix {
 	float: left !important;
+	width: 100%;
 
 	&:after {
 		content: " ";
