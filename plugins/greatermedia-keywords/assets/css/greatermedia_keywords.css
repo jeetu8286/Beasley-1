@@ -46,5 +46,7 @@ tr.delete {
 
 .post-search__list-item {
   margin: .5em 0; }
+  .post-search__list-item input, .post-search__list-item label {
+    display: inline-block; }
 
 /*# sourceMappingURL=greatermedia_keywords.css.map */
