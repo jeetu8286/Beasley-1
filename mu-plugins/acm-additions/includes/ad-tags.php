@@ -106,7 +106,7 @@ function ad_variant( $new_variant = false ) {
 function ad_variant_overrides( $new_overrides = false ) {
 	static $overrides;
 
-	if ( false !== $overrides ) {
+	if ( false !== $new_overrides ) {
 		$overrides = $new_overrides;
 	}
 
