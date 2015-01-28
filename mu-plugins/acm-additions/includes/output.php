@@ -55,7 +55,7 @@ function render_tag( $output_html, $tag_id ) {
 		$variant_overrides = ad_variant_overrides();
 
 		// Merge the overrides and meta together, giving overrides priority to the global variant settings
-		$variant_meta = array_merge( $variant_meta, $variant_overrides );
+		$variant_meta = wp_parse_args( $variant_overrides, $variant_meta );
 
 		$variant_id = '_' . $variant;
 
