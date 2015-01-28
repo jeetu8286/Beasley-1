@@ -7923,7 +7923,10 @@ category: Components - Shows
     margin-top: 1em;
     width: 35px;
     height: 35px;
-    font-size: 17px; }
+    font-size: 16px;
+    padding: 8px; }
+    .show__meta .social-share-link.icon-google-plus, .show__meta .social-share-link.social__link--google-plus:before {
+      padding-left: 10px; }
     .show__meta .social-share-link:hover, .show__meta .social-share-link:active {
       color: #561015;
       background: #ffffff;
