@@ -1,9 +1,5 @@
 <?php $contest_id = get_the_ID(); ?>
 <article id="post-<?php the_ID(); ?>" <?php post_class( 'cf collapsed' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
-
-	<div class="ad__inline--right desktop">
-		<?php do_action( 'acm_tag', 'mrec-lists' ); ?>
-	</div>
 	
 	<section class="col__inner--left">
 
@@ -95,7 +91,12 @@
 
 	</section>
 
-	<section id="contest-form" class="col__inner--right contest__form"<?php gmr_contest_container_attributes(); ?>></section>
+	<section class="col__inner--right">
+		<section id="contest-form" class="contest__form"<?php gmr_contest_container_attributes(); ?>></section>
+		<div class="ad__inline--right desktop">
+			<?php do_action( 'acm_tag', 'mrec-lists' ); ?>
+		</div>
+	</section>
 
 	<?php get_template_part( 'partials/submission', 'tiles' ); ?>
 
