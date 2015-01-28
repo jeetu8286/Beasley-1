@@ -61,6 +61,8 @@ tr.delete {
 	.is-loading & {
 		opacity: 0.5;
 	}
+	margin-left: 1px;
+	width: 91%;
 }
 
 .post-search__list-item {
