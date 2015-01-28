@@ -138,4 +138,4 @@ function render_variant( $tag_id, $variant, $overrides = array() ) {
 	ad_variant( '' );
 	ad_variant_overrides( array() );
 }
-add_action( 'acm_tag_gmr_variant', __NAMESPACE__ . '\render_variant', 10, 2 );
+add_action( 'acm_tag_gmr_variant', __NAMESPACE__ . '\render_variant', 10, 3 );
