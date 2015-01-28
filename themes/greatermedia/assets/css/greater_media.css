@@ -8007,9 +8007,11 @@ category: Components - Shows
       background-color: #561015;
       background-size: auto 65%; } }
 
-.show__header-content {
-  display: table;
-  table-layout: fixed; }
+@media screen and (min-width: 1024px) {
+  .show__header-content {
+    display: table;
+    table-layout: fixed;
+    width: 100%; } }
 
 .show__cast {
   width: 100%;
@@ -8075,11 +8077,12 @@ category: Components - Shows
         list-style-type: none; } }
   @media screen and (min-width: 1024px) {
     .show__nav {
-      width: 75%;
+      width: auto;
       display: table-cell;
       vertical-align: middle;
       text-align: left;
       padding-left: 3em;
+      padding-right: 3em;
       position: relative; }
       .show__nav .show__title {
         margin-top: 0;
@@ -8122,7 +8125,8 @@ category: Components - Shows
   float: none; }
   @media screen and (min-width: 1024px) {
     .show__meta {
-      width: 25%;
+      width: 180px;
+      white-space: nowrap;
       display: table-cell;
       vertical-align: middle;
       text-align: right; } }
