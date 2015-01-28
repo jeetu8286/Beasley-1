@@ -67,4 +67,7 @@ tr.delete {
 
 .post-search__list-item {
 	margin: .5em 0;
+	input, label {
+		display: inline-block;
+	}
 }
