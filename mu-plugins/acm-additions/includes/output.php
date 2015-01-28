@@ -64,7 +64,7 @@ function wp_head() {
 		
 		jQuery( function( $ ) {
 			fill_ads(); 
-			$( document ).on( 'gmr_fill_ads', fill_ads );
+			$( document ).on( 'pjax:end gmr_lazy_load_end', fill_ads );
 		} );
 	</script>
 	<?php
