@@ -207,8 +207,11 @@ category: Components - Shows
 }
 
 .show__header-content {
-	display: table;
-	table-layout: fixed; 
+	@include bp(large) {
+		display: table;
+		table-layout: fixed; 
+		width: 100%;		
+	}
 }
 
 .show__cast {
@@ -299,11 +302,12 @@ category: Components - Shows
 	}
 
 	@include bp(large) {
-		width: 75%; // I understand that this doesn't make sense, because 150px + 75% + 25% doesn't make sense. But that's table layouts for ya. 
+		width: auto;  
 		display: table-cell;
 		vertical-align: middle;
 		text-align: left;
 		padding-left: 3em;
+		padding-right: 3em; 
 		position: relative; 
 
 		.show__title {
@@ -364,7 +368,8 @@ category: Components - Shows
 	float: none;
 
 	@include bp(large) {
-		width: 25%;
+		width: 180px;
+		white-space: nowrap;
 		display: table-cell;
 		vertical-align: middle; 
 		text-align: right;
