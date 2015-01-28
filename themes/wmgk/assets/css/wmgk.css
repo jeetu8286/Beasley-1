@@ -12171,6 +12171,8 @@ category: Components
     display: table; }
   .songs__group:after {
     clear: both; }
+  .songs__group.songs__group--new-date {
+    margin-top: 2em; }
 
 .songs__group--date {
   font-size: 3.24732em;

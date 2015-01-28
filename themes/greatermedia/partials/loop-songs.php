@@ -1,20 +1,34 @@
 <?php
 
+global $gmr_last_song, $gmr_moved_song, $wp_query;
+
+// add a trailing song from previous page to the current page
+if ( ! empty( $gmr_moved_song ) ) :
+	array_unshift( $wp_query->posts, $gmr_moved_song );
+endif;
+
+$date_pattern = 'M j';
 $current_date = null;
 while( have_posts() ) :
 	the_post();
 
-	$date = get_the_time( 'M j' );
+	$date = get_the_time( $date_pattern );
 	if ( $current_date != $date ) :
+		// break the loop if the trailing song has different date to eliminate
+		// a gap in the songs list, we will add this song on the next page
+		if ( ! have_posts() ) :
+			break;
+		endif;
+
 		if ( ! is_null( $current_date ) ) :
 				?></ul>
 			</div><?php
 		endif;
 
-		?><div class="songs__group">
-			<div class="songs__group--date">
-				<?php echo esc_html( $date ); ?>
-			</div>
+		$not_same_date = ! $gmr_last_song || $date != get_the_time( $date_pattern, $gmr_last_song );
+
+		?><div class="songs__group<?php echo $not_same_date ? ' songs__group--new-date' : ''; ?>">
+			<div class="songs__group--date"><?php echo $not_same_date ? esc_html( $date ) : '&nbsp;'; ?></div>
 			<ul class="songs__group--list"><?php
 
 		$current_date = $date;
