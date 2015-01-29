@@ -737,7 +737,7 @@ img {
   @media screen and (min-width: 768px) {
     .live-player {
       position: absolute;
-      top: 252px;
+      top: 215px;
       bottom: auto;
       right: 0;
       left: auto;
@@ -772,7 +772,7 @@ img {
 
 @media screen and (min-width: 782px) {
   .logged-in .live-player {
-    top: 289px; } }
+    top: 247px; } }
 
 .row {
   display: block; }
@@ -8845,8 +8845,7 @@ category: Components - Shows
   padding: 0;
   margin: 0 0 1em;
   height: 100% !important;
-  overflow: hidden;
-  overflow-y: scroll; }
+  overflow: hidden; }
   .live-player--open .widget--live-player {
     margin-bottom: 58px; }
 
@@ -8870,6 +8869,12 @@ category: Components - Shows
   padding: 0;
   margin: 0;
   line-height: 1; }
+
+.slimscroll--bar {
+  background-color: #303030; }
+
+.slimscroll--rail {
+  background-color: #d0d2d3; }
 
 /*doc
 ---
