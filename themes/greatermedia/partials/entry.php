@@ -55,5 +55,7 @@
 			echo '<a href="' . esc_url( get_category_link($category[0]->term_id ) ) . '" class="entry2__footer--category">' . esc_html( $category[0]->cat_name ) . '</a>';
 		}
 		?>
+
+		<a href="<?php the_permalink(); ?>" class="entry2__footer--read-more"><?php _e( 'read more', 'greatermedia' ); ?></a>
 	</footer>
 </article>

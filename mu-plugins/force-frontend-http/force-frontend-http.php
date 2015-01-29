@@ -17,12 +17,16 @@ class FrontEndHttpRedirector {
 	}
 
 	function redirect() {
-		wp_safe_redirect( $this->get_redirect_url() );
+		wp_redirect( $this->get_redirect_url(), 301 );
 		die();
 	}
 
 	function needs_redirect() {
-		return ! is_admin() && is_ssl();
+		return ! $this->is_login_page() && ! is_admin() && is_ssl();
+	}
+
+	function is_login_page() {
+		return in_array( $GLOBALS['pagenow'], array( 'wp-login.php', 'wp-register.php' ) );
 	}
 
 	function get_redirect_url() {
@@ -35,4 +39,4 @@ class FrontEndHttpRedirector {
 }
 
 $frontend_http_redirector = new FrontEndHttpRedirector();
-$frontend_http_redirector->enable();
+//$frontend_http_redirector->enable();

@@ -1,6 +1,6 @@
 <?php $contest_id = get_the_ID(); ?>
-<article id="post-<?php the_ID(); ?>" <?php post_class( 'cf collapsed' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
-
+<article id="post-<?php the_ID(); ?>" <?php post_class( 'cf' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
+	
 	<section class="col__inner--left">
 
 		<header class="entry__header">
@@ -14,7 +14,6 @@
 		</header>
 
 		<div class="contest__restrictions">
-
 			<div class="contest__restriction--not-started">
 				<p>The contest is not started yet.</p>
 			</div>
@@ -71,6 +70,7 @@
 
 		<?php if ( ( $enter = trim( get_post_meta( get_the_ID(), 'how-to-enter-desc', true ) ) ) ) : ?>
 			<div class="contest__description">
+				<h3 class="contest__prize--title"><?php _e( 'How to enter:', 'greatermedia' ); ?></h3>
 				<?php echo wpautop( $enter ); ?>
 			</div>
 		<?php endif; ?>
@@ -79,7 +79,7 @@
 		<div class="contest__description">
 			<p>
 				<a class="contest-attr--rules-toggler pjax-exclude" href="#" data-toggle="collapse" data-target="#contest-rules" data-alt-text="Hide Contest Rules">
-					<?php _e( 'Show Contest Rules', 'greatermedia' ); ?>
+					<?php _e( 'view contest rules', 'greatermedia' ); ?>
 				</a>
 			</p>
 
@@ -91,8 +91,12 @@
 
 	</section>
 
-
-	<section id="contest-form" class="col__inner--right contest__form"<?php gmr_contest_container_attributes(); ?>></section>
+	<section class="col__inner--right">
+		<section id="contest-form" class="contest__form"<?php gmr_contest_container_attributes(); ?>></section>
+		<div class="ad__inline--right desktop">
+			<?php do_action( 'acm_tag', 'mrec-lists' ); ?>
+		</div>
+	</section>
 
 	<?php get_template_part( 'partials/submission', 'tiles' ); ?>
 
