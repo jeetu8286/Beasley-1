@@ -236,7 +236,7 @@
 			if (body.classList.contains('logged-in')) {
 				livePlayer.style.top = wpAdminHeight + elemHeight(header) + 'px';
 			} else {
-				livePlayer.style.top = elemeHeight(header) + 'px';
+				livePlayer.style.top = elemHeight(header) + 'px';
 			}
 		}
 
