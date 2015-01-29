@@ -39,4 +39,4 @@ class FrontEndHttpRedirector {
 }
 
 $frontend_http_redirector = new FrontEndHttpRedirector();
-$frontend_http_redirector->enable();
+//$frontend_http_redirector->enable();
