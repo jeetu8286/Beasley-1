@@ -17,17 +17,23 @@ class FrontEndHttpRedirector {
 	}
 
 	function redirect() {
-		wp_safe_redirect( $this->get_redirect_url() );
+		$redirect_url = $this->get_redirect_url();
+		$html = <<<HTML
+<script type="text/javascript">
+	location.href = location.href.replace('https://', 'http://');
+</script>
+HTML;
+
+		echo $html;
 		die();
 	}
 
 	function needs_redirect() {
-		return ! is_admin() && is_ssl() && ! $this->is_core_file();
+		return ! $this->is_login_page() && ! is_admin() && is_ssl();
 	}
 
-	function is_core_file() {
-		$path = $_SERVER['REQUEST_URI'];
-		return strpos( $path, '/wp-' ) === 0;
+	function is_login_page() {
+		return in_array( $GLOBALS['pagenow'], array( 'wp-login.php', 'wp-register.php' ) );
 	}
 
 	function get_redirect_url() {
