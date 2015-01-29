@@ -42,3 +42,7 @@
 	display: inline !important;
 	height: 60px;
 }
+
+.wp-audio-shortcode {
+	max-width: 130px;
+}
