@@ -12602,4 +12602,12 @@ category: Components
 .page__title {
   text-transform: uppercase; }
 
+/**
+ * Fix for Fitvids.js
+ * Max-width is more helpful
+ */
+.fluid-width-video-wrapper {
+  max-width: 100% !important;
+  width: auto !important; }
+
 /*# sourceMappingURL=greater_media.css.map */

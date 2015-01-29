@@ -1,0 +1,8 @@
+/**
+ * Fix for Fitvids.js
+ * Max-width is more helpful
+ */
+.article__content .fluid-width-video-wrapper {
+	max-width: 100%;
+	width: auto;
+}

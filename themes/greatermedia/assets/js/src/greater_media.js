@@ -528,7 +528,7 @@
 		});
 
 		$(document).ready(function() {
-			$('.article__content').fitVids();
+			$('.article__content').fitVids({customSelector: "div[id^='playerwrapper']"});
 		});
 	})(jQuery);
 
