@@ -17,11 +17,9 @@ class FrontEndHttpRedirector {
 	}
 
 	function redirect() {
-		$redirect_url = $this->get_redirect_url();
 		$html = <<<HTML
-<meta http-equiv="refresh" content="0; url={$redirect_url}" />
 <script type="text/javascript">
-	window.location.href = '{$redirect_url}';
+	location.href = location.href.replace('https://', 'http://');
 </script>
 HTML;
 
@@ -35,13 +33,6 @@ HTML;
 
 	function is_login_page() {
 		return in_array( $GLOBALS['pagenow'], array( 'wp-login.php', 'wp-register.php' ) );
-	}
-
-	function get_redirect_url() {
-		$domain   = $_SERVER['SERVER_NAME'];
-		$path     = $_SERVER['REQUEST_URI'];
-
-		return 'http://' . $domain . $path;
 	}
 
 }
