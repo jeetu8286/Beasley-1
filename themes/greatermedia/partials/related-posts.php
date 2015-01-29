@@ -7,7 +7,7 @@
 				<a href="<?php the_permalink() ?>" rel="bookmark" class='related-post'>
 					<article>
 						<div class="related-post__img">
-							<div class="thumbnail" style='background-image: url(<?php gm_post_thumbnail_url( 'gm-related-post' ); ?>)'></div>
+							<div class="thumbnail" style='background-image: url(<?php gm_post_thumbnail_url( 'gm-related-post', null, true ); ?>)'></div>
 						</div>
 						<div class="related-post__meta">
 							<div class="related-post__title"><?php the_title(); ?></div>

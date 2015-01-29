@@ -8,8 +8,11 @@
 	ProfileMenuApp.prototype = {
 
 		run: function() {
+			var $body = $('body');
 			var $largeLink = $('.header__account--large');
-			$largeLink.toggleClass('logged-in', is_gigya_user_logged_in());
+			if ($body.hasClass('gmr-user')) {
+				$largeLink.toggleClass('logged-in');
+			}
 
 			var $container = $('.header__account--container');
 			$container.append(this.getMenu());
@@ -21,6 +24,7 @@
 			if (thumbnailURL) {
 				var $img = $('<img />', { src: thumbnailURL });
 				$avatar.html($img);
+				$avatar.addClass('avatar');
 			}
 		},
 

@@ -1,3 +1,7 @@
+*:focus {
+    outline: none;
+}
+
 #query_builder .inside {
 	padding: 0;
 	margin: 0;
@@ -44,8 +48,22 @@
 .active_constraints li {
 	border: 1px solid #ccc;
 	background-color: #F8F8F8;
-	padding: 1em;
+	padding: 1em 1em 1em 1em;
 	margin: 0 1em 1em 1em;
+}
+
+.active_constraints li>div {
+	/*margin-bottom: -2em;*/
+	cursor: move;
+}
+
+.active_constraints li>div:hover {
+	cursor: move;
+}
+
+.active_constraints li:last-child .constraint-conjunction {
+	/*opacity: 1;*/
+	/*visibility: hidden;*/
 }
 
 .active_constraints p {
@@ -229,4 +247,66 @@
 
 #post-body #timestamp:before {
 	content: '\f504' !important;
+}
+
+.constraint-operator {
+	width: 30%;
+}
+
+.constraint-value {
+	width: 50%;
+}
+
+.constraint-conjunction {
+	width: 15%;
+	/*position: relative;*/
+	/*top: 2em;*/
+	/*left: 45%;*/
+}
+
+.favorite-type, .favorite-category {
+	width: 100%;
+}
+
+.conjunction-guide {
+	font-size: 0.8em;
+	background: #53585F;
+	color: white;
+	margin: 1.2em -14px -14px -14px;
+	padding: 0;
+	/*border: 1px solid red;*/
+}
+
+.conjunction-guide .arrow-down {
+	width: 0;
+	height: 0;
+	border-left: 5px solid transparent;
+	border-right: 5px solid transparent;
+	border-top: 5px solid white;
+	position: relative;
+	top: 12px;
+	margin: 0 0.4em;
+}
+
+.conjunction-guide p {
+	margin: 0;
+	padding: 0.2em;
+}
+
+.email-engagement-tally .constraint-value {
+	width: 15%;
+}
+
+.email-engagement-tally .email-event {
+	width: 35%;
+}
+
+.email-engagement .email-event {
+	width: 50%;
+	display: block;
+	margin: 1em 0;
+}
+
+.email-engagement .constraint-value {
+	width: 50%;
 }

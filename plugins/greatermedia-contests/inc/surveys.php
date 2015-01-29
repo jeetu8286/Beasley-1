@@ -2,6 +2,7 @@
 
 // action hooks
 add_action( 'template_redirect', 'gmr_surveys_process_action' );
+add_action( 'wp_enqueue_scripts', 'gmr_surveys_enqueue_scripts' );
 
 add_action( 'gmr_survey_load', 'gmr_surveys_render_form' );
 add_action( 'gmr_survey_submit', 'gmr_surveys_process_form_submission' );
@@ -35,6 +36,18 @@ function gmr_surveys_process_action() {
 }
 
 /**
+ * Enqueues survey script.
+ *
+ * @action wp_enqueue_scripts
+ */
+function gmr_surveys_enqueue_scripts() {
+	$base_path = trailingslashit( GREATER_MEDIA_CONTESTS_URL );
+	$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
+
+	wp_enqueue_script( 'greatermedia-surveys', "{$base_path}js/surveys{$postfix}.js", array( 'jquery' ), GREATER_MEDIA_CONTESTS_VERSION, true );
+}
+
+/**
  * Displays survey container attributes required for proper work of survey JS.
  *
  * @param WP_Post|int $post The contest id or object.
@@ -48,8 +61,7 @@ function gmr_survey_container_attributes( $post = null ) {
 	$permalink = untrailingslashit( get_permalink( $post->ID ) );
 
 	$endpoints = array(
-		'load'        => "{$permalink}/action/load/",
-		'submit'      => "{$permalink}/action/submit/",
+		'load' => "{$permalink}/action/load/",
 	);
 
 	foreach ( $endpoints as $attribute => $value ) {
@@ -68,14 +80,21 @@ function gmr_surveys_render_form() {
 		wp_send_json_error( array( 'restriction' => 'signin' ) );
 	}
 
+	$survey_id = get_the_ID();
+	
 	// check if user already submitted survey response
-	if ( function_exists( 'has_user_entered_survey' ) && has_user_entered_survey( get_the_ID() ) ) {
+	if ( function_exists( 'has_user_entered_survey' ) && has_user_entered_survey( $survey_id ) ) {
 		wp_send_json_error( array( 'restriction' => 'one-entry' ) );
+	}
+
+	$form = get_post_meta( $survey_id, 'survey_embedded_form', true );
+	if ( is_string( $form ) ) {
+		$form = json_decode( trim( $form, '"' ) );
 	}
 
 	// render the form
 	wp_send_json_success( array(
-		'html' => GreaterMediaSurveyFormRender::render( get_the_ID() ),
+		'html' => GreaterMediaFormbuilderRender::render( $survey_id, $form, false ),
 	) );
 }
 
@@ -115,26 +134,31 @@ function gmr_surveys_process_form_submission() {
 
 	do_action( 'greatermedia_survey_entry_save', $entry );
 
-	$thankyou = get_post_meta( $survey_id, 'form-thankyou', true );
-	$thankyou = $thankyou ? $thankyou : "Thanks for your response!";
-	echo wpautop( $thankyou );
+	echo '<html>';
+		echo '<head></head>';
+		echo '<body>';
+			$thankyou = get_post_meta( $survey_id, 'form-thankyou', true );
+			$thankyou = $thankyou ? $thankyou : "Thanks for your response!";
+			echo wpautop( $thankyou );
 
-	$fields = GreaterMediaFormbuilderRender::parse_entry( $survey_id, $entry->post->ID, $form );
-	if ( ! empty( $fields ) ) :
-		?><h4 class="contest__submission--entries-title">Here is your response:</h4>
-		<dl class="contest__submission--entries">
-			<?php foreach ( $fields as $field ) : ?>
-				<?php if ( 'file' != $field['type'] ) : ?>
-					<dt>
-						<?php echo esc_html( $field['label'] ); ?>
-					</dt>
-					<dd>
-						<?php echo esc_html( is_array( $field['value'] ) ? implode( ', ', $field['value'] ) : $field['value'] ); ?>
-					</dd>
-				<?php endif; ?>
-			<?php endforeach; ?>
-		</dl><?php
-	endif;
+			$fields = GreaterMediaFormbuilderRender::parse_entry( $survey_id, $entry->post->ID, $form );
+			if ( ! empty( $fields ) ) :
+				?><h4 class="contest__submission--entries-title">Here is your response:</h4>
+				<dl class="contest__submission--entries">
+					<?php foreach ( $fields as $field ) : ?>
+						<?php if ( 'file' != $field['type'] ) : ?>
+							<dt>
+								<?php echo esc_html( $field['label'] ); ?>
+							</dt>
+							<dd>
+								<?php echo esc_html( is_array( $field['value'] ) ? implode( ', ', $field['value'] ) : $field['value'] ); ?>
+							</dd>
+						<?php endif; ?>
+					<?php endforeach; ?>
+				</dl><?php
+			endif;
+		echo '</body>';
+	echo '</html>';
 }
 
 /**

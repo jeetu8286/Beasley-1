@@ -8,6 +8,16 @@
 
 				<?php the_post_thumbnail( 'gmr-album-thumbnail', array( 'class' => 'single__featured-img' ) ); ?>
 
+				<?php
+
+					$image_attr = image_attribution();
+
+					if ( ! empty( $image_attr ) ) {
+						echo $image_attr;
+					}
+
+				?>
+
 			</div>
 
 		<?php } ?>
@@ -26,9 +36,7 @@
 
 					<time class="entry__date" datetime="<?php echo get_the_time(); ?>"><?php the_date('F j'); ?></time>
 					<h2 class="entry__title" itemprop="headline"><?php the_title(); ?></h2>
-					<a class="icon-facebook social-share-link" href="http://www.facebook.com/sharer/sharer.php?u=[URL]&title=[TITLE]"></a>
-					<a class="icon-twitter social-share-link" href="http://twitter.com/home?status=[TITLE]+[URL]"></a>
-					<a class="icon-google-plus social-share-link" href="https://plus.google.com/share?url=[URL]"></a>
+					<?php get_template_part( 'partials/social-share' ); ?>
 
 				</header>
 

@@ -52,6 +52,10 @@ function render_tag( $output_html, $tag_id ) {
 	if ( ! empty( $variant ) ) {
 		// We know this exists, because otherwise render_variant would not have set this value
 		$variant_meta = $tag_meta['variants'][ $variant ];
+		$variant_overrides = ad_variant_overrides();
+
+		// Merge the overrides and meta together, giving overrides priority to the global variant settings
+		$variant_meta = wp_parse_args( $variant_overrides, $variant_meta );
 
 		$variant_id = '_' . $variant;
 
@@ -67,10 +71,13 @@ function render_tag( $output_html, $tag_id ) {
 	if ( is_null( $random_number ) ) {
 		$random_number =  str_pad( rand( 0, 999999999999999 ), 15, rand( 0, 9 ), STR_PAD_LEFT );
 	}
+	
+	$uniqid = uniqid();
+	
 	ob_start();
 
 	?>
-	<div id="%openx_id%_%tag%<?php echo esc_attr( $variant_id ); ?>">
+	<div id="%openx_id%_%tag%<?php echo esc_attr( $variant_id ); ?>_<?php echo esc_attr( $uniqid ); ?>">
 		<noscript>
 			<iframe id="9ee0446165" name="9ee0446165" src="//ox-d.greatermedia.com/w/1.0/afr?auid=%openx_id%&cb=<?php echo intval( $random_number ) ?>" frameborder="0" scrolling="no">
 				<a href="http://ox-d.greatermedia.com/w/1.0/rc?cs=9ee0446165&cb=<?php echo intval( $random_number ); ?>" >
@@ -95,7 +102,7 @@ function render_tag( $output_html, $tag_id ) {
 		if ( maxWidthOk && minWidthOk ) {
 			var OX_ads = OX_ads || [];
 			OX_ads.push({
-				slot_id: "%openx_id%_%tag%<?php echo esc_js( $variant_id ); ?>",
+				slot_id: "%openx_id%_%tag%<?php echo esc_js( $variant_id ); ?>_<?php echo esc_attr( $uniqid ); ?>",
 				auid: "%openx_id%"
 			});
 		}
@@ -108,7 +115,7 @@ function render_tag( $output_html, $tag_id ) {
 	return $output;
 }
 
-function render_variant( $tag_id, $variant ) {
+function render_variant( $tag_id, $variant, $overrides = array() ) {
 	$tag_meta = get_ad_tag_meta( $tag_id );
 
 	if ( false === $tag_meta ) {
@@ -120,13 +127,15 @@ function render_variant( $tag_id, $variant ) {
 		return;
 	}
 
-	// Set our current variant
+	// Set our current variant + any overrides we may need to use
 	ad_variant( $variant );
+	ad_variant_overrides( $overrides );
 
 	// Do the ad slot
 	do_action( 'acm_tag', $tag_id );
 
-	// Clear the current variant
+	// Clear the current variant + overrides
 	ad_variant( '' );
+	ad_variant_overrides( array() );
 }
-add_action( 'acm_tag_gmr_variant', __NAMESPACE__ . '\render_variant', 10, 2 );
+add_action( 'acm_tag_gmr_variant', __NAMESPACE__ . '\render_variant', 10, 3 );

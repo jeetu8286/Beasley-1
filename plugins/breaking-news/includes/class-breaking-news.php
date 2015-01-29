@@ -14,21 +14,7 @@ if ( !class_exists( "Breaking_News" ) ) {
 	    	add_action( 'show_breaking_news_banner', array( $this, 'show_breaking_news_banner' ) );
 	    	add_action( 'show_latest_breaking_news_item', array( $this, 'show_breaking_news_banner' ) );
 	    	add_action( 'wp_enqueue_scripts', array( $this, 'breaking_news_enqueue_scripts' ) );
-	    	add_action( 'admin_enqueue_scripts', array( $this, 'breaking_news_admin_enqueue_scripts' ) );
 	    }
-
-	    /**
-	     * Enqueue supporing admin scripts.
-	     *
-	     * @return void
-	     */
-	    public function breaking_news_admin_enqueue_scripts() {
-	    	$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
-
-	    	if ( 'post' === get_post_type() ) {
-				wp_enqueue_script( 'breaking-news-admin-js', BREAKING_NEWS_URL . "assets/js/breaking-news{$postfix}.js", array( 'jquery'), BREAKING_NEWS_VERSION, true );
-			}
-		}
 
 	    /**
 	     * Enqueue supporing front-end scripts.
@@ -58,22 +44,10 @@ if ( !class_exists( "Breaking_News" ) ) {
 			wp_nonce_field( 'save_breaking_news_meta', 'breaking_news_nonce' );
 
 			$is_breaking_news = self::sanitize_boolean( get_post_meta( $post->ID, '_is_breaking_news', true ) );
-			$show_site_wide_notification = self::sanitize_boolean( get_post_meta( $post->ID, '_show_in_site_wide_notification', true ) );
 			?>
-
-			<style>
-				#post-body #site-wide-notification-meta {
-					padding-left: 35px;
-				}
-			</style>
-
 			<div id="breaking-news-meta-fields">
 				<div id="breaking-news-meta" class="misc-pub-section">
-					<input type="checkbox" name="breaking_news_option" id="breaking_news_option" value="1" <?php checked( 1, $is_breaking_news ); ?> /> <label for="breaking_news_option"><?php _e( 'Breaking News', 'breaking_news' ); ?></label>
-				</div>
-
-				<div id="site-wide-notification-meta" class="misc-pub-section">
-					<input type="checkbox" name="site_wide_notification_option" id="site_wide_notification_option" value="1" <?php checked( 1, $show_site_wide_notification ); ?> /> <label for="site_wide_notification_option"><?php _e( 'Site-wide Notification', 'breaking_news' ); ?></label>
+					<input type="checkbox" name="breaking_news_option" id="breaking_news_option" value="1" <?php checked( 1, $is_breaking_news ); ?> /> <label for="breaking_news_option"><?php _e( 'Breaking News Alert', 'breaking_news' ); ?></label>
 				</div>
 			</div>
 
@@ -87,11 +61,9 @@ if ( !class_exists( "Breaking_News" ) ) {
 		 * @return void
 		 */
 		public function save_breaking_news_meta_option( $post_id ) {
-			global $post;
 
 			// Defaults
 			$is_breaking_news = 0;
-			$show_site_wide_notification = 0;
 
 			if ( ! isset( $_POST['breaking_news_nonce'] ) || ! wp_verify_nonce( $_POST['breaking_news_nonce' ], 'save_breaking_news_meta' ) ) {
 				return;
@@ -109,17 +81,7 @@ if ( !class_exists( "Breaking_News" ) ) {
 				$is_breaking_news = $this->sanitize_boolean( $_POST['breaking_news_option'] );
 			}
 
-			if ( isset( $_POST['site_wide_notification_option'] ) ) {
-				$show_site_wide_notification = $this->sanitize_boolean( $_POST['site_wide_notification_option'] );
-			}
-
-			// If the post isn't breaking news, don't enable the site-wide notification either.
-			if ( $show_site_wide_notification ) {
-				$is_breaking_news = 1;
-			}
-			
 			update_post_meta( $post_id, '_is_breaking_news', $is_breaking_news );
-			update_post_meta( $post_id, '_show_in_site_wide_notification', $show_site_wide_notification );
 
 			// Send notices
 			if ( 1 === $is_breaking_news ) {
@@ -140,12 +102,7 @@ if ( !class_exists( "Breaking_News" ) ) {
 			if ( ! $post ) {
 				return; 
 			}
-			
-			// Bail if not home and not site wide
-			if ( ! is_front_page() && ! get_post_meta( $post->ID, '_show_in_site_wide_notification', true ) ) {
-				return; 
-			}
-			
+
 			setup_postdata( $post );
 			
 			?>

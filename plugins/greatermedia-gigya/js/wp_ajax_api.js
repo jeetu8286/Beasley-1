@@ -14,11 +14,25 @@
 			var queryParams = {};
 			queryParams[action + '_nonce'] = this.nonceFor(action);
 
-			var url = this.config.ajax_url;
+			var url = this.getAjaxUrl();
 			url += url.indexOf('?') === -1 ? '?' : '&';
 			url += $.param(queryParams);
 
 			return url;
+		},
+
+		getAjaxUrl: function() {
+			var url = this.config.ajax_url;
+
+			if (this.isSecurePage()) {
+				return url;
+			} else {
+				return url.replace( 'https://', 'http://' );
+			}
+		},
+
+		isSecurePage: function() {
+			return location.protocol === 'https:';
 		},
 
 		request: function(action, data) {

@@ -1,3 +1,13 @@
+.events-archive {
+	#tribe-events-pg-template {
+		max-width: 100%;
+	}
+
+	.tribe-events-day-time-slot {
+		clear: both;
+	}
+}
+
 .event__thumbnail {
 	@include span-columns(4 of 4);
 	background-color: lighten($primary-border, 9%);
@@ -20,6 +30,33 @@
 
 .event__thumbnail img {
 	margin: 0 auto;
+}
+
+.event__info {
+	@include row();
+	margin-bottom: 2em;
+	
+	@include bp(large) {
+		padding-right: 320px;
+	}
+}
+
+.tribe-events-single {
+	.ad__inline--right.desktop {
+		display: none;
+
+		@include bp(large) {
+			display: block;
+		}
+	}
+	.ad__inline--right.mobile {
+		display: block;
+		float: left;
+
+		@include bp(large) {
+			display: none;
+		}
+	}
 }
 
 .tribe-events-button {
@@ -153,6 +190,16 @@
 
 .tribe-events-single-section-title {
 	font-family: $open-sans;
+}
+
+.tribe-events-single-section.tribe-events-event-meta.primary.tribe-clearfix {
+	float: left !important;
+	width: 100%;
+
+	&:after {
+		content: " ";
+		display: none !important;
+	}
 }
 
 .single-tribe_events #tribe-events-footer {

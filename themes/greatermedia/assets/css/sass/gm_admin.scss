@@ -4,3 +4,25 @@
  * Copyright (c) 2014 10up
  * Licensed under the GPLv2+ license.
  */
+
+.wp-admin {
+
+
+		.post-finder {
+
+			.list {
+				float: left;
+				width: 90%;
+
+				li {
+					display: block;
+					margin-left: 0;
+				}
+			}
+
+			select, .search input {
+				width: 90%;
+			}
+
+		}
+}

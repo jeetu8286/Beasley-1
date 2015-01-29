@@ -1,6 +1,10 @@
 <span class="preview-result-name">
-	<%- fields.first_name %> <%- fields.last_name %>
+	<% if (fields.first_name || fields.last_name) { %>
+		<%- fields.first_name %> <%- fields.last_name %>
+	<% } else { %>
+		N/A
+	<% } %>
 </span>
-<span class="preview-result-email">
+<span class="preview-result-email" title="<%- email %>">
 	<%- view.domainFor(email) %>
 </span>

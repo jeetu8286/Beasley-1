@@ -22,7 +22,7 @@
 
 <div class="entry-select-group">
 	<label><strong>Favorite Type: </strong></label>
-	<select class="favorite-type" style="width: 100%">
+	<select class="favorite-type">
 		<% _.each(favoriteTypes, function(favoriteItem) { %>
 		<option value="<%- favoriteItem.value %>" <%= favoriteItem.value == favoriteType ? 'selected="selected"' : ''  %>">
 		<%- favoriteItem.label %>
@@ -33,7 +33,7 @@
 
 <div class="entry-select-group">
 	<label><strong>Category: </strong></label>
-	<select class="favorite-category" style="width: 100%">
+	<select class="favorite-category">
 		<% _.each(categories, function(categoryItem) { %>
 		<option value="<%- categoryItem.value %>" <%= categoryItem.value == category ? 'selected="selected"' : ''  %>">
 		<%- categoryItem.label %>
@@ -45,7 +45,7 @@
 <div class="entry-answer-group">
 	<label><strong>Favorite: </strong></label>
 
-	<select class="constraint-operator" style="width: 35%">
+	<select class="constraint-operator">
 		<% _.each(view.operatorsFor(valueType), function(operatorItem) { %>
 		<option value="<%- operatorItem %>" <%= operatorItem === operator ? 'selected="selected"' : ''  %>">
 		<%- operatorItem %>
@@ -55,7 +55,7 @@
 
 	<input type="text" class="constraint-value constraint-value-text" value="<%- value %>" />
 
-	<select class="constraint-conjunction" style="width: 15%">
+	<select class="constraint-conjunction">
 		<% _.each(view.conjunctions, function(conjunctionItem) { %>
 		<option value="<%- conjunctionItem %>" <%= conjunctionItem === conjunction ? 'selected="selected"' : ''  %>">
 		<%- conjunctionItem %>
@@ -64,3 +64,6 @@
 	</select>
 </div>
 
+<div class="conjunction-guide">
+	<p><span class="arrow-down"></span>OR any of the following conditions</p>
+</div>

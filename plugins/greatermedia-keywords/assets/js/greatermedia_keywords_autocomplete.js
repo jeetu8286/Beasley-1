@@ -2,7 +2,7 @@
  * http://wordpress.org/plugins
  * Copyright (c) 2015; * Licensed GPLv2+ */
 // Silence jslint warning about _ being undefined.
-/*global _ */
+/*global _, document */
 
 jQuery( function ( $ ) {
 	'use strict';
@@ -30,7 +30,7 @@ jQuery( function ( $ ) {
 	};
 
 	Keyword_Search.prototype.normalize_search_term = function ( search_term ) {
-		return search_term.trim().toLowerCase().replace( /[^a-z0-9]+/g, '' );
+		return $.trim( search_term ).toLowerCase().replace( /[^a-z0-9]+/g, '' );
 	};
 
 	function Arrow_Key_Navigator( $items, $context, position_change_callback, cancel_callback ) {
@@ -44,6 +44,8 @@ jQuery( function ( $ ) {
 		self.is_navigating = false;
 		self.position = null;
 		self.stack_size = $items.children().length;
+		
+		self.$last_hovered_item = null;
 
 		function _highlight_item() {
 			$items.find( '.is-highlighted' ).removeClass( 'is-highlighted' );
@@ -51,13 +53,15 @@ jQuery( function ( $ ) {
 		}
 
 		function up() {
+			resume_keyboard();
+			
 			if ( null === self.position || $items.children().length !== self.stack_size ) {
-				self.position = $items.children().length + 1;
+				self.position = $items.children().length; // Put at last index + 1
 				self.stack_size =  $items.children().length;
 			}
-
+			
 			if ( 0 === self.position ) {
-				self.position = $items.children().length - 1;
+				self.position = $items.children().length - 1; // Put at last index
 			} else {
 				self.position--;
 			}
@@ -66,6 +70,8 @@ jQuery( function ( $ ) {
 		}
 
 		function down() {
+			resume_keyboard(); 
+			
 			if ( null === self.position || $items.children().length !== self.stack_size ) {
 				self.position = -1;
 				self.stack_size =  $items.children().length;
@@ -78,6 +84,15 @@ jQuery( function ( $ ) {
 			}
 
 			_highlight_item();
+		}
+		
+		function resume_keyboard() {
+			if ( ! self.$last_hovered_item ) {
+				return; 
+			}
+			
+			self.position = self.$last_hovered_item.index();
+			self.$last_hovered_item = null; 
 		}
 
 		$context.keydown( function( e ) {
@@ -99,7 +114,7 @@ jQuery( function ( $ ) {
 				if ( self.position_change_callback ) {
 					self.position_change_callback( self.position );
 				}
-			} else if ( 27 === e.which ) { // Escape key
+			} else if ( 27 === e.which && self.is_navigating ) { // Escape key
 				self.$items.removeClass( 'is-navigating' )
 					.addClass( 'is-hoverable' );
 				self.cancel();
@@ -111,14 +126,21 @@ jQuery( function ( $ ) {
 				self.is_navigating = false;
 			}
 		} );
+		
+		$items.on( 'hover', '> *', function ( e ) {
+			self.$items.addClass( 'is-hoverable' );
+			self.$items.find( '.is-highlighted' ).removeClass( 'is-highlighted' ); 
+			self.$last_hovered_item = $( this );
+		} );
 
-		$items.find( 'is-highlighted' ).removeClass( 'is-highlighted' );
+		$items.find( '.is-highlighted' ).removeClass( 'is-highlighted' );
 		$items.addClass( 'is-hoverable' );
 	}
 
 	Arrow_Key_Navigator.prototype.cancel = function () {
 		this.is_navigating = false;
 		this.position = null;
+		this.$last_hovered_item = null; 
 
 		if ( this.cancel_callback ) {
 			this.cancel_callback();
@@ -183,7 +205,7 @@ jQuery( function ( $ ) {
 		$search_field.val( search.last_search );
 	}
 
-	var key_nav = new Arrow_Key_Navigator( $item_list, $search_field, handle_nav_update, handle_nav_cancel );
+	var key_nav = new Arrow_Key_Navigator( $item_list, $( document ), handle_nav_update, handle_nav_cancel );
 
 	// Hook up the search field handler.
 	$search_field.on( 'keyup', function () {

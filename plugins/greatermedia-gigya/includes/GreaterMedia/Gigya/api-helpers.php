@@ -30,8 +30,8 @@ function save_gigya_action( $action ) {
 	get_gigya_action_dispatcher()->save_action( $action );
 }
 
-function save_gigya_actions( $actions ) {
-	get_gigya_action_dispatcher()->save_actions( $actions );
+function save_gigya_actions( $actions, $user_id ) {
+	get_gigya_action_dispatcher()->save_actions( $actions, $user_id );
 }
 
 /* Profile Path Helpers */

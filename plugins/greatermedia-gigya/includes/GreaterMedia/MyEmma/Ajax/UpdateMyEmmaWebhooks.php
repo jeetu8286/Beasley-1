@@ -5,6 +5,8 @@ namespace GreaterMedia\MyEmma\Ajax;
 use GreaterMedia\Gigya\Ajax\AjaxHandler;
 use GreaterMedia\MyEmma\EmmaAPI;
 use GreaterMedia\MyEmma\Webhooks\MemberOptout;
+use GreaterMedia\MyEmma\Webhooks\MessageOpen;
+use GreaterMedia\MyEmma\Webhooks\MessageClick;
 
 class UpdateMyEmmaWebhooks extends AjaxHandler {
 
@@ -32,16 +34,16 @@ class UpdateMyEmmaWebhooks extends AjaxHandler {
 	function update_webhooks() {
 		$webhooks = $this->get_webhooks();
 		$api      = new EmmaAPI();
-
 		$api->webhooksRemoveAll();
 
 		foreach ( $webhooks as $webhook ) {
+			$api = new EmmaAPI(); // KLUDGE, fix for weird caching in Emma
 			$params = array(
 				'url'   => $webhook->get_url(),
 				'event' => $webhook->get_event_name()
 			);
 
-			$api->webhooksCreate( $params );
+			$response = $api->webhooksCreate( $params );
 		}
 	}
 
@@ -56,6 +58,8 @@ class UpdateMyEmmaWebhooks extends AjaxHandler {
 	function get_webhooks() {
 		$webhooks = array(
 			new MemberOptout(),
+			new MessageOpen(),
+			new MessageClick(),
 		);
 
 		return $webhooks;

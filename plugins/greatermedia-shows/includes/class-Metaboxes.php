@@ -6,6 +6,8 @@
  */
 class GMR_Show_Metaboxes {
 
+	private $_restricted_posts = null;
+
 	/**
 	 * Constructor.
 	 *
@@ -73,6 +75,7 @@ class GMR_Show_Metaboxes {
 		add_meta_box( 'show_featured', 'Featured', array( $this, 'render_featured_meta_box' ), ShowsCPT::SHOW_CPT, 'advanced', 'high' );
 		add_meta_box( 'show_favorites', 'Favorites', array( $this, 'render_favorites_meta_box' ), ShowsCPT::SHOW_CPT, 'advanced', 'high' );
 		add_meta_box( 'show_time', 'Show Times', array( $this, 'render_show_times_meta_box' ), ShowsCPT::SHOW_CPT, 'side' );
+		add_meta_box( 'show_social_pages', 'Social Pages', array( $this, 'render_social_pages_meta_box' ), ShowsCPT::SHOW_CPT, 'advanced' );
 	}
 
 	/**
@@ -176,8 +179,37 @@ class GMR_Show_Metaboxes {
 		echo '<img src="', esc_attr( $image ), '" class="meta_box_preview_image">';
 		echo '<div style="text-align:center">';
 			echo '<a href="#" class="meta_box_upload_image_button button button-primary" rel="', $post->ID, '">Choose Image</a> ';
-			echo '<a href="#" class="meta_box_clear_image_button button">Remove Image</a>';
+			if ( $image_id ) {
+				echo '<a href="#" class="meta_box_clear_image_button button">Remove Image</a>'; 
+			}
 		echo '</div>';
+	}
+
+	private function _get_restricted_post_ids() {
+		if ( is_null( $this->_restricted_posts ) ) {
+			$query = new \WP_Query();
+			$this->_restricted_posts = $query->query( array(
+				'post_type'           => 'any',
+				'post_status'         => 'any',
+				'posts_per_page'      => 50,
+				'ignore_sticky_posts' => true,
+				'no_found_rows'       => true,
+				'fields'              => 'ids',
+				'meta_query'          => array(
+					'relation' => 'OR',
+					array(
+						'key'     => 'post_age_restriction',
+						'compare' => 'EXISTS',
+					),
+					array(
+						'key'     => 'post_login_restriction',
+						'compare' => 'EXISTS',
+					),
+				),
+			) );
+		}
+
+		return $this->_restricted_posts;
 	}
 
 	public function render_featured_meta_box( WP_Post $post ) {
@@ -190,7 +222,8 @@ class GMR_Show_Metaboxes {
 		$options = array(
 			'args' => array(
 				'post_type' => array( 'post', 'tribe_events' ),
-				'meta_key' => '_thumbnail_id',
+				'meta_key'  => '_thumbnail_id',
+				'exclude'   => $this->_get_restricted_post_ids(),
 			),
 			'limit' => 3,
 		);
@@ -212,9 +245,10 @@ class GMR_Show_Metaboxes {
 		$options = array(
 			'args' => array(
 				'post_type' => array( 'post' ),
-				'meta_key' => '_thumbnail_id',
+				'meta_key'  => '_thumbnail_id',
+				'exclude'   => $this->_get_restricted_post_ids(),
 			),
-			'limit' => 10,
+			'limit' => 3,
 		);
 
 		?>
@@ -249,6 +283,44 @@ class GMR_Show_Metaboxes {
 			<p class="description">
 			A simple description for when this show is on air. Used alongside show titles. Independent from the official show schedule.
 		</p>
+		<?php
+	}
+	
+	/**
+	 * Render a meta box to enter a social page links.
+	 * @param $post WP_Post
+	 */
+	public function render_social_pages_meta_box( $post ) {				
+		$facebook = get_post_meta( $post->ID, 'show/social_pages/facebook', true ); 
+		$twitter = get_post_meta( $post->ID, 'show/social_pages/twitter', true );
+		$instagram = get_post_meta( $post->ID, 'show/social_pages/instagram', true );
+		$google = get_post_meta( $post->ID, 'show/social_pages/google', true );
+		
+		?>
+		<table class="form-table">
+			<tr>
+				<td><label>Facebook URL</label></td>
+				<td>
+					<input type="text" name="show/social_pages/facebook" class="widefat" value="<?php echo esc_attr( $facebook ); ?>">
+				</td>
+			</tr>
+				<td><label>Twitter URL</label></td>
+				<td>
+					<input type="text" name="show/social_pages/twitter" class="widefat" value="<?php echo esc_attr( $twitter ); ?>">
+				</td>
+			</tr>
+				<td><label>Instagram URL</label></td>
+				<td>
+					<input type="text" name="show/social_pages/instagram" class="widefat" value="<?php echo esc_attr( $instagram ); ?>">
+				</td>
+			</tr>
+			</tr>
+				<td><label>Google+ URL</label></td>
+				<td>
+					<input type="text" name="show/social_pages/google" class="widefat" value="<?php echo esc_attr( $google ); ?>">
+				</td>
+			</tr>
+		</table>
 		<?php
 	}
 
@@ -311,7 +383,13 @@ class GMR_Show_Metaboxes {
 		} else {
 			delete_post_meta( $post_id, 'show_days' );
 		}
-
+		
+		
+		// Save social pages
+		update_post_meta( $post_id, 'show/social_pages/facebook', filter_input( INPUT_POST, 'show/social_pages/facebook', FILTER_SANITIZE_URL ) );
+		update_post_meta( $post_id, 'show/social_pages/twitter', filter_input( INPUT_POST, 'show/social_pages/twitter', FILTER_SANITIZE_URL ) );
+		update_post_meta( $post_id, 'show/social_pages/instagram', filter_input( INPUT_POST, 'show/social_pages/instagram', FILTER_SANITIZE_URL ) );
+		update_post_meta( $post_id, 'show/social_pages/google', filter_input( INPUT_POST, 'show/social_pages/google', FILTER_SANITIZE_URL ) );
 	}
 
 	/**

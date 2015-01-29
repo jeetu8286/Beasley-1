@@ -255,5 +255,13 @@ class ActionPublisherTest extends \WP_UnitTestCase {
 
 	}
 
+	/* dynamic list actions */
+	function test_it_knows_if_not_a_list_action() {
+		$this->assertFalse( $this->publisher->is_list_action( 'foo' ) );
+	}
+
+	function test_it_knows_if_a_list_action() {
+		$this->assertTrue( $this->publisher->is_list_action( 'contest' ) );
+	}
 
 }

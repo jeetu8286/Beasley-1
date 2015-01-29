@@ -1,0 +1,85 @@
+.sponsors {
+	@include fill-parent;
+	overflow: auto;
+	border: 1px solid $primary-border;
+	border-bottom: none;
+}
+
+.sponsors__heading {
+	@extend .content__heading;
+	font-family: $droid-sans;
+	font-size: ms(5);
+	font-weight: bold;
+	color: $primary-text;
+}
+
+.sponsors__row {
+	@include fill-parent;
+	overflow: auto;
+	background-color: $color-gray-light;
+
+	@include bp(medium) {
+		border-bottom: 1px solid $primary-border;
+	}
+}
+
+.sponsor {
+	position: relative;
+	display: block;
+	float: left;
+	width: 100%;
+	padding: 2em;
+	background-color: white;
+	border-bottom: 1px solid $primary-border;
+
+	@include bp(medium) {
+		width: 50%;
+		height: 200px;
+		border-bottom: none;
+		border-right: 1px solid $primary-border;
+	}
+
+	@include bp(large) {
+		height: 270px;
+	}
+
+	&:nth-of-type(2n+2) {
+		border-right: none;
+	}
+
+}
+
+.sponsor__logo,
+.sponsor__name {
+	margin: 0 auto;
+	text-align: center;
+	font-family: $droid-sans;
+
+	@include bp(medium) {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		@include transform(translate(-50%, -50%));
+
+		a {
+			display: block;
+		}
+	}
+}
+
+.sponsor__logo img {
+	margin: 0 auto;
+}
+
+.sponsor__name a,
+.sponsor__name a:visited {
+	font-size: ms(5);
+	font-weight: bold;
+	color: $primary-text;
+}
+
+.sponsor__name a:hover,
+.sponsor__name a:active,
+.sponsor__name a:focus {
+	color: $primary-link-hover;
+}

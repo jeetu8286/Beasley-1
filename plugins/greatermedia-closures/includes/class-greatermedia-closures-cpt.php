@@ -18,7 +18,6 @@ class GreaterMediaClosuresCPT {
 	public static function init() {
 		add_action( 'init', array( __CLASS__, 'gmedia_closures_cpt' ) );
 		add_action( 'init', array( __CLASS__, 'gmedia_closures_type' ) );
-		add_action( 'init', array( __CLASS__, 'gmedia_closures_entity_type' ) );
 		add_action( 'admin_menu', array( __CLASS__, 'gmedia_closures_remove_metaboxes' ) );
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'gmedia_enqueue_scripts' ) );
 		add_action( 'pre_get_posts', array( __CLASS__, 'change_closures_archive_order' ) );
@@ -66,11 +65,11 @@ class GreaterMediaClosuresCPT {
 			'hierarchical'        => false,
 			'description'         => 'description',
 			'taxonomies'          => array(),
-			'public'              => true,
+			'public'              => false,
 			'show_ui'             => true,
 			'show_in_menu'        => true,
 			'show_in_admin_bar'   => true,
-			'menu_position'       => null,
+			'menu_position'       => 42,
 			'menu_icon'           => 'dashicons-welcome-comments',
 			'show_in_nav_menus'   => true,
 			'publicly_queryable'  => true,
@@ -125,44 +124,6 @@ class GreaterMediaClosuresCPT {
 		);
 
 		register_taxonomy( self::CLOSURE_TYPE_SLUG, array( self::CLOSURE_CPT_SLUG ), $args );
-	}
-
-	/**
-	 * Create a taxonomy for closure entity types
-	 */
-	public static function gmedia_closures_entity_type() {
-
-		$labels = array(
-			'name'					=> _x( 'Entity Types', 'Taxonomy Entity Types', 'greatermedia' ),
-			'singular_name'			=> _x( 'Entity Type', 'Taxonomy Entity Type', 'greatermedia' ),
-			'search_items'			=> __( 'Search Entity Types', 'greatermedia' ),
-			'popular_items'			=> __( 'Popular Entity Types', 'greatermedia' ),
-			'all_items'				=> __( 'All Entity Types', 'greatermedia' ),
-			'parent_item'			=> __( 'Parent Entity Type', 'greatermedia' ),
-			'parent_item_colon'		=> __( 'Parent Entity Type', 'greatermedia' ),
-			'edit_item'				=> __( 'Edit Entity Type', 'greatermedia' ),
-			'update_item'			=> __( 'Update Entity Type', 'greatermedia' ),
-			'add_new_item'			=> __( 'Add New Entity Type', 'greatermedia' ),
-			'new_item_name'			=> __( 'New Entity Type Name', 'greatermedia' ),
-			'add_or_remove_items'	=> __( 'Add or remove Entity Types', 'greatermedia' ),
-			'choose_from_most_used'	=> __( 'Choose from most used greatermedia', 'greatermedia' ),
-			'menu_name'				=> __( 'Entity Type', 'greatermedia' ),
-		);
-
-		$args = array(
-			'labels'            => $labels,
-			'public'            => true,
-			'show_in_nav_menus' => true,
-			'show_admin_column' => true,
-			'hierarchical'      => false,
-			'show_tagcloud'     => true,
-			'show_ui'           => true,
-			'query_var'         => true,
-			'rewrite'           => true,
-			'capabilities'      => array(),
-		);
-
-		register_taxonomy( self::CLOSURE_ENTITY_TYPE_SLUG, array( self::CLOSURE_CPT_SLUG ), $args );
 	}
 
 	/**

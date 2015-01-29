@@ -62,6 +62,10 @@ class GigyaUserFinder {
 			}
 		}
 
+		if ( array_key_exists( 'UID', $result ) ) {
+			$user['fields']['gigya_user_id'] = $result['UID'];
+		}
+
 		return $user;
 	}
 

@@ -1,4 +1,4 @@
-<div class="login-restricted-shield" id="login-restricted-shield-<?php echo esc_attr( $post->ID ); ?>">
+<div class="login-restricted-shield" id="login-restricted-shield-<?php the_ID(); ?>">
 	<p>
 		The following is restricted to members only
 	</p>

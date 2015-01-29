@@ -18,12 +18,6 @@
   #schedule-form input[type="text"],
   #schedule-form input[type="submit"] {
     margin-top: -3px; }
-  #schedule-form select,
-  #schedule-form input[type="text"] {
-    box-shadow: none;
-    border: 0;
-    border-bottom: 1px dashed #ccc;
-    font-weight: bold; }
   #schedule-form input[type="submit"] {
     float: right; }
 
@@ -126,6 +120,15 @@
 
 #show-homepage::before {
   content: "\f102"; }
+
+#show-homepage-supports-galleries::before {
+  content: "\f161"; }
+
+#show-homepage-supports-podcasts::before {
+  content: "\f482"; }
+
+#show-homepage-supports-videos::before {
+  content: "\f126"; }
 
 #show_logo .meta_box_preview_image {
   max-width: 200px;

@@ -13,7 +13,7 @@
 		<div class="gallery__featured--caption">
 			<div class="inner-wrap">
 				<h3 class="gallery__featured--title">
-					<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+					<?php the_title(); ?>
 				</h3>
 			</div>
 		</div>

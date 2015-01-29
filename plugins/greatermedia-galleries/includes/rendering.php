@@ -22,7 +22,7 @@ class GreaterMediaGallery {
 		add_filter( 'the_content', array( __CLASS__, 'strip_for_single_gallery' ) );
 
 		// Register scripts
-		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'register_scripts' ) );
+		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'register_scripts' ), 10 );
 	}
 
 	/**
@@ -39,7 +39,7 @@ class GreaterMediaGallery {
 		 * This include all js files for cycle2, located in `assets/js/vendor/cycle2/`
 		 * and `gmr_gallery.js`, located in `assets/js/src/`
 		 */
-		wp_enqueue_script( 'gmr-gallery', GREATER_MEDIA_GALLERIES_URL . "assets/js/gmr_gallery{$postfix}.js", array( 'jquery' ), GREATER_MEDIA_GALLERIES_VERSION, true );
+		wp_enqueue_script( 'gmr-gallery', GREATER_MEDIA_GALLERIES_URL . "assets/js/gmr_gallery{$postfix}.js", array( 'jquery' ), GREATER_MEDIA_GALLERIES_VERSION, false );
 	}
 
 	/**
@@ -123,19 +123,20 @@ class GreaterMediaGallery {
 	 * @return WP_Query
 	 */
 	public static function get_query_for_post( $post ) {
-		preg_match_all( '/\[gallery.*ids=.(.*).\]/', $post->post_content, $ids );
+		$array_ids = get_post_meta( $post->ID, 'gallery-image' );
 
-		$array_ids = array();
-		foreach( $ids[1] as $match ) {
-			$array_id = explode( ',', $match );
-			$array_id = array_map( 'intval', $array_id );
+		if ( empty( $array_ids ) && preg_match_all( '/\[gallery.*ids=.(.*).\]/', $post->post_content, $ids ) ) {
+			foreach( $ids[1] as $match ) {
+				$array_id = explode( ',', $match );
+				$array_id = array_map( 'intval', $array_id );
 
-			$array_ids = array_merge( $array_ids, $array_id );
+				$array_ids = array_merge( $array_ids, $array_id );
+			}
 		}
 
-		$query = self::get_query_for_ids( $array_ids );
-
-		return $query;
+		return ! empty( $array_ids ) 
+			? self::get_query_for_ids( $array_ids )
+			: null;
 	}
 
 	/**
@@ -146,8 +147,9 @@ class GreaterMediaGallery {
 		self::$strip_shortcodes = true;
 
 		$gallery_query = self::get_query_for_post( get_queried_object() );
-
-		echo self::render_gallery_from_query( $gallery_query );
+		if ( $gallery_query ) {
+			echo self::render_gallery_from_query( $gallery_query );
+		}
 	}
 
 	/**
@@ -226,6 +228,8 @@ class GreaterMediaGallery {
 
 								$image = wp_get_attachment_image_src( get_the_ID(), array( 775, 516 ), false );
 								$image_url = $image[0];
+								$image_attribution = get_post_meta( get_the_ID(), 'gmr_image_attribution', true );
+								$img_link = filter_var( $image_attribution, FILTER_VALIDATE_URL );
 								?>
 								<div class="gallery__slide--image"
 									<?php
@@ -234,6 +238,21 @@ class GreaterMediaGallery {
 									}
 									?>
 									 style="background-image: url(<?php echo esc_url( $image_url ); ?>);">
+									<?php
+
+										if ( ! empty( $image_attribution ) ) {
+											if ( $img_link ) {
+												echo '<div class="image__attribution">';
+												echo '<a href="' . wp_kses_post( $image_attribution ) . '">Photo Credit</a>';
+												echo '</div>';
+											} else {
+												echo '<div class="image__attribution">';
+												echo wp_kses_post( $image_attribution );
+												echo '</div>';
+											}
+										}
+
+									?>
 								</div>
 							<?php
 
@@ -259,18 +278,10 @@ class GreaterMediaGallery {
 								$slide_link = get_permalink( $main_post_id ) . '#' . $slide_hash;
 								$image_title = get_the_title( $post ); // title of the gallery image
 
-								$share_fb_url = add_query_arg( array(
-									'u' => $slide_link,
-									'title' => get_the_title()
-								), 'http://facebook.com/sharer/sharer.php' );
+								$share_fb_url = 'http://facebook.com/sharer/sharer.php?u=' . urlencode( $slide_link ) . '&title=' . urlencode( $image_title );
+								$share_twitter_url = 'http://twitter.com/home?status=' . urlencode( $image_title . ' ' . $slide_link );
+								$share_google_url = 'https://plus.google.com/share?url=' . urlencode( $slide_link );
 
-								$share_twitter_url = add_query_arg( array (
-									'status' => get_the_title() . ' ' . $slide_link
-								), 'http://twitter.com/home' );
-
-								$share_google_url = add_query_arg( array (
-									'url' => $slide_link
-								), 'https://plus.google.com/share' );
 								?>
 								<div class="gallery__slide--content"
 									 <?php if ( $use_hash ) : ?>
@@ -287,12 +298,9 @@ class GreaterMediaGallery {
 
 									<div class="gallery__social-and-count">
 										<div class="gallery__social">
-											<a class="icon-facebook social-share-link"
-											   href="<?php echo esc_url( $share_fb_url ); ?>"></a>
-											<a class="icon-twitter social-share-link"
-											   href="<?php echo esc_url( $share_twitter_url ); ?>"></a>
-											<a class="icon-google-plus social-share-link"
-											   href="<?php echo esc_url( $share_google_url ); ?>"></a>
+											<a class="icon-facebook social-share-link popup" href="<?php echo esc_url( $share_fb_url ); ?>"></a>
+											<a class="icon-twitter social-share-link popup" href="<?php echo esc_url( $share_twitter_url ); ?>"></a>
+											<a class="icon-google-plus social-share-link popup" href="<?php echo esc_url( $share_google_url ); ?>"></a>
 										</div>
 										<div class="gallery_count">
 											<?php echo absint( $gallery->current_post + 1 ); ?>
@@ -308,12 +316,9 @@ class GreaterMediaGallery {
 									</div>
 
 									<div class="gallery__social--mobile">
-										<a class="icon-facebook social-share-link"
-										   href="<?php echo esc_url( $share_fb_url ); ?>"></a>
-										<a class="icon-twitter social-share-link"
-										   href="<?php echo esc_url( $share_twitter_url ); ?>"></a>
-										<a class="icon-google-plus social-share-link"
-										   href="<?php echo esc_url( $share_google_url ); ?>"></a>
+										<a class="icon-facebook social-share-link popup" href="<?php echo esc_url( $share_fb_url ); ?>"></a>
+										<a class="icon-twitter social-share-link popup" href="<?php echo esc_url( $share_twitter_url ); ?>"></a>
+										<a class="icon-google-plus social-share-link popup" href="<?php echo esc_url( $share_google_url ); ?>"></a>
 									</div>
 								</div>
 

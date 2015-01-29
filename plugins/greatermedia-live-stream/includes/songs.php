@@ -10,6 +10,7 @@ add_action( 'manage_' . GMR_SONG_CPT . '_posts_custom_column', 'gmr_songs_render
 // filter hooks
 add_filter( 'manage_' . GMR_SONG_CPT . '_posts_columns', 'gmr_songs_filter_columns_list' );
 add_filter( 'wp_insert_post_parent', 'gmr_songs_set_song_stream', PHP_INT_MAX, 3 );
+add_filter( 'wp_link_query_args', 'gmr_songs_exclude_songs_from_editor_links_query' );
 add_filter( 'gmr_live_link_add_copy_action', 'gmr_songs_remove_copy_to_live_link_action', 10, 2 );
 add_filter( 'gmr_blogroll_widget_item_post_types', 'gmr_songs_add_type_to_blogroll_widget' );
 add_filter( 'gmr_blogroll_widget_item_ids', 'gmr_songs_get_blogroll_widget_item_ids' );
@@ -57,6 +58,26 @@ function gmr_songs_render_custom_column( $column_name, $post_id ) {
 }
 
 /**
+ * Removes songs from editor links query.
+ *
+ * @filter wp_link_query_args
+ * @param array $args The array of query args.
+ * @return array Adjusted array of query args.
+ */
+function gmr_songs_exclude_songs_from_editor_links_query( $args ) {
+	if ( ! empty( $args['post_type'] ) ) {
+		$post_type = $args['post_type'];
+		if ( is_string( $post_type ) ) {
+			$post_type = array_map( 'trim', explode( ',', $post_type ) );
+		}
+
+		unset( $post_type[ array_search( GMR_SONG_CPT, $post_type ) ] );
+		$args['post_type'] = $post_type;
+	}
+	return $args;
+}
+
+/**
  * Registers Song post type.
  *
  * @action init
@@ -82,6 +103,7 @@ function gmr_songs_register_post_type() {
 		'label'                => 'Songs',
 		'labels'               => $labels,
 		'public'               => true,
+		'exclude_from_search'  => true,
 		'show_ui'              => true,
 		'show_in_menu'         => false,
 		'can_export'           => true,
@@ -195,16 +217,16 @@ function gmr_songs_blogroll_widget_item( $item ) {
 		return $item;
 	}
 
-	$item = '<div class="live-link__song">';
-		$item .= '<div class="live-link__song--artist">';
-			$item .= get_post_meta( $song->ID, 'artist', true );
-		$item .= '</div>';
-		$item .= '<div class="live-link__song--title">';
-			$item .= '<a href="' . esc_url( get_permalink( $song->post_parent ) ) . '">';
+	$item = '<a href="' . esc_url( get_permalink( $song->post_parent ) ) . '">';
+		$item .= '<div class="live-link__song">';
+			$item .= '<div class="live-link__song--artist">';
+				$item .= get_post_meta( $song->ID, 'artist', true );
+			$item .= '</div>';
+			$item .= '<div class="live-link__song--title">';
 				$item .= get_the_title();
-			$item .= '</a>';
+			$item .= '</div>';
 		$item .= '</div>';
-	$item .= '</div>';
+	$item .= '</a>';
 
 	return $item;
 }

@@ -65,11 +65,11 @@ class AccountSchema {
 				),
 				'state' => array(
 					'writeAccess' => 'clientModify',
-					'required' => false,
+					'required' => true,
 				),
 				'city' => array(
 					'writeAccess' => 'clientModify',
-					'required' => false,
+					'required' => true,
 				),
 				'address' => array(
 					'writeAccess' => 'clientModify',
@@ -224,11 +224,11 @@ class AccountSchema {
 				),
 				'listeningFrequency' => array(
 					'writeAccess' => 'clientModify',
-					'required' => false,
+					'required' => true,
 				),
 				'listeningLoyalty' => array(
 					'writeAccess' => 'clientModify',
-					'required' => false,
+					'required' => true,
 				),
 				'subscribedToList' => array(
 					'writeAccess' => 'clientModify',

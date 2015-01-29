@@ -1,4 +1,4 @@
-/*! Greater Media Contests - v1.0.4
+/*! Greater Media Contests - v1.0.6
  * http://10up.com/
  * Copyright (c) 2015;
  * Licensed GPLv2+
@@ -38,7 +38,7 @@ jQuery(function () {
 		var parser = document.createElement('a');
 		parser.href = url;
 
-		var new_url = parser.protocol + '//' +
+		var new_url = '//' +
 			parser.host +
 			parser.pathname +
 			'.' + extension +
@@ -56,6 +56,7 @@ jQuery(function () {
 			var approve_link = append_extension(this.href, 'json');
 			var ugc_id = jQuery(this).parents('tr').data('ugc-id');
 
+			console.log('approve link: ', approve_link);
 			var req = jQuery.ajax(approve_link);
 			req.done(function () {
 				var row = jQuery('tr[data-ugc-id=' + ugc_id + ']');

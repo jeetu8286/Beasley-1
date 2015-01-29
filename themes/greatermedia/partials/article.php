@@ -3,7 +3,17 @@
 	<div class="container">
 
 		<?php if ( has_post_thumbnail() && ! \Greater_Media\Gallery_Post_Thumbnails\post_has_gallery() ): ?>
-			<div class="article__thumbnail" style='background-image: url(<?php gm_post_thumbnail_url( 'full' ); ?>)'></div>
+			<div class="article__thumbnail" style='background-image: url(<?php gm_post_thumbnail_url( 'full' ); ?>)'>
+				<?php
+
+					$image_attr = image_attribution();
+
+					if ( ! empty( $image_attr ) ) {
+						echo $image_attr;
+					}
+
+				?>
+			</div>
 		<?php endif; ?>
 
 		<section class="content">
@@ -19,9 +29,7 @@
 
 					<time class="article__date" datetime="<?php echo get_the_time(); ?>"><?php the_date('F j'); ?></time>
 					<h2 class="article__title" itemprop="headline"><?php the_title(); ?></h2>
-					<a class="icon-facebook social__link popup" target='_blank' href="http://www.facebook.com/sharer/sharer.php?u=<?php echo urlencode( get_permalink() ); ?>&title=<?php echo urlencode( get_the_title() ); ?>"></a>
-					<a class="icon-twitter social__link popup" target='_blank' href="http://twitter.com/home?status=<?php echo urlencode( get_the_title() ); ?>+<?php echo urlencode( get_permalink() ); ?>"></a>
-					<a class="icon-google-plus social__link popup" target='_blank' href="https://plus.google.com/share?url=<?php echo urlencode( get_permalink() ); ?>"></a>
+					<?php get_template_part( 'partials/social-share' ); ?>
 
 				</header>
 

@@ -24,22 +24,36 @@ module.exports = function( grunt ) {
 			all: [
 				'Gruntfile.js',
 				'assets/js/src/**/*.js',
-				'assets/js/test/**/*.js'
+				'assets/js/test/**/*.js',
 			],
 			options: {
 				curly:   true,
-				eqeqeq:  true,
+				eqeqeq:  false,
 				immed:   true,
-				latedef: true,
+				latedef: false,
 				newcap:  true,
 				noarg:   true,
 				sub:     true,
 				undef:   true,
-				boss:    true,
+				boss:    false,
 				eqnull:  true,
+				devel:   true,
+				browser: true,
 				globals: {
 					exports: true,
-					module:  false
+					module:  false,
+					'is_gigya_user_logged_in': true,
+					'gmr': true,
+					'Cookies': true,
+					'gmlp': true,
+					'jQuery': true,
+					'$': true,
+					'window': true,
+					'bowser': true,
+					'require': true,
+					'TdPlayerApi': true,
+					'_': false,
+					'Modernizr': true
 				}
 			}		
 		},
@@ -59,39 +73,8 @@ module.exports = function( grunt ) {
 		test:   {
 			files: ['assets/js/test/**/*.js']
 		},
-		
-		sass:   {
-			options: {
-				require: 'sass-globbing',
-				update: true
-			},
-			all: {
-				files: {
-					'assets/css/greater_media_live_player.css': 'assets/css/sass/greater_media_live_player.scss',
-				}
-			}
-		},
-		
-		cssmin: {
-			minify: {
-				expand: true,
-				
-				cwd: 'assets/css/',				
-				src: ['greater_media_live_player.css'],
-				
-				dest: 'assets/css/',
-				ext: '.min.css'
-			}
-		},
+
 		watch:  {
-			
-			sass: {
-				files: ['assets/css/sass/*/*.scss'],
-				tasks: ['sass', 'cssmin'],
-				options: {
-					debounceDelay: 500
-				}
-			},
 			
 			scripts: {
 				files: ['assets/js/admin/**/*.js', 'assets/js/src/**/*.js', 'assets/js/vendor/**/*.js'],
@@ -153,7 +136,7 @@ module.exports = function( grunt ) {
 	
 	// Default task.
 	
-	grunt.registerTask( 'default', ['jshint', 'concat', 'uglify', 'sass', 'cssmin'] );
+	grunt.registerTask( 'default', ['jshint', 'concat', 'uglify'] );
 	
 	
 	grunt.registerTask( 'build', ['default', 'clean', 'copy', 'compress'] );

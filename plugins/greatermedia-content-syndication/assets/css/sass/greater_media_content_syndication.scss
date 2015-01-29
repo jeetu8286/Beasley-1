@@ -16,6 +16,41 @@
 	margin-left: 10px;
   }
   span.description {
-	margin-left: 21%;
+	margin-left: 1%;
+  }
+}
+
+.subscription_type {
+  margin-top: 2em;
+  label {
+    float: left;
+    width: 12em;
+    margin-right: 1.5em;
+  }
+  span.description {
+    margin-left: 1%;
+  }
+}
+
+.subscription_post_status {
+  label {
+    float: left;
+    width: 4em;
+  }
+  .subscription_status {
+    margin-bottom: 5px;
+  }
+}
+
+#subscription_default_metabox {
+  h4 {
+    margin-bottom: 10px;
+    margin-top: 10px;
+  }
+}
+
+.syndication {
+  span.timestamp:before {
+    content: "\f303" !important;
   }
 }

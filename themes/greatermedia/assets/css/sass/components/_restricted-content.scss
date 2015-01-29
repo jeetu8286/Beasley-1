@@ -2,6 +2,7 @@
 .logout-restricted-login-btn,
 .age-restricted-login-btn {
 	@include btn($btn-bg, $color-text-white, $btn-bg, .45em, 1em, ms(-1));
+	text-transform: none;
 }
 
 .entry2__excerpt {
@@ -9,5 +10,18 @@
 	.logout-restricted-login-btn,
 	.age-restricted-login-btn {
 		margin: 1em 0;
+	}
+}
+
+.age-restricted-shield--inline,
+.login-restricted-shield--inline,
+.logout-restricted-shield--inline {
+	background: $extra-light-gray;
+	margin: $base-line-height 0;
+	padding: 1.5em $gutter;
+	text-align: center; 
+	
+	p {
+		margin: .75em 0; 
 	}
 }

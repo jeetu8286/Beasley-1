@@ -25,7 +25,14 @@ class EmmaFieldsUpdater {
 			'field_type'    => 'date',
 			'widget_type'   => 'date',
 			'column_order'  => 3,
-		)
+		),
+		'gigya_user_id' => array(
+			'shortcut_name' => 'gigya_user_id',
+			'display_name'  => 'Gigya User ID',
+			'field_type'    => 'text',
+			'widget_type'   => 'text',
+			'column_order'  => 4,
+		),
 	);
 
 	public $emma_api;

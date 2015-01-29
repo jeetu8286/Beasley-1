@@ -218,52 +218,59 @@ class GreaterMediaFormbuilderRender {
 	 * Render a form attached to a given post
 	 *
 	 * @param int $post_id Post ID
+	 * @param array $form The form fields array.
+	 * @param bool $use_user_info Determines whether to show user info or not.
 	 */
-	public static function render( $post_id ) {
+	public static function render( $post_id, $form = null, $use_user_info = true ) {
+		if ( ! $form  ) {
+			$form = get_post_meta( $post_id, 'embedded_form', true );
+			if ( empty( $form ) ) {
+				return;
+			}
 
-		$form = get_post_meta( $post_id, 'embedded_form', true );
-		if ( empty( $form ) ) {
-			return;
-		}
-		
-		if ( is_string( $form ) ) {
-			$clean_form = trim( $form, '"' );
-			$form = json_decode( $clean_form );
-		}
-
-		$title = get_post_meta( $post_id, 'form-title', true );
-		if ( empty( $title ) ) {
-			$title = 'Enter Here to Win';
-		}
-
-		$html = '<h3 class="contest__form--heading">' . esc_html( $title ) . '</h3>';
-		$html .= '<form novalidate method="post" enctype="multipart/form-data">';
-
-		$html .= '<div class="contest__form--user-info">';
-		if ( function_exists( 'is_gigya_user_logged_in' ) && is_gigya_user_logged_in() ) {
-			$html .= '<a href="' . esc_url( trailingslashit( gigya_profile_path( 'account' ) ) ) . '">Edit Your Profile</a>';
-			$html .= '<dl>';
-				$html .= '<dt>Submitted By:</dt>';
-				$html .= sprintf( '<dd>%s %s</dd>', self::_get_user_field( 'firstName' ), self::_get_user_field( 'lastName' ) );
-				$html .= '<dt>Email Address:</dt>';
-				$html .= '<dd>' . self::_get_user_field( 'email' ) . '</dd>';
-				$html .= '<dt>Date of Birth:</dt>';
-				$html .= sprintf( '<dd>%s/%s/%s</dd>', self::_get_user_field( 'birthMonth', '01' ), self::_get_user_field( 'birthDay', '01' ), self::_get_user_field( 'birthYear' ) );
-				$html .= '<dt>Zip:</dt>';
-				$html .= '<dd>' . self::_get_user_field( 'zip' ) . '</dd>';
-			$html .= '</dl>';
-		} else {
-			$html .= '<i>Enter this contest as guest</i> <a href="' . esc_url( gmr_contests_get_login_url() ) . '">Login or Register</a>';
-			foreach ( self::_get_default_fields() as $field ) {
-				$renderer_method = 'render_' . $field->field_type;
-				if ( method_exists( __CLASS__, $renderer_method ) ) {
-					$html .= '<div class="contest__form--row">';
-					$html .= self::$renderer_method( $post_id, $field );
-					$html .= '</div>';
-				}
+			if ( is_string( $form ) ) {
+				$form = json_decode( trim( $form, '"' ) );
 			}
 		}
-		$html .= '</div>';
+
+		$permalink = untrailingslashit( get_permalink( $post_id ) );
+
+		$html = '';
+		$title = get_post_meta( $post_id, 'form-title', true );
+		if ( ! empty( $title ) ) {
+			$html .= '<h3 class="contest__form--heading">' . esc_html( $title ) . '</h3>';
+		}
+
+		$html .= '<iframe id="theiframe" name="theiframe" style="width:1px;height:1px;border:none;display:none"></iframe>';
+		$html .= '<form action="' . esc_url( $permalink ) . '/action/submit/" target="theiframe" method="post" enctype="multipart/form-data" novalidate>';
+
+		if ( $use_user_info ) {
+			$html .= '<div class="contest__form--user-info">';
+			if ( function_exists( 'is_gigya_user_logged_in' ) && is_gigya_user_logged_in() ) {
+				$html .= '<a href="' . esc_url( trailingslashit( gigya_profile_path( 'account' ) ) ) . '">Edit Your Profile</a>';
+				$html .= '<dl>';
+					$html .= '<dt>Submitted By:</dt>';
+					$html .= sprintf( '<dd>%s %s</dd>', self::_get_user_field( 'firstName' ), self::_get_user_field( 'lastName' ) );
+					$html .= '<dt>Email Address:</dt>';
+					$html .= '<dd>' . self::_get_user_field( 'email' ) . '</dd>';
+					$html .= '<dt>Date of Birth:</dt>';
+					$html .= sprintf( '<dd>%s/%s/%s</dd>', self::_get_user_field( 'birthMonth', '01' ), self::_get_user_field( 'birthDay', '01' ), self::_get_user_field( 'birthYear' ) );
+					$html .= '<dt>Zip:</dt>';
+					$html .= '<dd>' . self::_get_user_field( 'zip' ) . '</dd>';
+				$html .= '</dl>';
+			} else {
+				$html .= '<i>Enter this contest as guest</i> <a href="' . esc_url( gmr_contests_get_login_url() ) . '">Login or Register</a>';
+				foreach ( self::_get_default_fields() as $field ) {
+					$renderer_method = 'render_' . $field->field_type;
+					if ( method_exists( __CLASS__, $renderer_method ) ) {
+						$html .= '<div class="contest__form--row">';
+						$html .= self::$renderer_method( $post_id, $field );
+						$html .= '</div>';
+					}
+				}
+			}
+			$html .= '</div>';
+		}
 
 		foreach ( $form as $field ) {
 			$renderer_method = 'render_' . $field->field_type;
@@ -281,11 +288,9 @@ class GreaterMediaFormbuilderRender {
 		}
 
 		$html .= self::get_submit_button( $submit_text, null, null, true );
-
 		$html .= '</form>';
 
 		return $html;
-
 	}
 
 	/**

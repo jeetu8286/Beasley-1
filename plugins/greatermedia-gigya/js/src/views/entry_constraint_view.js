@@ -101,6 +101,7 @@ var EntryConstraintView = ConstraintView.extend({
 		//console.log('updateConstraint', changes);
 		constraint.set(changes);
 		this.renderEntryAnswer();
+		this.renderConjunctionGuide();
 	},
 
 	hasChoices: function() {

@@ -1,4 +1,4 @@
-/*! Greater Media Contests - v1.0.4
+/*! Greater Media Contests - v1.0.6
  * http://10up.com/
  * Copyright (c) 2015;
  * Licensed GPLv2+
@@ -8,7 +8,7 @@
 		var formbuilder = new Formbuilder({
 			selector: '#survey_embedded_form',
 			bootstrapData: gmr.form,
-			controls: ['address', 'checkboxes', 'date', 'dropdown', 'email', 'number', 'paragraph', 'price', 'radio', 'section_break', 'text', 'time', 'website' ]
+			controls: ['address', 'checkboxes', 'date', 'dropdown', 'email', 'paragraph', 'radio', 'section_break', 'text', 'website']
 		});
 
 		formbuilder.on('save', function(payload) {

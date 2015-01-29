@@ -44,8 +44,7 @@
 }
 
 .contest-form-info {
-	background-color: steelblue;
-	color: white;
+	background-color: whitesmoke;
 	padding: 0.5em 1em;
 	margin-bottom: 2em;
 }
@@ -144,6 +143,49 @@
 
 		.unmark-winner a {
 			color: red;
+		}
+	}
+}
+
+.post-type-survey {
+	#survey-responses-link {
+		float: right;
+		margin-bottom: 5px;
+	}
+
+	#delete-action {
+		float: left;
+	}
+
+	#publishing-action {
+		float: right;
+		clear: right;
+	}
+
+	.fb-save-wrapper {
+		display: none;
+	}
+
+	.fb-tabs {
+		li {
+			margin-bottom: 0;
+		}
+	}
+
+	.fb-right,
+	.fb-left {
+		padding-top: 0;
+	}
+
+	.form-table th {
+		width: 250px;
+	}
+}
+
+@media screen and (max-width: 782px) {
+	.post-type-survey {
+		#survey-responses-link {
+			margin-bottom: 0;
 		}
 	}
 }

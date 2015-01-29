@@ -28,6 +28,7 @@
 		display: inline-block;
 		vertical-align: middle;
 		width: 70%;
+		line-height: 1.25em;
 
 		@include bp(large) {
 			width: 80%;

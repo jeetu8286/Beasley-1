@@ -20,6 +20,9 @@ class UpdateAccountAjaxHandler extends AjaxHandler {
 			$emma_group_sync_task = new EmmaGroupSyncTask();
 			$emma_group_sync_task->enqueue( array( 'user_id' => $user_id ) );
 
+			$transient = 'gigya_user_profile_' . $user_id;
+			delete_transient( $transient );
+
 			return true;
 		} else {
 			return false;

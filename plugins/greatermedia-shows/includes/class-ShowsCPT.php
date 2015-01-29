@@ -52,9 +52,9 @@ class ShowsCPT {
 	public function register_post_type() {
 		register_post_type( self::SHOW_CPT, array(
 			'public'              => true,
-			'menu_position'       => 5,
+			'menu_position'       => 37,
 			'menu_icon'           => 'dashicons-megaphone',
-			'has_archive'         => true,
+			'has_archive'         => 'shows',
 			'supports'            => array( 'title', 'editor', 'author', 'thumbnail', 'comments', 'revisions' ),
 			'labels'              => array(
 				'name'               => __( 'Shows', 'greatermedia' ),
