@@ -526,6 +526,10 @@
 
 			return false;
 		});
+
+		$(document).ready(function() {
+			$('.article__content').fitVids();
+		});
 	})(jQuery);
 
 	function personality_toggle() {
