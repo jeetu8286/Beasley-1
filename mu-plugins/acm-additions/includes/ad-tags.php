@@ -97,3 +97,18 @@ function ad_variant( $new_variant = false ) {
 
 	return $variant;
 }
+
+/**
+ * @param bool $new_overrides
+ *
+ * @return bool|array
+ */
+function ad_variant_overrides( $new_overrides = false ) {
+	static $overrides;
+
+	if ( false !== $new_overrides ) {
+		$overrides = $new_overrides;
+	}
+
+	return (array) $overrides;
+}
