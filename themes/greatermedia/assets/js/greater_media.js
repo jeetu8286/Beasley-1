@@ -656,7 +656,9 @@
 	}
 
 	function lpHeight() {
-		livePlayer.style.height = elemHeight(siteWrap) + 'px';
+		if (livePlayer != null ) {
+			livePlayer.style.height = elemHeight(siteWrap) - elemHeight(header) + 'px';
+		}
 	}
 	/**
 	 * detects various positions of the screen on scroll to deliver states of the live player
