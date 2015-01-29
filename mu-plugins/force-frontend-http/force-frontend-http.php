@@ -17,7 +17,15 @@ class FrontEndHttpRedirector {
 	}
 
 	function redirect() {
-		wp_redirect( $this->get_redirect_url(), 301 );
+		$redirect_url = $this->get_redirect_url();
+		$html = <<<HTML
+<meta http-equiv="refresh" content="0; url={$redirect_url}" />
+<script type="text/javascript">
+	window.location.href = '{$redirect_url}';
+</script>
+HTML;
+
+		echo $html;
 		die();
 	}
 
@@ -39,4 +47,4 @@ class FrontEndHttpRedirector {
 }
 
 $frontend_http_redirector = new FrontEndHttpRedirector();
-//$frontend_http_redirector->enable();
+$frontend_http_redirector->enable();
