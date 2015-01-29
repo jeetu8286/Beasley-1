@@ -137,7 +137,6 @@
 			}
 			if (liveLinksWidget != null ) {
 				liveLinksWidget.style.maxHeight = windowHeight(window) - wpAdminHeight - elemHeight(header) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - elemHeight(liveLinksWidgetTitle) - elemHeight(nowPlaying) + 'px';
-				$(document).trigger('live-links-height-changed');
 			}
 		} else {
 			if (livePlayer != null ) {
@@ -149,7 +148,6 @@
 			}
 			if (liveLinksWidget != null ) {
 				liveLinksWidget.style.maxHeight = windowHeight(window) - elemHeight(header) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - elemHeight(liveLinksWidgetTitle) - elemHeight(nowPlaying) + 'px';
-				$(document).trigger('live-links-height-changed');
 			}
 		}
 		if (livePlayer != null ) {
@@ -172,7 +170,6 @@
 			}
 			if (liveLinksWidget != null ) {
 				liveLinksWidget.style.maxHeight = windowHeight(window) - elemTopOffset(header) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - elemHeight(liveLinksWidgetTitle) - elemHeight(nowPlaying) + 'px';
-				$(document).trigger('live-links-height-changed');
 			}
 		} else {
 			if (livePlayer != null ) {
@@ -184,7 +181,6 @@
 			}
 			if (liveLinksWidget != null ) {
 				liveLinksWidget.style.maxHeight = windowHeight(window) - elemHeightOffset(header) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - elemHeight(liveLinksWidgetTitle) - elemHeight(nowPlaying) + 'px';
-				$(document).trigger('live-links-height-changed');
 			}
 		}
 		if (livePlayer != null ) {
@@ -207,7 +203,6 @@
 			}
 			if (liveLinksWidget != null ) {
 				liveLinksWidget.style.maxHeight = windowHeight(window) - wpAdminHeight - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - elemHeight(liveLinksWidgetTitle) - elemHeight(nowPlaying) + 'px';
-				$(document).trigger('live-links-height-changed');
 			}
 		} else {
 			if (livePlayer != null ) {
@@ -219,7 +214,6 @@
 			}
 			if (liveLinksWidget != null ) {
 				liveLinksWidget.style.maxHeight = windowHeight(window) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - elemHeight(liveLinksWidgetTitle) - elemHeight(nowPlaying) + 'px';
-				$(document).trigger('live-links-height-changed');
 			}
 		}
 		if (livePlayer != null ) {
@@ -585,27 +579,6 @@
 
 			return false;
 		});
-
-		var _slim_scroll = function() {
-			if ($.fn.slimScroll) {
-				$('.widget_gmr_blogroll_widget ul').slimScroll({
-					height: 'auto',
-					color: false,
-					railColor: false,
-					alwaysVisible: true,
-					railVisible: true,
-					wrapperClass: 'slimscroll--wrapper',
-					barClass: 'slimscroll--bar',
-					railClass: 'slimscroll--rail',
-					borderRadius: 0,
-					railBorderRadius: 0
-				});
-			}
-		};
-
-		$(document).on('live-links-height-changed', _slim_scroll);
-		$(document).on('blogroll-widget-updated', _slim_scroll);
-
 		$(document).ready(function() {
 			$('.article__content').fitVids();
 		});
