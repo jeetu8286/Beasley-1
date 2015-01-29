@@ -206,3 +206,10 @@
 	border-top: none;
 	padding-top: 0;
 }
+
+#tribe-events-bar {
+
+	.site-wrap.pjax--active & {
+		display: none;
+	}
+}
