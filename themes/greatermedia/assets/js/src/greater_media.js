@@ -526,6 +526,10 @@
 
 			return false;
 		});
+
+		$(document).ready(function() {
+			$('.article__content').fitVids({customSelector: "div[id^='playerwrapper']"});
+		});
 	})(jQuery);
 
 	function personality_toggle() {
@@ -557,6 +561,8 @@
 		});
 	}
 
-	personality_toggle();
+	$(document).bind( 'pjax:end', function () {
+		personality_toggle();
+	});
 
 })();

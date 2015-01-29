@@ -17,7 +17,13 @@ class FrontEndHttpRedirector {
 	}
 
 	function redirect() {
-		wp_redirect( $this->get_redirect_url(), 301 );
+		$html = <<<HTML
+<script type="text/javascript">
+	location.href = location.href.replace('https://', 'http://');
+</script>
+HTML;
+
+		echo $html;
 		die();
 	}
 
@@ -29,14 +35,7 @@ class FrontEndHttpRedirector {
 		return in_array( $GLOBALS['pagenow'], array( 'wp-login.php', 'wp-register.php' ) );
 	}
 
-	function get_redirect_url() {
-		$domain   = $_SERVER['SERVER_NAME'];
-		$path     = $_SERVER['REQUEST_URI'];
-
-		return 'http://' . $domain . $path;
-	}
-
 }
 
 $frontend_http_redirector = new FrontEndHttpRedirector();
-//$frontend_http_redirector->enable();
+$frontend_http_redirector->enable();
