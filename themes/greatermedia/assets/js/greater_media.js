@@ -376,7 +376,8 @@
 		classes = {},
 		last_url = null,
 		current_url = location.href,
-		normalize_url;
+		normalize_url,
+		siteWrap = $('#site-wrap');
 
 	normalize_url = function(url) {
 		return url.replace(/[\?\#].*$/g, '');
@@ -422,6 +423,14 @@
 	$document.bind( 'pjax:end', function () {
 		$( 'body').removeClass( 'is-busy' );
 	} );
+
+	/**
+	 * Adds `pjax--active` class to the `#site-wrap` element when a Pjax request starts. This class can be used for
+	 * visual display when Pjax is active.
+	 */
+	$document.bind('pjax:start', function() {
+		siteWrap.addClass('pjax--active');
+	});
 })(jQuery, location);
 (function () {
 

@@ -7389,6 +7389,9 @@ category: Components - Ads
   border-top: none;
   padding-top: 0; }
 
+.site-wrap.pjax--active #tribe-events-bar {
+  display: none; }
+
 /*doc
 ---
 title: Podcast Excerpt
