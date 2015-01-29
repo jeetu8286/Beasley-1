@@ -121,17 +121,6 @@ img {
 	}
 }
 
-.live-player:after {
-	position: absolute;
-	top: 100%;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background-color: $liveplayer-bg;
-	content: "";
-	z-index: 10;
-}
-
 .row {
 	@include row();
 }

@@ -1225,7 +1225,9 @@
 	}
 
 	function lpHeight() {
-		livePlayer.style.height = elemHeight(siteWrap) + 'px';
+		if (livePlayer != null ) {
+			livePlayer.style.height = elemHeight(siteWrap) - elemHeight(header) + 'px';
+		}
 	}
 	/**
      * Toggles a class to the Live Play Stream Select box when the box is clicked
