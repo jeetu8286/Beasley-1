@@ -280,6 +280,7 @@ class GreaterMedia_Keyword_Admin {
 			$res[] = array(
 				'id' => (int) $post->ID,
 				'title' => $post->post_title,
+				'post_type' => strtoupper( $post->post_type ),
 			);
 		}
 
