@@ -62,7 +62,7 @@
 					'link_after'      => '',
 					'items_wrap'      => '<ul id="%1$s" class="%2$s">%3$s</ul>',
 					'depth'           => 0,
-					'walker'          => new GreaterMediaMobileNavWalker()
+					'walker'          => new GreaterMediaMobileNavWalker(),
 				);
 
 				wp_nav_menu( $mobile_nav );
@@ -109,7 +109,7 @@
 								'link_after'      => '',
 								'items_wrap'      => '<ul id="%1$s" class="%2$s">%3$s</ul>',
 								'depth'           => 0,
-								'walker'          => new GreaterMediaNavWalker
+								'walker'          => new GreaterMediaNavWalker(),
 							);
 							wp_nav_menu( $main_nav );
 							?>
