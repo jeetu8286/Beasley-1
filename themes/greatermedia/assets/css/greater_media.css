@@ -6320,7 +6320,8 @@ category: Components - Ads
 .type-survey.collapsed .col__inner--left {
   width: 100%;
   margin-right: 0;
-  padding-right: 0; }
+  padding-right: 0;
+  float: none; }
 .type-contest.collapsed .col__inner--right,
 .type-survey.collapsed .col__inner--right {
   display: none; }
