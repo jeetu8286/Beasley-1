@@ -20,6 +20,7 @@ tr.delete {
 			display: block;
 			overflow: hidden;
 			padding: 7px 7px 8px 10px;
+			font-weight: normal;
 		}
 	}
 }
@@ -53,7 +54,6 @@ tr.delete {
 }
 
 .post-search__list {
-	padding: 0 .5em; 
 	height: 12.5em; 
 	overflow: auto;
 	border: 1px solid #bbb;
@@ -62,12 +62,34 @@ tr.delete {
 		opacity: 0.5;
 	}
 	margin-left: 1px;
-	width: 91%;
+	width: 95%;
 }
 
 .post-search__list-item {
-	margin: .5em 0;
-	input, label {
+	padding: .5em;
+	margin: 0;
+	label {
 		display: inline-block;
+		width: 100%;
+	}
+	span.post_type {
+		float: right;
+		color: rgb(147, 147, 147);
+	}
+}
+
+.post-search__list-item:hover {
+	cursor: pointer;
+}
+
+.post-search__list-item {
+	input.post-search__list-item-input {
+		display: none;
+	}
+}
+.selected {
+	background-color: rgb(150, 150, 150);
+	label, .post_type {
+		color: #fff !important;
 	}
 }
