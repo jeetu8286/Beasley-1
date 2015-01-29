@@ -19,6 +19,7 @@ module.exports = function (grunt) {
 			},
 			greater_media: {
 				src: [
+					'assets/js/vendor/jquery.fitvids.js',
 					'assets/js/src/mobile-sub-menus.js',
 					'assets/js/src/profile.js',
 					'assets/js/src/show-schedule.js',
