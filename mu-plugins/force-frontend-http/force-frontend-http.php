@@ -22,7 +22,12 @@ class FrontEndHttpRedirector {
 	}
 
 	function needs_redirect() {
-		return ! is_admin() && is_ssl();
+		return ! is_admin() && is_ssl() && ! $this->is_core_file();
+	}
+
+	function is_core_file() {
+		$path = $_SERVER['REQUEST_URI'];
+		return strpos( $path, '/wp-' ) === 0;
 	}
 
 	function get_redirect_url() {
