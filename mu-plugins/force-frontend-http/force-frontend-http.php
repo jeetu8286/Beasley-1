@@ -22,7 +22,11 @@ class FrontEndHttpRedirector {
 	}
 
 	function needs_redirect() {
-		return ! is_admin() && is_ssl();
+		return ! $this->is_login_page() && ! is_admin() && is_ssl();
+	}
+
+	function is_login_page() {
+		return in_array( $GLOBALS['pagenow'], array( 'wp-login.php', 'wp-register.php' ) );
 	}
 
 	function get_redirect_url() {
