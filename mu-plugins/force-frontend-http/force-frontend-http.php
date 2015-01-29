@@ -17,7 +17,7 @@ class FrontEndHttpRedirector {
 	}
 
 	function redirect() {
-		wp_safe_redirect( $this->get_redirect_url() );
+		wp_redirect( $this->get_redirect_url(), 301 );
 		die();
 	}
 
