@@ -152,6 +152,14 @@ function greatermedia_scripts_styles() {
 		false
 	);
 	wp_enqueue_script(
+		'placeholders',
+		"{$baseurl}/assets/js/vendor/placeholders.min.js",
+		array(),
+		'3.0.2',
+		false
+	);
+
+	wp_enqueue_script(
 		'greatermedia-load-more',
 		"{$baseurl}/assets/js/greater_media_load_more{$postfix}.js",
 		array( 'jquery', 'jquery-waypoints' ),
@@ -685,7 +693,7 @@ add_action( 'wp_head', 'add_ie_stylesheet' );
  * @param string $sep Optional separator.
  * @return string The filtered title.
  */
-function twentyfourteen_wp_title( $title, $sep ) {
+function greatermedia_wp_title( $title, $sep ) {
 	global $paged, $page;
 
 	if ( is_feed() ) {
@@ -708,7 +716,7 @@ function twentyfourteen_wp_title( $title, $sep ) {
 
 	return $title;
 }
-add_filter( 'wp_title', 'twentyfourteen_wp_title', 10, 2 );
+add_filter( 'wp_title', 'greatermedia_wp_title', 10, 2 );
 
 /**
  * Updates tribe events archive title.
@@ -741,3 +749,41 @@ function greatermedia_events_title( $title ) {
 	return $title;
 }
 add_filter( 'tribe_get_events_title', 'greatermedia_events_title' );
+
+/**
+ * Overrides the default [caption] shortcode so we can use max-width instead of width.
+ * Still takes the 'width' shortcode attribute, just modifies it at output.
+ *
+ * @param $empty string comes in as an empty string. Fill it up to override the caption
+ * @param $attr array of attributes for the shortcode
+ * @param $content string The image, possibly wrapped in an anchor — or technically any other content.
+ * @return string shortcode HTML output
+ */
+
+function greatermedia_image_caption_override( $empty, $attr, $content ) {
+
+	$atts = shortcode_atts( array(
+		'id'      => '',
+		'align'   => 'alignnone',
+		'width'   => '',
+		'caption' => '',
+		'class'   => '',
+	), $attr, 'caption' );
+
+	$atts['width'] = (int) $atts['width'];
+
+	if ( $atts['width'] < 1 || empty( $atts['caption'] ) ) {
+		return $content;
+	}
+
+	if ( ! empty( $atts['id'] ) ) {
+		$atts['id'] = 'id="' . esc_attr( $atts['id'] ) . '" ';
+	}
+
+	$class = trim( 'wp-caption ' . $atts['align'] . ' ' . $atts['class'] );
+
+		return '<figure ' . $atts['id'] . 'style="max-width: ' . (int) $atts['width'] . 'px;" class="' . esc_attr( $class ) . '">'
+		       . do_shortcode( $content ) . '<figcaption class="wp-caption-text">' . $atts['caption'] . '</figcaption></figure>';
+
+}
+add_filter( 'img_caption_shortcode', 'greatermedia_image_caption_override', null, 3 );

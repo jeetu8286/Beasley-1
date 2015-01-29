@@ -991,7 +991,8 @@ class Ad_Code_Manager {
 			$prioritized_display_codes[$priority][] = $display_code;
 		}
 		ksort( $prioritized_display_codes, SORT_NUMERIC );
-		$code_to_display = array_shift( array_shift( $prioritized_display_codes ) );
+		$prioritized_display_codes = array_shift( $prioritized_display_codes );
+		$code_to_display = array_shift( $prioritized_display_codes );
 
 		return $code_to_display;
 	}

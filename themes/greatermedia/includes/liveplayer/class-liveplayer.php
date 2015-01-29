@@ -6,6 +6,7 @@ class GreaterMediaLivePlayer {
 		add_action( 'init', array( __CLASS__, 'register_endpoint' ) );
 		add_action( 'template_redirect', array( __CLASS__, 'process_onair_request' ) );
 		add_action( 'wp_footer', array( __CLASS__, 'render_live_player' ) );
+		add_action( 'gmr_live_audio_link', array( __CLASS__, 'live_audio_link' ) );
 	}
 
 	public static function render_live_player() {
@@ -84,10 +85,127 @@ class GreaterMediaLivePlayer {
 		}
 
 		wp_send_json_success( array(
-			'tagline'  => get_bloginfo( 'description' ),
+			'tagline'  => html_entity_decode( get_bloginfo( 'description' ), ENT_QUOTES ),
 			'schedule' => $schedule,
 		) );
 		exit;
+	}
+
+	/**
+	 * Returns the server location for live streaming
+	 *
+	 * @static
+	 * @access public
+	 *
+	 * @return bool|mixed
+	 */
+	public static function live_stream_server() {
+
+		$server = get_transient( 'gmr_livestream_server' );
+
+		if ( false === $server ) {
+
+			$xml = self::live_stream_endpoint();
+
+			$server_loc = (string)$xml->mountpoints[0]->mountpoint[0]->servers->server->ip;
+
+			if ( false === $server_loc ) {
+				return false;
+			}
+
+			$server = set_transient( 'gmr_livestream_server', $server_loc, 30 * MINUTE_IN_SECONDS );
+
+			if ( false === $server ) {
+				return false;
+			}
+		}
+
+		return $server;
+
+	}
+
+	/**
+	 * Returns the mount for live streaming
+	 *
+	 * @static
+	 * @access public
+	 *
+	 * @return bool|mixed
+	 */
+	public static function live_stream_mount() {
+
+		$mount = get_transient( 'gmr_livestream_mount' );
+
+		if ( false === $mount ) {
+
+			$xml = self::live_stream_endpoint();
+
+			$mount_point = (string)$xml->mountpoints[0]->mountpoint[0]->mount;
+
+			if ( false === $mount_point ) {
+				return false;
+			}
+
+			$mount = set_transient( 'gmr_livestream_mount', $mount_point, 30 * MINUTE_IN_SECONDS );
+
+			if ( false === $mount ) {
+				return false;
+			}
+		}
+
+		return $mount;
+
+	}
+
+	/**
+	 * Returns the xml endpoint as a string
+	 *
+	 * @static
+	 * @access public
+	 *
+	 * @return SimpleXMLElement
+	 */
+	public static function live_stream_endpoint() {
+		// So that we save this data if we call this function multiple times in one request
+		static $data;
+
+		if ( is_null( $data ) ) {
+			$active_stream = gmr_streams_get_primary_stream_callsign();
+
+			$xmlstr = "http://playerservices.streamtheworld.com/api/livestream?version=1.8&station={$active_stream}";
+
+			$xml = wp_remote_retrieve_body( wp_remote_get( $xmlstr ) );
+
+			$data = simplexml_load_string( $xml );
+		}
+
+		return $data;
+
+	}
+
+	/**
+	 * Echos a full live streaming endpoint
+	 *
+	 * @static
+	 * @access public
+	 */
+	public static function live_audio_link() {
+
+		$ip = self::live_stream_server();
+
+		$mount = self::live_stream_mount();
+
+		if ( ! empty( $ip ) && ! empty( $mount ) ) {
+
+			$endpoint = 'http://' . $ip . '/' . $mount . '.mp3?pname=TdPlayerApi&pversion=2.5';
+
+			echo '<div class="live-audio">';
+
+			echo '<a href="' . esc_url( $endpoint ) . '" class="live-audio__link">Listen Live</a>';
+
+			echo '</div>';
+		}
+
 	}
 
 }

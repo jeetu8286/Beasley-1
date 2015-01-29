@@ -300,8 +300,8 @@
 		var runtimeCurrent = audioCurrent.nextElementSibling;
 		var audioTime = document.querySelectorAll('.audio__time'), i;
 		var runtime = document.querySelector('.podcast__runtime');
-
-		if (podcastPlayer != null && body.classList.contains('single-show')) {
+		$('.playing__current').removeClass('playing__current');
+		if (podcastPlayer != null && ( body.classList.contains('single-show') || body.classList.contains('post-type-archive-podcast') || body.classList.contains('single-podcast') ) ) {
 			audioCurrent.classList.add('playing__current');
 			runtimeCurrent.classList.add('playing');
 		} else {
@@ -361,6 +361,26 @@
 				liveStreamSelector.classList.remove('full__width');
 			}
 		}
+	}
+
+	function addPlayBtnHeartbeat() {
+		if (playBtn != null) {
+			playBtn.classList.add('play-btn--heartbeat');
+		}
+		if (livePlayer != null) {
+			livePlayer.classList.add('live-player--heartbeat');
+		}
+		console.log('--- Heartbeat Class Added ---');
+	}
+
+	function removePlayBtnHeartbeat() {
+		if (playBtn != null && playBtn.classList.contains('play-btn--heartbeat')) {
+			playBtn.classList.remove('play-btn--heartbeat');
+		}
+		if (livePlayer != null && livePlayer.classList.contains('live-player--heartbeat')) {
+			livePlayer.classList.remove('live-player--heartbeat');
+		}
+		console.log('--- Heartbeat Class Removed ---');
 	}
 
 	var listenLiveStopCustomInlineAudio = function() {
@@ -868,6 +888,10 @@
 		player.setVolume(1); //Set volume to 100%
 
 		setStatus('Api Ready');
+		if (window.innerWidth >= 768) {
+			addPlayBtnHeartbeat();
+			setTimeout(removePlayBtnHeartbeat, 2000);
+		}
 		setTech(player.MediaPlayer.tech.type);
 
 		if (player.addEventListener) {

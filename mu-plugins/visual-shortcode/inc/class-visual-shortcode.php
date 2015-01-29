@@ -69,6 +69,9 @@ abstract class VisualShortcode {
 	 */
 	protected static $runtime_status = array();
 
+
+	protected $position = 0;
+
 	/**
 	 * Constants for declaring which TinyMCE toolbar this shortcode's icon belongs on
 	 */
@@ -82,7 +85,7 @@ abstract class VisualShortcode {
 	 * @param string $mce_toolbar    MCE_TOOLBAR_* constant for which TinyMCE toolbar this shortcode's button will render on
 	 * @param string $button_title   Title to display when the shortcode's button is hovered over in TinyMCE
 	 */
-	public function __construct( $shortcode_name, $js_module_name, $dashicon_name = 'dashicons-edit', $mce_toolbar = null, $button_title = '' ) {
+	public function __construct( $shortcode_name, $js_module_name, $dashicon_name = 'dashicons-edit', $mce_toolbar = null, $button_title = '', $position = 0 ) {
 
 		/**
 		 * Defaulting $mce_toolbar to a class constant in the method signature wasn't working
@@ -119,6 +122,7 @@ abstract class VisualShortcode {
 		$this->button_name         = $this->tinymce_plugin_name . '_button';
 		$this->icon_class          = $this->button_name;
 		$this->button_title        = $button_title;
+		$this->position            = intval( $position );
 
 		// Add this shortcode to the VisualShortcode registry
 		self::$registry[ $shortcode_name ] = array(
@@ -252,7 +256,11 @@ CSS;
 	 */
 	public function register_tinymce_button( array $buttons ) {
 
-		array_push( $buttons, $this->button_name );
+		if( is_int( $this->position ) && $this->position > 0 ) {
+			array_splice( $buttons, $this->position, 0, $this->button_name ); // splice in at position 3
+		} else {
+			array_push( $buttons, $this->button_name );
+		}
 
 		return $buttons;
 

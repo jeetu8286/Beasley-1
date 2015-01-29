@@ -58,6 +58,8 @@ function gmr_streams_get_stream_permalink( $post_link, $post ) {
  * @return array The array of unpacked query vars.
  */
 function gmr_streams_unpack_vars( $query_vars ) {
+	global $gmr_last_song, $gmr_moved_song;
+	
 	// do nothing if it is wrong page
 	if ( empty( $query_vars[GMR_LIVE_STREAM_CPT] ) ) {
 		return $query_vars;
@@ -92,6 +94,25 @@ function gmr_streams_unpack_vars( $query_vars ) {
 		$query_vars['order'] = 'DESC';
 		$query_vars['orderby'] = 'date';
 		$query_vars['posts_per_page'] = 50;
+
+		if ( ! empty( $query_vars['paged'] ) && $query_vars['paged'] > 1 ) {
+			$qv = $query_vars;
+			$qv['paged']--;
+			$qv['fields'] = 'ids';
+
+			$songs = $query->query( $qv );
+			if ( ! empty( $songs ) ) {
+				$gmr_last_song = get_post( array_pop( $songs ) );
+				$pre_last_song = get_post( array_pop( $songs ) );
+
+				remove_filter( 'get_post_time', array( 'TribeEventsTemplates', 'event_date_to_pubDate' ), 10, 3 );
+				
+				if ( get_the_time( 'M j', $pre_last_song ) != get_the_time( 'M j', $gmr_last_song ) ) {
+					$gmr_moved_song = $gmr_last_song;
+					$gmr_last_song = $pre_last_song;
+				}
+			}
+		}
 	}
 
 	return $query_vars;
@@ -113,7 +134,7 @@ function gmr_streams_register_post_type() {
 		'exclude_from_search'  => true,
 		'publicly_queryable'   => false,
 		'show_ui'              => true,
-		'show_in_nav_menus'    => false,
+		'show_in_nav_menus'    => true,
 		'show_in_menu'         => 'options-general.php',
 		'rewrite'              => false,
 		'query_var'            => false,
@@ -143,12 +164,23 @@ function gmr_streams_register_post_type() {
 	) );
 
 	// register rewrite rule and add query var
+	$new_rules = array(
+		'^stream/([^/]+)/?$'                 => 'index.php?' . GMR_LIVE_STREAM_CPT . '=$matches[1]',
+		'^stream/(.+?)/page/?([0-9]{1,})/?$' => 'index.php?' . GMR_LIVE_STREAM_CPT . '=$matches[1]&paged=$matches[2]',
+	);
+
+	foreach ( $new_rules as $rule => $rewrite ) {
+		$wp_rewrite->add_rule( $rule, $rewrite, 'top' );
+	}
+
 	$regex = '^stream/([^/]+)/?$';
 	$wp_rewrite->add_rule( $regex, 'index.php?' . GMR_LIVE_STREAM_CPT . '=$matches[1]', 'top' );
+	$wp_rewrite->add_rule( '^stream/(.+?)/page/?([0-9]{1,})/?$', 'index.php?' . GMR_LIVE_STREAM_CPT . '=$matches[1]&paged=$matches[2]', 'top' );
 
 	$wp->add_query_var( GMR_LIVE_STREAM_CPT );
-	$rules = $wp_rewrite->wp_rewrite_rules();
-	if ( ! isset( $rules[ $regex ] ) ) {
+	$all_rules = $wp_rewrite->wp_rewrite_rules();
+	$rules_diff = array_diff_key( $new_rules, $all_rules );
+	if ( ! empty( $rules_diff ) ) {
 		$wp_rewrite->flush_rules();
 	}
 }

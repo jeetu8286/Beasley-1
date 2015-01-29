@@ -1,20 +1,16 @@
 <?php $contest_id = get_the_ID(); ?>
 
-<article id="post-<?php the_ID(); ?>" <?php post_class( 'cf collapsed' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
-
+<article id="post-<?php the_ID(); ?>" <?php post_class( 'cf' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
+	
+	<section class="col__inner--left">
 	<header class="entry__header">
-		<?php $encoded_permalink = urlencode( get_permalink() ); ?>
-		<?php $encoded_title = urlencode( get_the_title() ); ?>
-
 		<time class="entry__date" datetime="<?php echo get_the_time(); ?>"><?php the_date( 'F j' ); ?></time>
 		<h2 class="entry__title" itemprop="headline">
 			<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
 			<sup class="entry__title--tag"><?php echo esc_html( gmr_contest_get_type_label() ); ?></sup>
 		</h2>
 
-		<a class="icon-facebook social-share-link" href="http://www.facebook.com/sharer/sharer.php?u=<?php echo $encoded_permalink; ?>&title=<?php echo $encoded_title; ?>"></a>
-		<a class="icon-twitter social-share-link" href="http://twitter.com/home?status=<?php echo $encoded_title; ?>+<?php echo $encoded_permalink; ?>"></a>
-		<a class="icon-google-plus social-share-link" href="https://plus.google.com/share?url=<?php echo $encoded_permalink; ?>"></a>
+		<?php get_template_part( 'partials/social-share' ); ?>
 	</header>
 
 	<?php the_content(); ?>
@@ -33,16 +29,22 @@
 	<?php endif; ?>
 
 	<?php if ( ( $contest_rules = trim( get_post_meta( get_the_ID(), 'rules-desc', true ) ) ) ) : ?>
-	<div class="contest__description">
-		<p>
-			<a class="contest-attr--rules-toggler pjax-exclude" href="#" data-toggle="collapse" data-target="#contest-rules" data-alt-text="Hide Contest Rules">
-				<?php _e( 'Show Contest Rules', 'greatermedia' ); ?>
-			</a>
-		</p>
+		<div class="contest__description">
+			<p>
+				<a class="contest-attr--rules-toggler pjax-exclude" href="#" data-toggle="collapse" data-target="#contest-rules" data-alt-text="Hide Contest Rules">
+					<?php _e( 'Show Contest Rules', 'greatermedia' ); ?>
+				</a>
+			</p>
 
-		<div id="contest-rules" class="contest-attr--rules" style="display:none;"><?php echo wpautop( $contest_rules ); ?></div>
-	</div>
+			<div id="contest-rules" class="contest-attr--rules" style="display:none;"><?php echo wpautop( $contest_rules ); ?></div>
+		</div>
 	<?php endif; ?>
 
 	<?php get_template_part( 'partials/post', 'footer' ); ?>
+	</section>
+	<section class="col__inner--right">
+		<div class="ad__inline--right desktop">
+			<?php do_action( 'acm_tag', 'mrec-body' ); ?>
+		</div>
+	</section>
 </article>
