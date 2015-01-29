@@ -29,7 +29,18 @@
 							$search_item_container.append( $( search_item_template( item ) ) );
 						} );
 						
+						_.each( $('.post-search__list-item'), function ( item, index ) {
+							if( index % 2 === 0 ) {
+								$(item).addClass('alternate');
+							}
+						} );
+
 						$post_search.removeClass( 'is-loading' );
+
+						$('.post-search__list-item-input').on('click', function(event) {
+							$('input:radio:not(:checked)').parent().removeClass("selected");
+							$('input:radio:checked').parent().addClass("selected");
+						});
 					} )
 				;
 			}
