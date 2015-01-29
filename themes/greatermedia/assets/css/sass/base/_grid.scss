@@ -113,6 +113,12 @@ img {
 		max-height: calc(48vh + 58px);
 		@include transition(all 200ms ease-in-out);
 	}
+
+	.logged-in & {
+		@include media(min-width 782px) {
+			top: 289px;
+		}
+	}
 }
 
 .live-player:after {
@@ -124,12 +130,6 @@ img {
 	background-color: $liveplayer-bg;
 	content: "";
 	z-index: 10;
-}
-
-.logged-in .live-player {
-	@include media(min-width 782px) {
-		top: 247px;
-	}
 }
 
 .row {

@@ -749,6 +749,9 @@ img {
     -webkit-transition: all 200ms ease-in-out;
     -moz-transition: all 200ms ease-in-out;
     transition: all 200ms ease-in-out; }
+  @media screen and (min-width: 782px) {
+    .logged-in .live-player {
+      top: 289px; } }
 
 .live-player:after {
   position: absolute;
@@ -759,10 +762,6 @@ img {
   background-color: #000000;
   content: "";
   z-index: 10; }
-
-@media screen and (min-width: 782px) {
-  .logged-in .live-player {
-    top: 247px; } }
 
 .row {
   display: block; }
@@ -4582,6 +4581,21 @@ category: Components
   content: " ";
   z-index: 100; }
 
+.live-stream {
+  display: block;
+  width: 100%;
+  overflow: auto;
+  background-color: #000000; }
+  @media screen and (min-width: 768px) {
+    .live-stream {
+      width: 225px; } }
+  .live-stream.live-stream--fixed {
+    position: fixed;
+    top: 0;
+    z-index: 20; }
+    .logged-in .live-stream.live-stream--fixed {
+      top: 32px; }
+
 .live-player__stream {
   position: absolute;
   display: none;
@@ -4759,20 +4773,25 @@ category: Components
   margin: 1em 0 0;
   overflow: visible; }
 
+/**
+ * @todo look into deleting this
 .live-stream {
-  float: right;
-  width: 14.375%;
-  padding: 12px 3.75% 12px 0;
-  text-align: right; }
-  @media screen and (min-width: 768px) {
-    .live-stream {
-      float: none;
-      width: auto;
-      padding: 23px 0 0;
-      text-align: center; } }
-  .live-stream.audio__playing {
-    padding-top: 0; }
+	float: right;
+	width: 14.375%; // 46px
+	padding: 12px 3.75% 12px 0; // 12px
+	text-align: right;
+	@include bp(medium) {
+		float: none;
+		width: auto;
+		padding: 23px 0 0;
+		text-align: center;
+	}
 
+	&.audio__playing {
+		padding-top: 0;
+	}
+}
+**/
 #popup-player-livestream .live-stream {
   float: none;
   width: auto;
@@ -8838,7 +8857,7 @@ category: Components - Shows
   padding: 0;
   margin: 0 0 1em;
   height: 100% !important;
-  overflow: hidden; }
+  overflow: auto; }
   .live-player--open .widget--live-player {
     margin-bottom: 58px; }
 

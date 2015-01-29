@@ -998,9 +998,11 @@
 	var body = document.querySelector('body'),
 		html = document.querySelector('html'),
 		mobileNavButton = document.querySelector('.mobile-nav__toggle'),
+		siteWrap = document.getElementById('site-wrap'),
 		pageWrap = document.getElementById('page-wrap'),
 		header = document.getElementById('header'),
 		livePlayer = document.getElementById('live-player__sidebar'),
+		liveStreamContainer = document.querySelector('.live-stream'),
 		livePlayerStream = document.querySelector('.live-player__stream'),
 		livePlayerStreamSelect = document.querySelector('.live-player__stream--current'),
 		livePlayerCurrentName = livePlayerStreamSelect.querySelector('.live-player__stream--current-name'),
@@ -1049,6 +1051,12 @@
 
 	function windowHeight(elem) {
 		return Math.max(document.documentElement.clientHeight, elem.innerHeight || 0);
+	}
+
+	function documentHeight() {
+		var html = document.documentElement;
+
+		return Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
 	}
 
 	function elementInViewport(elem) {
@@ -1207,10 +1215,18 @@
 	 */
 	function lpPosDefault() {
 		if (livePlayer != null ) {
-			livePlayer.style.height = '100%';
+			if (body.classList.contains('logged-in')) {
+				livePlayer.style.top = wpAdminHeight + elemHeight(header) + 'px';
+			} else {
+				livePlayer.style.top = elemeHeight(header) + 'px';
+			}
 		}
+
 	}
 
+	function lpHeight() {
+		livePlayer.style.height = elemHeight(siteWrap) + 'px';
+	}
 	/**
      * Toggles a class to the Live Play Stream Select box when the box is clicked
      */
@@ -1260,14 +1276,21 @@
 			};
 
 			if (scrollObject.y == 0) {
-				lpPosBase();
+				if (liveStreamContainer.classList.contains('live-stream--fixed')) {
+					liveStreamContainer.classList.remove('live-stream--fixed');
+				}
 			} else if (scrollObject.y >= 1 && elementInViewport(header)) {
-				lpPosScrollInit();
+				if (liveStreamContainer.classList.contains('live-stream--fixed')) {
+					liveStreamContainer.classList.remove('live-stream--fixed');
+				}
 			} else if (!elementInViewport(header)) {
-				lpPosNoHeader();
+				liveStreamContainer.classList.add('live-stream--fixed');
 			} else {
-				lpPosDefault();
+				if (liveStreamContainer.classList.contains('live-stream--fixed')) {
+					liveStreamContainer.classList.remove('live-stream--fixed');
+				}
 			}
+			lpHeight();
 		}
 	}
 
@@ -1454,6 +1477,7 @@
 		} else {
 			if (livePlayer != null) {
 				livePlayerDesktopReset();
+				lpPosDefault();
 				addEventHandler(window, elemScroll, function () {
 					scrollDebounce();
 					scrollThrottle();
@@ -1474,9 +1498,8 @@
 	 * functions being run at specific window widths.
 	 */
 	if (window.innerWidth >= 768) {
-		addEventHandler(window, elemLoad, function () {
-			lpPosBase();
-		});
+		lpPosDefault();
+		lpHeight();
 		addEventHandler(window, elemScroll, function () {
 			scrollDebounce();
 			scrollThrottle();
