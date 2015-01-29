@@ -376,6 +376,7 @@
 		if (livePlayer != null) {
 			livePlayer.classList.add('live-player--heartbeat');
 		}
+		console.log('--- Heartbeat Class Added ---');
 	}
 
 	function removePlayBtnHeartbeat() {
@@ -385,6 +386,7 @@
 		if (livePlayer != null && livePlayer.classList.contains('live-player--heartbeat')) {
 			livePlayer.classList.remove('live-player--heartbeat');
 		}
+		console.log('--- Heartbeat Class Removed ---');
 	}
 
 	var listenLiveStopCustomInlineAudio = function() {
