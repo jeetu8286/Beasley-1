@@ -36,18 +36,33 @@ tr.delete {
   top: .3em; }
 
 .post-search__list {
-  padding: 0 .5em;
   height: 12.5em;
   overflow: auto;
   border: 1px solid #bbb;
   margin-left: 1px;
-  width: 91%; }
+  width: 95%; }
   .is-loading .post-search__list {
     opacity: 0.5; }
 
 .post-search__list-item {
-  margin: .5em 0; }
-  .post-search__list-item input, .post-search__list-item label {
-    display: inline-block; }
+  padding: .5em;
+  margin: 0; }
+  .post-search__list-item label {
+    display: inline-block;
+    width: 100%; }
+  .post-search__list-item span.post_type {
+    float: right;
+    color: #939393; }
+
+.post-search__list-item:hover {
+  cursor: pointer; }
+
+.post-search__list-item input.post-search__list-item-input {
+  display: none; }
+
+.selected {
+  background-color: #969696; }
+  .selected label, .selected .post_type {
+    color: #fff !important; }
 
 /*# sourceMappingURL=greatermedia_keywords.css.map */

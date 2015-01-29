@@ -561,6 +561,8 @@
 		});
 	}
 
-	personality_toggle();
+	$(document).bind( 'pjax:end', function () {
+		personality_toggle();
+	});
 
 })();

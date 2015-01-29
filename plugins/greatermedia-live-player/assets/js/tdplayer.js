@@ -1,3 +1,4 @@
+/* global: gigya_profile_path */
 (function ($, window, undefined) {
 	"use strict";
 
@@ -32,7 +33,7 @@
 	var nowPlaying = document.getElementById('live-stream__now-playing');
 	var listenLogin = document.getElementById('live-stream__login');
 	var $trackInfo = $(document.getElementById('trackInfo'));
-	var gigyaLogin = gmr.homeUrl + "members/login";
+	var gigyaLogin = gigya_profile_path('login');
 	var clearDebug = document.getElementById('clearDebug');
 	var adBlockCheck = document.getElementById('ad-check');
 	var adBlockClose = document.getElementById('close-adblock');
@@ -361,6 +362,7 @@
 		if (livePlayer != null) {
 			livePlayer.classList.add('live-player--heartbeat');
 		}
+		console.log('--- Heartbeat Class Added ---');
 	}
 
 	function removePlayBtnHeartbeat() {
@@ -370,6 +372,7 @@
 		if (livePlayer != null && livePlayer.classList.contains('live-player--heartbeat')) {
 			livePlayer.classList.remove('live-player--heartbeat');
 		}
+		console.log('--- Heartbeat Class Removed ---');
 	}
 
 	var listenLiveStopCustomInlineAudio = function() {
