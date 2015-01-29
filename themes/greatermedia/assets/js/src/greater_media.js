@@ -580,6 +580,10 @@
 
 		$(document).on('live-links-height-changed', _slim_scroll);
 		$(document).on('blogroll-widget-updated', _slim_scroll);
+
+		$(document).ready(function() {
+			$('.article__content').fitVids();
+		});
 	})(jQuery);
 
 	function personality_toggle() {
