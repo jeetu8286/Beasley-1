@@ -93,7 +93,7 @@ img {
 	@include transition(all 200ms ease-in-out);
 	@include bp(medium){
 		position: absolute;
-		top: 252px;
+		top: 215px;
 		bottom: auto;
 		right: 0;
 		left: auto;
@@ -115,7 +115,7 @@ img {
 
 	.logged-in & {
 		@include media(min-width 782px) {
-			top: 289px;
+			top: 247px;
 		}
 	}
 }
