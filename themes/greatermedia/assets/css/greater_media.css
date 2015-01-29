@@ -751,7 +751,7 @@ img {
     transition: all 200ms ease-in-out; }
   @media screen and (min-width: 782px) {
     .logged-in .live-player {
-      top: 289px; } }
+      top: 247px; } }
 
 .row {
   display: block; }
@@ -8846,7 +8846,6 @@ category: Components - Shows
 .widget--live-player {
   padding: 0;
   margin: 0 0 1em;
-  height: 100% !important;
   overflow: auto; }
   .live-player--open .widget--live-player {
     margin-bottom: 58px; }
