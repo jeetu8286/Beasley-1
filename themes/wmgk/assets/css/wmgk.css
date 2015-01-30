@@ -5671,6 +5671,34 @@ category: Components
 .live-link__title a:hover, .live-link__title a:focus, .live-link__title a:active {
   color: #aa1c20; }
 
+.live-links--more {
+  position: fixed;
+  bottom: 0;
+  display: none;
+  width: 100%;
+  height: 40px;
+  background-color: #f2f2f2; }
+  @media screen and (min-width: 768px) {
+    .live-links--more {
+      width: 225px; } }
+  .live-links--more.show-more {
+    display: block; }
+  .live-links--more:before {
+    position: absolute;
+    bottom: 40px;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    background: -webkit-linear-gradient(transparent, black);
+    /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(transparent, black);
+    /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(transparent, black);
+    /* For Firefox 3.6 to 15 */
+    background: linear-gradient(transparent, black);
+    /* Standard syntax (must be last) */
+    content: ""; }
+
 .audio__time {
   display: none;
   visibility: hidden;
@@ -12725,5 +12753,36 @@ category: Components
 .live-link__type--show {
   border-bottom-color: white;
   background: none; }
+
+.live-links--more:before {
+  background: -webkit-linear-gradient(rgba(242, 242, 242, 0), #f2f2f2);
+  /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(rgba(242, 242, 242, 0), #f2f2f2);
+  /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(rgba(242, 242, 242, 0), #f2f2f2);
+  /* For Firefox 3.6 to 15 */
+  background: linear-gradient(rgba(242, 242, 242, 0), #f2f2ff);
+  /* Standard syntax (must be last) */ }
+
+.live-links--more__btn {
+  display: inline-block;
+  line-height: 1;
+  padding: 0.5em 1em;
+  margin-right: .5em;
+  outline: none;
+  background-color: #d22228;
+  border: 1px solid #d22228;
+  font-family: "Open Sans", sans-serif;
+  font-size: 0.88889em;
+  color: #ffffff !important;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 100em; }
+  .live-links--more__btn:hover, .live-links--more__btn:focus {
+    background-color: #aa1c20;
+    border-color: #aa1c20;
+    color: #ffffff; }
+  .live-links--more__btn:last-of-type {
+    margin-right: 0; }
 
 /*# sourceMappingURL=wmgk.css.map */

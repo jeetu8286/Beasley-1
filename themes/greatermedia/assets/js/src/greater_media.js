@@ -33,13 +33,16 @@
 		liveLink = document.querySelector( '.live-link__title'),
 		liveLinksWidget = document.querySelector( '.widget--live-player' ),
 		liveLinksWidgetTitle = document.querySelector('.widget--live-player__title'),
+		liveLinksMore = document.querySelector('.live-links--more'),
 		liveStream = document.getElementById( 'live-player' ),
 		windowWidth = this.innerWidth || this.document.documentElement.clientWidth || this.document.body.clientWidth || 0,
+		windowHeight = this.innerHeight|| this.document.documentElement.clientHeight || this.document.body.clientHeight || 0,
 		scrollObject = {},
 		collapseToggle = document.querySelector('*[data-toggle="collapse"]'),
 		breakingNewsBanner = document.getElementById('breaking-news-banner'),
 		$overlay = $('.overlay-mask'),
-		livePlayerMore = document.getElementById('live-player--more');
+		livePlayerMore = document.getElementById('live-player--more'),
+		mainContent = document.querySelector('.main');
 
 	/**
 	 * function to dynamically calculate the offsetHeight of an element
@@ -239,6 +242,12 @@
 	function lpHeight() {
 		if (livePlayer != null ) {
 			livePlayer.style.height = elemHeight(siteWrap) - elemHeight(header) + 'px';
+		}
+	}
+
+	function liveLinksReadMore() {
+		if (liveLinksWidget != null && elemHeight(liveLinksWidget) >= windowHeight) {
+			liveLinksMore.classList.add('show-more');
 		}
 	}
 	/**
@@ -464,6 +473,7 @@
 			if (livePlayer != null) {
 				livePlayerDesktopReset();
 				lpPosDefault();
+				liveLinksReadMore();
 				addEventHandler(window, elemScroll, function () {
 					scrollDebounce();
 					scrollThrottle();
@@ -486,6 +496,7 @@
 	if (window.innerWidth >= 768) {
 		lpPosDefault();
 		lpHeight();
+		liveLinksReadMore();
 		addEventHandler(window, elemScroll, function () {
 			scrollDebounce();
 			scrollThrottle();

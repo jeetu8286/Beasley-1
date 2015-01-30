@@ -2,3 +2,17 @@
 	border-bottom-color: white;
 	background: none;
 }
+
+.live-links--more {
+
+	&:before {
+		background: -webkit-linear-gradient(rgba(242,242,242, 0), rgb(242,242,242)); /* For Safari 5.1 to 6.0 */
+		background: -o-linear-gradient(rgba(242,242,242, 0), rgb(242,242,242)); /* For Opera 11.1 to 12.0 */
+		background: -moz-linear-gradient(rgba(242,242,242, 0), rgb(242,242,242)); /* For Firefox 3.6 to 15 */
+		background: linear-gradient(rgba(242,242,242, 0), rgb(242,242,2420)); /* Standard syntax (must be last) */
+	}
+}
+
+.live-links--more__btn {
+	@include btn($btn-bg, $color-text-white, $btn-bg, 0.5em, 1em, ms(-1));
+}

@@ -1299,6 +1299,36 @@ category: Components
 	color: $primary-link-hover;
 }
 
+.live-links--more {
+	position: fixed;
+	bottom: 0;
+	display: none;
+	width: 100%;
+	height: 40px;
+	background-color: $liveplayer-bg;
+
+	@include bp(medium) {
+		width: 225px;
+	}
+
+	&.show-more {
+		display: block;
+	}
+
+	&:before {
+		position: absolute;
+		bottom: 40px;
+		left: 0;
+		width: 100%;
+		height: 40px;
+		background: -webkit-linear-gradient(rgba(0, 0, 0, 0), rgb(0, 0, 0)); /* For Safari 5.1 to 6.0 */
+		background: -o-linear-gradient(rgba(0, 0, 0, 0), rgb(0, 0, 0)); /* For Opera 11.1 to 12.0 */
+		background: -moz-linear-gradient(rgba(0, 0, 0, 0), rgb(0, 0, 0)); /* For Firefox 3.6 to 15 */
+		background: linear-gradient(rgba(0, 0, 0, 0), rgb(0, 0, 0)); /* Standard syntax (must be last) */
+		content: "";
+	}
+}
+
 .audio__time {
 	display: none;
 	visibility: hidden;
