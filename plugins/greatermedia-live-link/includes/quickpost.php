@@ -1,11 +1,4 @@
 <?php
-/*
-Plugin Name: Greater Media QuickPost
-Description: QuickPost functionality gives access to an extremely rapid and no-frills way to create new posts formatted as text snippets, links, embedded video, images, or calls to action.
-Version: 1.0
-Author: 10up
-Author URI: http://10up.com/
-*/
 
 class GMR_QuickPost {
 
@@ -21,24 +14,6 @@ class GMR_QuickPost {
 	 * @var GMR_QuickPost
 	 */
 	private static $_isntance = null;
-
-	/**
-	 * Private constructor.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @access private
-	 */
-	private function __construct() {}
-
-	/**
-	 * Private clone method.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @access private
-	 */
-	private function __clone() {}
 
 	/**
 	 * Returns class instance. Initializes it if it is not exists yet.
@@ -183,7 +158,7 @@ class GMR_QuickPost {
 
 			<div class="quickpost-code" style="display:none;">
 				<p class="description">If your bookmarks toolbar is hidden: copy the code below, open your Bookmarks manager, create new bookmark, type Quick Post into the name field and paste the code into the URL field.</p>
-				<p><textarea rows="5" cols="120" readonly="readonly"><?php echo esc_textarea( $link ); ?></textarea></p>
+				<p><textarea class="large-text" rows="5" cols="20" readonly="readonly"><?php echo esc_textarea( $link ); ?></textarea></p>
 			</div>
 		</div><?php
 	}
@@ -999,7 +974,7 @@ class GMR_QuickPost {
 	public function substitute_media_buttons() {
 		esc_html_e( 'Add:' );
 
-		if ( current_user_can('upload_files') ) {
+		if ( current_user_can( 'upload_files' ) ) {
 			?><a id="photo_button" title="<?php esc_attr_e( 'Insert an Image' ); ?>" href="#">
 				<img alt="<?php esc_attr_e( 'Insert an Image' ); ?>" src="<?php echo esc_url( admin_url( 'images/media-button-image.gif?ver=20100531' ) ); ?>">
 			</a><?php
