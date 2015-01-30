@@ -47,6 +47,17 @@
 	.profile-page__sidebar h1 {
 		text-transform: uppercase;
 
+		@include bp('medium') {
+			margin-bottom: 0.4em;
+		}
+
+		@include bp('small') {
+			margin-bottom: 0.4em;
+		}
+
+		@include bp('x-small') {
+			margin-bottom: 0.4em;
+		}
 	}
 
 	/**
