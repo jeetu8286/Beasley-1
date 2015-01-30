@@ -1,10 +1,11 @@
 .footer {
 	width: 100%;
-	margin: 0 auto 58px;
+	padding-bottom: 58px;
+	margin: 0 auto;
 	overflow: auto;
 	background-color: $secondary-bg;
 	@include bp(medium) {
-		margin-bottom: 0;
+		padding-bottom: 0;
 	}
 }
 
@@ -44,10 +45,11 @@
 }
 
 .footer__copyright {
-	padding: 13px 0;
+	padding: 0;
 	font-size: ms(-3);
 	@include bp(large) {
 		@include span-columns(5 of 12);
+		padding: 13px 0;
 	}
 }
 
@@ -98,11 +100,8 @@
 
 .footer__nav--list {
 	@extend %unordered-list;
-	padding: 13px 0;
+	padding: 0;
 	font-size: ms(-3);
-	@include bp(medium) {
-		padding: 0;
-	}
 }
 
 .footer__nav--list .menu-item {
@@ -119,6 +118,7 @@
 }
 
 .footer__menu .social__list {
+	padding: 20px 0;
 	@include bp(medium) {
 		float: right;
 		padding: 0;
