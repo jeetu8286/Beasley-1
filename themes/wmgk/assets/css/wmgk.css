@@ -5097,7 +5097,8 @@ category: Components
         right: auto; } }
   .live-stream__btn--play.live-player__login {
     display: block;
-    border-color: #d0d2d3;
+    border: 1px solid #d0d2d3;
+    background-color: transparent;
     color: #d0d2d3;
     -webkit-transform: rotateX(0deg);
     -moz-transform: rotateX(0deg);

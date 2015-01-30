@@ -626,7 +626,8 @@ category: Components
 
 	&.live-player__login {
 		display: block;
-		border-color: $btn-inactive;
+		border: 1px solid $btn-inactive;
+		background-color: transparent;
 		color: $btn-inactive;
 		@include transform(rotateX(0deg));
 		@include transform-style(preserve-3d);
