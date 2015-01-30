@@ -244,6 +244,9 @@
 		if (livePlayer != null) {
 			livePlayer.style.height = elemHeight(siteWrap) - elemHeight(header) + 'px';
 		}
+	}
+
+	function liveLinksHeight() {
 		if (liveLinks != null) {
 			liveLinks.style.height = windowHeight - elemHeight(header) - elemHeight(liveStreamContainer) + 'px';
 		}
@@ -255,9 +258,42 @@
 		}
 	}
 
-	function moreLiveLinks() {
-		liveLinks.scrollTop += windowHeight - elemHeight(header) - elemHeight(liveStreamContainer);
+	function liveLinksScroll() {
+		var start = liveLinks.scrollTop,
+			to = windowHeight - elemHeight(header) - elemHeight(liveStreamContainer),
+			change = to - start,
+			currentTime = 0,
+			increment = 20,
+			duration = 500;
+
+		var animateScroll = function(){
+			currentTime += increment;
+			var val = Math.easeInOutQuad(currentTime, start, change, duration);
+			liveLinks.scrollTop = val;
+			if(currentTime < duration) {
+				setTimeout(animateScroll, increment);
+			}
+		};
+		animateScroll();
 	}
+
+	/**
+	 * Ease in and Out animation
+	 *
+	 * @param t = current time
+	 * @param b = start value
+	 * @param c = change in value
+	 * @param d = duration
+	 * @returns {*}
+	 */
+	Math.easeInOutQuad = function (t, b, c, d) {
+		t /= d/2;
+		if (t < 1) return c/2*t*t + b;
+		t--;
+		return -c/2 * (t*(t-2) - 1) + b;
+	};
+
+
 	/**
 	 * detects various positions of the screen on scroll to deliver states of the live player
 	 *
@@ -282,15 +318,27 @@
 				if (liveStreamContainer.classList.contains('live-stream--fixed')) {
 					liveStreamContainer.classList.remove('live-stream--fixed');
 				}
+				if(liveLinks != null) {
+					liveLinks.style.height = windowHeight - elemHeight(header) - elemHeight(liveStreamContainer) + 'px';
+				}
 			} else if (scrollObject.y >= 1 && elementInViewport(header)) {
 				if (liveStreamContainer.classList.contains('live-stream--fixed')) {
 					liveStreamContainer.classList.remove('live-stream--fixed');
 				}
+				if(liveLinks != null) {
+					liveLinks.style.height = windowHeight + 'px';
+				}
 			} else if (!elementInViewport(header)) {
 				liveStreamContainer.classList.add('live-stream--fixed');
+				if(liveLinks != null) {
+					liveLinks.style.height = '100%';
+				}
 			} else {
 				if (liveStreamContainer.classList.contains('live-stream--fixed')) {
 					liveStreamContainer.classList.remove('live-stream--fixed');
+				}
+				if(liveLinks != null) {
+					liveLinks.style.height = '100%';
 				}
 			}
 			lpHeight();
@@ -481,6 +529,7 @@
 			if (livePlayer != null) {
 				livePlayerDesktopReset();
 				lpPosDefault();
+				liveLinksHeight();
 				liveLinksReadMore();
 				addEventHandler(window, elemScroll, function () {
 					scrollDebounce();
@@ -504,6 +553,7 @@
 	if (window.innerWidth >= 768) {
 		lpPosDefault();
 		lpHeight();
+		liveLinksHeight();
 		liveLinksReadMore();
 		addEventHandler(window, elemScroll, function () {
 			scrollDebounce();
@@ -539,7 +589,7 @@
 	});
 
 	if (liveLinksMoreBtn != null) {
-		liveLinksMoreBtn.addEventListener('click', moreLiveLinks, true);
+		liveLinksMoreBtn.addEventListener('click', liveLinksScroll, false);
 	}
 
 	function init_menu_overlay() {
