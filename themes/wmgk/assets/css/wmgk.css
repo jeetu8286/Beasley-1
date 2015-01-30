@@ -12750,17 +12750,13 @@ category: Components
 
 .image__attribution {
   position: absolute;
-  top: 10px;
+  bottom: 10px;
   right: 10px;
   margin-left: 10px;
   padding: .5em 1em;
   background-color: #000000;
   font-size: 0.88889em;
   color: #ffffff; }
-  @media screen and (min-width: 768px) {
-    .image__attribution {
-      top: auto;
-      bottom: 10px; } }
   .image__attribution a, .image__attribution a:visited {
     color: #d0d2d3;
     text-decoration: underline; }
