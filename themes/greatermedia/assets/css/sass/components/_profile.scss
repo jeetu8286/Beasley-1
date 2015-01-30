@@ -48,15 +48,23 @@
 		text-transform: uppercase;
 
 		@include bp('medium') {
-			margin-bottom: 0.4em;
+			margin-bottom: 0.5em;
 		}
 
 		@include bp('small') {
-			margin-bottom: 0.4em;
+			margin-bottom: 0.5em;
 		}
 
 		@include bp('x-small') {
-			margin-bottom: 0.4em;
+			margin-bottom: 0.5em;
+		}
+
+		@include bp('large') {
+			margin-bottom: 0.6em;
+		}
+
+		@include bp('x-large') {
+			margin-bottom: 0.6em;
 		}
 	}
 

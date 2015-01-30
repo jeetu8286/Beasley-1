@@ -10842,13 +10842,19 @@ select {
     text-transform: uppercase; }
     @media screen and (min-width: 768px) {
       .profile-page .profile-page__sidebar h1 {
-        margin-bottom: 0.4em; } }
+        margin-bottom: 0.5em; } }
     @media screen and (min-width: 480px) {
       .profile-page .profile-page__sidebar h1 {
-        margin-bottom: 0.4em; } }
+        margin-bottom: 0.5em; } }
     @media screen and (min-width: 320px) {
       .profile-page .profile-page__sidebar h1 {
-        margin-bottom: 0.4em; } }
+        margin-bottom: 0.5em; } }
+    @media screen and (min-width: 1024px) {
+      .profile-page .profile-page__sidebar h1 {
+        margin-bottom: 0.6em; } }
+    @media screen and (min-width: 1400px) {
+      .profile-page .profile-page__sidebar h1 {
+        margin-bottom: 0.6em; } }
   .profile-page .profile-page__sidebar p {
     display: none; }
     @media screen and (min-width: 768px) {
