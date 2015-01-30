@@ -1102,10 +1102,6 @@
 		resizeThrottle();
 	});
 
-	if (liveLinksMoreBtn != null) {
-		liveLinksMoreBtn.addEventListener('click', liveLinksScroll, false);
-	}
-
 	function init_menu_overlay() {
 		var $menu = jQuery(document.querySelector('.header__nav--list')),
 			$secondary = jQuery(document.querySelector('.header__secondary')),
