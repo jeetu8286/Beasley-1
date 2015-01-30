@@ -76,6 +76,11 @@ tr.delete {
 		float: right;
 		color: rgb(147, 147, 147);
 	}
+
+	span.linked_content_label {
+		float: left;
+		width: 80%;
+	}
 }
 
 .post-search__list-item:hover {
