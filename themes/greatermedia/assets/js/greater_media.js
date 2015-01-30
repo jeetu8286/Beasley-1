@@ -536,6 +536,7 @@
 		livePlayerStreamSelect = document.querySelector('.live-player__stream--current'),
 		livePlayerCurrentName = livePlayerStreamSelect.querySelector('.live-player__stream--current-name'),
 		livePlayerStreams = livePlayerStreamSelect.querySelectorAll('.live-player__stream--item'),
+		liveLinksMoreBtn = document.querySelector('.live-links--more__btn'),
 		wpAdminHeight = 32,
 		onAir = document.getElementById( 'on-air' ),
 		upNext = document.getElementById( 'up-next'),
@@ -544,13 +545,16 @@
 		liveLink = document.querySelector( '.live-link__title'),
 		liveLinksWidget = document.querySelector( '.widget--live-player' ),
 		liveLinksWidgetTitle = document.querySelector('.widget--live-player__title'),
+		liveLinksMore = document.querySelector('.live-links--more'),
 		liveStream = document.getElementById( 'live-player' ),
 		windowWidth = this.innerWidth || this.document.documentElement.clientWidth || this.document.body.clientWidth || 0,
+		windowHeight = this.innerHeight|| this.document.documentElement.clientHeight || this.document.body.clientHeight || 0,
 		scrollObject = {},
 		collapseToggle = document.querySelector('*[data-toggle="collapse"]'),
 		breakingNewsBanner = document.getElementById('breaking-news-banner'),
 		$overlay = $('.overlay-mask'),
-		livePlayerMore = document.getElementById('live-player--more');
+		livePlayerMore = document.getElementById('live-player--more'),
+		mainContent = document.querySelector('.main');
 
 	/**
 	 * function to dynamically calculate the offsetHeight of an element
@@ -737,7 +741,7 @@
 	 * default height for the live player
 	 */
 	function lpPosDefault() {
-		if (livePlayer != null ) {
+		if (livePlayer != null) {
 			if (body.classList.contains('logged-in')) {
 				livePlayer.style.top = wpAdminHeight + elemHeight(header) + 'px';
 			} else {
@@ -748,10 +752,59 @@
 	}
 
 	function lpHeight() {
-		if (livePlayer != null ) {
+		if (livePlayer != null) {
 			livePlayer.style.height = elemHeight(siteWrap) - elemHeight(header) + 'px';
 		}
 	}
+
+	function liveLinksHeight() {
+		if (liveLinks != null) {
+			liveLinks.style.height = windowHeight - elemHeight(header) - elemHeight(liveStreamContainer) + 'px';
+		}
+	}
+
+	function liveLinksReadMore() {
+		if (liveLinksWidget != null && elemHeight(liveLinksWidget) >= windowHeight) {
+			liveLinksMore.classList.add('show-more');
+		}
+	}
+
+	function liveLinksScroll() {
+		var start = liveLinks.scrollTop,
+			to = windowHeight - elemHeight(header) - elemHeight(liveStreamContainer),
+			change = to - start,
+			currentTime = 0,
+			increment = 20,
+			duration = 500;
+
+		var animateScroll = function(){
+			currentTime += increment;
+			var val = Math.easeInOutQuad(currentTime, start, change, duration);
+			liveLinks.scrollTop = val;
+			if(currentTime < duration) {
+				setTimeout(animateScroll, increment);
+			}
+		};
+		animateScroll();
+	}
+
+	/**
+	 * Ease in and Out animation
+	 *
+	 * @param t = current time
+	 * @param b = start value
+	 * @param c = change in value
+	 * @param d = duration
+	 * @returns {*}
+	 */
+	Math.easeInOutQuad = function (t, b, c, d) {
+		t /= d/2;
+		if (t < 1) return c/2*t*t + b;
+		t--;
+		return -c/2 * (t*(t-2) - 1) + b;
+	};
+
+
 	/**
      * Toggles a class to the Live Play Stream Select box when the box is clicked
      */
@@ -804,15 +857,27 @@
 				if (liveStreamContainer.classList.contains('live-stream--fixed')) {
 					liveStreamContainer.classList.remove('live-stream--fixed');
 				}
+				if(liveLinks != null) {
+					liveLinks.style.height = windowHeight - elemHeight(header) - elemHeight(liveStreamContainer) + 'px';
+				}
 			} else if (scrollObject.y >= 1 && elementInViewport(header)) {
 				if (liveStreamContainer.classList.contains('live-stream--fixed')) {
 					liveStreamContainer.classList.remove('live-stream--fixed');
 				}
+				if(liveLinks != null) {
+					liveLinks.style.height = windowHeight + 'px';
+				}
 			} else if (!elementInViewport(header)) {
 				liveStreamContainer.classList.add('live-stream--fixed');
+				if(liveLinks != null) {
+					liveLinks.style.height = '100%';
+				}
 			} else {
 				if (liveStreamContainer.classList.contains('live-stream--fixed')) {
 					liveStreamContainer.classList.remove('live-stream--fixed');
+				}
+				if(liveLinks != null) {
+					liveLinks.style.height = '100%';
 				}
 			}
 			lpHeight();
@@ -998,11 +1063,15 @@
 		if (window.innerWidth <= 767) {
 			if (livePlayer != null) {
 				livePlayerMobileReset();
+				liveLinksHeight();
+				liveLinksReadMore();
 			}
 		} else {
 			if (livePlayer != null) {
 				livePlayerDesktopReset();
 				lpPosDefault();
+				liveLinksHeight();
+				liveLinksReadMore();
 				addEventHandler(window, elemScroll, function () {
 					scrollDebounce();
 					scrollThrottle();
@@ -1031,6 +1100,9 @@
 		});
 	}
 
+	liveLinksHeight();
+	liveLinksReadMore();
+
 	if (onAir != null) {
 		addEventHandler(onAir, elemClick, openLivePlayer);
 	}
@@ -1057,6 +1129,10 @@
 		resizeDebounce();
 		resizeThrottle();
 	});
+
+	if (liveLinksMoreBtn != null) {
+		liveLinksMoreBtn.addEventListener('click', liveLinksScroll, false);
+	}
 
 	function init_menu_overlay() {
 		var $menu = jQuery(document.querySelector('.header__nav--list')),

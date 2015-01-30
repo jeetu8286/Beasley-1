@@ -78,6 +78,9 @@ if ( empty( $active_stream ) ) {
 
 		<?php dynamic_sidebar( 'liveplayer_sidebar' ); ?>
 
+		<div class="live-links--more">
+			<div class="live-links--more__btn">More</div>
+		</div>
 	</div>
 
 </aside>

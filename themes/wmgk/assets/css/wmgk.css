@@ -4573,22 +4573,6 @@ category: Components
   content: " ";
   z-index: 100; }
 
-.live-player--open .live-player:after {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 40px;
-  background: -moz-linear-gradient(top, transparent 0%, rgba(0, 0, 0, 0.7) 100%);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, transparent), color-stop(100%, rgba(0, 0, 0, 0.7)));
-  background: -webkit-linear-gradient(top, transparent 0%, rgba(0, 0, 0, 0.7) 100%);
-  background: -o-linear-gradient(top, transparent 0%, rgba(0, 0, 0, 0.7) 100%);
-  background: -ms-linear-gradient(top, transparent 0%, rgba(0, 0, 0, 0.7) 100%);
-  background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.7) 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#000000', endColorstr='#000000', GradientType=0);
-  content: " ";
-  z-index: 100; }
-
 .live-stream {
   display: block;
   width: 100%;
@@ -5155,7 +5139,8 @@ category: Components
         right: auto; } }
   .live-stream__btn--play.live-player__login {
     display: block;
-    border-color: #d0d2d3;
+    border: 1px solid #d0d2d3;
+    background-color: transparent;
     color: #d0d2d3;
     -webkit-transform: rotateX(0deg);
     -moz-transform: rotateX(0deg);
@@ -5623,7 +5608,7 @@ category: Components
   display: block;
   float: right;
   width: 34px;
-  height: 58px;
+  height: 57px;
   padding-top: 8px;
   line-height: 1;
   font-size: 2.02729em;
@@ -5637,7 +5622,8 @@ category: Components
   visibility: hidden;
   padding: 16px 0 0;
   background-color: #f2f2f2;
-  text-align: center; }
+  text-align: center;
+  overflow: hidden; }
   @media screen and (min-width: 768px) {
     .live-links {
       visibility: visible;
@@ -5645,6 +5631,16 @@ category: Components
       height: 100%;
       margin: 0;
       border-top: 1px solid #282827; } }
+  .live-player--open .live-links {
+    visibility: visible;
+    display: block;
+    height: auto !important;
+    max-height: 48vh;
+    margin-top: 43px; }
+    @media screen and (min-width: 480px) {
+      .live-player--open .live-links {
+        max-height: 35vh;
+        overflow: hidden; } }
 
 #popup-player-livestream .live-links {
   display: block;
@@ -5654,21 +5650,6 @@ category: Components
   margin: 16px 0 0;
   overflow: hidden;
   overflow-y: scroll; }
-
-.live-player--open .live-links {
-  visibility: visible;
-  display: block;
-  height: auto !important;
-  max-height: 48vh;
-  margin-top: 43px;
-  overflow: hidden;
-  overflow-y: scroll; }
-  @media screen and (min-width: 480px) {
-    .live-player--open .live-links {
-      max-height: 35vh;
-      overflow: hidden;
-      overflow-y: scroll;
-      -webkit-touch-overflow: scroll; } }
 
 #popup-player-livestream .live-player--open .live-links {
   max-height: 35vh;
@@ -5771,6 +5752,55 @@ category: Components
   position: inherit;
   width: auto;
   right: auto; }
+
+.live-links--more {
+  position: fixed;
+  bottom: 0;
+  display: none;
+  width: 100%;
+  height: 40px;
+  background-color: #f2f2f2; }
+  @media screen and (min-width: 768px) {
+    .live-links--more {
+      width: 225px; } }
+  .live-links--more.show-more {
+    display: block; }
+  .live-links--more:before {
+    position: absolute;
+    bottom: 40px;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    background: -webkit-linear-gradient(transparent, black);
+    /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(transparent, black);
+    /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(transparent, black);
+    /* For Firefox 3.6 to 15 */
+    background: linear-gradient(transparent, black);
+    /* Standard syntax (must be last) */
+    content: ""; }
+
+.live-links--more__btn {
+  display: inline-block;
+  line-height: 1;
+  padding: 0.5em 1em;
+  margin-right: .5em;
+  outline: none;
+  background-color: #d22228;
+  border: 1px solid #d22228;
+  font-family: "Open Sans", sans-serif;
+  font-size: 0.88889em;
+  color: #ffffff !important;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 100em; }
+  .live-links--more__btn:hover, .live-links--more__btn:focus {
+    background-color: #aa1c20;
+    border-color: #aa1c20;
+    color: #ffffff; }
+  .live-links--more__btn:last-of-type {
+    margin-right: 0; }
 
 .audio__time {
   display: none;
@@ -12854,5 +12884,15 @@ category: Components
 .live-link__type--show {
   border-bottom-color: white;
   background: none; }
+
+.live-links--more:before {
+  background: -webkit-linear-gradient(rgba(242, 242, 242, 0), #f2f2f2);
+  /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(rgba(242, 242, 242, 0), #f2f2f2);
+  /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(rgba(242, 242, 242, 0), #f2f2f2);
+  /* For Firefox 3.6 to 15 */
+  background: linear-gradient(rgba(242, 242, 242, 0), #f2f2ff);
+  /* Standard syntax (must be last) */ }
 
 /*# sourceMappingURL=wmgk.css.map */
