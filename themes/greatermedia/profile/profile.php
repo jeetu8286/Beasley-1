@@ -278,7 +278,8 @@ function get_gigya_verify_email_message() {
 
 				<span class="gigya-error-msg" data-bound-to="profile.state" ></span>
 				<label>State:</label>
-				<select name="profile.state">
+				<select name="profile.state" id="profile-state">
+					<option disabled selected value>Select One</option>
 					<?php foreach ( $state_names as $state ) { ?>
 						<option value="<?php echo esc_attr( $state['value'] ); ?>"><?php echo esc_html( $state['label'] ); ?></option>
 					<?php } ?>
@@ -286,7 +287,7 @@ function get_gigya_verify_email_message() {
 
 				<span class="gigya-error-msg" data-bound-to="profile.city" ></span>
 				<label>City:</label>
-				<input type="text" name="profile.city" />
+				<input type="text" name="profile.city" id="profile-city" />
 
 				<h2>Email Subscriptions</h2>
 
