@@ -519,6 +519,12 @@ class MemberQuery {
 
 		$query .= ' and ';
 
+		if ( $operator === 'contains' ) {
+			$operator = 'equals';
+		} else if ( $operator === 'not contains' ) {
+			$operator = 'not equals';
+		}
+
 		$query .= $this->field_name_for( 'actionData.value', $valueType );
 		$query .= ' ';
 		$query .= $this->operator_for( $operator );
