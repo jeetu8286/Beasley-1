@@ -4,13 +4,9 @@
 (function($, window, document, live_links) {
 	$(document).ready(function() {
 		$('#wp-admin-bar-add-live-link').click(function() {
-			var e = window.getSelection,
-				k = document.getSelection,
-				x = document.selection,
-				selection = (e ? e() + '' : (k) ? k() + '' : (x ? x.createRange().text : 0)),
-				location = document.location,
+			var location = document.location,
 				encode = encodeURIComponent,
-				url = live_links.url + '&u=' + encode(location.href) + '&t=' + encode(document.title) + '&s=' + encode(selection) + '&v=4',
+				url = live_links.url + '&u=' + encode(location.href) + '&t=' + encode(document.title) + '&v=4',
 				open_window;
 
 			open_window = function () {
