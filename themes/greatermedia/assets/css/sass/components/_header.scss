@@ -27,7 +27,6 @@
 	width: 100%;
 	height: 70px;
 	padding: 0;
-	background-color: $secondary-bg;
 	border-bottom: 1px solid $header-border;
 	@include bp(medium) {
 		height: 82px;
