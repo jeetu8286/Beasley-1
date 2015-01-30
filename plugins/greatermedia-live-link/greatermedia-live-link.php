@@ -182,10 +182,19 @@ function gmr_ll_add_quickpost_checkbox() {
  * @uses 'gmr_live_link_taxonomies' filter to filter supported taxonomies.
  */
 function gmr_ll_register_post_type() {
+
+	$rewrite = array(
+		'slug'                => 'live-links',
+		'with_front'          => true,
+		'pages'               => true,
+		'feeds'               => true,
+	);
+
 	register_post_type( GMR_LIVE_LINK_CPT, array(
-		'public'               => false,
+		'public'               => true,
 		'show_ui'              => true,
-		'rewrite'              => false,
+		'has_archive'          => true,
+		'rewrite'              => $rewrite,
 		'query_var'            => false,
 		'can_export'           => false,
 		'menu_position'        => 5,
