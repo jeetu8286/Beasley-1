@@ -43,6 +43,7 @@ module.exports = function( grunt ) {
 					exports: true,
 					module:  false,
 					'is_gigya_user_logged_in': true,
+					'gigya_profile_path': true,
 					'gmr': true,
 					'Cookies': true,
 					'gmlp': true,
