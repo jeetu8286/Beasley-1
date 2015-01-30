@@ -15,6 +15,8 @@ class GMR_QuickPost {
 	 */
 	private static $_isntance = null;
 
+	private $_link = false;
+
 	/**
 	 * Returns class instance. Initializes it if it is not exists yet.
 	 *
@@ -30,9 +32,46 @@ class GMR_QuickPost {
 			
 			add_action( 'wp_dashboard_setup', array( self::$_isntance, 'register_dashboard_widget' ) );
 			add_action( 'admin_action_' . self::ADMIN_ACTION, array( self::$_isntance, 'process_quickpost_popup' ) );
+			add_action( 'admin_bar_menu', array( self::$_isntance, 'add_admin_bar_items' ), 100 );
+			add_action( 'wp_enqueue_scripts', array( self::$_isntance, 'enqueue_scripts' ) );
 		}
 
 		return self::$_isntance;
+	}
+
+	/**
+	 * Adds bookmarklet link to the admin bar menu.
+	 *
+	 * @since 1.0.0
+	 * @action admin_bar_menu 100
+	 *
+	 * @access public
+	 * @param WP_Admin_Bar $admin_bar The admin bar object.
+	 */
+	public function add_admin_bar_items( WP_Admin_Bar $admin_bar ) {
+		if ( ! is_admin() && current_user_can( 'create_post' ) ) {
+			$admin_bar->add_menu( array(
+				'id'    => 'add-live-link',
+				'title' => 'Create Live Link',
+				'href'  => '#',
+			) );
+		}
+	}
+
+	/**
+	 * Enqueues scripts.
+	 *
+	 * @since 1.0.0
+	 * @access wp_enqueue_scripts
+	 *
+	 * @access public
+	 */
+	public function enqueue_scripts() {
+		if ( is_user_logged_in() && current_user_can( 'create_post' ) ) {
+			$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
+			wp_enqueue_script( 'gmr-quick-live-links', GMEDIA_LIVE_LINK_URL . "/assets/js/quick-links{$postfix}.js", array( 'jquery' ), GMEDIA_LIVE_LINK_VERSION, true );
+			wp_localize_script( 'gmr-quick-live-links', 'live_links', array( 'url'  => admin_url( 'admin.php?action=' . self::ADMIN_ACTION ) ) );
+		}
 	}
 
 	/**

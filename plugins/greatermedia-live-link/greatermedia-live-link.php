@@ -6,7 +6,10 @@
  * Author URI:  http://10up.com/
  */
 
-// constants
+define( 'GMEDIA_LIVE_LINK_VERSION', '1.0.0' );
+define( 'GMEDIA_LIVE_LINK_URL',     plugin_dir_url( __FILE__ ) );
+define( 'GMEDIA_LIVE_LINK_PATH',    dirname( __FILE__ ) . '/' );
+
 define( 'GMR_LIVE_LINK_CPT', 'gmr-live-link' );
 
 require_once 'includes/live-link.php';
