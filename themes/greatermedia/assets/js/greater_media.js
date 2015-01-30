@@ -851,6 +851,7 @@
 				}
 			}
 			lpHeight();
+			liveLinksReadMore();
 		}
 	}
 

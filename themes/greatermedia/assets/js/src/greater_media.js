@@ -340,6 +340,7 @@
 				}
 			}
 			lpHeight();
+			liveLinksReadMore();
 		}
 	}
 
