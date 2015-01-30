@@ -2892,12 +2892,13 @@ Community Highlights and Events
 
 .footer {
   width: 100%;
-  margin: 0 auto 58px;
+  padding-bottom: 58px;
+  margin: 0 auto;
   overflow: auto;
   background-color: #000000; }
   @media screen and (min-width: 768px) {
     .footer {
-      margin-bottom: 0; } }
+      padding-bottom: 0; } }
 
 .footer a:link, .footer a:visited {
   color: #929497; }
@@ -2956,14 +2957,15 @@ Community Highlights and Events
         margin-right: 0; } }
 
 .footer__copyright {
-  padding: 13px 0;
+  padding: 0;
   font-size: 0.70233em; }
   @media screen and (min-width: 1024px) {
     .footer__copyright {
       float: left;
       display: block;
       margin-right: 2.35765%;
-      width: 40.29137%; }
+      width: 40.29137%;
+      padding: 13px 0; }
       .footer__copyright:last-child {
         margin-right: 0; } }
 
@@ -3006,11 +3008,8 @@ Community Highlights and Events
     padding-top: 24px; } }
 
 .footer__nav--list {
-  padding: 13px 0;
+  padding: 0;
   font-size: 0.70233em; }
-  @media screen and (min-width: 768px) {
-    .footer__nav--list {
-      padding: 0; } }
 
 .footer__nav--list .menu-item {
   display: inline-block;
@@ -3022,10 +3021,12 @@ Community Highlights and Events
     .footer__nav--list .menu-item:last-of-type {
       margin-right: 2.5em; } }
 
-@media screen and (min-width: 768px) {
-  .footer__menu .social__list {
-    float: right;
-    padding: 0; } }
+.footer__menu .social__list {
+  padding: 20px 0; }
+  @media screen and (min-width: 768px) {
+    .footer__menu .social__list {
+      float: right;
+      padding: 0; } }
 
 .footer__menu a.social__link {
   border-color: #929497;
