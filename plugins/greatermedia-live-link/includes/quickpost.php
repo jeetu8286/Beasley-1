@@ -97,7 +97,7 @@ class GMR_QuickPost {
 		$saved = false;
 		if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 			check_admin_referer( 'quickpost' );
-			$this->_save_quick_post();
+			$this->_save_quick_link();
 			$saved = true;
 		}
 
@@ -113,19 +113,36 @@ class GMR_QuickPost {
 		_wp_admin_html_begin(); ?>
 				<title><?php _e('Quick Post') ?></title>
 
-				<?php if ( $saved ) : ?>
-					<script type="text/javascript">window.close();</script>
-				<?php endif; ?>
+				<style type="text/css">
+					#redirectdiv {
+						margin-top: 2em;
+					}
+
+					#redirectdiv b {
+						font-size: 1.2em;
+						margin-bottom: 0.5em;
+						display: block;
+					}
+
+					#redirect_to {
+						padding: 3px 8px;
+						font-size: 1.4em;
+						line-height: 100%;
+						height: 1.7em;
+						width: 100%;
+						outline: none;
+						margin: 0;
+						background-color: #fff;
+					}
+				</style>
 					
 				<?php $this->_do_header_actions() ?>
 
 				<script type="text/javascript">
-					var wpActiveEditor = 'content';
+					<?php if ( $saved ) : ?>window.close();<?php endif; ?>
 
 					(function($) {
 						$(document).ready(function() {
-							var $contnet = $('#content');
-
 							// Resize screen.
 							window.resizeTo(760,580);
 
@@ -133,12 +150,6 @@ class GMR_QuickPost {
 							$('#publish, #save').click(function() {
 								$('.press-this #publishing-actions .spinner').css('display', 'inline-block');
 							});
-
-							if ( $( '#wp-content-wrap' ).hasClass( 'html-active' ) && window.switchEditors &&
-								( tinyMCEPreInit.mceInit.content && tinyMCEPreInit.mceInit.content.wpautop ) ) {
-								// The Text editor is default, run the initial content through pre_wpautop() to convert the paragraphs
-								$contnet.text( window.switchEditors.pre_wpautop( $contnet.text() ) );
-							}
 						});
 					})(jQuery);
 				</script>
@@ -161,8 +172,19 @@ class GMR_QuickPost {
 
 								<div id="submitdiv" class="postbox">
 									<div class="handlediv" title="<?php esc_attr_e( 'Click to toggle' ); ?>"><br /></div>
-									<h3 class="hndle"><?php _e( 'Quick Post' ) ?></h3>
-									<div class="inside"><?php
+									<div class="inside">
+										<p id="publishing-actions">
+											<?php submit_button( __( 'Save Draft' ), 'button', 'draft', false, array( 'id' => 'save' ) ); ?>
+											<?php
+												if ( current_user_can( 'publish_posts' ) ) {
+													submit_button( __( 'Publish' ), 'primary', 'publish', false );
+												} else {
+													echo '<br><br>';
+													submit_button( __( 'Submit for Review' ), 'primary', 'review', false );
+												}
+											?>
+											<span class="spinner" style="display: none;"></span>
+										</p><?php
 
 										if ( current_theme_supports( 'post-formats' ) ) :
 											$post_formats = get_theme_support( 'post-formats' );
@@ -194,19 +216,7 @@ class GMR_QuickPost {
 
 										do_action( 'gmr_quickpost_submitbox_misc_actions', $post );
 
-										?><p id="publishing-actions">
-											<?php submit_button( __( 'Save Draft' ), 'button', 'draft', false, array( 'id' => 'save' ) ); ?>
-											<?php
-												if ( current_user_can( 'publish_posts' ) ) {
-													submit_button( __( 'Publish' ), 'primary', 'publish', false );
-												} else {
-													echo '<br><br>';
-													submit_button( __( 'Submit for Review' ), 'primary', 'review', false );
-												}
-											?>
-											<span class="spinner" style="display: none;"></span>
-										</p>
-									</div>
+									?></div>
 								</div>
 
 								<?php do_meta_boxes( 'quickpost', 'side', array(
@@ -230,21 +240,19 @@ class GMR_QuickPost {
 									<input name="title" id="title" class="text" type="text" value="<?php echo esc_attr( $title ); ?>">
 								</div>
 							</div>
-							
-							<div class="postdivrich"><?php
-								$content = sprintf( "<a href='%s'>%s</a>.</p>", esc_url( $url ), esc_html( $title ) );
-								
-								wp_editor( $content, 'content', array( 'teeny' => true, 'textarea_rows' => '15' ) );
-							?></div>
+
+							<div id="redirectdiv">
+								<b>Redirects To:</b>
+								<input type="url" id="redirect_to" class="widefat" name="redirect" value="<?php echo esc_attr( $url ); ?>">
+							</div>
 						</div>
 					</div>
 				</form>
 
 				<?php $this->_do_footer_actions() ?>
-
-				<script type="text/javascript">if (typeof wpOnload == 'function') wpOnload();</script>
 			</body>
 		</html><?php
+		
 		exit;
 	}
 
@@ -256,22 +264,19 @@ class GMR_QuickPost {
 	 * @access private
 	 * @return int The ID of the quick post.
 	 */
-	private function _save_quick_post() {
-		$post = get_default_post_to_edit( 'post' );
+	private function _save_quick_link() {
+		$post = get_default_post_to_edit( GMR_LIVE_LINK_CPT );
 		$post = get_object_vars( $post );
-		$post_id = $post['ID'] = (int) $_POST['post_id'];
+		$post_id = $post['ID'] = filter_input( INPUT_POST, 'post_id', FILTER_VALIDATE_INT );
 
 		if ( ! current_user_can( 'edit_post', $post_id ) ) {
 			wp_die( __( 'You are not allowed to edit this post.' ) );
 		}
 
-		$post['post_category'] = isset( $_POST['post_category'] ) ? $_POST['post_category'] : '';
-		$post['tax_input'] = isset( $_POST['tax_input'] ) ? $_POST['tax_input'] : '';
 		$post['post_title'] = isset( $_POST['title'] ) ? $_POST['title'] : '';
-		$content = isset( $_POST['content'] ) ? $_POST['content'] : '';
 
 		// Set the post_content and status.
-		$post['post_content'] = $content;
+		$post['post_content'] = '';
 		if ( isset( $_POST['publish'] ) && current_user_can( 'publish_posts' ) ) {
 			$post['post_status'] = 'publish';
 		} elseif ( isset( $_POST['review'] ) ) {
@@ -290,6 +295,9 @@ class GMR_QuickPost {
 		}
 
 		$post_id = wp_update_post( apply_filters( 'gmr_quickpost_post_data', $post ) );
+		if ( $post_id ) {
+			update_post_meta( $post_id, 'redirect', filter_input( INPUT_POST, 'redirect', FILTER_VALIDATE_URL ) );
+		}
 		
 		do_action( 'gmr_quickpost_post_created', $post_id );
 

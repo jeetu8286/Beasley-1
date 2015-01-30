@@ -20,6 +20,8 @@
 			} else {
 				open_window();
 			}
+
+			return false;
 		});
 	});
 })(jQuery, window, document, live_links);

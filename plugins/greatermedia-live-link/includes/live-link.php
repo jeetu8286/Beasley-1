@@ -6,8 +6,6 @@ add_action( 'save_post', 'gmr_ll_save_redirect_meta_box_data', 11 );
 add_action( 'save_post', 'gmr_ll_update_live_link_title' );
 add_action( 'manage_' . GMR_LIVE_LINK_CPT . '_posts_custom_column', 'gmr_ll_render_custom_column', 10, 2 );
 add_action( 'admin_action_gmr_ll_copy', 'gmr_ll_handle_copy_post_to_live_link' );
-add_action( 'gmr_quickpost_submitbox_misc_actions', 'gmr_ll_add_quickpost_checkbox' );
-add_action( 'gmr_quickpost_post_created', 'gmr_ll_create_quickpost_live_link' );
 add_action( 'wp_ajax_gmr_live_link_suggest', 'gmr_ll_live_link_suggest' );
 add_action( 'deleted_post', 'gmr_ll_delete_post_live_links' );
 
@@ -150,20 +148,6 @@ function gmr_ll_suggestion_by_post_title( $where, $wp_query ) {
  */
 function gmr_ll_get_suggestion_post_types() {
 	return apply_filters( 'gmr_live_link_suggestion_post_types', array( 'post', 'page', 'tribe_events' ) );
-}
-
-/**
- * Adds checkbox to create live link to quickpost popup form.
- *
- * @action gmr_quickpost_submitbox_misc_actions
- */
-function gmr_ll_add_quickpost_checkbox() {
-	?><p>
-		<label>
-			Create Live Link: 
-			<input type="checkbox" name="gmr_create_live_link" value="1">
-		</label>
-	</p><?php
 }
 
 /**
@@ -442,18 +426,6 @@ function gmr_ll_handle_copy_post_to_live_link() {
 	$ll_id = gmr_ll_copy_post_to_live_link( $post->ID );
 	wp_redirect( get_edit_post_link( $ll_id, 'redirect' ) );
 	exit;
-}
-
-/**
- * Creates live link for a post created via quickpost form.
- *
- * @action gmr_quickpost_post_created
- * @param int $post_id The new post id.
- */
-function gmr_ll_create_quickpost_live_link( $post_id ) {
-	if ( filter_input( INPUT_POST, 'gmr_create_live_link', FILTER_VALIDATE_BOOLEAN ) ) {
-		gmr_ll_copy_post_to_live_link( $post_id );
-	}
 }
 
 /**
