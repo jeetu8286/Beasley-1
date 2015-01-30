@@ -2,7 +2,7 @@
 
 class GMR_QuickPost {
 
-	const ADMIN_ACTION = 'gmr_quickpost';
+	const ADMIN_ACTION = 'gmr_quicklink';
 
 	/**
 	 * Singletone instance of the class.
@@ -28,7 +28,7 @@ class GMR_QuickPost {
 		if ( is_null( self::$_isntance ) ) {
 			self::$_isntance = new GMR_QuickPost();
 			
-			add_action( 'admin_action_' . self::ADMIN_ACTION, array( self::$_isntance, 'process_quickpost_popup' ) );
+			add_action( 'admin_action_' . self::ADMIN_ACTION, array( self::$_isntance, 'process_quicklink_popup' ) );
 			add_action( 'admin_bar_menu', array( self::$_isntance, 'add_admin_bar_items' ), 100 );
 			add_action( 'wp_enqueue_scripts', array( self::$_isntance, 'enqueue_scripts' ) );
 		}
@@ -75,11 +75,11 @@ class GMR_QuickPost {
 	 * Processes QuickPost popup request.
 	 *
 	 * @since 1.0.0
-	 * @action admin_action_gmr_quickpost
+	 * @action admin_action_gmr_quicklink
 	 *
 	 * @access public
 	 */
-	public function process_quickpost_popup() {
+	public function process_quicklink_popup() {
 		// die if user don't have permissions
 		if ( ! current_user_can( 'edit_posts' ) || ! current_user_can( get_post_type_object( GMR_LIVE_LINK_CPT )->cap->create_posts ) ) {
 			wp_die( __( 'Cheatin&#8217; uh?' ) );
@@ -96,7 +96,7 @@ class GMR_QuickPost {
 		// process submitted posts.
 		$saved = false;
 		if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
-			check_admin_referer( 'quickpost' );
+			check_admin_referer( 'quicklink' );
 			$this->_save_quick_link();
 			$saved = true;
 		}
@@ -107,8 +107,6 @@ class GMR_QuickPost {
 		wp_enqueue_script( 'post' );
 
 		remove_action( 'media_buttons', 'media_buttons' );
-		
-		do_action( 'gmr_quickpost_add_metaboxes', 'quickpost', $post->ID );
 
 		_wp_admin_html_begin(); ?>
 				<title><?php _e('Quick Post') ?></title>
@@ -160,7 +158,7 @@ class GMR_QuickPost {
 
 						<div id="side-sortables" class="press-this-sidebar">
 							<div class="sleeve">
-								<?php wp_nonce_field( 'quickpost' ) ?>
+								<?php wp_nonce_field( 'quicklink' ) ?>
 								<input type="hidden" name="post_type" id="post_type" value="text">
 								<input type="hidden" name="autosave" id="autosave">
 								<input type="hidden" id="original_post_status" name="original_post_status" value="draft">
@@ -198,31 +196,25 @@ class GMR_QuickPost {
 												}
 
 												?><p>
-													<label for="post_format"><?php _e( 'Post Format:' ); ?>
-														<select name="post_format" id="post_format">
-															<option value="0"><?php echo get_post_format_string( 'standard' ); ?></option>
-															<?php foreach ( $post_formats[0] as $format ): ?>
-																<?php if ( in_array( $format, array( 'link', 'video', 'standard', 'audio' ) ) ) : ?>
-																	<option<?php selected( $default_format, $format ); ?> value="<?php echo esc_attr( $format ); ?>">
-																		<?php echo esc_html( get_post_format_string( $format ) ); ?>
-																	</option>
-																<?php endif; ?>
-															<?php endforeach; ?>
-														</select>
-													</label>
+													<label for="post_format"><?php _e( 'Post Format:' ); ?></label>
+													<select name="post_format" id="post_format" class="widefat">
+														<option value="0"><?php echo get_post_format_string( 'standard' ); ?></option>
+														<?php foreach ( $post_formats[0] as $format ): ?>
+															<?php if ( in_array( $format, array( 'link', 'video', 'standard', 'audio' ) ) ) : ?>
+																<option<?php selected( $default_format, $format ); ?> value="<?php echo esc_attr( $format ); ?>">
+																	<?php echo esc_html( get_post_format_string( $format ) ); ?>
+																</option>
+															<?php endif; ?>
+														<?php endforeach; ?>
+													</select>
 												</p><?php
 											endif;
 										endif;
 
-										do_action( 'gmr_quickpost_submitbox_misc_actions', $post );
+										do_action( 'gmr_quicklink_submitbox_misc_actions', $post );
 
 									?></div>
 								</div>
-
-								<?php do_meta_boxes( 'quickpost', 'side', array(
-									'post_id' => $post->ID,
-									'url'     => $url,
-								) ); ?>
 							</div>
 						</div>
 
@@ -294,12 +286,12 @@ class GMR_QuickPost {
 			}
 		}
 
-		$post_id = wp_update_post( apply_filters( 'gmr_quickpost_post_data', $post ) );
+		$post_id = wp_update_post( apply_filters( 'gmr_quicklink_post_data', $post ) );
 		if ( $post_id ) {
 			update_post_meta( $post_id, 'redirect', filter_input( INPUT_POST, 'redirect', FILTER_VALIDATE_URL ) );
 		}
 		
-		do_action( 'gmr_quickpost_post_created', $post_id );
+		do_action( 'gmr_quicklink_post_created', $post_id );
 
 		return $post_id;
 	}
@@ -313,7 +305,7 @@ class GMR_QuickPost {
 	 */
 	private function _do_header_actions() {
 		/** This action is documented in wp-admin/admin-header.php */
-		do_action( 'admin_enqueue_scripts', 'quickpost' );
+		do_action( 'admin_enqueue_scripts', 'quicklink' );
 
 		/** This action is documented in wp-admin/admin-header.php */
 		do_action( 'admin_print_styles' );
