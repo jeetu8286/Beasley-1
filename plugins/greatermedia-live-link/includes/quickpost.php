@@ -27,13 +27,81 @@ class GMR_QuickPost {
 	public static function get_intance() {
 		if ( is_null( self::$_isntance ) ) {
 			self::$_isntance = new GMR_QuickPost();
-			
+
+			add_action( 'wp_dashboard_setup', array( self::$_isntance, 'register_dashboard_widget' ) );
 			add_action( 'admin_action_' . self::ADMIN_ACTION, array( self::$_isntance, 'process_quicklink_popup' ) );
 			add_action( 'admin_bar_menu', array( self::$_isntance, 'add_admin_bar_items' ), 100 );
 			add_action( 'wp_enqueue_scripts', array( self::$_isntance, 'enqueue_scripts' ) );
 		}
 
 		return self::$_isntance;
+	}
+
+	/**
+	 * Registers dashboard widget.
+	 *
+	 * @since 1.0.0
+	 * @action wp_dashboard_setup
+	 *
+	 * @access public
+	 */
+	public function register_dashboard_widget() {
+		if ( current_user_can( 'edit_posts' ) ) {
+			wp_add_dashboard_widget( 'quickpost', 'Quick Post', array( $this, 'render_tool_box' ) );
+		}
+	}
+
+	/**
+	 * Rendes Quick Post tool box.
+	 *
+	 * @since 1.0.0
+	 * @action tool_box
+	 *
+	 * @access public
+	 */
+	public function render_tool_box() {
+		if ( ! current_user_can( 'edit_posts' ) )  {
+			return;
+		}
+
+		$link = admin_url( 'admin.php?action=' . self::ADMIN_ACTION );
+		$link = str_replace( array( "\r", "\n", "\t" ), '', "
+				javascript:
+				var d=document,
+				w=window,
+				e=w.getSelection,
+				k=d.getSelection,
+				x=d.selection,
+				s=(e?e()+'':(k)?k()+'':(x?x.createRange().text:0)),
+				f='{$link}',
+				l=d.location,
+				e=encodeURIComponent,
+				u=f+'&u='+e(l.href)+'&t='+e(d.title)+'&s='+e(s)+'&v=4';
+				a=function(){var w=720,h=250,t=(screen.width/2)-(w/2),p=(screen.height/2)-(h/2);
+				if(!window.open(u, 't', 'toolbar=0,resizable=1,copyhistory=0,scrollbars=1,status=1,width='+w+',height='+h+',top='+p+',left='+t))l.href=u;};
+				if(/Firefox/.test(navigator.userAgent))setTimeout(a, 0);else a();
+				void(0)
+		" );
+
+		?><div class="tool-box">
+			<p>Quick Post is a bookmarklet: a little app that runs in your browser and lets you grab bits of the web.</p>
+
+			<p class="description">
+				Use Quick Post to clip text, images and videos from any web page. Then edit and add more straight from Quick Post before you save or publish it in a post on your site.
+				Drag-and-drop the following link to your bookmarks bar or right click it and add it to your favorites for a posting shortcut.
+			</p>
+
+			<p class="pressthis">
+				<a onclick="return false;" oncontextmenu="if(window.navigator.userAgent.indexOf('WebKit')!=-1||window.navigator.userAgent.indexOf('MSIE')!=-1){jQuery('.quickpost-code').show().find('textarea').focus().select();return false;}" href="<?php echo esc_attr( $link ); ?>">
+					<span>Quick Post</span>
+				</a>
+			</p>
+
+			<div class="quickpost-code" style="display:none;">
+				<p class="description">If your bookmarks toolbar is hidden: copy the code below, open your Bookmarks manager, create new bookmark, type Quick Post into the name field and paste the code into the URL field.</p>
+				<p><textarea rows="5" cols="20" class="widefat" readonly="readonly"><?php echo esc_textarea( $link ); ?></textarea></p>
+			</div>
+		</div><?php
 	}
 
 	/**
