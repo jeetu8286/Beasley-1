@@ -1035,6 +1035,8 @@
 		if (window.innerWidth <= 767) {
 			if (livePlayer != null) {
 				livePlayerMobileReset();
+				liveLinksHeight();
+				liveLinksReadMore();
 			}
 		} else {
 			if (livePlayer != null) {
@@ -1064,13 +1066,14 @@
 	if (window.innerWidth >= 768) {
 		lpPosDefault();
 		lpHeight();
-		liveLinksHeight();
-		liveLinksReadMore();
 		addEventHandler(window, elemScroll, function () {
 			scrollDebounce();
 			scrollThrottle();
 		});
 	}
+
+	liveLinksHeight();
+	liveLinksReadMore();
 
 	if (onAir != null) {
 		addEventHandler(onAir, elemClick, openLivePlayer);
