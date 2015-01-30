@@ -10840,6 +10840,21 @@ select {
         background-position: 50% 50%; } }
   .profile-page .profile-page__sidebar h1 {
     text-transform: uppercase; }
+    @media screen and (min-width: 768px) {
+      .profile-page .profile-page__sidebar h1 {
+        margin-bottom: 0.5em; } }
+    @media screen and (min-width: 480px) {
+      .profile-page .profile-page__sidebar h1 {
+        margin-bottom: 0.5em; } }
+    @media screen and (min-width: 320px) {
+      .profile-page .profile-page__sidebar h1 {
+        margin-bottom: 0.5em; } }
+    @media screen and (min-width: 1024px) {
+      .profile-page .profile-page__sidebar h1 {
+        margin-bottom: 0.6em; } }
+    @media screen and (min-width: 1400px) {
+      .profile-page .profile-page__sidebar h1 {
+        margin-bottom: 0.6em; } }
   .profile-page .profile-page__sidebar p {
     display: none; }
     @media screen and (min-width: 768px) {
@@ -12595,17 +12610,13 @@ category: Components
 
 .image__attribution {
   position: absolute;
-  top: 10px;
+  bottom: 10px;
   right: 10px;
   margin-left: 10px;
   padding: .5em 1em;
   background-color: #000000;
   font-size: 0.88889em;
   color: #ffffff; }
-  @media screen and (min-width: 768px) {
-    .image__attribution {
-      top: auto;
-      bottom: 10px; } }
   .image__attribution a, .image__attribution a:visited {
     color: #d0d2d3;
     text-decoration: underline; }

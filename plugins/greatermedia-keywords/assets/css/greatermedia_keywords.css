@@ -53,6 +53,9 @@ tr.delete {
   .post-search__list-item span.post_type {
     float: right;
     color: #939393; }
+  .post-search__list-item span.linked_content_label {
+    float: left;
+    width: 80%; }
 
 .post-search__list-item:hover {
   cursor: pointer; }
