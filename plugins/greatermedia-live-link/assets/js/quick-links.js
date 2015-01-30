@@ -10,7 +10,12 @@
 				open_window;
 
 			open_window = function () {
-				if (!window.open(url, 't', 'toolbar=0,resizable=1,scrollbars=1,status=1,width=720,height=570')) {
+				var width = 720,
+					height = 250,
+					left = (screen.width/2)-(width/2),
+					top = (screen.height/2)-(height/2);
+
+				if (!window.open(url, 't', 'toolbar=0,resizable=1,copyhistory=0,scrollbars=1,status=1,width=' + width + ',height=' + height + ',top=' + top + ',left=' + left)) {
 					location.href = url;
 				}
 			};

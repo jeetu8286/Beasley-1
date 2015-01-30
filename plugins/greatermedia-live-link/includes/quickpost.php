@@ -109,16 +109,25 @@ class GMR_QuickPost {
 		remove_action( 'media_buttons', 'media_buttons' );
 
 		_wp_admin_html_begin(); ?>
-				<title><?php _e('Quick Post') ?></title>
+				<title>Quick Live Link</title>
 
 				<style type="text/css">
+					body.press-this.quick-link {
+						min-height: 100%;
+					}
+
 					#redirectdiv {
-						margin-top: 2em;
+						margin-top: 1em;
 					}
 
 					#redirectdiv b {
 						font-size: 1.2em;
 						margin-bottom: 0.5em;
+						display: block;
+					}
+
+					#redirectdiv i {
+						margin-top: 0.75em;
 						display: block;
 					}
 
@@ -142,7 +151,7 @@ class GMR_QuickPost {
 					(function($) {
 						$(document).ready(function() {
 							// Resize screen.
-							window.resizeTo(760,580);
+							window.resizeTo(720, 250);
 
 							$('#title').unbind();
 							$('#publish, #save').click(function() {
@@ -152,7 +161,7 @@ class GMR_QuickPost {
 					})(jQuery);
 				</script>
 			</head>
-			<body class="press-this wp-admin wp-core-ui">
+			<body class="press-this quick-link wp-admin wp-core-ui">
 				<form action="<?php echo esc_url( admin_url( 'admin.php?action=' . self::ADMIN_ACTION ) ) ?>" method="post">
 					<div id="poststuff" class="metabox-holder">
 
@@ -172,7 +181,6 @@ class GMR_QuickPost {
 									<div class="handlediv" title="<?php esc_attr_e( 'Click to toggle' ); ?>"><br /></div>
 									<div class="inside">
 										<p id="publishing-actions">
-											<?php submit_button( __( 'Save Draft' ), 'button', 'draft', false, array( 'id' => 'save' ) ); ?>
 											<?php
 												if ( current_user_can( 'publish_posts' ) ) {
 													submit_button( __( 'Publish' ), 'primary', 'publish', false );
@@ -182,6 +190,7 @@ class GMR_QuickPost {
 												}
 											?>
 											<span class="spinner" style="display: none;"></span>
+											<?php submit_button( __( 'Save Draft' ), 'button', 'draft', false, array( 'id' => 'save' ) ); ?>
 										</p><?php
 
 										if ( current_theme_supports( 'post-formats' ) ) :
@@ -236,6 +245,12 @@ class GMR_QuickPost {
 							<div id="redirectdiv">
 								<b>Redirects To:</b>
 								<input type="url" id="redirect_to" class="widefat" name="redirect" value="<?php echo esc_attr( $url ); ?>">
+								<i>
+									<strong>Pro Tip:</strong> Use Quick Link while browsing
+									<?php echo esc_html( parse_url( home_url( '/' ), PHP_URL_HOST ) ); ?>
+									to rapidly create new live links from existing posts, contests,
+									events and galleries.
+								</i>
 							</div>
 						</div>
 					</div>

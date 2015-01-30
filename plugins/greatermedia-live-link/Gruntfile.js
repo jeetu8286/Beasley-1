@@ -36,6 +36,7 @@ module.exports = function (grunt) {
 					jQuery: false,
 					document: false,
 					window: false,
+					screen: false,
 					console: false,
 					live_links: false,
 					navigator: false,
