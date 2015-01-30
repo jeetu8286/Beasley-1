@@ -58,7 +58,7 @@ class ListEntryFieldsAjaxHandler extends AjaxHandler {
 
 	public function entry_field_for( $form_field, $id ) {
 		$entry_field            = array();
-		$entry_field['label']   = $form_field['label'];
+		$entry_field['label']   = html_entity_decode( $form_field['label'] );
 		$entry_field['value']   = $form_field['cid'];
 		$entry_field['type']    = $form_field['field_type'];
 		$entry_field['choices'] = $this->choices_for( $form_field );
