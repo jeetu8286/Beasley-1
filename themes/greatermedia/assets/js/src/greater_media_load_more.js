@@ -63,7 +63,10 @@
 							$($('<div>' + $.trim(response.html) + '</div>').html()).insertBefore($button.parents('.posts-pagination'));							
 	
 							// Increment page number
-							pagenums[page_link_template]++;						
+							pagenums[page_link_template]++;
+							
+							// Trigger event.
+							$( document ).trigger( 'gmr_lazy_load_end' ); 
 						}
 												
 						if ( ! response.post_count || pagenums[page_link_template] > response.max_num_pages ) {

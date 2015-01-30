@@ -12,7 +12,3 @@
 		background: linear-gradient(rgba(242,242,242, 0), rgb(242,242,2420)); /* Standard syntax (must be last) */
 	}
 }
-
-.live-links--more__btn {
-	@include btn($btn-bg, $color-text-white, $btn-bg, 0.5em, 1em, ms(-1));
-}

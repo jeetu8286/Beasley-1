@@ -865,6 +865,14 @@ body {
 * {
   -webkit-tap-highlight-color: transparent; }
 
+/**
+ * Fix for Fitvids.js
+ * Max-width is more helpful
+ */
+.article__content .fluid-width-video-wrapper {
+  max-width: 100%;
+  width: auto; }
+
 body {
   line-height: 2;
   font-size: 80%;
@@ -5546,7 +5554,8 @@ category: Components
   visibility: hidden;
   padding: 16px 0 0;
   background-color: #000000;
-  text-align: center; }
+  text-align: center;
+  overflow: hidden; }
   @media screen and (min-width: 768px) {
     .live-links {
       visibility: visible;
@@ -5688,6 +5697,27 @@ category: Components
     background: linear-gradient(transparent, black);
     /* Standard syntax (must be last) */
     content: ""; }
+
+.live-links--more__btn {
+  display: inline-block;
+  line-height: 1;
+  padding: 0.5em 1em;
+  margin-right: .5em;
+  outline: none;
+  background-color: #d22228;
+  border: 1px solid #d22228;
+  font-family: "Open Sans", sans-serif;
+  font-size: 0.88889em;
+  color: #ffffff !important;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 100em; }
+  .live-links--more__btn:hover, .live-links--more__btn:focus {
+    background-color: #aa1c20;
+    border-color: #aa1c20;
+    color: #ffffff; }
+  .live-links--more__btn:last-of-type {
+    margin-right: 0; }
 
 .audio__time {
   display: none;
@@ -7425,6 +7455,9 @@ category: Components - Ads
 .single-tribe_events #tribe-events-footer {
   border-top: none;
   padding-top: 0; }
+
+.site-wrap.pjax--active #tribe-events-bar {
+  display: none; }
 
 /*doc
 ---

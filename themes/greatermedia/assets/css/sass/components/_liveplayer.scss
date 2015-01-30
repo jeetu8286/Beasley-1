@@ -1150,6 +1150,7 @@ category: Components
 	padding: 16px 0 0;
 	background-color: $liveplayer-bg;
 	text-align: center;
+	overflow: hidden;
 	@include bp(medium) {
 		visibility: visible;
 		display: block;
@@ -1327,6 +1328,10 @@ category: Components
 		background: linear-gradient(rgba(0, 0, 0, 0), rgb(0, 0, 0)); /* Standard syntax (must be last) */
 		content: "";
 	}
+}
+
+.live-links--more__btn {
+	@include btn($btn-bg, $color-text-white, $btn-bg, 0.5em, 1em, ms(-1));
 }
 
 .audio__time {

@@ -25,6 +25,7 @@
 		livePlayerStreamSelect = document.querySelector('.live-player__stream--current'),
 		livePlayerCurrentName = livePlayerStreamSelect.querySelector('.live-player__stream--current-name'),
 		livePlayerStreams = livePlayerStreamSelect.querySelectorAll('.live-player__stream--item'),
+		liveLinksMoreBtn = document.querySelector('.live-links--more__btn'),
 		wpAdminHeight = 32,
 		onAir = document.getElementById( 'on-air' ),
 		upNext = document.getElementById( 'up-next'),
@@ -229,7 +230,7 @@
 	 * default height for the live player
 	 */
 	function lpPosDefault() {
-		if (livePlayer != null ) {
+		if (livePlayer != null) {
 			if (body.classList.contains('logged-in')) {
 				livePlayer.style.top = wpAdminHeight + elemHeight(header) + 'px';
 			} else {
@@ -240,8 +241,11 @@
 	}
 
 	function lpHeight() {
-		if (livePlayer != null ) {
+		if (livePlayer != null) {
 			livePlayer.style.height = elemHeight(siteWrap) - elemHeight(header) + 'px';
+		}
+		if (liveLinks != null) {
+			liveLinks.style.height = windowHeight - elemHeight(header) - elemHeight(liveStreamContainer) + 'px';
 		}
 	}
 
@@ -249,6 +253,10 @@
 		if (liveLinksWidget != null && elemHeight(liveLinksWidget) >= windowHeight) {
 			liveLinksMore.classList.add('show-more');
 		}
+	}
+
+	function moreLiveLinks() {
+		liveLinks.scrollTop += windowHeight - elemHeight(header) - elemHeight(liveStreamContainer);
 	}
 	/**
 	 * detects various positions of the screen on scroll to deliver states of the live player
@@ -530,6 +538,10 @@
 		resizeThrottle();
 	});
 
+	if (liveLinksMoreBtn != null) {
+		liveLinksMoreBtn.addEventListener('click', moreLiveLinks, true);
+	}
+
 	function init_menu_overlay() {
 		var $menu = jQuery(document.querySelector('.header__nav--list')),
 			$secondary = jQuery(document.querySelector('.header__secondary')),
@@ -562,6 +574,10 @@
 
 			return false;
 		});
+
+		$(document).ready(function() {
+			$('.article__content').fitVids({customSelector: "div[id^='playerwrapper']"});
+		});
 	})(jQuery);
 
 	function personality_toggle() {
@@ -593,6 +609,8 @@
 		});
 	}
 
-	personality_toggle();
+	$(document).bind( 'pjax:end', function () {
+		personality_toggle();
+	});
 
 })();
