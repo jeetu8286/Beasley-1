@@ -15,8 +15,6 @@ class GMR_QuickPost {
 	 */
 	private static $_isntance = null;
 
-	private $_link = false;
-
 	/**
 	 * Returns class instance. Initializes it if it is not exists yet.
 	 *
@@ -86,68 +84,6 @@ class GMR_QuickPost {
 		if ( current_user_can( 'edit_posts' ) ) {
 			wp_add_dashboard_widget( 'quickpost', 'Quick Post', array( $this, 'render_tool_box' ) );
 		}
-	}
-
-	/**
-	 * Renders featured image metabox.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @access public
-	 * @param array $params The quickpost params.
-	 */
-	public function render_featured_image_metabox( $params ) {
-		$images = $this->_get_images( $params['url'] );
-		if ( empty( $images ) ) {
-			echo '<i>No images were found.</i>';
-			return;
-		}
-		
-		?><script type="text/javascript">
-			(function($) {
-				$(document).ready(function() {
-					var selected_image = 0,
-						images = <?php $this->_process_ajax_photo_images_request( $params['url'] ) ?>;
-
-					$('#quickpost-featured-image-number span:last-child').text(images.length);
-					
-					function updateImage() {
-						$('#quickpost-featured-image img').attr('src', images[selected_image]);
-						$('#quickpost-featured-image-controls a:last-child').toggle(selected_image != images.length - 1);
-						$('#quickpost-featured-image-controls a:first-child').toggle(selected_image != 0);
-						$('#quickpost-featured-image-number span:first-child').text(selected_image + 1);
-						$('input[name="featured_image"]').val(images[selected_image]);
-					}
-
-					$('#quickpost-featured-image-controls a:first-child').click(function() {
-						selected_image--;
-						updateImage();
-						return false;
-					});
-
-					$('#quickpost-featured-image-controls a:last-child').click(function() {
-						selected_image++;
-						updateImage();
-						return false;
-					});
-
-					updateImage();
-				});
-			})(jQuery);
-		</script>
-
-		<input type="hidden" name="featured_image" value="">
-
-		<div id="quickpost-featured-image">
-			<div id="quickpost-featured-image-number">
-				<span></span>/<span></span>
-			</div>
-			<img src="">
-		</div>
-		<div id="quickpost-featured-image-controls">
-			<a href="#" style="display:none">&laquo; prev</a>
-			<a href="#">next &raquo;</a>
-		</div><?php
 	}
 
 	/**
@@ -258,8 +194,6 @@ class GMR_QuickPost {
 
 		remove_action( 'media_buttons', 'media_buttons' );
 		add_action( 'media_buttons', array( $this, 'substitute_media_buttons' ) );
-
-		add_meta_box( 'quickpost_featured_image', 'Featured Image', array( $this, 'render_featured_image_metabox' ), 'quickpost', 'side', 'high' );
 		
 		do_action( 'gmr_quickpost_add_metaboxes', 'quickpost', $post_id );
 
@@ -269,46 +203,6 @@ class GMR_QuickPost {
 				<?php if ( $saved ) : ?>
 					<script type="text/javascript">window.close();</script>
 				<?php endif; ?>
-
-				<style type="text/css" media="screen">
-					#quickpost-featured-image {
-						width: 214px;
-						height: 160px;
-						overflow: hidden;
-						margin-bottom: 10px;
-						position: relative;
-					}
-
-					#quickpost-featured-image img {
-						width: 100%;
-						height: auto;
-					}
-
-					#quickpost-featured-image-controls {
-						text-align: center;
-					}
-
-					#quickpost-featured-image-controls a {
-						text-decoration: none;
-					}
-
-					#quickpost-featured-image-controls a:first-child {
-						margin-right: 10px;
-					}
-
-					#quickpost-featured-image-number {
-						position: absolute;
-						top: 0;
-						right: 0;
-						background: rgba(0, 0, 0, 0.5);
-						color: white;
-						font-weight: bold;
-						padding: 3px 10px;
-					}
-
-					#quickpost-featured-image-number span {
-					}
-				</style>
 
 				<script type="text/javascript">
 					//<![CDATA[
@@ -873,19 +767,6 @@ class GMR_QuickPost {
 								add_post_meta( $attachment_id, 'gmr_image_attribution', $origin );
 							}
 						}
-					}
-				}
-			}
-
-			// featured image
-			$featured_image = filter_input( INPUT_POST, 'featured_image', FILTER_VALIDATE_URL );
-			if ( ! empty( $featured_image ) ) {
-				$thumbnail_id = false;
-				$downloaded = $this->_download_image( $featured_image, $post_id, '', $thumbnail_id );
-				if ( ! is_wp_error( $downloaded ) && $thumbnail_id ) {
-					set_post_thumbnail( $post_id, $thumbnail_id );
-					if ( $origin ) {
-						add_post_meta( $thumbnail_id, 'gmr_image_attribution', $origin );
 					}
 				}
 			}
