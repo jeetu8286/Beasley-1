@@ -78,8 +78,9 @@ if ( empty( $active_stream ) ) {
 
 		<?php dynamic_sidebar( 'liveplayer_sidebar' ); ?>
 
+		<div id="live-links__widget--end"></div>
 		<div class="live-links--more">
-			<div class="live-links--more__btn">More</div>
+			<a href="<?php echo esc_url( home_url( '/live-links' ) ); ?>" class="live-links--more__btn">More</a>
 		</div>
 	</div>
 

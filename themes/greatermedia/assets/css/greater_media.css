@@ -5744,9 +5744,8 @@ category: Components
   right: auto; }
 
 .live-links--more {
-  position: fixed;
-  bottom: 0;
-  display: none;
+  position: relative;
+  display: block;
   width: 100%;
   height: 40px;
   background-color: #000000; }
@@ -5754,22 +5753,23 @@ category: Components
     .live-links--more {
       width: 225px; } }
   .live-links--more.show-more {
-    display: block; }
-  .live-links--more:before {
-    position: absolute;
-    bottom: 40px;
-    left: 0;
-    width: 100%;
-    height: 40px;
-    background: -webkit-linear-gradient(transparent, black);
-    /* For Safari 5.1 to 6.0 */
-    background: -o-linear-gradient(transparent, black);
-    /* For Opera 11.1 to 12.0 */
-    background: -moz-linear-gradient(transparent, black);
-    /* For Firefox 3.6 to 15 */
-    background: linear-gradient(transparent, black);
-    /* Standard syntax (must be last) */
-    content: ""; }
+    position: fixed;
+    bottom: 0; }
+    .live-links--more.show-more:before {
+      position: absolute;
+      bottom: 40px;
+      left: 0;
+      width: 100%;
+      height: 40px;
+      background: -webkit-linear-gradient(transparent, black);
+      /* For Safari 5.1 to 6.0 */
+      background: -o-linear-gradient(transparent, black);
+      /* For Opera 11.1 to 12.0 */
+      background: -moz-linear-gradient(transparent, black);
+      /* For Firefox 3.6 to 15 */
+      background: linear-gradient(transparent, black);
+      /* Standard syntax (must be last) */
+      content: ""; }
 
 .live-links--more__btn {
   display: inline-block;

@@ -5754,9 +5754,8 @@ category: Components
   right: auto; }
 
 .live-links--more {
-  position: fixed;
-  bottom: 0;
-  display: none;
+  position: relative;
+  display: block;
   width: 100%;
   height: 40px;
   background-color: #f2f2f2; }
@@ -5764,22 +5763,23 @@ category: Components
     .live-links--more {
       width: 225px; } }
   .live-links--more.show-more {
-    display: block; }
-  .live-links--more:before {
-    position: absolute;
-    bottom: 40px;
-    left: 0;
-    width: 100%;
-    height: 40px;
-    background: -webkit-linear-gradient(transparent, black);
-    /* For Safari 5.1 to 6.0 */
-    background: -o-linear-gradient(transparent, black);
-    /* For Opera 11.1 to 12.0 */
-    background: -moz-linear-gradient(transparent, black);
-    /* For Firefox 3.6 to 15 */
-    background: linear-gradient(transparent, black);
-    /* Standard syntax (must be last) */
-    content: ""; }
+    position: fixed;
+    bottom: 0; }
+    .live-links--more.show-more:before {
+      position: absolute;
+      bottom: 40px;
+      left: 0;
+      width: 100%;
+      height: 40px;
+      background: -webkit-linear-gradient(transparent, black);
+      /* For Safari 5.1 to 6.0 */
+      background: -o-linear-gradient(transparent, black);
+      /* For Opera 11.1 to 12.0 */
+      background: -moz-linear-gradient(transparent, black);
+      /* For Firefox 3.6 to 15 */
+      background: linear-gradient(transparent, black);
+      /* Standard syntax (must be last) */
+      content: ""; }
 
 .live-links--more__btn {
   display: inline-block;
@@ -12882,14 +12882,12 @@ category: Components
   border-bottom-color: white;
   background: none; }
 
-.live-links--more:before {
-  background: -webkit-linear-gradient(rgba(242, 242, 242, 0), #f2f2f2);
-  /* For Safari 5.1 to 6.0 */
-  background: -o-linear-gradient(rgba(242, 242, 242, 0), #f2f2f2);
-  /* For Opera 11.1 to 12.0 */
-  background: -moz-linear-gradient(rgba(242, 242, 242, 0), #f2f2f2);
-  /* For Firefox 3.6 to 15 */
-  background: linear-gradient(rgba(242, 242, 242, 0), #f2f2ff);
-  /* Standard syntax (must be last) */ }
+.live-links--more.show-more:before {
+  background: -moz-linear-gradient(top, rgba(255, 255, 255, 0) 0%, #f2f2f2 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(255, 255, 255, 0), color-stop(100%, #f2f2f2)));
+  background: -webkit-linear-gradient(top, rgba(255, 255, 255, 0) 0%, #f2f2f2 100%);
+  background: -o-linear-gradient(top, rgba(255, 255, 255, 0) 0%, #f2f2f2 100%);
+  background: -ms-linear-gradient(top, rgba(255, 255, 255, 0) 0%, #f2f2f2 100%);
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, #f2f2f2 100%); }
 
 /*# sourceMappingURL=wmgk.css.map */
