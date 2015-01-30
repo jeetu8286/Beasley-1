@@ -70,7 +70,7 @@ $options = self::get_keyword_options( $this::$plugin_slug . '_option_name' );
 									<li class="post-search__list-item">
 									<input class="post-search__list-item-input" type="radio" name="linked_content" value="<%= id %>" id="linked_content_item_<%= id %>" />
 									<label for="linked_content_item_<%= id %>">
-									<%= title %>
+									<span class="linked_content_label"><%= title %></span>
 									<span class="post_type"><%= post_type %></span>
 									</label>
 									</li>

@@ -494,6 +494,7 @@
 
 				case 'gigya-register-complete-screen':
 					this.controller.willRegister = true;
+					this.updateGeoFields();
 					break;
 
 				case 'gigya-update-profile-success-screen':
@@ -622,8 +623,95 @@
 				var $link = $('.verify-email-link');
 				$link.css('display', 'inline-block');
 			}
+		},
+
+		getStates: function() {
+			var $profileState = $('#profile-state option');
+			var states = [];
+
+			$profileState.each(function(index, option) {
+				var $option = $(option);
+				states.push({label: $option.text(), value: $option.val()});
+			});
+
+			return states;
+		},
+
+		updateGeoFields: function() {
+			var states        = this.getStates();
+			var $profileCity  = $('#profile-city');
+			var $profileState = $('#profile-state');
+			var currentCity   = $profileCity.val();
+			var parser        = new GeoLocationParser(states);
+			var result = null;
+
+			try {
+				result = parser.parse(currentCity);
+			} catch (e) {
+				// no op
+			}
+
+			if (result !== null) {
+				$profileCity.val(result.city);
+				$profileState.val(result.state);
+			} else {
+				$profileCity.val('');
+				$profileState.val('');
+			}
 		}
 
+	};
+
+	var GeoLocationParser = function(states) {
+		this.states = states;
+	};
+
+	GeoLocationParser.prototype = {
+
+		parse: function(text) {
+			var parts    = text.split(',');
+			var total    = parts.length;
+			var lastPart = this.trim(parts[total - 1]);
+			var state, city;
+
+			if (lastPart === 'United States' || lastPart === 'US' || lastPart === 'USA') {
+				state = this.trim(parts[total - 2]);
+				city  = this.trim(parts.slice(0, total - 2).join(', '));
+			} else {
+				state = lastPart;
+				city  = this.trim(parts.slice(0, total - 1).join(', '));
+			}
+
+			var foundState = this.findState(state);
+
+			if (foundState) {
+				return {
+					state: foundState,
+					city: city
+				};
+			} else {
+				return null;
+			}
+		},
+
+		findState: function(state) {
+			var n = this.states.length;
+			var option;
+
+			for (var i = 0; i < n; i++) {
+				option = this.states[i];
+				if (option.label === state) {
+					return option.value;
+				}
+			}
+
+			return null;
+		},
+
+		trim: function(str) {
+			var rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
+			return str.replace(rtrim, '');
+		}
 	};
 
 	var GigyaProfileApp = function() {
