@@ -8998,7 +8998,7 @@ a.social-share-link {
   min-height: 40px;
   padding: 0 20px;
   border-top: 1px solid #303030;
-  background-color: transparent; }
+  background-color: #303030; }
   @media screen and (min-width: 768px) {
     .header__search--form {
       position: fixed;
