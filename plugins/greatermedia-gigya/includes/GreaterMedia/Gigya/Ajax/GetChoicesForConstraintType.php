@@ -54,7 +54,7 @@ class GetChoicesForConstraintType extends AjaxHandler {
 			}
 
 			$choices[] = array(
-				'label' => $post->post_title,
+				'label' => html_entity_decode( $post->post_title ),
 				'value' => $post->ID,
 			);
 		}
@@ -87,7 +87,7 @@ class GetChoicesForConstraintType extends AjaxHandler {
 
 		foreach ( $emma_groups as $group ) {
 			$choices[] = array(
-				'label' => $group['group_name'],
+				'label' => html_entity_decode( $group['group_name'] ),
 				'value' => strval( $group['group_id'] )
 			);
 		}
