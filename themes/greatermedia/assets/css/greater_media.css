@@ -5540,7 +5540,8 @@ category: Components
   padding: 16px 0 0;
   background-color: #000000;
   text-align: center;
-  overflow: hidden; }
+  overflow: hidden;
+  overflow-y: auto; }
   @media screen and (min-width: 768px) {
     .live-links {
       visibility: visible;
@@ -5655,7 +5656,10 @@ category: Components
   display: block;
   width: 100%;
   height: 40px;
-  background-color: #000000; }
+  background-color: #000000;
+  -webkit-transition: all 500ms ease-in-out;
+  -moz-transition: all 500ms ease-in-out;
+  transition: all 500ms ease-in-out; }
   @media screen and (min-width: 768px) {
     .live-links--more {
       width: 225px; } }
