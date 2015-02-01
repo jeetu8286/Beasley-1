@@ -12232,6 +12232,12 @@ category: Components - Article
 #livefyre-comments .fyre img {
   display: inline; }
 
+#livefyre-comments label {
+  display: inline; }
+
+#livefyre-comments .fyre-mention-item {
+  height: 2.5em; }
+
 /*doc
 ---
 title: Related Post
