@@ -1239,11 +1239,15 @@ blockquote p {
   width: 100%; }
 
 .mobile-nav .social__link {
-  margin: 0 0 0 1.25em;
+  margin: 0 0 0 1em;
   font-size: 1.42383em; }
 
 .mobile-nav .social__link:last-child {
-  margin: 0 0 0 1.25em; }
+  margin: 0 0 0 1em; }
+
+.mobile-nav .social__link {
+  color: #fff;
+  border-color: #fff; }
 
 .header__nav ul, .header__account ul {
   padding: 0;
