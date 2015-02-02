@@ -2334,32 +2334,30 @@ Community Highlights and Events
 ```
 */
 .home__highlights {
-  padding: 0 0.809em 1.5em;
+  padding: 1.5em 0.809em;
   background-color: #5a5a5a;
   border-bottom: 1px solid #525252; }
   @media screen and (min-width: 768px) {
     .home__highlights {
-      padding: 0 3.236em 3em; } }
+      padding: 3em 3.236em; } }
 
 .highlights__heading {
   margin: 0 0 0.75em;
+  line-height: 1;
   font-family: "Open Sans", sans-serif;
   font-size: 1.26563em;
   font-weight: lighter;
   color: #929497;
   vertical-align: top; }
 
-.highlights__community {
-  padding-top: 1.5em; }
-  @media screen and (min-width: 1024px) {
-    .highlights__community {
-      float: left;
-      display: block;
-      margin-right: 1.87727%;
-      width: 59.24909%;
-      padding-top: 2.25em; }
-      .highlights__community:last-child {
-        margin-right: 0; } }
+@media screen and (min-width: 1024px) {
+  .highlights__community {
+    float: left;
+    display: block;
+    margin-right: 1.87727%;
+    width: 59.24909%; }
+    .highlights__community:last-child {
+      margin-right: 0; } }
 
 .highlights__community--item {
   position: relative;
@@ -2453,16 +2451,16 @@ Community Highlights and Events
     color: #f5ed7f; }
 
 .highlights__events {
-  padding-top: 1.5em;
-  clear: both; }
+  clear: both;
+  padding-top: 1.5em; }
   @media screen and (min-width: 1024px) {
     .highlights__events {
-      padding-top: 2.25em;
       float: left;
       display: block;
       margin-right: 1.87727%;
       width: 38.87364%;
-      clear: none; }
+      clear: none;
+      padding-top: 0; }
       .highlights__events:last-child {
         margin-right: 0; } }
 
@@ -2472,7 +2470,7 @@ Community Highlights and Events
 .highlights__events--more-btn {
   display: inline-block;
   line-height: 1;
-  padding: 0 1em;
+  padding: 0.25em 1em;
   margin-right: .5em;
   outline: none;
   background-color: transparent;
@@ -2483,12 +2481,9 @@ Community Highlights and Events
   text-transform: uppercase;
   cursor: pointer;
   border-radius: 100em;
-  display: inline-block;
   margin-left: .5em;
   margin-top: 0;
-  line-height: 2;
-  text-transform: none;
-  vertical-align: top; }
+  text-transform: none; }
   .highlights__events--more-btn:hover, .highlights__events--more-btn:focus {
     background-color: transparent;
     border-color: #959799;
@@ -2497,8 +2492,8 @@ Community Highlights and Events
     margin-right: 0; }
   @media screen and (min-width: 1024px) {
     .highlights__events--more-btn {
-      margin-top: 0.05em;
-      font-size: 0.85em; } }
+      margin-top: .05em;
+      font-size: .8em; } }
   .highlights__events--more-btn:hover {
     color: #aa1c20 !important;
     border-color: #aa1c20; }
@@ -8178,8 +8173,10 @@ header.podcast__header {
 .single-show .entry2__thumbnail {
   margin-bottom: 0.5em; }
 .single-show .format-standard .entry2__thumbnail {
-  margin-top: 1.75em;
-  margin-left: 0.75em; }
+  margin-top: 1.75em; }
+  @media screen and (min-width: 768px) {
+    .single-show .format-standard .entry2__thumbnail {
+      margin-left: 0.75em; } }
 
 .show-attr--name {
   position: absolute;

@@ -38,7 +38,8 @@ class Member {
 		$attr = $node->attributes;
 
 		$this->parse_field( $attr, 'MemberID', 'member_id' );
-		$this->parse_field( $attr, 'EmailAddress', 'email', FILTER_VALIDATE_EMAIL );
+		$this->parse_email( $attr );
+
 		$this->parse_field( $attr, 'FirstName', 'first_name' );
 		$this->parse_field( $attr, 'LastName', 'last_name' );
 		$this->parse_field( $attr, 'ScreenName', 'screen_name' );
@@ -70,7 +71,9 @@ class Member {
 			switch ( $child_node->nodeName ) {
 				case 'MemberGroup':
 					$group_name = $this->parse_member_group( $child_node );
-					$this->member_groups[] = $group_name;
+					if ( $group_name !== false ) {
+						$this->member_groups[] = $group_name;
+					}
 					break;
 
 				case 'FacebookMember':
@@ -86,6 +89,10 @@ class Member {
 	function parse_member_group( $node ) {
 		$attr = $node->attributes;
 		$group_name = $attr->getNamedItem( 'Name' )->nodeValue;
+
+		if ( $group_name === 'Birthday Greetings' && is_null( $this->birthday ) ) {
+			$group_name = false;
+		}
 
 		return $group_name;
 	}
@@ -110,6 +117,21 @@ class Member {
 			if ( ! is_null( $value ) ) {
 				$this->$field = $value;
 			}
+		}
+	}
+
+	function parse_email( $attr ) {
+		$item = $attr->getNamedItem( 'EmailAddress' );
+
+		if ( ! is_null( $item ) ) {
+			$repairer    = new EmailRepairer();
+			$this->email = $repairer->repair( $item->nodeValue );
+
+			if ( ! $this->email ) {
+				throw new \Exception( 'Failed to parse member email: ' . $item->nodeValue );
+			}
+		} else {
+			throw new \Exception( 'EmailAddress not found for ' . $this->member_id);
 		}
 	}
 
@@ -206,11 +228,15 @@ class Member {
 	}
 
 	function export_birthday( &$target ) {
-		$date = date_parse( $this->birthday );
+		if ( ! is_null( $this->birthday ) ) {
+			$date = date_parse( $this->birthday );
 
-		$target['birthYear']  = $date['year'];
-		$target['birthMonth'] = $date['month'];
-		$target['birthDay']   = $date['day'];
+			$target['birthYear']  = $date['year'];
+			$target['birthMonth'] = $date['month'];
+			$target['birthDay']   = $date['day'];
+		} else {
+			error_log( "skipped birthday for: {$this->member_id} - {$this->email}"  );
+		}
 	}
 
 	function export_gender( &$target ) {
@@ -256,7 +282,12 @@ class Member {
 		$subscribedToList = array();
 
 		foreach ( $this->member_groups as $group_name ) {
-			$subscribedToList[]       = $this->parent->get_member_group_id( $group_name );
+			$group_id = $this->parent->get_member_group_id( $group_name );
+			if ( $group_id === false || $group_id === '' ) {
+				continue;
+			}
+
+			$subscribedToList[]       = $group_id;
 			$gigya_field_key          = $this->parent->get_member_group_gigya_key( $group_name );
 			$data[ $gigya_field_key ] = true;
 		}
