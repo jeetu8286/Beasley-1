@@ -584,9 +584,21 @@ category: Components - Shows
 }
 
 .inner-right-col {
+	//background-color: $color-gray-extra-light;
+	border-top: 1px solid $primary-border;
+	border-bottom: 1px solid $primary-border;
 	float: none;
+	margin-left: -.809em; /* this is the padding on .content */
+	margin-right: -.809em;
+	padding: 0 .809em;
+	margin-bottom: 3em;
+
+	@extend .cf;
 
 	@include bp(large) {
+		border: none;
+		margin: 0;
+		padding: 0;
 		float: right;
 		width: 300px;
 	}
@@ -637,6 +649,8 @@ category: Components - Shows
 	margin-top: 20px;
 	position: relative;
 	@include span-columns(12 of 12);
+	@include omega();
+
 	
 	.section-header {
 		font-size: ms(1);
@@ -678,11 +692,10 @@ category: Components - Shows
 }
 
 .show__live-links--more {
-	text-align: center;
 	position: relative;
 	float: left;
 	width: 100%;
-	padding: 15px 0;
+	margin: 20px 0;
 
 	.more-btn {
 		position: relative;
