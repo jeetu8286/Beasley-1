@@ -47,7 +47,7 @@ class GMR_QuickPost {
 	 */
 	public function register_dashboard_widget() {
 		if ( current_user_can( 'edit_posts' ) ) {
-			wp_add_dashboard_widget( 'quickpost', 'Quick Post', array( $this, 'render_tool_box' ) );
+			wp_add_dashboard_widget( 'quickpost', 'Quick Live Link', array( $this, 'render_tool_box' ) );
 		}
 	}
 
@@ -84,23 +84,18 @@ class GMR_QuickPost {
 		" );
 
 		?><div class="tool-box">
-			<p>Quick Post is a bookmarklet: a little app that runs in your browser and lets you grab bits of the web.</p>
+			<p>Quick Live Link is a bookmarklet: a little app that runs in your browser and lets you quickly create live links from the websites you visit.</p>
 
 			<p class="description">
-				Use Quick Post to clip text, images and videos from any web page. Then edit and add more straight from Quick Post before you save or publish it in a post on your site.
 				Drag-and-drop the following link to your bookmarks bar or right click it and add it to your favorites for a posting shortcut.
 			</p>
 
 			<p class="pressthis">
 				<a onclick="return false;" oncontextmenu="if(window.navigator.userAgent.indexOf('WebKit')!=-1||window.navigator.userAgent.indexOf('MSIE')!=-1){jQuery('.quickpost-code').show().find('textarea').focus().select();return false;}" href="<?php echo esc_attr( $link ); ?>">
-					<span>Quick Post</span>
+					<span>Quick Live Link</span>
 				</a>
 			</p>
 
-			<div class="quickpost-code" style="display:none;">
-				<p class="description">If your bookmarks toolbar is hidden: copy the code below, open your Bookmarks manager, create new bookmark, type Quick Post into the name field and paste the code into the URL field.</p>
-				<p><textarea rows="5" cols="20" class="widefat" readonly="readonly"><?php echo esc_textarea( $link ); ?></textarea></p>
-			</div>
 		</div><?php
 	}
 
