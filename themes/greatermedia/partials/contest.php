@@ -55,9 +55,9 @@
 			</div>
 		</div>
 
-		<div class="contest__entry--link">
-			<a href="#contest-form" class="contest__entry--btn">Enter Contest</a>
-		</div>
+		<p class="contest__entry--link">
+			<a href="#contest-form" class="contest__entry--btn">Skip to Entry Form</a>
+		</p>
 
 		<?php the_content(); ?>
 
@@ -77,11 +77,10 @@
 
 		<?php if ( ( $contest_rules = trim( get_post_meta( get_the_ID(), 'rules-desc', true ) ) ) ) : ?>
 		<div class="contest__description">
-			<p>
+
 				<a class="contest-attr--rules-toggler pjax-exclude" href="#" data-toggle="collapse" data-target="#contest-rules" data-alt-text="Hide Contest Rules">
 					<?php _e( 'view contest rules', 'greatermedia' ); ?>
 				</a>
-			</p>
 
 			<div id="contest-rules" class="contest-attr--rules" style="display:none;"><?php echo wpautop( $contest_rules ); ?></div>
 		</div>

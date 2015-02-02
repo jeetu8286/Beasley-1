@@ -6335,6 +6335,15 @@ category: Components - Ads
 .type-contest .col__inner--left,
 .type-survey .col__inner--left {
   border-right-width: 0; }
+.type-contest .col__inner--right,
+.type-survey .col__inner--right {
+  border-bottom: 1px solid #d0d2d3;
+  margin-bottom: 30px;
+  padding-bottom: 30px; }
+  @media screen and (min-width: 1024px) {
+    .type-contest .col__inner--right,
+    .type-survey .col__inner--right {
+      border: none; } }
 .type-contest.collapsed .col__inner--left,
 .type-survey.collapsed .col__inner--left {
   width: 100%;
@@ -6348,87 +6357,15 @@ category: Components - Ads
 .type-survey.collapsed .contest__entry--link {
   display: none; }
 
-.contest__entry--link {
-  display: block;
-  margin-bottom: 2em; }
-  @media screen and (min-width: 1024px) {
-    .contest__entry--link {
-      display: none; } }
-
-.contest__entry--btn {
-  display: inline-block;
-  line-height: 1;
-  padding: 0.5em 1em;
-  margin-right: .5em;
-  outline: none;
-  background-color: #d22228;
-  border: 1px solid #d22228;
-  font-family: "Open Sans", sans-serif;
-  font-size: 1.125em;
-  color: #ffffff !important;
-  text-transform: uppercase;
-  cursor: pointer;
-  border-radius: 100em;
-  width: 100%;
-  text-transform: uppercase;
-  text-align: center; }
-  .contest__entry--btn:hover, .contest__entry--btn:focus {
-    background-color: #aa1c20;
-    border-color: #aa1c20;
-    color: #ffffff; }
-  .contest__entry--btn:last-of-type {
-    margin-right: 0; }
-
-.contest__entry--btn:hover {
-  display: inline-block;
-  line-height: 1;
-  padding: 0.5em 1em;
-  margin-right: .5em;
-  outline: none;
-  background-color: #f5ed7f;
-  border: 1px solid #f5ed7f;
-  font-family: "Open Sans", sans-serif;
-  font-size: 1.125em;
-  color: #000000 !important;
-  text-transform: uppercase;
-  cursor: pointer;
-  border-radius: 100em; }
-  .contest__entry--btn:hover:hover, .contest__entry--btn:hover:focus {
-    background-color: #f2e754;
-    border-color: #f2e754;
-    color: #000000; }
-  .contest__entry--btn:hover:last-of-type {
-    margin-right: 0; }
-
-.contest__entry--btn:active {
-  display: inline-block;
-  line-height: 1;
-  padding: 0.5em 1em;
-  margin-right: .5em;
-  outline: none;
-  background-color: #000000;
-  border: 1px solid #000000;
-  font-family: "Open Sans", sans-serif;
-  font-size: 1.125em;
-  color: #ffffff !important;
-  text-transform: uppercase;
-  cursor: pointer;
-  border-radius: 100em; }
-  .contest__entry--btn:active:hover, .contest__entry--btn:active:focus {
-    background-color: black;
-    border-color: black;
-    color: #ffffff; }
-  .contest__entry--btn:active:last-of-type {
-    margin-right: 0; }
-
-.contest__description {
-  margin-bottom: 40px; }
+@media screen and (min-width: 1024px) {
+  .contest__entry--link {
+    display: none; } }
 
 .contest__description:last-of-type {
   margin-bottom: 0; }
 
 .contest__prize--title {
-  margin: 0 0 18px;
+  margin: 0 0 .25em;
   font-family: "Droid Sans", sans-serif;
   font-size: 1.60181em;
   color: #d22228; }
@@ -6717,7 +6654,6 @@ category: Components - Ads
   text-transform: uppercase;
   cursor: pointer;
   border-radius: 100em;
-  width: 100%;
   text-transform: uppercase; }
   .contest__form button[type="submit"]:hover, .contest__form button[type="submit"]:focus,
   .contest__form input[type="submit"]:hover,
