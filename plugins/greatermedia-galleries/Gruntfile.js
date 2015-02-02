@@ -8,10 +8,10 @@ module.exports = function (grunt) {
 			},
 			gmr_gallery: {
 				src: [
-					'assets/js/vendor/cycle2/jquery.cycle2.min.js',
-					'assets/js/vendor/cycle2/jquery.cycle2.center.min.js',
-					'assets/js/vendor/cycle2/jquery.cycle2.swipe.min.js',
-					'assets/js/vendor/cycle2/jquery.cycle2.carousel.min.js',
+					'assets/js/vendor/cycle2/jquery.cycle2.js',
+					'assets/js/vendor/cycle2/jquery.cycle2.center.js',
+					'assets/js/vendor/cycle2/jquery.cycle2.swipe.js',
+					'assets/js/vendor/cycle2/jquery.cycle2.carousel.js',
 					'assets/js/src/gmr_gallery.js'
 				],
 				dest: 'assets/js/gmr_gallery.js'

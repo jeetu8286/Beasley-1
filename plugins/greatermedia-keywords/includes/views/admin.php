@@ -60,17 +60,19 @@ $options = self::get_keyword_options( $this::$plugin_slug . '_option_name' );
 								<label for="tag-name">Linked Post</label>
 								<p>
 								<div class="post-search">
-										<p>Search for a post:</p>
+									<p>Search for content or choose from the most recent</p>
 										<input type="text" id="linked_content_search" size="25" autocomplete="off" class="post-search__search-field regular-text" />
 										<span class="spinner"></span>
-									
 
 									<ul class="post-search__list regular-text"></ul>
 
 									<script type="text/template" class="post-search__list-item-template">
 									<li class="post-search__list-item">
-									<input type="radio" name="linked_content" value="<%= id %>" id="linked_content_item_<%= id %>" />
-									<label for="linked_content_item_<%= id %>"><%= title %></label>
+									<input class="post-search__list-item-input" type="radio" name="linked_content" value="<%= id %>" id="linked_content_item_<%= id %>" />
+									<label for="linked_content_item_<%= id %>">
+									<span class="linked_content_label"><%= title %></span>
+									<span class="post_type"><%= post_type %></span>
+									</label>
 									</li>
 									</script>
 

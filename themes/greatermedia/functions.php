@@ -684,6 +684,14 @@ function add_ie_stylesheet() {
 add_action( 'wp_head', 'add_ie_stylesheet' );
 
 /**
+ * Hide live player sidebar
+ */
+add_action( 'gmlp_player_popup_template', 'greatermedia_popup_payer_hide_livesidebar' );
+function greatermedia_popup_payer_hide_livesidebar(){
+	add_filter( 'load_greatermedia_livepress_sidebar', '__return_false' );
+}
+
+/**
  * Create a nicely formatted and more specific title element text for output
  * in head of document, based on current view.
  *
@@ -787,3 +795,139 @@ function greatermedia_image_caption_override( $empty, $attr, $content ) {
 
 }
 add_filter( 'img_caption_shortcode', 'greatermedia_image_caption_override', null, 3 );
+
+function post_type_caps( $post_type, $args ) {
+	global $wp_post_types;
+
+	$types_to_add = array(
+		GMR_LIVE_LINK_CPT,
+		'gmr_gallery',
+		'gmr_album',
+		'contest',
+		'survey',
+		'show',
+		'podcast',
+		'episode',
+		'cdvertiser',
+		'gmr_closure',
+		'content-kit',
+		'member_query',
+		'subscription',
+		);
+	
+	if( !in_array( $post_type, $types_to_add ) ) {
+		return;
+	}
+
+	$args->capability_type = $post_type;
+    $args->map_meta_cap = true;
+
+    $args->cap = array(
+			'edit_post' => 'edit_' . $post_type,
+            'read_post' => 'read_' . $post_type,
+            'delete_post' => 'delete_' . $post_type,
+            'edit_posts' => 'edit_' . $post_type . 's',
+            'edit_others_posts' => 'edit_others_' . $post_type . 's',
+            'publish_posts' => 'publish_' . $post_type . 's',
+            'read_private_posts' => 'read_private_' . $post_type . 's',
+            'read' => 'read',
+            'delete_posts' => 'delete_'  . $post_type . 's',
+            'delete_private_posts' => 'delete_private_'  . $post_type . 's',
+            'delete_published_posts' => 'delete_published_' . $post_type . 's',
+            'delete_others_posts' => 'delete_others_' . $post_type . 's',
+            'edit_private_posts' => 'edit_private_' . $post_type . 's',
+            'edit_published_posts' => 'edit_published_' . $post_type . 's',
+            'create_posts' => 'edit_' . $post_type . 's',
+    	);
+    $args->cap = (object) $args->cap;
+    // Modify post type object
+    $wp_post_types[$post_type] = $args;
+
+}
+add_action( 'registered_post_type', 'post_type_caps', 10, 2 );
+/**
+ * Returns menu hash based on its arguments.
+ *
+ * @param array $args The array of menu arguments.
+ * @return string The menu hash.
+ */
+function _greatermedia_get_menu_hash( $args ) {
+	$_args = (array) $args;
+
+	// let's unset walker, because it might affect hash results.
+	unset( $_args['walker'] );
+	// let's sort args by key
+	ksort( $_args );
+
+	return sha1( serialize( $_args ) );
+}
+
+/**
+ * Returns cached menu if available.
+ *
+ * @param mixed $menu The default menu.
+ * @param array $args The array of menu arguments.
+ * @return mixed Cached menu if available, otherwise default menu.
+ */
+function greatermedia_get_cached_mega_menu( $menu, $args ) {
+	$hash = _greatermedia_get_menu_hash( $args );
+	$cached_menus = get_transient( 'gmr_mega_menus' );
+	if ( ! is_array( $cached_menus ) ) {
+		return $menu;
+	}
+
+	return ! empty( $cached_menus[ $hash ] ) ? $cached_menus[ $hash ] : $menu;
+}
+add_filter( 'pre_wp_nav_menu', 'greatermedia_get_cached_mega_menu', 10, 2 );
+
+/**
+ * Caches newly generated menu.
+ *
+ * @param string $menu The menu markup to cache.
+ * @param array $args The array of menu arguments.
+ * @return string The menu markup.
+ */
+function greatermedia_cache_mega_menu( $menu, $args ) {
+	$hash = _greatermedia_get_menu_hash( $args );
+	$cached_menus = get_transient( 'gmr_mega_menus' );
+	if ( ! is_array( $cached_menus ) ) {
+		$cached_menus = array();
+	}
+
+	$cached_menus[ $hash ] = $menu;
+	set_transient( 'gmr_mega_menus', $cached_menus );
+	
+	return $menu;
+}
+add_filter( 'wp_nav_menu', 'greatermedia_cache_mega_menu', 100, 2 );
+
+/**
+ * Clears cached menus.
+ */
+function greatermedia_clear_mega_menu_cache() {
+	delete_transient( 'gmr_mega_menus' );
+}
+add_action( 'wp_create_nav_menu', 'greatermedia_clear_mega_menu_cache' );
+add_action( 'wp_update_nav_menu', 'greatermedia_clear_mega_menu_cache' );
+add_action( 'wp_delete_nav_menu', 'greatermedia_clear_mega_menu_cache' );
+add_action( 'wp_update_nav_menu_item', 'greatermedia_clear_mega_menu_cache' );
+add_action( 'save_post_nav_menu_item', 'greatermedia_clear_mega_menu_cache' );
+
+/**
+ * Clears cached menus when locations have been changed.
+ */
+function greatermedia_clear_mega_menu_cache_on_locations_change( $value ) {
+	greatermedia_clear_mega_menu_cache();
+	return $value;
+}
+add_filter( 'pre_set_theme_mod_nav_menu_locations', 'greatermedia_clear_mega_menu_cache_on_locations_change' );
+
+/**
+ * Clears cached menus.
+ */
+function greatermedia_clear_mega_menu_cache_on_menu_item_delete( $post_id = false ) {
+	if ( 'nav_menu_item' == get_post_type( $post_id ) ) {
+		greatermedia_clear_mega_menu_cache();
+	}
+}
+add_action( 'delete_post', 'greatermedia_clear_mega_menu_cache_on_menu_item_delete' );

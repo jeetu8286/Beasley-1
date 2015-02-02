@@ -7,6 +7,7 @@
  * conditionals were added that would use `attachEvent` if `addEventListener` is not supported. A custom function --
  * `addEventHandler` -- that will handle the switch is also being used throughout.
  */
+/* global: gigya_profile_path */
 (function ($, window, undefined) {
 	"use strict";
 
@@ -41,7 +42,7 @@
 	var nowPlaying = document.getElementById('live-stream__now-playing');
 	var listenLogin = document.getElementById('live-stream__login');
 	var $trackInfo = $(document.getElementById('trackInfo'));
-	var gigyaLogin = gmr.homeUrl + "members/login";
+	var gigyaLogin = gigya_profile_path('login');
 	var clearDebug = document.getElementById('clearDebug');
 	var adBlockCheck = document.getElementById('ad-check');
 	var adBlockClose = document.getElementById('close-adblock');
@@ -52,6 +53,7 @@
 	var nowPlayingInfo = document.getElementById('nowPlaying');
 	var trackInfo = document.getElementById('trackInfo');
 	var liveStreamSelector = document.querySelector('.live-player__stream');
+	var playerPopupWindow = null;
 
 	/**
 	 * global variables for event types to use in conjunction with `addEventHandler` function
@@ -85,7 +87,11 @@
 	 */
 	window.tdPlayerApiReady = function () {
 		console.log("--- TD Player API Loaded ---");
-		initPlayer();
+		if ( is_player_popup_required() ){
+			load_player_popup();
+		} else {
+			initPlayer();
+		}
 	};
 
 	function calcTechPriority() {
@@ -370,6 +376,7 @@
 		if (livePlayer != null) {
 			livePlayer.classList.add('live-player--heartbeat');
 		}
+		console.log('--- Heartbeat Class Added ---');
 	}
 
 	function removePlayBtnHeartbeat() {
@@ -379,6 +386,7 @@
 		if (livePlayer != null && livePlayer.classList.contains('live-player--heartbeat')) {
 			livePlayer.classList.remove('live-player--heartbeat');
 		}
+		console.log('--- Heartbeat Class Removed ---');
 	}
 
 	var listenLiveStopCustomInlineAudio = function() {
@@ -1183,81 +1191,19 @@
 
 		$("#asyncData").html("<div>" + tableContent + "</div>");
 	}
-
-	function playRunSpotAd() {
-		detachAdListeners();
-		attachAdListeners();
-
-		player.stop();
-		player.skipAd();
-		player.playAd('vastAd', {sid: 8441});
-	}
-
-	function playRunSpotAdById() {
-		if ($("#runSpotId").val() === '') {
-			return;
-		}
-
-		detachAdListeners();
-		attachAdListeners();
-
-		player.stop();
-		player.skipAd();
-		player.playAd('vastAd', {sid: $("#runSpotId").val()});
-	}
-
-	function playVastAd() {
-		detachAdListeners();
-		attachAdListeners();
-
-		player.stop();
-		player.skipAd();
-		player.playAd('vastAd', {url: 'http://runspot4.tritondigital.com/RunSpotV4.svc/GetVASTAd?&StationID=8441&MediaFormat=21&RecordImpressionOnCall=false&AdMinimumDuration=0&AdMaximumDuration=900&AdLevelPlacement=1&AdCategory=1'});
-	}
-
-	function playVastAdByUrl() {
-		if ($("#vastAdUrl").val() === '') {
-			return;
-		}
-
-		detachAdListeners();
-		attachAdListeners();
-
-		player.stop();
-		player.skipAd();
-		player.playAd('vastAd', {url: $("#vastAdUrl").val()});
-	}
-
-	function playBloomAd() {
-		detachAdListeners();
-		attachAdListeners();
-
-		player.stop();
-		player.skipAd();
-		player.playAd('bloom', {id: 4974});
-	}
-
-	function playMediaAd() {
-		detachAdListeners();
-		attachAdListeners();
-
-		player.stop();
-		player.skipAd();
-		//player.playAd( 'mediaAd', { mediaUrl: 'http://cdnp.tremormedia.com/video/acudeo/Carrot_400x300_500kb.flv', linkUrl:'http://www.google.fr/' } );
-		player.playAd('mediaAd', {mediaUrl: 'http://vjs.zencdn.net/v/oceans.mp4', linkUrl: 'http://www.google.fr/'});
-	}
+	
 
 	function attachAdListeners() {
 		if (player.addEventListener){
 			player.addEventListener('ad-playback-start', onAdPlaybackStart);
-			player.addEventListener('ad-playback-error', adError);
+			//player.addEventListener('ad-playback-error', adError); @todo uncomment these after Triton tests
 			player.addEventListener('ad-playback-complete', onAdPlaybackComplete);
 			player.addEventListener('ad-countdown', onAdCountdown);
 			player.addEventListener('vast-process-complete', onVastProcessComplete);
 			player.addEventListener('vpaid-ad-companions', onVpaidAdCompanions);
 		} else if (player.attachEvent) {
 			player.attachEvent('ad-playback-start', onAdPlaybackStart);
-			player.attachEvent('ad-playback-error', adError);
+			//player.attachEvent('ad-playback-error', adError);
 			player.attachEvent('ad-playback-complete', onAdPlaybackComplete);
 			player.attachEvent('ad-countdown', onAdCountdown);
 			player.attachEvent('vast-process-complete', onVastProcessComplete);
@@ -1268,14 +1214,14 @@
 	function detachAdListeners() {
 		if (player.removeEventListener){
 			player.removeEventListener('ad-playback-start', onAdPlaybackStart);
-			player.removeEventListener('ad-playback-error', adError);
+			//player.removeEventListener('ad-playback-error', adError);
 			player.removeEventListener('ad-playback-complete', onAdPlaybackComplete);
 			player.removeEventListener('ad-countdown', onAdCountdown);
 			player.removeEventListener('vast-process-complete', onVastProcessComplete);
 			player.removeEventListener('vpaid-ad-companions', onVpaidAdCompanions);
 		} else if (player.detachEvent) {
 			player.detachEvent('ad-playback-start', onAdPlaybackStart);
-			player.detachEvent('ad-playback-error', adError);
+			//player.detachEvent('ad-playback-error', adError);
 			player.detachEvent('ad-playback-complete', onAdPlaybackComplete);
 			player.detachEvent('ad-countdown', onAdCountdown);
 			player.detachEvent('vast-process-complete', onVastProcessComplete);
@@ -1708,5 +1654,21 @@
 		addEventHandler(podcastPlayBtn,elemClick,setInlineAudioUX);
 		addEventHandler(podcastPauseBtn,elemClick,pauseCustomInlineAudio);
 	});
-
+	
+	function is_player_popup_required() {
+		/** For testing return true **/
+		return ( "undefined" !== typeof Modernizr  && false === Modernizr.history && "" === gmlp.is_popup );
+	}
+	
+	function load_player_popup(){
+		jQuery('#playButton').click(function(){
+			if ( playerPopupWindow == null || playerPopupWindow.closed) {
+				//create new, since none is open
+				playerPopupWindow = window.open(gmlp.popup_url, "livestreaming", "toolbar=no, scrollbars=no, resizable=no, top=500, left=500, width=400, height=400");
+			} else {
+				playerPopupWindow.focus();
+			}
+		});
+		
+	}
 })(jQuery, window);

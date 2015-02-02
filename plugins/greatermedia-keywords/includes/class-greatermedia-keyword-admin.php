@@ -277,9 +277,11 @@ class GreaterMedia_Keyword_Admin {
 		) );
 
 		foreach ( $posts as $post ) {
+			$post_type_obj = get_post_type_object( $post->post_type );
 			$res[] = array(
 				'id' => (int) $post->ID,
 				'title' => $post->post_title,
+				'post_type' => strtoupper( $post_type_obj->labels->singular_name ),
 			);
 		}
 
