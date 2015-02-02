@@ -1186,81 +1186,19 @@
 
 		$("#asyncData").html("<div>" + tableContent + "</div>");
 	}
-
-	function playRunSpotAd() {
-		detachAdListeners();
-		attachAdListeners();
-
-		player.stop();
-		player.skipAd();
-		player.playAd('vastAd', {sid: 8441});
-	}
-
-	function playRunSpotAdById() {
-		if ($("#runSpotId").val() === '') {
-			return;
-		}
-
-		detachAdListeners();
-		attachAdListeners();
-
-		player.stop();
-		player.skipAd();
-		player.playAd('vastAd', {sid: $("#runSpotId").val()});
-	}
-
-	function playVastAd() {
-		detachAdListeners();
-		attachAdListeners();
-
-		player.stop();
-		player.skipAd();
-		player.playAd('vastAd', {url: 'http://runspot4.tritondigital.com/RunSpotV4.svc/GetVASTAd?&StationID=8441&MediaFormat=21&RecordImpressionOnCall=false&AdMinimumDuration=0&AdMaximumDuration=900&AdLevelPlacement=1&AdCategory=1'});
-	}
-
-	function playVastAdByUrl() {
-		if ($("#vastAdUrl").val() === '') {
-			return;
-		}
-
-		detachAdListeners();
-		attachAdListeners();
-
-		player.stop();
-		player.skipAd();
-		player.playAd('vastAd', {url: $("#vastAdUrl").val()});
-	}
-
-	function playBloomAd() {
-		detachAdListeners();
-		attachAdListeners();
-
-		player.stop();
-		player.skipAd();
-		player.playAd('bloom', {id: 4974});
-	}
-
-	function playMediaAd() {
-		detachAdListeners();
-		attachAdListeners();
-
-		player.stop();
-		player.skipAd();
-		//player.playAd( 'mediaAd', { mediaUrl: 'http://cdnp.tremormedia.com/video/acudeo/Carrot_400x300_500kb.flv', linkUrl:'http://www.google.fr/' } );
-		player.playAd('mediaAd', {mediaUrl: 'http://vjs.zencdn.net/v/oceans.mp4', linkUrl: 'http://www.google.fr/'});
-	}
+	
 
 	function attachAdListeners() {
 		if (player.addEventListener){
 			player.addEventListener('ad-playback-start', onAdPlaybackStart);
-			player.addEventListener('ad-playback-error', adError);
+			//player.addEventListener('ad-playback-error', adError); @todo uncomment these after Triton tests
 			player.addEventListener('ad-playback-complete', onAdPlaybackComplete);
 			player.addEventListener('ad-countdown', onAdCountdown);
 			player.addEventListener('vast-process-complete', onVastProcessComplete);
 			player.addEventListener('vpaid-ad-companions', onVpaidAdCompanions);
 		} else if (player.attachEvent) {
 			player.attachEvent('ad-playback-start', onAdPlaybackStart);
-			player.attachEvent('ad-playback-error', adError);
+			//player.attachEvent('ad-playback-error', adError);
 			player.attachEvent('ad-playback-complete', onAdPlaybackComplete);
 			player.attachEvent('ad-countdown', onAdCountdown);
 			player.attachEvent('vast-process-complete', onVastProcessComplete);
@@ -1271,14 +1209,14 @@
 	function detachAdListeners() {
 		if (player.removeEventListener){
 			player.removeEventListener('ad-playback-start', onAdPlaybackStart);
-			player.removeEventListener('ad-playback-error', adError);
+			//player.removeEventListener('ad-playback-error', adError);
 			player.removeEventListener('ad-playback-complete', onAdPlaybackComplete);
 			player.removeEventListener('ad-countdown', onAdCountdown);
 			player.removeEventListener('vast-process-complete', onVastProcessComplete);
 			player.removeEventListener('vpaid-ad-companions', onVpaidAdCompanions);
 		} else if (player.detachEvent) {
 			player.detachEvent('ad-playback-start', onAdPlaybackStart);
-			player.detachEvent('ad-playback-error', adError);
+			//player.detachEvent('ad-playback-error', adError);
 			player.detachEvent('ad-playback-complete', onAdPlaybackComplete);
 			player.detachEvent('ad-countdown', onAdCountdown);
 			player.detachEvent('vast-process-complete', onVastProcessComplete);

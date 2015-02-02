@@ -8,6 +8,7 @@ class AffinityClub {
 	public $other_count;
 	public $member_groups;
 	public $members;
+	public $errors;
 
 	public $member_group_ids = array(
 		'@Work Network Newsletter' => '2196755',
@@ -21,14 +22,19 @@ class AffinityClub {
 		'@Work Network Newsletter' => 'workNetworkGroup',
 		"MGK's Discount Deal"      => 'discountDealGroup',
 		'Birthday Greetings'       => 'birthdayGreetingsGroup',
-		'Listener Appreciation'    => '',
-		'Hidden Group'             => '',
+		'Listener Appreciation'    => 'listenerAppreciationGroup',
+		'Hidden Group'             => 'hiddenGroup1',
 	);
 
 	function parse( $node ) {
 		if ( $node->hasChildNodes() ) {
+			$this->errors = array();
 			$this->parse_nodes( $node );
 		}
+	}
+
+	function has_errors() {
+		return count( $this->errors ) > 0;
 	}
 
 	function parse_nodes( $node ) {
@@ -76,21 +82,33 @@ class AffinityClub {
 		$this->other_count  = intval( $attr->getNamedItem( 'OtherCount' )->nodeValue );
 		$members            = array();
 		$child_node         = $node->firstChild;
-		$real_count = 0;
+		$real_count         = 0;
 
 		while ( ! is_null( $child_node ) ) {
 			if ( $child_node->nodeName === 'Member' ) {
-				$member = new Member( $this );
-				$member->parse( $child_node );
+				try {
+					$member = new Member( $this );
+					$member->parse( $child_node );
 
-				if ( $member->is_active() && ! $member->is_facebook_member() ) {
-					$members[] = $member;
-					$real_count++;
+					if ( $member->is_active() ) {
+						$members[] = $member;
+						$real_count++;
 
-					// WARNING: For debugging only
-					if ( $real_count > 1000 ) {
-						//break;
+						// WARNING: For debugging only
+						if ( $real_count > 1000 ) {
+							//break;
+						}
 					}
+				} catch ( \Exception $e ) {
+					$tempDoc = new \DOMDocument();
+					$tempDoc->preserveWhitespace = false;
+					$tempDoc->formatOutput       = true;
+					$tempDoc->importNode( $child_node, true );
+
+					$this->errors[] = array(
+						'reason' => $e->getMessage(),
+						'node' => $child_node->nodeValue,
+					);
 				}
 			}
 
@@ -106,9 +124,12 @@ class AffinityClub {
 			'accounts' => $this->export_accounts()
 		);
 
-		//error_log( print_r( $gigya_export, true ) );
-		//var_dump( $gigya_export );
-		return $gigya_export;
+		$result = array(
+			'data' => $gigya_export,
+			'errors' => $this->errors
+		);
+
+		return $result;
 	}
 
 	function export_accounts() {
