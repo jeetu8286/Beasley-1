@@ -5568,8 +5568,7 @@ category: Components
     margin-top: 43px; }
     @media screen and (min-width: 480px) {
       .live-player--open .live-links {
-        max-height: 35vh;
-        overflow: hidden; } }
+        max-height: 35vh; } }
 
 .live-link__song:before, .live-link__type--audio:before, .live-link__type--gallery:before, .live-link__type--image:before, .live-link__type--link:before, .live-link__type--standard:before, .live-link__type--video:before {
   width: 0;
