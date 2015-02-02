@@ -138,21 +138,26 @@ category: Components
 	z-index: 100;
 }
 
-.live-player--open .live-player:after {
-	position: absolute;
-	bottom: 0;
-	left: 0;
+// container for the live stream section of the live player
+.live-stream {
+	display: block;
 	width: 100%;
-	height: 40px;
-	background: -moz-linear-gradient(top,rgba(0,0,0,0) 0%,rgba(0,0,0,.7) 100%);
-	background: -webkit-gradient(linear,left top,left bottom,color-stop(0%,rgba(0,0,0,0)),color-stop(100%,rgba(0,0,0,.7)));
-	background: -webkit-linear-gradient(top,rgba(0,0,0,0) 0%,rgba(0,0,0,.7) 100%);
-	background: -o-linear-gradient(top,rgba(0,0,0,0) 0%,rgba(0,0,0,.7) 100%);
-	background: -ms-linear-gradient(top,rgba(0,0,0,0) 0%,rgba(0,0,0,.7) 100%);
-	background: linear-gradient(to bottom,rgba(0,0,0,0) 0%,rgba(0,0,0,.7) 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#000000', endColorstr='#000000', GradientType=0);
-	content: " ";
-	z-index: 100;
+	overflow: auto;
+	background-color: $liveplayer-bg;
+
+	@include bp(medium) {
+		width: 225px;
+	}
+
+	&.live-stream--fixed {
+		position: fixed;
+		top: 0;
+		z-index: 20;
+
+		.logged-in & {
+			top: 32px;
+		}
+	}
 }
 
 // Select List to choose a stream
@@ -197,6 +202,11 @@ category: Components
 	&.full__width {
 		width: 90%;
 	}
+}
+#popup-player-livestream .live-player__stream{
+  position: relative;
+  display: block;
+  top: auto;
 }
 
 .live-player__stream li {
@@ -331,6 +341,13 @@ category: Components
 	}
 }
 
+#popup-player-livestream .live-player__container{
+    margin: 1em 0 0;
+    overflow: visible;
+}
+
+/**
+ * @todo look into deleting this
 .live-stream {
 	float: right;
 	width: 14.375%; // 46px
@@ -346,6 +363,14 @@ category: Components
 	&.audio__playing {
 		padding-top: 0;
 	}
+}
+**/
+
+#popup-player-livestream .live-stream{
+  float: none;
+  width: auto;
+  padding: 23px 0 1em;
+  text-align: center;
 }
 
 .live-stream__player {
@@ -375,6 +400,9 @@ category: Components
 			padding: 0 0 23px;
 		}
 	}
+}
+#popup-player-livestream .live-stream__player{
+  padding-bottom: 23px;
 }
 
 .live-stream__player.open {
@@ -416,7 +444,10 @@ category: Components
 		}
 	}
 }
-
+#popup-player-livestream .live-stream__status{
+  display: block;
+  height: 23px;
+}
 .live-stream__listen-now--btn {
 	display: none;
 
@@ -522,7 +553,10 @@ category: Components
 		z-index: initial;
 	}
 }
-
+#popup-player-livestream %live-stream__btn{
+  width: 54px;
+  height: 54px;
+}
 .live-stream__btn--label {
 	position: absolute !important;
 	clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
@@ -533,6 +567,9 @@ category: Components
 	@include bp(medium) {
 		padding-bottom: 22px;
 	}
+}
+#popup-player-livestream .live-stream__login--actions{
+  padding-bottom: 23px;
 }
 
 .live-stream__btn--login  {
@@ -620,7 +657,8 @@ category: Components
 
 	&.live-player__login {
 		display: block;
-		border-color: $btn-inactive;
+		border: 1px solid $btn-inactive;
+		background-color: transparent;
 		color: $btn-inactive;
 		@include transform(rotateX(0deg));
 		@include transform-style(preserve-3d);
@@ -658,6 +696,8 @@ category: Components
 	visibility: hidden;
 	float: left;
 	@include transition(all 500ms ease-in-out 500ms);
+	background: $btn-bg;
+	color: $liveplayer-bg;
 
 	@include bp(medium) {
 		float: none;
@@ -827,7 +867,7 @@ category: Components
 		float: none;
 		width: auto;
 		padding: 23px 0 0;
-		text-align: center;
+	text-align: center;
 	}
 
 	&.audio__playing {
@@ -863,7 +903,16 @@ category: Components
 		margin: 0;
 		text-align: center;
 	}
-
+#popup-player-livestream {
+  .on-air, .up-next{
+    float: none;
+    width: 100%;
+    height: 48px;
+    padding: 0 1em;
+    margin: 0;
+    text-align: center;
+  }
+}
 	.live-player__container.playing & {
 		display: none;
 
@@ -918,6 +967,12 @@ category: Components
 			display: none;
 		}
 	}
+}
+#popup-player-livestream{
+  .on-air__title, .up-next__title {
+    margin-right: .25em;
+    font-size: ms(-3);
+  }
 }
 
 .on-air__show, .up-next__show {
@@ -984,7 +1039,15 @@ category: Components
 		}
 	}
 }
-
+#popup-player-livestream .now-playing {
+  display: block;
+  float: none;
+  width: 100%;
+  height: auto;
+  padding: 0 1em;
+  margin: 1em 0 0;
+  text-align: center;
+}
 .now-playing__info {
 
 	.now-playing.playing &, .live-player--active & {
@@ -1021,6 +1084,9 @@ category: Components
 		}
 	}
 }
+#popup-player-livestream .now-playing__title{
+  font-size: ms(1);
+}
 
 .now-playing__artist {
 	line-height: 1;
@@ -1032,6 +1098,9 @@ category: Components
 		font-size: ms(-2);
 	}
 }
+#popup-player-livestream .now-playing__artist{
+  font-size: ms(-2);
+}
 
 // volume controls and level
 .live-player__volume {
@@ -1041,6 +1110,11 @@ category: Components
 		width: 95%;
 		margin: 0 2.5%;
 	}
+}
+#popup-player-livestream .live-player__volume {
+  display: block;
+  width: 95%;
+  margin: 0 2.5%;
 }
 
 .live-player__volume--btn {
@@ -1109,7 +1183,7 @@ category: Components
 	display: block;
 	float: right;
 	width: 34px;
-	height: 58px;
+	height: 57px;
 	padding-top: 8px;
 	line-height: 1;
 	font-size: ms(6);
@@ -1127,29 +1201,44 @@ category: Components
 	padding: 16px 0 0;
 	background-color: $liveplayer-bg;
 	text-align: center;
+	overflow: hidden;
+	overflow-y: auto;
+
 	@include bp(medium) {
 		visibility: visible;
 		display: block;
 		height: 100%;
 		margin: 0;
+		overflow: hidden;
 		border-top: 1px solid $secondary-border;
+	}
+
+	.live-player--open & {
+		visibility: visible;
+		display: block;
+		height: auto !important;
+		max-height: 48vh;
+		margin-top: 43px;
+		@include bp(small) {
+			max-height: 35vh;
+		}
 	}
 }
 
-.live-player--open .live-links {
-	visibility: visible;
-	display: block;
-	height: auto !important;
-	max-height: 48vh;
-	margin-top: 43px;
-	overflow: hidden;
-	overflow-y: scroll;
-	@include bp(small) {
-		max-height: 35vh;
-		overflow: hidden;
-		overflow-y: scroll;
-		-webkit-touch-overflow:scroll
-	}
+#popup-player-livestream .live-links{
+  display: block;
+  height: 100%;
+  padding-right: 1em;
+  padding-left: 1em;
+  margin: 16px 0 0;
+  overflow: hidden;
+  overflow-y: scroll;
+}
+#popup-player-livestream .live-player--open .live-links{
+  max-height: 35vh;
+  overflow: hidden;
+  overflow-y: scroll;
+  -webkit-touch-overflow:scroll
 }
 
 %live-link__icon {
@@ -1274,6 +1363,48 @@ category: Components
 
 .live-link__title a:hover, .live-link__title a:focus, .live-link__title a:active {
 	color: $primary-link-hover;
+}
+
+
+#popup-player-livestream .live-player {
+	position: inherit;
+	width: auto;
+	right: auto;
+}
+
+.live-links--more {
+	position: relative;
+	display: block;
+	width: 100%;
+	height: 40px;
+	background-color: $liveplayer-bg;
+	@include transition(all 500ms ease-in-out);
+
+	@include bp(medium) {
+		width: 225px;
+	}
+
+	&.show-more {
+		position: fixed;
+		bottom: 0;
+
+		&:before {
+			position: absolute;
+			bottom: 40px;
+			left: 0;
+			width: 100%;
+			height: 40px;
+			background: -webkit-linear-gradient(rgba(0, 0, 0, 0), rgb(0, 0, 0)); /* For Safari 5.1 to 6.0 */
+			background: -o-linear-gradient(rgba(0, 0, 0, 0), rgb(0, 0, 0)); /* For Opera 11.1 to 12.0 */
+			background: -moz-linear-gradient(rgba(0, 0, 0, 0), rgb(0, 0, 0)); /* For Firefox 3.6 to 15 */
+			background: linear-gradient(rgba(0, 0, 0, 0), rgb(0, 0, 0)); /* Standard syntax (must be last) */
+			content: "";
+		}
+	}
+}
+
+.live-links--more__btn {
+	@include btn($btn-bg, $color-text-white, $btn-bg, 0.5em, 1em, ms(-1));
 }
 
 .audio__time {
@@ -1486,4 +1617,20 @@ $heartbeat-rotation: rotate(0);
 	opacity: .5;
 	border-radius: 50%;
 	@include animation( heartbeat-pulse 3000ms ease-out 0ms infinite normal );
+}
+
+a.podcast__download--fallback, a.podcast__download--fallback:visited {
+	display: none;
+	width: 150px;
+	height: 40px;
+	margin-top: 6px;
+	padding-top: 6px;
+	background-color: $primary-link;
+	font-size: 14px;
+	color: white;
+	text-align: center;
+}
+
+a.podcast__download--fallback:hover, a.podcast__download--fallback:active {
+	background-color: $primary-link-hover;
 }
