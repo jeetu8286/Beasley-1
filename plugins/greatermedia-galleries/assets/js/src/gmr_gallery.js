@@ -26,7 +26,18 @@
 			function bind_events() {
 				var hashChange = false;
 	
-				slideshow = $gallery.find( '.gallery__slide--images.cycle-slideshow' );
+				slideshow = $gallery.find( '.gallery__slide--images' );
+				
+				// Don't enable the centering plugin on IE8. Note that removing 
+				// the attributes (instead of adding them) doesn't work. 
+				if ( ! $( 'html' ).hasClass( 'lt-ie9' ) ) {
+					slideshow.attr( 'data-cycle-center-horz', true );
+					slideshow.attr( 'data-cycle-center-vert', true ); 
+				}
+				
+				// Initialize the slideshow.
+				slideshow.cycle();
+				
 				$slide_paging_previews = $gallery.find( '.gallery__previews' );
 	
 				/**
