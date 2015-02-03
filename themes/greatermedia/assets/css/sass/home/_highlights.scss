@@ -91,10 +91,6 @@ Community Highlights and Events
 	background-color: $highlights-bg;
 	border-bottom: 1px solid darken( $highlights-bg, 3% );
 
-	@include bp(x-small) {
-		padding-bottom: 1em;
-	}
-
 	@include bp(medium) {
 		padding: $base-line-height * 2 $gutter * 2;
 	}
@@ -257,7 +253,7 @@ Community Highlights and Events
 	height: 100px;
 
 	@include bp(x-small) {
-		margin-bottom: 0.8em;
+		margin-bottom: .65em;
 	}
 
 	@include bp(small) {
@@ -329,6 +325,7 @@ Community Highlights and Events
 }
 
 .highlights__event--title {
+	font-family: $open-sans;
 	font-size: ms(0);
 	color: $medium-dark-gray;
 	margin: 0 0 .3em;
