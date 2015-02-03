@@ -341,17 +341,6 @@
 
 	addEventHandler(mobileNavButton, elemClick, toggleNavButton);
 
-	function closeMobileNav() {
-		if (body.classList.contains('mobile-nav--open')) {
-			pageWrap.addEventListener('click', function() {
-				body.classList.remove('mobile-nav--open');
-			}, false);
-		}
-	}
-
-	closeMobileNav();
-
-
 	/**
 	 * Toggles a target element.
 	 *
