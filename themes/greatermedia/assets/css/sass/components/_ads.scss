@@ -53,8 +53,13 @@ category: Components - Ads
 	margin: 0 auto;
 	text-align: center;
 
-	@include bp(medium) {
+	@include bp(large) {
 		float: right;
+		margin: 0 0 1em 1em;
+	}
+
+	@include bp(medium) {
+		float: none;
 		margin: 0 0 1em 1em;
 	}
 }
