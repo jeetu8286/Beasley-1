@@ -520,20 +520,24 @@
 	/**
 	 * global variables
 	 *
-	 * @type {HTMLElement}
+	 * @type {jQuery}
 	 */
 	var $ = jQuery;
 
 	var body = document.querySelector('body'),
 		html = document.querySelector('html'),
 		mobileNavButton = document.querySelector('.mobile-nav__toggle'),
+		siteWrap = document.getElementById('site-wrap'),
 		pageWrap = document.getElementById('page-wrap'),
 		header = document.getElementById('header'),
 		livePlayer = document.getElementById('live-player__sidebar'),
+		liveStreamContainer = document.querySelector('.live-stream'),
 		livePlayerStream = document.querySelector('.live-player__stream'),
 		livePlayerStreamSelect = document.querySelector('.live-player__stream--current'),
 		livePlayerCurrentName = livePlayerStreamSelect.querySelector('.live-player__stream--current-name'),
 		livePlayerStreams = livePlayerStreamSelect.querySelectorAll('.live-player__stream--item'),
+		liveLinksMoreBtn = document.querySelector('.live-links--more__btn'),
+		liveLinksEnd = document.getElementById('live-links__widget--end'),
 		wpAdminHeight = 32,
 		onAir = document.getElementById( 'on-air' ),
 		upNext = document.getElementById( 'up-next'),
@@ -542,13 +546,16 @@
 		liveLink = document.querySelector( '.live-link__title'),
 		liveLinksWidget = document.querySelector( '.widget--live-player' ),
 		liveLinksWidgetTitle = document.querySelector('.widget--live-player__title'),
+		liveLinksMore = document.querySelector('.live-links--more'),
 		liveStream = document.getElementById( 'live-player' ),
 		windowWidth = this.innerWidth || this.document.documentElement.clientWidth || this.document.body.clientWidth || 0,
+		windowHeight = this.innerHeight|| this.document.documentElement.clientHeight || this.document.body.clientHeight || 0,
 		scrollObject = {},
 		collapseToggle = document.querySelector('*[data-toggle="collapse"]'),
 		breakingNewsBanner = document.getElementById('breaking-news-banner'),
 		$overlay = $('.overlay-mask'),
-		livePlayerMore = document.getElementById('live-player--more');
+		livePlayerMore = document.getElementById('live-player--more'),
+		mainContent = document.querySelector('.main');
 
 	/**
 	 * function to dynamically calculate the offsetHeight of an element
@@ -578,6 +585,12 @@
 
 	function windowHeight(elem) {
 		return Math.max(document.documentElement.clientHeight, elem.innerHeight || 0);
+	}
+
+	function documentHeight() {
+		var html = document.documentElement;
+
+		return Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
 	}
 
 	function elementInViewport(elem) {
@@ -729,10 +742,99 @@
 	 * default height for the live player
 	 */
 	function lpPosDefault() {
-		if (livePlayer != null ) {
-			livePlayer.style.height = '100%';
+		if (livePlayer != null) {
+			if (body.classList.contains('logged-in')) {
+				livePlayer.style.top = wpAdminHeight + elemHeight(header) + 'px';
+			} else {
+				livePlayer.style.top = elemHeight(header) + 'px';
+			}
+		}
+
+	}
+
+	function lpHeight() {
+		if (livePlayer != null) {
+			livePlayer.style.height = elemHeight(siteWrap) - elemHeight(header) + 'px';
 		}
 	}
+
+	function liveLinksHeight() {
+		if (liveLinks != null) {
+			liveLinks.style.height = windowHeight - elemHeight(header) - elemHeight(liveStreamContainer) + 'px';
+		}
+	}
+
+	function liveLinksReadMore() {
+		if (liveLinksWidget != null && elemHeight(liveLinksWidget) >= windowHeight && ! elementInViewport(liveLinksEnd)) {
+			liveLinksMore.classList.add('show-more');
+		} else if (elementInViewport(liveLinksEnd) && liveLinksMore.classList.contains('show-more')) {
+			liveLinksMore.classList.remove('show-more');
+		}
+	}
+
+	function liveLinksScroll() {
+		var start = liveLinks.scrollTop,
+			to = windowHeight - elemHeight(header) - elemHeight(liveStreamContainer),
+			change = to - start,
+			currentTime = 0,
+			increment = 20,
+			duration = 500;
+
+		var animateScroll = function(){
+			currentTime += increment;
+			var val = Math.easeInOutQuad(currentTime, start, change, duration);
+			liveLinks.scrollTop = val;
+			if(currentTime < duration) {
+				setTimeout(animateScroll, increment);
+			}
+		};
+		animateScroll();
+	}
+
+	/**
+	 * Ease in and Out animation
+	 *
+	 * @param t = current time
+	 * @param b = start value
+	 * @param c = change in value
+	 * @param d = duration
+	 * @returns {*}
+	 */
+	Math.easeInOutQuad = function (t, b, c, d) {
+		t /= d/2;
+		if (t < 1) return c/2*t*t + b;
+		t--;
+		return -c/2 * (t*(t-2) - 1) + b;
+	};
+
+
+	/**
+     * Toggles a class to the Live Play Stream Select box when the box is clicked
+     */
+    function toggleStreamSelect() {
+        livePlayerStreamSelect.classList.toggle( 'open' );
+    }
+    addEventHandler(livePlayerStreamSelect,elemClick,toggleStreamSelect);
+
+    /**
+     * Selects a Live Player Stream
+     */
+    function selectStream() {
+        var selected_stream = this.querySelector( '.live-player__stream--name' ).textContent;
+
+        livePlayerCurrentName.textContent = selected_stream;
+        document.dispatchEvent( new CustomEvent( 'live-player-stream-changed', { 'detail': selected_stream } ) );
+    }
+
+    for ( var i = 0; i < livePlayerStreams.length; i++ ) {
+        addEventHandler(livePlayerStreams[i],elemClick,selectStream);
+    }
+    /**
+     * from Js Window resize script is not neccessary on popupPlayer window
+     */
+    if( document.getElementById( 'popup-player-livestream' ) ){
+        return;
+    }
 
 	/**
 	 * detects various positions of the screen on scroll to deliver states of the live player
@@ -755,14 +857,29 @@
 			};
 
 			if (scrollObject.y == 0) {
-				lpPosBase();
+				if (liveStreamContainer.classList.contains('live-stream--fixed')) {
+					liveStreamContainer.classList.remove('live-stream--fixed');
+				}
+
 			} else if (scrollObject.y >= 1 && elementInViewport(header)) {
-				lpPosScrollInit();
+				if (liveStreamContainer.classList.contains('live-stream--fixed')) {
+					liveStreamContainer.classList.remove('live-stream--fixed');
+				}
+				if(liveLinks != null) {
+					liveLinks.style.marginTop = '0px';
+				}
 			} else if (!elementInViewport(header)) {
-				lpPosNoHeader();
+				liveStreamContainer.classList.add('live-stream--fixed');
+				if(liveLinks != null) {
+					liveLinks.style.marginTop = elemHeight(liveStreamContainer) + 'px';
+				}
 			} else {
-				lpPosDefault();
+				if (liveStreamContainer.classList.contains('live-stream--fixed')) {
+					liveStreamContainer.classList.remove('live-stream--fixed');
+				}
 			}
+			lpHeight();
+			liveLinksReadMore();
 		}
 	}
 
@@ -944,11 +1061,14 @@
 	function resizeWindow() {
 		if (window.innerWidth <= 767) {
 			if (livePlayer != null) {
+				liveLinksReadMore();
 				livePlayerMobileReset();
 			}
 		} else {
 			if (livePlayer != null) {
 				livePlayerDesktopReset();
+				lpPosDefault();
+				liveLinksReadMore();
 				addEventHandler(window, elemScroll, function () {
 					scrollDebounce();
 					scrollThrottle();
@@ -969,14 +1089,15 @@
 	 * functions being run at specific window widths.
 	 */
 	if (window.innerWidth >= 768) {
-		addEventHandler(window, elemLoad, function () {
-			lpPosBase();
-		});
+		lpPosDefault();
+		lpHeight();
+		liveLinksReadMore();
 		addEventHandler(window, elemScroll, function () {
 			scrollDebounce();
 			scrollThrottle();
 		});
 	}
+
 
 	if (onAir != null) {
 		addEventHandler(onAir, elemClick, openLivePlayer);
@@ -1004,6 +1125,8 @@
 		resizeDebounce();
 		resizeThrottle();
 	});
+
+	liveLinksReadMore();
 
 	function init_menu_overlay() {
 		var $menu = jQuery(document.querySelector('.header__nav--list')),
@@ -1037,7 +1160,6 @@
 
 			return false;
 		});
-
 		$(document).ready(function() {
 			$('.article__content').fitVids({customSelector: "div[id^='playerwrapper']"});
 		});

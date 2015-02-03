@@ -668,7 +668,8 @@ img {
       -moz-transform: none;
       -ms-transform: none;
       -o-transform: none;
-      transform: none; } }
+      transform: none;
+      min-height: 800px; } }
 
 .container, .single-gmr_gallery .gallery .container {
   max-width: 100%;
@@ -736,7 +737,7 @@ img {
   @media screen and (min-width: 768px) {
     .live-player {
       position: absolute;
-      top: 252px;
+      top: 215px;
       bottom: auto;
       right: 0;
       left: auto;
@@ -758,20 +759,9 @@ img {
     -webkit-transition: all 200ms ease-in-out;
     -moz-transition: all 200ms ease-in-out;
     transition: all 200ms ease-in-out; }
-
-.live-player:after {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #f2f2f2;
-  content: "";
-  z-index: 10; }
-
-@media screen and (min-width: 782px) {
-  .logged-in .live-player {
-    top: 289px; } }
+  @media screen and (min-width: 782px) {
+    .logged-in .live-player {
+      top: 247px; } }
 
 .row {
   display: block; }
@@ -1573,14 +1563,25 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
     .has-excerpt .header__nav .format-fi .entry2__thumbnail:after {
       padding-top: 75%; }
 
-.format-fi .menu__featured-post--mobile a {
-  border-bottom: 1px solid #d0d2d3;
-  padding: 0;
-  margin: 18px 1.25em 0; }
-  .format-fi .menu__featured-post--mobile a:hover {
-    background-color: transparent; }
-    .format-fi .menu__featured-post--mobile a:hover p {
-      color: #aa1c20; }
+.format-fi .menu__featured-post--mobile {
+  float: left;
+  width: 100%; }
+  .format-fi .menu__featured-post--mobile a {
+    border-bottom: 1px solid #d0d2d3;
+    padding: 0;
+    margin: 18px 5% 0;
+    float: left;
+    width: 90%; }
+    @media screen and (min-width: 480px) {
+      .format-fi .menu__featured-post--mobile a {
+        padding-bottom: 20px;
+        margin: 18px 1.25em 0; } }
+    .format-fi .menu__featured-post--mobile a:hover {
+      background-color: transparent; }
+      .format-fi .menu__featured-post--mobile a:hover p {
+        color: #aa1c20; }
+  .format-fi .menu__featured-post--mobile + li {
+    clear: left; }
 
 .content__heading, .sponsors__heading {
   margin-top: 0;
@@ -8212,7 +8213,7 @@ category: Components - Shows
     clear: both; }
   .show__header.has-thumbnail {
     background-repeat: no-repeat;
-    background-size: 100%;
+    background-size: 100% auto;
     background-size: cover;
     background-position: center; }
   .show__header > div {
@@ -8227,13 +8228,20 @@ category: Components - Shows
       background-color: #561015;
       background-size: auto 65%; } }
 
+@media screen and (min-width: 1024px) {
+  .show__header-content {
+    display: table;
+    table-layout: fixed;
+    width: 100%; } }
+
 .show__cast {
   width: 100%;
   height: 100%; }
   @media screen and (min-width: 1024px) {
     .show__cast {
       width: 150px;
-      float: left; } }
+      display: table-cell;
+      vertical-align: middle; } }
   .show__cast img {
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
@@ -8246,6 +8254,8 @@ category: Components - Shows
 .show__nav {
   width: 100%;
   text-align: center; }
+  .show__nav .show__title {
+    line-height: 1.3; }
   .show__nav h1 a {
     color: #ffffff;
     text-transform: uppercase; }
@@ -8286,26 +8296,24 @@ category: Components - Shows
         margin: 0;
         width: 100%;
         list-style-type: none; } }
-  @media screen and (min-width: 1043px) {
+  @media screen and (min-width: 1024px) {
     .show__nav {
-      width: 53%;
-      float: left;
-      margin-top: 1.5em;
-      margin-bottom: 0;
+      width: auto;
+      display: table-cell;
+      vertical-align: middle;
       text-align: left;
-      padding-left: 3em; }
+      padding-left: 3em;
+      padding-right: 3em;
+      position: relative; }
       .show__nav .show__title {
         margin-top: 0;
-        margin-bottom: 0.6em; }
+        margin-bottom: 0; }
       .show__nav ul {
+        position: absolute;
         text-align: justify;
         margin-left: -9px;
-        width: auto; }
-      .show__nav ul:after {
-        content: "";
-        width: 100%;
-        display: inline-block;
-        height: 0; } }
+        padding-top: 8px;
+        width: auto; } }
 
 .show__nav--mobile {
   display: block;
@@ -8336,12 +8344,13 @@ category: Components - Shows
   width: 100%;
   text-align: center;
   float: none; }
-  @media screen and (min-width: 1043px) {
+  @media screen and (min-width: 1024px) {
     .show__meta {
-      width: 25%;
-      float: right;
-      text-align: right;
-      margin-top: 1.5em; } }
+      width: 180px;
+      white-space: nowrap;
+      display: table-cell;
+      vertical-align: middle;
+      text-align: right; } }
   .show__meta em {
     display: block;
     line-height: 1.5;
@@ -8891,9 +8900,7 @@ category: Components - Shows
 .widget--live-player {
   padding: 0;
   margin: 0 0 1em;
-  height: 100% !important;
-  overflow: hidden;
-  overflow-y: scroll; }
+  overflow: auto; }
   .live-player--open .widget--live-player {
     margin-bottom: 58px; }
 
@@ -9016,7 +9023,9 @@ a.social-share-link {
       -ms-transform: translate(0, -200%);
       -o-transform: translate(0, -200%);
       transform: translate(0, -200%);
-      /* 200% ensures it's out of the way of the .wp-admin bar */ }
+      /* 200% ensures it's out of the way of the .wp-admin bar */
+      z-index: 5000000;
+      /* IAB z-index standards for nav drop downs. Prevents an ad from being over top unless it's a full-screen ad */ }
       .logged-in .header__search--form {
         top: 32px; } }
 
@@ -12884,15 +12893,23 @@ category: Components
 .highlights__heading {
   color: #ffffff; }
 
-.audio__progress-bar {
-  background-color: #929497; }
-
 .type-contest .entry__title--tag {
   background-color: #d0d2d3;
   border-color: #d0d2d3; }
 
+.audio__progress-bar {
+  background-color: #929497; }
+
 .live-link__type--show {
   border-bottom-color: white;
   background: none; }
+
+.live-links--more.show-more:before {
+  background: -moz-linear-gradient(top, rgba(255, 255, 255, 0) 0%, #f2f2f2 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(255, 255, 255, 0), color-stop(100%, #f2f2f2)));
+  background: -webkit-linear-gradient(top, rgba(255, 255, 255, 0) 0%, #f2f2f2 100%);
+  background: -o-linear-gradient(top, rgba(255, 255, 255, 0) 0%, #f2f2f2 100%);
+  background: -ms-linear-gradient(top, rgba(255, 255, 255, 0) 0%, #f2f2f2 100%);
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, #f2f2f2 100%); }
 
 /*# sourceMappingURL=wmgk.css.map */
