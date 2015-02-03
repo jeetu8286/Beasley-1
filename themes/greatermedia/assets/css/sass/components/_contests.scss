@@ -235,6 +235,14 @@
 }
 
 .contest__form {
+
+	// These two declarations work together for consistent bottom margins
+	margin-bottom: 60px;
+	p.submit {
+		margin-bottom: 0;
+	}
+
+
 	fieldset {
 		legend,
 		label {
