@@ -258,7 +258,6 @@
 		element: document.getElementById('live-links__widget--end'),
 		entered: function(direction) {
 			if (direction === 'down') {
-				console.log('--- New Waypoint on Entry ---');
 				liveLinksMore.classList.remove('show-more');
 			}
 		}
@@ -268,12 +267,10 @@
 		element: document.getElementById('live-links__widget--end'),
 		exited: function(direction) {
 			if (direction === 'up') {
-				console.log('--- New Waypoint on Exit---');
 				liveLinksMore.classList.add('show-more');
 			}
 		}
 	});
-
 
 
 	function liveLinksReadMore() {
