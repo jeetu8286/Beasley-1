@@ -696,6 +696,8 @@ category: Components
 	visibility: hidden;
 	float: left;
 	@include transition(all 500ms ease-in-out 500ms);
+	background: $btn-bg;
+	color: $liveplayer-bg;
 
 	@include bp(medium) {
 		float: none;
@@ -1201,11 +1203,13 @@ category: Components
 	text-align: center;
 	overflow: hidden;
 	overflow-y: auto;
+
 	@include bp(medium) {
 		visibility: visible;
 		display: block;
 		height: 100%;
 		margin: 0;
+		overflow: hidden;
 		border-top: 1px solid $secondary-border;
 	}
 
@@ -1217,7 +1221,6 @@ category: Components
 		margin-top: 43px;
 		@include bp(small) {
 			max-height: 35vh;
-			overflow: hidden;
 		}
 	}
 }
