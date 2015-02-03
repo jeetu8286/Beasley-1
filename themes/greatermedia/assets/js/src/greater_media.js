@@ -254,19 +254,33 @@
 		}
 	}
 
-	var liveLinksInview = new Waypoint.Inview({
-		element: liveLinksEnd[0],
-		entered: function(down) {
-			liveLinksMore.classList.remove('show-more');
-		},
-		exited: function(up) {
-			liveLinksMore.classList.add('show-more');
+	var liveLinksIn = new Waypoint.Inview({
+		element: document.getElementById('live-links__widget--end'),
+		entered: function(direction) {
+			if (direction === 'down') {
+				console.log('--- New Waypoint on Entry ---');
+				liveLinksMore.classList.remove('show-more');
+			}
 		}
 	});
+
+	var liveLinksOut = new Waypoint.Inview({
+		element: document.getElementById('live-links__widget--end'),
+		exited: function(direction) {
+			if (direction === 'up') {
+				console.log('--- New Waypoint on Exit---');
+				liveLinksMore.classList.add('show-more');
+			}
+		}
+	});
+
+
 
 	function liveLinksReadMore() {
 		if (liveLinksWidget != null && elemHeight(liveLinksWidget) >= windowHeight) {
 			liveLinksMore.classList.add('show-more');
+			liveLinksIn();
+			liveLinksOut();
 		}
 	}
 
