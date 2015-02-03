@@ -21,8 +21,8 @@ category: Components - Ads
 	&.desktop { display: none; }
 	&.mobile {
 		display: block;
-		height: 60px;
-		padding: 5px 0;
+		height: 50px;
+		padding: 0;
 	}
 
 	@include bp(medium) {
@@ -51,6 +51,7 @@ category: Components - Ads
 .ad__inline--right {
 	float: none;
 	margin: 0 auto;
+	text-align: center;
 
 	@include bp(medium) {
 		float: right;
