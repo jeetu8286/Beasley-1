@@ -2594,6 +2594,7 @@ Community Highlights and Events
       padding-top: 4%; } }
 
 .highlights__event--title {
+  font-family: "Open Sans", sans-serif;
   font-size: 1em;
   color: #6d6e70;
   margin: 0 0 .3em;
