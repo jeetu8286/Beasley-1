@@ -766,7 +766,7 @@
 	}
 
 	function liveLinksReadMore() {
-		if (liveLinksWidget != null && elemHeight(liveLinksWidget) >= windowHeight && ! elementInViewport(liveLinksEnd)) {
+		if (liveLinksWidget != null && elemHeight(liveLinksWidget) >= windowHeight && ! elementInViewport(liveLinksEnd) ) {
 			liveLinksMore.classList.add('show-more');
 		} else if (elementInViewport(liveLinksEnd) && liveLinksMore.classList.contains('show-more')) {
 			liveLinksMore.classList.remove('show-more');
