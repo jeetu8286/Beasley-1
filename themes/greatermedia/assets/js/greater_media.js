@@ -765,11 +765,19 @@
 		}
 	}
 
-	function liveLinksReadMore() {
-		if (liveLinksWidget != null && elemHeight(liveLinksWidget) >= windowHeight && ! elementInViewport(liveLinksEnd) ) {
-			liveLinksMore.classList.add('show-more');
-		} else if (elementInViewport(liveLinksEnd) && liveLinksMore.classList.contains('show-more')) {
+	var liveLinksInview = new Waypoint.Inview({
+		element: liveLinksEnd[0],
+		entered: function(down) {
 			liveLinksMore.classList.remove('show-more');
+		},
+		exited: function(up) {
+			liveLinksMore.classList.add('show-more');
+		}
+	});
+
+	function liveLinksReadMore() {
+		if (liveLinksWidget != null && elemHeight(liveLinksWidget) >= windowHeight) {
+			liveLinksMore.classList.add('show-more');
 		}
 	}
 
