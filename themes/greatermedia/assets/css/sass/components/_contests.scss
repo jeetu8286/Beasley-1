@@ -336,6 +336,7 @@
 		position: relative;
 
 		a {
+			max-width: 49%;
 			position: absolute;
 			top: 15px;
 			right: 15px;
@@ -344,6 +345,7 @@
 		}
 
 		i {
+			max-width: 50%;
 			font-size: ms(-2);
 			line-height: 1em;
 			margin-bottom: 15px;

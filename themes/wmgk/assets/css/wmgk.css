@@ -6924,6 +6924,7 @@ category: Components - Ads
   position: relative; }
   .contest__form .contest__submission--entries a,
   .contest__form .contest__form--user-info a {
+    max-width: 49%;
     position: absolute;
     top: 15px;
     right: 15px;
@@ -6931,6 +6932,7 @@ category: Components - Ads
     line-height: 1em; }
   .contest__form .contest__submission--entries i,
   .contest__form .contest__form--user-info i {
+    max-width: 50%;
     font-size: 0.79012em;
     line-height: 1em;
     margin-bottom: 15px;
