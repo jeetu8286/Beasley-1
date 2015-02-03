@@ -178,12 +178,17 @@
 }
 
 .mobile-nav .social__link {
-	margin: 0 0 0 1.25em;
+	margin: 0 0 0 1em;
 	font-size: ms(3);
 }
 
 .mobile-nav .social__link:last-child {
-	margin: 0 0 0 1.25em;
+	margin: 0 0 0 1em;
+}
+
+.mobile-nav .social__link {
+	color: #fff;
+	border-color: #fff;
 }
 
 // main header navigation

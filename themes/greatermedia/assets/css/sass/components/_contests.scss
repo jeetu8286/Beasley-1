@@ -19,6 +19,15 @@
 		border-right-width: 0;
 	}
 
+	.col__inner--right {
+		border-bottom: 1px solid $primary-border;
+		margin-bottom: 30px;
+		padding-bottom: 30px;
+		@include bp('large') {
+			border: none;
+		}
+	}
+
 	&.collapsed {
 		.col__inner--left {
 			width: 100%;
@@ -38,38 +47,18 @@
 }
 
 .contest__entry--link {
-	display: block;
-	margin-bottom: 2em;
 	@include bp(large) {
 		display: none;
 	}
 }
 
-.contest__entry--btn {
-	@include btn($btn-bg, $color-text-white, $btn-bg, .5em, 1em, ms(1));
-	width: 100%;
-	text-transform: uppercase;
-	text-align: center;
-}
-
-.contest__entry--btn:hover {
-	@include btn($btn-hover, $color-text-black, $btn-hover, .5em, 1em, ms(1));
-}
-
-.contest__entry--btn:active {
-	@include btn($btn-active, $color-text-white, $btn-active, .5em, 1em, ms(1));
-}
-
-.contest__description  {
-	margin-bottom: 40px;
-}
 
 .contest__description:last-of-type  {
 	margin-bottom: 0;
 }
 
 .contest__prize--title {
-	margin: 0 0 18px;
+	margin: 0 0 .25em;
 	font-family: $droid-sans;
 	font-size: ms(4);
 	color: $color-text-red;
@@ -246,6 +235,14 @@
 }
 
 .contest__form {
+
+	// These two declarations work together for consistent bottom margins
+	margin-bottom: 60px;
+	p.submit {
+		margin-bottom: 0;
+	}
+
+
 	fieldset {
 		legend,
 		label {
@@ -275,7 +272,6 @@
 	button[type="submit"],
 	input[type="submit"] {
 		@include btn($btn-bg, $color-text-white, $btn-bg, .625em, 1em, ms(3));
-		width: 100%;
 		text-transform: uppercase;
 
 		&:hover {
@@ -348,6 +344,7 @@
 		position: relative;
 
 		a {
+			max-width: 49%;
 			position: absolute;
 			top: 15px;
 			right: 15px;
@@ -356,6 +353,7 @@
 		}
 
 		i {
+			max-width: 50%;
 			font-size: ms(-2);
 			line-height: 1em;
 			margin-bottom: 15px;
