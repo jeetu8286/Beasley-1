@@ -96,7 +96,7 @@ class GreaterMediaLoginRestrictedContent extends VisualShortcode {
 					'Status'                   => __( 'Status', 'greatermedia-login-restricted-content' ),
 					'Logged in'                => __( 'Logged in', 'greatermedia-login-restricted-content' ),
 					'Logged out'               => __( 'Logged out', 'greatermedia-login-restricted-content' ),
-					'No restriction'           => __( 'No restriction', 'greatermedia-login-restricted-content' ),
+					'No restriction'           => __( 'None', 'greatermedia-login-restricted-content' ),
 				),
 			);
 

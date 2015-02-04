@@ -13,7 +13,6 @@ add_filter( 'wp_insert_post_parent', 'gmr_songs_set_song_stream', PHP_INT_MAX, 3
 add_filter( 'wp_link_query_args', 'gmr_songs_exclude_songs_from_editor_links_query' );
 add_filter( 'gmr_live_link_add_copy_action', 'gmr_songs_remove_copy_to_live_link_action', 10, 2 );
 add_filter( 'gmr_blogroll_widget_item_post_types', 'gmr_songs_add_type_to_blogroll_widget' );
-add_filter( 'gmr_blogroll_widget_item_ids', 'gmr_songs_get_blogroll_widget_item_ids' );
 add_filter( 'gmr_blogroll_widget_item', 'gmr_songs_blogroll_widget_item' );
 
 /**
@@ -140,38 +139,6 @@ function gmr_songs_register_admin_menu() {
 function gmr_songs_add_type_to_blogroll_widget( $post_types ) {
 	$post_types[] = GMR_SONG_CPT;
 	return $post_types;
-}
-
-/**
- * Returns song ids to include into blogroll widget.
- * 
- * @filter gmr_blogroll_widget_item_ids
- * @param array $posts The array post ids.
- * @return array The extended array with song ids.
- */
-function gmr_songs_get_blogroll_widget_item_ids( $posts ) {
-	$query = new WP_Query();
-
-	$stream = null;
-	$sign = get_query_var( GMR_LIVE_STREAM_CPT );
-	if ( ! empty( $sign ) ) {
-		$stream = gmr_streams_get_stream_by_sign( $sign );
-	}
-
-	if ( ! $stream ) {
-		$stream = gmr_streams_get_primary_stream();
-	}
-
-	return ! $stream ? $posts : array_merge( $posts, $query->query(  array(
-		'post_type'           => GMR_SONG_CPT,
-		'post_parent'         => $stream->ID,
-		'orderby'             => 'date',
-		'order'               => 'DESC',
-		'ignore_sticky_posts' => true,
-		'no_found_rows'       => true,
-		'posts_per_page'      => 20,
-		'fields'              => 'ids',
-	) ) );
 }
 
 /**

@@ -68,6 +68,7 @@
 
 	$(document).bind('pjax:end', __ready).ready(__ready);
 })(jQuery);
+
 (function ($) {
 	$(document).ready(function () {
 		/**
