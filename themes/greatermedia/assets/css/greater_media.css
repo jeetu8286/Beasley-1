@@ -1114,7 +1114,7 @@ blockquote p {
   display: none; }
 
 .mobile-nav--open .mobile-nav__toggle {
-  display: none; }
+  display: block; }
 
 .admin-bar .mobile-nav {
   top: 32px;
