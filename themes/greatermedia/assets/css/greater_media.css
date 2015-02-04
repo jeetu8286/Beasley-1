@@ -1103,6 +1103,20 @@ blockquote p {
     .mobile-nav {
       display: none; } }
 
+#mobile-nav {
+  z-index: 25; }
+
+#mobile-nav-blocker {
+  background-color: rgba(0, 0, 0, 0.4);
+  /*background-color: red;*/
+  /*opacity: 0.7;*/
+  z-index: 20;
+  position: absolute;
+  display: none; }
+
+.mobile-nav--open .mobile-nav__toggle {
+  display: none; }
+
 .admin-bar .mobile-nav {
   top: 32px;
   height: calc( 100% - 32px );
@@ -4278,8 +4292,12 @@ Link posts contain a link to an external site. They can also optionally have a f
     .article__categories, .article__tags, .article__shows {
       font-size: 0.88889em; } }
 
+.article__shows {
+  margin-bottom: 0; }
+
 .article__list, .article__list--categories, .article__list--tags, .article__list--shows, .article__list--show {
-  display: inline;
+  display: block;
+  float: left;
   padding: 0;
   margin: 0;
   list-style: none; }
@@ -4299,19 +4317,37 @@ Link posts contain a link to an external site. They can also optionally have a f
   color: #aa1c20; }
 
 .article__list--title {
-  display: inline-block;
+  display: block;
+  float: left;
+  width: auto;
   font-weight: 800; }
 
 .article__list--title:after {
   content: "/";
   margin: 0 .25em 0 .5em; }
 
+.article__list--shows {
+  width: auto;
+  max-width: 75%; }
+  @media screen and (min-width: 768px) {
+    .article__list--shows {
+      max-width: 85%; } }
+  @media screen and (min-width: 1400px) {
+    .article__list--shows {
+      max-width: none; } }
+  @media screen and (min-width: 1024px) {
+    .contest .article__list--shows {
+      max-width: 80%; } }
+  @media screen and (min-width: 1400px) {
+    .contest .article__list--shows {
+      max-width: 85%; } }
+
 .article__list--show {
   margin-right: .5em;
   display: inline-block; }
 
 .article__show--logo {
-  display: inline-block;
+  display: block;
   float: left;
   width: 24px;
   height: 24px;
@@ -4333,7 +4369,22 @@ Link posts contain a link to an external site. They can also optionally have a f
   border-radius: 50%; }
 
 .article__show--name {
-  display: inline-block; }
+  display: block;
+  float: left;
+  width: auto;
+  max-width: 80%; }
+  @media screen and (min-width: 768px) {
+    .article__show--name {
+      max-width: 85%; } }
+  @media screen and (min-width: 1400px) {
+    .article__show--name {
+      max-width: none; } }
+  @media screen and (min-width: 1024px) {
+    .contest .article__show--name {
+      max-width: 80%; } }
+  @media screen and (min-width: 1400px) {
+    .contest .article__show--name {
+      max-width: 85%; } }
 
 @media screen and (min-width: 1024px) {
   .article__list--item,
