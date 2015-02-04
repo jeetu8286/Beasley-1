@@ -115,7 +115,10 @@ img {
 	}
 
 	.logged-in & {
-		@include media(min-width 782px) {
+		@include bp(medium) {
+			top: 261px;
+		}
+		@include media(min-width 783px) {
 			top: 247px;
 		}
 	}

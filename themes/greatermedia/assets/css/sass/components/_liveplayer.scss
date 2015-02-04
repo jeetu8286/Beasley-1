@@ -150,12 +150,19 @@ category: Components
 	}
 
 	&.live-stream--fixed {
-		position: fixed;
-		top: 0;
-		z-index: 20;
+		@include bp(medium) {
+			position: fixed;
+			top: 0;
+			z-index: 20;
+		}
 
 		.logged-in & {
-			top: 32px;
+			@include bp(medium) {
+				top: 46px;
+			}
+			@include media(min-width 783px) {
+				top: 32px;
+			}
 		}
 	}
 }
@@ -1207,7 +1214,6 @@ category: Components
 	@include bp(medium) {
 		visibility: visible;
 		display: block;
-		height: 100%;
 		margin: 0;
 		overflow: hidden;
 		border-top: 1px solid $secondary-border;
@@ -1373,14 +1379,19 @@ category: Components
 }
 
 .live-links--more {
+	display: none;
+	visibility: hidden;
 	position: relative;
-	display: block;
 	width: 100%;
 	height: 40px;
 	background-color: $liveplayer-bg;
 	@include transition(all 500ms ease-in-out);
+	@include transition-delay(500ms);
+
 
 	@include bp(medium) {
+		display: block;
+		visibility: visible;
 		width: 225px;
 	}
 
@@ -1400,6 +1411,12 @@ category: Components
 			background: linear-gradient(rgba(0, 0, 0, 0), rgb(0, 0, 0)); /* Standard syntax (must be last) */
 			content: "";
 		}
+	}
+
+	.live-player--open & {
+		display: block;
+		visibility: visible;
+		@include transition-delay(500ms);
 	}
 }
 
