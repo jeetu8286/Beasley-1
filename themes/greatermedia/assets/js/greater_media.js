@@ -556,7 +556,8 @@
 		breakingNewsBanner = document.getElementById('breaking-news-banner'),
 		$overlay = $('.overlay-mask'),
 		livePlayerMore = document.getElementById('live-player--more'),
-		mainContent = document.querySelector('.main');
+		mainContent = document.querySelector('.main'),
+		footer = document.querySelector('.footer');
 
 	/**
 	 * function to dynamically calculate the offsetHeight of an element
@@ -565,11 +566,7 @@
 	 * @returns {number}
 	 */
 	function elemHeight(elem) {
-		if (elem != null && elem === header && breakingNewsBanner != null) {
-			return elem.offsetHeight + breakingNewsBanner.offsetHeight;
-		} else if (elem != null) {
-			return elem.offsetHeight;
-		}
+		return elem.offsetHeight;
 	}
 
 	function elemTopOffset(elem) {
@@ -646,12 +643,11 @@
 	function lpPosDefault() {
 		if (livePlayer != null) {
 			if (body.classList.contains('logged-in')) {
-				livePlayer.style.top = elemHeight(wpAdminBar) + elemHeight(header) + 'px';
+				livePlayer.style.top = wpAdminHeight + elemHeight(header) + 'px';
 			} else {
 				livePlayer.style.top = elemHeight(header) + 'px';
 			}
 		}
-
 	}
 
 	function lpHeight() {
@@ -659,46 +655,6 @@
 			livePlayer.style.height = elemHeight(siteWrap) - elemHeight(header) + 'px';
 		}
 	}
-
-	function liveLinksReadMore() {
-
-	}
-
-	function liveLinksScroll() {
-		var start = liveLinks.scrollTop,
-			to = windowHeight - elemHeight(header) - elemHeight(liveStreamContainer),
-			change = to - start,
-			currentTime = 0,
-			increment = 20,
-			duration = 500;
-
-		var animateScroll = function(){
-			currentTime += increment;
-			var val = Math.easeInOutQuad(currentTime, start, change, duration);
-			liveLinks.scrollTop = val;
-			if(currentTime < duration) {
-				setTimeout(animateScroll, increment);
-			}
-		};
-		animateScroll();
-	}
-
-	/**
-	 * Ease in and Out animation
-	 *
-	 * @param t = current time
-	 * @param b = start value
-	 * @param c = change in value
-	 * @param d = duration
-	 * @returns {*}
-	 */
-	Math.easeInOutQuad = function (t, b, c, d) {
-		t /= d/2;
-		if (t < 1) return c/2*t*t + b;
-		t--;
-		return -c/2 * (t*(t-2) - 1) + b;
-	};
-
 
 	/**
      * Toggles a class to the Live Play Stream Select box when the box is clicked
@@ -752,23 +708,26 @@
 				if (liveStreamContainer.classList.contains('live-stream--fixed')) {
 					liveStreamContainer.classList.remove('live-stream--fixed');
 				}
-			} else if (scrollObject.y >= 1 && elementInViewport(header)) {
+			} else if (scrollObject.y >= 1 && elementInViewport(header) && ! elementInViewport(footer)) {
 				if (liveStreamContainer.classList.contains('live-stream--fixed')) {
 					liveStreamContainer.classList.remove('live-stream--fixed');
 				}
 				if(liveLinks != null) {
 					liveLinks.style.marginTop = '0px';
 				}
-			} else if (!elementInViewport(header)) {
+			} else if (!elementInViewport(header) && ! elementInViewport(footer)) {
 				liveStreamContainer.classList.add('live-stream--fixed');
 				if(liveLinks != null) {
 					liveLinks.style.marginTop = elemHeight(liveStreamContainer) + 'px';
 				}
+			} else if (elementInViewport(footer)) {
+				liveLinks.style.marginTop = '0px';
 			} else {
 				if (liveStreamContainer.classList.contains('live-stream--fixed')) {
 					liveStreamContainer.classList.remove('live-stream--fixed');
 				}
 			}
+			lpPosDefault();
 			lpHeight();
 		}
 	}
