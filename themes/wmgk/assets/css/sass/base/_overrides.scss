@@ -113,19 +113,19 @@
 	&:hover {
 		color: $yellow !important;
 		border-color: $yellow;
-	} 
+	}
 }
 
 .highlights__event--item {
 	background-color: #8c8c8c;
-	color: $white; 
+	color: $white;
 }
 
 .highlights__event--title, .highlights__event--date {
 	color: $white;
-	
+
 	a:hover & {
-		color: $yellow; 
+		color: $yellow;
 	}
 }
 
@@ -133,11 +133,11 @@
 	color: $highlights-heading;
 }
 
-.audio__progress-bar {
-	background-color: $gray;
-}
-
 .type-contest .entry__title--tag {
 	background-color: $light-gray;
 	border-color: $light-gray;
+}
+
+.audio__progress-bar {
+	background-color: $gray;
 }
