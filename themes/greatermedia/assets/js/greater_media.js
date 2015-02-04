@@ -752,7 +752,6 @@
 				if (liveStreamContainer.classList.contains('live-stream--fixed')) {
 					liveStreamContainer.classList.remove('live-stream--fixed');
 				}
-
 			} else if (scrollObject.y >= 1 && elementInViewport(header)) {
 				if (liveStreamContainer.classList.contains('live-stream--fixed')) {
 					liveStreamContainer.classList.remove('live-stream--fixed');
@@ -786,6 +785,10 @@
 			if (livePlayer.classList.contains('live-player--fixed')) {
 				livePlayer.classList.remove('live-player--fixed');
 			}
+			if (liveStreamContainer.classList.contains('live-stream--fixed')) {
+				liveStreamContainer.classList.remove('live-stream--fixed');
+			}
+			liveLinks.style.marginTop = '0px';
 			livePlayer.classList.add('live-player--mobile');
 		}
 	}
