@@ -149,30 +149,8 @@
 		}
 	}
 
-	var liveLinksIn = new Waypoint.Inview({
-		element: document.getElementById('live-links__widget--end'),
-		entered: function(direction) {
-			if (direction === 'down') {
-				liveLinksMore.classList.remove('show-more');
-			}
-		}
-	});
-
-	var liveLinksOut = new Waypoint.Inview({
-		element: document.getElementById('live-links__widget--end'),
-		exited: function(direction) {
-			if (direction === 'up') {
-				liveLinksMore.classList.add('show-more');
-			}
-		}
-	});
-	
 	function liveLinksReadMore() {
-		if (liveLinksWidget != null && elemHeight(liveLinksWidget) >= windowHeight) {
-			liveLinksMore.classList.add('show-more');
-			liveLinksIn();
-			liveLinksOut();
-		}
+
 	}
 
 	function liveLinksScroll() {
@@ -263,7 +241,6 @@
 				if (liveStreamContainer.classList.contains('live-stream--fixed')) {
 					liveStreamContainer.classList.remove('live-stream--fixed');
 				}
-
 			} else if (scrollObject.y >= 1 && elementInViewport(header)) {
 				if (liveStreamContainer.classList.contains('live-stream--fixed')) {
 					liveStreamContainer.classList.remove('live-stream--fixed');
@@ -282,7 +259,6 @@
 				}
 			}
 			lpHeight();
-			liveLinksReadMore();
 		}
 	}
 
@@ -298,6 +274,10 @@
 			if (livePlayer.classList.contains('live-player--fixed')) {
 				livePlayer.classList.remove('live-player--fixed');
 			}
+			if (liveStreamContainer.classList.contains('live-stream--fixed')) {
+				liveStreamContainer.classList.remove('live-stream--fixed');
+			}
+			liveLinks.style.marginTop = '0px';
 			livePlayer.classList.add('live-player--mobile');
 		}
 	}
@@ -464,14 +444,12 @@
 	function resizeWindow() {
 		if (window.innerWidth <= 767) {
 			if (livePlayer != null) {
-				liveLinksReadMore();
 				livePlayerMobileReset();
 			}
 		} else {
 			if (livePlayer != null) {
 				livePlayerDesktopReset();
 				lpPosDefault();
-				liveLinksReadMore();
 				addEventHandler(window, elemScroll, function () {
 					scrollDebounce();
 					scrollThrottle();
@@ -494,7 +472,6 @@
 	if (window.innerWidth >= 768) {
 		lpPosDefault();
 		lpHeight();
-		liveLinksReadMore();
 		addEventHandler(window, elemScroll, function () {
 			scrollDebounce();
 			scrollThrottle();
@@ -528,8 +505,6 @@
 		resizeDebounce();
 		resizeThrottle();
 	});
-
-	liveLinksReadMore();
 
 	function init_menu_overlay() {
 		var $menu = jQuery(document.querySelector('.header__nav--list')),
@@ -565,6 +540,28 @@
 		});
 		$(document).ready(function() {
 			$('.article__content').fitVids({customSelector: "div[id^='playerwrapper']"});
+
+			if (liveLinksWidget != null && elemHeight(liveLinksWidget) >= windowHeight) {
+				liveLinksMore.classList.add('show-more');
+
+				var liveLinksIn = new Waypoint.Inview({
+					element: $('#live-links__widget--end')[0],
+					entered: function (direction) {
+						if (direction === 'down') {
+							liveLinksMore.classList.remove('show-more');
+						}
+					}
+				});
+
+				var liveLinksOut = new Waypoint.Inview({
+					element: $('#live-links__widget--end')[0],
+					exited: function (direction) {
+						if (direction === 'up') {
+							liveLinksMore.classList.add('show-more');
+						}
+					}
+				});
+			}
 		});
 	})(jQuery);
 
