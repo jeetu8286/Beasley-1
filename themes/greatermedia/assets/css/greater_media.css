@@ -4030,6 +4030,8 @@ Link posts contain a link to an external site. They can also optionally have a f
   margin: 0;
   font-size: 2.02729em;
   line-height: 1.2; }
+  #tribe-events .entry2__title {
+    margin-bottom: 30px; }
 
 .entry2__excerpt {
   margin: .75em 0 0; }
