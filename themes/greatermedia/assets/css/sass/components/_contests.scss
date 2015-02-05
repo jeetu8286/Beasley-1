@@ -28,8 +28,6 @@
 	}
 
 	.col__inner--right {
-		border-bottom: 1px solid $primary-border;
-		margin-bottom: 30px;
 		padding-bottom: 30px;
 
 		@include bp(large) {
