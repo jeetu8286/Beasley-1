@@ -2522,7 +2522,7 @@ Community Highlights and Events
   width: 100%;
   background-color: #ffffff;
   color: #404041;
-  margin: 0 0 1.5em;
+  margin: 0 0 .75em;
   position: relative;
   font-size: 1.26563em;
   height: 100px; }
@@ -2608,7 +2608,7 @@ Community Highlights and Events
 
 .highlights__event--title {
   font-family: "Open Sans", sans-serif;
-  font-size: 1em;
+  font-size: 1.125em;
   color: #6d6e70;
   margin: 0 0 .3em;
   overflow: hidden;
@@ -5829,12 +5829,9 @@ category: Components
   padding: 5px 0;
   text-align: center;
   background-color: #000000;
-  -webkit-transition: all 500ms ease-in-out;
-  -moz-transition: all 500ms ease-in-out;
-  transition: all 500ms ease-in-out;
-  -webkit-transition-delay: 500ms;
-  -moz-transition-delay: 500ms;
-  transition-delay: 500ms; }
+  -webkit-transition: all 200ms ease-in-out;
+  -moz-transition: all 200ms ease-in-out;
+  transition: all 200ms ease-in-out; }
   @media screen and (min-width: 768px) {
     .live-links--more {
       display: block;
@@ -6573,6 +6570,20 @@ category: Components - Ads
 .type-contest .col__inner--left,
 .type-survey .col__inner--left {
   border-right-width: 0; }
+  @media screen and (min-width: 1024px) {
+    .type-contest .col__inner--left,
+    .type-survey .col__inner--left {
+      width: calc(100% - 300px - 2.35765%); } }
+  @media screen and (min-width: 1400px) {
+    .type-contest .col__inner--left,
+    .type-survey .col__inner--left {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 65.88078%; }
+      .type-contest .col__inner--left:last-child,
+      .type-survey .col__inner--left:last-child {
+        margin-right: 0; } }
 .type-contest .col__inner--right,
 .type-survey .col__inner--right {
   border-bottom: 1px solid #d0d2d3;
@@ -6581,7 +6592,19 @@ category: Components - Ads
   @media screen and (min-width: 1024px) {
     .type-contest .col__inner--right,
     .type-survey .col__inner--right {
+      width: 300px;
       border: none; } }
+  @media screen and (min-width: 1400px) {
+    .type-contest .col__inner--right,
+    .type-survey .col__inner--right {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 31.76157%;
+      margin-right: 0; }
+      .type-contest .col__inner--right:last-child,
+      .type-survey .col__inner--right:last-child {
+        margin-right: 0; } }
 .type-contest.collapsed .col__inner--left,
 .type-survey.collapsed .col__inner--left {
   width: 100%;
@@ -8618,6 +8641,14 @@ category: Components - Shows
       float: right; }
       .inner-right-col:last-child {
         margin-right: 0; } }
+
+.show__ad {
+  padding-top: 3em;
+  margin: 0 auto;
+  text-align: center; }
+  @media screen and (min-width: 1024px) {
+    .show__ad {
+      padding-top: 0; } }
 
 .show__favorites .featured__content--block {
   float: left;
