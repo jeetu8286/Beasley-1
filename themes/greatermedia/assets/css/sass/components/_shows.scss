@@ -613,6 +613,16 @@ category: Components - Shows
 	}
 }
 
+.show__ad {
+	padding-top: 3em;
+	margin: 0 auto;
+	text-align: center;
+
+	@include bp(large) {
+		padding-top: 0;
+	}
+}
+
 .show__favorites {
 	.featured__content--block {
 		@include span-columns(12 of 12);
