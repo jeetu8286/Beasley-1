@@ -751,7 +751,6 @@
 			}
 			lpPosDefault();
 			lpHeight();
-			liveLinksHeight();
 		}
 	}
 
