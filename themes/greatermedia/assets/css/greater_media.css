@@ -6610,8 +6610,7 @@ category: Components - Ads
   @media screen and (min-width: 1024px) {
     .type-contest .col__inner--right,
     .type-survey .col__inner--right {
-      width: 300px;
-      border: none; } }
+      width: 300px; } }
   @media screen and (min-width: 1400px) {
     .type-contest .col__inner--right,
     .type-survey .col__inner--right {

@@ -32,7 +32,6 @@
 
 		@include bp(large) {
 			width: 300px;
-			border: none;
 		}
 
 		@include bp(x-large) {
