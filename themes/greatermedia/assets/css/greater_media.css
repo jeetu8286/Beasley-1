@@ -2522,7 +2522,7 @@ Community Highlights and Events
   width: 100%;
   background-color: #ffffff;
   color: #404041;
-  margin: 0 0 1.5em;
+  margin: 0 0 .75em;
   position: relative;
   font-size: 1.26563em;
   height: 100px; }
@@ -2608,7 +2608,7 @@ Community Highlights and Events
 
 .highlights__event--title {
   font-family: "Open Sans", sans-serif;
-  font-size: 1em;
+  font-size: 1.125em;
   color: #6d6e70;
   margin: 0 0 .3em;
   overflow: hidden;
