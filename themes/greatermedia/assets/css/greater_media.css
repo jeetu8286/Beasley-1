@@ -8615,6 +8615,14 @@ category: Components - Shows
       .inner-right-col:last-child {
         margin-right: 0; } }
 
+.show__ad {
+  padding-top: 3em;
+  margin: 0 auto;
+  text-align: center; }
+  @media screen and (min-width: 1024px) {
+    .show__ad {
+      padding-top: 0; } }
+
 .show__favorites .featured__content--block {
   float: left;
   display: block;
