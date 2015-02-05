@@ -145,6 +145,23 @@
 		}
 	}
 
+	function liveLinksHeight() {
+		var liveLinksBlogRoll = document.getElementById('live-links__blogroll');
+		if (liveLinksBlogRoll != null) {
+			var liveLinksItem = liveLinksBlogRoll.getElementsByTagName('li');
+		}
+		if (liveLinks != null && liveLinksWidget != null) {
+			if (elemHeight(liveLinksWidget) >= elemHeight(livePlayer)) {
+				liveLinksMore.classList.add('show-more--fixed');
+				liveLinks.style.height = elemHeight(livePlayer) - elemHeight(liveStreamContainer) + 'px';
+			}
+		}
+
+		if(liveLinksWidget != null & liveLinksMore != null && liveLinksItem.length >= 1) {
+			liveLinksMore.classList.add('show-more');
+		}
+	}
+
 	/**
      * Toggles a class to the Live Play Stream Select box when the box is clicked
      */
@@ -209,8 +226,10 @@
 				if(liveLinks != null) {
 					liveLinks.style.marginTop = elemHeight(liveStreamContainer) + 'px';
 				}
-			} else if (elementInViewport(footer)) {
-				liveLinks.style.marginTop = '0px';
+			} else if (elementInViewport(footer) && liveLinksWidget != null) {
+				if (elemHeight(liveLinksWidget) <= elemHeight(siteWrap)) {
+					liveLinks.style.marginTop = '0px';
+				}
 			} else {
 				if (liveStreamContainer.classList.contains('live-stream--fixed')) {
 					liveStreamContainer.classList.remove('live-stream--fixed');
@@ -221,7 +240,9 @@
 		}
 	}
 
-	/**
+
+
+			/**
 	 * adds some styles to the live player that would be called at mobile breakpoints. This is added specifically to
 	 * deal with a window being resized.
 	 */
@@ -305,13 +326,28 @@
 	/**
 	 * Toggles a class to the body when the mobile nav button is clicked
 	 */
+
+	function mobileOpenLocation() {
+		var y = window.pageYOffset;
+
+		siteWrap.style.top = '-' + y + 'px';
+	}
+
+	function mobileCloseLocation() {
+		var y = window.pageYOffset;
+
+		siteWrap.style.removeProperty('top');
+	}
+
 	function toggleNavButton() {
 		body.classList.toggle('mobile-nav--open');
 
 		if ($('.mobile-nav--open').length) {
 			showBlocker();
+			mobileOpenLocation();
 		} else {
 			hideBlocker();
+			mobileCloseLocation()
 		}
 	}
 
@@ -437,6 +473,7 @@
 	if (window.innerWidth >= 768) {
 		lpPosDefault();
 		lpHeight();
+		liveLinksHeight();
 		addEventHandler(window, elemScroll, function () {
 			scrollDebounce();
 			scrollThrottle();
@@ -505,28 +542,6 @@
 		});
 		$(document).ready(function() {
 			$('.article__content').fitVids({customSelector: "div[id^='playerwrapper']"});
-
-			if (liveLinksWidget != null && elemHeight(liveLinksWidget) >= windowHeight && window.innerWidth >= 768) {
-				liveLinksMore.classList.add('show-more');
-
-				var liveLinksIn = new Waypoint.Inview({
-					element: $('#live-links__widget--end')[0],
-					entered: function (direction) {
-						if (direction === 'down') {
-							liveLinksMore.classList.remove('show-more');
-						}
-					}
-				});
-
-				var liveLinksOut = new Waypoint.Inview({
-					element: $('#live-links__widget--end')[0],
-					exited: function (direction) {
-						if (direction === 'up') {
-							liveLinksMore.classList.add('show-more');
-						}
-					}
-				});
-			}
 		});
 	})(jQuery);
 
