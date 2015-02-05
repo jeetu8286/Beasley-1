@@ -44,6 +44,7 @@
 	var nowPlayingInfo = document.getElementById('nowPlaying');
 	var trackInfo = document.getElementById('trackInfo');
 	var liveStreamSelector = document.querySelector('.live-player__stream');
+	var playerPopupWindow = null;
 
 	/**
 	 * global variables for event types to use in conjunction with `addEventHandler` function
@@ -77,16 +78,20 @@
 	 */
 	window.tdPlayerApiReady = function () {
 		console.log("--- TD Player API Loaded ---");
-		initPlayer();
+		if ( is_player_popup_required() ){
+			load_player_popup();
+		} else {
+			initPlayer();
+		}
 	};
 
 	function calcTechPriority() {
 		if (bowser.firefox) {
-			return ['Flash'];
+			return ['Flash', 'Html5'];
 		} else if (bowser.safari) {
-			return ['Html5'];
+			return ['Html5', 'Flash'];
 		} else if (bowser.chrome) {
-			return ['Flash'];
+			return ['Flash', 'Html5'];
 		} else {
 			return ['Html5', 'Flash'];
 		}
@@ -179,10 +184,6 @@
 
 		if (clearDebug != null) {
 			addEventHandler(clearDebug,elemClick,clearDebugInfo);
-		}
-
-		if (nowPlaying != null) {
-			addEventHandler(nowPlaying,elemClick,stopStream);
 		}
 
 	}
@@ -520,27 +521,7 @@
 	function playLiveStreamMobile() {
 		var station = gmr.callsign;
 
-		if (Cookies.get('gmr_play_live_audio') == 1) {
-			if (station === '') {
-				alert('Please enter a Station');
-				return;
-			}
-
-			debug('playLiveStream - station=' + station);
-
-			if (livePlaying) {
-				player.stop();
-			}
-
-			if ( true === playingCustomAudio ) {
-				listenLiveStopCustomInlineAudio();
-			}
-
-			livePlayer.classList.add('live-player--active');
-			player.play({station: station, timeShift: true});
-			setPlayingStyles();
-			setTimeout(replaceNPInfo, 2000);
-		} else if (Cookies.get('gmr_play_live_audio') === 0) {
+		if (Cookies.get('gmr_play_live_audio') != 1) {
 			if (station === '') {
 				alert('Please enter a Station');
 				return;
@@ -588,6 +569,26 @@
 					setTimeout(replaceNPInfo, 2000);
 				});
 			}
+		} else {
+			if (station === '') {
+				alert('Please enter a Station');
+				return;
+			}
+
+			debug('playLiveStream - station=' + station);
+
+			if (livePlaying) {
+				player.stop();
+			}
+
+			if ( true === playingCustomAudio ) {
+				listenLiveStopCustomInlineAudio();
+			}
+
+			livePlayer.classList.add('live-player--active');
+			player.play({station: station, timeShift: true});
+			setPlayingStyles();
+			setTimeout(replaceNPInfo, 2000);
 		}
 
 	}
@@ -1640,5 +1641,21 @@
 		addEventHandler(podcastPlayBtn,elemClick,setInlineAudioUX);
 		addEventHandler(podcastPauseBtn,elemClick,pauseCustomInlineAudio);
 	});
-
+	
+	function is_player_popup_required() {
+		/** For testing return true **/
+		return ( "undefined" !== typeof Modernizr  && false === Modernizr.history && "" === gmlp.is_popup );
+	}
+	
+	function load_player_popup(){
+		jQuery('#playButton').click(function(){
+			if ( playerPopupWindow == null || playerPopupWindow.closed) {
+				//create new, since none is open
+				playerPopupWindow = window.open(gmlp.popup_url, "livestreaming", "toolbar=no, scrollbars=no, resizable=no, top=500, left=500, width=400, height=400");
+			} else {
+				playerPopupWindow.focus();
+			}
+		});
+		
+	}
 })(jQuery, window);

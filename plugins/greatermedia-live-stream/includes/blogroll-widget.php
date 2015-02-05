@@ -120,23 +120,15 @@ function gmr_blogroll_get_widget_html() {
 	// start from enabling outbut buffering
 	ob_start();
 
-	// get widget item ids
-	$posts__in = apply_filters( 'gmr_blogroll_widget_item_ids', array() );
-	$posts__in = array_unique( array_filter( array_map( 'intval', $posts__in ) ) );
-
 	// build quiery and render widget's html
-	$query = new WP_Query();
-	if ( ! empty( $posts__in ) ) {
-		$query->query(  array(
-			'post_type'           => apply_filters( 'gmr_blogroll_widget_item_post_types', array() ),
-			'post__in'            => $posts__in,
-			'orderby'             => 'date',
-			'order'               => 'DESC',
-			'ignore_sticky_posts' => true,
-			'no_found_rows'       => true,
-			'posts_per_page'      => 20,
-		) );
-	}
+	$query = new WP_Query( array(
+		'post_type'           => apply_filters( 'gmr_blogroll_widget_item_post_types', array() ),
+		'orderby'             => 'date',
+		'order'               => 'DESC',
+		'ignore_sticky_posts' => true,
+		'no_found_rows'       => true,
+		'posts_per_page'      => 30,
+	) );
 
 	echo '<ul>';
 		while ( $query->have_posts() ) :

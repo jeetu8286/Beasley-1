@@ -150,12 +150,19 @@ category: Components
 	}
 
 	&.live-stream--fixed {
-		position: fixed;
-		top: 0;
-		z-index: 20;
+		@include bp(medium) {
+			position: fixed;
+			top: 0;
+			z-index: 20;
+		}
 
 		.logged-in & {
-			top: 32px;
+			@include bp(medium) {
+				top: 46px;
+			}
+			@include media(min-width 783px) {
+				top: 32px;
+			}
 		}
 	}
 }
@@ -473,11 +480,12 @@ category: Components
 }
 
 .live-stream__now-playing--btn {
-	@include btn(transparent, $color-text-red, $btn-bg, .5em, 1em, ms(-1));
+	@include btn(transparent, $color-text-red, transparent, .5em, 1em, ms(-1));
 	display: none;
 	margin-right: 0;
 	font-weight: 700;
 	@include transition(background 200ms ease-in-out);
+	cursor: default;
 }
 
 .live-stream__login {
@@ -1203,11 +1211,11 @@ category: Components
 	text-align: center;
 	overflow: hidden;
 	overflow-y: auto;
+	-webkit-overflow-scrolling: touch;
 
 	@include bp(medium) {
 		visibility: visible;
 		display: block;
-		height: 100%;
 		margin: 0;
 		overflow: hidden;
 		border-top: 1px solid $secondary-border;
@@ -1218,7 +1226,8 @@ category: Components
 		display: block;
 		height: auto !important;
 		max-height: 48vh;
-		margin-top: 43px;
+		padding-bottom: 40px;
+		margin-top: 43px !important;
 		@include bp(small) {
 			max-height: 35vh;
 		}
@@ -1373,14 +1382,23 @@ category: Components
 }
 
 .live-links--more {
-	position: relative;
 	display: block;
+	visibility: hidden;
+	position: fixed;
+	bottom: 0;
 	width: 100%;
 	height: 40px;
+	padding: 5px 0;
+	text-align: center;
 	background-color: $liveplayer-bg;
-	@include transition(all 500ms ease-in-out);
+	@include transition(all 200ms ease-in-out);
+
 
 	@include bp(medium) {
+		display: block;
+		position: relative;
+		bottom: auto;
+		visibility: visible;
 		width: 225px;
 	}
 
@@ -1400,6 +1418,11 @@ category: Components
 			background: linear-gradient(rgba(0, 0, 0, 0), rgb(0, 0, 0)); /* Standard syntax (must be last) */
 			content: "";
 		}
+	}
+
+	.live-player--open & {
+		display: block;
+		visibility: visible;
 	}
 }
 
