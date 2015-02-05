@@ -1382,7 +1382,7 @@ category: Components
 }
 
 .live-links--more {
-	display: block;
+	display: none;
 	visibility: hidden;
 	position: fixed;
 	bottom: 0;
@@ -1395,7 +1395,6 @@ category: Components
 
 
 	@include bp(medium) {
-		display: block;
 		position: relative;
 		bottom: auto;
 		visibility: visible;
@@ -1403,7 +1402,12 @@ category: Components
 	}
 
 	&.show-more {
+		display: block;
+	}
+
+	&.show-more--fixed {
 		position: fixed;
+		display: block;
 		bottom: 0;
 
 		&:before {
