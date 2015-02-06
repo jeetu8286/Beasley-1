@@ -142,11 +142,11 @@ category: Components
 .live-stream {
 	display: block;
 	width: 100%;
-	overflow: auto;
 	background-color: $liveplayer-bg;
 
 	@include bp(medium) {
 		width: 225px;
+		overflow: auto;
 	}
 
 	&.live-stream--fixed {
@@ -384,7 +384,7 @@ category: Components
 	position: absolute;
 	right: 39px;
 	width: 34px;
-	height: 58px;
+	height: 57px;
 	padding: 12px 0;
 	margin-right: 5px;
 	@include transition(width 200ms ease-in-out 200ms);
@@ -611,7 +611,7 @@ category: Components
 	}
 }
 
-.live-stream__btn--play, .live-stream__btn--resume, .live-stream__btn--pause {
+.live-stream__btn--play, .live-stream__btn--resume, .live-stream__btn--pause, .live-stream__btn--loading {
 	position: relative;
 	@extend %live-stream__btn;
 }
@@ -638,6 +638,19 @@ category: Components
 
 	.live-stream__player.audio__playing & {
 		content: "\e61f" !important;
+	}
+}
+
+.live-stream__btn--loading .fa {
+	position: absolute;
+	top: 20%;
+	left: 23%;
+	@include transform(translate(-50%, -50%));
+	font-size: ms(2);
+
+	@include bp(medium) {
+		top: 28%;
+		left: 32%;
 	}
 }
 
@@ -697,6 +710,17 @@ category: Components
 		top: 52%;
 	}
 
+}
+
+.live-stream__btn--loading {
+	display: none;
+	border: none;
+	background: $btn-bg;
+	color: $liveplayer-bg;
+
+	&.loading {
+		display: block;
+	}
 }
 
 .live-stream__btn--pause {
@@ -1005,7 +1029,7 @@ category: Components
 	display: none;
 	float: left;
 	width: calc(100% - 144px);
-	height: 58px;
+	height: 57px;
 	padding: 16px 1em 0 0;
 	text-align: left;
 	@include bp(medium) {
@@ -1021,7 +1045,7 @@ category: Components
 		position: relative;
 		display: block;
 		width: calc(100% - 78px);
-		padding: 0 0 0 3.75%;
+		padding: 0 3.75%;
 
 		@include bp(medium) {
 			@include fill-parent;
@@ -1036,7 +1060,7 @@ category: Components
 		left: 0;
 		display: block;
 		width: calc(100% - 110px);
-		height: 58px;
+		height: 57px;
 		padding: 0 0 0 3.75%;
 
 		@include bp(medium) {
@@ -1074,7 +1098,7 @@ category: Components
 
 .now-playing__title {
 	margin: 0 0 8px;
-	line-height: 1;
+	line-height: 1.2;
 	font-size: ms(0);
 	font-weight: lighter;
 	color: $color-text-red;
