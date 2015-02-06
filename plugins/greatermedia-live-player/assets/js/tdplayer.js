@@ -431,7 +431,9 @@
 		}
 	}
 
-	changePlayerState();
+	$(document).ready(function() {
+		changePlayerState();
+	});
 
 	function loggedInGigyaUser() {
 		if (is_gigya_user_logged_in() ) {
@@ -1186,19 +1188,19 @@
 
 		$("#asyncData").html("<div>" + tableContent + "</div>");
 	}
-	
+
 
 	function attachAdListeners() {
 		if (player.addEventListener){
 			player.addEventListener('ad-playback-start', onAdPlaybackStart);
-			//player.addEventListener('ad-playback-error', adError); @todo uncomment these after Triton tests
+			player.addEventListener('ad-playback-error', adError);
 			player.addEventListener('ad-playback-complete', onAdPlaybackComplete);
 			player.addEventListener('ad-countdown', onAdCountdown);
 			player.addEventListener('vast-process-complete', onVastProcessComplete);
 			player.addEventListener('vpaid-ad-companions', onVpaidAdCompanions);
 		} else if (player.attachEvent) {
 			player.attachEvent('ad-playback-start', onAdPlaybackStart);
-			//player.attachEvent('ad-playback-error', adError);
+			player.attachEvent('ad-playback-error', adError);
 			player.attachEvent('ad-playback-complete', onAdPlaybackComplete);
 			player.attachEvent('ad-countdown', onAdCountdown);
 			player.attachEvent('vast-process-complete', onVastProcessComplete);
@@ -1209,14 +1211,14 @@
 	function detachAdListeners() {
 		if (player.removeEventListener){
 			player.removeEventListener('ad-playback-start', onAdPlaybackStart);
-			//player.removeEventListener('ad-playback-error', adError);
+			player.removeEventListener('ad-playback-error', adError);
 			player.removeEventListener('ad-playback-complete', onAdPlaybackComplete);
 			player.removeEventListener('ad-countdown', onAdCountdown);
 			player.removeEventListener('vast-process-complete', onVastProcessComplete);
 			player.removeEventListener('vpaid-ad-companions', onVpaidAdCompanions);
 		} else if (player.detachEvent) {
 			player.detachEvent('ad-playback-start', onAdPlaybackStart);
-			//player.detachEvent('ad-playback-error', adError);
+			player.detachEvent('ad-playback-error', adError);
 			player.detachEvent('ad-playback-complete', onAdPlaybackComplete);
 			player.detachEvent('ad-countdown', onAdCountdown);
 			player.detachEvent('vast-process-complete', onVastProcessComplete);
@@ -1533,7 +1535,7 @@
 				$(document).pjax('a:not(.ab-item)', '.main', {
 					'fragment': '.main',
 					'maxCacheLength': 500,
-					'timeout': 5000
+					'timeout': 10000
 				});
 			}
 		} else if (gmlp.logged_in) {
@@ -1541,7 +1543,7 @@
 				$(document).pjax('a:not(.ab-item)', '.page-wrap', {
 					'fragment': '.page-wrap',
 					'maxCacheLength': 500,
-					'timeout': 5000
+					'timeout': 10000
 				});
 			}
 		}
@@ -1649,12 +1651,12 @@
 		addEventHandler(podcastPlayBtn,elemClick,setInlineAudioUX);
 		addEventHandler(podcastPauseBtn,elemClick,pauseCustomInlineAudio);
 	});
-	
+
 	function is_player_popup_required() {
 		/** For testing return true **/
 		return ( "undefined" !== typeof Modernizr  && false === Modernizr.history && "" === gmlp.is_popup );
 	}
-	
+
 	function load_player_popup(){
 		jQuery('#playButton').click(function(){
 			if ( playerPopupWindow == null || playerPopupWindow.closed) {
@@ -1664,6 +1666,6 @@
 				playerPopupWindow.focus();
 			}
 		});
-		
+
 	}
 })(jQuery, window);
