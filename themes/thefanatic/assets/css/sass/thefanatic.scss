@@ -9,3 +9,10 @@
 @import "base/variables";
 
 @import "../../../../greatermedia/assets/css/sass/greater_media.scss";
+
+// Main layout components: menu, typography, etc.
+@import "layout/menus";
+
+@import "components/header";
+
+

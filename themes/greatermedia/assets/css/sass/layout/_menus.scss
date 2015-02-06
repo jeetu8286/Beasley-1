@@ -263,6 +263,10 @@
 .header__account ul li a:visited, {
 	display: block;
 	padding: 33px 1.125em 32px;
+
+	.news-site & {
+		padding: 31px 1.125em;
+	}
 }
 
 .header__nav ul li a:hover,
