@@ -74,16 +74,57 @@
 			<div id="page-wrap" class="page-wrap">
 				<header id="header" class="header" role="banner">
 					<?php do_action( 'show_breaking_news_banner' ); ?>
-					<div class="container container__leaderboard">
-						<div class="ad__leaderboard desktop">
-							<?php do_action( 'acm_tag', 'leaderboard-top-of-site' ); ?>
-						</div>
-						<div class="ad__leaderboard mobile">
-							<?php do_action( 'acm_tag', 'smartphone-wide-banner' ); ?>
+					<div class="header__leaderboard">
+						<div class="container container__leaderboard">
+							<div class="ad__leaderboard desktop">
+								<?php do_action( 'acm_tag', 'leaderboard-top-of-site' ); ?>
+							</div>
+							<div class="ad__leaderboard mobile">
+								<?php do_action( 'acm_tag', 'smartphone-wide-banner' ); ?>
+							</div>
 						</div>
 					</div>
-					<div class="header__news">
+					<div class="header__sub">
 						<div class="container">
+							<div class="recent-scores__widget">
+								<div class="score--visitor">
+									<div class="team__logo">
+										<img src="<?php bloginfo( 'stylesheet_directory' ); ?>/images/detroit-pistons-logo.png">
+									</div>
+									<div class="team__name">
+										Detroit Pistons
+										<div class="team__record">
+											(14-24)
+										</div>
+									</div>
+								</div>
+								<div class="game__score">
+									114 - 111
+									<div class="game__score--status">
+										Final
+									</div>
+								</div>
+								<div class="score--home">
+									<div class="team__name">
+										Toronto Raptors
+										<div class="team__record">
+											(25-12)
+										</div>
+									</div>
+									<div class="team__logo">
+										<img src="<?php bloginfo( 'stylesheet_directory' ); ?>/images/toronto-raptors-logo.png">
+									</div>
+								</div>
+							</div>
+
+							<?php
+							/**
+							 * @todo rethink this nav to deal with an icon that is different size than text
+							 */
+							?>
+							<ul class="header__subnav">
+								<li class="header__subnav--schedule"><a href="#" class="header__link--schedule">Schedule</a></li>
+							</ul>
 						</div>
 					</div>
 					<div class="header__main">
@@ -91,10 +132,6 @@
 							<div class="mobile-nav__toggle">
 								<div class="mobile-nav__toggle--span"></div>
 							</div>
-
-								<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="header__logo">
-									<?php do_action( 'gmr_site_logo' ); ?>
-								</a>
 
 							<?php
 							$main_nav = array(

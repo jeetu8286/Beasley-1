@@ -506,11 +506,11 @@ category: Base - Typography
  */
 @font-face {
   font-family: 'gmr-icons';
-  src: url("../../../../themes/greatermedia/assets/fonts/icon-font/gmr-icons.eot?-2ikn7k");
-  src: url("../../../../themes/greatermedia/assets/fonts/icon-font/gmr-icons.eot?#iefix-2ikn7k") format("embedded-opentype"), url("../../../../themes/greatermedia/assets/fonts/icon-font/gmr-icons.woff?-2ikn7k") format("woff"), url("../../../../themes/greatermedia/assets/fonts/icon-font/gmr-icons.ttf?-2ikn7k") format("truetype"), url("../../../../themes/greatermedia/assets/fonts/icon-font/gmr-icons.svg?-2ikn7k#icomoon") format("svg");
+  src: url("../../../../themes/greatermedia/assets/fonts/icon-font/gmr-icons.eot?lpqn4l");
+  src: url("../../../../themes/greatermedia/assets/fonts/icon-font/gmr-icons.eot?#iefixlpqn4l") format("embedded-opentype"), url("../../../../themes/greatermedia/assets/fonts/icon-font/gmr-icons.woff?lpqn4l") format("woff"), url("../../../../themes/greatermedia/assets/fonts/icon-font/gmr-icons.ttf?lpqn4l") format("truetype"), url("../../../../themes/greatermedia/assets/fonts/icon-font/gmr-icons.svg?lpqn4l#icomoon") format("svg");
   font-weight: normal;
   font-style: normal; }
-[class^="icon-"], [class*=" icon-"], .entry__thumbnail--video:before, .entry__thumbnail--events:before, .entry__thumbnail--audio:before, .header__search--btn:before, .entry2__thumbnail__icon, .live-link__song:before, .live-link__type--audio:before, .live-link__type--gallery:before, .live-link__type--image:before, .live-link__type--link:before, .live-link__type--standard:before, .live-link__type--video:before, .social__link--facebook, .social__link--twitter, .social__link--google-plus:before, .social__link--youtube:before, .social__link--instagram:before, .gallery__prev--btn:before, .gallery__next--btn:after, .gallery__paging--prev, .gallery__paging--next, .gallery__grid--album, .gmr-icon, .contest__submission .preview .preview-close, .header__search--submit, .header__search--cancel {
+[class^="icon-"], [class*=" icon-"], .entry__thumbnail--video:before, .entry__thumbnail--events:before, .entry__thumbnail--audio:before, .header__subnav--schedule:before, .header__search--btn:before, .entry2__thumbnail__icon, .live-link__song:before, .live-link__type--audio:before, .live-link__type--gallery:before, .live-link__type--image:before, .live-link__type--link:before, .live-link__type--standard:before, .live-link__type--video:before, .social__link--facebook, .social__link--twitter, .social__link--google-plus:before, .social__link--youtube:before, .social__link--instagram:before, .gallery__prev--btn:before, .gallery__next--btn:after, .gallery__paging--prev, .gallery__paging--next, .gallery__grid--album, .gmr-icon, .contest__submission .preview .preview-close, .header__search--submit, .header__search--cancel {
   font-family: 'gmr-icons';
   speak: none;
   font-style: normal;
@@ -638,6 +638,18 @@ category: Base - Typography
 
 .icon-radio-tower:before {
   content: "\e626"; }
+
+.icon-schedule:before {
+  content: "\e627"; }
+
+.icon-stocks:before {
+  content: "\e628"; }
+
+.icon-traffic:before {
+  content: "\e629"; }
+
+.icon-weather:before {
+  content: "\e62a"; }
 
 img {
   max-width: 100%;
@@ -2703,12 +2715,43 @@ Community Highlights and Events
   .news-site .header .container {
     padding: 0; }
 
-.header__news {
+.header__leaderboard {
+  width: auto;
+  overflow: auto; }
+
+.header__sub {
   display: none;
   width: auto;
   height: 48px; }
-  .news-site .header__news {
+  .news-site .header__sub {
     display: block; }
+
+.header__subnav {
+  float: right;
+  height: 48px;
+  padding: 0;
+  margin: 0 20px 0 0;
+  line-height: 1;
+  font-size: 1em;
+  text-transform: uppercase; }
+
+.header__subnav li {
+  display: inline-block;
+  height: 48px;
+  padding: 16px 0;
+  margin: 0;
+  color: #ffffff; }
+  .header__subnav li a, .header__subnav li a:visited {
+    color: #ffffff; }
+
+.header__subnav--schedule:before {
+  width: 0;
+  height: 0;
+  margin-right: 10px;
+  font-size: 1.26563em; }
+
+.header__subnav--schedule:before {
+  content: "\e627"; }
 
 .header__main {
   width: 100%;
@@ -5816,6 +5859,11 @@ category: Components
     @media screen and (min-width: 480px) {
       .live-player--open .live-links {
         max-height: 35vh; } }
+  .live-links.live-links--fixed {
+    position: fixed; }
+    @media screen and (min-width: 768px) {
+      .live-links.live-links--fixed {
+        width: 225px; } }
 
 #popup-player-livestream .live-links {
   display: block;
@@ -5930,7 +5978,6 @@ category: Components
 
 .live-links--more {
   display: none;
-  visibility: hidden;
   position: fixed;
   bottom: 0;
   width: 100%;
@@ -5943,36 +5990,57 @@ category: Components
   transition: all 200ms ease-in-out; }
   @media screen and (min-width: 768px) {
     .live-links--more {
-      position: relative;
-      bottom: auto;
-      visibility: visible;
+      display: block;
       width: 225px; } }
-  .live-links--more.show-more {
-    display: block; }
+  .live-links--more.show-more--muted {
+    display: none; }
   .live-links--more.show-more--fixed {
     position: fixed;
     display: block;
     bottom: 0; }
-    .live-links--more.show-more--fixed:before {
-      position: absolute;
-      bottom: 40px;
-      left: 0;
-      width: 100%;
-      height: 40px;
-      background: -webkit-linear-gradient(transparent, black);
-      /* For Safari 5.1 to 6.0 */
-      background: -o-linear-gradient(transparent, black);
-      /* For Opera 11.1 to 12.0 */
-      background: -moz-linear-gradient(transparent, black);
-      /* For Firefox 3.6 to 15 */
-      background: linear-gradient(transparent, black);
-      /* Standard syntax (must be last) */
-      content: ""; }
+  .live-links--more:before {
+    position: absolute;
+    bottom: 40px;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    background: -webkit-linear-gradient(transparent, black);
+    /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(transparent, black);
+    /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(transparent, black);
+    /* For Firefox 3.6 to 15 */
+    background: linear-gradient(transparent, black);
+    /* Standard syntax (must be last) */
+    content: ""; }
   .live-player--open .live-links--more {
-    display: block;
-    visibility: visible; }
+    display: block; }
 
 .live-links--more__btn {
+  display: inline-block;
+  line-height: 1;
+  padding: 0.5em 1em;
+  margin-right: .5em;
+  outline: none;
+  background-color: #929497;
+  border: 1px solid #929497;
+  font-family: "Open Sans", sans-serif;
+  font-size: 0.88889em;
+  color: #ffffff !important;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 100em;
+  -webkit-transition: all 200ms ease-in-out;
+  -moz-transition: all 200ms ease-in-out;
+  transition: all 200ms ease-in-out; }
+  .live-links--more__btn:hover, .live-links--more__btn:focus {
+    background-color: #7b7d80;
+    border-color: #7b7d80;
+    color: #ffffff; }
+  .live-links--more__btn:last-of-type {
+    margin-right: 0; }
+
+.live-links--more__btn:hover {
   display: inline-block;
   line-height: 1;
   padding: 0.5em 1em;
@@ -5986,11 +6054,11 @@ category: Components
   text-transform: uppercase;
   cursor: pointer;
   border-radius: 100em; }
-  .live-links--more__btn:hover, .live-links--more__btn:focus {
+  .live-links--more__btn:hover:hover, .live-links--more__btn:hover:focus {
     background-color: #b21f18;
     border-color: #b21f18;
     color: #ffffff; }
-  .live-links--more__btn:last-of-type {
+  .live-links--more__btn:hover:last-of-type {
     margin-right: 0; }
 
 .audio__time {
@@ -8488,7 +8556,7 @@ category: Components - Shows
     .show__nav li a {
       font-size: 1em;
       font-weight: bold;
-      padding: 9px;
+      padding: 5px;
       border-radius: 20px;
       display: inline-block;
       text-transform: uppercase;
@@ -8517,9 +8585,7 @@ category: Components - Shows
         text-align: left;
         margin-left: -9px;
         padding-top: 8px;
-        width: auto; }
-        .show__nav ul li a {
-          padding: 5px; } }
+        width: auto; } }
   @media screen and (min-width: 1200px) {
     .show__nav ul {
       text-align: justify;
@@ -13027,6 +13093,58 @@ category: Components
   .image__attribution a:hover, .image__attribution a:active, .image__attribution a:focus {
     color: #aa1c20; }
 
+.recent-scores__widget {
+  float: right;
+  display: table;
+  table-layout: fixed;
+  height: 48px;
+  font-size: 0.79012em;
+  color: #ffffff; }
+
+.score--visitor {
+  display: table-cell;
+  width: auto;
+  vertical-align: middle;
+  text-align: left; }
+
+.game__score {
+  display: table-cell;
+  width: auto;
+  vertical-align: middle;
+  padding: 0 20px;
+  text-align: center; }
+
+.score--home {
+  display: table-cell;
+  width: auto;
+  vertical-align: middle;
+  text-align: right; }
+
+.team__logo {
+  display: table-cell;
+  width: auto;
+  vertical-align: middle;
+  height: 34px;
+  padding-right: 6px; }
+  .score--home .team__logo {
+    padding-right: 0;
+    padding-left: 6px; }
+
+.team__logo img {
+  height: 34px;
+  width: auto; }
+
+.team__name {
+  display: table-cell;
+  width: auto;
+  vertical-align: middle; }
+
+.team__record {
+  font-size: 0.70233em; }
+
+.game__score--status {
+  font-size: 0.70233em; }
+
 /**
  * Single Page Styles
  */
@@ -13049,7 +13167,7 @@ category: Components
 .ui-menu .ui-state-focus {
   background-color: #580f0c; }
 
-.header__news {
+.header__sub {
   background-color: #580f0c; }
 
 .header__main {
