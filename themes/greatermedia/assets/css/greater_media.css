@@ -5748,6 +5748,11 @@ category: Components
     @media screen and (min-width: 480px) {
       .live-player--open .live-links {
         max-height: 35vh; } }
+  .live-links.live-links--fixed {
+    position: fixed; }
+    @media screen and (min-width: 768px) {
+      .live-links.live-links--fixed {
+        width: 225px; } }
 
 #popup-player-livestream .live-links {
   display: block;
@@ -5862,7 +5867,6 @@ category: Components
 
 .live-links--more {
   display: none;
-  visibility: hidden;
   position: fixed;
   bottom: 0;
   width: 100%;
@@ -5875,36 +5879,57 @@ category: Components
   transition: all 200ms ease-in-out; }
   @media screen and (min-width: 768px) {
     .live-links--more {
-      position: relative;
-      bottom: auto;
-      visibility: visible;
+      display: block;
       width: 225px; } }
-  .live-links--more.show-more {
-    display: block; }
+  .live-links--more.show-more--muted {
+    display: none; }
   .live-links--more.show-more--fixed {
     position: fixed;
     display: block;
     bottom: 0; }
-    .live-links--more.show-more--fixed:before {
-      position: absolute;
-      bottom: 40px;
-      left: 0;
-      width: 100%;
-      height: 40px;
-      background: -webkit-linear-gradient(transparent, black);
-      /* For Safari 5.1 to 6.0 */
-      background: -o-linear-gradient(transparent, black);
-      /* For Opera 11.1 to 12.0 */
-      background: -moz-linear-gradient(transparent, black);
-      /* For Firefox 3.6 to 15 */
-      background: linear-gradient(transparent, black);
-      /* Standard syntax (must be last) */
-      content: ""; }
+  .live-links--more:before {
+    position: absolute;
+    bottom: 40px;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    background: -webkit-linear-gradient(transparent, black);
+    /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(transparent, black);
+    /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(transparent, black);
+    /* For Firefox 3.6 to 15 */
+    background: linear-gradient(transparent, black);
+    /* Standard syntax (must be last) */
+    content: ""; }
   .live-player--open .live-links--more {
-    display: block;
-    visibility: visible; }
+    display: block; }
 
 .live-links--more__btn {
+  display: inline-block;
+  line-height: 1;
+  padding: 0.5em 1em;
+  margin-right: .5em;
+  outline: none;
+  background-color: #929497;
+  border: 1px solid #929497;
+  font-family: "Open Sans", sans-serif;
+  font-size: 0.88889em;
+  color: #ffffff !important;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 100em;
+  -webkit-transition: all 200ms ease-in-out;
+  -moz-transition: all 200ms ease-in-out;
+  transition: all 200ms ease-in-out; }
+  .live-links--more__btn:hover, .live-links--more__btn:focus {
+    background-color: #7b7d80;
+    border-color: #7b7d80;
+    color: #ffffff; }
+  .live-links--more__btn:last-of-type {
+    margin-right: 0; }
+
+.live-links--more__btn:hover {
   display: inline-block;
   line-height: 1;
   padding: 0.5em 1em;
@@ -5918,11 +5943,11 @@ category: Components
   text-transform: uppercase;
   cursor: pointer;
   border-radius: 100em; }
-  .live-links--more__btn:hover, .live-links--more__btn:focus {
+  .live-links--more__btn:hover:hover, .live-links--more__btn:hover:focus {
     background-color: #aa1c20;
     border-color: #aa1c20;
     color: #ffffff; }
-  .live-links--more__btn:last-of-type {
+  .live-links--more__btn:hover:last-of-type {
     margin-right: 0; }
 
 .audio__time {
@@ -8416,7 +8441,7 @@ category: Components - Shows
     .show__nav li a {
       font-size: 1em;
       font-weight: bold;
-      padding: 9px;
+      padding: 5px;
       border-radius: 20px;
       display: inline-block;
       text-transform: uppercase;
@@ -8445,9 +8470,7 @@ category: Components - Shows
         text-align: left;
         margin-left: -9px;
         padding-top: 8px;
-        width: auto; }
-        .show__nav ul li a {
-          padding: 5px; } }
+        width: auto; } }
   @media screen and (min-width: 1200px) {
     .show__nav ul {
       text-align: justify;
