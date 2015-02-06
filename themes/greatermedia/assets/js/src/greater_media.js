@@ -9,20 +9,25 @@
 	/**
 	 * global variables
 	 *
-	 * @type {HTMLElement}
+	 * @type {jQuery}
 	 */
 	var $ = jQuery;
 
 	var body = document.querySelector('body'),
 		html = document.querySelector('html'),
 		mobileNavButton = document.querySelector('.mobile-nav__toggle'),
+		siteWrap = document.getElementById('site-wrap'),
 		pageWrap = document.getElementById('page-wrap'),
 		header = document.getElementById('header'),
 		livePlayer = document.getElementById('live-player__sidebar'),
+		liveStreamContainer = document.querySelector('.live-stream'),
 		livePlayerStream = document.querySelector('.live-player__stream'),
 		livePlayerStreamSelect = document.querySelector('.live-player__stream--current'),
 		livePlayerCurrentName = livePlayerStreamSelect.querySelector('.live-player__stream--current-name'),
 		livePlayerStreams = livePlayerStreamSelect.querySelectorAll('.live-player__stream--item'),
+		liveLinksMoreBtn = document.querySelector('.live-links--more__btn'),
+		liveLinksEnd = document.getElementById('live-links__widget--end'),
+		wpAdminBar = document.getElementById('wpadminbar'),
 		wpAdminHeight = 32,
 		onAir = document.getElementById( 'on-air' ),
 		upNext = document.getElementById( 'up-next'),
@@ -31,13 +36,17 @@
 		liveLink = document.querySelector( '.live-link__title'),
 		liveLinksWidget = document.querySelector( '.widget--live-player' ),
 		liveLinksWidgetTitle = document.querySelector('.widget--live-player__title'),
+		liveLinksMore = document.querySelector('.live-links--more'),
 		liveStream = document.getElementById( 'live-player' ),
 		windowWidth = this.innerWidth || this.document.documentElement.clientWidth || this.document.body.clientWidth || 0,
+		windowHeight = this.innerHeight|| this.document.documentElement.clientHeight || this.document.body.clientHeight || 0,
 		scrollObject = {},
 		collapseToggle = document.querySelector('*[data-toggle="collapse"]'),
 		breakingNewsBanner = document.getElementById('breaking-news-banner'),
 		$overlay = $('.overlay-mask'),
-		livePlayerMore = document.getElementById('live-player--more');
+		livePlayerMore = document.getElementById('live-player--more'),
+		mainContent = document.querySelector('.main'),
+		footer = document.querySelector('.footer');
 
 	/**
 	 * function to dynamically calculate the offsetHeight of an element
@@ -46,11 +55,7 @@
 	 * @returns {number}
 	 */
 	function elemHeight(elem) {
-		if (elem != null && elem === header && breakingNewsBanner != null) {
-			return elem.offsetHeight + breakingNewsBanner.offsetHeight;
-		} else if (elem != null) {
-			return elem.offsetHeight;
-		}
+		return elem.offsetHeight;
 	}
 
 	function elemTopOffset(elem) {
@@ -67,6 +72,12 @@
 
 	function windowHeight(elem) {
 		return Math.max(document.documentElement.clientHeight, elem.innerHeight || 0);
+	}
+
+	function documentHeight() {
+		var html = document.documentElement;
+
+		return Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
 	}
 
 	function elementInViewport(elem) {
@@ -116,112 +127,68 @@
 	}
 
 	/**
-	 * function for the initial state of the live player and scroll position one
-	 */
-	function lpPosBase() {
-		if (body.classList.contains('logged-in')) {
-			if (livePlayer != null ) {
-				livePlayer.style.top = wpAdminHeight + elemHeight(header) + 'px';
-				livePlayer.style.height = windowHeight(window) - wpAdminHeight - elemHeight(header) + 'px';
-			}
-			if (liveLinks != null ) {
-				liveLinks.style.height = windowHeight(window) - wpAdminHeight - elemHeight(header) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) + 'px';
-			}
-			if (liveLinksWidget != null ) {
-				liveLinksWidget.style.maxHeight = windowHeight(window) - wpAdminHeight - elemHeight(header) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - elemHeight(liveLinksWidgetTitle) - elemHeight(nowPlaying) + 'px';
-			}
-		} else {
-			if (livePlayer != null ) {
-				livePlayer.style.top = elemHeight(header) + 'px';
-				livePlayer.style.height = windowHeight(window) - elemHeight(header) + 'px';
-			}
-			if (liveLinks != null ) {
-				liveLinks.style.height = windowHeight(window) - elemHeight(header) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) + 'px';
-			}
-			if (liveLinksWidget != null ) {
-				liveLinksWidget.style.maxHeight = windowHeight(window) - elemHeight(header) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - elemHeight(liveLinksWidgetTitle) - elemHeight(nowPlaying) + 'px';
-			}
-		}
-		if (livePlayer != null ) {
-			livePlayer.classList.remove('live-player--fixed');
-			livePlayer.classList.add('live-player--init');
-		}
-	}
-
-	/**
-	 * function for the live player when a user starts scrolling and the header is not in view
-	 */
-	function lpPosScrollInit() {
-		if (body.classList.contains('logged-in')) {
-			if (livePlayer != null ) {
-				livePlayer.style.top = wpAdminHeight + elemHeight(header) + 'px';
-				livePlayer.style.height = windowHeight(window) - wpAdminHeight + 'px';
-			}
-			if (liveLinks != null ) {
-				liveLinks.style.height = windowHeight(window) - elemTopOffset(header) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) + 'px';
-			}
-			if (liveLinksWidget != null ) {
-				liveLinksWidget.style.maxHeight = windowHeight(window) - elemTopOffset(header) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - elemHeight(liveLinksWidgetTitle) - elemHeight(nowPlaying) + 'px';
-			}
-		} else {
-			if (livePlayer != null ) {
-				livePlayer.style.top = elemHeight(header) + 'px';
-				livePlayer.style.height = windowHeight(window) - wpAdminHeight - elemHeight(header) + 'px';
-			}
-			if (liveLinks != null ) {
-				liveLinks.style.height = windowHeight(window) - elemHeightOffset(header) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) + 'px';
-			}
-			if (liveLinksWidget != null ) {
-				liveLinksWidget.style.maxHeight = windowHeight(window) - elemHeightOffset(header) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - elemHeight(liveLinksWidgetTitle) - elemHeight(nowPlaying) + 'px';
-			}
-		}
-		if (livePlayer != null ) {
-			livePlayer.classList.remove('live-player--fixed');
-			livePlayer.classList.add('live-player--init');
-		}
-	}
-
-	/**
-	 * function for the live player when the header is no longer in view
-	 */
-	function lpPosNoHeader() {
-		if (body.classList.contains('logged-in')) {
-			if (livePlayer != null ) {
-				livePlayer.style.top = wpAdminHeight + 'px';
-				livePlayer.style.height = windowHeight(window) - wpAdminHeight + 'px';
-			}
-			if (liveLinks != null ) {
-				liveLinks.style.height = windowHeight(window) - wpAdminHeight - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) + 'px';
-			}
-			if (liveLinksWidget != null ) {
-				liveLinksWidget.style.maxHeight = windowHeight(window) - wpAdminHeight - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - elemHeight(liveLinksWidgetTitle) - elemHeight(nowPlaying) + 'px';
-			}
-		} else {
-			if (livePlayer != null ) {
-				livePlayer.style.top = '0px';
-				livePlayer.style.height = windowHeight(window) + 'px';
-			}
-			if (liveLinks != null ) {
-				liveLinks.style.height = windowHeight(window) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) + 'px';
-			}
-			if (liveLinksWidget != null ) {
-				liveLinksWidget.style.maxHeight = windowHeight(window) - elemHeight(livePlayerStreamSelect) - elemHeight(liveStream) - elemHeight(liveLinksWidgetTitle) - elemHeight(nowPlaying) + 'px';
-			}
-		}
-		if (livePlayer != null ) {
-			livePlayer.classList.remove('live-player--init');
-			livePlayer.classList.add('live-player--fixed');
-		}
-	}
-
-	/**
 	 * default height for the live player
 	 */
 	function lpPosDefault() {
-		if (livePlayer != null ) {
-			livePlayer.style.height = '100%';
+		if (livePlayer != null) {
+			if (body.classList.contains('logged-in')) {
+				livePlayer.style.top = wpAdminHeight + elemHeight(header) + 'px';
+			} else {
+				livePlayer.style.top = elemHeight(header) + 'px';
+			}
 		}
 	}
+
+	function lpHeight() {
+		if (livePlayer != null) {
+			livePlayer.style.height = elemHeight(siteWrap) - elemHeight(header) + 'px';
+		}
+	}
+
+	function liveLinksHeight() {
+		var liveLinksBlogRoll = document.getElementById('live-links__blogroll');
+		if (liveLinksBlogRoll != null) {
+			var liveLinksItem = liveLinksBlogRoll.getElementsByTagName('li');
+		}
+		if (liveLinks != null && liveLinksWidget != null) {
+			if (elemHeight(liveLinksWidget) >= elemHeight(livePlayer)) {
+				liveLinksMore.classList.add('show-more--fixed');
+				liveLinks.style.height = elemHeight(livePlayer) - elemHeight(liveStreamContainer) + 'px';
+			}
+		}
+
+		if(liveLinksWidget != null & liveLinksMore != null && liveLinksItem.length >= 1) {
+			liveLinksMore.classList.add('show-more');
+		}
+	}
+
+	/**
+     * Toggles a class to the Live Play Stream Select box when the box is clicked
+     */
+    function toggleStreamSelect() {
+        livePlayerStreamSelect.classList.toggle( 'open' );
+    }
+    addEventHandler(livePlayerStreamSelect,elemClick,toggleStreamSelect);
+
+    /**
+     * Selects a Live Player Stream
+     */
+    function selectStream() {
+        var selected_stream = this.querySelector( '.live-player__stream--name' ).textContent;
+
+        livePlayerCurrentName.textContent = selected_stream;
+        document.dispatchEvent( new CustomEvent( 'live-player-stream-changed', { 'detail': selected_stream } ) );
+    }
+
+    for ( var i = 0; i < livePlayerStreams.length; i++ ) {
+        addEventHandler(livePlayerStreams[i],elemClick,selectStream);
+    }
+    /**
+     * from Js Window resize script is not neccessary on popupPlayer window
+     */
+    if( document.getElementById( 'popup-player-livestream' ) ){
+        return;
+    }
 
 	/**
 	 * detects various positions of the screen on scroll to deliver states of the live player
@@ -244,18 +211,38 @@
 			};
 
 			if (scrollObject.y == 0) {
-				lpPosBase();
-			} else if (scrollObject.y >= 1 && elementInViewport(header)) {
-				lpPosScrollInit();
-			} else if (!elementInViewport(header)) {
-				lpPosNoHeader();
+				if (liveStreamContainer.classList.contains('live-stream--fixed')) {
+					liveStreamContainer.classList.remove('live-stream--fixed');
+				}
+			} else if (scrollObject.y >= 1 && elementInViewport(header) && ! elementInViewport(footer)) {
+				if (liveStreamContainer.classList.contains('live-stream--fixed')) {
+					liveStreamContainer.classList.remove('live-stream--fixed');
+				}
+				if(liveLinks != null) {
+					liveLinks.style.marginTop = '0px';
+				}
+			} else if (!elementInViewport(header) && ! elementInViewport(footer)) {
+				liveStreamContainer.classList.add('live-stream--fixed');
+				if(liveLinks != null) {
+					liveLinks.style.marginTop = elemHeight(liveStreamContainer) + 'px';
+				}
+			} else if (elementInViewport(footer) && liveLinksWidget != null) {
+				if (elemHeight(liveLinksWidget) <= elemHeight(siteWrap)) {
+					liveLinks.style.marginTop = '0px';
+				}
 			} else {
-				lpPosDefault();
+				if (liveStreamContainer.classList.contains('live-stream--fixed')) {
+					liveStreamContainer.classList.remove('live-stream--fixed');
+				}
 			}
+			lpPosDefault();
+			lpHeight();
 		}
 	}
 
-	/**
+
+
+			/**
 	 * adds some styles to the live player that would be called at mobile breakpoints. This is added specifically to
 	 * deal with a window being resized.
 	 */
@@ -267,6 +254,10 @@
 			if (livePlayer.classList.contains('live-player--fixed')) {
 				livePlayer.classList.remove('live-player--fixed');
 			}
+			if (liveStreamContainer.classList.contains('live-stream--fixed')) {
+				liveStreamContainer.classList.remove('live-stream--fixed');
+			}
+			liveLinks.style.marginTop = '0px';
 			livePlayer.classList.add('live-player--mobile');
 		}
 	}
@@ -335,8 +326,29 @@
 	/**
 	 * Toggles a class to the body when the mobile nav button is clicked
 	 */
+
+	function mobileOpenLocation() {
+		var y = window.pageYOffset;
+
+		siteWrap.style.top = '-' + y + 'px';
+	}
+
+	function mobileCloseLocation() {
+		var y = window.pageYOffset;
+
+		siteWrap.style.removeProperty('top');
+	}
+
 	function toggleNavButton() {
 		body.classList.toggle('mobile-nav--open');
+
+		if ($('.mobile-nav--open').length) {
+			showBlocker();
+			mobileOpenLocation();
+		} else {
+			hideBlocker();
+			mobileCloseLocation()
+		}
 	}
 
 	addEventHandler(mobileNavButton, elemClick, toggleNavButton);
@@ -403,7 +415,7 @@
 	function openLivePlayer() {
 		if (window.innerWidth <= 767) {
 			body.classList.toggle('live-player--open');
-			liveLinksMobileState();
+			//liveLinksMobileState();
 		}
 	}
 
@@ -415,7 +427,7 @@
 			if (body.classList.contains('live-player--open')) {
 				body.classList.remove('live-player--open');
 			}
-			liveLinksMobileState();
+			//liveLinksMobileState();
 		}
 	}
 
@@ -438,6 +450,7 @@
 		} else {
 			if (livePlayer != null) {
 				livePlayerDesktopReset();
+				lpPosDefault();
 				addEventHandler(window, elemScroll, function () {
 					scrollDebounce();
 					scrollThrottle();
@@ -458,14 +471,15 @@
 	 * functions being run at specific window widths.
 	 */
 	if (window.innerWidth >= 768) {
-		addEventHandler(window, elemLoad, function () {
-			lpPosBase();
-		});
+		lpPosDefault();
+		lpHeight();
+		liveLinksHeight();
 		addEventHandler(window, elemScroll, function () {
 			scrollDebounce();
 			scrollThrottle();
 		});
 	}
+
 
 	if (onAir != null) {
 		addEventHandler(onAir, elemClick, openLivePlayer);
@@ -521,12 +535,11 @@
 			var href = $(this).attr('href'),
 				x = screen.width / 2 - 700 / 2,
 				y = screen.height / 2 - 450 / 2;
-			
+
 			window.open(href, href, 'height=485,width=700,scrollbars=yes,resizable=yes,left=' + x + ',top=' + y);
 
 			return false;
 		});
-
 		$(document).ready(function() {
 			$('.article__content').fitVids({customSelector: "div[id^='playerwrapper']"});
 		});
@@ -563,6 +576,36 @@
 
 	$(document).bind( 'pjax:end', function () {
 		personality_toggle();
+	});
+
+	var getBlockerDiv = function() {
+		var $div = $('#mobile-nav-blocker');
+		if ($div.length === 0) {
+			$('<div id="mobile-nav-blocker"></div>').insertAfter('#mobile-nav');
+			$div = $('#mobile-nav-blocker');
+			$div.on('click', toggleNavButton);
+		}
+
+		return $div;
+	};
+
+	var showBlocker = function() {
+		var $blocker = getBlockerDiv();
+
+		$blocker.css({
+			width: $(document).width(),
+			height: $(document).height(),
+			display: 'block',
+		});
+	};
+
+	var hideBlocker = function() {
+		var $blocker = getBlockerDiv();
+		$blocker.css({'display': 'none'});
+	};
+
+	$(document).ready(function() {
+		//showBlocker();
 	});
 
 })();

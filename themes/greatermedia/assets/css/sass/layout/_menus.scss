@@ -64,11 +64,30 @@
 	@include transform(translate(-100%, 0));
 	@include transition(all 100ms ease-out);
 	background-color: $secondary-bg;
-	border-right: 1px solid $primary-border;
 	z-index: 1;
 	overflow-y: auto;
+	-webkit-overflow-scrolling: touch;
 	@include bp(large) {
 		display: none;
+	}
+}
+
+#mobile-nav {
+	z-index: 25;
+}
+
+#mobile-nav-blocker {
+	background-color: rgba(0,0,0,0.4);
+	/*background-color: red;*/
+	/*opacity: 0.7;*/
+	z-index: 20;
+	position: absolute;
+	display: none;
+}
+
+.mobile-nav--open {
+	.mobile-nav__toggle {
+		display: block;
 	}
 }
 
@@ -85,6 +104,11 @@
 
 .mobile-nav--open {
 	overflow: hidden;
+
+	.site-wrap {
+		position: fixed;
+		overflow: hidden;
+	}
 }
 
 .mobile-nav--open .mobile-nav {
@@ -109,7 +133,6 @@
 	@include transform(translate(78%, 0));
 	width: 100%;
 	@include transition(transform 100ms ease-out);
-	position: fixed;
 }
 
 .mobile-nav--open .header__search--open {
@@ -117,8 +140,7 @@
 }
 
 .mobile-nav--open .header__search--form {
-	position: fixed;
-	@include transform(translate(78%));
+	@include transform(translate(78%, 0));
 	@include bp('medium') {
 		@include transform(translate(78%, -200%));
 	}
@@ -126,6 +148,13 @@
 
 .mobile-nav--open .footer {
 	display: none;
+}
+
+.mobile-nav--open .live-player {
+	@include transform(translate(78%, 0));
+	@include bp(medium) {
+		right: 78% !important;
+	}
 }
 
 .mobile-nav--open .page-wrap {
@@ -139,6 +168,16 @@
  * z-index is 2 so that it sits under the close button, but above most content
  */
 .mobile-nav--open .page-wrap:before {
+	position: absolute;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0,.4);
+	content: " ";
+	z-index: 2;
+}
+
+.mobile-nav--open .live-player:before {
 	position: absolute;
 	top: 0;
 	width: 100%;
@@ -178,12 +217,17 @@
 }
 
 .mobile-nav .social__link {
-	margin: 0 0 0 1.25em;
+	margin: 0 0 0 1em;
 	font-size: ms(3);
 }
 
 .mobile-nav .social__link:last-child {
-	margin: 0 0 0 1.25em;
+	margin: 0 0 0 1em;
+}
+
+.mobile-nav .social__link {
+	color: #fff;
+	border-color: #fff;
 }
 
 // main header navigation

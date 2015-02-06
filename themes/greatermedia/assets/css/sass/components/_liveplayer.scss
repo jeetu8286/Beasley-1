@@ -142,20 +142,27 @@ category: Components
 .live-stream {
 	display: block;
 	width: 100%;
-	overflow: auto;
 	background-color: $liveplayer-bg;
 
 	@include bp(medium) {
 		width: 225px;
+		overflow: auto;
 	}
 
 	&.live-stream--fixed {
-		position: fixed;
-		top: 0;
-		z-index: 20;
+		@include bp(medium) {
+			position: fixed;
+			top: 0;
+			z-index: 20;
+		}
 
 		.logged-in & {
-			top: 32px;
+			@include bp(medium) {
+				top: 46px;
+			}
+			@include media(min-width 783px) {
+				top: 32px;
+			}
 		}
 	}
 }
@@ -377,7 +384,7 @@ category: Components
 	position: absolute;
 	right: 39px;
 	width: 34px;
-	height: 58px;
+	height: 57px;
 	padding: 12px 0;
 	margin-right: 5px;
 	@include transition(width 200ms ease-in-out 200ms);
@@ -473,11 +480,12 @@ category: Components
 }
 
 .live-stream__now-playing--btn {
-	@include btn(transparent, $color-text-red, $btn-bg, .5em, 1em, ms(-1));
+	@include btn(transparent, $color-text-red, transparent, .5em, 1em, ms(-1));
 	display: none;
 	margin-right: 0;
 	font-weight: 700;
 	@include transition(background 200ms ease-in-out);
+	cursor: default;
 }
 
 .live-stream__login {
@@ -603,7 +611,7 @@ category: Components
 	}
 }
 
-.live-stream__btn--play, .live-stream__btn--resume, .live-stream__btn--pause {
+.live-stream__btn--play, .live-stream__btn--resume, .live-stream__btn--pause, .live-stream__btn--loading {
 	position: relative;
 	@extend %live-stream__btn;
 }
@@ -630,6 +638,19 @@ category: Components
 
 	.live-stream__player.audio__playing & {
 		content: "\e61f" !important;
+	}
+}
+
+.live-stream__btn--loading .fa {
+	position: absolute;
+	top: 20%;
+	left: 23%;
+	@include transform(translate(-50%, -50%));
+	font-size: ms(2);
+
+	@include bp(medium) {
+		top: 28%;
+		left: 32%;
 	}
 }
 
@@ -689,6 +710,17 @@ category: Components
 		top: 52%;
 	}
 
+}
+
+.live-stream__btn--loading {
+	display: none;
+	border: none;
+	background: $btn-bg;
+	color: $liveplayer-bg;
+
+	&.loading {
+		display: block;
+	}
 }
 
 .live-stream__btn--pause {
@@ -997,7 +1029,7 @@ category: Components
 	display: none;
 	float: left;
 	width: calc(100% - 144px);
-	height: 58px;
+	height: 57px;
 	padding: 16px 1em 0 0;
 	text-align: left;
 	@include bp(medium) {
@@ -1013,7 +1045,7 @@ category: Components
 		position: relative;
 		display: block;
 		width: calc(100% - 78px);
-		padding: 0 0 0 3.75%;
+		padding: 0 3.75%;
 
 		@include bp(medium) {
 			@include fill-parent;
@@ -1028,7 +1060,7 @@ category: Components
 		left: 0;
 		display: block;
 		width: calc(100% - 110px);
-		height: 58px;
+		height: 57px;
 		padding: 0 0 0 3.75%;
 
 		@include bp(medium) {
@@ -1066,7 +1098,7 @@ category: Components
 
 .now-playing__title {
 	margin: 0 0 8px;
-	line-height: 1;
+	line-height: 1.2;
 	font-size: ms(0);
 	font-weight: lighter;
 	color: $color-text-red;
@@ -1203,11 +1235,11 @@ category: Components
 	text-align: center;
 	overflow: hidden;
 	overflow-y: auto;
+	-webkit-overflow-scrolling: touch;
 
 	@include bp(medium) {
 		visibility: visible;
 		display: block;
-		height: 100%;
 		margin: 0;
 		overflow: hidden;
 		border-top: 1px solid $secondary-border;
@@ -1218,7 +1250,8 @@ category: Components
 		display: block;
 		height: auto !important;
 		max-height: 48vh;
-		margin-top: 43px;
+		padding-bottom: 40px;
+		margin-top: 43px !important;
 		@include bp(small) {
 			max-height: 35vh;
 		}
@@ -1373,19 +1406,32 @@ category: Components
 }
 
 .live-links--more {
-	position: relative;
-	display: block;
+	display: none;
+	visibility: hidden;
+	position: fixed;
+	bottom: 0;
 	width: 100%;
 	height: 40px;
+	padding: 5px 0;
+	text-align: center;
 	background-color: $liveplayer-bg;
-	@include transition(all 500ms ease-in-out);
+	@include transition(all 200ms ease-in-out);
+
 
 	@include bp(medium) {
+		position: relative;
+		bottom: auto;
+		visibility: visible;
 		width: 225px;
 	}
 
 	&.show-more {
+		display: block;
+	}
+
+	&.show-more--fixed {
 		position: fixed;
+		display: block;
 		bottom: 0;
 
 		&:before {
@@ -1400,6 +1446,11 @@ category: Components
 			background: linear-gradient(rgba(0, 0, 0, 0), rgb(0, 0, 0)); /* Standard syntax (must be last) */
 			content: "";
 		}
+	}
+
+	.live-player--open & {
+		display: block;
+		visibility: visible;
 	}
 }
 
