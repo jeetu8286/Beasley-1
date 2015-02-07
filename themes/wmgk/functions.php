@@ -88,14 +88,3 @@ function wmgk_scripts_styles() {
 }
 
 add_action( 'wp_enqueue_scripts', 'wmgk_scripts_styles', 20 );
-
-/**
- * Add humans.txt to the <head> element.
- */
-function wmgk_header_meta() {
-	$humans = '<link type="text/plain" rel="author" href="' . get_template_directory_uri() . '/humans.txt" />';
-
-	echo apply_filters( 'wmgk_humans', $humans );
-}
-
-add_action( 'wp_head', 'wmgk_header_meta' );
