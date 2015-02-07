@@ -52,13 +52,20 @@ add_action( 'after_setup_theme', 'wmgk_setup' );
 function wmgk_scripts_styles() {
 	$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 
-	wp_enqueue_script(
-		'wmgk',
-		get_stylesheet_directory_uri() . "/assets/js/wmgk{$postfix}.js",
-		array(),
-		WMGK_VERSION,
-		true
-	);
+	/*
+	 * Commented out because wmgk.js is an empty file.
+	 * The JS file and this statement remain so that future child-theme-specific JS can be added
+	 * with ease and best practices. Until then, saving the http request.
+	 */
+//	wp_enqueue_script(
+//		'wmgk',
+//		get_stylesheet_directory_uri() . "/assets/js/wmgk{$postfix}.js",
+//		array(),
+//		WMGK_VERSION,
+//		true
+//	);
+
+
 	/**
 	 * We are dequeueing and deregistering the parent theme's style sheets.
 	 * The purpose for this is we are importing the parent's sass files into the child's sass files so that we can
