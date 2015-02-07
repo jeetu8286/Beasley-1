@@ -148,13 +148,6 @@ function greatermedia_scripts_styles() {
 		false
 	);
 	wp_enqueue_script(
-		'html5shiv',
-		"{$baseurl}/assets/js/vendor/html5shiv-printshiv.js",
-		array(),
-		'3.7.2',
-		false
-	);
-	wp_enqueue_script(
 		'placeholders',
 		"{$baseurl}/assets/js/vendor/placeholders.min.js",
 		array(),
