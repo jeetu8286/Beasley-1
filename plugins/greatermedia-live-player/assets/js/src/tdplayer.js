@@ -95,7 +95,7 @@
 		debug('Live stream interval set');
 
 		liveStreamInterval = setInterval(function() {
-			$(body).trigger('liveAudioStillPlaying.gmr');
+			$(body).trigger('liveStreamStillPlaying.gmr');
 			debug('Live stream interval reached');
 		}, audioIntervalDuration);
 	}
