@@ -93,9 +93,10 @@
 	 */
 	function startLiveStreamInterval() {
 		debug('Live stream interval set');
+		$(body).trigger('liveStreamPlaying.gmr');
 
 		liveStreamInterval = setInterval(function() {
-			$(body).trigger('liveStreamStillPlaying.gmr');
+			$(body).trigger('liveStreamPlaying.gmr');
 			debug('Live stream interval reached');
 		}, audioIntervalDuration);
 	}
@@ -106,9 +107,10 @@
 	 */
 	function startInlineAudioInterval() {
 		debug('Inline audio interval set');
+		$(body).trigger('inlineAudioPlaying.gmr');
 
 		inlineAudioInterval = setInterval(function () {
-			$(body).trigger('inlineAudioStillPlaying.gmr');
+			$(body).trigger('inlineAudioPlaying.gmr');
 			debug('Inline audio interval reached');
 		}, audioIntervalDuration);
 	}
