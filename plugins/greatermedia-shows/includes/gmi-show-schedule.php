@@ -474,7 +474,6 @@ function gmrs_get_scheduled_episodes( $from = null, $to = null) {
 			),
 		),
 	) );
-	error_log( 'Total episodes: ' . count( $posts ) );
 
 	$episodes = array();
 	foreach ( $posts as $post ) {
