@@ -631,7 +631,7 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 				$.post(container.data('unvote'), {ugc: $this.data('id')}, function(response) {
 					sync_vote = false;
 					$icon.attr('class', classes);
-					
+
 					if (response.success) {
 						$item.removeClass('voted');
 						gridUpdateRating($rating, -1);
@@ -676,7 +676,7 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 				} else if (iframe.attachEvent) {
 					iframe.attachEvent('onload', iframe_onload);
 				}
-				
+
 				return true;
 			}
 
@@ -695,12 +695,14 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 		var loadContainerState = function(url) {
 			$.get(url, function(response) {
 				var restriction = null;
-				
+
 				if (response.success) {
 					container.html(response.data.html);
+					console.log('loadUserContestMeta', response.data.contest_id);
+					loadUserContestMeta(response.data.contest_id);
 
 					$('#contest-form form').parsley();
-					
+
 					$('.type-contest.collapsed').removeClass('collapsed');
 				} else {
 					restriction = response.data.restriction;
@@ -710,11 +712,56 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 			});
 		};
 
+		var loadUserContestMeta = function(contestID) {
+			has_user_entered_contest(contestID)
+				.then(didLoadUserContestMeta);
+		};
+
+		var didLoadUserContestMeta = function(response) {
+			var hasParticipated = response.success && response.data;
+			showUserContestMeta(hasParticipated);
+		};
+
+		var showUserContestMeta = function(hasParticipated) {
+			var loggedInTemplate = '<a href="<%- editProfileUrl %>">Edit Your Profile</a>' +
+				'<dl>' +
+				'<dt>Submitted By:</dt>' +
+				'<dd><%- firstName %> <%- lastName %></dd>' +
+				//'<dt>Email Address:</dt>' +
+				//'<dd><%- email %></dd>' +
+				'<dt>Age: </dt>' +
+				'<dd><%- age %></dd>' +
+				'<dt>Zip: </dt>' +
+				'<dd><%- zip %></dd>' +
+				'</dl>';
+
+			var loggedOutTemplate = '<i>Enter this contest as a guest</i>' +
+				'<a href="<%- loginUrl %>">Login or Register</a>';
+
+			var data = {
+				editProfileUrl : gigya_profile_path('account'),
+				loginUrl       : gigya_profile_path('login'),
+				firstName      : get_gigya_user_field('firstName'),
+				lastName       : get_gigya_user_field('lastName'),
+				email          : get_gigya_user_field('email'),
+				age            : get_gigya_user_field('age'),
+				zip            : get_gigya_user_field('zip'),
+			};
+
+			var userTemplate = hasParticipated ? loggedInTemplate : loggedOutTemplate;
+			var template     = _.template(userTemplate);
+			var html         = template(data);
+			var $form        = $('.contest__form--user-info');
+
+			$form.html(html);
+			$form.css('display', 'block');
+		};
+
 		$('.contest__restriction--min-age-yes').click(function() {
 			loadContainerState(container.data('confirm-age'));
 			return false;
 		});
-		
+
 		$('.contest__restriction--min-age-no').click(function() {
 			showRestriction('age-fails');
 			return false;

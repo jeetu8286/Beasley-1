@@ -245,6 +245,8 @@ class GreaterMediaFormbuilderRender {
 		$html .= '<form action="' . esc_url( $permalink ) . '/action/submit/" target="theiframe" method="post" enctype="multipart/form-data" novalidate>';
 
 		if ( $use_user_info ) {
+			$html .= '<div class="contest__form--user-info" style="display:none"></div>';
+			/*
 			$html .= '<div class="contest__form--user-info">';
 			if ( function_exists( 'is_gigya_user_logged_in' ) && is_gigya_user_logged_in() ) {
 				$html .= '<a href="' . esc_url( trailingslashit( gigya_profile_path( 'account' ) ) ) . '">Edit Your Profile</a>';
@@ -270,6 +272,7 @@ class GreaterMediaFormbuilderRender {
 				}
 			}
 			$html .= '</div>';
+*/
 		}
 
 		foreach ( $form as $field ) {
@@ -324,7 +327,7 @@ class GreaterMediaFormbuilderRender {
 			if ( ! empty( $field->required ) && 'section_break' != $field->field_type ) {
 				$label .= ' <abbr title="required">*</abbr>';
 			}
-			
+
 			$html .= '<label ';
 
 			foreach ( $attributes as $attribute => $value ) {
@@ -363,7 +366,7 @@ class GreaterMediaFormbuilderRender {
 			if ( ! empty( $field->required ) && 'section_break' != $field->field_type ) {
 				$label .= ' <abbr title="required">*</abbr>';
 			}
-			
+
 			$html .= '<legend ';
 			foreach ( $attributes as $attribute => $value ) {
 				$html .= $attribute . '="' . esc_attr( $value ) . '" ';
