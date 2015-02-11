@@ -42,13 +42,29 @@ class Plugin {
 			$this->plugin_file,
 			array( $this, 'migrate' )
 		);
+
+		register_deactivation_hook(
+			$this->plugin_file,
+			array( $this, 'deactivate' )
+		);
 	}
 
 	public function migrate() {
 		$migrator = new Sync\TempSchemaMigrator();
 		$migrator->migrate();
 
+		$post_type = new MemberQueryPostType();
+		$post_type->register();
+
+		load_capabilities( $post_type->get_post_type_name() );
+
 		flush_rewrite_rules();
+	}
+
+	public function deactivate() {
+		$post_type = new MemberQueryPostType();
+
+		unload_capabilities( $post_type->get_post_type_name() );
 	}
 
 	/**
@@ -275,7 +291,7 @@ class Plugin {
 			$post_type   = $post->post_type;
 			$post_status = $post->post_status;
 
-			if ( $post_status === 'publish' && $post_type === 'member_query' ) {
+			if ( ( $post_status === 'publish' || $post_status === 'pending' ) && $post_type === 'member_query' ) {
 				return $this->publish_member_query( $post_id, $post );
 			}
 		}
@@ -305,7 +321,11 @@ class Plugin {
 			$member_query->build_and_save();
 
 			if ( $this->can_export_member_query() ) {
-				$this->export_member_query( $post_id );
+				if ( current_user_can( 'publish_member_queries' ) ) {
+					$this->export_member_query( $post_id );
+				} else {
+					$this->set_flash( 'Error: You do not have enough permissions to publish queries.' );
+				}
 			}
 		} catch ( \Exception $e ) {
 			$this->set_flash( $e->getMessage() );
