@@ -246,8 +246,10 @@ function gmrs_delete_show_episode() {
 			),
 		) );
 
-		while ( $query->have_posts() ) {
-			$deleted = wp_delete_post( $query->next_post(), true );
+		if ( $query->have_posts() ) {
+			foreach ( $query->posts as $post_to_delete ) {
+				$deleted = wp_delete_post( $post_to_delete, true );
+			}
 		}
 	} else {
 		$deleted = wp_delete_post( $episode_id, true );
@@ -355,7 +357,7 @@ function gmrs_render_episode_schedule_page() {
 					</option>
 				<?php endfor; ?>
 			</select>
-			untill
+			until
 			<select name="end_time">
 				<?php for ( $i = 1; $i <= $count; $i++ ) : ?>
 					<?php $time = HOUR_IN_SECONDS * $precision * $i; ?>
@@ -449,11 +451,11 @@ function gmrs_get_scheduled_episodes( $from = null, $to = null) {
 	$query = new WP_Query();
 
 	if ( empty( $from ) ) {
-		$from = date( DATE_ISO8601, time() );
+		$from = date( DATE_ISO8601, strtotime( '-1 day' ) );
 	}
 
 	if ( empty( $to ) ) {
-		$to = date( 'Y-m-d 23:59:59', strtotime( '+1 week' ) );
+		$to = date( 'Y-m-d 24:00:00', strtotime( '+7 week' ) );
 	}
 
 	$posts = $query->query( array(
