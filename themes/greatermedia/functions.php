@@ -652,7 +652,7 @@ function add_google_analytics() {
 	});
 
 	$body.on('liveStreamPlaying.gmr', function () {
-		ga('send', 'event', 'audio', 'Live Stream playing');
+		ga('send', 'event', 'audio', 'Live stream playing');
 	});
 
 	</script>
