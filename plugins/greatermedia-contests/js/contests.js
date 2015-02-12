@@ -719,24 +719,28 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 
 		var didLoadUserContestMeta = function(response) {
 			var hasParticipated = response.success && response.data;
-			showUserContestMeta(hasParticipated);
+			if (is_gigya_user_logged_in()) {
+				showUserContestMeta(hasParticipated);
+			} else {
+				var $form = $('.contest__form--user-info');
+				$form.css('display', 'block');
+			}
 		};
 
 		var showUserContestMeta = function(hasParticipated) {
-			var loggedInTemplate = '<a href="<%- editProfileUrl %>">Edit Your Profile</a>' +
+			var userTemplate = '<span class="meta-title">Entry Details</span>' +
+				'<a href="<%- editProfileUrl %>">Edit Your Profile</a>' +
+				'<p class="meta-subtitle">This information is required for every entry.</p>' +
 				'<dl>' +
-				'<dt>Submitted By:</dt>' +
+				'<dt>Name: </dt>' +
 				'<dd><%- firstName %> <%- lastName %></dd>' +
-				//'<dt>Email Address:</dt>' +
-				//'<dd><%- email %></dd>' +
-				'<dt>Age: </dt>' +
+				'<dt>Email Address:</dt>' +
+				'<dd><%- email %></dd>' +
+				'<dt>Date of Birth: </dt>' +
 				'<dd><%- age %></dd>' +
 				'<dt>Zip: </dt>' +
 				'<dd><%- zip %></dd>' +
 				'</dl>';
-
-			var loggedOutTemplate = '<i>Enter this contest as a guest</i>' +
-				'<a href="<%- loginUrl %>">Login or Register</a>';
 
 			var data = {
 				editProfileUrl : gigya_profile_path('account'),
@@ -748,13 +752,15 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 				zip            : get_gigya_user_field('zip'),
 			};
 
-			var userTemplate = hasParticipated ? loggedInTemplate : loggedOutTemplate;
 			var template     = _.template(userTemplate);
 			var html         = template(data);
-			var $form        = $('.contest__form--user-info');
+			var $box        = $('.contest__form--user-info .user-info-box');
 
-			$form.html(html);
-			$form.css('display', 'block');
+			$box.html(html);
+			$box.css('display', 'block');
+
+			var $userInfo = $('.contest__form--user-info');
+			$userInfo.css('display', 'block');
 		};
 
 		$('.contest__restriction--min-age-yes').click(function() {
