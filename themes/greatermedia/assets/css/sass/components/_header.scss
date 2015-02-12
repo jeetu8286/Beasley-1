@@ -133,6 +133,7 @@
 	}
 
 	.news-site & {
+
 		@include bp(medium) {
 			height: 126px;
 			padding-right: 24px;

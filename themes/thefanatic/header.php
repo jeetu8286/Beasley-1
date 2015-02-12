@@ -116,12 +116,6 @@
 									</div>
 								</div>
 							</div>
-
-							<?php
-							/**
-							 * @todo rethink this nav to deal with an icon that is different size than text
-							 */
-							?>
 							<ul class="header__subnav">
 								<li class="header__subnav--schedule"><a href="#" class="header__link--schedule">Schedule</a></li>
 							</ul>
@@ -132,7 +126,9 @@
 							<div class="mobile-nav__toggle">
 								<div class="mobile-nav__toggle--span"></div>
 							</div>
-
+							<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="header__logo">
+								<?php do_action( 'gmr_site_logo' ); ?>
+							</a>
 							<?php
 							$main_nav = array(
 								'theme_location'  => 'main-nav',
