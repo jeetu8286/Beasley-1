@@ -698,7 +698,6 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 
 				if (response.success) {
 					container.html(response.data.html);
-					console.log('loadUserContestMeta', response.data.contest_id);
 					loadUserContestMeta(response.data.contest_id);
 
 					$('#contest-form form').parsley();
@@ -713,21 +712,22 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 		};
 
 		var loadUserContestMeta = function(contestID) {
-			has_user_entered_contest(contestID)
-				.then(didLoadUserContestMeta);
-		};
-
-		var didLoadUserContestMeta = function(response) {
-			var hasParticipated = response.success && response.data;
 			if (is_gigya_user_logged_in()) {
-				showUserContestMeta(hasParticipated);
+				get_gigya_profile_fields(['email', 'dateOfBirth'])
+					.then(didLoadUserContestMeta);
 			} else {
 				var $form = $('.contest__form--user-info');
 				$form.css('display', 'block');
 			}
 		};
 
-		var showUserContestMeta = function(hasParticipated) {
+		var didLoadUserContestMeta = function(response) {
+			if (response.success) {
+				showUserContestMeta(response.data);
+			}
+		};
+
+		var showUserContestMeta = function(fields) {
 			var userTemplate = '<span class="meta-title">Entry Details</span>' +
 				'<a href="<%- editProfileUrl %>">Edit Your Profile</a>' +
 				'<p class="meta-subtitle">This information is required for every entry.</p>' +
@@ -737,7 +737,7 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 				'<dt>Email Address:</dt>' +
 				'<dd><%- email %></dd>' +
 				'<dt>Date of Birth: </dt>' +
-				'<dd><%- age %></dd>' +
+				'<dd><%- dateOfBirth %></dd>' +
 				'<dt>Zip: </dt>' +
 				'<dd><%- zip %></dd>' +
 				'</dl>';
@@ -747,8 +747,9 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 				loginUrl       : gigya_profile_path('login'),
 				firstName      : get_gigya_user_field('firstName'),
 				lastName       : get_gigya_user_field('lastName'),
-				email          : get_gigya_user_field('email'),
+				email          : fields.email || 'N/A',
 				age            : get_gigya_user_field('age'),
+				dateOfBirth    : fields.dateOfBirth || 'N/A',
 				zip            : get_gigya_user_field('zip'),
 			};
 
