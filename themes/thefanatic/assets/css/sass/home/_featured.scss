@@ -4,3 +4,11 @@
 		color: $color-red;
 	}
 }
+
+.featured__content--title {
+	color: $color-gray-medium-light;
+
+	.featured__content--block:hover & {
+		color: $color-red-dark;
+	}
+}

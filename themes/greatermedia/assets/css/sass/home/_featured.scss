@@ -102,6 +102,11 @@ Curated posts for Featured Articles
 	}
 }
 
+.featured__articles {
+	display: block;
+	overflow: auto;
+}
+
 .featured__article{
 	@include row();
 
@@ -152,6 +157,20 @@ Curated posts for Featured Articles
 .featured__content {
 	padding-bottom: 0;
 	@include row();
+
+	.news-site & {
+		padding: $base-line-height $gutter / 2;
+
+		@include bp(small) {
+			@include span-columns(6);
+			@include omega;
+		}
+		@include bp(medium) {
+			@include span-columns(8);
+			@include omega;
+			padding: $base-line-height * 2 $gutter * 2;
+		}
+	}
 }
 
 .featured__article {
@@ -165,8 +184,8 @@ Curated posts for Featured Articles
 	@include span-columns(4 of 4);
 	@include omega;
 	overflow: hidden;
-	background-color: $featured-secondary-bg;	
-	position: relative;  
+	background-color: $featured-secondary-bg;
+	position: relative;
 	padding-top: 35.71%;
 	background-size: 100%;
 	background-size: cover;
@@ -240,6 +259,7 @@ Curated posts for Featured Articles
 	.news-site & {
 		font-family: $secondary-font;
 		font-size: ms(0);
+		font-weight: normal;
 	}
 }
 
@@ -302,6 +322,16 @@ Curated posts for Featured Articles
 		background-color: $featured-secondary-bg;
 		color: $secondary-link;
 	}
+
+	.news-site & {
+		margin-top: 0;
+		height: 100%;
+		background-color: transparent;
+
+		@include bp(large) {
+			height: 100%;
+		}
+	}
 }
 
 .featured__content--block:last-of-type {
@@ -316,7 +346,7 @@ Curated posts for Featured Articles
 	background-size: 100%;
 	background-size: cover;
 	background-repeat: no-repeat;
-	background-position: center center; 
+	background-position: center center;
 	@include bp(small) {
 		@include span-columns(4 of 4);
 		@include omega;
@@ -328,6 +358,17 @@ Curated posts for Featured Articles
 	}
 	@include bp(x-large) {
 		@include span-columns(4 of 12);
+	}
+
+	.news-site & {
+
+		@include bp(large) {
+			@include span-columns(12 of 12);
+			padding-top: 52.25%;
+		}
+		@include bp(x-large) {
+			@include span-columns(12 of 12);
+		}
 	}
 }
 
@@ -346,11 +387,19 @@ Curated posts for Featured Articles
 	}
 	@include bp(large) {
 		@include span-columns(8 of 12);
-		min-height: none;
+		min-height: 100%;
 	}
 
 	.home__featured & {
 		color: $highlights-text;
+	}
+
+	.news-site & {
+		padding: .8em 0 0;
+
+		@include bp(small) {
+			min-height: 100%;
+		}
 	}
 }
 
@@ -366,11 +415,16 @@ Curated posts for Featured Articles
 	-webkit-line-clamp: 3;
 	-webkit-box-orient: vertical;
 	text-overflow: ellipsis;
-	font-family: $open-sans;
+	font-family: $primary-font;
 	color: $color-text-white;
 
 	.featured__content--block:hover & {
 		color: $color-text-yellow;
+	}
+
+	.news-site & {
+		font-family: $secondary-font;
+		font-weight: normal;
 	}
 }
 
