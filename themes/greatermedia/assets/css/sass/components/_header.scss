@@ -41,7 +41,6 @@
 
 .header__leaderboard {
 	width: auto;
-	overflow: auto;
 }
 
 .header__sub {
@@ -67,11 +66,15 @@
 .header__subnav li {
 	display: inline-block;
 	height: 48px;
-	padding: 16px 0;
+	padding: 14px 0 16px;
 	margin: 0;
 	color: $color-text-white;
 
 	a, a:visited {
+		display: inline-block;
+		height: 16px;
+		padding-top: 3px;
+		vertical-align: top;
 		color: $color-text-white;
 	}
 }
@@ -334,19 +337,27 @@
 
 		@include bp(medium) {
 			height: 78px;
-			padding-top: 30px;
-			padding-bottom: 30px;
+			padding-top: 26px;
+			padding-bottom: 26px;
+		}
+
+		@include bp(large) {
+			font-size: ms(4);
 		}
 	}
 }
 
 .header__account--span {
-	font-family: $open-sans;
+	font-family: $primary-font;
 	color: $light-gray;
 
 	@include bp(larger) {
 		font-size: 12.65px;
 		padding-left: 12px;
+	}
+
+	.news-site & {
+		color: white;
 	}
 }
 
@@ -423,6 +434,8 @@
 
 	.news-site & {
 
+		color: white;
+
 		@include bp(medium) {
 			height: 78px;
 		}
@@ -445,9 +458,15 @@
 	}
 
 	.news-site & {
+		padding: 31px 0 29px;
+		text-transform: uppercase;
 
 		@include bp(medium) {
 			height: 78px;
+		}
+
+		@include bp(large) {
+			font-size: ms(-1);
 		}
 	}
 }
@@ -460,8 +479,8 @@
 
 	.news-site & {
 		height: 78px;
-		padding-top: 32px;
-		padding-bottom: 28px;
+		padding-top: 28px;
+		padding-bottom: 27px;
 	}
 }
 
@@ -472,5 +491,12 @@
 
 	@include bp(large) {
 		font-size: ms(1);
+	}
+
+	.news-site & {
+
+		@include bp(large) {
+			font-size: ms(3);
+		}
 	}
 }

@@ -52,6 +52,19 @@ add_action( 'after_setup_theme', 'thefanatic_setup' );
 function thefanatic_scripts_styles() {
 	$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 
+	wp_register_style(
+		'roboto',
+		'//fonts.googleapis.com/css?family=Roboto:400,900italic,700italic,400italic,300italic,900,700,300',
+		array(),
+		null
+	);
+	wp_register_style(
+		'roboto-slab',
+		'//fonts.googleapis.com/css?family=Roboto+Slab:400,700',
+		array(),
+		null
+	);
+
 	wp_enqueue_script(
 		'thefanatic',
 		get_stylesheet_directory_uri() . "/assets/js/thefanatic{$postfix}.js",

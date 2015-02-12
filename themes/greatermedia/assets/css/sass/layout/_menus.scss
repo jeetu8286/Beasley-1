@@ -245,6 +245,12 @@
 	display: inline-block;
 	font-size: ms(0);
 	float: left;
+
+	.news-site  & {
+		font-size: ms(2);
+		font-weight: 900;
+		text-transform: uppercase;
+	}
 }
 
 .header__main a, .header__main a:visited {
@@ -265,7 +271,7 @@
 	padding: 33px 1.125em 32px;
 
 	.news-site & {
-		padding: 31px 1.125em;
+		padding: 32px 1.125em 31px;
 	}
 }
 

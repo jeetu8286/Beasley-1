@@ -10,9 +10,15 @@
 
 @import "../../../../greatermedia/assets/css/sass/greater_media.scss";
 
-// Main layout components: menu, typography, etc.
-@import "layout/menus";
+// Anything that doesn't print out CSS along with normalize and fonts
+@import "base/fonts";
 
+// Main layout components: menu, typography, etc.
+@import "layout/typography";
+@import "layout/menus";
+@import "layout/sub-menus/sub-menus";
+
+// Components
 @import "components/header";
 
 
