@@ -107,22 +107,43 @@ Curated posts for Featured Articles
 
 	.news-site & {
 		position: relative;
-		float: right;
-		width: 33%;
+		float: left;
+		width: 49%;
 		padding: 0;
-		margin-bottom: 2px;
+		margin-right: 2%;
 		background-color: transparent;
 		background-image: none;
-		font-size: ms(3);
+		font-size: ms(1);
+
+		@include bp(medium) {
+			float: right;
+			width: 33%;
+			margin-bottom: 2px;
+			margin-right: 0;
+		}
+
+		@include bp(large) {
+			font-size: ms(3);
+		}
 
 		&:first-of-type {
 			float: left;
-			width: calc(100% - 8px - 33%);
-			margin-bottom: 0;
-			font-size: ms(6);
+			width: 100%;
+			margin-bottom: 14px;
+			font-size: ms(3);
+
+			@include bp(medium) {
+				width: calc(100% - 8px - 33%);
+				margin-bottom: 0;
+			}
+
+			@include bp(large) {
+				font-size: ms(6);
+			}
 		}
 
 		&:last-of-type {
+			margin-right: 0;
 			margin-bottom: 0;
 		}
 	}
