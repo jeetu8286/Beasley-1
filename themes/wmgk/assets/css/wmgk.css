@@ -12961,10 +12961,10 @@ category: Components
     font-size: 60px;
     color: #bbb; }
   .busy-mask .icon-spin {
-    -webkit-animation: spin 1s infinite linear;
-    -moz-animation: spin 1s infinite linear;
-    -o-animation: spin 1s infinite linear;
-    animation: spin 1s infinite linear; }
+    -webkit-animation: icon-spin 1s infinite linear;
+    -moz-animation: icon-spin 1s infinite linear;
+    -o-animation: icon-spin 1s infinite linear;
+    animation: icon-spin 1s infinite linear; }
 
 .sponsors {
   width: 100%;
