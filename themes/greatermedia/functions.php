@@ -177,6 +177,13 @@ function greatermedia_scripts_styles() {
 	);
 
 	/**
+	 * YARPP styles are not being used, so let's get rid of them!
+	 */
+	wp_dequeue_style(
+		'yarppWidgetCss'
+	);
+
+	/**
 	 * this is a fix to resolve conflicts with styles and javascript for The Events Calendar plugin that will not
 	 * load once pjax has been activated. We are checking to see if the `Tribe_Template_Factory` class exists and if
 	 * the function `asset_package` exists within `Tribe_Template_Factory`. If the class and function exists, we then
