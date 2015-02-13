@@ -150,9 +150,7 @@ function greatermedia_scripts_styles() {
 		array(
 			'jquery',
 			'underscore',
-			'classlist-polyfill',
-			'jquery-waypoints',
-			'waypoints-inview'
+			'classlist-polyfill'
 		),
 		GREATERMEDIA_VERSION,
 		true
@@ -561,7 +559,7 @@ function greatermedia_load_more_button( $args = array() ) {
 			data-partial-name='<?php echo esc_attr( $args['partial_name'] ); ?>'
 			data-auto-load='<?php echo intval( $args['auto_load'] ); ?>'
 			>
-			<i class="fa fa-spin fa-refresh"></i> Load More
+			<i class="gmr-icon icon-spin icon-loading"></i> Load More
 		</a>
 	</div>
 <?php

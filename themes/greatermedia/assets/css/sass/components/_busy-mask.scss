@@ -16,7 +16,7 @@
 		@include transition( opacity 250ms linear );
 	}
 	
-	.fa {
+	.gmr-icon {
 		position: absolute;
 		left: 50%;
 		top: 50%;
@@ -25,7 +25,7 @@
 		color: #bbb;		
 	}
 
-	.fa-spin {
+	.icon-spin {
 	  -webkit-animation: spin 1s infinite linear;
 	  -moz-animation: spin 1s infinite linear;
 	  -o-animation: spin 1s infinite linear;
