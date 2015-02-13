@@ -1,4 +1,6 @@
 /* globals is_gigya_user_logged_in:false, get_gigya_user_field:false */
+/* globals get_gigya_profile_fields:false, gigya_profile_path:false */
+/* globals _:false */
 (function($) {
 	var $document = $(document), container, gridContainer;
 
@@ -130,16 +132,18 @@
 
 				if (response.success) {
 					container.html(response.data.html);
-					loadUserContestMeta(response.data.contest_id);
 
 					$('#contest-form form').parsley();
-
 					$('.type-contest.collapsed').removeClass('collapsed');
 				} else {
 					restriction = response.data.restriction;
 				}
 
 				showRestriction(restriction);
+
+				if (response.data && response.data.contest_id) {
+					loadUserContestMeta(response.data.contest_id);
+				}
 			});
 		};
 
