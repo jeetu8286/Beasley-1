@@ -262,10 +262,16 @@
 			nowPlaying.style.display = 'inline-block';
 			listenNow.style.display = 'none';
 		}
-		if (loadingBtn != null) {
+		if (false === playingCustomAudio && loadingBtn != null) {
 			loadingBtn.classList.add('loading');
 		}
-
+		if (true === playingCustomAudio && pauseBtn != null) {
+			if (pauseBtn.classList.contains('live-player__muted')) {
+				pauseBtn.classList.remove('live-player__muted');
+			}
+		} else {
+			pauseBtn.classList.add('live-player__muted');
+		}
 
 	}
 
@@ -572,71 +578,48 @@
 	function playLiveStreamMobile() {
 		var station = gmr.callsign;
 
-		if (Cookies.get('gmr_play_live_audio') != 1) {
-			if (station === '') {
-				alert('Please enter a Station');
-				return;
-			}
+		if (station === '') {
+			alert('Please enter a Station');
+			return;
+		}
+		if ( true === playingCustomAudio ) {
+			listenLiveStopCustomInlineAudio();
+		}
+		debug('playLiveStream - station=' + station);
 
-			if ( true === playingCustomAudio ) {
-				listenLiveStopCustomInlineAudio();
-			}
-
-			debug('playLiveStream - station=' + station);
-
-			preVastAd();
-			if (adBlockCheck === undefined) {
-				showAdBlockDetect();
-				setTimeout(postVastAd, 15000);
-			} else {
-				streamVastAd();
-			}
-			if (player.addEventListener) {
-				player.addEventListener('ad-playback-complete', function () {
-					postVastAd();
-					console.log("--- ad complete ---");
-
-					if (livePlaying) {
-						player.stop();
-					}
-
-					livePlayer.classList.add('live-player--active');
-					player.play({station: station, timeShift: true});
-					setPlayingStyles();
-				});
-			} else if (player.attachEvent) {
-				player.attachEvent('ad-playback-complete', function () {
-					postVastAd();
-					console.log("--- ad complete ---");
-
-					if (livePlaying) {
-						player.stop();
-					}
-
-					livePlayer.classList.add('live-player--active');
-					player.play({station: station, timeShift: true});
-					setPlayingStyles();
-				});
-			}
+		preVastAd();
+		if (adBlockCheck === undefined) {
+			showAdBlockDetect();
+			setTimeout(postVastAd, 15000);
 		} else {
-			if (station === '') {
-				alert('Please enter a Station');
-				return;
-			}
+			streamVastAd();
+		}
+		if (player.addEventListener) {
+			player.addEventListener('ad-playback-complete', function () {
+				postVastAd();
+				console.log("--- ad complete ---");
 
-			debug('playLiveStream - station=' + station);
+				if (livePlaying) {
+					player.stop();
+				}
 
-			if (livePlaying) {
-				player.stop();
-			}
+				livePlayer.classList.add('live-player--active');
+				player.play({station: station, timeShift: true});
+				setPlayingStyles();
+			});
+		} else if (player.attachEvent) {
+			player.attachEvent('ad-playback-complete', function () {
+				postVastAd();
+				console.log("--- ad complete ---");
 
-			if ( true === playingCustomAudio ) {
-				listenLiveStopCustomInlineAudio();
-			}
+				if (livePlaying) {
+					player.stop();
+				}
 
-			livePlayer.classList.add('live-player--active');
-			player.play({station: station, timeShift: true});
-			setPlayingStyles();
+				livePlayer.classList.add('live-player--active');
+				player.play({station: station, timeShift: true});
+				setPlayingStyles();
+			});
 		}
 
 	}
@@ -653,7 +636,7 @@
 			preVastAd();
 			showAdBlockDetect();
 			setTimeout(postVastAd, 15000);
-		} else if (Cookies.get('gmr_play_live_audio') != 1) {
+		} else {
 
 			if (station === '') {
 				alert('Please enter a Station');
@@ -691,25 +674,6 @@
 					setPlayingStyles();
 				});
 			}
-		} else {
-			if (station === '') {
-				alert('Please enter a Station');
-				return;
-			}
-
-			debug('playLiveStream - station=' + station);
-
-			if (livePlaying) {
-				player.stop();
-			}
-
-			if ( true === playingCustomAudio ) {
-				listenLiveStopCustomInlineAudio();
-			}
-
-			livePlayer.classList.add('live-player--active');
-			player.play({station: station, timeShift: true});
-			setPlayingStyles();
 		}
 	}
 
