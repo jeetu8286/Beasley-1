@@ -6488,6 +6488,13 @@ category: Components - Ads
 ```
 
 */
+.ad__inline--right:after, .ad__in-loop:after {
+  content: '\25B4  Advertisement';
+  display: block;
+  font-size: 10px;
+  text-transform: uppercase;
+  color: #7f7f81; }
+
 .ad__leaderboard {
   position: relative;
   padding: 1.25em 0;
