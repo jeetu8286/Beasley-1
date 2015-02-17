@@ -1351,7 +1351,7 @@ blockquote p {
   .header__account ul li a, .news-site
   .header__account ul li a:link, .news-site
   .header__account ul li a:visited {
-    padding: 32px 1.2em 31px;
+    padding: 30px 1.2em 29px;
     border-right: 1px solid #580f0c; }
 
 .header__nav ul li a:hover,
@@ -1473,6 +1473,13 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
     .header__nav .format-fi > ul.header__account--links a:hover,
     .ui-menu a:hover {
       color: #ffffff; }
+  .news-site .header__nav .sub-menu li a, .news-site .header__nav .format-fw > ul li a, .news-site .header__nav .format-sp > ul li a, .news-site .header__nav .format-fi > ul li a, .news-site
+  .header__account--links.sub-menu li a, .news-site .header__nav .format-fw > ul.header__account--links li a, .header__nav .news-site .format-fw > ul.header__account--links li a, .news-site .header__nav .format-sp > ul.header__account--links li a, .header__nav .news-site .format-sp > ul.header__account--links li a, .news-site .header__nav .format-fi > ul.header__account--links li a, .header__nav .news-site .format-fi > ul.header__account--links li a, .news-site
+  .ui-menu li a {
+    border-right: none;
+    font-size: 0.79012em;
+    font-weight: normal;
+    text-transform: none; }
 
 .header__account--container {
   display: none; }
@@ -13402,12 +13409,6 @@ h1, .h1, .type-tribe_events .entry2__thumbnail--event-date, .type-contest .entry
 .header__account ul li:hover,
 .ui-menu .ui-state-focus {
   background-color: #580f0c; }
-
-.header__nav ul li a,
-.header__nav ul li a:link,
-.header__nav ul li a:visited {
-  padding-top: 30px !important;
-  padding-bottom: 28px !important; }
 
 .header__nav .sub-menu, .header__nav .format-fw > ul, .header__nav .format-sp > ul, .header__nav .format-fi > ul,
 .header__account--links.sub-menu,
