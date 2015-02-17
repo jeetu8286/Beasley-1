@@ -613,7 +613,8 @@
 		}
 
 		.preview-close {
-			@extend .gmr-icon, .icon-close;
+			@extend .gmr-icon;
+			@extend .icon-close;
 
 			position: absolute;
 			top: 10px;
