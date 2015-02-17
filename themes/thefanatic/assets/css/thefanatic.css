@@ -1351,7 +1351,7 @@ blockquote p {
   .header__account ul li a, .news-site
   .header__account ul li a:link, .news-site
   .header__account ul li a:visited {
-    padding: 30px 1.2em 29px;
+    padding: 29px 1.2em 29px;
     border-right: 1px solid #580f0c; }
 
 .header__nav ul li a:hover,

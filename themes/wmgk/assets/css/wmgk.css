@@ -1351,7 +1351,8 @@ blockquote p {
   .header__account ul li a, .news-site
   .header__account ul li a:link, .news-site
   .header__account ul li a:visited {
-    padding: 32px 1.125em 31px; }
+    padding: 30px 1.2em 29px;
+    border-right: 1px solid #282827; }
 
 .header__nav ul li a:hover,
 .header__nav ul li a:focus,
@@ -1472,6 +1473,13 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
     .header__nav .format-fi > ul.header__account--links a:hover,
     .ui-menu a:hover {
       color: #ffffff; }
+  .news-site .header__nav .sub-menu li a, .news-site .header__nav .format-fw > ul li a, .news-site .header__nav .format-sp > ul li a, .news-site .header__nav .format-fi > ul li a, .news-site
+  .header__account--links.sub-menu li a, .news-site .header__nav .format-fw > ul.header__account--links li a, .header__nav .news-site .format-fw > ul.header__account--links li a, .news-site .header__nav .format-sp > ul.header__account--links li a, .header__nav .news-site .format-sp > ul.header__account--links li a, .news-site .header__nav .format-fi > ul.header__account--links li a, .header__nav .news-site .format-fi > ul.header__account--links li a, .news-site
+  .ui-menu li a {
+    border-right: none;
+    font-size: 0.79012em;
+    font-weight: normal;
+    text-transform: none; }
 
 .header__account--container {
   display: none; }
@@ -2950,10 +2958,11 @@ Community Highlights and Events
     @media screen and (min-width: 768px) {
       .news-site .header__logo {
         height: 126px;
-        padding-right: 24px;
-        padding-left: 24px;
+        padding-right: 1.5em;
+        padding-left: 1.5em;
         margin-top: -48px;
-        margin-left: 70px; } }
+        margin-left: 70px;
+        margin-right: 0; } }
     @media screen and (min-width: 1024px) {
       .news-site .header__logo {
         margin-left: 0; } }
