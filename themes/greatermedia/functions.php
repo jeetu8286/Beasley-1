@@ -81,6 +81,11 @@ function greatermedia_setup() {
 	add_post_type_support( 'post', 'login-restricted-content' );
 	add_post_type_support( 'post', 'age-restricted-content' );
 
+	// Pages should also support same restrictions as posts
+	add_post_type_support( 'page', 'timed-content' );
+	add_post_type_support( 'page', 'login-restricted-content' );
+	add_post_type_support( 'page', 'age-restricted-content' );
+
 	// Add theme support for post-formats
 	$formats = array( 'gallery', 'link', 'image', 'video', 'audio' );
 	add_theme_support( 'post-formats', $formats );
@@ -116,20 +121,8 @@ function greatermedia_scripts_styles() {
 	$baseurl = untrailingslashit( get_template_directory_uri() );
 
 	wp_register_style(
-		'open-sans',
-		'http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,800italic,400,300,700,800',
-		array(),
-		null
-	);
-	wp_register_style(
-		'droid-sans',
-		'http://fonts.googleapis.com/css?family=Droid+Sans:400,700',
-		array(),
-		null
-	);
-	wp_register_style(
-		'font-awesome',
-		'//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css',
+		'google-fonts',
+		'//fonts.googleapis.com/css?family=Droid+Sans:400,700|Open+Sans:300italic,400italic,700italic,800italic,400,300,700,8',
 		array(),
 		null
 	);
@@ -138,9 +131,7 @@ function greatermedia_scripts_styles() {
 		"{$baseurl}/assets/css/greater_media{$postfix}.css",
 		array(
 			'dashicons',
-			'open-sans',
-			'droid-sans',
-			'font-awesome'
+			'google-fonts'
 		),
 		GREATERMEDIA_VERSION
 	);
@@ -150,9 +141,7 @@ function greatermedia_scripts_styles() {
 		array(
 			'jquery',
 			'underscore',
-			'classlist-polyfill',
-			'jquery-waypoints',
-			'waypoints-inview'
+			'classlist-polyfill'
 		),
 		GREATERMEDIA_VERSION,
 		true
@@ -174,6 +163,13 @@ function greatermedia_scripts_styles() {
 	);
 	wp_enqueue_style(
 		'greatermedia'
+	);
+
+	/**
+	 * YARPP styles are not being used, so let's get rid of them!
+	 */
+	wp_dequeue_style(
+		'yarppWidgetCss'
 	);
 
 	/**
@@ -554,7 +550,7 @@ function greatermedia_load_more_button( $args = array() ) {
 			data-partial-name='<?php echo esc_attr( $args['partial_name'] ); ?>'
 			data-auto-load='<?php echo intval( $args['auto_load'] ); ?>'
 			>
-			<i class="fa fa-spin fa-refresh"></i> Load More
+			<i class="gmr-icon icon-spin icon-loading"></i> Load More
 		</a>
 	</div>
 <?php
@@ -625,10 +621,12 @@ add_filter( 'get_user_option_dashboard_quick_press_last_post_id', 'greatermedia_
 
 function add_google_analytics() {
 	$google_analytics = get_option( 'gmr_google_analytics', '' );
+	$google_uid_dimension = absint( get_option( 'gmr_google_uid_dimension', '' ) );
 
 	if ( empty( $google_analytics ) ) {
 		return;
 	}
+
 	?>
 	<script>
 	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -638,8 +636,16 @@ function add_google_analytics() {
 
 	ga('create', '<?php echo esc_js( $google_analytics ); ?>', 'auto');
 
+	var googleUidDimension = '<?php echo esc_js( $google_uid_dimension ); ?>';
+
 	if( window.is_gigya_user_logged_in && is_gigya_user_logged_in() ) {
 		ga( 'set', '&uid', get_gigya_user_id() );
+
+		if ( googleUidDimension !== '0' ) {
+			googleUidDimension = 'dimension' + googleUidDimension;
+			ga( 'set', googleUidDimension, get_gigya_user_id() );
+		}
+
 	}
 
 	jQuery(document).on('pjax:end', function() {
@@ -648,14 +654,16 @@ function add_google_analytics() {
 	});
 	ga('send', 'pageview');
 
-	var $body = jQuery('body');
+	jQuery(document).ready(function() {
+		var $body = jQuery('body');
 
-	$body.on('inlineAudioPlaying.gmr', function() {
-		ga('send', 'event', 'audio', 'Inline audio playing');
-	});
+		$body.on('inlineAudioPlaying.gmr', function() {
+			ga('send', 'event', 'audio', 'Inline audio playing');
+		});
 
-	$body.on('liveStreamPlaying.gmr', function () {
-		ga('send', 'event', 'audio', 'Live stream playing');
+		$body.on('liveStreamPlaying.gmr', function () {
+			ga('send', 'event', 'audio', 'Live stream playing');
+		});
 	});
 
 	</script>
