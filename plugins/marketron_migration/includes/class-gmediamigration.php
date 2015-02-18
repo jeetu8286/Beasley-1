@@ -88,7 +88,12 @@ class GMedia_Migration extends WP_CLI_Command {
 
 	function restore() {
 		global $wpdb;
-		$prefix = $wpdb->prefix;
+
+		$prefix           = $wpdb->prefix;
+		$blog_id          = get_current_blog_id();
+		$home_dir         = get_home_path();
+		$upload_dir_parts = wp_upload_dir();
+		$upload_dir       = $upload_dir_parts['basedir'];
 
 		$wpdb->query( "Delete From {$prefix}postmeta" );
 		$wpdb->query( "Delete From {$prefix}posts" );
@@ -100,11 +105,9 @@ class GMedia_Migration extends WP_CLI_Command {
 		$wpdb->query( "Delete From {$prefix}comments" );
 		$wpdb->query( "Delete From {$prefix}links" );
 
-		$blog_id     = get_current_blog_id();
-		$home_dir    = get_home_path();
-		$uploads_dir = $home_dir . "wp-content/uploads/sites/$blog_id";
+		system( "rm -rf '$upload_dir'" );
+		system( "mkdir -p '$upload_dir'" );
 
-		system( "rm -rf '$uploads_dir'" );
 		wp_cache_flush();
 
 		\WP_CLI::success( 'Restored WordPress to Defaults' );
