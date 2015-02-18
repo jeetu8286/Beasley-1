@@ -1,3 +1,11 @@
+.mobile-nav {
+	background-color: $color-gray-medium-dark;
+}
+
+.mobile-nav__list a:hover, .mobile-nav__list a:focus, .mobile-nav__list a:active {
+	background-color: $color-red-dark;
+}
+
 .header__nav ul li a:hover,
 .header__nav ul li a:focus,
 .header__nav ul li a:active,

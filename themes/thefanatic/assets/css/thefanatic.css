@@ -13337,11 +13337,20 @@ h1, .h1, .type-tribe_events .entry2__thumbnail--event-date, .type-contest .entry
 .section-header {
   font-family: 'Open Sans', sans-serif; }
 
+.mobile-nav {
+  background-color: #303030; }
+
+.mobile-nav__list a:hover, .mobile-nav__list a:focus, .mobile-nav__list a:active {
+  background-color: #580f0c; }
+
 .header__nav ul li a:hover, .header__nav ul li a:focus, .header__nav ul li a:active, .header__nav ul li:hover, .header__account ul li a:hover, .header__account ul li a:focus, .header__account ul li a:active, .header__account ul li:hover, .ui-menu .ui-state-focus {
   background-color: #580f0c; }
 
 .header__nav .sub-menu, .header__nav .format-fw > ul, .header__nav .format-sp > ul, .header__nav .format-fi > ul, .header__account--links.sub-menu, .header__nav .format-fw > ul.header__account--links, .header__nav .format-sp > ul.header__account--links, .header__nav .format-fi > ul.header__account--links, .ui-menu {
   border-top-color: #580f0c; }
+
+.mobile-nav .mobile-menu-submenu-header {
+  background-color: #580f0c; }
 
 .featured__article:hover .featured__article--heading {
   color: #db261d; }
