@@ -77,8 +77,10 @@ class GMedia_Migration extends WP_CLI_Command {
 	function __construct() {
 		// TODO: Lookup paths from command args
 		$this->downloader = new \GreaterMedia\Utils\Downloader(
-			'/projects/10up/greater_media/migration_cache/wmgk/downloads',
-			'/projects/10up/greater_media/migration_cache/wmgk/media'
+			//'/projects/10up/greater_media/migration_cache/wmgk/downloads',
+			//'/projects/10up/greater_media/migration_cache/wmgk/media'
+			'migration_cache/downloads',
+			'migration_cache/media'
 		);
 	}
 
@@ -575,7 +577,13 @@ class GMedia_Migration extends WP_CLI_Command {
 		return $exists;
 	}
 
+	// NOTE: Disabling this to make the process faster
+	// This is actually used as a reverse lookup against the destination server.
+	// The server is not setup to handle the serving pages at the
+	// same speed as the import!
+	// TODO: Use file system check if needed
 	private function is_html( $file, $count = FALSE){
+		return false;
 		$str = file_get_contents( $file );
 		if( strpos( $str, 'html' )  !== false ) {
 			return true;
