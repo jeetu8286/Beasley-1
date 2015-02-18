@@ -86,6 +86,30 @@ class GMedia_Migration extends WP_CLI_Command {
 		return $this->downloader->download( $url );
 	}
 
+	function restore() {
+		global $wpdb;
+		$prefix = $wpdb->prefix;
+
+		$wpdb->query( "Delete From {$prefix}postmeta" );
+		$wpdb->query( "Delete From {$prefix}posts" );
+		$wpdb->query( "Delete From {$prefix}term_relationships" );
+		$wpdb->query( "Delete From {$prefix}terms Where term_id != 1" );
+		$wpdb->query( "Delete From {$prefix}term_taxonomy Where term_taxonomy_id != 1" );
+		$wpdb->query( "Delete From {$prefix}term_relationships" );
+		$wpdb->query( "Delete From {$prefix}commentmeta" );
+		$wpdb->query( "Delete From {$prefix}comments" );
+		$wpdb->query( "Delete From {$prefix}links" );
+
+		$blog_id     = get_current_blog_id();
+		$home_dir    = get_home_path();
+		$uploads_dir = $home_dir . "wp-content/uploads/sites/$blog_id";
+
+		system( "rm -rf '$uploads_dir'" );
+		wp_cache_flush();
+
+		\WP_CLI::success( 'Restored WordPress to Defaults' );
+	}
+
 	/**
 	 * Reset the DB
 	 * -e 'show databases;'
@@ -170,6 +194,10 @@ class GMedia_Migration extends WP_CLI_Command {
 
 		$file  = $args[0];
 		$force = isset( $assoc_args['force'] );
+
+		if ( $force ) {
+			$this->restore();
+		}
 
 		if ( false !== stripos( $file, '.xml' ) ) {
 			$finfo          = finfo_open( FILEINFO_MIME_TYPE );
@@ -302,6 +330,7 @@ class GMedia_Migration extends WP_CLI_Command {
 
 		$count = 0;
 		foreach ( $articles->Article as $article ) {
+			//\WP_CLI::log( 'Importing: ' . $article['Title'] );
 			$user_id = get_current_user_id();
 
 			if ( isset( $article->Authors->Author ) ) {
@@ -433,7 +462,7 @@ class GMedia_Migration extends WP_CLI_Command {
 					$new_tax = $taxonomy_mapping[$marketron_term]['taxonomy'];
 				} else {
 					$new_term['name'] = $marketron_term;
-					$new_tax = 'post';
+					$new_tax = 'category';
 				}
 
 				$feed_id = $this->process_term( $new_term, $new_tax, 'post' );
@@ -502,9 +531,10 @@ class GMedia_Migration extends WP_CLI_Command {
 					WP_CLI::log( "Error: Featured image not added!" );
 				}
 			} else {
-				WP_CLI::log( "Error: No Featured Image Found!" );
+				//WP_CLI::log( "Error: No Featured Image Found! " );
 			}
 
+			$notify->tick();
 			/*// Comments
 			if ( isset( $article->Comments ) ) {
 				foreach ( $article->Comments->Comment as $comment ) {
@@ -520,11 +550,16 @@ class GMedia_Migration extends WP_CLI_Command {
 			}*/
 		}
 
+		if ( ! empty( $this->downloader->errors ) ) {
+			print_r( $this->downloader->errors );
+		}
+
 		$notify->finish();
 	}
 
 
 	private function check_file( $file ) {
+		return true;
 		$file_headers = @get_headers($file);
 
 		if( $file_headers[0] == 'HTTP/1.1 404 Not Found' || $file_headers[0] == 'HTTP/1.1 301 Moved Permanently' ) {
@@ -606,7 +641,7 @@ class GMedia_Migration extends WP_CLI_Command {
 			if ( is_wp_error( $id ) ) {
 				@unlink( $file_array['tmp_name'] );
 				WP_CLI::warning( "Error uploading music:". $id->get_error_message() );
-				WP_CLI::warning( "Filename: $old_filename" );
+				WP_CLI::warning( "Filename: $old_filepath - $tmp" );
 				$id = '';
 			}
 
@@ -934,6 +969,7 @@ class GMedia_Migration extends WP_CLI_Command {
 
 		$featured_image = '';
 		$old_filename = '';
+		$old_filepath = $filepath;
 
 		$filename = str_replace( '\\', '/', $filepath );
 		$filename = urldecode( $filename ); // for filenames with spaces
@@ -944,10 +980,11 @@ class GMedia_Migration extends WP_CLI_Command {
 		if ( preg_match( '/^http/', $filename ) || preg_match( '/^www/', $filename ) ) {
 			$old_filename = $filename;
 		} else {
-			$old_filename = trailingslashit( $this->site_url ) . $filename;
+			// TODO: Fix this for other sites
+			$old_filename = 'http://www.wmgk.com' . $filename;
 		}
 
-		$tmp = download_url( $old_filename );
+		$tmp = $this->download_url( $old_filename );
 		preg_match( '/[^\?]+\.(jpg|JPG|jpe|JPE|jpeg|Jpeg|JPEG|gif|GIF|png|PNG)/', $filename, $matches );
 
 		// make sure we have a match.  This won't be set for PDFs and .docs
@@ -968,8 +1005,8 @@ class GMedia_Migration extends WP_CLI_Command {
 			// If error storing permanently, unlink
 			if ( is_wp_error( $id ) ) {
 				@unlink( $file_array['tmp_name'] );
-				WP_CLI::log( "Error: ". $id->get_error_message() );
-				WP_CLI::log( "Filename: $old_filename" );
+				WP_CLI::log( "Feature Image Error: ". $id->get_error_message() );
+				WP_CLI::log( "\tFilename: $old_filename" );
 			} else {
 				$featured_image = set_post_thumbnail( $post_id, $id );
 				@unlink( $file_array['tmp_name'] );
@@ -3169,6 +3206,25 @@ class GMedia_Migration extends WP_CLI_Command {
 		}
 
 		return $taxonomy_map;
+	}
+
+	/*
+	 ****************************************************
+	 * DMS: Helpers
+	 ****************************************************
+	 */
+	function filepath_to_url( $filepath ) {
+		$filename = str_replace( '\\', '/', $filepath );
+		$filename = urldecode( $filename ); // for filenames with spaces
+		$filename = str_replace( ' ', '%20', $filename );
+		$filename = str_replace( '&amp;', '&', $filename );
+		$filename = str_replace( '&mdash;', '—', $filename );
+
+		$obj                 = new \stdClass();
+		$obj->original_path  = $filepath;
+		$obj->sanitized_path = $filename;
+
+		return $obj;
 	}
 
 }

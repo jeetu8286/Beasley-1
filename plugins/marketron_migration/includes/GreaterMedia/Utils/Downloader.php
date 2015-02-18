@@ -5,6 +5,7 @@ namespace GreaterMedia\Utils;
 class Downloader {
 
 	public $cache_dir;
+	public $cache_errors = true;
 	public $media_files_dir;
 	public $errors = array();
 
@@ -30,6 +31,13 @@ class Downloader {
 
 	function cache( $url ) {
 		$tmp_file = download_url( $url );
+
+		if ( is_wp_error( $tmp_file ) && $this->cache_errors ) {
+			$placeholder = $this->cache_dir . '/placeholder.jpg';
+			$tmp_file    = $this->cache_dir . '/placeholder_tmp.png';
+
+			copy( $placeholder, $tmp_file );
+		}
 
 		if ( ! is_wp_error( $tmp_file ) ) {
 			$cache_file_path = $this->cache_file_path_for( $url );
