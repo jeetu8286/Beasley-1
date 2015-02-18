@@ -1116,6 +1116,15 @@
 
 	$(document).ready(function() {
 		//showBlocker();
+
+		/**
+		 * Resolves issue that requires a double click on a sub-menu link on iOS.
+		 */
+		$('.sub-menu li a').on('click touchend', function(e) {
+			var el = $(this);
+			var link = el.attr('href');
+			window.location = link;
+		});
 	});
 
 })();
