@@ -527,9 +527,9 @@ class GMedia_Migration extends WP_CLI_Command {
 
 				$image = $this->import_featured_image( $featured_image_path, $wp_id, $featured_image_attrs );
 
-				if ( ! $image ) {
-					WP_CLI::log( "Error: Featured image not added!" );
-				}
+				//if ( ! $image ) {
+					//WP_CLI::log( "Error: Featured image not added!" );
+				//}
 			} else {
 				//WP_CLI::log( "Error: No Featured Image Found! " );
 			}
@@ -985,6 +985,10 @@ class GMedia_Migration extends WP_CLI_Command {
 		}
 
 		$tmp = $this->download_url( $old_filename );
+
+		if ( $tmp === false ) {
+			return false;
+		}
 		preg_match( '/[^\?]+\.(jpg|JPG|jpe|JPE|jpeg|Jpeg|JPEG|gif|GIF|png|PNG)/', $filename, $matches );
 
 		// make sure we have a match.  This won't be set for PDFs and .docs
@@ -1386,9 +1390,9 @@ class GMedia_Migration extends WP_CLI_Command {
 
 					$image = $this->import_featured_image( $featured_image_path, $wp_id, $featured_image_attrs );
 
-					if ( ! $image ) {
-						WP_CLI::log( "Error: Featured image not added!" );
-					}
+					//if ( ! $image ) {
+						//WP_CLI::log( "Error: Featured image not added!" );
+					//}
 				} else {
 					WP_CLI::log( "Error: No Featured Image Found!" );
 				}

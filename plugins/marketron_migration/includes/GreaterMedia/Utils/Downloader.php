@@ -11,7 +11,15 @@ class Downloader {
 
 	function __construct( $cache_dir, $media_files_dir ) {
 		$this->cache_dir       = $cache_dir;
+		$this->errors_dir      = $cache_dir . '/errors';
 		$this->media_files_dir = $media_files_dir;
+	}
+
+	function has_cached_error( $url ) {
+		$key  = $this->cache_key_for( $url );
+		$path = $this->errors_dir . '/' . $key;
+
+		return file_exists( $path );
 	}
 
 	function cache_key_for( $url ) {
@@ -32,16 +40,14 @@ class Downloader {
 	function cache( $url ) {
 		$tmp_file = download_url( $url );
 
-		if ( is_wp_error( $tmp_file ) && $this->cache_errors ) {
-			$placeholder = $this->cache_dir . '/placeholder.jpg';
-			$tmp_file    = $this->cache_dir . '/placeholder_tmp.png';
-
-			copy( $placeholder, $tmp_file );
-		}
-
 		if ( ! is_wp_error( $tmp_file ) ) {
 			$cache_file_path = $this->cache_file_path_for( $url );
 			rename( $tmp_file, $cache_file_path );
+		} else {
+			$key             = $this->cache_key_for( $url );
+			$error_file_path = $this->errors_dir . '/' . $key;
+
+			touch( $error_file_path );
 		}
 	}
 
@@ -64,6 +70,12 @@ class Downloader {
 		$url      = trim( $url );
 		$parts    = parse_url( $url );
 		$url_path = urldecode( $parts['path'] );
+
+		/* if url is 404 and cached return early */
+		if ( $this->has_cached_error( $url ) ) {
+			$this->errors[] = $url;
+			return false;
+		}
 
 		if ( $this->is_cached_media_file( $url, $url_path ) ) {
 			/* if media file, we copy the media file to our cache */
