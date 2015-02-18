@@ -495,6 +495,7 @@
 		addEventHandler(liveLinksWidget, elemClick, liveLinksClose);
 	}
 	if (playBtn != null || resumeBtn != null) {
+		addEventHandler(playBtn, elemClick, playerActive);
 		addEventHandler(resumeBtn, elemClick, playerActive);
 	}
 	if (pauseBtn != null) {
@@ -604,6 +605,15 @@
 
 	$(document).ready(function() {
 		//showBlocker();
+
+		/**
+		 * Resolves issue that requires a double click on a sub-menu link on iOS.
+		 */
+		$('.sub-menu li a').on('click touchend', function(e) {
+			var el = $(this);
+			var link = el.attr('href');
+			window.location = link;
+		});
 	});
 
 })();
