@@ -72,6 +72,20 @@ class GMedia_Migration extends WP_CLI_Command {
 	public $config_file = '';
 	public $type = '';
 
+	public $downloader;
+
+	function __construct() {
+		// TODO: Lookup paths from command args
+		$this->downloader = new \GreaterMedia\Utils\Downloader(
+			'/projects/10up/greater_media/migration_cache/wmgk/downloads',
+			'/projects/10up/greater_media/migration_cache/wmgk/media'
+		);
+	}
+
+	function download_url( $url ) {
+		return $this->downloader->download( $url );
+	}
+
 	/**
 	 * Reset the DB
 	 * -e 'show databases;'
@@ -537,7 +551,7 @@ class GMedia_Migration extends WP_CLI_Command {
 		require_once( ABSPATH . 'wp-admin/includes/image.php' );
 
 		$id = '';
-		$old_filename = '';
+		$old_filepath = $filepath;
 
 		$filename = str_replace( '\\', '/', $filepath );
 		$filename = urldecode( $filename ); // for filenames with spaces
@@ -545,6 +559,10 @@ class GMedia_Migration extends WP_CLI_Command {
 		$filename = str_replace( '&amp;', '&', $filename );
 		$filename = str_replace( '&mdash;', '—', $filename );
 
+		// TODO: make site specific
+		$file_to_download = 'http://media.wmgk.com/' . $filename;
+
+		/*
 		//$old_filename = $upload_dir . '/wp-content/uploads/' . $filename;
 		if( !file_exists( get_home_path() . '/wp-content/uploads/' . $filename ) ) {
 			if( strpos( $this->site_url,'wmgk' ) !== false ) {
@@ -559,8 +577,9 @@ class GMedia_Migration extends WP_CLI_Command {
 		if( !$this->check_file( $old_filename ) ) {
 			return false;
 		}
+		*/
 
-		$tmp = download_url( $old_filename );
+		$tmp = $this->download_url( $file_to_download );
 		preg_match( '/[^\?]+\.(mp3|mp4|flv)/i', $filename, $matches );
 
 		// make sure we have a match.  This won't be set for PDFs and .docs
