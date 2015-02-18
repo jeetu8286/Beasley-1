@@ -3,7 +3,11 @@
 }
 
 .mobile-nav__list a:hover, .mobile-nav__list a:focus, .mobile-nav__list a:active {
-	background-color: $color-red-dark;
+	background-color: $color-red;
+}
+
+.mobile-nav__list .menu-item {
+	border-bottom-color: $color-gray-medium;
 }
 
 .header__nav ul li a:hover,

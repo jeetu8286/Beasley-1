@@ -13341,16 +13341,21 @@ h1, .h1, .type-tribe_events .entry2__thumbnail--event-date, .type-contest .entry
   background-color: #303030; }
 
 .mobile-nav__list a:hover, .mobile-nav__list a:focus, .mobile-nav__list a:active {
-  background-color: #580f0c; }
+  background-color: #db261d; }
+
+.mobile-nav__list .menu-item {
+  border-bottom-color: #58595B; }
 
 .header__nav ul li a:hover, .header__nav ul li a:focus, .header__nav ul li a:active, .header__nav ul li:hover, .header__account ul li a:hover, .header__account ul li a:focus, .header__account ul li a:active, .header__account ul li:hover, .ui-menu .ui-state-focus {
   background-color: #580f0c; }
 
 .header__nav .sub-menu, .header__nav .format-fw > ul, .header__nav .format-sp > ul, .header__nav .format-fi > ul, .header__account--links.sub-menu, .header__nav .format-fw > ul.header__account--links, .header__nav .format-sp > ul.header__account--links, .header__nav .format-fi > ul.header__account--links, .ui-menu {
-  border-top-color: #580f0c; }
+  border-top-color: #db261d; }
 
 .mobile-nav .mobile-menu-submenu-header {
-  background-color: #580f0c; }
+  background-color: #db261d; }
+.mobile-nav .show-subnavigation {
+  border-left-color: #58595B; }
 
 .featured__article:hover .featured__article--heading {
   color: #db261d; }
@@ -13375,5 +13380,35 @@ h1, .h1, .type-tribe_events .entry2__thumbnail--event-date, .type-contest .entry
 @media screen and (min-width: 768px)  {
   .header__account:hover {
     background-color: #580f0c; } }
+
+.header__search--form {
+  border-top-color: #e3e4e5;
+  background-color: #58595B; }
+  @media screen and (min-width: 768px)  {
+    .header__search--form {
+      background-color: #ffffff; } }
+
+.header__search--input {
+  color: #e3e4e5; }
+  .header__search--input::-webkit-input-placeholder {
+    color: #e3e4e5; }
+  .header__search--input::-moz-placeholder {
+    color: #e3e4e5; }
+  .header__search--input:-moz-placeholder {
+    color: #e3e4e5; }
+  .header__search--input:-ms-input-placeholder {
+    color: #e3e4e5; }
+  @media screen and (min-width: 768px)  {
+    .header__search--input {
+      background-color: #ffffff !important;
+      color: #000000; }
+      .header__search--input::-webkit-input-placeholder {
+        color: #d0d2d3; }
+      .header__search--input::-moz-placeholder {
+        color: #d0d2d3; }
+      .header__search--input:-moz-placeholder {
+        color: #d0d2d3; }
+      .header__search--input:-ms-input-placeholder {
+        color: #d0d2d3; } }
 
 /*# sourceMappingURL=thefanatic.css.map */
