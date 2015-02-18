@@ -428,8 +428,13 @@ class GMedia_Migration extends WP_CLI_Command {
 			if ( isset( $article->Feeds->Feed['Feed'] ) ) {
 				$marketron_term = trim( (string)  $article->Feeds->Feed['Feed'] );
 
-				$new_term['name'] = $taxonomy_mapping[$marketron_term]['term'];
-				$new_tax = $taxonomy_mapping[$marketron_term]['taxonomy'];
+				if ( isset( $taxonomy_mapping[ $marketron_term ] ) ) {
+					$new_term['name'] = $taxonomy_mapping[$marketron_term]['term'];
+					$new_tax = $taxonomy_mapping[$marketron_term]['taxonomy'];
+				} else {
+					$new_term['name'] = $marketron_term;
+					$new_tax = 'post';
+				}
 
 				$feed_id = $this->process_term( $new_term, $new_tax, 'post' );
 
