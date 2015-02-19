@@ -3,8 +3,8 @@
  * Plugin Name: Show Network Domains
  * Description: Shows the domain for each site in the sites list table
  * Version: 1.0
- * Author: Chris Marslender
- * Author URI: http://chrismarslender.com
+ * Author: 10up
+ * Author URI: http://10up.com
  */
 
 /**
