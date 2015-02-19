@@ -566,8 +566,6 @@ function get_local_files () {
 	);
 
 	// Loop through files and find out if they need uploaded
-	/* Yeah Right, this takes WAY to much memory
-	// @todo CMMARSLENDER FIX This. Need probably a wp-cli bulk upload command or something - This will never fly - hitting memory limits
 	$i = 0;
 	foreach ( $files as $fileinfo ) {
 		$the_file  = $fileinfo->getRealPath ();
@@ -593,7 +591,6 @@ function get_local_files () {
 			}
 		}
 	}
-	*/
 
 	return $local_files;
 }
