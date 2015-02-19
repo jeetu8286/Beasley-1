@@ -1621,6 +1621,17 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
       font-size: 1.26562em; } }
   #tribe-events .content__heading, #tribe-events .sponsors__heading {
     margin-bottom: 30px; }
+  .news-site .content__heading, .news-site .sponsors__heading {
+    padding: .35em 0 1.65em;
+    margin: 0;
+    line-height: 1;
+    border-top: 1px solid #d0d2d3;
+    font-size: 2.02729em;
+    font-weight: lighter;
+    text-transform: uppercase; }
+
+.news-site .highlights__col {
+  border-top: 1px solid #d0d2d3; }
 
 .ad__in-loop {
   margin: 1.5em 0;
@@ -4583,6 +4594,8 @@ Link posts contain a link to an external site. They can also optionally have a f
     margin-right: 0; }
   .entry2:last-of-type {
     border-bottom: none; }
+  .news-site .entry2 {
+    padding-bottom: 2.5em; }
 
 .entry2__thumbnail {
   margin-bottom: 1.125em;
@@ -4670,6 +4683,9 @@ Link posts contain a link to an external site. They can also optionally have a f
   margin: 0;
   font-size: 2.02729em;
   line-height: 1.2; }
+  .news-site .entry2__title {
+    margin: .5em 0 .75em;
+    font-weight: normal; }
 
 .entry2__excerpt {
   margin: .75em 0 0; }
@@ -4678,6 +4694,9 @@ Link posts contain a link to an external site. They can also optionally have a f
   @media screen and (min-width: 768px)  {
     .entry2__excerpt {
       display: block; } }
+  .news-site .entry2__excerpt {
+    margin: 0;
+    line-height: 1.875; }
 
 .entry2__event--details {
   margin-top: 0.75em;
@@ -4697,6 +4716,24 @@ Link posts contain a link to an external site. They can also optionally have a f
     margin-right: 0; }
   .events-archive .entry2__footer {
     display: none; }
+
+.entry2__category:link, .entry2__category:visited {
+  width: 100%;
+  display: block;
+  line-height: 1;
+  font-weight: lighter;
+  font-size: 1.125em;
+  color: #db261d;
+  text-transform: uppercase; }
+  @media screen and (min-width: 768px)  {
+    .entry2__category:link, .entry2__category:visited {
+      font-size: 1em; } }
+  @media screen and (min-width: 1024px)  {
+    .entry2__category:link, .entry2__category:visited {
+      font-size: 0.88889em; } }
+
+.entry2__category:hover, .entry2__category:focus, .entry2__category:active {
+  color: #aa1c20; }
 
 .entry2__footer--category:link, .entry2__footer--category:visited {
   float: left;
