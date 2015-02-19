@@ -57,6 +57,51 @@ class Migrator {
 		$this->mapping_collection->load( 'wmgk_mapping.csv' );
 	}
 
+	function build_actions_json( $args, $opts ) {
+		$user_ids = $opts['user_ids'];
+		$output   = $opts['output'];
+
+		$user_ids     = file( $user_ids );
+		$records = array();
+
+		foreach ( $user_ids as $user_id ) {
+			$user_id = trim( $user_id );
+			$actions_count = rand( 5, 50 );
+
+			for ( $i = 0; $i < $actions_count; $i++ ) {
+				$record = array(
+					'UID' => $user_id,
+					'data' => array(
+						'actions' => array(
+							array(
+								'actionType' => 'action:contest',
+								'actionID' => strval( rand( 50000, 100000 ) ),
+								'actionData' => array(
+									array(
+										'name' => 'rc' . rand( 1, 10 ),
+										'value_t' => 'lorem ispum dolor sit amet ' . rand( 1000, 100000 ),
+									),
+									array(
+										'name' => 'timestamp',
+										'value_i' => strtotime( 'now' ),
+									),
+								),
+							),
+						),
+					)
+				);
+
+				$records[] = $record;
+			}
+		}
+
+		$json = json_encode( $records, JSON_PRETTY_PRINT );
+		file_put_contents( $output, $json );
+		$count = count( $records );
+
+		\WP_CLI::success( "Actions( $count ) JSON generated successfully." );
+	}
+
 	function migrate( $args, $opts ) {
 		$opts          = wp_parse_args( $opts, $this->default_opts );
 		$opts['fresh'] = filter_var( $opts['fresh'], FILTER_VALIDATE_BOOLEAN );
