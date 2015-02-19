@@ -129,7 +129,6 @@
 	margin: 0 auto;
 	color: $color-text-white;
 	cursor: pointer;
-	font-family: $open-sans;
 	@include bp(medium) {
 		width: 64px;
 		height: 82px;
@@ -239,7 +238,6 @@
 }
 
 .header__account--span {
-	font-family: $open-sans;
 	color: $light-gray;
 
 	@include bp(larger) {
