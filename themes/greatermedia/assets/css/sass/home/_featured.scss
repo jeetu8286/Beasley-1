@@ -223,6 +223,7 @@ a.featured__article--link {
 		position: absolute;
 		bottom: 0;
 		left: 0;
+		padding: 1em 1.875em;
 		background-color: rgba(0,0,0,.5);
 	}
 }
@@ -261,9 +262,12 @@ a.featured__article--link {
 			font-size: ms(5);
 			font-weight: 700;
 		}
+
+		.featured__article--content {
+			padding: 1em 1.5em;
+		}
 	}
 }
-
 
 .featured__article--heading a, .featured__article--heading a:visited {
 	color: $color-text-white;
@@ -434,6 +438,7 @@ a.featured__article--link {
 
 		@include bp(large) {
 			width: calc(100% - 5px);
+			padding: .875em 1.25em;
 		}
 
 		@include bp(x-large) {
