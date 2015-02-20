@@ -10,7 +10,7 @@
  * @param string $handle Script handle.
  * @return string Updated script tag if it contains "rocketloader" flag, otherwise initial tag.
  */
-function enable_rocketloader_for_script( $tag, $handle ) {
+function add_rocketloader_for_script( $tag, $handle ) {
 	global $wp_scripts;
 
 	$rocketloaded = $wp_scripts->get_data( $handle, 'rocketloader' );
@@ -20,4 +20,30 @@ function enable_rocketloader_for_script( $tag, $handle ) {
 
 	return $tag;
 }
-add_filter( 'script_loader_tag', 'enable_rocketloader_for_script', 10, 2 );
+add_filter( 'script_loader_tag', 'add_rocketloader_for_script', 10, 2 );
+
+/**
+ * Marks script to be loaded with rocketloader attribute.
+ *
+ * @see add_rocketloader_for_script()
+ *
+ * @global WP_Scripts $wp_scripts
+ * @param string $handle The script handle.
+ */
+function wp_rocketloader_script( $handle ) {
+	global $wp_scripts;
+	$wp_scripts->add_data( $handle, 'rocketloader', true );
+}
+
+/**
+ * Unmarks script to be loaded with rocketloader attribute.
+ *
+ * @see add_rocketloader_for_script()
+ *
+ * @global WP_Scripts $wp_scripts
+ * @param string $handle The script handle.
+ */
+function wp_derocketloader_script( $handle ) {
+	global $wp_scripts;
+	$wp_scripts->add_data( $handle, 'rocketloader', false );
+}
