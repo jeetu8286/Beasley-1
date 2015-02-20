@@ -485,8 +485,11 @@ function set_cdn_path($attachment) {
                     if (verify_exists( $new_attachment )) {
 	                    // NEW ATTACHMENT IS THE FULL URL, so GET RID OF THE BASE!!!!
 	                    $new_attachment = str_replace( $upload_data['baseurl'], '', $new_attachment );
+	                    if ( strpos( $new_attachment, '/' ) === 0 ) {
+							$new_attachment = substr( $new_attachment, 1 );
+	                    }
 
-	                    $attachment = str_replace($cur_attachment, $cdn_url . $new_attachment, $attachment);
+	                    $attachment = str_replace($cur_attachment, trailingslashit( $cdn_url ) . $new_attachment, $attachment);
                     }
                 }
             }
