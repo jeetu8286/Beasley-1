@@ -142,8 +142,9 @@ function remove_cdn_files( $post_id ){
 	}
 	
 	// Get attachment metadata so we can delete all attachments associated with this image
-	$attachment_metadata = $wpdb->get_results("SELECT meta_key,meta_value FROM ".$wpdb->prefix."postmeta WHERE post_id = '$post_id' AND (meta_key='_wp_attachment_metadata' OR meta_key='_wp_attached_file')");
-	if ($wpdb->num_rows > 0) {
+	$query = $wpdb->prepare( "SELECT meta_key, meta_value FROM {$wpdb->postmeta} WHERE post_id = %d AND (meta_key = '_wp_attachment_metadata' OR meta_key = '_wp_attached_file')", $post_id );
+	$attachment_metadata = $wpdb->get_results( $query );
+	if ( count( $attachment_metadata ) > 0 ) {
 		// Check if meta value or attached file
         foreach ($attachment_metadata as $cur_attachment_metadata) {
 			// Unserialize image data
@@ -205,7 +206,8 @@ function verify_filename($filename, $filename_raw = null) {
 	$ext  = empty($info['extension']) ? '' : '.' . $info['extension'];
 
 	// Get attachment metadata so we can delete all attachments associated with this image
-	$existing_files = $wpdb->get_results("SELECT guid FROM ".$wpdb->prefix."posts WHERE guid LIKE '%".preg_replace('/[0-9]*$/', '', $info['filename'])."%".$info['extension']."'");
+	$query = $wpdb->prepare( "SELECT guid FROM {$wpdb->posts} WHERE guid LIKE %s", "%" . preg_replace( '/[0-9]*$/', '', $info['filename'] ) . "%" . $info['extension'] );
+	$existing_files = $wpdb->get_results( $query );
 
 	// Check if file exists
 	if (count($existing_files) > 0) {

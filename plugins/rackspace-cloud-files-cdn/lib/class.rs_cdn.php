@@ -140,8 +140,8 @@ class RS_CDN {
 
 
 	/**
-	* Uploads given file attachment to CDN
-	*/
+	 * Uploads given file attachment to CDN
+	 */
 	public function upload_file( $file_path , $file_name = null, $existing_container = null, $post_id = null){
 		global $wpdb;
 
@@ -175,8 +175,8 @@ class RS_CDN {
 
 		// Upload failed, remove attachment from db
 		if (isset($post_id)) {
-			$wpdb->query("DELETE FROM $wpdb->posts WHERE ID='$post_id' AND post_type='attachment'");
-			$wpdb->query("DELETE FROM $wpdb->postmeta WHERE post_id='$post_id'");
+			$wpdb->delete( $wpdb->posts, array( 'ID' => $post_id, 'post_type' => 'attachment' ), array( '%d', '%s' ) );
+			$wpdb->delete( $wpdb->postmeta, array( 'post_id' => $post_id ), array( '%d' ) );
 		}
 
 		return false;
