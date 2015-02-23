@@ -96,6 +96,10 @@
 			$settings_error = true;
 		}
 	}
+
+	if ( ! isset( $num_files_to_sync ) ) {
+		$num_files_to_sync = 0;
+	}
 ?>
 <script type="text/javascript">
 	var plugin_path = "<?php echo RS_CDN_URL ?>";
