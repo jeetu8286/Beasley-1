@@ -216,7 +216,7 @@ class RS_CDN {
 				}
 
 				// Write files to cache file
-				if ( is_writable( RS_CDN_PATH ) && is_writable( $cache_file_path ) ) {
+				if ( is_writable( RS_CDN_PATH ) && ( is_writable( $cache_file_path ) || ! file_exists( $cache_file_path ) ) ) {
 					// Write to cache file
 					file_put_contents( $cache_file_path, serialize( $cdn_objects_cache ) );
 				}
