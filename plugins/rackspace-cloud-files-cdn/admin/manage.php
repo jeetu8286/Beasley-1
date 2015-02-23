@@ -139,10 +139,11 @@
 			}
 
             // Make sure cache file is writable
-            if (!is_writable(RS_CDN_PATH) || !is_writable(RS_CDN_PATH.'object_cache')) {
+			$object_cache_file = RS_CDN_PATH . 'object_cache.dat';
+            if ( ! is_writable( RS_CDN_PATH ) || ( file_exists( $object_cache_file ) && ! is_writable( $object_cache_file ) ) ) {
         ?>
             <div class="error"> 
-				<p><strong>Uh-Oh!</strong><br />Looks like the "object_cache" file is not writable. Please fix this to improve load time performance.</p>
+				<p><strong>Uh-Oh!</strong><br />Looks like the "object_cache.dat" file is not writable. Please fix this to improve load time performance.</p>
 			</div>
         <?php
             }
