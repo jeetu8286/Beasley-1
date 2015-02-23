@@ -12,7 +12,7 @@ function rs_cdn_manage() {
  */
 function rs_cdn_admin_pages() {
 	if (current_user_can('manage_options')) {
-		add_menu_page("Rackspace CDN", "Rackspace CDN", "publish_posts", "rs-cdn-manage", "rs_cdn_manage");
+		add_options_page("Rackspace CDN", "Rackspace CDN", "publish_posts", "rs-cdn-manage", "rs_cdn_manage");
 	}
 }
 add_action('admin_menu', 'rs_cdn_admin_pages');
@@ -56,4 +56,3 @@ function save_cdn_settings() {
 		}
 	}
 }
-?>
