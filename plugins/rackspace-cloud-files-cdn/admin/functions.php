@@ -22,6 +22,8 @@ add_action('admin_menu', 'rs_cdn_admin_pages');
  * Save CloudFiles CDN Settings
  */
 function save_cdn_settings() {
+	global $rackspace_cdn;
+
 	if (is_admin() && current_user_can('manage_options') && !empty($_POST) && !empty($_POST['rs_cdn'])) {
 		// Turn off SSL if custom CNAME is being used
 		if (isset($_POST['rs_cdn']['custom_cname']) && trim($_POST['rs_cdn']['custom_cname']) != '') {
@@ -45,11 +47,11 @@ function save_cdn_settings() {
 			update_option(RS_CDN_OPTIONS, $cdn_settings);
 
 			// Assign newly created instance to the CDN
-			unset($_SESSION['cdn']);
-			$_SESSION['cdn'] = $new_instance;
+			unset( $rackspace_cdn );
+			$rackspace_cdn = $new_instance;
 
             // Force CDN object cache
-			$_SESSION['cdn']->get_cdn_objects(true);
+			$rackspace_cdn->get_cdn_objects(true);
 		} catch (Exception $exc) {
 			// Exception encountered, return false
 			return array('response' => 'error', 'message' => 'The new settings you entered failed authentication, so they were not updated. Please try again.');
