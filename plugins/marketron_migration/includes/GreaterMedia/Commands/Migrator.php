@@ -41,8 +41,8 @@ class Migrator {
 
 	function test_media_downloader( $args, $opts ) {
 		$downloader = new Downloader(
-			'/projects/10up/greater_media/migration_cache/wmgk/downloads',
-			'/projects/10up/greater_media/migration_cache/wmgk/media'
+			'migration_cache/downloads',
+			'migration_cache/media'
 		);
 		$tmp_file = $downloader->download( 'http://media.wmgk.com/' . urlencode('Blogs/1001280/Watch The Mummers Strut (More Than A Tradition)mastered.mp3'  ) );
 		\WP_CLI::log( 'First tmp file = ' . $tmp_file );
@@ -131,7 +131,11 @@ class Migrator {
 			$tools_to_load = array( $tool );
 		}
 
-		$this->downloader       = new Downloader( $migration_cache_dir . '/downloads' );
+		$this->downloader = new Downloader(
+			$migration_cache_dir . '/downloads',
+			$migration_cache_dir . '/media'
+		);
+
 		$this->tool_factory     = new ToolFactory( $this );
 		$this->importer_factory = new ImporterFactory( $this );
 
