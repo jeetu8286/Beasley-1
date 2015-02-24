@@ -204,6 +204,34 @@ add_action( 'delete_attachment', 'rackspace_delete_attachment' );
 
 
 /**
+ * Fixes URL scheme adjusted by set_url_scheme() function.
+ *
+ * @param string $url Incoming URL address.
+ * @return string Updated URL address if it is rackspace CDN address, otherwise initial address.
+ */
+function rackspace_fix_set_url_scheme( $url ) {
+	if ( check_cdn() === false ) {
+		return $url;
+	}
+
+	global $rackspace_cdn;
+
+	if ( isset( $rackspace_cdn->api_settings->custom_cname ) && trim( $rackspace_cdn->api_settings->custom_cname ) != '' ) {
+		$cdn_url = $rackspace_cdn->api_settings->custom_cname;
+		if ( parse_url( $cdn_url, PHP_URL_HOST ) == parse_url( $url, PHP_URL_HOST ) ) {
+			$scheme = parse_url( $cdn_url, PHP_URL_SCHEME );
+			if ( ! empty( $scheme ) ) {
+				$url = preg_replace( '#^\w+://#', $scheme . '://', $url );
+			}
+		}
+	}
+
+	return $url;
+}
+add_filter( 'set_url_scheme', 'rackspace_fix_set_url_scheme' );
+
+
+/**
  * Upload main image and thumbnails to CDN.
  * Remove the local copy if user specified in settings.
  */
