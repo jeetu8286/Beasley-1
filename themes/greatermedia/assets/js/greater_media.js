@@ -1008,13 +1008,6 @@
 	if (liveLinksWidget != null) {
 		addEventHandler(liveLinksWidget, elemClick, liveLinksClose);
 	}
-	if (playBtn != null || resumeBtn != null) {
-		addEventHandler(playBtn, elemClick, playerActive);
-		addEventHandler(resumeBtn, elemClick, playerActive);
-	}
-	if (pauseBtn != null) {
-		addEventHandler(pauseBtn, elemClick, playerNotActive);
-	}
 
 	addEventHandler(window, elemResize, function () {
 		resizeDebounce();
