@@ -47,20 +47,20 @@ function rackspace_on_attachment_metadata_update( $meta_data, $post_id ) {
 	$upload_dir = wp_upload_dir();
 
 	$filename = ! empty( $meta_data['file'] ) ? $meta_data['file'] : get_post_meta( $post_id, '_wp_attached_file', true );
-	$filename = $upload_dir['basedir'] . DIRECTORY_SEPARATOR . $meta_data['file'];
+	$filepath = $upload_dir['basedir'] . DIRECTORY_SEPARATOR . $filename;
 
 	// sync image
 	if ( empty( $meta_data[ RS_META_SYNCED ] ) ) {
 		try {
-			if ( is_readable( $filename ) ) {
+			if ( is_readable( $filepath ) ) {
 				// upload file
-				$rackspace_cdn->upload_file( $filename, $meta_data['file'] );
+				$rackspace_cdn->upload_file( $filepath, $filename );
 				// update metadata
 				$meta_data[ RS_META_SYNCED ] = true;
 
 				// delete file when successfully uploaded, if set
 				if ( isset( $rackspace_cdn->api_settings->remove_local_files ) && $rackspace_cdn->api_settings->remove_local_files == true ) {
-					@unlink( $filename );
+					@unlink( $filepath );
 				}
 			}
 		} catch ( Exception $e ) {}
@@ -68,7 +68,7 @@ function rackspace_on_attachment_metadata_update( $meta_data, $post_id ) {
 
 	// sync image sizes
 	if ( ! empty( $meta_data['sizes'] ) ) {
-		$root_dir = dirname( $filename ) . DIRECTORY_SEPARATOR;
+		$root_dir = dirname( $filepath ) . DIRECTORY_SEPARATOR;
 		$base_dir = dirname( $meta_data['file'] ) . DIRECTORY_SEPARATOR;
 		foreach ( $meta_data['sizes'] as $size => $meta ) {
 			if ( empty( $meta_data['sizes'][ $size ][ RS_META_SYNCED ] ) ) {
