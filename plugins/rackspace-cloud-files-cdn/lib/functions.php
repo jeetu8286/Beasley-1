@@ -65,16 +65,17 @@ function rackspace_sync_attachment( $attachment_id ) {
 
 	// sync image sizes
 	if ( ! empty( $metadata['sizes'] ) ) {
-		$basedir = dirname( $filename );
+		$root_dir = dirname( $filename ) . DIRECTORY_SEPARATOR;
+		$base_dir = diranem( $metadata['file'] ) . DIRECTORY_SEPARATOR;
 		foreach ( $metadata['sizes'] as $size => $meta ) {
 			try {
-				$cur_file = $basedir . DIRECTORY_SEPARATOR . $meta['file'];
+				$cur_file = $root_dir . $meta['file'];
 				if ( ! is_readable( $cur_file ) ) {
 					continue;
 				}
 
 				// upload file
-				$rackspace_cdn->upload_file( $cur_file, $meta['file'] );
+				$rackspace_cdn->upload_file( $cur_file, $base_dir . $meta['file'] );
 				// update metadata
 				$metadata['sizes'][ $size ][ RS_META_SYNCED ] = true;
 
@@ -131,6 +132,107 @@ function rackspace_need_attachment_sync( $meta_data ) {
 
 	return false;
 }
+
+
+/**
+ * Updates attachment URL to use CDN version of a file if possible.
+ * 
+ * @global RS_CDN $rackspace_cdn
+ * @param string $url Initial attachment URL.
+ * @param int $attachment_id The attachment id.
+ * @return string The attachment URL.
+ */
+function rackspace_update_attachment_url( $url, $attachment_id ) {
+	if ( check_cdn() === false ) {
+		return $url;
+	}
+
+	$metadata = wp_get_attachment_metadata( $attachment_id );
+	if ( empty( $metadata[ RS_META_SYNCED ] ) ) {
+		return $url;
+	}
+
+	global $rackspace_cdn;
+
+	if ( isset( $rackspace_cdn->api_settings->custom_cname ) && trim( $rackspace_cdn->api_settings->custom_cname ) != '' ) {
+		$cdn_url = $rackspace_cdn->api_settings->custom_cname;
+	} else {
+		$cdn_url = isset( $rackspace_cdn->api_settings->use_ssl ) ? get_cdn_url( 'ssl' ) : get_cdn_url();
+	}
+
+	return trailingslashit( $cdn_url ) . $metadata['file'];
+}
+add_filter( 'wp_get_attachment_url', 'rackspace_update_attachment_url', 1, 2 );
+
+
+/**
+ * Updates attachment image attributes to use rackspace URL if available.
+ *
+ * @global RS_CDN $rackspace_cdn
+ * @param array $attr The attachment image attributes.
+ * @param WP_Post $attachment The attachment object.
+ * @param string $size The attachment image size.
+ * @return array Attachment attributes.
+ */
+function rackspace_update_attachment_image_attr( $attr, $attachment, $size ) {
+	if ( check_cdn() === false ) {
+		return $attr;
+	}
+
+	$metadata = wp_get_attachment_metadata( $attachment->ID );
+	if ( empty( $metadata['sizes'][ $size ][ RS_META_SYNCED ] ) ) {
+		return $attr;
+	}
+
+	global $rackspace_cdn;
+
+	if ( isset( $rackspace_cdn->api_settings->custom_cname ) && trim( $rackspace_cdn->api_settings->custom_cname ) != '' ) {
+		$cdn_url = $rackspace_cdn->api_settings->custom_cname;
+	} else {
+		$cdn_url = isset( $rackspace_cdn->api_settings->use_ssl ) ? get_cdn_url( 'ssl' ) : get_cdn_url();
+	}
+
+	$attr['src'] = trailingslashit( $cdn_url ) . $metadata['sizes'][ $size ]['file'];
+	
+	return $attr;
+}
+add_filter( 'wp_get_attachment_image_attributes', 'rackspace_update_attachment_image_attr', 1, 3 );
+
+
+/**
+ * Removes CDN file when attachment is deleted.
+ *
+ * @global RS_CDN $rackspace_cdn
+ * @param int $attachment_id Attachment id.
+ */
+function rackspace_delete_attachment( $attachment_id ) {
+	if ( check_cdn() === false ) {
+		return;
+	}
+
+	global $rackspace_cdn;
+
+	$files = array();
+	$metadata = wp_get_attachment_metadata( $attachment_id );
+	$base_dir = trailingslashit( dirname( $metadata['file'] ) );
+
+	if ( ! empty( $metadata[ RS_META_SYNCED ] ) ) {
+		$files[] = $metadata['file'];
+	}
+
+	if ( ! empty( $metadata['sizes'] ) ) {
+		foreach ( $metadata['sizes'] as $meta ) {
+			if ( ! empty( $meta[ RS_META_SYNCED ] ) ) {
+				$files[] = $base_dir . $meta['file'];
+			}
+		}
+	}
+
+	if ( ! empty( $files ) ) {
+		$rackspace_cdn->delete_files( $files );
+	}
+}
+add_action( 'delete_attachment', 'rackspace_delete_attachment' );
 
 
 /**
@@ -283,7 +385,7 @@ function remove_cdn_files( $post_id ){
 	// Send batch delete
 	$rackspace_cdn->delete_files( $files_to_delete );
 }
-add_action( 'delete_attachment', 'remove_cdn_files');
+//add_action( 'delete_attachment', 'remove_cdn_files');
 
 
 /**
@@ -611,7 +713,6 @@ function set_cdn_path($attachment) {
 }
 add_filter('the_content', 'set_cdn_path');
 add_filter('richedit_pre', 'set_cdn_path');
-add_filter('wp_get_attachment_url', 'set_cdn_path');
 
 
 /**
