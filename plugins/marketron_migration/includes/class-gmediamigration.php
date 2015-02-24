@@ -1397,18 +1397,28 @@ class GMedia_Migration extends WP_CLI_Command {
 	private function process_events( $events, $force ) {
 		global $wpdb;
 
-		$total  = count( $events->EventCalendar );
-		$notify = new \cli\progress\Bar( "Importing $total event calendars", $total );
-
-		$count = 0;
+		$total = count( $events->EventCalendar );
 		foreach ( $events->EventCalendar as $calendar ) {
+			$total += count( $calendar->Event );
+		}
+
+		$notify = new \cli\progress\Bar( "Importing $total event calendars", $total );
+		$count = 0;
+		$total_calendars = count( $events->EventCalendar );
+		$calendar_index = 0;
+
+		foreach ( $events->EventCalendar as $calendar ) {
+			$calendar_index++;
 			$event_cat['name'] = (string) $calendar['EventCalendarName'];
 			$event_cat['desc'] = (string) $calendar['EventCalendarDescription'];
 
 			$total    = count( $calendar->Event );
-			$progress = new \cli\progress\Bar( "Importing $total events", $total );
+			//$progress = new \cli\progress\Bar( "Importing $total events", $total );
+			$total_events = count( $calendar->Event );
+			$event_index = 0;
 
 			foreach ( $calendar->Event as $event ) {
+				$event_index++;
 				$event_hash = trim( (string) $event['EventName'] ) . (string) $event['DateCreated'];
 				$event_hash = md5( $event_hash );
 
@@ -1417,18 +1427,8 @@ class GMedia_Migration extends WP_CLI_Command {
 
 				// If we're not forcing import, skip existing posts.
 				if ( ! $force && $wp_id ) {
-					$progress->tick();
+					//$progress->tick();
 					continue;
-				}
-
-				// counter to clear the cache
-				$count++;
-				if( $count == 100 ) {
-					if( class_exists('MTM_Migration_Utils') ) {
-						MTM_Migration_Utils::stop_the_insanity();
-						sleep( 15 );
-					}
-					$count = 0;
 				}
 
 				$tribe_event = array(
@@ -1439,6 +1439,8 @@ class GMedia_Migration extends WP_CLI_Command {
 					'post_date'     => (string) $event['DateCreated'],
 					'post_modified' => (string) $event['DateModified'],
 				);
+
+				\WP_CLI::log( "Importing Calendar( $calendar_index/$total_calendars ) - Events( $event_index/$total_events ) - " . $tribe_event['post_title'] );
 
 				if ( $wp_id ) {
 					$tribe_event['ID'] = $wp_id;
@@ -1468,11 +1470,11 @@ class GMedia_Migration extends WP_CLI_Command {
 
 					$image = $this->import_featured_image( $featured_image_path, $wp_id, $featured_image_attrs );
 
-					if ( ! $image ) {
-						WP_CLI::warning( "Featured image not added!" );
-					}
+					//if ( ! $image ) {
+						//WP_CLI::warning( "Featured image not added!" );
+					//}
 				} else {
-					WP_CLI::log( "No Featured Image Found!" );
+					//WP_CLI::log( "No Featured Image Found!" );
 				}
 				// Post Meta
 				if ( isset( $event['EventDate'] ) ) {
@@ -1542,10 +1544,9 @@ class GMedia_Migration extends WP_CLI_Command {
 					}
 				}
 
-				$progress->tick();
+				$notify->tick();
 			}
 
-			$progress->finish();
 			$notify->tick();
 		}
 
@@ -2222,19 +2223,29 @@ class GMedia_Migration extends WP_CLI_Command {
 		global $wpdb;
 
 		$total  = count( $calendars->Calendar );
-		$notify = new \cli\progress\Bar( "Importing $total concert calendars", $total );
-
-		$count = 0;
 		foreach ( $calendars->Calendar as $calendar ) {
+			$total += count( $calendar->Events->Event );
+		}
+
+		$notify = new \cli\progress\Bar( "Importing $total concert calendars", $total );
+		$count = 0;
+		$total_calendars = count( $calendars->Calendar );
+		$calendar_index = 0;
+
+		foreach ( $calendars->Calendar as $calendar ) {
+			$calendar_index++;
+
 			$event_cat['name'] = (string) $calendar['CalendarName'];
 			$event_cat['desc'] = (string) $calendar['CalendarDescription'];
 
 			$total    = count( $calendar->Events->Event );
 			$progress = new \cli\progress\Bar( "Importing $total concert events", $total );
+			$total_events = count( $calendar->Events->Event );
+			$event_index = 0;
 
 			//$this->check_and_add_cpt('tribe_events');
 			foreach ( $calendar->Events->Event as $event ) {
-
+				$event_index++;
 				$event_hash = trim( (string) $event['ConcertName'] ) . (string) $event['DateCreated'];
 				$event_hash = md5( $event_hash );
 
@@ -2247,17 +2258,6 @@ class GMedia_Migration extends WP_CLI_Command {
 					continue;
 				}
 
-				// counter to clear the cache
-				$count++;
-				if( $count == 100 ) {
-					if( class_exists('MTM_Migration_Utils') ) {
-						MTM_Migration_Utils::stop_the_insanity();
-
-					}
-					sleep(15);
-					$count = 0;
-				}
-
 				$tribe_event = array(
 					'post_type'     => 'tribe_events',
 					'post_status'   => 'publish',
@@ -2266,6 +2266,8 @@ class GMedia_Migration extends WP_CLI_Command {
 					'post_date'     => (string) $event['ConcertDate'],
 					'post_modified' => (string) $event['DateModified'],
 				);
+
+				\WP_CLI::log( "Importing Concert( $calendar_index/$total_calendars ) - Concert( $event_index/$total_events ) - " . $tribe_event['post_title'] );
 
 				if ( $wp_id ) {
 					$tribe_event['ID'] = $wp_id;
@@ -2437,11 +2439,12 @@ class GMedia_Migration extends WP_CLI_Command {
 					WP_CLI::warning('Class for adding redircet is mssing!');
 				}
 
-				$progress->tick();
+				$notify->tick();
 			}
-			$progress->finish();
+
 			$notify->tick();
 		}
+
 		$notify->finish();
 	}
 
@@ -2631,10 +2634,17 @@ class GMedia_Migration extends WP_CLI_Command {
 		);
 
 		$total  = count( $surveys->Survey );
-		$notify = new \cli\progress\Bar( "Importing $total surveys", $total );
-
-		$count = 0;
 		foreach ( $surveys->Survey as $survey ) {
+			$total += count( $surveys->Responses->Response );
+		}
+
+		$notify = new \cli\progress\Bar( "Importing $total surveys", $total );
+		$count = 0;
+		$total_surveys = count( $surveys->Survey );
+		$survey_index = 0;
+
+		foreach ( $surveys->Survey as $survey ) {
+			$survey_index++;
 			$survey_id = (string) $survey['SurveyID'];
 
 			$total  = count( $survey->Responses->Response );
@@ -2646,16 +2656,6 @@ class GMedia_Migration extends WP_CLI_Command {
 			if ( ! $force && $wp_id ) {
 				$notify->tick();
 				continue;
-			}
-
-			// counter to clear the cache
-			$count++;
-			if( $count == 10 ) {
-				if( class_exists('MTM_Migration_Utils') ) {
-					MTM_Migration_Utils::stop_the_insanity();
-				}
-				sleep(15);
-				$count = 0;
 			}
 
 			$survey_args = array(
@@ -2741,10 +2741,13 @@ class GMedia_Migration extends WP_CLI_Command {
 			$form_encoded = json_encode( $form );
 			update_post_meta( $wp_id, 'survey_embedded_form', $form_encoded );
 
+			$total_responses = count( $survey->Responses->Response );
+			$response_index = 0;
+
 			if( isset( $survey->Responses->Response ) ) {
 
 				foreach ( $survey->Responses->Response as $response ) {
-
+					$response_index++;
 					$response_values = array();
 
 					foreach ( $response->Answer as $answer ) {
@@ -2769,6 +2772,8 @@ class GMedia_Migration extends WP_CLI_Command {
 						'post_parent' => $wp_id,
 						'post_title'  => (string) $response['EmailAddress'],
 					);
+
+					\WP_CLI::log( "Importing Survey( $survey_index/$total_surveys ) Response( $response_index/$total_responses ): " . $response_args['post_title'] );
 
 					$user_survey_id = (string) $response['UserSurveyID'];
 
@@ -2795,8 +2800,12 @@ class GMedia_Migration extends WP_CLI_Command {
 						update_post_meta( $response_id, '_legacy_survey_MemberID', (string) $response['MemberID'] );
 						update_post_meta( $response_id, '_legacy_survey_stand_alone', (string) $response['IsResponseFromStandAloneSurvey'] );
 					}
+
+					$notify->tick();
 				}
+
 			}
+
 			$notify->tick();
 		}
 
