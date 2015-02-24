@@ -1783,11 +1783,18 @@ class GMedia_Migration extends WP_CLI_Command {
 	private function process_showcases( $showcases, $force ) {
 		global $wpdb;
 
-		$total = count( $showcases->Showcase );
-		$notify = new \cli\progress\Bar( "Importing $total showcases", $total );
-
-		$count = 0;
+		$total  = count( $showcases->Showcase );
 		foreach ( $showcases->Showcase as $showcase ) {
+			$total += count( $showcases->ShowcasePhoto );
+		}
+
+		$notify = new \cli\progress\Bar( "Importing $total showcases", $total );
+		$count  = 0;
+		$total_showcases = count( $showcases->Showcase );
+		$showcase_index = 0;
+
+		foreach ( $showcases->Showcase as $showcase ) {
+			$showcase_index++;
 			$showcase_hash = trim( (string) $showcase['ShowcaseName'] ) . (string) $showcase['DateCreated'];
 			$showcase_hash = md5( $showcase_hash );
 
@@ -1800,17 +1807,6 @@ class GMedia_Migration extends WP_CLI_Command {
 				continue;
 			}
 
-			// counter to clear the cache
-			$count++;
-			if( $count == 10 ) {
-				if( class_exists('MTM_Migration_Utils') ) {
-					MTM_Migration_Utils::stop_the_insanity();
-
-				}
-				sleep(15);
-				$count = 0;
-			}
-
 			$showcase_post = array(
 				'post_type'     => 'gmr_album',
 				'post_status'   => 'publish',
@@ -1820,6 +1816,7 @@ class GMedia_Migration extends WP_CLI_Command {
 				'post_modified' => (string) $showcase['DateModified']
 			);
 
+			\WP_CLI::log( 'Importing Showcase - ' . $showcase_post['post_title'] );
 
 			if ( $wp_id ) {
 				$showcase_post['ID'] = $wp_id;
@@ -1850,15 +1847,25 @@ class GMedia_Migration extends WP_CLI_Command {
 
 			$gallery_ids = array();
 			$menu_order = 1;
+			$total_showcase_entries = count( $entry->ShowcasePhoto );
+			$showcase_entry_index = 0;
 			foreach ( $showcase as $entry ) {
+				$showcase_entry_title = trim( (string) $entry['ShowcaseEntryName'] );
+				$showcase_entry_index++;
 				$gallery_ids[] = $this->process_showcase_entry( $entry, $wp_id, $force, $menu_order );
+				\WP_CLI::log( "Importing Showcase ($showcase_index/$total_showcases) - Entry( $showcase_entry_index/$total_showcase_entries ) - $showcase_entry_title" );
 				$menu_order++;
+				$notify->tick();
 			}
 
 			if ( ! empty( $gallery_ids ) ) {
 				update_post_meta( $wp_id, '_gmedia_related_galleries', $gallery_ids );
 			}
+
+			$notify->tick();
 		}
+
+		$notify->finish();
 	}
 
 	/**
@@ -1903,7 +1910,7 @@ class GMedia_Migration extends WP_CLI_Command {
 		}
 
 		$wp_id = wp_insert_post( $showcase_entry_post );
-		WP_CLI::log( 'Added showcase entry' );
+		//WP_CLI::log( 'Added showcase entry' );
 		set_post_format( $wp_id, 'gallery' );
 		update_post_meta( $wp_id, 'gmedia_import_id', $entry_hash );
 		update_post_meta( $wp_id, '_gmedia_related_content', $parent_id );
@@ -2015,19 +2022,6 @@ class GMedia_Migration extends WP_CLI_Command {
 					//$notify->tick();
 					continue;
 				}
-
-				// counter to clear the cache
-				/*
-				$count++;
-				if( $count == 100 ) {
-					if( class_exists('MTM_Migration_Utils') ) {
-						MTM_Migration_Utils::stop_the_insanity();
-
-					}
-					sleep(15);
-					$count = 0;
-				}
-*/
 
 				if ( isset( $post['PostedBy'] ) ) {
 					$author_email = (string) $post['PostedBy'];
@@ -2469,10 +2463,18 @@ class GMedia_Migration extends WP_CLI_Command {
 		global $wpdb;
 
 		$total  = count( $podcasts->Channel );
+		foreach ( $podcasts->Channel as $single_channel ) {
+			$total += count( $single_channel->Items );
+		}
+
 		$notify = new \cli\progress\Bar( "Importing $total podcast channels", $total );
 
 		$count = 0;
+		$total_podcasts = count( $podcasts->Channel );
+		$podcast_index = 0;
+
 		foreach ( $podcasts->Channel as $single_channel ) {
+			$podcast_index++;
 
 			$channel_hash = trim( (string) $single_channel['ChannelTitle'] ) . (string) $single_channel['UTCDateCreated'];
 			$channel_hash = md5( $channel_hash );
@@ -2503,6 +2505,8 @@ class GMedia_Migration extends WP_CLI_Command {
 					'post_date'     => (string) $single_channel['UTCDateCreated'],
 					'post_modified' => (string) $single_channel['UTCDateModified'],
 				);
+
+				\WP_CLI::log( 'Import Podcasts: ' . $podcast['post_title'] );
 
 				if ( $wp_id ) {
 					$podcast['ID'] = $wp_id;
@@ -2572,9 +2576,14 @@ class GMedia_Migration extends WP_CLI_Command {
 				}
 
 				//gmp_audio_file_meta_key
+				$episode_index  = 0;
+				$total_episodes = count( $podcasts->Channel->Item );
+
 				foreach ( $podcasts->Channel->Item as $podcast_item ) {
+					$episode_index++;
 					$episode_title = trim( (string) $podcast_item['ItemTitle'] );
 					$episode_title = strtolower( $episode_title );
+					\WP_CLI::log( "Import Podcast($podcast_index/$total_podcasts) - Item( $episode_index/$total_episodes ) - $episode_title" );
 
 					$episode_date = (string) $podcast_item['UTCDateCreated'];
 					$episode_date_mod = (string) $podcast_item['UTCDateModified'];
@@ -2605,13 +2614,14 @@ class GMedia_Migration extends WP_CLI_Command {
 							wp_update_post( $episode );
 						}
 					}
+
+					$notify->tick();
 				}
 
-
-			//$notify->tick();
+				$notify->tick();
 			}
 
-		//$notify->finish();
+		$notify->finish();
 	}
 
 	private function process_surveys( $surveys, $force ) {
