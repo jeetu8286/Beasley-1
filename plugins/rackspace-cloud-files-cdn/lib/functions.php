@@ -31,12 +31,12 @@ function check_cdn() {
 
 
 /**
- * Synchronizes attachment.
+ * Schedules attachment synchronization.
  * 
- * @global RS_CDN $rackspace_cdn
- * @param int $attachment_id The attachment id.
+ * @param array $meta_data The attachment metadata.
+ * @param int $post_id The attachment id.
  */
-function rackspace_sync_attachment( $attachment_id ) {
+function rackspace_on_attachment_metadata_update( $meta_data, $post_id ) {
 	if ( check_cdn() === false ) {
 		return;
 	}
@@ -45,93 +45,54 @@ function rackspace_sync_attachment( $attachment_id ) {
 
 	// get upload dir and attachment metadata
 	$upload_dir = wp_upload_dir();
-	$metadata = wp_get_attachment_metadata( $attachment_id );
 
 	// sync image
-	try {
-		$filename = $upload_dir['basedir'] . DIRECTORY_SEPARATOR . $metadata['file'];
-		if ( is_readable( $filename ) ) {
-			// upload file
-			$rackspace_cdn->upload_file( $filename, $metadata['file'] );
-			// update metadata
-			$metadata[ RS_META_SYNCED ] = true;
-
-			// delete file when successfully uploaded, if set
-			if ( isset( $rackspace_cdn->api_settings->remove_local_files ) && $rackspace_cdn->api_settings->remove_local_files == true ) {
-				@unlink( $filename );
-			}
-		}
-	} catch ( Exception $e ) {}
-
-	// sync image sizes
-	if ( ! empty( $metadata['sizes'] ) ) {
-		$root_dir = dirname( $filename ) . DIRECTORY_SEPARATOR;
-		$base_dir = diranem( $metadata['file'] ) . DIRECTORY_SEPARATOR;
-		foreach ( $metadata['sizes'] as $size => $meta ) {
-			try {
-				$cur_file = $root_dir . $meta['file'];
-				if ( ! is_readable( $cur_file ) ) {
-					continue;
-				}
-
+	if ( empty( $meta_data[ RS_META_SYNCED ] ) ) {
+		try {
+			$filename = $upload_dir['basedir'] . DIRECTORY_SEPARATOR . $meta_data['file'];
+			if ( is_readable( $filename ) ) {
 				// upload file
-				$rackspace_cdn->upload_file( $cur_file, $base_dir . $meta['file'] );
+				$rackspace_cdn->upload_file( $filename, $meta_data['file'] );
 				// update metadata
-				$metadata['sizes'][ $size ][ RS_META_SYNCED ] = true;
+				$meta_data[ RS_META_SYNCED ] = true;
 
 				// delete file when successfully uploaded, if set
 				if ( isset( $rackspace_cdn->api_settings->remove_local_files ) && $rackspace_cdn->api_settings->remove_local_files == true ) {
-					@unlink( $cur_file );
+					@unlink( $filename );
 				}
-			} catch ( Exception $e ) {}
-		}
+			}
+		} catch ( Exception $e ) {}
 	}
 
-	// update metadata
-	remove_filter( 'wp_update_attachment_metadata', 'rackspace_on_attachment_metadata_update', 10, 2 );
-	wp_update_attachment_metadata( $attachment_id, $metadata );
-	add_filter( 'wp_update_attachment_metadata', 'rackspace_on_attachment_metadata_update', 10, 2 );
-}
-add_action( 'rackspace_sync_attachment', 'rackspace_sync_attachment' );
+	// sync image sizes
+	if ( ! empty( $meta_data['sizes'] ) ) {
+		$root_dir = dirname( $filename ) . DIRECTORY_SEPARATOR;
+		$base_dir = diranem( $meta_data['file'] ) . DIRECTORY_SEPARATOR;
+		foreach ( $meta_data['sizes'] as $size => $meta ) {
+			if ( empty( $meta_data['sizes'][ $size ][ RS_META_SYNCED ] ) ) {
+				try {
+					$cur_file = $root_dir . $meta['file'];
+					if ( ! is_readable( $cur_file ) ) {
+						continue;
+					}
 
+					// upload file
+					$rackspace_cdn->upload_file( $cur_file, $base_dir . $meta['file'] );
+					// update metadata
+					$meta_data['sizes'][ $size ][ RS_META_SYNCED ] = true;
 
-/**
- * Schedules attachment synchronization.
- * 
- * @param array $meta_data The attachment metadata.
- * @param int $post_id The attachment id.
- */
-function rackspace_on_attachment_metadata_update( $meta_data, $post_id ) {
-	if ( rackspace_need_attachment_sync( $meta_data ) ) {
-		wp_schedule_single_event( current_time( 'timestamp', 1 ), 'rackspace_sync_attachment', array( $post_id ) );
+					// delete file when successfully uploaded, if set
+					if ( isset( $rackspace_cdn->api_settings->remove_local_files ) && $rackspace_cdn->api_settings->remove_local_files == true ) {
+						@unlink( $cur_file );
+					}
+				} catch ( Exception $e ) {}
+			}
+		}
 	}
 	
 	return $meta_data;
 }
 add_filter( 'wp_update_attachment_metadata', 'rackspace_on_attachment_metadata_update', 10, 2 );
-
-
-/**
- * Determines whether or not attachment need to be synced.
- * 
- * @param array $meta_data The attachment metadata.
- * @return boolean TRUE if attachment need to be synced, otherwise FALSE.
- */
-function rackspace_need_attachment_sync( $meta_data ) {
-	if ( empty( $meta_data[ RS_META_SYNCED ] ) ) {
-		return true;
-	}
-
-	if ( ! empty( $meta_data['sizes'] ) ) {
-		foreach ( $meta_data['sizes'] as $size ) {
-			if ( empty( $size[ RS_META_SYNCED ] ) ) {
-				return true;
-			}
-		}
-	}
-
-	return false;
-}
 
 
 /**
