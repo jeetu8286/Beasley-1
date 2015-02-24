@@ -1288,22 +1288,33 @@ class GMedia_Migration extends WP_CLI_Command {
 		global $wpdb;
 
 		$total  = count( $channels->Channel );
-		$notify = new \cli\progress\Bar( "Importing $total channels!", $total );
+		foreach ( $channels->Channel as $channel ) {
+			$total += count( $channel->Story );
+		}
+
+		$notify = new \cli\progress\Bar( "Importing $total Channels", $total );
 
 		$count = 0;
 		$taxonomy = 'category';
 		if( $this->type == 'factory_channel' || $this->type == 'factory_channels' ) {
 			$taxonomy = 'collection';
 		}
-		foreach ( $channels->Channel as $channel ) {
 
+		$channel_index = 0;
+		$total_channels = count( $channels->Channel );
+
+		foreach ( $channels->Channel as $channel ) {
+			$channel_index++;
 			$channel_title = (string) $channel['ChannelTitle'];
 			$channel_desc  = (string) $channel['ChannelDescription'];
 			$blog_info['name']     = trim( $channel_title );
 			$blog_info['desc']     = trim( $channel_desc );
 			$blog_id       = $this->process_term( $blog_info, $taxonomy, 'post' );
+			$story_index = 0;
+			$total_stories = count( $channel->Story );
 
 			foreach ( $channel->Story as $story ) {
+				$story_index++;
 				$story_hash = trim( (string) $story['Headline'] ) . (string) $story['StoryDate'] . (string) $story['StoryID'];
 				$story_hash = md5( $story_hash );
 
@@ -1316,18 +1327,8 @@ class GMedia_Migration extends WP_CLI_Command {
 					continue;
 				}
 
-				// counter to clear the cache
-				/*
-				$count++;
-				if( $count == 100 ) {
-					if( class_exists('MTM_Migration_Utils') ) {
-						MTM_Migration_Utils::stop_the_insanity();
-					}
-					sleep(15);
-					$count = 0;
-				}
-*/
-				$story_title = strtolower( trim( (string) $story['Headline'] ) );
+				$story_title = trim( (string) $story['Headline'] );
+				\WP_CLI::log( "Importing Channel ($channel_index/$total_channels) Story( $story_index/$total_stories ) - $story_title" );
 
 				$post = array(
 					'post_type'    => 'post',
@@ -1365,7 +1366,7 @@ class GMedia_Migration extends WP_CLI_Command {
 				if ( isset( $story['HeadlineImageFilename'] ) ) {
 					$featured_image_attrs = array();
 					$featured_image_path  = '/Pics/' . (string) $story['HeadlineImageFilename'];
-					\WP_CLI::log( 'Importing Featured Image: ' . $featured_image_path );
+					//\WP_CLI::log( 'Importing Featured Image: ' . $featured_image_path );
 
 					$image = $this->import_featured_image( $featured_image_path, $wp_id, $featured_image_attrs );
 
@@ -1376,23 +1377,13 @@ class GMedia_Migration extends WP_CLI_Command {
 					WP_CLI::log( "Error: No Featured Image Found!" );
 				}
 
-				// Comments
-				/*if ( isset( $story->Comments ) ) {
-					foreach ( $story->Comments->Comment as $comment ) {
-						$comment_id = $this->add_comment( $comment, $wp_id, $force );
-
-						if ( $comment_id ) {
-							if ( isset( $comment['ParentCommentID'] ) ) {
-								$parent_comment_id = (int) $comment['ParentCommentID'];
-								$this->add_parent_comment( $comment_id, $parent_comment_id );
-							}
-						}
-					}
-				}*/
+				$notify->tick();
 			}
+
 			WP_CLI::log( 'Imported channel ' . (string) $channel['ChannelTitle'] );
-			//$notify->tick();
+			$notify->tick();
 		}
+
 		$notify->finish();
 	}
 
@@ -1989,30 +1980,44 @@ class GMedia_Migration extends WP_CLI_Command {
 		global $wpdb;
 
 		$total = count( $videos->VideoChannel );
-		$notify = new \cli\progress\Bar( "Importing $total video channels", $total );
 
-		$count = 0;
 		foreach ( $videos->VideoChannel as $channel ) {
+			$total = count( $channel->VideoPost );
+		}
+
+		$notify = new \cli\progress\Bar( "Importing $total video channels", $total );
+		$count = 0;
+		$channel_index = 0;
+		$total_channels = count( $videos->VideoChannel );
+
+		foreach ( $videos->VideoChannel as $channel ) {
+			$channel_index++;
 			$channel_title = (string) $channel['VideoChannelName'];
 			$channel_desc = (string) $channel['VideoChannelDescription'];
 			$blog_info['name'] = trim( $channel_title );
 			$blog_info['desc'] = trim( $channel_desc );
 			$blog_id = $this->process_term( $blog_info, 'category' , 'post');
+			$total_video_posts = count( $channel->VideoPost );
+			$video_post_index = 0;
 
 			foreach ( $channel->VideoPost as $post ) {
+				$video_post_index++;
 				$post_hash = trim( (string) $post['PostTitle'] ) . (string) $post['DateCreated'];
 				$post_hash = md5( $post_hash );
+				$video_post_title = trim( (string) $post['PostTitle'] );
+				\WP_CLI::log( "Importing Video( $channel_index/$total_channels ) - Post( $video_post_index/$total_video_posts ) - $video_post_title" );
 
 				// grab the existing post ID (if it exists).
 				$wp_id = $wpdb->get_var( $sql = "SELECT post_id from {$wpdb->postmeta} WHERE meta_key = 'gmedia_import_id' AND meta_value = '".$post_hash ."'" );
 
 				// If we're not forcing import, skip existing posts.
 				if ( ! $force && $wp_id ) {
-					$notify->tick();
+					//$notify->tick();
 					continue;
 				}
 
 				// counter to clear the cache
+				/*
 				$count++;
 				if( $count == 100 ) {
 					if( class_exists('MTM_Migration_Utils') ) {
@@ -2022,6 +2027,7 @@ class GMedia_Migration extends WP_CLI_Command {
 					sleep(15);
 					$count = 0;
 				}
+*/
 
 				if ( isset( $post['PostedBy'] ) ) {
 					$author_email = (string) $post['PostedBy'];
@@ -2102,6 +2108,8 @@ class GMedia_Migration extends WP_CLI_Command {
 				} else {
 					WP_CLI::log( "Error: No Featured Image Found!" );
 				}
+
+				$notify->tick();
 			}
 
 			$notify->tick();
