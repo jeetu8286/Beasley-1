@@ -2122,13 +2122,15 @@ class GMedia_Migration extends WP_CLI_Command {
 	private function process_venues( $venues, $force ) {
 		global $wpdb;
 
-		$total  = count( $venues->Venue );
+		$total    = count( $venues->Venue );
 		$progress = new \cli\progress\Bar( "Importing $total venues", $total );
 
 		$count = 0;
+		$venue_index = 0;
 		foreach ( $venues->Venue as $venue ) {
 			$venue_hash = trim( (string) $venue['VenueName'] ) . (string) $venue['DateCreated'];
 			$venue_hash = md5( $venue_hash );
+			$venue_index++;
 
 			// grab the existing post ID (if it exists).
 			$wp_id = $wpdb->get_var( $sql = "SELECT post_id from {$wpdb->postmeta} WHERE meta_key = 'emmis_import_id' AND meta_value = '" . $venue_hash . "'" );
@@ -2139,17 +2141,6 @@ class GMedia_Migration extends WP_CLI_Command {
 				continue;
 			}
 
-			// counter to clear the cache
-			$count++;
-			if( $count == 100 ) {
-				if( class_exists('MTM_Migration_Utils') ) {
-					MTM_Migration_Utils::stop_the_insanity();
-
-				}
-				sleep(15);
-				$count = 0;
-			}
-
 			$tribe_venue = array(
 				'post_type'     => 'tribe_venue',
 				'post_status'   => 'publish',
@@ -2158,6 +2149,8 @@ class GMedia_Migration extends WP_CLI_Command {
 				'post_date'     => (string) $venue['DateCreated'],
 				'post_modified' => (string) $venue['DateModified'],
 			);
+
+			\WP_CLI::log( "Importing Venues( $venue_index/$total ) - " . $tribe_venue['post_title'] );
 
 			if ( $wp_id ) {
 				$tribe_venue['ID'] = $wp_id;
