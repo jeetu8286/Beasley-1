@@ -38,18 +38,20 @@ function check_cdn() {
  */
 function rackspace_on_attachment_metadata_update( $meta_data, $post_id ) {
 	if ( check_cdn() === false ) {
-		return;
+		return $meta_data;
 	}
 
 	global $rackspace_cdn;
 
-	// get upload dir and attachment metadata
+	// get upload dir and attachment file
 	$upload_dir = wp_upload_dir();
+
+	$filename = ! empty( $meta_data['file'] ) ? $meta_data['file'] : get_post_meta( $post_id, '_wp_attached_file', true );
+	$filename = $upload_dir['basedir'] . DIRECTORY_SEPARATOR . $meta_data['file'];
 
 	// sync image
 	if ( empty( $meta_data[ RS_META_SYNCED ] ) ) {
 		try {
-			$filename = $upload_dir['basedir'] . DIRECTORY_SEPARATOR . $meta_data['file'];
 			if ( is_readable( $filename ) ) {
 				// upload file
 				$rackspace_cdn->upload_file( $filename, $meta_data['file'] );
@@ -115,13 +117,14 @@ function rackspace_update_attachment_url( $url, $attachment_id ) {
 
 	global $rackspace_cdn;
 
+	$file = get_post_meta( $attachment_id, '_wp_attached_file', true );
 	if ( isset( $rackspace_cdn->api_settings->custom_cname ) && trim( $rackspace_cdn->api_settings->custom_cname ) != '' ) {
 		$cdn_url = $rackspace_cdn->api_settings->custom_cname;
 	} else {
 		$cdn_url = isset( $rackspace_cdn->api_settings->use_ssl ) ? get_cdn_url( 'ssl' ) : get_cdn_url();
 	}
 
-	return trailingslashit( $cdn_url ) . $metadata['file'];
+	return trailingslashit( $cdn_url ) . $file;
 }
 add_filter( 'wp_get_attachment_url', 'rackspace_update_attachment_url', 1, 2 );
 
@@ -178,7 +181,11 @@ function rackspace_delete_attachment( $attachment_id ) {
 	$base_dir = trailingslashit( dirname( $metadata['file'] ) );
 
 	if ( ! empty( $metadata[ RS_META_SYNCED ] ) ) {
-		$files[] = $metadata['file'];
+		if ( ! isset( $metadata['file'] ) ) {
+			$files[] = get_post_meta( $attachment_id, '_wp_attached_file', true );
+		} else {
+			$files[] = $metadata['file'];
+		}
 	}
 
 	if ( ! empty( $metadata['sizes'] ) ) {
@@ -672,8 +679,8 @@ function set_cdn_path($attachment) {
     // Return attachment
     return $attachment;
 }
-add_filter('the_content', 'set_cdn_path');
-add_filter('richedit_pre', 'set_cdn_path');
+//add_filter('the_content', 'set_cdn_path');
+//add_filter('richedit_pre', 'set_cdn_path');
 
 
 /**
