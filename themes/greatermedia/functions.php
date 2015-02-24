@@ -58,7 +58,7 @@ function greatermedia_setup() {
 
 	// Add theme support for post thumbnails
 	add_theme_support( 'post-thumbnails' );
-	add_image_size( 'gm-article-thumbnail',     		1580,   9999,   false   ); // thumbnails used for articles
+	add_image_size( 'gm-article-thumbnail',     		1400,   9999,   false   ); // thumbnails used for articles
 	add_image_size( 'gm-entry-thumbnail-1-1' ,          500,    500,    true    );
 	add_image_size( 'gm-entry-thumbnail-4-3' ,          500,    375,    true    );
 	add_image_size( 'gmr-gallery',              		800,    534,    true    ); // large images for the gallery
@@ -122,7 +122,7 @@ function greatermedia_scripts_styles() {
 
 	wp_register_style(
 		'google-fonts',
-		'//fonts.googleapis.com/css?family=Droid+Sans:400,700|Open+Sans:300italic,400italic,700italic,800italic,400,300,700,8',
+		'//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,800italic,400,300,700,800',
 		array(),
 		null
 	);
@@ -130,7 +130,6 @@ function greatermedia_scripts_styles() {
 		'greatermedia',
 		"{$baseurl}/assets/css/greater_media{$postfix}.css",
 		array(
-			'dashicons',
 			'google-fonts'
 		),
 		GREATERMEDIA_VERSION

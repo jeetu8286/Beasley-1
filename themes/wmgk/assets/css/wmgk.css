@@ -927,7 +927,6 @@ category: Base - Typography
 */
 h1, .h1, .type-tribe_events .entry2__thumbnail--event-date, .type-contest .entry2__thumbnail--end-date, .type-contest .entry2__thumbnail--contest-type, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
   line-height: 1.5;
-  font-family: 'Droid Sans', sans-serif;
   text-rendering: optimizelegibility;
   font-weight: bold; }
   h1 a:link, h1 a:visited, .h1 a:link, .type-tribe_events .entry2__thumbnail--event-date a:link, .type-contest .entry2__thumbnail--end-date a:link, .type-contest .entry2__thumbnail--contest-type a:link, .h1 a:visited, .type-tribe_events .entry2__thumbnail--event-date a:visited, .type-contest .entry2__thumbnail--end-date a:visited, .type-contest .entry2__thumbnail--contest-type a:visited, h2 a:link, h2 a:visited, .h2 a:link, .h2 a:visited, h3 a:link, h3 a:visited, .h3 a:link, .h3 a:visited, h4 a:link, h4 a:visited, .h4 a:link, .h4 a:visited, h5 a:link, h5 a:visited, .h5 a:link, .h5 a:visited, h6 a:link, h6 a:visited, .h6 a:link, .h6 a:visited {
@@ -961,7 +960,6 @@ h6, .h6 {
   letter-spacing: 2px; }
 
 .section-header {
-  font-family: 'Open Sans', sans-serif;
   font-weight: 200;
   font-size: 1.25em;
   color: #929497;
@@ -1587,7 +1585,6 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
 .content__heading, .sponsors__heading {
   margin-top: 0;
   margin-bottom: 1.5em;
-  font-family: 'Open Sans', sans-serif;
   font-size: 2.02729em;
   font-weight: bold;
   text-align: left;
@@ -1981,7 +1978,6 @@ Curated posts for Featured Articles
   width: 100%;
   margin-right: 0;
   margin: 0;
-  font-family: 'Open Sans', sans-serif;
   font-size: 1.26562em;
   line-height: 1.3;
   font-weight: bold;
@@ -2166,7 +2162,6 @@ Curated posts for Featured Articles
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   text-overflow: ellipsis;
-  font-family: 'Open Sans', sans-serif;
   color: #ffffff; }
   .featured__content--block:hover .featured__content--title {
     color: #f5ed7f; }
@@ -2195,7 +2190,6 @@ Curated posts for Featured Articles
   outline: none;
   background-color: #d22228;
   border: 1px solid #d22228;
-  font-family: 'Open Sans', sans-serif;
   font-size: 0.7em;
   color: #ffffff !important;
   text-transform: uppercase;
@@ -2218,7 +2212,6 @@ Curated posts for Featured Articles
   outline: none;
   background-color: #f5ed7f;
   border: 1px solid #f5ed7f;
-  font-family: 'Open Sans', sans-serif;
   font-size: 0.7em;
   color: #000000 !important;
   text-transform: uppercase;
@@ -2239,7 +2232,6 @@ Curated posts for Featured Articles
   outline: none;
   background-color: #000000;
   border: 1px solid #000000;
-  font-family: 'Open Sans', sans-serif;
   font-size: 0.7em;
   color: #ffffff !important;
   text-transform: uppercase;
@@ -2350,7 +2342,6 @@ Community Highlights and Events
 .highlights__heading {
   margin: 0 0 0.75em;
   line-height: 1;
-  font-family: 'Open Sans', sans-serif;
   font-size: 1.26562em;
   font-weight: lighter;
   color: #929497;
@@ -2481,7 +2472,6 @@ Community Highlights and Events
   outline: none;
   background-color: transparent;
   border: 1px solid #acaeb0;
-  font-family: 'Open Sans', sans-serif;
   font-size: 0.8em;
   color: #acaeb0 !important;
   text-transform: uppercase;
@@ -2581,7 +2571,15 @@ Community Highlights and Events
   display: block;
   margin-right: 4.82916%;
   width: 65.05695%;
-  padding: 6% 1.618em 0 0;
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  -o-transform: translateY(-50%);
+  transform: translateY(-50%);
+  padding: 0 1.618em 0 0;
+  margin-left: 35%;
   font-size: 1.26562em; }
   .highlights__event--meta:last-child {
     margin-right: 0; }
@@ -2592,10 +2590,9 @@ Community Highlights and Events
     .highlights__event--meta {
       width: auto;
       margin-left: 26.32916%;
-      padding-top: 4%; } }
+      padding-top: 0; } }
 
 .highlights__event--title {
-  font-family: 'Open Sans', sans-serif;
   font-size: 1em;
   color: #6d6e70;
   margin: 0 0 .3em;
@@ -2749,8 +2746,7 @@ Community Highlights and Events
   float: right;
   margin: 0 auto;
   color: #ffffff;
-  cursor: pointer;
-  font-family: 'Open Sans', sans-serif; }
+  cursor: pointer; }
   @media screen and (min-width: 768px)  {
     .header__account {
       width: 64px;
@@ -2820,13 +2816,22 @@ Community Highlights and Events
       padding-top: 25px;
       padding-bottom: 25px; } }
 
-.header__account--span {
-  font-family: 'Open Sans', sans-serif;
+.header__account--span, .header__account--logged-in, .header__account--logged-out {
   color: #d0d2d3; }
   @media screen and (min-width: 1200px)  {
-    .header__account--span {
+    .header__account--span, .header__account--logged-in, .header__account--logged-out {
       font-size: 12.65px;
       padding-left: 12px; } }
+
+.header__account--logged-in {
+  display: none !important; }
+  .gmr-user .header__account--logged-in {
+    display: table-cell !important; }
+
+.header__account--logged-out {
+  display: table-cell !important; }
+  .gmr-user .header__account--logged-out {
+    display: none !important; }
 
 /** An image is shown if the current user is logged in and Gigya gives us a thumbnail URL **/
 .header__account--btn img {
@@ -2922,17 +2927,77 @@ Community Highlights and Events
   color: #d22228; }
 
 .footer .container {
+  min-height: 0;
+  padding-top: 40px;
+  padding-bottom: 40px;
   background-color: #fff;
-  min-height: 0; }
+  border-top: 1px solid #d0d2d3; }
+
+.footer__ad {
+  float: left;
+  display: block;
+  margin-right: 7.42297%;
+  width: 100%;
+  margin-right: 0;
+  text-align: center; }
+  .footer__ad:last-child {
+    margin-right: 0; }
+  @media screen and (min-width: 480px)  {
+    .footer__ad {
+      float: left;
+      display: block;
+      margin-right: 4.82916%;
+      width: 100%;
+      margin-right: 0; }
+      .footer__ad:last-child {
+        margin-right: 0; } }
+  @media screen and (min-width: 768px)  {
+    .footer__ad {
+      float: left;
+      display: block;
+      margin-right: 3.57866%;
+      width: 100%;
+      margin-right: 0; }
+      .footer__ad:last-child {
+        margin-right: 0; } }
+  @media screen and (min-width: 1024px)  {
+    .footer__ad {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 100%;
+      margin-right: 0; }
+      .footer__ad:last-child {
+        margin-right: 0; } }
+  @media screen and (min-width: 1400px)  {
+    .footer__ad {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 100%;
+      margin-right: 0; }
+      .footer__ad:last-child {
+        margin-right: 0; } }
+  .footer__ad .mobile {
+    display: block;
+    height: 50px; }
+    @media screen and (min-width: 468px) {
+      .footer__ad .mobile {
+        display: none; } }
+  .footer__ad .desktop {
+    display: none;
+    height: 60px; }
+    @media screen and (min-width: 468px) {
+      .footer__ad .desktop {
+        display: block; } }
 
 .footer__content {
   float: left;
   display: block;
   margin-right: 7.42297%;
   width: 100%;
-  padding: 40px 5.5%;
+  padding: 40px 5.5% 0;
   background-color: #fff;
-  border-top: 1px solid #d0d2d3;
   color: #929497;
   text-align: center; }
   .footer__content:last-child {
@@ -3207,8 +3272,7 @@ Link posts contain a link to an external site. They can also optionally have a f
     margin-bottom: 32px; }
 
 .entry__content {
-  padding: 1.5em 0;
-  font-family: 'Open Sans', sans-serif; }
+  padding: 1.5em 0; }
 
 .entry__date {
   font-size: 0.79012em;
@@ -3274,7 +3338,6 @@ Link posts contain a link to an external site. They can also optionally have a f
   text-align: right;
   display: inline-block;
   line-height: 1;
-  font-family: 'Droid Sans', sans-serif;
   font-weight: bold;
   color: #929497; }
 
@@ -3853,7 +3916,6 @@ Link posts contain a link to an external site. They can also optionally have a f
   outline: none;
   background-color: #d22228;
   border: 1px solid #d22228;
-  font-family: 'Open Sans', sans-serif;
   font-size: 0.88889em;
   color: #ffffff !important;
   text-transform: uppercase;
@@ -3877,7 +3939,6 @@ Link posts contain a link to an external site. They can also optionally have a f
     outline: none;
     background-color: #929497;
     border: 1px solid #929497;
-    font-family: 'Open Sans', sans-serif;
     font-size: 0.88889em;
     color: #ffffff !important;
     text-transform: uppercase;
@@ -3928,6 +3989,12 @@ Link posts contain a link to an external site. They can also optionally have a f
       margin-bottom: 0; }
       .entry2__thumbnail:last-child {
         margin-right: 0; } }
+  @media screen and (min-width: 1024px)  {
+    .entry2__thumbnail {
+      margin-bottom: 1em; } }
+  @media screen and (min-width: 1200px)  {
+    .entry2__thumbnail {
+      margin-bottom: 0; } }
   .has-excerpt .entry2__thumbnail:after {
     padding-top: 75%; }
 
@@ -3982,7 +4049,26 @@ Link posts contain a link to an external site. They can also optionally have a f
       width: 65.05695%;
       margin-right: 0; }
       .has-post-thumbnail .entry2__meta:last-child, .type-contest .entry2__meta:last-child, .type-tribe_events .entry2__meta:last-child {
-        margin-right: 0; } }
+        margin-right: 0; }
+    @media screen and (min-width: 1024px)  {
+      .has-post-thumbnail .entry2__meta {
+        float: left;
+        display: block;
+        margin-right: 4.82916%;
+        width: 100%;
+        margin-right: 0;
+        float: none; }
+        .has-post-thumbnail .entry2__meta:last-child {
+          margin-right: 0; } }
+    @media screen and (min-width: 1200px)  {
+      .has-post-thumbnail .entry2__meta {
+        float: left;
+        display: block;
+        margin-right: 4.82916%;
+        width: 65.05695%;
+        margin-right: 0; }
+        .has-post-thumbnail .entry2__meta:last-child {
+          margin-right: 0; } } }
 
 .entry2__date {
   font-size: 1em;
@@ -4124,11 +4210,30 @@ Link posts contain a link to an external site. They can also optionally have a f
   font-weight: normal;
   left: 0;
   top: 0; }
+  @media screen and (min-width: 768px)  {
+    .type-contest .entry2__thumbnail--contest-type {
+      max-width: 60%; } }
+  @media screen and (min-width: 1024px)  {
+    .type-contest .entry2__thumbnail--contest-type {
+      max-width: initial; } }
 .type-contest .entry2__thumbnail--day-of-week {
+  font-size: 1em;
   font-weight: normal; }
+  @media screen and (min-width: 768px)  {
+    .type-contest .entry2__thumbnail--day-of-week {
+      font-size: .875em; } }
+  @media screen and (min-width: 1024px)  {
+    .type-contest .entry2__thumbnail--day-of-week {
+      font-size: 1em; } }
 .type-contest .entry2__thumbnail--month-and-day {
   font-size: 2em;
   margin-top: .15em; }
+  @media screen and (min-width: 768px)  {
+    .type-contest .entry2__thumbnail--month-and-day {
+      font-size: 1.5em; } }
+  @media screen and (min-width: 1024px)  {
+    .type-contest .entry2__thumbnail--month-and-day {
+      font-size: 2em; } }
 
 .entry2-ad-wrap {
   clear: both;
@@ -4217,6 +4322,15 @@ Link posts contain a link to an external site. They can also optionally have a f
     .article__content {
       margin-bottom: 4.5em; } }
 
+.article .ad__inline--right.desktop {
+  display: none; }
+.article .ad__inline--right.mobile {
+  display: block; }
+@media screen and (min-width: 768px)  {
+  .article .ad__inline--right.desktop {
+    display: block; }
+  .article .ad__inline--right.mobile {
+    display: none; } }
 @media screen and (min-width: 1024px)  {
   .article .ad__inline--right {
     margin-left: 3.236em; } }
@@ -4834,7 +4948,6 @@ category: Components
       outline: none;
       background-color: #d22228;
       border: 1px solid #d22228;
-      font-family: 'Open Sans', sans-serif;
       font-size: 0.88889em;
       color: #ffffff !important;
       text-transform: uppercase;
@@ -4872,7 +4985,6 @@ category: Components
   outline: none;
   background-color: transparent;
   border: 1px solid transparent;
-  font-family: 'Open Sans', sans-serif;
   font-size: 0.88889em;
   color: #d22228 !important;
   text-transform: uppercase;
@@ -4943,7 +5055,6 @@ category: Components
   outline: none;
   background-color: transparent;
   border: 1px solid #d22228;
-  font-family: 'Open Sans', sans-serif;
   font-size: 0.88889em;
   color: #d22228 !important;
   text-transform: uppercase;
@@ -5143,6 +5254,8 @@ category: Components
         right: auto; } }
   .live-player--active .live-stream__btn--play {
     display: none; }
+  .vast-ad--playing .live-stream__btn--play {
+    display: block; }
   .live-stream__btn--play.live-player__muted {
     display: none; }
   .live-stream__btn--play.play-btn--heartbeat:before {
@@ -5722,7 +5835,6 @@ category: Components
   display: block;
   padding-top: 6px;
   margin: 0;
-  font-family: 'Open Sans', sans-serif;
   font-size: 0.88889em;
   font-weight: normal;
   color: #f2f2f2; }
@@ -5793,7 +5905,6 @@ category: Components
   outline: none;
   background-color: #929497;
   border: 1px solid #929497;
-  font-family: 'Open Sans', sans-serif;
   font-size: 0.88889em;
   color: #ffffff !important;
   text-transform: uppercase;
@@ -5817,7 +5928,6 @@ category: Components
   outline: none;
   background-color: #d22228;
   border: 1px solid #d22228;
-  font-family: 'Open Sans', sans-serif;
   font-size: 0.88889em;
   color: #ffffff !important;
   text-transform: uppercase;
@@ -6315,8 +6425,14 @@ a.podcast__download--fallback, a.podcast__download--fallback:visited {
 a.podcast__download--fallback:hover, a.podcast__download--fallback:active {
   background-color: #aa1c20; }
 
+body.vast-ad--playing {
+  overflow: hidden !important; }
+
 .breaking-news-banner {
-  padding: 10px 0; }
+  width: 100%;
+  background: #d22228;
+  padding: 10px 0;
+  color: #ffffff; }
 
 .breaking-news-banner__inner {
   padding: 0 20px;
@@ -6339,6 +6455,8 @@ a.podcast__download--fallback:hover, a.podcast__download--fallback:active {
       padding: 0 1.618em; } }
 
 .breaking-news-banner__title {
+  font-weight: bold;
+  padding-right: 0.5em;
   color: #f5ed7f;
   text-transform: uppercase; }
 
@@ -6370,7 +6488,7 @@ category: Components - Ads
 
 */
 .ad__inline--right:after, .ad__in-loop:after {
-  content: '\25B4  Advertisement';
+  content: 'Advertisement';
   display: block;
   font-size: 10px;
   text-transform: uppercase;
@@ -6543,7 +6661,6 @@ category: Components - Ads
   outline: none;
   background-color: #f2f2f2;
   border: 1px solid #f2f2f2;
-  font-family: 'Open Sans', sans-serif;
   font-size: 0.6243em;
   color: #ffffff !important;
   text-transform: uppercase;
@@ -6609,13 +6726,11 @@ category: Components - Ads
 
 .contest__prize--title {
   margin: 0 0 .25em;
-  font-family: 'Droid Sans', sans-serif;
   font-size: 1.60181em;
   color: #d22228; }
 
 .contest__form--heading {
   margin: 0 0 30px;
-  font-family: 'Droid Sans', sans-serif;
   font-size: 1.60181em; }
 
 .contest__form--row {
@@ -6637,7 +6752,6 @@ category: Components - Ads
   outline: none;
   background-color: #d22228;
   border: 1px solid #d22228;
-  font-family: 'Open Sans', sans-serif;
   font-size: 0.88889em;
   color: #ffffff !important;
   text-transform: uppercase;
@@ -6672,7 +6786,6 @@ category: Components - Ads
   outline: none;
   background-color: #d22228;
   border: 1px solid #d22228;
-  font-family: 'Open Sans', sans-serif;
   font-size: 0.88889em;
   color: #ffffff !important;
   text-transform: uppercase;
@@ -6692,7 +6805,6 @@ category: Components - Ads
     outline: none;
     background-color: #f5ed7f;
     border: 1px solid #f5ed7f;
-    font-family: 'Open Sans', sans-serif;
     font-size: 0.88889em;
     color: #000000 !important;
     text-transform: uppercase;
@@ -6712,7 +6824,6 @@ category: Components - Ads
     outline: none;
     background-color: #000000;
     border: 1px solid #000000;
-    font-family: 'Open Sans', sans-serif;
     font-size: 0.88889em;
     color: #ffffff !important;
     text-transform: uppercase;
@@ -6747,7 +6858,6 @@ category: Components - Ads
   outline: none;
   background-color: #929497;
   border: 1px solid #929497;
-  font-family: 'Open Sans', sans-serif;
   font-size: 0.79012em;
   color: #ffffff !important;
   text-transform: uppercase;
@@ -6768,7 +6878,6 @@ category: Components - Ads
   outline: none;
   background-color: #d22228;
   border: 1px solid #d22228;
-  font-family: 'Open Sans', sans-serif;
   font-size: 0.79012em;
   color: #ffffff !important;
   text-transform: uppercase;
@@ -6789,7 +6898,6 @@ category: Components - Ads
   outline: none;
   background-color: #000000;
   border: 1px solid #000000;
-  font-family: 'Open Sans', sans-serif;
   font-size: 0.79012em;
   color: #ffffff !important;
   text-transform: uppercase;
@@ -6810,7 +6918,6 @@ category: Components - Ads
 
 .contest__sponsors--heading {
   margin: 0 0 1.4em;
-  font-family: 'Open Sans', sans-serif;
   font-size: 0.88889em;
   font-weight: normal;
   text-transform: uppercase;
@@ -6854,7 +6961,6 @@ category: Components - Ads
     border: 1px solid transparent;
     outline: none;
     background-color: #d0d2d3;
-    font-family: 'Open Sans', sans-serif;
     color: #282827; }
   .contest__form button[type="submit"], .contest__form input[type="submit"] {
     display: inline-block;
@@ -6864,7 +6970,6 @@ category: Components - Ads
     outline: none;
     background-color: #d22228;
     border: 1px solid #d22228;
-    font-family: 'Open Sans', sans-serif;
     font-size: 1.42383em;
     color: #ffffff !important;
     text-transform: uppercase;
@@ -6885,7 +6990,6 @@ category: Components - Ads
       outline: none;
       background-color: #f5ed7f;
       border: 1px solid #f5ed7f;
-      font-family: 'Open Sans', sans-serif;
       font-size: 1.42383em;
       color: #000000 !important;
       text-transform: uppercase;
@@ -6905,7 +7009,6 @@ category: Components - Ads
       outline: none;
       background-color: #000000;
       border: 1px solid #000000;
-      font-family: 'Open Sans', sans-serif;
       font-size: 1.42383em;
       color: #ffffff !important;
       text-transform: uppercase;
@@ -6935,7 +7038,6 @@ category: Components - Ads
     background-repeat: no-repeat;
     background-position: 90% center;
     background-size: auto 10px;
-    font-family: 'Open Sans', sans-serif;
     color: #282827;
     display: inline-block;
     -webkit-appearance: none;
@@ -7030,7 +7132,6 @@ category: Components - Ads
   outline: none;
   background-color: #d22228;
   border: 1px solid #d22228;
-  font-family: 'Open Sans', sans-serif;
   font-size: 0.88889em;
   color: #ffffff !important;
   text-transform: uppercase;
@@ -7130,7 +7231,6 @@ category: Components - Ads
     outline: none;
     background-color: #d22228;
     border: 1px solid #d22228;
-    font-family: 'Open Sans', sans-serif;
     font-size: 0.88889em;
     color: #ffffff !important;
     text-transform: uppercase;
@@ -7258,6 +7358,16 @@ category: Components - Ads
       clear: both; }
     .contest__submission .contest__submission--thumbnail {
       height: 117px; } }
+
+/**
+ * @file override some default styles in the jQuery UI datepicker so it looks less broken
+ * taken from contests plugin to reduce load
+ */
+.ui-datepicker {
+  background-color: #ffffff; }
+
+.ui-datepicker .ui-datepicker-next {
+  right: 1em; }
 
 .events-archive #tribe-events-pg-template {
   max-width: 100%; }
@@ -7528,6 +7638,8 @@ category: Components - Ads
       margin-right: 0; }
       .tribe-events-event-meta .tribe-events-meta-group-gmap:last-child {
         margin-right: 0; } }
+  .site-wrap.pjax--active .tribe-events-event-meta .tribe-events-meta-group-gmap {
+    display: none; }
 
 .single-tribe_events .tribe-events-venue-map {
   padding: 0;
@@ -7769,7 +7881,6 @@ a.podcast__rss:link, a.podcast__rss:visited {
   outline: none;
   background-color: transparent;
   border: 1px solid #929497;
-  font-family: 'Open Sans', sans-serif;
   font-size: 0.88889em;
   color: #929497 !important;
   text-transform: uppercase;
@@ -7794,7 +7905,6 @@ a.podcast__rss:hover, a.podcast__rss:focus {
   outline: none;
   background-color: #d22228;
   border: 1px solid #d22228;
-  font-family: 'Open Sans', sans-serif;
   font-size: 0.88889em;
   color: #ffffff !important;
   text-transform: uppercase;
@@ -7816,7 +7926,6 @@ a.podcast__rss:active {
   outline: none;
   background-color: #000000;
   border: 1px solid #000000;
-  font-family: 'Open Sans', sans-serif;
   font-size: 0.88889em;
   color: #ffffff !important;
   text-transform: uppercase;
@@ -7857,7 +7966,6 @@ a.podcast__rss:active {
   outline: none;
   background-color: transparent;
   border: 1px solid #929497;
-  font-family: 'Open Sans', sans-serif;
   font-size: 0.88889em;
   color: #929497 !important;
   text-transform: uppercase;
@@ -7888,7 +7996,6 @@ a.podcast__rss:active {
   outline: none;
   background-color: #d22228;
   border: 1px solid #d22228;
-  font-family: 'Open Sans', sans-serif;
   font-size: 0.88889em;
   color: #ffffff !important;
   text-transform: uppercase;
@@ -7910,7 +8017,6 @@ a.podcast__rss:active {
   outline: none;
   background-color: #000000;
   border: 1px solid #000000;
-  font-family: 'Open Sans', sans-serif;
   font-size: 0.88889em;
   color: #ffffff !important;
   text-transform: uppercase;
@@ -8042,7 +8148,6 @@ header.podcast__header {
   outline: none;
   background-color: #d22228;
   border: 1px solid #d22228;
-  font-family: 'Open Sans', sans-serif;
   font-size: 0.88889em;
   color: #ffffff !important;
   text-transform: uppercase;
@@ -8336,8 +8441,7 @@ category: Components - Shows
       display: none; } }
 
 .show__title {
-  font-size: 2em;
-  font-family: 'Droid Sans', sans-serif; }
+  font-size: 2em; }
 
 .show__meta {
   width: 100%;
@@ -8918,7 +9022,6 @@ category: Components - Shows
     .widget--live-player__title {
       display: block;
       margin: 0 0 1em;
-      font-family: 'Open Sans', sans-serif;
       font-size: 1em;
       font-weight: normal; } }
 
@@ -9128,7 +9231,6 @@ a.social__link, a.social-share-link {
   outline: none;
   background-color: #d22228;
   border: 1px solid #d22228;
-  font-family: 'Open Sans', sans-serif;
   font-size: 0.88889em;
   color: #ffffff !important;
   text-transform: uppercase;
@@ -9168,7 +9270,6 @@ a.social__link, a.social-share-link {
   margin: 0;
   line-height: 1;
   border-bottom: 6px solid #404041;
-  font-family: 'Open Sans', sans-serif;
   font-size: 0.88889em;
   font-weight: lighter;
   color: #404041; }
@@ -9192,7 +9293,6 @@ a.social__link, a.social-share-link {
   margin: 0;
   line-height: 1;
   border-bottom: 6px solid #d0d2d3;
-  font-family: 'Open Sans', sans-serif;
   font-size: 0.88889em;
   font-weight: lighter;
   color: #404041; }
@@ -9260,7 +9360,6 @@ a.social__link, a.social-share-link {
   margin-right: 0;
   margin-top: 0;
   margin-bottom: 0;
-  font-family: 'Open Sans', sans-serif;
   font-size: 1.26562em;
   font-weight: normal;
   color: #d22228; }
@@ -9746,7 +9845,6 @@ category: Components - Gallery Archive
   width: 100%;
   margin: 0 0 20px;
   line-height: 1;
-  font-family: 'Open Sans', sans-serif;
   font-size: 1.60181em;
   font-weight: lighter;
   word-break: break-all; }
@@ -9843,7 +9941,6 @@ category: Components - Gallery Archive
   -o-border-radius: 32px;
   -border-radius: 32px;
   border-radius: 32px;
-  font-family: 'Open Sans', sans-serif;
   font-size: 1.125em;
   font-weight: lighter;
   color: #404041;
@@ -10204,7 +10301,6 @@ category: Components - Gallery Archive
   outline: none;
   background-color: #d22228;
   border: 1px solid #d22228;
-  font-family: 'Open Sans', sans-serif;
   font-size: 1em;
   color: #ffffff !important;
   text-transform: uppercase;
@@ -10408,6 +10504,12 @@ category: Components - Gallery Archive
 .gallery__grid--thumbnail {
   position: relative;
   margin-bottom: 10px; }
+  .gallery__grid--thumbnail .thumbnail {
+    padding-bottom: 66%;
+    background-position: center center;
+    background-size: 100%;
+    background-size: cover;
+    background-repeat: no-repeat; }
 
 @media screen and (min-width: 768px)  {
   .gallery__grid--thumbwrap {
@@ -10433,7 +10535,6 @@ category: Components - Gallery Archive
 
 .gallery__grid--title {
   margin: 0;
-  font-family: 'Open Sans', sans-serif;
   font-size: 1.125em;
   font-weight: lighter;
   color: #404041; }
@@ -10969,7 +11070,7 @@ select {
   .profile-page .profile-page__sidebar {
     background-color: #561015;
     color: #ffffff;
-    background-image: url("../../../../themes/greatermedia/assets/../images/profile_bg.jpg");
+    background-image: url('../../images/profile_bg.jpg');
     text-align: center;
     background-size: cover;
     background-repeat: no-repeat; }
@@ -11075,7 +11176,6 @@ select {
   outline: none;
   background-color: #d22228;
   border: 1px solid #d22228;
-  font-family: 'Open Sans', sans-serif;
   font-size: 0.88889em;
   color: #ffffff !important;
   text-transform: uppercase;
@@ -11096,7 +11196,6 @@ select {
   outline: none;
   background-color: #f5ed7f;
   border: 1px solid #f5ed7f;
-  font-family: 'Open Sans', sans-serif;
   font-size: 0.88889em;
   color: #ffffff !important;
   text-transform: uppercase;
@@ -11117,7 +11216,6 @@ select {
   outline: none;
   background-color: #000000;
   border: 1px solid #000000;
-  font-family: 'Open Sans', sans-serif;
   font-size: 0.88889em;
   color: #ffffff !important;
   text-transform: uppercase;
@@ -12453,7 +12551,6 @@ category: Components - Article
 
 .related-posts__title {
   color: #929497;
-  font-family: 'Open Sans', sans-serif;
   font-weight: lighter; }
 
 .related-post {
@@ -12484,7 +12581,6 @@ category: Components - Article
   width: 100%;
   padding: 1em;
   background-color: rgba(40, 40, 39, 0.8);
-  font-family: 'Open Sans', sans-serif;
   font-weight: lighter; }
 
 .related-post__title {
@@ -12718,7 +12814,6 @@ category: Components
   border-bottom: none; }
 
 .sponsors__heading {
-  font-family: 'Droid Sans', sans-serif;
   font-size: 1.80203em;
   font-weight: bold;
   color: #404041; }
@@ -12753,8 +12848,7 @@ category: Components
 
 .sponsor__logo, .sponsor__name {
   margin: 0 auto;
-  text-align: center;
-  font-family: 'Droid Sans', sans-serif; }
+  text-align: center; }
   @media screen and (min-width: 768px)  {
     .sponsor__logo, .sponsor__name {
       position: absolute;
