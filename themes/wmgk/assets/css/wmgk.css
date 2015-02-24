@@ -2571,7 +2571,15 @@ Community Highlights and Events
   display: block;
   margin-right: 4.82916%;
   width: 65.05695%;
-  padding: 6% 1.618em 0 0;
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  -o-transform: translateY(-50%);
+  transform: translateY(-50%);
+  padding: 0 1.618em 0 0;
+  margin-left: 35%;
   font-size: 1.26562em; }
   .highlights__event--meta:last-child {
     margin-right: 0; }
@@ -2582,7 +2590,7 @@ Community Highlights and Events
     .highlights__event--meta {
       width: auto;
       margin-left: 26.32916%;
-      padding-top: 4%; } }
+      padding-top: 0; } }
 
 .highlights__event--title {
   font-size: 1em;
@@ -3981,6 +3989,12 @@ Link posts contain a link to an external site. They can also optionally have a f
       margin-bottom: 0; }
       .entry2__thumbnail:last-child {
         margin-right: 0; } }
+  @media screen and (min-width: 1024px)  {
+    .entry2__thumbnail {
+      margin-bottom: 1em; } }
+  @media screen and (min-width: 1200px)  {
+    .entry2__thumbnail {
+      margin-bottom: 0; } }
   .has-excerpt .entry2__thumbnail:after {
     padding-top: 75%; }
 
@@ -4035,7 +4049,26 @@ Link posts contain a link to an external site. They can also optionally have a f
       width: 65.05695%;
       margin-right: 0; }
       .has-post-thumbnail .entry2__meta:last-child, .type-contest .entry2__meta:last-child, .type-tribe_events .entry2__meta:last-child {
-        margin-right: 0; } }
+        margin-right: 0; }
+    @media screen and (min-width: 1024px)  {
+      .has-post-thumbnail .entry2__meta {
+        float: left;
+        display: block;
+        margin-right: 4.82916%;
+        width: 100%;
+        margin-right: 0;
+        float: none; }
+        .has-post-thumbnail .entry2__meta:last-child {
+          margin-right: 0; } }
+    @media screen and (min-width: 1200px)  {
+      .has-post-thumbnail .entry2__meta {
+        float: left;
+        display: block;
+        margin-right: 4.82916%;
+        width: 65.05695%;
+        margin-right: 0; }
+        .has-post-thumbnail .entry2__meta:last-child {
+          margin-right: 0; } } }
 
 .entry2__date {
   font-size: 1em;
@@ -5208,6 +5241,8 @@ category: Components
         right: auto; } }
   .live-player--active .live-stream__btn--play {
     display: none; }
+  .vast-ad--playing .live-stream__btn--play {
+    display: block; }
   .live-stream__btn--play.live-player__muted {
     display: none; }
   .live-stream__btn--play.play-btn--heartbeat:before {
@@ -10456,6 +10491,12 @@ category: Components - Gallery Archive
 .gallery__grid--thumbnail {
   position: relative;
   margin-bottom: 10px; }
+  .gallery__grid--thumbnail .thumbnail {
+    padding-bottom: 66%;
+    background-position: center center;
+    background-size: 100%;
+    background-size: cover;
+    background-repeat: no-repeat; }
 
 @media screen and (min-width: 768px)  {
   .gallery__grid--thumbwrap {

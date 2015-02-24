@@ -83,13 +83,16 @@
 
 (function(jQuery, window, undefined) {
 
-	var $mobileMenu = jQuery(document.querySelectorAll('ul.js-mobile-sub-menus'));
+	var $mobileMenu = jQuery(document.querySelectorAll('ul.js-mobile-sub-menus')),
+		$menuOverlay = jQuery(document.querySelector('.menu-overlay-mask'));
 
 	function init() {
 
 		$mobileMenu.on('click.greaterMedia.Menus', 'a.show-subnavigation', openSubMenu);
 
 		$mobileMenu.on('click.greaterMedia.Menus', 'a.mobile-menu-submenu-back-link', closeSubMenu);
+
+		$menuOverlay.on('click', closeSubMenu);
 
 	}
 
@@ -1004,13 +1007,6 @@
 	}
 	if (liveLinksWidget != null) {
 		addEventHandler(liveLinksWidget, elemClick, liveLinksClose);
-	}
-	if (playBtn != null || resumeBtn != null) {
-		addEventHandler(playBtn, elemClick, playerActive);
-		addEventHandler(resumeBtn, elemClick, playerActive);
-	}
-	if (pauseBtn != null) {
-		addEventHandler(pauseBtn, elemClick, playerNotActive);
 	}
 
 	addEventHandler(window, elemResize, function () {
