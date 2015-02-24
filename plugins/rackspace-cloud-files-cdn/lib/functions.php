@@ -156,7 +156,7 @@ function rackspace_update_attachment_image_attr( $attr, $attachment, $size ) {
 		$cdn_url = isset( $rackspace_cdn->api_settings->use_ssl ) ? get_cdn_url( 'ssl' ) : get_cdn_url();
 	}
 
-	$attr['src'] = trailingslashit( $cdn_url ) . $metadata['sizes'][ $size ]['file'];
+	$attr['src'] = trailingslashit( $cdn_url ) . dirname( $metadata['file'] ) . DIRECTORY_SEPARATOR . $metadata['sizes'][ $size ]['file'];
 	
 	return $attr;
 }
