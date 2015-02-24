@@ -67,7 +67,7 @@ function rackspace_on_attachment_metadata_update( $meta_data, $post_id ) {
 	// sync image sizes
 	if ( ! empty( $meta_data['sizes'] ) ) {
 		$root_dir = dirname( $filename ) . DIRECTORY_SEPARATOR;
-		$base_dir = diranem( $meta_data['file'] ) . DIRECTORY_SEPARATOR;
+		$base_dir = dirname( $meta_data['file'] ) . DIRECTORY_SEPARATOR;
 		foreach ( $meta_data['sizes'] as $size => $meta ) {
 			if ( empty( $meta_data['sizes'][ $size ][ RS_META_SYNCED ] ) ) {
 				try {
