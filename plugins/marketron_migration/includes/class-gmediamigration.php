@@ -82,13 +82,15 @@ class GMedia_Migration extends WP_CLI_Command {
 			'migration_cache/downloads',
 			'migration_cache/media'
 		);
+
+		add_filter( 'intermediate_image_sizes', '__return_empty_array' );
 	}
 
 	function download_url( $url ) {
 		return $this->downloader->download( $url );
 	}
 
-	function restore() {
+	function restore( $args, $opts ) {
 		global $wpdb;
 
 		$prefix           = $wpdb->prefix;
@@ -112,7 +114,10 @@ class GMedia_Migration extends WP_CLI_Command {
 
 		wp_cache_flush();
 
-		\WP_CLI::success( 'Restored WordPress to Defaults' );
+		$site   = get_blog_details();
+		$domain = $site->domain;
+
+		\WP_CLI::success( "Restored WordPress( $domain ) to Defaults" );
 	}
 
 	/**
@@ -199,10 +204,6 @@ class GMedia_Migration extends WP_CLI_Command {
 
 		$file  = $args[0];
 		$force = isset( $assoc_args['force'] );
-
-		if ( $force ) {
-			$this->restore();
-		}
 
 		if ( false !== stripos( $file, '.xml' ) ) {
 			$finfo          = finfo_open( FILEINFO_MIME_TYPE );
@@ -353,6 +354,7 @@ class GMedia_Migration extends WP_CLI_Command {
 						if ( $exists ) {
 							$user_id = $exists;
 							if ( ! get_user_meta( $user_id, 'simple_local_avatar' ) ) {
+								error_log( 'Importing author images' );
 								$image_id = $this->import_author_images( $author['ImageFilepath'] );
 								if ( $image_id ) {
 									$meta_value = array();
@@ -391,6 +393,7 @@ class GMedia_Migration extends WP_CLI_Command {
 			}
 
 			// counter to clear the cache
+			/*
 			$count++;
 			if( $count == 100 ) {
 				if( class_exists('MTM_Migration_Utils') ) {
@@ -399,6 +402,7 @@ class GMedia_Migration extends WP_CLI_Command {
 				sleep(15);
 				$count = 0;
 			}
+*/
 			$feed_article_title = strtolower( trim( (string) $article['Title'] ) );
 
 			if( isset( $article['PrimaryMediaReference'] ) ) {
@@ -429,6 +433,7 @@ class GMedia_Migration extends WP_CLI_Command {
 			update_post_meta( $wp_id, 'gmedia_import_id', $article_hash );
 
 			if( isset($article['FeaturedAudioFilepath']) && $wp_id ) {
+				//\WP_CLI::log( 'Importing FeatureAudioFilepath' );
 				$media_url = $this->import_music_files( $wp_id, $article['FeaturedAudioFilepath'] );
 
 				if( $media_url ) {
@@ -443,6 +448,7 @@ class GMedia_Migration extends WP_CLI_Command {
 
 			// Process Feed Taxonomy Term
 			if ( isset( $article->Feeds->Feed->FeedCategories->FeedCategory ) ) {
+				//\WP_CLI::log( 'Importing FeedCategories' );
 				$feed_cats = array();
 				foreach ( $article->Feeds->Feed->FeedCategories->FeedCategory as $feed_category ) {
 					if( $feed_category['Category'] ) {
@@ -460,6 +466,7 @@ class GMedia_Migration extends WP_CLI_Command {
 			}
 
 			if ( isset( $article->Feeds->Feed['Feed'] ) ) {
+				//\WP_CLI::log( 'Importing Feeds' );
 				$marketron_term = trim( (string)  $article->Feeds->Feed['Feed'] );
 
 				if ( isset( $taxonomy_mapping[ $marketron_term ] ) ) {
@@ -479,7 +486,10 @@ class GMedia_Migration extends WP_CLI_Command {
 
 			$old_url = $this->site_url;
 			if ( isset( $article->Feeds->Feed->FeedSlugHistoryItems ) ) {
+				//\WP_CLI::log( 'Importing FeedSlugHistoryItems' );
+
 				foreach ( $article->Feeds->Feed->FeedSlugHistoryItems->FeedSlugHistoryItem as $SlugHistoryitem ) {
+					//error_log( 'Old URL: ' . $old_url );
 					$old_url = trailingslashit( $this->site_url )  . trim( (string) $SlugHistoryitem['FeedHistoricalSlug'] )
 					           . '/' . trim( (string) $article['SlugDate'] ) . '/' . trim( (string) $article['Slug'] );
 				}
@@ -489,6 +499,7 @@ class GMedia_Migration extends WP_CLI_Command {
 
 			// Process Tags
 			if ( isset( $article->Tags->Tag ) ) {
+				//\WP_CLI::log( 'Import Tags' );
 				$tag_ids = array();
 				foreach ( $article->Tags->Tag as $tag ) {
 					$tag_details['name'] = $tag['Tag'];
@@ -514,9 +525,11 @@ class GMedia_Migration extends WP_CLI_Command {
 			}
 
 			// Featured Image
-			if ( isset( $article['FeaturedImageFilepath'] ) ) {
+			if ( isset( $article['FeaturedImageURL'] ) ) {
 				$featured_image_attrs = array();
-				$featured_image_path  = (string) $article['FeaturedImageFilepath'];
+				//$featured_image_path  = (string) $article['FeaturedImageFilepath'];
+				$featured_image_path = (string) $article['FeaturedImageURL'];
+				//\WP_CLI::log( "Importing FeaturedImageFilepath: $featured_image_path" );
 
 				if ( isset( $article['FeaturedImageCaption'] ) ) {
 					$featured_image_attrs['post_excerpt'] = (string) $article['FeaturedImageCaption'];
@@ -1015,6 +1028,7 @@ class GMedia_Migration extends WP_CLI_Command {
 			}
 
 			// do the validation and storage stuff
+			$prof_start = microtime(true);
 			$id = media_handle_sideload( $file_array, $post_id, null, $attrs );
 
 			// If error storing permanently, unlink
