@@ -672,8 +672,8 @@ function set_cdn_path($attachment) {
     // Return attachment
     return $attachment;
 }
-add_filter('the_content', 'set_cdn_path');
-add_filter('richedit_pre', 'set_cdn_path');
+//add_filter('the_content', 'set_cdn_path');
+//add_filter('richedit_pre', 'set_cdn_path');
 
 
 /**
