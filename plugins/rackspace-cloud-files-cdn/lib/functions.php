@@ -325,8 +325,8 @@ function upload_images($meta_id, $post_id, $meta_key='', $meta_value='') {
 		return true;
     }
 }
-add_action('added_post_meta', 'upload_images', 10, 4);
-add_action('updated_post_meta', 'upload_images', 10, 4);
+//add_action('added_post_meta', 'upload_images', 10, 4);
+//add_action('updated_post_meta', 'upload_images', 10, 4);
 
 
 /**
