@@ -83,7 +83,6 @@ class GMedia_Migration extends WP_CLI_Command {
 			'migration_cache/media'
 		);
 
-		add_filter( 'intermediate_image_sizes', '__return_empty_array' );
 	}
 
 	function download_url( $url ) {
@@ -153,6 +152,8 @@ class GMedia_Migration extends WP_CLI_Command {
 	 * @synopsis <file> --type=<content-type> --site=<site> [--force] [--skip] [--config_file]
 	 */
 	public function import( $args = array(), $assoc_args = array() ) {
+		add_filter( 'intermediate_image_sizes', '__return_empty_array' );
+
 		if ( isset( $assoc_args['type'] ) ) {
 			$type = $assoc_args['type'];
 			$this->type = $type;
