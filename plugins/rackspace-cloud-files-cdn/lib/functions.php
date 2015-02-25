@@ -31,32 +31,37 @@ function check_cdn() {
 
 
 /**
- * Schedules attachment synchronization.
- * 
- * @param array $meta_data The attachment metadata.
+ * Uploads attachment to the rackspace CDN.
+ *
+ * @global RS_CDN $rackspace_cdn
  * @param int $post_id The attachment id.
+ * @param array $meta_data The attachment metadata.
+ * @param boolean $force_reload Determines whether or not attachment should be reloaded.
+ * @return boolean TRUE if uploaded, otherwise FALSE.
  */
-function rackspace_on_attachment_metadata_update( $meta_data, $post_id ) {
+function rackspace_upload_attachment( $post_id, &$meta_data, $force_reload = false ) {
 	if ( check_cdn() === false ) {
-		return $meta_data;
+		return false;
 	}
 
 	global $rackspace_cdn;
 
 	// get upload dir and attachment file
 	$upload_dir = wp_upload_dir();
+	$uploaded = false;
 
 	$filename = ! empty( $meta_data['file'] ) ? $meta_data['file'] : get_post_meta( $post_id, '_wp_attached_file', true );
 	$filepath = $upload_dir['basedir'] . DIRECTORY_SEPARATOR . $filename;
 
 	// sync image
-	if ( empty( $meta_data[ RS_META_SYNCED ] ) ) {
+	if ( $force_reload || empty( $meta_data[ RS_META_SYNCED ] ) ) {
 		try {
 			if ( is_readable( $filepath ) ) {
 				// upload file
 				$rackspace_cdn->upload_file( $filepath, $filename );
 				// update metadata
 				$meta_data[ RS_META_SYNCED ] = true;
+				$uploaded = true;
 
 				// delete file when successfully uploaded, if set
 				if ( isset( $rackspace_cdn->api_settings->remove_local_files ) && $rackspace_cdn->api_settings->remove_local_files == true ) {
@@ -71,7 +76,7 @@ function rackspace_on_attachment_metadata_update( $meta_data, $post_id ) {
 		$root_dir = dirname( $filepath ) . DIRECTORY_SEPARATOR;
 		$base_dir = dirname( $meta_data['file'] ) . DIRECTORY_SEPARATOR;
 		foreach ( $meta_data['sizes'] as $size => $meta ) {
-			if ( empty( $meta_data['sizes'][ $size ][ RS_META_SYNCED ] ) ) {
+			if ( $force_reload || empty( $meta_data['sizes'][ $size ][ RS_META_SYNCED ] ) ) {
 				try {
 					$cur_file = $root_dir . $meta['file'];
 					if ( ! is_readable( $cur_file ) ) {
@@ -82,6 +87,7 @@ function rackspace_on_attachment_metadata_update( $meta_data, $post_id ) {
 					$rackspace_cdn->upload_file( $cur_file, $base_dir . $meta['file'] );
 					// update metadata
 					$meta_data['sizes'][ $size ][ RS_META_SYNCED ] = true;
+					$uploaded = true;
 
 					// delete file when successfully uploaded, if set
 					if ( isset( $rackspace_cdn->api_settings->remove_local_files ) && $rackspace_cdn->api_settings->remove_local_files == true ) {
@@ -90,6 +96,26 @@ function rackspace_on_attachment_metadata_update( $meta_data, $post_id ) {
 				} catch ( Exception $e ) {}
 			}
 		}
+	}
+
+	// update last sync time
+	if ( $uploaded ) {
+		update_post_meta( $post_id, '_rackspace_synced', current_time( 'mysql', 1 ) );
+	}
+
+	return $uploaded;
+}
+
+
+/**
+ * Schedules attachment synchronization.
+ * 
+ * @param array $meta_data The attachment metadata.
+ * @param int $post_id The attachment id.
+ */
+function rackspace_on_attachment_metadata_update( $meta_data, $post_id ) {
+	if ( apply_filters( 'rackspace_update_attachment_metadata', true ) ) {
+		rackspace_upload_attachment( $post_id, $meta_data );
 	}
 	
 	return $meta_data;
