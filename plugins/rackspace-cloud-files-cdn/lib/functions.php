@@ -20,11 +20,6 @@ function check_cdn() {
 		return false;
 	}
 
-	// Check if connection OR container objects are null, if so, return false
-	if ( is_null( $rackspace_cdn->connection_object() ) || is_null( $rackspace_cdn->container_object() ) ) {
-		return false;
-	}
-
 	// Session created successfully
 	return true;
 }
@@ -165,7 +160,7 @@ add_filter( 'wp_get_attachment_url', 'rackspace_update_attachment_url', 1, 2 );
  * @return array Attachment attributes.
  */
 function rackspace_update_attachment_image_attr( $attr, $attachment, $size ) {
-	if ( check_cdn() === false ) {
+	if ( check_cdn() === false || is_array( $size ) ) {
 		return $attr;
 	}
 
