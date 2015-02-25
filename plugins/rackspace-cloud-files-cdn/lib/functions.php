@@ -31,10 +31,9 @@ function check_cdn() {
  * @global RS_CDN $rackspace_cdn
  * @param int $post_id The attachment id.
  * @param array $meta_data The attachment metadata.
- * @param boolean $force_reload Determines whether or not attachment should be reloaded.
  * @return boolean TRUE if uploaded, otherwise FALSE.
  */
-function rackspace_upload_attachment( $post_id, &$meta_data, $force_reload = false ) {
+function rackspace_upload_attachment( $post_id, &$meta_data ) {
 	if ( check_cdn() === false ) {
 		return false;
 	}
@@ -49,49 +48,46 @@ function rackspace_upload_attachment( $post_id, &$meta_data, $force_reload = fal
 	$filepath = $upload_dir['basedir'] . DIRECTORY_SEPARATOR . $filename;
 
 	// sync image
-	if ( $force_reload || empty( $meta_data[ RS_META_SYNCED ] ) ) {
-		try {
-			if ( is_readable( $filepath ) ) {
-				// upload file
-				if ( $rackspace_cdn->upload_file( $filepath, $filename ) ) {
-					// update metadata
-					$meta_data[ RS_META_SYNCED ] = true;
-					$uploaded = true;
+	try {
+		if ( is_readable( $filepath ) ) {
+			// upload file
+			if ( $rackspace_cdn->upload_file( $filepath, $filename ) ) {
+				// update metadata
+				$meta_data[ RS_META_SYNCED ] = true;
+				$uploaded = true;
 
-					// delete file when successfully uploaded, if set
-					if ( isset( $rackspace_cdn->api_settings->remove_local_files ) && $rackspace_cdn->api_settings->remove_local_files == true ) {
-						@unlink( $filepath );
-					}
+				// delete file when successfully uploaded, if set
+				if ( isset( $rackspace_cdn->api_settings->remove_local_files ) && $rackspace_cdn->api_settings->remove_local_files == true ) {
+					@unlink( $filepath );
 				}
 			}
-		} catch ( Exception $e ) {}
-	}
+		}
+	} catch ( Exception $e ) {}
 
 	// sync image sizes
 	if ( ! empty( $meta_data['sizes'] ) ) {
 		$root_dir = dirname( $filepath ) . DIRECTORY_SEPARATOR;
 		$base_dir = dirname( $meta_data['file'] ) . DIRECTORY_SEPARATOR;
+		
 		foreach ( $meta_data['sizes'] as $size => $meta ) {
-			if ( $force_reload || empty( $meta_data['sizes'][ $size ][ RS_META_SYNCED ] ) ) {
-				try {
-					$cur_file = $root_dir . $meta['file'];
-					if ( ! is_readable( $cur_file ) ) {
-						continue;
-					}
+			try {
+				$cur_file = $root_dir . $meta['file'];
+				if ( ! is_readable( $cur_file ) ) {
+					continue;
+				}
 
-					// upload file
-					if ( $rackspace_cdn->upload_file( $cur_file, $base_dir . $meta['file'] ) ) {
-						// update metadata
-						$meta_data['sizes'][ $size ][ RS_META_SYNCED ] = true;
-						$uploaded = true;
+				// upload file
+				if ( $rackspace_cdn->upload_file( $cur_file, $base_dir . $meta['file'] ) ) {
+					// update metadata
+					$meta_data['sizes'][ $size ][ RS_META_SYNCED ] = true;
+					$uploaded = true;
 
-						// delete file when successfully uploaded, if set
-						if ( isset( $rackspace_cdn->api_settings->remove_local_files ) && $rackspace_cdn->api_settings->remove_local_files == true ) {
-							@unlink( $cur_file );
-						}
+					// delete file when successfully uploaded, if set
+					if ( isset( $rackspace_cdn->api_settings->remove_local_files ) && $rackspace_cdn->api_settings->remove_local_files == true ) {
+						@unlink( $cur_file );
 					}
-				} catch ( Exception $e ) {}
-			}
+				}
+			} catch ( Exception $e ) {}
 		}
 	}
 
