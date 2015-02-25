@@ -36,7 +36,7 @@ class Rackspace_CLI_Command extends WP_CLI_Command {
 				wp_update_attachment_metadata( $post_id, $meta_data );
 				$verbose && WP_CLI::success( sprintf( 'Attachment %s has been uploaded.', $post_id ) );
 			} else {
-				$verbose && WP_CLI::error( sprintf( 'Attachment %s has not been uploaded.', $post_id ) );
+				$verbose && WP_CLI::warning( sprintf( 'Attachment %s has not been uploaded.', $post_id ) );
 			}
 		}
 
@@ -124,13 +124,14 @@ class Rackspace_CLI_Command extends WP_CLI_Command {
 				'paged'               => $paged,
 				'posts_per_page'      => 100,
 				'ignore_sticky_posts' => true,
+				'fields'              => 'ids',
 			) );
 
-			$this->_upload_attachments( $post_ids, $verbose, $force_reload );
-			
-			$verbose && WP_CLI::line( sprintf( '%d page of %d is processed', $paged, $query->max_num_pages ) );
-
-			$paged++;
+			if ( ! empty( $post_ids ) ) {
+				$this->_upload_attachments( $post_ids, $verbose, $force_reload );
+				$verbose && WP_CLI::line( sprintf( '%d page of %d is processed', $paged, $query->max_num_pages ) );
+				$paged++;
+			}
 		} while ( $query->post_count > 0 );
 	}
 

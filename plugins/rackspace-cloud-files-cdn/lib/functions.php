@@ -53,14 +53,15 @@ function rackspace_upload_attachment( $post_id, &$meta_data, $force_reload = fal
 		try {
 			if ( is_readable( $filepath ) ) {
 				// upload file
-				$rackspace_cdn->upload_file( $filepath, $filename );
-				// update metadata
-				$meta_data[ RS_META_SYNCED ] = true;
-				$uploaded = true;
+				if ( $rackspace_cdn->upload_file( $filepath, $filename ) ) {
+					// update metadata
+					$meta_data[ RS_META_SYNCED ] = true;
+					$uploaded = true;
 
-				// delete file when successfully uploaded, if set
-				if ( isset( $rackspace_cdn->api_settings->remove_local_files ) && $rackspace_cdn->api_settings->remove_local_files == true ) {
-					@unlink( $filepath );
+					// delete file when successfully uploaded, if set
+					if ( isset( $rackspace_cdn->api_settings->remove_local_files ) && $rackspace_cdn->api_settings->remove_local_files == true ) {
+						@unlink( $filepath );
+					}
 				}
 			}
 		} catch ( Exception $e ) {}
@@ -79,14 +80,15 @@ function rackspace_upload_attachment( $post_id, &$meta_data, $force_reload = fal
 					}
 
 					// upload file
-					$rackspace_cdn->upload_file( $cur_file, $base_dir . $meta['file'] );
-					// update metadata
-					$meta_data['sizes'][ $size ][ RS_META_SYNCED ] = true;
-					$uploaded = true;
+					if ( $rackspace_cdn->upload_file( $cur_file, $base_dir . $meta['file'] ) ) {
+						// update metadata
+						$meta_data['sizes'][ $size ][ RS_META_SYNCED ] = true;
+						$uploaded = true;
 
-					// delete file when successfully uploaded, if set
-					if ( isset( $rackspace_cdn->api_settings->remove_local_files ) && $rackspace_cdn->api_settings->remove_local_files == true ) {
-						@unlink( $cur_file );
+						// delete file when successfully uploaded, if set
+						if ( isset( $rackspace_cdn->api_settings->remove_local_files ) && $rackspace_cdn->api_settings->remove_local_files == true ) {
+							@unlink( $cur_file );
+						}
 					}
 				} catch ( Exception $e ) {}
 			}
