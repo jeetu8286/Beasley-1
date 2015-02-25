@@ -200,6 +200,35 @@ class GMedia_Migration extends WP_CLI_Command {
 		return $podcast_id;
 	}
 
+	function load_tags( $tags_file ) {
+		$file   = fopen( $tags_file, 'r' );
+		$fields = fgetcsv( $file, 0, ',', '"' );
+		$tags   = array();
+		$total_tags = count(file($tags_file)) - 1;
+		$notify = new \cli\progress\Bar( "Importing $total_tags Tags ", $total_tags );
+
+		while ( $fields !== false ) {
+			if ( is_numeric( $fields[0] ) ) {
+				$tag_name = $fields[1];
+				$tag_slug = $fields[2];
+
+				if ( ! term_exists( $tag_name, 'post_tag' ) ) {
+					$tags[ $tag_slug ] = wp_insert_term(
+						$tag_name,
+						'post_tag',
+						array( 'slug' => $tag_slug )
+					);
+					//\WP_CLI::log( 'Inserted Tag: ' . $tag_name );
+				}
+			}
+
+			$fields = fgetcsv( $file, 0, ',', '"' );
+			$notify->tick();
+		}
+
+		$notify->finish();
+	}
+
 	/*
 	 * ----------------------------------------------------------------------------------------------------------------
 	 * ----------------------------------------------------------------------------------------------------------------
@@ -215,7 +244,7 @@ class GMedia_Migration extends WP_CLI_Command {
 	/**
 	 * Handle the import of an xml file.
 	 *
-	 * @synopsis <file> --type=<content-type> --site=<site> [--force] [--skip] [--mapping_file] [--limit] [--config_file]
+	 * @synopsis <file> --type=<content-type> --site=<site> [--force] [--skip] [--mapping_file] [--limit] [--config_file] [--tags]
 	 */
 	public function import( $args = array(), $assoc_args = array() ) {
 		add_filter( 'intermediate_image_sizes', '__return_empty_array' );
@@ -252,6 +281,13 @@ class GMedia_Migration extends WP_CLI_Command {
 			$this->limit = intval( $assoc_args['limit'] );
 		} else {
 			$this->limit = -1;
+		}
+
+		if ( isset( $assoc_args['tags'] ) ) {
+			$tags_file = $assoc_args['tags'];
+			$this->load_tags( $tags_file );
+		} else {
+			\WP_CLI::error( 'Tags file not provided' );
 		}
 
 		if ( isset( $assoc_args['site'] ) ) {
@@ -1020,6 +1056,11 @@ class GMedia_Migration extends WP_CLI_Command {
 			return (int) $term['term_id'];
 		}
 
+		if ( $taxonomy === 'post_tag' && ! term_exists( $term_name, $taxonomy ) ) {
+			// for tags, limit tags to whitelisted set of tags only
+			return false;
+		}
+
 		if ( $parent ) {
 			$parent_term_name = sanitize_term_field( 'name', $parent, 0, $taxonomy, 'db' );
 
@@ -1271,7 +1312,6 @@ class GMedia_Migration extends WP_CLI_Command {
 				}
 			}
 
-
 			$entry_index = 0;
 			$entry_count = count( $single_blog->BlogEntries->BlogEntry );
 
@@ -1380,6 +1420,25 @@ class GMedia_Migration extends WP_CLI_Command {
 
 					if ( $term ) {
 						$result = wp_set_object_terms( $wp_id, array( $term ), 'category', false );
+					}
+				}
+
+				if ( isset( $entry['Tags'] ) ) {
+					$tag_names = explode( ' ', (string) $entry['Tags'] );
+					$tag_ids   = array();
+
+					foreach ( $tag_names as $tag ) {
+						$tag_details = array( 'name' => $tag );
+						$tag_id = $this->process_term( $tag_details, 'post_tag', 'post');
+
+						if( $tag_id ) {
+							$tag_ids[] = $tag_id;
+						}
+					}
+
+					if ( !empty( $tag_ids ) ) {
+						//\WP_CLI::log( 'Created Tags: ' . json_encode( $tag_ids ) );
+						$result = wp_set_post_terms( $wp_id, $tag_ids, 'post_tag', false );
 					}
 				}
 
