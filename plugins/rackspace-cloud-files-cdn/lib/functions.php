@@ -47,7 +47,7 @@ function rackspace_upload_attachment( $post_id, &$meta_data ) {
 	$filename = ! empty( $meta_data['file'] ) ? $meta_data['file'] : get_post_meta( $post_id, '_wp_attached_file', true );
 	$filepath = $upload_dir['basedir'] . DIRECTORY_SEPARATOR . $filename;
 
-	// sync image
+	// upload attachment
 	try {
 		if ( is_readable( $filepath ) ) {
 			// upload file
@@ -64,7 +64,7 @@ function rackspace_upload_attachment( $post_id, &$meta_data ) {
 		}
 	} catch ( Exception $e ) {}
 
-	// sync image sizes
+	// upload image sizes
 	if ( ! empty( $meta_data['sizes'] ) ) {
 		$root_dir = dirname( $filepath ) . DIRECTORY_SEPARATOR;
 		$base_dir = dirname( $meta_data['file'] ) . DIRECTORY_SEPARATOR;
@@ -97,6 +97,54 @@ function rackspace_upload_attachment( $post_id, &$meta_data ) {
 	}
 
 	return $uploaded;
+}
+
+
+/**
+ * Download attachment files to the local filesystem.
+ * 
+ * @global RS_CDN $rackspace_cdn
+ * @param int $post_id Attachment id.
+ * @param array $meta_data Attachment meta data.
+ * @return boolean TRUE if files have been downloaded, otherwise FALSE.
+ */
+function rackspace_download_attachment( $post_id, $meta_data ) {
+	if ( check_cdn() === false ) {
+		return false;
+	}
+
+	global $rackspace_cdn;
+
+	// get upload dir and attachment file
+	$upload_dir = wp_upload_dir();
+	$downloaded = false;
+
+	$filename = ! empty( $meta_data['file'] ) ? $meta_data['file'] : get_post_meta( $post_id, '_wp_attached_file', true );
+	$filepath = $upload_dir['basedir'] . DIRECTORY_SEPARATOR . $filename;
+
+	// download image
+	try {
+		$rackspace_cdn->download_file( $filepath, $filename );
+		$downloaded = true;
+	} catch ( Exception $e ) {}
+
+	// download image sizes
+	if ( ! empty( $meta_data['sizes'] ) ) {
+		$root_dir = dirname( $filepath ) . DIRECTORY_SEPARATOR;
+		$base_dir = dirname( $meta_data['file'] ) . DIRECTORY_SEPARATOR;
+
+		foreach ( $meta_data['sizes'] as $meta ) {
+			try {
+				$cur_file = $root_dir . $meta['file'];
+
+				// download file
+				$rackspace_cdn->upload_file( $cur_file, $base_dir . $meta['file'] );
+				$downloaded = true;
+			} catch ( Exception $e ) {}
+		}
+	}
+
+	return $downloaded;
 }
 
 
