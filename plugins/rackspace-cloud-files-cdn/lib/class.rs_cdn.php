@@ -44,16 +44,6 @@ class RS_CDN {
 
 		// Set API settings
 		$this->api_settings = (object) $settings;
-
-		// Set container object
-		try {
-    		$the_container_obj = $this->container_object();
-
-            // Assign container object
-            $this->oc_container = $the_container_obj;
-		} catch (Exception $exc) {
-    		return false;
-		}
 	}
 
 
