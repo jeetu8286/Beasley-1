@@ -15,9 +15,8 @@ class Rackspace_CLI_Command extends WP_CLI_Command {
 	 * @access protected
 	 * @param array $post_ids The array of attachment ids to upload.
 	 * @param boolean $verbose Determines whether or not to display progress messages.
-	 * @param boolean $force_reload Determines whether or not attachment should be re-uploaded.
 	 */
-	protected function _upload_attachments( $post_ids, $verbose, $force_reload ) {
+	protected function _upload_attachments( $post_ids, $verbose ) {
 		// deactivate attachment meta data update hook
 		add_filter( 'rackspace_update_attachment_metadata', '__return_false' );
 
@@ -32,7 +31,7 @@ class Rackspace_CLI_Command extends WP_CLI_Command {
 
 			// upload attachment
 			$meta_data = wp_get_attachment_metadata( $post_id );
-			if ( rackspace_upload_attachment( $post_id, $meta_data, $force_reload ) ) {
+			if ( rackspace_upload_attachment( $post_id, $meta_data ) ) {
 				wp_update_attachment_metadata( $post_id, $meta_data );
 				$verbose && WP_CLI::success( sprintf( 'Attachment %s has been uploaded.', $post_id ) );
 			} else {
@@ -52,19 +51,15 @@ class Rackspace_CLI_Command extends WP_CLI_Command {
 	 * --id=<id>
 	 * : The attachment id to upload. Could be comma separated list of ids.
 	 *
-	 * --force-reload
-	 * : Determines whether or not to upload already uploaded attachments.
-	 *
 	 * --verbose
 	 * : Determines whether or not to display progress messages.
 	 *
 	 * ## EXAMPLES
 	 *
 	 *     wp rackspace upload --id=5
-	 *     wp rackspace upload --id=5 --force-reload
 	 *     wp rackspace upload --id=5,8,10 --verbose
 	 *
-	 * @synopsis --id=<id> [--force-reload] [--verbose]
+	 * @synopsis --id=<id> [--verbose]
 	 *
 	 * @access public
 	 * @param array $args The array of arguments.
@@ -72,7 +67,6 @@ class Rackspace_CLI_Command extends WP_CLI_Command {
 	 */
 	public function upload( $args, $assoc_args ) {
 		$verbose = ! empty( $assoc_args['verbose'] );
-		$force_reload = ! empty( $assoc_args['force-reload'] );
 
 		$post_ids = isset( $assoc_args['id'] ) ? $assoc_args['id'] : '';
 		$post_ids = array_filter( wp_parse_id_list( $post_ids ) );
@@ -81,7 +75,7 @@ class Rackspace_CLI_Command extends WP_CLI_Command {
 			return;
 		}
 
-		$this->_upload_attachments( $post_ids, $verbose, $force_reload );
+		$this->_upload_attachments( $post_ids, $verbose );
 	}
 
 	/**
@@ -111,24 +105,30 @@ class Rackspace_CLI_Command extends WP_CLI_Command {
 	 */
 	public function upload_all( $args, $assoc_args ) {
 		$verbose = ! empty( $assoc_args['verbose'] );
-		$force_reload = ! empty( $assoc_args['force-reload'] );
 
 		$paged = 1;
 		$query = new WP_Query();
 
+		$args = array(
+			'post_type'           => array( 'attachment' ),
+			'post_status'         => array( 'inherit', 'private' ),
+			'suppress_filters'    => true,
+			'posts_per_page'      => 100,
+			'ignore_sticky_posts' => true,
+			'fields'              => 'ids',
+		);
+
+		if ( empty( $assoc_args['force-reload'] ) ) {
+			$args['meta_key'] = '_rackspace_synced';
+			$args['meta_compare'] = 'NOT EXISTS';
+		}
+
 		do {
-			$post_ids = $query->query( array(
-				'post_type'           => array( 'attachment' ),
-				'post_status'         => array( 'inherit', 'private' ),
-				'suppress_filters'    => true,
-				'paged'               => $paged,
-				'posts_per_page'      => 100,
-				'ignore_sticky_posts' => true,
-				'fields'              => 'ids',
-			) );
+			$args['paged'] = $paged;
+			$post_ids = $query->query( $args );
 
 			if ( ! empty( $post_ids ) ) {
-				$this->_upload_attachments( $post_ids, $verbose, $force_reload );
+				$this->_upload_attachments( $post_ids, $verbose );
 				$verbose && WP_CLI::line( sprintf( '%d page of %d is processed', $paged, $query->max_num_pages ) );
 				$paged++;
 			}
