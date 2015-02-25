@@ -1,13 +1,4 @@
 <?php
-/**
- * Functions used to connect to the CDN
- */
-
-/**
- * Include global vars
- */
-global $wpdb;
-
 
 /**
  * CDN class
@@ -116,66 +107,59 @@ class RS_CDN {
 	/**
 	*  Create Openstack CDN File Object
 	*/
-	public function file_object($container, $file_path, $file_name = null){
+	public function file_object( $container, $file_path, $file_name = null ) {
 		// Get file content
-		$file_contents = @file_get_contents( $file_path );
-		$file_name = (isset($file_name) && !is_null($file_name)) ? $file_name : basename( $file_path );
+		$file_name = (isset( $file_name ) && !is_null( $file_name )) ? $file_name : basename( $file_path );
 
 		// Create file object
 		$file = $container->DataObject();
-		$file->SetData( $file_contents );
 		$file->name = $file_name;
+		
 		return $file;
 	}
-
 
 	/**
 	 * Uploads given file attachment to CDN
 	 */
-	public function upload_file( $file_path , $file_name = null, $existing_container = null, $post_id = null){
+	public function upload_file( $file_path, $file_name = null, $existing_container = null, $post_id = null ) {
 		global $wpdb;
-
-		// Check if file exists
-		$check_file_name = (isset($file_name)) ? $file_name : basename($file_path);
 
 		// Get ready to upload file to CDN
 		$container = $this->container_object();
 		if ( ! $container ) {
 			return false;
 		}
-		
-		$file = $this->file_object($container, $file_path, $file_name);
+
+		$file = $this->file_object( $container, $file_path, $file_name );
 
 		// Upload object
+		$params = array();
 		$content_type = get_content_type( $file_path );
-		if ($content_type !== false) {
-			if ($file->Create(array('content_type' => $content_type))) {
-				return true;
-			}
-		} else {
-			if ($file->Create()) {
-				return true;
-			}
+		if ( $content_type !== false ) {
+			$params['content_type'] = $content_type;
+		}
+
+		if ( $file->Create( $params, $file_path ) ) {
+			return true;
 		}
 
 		// Upload failed, remove local images
-		if (stripos($file_path, 'http') == 0) {
+		if ( stripos( $file_path, 'http' ) == 0 ) {
 			$upload_dir = wp_upload_dir();
-			$file_path = str_replace($upload_dir['baseurl'], $upload_dir['basedir'], $file_path);
-			unlink($file_path);
+			$file_path = str_replace( $upload_dir['baseurl'], $upload_dir['basedir'], $file_path );
+			unlink( $file_path );
 		} else {
-			unlink($file_path);
+			unlink( $file_path );
 		}
 
 		// Upload failed, remove attachment from db
-		if (isset($post_id)) {
+		if ( isset( $post_id ) ) {
 			$wpdb->delete( $wpdb->posts, array( 'ID' => $post_id, 'post_type' => 'attachment' ), array( '%d', '%s' ) );
 			$wpdb->delete( $wpdb->postmeta, array( 'post_id' => $post_id ), array( '%d' ) );
 		}
 
 		return false;
 	}
-
 
 	/**
 	*  Get list of CDN objects
