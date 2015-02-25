@@ -146,10 +146,76 @@ class GMedia_Migration extends WP_CLI_Command {
 		}
 	}
 
+	/*
+	 * ----------------------------------------------------------------------------------------------------------------
+	 * ----------------------------------------------------------------------------------------------------------------
+	 * ----------------------------------------------------------------------------------------------------------------
+	 *
+	 * Darshan Helpers Start
+	 *
+	 * ----------------------------------------------------------------------------------------------------------------
+	 * ----------------------------------------------------------------------------------------------------------------
+	 * ----------------------------------------------------------------------------------------------------------------
+	 *
+	 */
+	public $limit;
+
+	/* Needs
+	 *
+	 * title
+	 * description
+	 * date_created
+	 * date_modified
+	 * featured_image
+	 */
+	function create_podcast( $podcast ) {
+		$title        = trim( (string) $podcast['title'] );
+		$podcast_post = get_page_by_title( $title, ARRAY_A, 'podcast' );
+
+		if ( ! is_null( $podcast_post ) ) {
+			return $podcast_post['ID'];
+		}
+
+		$podcast_post = array(
+			'post_type'     => 'podcast',
+			'post_status'   => 'publish',
+			'post_title'    => $title,
+			'post_content'  => trim( (string) $podcast['description'] ),
+			'post_date'     => (string) $podcast['date_created'],
+			'post_modified' => (string) $podcast['date_modified'],
+		);
+
+		$podcast_id                   = wp_insert_post( $podcast_post );
+		$updated_post                 = array( 'ID' => $podcast_id );
+		$updated_post['post_content'] = $this->import_media( $podcast_post['post_content'], $podcast_id );
+
+		wp_update_post( $updated_post );
+
+		if ( isset( $podcast['featured_image'] ) ) {
+			$featured_image_attrs = array();
+			$featured_image_path  = $podcast['featured_image'];
+			$this->import_featured_image( $featured_image_path, $podcast_id, $featured_image_attrs );
+		}
+
+		return $podcast_id;
+	}
+
+	/*
+	 * ----------------------------------------------------------------------------------------------------------------
+	 * ----------------------------------------------------------------------------------------------------------------
+	 * ----------------------------------------------------------------------------------------------------------------
+	 *
+	 * Darshan Helpers End
+	 *
+	 * ----------------------------------------------------------------------------------------------------------------
+	 * ----------------------------------------------------------------------------------------------------------------
+	 * ----------------------------------------------------------------------------------------------------------------
+	 *
+	 */
 	/**
 	 * Handle the import of an xml file.
 	 *
-	 * @synopsis <file> --type=<content-type> --site=<site> [--force] [--skip] [--config_file]
+	 * @synopsis <file> --type=<content-type> --site=<site> [--force] [--skip] [--mapping_file] [--limit] [--config_file]
 	 */
 	public function import( $args = array(), $assoc_args = array() ) {
 		add_filter( 'intermediate_image_sizes', '__return_empty_array' );
@@ -172,6 +238,20 @@ class GMedia_Migration extends WP_CLI_Command {
 			}
 		} elseif( $type == 'blog' || $type == 'blogs' ) {
 			WP_CLI::error( "Type is set to blog. Please provide config file!" );
+		}
+
+		if ( isset( $assoc_args['mapping_file'] ) ) {
+			$this->mapping_file = $assoc_args['mapping_file'];
+			$this->mapping_collection = new \Marketron\MappingCollection();
+			$this->mapping_collection->load( $this->mapping_file );
+		} else {
+			WP_CLI::error( "Mapping file not provided." );
+		}
+
+		if ( isset( $assoc_args['limit'] ) ) {
+			$this->limit = intval( $assoc_args['limit'] );
+		} else {
+			$this->limit = -1;
 		}
 
 		if ( isset( $assoc_args['site'] ) ) {
@@ -1140,9 +1220,12 @@ class GMedia_Migration extends WP_CLI_Command {
 		$taxonomy_map = array();
 		$taxonomy_map = $this->parse_taxonomy_mapping();
 		$total        = count( $blogs );
+		$blog_index = 0;
 
 		$total_items_to_import = count( $blogs );
 		foreach ( $blogs as $single_blog ) {
+			$blog_index++;
+			//\WP_CLI::log( 'Blog : ' . $blog_index . ' - ' . (string)$single_blog['BlogName'] . ' - ' . count( $single_blog->BlogEntries->BlogEntry ) );
 			$total_items_to_import += count( $single_blog->BlogEntries->BlogEntry );
 		}
 
@@ -1151,8 +1234,21 @@ class GMedia_Migration extends WP_CLI_Command {
 
 		foreach ( $blogs as $single_blog ) {
 			$blog_index++;
+			if ( $blog_index !== 9 ) {
+				// For testing limiting to Kathy Wagner's Blog
+				//continue;
+			}
 
-			$blog      = (string) $single_blog['BlogName'];
+			$blog = (string) $single_blog['BlogName'];
+			$marketron_blog_id = (string) $single_blog['BlogID'];
+			$marketron_user_id = 0;
+			$mapping = $this->mapping_collection->get_mapping( $marketron_blog_id );
+
+			if ( ! $this->mapping_collection->can_import( $marketron_blog_id ) ) {
+				\WP_CLI::log( 'Skipped Blog: ' . $blog );
+				continue;
+			}
+
 			$blog_desc = (string) $single_blog['BlogDescription'];
 			\WP_CLI::log( "Importing Blog: $blog_index/$total - " . (string)$blog );
 
@@ -1169,13 +1265,44 @@ class GMedia_Migration extends WP_CLI_Command {
 				} else {
 					$user_id = get_current_user_id();
 				}
+
+				if ( strval( $author['AuthorName'] ) === $mapping->wordpress_author_name ) {
+					$marketron_user_id = $user_id;
+				}
 			}
+
 
 			$entry_index = 0;
 			$entry_count = count( $single_blog->BlogEntries->BlogEntry );
 
 			foreach ( $single_blog->BlogEntries->BlogEntry as $entry ) {
 				$entry_index++;
+				if ( $this->limit !== -1 && $entry_index > $this->limit ) {
+					continue;
+				}
+
+				if( isset( $entry->BlogEntryAudio ) ) {
+					$podcast = array(
+						'title'         => $blog,
+						'description'   => (string) $single_blog['BlogDescription'],
+						'date_created'  => (string) $single_blog['DateCreated'],
+						'date_modified' => (string) $single_blog['DateModified'],
+					);
+
+					if ( $mapping->wordpress_podcast_name ) {
+						$podcast['title'] = $mapping->wordpress_podcast_name;
+					}
+
+					if ( isset( $entry->BlogEntryImage ) ) {
+						$image = $entry->BlogEntryImage[0];
+						$podcast['featured_image_path']  = '/Pics/' . (string) $image['MainImageSrc'];
+					}
+
+					$podcast_id = $this->create_podcast( $podcast );
+					//\WP_CLI::log( "Created Podcast: $blog - " . $podcast_id );
+				} else {
+					$podcast_id = null;
+				}
 
 				$blog_entry_title = trim( (string) $entry['EntryTitle'] );
 				\WP_CLI::log( "Importing: Blog($blog_index) Entry - $entry_index/$entry_count - $blog_entry_title" );
@@ -1199,7 +1326,13 @@ class GMedia_Migration extends WP_CLI_Command {
 					'post_content'  => trim( (string) $entry->BlogEntryText ),
 					'post_date'     => (string) $entry['EntryPostedUTCDatetime'],
 					'post_date_gmt' => (string) $entry['EntryPostedUTCDatetime'],
+					'post_author'   => $marketron_user_id,
 				);
+
+				if ( ! is_null( $podcast_id ) ) {
+					$post['post_type'] = 'episode';
+					$post['post_parent'] = $podcast_id;
+				}
 
 				if ( 'Draft' === $entry['StatusDescription'] ) {
 					$post['post_status'] = 'draft';
@@ -1212,9 +1345,8 @@ class GMedia_Migration extends WP_CLI_Command {
 				$wp_id = wp_insert_post( $post );
 				update_post_meta( $wp_id, 'gmedia_import_id', $entry_hash );
 
-
-				if( isset( $single_blog->BlogEntries->BlogEntry->BlogEntryAudio ) ) {
-					foreach ( $single_blog->BlogEntries->BlogEntry->BlogEntryAudio as $single_audio ) {
+				if( isset( $entry->BlogEntryAudio ) ) {
+					foreach ( $entry->BlogEntryAudio as $single_audio ) {
 						if( isset( $single_audio['AudioSrc'] ) ) {
 							$media_url = $this->import_music_files( $wp_id, $single_audio['AudioSrc'] );
 
@@ -1228,7 +1360,6 @@ class GMedia_Migration extends WP_CLI_Command {
 							}
 						}
 					}
-
 				} else {
 					// Download images found in post_content and update post_content with new images.
 					$updated_post                 = array( 'ID' => $wp_id );
@@ -1238,14 +1369,17 @@ class GMedia_Migration extends WP_CLI_Command {
 				}
 
 				// Process Blog Taxonomy Term
-				if ( isset( $blog ) ) {
-					$blog_info['name'] = trim( $taxonomy_map[ $blog ][ 'term' ] );
-					$blog_info['desc'] = trim( $blog_desc );
+				if ( isset( $mapping ) ) {
+					$category = $mapping->wordpress_category;
+					$term_info['name'] = $category;
+					$term_info['desc'] = $category;
 
-					$blog_id = $this->process_term( $blog_info, $taxonomy_map[ $blog ][ 'taxonomy' ], 'post' );
+					$term = $this->process_term(
+						$term_info, 'category', $post['post_type']
+					);
 
-					if ( $blog_id ) {
-						wp_set_post_terms( $wp_id, array( $blog_id ), $taxonomy_map[ $blog ][ 'taxonomy' ], false );
+					if ( $term ) {
+						$result = wp_set_object_terms( $wp_id, array( $term ), 'category', false );
 					}
 				}
 

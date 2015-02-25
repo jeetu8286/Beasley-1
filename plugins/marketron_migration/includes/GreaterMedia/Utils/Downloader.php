@@ -62,7 +62,7 @@ class Downloader {
 		$media_file_path = $this->media_files_dir . $url_path;
 		$cache_file_path = $this->cache_file_path_for( $url );
 
-		\WP_CLI::success( 'Found cached media file: ' . $url_path );
+		//\WP_CLI::success( 'Found cached media file: ' . $url_path );
 		copy( $media_file_path, $cache_file_path );
 	}
 
