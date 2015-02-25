@@ -16,7 +16,7 @@ if ( ! defined( 'WP_PLUGIN_URL' ) ) {
 /**
  *  Define constants
  */
-define( 'RS_CDN_PATH', dirname( __FILE__ ) );
+define( 'RS_CDN_PATH', dirname( __FILE__ ) . DIRECTORY_SEPARATOR );
 define( 'RS_CDN_URL', plugins_url( '/', __FILE__ ) );
 define( 'RS_CDN_OPTIONS', 'wp_rs_cdn_settings' );
 define( 'RS_META_SYNCED', 'rackspace-synced' );
