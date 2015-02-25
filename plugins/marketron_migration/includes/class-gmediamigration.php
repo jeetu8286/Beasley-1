@@ -2943,6 +2943,11 @@ class GMedia_Migration extends WP_CLI_Command {
 					$response_index++;
 					$response_values = array();
 
+					// limit survey responses for testing purposes
+					if ( $this->limit !== -1 && $response_index > $this->limit ) {
+						continue;
+					}
+
 					foreach ( $response->Answer as $answer ) {
 
 						// get parent question id
@@ -3146,9 +3151,16 @@ class GMedia_Migration extends WP_CLI_Command {
 				}
 			}
 
+			$contest_entry_index = 0;
+
 			if( isset( $contest->Entries->Entry ) ) {
 
 				foreach ( $contest->Entries->Entry as $entry ) {
+					$contest_entry_index++;
+
+					if ( $this->limit !== -1 && $contest_entry_index > $this->limit ) {
+						continue;
+					}
 
 					$entry_name = (string) $entry['ContestEntryID'];
 					if( isset( $entry['MemberID'] ) ) {
