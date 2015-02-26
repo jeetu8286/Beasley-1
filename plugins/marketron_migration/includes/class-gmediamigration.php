@@ -215,7 +215,6 @@ class GMedia_Migration extends WP_CLI_Command {
 	}
 
 	function load_tags( $tags_file ) {
-		return;
 		$file   = fopen( $tags_file, 'r' );
 		$fields = fgetcsv( $file, 0, ',', '"' );
 		$tags   = array();
@@ -1165,6 +1164,16 @@ class GMedia_Migration extends WP_CLI_Command {
 			// do the validation and storage stuff
 			$prof_start = microtime(true);
 			$id = media_handle_sideload( $file_array, $post_id, null, $attrs );
+
+			$image_src_attr = wp_get_attachment_image_src( $id, 'full' );
+			$image_width = $image_src_attr[1];
+			$image_height = $image_src_attr[2];
+
+			if ( $image_width < 300 || $image_height < 300 ) {
+				// don't link images that are too small
+				\WP_CLI::log( 'Ignored Tiny Feature Image: ' . $filepath );
+				return false;
+			}
 
 			// If error storing permanently, unlink
 			if ( is_wp_error( $id ) ) {
