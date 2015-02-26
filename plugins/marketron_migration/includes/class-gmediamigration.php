@@ -1415,6 +1415,8 @@ class GMedia_Migration extends WP_CLI_Command {
 				update_post_meta( $wp_id, 'gmedia_import_id', $entry_hash );
 
 				if( isset( $entry->BlogEntryAudio ) ) {
+					set_post_format( $wp_id, 'audio' );
+
 					foreach ( $entry->BlogEntryAudio as $single_audio ) {
 						if( isset( $single_audio['AudioSrc'] ) ) {
 							$media_url = $this->import_music_files( $wp_id, $single_audio['AudioSrc'] );
