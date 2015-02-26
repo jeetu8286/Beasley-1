@@ -5,6 +5,7 @@ namespace Marketron;
 class MappingCollection {
 
 	public $mappings = array();
+	public $shows = array();
 
 	function load( $mapping_file ) {
 		if ( file_exists( $mapping_file ) ) {
@@ -83,6 +84,10 @@ class MappingCollection {
 			if ( $mapping !== false ) {
 				$marketron_id = strval( $mapping->marketron_id );
 				$this->mappings[ $marketron_id ] = $mapping;
+
+				if ( $mapping->wordpress_author_name ) {
+					$this->shows[ $mapping->wordpress_author_name ] = $marketron_id;
+				}
 			}
 
 			$fields = $this->read_line( $file );
@@ -211,6 +216,16 @@ class MappingCollection {
 
 	function get_mapping( $marketron_id ) {
 		return $this->mappings[ $marketron_id ];
+	}
+
+	function has_show( $show_author ) {
+		$show_author = trim( $show_author );
+		return array_key_exists( $show_author, $this->shows );
+	}
+
+	function get_show_mapping( $show_author ) {
+		$marketron_id = $this->shows[ $show_author ];
+		return $this->get_mapping( $marketron_id );
 	}
 
 }
