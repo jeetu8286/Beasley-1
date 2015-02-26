@@ -573,6 +573,7 @@ class GMedia_Migration extends WP_CLI_Command {
 					$updated_post['post_content'] = $content . '<br/>' . '[audio mp3="' . $media_url . '"][/audio]' ;
 
 					wp_update_post( $updated_post );
+					set_post_format( $wp_id, 'audio' );
 
 					update_post_meta( $wp_id, '_legacy_music_file', $media_url );
 				}
