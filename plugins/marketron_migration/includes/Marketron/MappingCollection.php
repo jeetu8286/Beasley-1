@@ -10,9 +10,68 @@ class MappingCollection {
 		if ( file_exists( $mapping_file ) ) {
 			$file           = fopen( $mapping_file, 'r' );
 			$this->parse( $file );
+			$this->load_shows();
 		} else {
 			\WP_CLI::error( "Mapping file not found: $mapping_file" );
 		}
+	}
+
+	function load_shows() {
+		foreach ( $this->mappings as $mapping ) {
+			if ( $mapping->wordpress_show_name ) {
+				$show = get_page_by_title( $mapping->wordpress_show_name, ARRAY_A, 'show' );
+				if ( is_null( $show ) ) {
+					$this->create_show( $mapping->wordpress_show_name );
+				}
+			}
+
+			if ( $mapping->wordpress_podcast_name ) {
+				$podcast = get_page_by_title( $mapping->wordpress_podcast_name, ARRAY_A, 'podcast' );
+				if ( is_null( $podcast ) ) {
+					$podcast_id = $this->create_podcast( $mapping->wordpress_podcast_name );
+				} else {
+					$podcast_id = $podcast['ID'];
+				}
+
+				$show_taxonomy = get_term_by( 'name', $mapping->wordpress_show_name, '_shows', ARRAY_A );
+				if ( ! is_wp_error( $show_taxonomy ) ) {
+					$result = wp_set_object_terms( $podcast_id, array( intval( $show_taxonomy['term_id'] ) ), '_shows', true );
+				}
+			}
+		}
+	}
+
+	function create_show( $show_name ) {
+		$post = array(
+			'post_type'     => 'show',
+			'post_status'   => 'publish',
+			'post_title'    => $show_name,
+			'post_content'  => '',
+		);
+
+		$post_id = wp_insert_post( $post );
+		\WP_CLI::log( "Created Show: $show_name - $post_id" );
+
+		update_post_meta( $post_id, 'show_homepage', '1' );
+		update_post_meta( $post_id, 'show_homepage_galleries', '1' );
+		update_post_meta( $post_id, 'show_homepage_podcasts', '1' );
+		update_post_meta( $post_id, 'show_homepage_videos', '1' );
+
+		return $post_id;
+	}
+
+	function create_podcast( $podcast_name ) {
+		$post = array(
+			'post_type'     => 'podcast',
+			'post_status'   => 'publish',
+			'post_title'    => $podcast_name,
+			'post_content'  => '',
+		);
+
+		$post_id = wp_insert_post( $post );
+		\WP_CLI::log( "Created Podcast: $podcast_name - $post_id" );
+
+		return $post_id;
 	}
 
 	function parse( $file ) {

@@ -110,6 +110,7 @@ class GMedia_Migration extends WP_CLI_Command {
 
 		system( "rm -rf '$upload_dir'" );
 		system( "mkdir -p '$upload_dir'" );
+		system( 'wp cache flush --url=' . get_site_url() );
 
 		wp_cache_flush();
 
@@ -117,6 +118,15 @@ class GMedia_Migration extends WP_CLI_Command {
 		$domain = $site->domain;
 
 		\WP_CLI::success( "Restored WordPress( $domain ) to Defaults" );
+	}
+
+	function post_assign( $args, $opts ) {
+		$post_id   = $args[0];
+		$show_name = $args[1];
+
+		$term   = get_term_by( 'name', $show_name, '_shows', ARRAY_A );
+		$result = wp_set_object_terms( $post_id, array( intval( $term['term_id'] ) ), '_shows', false );
+		\WP_CLI::log( print_r( $result, true ) );
 	}
 
 	/**
@@ -170,11 +180,7 @@ class GMedia_Migration extends WP_CLI_Command {
 	 */
 	function create_podcast( $podcast ) {
 		$title        = trim( (string) $podcast['title'] );
-		$podcast_post = get_page_by_title( $title, ARRAY_A, 'podcast' );
-
-		if ( ! is_null( $podcast_post ) ) {
-			return $podcast_post['ID'];
-		}
+		$old_podcast_post = get_page_by_title( $title, ARRAY_A, 'podcast' );
 
 		$podcast_post = array(
 			'post_type'     => 'podcast',
@@ -184,6 +190,14 @@ class GMedia_Migration extends WP_CLI_Command {
 			'post_date'     => (string) $podcast['date_created'],
 			'post_modified' => (string) $podcast['date_modified'],
 		);
+
+		if ( ! is_null( $old_podcast_post ) ) {
+			$podcast_post['ID'] = $old_podcast_post['ID'];
+			wp_update_post( $podcast_post );
+
+			return $old_podcast_post['ID'];
+		}
+
 
 		$podcast_id                   = wp_insert_post( $podcast_post );
 		$updated_post                 = array( 'ID' => $podcast_id );
@@ -1258,8 +1272,7 @@ class GMedia_Migration extends WP_CLI_Command {
 	private function process_blogs( $blogs, $force ) {
 		global $wpdb;
 
-		$taxonomy_map = array();
-		$taxonomy_map = $this->parse_taxonomy_mapping();
+		$taxonomy_mapping = $this->parse_taxonomy_mapping();
 		$total        = count( $blogs );
 		$blog_index = 0;
 
@@ -1284,6 +1297,12 @@ class GMedia_Migration extends WP_CLI_Command {
 			$marketron_blog_id = (string) $single_blog['BlogID'];
 			$marketron_user_id = 0;
 			$mapping = $this->mapping_collection->get_mapping( $marketron_blog_id );
+
+			if ( $mapping->wordpress_show_name ) {
+				$show_taxonomy = get_term_by( 'name', $mapping->wordpress_show_name, '_shows', ARRAY_A );
+			} else {
+				$show_taxonomy = false;
+			}
 
 			if ( ! $this->mapping_collection->can_import( $marketron_blog_id ) ) {
 				\WP_CLI::log( 'Skipped Blog: ' . $blog );
@@ -1423,6 +1442,14 @@ class GMedia_Migration extends WP_CLI_Command {
 					}
 				}
 
+				if ( $show_taxonomy ) {
+					// Add show shadow taxonomy if post is associated
+					// with a show
+					wp_set_object_terms(
+						$wp_id, array( intval( $show_taxonomy['term_id'] ) ), '_shows', true
+					);
+				}
+
 				if ( isset( $entry['Tags'] ) ) {
 					$tag_names = explode( ' ', (string) $entry['Tags'] );
 					$tag_ids   = array();
@@ -1510,6 +1537,10 @@ class GMedia_Migration extends WP_CLI_Command {
 				$story_index++;
 				$story_hash = trim( (string) $story['Headline'] ) . (string) $story['StoryDate'] . (string) $story['StoryID'];
 				$story_hash = md5( $story_hash );
+
+				if ( $this->limit !== -1 && $story_index > $this->limit ) {
+					continue;
+				}
 
 				// grab the existing post ID (if it exists).
 				$wp_id = $wpdb->get_var( $sql = "SELECT post_id from {$wpdb->postmeta} WHERE meta_key = 'gmedia_import_id' AND meta_value = '" . $story_hash . "'" );
