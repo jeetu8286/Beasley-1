@@ -110,6 +110,7 @@ class GMedia_Migration extends WP_CLI_Command {
 
 		system( "rm -rf '$upload_dir'" );
 		system( "mkdir -p '$upload_dir'" );
+		system( 'wp cache flush --url=' . get_site_url() );
 
 		wp_cache_flush();
 
@@ -117,6 +118,15 @@ class GMedia_Migration extends WP_CLI_Command {
 		$domain = $site->domain;
 
 		\WP_CLI::success( "Restored WordPress( $domain ) to Defaults" );
+	}
+
+	function post_assign( $args, $opts ) {
+		$post_id   = $args[0];
+		$show_name = $args[1];
+
+		$term   = get_term_by( 'name', $show_name, '_shows', ARRAY_A );
+		$result = wp_set_object_terms( $post_id, array( intval( $term['term_id'] ) ), '_shows', false );
+		\WP_CLI::log( print_r( $result, true ) );
 	}
 
 	/**
@@ -170,11 +180,7 @@ class GMedia_Migration extends WP_CLI_Command {
 	 */
 	function create_podcast( $podcast ) {
 		$title        = trim( (string) $podcast['title'] );
-		$podcast_post = get_page_by_title( $title, ARRAY_A, 'podcast' );
-
-		if ( ! is_null( $podcast_post ) ) {
-			return $podcast_post['ID'];
-		}
+		$old_podcast_post = get_page_by_title( $title, ARRAY_A, 'podcast' );
 
 		$podcast_post = array(
 			'post_type'     => 'podcast',
@@ -184,6 +190,14 @@ class GMedia_Migration extends WP_CLI_Command {
 			'post_date'     => (string) $podcast['date_created'],
 			'post_modified' => (string) $podcast['date_modified'],
 		);
+
+		if ( ! is_null( $old_podcast_post ) ) {
+			$podcast_post['ID'] = $old_podcast_post['ID'];
+			wp_update_post( $podcast_post );
+
+			return $old_podcast_post['ID'];
+		}
+
 
 		$podcast_id                   = wp_insert_post( $podcast_post );
 		$updated_post                 = array( 'ID' => $podcast_id );
@@ -201,6 +215,7 @@ class GMedia_Migration extends WP_CLI_Command {
 	}
 
 	function load_tags( $tags_file ) {
+		return;
 		$file   = fopen( $tags_file, 'r' );
 		$fields = fgetcsv( $file, 0, ',', '"' );
 		$tags   = array();
@@ -1258,8 +1273,7 @@ class GMedia_Migration extends WP_CLI_Command {
 	private function process_blogs( $blogs, $force ) {
 		global $wpdb;
 
-		$taxonomy_map = array();
-		$taxonomy_map = $this->parse_taxonomy_mapping();
+		$taxonomy_mapping = $this->parse_taxonomy_mapping();
 		$total        = count( $blogs );
 		$blog_index = 0;
 
@@ -1284,6 +1298,12 @@ class GMedia_Migration extends WP_CLI_Command {
 			$marketron_blog_id = (string) $single_blog['BlogID'];
 			$marketron_user_id = 0;
 			$mapping = $this->mapping_collection->get_mapping( $marketron_blog_id );
+
+			if ( $mapping->wordpress_show_name ) {
+				$show_taxonomy = get_term_by( 'name', $mapping->wordpress_show_name, '_shows', ARRAY_A );
+			} else {
+				$show_taxonomy = false;
+			}
 
 			if ( ! $this->mapping_collection->can_import( $marketron_blog_id ) ) {
 				\WP_CLI::log( 'Skipped Blog: ' . $blog );
@@ -1423,6 +1443,14 @@ class GMedia_Migration extends WP_CLI_Command {
 					}
 				}
 
+				if ( $show_taxonomy ) {
+					// Add show shadow taxonomy if post is associated
+					// with a show
+					wp_set_object_terms(
+						$wp_id, array( intval( $show_taxonomy['term_id'] ) ), '_shows', true
+					);
+				}
+
 				if ( isset( $entry['Tags'] ) ) {
 					$tag_names = explode( ' ', (string) $entry['Tags'] );
 					$tag_ids   = array();
@@ -1510,6 +1538,10 @@ class GMedia_Migration extends WP_CLI_Command {
 				$story_index++;
 				$story_hash = trim( (string) $story['Headline'] ) . (string) $story['StoryDate'] . (string) $story['StoryID'];
 				$story_hash = md5( $story_hash );
+
+				if ( $this->limit !== -1 && $story_index > $this->limit ) {
+					continue;
+				}
 
 				// grab the existing post ID (if it exists).
 				$wp_id = $wpdb->get_var( $sql = "SELECT post_id from {$wpdb->postmeta} WHERE meta_key = 'gmedia_import_id' AND meta_value = '" . $story_hash . "'" );
@@ -1757,12 +1789,25 @@ class GMedia_Migration extends WP_CLI_Command {
 		global $wpdb;
 
 		$total = count( $galleries->Album );
+		foreach ( $galleries->Album as $album ) {
+			$total += count( $album->Photo );
+		}
+
 		$notify = new \cli\progress\Bar( "Importing $total albums", $total );
+		$total_galleries = count( $galleries->Album );
+		$gallery_index = 0;
 
 		$count = 0;
 		foreach ( $galleries->Album as $album ) {
+			$gallery_index++;
+			if ( $this->limit !== -1 && $gallery_index > $this->limit ) {
+				continue;
+			}
+
 			$gallery_hash = trim( (string) $album['AlbumName'] ) . (string) $album['UTCDateCreated'];
 			$gallery_hash = md5( $gallery_hash );
+
+			\WP_CLI::log( "Importing Gallery( $gallery_index/$total_galleries )" );
 
 			// grab the existing post ID (if it exists).
 			$wp_id = $wpdb->get_var( $sql = "SELECT post_id from {$wpdb->postmeta} WHERE meta_key = 'gmedia_import_id' AND meta_value = '".$gallery_hash ."'" );
@@ -1772,17 +1817,6 @@ class GMedia_Migration extends WP_CLI_Command {
 				$notify->tick();
 				continue;
 			}
-
-			// counter to clear the cache
-			$count++;
-			if( $count == 100 ) {
-				if( class_exists('MTM_Migration_Utils') ) {
-					MTM_Migration_Utils::stop_the_insanity();
-				}
-				sleep(15);
-				$count = 0;
-			}
-
 
 			$gallery_args = array(
 				'post_type'     => 'gmr_gallery',
@@ -1807,6 +1841,8 @@ class GMedia_Migration extends WP_CLI_Command {
 			// Process Gallery Category Terms
 			if ( isset( $album['Categories'] ) ) {
 				$gallery_cats = explode( ',', (string) $album['Categories'] );
+				$gallery_cats = array_map( 'trim', $gallery_cats );
+
 				$cat_ids = array();
 				foreach ( $gallery_cats as $gallery_cat ) {
 					if ( '' !== trim( $gallery_cat ) ) {
@@ -1816,8 +1852,18 @@ class GMedia_Migration extends WP_CLI_Command {
 						if( $cat_id ) {
 							array_push( $cat_ids, $cat_id );
 						}
+
+						// Look for author name in mapping, if found we use the corresponding
+						// show name to associate a gallery with a show
+						if ( $this->mapping_collection->has_show( $term_title ) ) {
+							$show_term = get_term_by( 'name', $term_title, '_shows', ARRAY_A );
+							$result = wp_set_object_terms(
+								$wp_id, array( intval( $show_term['term_id'] ) ), '_shows', false
+							);
+						}
 					}
 				}
+
 				if ( !empty( $cat_ids ) ) {
 					wp_set_post_terms( $wp_id, $cat_ids, 'category', false );
 				}
@@ -1850,14 +1896,26 @@ class GMedia_Migration extends WP_CLI_Command {
 					$draft_gallery = array( 'ID' => $wp_id, 'post_status' => 'draft' );
 					wp_update_post( $draft_gallery );
 				} else {
+					$total_photo_albums = count( $album->Photo );
+					$photo_album_index = 0;
+
 
 					foreach ( $album->Photo as $photo ) {
+						$photo_album_index++;
+						if ( $this->limit !== -1 && $photo_album_index > $this->limit ) {
+							continue;
+						}
+
+						$largest_photo = $photo->PhotoFiles[ count( $photo->PhotoFiles ) - 1 ];
 						$photo_info = array(
 							'caption'     => $photo['PhotoCaption'],
 							'attribution' => $photo['Attribution'],
-							'path'        => $photo['Filename']
+							'path'        => $largest_photo['Filename']
 						);
+
+						\WP_CLI::log( "Importing Gallery( $gallery_index/$total_galleries ) Photo( $photo_album_index/$total_photo_albums )" );
 						$image_ids[] = $this->import_gallery_images( $photo_info, $wp_id );
+						$notify->tick();
 					}
 
 					if ( ! empty( $image_ids ) ) {
@@ -1873,7 +1931,7 @@ class GMedia_Migration extends WP_CLI_Command {
 				}
 			}
 
-			//$notify->tick();
+			$notify->tick();
 		}
 
 		$notify->finish();
@@ -1902,27 +1960,11 @@ class GMedia_Migration extends WP_CLI_Command {
 		if ( preg_match( '/^http/', $filename ) || preg_match( '/^www/', $filename ) ) {
 			$old_filename = $filename;
 		} else {
-			$old_filename = trailingslashit( $this->site_url) . $filename;
+			// TODO: needs to be fixed for other sites
+			$old_filename = trailingslashit( 'http://www.wmgk.com' ) . $filename;
 		}
 
-		if ( strpos( $old_filename, '-sizeID-' ) !== false ) {
-			$tmp = '';
-
-			foreach ( $this->photo_sizes as $size_id => $size_name ) {
-				$replaced_filename = str_replace( '-sizeID-', $size_id, $old_filename );
-				$replaced_filename = str_replace( '-photosize-', $size_name, $replaced_filename );
-				$replaced_filename = str_replace( ' ', '%20', $replaced_filename );
-
-				$tmp = $this->download_url( $replaced_filename );
-
-				if ( ! is_wp_error( $tmp ) ) {
-					break;
-				}
-			}
-		} else {
-			$replaced_filename = str_replace( ' ', '%20', $old_filename );
-			$tmp = $this->download_url( $replaced_filename );
-		}
+		$tmp = $this->download_url( $old_filename );
 
 		if ( $tmp ) {
 			preg_match( '/[^\?]+\.(jpg|JPG|jpe|JPE|jpeg|Jpeg|JPEG|gif|GIF|png|PNG)/', $filename, $matches );
