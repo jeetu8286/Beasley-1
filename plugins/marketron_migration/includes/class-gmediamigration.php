@@ -541,6 +541,8 @@ class GMedia_Migration extends WP_CLI_Command {
 				$content =  trim( (string) $article['ArticleText'] );
 			}
 
+			$content = $this->replace_custom_video_embed( $content );
+
 			$post = array(
 				'post_type'     => 'post',
 				'post_status'   => 'publish',
