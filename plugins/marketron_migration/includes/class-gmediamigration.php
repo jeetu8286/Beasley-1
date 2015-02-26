@@ -1038,6 +1038,18 @@ class GMedia_Migration extends WP_CLI_Command {
 			}
 		}
 
+		$content = $this->replace_custom_video_embed( $content );
+
+		return $content;
+	}
+
+	function replace_custom_video_embed( $content ) {
+		$content = preg_replace(
+			'#<div.*data-youtube-id="(.*)">.*</div>#',
+			'http://www.youtube.com/watch?v=${1}',
+			$content
+		);
+
 		return $content;
 	}
 
