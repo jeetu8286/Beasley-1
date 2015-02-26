@@ -215,7 +215,6 @@ class GMedia_Migration extends WP_CLI_Command {
 	}
 
 	function load_tags( $tags_file ) {
-		return;
 		$file   = fopen( $tags_file, 'r' );
 		$fields = fgetcsv( $file, 0, ',', '"' );
 		$tags   = array();
@@ -1039,6 +1038,18 @@ class GMedia_Migration extends WP_CLI_Command {
 			}
 		}
 
+		$content = $this->replace_custom_video_embed( $content );
+
+		return $content;
+	}
+
+	function replace_custom_video_embed( $content ) {
+		$content = preg_replace(
+			'#<div.*data-youtube-id="(.*)">.*</div>#',
+			'http://www.youtube.com/watch?v=${1}',
+			$content
+		);
+
 		return $content;
 	}
 
@@ -1165,6 +1176,16 @@ class GMedia_Migration extends WP_CLI_Command {
 			// do the validation and storage stuff
 			$prof_start = microtime(true);
 			$id = media_handle_sideload( $file_array, $post_id, null, $attrs );
+
+			$image_src_attr = wp_get_attachment_image_src( $id, 'full' );
+			$image_width = $image_src_attr[1];
+			$image_height = $image_src_attr[2];
+
+			if ( $image_width < 300 || $image_height < 300 ) {
+				// don't link images that are too small
+				\WP_CLI::log( 'Ignored Tiny Feature Image: ' . $filepath );
+				return false;
+			}
 
 			// If error storing permanently, unlink
 			if ( is_wp_error( $id ) ) {
@@ -1406,6 +1427,8 @@ class GMedia_Migration extends WP_CLI_Command {
 				update_post_meta( $wp_id, 'gmedia_import_id', $entry_hash );
 
 				if( isset( $entry->BlogEntryAudio ) ) {
+					set_post_format( $wp_id, 'audio' );
+
 					foreach ( $entry->BlogEntryAudio as $single_audio ) {
 						if( isset( $single_audio['AudioSrc'] ) ) {
 							$media_url = $this->import_music_files( $wp_id, $single_audio['AudioSrc'] );
