@@ -2571,7 +2571,15 @@ Community Highlights and Events
   display: block;
   margin-right: 4.82916%;
   width: 65.05695%;
-  padding: 6% 1.618em 0 0;
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  -o-transform: translateY(-50%);
+  transform: translateY(-50%);
+  padding: 0 1.618em 0 0;
+  margin-left: 35%;
   font-size: 1.26562em; }
   .highlights__event--meta:last-child {
     margin-right: 0; }
@@ -2582,7 +2590,7 @@ Community Highlights and Events
     .highlights__event--meta {
       width: auto;
       margin-left: 26.32916%;
-      padding-top: 4%; } }
+      padding-top: 0; } }
 
 .highlights__event--title {
   font-size: 1em;
@@ -2808,12 +2816,22 @@ Community Highlights and Events
       padding-top: 25px;
       padding-bottom: 25px; } }
 
-.header__account--span {
+.header__account--span, .header__account--logged-in, .header__account--logged-out {
   color: #d0d2d3; }
   @media screen and (min-width: 1200px)  {
-    .header__account--span {
+    .header__account--span, .header__account--logged-in, .header__account--logged-out {
       font-size: 12.65px;
       padding-left: 12px; } }
+
+.header__account--logged-in {
+  display: none !important; }
+  .gmr-user .header__account--logged-in {
+    display: table-cell !important; }
+
+.header__account--logged-out {
+  display: table-cell !important; }
+  .gmr-user .header__account--logged-out {
+    display: none !important; }
 
 /** An image is shown if the current user is logged in and Gigya gives us a thumbnail URL **/
 .header__account--btn img {
@@ -2909,17 +2927,77 @@ Community Highlights and Events
   color: #d22228; }
 
 .footer .container {
+  min-height: 0;
+  padding-top: 40px;
+  padding-bottom: 40px;
   background-color: #fff;
-  min-height: 0; }
+  border-top: 1px solid #d0d2d3; }
+
+.footer__ad {
+  float: left;
+  display: block;
+  margin-right: 7.42297%;
+  width: 100%;
+  margin-right: 0;
+  text-align: center; }
+  .footer__ad:last-child {
+    margin-right: 0; }
+  @media screen and (min-width: 480px)  {
+    .footer__ad {
+      float: left;
+      display: block;
+      margin-right: 4.82916%;
+      width: 100%;
+      margin-right: 0; }
+      .footer__ad:last-child {
+        margin-right: 0; } }
+  @media screen and (min-width: 768px)  {
+    .footer__ad {
+      float: left;
+      display: block;
+      margin-right: 3.57866%;
+      width: 100%;
+      margin-right: 0; }
+      .footer__ad:last-child {
+        margin-right: 0; } }
+  @media screen and (min-width: 1024px)  {
+    .footer__ad {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 100%;
+      margin-right: 0; }
+      .footer__ad:last-child {
+        margin-right: 0; } }
+  @media screen and (min-width: 1400px)  {
+    .footer__ad {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 100%;
+      margin-right: 0; }
+      .footer__ad:last-child {
+        margin-right: 0; } }
+  .footer__ad .mobile {
+    display: block;
+    height: 50px; }
+    @media screen and (min-width: 468px) {
+      .footer__ad .mobile {
+        display: none; } }
+  .footer__ad .desktop {
+    display: none;
+    height: 60px; }
+    @media screen and (min-width: 468px) {
+      .footer__ad .desktop {
+        display: block; } }
 
 .footer__content {
   float: left;
   display: block;
   margin-right: 7.42297%;
   width: 100%;
-  padding: 40px 5.5%;
+  padding: 40px 5.5% 0;
   background-color: #fff;
-  border-top: 1px solid #d0d2d3;
   color: #929497;
   text-align: center; }
   .footer__content:last-child {
@@ -3911,6 +3989,12 @@ Link posts contain a link to an external site. They can also optionally have a f
       margin-bottom: 0; }
       .entry2__thumbnail:last-child {
         margin-right: 0; } }
+  @media screen and (min-width: 1024px)  {
+    .entry2__thumbnail {
+      margin-bottom: 1em; } }
+  @media screen and (min-width: 1200px)  {
+    .entry2__thumbnail {
+      margin-bottom: 0; } }
   .has-excerpt .entry2__thumbnail:after {
     padding-top: 75%; }
 
@@ -3965,7 +4049,26 @@ Link posts contain a link to an external site. They can also optionally have a f
       width: 65.05695%;
       margin-right: 0; }
       .has-post-thumbnail .entry2__meta:last-child, .type-contest .entry2__meta:last-child, .type-tribe_events .entry2__meta:last-child {
-        margin-right: 0; } }
+        margin-right: 0; }
+    @media screen and (min-width: 768px)  {
+      .has-post-thumbnail .entry2__meta {
+        float: left;
+        display: block;
+        margin-right: 4.82916%;
+        width: 100%;
+        margin-right: 0;
+        float: none; }
+        .has-post-thumbnail .entry2__meta:last-child {
+          margin-right: 0; } }
+    @media screen and (min-width: 1200px)  {
+      .has-post-thumbnail .entry2__meta {
+        float: left;
+        display: block;
+        margin-right: 4.82916%;
+        width: 65.05695%;
+        margin-right: 0; }
+        .has-post-thumbnail .entry2__meta:last-child {
+          margin-right: 0; } } }
 
 .entry2__date {
   font-size: 1em;
@@ -4052,6 +4155,15 @@ Link posts contain a link to an external site. They can also optionally have a f
     float: right;
     margin-right: 0; } }
 
+@media screen and (min-width: 768px)  {
+  .entry2.format-standard.has-post-thumbnail .entry2__thumbnail {
+    margin-left: 2em;
+    margin-bottom: 1em; } }
+@media screen and (min-width: 1200px)  {
+  .entry2.format-standard.has-post-thumbnail .entry2__thumbnail {
+    margin-left: 0;
+    margin-bottom: 0; } }
+
 @media screen and (min-width: 480px)  {
   .entry2.format-audio.has-post-thumbnail .entry2__thumbnail {
     float: left;
@@ -4107,11 +4219,30 @@ Link posts contain a link to an external site. They can also optionally have a f
   font-weight: normal;
   left: 0;
   top: 0; }
+  @media screen and (min-width: 768px)  {
+    .type-contest .entry2__thumbnail--contest-type {
+      max-width: 60%; } }
+  @media screen and (min-width: 1024px)  {
+    .type-contest .entry2__thumbnail--contest-type {
+      max-width: initial; } }
 .type-contest .entry2__thumbnail--day-of-week {
+  font-size: 1em;
   font-weight: normal; }
+  @media screen and (min-width: 768px)  {
+    .type-contest .entry2__thumbnail--day-of-week {
+      font-size: .875em; } }
+  @media screen and (min-width: 1024px)  {
+    .type-contest .entry2__thumbnail--day-of-week {
+      font-size: 1em; } }
 .type-contest .entry2__thumbnail--month-and-day {
   font-size: 2em;
   margin-top: .15em; }
+  @media screen and (min-width: 768px)  {
+    .type-contest .entry2__thumbnail--month-and-day {
+      font-size: 1.5em; } }
+  @media screen and (min-width: 1024px)  {
+    .type-contest .entry2__thumbnail--month-and-day {
+      font-size: 2em; } }
 
 .entry2-ad-wrap {
   clear: both;
@@ -5132,6 +5263,8 @@ category: Components
         right: auto; } }
   .live-player--active .live-stream__btn--play {
     display: none; }
+  .vast-ad--playing .live-stream__btn--play {
+    display: block; }
   .live-stream__btn--play.live-player__muted {
     display: none; }
   .live-stream__btn--play.play-btn--heartbeat:before {
@@ -5748,7 +5881,12 @@ category: Components
   @media screen and (min-width: 768px)  {
     .live-links--more {
       display: block;
+      right: 0;
       width: 225px; } }
+  @media screen and (min-width: 1400px)  {
+    .live-links--more {
+      right: -webkit-calc(50% - 700px);
+      right: calc(50% - 700px); } }
   .live-links--more.show-more--muted {
     display: none; }
   .live-links--more.show-more--fixed {
@@ -6301,6 +6439,9 @@ a.podcast__download--fallback, a.podcast__download--fallback:visited {
 a.podcast__download--fallback:hover, a.podcast__download--fallback:active {
   background-color: #aa1c20; }
 
+body.vast-ad--playing {
+  overflow: hidden !important; }
+
 .breaking-news-banner {
   width: 100%;
   background: #d22228;
@@ -6361,7 +6502,7 @@ category: Components - Ads
 
 */
 .ad__inline--right:after, .ad__in-loop:after {
-  content: '\25B4  Advertisement';
+  content: 'Advertisement';
   display: block;
   font-size: 10px;
   text-transform: uppercase;
@@ -6835,7 +6976,7 @@ category: Components - Ads
     outline: none;
     background-color: #d0d2d3;
     color: #282827; }
-  .contest__form button[type="submit"], .contest__form input[type="submit"] {
+  .contest__form button[type="button"], .contest__form button[type="submit"], .contest__form input[type="submit"] {
     display: inline-block;
     line-height: 1;
     padding: 0.625em 1em;
@@ -6849,13 +6990,13 @@ category: Components - Ads
     cursor: pointer;
     border-radius: 100em;
     text-transform: uppercase; }
-    .contest__form button[type="submit"]:hover, .contest__form button[type="submit"]:focus, .contest__form input[type="submit"]:hover, .contest__form input[type="submit"]:focus {
+    .contest__form button[type="button"]:hover, .contest__form button[type="button"]:focus, .contest__form button[type="submit"]:hover, .contest__form button[type="submit"]:focus, .contest__form input[type="submit"]:hover, .contest__form input[type="submit"]:focus {
       background-color: #aa1c20;
       border-color: #aa1c20;
       color: #ffffff; }
-    .contest__form button[type="submit"]:last-of-type, .contest__form input[type="submit"]:last-of-type {
+    .contest__form button[type="button"]:last-of-type, .contest__form button[type="submit"]:last-of-type, .contest__form input[type="submit"]:last-of-type {
       margin-right: 0; }
-    .contest__form button[type="submit"]:hover, .contest__form input[type="submit"]:hover {
+    .contest__form button[type="button"]:hover, .contest__form button[type="submit"]:hover, .contest__form input[type="submit"]:hover {
       display: inline-block;
       line-height: 1;
       padding: 0.625em 1em;
@@ -6868,13 +7009,13 @@ category: Components - Ads
       text-transform: uppercase;
       cursor: pointer;
       border-radius: 100em; }
-      .contest__form button[type="submit"]:hover:hover, .contest__form button[type="submit"]:hover:focus, .contest__form input[type="submit"]:hover:hover, .contest__form input[type="submit"]:hover:focus {
+      .contest__form button[type="button"]:hover:hover, .contest__form button[type="button"]:hover:focus, .contest__form button[type="submit"]:hover:hover, .contest__form button[type="submit"]:hover:focus, .contest__form input[type="submit"]:hover:hover, .contest__form input[type="submit"]:hover:focus {
         background-color: #f2e754;
         border-color: #f2e754;
         color: #000000; }
-      .contest__form button[type="submit"]:hover:last-of-type, .contest__form input[type="submit"]:hover:last-of-type {
+      .contest__form button[type="button"]:hover:last-of-type, .contest__form button[type="submit"]:hover:last-of-type, .contest__form input[type="submit"]:hover:last-of-type {
         margin-right: 0; }
-    .contest__form button[type="submit"]:active, .contest__form input[type="submit"]:active {
+    .contest__form button[type="button"]:active, .contest__form button[type="submit"]:active, .contest__form input[type="submit"]:active {
       display: inline-block;
       line-height: 1;
       padding: 0.625em 1em;
@@ -6887,13 +7028,13 @@ category: Components - Ads
       text-transform: uppercase;
       cursor: pointer;
       border-radius: 100em; }
-      .contest__form button[type="submit"]:active:hover, .contest__form button[type="submit"]:active:focus, .contest__form input[type="submit"]:active:hover, .contest__form input[type="submit"]:active:focus {
+      .contest__form button[type="button"]:active:hover, .contest__form button[type="button"]:active:focus, .contest__form button[type="submit"]:active:hover, .contest__form button[type="submit"]:active:focus, .contest__form input[type="submit"]:active:hover, .contest__form input[type="submit"]:active:focus {
         background-color: black;
         border-color: black;
         color: #ffffff; }
-      .contest__form button[type="submit"]:active:last-of-type, .contest__form input[type="submit"]:active:last-of-type {
+      .contest__form button[type="button"]:active:last-of-type, .contest__form button[type="submit"]:active:last-of-type, .contest__form input[type="submit"]:active:last-of-type {
         margin-right: 0; }
-    .contest__form button[type="submit"] i.gmr-icon, .contest__form button[type="submit"] .contest__submission .preview i.preview-close, .contest__submission .preview .contest__form button[type="submit"] i.preview-close, .contest__form input[type="submit"] i.gmr-icon, .contest__form input[type="submit"] .contest__submission .preview i.preview-close, .contest__submission .preview .contest__form input[type="submit"] i.preview-close {
+    .contest__form button[type="button"] i.gmr-icon, .contest__form button[type="button"] .contest__submission .preview i.preview-close, .contest__submission .preview .contest__form button[type="button"] i.preview-close, .contest__form button[type="submit"] i.gmr-icon, .contest__form button[type="submit"] .contest__submission .preview i.preview-close, .contest__submission .preview .contest__form button[type="submit"] i.preview-close, .contest__form input[type="submit"] i.gmr-icon, .contest__form input[type="submit"] .contest__submission .preview i.preview-close, .contest__submission .preview .contest__form input[type="submit"] i.preview-close {
       display: none; }
   .contest__form select {
     width: 174px;
@@ -10377,6 +10518,12 @@ category: Components - Gallery Archive
 .gallery__grid--thumbnail {
   position: relative;
   margin-bottom: 10px; }
+  .gallery__grid--thumbnail .thumbnail {
+    padding-bottom: 66%;
+    background-position: center center;
+    background-size: 100%;
+    background-size: cover;
+    background-repeat: no-repeat; }
 
 @media screen and (min-width: 768px)  {
   .gallery__grid--thumbwrap {
@@ -10937,7 +11084,7 @@ select {
   .profile-page .profile-page__sidebar {
     background-color: #561015;
     color: #ffffff;
-    background-image: url("../../../../themes/greatermedia/assets/../images/profile_bg.jpg");
+    background-image: url('../../images/profile_bg.jpg');
     text-align: center;
     background-size: cover;
     background-repeat: no-repeat; }
@@ -10986,6 +11133,9 @@ select {
   font-size: 3.24732em;
   font-weight: 700;
   color: #929497; }
+  @media screen and (min-width: 768px)  {
+    .show__live-links .group-date {
+      font-size: 2.2807em; } }
   @media screen and (min-width: 1024px)  {
     .show__live-links .group-date {
       float: left;
@@ -10993,7 +11143,8 @@ select {
       margin-right: 2.35765%;
       width: 23.23176%;
       clear: both;
-      margin-top: 24px; }
+      margin-top: 24px;
+      font-size: 3.24732em; }
       .show__live-links .group-date:last-child {
         margin-right: 0; } }
 .show__live-links .ll-archive-list li {
@@ -12824,6 +12975,44 @@ blockquote {
   left: 0;
   width: 100%;
   height: 100%; }
+
+table.responsive {
+  width: 100% !important;
+  margin-bottom: 0;
+  border: 1px solid #d0d2d3;
+  font-size: 0.79012em; }
+  @media screen and (min-width: 768px)  {
+    table.responsive {
+      font-size: 0.88889em; } }
+  @media screen and (min-width: 1024px)  {
+    table.responsive {
+      font-size: 1em; } }
+
+table.responsive td, table.responsive th {
+  position: relative;
+  overflow: auto; }
+
+table.responsive th {
+  padding: .5em .75em;
+  font-weight: bold;
+  text-align: left; }
+
+table.responsive td {
+  padding: .5em .75em;
+  text-align: left; }
+
+table.responsive tr {
+  border: none;
+  border-bottom: 1px solid #d0d2d3; }
+
+table.responsive tr:last-of-type {
+  border-bottom: none; }
+
+table.responsive tr:nth-of-type(odd) {
+  background-color: #f1f1f3; }
+
+table.responsive tr:nth-of-type(even) {
+  background-color: white; }
 
 /**
  * Single Page Styles

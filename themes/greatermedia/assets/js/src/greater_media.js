@@ -46,7 +46,9 @@
 		$overlay = $('.overlay-mask'),
 		livePlayerMore = document.getElementById('live-player--more'),
 		mainContent = document.querySelector('.main'),
-		footer = document.querySelector('.footer');
+		footer = document.querySelector('.footer'),
+		$table = $('table'),
+		$tableTd = $('table td');
 
 	/**
 	 * function to dynamically calculate the offsetHeight of an element
@@ -205,42 +207,26 @@
 			};
 
 			if (scrollObject.y == 0) {
-				if (liveStreamContainer.classList.contains('live-stream--fixed')) {
-					liveStreamContainer.classList.remove('live-stream--fixed');
-				}
-				if (liveLinks.classList.contains('live-links--fixed')) {
-					liveLinks.classList.remove('live-links--fixed');
+				if (livePlayer.classList.contains('live-player--fixed')) {
+					livePlayer.classList.remove('live-player--fixed');
 				}
 				lpPosDefault();
 			} else if (scrollObject.y >= 1 && elementInViewport(header) && ! elementInViewport(footer)) {
-				if (liveStreamContainer.classList.contains('live-stream--fixed')) {
-					liveStreamContainer.classList.remove('live-stream--fixed');
-				}
-				if (liveLinks.classList.contains('live-links--fixed')) {
-					liveLinks.classList.remove('live-links--fixed');
+				if (livePlayer.classList.contains('live-player--fixed')) {
+					livePlayer.classList.remove('live-player--fixed');
 				}
 				lpPosDefault();
 			} else if (!elementInViewport(header) && ! elementInViewport(footer)) {
-				liveStreamContainer.classList.add('live-stream--fixed');
+				livePlayer.classList.add('live-player--fixed');
 				if (livePlayer != null) {
 					livePlayer.style.removeProperty('top');
-				}
-				if (liveLinks != null) {
-					liveLinks.classList.add('live-links--fixed');
-					if (body.classList.contains('logged-in')) {
-						liveLinks.style.top = wpAdminHeight + elemHeight(liveStreamContainer) + 'px';
-					} else {
-						liveLinks.style.top = elemHeight(liveStreamContainer) + 'px';
-					}
 				}
 			}
 			lpHeight();
 		}
 	}
 
-
-
-			/**
+	/**
 	 * adds some styles to the live player that would be called at mobile breakpoints. This is added specifically to
 	 * deal with a window being resized.
 	 */
@@ -251,9 +237,6 @@
 			}
 			if (livePlayer.classList.contains('live-player--fixed')) {
 				livePlayer.classList.remove('live-player--fixed');
-			}
-			if (liveStreamContainer.classList.contains('live-stream--fixed')) {
-				liveStreamContainer.classList.remove('live-stream--fixed');
 			}
 			liveLinks.style.marginTop = '0px';
 			livePlayer.classList.add('live-player--mobile');
@@ -438,6 +421,16 @@
 	}
 
 	/**
+	 * Adds a class to a HTML table to make the table responsive
+	 */
+	function responsiveTables() {
+		$table.addClass('responsive');
+		$tableTd.removeAttr('width');
+	}
+
+	responsiveTables();
+
+	/**
 	 * Resize Window function for when a user scales down their browser window below 767px
 	 */
 	function resizeWindow() {
@@ -448,7 +441,6 @@
 		} else {
 			if (livePlayer != null) {
 				livePlayerDesktopReset();
-				lpPosDefault();
 				addEventHandler(window, elemScroll, function () {
 					scrollDebounce();
 					scrollThrottle();
@@ -493,13 +485,6 @@
 	}
 	if (liveLinksWidget != null) {
 		addEventHandler(liveLinksWidget, elemClick, liveLinksClose);
-	}
-	if (playBtn != null || resumeBtn != null) {
-		addEventHandler(playBtn, elemClick, playerActive);
-		addEventHandler(resumeBtn, elemClick, playerActive);
-	}
-	if (pauseBtn != null) {
-		addEventHandler(pauseBtn, elemClick, playerNotActive);
 	}
 
 	addEventHandler(window, elemResize, function () {
@@ -603,17 +588,62 @@
 		$blocker.css({'display': 'none'});
 	};
 
-	$(document).ready(function() {
-		//showBlocker();
+	/**
+	 * Returns user agents for mobile devices. We need to be able to detect common mobile devices in order to remove
+	 * the double tap click issue that appears, specifically in iOS. If we do not detect the agent, this will stay
+	 * active in the menu at all times and breaks Pjax.
+	 *
+	 * @type {{TOUCH_DOWN_EVENT_NAME: string, TOUCH_UP_EVENT_NAME: string, TOUCH_MOVE_EVENT_NAME: string, TOUCH_DOUBLE_TAB_EVENT_NAME: string, isAndroid: Function, isBlackBerry: Function, isIOS: Function, isOpera: Function, isWindows: Function, isMobile: Function}}
+	 */
+	var Environment = {
+		//mobile or desktop compatible event name, to be used with '.on' function
+		TOUCH_DOWN_EVENT_NAME: 'mousedown touchstart',
+		TOUCH_UP_EVENT_NAME: 'mouseup touchend',
+		TOUCH_MOVE_EVENT_NAME: 'mousemove touchmove',
+		TOUCH_DOUBLE_TAB_EVENT_NAME: 'dblclick dbltap',
 
-		/**
-		 * Resolves issue that requires a double click on a sub-menu link on iOS.
-		 */
-		$('.sub-menu li a').on('click touchend', function(e) {
+		isAndroid: function() {
+			return navigator.userAgent.match(/Android/i);
+		},
+		isBlackBerry: function() {
+			return navigator.userAgent.match(/BlackBerry/i);
+		},
+		isIOS: function() {
+			return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+		},
+		isOpera: function() {
+			return navigator.userAgent.match(/Opera Mini/i);
+		},
+		isWindows: function() {
+			return navigator.userAgent.match(/IEMobile/i);
+		},
+		isMobile: function() {
+			return (Environment.isAndroid() || Environment.isBlackBerry() || Environment.isIOS() || Environment.isOpera() || Environment.isWindows());
+		}
+	};
+
+	/**
+	 * Resolves issue that requires a double click on a sub-menu link on iOS.
+	 */
+	function stopClickMobile() {
+		$('.sub-menu li a').on('click touchend', function (e) {
 			var el = $(this);
 			var link = el.attr('href');
 			window.location = link;
 		});
+	}
+
+	$(document).ready(function() {
+		//showBlocker();
+
+		personality_toggle();
+
+		/**
+		 * Only run this function if the Environment is a mobile device
+		 */
+		if (Environment.isMobile()) {
+			stopClickMobile();
+		}
 	});
 
 })();

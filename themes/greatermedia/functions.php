@@ -20,7 +20,7 @@
 if ( defined( 'GMR_PARENT_ENV' ) && 'dev' == GMR_PARENT_ENV ) {
 	define( 'GREATERMEDIA_VERSION', time() );
 } else {
-	define( 'GREATERMEDIA_VERSION', '0.1.5' );
+	define( 'GREATERMEDIA_VERSION', '0.1.6' );
 }
 
 add_theme_support( 'homepage-curation' );
@@ -58,7 +58,7 @@ function greatermedia_setup() {
 
 	// Add theme support for post thumbnails
 	add_theme_support( 'post-thumbnails' );
-	add_image_size( 'gm-article-thumbnail',     		1580,   9999,   false   ); // thumbnails used for articles
+	add_image_size( 'gm-article-thumbnail',     		1400,   9999,   false   ); // thumbnails used for articles
 	add_image_size( 'gm-entry-thumbnail-1-1' ,          500,    500,    true    );
 	add_image_size( 'gm-entry-thumbnail-4-3' ,          500,    375,    true    );
 	add_image_size( 'gmr-gallery',              		800,    534,    true    ); // large images for the gallery
@@ -474,7 +474,7 @@ if ( ! function_exists( 'greatermedia_load_more_template' ) ) :
 			$partial_slug = 'partials/loop';
 		}
 
-		global $wp_query;
+		global $wp_query, $gmr_loadmore_num_pages, $gmr_loadmore_post_count, $gmr_loadmore_paged;
 
 		ob_start();
 
@@ -483,10 +483,10 @@ if ( ! function_exists( 'greatermedia_load_more_template' ) ) :
 		$html = ob_get_clean();
 
 		wp_send_json( array(
-			'paged' => $wp_query->query_vars['paged'],
-			'max_num_pages' => $wp_query->max_num_pages,
-			'post_count' => $wp_query->post_count,
-			'html' => $html,
+			'paged'         => $gmr_loadmore_paged ?: $wp_query->query_vars['paged'],
+			'max_num_pages' => $gmr_loadmore_num_pages ?: $wp_query->max_num_pages,
+			'post_count'    => $gmr_loadmore_post_count ?: $wp_query->post_count,
+			'html'          => $html,
 		) );
 
 		exit;

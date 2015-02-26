@@ -702,6 +702,10 @@ category: Components
 		display: none;
 	}
 
+	.vast-ad--playing & {
+		display: block;
+	}
+
 	&.live-player__muted {
 		display: none;
 	}
@@ -1426,7 +1430,12 @@ category: Components
 
 	@include bp(medium) {
 		display: block;
+		right: 0;
 		width: 225px;
+	}
+
+	@include bp(x-large) {
+		@include calc(right, '50% - 700px');
 	}
 
 	&.show-more--muted {
@@ -1692,4 +1701,8 @@ a.podcast__download--fallback, a.podcast__download--fallback:visited {
 
 a.podcast__download--fallback:hover, a.podcast__download--fallback:active {
 	background-color: $primary-link-hover;
+}
+
+body.vast-ad--playing {
+	overflow: hidden !important;
 }
