@@ -139,7 +139,7 @@
 	@include transform(translate(78%, 0));
 }
 
-.mobile-nav--open .header__search--form {
+.moble-nav--open .header__search--form {
 	@include transform(translate(78%, 0));
 	@include bp('medium') {
 		@include transform(translate(78%, -200%));
@@ -280,6 +280,14 @@
 .header__account ul li:hover,
 .ui-menu .ui-state-focus {
 	background-color: $header-nav-bg;
+
+	.pjax-start & {
+		background-color: $header-nav-bg;
+	}
+
+	.pjax-end & {
+		background-color: transparent;
+	}
 }
 
 ul.sub-menu li:not(.mobile-menu-submenu-header):hover {
