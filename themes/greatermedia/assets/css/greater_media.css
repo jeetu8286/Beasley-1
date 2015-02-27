@@ -3925,6 +3925,7 @@ Link posts contain a link to an external site. They can also optionally have a f
   .posts-pagination--load-more:last-of-type {
     margin-right: 0; }
   .posts-pagination--load-more .gmr-icon, .posts-pagination--load-more .contest__submission .preview .preview-close, .contest__submission .preview .posts-pagination--load-more .preview-close {
+    display: inline-block;
     margin-right: 0.4em; }
   .posts-pagination--load-more.is-loaded .gmr-icon, .posts-pagination--load-more.is-loaded .contest__submission .preview .preview-close, .contest__submission .preview .posts-pagination--load-more.is-loaded .preview-close {
     display: none; }
