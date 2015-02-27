@@ -18,6 +18,14 @@
 	float: right;
 	width: 40px;
 	height: 40px;
+
+	.pjax-start & {
+		display: block;
+	}
+
+	.pjax-end & {
+		display: none;
+	}
 }
 
 .menu-overlay-mask {
@@ -37,6 +45,14 @@
 		opacity: 1;
 		@include transition(visibility 0s linear, opacity 100ms ease-out);
 	}
+
+	.pjax-start & {
+		display: block;
+	}
+
+	.pjax-end & {
+		display: none;
+	}
 }
 
 /**
@@ -55,6 +71,14 @@
 
 .header__nav ul li:hover .sub-menu {
 	display: block;
+
+	.pjax-start & {
+		display: block;
+	}
+
+	.pjax-end & {
+		display: none;
+	}
 }
 
 .header__nav .sub-menu,

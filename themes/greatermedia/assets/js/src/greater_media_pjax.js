@@ -42,6 +42,8 @@
 	 */
 	$document.bind( 'pjax:start', function () {
 		$( 'body').addClass( 'is-busy' );
+		$( 'body').addClass( 'pjax-start' );
+		$( 'body').removeClass( 'pjax-end' );
 	} );
 
 	/**
@@ -49,6 +51,8 @@
 	 */
 	$document.bind( 'pjax:end', function () {
 		$( 'body').removeClass( 'is-busy' );
+		$( 'body').removeClass( 'pjax-start' );
+		$( 'body').addClass( 'pjax-end' );
 	} );
 
 	/**
