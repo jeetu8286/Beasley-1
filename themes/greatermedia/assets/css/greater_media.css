@@ -946,7 +946,7 @@ h5, .h5 {
   letter-spacing: 2px; }
 
 h6, .h6 {
-  font-size: 1.26563em;
+  font-size: 1.26562em;
   letter-spacing: 2px; }
 
 .section-header {
@@ -1244,7 +1244,7 @@ blockquote p {
   display: block;
   padding: 18px 1.25em;
   line-height: 1;
-  font-size: 1.26563em;
+  font-size: 1.26562em;
   color: #ffffff; }
 
 .mobile-nav__list a:hover, .mobile-nav__list a:focus, .mobile-nav__list a:active {
@@ -1588,7 +1588,7 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
   color: #929497; }
   @media screen and (min-width: 768px)  {
     .content__heading, .sponsors__heading {
-      font-size: 1.26563em; } }
+      font-size: 1.26562em; } }
   #tribe-events .content__heading, #tribe-events .sponsors__heading {
     margin-bottom: 30px; }
 
@@ -1975,7 +1975,7 @@ Curated posts for Featured Articles
   width: 100%;
   margin-right: 0;
   margin: 0;
-  font-size: 1.26563em;
+  font-size: 1.26562em;
   line-height: 1.3;
   font-weight: bold;
   color: #ffffff; }
@@ -2119,7 +2119,7 @@ Curated posts for Featured Articles
   margin-right: 2.35765%;
   width: 65.88078%;
   padding: .8em 0.809em;
-  font-size: 1.26563em;
+  font-size: 1.26562em;
   font-weight: lighter;
   overflow: hidden; }
   .featured__content--meta:last-child {
@@ -2339,7 +2339,7 @@ Community Highlights and Events
 .highlights__heading {
   margin: 0 0 0.75em;
   line-height: 1;
-  font-size: 1.26563em;
+  font-size: 1.26562em;
   font-weight: lighter;
   color: #929497;
   vertical-align: top; }
@@ -2577,7 +2577,7 @@ Community Highlights and Events
   transform: translateY(-50%);
   padding: 0 1.618em 0 0;
   margin-left: 35%;
-  font-size: 1.26563em; }
+  font-size: 1.26562em; }
   .highlights__event--meta:last-child {
     margin-right: 0; }
   @media screen and (min-width: 768px)  {
@@ -4488,7 +4488,7 @@ Link posts contain a link to an external site. They can also optionally have a f
     font-size: 1.42383em;
     letter-spacing: 2px; }
   .article__content h4 {
-    font-size: 1.26563em;
+    font-size: 1.26562em;
     letter-spacing: 2px; }
   .article__content h5, .article__content h6 {
     font-weight: bold;
@@ -5148,7 +5148,7 @@ body.profile-page-login .live-player--mobile {
     -o-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
     font-family: 'gmr-icons' !important;
-    font-size: 1.26563em;
+    font-size: 1.26562em;
     content: "\e626"; }
   .live-player__container.playing .live-stream__btn--login {
     display: block; }
@@ -5170,7 +5170,7 @@ body.profile-page-login .live-player--mobile {
   -o-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
   font-family: 'gmr-icons' !important;
-  font-size: 1.26563em;
+  font-size: 1.26562em;
   content: "\e606" !important; }
 
 .live-stream__btn--pause:before {
@@ -5183,7 +5183,7 @@ body.profile-page-login .live-player--mobile {
   -o-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
   font-family: 'gmr-icons' !important;
-  font-size: 1.26563em;
+  font-size: 1.26562em;
   content: "\e61f" !important; }
   .live-stream__player.audio__playing .live-stream__btn--pause:before {
     content: "\e61f" !important; }
@@ -5342,7 +5342,7 @@ body.profile-page-login .live-player--mobile {
     -o-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
     font-family: 'gmr-icons' !important;
-    font-size: 1.26563em;
+    font-size: 1.26562em;
     content: "\e626"; }
   .live-player__container.playing .live-stream--inactive {
     display: block; }
@@ -7784,6 +7784,12 @@ category: Components - Shows
   border-width: 3px;
   background-color: rgba(255, 255, 255, 0.5); }
 
+.single-show .podcast__btn--play, .single-show .podcast__btn--pause {
+  width: 80%;
+  height: 80%;
+  left: 10%;
+  top: 10%; }
+
 .podcast__btn--play:hover, .podcast__btn--pause:focus {
   border-color: #aa1c20;
   color: #aa1c20; }
@@ -7872,12 +7878,21 @@ category: Components - Shows
       line-height: 1;
       font-size: 1.80203em; } }
 
+@media screen and (min-width: 1024px)  {
+  .single-show .podcast__title {
+    margin-bottom: 13px; } }
+
 .podcast__parent {
   margin-bottom: 10px; }
 
 .podcast__parent--title, .podcast__child--title {
   display: inline-block;
-  font-weight: bold; }
+  font-weight: bold;
+  margin-right: 10px; }
+
+.single-show .podcast__parent--title {
+  display: block;
+  margin-bottom: 0.5em; }
 
 .podcast__date, .podcast__archive--episode-count {
   font-size: 0.79012em;
@@ -7901,7 +7916,6 @@ a.podcast__rss:link, a.podcast__rss:visited {
   cursor: pointer;
   border-radius: 100em;
   display: inline-block;
-  margin-left: 10px;
   font-weight: normal;
   text-transform: none; }
   a.podcast__rss:link:hover, a.podcast__rss:link:focus, a.podcast__rss:visited:hover, a.podcast__rss:visited:focus {
@@ -8045,7 +8059,7 @@ a.podcast__rss:active {
     margin-right: 0; }
 
 .podcast__subscribe {
-  margin: 0 0 0 10px;
+  margin: 0 10px 0 0;
   text-transform: none; }
 
 .gmr-mediaelement-fallback {
@@ -9015,7 +9029,7 @@ category: Components - Shows
   margin: 0 -1px; }
 
 .gmr_gallery .entry__related-posts .section-header {
-  font-size: 1.26563em;
+  font-size: 1.26562em;
   font-weight: bold;
   color: #6d6e70; }
   .gmr_gallery .entry__related-posts .section-header a, .gmr_gallery .entry__related-posts .section-header a:visited {
@@ -9292,7 +9306,7 @@ a.social__link, a.social-share-link {
   padding: 0;
   margin-top: 26px;
   margin-bottom: 0;
-  font-size: 1.26563em;
+  font-size: 1.26562em;
   color: #404041;
   text-transform: uppercase; }
 
@@ -9374,7 +9388,7 @@ a.social__link, a.social-share-link {
   margin-right: 0;
   margin-top: 0;
   margin-bottom: 0;
-  font-size: 1.26563em;
+  font-size: 1.26562em;
   font-weight: normal;
   color: #d22228; }
   .search__result--title:last-child {
@@ -11175,7 +11189,7 @@ select {
   height: 250px;
   padding: 20px;
   background-color: #ffffff;
-  font-size: 1.26563em;
+  font-size: 1.26562em;
   color: #404041;
   -webkit-transform: translate(-50%, -50%);
   -moz-transform: translate(-50%, -50%);
@@ -12707,15 +12721,15 @@ category: Components
 </article>
 ```
 */
-.podcast .hide-mobile {
+.single-show .hide-mobile, .podcast .hide-mobile {
   display: none !important; }
   @media screen and (min-width: 1024px)  {
-    .podcast .hide-mobile {
+    .single-show .hide-mobile, .podcast .hide-mobile {
       display: block !important; } }
-.podcast .show-mobile {
+.single-show .show-mobile, .podcast .show-mobile {
   display: block !important; }
   @media screen and (min-width: 1024px)  {
-    .podcast .show-mobile {
+    .single-show .show-mobile, .podcast .show-mobile {
       display: none !important; } }
 
 .songs__group {
