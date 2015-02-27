@@ -199,7 +199,11 @@
 
 			var profile = this.profileForResponse(response);
 			this.session.login(profile);
-			this.redirect('/');
+
+			var self = this;
+			setTimeout(function() {
+				self.redirect('/');
+			}, 5000);
 		},
 
 		didRegister: function(response) {
