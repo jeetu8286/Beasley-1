@@ -3935,6 +3935,7 @@ Link posts contain a link to an external site. They can also optionally have a f
   .posts-pagination--load-more:last-of-type {
     margin-right: 0; }
   .posts-pagination--load-more .gmr-icon, .posts-pagination--load-more .contest__submission .preview .preview-close, .contest__submission .preview .posts-pagination--load-more .preview-close {
+    display: inline-block;
     margin-right: 0.4em; }
   .posts-pagination--load-more.is-loaded .gmr-icon, .posts-pagination--load-more.is-loaded .contest__submission .preview .preview-close, .contest__submission .preview .posts-pagination--load-more.is-loaded .preview-close {
     display: none; }
@@ -4370,6 +4371,7 @@ Link posts contain a link to an external site. They can also optionally have a f
   clear: both;
   margin-bottom: 1.25em;
   font-size: 1.125em;
+  line-height: 1.6;
   color: #929497; }
   @media screen and (min-width: 768px)  {
     .article__categories, .article__tags, .article__shows {
@@ -4379,8 +4381,7 @@ Link posts contain a link to an external site. They can also optionally have a f
   margin-bottom: 0; }
 
 .article__list, .article__list--categories, .article__list--tags, .article__list--shows, .article__list--show {
-  display: block;
-  float: left;
+  display: inline;
   padding: 0;
   margin: 0;
   list-style: none; }
@@ -4389,7 +4390,8 @@ Link posts contain a link to an external site. They can also optionally have a f
   text-transform: uppercase; }
 
 .article__list--item {
-  display: inline;
+  display: inline-block;
+  white-space: nowrap;
   list-style: none;
   margin-right: .5em; }
 
@@ -4400,9 +4402,7 @@ Link posts contain a link to an external site. They can also optionally have a f
   color: #aa1c20; }
 
 .article__list--title {
-  display: block;
-  float: left;
-  width: auto;
+  display: inline;
   font-weight: 800; }
 
 .article__list--title:after {
