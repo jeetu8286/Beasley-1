@@ -1288,12 +1288,8 @@ blockquote p {
   display: block;
   padding: 33px 1.125em 32px; }
 
-.header__nav ul li a:hover, .header__nav ul li a:focus, .header__nav ul li a:active, .header__nav ul li:hover, .header__account ul li a:hover, .header__account ul li a:focus, .header__account ul li a:active, .header__account ul li:hover, .ui-menu .ui-state-focus {
+.header__nav ul li.active a:hover, .header__nav ul li a:focus, .header__nav ul li a:active, .header__nav ul li.active, .header__account ul li a:hover, .header__account ul li a:focus, .header__account ul li a:active, .header__account ul li:hover, .ui-menu .ui-state-focus {
   background-color: #d22228; }
-  .pjax-start .header__nav ul li a:hover, .pjax-start .header__nav ul li a:focus, .pjax-start .header__nav ul li a:active, .pjax-start .header__nav ul li:hover, .pjax-start .header__account ul li a:hover, .pjax-start .header__account ul li a:focus, .pjax-start .header__account ul li a:active, .pjax-start .header__account ul li:hover, .pjax-start .ui-menu .ui-state-focus {
-    background-color: #d22228; }
-  .pjax-end .header__nav ul li a:hover, .pjax-end .header__nav ul li a:focus, .pjax-end .header__nav ul li a:active, .pjax-end .header__nav ul li:hover, .pjax-end .header__account ul li a:hover, .pjax-end .header__account ul li a:focus, .pjax-end .header__account ul li a:active, .pjax-end .header__account ul li:hover, .pjax-end .ui-menu .ui-state-focus {
-    background-color: transparent; }
 
 ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw > ul li:not(.mobile-menu-submenu-header):hover, .header__nav .format-sp > ul li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fi > ul li:not(.mobile-menu-submenu-header):hover {
   background-color: transparent; }
@@ -1311,19 +1307,17 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
  *
  */
 /* Psuedo element helps with selection by preventing the menu from collapsing on just a bit of a mouse-out */
-.header__nav .menu-item-has-children:hover:after {
+.header__nav .menu-item-has-children:after {
   content: ' ';
-  display: block;
+  display: none;
   position: relative;
   bottom: 40px;
   right: -40px;
   float: right;
   width: 40px;
   height: 40px; }
-  .pjax-start .header__nav .menu-item-has-children:hover:after {
+  .header__nav .menu-item-has-children:after.active .header__nav .menu-item-has-children:after {
     display: block; }
-  .pjax-end .header__nav .menu-item-has-children:hover:after {
-    display: none; }
 
 .menu-overlay-mask {
   visibility: hidden;
@@ -1345,10 +1339,8 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
     -webkit-transition: visibility 0s linear, opacity 100ms ease-out;
     -moz-transition: visibility 0s linear, opacity 100ms ease-out;
     transition: visibility 0s linear, opacity 100ms ease-out; }
-  .pjax-start .menu-overlay-mask {
-    display: block; }
-  .pjax-end .menu-overlay-mask {
-    display: none; }
+  .active .menu-overlay-mask {
+    visibility: hidden; }
 
 /**
  * This is not ideal, we should be doing this on the top level <li>
@@ -1361,12 +1353,11 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
     z-index: 5000100;
     /* IAB z-index standard for drop nav is 5000000 - 5999999 */ }
 
-.header__nav ul li:hover .sub-menu, .header__nav ul li:hover .format-fw > ul, .header__nav ul li:hover .format-sp > ul, .header__nav ul li:hover .format-fi > ul {
+.header__nav ul li .sub-menu, .header__nav ul li .format-fw > ul, .header__nav ul li .format-sp > ul, .header__nav ul li .format-fi > ul {
+  display: none; }
+
+.header__nav ul li.active .sub-menu, .header__nav ul li.active .format-fw > ul, .header__nav ul li.active .format-sp > ul, .header__nav ul li.active .format-fi > ul {
   display: block; }
-  .pjax-start .header__nav ul li:hover .sub-menu, .pjax-start .header__nav ul li:hover .format-fw > ul, .pjax-start .header__nav ul li:hover .format-sp > ul, .pjax-start .header__nav ul li:hover .format-fi > ul {
-    display: block; }
-  .pjax-end .header__nav ul li:hover .sub-menu, .pjax-end .header__nav ul li:hover .format-fw > ul, .pjax-end .header__nav ul li:hover .format-sp > ul, .pjax-end .header__nav ul li:hover .format-fi > ul {
-    display: none; }
 
 .header__nav .sub-menu, .header__nav .format-fw > ul, .header__nav .format-sp > ul, .header__nav .format-fi > ul, .header__account--links.sub-menu, .header__nav .format-fw > ul.header__account--links, .header__nav .format-sp > ul.header__account--links, .header__nav .format-fi > ul.header__account--links, .ui-menu {
   position: absolute;
