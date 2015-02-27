@@ -430,6 +430,16 @@
 
 	responsiveTables();
 
+	function addGigyaBodyClass() {
+		if (! body.classList.contains('gmr-user')) {
+			body.classList.add('gmr-user');
+		}
+	}
+
+	if (is_gigya_user_logged_in()) {
+		addGigyaBodyClass();
+	}
+
 	/**
 	 * Resize Window function for when a user scales down their browser window below 767px
 	 */
@@ -638,12 +648,6 @@
 
 		personality_toggle();
 
-		/**
-		 * Only run this function if the Environment is a mobile device
-		 */
-		if (Environment.isMobile()) {
-			stopClickMobile();
-		}
 	});
 
 })();
