@@ -154,7 +154,7 @@
 				{
 					id: 'MediaPlayer',
 					playerId: 'td_container',
-					isDebug: true,
+					isDebug: false,
 					techPriority: techPriority,
 					timeShift: { // timeShifting is currently available on Flash only. Leaving for HTML5 future
 						active: 0, /* 1 = active, 0 = inactive */
@@ -1370,7 +1370,6 @@
 	};
 
 	var pauseCustomInlineAudio = function () {
-		pjaxStop();
 		customAudio.pause();
 		resetInlineAudioStates();
 		setPausedStyles();
@@ -1381,7 +1380,6 @@
 	 Same as pausing, but sets the "Playing" state to false, to allow resuming live player audio
 	 */
 	var stopCustomInlineAudio = function () {
-		pjaxStop();
 		customAudio.pause();
 		resetInlineAudioStates();
 		playingCustomAudio = false;
@@ -1493,11 +1491,13 @@
 		}
 	}
 
-	function pjaxStop() {
-		$(document).on('pjax:click', function (event) {
-			event.preventDefault();
-		});
-	}
+	$(document).bind('pjax:click', function () {
+		if (livePlaying === true) {
+			console.log( typeof livePlaying );
+		} else {
+			console.log('--- another test ---');
+		}
+	});
 
 	/**
 	 * calculates the time of an inline audio element and outputs the duration as a % displayed in the progress bar
@@ -1581,4 +1581,5 @@
 		addEventHandler(podcastPlayBtn, elemClick, setInlineAudioUX);
 		addEventHandler(podcastPauseBtn, elemClick, pauseCustomInlineAudio);
 	});
+
 })(jQuery, window);
