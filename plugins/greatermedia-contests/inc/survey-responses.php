@@ -183,7 +183,6 @@ function gmr_survey_export_to_csv() {
 	do {
 		$query->query( array(
 			'post_type'           => GMR_SURVEY_RESPONSE_CPT,
-			'post_status'         => 'any',
 			'post_parent'         => $survey->ID,
 			'suppress_filters'    => true,
 			'paged'               => $paged,

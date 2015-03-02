@@ -186,7 +186,6 @@ function gmr_contests_export_to_csv() {
 	do {
 		$query->query( array(
 			'post_type'           => GMR_CONTEST_ENTRY_CPT,
-			'post_status'         => 'any',
 			'post_parent'         => $contest->ID,
 			'suppress_filters'    => true,
 			'paged'               => $paged,
