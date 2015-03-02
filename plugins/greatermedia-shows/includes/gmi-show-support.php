@@ -86,35 +86,44 @@ function get_show_endpoint_pagination_links( \WP_Query $query ) {
 }
 
 /**
- * Gets an instance of WP_Query that corresponds to the current page of the podcast endpoints for shows
- *
- * @return \WP_Query
+ * Returns podcast ids associated with the current show.
  */
-function get_show_podcast_query() {
+function get_show_podcast_ids() {
+	$show_podcasts = new \WP_Query();
 	$show_term = \TDS\get_related_term( get_the_ID() );
-	$current_page = get_query_var( 'show_section_page' ) ?: 1;
 
 	// could possibly add some caching of these parent IDs (podcast-parent-ids-<term_slug>) and then nuke the key and regen whenever any parent podcast with the terms is edited/created/deleted
 	$show_podcasts_args = array(
-		'post_type' => \GMP_CPT::PODCAST_POST_TYPE,
-		'tax_query' => array(
+		'post_type'      => \GMP_CPT::PODCAST_POST_TYPE,
+		'posts_per_page' => 500,
+		'fields'         => 'ids',
+		'tax_query'      => array(
 			array(
 				'taxonomy' => \ShowsCPT::SHOW_TAXONOMY,
 				'field' => 'term_taxonomy_id',
 				'terms' => $show_term->term_taxonomy_id,
 			),
 		),
-		'posts_per_page' => 500,
-		'fields' => 'ids',
 	);
-	$show_podcasts = new \WP_Query( $show_podcasts_args );
 
-	$possible_parents = $show_podcasts->posts;
-	if( !empty( $possible_parents) ) {
+	return  $show_podcasts->query( $show_podcasts_args );
+}
+
+/**
+ * Gets an instance of WP_Query that corresponds to the current page of the podcast endpoints for shows
+ *
+ * @return \WP_Query
+ */
+function get_show_podcast_query() {
+	$possible_parents = get_show_podcast_ids();
+	if ( ! empty( $possible_parents ) ) {
+		$current_page = get_query_var( 'paged', 1 );
+
 		$podcast_args = array(
-			'post_type' => \GMP_CPT::EPISODE_POST_TYPE,
+			'post_type'       => \GMP_CPT::EPISODE_POST_TYPE,
 			'post_parent__in' => $possible_parents,
-			'paged' => $current_page,
+			'paged'           => $current_page,
+			'posts_per_page'  => get_option( 'posts_per_page', 10 ),
 		);
 
 		$podcast_query = new \WP_Query( $podcast_args );
@@ -132,7 +141,7 @@ function get_show_podcast_query() {
  */
 function get_show_video_query() {
 	$show_term = \TDS\get_related_term( get_the_ID() );
-	$current_page = get_query_var( 'show_section_page' ) ?: 1;
+	$current_page = get_query_var( 'paged', 1 );
 
 	$video_args = array(
 		'post_type' => 'post',
@@ -164,7 +173,7 @@ function get_show_video_query() {
  */
 function get_show_gallery_query() {
 	$show_term = \TDS\get_related_term( get_the_ID() );
-	$current_page = get_query_var( 'show_section_page' ) ?: 1;
+	$current_page = get_query_var( 'paged', 1 );
 
 	$album_args = array(
 		'post_type' => 'albums', // todo is this post type coming from migration scripts? Need to dynamically grab this post type if we can
@@ -281,7 +290,7 @@ function get_show_live_links_archive_query() {
 
 	$show_term = \TDS\get_related_term( get_the_ID() );
 
-	$current_page = get_query_var( 'show_section_page' ) ?: 1;
+	$current_page = get_query_var( 'paged', 1 );
 
 	$args = array(
 		'post_type' => GMR_LIVE_LINK_CPT,
@@ -312,10 +321,15 @@ function get_show_live_links_archive_query() {
 
 function get_show_main_query() {
 	$show_term = \TDS\get_related_term( get_the_ID() );
-	$current_page = get_query_var( 'show_section_page' ) ?: 1;
+	$current_page = get_query_var( 'paged' ) ?: 1;
 
+	$post_types = array( 'post' );
+	if ( class_exists( '\GreaterMediaGalleryCPT' ) ) {
+		$post_types[] = \GreaterMediaGalleryCPT::GALLERY_POST_TYPE;
+	}
+	
 	$show_args = array(
-		'post_type'      => 'post',
+		'post_type'      => $post_types,
 		'paged'          => $current_page,
 		'posts_per_page' => get_option( 'posts_per_page', 10 ),
 		'tax_query'      => array(
@@ -328,9 +342,28 @@ function get_show_main_query() {
 		),
 	);
 
+	add_filter( 'posts_where', '\GreaterMedia\Shows\adjust_show_main_query' );
 	$show_query = new \WP_Query( $show_args );
 
 	return $show_query;
+}
+
+function adjust_show_main_query( $where ) {
+	global $wpdb;
+
+	remove_filter( 'posts_where', '\GreaterMedia\Shows\adjust_show_main_query' );
+	
+	if ( class_exists( '\GMP_CPT' ) ) {
+		$where = sprintf(
+			" AND ((1 = 1%1\$s) OR (%2\$s.post_type = '%3\$s' AND %2\$s.post_parent IN (%4\$s) AND (%2\$s.post_status = 'publish')))",
+			$where,
+			$wpdb->posts,
+			\GMP_CPT::EPISODE_POST_TYPE,
+			implode( ',', get_show_podcast_ids() )
+		);
+	}
+
+	return $where;
 }
 
 function get_show_days( $object_id ) {
