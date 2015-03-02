@@ -946,7 +946,7 @@ h5, .h5 {
   letter-spacing: 2px; }
 
 h6, .h6 {
-  font-size: 1.26562em;
+  font-size: 1.26563em;
   letter-spacing: 2px; }
 
 .section-header {
@@ -1244,7 +1244,7 @@ blockquote p {
   display: block;
   padding: 18px 1.25em;
   line-height: 1;
-  font-size: 1.26562em;
+  font-size: 1.26563em;
   color: #ffffff; }
 
 .mobile-nav__list a:hover, .mobile-nav__list a:focus, .mobile-nav__list a:active {
@@ -1588,7 +1588,7 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
   color: #929497; }
   @media screen and (min-width: 768px)  {
     .content__heading, .sponsors__heading {
-      font-size: 1.26562em; } }
+      font-size: 1.26563em; } }
   #tribe-events .content__heading, #tribe-events .sponsors__heading {
     margin-bottom: 30px; }
 
@@ -1975,7 +1975,7 @@ Curated posts for Featured Articles
   width: 100%;
   margin-right: 0;
   margin: 0;
-  font-size: 1.26562em;
+  font-size: 1.26563em;
   line-height: 1.3;
   font-weight: bold;
   color: #ffffff; }
@@ -2119,7 +2119,7 @@ Curated posts for Featured Articles
   margin-right: 2.35765%;
   width: 65.88078%;
   padding: .8em 0.809em;
-  font-size: 1.26562em;
+  font-size: 1.26563em;
   font-weight: lighter;
   overflow: hidden; }
   .featured__content--meta:last-child {
@@ -2339,7 +2339,7 @@ Community Highlights and Events
 .highlights__heading {
   margin: 0 0 0.75em;
   line-height: 1;
-  font-size: 1.26562em;
+  font-size: 1.26563em;
   font-weight: lighter;
   color: #929497;
   vertical-align: top; }
@@ -2577,7 +2577,7 @@ Community Highlights and Events
   transform: translateY(-50%);
   padding: 0 1.618em 0 0;
   margin-left: 35%;
-  font-size: 1.26562em; }
+  font-size: 1.26563em; }
   .highlights__event--meta:last-child {
     margin-right: 0; }
   @media screen and (min-width: 768px)  {
@@ -4488,7 +4488,7 @@ Link posts contain a link to an external site. They can also optionally have a f
     font-size: 1.42383em;
     letter-spacing: 2px; }
   .article__content h4 {
-    font-size: 1.26562em;
+    font-size: 1.26563em;
     letter-spacing: 2px; }
   .article__content h5, .article__content h6 {
     font-weight: bold;
@@ -5148,7 +5148,7 @@ body.profile-page-login .live-player--mobile {
     -o-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
     font-family: 'gmr-icons' !important;
-    font-size: 1.26562em;
+    font-size: 1.26563em;
     content: "\e626"; }
   .live-player__container.playing .live-stream__btn--login {
     display: block; }
@@ -5170,7 +5170,7 @@ body.profile-page-login .live-player--mobile {
   -o-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
   font-family: 'gmr-icons' !important;
-  font-size: 1.26562em;
+  font-size: 1.26563em;
   content: "\e606" !important; }
 
 .live-stream__btn--pause:before {
@@ -5183,7 +5183,7 @@ body.profile-page-login .live-player--mobile {
   -o-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
   font-family: 'gmr-icons' !important;
-  font-size: 1.26562em;
+  font-size: 1.26563em;
   content: "\e61f" !important; }
   .live-stream__player.audio__playing .live-stream__btn--pause:before {
     content: "\e61f" !important; }
@@ -5342,7 +5342,7 @@ body.profile-page-login .live-player--mobile {
     -o-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
     font-family: 'gmr-icons' !important;
-    font-size: 1.26562em;
+    font-size: 1.26563em;
     content: "\e626"; }
   .live-player__container.playing .live-stream--inactive {
     display: block; }
@@ -9033,7 +9033,7 @@ category: Components - Shows
   margin: 0 -1px; }
 
 .gmr_gallery .entry__related-posts .section-header {
-  font-size: 1.26562em;
+  font-size: 1.26563em;
   font-weight: bold;
   color: #6d6e70; }
   .gmr_gallery .entry__related-posts .section-header a, .gmr_gallery .entry__related-posts .section-header a:visited {
@@ -9310,7 +9310,7 @@ a.social__link, a.social-share-link {
   padding: 0;
   margin-top: 26px;
   margin-bottom: 0;
-  font-size: 1.26562em;
+  font-size: 1.26563em;
   color: #404041;
   text-transform: uppercase; }
 
@@ -9392,7 +9392,7 @@ a.social__link, a.social-share-link {
   margin-right: 0;
   margin-top: 0;
   margin-bottom: 0;
-  font-size: 1.26562em;
+  font-size: 1.26563em;
   font-weight: normal;
   color: #d22228; }
   .search__result--title:last-child {
@@ -10460,14 +10460,14 @@ category: Components - Gallery Archive
     margin: 0;
     font-size: 1.42383em;
     line-height: 1.2; }
-  .show__feature--primary .gallery__featured--caption h3 {
+  .gallery__featured--primary .gallery__featured--caption h3 {
     font-size: 1.80203em; }
   .gallery__featured--caption time {
     font-size: 1em;
     text-transform: uppercase;
     color: #404041; }
   .gallery__featured--caption .inner-wrap {
-    padding: 1.5em 1.618em; }
+    padding: 1.2em 1.618em; }
   @media screen and (min-width: 1024px)  {
     .gallery__featured--caption {
       position: absolute;
@@ -10475,11 +10475,14 @@ category: Components - Gallery Archive
       left: 0;
       bottom: 0; }
       .gallery__featured--caption h3 {
-        font-size: 1.125em; }
-      .show__feature--primary .gallery__featured--caption h3 {
+        font-size: 1em; }
+      .gallery__featured--primary .gallery__featured--caption h3 {
         font-size: 2.02729em; }
       .gallery__featured--caption time {
         font-size: 0.88889em; } }
+  @media screen and (min-width: 1200px)  {
+    .gallery__featured--caption h3 {
+      font-size: 1.125em; } }
 
 .gallery__grid--column {
   float: left;
@@ -11193,7 +11196,7 @@ select {
   height: 250px;
   padding: 20px;
   background-color: #ffffff;
-  font-size: 1.26562em;
+  font-size: 1.26563em;
   color: #404041;
   -webkit-transform: translate(-50%, -50%);
   -moz-transform: translate(-50%, -50%);
