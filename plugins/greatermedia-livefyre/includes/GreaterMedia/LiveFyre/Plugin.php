@@ -2,11 +2,15 @@
 
 namespace GreaterMedia\LiveFyre;
 
+use Livefyre\Livefyre;
+
 class Plugin {
 
 	function enable() {
 		add_action( 'admin_menu', array( $this, 'initialize_admin_menu' ) );
 		add_action( 'init', array( $this, 'initialize' ) );
+		add_action( 'update_gigya_account', array( $this, 'sync_livefyre_user' ) );
+		add_action( 'gigya_login', array( $this, 'sync_livefyre_user' ) );
 
 		if ( $this->is_ajax_request() ) {
 			$this->register_ajax_handlers();
@@ -61,6 +65,7 @@ class Plugin {
 		$handlers   = array();
 		$handlers[] = new Ajax\ChangeLiveFyreSettings();
 		$handlers[] = new Ajax\GetLiveFyreAuthToken();
+		$handlers[] = new Ajax\PullGigyaProfile();
 
 		foreach ( $handlers as $handler ) {
 			$handler->register();
@@ -88,6 +93,20 @@ class Plugin {
 		$settings = json_decode( $settings, true );
 
 		return $settings;
+	}
+
+	function sync_livefyre_user( $gigya_user_id ) {
+		$gigya_user_id = rtrim( base64_encode( $gigya_user_id ), '=' );
+		$settings      = $this->get_livefyre_settings();
+		$network_name  = $settings['network_name'];
+		$network_key   = $settings['network_key'];
+
+		try {
+			$network = Livefyre::getNetwork( $network_name, $network_key );
+			$network->syncUser( $gigya_user_id );
+		} catch ( \Exception $e ) {
+			error_log( "Failed to sync livefyre user: $gigya_user_id" );
+		}
 	}
 
 }

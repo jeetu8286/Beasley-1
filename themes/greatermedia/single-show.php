@@ -23,7 +23,7 @@
 									<div class="show__feature">
 										<div class='show-feature__thumbnail'>
 											<?php if ( has_post_thumbnail() ) : ?>
-												<div class='thumbnail' style='background-image: url(<?php gm_post_thumbnail_url( 'gmr-show-featured-primary' ); ?>)'></div>
+												<div class='thumbnail' style='background-image: url(<?php gm_post_thumbnail_url( 'gmr-show-featured-primary', null, true ); ?>)'></div>
 											<?php else: ?>
 												<div class='thumbnail thumbnail-placeholder' style=''></div>
 											<?php endif; ?>
@@ -44,7 +44,7 @@
 										<div class="show__feature">
 											<div class='show-feature__thumbnail'>
 												<?php if ( has_post_thumbnail() ) : ?>
-													<div class='thumbnail' style='background-image: url(<?php gm_post_thumbnail_url( 'gmr-show-featured-primary' ); ?>)'></div>
+													<div class='thumbnail' style='background-image: url(<?php gm_post_thumbnail_url( 'gmr-show-featured-primary', null, true ); ?>)'></div>
 												<?php else: ?>
 													<div class='thumbnail thumbnail-placeholder' style=''></div>
 												<?php endif; ?>
@@ -107,17 +107,7 @@
 
 				        <section class="show__blogroll inner-left-col">
 				        	<h2 class="section-header">Blog</h2>
-
-					        <?php
-					        $main_query = \GreaterMedia\Shows\get_show_main_query();
-					        while( $main_query->have_posts() ): $main_query->the_post(); ?>
-						        
-								<?php get_template_part('partials/entry'); ?>
-
-					        <?php endwhile; ?>
-					        <?php wp_reset_query(); ?>
-	
-							<?php greatermedia_load_more_button( array( 'page_link_template' => home_url( '_shows/' . get_post()->post_name . '/page/%d/' ) ) );	?>
+							<?php get_template_part( 'partials/loop', 'show' ); ?>
 						</section>
 
 			        </div>

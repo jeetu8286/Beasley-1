@@ -31,6 +31,14 @@
 		margin-bottom: 0;
 	}
 
+	@include bp(large) {
+		margin-bottom: 1em;
+	}
+
+	@include bp(larger) {
+		margin-bottom: 0;
+	}
+
 	.has-excerpt &:after {
 		padding-top: 75%;
 	}
@@ -110,6 +118,20 @@
 			@include span-columns(4 of 6);
 			@include omega;
 		}
+
+		.has-post-thumbnail & {
+
+			@include bp(medium) {
+				@include span-columns(6 of 6);
+				@include omega;
+				float: none;
+			}
+
+			@include bp(larger) {
+				@include span-columns(4 of 6);
+				@include omega;
+			}
+		}
 	}
 }
 
@@ -183,7 +205,6 @@
 	line-height: 1;
 	font-weight: lighter;
 	font-size: ms(1);
-	color: $color-red;
 	text-transform: uppercase;
 
 	@include bp(medium) {
@@ -248,6 +269,22 @@
 		.entry2__thumbnail {
 			float: right;
 			margin-right: 0;
+		}
+	}
+}
+
+.entry2.format-standard.has-post-thumbnail {
+	@include bp(medium) {
+		.entry2__thumbnail {
+			margin-left: 2em;
+			margin-bottom: 1em;
+		}
+	}
+
+	@include bp(larger) {
+		.entry2__thumbnail {
+			margin-left: 0;
+			margin-bottom: 0;
 		}
 	}
 }
@@ -326,15 +363,40 @@
 		font-weight: normal;
 		left: 0;
 		top: 0;
+
+		@include bp(medium) {
+			max-width: 60%;
+		}
+
+		@include bp(large) {
+			max-width: initial;
+		}
 	}
 
 	.entry2__thumbnail--day-of-week {
+		font-size: 1em;
 		font-weight: normal;
+
+		@include bp(medium) {
+			font-size: .875em;
+		}
+
+		@include bp(large) {
+			font-size: 1em;
+		}
 	}
 
 	.entry2__thumbnail--month-and-day {
 		font-size: 2em;
 		margin-top: .15em;
+
+		@include bp(medium) {
+			font-size: 1.5em;
+		}
+
+		@include bp(large) {
+			font-size: 2em;
+		}
 	}
 }
 

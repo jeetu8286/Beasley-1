@@ -290,6 +290,7 @@ function gmr_contests_enqueue_front_scripts() {
 	//wp_enqueue_style( 'greatermedia-contests', "{$base_path}css/greatermedia-contests.css", array( 'datetimepicker' ), GREATER_MEDIA_CONTESTS_VERSION );
 
 	wp_enqueue_script( 'greatermedia-contests', "{$base_path}js/contests{$postfix}.js", array( 'modernizr', 'jquery-waypoints', 'jquery', 'datetimepicker', 'parsleyjs', 'gmr-gallery' ), GREATER_MEDIA_CONTESTS_VERSION, true );
+	wp_rocketloader_script( 'greatermedia-contests' );
 }
 
 /**
@@ -303,16 +304,28 @@ function gmr_contest_container_attributes( $post = null ) {
 		return;
 	}
 
-	$permalink = untrailingslashit( get_permalink( $post->ID ) );
-	$permalink_action = "{$permalink}/action";
+	$endpoints = array();
+	
+	if ( is_preview() ) {
+		$endpoints = array(
+			'load'        => add_query_arg( 'action', 'load' ),
+			'confirm-age' => add_query_arg( 'action', 'confirm-age' ),
+			'vote'        => add_query_arg( 'action', 'vote' ),
+			'unvote'      => add_query_arg( 'action', 'unvote' ),
+			'infinite'    => add_query_arg( 'page', '' ),
+		);
+	} else {
+		$permalink = untrailingslashit( get_permalink( $post->ID ) );
+		$permalink_action = "{$permalink}/action";
 
-	$endpoints = array(
-		'load'        => "{$permalink_action}/load/",
-		'confirm-age' => "{$permalink_action}/confirm-age/",
-		'vote'        => "{$permalink_action}/vote/",
-		'unvote'      => "{$permalink_action}/unvote/",
-		'infinite'    => "{$permalink}/page/",
-	);
+		$endpoints = array(
+			'load'        => "{$permalink_action}/load/",
+			'confirm-age' => "{$permalink_action}/confirm-age/",
+			'vote'        => "{$permalink_action}/vote/",
+			'unvote'      => "{$permalink_action}/unvote/",
+			'infinite'    => "{$permalink}/page/",
+		);
+	}
 
 	foreach ( $endpoints as $attribute => $value ) {
 		echo sprintf( ' data-%s="%s"', $attribute, esc_url( $value ) );
@@ -613,8 +626,16 @@ function gmr_contests_render_form( $skip_age = false ) {
 
 	// check if user can submit multiple entries
 	$single_entry = get_post_meta( $contest_id, 'contest-single-entry', true );
-	if ( $single_entry && function_exists( 'has_user_entered_contest' ) && has_user_entered_contest( $contest_id ) ) {
-		wp_send_json_error( array( 'restriction' => 'one-entry' ) );
+	if ( $single_entry ) {
+		$contests = isset( $_COOKIE['__cs'] ) ? $_COOKIE['__cs'] : '';
+		$contests = wp_parse_id_list( base64_decode( $contests ) );
+		if ( in_array( $contest_id, $contests ) ) {
+			wp_send_json_error( array( 'restriction' => 'one-entry' ) );
+		}
+
+		if ( function_exists( 'has_user_entered_contest' ) && has_user_entered_contest( $contest_id ) ) {
+			wp_send_json_error( array( 'restriction' => 'one-entry' ) );
+		}
 	}
 
 	// check min age restriction
@@ -665,13 +686,24 @@ function gmr_contests_process_form_submission() {
 		return;
 	}
 
+	$contest_id = get_the_ID();
+	$submitted_values = $submitted_files  = array();
+
+	if ( function_exists( 'is_gigya_user_logged_in' ) && ! is_gigya_user_logged_in() ) {
+		$entrant_email = filter_input( INPUT_POST, 'userinfo_email', FILTER_VALIDATE_EMAIL );
+		if ( ! $entrant_email || ( function_exists( 'has_email_entered_contest' ) && has_email_entered_contest( $contest_id, $entrant_email ) ) ) {
+			echo '<html>';
+				echo '<head></head>';
+				echo '<body><b style="color:red">Sorry, but you can enter the contest only once.</b></body>';
+			echo '</html>';
+			exit;
+		}
+	}
+
 	require_once ABSPATH . 'wp-admin/includes/image.php';
 	require_once ABSPATH . 'wp-admin/includes/media.php';
 	require_once ABSPATH . 'wp-admin/includes/file.php';
 
-	$submitted_values = $submitted_files  = array();
-
-	$contest_id = get_the_ID();
 	$form = @json_decode( get_post_meta( $contest_id, 'embedded_form', true ) );
 	foreach ( $form as $field ) {
 		$field_key = 'form_field_' . $field->cid;
@@ -725,6 +757,16 @@ function gmr_contests_process_form_submission() {
 
 	do_action( 'greatermedia_contest_entry_save', $entry );
 	delete_transient( 'contest_entries_' . $contest_id );
+
+	if ( ! headers_sent() ) {
+		$contests = isset( $_COOKIE['__cs'] ) ? $_COOKIE['__cs'] : '';
+		$contests = wp_parse_id_list( base64_decode( $contests ) );
+		$contests[] = $contest_id;
+		$contests = array_filter( array_unique( $contests ) );
+		$contests = base64_encode( implode( ',', $contests ) );
+		
+		setcookie( '__cs', $contests, current_time( 'timestamp', 1 ) + YEAR_IN_SECONDS, '/', parse_url( home_url(), PHP_URL_HOST ) );
+	}
 
 	echo '<html>';
 		echo '<head></head>';
@@ -1213,7 +1255,7 @@ $did_filter_expired_contests = false;
 function gmr_filter_expired_contests( $query ) {
 	global $did_filter_expired_contests;
 
-	if ( ! is_admin() && is_search() && ! $did_filter_expired_contests ) {
+	if ( ! is_admin() && ( is_search() || is_post_type_archive( GMR_CONTEST_CPT ) ) && ! $did_filter_expired_contests ) {
 		$now           = time();
 		$query_params = array(
 			'relation' => 'OR',

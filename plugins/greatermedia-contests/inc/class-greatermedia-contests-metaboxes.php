@@ -181,17 +181,36 @@ class GreaterMediaContestsMetaboxes {
 	 * @param array $args
 	 */
 	public function render_date_field( array $args ) {
+		static $render_server_time = true;
 
-		if ( isset( $args['value'] ) && is_numeric( $args['value'] ) ) {
-			// HTML5 date input needs date in Y-m-d and will convert to local format on display
-			$args['value'] = date( 'Y-m-d', $args['value'] );
-		} else {
-			$args['value'] = ''; // invalid, should be a unix timestamp
+		$name = $args['name'];
+		$date = ! empty( $args['value'] ) && is_numeric( $args['value'] ) ? $args['value'] : null;
+		if ( ! empty( $date ) ) {
+			$date += get_option( 'gmt_offset' ) * HOUR_IN_SECONDS;
 		}
 
+		$args['value'] = '';
+
 		$args['type'] = 'date';
+		$args['name'] = $name . '[date]';
+		if ( $date ) {
+			$args['value'] = date( 'Y-m-d', $date );
+		}
 		self::render_input( $args );
 
+		$args['type'] = 'time';
+		$args['name'] = $name . '[time]';
+		if ( $date ) {
+			$args['value'] = date( 'H:i', $date );
+		}
+		self::render_input( $args );
+
+		if ( $render_server_time ) {
+			$format = get_option( 'date_format' ) . ' ' . get_option( 'time_format' );
+			echo ' <small>(server time is ' . date( $format, current_time( 'timestamp' ) ) . ')</small>';
+			$render_server_time = false;
+		}
+		
 	}
 
 	public function render_input( array $args ) {
@@ -227,7 +246,7 @@ class GreaterMediaContestsMetaboxes {
 
 		$contset_type = get_post_meta( $post->ID, 'contest_type', true );
 		$is_onair = 'onair' == $contset_type;
-		
+
 		?><ul class="tabs">
 			<li class="active"><a href="#what-you-win">What You Win</a></li>
 			<li><a href="#how-to-enter">How to Enter</a></li>
@@ -254,7 +273,7 @@ class GreaterMediaContestsMetaboxes {
 		<div id="contest-form" class="tab">
 			<?php if ( ! $post_status->public ) : ?>
 				<div class="contest-form-info">Name, Email Address, Date of Birth and Zipcode fields will be added automatically to every contest.</div>
-				
+
 				<div id="contest_embedded_form"></div>
 				<input type="hidden" id="contest_embedded_form_data" name="contest_embedded_form">
 			<?php else : ?>
@@ -271,10 +290,12 @@ class GreaterMediaContestsMetaboxes {
 
 	private function _restrictions_settings( WP_Post $post ) {
 		$post_status = get_post_status_object( $post->post_status );
+		$datetime_format = get_option( 'date_format' ) . ' ' . get_option( 'time_format' );
 
 		$started = get_post_meta( $post->ID, 'contest-start', true );
 		$ended = get_post_meta( $post->ID, 'contest-end', true );
-		
+		$offset = get_option( 'gmt_offset' ) * HOUR_IN_SECONDS;
+
 		?><table class="form-table">
 			<tr>
 				<th scope="row"><label for="greatermedia_contest_start">Start date</label></th>
@@ -287,7 +308,19 @@ class GreaterMediaContestsMetaboxes {
 							'value'   => get_post_meta( $post->ID, 'contest-start', true )
 						) ); ?>
 					<?php else : ?>
-						<b><?php echo ! empty( $started ) ? date( get_option( 'date_format' ), get_post_meta( $post->ID, 'contest-start', true ) ) : '&#8212;'; ?></b>
+						<b>
+							<?php if ( ! empty( $started ) ) : ?>
+								<?php echo date( $datetime_format, $started + $offset ); ?>
+							<?php else : ?>
+								&#8212;
+							<?php endif; ?>
+						</b>
+					
+						<?php if ( ! empty( $started ) ) : ?>
+							<small style="margin-left:2em;">
+								(server time is <?php echo date( $datetime_format, current_time( 'timestamp' ) ); ?>)
+							</small>
+						<?php endif; ?>
 					<?php endif; ?>
 				</td>
 			</tr>
@@ -303,7 +336,19 @@ class GreaterMediaContestsMetaboxes {
 							'value'   => get_post_meta( $post->ID, 'contest-end', true ),
 						) ); ?>
 					<?php else : ?>
-						<b><?php echo ! empty( $ended ) ? date( get_option( 'date_format' ), get_post_meta( $post->ID, 'contest-end', true ) ) : '&#8212;'; ?></b>
+						<b>
+							<?php if ( ! empty( $ended ) ) : ?>
+								<?php echo date( $datetime_format, $ended + $offset ); ?>
+							<?php else : ?>
+								&#8212;
+							<?php endif; ?>
+						</b>
+
+						<?php if ( empty( $started ) && ! empty( $ended ) ) : ?>
+							<small style="margin-left:2em;">
+								(server time is <?php echo date( $datetime_format, current_time( 'timestamp' ) ); ?>)
+							</small>
+						<?php endif; ?>
 					<?php endif; ?>
 				</td>
 			</tr>
@@ -345,7 +390,7 @@ class GreaterMediaContestsMetaboxes {
 	}
 
 	public function gallery_meta_box( WP_Post $post ) {
-		
+
 		$images = get_children( array(
 			'numberposts'    => 500, // do we need more?
 			'post_parent'    => $post->ID,
@@ -435,12 +480,26 @@ class GreaterMediaContestsMetaboxes {
 		update_post_meta( $post_id, 'rules-desc', wp_kses_post( $_POST['greatermedia_contest_rules'] ) );
 		update_post_meta( $post_id, 'contest_type', filter_input( INPUT_POST, 'contest_type' ) );
 
-		if ( ! empty( $_POST['greatermedia_contest_start'] ) ) {
-			update_post_meta( $post_id, 'contest-start', strtotime( $_POST['greatermedia_contest_start'] ) );
-		}
+		$offset = get_option( 'gmt_offset' ) * HOUR_IN_SECONDS;
+		$dates = array(
+			'contest-start' => 'greatermedia_contest_start',
+			'contest-end'   => 'greatermedia_contest_end',
+		);
 
-		if ( ! empty( $_POST['greatermedia_contest_end'] ) ) {
-			update_post_meta( $post_id, 'contest-end', strtotime( $_POST['greatermedia_contest_end'] ) );
+		foreach ( $dates as $meta => $param ) {
+			if ( isset( $_POST[ $param ]['date'] ) ) {
+				$value = 0;
+				if ( ! empty( $_POST[ $param ]['date'] ) ) {
+					$value = $_POST[ $param ]['date'];
+					if ( ! empty( $_POST[ $param ]['time'] ) ) {
+						$value .= ' ' . $_POST[ $param ]['time'];
+					}
+
+					$value = strtotime( $value ) - $offset; // convert to timestamp and UTC
+				}
+
+				update_post_meta( $post_id, $meta, $value );
+			}
 		}
 
 		$members_only = filter_input( INPUT_POST, 'greatermedia_contest_members_only', FILTER_VALIDATE_BOOLEAN );

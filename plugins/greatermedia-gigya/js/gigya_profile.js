@@ -141,12 +141,7 @@
 			return !!this.getUserID();
 		},
 
-		register: function(profile) {
-			this.login(profile);
-			return ajaxApi.request('register_account', {});
-		},
-
-		login: function(profile) {
+		save: function(profile) {
 			for (var property in profile) {
 				if (profile.hasOwnProperty(property)) {
 					this.store.set(property, profile[property]);
@@ -156,9 +151,19 @@
 			this.store.save(true);
 		},
 
+		register: function(profile) {
+			this.save(profile);
+			return ajaxApi.request('register_account', {});
+		},
+
+		login: function(profile) {
+			this.save(profile);
+			return ajaxApi.request('gigya_login', {});
+		},
+
 		update: function(profile) {
 			this.store.clear();
-			this.login(profile);
+			this.save(profile);
 		},
 
 		logout: function() {
@@ -198,8 +203,16 @@
 			}
 
 			var profile = this.profileForResponse(response);
-			this.session.login(profile);
-			this.redirect('/');
+			var self = this;
+
+			this.session.login(profile)
+				.then(function() {
+					self.redirect('/', 'login');
+				})
+				.fail(function() {
+					// TODO: What to do if gigya_login ajax failed?
+					self.redirect('/', login);
+				});
 		},
 
 		didRegister: function(response) {
@@ -248,11 +261,20 @@
 			return profile;
 		},
 
-		redirect: function(defaultDest) {
+		redirect: function(defaultDest, source) {
 			var redirectUrl = this.getRedirectUrl(defaultDest);
+			if (source === 'login' && redirectUrl.indexOf('/members/account') === 0) {
+				// override redirect to account page when redirecting after login
+				// even if dest is to the account page
+				redirectUrl = '/';
+			}
 
 			if (redirectUrl) {
-				location.href = redirectUrl;
+				if (location.replace) {
+					location.replace(redirectUrl);
+				} else {
+					location.href = redirectUrl;
+				}
 			}
 		},
 

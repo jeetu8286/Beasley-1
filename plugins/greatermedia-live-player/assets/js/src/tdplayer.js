@@ -58,11 +58,11 @@
 	var nowPlayingInfo = document.getElementById('nowPlaying');
 	var trackInfo = document.getElementById('trackInfo');
 	var liveStreamSelector = document.querySelector('.live-player__stream');
-	var playerPopupWindow = null;
 	var inlineAudioInterval = null;
 	var liveStreamInterval = null;
-	var audioIntervalDuration = 60000;
-	/* every minute */
+	var audioIntervalDuration = 60000; /* every minute */
+	var footer = document.querySelector('.footer');
+	var lpInit = false;
 
 	/**
 	 * global variables for event types to use in conjunction with `addEventHandler` function
@@ -138,11 +138,7 @@
 	 */
 	window.tdPlayerApiReady = function () {
 		console.log("--- TD Player API Loaded ---");
-		if (is_player_popup_required()) {
-			load_player_popup();
-		} else {
-			initPlayer();
-		}
+		initPlayer();
 	};
 
 	function calcTechPriority() {
@@ -167,7 +163,7 @@
 				{
 					id: 'MediaPlayer',
 					playerId: 'td_container',
-					isDebug: false,
+					isDebug: true,
 					techPriority: techPriority,
 					timeShift: { // timeShifting is currently available on Flash only. Leaving for HTML5 future
 						active: 0, /* 1 = active, 0 = inactive */
@@ -295,6 +291,9 @@
 		} else {
 			playBtn.classList.add('live-player__muted');
 		}
+		if (body.classList.contains('live-player--active')) {
+			body.classList.remove('live-player--active');
+		}
 		listenNow.style.display = 'inline-block';
 		nowPlaying.style.display = 'none';
 		pauseBtn.classList.add('live-player__muted');
@@ -412,7 +411,6 @@
 		if (livePlayer != null) {
 			livePlayer.classList.add('live-player--heartbeat');
 		}
-		//console.log('--- Heartbeat Class Added ---');
 	}
 
 	function removePlayBtnHeartbeat() {
@@ -422,7 +420,6 @@
 		if (livePlayer != null && livePlayer.classList.contains('live-player--heartbeat')) {
 			livePlayer.classList.remove('live-player--heartbeat');
 		}
-		//console.log('--- Heartbeat Class Removed ---');
 	}
 
 	var listenLiveStopCustomInlineAudio = function () {
@@ -443,20 +440,46 @@
 			listenNow.innerHTML = 'Listen Live';
 		}
 		if (window.innerWidth >= 768) {
-			playLiveStream();
+			playLiveStreamNoAd();
 		}
 	};
 
+	function setInitialPlay() {
+		lpInit = 1;
+		console.log('-- Player Initialized By Click ---');
+	}
+
+	function setPlayerReady() {
+		lpInit = true;
+		console.log('-- Player Ready to Go ---');
+	}
+
+	function playLiveStreamDevice() {
+		if (is_gigya_user_logged_in() && lpInit === true) {
+			setStoppedStyles();
+			if (window.innerWidth >= 768) {
+				playLiveStreamNoAd();
+			} else {
+				playLiveStreamMobileNoAd();
+			}
+		}
+	}
+
 	function changePlayerState() {
 		if (is_gigya_user_logged_in()) {
-			if (window.innerWidth >= 768) {
-				if (playBtn != null) {
-					addEventHandler(playBtn, elemClick, playLiveStream);
-				}
-			} else {
-				if (playBtn != null) {
-					addEventHandler(playBtn, elemClick, playLiveStreamMobile);
-				}
+			if (playBtn != null) {
+				addEventHandler(playBtn, elemClick, function(){
+					if (lpInit === true) {
+						setStoppedStyles();
+						if (window.innerWidth >= 768) {
+							playLiveStreamNoAd();
+						} else {
+							playLiveStreamMobileNoAd();
+						}
+					} else {
+						setInitialPlay();
+					}
+				});
 			}
 			if (listenNow != null) {
 				addEventHandler(listenNow, elemClick, listenLiveStopCustomInlineAudio);
@@ -465,6 +488,7 @@
 			if (playBtn != null) {
 				addEventHandler(playBtn, 'click', function () {
 					window.location.href = gigyaLogin;
+					setPlayerReady();
 				});
 			}
 			if (listenNow != null) {
@@ -485,23 +509,14 @@
 	});
 
 	function loggedInGigyaUser() {
-		if (is_gigya_user_logged_in()) {
-			setStoppedStyles();
-			if (Cookies.get("gmlp_play_button_pushed") == 1) {
-				if (window.innerWidth >= 768) {
-					playLiveStream();
-				} else {
-					playLiveStreamMobile();
-				}
-				Cookies.set("gmlp_play_button_pushed", 0);
-			} else {
-				//console.log("--- Log In with Gigya ---");
-			}
-		}
+		playLiveStreamDevice();
+		Cookies.set("gmlp_play_button_pushed", 0);
 	}
 
 	function preVastAd() {
 		var preRoll = document.getElementById('live-stream__container');
+
+		body.classList.add('vast-ad--playing');
 
 		if (preRoll != null) {
 			preRoll.classList.add('vast__pre-roll');
@@ -510,6 +525,10 @@
 
 	function postVastAd() {
 		var preRoll = document.getElementById('live-stream__container');
+
+		if (body.classList.contains('vast-ad--playing')) {
+			body.classList.remove('vast-ad--playing');
+		}
 
 		if (preRoll != null) {
 			preRoll.classList.remove('vast__pre-roll');
@@ -552,6 +571,7 @@
 	function playLiveStreamMobile() {
 		var station = gmr.callsign;
 
+		pjaxInit();
 		if (station === '') {
 			alert('Please enter a Station');
 			return;
@@ -572,6 +592,7 @@
 					player.stop();
 				}
 
+				body.classList.add('live-player--active');
 				livePlayer.classList.add('live-player--active');
 				player.play({station: station, timeShift: true});
 				setPlayingStyles();
@@ -585,11 +606,38 @@
 					player.stop();
 				}
 
+				body.classList.add('live-player--active');
 				livePlayer.classList.add('live-player--active');
 				player.play({station: station, timeShift: true});
 				setPlayingStyles();
 			});
 		}
+
+	}
+
+	/**
+	 * Temp to remove vast ad while issues are resolves
+	 */
+	function playLiveStreamMobileNoAd() {
+		var station = gmr.callsign;
+
+		if (station === '') {
+			alert('Please enter a Station');
+			return;
+		}
+		if (true === playingCustomAudio) {
+			listenLiveStopCustomInlineAudio();
+		}
+		debug('playLiveStream - station=' + station);
+
+		if (livePlaying) {
+			player.stop();
+		}
+
+		body.classList.add('live-player--active');
+		livePlayer.classList.add('live-player--active');
+		player.play({station: station, timeShift: true});
+		setPlayingStyles();
 
 	}
 
@@ -621,6 +669,7 @@
 						player.stop();
 					}
 
+					body.classList.add('live-player--active');
 					livePlayer.classList.add('live-player--active');
 					player.play({station: station, timeShift: true});
 					setPlayingStyles();
@@ -634,11 +683,43 @@
 						player.stop();
 					}
 
+					body.classList.add('live-player--active');
 					livePlayer.classList.add('live-player--active');
 					player.play({station: station, timeShift: true});
 					setPlayingStyles();
 				});
 			}
+		}
+	}
+
+	/**
+	 * Temp to remove vast ad while issues are resolves
+	 */
+	function playLiveStreamNoAd() {
+		var station = gmr.callsign;
+
+		pjaxInit();
+		if (true === playingCustomAudio) {
+			resumeCustomInlineAudio();
+
+			setPlayingStyles();
+		} else {
+
+			if (station === '') {
+				alert('Please enter a Station');
+				return;
+			}
+
+			debug('playLiveStream - station=' + station);
+
+			if (livePlaying) {
+				player.stop();
+			}
+
+			body.classList.add('live-player--active');
+			livePlayer.classList.add('live-player--active');
+			player.play({station: station, timeShift: true});
+			setPlayingStyles();
 		}
 	}
 
@@ -702,8 +783,6 @@
 
 		//Listen on companion-load-error event
 		//companions.addEventListener("companion-load-error", onCompanionLoadError);
-
-		loggedInGigyaUser();
 		initControlsUi();
 
 		if (player.addEventListener) {
@@ -743,6 +822,15 @@
 		player.setVolume(1); //Set volume to 100%
 
 		setStatus('Api Ready');
+		if (lpInit === 1) {
+			setPlayerReady();
+			playLiveStreamDevice();
+		} else if (Cookies.get('gmlp_play_button_pushed') === 1) {
+			setPlayerReady();
+			playLiveStreamDevice();
+		} else {
+			setPlayerReady();
+		}
 		if (window.innerWidth >= 768) {
 			addPlayBtnHeartbeat();
 			setTimeout(removePlayBtnHeartbeat, 2000);
@@ -1502,21 +1590,4 @@
 		addEventHandler(podcastPlayBtn, elemClick, setInlineAudioUX);
 		addEventHandler(podcastPauseBtn, elemClick, pauseCustomInlineAudio);
 	});
-
-	function is_player_popup_required() {
-		/** For testing return true **/
-		return ( "undefined" !== typeof Modernizr && false === Modernizr.history && "" === gmlp.is_popup );
-	}
-
-	function load_player_popup() {
-		jQuery('#playButton').click(function () {
-			if (playerPopupWindow == null || playerPopupWindow.closed) {
-				//create new, since none is open
-				playerPopupWindow = window.open(gmlp.popup_url, "livestreaming", "toolbar=no, scrollbars=no, resizable=no, top=500, left=500, width=400, height=400");
-			} else {
-				playerPopupWindow.focus();
-			}
-		});
-
-	}
 })(jQuery, window);

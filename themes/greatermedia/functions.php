@@ -20,7 +20,7 @@
 if ( defined( 'GMR_PARENT_ENV' ) && 'dev' == GMR_PARENT_ENV ) {
 	define( 'GREATERMEDIA_VERSION', time() );
 } else {
-	define( 'GREATERMEDIA_VERSION', '0.1.5' );
+	define( 'GREATERMEDIA_VERSION', '1.0.1' );
 }
 
 add_theme_support( 'homepage-curation' );
@@ -58,7 +58,7 @@ function greatermedia_setup() {
 
 	// Add theme support for post thumbnails
 	add_theme_support( 'post-thumbnails' );
-	add_image_size( 'gm-article-thumbnail',     		1580,   9999,   false   ); // thumbnails used for articles
+	add_image_size( 'gm-article-thumbnail',     		1400,   9999,   false   ); // thumbnails used for articles
 	add_image_size( 'gm-entry-thumbnail-1-1' ,          500,    500,    true    );
 	add_image_size( 'gm-entry-thumbnail-4-3' ,          500,    375,    true    );
 	add_image_size( 'gmr-gallery',              		800,    534,    true    ); // large images for the gallery
@@ -410,28 +410,6 @@ function greatermedia_alter_search_query( $query ) {
 add_action( 'pre_get_posts', 'greatermedia_alter_search_query' );
 
 /**
- * Alters the main query on the front page to include additional post types
- *
- * @param WP_Query $query
- */
-function greatermedia_alter_front_page_query( $query ) {
-	if ( $query->is_main_query() && $query->is_front_page() ) {
-		// Need to really think about how to include events here, and if it really makes sense. By default,
-		// we would have all published events, in reverse cron - so like we'd have "posts" looking things dated for the future
-		// that would end up hiding the actual posts, potentially for pages before getting to any real content.
-		//
-		// ADDITIONALLY - There is a checkbox for this on the events setting page, so we don't need to do that here :)
-		$post_types = array( 'post' );
-		if ( class_exists( 'GMP_CPT' ) ) {
-			$post_types[] = GMP_CPT::EPISODE_POST_TYPE;
-		}
-
-		$query->set( 'post_type', $post_types );
-	}
-}
-add_action( 'pre_get_posts', 'greatermedia_alter_front_page_query' );
-
-/**
  * This will keep Jetpack Sharing from auto adding to the end of a post.
  * We want to add this manually to the proper theme locations
  *
@@ -474,7 +452,7 @@ if ( ! function_exists( 'greatermedia_load_more_template' ) ) :
 			$partial_slug = 'partials/loop';
 		}
 
-		global $wp_query;
+		global $wp_query, $gmr_loadmore_num_pages, $gmr_loadmore_post_count, $gmr_loadmore_paged;
 
 		ob_start();
 
@@ -483,10 +461,10 @@ if ( ! function_exists( 'greatermedia_load_more_template' ) ) :
 		$html = ob_get_clean();
 
 		wp_send_json( array(
-			'paged' => $wp_query->query_vars['paged'],
-			'max_num_pages' => $wp_query->max_num_pages,
-			'post_count' => $wp_query->post_count,
-			'html' => $html,
+			'paged'         => $gmr_loadmore_paged ?: $wp_query->query_vars['paged'],
+			'max_num_pages' => $gmr_loadmore_num_pages ?: $wp_query->max_num_pages,
+			'post_count'    => $gmr_loadmore_post_count ?: $wp_query->post_count,
+			'html'          => $html,
 		) );
 
 		exit;

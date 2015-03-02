@@ -111,6 +111,13 @@ category: Components
 	height: auto !important;
 }
 
+	// Hide the player on the login, register, and forgot password pages. The
+	// "Listen Live" button looks like a form submission button and confuses
+	// users when they are filling out the forms.  
+	body.profile-page-login .live-player--mobile {
+		display: none;
+	}
+
 // for when the live player is opened on mobile
 .live-player--open .page-wrap:before {
 	position: absolute;
@@ -700,6 +707,10 @@ category: Components
 
 	.live-player--active & {
 		display: none;
+	}
+
+	.vast-ad--playing & {
+		display: block;
 	}
 
 	&.live-player__muted {
@@ -1426,7 +1437,12 @@ category: Components
 
 	@include bp(medium) {
 		display: block;
+		right: 0;
 		width: 225px;
+	}
+
+	@include bp(x-large) {
+		@include calc(right, '50% - 700px');
 	}
 
 	&.show-more--muted {
@@ -1692,4 +1708,8 @@ a.podcast__download--fallback, a.podcast__download--fallback:visited {
 
 a.podcast__download--fallback:hover, a.podcast__download--fallback:active {
 	background-color: $primary-link-hover;
+}
+
+body.vast-ad--playing {
+	overflow: hidden !important;
 }

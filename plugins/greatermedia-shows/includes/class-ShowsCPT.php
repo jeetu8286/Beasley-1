@@ -38,6 +38,7 @@ class ShowsCPT {
 			add_action( 'wp_ajax_nopriv_gmr_show_load_live_links', array( self::$_instance, 'load_more_links' ) );
 
 			add_filter( 'gmr_blogroll_widget_item_post_types', array( self::$_instance, 'add_episode_pt_to_blogroll_widget' ) );
+			add_filter( 'redirect_canonical', array( self::$_instance, 'check_redirect_canonical' ) );
 		}
 
 		return self::$_instance;
@@ -215,6 +216,15 @@ class ShowsCPT {
 			</li><?php
 		}
 		exit;
+	}
+
+	/**
+	 * Prevents canonical redirect for show archive.
+	 */
+	public function check_redirect_canonical( $redirect_url ) {
+		return get_query_var( 'post_type' ) != self::SHOW_CPT || get_query_var( 'paged' ) < 2
+			? $redirect_url
+			: false;
 	}
 
 }
