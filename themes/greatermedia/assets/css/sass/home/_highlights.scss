@@ -257,6 +257,11 @@ Community Highlights and Events
 
 	.news-site & {
 		@include span-columns(4 of 12);
+
+		@include bp(medium) {
+			clear: both;
+			padding-top: 0;
+		}
 	}
 }
 
@@ -410,10 +415,18 @@ Community Highlights and Events
 	}
 
 	.news-site & {
-		margin-top: -5px;
-		font-size: ms(2);
+		font-size: ms(-2);
 		font-weight: normal;
 		text-transform: uppercase;
+
+		@include bp(large) {
+			font-size: ms(0);
+		}
+
+		@include bp(x-large) {
+			margin-top: -5px;
+			font-size: ms(2);
+		}
 	}
 }
 
@@ -425,15 +438,23 @@ Community Highlights and Events
 	color: $gray;
 
 	.news-site & {
-		font-size: ms(1);
+		font-size: ms(-3);
 		text-transform: none;
+
+		@include bp(large) {
+			font-size: ms(-1);
+		}
+
+		@include bp(x-large) {
+			font-size: ms(1);
+		}
 	}
 }
 
 .highlights__contests {
 	clear: both;
 	padding-top: 1.5em;
-	@include bp(large) {
+	@include bp(medium) {
 		@include span-columns(6 of 15);
 		clear: none;
 		padding-top: 0;
@@ -442,10 +463,6 @@ Community Highlights and Events
 	.news-site & {
 		@include span-columns(4 of 12);
 	}
-}
-
-.highlights__contests .highlights__heading {
-	display: inline-block;
 }
 
 .highlights__contests--more-btn {
@@ -482,7 +499,7 @@ Community Highlights and Events
 		margin-bottom: 0;
 	}
 
-	@include bp(large) {
+	@include bp(medium) {
 		@include span-columns(6 of 6);
 		// Force a specific height relative to the grid
 		height: 0;
@@ -513,7 +530,7 @@ Community Highlights and Events
 	background-position: center center;
 	background-repeat: no-repeat;
 
-	@include bp(large) {
+	@include bp(medium) {
 		@include span-columns(2 of 6);
 		width: 21.5%;
 		position: absolute;
@@ -531,7 +548,7 @@ Community Highlights and Events
 		font-size: ms(1);
 	}
 
-	@include bp(large) {
+	@include bp(medium) {
 		width: auto;
 		margin-left: 26.32916%;
 		padding-top: 4%;
@@ -568,10 +585,18 @@ Community Highlights and Events
 	}
 
 	.news-site & {
-		margin-top: -5px;
-		font-size: ms(2);
+		font-size: ms(-2);
 		font-weight: normal;
 		text-transform: uppercase;
+
+		@include bp(large) {
+			font-size: ms(0);
+		}
+
+		@include bp(x-large) {
+			margin-top: -5px;
+			font-size: ms(2);
+		}
 	}
 }
 
@@ -585,6 +610,14 @@ Community Highlights and Events
 	.news-site & {
 		font-size: ms(1);
 		text-transform: none;
+
+		@include bp(large) {
+			font-size: ms(-1);
+		}
+
+		@include bp(x-large) {
+			font-size: ms(1);
+		}
 	}
 }
 
@@ -592,22 +625,23 @@ a.highlights__contest--btn {
 	@include btn($btn-bg, $color-text-white, $btn-bg, .5em, 1em, .875em);
 	@include border-radius(4px);
 	margin-top: 1em;
+	text-align: center;
+
+	@include bp(medium) {
+		font-size: ms(-2);
+	}
+
+	@include bp(large) {
+		font-size: ms(-1);
+	}
 }
 
 .highlights__ad {
-	clear: both;
-	padding-top: 1.5em;
-	@include bp(large) {
-		@include span-columns(6 of 15);
-		margin-top: 1em;
-		clear: none;
-		padding-top: 0;
-	}
 
 	.news-site & {
 		clear: both;
 		padding-top: 1.5em;
-		@include bp(large) {
+		@include bp(medium) {
 			@include span-columns(4 of 12);
 			clear: none;
 			padding-top: 0;
