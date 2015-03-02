@@ -1320,6 +1320,9 @@ blockquote p {
         padding-top: 29px;
         padding-bottom: 29px; } }
 
+.news-site .header__account ul li a, .news-site .header__account ul li a:link, .news-site .header__account ul li a:visited {
+  border-right: none; }
+
 .header__nav ul li.active a:hover, .header__nav ul li a:focus, .header__nav ul li a:active, .header__nav ul li.active, .header__account ul li a:hover, .header__account ul li a:focus, .header__account ul li a:active, .header__account ul li:hover, .ui-menu .ui-state-focus {
   background-color: #d22228; }
 
@@ -3404,6 +3407,7 @@ a.highlights__contest--btn {
       width: auto; } }
   @media screen and (min-width: 768px)  {
     .news-site .header__account {
+      width: auto;
       height: 78px; } }
 
 .header__account--mobile {
@@ -3467,6 +3471,7 @@ a.highlights__contest--btn {
       padding-bottom: 25px; } }
   @media screen and (min-width: 768px)  {
     .news-site .header__account--btn {
+      width: auto;
       height: 78px;
       padding: 26px 1.5em; } }
   @media screen and (min-width: 1024px)  {
@@ -13903,7 +13908,7 @@ table.responsive tr:nth-of-type(even) {
 .mobile-nav__list .menu-item {
   border-bottom-color: #58595B; }
 
-.header__nav ul li a:hover, .header__nav ul li a:focus, .header__nav ul li a:active, .header__nav ul li:hover, .header__account ul li a:hover, .header__account ul li a:focus, .header__account ul li a:active, .header__account ul li:hover, .ui-menu .ui-state-focus {
+.header__nav ul li.active a:hover, .header__nav ul li a:focus, .header__nav ul li a:active, .header__nav ul li.active, .header__account ul li a:hover, .header__account ul li a:focus, .header__account ul li a:active, .header__account ul li:hover, .ui-menu .ui-state-focus {
   background-color: #580f0c; }
 
 .header__nav .sub-menu, .header__nav .format-fw > ul, .header__nav .format-sp > ul, .header__nav .format-fi > ul, .header__account--links.sub-menu, .header__nav .format-fw > ul.header__account--links, .header__nav .format-sp > ul.header__account--links, .header__nav .format-fi > ul.header__account--links, .ui-menu {
@@ -13982,5 +13987,8 @@ table.responsive tr:nth-of-type(even) {
         color: #d0d2d3; }
       .header__search--input:-ms-input-placeholder {
         color: #d0d2d3; } }
+
+a.entry2__category:link, a.entry2__category:visited {
+  color: #929497; }
 
 /*# sourceMappingURL=thefanatic.css.map */
