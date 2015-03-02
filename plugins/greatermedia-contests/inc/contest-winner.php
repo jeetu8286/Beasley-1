@@ -1,18 +1,31 @@
 <?php
 
 // action hooks
+add_action( 'admin_init', 'gmr_contests_check_entries_permissions' );
 add_action( 'admin_menu', 'gmr_contests_register_winners_page' );
 add_action( 'post_submitbox_start', 'gmr_contest_view_entries_link', 11 );
 add_action( 'manage_' . GMR_CONTEST_ENTRY_CPT . '_posts_custom_column', 'gmr_contests_render_contest_entry_column', 10, 2 );
 add_action( 'admin_action_gmr_contest_entry_mark_winner', 'gmr_contests_mark_contest_winner' );
 add_action( 'admin_action_gmr_contest_entry_mark_bulk_winners', 'gmr_contests_mark_bulk_contest_winner' );
 add_action( 'admin_action_gmr_contest_entry_unmark_winner', 'gmr_contests_unmark_contest_winner' );
+add_action( 'admin_action_gmr_contest_export', 'gmr_contests_export_to_csv' );
 add_action( 'pre_get_posts', 'gmr_contest_adjust_contest_entries_query' );
 
 // filter hooks
 add_filter( 'post_row_actions', 'gmr_contests_add_table_row_actions', 10, 2 );
 add_filter( 'parent_file', 'gmr_contests_adjust_winners_page_admin_menu' );
 add_filter( 'parent_file', 'gmr_contests_adjust_current_admin_menu' );
+
+/**
+ * Checks user capabilities to see entries page.
+ */
+function gmr_contests_check_entries_permissions() {
+	global $pagenow;
+
+	if ( 'admin.php' == $pagenow && isset( $_REQUEST['page'] ) && 'gmr-contest-winner' == $_REQUEST['page'] && ! current_user_can( 'edit_contest', filter_input( INPUT_GET, 'contest' ) ) ) {
+		wp_die( "You don't have sufficient permissions to view contest entries." );
+	}
+}
 
 /**
  * Renders link to access contest entries.
@@ -82,6 +95,10 @@ function gmr_contests_render_winner_page() {
 		wp_die( 'Contest has not been found.' );
 	}
 
+	if ( ! current_user_can( 'edit_contest', $contest->ID ) ) {
+		wp_die( "You don't have sufficient permissions to view contest entries." );
+	}
+
 	// fake post type to make standard WP_Posts_List_Table class working properly
 	$_GET['post_type'] = GMR_CONTEST_ENTRY_CPT;
 
@@ -110,11 +127,19 @@ function gmr_contests_render_winner_page() {
 	$winners = new GMR_Contest_Winners_Table( array( 'contest_id' => $contest->ID ) );
 	$winners->prepare_items();
 
+	// links
+	$contests_link = admin_url( 'edit.php?post_type=' . GMR_CONTEST_CPT );
+	$export_link = admin_url( 'admin.php?action=gmr_contest_export&contest=' . $contest->ID );
+	$export_link = wp_nonce_url( $export_link, 'gmr-contest-export' );
+
 	?><div id="contest-winner-selection" class="wrap">
 		<h2>
 			Entries:
 			<a href="<?php echo get_edit_post_link( $contest->ID ); ?>"><?php echo esc_html( $contest->post_title ); ?></a>
-			<a class="add-new-h2" href="<?php echo esc_url( admin_url( 'edit.php?post_type=' . GMR_CONTEST_CPT ) ); ?>">All Contests</a>
+			<a class="add-new-h2" href="<?php echo esc_url( $contests_link ); ?>">All Contests</a>
+			<?php if ( current_user_can( 'export_contest_entries' ) ) : ?>
+				<a class="add-new-h2" href="<?php echo esc_url( $export_link ); ?>">Export to CSV</a>
+			<?php endif; ?>
 		</h2>
 
 		<?php if ( $winners->has_items() ) : ?>
@@ -134,6 +159,100 @@ function gmr_contests_render_winner_page() {
 			<?php $wp_list_table->display(); ?>
 		</form>
 	</div><?php
+}
+
+/**
+ * Exports contest entries into as a CSV file.
+ *
+ * @action admin_action_gmr_contest_export
+ */
+function gmr_contests_export_to_csv() {
+	check_admin_referer( 'gmr-contest-export' );
+
+	$contest = filter_input( INPUT_GET, 'contest', FILTER_VALIDATE_INT );
+	if ( ! $contest || ! ( $contest = get_post( $contest ) ) || GMR_CONTEST_CPT != $contest->post_type ) {
+		status_header( 404 );
+		exit;
+	}
+
+	if ( ! current_user_can( 'export_contest_entries' ) ) {
+		wp_die( "You don't have sufficient permissions to export contest entries." );
+		exit;
+	}
+
+	header( 'Content-Description: File Transfer' );
+	header( 'Content-Type: text/csv' );
+	header( 'Content-Disposition: attachment; filename=' . $contest->post_name . '.csv' );
+	header( 'Connection: Keep-Alive' );
+
+	$paged = 1;
+	$query = new WP_Query();
+
+	$form = get_post_meta( $contest->ID, 'embedded_form', true );
+	if ( ! empty( $form ) ) {
+		if ( is_string( $form ) ) {
+			$clean_form = trim( $form, '"' );
+			$form = json_decode( $clean_form );
+		}
+	}
+
+	$headers = array( 'Name', 'Email', 'Gender', 'ZIP', 'Year of Birth' );
+	if ( $form ) {
+		foreach ( $form as $field ) {
+			$headers[] = $field->label;
+		}
+	}
+
+	$stdout = fopen( 'php://output', 'w' );
+	fputcsv( $stdout, $headers );
+
+	do {
+		$query->query( array(
+			'post_type'           => GMR_CONTEST_ENTRY_CPT,
+			'post_parent'         => $contest->ID,
+			'suppress_filters'    => true,
+			'paged'               => $paged,
+			'posts_per_page'      => 100,
+			'ignore_sticky_posts' => true,
+			'fields'              => 'ids',
+		) );
+
+		if ( $query->have_posts() ) {
+			while ( $query->have_posts() ) {
+				$entry_id = $query->next_post();
+				$row = array(
+					gmr_contest_get_entry_author( $entry_id ),
+					gmr_contest_get_entry_author_email( $entry_id ),
+					get_post_meta( $entry_id, 'entrant_gender', true ),
+					get_post_meta( $entry_id, 'entrant_zip', true ),
+					get_post_meta( $entry_id, 'entrant_birth_year', true ),
+				);
+
+				if ( $form ) {
+					$records = GreaterMediaFormbuilderRender::parse_entry( $contest->ID, $entry_id, $form );
+					foreach ( $records as $record ) {
+						if ( $record['type'] == 'file' ) {
+							$attachment = get_post( $record['value'] );
+							$row[] = $attachment && 'attachment' == $attachment->post_type && 'inherit' == $attachment->post_status
+								? wp_get_attachment_url( $attachment->ID )
+								: '';
+						} else {
+							$row[] = is_array( $record['value'] )
+								? implode( ',', $record['value'] )
+								: $record['value'];
+						}
+					}
+				}
+
+				fputcsv( $stdout, $row );
+			}
+		}
+
+		$paged++;
+	} while( $query->post_count > 0 );
+
+	fclose( $stdout );
+	exit;
 }
 
 /**
