@@ -207,11 +207,11 @@
 
 			this.session.login(profile)
 				.then(function() {
-					self.redirect('/');
+					self.redirect('/', 'login');
 				})
 				.fail(function() {
 					// TODO: What to do if gigya_login ajax failed?
-					self.redirect('/');
+					self.redirect('/', login);
 				});
 		},
 
@@ -261,8 +261,13 @@
 			return profile;
 		},
 
-		redirect: function(defaultDest) {
+		redirect: function(defaultDest, source) {
 			var redirectUrl = this.getRedirectUrl(defaultDest);
+			if (source === 'login' && redirectUrl.indexOf('/members/account') === 0) {
+				// override redirect to account page when redirecting after login
+				// even if dest is to the account page
+				redirectUrl = '/';
+			}
 
 			if (redirectUrl) {
 				if (location.replace) {
