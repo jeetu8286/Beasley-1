@@ -143,6 +143,18 @@ Community Highlights and Events
 		font-size: ms(6);
 		font-weight: lighter;
 		text-transform: uppercase;
+
+		@include bp(medium) {
+			font-size: ms(3);
+		}
+
+		@include bp(large) {
+			font-size: ms(3);
+		}
+
+		@include bp(larger) {
+			font-size: ms(6);
+		}
 	}
 }
 
@@ -309,6 +321,14 @@ Community Highlights and Events
 	}
 
 	.news-site & {
+
+		@include bp(medium) {
+			@include span-columns(6 of 6);
+			// Force a specific height relative to the grid
+			height: 0;
+			padding-bottom: 21.5%;
+			margin: 0 0 5%;
+		}
 
 		@include bp(large) {
 			margin-bottom: 6%;

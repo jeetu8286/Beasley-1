@@ -2583,6 +2583,15 @@ Community Highlights and Events
     font-size: 2.02729em;
     font-weight: lighter;
     text-transform: uppercase; }
+    @media screen and (min-width: 768px)  {
+      .news-site .highlights__heading {
+        font-size: 1.42383em; } }
+    @media screen and (min-width: 1024px)  {
+      .news-site .highlights__heading {
+        font-size: 1.42383em; } }
+    @media screen and (min-width: 1200px)  {
+      .news-site .highlights__heading {
+        font-size: 2.02729em; } }
 
 @media screen and (min-width: 1024px)  {
   .highlights__community {
@@ -2779,6 +2788,17 @@ Community Highlights and Events
     right: 0;
     bottom: 0;
     left: 0; }
+  @media screen and (min-width: 768px)  {
+    .news-site .highlights__event--item {
+      float: left;
+      display: block;
+      margin-right: 4.82916%;
+      width: 100%;
+      height: 0;
+      padding-bottom: 21.5%;
+      margin: 0 0 5%; }
+      .news-site .highlights__event--item:last-child {
+        margin-right: 0; } }
   @media screen and (min-width: 1024px)  {
     .news-site .highlights__event--item {
       margin-bottom: 6%; } }
