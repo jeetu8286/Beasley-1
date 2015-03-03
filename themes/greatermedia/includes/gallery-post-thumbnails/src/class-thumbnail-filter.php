@@ -2,6 +2,8 @@
 
 namespace Greater_Media\Gallery_Post_Thumbnails;
 
+use TDS;
+
 class Thumbnail_Filter
 {	
 	protected $_filtering_meta = false; 
@@ -29,7 +31,9 @@ class Thumbnail_Filter
 					$thumbnail_id = false; 
 				} elseif ( ! $thumbnail_id ) {
 					// Okay, get a new one.
-					if ( 'gmr_album' == get_post_type( $post_id ) ) {
+					if ( 'podcast' == get_post_type( $post_id ) ) {
+						$thumbnail_id = $this->_get_podcast_image( $post_id );
+					} elseif ( 'gmr_album' == get_post_type( $post_id ) ) {
 						$thumbnail_id = $this->_get_first_album_image( $post_id );
 					} else {
 						$thumbnail_id = $this->_get_first_gallery_image( $post_id );
@@ -60,6 +64,24 @@ class Thumbnail_Filter
 		}
 		
 		wp_cache_delete( $post_id, 'gm/post_gallery_thumb' );
+	}
+
+	protected function _get_podcast_image( $post_id )
+	{
+		//  Find the associated show post
+		$terms = wp_get_object_terms( $post_id, '_shows' );
+
+		if ( ! $terms ) {
+			return;
+		}
+
+		$show_post = TDS\get_related_post( $terms[0] );
+
+		if ( ! $show_post ) {
+			return;
+		}
+
+		return (int) get_post_meta( $show_post->ID, 'logo_image', true );
 	}
 
 	protected function _get_first_album_image( $post )
