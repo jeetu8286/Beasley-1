@@ -256,9 +256,11 @@ Community Highlights and Events
 	}
 
 	.news-site & {
-		@include span-columns(6 of 12);
+		@include span-columns(12 of 12);
+		@include omega;
 
 		@include bp(medium) {
+			@include span-columns(6 of 12);
 			clear: both;
 			padding-top: 0;
 		}
@@ -271,6 +273,10 @@ Community Highlights and Events
 
 .highlights__events .highlights__heading {
 	display: inline-block;
+
+	.news-site & {
+		display: block;
+	}
 }
 
 .highlights__events--more-btn {
@@ -465,7 +471,8 @@ Community Highlights and Events
 	}
 
 	.news-site & {
-		@include span-columns(4 of 12);
+		@include span-columns(12 of 12);
+		@include omega;
 
 		@include bp(medium) {
 			@include span-columns(6 of 12);
@@ -561,11 +568,10 @@ Community Highlights and Events
 
 .highlights__contest--meta {
 	@include span-columns(4 of 6);
-	padding: 6% $gutter 0 0;
-	margin-left: 35%;
 	font-size: ms(2);
 
 	@include bp(medium) {
+		margin-left: 35%;
 		font-size: ms(1);
 	}
 
