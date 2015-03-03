@@ -86,6 +86,15 @@ function greatermedia_setup() {
 	add_post_type_support( 'page', 'login-restricted-content' );
 	add_post_type_support( 'page', 'age-restricted-content' );
 
+	// Restrictions for galleries
+	add_post_type_support( 'gmr_gallery', 'timed-content' );
+	add_post_type_support( 'gmr_gallery', 'login-restricted-content' );
+	add_post_type_support( 'gmr_gallery', 'age-restricted-content' );
+
+	add_post_type_support( 'gmr_album', 'timed-content' );
+	add_post_type_support( 'gmr_album', 'login-restricted-content' );
+	add_post_type_support( 'gmr_album', 'age-restricted-content' );
+
 	// Add theme support for post-formats
 	$formats = array( 'gallery', 'link', 'image', 'video', 'audio' );
 	add_theme_support( 'post-formats', $formats );
