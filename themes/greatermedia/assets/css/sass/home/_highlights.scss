@@ -256,11 +256,15 @@ Community Highlights and Events
 	}
 
 	.news-site & {
-		@include span-columns(4 of 12);
+		@include span-columns(6 of 12);
 
 		@include bp(medium) {
 			clear: both;
 			padding-top: 0;
+		}
+
+		@include bp(large) {
+			@include span-columns(4 of 12);
 		}
 	}
 }
@@ -462,6 +466,15 @@ Community Highlights and Events
 
 	.news-site & {
 		@include span-columns(4 of 12);
+
+		@include bp(medium) {
+			@include span-columns(6 of 12);
+			@include omega;
+		}
+
+		@include bp(medium) {
+			@include span-columns(4 of 12);
+		}
 	}
 }
 
@@ -641,10 +654,15 @@ a.highlights__contest--btn {
 	.news-site & {
 		clear: both;
 		padding-top: 1.5em;
+
 		@include bp(medium) {
-			@include span-columns(4 of 12);
+			@include fill-parent();
 			clear: none;
-			padding-top: 0;
+		}
+
+		@include bp(large) {
+			@include span-columns(4 of 12);
+			@include omega;
 		}
 	}
 }
