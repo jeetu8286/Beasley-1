@@ -766,6 +766,9 @@ img {
   @media screen and (min-width: 783px)  {
     .logged-in .live-player {
       top: 247px; } }
+  @media screen and (min-width: 768px)  {
+    .news-site .live-player {
+      border-left: 1px solid #d0d2d3; } }
 
 .row {
   display: block; }
@@ -1418,7 +1421,7 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
     .header__nav .sub-menu a:hover, .header__nav .format-fw > ul a:hover, .header__nav .format-sp > ul a:hover, .header__nav .format-fi > ul a:hover, .header__account--links.sub-menu a:hover, .header__nav .format-fw > ul.header__account--links a:hover, .header__nav .format-sp > ul.header__account--links a:hover, .header__nav .format-fi > ul.header__account--links a:hover, .ui-menu a:hover {
       color: #ffffff; }
   .news-site .header__nav .sub-menu li a, .news-site .header__nav .format-fw > ul li a, .news-site .header__nav .format-sp > ul li a, .news-site .header__nav .format-fi > ul li a, .news-site .header__account--links.sub-menu li a, .news-site .header__nav .format-fw > ul.header__account--links li a, .header__nav .news-site .format-fw > ul.header__account--links li a, .news-site .header__nav .format-sp > ul.header__account--links li a, .header__nav .news-site .format-sp > ul.header__account--links li a, .news-site .header__nav .format-fi > ul.header__account--links li a, .header__nav .news-site .format-fi > ul.header__account--links li a, .news-site .ui-menu li a {
-    border-right: none;
+    border-right: none !important;
     font-size: 0.79012em;
     font-weight: normal;
     text-transform: none; }
@@ -2714,6 +2717,10 @@ Community Highlights and Events
     width: 31.76157%; }
     .news-site .highlights__events:last-child {
       margin-right: 0; }
+    @media screen and (min-width: 768px)  {
+      .news-site .highlights__events {
+        clear: both;
+        padding-top: 0; } }
 
 .highlights__events .highlights__heading {
   display: inline-block; }
@@ -2878,10 +2885,16 @@ Community Highlights and Events
   a:hover .highlights__event--title {
     color: #aa1c20; }
   .news-site .highlights__event--title {
-    margin-top: -5px;
-    font-size: 1.26562em;
+    font-size: 0.79012em;
     font-weight: normal;
     text-transform: uppercase; }
+    @media screen and (min-width: 1024px)  {
+      .news-site .highlights__event--title {
+        font-size: 1em; } }
+    @media screen and (min-width: 1400px)  {
+      .news-site .highlights__event--title {
+        margin-top: -5px;
+        font-size: 1.26562em; } }
 
 .highlights__event--date {
   display: block;
@@ -2890,13 +2903,19 @@ Community Highlights and Events
   font-size: 0.79012em;
   color: #929497; }
   .news-site .highlights__event--date {
-    font-size: 1.125em;
+    font-size: 0.70233em;
     text-transform: none; }
+    @media screen and (min-width: 1024px)  {
+      .news-site .highlights__event--date {
+        font-size: 0.88889em; } }
+    @media screen and (min-width: 1400px)  {
+      .news-site .highlights__event--date {
+        font-size: 1.125em; } }
 
 .highlights__contests {
   clear: both;
   padding-top: 1.5em; }
-  @media screen and (min-width: 1024px)  {
+  @media screen and (min-width: 768px)  {
     .highlights__contests {
       float: left;
       display: block;
@@ -2913,9 +2932,6 @@ Community Highlights and Events
     width: 31.76157%; }
     .news-site .highlights__contests:last-child {
       margin-right: 0; }
-
-.highlights__contests .highlights__heading {
-  display: inline-block; }
 
 .highlights__contests--more-btn {
   display: inline-block;
@@ -2971,7 +2987,7 @@ Community Highlights and Events
       margin-bottom: 0; }
       .highlights__contest--item:last-child {
         margin-right: 0; } }
-  @media screen and (min-width: 1024px)  {
+  @media screen and (min-width: 768px)  {
     .highlights__contest--item {
       float: left;
       display: block;
@@ -3003,7 +3019,7 @@ Community Highlights and Events
   background-repeat: no-repeat; }
   .highlights__contest--thumb:last-child {
     margin-right: 0; }
-  @media screen and (min-width: 1024px)  {
+  @media screen and (min-width: 768px)  {
     .highlights__contest--thumb {
       float: left;
       display: block;
@@ -3028,7 +3044,7 @@ Community Highlights and Events
   @media screen and (min-width: 768px)  {
     .highlights__contest--meta {
       font-size: 1.125em; } }
-  @media screen and (min-width: 1024px)  {
+  @media screen and (min-width: 768px)  {
     .highlights__contest--meta {
       width: auto;
       margin-left: 26.32916%;
@@ -3052,10 +3068,16 @@ Community Highlights and Events
   a:hover .highlights__contest--title {
     color: #aa1c20; }
   .news-site .highlights__contest--title {
-    margin-top: -5px;
-    font-size: 1.26562em;
+    font-size: 0.79012em;
     font-weight: normal;
     text-transform: uppercase; }
+    @media screen and (min-width: 1024px)  {
+      .news-site .highlights__contest--title {
+        font-size: 1em; } }
+    @media screen and (min-width: 1400px)  {
+      .news-site .highlights__contest--title {
+        margin-top: -5px;
+        font-size: 1.26562em; } }
 
 .highlights__contest--date {
   display: block;
@@ -3066,6 +3088,12 @@ Community Highlights and Events
   .news-site .highlights__contest--date {
     font-size: 1.125em;
     text-transform: none; }
+    @media screen and (min-width: 1024px)  {
+      .news-site .highlights__contest--date {
+        font-size: 0.88889em; } }
+    @media screen and (min-width: 1400px)  {
+      .news-site .highlights__contest--date {
+        font-size: 1.125em; } }
 
 a.highlights__contest--btn {
   display: inline-block;
@@ -3086,41 +3114,34 @@ a.highlights__contest--btn {
   -o-border-radius: 4px;
   -border-radius: 4px;
   border-radius: 4px;
-  margin-top: 1em; }
+  margin-top: 1em;
+  text-align: center; }
   a.highlights__contest--btn:hover, a.highlights__contest--btn:focus {
     background-color: #aa1c20;
     border-color: #aa1c20;
     color: #ffffff; }
   a.highlights__contest--btn:last-of-type {
     margin-right: 0; }
+  @media screen and (min-width: 768px)  {
+    a.highlights__contest--btn {
+      font-size: 0.79012em; } }
+  @media screen and (min-width: 1024px)  {
+    a.highlights__contest--btn {
+      font-size: 0.88889em; } }
 
-.highlights__ad {
+.news-site .highlights__ad {
   clear: both;
   padding-top: 1.5em; }
-  @media screen and (min-width: 1024px)  {
-    .highlights__ad {
+  @media screen and (min-width: 768px)  {
+    .news-site .highlights__ad {
       float: left;
       display: block;
-      margin-right: 1.87727%;
-      width: 38.87364%;
-      margin-top: 1em;
+      margin-right: 2.35765%;
+      width: 31.76157%;
       clear: none;
       padding-top: 0; }
-      .highlights__ad:last-child {
+      .news-site .highlights__ad:last-child {
         margin-right: 0; } }
-  .news-site .highlights__ad {
-    clear: both;
-    padding-top: 1.5em; }
-    @media screen and (min-width: 1024px)  {
-      .news-site .highlights__ad {
-        float: left;
-        display: block;
-        margin-right: 2.35765%;
-        width: 31.76157%;
-        clear: none;
-        padding-top: 0; }
-        .news-site .highlights__ad:last-child {
-          margin-right: 0; } }
 
 .header {
   position: relative;
@@ -11228,14 +11249,14 @@ category: Components - Gallery Archive
     margin: 0;
     font-size: 1.42383em;
     line-height: 1.2; }
-  .show__feature--primary .gallery__featured--caption h3 {
+  .gallery__featured--primary .gallery__featured--caption h3 {
     font-size: 1.80203em; }
   .gallery__featured--caption time {
     font-size: 1em;
     text-transform: uppercase;
     color: #ffffff; }
   .gallery__featured--caption .inner-wrap {
-    padding: 1.5em 1.618em; }
+    padding: 1.2em 1.618em; }
   @media screen and (min-width: 1024px)  {
     .gallery__featured--caption {
       position: absolute;
@@ -11243,11 +11264,14 @@ category: Components - Gallery Archive
       left: 0;
       bottom: 0; }
       .gallery__featured--caption h3 {
-        font-size: 1.125em; }
-      .show__feature--primary .gallery__featured--caption h3 {
+        font-size: 1em; }
+      .gallery__featured--primary .gallery__featured--caption h3 {
         font-size: 2.02729em; }
       .gallery__featured--caption time {
         font-size: 0.88889em; } }
+  @media screen and (min-width: 1200px)  {
+    .gallery__featured--caption h3 {
+      font-size: 1.125em; } }
 
 .gallery__grid--column {
   float: left;
