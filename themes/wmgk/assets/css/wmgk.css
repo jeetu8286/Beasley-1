@@ -11130,14 +11130,9 @@ select {
         text-align: left;
         background-position: 50% 50%; } }
   .profile-page .profile-page__sidebar h1 {
-    text-transform: uppercase; }
+    text-transform: uppercase;
+    margin-bottom: 0; }
     @media screen and (min-width: 768px)  {
-      .profile-page .profile-page__sidebar h1 {
-        margin-bottom: 0.5em; } }
-    @media screen and (min-width: 480px)  {
-      .profile-page .profile-page__sidebar h1 {
-        margin-bottom: 0.5em; } }
-    @media screen and (min-width: 320px)  {
       .profile-page .profile-page__sidebar h1 {
         margin-bottom: 0.5em; } }
     @media screen and (min-width: 1024px)  {
@@ -11146,10 +11141,10 @@ select {
     @media screen and (min-width: 1400px)  {
       .profile-page .profile-page__sidebar h1 {
         margin-bottom: 0.6em; } }
-  .profile-page .profile-page__sidebar p {
+  .profile-page .profile-page__sidebar .profile-message {
     display: none; }
     @media screen and (min-width: 768px)  {
-      .profile-page .profile-page__sidebar p {
+      .profile-page .profile-page__sidebar .profile-message {
         display: block; } }
 
 .show__live-links .live-links-group {
