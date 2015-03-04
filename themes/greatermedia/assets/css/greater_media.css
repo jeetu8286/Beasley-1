@@ -7879,6 +7879,8 @@ category: Components - Shows
       margin: 20px 0 26px;
       line-height: 1;
       font-size: 1.80203em; } }
+  .post-type-archive-podcast .podcast__title {
+    display: inline-block; }
 
 @media screen and (min-width: 1024px)  {
   .show__blogroll .podcast__title {
@@ -8068,6 +8070,9 @@ a.podcast__rss:active {
   margin: 0 10px 0 0;
   text-transform: none; }
 
+.post-type-archive-podcast .podcast__rss {
+  display: inline-block; }
+
 .gmr-mediaelement-fallback {
   max-height: 100px; }
 
@@ -8178,6 +8183,9 @@ header.podcast__header {
   @media screen and (min-width: 1024px)  {
     .post-type-archive-podcast .podcast__archive .podcast__date, .post-type-archive-podcast .podcast__archive .podcast__archive--episode-count {
       margin-top: 0; } }
+
+.post-type-archive-podcast .podcast__archive--episode-count {
+  display: inline-block; }
 
 .single-podcast .podcast__header a.podcast__subscribe, .single-podcast .podcast__header a.podcast__rss {
   vertical-align: text-bottom; }
