@@ -7900,7 +7900,7 @@ category: Components - Shows
   display: block;
   margin-bottom: 0.5em; }
 
-.podcast__date, .podcast__archive--episode-count {
+.podcast__date {
   font-size: 0.79012em;
   line-height: 1;
   float: left;
@@ -8160,9 +8160,11 @@ header.podcast__header {
 .podcast__child--title {
   margin-bottom: 10px; }
 
-.podcast__archive .podcast__date, .podcast__archive .podcast__archive--episode-count {
+.podcast__archive .podcast__date {
   width: 100%;
-  margin-bottom: 0; }
+  display: block;
+  margin-bottom: 0;
+  float: none; }
 .podcast__archive .podcast__title {
   margin-top: 0; }
 .podcast__archive .podcast__desc {
@@ -8170,6 +8172,46 @@ header.podcast__header {
 .podcast__archive a.podcast__subscribe, .podcast__archive a.podcast__rss {
   font-size: 0.7em;
   vertical-align: top; }
+
+.post-type-archive-podcast .podcast__archive .podcast__date {
+  margin: 10px 0;
+  display: inline-block;
+  float: none;
+  width: auto;
+  font-weight: bold;
+  font-size: 1em;
+  color: #404041;
+  text-transform: none; }
+  @media screen and (min-width: 1024px)  {
+    .post-type-archive-podcast .podcast__archive .podcast__date {
+      margin-top: 0; } }
+  .post-type-archive-podcast .podcast__archive .podcast__date:before {
+    width: 0;
+    height: 0;
+    margin: 0 5px;
+    content: " - "; }
+.post-type-archive-podcast .podcast__archive .podcast__title {
+  display: inline-block; }
+.post-type-archive-podcast .podcast__archive .podcast__rss {
+  display: inline-block;
+  margin-top: 2px;
+  margin-left: 10px;
+  margin-bottom: 0; }
+.post-type-archive-podcast .podcast__archive .podcast__parent--title {
+  margin-right: 0; }
+
+.podcast__archive--episode-count {
+  font-size: 0.79012em;
+  line-height: 1;
+  margin-bottom: 10px;
+  color: #929497;
+  text-transform: uppercase; }
+  .post-type-archive-podcast .podcast__archive--episode-count {
+    display: inline-block;
+    width: auto;
+    margin-top: 8px !important;
+    margin-left: 10px !important;
+    vertical-align: top; }
 
 .single-podcast .podcast__header a.podcast__subscribe, .single-podcast .podcast__header a.podcast__rss {
   vertical-align: text-bottom; }
