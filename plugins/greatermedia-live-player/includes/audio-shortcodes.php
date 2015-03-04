@@ -193,7 +193,7 @@ class GMR_Audio_Shortcodes {
 		$new_html .= '</div>';
 		$new_html .= '<div class="podcast__meta">';
 		if ( $is_podcast ) {
-			$new_html .= '<time class="podcast__date" datetime="' . get_the_time( 'c' ) . '">' . get_the_time( 'F j, y' ) . '</time>';
+			$new_html .= '<time class="podcast__date" datetime="' . get_the_time( 'c' ) . '">' . get_the_time( 'F j, Y' ) . '</time>';
 			$new_html .= '<h3 class="podcast__title">' . get_the_title() . '</h3>';
 		} elseif ( $is_podcast_archive ) {
 			$parent_title = esc_html( $parent_podcast->post_title );
