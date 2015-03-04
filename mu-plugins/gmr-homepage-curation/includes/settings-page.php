@@ -6,7 +6,6 @@ add_action( 'admin_menu', __NAMESPACE__ . '\add_settings_page' );
 add_action( 'admin_init', __NAMESPACE__ . '\register_settings' );
 add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\enqueue_admin_scripts' );
 
-
 /* Define sections, page slugs, etc */
 function get_settings_page_slug() {
 	return 'homepage-curation';
@@ -23,7 +22,7 @@ function register_settings() {
 	add_settings_section( get_settings_section(), 'Homepage Curation', '__return_null', get_settings_page_slug() );
 
 	// Can hook into this to add more post types
-	$homepage_curation_post_types = apply_filters( 'gmr-homepage-curation-post-types', array( 'post', 'tribe_events' ) );
+	$homepage_curation_post_types = apply_filters( 'gmr-homepage-curation-post-types', array( 'post', 'page', 'tribe_events' ) );
 
 	// Fetch restricted post ids
 	$query = new \WP_Query();
@@ -175,8 +174,8 @@ function render_homepage_curation() {
 }
 
 function enqueue_admin_scripts( $page ) {
-	global $gmr_homepage_curation;
-	if ( $gmr_homepage_curation == $page ) {
+	global $gmr_homepage_curation, $typenow;
+	if ( $gmr_homepage_curation == $page || 'show' == $typenow ) {
 		wp_enqueue_style( 'homepage-curation', GMEDIA_HOMEPAGE_CURATION_URL . 'css/admin.css', null, GMEDIA_HOMEPAGE_CURATION_VERSION );
 		wp_enqueue_script( 'homepage-curation', GMEDIA_HOMEPAGE_CURATION_URL . 'js/curation.js', array( 'jquery' ), GMEDIA_HOMEPAGE_CURATION_VERSION, true );
 	}
