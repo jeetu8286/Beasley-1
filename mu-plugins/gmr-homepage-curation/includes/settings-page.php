@@ -23,7 +23,7 @@ function register_settings() {
 	add_settings_section( get_settings_section(), 'Homepage Curation', '__return_null', get_settings_page_slug() );
 
 	// Can hook into this to add more post types
-	$homepage_curation_post_types = apply_filters( 'gmr-homepage-curation-post-types', array( 'post', 'tribe_events' ) );
+	$homepage_curation_post_types = apply_filters( 'gmr-homepage-curation-post-types', array( 'post', 'page', 'tribe_events' ) );
 
 	// Fetch restricted post ids
 	$query = new \WP_Query();
