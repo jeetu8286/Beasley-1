@@ -88,7 +88,7 @@ Community Highlights and Events
 .home__highlights {
 	@extend %main;
 	padding: $base-line-height $gutter / 2;
-	background-color: $highlights-bg;
+	background-color: $highlights-bg !important;
 	border-bottom: 1px solid darken( $highlights-bg, 3% );
 
 	@include bp(medium) {
