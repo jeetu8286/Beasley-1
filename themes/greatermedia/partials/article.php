@@ -2,7 +2,7 @@
 
 	<div class="container">
 
-		<?php if ( has_post_thumbnail() && ! \Greater_Media\Gallery_Post_Thumbnails\post_has_gallery() ): ?>
+		<?php if ( has_post_thumbnail() && ! \Greater_Media\Fallback_Thumbnails\post_has_gallery() ): ?>
 			<div class="article__thumbnail" style='background-image: url(<?php gm_post_thumbnail_url( 'gm-article-thumbnail' ); ?>)'>
 				<?php
 
@@ -26,7 +26,7 @@
 
 				<header class="article__header">
 
-					<time class="article__date" datetime="<?php echo get_the_time(); ?>"><?php the_date('F j'); ?></time>
+					<time class="article__date" datetime="<?php echo get_the_time(); ?>"><?php the_date('F j, Y'); ?></time>
 					<h2 class="article__title" itemprop="headline"><?php the_title(); ?></h2>
 					<?php get_template_part( 'partials/social-share' ); ?>
 
