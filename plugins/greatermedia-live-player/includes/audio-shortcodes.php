@@ -236,10 +236,7 @@ class GMR_Audio_Shortcodes {
 			if ( $itunes_url != '' ) {
 				$new_html .= '<a class="podcast__subscribe" href="' . esc_url( $itunes_url ) . '" target="_blank">Subscribe in iTunes</a>';
 			}
-
-			$new_html .= self::filter_episode_content(
-				$post_id, '<a class="podcast__rss" href="' . esc_url( $feed_url ) . '" target="_blank">Podcast Feed</a>'
-			);
+			
 			$new_html .= '</div>';
 		}
 
