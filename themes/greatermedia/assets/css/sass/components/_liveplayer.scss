@@ -547,8 +547,8 @@ category: Components
 	}
 
 	.news-site & {
-		@include btn(transparent, $color-red, $btn-bg, .7em, 1.4em, ms(-1));
 		@include border-radius(4px);
+		padding: .7em 1.4em;
 	}
 }
 

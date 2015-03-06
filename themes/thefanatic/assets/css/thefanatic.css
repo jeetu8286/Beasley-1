@@ -5869,30 +5869,13 @@ body.profile-page-login .live-player--mobile {
       .audio__playing .live-stream__listen-now--btn, .audio__playing .podcast__subscribe, .audio__playing .podcast__rss {
         max-width: none; } }
   .news-site .live-stream__listen-now--btn, .news-site .podcast__subscribe, .news-site .podcast__rss {
-    display: inline-block;
-    line-height: 1;
-    padding: 0.7em 1.4em;
-    margin-right: .5em;
-    outline: none;
-    background-color: transparent;
-    border: 1px solid #db261d;
-    font-size: 0.88889em;
-    color: #db261d !important;
-    text-transform: uppercase;
-    cursor: pointer;
-    border-radius: 100em;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     -ms-border-radius: 4px;
     -o-border-radius: 4px;
     -border-radius: 4px;
-    border-radius: 4px; }
-    .news-site .live-stream__listen-now--btn:hover, .news-site .podcast__subscribe:hover, .news-site .podcast__rss:hover, .news-site .live-stream__listen-now--btn:focus, .news-site .podcast__subscribe:focus, .news-site .podcast__rss:focus {
-      background-color: transparent;
-      border-color: #b21f18;
-      color: #db261d; }
-    .news-site .live-stream__listen-now--btn:last-of-type, .news-site .podcast__subscribe:last-of-type, .news-site .podcast__rss:last-of-type {
-      margin-right: 0; }
+    border-radius: 4px;
+    padding: .7em 1.4em; }
 
 .live-stream__now-playing--btn {
   display: inline-block;
@@ -14270,6 +14253,11 @@ a.entry2__category:link, a.entry2__category:visited {
 
 .on-air__show {
   color: #221f1f; }
+
+.live-stream__listen-now--btn, .podcast__subscribe, .podcast__rss {
+  background-color: transparent;
+  border-color: #db261d;
+  color: #d22228; }
 
 @media screen and (min-width: 768px)  {
   .live-links {
