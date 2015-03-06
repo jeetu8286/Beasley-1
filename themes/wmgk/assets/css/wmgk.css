@@ -8315,7 +8315,7 @@ header.podcast__header {
   color: #282827;
   margin-bottom: 0.5em; }
 .single-show .home__highlights {
-  background-color: transparent;
+  background-color: transparent !important;
   border-bottom: none;
   padding: 0;
   margin-bottom: 3em; }
