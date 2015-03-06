@@ -2558,7 +2558,7 @@ Community Highlights and Events
   .news-site .home__highlights {
     padding-top: 0;
     padding-bottom: 0;
-    background-color: transparent;
+    background-color: transparent !important;
     border-bottom: none; }
 
 .news-site .highlights__col {
@@ -5491,7 +5491,6 @@ body.profile-page-login .live-player--mobile {
   background-color: #000000; }
   @media screen and (min-width: 768px)  {
     .live-stream {
-      width: 225px;
       overflow: auto; } }
   @media screen and (min-width: 768px)  {
     .live-stream.live-stream--fixed {
@@ -5504,6 +5503,8 @@ body.profile-page-login .live-player--mobile {
   @media screen and (min-width: 783px)  {
     .logged-in .live-stream.live-stream--fixed {
       top: 32px; } }
+  .news-site .live-stream {
+    margin-top: 4em; }
 
 .live-player__stream {
   position: absolute;
