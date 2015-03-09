@@ -1345,8 +1345,10 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
   float: right;
   width: 40px;
   height: 40px; }
-  .header__nav .menu-item-has-children:after.active .header__nav .menu-item-has-children:after {
+  .header__nav .menu-item-has-children:after.active {
     display: block; }
+    .header__nav .menu-item-has-children:after.active:hover {
+      color: white; }
 
 .menu-overlay-mask {
   visibility: hidden;
@@ -1410,11 +1412,14 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
       color: #000000; }
     .header__nav .sub-menu a:hover, .header__nav .format-fw > ul a:hover, .header__nav .format-sp > ul a:hover, .header__nav .format-fi > ul a:hover, .header__account--links.sub-menu a:hover, .header__nav .format-fw > ul.header__account--links a:hover, .header__nav .format-sp > ul.header__account--links a:hover, .header__nav .format-fi > ul.header__account--links a:hover, .ui-menu a:hover {
       color: #ffffff; }
-  .news-site .header__nav .sub-menu li a, .news-site .header__nav .format-fw > ul li a, .news-site .header__nav .format-sp > ul li a, .news-site .header__nav .format-fi > ul li a, .news-site .header__account--links.sub-menu li a, .news-site .header__nav .format-fw > ul.header__account--links li a, .header__nav .news-site .format-fw > ul.header__account--links li a, .news-site .header__nav .format-sp > ul.header__account--links li a, .header__nav .news-site .format-sp > ul.header__account--links li a, .news-site .header__nav .format-fi > ul.header__account--links li a, .header__nav .news-site .format-fi > ul.header__account--links li a, .news-site .ui-menu li a {
-    border-right: none !important;
-    font-size: 0.79012em;
-    font-weight: normal;
-    text-transform: none; }
+  .news-site .header__nav .sub-menu, .news-site .header__nav .format-fw > ul, .news-site .header__nav .format-sp > ul, .news-site .header__nav .format-fi > ul, .news-site .header__account--links.sub-menu, .news-site .header__nav .format-fw > ul.header__account--links, .header__nav .news-site .format-fw > ul.header__account--links, .news-site .header__nav .format-sp > ul.header__account--links, .header__nav .news-site .format-sp > ul.header__account--links, .news-site .header__nav .format-fi > ul.header__account--links, .header__nav .news-site .format-fi > ul.header__account--links, .news-site .ui-menu {
+    border-top: none;
+    border-bottom: 7px solid #d22228; }
+    .news-site .header__nav .sub-menu li a, .news-site .header__nav .format-fw > ul li a, .news-site .header__nav .format-sp > ul li a, .news-site .header__nav .format-fi > ul li a, .news-site .header__account--links.sub-menu li a, .news-site .header__nav .format-fw > ul.header__account--links li a, .header__nav .news-site .format-fw > ul.header__account--links li a, .news-site .header__nav .format-sp > ul.header__account--links li a, .header__nav .news-site .format-sp > ul.header__account--links li a, .news-site .header__nav .format-fi > ul.header__account--links li a, .header__nav .news-site .format-fi > ul.header__account--links li a, .news-site .ui-menu li a {
+      border-right: none !important;
+      font-size: 0.79012em;
+      font-weight: normal;
+      text-transform: none; }
 
 .header__account--container {
   display: none; }
@@ -1494,6 +1499,27 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
   padding-left: 1%;
   margin-left: 1%; }
 .header__nav .format-fw > ul > li:nth-child(3n+1), .header__nav .format-sp > ul > li:nth-child(3n+1) {
+  clear: left; }
+.news-site .header__nav .format-fw > ul > li, .header__nav .news-site .format-fw > ul > li, .news-site .header__nav .format-sp > ul > li, .header__nav .news-site .format-sp > ul > li {
+  width: 23.5%;
+  float: none;
+  display: inline-block;
+  vertical-align: top; }
+  .news-site .header__nav .format-fw > ul > li > a, .header__nav .news-site .format-fw > ul > li > a, .news-site .header__nav .format-sp > ul > li > a, .header__nav .news-site .format-sp > ul > li > a {
+    float: left;
+    width: 100%;
+    line-height: 1.25em; }
+.news-site .header__nav .format-fw > ul > li:not(:nth-child(3n+1)), .header__nav .news-site .format-fw > ul > li:not(:nth-child(3n+1)), .news-site .header__nav .format-sp > ul > li:not(:nth-child(3n+1)), .header__nav .news-site .format-sp > ul > li:not(:nth-child(3n+1)) {
+  border-left: none;
+  padding-left: 0;
+  margin-left: 0; }
+.news-site .header__nav .format-fw > ul > li:not(:nth-child(4n+1)), .header__nav .news-site .format-fw > ul > li:not(:nth-child(4n+1)), .news-site .header__nav .format-sp > ul > li:not(:nth-child(4n+1)), .header__nav .news-site .format-sp > ul > li:not(:nth-child(4n+1)) {
+  border-left: 1px solid #d0d2d3 !important;
+  padding-left: 1%;
+  margin-left: 1%; }
+.news-site .header__nav .format-fw > ul > li:nth-child(3n+1), .header__nav .news-site .format-fw > ul > li:nth-child(3n+1), .news-site .header__nav .format-sp > ul > li:nth-child(3n+1), .header__nav .news-site .format-sp > ul > li:nth-child(3n+1) {
+  clear: none; }
+.news-site .header__nav .format-fw > ul > li:nth-child(4n+1), .header__nav .news-site .format-fw > ul > li:nth-child(4n+1), .news-site .header__nav .format-sp > ul > li:nth-child(4n+1), .header__nav .news-site .format-sp > ul > li:nth-child(4n+1) {
   clear: left; }
 
 .format-sp a:hover {
@@ -1625,6 +1651,14 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
       font-size: 1.26562em; } }
   #tribe-events .content__heading, #tribe-events .sponsors__heading {
     margin-bottom: 30px; }
+  .single-podcast .content__heading, .single-podcast .sponsors__heading {
+    display: block;
+    margin-bottom: .25em; }
+    @media screen and (min-width: 768px)  {
+      .single-podcast .content__heading, .single-podcast .sponsors__heading {
+        display: inline-block;
+        margin-bottom: 1.5em;
+        margin-right: 10px; } }
   .news-site .content__heading, .news-site .sponsors__heading {
     padding: .35em 0 1.65em;
     margin: 0;
@@ -4996,12 +5030,12 @@ Link posts contain a link to an external site. They can also optionally have a f
     .article__date {
       font-size: 0.88889em; } }
 
-.article__title {
+.article__title, .single-podcast .podcast__parent--title {
   font-size: 2.88651em;
   line-height: 1.2;
   margin: 0 0 0.65em; }
   @media screen and (min-width: 768px)  {
-    .article__title {
+    .article__title, .single-podcast .podcast__parent--title {
       font-size: 2.2807em; } }
 
 .article__thumbnail {
@@ -5677,10 +5711,10 @@ body.profile-page-login .live-player--mobile {
     top: 273px;
     width: 200px; }
 
-.live-stream__listen-now--btn, .podcast__subscribe, .podcast__rss {
+.live-stream__listen-now--btn, .podcast__rss {
   display: none; }
   @media screen and (min-width: 768px)  {
-    .live-stream__listen-now--btn, .podcast__subscribe, .podcast__rss {
+    .live-stream__listen-now--btn, .podcast__rss {
       display: block;
       margin-right: 0;
       display: inline-block;
@@ -5700,13 +5734,13 @@ body.profile-page-login .live-player--mobile {
       -webkit-transition: all 200ms ease-in-out;
       -moz-transition: all 200ms ease-in-out;
       transition: all 200ms ease-in-out; }
-      .live-stream__listen-now--btn:hover, .podcast__subscribe:hover, .podcast__rss:hover, .live-stream__listen-now--btn:focus, .podcast__subscribe:focus, .podcast__rss:focus {
+      .live-stream__listen-now--btn:hover, .podcast__rss:hover, .live-stream__listen-now--btn:focus, .podcast__rss:focus {
         background-color: #aa1c20;
         border-color: #aa1c20;
         color: #ffffff; }
-      .live-stream__listen-now--btn:last-of-type, .podcast__subscribe:last-of-type, .podcast__rss:last-of-type {
+      .live-stream__listen-now--btn:last-of-type, .podcast__rss:last-of-type {
         margin-right: 0; } }
-  .audio__playing .live-stream__listen-now--btn, .audio__playing .podcast__subscribe, .audio__playing .podcast__rss {
+  .audio__playing .live-stream__listen-now--btn, .audio__playing .podcast__rss {
     max-width: 100px;
     -webkit-transition: all 200ms ease-in-out;
     -moz-transition: all 200ms ease-in-out;
@@ -5716,9 +5750,9 @@ body.profile-page-login .live-player--mobile {
     transition-delay: 1s;
     text-align: center; }
     @media screen and (min-width: 768px)  {
-      .audio__playing .live-stream__listen-now--btn, .audio__playing .podcast__subscribe, .audio__playing .podcast__rss {
+      .audio__playing .live-stream__listen-now--btn, .audio__playing .podcast__rss {
         max-width: none; } }
-  .news-site .live-stream__listen-now--btn, .news-site .podcast__subscribe, .news-site .podcast__rss {
+  .news-site .live-stream__listen-now--btn, .news-site .podcast__rss {
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     -ms-border-radius: 4px;
@@ -8835,8 +8869,32 @@ a.podcast__rss:active {
     margin-right: 0; }
 
 .podcast__subscribe {
+  display: block;
+  display: inline-block;
+  line-height: 1;
+  padding: 0.5em 1em;
+  margin-right: .5em;
+  outline: none;
+  background-color: #d22228;
+  border: 1px solid #d22228;
+  font-size: 0.88889em;
+  color: #ffffff !important;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 100em;
+  font-weight: 700;
+  z-index: 1;
+  -webkit-transition: all 200ms ease-in-out;
+  -moz-transition: all 200ms ease-in-out;
+  transition: all 200ms ease-in-out;
   margin: 0 10px 0 0;
   text-transform: none; }
+  .podcast__subscribe:hover, .podcast__subscribe:focus {
+    background-color: #aa1c20;
+    border-color: #aa1c20;
+    color: #ffffff; }
+  .podcast__subscribe:last-of-type {
+    margin-right: 0; }
 
 .gmr-mediaelement-fallback {
   max-height: 100px; }
@@ -8921,9 +8979,6 @@ a.podcast__rss:active {
     .podcast-player--compact .podcast-player {
       max-width: 60%; } }
 
-header.podcast__header {
-  padding-left: 1em; }
-
 .podcast__archive_title {
   margin-bottom: 10px; }
 
@@ -8943,37 +8998,52 @@ header.podcast__header {
   font-size: 0.7em;
   vertical-align: top; }
 
-.post-type-archive-podcast .podcast__archive .podcast__date {
-  margin: 10px 0;
-  display: inline-block;
+.post-type-archive-podcast .podcast__archive .podcast__meta .podcast__date {
+  margin: 0;
+  display: block;
   float: none;
   width: auto;
+  line-height: 1.5;
   font-weight: bold;
   font-size: 1em;
   color: #404041;
   text-transform: none; }
   @media screen and (min-width: 1024px)  {
-    .post-type-archive-podcast .podcast__archive .podcast__date {
-      margin-top: 0; } }
-  .post-type-archive-podcast .podcast__archive .podcast__date:before {
-    width: 0;
-    height: 0;
-    margin: 0 5px;
-    content: " - "; }
-.post-type-archive-podcast .podcast__archive .podcast__title {
-  display: inline-block; }
-.post-type-archive-podcast .podcast__archive .podcast__rss {
-  display: inline-block;
-  margin-top: 2px;
-  margin-left: 10px;
-  margin-bottom: 0; }
-.post-type-archive-podcast .podcast__archive .podcast__parent--title {
+    .post-type-archive-podcast .podcast__archive .podcast__meta .podcast__date {
+      display: inline; }
+      .post-type-archive-podcast .podcast__archive .podcast__meta .podcast__date:before {
+        width: 0;
+        height: 0;
+        margin: 0 5px;
+        content: " - "; } }
+.post-type-archive-podcast .podcast__archive .podcast__meta .podcast__title {
+  margin: 0 0 .5em; }
+.post-type-archive-podcast .podcast__archive .podcast__meta .podcast__rss {
+  display: none; }
+  @media screen and (min-width: 1024px)  {
+    .post-type-archive-podcast .podcast__archive .podcast__meta .podcast__rss {
+      display: inline-block;
+      margin-top: 2px;
+      margin-bottom: 0;
+      margin-right: 1em; } }
+@media screen and (min-width: 1024px)  {
+  .post-type-archive-podcast .podcast__archive .podcast__meta .podcast__parent {
+    margin-top: .5em; } }
+.post-type-archive-podcast .podcast__archive .podcast__meta .podcast__parent--title {
+  display: block;
   margin-right: 0; }
-.post-type-archive-podcast .podcast__archive .podcast__subscribe {
-  display: inline-block;
-  margin-top: 2px;
-  margin-left: 10px;
-  margin-bottom: 0; }
+  @media screen and (min-width: 1024px)  {
+    .post-type-archive-podcast .podcast__archive .podcast__meta .podcast__parent--title {
+      display: inline; } }
+.post-type-archive-podcast .podcast__archive .podcast__meta .podcast__subscribe {
+  display: none; }
+  @media screen and (min-width: 1024px)  {
+    .post-type-archive-podcast .podcast__archive .podcast__meta .podcast__subscribe {
+      display: inline-block;
+      margin-top: 2px;
+      margin-bottom: 0;
+      margin-right: 1em;
+      margin-left: 0; } }
 
 .podcast__archive--episode-count {
   font-size: 0.79012em;
@@ -8981,15 +9051,31 @@ header.podcast__header {
   margin-bottom: 10px;
   color: #929497;
   text-transform: uppercase; }
-  .post-type-archive-podcast .podcast__archive--episode-count {
-    display: inline-block;
-    width: auto;
-    margin-top: 8px !important;
-    margin-left: 10px !important;
-    vertical-align: top; }
+  .podcast__download .podcast__archive--episode-count {
+    display: block; }
+    @media screen and (min-width: 1024px)  {
+      .podcast__download .podcast__archive--episode-count {
+        display: none; } }
+  .podcast__meta .podcast__archive--episode-count {
+    display: none; }
+    @media screen and (min-width: 1024px)  {
+      .podcast__meta .podcast__archive--episode-count {
+        display: inline-block;
+        width: auto;
+        margin-top: 8px !important;
+        vertical-align: top; } }
 
-.single-podcast .podcast__header a.podcast__subscribe, .single-podcast .podcast__header a.podcast__rss {
-  vertical-align: text-bottom; }
+.single-podcast .podcast__header {
+  margin-bottom: 1.75em; }
+  @media screen and (min-width: 768px)  {
+    .single-podcast .podcast__header {
+      margin-bottom: 0; } }
+  .single-podcast .podcast__header a.podcast__subscribe, .single-podcast .podcast__header a.podcast__rss {
+    vertical-align: text-bottom; }
+.single-podcast .podcast__parent--title {
+  margin-right: 10px; }
+.single-podcast .podcast__subscribe {
+  display: inline-block; }
 
 .login-restricted-login-btn, .logout-restricted-login-btn, .age-restricted-login-btn {
   display: inline-block;
