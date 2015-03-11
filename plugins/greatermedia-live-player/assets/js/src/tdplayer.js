@@ -194,7 +194,7 @@
 			}
 		);
 
-		player = new TdPlayerApi(tdPlayerConfig);
+		window.player = player = new TdPlayerApi(tdPlayerConfig);
 		if (player.addEventListener) {
 			player.addEventListener('player-ready', onPlayerReady);
 			player.addEventListener('configuration-error', onConfigurationError);
@@ -828,7 +828,7 @@
 			player.attachEvent('stream-stop', onStreamStopped);
 		}
 
-		player.setVolume(1); //Set volume to 100%
+		player.setVolume(window.player_volume || 1);
 
 		setStatus('Api Ready');
 		if (lpInit === 1) {

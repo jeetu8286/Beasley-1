@@ -5,7 +5,7 @@
  * Licensed under the GPLv2+ license.
  */
 
-(function ($,window,undefined) {
+(function($, window, undefined) {
 	"use strict";
 
 	// variables
@@ -101,4 +101,28 @@
 		}
 	});
 
-} )(jQuery,window);
+	$(document).ready(function() {
+		var volume_slider = $('#live-player--volume');
+
+		volume_slider.noUiSlider({
+			start: 1,
+			range: {
+				min: 0,
+				max: 1
+			}
+		});
+
+		volume_slider.on('slide', function() {
+			var volume = parseFloat(volume_slider.val());
+
+			if (isNaN(volume)) {
+				return;
+			}
+
+			window.player_volume = volume;
+			if (window.player) {
+				window.player.setVolume(volume);
+			}
+		});
+	});
+})(jQuery, window);
