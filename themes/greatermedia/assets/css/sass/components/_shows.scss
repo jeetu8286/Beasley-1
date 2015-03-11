@@ -526,7 +526,7 @@ category: Components - Shows
 }
 
 .show__feature--desc {
-	background-color: #F1F1F3;
+	background-color: $show-highlights-bg;
 	color: $primary-heading;
 
 	h3 {

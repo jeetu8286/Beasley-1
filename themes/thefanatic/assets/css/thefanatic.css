@@ -938,8 +938,7 @@ h1, .h1, .type-tribe_events .entry2__thumbnail--event-date, .type-contest .entry
   h1 a:hover, h1 a:focus, h1 a:active, .h1 a:hover, .type-tribe_events .entry2__thumbnail--event-date a:hover, .type-contest .entry2__thumbnail--end-date a:hover, .type-contest .entry2__thumbnail--contest-type a:hover, .h1 a:focus, .type-tribe_events .entry2__thumbnail--event-date a:focus, .type-contest .entry2__thumbnail--end-date a:focus, .type-contest .entry2__thumbnail--contest-type a:focus, .h1 a:active, .type-tribe_events .entry2__thumbnail--event-date a:active, .type-contest .entry2__thumbnail--end-date a:active, .type-contest .entry2__thumbnail--contest-type a:active, h2 a:hover, h2 a:focus, h2 a:active, .h2 a:hover, .h2 a:focus, .h2 a:active, h3 a:hover, h3 a:focus, h3 a:active, .h3 a:hover, .h3 a:focus, .h3 a:active, h4 a:hover, h4 a:focus, h4 a:active, .h4 a:hover, .h4 a:focus, .h4 a:active, h5 a:hover, h5 a:focus, h5 a:active, .h5 a:hover, .h5 a:focus, .h5 a:active, h6 a:hover, h6 a:focus, h6 a:active, .h6 a:hover, .h6 a:focus, .h6 a:active {
     color: #580f0c; }
   .news-site h1, .news-site .h1, .news-site .type-tribe_events .entry2__thumbnail--event-date, .type-tribe_events .news-site .entry2__thumbnail--event-date, .news-site .type-contest .entry2__thumbnail--end-date, .type-contest .news-site .entry2__thumbnail--end-date, .news-site .type-contest .entry2__thumbnail--contest-type, .type-contest .news-site .entry2__thumbnail--contest-type, .news-site h2, .news-site .h2, .news-site h3, .news-site .h3, .news-site h4, .news-site .h4, .news-site h5, .news-site .h5, .news-site h6, .news-site .h6 {
-    font-weight: normal;
-    color: #000000; }
+    font-weight: normal; }
 
 .featured__content--title a:link, .featured__content--title a:visited, .featured__article--title a:link, .featured__article--title a:visited, .highlights__community--title a:link, .highlights__community--title a:visited {
   color: #ffffff; }
@@ -9594,7 +9593,7 @@ category: Components - Shows
         top: 0; } }
 
 .show__feature--desc {
-  background-color: #F1F1F3;
+  background-color: #e3e4e5;
   color: #000000; }
   .show__feature--desc h3 {
     margin: 0;
@@ -14184,6 +14183,9 @@ table.responsive tr:nth-of-type(even) {
   .live-player {
     width: 300px; } }
 
+h1, .h1, .type-tribe_events .entry2__thumbnail--event-date, .type-contest .entry2__thumbnail--end-date, .type-contest .entry2__thumbnail--contest-type, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
+  color: #000000; }
+
 .mobile-nav {
   background-color: #303030; }
 
@@ -14237,6 +14239,9 @@ table.responsive tr:nth-of-type(even) {
 
 .highlights__contest--date {
   color: #58595b; }
+
+.highlights__community--title {
+  color: white; }
 
 .header__sub {
   background-color: #580f0c; }
@@ -14341,6 +14346,16 @@ a.entry2__category:link, a.entry2__category:visited {
 .live-links--more__btn:hover {
   background-color: #db261d !important;
   border-color: #db261d !important; }
+
+.show__header {
+  background-color: #580f0c; }
+  .show__header.has-thumbnail:before {
+    background-image: linear-gradient(to bottom, rgba(88, 15, 12, 0.85), rgba(88, 15, 12, 0.85));
+    background-image: -moz-linear-gradient(top, rgba(88, 15, 12, 0.85), rgba(88, 15, 12, 0.85));
+    background-image: -o-linear-gradient(top, rgba(88, 15, 12, 0.85), rgba(88, 15, 12, 0.85));
+    background-image: -ms-linear-gradient(top, rgba(88, 15, 12, 0.85), rgba(88, 15, 12, 0.85));
+    background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(88, 15, 12, 0.85)), to(rgba(88, 15, 12, 0.85)));
+    background-image: -webkit-linear-gradient(top, rgba(88, 15, 12, 0.85), rgba(88, 15, 12, 0.85)); }
 
 .shows__schedule--now {
   border-color: #db261d; }
