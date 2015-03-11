@@ -1776,31 +1776,6 @@ var $ = jQuery;
 			Cookies.set('gmr_play_live_audio', 0);
 		}
 	});
-
-	$(document).ready(function() {
-		var volume_slider = $('#live-player--volume');
-
-		volume_slider.noUiSlider({
-			start: 1,
-			range: {
-				min: 0,
-				max: 1
-			}
-		});
-
-		volume_slider.on('slide', function() {
-			var volume = parseFloat(volume_slider.val());
-
-			if (isNaN(volume)) {
-				return;
-			}
-
-			window.player_volume = volume;
-			if (window.player) {
-				window.player.setVolume(volume);
-			}
-		});
-	});
 })(jQuery, window);
 /* global: gigya_profile_path */
 (function ($, window, undefined) {
@@ -1858,6 +1833,8 @@ var $ = jQuery;
 	var liveStreamInterval = null;
 	var footer = document.querySelector('.footer');
 	var lpInit = false;
+	var volume_slider = $(document.getElementById('live-player--volume'));
+	var global_volume = 1;
 
 	/**
 	 * global variables for event types to use in conjunction with `addEventHandler` function
@@ -2622,8 +2599,8 @@ var $ = jQuery;
 			player.attachEvent('stream-start', onStreamStarted);
 			player.attachEvent('stream-stop', onStreamStopped);
 		}
-
-		player.setVolume(window.player_volume || 1);
+		
+		player.setVolume(1);
 
 		setStatus('Api Ready');
 		if (lpInit === 1) {
@@ -2663,6 +2640,29 @@ var $ = jQuery;
 
 		$("#pwaButton").click(function () {
 			loadPwaData();
+		});
+
+		volume_slider.noUiSlider({
+			start: getVolume(),
+			range: {
+				min: 0,
+				max: 1
+			}
+		});
+
+		volume_slider.on('slide', function() {
+			global_volume = parseFloat(volume_slider.val());
+			if (isNaN(global_volume)) {
+				global_volume = 1;
+			}
+
+			if (livePlaying) {
+				player.setVolume(global_volume);
+			}
+			
+			if (typeof(localStorage) !== "undefined") {
+				localStorage.setItem("gmr-live-player-volume", global_volume);
+			}
 		});
 	}
 
@@ -2748,6 +2748,24 @@ var $ = jQuery;
 		}
 	}
 
+	function getVolume() {
+		var volume = global_volume;
+
+		if (typeof(localStorage) !== "undefined") {
+			volume = localStorage.getItem("gmr-live-player-volume");
+			if (volume === null) {
+				volume = 1;
+			} else {
+				volume = parseFloat(volume);
+				if (isNaN(volume)) {
+					volume = 1;
+				}
+			}
+		}
+
+		return volume;
+	}
+
 	function onStreamStarted() {
 		livePlaying = true;
 		playingLiveAudio = true;
@@ -2755,10 +2773,14 @@ var $ = jQuery;
 		if (loadingBtn.classList.contains('loading')) {
 			loadingBtn.classList.remove('loading');
 		}
+
 		if (pauseBtn.classList.contains('live-player__muted')) {
 			pauseBtn.classList.remove('live-player__muted');
 		}
+
 		startLiveStreamInterval();
+		
+		player.setVolume(getVolume());
 	}
 
 	function onStreamSelect() {
