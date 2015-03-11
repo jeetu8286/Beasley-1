@@ -7,6 +7,8 @@ use GreaterMedia\Utils\Downloader;
 use Marketron\MappingCollection;
 use Marketron\Tools\Factory as ToolFactory;
 use GreaterMedia\Import\Factory as ImporterFactory;
+use Marketron\XMLExtractor;
+use WordPress\Tables\Users;
 
 class Migrator {
 
@@ -27,8 +29,11 @@ class Migrator {
 	public $tool_factory;
 	public $importer_factory;
 	public $downloader;
-	public $config;
 	public $opts;
+
+	public $config;
+	public $mappings;
+	public $fresh;
 
 	function _test_downloader( $args, $opts ) {
 		$downloader = new Downloader( 'migration_cache/downloads' );
@@ -186,6 +191,110 @@ class Migrator {
 				system( "xmllint --huge --format --output $outfile $file" );
 			}
 		}
+	}
+
+	/* fast migration */
+	function fast_migrate( $args, $opts ) {
+		$this->load_params( $args, $opts );
+
+		if ( $this->fresh ) {
+			// if backup does not exist create it first
+			if ( ! file_exists( $this->get_backup_file() ) ) {
+				$this->backup( $args, $opts );
+			} else {
+				$this->restore( $args, $opts );
+			}
+		}
+
+		$this->config = new MigrationConfig( $this->site_dir );
+		$this->config->container = $this;
+		$this->config->load();
+
+		$this->mappings = new MappingCollection();
+		$this->mappings->container = $this;
+		$this->mappings->load();
+
+		\WP_CLI::log( '' );
+
+		$this->xml_extractor = new XMLExtractor();
+		$this->xml_extractor->container = $this;
+		$this->xml_extractor->extract();
+
+		$users = new Users();
+		$users->container = $this;
+
+		$total_users = 100000;
+		$password    = wp_hash_password( 'foobar' );
+		$notify      = new \cli\progress\Bar( "Created $total_users Test Users", $total_users );
+
+		foreach ( range( 1, $total_users ) as $i ) {
+			$users->add(
+				array(
+					'user_login'          => 'me' . $i,
+					'user_nicename'       => 'me' . $i,
+					'user_pass'           => $password,
+					'user_email'          => "me$i@foo.com",
+					'user_url'            => '',
+					'user_registered'     => gmdate( 'Y-m-d H:i:s' ),
+					'user_activation_key' => '',
+					'user_status'         => 0,
+					'display_name'        => 'Foo User' . $i,
+				)
+			);
+
+			$notify->tick();
+		}
+
+		$notify->finish();
+
+		$users->export();
+		$users->import();
+	}
+
+	function restore( $args, $opts ) {
+		$this->load_params( $args, $opts );
+
+		$backup = $this->get_backup_file();
+
+		if ( file_exists( $backup ) ) {
+			\WP_CLI::log( "Restoring Backup: $backup" );
+			system( "wp db import \"$backup\"" );
+		} else {
+			\WP_CLI::error( "Backup not found: $backup" );
+		}
+
+		\WP_CLI::log( '' );
+	}
+
+	function backup( $args, $opts ) {
+		$this->load_params( $args, $opts );
+		$backup = $this->get_backup_file();
+
+		if ( file_exists( $backup ) ) {
+			\WP_CLI::confirm( 'Backup file exists, Are you sure you want to overwrite it?' );
+			\WP_CLI::log( "Overwriting Database Backup: $backup" );
+		} else {
+			\WP_CLI::log( "Backing up Database: $backup" );
+		}
+
+		system( "wp db export \"$backup\"" );
+		\WP_CLI::log( '' );
+	}
+
+	private function load_params( $args, $opts ) {
+		$this->args = $args;
+		$this->opts = $opts;
+
+		if ( ! array_key_exists( 'site_dir', $opts ) ) {
+			\WP_CLI::error( '--site_dir option must be specified' );
+		}
+
+		$this->site_dir = $opts['site_dir'];
+		$this->fresh    = array_key_exists( 'fresh', $opts ) && filter_var( $opts['fresh'], FILTER_VALIDATE_BOOLEAN );
+	}
+
+	private function get_backup_file() {
+		return $this->site_dir . '/backup.sql';
 	}
 
 }

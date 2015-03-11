@@ -4,14 +4,20 @@ namespace Marketron;
 
 class MappingCollection {
 
+	public $container;
 	public $mappings = array();
 	public $shows = array();
 
-	function load( $mapping_file ) {
+	function load() {
+		$config       = $this->container->config;
+		$mapping_file = $config->get_mapping_file();
+
+		\WP_CLI::log( "Loading Mapping File: $mapping_file" );
+
 		if ( file_exists( $mapping_file ) ) {
 			$file           = fopen( $mapping_file, 'r' );
 			$this->parse( $file );
-			$this->load_shows();
+			//$this->load_shows();
 		} else {
 			\WP_CLI::error( "Mapping file not found: $mapping_file" );
 		}
@@ -226,6 +232,16 @@ class MappingCollection {
 	function get_show_mapping( $show_author ) {
 		$marketron_id = $this->shows[ $show_author ];
 		return $this->get_mapping( $marketron_id );
+	}
+
+	function get_author_names() {
+		$author_names = array();
+
+		foreach ( $this->mappings as $mapping ) {
+			$author_names[] = $mapping->wordpress_author_name;
+		}
+
+		return $author_names;
 	}
 
 }
