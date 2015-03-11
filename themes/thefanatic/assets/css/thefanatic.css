@@ -1676,6 +1676,10 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
         margin-bottom: 1.5em;
         margin-right: 10px; } }
   .news-site .content__heading, .news-site .sponsors__heading {
+    font-size: 2.02729em;
+    font-weight: lighter;
+    text-transform: uppercase; }
+  .home.news-site .content__heading, .home.news-site .sponsors__heading {
     padding: .35em 0 1.65em;
     margin: 0;
     line-height: 1;
@@ -5154,6 +5158,9 @@ Link posts contain a link to an external site. They can also optionally have a f
 .article__list--title {
   display: inline;
   font-weight: 800; }
+  .news-site .article__list--title {
+    font-weight: normal;
+    color: #58595b; }
 
 .article__list--title:after {
   content: "/";
@@ -9321,6 +9328,20 @@ category: Components - Shows
     background-size: 100% auto;
     background-size: cover;
     background-position: center; }
+    .show__header.has-thumbnail:before {
+      position: absolute;
+      display: block;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: linear-gradient(to bottom, rgba(86, 16, 21, 0.85), rgba(86, 16, 21, 0.85));
+      background-image: -moz-linear-gradient(top, rgba(86, 16, 21, 0.85), rgba(86, 16, 21, 0.85));
+      background-image: -o-linear-gradient(top, rgba(86, 16, 21, 0.85), rgba(86, 16, 21, 0.85));
+      background-image: -ms-linear-gradient(top, rgba(86, 16, 21, 0.85), rgba(86, 16, 21, 0.85));
+      background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(86, 16, 21, 0.85)), to(rgba(86, 16, 21, 0.85)));
+      background-image: -webkit-linear-gradient(top, rgba(86, 16, 21, 0.85), rgba(86, 16, 21, 0.85));
+      content: " "; }
   .show__header > div {
     vertical-align: middle; }
   @media screen and (min-width: 768px)  {
@@ -9341,6 +9362,7 @@ category: Components - Shows
 
 .show__cast {
   width: 100%;
+  position: relative;
   height: 100%; }
   @media screen and (min-width: 1024px)  {
     .show__cast {
@@ -9359,6 +9381,7 @@ category: Components - Shows
 .show__nav {
   width: 100%;
   overflow: auto;
+  position: relative;
   text-align: center;
   margin: 1.5em 0 .5em; }
   .show__nav .show__title {
@@ -9400,7 +9423,6 @@ category: Components - Shows
       text-align: left;
       padding-left: 3em;
       padding-right: 3em;
-      position: relative;
       overflow: visible; }
       .show__nav .show__title {
         margin-top: 0;
@@ -9444,6 +9466,7 @@ category: Components - Shows
 
 .show__meta {
   width: 100%;
+  position: relative;
   text-align: center;
   float: none; }
   @media screen and (min-width: 1024px)  {
@@ -14318,5 +14341,8 @@ a.entry2__category:link, a.entry2__category:visited {
 .live-links--more__btn:hover {
   background-color: #db261d !important;
   border-color: #db261d !important; }
+
+.shows__schedule--now {
+  border-color: #db261d; }
 
 /*# sourceMappingURL=thefanatic.css.map */
