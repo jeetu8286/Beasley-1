@@ -1,0 +1,22 @@
+a.social__link,
+a.social-share-link {
+	color: $social-color;
+	border: 1px solid $social-color;
+
+	&:hover {	
+		color: $social-hover;
+		border-color: $social-hover; 
+	}	
+}
+
+.social__link a, .social__link a:visited {
+	color: $secondary-heading;
+}
+
+.social__link a:hover, .social__link a:focus {
+	color: $secondary-link;
+}
+
+.social__link a:active {
+	color: $color-text-white;
+}
