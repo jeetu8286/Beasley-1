@@ -475,6 +475,7 @@ category: Components - Shows
 }
 
 .show__feature--primary {
+
 	@include bp(large) {
 		@include span-columns(8 of 12);
 	}
@@ -482,6 +483,7 @@ category: Components - Shows
 }
 
 .show__feature--secondary {
+
 	@include bp(large) {
 		@include span-columns(4 of 12);
 		@include omega;
@@ -509,6 +511,13 @@ category: Components - Shows
 	&:hover {
 		h3 {
 			color: $primary-link-hover;
+		}
+
+		.news-site & {
+
+			.show__feature--title {
+				color: $primary-link;
+			}
 		}
 	}
 	
@@ -572,9 +581,7 @@ category: Components - Shows
 			font-size: ms(-1);
 		}
 	}
-} 	
-
-
+}
 
 /*doc
 ---
@@ -717,6 +724,35 @@ category: Components - Shows
 			}
 		}
 	}
+
+	.news-site & {
+
+		li[class^="live-link__type"] {
+			min-height: 30px;
+
+			&:before {
+				top: auto;
+				font-size: .675em;
+
+				@include bp(large) {
+					top: auto;
+					font-size: .675em;
+				}
+			}
+
+			a {
+
+				&:hover {
+					color: $primary-link;
+				}
+			}
+		}
+
+		.live-link__title {
+			padding-left: 20px;
+		}
+	}
+
 }
 
 .show__live-links--more {
@@ -748,6 +784,14 @@ category: Components - Shows
 	&:hover {
 		color: $primary-link-hover;
 		border: 1px solid $primary-link-hover;
+	}
+
+	.news-site & {
+
+		&:hover {
+			border-color: $primary-link;
+			color: $primary-link;
+		}
 	}
 }
 
