@@ -103,8 +103,8 @@ class GMLP_Player {
 	 * Enqueue scripts
 	 */
 	public static function enqueue_scripts() {
-
-		$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
+		$script_debug = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG;
+		$postfix = $script_debug ? '' : '.min';
 
 		if ( function_exists( 'gmr_streams_get_primary_stream_callsign') ) {
 			$callsign = gmr_streams_get_primary_stream_callsign();
@@ -128,6 +128,7 @@ class GMLP_Player {
 		$home_url = home_url( '/' );
 		wp_enqueue_script( 'gmlp-js', GMLIVEPLAYER_URL . "assets/js/greater_media_live_player{$postfix}.js", array( 'jquery', 'underscore', 'classlist-polyfill', 'nielsen-sdk', 'bowser', 'pjax', 'wp-mediaelement', 'cookies-js' ), GMLIVEPLAYER_VERSION, true );
 		wp_localize_script( 'gmlp-js', 'gmr', array(
+			'debug'      => $script_debug,
 			'logged_in'  => is_gigya_user_logged_in(),
 			'callsign'   => $callsign,
 			'streamUrl'  => $vast_url,

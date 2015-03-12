@@ -10,6 +10,7 @@ module.exports = function( grunt ) {
 			greater_media_live_player: {
 				src: [
 					'assets/js/src/jquery.load.js',
+					'assets/js/src/nielsen_sdk_embed.js',
 					'assets/js/src/greater_media_live_player.js',
 					'assets/js/src/tdplayer.js'
 				],
@@ -38,19 +39,21 @@ module.exports = function( grunt ) {
 				globals: {
 					exports: true,
 					module:  false,
-					'is_gigya_user_logged_in': true,
-					'gigya_profile_path': true,
-					'gmr': true,
-					'Cookies': true,
-					'gmlp': true,
-					'jQuery': true,
+					is_gigya_user_logged_in: true,
+					gigya_profile_path: true,
+					gmr: true,
+					Cookies: true,
+					gmlp: true,
+					jQuery: true,
 					'$': true,
-					'window': true,
-					'bowser': true,
-					'require': true,
-					'TdPlayerApi': true,
+					window: true,
+					bowser: true,
+					require: true,
+					TdPlayerApi: true,
 					'_': false,
-					'Modernizr': true
+					Modernizr: true,
+					NOLCMB: false,
+					bindNielsenSDKEvents: true
 				}
 			}		
 		},
