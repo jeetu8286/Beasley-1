@@ -121,7 +121,7 @@ class GMLP_Player {
 			wp_localize_script( 'nielsen-sdk', '_nolggGlobalParams', array(
 				'apid'   => $apid,
 				'apn'    => get_option( 'gmr_nielsen_sdk_apn', get_bloginfo( 'name' ) ),
-				'sfcode' => get_option( 'gmr_nielsen_sdk_sfcode' ) ? 'drm' : 'uat-cert',
+				'sfcode' => get_option( 'gmr_nielsen_sdk_mode' ) ? 'drm' : 'uat-cert',
 			) );
 		}
 
@@ -174,14 +174,14 @@ class GMLP_Player {
 			'default' => get_bloginfo( 'name' ),
 		) );
 
-		add_settings_field( 'gmr_nielsen_sdk_sfcode', 'Nielsen SDK Mode', array( __CLASS__, 'render_nielsen_sdk_mode_settings' ), 'media', 'greatermedia_live_player' );
+		add_settings_field( 'gmr_nielsen_sdk_mode', 'Nielsen SDK Mode', array( __CLASS__, 'render_nielsen_sdk_mode_settings' ), 'media', 'greatermedia_live_player' );
 		
 		add_settings_field( 'gmr_live_streaming_interval', 'Live Streaming Interval', $interval_callback, 'media', 'greatermedia_live_player', array( 'name' => 'gmr_live_streaming_interval' ) );
 		add_settings_field( 'gmr_inline_audio_interval', 'Inline Audio Interval', $interval_callback, 'media', 'greatermedia_live_player', array( 'name' => 'gmr_inline_audio_interval' ) );
 
 		register_setting( 'media', 'gmr_nielsen_sdk_apid', 'trim' );
 		register_setting( 'media', 'gmr_nielsen_sdk_apn', 'trim' );
-		register_setting( 'media', 'gmr_nielsen_sdk_sfcode', 'boolval' );
+		register_setting( 'media', 'gmr_nielsen_sdk_mode', 'boolval' );
 		register_setting( 'media', 'gmr_live_streaming_interval', 'intval' );
 		register_setting( 'media', 'gmr_inline_audio_interval', 'intval' );
 	}
@@ -210,9 +210,9 @@ class GMLP_Player {
 	}
 
 	public static function render_nielsen_sdk_mode_settings() {
-		?><select name="gmr_nielsen_sdk_sfcode">
+		?><select name="gmr_nielsen_sdk_mode">
 			<option value="0">Test</option>
-			<option value="1"<?php selected( get_option( 'gmr_nielsen_sdk_sfcode' ) ); ?>>Production</option>
+			<option value="1"<?php selected( get_option( 'gmr_nielsen_sdk_mode' ) ); ?>>Production</option>
 		</select><?php
 	}
 
