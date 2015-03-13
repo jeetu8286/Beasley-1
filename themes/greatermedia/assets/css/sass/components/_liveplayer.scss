@@ -458,6 +458,10 @@ category: Components
 			top: 264px;
 		}
 	}
+
+	.gmr-user .live-player__container.no-volume-control & {
+		top: 236px;
+	}
 }
 #popup-player-livestream .live-stream__status{
   display: block;
@@ -1762,6 +1766,10 @@ a.live-audio__link {
 
 
 	.live-player__container.playing & {
+		display: none;
+	}
+
+	.live-player__container.no-volume-control & {
 		display: none;
 	}
 }
