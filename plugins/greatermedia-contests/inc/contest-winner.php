@@ -243,12 +243,12 @@ function gmr_contests_export_to_csv() {
 				}
 
 				fputcsv( $stdout, $row );
+
+				flush();
+				ob_flush();
+
+				wp_cache_flush();
 			}
-
-			flush();
-			ob_flush();
-
-			wp_cache_flush();
 		}
 
 		$paged++;
