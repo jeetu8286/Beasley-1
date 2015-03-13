@@ -480,9 +480,9 @@
 					if (lpInit === true) {
 						setStoppedStyles();
 						if (window.innerWidth >= 768) {
-							playLiveStreamNoAd();
+							playLiveStream();
 						} else {
-							playLiveStreamMobileNoAd();
+							playLiveStreamMobile();
 						}
 					} else {
 						setInitialPlay();
