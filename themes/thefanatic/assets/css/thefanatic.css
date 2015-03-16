@@ -7430,7 +7430,7 @@ category: Components - Ads
 .closure {
   padding: 10px;
   padding-left: 0;
-  border-bottom: 1px solid rgba(128, 128, 128, 0.2); }
+  border-bottom: 1px solid rgba(184, 186, 188, 0.2); }
 
 .closure p {
   margin: 0;
@@ -7442,7 +7442,7 @@ category: Components - Ads
   margin: 0;
   padding-left: 0;
   text-transform: uppercase;
-  color: #d22228;
+  color: #db261d;
   float: left;
   margin-right: 1em; }
   @media screen and (max-width: 1023px) {
@@ -7472,14 +7472,13 @@ category: Components - Ads
       width: 18%; } }
 
 .closure-attr--date {
-  color: #9A9AA1; }
+  color: #929497; }
 
 .closures_header {
   padding: 10px;
   padding-left: 0;
   text-transform: uppercase;
-  font-weight: bold;
-  font-family: "Droid Sans", sans-serif; }
+  font-weight: bold; }
 
 .closures_header:after {
   content: "";
