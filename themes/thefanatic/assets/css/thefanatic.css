@@ -10397,7 +10397,7 @@ a.social__link, a.social-share-link {
   margin-bottom: 0;
   font-size: 1.26562em;
   font-weight: normal;
-  color: #d22228; }
+  color: #db261d; }
   .search__result--title:last-child {
     margin-right: 0; }
   @media screen and (min-width: 480px)  {
@@ -10438,10 +10438,10 @@ a.social__link, a.social-share-link {
         margin-right: 0; } }
 
 .search__result--title a:link, .search__result--title a:visited {
-  color: #d22228; }
+  color: #db261d; }
 
 .search__result--title a:hover, .search__result--title a:focus, .search__result--title a:active {
-  color: #000000; }
+  color: #580f0c; }
 
 .search__result--term {
   font-weight: bold; }
