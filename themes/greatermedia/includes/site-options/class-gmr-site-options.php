@@ -117,6 +117,7 @@ class GreaterMediaSiteOptions {
 		register_setting( self::option_group, 'gmr_google_analytics', 'sanitize_text_field' );
 		register_setting( self::option_group, 'gmr_google_uid_dimension', 'absint' );
 		register_setting( self::option_group, 'gmr_livelinks_title', 'sanitize_text_field');
+		register_setting( self::option_group, 'gmr_liveplayer_display', 'esc_attr' );
 
 		/**
 		 * Allows us to register extra settings that are not necessarily always present on all child sites.
@@ -159,6 +160,7 @@ class GreaterMediaSiteOptions {
 		$site_logo_id = GreaterMediaSiteOptionsHelperFunctions::get_site_logo_id();
 		$site_favicon_id = GreaterMediaSiteOptionsHelperFunctions::get_site_favicon_id();
 		$livelinks_title = get_option( 'gmr_livelinks_title', '' );
+		$liveplayer_display = get_option( 'gmr_liveplayer_display', '' );
 
 		?>
 
@@ -167,10 +169,15 @@ class GreaterMediaSiteOptions {
 		<hr />
 
 		<?php self::render_image_select( 'Site Fav Icon', 'gmr_site_favicon', $site_favicon_id ); ?>
-
+		
 		<hr />
 
-		<h4>Live Links</h4>
+		<h4><?php _e( 'Live Player and Live Links', 'greatermedia' ); ?></h4>
+
+		<div class="gmr__option">
+			<input type="checkbox" name="gmr_liveplayer_display" id="gmr_liveplayer_display" value="1" <?php checked( 1 == esc_attr( $liveplayer_display ) ); ?> /><label for="gmr_liveplayer_display" class="gmr__option--label-inline"><?php _e( 'Do not display the Live Player', 'greatermedia' ); ?></label>
+			<div class="gmr-option__field--desc"><?php _e( 'Check this box if this site does not have a live audio stream.', 'greatermedia' ); ?></div>
+		</div>
 
 		<div class="gmr__option">
 			<label for="gmr_livelinks_title" class="gmr__option--label">Title of Live Links Sidebar</label>
