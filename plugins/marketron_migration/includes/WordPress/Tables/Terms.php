@@ -24,8 +24,8 @@ class Terms extends BaseTable {
 		$term_name = $fields['name'];
 
 		if ( $this->has_term( $term_name ) ) {
-			//error_log( 'did not create term: $term_name' );
-			//return $this->get_term( $term_name );
+			//error_log( "did not create term: $term_name" );
+			return $this->get_term( $term_name );
 		}
 
 		if ( ! array_key_exists( 'slug', $fields ) ) {

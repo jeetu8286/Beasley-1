@@ -7,6 +7,7 @@ class MappingCollection {
 	public $container;
 	public $mappings = array();
 	public $shows = array();
+	public $author_names = array();
 
 	function load() {
 		$config       = $this->container->config;
@@ -27,6 +28,8 @@ class MappingCollection {
 		$this->import_authors();
 		$this->import_categories();
 		$this->import_shows();
+		$this->import_podcasts();
+		$this->import_tags();
 	}
 
 	function load_shows() {
@@ -54,6 +57,7 @@ class MappingCollection {
 		}
 	}
 
+	// DEPRECATED
 	function create_show( $show_name ) {
 		$post = array(
 			'post_type'     => 'show',
@@ -73,6 +77,7 @@ class MappingCollection {
 		return $post_id;
 	}
 
+	// DEPRECATED
 	function create_podcast( $podcast_name ) {
 		$post = array(
 			'post_type'     => 'podcast',
@@ -251,7 +256,7 @@ class MappingCollection {
 			}
 		}
 
-		return $author_names;
+		return array_unique( $author_names );
 	}
 
 	function import_authors() {
@@ -265,6 +270,8 @@ class MappingCollection {
 
 			$entity->add( $author );
 		}
+
+		$this->author_names = $authors;
 	}
 
 	function get_category_names() {
@@ -292,17 +299,60 @@ class MappingCollection {
 
 	function import_shows() {
 		$entity = $this->get_entity( 'show' );
+		$shows_map = array();
 
 		foreach ( $this->mappings as $mapping ) {
-			if ( ! empty( $mapping->wordpress_show_name ) ) {
+			$show_name = $mapping->wordpress_show_name;
+			if ( ! empty( $show_name ) && ! isset( $shows_map[ $show_name ] ) ) {
 				$show = array(
-					'show_name'   => $mapping->wordpress_show_name,
+					'show_name'   => $show_name,
 					'show_author' => $mapping->wordpress_author_name,
 				);
 
 				$entity->add( $show );
+				$shows_map[ $show_name ] = true;
 			}
 		}
+	}
+
+	function import_podcasts() {
+		$entity       = $this->get_entity( 'podcast' );
+		$podcasts_map = array();
+
+		foreach ( $this->mappings as $mapping ) {
+			$podcast_name = trim( $mapping->wordpress_podcast_name );
+
+			if ( ! empty( $podcast_name ) && ! isset( $podcasts_map[ $podcast_name ] ) ) {
+				$podcast = array(
+					'podcast_name' => $podcast_name,
+					'podcast_author' => $mapping->wordpress_author_name,
+					'podcast_show' => $mapping->wordpress_show_name,
+				);
+
+				$entity->add( $podcast );
+			}
+		}
+	}
+
+	function import_tags() {
+		$tags_file  = $this->container->config->get_tags_file();
+		$file       = fopen( $tags_file, 'r' );
+		$fields     = fgetcsv( $file, 0, ',', '"' );
+		$total_tags = count( file( $tags_file ) ) - 1;
+		$notify     = new \cli\progress\Bar( "Importing $total_tags Tags ", $total_tags );
+		$entity     = $this->get_entity( 'tag' );
+
+		while ( $fields !== false ) {
+			if ( is_numeric( $fields[0] ) ) {
+				$tag_name = $fields[1];
+				$entity->add( $tag_name );
+			}
+
+			$fields = fgetcsv( $file, 0, ',', '"' );
+			$notify->tick();
+		}
+
+		$notify->finish();
 	}
 
 	function get_entity( $name ) {
@@ -311,6 +361,20 @@ class MappingCollection {
 
 	function get_table( $name ) {
 		return $this->container->table_factory->build( $name );
+	}
+
+	function has_author( $name ) {
+		return in_array( $name, $this->author_names );
+	}
+
+	function get_show_for_author( $name ) {
+		foreach ( $this->mappings as $mapping ) {
+			if ( $mapping->wordpress_author_name === $name ) {
+				return $mapping->wordpress_show_name;
+			}
+		}
+
+		return null;
 	}
 
 }

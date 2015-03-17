@@ -33,6 +33,7 @@ class Posts extends BaseTable {
 	public $indices = array(
 		'post_name',
 		'post_type',
+		'post_title',
 	);
 
 	function get_table_name() {

@@ -29,12 +29,12 @@ class Taxonomy extends BaseEntity {
 			$term    = array( 'name' => $term_name );
 			$term    = $table->add( $term );
 		} else {
-			if ( strpos( $taxonomy, '_' ) === 0 ) {
-				$term    = array( 'name' => $term_name );
-				$term    = $table->add( $term );
-			} else {
-				$term    = $table->get_term( $term_name );
-			}
+			$term    = $table->get_term( $term_name );
+			//if ( strpos( $taxonomy, '_' ) === 0 ) {
+				//$term    = array( 'name' => $term_name );
+				//$term    = $table->add( $term );
+			//} else {
+			//}
 		}
 
 		//error_log( "find_or_create_term: $term_name" );

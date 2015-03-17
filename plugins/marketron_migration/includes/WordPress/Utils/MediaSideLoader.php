@@ -46,6 +46,10 @@ class MediaSideLoader {
 
 	// copy the media file to output/uploads and return it's attributes
 	function sideload( $filepath, $timestamp = null ) {
+		if ( ! file_exists( $filepath ) ) {
+			return false;
+		}
+
 		if ( is_null( $timestamp ) ) {
 			$timestamp = strtotime( 'now' );
 		}
@@ -219,7 +223,7 @@ class MediaSideLoader {
 		$suffix     = $this->get_timestamp_suffix( $timestamp );
 		$upload_dir = wp_upload_dir();
 
-		return $upload_dir['basedir'] . '/' . $suffix . '/' . $filename;
+		return $upload_dir['basedir'] . '/' . $suffix . '/' . sanitize_file_name( $filename );
 	}
 
 	function get_timestamp_suffix( $timestamp ) {

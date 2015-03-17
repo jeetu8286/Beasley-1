@@ -23,6 +23,12 @@ class Factory {
 		'event_category' => 'WordPress\Entities\EventCategory',
 		'event' => 'WordPress\Entities\Event',
 		'show' => 'WordPress\Entities\Show',
+		'podcast' => 'WordPress\Entities\Podcast',
+		'podcast_episode' => 'WordPress\Entities\PodcastEpisode',
+		'series_taxonomy' => 'WordPress\Entities\SeriesTaxonomy',
+		'blog' => 'WordPress\Entities\Blog',
+		'gallery' => 'WordPress\Entities\Gallery',
+		'album' => 'WordPress\Entities\Album',
 	);
 
 

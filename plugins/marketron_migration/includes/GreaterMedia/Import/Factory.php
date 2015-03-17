@@ -8,6 +8,9 @@ class Factory {
 		'feed' => 'GreaterMedia\Import\Feed',
 		'venue' => 'GreaterMedia\Import\Venue',
 		'event_calendar' => 'GreaterMedia\Import\EventCalendar',
+		'blog' => 'GreaterMedia\Import\Blog',
+		'photo_album_v2' => 'GreaterMedia\Import\PhotoAlbumV2',
+		'showcase' => 'GreaterMedia\Import\Showcase',
 	);
 
 	public $container;

@@ -7,10 +7,13 @@ class Factory {
 	public $container;
 	public $tools = array();
 	public $tools_type_map = array(
-		'feed'            => 'Marketron\Tools\Feed',
-		'venue'           => 'Marketron\Tools\Venue',
+		'feed'           => 'Marketron\Tools\Feed',
+		'venue'          => 'Marketron\Tools\Venue',
 		'event_calendar' => 'Marketron\Tools\EventCalendar',
-		'affinity_club'   => 'Marketron\Tools\AffinityClub',
+		'affinity_club'  => 'Marketron\Tools\AffinityClub',
+		'blog'           => 'Marketron\Tools\Blog',
+		'photo_album_v2'           => 'Marketron\Tools\PhotoAlbumV2',
+		'showcase'           => 'Marketron\Tools\Showcase',
 	);
 
 	function build( $tool_name ) {

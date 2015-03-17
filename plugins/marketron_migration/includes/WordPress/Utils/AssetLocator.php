@@ -45,6 +45,10 @@ class AssetLocator {
 
 	function repair_path( $path ) {
 		$path = preg_replace( '/^\\\\Pics/', '', $path, 1 );
+		$path = preg_replace( '/\s+.mp3$/', '.mp3', $path, 1 );
+		$path = preg_replace( '/\s+.jpeg$/', '.jpeg', $path, 1 );
+		$path = preg_replace( '/\s+.jpg$/', '.jpg', $path, 1 );
+
 		return $path;
 	}
 

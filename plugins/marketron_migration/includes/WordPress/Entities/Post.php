@@ -46,13 +46,13 @@ class Post extends BaseEntity {
 			$this->set_post_categories( $post_id, $fields['categories'] );
 		}
 
-		if ( array_key_exists( 'featured_image', $fields ) ) {
+		if ( array_key_exists( 'featured_image', $fields ) && ! empty( $fields['featured_image'] ) ) {
 			$this->set_featured_image(
 				$post_id, $fields['featured_image'], $fields['post_author']
 			);
 		}
 
-		if ( array_key_exists( 'featured_audio', $fields ) ) {
+		if ( array_key_exists( 'featured_audio', $fields ) && ! empty( $fields['featured_audio'] ) ) {
 			$this->set_featured_audio( $fields );
 		}
 

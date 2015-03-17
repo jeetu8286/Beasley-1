@@ -258,7 +258,7 @@ class Migrator {
 		$this->mappings->load();
 		$this->xml_extractor->extract();
 
-		$tool = 'feed';
+		$tool = 'all';
 		$migration_cache_dir = 'migration_cache';
 		$this->opts['migration_cache_dir'] = 'migration_cache';
 
@@ -275,8 +275,8 @@ class Migrator {
 
 		$this->mappings->import();
 
-		//$this->load_tools( $tools_to_load );
-		//$this->import_tools( $tools_to_load );
+		$this->load_tools( $tools_to_load );
+		$this->import_tools( $tools_to_load );
 
 		//$this->test_users();
 		//$this->test_users_api();
@@ -297,6 +297,7 @@ class Migrator {
 		//$this->test_post_format();
 		$this->table_factory->export();
 		$this->table_factory->import();
+		$this->update_term_counts();
 
 		$this->side_loader->sync();
 		$this->error_reporter->save_report();
@@ -726,6 +727,24 @@ class Migrator {
 
 	private function get_backup_file() {
 		return $this->site_dir . '/backups/database.sql';
+	}
+
+	private function update_term_counts() {
+		global $wpdb;
+		$query = <<<SQL
+UPDATE {$wpdb->prefix}term_taxonomy
+SET count = (
+	SELECT COUNT(*) FROM {$wpdb->prefix}term_relationships rel
+    LEFT JOIN {$wpdb->prefix}posts po ON (po.ID = rel.object_id)
+    WHERE
+        rel.term_taxonomy_id = {$wpdb->prefix}term_taxonomy.term_taxonomy_id
+        AND
+		{$wpdb->prefix}term_taxonomy.taxonomy NOT IN ('link_category')
+        AND
+        po.post_status IN ('publish', 'future')
+);
+SQL;
+		$wpdb->query( $query );
 	}
 
 }
