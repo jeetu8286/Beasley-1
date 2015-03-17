@@ -711,6 +711,9 @@ img {
   @media screen and (min-width: 768px)  {
     .content, .gallery__archive, .main .lead-in, .main #signup-welcome, .main .view {
       padding: 3em 3.236em; } }
+  @media screen and (min-width: 768px)  {
+    .news-site .content, .news-site .gallery__archive, .news-site .main .lead-in, .main .news-site .lead-in, .news-site .main #signup-welcome, .main .news-site #signup-welcome, .news-site .main .view, .main .news-site .view {
+      padding: 1.5em 1.5em; } }
 
 .live-player {
   position: fixed;
@@ -2594,6 +2597,9 @@ Community Highlights and Events
     padding-bottom: 0;
     background-color: transparent !important;
     border-bottom: none; }
+    @media screen and (min-width: 768px)  {
+      .news-site .home__highlights {
+        padding: 0 1.5em; } }
 
 .news-site .highlights__col {
   border-top: 1px solid #d0d2d3; }
@@ -2761,13 +2767,21 @@ Community Highlights and Events
         float: left;
         display: block;
         margin-right: 2.35765%;
+        width: 48.82117%; }
+        .news-site .highlights__events:last-child, .news-site .highlights__contests:last-child {
+          margin-right: 0; } }
+    @media screen and (min-width: 1400px)  {
+      .news-site .highlights__events, .news-site .highlights__contests {
+        float: left;
+        display: block;
+        margin-right: 2.35765%;
         width: 31.76157%; }
         .news-site .highlights__events:last-child, .news-site .highlights__contests:last-child {
           margin-right: 0; } }
 
 .news-site .highlights__contests {
   padding-top: 1.5em; }
-  @media screen and (min-width: 768px)  {
+  @media (min-width: 768px) and (max-width: 1399px) {
     .news-site .highlights__contests {
       margin-right: 0; } }
   @media screen and (min-width: 1024px)  {
@@ -3094,7 +3108,7 @@ a.highlights__contest--btn {
       width: 100%;
       margin: 0 auto;
       text-align: center; } }
-  @media screen and (min-width: 1200px)  {
+  @media screen and (min-width: 1400px)  {
     .news-site .highlights__ad {
       float: left;
       display: block;
@@ -4668,6 +4682,9 @@ Link posts contain a link to an external site. They can also optionally have a f
   @media screen and (min-width: 768px)  {
     .entries {
       padding: 1.5em 3.236em; } }
+  @media screen and (min-width: 768px)  {
+    .news-site .entries {
+      padding: 1.5em 1.5em; } }
 
 .entry2 {
   float: left;
