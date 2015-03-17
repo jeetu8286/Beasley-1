@@ -469,6 +469,9 @@
 	if (liveLinksWidget != null) {
 		addEventHandler(liveLinksWidget, elemClick, liveLinksClose);
 	}
+	if (body.classList.contains('liveplayer-disabled')) {
+		addEventHandler(liveLinksWidgetTitle, 'click', openLivePlayer);
+	}
 
 	addEventHandler(window, elemResize, function () {
 		resizeDebounce();

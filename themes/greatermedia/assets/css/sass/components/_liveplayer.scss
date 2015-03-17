@@ -1275,6 +1275,11 @@ category: Components
 			width: 225px;
 		}
 	}
+
+	.liveplayer-disabled & {
+		visibility: visible;
+		max-height: none;
+	}
 }
 
 #popup-player-livestream .live-links{
