@@ -23,6 +23,12 @@ class MappingCollection {
 		}
 	}
 
+	function import() {
+		$this->import_authors();
+		$this->import_categories();
+		$this->import_shows();
+	}
+
 	function load_shows() {
 		foreach ( $this->mappings as $mapping ) {
 			if ( $mapping->wordpress_show_name ) {
@@ -238,10 +244,73 @@ class MappingCollection {
 		$author_names = array();
 
 		foreach ( $this->mappings as $mapping ) {
-			$author_names[] = $mapping->wordpress_author_name;
+			$author_name = trim( $mapping->wordpress_author_name );
+
+			if ( ! empty( $author_name ) ) {
+				$author_names[] = $author_name;
+			}
 		}
 
 		return $author_names;
+	}
+
+	function import_authors() {
+		$authors = $this->get_author_names();
+		$entity  = $this->container->entity_factory->build( 'author' );
+
+		foreach ( $authors as $author_name ) {
+			$author = array(
+				'display_name' => $author_name,
+			);
+
+			$entity->add( $author );
+		}
+	}
+
+	function get_category_names() {
+		$categories = array();
+
+		foreach ( $this->mappings as $mapping ) {
+			$category = trim( $mapping->wordpress_category );
+
+			if ( ! empty( $category ) ) {
+				$categories[] = $category;
+			}
+		}
+
+		return $categories;
+	}
+
+	function import_categories() {
+		$categories = $this->get_category_names();
+		$entity  = $this->container->entity_factory->build( 'category' );
+
+		foreach ( $categories as $category_name ) {
+			$entity->add( $category_name );
+		}
+	}
+
+	function import_shows() {
+		$entity = $this->get_entity( 'show' );
+
+		foreach ( $this->mappings as $mapping ) {
+			if ( ! empty( $mapping->wordpress_show_name ) ) {
+				$show = array(
+					'show_name'   => $mapping->wordpress_show_name,
+					'show_author' => $mapping->wordpress_author_name,
+				);
+
+				$entity->add( $show );
+			}
+		}
+	}
+
+	function get_entity( $name ) {
+		return $this->container->entity_factory->build( $name );
+	}
+
+	function get_table( $name ) {
+		return $this->container->table_factory->build( $name );
 	}
 
 }

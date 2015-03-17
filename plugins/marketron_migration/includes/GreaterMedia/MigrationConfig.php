@@ -9,6 +9,8 @@ class MigrationConfig {
 	public $output_dir;
 	public $site_dir;
 	public $data;
+	public $asset_dirs;
+	public $data_files;
 
 	function __construct( $site_dir ) {
 		$this->site_dir   = $site_dir;
@@ -20,6 +22,10 @@ class MigrationConfig {
 		return $this->input_dir . '/config.json';
 	}
 
+	function get_site_dir() {
+		return $this->container->opts['site_dir'];
+	}
+
 	function get_mapping_file() {
 		return $this->input_dir . '/mapping.csv';
 	}
@@ -28,6 +34,7 @@ class MigrationConfig {
 		return $this->input_dir . '/tags.csv';
 	}
 
+	// DEPRECATED, there are multiple exports
 	function get_marketron_export_file() {
 		return $this->input_dir . '/marketron_export.zip';
 	}
@@ -50,6 +57,59 @@ class MigrationConfig {
 
 	function get_seed_id() {
 		return $this->data['database']['seed_id'];
+	}
+
+	function get_site_option( $name ) {
+		return $this->get_config_option( 'site', $name );
+	}
+
+	function get_error_option( $name ) {
+		return $this->get_config_option( 'error', $name );
+	}
+
+	function get_config_option( $parent, $name ) {
+		if ( array_key_exists( $name, $this->data[ $parent ] ) ) {
+			return $this->data[ $parent ][ $name ];
+		} else {
+			\WP_CLI::error( "Error: Unknown site_option - $name" );
+		}
+	}
+
+	function get_asset_dirs() {
+		if ( is_null( $this->asset_dirs ) ) {
+			$asset_dirs = $this->data['site']['asset_dirs'];
+			$site_dir   = $this->get_site_dir();
+			$dirs       = array();
+
+			foreach ( $asset_dirs as $asset_dir ) {
+				$dirs[] = $site_dir . '/marketron_files/' . $asset_dir;
+			}
+
+			$this->asset_dirs = $dirs;
+		}
+
+		return $this->asset_dirs;
+	}
+
+	function get_data_files() {
+		$data_files_map = $this->get_site_option( 'data_files' );
+		return array_keys( $data_files_map );
+	}
+
+	function get_data_file_dirs_for_tool( $name ) {
+		$data_files = $this->get_site_option( 'data_files' );
+		$dirs       = array();
+		$site_dir   = $this->get_site_dir();
+
+		foreach ( $data_files as $data_file => $tools ) {
+			if ( in_array( $name, $tools ) ) {
+				$data_file_dirname = basename( $data_file, '.zip' );
+				$data_file_dir     = $site_dir . '/marketron_files/' . $data_file_dirname;
+				$dirs[]            = $data_file_dir;
+			}
+		}
+
+		return $dirs;
 	}
 
 	function load() {

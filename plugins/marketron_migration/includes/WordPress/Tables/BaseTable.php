@@ -5,18 +5,45 @@ namespace WordPress\Tables;
 class BaseTable {
 
 	public $container;
+	public $factory;
 	public $id_counter    = null;
 	public $rows          = array();
 	public $columns       = array();
 	public $indices       = array();
 	public $indices_store = array();
+	public $primary_key   = 'ID';
 
 	function get_next_id() {
 		if ( is_null( $this->id_counter ) ) {
-			$this->id_counter = $this->container->config->get_seed_id();
+			$seed_id         = $this->get_seed_id();
+			$has_primary_key = $this->has_primary_key();
+
+			if ( $seed_id === 0 && $has_primary_key ) {
+				$this->id_counter = $this->get_max_id() + 1000;
+			} else {
+				$this->id_counter = $seed_id;
+			}
 		}
 
 		return $this->id_counter++;
+	}
+
+	function get_seed_id() {
+		return $this->container->config->get_seed_id();
+	}
+
+	function has_primary_key() {
+		return in_array( $this->primary_key, $this->columns );
+	}
+
+	function get_max_id() {
+		global $wpdb;
+
+		$query  = " Select Max( $this->primary_key )";
+		$query .= ' From ' . $this->get_prefixed_table_name();
+		$max_id = intval( $wpdb->get_var( $query ) );
+
+		return $max_id;
 	}
 
 	function get_rows() {
@@ -31,21 +58,30 @@ class BaseTable {
 		return $this->indices;
 	}
 
-	function add( $fields ) {
-		if ( ! array_key_exists( 'ID', $fields ) ) {
-			$fields['ID'] = $this->get_next_id();
+	function get_table( $name ) {
+		return $this->factory->build( $name );
+	}
+
+	function add( &$fields ) {
+		if ( ! array_key_exists( $this->primary_key, $fields ) ) {
+			$fields[ $this->primary_key ] = $this->get_next_id();
 		}
 
-		$id = $fields['ID'];
+		$id                = $fields[ $this->primary_key ];
 		$this->rows[ $id ] = $fields;
+
 		$this->index_row( $fields );
 
 		return $fields;
 	}
 
-	function index_row( $fields ) {
+	function update( $id, $field_name, $field_value ) {
+		$this->rows[ $id ][ $field_name ] = $field_value;
+	}
+
+	function index_row( &$fields ) {
 		$indices = $this->get_indices();
-		$id      = $fields['ID'];
+		$id      = $fields[ $this->primary_key ];
 
 		foreach ( $indices as $index_field ) {
 			if ( ! array_key_exists( $index_field, $this->indices_store ) ) {
@@ -54,7 +90,12 @@ class BaseTable {
 
 			if ( array_key_exists( $index_field, $fields ) ) {
 				$field_value = $fields[ $index_field ];
-				$this->indices_store[ $index_field ][ $field_value ] = $id;
+
+				if ( ! array_key_exists( $field_value, $this->indices_store[ $index_field ] ) ) {
+					$this->indices_store[ $index_field ][ $field_value ] = array();
+				}
+
+				$this->indices_store[ $index_field ][ $field_value ][] = $id;
 			}
 		}
 	}
@@ -62,16 +103,32 @@ class BaseTable {
 	/* Eg:- has_row_with_field( 'slug', 'foo-bar' ) */
 	function has_row_with_field( $field_name, $field_value ) {
 		if ( array_key_exists( $field_name, $this->indices_store ) ) {
-			return array_key_exists( $field_value, $this->indices_store[ $field_name ] );
+			if ( array_key_exists( $field_value, $this->indices_store[ $field_name ] ) ) {
+				$indices = $this->indices_store[ $field_name ][ $field_value ];
+				return count( $indices ) > 0;
+			} else {
+				return false;
+			}
 		} else {
 			return false;
 		}
 	}
 
+	// returns first row with matched index
 	function get_row_with_field( $field_name, $field_value ) {
 		if ( $this->has_row_with_field( $field_name, $field_value ) ) {
-			$id = $this->indices_store[ $field_name ][ $field_value ];
-			return $this->rows[ $id ];
+			$indices = $this->indices_store[ $field_name ][ $field_value ];
+			$row_id  = $indices[0];
+			return $this->rows[ $row_id ];
+		} else {
+			return null;
+		}
+	}
+
+	function get_rows_with_field( $field_name, $field_value ) {
+		if ( $this->has_row_with_field( $field_name, $field_value ) ) {
+			$indices = $this->indices_store[ $field_name ][ $field_value ];
+			return $this->get_rows_by_ids( $indices );
 		} else {
 			return null;
 		}
@@ -85,6 +142,18 @@ class BaseTable {
 		}
 	}
 
+	function get_rows_by_ids( $ids ) {
+		$rows = array();
+
+		foreach ( $ids as $id ) {
+			if ( array_key_exists( $id, $this->rows ) ) {
+				$rows[] = $this->rows[ $id ];
+			}
+		}
+
+		return $rows;
+	}
+
 	function get_export_dir() {
 		return $this->container->config->get_csv_export_dir();
 	}
@@ -93,9 +162,18 @@ class BaseTable {
 		return 'base_table';
 	}
 
+	function is_multisite_table() {
+		return true;
+	}
+
 	function get_prefixed_table_name() {
 		global $wpdb;
-		return $wpdb->prefix . $this->get_table_name();
+
+		if ( $this->is_multisite_table() ) {
+			return $wpdb->prefix . $this->get_table_name();
+		} else {
+			return $wpdb->base_prefix . $this->get_table_name();
+		}
 	}
 
 	function get_export_file() {
@@ -118,7 +196,7 @@ Load Data Local InFile '$csv_file'
 Into Table $table_name
 Fields Terminated By ','
 Optionally Enclosed By '\"'
-($columns)
+($columns);
 SQL;
 
 		$query = str_replace( "\n", " ", $query );
@@ -138,8 +216,7 @@ SQL;
 		$cmd .= ' --local-infile';
 		$cmd .= ' --database=' . DB_NAME;
 		$cmd .= ' --show-warnings';
-		$cmd .= ' --verbose';
-		$cmd .= ' -e "' . $query . '"';
+		$cmd .= ' -vve ' . escapeshellarg( $query );
 
 		system( $cmd );
 
@@ -172,19 +249,26 @@ SQL;
 		$rows       = $this->get_rows();
 		$total_rows = count( $rows );
 		$table_name = $this->get_table_name();
-		$notify     = new \cli\progress\Bar( "Generating CSV with $total_rows $table_name", $total_rows );
 
-		foreach ( $rows as $row_id => $row ) {
-			$csv_row = $this->to_csv_row( $row, $columns );
-			fputcsv(
-				$csv_file_handle, $csv_row, ',', '"'
-			);
+		if ( $total_rows > 0 ) {
+			$msg        = "Generating CSV with $total_rows $table_name";
+			$msg        = str_pad( $msg, 40, ' ', STR_PAD_RIGHT );
+			$notify     = new \cli\progress\Bar( $msg, $total_rows );
 
-			$notify->tick();
+			foreach ( $rows as $row_id => $row ) {
+				$csv_row = $this->to_csv_row( $row, $columns );
+				fputcsv(
+					$csv_file_handle, $csv_row, ',', '"'
+				);
+
+				$notify->tick();
+			}
+
+			fclose( $csv_file_handle );
+			$notify->finish();
+		} else {
+			\WP_CLI::log( "Skipped $table_name" );
 		}
-
-		fclose( $csv_file_handle );
-		$notify->finish();
 	}
 
 	function to_csv_row( $row, $columns ) {
@@ -196,6 +280,10 @@ SQL;
 			} else {
 				$type = gettype( $row[ $column ] );
 				$value = $row[ $column ];
+
+				if ( $value instanceof \DateTime ) {
+					$value = $value->format( 'Y-m-d H:i:s' );
+				}
 				//error_log( $column . ' ' . $type );
 			}
 			// TODO: type conversion
