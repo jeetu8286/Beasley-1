@@ -25,8 +25,8 @@ class Migrator {
 	);
 
 	public $default_tools = array(
-		'feed',
-		//'affinity_club',
+		'feed', 'blog', 'venue', 'event_calendar',
+		'photo_album_v2', 'showcase'
 	);
 
 	public $tool_factory;
