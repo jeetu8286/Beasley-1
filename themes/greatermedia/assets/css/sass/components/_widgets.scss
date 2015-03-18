@@ -6,6 +6,14 @@
 	.live-player--open & {
 		margin-bottom: 58px;
 	}
+
+	.news-site & {
+		padding: 0 5%;
+
+		@include bp(medium) {
+			padding: 0;
+		}
+	}
 }
 
 .widget--live-player__title {
@@ -42,13 +50,9 @@
 	line-height: 1;
 
 	.news-site & {
-		padding-top: 2.125em;
+		margin-top: 2.125em;
 
 		&:hover {
-
-			.live-link__title {
-				color: $primary-link-hover;
-			}
 
 			div:before {
 				color: $primary-link-hover;
