@@ -6,6 +6,27 @@
 	.live-player--open & {
 		margin-bottom: 58px;
 	}
+
+	.liveplayer-disabled & {
+		visibility: hidden;
+
+		@include bp(medium) {
+			visibility: visible;
+		}
+	}
+
+	.liveplayer-disabled.live-player--open & {
+		visibility: visible;
+		display: block;
+		height: auto !important;
+		max-height: 48vh;
+		padding-bottom: 40px;
+		margin-bottom: 0;
+		
+		@include bp(small) {
+			max-height: 35vh;
+		}
+	}
 }
 
 .widget--live-player__title {
@@ -15,6 +36,34 @@
 		margin: 0 0 1em;
 		font-size: ms(0);
 		font-weight: normal;
+	}
+
+	.liveplayer-disabled & {
+		position: absolute;
+		display: block;
+		top: 0;
+		left: 0;
+		width: calc(100% - 58px);
+		padding: 21px 0 21px 3.75%;
+		margin: 0;
+		border-bottom: 1px solid white;
+		line-height: 1;
+		font-size: ms(1);
+		font-weight: bold;
+		text-align: left;
+
+		@include bp(medium) {
+			position: relative;
+			top: auto;
+			left: auto;
+			width: 100%;
+			padding: 0;
+			margin: 0 0 1em;
+			border-bottom: none;
+			font-size: ms(0);
+			font-weight: normal;
+			text-align: center;
+		}
 	}
 }
 
