@@ -19,7 +19,11 @@ if ( empty( $active_stream ) ) {
 </style>
 <aside id="live-player__sidebar" class="live-player">
 
-	<?php // start the live streaming section of the live player ?>
+	<?php // start the live streaming section of the live player
+	$liveplayer_disabled = get_option( 'gmr_liveplayer_disabled' );
+
+	if ( $liveplayer_disabled != 1 ) {
+	?>
 	<div class="live-stream">
 		<nav class="live-player__stream">
 			<ul class="live-player__stream--list">
@@ -69,12 +73,14 @@ if ( empty( $active_stream ) ) {
 
 		</div>
 	</div>
-	<?php // start the live streaming section of the live player ?>
+	<?php } // start the live streaming section of the live player ?>
 
 	<?php // start the live links section of the live player ?>
 	<div id="live-links" class="live-links">
 
-		<h3 class="widget--live-player__title"><?php _e( 'Live Links', 'greatermedia' ); ?></h3>
+		<h3 class="widget--live-player__title"><?php do_action( 'gmr_livelinks_title' ); ?></h3>
+
+		<div class="live-player--open__btn"></div>
 
 		<?php dynamic_sidebar( 'liveplayer_sidebar' ); ?>
 

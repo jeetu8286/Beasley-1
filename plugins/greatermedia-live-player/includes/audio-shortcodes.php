@@ -43,31 +43,38 @@ class GMR_Audio_Shortcodes {
 		if ( is_admin() ) {
 			return $html;
 		}
+		
+//		/*
+//		 * Spec supports mp3 only, as do the browsers we're trying to use audio element with.
+//		 * Anything else will just use media element, rather than the live player
+//		 * support could be expanded later if necessary, checking types with wp_get_audio_extensions() to know supported
+//		 * audio types in core, but we'd likely need better browser support, or some fixes to mediaelement so that
+//		 * it works better (at all) when not attached to a real element in the visible DOM
+//		 */
+//		if ( ! isset( $atts['mp3'] ) || empty( $atts['mp3'] ) ) {
+//			$new_html = '<div class="gmr-mediaelement">';
+//			$new_html .= $html;
+//			$new_html .= '</div>';
+//
+//			return $new_html;
+//		}
 
-		/*
-		 * Spec supports mp3 only, as do the browsers we're trying to use audio element with.
-		 * Anything else will just use media element, rather than the live player
-		 * support could be expanded later if necessary, checking types with wp_get_audio_extensions() to know supported
-		 * audio types in core, but we'd likely need better browser support, or some fixes to mediaelement so that
-		 * it works better (at all) when not attached to a real element in the visible DOM
-		 */
-		if ( ! isset( $atts['mp3'] ) || empty( $atts['mp3'] ) ) {
-			$new_html = '<div class="gmr-mediaelement">';
-			$new_html .= $html;
-			$new_html .= '</div>';
-
-			return $new_html;
+		$formats = array( 'mp3', 'ogg', 'wma', 'm4a', 'wav' );
+		foreach ( $formats as $format ) {
+			if ( ! empty( $atts[ $format ] ) && filter_var( $atts[ $format ], FILTER_VALIDATE_URL ) ) {
+				$mp3_src = $atts[ $format ];
+				break;
+			}
 		}
 
-		$mp3_src = $atts['mp3'];
 		if ( ! function_exists( 'wp_read_audio_metadata' ) ) {
 			include_once trailingslashit( ABSPATH ) . 'wp-admin/includes/media.php';
 		}
 
 		$metadata_defaults = array(
-			'title' => '',
+			'title'            => '',
 			'length_formatted' => '',
-			'artist' => '',
+			'artist'           => '',
 		);
 
 		/*
@@ -139,19 +146,24 @@ class GMR_Audio_Shortcodes {
 		} else {
 			$new_html .= '<div class="podcast-player podcast-player--compact">';
 		}
-		
+
 		$new_html .= '<div class="podcast__play mp3-' . esc_attr( $hash ) . '">'; // Hash is used to ensure the inline audio can always match state of live player, even when the player is the buttons that are clicked
 		$new_html .= '<div class="podcast__cover"  style="background-image: url(' . $featured_image . ');">';
 
+		/* Note: the content below is for a podcast episode */
+		$play_episode_content = '';
+
 		if ( $is_podcast ) {
-			$new_html .= '<button class="podcast__btn--play" data-mp3-src="' . esc_attr( $mp3_src ) . '" data-mp3-title="' . get_the_title() . '" data-mp3-artist="' . esc_html( $parent_podcast->post_title ) . ' - ' . get_the_time( 'n.j.y' ) . '" data-mp3-hash="' . esc_attr( $hash ) . '"></button>';
+			$play_episode_content .= '<button class="podcast__btn--play" data-mp3-src="' . esc_attr( $mp3_src ) . '" data-mp3-title="' . get_the_title() . '" data-mp3-artist="' . esc_html( $parent_podcast->post_title ) . ' - ' . get_the_time( 'n.j.y' ) . '" data-mp3-hash="' . esc_attr( $hash ) . '"></button>';
 		} elseif ( $is_podcast_archive ) {
-			$new_html .= '<button class="podcast__btn--play" data-mp3-src="' . esc_attr( $mp3_src ) . '" data-mp3-title="' . get_the_title() . '" data-mp3-artist="' . esc_html( get_the_title() ) . ' - ' . get_the_time( 'n.j.y' ) . '" data-mp3-hash="' . esc_attr( $hash ) . '"></button>';
+			$play_episode_content .= '<button class="podcast__btn--play" data-mp3-src="' . esc_attr( $mp3_src ) . '" data-mp3-title="' . get_the_title() . '" data-mp3-artist="' . esc_html( get_the_title() ) . ' - ' . get_the_time( 'n.j.y' ) . '" data-mp3-hash="' . esc_attr( $hash ) . '"></button>';
 		} else {
-			$new_html .= '<button class="podcast__btn--play" data-mp3-src="' . esc_attr( $mp3_src ) . '" data-mp3-title="' . esc_attr( $title ) . '" data-mp3-artist=" " data-mp3-hash="' . esc_attr( $hash ) . '"></button>';
+			$play_episode_content .= '<button class="podcast__btn--play" data-mp3-src="' . esc_attr( $mp3_src ) . '" data-mp3-title="' . esc_attr( $title ) . '" data-mp3-artist=" " data-mp3-hash="' . esc_attr( $hash ) . '"></button>';
 		}
 
-		$new_html .= '<button class="podcast__btn--pause"></button>';
+		$play_episode_content .= '<button class="podcast__btn--pause"></button>';
+
+		$new_html .= self::filter_episode_content( $post_id, $play_episode_content );
 		$new_html .= '</div>';
 
 		if ( $is_podcast || $is_podcast_archive ) {
@@ -179,12 +191,20 @@ class GMR_Audio_Shortcodes {
 					if ( $itunes_url != '' ) {
 						$new_html .= '<a class="podcast__subscribe show-mobile" href="' . esc_url( $itunes_url ) . '" target="_blank">Subscribe in iTunes</a>';
 					}
-					$new_html .= '<a class="podcast__rss show-mobile" href="' . esc_url( $feed_url ) . '" target="_blank">Podcast Feed</a>';
+					$new_html .= self::filter_episode_content(
+						$post_id,
+						'<a class="podcast__rss show-mobile" href="' . esc_url( $feed_url ) . '" target="_blank">Podcast Feed</a>'
+					);
+				}
+
+				if ( $is_podcast_archive && $podcast_episodes_query ) {
+					$new_html .= '<div class="podcast__archive--episode-count">' . $podcast_episodes_query->found_posts . ' Episodes</div>';
 				}
 			}
-			
+
 			if ( ! $is_podcast_archive ) {
-				$new_html .= '<a href="' . esc_attr( $mp3_src ) . '" download="' . esc_attr( $mp3_src ) . '" class="podcast__download--btn" download>Download</a>';
+				$download_content = '<a href="' . esc_attr( $mp3_src ) . '" download="' . esc_attr( $mp3_src ) . '" class="podcast__download--btn" download>Download</a>';
+				$new_html .= self::filter_episode_content( $post_id, $download_content );
 			}
 
 			$new_html .= '</div>';
@@ -193,13 +213,22 @@ class GMR_Audio_Shortcodes {
 		$new_html .= '</div>';
 		$new_html .= '<div class="podcast__meta">';
 		if ( $is_podcast ) {
-			$new_html .= '<time class="podcast__date" datetime="' . get_the_time( 'c' ) . '">' . get_the_time( 'F j' ) . '</time>';
+			$new_html .= '<time class="podcast__date" datetime="' . get_the_time( 'c' ) . '">' . get_the_time( 'F j, Y' ) . '</time>';
 			$new_html .= '<h3 class="podcast__title">' . get_the_title() . '</h3>';
 		} elseif ( $is_podcast_archive ) {
-			$new_html .= '<h3 class="podcast__title"><a href="' . get_the_permalink( $parent_podcast ) . '">' . get_the_title() . '</a></h3>';
-			$new_html .= '<time class="podcast__date" datetime="' . date( 'c', $episode_date ) . '">LATEST EPISODE: ' . date( 'F j', $episode_date ) . '</time>';
+			$parent_title = esc_html( $parent_podcast->post_title );
+			$new_html .= '<h3 class="podcast__title"><a href="' . esc_url( get_the_permalink( $parent_podcast ) ) . '">' . esc_html( $parent_title ) . '</a></h3>';
+			$new_html .= '<a class="podcast__rss" href="' . esc_url( $feed_url ) . '" target="_blank">Podcast Feed</a>';
+			if ( $itunes_url != '' ) {
+				$new_html .= '<a class="podcast__subscribe" href="' . esc_url( $itunes_url ) . '" target="_blank">Subscribe in iTunes</a>';
+			}
+
 		} else {
 			$new_html .= '<h3 class="podcast__title">' . esc_html( $title ) . '</h3>';
+		}
+
+		if ( $is_podcast_archive && $podcast_episodes_query ) {
+			$new_html .= '<div class="podcast__archive--episode-count">' . $podcast_episodes_query->found_posts . ' Episodes</div>';
 		}
 
 		if ( $parent_podcast_id && $is_podcast && !is_singular( GMP_CPT::PODCAST_POST_TYPE ) ) {
@@ -208,31 +237,21 @@ class GMR_Audio_Shortcodes {
 			if ( $itunes_url != '' ) {
 				$new_html .= '<a class="podcast__subscribe" href="' . esc_url( $itunes_url ) . '" target="_blank">Subscribe in iTunes</a>';
 			}
-			$new_html .= '<a class="podcast__rss" href="' . esc_url( $feed_url ) . '" target="_blank">Podcast Feed</a>';
+			$new_html .= self::filter_episode_content(
+				$post_id,
+				'<a class="podcast__rss" href="' . esc_url( $feed_url ) . '" target="_blank">Podcast Feed</a>'
+			);
 			$new_html .= '</div>';
 		} elseif ( $is_podcast_archive ) {
-			$parent_title = get_the_title();
-			if ( ! empty( $parent_podcast ) ) {
-				$parent_title = esc_html( $parent_podcast->post_title );
-			}
 
-			$new_html .= '<div class="podcast__parent--title podcast__parent--title--mobile show-mobile">' . $parent_title . '</div>';
-			$new_html .= '<div class="podcast__parent hide-mobile"><div class="podcast__parent--title">' . $parent_title . '</div>';
+			$new_html .= '<div class="podcast__parent"><div class="podcast__parent--title">Latest Episode: ' . get_the_title() . '</div>';
+			$new_html .= '<time class="podcast__date" datetime="' . date( 'c', $episode_date ) . '">' . date( 'F j, Y', $episode_date ) . '</time>';
 
-			if ( $itunes_url != '' ) {
-				$new_html .= '<a class="podcast__subscribe" href="' . esc_url( $itunes_url ) . '" target="_blank">Subscribe in iTunes</a>';
-			}
-			
-			$new_html .= '<a class="podcast__rss" href="' . esc_url( $feed_url ) . '" target="_blank">Podcast Feed</a>';
 			$new_html .= '</div>';
 		}
-		
+
 		if ( $is_podcast || $is_podcast_archive ) {
 			$new_html .= '<div class="podcast__desc">' . get_the_excerpt() . '</div>';
-		}
-
-		if ( $is_podcast_archive && $podcast_episodes_query ) {
-			$new_html .= '<div class="podcast__archive--episode-count">' . $podcast_episodes_query->found_posts . ' Episodes</div>';
 		}
 
 		if ( ! $is_podcast && ! $is_podcast_archive ) {
@@ -257,6 +276,18 @@ class GMR_Audio_Shortcodes {
 		}
 
 		return $new_html;
+	}
+
+	public static function filter_episode_content( $episode_id, $content ) {
+		global $post;
+
+		$old_post = $post;
+		$episode  = get_post( $episode_id );
+		$post     = $episode;
+		$content  = apply_filters( 'the_secondary_content', $content );
+		$post     = $old_post;
+
+		return $content;
 	}
 
 }

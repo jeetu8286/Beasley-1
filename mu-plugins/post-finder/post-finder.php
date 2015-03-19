@@ -10,12 +10,12 @@
 if( !class_exists( 'NS_Post_Finder' ) ) :
 
 define( 'POST_FINDER_VERSION', '0.2' );
- 
+
 /**
  * Namespacing the class with "NS" to ensure uniqueness
  */
 class NS_Post_Finder {
-	
+
 	/**
 	 * Setup hooks
 	 *
@@ -58,9 +58,9 @@ class NS_Post_Finder {
 			)
 		);
 
-		wp_enqueue_style( 'post-finder', plugins_url( 'css/screen.css', __FILE__ ) );
+		wp_enqueue_style( 'post-finder', plugins_url( 'css/screen.css', __FILE__ ), null, POST_FINDER_VERSION );
 	}
-	
+
 	/**
 	 * Make sure our nonce and JS templates are on all admin pages
 	 *
@@ -76,7 +76,7 @@ class NS_Post_Finder {
 	 * Outputs JS templates for use.
 	 */
 	private function render_js_templates() {
-		$main_template = 
+		$main_template =
 			'<li data-id="<%= id %>">
 				<input type="text" size="3" maxlength="3" max="3" value="<%= pos %>">
 				<span><%= title %></span>
@@ -87,16 +87,21 @@ class NS_Post_Finder {
 				</nav>
 			</li>';
 
-		$item_template = 
-			'<li data-id="<%= ID %>" data-permalink="<%= permalink %>">
-				<a href="#" class="add">Add</a>
-				<span><%= post_title %></span>
+		$item_template =
+			'<li data-id="<%= ID %>" data-permalink="<%= permalink %>" data-title="<%= post_title %>">
+				<a class="post-link" href="<%= permalink %>" target="_blank">
+					<%= post_title %>
+				</a>
+				<a class="add" href="#">Add</a>
+				<small class="post-date">
+					<%= post_date_formatted %>
+				</small>
 			</li>';
 
 		// allow for filtering / overriding of templates
 		$main_template = apply_filters( 'post_finder_main_template', $main_template );
 		$item_template = apply_filters( 'post_finder_item_template', $item_template );
-		
+
 		?>
 
 		<script type="text/html" id="tmpl-post-finder-main">
@@ -150,7 +155,7 @@ class NS_Post_Finder {
 			$plural           = 'Posts';
 			$singular_article = 'a';
 		}
-		
+
 		// get current selected posts if we have a value
 		if( !empty( $value ) && is_string( $value ) ) {
 
@@ -168,7 +173,7 @@ class NS_Post_Finder {
 		// if we have some ids already, make sure they arent included in the recent posts
 		if( !empty( $post_ids ) ) {
 			$args['post__not_in'] = $post_ids;
-		} 
+		}
 
 		// get recent posts
 		$recent_posts = get_posts( apply_filters( 'post_finder_' . $name . '_recent_post_args', $args ) );
@@ -177,7 +182,7 @@ class NS_Post_Finder {
 
 		if( !$options['show_numbers'] )
 			$class .= ' no-numbers';
-		
+
 		?>
 		<div class="<?php echo esc_attr( $class ); ?>" data-limit="<?php echo intval( $options['limit'] ); ?>" data-args='<?php echo json_encode( $args ); ?>'>
 			<input type="hidden" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>">
@@ -221,7 +226,7 @@ class NS_Post_Finder {
 				<?php endforeach; ?>
 			</select>
 			<?php endif; ?>
-		
+
 			<div class="search">
 				<h4>Search for <?php echo esc_html( $singular_article ) . ' ' . esc_html( $singular ); ?></h4>
 				<input type="text" placeholder="Enter a term or phrase">
@@ -247,7 +252,7 @@ class NS_Post_Finder {
 	 * @return void
 	 */
 	function search_posts() {
-		
+
 		check_ajax_referer( 'post_finder' );
 
 		if( !current_user_can( 'edit_posts' ) )
@@ -305,7 +310,7 @@ class NS_Post_Finder {
 
 				if( in_array( $_REQUEST['post_type'], $post_types ) )
 					$args['post_type'] = $_REQUEST['post_type'];
-			
+
 			}
 		}
 
@@ -319,8 +324,10 @@ class NS_Post_Finder {
 		$posts = get_posts( apply_filters( 'post_finder_search_args', $args ) );
 
 		// Get the permalink so that View/Edit links work
-		foreach( $posts as $key => $post )
+		foreach( $posts as $key => $post ) {
 			$posts[$key]->permalink = get_permalink( $post->ID );
+			$posts[$key]->post_date_formatted = get_the_time( 'F j, Y', $post );
+		}
 
 		$posts = apply_filters( 'post_finder_search_results', $posts );
 

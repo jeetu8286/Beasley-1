@@ -116,6 +116,8 @@ class GreaterMediaSiteOptions {
 		register_setting( self::option_group, 'gmr_site_favicon', 'intval' );
 		register_setting( self::option_group, 'gmr_google_analytics', 'sanitize_text_field' );
 		register_setting( self::option_group, 'gmr_google_uid_dimension', 'absint' );
+		register_setting( self::option_group, 'gmr_livelinks_title', 'sanitize_text_field');
+		register_setting( self::option_group, 'gmr_liveplayer_disabled', 'esc_attr' );
 
 		/**
 		 * Allows us to register extra settings that are not necessarily always present on all child sites.
@@ -157,16 +159,32 @@ class GreaterMediaSiteOptions {
 		$instagram = get_option( 'gmr_instagram_name', '' );
 		$site_logo_id = GreaterMediaSiteOptionsHelperFunctions::get_site_logo_id();
 		$site_favicon_id = GreaterMediaSiteOptionsHelperFunctions::get_site_favicon_id();
+		$livelinks_title = get_option( 'gmr_livelinks_title', '' );
+		$liveplayer_disabled = get_option( 'gmr_liveplayer_disabled', '' );
 
 		?>
 
 		<?php self::render_image_select( 'Site Logo', 'gmr_site_logo', $site_logo_id ); ?>
 
-		<hr/>
+		<hr />
 
 		<?php self::render_image_select( 'Site Fav Icon', 'gmr_site_favicon', $site_favicon_id ); ?>
 
-		<hr/>
+		<hr />
+
+		<h4><?php _e( 'Live Player and Live Links', 'greatermedia' ); ?></h4>
+
+		<div class="gmr__option">
+			<input type="checkbox" name="gmr_liveplayer_disabled" id="gmr_liveplayer_disabled" value="1" <?php checked( 1 == esc_attr( $liveplayer_disabled ) ); ?> /><label for="gmr_liveplayer_disabled" class="gmr__option--label-inline"><?php _e( 'Disable the Live Player', 'greatermedia' ); ?></label>
+			<div class="gmr-option__field--desc"><?php _e( 'Check this box if this site does not have a live audio stream.', 'greatermedia' ); ?></div>
+		</div>
+
+		<div class="gmr__option">
+			<label for="gmr_livelinks_title" class="gmr__option--label">Title of Live Links Sidebar</label>
+			<input type="text" class="gmr__option--input" name="gmr_livelinks_title" id="gmr_livelinks_title" value="<?php echo esc_attr( $livelinks_title ); ?>" />
+		</div>
+
+		<hr />
 
 		<h4>Social Pages</h4>
 
@@ -177,7 +195,7 @@ class GreaterMediaSiteOptions {
 
 		<div class="gmr__option">
 			<label for="gmr_twitter_url" class="gmr__option--label">Twitter Username</label>
-			<input type="text" class="gmr__option--input" name="gmr_twitter_name" id="gmr_twitter_name" value="<?php echo esc_html( $twitter ); ?>" />
+			<input type="text" class="gmr__option--input" name="gmr_twitter_name" id="gmr_twitter_name" value="<?php echo esc_attr( $twitter ); ?>" />
 			<div class="gmr-option__field--desc"><?php _e( 'Please enter username minus the @', 'greatermedia' ); ?></div>
 		</div>
 
@@ -188,11 +206,11 @@ class GreaterMediaSiteOptions {
 
 		<div class="gmr__option">
 			<label for="gmr_instagram_url" class="gmr__option--label">Instagram Username</label>
-			<input type="text" class="gmr__option--input" name="gmr_instagram_name" id="gmr_instagram_name" value="<?php echo esc_html( $instagram ); ?>" />
+			<input type="text" class="gmr__option--input" name="gmr_instagram_name" id="gmr_instagram_name" value="<?php echo esc_attr( $instagram ); ?>" />
 			<div class="gmr-option__field--desc"><?php _e( 'Please enter username only, not a full url.', 'greatermedia' ); ?></div>
 		</div>
 
-		<hr/>
+		<hr />
 
 
 	<?php

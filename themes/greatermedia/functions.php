@@ -20,7 +20,7 @@
 if ( defined( 'GMR_PARENT_ENV' ) && 'dev' == GMR_PARENT_ENV ) {
 	define( 'GREATERMEDIA_VERSION', time() );
 } else {
-	define( 'GREATERMEDIA_VERSION', '1.0.3' );
+	define( 'GREATERMEDIA_VERSION', '1.0.17' );
 }
 
 add_theme_support( 'homepage-curation' );
@@ -30,7 +30,6 @@ require_once( __DIR__ . '/includes/site-options/loader.php' );
 require_once( __DIR__ . '/includes/mega-menu/mega-menu-admin.php' );
 require_once( __DIR__ . '/includes/mega-menu/mega-menu-walker.php' );
 require_once( __DIR__ . '/includes/mega-menu/mega-menu-mobile-walker.php' );
-require_once( __DIR__ . '/includes/fallback-thumbnails/loader.php' );
 require_once( __DIR__ . '/includes/image-attributes/loader.php');
 require_once( __DIR__ . '/includes/posts-screen-thumbnails/loader.php' );
 
@@ -85,6 +84,26 @@ function greatermedia_setup() {
 	add_post_type_support( 'page', 'timed-content' );
 	add_post_type_support( 'page', 'login-restricted-content' );
 	add_post_type_support( 'page', 'age-restricted-content' );
+
+	// Restrictions for galleries
+	add_post_type_support( 'gmr_gallery', 'timed-content' );
+	add_post_type_support( 'gmr_gallery', 'login-restricted-content' );
+	add_post_type_support( 'gmr_gallery', 'age-restricted-content' );
+
+	// Restrictions for albums
+	add_post_type_support( 'gmr_album', 'timed-content' );
+	add_post_type_support( 'gmr_album', 'login-restricted-content' );
+	add_post_type_support( 'gmr_album', 'age-restricted-content' );
+
+	// Restrictions for podcasts episodes
+	add_post_type_support( 'episode', 'timed-content' );
+	add_post_type_support( 'episode', 'login-restricted-content' );
+	add_post_type_support( 'episode', 'age-restricted-content' );
+
+	// Restrictions for events
+	add_post_type_support( 'tribe_events', 'timed-content' );
+	add_post_type_support( 'tribe_events', 'login-restricted-content' );
+	add_post_type_support( 'tribe_events', 'age-restricted-content' );
 
 	// Add theme support for post-formats
 	$formats = array( 'gallery', 'link', 'image', 'video', 'audio' );
@@ -908,3 +927,14 @@ function greatermedia_archive_title() {
 
 	echo '</h2>';
 }
+
+function greatermedia_liveplayer_disabled( $classes ) {
+	$liveplayer_disabled = get_option( 'gmr_liveplayer_disabled' );
+
+	if ( $liveplayer_disabled == 1 ) {
+		$classes[] = 'liveplayer-disabled';
+	}
+
+	return $classes;
+}
+add_filter( 'body_class', 'greatermedia_liveplayer_disabled' );

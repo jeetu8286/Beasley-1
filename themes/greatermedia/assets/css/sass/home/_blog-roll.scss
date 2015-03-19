@@ -16,6 +16,17 @@
 	#tribe-events & {
 		margin-bottom: 30px;
 	}
+
+	.single-podcast & {
+		display: block;
+		margin-bottom: .25em;
+
+		@include bp(medium) {
+			display: inline-block;
+			margin-bottom: $base-line-height;
+			margin-right: 10px;
+		}
+	}
 }
 
 .ad__in-loop {
