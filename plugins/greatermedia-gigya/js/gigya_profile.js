@@ -253,7 +253,7 @@
 				lastName       : response.profile.lastName,
 				age            : response.profile.age,
 				zip            : response.profile.zip,
-				nielsen_optout : response.data ? response.data.nielsen_optout : false
+				nielsen_optout : response.data && response.data.nielsen_optout ? response.data.nielsen_optout : false
 			};
 
 			if (response.profile.thumbnailURL) {
