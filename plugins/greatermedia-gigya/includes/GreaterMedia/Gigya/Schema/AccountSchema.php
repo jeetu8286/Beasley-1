@@ -226,10 +226,6 @@ class AccountSchema {
 					'writeAccess' => 'clientModify',
 					'required' => false,
 				),
-				'nielsen_optout' => array(
-					'writeAccess' => 'clientModify',
-					'required' => false,
-				),
 				'comment_count' => array(
 					'writeAccess' => 'clientModify',
 					'required' => false,
