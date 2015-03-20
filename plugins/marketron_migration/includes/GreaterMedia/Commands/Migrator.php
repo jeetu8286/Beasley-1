@@ -25,8 +25,10 @@ class Migrator {
 	);
 
 	public $default_tools = array(
-		'feed', 'blog', 'venue', 'event_calendar',
-		'photo_album_v2', 'showcase'
+		'feed', 'blog', 'venue', 'event_calendar', 'channel',
+		'video_channel', 'event_manager',
+		'photo_album_v2', 'showcase', 'podcast', 'survey',
+		'contest',
 	);
 
 	public $tool_factory;
@@ -207,6 +209,10 @@ class Migrator {
 			$this->config->container = $this;
 			$this->config->load();
 
+			$this->config_loader = new \GreaterMedia\ConfigLoader();
+			$this->config_loader->container = $this;
+			$this->config_loader->load();
+
 			$this->side_loader = new MediaSideLoader();
 			$this->side_loader->container = $this;
 
@@ -236,6 +242,9 @@ class Migrator {
 
 			$this->importer_factory = new ImporterFactory();
 			$this->importer_factory->container = $this;
+
+			$this->inline_image_replacer = new \WordPress\Utils\InlineImageReplacer();
+			$this->inline_image_replacer->container = $this;
 
 			$this->initialized = true;
 		}
@@ -278,6 +287,8 @@ class Migrator {
 		$this->load_tools( $tools_to_load );
 		$this->import_tools( $tools_to_load );
 
+		//$this->test_img();
+		//return;
 		//$this->test_users();
 		//$this->test_users_api();
 
@@ -295,12 +306,14 @@ class Migrator {
 		//
 		//$this->test_legacy_redirect();
 		//$this->test_post_format();
+		$this->config_loader->load_live_streams();
+
 		$this->table_factory->export();
 		$this->table_factory->import();
 		$this->update_term_counts();
 
-		$this->side_loader->sync();
 		$this->error_reporter->save_report();
+		$this->side_loader->sync();
 	}
 
 	function test_post_format() {
@@ -747,4 +760,50 @@ SQL;
 		$wpdb->query( $query );
 	}
 
+	function test_img() {
+		$content = <<<CONTENT
+<img src="http://www.wmgk.com/Pics/Surveys/logo_header_img2.jpg" alt="" width="582" height="139" />
+
+<img src="http://www.wmgk.com/Pics/Surveys/logo_header_img2.jpg" alt="" width="582" class="foo bar" height="139" />
+
+<img src="http://www.wmgk.com/Pics/Surveys/logo_header_img2.jpg" alt="" width="582" height="139" class="" />
+CONTENT;
+
+		$replacer = new \WordPress\Utils\InlineImageReplacer();
+		$replacer->container = $this;
+
+		$result = $replacer->find_and_replace( $content );
+		var_dump( $result );
+
+		return;
+		$tagPattern = "/<img[^>]+>/";
+		$result  = preg_match_all($tagPattern, $content, $images);
+		$total_images = count( $images );
+
+		if ( $total_images >= 1 ){
+			$image_pattern = "/src=['\"]([^'\"]*?)['\"]/";
+			$class_pattern = "/class=['\"]([^'\"]*?)['\"]/";
+
+			foreach ( $images[0] as $image ) {
+				$result = preg_match($image_pattern, $image, $match);
+
+				if ( $result === 1 ) {
+					$result = preg_match($class_pattern, $image, $klass);
+					var_dump( $match );
+					var_dump( $klass );
+				}
+			}
+		}
+
+		//$src  = "/src=['\"]([^'\"]*?)['\"]/";
+
+		//$match_count = preg_match_all( $pattern, $content, $matches );
+	}
+
+	function get_relative_path( $src ) {
+		$path = parse_url( $src, PHP_URL_PATH );
+		return $path;
+	}
+
 }
+
