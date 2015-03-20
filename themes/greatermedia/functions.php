@@ -20,7 +20,7 @@
 if ( defined( 'GMR_PARENT_ENV' ) && 'dev' == GMR_PARENT_ENV ) {
 	define( 'GREATERMEDIA_VERSION', time() );
 } else {
-	define( 'GREATERMEDIA_VERSION', '1.0.15' );
+	define( 'GREATERMEDIA_VERSION', '1.0.17' );
 }
 
 add_theme_support( 'homepage-curation' );
@@ -927,3 +927,14 @@ function greatermedia_archive_title() {
 
 	echo '</h2>';
 }
+
+function greatermedia_liveplayer_disabled( $classes ) {
+	$liveplayer_disabled = get_option( 'gmr_liveplayer_disabled' );
+
+	if ( $liveplayer_disabled == 1 ) {
+		$classes[] = 'liveplayer-disabled';
+	}
+
+	return $classes;
+}
+add_filter( 'body_class', 'greatermedia_liveplayer_disabled' );
