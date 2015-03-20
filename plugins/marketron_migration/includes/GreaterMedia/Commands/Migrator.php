@@ -760,50 +760,5 @@ SQL;
 		$wpdb->query( $query );
 	}
 
-	function test_img() {
-		$content = <<<CONTENT
-<img src="http://www.wmgk.com/Pics/Surveys/logo_header_img2.jpg" alt="" width="582" height="139" />
-
-<img src="http://www.wmgk.com/Pics/Surveys/logo_header_img2.jpg" alt="" width="582" class="foo bar" height="139" />
-
-<img src="http://www.wmgk.com/Pics/Surveys/logo_header_img2.jpg" alt="" width="582" height="139" class="" />
-CONTENT;
-
-		$replacer = new \WordPress\Utils\InlineImageReplacer();
-		$replacer->container = $this;
-
-		$result = $replacer->find_and_replace( $content );
-		var_dump( $result );
-
-		return;
-		$tagPattern = "/<img[^>]+>/";
-		$result  = preg_match_all($tagPattern, $content, $images);
-		$total_images = count( $images );
-
-		if ( $total_images >= 1 ){
-			$image_pattern = "/src=['\"]([^'\"]*?)['\"]/";
-			$class_pattern = "/class=['\"]([^'\"]*?)['\"]/";
-
-			foreach ( $images[0] as $image ) {
-				$result = preg_match($image_pattern, $image, $match);
-
-				if ( $result === 1 ) {
-					$result = preg_match($class_pattern, $image, $klass);
-					var_dump( $match );
-					var_dump( $klass );
-				}
-			}
-		}
-
-		//$src  = "/src=['\"]([^'\"]*?)['\"]/";
-
-		//$match_count = preg_match_all( $pattern, $content, $matches );
-	}
-
-	function get_relative_path( $src ) {
-		$path = parse_url( $src, PHP_URL_PATH );
-		return $path;
-	}
-
 }
 
