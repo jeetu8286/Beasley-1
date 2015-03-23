@@ -24,7 +24,7 @@ class EventManager extends BaseImporter {
 		$events       = $this->events_from_calendar( $calendar );
 		$total        = count( $events );
 		$msg          = "Importing $total Events from Calendar";
-		$progress_bar = new \cli\progress\Bar( $msg, $total );
+		$progress_bar = new \WordPress\Utils\ProgressBar( $msg, $total );
 		$entity       = $this->get_entity( 'event' );
 		$categories   = $this->categories_from_calendar( $calendar );
 

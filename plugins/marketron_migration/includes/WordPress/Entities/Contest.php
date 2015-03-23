@@ -77,10 +77,13 @@ class Contest extends Post {
 	}
 
 	function add_contest_entries( $contest_id, $entries ) {
-		$entity = $this->get_entity( 'contest_entry' );
+		$entity       = $this->get_entity( 'contest_entry' );
+		//$total        = count( $entries );
+		//$progress_bar = new \WordPress\Utils\ProgressBar( $msg, $total );
 
 		foreach ( $entries as $entry ) {
-
+			$entry['contest_id'] = $contest_id;
+			$entity->add( $entry );
 		}
 	}
 

@@ -24,11 +24,15 @@ class Migrator {
 		'mapping_file'        => 'wmgk_mapping.csv',
 	);
 
+	//public $default_tools = array(
+		//'feed', 'blog', 'venue', 'event_calendar', 'channel',
+		//'video_channel', 'event_manager',
+		//'photo_album_v2', 'showcase', 'podcast', 'survey',
+		//'contest',
+	//);
+
 	public $default_tools = array(
-		'feed', 'blog', 'venue', 'event_calendar', 'channel',
-		'video_channel', 'event_manager',
-		'photo_album_v2', 'showcase', 'podcast', 'survey',
-		'contest',
+		'feed'
 	);
 
 	public $tool_factory;
@@ -154,6 +158,7 @@ class Migrator {
 
 		$this->load_tools( $tools_to_load );
 		$this->import_tools( $tools_to_load );
+
 	}
 
 	private function load_tools( $tools_to_load ) {
@@ -267,25 +272,24 @@ class Migrator {
 		$this->mappings->load();
 		$this->xml_extractor->extract();
 
-		$tool = 'all';
-		$migration_cache_dir = 'migration_cache';
-		$this->opts['migration_cache_dir'] = 'migration_cache';
+		$tools_to_load = $this->get_tools_to_load();
+		//$migration_cache_dir = 'migration_cache';
+		//$this->opts['migration_cache_dir'] = 'migration_cache';
 
-		if ( $tool === 'all' ) {
-			$tools_to_load = $this->default_tools;
-		} else {
-			$tools_to_load = array( $tool );
-		}
-
-		$this->downloader = new Downloader(
-			$migration_cache_dir . '/downloads',
-			$migration_cache_dir . '/media'
-		);
+		//$this->downloader = new Downloader(
+			//$migration_cache_dir . '/downloads',
+			//$migration_cache_dir . '/media'
+		//);
 
 		$this->mappings->import();
+		//$show = '95.7 BEN-FM Morning Show';
+		//$podcast = $this->mappings->get_podcast_for_show( $show );
+		//error_log( 'Get Podcast For: ' . $show . ' - ' . $podcast );
+		//return;
+
 
 		$this->load_tools( $tools_to_load );
-		$this->import_tools( $tools_to_load );
+		//$this->import_tools( $tools_to_load );
 
 		//$this->test_img();
 		//return;
@@ -306,11 +310,13 @@ class Migrator {
 		//
 		//$this->test_legacy_redirect();
 		//$this->test_post_format();
+		$this->entity_factory->build( 'gigya_user' )->export();
+		$this->entity_factory->build( 'survey' )->export_actions();
 		$this->config_loader->load_live_streams();
 
 		$this->table_factory->export();
-		$this->table_factory->import();
 		$this->update_term_counts();
+		//$this->table_factory->import();
 
 		$this->error_reporter->save_report();
 		$this->side_loader->sync();
@@ -631,7 +637,7 @@ class Migrator {
 
 		$total_users = 10000;
 		$password    = wp_hash_password( 'foobar' );
-		$notify      = new \cli\progress\Bar( "Created $total_users Test Users", $total_users );
+		$notify      = new \WordPress\Utils\ProgressBar( "Created $total_users Test Users", $total_users );
 
 		foreach ( range( 1, $total_users ) as $i ) {
 			$users->add(
@@ -730,12 +736,28 @@ class Migrator {
 		$this->args = $args;
 		$this->opts = $opts;
 
-		if ( ! array_key_exists( 'site_dir', $opts ) ) {
+		if ( ! array_key_exists( 'site_dir', $this->opts ) ) {
 			\WP_CLI::error( '--site_dir option must be specified' );
 		}
 
+		if ( ! array_key_exists( 'tools_to_load', $this->opts ) ) {
+			$this->opts['tools_to_load'] = $this->default_tools;
+		} else if ( $opts['tools_to_load'] !== 'all' ) {
+			$this->opts['tools_to_load'] = explode( ',', $this->opts['tools_to_load'] );
+		}
+
 		$this->site_dir = $opts['site_dir'];
-		$this->fresh    = array_key_exists( 'fresh', $opts ) && filter_var( $opts['fresh'], FILTER_VALIDATE_BOOLEAN );
+		$this->fresh    = array_key_exists( 'fresh', $this->opts ) && filter_var( $opts['fresh'], FILTER_VALIDATE_BOOLEAN );
+	}
+
+	function get_tools_to_load() {
+		$tools_to_load = $this->opts['tools_to_load'];
+
+		if ( $tools_to_load === 'all' ) {
+			$tools_to_load = $this->tool_factory->get_tool_names();
+		}
+
+		return $tools_to_load;
 	}
 
 	private function get_backup_file() {
@@ -758,6 +780,41 @@ SET count = (
 );
 SQL;
 		$wpdb->query( $query );
+	}
+
+	function review_featured_images( $args, $opts ) {
+		if ( ! array_key_exists( 'log_file', $opts ) ) {
+			\WP_CLI::error( '--log_file option must be specified' );
+		}
+
+		if ( ! array_key_exists( 'min_width', $opts ) ) {
+			$min_width = 300;
+		} else {
+			$min_width = intval( $opts['min_width'] );
+		}
+
+		$log_file = $opts['log_file'];
+		$reviewer = new \WordPress\Utils\FeaturedImageReviewer();
+		$reviewer->review( $log_file, $min_width );
+	}
+
+	function print_image_regenerator( $args, $opts ) {
+		$this->load_params( $args, $opts );
+
+		if ( ! array_key_exists( 'procs', $opts ) ) {
+			$procs = 20;
+		} else {
+			$procs = intval( $opts[ 'procs' ] );
+		}
+
+		$attachments_log = $this->opts['site_dir'] . '/output/attachments.log';
+		$cmd  = 'cat ' . escapeshellarg( $attachments_log );
+		$cmd .= ' | ';
+		$cmd .= " xargs -I ID -P $procs";
+		$cmd .=	' wp media regenerate ID --yes ';
+		$cmd .= ' --url=' . ltrim( get_site_url(), 'http://' );
+
+		\WP_CLI::log( $cmd );
 	}
 
 }

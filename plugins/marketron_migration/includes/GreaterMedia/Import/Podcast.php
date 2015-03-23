@@ -29,7 +29,7 @@ class Podcast extends BaseImporter {
 
 	function podcast_from_channel( $channel ) {
 		$podcast_name = $this->import_string( $channel['ChannelTitle'] );
-		\WP_CLI::log( 'Importing Podcasts: ' . $podcast_name );
+		//\WP_CLI::log( 'Importing Podcasts: ' . $podcast_name );
 
 		$entity       = $this->get_entity( 'podcast' );
 		$podcast      = $entity->get_podcast_by_name( $podcast_name );
@@ -48,8 +48,8 @@ class Podcast extends BaseImporter {
 
 	function import_podcast_episodes( $podcast, $items ) {
 		$total        = count( $items );
-		$msg          = "Importing $total items from Podcast";
-		$progress_bar = new \cli\progress\Bar( $msg, $total );
+		//$msg          = "Importing $total items from Podcast";
+		//$progress_bar = new \WordPress\Utils\ProgressBar( $msg, $total );
 		$entity       = $this->get_entity( 'podcast_episode' );
 
 		foreach ( $items as $item ) {
@@ -58,10 +58,10 @@ class Podcast extends BaseImporter {
 			$episode['post_author']     = $podcast['post_author'];
 
 			$entity->add( $episode );
-			$progress_bar->tick();
+			//$progress_bar->tick();
 		}
 
-		$progress_bar->finish();
+		//$progress_bar->finish();
 	}
 
 	function episode_from_item( $item ) {
