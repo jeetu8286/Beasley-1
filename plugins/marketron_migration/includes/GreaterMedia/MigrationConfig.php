@@ -65,6 +65,10 @@ class MigrationConfig {
 		return $this->output_dir . '/gigya_profiles.json';
 	}
 
+	function get_gigya_account_export_file() {
+		return $this->output_dir . '/gigya_accounts.json';
+	}
+
 	function get_attachments_log_file() {
 		return $this->output_dir . '/attachments.log';
 	}

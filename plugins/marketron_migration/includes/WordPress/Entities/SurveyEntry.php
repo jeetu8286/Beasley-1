@@ -17,6 +17,7 @@ class SurveyEntry extends Post {
 
 		if ( $entity->user_exists( $member_id ) ) {
 			$member_name  = $entity->get_full_name( $member_id );
+
 			if ( empty( $member_email ) ) {
 				$member_email = $entity->get_email( $member_id );
 			}

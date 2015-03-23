@@ -17,8 +17,10 @@ class Feed extends BaseImporter {
 		$total            = count( $articles );
 		$locator          = $this->container->asset_locator;
 		$notify           = new \WordPress\Utils\ProgressBar( "Importing $total items from $tool_name", $total );
-		$max_items        = $this->get_site_option( 'limit' );
-		$item_index       = 1;
+
+		$podcast_count = 0;
+		$blog_post_count = 0;
+		$blog_with_shows = 0;
 
 		foreach ( $articles as $article ) {
 			$post = $this->post_from_article( $article );
@@ -27,17 +29,20 @@ class Feed extends BaseImporter {
 				$post['episode_podcast'] = $this->mapped_podcast_for_show( $post['show'] );
 				$post['episode_file']    = $post['featured_audio'];
 
-				//error_log( 'added podcast episode: ' . $post['episode_podcast'] );
 				$podcast_episodes->add( $post );
+				$podcast_count++;
 			} else {
 				$posts->add( $post );
+				$blog_post_count++;
+				if ( ! empty( $post['show'] ) ) {
+					$blog_with_shows++;
+				}
 			}
-			$notify->tick();
 
-			if ( $item_index++ > $max_items ) {
-				break;
-			}
+			$notify->tick();
 		}
+
+		//\WP_CLI::error( "Podcast Episode Count: $podcast_count, Blog Post Count: $blog_post_count, Blog with Shows: $blog_with_shows" );
 
 		$notify->finish();
 	}
@@ -100,10 +105,39 @@ class Feed extends BaseImporter {
 
 		if ( ! is_null( $show ) ) {
 			$post['show'] = $show;
+		} else {
+			$post['show'] = $this->show_from_tags( $tags );
+
+			if ( empty( $post['show'] ) ) {
+				$post['show'] = $this->show_from_title( $post['post_title'] );
+			}
 		}
 
 		return $post;
 	}
+
+	function show_from_title( $name ) {
+		$mappings = $this->container->mappings;
+		$authors  = $mappings->get_matched_authors( $name );
+
+		if ( ! empty( $authors ) ) {
+			$show = $mappings->get_show_from_author_names( $authors );
+		} else {
+			$show = null;
+		}
+
+		return null;
+	}
+
+	function show_from_tags( &$tags ) {
+		$show = $this->show_from_categories( $tags );
+		if ( empty( $show ) ) {
+			$show = $this->container->mappings->get_show_from_author_names( $tags );
+		}
+		return $show;
+	}
+
+
 
 	function articles_from_source( $source ) {
 		return $source->Articles->Article;

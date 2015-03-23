@@ -12,6 +12,10 @@ class Post extends BaseEntity {
 			}
 		}
 
+		if ( ! empty( $fields['post_author'] ) && $fields['post_author'] === 'INACTIVE' ) {
+			$fields['post_author'] = 0;
+		}
+
 		if ( empty( $fields['post_name'] ) && ! empty( $fields['post_title'] ) ) {
 			$fields['post_name'] = sanitize_title( $fields['post_title'] );
 		}

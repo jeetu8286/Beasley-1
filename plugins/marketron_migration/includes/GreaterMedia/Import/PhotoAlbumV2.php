@@ -16,11 +16,6 @@ class PhotoAlbumV2 extends BaseImporter {
 
 		foreach ( $albums as $album ) {
 			$gallery = $this->gallery_from_album( $album );
-			if ( ! empty( $gallery['gallery_show'] ) ) {
-				error_log( 'Gallery Found: ' . $gallery['gallery_show'] );
-			} else {
-				//error_log( 'No gallery for show: ' . $album['AlbumName'] );
-			}
 			$entity->add( $gallery );
 			$notify->tick();
 		}
@@ -39,7 +34,6 @@ class PhotoAlbumV2 extends BaseImporter {
 			'gallery_images' => $gallery_images,
 		);
 
-		error_log( 'AlbumName: ' . $gallery['gallery_name'] );
 		$meta         = $this->meta_from_album( $album );
 		$gallery_show = $meta['gallery_show'];
 

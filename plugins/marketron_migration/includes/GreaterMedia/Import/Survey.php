@@ -12,16 +12,10 @@ class Survey extends BaseImporter {
 		$surveys      = $this->surveys_from_source( $source );
 		$total        = count( $surveys );
 		$progress_bar = new \WordPress\Utils\ProgressBar( "Importing $total Surveys", $total );
-		$index = 0;
-		$limit = 3;
 
 		foreach( $surveys as $survey ) {
 			$this->import_survey( $survey );
 			$progress_bar->tick();
-
-			//if ( $index++ >= $limit ) {
-				//break;
-			//}
 		}
 
 		$progress_bar->finish();
@@ -59,7 +53,7 @@ class Survey extends BaseImporter {
 		$survey_featured_image = $this->featured_image_from_survey( $survey );
 		$survey_restrictions   = $this->restrictions_from_survey( $survey );
 		$responses             = $this->responses_from_survey( $survey );
-		$survey_entries        = $this->survey_entries_from_responses( $responses );
+		$survey_entries        = $this->survey_entries_from_responses( $responses, $survey );
 
 		if ( ! empty( $survey['ContestID'] ) ) {
 			$contest_id = $this->import_string( $survey['ContestID'] );
@@ -297,9 +291,15 @@ class Survey extends BaseImporter {
 		return array();
 	}
 
-	function survey_entries_from_responses( $responses ) {
+	function survey_entries_from_responses( $responses, $survey ) {
 		$survey_entries = array();
 		$exclude_survey_entries = $this->get_site_option( 'exclude_survey_entries' );
+
+		if ( ! empty( $survey['ContestID'] ) ) {
+			$contest_id = $this->import_string( $survey['ContestID'] );
+		} else {
+			$contest_id = null;
+		}
 
 		if ( empty( $responses ) || $exclude_survey_entries ) {
 			return $survey_entries;
@@ -309,8 +309,10 @@ class Survey extends BaseImporter {
 		//$progress_bar = new \WordPress\Utils\ProgressBar( "  Importing $total Survey Responses", $total );
 
 		foreach ( $responses as $response ) {
-			$survey_entry     = $this->survey_entry_from_response( $response );
-			$survey_entries[] = $survey_entry;
+			$survey_entry                   = $this->survey_entry_from_response( $response );
+			$survey_entry['contest_id']     = $contest_id;
+			$survey_entry['user_survey_id'] = $this->import_string( $response['UserSurveyID'] );
+			$survey_entries[]               = $survey_entry;
 
 			//$progress_bar->tick();
 		}

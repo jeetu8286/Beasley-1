@@ -7,6 +7,7 @@ class Survey extends Post {
 	public $survey_forms    = array();
 	public $contest_entries = array();
 	public $survey_entries  = array();
+	public $guest_entry_count = 0;
 
 	function get_post_type() {
 		return 'survey';
@@ -22,9 +23,10 @@ class Survey extends Post {
 		$survey_completion_message = $fields['survey_completion_message'];
 		$survey_form               = $fields['survey_form'];
 
-		if ( ! empty( $contest_id ) ) {
 			/*  we file contest entries for later pickup by the contest  entity */
 			/*  else it's a catch-22 contest vs surveys */
+		/*
+		if ( ! empty( $contest_id ) ) {
 			if ( ! array_key_exists( $contest_id, $this->contest_entries ) ) {
 				$this->contest_entries[ $contest_id ] = array();
 			}
@@ -41,6 +43,7 @@ class Survey extends Post {
 
 			$survey_entries = array();
 		}
+*/
 
 		$meta                         = array();
 		$meta['form-title']           = $survey_title;
@@ -78,23 +81,22 @@ class Survey extends Post {
 	}
 
 	function import_survey_entries( $survey_id, $survey_entries ) {
-		$entity = $this->get_entity( 'survey_entry' );
+		$entity      = $this->get_entity( 'survey_entry' );
+		$gigya_users = $this->get_entity( 'gigya_user' );
+
 		//$total = count( $survey_entries );
 		//$msg = "  Adding $total Survey Entries";
 		//$progress_bar = new \WordPress\Utils\ProgressBar( $msg, $total );
 
 		foreach ( $survey_entries as $survey_entry ) {
-			$member_id                 = $survey_entry['member_id'];
-			$survey_entry['survey_id'] = $survey_id;
-			$survey_entry = $entity->add( $survey_entry );
-			$survey_entry_id = $survey_entry['ID'];
+			$member_id = $survey_entry['member_id'];
 
 			if ( ! empty( $member_id ) ) {
-				if ( ! array_key_exists( $member_id, $this->survey_entries ) ) {
-					$this->survey_entries[ $member_id ] = array( $survey_entry_id );
-				} else {
-					$this->survey_entries[ $member_id ][]  = $survey_entry_id;
-				}
+				$survey_entry['survey_id'] = $survey_id;
+				$survey_entry              = $entity->add( $survey_entry );
+				$gigya_users->add_survey_entry( $member_id, $survey_entry );
+			} else {
+				$this->guest_entry_count++;
 			}
 
 			//$progress_bar->tick();
@@ -112,38 +114,6 @@ class Survey extends Post {
 		return $this->contest_entries[ $contest_id ][ $member_id ];
 	}
 
-	function get_contests_participated( $member_id ) {
-		$user_contest_ids = array();
-
-		foreach ( $this->contest_entries as $contest_id => $entries ) {
-			if ( array_key_exists( $member_id, $entries ) ) {
-				$user_contest_ids[] = strval( $contest_id );
-			}
-		}
-
-		$user_contest_ids = array_values( array_unique( $user_contest_ids ) );
-		return $user_contest_ids;
-	}
-
-	function get_surveys_participated( $member_id ) {
-		if ( array_key_exists( $member_id, $this->survey_entries ) ) {
-			$survey_entry_ids = $this->survey_entries[ $member_id ];
-			$survey_ids       = array();
-			$table            = $this->get_table( 'posts' );
-
-			foreach ( $survey_entry_ids as $survey_entry_id ) {
-				$survey_entry = $table->get_row_by_id( $survey_entry_id );
-				$survey_id    = $survey_entry['post_parent'];
-
-				$survey_ids[] = strval( $survey_id );
-			}
-
-			return $survey_ids;
-		} else {
-			return array();
-		}
-	}
-
 	function export_actions() {
 		$export_file = $this->container->config->get_gigya_action_export_file();
 		$actions     = $this->export_contest_actions();
@@ -153,9 +123,9 @@ class Survey extends Post {
 	}
 
 	function export_survey_actions() {
-		$actions = array();
-		$total = count( $this->survey_entries );
-		$table = $this->get_table( 'posts' );
+		$actions      = array();
+		$total        = count( $this->survey_entries );
+		$table        = $this->get_table( 'posts' );
 		$msg          = "Exporting $total Survey Actions";
 		$progress_bar = new \WordPress\Utils\ProgressBar( $msg, $total );
 

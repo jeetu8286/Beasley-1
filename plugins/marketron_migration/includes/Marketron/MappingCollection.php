@@ -469,4 +469,14 @@ class MappingCollection {
 		return null;
 	}
 
+	function get_podcast_from_marketron_name( $marketron_name ) {
+		foreach ( $this->mappings as $mapping ) {
+			if ( $mapping->marketron_name === $marketron_name ) {
+				return $mapping->wordpress_podcast_name;
+			}
+		}
+
+		return null;
+	}
+
 }

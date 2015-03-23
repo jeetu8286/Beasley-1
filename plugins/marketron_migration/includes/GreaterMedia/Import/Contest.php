@@ -52,7 +52,7 @@ class Contest extends BaseImporter {
 		$post['contest_confirmation'] = $this->confirmation_from_contest( $contest );
 		$post['contest_entries']      = $contest_entries;
 		$post['contest_shows']        = $contest_shows;
-		$post['categories'] = $this->categories_from_contest( $contest );
+		$post['categories']           = $this->categories_from_contest( $contest );
 
 		if ( ! empty( $featured_image ) ) {
 			$post['featured_image'] = $featured_image;
@@ -172,34 +172,31 @@ class Contest extends BaseImporter {
 	}
 
 	function contest_entry_from_entry( $entry, $contest_id ) {
-		$contest_entry               = array();
-		$contest_entry['member_id']  = $this->import_string( $entry['MemberID'] );
-		$contest_entry['answers']    = $this->answers_from_entry( $entry, $contest_id );
-		$contest_entry['created_on'] = $this->import_string( $entry['UTCEntryDate'] );
+		$contest_entry                         = array();
+		$contest_entry['marketron_contest_id'] = $contest_id;
+		$contest_entry['member_id']            = $this->import_string( $entry['MemberID'] );
+		$contest_entry['answers']              = $this->answers_from_entry( $entry, $contest_id );
+		$contest_entry['created_on']           = $this->import_string( $entry['UTCEntryDate'] );
+		$contest_entry['user_survey_id']       = $this->import_string( $entry['UserSurveyID'] );
 
 		return $contest_entry;
 	}
 
 	function answers_from_entry( $entry, $contest_id ) {
-		$member_id = $this->import_string( $entry['MemberID'] );
+		$member_id   = $this->import_string( $entry['MemberID'] );
+		$gigya_users = $this->get_entity( 'gigya_user' );
 
 		if ( empty( $entry['UserSurveyID'] ) ) {
 			// no linked survey, enter to win type of contest
-			// TODO
 			return array();
 		} else {
-			if ( empty( $member_id ) ) {
-				return array();
-			}
+			// answers will be picked up from the corresponding survey
+			$user_survey_id = $this->import_string( $entry['UserSurveyID'] );
 
-			$entity    = $this->get_entity( 'survey' );
-			$survey_id = $entry['UserSurveyID'];
-
-			if ( $entity->has_contest_entries( $contest_id, $member_id ) ) {
-				$survey_entries = $entity->get_contest_entries( $contest_id, $member_id );
-				$first_entry = $survey_entries[0];
-				// KLUDGE: Save user multiple entries?
-				return $first_entry['answers'];
+			if ( ! empty( $user_survey_id ) ) {
+				// For Contests linked to Surveys we lookup the answer
+				// from the corresponding survey response
+				return $gigya_users->get_user_survey_answers( $member_id, $user_survey_id );
 			} else {
 				return array();
 			}

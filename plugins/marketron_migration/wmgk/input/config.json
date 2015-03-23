@@ -6,10 +6,12 @@
 		"domain": "wmgk.com",
 		"email_domain": "wmgk.com",
 		"default_author_password": "foobar",
-		"asset_dirs": [
+		"aasset_dirs": [
 			"PICS-WMGKFM/WMGKFM",
 			"PICS-GMFeedSharingAM/GMFeedSharingAM",
 			"MEDIA-WMGKFM"
+		],
+		"asset_dirs": [
 		],
 		"data_files": {
 			"WMGK Data Export 022315.zip": [
