@@ -10,6 +10,14 @@ class BaseImporter {
 		$this->container = $container;
 	}
 
+	function get_config() {
+		return $this->container->config;
+	}
+
+	function get_site_option( $name ) {
+		return $this->get_config()->get_site_option( $name );
+	}
+
 	function get_tool_name() {
 		return 'base_tool';
 	}
@@ -20,11 +28,47 @@ class BaseImporter {
 		);
 	}
 
-	function import() {
+	function get_entity( $name ) {
+		return $this->container->entity_factory->build( $name );
 	}
 
-	function import_categories() {
+	function get_table( $name ) {
+		return $this->container->table_factory->build( $name );
+	}
 
+	function get_mappings() {
+		return $this->container->mappings;
+	}
+
+	function can_import( $blog_id ) {
+		return $this->get_mappings()->can_import( $blog_id );
+	}
+
+	function import() {
+		$tool    = $this->get_tool();
+		$sources = $tool->sources;
+
+		foreach ( $sources as $source ) {
+			$this->import_source( $source );
+		}
+	}
+
+	function import_source( $source ) {
+
+	}
+
+	function import_string( $element ) {
+		$string = (string) $element;
+		return trim( $string );
+	}
+
+	function import_bool( $element ) {
+		$string = $this->import_string( $element );
+		return filter_var( $string, FILTER_VALIDATE_BOOLEAN );
+	}
+
+	function to_datetime( $timestamp ) {
+		return $this->container->entity_factory->get_entity( 'post' )->to_datetime( $timestamp );
 	}
 
 }

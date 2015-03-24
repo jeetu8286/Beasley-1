@@ -7,6 +7,7 @@ add_action( 'post_submitbox_start', 'gmr_survey_view_responses_link', 1 );
 add_action( 'manage_' . GMR_SURVEY_RESPONSE_CPT . '_posts_custom_column', 'gmr_surveys_render_survey_response_column', 10, 2 );
 add_action( 'pre_get_posts', 'gmr_survey_adjust_survey_responses_query' );
 add_action( 'admin_action_gmr_survey_export', 'gmr_survey_export_to_csv' );
+add_action( 'gmr_do_survey_export', 'gmr_do_survey_export' );
 
 // filter hooks
 add_filter( 'post_row_actions', 'gmr_surveys_add_table_row_actions', PHP_INT_MAX, 2 );
@@ -58,7 +59,7 @@ function gmr_surveys_add_table_row_actions( $actions, WP_Post $post ) {
 	// add survey responses action
 	if ( current_user_can( 'edit_survey_responses' ) ) {
 		$link = admin_url( 'admin.php?page=gmr-survey-responses&survey_id=' . $post->ID );
-		$actions['gmr-survey-response'] = '<a href="' . esc_url( $link ) . '">Responses</a>';
+		$actions['gmr-survey-responses'] = '<a href="' . esc_url( $link ) . '">Responses</a>';
 	}
 
 	// unset redundant actions
@@ -146,6 +147,12 @@ function gmr_surveys_render_response_page() {
 			<?php endif; ?>
 		</h2>
 
+		<?php if ( filter_input( INPUT_GET, 'export', FILTER_VALIDATE_BOOLEAN ) ) : ?>
+			<div class="updated">
+				<p>Export process has been started. We will email you a CSV file when export is finished. If you don't receive an email in the nearest time, then check your spam folder.</p>
+			</div>
+		<?php endif; ?>
+
 		<form id="posts-filter">
 			<input type="hidden" name="noheader" value="true">
 			<input type="hidden" name="page" value="<?php echo esc_html( filter_input( INPUT_GET, 'page' ) ); ?>">
@@ -177,10 +184,32 @@ function gmr_survey_export_to_csv() {
 		exit;
 	}
 
-	header( 'Content-Description: File Transfer' );
-	header( 'Content-Type: text/csv' );
-	header( 'Content-Disposition: attachment; filename=' . $survey->post_name . '.csv' );
-	header( 'Connection: Keep-Alive' );
+	wp_async_task_add( 'gmr_do_survey_export', array(
+		'survey' => $survey->ID,
+		'email'  => wp_get_current_user()->user_email,
+	) );
+
+	$redirect = admin_url( 'admin.php?page=gmr-survey-responses&export=1&survey_id=' . $survey->ID );
+	wp_redirect( $redirect );
+	exit;
+}
+
+/**
+ * Performs survey export.
+ *
+ * @param array $args The export arguments.
+ */
+function gmr_do_survey_export( $args ) {
+	if ( empty( $args['survey'] ) || ! ( $survey = get_post( $args['survey'] ) ) || GMR_SURVEY_CPT != $survey->post_type ) {
+		return;
+	}
+
+	$dir = get_temp_dir();
+	$filename = $dir . wp_unique_filename( $dir, $survey->post_name . date( '-Y-m-d' ) . '.csv' );
+	$stdout = fopen( $filename, 'w' );
+	if ( ! $stdout ) {
+		return;
+	}
 
 	$paged = 1;
 	$query = new WP_Query();
@@ -200,7 +229,6 @@ function gmr_survey_export_to_csv() {
 		}
 	}
 
-	$stdout = fopen( 'php://output', 'w' );
 	fputcsv( $stdout, $headers );
 
 	do {
@@ -235,7 +263,14 @@ function gmr_survey_export_to_csv() {
 	} while( $query->post_count > 0 );
 
 	fclose( $stdout );
-	exit;
+
+	$title = $survey->post_title . ' Entries';
+	$message = 'Please, find in attach CSV file with all responses.';
+	$from = 'From: no-reply@' . parse_url( home_url(), PHP_URL_HOST );
+
+	wp_mail( $args['email'], $title, $message, $from, array( $filename ) );
+
+	@unlink( $filename );
 }
 
 /**
@@ -249,7 +284,7 @@ function gmr_survey_export_to_csv() {
 function gmr_surveys_adjust_responses_page_admin_menu( $parent_file ) {
 	global $submenu_file;
 
-	if ( ! empty( $_REQUEST['page'] ) && 'gmr-survey-response' == $_REQUEST['page'] ) {
+	if ( ! empty( $_REQUEST['page'] ) && 'gmr-survey-responses' == $_REQUEST['page'] ) {
 		$parent_file = 'edit.php?post_type=' . GMR_SURVEY_CPT;
 		$submenu_file = 'edit.php?post_type=' . GMR_SURVEY_CPT;
 	}
@@ -302,7 +337,7 @@ function gmr_surveys_render_survey_response_column( $column_name, $post_id ) {
 function gmr_survey_adjust_survey_responses_query( WP_Query $query ) {
 	global $typenow;
 
-	if ( GMR_SURVEY_RESPONSE_CPT == $typenow && 'gmr-survey-response' == filter_input( INPUT_GET, 'page' ) && $query->is_main_query() ) {
+	if ( GMR_SURVEY_RESPONSE_CPT == $typenow && 'gmr-survey-responses' == filter_input( INPUT_GET, 'page' ) && $query->is_main_query() ) {
 		$survey = filter_input( INPUT_GET, 'survey_id', FILTER_VALIDATE_INT, array( 'options' => array( 'min_range' => 1 ) ) );
 		if ( $survey && ( $survey = get_post( $survey ) ) && GMR_SURVEY_CPT == $survey->post_type ) {
 			$query->set( 'post_parent', $survey->ID );

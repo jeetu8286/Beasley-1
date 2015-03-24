@@ -7,6 +7,11 @@ use GreaterMedia\Utils\Downloader;
 use Marketron\MappingCollection;
 use Marketron\Tools\Factory as ToolFactory;
 use GreaterMedia\Import\Factory as ImporterFactory;
+use Marketron\XMLExtractor;
+use WordPress\Tables\Users;
+use WordPress\Tables\Factory as TableFactory;
+use WordPress\Entities\Factory as EntityFactory;
+use WordPress\Utils\MediaSideLoader;
 
 class Migrator {
 
@@ -19,16 +24,28 @@ class Migrator {
 		'mapping_file'        => 'wmgk_mapping.csv',
 	);
 
+	//public $default_tools = array(
+		//'feed', 'blog', 'venue', 'event_calendar', 'channel',
+		//'video_channel', 'event_manager',
+		//'photo_album_v2', 'showcase', 'podcast', 'survey',
+		//'contest',
+	//);
+
 	public $default_tools = array(
-		'feed',
-		//'affinity_club',
+		'feed'
 	);
 
 	public $tool_factory;
 	public $importer_factory;
 	public $downloader;
-	public $config;
 	public $opts;
+	public $entity_factory;
+	public $table_factory;
+
+	public $config;
+	public $mappings;
+	public $fresh;
+	public $initialized = false;
 
 	function _test_downloader( $args, $opts ) {
 		$downloader = new Downloader( 'migration_cache/downloads' );
@@ -141,6 +158,7 @@ class Migrator {
 
 		$this->load_tools( $tools_to_load );
 		$this->import_tools( $tools_to_load );
+
 	}
 
 	private function load_tools( $tools_to_load ) {
@@ -188,4 +206,198 @@ class Migrator {
 		}
 	}
 
+	function initialize( $args, $opts, $update = true ) {
+		if ( ! $this->initialized ) {
+			$this->load_params( $args, $opts );
+
+			$this->config = new MigrationConfig( $this->site_dir );
+			$this->config->container = $this;
+			$this->config->load();
+
+			$this->config_loader = new \GreaterMedia\ConfigLoader();
+			$this->config_loader->container = $this;
+
+			if ( $update ) {
+				$this->config_loader->load();
+			}
+
+			$this->side_loader = new MediaSideLoader();
+			$this->side_loader->container = $this;
+
+			$this->asset_locator = new \WordPress\Utils\AssetLocator();
+			$this->asset_locator->container = $this;
+
+			$this->error_reporter = new \GreaterMedia\Utils\ErrorReporter();
+			$this->error_reporter->container = $this;
+
+			$this->table_factory = new TableFactory();
+			$this->table_factory->container = $this;
+
+			$this->entity_factory = new EntityFactory();
+			$this->entity_factory->container = $this;
+
+			$this->backup_manager = new \WordPress\Tables\BackupManager();
+			$this->backup_manager->container = $this;
+
+			$this->mappings = new MappingCollection();
+			$this->mappings->container = $this;
+
+			$this->xml_extractor = new XMLExtractor();
+			$this->xml_extractor->container = $this;
+
+			$this->tool_factory     = new ToolFactory();
+			$this->tool_factory->container = $this;
+
+			$this->importer_factory = new ImporterFactory();
+			$this->importer_factory->container = $this;
+
+			$this->inline_image_replacer = new \WordPress\Utils\InlineImageReplacer();
+			$this->inline_image_replacer->container = $this;
+
+			$this->initialized = true;
+		}
+	}
+
+	/* fast migration */
+	function fast_migrate( $args, $opts ) {
+		$this->initialize( $args, $opts, true );
+
+		if ( $this->fresh ) {
+			// if backup does not exist create it first
+			if ( ! file_exists( $this->backup_manager->get_backup_file() ) ) {
+				$this->backup( $args, $opts );
+			} else {
+				$this->restore( $args, $opts );
+				$this->side_loader->restore();
+			}
+		}
+
+		$this->mappings->load();
+		$this->xml_extractor->extract();
+		$this->mappings->import();
+
+		$tools_to_load = $this->get_tools_to_load();
+		$this->load_tools( $tools_to_load );
+
+		if ( $this->opts['export_to_gigya'] ) {
+			$this->entity_factory->build( 'gigya_user' )->export();
+		}
+
+		$this->config_loader->load_live_streams();
+		$this->table_factory->export();
+		$this->update_term_counts();
+		$this->error_reporter->save_report();
+		$this->side_loader->sync();
+	}
+
+	function restore( $args, $opts ) {
+		$this->initialize( $args, $opts, false );
+		$this->backup_manager->restore();
+	}
+
+	function backup( $args, $opts ) {
+		$this->initialize( $args, $opts, false );
+		$this->backup_manager->backup();
+	}
+
+	private function load_params( $args, $opts ) {
+		$this->args = $args;
+		$this->opts = $opts;
+
+		if ( ! array_key_exists( 'site_dir', $this->opts ) ) {
+			\WP_CLI::error( '--site_dir option must be specified' );
+		}
+
+		if ( ! array_key_exists( 'tools_to_load', $this->opts ) ) {
+			$this->opts['tools_to_load'] = $this->default_tools;
+		} else if ( $opts['tools_to_load'] !== 'all' ) {
+			$this->opts['tools_to_load'] = explode( ',', $this->opts['tools_to_load'] );
+		}
+
+		$this->site_dir = $opts['site_dir'];
+
+		$this->load_boolean_opt( 'fake_media', false );
+		$this->load_boolean_opt( 'fresh', false );
+		$this->load_boolean_opt( 'export_to_gigya', true );
+	}
+
+	function load_boolean_opt( $name, $default ) {
+		if ( ! array_key_exists( $name, $this->opts ) ) {
+			$this->opts[ $name ] = false;
+		} else {
+			$this->opts[ $name ] = filter_var( $this->opts[ $name ], FILTER_VALIDATE_BOOLEAN );
+		}
+	}
+
+	function get_tools_to_load() {
+		$tools_to_load = $this->opts['tools_to_load'];
+
+		if ( $tools_to_load === 'all' ) {
+			$tools_to_load = $this->tool_factory->get_tool_names();
+		}
+
+		return $tools_to_load;
+	}
+
+	private function update_term_counts() {
+		global $wpdb;
+		$query = <<<SQL
+UPDATE {$wpdb->prefix}term_taxonomy
+SET count = (
+	SELECT COUNT(*) FROM {$wpdb->prefix}term_relationships rel
+    LEFT JOIN {$wpdb->prefix}posts po ON (po.ID = rel.object_id)
+    WHERE
+        rel.term_taxonomy_id = {$wpdb->prefix}term_taxonomy.term_taxonomy_id
+        AND
+		{$wpdb->prefix}term_taxonomy.taxonomy NOT IN ('link_category')
+        AND
+        po.post_status IN ('publish', 'future')
+);
+SQL;
+		$wpdb->query( $query );
+	}
+
+	function review_featured_images( $args, $opts ) {
+		if ( ! array_key_exists( 'log_file', $opts ) ) {
+			\WP_CLI::error( '--log_file option must be specified' );
+		}
+
+		if ( ! array_key_exists( 'min_width', $opts ) ) {
+			$min_width = 300;
+		} else {
+			$min_width = intval( $opts['min_width'] );
+		}
+
+		$log_file = $opts['log_file'];
+		$reviewer = new \WordPress\Utils\FeaturedImageReviewer();
+		$reviewer->review( $log_file, $min_width );
+	}
+
+	function print_image_regenerator( $args, $opts ) {
+		$this->load_params( $args, $opts );
+
+		if ( ! array_key_exists( 'procs', $opts ) ) {
+			$procs = 20;
+		} else {
+			$procs = intval( $opts[ 'procs' ] );
+		}
+
+		$attachments_log = $this->opts['site_dir'] . '/output/attachments.log';
+		$cmd  = 'cat ' . escapeshellarg( $attachments_log );
+		$cmd .= ' | ';
+		$cmd .= " xargs -I ID -P $procs";
+		$cmd .=	' wp media regenerate ID --yes ';
+		$cmd .= ' --url=' . ltrim( get_site_url(), 'http://' );
+
+		\WP_CLI::log( $cmd );
+	}
+
+	function export_actions( $args, $opts ) {
+		$this->initialize( $args, $opts, false );
+
+		$gigya_user = $this->entity_factory->get_entity( 'gigya_user' );
+		$gigya_user->export_actions();
+	}
+
 }
+
