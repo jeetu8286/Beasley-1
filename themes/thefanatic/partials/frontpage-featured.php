@@ -7,78 +7,64 @@
  */
 ?>
 <section id="featured" class="home__featured">
+
+	<div class="featured__articles">
 		<?php
-		$hp_featured_query = \GreaterMedia\HomepageCuration\get_featured_query(); ?>
+		$hp_featured_query = \GreaterMedia\HomepageCuration\get_featured_query();
 
-		<div class="featured__articles">
-			<div class="featured__article--primary">
-				<div class="featured__article">
-					<a href="#<?php /* the_permalink(); */?>" class="featured__article--link">
-						<div class="featured__article--image" style='background-image: url(http://lorempixel.com/900/550/sports/1)'>
-							<?php /*
+		if ( $hp_featured_query->have_posts() ) : $hp_featured_query->the_post(); ?>
+		<div class="featured__article--primary">
+			<div class="featured__article">
+				<a href="#<?php the_permalink(); ?>" class="featured__article--link">
+					<div class="featured__article--image" style='background-image: url(<?php gm_post_thumbnail_url( 'gmr-featured-primary', null, true ) ?>)'>
+						<?php
 
-								$image_attr = image_attribution();
+							$image_attr = image_attribution();
 
-								if ( ! empty( $image_attr ) ) {
-									echo $image_attr;
-								} */
+							if ( ! empty( $image_attr ) ) {
+								echo $image_attr;
+							}
 
-							?>
+						?>
+					</div>
+					<div class="featured__article--content">
+						<div class="featured__article--heading">
+							<?php the_title(); ?>
 						</div>
-						<div class="featured__article--content">
-							<div class="featured__article--heading">
-								What Chris Christie might talk about in 2015 State of the State speech today.
-								<?php /* the_title(); */ ?>
-							</div>
-						</div>
-					</a>
-				</div>
-			</div>
-			<div class="featured__article--secondary">
-				<div class="featured__article">
-					<a href="#<?php /* the_permalink(); */?>" class="featured__article--link">
-						<div class="featured__article--image" style='background-image: url(http://lorempixel.com/450/310/people/1)'>
-							<?php /*
-
-										$image_attr = image_attribution();
-
-										if ( ! empty( $image_attr ) ) {
-											echo $image_attr;
-										} */
-
-							?>
-						</div>
-						<div class="featured__article--content">
-							<div class="featured__article--heading">
-								Vigil honors 4 shot dead in Hayes Valley
-								<?php /* the_title(); */ ?>
-							</div>
-						</div>
-					</a>
-				</div>
-				<div class="featured__article">
-					<a href="#<?php /* the_permalink(); */?>" class="featured__article--link">
-						<div class="featured__article--image" style='background-image: url(http://lorempixel.com/450/310/nature/1)'>
-							<?php /*
-
-										$image_attr = image_attribution();
-
-										if ( ! empty( $image_attr ) ) {
-											echo $image_attr;
-										} */
-
-							?>
-						</div>
-						<div class="featured__article--content">
-							<div class="featured__article--heading">
-								Record spell of Spare the Air days as dirty Bay Area skies linger
-								<?php /* the_title(); */ ?>
-							</div>
-						</div>
-					</a>
-				</div>
+					</div>
+				</a>
 			</div>
 		</div>
+		<?php endif; ?>
+		<?php // if we still have more posts (we almost always will), render the 3 below the main section ?>
+		<?php if ( $hp_featured_query->have_posts() ) : ?>
+			<div class="featured__article--secondary">
+				<?php while ( $hp_featured_query->have_posts() ) : $hp_featured_query->the_post(); ?>
+					<div class="featured__article">
+						<a href="#<?php the_permalink(); ?>" class="featured__article--link">
+							<div class="featured__article--image" style='background-image: url(<?php gm_post_thumbnail_url( 'gmr-featured-secondary', null, true ) ?>)'>
+								<?php
+
+									$image_attr = image_attribution();
+
+									if ( ! empty( $image_attr ) ) {
+										echo $image_attr;
+									}
+
+								?>
+							</div>
+							<div class="featured__article--content">
+								<div class="featured__article--heading">
+									<?php the_title(); ?>
+								</div>
+							</div>
+						</a>
+					</div>
+				<?php endwhile; ?>
+			</div>
+		<?php endif; ?>
+		<?php wp_reset_query(); ?>
+	</div>
 		<?php // if we still have more posts (we almost always will), render the 3 below the main section ?>
 			<div class="featured__content">
 					<div class="featured__content--block">
