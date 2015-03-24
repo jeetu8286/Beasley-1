@@ -57,17 +57,36 @@
 
 			<h2 class="highlights__heading"><?php _e( 'Contests', 'greatermedia' ); ?></h2>
 
-			<div class="highlights__contest--item">
-				<div class="highlights__contest--thumb" style='background-image: url(http://lorempixel.com/200/200/sports/)'></div>
 
-					<div class="highlights__contest--meta">
-						<h3 class="highlights__contest--title">John Mellencamp Christmas Live</h3>
-						<div class="highlights__contest--date"><time datetime="">Sat, Dec 23th</time></div>
-						<div class="highlights__contest--time"><time datetime="">4PM - 8:30PM</time></div>
-						<a href="#" class="highlights__contest--btn">Enter To Win</a>
-					</div>
+			<?php
+			$contests_query = \GreaterMedia\HomepageCuration\get_contests_query();
+			while( $contests_query->have_posts() ) : $contests_query->the_post(); ?>
 
-			</div>
+				<div class="highlights__contest--item">
+					<div class="highlights__contest--thumb" style='background-image: url(<?php gm_post_thumbnail_url( 'gmr-featured-secondary', null, true ) ?>)'></div>
+
+						<div class="highlights__contest--meta">
+							<h3 class="highlights__contest--title"><?php the_title(); ?></h3>
+							<?php
+							$date_format = 'M j, Y';
+							$date_format_c = 'c';
+							$time_format = 'g:iA';
+							$time_format_m = 'G:i';
+
+							$start = get_post_meta( $post->ID, 'contest-start', true );
+							$end = get_post_meta( $post->ID, 'contest-end', true );
+							$offset = get_option( 'gmt_offset' ) * HOUR_IN_SECONDS;
+
+							echo '<div class="highlights__contest--date"><time datetime="' . date( $date_format_c, $start + $offset ) . '">' . date( $date_format, $start + $offset ) . '</time> - <time datetime="' . date( $date_format_c, $end + $offset ) . '">' . date( $date_format, $end + $offset ) . '</time></div>';
+							echo '<div class="highlights__contest--time"><time datetime="' . date( $time_format_m, $end + $offset ) . '">' . date( $time_format, $end + $offset ) . '</time></div>';
+							?>
+							<a href="<?php the_permalink(); ?>" class="highlights__contest--btn"><?php _e( 'Enter To Win', 'thefanatic' ); ?></a>
+						</div>
+
+				</div>
+
+			<?php endwhile; ?>
+			<?php wp_reset_query(); ?>
 		</div>
 
 		<div class="highlights__ad">
