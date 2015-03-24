@@ -14,7 +14,7 @@
 			<?php
 			$news_site = get_option( 'gmr_newssite' );
 
-			// If this is a News/Sports site, our query will change
+			// If this is a News/Sports site, our content will change
 			if ( $news_site ) { ?>
 
 				<div class="highlights__events">

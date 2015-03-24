@@ -10,6 +10,7 @@
 	<?php
 	$news_site = get_option( 'gmr_newssite' );
 
+	// If this is a News/Sports site, our query will change
 	if ( $news_site ) {
 
 		$hp_featured_query = \GreaterMedia\HomepageCuration\get_featured_query();
