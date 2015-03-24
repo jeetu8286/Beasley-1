@@ -68,7 +68,9 @@
 						<div class="highlights__contest--meta">
 							<h3 class="highlights__contest--title"><?php the_title(); ?></h3>
 							<?php
-							$date_format = 'M j, Y';
+							$date_format = 'M j';
+							$date_format_full = 'M j, Y';
+							$date_format_year = 'Y';
 							$date_format_c = 'c';
 							$time_format = 'g:iA';
 							$time_format_m = 'G:i';
@@ -77,8 +79,22 @@
 							$end = get_post_meta( $post->ID, 'contest-end', true );
 							$offset = get_option( 'gmt_offset' ) * HOUR_IN_SECONDS;
 
-							echo '<div class="highlights__contest--date"><time datetime="' . date( $date_format_c, $start + $offset ) . '">' . date( $date_format, $start + $offset ) . '</time> - <time datetime="' . date( $date_format_c, $end + $offset ) . '">' . date( $date_format, $end + $offset ) . '</time></div>';
-							echo '<div class="highlights__contest--time"><time datetime="' . date( $time_format_m, $end + $offset ) . '">' . date( $time_format, $end + $offset ) . '</time></div>';
+							$start_year = date( $date_format_year, $start + $offset );
+							$end_year = date( $date_format_year, $end + $offset );
+
+							/**
+							 * Run a check to see if the year for the start and end dates are the same so that we do
+							 * not have redundant years being printed out on screen. If the years are the same, only the
+							 * end date will print the date. If the years are not the same, both dates will print the
+							 * date.
+							 **/
+							if ( $start_year == $end_year ) {
+								echo '<div class="highlights__contest--date"><time datetime="' . date( $date_format_c, $start + $offset ) . '">' . date( $date_format, $start + $offset ) . '</time> - <time datetime="' . date( $date_format_c, $end + $offset ) . '">' . date( $date_format_full, $end + $offset ) . '</time></div>';
+								echo '<div class="highlights__contest--time"><time datetime="' . date( $time_format_m, $end + $offset ) . '">' . date( $time_format, $end + $offset ) . '</time></div>';
+							} else {
+								echo '<div class="highlights__contest--date"><time datetime="' . date( $date_format_c, $start + $offset ) . '">' . date( $date_format_full, $start + $offset ) . '</time> - <time datetime="' . date( $date_format_c, $end + $offset ) . '">' . date( $date_format_full, $end + $offset ) . '</time></div>';
+								echo '<div class="highlights__contest--time"><time datetime="' . date( $time_format_m, $end + $offset ) . '">' . date( $time_format, $end + $offset ) . '</time></div>';
+							}
 							?>
 							<a href="<?php the_permalink(); ?>" class="highlights__contest--btn"><?php _e( 'Enter To Win', 'thefanatic' ); ?></a>
 						</div>
