@@ -5745,7 +5745,7 @@ body.profile-page-login .live-player--mobile {
       margin: 0 auto;
       text-align: center; } }
   .news-site .live-stream__status {
-    top: 304px;
+    top: 264px;
     width: 200px; }
   .gmr-user .live-stream__status {
     display: none; }
@@ -5754,7 +5754,7 @@ body.profile-page-login .live-player--mobile {
         display: block;
         top: 264px; } }
   .gmr-user.news-site .live-stream__status {
-    top: 324px;
+    top: 314px;
     width: 200px;
     padding-bottom: 0; }
   .gmr-user .live-player__container.no-volume-control .live-stream__status {
