@@ -1228,8 +1228,8 @@ var AVAILABLE_CONSTRAINTS = [
 
 	/* System Fields */
 	{
-		type: 'system:createdTimestamp',
-		valueType: 'date',
+		type: 'data:registeredTimestamp',
+		valueType: 'epoch',
 		value: '01/01/2012',
 		operator: 'greater than',
 	},
@@ -1494,7 +1494,7 @@ var AVAILABLE_CONSTRAINTS_META = [
 
 	/* System Fields */
 	{
-		type: 'system:createdTimestamp',
+		type: 'data:registeredTimestamp',
 		title: 'Creation Date',
 	},
 	{
