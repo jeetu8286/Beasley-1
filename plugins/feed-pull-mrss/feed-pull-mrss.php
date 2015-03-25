@@ -28,31 +28,78 @@ add_filter( 'fp_pre_post_insert_value', 'fpmrss_catch_feed_item_xml', 10, 3 );
  * Fetches thumbnail image for a media item.
  *
  * @global SimpleXMLElement $fpmrss_feed_item The current SimpleXML element.
+ * @global array $fpmrss_feed_thumbnails The array of feed thumbnails to import.
  * @param int $post_id Newly imported post id.
  */
 function fpmrss_fetch_thumbnail( $post_id ) {
-	global $fpmrss_feed_item;
+	global $fpmrss_feed_item, $fpmrss_feed_thumbnails;
+
+	// do nothing if an xml element is not caught
 	if ( ! $fpmrss_feed_item ) {
 		return;
 	}
 
-	require_once ABSPATH . 'wp-admin/includes/image.php';
-	require_once ABSPATH . 'wp-admin/includes/media.php';
-	require_once ABSPATH . 'wp-admin/includes/file.php';
+	// init feed thumbnails array if it isn't
+	if ( ! is_array( $fpmrss_feed_thumbnails ) ) {
+		$fpmrss_feed_thumbnails = array();
+	}
+
 
 	$thumbnail = current( (array) $fpmrss_feed_item->xpath( 'media:content/media:thumbnail/@url' ) );
 	if ( $thumbnail ) {
 		$thumbnail = (string) $thumbnail['url'];
 		if ( filter_var( $thumbnail, FILTER_VALIDATE_URL ) ) {
-			$thumbnail_id = fpmrss_download_image( $thumbnail, $post_id );
-			if ( $thumbnail_id && ! is_wp_error( $thumbnail_id ) ) {
-				set_post_thumbnail( $post_id, $thumbnail_id );
-			}
+			$fpmrss_feed_thumbnails[] = array( $thumbnail, $post_id );
 		}
 	}
+
+	$fpmrss_feed_item = null;
 }
 add_action( 'fp_created_post', 'fpmrss_fetch_thumbnail' );
 add_action( 'fp_updated_post', 'fpmrss_fetch_thumbnail' );
+
+/**
+ * Lauches async task to import thumbnails.
+ *
+ * @global array $fpmrss_feed_thumbnails The array of feed thumbnails to import.
+ */
+function fpmrss_launch_async_thumbnails_import() {
+	global $fpmrss_feed_thumbnails;
+
+	// do nothing if feed thumbnails array if empty
+	if ( empty( $fpmrss_feed_thumbnails ) ) {
+		return;
+	}
+
+	// try to launch async task if available, otherwise schedule single event
+	if ( function_exists( 'wp_async_task_add' ) ) {
+		wp_async_task_add( 'fpmrss_import_thumbnails', $fpmrss_feed_thumbnails );
+	} else {
+		wp_schedule_single_event( current_time( 'timestamp', 1 ), 'fpmrss_import_thumbnails', array( $fpmrss_feed_thumbnails ) );
+	}
+}
+add_action( 'fp_post_feed_pull', 'fpmrss_launch_async_thumbnails_import' );
+
+/**
+ * Performs thumbnails import.
+ *
+ * @param array $thumbnails Array of arrays of thumbnail urls and post ids.
+ */
+function fpmrss_import_thumbnails( $thumbnails ) {
+	require_once ABSPATH . 'wp-admin/includes/image.php';
+	require_once ABSPATH . 'wp-admin/includes/media.php';
+	require_once ABSPATH . 'wp-admin/includes/file.php';
+
+	foreach ( $thumbnails as $thumbnail ) {
+		echo $thumbnail[0] . PHP_EOL;
+		
+		$thumbnail_id = fpmrss_download_image( $thumbnail[0], $thumbnail[1] );
+		if ( $thumbnail_id && ! is_wp_error( $thumbnail_id ) ) {
+			set_post_thumbnail( $thumbnail[1], $thumbnail_id );
+		}
+	}
+}
+add_action( 'fpmrss_import_thumbnails', 'fpmrss_import_thumbnails' );
 
 /**
  * Downloads remote image or just returns attachment ID if it has been already imported.
@@ -91,8 +138,13 @@ function fpmrss_download_image( $image, $post_id ) {
 	$file_array['tmp_name'] = $tmp;
 	$file_array['error'] = 0;
 
+	$post_data = array();
 	$post = get_post( $post_id );
-	$image_id = media_handle_sideload( $file_array, $post_id, null, array( 'post_author' => $post->post_author ) );
+	if ( $post ) {
+		$post_data['post_author'] = $post->post_author;
+	}
+
+	$image_id = media_handle_sideload( $file_array, $post_id, null, $post_data );
 	if ( is_wp_error( $image_id ) ) {
 		@unlink( $file_array['tmp_name'] );
 	} else {
@@ -122,6 +174,6 @@ function fpmrss_generate_image_name( $image ) {
 			$file_name = substr( sanitize_title( pathinfo( $image, PATHINFO_FILENAME ) ), 0, 254 ) . $ext;
 		}
 	}
-
+	
 	return $file_name;
 }
