@@ -3274,7 +3274,7 @@ a.highlights__contest--btn {
   .header__subnav--item:last-of-type a {
     padding-right: 0; }
   .header__subnav--item a:hover, .header__subnav--item a:focus, .header__subnav--item a:active {
-    color: #580f0c; }
+    color: #db261d; }
   @media screen and (min-width: 768px)  {
     .header__subnav--item {
       display: table-cell;
@@ -3649,6 +3649,8 @@ a.highlights__contest--btn {
     @media screen and (min-width: 1024px)  {
       .news-site .header__search--span {
         font-size: 1em; } }
+  .news-site .header__search:hover .header__search--span {
+    color: #db261d; }
 
 .header__search--btn {
   display: block;
@@ -3658,6 +3660,8 @@ a.highlights__contest--btn {
   .news-site .header__search--btn {
     height: 48px;
     padding: 16px 1.25em 14px 0; }
+  .news-site .header__search:hover .header__search--btn {
+    color: #db261d; }
 
 .header__search--btn:before {
   font-size: 1.42383em;
