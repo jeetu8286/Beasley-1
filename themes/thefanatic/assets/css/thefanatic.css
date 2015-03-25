@@ -2526,6 +2526,19 @@ a.featured__content--link {
   .featured__content--block:active .featured__content--btn:last-of-type {
     margin-right: 0; }
 
+.featured__video {
+  position: absolute;
+  top: 1.75em;
+  right: 2.5em;
+  color: white;
+  width: 40px;
+  height: 40px; }
+
+.featured__video .gmr-icon, .featured__video .contest__submission .preview .preview-close, .contest__submission .preview .featured__video .preview-close {
+  width: 40px;
+  height: 40px;
+  font-size: 2.5em; }
+
 /*doc
 ---
 title: Highlights
@@ -14234,6 +14247,12 @@ category: Components
     text-decoration: underline; }
   .image__attribution a:hover, .image__attribution a:active, .image__attribution a:focus {
     color: #aa1c20; }
+  .news-site .image__attribution {
+    top: 10px;
+    right: auto;
+    bottom: auto;
+    left: 10px;
+    margin-left: 0; }
 
 /**
  * WordPress Specific Styles
