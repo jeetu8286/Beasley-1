@@ -24,6 +24,85 @@ function fpmrss_catch_feed_item_xml( $pre_filter_post_value, $xml_element ) {
 add_filter( 'fp_post_args', 'fpmrss_catch_feed_item_xml', 10, 2 );
 
 /**
+ * Extracts media group element.
+ *
+ * @param SimpleXMLElement $element Current RSS element.
+ * @return SimpleXMLElement Media group element on success, otherwise FALSE.
+ */
+function fpmrss_get_media_group( SimpleXMLElement $element ) {
+	$group = $element->xpath( 'media:group' );
+	if ( ! empty( $group ) ) {
+		$group = current( $group );
+	} else {
+		$group = $element->xpath( 'media:content' );
+		if ( ! empty( $group ) ) {
+			$group = current( $group );
+		}
+	}
+
+	return $group;
+}
+
+/**
+ * Extracts media thumbnail from an RSS element.
+ *
+ * @param SimpleXMLElement $element Current RSS element.
+ * @return string Thumbnail URL on success, otherwise FALSE.
+ */
+function fpmrss_extract_media_thumbnail( SimpleXMLElement $element ) {
+	$group = fpmrss_get_media_group( $element );
+	if ( ! is_a( $group, 'SimpleXMLElement' ) ) {
+		return false;
+	}
+
+	$thumbnail_url = false;
+	$thumbnails = $group->xpath( 'media:thumbnail' );
+	if ( ! empty( $thumbnails ) ) {
+		$max_width = 0;
+		foreach ( $thumbnails as $thumbnail ) {
+			if ( empty( $thumbnail['url'] ) || ! filter_var( $thumbnail['url'], FILTER_VALIDATE_URL ) ) {
+				continue;
+			}
+
+			$current_width = intval( $thumbnail['width'] );
+			if ( ! empty( $current_width ) && $max_width >= $current_width ) {
+				continue;
+			}
+
+			$thumbnail_url = strval( $thumbnail['url'] );
+			$max_width = $current_width;
+		}
+	}
+
+	return $thumbnail_url;
+}
+
+/**
+ * Extracts media player from an RSS element.
+ *
+ * @param SimpleXMLElement $element Current RSS elemenet.
+ * @return string Player value on success, otherwise FALSE.
+ */
+function fpmrss_extract_media_player( SimpleXMLElement $element ) {
+	$group = fpmrss_get_media_group( $element );
+	if ( ! is_a( $group, 'SimpleXMLElement' ) ) {
+		return false;
+	}
+
+	$player_value = false;
+	$player = $group->xpath( 'media:player' );
+	if ( ! empty( $player ) ) {
+		$player = current( $player );
+		$player_value = trim( strval( $player ) );
+		if ( empty( $player_value ) && ! empty( $player['url'] ) && filter_var( $player['url'], FILTER_VALIDATE_URL ) ) {
+			$player_value = strval( $player['url'] );
+		}
+	}
+
+	return $player_value;
+}
+
+/**
  * Fetches thumbnail image for a media item.
  *
  * @global SimpleXMLElement $fpmrss_feed_item The current SimpleXML element.
@@ -44,23 +123,15 @@ function fpmrss_fetch_media_data( $post_id ) {
 	}
 
 	// fetch thumbnail
-	$thumbnail = current( (array) $fpmrss_feed_item->xpath( 'media:content/media:thumbnail/@url' ) );
+	$thumbnail = fpmrss_extract_media_thumbnail( $fpmrss_feed_item );
 	if ( $thumbnail ) {
-		$thumbnail = (string) $thumbnail['url'];
-		if ( filter_var( $thumbnail, FILTER_VALIDATE_URL ) ) {
-			$fpmrss_feed_thumbnails[] = array( $thumbnail, $post_id );
-		}
+		$fpmrss_feed_thumbnails[] = array( $thumbnail, $post_id );
 	}
 
 	// fetch player
-	$player = current( (array) $fpmrss_feed_item->xpath( 'media:content/media:player' ) );
+	$player = fpmrss_extract_media_player( $fpmrss_feed_item );
 	if ( $player ) {
-		$player_content = trim( (string) $player );
-		if ( ! empty( $player_content ) ) {
-			update_post_meta( $post_id, 'gmr-player', $player_content );
-		} elseif ( ! empty( $player['url'] ) && filter_var( $player['url'], FILTER_VALIDATE_URL ) ) {
-			update_post_meta( $post_id, 'gmr-player', $player['url'] );
-		}
+		update_post_meta( $post_id, 'gmr-player', $player );
 	}
 
 	$fpmrss_feed_item = null;
