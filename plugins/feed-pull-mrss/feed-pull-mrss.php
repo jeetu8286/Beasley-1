@@ -132,6 +132,7 @@ function fpmrss_fetch_media_data( $post_id ) {
 	$player = fpmrss_extract_media_player( $fpmrss_feed_item );
 	if ( $player ) {
 		update_post_meta( $post_id, 'gmr-player', $player );
+		set_post_format( $post_id, 'video' );
 	}
 
 	$fpmrss_feed_item = null;
