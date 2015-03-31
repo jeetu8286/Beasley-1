@@ -315,3 +315,72 @@ function fpmrss_update_content( $content ) {
 	return $content;
 }
 add_action( 'the_content', 'fpmrss_update_content', 1 );
+
+/**
+ * Registers Ooyala settings metabox.
+ *
+ * @global string $typenow The current post type.
+ */
+function fpmrss_add_meta_box() {
+	global $typenow;
+
+	if ( 'fp_feed' == $typenow ) {
+		$feed_url = get_post_meta( get_the_ID(), 'fp_feed_url', true );
+		if ( filter_var( $feed_url, FILTER_VALIDATE_URL ) && preg_match( '#ooyala\.com$#i', parse_url( $feed_url, PHP_URL_HOST ) ) ) {
+			add_meta_box( 'fpmrss-ooyala', 'Ooyala Settings', 'fpmrss_render_ooyala_metabox', 'fp_feed', 'side', 'core' );
+		}
+	}
+}
+add_action( 'add_meta_boxes', 'fpmrss_add_meta_box' );
+
+/**
+ * Renders Ooyala settings meta box.
+ *
+ * @param WP_Post $feed The feed object.
+ */
+function fpmrss_render_ooyala_metabox( $feed ) {
+	$player_id = get_post_meta( $feed->ID, 'fpmrss-ooyala-player-id', true );
+	$ad_set = get_post_meta( $feed->ID, 'fpmrss-ooyala-ad-set', true );
+
+	wp_nonce_field( 'fpmrss-ooyala', 'fpmrss_ooyala_nonce', false );
+
+	echo '<p>';
+		echo '<label for="fpmrss-ooyala-player-id">Player ID:</label>';
+		echo '<input type="text" id="fpmrss-ooyala-player-id" class="widefat" name="fpmrss-ooyala-player-id" value="', esc_attr( $player_id ), '">';
+	echo '</p>';
+	echo '<p>';
+		echo '<label for="fpmrss-ooyala-ad-set">Ad Set:</label>';
+		echo '<input type="text" id="fpmrss-ooyala-ad-set" class="widefat" name="fpmrss-ooyala-ad-set" value="', esc_attr( $ad_set ), '">';
+	echo '</p>';
+}
+
+/**
+ * Saves post settings.
+ * 
+ * @param int $post_id The post id.
+ */
+function fpmrss_save_settings( $post_id ) {
+	$doing_autosave = defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE;
+	$has_capabilities = current_user_can( 'edit_post', $post_id );
+	$is_revision = 'revision' == get_post_type( $post_id );
+	
+	if ( $doing_autosave || ! $has_capabilities || $is_revision ) {
+		return;
+	}
+
+	$ooyala_nonce = filter_input( INPUT_POST, 'fpmrss_ooyala_nonce' );
+	if ( $ooyala_nonce && wp_verify_nonce( $ooyala_nonce, 'fpmrss-ooyala' ) ) {
+		$fields = array( 'fpmrss-ooyala-player-id', 'fpmrss-ooyala-ad-set' );
+		foreach ( $fields as $field ) {
+			$value = wp_kses_post( filter_input( INPUT_POST, $field ) );
+			$value = trim( $value );
+
+			if ( ! empty( $value ) ) {
+				update_post_meta( $post_id, $field, $value );
+			} else {
+				delete_post_meta( $post_id, $field );
+			}
+		}
+	}
+}
+add_action( 'save_post', 'fpmrss_save_settings' );
