@@ -20,7 +20,7 @@
 if ( defined( 'GMR_PARENT_ENV' ) && 'dev' == GMR_PARENT_ENV ) {
 	define( 'GREATERMEDIA_VERSION', time() );
 } else {
-	define( 'GREATERMEDIA_VERSION', '1.0.17' );
+	define( 'GREATERMEDIA_VERSION', '1.0.19' );
 }
 
 add_theme_support( 'homepage-curation' );
@@ -32,6 +32,7 @@ require_once( __DIR__ . '/includes/mega-menu/mega-menu-walker.php' );
 require_once( __DIR__ . '/includes/mega-menu/mega-menu-mobile-walker.php' );
 require_once( __DIR__ . '/includes/image-attributes/loader.php');
 require_once( __DIR__ . '/includes/posts-screen-thumbnails/loader.php' );
+require_once( __DIR__ . '/includes/class-favicon.php' );
 
 /**
  * Required files

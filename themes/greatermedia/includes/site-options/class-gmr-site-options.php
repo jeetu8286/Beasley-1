@@ -113,11 +113,11 @@ class GreaterMediaSiteOptions {
 		register_setting( self::option_group, 'gmr_youtube_url', 'esc_url_raw' );
 		register_setting( self::option_group, 'gmr_instagram_name', 'sanitize_text_field' );
 		register_setting( self::option_group, 'gmr_site_logo', 'intval' );
-		register_setting( self::option_group, 'gmr_site_favicon', 'intval' );
 		register_setting( self::option_group, 'gmr_google_analytics', 'sanitize_text_field' );
 		register_setting( self::option_group, 'gmr_google_uid_dimension', 'absint' );
 		register_setting( self::option_group, 'gmr_livelinks_title', 'sanitize_text_field');
 		register_setting( self::option_group, 'gmr_newssite', 'esc_attr' );
+		register_setting( self::option_group, 'gmr_livelinks_more_redirect', 'esc_attr' );
 		register_setting( self::option_group, 'gmr_liveplayer_disabled', 'esc_attr' );
 
 		/**
@@ -159,18 +159,14 @@ class GreaterMediaSiteOptions {
 		$youtube = get_option( 'gmr_youtube_url', '' );
 		$instagram = get_option( 'gmr_instagram_name', '' );
 		$site_logo_id = GreaterMediaSiteOptionsHelperFunctions::get_site_logo_id();
-		$site_favicon_id = GreaterMediaSiteOptionsHelperFunctions::get_site_favicon_id();
 		$livelinks_title = get_option( 'gmr_livelinks_title', '' );
 		$news_site = get_option( 'gmr_newssite', '' );
+		$livelinks_more = get_option( 'gmr_livelinks_more_redirect', '' );
 		$liveplayer_disabled = get_option( 'gmr_liveplayer_disabled', '' );
 
 		?>
 
 		<?php self::render_image_select( 'Site Logo', 'gmr_site_logo', $site_logo_id ); ?>
-
-		<hr />
-
-		<?php self::render_image_select( 'Site Fav Icon', 'gmr_site_favicon', $site_favicon_id ); ?>
 
 		<hr />
 
@@ -186,8 +182,13 @@ class GreaterMediaSiteOptions {
 		<h4><?php _e( 'Live Player and Live Links', 'greatermedia' ); ?></h4>
 
 		<div class="gmr__option">
-			<input type="checkbox" name="gmr_liveplayer_disabled" id="gmr_liveplayer_disabled" value="1" <?php checked( 1 == esc_attr( $liveplayer_disabled ) ); ?> /><label for="gmr_liveplayer_disabled" class="gmr__option--label-inline"><?php _e( 'Disable the Live Player', 'greatermedia' ); ?></label>
+			<input type="checkbox" name="gmr_liveplayer_more" id="gmr_liveplayer_disabled" value="1" <?php checked( 1 == esc_attr( $liveplayer_disabled ) ); ?> /><label for="gmr_liveplayer_disabled" class="gmr__option--label-inline"><?php _e( 'Disable the Live Player', 'greatermedia' ); ?></label>
 			<div class="gmr-option__field--desc"><?php _e( 'Check this box if this site does not have a live audio stream.', 'greatermedia' ); ?></div>
+		</div>
+
+		<div class="gmr__option">
+			<input type="checkbox" name="gmr_livelinks_more_redirect" id="gmr_livelinks_more_redirect" value="1" <?php checked( 1 == esc_attr( $livelinks_more ) ); ?> /><label for="gmr_livelinks_more_redirect" class="gmr__option--label-inline"><?php _e( 'Redirect the Live Links "More" button to the Station Stream Archive', 'greatermedia' ); ?></label>
+			<div class="gmr-option__field--desc"><?php _e( 'By default, the "More" button located in the Live Links section of the live player sidebar, points to an archive of Live Links for the station. Checking this box will change the reference point for the more button so that when clicked, the button redirects to a Stream Archive for the Station.', 'greatermedia' ); ?></div>
 		</div>
 
 		<div class="gmr__option">
