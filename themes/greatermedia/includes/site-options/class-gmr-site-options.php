@@ -113,7 +113,6 @@ class GreaterMediaSiteOptions {
 		register_setting( self::option_group, 'gmr_youtube_url', 'esc_url_raw' );
 		register_setting( self::option_group, 'gmr_instagram_name', 'sanitize_text_field' );
 		register_setting( self::option_group, 'gmr_site_logo', 'intval' );
-		register_setting( self::option_group, 'gmr_site_favicon', 'intval' );
 		register_setting( self::option_group, 'gmr_google_analytics', 'sanitize_text_field' );
 		register_setting( self::option_group, 'gmr_google_uid_dimension', 'absint' );
 		register_setting( self::option_group, 'gmr_livelinks_title', 'sanitize_text_field');
@@ -159,7 +158,6 @@ class GreaterMediaSiteOptions {
 		$youtube = get_option( 'gmr_youtube_url', '' );
 		$instagram = get_option( 'gmr_instagram_name', '' );
 		$site_logo_id = GreaterMediaSiteOptionsHelperFunctions::get_site_logo_id();
-		$site_favicon_id = GreaterMediaSiteOptionsHelperFunctions::get_site_favicon_id();
 		$livelinks_title = get_option( 'gmr_livelinks_title', '' );
 		$livelinks_more = get_option( 'gmr_livelinks_more_redirect', '' );
 		$liveplayer_disabled = get_option( 'gmr_liveplayer_disabled', '' );
@@ -167,10 +165,6 @@ class GreaterMediaSiteOptions {
 		?>
 
 		<?php self::render_image_select( 'Site Logo', 'gmr_site_logo', $site_logo_id ); ?>
-
-		<hr />
-
-		<?php self::render_image_select( 'Site Fav Icon', 'gmr_site_favicon', $site_favicon_id ); ?>
 
 		<hr />
 
