@@ -96,3 +96,7 @@ class GreaterMediaSiteOptionsHelperFunctions {
 }
 
 GreaterMediaSiteOptionsHelperFunctions::init();
+
+function is_news_site() {
+	return (bool) filter_var( get_option( 'gmr_newssite' ), FILTER_VALIDATE_BOOLEAN );
+}
