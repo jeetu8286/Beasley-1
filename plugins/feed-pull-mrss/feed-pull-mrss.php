@@ -7,6 +7,8 @@ Author: 10up
 Author URI: http://10up.com/
 */
 
+delete_option( 'fp_deleted_syndicated' );
+
 /**
  * Catches SimpleXML element to use in the next steps.
  *
@@ -150,8 +152,9 @@ function fpmrss_extract_media_player( SimpleXMLElement $element ) {
  * @global SimpleXMLElement $fpmrss_feed_item The current SimpleXML element.
  * @global array $fpmrss_feed_thumbnails The array of feed thumbnails to import.
  * @param int $post_id Newly imported post id.
+ * @param int $feed_id The feed id.
  */
-function fpmrss_fetch_media_data( $post_id ) {
+function fpmrss_fetch_media_data( $post_id, $feed_id ) {
 	global $fpmrss_feed_item, $fpmrss_feed_thumbnails;
 
 	// do nothing if an xml element is not caught
@@ -177,10 +180,19 @@ function fpmrss_fetch_media_data( $post_id ) {
 		set_post_format( $post_id, 'video' );
 	}
 
+	// copy Ooyala metas if available
+	$metas = array( 'fpmrss-ooyala-player-id', 'fpmrss-ooyala-ad-set' );
+	foreach ( $metas as $meta ) {
+		$value = get_post_meta( $feed_id, $meta, true );
+		if ( ! empty( $value ) ) {
+			update_post_meta( $post_id, $meta, $value );
+		}
+	}
+
 	$fpmrss_feed_item = null;
 }
-add_action( 'fp_created_post', 'fpmrss_fetch_media_data' );
-add_action( 'fp_updated_post', 'fpmrss_fetch_media_data' );
+add_action( 'fp_created_post', 'fpmrss_fetch_media_data', 10, 2 );
+add_action( 'fp_updated_post', 'fpmrss_fetch_media_data', 10, 2 );
 
 /**
  * Lauches async task to import thumbnails.
@@ -324,10 +336,15 @@ add_action( 'the_content', 'fpmrss_update_content', 1 );
 function fpmrss_add_meta_box() {
 	global $typenow;
 
-	if ( 'fp_feed' == $typenow ) {
-		$feed_url = get_post_meta( get_the_ID(), 'fp_feed_url', true );
+	$post_id = get_the_ID();
+	$feed_id = 'fp_feed' == $typenow
+		? $post_id
+		: get_post_meta( $post_id, 'fp_source_feed_id', true );
+
+	if ( ! empty( $feed_id ) ) {
+		$feed_url = get_post_meta( $feed_id, 'fp_feed_url', true );
 		if ( filter_var( $feed_url, FILTER_VALIDATE_URL ) && preg_match( '#ooyala\.com$#i', parse_url( $feed_url, PHP_URL_HOST ) ) ) {
-			add_meta_box( 'fpmrss-ooyala', 'Ooyala Settings', 'fpmrss_render_ooyala_metabox', 'fp_feed', 'side', 'core' );
+			add_meta_box( 'fpmrss-ooyala', 'Ooyala Settings', 'fpmrss_render_ooyala_metabox', $typenow, 'side', 'core' );
 		}
 	}
 }
