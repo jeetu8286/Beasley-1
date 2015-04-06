@@ -47,33 +47,6 @@ class Migrator {
 	public $fresh;
 	public $initialized = false;
 
-	function _test_downloader( $args, $opts ) {
-		$downloader = new Downloader( 'migration_cache/downloads' );
-		$tmp_file = $downloader->download( 'https://www.google.co.in/images/srpr/logo10w.png' );
-		\WP_CLI::log( 'First tmp file = ' . $tmp_file );
-
-		$tmp_file = $downloader->download( 'https://www.google.co.in/images/srpr/logo10w.png' );
-		\WP_CLI::log( 'Second tmp file = ' . $tmp_file );
-	}
-
-	function test_media_downloader( $args, $opts ) {
-		$downloader = new Downloader(
-			'migration_cache/downloads',
-			'migration_cache/media'
-		);
-		$tmp_file = $downloader->download( 'http://media.wmgk.com/' . urlencode('Blogs/1001280/Watch The Mummers Strut (More Than A Tradition)mastered.mp3'  ) );
-		\WP_CLI::log( 'First tmp file = ' . $tmp_file );
-
-		$tmp_file = $downloader->download( 'http://media.wmgk.com/' . urlencode('Blogs/1001280/Watch The Mummers Strut (More Than A Tradition)mastered.mp3'  ) );
-		\WP_CLI::log( 'Second tmp file = ' . $tmp_file );
-
-	}
-
-	function test_mapping( $args, $opts ) {
-		$this->mapping_collection = new MappingCollection();
-		$this->mapping_collection->load( 'wmgk_mapping.csv' );
-	}
-
 	function build_actions_json( $args, $opts ) {
 		$user_ids = $opts['user_ids'];
 		$output   = $opts['output'];
