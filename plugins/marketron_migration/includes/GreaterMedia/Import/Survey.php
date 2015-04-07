@@ -99,6 +99,7 @@ class Survey extends BaseImporter {
 
 	function excerpt_from_survey( $survey ) {
 		$excerpt = $this->import_string( $survey['SurveyBlurb'] );
+		$excerpt = htmlentities( $excerpt );
 
 		return $excerpt;
 	}
