@@ -252,6 +252,13 @@ class Migrator {
 		$tools_to_load = $this->get_tools_to_load();
 		$this->load_tools( $tools_to_load );
 
+		if ( $this->opts['repair'] ) {
+			//$repairer = new \GreaterMedia\Import\Repair\EmbeddedFormRepairer();
+			//$repairer->container = $this;
+			//$repairer->repair( $this->opts['site_dir'] . '/output/cids.json' );
+
+		}
+
 		if ( $this->opts['export_to_gigya'] ) {
 			$this->entity_factory->build( 'gigya_user' )->export();
 		}
@@ -260,6 +267,15 @@ class Migrator {
 		$this->table_factory->export();
 		$this->error_reporter->save_report();
 		$this->side_loader->sync();
+	}
+
+	function repair( $args, $opts ) {
+		$opts['repair'] = true;
+		$this->initialize( $args, $opts, false );
+
+		$repairer = new \GreaterMedia\Import\Repair\EmbeddedFormRepairer();
+		$repairer->container = $this;
+		$repairer->update_cids( $this->opts['site_dir'] . '/output/cids.json' );
 	}
 
 	function restore( $args, $opts ) {
@@ -291,6 +307,7 @@ class Migrator {
 		$this->load_boolean_opt( 'fake_media', false );
 		$this->load_boolean_opt( 'fresh', false );
 		$this->load_boolean_opt( 'export_to_gigya', true );
+		$this->load_boolean_opt( 'repair', false );
 
 		$this->fresh = $this->opts['fresh'];
 	}
@@ -306,8 +323,10 @@ class Migrator {
 	function get_tools_to_load() {
 		$tools_to_load = $this->opts['tools_to_load'];
 
-		if ( $tools_to_load === 'all' ) {
+		if ( $tools_to_load[0] === 'all' ) {
 			$tools_to_load = $this->tool_factory->get_tool_names();
+		} else if ( $tools_to_load[0] === 'none' ) {
+			$tools_to_load = array();
 		}
 
 		return $tools_to_load;
