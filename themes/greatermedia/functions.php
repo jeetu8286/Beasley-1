@@ -20,7 +20,7 @@
 if ( defined( 'GMR_PARENT_ENV' ) && 'dev' == GMR_PARENT_ENV ) {
 	define( 'GREATERMEDIA_VERSION', time() );
 } else {
-	define( 'GREATERMEDIA_VERSION', '1.0.19' );
+	define( 'GREATERMEDIA_VERSION', '1.0.20' );
 }
 
 add_theme_support( 'homepage-curation' );
@@ -105,6 +105,11 @@ function greatermedia_setup() {
 	add_post_type_support( 'tribe_events', 'timed-content' );
 	add_post_type_support( 'tribe_events', 'login-restricted-content' );
 	add_post_type_support( 'tribe_events', 'age-restricted-content' );
+
+	// Restrictions for contests
+	add_post_type_support( 'contest', 'timed-content' );
+	add_post_type_support( 'contest', 'login-restricted-content' );
+	add_post_type_support( 'contest', 'age-restricted-content' );
 
 	// Add theme support for post-formats
 	$formats = array( 'gallery', 'link', 'image', 'video', 'audio' );
