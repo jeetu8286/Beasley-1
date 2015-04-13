@@ -1008,7 +1008,7 @@ add_filter( 'gmr-homepage-featured-limit', 'greatermedia_extend_featured_curatio
  *
  * @return int
  */
-function greatermedia_extend_community_curation_limit( $limi ) {
+function greatermedia_extend_community_curation_limit( $limit ) {
 
 	if ( is_news_site() ) {
 		$limit = 4;
