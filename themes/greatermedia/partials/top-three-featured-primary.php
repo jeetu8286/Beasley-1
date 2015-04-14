@@ -14,6 +14,7 @@
 					<div class='thumbnail thumbnail-placeholder' style=''></div>
 				<?php endif; ?>
 			</div>
+			<div class="top-three__play"></div>
 			<div class="top-three__desc">
 				<div class='inner-wrap'>
 					<h3><?php the_title(); ?></h3>
