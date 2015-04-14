@@ -1,5 +1,5 @@
-(function() {
-	var ggComObj;
+(function(gmr) {
+	var ggComObj, stream;
 
 	// Nielsen SDK event codes:
 	//  5 - play
@@ -30,6 +30,14 @@
 				player.attachEvent(event, events[event]);
 			}
 		}
+
+		stream = gmr.callsign;
+		
+		if (hasAddEventListener) {
+			document.addEventListener('live-player-stream-changed', onStreamChanged);
+		} else {
+			document.attachEvent('live-player-stream-changed', onStreamChanged);
+		}
 	};
 
 	function NielsenSDKggCom(beacon, player) {
@@ -39,6 +47,11 @@
 		that.player = player;
 		that.is_playing = false;
 	}
+
+	var onStreamChanged = function(e) {
+		debug('Stream has been changed to ' + e.detail);
+		stream = e.detail;
+	};
 
 	var onStreamStatus = function(e) {
 		if (e.data.code === 'LIVE_PAUSE' || e.data.code === 'LIVE_STOP') {
@@ -55,10 +68,13 @@
 
 		debug('Send ad block cue metadata event to Nielsen SDK.');
 		ggComObj.gg.ggPM(15, {
-			assetid: data.cueID,
+			dataSrc: 'cms',
+			assetid: stream,
 			title: data.cueTitle,
 			length: data.duration / 1000, // convert to seconds
-			type: 'midroll'
+			type: 'radio',
+			provider: 'GreaterMedia',
+			stationType: 1
 		});
 
 		debug('Send playhead position event to Nielsen SDK.');
@@ -76,10 +92,13 @@
 
 		debug('Send track cue metadata event to Nielsen SDK.');
 		ggComObj.gg.ggPM(15, {
-			assetid: data.cueID,
+			dataSrc: 'cms',
+			assetid: stream,
 			title: data.cueTitle,
 			length: data.cueTimeDuration,
-			type: 'content'
+			type: 'radio',
+			provider: 'GreaterMedia',
+			stationType: 1
 		});
 
 		debug('Send playhead position event to Nielsen SDK.');
@@ -102,4 +121,4 @@
 			console.log(info);
 		}
 	};
-})();
+})(gmr);
