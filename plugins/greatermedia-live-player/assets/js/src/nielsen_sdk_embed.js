@@ -1,5 +1,5 @@
 (function(gmr) {
-	var ggComObj, stream;
+	var ggComObj, stream, tracker = null;
 
 	// Nielsen SDK event codes:
 	//  5 - play
@@ -21,8 +21,10 @@
 				'stream-status': onStreamStatus
 			};
 
+		stream = gmr.callsign;
 		ggComObj = new NielsenSDKggCom(beacon, player);
 
+		// register event listeners
 		for (var event in events) {
 			if (hasAddEventListener) {
 				player.addEventListener(event, events[event]);
@@ -31,8 +33,7 @@
 			}
 		}
 
-		stream = gmr.callsign;
-		
+		// listen to stream change event
 		if (hasAddEventListener) {
 			document.addEventListener('live-player-stream-changed', onStreamChanged);
 		} else {
@@ -59,6 +60,15 @@
 		}
 	};
 
+	var trackPlayheadPosition = function() {
+		if (!tracker) {
+			tracker = setInterval(function() {
+				debug('Send playhead position event to Nielsen SDK.');
+				ggComObj.gg.ggPM(49, Date.now() / 1000);
+			}, 9500);
+		}
+	};
+
 	var onAdBreakCuePoint = function(e) {
 		var data = e.data.adBreakData;
 
@@ -77,8 +87,7 @@
 			stationType: 1
 		});
 
-		debug('Send playhead position event to Nielsen SDK.');
-		ggComObj.gg.ggPM(49, Date.now() / 1000);
+		trackPlayheadPosition();
 
 		ggComObj.is_playing = true;
 	};
@@ -101,8 +110,7 @@
 			stationType: 1
 		});
 
-		debug('Send playhead position event to Nielsen SDK.');
-		ggComObj.gg.ggPM(49, Date.now() / 1000);
+		trackPlayheadPosition();
 
 		ggComObj.is_playing = true;
 	};
@@ -113,6 +121,11 @@
 			
 			ggComObj.gg.ggPM(7, Date.now() / 1000);
 			ggComObj.is_playing = false;
+
+			if (tracker) {
+				clearInterval(tracker);
+				tracker = null;
+			}
 		}
 	};
 
