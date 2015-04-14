@@ -72,6 +72,12 @@
 	.top-three__feature--primary & {
 		font-size: 6em;
 	}
+
+	.entry2 & {
+		top: 50%;
+		@include transform(translate(-50%, -50%));
+		font-size: 3em;
+	}
 }
 
 .top-three__play:before {
