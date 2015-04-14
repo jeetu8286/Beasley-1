@@ -8,6 +8,9 @@
  */
 $layout = sprintf( 'gmr_category_%d_layout', get_queried_object_id() );
 $layout = get_option( $layout );
+if ( ! empty( $layout ) ) {
+	$layout = 'category-' . $layout;
+}
 ?>
 <article id="post-<?php the_ID(); ?>" <?php post_class( 'entry2' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
 	<?php 
@@ -22,8 +25,8 @@ $layout = get_option( $layout );
 			<a href="<?php the_permalink(); ?>">
 				<div class="entry2__thumbnail__image" style='background-image: url(<?php gm_post_thumbnail_url( $thumbnail_size ); ?>)'></div>
 				<div class="entry2__thumbnail__icon"></div>
-				<?php if ( is_archive() && $layout === 'top3' ) { ?>
-					<div class="top-three__play"></div>
+				<?php if ( is_archive() && ! empty ( $layout ) ) { ?>
+					<div class="top-three__play <?php echo esc_html( $layout ); ?>"></div>
 				<?php } ?>
 			</a>
 		</section>

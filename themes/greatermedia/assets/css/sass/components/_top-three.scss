@@ -74,9 +74,14 @@
 	}
 
 	.entry2 & {
+		display: none;
 		top: 50%;
 		@include transform(translate(-50%, -50%));
 		font-size: 3em;
+
+		&[class*='category-'] {
+			display: block;
+		}
 	}
 }
 

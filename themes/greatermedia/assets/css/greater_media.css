@@ -13468,6 +13468,7 @@ table.responsive tr:nth-of-type(even) {
   .top-three__feature--primary .top-three__play {
     font-size: 6em; }
   .entry2 .top-three__play {
+    display: none;
     top: 50%;
     -webkit-transform: translate(-50%, -50%);
     -moz-transform: translate(-50%, -50%);
@@ -13475,6 +13476,8 @@ table.responsive tr:nth-of-type(even) {
     -o-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
     font-size: 3em; }
+    .entry2 .top-three__play[class*='category-'] {
+      display: block; }
 
 .top-three__play:before {
   content: "\e606"; }
