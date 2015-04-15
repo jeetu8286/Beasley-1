@@ -468,6 +468,15 @@ class MappingCollection {
 		foreach ( $this->author_names as $author ) {
 			if ( strpos( $string, $author ) !== false ) {
 				$matches[] = $author;
+			} else if ( strpos( $author, ' ' ) !== false ) {
+				$sub_authors = explode( ' ', $author );
+				$sub_authors = array_map( 'trim', $sub_authors );
+
+				foreach ( $sub_authors as $sub_author ) {
+					if ( strpos( $string, $sub_author . ' ' ) !== false ) {
+						$matches[] = $author;
+					}
+				}
 			}
 		}
 
