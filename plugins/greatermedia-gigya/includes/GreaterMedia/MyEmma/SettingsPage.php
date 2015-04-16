@@ -30,7 +30,7 @@ class SettingsPage {
 			true
 		);
 
-		$member_query_settings = get_option( 'member_query_settings' );
+		$member_query_settings = get_option( 'member_query_settings', '{}' );
 		$member_query_settings = json_decode( $member_query_settings, true );
 
 		$meta = array(
