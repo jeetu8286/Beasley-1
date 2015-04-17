@@ -137,6 +137,7 @@ class QueryTask extends SyncTask {
 			$compile_results_task = new InMemoryCompileResultsTask();
 			$compile_results_task->enqueue( $params );
 		} else if ( $this->cache_retries++ < $this->max_cache_retries ){
+			$sentinel->clear_task_meta_cache();
 			sleep( $this->cache_retry_delay );
 			$this->after( $matches );
 		}
