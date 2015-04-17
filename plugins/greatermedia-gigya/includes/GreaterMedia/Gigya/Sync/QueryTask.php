@@ -4,6 +4,9 @@ namespace GreaterMedia\Gigya\Sync;
 
 class QueryTask extends SyncTask {
 
+	public $cache_retries     = 0;
+	public $max_cache_retries = 5;
+	public $cache_retry_delay = 5;
 	public $page_size         = 1000;
 	public $preview_page_size = 5;
 	public $collector         = null;
@@ -133,6 +136,9 @@ class QueryTask extends SyncTask {
 			$params['cursor'] = 0;
 			$compile_results_task = new InMemoryCompileResultsTask();
 			$compile_results_task->enqueue( $params );
+		} else if ( $this->cache_retries++ < $this->max_cache_retries ){
+			sleep( $this->cache_retry_delay );
+			$this->after( $matches );
 		}
 	}
 
