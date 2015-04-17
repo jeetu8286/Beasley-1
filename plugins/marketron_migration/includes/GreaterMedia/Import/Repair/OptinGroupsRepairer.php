@@ -149,8 +149,8 @@ class OptinGroupsRepairer {
 	}
 
 	function get_user_query() {
-		return 'select * from accounts where profile.age > 93';
-		//return 'select UID from accounts';
+		//return 'select * from accounts where profile.age > 93';
+		return 'select UID from accounts';
 	}
 
 	function sleep() {
