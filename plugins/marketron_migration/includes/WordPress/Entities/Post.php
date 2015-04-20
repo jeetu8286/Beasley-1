@@ -4,6 +4,20 @@ namespace WordPress\Entities;
 
 class Post extends BaseEntity {
 
+	public $entities_map = array(
+		'â€¦'             => '&#8230;', # elipsis
+		'â€“'             => '&ndash;', # long hyphen
+		'â€™'             => '&rsquo;', # curly apostrophe
+		'â€œ'             => '&ldquo;', # curly open quote
+		'/â€[[:cntrl:]]/' => '&rdquo;', # curly close quote
+
+		'…' => '&#8230;', # elipsis
+		'–' => '&ndash;', # long hyphen
+		'’' => '&rsquo;', # curly apostrophe
+		'“' => '&ldquo;', # curly open quote
+		'”' => '&rdquo;', # curly close quote
+	);
+
 	function add( &$fields ) {
 		if ( array_key_exists( 'post_authors', $fields ) ) {
 			$post_authors = $this->add_post_authors( $fields['post_authors'] );
@@ -43,6 +57,14 @@ class Post extends BaseEntity {
 			$fields['post_content']
 		);
 
+		$fields['post_content'] = $this->replace_broken_entities(
+			$fields['post_content']
+		);
+
+		$fields['post_excerpt'] = $this->replace_broken_entities(
+			$fields['post_excerpt']
+		);
+
 		$fields = $table->add( $fields );
 		$post_id = $fields['ID'];
 
@@ -50,12 +72,16 @@ class Post extends BaseEntity {
 			$this->set_post_format( $post_id, $fields['post_format'] );
 		}
 
-		if ( array_key_exists( 'tags', $fields ) ) {
+		if ( ! empty( $fields['tags'] ) ) {
 			$this->set_post_tags( $post_id, $fields['tags'] );
 		}
 
-		if ( array_key_exists( 'categories', $fields ) ) {
+		if ( ! empty( $fields['categories'] ) ) {
 			$this->set_post_categories( $post_id, $fields['categories'] );
+		}
+
+		if ( ! empty( $fields['collections'] ) ) {
+			$this->set_post_collections( $post_id, $fields['collections'] );
 		}
 
 		if ( array_key_exists( 'featured_image', $fields ) && ! empty( $fields['featured_image'] ) ) {
@@ -66,15 +92,14 @@ class Post extends BaseEntity {
 			$this->set_featured_audio( $post_id, $fields );
 		}
 
-		if ( array_key_exists( 'redirects', $fields ) ) {
-			$this->set_redirects( $post_id, $fields );
+		if ( ! empty( $fields['redirects'] ) ) {
+			$this->set_redirects( $post_id, $fields['redirects'] );
 		}
 
 		return $fields;
 	}
 
-	function set_redirects( $post_id, &$fields ) {
-		$redirects = $fields['redirects'];
+	function set_redirects( $post_id, &$redirects ) {
 		$legacy_redirects = $this->get_entity( 'legacy_redirect' );
 
 		foreach ( $redirects as $redirect ) {
@@ -136,6 +161,9 @@ class Post extends BaseEntity {
 
 			$posts = $this->get_table( 'posts' );
 			$posts->update( $post_id, 'post_content', $content );
+		} else {
+			$posts = $this->get_table( 'posts' );
+			$posts->update( $post_id, 'post_format', 'standard' );
 		}
 	}
 
@@ -160,6 +188,18 @@ class Post extends BaseEntity {
 		return $inline_image_replacer->find_and_replace( $content );
 	}
 
+	function replace_broken_entities( $content ) {
+		foreach ( $this->entities_map as $key => $value ) {
+			if ( strpos( $key, '/' ) === 0 ) {
+				$content = preg_replace( $key, $value, $content );
+			} else {
+				$content = str_replace( $key, $value, $content );
+			}
+		}
+
+		return $content;
+	}
+
 	function set_post_format( $post_id, $post_format ) {
 		$entity = $this->get_entity( 'post_format' );
 		$entity->add( $post_format, $post_id );
@@ -178,6 +218,14 @@ class Post extends BaseEntity {
 
 		foreach ( $categories as $category ) {
 			$entity->add( $category, $post_id );
+		}
+	}
+
+	function set_post_collections( $post_id, $collections ) {
+		$entity = $this->get_entity( 'collection_taxonomy' );
+
+		foreach ( $collections as $collection ) {
+			$entity->add( $collection, $post_id );
 		}
 	}
 

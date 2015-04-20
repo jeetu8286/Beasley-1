@@ -19,11 +19,26 @@ $months = array(
 	'December',
 );
 
+function emma_filter_active_groups( $group ) {
+	if ( ! array_key_exists( 'group_active', $group ) ) {
+		// old settings before this feature, assumes all such groups are
+		// active by default
+		return true;
+	} else if ( filter_var( $group['group_active'], FILTER_VALIDATE_BOOLEAN ) === true ) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
 $emma_groups = get_option( 'emma_groups' );
 $emma_groups = json_decode( $emma_groups, true );
 if ( ! $emma_groups ) {
 	$emma_groups = array();
+} else {
+	$emma_groups = array_filter( $emma_groups, 'emma_filter_active_groups' );
 }
+
 
 $state_names = array(
 	array( 'label' => 'Alabama', 'value' => 'AL' ),
@@ -296,13 +311,19 @@ function get_gigya_verify_email_message() {
 
 				<ul class="member-groups-list">
 					<?php foreach ( $emma_groups as $emma_group ) { ?>
+					<?php
+						$emma_group_id          = $emma_group['group_id'];
+						$emma_group_name        = $emma_group['group_name'];
+						$emma_group_description = empty( $emma_group['group_description'] ) ? $emma_group_name : $emma_group['group_description'];
+						$field_key              = $emma_group['field_key'];
+					?>
 						<li>
 							<input
 								type="checkbox"
-								name="data.<?php echo esc_attr( $emma_group['field_key'] ) ?>"
-								checked="checked" />
-							<label class="label-email-list">
-								<?php echo esc_html( $emma_group['group_name'] ) ?>
+								name="data.<?php echo esc_attr( $field_key ) ?>"
+								checked="checked" id="emma_group_<?php echo esc_attr( $emma_group_id ); ?>" />
+							<label class="label-email-list" for="emma_group_<?php echo esc_attr( $emma_group_id ); ?>">
+								<?php echo esc_html( $emma_group_description ) ?>
 							</label>
 						</li>
 					<?php } ?>
@@ -319,7 +340,7 @@ function get_gigya_verify_email_message() {
 					<option value="2">more than 3 hours</option>
 				</select>
 
-				<label for="register-complete-listening-loyalty">When you're listening to the radio, about what percentage of time do you spend listening to 102.9 WMGK?</label>
+				<label for="register-complete-listening-loyalty">When you're listening to the radio, about what percentage of time do you spend listening to <?php echo get_bloginfo( 'name' ); ?>?</label>
 				<span class="gigya-error-msg" data-bound-to="data.listeningLoyalty" ></span>
 				<select name="data.listeningLoyalty" id="register-complete-listening-loyalty">
 					<option disabled selected value>Select One</option>
@@ -414,16 +435,31 @@ function get_gigya_verify_email_message() {
 
 				<ul class="member-groups-list">
 					<?php foreach ( $emma_groups as $emma_group ) { ?>
+					<?php
+						$emma_group_id          = $emma_group['group_id'];
+						$emma_group_name        = $emma_group['group_name'];
+						$emma_group_description = empty( $emma_group['group_description'] ) ? $emma_group_name : $emma_group['group_description'];
+						$field_key              = $emma_group['field_key'];
+					?>
 						<li>
 							<input
 								type="checkbox"
-								name="data.<?php echo esc_attr( $emma_group['field_key'] ) ?>" />
-							<label class="label-email-list">
-								<?php echo esc_html( $emma_group['group_name'] ) ?>
+								name="data.<?php echo esc_attr( $field_key ) ?>"
+								checked="checked" id="emma_group_<?php echo esc_attr( $emma_group_id ); ?>" />
+							<label class="label-email-list" for="emma_group_<?php echo esc_attr( $emma_group_id ); ?>">
+								<?php echo esc_html( $emma_group_description ) ?>
 							</label>
 						</li>
 					<?php } ?>
 				</ul>
+
+				<div class="nielsen-research">
+					<h2>Nielsen Research</h2>
+					<p>Our properties may feature Nielsen proprietary measurement software, which will allow you to contribute to market research, such as Nielsen TV Ratings. To learn more about the information that Nielsen software may collect and your choices with regard to it, please see the Nielsen Digital Measurement Privacy Policy at <a href="http://www.nielsen.com/digitalprivacy">http://www.nielsen.com/digitalprivacy</a>.</p>
+
+					<input type="checkbox" id="nielsen_optout" name="data.nielsen_optout" class="nielsen-opt-out" />
+					<label class="label-nielsen-opt-out" for="nielsen_optout">Opt-out of Nielsen's Online Measurement Research.</label>
+				</div>
 
 				<a href="#" class="link-button logout-button">&laquo; Logout</a>
 				<input type="submit" name="submit" class="gigya-input-submit-button" value="Update Profile" />

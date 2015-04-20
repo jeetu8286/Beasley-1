@@ -47,33 +47,6 @@ class Migrator {
 	public $fresh;
 	public $initialized = false;
 
-	function _test_downloader( $args, $opts ) {
-		$downloader = new Downloader( 'migration_cache/downloads' );
-		$tmp_file = $downloader->download( 'https://www.google.co.in/images/srpr/logo10w.png' );
-		\WP_CLI::log( 'First tmp file = ' . $tmp_file );
-
-		$tmp_file = $downloader->download( 'https://www.google.co.in/images/srpr/logo10w.png' );
-		\WP_CLI::log( 'Second tmp file = ' . $tmp_file );
-	}
-
-	function test_media_downloader( $args, $opts ) {
-		$downloader = new Downloader(
-			'migration_cache/downloads',
-			'migration_cache/media'
-		);
-		$tmp_file = $downloader->download( 'http://media.wmgk.com/' . urlencode('Blogs/1001280/Watch The Mummers Strut (More Than A Tradition)mastered.mp3'  ) );
-		\WP_CLI::log( 'First tmp file = ' . $tmp_file );
-
-		$tmp_file = $downloader->download( 'http://media.wmgk.com/' . urlencode('Blogs/1001280/Watch The Mummers Strut (More Than A Tradition)mastered.mp3'  ) );
-		\WP_CLI::log( 'Second tmp file = ' . $tmp_file );
-
-	}
-
-	function test_mapping( $args, $opts ) {
-		$this->mapping_collection = new MappingCollection();
-		$this->mapping_collection->load( 'wmgk_mapping.csv' );
-	}
-
 	function build_actions_json( $args, $opts ) {
 		$user_ids = $opts['user_ids'];
 		$output   = $opts['output'];
@@ -285,9 +258,21 @@ class Migrator {
 
 		$this->config_loader->load_live_streams();
 		$this->table_factory->export();
-		$this->update_term_counts();
 		$this->error_reporter->save_report();
 		$this->side_loader->sync();
+	}
+
+	function repair( $args, $opts ) {
+			//$repairer = new \GreaterMedia\Import\Repair\EmbeddedFormRepairer();
+			//$repairer->container = $this;
+			//$repairer->repair( $this->opts['site_dir'] . '/output/cids.json' );
+
+		$opts['repair'] = true;
+		$this->initialize( $args, $opts, false );
+
+		$repairer = new \GreaterMedia\Import\Repair\EmbeddedFormRepairer();
+		$repairer->container = $this;
+		$repairer->update_cids( $this->opts['site_dir'] . '/output/cids.json' );
 	}
 
 	function restore( $args, $opts ) {
@@ -319,11 +304,14 @@ class Migrator {
 		$this->load_boolean_opt( 'fake_media', false );
 		$this->load_boolean_opt( 'fresh', false );
 		$this->load_boolean_opt( 'export_to_gigya', true );
+		$this->load_boolean_opt( 'repair', false );
+
+		$this->fresh = $this->opts['fresh'];
 	}
 
 	function load_boolean_opt( $name, $default ) {
 		if ( ! array_key_exists( $name, $this->opts ) ) {
-			$this->opts[ $name ] = false;
+			$this->opts[ $name ] = $default;
 		} else {
 			$this->opts[ $name ] = filter_var( $this->opts[ $name ], FILTER_VALIDATE_BOOLEAN );
 		}
@@ -334,12 +322,14 @@ class Migrator {
 
 		if ( $tools_to_load === 'all' ) {
 			$tools_to_load = $this->tool_factory->get_tool_names();
+		} else if ( $tools_to_load[0] === 'none' ) {
+			$tools_to_load = array();
 		}
 
 		return $tools_to_load;
 	}
 
-	private function update_term_counts() {
+	function update_term_counts( $args, $opts ) {
 		global $wpdb;
 		$query = <<<SQL
 UPDATE {$wpdb->prefix}term_taxonomy
@@ -355,6 +345,8 @@ SET count = (
 );
 SQL;
 		$wpdb->query( $query );
+
+		\WP_CLI::success( 'Taxonomy Term counts updated successfully' );
 	}
 
 	function review_featured_images( $args, $opts ) {
@@ -397,6 +389,49 @@ SQL;
 
 		$gigya_user = $this->entity_factory->get_entity( 'gigya_user' );
 		$gigya_user->export_actions();
+	}
+
+	function prepare( $args, $opts ) {
+		$this->load_params( $args, $opts );
+
+		$this->config = new MigrationConfig( $this->site_dir );
+		$this->config->container = $this;
+
+		$this->config_loader = new \GreaterMedia\ConfigLoader();
+		$this->config_loader->container = $this;
+
+		$this->config_loader->prepare();
+	}
+
+	function merge_duplicate_taxonomy( $args, $opts ) {
+		if ( ! empty( $opts['taxonomy'] ) ) {
+			$taxonomy = $opts['taxonomy'];
+		} else {
+			$taxonomy = 'post_tag';
+		}
+
+		$merger      = new \WordPress\Utils\DuplicateTaxonomyMerger();
+		$merge_count = $merger->merge( $taxonomy );
+
+		if ( $merge_count > 0 ) {
+			\WP_CLI::success( "Merged $merge_count Terms for Taxonomy: $taxonomy" );
+		} else {
+			\WP_CLI::warning( "No Duplicate Terms found for Taxonomy: $taxonomy" );
+		}
+	}
+
+	function repair_optin_groups( $args, $opts ) {
+		$optin_groups_config = $opts['optin_groups'];
+		$errors_file         = $opts['errors_file'];
+
+		$optin_groups = new \GreaterMedia\Import\Repair\OptinGroups();
+		$optin_groups->load( $optin_groups_config );
+
+		$repairer         = new \GreaterMedia\Import\Repair\OptinGroupsRepairer();
+		$repairer->groups = $optin_groups;
+		$total = $repairer->repair( $errors_file );
+
+		\WP_CLI::success( "Successfully Repaired $total Optin Groups" );
 	}
 
 }

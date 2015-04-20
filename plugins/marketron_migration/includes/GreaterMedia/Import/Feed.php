@@ -21,16 +21,25 @@ class Feed extends BaseImporter {
 		$podcast_count = 0;
 		$blog_post_count = 0;
 		$blog_with_shows = 0;
+		$max = 3000;
+		$min = 9500;
+		$index = 0;
 
 		foreach ( $articles as $article ) {
+			//if ( $index++ < $min ) {
+				//continue;
+			//}
+
 			$post = $this->post_from_article( $article );
-			if ( ! empty( $post['featured_audio'] ) && ! empty( $post['show'] ) ) {
+
+			if ( ! empty( $post['featured_audio'] ) && ! empty( $post['show'] ) && ! empty( $this->mapped_podcast_for_show( $post['show'] ) ) ) {
 				$post['episode_name']    = $post['post_title'];
 				$post['episode_podcast'] = $this->mapped_podcast_for_show( $post['show'] );
 				$post['episode_file']    = $post['featured_audio'];
 
 				$podcast_episodes->add( $post );
 				$podcast_count++;
+				//error_log( 'Found Show Podcast Episode: ' . $post['show'] );
 			} else {
 				$posts->add( $post );
 				$blog_post_count++;
@@ -40,6 +49,11 @@ class Feed extends BaseImporter {
 			}
 
 			$notify->tick();
+
+			//if ( $index++ > $max ) {
+				//break;
+			//}
+
 		}
 
 		//\WP_CLI::error( "Podcast Episode Count: $podcast_count, Blog Post Count: $blog_post_count, Blog with Shows: $blog_with_shows" );
@@ -51,6 +65,8 @@ class Feed extends BaseImporter {
 		$post           = array();
 		$categories     = $this->categories_from_article( $article );
 		$tags           = $this->tags_from_article( $article );
+		$collections    = $this->collections_from_article( $article );
+
 		$redirects      = $this->redirects_from_article( $article );
 		$featured_image = $this->featured_image_from_article( $article );
 		$content_parts  = $this->content_from_article( $article );
@@ -63,6 +79,8 @@ class Feed extends BaseImporter {
 		$created_on     = $this->import_string( $article['UTCStartDateTime'] );
 		$modified_on    = $this->import_string( $article['LastModifiedUTCDateTime'] );
 		$show           = $this->show_from_categories( $categories );
+
+		//\WP_CLI::log( "Importing Post: $post_title" );
 
 		if ( ! is_null( $featured_audio ) ) {
 			$post_format = 'audio';
@@ -91,6 +109,7 @@ class Feed extends BaseImporter {
 
 			'tags'        => $tags,
 			'categories'  => $categories,
+			'collections' => $collections,
 			'post_format' => $post_format,
 			'redirects'   => $redirects,
 		);
@@ -111,6 +130,10 @@ class Feed extends BaseImporter {
 			if ( empty( $post['show'] ) ) {
 				$post['show'] = $this->show_from_title( $post['post_title'] );
 			}
+		}
+
+		if ( ! empty( $post['show'] ) ) {
+			//\WP_CLI::log( 'Found Show: ' . $post['show'] );
 		}
 
 		return $post;
@@ -202,6 +225,8 @@ class Feed extends BaseImporter {
 			$excerpt = '';
 		}
 
+		$excerpt = wp_strip_all_tags( $excerpt );
+
 		return $excerpt;
 	}
 
@@ -217,9 +242,20 @@ class Feed extends BaseImporter {
 			}
 		}
 
-		$category_names = array_merge(
-			$this->feed_names_from_article( $article )
-		);
+		$feed_names = $this->feed_names_from_article( $article );
+		$category_names = array_merge( $category_names, $feed_names );
+
+		$mappings = $this->container->mappings;
+
+		if ( ! empty( $feed_names ) ) {
+			foreach ( $feed_names as $feed_name ) {
+				$category_name = $mappings->get_category_from_marketron_name( $feed_name );
+				if ( ! empty( $category_name ) ) {
+					$category_names[] = $category_name;
+				}
+			}
+		}
+
 
 		return array_unique( $category_names );
 	}
@@ -238,6 +274,24 @@ class Feed extends BaseImporter {
 		}
 
 		return array_unique( $tag_names );
+	}
+
+	function collections_from_article( $article ) {
+		$mappings = $this->container->mappings;
+
+		if ( $mappings->show_is_collection ) {
+			$feeds      = $this->feeds_from_article( $article );
+
+			if ( ! empty( $feeds ) ) {
+				$feed_name  = $this->import_string( $feeds[0]['Feed'] );
+				//error_log( 'Collection: ' . $feed_name );
+				return array( $feed_name );
+			} else {
+				return array();
+			}
+		} else {
+			return array();
+		}
 	}
 
 	function feeds_from_article( $article ) {
@@ -264,7 +318,11 @@ class Feed extends BaseImporter {
 	}
 
 	function feed_categories_from_article( $article ) {
-		return $article->Feeds->Feed->FeedCategories->FeedCategory;
+		if ( isset( $article->Feeds->Feed->FeedCategories->FeedCategory ) ) {
+			return $article->Feeds->Feed->FeedCategories->FeedCategory;
+		} else {
+			return array();
+		}
 	}
 
 	function feed_category_names_from_article( $article ) {
