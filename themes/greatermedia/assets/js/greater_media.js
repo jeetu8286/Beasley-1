@@ -81,11 +81,19 @@
 // Works with either jQuery or Zepto
 })( window.jQuery || window.Zepto );
 
-(function(jQuery, window, undefined) {
+(function($, window, undefined) {
 
-	var $mobileMenu = jQuery(document.querySelectorAll('ul.js-mobile-sub-menus')),
-		$menuOverlay = jQuery(document.querySelector('.menu-overlay-mask'));
+	/**
+	 * Global Variables
+	 *
+	 * @type {*|HTMLElement}
+	 */
+	var $mobileMenu = $(document.querySelectorAll('ul.js-mobile-sub-menus')),
+		$menuOverlay = $(document.querySelector('.menu-overlay-mask'));
 
+	/**
+	 * Init Function
+	 */
 	function init() {
 
 		$mobileMenu.on('click.greaterMedia.Menus', 'a.show-subnavigation', openSubMenu);
@@ -96,17 +104,27 @@
 
 	}
 
+	/**
+	 * Closes the SubMenu
+	 *
+	 * @param event
+	 */
 	function closeSubMenu(event) {
 		event.preventDefault();
-		jQuery(this).parents('.sub-menu').removeClass('is-visible');
+		$(this).parents('.sub-menu').removeClass('is-visible');
 	}
 
+	/**
+	 * Opens the SubMenu
+	 *
+	 * @param event
+	 */
 	function openSubMenu(event) {
 		event.preventDefault();
 
 		// collapse any other open menus before opening ours.
 		$mobileMenu.find('.is-visible').removeClass('is-visible');
-		jQuery(this).siblings('.sub-menu').addClass('is-visible');
+		$(this).siblings('.sub-menu').addClass('is-visible');
 	}
 
 	init();
@@ -522,15 +540,11 @@
 		siteWrap.addClass('pjax--active');
 	});
 })(jQuery, location);
-(function () {
+(function ($, window) {
 
 	/**
-	 * global variables
-	 *
-	 * @type {jQuery}
+	 * Global variables
 	 */
-	var $ = jQuery;
-
 	var body = document.querySelector('body');
 	var html = document.querySelector('html');
 	var header = document.getElementById('header');
@@ -555,45 +569,46 @@
 		}
 	}
 
-	(function ($) {
-		$(document).on('click', '.popup', function () {
-			var href = $(this).attr('href'),
-				x = screen.width / 2 - 700 / 2,
-				y = screen.height / 2 - 450 / 2;
+	/**
+	 * Function to add pop-up for social links
+	 *
+	 * @returns {boolean}
+	 */
+	function socialPopup() {
+		var href = $(this).attr('href'),
+			x = screen.width / 2 - 700 / 2,
+			y = screen.height / 2 - 450 / 2;
 
-			window.open(href, href, 'height=485,width=700,scrollbars=yes,resizable=yes,left=' + x + ',top=' + y);
+		window.open(href, href, 'height=485,width=700,scrollbars=yes,resizable=yes,left=' + x + ',top=' + y);
 
-			return false;
-		});
+		return false;
+	}
 
-		/**
-		 * Toggles a target element.
-		 * @param {MouseEvent} e
-		 */
-		$(document).on('click', '*[data-toggle="collapse"]', function(e) {
-			var target = $($(this).attr('data-target')).get(0),
-				currentText = $(this).html(),
-				newText = $(this).attr('data-alt-text');
+	/**
+	 * Toggles a target element for contest rules
+	 *
+	 * @param {MouseEvent} e
+	 * @returns {boolean}
+	 */
+	function contestRulesToggle(e) {
+		var target = $($(this).attr('data-target')).get(0),
+			currentText = $(this).html(),
+			newText = $(this).attr('data-alt-text');
 
-			target.style.display = target.style.display != 'none' ? 'none' : 'block';
+		target.style.display = target.style.display != 'none' ? 'none' : 'block';
 
-			$(this).html(newText);
-			$(this).attr('data-alt-text', currentText);
+		$(this).html(newText);
+		$(this).attr('data-alt-text', currentText);
 
-			return false;
-		});
-
-		$(document).ready(function() {
-			$('.article__content').fitVids({customSelector: "div[id^='playerwrapper']"});
-		});
-	})(jQuery);
+		return false;
+	}
 
 	/**
 	 * Personality Toggle
 	 */
 	function personality_toggle() {
-		var $button = jQuery('.person-toggle');
-		start = jQuery('.personality__meta').first().height(); // get the height of the meta before we start, basically tells us whether we're using the mobile or desktop height
+		var $button = $('.person-toggle');
+		start = $('.personality__meta').first().height(); // get the height of the meta before we start, basically tells us whether we're using the mobile or desktop height
 
 		$button.on('click', function (e) {
 			var $this = $(this);
@@ -629,9 +644,20 @@
 		addGigyaBodyClass();
 	}
 
+	/**
+	 * Functions called on Document Ready
+	 */
 	$(document).ready(function() {
 		personality_toggle();
+		$('.article__content').fitVids({customSelector: "div[id^='playerwrapper']"});
 	});
+
+	/**
+	 * Functions specific to document events
+	 */
+	$(document).on('click', '.popup', socialPopup);
+
+	$(document).on('click', '*[data-toggle="collapse"]', contestRulesToggle);
 
 	/**
 	 * Functions that run after the pjax:end event
@@ -640,7 +666,7 @@
 		personality_toggle();
 	});
 	
-})();
+})(jQuery, window);
 (function () {
 
 	/**
@@ -669,7 +695,7 @@
 	var livePlayerOpenBtn = document.querySelector('.live-player--open__btn');
 
 	/**
-	 * function to dynamically calculate the offsetHeight of an element
+	 * Function to dynamically calculate the offsetHeight of an element
 	 *
 	 * @param elem
 	 * @returns {number}
@@ -678,6 +704,12 @@
 		return elem.offsetHeight;
 	}
 
+	/**
+	 * Function that will detect if the element is in the visible viewport
+	 *
+	 * @param elem
+	 * @returns {boolean}
+	 */
 	function elementInViewport(elem) {
 		if (elem != null) {
 			var top = elem.offsetTop;
@@ -701,7 +733,7 @@
 	}
 
 	/**
-	 * function to detect if the current browser can use `addEventListener`, if not, use `attachEvent`
+	 * Function to detect if the current browser can use `addEventListener`, if not, use `attachEvent`
 	 * this is a specific fix for IE8
 	 *
 	 * @param elem
@@ -716,7 +748,7 @@
 	}
 
 	/**
-	 * default height for the live player
+	 * Default height for the live player
 	 */
 	function lpPosDefault() {
 		if (livePlayer != null) {
@@ -728,12 +760,18 @@
 		}
 	}
 
+	/**
+	 * Adds a height to the live player based on the height of the sitewrap element minus the height of the header
+	 */
 	function lpHeight() {
 		if (livePlayer != null) {
 			livePlayer.style.height = elemHeight(siteWrap) - elemHeight(header) + 'px';
 		}
 	}
 
+	/**
+	 * Adds a height to the live links
+	 */
 	function liveLinksHeight() {
 		var liveLinksBlogRoll = document.getElementById('live-links__blogroll');
 		if (liveLinksBlogRoll != null) {
@@ -746,24 +784,20 @@
 	}
 
 	/**
-	 * from Js Window resize script is not neccessary on popupPlayer window
-	 */
-	if( document.getElementById( 'popup-player-livestream' ) ){
-		return;
-	}
-
-	/**
-	 * detects various positions of the screen on scroll to deliver states of the live player
+	 * Detects various positions of the screen on scroll to deliver states of the live player
 	 *
 	 * y scroll position === `0`: the live player will be absolute positioned with a top location value based
 	 * on the height of the header and the height of the WP Admin bar (if logged in); the height will be adjusted
 	 * based on the window height - WP Admin Bar height (if logged in) - header height.
+	 *
 	 * y scroll position >= `1` and <= the header height: the live player height will be 100% and will still be
 	 * positioned absolute as y scroll position === `0` was.
+	 *
 	 * y scroll position >= the header height: the live player height will be based on the height of the window - WP
 	 * Admin bar height (if logged in); the live player will be fixed position at `0` or the height of the WP Admin bar
 	 * if logged in.
-	 * all other states will cause the live player to have a height of 100%;.
+	 *
+	 * All other states will cause the live player to have a height of 100%;.
 	 */
 	function getScrollPosition() {
 		if (window.innerWidth >= 768) {
@@ -793,7 +827,7 @@
 	}
 
 	/**
-	 * adds some styles to the live player that would be called at mobile breakpoints. This is added specifically to
+	 * Adds some styles to the live player that would be called at mobile breakpoints. This is added specifically to
 	 * deal with a window being resized.
 	 */
 	function livePlayerMobileReset() {
@@ -810,7 +844,7 @@
 	}
 
 	/**
-	 * adds some styles to the live player that would be called at desktop breakpoints. This is added specifically to
+	 * Adds some styles to the live player that would be called at desktop breakpoints. This is added specifically to
 	 * deal with a window being resized.
 	 */
 	function livePlayerDesktopReset() {
@@ -884,6 +918,9 @@
 		}
 	}
 
+	/**
+	 * Sets states needed for the liveplayer on mobile
+	 */
 	function liveLinksMobileState() {
 		if ( $('body').hasClass('live-player--open')) {
 			document.body.style.overflow = 'hidden';
@@ -971,21 +1008,17 @@
 	});
 
 })();
-(function () {
+(function ($, window) {
 
 	/**
-	 * global variables
-	 *
-	 * @type {jQuery}
+	 * Global variables
 	 */
-	var $ = jQuery;
-
 	var body = document.querySelector('body');
 	var mobileNavButton = document.querySelector('.mobile-nav__toggle');
 	var siteWrap = document.getElementById('site-wrap');
 
 	/**
-	 * function to detect if the current browser can use `addEventListener`, if not, use `attachEvent`
+	 * Function to detect if the current browser can use `addEventListener`, if not, use `attachEvent`
 	 * this is a specific fix for IE8
 	 *
 	 * @param elem
@@ -1149,10 +1182,10 @@
 		removeoverlay();
 	});
 
-})();
-(function() {
-	var $ = jQuery,
-		$searchContainer = $( '#header__search--form '),
+})(jQuery, window);
+(function($, window, undefined) {
+
+	var $searchContainer = $( '#header__search--form '),
 		$searchForm = $( '#header__search--form ' ).find( 'form' ),
 		$searchBtn = $( '#header__search'),
 		$searchInput = $( '#header-search' ),
@@ -1288,4 +1321,4 @@
 		closeSearch( e );
 	} );
 	
-})();
+})(jQuery, window);

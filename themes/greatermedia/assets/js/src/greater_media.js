@@ -6,15 +6,11 @@
  * Copyright (c) 2014 10up
  * Licensed under the GPLv2+ license.
  */
-(function () {
+(function ($, window) {
 
 	/**
-	 * global variables
-	 *
-	 * @type {jQuery}
+	 * Global variables
 	 */
-	var $ = jQuery;
-
 	var body = document.querySelector('body');
 	var html = document.querySelector('html');
 	var header = document.getElementById('header');
@@ -39,45 +35,46 @@
 		}
 	}
 
-	(function ($) {
-		$(document).on('click', '.popup', function () {
-			var href = $(this).attr('href'),
-				x = screen.width / 2 - 700 / 2,
-				y = screen.height / 2 - 450 / 2;
+	/**
+	 * Function to add pop-up for social links
+	 *
+	 * @returns {boolean}
+	 */
+	function socialPopup() {
+		var href = $(this).attr('href'),
+			x = screen.width / 2 - 700 / 2,
+			y = screen.height / 2 - 450 / 2;
 
-			window.open(href, href, 'height=485,width=700,scrollbars=yes,resizable=yes,left=' + x + ',top=' + y);
+		window.open(href, href, 'height=485,width=700,scrollbars=yes,resizable=yes,left=' + x + ',top=' + y);
 
-			return false;
-		});
+		return false;
+	}
 
-		/**
-		 * Toggles a target element.
-		 * @param {MouseEvent} e
-		 */
-		$(document).on('click', '*[data-toggle="collapse"]', function(e) {
-			var target = $($(this).attr('data-target')).get(0),
-				currentText = $(this).html(),
-				newText = $(this).attr('data-alt-text');
+	/**
+	 * Toggles a target element for contest rules
+	 *
+	 * @param {MouseEvent} e
+	 * @returns {boolean}
+	 */
+	function contestRulesToggle(e) {
+		var target = $($(this).attr('data-target')).get(0),
+			currentText = $(this).html(),
+			newText = $(this).attr('data-alt-text');
 
-			target.style.display = target.style.display != 'none' ? 'none' : 'block';
+		target.style.display = target.style.display != 'none' ? 'none' : 'block';
 
-			$(this).html(newText);
-			$(this).attr('data-alt-text', currentText);
+		$(this).html(newText);
+		$(this).attr('data-alt-text', currentText);
 
-			return false;
-		});
-
-		$(document).ready(function() {
-			$('.article__content').fitVids({customSelector: "div[id^='playerwrapper']"});
-		});
-	})(jQuery);
+		return false;
+	}
 
 	/**
 	 * Personality Toggle
 	 */
 	function personality_toggle() {
-		var $button = jQuery('.person-toggle');
-		start = jQuery('.personality__meta').first().height(); // get the height of the meta before we start, basically tells us whether we're using the mobile or desktop height
+		var $button = $('.person-toggle');
+		start = $('.personality__meta').first().height(); // get the height of the meta before we start, basically tells us whether we're using the mobile or desktop height
 
 		$button.on('click', function (e) {
 			var $this = $(this);
@@ -113,9 +110,20 @@
 		addGigyaBodyClass();
 	}
 
+	/**
+	 * Functions called on Document Ready
+	 */
 	$(document).ready(function() {
 		personality_toggle();
+		$('.article__content').fitVids({customSelector: "div[id^='playerwrapper']"});
 	});
+
+	/**
+	 * Functions specific to document events
+	 */
+	$(document).on('click', '.popup', socialPopup);
+
+	$(document).on('click', '*[data-toggle="collapse"]', contestRulesToggle);
 
 	/**
 	 * Functions that run after the pjax:end event
@@ -124,4 +132,4 @@
 		personality_toggle();
 	});
 	
-})();
+})(jQuery, window);

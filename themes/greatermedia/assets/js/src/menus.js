@@ -6,21 +6,17 @@
  * Copyright (c) 2014 10up
  * Licensed under the GPLv2+ license.
  */
-(function () {
+(function ($, window) {
 
 	/**
-	 * global variables
-	 *
-	 * @type {jQuery}
+	 * Global variables
 	 */
-	var $ = jQuery;
-
 	var body = document.querySelector('body');
 	var mobileNavButton = document.querySelector('.mobile-nav__toggle');
 	var siteWrap = document.getElementById('site-wrap');
 
 	/**
-	 * function to detect if the current browser can use `addEventListener`, if not, use `attachEvent`
+	 * Function to detect if the current browser can use `addEventListener`, if not, use `attachEvent`
 	 * this is a specific fix for IE8
 	 *
 	 * @param elem
@@ -184,4 +180,4 @@
 		removeoverlay();
 	});
 
-})();
+})(jQuery, window);

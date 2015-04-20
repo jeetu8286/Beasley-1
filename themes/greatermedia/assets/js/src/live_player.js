@@ -34,7 +34,7 @@
 	var livePlayerOpenBtn = document.querySelector('.live-player--open__btn');
 
 	/**
-	 * function to dynamically calculate the offsetHeight of an element
+	 * Function to dynamically calculate the offsetHeight of an element
 	 *
 	 * @param elem
 	 * @returns {number}
@@ -43,6 +43,12 @@
 		return elem.offsetHeight;
 	}
 
+	/**
+	 * Function that will detect if the element is in the visible viewport
+	 *
+	 * @param elem
+	 * @returns {boolean}
+	 */
 	function elementInViewport(elem) {
 		if (elem != null) {
 			var top = elem.offsetTop;
@@ -66,7 +72,7 @@
 	}
 
 	/**
-	 * function to detect if the current browser can use `addEventListener`, if not, use `attachEvent`
+	 * Function to detect if the current browser can use `addEventListener`, if not, use `attachEvent`
 	 * this is a specific fix for IE8
 	 *
 	 * @param elem
@@ -81,7 +87,7 @@
 	}
 
 	/**
-	 * default height for the live player
+	 * Default height for the live player
 	 */
 	function lpPosDefault() {
 		if (livePlayer != null) {
@@ -93,12 +99,18 @@
 		}
 	}
 
+	/**
+	 * Adds a height to the live player based on the height of the sitewrap element minus the height of the header
+	 */
 	function lpHeight() {
 		if (livePlayer != null) {
 			livePlayer.style.height = elemHeight(siteWrap) - elemHeight(header) + 'px';
 		}
 	}
 
+	/**
+	 * Adds a height to the live links
+	 */
 	function liveLinksHeight() {
 		var liveLinksBlogRoll = document.getElementById('live-links__blogroll');
 		if (liveLinksBlogRoll != null) {
@@ -111,24 +123,20 @@
 	}
 
 	/**
-	 * from Js Window resize script is not neccessary on popupPlayer window
-	 */
-	if( document.getElementById( 'popup-player-livestream' ) ){
-		return;
-	}
-
-	/**
-	 * detects various positions of the screen on scroll to deliver states of the live player
+	 * Detects various positions of the screen on scroll to deliver states of the live player
 	 *
 	 * y scroll position === `0`: the live player will be absolute positioned with a top location value based
 	 * on the height of the header and the height of the WP Admin bar (if logged in); the height will be adjusted
 	 * based on the window height - WP Admin Bar height (if logged in) - header height.
+	 *
 	 * y scroll position >= `1` and <= the header height: the live player height will be 100% and will still be
 	 * positioned absolute as y scroll position === `0` was.
+	 *
 	 * y scroll position >= the header height: the live player height will be based on the height of the window - WP
 	 * Admin bar height (if logged in); the live player will be fixed position at `0` or the height of the WP Admin bar
 	 * if logged in.
-	 * all other states will cause the live player to have a height of 100%;.
+	 *
+	 * All other states will cause the live player to have a height of 100%;.
 	 */
 	function getScrollPosition() {
 		if (window.innerWidth >= 768) {
@@ -158,7 +166,7 @@
 	}
 
 	/**
-	 * adds some styles to the live player that would be called at mobile breakpoints. This is added specifically to
+	 * Adds some styles to the live player that would be called at mobile breakpoints. This is added specifically to
 	 * deal with a window being resized.
 	 */
 	function livePlayerMobileReset() {
@@ -175,7 +183,7 @@
 	}
 
 	/**
-	 * adds some styles to the live player that would be called at desktop breakpoints. This is added specifically to
+	 * Adds some styles to the live player that would be called at desktop breakpoints. This is added specifically to
 	 * deal with a window being resized.
 	 */
 	function livePlayerDesktopReset() {
@@ -249,6 +257,9 @@
 		}
 	}
 
+	/**
+	 * Sets states needed for the liveplayer on mobile
+	 */
 	function liveLinksMobileState() {
 		if ( $('body').hasClass('live-player--open')) {
 			document.body.style.overflow = 'hidden';
