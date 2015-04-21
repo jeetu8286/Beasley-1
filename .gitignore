@@ -51,4 +51,5 @@ plugins/seriously-simple-podcasting/
 /plugins/rackspace-cloud-files-cdn/object_cache.dat
 plugins/mce-table-buttons/
 plugins/term-management-tools
+/plugins/feed-pull/
 style.css.md
