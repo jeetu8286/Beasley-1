@@ -13747,9 +13747,8 @@ header#header.header {
 .page__title, h1, h2, h3, h4, h5, h6 {
   font-family: oswald !important; }
 
-.article__thumbnail, .contest__thumbnail {
-  max-height: 300px; }
-
+/* .article__thumbnail,.contest__thumbnail {max-height:300px;}
+*/
 .home .container {
   background-color: transparent !important; }
 
