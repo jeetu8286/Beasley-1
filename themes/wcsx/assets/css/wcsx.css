@@ -906,7 +906,7 @@ body {
 body {
   line-height: 2;
   font-size: 80%;
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Oswald', sans-serif;
   color: #404041;
   -webkit-font-smoothing: antialiased; }
   @media screen and (min-width: 480px)  {
@@ -7686,7 +7686,7 @@ category: Components - Ads
   outline: none;
   background-color: #d22228 !important;
   border: 1px solid #d22228 !important;
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Oswald', sans-serif;
   font-size: 0.8888888889em;
   color: #ffffff !important;
   text-transform: uppercase;
@@ -7879,7 +7879,7 @@ category: Components - Ads
   border-radius: 0; }
 
 .tribe-events-single-section-title {
-  font-family: 'Open Sans', sans-serif; }
+  font-family: 'Oswald', sans-serif; }
 
 .tribe-events-single-section.tribe-events-event-meta.primary.tribe-clearfix {
   float: left !important;
@@ -13565,6 +13565,73 @@ table.responsive tr:nth-of-type(even) {
 
 .footer {
   background-color: #fff; }
+
+/*//////////
+// Chris's overrides
+//////////
+*/
+#site-wrap.site-wrap {
+  background-size: 100%;
+  background-color: #000;
+  background-image: url(../../images/concertcrowd.jpg);
+  background-repeat: repeat-x; }
+
+.header {
+  background-image: url(../../images/mastgrade.png);
+  border-bottom: 1px solid #D22228; }
+
+.header__main {
+  background-color: #000;
+  font-family: oswald;
+  text-transform: uppercase;
+  border-bottom: solid 4px #D22228; }
+
+.home__featured {
+  background-color: transparent;
+  background-image: url(../../images/black60bg.png); }
+
+.featured__content--block {
+  background-color: #000; }
+
+.featured__article--content {
+  background-color: #000000; }
+
+.home__highlights {
+  background-color: #252424; }
+
+.main, #page-wrap.page-wrap {
+  background-color: transparent; }
+
+header#header.header {
+  background-color: transparent; }
+
+.container {
+  background-color: transparent; }
+
+.entries {
+  background-color: #E5E5E5;
+  background-repeat: repeat-x;
+  background-image: url(../../images/mainbg.jpg); }
+
+.content {
+  background-color: #fff;
+  background-image: url(../../images/mainbg.jpg); }
+
+.gallery__archive {
+  background-color: #E5E5E5 !important;
+  background-repeat: repeat-x;
+  background-image: url(../../images/mainbg.jpg); }
+
+.home__highlights {
+  visibility: hidden;
+  height: 0px;
+  padding: 0px; }
+
+.page__title, h1, h2, h3, h4, h5, h6 {
+  font-family: oswald !important; }
+
+.article__thumbnail, .contest__thumbnail {
+  max-height: 300px; }
 
 .live-link__type--show {
   border-bottom-color: white;
