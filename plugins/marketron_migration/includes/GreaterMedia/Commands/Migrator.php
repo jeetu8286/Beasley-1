@@ -190,9 +190,9 @@ class Migrator {
 			$this->config_loader = new \GreaterMedia\ConfigLoader();
 			$this->config_loader->container = $this;
 
-			if ( $update ) {
-				$this->config_loader->load();
-			}
+			//if ( $update ) {
+				//$this->config_loader->load();
+			//}
 
 			$this->side_loader = new MediaSideLoader();
 			$this->side_loader->container = $this;
@@ -256,10 +256,15 @@ class Migrator {
 			$this->entity_factory->build( 'gigya_user' )->export();
 		}
 
-		$this->config_loader->load_live_streams();
 		$this->table_factory->export();
 		$this->error_reporter->save_report();
 		$this->side_loader->sync();
+	}
+
+	function configure_api_keys( $args, $opts ) {
+		$this->initialize( $args, $opts );
+		$this->config_loader->load();
+		$this->config_loader->load_live_streams();
 	}
 
 	function repair( $args, $opts ) {
