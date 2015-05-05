@@ -165,7 +165,11 @@ class Migrator {
 		system( "unzip $update_flag -d \"$dest\" \"$marketron_export\" " );
 	}
 
-	private function format( $dir, $fresh = false ) {
+	public function format_data( $args, $opts ) {
+		$this->initialize( $args, $opts );
+
+		$dir     = $this->config->get_marketron_files_dir() . '/data';
+		$fresh   = $this->opts['fresh'];
 		$pattern = "$dir/*.{xml,XML}";
 		$files   = glob( $pattern, GLOB_BRACE );
 		$files   = preg_grep( '/._formatted.xml$/', $files, PREG_GREP_INVERT );
