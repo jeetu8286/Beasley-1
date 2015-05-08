@@ -14,15 +14,10 @@ get_header(); ?>
 
 		<section class="content">
 
-			<?php if ( is_category() || is_tag() ) {
-				greatermedia_archive_title();
-			} else { ?>
-
-				<h2 class="content__heading">
-					<?php $object = get_queried_object(); ?>
-					<?php echo ! empty( $object->labels->name ) ? esc_html( $object->labels->name) : ''; ?>
-				</h2>
-			<?php } ?>
+			<h2 class="content__heading">
+				<?php $object = get_queried_object(); ?>
+				<?php echo ! empty( $object->labels->name ) ? esc_html( $object->labels->name) : ''; ?>
+			</h2>
 
 			<?php if ( have_posts() ) :  ?>
 

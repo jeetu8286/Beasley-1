@@ -165,7 +165,11 @@ class Migrator {
 		system( "unzip $update_flag -d \"$dest\" \"$marketron_export\" " );
 	}
 
-	private function format( $dir, $fresh = false ) {
+	public function format_data( $args, $opts ) {
+		$this->initialize( $args, $opts );
+
+		$dir     = $this->config->get_marketron_files_dir() . '/data';
+		$fresh   = $this->opts['fresh'];
 		$pattern = "$dir/*.{xml,XML}";
 		$files   = glob( $pattern, GLOB_BRACE );
 		$files   = preg_grep( '/._formatted.xml$/', $files, PREG_GREP_INVERT );
@@ -190,9 +194,9 @@ class Migrator {
 			$this->config_loader = new \GreaterMedia\ConfigLoader();
 			$this->config_loader->container = $this;
 
-			if ( $update ) {
-				$this->config_loader->load();
-			}
+			//if ( $update ) {
+				//$this->config_loader->load();
+			//}
 
 			$this->side_loader = new MediaSideLoader();
 			$this->side_loader->container = $this;
@@ -256,23 +260,29 @@ class Migrator {
 			$this->entity_factory->build( 'gigya_user' )->export();
 		}
 
-		$this->config_loader->load_live_streams();
 		$this->table_factory->export();
 		$this->error_reporter->save_report();
 		$this->side_loader->sync();
 	}
 
-	function repair( $args, $opts ) {
-			//$repairer = new \GreaterMedia\Import\Repair\EmbeddedFormRepairer();
-			//$repairer->container = $this;
-			//$repairer->repair( $this->opts['site_dir'] . '/output/cids.json' );
+	function configure_api_keys( $args, $opts ) {
+		$this->initialize( $args, $opts );
+		$this->config_loader->load();
+		$this->config_loader->load_live_streams();
+	}
 
+	function repair( $args, $opts ) {
 		$opts['repair'] = true;
+		$opts['tools_to_load'] = 'feed';
 		$this->initialize( $args, $opts, false );
 
-		$repairer = new \GreaterMedia\Import\Repair\EmbeddedFormRepairer();
+		//$repairer = new \GreaterMedia\Import\Repair\EmbeddedFormRepairer();
+		//$repairer->container = $this;
+		//$repairer->update_cids( $this->opts['site_dir'] . '/output/cids.json' );
+
+		$repairer = new \GreaterMedia\Import\Repair\FeaturedImageRepairer();
 		$repairer->container = $this;
-		$repairer->update_cids( $this->opts['site_dir'] . '/output/cids.json' );
+		$repairer->repair();
 	}
 
 	function restore( $args, $opts ) {
@@ -434,5 +444,45 @@ SQL;
 		\WP_CLI::success( "Successfully Repaired $total Optin Groups" );
 	}
 
+	function repair_video_embeds( $args, $opts ) {
+		$refresher = new \GreaterMedia\Import\Repair\VideoRefresher();
+		$refresher->refresh();
+	}
+
+	/* profile verification */
+	function verify_gigya_import( $args, $opts ) {
+		$marketron_accounts_file = $opts['marketron_accounts'];
+		$gigya_accounts_file     = $opts['gigya_accounts'];
+		$error_file              = $opts['errors'];
+
+		$csv_loader     = new \GreaterMedia\Profile\GigyaCSVLoader();
+		$gigya_accounts = $csv_loader->load( $gigya_accounts_file );
+		//var_dump( $gigya_accounts );
+		//return;
+
+		\WP_CLI::log( 'Loaded ' . count( $gigya_accounts ) . ' Gigya Accounts' );
+
+		$json_loader        = new \GreaterMedia\Profile\ImportJSONLoader();
+		$marketron_accounts = $json_loader->load( $marketron_accounts_file );
+
+		\WP_CLI::log( 'Loaded ' . count( $marketron_accounts ) . ' Marketron Accounts' );
+
+		$verifier = new \GreaterMedia\Profile\ImportVerifier(
+			$marketron_accounts, $gigya_accounts
+		);
+
+		$success = $verifier->verify();
+
+		if ( $success ) {
+			\WP_CLI::success( 'Gigya Profile Import Verified!!!' );
+		} else {
+			$errors = $verifier->errors;
+			$data   = implode( "\n", $errors );
+
+			file_put_contents( $error_file, $data );
+			\WP_CLI::error( 'Verification Failed with ' . count( $errors ) . ' errors.' );
+		}
+		//print_r( count( $marketron_accounts ) );
+	}
 }
 
