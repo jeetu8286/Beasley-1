@@ -83,38 +83,38 @@
 ### assets/css/greater_media.css
 
 - **Total Stylesheets:** 1
-- **Total Stylesheet Size:** 425788
-- **Total Media Queries:** 14
-- **Total Rules:** 2316
-- **Selectors Per Rule:** 1.3933506044905009
-- **Total Selectors:** 3227
-- **Identifiers Per Selector:** 2.2466687325689496
-- **Specificity Per Selector:** 20.911062906724514
+- **Total Stylesheet Size:** 468971
+- **Total Media Queries:** 15
+- **Total Rules:** 2597
+- **Selectors Per Rule:** 1.4224104736234116
+- **Total Selectors:** 3694
+- **Identifiers Per Selector:** 2.322414726583649
+- **Specificity Per Selector:** 21.152138603140227
 - **Top Selector Specificity:** 120
-- **Top Selector Specificity Selector:** .on-air #popup-player-livestream .on-air
-- **Total Id Selectors:** 11
-- **Total Identifiers:** 7250
-- **Total Declarations:** 6988
-- **Total Unique Colors:** 32
-- **Total Important Keywords:** 123
+- **Top Selector Specificity Selector:** #popup-player-livestream .live-player--open .live-links
+- **Total Id Selectors:** 9
+- **Total Identifiers:** 8579
+- **Total Declarations:** 7757
+- **Total Unique Colors:** 31
+- **Total Important Keywords:** 131
 
 ### assets/css/greater_media.min.css
 
 - **Total Stylesheets:** 1
-- **Total Stylesheet Size:** 236847
-- **Total Media Queries:** 14
-- **Total Rules:** 2243
-- **Selectors Per Rule:** 1.495318769505127
-- **Total Selectors:** 3354
-- **Identifiers Per Selector:** 2.2206320810971976
-- **Specificity Per Selector:** 20.746869409660107
+- **Total Stylesheet Size:** 269540
+- **Total Media Queries:** 15
+- **Total Rules:** 2522
+- **Selectors Per Rule:** 1.5158604282315622
+- **Total Selectors:** 3823
+- **Identifiers Per Selector:** 2.2945330891969657
+- **Specificity Per Selector:** 20.980643473711744
 - **Top Selector Specificity:** 120
-- **Top Selector Specificity Selector:** .on-air #popup-player-livestream .on-air
-- **Total Id Selectors:** 11
-- **Total Identifiers:** 7448
-- **Total Declarations:** 6428
-- **Total Unique Colors:** 32
-- **Total Important Keywords:** 117
+- **Top Selector Specificity Selector:** #popup-player-livestream .live-player--open .live-links
+- **Total Id Selectors:** 9
+- **Total Identifiers:** 8772
+- **Total Declarations:** 7173
+- **Total Unique Colors:** 31
+- **Total Important Keywords:** 128
 
 ### assets/css/greater_media_admin.css
 
