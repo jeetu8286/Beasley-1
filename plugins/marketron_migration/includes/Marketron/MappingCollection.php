@@ -186,15 +186,19 @@ class MappingCollection {
 
 		switch ( $name ) {
 			case 'blogs':
+			case 'blog':
 				return 'blog';
 
 			case 'channels':
+			case 'channel':
 				return 'channel';
 
 			case 'feeds':
+			case 'feed':
 				return 'feed';
 
 			case 'podcasts':
+			case 'podcast':
 				return 'podcast';
 
 			default:
@@ -210,6 +214,7 @@ class MappingCollection {
 				return 'post';
 
 			case 'podcast episode':
+			case 'podcast':
 				return 'podcast_episode';
 
 			default:
