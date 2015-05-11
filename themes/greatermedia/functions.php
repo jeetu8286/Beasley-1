@@ -436,6 +436,27 @@ function greatermedia_alter_search_query( $query ) {
 add_action( 'pre_get_posts', 'greatermedia_alter_search_query' );
 
 /**
+ * Alter query to show custom post types in category pages.
+ *
+ * @param  WP_Query $query [description]
+ */
+function greatermedia_alter_taxonomy_archive_query( $query ) {
+	if ( greatermedia_is_taxonomy_archive( $query ) ) {
+		$query->set( 'post_type', get_post_types() );
+	}
+}
+
+function greatermedia_is_taxonomy_archive( $query ) {
+	if ( $query->is_main_query() ) {
+		return $query->is_category() || $query->is_tag();
+	} else {
+		return false;
+	}
+}
+
+add_action( 'pre_get_posts', 'greatermedia_alter_taxonomy_archive_query' );
+
+/**
  * This will keep Jetpack Sharing from auto adding to the end of a post.
  * We want to add this manually to the proper theme locations
  *
@@ -935,6 +956,36 @@ function greatermedia_archive_title() {
 	echo '</h2>';
 }
 
+/**
+ * Adds a class to the body if a checkbox for News/Sports sites, has been checked in the site settings
+ *
+ * @action body_class
+ * @access public
+ *
+ * @param $classes
+ *
+ * @return array
+ */
+function greatermedia_newssite_class( $classes ) {
+
+	if ( is_news_site() ) {
+		$classes[] = 'news-site';
+	}
+	
+	return $classes;
+}
+add_filter( 'body_class', 'greatermedia_newssite_class' );
+
+/**
+ * Adds a class to the body if a checkbox, that disables the live player, has been checked in the site settings
+ *
+ * @action body_class
+ * @access public
+ *
+ * @param $classes
+ *
+ * @return array
+ */
 function greatermedia_liveplayer_disabled( $classes ) {
 	$liveplayer_disabled = get_option( 'gmr_liveplayer_disabled' );
 
@@ -945,3 +996,49 @@ function greatermedia_liveplayer_disabled( $classes ) {
 	return $classes;
 }
 add_filter( 'body_class', 'greatermedia_liveplayer_disabled' );
+
+/**
+ * Extends the homepage featured curation limit
+ *
+ * @action gmr-homepage-featured-limit
+ * @access public
+ *
+ * @param $limit
+ *
+ * @return int
+ */
+function greatermedia_extend_featured_curation_limit( $limit ) {
+
+	if ( is_news_site() ) {
+		$limit = 6;
+	} else {
+		$limit = 4;
+	}
+
+	return $limit;
+
+}
+add_filter( 'gmr-homepage-featured-limit', 'greatermedia_extend_featured_curation_limit' );
+
+/**
+ * Extends the homepage community curation limit
+ *
+ * @action gmr-homepage-community-limit
+ * @access public
+ *
+ * @param $limit
+ *
+ * @return int
+ */
+function greatermedia_extend_community_curation_limit( $limit ) {
+
+	if ( is_news_site() ) {
+		$limit = 4;
+	} else {
+		$limit = 3;
+	}
+
+	return $limit;
+
+}
+add_filter( 'gmr-homepage-community-limit', 'greatermedia_extend_community_curation_limit' );
