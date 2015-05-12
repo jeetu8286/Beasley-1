@@ -57,6 +57,12 @@ class Post extends BaseEntity {
 			$fields['post_content']
 		);
 
+		/*
+		$fields['post_content'] = $this->import_libsyn_embeds_in_content(
+			$fields['post_content'], $fields
+		);
+		 */
+
 		$fields['post_content'] = $this->replace_broken_entities(
 			$fields['post_content']
 		);
@@ -186,6 +192,19 @@ class Post extends BaseEntity {
 	function import_images_in_content( $content ) {
 		$inline_image_replacer = $this->container->inline_image_replacer;
 		return $inline_image_replacer->find_and_replace( $content );
+	}
+
+	function import_libsyn_embeds_in_content( $content, &$fields ) {
+		$inline_image_replacer = $this->container->inline_libsyn_replacer;
+		$new_content = $inline_image_replacer->find_and_replace( $content );
+
+		if ( $content !== $new_content ) {
+			$fields['post_format'] = 'audio';
+
+			return $new_content;
+		} else {
+			return $content;
+		}
 	}
 
 	function replace_broken_entities( $content ) {
