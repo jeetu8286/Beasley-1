@@ -193,7 +193,10 @@
 
 /* live stream */
 .live-stream__now-playing--btn{color:#002a6e!important;}
-.live-stream__btn--loading, .live-stream__btn--pause, .live-stream__btn--resume{color:#002a6e!important;}
+
+.live-stream__btn--loading,
+.live-stream__btn--pause, 
+.live-stream__btn--resume{background: #002a6e!important;color:#fff!important; border: 2px solid #a8d6f7!important;}
 .now-playing__title {color: #002a6e!important;}
 .now-playing__artist {color: #002a6e!important;}
 #live-player--volume .noUi-base {background: #a8d6f7;}
@@ -456,9 +459,15 @@ media 768px
     }
     a:link, a:visited {color: #002a6e!important;}
     a:hover {color: #002a6e!important; text-decoration: underline;}*/
+    .now-playing__title,
+    .now-playing__artist {
+        font-size: 1em;
+        font-style: italic;
+        font-weight: 500;
+    }
     .widget--live-player a:hover>div{background-color: #114598!important;color:#0067b1!important;}
 
-     .ad__leaderboard.desktop {
+    .ad__leaderboard.desktop {
 
     border: 5px solid #002a6e!important;
     width:738px;
