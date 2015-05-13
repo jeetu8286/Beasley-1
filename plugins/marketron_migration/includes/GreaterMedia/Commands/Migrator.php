@@ -15,22 +15,6 @@ use WordPress\Utils\MediaSideLoader;
 
 class Migrator {
 
-	public $default_opts = array(
-		'config_file'              => 'wmgk.json',
-		'marketron_export'    => 'wmgk.zip',
-		'tool'                => 'feed',
-		'fresh'               => false,
-		'migration_cache_dir' => 'migration_cache',
-		'mapping_file'        => 'wmgk_mapping.csv',
-	);
-
-	//public $default_tools = array(
-		//'feed', 'blog', 'venue', 'event_calendar', 'channel',
-		//'video_channel', 'event_manager',
-		//'photo_album_v2', 'showcase', 'podcast', 'survey',
-		//'contest',
-	//);
-
 	public $default_tools = array(
 		'feed'
 	);
@@ -41,56 +25,13 @@ class Migrator {
 	public $opts;
 	public $entity_factory;
 	public $table_factory;
+	public $inline_image_replacer;
+	public $inline_libsyn_replacer;
 
 	public $config;
 	public $mappings;
 	public $fresh;
 	public $initialized = false;
-
-	function build_actions_json( $args, $opts ) {
-		$user_ids = $opts['user_ids'];
-		$output   = $opts['output'];
-
-		$user_ids     = file( $user_ids );
-		$records = array();
-
-		foreach ( $user_ids as $user_id ) {
-			$user_id = trim( $user_id );
-			$actions_count = rand( 5, 50 );
-
-			for ( $i = 0; $i < $actions_count; $i++ ) {
-				$record = array(
-					'UID' => $user_id,
-					'data' => array(
-						'actions' => array(
-							array(
-								'actionType' => 'action:contest',
-								'actionID' => strval( rand( 50000, 100000 ) ),
-								'actionData' => array(
-									array(
-										'name' => 'rc' . rand( 1, 10 ),
-										'value_t' => 'lorem ispum dolor sit amet ' . rand( 1000, 100000 ),
-									),
-									array(
-										'name' => 'timestamp',
-										'value_i' => strtotime( 'now' ),
-									),
-								),
-							),
-						),
-					)
-				);
-
-				$records[] = $record;
-			}
-		}
-
-		$json = json_encode( $records, JSON_PRETTY_PRINT );
-		file_put_contents( $output, $json );
-		$count = count( $records );
-
-		\WP_CLI::success( "Actions( $count ) JSON generated successfully." );
-	}
 
 	function migrate( $args, $opts ) {
 		$opts          = wp_parse_args( $opts, $this->default_opts );
@@ -165,7 +106,11 @@ class Migrator {
 		system( "unzip $update_flag -d \"$dest\" \"$marketron_export\" " );
 	}
 
-	private function format( $dir, $fresh = false ) {
+	public function format_data( $args, $opts ) {
+		$this->initialize( $args, $opts );
+
+		$dir     = $this->config->get_marketron_files_dir() . '/data';
+		$fresh   = $this->opts['fresh'];
 		$pattern = "$dir/*.{xml,XML}";
 		$files   = glob( $pattern, GLOB_BRACE );
 		$files   = preg_grep( '/._formatted.xml$/', $files, PREG_GREP_INVERT );
@@ -190,9 +135,9 @@ class Migrator {
 			$this->config_loader = new \GreaterMedia\ConfigLoader();
 			$this->config_loader->container = $this;
 
-			if ( $update ) {
-				$this->config_loader->load();
-			}
+			//if ( $update ) {
+				//$this->config_loader->load();
+			//}
 
 			$this->side_loader = new MediaSideLoader();
 			$this->side_loader->container = $this;
@@ -227,6 +172,9 @@ class Migrator {
 			$this->inline_image_replacer = new \WordPress\Utils\InlineImageReplacer();
 			$this->inline_image_replacer->container = $this;
 
+			$this->inline_libsyn_replacer = new \WordPress\Utils\InlineLibSynReplacer();
+			$this->inline_libsyn_replacer->container = $this;
+
 			$this->initialized = true;
 		}
 	}
@@ -256,23 +204,29 @@ class Migrator {
 			$this->entity_factory->build( 'gigya_user' )->export();
 		}
 
-		$this->config_loader->load_live_streams();
 		$this->table_factory->export();
 		$this->error_reporter->save_report();
 		$this->side_loader->sync();
 	}
 
-	function repair( $args, $opts ) {
-			//$repairer = new \GreaterMedia\Import\Repair\EmbeddedFormRepairer();
-			//$repairer->container = $this;
-			//$repairer->repair( $this->opts['site_dir'] . '/output/cids.json' );
+	function configure_api_keys( $args, $opts ) {
+		$this->initialize( $args, $opts );
+		$this->config_loader->load();
+		$this->config_loader->load_live_streams();
+	}
 
+	function repair( $args, $opts ) {
 		$opts['repair'] = true;
+		$opts['tools_to_load'] = 'feed';
 		$this->initialize( $args, $opts, false );
 
-		$repairer = new \GreaterMedia\Import\Repair\EmbeddedFormRepairer();
+		//$repairer = new \GreaterMedia\Import\Repair\EmbeddedFormRepairer();
+		//$repairer->container = $this;
+		//$repairer->update_cids( $this->opts['site_dir'] . '/output/cids.json' );
+
+		$repairer = new \GreaterMedia\Import\Repair\FeaturedImageRepairer();
 		$repairer->container = $this;
-		$repairer->update_cids( $this->opts['site_dir'] . '/output/cids.json' );
+		$repairer->repair();
 	}
 
 	function restore( $args, $opts ) {
@@ -439,5 +393,40 @@ SQL;
 		$refresher->refresh();
 	}
 
+	/* profile verification */
+	function verify_gigya_import( $args, $opts ) {
+		$marketron_accounts_file = $opts['marketron_accounts'];
+		$gigya_accounts_file     = $opts['gigya_accounts'];
+		$error_file              = $opts['errors'];
+
+		$csv_loader     = new \GreaterMedia\Profile\GigyaCSVLoader();
+		$gigya_accounts = $csv_loader->load( $gigya_accounts_file );
+		//var_dump( $gigya_accounts );
+		//return;
+
+		\WP_CLI::log( 'Loaded ' . count( $gigya_accounts ) . ' Gigya Accounts' );
+
+		$json_loader        = new \GreaterMedia\Profile\ImportJSONLoader();
+		$marketron_accounts = $json_loader->load( $marketron_accounts_file );
+
+		\WP_CLI::log( 'Loaded ' . count( $marketron_accounts ) . ' Marketron Accounts' );
+
+		$verifier = new \GreaterMedia\Profile\ImportVerifier(
+			$marketron_accounts, $gigya_accounts
+		);
+
+		$success = $verifier->verify();
+
+		if ( $success ) {
+			\WP_CLI::success( 'Gigya Profile Import Verified!!!' );
+		} else {
+			$errors = $verifier->errors;
+			$data   = implode( "\n", $errors );
+
+			file_put_contents( $error_file, $data );
+			\WP_CLI::error( 'Verification Failed with ' . count( $errors ) . ' errors.' );
+		}
+		//print_r( count( $marketron_accounts ) );
+	}
 }
 
