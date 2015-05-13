@@ -177,41 +177,32 @@ function fpmrss_fetch_media_data( $post_id, $feed_id ) {
 		// check if redirect header exists for a video
 		if ( filter_var( $player, FILTER_VALIDATE_URL ) ) {
 			$response = wp_remote_head( $player );
-			$location = wp_remote_retrieve_header( $response, 'location' );
-			if ( ! empty( $location ) ) {
-				$player = $location;
+			if ( ! is_wp_error( $response ) ) {
+				$location = wp_remote_retrieve_header( $response, 'location' );
+				if ( ! empty( $location ) ) {
+					$player = $location;
+				}
 			}
 		}
 
-		// we need to switch a link on a video to player embed code
+		// we need to convert a link or an embed code into the player shortcode
+		$matches = array();
+		$embed_code = $player_id = false;
 		if ( filter_var( $player, FILTER_VALIDATE_URL ) && preg_match( '#^https?\:\/\/.*?\.ooyala\.com\/(.+?)\/(.+?)\/?$#i', $player, $matches ) ) {
-$player = <<<OOYALA_PLAYER
-<script src="http://player.ooyala.com/player.js?embedCode={$matches[1]}&embedType=player.jsMRSS&videoPcode={$matches[2]}&width=480&height=270"></script>
-<noscript>
-  <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" id="ooyalaPlayer_5j2v5o_nn9rxe" width="480" height="270" codebase="http://fpdownload.macromedia.com/get/flashplayer/current/swflash.cab">
-	<param name="movie" value="http://player.ooyala.com/player_v2.swf?embedCode={$matches[1]}&keepEmbedCode=true&videoPcode={$matches[2]}"/>
-	<param name="bgcolor" value="#000000"/>
-	<param name="allowScriptAccess" value="always"/>
-	<param name="allowFullScreen" value="true"/>
-	<param name="flashvars" value="embedCode={$matches[1]}&embedType=noscriptObjectTagMRSS&videoPcode={$matches[2]}&width=480&height=270"/>
-	<embed src="http://player.ooyala.com/player_v2.swf?embedCode={$matches[1]}&keepEmbedCode=true&videoPcode={$matches[2]}"
-		bgcolor="#000000"
-		width="480"
-		height="270"
-		name="ooyalaPlayer_572t57_nn9rxe" align="middle" play="true" loop="false"
-		allowScriptAccess="always" allowFullScreen="true"
-		type="application/x-shockwave-flash"
-		flashvars="embedCode={$matches[1]}&embedType=noscriptObjectTagMRSS&videoPcode={$matches[2]}&width=480&height=270"
-		pluginspage="http://www.adobe.com/go/getflashplayer">
-	</embed>
-  </object>
-</noscript>
-OOYALA_PLAYER;
+			$embed_code = $matches[1];
+			$player_id = $matches[2];
+		} elseif ( preg_match( '#embedCode\=(.+?)[\&\"\']#is', $player, $matches ) ) {
+			$embed_code = $matches[1];
+			if ( preg_match( '#videoPcode\=(.+?)[\&\"\']#is', $player, $matches ) ) {
+				$player_id = $matches[1];
+			}
 		}
 
 		// set player meta
-		update_post_meta( $post_id, 'gmr-player', $player );
-		set_post_format( $post_id, 'video' );
+		if ( ! empty( $embed_code ) ) {
+			update_post_meta( $post_id, 'gmr-player', "[ooyala_video embed_code=\"{$embed_code}\" player_id=\"{$player_id}\"]" );
+			set_post_format( $post_id, 'video' );
+		}
 	}
 
 	// copy Ooyala metas if available
@@ -357,6 +348,84 @@ function fpmrss_update_content( $content ) {
 	return $content;
 }
 add_action( 'the_content', 'fpmrss_update_content', 1 );
+
+/**
+ * Renders Ooyala video shortcode.
+ *
+ * @param array $atts Shortcode attributes.
+ * @return string Shortcode HTML.
+ */
+function fpmrss_render_ooyala_player( $atts ) {
+	static $player_num = 0;
+
+	// parse shortcode attributes
+	$atts = shortcode_atts( array(
+		'embed_code' => '',
+		'player_id'  => '',
+	), $atts );
+
+	// return nothing if embed code is empty
+	if ( empty( $atts['embed_code'] ) ) {
+		return '';
+	}
+
+	// override player id if it has been set for a feed
+	$player_num++;
+	$player_id = $atts['player_id'];
+	$use_source_feed_player = false;
+	$source_feed_id = get_post_meta( get_the_ID(), 'fp_source_feed_id', true );
+	if ( ! empty( $source_feed_id ) ) {
+		$feed_player_id = get_post_meta( $source_feed_id, 'fpmrss-ooyala-player-id', true );
+		if ( ! empty( $feed_player_id ) ) {
+			$use_source_feed_player = true;
+			$player_id = $feed_player_id;
+		}
+	}
+
+	// check if player exists and if it doesn't, then try to find default or any
+	if ( ! $use_source_feed_player ) {
+		$ooyala_settings = get_option( 'ooyala' );
+		if ( ! empty( $ooyala_settings['api_key'] ) && ! empty( $ooyala_settings['api_secret'] ) ) {
+			if ( ! class_exists( 'OoyalaApi' ) ) {
+				require_once 'OoyalaApi.php';
+			}
+
+			$ooyala = new OoyalaApi( $ooyala_settings['api_key'], $ooyala_settings['api_secret'] );
+			$players = $ooyala->get( 'players' );
+			if ( $players && ! empty( $players->items ) ) {
+				$players = $players->items;
+				if ( ! in_array( $player_id, wp_list_pluck( $players, 'id' ) ) ) {
+					$default = wp_list_filter( $players, array( 'is_default' => true ) );
+					if ( ! empty( $default ) ) {
+						$default = current( $default );
+						$player_id = $default->id;
+					} else {
+						$player = current( $players );
+						$player_id = $player->id;
+					}
+				}
+			}
+		}
+	}
+
+	// render player
+	ob_start();
+	?><script src="//player.ooyala.com/v3/<?php echo urlencode( $player_id ); ?>?platform=html5-fallback"></script>
+	<div id="ooyalaplayer-<?php echo esc_attr( $player_num ); ?>" style="height:480px"></div>
+	<script>
+		try {
+			OO.ready(function() {
+				OO.Player.create( 'ooyalaplayer-<?php echo esc_attr( $player_num ); ?>', '<?php echo esc_js( $atts['embed_code' ] ); ?>' );
+			});
+		} catch(e) {};
+	</script>
+	<noscript><div>Please enable Javascript to watch this video</div></noscript><?php
+	
+	$html = ob_get_clean();
+	
+	return $html;
+}
+add_shortcode( 'ooyala_video', 'fpmrss_render_ooyala_player' );
 
 /**
  * Registers Ooyala settings metabox.
