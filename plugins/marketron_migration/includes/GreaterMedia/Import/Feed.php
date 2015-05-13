@@ -133,7 +133,7 @@ class Feed extends BaseImporter {
 			'collections' => $collections,
 			'post_format' => $post_format,
 			'redirects'   => $redirects,
-			'feed_names'  => $feed_names,
+			//'feed_names'  => $feed_names,
 		);
 
 		if ( ! is_null( $featured_image ) ) {
@@ -222,11 +222,12 @@ class Feed extends BaseImporter {
 		$libsyn_embeds = $inline_image_replacer->find( $content );
 
 		if ( count( $libsyn_embeds ) > 0 ) {
-			foreach ( $libsyn_embeds as $embed ) {
-				$content = str_replace( $embed['tag'], '', $content );
-			}
+			//foreach ( $libsyn_embeds as $embed ) {
+				//$content = str_replace( $embed['tag'], '', $content );
+			//}
 
-			$featured_audio = $libsyn_embeds[0]['file'];
+			//$featured_audio = $libsyn_embeds[0]['file'];
+			$featured_audio = 'placeholder';
 			$post_format = 'audio';
 		}
 
