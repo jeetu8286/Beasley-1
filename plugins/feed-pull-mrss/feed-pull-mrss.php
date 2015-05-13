@@ -396,6 +396,8 @@ add_action( 'add_meta_boxes', 'fpmrss_add_meta_box' );
  * @param WP_Post $post The post object.
  */
 function fpmrss_render_ooyala_metabox( $post ) {
+	$transient_ttl = 5 * MINUTE_IN_SECONDS;
+
 	$ooyala = get_option( 'ooyala' );
 	$ooyala_api = null;
 	if ( class_exists( 'OoyalaApi' ) && ! empty( $ooyala['api_key'] ) && ! empty( $ooyala['api_secret'] ) ) {
@@ -406,22 +408,28 @@ function fpmrss_render_ooyala_metabox( $post ) {
 
 	$selected_player = get_post_meta( $post->ID, 'fpmrss-ooyala-player-id', true );
 	$players = get_transient( 'gmr_ooyala_players' );
-	if ( $players === false && $ooyala_api ) {
+	if ( $players === false ) {
 		$players = array();
-		$response = $ooyala_api->get( 'players' );
-		if ( ! empty( $response->items ) ) {
-			foreach ( $response->items as $ad_set ) {
-				$players[ $ad_set->id ] = $ad_set->name;
+		if ( $ooyala_api ) {
+			$response = $ooyala_api->get( 'players' );
+			if ( ! empty( $response->items ) ) {
+				foreach ( $response->items as $ad_set ) {
+					$players[ $ad_set->id ] = $ad_set->name;
+				}
 			}
 		}
 
-		set_transient( 'gmr_ooyala_players', $players, 15 * MINUTE_IN_SECONDS );
+		set_transient( 'gmr_ooyala_players', $players, $transient_ttl );
 	}
 
 	echo '<p>';
 		echo '<label for="fpmrss-ooyala-player-id">Player ID:</label>';
 		echo '<select id="fpmrss-ooyala-player-id" name="fpmrss-ooyala-player-id" class="widefat">';
-			echo '<option value="">---</option>';
+			echo '<option value="">';
+				echo 'fp_feed' == $post->post_type
+					? '--- player by default ---'
+					: '--- player defined in the feed ---';
+			echo '</option>';
 			foreach ( $players as $id => $name ) :
 				echo '<option value="', esc_attr( $id ), '"', selected( $id, $selected_player, false ), '>';
 					echo esc_html( $name );
@@ -432,22 +440,28 @@ function fpmrss_render_ooyala_metabox( $post ) {
 	
 	$selected_ad_set = get_post_meta( $post->ID, 'fpmrss-ooyala-ad-set', true );
 	$ad_sets = get_transient( 'gmr_ooyala_ad_sets' );
-	if ( $ad_sets === false && $ooyala_api ) {
+	if ( $ad_sets === false ) {
 		$ad_sets = array();
-		$response = $ooyala_api->get( 'ad_sets' );
-		if ( ! empty( $response->items ) ) {
-			foreach ( $response->items as $ad_set ) {
-				$ad_sets[ $ad_set->id ] = $ad_set->name;
+		if ( $ooyala_api ) {
+			$response = $ooyala_api->get( 'ad_sets' );
+			if ( ! empty( $response->items ) ) {
+				foreach ( $response->items as $ad_set ) {
+					$ad_sets[ $ad_set->id ] = $ad_set->name;
+				}
 			}
 		}
 
-		set_transient( 'gmr_ooyala_ad_sets', $ad_sets, 15 * MINUTE_IN_SECONDS );
+		set_transient( 'gmr_ooyala_ad_sets', $ad_sets, $transient_ttl );
 	}
 	
 	echo '<p>';
 		echo '<label for="fpmrss-ooyala-ad-set">Ad Set:</label>';
 		echo '<select id="fpmrss-ooyala-ad-set" name="fpmrss-ooyala-ad-set" class="widefat">';
-			echo '<option value="">---</option>';
+			echo '<option value="">';
+				echo 'fp_feed' == $post->post_type 
+					? '--- no add set ---'
+					: '--- ad set defined in the feed ---';
+			echo '</option>';
 			foreach ( $ad_sets as $id => $name ) :
 				echo '<option value="', esc_attr( $id ), '"', selected( $id, $selected_ad_set, false ), '>';
 					echo esc_html( $name );
