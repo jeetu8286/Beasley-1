@@ -187,22 +187,15 @@ function fpmrss_fetch_media_data( $post_id, $feed_id ) {
 
 		// we need to convert a link or an embed code into the player shortcode
 		$matches = array();
-		$embed_code = $player_id = false;
 		if ( filter_var( $player, FILTER_VALIDATE_URL ) && preg_match( '#^https?\:\/\/.*?\.ooyala\.com\/(.+?)\/(.+?)\/?$#i', $player, $matches ) ) {
-			$embed_code = $matches[1];
-			$player_id = $matches[2];
+			$player = "[ooyala code=\"{$matches[1]}\"]";
 		} elseif ( preg_match( '#embedCode\=(.+?)[\&\"\']#is', $player, $matches ) ) {
-			$embed_code = $matches[1];
-			if ( preg_match( '#videoPcode\=(.+?)[\&\"\']#is', $player, $matches ) ) {
-				$player_id = $matches[1];
-			}
+			$player = "[ooyala code=\"{$matches[1]}\"]";
 		}
 
 		// set player meta
-		if ( ! empty( $embed_code ) ) {
-			update_post_meta( $post_id, 'gmr-player', "[ooyala_video embed_code=\"{$embed_code}\" player_id=\"{$player_id}\"]" );
-			set_post_format( $post_id, 'video' );
-		}
+		update_post_meta( $post_id, 'gmr-player', $player );
+		set_post_format( $post_id, 'video' );
 	}
 
 	// copy Ooyala metas if available
@@ -350,84 +343,6 @@ function fpmrss_update_content( $content ) {
 add_action( 'the_content', 'fpmrss_update_content', 1 );
 
 /**
- * Renders Ooyala video shortcode.
- *
- * @param array $atts Shortcode attributes.
- * @return string Shortcode HTML.
- */
-function fpmrss_render_ooyala_player( $atts ) {
-	static $player_num = 0;
-
-	// parse shortcode attributes
-	$atts = shortcode_atts( array(
-		'embed_code' => '',
-		'player_id'  => '',
-	), $atts );
-
-	// return nothing if embed code is empty
-	if ( empty( $atts['embed_code'] ) ) {
-		return '';
-	}
-
-	// override player id if it has been set for a feed
-	$player_num++;
-	$player_id = $atts['player_id'];
-	$use_source_feed_player = false;
-	$source_feed_id = get_post_meta( get_the_ID(), 'fp_source_feed_id', true );
-	if ( ! empty( $source_feed_id ) ) {
-		$feed_player_id = get_post_meta( $source_feed_id, 'fpmrss-ooyala-player-id', true );
-		if ( ! empty( $feed_player_id ) ) {
-			$use_source_feed_player = true;
-			$player_id = $feed_player_id;
-		}
-	}
-
-	// check if player exists and if it doesn't, then try to find default or any
-	if ( ! $use_source_feed_player ) {
-		$ooyala_settings = get_option( 'ooyala' );
-		if ( ! empty( $ooyala_settings['api_key'] ) && ! empty( $ooyala_settings['api_secret'] ) ) {
-			if ( ! class_exists( 'OoyalaApi' ) ) {
-				require_once 'OoyalaApi.php';
-			}
-
-			$ooyala = new OoyalaApi( $ooyala_settings['api_key'], $ooyala_settings['api_secret'] );
-			$players = $ooyala->get( 'players' );
-			if ( $players && ! empty( $players->items ) ) {
-				$players = $players->items;
-				if ( ! in_array( $player_id, wp_list_pluck( $players, 'id' ) ) ) {
-					$default = wp_list_filter( $players, array( 'is_default' => true ) );
-					if ( ! empty( $default ) ) {
-						$default = current( $default );
-						$player_id = $default->id;
-					} else {
-						$player = current( $players );
-						$player_id = $player->id;
-					}
-				}
-			}
-		}
-	}
-
-	// render player
-	ob_start();
-	?><script src="//player.ooyala.com/v3/<?php echo urlencode( $player_id ); ?>?platform=html5-fallback"></script>
-	<div id="ooyalaplayer-<?php echo esc_attr( $player_num ); ?>" style="height:480px"></div>
-	<script>
-		try {
-			OO.ready(function() {
-				OO.Player.create( 'ooyalaplayer-<?php echo esc_attr( $player_num ); ?>', '<?php echo esc_js( $atts['embed_code' ] ); ?>' );
-			});
-		} catch(e) {};
-	</script>
-	<noscript><div>Please enable Javascript to watch this video</div></noscript><?php
-	
-	$html = ob_get_clean();
-	
-	return $html;
-}
-add_shortcode( 'ooyala_video', 'fpmrss_render_ooyala_player' );
-
-/**
  * Registers Ooyala settings metabox.
  *
  * @global string $typenow The current post type.
@@ -455,15 +370,10 @@ add_action( 'add_meta_boxes', 'fpmrss_add_meta_box' );
  * @param WP_Post $feed The feed object.
  */
 function fpmrss_render_ooyala_metabox( $feed ) {
-	$player_id = get_post_meta( $feed->ID, 'fpmrss-ooyala-player-id', true );
 	$ad_set = get_post_meta( $feed->ID, 'fpmrss-ooyala-ad-set', true );
 
 	wp_nonce_field( 'fpmrss-ooyala', 'fpmrss_ooyala_nonce', false );
 
-	echo '<p>';
-		echo '<label for="fpmrss-ooyala-player-id">Player ID:</label>';
-		echo '<input type="text" id="fpmrss-ooyala-player-id" class="widefat" name="fpmrss-ooyala-player-id" value="', esc_attr( $player_id ), '">';
-	echo '</p>';
 	echo '<p>';
 		echo '<label for="fpmrss-ooyala-ad-set">Ad Set:</label>';
 		echo '<input type="text" id="fpmrss-ooyala-ad-set" class="widefat" name="fpmrss-ooyala-ad-set" value="', esc_attr( $ad_set ), '">';
@@ -486,7 +396,7 @@ function fpmrss_save_settings( $post_id ) {
 
 	$ooyala_nonce = filter_input( INPUT_POST, 'fpmrss_ooyala_nonce' );
 	if ( $ooyala_nonce && wp_verify_nonce( $ooyala_nonce, 'fpmrss-ooyala' ) ) {
-		$fields = array( 'fpmrss-ooyala-player-id', 'fpmrss-ooyala-ad-set' );
+		$fields = array( 'fpmrss-ooyala-ad-set' );
 		foreach ( $fields as $field ) {
 			$value = wp_kses_post( filter_input( INPUT_POST, $field ) );
 			$value = trim( $value );
