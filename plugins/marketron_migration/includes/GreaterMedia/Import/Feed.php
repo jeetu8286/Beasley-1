@@ -227,8 +227,8 @@ class Feed extends BaseImporter {
 			//}
 
 			//$featured_audio = $libsyn_embeds[0]['file'];
-			$featured_audio = 'placeholder';
-			$post_format = 'audio';
+			$featured_audio = null;
+			$post_format = 'standard';
 		}
 
 		return array(
