@@ -239,8 +239,6 @@ class GigyaUser extends BaseEntity {
 					$max_survey_entries = count( $account['data']['survey_list'] );
 				}
 				$accounts[] = $account;
-			} else {
-				\WP_CLI::log( $user_id );
 			}
 
 			$progress_bar->tick();
