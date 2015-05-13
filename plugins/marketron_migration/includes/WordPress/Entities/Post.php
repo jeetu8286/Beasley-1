@@ -94,7 +94,7 @@ class Post extends BaseEntity {
 			$this->set_featured_image( $post_id, $fields );
 		}
 
-		if ( array_key_exists( 'featured_audio', $fields ) && ! empty( $fields['featured_audio'] ) ) {
+		if ( array_key_exists( 'featured_audio', $fields ) && ! empty( $fields['featured_audio'] && $fields['featured_audio'] !== 'placeholder' ) ) {
 			$this->set_featured_audio( $post_id, $fields );
 		}
 
