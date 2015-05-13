@@ -340,9 +340,16 @@ add_action( 'the_content', 'fpmrss_update_content', 1 );
  * @return array Filtered ooyala player arguments.
  */
 function fpmrss_filter_ooyala_args( $args ) {
-	$player_id = fpmrss_extract_ooyala_post_meta( get_the_ID(), 'fpmrss-ooyala-player-id' );
+	$video_id = get_the_ID();
+
+	$player_id = fpmrss_extract_ooyala_post_meta( $video_id, 'fpmrss-ooyala-player-id' );
 	if ( $player_id ) {
 		$args['player_id'] = $player_id;
+	}
+
+	$ad_set = fpmrss_extract_ooyala_post_meta( $video_id, 'fpmrss-ooyala-ad-set' );
+	if ( $ad_set ) {
+		$args['ad_set'] = $ad_set;
 	}
 
 	return $args;
