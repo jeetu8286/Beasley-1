@@ -25,7 +25,7 @@ class InlineLibSynReplacer {
 
 	function find( $content ) {
 		$iframes       = $this->find_iframes( $content );
-		$libsyn_embeds = $this->find_embeds_inplace( $iframes );
+		$libsyn_embeds = $this->find_embeds( $iframes );
 
 		return $libsyn_embeds;
 	}
