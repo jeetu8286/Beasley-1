@@ -83,17 +83,17 @@
 ### assets/css/greater_media.css
 
 - **Total Stylesheets:** 1
-- **Total Stylesheet Size:** 469583
+- **Total Stylesheet Size:** 471583
 - **Total Media Queries:** 15
 - **Total Rules:** 2600
-- **Selectors Per Rule:** 1.4219230769230768
-- **Total Selectors:** 3697
-- **Identifiers Per Selector:** 2.3418988368947797
-- **Specificity Per Selector:** 21.23180957533135
+- **Selectors Per Rule:** 1.4373076923076924
+- **Total Selectors:** 3737
+- **Identifiers Per Selector:** 2.3767728124163767
+- **Specificity Per Selector:** 21.39202568905539
 - **Top Selector Specificity:** 120
 - **Top Selector Specificity Selector:** #popup-player-livestream .live-player--open .live-links
 - **Total Id Selectors:** 9
-- **Total Identifiers:** 8658
+- **Total Identifiers:** 8882
 - **Total Declarations:** 7765
 - **Total Unique Colors:** 31
 - **Total Important Keywords:** 131
@@ -101,17 +101,17 @@
 ### assets/css/greater_media.min.css
 
 - **Total Stylesheets:** 1
-- **Total Stylesheet Size:** 270071
+- **Total Stylesheet Size:** 271983
 - **Total Media Queries:** 15
 - **Total Rules:** 2525
-- **Selectors Per Rule:** 1.5152475247524753
-- **Total Selectors:** 3826
-- **Identifiers Per Selector:** 2.3128593831677993
-- **Specificity Per Selector:** 21.052535284892837
+- **Selectors Per Rule:** 1.5310891089108911
+- **Total Selectors:** 3866
+- **Identifiers Per Selector:** 2.3468701500258664
+- **Specificity Per Selector:** 21.209260217278842
 - **Top Selector Specificity:** 120
 - **Top Selector Specificity Selector:** #popup-player-livestream .live-player--open .live-links
 - **Total Id Selectors:** 9
-- **Total Identifiers:** 8849
+- **Total Identifiers:** 9073
 - **Total Declarations:** 7181
 - **Total Unique Colors:** 31
 - **Total Important Keywords:** 128
