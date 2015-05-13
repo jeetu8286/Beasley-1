@@ -73,7 +73,7 @@ class Feed extends BaseImporter {
 			$notify->tick();
 		}
 
-		\WP_CLI::log( 'Total Lib Syn Replacements: ' . \WordPress\Utils\InlineLibSynReplacer::$replacements );
+		//\WP_CLI::log( 'Total Lib Syn Replacements: ' . \WordPress\Utils\InlineLibSynReplacer::$replacements );
 
 		$notify->finish();
 	}
