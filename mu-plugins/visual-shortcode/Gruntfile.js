@@ -13,7 +13,7 @@ module.exports = function(grunt) {
 			dist: {
 				files: [{
 					expand: true,
-					src: ['js/*.js', '!js/*.min.js'],
+					src: ['js/**/*.js', '!js/**/*.min.js'],
 					ext: '.min.js'
 				}]
 			}
@@ -23,7 +23,7 @@ module.exports = function(grunt) {
 			dist: {
 				files: [{
 					expand: true,
-					src: ['css/*.css', '!css/*.min.css'],
+					src: ['css/**/*.css', '!css/**/*.min.css'],
 					ext: '.min.css'
 				}]
 			}
