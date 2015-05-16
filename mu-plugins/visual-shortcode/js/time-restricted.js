@@ -8,17 +8,20 @@
 	TimeRestrictedConvertor.prototype = $.extend(new VisualShortcodeRedux.Convertor(), {
 
 		toDataAttrs: function(data) {
-			var show = data.show;
-			var hide = data.hide;
+			if (data.show) {
+				var show = data.show;
+				var showUTC = new Date(show);
+				showUTC = showUTC.toISOString();
+				data.show = showUTC;
+			}
 
-			var showUTC = new Date(show);
-			showUTC = showUTC.toISOString();
+			if (data.hide) {
+				var hide    = data.hide;
+				var hideUTC = new Date(hide);
 
-			var hideUTC = new Date(hide);
-			hideUTC = hideUTC.toISOString();
-
-			data.show = showUTC;
-			data.hide = hideUTC;
+				hideUTC   = hideUTC.toISOString();
+				data.hide = hideUTC;
+			}
 
 			var Convertor = VisualShortcodeRedux.Convertor;
 			return Convertor.prototype.toDataAttrs.call(this, data);
@@ -85,49 +88,65 @@
 
 		getData: function() {
 			var data = this.data;
-			var show = data.show;
-			var hide = data.hide;
 
-			show = this.formatDateForInput(show);
-			hide = this.formatDateForInput(hide);
+			if (data.show) {
+				var show = data.show;
+				show = this.formatDateForInput(show);
+				data.show = show;
+			}
 
-			data.show = show;
-			data.hide = hide;
+			if (data.hide) {
+				var hide = data.hide;
+				hide = this.formatDateForInput(hide);
+				data.hide = hide;
+			}
 
 			return data;
 		},
 
 		formatDateForInput: function(date) {
-			var dateObj = new Date(date);
-			return dateObj.format('Y/m/d h:i');
+			return this.plugin.formatDate(date);
 		},
 
 		didOpen: function() {
 			var $showInput = $('#time-restriction-show-input');
 			var $hideInput = $('#time-restriction-hide-input');
+			var format = 'M d, Y h:i a';
+			var opts = { format: format };
 
-			$showInput.datetimepicker();
-			$hideInput.datetimepicker();
+			$showInput.datetimepicker(opts);
+			$hideInput.datetimepicker(opts);
 		},
 
 		didSubmit: function(event) {
 			var data = event.data;
-			var show = data.show;
-			var hide = data.hide;
 
-			var showUTC = new Date(show);
-			showUTC = showUTC.toISOString();
+			if (data.show !== '') {
+				var show    = data.show;
+				var showUTC = new Date(show);
 
-			var hideUTC = new Date(hide);
-			hideUTC = hideUTC.toISOString();
+				showUTC   = showUTC.toISOString();
+				data.show = showUTC;
+			} else {
+				delete data.show;
+			}
 
-			data.show = showUTC;
-			data.hide = hideUTC;
+			if (data.hide !== '') {
+				var hide    = data.hide;
+				var hideUTC = new Date(hide);
+
+				hideUTC = hideUTC.toISOString();
+				data.hide = hideUTC;
+			} else {
+				delete data.hide;
+			}
 
 			var Dialog = VisualShortcodeRedux.Dialog;
 			event.data = data;
 
-			return Dialog.prototype.didSubmit.call(this, event);
+			if (data.show !== '' || data.hide !== '') {
+				return Dialog.prototype.didSubmit.call(this, event);
+			}
 		},
 
 	});
@@ -169,7 +188,7 @@
 
 		formatDate: function(date) {
 			var dateObj = new Date(date);
-			return dateObj.format('M d, Y h:i');
+			return dateObj.format('M d, Y h:i a');
 		},
 
 		getMenu: function() {
@@ -180,9 +199,9 @@
 		},
 
 		getDialog: function(isNew) {
-			var dialog = new TimeRestrictedDialog();
-			dialog.isNew = isNew;
-			dialog.data = {};
+			var dialog    = new TimeRestrictedDialog();
+			dialog.isNew  = isNew;
+			dialog.data   = {};
 			dialog.plugin = this;
 
 			return dialog;
@@ -200,8 +219,7 @@
 	});
 
 	$(document).ready(function() {
-		var plugin = new TimeRestrictedPlugin();
-		plugin.register();
+		VisualShortcodeRedux.registerPlugin('timeRestricted', TimeRestrictedPlugin);
 	});
 
 }(jQuery));

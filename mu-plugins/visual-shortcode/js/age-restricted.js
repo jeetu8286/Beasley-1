@@ -43,7 +43,7 @@
 			if (data.status) {
 				return data.status;
 			} else {
-				return '18+';
+				return '18plus';
 			}
 		}
 
@@ -70,13 +70,35 @@
 			return 'Restricted to: ' + this.getMetaStatus(data);
 		},
 
-		getMetaStatus: function(data) {
-			var status = data.status;
+		getData: function() {
+			var data = this.data;
 
+			if (data.status) {
+				data.status = this.toValue(data.status);
+			}
+
+			return data;
+		},
+
+		getMetaStatus: function(data) {
+			return this.toLabel(data.status);
+		},
+
+		toLabel: function(status) {
 			if (status === '18plus' || status === '18+') {
 				return '18+';
 			} else if (status === '21plus' || status === '21+') {
 				return '21+';
+			} else {
+				return 'N/A';
+			}
+		},
+
+		toValue: function(status) {
+			if (status === '18plus' || status === '18+') {
+				return '18plus';
+			} else if (status === '21plus' || status === '21+') {
+				return '21plus';
 			} else {
 				return 'N/A';
 			}
@@ -101,8 +123,7 @@
 	});
 
 	$(document).ready(function() {
-		var plugin = new AgeRestrictedPlugin();
-		plugin.register();
+		VisualShortcodeRedux.registerPlugin('ageRestricted', AgeRestrictedPlugin);
 	});
 
 }(jQuery));

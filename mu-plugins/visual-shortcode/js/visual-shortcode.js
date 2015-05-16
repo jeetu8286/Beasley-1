@@ -8,9 +8,13 @@
 	Convertor.prototype = {
 
 		toHTML: function(content) {
-			return wp.shortcode.replace(
+			var html = wp.shortcode.replace(
 				this.plugin.getShortcodeTag(), content, this.toHTMLFragmentProxy
 			);
+
+			html = this.replaceEmptyBody(html);
+
+			return html;
 		},
 
 		toShortcode: function(content) {
@@ -62,13 +66,14 @@
 		},
 
 		replaceShortcode: function(index, shortcode) {
-			var $shortcode  = $(shortcode);
-			var $body       = $('.body', $shortcode);
-			var data        = $shortcode.data();
-			var wpShortcode = new wp.shortcode({
+			var $shortcode    = $(shortcode);
+			var shortcodeNode = this.plugin.nodeForTarget(shortcode);
+			var $body         = $('.body', $shortcode);
+			var data          = this.plugin.getDataFromNode(shortcodeNode);
+			var wpShortcode   = new wp.shortcode({
 				tag     : this.plugin.getShortcodeTag(),
 				attrs   : data,
-				type    : this.getType(),
+				type    : this.plugin.getType(),
 				content : $body.html()
 			});
 
@@ -77,13 +82,15 @@
 			$shortcode.replaceWith(html);
 		},
 
+		replaceEmptyBody: function(html) {
+			html = html.replace('<div class="body">&nbsp;</div>', '&nbsp;');
+
+			return html;
+		},
+
 		getSelector: function() {
 			return '.' + this.plugin.getClassName();
 		},
-
-		getType: function() {
-			return 'closed';
-		}
 
 	};
 
@@ -94,6 +101,7 @@
 	Menu.prototype = {
 
 		plugin: null,
+		button: null,
 
 		register: function() {
 			var editor  = this.plugin.getEditor();
@@ -101,20 +109,29 @@
 			var buttons = this.getButtons();
 			var button;
 
-			for ( var i = 0; i < buttons.length; i++ ) {
+			for (var i = 0; i < buttons.length; i++) {
 				button = buttons[i];
 				editor.addButton(command, button);
 			}
 		},
 
 		getButtons: function() {
+			var self = this;
+
 			return [
 				{
-					title: this.plugin.getDisplayName(),
-					cmd: this.plugin.getCommand(),
-					image: '',
+					title        : this.plugin.getDisplayName(),
+					cmd          : this.plugin.getCommand(),
+					image        : '',
+					onPostRender : function() { self.button = this; },
 				}
 			];
+		},
+
+		setEnabled: function(enabled) {
+			if (this.button) {
+				this.button.disabled(!enabled);
+			}
 		}
 
 	};
@@ -125,10 +142,11 @@
 
 	Dialog.prototype = {
 
-		plugin : null,
-		win    : null,
-		data: {},
-		activeNode: null,
+		plugin     : null,
+		win        : null,
+		data       : {},
+		activeNode : null,
+		isNew      : true,
 
 		open: function() {
 			var editor        = this.plugin.getEditor();
@@ -137,6 +155,12 @@
 
 			this.activeNode = this.plugin.getSelectedNode();
 			this.win        = windowManager.open(params);
+
+			if (!this.data.isNew) {
+				// KLUDGE - TinyMCE buttons have inline styles
+				var $removeButton = $('#content-restricted-remove-button');
+				$removeButton.css('left', '10px');
+			}
 
 			this.didOpen();
 		},
@@ -158,25 +182,27 @@
 				var focusState = plugin.getFocusState();
 				var mode       = focusState.value;
 				var target     = focusState.target;
-				var $target = $(target);
-				var $meta = $('.meta', $target);
+				var $target    = $(target);
+				var $meta      = $('.meta', $target);
+				var targetNode = this.plugin.nodeForTarget(target);
 
-				$target.data(data);
+				this.plugin.saveDataToNode(targetNode, data);
 				$meta.html(this.plugin.getMetaLabel(data));
 			} else {
 				var selectedText = this.plugin.getSelectedText();
 				var shortcode = new wp.shortcode({
 					tag     : this.plugin.getShortcodeTag(),
 					attrs   : data,
-					type    : 'closed',
+					type    : this.plugin.getType(),
 					content : selectedText,
 				});
 
 				var content = shortcode.string();
 
 				editor.execCommand('mceInsertContent', false, content);
-				editor.selection.collapse();
 			}
+
+			editor.selection.collapse();
 		},
 
 		didClose: function(event) {
@@ -210,7 +236,7 @@
 				title   : this.getTitle(),
 				width   : size.width,
 				height  : size.height,
-				buttons : this.getButtons(),
+				buttons : this.getButtons(this.isNew),
 				body    : this.getBody(),
 
 				onsubmit : $.proxy(this.didSubmit, this),
@@ -221,7 +247,7 @@
 		},
 
 		getSize: function() {
-			return { width: 400, height: 200 };
+			return { width: 400, height: 100 };
 		},
 
 		getTitle: function() {
@@ -229,12 +255,7 @@
 		},
 
 		getButtons: function(isNew) {
-			return [
-				{
-					text: 'Remove',
-					id: 'content-restricted-remove-button',
-					onclick: $.proxy(this.didRemove, this),
-				},
+			var buttons = [
 				{
 					text: 'Ok',
 					onclick: 'submit'
@@ -244,10 +265,86 @@
 					onclick: 'close'
 				}
 			];
+
+			if (!isNew) {
+				buttons.unshift(
+					{
+						text: 'Remove',
+						id: 'content-restricted-remove-button',
+						onclick: $.proxy(this.didRemove, this),
+					}
+				);
+			}
+
+			return buttons;
 		},
 
 		getBody: function(isNew) {
 			return 'abstract';
+		},
+
+	};
+
+	var PluginGroup = function(groupID) {
+		this.groupID    = groupID;
+		this.plugins    = [];
+		this.registered = false;
+	};
+
+	PluginGroup.prototype = {
+
+		add: function(plugin) {
+			this.plugins.push(plugin);
+			this.register(plugin);
+		},
+
+		register: function(plugin) {
+			if (!this.registered) {
+				var editor = plugin.getEditor();
+				editor.onNodeChange.add($.proxy(this.didNodeChange, this));
+
+				this.registered = true;
+			}
+		},
+
+		didNodeChange: function(editor, controlManager, node) {
+			var groupHasFocus = this.groupHasFocus();
+			var n             = this.plugins.length;
+			var i, plugin;
+
+			for (i = 0; i < n; i++) {
+				plugin = this.plugins[i];
+
+				if (plugin.isFocussed()) {
+					/* plugin in focus - enable */
+					plugin.setEnabled(true);
+				} else if (groupHasFocus) {
+					/* plugin does not have focus but group has
+					 * focus - disable current
+					 */
+					plugin.setEnabled(false);
+				} else {
+					/* plugin is not focus - group also does not have
+					 * focus - outside content restricted focus - enable
+					 */
+					plugin.setEnabled(true);
+				}
+			}
+		},
+
+		groupHasFocus: function() {
+			var n = this.plugins.length;
+			var i, plugin;
+
+			for (i = 0; i < n; i++) {
+				plugin = this.plugins[i];
+
+				if (plugin.isFocussed()) {
+					return true;
+				}
+			}
+
+			return false;
 		},
 
 	};
@@ -259,7 +356,7 @@
 	Plugin.prototype = {
 
 		getName: function() {
-			return 'shortcode-plugin';
+			return 'shortcodePlugin';
 		},
 
 		getPluginName: function() {
@@ -282,8 +379,16 @@
 			return this.getName();
 		},
 
+		getGroupID: function() {
+			return this.group.groupID;
+		},
+
 		getNamespace: function() {
 			return 'tinymce.plugins.' + this.getPluginName();
+		},
+
+		getType: function() {
+			return 'closed';
 		},
 
 		getMetaLabel: function(data) {
@@ -331,11 +436,11 @@
 
 		getSelectedData: function() {
 			var focusState = this.getFocusState();
-			var target = focusState.target;
+			var target     = focusState.target;
 
 			if (target) {
-				var $target = $(target);
-				return $target.data();
+				var targetNode = this.nodeForTarget(target);
+				return this.getDataFromNode(targetNode);
 			} else {
 				return {};
 			}
@@ -367,16 +472,11 @@
 			return state.value === 'at' || state.value === 'inside';
 		},
 
-		register: function() {
-			var pluginName = this.getPluginName();
-			var callback   = this.callback('didRegister');
-
-			tinymce.PluginManager.add(pluginName, callback);
+		setEnabled: function(enabled) {
+			this.menu.setEnabled(enabled);
 		},
 
-		/* TinyMCE Events */
-		didRegister: function(editor) {
-			this.editor = editor;
+		initialize: function() {
 			this.editor.addCommand(this.getCommand(), this.callback('didCommand'));
 
 			this.menu = this.getMenu();
@@ -387,17 +487,18 @@
 			this.editor.on('PostProcess', this.callback('didPostProcess'));
 		},
 
+		/* TinyMCE Events */
 		didCommand: function() {
-			var dialog  = this.getDialog();
-			dialog.data = this.getSelectedData();
-			dialog.open();
+			var dialog   = this.getDialog();
+			dialog.data  = this.getSelectedData();
+			dialog.isNew = !this.isFocussed();
 
-			var $removeButton = $('#content-restricted-remove-button');
-			$removeButton.css('left', '10px');
+			dialog.open();
 		},
 
-		didNodeChange: function(editor, command, node) {
-			command.setActive(this.isFocussed());
+		didNodeChange: function(editor, controlManager, node) {
+			var hasFocus = this.isFocussed();
+			controlManager.setActive(this.getCommand(), hasFocus);
 
 			var focusState = this.getFocusState();
 			var isInside   = false;
@@ -434,13 +535,102 @@
 		callback: function(method) {
 			return $.proxy(this[method], this);
 		},
+
+		nodeForTarget: function(target) {
+			if (target instanceof jQuery) {
+				return target.get(0);
+			} else {
+				return target;
+			}
+		},
+
+		saveDataToNode: function(node, data) {
+			for (var key in data) {
+				if (data.hasOwnProperty(key)) {
+					node.setAttribute('data-' + key, data[key]);
+				}
+			}
+		},
+
+		getDataFromNode: function(node) {
+			var data       = {};
+			var pattern    = /^data-/;
+			var attributes = node.attributes;
+			var n          = attributes.length;
+			var cursor     = ('data-').length;
+			var i, key, name;
+
+			for (i = 0; i < n; i++) {
+				attribute = attributes[i];
+				name      = attribute.name;
+
+				if (pattern.test(name)) {
+					key       = name.substring(cursor);
+					data[key] = attribute.value;
+				}
+			}
+
+			return data;
+		},
 	};
 
+	var PluginFactory = function() {
+		this.pluginGroups = {};
+	};
+
+	PluginFactory.prototype = {
+
+		register: function(pluginName, klass) {
+			var self    = this;
+			var builder = function(editor, editorUrl) {
+				return self.build(editor, editorUrl, klass);
+			};
+
+			tinymce.PluginManager.add(pluginName, builder);
+		},
+
+		build: function(editor, editorUrl, klass) {
+			var plugin       = new klass();
+			var groupID      = editor.id;
+
+			plugin.editor    = editor;
+			plugin.editorUrl = editorUrl;
+			plugin.group     = this.store(groupID, plugin);
+			plugin.initialize();
+
+			return plugin;
+		},
+
+		store: function(groupID, plugin) {
+			if (!this.pluginGroups[groupID]) {
+				this.pluginGroups[groupID] = new PluginGroup(groupID);
+			}
+
+			var group = this.pluginGroups[groupID];
+			group.add(plugin);
+
+			return group;
+		}
+
+	};
+
+	PluginFactory.instance = new PluginFactory();
+
 	window.VisualShortcodeRedux = {
-		Convertor: Convertor,
-		Menu: Menu,
-		Dialog: Dialog,
-		Plugin: Plugin,
+		Convertor     : Convertor,
+		Menu          : Menu,
+		Dialog        : Dialog,
+		Plugin        : Plugin,
+		PluginFactory : PluginFactory,
+		PluginGroup   : PluginGroup,
+
+		registerPlugin: function(name, klass) {
+			if (!this.factory) {
+				this.factory = new PluginFactory();
+			}
+
+			return this.factory.register(name, klass);
+		}
 	};
 
 }(jQuery));

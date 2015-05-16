@@ -18,26 +18,6 @@ class ContentRestrictedShortcodes {
 		add_filter(
 			'mce_css', array( $this, 'add_css' )
 		);
-
-		add_action(
-			'admin_head', array( $this, 'add_button_css' )
-		);
-	}
-
-	function add_button_css() {
-		$html = <<<HTML
-		<style type="text/css">
-i.mce-ico.mce-i-ageRestricted:before {
-	content: "\f301";
-	display: inline-block;
-	-webkit-font-smoothing: antialiased;
-	font: normal 20px/1 'dashicons';
-	vertical-align: top;
-}
-		</style>
-HTML;
-
-		echo $html;
 	}
 
 	function add_base_plugin() {
@@ -65,6 +45,11 @@ HTML;
 				'0.1.0',
 				false
 			);
+
+			wp_enqueue_style(
+				'visual-shortcode-admin',
+				$this->get_css_url( 'visual-shortcode-admin' )
+			);
 		}
 	}
 
@@ -80,16 +65,16 @@ HTML;
 
 	function add_plugins( $plugins ) {
 		$plugins['ageRestricted']   = $this->get_plugin_url( 'age-restricted' );
-		$plugins['loginRestricted'] = $this->get_plugin_url( 'login-restricted' );
 		$plugins['timeRestricted']  = $this->get_plugin_url( 'time-restricted' );
+		$plugins['loginRestricted'] = $this->get_plugin_url( 'login-restricted' );
 
 		return $plugins;
 	}
 
 	function add_buttons( $buttons ) {
 		$buttons[] = 'ageRestricted';
-		$buttons[] = 'loginRestricted';
 		$buttons[] = 'timeRestricted';
+		$buttons[] = 'loginRestricted';
 
 		return $buttons;
 	}

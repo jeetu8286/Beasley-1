@@ -101,8 +101,7 @@
 	});
 
 	$(document).ready(function() {
-		var plugin = new LoginRestrictedPlugin();
-		plugin.register();
+		VisualShortcodeRedux.registerPlugin('loginRestricted', LoginRestrictedPlugin);
 	});
 
 }(jQuery));
