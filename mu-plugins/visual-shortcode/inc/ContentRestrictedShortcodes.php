@@ -24,7 +24,7 @@ class ContentRestrictedShortcodes {
 		if ( $this->can_add_base_plugin() ) {
 			wp_enqueue_script(
 				'jquery-date-format',
-				$this->get_plugin_url( 'date.format/date.format' ),
+				$this->get_plugin_url( 'date.format/date-format' ),
 				array( 'jquery' ),
 				'0.1.0',
 				true
@@ -32,7 +32,7 @@ class ContentRestrictedShortcodes {
 
 			wp_enqueue_script(
 				'jquery-datetimepicker',
-				$this->get_plugin_url( 'datetimepicker/jquery.datetimepicker' ),
+				$this->get_plugin_url( 'datetimepicker/jquery-datetimepicker' ),
 				array( 'jquery' ),
 				'0.1.0',
 				true
@@ -82,7 +82,7 @@ class ContentRestrictedShortcodes {
 	function add_css( $styles ) {
 		$styles   = explode( ',', $styles );
 		$styles[] = $this->get_css_url( 'visual-shortcode' );
-		$styles[] = $this->get_css_url( 'datetimepicker/jquery.datetimepicker', 'js' );
+		$styles[] = $this->get_css_url( 'datetimepicker/jquery-datetimepicker', 'js' );
 		$styles   = implode( ',', $styles );
 
 		return $styles;
