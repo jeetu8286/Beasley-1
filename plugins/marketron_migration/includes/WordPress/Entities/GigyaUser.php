@@ -57,22 +57,19 @@ class GigyaUser extends BaseEntity {
 		file_put_contents( $export_file, json_encode( $gigya_export, JSON_PRETTY_PRINT ) );
 		\WP_CLI::success( "Saved $total Gigya Profiles" );
 
-		$export_file          = $this->container->config->get_gigya_account_export_file();
-		$filtered_gigya_users = $this->export_gigya_users();
-		file_put_contents( $export_file, json_encode( $filtered_gigya_users, JSON_PRETTY_PRINT ) );
-
-		\WP_CLI::success( "Saved $total Gigya Accounts" );
+		$export_file = $this->container->config->get_gigya_account_export_file();
+		$this->export_gigya_users( $export_file );
 	}
 
-	function export_gigya_users() {
-		$gigya_users         = array();
-		$total               = count( $this->gigya_users );
-		$msg                 = 'Saving Gigya Accounts ...';
-		$progress_bar        = new \WordPress\Utils\ProgressBar( $msg, $total );
+	function export_gigya_users( $export_file ) {
+		$total        = count( $this->gigya_users );
+		$msg          = 'Saving Gigya Accounts ...';
+		$progress_bar = new \WordPress\Utils\ProgressBar( $msg, $total );
+		$index        = 0;
 
 		foreach ( $this->gigya_users as $user_id => $gigya_user ) {
-			if ( $this->can_import_gigya_user( $gigya_user ) ) {
-				$gigya_users[] = $gigya_user;
+			if ( ! $this->can_import_gigya_user( $gigya_user ) ) {
+				unset( $this->gigya_users[ $user_id ] );
 			}
 
 			$progress_bar->tick();
@@ -80,7 +77,9 @@ class GigyaUser extends BaseEntity {
 
 		$progress_bar->finish();
 
-		return $gigya_users;
+		\WP_CLI::log( 'Saving Gigya Accounts ...' );
+		file_put_contents( $export_file, json_encode( $this->gigya_users, JSON_PRETTY_PRINT ) );
+		\WP_CLI::success( "Saving $total Gigya Accounts." );
 	}
 
 	function export_actions() {
