@@ -214,6 +214,7 @@ class Migrator {
 		$this->initialize( $args, $opts );
 		$this->config_loader->load();
 		$this->config_loader->load_live_streams();
+		$this->config_loader->load_myemma_groups( true );
 	}
 
 	function repair( $args, $opts ) {

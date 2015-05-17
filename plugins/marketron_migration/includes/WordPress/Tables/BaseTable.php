@@ -276,6 +276,11 @@ SQL;
 			$notify     = new \WordPress\Utils\ProgressBar( $msg, $total_rows );
 
 			foreach ( $rows as $row_id => $row ) {
+				if ( array_key_exists( 'exclude_from_csv', $row ) ) {
+					/* ignore rows marked for exclusion */
+					continue;
+				}
+
 				$csv_row = $this->to_csv_row( $row, $columns );
 				fputcsv(
 					$csv_file_handle, $csv_row, ',', '"'
