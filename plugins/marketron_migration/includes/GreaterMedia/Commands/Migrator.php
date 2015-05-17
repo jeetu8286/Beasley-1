@@ -200,11 +200,12 @@ class Migrator {
 		$tools_to_load = $this->get_tools_to_load();
 		$this->load_tools( $tools_to_load );
 
+		$this->table_factory->export();
+
 		if ( $this->opts['export_to_gigya'] ) {
 			$this->entity_factory->build( 'gigya_user' )->export();
 		}
 
-		$this->table_factory->export();
 		$this->error_reporter->save_report();
 		$this->side_loader->sync();
 	}
@@ -427,6 +428,19 @@ SQL;
 			\WP_CLI::error( 'Verification Failed with ' . count( $errors ) . ' errors.' );
 		}
 		//print_r( count( $marketron_accounts ) );
+	}
+
+	function delete_facebook_data( $args, $opts ) {
+		$this->initialize( $args, $opts );
+
+		$screener = new \GreaterMedia\Profile\AffinityClubScreener();
+		$screener->container = $this;
+
+		$affinity_club_tool    = $this->tool_factory->build( 'affinity_club' );
+		$affinity_clubs_input  = $affinity_club_tool->get_data_files()[0];
+		$affinity_clubs_output = str_replace( '_formatted.xml', '_filtered.xml', $affinity_clubs_input );
+
+		$screener->screen( $affinity_clubs_input, $affinity_clubs_output );
 	}
 }
 

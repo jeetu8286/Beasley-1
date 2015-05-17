@@ -65,7 +65,7 @@ class BaseTool {
 		return $this->get_config()->get_data_file_dirs_for_tool( $this->get_name() );
 	}
 
-	function load() {
+	function load( $auto_import = true ) {
 		$tool_name  = $this->get_name();
 		$data_files = $this->get_data_files();
 
@@ -79,7 +79,10 @@ class BaseTool {
 					$this->parse( $xml_doc );
 
 					$importer = $this->get_importer( $tool_name );
-					$importer->import_source( $xml_doc );
+
+					if ( $auto_import ) {
+						$importer->import_source( $xml_doc );
+					}
 
 					if ( $this->container->opts['repair'] ) {
 						$this->sources[] = $xml_doc;

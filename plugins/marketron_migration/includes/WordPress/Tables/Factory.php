@@ -28,6 +28,10 @@ class Factory {
 		return $this->get_instance_for_table( $name );
 	}
 
+	function destroy() {
+		$this->instances = null;
+	}
+
 	function get_table_names() {
 		$table_names = array();
 
@@ -51,6 +55,8 @@ class Factory {
 	function export() {
 		$this->export_all();
 		$this->export_to_file();
+
+		$this->destroy();
 	}
 
 	function export_all() {
