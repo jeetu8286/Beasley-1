@@ -29,7 +29,18 @@ class Factory {
 	}
 
 	function destroy() {
+		foreach ( $this->instances as $name => $instance ) {
+			if ( $instance->can_destroy() ) {
+				$instance->destroy();
+				$this->instances[ $name ] = null;
+				unset( $this->instances[ $name ] );
+			}
+		}
+
 		$this->instances = null;
+
+		$this->container = null;
+		unset( $this->container );
 	}
 
 	function get_table_names() {
@@ -60,7 +71,7 @@ class Factory {
 	}
 
 	function export_all() {
-		foreach ( $this->instances as $instance ) {
+		foreach ( $this->instances as $name => $instance ) {
 			$instance->export();
 		}
 	}

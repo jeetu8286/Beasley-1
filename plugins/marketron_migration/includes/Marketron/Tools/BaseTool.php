@@ -2,6 +2,15 @@
 
 namespace Marketron\Tools;
 
+/*
+ * TODO: Simplify this into a single class
+ *
+ * Original design called for multiple tool implementations
+ * but the only thing that actually needed customization was the tool name
+ * and path.
+ *
+ * Folding this back into one class will simplify..
+ */
 class BaseTool {
 
 	public $container;
@@ -100,64 +109,16 @@ class BaseTool {
 		// do optional custom parsing here
 	}
 
-	/*
-	function parse_fields( $element, $fields ) {
-		$record     = array();
-		$attributes = $element->attributes();
-
-		foreach ( $fields as $field_name ) {
-			if ( isset( $attributes[ $field_name ] ) ) {
-				$value = $this->parse_value( $field_name, $attributes );
-			} else {
-				$value = null;
-			}
-
-			$record[ $field_name ] = $value;
-		}
-
-		return $record;
+	function can_destroy() {
+		return true;
 	}
 
-	function parse_value( $field_name, $attributes ) {
-		$value = $attributes[ $field_name ];
-		$value = (string) $value;
-		$value = trim( $value );
+	function destroy() {
+		$this->container = null;
+		unset( $this->container );
 
-		if ( preg_match( '/DateTime$/', $field_name ) ) {
-			$value = $value;
-			//$value = new \DateTime( $value );
-		} else if ( preg_match( '/Filepath$/', $field_name ) ) {
-			$value = $this->parse_filepath( $value );
-		}
-
-
-		return $value;
+		$this->sources = null;
+		unset( $this->sources );
 	}
-
-	function parse_filepath( $filepath ) {
-		$filename = str_replace( '\\', '/', $filepath );
-		$filename = urldecode( $filename ); // for filenames with spaces
-		$filename = str_replace( ' ', '%20', $filename );
-		$filename = str_replace( '&amp;', '&', $filename );
-		$filename = str_replace( '&mdash;', '—', $filename );
-
-		return $filename;
-	}
-
-	function parse_collection( $parser_func, $elements ) {
-		$items = array();
-		$callable = array( $this, $parser_func );
-
-		foreach ( $elements as $element ) {
-			$item = call_user_func( $callable, $element );
-
-			if ( $item !== false ) {
-				$items[] = $item;
-			}
-		}
-
-		return $items;
-	}
-*/
 
 }

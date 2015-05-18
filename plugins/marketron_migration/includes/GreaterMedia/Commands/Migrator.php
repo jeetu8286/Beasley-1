@@ -200,11 +200,21 @@ class Migrator {
 		$tools_to_load = $this->get_tools_to_load();
 		$this->load_tools( $tools_to_load );
 
-		$this->table_factory->export();
-
 		if ( $this->opts['export_to_gigya'] ) {
 			$this->entity_factory->build( 'gigya_user' )->export();
 		}
+
+		$this->importer_factory->destroy();
+		$this->importer_factory = null;
+		unset( $this->importer_factory );
+
+		$this->entity_factory->destroy();
+		$this->entity_factory = null;
+		unset( $this->entity_factory );
+
+		$this->table_factory->export();
+		$this->table_factory = null;
+		unset( $this->table_factory );
 
 		$this->error_reporter->save_report();
 		$this->side_loader->sync();

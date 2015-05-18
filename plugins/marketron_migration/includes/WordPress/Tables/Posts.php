@@ -128,8 +128,10 @@ class Posts extends BaseTable {
 	function add_post_meta( $post_id, $fields ) {
 		$meta_fields = $this->to_meta_fields( $post_id, $fields );
 		$table       = $this->get_table( 'postmeta' );
+		$exclude_from_csv = array_key_exists( 'existing_id', $fields );
 
 		foreach ( $meta_fields as $meta_field ) {
+			$meta_field['exclude_from_csv'] = true;
 			$table->add( $meta_field );
 		}
 	}
