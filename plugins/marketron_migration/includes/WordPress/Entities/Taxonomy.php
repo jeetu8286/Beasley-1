@@ -12,6 +12,10 @@ class Taxonomy extends BaseEntity {
 	}
 
 	function add( $term_name, $post_id = null, $exclude_from_csv = false ) {
+		if ( is_array( $term_name ) ) {
+			$term_name = $term_name[0];
+		}
+
 		if ( trim( $term_name ) === '' ) {
 			//\WP_CLI::warning( 'Empty Term name' );
 			return;
