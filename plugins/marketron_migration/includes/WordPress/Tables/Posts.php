@@ -131,7 +131,9 @@ class Posts extends BaseTable {
 		$exclude_from_csv = array_key_exists( 'existing_id', $fields );
 
 		foreach ( $meta_fields as $meta_field ) {
-			$meta_field['exclude_from_csv'] = true;
+			if ( $exclude_from_csv ) {
+				$meta_field['exclude_from_csv'] = $exclude_from_csv;
+			}
 			$table->add( $meta_field );
 		}
 	}
