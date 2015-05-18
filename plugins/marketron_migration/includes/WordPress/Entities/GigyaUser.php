@@ -67,6 +67,7 @@ class GigyaUser extends BaseEntity {
 	/* export_actions reconstructs it back into correct format */
 	function export_gigya_users( $export_file ) {
 		$total        = count( $this->gigya_users );
+		$write_total  = 0;
 		$msg          = 'Saving Gigya Accounts ...';
 		$progress_bar = new \WordPress\Utils\ProgressBar( $msg, $total );
 		$index        = 0;
@@ -77,6 +78,7 @@ class GigyaUser extends BaseEntity {
 				unset( $this->gigya_users[ $user_id ] );
 			} else {
 				fwrite( $file, json_encode( $gigya_user ) . "\n" );
+				$write_total++;
 			}
 
 			$progress_bar->tick();
@@ -87,7 +89,7 @@ class GigyaUser extends BaseEntity {
 
 		//\WP_CLI::log( 'Saving Gigya Accounts ...' );
 		//file_put_contents( $export_file, json_encode( $this->gigya_users, JSON_PRETTY_PRINT ) );
-		\WP_CLI::success( "Saved $total Gigya Accounts." );
+		\WP_CLI::success( "Saved $write_total Gigya Accounts." );
 	}
 
 	function export_actions() {
