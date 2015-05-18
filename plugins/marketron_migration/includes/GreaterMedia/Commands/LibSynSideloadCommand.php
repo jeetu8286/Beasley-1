@@ -1,9 +1,11 @@
 <?php
 
+namespace GreaterMedia\Commands;
+
 /**
  * Sideload Libsyn into WordPress
  */
-class WP_CLI_Libsyn_Sideload_Command extends WP_CLI_Command {
+class LibSynSideloadCommand extends \WP_CLI_Command {
 
     /**
      * Sideload embedded libsyn podcasts, and update post references.
@@ -50,9 +52,9 @@ class WP_CLI_Libsyn_Sideload_Command extends WP_CLI_Command {
         $query = "SELECT ID, post_content FROM $wpdb->posts $where";
 
         $num_updated_posts = 0;
-        foreach( new WP_CLI\Iterators\Query( $query ) as $post ) {
+        foreach( new \WP_CLI\Iterators\Query( $query ) as $post ) {
 
-            //WP_CLI::line( sprintf( "Post #%d found.", $post->ID ) );
+            //\WP_CLI::line( sprintf( "Post #%d found.", $post->ID ) );
 
             $num_sideloaded_images = 0;
 
@@ -60,14 +62,14 @@ class WP_CLI_Libsyn_Sideload_Command extends WP_CLI_Command {
                 continue;
             }
 
-            $document = new DOMDocument;
+            $document = new \DOMDocument;
             @$document->loadHTML( $post->post_content );
 
             $iframe_srcs = array();
             foreach( $document->getElementsByTagName( 'iframe' ) as $iframe ) {
 
                 $iframe_src = esc_url_raw( $iframe->getAttribute( 'src' ) );
-                //WP_CLI::line( sprintf( "iframe found: %s", $iframe_src ) );
+                //\WP_CLI::line( sprintf( "iframe found: %s", $iframe_src ) );
 
                 // Get iframe source
                 $tmp = download_url( $iframe_src );
@@ -79,12 +81,12 @@ class WP_CLI_Libsyn_Sideload_Command extends WP_CLI_Command {
                 $m = preg_match( $pattern, $tmpHtml, $matches );
 
                 if ($m){
-                                        WP_CLI::line( sprintf( "Post #%d image found: %s", $post->ID, $matches[0] ) );
+                                        \WP_CLI::line( sprintf( "Post #%d image found: %s", $post->ID, $matches[0] ) );
 
-                                    WP_CLI::line( 'Downloading image...' );
+                                    \WP_CLI::line( 'Downloading image...' );
                                     // Download mp3 to temp file
                                     $tmp = download_url( $matches[1] );
-                                    WP_CLI::line( 'Downloaded image.' );
+                                    \WP_CLI::line( 'Downloaded image.' );
 
                                     // Set variables for storage
                                     $file_array = array();
@@ -95,21 +97,21 @@ class WP_CLI_Libsyn_Sideload_Command extends WP_CLI_Command {
                                     if ( is_wp_error( $tmp ) ) {
                                             @unlink( $file_array['tmp_name'] );
                                             $file_array['tmp_name'] = '';
-                                            WP_CLI::warning( $tmp->get_error_message() );
+                                            \WP_CLI::warning( $tmp->get_error_message() );
                                             $bad_posts[] = $post->ID;
                                             continue;
                                     }
 
-                                    WP_CLI::line( 'Sideloading image...' );
+                                    \WP_CLI::line( 'Sideloading image...' );
                                     // do the validation and storage stuff
                                     $image_id = media_handle_sideload( $file_array, $post->ID );
-                                    WP_CLI::line( 'Sideloaded image...' );
+                                    \WP_CLI::line( 'Sideloaded image...' );
 
                                     // If error storing permanently, unlink
                                     if ( is_wp_error( $image_id ) ) {
                                             var_dump( $image_id );
                                             @unlink( $file_array['tmp_name']);
-                                            WP_CLI::warning( $image_id->get_error_message() );
+                                            \WP_CLI::warning( $image_id->get_error_message() );
                                             $bad_posts[] = $post->ID;
                                             continue;
                                     }
@@ -119,7 +121,7 @@ class WP_CLI_Libsyn_Sideload_Command extends WP_CLI_Command {
 
                                     @unlink( $file_array['tmp_name'] );
                 }else{
-                                        WP_CLI::line( sprintf( "Post #%d image not found.", $post->ID ) );
+                                        \WP_CLI::line( sprintf( "Post #%d image not found.", $post->ID ) );
                                 }
 
                 // Parse out mp3 url
@@ -127,16 +129,16 @@ class WP_CLI_Libsyn_Sideload_Command extends WP_CLI_Command {
                 $m = preg_match( $pattern, $tmpHtml, $matches );
 
                 if ($m){
-                    WP_CLI::line( sprintf( "Post #%d MP3 found: %s", $post->ID, $matches[0] ) );
+                    \WP_CLI::line( sprintf( "Post #%d MP3 found: %s", $post->ID, $matches[0] ) );
                 }else{
-                    WP_CLI::line( sprintf( "Post #%d MP3 not found.", $post->ID ) );
+                    \WP_CLI::line( sprintf( "Post #%d MP3 not found.", $post->ID ) );
                     $bad_posts[] = $post->ID;
                 }
 
-                WP_CLI::line( 'Downloading MP3...' );
+                \WP_CLI::line( 'Downloading MP3...' );
                 // Download mp3 to temp file
                 $tmp = download_url( $matches[0] );
-                WP_CLI::line( 'Downloaded MP3.' );
+                \WP_CLI::line( 'Downloaded MP3.' );
 
                 // Set variables for storage
                                 $file_array = array();
@@ -147,21 +149,21 @@ class WP_CLI_Libsyn_Sideload_Command extends WP_CLI_Command {
                                 if ( is_wp_error( $tmp ) ) {
                                         @unlink( $file_array['tmp_name'] );
                                         $file_array['tmp_name'] = '';
-                                        WP_CLI::warning( $tmp->get_error_message() );
+                                        \WP_CLI::warning( $tmp->get_error_message() );
                                         $bad_posts[] = $post->ID;
                     continue;
                                 }
 
-                WP_CLI::line( 'Sideloading MP3...' );
+                \WP_CLI::line( 'Sideloading MP3...' );
                 // do the validation and storage stuff
                                 $id = media_handle_sideload( $file_array, $post->ID );
-                WP_CLI::line( 'Sideloaded MP3...' );
+                \WP_CLI::line( 'Sideloaded MP3...' );
 
                 // If error storing permanently, unlink
                                 if ( is_wp_error( $id ) ) {
                     var_dump( $id );
                                         @unlink( $file_array['tmp_name']);
-                                        WP_CLI::warning( $id->get_error_message() );
+                                        \WP_CLI::warning( $id->get_error_message() );
                     $bad_posts[] = $post->ID;
                     continue;
                                 }
@@ -184,16 +186,15 @@ class WP_CLI_Libsyn_Sideload_Command extends WP_CLI_Command {
                 $wpdb->update( $wpdb->posts, array( 'post_content' => $post->post_content, 'post_parent' => 1022, 'post_type' => 'episode' ), array( 'ID' => $post->ID ) );
 
                 clean_post_cache( $post->ID );
-                WP_CLI::line( sprintf( "Sideloaded %d media references for post #%d", $num_sideloaded_images, $post->ID ) );
+                \WP_CLI::line( sprintf( "Sideloaded %d media references for post #%d", $num_sideloaded_images, $post->ID ) );
             } else if ( ! $num_sideloaded_images && $assoc_args['verbose'] ) {
-                WP_CLI::line( sprintf( "No media sideloading necessary for post #%d", $post->ID ) );
+                \WP_CLI::line( sprintf( "No media sideloading necessary for post #%d", $post->ID ) );
             }
 
         }
         var_dump( $bad_posts );
-        WP_CLI::success( sprintf( "Sideload complete. Updated media references for %d posts.", $num_updated_posts ) );
+        \WP_CLI::success( sprintf( "Sideload complete. Updated media references for %d posts.", $num_updated_posts ) );
     }
 
 }
 
-WP_CLI::add_command( 'libsyn', 'WP_CLI_Libsyn_Sideload_Command' );
