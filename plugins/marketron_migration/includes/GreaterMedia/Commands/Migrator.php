@@ -204,7 +204,18 @@ class Migrator {
 			$this->entity_factory->build( 'gigya_user' )->export();
 		}
 
+		$this->importer_factory->destroy();
+		$this->importer_factory = null;
+		unset( $this->importer_factory );
+
+		$this->entity_factory->destroy();
+		$this->entity_factory = null;
+		unset( $this->entity_factory );
+
 		$this->table_factory->export();
+		$this->table_factory = null;
+		unset( $this->table_factory );
+
 		$this->error_reporter->save_report();
 		$this->side_loader->sync();
 	}
@@ -213,6 +224,7 @@ class Migrator {
 		$this->initialize( $args, $opts );
 		$this->config_loader->load();
 		$this->config_loader->load_live_streams();
+		$this->config_loader->load_myemma_groups( true );
 	}
 
 	function repair( $args, $opts ) {
@@ -396,37 +408,26 @@ SQL;
 	/* profile verification */
 	function verify_gigya_import( $args, $opts ) {
 		$marketron_accounts_file = $opts['marketron_accounts'];
-		$gigya_accounts_file     = $opts['gigya_accounts'];
-		$error_file              = $opts['errors'];
-
-		$csv_loader     = new \GreaterMedia\Profile\GigyaCSVLoader();
-		$gigya_accounts = $csv_loader->load( $gigya_accounts_file );
-		//var_dump( $gigya_accounts );
-		//return;
-
-		\WP_CLI::log( 'Loaded ' . count( $gigya_accounts ) . ' Gigya Accounts' );
+		$errors_file              = $opts['errors_file'];
 
 		$json_loader        = new \GreaterMedia\Profile\ImportJSONLoader();
 		$marketron_accounts = $json_loader->load( $marketron_accounts_file );
 
-		\WP_CLI::log( 'Loaded ' . count( $marketron_accounts ) . ' Marketron Accounts' );
+		$verifier = new \GreaterMedia\Profile\GigyaAccountImportVerifier();
+		$verifier->verify( $marketron_accounts, $errors_file );
+	}
 
-		$verifier = new \GreaterMedia\Profile\ImportVerifier(
-			$marketron_accounts, $gigya_accounts
-		);
+	function delete_facebook_data( $args, $opts ) {
+		$this->initialize( $args, $opts );
 
-		$success = $verifier->verify();
+		$screener = new \GreaterMedia\Profile\AffinityClubScreener();
+		$screener->container = $this;
 
-		if ( $success ) {
-			\WP_CLI::success( 'Gigya Profile Import Verified!!!' );
-		} else {
-			$errors = $verifier->errors;
-			$data   = implode( "\n", $errors );
+		$affinity_club_tool    = $this->tool_factory->build( 'affinity_club' );
+		$affinity_clubs_input  = $affinity_club_tool->get_data_files()[0];
+		$affinity_clubs_output = str_replace( '_formatted.xml', '_filtered.xml', $affinity_clubs_input );
 
-			file_put_contents( $error_file, $data );
-			\WP_CLI::error( 'Verification Failed with ' . count( $errors ) . ' errors.' );
-		}
-		//print_r( count( $marketron_accounts ) );
+		$screener->screen( $affinity_clubs_input, $affinity_clubs_output );
 	}
 }
 

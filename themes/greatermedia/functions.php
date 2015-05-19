@@ -20,7 +20,7 @@
 if ( defined( 'GMR_PARENT_ENV' ) && 'dev' == GMR_PARENT_ENV ) {
 	define( 'GREATERMEDIA_VERSION', time() );
 } else {
-	define( 'GREATERMEDIA_VERSION', '1.0.21' );
+	define( 'GREATERMEDIA_VERSION', '1.0.22' );
 }
 
 add_theme_support( 'homepage-curation' );
@@ -265,7 +265,7 @@ add_action( 'wp_head', 'greatermedia_header_meta' );
 function greatermedia_nav_menus() {
 	$locations = array(
 		'main-nav' => __( 'Main Navigation', 'greatermedia' ),
-		'secondary-nav' => __( 'Seconadary Navigation', 'greatermedia' ),
+		'secondary-nav' => __( 'Secondary Navigation', 'greatermedia' ),
 		'footer-nav' => __( 'Footer Navigation', 'greatermedia' )
 	);
 	register_nav_menus( $locations );
@@ -447,7 +447,7 @@ function greatermedia_alter_taxonomy_archive_query( $query ) {
 }
 
 function greatermedia_is_taxonomy_archive( $query ) {
-	if ( $query->is_main_query() ) {
+	if ( $query->is_main_query() && ! is_admin() ) {
 		return $query->is_category() || $query->is_tag();
 	} else {
 		return false;
