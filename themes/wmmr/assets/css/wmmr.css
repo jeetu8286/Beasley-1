@@ -727,7 +727,7 @@ img {
   background-color: #303030; }
 
 .main .container {
-  background-color: #fff; }
+  background-color: #000; }
 
 .content, .gallery__archive, .main .lead-in, .main #signup-welcome, .main .view {
   width: 100%;
@@ -1429,7 +1429,7 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
 .header__nav .sub-menu, .header__nav .format-fw > ul, .header__nav .format-sp > ul, .header__nav .format-fi > ul, .header__account--links.sub-menu, .header__nav .format-fw > ul.header__account--links, .header__nav .format-sp > ul.header__account--links, .header__nav .format-fi > ul.header__account--links, .ui-menu {
   position: absolute;
   border-top: 7px solid #d22228;
-  background-color: #fff;
+  background-color: #000;
   color: #000000;
   min-width: 300px;
   z-index: 5000100;
@@ -1475,7 +1475,7 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
   .mobile-nav .sub-menu li:not(.mobile-menu-submenu-header), .mobile-nav .header__nav .format-fw > ul li:not(.mobile-menu-submenu-header), .header__nav .mobile-nav .format-fw > ul li:not(.mobile-menu-submenu-header), .mobile-nav .header__nav .format-sp > ul li:not(.mobile-menu-submenu-header), .header__nav .mobile-nav .format-sp > ul li:not(.mobile-menu-submenu-header), .mobile-nav .header__nav .format-fi > ul li:not(.mobile-menu-submenu-header), .header__nav .mobile-nav .format-fi > ul li:not(.mobile-menu-submenu-header) {
     list-style-type: none;
     border: none;
-    background-color: #fff; }
+    background-color: #000; }
   .mobile-nav .sub-menu a:link, .mobile-nav .header__nav .format-fw > ul a:link, .header__nav .mobile-nav .format-fw > ul a:link, .mobile-nav .header__nav .format-sp > ul a:link, .header__nav .mobile-nav .format-sp > ul a:link, .mobile-nav .header__nav .format-fi > ul a:link, .header__nav .mobile-nav .format-fi > ul a:link, .mobile-nav .sub-menu a:visited, .mobile-nav .header__nav .format-fw > ul a:visited, .header__nav .mobile-nav .format-fw > ul a:visited, .mobile-nav .header__nav .format-sp > ul a:visited, .header__nav .mobile-nav .format-sp > ul a:visited, .mobile-nav .header__nav .format-fi > ul a:visited, .header__nav .mobile-nav .format-fi > ul a:visited {
     color: #000; }
   .mobile-nav .sub-menu a:hover, .mobile-nav .header__nav .format-fw > ul a:hover, .header__nav .mobile-nav .format-fw > ul a:hover, .mobile-nav .header__nav .format-sp > ul a:hover, .header__nav .mobile-nav .format-sp > ul a:hover, .mobile-nav .header__nav .format-fi > ul a:hover, .header__nav .mobile-nav .format-fi > ul a:hover, .mobile-nav .sub-menu a:active, .mobile-nav .header__nav .format-fw > ul a:active, .header__nav .mobile-nav .format-fw > ul a:active, .mobile-nav .header__nav .format-sp > ul a:active, .header__nav .mobile-nav .format-sp > ul a:active, .mobile-nav .header__nav .format-fi > ul a:active, .header__nav .mobile-nav .format-fi > ul a:active {
@@ -3060,7 +3060,7 @@ Community Highlights and Events
   display: block;
   margin-right: 7.4229703521%;
   width: 100%;
-  background-color: #fff;
+  background-color: #000;
   color: #404041;
   margin: 0 0 .75em;
   position: relative;
@@ -3901,7 +3901,7 @@ a.highlights__contest--btn {
   min-height: 0;
   padding-top: 40px;
   padding-bottom: 40px;
-  background-color: #fff;
+  background-color: #000;
   border-top: 1px solid #d0d2d3; }
 
 .footer__ad {
@@ -3968,7 +3968,7 @@ a.highlights__contest--btn {
   margin-right: 7.4229703521%;
   width: 100%;
   padding: 40px 5.5% 0;
-  background-color: #fff;
+  background-color: #000;
   color: #929497;
   text-align: center; }
   .footer__content:last-child {
@@ -9081,7 +9081,7 @@ category: Components - Shows
   left: 28%;
   height: 45%;
   border-width: 3px;
-  background-color: rgba(255, 255, 255, 0.5); }
+  background-color: rgba(0, 0, 0, 0.5); }
 
 .show__blogroll .podcast__btn--play, .show__blogroll .podcast__btn--pause {
   width: 80%;
@@ -10426,7 +10426,7 @@ category: Components - Shows
         display: none; } }
 
 .shows__schedule--dayofweek {
-  background: #fff;
+  background: #000;
   border-bottom: 2px solid #000000;
   text-align: center;
   padding: 15px 0;
@@ -10653,7 +10653,7 @@ a.social__link, a.social-share-link {
       width: 100%;
       height: auto;
       padding: 16px 2.5%;
-      background-color: #fff;
+      background-color: #000;
       border-top: none;
       -webkit-transition: all 200ms ease-in-out;
       -moz-transition: all 200ms ease-in-out;
@@ -10706,7 +10706,7 @@ a.social__link, a.social-share-link {
   @media screen and (min-width: 768px)  {
     .header__search--input {
       height: 100px;
-      background-color: #fff !important;
+      background-color: #000 !important;
       outline: none;
       font-size: 2.2806973457em;
       color: #000000; }
@@ -10752,7 +10752,7 @@ a.social__link, a.social-share-link {
     display: block; }
 
 .header-search-body {
-  background: #fff;
+  background: #000;
   text-align: center;
   margin: 0 -20px;
   padding: 1.5em 20px;
@@ -10961,7 +10961,7 @@ body.search-results .posts-pagination {
   line-height: 1.5;
   margin: 0 -20px;
   padding: 0 20px 1.5em;
-  background: #fff;
+  background: #000;
   text-align: left; }
   @media screen and (min-width: 768px)  {
     .keyword-search {
@@ -11167,7 +11167,7 @@ category: Components - Gallery Archive
   overflow: auto; }
 
 .gallery .container {
-  background-color: #fff; }
+  background-color: #000; }
   @media screen and (min-width: 768px)  {
     .gallery .container {
       padding-right: 0; } }
@@ -12151,7 +12151,7 @@ category: Components - Shows
 */
 .show__personalities {
   display: block;
-  background-color: #fff;
+  background-color: #000;
   margin-top: -4em;
   margin-bottom: 10%; }
   .show__personalities:before, .show__personalities:after {
@@ -12589,7 +12589,7 @@ select {
   cursor: default; }
 
 .header__search--form .ui-autocomplete {
-  background-color: #fff;
+  background-color: #000;
   width: 100%;
   top: 100%;
   left: 0; }
@@ -12605,7 +12605,7 @@ select {
       min-height: 800px; } }
   .profile-page .profile-page__sidebar, .profile-page .profile-page__content {
     padding: 1em 7.0833333333%;
-    background-color: #fff; }
+    background-color: #000; }
     @media screen and (min-width: 1024px)  {
       .profile-page .profile-page__sidebar, .profile-page .profile-page__content {
         display: table-cell;
@@ -12705,7 +12705,7 @@ select {
   width: 640px;
   height: 250px;
   padding: 20px;
-  background-color: #fff;
+  background-color: #000;
   font-size: 1.265625em;
   color: #404041;
   -webkit-transform: translate(-50%, -50%);
@@ -14797,18 +14797,58 @@ table.responsive tr:nth-of-type(even) {
  * Misc overides for the child theme
  */
 .main, .home__highlights {
-  background-color: #fff; }
+  background-image: url("../../images/main-bg.png");
+  background-position: center;
+  background-repeat: repeat-y;
+  background-color: #000; }
 
 .header {
-  border-bottom: 1px solid #58595b; }
+  background-color: white;
+  background-image: url("../../images/crowd-header-bg.jpg");
+  background-repeat: repeat-x;
+  background-position: center;
+  border-bottom: 7px solid gray; }
 
-@media screen and (min-width: 768px)  {
-  .home__featured {
-    background-position: left top;
-    background-color: #561015; } }
+.header__main {
+  height: 82px;
+  border-top: none;
+  border-bottom: none;
+  background-color: rgba(0, 0, 0, 0.3); }
+  .header__main a, .header__main a:active, .header__main a:hover, .header__main a:visited {
+    color: #fff;
+    font-weight: 300; }
+  .header__main .header__nav {
+    text-transform: uppercase;
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+    margin-left: 250px; }
+  .header__main .header__search {
+    color: #fff; }
+  .header__main .header__account--logged-in, .header__main .header__account--logged-out, .header__main .header__account-- {
+    color: #fff; }
+  .header__main .header__social a.social__link {
+    color: #fff; }
+
+.home__featured {
+  background-color: white;
+  background-image: none;
+  border: 1px solid #eee;
+  background: url("../../images/pw_maze_white.png"); }
+  @media screen and (min-width: 768px)  {
+    .home__featured {
+      background-position: left top;
+      background-color: #561015; } }
 
 .live-links {
-  border-top: 0; }
+  border-top: 0;
+  background-image: url("../../images/brushed-metal.jpg");
+  background-position: center; }
+
+.live-links--more:before {
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0, #9f9c9c 100%); }
+.live-links--more .live-links--more__btn {
+  border: none;
+  background-color: #5b5d5f; }
 
 .single-gmr_gallery .gallery__paging--prev, .single-gmr_gallery .gallery__paging--next {
   color: #d0d2d3; }
@@ -14846,18 +14886,29 @@ table.responsive tr:nth-of-type(even) {
 
 .live-player__container {
   border-bottom: 1px solid white; }
+  .live-player__container .live-stream__status .live-stream__listen-now--btn, .live-player__container .live-stream__status .podcast__rss {
+    color: #fdfafa; }
+
+.now-playing__title {
+  font-weight: normal;
+  color: #000;
+  font-family: 'Oswald', sans-serif; }
 
 .now-playing__artist {
-  color: #303030; }
+  font-weight: 400;
+  color: #000;
+  font-family: 'Oswald', sans-serif; }
 
 .live-link__title, .live-link__title a:link, .live-link__title a:visited {
   color: #58595B; }
 
-.live-link__song:before {
-  color: #6d6e70; }
-
-.live-link__song--artist {
-  color: #6d6e70; }
+.live-link__song {
+  font-weight: 400;
+  font-family: 'Oswald', sans-serif; }
+  .live-link__song:before {
+    color: #c20411; }
+  .live-link__song .live-link__song--artist {
+    color: #c20411; }
 
 .live-link__song--title {
   color: #282827; }
@@ -14870,28 +14921,55 @@ table.responsive tr:nth-of-type(even) {
 .live-link__title a:hover, .live-link__title a:focus, .live-link__title a:active {
   color: #aa1c20; }
 
-@media screen and (min-width: 768px)  {
-  .header__logo {
-    top: -7px; } }
+.header__logo {
+  background-image: url("../../images/wmmr-logo.png");
+  background-repeat: no-repeat;
+  width: 199px;
+  height: 117px;
+  position: absolute;
+  z-index: 100;
+  top: -40px;
+  float: none; }
+
+.header__logo--img {
+  display: none; }
 
 .home__highlights {
+  background: url("../../images/pw_maze_gray.png");
   border-bottom-color: #d0d2d3; }
 
-.highlights__events--more-btn:hover {
-  color: #f5ed7f !important;
-  border-color: #f5ed7f; }
+.highlights__events {
+  text-decoration: none; }
+
+.highlights__events--more-btn {
+  background-color: #9B090E !important;
+  color: #fff; }
+  .highlights__events--more-btn:hover {
+    color: #f5ed7f !important;
+    border-color: #f5ed7f; }
 
 .highlights__event--item {
   background-color: #8c8c8c;
   color: #ffffff; }
 
-.highlights__event--title, .highlights__event--date {
-  color: #ffffff; }
-  a:hover .highlights__event--title, a:hover .highlights__event--date {
+.highlights__event--title {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 400;
+  color: #b72f2c; }
+  a:hover .highlights__event--title {
+    color: #f5ed7f; }
+
+.highlights__event--date {
+  color: #716c6c; }
+  a:hover .highlights__event--date {
     color: #f5ed7f; }
 
 .highlights__heading {
-  color: #ffffff; }
+  text-transform: uppercase;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+  color: #b72f2c;
+  text-shadow: 2px 2px 2px rgba(139, 128, 146, 0.4); }
 
 .type-contest .entry__title--tag {
   background-color: #d0d2d3;
@@ -14901,7 +14979,23 @@ table.responsive tr:nth-of-type(even) {
   background-color: #929497; }
 
 .footer {
-  background-color: #fff; }
+  background-color: #000; }
+
+.featured__content--title {
+  font-size: 1.23em;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 400; }
+
+.featured__article--heading {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-shadow: 2px 2px 1px #530606;
+  color: #fbe374; }
+
+.widget--live-player__title {
+  font-family: 'Oswald', sans-serif;
+  text-transform: uppercase; }
 
 .live-link__type--show {
   border-bottom-color: white;

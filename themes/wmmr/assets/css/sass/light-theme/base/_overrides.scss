@@ -1,12 +1,65 @@
 .main, %main {
-	background-color: $primary-bg;
+	background-image: url("../../images/main-bg.png");
+	background-position: center;
+	background-repeat: repeat-y;
+	background-color: #000;
 }
 
 .header {
-	border-bottom: 1px solid #58595b;
+	background-color: white;
+	background-image: url("../../images/crowd-header-bg.jpg");
+	background-repeat: repeat-x;
+	background-position: center;
+	border-bottom: 7px solid gray;
+}
+
+.header__main {
+	height: 82px;
+	border-top: none;
+	border-bottom: none;
+	background-color: rgba(0, 0, 0, 0.3);
+
+	a,
+	a:active,
+	a:hover,
+	a:visited {
+		color: #fff;
+		font-weight: 300;
+	}
+
+	.header__nav {
+		text-transform: uppercase;
+		font-family: 'Oswald', sans-serif;
+		font-weight: 700;
+		margin-left: 250px;
+	}
+
+	.header__search {
+		color: #fff;
+	}
+
+	.header__account--logged-in,
+	.header__account--logged-out,
+	.header__account-- {
+		color: #fff;
+	}
+
+	.header__social {
+
+		a.social__link {
+			color: #fff;
+		}
+
+	}
 }
 
 .home__featured {
+
+	background-color: white;
+	background-image: none;
+	border: 1px solid #eee;
+	background: url("../../images/pw_maze_white.png");
+
 	@include bp(medium) {
 		background-position: left top;
 		background-color: #561015;
@@ -16,6 +69,21 @@
 
 .live-links {
 	border-top: 0;
+	background-image: url("../../images/brushed-metal.jpg");
+  	background-position: center;
+}
+
+.live-links--more {
+
+	&:before {
+		background: linear-gradient(to bottom,rgba(255,255,255,0) 0,#9f9c9c 100%);
+	}
+
+	.live-links--more__btn {
+		border: none;
+		background-color: #5b5d5f;
+	}
+
 }
 
 .single-gmr_gallery .gallery__paging--prev,
@@ -70,22 +138,43 @@
 
 .live-player__container {
 	border-bottom: 1px solid white;
+
+	.live-stream__status {
+
+		.live-stream__listen-now--btn {
+			color: #fdfafa;
+		}
+
+	}
+}
+
+.now-playing__title {
+	font-weight: normal;
+	color: #000;
+	font-family: 'Oswald', sans-serif;
 }
 
 .now-playing__artist {
-	color: $color-gray-medium-dark;
+	font-weight: 400;
+	color: #000;
+	font-family: 'Oswald', sans-serif;
 }
 
 .live-link__title, .live-link__title a:link, .live-link__title a:visited {
 	color: $color-gray-medium;
 }
 
-.live-link__song:before {
-	color: $medium-dark-gray;
-}
+.live-link__song {
+	font-weight: 400;
+	font-family: 'Oswald', sans-serif;
 
-.live-link__song--artist {
-	color: $medium-dark-gray;
+	&:before {
+		color: #c20411;
+	}
+
+	.live-link__song--artist {
+		color: #c20411;
+	}
 }
 
 .live-link__song--title {
@@ -105,15 +194,37 @@
 }
 
 .header__logo {
+	background-image: url("../../images/wmmr-logo.png");
+	background-repeat: no-repeat;
+	width: 199px;
+	height: 117px;
+	position: absolute;
+	z-index: 100;
+	top: -40px;
+	float: none;
+
 	@include bp(medium) {
-		top: -7px;
+		/*top: -7px;*/
 	}
 }
+
+.header__logo--img {
+	display: none;
+}
+
 .home__highlights {
+	background: url("../../images/pw_maze_gray.png");
 	border-bottom-color: $primary-border;
 }
 
+.highlights__events {
+	text-decoration: none;
+}
+
 .highlights__events--more-btn {
+	background-color: #9B090E!important;
+	color: #fff;
+
 	&:hover {
 		color: $yellow !important;
 		border-color: $yellow;
@@ -125,8 +236,18 @@
 	color: $white;
 }
 
-.highlights__event--title, .highlights__event--date {
-	color: $white;
+.highlights__event--title {
+	font-family: 'Oswald', sans-serif;
+	font-weight: 400;
+	color: #b72f2c;
+
+	a:hover & {
+		color: $yellow;
+	}
+}
+
+.highlights__event--date {
+	color: #716c6c;
 
 	a:hover & {
 		color: $yellow;
@@ -134,7 +255,11 @@
 }
 
 .highlights__heading {
-	color: $highlights-heading;
+	text-transform: uppercase;
+	font-family: 'Oswald', sans-serif;
+	font-weight: 700;
+	color: #b72f2c;
+	text-shadow: 2px 2px 2px rgba(139, 128, 146, 0.4);
 }
 
 .type-contest .entry__title--tag {
@@ -149,3 +274,23 @@
 .footer {
 	background-color: $primary-bg;
 }
+
+.featured__content--title {
+	font-size: 1.23em;
+	font-family: 'Oswald', sans-serif;
+	font-weight: 400;
+}
+
+.featured__article--heading {
+	font-family: 'Oswald', sans-serif;
+	font-weight: 700;
+	text-transform: uppercase;
+	text-shadow: 2px 2px 1px rgba(83, 6, 6, 1);
+	color: #fbe374;
+}
+
+.widget--live-player__title {
+	font-family: 'Oswald', sans-serif;
+	text-transform: uppercase;
+}
+
