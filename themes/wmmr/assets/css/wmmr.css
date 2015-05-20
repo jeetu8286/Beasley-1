@@ -14797,17 +14797,19 @@ table.responsive tr:nth-of-type(even) {
  * Misc overides for the child theme
  */
 .main, .home__highlights {
-  background-image: url("../../images/main-bg.png");
-  background-position: center;
-  background-repeat: repeat-y;
-  background-color: #000; }
+  /*background-image: url("../../images/main-bg.png");
+	background-position: center;
+	background-repeat: repeat-y;*/
+  background-color: #fff; }
+  .main .container, .home__highlights .container {
+    background-color: #fff; }
 
 .header {
   background-color: white;
   background-image: url("../../images/crowd-header-bg.jpg");
   background-repeat: repeat-x;
   background-position: center;
-  border-bottom: 7px solid gray; }
+  border-bottom: none; }
 
 .header__main {
   height: 82px;
@@ -14829,11 +14831,42 @@ table.responsive tr:nth-of-type(even) {
   .header__main .header__social a.social__link {
     color: #fff; }
 
+.header__account ul li a:active, .header__account ul li a:focus, .header__account ul li a:hover, .header__account ul li:hover, .header__nav ul li a:active, .header__nav ul li a:focus, .header__nav ul li.active, .header__nav ul li.active a:hover, .ui-menu .ui-state-focus {
+  background-color: #f8c50f; }
+
+.header__account--links.sub-menu, .header__nav .format-fw > ul.header__account--links, .header__nav .format-sp > ul.header__account--links, .header__nav .format-fi > ul.header__account--links, .header__nav .format-fi > ul, .header__nav .format-fi > ul.header__account--links, .header__nav .format-fw > ul, .header__nav .format-fw > ul.header__account--links, .header__nav .format-sp > ul, .header__nav .format-sp > ul.header__account--links, .header__nav .sub-menu, .header__nav .format-fw > ul, .header__nav .format-sp > ul, .header__nav .format-fi > ul, .ui-menu {
+  position: absolute;
+  border-top: 7px solid #f8c50f;
+  background-color: #fff;
+  color: #000;
+  min-width: 300px;
+  z-index: 5000100; }
+
 .home__featured {
   background-color: white;
   background-image: none;
   border: 1px solid #eee;
   background: url("../../images/pw_maze_white.png"); }
+  .home__featured .featured__article--content {
+    background-image: -ms-linear-gradient(right, #db5b15 0%, #910101 100%);
+    background-image: -moz-linear-gradient(right, #db5b15 0%, #910101 100%);
+    background-image: -o-linear-gradient(right, #db5b15 0%, #910101 100%);
+    background-image: -webkit-gradient(linear, right top, left top, color-stop(0, #db5b15), color-stop(1, #910101));
+    background-image: -webkit-linear-gradient(right, #db5b15 0%, #910101 100%);
+    background-image: linear-gradient(to left, #db5b15 0%, #910101 100%);
+    border-radius: 0 0 0 38px;
+    -moz-border-radius: 0 0 0 38px;
+    -webkit-border-radius: 0 0 0 38px; }
+  .home__featured .featured__content--block {
+    background-image: -ms-linear-gradient(right, #db5b15 0%, #910101 100%);
+    background-image: -moz-linear-gradient(right, #db5b15 0%, #910101 100%);
+    background-image: -o-linear-gradient(right, #db5b15 0%, #910101 100%);
+    background-image: -webkit-gradient(linear, right top, left top, color-stop(0, #db5b15), color-stop(1, #910101));
+    background-image: -webkit-linear-gradient(right, #db5b15 0%, #910101 100%);
+    background-image: linear-gradient(to left, #db5b15 0%, #910101 100%);
+    border-radius: 38px 0 0 38px;
+    -moz-border-radius: 38px 0 0 38px;
+    -webkit-border-radius: 38px 0 0 38px; }
   @media screen and (min-width: 768px)  {
     .home__featured {
       background-position: left top;
@@ -14856,6 +14889,7 @@ table.responsive tr:nth-of-type(even) {
     color: #d22228; }
 
 .live-player__stream {
+  display: none;
   border: 1px solid #b0b0b0;
   color: #b0b0b0;
   -webkit-border-radius: 1em;
@@ -14906,7 +14940,9 @@ table.responsive tr:nth-of-type(even) {
   font-weight: 400;
   font-family: 'Oswald', sans-serif; }
   .live-link__song:before {
-    color: #c20411; }
+    color: #c20411;
+    position: absolute;
+    left: 10px; }
   .live-link__song .live-link__song--artist {
     color: #c20411; }
 
@@ -14921,18 +14957,19 @@ table.responsive tr:nth-of-type(even) {
 .live-link__title a:hover, .live-link__title a:focus, .live-link__title a:active {
   color: #aa1c20; }
 
-.header__logo {
-  background-image: url("../../images/wmmr-logo.png");
-  background-repeat: no-repeat;
-  width: 199px;
-  height: 117px;
-  position: absolute;
-  z-index: 100;
-  top: -40px;
-  float: none; }
-
-.header__logo--img {
-  display: none; }
+@media screen and (min-width: 768px)  {
+  .header__logo {
+    /*top: -7px;*/
+    background-image: url("../../images/wmmr-logo.png");
+    background-repeat: no-repeat;
+    width: 199px;
+    height: 117px;
+    position: absolute;
+    z-index: 100;
+    top: -40px;
+    float: none; }
+    .header__logo .header__logo--img {
+      display: none; } }
 
 .home__highlights {
   background: url("../../images/pw_maze_gray.png");
@@ -14942,14 +14979,14 @@ table.responsive tr:nth-of-type(even) {
   text-decoration: none; }
 
 .highlights__events--more-btn {
-  background-color: #9B090E !important;
+  background-color: #878787;
   color: #fff; }
   .highlights__events--more-btn:hover {
     color: #f5ed7f !important;
     border-color: #f5ed7f; }
 
 .highlights__event--item {
-  background-color: #8c8c8c;
+  background-color: transparent;
   color: #ffffff; }
 
 .highlights__event--title {
@@ -14986,12 +15023,20 @@ table.responsive tr:nth-of-type(even) {
   font-family: 'Oswald', sans-serif;
   font-weight: 400; }
 
+.featured__content--btn {
+  display: none; }
+
 .featured__article--heading {
   font-family: 'Oswald', sans-serif;
   font-weight: 700;
   text-transform: uppercase;
   text-shadow: 2px 2px 1px #530606;
   color: #fbe374; }
+
+.featured__article--image {
+  border-radius: 0 38px 0 0;
+  -moz-border-radius: 0 38px 0 0;
+  -webkit-border-radius: 0 38px 0 0; }
 
 .widget--live-player__title {
   font-family: 'Oswald', sans-serif;
