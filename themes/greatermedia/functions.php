@@ -20,7 +20,7 @@
 if ( defined( 'GMR_PARENT_ENV' ) && 'dev' == GMR_PARENT_ENV ) {
 	define( 'GREATERMEDIA_VERSION', time() );
 } else {
-	define( 'GREATERMEDIA_VERSION', '1.0.22' );
+	define( 'GREATERMEDIA_VERSION', '1.0.23' );
 }
 
 add_theme_support( 'homepage-curation' );
@@ -1042,3 +1042,12 @@ function greatermedia_extend_community_curation_limit( $limit ) {
 
 }
 add_filter( 'gmr-homepage-community-limit', 'greatermedia_extend_community_curation_limit' );
+
+function greatermedia_podcasts_in_loop( $query ) {
+
+	if ( is_home() && $query->is_main_query() )
+		$query->set( 'post_type', array( 'post', 'episode' ) );
+
+	return $query;
+}
+add_action( 'pre_get_posts', 'greatermedia_podcasts_in_loop' );

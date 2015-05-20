@@ -83,36 +83,36 @@
 ### assets/css/greater_media.css
 
 - **Total Stylesheets:** 1
-- **Total Stylesheet Size:** 471583
+- **Total Stylesheet Size:** 474652
 - **Total Media Queries:** 15
-- **Total Rules:** 2600
-- **Selectors Per Rule:** 1.4373076923076924
-- **Total Selectors:** 3737
-- **Identifiers Per Selector:** 2.3767728124163767
-- **Specificity Per Selector:** 21.39202568905539
-- **Top Selector Specificity:** 120
-- **Top Selector Specificity Selector:** #popup-player-livestream .live-player--open .live-links
-- **Total Id Selectors:** 9
-- **Total Identifiers:** 8882
-- **Total Declarations:** 7765
+- **Total Rules:** 2606
+- **Selectors Per Rule:** 1.4581734458940905
+- **Total Selectors:** 3800
+- **Identifiers Per Selector:** 2.4026315789473682
+- **Specificity Per Selector:** 21.874736842105264
+- **Top Selector Specificity:** 130
+- **Top Selector Specificity Selector:** .home .main #signup-welcome:last-child
+- **Total Id Selectors:** 17
+- **Total Identifiers:** 9130
+- **Total Declarations:** 7778
 - **Total Unique Colors:** 31
 - **Total Important Keywords:** 131
 
 ### assets/css/greater_media.min.css
 
 - **Total Stylesheets:** 1
-- **Total Stylesheet Size:** 271983
+- **Total Stylesheet Size:** 274786
 - **Total Media Queries:** 15
-- **Total Rules:** 2525
-- **Selectors Per Rule:** 1.5310891089108911
-- **Total Selectors:** 3866
-- **Identifiers Per Selector:** 2.3468701500258664
-- **Specificity Per Selector:** 21.209260217278842
-- **Top Selector Specificity:** 120
-- **Top Selector Specificity Selector:** #popup-player-livestream .live-player--open .live-links
-- **Total Id Selectors:** 9
-- **Total Identifiers:** 9073
-- **Total Declarations:** 7181
+- **Total Rules:** 2529
+- **Selectors Per Rule:** 1.5523922499011467
+- **Total Selectors:** 3926
+- **Identifiers Per Selector:** 2.3734080489047376
+- **Specificity Per Selector:** 21.68797758532858
+- **Top Selector Specificity:** 130
+- **Top Selector Specificity Selector:** .home .main #signup-welcome:last-child
+- **Total Id Selectors:** 17
+- **Total Identifiers:** 9318
+- **Total Declarations:** 7195
 - **Total Unique Colors:** 31
 - **Total Important Keywords:** 128
 
