@@ -56,7 +56,7 @@ class Blog extends BaseImporter {
 
 				$entity = $this->get_entity( 'podcast_episode' );
 			} else {
-				error_log( "Empty Podcast for: $blog_name" );
+				//error_log( "Empty Podcast for: $blog_name" );
 				$entity = $this->get_entity( 'blog' );
 			}
 		} else {
