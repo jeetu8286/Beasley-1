@@ -75,7 +75,7 @@ class Blog extends BaseImporter {
 		$tags           = $this->tags_from_blog_entry( $blog_entry );
 		$created_on     = $this->import_string( $blog_entry['DateCreated'] );
 		$post_content   = $this->content_from_blog_entry( $blog_entry );
-		$post_body   = $post_content['body'];
+		$post_body      = $post_content['body'];
 		$featured_image = $this->featured_image_from_blog_entry( $blog_entry );
 		$featured_audio = $this->featured_audio_from_blog_entry( $blog_entry );
 		$entry_url      = $this->import_string( $blog_entry['BlogEntryURL'] );
@@ -95,6 +95,10 @@ class Blog extends BaseImporter {
 
 			'tags' => $tags,
 		);
+
+		if ( ! empty( $post_body ) ) {
+			//$post['post_excerpt'] = wp_trim_excerpt( $post_body );
+		}
 
 		if ( ! is_null( $featured_image ) ) {
 			$post['featured_image'] = $featured_image;
