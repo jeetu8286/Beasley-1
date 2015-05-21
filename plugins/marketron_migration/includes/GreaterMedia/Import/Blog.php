@@ -107,9 +107,9 @@ class Blog extends BaseImporter {
 		}
 
 		if ( ! is_null( $entry_url ) ) {
-			//$post['redirects'] = array(
-				//array( 'url' => $entry_url )
-			//);
+			$post['redirects'] = array(
+				array( 'url' => $entry_url )
+			);
 		}
 
 		$this->replace_post_format_in_title( $post );
