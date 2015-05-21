@@ -171,7 +171,7 @@ class Post extends BaseEntity {
 			$post_formats = $this->get_entity( 'post_format' );
 			$post_formats->add( 'audio', $post_id );
 		} else {
-			$posts = $this->get_entity( 'post_format' );
+			$post_formats = $this->get_entity( 'post_format' );
 			$post_formats->add( 'standard', $post_id );
 		}
 	}
