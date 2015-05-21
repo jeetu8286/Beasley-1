@@ -162,17 +162,30 @@ class Blog extends BaseImporter {
 				$content     = '[embed]' . $primary_media_ref . '[/embed]' . '<br/>' . $content;
 				$post_format = 'video';
 			}
-		}
 
-		$content = preg_replace(
-			'#<div.*data-youtube-id="(.*)">.*</div>#',
-			'[embed]http://www.youtube.com/watch?v=${1}[/embed]',
-			$content, -1, $videos
-		);
+		} else if ( strpos( 'data-youtube-id', $content ) !== false ){
+			$content = preg_replace(
+				'#<div.*data-youtube-id="(.*)">.*</div>#',
+				'[embed]http://www.youtube.com/watch?v=${1}[/embed]',
+				$content, -1, $videos
+			);
 
-		if ( $post_format !== 'video' && $videos > 0 ) {
-			$post_format = 'video';
+			if ( $post_format !== 'video' && $videos > 0 ) {
+				$post_format = 'video';
+			}
+		} else if ( strpos( 'youtube.com/embed', $content ) !== false ) {
+			$content = preg_replace(
+				'#<iframe.*src="https://www.youtube.com/embed/([^"]*)".*</iframe>#',
+				'[embed]https://www.youtube.com/watch?v=${1}[/embed]',
+				$content, -1, $videos
+			);
+
+			if ( $post_format !== 'video' && $videos > 0 ) {
+				$post_format = 'video';
+			}
 		}
+		/* <iframe src="https://www.youtube.com/embed/TPTe-Z3hfNc" frameborder="0" width="560" height="315"></iframe> */
+
 
 		return array(
 			'body'        => $content,
