@@ -112,7 +112,40 @@ class Blog extends BaseImporter {
 			//);
 		}
 
+		$this->replace_post_format_in_title( $post );
+
 		return $post;
+	}
+
+	function replace_post_format_in_title( &$post ) {
+		$title = $post['post_title'];
+		$post_format = null;
+
+		if ( strpos( $title, '[AUDIO]' ) !== false ) {
+			$title = str_replace( '[AUDIO]', '', $title );
+			$post_format = 'audio';
+		} else if ( strpos( $title, '[VIDEO]' ) !== false ) {
+			$title = str_replace( '[VIDEO]', '', $title );
+			$post_format = 'video';
+		} else if ( strpos( $title, '[LINK]' ) !== false ) {
+			$title = str_replace( '[LINK]', '', $title );
+			$post_format = 'link';
+		} else if ( strpos( $title, '[GALLERY]' ) !== false ) {
+			$title = str_replace( '[GALLERY]', '', $title );
+			$post_format = 'gallery';
+		}
+
+		$title = trim( $title );
+		$title = ltrim( $title, '-' );
+		$title = trim( $title );
+
+		if ( empty( $post['post_format'] ) ) {
+			$post['post_format'] = $post_format;
+		} else if ( $post['post_format'] !== $post_format ) {
+			$post['post_format'] = $post_format;
+		}
+
+		$post['post_title'] = $title;
 	}
 
 	function featured_image_from_blog_entry( $blog_entry ) {
@@ -179,6 +212,16 @@ class Blog extends BaseImporter {
 			$content = preg_replace(
 				'#<iframe.*src="https?://www.youtube.com/embed/([^"]*)".*</iframe>#',
 				'[embed]https://www.youtube.com/watch?v=${1}[/embed]',
+				$content, -1, $videos
+			);
+
+			if ( $post_format !== 'video' && $videos > 0 ) {
+				$post_format = 'video';
+			}
+		} else if ( strpos( $content, 'player.vimeo.com' ) !== false ) {
+			$content = preg_replace(
+				'#<iframe.*src="([^"]*)".*</iframe>#',
+				'[embed]${1}[/embed]',
 				$content, -1, $videos
 			);
 
