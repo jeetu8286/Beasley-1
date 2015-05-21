@@ -15,14 +15,16 @@ class Blog extends BaseImporter {
 			$blog_id   = $this->import_string( $blog['BlogID'] );
 			$blog_name = $this->import_string( $blog['BlogName'] );
 
-			if ( $this->can_import( $blog_id ) ) {
+			if ( $this->can_import_marketron_name( $blog_name, 'blog' ) ) {
 				$this->import_blog( $blog, $blog_name, $blog_id );
+			} else {
+				\WP_CLI::log( 'Excluded Blog: ' . $blog_name );
 			}
 		}
 	}
 
 	function import_blog( $blog, $blog_name, $blog_id ) {
-		$author  = $this->mapped_author_for_blog( $blog_id );
+		$author  = $this->mapped_author_for_blog( $blog_name);
 		$entries = $this->entries_from_blog( $blog );
 		$total   = count( $entries );
 		$msg     = "Importing $total entries from Blog($blog_name)";
@@ -30,22 +32,22 @@ class Blog extends BaseImporter {
 		$notify  = new \WordPress\Utils\ProgressBar( $msg, $total );
 
 		foreach ( $entries as $entry ) {
-			$this->import_blog_entry( $entry, $blog_id, $author );
+			$this->import_blog_entry( $entry, $blog_id, $blog_name, $author );
 			$notify->tick();
 		}
 
 		$notify->finish();
 	}
 
-	function import_blog_entry( $blog_entry, $blog_id, $author ) {
+	function import_blog_entry( $blog_entry, $blog_id, $blog_name, $author ) {
 		$post                 = $this->post_from_blog_entry( $blog_entry );
 		$post['post_authors'] = array( $author );
-		$post['categories']   = $this->mapped_categories_for_blog( $blog_id );
+		$post['categories']   = $this->mapped_categories_for_blog( $blog_name );
 
 		if ( $this->has_audio( $blog_entry ) ) {
 			$post['episode_name']    = $post['post_title'];
 
-			$episode_podcast = $this->mapped_podcast_for_blog( $blog_id );
+			$episode_podcast = $this->mapped_podcast_for_blog( $blog_name );
 
 			// Either - mapping
 			if ( ! empty( $episode_podcast ) ) {
@@ -54,10 +56,11 @@ class Blog extends BaseImporter {
 
 				$entity = $this->get_entity( 'podcast_episode' );
 			} else {
+				error_log( "Empty Podcast for: $blog_name" );
 				$entity = $this->get_entity( 'blog' );
 			}
 		} else {
-			$post['show'] = $this->mapped_show_for_blog( $blog_id );
+			$post['shows'] = array( $this->mapped_show_for_blog( $blog_name ) );
 			$entity       = $this->get_entity( 'blog' );
 		}
 
@@ -148,6 +151,19 @@ class Blog extends BaseImporter {
 			$content = '';
 		}
 
+		if ( ! empty( $article['PrimaryMediaReference'] ) ) {
+			$primary_media_ref = $this->import_string( $article['PrimaryMediaReference'] );
+
+			if ( strpos($primary_media_ref, 'youtube.com' ) !== false ) {
+				$content     = '[embed]' . $primary_media_ref . '[/embed]'. '<br/>' . $content;
+				$post_format = 'video';
+			} else if ( strpos( $primary_media_ref, 'youtu.be' ) !== false ) {
+				$primary_media_ref = str_replace( 'youtu.be/', 'youtube.com/watch?v=', $primary_media_ref );
+				$content     = '[embed]' . $primary_media_ref . '[/embed]' . '<br/>' . $content;
+				$post_format = 'video';
+			}
+		}
+
 		$content = preg_replace(
 			'#<div.*data-youtube-id="(.*)">.*</div>#',
 			'[embed]http://www.youtube.com/watch?v=${1}[/embed]',
@@ -187,8 +203,8 @@ class Blog extends BaseImporter {
 		return $source->Blog;
 	}
 
-	function mapped_author_for_blog( $blog_id ) {
-		$mapping = $this->get_mappings()->get_mapping( $blog_id );
+	function mapped_author_for_blog( $blog_name ) {
+		$mapping = $this->get_mapping_for_blog( $blog_name );
 		if ( ! is_null( $mapping ) ) {
 			return $mapping->wordpress_author_name;
 		} else {
@@ -196,17 +212,18 @@ class Blog extends BaseImporter {
 		}
 	}
 
-	function mapped_podcast_for_blog( $blog_id ) {
-		$mapping = $this->get_mappings()->get_mapping( $blog_id );
+	function mapped_podcast_for_blog( $blog_name ) {
+		$mapping = $this->get_mapping_for_blog( $blog_name );
 		if ( ! is_null( $mapping ) ) {
 			return $mapping->wordpress_podcast_name;
 		} else {
+			//\WP_CLI::warning( "No podcast mapping for blog: $blog_name" );
 			return null;
 		}
 	}
 
-	function mapped_categories_for_blog( $blog_id ) {
-		$mapping = $this->get_mappings()->get_mapping( $blog_id );
+	function mapped_categories_for_blog( $blog_name ) {
+		$mapping = $this->get_mapping_for_blog( $blog_name );
 		if ( ! is_null( $mapping ) ) {
 			return array( $mapping->wordpress_category );
 		} else {
@@ -214,13 +231,25 @@ class Blog extends BaseImporter {
 		}
 	}
 
-	function mapped_show_for_blog( $blog_id ) {
-		$mapping = $this->get_mappings()->get_mapping( $blog_id );
+	function mapped_show_for_blog( $blog_name ) {
+		$mapping = $this->get_mapping_for_blog( $blog_name );
 		if ( ! is_null( $mapping ) ) {
-			return $mapping->wordpress_show_name;
+			$show = $mapping->wordpress_show_name;
+
+			if ( ! is_null( $show ) ) {
+				return $show;
+			} else {
+				\WP_CLI::error( 'No show for blog: ' . $blog_name );
+			}
 		} else {
+			\WP_CLI::error( 'No show for blog: ' . $blog_name );
 			return null;
 		}
+	}
+
+	function get_mapping_for_blog( $blog_name ) {
+		$mapping = $this->get_mappings()->get_mapping_by_name( $blog_name, 'blog' );
+		return $mapping;
 	}
 
 	function authors_from_blog( $blog ) {
