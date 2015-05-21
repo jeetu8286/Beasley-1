@@ -75,7 +75,7 @@ class Blog extends BaseImporter {
 		$tags           = $this->tags_from_blog_entry( $blog_entry );
 		$created_on     = $this->import_string( $blog_entry['DateCreated'] );
 		$post_content   = $this->content_from_blog_entry( $blog_entry );
-		$post_content   = $post_content['body'];
+		$post_body   = $post_content['body'];
 		$featured_image = $this->featured_image_from_blog_entry( $blog_entry );
 		$featured_audio = $this->featured_audio_from_blog_entry( $blog_entry );
 		$entry_url      = $this->import_string( $blog_entry['BlogEntryURL'] );
@@ -89,7 +89,7 @@ class Blog extends BaseImporter {
 		$post = array(
 			'post_title' => $post_title,
 			'post_status' => $post_status,
-			'post_content' => $post_content,
+			'post_content' => $post_body,
 			'created_on' => $created_on,
 			'modified_on' => $modified_on,
 
@@ -102,6 +102,8 @@ class Blog extends BaseImporter {
 
 		if ( ! is_null( $featured_audio ) ) {
 			$post['featured_audio'] = $featured_audio;
+		} else {
+			$post['post_format'] = $post_content['post_format'];
 		}
 
 		if ( ! is_null( $entry_url ) ) {
@@ -163,7 +165,7 @@ class Blog extends BaseImporter {
 				$post_format = 'video';
 			}
 
-		} else if ( strpos( 'data-youtube-id', $content ) !== false ){
+		} else if ( strpos( $content, 'data-youtube-id' ) !== false ){
 			$content = preg_replace(
 				'#<div.*data-youtube-id="(.*)">.*</div>#',
 				'[embed]http://www.youtube.com/watch?v=${1}[/embed]',
@@ -173,9 +175,9 @@ class Blog extends BaseImporter {
 			if ( $post_format !== 'video' && $videos > 0 ) {
 				$post_format = 'video';
 			}
-		} else if ( strpos( 'youtube.com/embed', $content ) !== false ) {
+		} else if ( strpos( $content, 'youtube.com/embed' ) !== false ) {
 			$content = preg_replace(
-				'#<iframe.*src="https://www.youtube.com/embed/([^"]*)".*</iframe>#',
+				'#<iframe.*src="https?://www.youtube.com/embed/([^"]*)".*</iframe>#',
 				'[embed]https://www.youtube.com/watch?v=${1}[/embed]',
 				$content, -1, $videos
 			);
