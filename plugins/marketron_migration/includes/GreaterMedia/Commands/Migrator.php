@@ -266,7 +266,7 @@ class Migrator {
 		}
 
 		$opts['site_dir'] = untrailingslashit( $opts['site_dir'] );
-		$this->site_dir = $opts['site_dir'];
+		$this->site_dir   = $opts['site_dir'];
 
 		$this->load_boolean_opt( 'fake_media', false );
 		$this->load_boolean_opt( 'fresh', false );
