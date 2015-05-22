@@ -224,10 +224,18 @@ class Contest extends BaseImporter {
 
 	function title_from_contest( $contest ) {
 		$title = $this->import_string( $contest->ContestText['ContestHeader'] );
-		//$title = ltrim( $title, '\[ONLINE\]' );
-		//$title = ltrim( $title, '\[ONLINE\*\]' );
-		//$title = ltrim( $title, '\[ON-AIR\]' );
-		//$title = ltrim( $title, '\[ON-AIR\*\]' );
+		$title_replacements = array(
+			'ONLINE', 'ON-AIR', 'ONAIR', 'ONSITE', 'ON-SITE',
+		);
+
+		foreach ( $title_replacements as $replacement ) {
+			$title = str_replace( "[$replacement]", '', $title );
+			$title = str_replace( "[$replacement*]", '', $title );
+			$title = str_replace( "[*$replacement]", '', $title );
+		}
+
+		return $title;
+
 		$title = ltrim( $title, ' ' );
 		$title = ltrim( $title, '-' );
 		$title = ltrim( $title, ' ' );
