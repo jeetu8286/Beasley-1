@@ -23,14 +23,7 @@ class Contest extends BaseImporter {
 	}
 
 	function import_contest( $contest ) {
-		$contest_name   = $this->import_string( $contest['ContestName'] );
-		//\WP_CLI::log( "Importing Contest: $contest_name" );
-
-		// For testing
-		//if ( strtotime( (string) $contest['DateCreated'] ) < strtotime( '-2 year' ) ) {
-			//return;
-		//}
-
+		$contest_name    = $this->import_string( $contest['ContestName'] );
 		$entity          = $this->get_entity( 'contest' );
 		$contest_id      = $this->import_string( $contest['ContestID'] );
 		$featured_image  = $this->import_string( $contest['ImageFilename'] );
@@ -54,6 +47,7 @@ class Contest extends BaseImporter {
 		$post['contest_entries']      = $contest_entries;
 		$post['contest_shows']        = $contest_shows;
 		$post['categories']           = $this->categories_from_contest( $contest );
+		$post['marketron_id']         = $this->import_string( $contest['ContestID'] );
 
 		if ( ! empty( $featured_image ) ) {
 			$post['featured_image'] = $featured_image;
@@ -233,8 +227,6 @@ class Contest extends BaseImporter {
 			$title = str_replace( "[$replacement*]", '', $title );
 			$title = str_replace( "[*$replacement]", '', $title );
 		}
-
-		return $title;
 
 		$title = ltrim( $title, ' ' );
 		$title = ltrim( $title, '-' );

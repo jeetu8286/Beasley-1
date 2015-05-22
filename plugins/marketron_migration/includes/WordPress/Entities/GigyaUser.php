@@ -534,7 +534,7 @@ class GigyaUser extends BaseEntity {
 			}
 		}
 
-		return $ids;
+		return array_unique( $ids );
 	}
 
 	function get_user_contest_entries_list( $user_id ) {
