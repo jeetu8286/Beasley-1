@@ -141,6 +141,8 @@ class ConfigLoader {
 				$group['group_description'] = '';
 			}
 
+			$group['group_active'] = $newsletter['active'];
+
 			$groups[] = $group;
 		}
 
