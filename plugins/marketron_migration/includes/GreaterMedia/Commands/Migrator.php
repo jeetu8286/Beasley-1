@@ -479,5 +479,14 @@ SQL;
 
 		$regenerator->regenerate( $args, $this->opts );
 	}
+
+	function create_emma_groups( $args, $opts ) {
+		$this->initialize( $args, $opts );
+
+		$emma_group_creator = new \GreaterMedia\EmmaGroupCreator();
+		$emma_group_creator->container = $this;
+		$emma_group_creator->create_and_save();
+	}
+
 }
 
