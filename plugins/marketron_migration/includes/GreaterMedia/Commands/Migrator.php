@@ -426,7 +426,8 @@ SQL;
 
 		$affinity_club_tool    = $this->tool_factory->build( 'affinity_club' );
 		$affinity_clubs_input  = $affinity_club_tool->get_data_files()[0];
-		$affinity_clubs_output = str_replace( '_formatted.xml', '_filtered.xml', $affinity_clubs_input );
+		//$affinity_clubs_output = str_replace( '_formatted.xml', '_filtered.xml', $affinity_clubs_input );
+		$affinity_clubs_output = $affinity_clubs_input;
 
 		$screener->screen( $affinity_clubs_input, $affinity_clubs_output );
 	}
