@@ -265,7 +265,8 @@ class Migrator {
 			$this->opts['tools_to_load'] = explode( ',', $this->opts['tools_to_load'] );
 		}
 
-		$this->site_dir = $opts['site_dir'];
+		$opts['site_dir'] = untrailingslashit( $opts['site_dir'] );
+		$this->site_dir   = $opts['site_dir'];
 
 		$this->load_boolean_opt( 'fake_media', false );
 		$this->load_boolean_opt( 'fresh', false );
@@ -408,37 +409,13 @@ SQL;
 	/* profile verification */
 	function verify_gigya_import( $args, $opts ) {
 		$marketron_accounts_file = $opts['marketron_accounts'];
-		$gigya_accounts_file     = $opts['gigya_accounts'];
-		$error_file              = $opts['errors'];
-
-		$csv_loader     = new \GreaterMedia\Profile\GigyaCSVLoader();
-		$gigya_accounts = $csv_loader->load( $gigya_accounts_file );
-		//var_dump( $gigya_accounts );
-		//return;
-
-		\WP_CLI::log( 'Loaded ' . count( $gigya_accounts ) . ' Gigya Accounts' );
+		$errors_file              = $opts['errors_file'];
 
 		$json_loader        = new \GreaterMedia\Profile\ImportJSONLoader();
 		$marketron_accounts = $json_loader->load( $marketron_accounts_file );
 
-		\WP_CLI::log( 'Loaded ' . count( $marketron_accounts ) . ' Marketron Accounts' );
-
-		$verifier = new \GreaterMedia\Profile\ImportVerifier(
-			$marketron_accounts, $gigya_accounts
-		);
-
-		$success = $verifier->verify();
-
-		if ( $success ) {
-			\WP_CLI::success( 'Gigya Profile Import Verified!!!' );
-		} else {
-			$errors = $verifier->errors;
-			$data   = implode( "\n", $errors );
-
-			file_put_contents( $error_file, $data );
-			\WP_CLI::error( 'Verification Failed with ' . count( $errors ) . ' errors.' );
-		}
-		//print_r( count( $marketron_accounts ) );
+		$verifier = new \GreaterMedia\Profile\GigyaAccountImportVerifier();
+		$verifier->verify( $marketron_accounts, $errors_file );
 	}
 
 	function delete_facebook_data( $args, $opts ) {
@@ -449,9 +426,68 @@ SQL;
 
 		$affinity_club_tool    = $this->tool_factory->build( 'affinity_club' );
 		$affinity_clubs_input  = $affinity_club_tool->get_data_files()[0];
-		$affinity_clubs_output = str_replace( '_formatted.xml', '_filtered.xml', $affinity_clubs_input );
+		//$affinity_clubs_output = str_replace( '_formatted.xml', '_filtered.xml', $affinity_clubs_input );
+		$affinity_clubs_output = $affinity_clubs_input;
 
 		$screener->screen( $affinity_clubs_input, $affinity_clubs_output );
 	}
+
+	/**
+	 * Regenerate thumbnail(s).
+	 *
+	 * ## OPTIONS
+	 *
+	 * [<attachment-id>...]
+	 * : One or more IDs of the attachments to regenerate.
+	 *
+	 * [--skip-delete]
+	 * : Skip deletion of the original thumbnails. If your thumbnails are linked from sources outside your control, it's likely best to leave them around. Defaults to false.
+	 *
+	 * [--site_dir]
+	 * : Path to GMR site configuration dir
+	 *
+	 * [--yes]
+	 * : Skip confirmation
+
+	 * [--owner]
+	 * : New file owner
+	 *
+	 * [--group]
+	 * : New file group
+	 *
+	 * [--errors_file]
+	 * : Optional path to errors file, defaults to site_dir/output_dir/thumbnail_generation_errors.json
+	 *
+	 * ## EXAMPLES
+	 *
+	 *     # re-generate all thumbnails, without confirmation
+	 *     wp marketron_migration regenerate_thumbnails --yes
+	 *
+	 *     # re-generate all thumbnails that have IDs between 1000 and 2000
+	 *     seq 1000 2000 | xargs wp marketron_migration regenerate_thumbnails
+	 */
+	function regenerate_thumbnails( $args, $opts ) {
+		$this->initialize( $args, $opts );
+
+		if ( empty( $args ) && empty( $this->opts['yes'] ) ) {
+			\WP_CLI::confirm(
+				'Are you sure you want to regenerate all thumbnails?'
+			);
+		}
+
+		$regenerator = new \WordPress\Utils\ThumbnailListRegenerator();
+		$regenerator->container = $this;
+
+		$regenerator->regenerate( $args, $this->opts );
+	}
+
+	function create_emma_groups( $args, $opts ) {
+		$this->initialize( $args, $opts );
+
+		$emma_group_creator = new \GreaterMedia\EmmaGroupCreator();
+		$emma_group_creator->container = $this;
+		$emma_group_creator->create_and_save();
+	}
+
 }
 
