@@ -312,6 +312,8 @@ class BlogData {
 			if ( $hash_value != $post_hash || $force_update ) {
 				// post has been updated, override existing one
 				$args['ID'] = $post_id;
+				unset( $args['post_date'], $args['post_date_gmt'] );
+				
 				wp_update_post( $args );
 				if ( ! empty( $metas ) ) {
 					foreach ( $metas as $meta_key => $meta_value ) {
