@@ -599,7 +599,9 @@ class BlogData {
 						$new_gallery_ids .= $existing[0]->ID . ",";
 					} elseif ( ! empty( $old_ids[ $index ] ) ) {
 						$new_id = self::ImportMedia( 0, $image_src, false, $old_ids[ $index ] );
-						$new_gallery_ids .= $new_id . ",";
+						if ( $new_id && ! is_wp_error( $new_id ) ) {
+							$new_gallery_ids .= $new_id . ",";
+						}
 					}
 				}
 
