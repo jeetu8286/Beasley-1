@@ -177,50 +177,25 @@ function fpmrss_fetch_media_data( $post_id, $feed_id ) {
 		// check if redirect header exists for a video
 		if ( filter_var( $player, FILTER_VALIDATE_URL ) ) {
 			$response = wp_remote_head( $player );
-			$location = wp_remote_retrieve_header( $response, 'location' );
-			if ( ! empty( $location ) ) {
-				$player = $location;
+			if ( ! is_wp_error( $response ) ) {
+				$location = wp_remote_retrieve_header( $response, 'location' );
+				if ( ! empty( $location ) ) {
+					$player = $location;
+				}
 			}
 		}
 
-		// we need to switch a link on a video to player embed code
+		// we need to convert a link or an embed code into the player shortcode
+		$matches = array();
 		if ( filter_var( $player, FILTER_VALIDATE_URL ) && preg_match( '#^https?\:\/\/.*?\.ooyala\.com\/(.+?)\/(.+?)\/?$#i', $player, $matches ) ) {
-$player = <<<OOYALA_PLAYER
-<script src="http://player.ooyala.com/player.js?embedCode={$matches[1]}&embedType=player.jsMRSS&videoPcode={$matches[2]}&width=480&height=270"></script>
-<noscript>
-  <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" id="ooyalaPlayer_5j2v5o_nn9rxe" width="480" height="270" codebase="http://fpdownload.macromedia.com/get/flashplayer/current/swflash.cab">
-	<param name="movie" value="http://player.ooyala.com/player_v2.swf?embedCode={$matches[1]}&keepEmbedCode=true&videoPcode={$matches[2]}"/>
-	<param name="bgcolor" value="#000000"/>
-	<param name="allowScriptAccess" value="always"/>
-	<param name="allowFullScreen" value="true"/>
-	<param name="flashvars" value="embedCode={$matches[1]}&embedType=noscriptObjectTagMRSS&videoPcode={$matches[2]}&width=480&height=270"/>
-	<embed src="http://player.ooyala.com/player_v2.swf?embedCode={$matches[1]}&keepEmbedCode=true&videoPcode={$matches[2]}"
-		bgcolor="#000000"
-		width="480"
-		height="270"
-		name="ooyalaPlayer_572t57_nn9rxe" align="middle" play="true" loop="false"
-		allowScriptAccess="always" allowFullScreen="true"
-		type="application/x-shockwave-flash"
-		flashvars="embedCode={$matches[1]}&embedType=noscriptObjectTagMRSS&videoPcode={$matches[2]}&width=480&height=270"
-		pluginspage="http://www.adobe.com/go/getflashplayer">
-	</embed>
-  </object>
-</noscript>
-OOYALA_PLAYER;
+			$player = "[ooyala code=\"{$matches[1]}\"]";
+		} elseif ( preg_match( '#embedCode\=(.+?)[\&\"\']#is', $player, $matches ) ) {
+			$player = "[ooyala code=\"{$matches[1]}\"]";
 		}
 
 		// set player meta
 		update_post_meta( $post_id, 'gmr-player', $player );
 		set_post_format( $post_id, 'video' );
-	}
-
-	// copy Ooyala metas if available
-	$metas = array( 'fpmrss-ooyala-player-id', 'fpmrss-ooyala-ad-set' );
-	foreach ( $metas as $meta ) {
-		$value = get_post_meta( $feed_id, $meta, true );
-		if ( ! empty( $value ) ) {
-			update_post_meta( $post_id, $meta, $value );
-		}
 	}
 
 	$fpmrss_feed_item = null;
@@ -359,6 +334,48 @@ function fpmrss_update_content( $content ) {
 add_action( 'the_content', 'fpmrss_update_content', 1 );
 
 /**
+ * Filters ooyala player arguments to set proper player id.
+ *
+ * @param array $args Initial ooyala player arguments.
+ * @return array Filtered ooyala player arguments.
+ */
+function fpmrss_filter_ooyala_args( $args ) {
+	$video_id = get_the_ID();
+
+	$player_id = fpmrss_extract_ooyala_post_meta( $video_id, 'fpmrss-ooyala-player-id' );
+	if ( $player_id ) {
+		$args['player_id'] = $player_id;
+	}
+
+	$ad_set = fpmrss_extract_ooyala_post_meta( $video_id, 'fpmrss-ooyala-ad-set' );
+	if ( $ad_set ) {
+		$args['ad_set'] = $ad_set;
+	}
+
+	return $args;
+}
+add_filter( 'ooyala_default_query_args', 'fpmrss_filter_ooyala_args' );
+
+/**
+ * Fetches post meta if available, if not, then tries to extract it from its feed.
+ *
+ * @param int $post_id The ooyala video post id.
+ * @param string $meta_key The meta key to fetch.
+ * @return mixed The meta value.
+ */
+function fpmrss_extract_ooyala_post_meta( $post_id, $meta_key ) {
+	$meta_value = get_post_meta( $post_id, $meta_key, true );
+	if ( false === $meta_value ) {
+		$parent_id = get_post_meta( $post_id, 'fp_source_feed_id', true );
+		if ( $parent_id ) {
+			$meta_value = get_post_meta( $parent_id, $meta_key, true );
+		}
+	}
+
+	return $meta_value;
+}
+
+/**
  * Registers Ooyala settings metabox.
  *
  * @global string $typenow The current post type.
@@ -383,34 +400,94 @@ add_action( 'add_meta_boxes', 'fpmrss_add_meta_box' );
 /**
  * Renders Ooyala settings meta box.
  *
- * @param WP_Post $feed The feed object.
+ * @param WP_Post $post The post object.
  */
-function fpmrss_render_ooyala_metabox( $feed ) {
-	$player_id = get_post_meta( $feed->ID, 'fpmrss-ooyala-player-id', true );
-	$ad_set = get_post_meta( $feed->ID, 'fpmrss-ooyala-ad-set', true );
+function fpmrss_render_ooyala_metabox( $post ) {
+	$transient_ttl = 5 * MINUTE_IN_SECONDS;
 
+	$ooyala = get_option( 'ooyala' );
+	$ooyala_api = null;
+	if ( class_exists( 'OoyalaApi' ) && ! empty( $ooyala['api_key'] ) && ! empty( $ooyala['api_secret'] ) ) {
+		$ooyala_api = new OoyalaApi( $ooyala['api_key'], $ooyala['api_secret'] );
+	}
+	
 	wp_nonce_field( 'fpmrss-ooyala', 'fpmrss_ooyala_nonce', false );
+
+	$selected_player = get_post_meta( $post->ID, 'fpmrss-ooyala-player-id', true );
+	$players = get_transient( 'gmr_ooyala_players' );
+	if ( $players === false ) {
+		$players = array();
+		if ( $ooyala_api ) {
+			$response = $ooyala_api->get( 'players' );
+			if ( ! empty( $response->items ) ) {
+				foreach ( $response->items as $ad_set ) {
+					$players[ $ad_set->id ] = $ad_set->name;
+				}
+			}
+		}
+
+		set_transient( 'gmr_ooyala_players', $players, $transient_ttl );
+	}
 
 	echo '<p>';
 		echo '<label for="fpmrss-ooyala-player-id">Player ID:</label>';
-		echo '<input type="text" id="fpmrss-ooyala-player-id" class="widefat" name="fpmrss-ooyala-player-id" value="', esc_attr( $player_id ), '">';
+		echo '<select id="fpmrss-ooyala-player-id" name="fpmrss-ooyala-player-id" class="widefat">';
+			echo '<option value="">';
+				echo 'fp_feed' == $post->post_type
+					? '--- player by default ---'
+					: '--- player defined in the feed ---';
+			echo '</option>';
+			foreach ( $players as $id => $name ) :
+				echo '<option value="', esc_attr( $id ), '"', selected( $id, $selected_player, false ), '>';
+					echo esc_html( $name );
+				echo '</option>';
+			endforeach;
+		echo '</select>';
 	echo '</p>';
+	
+	$selected_ad_set = get_post_meta( $post->ID, 'fpmrss-ooyala-ad-set', true );
+	$ad_sets = get_transient( 'gmr_ooyala_ad_sets' );
+	if ( $ad_sets === false ) {
+		$ad_sets = array();
+		if ( $ooyala_api ) {
+			$response = $ooyala_api->get( 'ad_sets' );
+			if ( ! empty( $response->items ) ) {
+				foreach ( $response->items as $ad_set ) {
+					$ad_sets[ $ad_set->id ] = $ad_set->name;
+				}
+			}
+		}
+
+		set_transient( 'gmr_ooyala_ad_sets', $ad_sets, $transient_ttl );
+	}
+	
 	echo '<p>';
 		echo '<label for="fpmrss-ooyala-ad-set">Ad Set:</label>';
-		echo '<input type="text" id="fpmrss-ooyala-ad-set" class="widefat" name="fpmrss-ooyala-ad-set" value="', esc_attr( $ad_set ), '">';
+		echo '<select id="fpmrss-ooyala-ad-set" name="fpmrss-ooyala-ad-set" class="widefat">';
+			echo '<option value="">';
+				echo 'fp_feed' == $post->post_type 
+					? '--- no add set ---'
+					: '--- ad set defined in the feed ---';
+			echo '</option>';
+			foreach ( $ad_sets as $id => $name ) :
+				echo '<option value="', esc_attr( $id ), '"', selected( $id, $selected_ad_set, false ), '>';
+					echo esc_html( $name );
+				echo '</option>';
+			endforeach;
+		echo '</select>';
 	echo '</p>';
 }
 
 /**
  * Saves post settings.
- * 
+ *
  * @param int $post_id The post id.
  */
 function fpmrss_save_settings( $post_id ) {
 	$doing_autosave = defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE;
 	$has_capabilities = current_user_can( 'edit_post', $post_id );
 	$is_revision = 'revision' == get_post_type( $post_id );
-	
+
 	if ( $doing_autosave || ! $has_capabilities || $is_revision ) {
 		return;
 	}

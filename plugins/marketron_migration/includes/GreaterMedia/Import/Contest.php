@@ -23,14 +23,7 @@ class Contest extends BaseImporter {
 	}
 
 	function import_contest( $contest ) {
-		$contest_name   = $this->import_string( $contest['ContestName'] );
-		//\WP_CLI::log( "Importing Contest: $contest_name" );
-
-		// For testing
-		//if ( strtotime( (string) $contest['DateCreated'] ) < strtotime( '-2 year' ) ) {
-			//return;
-		//}
-
+		$contest_name    = $this->import_string( $contest['ContestName'] );
 		$entity          = $this->get_entity( 'contest' );
 		$contest_id      = $this->import_string( $contest['ContestID'] );
 		$featured_image  = $this->import_string( $contest['ImageFilename'] );
@@ -54,6 +47,7 @@ class Contest extends BaseImporter {
 		$post['contest_entries']      = $contest_entries;
 		$post['contest_shows']        = $contest_shows;
 		$post['categories']           = $this->categories_from_contest( $contest );
+		$post['marketron_id']         = $this->import_string( $contest['ContestID'] );
 
 		if ( ! empty( $featured_image ) ) {
 			$post['featured_image'] = $featured_image;
@@ -157,13 +151,15 @@ class Contest extends BaseImporter {
 				$field_options = array();
 				$options       = array();
 
-				foreach ( $question->QuestionOptions->QuestionOption as $option ) {
-					$field_value = $this->import_string( $option['FieldValue'] );
-					$field_value = str_replace( '"', '&quot;', $field_value );
-					$options[] = array(
-						'label' => $field_value,
-						'checked' => false,
-					);
+				if ( ! empty( $question->QuestionOptions->QuestionOption ) ) {
+					foreach ( $question->QuestionOptions->QuestionOption as $option ) {
+						$field_value = $this->import_string( $option['FieldValue'] );
+						$field_value = str_replace( '"', '&quot;', $field_value );
+						$options[] = array(
+							'label' => $field_value,
+							'checked' => false,
+						);
+					}
 				}
 
 				$field_options['options'] = $options;
@@ -222,10 +218,16 @@ class Contest extends BaseImporter {
 
 	function title_from_contest( $contest ) {
 		$title = $this->import_string( $contest->ContestText['ContestHeader'] );
-		//$title = ltrim( $title, '\[ONLINE\]' );
-		//$title = ltrim( $title, '\[ONLINE\*\]' );
-		//$title = ltrim( $title, '\[ON-AIR\]' );
-		//$title = ltrim( $title, '\[ON-AIR\*\]' );
+		$title_replacements = array(
+			'ONLINE', 'ON-AIR', 'ONAIR', 'ONSITE', 'ON-SITE',
+		);
+
+		foreach ( $title_replacements as $replacement ) {
+			$title = str_replace( "[$replacement]", '', $title );
+			$title = str_replace( "[$replacement*]", '', $title );
+			$title = str_replace( "[*$replacement]", '', $title );
+		}
+
 		$title = ltrim( $title, ' ' );
 		$title = ltrim( $title, '-' );
 		$title = ltrim( $title, ' ' );
@@ -254,6 +256,11 @@ class Contest extends BaseImporter {
 	}
 
 	function contest_entries_from_contest( $contest ) {
+		$exclude_contest_entries = $this->get_site_option( 'exclude_contest_entries' );
+		if ( $exclude_contest_entries ) {
+			return array();
+		}
+
 		$contest_id = $this->import_string( $contest['ContestID'] );
 		$contest_entries = array();
 		$entries         = $this->entries_from_contest( $contest );
@@ -262,13 +269,27 @@ class Contest extends BaseImporter {
 			return $contest_entries;
 		}
 
-		$total        = count( $entries );
-		$msg          = "  Importing $total Contest Entries";
+		$total          = count( $entries );
+		$msg            = "  Importing $total Contest Entries";
+		$gigya_users    = $this->container->entity_factory->build( 'gigya_user' );
+		$user_entries   = array();
 		//$progress_bar = new \WordPress\Utils\ProgressBar( $msg, $total );
 
 		foreach ( $entries as $entry ) {
-			$contest_entry     = $this->contest_entry_from_entry( $entry, $contest_id, $contest );
-			$contest_entries[] = $contest_entry;
+			$member_id = $this->import_string( $entry['MemberID'] );
+
+			if ( array_key_exists( $member_id, $user_entries ) ) {
+				continue;
+			}
+
+			$contest_entry = $this->contest_entry_from_entry(
+				$entry, $contest_id, $contest, $gigya_users
+			);
+
+			if ( ! empty( $contest_entry ) ) {
+				$user_entries[ $member_id ] = true;
+				$contest_entries[] = $contest_entry;
+			}
 			//$progress_bar->tick();
 		}
 
@@ -281,10 +302,15 @@ class Contest extends BaseImporter {
 		return $this->contest_shows_from_contest( $contest );
 	}
 
-	function contest_entry_from_entry( $entry, $contest_id, $contest ) {
+	function contest_entry_from_entry( $entry, $contest_id, $contest, $gigya_users ) {
 		$contest_entry                         = array();
 		$contest_entry['marketron_contest_id'] = $contest_id;
 		$contest_entry['member_id']            = $this->import_string( $entry['MemberID'] );
+
+		if ( ! $gigya_users->can_import_member( $contest_entry['member_id'] ) ) {
+			return null;
+		}
+
 		$contest_entry['answers']              = $this->answers_from_entry( $entry, $contest_id, $contest );
 		$contest_entry['created_on']           = $this->import_string( $entry['UTCEntryDate'] );
 		$contest_entry['user_survey_id']       = $this->import_string( $entry['UserSurveyID'] );

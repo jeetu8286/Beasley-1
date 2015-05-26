@@ -45,10 +45,10 @@ class Survey extends Post {
 		}
 */
 
-		$meta                         = array();
-		$meta['form-title']           = $survey_title;
-		$meta['form-thankyou']        = $survey_completion_message;
-		$meta['marketron_survey_id']  = $marketron_id;
+		$meta                  = array();
+		$meta['form-title']    = $survey_title;
+		$meta['form-thankyou'] = $survey_completion_message;
+		$meta['marketron_id']  = $marketron_id;
 
 		if ( ! empty( $survey_form ) ) {
 			$meta['survey_embedded_form'] = json_encode( $survey_form );
@@ -223,6 +223,17 @@ class Survey extends Post {
 				'actions' => array( $action )
 			),
 		);
+	}
+
+	function destroy() {
+		$this->survey_forms = null;
+		unset( $this->survey_forms );
+
+		$this->contest_entries = null;
+		unset( $this->contest_entries );
+
+		$this->survey_entries = null;
+		unset( $this->survey_entries );
 	}
 
 }

@@ -9,18 +9,28 @@ class Blog extends Post {
 	}
 
 	function add( &$fields ) {
-		if ( ! empty( $fields['show'] ) ) {
-			$show = $fields['show'];
+		if ( ! empty( $fields['shows'] ) ) {
+			$shows = $fields['shows'];
 		} else {
-			$show = null;
+			$shows = null;
 		}
 
 		$fields = parent::add( $fields );
 		$post_id = $fields['ID'];
 
-		if ( ! empty( $show ) ) {
-			$entity = $this->get_entity( 'show_taxonomy' );
-			$entity->add( $show, $post_id );
+		if ( ! empty( $shows ) ) {
+			$shows = array_unique( $shows );
+			foreach ( $shows as $show ) {
+				$entity = $this->get_entity( 'show_taxonomy' );
+				if ( trim( $show ) !== '' ) {
+					$entity->add( $show, $post_id );
+				}
+			}
+		}
+
+		if ( ! empty( $fields['post_format'] ) ) {
+			$post_formats = $this->get_entity( 'post_format' );
+			$post_formats->add( $fields['post_format'], $post_id );
 		}
 
 		return $fields;

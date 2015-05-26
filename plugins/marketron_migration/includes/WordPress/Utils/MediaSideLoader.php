@@ -41,7 +41,15 @@ class MediaSideLoader {
 			}
 
 			//error_log( "copy: $source - $dest" );
-			copy( $source, $dest );
+			if ( ! $this->container->opts['fake_media'] ) {
+				copy( $source, $dest );
+				$this->update_ownership( $dest );
+			} else if ( preg_match( '/.jpg$/', $dest ) !== false ){
+				copy( $source, $dest );
+				$this->update_ownership( $dest );
+			} else {
+				$this->symlink( $source, $dest );
+			}
 
 			$notify->tick();
 		}
@@ -261,6 +269,12 @@ class MediaSideLoader {
 		} finally {
 			chdir( $cwd );
 		}
+	}
+
+	function update_ownership( $path ) {
+		/* TODO: configurable via WP_CLI opts */
+		chown( $path, 'nginx' );
+		chgrp( $path, 'nginx' );
 	}
 
 }

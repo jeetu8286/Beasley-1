@@ -65,7 +65,13 @@ class BaseTable {
 
 	function add( &$fields ) {
 		if ( ! array_key_exists( $this->primary_key, $fields ) ) {
-			$fields[ $this->primary_key ] = $this->get_next_id();
+			if ( array_key_exists( 'existing_id', $fields ) ) {
+				/* if existing id, this is a record retrieved from the db */
+				$fields[ $this->primary_key ] = $fields['existing_id'];
+				$fields['exclude_from_csv'] = true;
+			} else {
+				$fields[ $this->primary_key ] = $this->get_next_id();
+			}
 		}
 
 		$id                = $fields[ $this->primary_key ];
@@ -103,6 +109,14 @@ class BaseTable {
 
 	/* Eg:- has_row_with_field( 'slug', 'foo-bar' ) */
 	function has_row_with_field( $field_name, $field_value ) {
+		if ( is_null( $field_value ) ) {
+			return false;
+		}
+
+		if ( is_array( $field_value ) ) {
+			$field_value = $field_value[0];
+		}
+
 		if ( array_key_exists( $field_name, $this->indices_store ) ) {
 			if ( array_key_exists( $field_value, $this->indices_store[ $field_name ] ) ) {
 				$indices = $this->indices_store[ $field_name ][ $field_value ];
@@ -117,6 +131,10 @@ class BaseTable {
 
 	// returns first row with matched index
 	function get_row_with_field( $field_name, $field_value ) {
+		if ( is_array( $field_value ) ) {
+			$field_value = $field_value[0];
+		}
+
 		if ( $this->has_row_with_field( $field_name, $field_value ) ) {
 			$indices = $this->indices_store[ $field_name ][ $field_value ];
 			$row_id  = $indices[0];
@@ -186,6 +204,33 @@ class BaseTable {
 		$file_handle = fopen( $csv_file, 'w' );
 
 		$this->to_csv( $file_handle );
+	}
+
+	function can_destroy() {
+		return true;
+	}
+
+	function destroy() {
+		$this->factory = null;
+		unset( $this->factory );
+
+		$this->container = null;
+		unset( $this->container );
+
+		$this->rows = null;
+		unset( $this->rows );
+
+		$this->columns = null;
+		unset( $this->columns );
+
+		$this->null_columns = null;
+		unset( $this->null_columns );
+
+		$this->indices = null;
+		unset( $this->indices );
+
+		$this->indices_store = null;
+		unset( $this->indices_store );
 	}
 
 	function get_import_query() {
@@ -264,6 +309,11 @@ SQL;
 			$notify     = new \WordPress\Utils\ProgressBar( $msg, $total_rows );
 
 			foreach ( $rows as $row_id => $row ) {
+				if ( array_key_exists( 'exclude_from_csv', $row ) ) {
+					/* ignore rows marked for exclusion */
+					continue;
+				}
+
 				$csv_row = $this->to_csv_row( $row, $columns );
 				fputcsv(
 					$csv_file_handle, $csv_row, ',', '"'

@@ -50,6 +50,7 @@ class ConfigLoader {
 		$this->load_member_page_text_options();
 		$this->load_google_analytics_options();
 		$this->load_social_page_options();
+		$this->load_embedly_options();
 	}
 
 	function load_gigya_options() {
@@ -120,7 +121,7 @@ class ConfigLoader {
 		\WP_CLI::success( 'Updated MyEmma Options' );
 	}
 
-	function load_myemma_groups() {
+	function load_myemma_groups( $save = false ) {
 		if ( ! $this->get_config()->has_config_option( 'myemma' ) ) {
 			return;
 		}
@@ -141,13 +142,17 @@ class ConfigLoader {
 				$group['group_description'] = '';
 			}
 
+			$group['group_active'] = empty( $newsletter['active'] ) ? true : $newsletter['active'];
+
 			$groups[] = $group;
 		}
 
-		$groups = json_encode( $groups );
-		update_option( 'emma_groups', $groups );
+		if ( $save ) {
+			$groups = json_encode( $groups );
+			update_option( 'emma_groups', $groups );
 
-		\WP_CLI::success( 'Updated MyEmma Groups' );
+			\WP_CLI::success( 'Updated MyEmma Groups' );
+		}
 	}
 
 	function load_ooyala_options() {
@@ -195,10 +200,14 @@ class ConfigLoader {
 		}
 
 		$live_streams = $this->get_config_option( 'live_player', 'streams' );
-		$entity       = $this->container->entity_factory->get_entity( 'live_stream' );
-		$total        = count( $live_streams );
+		$total        = 0;
 
 		foreach ( $live_streams as $live_stream ) {
+			$existing_post = get_page_by_title( $live_stream['call_sign'], ARRAY_A, 'live-stream' );
+			if ( ! is_null( $existing_post ) ) {
+				continue;
+			}
+
 			$post = array(
 				'post_type'   => 'live-stream',
 				'post_title'  => $live_stream['call_sign'],
@@ -210,6 +219,8 @@ class ConfigLoader {
 			update_post_meta( $post_id, 'call_sign', $live_stream['call_sign'] );
 			update_post_meta( $post_id, 'description', $live_stream['description'] );
 			update_post_meta( $post_id, 'vast_url', $live_stream['vast_url'] );
+
+			$total++;
 		}
 
 		\WP_CLI::success( "Imported $total Live Stream(s)" );
@@ -273,6 +284,23 @@ class ConfigLoader {
 		update_option( 'gmr_instagram_name', $instagram );
 
 		\WP_CLI::success( 'Updated Social Page Options' );
+	}
+
+	function load_embedly_options() {
+		if ( ! $this->get_config()->has_config_option( 'embedly' ) ) {
+			return;
+		}
+
+		global $wpdb;
+		$settings = array(
+			'table'  => $wpdb->prefix . 'embedly_providers',
+			'active' => true,
+			'key'    => $this->get_config_option( 'embedly', 'api_key' ),
+		);
+
+		update_option( 'embedly_settings', $settings );
+
+		\WP_CLI::success( 'Updated Embedly Options' );
 	}
 
 }
