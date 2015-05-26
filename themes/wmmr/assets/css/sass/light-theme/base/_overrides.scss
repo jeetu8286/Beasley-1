@@ -1,3 +1,5 @@
+@import url(http://fonts.googleapis.com/css?family=Oswald:400,300,700);
+
 .main, %main {
 	background-color: #fff;
 
@@ -25,7 +27,7 @@
 	a:hover,
 	a:visited {
 		color: #fff;
-		font-weight: 300;
+		font-weight: 700;
 	}
 
 	.header__nav {
@@ -54,11 +56,26 @@
 	}
 }
 
-.header__account ul li a:active, .header__account ul li a:focus, .header__account ul li a:hover, .header__account ul li:hover, .header__nav ul li a:active, .header__nav ul li a:focus, .header__nav ul li.active, .header__nav ul li.active a:hover, .ui-menu .ui-state-focus {
+.header__account ul li a:active,
+.header__account ul li a:focus,
+.header__account ul li a:hover,
+.header__account ul li:hover,
+.header__nav ul li a:active,
+.header__nav ul li a:focus,
+.header__nav ul li.active,
+.header__nav ul li.active a:hover,
+.ui-menu .ui-state-focus {
 	background-color: #f8c50f;
 }
 
-.header__account--links.sub-menu, .header__nav .format-fi > ul, .header__nav .format-fi > ul.header__account--links, .header__nav .format-fw > ul, .header__nav .format-fw > ul.header__account--links, .header__nav .format-sp > ul, .header__nav .format-sp > ul.header__account--links, .header__nav .sub-menu, .ui-menu {
+.header__account--links.sub-menu,
+.header__nav .format-fi > ul,
+.header__nav .format-fi > ul.header__account--links,
+.header__nav .format-fw > ul,
+.header__nav .format-fw > ul.header__account--links,
+.header__nav .format-sp > ul,
+.header__nav .format-sp > ul.header__account--links,
+.header__nav .sub-menu, .ui-menu {
 	position: absolute;
 	border-top: 7px solid #f8c50f;
 	background-color: #fff;
@@ -104,12 +121,6 @@
 		background-color: #561015;
 		// background-size: cover; // Leave this out unless we want big crosshatches on WMGK. If we do want that, be sure to also add this to the .show__header
 	}
-}
-
-.live-links {
-	border-top: 0;
-	background-image: url("../../images/brushed-metal.jpg");
-  	background-position: center;
 }
 
 .live-links--more {
@@ -176,6 +187,18 @@
 
 }
 
+.live-player--open {
+
+	.live-player__stream {
+		display: none;
+	}
+
+	.live-links {
+		margin-top: 0!important;
+	}
+
+}
+
 .live-player__container {
 	border-bottom: 1px solid white;
 
@@ -237,7 +260,7 @@
 
 .header__logo {
 
-	@include bp(medium) {
+	@include bp(large) {
 		/*top: -7px;*/
 		background-image: url("../../images/wmmr-logo.png");
 		background-repeat: no-repeat;
@@ -267,7 +290,7 @@
 
 .highlights__events--more-btn {
 	background-color: #878787;
-	color: #fff;
+	color: #fff!important;
 
 	&:hover {
 		color: $yellow !important;
@@ -276,7 +299,7 @@
 }
 
 .highlights__event--item {
-	background-color: transparent;
+	background-color: rgba(0,0,0,.1);
 	color: $white;
 }
 
@@ -326,7 +349,7 @@
 }
 
 .featured__content--btn {
-	display:none;
+	display:none!important;
 }
 
 .featured__article--heading {
@@ -348,3 +371,124 @@
 	text-transform: uppercase;
 }
 
+/* Smartphones & Tablets (portrait) ----------- */
+@media only screen and (max-width : 479px) {
+
+	.entry2 {
+		border: 1px solid #d0d2d3;
+		-webkit-box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.55);
+		-moz-box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.55);
+		box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.55);
+
+		.entry2__meta {
+			padding: 0 10px;
+
+			.entry2__date {
+				margin: 0;
+			}
+		}
+
+		.entry2__footer {
+			padding: 10px;
+			margin-top: 1em;
+		}
+	}
+
+}
+
+@include bp(medium) {
+
+	.home__featured {
+
+		background-color: #f2f2f2;
+
+		.featured__content--block {
+			border-radius: 0;
+			-moz-border-radius: 0;
+			-webkit-border-radius: 0;
+		}
+
+		.live-player--open {
+
+			.live-player__stream {
+				/*display: none;*/
+			}
+
+			.live-links {
+				/*margin-top: 0!important;*/
+			}
+
+		}
+
+	}
+
+	.live-links {
+		border-top: 0;
+		background-image: url("../../images/brushed-metal.jpg");
+	  	background-position: center;
+	}
+
+}
+
+@include bp(large) {
+
+	.header__nav > ul > li a,
+	.header__nav > ul > li a:active,
+	.header__nav > ul > li a:hover,
+	.header__nav > ul > li a:visited {
+		font-size: 16px;
+		padding: 33px 12px 33px 12px!important;
+	}
+
+	.header__nav > ul > li a:hover {
+		color: #333;
+	}
+
+	.header__main .header__search {
+		padding: 0 16px;
+
+		&:hover {
+			background-color: #f8c50f;
+			color: #333;
+		}
+	}
+
+	.header__account:hover {
+		background-color: #f8c50f;
+	}
+
+	.header__main a:hover {
+		color: #333;
+
+		.header__account--logged-in,
+		.header__account--logged-out,
+		.header__account--,
+		{
+			color: #333;
+		}
+	}
+
+}
+
+@include bp(larger) {
+
+	.header__nav > ul > li a,
+	.header__nav > ul > li a:active,
+	.header__nav > ul > li a:hover,
+	.header__nav > ul > li a:visited {
+		font-size: 18px;
+		padding: 32px 15px 32px 15px !important;
+	}
+
+}
+
+@include bp(x-large) {
+
+	.main {
+		background-image: url("../../images/main-bg.png");
+		background-position: center;
+		background-repeat: repeat-y;
+		background-color:#000;
+	}
+
+}
