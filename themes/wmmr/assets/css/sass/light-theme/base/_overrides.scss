@@ -9,7 +9,7 @@
 }
 
 .header {
-	background-color: white;
+	background-color: #000;
 	background-image: url("../../images/crowd-header-bg.jpg");
 	background-repeat: repeat-x;
 	background-position: center;
@@ -371,6 +371,11 @@
 	text-transform: uppercase;
 }
 
+.podcast__btn--play,
+.podcast__btn--pause {
+	background-color: #fff;
+}
+
 /* Smartphones & Tablets (portrait) ----------- */
 @media only screen and (max-width : 479px) {
 
@@ -398,6 +403,20 @@
 
 @include bp(medium) {
 
+	.header__search--form {
+
+		background-color: #fff;
+
+		.header__search--input {
+			background-color: #fff!important;
+		}
+
+		.header-search-body {
+			background: #fff;
+		}
+
+	}
+
 	.home__featured {
 
 		background-color: #f2f2f2;
@@ -422,10 +441,44 @@
 
 	}
 
-	.live-links {
-		border-top: 0;
+	.live-player {
+
 		background-image: url("../../images/brushed-metal.jpg");
 	  	background-position: center;
+
+	}
+
+	.live-links {
+		border-top: 0;
+		background: none;
+
+	  	.live-link__title {
+
+	  		a {
+		  		font-family: 'Oswald', sans-serif;
+		  		line-height: 1.1em;
+		  		color: #000;
+		  		text-shadow: 0px 0px 10px rgba(255, 255, 255, 1);
+			}
+
+	  	}
+	}
+
+	.live-stream {
+		background-image: url("../../images/tuner-bg.jpg");
+
+		.on-air, .up-next {
+			visibility: hidden;
+		}
+
+		.live-stream__controls {
+			padding: 34px 0 0;
+		}
+
+		.now-playing__title {
+			color: #fff;
+			text-shadow: 0px 0px 10px rgba(0, 0, 0, 1);
+		}
 	}
 
 }
