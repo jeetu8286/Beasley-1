@@ -23,14 +23,7 @@ class Contest extends BaseImporter {
 	}
 
 	function import_contest( $contest ) {
-		$contest_name   = $this->import_string( $contest['ContestName'] );
-		//\WP_CLI::log( "Importing Contest: $contest_name" );
-
-		// For testing
-		//if ( strtotime( (string) $contest['DateCreated'] ) < strtotime( '-2 year' ) ) {
-			//return;
-		//}
-
+		$contest_name    = $this->import_string( $contest['ContestName'] );
 		$entity          = $this->get_entity( 'contest' );
 		$contest_id      = $this->import_string( $contest['ContestID'] );
 		$featured_image  = $this->import_string( $contest['ImageFilename'] );
@@ -54,6 +47,7 @@ class Contest extends BaseImporter {
 		$post['contest_entries']      = $contest_entries;
 		$post['contest_shows']        = $contest_shows;
 		$post['categories']           = $this->categories_from_contest( $contest );
+		$post['marketron_id']         = $this->import_string( $contest['ContestID'] );
 
 		if ( ! empty( $featured_image ) ) {
 			$post['featured_image'] = $featured_image;
@@ -224,10 +218,16 @@ class Contest extends BaseImporter {
 
 	function title_from_contest( $contest ) {
 		$title = $this->import_string( $contest->ContestText['ContestHeader'] );
-		//$title = ltrim( $title, '\[ONLINE\]' );
-		//$title = ltrim( $title, '\[ONLINE\*\]' );
-		//$title = ltrim( $title, '\[ON-AIR\]' );
-		//$title = ltrim( $title, '\[ON-AIR\*\]' );
+		$title_replacements = array(
+			'ONLINE', 'ON-AIR', 'ONAIR', 'ONSITE', 'ON-SITE',
+		);
+
+		foreach ( $title_replacements as $replacement ) {
+			$title = str_replace( "[$replacement]", '', $title );
+			$title = str_replace( "[$replacement*]", '', $title );
+			$title = str_replace( "[*$replacement]", '', $title );
+		}
+
 		$title = ltrim( $title, ' ' );
 		$title = ltrim( $title, '-' );
 		$title = ltrim( $title, ' ' );
@@ -256,6 +256,11 @@ class Contest extends BaseImporter {
 	}
 
 	function contest_entries_from_contest( $contest ) {
+		$exclude_contest_entries = $this->get_site_option( 'exclude_contest_entries' );
+		if ( $exclude_contest_entries ) {
+			return array();
+		}
+
 		$contest_id = $this->import_string( $contest['ContestID'] );
 		$contest_entries = array();
 		$entries         = $this->entries_from_contest( $contest );
