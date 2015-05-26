@@ -175,7 +175,8 @@ Denis Changes to _overrides.scss file 5/20
  #page-wrap.page-wrap,
 .main,
 .home .container
-{background-color: transparent!important;}                
+{background-color: transparent!important; background-image: none!important;}        
+
 .highlights__heading {
     color: #fff!important;
     font-weight: 500;
@@ -195,7 +196,7 @@ Denis Changes to _overrides.scss file 5/20
     /*background-image: url("http://i.imgur.com/q7eZ8Jz.png");
     background-repeat: no-repeat;
     background-position: left top;*/
-    background-color: #004c90!important;color:#fff;
+    background-color: #0e2242!important;color:#fff;
   }
 
 .live-player__stream{display: inline!important; margin-top: 60px; }
@@ -283,7 +284,7 @@ a.contest-attr--rules-toggler.pjax-exclude:hover{background-color: #004c90; colo
 
 .home__featured .featured__article--content { background-color: #0e2242;color: #fff; border-bottom-left-radius: 0em!important; border-bottom-right-radius:0em!important;}
 .home__featured .featured__article a:hover {background-color: #005596; color: #fff; border-bottom-left-radius: 0em!important;border-top-left-radius: 0em!important; border-bottom-right-radius:0em!important;}
-.home__featured .featured__article a:hover .featured__article--content {background-color: #005596;color: #ffe513!important;border-bottom-right-radius: 0em!important;}
+.home__featured .featured__article a:hover .featured__article--content {background-color: #005596;color: #ffe513!important;border-bottom-left-radius: 0em!important;border-bottom-right-radius: 0em!important;}
 
 .featured__content--title {color: #FFFFFF;font-family: 'Ubuntu', sans-serif;}
 .featured__content--title:hover {color: #FFFFFF!important;font-family: 'Ubuntu', sans-serif;}
@@ -388,6 +389,9 @@ h2.entry2__title a:hover{color: #f58426!important;}
 
 
 .entries {background-color: #fff;}
+
+.content {background-color: #fff;}
+.home .content{float: left;display: block;width: 100%;}
 /*----------------------------------------------------------------------------------------------------------------------
 media 400px 
 ------------------------------------------------------------------------------------------------------------------------*/
@@ -433,7 +437,7 @@ a:hover {color: #002a6e!important; text-decoration: underline;}*/
   box-shadow: 0px 0px 0px 0px!important;
 }
 
-section.content {background-color: #fff;}
+
 
 .header {
   -webkit-animation-name: no_name!important;
@@ -746,8 +750,7 @@ media 1252px
   animation-direction: alternate;
   animation-time: 10s;
   }
-.main 
-{background: transparent!important;} 
+
 
 }
 /*-----------------------------------
