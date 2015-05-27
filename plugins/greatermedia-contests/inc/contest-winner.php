@@ -282,7 +282,7 @@ function gmr_do_contest_export( $args ) {
 				$row = array_merge( array( $entry->post_date ), gmr_contest_get_entry_author( $entry->ID, 'array' ), array(
 					gmr_contest_get_entry_author_email( $entry->ID ),
 					! empty( $profile['address'] ) ? $profile['address'] : '',
-					! empty( $profile['cite'] ) ? $profile['city'] : '',
+					! empty( $profile['city'] ) ? $profile['city'] : '',
 					! empty( $profile['state'] ) ? $profile['state'] : '',
 					! empty( $profile['zip'] ) ? $profile['zip'] : get_post_meta( $entry->ID, 'entrant_zip', true ),
 					! empty( $profile['country'] ) ? $profile['country'] : '',
