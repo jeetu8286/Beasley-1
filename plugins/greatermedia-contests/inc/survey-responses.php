@@ -277,7 +277,7 @@ function gmr_do_survey_export( $args ) {
 				}
 
 				$zip = ! empty( $profile['zip'] ) ? $profile['zip'] : get_post_meta( $entry->ID, 'entrant_zip', true );
-				$zip = str_pad( absint( $zip ), '0', STR_PAD_LEFT );
+				$zip = str_pad( absint( $zip ), 5, '0', STR_PAD_LEFT );
 
 				$row = array_merge( array( $entry->post_date ), gmr_contest_get_entry_author( $entry->ID, 'array' ), array(
 					gmr_contest_get_entry_author_email( $entry->ID ),
