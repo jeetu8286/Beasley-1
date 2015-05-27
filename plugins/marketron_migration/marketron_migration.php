@@ -27,3 +27,14 @@ if ( defined( 'WP_CLI' ) and WP_CLI  ) {
 	\WP_CLI::add_command( 'marketron_migration', '\GreaterMedia\Commands\Migrator' );
 	\WP_CLI::add_command( 'libsyn', '\GreaterMedia\Commands\LibSynSideloadCommand' );
 }
+
+if ( defined( 'DOING_ASYNC' ) && DOING_ASYNC ) {
+	if ( ! function_exists( '\wp_generate_attachment_metadata' ) ) {
+		require_once( ABSPATH . 'wp-admin/includes/image.php' );
+	}
+
+	require_once( __DIR__ . '/vendor/autoload.php' );
+
+	$thumbnail_list_regenerator = new \WordPress\Utils\ThumbnailListRegenerator();
+	$thumbnail_list_regenerator->register();
+}
