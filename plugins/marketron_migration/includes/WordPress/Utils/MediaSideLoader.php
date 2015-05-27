@@ -297,6 +297,15 @@ class MediaSideLoader {
 				$this->pending_sideloads[ $index ] = null;
 			}
 		}
+
+		$this->pending_sideloads = array_filter(
+			$this->pending_sideloads,
+			array( $this, 'is_pending_sideload' )
+		);
+	}
+
+	function is_pending_sideload( $item ) {
+		return ! empty( $item );
 	}
 
 }
