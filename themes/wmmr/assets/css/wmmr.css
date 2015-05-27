@@ -15079,6 +15079,9 @@ table.responsive tr:nth-of-type(even) {
 .podcast__btn--play, .podcast__btn--pause {
   background-color: #fff; }
 
+.article__content .fluid-width-video-wrapper {
+  margin-bottom: 1em; }
+
 /* Smartphones & Tablets (portrait) ----------- */
 @media only screen and (max-width: 479px) {
   .entry2, .home .episode {
