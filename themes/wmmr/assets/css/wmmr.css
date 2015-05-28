@@ -15082,6 +15082,9 @@ table.responsive tr:nth-of-type(even) {
 .article__content .fluid-width-video-wrapper {
   margin-bottom: 1em; }
 
+.profile-page .profile-page__content, .profile-page .profile-page__sidebar {
+  background-color: #fff; }
+
 /* Smartphones & Tablets (portrait) ----------- */
 @media only screen and (max-width: 479px) {
   .entry2, .home .episode {
@@ -15167,7 +15170,7 @@ table.responsive tr:nth-of-type(even) {
       text-shadow: 0px 0px 10px black; } }
 
 @media screen and (min-width: 1024px)  {
-  .header__nav > ul > li a, .header__nav > ul > li a:active, .header__nav > ul > li a:hover, .header__nav > ul > li a:visited {
+  .header__nav > ul > li > a, .header__nav > ul > li > a:active, .header__nav > ul > li > a:hover, .header__nav > ul > li > a:visited {
     font-size: 16px;
     padding: 33px 12px 33px 12px !important; }
   .header__nav > ul > li a:hover {
@@ -15185,7 +15188,7 @@ table.responsive tr:nth-of-type(even) {
       color: #333; } }
 
 @media screen and (min-width: 1200px)  {
-  .header__nav > ul > li a, .header__nav > ul > li a:active, .header__nav > ul > li a:hover, .header__nav > ul > li a:visited {
+  .header__nav > ul > li > a, .header__nav > ul > li > a:active, .header__nav > ul > li > a:hover, .header__nav > ul > li > a:visited {
     font-size: 18px;
     padding: 32px 15px 32px 15px !important; } }
 

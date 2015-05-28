@@ -380,6 +380,11 @@
     margin-bottom: 1em;
 }
 
+.profile-page .profile-page__content,
+.profile-page .profile-page__sidebar {
+    background-color: #fff;
+}
+
 /* Smartphones & Tablets (portrait) ----------- */
 @media only screen and (max-width : 479px) {
 
@@ -536,10 +541,10 @@
 
 @include bp(large) {
 
-    .header__nav > ul > li a,
-    .header__nav > ul > li a:active,
-    .header__nav > ul > li a:hover,
-    .header__nav > ul > li a:visited {
+    .header__nav > ul > li > a,
+    .header__nav > ul > li > a:active,
+    .header__nav > ul > li > a:hover,
+    .header__nav > ul > li > a:visited {
         font-size: 16px;
         padding: 33px 12px 33px 12px!important;
     }
@@ -576,10 +581,10 @@
 
 @include bp(larger) {
 
-    .header__nav > ul > li a,
-    .header__nav > ul > li a:active,
-    .header__nav > ul > li a:hover,
-    .header__nav > ul > li a:visited {
+    .header__nav > ul > li > a,
+    .header__nav > ul > li > a:active,
+    .header__nav > ul > li > a:hover,
+    .header__nav > ul > li > a:visited {
         font-size: 18px;
         padding: 32px 15px 32px 15px !important;
     }
