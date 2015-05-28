@@ -37,4 +37,10 @@ if ( defined( 'DOING_ASYNC' ) && DOING_ASYNC ) {
 
 	$thumbnail_list_regenerator = new \WordPress\Utils\ThumbnailListRegenerator();
 	$thumbnail_list_regenerator->register();
+
+	$gigya_action_generator = new \WordPress\Entities\GigyaUser();
+	$gigya_action_generator->register();
+
+	$media_file_sideloader = new \WordPress\Utils\MediaSideLoader();
+	$media_file_sideloader->register();
 }

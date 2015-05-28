@@ -265,6 +265,16 @@ class Migrator {
 			$this->opts['tools_to_load'] = explode( ',', $this->opts['tools_to_load'] );
 		}
 
+		if ( array_key_exists( 'async', $opts ) ) {
+			if ( empty( $opts['async'] ) ) {
+				$this->opts['async'] = true;
+			} else {
+				$this->opts['async'] = filter_var( $opts['async'], FILTER_VALIDATE_BOOLEAN );
+			}
+		} else {
+			$this->opts['async'] = false;
+		}
+
 		$opts['site_dir'] = untrailingslashit( $opts['site_dir'] );
 		$this->site_dir   = $opts['site_dir'];
 
@@ -355,7 +365,22 @@ SQL;
 		$this->initialize( $args, $opts, false );
 
 		$gigya_user = $this->entity_factory->get_entity( 'gigya_user' );
-		$gigya_user->export_actions();
+
+		if ( $this->opts['async'] ) {
+			$gigya_user->export_actions_async();
+		} else {
+			$gigya_user->export_actions();
+		}
+	}
+
+	function join_actions_file( $args, $opts ) {
+		$this->initialize( $args, $opts, false );
+
+		$actions_log = $this->config->get_output_dir() . '/actions.log';
+		$dest = $this->config->get_gigya_action_export_file();
+
+		$gigya_user = $this->entity_factory->get_entity( 'gigya_user' );
+		$gigya_user->join_actions_file( $actions_log, $dest );
 	}
 
 	function prepare( $args, $opts ) {
