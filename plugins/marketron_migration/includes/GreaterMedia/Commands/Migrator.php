@@ -380,7 +380,7 @@ SQL;
 		$dest = $this->config->get_gigya_action_export_file();
 
 		$gigya_user = $this->entity_factory->get_entity( 'gigya_user' );
-		$gigya_user->join_accounts_file( $actions_log, $dest );
+		$gigya_user->join_actions_file( $actions_log, $dest );
 	}
 
 	function prepare( $args, $opts ) {
