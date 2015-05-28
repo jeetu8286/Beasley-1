@@ -23,7 +23,7 @@ function gmr_is_show( $show = null ) {
 		
 		if ( is_singular( ShowsCPT::get_instance()->get_supported_post_types() ) ) {
 			$id = get_the_ID();
-			$id = empty( $id ) ? get_queried_object_id() : $id; // In case we haven't gotten to the loop yet... (header)
+			$id = empty( $id ) ? get_queried_object_id() : $id; // In case we haven't gotten to the loop yet (ex: in the header)
 			$show_terms = wp_get_object_terms( $id, ShowsCPT::SHOW_TAXONOMY );
 			$show_term_slugs = wp_list_pluck( $show_terms, 'slug' );
 
@@ -43,8 +43,6 @@ function gmr_is_show( $show = null ) {
 			return true;
 		}
 	}
-
-
 
 	return false;
 }
