@@ -15019,8 +15019,8 @@ table.responsive tr:nth-of-type(even) {
     margin-right: 0; } }
 
 .home__featured .featured__article--content {
-  background-color: #c00000;
-  color: #c00000;
+  background-color: #666;
+  color: #666;
   font-family: 'Istok+Web', sans-serif; }
 
 .live-player__stream {
@@ -15051,7 +15051,7 @@ a:hover .highlights__community--title {
 
 /* Rollover color for feature bar */
 .home__featured .featured__article a:hover .featured__article--content {
-  background-color: #781214; }
+  background-color: #999; }
 
 /* Feature bar font color */
 .featured__article:hover .featured__article--heading {
@@ -15066,18 +15066,18 @@ a:hover .highlights__community--title {
 
 /* Sub-Feature box color */
 .home__featured .featured__content--block {
-  background-color: #c00000; }
+  background-color: #666; }
 
 /* Events box color */
 .highlights__event--item {
-  background-color: #c00000;
+  background-color: #666;
   transition: all 200ms ease-in-out;
   -moz-transition: all 200ms ease-in-out;
   -webkit-transition: all 200ms ease-in-out; }
 
 /* Events box rollover color */
 .highlights__event--item:hover {
-  background-color: #781214; }
+  background-color: #999; }
 
 /* Events font color */
 .highlights__event--date, .highlights__event--title {
@@ -15095,7 +15095,7 @@ a:hover .highlights__event--date, a:hover .highlights__event--title {
 
 /* Sub-Feature box rollover color */
 .featured__content--block:hover {
-  background: #c00000; }
+  background: #333; }
 
 .entry2__title {
   font-family: 'Istok+Web', sans-serif; }
@@ -15326,8 +15326,8 @@ a:hover .highlights__event--date, a:hover .highlights__event--title {
 } */
   /* Featured box background desktop */
   .home__featured .featured__article--content {
-    background-color: #c00000;
-    color: #c00000; } }
+    background-color: #666666;
+    color: #666666; } }
 
 @media screen and (min-width: 1024px) {
   .header__nav li {
@@ -15398,8 +15398,8 @@ a:hover .highlights__event--date, a:hover .highlights__event--title {
 
 /* Featured content btn */
 .featured__content--btn {
-  background-color: #c00000;
-  border: 1px solid #c00000;
+  background-color: #333;
+  border: 1px solid #333;
   border-radius: 100em;
   color: #fff !important;
   cursor: pointer;
@@ -15648,6 +15648,15 @@ a:hover .highlights__event--date, a:hover .highlights__event--title {
 .header__logo img {
   display: none; }
 
+.header__logo {
+  background: url("http://greatermedianj.com/WDHA/wdhawhite.png") no-repeat;
+  display: block;
+  width: 150px;
+  height: 110px;
+  z-index: 1;
+  cursor: pointer;
+  margin: 15px 0 0 50px; }
+
 .live-player {
   color: #000;
   font-weight: 700;
@@ -15690,7 +15699,7 @@ a:hover .highlights__event--date, a:hover .highlights__event--title {
   color: #fff; }
 
 .featured__content--block:hover {
-  background: #781214; }
+  background: #999999; }
 
 .live-link__type--show {
   border-bottom-color: white;
@@ -15703,3 +15712,13 @@ a:hover .highlights__event--date, a:hover .highlights__event--title {
   background: -o-linear-gradient(top, rgba(255, 255, 255, 0) 0%, #f2f2f2 100%);
   background: -ms-linear-gradient(top, rgba(255, 255, 255, 0) 0%, #f2f2f2 100%);
   background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, #f2f2f2 100%); }
+
+.show__header.has-thumbnail:before {
+  position: absolute;
+  display: none;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: none;
+  content: " "; }
