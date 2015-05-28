@@ -84,10 +84,6 @@ class VideoChannel extends BaseImporter {
 		$title      = $this->import_string( $post['PostTitle'] );
 		$embed_code = $this->import_string( $post['EmbededTag'] );
 
-		if ( $title === 'WDHA Morning Jolt Road Trip' ) {
-			var_dump( $embed_code );
-		}
-
 		$video_oembed = $this->video_from_embed_code( $embed_code );
 
 		if ( $video_oembed !== false ) {
