@@ -77,6 +77,10 @@ class GMR_Syndication_CLI extends WP_CLI_Command {
 			$notify = new \cli\progress\Bar( "Importing $total articles", $total );
 
 			foreach ( $result as $single_post ) {
+				if ( empty( $single_post['post_obj'] ) ) {
+					continue;
+				}
+				
 				$new_post_id = BlogData::ImportPosts(
 						$single_post['post_obj']
 						, $single_post['post_metas']
