@@ -38,7 +38,7 @@ function gmr_is_show( $show = null ) {
 	$show_qv = get_query_var( 'show' );
 
 	// Were only checking for shows in general, not a specific show, if $show is null, so just make sure that there is a show QV set, which means we're on a show section
-	if ( is_null( $show ) && ! empty( $show_qv ) ) {
+	if ( empty( $show ) && ! empty( $show_qv ) ) {
 		return true;
 	}
 
