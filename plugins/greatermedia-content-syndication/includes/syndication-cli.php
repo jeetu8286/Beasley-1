@@ -10,6 +10,9 @@ class GMR_Syndication_CLI extends WP_CLI_Command {
 	 * [<start>]
 	 * : Import articles that were added on or after this date. YYYY-MM-DD
 	 *
+	 * [<end>]
+	 * : Import articles that were added before this date. YYYY-MM-DD
+	 *
 	 * [<reload>]
 	 * : Forces syndication to reload content.
 	 *
@@ -19,7 +22,7 @@ class GMR_Syndication_CLI extends WP_CLI_Command {
 	 *
 	 * wp gmr-syndication import 2014-09-30
 	 *
-	 * @synopsis [<start>] [--reload]
+	 * @synopsis [<start>] [<end>] [--reload]
 	 *
 	 * @subcommand import
 	 *
@@ -54,7 +57,7 @@ class GMR_Syndication_CLI extends WP_CLI_Command {
 				$start = date( 'Y-m-d H:i:s', mktime( 0, 0, 0, 1, 1, 2012 ) );
 			}
 
-			$result = BlogData::QueryContentSite( $single_subscription->ID, $start );
+			$result = BlogData::QueryContentSite( $single_subscription->ID, $start, $end );
 
 			$taxonomy_names = get_object_taxonomies( 'post', 'objects' );
 			$defaults = array(
@@ -74,21 +77,21 @@ class GMR_Syndication_CLI extends WP_CLI_Command {
 			$notify = new \cli\progress\Bar( "Importing $total articles", $total );
 
 			foreach ( $result as $single_post ) {
-				$new_post_id = BlogData::ImportPosts(
-						$single_post['post_obj']
-						, $single_post['post_metas']
-						, $defaults
-						, $single_post['featured']
-						, $single_post['attachments']
-						, $single_post['gallery_attachments']
-						, $single_post['galleries']
-						, $single_post['term_tax']
-						, $force
-				);
-
-				if ( $new_post_id ) {
-					$notify->tick();
+				if ( ! empty( $single_post['post_obj'] ) ) {
+					BlogData::ImportPosts(
+							$single_post['post_obj']
+							, $single_post['post_metas']
+							, $defaults
+							, $single_post['featured']
+							, $single_post['attachments']
+							, $single_post['gallery_attachments']
+							, $single_post['galleries']
+							, $single_post['term_tax']
+							, $force
+					);
 				}
+				
+				$notify->tick();
 			}
 
 			$notify->finish();
