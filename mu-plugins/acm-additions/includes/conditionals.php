@@ -32,16 +32,19 @@ function gmr_is_show( $show = null ) {
 			}
 		}
 
-		return false;
-	} else {
-		// Were only checking for shows in general, not a specific show, if $show is null
-		if ( is_null( $show ) ) {
-			return true;
-		}
+	}
 
-		if ( get_query_var( 'show' ) == $show ) {
-			return true;
-		}
+	// Get the show query var, so we can tell if we are on one of the show sections at all
+	$show_qv = get_query_var( 'show' );
+
+	// Were only checking for shows in general, not a specific show, if $show is null, so just make sure that there is a show QV set, which means we're on a show section
+	if ( is_null( $show ) && ! empty( $show_qv ) ) {
+		return true;
+	}
+
+	// Check if the specific show we are targeting matches our current show section
+	if ( $show_qv == $show ) {
+		return true;
 	}
 
 	return false;
