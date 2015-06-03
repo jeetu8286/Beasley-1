@@ -335,6 +335,9 @@ function fpmrss_generate_image_name( $image ) {
 function fpmrss_update_content( $content ) {
 	$player = get_post_meta( get_the_ID(), 'gmr-player', true );
 	if ( ! empty( $player ) ) {
+		if ( filter_var( $player, FILTER_VALIDATE_URL ) ) {
+			$player = "[embed]{$player}[/embed]";
+		}
 		$content = $player . PHP_EOL . PHP_EOL . $content;
 	}
 	
@@ -374,7 +377,7 @@ add_filter( 'ooyala_default_query_args', 'fpmrss_filter_ooyala_args' );
  */
 function fpmrss_extract_ooyala_post_meta( $post_id, $meta_key ) {
 	$meta_value = get_post_meta( $post_id, $meta_key, true );
-	if ( false === $meta_value ) {
+	if ( empty( $meta_value ) ) {
 		$parent_id = get_post_meta( $post_id, 'fp_source_feed_id', true );
 		if ( $parent_id ) {
 			$meta_value = get_post_meta( $parent_id, $meta_key, true );
