@@ -39,7 +39,6 @@ class AffinityClubScreener {
 
 		foreach ( $members as $member ) {
 			$member_id = trim( (string) $member->getAttribute( 'MemberID' ) );
-			$member_id = rtrim( $member_id, ',' );
 
 			if ( ! $this->can_import_member( $member_id, $member_ids ) ) {
 				$filtered_count++;
@@ -91,6 +90,7 @@ class AffinityClubScreener {
 
 		while ( $line !== false ) {
 			$line = trim( $line );
+			$line = rtrim( $line, ',' );
 
 			if ( is_numeric( $line ) ) {
 				$member_id    = strval( $line );
