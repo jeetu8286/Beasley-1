@@ -22,8 +22,9 @@ get_header(); ?>
 
 					<header class="article__header">
 
-						<time class="article__date" datetime="<?php echo get_the_time(); ?>"><?php the_date('F j, Y'); ?></time>
+						<time class="article__date" datetime="<?php echo get_the_time(); ?>"><?php the_date( 'F j, Y' ); ?></time>
 						<h2 class="article__title" itemprop="headline"><?php the_title(); ?></h2>
+						
 						<?php get_template_part( 'partials/social-share' ); ?>
 
 						<div class="episode__buttons">
@@ -77,9 +78,7 @@ get_header(); ?>
 					</header>
 
 					<section class="article__content" itemprop="articleBody">
-
 						<?php the_content(); ?>
-
 					</section>
 
 					<?php get_template_part( 'partials/article-footer' ); ?>
