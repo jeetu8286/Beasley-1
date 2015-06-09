@@ -9613,6 +9613,9 @@ a.podcast__rss:active {
   width: 100%;
   height: auto; }
 
+.episode__buttons {
+  margin-top: 1.5em; }
+
 .login-restricted-login-btn, .logout-restricted-login-btn, .age-restricted-login-btn {
   display: inline-block;
   line-height: 1;
