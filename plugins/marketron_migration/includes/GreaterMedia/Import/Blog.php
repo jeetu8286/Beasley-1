@@ -216,6 +216,8 @@ class Blog extends BaseImporter {
 				$content, -1, $videos
 			);
 
+			$content = str_replace( '?wmode=transparent', '', $content );
+
 			if ( $post_format !== 'video' && $videos > 0 ) {
 				$post_format = 'video';
 			}
