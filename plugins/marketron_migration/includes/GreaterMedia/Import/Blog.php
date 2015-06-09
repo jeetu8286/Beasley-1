@@ -210,13 +210,15 @@ class Blog extends BaseImporter {
 				$post_format = 'video';
 			}
 		} else if ( strpos( $content, 'youtube.com/embed' ) !== false ) {
-			$content = preg_replace(
+			$content = preg_replace_callback(
 				'#<iframe.*src="https?://www.youtube.com/embed/([^"]*)".*</iframe>#',
-				'[embed]https://www.youtube.com/watch?v=${1}[/embed]',
+				function( $matches ) {
+					$embed_params = $matches[1];
+					$embed_params = str_replace( '?', '&', $embed_params );
+					return "[embed]http://www.youtube.com/watch?v=${embed_params}[/embed]";
+				},
 				$content, -1, $videos
 			);
-
-			$content = str_replace( '?wmode=transparent', '', $content );
 
 			if ( $post_format !== 'video' && $videos > 0 ) {
 				$post_format = 'video';
