@@ -14864,20 +14864,22 @@ table.responsive tr:nth-of-type(even) {
 .live-links--more.show-more--muted {
   display: block; }
 
-#fanatic-social-stream article {
-  border-width: 0 0 1px 0;
-  margin: 0;
-  padding: 20px 0; }
-  #fanatic-social-stream article.content-default .content-body {
-    font-family: 'Open Sans', sans-serif;
-    font-size: 16px;
-    line-height: 20px; }
-  #fanatic-social-stream article.content .content-header .content-header-inner {
-    padding-top: 0; }
-  #fanatic-social-stream article.content-instagram .content-header .content-header-inner {
-    padding-top: 20px; }
-#fanatic-social-stream .hub-list-more {
-  display: none; }
+#fanatic-social-stream {
+  border-top: 1px solid #eee; }
+  #fanatic-social-stream article {
+    border-width: 0 0 1px 0;
+    margin: 0;
+    padding: 20px 0; }
+    #fanatic-social-stream article.content-default .content-body {
+      font-family: 'Open Sans', sans-serif;
+      font-size: 16px;
+      line-height: 20px; }
+    #fanatic-social-stream article.content .content-header .content-header-inner {
+      padding-top: 0; }
+    #fanatic-social-stream article.content-instagram .content-header .content-header-inner {
+      padding-top: 20px; }
+  #fanatic-social-stream .hub-list-more {
+    display: none; }
 
 .single-gmr_gallery .gallery__paging--prev, .single-gmr_gallery .gallery__paging--next {
   color: #d0d2d3; }
