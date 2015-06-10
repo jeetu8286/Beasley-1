@@ -83,36 +83,36 @@
 ### assets/css/greater_media.css
 
 - **Total Stylesheets:** 1
-- **Total Stylesheet Size:** 474935
+- **Total Stylesheet Size:** 475298
 - **Total Media Queries:** 15
-- **Total Rules:** 2607
-- **Selectors Per Rule:** 1.4591484464902187
-- **Total Selectors:** 3804
-- **Identifiers Per Selector:** 2.4045741324921135
-- **Specificity Per Selector:** 21.90588853838065
+- **Total Rules:** 2608
+- **Selectors Per Rule:** 1.4635736196319018
+- **Total Selectors:** 3817
+- **Identifiers Per Selector:** 2.404244170814776
+- **Specificity Per Selector:** 21.9098768666492
 - **Top Selector Specificity:** 130
 - **Top Selector Specificity Selector:** .home .main #signup-welcome:last-child
 - **Total Id Selectors:** 18
-- **Total Identifiers:** 9147
-- **Total Declarations:** 7779
+- **Total Identifiers:** 9177
+- **Total Declarations:** 7780
 - **Total Unique Colors:** 31
 - **Total Important Keywords:** 131
 
 ### assets/css/greater_media.min.css
 
 - **Total Stylesheets:** 1
-- **Total Stylesheet Size:** 275068
+- **Total Stylesheet Size:** 275410
 - **Total Media Queries:** 15
-- **Total Rules:** 2529
-- **Selectors Per Rule:** 1.5519968366943455
-- **Total Selectors:** 3925
-- **Identifiers Per Selector:** 2.3760509554140126
-- **Specificity Per Selector:** 21.72535031847134
+- **Total Rules:** 2530
+- **Selectors Per Rule:** 1.5565217391304347
+- **Total Selectors:** 3938
+- **Identifiers Per Selector:** 2.375825292026409
+- **Specificity Per Selector:** 21.729812087353988
 - **Top Selector Specificity:** 130
 - **Top Selector Specificity Selector:** .home .main #signup-welcome:last-child
 - **Total Id Selectors:** 18
-- **Total Identifiers:** 9326
-- **Total Declarations:** 7202
+- **Total Identifiers:** 9356
+- **Total Declarations:** 7203
 - **Total Unique Colors:** 31
 - **Total Important Keywords:** 128
 
