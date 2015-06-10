@@ -9,14 +9,7 @@
 <div class="show__header<?php if( has_post_thumbnail() ) echo ' has-thumbnail'; ?>"
 
 	<?php if( has_post_thumbnail() ) { ?>
-	style="
-	background-image: linear-gradient(to bottom, rgba(86, 16, 21, .85), rgba(86, 16, 21, .85)), url(<?php echo $src; ?>);
-    background-image: -moz-linear-gradient(top, rgba(86, 16, 21, .85), rgba(86, 16, 21, .85)), url(<?php echo $src; ?>);
-    background-image: -o-linear-gradient(top, rgba(86, 16, 21, .85), rgba(86, 16, 21, .85)), url(<?php echo $src; ?>);
-    background-image: -ms-linear-gradient(top, rgba(86, 16, 21, .85), rgba(86, 16, 21, .85)), url(<?php echo $src; ?>);
-    background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(86, 16, 21, .85)), to(rgba(86, 16, 21, .85))), url(<?php echo $src; ?>);
-    background-image: -webkit-linear-gradient(top, rgba(86, 16, 21, .85), rgba(86, 16, 21, .85)), url(<?php echo $src; ?>);
-	"
+	style="background-image: url(<?php echo $src; ?>);"
 	<?php } ?>
 >
 	<div class="show__header-content">

@@ -4,6 +4,8 @@ namespace WordPress\Tables;
 
 class Posts extends BaseTable {
 
+	public $post_names = array();
+
 	public $columns = array(
 		'post_parent',
 		'menu_order',
@@ -93,19 +95,19 @@ class Posts extends BaseTable {
 	}
 
 	function distinct_post_name( $post_name ) {
-		$new_post_name = $post_name;
-		$counter = 1;
-		$max_attempts = 100;
-
-		while ( $counter < $max_attempts ) {
-			if ( $this->has_row_with_field( 'post_name', $new_post_name ) ) {
-				$new_post_name = $post_name . '-' . $counter;
-			} else {
-				break;
-			}
-
-			$counter++;
+		if ( ! array_key_exists( $post_name, $this->post_names ) ) {
+			$this->post_names[ $post_name ] = 0;
 		}
+
+		$counter = $this->post_names[ $post_name ];
+
+		if ( $counter === 0 ) {
+			$new_post_name = $post_name;
+		} else {
+			$new_post_name = $post_name . '-' . $counter;
+		}
+
+		$this->post_names[ $post_name ]++;
 
 		return $new_post_name;
 	}
@@ -126,8 +128,12 @@ class Posts extends BaseTable {
 	function add_post_meta( $post_id, $fields ) {
 		$meta_fields = $this->to_meta_fields( $post_id, $fields );
 		$table       = $this->get_table( 'postmeta' );
+		$exclude_from_csv = array_key_exists( 'existing_id', $fields );
 
 		foreach ( $meta_fields as $meta_field ) {
+			if ( $exclude_from_csv ) {
+				$meta_field['exclude_from_csv'] = $exclude_from_csv;
+			}
 			$table->add( $meta_field );
 		}
 	}

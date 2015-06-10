@@ -39,14 +39,24 @@ class Show extends Post {
 
 		$fields['post_author'] = $this->get_show_author_id( $show_author );
 		$fields['post_title']  = $show_name;
-		$fields['postmeta']    = $show_meta;
+
+		if ( ! array_key_exists( 'existing_id', $fields ) ) {
+			$fields['postmeta'] = $show_meta;
+		}
 
 		$fields  = parent::add( $fields );
 		$show_id = $fields['ID'];
 		$this->shows_added[ $show_name ] = $fields;
 
 		$show_taxonomy_entity = $this->get_entity( 'show_taxonomy' );
-		$show_taxonomy_entity->add( $show_name, $show_id );
+
+		if ( ! array_key_exists( 'existing_id', $fields ) ) {
+			/* show does not exist previously so create shadow taxonomy */
+			$show_taxonomy_entity->add( $show_name, $show_id );
+		} else {
+			/* show exists from previous import, don't generate shadow taxonomy */
+			$show_taxonomy_entity->add( $show_name, $show_id, true );
+		}
 
 		return $fields;
 	}
@@ -62,6 +72,13 @@ class Show extends Post {
 		}
 
 		return $show_id;
+	}
+
+	function destroy() {
+		$this->shows_added = null;
+		unset( $this->shows_added );
+
+		parent::destroy();
 	}
 
 }

@@ -20,7 +20,7 @@
 if ( defined( 'GMR_PARENT_ENV' ) && 'dev' == GMR_PARENT_ENV ) {
 	define( 'GREATERMEDIA_VERSION', time() );
 } else {
-	define( 'GREATERMEDIA_VERSION', '1.0.20' );
+	define( 'GREATERMEDIA_VERSION', '1.0.3' );
 }
 
 add_theme_support( 'homepage-curation' );
@@ -32,6 +32,7 @@ require_once( __DIR__ . '/includes/mega-menu/mega-menu-walker.php' );
 require_once( __DIR__ . '/includes/mega-menu/mega-menu-mobile-walker.php' );
 require_once( __DIR__ . '/includes/image-attributes/loader.php');
 require_once( __DIR__ . '/includes/posts-screen-thumbnails/loader.php' );
+require_once( __DIR__ . '/includes/category-options.php' );
 require_once( __DIR__ . '/includes/class-favicon.php' );
 
 /**
@@ -115,6 +116,9 @@ function greatermedia_setup() {
 	$formats = array( 'gallery', 'link', 'image', 'video', 'audio' );
 	add_theme_support( 'post-formats', $formats );
 
+	// Embed providers
+	wp_embed_register_handler( 'pinterest', '~https?\:\/\/\w+\.pinterest\.com\/pin\/(\d+)\/?~i', 'greatermedia_pinterest_handler' );
+	wp_embed_register_handler( 'facebook', '~https?\:\/\/\w+\.facebook\.com\/\w+\/posts\/(\d+)\/?~i', 'greatermedia_facebook_handler' );
 }
 
 add_action( 'after_setup_theme', 'greatermedia_setup' );
@@ -165,23 +169,9 @@ function greatermedia_scripts_styles() {
 		array(
 			'jquery',
 			'underscore',
-			'classlist-polyfill'
+			'classlist-polyfill',
+			'jquery-waypoints'
 		),
-		GREATERMEDIA_VERSION,
-		true
-	);
-	wp_enqueue_script(
-		'placeholders',
-		"{$baseurl}/assets/js/vendor/placeholders.min.js",
-		array(),
-		'3.0.2',
-		false
-	);
-
-	wp_enqueue_script(
-		'greatermedia-load-more',
-		"{$baseurl}/assets/js/greater_media_load_more{$postfix}.js",
-		array( 'jquery', 'jquery-waypoints' ),
 		GREATERMEDIA_VERSION,
 		true
 	);
@@ -264,7 +254,7 @@ add_action( 'wp_head', 'greatermedia_header_meta' );
 function greatermedia_nav_menus() {
 	$locations = array(
 		'main-nav' => __( 'Main Navigation', 'greatermedia' ),
-		'secondary-nav' => __( 'Seconadary Navigation', 'greatermedia' ),
+		'secondary-nav' => __( 'Secondary Navigation', 'greatermedia' ),
 		'footer-nav' => __( 'Footer Navigation', 'greatermedia' )
 	);
 	register_nav_menus( $locations );
@@ -433,6 +423,27 @@ function greatermedia_alter_search_query( $query ) {
 	}
 }
 add_action( 'pre_get_posts', 'greatermedia_alter_search_query' );
+
+/**
+ * Alter query to show custom post types in category pages.
+ *
+ * @param  WP_Query $query [description]
+ */
+function greatermedia_alter_taxonomy_archive_query( $query ) {
+	if ( greatermedia_is_taxonomy_archive( $query ) ) {
+		$query->set( 'post_type', get_post_types() );
+	}
+}
+
+function greatermedia_is_taxonomy_archive( $query ) {
+	if ( $query->is_main_query() && ! is_admin() ) {
+		return $query->is_category() || $query->is_tag();
+	} else {
+		return false;
+	}
+}
+
+add_action( 'pre_get_posts', 'greatermedia_alter_taxonomy_archive_query' );
 
 /**
  * This will keep Jetpack Sharing from auto adding to the end of a post.
@@ -934,6 +945,36 @@ function greatermedia_archive_title() {
 	echo '</h2>';
 }
 
+/**
+ * Adds a class to the body if a checkbox for News/Sports sites, has been checked in the site settings
+ *
+ * @action body_class
+ * @access public
+ *
+ * @param $classes
+ *
+ * @return array
+ */
+function greatermedia_newssite_class( $classes ) {
+
+	if ( is_news_site() ) {
+		$classes[] = 'news-site';
+	}
+	
+	return $classes;
+}
+add_filter( 'body_class', 'greatermedia_newssite_class' );
+
+/**
+ * Adds a class to the body if a checkbox, that disables the live player, has been checked in the site settings
+ *
+ * @action body_class
+ * @access public
+ *
+ * @param $classes
+ *
+ * @return array
+ */
 function greatermedia_liveplayer_disabled( $classes ) {
 	$liveplayer_disabled = get_option( 'gmr_liveplayer_disabled' );
 
@@ -944,3 +985,71 @@ function greatermedia_liveplayer_disabled( $classes ) {
 	return $classes;
 }
 add_filter( 'body_class', 'greatermedia_liveplayer_disabled' );
+
+/**
+ * Extends the homepage featured curation limit
+ *
+ * @action gmr-homepage-featured-limit
+ * @access public
+ *
+ * @param $limit
+ *
+ * @return int
+ */
+function greatermedia_extend_featured_curation_limit( $limit ) {
+
+	if ( is_news_site() ) {
+		$limit = 6;
+	} else {
+		$limit = 4;
+	}
+
+	return $limit;
+
+}
+add_filter( 'gmr-homepage-featured-limit', 'greatermedia_extend_featured_curation_limit' );
+
+/**
+ * Extends the homepage community curation limit
+ *
+ * @action gmr-homepage-community-limit
+ * @access public
+ *
+ * @param $limit
+ *
+ * @return int
+ */
+function greatermedia_extend_community_curation_limit( $limit ) {
+
+	if ( is_news_site() ) {
+		$limit = 4;
+	} else {
+		$limit = 3;
+	}
+
+	return $limit;
+
+}
+add_filter( 'gmr-homepage-community-limit', 'greatermedia_extend_community_curation_limit' );
+
+function greatermedia_podcasts_in_loop( $query ) {
+
+	if ( is_home() && $query->is_main_query() )
+		$query->set( 'post_type', array( 'post', 'episode' ) );
+
+	return $query;
+}
+add_action( 'pre_get_posts', 'greatermedia_podcasts_in_loop' );
+
+function greatermedia_pinterest_handler( $matches, $attr, $url, $rawattr ) {
+	return sprintf(
+		'<a data-pin-do="embedPin" href="%s"></a>' .
+		'<script type="text/javascript" async defer src="//assets.pinterest.com/js/pinit.js"></script>',
+		esc_url( $url )
+	);
+}
+
+function greatermedia_facebook_handler( $matches, $attr, $url, $rawattr ) {
+	return '<script>!function(e,n,t){var o,c=e.getElementsByTagName(n)[0];e.getElementById(t)||(o=e.createElement(n),o.id=t,o.src="//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.2",c.parentNode.insertBefore(o,c))}(document,"script","facebook-jssdk");</script>
+			<div class="fb-post" data-href="' . esc_url( $url ) . '"></div>';
+}

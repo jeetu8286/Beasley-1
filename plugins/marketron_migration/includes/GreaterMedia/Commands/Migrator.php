@@ -15,22 +15,6 @@ use WordPress\Utils\MediaSideLoader;
 
 class Migrator {
 
-	public $default_opts = array(
-		'config_file'              => 'wmgk.json',
-		'marketron_export'    => 'wmgk.zip',
-		'tool'                => 'feed',
-		'fresh'               => false,
-		'migration_cache_dir' => 'migration_cache',
-		'mapping_file'        => 'wmgk_mapping.csv',
-	);
-
-	//public $default_tools = array(
-		//'feed', 'blog', 'venue', 'event_calendar', 'channel',
-		//'video_channel', 'event_manager',
-		//'photo_album_v2', 'showcase', 'podcast', 'survey',
-		//'contest',
-	//);
-
 	public $default_tools = array(
 		'feed'
 	);
@@ -41,56 +25,13 @@ class Migrator {
 	public $opts;
 	public $entity_factory;
 	public $table_factory;
+	public $inline_image_replacer;
+	public $inline_libsyn_replacer;
 
 	public $config;
 	public $mappings;
 	public $fresh;
 	public $initialized = false;
-
-	function build_actions_json( $args, $opts ) {
-		$user_ids = $opts['user_ids'];
-		$output   = $opts['output'];
-
-		$user_ids     = file( $user_ids );
-		$records = array();
-
-		foreach ( $user_ids as $user_id ) {
-			$user_id = trim( $user_id );
-			$actions_count = rand( 5, 50 );
-
-			for ( $i = 0; $i < $actions_count; $i++ ) {
-				$record = array(
-					'UID' => $user_id,
-					'data' => array(
-						'actions' => array(
-							array(
-								'actionType' => 'action:contest',
-								'actionID' => strval( rand( 50000, 100000 ) ),
-								'actionData' => array(
-									array(
-										'name' => 'rc' . rand( 1, 10 ),
-										'value_t' => 'lorem ispum dolor sit amet ' . rand( 1000, 100000 ),
-									),
-									array(
-										'name' => 'timestamp',
-										'value_i' => strtotime( 'now' ),
-									),
-								),
-							),
-						),
-					)
-				);
-
-				$records[] = $record;
-			}
-		}
-
-		$json = json_encode( $records, JSON_PRETTY_PRINT );
-		file_put_contents( $output, $json );
-		$count = count( $records );
-
-		\WP_CLI::success( "Actions( $count ) JSON generated successfully." );
-	}
 
 	function migrate( $args, $opts ) {
 		$opts          = wp_parse_args( $opts, $this->default_opts );
@@ -165,7 +106,11 @@ class Migrator {
 		system( "unzip $update_flag -d \"$dest\" \"$marketron_export\" " );
 	}
 
-	private function format( $dir, $fresh = false ) {
+	public function format_data( $args, $opts ) {
+		$this->initialize( $args, $opts );
+
+		$dir     = $this->config->get_marketron_files_dir() . '/data';
+		$fresh   = $this->opts['fresh'];
 		$pattern = "$dir/*.{xml,XML}";
 		$files   = glob( $pattern, GLOB_BRACE );
 		$files   = preg_grep( '/._formatted.xml$/', $files, PREG_GREP_INVERT );
@@ -190,9 +135,9 @@ class Migrator {
 			$this->config_loader = new \GreaterMedia\ConfigLoader();
 			$this->config_loader->container = $this;
 
-			if ( $update ) {
-				$this->config_loader->load();
-			}
+			//if ( $update ) {
+				//$this->config_loader->load();
+			//}
 
 			$this->side_loader = new MediaSideLoader();
 			$this->side_loader->container = $this;
@@ -227,6 +172,9 @@ class Migrator {
 			$this->inline_image_replacer = new \WordPress\Utils\InlineImageReplacer();
 			$this->inline_image_replacer->container = $this;
 
+			$this->inline_libsyn_replacer = new \WordPress\Utils\InlineLibSynReplacer();
+			$this->inline_libsyn_replacer->container = $this;
+
 			$this->initialized = true;
 		}
 	}
@@ -256,23 +204,41 @@ class Migrator {
 			$this->entity_factory->build( 'gigya_user' )->export();
 		}
 
-		$this->config_loader->load_live_streams();
+		$this->importer_factory->destroy();
+		$this->importer_factory = null;
+		unset( $this->importer_factory );
+
+		$this->entity_factory->destroy();
+		$this->entity_factory = null;
+		unset( $this->entity_factory );
+
 		$this->table_factory->export();
+		$this->table_factory = null;
+		unset( $this->table_factory );
+
 		$this->error_reporter->save_report();
 		$this->side_loader->sync();
 	}
 
-	function repair( $args, $opts ) {
-			//$repairer = new \GreaterMedia\Import\Repair\EmbeddedFormRepairer();
-			//$repairer->container = $this;
-			//$repairer->repair( $this->opts['site_dir'] . '/output/cids.json' );
+	function configure_api_keys( $args, $opts ) {
+		$this->initialize( $args, $opts );
+		$this->config_loader->load();
+		$this->config_loader->load_live_streams();
+		$this->config_loader->load_myemma_groups( true );
+	}
 
+	function repair( $args, $opts ) {
 		$opts['repair'] = true;
+		$opts['tools_to_load'] = 'feed';
 		$this->initialize( $args, $opts, false );
 
-		$repairer = new \GreaterMedia\Import\Repair\EmbeddedFormRepairer();
+		//$repairer = new \GreaterMedia\Import\Repair\EmbeddedFormRepairer();
+		//$repairer->container = $this;
+		//$repairer->update_cids( $this->opts['site_dir'] . '/output/cids.json' );
+
+		$repairer = new \GreaterMedia\Import\Repair\FeaturedImageRepairer();
 		$repairer->container = $this;
-		$repairer->update_cids( $this->opts['site_dir'] . '/output/cids.json' );
+		$repairer->repair();
 	}
 
 	function restore( $args, $opts ) {
@@ -299,7 +265,18 @@ class Migrator {
 			$this->opts['tools_to_load'] = explode( ',', $this->opts['tools_to_load'] );
 		}
 
-		$this->site_dir = $opts['site_dir'];
+		if ( array_key_exists( 'async', $opts ) ) {
+			if ( empty( $opts['async'] ) ) {
+				$this->opts['async'] = true;
+			} else {
+				$this->opts['async'] = filter_var( $opts['async'], FILTER_VALIDATE_BOOLEAN );
+			}
+		} else {
+			$this->opts['async'] = false;
+		}
+
+		$opts['site_dir'] = untrailingslashit( $opts['site_dir'] );
+		$this->site_dir   = $opts['site_dir'];
 
 		$this->load_boolean_opt( 'fake_media', false );
 		$this->load_boolean_opt( 'fresh', false );
@@ -388,7 +365,22 @@ SQL;
 		$this->initialize( $args, $opts, false );
 
 		$gigya_user = $this->entity_factory->get_entity( 'gigya_user' );
-		$gigya_user->export_actions();
+
+		if ( $this->opts['async'] ) {
+			$gigya_user->export_actions_async();
+		} else {
+			$gigya_user->export_actions();
+		}
+	}
+
+	function join_actions_file( $args, $opts ) {
+		$this->initialize( $args, $opts, false );
+
+		$actions_log = $this->config->get_output_dir() . '/actions.log';
+		$dest = $this->config->get_gigya_action_export_file();
+
+		$gigya_user = $this->entity_factory->get_entity( 'gigya_user' );
+		$gigya_user->join_actions_file( $actions_log, $dest );
 	}
 
 	function prepare( $args, $opts ) {
@@ -432,6 +424,99 @@ SQL;
 		$total = $repairer->repair( $errors_file );
 
 		\WP_CLI::success( "Successfully Repaired $total Optin Groups" );
+	}
+
+	function repair_video_embeds( $args, $opts ) {
+		$refresher = new \GreaterMedia\Import\Repair\VideoRefresher();
+		$refresher->refresh();
+	}
+
+	/* profile verification */
+	function verify_gigya_import( $args, $opts ) {
+		$this->initialize( $args, $opts );
+
+		$output_dir              = $this->config->get_output_dir();
+		$marketron_accounts_file = $output_dir . '/gigya_profiles.json';
+		$errors_file             = $output_dir . '/gigya_import_errors.json';
+
+		$json_loader        = new \GreaterMedia\Profile\ImportJSONLoader();
+		$marketron_accounts = $json_loader->load( $marketron_accounts_file );
+
+		$verifier = new \GreaterMedia\Profile\GigyaAccountImportVerifier();
+		$verifier->verify( $marketron_accounts, $errors_file );
+	}
+
+	function delete_facebook_data( $args, $opts ) {
+		$this->initialize( $args, $opts );
+
+		$screener = new \GreaterMedia\Profile\AffinityClubScreener();
+		$screener->container = $this;
+
+		$affinity_club_tool    = $this->tool_factory->build( 'affinity_club' );
+		$affinity_clubs_input  = $affinity_club_tool->get_data_files()[0];
+		$affinity_clubs_output = $affinity_clubs_input;
+
+		$screener->screen( $affinity_clubs_input, $affinity_clubs_output );
+	}
+
+	/**
+	 * Regenerate thumbnail(s).
+	 *
+	 * ## OPTIONS
+	 *
+	 * [<attachment-id>...]
+	 * : One or more IDs of the attachments to regenerate.
+	 *
+	 * [--skip-delete]
+	 * : Skip deletion of the original thumbnails. If your thumbnails are linked from sources outside your control, it's likely best to leave them around. Defaults to false.
+	 *
+	 * [--site_dir]
+	 * : Path to GMR site configuration dir
+	 *
+	 * [--yes]
+	 * : Skip confirmation
+
+	 * [--owner]
+	 * : New file owner
+	 *
+	 * [--group]
+	 * : New file group
+	 *
+	 * [--errors_file]
+	 * : Optional path to errors file, defaults to site_dir/output_dir/thumbnail_generation_errors.json
+	 *
+	 * [--async]
+	 * : Optional whether to use gearman to generate the thumbnails
+	 *
+	 * ## EXAMPLES
+	 *
+	 *     # re-generate all thumbnails, without confirmation
+	 *     wp marketron_migration regenerate_thumbnails --yes
+	 *
+	 *     # re-generate all thumbnails that have IDs between 1000 and 2000
+	 *     seq 1000 2000 | xargs wp marketron_migration regenerate_thumbnails
+	 */
+	function regenerate_thumbnails( $args, $opts ) {
+		$this->initialize( $args, $opts );
+
+		if ( empty( $args ) && empty( $this->opts['yes'] ) ) {
+			\WP_CLI::confirm(
+				'Are you sure you want to regenerate all thumbnails?'
+			);
+		}
+
+		$regenerator = new \WordPress\Utils\ThumbnailListRegenerator();
+		$regenerator->container = $this;
+
+		$regenerator->regenerate( $args, $this->opts );
+	}
+
+	function create_emma_groups( $args, $opts ) {
+		$this->initialize( $args, $opts );
+
+		$emma_group_creator = new \GreaterMedia\EmmaGroupCreator();
+		$emma_group_creator->container = $this;
+		$emma_group_creator->create_and_save();
 	}
 
 }

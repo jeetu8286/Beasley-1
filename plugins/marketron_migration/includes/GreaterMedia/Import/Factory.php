@@ -19,6 +19,7 @@ class Factory {
 		'livestream' => 'GreaterMedia\Import\LiveStream',
 		'contest' => 'GreaterMedia\Import\Contest',
 		'affinity_club' => 'GreaterMedia\Import\AffinityClub',
+		'audio_video_player' => 'GreaterMedia\Import\AudioVideoPlayer',
 	);
 
 	public $container;
@@ -33,6 +34,19 @@ class Factory {
 		}
 
 		return $this->instances[ $tool_name ];
+	}
+
+	function destroy() {
+		foreach ( $this->instances as $tool_name => $instance ) {
+			if ( $instance->can_destroy() ) {
+				$instance->destroy();
+				$this->instances[ $tool_name ] = null;
+				unset( $this->instances[ $tool_name ] );
+			}
+		}
+
+		$this->container = null;
+		unset( $this->container );
 	}
 
 }

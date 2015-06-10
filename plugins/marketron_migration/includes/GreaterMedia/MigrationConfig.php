@@ -32,6 +32,10 @@ class MigrationConfig {
 		return $this->input_dir . '/config.json';
 	}
 
+	function get_config_data() {
+		return $this->data;
+	}
+
 	function get_site_dir() {
 		return $this->container->opts['site_dir'];
 	}
@@ -46,6 +50,10 @@ class MigrationConfig {
 
 	function get_upload_backups_dir() {
 		return $this->get_backups_dir() . '/uploads';
+	}
+
+	function get_downloads_dir() {
+		return $this->site_dir . '/downloads';
 	}
 
 	function get_mapping_file() {

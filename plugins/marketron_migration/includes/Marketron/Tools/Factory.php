@@ -24,6 +24,7 @@ class Factory {
 		'event_manager' => 'Marketron\Tools\EventManager',
 
 		'podcast'  => 'Marketron\Tools\Podcast',
+		'audio_video_player' => 'Marketron\Tools\AudioVideoPlayer',
 		//'schedule' => 'Marketron\Tools\Schedule',
 	);
 
@@ -40,6 +41,22 @@ class Factory {
 
 	function get_tool_names() {
 		return array_keys( $this->tools_type_map );
+	}
+
+	function destroy() {
+		foreach ( $this->tools as $tool_name => $tool ) {
+			if ( $tool->can_destroy() ) {
+				$tool->destroy();
+				$this->tools[ $tool_name ] = null;
+				unset( $this->tools[ $tool_name ] );
+			}
+		}
+
+		$this->tools = null;
+		unset( $this->tools );
+
+		$this->container = null;
+		unset( $this->container );
 	}
 
 }

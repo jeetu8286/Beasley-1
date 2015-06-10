@@ -26,37 +26,64 @@ class Feed extends BaseImporter {
 		$index = 0;
 
 		foreach ( $articles as $article ) {
-			//if ( $index++ < $min ) {
-				//continue;
-			//}
+			if ( ! $this->container->mappings->can_import_marketron_name(
+				(string) $article->Feeds->Feed['Feed'], 'feed' ) ) {
+				\WP_CLI::log( '    Excluded Feed: ' . (string) $article->Feeds->Feed['Feed'] );
+				continue;
+			}
 
 			$post = $this->post_from_article( $article );
 
-			if ( ! empty( $post['featured_audio'] ) && ! empty( $post['show'] ) && ! empty( $this->mapped_podcast_for_show( $post['show'] ) ) ) {
-				$post['episode_name']    = $post['post_title'];
-				$post['episode_podcast'] = $this->mapped_podcast_for_show( $post['show'] );
-				$post['episode_file']    = $post['featured_audio'];
+			if ( ! empty( $post['feed_names'] ) && count( $post['feed_names'] ) > 1 ) {
+				foreach ( $post['feed_names'] as $feed_name ) {
+					$new_post = $post;
+					$new_categories = array( $feed_name );
+					$new_post['shows'] = $this->show_from_categories( $new_categories );
 
-				$podcast_episodes->add( $post );
-				$podcast_count++;
-				//error_log( 'Found Show Podcast Episode: ' . $post['show'] );
+					// KLUDGE: Duplication
+					if ( ! empty( $new_post['featured_audio'] ) && ! empty( $new_post['shows'] ) && ! empty( $this->mapped_podcast_for_show( $new_post['shows'][0] ) ) ) {
+						$new_post['episode_name']    = $new_post['post_title'];
+						$new_post['episode_podcast'] = $this->mapped_podcast_for_show( $new_post['shows'][0] );
+						$new_post['episode_file']    = $new_post['featured_audio'];
+					//error_log( $new_post['episode_podcast'] . ' x ' . implode( ', ', $post['feed_names'] ) );
+
+						$podcast_episodes->add( $new_post );
+						$podcast_count++;
+						//error_log( 'Found Show Podcast Episode: ' . $new_post['show'] );
+					} else {
+						$posts->add( $new_post );
+						$blog_post_count++;
+					}
+				}
+
 			} else {
-				$posts->add( $post );
-				$blog_post_count++;
-				if ( ! empty( $post['show'] ) ) {
-					$blog_with_shows++;
+				if ( ! empty( $post['featured_audio'] ) && ! empty( $post['shows'] ) && ! empty( $this->mapped_podcast_for_show( $post['shows'][0] ) ) ) {
+					$episode_podcast = $this->mapped_podcast_for_show( $post['shows'][0] );
+
+					if ( ! empty( $episode_podcast ) ) {
+						$post['episode_name']    = $post['post_title'];
+						$post['episode_podcast'] = $episode_podcast;
+						$post['episode_file']    = $post['featured_audio'];
+
+						$podcast_episodes->add( $post );
+						$podcast_count++;
+
+						//\WP_CLI::log( 'Found Show Podcast Episode: ' . $episode_podcast );
+					} else {
+						$posts->add( $post );
+						$blog_post_count++;
+					}
+				} else {
+					$posts->add( $post );
+					$blog_post_count++;
 				}
 			}
 
+
 			$notify->tick();
-
-			//if ( $index++ > $max ) {
-				//break;
-			//}
-
 		}
 
-		//\WP_CLI::error( "Podcast Episode Count: $podcast_count, Blog Post Count: $blog_post_count, Blog with Shows: $blog_with_shows" );
+		//\WP_CLI::log( 'Total Lib Syn Replacements: ' . \WordPress\Utils\InlineLibSynReplacer::$replacements );
 
 		$notify->finish();
 	}
@@ -78,11 +105,15 @@ class Feed extends BaseImporter {
 		$post_excerpt   = $this->excerpt_from_article( $article );
 		$created_on     = $this->import_string( $article['UTCStartDateTime'] );
 		$modified_on    = $this->import_string( $article['LastModifiedUTCDateTime'] );
-		$show           = $this->show_from_categories( $categories );
+		$shows          = $this->show_from_categories( $categories );
+		$feed_names     = $this->feed_names_from_article( $article );
 
 		//\WP_CLI::log( "Importing Post: $post_title" );
 
 		if ( ! is_null( $featured_audio ) ) {
+			$post_format = 'audio';
+		} else if ( ! empty( $content_parts['featured_audio'] ) ) {
+			$featured_audio = $content_parts['featured_audio'];
 			$post_format = 'audio';
 		}
 
@@ -112,6 +143,7 @@ class Feed extends BaseImporter {
 			'collections' => $collections,
 			'post_format' => $post_format,
 			'redirects'   => $redirects,
+			//'feed_names'  => $feed_names,
 		);
 
 		if ( ! is_null( $featured_image ) ) {
@@ -122,17 +154,17 @@ class Feed extends BaseImporter {
 			$post['featured_audio'] = $featured_audio;
 		}
 
-		if ( ! is_null( $show ) ) {
-			$post['show'] = $show;
+		if ( ! empty( $shows ) ) {
+			$post['shows'] = $shows;
 		} else {
-			$post['show'] = $this->show_from_tags( $tags );
+			$post['shows'] = array( $this->show_from_tags( $tags ) );
 
-			if ( empty( $post['show'] ) ) {
-				$post['show'] = $this->show_from_title( $post['post_title'] );
+			if ( empty( $post['shows'] ) ) {
+				$post['shows'] = array( $this->show_from_title( $post['post_title'] ) );
 			}
 		}
 
-		if ( ! empty( $post['show'] ) ) {
+		if ( ! empty( $post['shows'] ) ) {
 			//\WP_CLI::log( 'Found Show: ' . $post['show'] );
 		}
 
@@ -167,8 +199,9 @@ class Feed extends BaseImporter {
 	}
 
 	function content_from_article( $article ) {
-		$content     = $article['ArticleText'];
-		$post_format = 'standard';
+		$content        = $article['ArticleText'];
+		$post_format    = 'standard';
+		$featured_audio = null;
 
 		if ( isset( $content ) ) {
 			$content = $this->import_string( $content );
@@ -180,14 +213,41 @@ class Feed extends BaseImporter {
 			$primary_media_ref = $this->import_string( $article['PrimaryMediaReference'] );
 
 			if ( strpos($primary_media_ref, 'youtube.com' ) !== false ) {
-				$content     = $primary_media_ref . '<br/>' . $content;
+				$content     = '[embed]' . $primary_media_ref . '[/embed]'. '<br/>' . $content;
+				$post_format = 'video';
+			} else if ( strpos( $primary_media_ref, 'youtu.be' ) !== false ) {
+				$primary_media_ref = str_replace( 'youtu.be/', 'youtube.com/watch?v=', $primary_media_ref );
+				$content     = '[embed]' . $primary_media_ref . '[/embed]' . '<br/>' . $content;
+				$post_format = 'video';
+			}
+		} else if ( strpos( $content, 'RTEMp3Player.swf' ) !== false ) {
+			$result = $this->find_and_replace_flash_audio( $content );
+
+			if ( $result !== false ) {
+				$featured_audio = $result['featured_audio'];
+				//\WP_CLI::log( 'Featured Audio: ' . $featured_audio );
+				$content = $result['content'];
+				$post_format = 'audio';
+			}
+		} else if ( strpos( $content, 'youtube.com/embed' ) !== false ) {
+			$content = preg_replace_callback(
+				'#<iframe.*src="https?://www.youtube.com/embed/([^"]*)".*</iframe>#',
+				function( $matches ) {
+					$embed_params = $matches[1];
+					$embed_params = str_replace( '?', '&', $embed_params );
+					return "[embed]http://www.youtube.com/watch?v=${embed_params}[/embed]";
+				},
+				$content, -1, $videos
+			);
+
+			if ( $post_format !== 'video' && $videos > 0 ) {
 				$post_format = 'video';
 			}
 		}
 
 		$content = preg_replace(
 			'#<div.*data-youtube-id="(.*)">.*</div>#',
-			'http://www.youtube.com/watch?v=${1}',
+			'[embed]http://www.youtube.com/watch?v=${1}[/embed]',
 			$content, -1, $videos
 		);
 
@@ -195,10 +255,52 @@ class Feed extends BaseImporter {
 			$post_format = 'video';
 		}
 
+		$inline_image_replacer = $this->container->inline_libsyn_replacer;
+		$libsyn_embeds = $inline_image_replacer->find( $content );
+
+		if ( count( $libsyn_embeds ) > 0 ) {
+			//foreach ( $libsyn_embeds as $embed ) {
+				//$content = str_replace( $embed['tag'], '', $content );
+			//}
+
+			//$featured_audio = $libsyn_embeds[0]['file'];
+			$featured_audio = null;
+			$post_format = 'standard';
+		}
+
 		return array(
 			'body'        => $content,
 			'post_format' => $post_format,
+			'featured_audio' => $featured_audio,
 		);
+	}
+
+	function find_and_replace_flash_audio( $content ) {
+		if ( strpos( $content, 'RTEMp3Player.swf' ) !== false ) {
+			$object_pattern = '#<object[^>]+>.*</object>#';
+			$result         = preg_match_all( $object_pattern, $content, $matches );
+
+			if ( $result >= 1 ) {
+				$objects   = $matches[0];
+				$object    = $objects[0];
+				$pattern = '#data=".*RTEMp3Player\.swf\?File=([^"]+)"#';
+				$result = preg_match_all( $pattern, $object, $matches );
+
+				if ( $result >= 1 ) {
+					$featured_audio = parse_url( $matches[1][0], PHP_URL_PATH );
+					$content = str_replace( $object, '', $content );
+
+					return array(
+						'featured_audio' => $featured_audio,
+						'content' => $content,
+					);
+				}
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
 	}
 
 	function title_from_article( $article ) {
@@ -315,6 +417,20 @@ class Feed extends BaseImporter {
 
 		//error_log( 'Found Feed Names: ' . print_r( $feed_names, true ) );
 		return $feed_names;
+	}
+
+	function feed_names_from_article_only( $article ) {
+		$feeds      = $this->feeds_from_article( $article );
+		$feed_names = array();
+
+		if ( ! empty( $feeds ) ) {
+			foreach ( $feeds as $feed ) {
+				$feed_name = $this->import_string( $feed['Feed'] );
+				$feed_names[] = $feed_name;
+			}
+		}
+
+		return array_unique( $feed_names );
 	}
 
 	function feed_categories_from_article( $article ) {

@@ -614,6 +614,19 @@ var Constraint = Backbone.Model.extend({
 		value       : ''
 	},
 
+	initialize: function(attr, opts) {
+		Backbone.Model.prototype.initialize.call(this, attr, opts);
+
+		if (attr.valueType === 'enum' && this.hasMeta('choices') && !attr.value) {
+			var choices = this.getMeta('choices');
+
+			if (choices && choices.length > 0) {
+				var value = this.getMeta('choices')[0].value;
+				this.set('value', value);
+			}
+		}
+	},
+
 	getMeta: function(key) {
 		if (this.hasMeta(key)) {
 			return AVAILABLE_CONSTRAINTS_META_MAP[this.get('type')][key];
@@ -768,8 +781,10 @@ var EntryConstraint = Constraint.extend({
 		if (field) {
 			var choices = field.get('choices');
 			if (choices && choices.length > 0) {
+				this.set('valueType', 'list');
 				return choices;
 			} else {
+				this.set('valueType', 'string');
 				return [];
 			}
 		} else {
