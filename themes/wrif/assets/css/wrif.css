@@ -14949,20 +14949,22 @@ table.responsive tr:nth-of-type(even) {
 // Detroit's overrides
 //////////
 */
-@media (min-width: 750px) {
-  #header.header {
-    background-color: #000000 !important; }
-  .home__featured {
-    background-image: url(http://beta.wrif.com/wp-content/uploads/sites/24/2015/06/featurebgmetal.jpg) !important;
-    background-color: #676767 !important;
-    background-size: 100% !important; }
-  #live-player {
-    background-color: #111111 !important;
-    background-repeat: no-repeat !important;
-    background-image: url(http://beta.wrif.com/wp-content/uploads/sites/24/2015/06/playerbg15.gif) !important; }
-  .live-stream__login {
-    margin-top: -10px !important;
-    margin-bottom: 10px !important; } }
+#header.header {
+  background-color: #000000 !important; }
+
+.home__featured {
+  background-image: url(http://beta.wrif.com/wp-content/uploads/sites/24/2015/06/featurebgmetal.jpg) !important;
+  background-color: #676767 !important;
+  background-size: 100% !important; }
+
+#live-player {
+  background-color: #111111 !important;
+  background-repeat: no-repeat !important;
+  background-image: url(http://beta.wrif.com/wp-content/uploads/sites/24/2015/06/playerbg15.gif) !important; }
+
+.live-stream__login {
+  margin-top: -10px !important;
+  margin-bottom: 10px !important; }
 
 .header {
   background-image: none !important; }
@@ -14984,7 +14986,7 @@ main.main {
 
 #site-wrap.site-wrap {
   background-repeat: no-repeat;
-  background-image: url(http://beta.wrif.com/wp-content/uploads/sites/24/2015/06/wrifwallpaper0615.jpg) !important;
+  background-image: url(http://beta.wrif.com/wp-content/uploads/sites/24/2015/06/wrifwallpapertexture.jpg) !important;
   background-position: center top !important; }
 
 #page-wrap.page-wrap {
