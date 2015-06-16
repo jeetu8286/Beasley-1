@@ -927,7 +927,7 @@ body {
 body {
   line-height: 2;
   font-size: 80%;
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Oswald', sans-serif;
   color: #404041;
   -webkit-font-smoothing: antialiased; }
   @media screen and (min-width: 480px)  {
@@ -8803,7 +8803,7 @@ category: Components - Ads
   outline: none;
   background-color: #d22228 !important;
   border: 1px solid #d22228 !important;
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Oswald', sans-serif;
   font-size: 0.8888888889em;
   color: #ffffff !important;
   text-transform: uppercase;
@@ -8997,7 +8997,7 @@ category: Components - Ads
   display: none; }
 
 .tribe-events-single-section-title {
-  font-family: 'Open Sans', sans-serif; }
+  font-family: 'Oswald', sans-serif; }
 
 .tribe-events-single-section.tribe-events-event-meta.primary.tribe-clearfix {
   float: left !important;
@@ -14976,6 +14976,12 @@ table.responsive tr:nth-of-type(even) {
   background-image: url(http://beta.wrif.com/wp-content/uploads/sites/24/2015/06/mastbg.jpg) !important;
   border-bottom: 0px !important; }
 
+#site-wrap {
+  background-color: #000000 !important; }
+
+.live-stream {
+  background-color: #000000 !important; }
+
 #header.header {
   background-color: transparent !important;
   background-image: none !important; }
@@ -14985,6 +14991,7 @@ main.main {
   background-image: none !important; }
 
 #site-wrap.site-wrap {
+  background-color: #000000 !important;
   background-repeat: no-repeat;
   background-image: url(http://beta.wrif.com/wp-content/uploads/sites/24/2015/06/wrifwallpapertexture.jpg) !important;
   background-position: center top !important; }
@@ -14998,6 +15005,9 @@ main.main {
 
 .featured__content--block, .featured__article--content {
   background-color: #000 !important; }
+
+.live-stream {
+  background-color: #000000 !important; }
 
 .live-player {
   background-color: #111111 !important; }
@@ -15013,6 +15023,9 @@ main.main {
   background-color: #000 !important;
   background-image: none !important; }
 
+footer.footer {
+  background-color: #000000 !important; }
+
 .live-link__type--show {
   border-bottom-color: white;
   background: none; }
@@ -15024,3 +15037,13 @@ main.main {
   background: -o-linear-gradient(top, rgba(255, 255, 255, 0) 0%, #f2f2f2 100%);
   background: -ms-linear-gradient(top, rgba(255, 255, 255, 0) 0%, #f2f2f2 100%);
   background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, #f2f2f2 100%); }
+
+.show__header.has-thumbnail:before {
+  position: absolute;
+  display: none;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: none;
+  content: " "; }
