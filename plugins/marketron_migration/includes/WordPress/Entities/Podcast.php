@@ -56,13 +56,7 @@ class Podcast extends Post {
 	}
 
 	function get_podcast_by_name( $name ) {
-		$table = $this->get_table( 'posts' );
-
-		if ( $table->has_row_with_field( 'podcast_name', $name ) ) {
-			return $table->get_row_with_field( 'podcast_name', $name );
-		} else {
-			return null;
-		}
+		return $this->cached_podcasts[ $name ];
 	}
 
 	function get_show_id( $name ) {
