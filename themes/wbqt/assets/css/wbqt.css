@@ -15203,7 +15203,7 @@ a.contest-attr--rules-toggler.pjax-exclude:hover {
   font-family: 'Oswald', sans-serif; }
 
 .header__logo {
-  background: url(../../images/header-logo.png) no-repeat;
+  background: url(../../images/header-logo1.png) no-repeat;
   border: solid 1px #6bb3ee;
   background-position: center top;
   background-size: contain;
@@ -15498,7 +15498,7 @@ media 768px
 	  animation-direction: normal;
 	  animation-timing-function: steps(1,end);*/ }
   .header__logo {
-    background: url(../../images/header-logo.png) no-repeat;
+    background: url(../../images/header-logo1.png) no-repeat;
     background-position: center top;
     display: block;
     width: 225px;
@@ -15521,7 +15521,7 @@ media 768px
     margin-top: 42px;
     padding: 0; }
   .live-stream {
-    background: #2e4d8f url(../../images/live-stream.png) no-repeat; }
+    background: #2e4d8f url(../../images/live-stream1.png) no-repeat; }
   .live-stream .on-air, .live-stream .up-next {
     padding: 4px 1em;
     position: relative;
