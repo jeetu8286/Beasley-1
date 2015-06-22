@@ -3844,6 +3844,10 @@ a.highlights__contest--btn {
     border: none;
     font-size: 1em;
     color: white; } }
+@media screen and (min-width: 1024px)  {
+  .news-site .header__social a.social__link {
+    padding: 15px 0 14px;
+    font-size: 1.25em; } }
 
 .header__search {
   display: none;
@@ -15364,6 +15368,26 @@ section.content {
   background-image: linear-gradient(to bottom, rgba(21, 9, 88, 0.5), rgba(21, 9, 88, 0.5));
   /* W3C */ }
 
+.top-three__desc:hover {
+  color: #150958; }
+
+a.podcast__rss:hover {
+  background-color: #150958; }
+
+h3.podcast__title a:link {
+  color: #150958; }
+
+h3.podcast__title a:hover {
+  color: #0c4da2; }
+
+.podcast__btn--play {
+  border-color: #150958;
+  color: #150958; }
+
+.podcast__btn--play:hover {
+  border-color: #0c4da2;
+  color: #0c4da2; }
+
 /*----------------------------------------------------------------------------------------------------------------------
 media 400px
 ------------------------------------------------------------------------------------------------------------------------*/
@@ -15394,6 +15418,8 @@ media 400px
 media 768px
 -----------------------------------*/
 @media screen and (min-width: 768px) {
+  .header__nav-submenu--features li:hover p {
+    color: #fff !important; }
   .on-air__title, .up-next__title {
     color: #fff;
     text-transform: uppercase; }
@@ -15694,12 +15720,12 @@ media 1252px
   .ad__leaderboard.desktop:after {
     content: "";
     display: inline-block;
-    background: url(../../images/img_Artists1.png) no-repeat;
+    background: url(../../images/img_Artists2.png) no-repeat;
     background-size: contain;
     position: absolute;
     width: 275px;
     height: 136px !important;
-    top: 10px;
+    top: -3px;
     right: -275px; } }
 
 /*-----------------------------------
@@ -15724,8 +15750,8 @@ media 1400px
   .ad__leaderboard.desktop:after {
     width: 325px;
     height: 136px !important;
-    top: -12px;
-    right: -325px; } }
+    top: -25px;
+    right: -330px; } }
 
 .live-link__type--show {
   border-bottom-color: white;
