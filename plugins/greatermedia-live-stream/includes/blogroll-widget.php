@@ -56,7 +56,7 @@ function gmr_blogroll_enqueue_widget_scripts() {
 	wp_register_script( 'gmr-blogroll-widget', GMEDIA_LIVE_STREAM_URL . "/assets/js/blogroll-widget{$postfix}.js", array( 'jquery' ), GMEDIA_LIVE_STREAM_VERSION, true );
 	wp_localize_script( 'gmr-blogroll-widget', 'gmr_blogroll_widget', array(
 		'ajaxurl'  => home_url( '/blogroll/stream/' ),
-		'interval' => 3 * MINUTE_IN_SECONDS * 1000, // 60 000 milliseconds
+		'interval' => MINUTE_IN_SECONDS * 1000, // 60 000 milliseconds
 		'primary' => $active_stream,
 	) );
 }
