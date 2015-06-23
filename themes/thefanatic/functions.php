@@ -21,7 +21,7 @@ if ( defined( 'GMR_THEFANATIC_ENV' ) && 'dev' == GMR_THEFANATIC_ENV ) {
 	// So that things like cloudflare don't hold on to our css during dev
 	define( 'THEFANATIC_VERSION', time() );
 } else {
-	define( 'THEFANATIC_VERSION', '0.2.0' ); /* Version bump by Allen 6/22/2015 @ 2:45pm EST */
+	define( 'THEFANATIC_VERSION', '0.2.1' ); /* Version bump by Steve 6/23/2015 @ 11:00am EST */
 }
 
 /**
@@ -43,6 +43,27 @@ function thefanatic_setup() {
 }
 
 add_action( 'after_setup_theme', 'thefanatic_setup' );
+
+/**
+ * Filter the Simpli-Fi script and make it async
+ *
+ * @param $tag
+ * @param $handle
+ * @param $src
+ *
+ * @return mixed|void
+ */
+function wpen_async_script( $tag, $handle, $src ) {
+
+    if ( 'simpli-fi' !== $handle ) :
+
+      return $tag;
+
+    endif;
+
+    return str_replace( '<script', '<script async ', $tag );
+}
+add_filter( 'script_loader_tag', 'wpen_async_script', 10, 3 );
 
 /**
  * Enqueue scripts and styles for front-end.
@@ -76,6 +97,13 @@ function thefanatic_scripts_styles() {
 		),
 		THEFANATIC_VERSION
 	);
+	wp_enqueue_script(
+                'simpli-fi',
+                'http://i.simpli.fi/dpx.js?cid=23420&action=100&segment=fanatic&m=1&sifi_tuid=7537',
+                array(),
+                null,
+                true
+            );
 }
 
 add_action( 'wp_enqueue_scripts', 'thefanatic_scripts_styles', 20 );

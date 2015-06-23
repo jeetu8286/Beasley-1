@@ -21,7 +21,7 @@ if ( defined( 'GMR_WMGK_ENV' ) && 'dev' == GMR_WMGK_ENV ) {
 	// So that things like cloudflare don't hold on to our css during dev
 	define( 'WMGK_VERSION', time() );
 } else {
-	define( 'WMGK_VERSION', '1.1.1' ); /* Version bump by Allen 6/22/2015 @ 2:45pm EST */
+	define( 'WMGK_VERSION', '1.1.2' ); /* Version bump by Steve 6/23/2015 @ 11:00am EST */
 }
 
 /**
@@ -43,6 +43,27 @@ function wmgk_setup() {
 }
 
 add_action( 'after_setup_theme', 'wmgk_setup' );
+
+/**
+ * Filter the Simpli-Fi script and make it async
+ *
+ * @param $tag
+ * @param $handle
+ * @param $src
+ *
+ * @return mixed|void
+ */
+function wmgk_async_script( $tag, $handle, $src ) {
+
+    if ( 'simpli-fi' !== $handle ) :
+
+      return $tag;
+
+    endif;
+
+    return str_replace( '<script', '<script async ', $tag );
+}
+add_filter( 'script_loader_tag', 'wmgk_async_script', 10, 3 );
 
 /**
  * Enqueue scripts and styles for front-end.
@@ -82,6 +103,13 @@ function wmgk_scripts_styles() {
 		),
 		WMGK_VERSION
 	);
+	wp_enqueue_script(
+                'simpli-fi',
+                'http://i.simpli.fi/dpx.js?cid=23419&action=100&segment=classicrockmgk&m=1&sifi_tuid=7536',
+                array(),
+                null,
+                true
+            );
 }
 
 add_action( 'wp_enqueue_scripts', 'wmgk_scripts_styles', 20 );
