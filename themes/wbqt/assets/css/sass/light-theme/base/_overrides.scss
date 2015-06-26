@@ -223,7 +223,8 @@
 }
 
 #live-player--volume .noUi-base {
-	background:#150958
+	background:#150958;
+	z-index: 1000!important;
 }
 
 #live-player--volume.noUi-horizontal .noUi-handle {
@@ -349,13 +350,13 @@ ul#live-links__blogroll {
 }
 
 .mobile-nav .social__link:hover {
-	color:#6bb3ee;
-	border-color:#6bb3ee
+	color:#034ea2;
+	border-color:#034ea2
 }
 
 .social__link:hover {
-	color:#6bb3ee!important;
-	border-color:#6bb3ee!important
+	color:#034ea2!important;
+	border-color:#034ea2!important
 }
 
 /* mobile contests */
@@ -456,7 +457,7 @@ a.contest-attr--rules-toggler.pjax-exclude:hover {
 }
 
 .header__logo {
-	background:url(../../images/header-logo.png) no-repeat;
+	background:url(../../images/header-logo1.png) no-repeat;
 	border:solid 1px #6bb3ee;
 	background-position:center top;
 	background-size:contain;
@@ -591,13 +592,36 @@ h2.entry2__title a:hover {
 	display:none
 }
 
-.entry2__thumbnail__overlay {
-	background-color:#002a6e;
-	opacity:.4
-}
-
 .type-contest .entry2__thumbnail--contest-type {
 	display:none
+}
+
+.type-contest .entry2__thumbnail{
+	background-color: transparent!important;
+}
+
+.entry2__thumbnail__overlay {
+	background-color: transparent!important;
+}
+
+.type-contest .entry2__thumbnail--end-date {
+	display:none!important;
+}
+
+.profile-page__sidebar .profile-header-link {
+	color: #6bb3ee;
+}
+
+.profile-page .profile-page__sidebar {
+	background-color: #150958;
+}
+
+.fyre .fyre-stream-livecount {
+	display: none!important;
+}
+
+.type-tribe_events .entry2__thumbnail--event-date  {
+	display:none!important;
 }
 
 .entries {
@@ -614,6 +638,47 @@ section.content {
 
 .now-playing {
 	height:0!important
+}
+
+.show__header.has-thumbnail:before {
+
+  background-image: -moz-linear-gradient(top,rgba(21,9,88,.5),rgba(21,9,88,.5));
+  /* FF3.6+ */
+  background-image: -webkit-gradient(linear,left top,left bottom,from(rgba(21,9,88,.5)),to(rgba(21,9,88,.5)));
+  /* Chrome,Safari4+ */
+  background-image: -webkit-linear-gradient(top,rgba(21,9,88,.5),rgba(21,9,88,.5));
+  /* Chrome10+,Safari5.1+ */
+  background-image: -o-linear-gradient(top,rgba(21,9,88,.5),rgba(21,9,88,.5));
+  /* Opera 11.10+ */
+  background-image: -ms-linear-gradient(top,rgba(21,9,88,.5),rgba(21,9,88,.5));
+  /* IE10+ */
+  background-image: linear-gradient(to bottom,rgba(21,9,88,.5),rgba(21,9,88,.5));
+  /* W3C */
+}
+
+.top-three__desc:hover {
+	color: #150958;
+}
+a.podcast__rss:hover{
+	background-color: #150958;
+}
+
+h3.podcast__title a:link {
+	color: #150958;
+}
+
+h3.podcast__title a:hover {
+	color: #0c4da2;
+}
+
+.podcast__btn--play {
+  border-color: #150958;
+  color: #150958;
+}
+
+.podcast__btn--play:hover {
+  border-color: #0c4da2;
+  color: #0c4da2;
 }
 
 /*----------------------------------------------------------------------------------------------------------------------
@@ -664,12 +729,18 @@ media 400px
 media 768px
 -----------------------------------*/
 @media screen and (min-width: 768px) {
-	.on-air__show,.up-next__show {
-		display:block!important
+
+
+	.header__nav-submenu--features li:hover p{
+		color:#fff!important;
+	}
+	.on-air__title, .up-next__title {
+		color: #fff;text-transform: uppercase;
 	}
 
 	.now-playing {
-		height:57px!important
+		height:57px!important;
+		padding: 35px 1em 0;
 	}
 
 	.now-playing__title {
@@ -771,7 +842,7 @@ media 768px
 	}
 
 	.header__logo {
-		background:url(../../images/header-logo.png) no-repeat;
+		background:url(../../images/header-logo1.png) no-repeat;
 		background-position:center top;
 		display:block;
 		width:225px;
@@ -806,7 +877,7 @@ media 768px
 	}
 
 	.live-stream {
-		background:#2e4d8f url(../../images/live-stream.png)no-repeat
+		background:#2e4d8f url(../../images/live-stream1.png)no-repeat
 	}
 
 	.live-stream .on-air,.live-stream .up-next {
@@ -817,17 +888,19 @@ media 768px
 	}
 
 	.live-stream__login {
-		background-color:transparent!important;
-		color:#002a6e
+		background-color: transparent!important;
+		color: #fff!important;
+		margin-top: 55px;
+		text-transform: uppercase;
 	}
 
-	.live-stream__listen-now--btn {
+	.live-stream__listen-now--btn, .podcast__rss {
 		display:inline-block;
 		line-height:1;
 		padding:.5em 1em;
 		margin-right:.5em;
 		position:relative;
-		top:80px;
+		top:60px;
 		outline:0;
 		background-color:transparent;
 		border:1px solid #fff;
@@ -851,9 +924,13 @@ media 768px
 
 	.live-stream__now-playing--btn {
 		position:relative;
-		top:80px
+		top:60px
 	}
 
+	.live-player--active .now-playing {
+  		
+  		padding: 35px 1em 0;
+  	}
 	.live-link__song {
 		transition:all 200ms ease-in-out;
 		-moz-transition:all 200ms ease-in-out;
@@ -881,12 +958,13 @@ media 768px
 	}
 
 	.on-air__show,.up-next__show {
+		display:block!important;
 		font-size:.8888888889em;
 		font-weight:800;
 		text-transform:uppercase;
 		font-family:'Oswald',sans-serif;
 		color:#fff!important;
-		padding-top:2px
+	    padding-top:0px!important;
 	}
 
 	.live-link__song--artist,.live-link__song:before {
@@ -940,15 +1018,15 @@ media 768px
 	}
 
 	.header__account ul li a:active,.header__account ul li a:focus,.header__account ul li a:hover,.header__account ul li:hover,.header__nav ul li a:active,.header__nav ul li a:focus,.header__nav ul li.active,.header__nav ul li.active a:hover,.header__nav ul li.active a:focus,.mobile-nav__list a:active,.mobile-nav__list a:focus,.mobile-nav__list a:hover,.ui-menu .ui-state-focus {
-		background-color:#6bb3ee!important
+		background-color:#034ea2!important
 	}
 
 	.header__account--btn:hover {
-		background-color:#6bb3ee!important
+		background-color:#034ea2!important
 	}
 
 	.header__account:hover {
-		background-color:#6bb3ee;
+		background-color:#034ea2;
 		color:#fff
 	}
 
@@ -968,7 +1046,8 @@ media 1024px
 @media screen and (min-width: 1024px) {
 	#live-player--volume .noUi-base {
 		margin-top:54px;
-		background:#150958
+		background:#150958;
+		z-index: 1000!important;
 	}
 
 	.header__logo {
@@ -1015,16 +1094,16 @@ media 1024px
 	}
 
 	.header__account--logged-out:hover {
-		background-color:#6bb3ee!important
+		background-color:#034ea2!important
 	}
 
 	.header__account--links.sub-menu {
-		border-top:6px solid #6bb3ee!important;
+		border-top:6px solid #034ea2!important;
 		border-bottom:0!important
 	}
 
 	.header__nav .sub-menu {
-		border-top:6px solid #6bb3ee!important;
+		border-top:6px solid #034ea2!important;
 		border-bottom:0!important;
 		background-color:#fff
 	}
@@ -1104,10 +1183,16 @@ media 1252px
 	}
 
 	.ad__leaderboard.desktop:after {
-		content:none!important;
-		display:none!important;
-		background:none!important
-	}
+	    content: "";
+	    display: inline-block;
+	    background: url(../../images/img_Artists2.png) no-repeat;
+	    background-size: contain;
+	    position: absolute;
+	    width: 275px;
+	    height: 136px!important;
+	    top: -3px;
+	    right: -275px;
+    }
 }
 
 /*-----------------------------------
@@ -1134,6 +1219,10 @@ media 1400px
 	}
 
 	.ad__leaderboard.desktop:after {
-		background:none!important
-	}
+	    width: 325px;
+	    height: 136px!important;
+	    top: -25px;
+	    right: -330px;
+    }
+
 }
