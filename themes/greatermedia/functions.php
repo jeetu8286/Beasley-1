@@ -20,7 +20,7 @@
 if ( defined( 'GMR_PARENT_ENV' ) && 'dev' == GMR_PARENT_ENV ) {
 	define( 'GREATERMEDIA_VERSION', time() );
 } else {
-	define( 'GREATERMEDIA_VERSION', '1.2.1' );
+	define( 'GREATERMEDIA_VERSION', '1.2.2' ); /* Version bump by Allen 6/22/2015 @ 2:45pm EST */
 }
 
 add_theme_support( 'homepage-curation' );
@@ -1062,3 +1062,17 @@ function greatermedia_facebook_handler( $matches, $attr, $url, $rawattr ) {
 	return '<script>!function(e,n,t){var o,c=e.getElementsByTagName(n)[0];e.getElementById(t)||(o=e.createElement(n),o.id=t,o.src="//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.2",c.parentNode.insertBefore(o,c))}(document,"script","facebook-jssdk");</script>
 			<div class="fb-post" data-href="' . esc_url( $url ) . '"></div>';
 }
+
+/**
+ * Filters search results to be ordered by the date
+ *
+ * @param $query
+ */
+function greatermedia_search_results_filter( $query ) {
+	if ( ! is_admin() && $query->is_main_query() ) {
+		if ( $query->is_search() ) {
+			$query->set( 'orderby', 'date' );
+		}
+	}
+}
+add_action( 'pre_get_posts', 'greatermedia_search_results_filter' );
