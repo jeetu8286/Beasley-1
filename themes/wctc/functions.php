@@ -1,6 +1,6 @@
 <?php
 /**
- * WKLB functions and definitions
+ * WCTC functions and definitions
  *
  * When using a child theme (see http://codex.wordpress.org/Theme_Development and
  * http://codex.wordpress.org/Child_Themes), you can override certain functions
@@ -8,13 +8,13 @@
  * functions.php file. The child theme's functions.php file is included before the parent
  * theme's file, so the child theme functions would be used.
  *
- * @package WKLB
+ * @package WCTC
  * @since 0.1.0
  */
- 
+
  // Useful global constants
-define( 'WKLB_VERSION', '0.1.4' );
- 
+define( 'WCTC_VERSION', '0.1.2' );
+
  /**
   * Set up theme defaults and register supported WordPress features.
   *
@@ -22,38 +22,45 @@ define( 'WKLB_VERSION', '0.1.4' );
   *
   * @since 0.1.0
   */
- function wklb_setup() {
+ function wctc_setup() {
 	/**
-	 * Makes WKLB available for translation.
+	 * Makes WCTC available for translation.
 	 *
 	 * Translations can be added to the /lang directory.
-	 * If you're building a theme based on WKLB, use a find and replace
-	 * to change 'wklb' to the name of your theme in all template files.
+	 * If you're building a theme based on WCTC, use a find and replace
+	 * to change 'wctc' to the name of your theme in all template files.
 	 */
-	load_theme_textdomain( 'wklb', get_stylesheet_directory_uri() . '/languages' );
+	load_theme_textdomain( 'wctc', get_stylesheet_directory_uri() . '/languages' );
  }
- add_action( 'after_setup_theme', 'wklb_setup' );
- 
+ add_action( 'after_setup_theme', 'wctc_setup' );
+
  /**
   * Enqueue scripts and styles for front-end.
   *
   * @since 0.1.0
   */
- function wklb_scripts_styles() {
+ function wctc_scripts_styles() {
 	$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 
 	wp_dequeue_style( 'greatermedia' );
-	wp_deregister_style( 'greatermedia' );	
-	wp_enqueue_style( 'wklb', get_stylesheet_directory_uri() . "/assets/css/wklb{$postfix}.css", array(), WKLB_VERSION );
+	wp_deregister_style( 'greatermedia' );
+	wp_enqueue_style( 'wctc', get_stylesheet_directory_uri() . "/assets/css/wctc{$postfix}.css", array(), WCTC_VERSION );
+            wp_enqueue_script(
+                'wctc',
+                get_stylesheet_directory_uri() . "/assets/js/wctc{$postfix}.js",
+                array(),
+                WCTC_VERSION,
+                true
+            );
  }
- add_action( 'wp_enqueue_scripts', 'wklb_scripts_styles', 20 );
- 
+ add_action( 'wp_enqueue_scripts', 'wctc_scripts_styles', 20 );
+
  /**
   * Add humans.txt to the <head> element.
   */
- function wklb_header_meta() {
+ function wctc_header_meta() {
 	$humans = '<link type="text/plain" rel="author" href="' . get_stylesheet_directory_uri() . '/humans.txt" />';
-	
-	echo apply_filters( 'wklb_humans', $humans );
+
+	echo apply_filters( 'wctc_humans', $humans );
  }
- add_action( 'wp_head', 'wklb_header_meta' );
+ add_action( 'wp_head', 'wctc_header_meta' );
