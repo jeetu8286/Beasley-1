@@ -13,7 +13,7 @@
  */
  
  // Useful global constants
-define( 'WKLB_VERSION', '0.1.6' );
+define( 'WKLB_VERSION', '0.1.7' );
  
  /**
   * Set up theme defaults and register supported WordPress features.
