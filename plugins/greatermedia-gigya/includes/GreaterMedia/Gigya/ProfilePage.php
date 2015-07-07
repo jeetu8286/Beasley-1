@@ -97,16 +97,6 @@ class ProfilePage {
 			return;
 		}
 
-		/*
-		wp_enqueue_script(
-			'country-region-selector',
-			plugins_url( "js/vendor/jquery.crs{$postfix}", GMR_GIGYA_PLUGIN_FILE ),
-			array( 'jquery' ),
-			GMR_GIGYA_VERSION,
-			true
-		);
-*/
-
 		wp_enqueue_script(
 			'geodata',
 			plugins_url( "js/geodata{$postfix}", GMR_GIGYA_PLUGIN_FILE ),
