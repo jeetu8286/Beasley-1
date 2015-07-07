@@ -90,11 +90,20 @@ class ProfilePage {
 
 	public function load_scripts( $page_name ) {
 		$api_key = $this->get_gigya_api_key();
+		$postfix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '.min.js' : '.js';
 
 		if ( $api_key === '' ) {
 			error_log( 'Fatal Error: Gigya API Key not found.' );
 			return;
 		}
+
+		wp_enqueue_script(
+			'country-region-selector',
+			plugins_url( "js/vendor/jquery.crs{$postfix}", GMR_GIGYA_PLUGIN_FILE ),
+			array( 'jquery' ),
+			GMR_GIGYA_VERSION,
+			true
+		);
 
 		wp_enqueue_script(
 			'gigya_config',
