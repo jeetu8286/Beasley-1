@@ -103,25 +103,7 @@ if ( $query->have_posts() ) :
 
 		<h3 class="section-header"><?php _e( 'Galleries and Alblums', 'greatermedia' ); ?></h3>
 
-		<?php
-
-		if ( $query->have_posts() ) :
-
-			while ( $query->have_posts() ) : $query->the_post();
-
-				if ( in_array( get_the_ID(), $rendered_posts ) ) {
-					continue;
-				}
-
-				$rendered_posts[ get_the_ID() ] = get_the_ID();
-
-				get_template_part( 'partials/gallery-grid' );
-
-			endwhile;
-
-			greatermedia_load_more_button( array( 'partial_slug' => 'partials/gallery-grid' ) );
-
-		endif; ?>
+		<?php include( locate_template( 'partials/loop-gallery.php' ) ); ?>
 
 	</div>
 
