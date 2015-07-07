@@ -119,6 +119,8 @@ if ( $query->have_posts() ) :
 
 			endwhile;
 
+			greatermedia_load_more_button( array( 'partial_slug' => 'partials/gallery-grid' ) );
+
 		endif; ?>
 
 	</div>
