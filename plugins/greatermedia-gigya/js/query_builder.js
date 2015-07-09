@@ -593,7 +593,7 @@ function print() { __p += __j.call(arguments, '') }
 with (obj) {
 __p += '<ul class="constraint-toolbar">\n\t<li>\n\t\t<a\n\t\t\talt="f105"\n\t\t\tclass="dashicons dashicons-admin-page copy-constraint"\n\t\t\thref="#"\n\t\t\ttitle="Duplicate"\n\t\t/>\n\n\t\t<a\n\t\t\talt="f105"\n\t\t\tclass="dashicons dashicons-trash remove-constraint"\n\t\t\thref="#"\n\t\t\ttitle="Remove"\n\t\t/>\n\t</li>\n</ul>\n\n<p class="constraint-title">\n\t' +
 __e( title ) +
-'\n</p>\n\n<p>\n\tEnter Zip Codes (comma delimited)\n</p>\n\n<p>\n\t<textarea class="constraint-value constraint-textarea">' +
+'\n</p>\n\n<p>Enter Zip Codes (comma delimited)</p>\n\n<p>\n\t<textarea class="constraint-value constraint-textarea">' +
 __e( value ) +
 '</textarea>\n</p>\n\n<select class="constraint-operator">\n\t';
  _.each(view.operatorsFor(valueType, type), function(operatorItem) { ;
