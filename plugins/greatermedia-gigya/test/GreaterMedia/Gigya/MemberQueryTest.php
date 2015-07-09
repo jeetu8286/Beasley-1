@@ -741,4 +741,76 @@ class MemberQueryTest extends \WP_UnitTestCase {
 		$expected = "data.email_message_click_count > 0";
 		$this->assertEquals( $expected, $actual );
 	}
+
+	function test_it_can_build_zip_code_list_from_multiple_input() {
+		$input = '1,2,3,4,5';
+		$actual = $this->query->get_zip_code_list( $input );
+		$this->assertEquals( "('1', '2', '3', '4', '5')", $actual );
+	}
+
+	function test_it_can_build_zip_code_list_from_single_input() {
+		$input = '1';
+		$actual = $this->query->get_zip_code_list( $input );
+		$this->assertEquals( "('1')", $actual );
+	}
+
+	function test_it_can_build_zip_code_list_with_trailing_comma() {
+		$input = '1,2,,,';
+		$actual = $this->query->get_zip_code_list( $input );
+		$this->assertEquals( "('1', '2')", $actual );
+	}
+
+	function test_it_can_build_zip_code_list_with_extra_whitespace() {
+		$input = "1,   2, 4,\t,5,\n6";
+		$actual = $this->query->get_zip_code_list( $input );
+		$this->assertEquals( "('1', '2', '4', '5', '6')", $actual );
+	}
+
+	function test_it_can_build_zip_code_list_without_input() {
+		$input = '   ';
+		$actual = $this->query->get_zip_code_list( $input );
+		$this->assertEquals( '()', $actual );
+	}
+
+	function test_it_can_build_zip_code_constraint_from_list_of_zip_codes() {
+		$constraint = array(
+			'type'        => 'profile:zip',
+			'operator'    => 'in',
+			'conjunction' => 'and',
+			'valueType'   => 'string',
+			'value'       => '10001,10002,10003',
+		);
+
+		$actual   = $this->query->clause_for_constraint( $constraint );
+		$expected = "profile.zip in ('10001', '10002', '10003')";
+		$this->assertEquals( $expected, $actual );
+	}
+
+	function test_it_can_build_zip_code_constraint_from_opposite_of_list_of_zip_codes() {
+		$constraint = array(
+			'type'        => 'profile:zip',
+			'operator'    => 'not in',
+			'conjunction' => 'and',
+			'valueType'   => 'string',
+			'value'       => '10001,10002,10003',
+		);
+
+		$actual   = $this->query->clause_for_constraint( $constraint );
+		$expected = "profile.zip not in ('10001', '10002', '10003')";
+		$this->assertEquals( $expected, $actual );
+	}
+
+	function test_it_can_build_zip_code_constraint_from_old_constraint_data() {
+		$constraint = array(
+			'type'        => 'profile:zip',
+			'operator'    => 'equals',
+			'conjunction' => 'and',
+			'valueType'   => 'string',
+			'value'       => '10001',
+		);
+
+		$actual   = $this->query->clause_for_constraint( $constraint );
+		$expected = "profile.zip in ('10001')";
+		$this->assertEquals( $expected, $actual );
+	}
 }

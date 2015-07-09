@@ -2997,6 +2997,16 @@ var ZipCodeConstraintView = ConstraintView.extend({
 		ConstraintView.prototype.initialize.call(this, model, opts);
 	},
 
+	operatorsFor: function(valueType, type) {
+		if (type === 'profile:zip') {
+			return ['in', 'not in'];
+		} else {
+			return ConstraintView.prototype.operatorsFor.call(
+				this, valueType, type
+			);
+		}
+	}
+
 });
 
 var ActiveConstraintsView = Backbone.CollectionView.extend({
