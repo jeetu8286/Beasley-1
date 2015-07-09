@@ -155,7 +155,7 @@ class MemberQueryTest extends \WP_UnitTestCase {
 		);
 
 		$actual = $this->query->clause_for_constraint( $constraint );
-		$expected = "data.actions.actionType = 'action:contest' and data.actions.actionID = '100' and data.actions.actionData.name = '200' and data.actions.actionData.value_s = 'New York'";
+		$expected = "data.actions.actionType = 'action:contest' and data.actions.actionID = '100' and data.actions.actionData.name = '200' and data.actions.actionData.value_t = 'New York'";
 		$this->assertEquals( $expected, $actual );
 	}
 
@@ -256,7 +256,7 @@ class MemberQueryTest extends \WP_UnitTestCase {
 		);
 
 		$actual = $this->query->clause_for( $constraints );
-		$expected = "profile.city contains 'New York' and data.actions.actionType = 'action:contest' and data.actions.actionID = '100' and data.actions.actionData.name = '200' and data.actions.actionData.value_s = 'New York'";
+		$expected = "profile.city contains 'New York' and data.actions.actionType = 'action:contest' and data.actions.actionID = '100' and data.actions.actionData.name = '200' and data.actions.actionData.value_t = 'New York'";
 		$this->assertEquals( $expected, $actual );
 	}
 
@@ -282,7 +282,7 @@ class MemberQueryTest extends \WP_UnitTestCase {
 
 		$this->query = $this->query_for( json_encode( $constraints ) );
 		$actual = $this->query->to_gql();
-		$expected = "select * from accounts where profile.city contains 'New York' and data.actions.actionType = 'action:contest' and data.actions.actionID = '100' and data.actions.actionData.name = '200' and data.actions.actionData.value_s = 'New York'";
+		$expected = "select * from accounts where profile.city contains 'New York' and data.actions.actionType = 'action:contest' and data.actions.actionID = '100' and data.actions.actionData.name = '200' and data.actions.actionData.value_t = 'New York'";
 		$this->assertEquals( $expected, $actual );
 	}
 
@@ -486,7 +486,7 @@ class MemberQueryTest extends \WP_UnitTestCase {
 		$this->assertEquals( 'profile', $actual[0]['store_type'] );
 		$this->assertEquals( $expected, $actual[0]['query'] );
 
-		$expected = "select * from actions where data.actions.actionType = 'action:contest' and data.actions.actionID = '100' and data.actions.actionData.name = '200' and data.actions.actionData.value_s = 'foo' or data.actions.actionType = 'action:contest' and data.actions.actionID = '101' and data.actions.actionData.name = '201' and data.actions.actionData.value_s = 'bar'";
+		$expected = "select * from actions where data.actions.actionType = 'action:contest' and data.actions.actionID = '100' and data.actions.actionData.name = '200' and data.actions.actionData.value_t = 'foo' or data.actions.actionType = 'action:contest' and data.actions.actionID = '101' and data.actions.actionData.name = '201' and data.actions.actionData.value_t = 'bar'";
 		$this->assertEquals( 'data_store', $actual[1]['store_type'] );
 		$this->assertEquals( $expected, $actual[1]['query'] );
 	}
