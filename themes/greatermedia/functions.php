@@ -674,6 +674,7 @@ function add_google_analytics() {
 		ga('set', 'location', window.location.href);
 		ga('send', 'pageview');
 	});
+	ga('require', 'displayfeatures');
 	ga('send', 'pageview');
 
 	jQuery(document).ready(function() {
