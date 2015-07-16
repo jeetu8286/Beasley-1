@@ -155,11 +155,6 @@
 
 @import url(http://fonts.googleapis.com/css?family=Roboto:400,700,700italic,900);
 
-a:link, a:visited {
-  color: #cc0000;
-  text-decoration: none;
-}
-
 .live-player__stream {display: none!important }
 
 .live-player--open .live-links {
@@ -675,7 +670,7 @@ a:hover .highlights__event--title {color:#f3ec1d;}
 a:hover .highlights__community--title {color:#f3ec1d;}
     
 @media screen and (min-width: 768px) {
- 
+
 .now-playing {
   display: block;
   width: 100%;
@@ -1182,3 +1177,5 @@ a.podcast__rss:focus:focus, a.podcast__rss:focus:hover, a.podcast__rss:hover:foc
     border-color: #333;
     color: #fff;
 }
+
+.header__main a, .header__main a:active, .header__main a:hover, .header__main a:visited {color: #fff;}
