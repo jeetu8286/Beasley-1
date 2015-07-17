@@ -1,5 +1,16 @@
 (function($) {
 
+	/* From Mozilla Dev */
+	if (!String.prototype.trim) {
+		(function() {
+			// Make sure we trim BOM and NBSP
+			var rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
+			String.prototype.trim = function() {
+				return this.replace(rtrim, '');
+			};
+		})();
+	}
+
 	var Convertor = function() {
 		this.toHTMLFragmentProxy   = $.proxy(this.toHTMLFragment, this);
 		this.replaceShortcodeProxy = $.proxy(this.replaceShortcode, this);
@@ -18,6 +29,7 @@
 		},
 
 		toShortcode: function(content) {
+			//console.log('toShortcode', content);
 			var $root       = $('<div></div>');
 			$root.html(content);
 
@@ -40,8 +52,12 @@
 			var $root   = $('<div></div>', dataAttrs);
 			var $header = $('<span></span>', { class: 'meta', contenteditable: false });
 			var $body   = $('<div></div>', { class: 'body' });
+			var content = shortcode.content;
 
-			$body.html(shortcode.content);
+			content = this.replaceTrailingPara(content);
+
+			console.log('shortcode.content', content);
+			$body.html(content);
 			$header.html(this.plugin.getMetaLabel(data));
 
 			$root.data('status', data.status);
@@ -83,9 +99,19 @@
 		},
 
 		replaceEmptyBody: function(html) {
-			html = html.replace('<div class="body">&nbsp;</div>', '&nbsp;');
+			html = html.replace('<div class="body">&nbsp;</div>', '');
 
 			return html;
+		},
+
+		replaceTrailingPara: function(content) {
+			content = content.trim();
+			content = content.replace(/<br \/>$/, '');
+			content = content.replace(/<p>$/, '');
+			content = content.trim();
+			content = content.replace(/<\/p>$/, '');
+
+			return content;
 		},
 
 		getSelector: function() {
@@ -301,7 +327,7 @@
 		register: function(plugin) {
 			if (!this.registered) {
 				var editor = plugin.getEditor();
-				editor.onNodeChange.add($.proxy(this.didNodeChange, this));
+				editor.on('NodeChange', $.proxy(this.didNodeChange, this));
 
 				this.registered = true;
 			}
@@ -527,6 +553,7 @@
 		didPostProcess: function(event) {
 			if (event.get) {
 				var convertor = this.getConvertor();
+				console.log('didPostProcess', event.content);
 				event.content = convertor.toShortcode(event.content);
 			}
 		},
