@@ -29,7 +29,6 @@
 		},
 
 		toShortcode: function(content) {
-			//console.log('toShortcode', content);
 			var $root       = $('<div></div>');
 			$root.html(content);
 
@@ -56,7 +55,6 @@
 
 			content = this.replaceTrailingPara(content);
 
-			console.log('shortcode.content', content);
 			$body.html(content);
 			$header.html(this.plugin.getMetaLabel(data));
 
@@ -333,7 +331,7 @@
 			}
 		},
 
-		didNodeChange: function(editor, controlManager, node) {
+		didNodeChange: function(event) {
 			var groupHasFocus = this.groupHasFocus();
 			var n             = this.plugins.length;
 			var i, plugin;
@@ -508,9 +506,10 @@
 			this.menu = this.getMenu();
 			this.menu.register();
 
-			this.editor.onNodeChange.add(this.callback('didNodeChange'));
+			this.editor.on('NodeChange', this.callback('didNodeChange'));
 			this.editor.on('BeforeSetContent', this.callback('didBeforeSetContent'));
 			this.editor.on('PostProcess', this.callback('didPostProcess'));
+			this.editor.on('KeyDown', this.callback('didKeyDown'));
 		},
 
 		/* TinyMCE Events */
@@ -522,9 +521,9 @@
 			dialog.open();
 		},
 
-		didNodeChange: function(editor, controlManager, node) {
+		didNodeChange: function(event) {
 			var hasFocus = this.isFocussed();
-			controlManager.setActive(this.getCommand(), hasFocus);
+			this.editor.controlManager.setActive(this.getCommand(), hasFocus);
 
 			var focusState = this.getFocusState();
 			var isInside   = false;
@@ -553,9 +552,40 @@
 		didPostProcess: function(event) {
 			if (event.get) {
 				var convertor = this.getConvertor();
-				console.log('didPostProcess', event.content);
 				event.content = convertor.toShortcode(event.content);
 			}
+		},
+
+		didKeyDown: function(event) {
+			if (event.keyCode === 13 && !event.shiftKey) {
+				var focusState = this.getFocusState();
+
+				if (focusState.value !== 'outside') {
+					var $target = focusState.target;
+					var target  = $target.get(0);
+					var range   = tinymce.DOM.createRng();
+					var rangeTarget;
+
+					if (target.nextSibling) {
+						rangeTarget = target.nextSibling;
+					} else {
+						var $para = $('<p>&nbsp;</p>');
+						$target.after($para);
+						rangeTarget = $para.get(0);
+					}
+
+					range.setStart(rangeTarget, 0);
+					range.setEnd(rangeTarget, 0);
+
+					this.editor.selection.setRng(range);
+
+					event.preventDefault();
+					event.stopPropagation();
+					return false;
+				}
+			}
+
+			return true;
 		},
 
 		/* helpers */
