@@ -92,6 +92,7 @@
 			});
 
 			var html = wpShortcode.string();
+			html = this.collapseNbsp(html);
 
 			$shortcode.replaceWith(html);
 		},
@@ -110,6 +111,10 @@
 			content = content.replace(/<\/p>$/, '');
 
 			return content;
+		},
+
+		collapseNbsp: function(content) {
+			return content.replace(/(&nbsp;)+/, '&nbsp;');
 		},
 
 		getSelector: function() {
