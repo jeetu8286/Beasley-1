@@ -565,22 +565,29 @@
 					var target  = $target.get(0);
 					var range   = tinymce.DOM.createRng();
 					var rangeTarget;
+					var $para;
 
 					if (target.nextSibling) {
 						rangeTarget = target.nextSibling;
 					} else {
-						var $para = $('<p>&nbsp;</p>');
+						$para = $('<p>&nbsp;</p>');
 						$target.after($para);
 						rangeTarget = $para.get(0);
 					}
 
 					range.setStart(rangeTarget, 0);
-					range.setEnd(rangeTarget, 0);
+
+					if ($para) {
+						range.setEnd(rangeTarget, 1);
+					} else {
+						range.setEnd(rangeTarget, 0);
+					}
 
 					this.editor.selection.setRng(range);
 
 					event.preventDefault();
 					event.stopPropagation();
+
 					return false;
 				}
 			}
