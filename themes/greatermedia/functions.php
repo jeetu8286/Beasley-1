@@ -970,7 +970,7 @@ function greatermedia_newssite_class( $classes ) {
 	if ( is_news_site() ) {
 		$classes[] = 'news-site';
 	}
-	
+
 	return $classes;
 }
 add_filter( 'body_class', 'greatermedia_newssite_class' );
@@ -1077,3 +1077,8 @@ function greatermedia_search_results_filter( $query ) {
 	}
 }
 add_action( 'pre_get_posts', 'greatermedia_search_results_filter' );
+
+/**
+ * Disables wptexturize for compatibility with Embed.ly
+ */
+add_filter( 'run_wptexturize', '__return_false' );
