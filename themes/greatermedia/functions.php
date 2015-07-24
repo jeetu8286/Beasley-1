@@ -20,7 +20,7 @@
 if ( defined( 'GMR_PARENT_ENV' ) && 'dev' == GMR_PARENT_ENV ) {
 	define( 'GREATERMEDIA_VERSION', time() );
 } else {
-	define( 'GREATERMEDIA_VERSION', '1.2.4' ); /* Version bump by Steve 7/21/2015 @ 11:40am EST */
+	define( 'GREATERMEDIA_VERSION', '1.2.5' ); /* Version bump by Steve 7/23/2015 @ 2:40pm EST */
 }
 
 add_theme_support( 'homepage-curation' );
@@ -1095,3 +1095,14 @@ function stylize_embedly_embeds( $content ) {
 }
 
 add_filter( 'content_save_pre', 'stylize_embedly_embeds', 30, 1 );
+
+/**
+ * Enables Video Thumbnails to work with Embedly on first post save.
+ */
+function urldecode_markup_for_video_thumbnails( $markup, $post_id ) {
+	return urldecode($markup);
+}
+
+add_filter( 'video_thumbnail_markup', 'urldecode_markup_for_video_thumbnails', 10, 2 );
+
+
