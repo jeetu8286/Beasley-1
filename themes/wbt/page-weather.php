@@ -20,8 +20,538 @@ get_header();
 		</header>
 		<section class="article__content" itemprop="articleBody">
 			<?php the_content(); ?>
-			<div class="gmcltWXcurrent">my div</div>
-			<div class="gmcltWXforecast">my div</div>
+			<div class="gmcltWXcurrent">
+				<h2>Charlotte, NC</h2>
+				<div class="gmcltWXcurrentIcon">
+					<img src="/wp-content/themes/wbt/images/wx/66.png">
+				</div>
+				<div class="gmcltWXcurrentTemp">
+					90&deg;
+				</div>
+				<div class="gmcltWXdata">
+					<h4>Broken Clouds</h4>
+				</div>
+			</div>
+			<div class="gmcltWXforecast">
+				<div class="gmcltWXforecastDay">
+					<img src="/wp-content/themes/wbt/images/wx/66.png">
+					<p>
+						High 92&deg; Low 68&deg;<br />
+						Mostly sunny. Highs in the low 90s and lows in the upper 60s.
+					</p>
+				</div>
+				<div class="gmcltWXforecastDay">
+					<img src="/wp-content/themes/wbt/images/wx/66.png">
+					<p>
+						High 92&deg; Low 68&deg;<br />
+						Mostly sunny. Highs in the low 90s and lows in the upper 60s.
+					</p>
+				</div>
+				<div class="gmcltWXforecastDay">
+					<img src="/wp-content/themes/wbt/images/wx/66.png">
+					<p>
+						High 92&deg; Low 68&deg;<br />
+						Mostly sunny. Highs in the low 90s and lows in the upper 60s.
+					</p>
+				</div>
+				<div class="gmcltWXforecastDay">
+					<img src="/wp-content/themes/wbt/images/wx/66.png">
+					<p>
+						High 92&deg; Low 68&deg;<br />
+						Mostly sunny. Highs in the low 90s and lows in the upper 60s.
+					</p>
+				</div>
+				<div class="gmcltWXforecastDay">
+					<img src="/wp-content/themes/wbt/images/wx/66.png">
+					<p>
+						High 92&deg; Low 68&deg;<br />
+						Mostly sunny. Highs in the low 90s and lows in the upper 60s.
+					</p>
+				</div>
+				
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				<!-- Dummy content -->
+				
+				
+			</div>
 		</section>
 		
 	

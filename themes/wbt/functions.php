@@ -52,7 +52,10 @@ define( 'WBT_VERSION', '0.1.0' );
         WBT_VERSION,
         true
     );
-
+    if ( is_page('weather') ) {
+    	wp_enqueue_style( 'stylesheet_name', get_stylesheet_directory_uri() . '/assets/css/weather.css' );
+    	wp_enqueue_script( 'stylesheet_name', get_stylesheet_directory_uri() . '/assets/js/weather.js', array( 'jquery' ) );
+	}
  }
  add_action( 'wp_enqueue_scripts', 'wbt_scripts_styles', 20 );
  
