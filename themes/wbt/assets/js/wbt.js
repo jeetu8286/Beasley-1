@@ -153,8 +153,6 @@ GMCLT.Weather = function() {
 	};
 	
 	var populateWeatherData = function(locationId) {
-		
-		var wxDataObject;
 		var wxConditionsSource = jQuery("#currentConditions-template").html(); 
 		var wxConditionsTemplate = Handlebars.compile(wxConditionsSource); 
 		var wxForecastFullSource = jQuery("#forecastFull-template").html(); 
@@ -170,6 +168,9 @@ GMCLT.Weather = function() {
 				jQuery('#gmcltWX_forecastContent').html(wxForecastTemplate(wxDataObject));
 				jQuery('.gmcltWX_search').show();
 				jQuery('.gmcltWX_loading').hide();
+			})
+			.fail(function() {
+			   wxError();
 			});
 		
 		
@@ -198,16 +199,41 @@ GMCLT.Weather = function() {
 					jQuery('.gmcltWX_loading').hide();
 					jQuery('#gmcltWX_search').val('');
 				}
+				
+			})
+			.fail(function() {
+			   wxError();
 			});
 			
 		}
 		
+	};
+	
+	var showAlertMap = function() {
+		var myLatlng = new google.maps.LatLng(35.2269, -80.8433);
+		var mapOptions = {
+			zoom: 11,
+		    scrollwheel: false,
+		    //draggable: false,
+		    center: myLatlng
+		}
+
+		wxmap = new google.maps.Map(document.getElementById('gmcltWX_map'), mapOptions);
 	}
+	
+	var wxError = function() {
+		var wxErrorSource = jQuery("#error-template").html(); 
+		var wxErrorTemplate = Handlebars.compile(wxErrorSource);
+		jQuery('#gmcltWX_currentContent').html(wxErrorTemplate());
+		jQuery('.gmcltWX_loading').hide();
+		jQuery('.gmcltWX_search').hide();
+	};
 	
 	var oPublic =
 	    {
 	      init: init,
-	      populateWeatherData: populateWeatherData
+	      populateWeatherData: populateWeatherData,
+	      showAlertMap: showAlertMap
 	    };
     return oPublic;
 	 

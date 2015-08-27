@@ -37,7 +37,6 @@ get_header();
 				<div id="gmcltWX_forecastFullContent"></div>
 				<div id="gmcltWX_forecastContent"></div>
 			</div>
-			
 		</section>
 		
 	
@@ -46,9 +45,11 @@ get_header();
 </div>
 
 <script type="text/javascript" src="/wp-content/themes/wbt/assets/js/vendor/handlebars-v3.0.3.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
 
 <script id="currentConditions-template" type="text/x-handlebars-template">
 	<h2>{{location}}</h2>
+	<p><a href="javascript:void(0);" onclick="GMCLT.Weather.showAlertMap()">Show Active Area Alerts</a></p>
 	<div class="gmcltWX_currentOne">
 		<div class="gmcltWX_currentIcon">
 			<img src="/wp-content/themes/wbt/images/wx/{{currentConditions.graphicCode}}.png">
@@ -123,8 +124,13 @@ get_header();
 	<h2>Search Results</h2>
 	<p>{{{message}}}</p>
 	{{#each results}}
-		<a href="javascript:void(0);" onclick="GMCLT.Weather.populateWeatherData('{{locationId}}')">{{location}}</a><br />
+		<a href="" onclick="GMCLT.Weather.populateWeatherData('{{locationId}}')">{{location}}</a><br />
 	{{/each}}
+</script>
+
+<script id="error-template" type="text/x-handlebars-template">
+	<h2>Sorry!</h2>
+	<p>An error has occurred while loading weather information. Please refresh the page and try again.</p>
 </script>
 
 <script type="text/javascript">

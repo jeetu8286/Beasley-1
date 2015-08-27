@@ -153,8 +153,6 @@ GMCLT.Weather = function() {
 	};
 	
 	var populateWeatherData = function(locationId) {
-		
-		var wxDataObject;
 		var wxConditionsSource = jQuery("#currentConditions-template").html(); 
 		var wxConditionsTemplate = Handlebars.compile(wxConditionsSource); 
 		var wxForecastFullSource = jQuery("#forecastFull-template").html(); 
@@ -170,6 +168,9 @@ GMCLT.Weather = function() {
 				jQuery('#gmcltWX_forecastContent').html(wxForecastTemplate(wxDataObject));
 				jQuery('.gmcltWX_search').show();
 				jQuery('.gmcltWX_loading').hide();
+			})
+			.fail(function() {
+			   wxError();
 			});
 		
 		
@@ -198,15 +199,178 @@ GMCLT.Weather = function() {
 					jQuery('.gmcltWX_loading').hide();
 					jQuery('#gmcltWX_search').val('');
 				}
+				
+			})
+			.fail(function() {
+			   wxError();
 			});
 			
 		}
 		
-	}
+	};
+	
+	
+	// Enable the visual refresh
+	google.maps.visualRefresh = true;
+	var map;
+	var infoWindow;
+	// Default State
+	var GMCLTstate = 'NC';
+
+	function initializeMap() {
+		geocoder = new google.maps.Geocoder();
+	  	geocoder.geocode( { 'address': GMCLTstate}, function(results, status) {
+	      if (status == google.maps.GeocoderStatus.OK) {
+			  var mapOptions = {
+				  zoom: 7,
+				  center: results[0].geometry.location,
+				  mapTypeId: google.maps.MapTypeId.ROADMAP
+				  };
+			
+			  map = new google.maps.Map(document.getElementById('map-canvas'),
+			      mapOptions);
+			  
+			  addAlertBoxes(GMCLTstate);
+			  
+			  tileNEX = new google.maps.ImageMapType({
+				  getTileUrl: function(tile, zoom) {
+					  return "http://mesonet.agron.iastate.edu/cache/tile.py/1.0.0/nexrad-n0q-900913/" + zoom + "/" + tile.x + "/" + tile.y +".png?"+ (new Date()).getTime(); 
+				  },
+				  tileSize: new google.maps.Size(256, 256),
+				  opacity:0.60,
+		          name : 'NEXRAD',
+				  isPng: true
+				  });
+
+        
+			 
+				  map.overlayMapTypes.push(null); // create empty overlay entry
+				  map.overlayMapTypes.setAt("1",tileNEX);
+				  
+			var stateList = 'NC,SC,VA,WV,TN,GA,AL,AK,AZ,AR,CA,CO,CT,DE,DC,FL,HI,ID,IL,IN,IA,KS,KY,LA,ME,MD,MA,MI,MN,MS,MO,MT,NE,NV,NH,NJ,NM,NY,ND,OH,OK,OR,PA,RI,SD,TX,UT,VT,WA,WI,WY';
+       		var stateARRAY = stateList.split(',');
+        
+	   		for (var i=0; i < stateARRAY.length; i++){
+	   			if (stateARRAY[i] != GMCLTstate) {
+		        addAlertBoxes(stateARRAY[i]);
+	        }
+        }
+		
+		
+	} else {
+        alert("Geocode was not successful for the following reason: " + status);
+      }
+    });
+    
+    }
+    
+    function addAlertBoxes(state) {
+	    var GMCLTMapObject = new Object();
+		        $.getJSON('http://site.gmclt.com/_global/_components/WeatherAlerts.cfc?method=getStateAlerts&state=' + state + '&callback=?',
+			
+				function (GMCLTMapObject) {
+		                   for (var i=0; i < GMCLTMapObject.length; i++){
+		                   	
+		                       var id = GMCLTMapObject[i].ID;
+							   			   
+			                   var myCoords = new Array();
+			                                      
+			                   for (var j=0; j < GMCLTMapObject[i].CountiesPolygon.length; j++){
+				                   myCoords.push(new google.maps.LatLng(GMCLTMapObject[i].CountiesPolygon[j].lat,GMCLTMapObject[i].CountiesPolygon[j].lng));
+			                   }
+			                   
+			                   window['alertZone' + id] = new google.maps.Polygon({
+							    paths: myCoords,
+							    strokeColor: '#FF0000',
+							    strokeOpacity: 0.8,
+							    strokeWeight: 1,
+							    fillColor: '#FF0000',
+							    fillOpacity: 0.35
+							  });
+							
+							  window['alertZone' + id].setMap(map);
+							  
+							  google.maps.event.addListener(window['alertZone' + id], 'click', buildPolyClickHandler(id));
+							  
+							  
+							  }
+		
+		                  
+			        });
+
+	    
+    }
+    
+    function changeState(){
+	    var x=document.getElementById("GMCLTStates").selectedIndex;
+		var y=document.getElementById("GMCLTStates").options;
+		
+		GMCLTstate = y[x].value;
+		initializeMap();
+		document.getElementById('alert-content').innerHTML = '<p>Click on a highlighted zone above to view weather alert details</p>';
+		
+		
+		
+    }
+    
+    function buildPolyClickHandler(id) {
+	    return function() {
+	    	
+	    	var GMCLTDetailsObject = new Object();
+		        $.getJSON('http://site.gmclt.com/_global/_components/WeatherAlerts.cfc?method=getAlertDetail&CountyID=' + id + '&callback=?',
+			
+				function (GMCLTDetailsObject) {
+					var html = '<h1>WBT Operation Stormwatch Alerts for ' + GMCLTDetailsObject[0].Name + ' County ' + GMCLTDetailsObject[0].State + '</h1>';
+					
+					if (GMCLTDetailsObject[0].Events.length > 1){
+						var alerttext = 'There are ' + GMCLTDetailsObject[0].Events.length + ' active alerts';
+					}
+					else {
+						var alerttext = 'There is 1 active alert';
+					}
+					var html = html + '<p>' + alerttext + '</p>';
+					
+					for (var i=0; i < GMCLTDetailsObject[0].Events.length; i++){
+					 	var html = html + '<h2>' + GMCLTDetailsObject[0].Events[i] + ' for ' + GMCLTDetailsObject[0].Name + ' until ' + GMCLTDetailsObject[0].Expires[i] + '</h2>';
+					 	var html = html + '<p>' + GMCLTDetailsObject[0].Summary[i] + '</p>'; 
+					 	var html = html + '<hr />';
+					}
+					
+					document.getElementById('alert-content').innerHTML = html;
+					
+				});
+	    	
+	    	
+	    };
+    }
+    
+	google.maps.event.addDomListener(window, 'load', initializeMap);
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	var wxError = function() {
+		var wxErrorSource = jQuery("#error-template").html(); 
+		var wxErrorTemplate = Handlebars.compile(wxErrorSource);
+		jQuery('#gmcltWX_currentContent').html(wxErrorTemplate());
+		jQuery('.gmcltWX_loading').hide();
+		jQuery('.gmcltWX_search').hide();
+	};
 	
 	var oPublic =
 	    {
 	      init: init,
+	      stormwatchInit: stormwatchInit,
 	      populateWeatherData: populateWeatherData
 	    };
     return oPublic;
