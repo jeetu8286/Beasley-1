@@ -878,9 +878,9 @@ category: Components - Gallery Archive
 	.section-header {
 		margin: 20px 0;
 
-		@include bp(medium) {
+		/*@include bp(medium) {
 			display: none;
-		}
+		}*/
 	}
 }
 
