@@ -1,4 +1,4 @@
-<h2 class="page__title" itemprop="headline"><?php _e( 'Photos', 'greatermedia' ); ?></h2>
+<h2 class="page__title" itemprop="headline"><?php _e( 'Latest Galleries', 'greatermedia' ); ?></h2>
 <?php
 
 /*
@@ -20,10 +20,9 @@ if ( $page > 1 ) {
 }
 
 $query_args = array(
-	'post_type'      => array( 'gmr_gallery', 'gmr_album' ),
+	'post_type'      => array( 'gmr_gallery' ),
 	'orderby'        => 'date',
 	'order'          => 'DESC',
-	'post_parent'    => '0',
 	'posts_per_page' => 3,
 	'offset'         => 0,
 );
@@ -54,12 +53,12 @@ if ( $query->have_posts() ) : ?>
 
 		<div class="gallery__featured--secondary">
 
-			<?php if ( $query->have_posts() ) : ?>
+			<?php if ( $query->have_posts() && $query->post_count > 1 ) : ?>
 				<?php $query->the_post(); ?>
 				<?php get_template_part( 'partials/gallery-featured', 'secondary' ); ?>
 			<?php endif; ?>
 
-			<?php if ( $query->have_posts() ) : ?>
+			<?php if ( $query->have_posts() && $query->post_count > 2 ) : ?>
 				<?php $query->the_post(); ?>
 				<?php get_template_part( 'partials/gallery-featured', 'secondary' ); ?>
 			<?php endif; ?>
@@ -72,7 +71,13 @@ if ( $query->have_posts() ) : ?>
 
 	<div class="gallery__grid">
 
-		<h3 class="section-header"><?php _e( 'Galleries and Alblums', 'greatermedia' ); ?></h3>
+		<?php get_template_part( 'partials/loop', 'album' ); ?>
+
+	</div>
+
+	<?php wp_reset_postdata(); ?>
+
+	<div class="gallery__grid">
 
 		<?php get_template_part( 'partials/loop', 'gallery' ); ?>
 
