@@ -7170,7 +7170,7 @@ body.profile-page-login .live-player--mobile {
   .podcast-player .audio__time {
     width: 100%; }
   .podcast-player.podcast-player--compact .audio__time {
-    padding-top: 12px;
+    padding-top: 5px;
     padding-bottom: 0; }
   .audio__time.playing__current {
     display: block;
@@ -7216,7 +7216,7 @@ body.profile-page-login .live-player--mobile {
 .audio__progress-bar {
   width: 100%;
   position: relative;
-  height: 3px;
+  height: 10px;
   background-color: #404041;
   color: #fff;
   -webkit-border-radius: 2px;
@@ -7236,7 +7236,7 @@ body.profile-page-login .live-player--mobile {
   top: 0;
   left: 0;
   display: inline-block;
-  height: 3px;
+  height: 10px;
   background-color: #d22228;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
@@ -11953,10 +11953,14 @@ category: Components - Gallery Archive
       .gallery__grid:last-child {
         margin-right: 0; } }
   .gallery__grid .section-header {
-    margin: 20px 0; }
-    @media screen and (min-width: 768px)  {
-      .gallery__grid .section-header {
-        display: none; } }
+    margin: 20px 0;
+    font-size: 1.6em;
+    font-weight: bold;
+    color: #404041;
+    text-transform: uppercase;
+    /*@include bp(medium) {
+			display: none;
+		}*/ }
 
 .gallery__featured {
   display: block; }

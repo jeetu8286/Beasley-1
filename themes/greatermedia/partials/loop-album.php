@@ -8,11 +8,11 @@ if ( empty( $page ) ) {
 }
 
 $query_args = array(
-	'post_type'      => array( 'gmr_gallery' ),
+	'post_type'      => array( 'gmr_album' ),
 	'orderby'        => 'date',
 	'order'          => 'DESC',
-	'posts_per_page' => 16,
-	'offset'         => 3 + 16 * ( $page - 1 ),
+	'posts_per_page' => 100,
+	'offset'         => 0,
 );
 
 if ( 'show' == get_post_type() ) {
@@ -31,12 +31,10 @@ if ( 'show' == get_post_type() ) {
 $query = new WP_Query( $query_args );
 
 if ( $query->have_posts() ) :
-	if ( $page == 1 ) : ?>
 
-<h2 class="section-header"><?php _e( 'Galleries', 'greatermedia' ); ?></h2>
-
-	<?php
-	endif;
+?>
+<h2 class="section-header"><?php _e( 'Albums', 'greatermedia' ); ?></h2>
+<?php
 
 	while ( $query->have_posts() ) :
 		$query->the_post();
@@ -50,7 +48,7 @@ if ( $query->have_posts() ) :
 		greatermedia_load_more_button( array(
 			'query'        => $query,
 			'partial_slug' => 'partials/loop',
-			'partial_name' => 'gallery',
+			'partial_name' => 'album',
 			'auto_load'    => false,
 		) );
 	endif;
