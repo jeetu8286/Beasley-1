@@ -11945,10 +11945,14 @@ category: Components - Gallery Archive
       .gallery__grid:last-child {
         margin-right: 0; } }
   .gallery__grid .section-header {
-    margin: 20px 0; }
-    @media screen and (min-width: 768px)  {
-      .gallery__grid .section-header {
-        display: none; } }
+    margin: 20px 0;
+    font-size: 1.6em;
+    font-weight: bold;
+    color: #404041;
+    text-transform: uppercase;
+    /*@include bp(medium) {
+			display: none;
+		}*/ }
 
 .gallery__featured {
   display: block; }
@@ -15088,6 +15092,7 @@ body {
     color: #d22228; }
 
 .live-player__stream {
+  display: none;
   border: 1px solid #b0b0b0;
   color: #b0b0b0;
   -webkit-border-radius: 1em;
@@ -15115,9 +15120,6 @@ body {
     .live-player__stream .live-player__stream--current.open .live-player__stream--available li:last-child {
       border-bottom-left-radius: 1em;
       border-bottom-right-radius: 1em; }
-
-.live-player__container {
-  border-bottom: 1px solid white; }
 
 .now-playing__artist {
   color: #303030; }
@@ -15212,7 +15214,14 @@ body {
   background-color: #929497; }
 
 .live-player {
+  background-image: url(../../images/player-bg.png);
   background-repeat: no-repeat; }
+
+.live-stream {
+  background-color: transparent; }
+
+.live-stream__listen-now--btn, .podcast__rss {
+  background-color: white !important; }
 
 .gmcltWX_narrowColumn {
   box-sizing: border-box;
