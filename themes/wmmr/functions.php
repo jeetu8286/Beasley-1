@@ -32,6 +32,7 @@ define( 'WMMR_VERSION', '0.2.1' ); /* Version bump by Steve 8/31/2015 @ 10:30pm 
 	 */
 	load_theme_textdomain( 'wmmr', get_stylesheet_directory_uri() . '/languages' );
  }
+
  add_action( 'after_setup_theme', 'wmmr_setup' );
 
   /**
@@ -44,44 +45,43 @@ define( 'WMMR_VERSION', '0.2.1' ); /* Version bump by Steve 8/31/2015 @ 10:30pm 
  * @return mixed|void
  */
 function wmmr_async_script( $tag, $handle, $src ) {
-
     if ( 'simpli-fi' !== $handle ) :
-
       return $tag;
-
     endif;
 
     return str_replace( '<script', '<script async ', $tag );
 }
+
 add_filter( 'script_loader_tag', 'wmmr_async_script', 10, 3 );
 
- /**
-  * Enqueue scripts and styles for front-end.
-  *
-  * @since 0.1.0
-  */
- function wmmr_scripts_styles() {
-	$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
+/**
+* Enqueue scripts and styles for front-end.
+*
+* @since 0.1.0
+*/
+function wmmr_scripts_styles() {
+  $postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 
-	wp_dequeue_style( 'greatermedia' );
-	wp_deregister_style( 'greatermedia' );
-	wp_enqueue_style( 'wmmr', get_stylesheet_directory_uri() . "/assets/css/wmmr{$postfix}.css", array(), WMMR_VERSION );
-            wp_enqueue_script(
-                'simpli-fi',
-                'http://i.simpli.fi/dpx.js?cid=23417&action=100&segment=wmmrrocks&m=1&sifi_tuid=7533',
-                array(),
-                null,
-                true
-            );
- }
- add_action( 'wp_enqueue_scripts', 'wmmr_scripts_styles', 20 );
+  wp_dequeue_style( 'greatermedia' );
+  wp_deregister_style( 'greatermedia' );
+  wp_enqueue_style( 'wmmr', get_stylesheet_directory_uri() . "/assets/css/wmmr{$postfix}.css", array(), WMMR_VERSION );
+  wp_enqueue_script(
+    'simpli-fi',
+    'http://i.simpli.fi/dpx.js?cid=23417&action=100&segment=wmmrrocks&m=1&sifi_tuid=7533',
+    array(),
+    null,
+    true
+  );
+}
 
- /**
-  * Add humans.txt to the <head> element.
-  */
- function wmmr_header_meta() {
-	$humans = '<link type="text/plain" rel="author" href="' . get_stylesheet_directory_uri() . '/humans.txt" />';
+add_action( 'wp_enqueue_scripts', 'wmmr_scripts_styles', 20 );
 
-	echo apply_filters( 'wmmr_humans', $humans );
- }
- add_action( 'wp_head', 'wmmr_header_meta' );
+/**
+* Add humans.txt to the <head> element.
+*/
+function wmmr_header_meta() {
+  $humans = '<link type="text/plain" rel="author" href="' . get_stylesheet_directory_uri() . '/humans.txt" />';
+  echo apply_filters( 'wmmr_humans', $humans );
+}
+
+add_action( 'wp_head', 'wmmr_header_meta' );

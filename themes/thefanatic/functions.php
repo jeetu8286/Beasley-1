@@ -54,15 +54,13 @@ add_action( 'after_setup_theme', 'thefanatic_setup' );
  * @return mixed|void
  */
 function wpen_async_script( $tag, $handle, $src ) {
+  if ( 'simpli-fi' !== $handle ) :
+    return $tag;
+  endif;
 
-    if ( 'simpli-fi' !== $handle ) :
-
-      return $tag;
-
-    endif;
-
-    return str_replace( '<script', '<script async ', $tag );
+  return str_replace( '<script', '<script async ', $tag );
 }
+
 add_filter( 'script_loader_tag', 'wpen_async_script', 10, 3 );
 
 /**
@@ -98,12 +96,12 @@ function thefanatic_scripts_styles() {
 		THEFANATIC_VERSION
 	);
 	wp_enqueue_script(
-                'simpli-fi',
-                'http://i.simpli.fi/dpx.js?cid=23420&action=100&segment=fanatic&m=1&sifi_tuid=7537',
-                array(),
-                null,
-                true
-            );
+		'simpli-fi',
+		'http://i.simpli.fi/dpx.js?cid=23420&action=100&segment=fanatic&m=1&sifi_tuid=7537',
+		array(),
+		null,
+		true
+	);
 }
 
 add_action( 'wp_enqueue_scripts', 'thefanatic_scripts_styles', 20 );
@@ -113,7 +111,6 @@ add_action( 'wp_enqueue_scripts', 'thefanatic_scripts_styles', 20 );
  */
 function thefanatic_header_meta() {
 	$humans = '<link type="text/plain" rel="author" href="' . get_template_directory_uri() . '/humans.txt" />';
-
 	echo apply_filters( 'thefanatic_humans', $humans );
 }
 
