@@ -1,0 +1,22 @@
+/*
+Sass::SyntaxError: Error generating source map: couldn't determine public URL for the source stylesheet.
+  No filename is available so there's nothing for the source map to link to.
+
+
+Backtrace:
+/Users/allenmoore/.rvm/gems/ruby-2.2.1/gems/sass-3.4.16/lib/sass/engine.rb:357:in `_render_with_sourcemap'
+/Users/allenmoore/.rvm/gems/ruby-2.2.1/gems/sass-3.4.16/lib/sass/engine.rb:295:in `render_with_sourcemap'
+/Users/allenmoore/.rvm/gems/ruby-2.2.1/gems/sass-3.4.16/lib/sass/exec/sass_scss.rb:410:in `run'
+/Users/allenmoore/.rvm/gems/ruby-2.2.1/gems/sass-3.4.16/lib/sass/exec/sass_scss.rb:63:in `process_result'
+/Users/allenmoore/.rvm/gems/ruby-2.2.1/gems/sass-3.4.16/lib/sass/exec/base.rb:52:in `parse'
+/Users/allenmoore/.rvm/gems/ruby-2.2.1/gems/sass-3.4.16/lib/sass/exec/base.rb:19:in `parse!'
+/Users/allenmoore/.rvm/gems/ruby-2.2.1/gems/sass-3.4.16/bin/sass:13:in `<top (required)>'
+/Users/allenmoore/.rvm/gems/ruby-2.2.1/bin/sass:23:in `load'
+/Users/allenmoore/.rvm/gems/ruby-2.2.1/bin/sass:23:in `<main>'
+/Users/allenmoore/.rvm/gems/ruby-2.2.1/bin/ruby_executable_hooks:15:in `eval'
+/Users/allenmoore/.rvm/gems/ruby-2.2.1/bin/ruby_executable_hooks:15:in `<main>'
+*/
+body:before {
+  white-space: pre;
+  font-family: monospace;
+  content: "Sass::SyntaxError: Error generating source map: couldn't determine public URL for the source stylesheet.\A   No filename is available so there's nothing for the source map to link to.\A "; }
