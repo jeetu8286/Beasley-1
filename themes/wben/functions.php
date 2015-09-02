@@ -13,7 +13,7 @@
  */
 
  // Useful global constants
-define( 'WBEN_VERSION', '0.1.7' ); /* Version bump by Steve 6/23/2015 @ 11:00am EST */
+define( 'WBEN_VERSION', '0.2.1' ); /* Version bump by Steve 8/31/2015 @ 10:30pm EST */
 
  /**
   * Set up theme defaults and register supported WordPress features.
@@ -34,6 +34,7 @@ define( 'WBEN_VERSION', '0.1.7' ); /* Version bump by Steve 6/23/2015 @ 11:00am 
  }
  add_action( 'after_setup_theme', 'wben_setup' );
 
+<<<<<<< HEAD
  /**
  * Filter the Simpli-Fi script and make it async
  *
@@ -55,6 +56,8 @@ function wben_async_script( $tag, $handle, $src ) {
 }
 add_filter( 'script_loader_tag', 'wben_async_script', 10, 3 );
 
+=======
+>>>>>>> master
  /**
   * Enqueue scripts and styles for front-end.
   *
