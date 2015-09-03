@@ -1,3 +1,0 @@
-/*! GreaterMedia Announcements - v0.0.1
- * http://wordpress.org/plugins
- * Copyright (c) 2015; * Licensed GPLv2+ */
