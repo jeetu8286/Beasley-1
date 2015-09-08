@@ -7,11 +7,13 @@ use \WP_Query;
 add_action( 'init',                  __NAMESPACE__ . '\register_homepage_cpt' );
 add_action( 'save_post',             __NAMESPACE__ . '\save_meta_data' );
 add_action( 'post_submitbox_start',  __NAMESPACE__ . '\create_homepages_nonce' );
-add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\enqueue_admin_scripts' );
 add_action( 'add_meta_boxes',        __NAMESPACE__ . '\remove_yoast_metabox', PHP_INT_MAX );
 add_action( 'wp_print_scripts',      __NAMESPACE__ . '\remove_yoast_metabox_js', PHP_INT_MAX );
 
 add_filter( 'preview_post_link',     __NAMESPACE__ . '\preview_post_setup', PHP_INT_MAX, 2 );
+
+// Commenting until settings page is removed completely
+//add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\enqueue_admin_scripts' );
 
 /**
  * Homepage save nonce
@@ -332,24 +334,24 @@ function get_preview_homepage() {
 /**
  * Enqueue admin scripts and styles
  */
-function enqueue_admin_scripts( $page ) {
-	global $typenow;
-	if ( 'show' == $typenow || 'gmr_homepage' == $typenow ) {
-		wp_enqueue_style(
-			'homepage-curation',
-			GMEDIA_HOMEPAGE_CURATION_URL . 'css/admin.css',
-			null,
-			GMEDIA_HOMEPAGE_CURATION_VERSION
-		);
-		wp_enqueue_script(
-			'homepage-curation',
-			GMEDIA_HOMEPAGE_CURATION_URL . 'js/curation.js',
-			array( 'jquery' ),
-			GMEDIA_HOMEPAGE_CURATION_VERSION,
-			true
-		);
-	}
-}
+//function enqueue_admin_scripts( $page ) {
+//	global $typenow;
+//	if ( 'show' == $typenow || 'gmr_homepage' == $typenow ) {
+//		wp_enqueue_style(
+//			'homepage-curation',
+//			GMEDIA_HOMEPAGE_CURATION_URL . 'css/admin.css',
+//			null,
+//			GMEDIA_HOMEPAGE_CURATION_VERSION
+//		);
+//		wp_enqueue_script(
+//			'homepage-curation',
+//			GMEDIA_HOMEPAGE_CURATION_URL . 'js/curation.js',
+//			array( 'jquery' ),
+//			GMEDIA_HOMEPAGE_CURATION_VERSION,
+//			true
+//		);
+//	}
+//}
 
 
 /**
