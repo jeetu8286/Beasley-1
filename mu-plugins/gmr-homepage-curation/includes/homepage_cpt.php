@@ -12,9 +12,6 @@ add_action( 'wp_print_scripts',      __NAMESPACE__ . '\remove_yoast_metabox_js',
 
 add_filter( 'preview_post_link',     __NAMESPACE__ . '\preview_post_setup', PHP_INT_MAX, 2 );
 
-// Commenting until settings page is removed completely
-//add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\enqueue_admin_scripts' );
-
 /**
  * Homepage save nonce
  *
@@ -330,29 +327,6 @@ function get_preview_homepage() {
 
 	return false;
 }
-
-/**
- * Enqueue admin scripts and styles
- */
-//function enqueue_admin_scripts( $page ) {
-//	global $typenow;
-//	if ( 'show' == $typenow || 'gmr_homepage' == $typenow ) {
-//		wp_enqueue_style(
-//			'homepage-curation',
-//			GMEDIA_HOMEPAGE_CURATION_URL . 'css/admin.css',
-//			null,
-//			GMEDIA_HOMEPAGE_CURATION_VERSION
-//		);
-//		wp_enqueue_script(
-//			'homepage-curation',
-//			GMEDIA_HOMEPAGE_CURATION_URL . 'js/curation.js',
-//			array( 'jquery' ),
-//			GMEDIA_HOMEPAGE_CURATION_VERSION,
-//			true
-//		);
-//	}
-//}
-
 
 /**
  * Remove the Yoast SEO metabox from homepage CPT's.
