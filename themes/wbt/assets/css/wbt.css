@@ -15219,7 +15219,11 @@ body {
   background-color: #0A47B4; }
 
 .header__sub {
-  background-color: #000000; }
+  background-color: #000000;
+  display: none !important; }
+  @media screen and (min-width: 768px)  {
+    .header__sub {
+      display: block !important; } }
 
 .header__nav .sub-menu, .header__nav .format-fw > ul, .header__nav .format-sp > ul, .header__nav .format-fi > ul {
   border-bottom: #CF000F; }
