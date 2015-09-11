@@ -1,17 +1,22 @@
-//Handlebars.registerHelper("inc", function(value, options)
-//{
-//    return parseInt(value) + 1;
-//});
-
-//Handlebars.registerHelper("analytics", function(eventCode)
-//{
-//    ga('send', {'hitType': 'event', 'eventCategory': 'Advertising', 'eventAction': 'Impression', 'eventLabel': eventCode});
-//   return '';
-//});
+if (typeof Handlebars != "undefined") {
+	
+}
 
 GMCLT.AdIndex = function() {
 
 	var init = function() {
+		Handlebars.registerHelper("inc", function(value, options)
+		{
+		    return parseInt(value) + 1;
+		});
+		
+		Handlebars.registerHelper("analytics", function(eventCode)
+		{
+		    ga('send', {'hitType': 'event', 'eventCategory': 'Advertising', 'eventAction': 'Impression', 'eventLabel': eventCode});
+		   return '';
+		});
+		
+		
 		//listen for search
 		jQuery('#gmclt_advertiserSearch').keydown(function (e){
 		    if(e.keyCode == 13){
