@@ -1,13 +1,13 @@
-Handlebars.registerHelper("inc", function(value, options)
-{
-    return parseInt(value) + 1;
-});
+//Handlebars.registerHelper("inc", function(value, options)
+//{
+//    return parseInt(value) + 1;
+//});
 
-Handlebars.registerHelper("analytics", function(eventCode)
-{
-    ga('send', {'hitType': 'event', 'eventCategory': 'Advertising', 'eventAction': 'Impression', 'eventLabel': eventCode});
-    return '';
-});
+//Handlebars.registerHelper("analytics", function(eventCode)
+//{
+//    ga('send', {'hitType': 'event', 'eventCategory': 'Advertising', 'eventAction': 'Impression', 'eventLabel': eventCode});
+//   return '';
+//});
 
 GMCLT.AdIndex = function() {
 

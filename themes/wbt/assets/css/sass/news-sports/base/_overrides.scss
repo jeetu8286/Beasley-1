@@ -131,6 +131,10 @@ body {
 
 .header__sub {
 	background-color: #000000;
+	display: none !important;
+	@include bp(medium) {
+		display: block !important;
+	}
 }
 
 .header__nav .sub-menu {
