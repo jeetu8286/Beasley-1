@@ -3,6 +3,11 @@ if (typeof Handlebars != "undefined") {
 }
 
 GMCLT.AdIndex = function() {
+	
+	var $advertiserSearch = jQuery( document.getElementById( 'gmclt_advertiserSearch' ) );
+	var $wideColumnContent = jQuery( document.getElementById( 'gmclt_wideColumnContent' ) );
+	var $categorySelect = '';
+	var $categoryDropdown = jQuery( document.getElementById( 'gmclt_categoryDropdown' ) );
 
 	var init = function() {
 		Handlebars.registerHelper("inc", function(value, options)
@@ -18,7 +23,7 @@ GMCLT.AdIndex = function() {
 		
 		
 		//listen for search
-		jQuery('#gmclt_advertiserSearch').keydown(function (e){
+		$advertiserSearch.keydown(function (e){
 		    if(e.keyCode == 13){
 		        searchAdvertisers(0, 'search');
 		    }
@@ -46,7 +51,8 @@ GMCLT.AdIndex = function() {
 	};	
 	
 	var searchAdvertisers = function(id,mode) {
-		var searchQuery = jQuery.trim(jQuery('#gmclt_advertiserSearch').val());
+		
+		var searchQuery = jQuery.trim( $advertiserSearch.val() );
 		var adSearchSource = jQuery("#searchResults-template").html(); 
 		var adSearchTemplate = Handlebars.compile(adSearchSource);
 		var proceed = false;
@@ -65,7 +71,7 @@ GMCLT.AdIndex = function() {
 				break;
 			case 'direct':
 				url = apiUrl + '/adIndex/adIndex.cfc?method=searchIndex&advertiserId=' + id + '&mode=' + mode +'&station=' + gmcltStationName + '&callback=?';
-				jQuery('#gmclt_categoryDropdown').hide();
+				$categoryDropdown.hide();
 				jQuery('.gmclt_searchBar').hide();
 				proceed = true;
 				break;
@@ -73,15 +79,15 @@ GMCLT.AdIndex = function() {
 		
 		if (proceed) {
 			jQuery('.gmclt_searching').show();
-			jQuery('#gmclt_wideColumnContent').html('');
+			$wideColumnContent.html('');
 			jQuery.getJSON(url,
 		
 			function (searchObject) {
-				jQuery('#gmclt_wideColumnContent').html(adSearchTemplate(searchObject));
+				$wideColumnContent.html(adSearchTemplate(searchObject));
 				jQuery('.gmclt_searching').hide();
-				jQuery('#gmclt_advertiserSearch').val('');
+				$advertiserSearch.val('');
 				if (mode != 'category') {
-					$("#gmclt_categorySelect").val('0');
+					$categorySelect.val('0');
 				} 
 				
 			})
@@ -99,8 +105,9 @@ GMCLT.AdIndex = function() {
 		jQuery.getJSON(apiUrl + '/adIndex/adIndex.cfc?method=getCategories&stationId=' + gmcltStationID + '&callback=?',
 	
 		function (categoryObject) {
-			jQuery('#gmclt_categoryDropdown').html(categoryTemplate(categoryObject));
-			jQuery('#gmclt_categorySelect').change(function() 
+			$categoryDropdown.html(categoryTemplate(categoryObject));
+			$categorySelect = jQuery( document.getElementById( 'gmclt_categorySelect' ) );
+			$categorySelect.change(function() 
 				{
 				  searchAdvertisers($(this).attr('value'), 'category');
 				});
@@ -113,7 +120,7 @@ GMCLT.AdIndex = function() {
 	var searchError = function() {
 		var searchErrorSource = jQuery("#error-template").html(); 
 		var searchErrorTemplate = Handlebars.compile(searchErrorSource);
-		jQuery('#gmclt_wideColumnContent').html(searchErrorTemplate());
+		$wideColumnContent.html(searchErrorTemplate());
 		jQuery('.gmclt_searching').hide();
 		jQuery('.gmclt_searchBar').hide();
 	};
