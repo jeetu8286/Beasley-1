@@ -1,7 +1,5 @@
 jQuery(document).ready(function(){
 	GMCLT.Weather.currentConditionsSubnav();
-	
-
 });
 
 GMCLT.Weather = function() {
@@ -36,20 +34,18 @@ GMCLT.Weather = function() {
 		
 				function (wxConditionsDataObject) {
 					populateCurrentConditionsSubnav(wxConditionsDataObject.temperature,wxConditionsDataObject.graphicCode,index);
+					Cookies.set('gmcltWx', wxConditionsDataObject.temperature + ',' + wxConditionsDataObject.graphicCode, { expires: 900 });
 				})
 				.fail(function() {
 				   //do nothing. Not catastrophic
 				});
 			}
 		}
-		else {
-			alert('not found');
-		}
 		
 	}
 	
 	var populateCurrentConditionsSubnav = function(temperature,graphicCode,index) {
-		var htmlString = '<a href="/weather"><img src="http://wbt.greatermedia.dev/wp-content/themes/wbt/images/wx/' + graphicCode +  '.png" style="height: 40px; display: inline;"> ' + temperature + '&deg;</a>';
+		var htmlString = '<a href="/weather"><div class="secondary-link"><img class="gmclt_headerWxIcon" src="/wp-content/themes/wbt/images/wx/' + graphicCode +  '.png"> ' + temperature + '&deg;</div></a>';
 		jQuery('#' + index).html(htmlString);
 	};
 	
