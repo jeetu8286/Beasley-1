@@ -60,7 +60,7 @@ function metabox_data() {
  * @return array
  */
 function get_supported_post_types() {
-	return (array) apply_filters( 'gmr_homepage_curation_supported_post_types', array( 'post', 'page', 'tribe_events' )  );
+	return (array) apply_filters( 'gmr-homepage-curation-post-types', array( 'post', 'page', 'tribe_events' )  );
 }
 
 /**
