@@ -8,10 +8,9 @@ if ( empty( $page ) ) {
 }
 
 $query_args = array(
-	'post_type'      => array( 'gmr_gallery', 'gmr_album' ),
+	'post_type'      => array( 'gmr_gallery' ),
 	'orderby'        => 'date',
 	'order'          => 'DESC',
-	'post_parent'    => '0',
 	'posts_per_page' => 16,
 	'offset'         => 3 + 16 * ( $page - 1 ),
 );
@@ -32,6 +31,12 @@ if ( 'show' == get_post_type() ) {
 $query = new WP_Query( $query_args );
 
 if ( $query->have_posts() ) :
+	if ( $page == 1 ) : ?>
+
+<h2 class="section-header"><?php _e( 'Galleries', 'greatermedia' ); ?></h2>
+
+	<?php
+	endif;
 
 	while ( $query->have_posts() ) :
 		$query->the_post();
