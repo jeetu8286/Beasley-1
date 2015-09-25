@@ -4,6 +4,28 @@ var apiUrl = 'http://api2.wbt.com';
 
 var gmcltStationName = 'WBT';
 var gmcltStationID = 2;
+
+ ( function( window, undefined ) {
+	'use strict';
+
+    Livefyre.require([
+        'streamhub-wall#3',
+        'streamhub-sdk#2'
+    ], function(LiveMediaWall, SDK) {
+        var wall = window.wall = new LiveMediaWall({
+            el: document.getElementById("wbt-social-column"),
+            initial: 4,
+            collection: new (SDK.Collection)({
+                "network": "gmcharlotte.fyre.co",
+                "siteId": "364558",
+                "articleId": "custom-1443014747260"
+            })
+        });
+    });
+
+    jQuery('.live-links--more__btn').attr('href', '/social/');
+
+ } )( this );
 if (typeof Handlebars != "undefined") {
 	
 }
@@ -171,7 +193,7 @@ GMCLT.Stocks = function() {
 	}
 	
 	var populateStockQuote = function() {
-		var htmlString = '<a href="/category/business-news/"><div class="secondary-link"><img class="gmclt_headerStocksIcon" src="/wp-content/themes/wbt/images/stocks/' + stockObject[currentStock].arrow + '.png"> ' + stockObject[currentStock].shortName + ': ' + stockObject[currentStock].change + '</div></a>';
+		var htmlString = '<a href="/category/business-news/"><div class="secondary-link"><img class="gmclt_stocksHeaderIcon" src="/wp-content/themes/wbt/images/stocks/' + stockObject[currentStock].arrow + '.png"> ' + stockObject[currentStock].shortName + ': ' + stockObject[currentStock].change + '</div></a>';
 		jQuery('#' + index).html(htmlString);
 		
 		if (stockObject.length == currentStock+1) {
@@ -197,10 +219,6 @@ var infowindow;
 GMCLT.Traffic = function() {
 	
   	var init = function() {
-  		google.maps.event.addDomListener(window, 'load', initialize);
-  	};
-
-	var initialize = function() {
 		var myLatlng = new google.maps.LatLng(35.2269, -80.8433);
 		var mapOptions = {
 			zoom: 11,
@@ -209,9 +227,9 @@ GMCLT.Traffic = function() {
 		    center: myLatlng
 		};
 
-		trafficmap = new google.maps.Map(document.getElementById('trafficMap-canvas'), mapOptions);
+		trafficmap = new google.maps.Map(document.getElementById('gmclt_trafficMapCanvas'), mapOptions);
 
-		var trafficLayer = new google.maps.TrafficLayer();
+		trafficLayer = new google.maps.TrafficLayer();
 		trafficLayer.setMap(trafficmap);
 		getTrafficIncidents();
 		getTrafficCameras();
@@ -248,8 +266,8 @@ GMCLT.Traffic = function() {
 					//Add listener for click
 					google.maps.event.addListener(window['marker' + id], 'click', buildIncidentClickHandler(trafficObject[i]));
 					
-					jQuery('#gmcltTraffic_list').html(trafficListTemplate(trafficObject));
-					jQuery('#gmcltTraffic_listLoading').hide();
+					jQuery('#gmclt_trafficList').html(trafficListTemplate(trafficObject));
+					jQuery('#gmclt_trafficListLoading').hide();
 					
 				}
 				jQuery('#gmcltTraffic_mapLoading').hide();
@@ -343,12 +361,12 @@ GMCLT.Weather = function() {
  	var init = function() {
 		populateWeatherData('USNC0121');	
 		//listen for search
-		jQuery('#gmcltWX_search').keydown(function (e){
+		jQuery('#gmclt_wxSearch').keydown(function (e){
 		    if(e.keyCode == 13){
 		        searchWeatherLocations();
 		    }
 		}); 
-		jQuery('#gmcltWX_searchsubmit').click(function(){
+		jQuery('#gmclt_wxSearchsubmit').click(function(){
 			searchWeatherLocations();
 			
 		});
@@ -381,7 +399,7 @@ GMCLT.Weather = function() {
 	}
 	
 	var populateCurrentConditionsSubnav = function(temperature,graphicCode,index) {
-		var htmlString = '<a href="/weather"><div class="secondary-link"><img class="gmclt_headerWxIcon" src="/wp-content/themes/wbt/images/wx/' + graphicCode +  '.png"> ' + temperature + '&deg;</div></a>';
+		var htmlString = '<a href="/weather"><div class="secondary-link"><img class="gmclt_wxHeaderIcon" src="/wp-content/themes/wbt/images/wx/' + graphicCode +  '.png"> ' + temperature + '&deg;</div></a>';
 		jQuery('#' + index).html(htmlString);
 	};
 	
@@ -400,9 +418,9 @@ GMCLT.Weather = function() {
 				jQuery('#gmclt_narrowColumnContent').html(wxConditionsTemplate(wxDataObject));
 				jQuery('#gmcltWX_forecastFullContent').html(wxForecastFullTemplate(wxDataObject));
 				jQuery('#gmcltWX_forecastContent').html(wxForecastTemplate(wxDataObject));
-				jQuery('.gmcltWX_search').show();
-				jQuery('.gmcltWX_loading').hide();
-				jQuery('#radarMap-canvas').show();
+				jQuery('.gmclt_wxSearch').show();
+				jQuery('.gmclt_wxLoading').hide();
+				jQuery('#gmclt_radarMapCanvas').show();
 				initializeRadarMap(wxDataObject.location + ', ' + wxDataObject.state);
 			})
 			.fail(function() {
@@ -412,27 +430,27 @@ GMCLT.Weather = function() {
 	};
 	
 	var searchWeatherLocations = function() {
-		var searchQuery = jQuery.trim(jQuery('#gmcltWX_search').val());
+		var searchQuery = jQuery.trim(jQuery('#gmclt_wxSearch').val());
 		var wxSearchSource = jQuery("#searchResults-template").html(); 
 		var wxSearchTemplate = Handlebars.compile(wxSearchSource);
 		
 		if (searchQuery.length) {
-			jQuery('.gmcltWX_loading').show();
+			jQuery('.gmclt_wxLoading').show();
 			jQuery('#gmclt_narrowColumnContent').html('');
 			jQuery('#gmcltWX_forecastFullContent').html('');
 			jQuery('#gmcltWX_forecastContent').html('');
-			jQuery('#radarMap-canvas').hide();
+			jQuery('#gmclt_radarMapCanvas').hide();
 			jQuery.getJSON(apiUrl + '/weather/weather.cfc?method=searchLocations&queryString=' + searchQuery + '&callback=?',
 		
 			function (wxSearchObject) {
 				if (wxSearchObject.match) {
 					populateWeatherData(wxSearchObject.results[0].locationId);
-					jQuery('#gmcltWX_search').val('');
+					jQuery('#gmclt_wxSearch').val('');
 				}
 				else {
 					jQuery('#gmclt_narrowColumnContent').html(wxSearchTemplate(wxSearchObject));
-					jQuery('.gmcltWX_loading').hide();
-					jQuery('#gmcltWX_search').val('');
+					jQuery('.gmclt_wxLoading').hide();
+					jQuery('#gmclt_wxSearch').val('');
 				}
 				
 			})
@@ -455,7 +473,7 @@ GMCLT.Weather = function() {
 					mapTypeId: google.maps.MapTypeId.ROADMAP
 				};
 			
-				var radarMap = new google.maps.Map(document.getElementById('radarMap-canvas'), mapOptions);
+				var radarMap = new google.maps.Map(document.getElementById('gmclt_radarMapCanvas'), mapOptions);
 			  
 				//get radar overlays
 				var tileNEX = new google.maps.ImageMapType({
@@ -481,11 +499,12 @@ GMCLT.Weather = function() {
 	var GMCLTstate = 'NC';
 	
 	var stormwatchInit = function() {
-		google.maps.event.addDomListener(window, 'load', initializeStormwatchMap);
+		//google.maps.event.addDomListener(window, 'load', initializeStormwatchMap);
+		initializeStormwatchMap();
 		google.maps.visualRefresh = true;
 		
-		jQuery('#GMCLTstateSelect').change(function () {
-			jQuery( "#GMCLTstateSelect option:selected" ).each(function() {
+		jQuery('#gmclt_selectState').change(function () {
+			jQuery( "#gmclt_selectState option:selected" ).each(function() {
 				GMCLTstate = jQuery( this ).val();
 				initializeStormwatchMap();
 			});
@@ -504,7 +523,7 @@ GMCLT.Weather = function() {
 					mapTypeId: google.maps.MapTypeId.ROADMAP
 				};
 			
-				stormwatchMap = new google.maps.Map(document.getElementById('stormwatchMap-canvas'), mapOptions);
+				stormwatchMap = new google.maps.Map(document.getElementById('gmclt_stormwatchMapCanvas'), mapOptions);
 			  
 				//get radar overlays
 				var tileNEX = new google.maps.ImageMapType({
@@ -610,8 +629,8 @@ GMCLT.Weather = function() {
 		var wxErrorSource = jQuery("#error-template").html(); 
 		var wxErrorTemplate = Handlebars.compile(wxErrorSource);
 		jQuery('#gmclt_narrowColumnContent').html(wxErrorTemplate());
-		jQuery('.gmcltWX_loading').hide();
-		jQuery('.gmcltWX_search').hide();
+		jQuery('.gmclt_wxLoading').hide();
+		jQuery('.gmclt_wxSearch').hide();
 	};
 	
 	var oPublic =
