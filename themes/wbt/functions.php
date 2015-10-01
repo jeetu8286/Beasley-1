@@ -13,7 +13,7 @@
  */
  
  // Useful global constants
-define( 'WBT_VERSION', '0.1.0' );
+define( 'WBT_VERSION', '0.1.1' );
  
  /**
   * Set up theme defaults and register supported WordPress features.
@@ -53,10 +53,9 @@ define( 'WBT_VERSION', '0.1.0' );
         WBT_VERSION,
         true
     );
-    if ( is_page('weather') ) {
-    	wp_enqueue_style( 'stylesheet_name', get_stylesheet_directory_uri() . '/assets/css/weather.css' );
-    	wp_enqueue_script( 'stylesheet_name', get_stylesheet_directory_uri() . '/assets/js/weather.js', array( 'jquery' ) );
-	}
+    wp_enqueue_script( 'handlebars', get_stylesheet_directory_uri() . '/assets/js/vendor/handlebars-v3.0.3.js', array( 'jquery' ) );
+    wp_enqueue_script( 'googlemaps', 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false', array() );
+
  }
  add_action( 'wp_enqueue_scripts', 'wbt_scripts_styles', 20 );
  

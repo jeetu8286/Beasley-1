@@ -166,7 +166,8 @@ function render_source_meta_box( $homepage, $metabox ) {
 		'show_icons'              => true,
 		'show_recent_select_list' => true,
 		'args'                    => array (
-			'post_type' => get_supported_post_types(),
+			'post_type'   => get_supported_post_types(),
+			'post_status' => array( 'publish', 'future' )
 		),
 	);
 
@@ -200,8 +201,6 @@ function render_source_meta_box( $homepage, $metabox ) {
 		}
 
 		$post_picker_args['args']['exclude'] = $restricted_posts;
-		$post_picker_args['args']['meta_key']  = '_thumbnail_id'; // Force posts only with thumbnail.
-
 	} else {
 		// Fetch future events post ids
 		$query = new \WP_Query();
