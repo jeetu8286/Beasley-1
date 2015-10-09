@@ -1,17 +1,78 @@
+body {
+	background-color: #ffffff !important;
+}
+
+.main {
+	background-image: url(../../images/bobsheriBackground.jpg);
+}
+
 .main, %main {
 	background-color: $primary-bg;
 }
 
 .header {
 	border-bottom: 1px solid #58595b;
+	background-color: #ffffff;
+	background-image: url(http://assets.gmclt.com/images/bobsheriHeader.jpg);
+	background-repeat: no-repeat;
+	background-size: auto 120px;
+	@include bp(medium) {
+		background-size: cover;
+	}
+	@include bp(large) {
+		background-position: left top;
+	}
+	@include bp(larger) {
+		background-position: center top;
+		background-size: auto;
+	}
+	
+}
+
+.header__main {
+	//background-color: #020276;
+	background-color:rgba(20,120,221,0.75);
+	border: 0;
+	//opacity: 0.75;
+}
+
+.header__nav {
+	margin-left: 100px;
+}
+
+.featured__article--content {
+	//opacity: 0.75;
+}
+
+.featured__content--meta {
+	//opacity: 0.75;
+}
+
+.home__highlights {
+	background-color: #333399 !important;
 }
 
 .home__featured {
 	@include bp(medium) {
 		background-position: left top;
-		background-color: #561015;
+		//background-color: #561015;
 		// background-size: cover; // Leave this out unless we want big crosshatches on WMGK. If we do want that, be sure to also add this to the .show__header
 	}
+}
+
+.header__logo--img {
+	max-height: 60px;
+	max-width: none;
+	top: 50%;
+	@include bp(larger) {
+		top: 30px;
+		margin-left: -20px;
+		max-height: 50px;
+	}
+}
+
+.live-player__stream {
+	display: none;
 }
 
 .live-links {
@@ -27,12 +88,48 @@
 	}
 }
 
+.live-links {
+	background-color: transparent !important;
+}
+
+.live-player {
+	background-color: #cf000f;
+	//background-image: url(../../images/mobilePlayer-bg.jpg);
+}
+
+.live-stream {
+ 	//background-image: url(../../images/mobilePlayer-bg.jpg);
+	background-repeat: no-repeat;
+	background-size: 100%;
+	@include bp(medium) {
+		background-image: url(http://assets.gmclt.com/images/BobAndSheriPlayer.jpg);
+	}
+}
+
+.on-air {
+	@include bp(medium) {
+		margin-top: 30px;
+		margin-bottom: -19px;
+	}
+}
+
+.on-air__show {
+		font-weight: bolder;
+}
+
+.on-air__title {
+		font-weight: bolder;
+}
+
+.live-player__container {
+	border-bottom: 0 !important; 
+}
+
 .live-player__stream {
 	border: 1px solid lighten($color-gray-medium-dark,50%);
 	color: lighten($color-gray-medium-dark,50%);
 	@include border-radius(1em);
 	background-color: $liveplayer-bg;
-
 	li {
 		height: auto;
 	}
@@ -121,7 +218,7 @@
 }
 
 .highlights__event--item {
-	background-color: #8c8c8c;
+	background-color: #3399ff;
 	color: $white;
 }
 
@@ -129,8 +226,17 @@
 	color: $white;
 
 	a:hover & {
-		color: $yellow;
+		color: #333399;
 	}
+}
+
+a:hover .highlights__community--title {
+	color: #3399ff;
+}
+
+.highlights__events--more-btn:hover {
+	color: #3399ff !important;
+	border-color: #3399ff;
 }
 
 .highlights__heading {

@@ -45,6 +45,14 @@ define( 'BOBANDSHERI_VERSION', '0.1.0' );
 	wp_dequeue_style( 'greatermedia' );
 	wp_deregister_style( 'greatermedia' );	
 	wp_enqueue_style( 'bobandsheri', get_stylesheet_directory_uri() . "/assets/css/bobandsheri{$postfix}.css", array(), BOBANDSHERI_VERSION );
+	wp_enqueue_script(
+        'wbt',
+        get_stylesheet_directory_uri() . "/assets/js/wbt{$postfix}.js",
+        array(),
+        WBT_VERSION,
+        true
+    );
+    
  }
  add_action( 'wp_enqueue_scripts', 'bobandsheri_scripts_styles', 20 );
  
