@@ -278,3 +278,8 @@ a:hover .highlights__community--title {
 		display: none;
 	}
 }
+
+.live-links--more.show-more--muted {
+	z-index: 1000;
+	display: block !important;
+}

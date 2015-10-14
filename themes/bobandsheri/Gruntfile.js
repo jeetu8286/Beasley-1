@@ -61,7 +61,7 @@ module.exports = function( grunt ) {
 			},
 			all: {
 				files: {
-					'assets/css/bobandsheri.css': 'assets/css/sass/bobandsheri.scss'
+					'assets/css/bobandsheri.css': 'assets/css/sass/bobandsheri_light.scss'
 				}
 			}
 		},
