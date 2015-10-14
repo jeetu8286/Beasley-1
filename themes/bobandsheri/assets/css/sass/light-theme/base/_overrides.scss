@@ -255,3 +255,26 @@ a:hover .highlights__community--title {
 .footer {
 	background-color: $primary-bg;
 }
+
+#bobandsheri-social-column {
+	overflow: hidden;
+	border-top: 1px solid #eee;
+
+	article {
+		border-width: 0 0 1px 0;
+		margin: 0;
+		padding: 20px 0;
+
+		&.content .content-header .content-header-inner {
+			padding-top: 0;
+		}
+
+		&.content-instagram .content-header .content-header-inner {
+			padding-top: 20px;
+		}
+	}
+
+	.hub-list-more {
+		display: none;
+	}
+}

@@ -13,7 +13,7 @@ module.exports = function( grunt ) {
 			},
 			bobandsheri: {
 				src: [
-					'assets/js/src/bobandsheri.js'
+					'assets/js/src/**.js'
 				],
 				dest: 'assets/js/bobandsheri.js'
 			}

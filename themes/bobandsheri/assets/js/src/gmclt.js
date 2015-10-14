@@ -18,7 +18,7 @@ var gmcltStationID = 3;
             collection: new (SDK.Collection)({
                 "network": "gmcharlotte.fyre.co",
                 "siteId": "377346",
-                "articleId": "c626f533-dc7c-42f0-8f14-3ed20a136e1d"
+                "articleId": "designer-app-1444422907332"
             })
         });
     });
