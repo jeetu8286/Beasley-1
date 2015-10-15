@@ -98,7 +98,7 @@ class BaseImporter {
 		if ( $created_on_time >= $time_limit_time  ) {
 			return true;
 		} else {
-			\WP_CLI::log( 'Skipped on Time: ' . $post['created_on'] );
+			//\WP_CLI::log( 'Skipped on Time: ' . $post['created_on'] );
 			return false;
 		}
 	}
