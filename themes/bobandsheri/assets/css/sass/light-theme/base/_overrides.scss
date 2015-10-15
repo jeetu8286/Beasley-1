@@ -1,5 +1,6 @@
 body {
-	background-color: #ffffff !important;
+  background-color: #ffffff !important;
+  font-family: 'Work Sans', sans-serif;
 }
 
 .main {
@@ -48,11 +49,24 @@ body {
 	//opacity: 0.75;
 }
 
+#bobandsheri-station-logo {
+	background-color: #333399;
+	padding: 10px;
+	margin-bottom: 11px;
+}
+
+#bobandsheri-station-logo img {
+	display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .home__highlights {
 	background-color: #333399 !important;
 }
 
 .home__featured {
+	background-image: none;
 	@include bp(medium) {
 		background-position: left top;
 		//background-color: #561015;
@@ -60,8 +74,60 @@ body {
 	}
 }
 
+.single-show .content {
+	padding: 0;
+}
+
+.single-show .home__highlights {
+	padding: 3em 3.236em;	
+	background-color: #333399 !important;
+}
+
+.single-show .highlights__heading {
+	color: white;
+}
+
+.show__features {
+	padding: 3em 3.236em;
+}
+
+.show__blogroll {
+	padding: 1.5em 3.236em;
+}
+
+.show__header {
+  background-image: none;
+}
+
+.show__header.has-thumbnail::before {
+  background-image: linear-gradient(to bottom,rgba(0,0,0,0),rgba(0,0,0,0));
+  background-image: -moz-linear-gradient(top,rgba(0,0,0,0),rgba(0,0,0,0));
+  background-image: -o-linear-gradient(top,rgba(0,0,0,0),rgba(0,0,0,0));
+  background-image: -ms-linear-gradient(top,rgba(0,0,0,0),rgba(0,0,0,0));
+  background-image: -webkit-gradient(linear,left top,left bottom,from(rgba(0,0,0,0)),to(rgba(0,0,0,0)));
+  background-image: -webkit-linear-gradient(top,rgba(0, 0, 0, 00),rgba(0, 0, 0, 00));
+}
+
+.show__nav li a:hover {
+  color: #333399;
+}
+
+.show__mini-nav .show__header {
+    background-color: #333399;
+    padding: 1px 5px 0 5px;
+}
+
+.show__mini-nav .show__header .show__nav .show__title a:hover,
+.show__mini-nav .show__nav li a:hover {
+    color: #333399;
+}
+
+.show__mini-nav .show__header .show__nav .show__title {
+	padding: 0 10px 2px 0;
+}
+
 .header__logo--img {
-	max-height: 60px;
+	max-height: 30px;
 	max-width: none;
 	top: 50%;
 	@include bp(larger) {
@@ -258,8 +324,7 @@ a:hover .highlights__community--title {
 
 #bobandsheri-social-column {
 	overflow: hidden;
-	border-top: 1px solid #eee;
-
+	
 	article {
 		border-width: 0 0 1px 0;
 		margin: 0;
@@ -279,7 +344,26 @@ a:hover .highlights__community--title {
 	}
 }
 
+.streamhub-wall-component {
+	article {
+		&.content-default .content-body {
+			font-family: 'Open Sans', sans-serif;
+			font-size: 16px;
+			line-height: 20px;
+		}
+	}
+}
+
+.widget--live-player__title {
+	display: none !important;
+}
+
 .live-links--more.show-more--muted {
 	z-index: 1000;
 	display: block !important;
+}
+
+.content-body {
+	font-family: sans-serif;
+	font-size: 15px;
 }

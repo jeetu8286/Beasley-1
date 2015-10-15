@@ -14933,7 +14933,8 @@ table.responsive tr:nth-of-type(even) {
  * Misc overides for the child theme
  */
 body {
-  background-color: #ffffff !important; }
+  background-color: #ffffff !important;
+  font-family: 'Work Sans', sans-serif; }
 
 .main {
   background-image: url(../../images/bobandsheriBackgroundStripes.jpg); }
@@ -14965,15 +14966,67 @@ body {
 .header__nav {
   margin-left: 100px; }
 
+#bobandsheri-station-logo {
+  background-color: #333399;
+  padding: 10px;
+  margin-bottom: 11px; }
+
+#bobandsheri-station-logo img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto; }
+
 .home__highlights {
   background-color: #333399 !important; }
 
-@media screen and (min-width: 768px)  {
-  .home__featured {
-    background-position: left top; } }
+.home__featured {
+  background-image: none; }
+  @media screen and (min-width: 768px)  {
+    .home__featured {
+      background-position: left top; } }
+
+.single-show .content {
+  padding: 0; }
+
+.single-show .home__highlights {
+  padding: 3em 3.236em;
+  background-color: #333399 !important; }
+
+.single-show .highlights__heading {
+  color: white; }
+
+.show__features {
+  padding: 3em 3.236em; }
+
+.show__blogroll {
+  padding: 1.5em 3.236em; }
+
+.show__header {
+  background-image: none; }
+
+.show__header.has-thumbnail::before {
+  background-image: linear-gradient(to bottom, transparent, transparent);
+  background-image: -moz-linear-gradient(top, transparent, transparent);
+  background-image: -o-linear-gradient(top, transparent, transparent);
+  background-image: -ms-linear-gradient(top, transparent, transparent);
+  background-image: -webkit-gradient(linear, left top, left bottom, from(transparent), to(transparent));
+  background-image: -webkit-linear-gradient(top, transparent, transparent); }
+
+.show__nav li a:hover {
+  color: #333399; }
+
+.show__mini-nav .show__header {
+  background-color: #333399;
+  padding: 1px 5px 0 5px; }
+
+.show__mini-nav .show__header .show__nav .show__title a:hover, .show__mini-nav .show__nav li a:hover {
+  color: #333399; }
+
+.show__mini-nav .show__header .show__nav .show__title {
+  padding: 0 10px 2px 0; }
 
 .header__logo--img {
-  max-height: 60px;
+  max-height: 30px;
   max-width: none;
   top: 50%; }
   @media screen and (min-width: 1200px)  {
@@ -15116,8 +15169,7 @@ a:hover .highlights__community--title {
   background-color: #fff; }
 
 #bobandsheri-social-column {
-  overflow: hidden;
-  border-top: 1px solid #eee; }
+  overflow: hidden; }
   #bobandsheri-social-column article {
     border-width: 0 0 1px 0;
     margin: 0;
@@ -15129,9 +15181,21 @@ a:hover .highlights__community--title {
   #bobandsheri-social-column .hub-list-more {
     display: none; }
 
+.streamhub-wall-component article.content-default .content-body {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 16px;
+  line-height: 20px; }
+
+.widget--live-player__title {
+  display: none !important; }
+
 .live-links--more.show-more--muted {
   z-index: 1000;
   display: block !important; }
+
+.content-body {
+  font-family: sans-serif;
+  font-size: 15px; }
 
 .live-link__type--show {
   border-bottom-color: white;
