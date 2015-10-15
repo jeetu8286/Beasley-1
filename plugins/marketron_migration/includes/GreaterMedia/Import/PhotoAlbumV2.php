@@ -21,6 +21,12 @@ class PhotoAlbumV2 extends BaseImporter {
 
 			if ( $this->can_import_album( $album_name ) ) {
 				$gallery = $this->gallery_from_album( $album );
+
+				if ( ! $this->can_import_by_time( $gallery ) ) {
+					$skip_count++;
+					continue;
+				}
+
 				$entity->add( $gallery );
 				$add_count++;
 			} else {

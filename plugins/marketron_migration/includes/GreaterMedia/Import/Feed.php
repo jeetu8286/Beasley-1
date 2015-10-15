@@ -159,6 +159,14 @@ class Feed extends BaseImporter {
 
 		if ( ! is_null( $featured_image ) ) {
 			$post['featured_image'] = $featured_image;
+
+			if ( ! empty( $article['FeaturedImageCaption'] ) ) {
+				$post['featured_image_caption'] = $this->import_string( $article['FeaturedImageCaption'] );
+			}
+
+			if ( ! empty( $article['FeaturedImageAttribute'] ) ) {
+				$post['featured_image_attribute'] = $this->import_string( $article['FeaturedImageAttribute'] );
+			}
 		}
 
 		if ( ! is_null( $featured_audio ) ) {
@@ -528,25 +536,6 @@ class Feed extends BaseImporter {
 	function mapped_podcast_for_show( $show ) {
 		$mappings = $this->container->mappings;
 		return $mappings->get_podcast_for_show( $show );
-	}
-
-	function can_import_by_time( $post ) {
-		$created_on      = $post['created_on'];
-		$created_on_time = strtotime( $created_on );
-		$time_limit      = $this->container->config->get_feed_time_limit();
-
-		if ( $time_limit === false ) {
-			return true;
-		}
-
-		$time_limit_time = strtotime( $time_limit );
-
-		if ( $created_on_time >= $time_limit_time  ) {
-			return true;
-		} else {
-			//\WP_CLI::log( 'Skipped on Time: ' . $post['created_on'] . ' ' . $post['post_title'] );
-			return false;
-		}
 	}
 
 }

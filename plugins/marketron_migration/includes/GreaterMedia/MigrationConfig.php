@@ -121,9 +121,9 @@ class MigrationConfig {
 		return $this->get_config_option( 'error', $name );
 	}
 
-	function get_feed_time_limit() {
-		if ( $this->has_config_option( 'site', 'feed_time_limit' ) ) {
-			return $this->get_config_option( 'site', 'feed_time_limit' );
+	function get_time_limit() {
+		if ( $this->has_config_option( 'site', 'time_limit' ) ) {
+			return $this->get_config_option( 'site', 'time_limit' );
 		} else {
 			return false;
 		}
