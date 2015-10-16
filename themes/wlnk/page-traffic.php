@@ -22,9 +22,9 @@ get_header();
 			<?php the_content(); ?>
 			<div id="gmcltTraffic_mapLoading" class="gmclt_trafficLoading">
 				<p>Loading...</p>
-				<img src="<?php echo trailingslashit( get_stylesheet_directory_uri() ); ?>images/WBTajaxLoader.gif">
+				<img src="<?php echo trailingslashit( get_stylesheet_directory_uri() ); ?>images/WLNKajaxLoader.gif">
 			</div>
-			<div id="gmclt_trafficMapCanvas" style="height: 700px; width: 100%;"></div>
+			<div id="gmclt_trafficMapCanvas"></div>
 			<div class="ad__in-loop ad__in-loop--desktop">
 				<?php do_action( 'acm_tag_gmr_variant', 'leaderboard-body', 'desktop' ); ?>
 			</div>
@@ -33,7 +33,7 @@ get_header();
 			</div>
 			<div id="gmclt_trafficListLoading" class="gmclt_trafficLoading">
 				<p>Loading...</p>
-				<img src="<?php echo trailingslashit( get_stylesheet_directory_uri() ); ?>images/WBTajaxLoader.gif">
+				<img src="<?php echo trailingslashit( get_stylesheet_directory_uri() ); ?>images/WLNKajaxLoader.gif">
 			</div>
 			<div id="gmclt_trafficList" class="gmclt_trafficList">
 				
