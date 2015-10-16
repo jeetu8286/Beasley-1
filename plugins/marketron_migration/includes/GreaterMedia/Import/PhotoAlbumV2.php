@@ -72,6 +72,10 @@ class PhotoAlbumV2 extends BaseImporter {
 
 		$gallery['gallery_show'] = $gallery_show;
 
+		if ( empty( $gallery_show ) ) {
+			//\WP_CLI::log( 'No Gallery Show: ' . $gallery['gallery_name'] );
+		}
+
 		return $gallery;
 	}
 

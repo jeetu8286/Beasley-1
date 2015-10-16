@@ -30,7 +30,7 @@ class Feed extends BaseImporter {
 		foreach ( $articles as $article ) {
 			if ( ! $this->container->mappings->can_import_marketron_name(
 				(string) $article->Feeds->Feed['Feed'], 'feed' ) ) {
-				//\WP_CLI::log( '    Excluded Feed: ' . (string) $article->Feeds->Feed['Feed'] );
+				\WP_CLI::log( '    Excluded Feed: ' . (string) $article->Feeds->Feed['Feed'] );
 				$skip_count++;
 				continue;
 			}
@@ -192,7 +192,7 @@ class Feed extends BaseImporter {
 		}
 
 		if ( ! empty( $post['shows'] ) ) {
-			\WP_CLI::log( 'Found Show: ' . print_r( $post['shows'], true ) );
+			//\WP_CLI::log( 'Found Show: ' . print_r( $post['shows'], true ) );
 		}
 
 		return $post;
