@@ -15276,11 +15276,11 @@ body {
 
 .header__sub {
   background-color: #000000;
-  height: 0; }
+  height: 48px; }
 
-@media screen and (min-width: 768px)  {
+@media screen and (max-width: 767px)  {
   .header__sub {
-    height: 48px; } }
+    height: 0; } }
 
 .header__nav li {
   font-size: 1.218em !important;
