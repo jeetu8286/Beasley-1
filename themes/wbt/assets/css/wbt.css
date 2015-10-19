@@ -15253,7 +15253,8 @@ body {
   color: #0A3FAB; }
 
 .header {
-  background-image: url(http://assets.wbt.com/images/skyscraperHeaderImage.jpg); }
+  background-image: url(http://assets.wbt.com/images/skyscraperHeaderImage.jpg);
+  background-position: center top; }
 
 .footer__ad .desktop {
   height: 90px; }
@@ -15281,10 +15282,6 @@ body {
 @media screen and (max-width: 767px)  {
   .header__sub {
     height: 0; } }
-
-.header__nav li {
-  font-size: 1.218em !important;
-  padding-bottom: 29px !important; }
 
 .header__nav .sub-menu, .header__nav .format-fw > ul, .header__nav .format-sp > ul, .header__nav .format-fi > ul {
   border-bottom: #CF000F; }
