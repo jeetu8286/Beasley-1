@@ -13,7 +13,7 @@
  */
 
  // Useful global constants
-define( 'WBT_VERSION', '0.1.9' );
+define( 'WBT_VERSION', '0.1.10' );
 
  /**
   * Set up theme defaults and register supported WordPress features.
@@ -46,7 +46,7 @@ define( 'WBT_VERSION', '0.1.9' );
 
 	wp_dequeue_style( 'greatermedia' );
 	wp_deregister_style( 'greatermedia' );
-	wp_enqueue_style( 'wbt', get_stylesheet_directory_uri() . "/assets/css/wbt.min.css", array(), WBT_VERSION );
+	wp_enqueue_style( 'wbt', get_stylesheet_directory_uri() . "/assets/css/wbt{$postfix}.css", array(), WBT_VERSION );
 	wp_enqueue_style( 'wbt-ie', get_stylesheet_directory_uri() . "/assets/css/wbt_ie.css", array('wbt'), WBT_VERSION );
 	$wp_styles->add_data( 'wbt-ie', 'conditional', 'lte IE 9' );
 	wp_enqueue_style( 'wbt-font', "http://fonts.googleapis.com/css?family=Lato", array(), WBT_VERSION );
