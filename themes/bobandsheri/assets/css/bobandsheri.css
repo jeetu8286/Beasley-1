@@ -15227,6 +15227,12 @@ a:hover .highlights__community--title {
   font-family: sans-serif;
   font-size: 15px; }
 
+.footer__ad {
+  height: 90px !important; }
+
+.gmclt_endorsementLogo {
+  display: inline !important; }
+
 .live-link__type--show {
   border-bottom-color: white;
   background: none; }
