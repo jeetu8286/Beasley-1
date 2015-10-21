@@ -15281,7 +15281,11 @@ body {
 
 @media screen and (max-width: 767px)  {
   .header__sub {
+<<<<<<< HEAD
     height: 0; } }
+=======
+    height: 48px; } }
+>>>>>>> master
 
 .header__nav .sub-menu, .header__nav .format-fw > ul, .header__nav .format-sp > ul, .header__nav .format-fi > ul {
   border-bottom: #CF000F; }
