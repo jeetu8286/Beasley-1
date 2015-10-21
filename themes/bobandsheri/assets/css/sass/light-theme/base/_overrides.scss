@@ -142,11 +142,15 @@ body {
 }
 
 .live-player__stream {
-	display: none;
+	display: none !important;
 }
 
 .live-links {
 	border-top: 0;
+}
+
+.live-stream__btn--play {
+	background: #CF000F;
 }
 
 .single-gmr_gallery .gallery__paging--prev,
