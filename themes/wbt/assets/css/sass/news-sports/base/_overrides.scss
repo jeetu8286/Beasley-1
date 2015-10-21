@@ -6,8 +6,8 @@ body {
 	border-bottom: 1px solid #58595b;
 }
 
-.home__featured {
-	@include bp(medium) {
+@include bp(medium) {
+	.home__featured {
 		background-position: left top;
 		background-color: #561015;
 	}
@@ -118,6 +118,7 @@ body {
 
 .header {
 	background-image: url(http://assets.wbt.com/images/skyscraperHeaderImage.jpg);
+	background-position: center top;
 }
 
 .footer__ad .desktop {
@@ -128,10 +129,16 @@ body {
 	top: 0 !important;
 	padding: 5px 0 !important;
 	background-color: transparent;
-	@include bp(medium) {
+}
+
+@include bp(medium) {
+	.header__logo {
 		top: 48px !important;
 	}
-	@include bp(large) {
+}
+
+@include bp(large) {
+	.header__logo {
 		top: 0 !important;
 	}
 }
@@ -141,11 +148,14 @@ body {
 }
 
 .header__sub {
-	background-color: #000000;
-	height: 0;
-	@include bp(medium) {
-		height: 48px;
-	}
+    background-color: #000000;
+    height: 48px;
+}
+
+@include bp(ie9medium) {
+    .header__sub {
+        height: 0;
+    }
 }
 
 .header__nav .sub-menu {
@@ -217,7 +227,10 @@ body {
  	background-image: url(../../images/player-bg-mobile.png);
 	background-repeat: no-repeat;
 	background-size: 100%;
-	@include bp(medium) {
+}
+
+@include bp(medium) {
+	.live-player {
 		background-image: url(../../images/player-bg.png);
 	}
 }
@@ -243,6 +256,10 @@ body {
 	background-image: -webkit-linear-gradient(top,rgba(0, 0, 0, 00),rgba(0, 0, 0, 00));
 }
 
+.show__nav li a:hover {
+  color: #CF000F;
+}
+
 .article__thumbnail__caption {
 	padding: 2px 4px 2px 4px;
 	color: #838383;
@@ -264,7 +281,10 @@ body {
 
 .live-links--more.show-more--muted {
 	display: none;
-	@include bp(medium) {
+}
+
+@include bp(medium) {
+	.live-links--more.show-more--muted {
 		display: block;
 	}
 }
@@ -285,7 +305,10 @@ body {
 	display: block;
 	width: 100%;
 	padding: 0.5em;
-	@include bp(larger) {
+}
+
+@include bp(larger) {
+	.gmclt_narrowColumn {
 		width: 36%;
 		float: left;
 	}
@@ -296,22 +319,28 @@ body {
 	padding: 0;
 }
 
-.gmclt_narrowColumnOne {
-	@include bp(small) {
+@include bp(small) {
+	.gmclt_narrowColumnOne {
 		float: left;
-	}
-	@include bp(larger) {
-		float: none;	
 	}
 }
 
-.gmclt_narrowColumnTwo {
-	@include bp(small) {
+@include bp(larger) {
+	.gmclt_narrowColumnOne {
+		float: none;
+	}
+}
+
+@include bp(small) {
+	.gmclt_narrowColumnTwo {
 		float: left;
 		padding-left: 20px;
 	}
-	@include bp(larger) {
-		float: none;	
+}
+
+@include bp(larger) {
+	.gmclt_narrowColumnTwo {
+		float: none;
 	}
 }
 
@@ -335,11 +364,13 @@ body {
 	box-sizing: border-box;
 	font-size: 16px;
 	width: 100%;
-	
-	@include bp(larger) {
+}
+
+@include bp(larger) {
+	.gmclt_wideColumn {
 		width: 60%;
 		float: left;
-	}	
+	}
 }
 
 .gmclt_topBottomPadding {
@@ -362,16 +393,19 @@ body {
 	font-size: 0.7em;
 }
 
-.gmclt_wxMobile {
-	@include bp(larger) {
-		display: none;	
+@include bp(larger) {
+	.gmclt_wxMobile {
+		display: none;
 	}
 }
 
 .gmclt_wxDesktop {
 	display: none;
-	@include bp(larger) {
-		display: inline;	
+}
+
+@include bp(larger) {
+	.gmclt_wxDesktop {
+		display: inline;
 	}
 }
 
@@ -395,8 +429,8 @@ body {
 	margin-top: 5px;
 }
 
-.gmclt_wxForecastShort {
-	@include bp(larger) {
+@include bp(larger) {
+	.gmclt_wxForecastShort {
 		float: left;
 		width: 20%;
 		border-bottom: none;
@@ -407,20 +441,20 @@ body {
 	}
 }
 
-.gmclt_wxForecastShort h4 {
-	@include bp(larger) {
+@include bp(larger) {
+	.gmclt_wxForecastShort h4 {
 		font-size: 0.8em;
 	}
 }
 
-.gmclt_wxFirst {
-	@include bp(larger) {
+@include bp(larger) {
+	.gmclt_wxFirst {
 		padding-left: 0;
 	}
 }
 
-.gmclt_wxLast {
-	@include bp(larger) {
+@include bp(larger) {
+	.gmclt_wxLast {
 		padding-right: 0;
 		border-right: none;
 	}
@@ -433,8 +467,11 @@ h4.gmclt_wxForecastDayHeader {
 .gmclt_wxForecastIcon {
 	float: left;
 	text-align: center;
-	@include bp(larger) {
-		float: right;	
+}
+
+@include bp(larger) {
+	.gmclt_wxForecastIcon {
+		float: right;
 	}
 }
 
@@ -445,8 +482,11 @@ h4.gmclt_wxForecastDayHeader {
 	display: block;
     margin-left: auto;
     margin-right: auto;
-	@include bp(larger) {
-		float: none;	
+}
+
+@include bp(larger) {
+	.gmclt_wxForecastIconShort {
+		float: none;
 	}
 }
 
@@ -457,13 +497,16 @@ h4.gmclt_wxForecastDayHeader {
 
 .gmclt_wxForecastText {
 	margin-left: 110px;
-	@include bp(larger) {
+}
+
+@include bp(larger) {
+	.gmclt_wxForecastText {
 		margin-left: 0;
 	}
 }
 
-.gmclt_wxForecastText p {
-	@include bp(larger) {
+@include bp(larger) {
+	.gmclt_wxForecastText p {
 		font-size: 0.8em;
 	}
 }
@@ -590,7 +633,10 @@ h4.gmclt_wxForecastDayHeader {
 
 .gmclt_right {
 	float: left;
-	@include bp(larger) {
+}
+
+@include bp(larger) {
+	.gmclt_right {
 		float: right;
 		text-align: left;
 	}
@@ -604,8 +650,8 @@ h4.gmclt_wxForecastDayHeader {
 	.header__account:hover {
 		color: #000000;
 
-		.header__account--span, 
-		.header__account--logged-in, 
+		.header__account--span,
+		.header__account--logged-in,
 		.header__account--logged-out {
 			color: #000000;
 		}
@@ -629,7 +675,10 @@ a:hover .breaking-news-banner {
 	margin: auto;
 	width: 80%;
 	height: 350px;
-	@include bp(larger) {
+}
+
+@include bp(larger) {
+	#gmclt_stormwatchMapCanvas {
 		width: 100%;
 		height: 700px;
 	}
@@ -639,18 +688,24 @@ a:hover .breaking-news-banner {
 	margin: auto;
 	width: 80%;
 	height: 300px;
-	@include bp(larger) {
+}
+
+@include bp(larger) {
+	#gmclt_radarMapCanvas {
 		width: 100%;
 	}
 }
 
 #gmclt_trafficMapCanvas {
     margin: auto;
-    width: 80%;
-    height: 300px;
-    @include bp(larger) {
-		width: 100%;
-		height: 700px;
+    width: 80% !important;
+    height: 300px !important;
+}
+
+@include bp(larger) {
+	#gmclt_trafficMapCanvas {
+		width: 100% !important;
+		height: 700px !important;
 	}
 }
 
@@ -675,4 +730,9 @@ a:hover .breaking-news-banner {
 	.hub-list-more {
 		display: none;
 	}
+}
+
+.live-links--more.show-more--muted {
+  z-index: 1000;
+  display: block !important;
 }

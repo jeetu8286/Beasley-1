@@ -7904,6 +7904,24 @@ category: Components - Ads
   .ad__in-loop--desktop {
     display: block; } }
 
+.ad__events-sponsorship {
+  text-align: center; }
+  .ad__events-sponsorship iframe {
+    width: 100%;
+    height: 75px; }
+    @media screen and (min-width: 480px)  {
+      .ad__events-sponsorship iframe {
+        height: 124px; } }
+    @media screen and (min-width: 768px)  {
+      .ad__events-sponsorship iframe {
+        height: 150px; } }
+    @media screen and (min-width: 1024px)  {
+      .ad__events-sponsorship iframe {
+        height: 175px; } }
+    @media screen and (min-width: 1400px)  {
+      .ad__events-sponsorship iframe {
+        height: 200px; } }
+
 .closures {
   margin-bottom: 2em; }
 
@@ -15236,29 +15254,6 @@ a.entry2__category:hover, a.entry2__category:active, a.entry2__category:focus {
 
 .home__highlights {
   border-bottom-color: #b8babc; }
-
-.highlights__events--more-btn:hover {
-  color: #f5ed7f !important;
-  border-color: #f5ed7f; }
-
-.highlights__event--item {
-  background-color: #8c8c8c;
-  color: #ffffff; }
-
-.highlights__event--title, .highlights__event--date {
-  color: #ffffff; }
-  a:hover .highlights__event--title, a:hover .highlights__event--date {
-    color: #f5ed7f; }
-
-.highlights__heading {
-  color: #ffffff; }
-
-.type-contest .entry__title--tag {
-  background-color: #d0d2d3;
-  border-color: #d0d2d3; }
-
-.audio__progress-bar {
-  background-color: #929497; }
 
 .ad__leaderboard {
   background-size: 100%;

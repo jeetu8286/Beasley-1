@@ -193,7 +193,7 @@ GMCLT.Stocks = function() {
 	}
 	
 	var populateStockQuote = function() {
-		var htmlString = '<a href="/category/business-news/"><div class="secondary-link"><img class="gmclt_stocksHeaderIcon" src="/wp-content/themes/wbt/images/stocks/' + stockObject[currentStock].arrow + '.png"> ' + stockObject[currentStock].shortName + ': ' + stockObject[currentStock].change + '</div></a>';
+		var htmlString = '<a href="/category/business-news/"><div class="secondary-link"><img style="height: 17px; width: 13px; display: inline; vertical-align: top;" class="gmclt_stocksHeaderIcon" src="/wp-content/themes/wbt/images/stocks/' + stockObject[currentStock].arrow + '.png"> ' + stockObject[currentStock].shortName + ': ' + stockObject[currentStock].change + '</div></a>';
 		jQuery('#' + index).html(htmlString);
 		
 		if (stockObject.length == currentStock+1) {
@@ -232,14 +232,13 @@ GMCLT.Traffic = function() {
 		trafficLayer = new google.maps.TrafficLayer();
 		trafficLayer.setMap(trafficmap);
 		getTrafficIncidents();
-		getTrafficCameras();
 	};
 
 	var getTrafficIncidents = function() {
 		var trafficListSource = jQuery("#list-template").html(); 
 		var trafficListTemplate = Handlebars.compile(trafficListSource);
 		
-		var infowindow = new google.maps.InfoWindow({
+		infowindow = new google.maps.InfoWindow({
 	        content: 'Test content'
 	    });
 			
@@ -289,54 +288,6 @@ GMCLT.Traffic = function() {
 			infowindow.open(trafficmap,window['marker' + id]);
 		};
 	};
-
-	var	getTrafficCameras = function() {
-				
-		infowindow = new google.maps.InfoWindow({
-	        content: 'blank'
-	    });
-		
-		jQuery.getJSON(apiUrl + '/traffic/traffic.cfc?method=getActiveCameras&callback=?',
-		
-			function (cameraObject) {
-				
-				for (var i=0;i<cameraObject.length;i++) { 
-					var id = cameraObject[i].webId;
-					var location = new google.maps.LatLng(cameraObject[i].latitude, cameraObject[i].longitude);
-					var title = cameraObject[i].name;
-					
-					//create marker
-					window['camera' + id] = new google.maps.Marker({
-						position: location,
-						map: trafficmap,
-						icon: iconPath + 'trafficCamera.png',
-						title: title,
-						zIndex: 1
-					});
-
-					//Add listener for click
-					google.maps.event.addListener(window['camera' + id], 'click', buildCameraClickHandler(cameraObject[i]));
-					
-				}
-			})
-			.fail(function() {
-			   //do nothing. if no traffic cameras are available, it doens't detrimentally affect usability
-			});
-	};
-
-	var buildCameraClickHandler = function(i) {
-		return function() {
-			var id = i.webId;
-			var orientation = i.orientation;
-			var name = i.name;
-			var provider = i.provider;
-			var fullImage = i.fullImage;
-			
-			infowindow.setContent("<img src='" + fullImage + "' style='padding: 10px;' vspace='2' hspace='2'><h2>" + name + "</h2><p class='attribution'>" + orientation + "</p><p>" + provider + "</p>");
-			infowindow.open(trafficmap,window['camera' + id]);
-		};
-
-  };
 
   	var trafficError = function(area) {
 		var trafficErrorSource = jQuery("#error-template").html(); 
@@ -399,7 +350,7 @@ GMCLT.Weather = function() {
 	}
 	
 	var populateCurrentConditionsSubnav = function(temperature,graphicCode,index) {
-		var htmlString = '<a href="/weather"><div class="secondary-link"><img class="gmclt_wxHeaderIcon" src="/wp-content/themes/wbt/images/wx/' + graphicCode +  '.png"> ' + temperature + '&deg;</div></a>';
+		var htmlString = '<a href="/weather"><div class="secondary-link"><img style="height: 35px; display: inline; margin-top: -10px; vertical-align: top;" class="gmclt_wxHeaderIcon" src="/wp-content/themes/wbt/images/wx/' + graphicCode +  '.png"> ' + temperature + '&deg;</div></a>';
 		jQuery('#' + index).html(htmlString);
 	};
 	
