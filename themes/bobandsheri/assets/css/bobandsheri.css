@@ -15003,6 +15003,12 @@ body {
     .home__featured {
       background-position: left top; } }
 
+.highlights__events .highlights__heading {
+  visibility: hidden !important; }
+
+.highlights__events--more-btn {
+  visibility: hidden !important; }
+
 .single-show .content {
   padding: 0; }
 
