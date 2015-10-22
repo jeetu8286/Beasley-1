@@ -2067,10 +2067,7 @@ Curated posts for Featured Articles
   .featured__content:after {
     clear: both; }
   .news-site .featured__content {
-    width: 100%;
-    display: table;
-    table-layout: fixed;
-    padding: 5px 0 0; }
+    width: 100%; }
 
 .featured__article {
   display: block;
@@ -2316,11 +2313,9 @@ a.featured__article--link {
     background-color: #270e10;
     color: #d0d2d3; }
   .news-site .featured__content--block {
-    display: table-cell;
-    float: none;
-    width: 100%;
+    width: 33.33333%;
     height: 100%;
-    padding: 0;
+    padding: 5px 0 0;
     margin: 0;
     background-color: transparent; }
 
@@ -15253,7 +15248,8 @@ body {
   color: #0A3FAB; }
 
 .header {
-  background-image: url(http://assets.wbt.com/images/skyscraperHeaderImage.jpg); }
+  background-image: url(http://assets.wbt.com/images/skyscraperHeaderImage.jpg);
+  background-position: center top; }
 
 .footer__ad .desktop {
   height: 90px; }
@@ -15276,11 +15272,11 @@ body {
 
 .header__sub {
   background-color: #000000;
-  height: 0; }
+  height: 48px; }
 
-@media screen and (min-width: 768px)  {
+@media screen and (max-width: 767px)  {
   .header__sub {
-    height: 48px; } }
+    height: 0; } }
 
 .header__nav .sub-menu, .header__nav .format-fw > ul, .header__nav .format-sp > ul, .header__nav .format-fi > ul {
   border-bottom: #CF000F; }
