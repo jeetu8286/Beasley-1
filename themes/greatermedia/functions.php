@@ -20,7 +20,7 @@
 if ( defined( 'GMR_PARENT_ENV' ) && 'dev' == GMR_PARENT_ENV ) {
 	define( 'GREATERMEDIA_VERSION', time() );
 } else {
-	define( 'GREATERMEDIA_VERSION', '1.2.6' ); /* Version bump by Steve 7/23/2015 @ 2:40pm EST */
+	define( 'GREATERMEDIA_VERSION', '1.2.6' ); /* Version bump by Allen 10/22/2015 @ 9:45am EST */
 }
 
 add_theme_support( 'homepage-curation' );
