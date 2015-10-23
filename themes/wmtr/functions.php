@@ -13,7 +13,7 @@
  */
 
  // Useful global constants
-define( 'WMTR_VERSION', '0.2.3' ); /* Version bump by Steve 8/31/2015 @ 10:30pm EST */
+define( 'WMTR_VERSION', '0.2.5' ); /* Version bump by Allen 10/23/2015 @ 11:00 a.m. EST */
 
  /**
   * Set up theme defaults and register supported WordPress features.
