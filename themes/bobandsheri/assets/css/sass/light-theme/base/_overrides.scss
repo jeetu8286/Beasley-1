@@ -74,6 +74,14 @@ body {
 	}
 }
 
+.highlights__events .highlights__heading {
+	visibility: hidden !important;
+}
+
+.highlights__events--more-btn {
+	visibility: hidden !important;
+}
+
 .single-show .content {
 	padding: 0;
 }
@@ -126,6 +134,10 @@ body {
 	padding: 0 10px 2px 0;
 }
 
+.profile-page .profile-page__sidebar {
+	background-color: #333399;
+}
+
 .header__logo--img {
 	max-height: 30px;
 	max-width: none;
@@ -138,11 +150,15 @@ body {
 }
 
 .live-player__stream {
-	display: none;
+	display: none !important;
 }
 
 .live-links {
 	border-top: 0;
+}
+
+.live-stream__btn--play {
+	background: #CF000F;
 }
 
 .single-gmr_gallery .gallery__paging--prev,
@@ -164,11 +180,11 @@ body {
 }
 
 .live-stream {
- 	//background-image: url(../../images/mobilePlayer-bg.jpg);
+ 	//background-image: url(../../images/bobandsheriPlayer-bg.jpg);
 	background-repeat: no-repeat;
 	background-size: 100%;
 	@include bp(medium) {
-		background-image: url(http://assets.gmclt.com/images/BobAndSheriPlayer.jpg);
+		background-image: url(../../images/bobandsheriPlayer-bg.png);
 	}
 }
 
@@ -366,4 +382,12 @@ a:hover .highlights__community--title {
 .content-body {
 	font-family: sans-serif;
 	font-size: 15px;
+}
+
+.footer__ad {
+	height: 90px !important;
+}
+
+.gmclt_endorsementLogo {
+	display: inline !important;
 }
