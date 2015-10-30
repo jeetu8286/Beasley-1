@@ -529,5 +529,34 @@ SQL;
 		$emma_group_creator->create_and_save();
 	}
 
+	function repair_feed_image_attribution( $args, $opts ) {
+		$opts['repair'] = true;
+		$opts['tools_to_load'] = 'feed';
+		$this->initialize( $args, $opts, false );
+
+		$this->mappings->load();
+
+		$repairer = new \GreaterMedia\Import\Repair\FeedImageAttribution();
+		$repairer->container = $this;
+		$repairer->repair();
+	}
+
+	function delete_posts( $args, $opts ) {
+		$post_deletor = new \GreaterMedia\Import\Repair\PostDeletor();
+		$post_deletor->delete();
+	}
+
+	function repair_feed_categories( $args, $opts ) {
+		$opts['repair'] = true;
+		$opts['tools_to_load'] = 'feed';
+		$this->initialize( $args, $opts, false );
+
+		$this->mappings->load();
+
+		$repairer = new \GreaterMedia\Import\Repair\FeedCategoryRepairer();
+		$repairer->container = $this;
+		$repairer->repair();
+	}
+
 }
 

@@ -6,11 +6,10 @@ body {
 	border-bottom: 1px solid #58595b;
 }
 
-.home__featured {
-	@include bp(medium) {
+@include bp(medium) {
+	.home__featured {
 		background-position: left top;
 		background-color: #561015;
-		// background-size: cover; // Leave this out unless we want big crosshatches on WMGK. If we do want that, be sure to also add this to the .show__header
 	}
 }
 
@@ -28,7 +27,7 @@ body {
 }
 
 .live-player__stream {
-	display: none;
+	display: none !important;
 	border: 1px solid lighten($color-gray-medium-dark,50%);
 	color: lighten($color-gray-medium-dark,50%);
 	@include border-radius(1em);
@@ -109,8 +108,17 @@ body {
 	color: #FFFFFF;
 }
 
+.profile-page .profile-page__sidebar {
+	background-color: #4288DC;
+}
+
+.profile-page__sidebar .profile-header-link {
+	color: #0A3FAB;
+}
+
 .header {
-	background-image: url(../../images/skyscraperHeaderImage.jpg);
+	background-image: url(http://assets.wbt.com/images/skyscraperHeaderImage.jpg);
+	background-position: center top;
 }
 
 .footer__ad .desktop {
@@ -121,10 +129,16 @@ body {
 	top: 0 !important;
 	padding: 5px 0 !important;
 	background-color: transparent;
-	@include bp(medium) {
+}
+
+@include bp(medium) {
+	.header__logo {
 		top: 48px !important;
 	}
-	@include bp(large) {
+}
+
+@include bp(large) {
+	.header__logo {
 		top: 0 !important;
 	}
 }
@@ -134,11 +148,14 @@ body {
 }
 
 .header__sub {
-	background-color: #000000;
-	height: 0;
-	@include bp(medium) {
-		height: 48px;
-	}
+    background-color: #000000;
+    height: 48px;
+}
+
+@include bp(ie9medium) {
+    .header__sub {
+        height: 0;
+    }
 }
 
 .header__nav .sub-menu {
@@ -207,8 +224,15 @@ body {
 }
 
 .live-player {
- 	background-image: url(../../images/player-bg.png);
+ 	background-image: url(../../images/player-bg-mobile.png);
 	background-repeat: no-repeat;
+	background-size: 100%;
+}
+
+@include bp(medium) {
+	.live-player {
+		background-image: url(../../images/player-bg.png);
+	}
 }
 
 .live-stream {
@@ -219,13 +243,72 @@ body {
 	background-color: white !important;
 }
 
+.show__header {
+	background-color: #4288DC;
+}
+
+.show__header.has-thumbnail::before {
+	background-image: linear-gradient(to bottom,rgba(0,0,0,0),rgba(0,0,0,0));
+	background-image: -moz-linear-gradient(top,rgba(0,0,0,0),rgba(0,0,0,0));
+	background-image: -o-linear-gradient(top,rgba(0,0,0,0),rgba(0,0,0,0));
+	background-image: -ms-linear-gradient(top,rgba(0,0,0,0),rgba(0,0,0,0));
+	background-image: -webkit-gradient(linear,left top,left bottom,from(rgba(0,0,0,0)),to(rgba(0,0,0,0)));
+	background-image: -webkit-linear-gradient(top,rgba(0, 0, 0, 00),rgba(0, 0, 0, 00));
+}
+
+.show__nav li a:hover {
+  color: #CF000F;
+}
+
+.article__thumbnail__caption {
+	padding: 2px 4px 2px 4px;
+	color: #838383;
+}
+
+.live-links {
+	border-top: 0;
+	margin: 0!important;
+	width: 100%;
+
+	.widget--live-player__title {
+		display: none;
+	}
+
+	.widget_gmr_blogroll_widget {
+		display: none;
+	}
+}
+
+.live-links--more.show-more--muted {
+	display: none;
+}
+
+@include bp(medium) {
+	.live-links--more.show-more--muted {
+		display: block;
+	}
+}
+
+.streamhub-wall-component {
+	article {
+		&.content-default .content-body {
+			font-family: 'Open Sans', sans-serif;
+			font-size: 16px;
+			line-height: 20px;
+		}
+	}
+}
+
 .gmclt_narrowColumn {
 	box-sizing: border-box;
 	background-color: #E3E4E5;
 	display: block;
 	width: 100%;
 	padding: 0.5em;
-	@include bp(larger) {
+}
+
+@include bp(larger) {
+	.gmclt_narrowColumn {
 		width: 36%;
 		float: left;
 	}
@@ -236,35 +319,29 @@ body {
 	padding: 0;
 }
 
-.gmclt_narrowColumnOne {
-	@include bp(small) {
+@include bp(small) {
+	.gmclt_narrowColumnOne {
 		float: left;
-	}
-	@include bp(larger) {
-		float: none;	
 	}
 }
 
-.gmclt_narrowColumnTwo {
-	@include bp(small) {
+@include bp(larger) {
+	.gmclt_narrowColumnOne {
+		float: none;
+	}
+}
+
+@include bp(small) {
+	.gmclt_narrowColumnTwo {
 		float: left;
 		padding-left: 20px;
 	}
-	@include bp(larger) {
-		float: none;	
+}
+
+@include bp(larger) {
+	.gmclt_narrowColumnTwo {
+		float: none;
 	}
-}
-
-.gmcltWX_data h4 {
-	margin: 0;
-}
-
-.gmcltWX_data p {
-	margin: 0;
-}
-
-.gmcltWX_data p.gmcltWX_dataSmall {
-	font-size: 0.7em;
 }
 
 .gmclt_narrowColumnIcon {
@@ -283,32 +360,53 @@ body {
 	margin-top: -20px;
 }
 
-.gmcltWX_mobile {
-	@include bp(larger) {
-		display: none;	
-	}
-}
-
-.gmcltWX_desktop {
-	display: none;
-	@include bp(larger) {
-		display: inline;	
-	}
-}
-
 .gmclt_wideColumn {
 	box-sizing: border-box;
 	font-size: 16px;
 	width: 100%;
-	
-	@include bp(larger) {
+}
+
+@include bp(larger) {
+	.gmclt_wideColumn {
 		width: 60%;
 		float: left;
-	}	
+	}
 }
 
 .gmclt_topBottomPadding {
 	padding: 10px 0 10px 0;
+}
+
+.gmclt_endorsementLogo {
+	display: inline !important;
+}
+
+.gmclt_wxData h4 {
+	margin: 0;
+}
+
+.gmclt_wxData p {
+	margin: 0;
+}
+
+.gmclt_wxData p.gmclt_wxDataSmall {
+	font-size: 0.7em;
+}
+
+@include bp(larger) {
+	.gmclt_wxMobile {
+		display: none;
+	}
+}
+
+.gmclt_wxDesktop {
+	display: none;
+}
+
+@include bp(larger) {
+	.gmclt_wxDesktop {
+		display: inline;
+	}
 }
 
 .gmclt_adDiv {
@@ -324,15 +422,15 @@ body {
 	}
 }
 
-.gmcltWX_forecastDay {
+.gmclt_wxForecastDay {
 	border-bottom: solid;
 	border-bottom-color: #E3E4E5;
 	border-bottom-width: 4px;
 	margin-top: 5px;
 }
 
-.gmcltWX_forecastShort {
-	@include bp(larger) {
+@include bp(larger) {
+	.gmclt_wxForecastShort {
 		float: left;
 		width: 20%;
 		border-bottom: none;
@@ -343,123 +441,132 @@ body {
 	}
 }
 
-.gmcltWX_forecastShort h4 {
-	@include bp(larger) {
+@include bp(larger) {
+	.gmclt_wxForecastShort h4 {
 		font-size: 0.8em;
 	}
 }
 
-.gmcltWX_first {
-	@include bp(larger) {
+@include bp(larger) {
+	.gmclt_wxFirst {
 		padding-left: 0;
 	}
 }
 
-.gmcltWX_last {
-	@include bp(larger) {
+@include bp(larger) {
+	.gmclt_wxLast {
 		padding-right: 0;
 		border-right: none;
 	}
 }
 
-h4.gmcltWX_forecastDayHeader {
+h4.gmclt_wxForecastDayHeader {
 	margin: 0;
 }
 
-.gmcltWX_forecastIcon {
+.gmclt_wxForecastIcon {
 	float: left;
 	text-align: center;
-	@include bp(larger) {
-		float: right;	
+}
+
+@include bp(larger) {
+	.gmclt_wxForecastIcon {
+		float: right;
 	}
 }
 
-.gmcltWX_forecastIconShort {
+.gmclt_wxForecastIconShort {
 	float: left;
 	text-align: center;
 	max-width: 100px;
 	display: block;
     margin-left: auto;
     margin-right: auto;
-	@include bp(larger) {
-		float: none;	
+}
+
+@include bp(larger) {
+	.gmclt_wxForecastIconShort {
+		float: none;
 	}
 }
 
-.gmcltWX_forecastIcon img {
+.gmclt_wxForecastIcon img {
 	display: block;
 	width: 100px;
 }
 
-.gmcltWX_forecastText {
+.gmclt_wxForecastText {
 	margin-left: 110px;
-	@include bp(larger) {
+}
+
+@include bp(larger) {
+	.gmclt_wxForecastText {
 		margin-left: 0;
 	}
 }
 
-.gmcltWX_forecastText p {
-	@include bp(larger) {
+@include bp(larger) {
+	.gmclt_wxForecastText p {
 		font-size: 0.8em;
 	}
 }
 
-.gmcltWX_loading {
+.gmclt_wxLoading {
 	z-index: 100;
 	left: 50%;
 	margin-bottom: 10px;
 }
 
-.gmcltWX_loading img {
+.gmclt_wxLoading img {
 	display: block;
     margin-left: auto;
     margin-right: auto;
 }
 
-.gmcltWX_loading p {
+.gmclt_wxLoading p {
 	margin-bottom: 0;
 	padding-bottom: 0;
 	text-align: center;
 }
 
-.gmcltWX_search {
+.gmclt_wxSearch {
 	text-align: right;
 	display: none;
 }
 
-.gmclt_headerWxIcon {
+.gmclt_wxHeaderIcon {
 	height: 35px;
 	display: inline;
 	margin-top: -10px;
 	vertical-align: top;
 }
 
-.gmclt_headerStocksIcon {
+.gmclt_stocksHeaderIcon {
 	height: 17px;
 	width: 13px;
 	display: inline;
 	vertical-align: top;
 }
 
-.gmcltTraffic_loading {
+.gmclt_trafficLoading {
     z-index: 100;
     left: 50%;
     margin-bottom: 10px;
 }
 
-.gmcltTraffic_loading img {
+.gmclt_trafficLoading img {
     display: block;
     margin-left: auto;
     margin-right: auto;
 }
 
-.gmcltTraffic_loading p {
+.gmclt_trafficLoading p {
     margin-bottom: 0;
     padding-bottom: 0;
     text-align: center;
 }
 
-.gmcltTraffic_list .entry {
+.gmclt_trafficList .entry {
     float: left;
     display: block;
     width: 100%;
@@ -468,11 +575,11 @@ h4.gmcltWX_forecastDayHeader {
     border-top: 1px solid #b8babc;
 }
 
-.gmcltTraffic_list.gmclt_left {
+.gmclt_trafficList.gmclt_left {
 	width: 80%;
 }
 
-.gmcltTraffic_listIcon {
+.gmclt_trafficListIcon {
     float: left;
 }
 
@@ -526,7 +633,10 @@ h4.gmcltWX_forecastDayHeader {
 
 .gmclt_right {
 	float: left;
-	@include bp(larger) {
+}
+
+@include bp(larger) {
+	.gmclt_right {
 		float: right;
 		text-align: left;
 	}
@@ -540,8 +650,8 @@ h4.gmcltWX_forecastDayHeader {
 	.header__account:hover {
 		color: #000000;
 
-		.header__account--span, 
-		.header__account--logged-in, 
+		.header__account--span,
+		.header__account--logged-in,
 		.header__account--logged-out {
 			color: #000000;
 		}
@@ -557,44 +667,72 @@ a:hover .breaking-news-banner {
 	color: #cf000f;
 }
 
-#GMCLTstateSelect {
+#gmclt_selectState {
 	margin-bottom: 10px;
 }
 
-#stormwatchMap-canvas {
+#gmclt_stormwatchMapCanvas {
 	margin: auto;
 	width: 80%;
 	height: 350px;
-	@include bp(larger) {
+}
+
+@include bp(larger) {
+	#gmclt_stormwatchMapCanvas {
 		width: 100%;
 		height: 700px;
 	}
 }
 
-#radarMap-canvas {
+#gmclt_radarMapCanvas {
 	margin: auto;
 	width: 80%;
 	height: 300px;
-	@include bp(larger) {
+}
+
+@include bp(larger) {
+	#gmclt_radarMapCanvas {
 		width: 100%;
 	}
 }
 
-#trafficMap-canvas {
+#gmclt_trafficMapCanvas {
     margin: auto;
-    width: 80%;
-    height: 300px;
-    @include bp(larger) {
-		width: 100%;
-		height: 700px;
+    width: 80% !important;
+    height: 300px !important;
+}
+
+@include bp(larger) {
+	#gmclt_trafficMapCanvas {
+		width: 100% !important;
+		height: 700px !important;
 	}
 }
 
-.show__header.has-thumbnail::before {
-	background-image: linear-gradient(to bottom,rgba(0,0,0,.52),rgba(0,0,0,.52));
-	background-image: -moz-linear-gradient(top,rgba(0,0,0,.52),rgba(0,0,0,.52));
-	background-image: -o-linear-gradient(top,rgba(0,0,0,.52),rgba(0,0,0,.52));
-	background-image: -ms-linear-gradient(top,rgba(0,0,0,.52),rgba(0,0,0,.52));
-	background-image: -webkit-gradient(linear,left top,left bottom,from(rgba(0,0,0,.52)),to(rgba(0,0,0,.52)));
-	background-image: -webkit-linear-gradient(top,rgba(0, 0, 0, 0.52),rgba(0, 0, 0, 0.52));
+#wbt-social-column {
+	overflow: hidden;
+	border-top: 1px solid #eee;
+
+	article {
+		border-width: 0 0 1px 0;
+		margin: 0;
+		padding: 20px 0;
+
+		&.content .content-header .content-header-inner {
+			padding-top: 0;
+		}
+
+		&.content-instagram .content-header .content-header-inner {
+			padding-top: 20px;
+		}
+	}
+
+	.hub-list-more {
+		display: none;
+	}
+}
+
+.live-links--more.show-more--muted {
+  z-index: 1000;
+  display: block !important;
 }

@@ -2074,10 +2074,7 @@ Curated posts for Featured Articles
   .featured__content:after {
     clear: both; }
   .news-site .featured__content {
-    width: 100%;
-    display: table;
-    table-layout: fixed;
-    padding: 5px 0 0; }
+    width: 100%; }
 
 .featured__article {
   display: block;
@@ -2323,11 +2320,9 @@ a.featured__article--link {
     background-color: #270e10;
     color: #d0d2d3; }
   .news-site .featured__content--block {
-    display: table-cell;
-    float: none;
-    width: 100%;
+    width: 33.3333333333%;
     height: 100%;
-    padding: 0;
+    padding: 5px 0 0;
     margin: 0;
     background-color: transparent; }
 
@@ -2915,12 +2910,6 @@ Community Highlights and Events
     display: none; }
 
 .highlights__community--title {
-  background-color: #191919;
-  background-image: -webkit-gradient(linear, left top, left bottom, from(transparent), to(#191919));
-  background-image: -webkit-linear-gradient(top, transparent, #191919);
-  background-image: -moz-linear-gradient(top, transparent, #191919);
-  background-image: -o-linear-gradient(top, transparent, #191919);
-  background-image: linear-gradient(to bottom, transparent, #191919);
   background-color: transparent;
   position: absolute;
   bottom: 0;
@@ -2938,6 +2927,14 @@ Community Highlights and Events
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis; }
+  @media screen and (max-width: 767px)  {
+    .highlights__community--title {
+      background-color: #191919;
+      background-image: -webkit-gradient(linear, left top, left bottom, from(transparent), to(#191919));
+      background-image: -webkit-linear-gradient(top, transparent, #191919);
+      background-image: -moz-linear-gradient(top, transparent, #191919);
+      background-image: -o-linear-gradient(top, transparent, #191919);
+      background-image: linear-gradient(to bottom, transparent, #191919); } }
   a:hover .highlights__community--title {
     color: #f5ed7f; }
   .news-site .highlights__community--title {
@@ -2955,12 +2952,6 @@ Community Highlights and Events
     width: calc(100% - 75px - 1.25em);
     max-height: 5em;
     white-space: normal;
-    background-color: transparent;
-    background-image: -webkit-gradient(linear, left top, left bottom, from(transparent), to(transparent));
-    background-image: -webkit-linear-gradient(top, transparent, transparent);
-    background-image: -moz-linear-gradient(top, transparent, transparent);
-    background-image: -o-linear-gradient(top, transparent, transparent);
-    background-image: linear-gradient(to bottom, transparent, transparent);
     padding: 0;
     margin-left: 0;
     line-height: 1.3;
@@ -2969,6 +2960,14 @@ Community Highlights and Events
     font-size: 1em;
     font-weight: normal;
     text-transform: uppercase; }
+    @media screen and (max-width: 767px)  {
+      .news-site .highlights__community--title {
+        background-color: transparent;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(transparent), to(transparent));
+        background-image: -webkit-linear-gradient(top, transparent, transparent);
+        background-image: -moz-linear-gradient(top, transparent, transparent);
+        background-image: -o-linear-gradient(top, transparent, transparent);
+        background-image: linear-gradient(to bottom, transparent, transparent); } }
     @media screen and (min-width: 1024px)  {
       .news-site .highlights__community--title {
         font-size: 1em; } }
@@ -5385,7 +5384,9 @@ Link posts contain a link to an external site. They can also optionally have a f
   display: block; }
 @media screen and (min-width: 1024px)  {
   .article .ad__inline--right.desktop {
-    display: block; }
+    display: block;
+    width: 300px;
+    min-height: 250px; }
   .article .ad__inline--right.mobile {
     display: none; } }
 @media screen and (min-width: 1024px)  {
@@ -7907,6 +7908,24 @@ category: Components - Ads
     display: none; }
   .ad__in-loop--desktop {
     display: block; } }
+
+.ad__events-sponsorship {
+  text-align: center; }
+  .ad__events-sponsorship iframe {
+    width: 100%;
+    height: 75px; }
+    @media screen and (min-width: 480px)  {
+      .ad__events-sponsorship iframe {
+        height: 124px; } }
+    @media screen and (min-width: 768px)  {
+      .ad__events-sponsorship iframe {
+        height: 150px; } }
+    @media screen and (min-width: 1024px)  {
+      .ad__events-sponsorship iframe {
+        height: 175px; } }
+    @media screen and (min-width: 1400px)  {
+      .ad__events-sponsorship iframe {
+        height: 200px; } }
 
 .closures {
   margin-bottom: 2em; }
@@ -14893,6 +14912,30 @@ table.responsive tr:nth-of-type(even) {
       .top-three__desc time {
         font-size: 0.8888888889em; } }
 
+.intrinsic-container {
+  position: relative;
+  height: 0;
+  overflow: hidden; }
+
+.intrinsic-container-fixed-height {
+  padding: 0;
+  overflow: inherit; }
+
+/* 16x9 Aspect Ratio */
+.intrinsic-container-16x9 {
+  padding-bottom: 56.25%; }
+
+/* 4x3 Aspect Ratio */
+.intrinsic-container-4x3 {
+  padding-bottom: 75%; }
+
+.intrinsic-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%; }
+
 /**
  * Single Page Styles
  */
@@ -15270,7 +15313,7 @@ a.contest-attr--rules-toggler.pjax-exclude:hover {
   font-family: 'Oswald', sans-serif; }
 
 .header__logo {
-  background: url(../../images/header-logo-large.png) no-repeat;
+  background: url(../../images/header-logo-large-pink.png) no-repeat;
   border: solid 0px #6bb3ee;
   background-position: center top;
   background-size: contain;
@@ -15719,7 +15762,9 @@ media 1024px
     margin-top: 10px;
     color: #FFF !important; }
   .header__nav {
-    padding-left: 20px !important; }
+    /* old padding normal logo
+		padding-left:20px!important;*/
+    padding-left: 200px !important; }
   .header__nav li {
     font-weight: 800;
     text-transform: uppercase; }
@@ -15758,18 +15803,20 @@ media 1175px
     display: none !important; }
   .header__logo--img {
     display: block !important;
-    /*width: 200px;
-	      height: 158px;*/ }
+    /*-- width: 200px;
+	      height: 158px; */ }
   .header__logo {
-    background: url(../../images/header-logo-large.png) no-repeat;
     background-size: contain;
     background-position: center top;
     border: solid 0 #fff;
     width: 200px;
-    height: 200px;
+    height: 219px;
+    top: -120px;
+    /* normal logo height and top 
+		height:200px;
+		top:-130px;*/
     display: block;
     position: absolute;
-    top: -130px;
     left: 20px;
     margin: 0;
     padding: 0;
@@ -15805,12 +15852,15 @@ media 1400px
   .header__nav {
     padding-left: 250px !important; }
   .header__logo {
-    background: url(../../images/header-logo-large.png) no-repeat;
     background-size: contain;
     background-position: center top;
     border: solid 0 #fff;
-    width: 242px;
-    height: 242px;
+    /* normal logo width and height
+		width:242px;
+		height:242px;*/
+    width: 225px;
+    max-width: 225px;
+    height: 247px;
     display: block;
     position: absolute;
     top: -130px;

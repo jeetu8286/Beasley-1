@@ -20,7 +20,7 @@
 if ( defined( 'GMR_PARENT_ENV' ) && 'dev' == GMR_PARENT_ENV ) {
 	define( 'GREATERMEDIA_VERSION', time() );
 } else {
-	define( 'GREATERMEDIA_VERSION', '1.2.5' ); /* Version bump by Steve 7/23/2015 @ 2:40pm EST */
+	define( 'GREATERMEDIA_VERSION', '1.2.7' ); /* Version bump by Allen 10/23/2015 @ 11:00 a.m. EST */
 }
 
 add_theme_support( 'homepage-curation' );
@@ -34,6 +34,7 @@ require_once( __DIR__ . '/includes/image-attributes/loader.php');
 require_once( __DIR__ . '/includes/posts-screen-thumbnails/loader.php' );
 require_once( __DIR__ . '/includes/category-options.php' );
 require_once( __DIR__ . '/includes/class-favicon.php' );
+require_once( __DIR__ . '/includes/iframe-embed.php' );
 
 /**
  * Required files
@@ -555,8 +556,7 @@ function greatermedia_load_more_button( $args = array() ) {
 		return;
 	}
 
-
-	if ( ! $args['next_page'] ) {
+	if ( empty( $args['next_page'] ) || !is_numeric( $args['next_page'] ) ) {
 		$args['next_page'] = 2;
 	}
 
@@ -1104,5 +1104,3 @@ function urldecode_markup_for_video_thumbnails( $markup, $post_id ) {
 }
 
 add_filter( 'video_thumbnail_markup', 'urldecode_markup_for_video_thumbnails', 10, 2 );
-
-
