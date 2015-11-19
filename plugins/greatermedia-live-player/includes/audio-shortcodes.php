@@ -44,6 +44,10 @@ class GMR_Audio_Shortcodes {
 			return $html;
 		}
 
+		if ( is_feed() ) {
+			return ' ';
+		}
+
 //		/*
 //		 * Spec supports mp3 only, as do the browsers we're trying to use audio element with.
 //		 * Anything else will just use media element, rather than the live player
@@ -115,7 +119,9 @@ class GMR_Audio_Shortcodes {
 			$title = $metadata['title'];
 		}
 
+		$is_podcast = is_singular( array( ShowsCPT::SHOW_CPT, 'podcast' ) );
 		$is_podcast_archive = is_post_type_archive( 'podcast' );
+		$is_episode = get_post_type($post_id) == 'episode' ? true : false;
 		$is_home = is_home();
 
 		$parent_podcast = false;
@@ -131,7 +137,17 @@ class GMR_Audio_Shortcodes {
 		}
 
 		//get podcast featured image
-		$featured_image = wp_get_attachment_url( get_post_thumbnail_id( $parent_podcast_id ) );
+		$featured_image = false;
+		if ( $is_episode ) {
+			$featured_image = get_post_thumbnail_id( $post_id );
+			if ( $featured_image ) {
+				$featured_image = wp_get_attachment_url( $featured_image );
+			}
+		}
+
+		if ( ! $featured_image ) {
+			$featured_image = wp_get_attachment_url( get_post_thumbnail_id( $parent_podcast_id ) );
+		}
 
 		$series = get_post( $parent_podcast_id );
 		$series_slug = $series->post_name;
@@ -141,9 +157,8 @@ class GMR_Audio_Shortcodes {
 		}
 
 		$downloadable = get_post_meta( $post_id, 'gmp_audio_downloadable', true );
+		$downloadable = filter_var( $downloadable, FILTER_VALIDATE_BOOLEAN );
 		$new_html = '';
-
-		$is_podcast = is_singular( array( ShowsCPT::SHOW_CPT, 'podcast' ) );
 
 		// podcast archive details
 
@@ -190,7 +205,7 @@ class GMR_Audio_Shortcodes {
 
 		$new_html .= '</span>';
 
-		if ( ( $is_podcast || $is_podcast_archive || $is_home ) && ( $downloadable == 'on' || $downloadable == '' ) ) {
+		if ( ( $is_podcast || $is_podcast_archive || $is_home ) && $downloadable ) {
 			$new_html .= '<div class="podcast__download">';
 			if ( ! is_singular( 'podcast' ) ) {
 				if ( $parent_podcast_id && ( $is_podcast || $is_podcast_archive || $is_home ) ) {
@@ -220,7 +235,7 @@ class GMR_Audio_Shortcodes {
 		$new_html .= '<div class="podcast__meta">';
 		if ( $is_podcast || $is_home ) {
 			$new_html .= '<time class="podcast__date" datetime="' . get_the_time( 'c' ) . '">' . get_the_time( 'F j, Y' ) . '</time>';
-			$new_html .= '<h3 class="podcast__title">' . get_the_title() . '</h3>';
+			$new_html .= '<h3 class="podcast__title"><a href="' . esc_url( get_the_permalink( get_the_ID() ) ) . '">' . esc_html( get_the_title() ) . '</a></h3>';
 		} elseif ( $is_podcast_archive ) {
 			$parent_title = esc_html( $parent_podcast->post_title );
 			$new_html .= '<h3 class="podcast__title"><a href="' . esc_url( get_the_permalink( $parent_podcast ) ) . '">' . esc_html( $parent_title ) . '</a></h3>';

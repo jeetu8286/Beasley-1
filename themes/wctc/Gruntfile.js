@@ -7,6 +7,7 @@ module.exports = function( grunt ) {
 	// Project configuration
 	grunt.initConfig( {
 		pkg:    grunt.file.readJSON( 'package.json' ),
+<<<<<<< HEAD
 		
 		sass:   {
 			all: {
@@ -21,11 +22,83 @@ module.exports = function( grunt ) {
 				expand: true,
 				cwd: 'assets/css/',
 				src: ['wctc.css'],
+=======
+		concat: {
+			options: {
+				stripBanners: true
+			},
+			wctc: {
+				src: [
+					'assets/js/src/wctc.js'
+				],
+				dest: 'assets/js/wctc.js'
+			}
+		},
+		jshint: {
+			browser: {
+				all: [
+					'assets/js/src/**/*.js',
+					'assets/js/test/**/*.js'
+				],
+				options: {
+					jshintrc: '.jshintrc'
+				}
+			},
+			grunt: {
+				all: [
+					'Gruntfile.js'
+				],
+				options: {
+					jshintrc: '.gruntjshintrc'
+				}
+			}
+		},
+		uglify: {
+			all: {
+				files: {
+					'assets/js/wctc.min.js': ['assets/js/wctc.js']
+				},
+				options: {
+					mangle: {
+						except: ['jQuery']
+					}
+				}
+			}
+		},
+		test:   {
+			files: ['assets/js/test/**/*.js']
+		},
+
+		sass:   {
+			options: {
+				require: 'sass-globbing',
+				sourceMap: true,
+				precision: 5
+			},
+			all: {
+				files: {
+					'assets/css/wctc.css': 'assets/css/sass/wctc_news.scss'
+				}
+			}
+		},
+
+		cssmin: {
+			minify: {
+				expand: true,
+
+				cwd: 'assets/css/',
+				src: ['wctc.css'],
+
+>>>>>>> master
 				dest: 'assets/css/',
 				ext: '.min.css'
 			}
 		},
 		watch:  {
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
 			sass: {
 				files: ['assets/css/sass/**/*.scss'],
 				tasks: ['sass', 'cssmin'],
@@ -33,11 +106,31 @@ module.exports = function( grunt ) {
 					debounceDelay: 500
 				}
 			},
+<<<<<<< HEAD
+=======
+
+			scripts: {
+				files: ['assets/js/src/**/*.js', 'assets/js/vendor/**/*.js'],
+				tasks: ['jshint', 'concat', 'uglify'],
+				options: {
+					debounceDelay: 500
+				}
+			}
+>>>>>>> master
 		}
 	} );
 
 	// Default task.
+<<<<<<< HEAD
 	grunt.registerTask( 'default', ['sass', 'cssmin'] );
 
 	grunt.util.linefeed = '\n';
 };
+=======
+
+	grunt.registerTask( 'default', ['jshint', 'concat', 'uglify', 'sass', 'cssmin'] );
+
+
+	grunt.util.linefeed = '\n';
+};
+>>>>>>> master

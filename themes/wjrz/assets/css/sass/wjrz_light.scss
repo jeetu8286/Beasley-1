@@ -1,6 +1,10 @@
 /**
  * WJRZ
+<<<<<<< HEAD
  * http://wrjz.com
+=======
+ * http://wjrz.com
+>>>>>>> master
  *
  * Copyright (c) 2015 Greater Media
  * Licensed under the GPLv2+ license.
@@ -20,4 +24,9 @@
  * Misc overides for the child theme
  */
 @import "light-theme/base/overrides";
+<<<<<<< HEAD
 @import "light-theme/components/liveplayer";
+=======
+@import "light-theme/components/liveplayer";
+@import "light-theme/components/shows";
+>>>>>>> master

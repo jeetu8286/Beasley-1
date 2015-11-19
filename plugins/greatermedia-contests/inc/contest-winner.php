@@ -23,7 +23,7 @@ add_filter( 'parent_file', 'gmr_contests_adjust_current_admin_menu' );
 function gmr_contests_check_entries_permissions() {
 	global $pagenow;
 
-	if ( 'admin.php' == $pagenow && isset( $_REQUEST['page'] ) && 'gmr-contest-winner' == $_REQUEST['page'] && ! current_user_can( 'edit_contest', filter_input( INPUT_GET, 'contest' ) ) ) {
+	if ( 'admin.php' == $pagenow && isset( $_REQUEST['page'] ) && 'gmr-contest-winner' == $_REQUEST['page'] && ! current_user_can( 'edit_contest', filter_input( INPUT_GET, 'contest_id' ) ) ) {
 		wp_die( "You don't have sufficient permissions to view contest entries." );
 	}
 }
@@ -208,9 +208,11 @@ function gmr_do_contest_export( $args ) {
 	}
 
 	$dir = get_temp_dir();
-	$filename = $dir . wp_unique_filename( $dir, $contest->post_name . date( '-Y-m-d' ) . '.csv' );
-	$stdout = fopen( $filename, 'w' );
-	if ( ! $stdout ) {
+	$csv_file = $dir . wp_unique_filename( $dir, $contest->post_name . date( '-Y-m-d' ) . '.csv' );
+	$zip_file = $dir . wp_unique_filename( $dir, $contest->post_name . date( '-Y-m-d' ) . '.zip' );
+
+	$handle = fopen( $csv_file, 'w' );
+	if ( ! $handle ) {
 		return;
 	}
 
@@ -240,14 +242,14 @@ function gmr_do_contest_export( $args ) {
 		'Gigya Age',
 		'Gigya Gender',
 	);
-	
+
 	if ( $form ) {
 		foreach ( $form as $field ) {
 			$headers[] = $field->label;
 		}
 	}
 
-	fputcsv( $stdout, $headers );
+	fputcsv( $handle, $headers );
 
 	do {
 		$query->query( array(
@@ -265,7 +267,11 @@ function gmr_do_contest_export( $args ) {
 
 				$profile = get_post_meta( $entry->ID, 'entrant_reference', true );
 				if ( ! empty( $profile ) ) {
-					$profile = get_gigya_user_profile( $profile );
+					try {
+						$profile = get_gigya_user_profile( $profile );
+					} catch ( Exception $e ) {
+						$profile = array();
+					}
 				}
 
 				$birthday = (int) get_post_meta( $entry->ID, 'entrant_birth_date', true );
@@ -296,7 +302,7 @@ function gmr_do_contest_export( $args ) {
 
 				if ( $form ) {
 					$records = GreaterMediaFormbuilderRender::parse_entry( $contest->ID, $entry->ID, $form );
-					
+
 					foreach ( $records as $record ) {
 						if ( $record['type'] == 'file' ) {
 							$attachment = get_post( $record['value'] );
@@ -311,26 +317,38 @@ function gmr_do_contest_export( $args ) {
 					}
 				}
 
-				fputcsv( $stdout, $row );
+				fputcsv( $handle, $row );
 			}
 		}
 
 		$paged++;
 	} while( $query->post_count > 0 );
 
-	fclose( $stdout );
+	fclose( $handle );
+
+	$attachment = $csv_file;
+	if ( extension_loaded( 'zip' ) && class_exists( 'ZipArchive' ) ) {
+		$zip = new ZipArchive();
+		if ( $zip->open( $zip_file, ZipArchive::CREATE ) ) {
+			$zip->addFile( $csv_file, basename( $csv_file ) );
+			$zip->close();
+
+			$attachment = $zip_file;
+		}
+	}
 
 	$title = $contest->post_title . ' Entries';
 	$message = 'Please, find in attach CSV file with all entries.';
-	
+
 	$mail_headers = array( 'From: no-reply@' . parse_url( home_url(), PHP_URL_HOST ) );
 	if ( defined( 'GMR_CSV_EXPORT_BCC' ) && filter_var( GMR_CSV_EXPORT_BCC, FILTER_VALIDATE_EMAIL ) ) {
 		$mail_headers[] = 'Bcc: ' . GMR_CSV_EXPORT_BCC;
 	}
 
-	wp_mail( $args['email'], $title, $message, $mail_headers, array( $filename ) );
+	wp_mail( $args['email'], $title, $message, $mail_headers, array( $attachment ) );
 
-	@unlink( $filename );
+	@unlink( $csv_file );
+	@unlink( $zip_file );
 }
 
 /**

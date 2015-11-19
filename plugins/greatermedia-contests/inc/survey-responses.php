@@ -19,7 +19,7 @@ add_filter( 'parent_file', 'gmr_surveys_adjust_responses_page_admin_menu' );
 function gmr_survey_check_responses_permissions() {
 	global $pagenow;
 
-	if ( 'admin.php' == $pagenow && isset( $_REQUEST['page'] ) && 'gmr-survey-responses' == $_REQUEST['page'] && ! current_user_can( 'edit_survey', filter_input( INPUT_GET, 'survey' ) ) ) {
+	if ( 'admin.php' == $pagenow && isset( $_REQUEST['page'] ) && 'gmr-survey-responses' == $_REQUEST['page'] && ! current_user_can( 'edit_survey', filter_input( INPUT_GET, 'survey_id' ) ) ) {
 		wp_die( "You don't have sufficient permissions to view survey responses." );
 	}
 }
@@ -205,9 +205,11 @@ function gmr_do_survey_export( $args ) {
 	}
 
 	$dir = get_temp_dir();
-	$filename = $dir . wp_unique_filename( $dir, $survey->post_name . date( '-Y-m-d' ) . '.csv' );
-	$stdout = fopen( $filename, 'w' );
-	if ( ! $stdout ) {
+	$csv_file = $dir . wp_unique_filename( $dir, $survey->post_name . date( '-Y-m-d' ) . '.csv' );
+	$zip_file = $dir . wp_unique_filename( $dir, $survey->post_name . date( '-Y-m-d' ) . '.zip' );
+
+	$handle = fopen( $csv_file, 'w' );
+	if ( ! $handle ) {
 		return;
 	}
 
@@ -244,7 +246,7 @@ function gmr_do_survey_export( $args ) {
 		}
 	}
 
-	fputcsv( $stdout, $headers );
+	fputcsv( $handle, $headers );
 
 	do {
 		$query->query( array(
@@ -262,7 +264,11 @@ function gmr_do_survey_export( $args ) {
 
 				$profile = get_post_meta( $entry->ID, 'entrant_reference', true );
 				if ( ! empty( $profile ) ) {
-					$profile = get_gigya_user_profile( $profile );
+					try {
+						$profile = get_gigya_user_profile( $profile );
+					} catch ( Exception $e ) {
+						$profile = array();
+					}
 				}
 
 				$birthday = (int) get_post_meta( $entry->ID, 'entrant_birth_date', true );
@@ -298,14 +304,25 @@ function gmr_do_survey_export( $args ) {
 					}
 				}
 
-				fputcsv( $stdout, $row );
+				fputcsv( $handle, $row );
 			}
 		}
 
 		$paged++;
 	} while( $query->post_count > 0 );
 
-	fclose( $stdout );
+	fclose( $handle );
+
+	$attachment = $csv_file;
+	if ( extension_loaded( 'zip' ) && class_exists( 'ZipArchive' ) ) {
+		$zip = new ZipArchive();
+		if ( $zip->open( $zip_file, ZipArchive::CREATE ) ) {
+			$zip->addFile( $csv_file, basename( $csv_file ) );
+			$zip->close();
+
+			$attachment = $zip_file;
+		}
+	}
 
 	$title = $survey->post_title . ' Entries';
 	$message = 'Please, find in attach CSV file with all responses.';
@@ -315,9 +332,10 @@ function gmr_do_survey_export( $args ) {
 		$mail_headers[] = 'Bcc: ' . GMR_CSV_EXPORT_BCC;
 	}
 
-	wp_mail( $args['email'], $title, $message, $mail_headers, array( $filename ) );
+	wp_mail( $args['email'], $title, $message, $mail_headers, array( $attachment ) );
 
-	@unlink( $filename );
+	@unlink( $csv_file );
+	@unlink( $zip_file );
 }
 
 /**

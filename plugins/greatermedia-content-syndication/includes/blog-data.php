@@ -231,6 +231,20 @@ class BlogData {
 		}
 		
 		$galleries = get_post_galleries( $single_result->ID, false );
+		foreach ( $galleries as &$gallery ) {
+			if ( ! empty( $gallery['ids'] ) ) {
+				$image_ids = array_filter( array_map( 'intval', explode( ',', $gallery['ids'] ) ) );
+				$gallery['ids'] = implode( ',', $image_ids );
+				$gallery['src'] = array();
+				
+				foreach ( $image_ids as $image_id ) {
+					$image_src = wp_get_attachment_image_src( $image_id, 'full' );
+					if ( ! empty( $image_src ) ) {
+						$gallery['src'][] = $image_src[0];
+					}
+				}
+			}
+		}
 
 		$attachments = array();
 		if ( 'gmr_gallery' == $post_type ) {
@@ -613,7 +627,7 @@ class BlogData {
 							self::updateImageCaption( $existing[0]->ID, $old_ids[ $index ] );
 						}
 					} elseif ( ! empty( $old_ids[ $index ] ) ) {
-						$new_id = self::ImportMedia( 0, $image_src, false, $old_ids[ $index ] );
+						$new_id = self::ImportMedia( $post_id, $image_src, false, $old_ids[ $index ] );
 						if ( $new_id && ! is_wp_error( $new_id ) ) {
 							$new_gallery_ids .= $new_id . ",";
 						}
