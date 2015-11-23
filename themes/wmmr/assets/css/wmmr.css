@@ -2074,10 +2074,7 @@ Curated posts for Featured Articles
   .featured__content:after {
     clear: both; }
   .news-site .featured__content {
-    width: 100%;
-    display: table;
-    table-layout: fixed;
-    padding: 5px 0 0; }
+    width: 100%; }
 
 .featured__article {
   display: block;
@@ -2323,11 +2320,9 @@ a.featured__article--link {
     background-color: #270e10;
     color: #d0d2d3; }
   .news-site .featured__content--block {
-    display: table-cell;
-    float: none;
-    width: 100%;
+    width: 33.3333333333%;
     height: 100%;
-    padding: 0;
+    padding: 5px 0 0;
     margin: 0;
     background-color: transparent; }
 
@@ -2915,12 +2910,6 @@ Community Highlights and Events
     display: none; }
 
 .highlights__community--title {
-  background-color: #191919;
-  background-image: -webkit-gradient(linear, left top, left bottom, from(transparent), to(#191919));
-  background-image: -webkit-linear-gradient(top, transparent, #191919);
-  background-image: -moz-linear-gradient(top, transparent, #191919);
-  background-image: -o-linear-gradient(top, transparent, #191919);
-  background-image: linear-gradient(to bottom, transparent, #191919);
   background-color: transparent;
   position: absolute;
   bottom: 0;
@@ -2938,6 +2927,14 @@ Community Highlights and Events
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis; }
+  @media screen and (max-width: 767px)  {
+    .highlights__community--title {
+      background-color: #191919;
+      background-image: -webkit-gradient(linear, left top, left bottom, from(transparent), to(#191919));
+      background-image: -webkit-linear-gradient(top, transparent, #191919);
+      background-image: -moz-linear-gradient(top, transparent, #191919);
+      background-image: -o-linear-gradient(top, transparent, #191919);
+      background-image: linear-gradient(to bottom, transparent, #191919); } }
   a:hover .highlights__community--title {
     color: #f5ed7f; }
   .news-site .highlights__community--title {
@@ -2955,12 +2952,6 @@ Community Highlights and Events
     width: calc(100% - 75px - 1.25em);
     max-height: 5em;
     white-space: normal;
-    background-color: transparent;
-    background-image: -webkit-gradient(linear, left top, left bottom, from(transparent), to(transparent));
-    background-image: -webkit-linear-gradient(top, transparent, transparent);
-    background-image: -moz-linear-gradient(top, transparent, transparent);
-    background-image: -o-linear-gradient(top, transparent, transparent);
-    background-image: linear-gradient(to bottom, transparent, transparent);
     padding: 0;
     margin-left: 0;
     line-height: 1.3;
@@ -2969,6 +2960,14 @@ Community Highlights and Events
     font-size: 1em;
     font-weight: normal;
     text-transform: uppercase; }
+    @media screen and (max-width: 767px)  {
+      .news-site .highlights__community--title {
+        background-color: transparent;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(transparent), to(transparent));
+        background-image: -webkit-linear-gradient(top, transparent, transparent);
+        background-image: -moz-linear-gradient(top, transparent, transparent);
+        background-image: -o-linear-gradient(top, transparent, transparent);
+        background-image: linear-gradient(to bottom, transparent, transparent); } }
     @media screen and (min-width: 1024px)  {
       .news-site .highlights__community--title {
         font-size: 1em; } }
@@ -3749,8 +3748,11 @@ a.highlights__contest--btn {
       font-size: 1.6018066406em; } }
   @media screen and (min-width: 1200px)  {
     .news-site .header__account--btn {
-      padding-top: 28px;
-      padding-bottom: 28px; } }
+      padding: 28px .25em; } }
+  @media screen and (min-width: 1260px) {
+    .news-site .header__account--btn {
+      padding-right: 1.5em;
+      padding-left: 1.5em; } }
   @media screen and (min-width: 1400px)  {
     .news-site .header__account--btn {
       padding-top: 26px;
@@ -3826,7 +3828,7 @@ a.highlights__contest--btn {
       font-size: 1em; } }
   @media screen and (min-width: 768px)  {
     .news-site .header__social {
-      height: 78px; } }
+      height: 48px; } }
 
 .header__social > .social__list {
   padding: 0; }
@@ -5382,7 +5384,9 @@ Link posts contain a link to an external site. They can also optionally have a f
   display: block; }
 @media screen and (min-width: 1024px)  {
   .article .ad__inline--right.desktop {
-    display: block; }
+    display: block;
+    width: 300px;
+    min-height: 250px; }
   .article .ad__inline--right.mobile {
     display: none; } }
 @media screen and (min-width: 1024px)  {
@@ -7166,7 +7170,7 @@ body.profile-page-login .live-player--mobile {
   .podcast-player .audio__time {
     width: 100%; }
   .podcast-player.podcast-player--compact .audio__time {
-    padding-top: 12px;
+    padding-top: 5px;
     padding-bottom: 0; }
   .audio__time.playing__current {
     display: block;
@@ -7212,7 +7216,7 @@ body.profile-page-login .live-player--mobile {
 .audio__progress-bar {
   width: 100%;
   position: relative;
-  height: 3px;
+  height: 10px;
   background-color: #404041;
   color: #fff;
   -webkit-border-radius: 2px;
@@ -7232,7 +7236,7 @@ body.profile-page-login .live-player--mobile {
   top: 0;
   left: 0;
   display: inline-block;
-  height: 3px;
+  height: 10px;
   background-color: #d22228;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
@@ -7904,6 +7908,24 @@ category: Components - Ads
     display: none; }
   .ad__in-loop--desktop {
     display: block; } }
+
+.ad__events-sponsorship {
+  text-align: center; }
+  .ad__events-sponsorship iframe {
+    width: 100%;
+    height: 75px; }
+    @media screen and (min-width: 480px)  {
+      .ad__events-sponsorship iframe {
+        height: 124px; } }
+    @media screen and (min-width: 768px)  {
+      .ad__events-sponsorship iframe {
+        height: 150px; } }
+    @media screen and (min-width: 1024px)  {
+      .ad__events-sponsorship iframe {
+        height: 175px; } }
+    @media screen and (min-width: 1400px)  {
+      .ad__events-sponsorship iframe {
+        height: 200px; } }
 
 .closures {
   margin-bottom: 2em; }
@@ -9993,6 +10015,58 @@ category: Components - Shows
   width: 100%;
   z-index: -1; }
 
+.show__mini-nav .show__header {
+  padding: 5px; }
+  .show__mini-nav .show__header .show__cast {
+    width: 40px;
+    float: left;
+    margin-top: 5px; }
+    .show__mini-nav .show__header .show__cast img {
+      width: 30px;
+      height: 30px; }
+  .show__mini-nav .show__header .show__nav {
+    padding: 0;
+    margin: 0 0 0 -40px;
+    display: block;
+    float: left; }
+    @media screen and (min-width: 1024px)  {
+      .show__mini-nav .show__header .show__nav {
+        margin: 0; } }
+    .show__mini-nav .show__header .show__nav .show__title {
+      font-size: 1em;
+      display: inline-block;
+      line-height: 15px;
+      padding: 0 10px 0 0;
+      max-width: 250px; }
+      @media screen and (min-width: 1024px)  {
+        .show__mini-nav .show__header .show__nav .show__title {
+          line-height: 30px;
+          max-width: none; }
+          .show__mini-nav .show__header .show__nav .show__title:after {
+            content: "\0003a";
+            font-weight: bold; } }
+      .show__mini-nav .show__header .show__nav .show__title a {
+        padding-right: 0px;
+        text-transform: uppercase;
+        color: #fff;
+        font-weight: bold;
+        padding: 5px;
+        border-radius: 20px;
+        display: inline-block; }
+        .show__mini-nav .show__header .show__nav .show__title a:hover {
+          background-color: #ffffff;
+          color: #561015; }
+    .show__mini-nav .show__header .show__nav ul {
+      display: inline-block;
+      margin: 0;
+      padding: 0; }
+      .show__mini-nav .show__header .show__nav ul li a {
+        padding: 0 5px;
+        line-height: 30px; }
+      @media screen and (min-width: 1024px)  {
+        .show__mini-nav .show__header .show__nav ul {
+          position: relative; } }
+
 /*doc
 ---
 title: Show Features
@@ -11949,10 +12023,14 @@ category: Components - Gallery Archive
       .gallery__grid:last-child {
         margin-right: 0; } }
   .gallery__grid .section-header {
-    margin: 20px 0; }
-    @media screen and (min-width: 768px)  {
-      .gallery__grid .section-header {
-        display: none; } }
+    margin: 20px 0;
+    font-size: 1.6em;
+    font-weight: bold;
+    color: #404041;
+    text-transform: uppercase;
+    /*@include bp(medium) {
+			display: none;
+		}*/ }
 
 .gallery__featured {
   display: block; }
@@ -14124,6 +14202,11 @@ category: Components - Article
 
 	}
 	*/
+.livefyre-mediawall {
+  overflow: hidden; }
+  .livefyre-mediawall .streamhub-wall-component article.content {
+    padding: 0 0 17px 0; }
+
 /*doc
 ---
 title: Related Post
@@ -14829,6 +14912,30 @@ table.responsive tr:nth-of-type(even) {
       .top-three__desc time {
         font-size: 0.8888888889em; } }
 
+.intrinsic-container {
+  position: relative;
+  height: 0;
+  overflow: hidden; }
+
+.intrinsic-container-fixed-height {
+  padding: 0;
+  overflow: inherit; }
+
+/* 16x9 Aspect Ratio */
+.intrinsic-container-16x9 {
+  padding-bottom: 56.25%; }
+
+/* 4x3 Aspect Ratio */
+.intrinsic-container-4x3 {
+  padding-bottom: 75%; }
+
+.intrinsic-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%; }
+
 /**
  * Single Page Styles
  */
@@ -15111,18 +15218,13 @@ table.responsive tr:nth-of-type(even) {
 
 /* Smartphones & Tablets (portrait) ----------- */
 @media only screen and (max-width: 479px) {
-  .entry2, .home .episode {
-    border: 1px solid #d0d2d3;
-    -webkit-box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.55);
-    -moz-box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.55);
-    box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.55); }
-    .entry2 .entry2__meta, .home .episode .entry2__meta {
-      padding: 0 10px; }
-      .entry2 .entry2__meta .entry2__date, .home .episode .entry2__meta .entry2__date {
-        margin: 0; }
-    .entry2 .entry2__footer, .home .episode .entry2__footer {
-      padding: 10px;
-      margin-top: 1em; } }
+  .entry2 .entry2__meta, .home .episode .entry2__meta {
+    padding: 0 10px; }
+    .entry2 .entry2__meta .entry2__date, .home .episode .entry2__meta .entry2__date {
+      margin: 0; }
+  .entry2 .entry2__footer, .home .episode .entry2__footer {
+    padding: 10px;
+    margin-top: 1em; } }
 
 @media screen and (min-width: 768px)  {
   .header__search--form {
