@@ -710,7 +710,7 @@ function gmr_contests_verify_form_submission( $form ) {
 				}
 
 				$value = trim( $value );
-				if ( ! empty( $value ) ) {
+				if ( ! empty( $value ) || ( 'radio' === $field->field_type && in_array( $value, [ 0, '0' ] ) ) ) {
 					continue;
 				}
 
@@ -729,7 +729,9 @@ function gmr_contests_verify_form_submission( $form ) {
 					$array_data[] = sanitize_text_field( $value );
 				}
 
-				$array_data = array_filter( array_map( 'trim', $array_data ) );
+				$array_data = array_filter( array_map( 'trim', $array_data ), function( $val ) use ( $field ) {
+					return ( ! empty( $val ) || ( 'checkboxes' === $field->field_type && in_array( $val, [ 0, '0' ] ) ) );
+				} );
 				if ( ! empty( $array_data ) ) {
 					continue;
 				}
