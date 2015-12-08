@@ -1,6 +1,6 @@
 <?php
 /**
- * WDHA functions and definitions
+ * WMGQ functions and definitions
  *
  * When using a child theme (see http://codex.wordpress.org/Theme_Development and
  * http://codex.wordpress.org/Child_Themes), you can override certain functions
@@ -8,12 +8,12 @@
  * functions.php file. The child theme's functions.php file is included before the parent
  * theme's file, so the child theme functions would be used.
  *
- * @package WDHA
+ * @package WMGQ
  * @since 0.1.0
  */
 
  // Useful global constants
-define( 'WDHA_VERSION', '0.3.1' ); /* Version bump by Allen 10/23/2015 @ 11:00 a.m. EST */
+define( 'WMGQ_VERSION', '0.2.3' ); /* Version bump by Allen 10/23/2015 @ 11:00 a.m. EST */
 
  /**
   * Set up theme defaults and register supported WordPress features.
@@ -22,38 +22,38 @@ define( 'WDHA_VERSION', '0.3.1' ); /* Version bump by Allen 10/23/2015 @ 11:00 a
   *
   * @since 0.1.0
   */
- function wdha_setup() {
+ function wmgq_setup() {
 	/**
-	 * Makes WDHA available for translation.
+	 * Makes WMGQ available for translation.
 	 *
 	 * Translations can be added to the /lang directory.
-	 * If you're building a theme based on WDHA, use a find and replace
-	 * to change 'wdha' to the name of your theme in all template files.
+	 * If you're building a theme based on WMGQ, use a find and replace
+	 * to change 'wmgq' to the name of your theme in all template files.
 	 */
-	load_theme_textdomain( 'wdha', get_stylesheet_directory_uri() . '/languages' );
+	load_theme_textdomain( 'wmgq', get_stylesheet_directory_uri() . '/languages' );
  }
- add_action( 'after_setup_theme', 'wdha_setup' );
+ add_action( 'after_setup_theme', 'wmgq_setup' );
 
  /**
   * Enqueue scripts and styles for front-end.
   *
   * @since 0.1.0
   */
- function wdha_scripts_styles() {
+ function wmgq_scripts_styles() {
 	$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 
 	wp_dequeue_style( 'greatermedia' );
 	wp_deregister_style( 'greatermedia' );
-	wp_enqueue_style( 'wdha', get_stylesheet_directory_uri() . "/assets/css/wdha{$postfix}.css", array(), WDHA_VERSION );
+	wp_enqueue_style( 'wmgq', get_stylesheet_directory_uri() . "/assets/css/wmgq{$postfix}.css", array(), WMGQ_VERSION );
  }
- add_action( 'wp_enqueue_scripts', 'wdha_scripts_styles', 20 );
+ add_action( 'wp_enqueue_scripts', 'wmgq_scripts_styles', 20 );
 
  /**
   * Add humans.txt to the <head> element.
   */
- function wdha_header_meta() {
+ function wmgq_header_meta() {
 	$humans = '<link type="text/plain" rel="author" href="' . get_stylesheet_directory_uri() . '/humans.txt" />';
 
-	echo apply_filters( 'wdha_humans', $humans );
+	echo apply_filters( 'wmgq_humans', $humans );
  }
- add_action( 'wp_head', 'wdha_header_meta' );
+ add_action( 'wp_head', 'wmgq_header_meta' );
