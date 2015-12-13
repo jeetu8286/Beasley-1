@@ -1,4 +1,4 @@
-g<?php
+<?php
 /**
  * Greater Media functions and definitions
  *
