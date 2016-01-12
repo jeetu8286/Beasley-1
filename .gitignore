@@ -34,6 +34,7 @@ atlassian-ide-plugin.xml
 mu-plugins/test-data-store.php
 **/.sass-cache/**
 /plugins/json-rest-api/
+/plugins/rest-api/
 /plugins/duplicate-post
 /plugins/rewrite-rules-inspector
 /plugins/simple-local-avatars
