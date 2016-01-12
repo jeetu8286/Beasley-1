@@ -13,8 +13,7 @@
  */
 
  // Useful global constants
-define( 'WBT_VERSION', '0.1.10' );
-
+define( 'WBT_VERSION', '0.1.4' );
 
  /**
   * Set up theme defaults and register supported WordPress features.
@@ -42,7 +41,7 @@ define( 'WBT_VERSION', '0.1.10' );
   */
  function wbt_scripts_styles() {
 	$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
-	
+
 	global $wp_styles;
 
 	wp_dequeue_style( 'greatermedia' );

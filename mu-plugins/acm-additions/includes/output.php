@@ -13,7 +13,8 @@ function load_scripts() {
 
 function wp_head() {
 	// Creates global ad object for use later in the rendering process
-	?>
+
+?>
 	<script type="text/javascript">
 
 		function fill_ad( $slot ) {
@@ -35,6 +36,12 @@ function wp_head() {
 				jQuery( $slot ).empty();
 				jQuery( $slot ).append( '<div id="' + $slot.attr( 'id' ) + '-placeholder"></div>' )
 				OX_12345.setAdUnitSlotId( $slot.data( 'openx-id' ), $slot.attr( 'id' ) + '-placeholder' );
+				if ( $slot.data( 'slug' ) )  {
+					OX_12345.addVariable( 'slug', $slot.data( 'slug' ) );
+				}
+				if ( $slot.data( 'shows' ) )  {
+					OX_12345.addVariable( 'shows', $slot.data( 'shows' ) );
+				}
 				if ( category ) {
 					OX_12345.addVariable( 'category', category );
 				}
@@ -86,6 +93,26 @@ function load_js() {
 
 function render_tag( $output_html, $tag_id ) {
 	static $random_number;
+
+	// Check if the post is singluar
+	if ( is_singular() ) {
+		global $post; // Just to be safe
+		// We want a slug for all singular post types
+		$slug = $post->post_name;
+
+		// Check if the class exists so we can use its properties
+		if ( class_exists( 'ShowsCPT' ) && defined( "ShowsCPT::SHOW_TAXONOMY" ) ) {
+			// Get the show terms
+			$terms = get_the_terms( $post->ID, constant( 'ShowsCPT::SHOW_TAXONOMY' ) );
+			// Check for errors
+			if ( $terms && ! is_wp_error( $terms ) ) { 
+				// Pluck those slugs out of the terms object
+				$shows = wp_list_pluck( $terms, 'slug' );
+				// Finally join those for openx in a csv format
+				$shows = join( ",", $shows );
+			}
+		}
+	}
 
 	$tag_meta = get_ad_tag_meta( $tag_id );
 
@@ -142,6 +169,12 @@ function render_tag( $output_html, $tag_id ) {
 		class="gmr-ad"
 		data-min-width="<?php echo esc_attr( $min_width ); ?>"
 		data-max-width="<?php echo esc_attr( $max_width ); ?>"
+		<?php if ( ! empty( $slug ) ) : ?>
+			data-slug="<?php echo esc_attr( $slug ); ?>"
+		<?php endif; ?>
+		<?php if ( ! empty( $shows ) ) : ?>
+			data-shows="<?php echo esc_attr( $shows ); ?>"
+		<?php endif; ?>
 		<?php if ( ! empty( $category ) ) : ?>
 		data-category="<?php echo esc_attr( $category ); ?>"
 		<?php endif; ?>

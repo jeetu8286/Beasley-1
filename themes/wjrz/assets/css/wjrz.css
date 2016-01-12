@@ -2074,10 +2074,7 @@ Curated posts for Featured Articles
   .featured__content:after {
     clear: both; }
   .news-site .featured__content {
-    width: 100%;
-    display: table;
-    table-layout: fixed;
-    padding: 5px 0 0; }
+    width: 100%; }
 
 .featured__article {
   display: block;
@@ -2323,11 +2320,9 @@ a.featured__article--link {
     background-color: #270e10;
     color: #d0d2d3; }
   .news-site .featured__content--block {
-    display: table-cell;
-    float: none;
-    width: 100%;
+    width: 33.3333333333%;
     height: 100%;
-    padding: 0;
+    padding: 5px 0 0;
     margin: 0;
     background-color: transparent; }
 
@@ -2915,12 +2910,6 @@ Community Highlights and Events
     display: none; }
 
 .highlights__community--title {
-  background-color: #191919;
-  background-image: -webkit-gradient(linear, left top, left bottom, from(transparent), to(#191919));
-  background-image: -webkit-linear-gradient(top, transparent, #191919);
-  background-image: -moz-linear-gradient(top, transparent, #191919);
-  background-image: -o-linear-gradient(top, transparent, #191919);
-  background-image: linear-gradient(to bottom, transparent, #191919);
   background-color: transparent;
   position: absolute;
   bottom: 0;
@@ -2938,6 +2927,14 @@ Community Highlights and Events
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis; }
+  @media screen and (max-width: 767px)  {
+    .highlights__community--title {
+      background-color: #191919;
+      background-image: -webkit-gradient(linear, left top, left bottom, from(transparent), to(#191919));
+      background-image: -webkit-linear-gradient(top, transparent, #191919);
+      background-image: -moz-linear-gradient(top, transparent, #191919);
+      background-image: -o-linear-gradient(top, transparent, #191919);
+      background-image: linear-gradient(to bottom, transparent, #191919); } }
   a:hover .highlights__community--title {
     color: #f5ed7f; }
   .news-site .highlights__community--title {
@@ -2955,12 +2952,6 @@ Community Highlights and Events
     width: calc(100% - 75px - 1.25em);
     max-height: 5em;
     white-space: normal;
-    background-color: transparent;
-    background-image: -webkit-gradient(linear, left top, left bottom, from(transparent), to(transparent));
-    background-image: -webkit-linear-gradient(top, transparent, transparent);
-    background-image: -moz-linear-gradient(top, transparent, transparent);
-    background-image: -o-linear-gradient(top, transparent, transparent);
-    background-image: linear-gradient(to bottom, transparent, transparent);
     padding: 0;
     margin-left: 0;
     line-height: 1.3;
@@ -2969,6 +2960,14 @@ Community Highlights and Events
     font-size: 1em;
     font-weight: normal;
     text-transform: uppercase; }
+    @media screen and (max-width: 767px)  {
+      .news-site .highlights__community--title {
+        background-color: transparent;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(transparent), to(transparent));
+        background-image: -webkit-linear-gradient(top, transparent, transparent);
+        background-image: -moz-linear-gradient(top, transparent, transparent);
+        background-image: -o-linear-gradient(top, transparent, transparent);
+        background-image: linear-gradient(to bottom, transparent, transparent); } }
     @media screen and (min-width: 1024px)  {
       .news-site .highlights__community--title {
         font-size: 1em; } }
@@ -15007,9 +15006,8 @@ table.responsive tr:nth-of-type(even) {
   border-bottom: 1px solid white; }
 
 .now-playing__artist {
-  color: #303030; }
+  color: #fff; }
 
-/*.live-link__title, .live-link__title a:link, .live-link__title a:visited {color: $white;} */
 .live-link__song:before {
   color: #fff; }
 
@@ -15022,7 +15020,6 @@ table.responsive tr:nth-of-type(even) {
   .live-link__song--title a, .live-link__song--title a:visited {
     color: #fff; }
 
-/*.live-link__title a:link, .live-link__title a:visited {color: $white;}*/
 .live-link__title a:hover, .live-link__title a:focus, .live-link__title a:active {
   color: #015da6; }
 
@@ -15090,7 +15087,7 @@ table.responsive tr:nth-of-type(even) {
     border-radius: 0;
     background-color: transparent;
     margin-right: 0;
-    color: #0073cf; } }
+    color: #fff; } }
 
 /* Mobile phone listen live padding */
 .live-player--open .live-links {
@@ -15221,7 +15218,6 @@ a:hover .highlights__community--title {
 a:hover .highlights__event--date, a:hover .highlights__event--title {
   color: #fff; }
 
-/* NOT IN WMTR CODE */
 .featured__content--block {
   transition: all 200ms ease-in-out;
   -moz-transition: all 200ms ease-in-out;
@@ -15307,6 +15303,8 @@ a:hover .highlights__event--date, a:hover .highlights__event--title {
     border: none;
     background: #fdba30;
     color: #f2f2f2; }
+  .live-player, .now-playing__artist {
+    color: #015da6; }
   /* Social link color and padding */
   .header__social .social__list {
     padding: 0 10px; }
@@ -15335,16 +15333,14 @@ a:hover .highlights__event--date, a:hover .highlights__event--title {
   /* Live stream background color */
   .live-links {
     background-color: #0073cf; }
-  .live-stream {
-    background: #f2f2f2 url(../../images/wjrz_listenlive_header.png) no-repeat; }
   .live-player {
     color: #0073cf;
     font-weight: 400;
     font-family: 'Istok+Web', sans-serif; }
   .now-playing__title {
-    color: #0073cf;
+    color: #fdba30;
     font-size: 1em;
-    font-weight: lighter;
+    font-weight: bold;
     line-height: 1.2;
     margin: 0 0 8px; }
   #live-player--volume .noUi-base {
@@ -15355,11 +15351,25 @@ a:hover .highlights__event--date, a:hover .highlights__event--title {
   .live-link__song:hover, .live-link__song:hover .live-link__song--title, .live-link__song:hover:before {
     color: #000; }
   .live-player__container {
-    background-color: #f2f2f2;
+    background-color: transparent;
     transition: all 200ms ease-in-out;
     -moz-transition: all 200ms ease-in-out;
     -webkit-transition: all 200ms ease-in-out;
     overflow: hidden; }
+  .live-stream__now-playing--btn {
+    line-height: 1;
+    padding: .5em 1em;
+    background-color: transparent;
+    border: 1px solid transparent;
+    color: #fff !important;
+    border-radius: 100em;
+    display: none;
+    margin-right: 0;
+    font-weight: 700;
+    -webkit-transition: background .2s ease-in-out;
+    -moz-transition: background .2s ease-in-out;
+    transition: background .2s ease-in-out;
+    cursor: default; }
   .live-player__container {
     border-bottom: 1px #fff; }
   .live-link__title, .live-link__title a:link, .live-link__title a:visited {
@@ -15435,7 +15445,11 @@ a:hover .highlights__event--date, a:hover .highlights__event--title {
     -webkit-transition: all 200ms ease-in-out;
     -moz-transition: all 200ms ease-in-out;
     transition: all 200ms ease-in-out; }
-  /* Different in WMTR CODE */
+  .home__featured .featured__content--image {
+    padding-top: 66.6%;
+    width: 100%; }
+  .featured__content--block {
+    height: 100%; }
   .live-links--more:before {
     background: -moz-linear-gradient(top, #0073cf 0%, #f2f2f2 100%) !important;
     /* FF3.6+ */
@@ -15455,12 +15469,7 @@ a:hover .highlights__event--date, a:hover .highlights__event--title {
   .home__featured .featured__article--content {
     background-color: #0073cf;
     color: #0073cf;
-    opacity: 1; }
-  .home__featured .featured__article--content {
-    /*background-image: linear-gradient(to bottom,#033d6c 0%,#015da6 100%);*/
-    border-radius: 0 0 12px 12px;
-    -moz-border-radius: 0 0 12px 12px;
-    -webkit-border-radius: 0 0 12px 12px; } }
+    opacity: 1; } }
 
 @media screen and (min-width: 1024px) {
   .header__nav li {
@@ -15565,10 +15574,6 @@ a:hover .highlights__event--date, a:hover .highlights__event--title {
   border-color: #fdba30;
   color: #fff; }
 
-.header {
-  background-image: url("../../images/WJRZ_header-bkg.jpg");
-  background-position: center top; }
-
 .live-link__song:before, .live-link__type--audio:before, .live-link__type--gallery:before, .live-link__type--image:before, .live-link__type--link:before, .live-link__type--standard:before, .live-link__type--video:before {
   width: 0;
   height: 0;
@@ -15604,28 +15609,6 @@ a:hover .highlights__event--date, a:hover .highlights__event--title {
   color: #fff; }
 
 .live-links--more__btn:last-of-type {
-  margin-right: 0; }
-
-.live-links--more__btn:hover {
-  display: inline-block;
-  line-height: 1;
-  padding: .5em 1em;
-  margin-right: .5em;
-  outline: 0;
-  background-color: #0073cf;
-  border: 1px solid #0073cf;
-  font-size: .88889em;
-  color: #fff !important;
-  text-transform: uppercase;
-  cursor: pointer;
-  border-radius: 100em; }
-
-.live-links--more__btn:hover:focus, .live-links--more__btn:hover:hover {
-  background-color: #0073cf;
-  border-color: #0073cf;
-  color: #fff; }
-
-.live-links--more__btn:hover:last-of-type {
   margin-right: 0; }
 
 /* Login page */
@@ -15670,6 +15653,20 @@ a:hover .highlights__event--date, a:hover .highlights__event--title {
   a:link, a:visited {
     color: #0073cf;
     text-decoration: none; }
+  .live-player, .now-playing__artist {
+    color: #fff; }
+  .live-stream .on-air, .live-stream .up-next {
+    padding: 7px 1em;
+    position: relative;
+    top: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    font-family: 'Istok+Web',sans-serif; }
+  .header__main .header__search:hover {
+    background-color: #015da6;
+    color: #fff; }
+  .header__main .header__search {
+    padding: 0 16px; }
   /*navigation rollover color */
   .header__account ul li a:active, .header__account ul li a:focus, .header__account ul li a:hover, .header__account ul li:hover, .header__nav ul li a:active, .header__nav ul li a:focus, .header__nav ul li.active, .header__nav ul li.active a:hover, .ui-menu .ui-state-focus {
     background-color: #015da6; }
@@ -15760,8 +15757,10 @@ a:hover .highlights__event--date, a:hover .highlights__event--title {
     background: #0073cf;
     border: 2px solid #0073cf;
     color: #f2f2f2; }
+  .live-stream {
+    background-image: url("../../images/WJRZ-tuner-bg.jpg"); }
   .live-stream__now-playing--btn {
-    color: #015da6 !important; }
+    color: #fff !important; }
   /* Header search color */
   .header__search {
     color: #fff; }
@@ -15877,13 +15876,13 @@ a:hover .highlights__event--date, a:hover .highlights__event--title {
 .show__feature--desc time {
   display: none; }
 
-.show__mini-nav .show__header {
-  background-color: #e6a110;
-  border-bottom: solid 1px #0073cf;
-  padding: 0px 5px 1px 5px; }
-
-.show__mini-nav .show__header .show__nav .show__title a:hover {
-  color: #015da6; }
+.songs__group--list .song__time {
+  float: left;
+  display: block;
+  width: auto;
+  max-width: 30%;
+  margin-right: 1em;
+  color: #929497; }
 
 .live-link__type--show {
   border-bottom-color: white;

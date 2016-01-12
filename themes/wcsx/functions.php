@@ -13,7 +13,7 @@
  */
 
  // Useful global constants
-define( 'WCSX_VERSION', '0.2.2' ); /* Version bump by Steve 8/31/2015 @ 10:30pm EST */
+define( 'WCSX_VERSION', '0.3.2' ); /* Version bump by Steve 10/23/2015 @ 2:00pm EST */
 
  /**
   * Set up theme defaults and register supported WordPress features.
@@ -39,12 +39,20 @@ define( 'WCSX_VERSION', '0.2.2' ); /* Version bump by Steve 8/31/2015 @ 10:30pm 
   *
   * @since 0.1.1
   */
- function wcsx_scripts_styles() {$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
- 	wp_register_style('google-fonts-wcsx','//fonts.googleapis.com/css?family=Oswald:400,300,700',array(),null);
- 	wp_dequeue_style( 'greatermedia' );
- 	wp_deregister_style( 'greatermedia' );
- 	wp_enqueue_style( 'wcsx', get_stylesheet_directory_uri() . "/assets/css/wcsx{$postfix}.css", array( 'google-fonts-wcsx' ), WCSX_VERSION );
- }
+ function wcsx_scripts_styles() {
+  $postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
+  wp_register_style('google-fonts-wcsx','//fonts.googleapis.com/css?family=Oswald:400,300,700',array(),null);
+  wp_dequeue_style( 'greatermedia' );
+  wp_deregister_style( 'greatermedia' );
+  wp_enqueue_style( 'wcsx', get_stylesheet_directory_uri() . "/assets/css/wcsx{$postfix}.css", array( 'google-fonts-wcsx' ), WCSX_VERSION );
+  wp_enqueue_script(
+    'wcsx',
+    get_stylesheet_directory_uri() . "/assets/js/wcsx{$postfix}.js",
+    array(),
+    WCSX_VERSION,
+    true
+  );
+}
  add_action( 'wp_enqueue_scripts', 'wcsx_scripts_styles', 20 );
 
  /**
@@ -56,3 +64,20 @@ define( 'WCSX_VERSION', '0.2.2' ); /* Version bump by Steve 8/31/2015 @ 10:30pm 
 	echo apply_filters( 'wcsx_humans', $humans );
  }
  add_action( 'wp_head', 'wcsx_header_meta' );
+
+ /**
+  * Add Chartbeat to site.
+  */
+ function wcsx_chartbeat_header() {
+  $content = '<script type="text/javascript">var _sf_startpt=(new Date()).getTime()</script>';
+
+  echo apply_filters( 'wcsx_chartbeat_header', $content );
+ }
+ add_action( 'wp_head', 'wcsx_chartbeat_header' );
+
+function wcsx_chartbeat_footer() {
+  $content = '<script type="text/javascript">var cbjspath = "static.chartbeat.com/js/chartbeat.js?uid=2332&domain=wcsx.com";var cbjsprotocol = (("https:" == document.location.protocol) ? "/web/20150302054219/https://s3.amazonaws.com/" : "http://"); document.write(unescape("%3Cscript src=\'"+cbjsprotocol+cbjspath+"\' type=\'text/javascript\'%3E%3C/script%3E"))</script>';
+
+  echo apply_filters( 'wcsx_chartbeat_footer', $content );
+}
+add_action( 'wp_footer', 'wcsx_chartbeat_footer' );
