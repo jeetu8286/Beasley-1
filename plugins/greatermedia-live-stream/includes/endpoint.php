@@ -1,23 +1,26 @@
 <?php
 
 // filter hooks
-add_filter( 'json_endpoints', 'gmr_streams_init_api_endpoint' );
+add_filter( 'rest_api_init', 'gmr_streams_init_api_endpoint' );
 add_filter( 'determine_current_user', 'gmr_streams_json_basic_auth_handler', 20 );
-add_filter( 'json_authentication_errors', 'gmr_streams_json_basic_auth_error' );
+add_filter( 'rest_authentication_errors', 'gmr_streams_json_basic_auth_error' );
 
 /**
  * Registers API endpoint.
  *
  * @filter json_endpoints
+ *
  * @param array $routes The initial array of routes.
+ *
  * @return array Extended array of API routes.
  */
 function gmr_streams_init_api_endpoint( $routes ) {
-	$routes['/stream/(?P<sign>\S+)'] = array(
-		array( 'gmr_streams_process_endpoint', WP_JSON_Server::CREATABLE | WP_JSON_Server::ACCEPT_JSON ),
+	register_rest_route( 'wp/v2', '/stream/(?P<sign>\S+)',
+		array(
+			'methods'  => WP_REST_Server::READABLE,
+			'callback' => 'gmr_streams_process_endpoint'
+		)
 	);
-
-	return $routes;
 }
 
 /**
@@ -83,17 +86,16 @@ function gmr_streams_process_endpoint( $sign, $data ) {
 		update_post_meta( $song_id, 'purchase_link', $data['purchase_link'] );
 	}
 
-	$response = new WP_JSON_Response();
-	$response->set_status( $created ? 201 : 400 );
-
-	return $response;
+	return new WP_REST_Response( $created, $created ? 201 : 400 );
 }
 
 /**
  * Authorizes an user using HTTP Basic Authorization method.
  *
  * @global WP_Error $wp_json_basic_auth_error The basic authorization error object.
+ *
  * @param WP_User $user The current user object.
+ *
  * @return WP_User|int The user id or object on success, otherwise null;
  */
 function gmr_streams_json_basic_auth_handler( $user ) {
@@ -107,7 +109,7 @@ function gmr_streams_json_basic_auth_handler( $user ) {
 	}
 
 	// Check that we're trying to authenticate
-	if ( !isset( $_SERVER['PHP_AUTH_USER'] ) ) {
+	if ( ! isset( $_SERVER['PHP_AUTH_USER'] ) ) {
 		return $user;
 	}
 
@@ -128,6 +130,7 @@ function gmr_streams_json_basic_auth_handler( $user ) {
 
 	if ( is_wp_error( $user ) ) {
 		$wp_json_basic_auth_error = new WP_Error( 'gmr_stream_not_authorized', strip_tags( $user->get_error_message() ), array( 'status' => 401 ) );
+
 		return null;
 	}
 
@@ -140,7 +143,9 @@ function gmr_streams_json_basic_auth_handler( $user ) {
  * Returns Basic Authorization errors if exists any.
  *
  * @global WP_Error $wp_json_basic_auth_error The basic authorization error object.
+ *
  * @param WP_Error $error The incoming error object or null.
+ *
  * @return WP_Error The error object on failure, otherwise null.
  */
 function gmr_streams_json_basic_auth_error( $error ) {
