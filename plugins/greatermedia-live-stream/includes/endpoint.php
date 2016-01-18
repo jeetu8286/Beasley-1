@@ -17,8 +17,8 @@ add_filter( 'rest_authentication_errors', 'gmr_streams_json_basic_auth_error' );
 function gmr_streams_init_api_endpoint( $routes ) {
 	register_rest_route( 'wp/v2', '/stream/(?P<sign>\S+)',
 		array(
-			'methods'  => WP_REST_Server::READABLE,
-			'callback' => 'gmr_streams_process_endpoint'
+			'methods'  => 'POST',
+			'callback' => 'gmr_streams_process_endpoint',
 		)
 	);
 }
@@ -29,14 +29,23 @@ function gmr_streams_init_api_endpoint( $routes ) {
  * @param string $sign The stream id.
  * @param array $data The song data.
  */
-function gmr_streams_process_endpoint( $sign, $data ) {
+function gmr_streams_process_endpoint( /*$sign,*/ $data ) {
+	$sign = $data->get_param( 'sign' );
+
 	// an example of data:
 	// {"artist": "Bruce Springsteen", "title": "Born to run", "purchase_link": "http://itunes.apple.com/album/born-to-run/id192810984?i=192811017&uo=5", "timestamp": "1417788996"}
 	//
 	// sample of curl command to test endpoint:
 	// curl -u admin:password -X POST --data '{json}' {endpoint_url}
 
-	$data = filter_var_array( $data, array(
+	$params = array(
+		'artist' => $data->get_param( 'artist' ),
+		'title' => $data->get_param( 'title' ),
+		'purchase_link' => $data->get_param( 'purchase_link' ),
+		'timestamp' => $data->get_param( 'timestamp' ),
+	);
+
+	$params = filter_var_array( $params, array(
 		'artist'        => FILTER_DEFAULT,
 		'title'         => FILTER_DEFAULT,
 		'purchase_link' => FILTER_VALIDATE_URL,
@@ -51,7 +60,7 @@ function gmr_streams_process_endpoint( $sign, $data ) {
 	);
 
 	foreach ( $validate as $key => $error ) {
-		if ( empty( $data[ $key ] ) ) {
+		if ( empty( $params[ $key ] ) ) {
 			return new WP_Error( 'gmr_stream_bad_request', $error, array( 'status' => 400 ) );
 		}
 	}
@@ -73,17 +82,17 @@ function gmr_streams_process_endpoint( $sign, $data ) {
 	$song = array(
 		'post_type'     => GMR_SONG_CPT,
 		'post_status'   => 'publish',
-		'post_date'     => date( DATE_ISO8601, $data['timestamp'] + get_option( 'gmt_offset' ) * HOUR_IN_SECONDS ),
-		'post_date_gmt' => date( DATE_ISO8601, $data['timestamp'] ),
+		'post_date'     => date( DATE_ISO8601, $params['timestamp'] + get_option( 'gmt_offset' ) * HOUR_IN_SECONDS ),
+		'post_date_gmt' => date( DATE_ISO8601, $params['timestamp'] ),
 		'post_parent'   => $query->next_post()->ID,
-		'post_title'    => $data['title'],
+		'post_title'    => $params['title'],
 	);
 
 	$song_id = wp_insert_post( $song, true );
 	$created = $song_id && ! is_wp_error( $song_id );
 	if ( $created ) {
-		update_post_meta( $song_id, 'artist', $data['artist'] );
-		update_post_meta( $song_id, 'purchase_link', $data['purchase_link'] );
+		update_post_meta( $song_id, 'artist', $params['artist'] );
+		update_post_meta( $song_id, 'purchase_link', $params['purchase_link'] );
 	}
 
 	return new WP_REST_Response( $created, $created ? 201 : 400 );
