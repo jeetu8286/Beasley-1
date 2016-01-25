@@ -12,13 +12,7 @@
  * @return void
  */
 function gmr_verify_form_submission( $form ) {
-
-	/**
-	 * Manual call to image.php so that users who have not authenticated with
-	 * WordPress have the ability to upload a file.
-	 */
-	require_once ABSPATH . 'wp-admin/includes/image.php';
-
+	
 	foreach ( (array) $form as $field ) {
 		if ( ! $field->required || 'section_break' === $field->field_type ) {
 			continue;
