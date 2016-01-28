@@ -528,10 +528,9 @@ class BlogData {
 		foreach ( $files as $file ) {
 			if ( file_exists( $path = $old_upload_dir['basedir'] . '/' . $file ) ) {
 				if ( ! copy( $path, $upload_dir['basedir'] . '/' . $file ) ) {
-				} else {
-					if ( ! empty( $args_assoc['delete-local'] ) ) {
-						unlink( $path );
-					}
+					error_log( "Unable to path:" . print_r( $path, true ), 3, '/var/www/html/wordpress/debug.log' );
+					error_log( "Unable to upload_dir:" . print_r( $upload_dir, true ), 3, '/var/www/html/wordpress/debug.log' );
+					error_log( "Unable to file:" . print_r( $file, true ), 3, '/var/www/html/wordpress/debug.log' );
 				}
 			}
 		}
