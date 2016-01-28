@@ -1,0 +1,322 @@
+Array
+(
+    [data] => Array
+        (
+            [wp-refresh-post-lock] => Array
+                (
+                    [post_id] => 409242
+                    [lock] => 1453999529:1
+                )
+
+            [wp-refresh-post-nonces] => Array
+                (
+                    [post_id] => 409242
+                )
+
+        )
+
+    [interval] => 15
+    [_nonce] => 985a1aa403
+    [action] => heartbeat
+    [screen_id] => post
+    [has_focus] => false
+)
+Array
+(
+    [data] => Array
+        (
+            [wp-check-locked-posts] => Array
+                (
+                    [0] => post-70967
+                    [1] => post-70219
+                    [2] => post-70822
+                    [3] => post-70811
+                    [4] => post-70110
+                    [5] => post-69788
+                    [6] => post-70113
+                    [7] => post-70808
+                    [8] => post-70887
+                    [9] => post-70898
+                    [10] => post-70830
+                    [11] => post-70920
+                    [12] => post-70916
+                    [13] => post-70894
+                    [14] => post-70913
+                    [15] => post-70908
+                    [16] => post-70891
+                    [17] => post-70904
+                    [18] => post-70901
+                    [19] => post-70886
+                    [20] => post-70884
+                    [21] => post-70876
+                    [22] => post-70868
+                    [23] => post-70860
+                    [24] => post-70854
+                    [25] => post-70861
+                    [26] => post-70846
+                    [27] => post-70849
+                    [28] => post-70842
+                    [29] => post-70841
+                    [30] => post-70837
+                    [31] => post-70833
+                    [32] => post-70089
+                    [33] => post-70821
+                    [34] => post-70812
+                    [35] => post-70802
+                    [36] => post-70798
+                    [37] => post-70785
+                    [38] => post-70782
+                    [39] => post-70767
+                    [40] => post-70794
+                    [41] => post-70777
+                    [42] => post-70756
+                    [43] => post-70778
+                    [44] => post-70773
+                    [45] => post-70770
+                    [46] => post-70757
+                    [47] => post-70755
+                    [48] => post-70750
+                    [49] => post-70746
+                    [50] => post-70740
+                    [51] => post-70737
+                    [52] => post-70733
+                    [53] => post-70879
+                    [54] => post-70717
+                    [55] => post-70728
+                    [56] => post-70725
+                    [57] => post-70722
+                    [58] => post-70712
+                    [59] => post-70689
+                    [60] => post-70708
+                    [61] => post-70674
+                    [62] => post-70694
+                    [63] => post-70700
+                    [64] => post-70660
+                    [65] => post-70695
+                    [66] => post-70627
+                    [67] => post-70641
+                    [68] => post-70650
+                    [69] => post-70639
+                    [70] => post-70626
+                    [71] => post-70620
+                    [72] => post-70619
+                    [73] => post-70611
+                    [74] => post-70703
+                    [75] => post-70584
+                    [76] => post-70586
+                    [77] => post-70564
+                    [78] => post-70560
+                    [79] => post-70447
+                    [80] => post-70556
+                    [81] => post-70081
+                    [82] => post-69735
+                    [83] => post-70516
+                    [84] => post-70517
+                    [85] => post-70511
+                    [86] => post-70508
+                    [87] => post-70504
+                    [88] => post-70502
+                    [89] => post-70480
+                    [90] => post-70499
+                    [91] => post-70466
+                    [92] => post-70491
+                    [93] => post-70469
+                    [94] => post-70444
+                    [95] => post-70461
+                    [96] => post-70454
+                    [97] => post-70448
+                    [98] => post-70435
+                    [99] => post-70439
+                )
+
+        )
+
+    [interval] => 15
+    [_nonce] => b8e62976d5
+    [action] => heartbeat
+    [screen_id] => edit-post
+    [has_focus] => false
+)
+Array
+(
+)
+Array
+(
+    [interval] => 60
+    [_nonce] => b8e62976d5
+    [action] => heartbeat
+    [screen_id] => plugins-network
+    [has_focus] => false
+)
+Array
+(
+    [interval] => 60
+    [_nonce] => b8e62976d5
+    [action] => heartbeat
+    [screen_id] => upload
+    [has_focus] => false
+)
+Array
+(
+)
+Array
+(
+    [data] => Array
+        (
+            [wp-refresh-post-lock] => Array
+                (
+                    [post_id] => 409242
+                    [lock] => 1453999650:1
+                )
+
+            [wp-refresh-post-nonces] => Array
+                (
+                    [post_id] => 409242
+                )
+
+        )
+
+    [interval] => 15
+    [_nonce] => 985a1aa403
+    [action] => heartbeat
+    [screen_id] => post
+    [has_focus] => false
+)
+Array
+(
+    [data] => Array
+        (
+            [wp-check-locked-posts] => Array
+                (
+                    [0] => post-70967
+                    [1] => post-70219
+                    [2] => post-70822
+                    [3] => post-70811
+                    [4] => post-70110
+                    [5] => post-69788
+                    [6] => post-70113
+                    [7] => post-70808
+                    [8] => post-70887
+                    [9] => post-70898
+                    [10] => post-70830
+                    [11] => post-70920
+                    [12] => post-70916
+                    [13] => post-70894
+                    [14] => post-70913
+                    [15] => post-70908
+                    [16] => post-70891
+                    [17] => post-70904
+                    [18] => post-70901
+                    [19] => post-70886
+                    [20] => post-70884
+                    [21] => post-70876
+                    [22] => post-70868
+                    [23] => post-70860
+                    [24] => post-70854
+                    [25] => post-70861
+                    [26] => post-70846
+                    [27] => post-70849
+                    [28] => post-70842
+                    [29] => post-70841
+                    [30] => post-70837
+                    [31] => post-70833
+                    [32] => post-70089
+                    [33] => post-70821
+                    [34] => post-70812
+                    [35] => post-70802
+                    [36] => post-70798
+                    [37] => post-70785
+                    [38] => post-70782
+                    [39] => post-70767
+                    [40] => post-70794
+                    [41] => post-70777
+                    [42] => post-70756
+                    [43] => post-70778
+                    [44] => post-70773
+                    [45] => post-70770
+                    [46] => post-70757
+                    [47] => post-70755
+                    [48] => post-70750
+                    [49] => post-70746
+                    [50] => post-70740
+                    [51] => post-70737
+                    [52] => post-70733
+                    [53] => post-70879
+                    [54] => post-70717
+                    [55] => post-70728
+                    [56] => post-70725
+                    [57] => post-70722
+                    [58] => post-70712
+                    [59] => post-70689
+                    [60] => post-70708
+                    [61] => post-70674
+                    [62] => post-70694
+                    [63] => post-70700
+                    [64] => post-70660
+                    [65] => post-70695
+                    [66] => post-70627
+                    [67] => post-70641
+                    [68] => post-70650
+                    [69] => post-70639
+                    [70] => post-70626
+                    [71] => post-70620
+                    [72] => post-70619
+                    [73] => post-70611
+                    [74] => post-70703
+                    [75] => post-70584
+                    [76] => post-70586
+                    [77] => post-70564
+                    [78] => post-70560
+                    [79] => post-70447
+                    [80] => post-70556
+                    [81] => post-70081
+                    [82] => post-69735
+                    [83] => post-70516
+                    [84] => post-70517
+                    [85] => post-70511
+                    [86] => post-70508
+                    [87] => post-70504
+                    [88] => post-70502
+                    [89] => post-70480
+                    [90] => post-70499
+                    [91] => post-70466
+                    [92] => post-70491
+                    [93] => post-70469
+                    [94] => post-70444
+                    [95] => post-70461
+                    [96] => post-70454
+                    [97] => post-70448
+                    [98] => post-70435
+                    [99] => post-70439
+                )
+
+        )
+
+    [interval] => 15
+    [_nonce] => b8e62976d5
+    [action] => heartbeat
+    [screen_id] => edit-post
+    [has_focus] => false
+)
+Array
+(
+)
+Array
+(
+    [interval] => 60
+    [_nonce] => b8e62976d5
+    [action] => heartbeat
+    [screen_id] => plugins-network
+    [has_focus] => false
+)
+Array
+(
+    [interval] => 60
+    [_nonce] => b8e62976d5
+    [action] => heartbeat
+    [screen_id] => upload
+    [has_focus] => false
+)
+Array
+(
+)
