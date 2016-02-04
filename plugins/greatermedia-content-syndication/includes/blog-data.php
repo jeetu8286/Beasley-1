@@ -97,6 +97,7 @@ class BlogData {
 		$content_home_url = trailingslashit( home_url() );
 		restore_current_blog();
 
+		// @remove after debugging
 		foreach ( $result as $single_post ) {
 			$post_id = self::ImportPosts(
 				$single_post['post_obj']
@@ -229,14 +230,15 @@ class BlogData {
 				$featured_src = $featured_src[0];
 			}
 		}
-		
+
 		$galleries = get_post_galleries( $single_result->ID, false );
+
 		foreach ( $galleries as &$gallery ) {
 			if ( ! empty( $gallery['ids'] ) ) {
 				$image_ids = array_filter( array_map( 'intval', explode( ',', $gallery['ids'] ) ) );
 				$gallery['ids'] = implode( ',', $image_ids );
 				$gallery['src'] = array();
-				
+
 				foreach ( $image_ids as $image_id ) {
 					$image_src = wp_get_attachment_image_src( $image_id, 'full' );
 					if ( ! empty( $image_src ) ) {
@@ -284,7 +286,7 @@ class BlogData {
 		if ( ! $post ) {
 			return;
 		}
-		
+
 		$post_name = sanitize_title( $post->post_name );
 		$post_title = sanitize_text_field( $post->post_title );
 		$post_type = sanitize_text_field( $post->post_type );
@@ -334,7 +336,7 @@ class BlogData {
 			if ( $hash_value != $post_hash || $force_update ) {
 				// post has been updated, override existing one
 				$args['ID'] = $post_id;
-				
+
 				wp_update_post( $args );
 				if ( ! empty( $metas ) ) {
 					foreach ( $metas as $meta_key => $meta_value ) {
@@ -499,6 +501,11 @@ class BlogData {
 	 * @return int|object
 	 */
 	public static function ImportMedia( $post_id, $filename, $featured = false, $old_id = 0 ) {
+
+		require_once( ABSPATH . 'wp-admin' . '/includes/image.php' );
+		require_once( ABSPATH . 'wp-admin' . '/includes/file.php' );
+		require_once( ABSPATH . 'wp-admin' . '/includes/media.php' );
+
 		$id = 0;
 		$old_id = intval( $old_id );
 		$tmp = download_url( $filename );

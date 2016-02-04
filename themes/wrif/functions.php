@@ -13,7 +13,7 @@
  */
 
  // Useful global constants
-define( 'WRIF_VERSION', '0.1.9' ); /* Version bump by Allen 10/22/2015 @ 9:45am EST */
+define( 'WRIF_VERSION', '0.2.2' ); /* Version bump by Steve 10/23/2015 @ 2:00pm EST */
 
  /**
   * Set up theme defaults and register supported WordPress features.
@@ -44,6 +44,13 @@ define( 'WRIF_VERSION', '0.1.9' ); /* Version bump by Allen 10/22/2015 @ 9:45am 
 	wp_dequeue_style( 'greatermedia' );
 	wp_deregister_style( 'greatermedia' );
 	wp_enqueue_style( 'wrif', get_stylesheet_directory_uri() . "/assets/css/wrif{$postfix}.css", array( 'google-fonts-wrif' ), WRIF_VERSION );
+	wp_enqueue_script(
+		'wrif',
+		get_stylesheet_directory_uri() . "/assets/js/wrif{$postfix}.js",
+		array(),
+		WRIF_VERSION,
+		true
+	);
 }
 add_action( 'wp_enqueue_scripts', 'wrif_scripts_styles', 20 );
 
@@ -58,3 +65,20 @@ add_action( 'wp_enqueue_scripts', 'wrif_scripts_styles', 20 );
 	echo apply_filters( 'wrif_humans', $humans );
  }
  add_action( 'wp_head', 'wrif_header_meta' );
+
+/**
+* Add Chartbeat to site.
+*/
+function wrif_chartbeat_header() {
+	$content = '<script type="text/javascript">var _sf_startpt=(new Date()).getTime()</script>';
+
+	echo apply_filters( 'wrif_chartbeat_header', $content );
+}
+add_action( 'wp_head', 'wrif_chartbeat_header' );
+
+function wrif_chartbeat_footer() {
+	$content = '<script type="text/javascript">var cbjspath = "static.chartbeat.com/js/chartbeat.js?uid=2332&domain=wrif.com";var cbjsprotocol = (("https:" == document.location.protocol) ? "/web/20150305155406/https://s3.amazonaws.com/" : "http://"); document.write(unescape("%3Cscript src=\'"+cbjsprotocol+cbjspath+"\' type=\'text/javascript\'%3E%3C/script%3E"))</script>';
+
+	echo apply_filters( 'wrif_chartbeat_footer', $content );
+}
+add_action( 'wp_footer', 'wrif_chartbeat_footer' );

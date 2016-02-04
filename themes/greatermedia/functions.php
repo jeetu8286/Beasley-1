@@ -20,7 +20,7 @@
 if ( defined( 'GMR_PARENT_ENV' ) && 'dev' == GMR_PARENT_ENV ) {
 	define( 'GREATERMEDIA_VERSION', time() );
 } else {
-	define( 'GREATERMEDIA_VERSION', '1.2.6' ); /* Version bump by Allen 10/22/2015 @ 9:45am EST */
+	define( 'GREATERMEDIA_VERSION', '1.2.7' ); /* Version bump by Allen 10/23/2015 @ 11:00 a.m. EST */
 }
 
 add_theme_support( 'homepage-curation' );
@@ -642,13 +642,18 @@ function greatermedia_deactivate_tribe_warning_on_dashboard( $option_value ) {
 add_filter( 'get_user_option_dashboard_quick_press_last_post_id', 'greatermedia_deactivate_tribe_warning_on_dashboard' );
 
 function add_google_analytics() {
+	global $post;
 	$google_analytics = get_option( 'gmr_google_analytics', '' );
 	$google_uid_dimension = absint( get_option( 'gmr_google_uid_dimension', '' ) );
 
 	if ( empty( $google_analytics ) ) {
 		return;
 	}
-
+	if ( is_singular() ) {
+		$args     = array( 'orderby' => 'name', 'order' => 'ASC', 'fields' => 'slugs' );
+		$shows    = implode( ', ', wp_get_post_terms( $post->ID, '_shows', $args ) );
+		$category = implode( ', ', wp_get_post_terms($post->ID, 'category', $args ) );
+	}
 	?>
 	<script>
 	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -675,6 +680,15 @@ function add_google_analytics() {
 		ga('send', 'pageview');
 	});
 	ga('require', 'displayfeatures');
+	<?php if ( is_singular() ) : ?>
+		<?php if ( ! empty( $shows ) ) : ?>
+			ga( 'set', 'contentGroup1', <?php echo json_encode( $shows ); ?> );
+		<?php endif; ?>
+		<?php if ( ! empty( $category ) ): ?>
+			ga( 'set', 'contentGroup2', <?php echo json_encode( $category ); ?> );
+		<?php endif; ?>
+	<?php endif ?>
+
 	ga('send', 'pageview');
 
 	jQuery(document).ready(function() {

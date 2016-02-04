@@ -21,7 +21,7 @@ if ( defined( 'GMR_THEFANATIC_ENV' ) && 'dev' == GMR_THEFANATIC_ENV ) {
 	// So that things like cloudflare don't hold on to our css during dev
 	define( 'THEFANATIC_VERSION', time() );
 } else {
-	define( 'THEFANATIC_VERSION', '0.2.6' ); /* Version bump by Allen 10/22/2015 @ 9:45am EST */
+	define( 'THEFANATIC_VERSION', '0.3.0' ); /* Version bump by Steve 12/10/2015 @ 3:15 p.m. EST */
 }
 
 /**
@@ -95,13 +95,14 @@ function thefanatic_scripts_styles() {
 		),
 		THEFANATIC_VERSION
 	);
-	wp_enqueue_script(
+	/* DISABLING DUE TO SIMPLIFI NETWORK ISSUE - WILL ENABLE ONCE FIXED - STEVE MEYERS - 11/13/15 */
+	/*wp_enqueue_script(
 		'simpli-fi',
 		'http://i.simpli.fi/dpx.js?cid=23420&action=100&segment=fanatic&m=1&sifi_tuid=7537',
 		array(),
 		null,
 		true
-	);
+	);*/
 }
 
 add_action( 'wp_enqueue_scripts', 'thefanatic_scripts_styles', 20 );
