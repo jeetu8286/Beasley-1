@@ -112,3 +112,20 @@ function greatermedia_json_categories_tags($post, $data, $update) {
 add_filter('json_insert_post', 'greatermedia_json_categories_tags', 20, 3 );
 // 2.x
 add_filter('rest_insert_post', 'greatermedia_json_categories_tags', 20, 3 );
+
+add_action( 'rest_api_init', 'slug_register_breaking' );
+function slug_register_breaking() {
+    register_rest_field( 'post',
+        '_is_breaking_news',
+        array(
+            'get_callback'    => 'slug_get_breaking',
+            'update_callback' => null,
+            'schema'          => null,
+        )
+    );
+}
+
+function slug_get_breaking( $object, $field_name, $request ) {
+    return get_post_meta( $object[ 'id' ], $field_name, true );
+}
+
