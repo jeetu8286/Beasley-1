@@ -127,7 +127,7 @@ class Dynamic_CDN {
 	 */
 	public function filter_image_srcset( $sources ) {
 		foreach ( $sources as &$source ) {
-			$source['url'] = $this->filter_uploads_only( $source['url'] );
+			$source['url'] = $this->filter( $source['url'] );
 		}
 
 		return $sources;
