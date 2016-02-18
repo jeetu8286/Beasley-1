@@ -43,33 +43,34 @@ class Dynamic_CDN {
 		$this->uploads_only = apply_filters( 'dynamic_cdn_uploads_only', false );
 		$this->extensions = apply_filters( 'dynamic_cdn_extensions', array( 'jpe?g', 'gif', 'png', 'bmp', 'js', 'ico' ) );
 
-			add_action( 'admin_init', array( $this, 'template_redirect' ) );
-			add_action( 'template_redirect', array( $this, 'template_redirect' ) );
+		add_action( 'admin_init', array( $this, 'template_redirect' ) );
+		add_action( 'template_redirect', array( $this, 'template_redirect' ) );
+		add_action( 'wp_get_attachment_url', array( $this, 'filter_attachment_url' ) );
 
-			add_filter( 'wp_calculate_image_srcset', array( $this, 'filter_image_srcset' ) );
+		add_filter( 'wp_calculate_image_srcset', array( $this, 'filter_image_srcset' ) );
 
-			if ( $this->uploads_only ) {
-				add_filter( 'the_content'/*'dynamic_cdn_content'*/, array( $this, 'filter_uploads_only' ) );
-			} else {
-				add_filter( 'dynamic_cdn_content', array( $this, 'filter' ) );
-			}
+		if ( $this->uploads_only ) {
+			add_filter( 'the_content'/*'dynamic_cdn_content'*/, array( $this, 'filter_uploads_only' ) );
+		} else {
+			add_filter( 'dynamic_cdn_content', array( $this, 'filter' ) );
+		}
 
-			$this->site_domain = parse_url( get_bloginfo( 'url' ), PHP_URL_HOST );
+		$this->site_domain = parse_url( get_bloginfo( 'url' ), PHP_URL_HOST );
 
-			/**
-			 * Update the stored site domain, should an aliasing plugin be used (for example)
-			 *
-			 * @param string $site_domain
-			 */
-			$this->site_domain = apply_filters( 'dynamic_cdn_site_domain', $this->site_domain );
+		/**
+		 * Update the stored site domain, should an aliasing plugin be used (for example)
+		 *
+		 * @param string $site_domain
+		 */
+		$this->site_domain = apply_filters( 'dynamic_cdn_site_domain', $this->site_domain );
 
-			if ( defined( 'DYNCDN_DOMAINS' ) ) {
-				$this->cdn_domains = explode( ',', DYNCDN_DOMAINS );
-				$this->cdn_domains = array_map( 'trim', $this->cdn_domains );
-				$this->has_domains = true;
-			}
+		if ( defined( 'DYNCDN_DOMAINS' ) ) {
+			$this->cdn_domains = explode( ',', DYNCDN_DOMAINS );
+			$this->cdn_domains = array_map( 'trim', $this->cdn_domains );
+			$this->has_domains = true;
+		}
 
-			$this->cdn_domains = apply_filters( 'dynamic_cdn_default_domains', $this->cdn_domains );
+		$this->cdn_domains = apply_filters( 'dynamic_cdn_default_domains', $this->cdn_domains );
 	}
 
 	/**
@@ -169,6 +170,48 @@ class Dynamic_CDN {
 		// Filter styles for image urls.
 		$content = preg_replace_callback( "#style=([\"'].*?)(url\(https?://){$url}([^\)]+\." . implode( '|', $this->extensions ) . ")(\?((?:(?!\\1).)+))?\)#", array( $this, 'style_cb' ), $content );
 		return $content;
+	}
+
+	/**
+	 * Filters attachment URL - Replaces anything on dynamic_cdn_site_domain with the proper CDN Domain
+	 *
+	 * Specifically this is required to catch instances inside of [playlist] shortcodes, since the data there
+	 * is JSON Encoded, and not captured by the regex above.
+	 *
+	 * @param string $attachment_url
+	 *
+	 * @return string
+	 */
+	public function filter_attachment_url( $attachment_url ) {
+		if ( ! $this->has_domains ) {
+			return $attachment_url;
+		}
+
+		$url = explode( '://', get_bloginfo( 'url' ) );
+		array_shift( $url );
+
+		/**
+		 * Modify the domain we're rewriting, should an aliasing plugin be used (for example)
+		 *
+		 * @param string $site_domain
+		 */
+		$url = apply_filters( 'dynamic_cdn_site_domain', rtrim( implode( '://', $url ), '/' ) );
+
+		if ( strpos( $attachment_url, $url ) === false ) {
+			return $attachment_url;
+		}
+
+		$cdn_domain = $this->cdn_domains[ 0 ];
+
+		$new_url = str_replace( $url, $cdn_domain, $attachment_url );
+
+		if ( is_ssl() ) {
+			$new_url = str_replace( 'http://', 'https://', $new_url );
+		} else {
+			$new_url = str_replace( 'https://', 'http://', $new_url );
+		}
+
+		return $new_url;
 	}
 
 	/**
