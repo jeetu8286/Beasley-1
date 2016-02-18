@@ -127,9 +127,11 @@ class Dynamic_CDN {
 	 */
 	public function filter_image_srcset( $sources ) {
 		foreach ( $sources as &$source ) {
+			// since filter function works only with HTML content, we need to wrap url with img tag to get it replaced correctly
 			$image = sprintf( '<img src="%s">', $source['url'] );
 			$image = $this->filter( $image );
 
+			// after replacement we need to unpack img tag and grab replaced url
 			if ( preg_match( '/\"(.*?)\"/', $image, $match ) ) {
 				$source['url'] = $match[1];
 			}
