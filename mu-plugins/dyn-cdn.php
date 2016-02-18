@@ -8,7 +8,7 @@ add_filter( 'dynamic_cdn_site_domain', function( $domain ) {
 });
 
 add_filter( 'dynamic_cdn_extensions', function( $extensions) {
-	$extensions[] = 'mp3';
+	$extensions = array_merge( $extensions, array( 'mp3', 'ogg', 'wma', 'm4a', 'wav' ) );
 
 	return $extensions;
 });
