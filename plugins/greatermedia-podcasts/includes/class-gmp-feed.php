@@ -15,7 +15,7 @@ class GMPFeed {
 
 			// Prevent feed from returning a 404 error when no posts are present on site
 			add_action( 'template_redirect' , array( __CLASS__ , 'gmp_prevent_404' ) , 10 );
-			add_action( 'template_redirect' , array( __CLASS__ , 'gmp_feed_template' ) , 1 );
+			add_action( 'template_redirect' , array( __CLASS__ , 'gmp_feed_template' ) , 11 );
 		}
 	}
 
