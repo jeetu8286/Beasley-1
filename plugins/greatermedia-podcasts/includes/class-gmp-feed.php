@@ -57,7 +57,7 @@ class GMPFeed {
 
 			$data = wp_remote_head( $file );
 
-			if( isset( $data['headers']['content-length'] ) ) {
+			if ( ! is_wp_error( $data ) && isset( $data['headers']['content-length'] ) ) {
 
 				$raw = $data['headers']['content-length'];
 				$formatted = self::format_bytes( $raw );
