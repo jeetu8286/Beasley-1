@@ -69,7 +69,7 @@ class BlogData {
 		}
 
 		$result = self::QueryContentSite( $syndication_id, '', '', $offset );
-		$taxonomy_namer = SyndicationCPT::$support_default_tax;
+		$taxonomy_names = SyndicationCPT::$support_default_tax;
 		$defaults = array(
 			'status' =>  get_post_meta( $syndication_id, 'subscription_post_status', true ),
 		);
