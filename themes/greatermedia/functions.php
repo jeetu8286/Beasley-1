@@ -35,6 +35,7 @@ require_once( __DIR__ . '/includes/posts-screen-thumbnails/loader.php' );
 require_once( __DIR__ . '/includes/category-options.php' );
 require_once( __DIR__ . '/includes/class-favicon.php' );
 require_once( __DIR__ . '/includes/iframe-embed.php' );
+require_once( __DIR__ . '/includes/flexible-feature-images/class-flexible-feature-images.php' );
 
 /**
  * Required files
