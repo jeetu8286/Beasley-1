@@ -1,17 +1,8 @@
-<?php
-/**
- * Single Post template file
- *
- * @package Greater Media
- * @since   0.1.0
- */
-
-get_header();
-?>
-
 <?php while ( have_posts() ) : the_post(); ?>
 
 	<div class="container">
+
+		<?php get_template_part( 'partials/show-mini-nav' ); ?>
 
 		<?php
 		/**
@@ -41,39 +32,21 @@ get_header();
 
 				<header class="article__header">
 
-
+					<time class="article__date" datetime="<?php echo get_the_time(); ?>"><?php the_date('F j, Y'); ?></time>
 					<h2 class="article__title" itemprop="headline"><?php the_title(); ?></h2>
 					<?php get_template_part( 'partials/social-share' ); ?>
-
+					<div class="article__author">by <?php the_author(); ?></div>
 				</header>
 
 				<section class="article__content" itemprop="articleBody">
 
 					<?php the_content(); ?>
 
-					<!-- begin video player -->
-						<div id="playerContainer" ></div>
-						<script type="text/javascript" src="https://player.ooyala.com/v3/7ed66e6e45b442dda34890f374bbb46c"></script>
-						<script type="text/javascript">
-						var ooyalaPlayer;
-						OO.ready(function() {
-						    var playerConfiguration = {
-							adSetCode:'f25d24d32a3d4e2e9f2b8ddc3350f3e0',
-							playlistsPlugin: {"data":["e4c4cac195bf482c99b409f0cfe16a75","2f8f6b2ed35c4ee1875595ddf881f605","13454882812d48159b3bc46a773fe154","c570d208f9df40e9a75f6ba838be417c","ae615e882e5d42a2b17d137042e83b23","205fce70130342fd852c2d73c1839e3e"]},
-						        autoplay: false,
-						        loop: false,
-						        height: 672,
-						        width: '',
-						        useFirstVideoFromPlaylist: true
-						    };
-
-						    ooyalaPlayer = OO.Player.create('playerContainer', '', playerConfiguration);
-						});
-						</script>
-					<!-- end player -->
-
 				</section>
-
+				<?php if ( function_exists( 'related_posts' ) ): ?>
+					<?php related_posts( array( 'template' => 'partials/related-posts.php' ) ); ?>
+				<?php endif; ?>
+				
 				<?php get_template_part( 'partials/article-footer' ); ?>
 
 				<div class="ad__inline--right mobile">
@@ -87,9 +60,7 @@ get_header();
 				<?php } ?>
 
 
-				<?php if ( function_exists( 'related_posts' ) ): ?>
-					<?php related_posts( array( 'template' => 'partials/related-posts.php' ) ); ?>
-				<?php endif; ?>
+
 
 			</article>
 
@@ -98,5 +69,3 @@ get_header();
 	</div>
 
 <?php endwhile; ?>
-<?php
-get_footer();

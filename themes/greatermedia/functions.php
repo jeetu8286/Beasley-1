@@ -435,6 +435,30 @@ function greatermedia_alter_search_query( $query ) {
 add_action( 'pre_get_posts', 'greatermedia_alter_search_query' );
 
 /**
+ * Alter search score to favor more recent posts first
+ *
+ * @param $request_args
+ */
+function ep_search_request_args( $request_args, $args = '', $scope = '' ) {
+	$gauss = new \stdClass();
+	$gauss->post_date = array( 'scale' => '52w', 'offset' => '12w', 'decay' => 0.3 );
+
+	$function_score = array(
+		'function_score' => array(
+			'functions' => array(
+				array( 'gauss' => $gauss )
+			),
+			'score_mode' => 'multiply',
+			'query' => $request_args['query']
+		)
+	);
+	$request_args['query'] = $function_score;
+
+	return $request_args;
+}
+add_filter( 'ep_formatted_args', 'ep_search_request_args' );
+
+/**
  * Alter query to show custom post types in category pages.
  *
  * @param  WP_Query $query [description]
@@ -510,7 +534,7 @@ if ( ! function_exists( 'greatermedia_load_more_template' ) ) :
 			'paged'         => $gmr_loadmore_paged ?: $wp_query->query_vars['paged'],
 			'max_num_pages' => $gmr_loadmore_num_pages ?: $wp_query->max_num_pages,
 			'post_count'    => $gmr_loadmore_post_count ?: $wp_query->post_count,
-			'html'          => $html,
+			'html'          => apply_filters( 'dynamic_cdn_content', $html ), // Apply dynamic cdn filter so images aren't broken.
 		) );
 
 		exit;
@@ -1077,20 +1101,6 @@ function greatermedia_facebook_handler( $matches, $attr, $url, $rawattr ) {
 	return '<script>!function(e,n,t){var o,c=e.getElementsByTagName(n)[0];e.getElementById(t)||(o=e.createElement(n),o.id=t,o.src="//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.2",c.parentNode.insertBefore(o,c))}(document,"script","facebook-jssdk");</script>
 			<div class="fb-post" data-href="' . esc_url( $url ) . '"></div>';
 }
-
-/**
- * Filters search results to be ordered by the date
- *
- * @param $query
- */
-function greatermedia_search_results_filter( $query ) {
-	if ( ! is_admin() && $query->is_main_query() ) {
-		if ( $query->is_search() ) {
-			$query->set( 'orderby', 'date' );
-		}
-	}
-}
-add_action( 'pre_get_posts', 'greatermedia_search_results_filter' );
 
 /**
  * Disables wptexturize for compatibility with Embed.ly
