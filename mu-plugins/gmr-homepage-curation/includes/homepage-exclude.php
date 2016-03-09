@@ -9,7 +9,7 @@ namespace GreaterMedia\HomepageCuration;
 
 function add_meta_boxes() {
 	$screens = apply_filters( 'gmr-homepage-exclude-post-types', [ 'post' ] );
-	add_meta_box( 'keep-off-homepage', 'Keep Off Homepage', __NAMESPACE__ . '\render_meta_box', $screens );
+	add_meta_box( 'keep-off-homepage', 'Keep Off Homepage', __NAMESPACE__ . '\render_meta_box', $screens, 'side' );
 }
 add_action( 'add_meta_boxes', __NAMESPACE__ . '\add_meta_boxes' );
 
