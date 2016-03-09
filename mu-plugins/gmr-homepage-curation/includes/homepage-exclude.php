@@ -20,7 +20,7 @@ function add_meta_boxes() {
 	 *
 	 * @param array $post_types Allowed post types.
 	 */
-	$screens = apply_filters( 'gmr-homepage-exclude-post-types', [ 'post' ] );
+	$screens = apply_filters( 'gmr-homepage-exclude-post-types', [ 'post', 'episode' ] );
 	add_meta_box( 'keep-off-homepage', 'Keep Off Homepage', __NAMESPACE__ . '\render_meta_box', $screens, 'side' );
 }
 add_action( 'add_meta_boxes', __NAMESPACE__ . '\add_meta_boxes' );
@@ -36,7 +36,7 @@ function save_meta( $post_id ) {
 	/**
 	 * See includes/homepage-exclude.php:23
 	 */
-	$allowed_types = apply_filters( 'gmr-homepage-exclude-post-types', [ 'post' ] );
+	$allowed_types = apply_filters( 'gmr-homepage-exclude-post-types', [ 'post', 'episode' ] );
 	$post          = get_post( $post_id );
 	if (
 		! in_array( $post->post_type, $allowed_types ) ||
