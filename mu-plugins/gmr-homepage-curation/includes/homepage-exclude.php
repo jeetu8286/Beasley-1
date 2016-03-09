@@ -11,17 +11,31 @@ const NONCE_NAME = '_keep-off-homepage-nonce';
 const NONCE_STRING = 'keep-off-homepage';
 const META_KEY = 'keep-off-homepage';
 
+/**
+ * Add keep off home page metabox.
+ */
 function add_meta_boxes() {
+	/**
+	 * Filter post types that are allowed to be excluded from the home page.
+	 *
+	 * @param array $post_types Allowed post types.
+	 */
 	$screens = apply_filters( 'gmr-homepage-exclude-post-types', [ 'post' ] );
 	add_meta_box( 'keep-off-homepage', 'Keep Off Homepage', __NAMESPACE__ . '\render_meta_box', $screens, 'side' );
 }
 add_action( 'add_meta_boxes', __NAMESPACE__ . '\add_meta_boxes' );
 
+/**
+ * Include and render keep off home page metabox.
+ */
 function render_meta_box() {
 	\GreaterMedia\HomepageCuration\load_template( 'metabox-keep-off-homepage.php' );
 }
 
 function save_meta( $post_id ) {
+	/**
+	 * See includes/homepage-exclude.php:23
+	 */
 	$allowed_types = apply_filters( 'gmr-homepage-exclude-post-types', [ 'post' ] );
 	$post          = get_post( $post_id );
 	if (
@@ -42,6 +56,11 @@ function save_meta( $post_id ) {
 }
 add_action( 'save_post', __NAMESPACE__ . '\save_meta' );
 
+/**
+ * Add meta query that excludes posts that have the keep off homepage meta key.
+ *
+ * @param \WP_Query $query Query object being modified.
+ */
 function ignore_posts( $query ) {
 
 	if ( ! $query->is_home() || ! $query->is_main_query() ) {
