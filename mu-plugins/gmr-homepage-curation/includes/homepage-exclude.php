@@ -5,7 +5,7 @@
  * @package GreaterMedia\HomepageCuration
  */
 
-namespace GreaterMedia\HomepageCuration;
+namespace GreaterMedia\HomepageCuration\KeepOffHomepage;
 
 const NONCE_NAME = '_keep-off-homepage-nonce';
 const NONCE_STRING = 'keep-off-homepage';
@@ -18,12 +18,12 @@ function add_meta_boxes() {
 add_action( 'add_meta_boxes', __NAMESPACE__ . '\add_meta_boxes' );
 
 function render_meta_box() {
-	load_template( 'metabox-keep-off-homepage.php' );
+	\GreaterMedia\HomepageCuration\load_template( 'metabox-keep-off-homepage.php' );
 }
 
-function save_meta( $post_id, $post ) {
+function save_meta( $post_id ) {
 	$allowed_types = apply_filters( 'gmr-homepage-exclude-post-types', [ 'post' ] );
-
+	$post          = get_post( $post_id );
 	if (
 		! in_array( $post->post_type, $allowed_types ) ||
 	  ! isset( $_POST[ NONCE_NAME ] ) || // PHPCS: input var ok.
@@ -40,3 +40,19 @@ function save_meta( $post_id, $post ) {
 		delete_post_meta( $post_id, META_KEY );
 	}
 }
+add_action( 'save_post', __NAMESPACE__ . '\save_meta' );
+
+function ignore_posts( $query ) {
+
+	if ( ! $query->is_home() || ! $query->is_main_query() ) {
+		return;
+	}
+
+	$meta_query   = $query->get( 'meta_query' );
+	$meta_query[] = [
+		'key'     => META_KEY,
+		'compare' => 'NOT EXISTS',
+	];
+	$query->set( 'meta_query', $meta_query );
+}
+add_action( 'pre_get_posts', __NAMESPACE__ . '\ignore_posts' );
