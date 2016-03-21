@@ -48,6 +48,10 @@ function save_meta( $post_id ) {
 		return;
 	}
 
+	if ( ! current_user_can( 'edit_post', $post_id ) ) {
+		return false;
+	}
+
 	if ( isset( $_POST[ META_KEY ] ) ) { // PHPCS: input var ok.
 		add_post_meta( $post_id, META_KEY, true );
 	} else {
