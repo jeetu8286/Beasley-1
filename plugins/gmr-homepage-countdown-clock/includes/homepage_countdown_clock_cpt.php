@@ -12,8 +12,6 @@ add_action( 'wp_print_scripts',      __NAMESPACE__ . '\remove_yoast_metabox_js',
 
 add_filter( 'preview_post_link',     __NAMESPACE__ . '\preview_post_setup', PHP_INT_MAX, 2 );
 
-// Enqueue scripts
-add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\enqueue_admin_scripts' );
 /**
  * Homepage save nonce
  *
@@ -38,7 +36,7 @@ function preview_meta_key_suffix() {
  * @return string
  */
 function gmr_countdownclocks_slug() {
-	return 'gmr_countdown_clock';
+	return GMR_COUNTDOWN_CLOCK_CPT;
 }
 
 /**
@@ -126,7 +124,7 @@ function register_homepage_countdown_clock_cpt() {
 		'show_in_rest'       => true,
         'rest_base'          => 'countdownclocks',
 		'supports'            => array( 'title', 'thumbnail' ),
-		'register_meta_box_cb' => __NAMESPACE__ . '\register_meta_boxes',
+		//'register_meta_box_cb' => __NAMESPACE__ . '\register_meta_boxes',
 	);
 
 	$args = apply_filters( 'gmr_homepage_countdown_clock_cpt_args', $args, gmr_countdownclocks_slug() );
@@ -422,17 +420,5 @@ function remove_yoast_metabox_js() {
 
 	if ( gmr_countdownclocks_slug() === $post->post_type ) {
 		wp_dequeue_script( 'wp-seo-metabox' );
-	}
-}
-
-/**
- * Enqueue admin scripts.
- * @param $page
- */
-function enqueue_admin_scripts( $page ) {
-	global $gmr_homepage_curation, $typenow;
-	if ( $gmr_homepage_curation == $page || 'show' == $typenow || 'gmr_homepage' == $typenow ) {
-		wp_enqueue_style( 'homepage-curation', GMEDIA_HOMEPAGE_CURATION_URL . 'css/admin.css', null, GMEDIA_HOMEPAGE_CURATION_VERSION );
-		wp_enqueue_script( 'homepage-curation', GMEDIA_HOMEPAGE_CURATION_URL . 'js/curation.js', array( 'jquery' ), GMEDIA_HOMEPAGE_CURATION_VERSION, true );
 	}
 }
