@@ -12,7 +12,7 @@ class GreaterMediaCountdownClockMetaboxes {
 		//add_action( 'admin_enqueue_scripts', array( $this, 'register_settings_fields' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
-		//add_action( 'save_post', array( $this, 'save_post' ) );
+		add_action( 'save_post', array( $this, 'save_post' ) );
 	}
 
 	/**
@@ -230,13 +230,12 @@ class GreaterMediaCountdownClockMetaboxes {
 		$post_status = get_post_status_object( $post->post_status );
 		$datetime_format = get_option( 'date_format' ) . ' ' . get_option( 'time_format' );
 
-		$started = get_post_meta( $post->ID, 'contest-start', true );
-		$ended = get_post_meta( $post->ID, 'contest-end', true );
+		$countdownDate = get_post_meta( $post->ID, 'countdown-date', true );
 		$offset = get_option( 'gmt_offset' ) * HOUR_IN_SECONDS;
 
 		?><table class="form-table">
 			<tr>
-				<th scope="row"><label for="greatermedia_countdown_date">Start date</label></th>
+				<th scope="row"><label for="greatermedia_countdown_date">Countdown To Date &amp; Time</label></th>
 				<td>
 					<?php if ( ! $post_status->public ) : ?>
 						<?php $this->render_date_field( array(
@@ -247,14 +246,14 @@ class GreaterMediaCountdownClockMetaboxes {
 						) ); ?>
 					<?php else : ?>
 						<b>
-							<?php if ( ! empty( $started ) ) : ?>
-								<?php echo date( $datetime_format, $started + $offset ); ?>
+							<?php if ( ! empty( $countdownDate ) ) : ?>
+								<?php echo date( $datetime_format, $countdownDate + $offset ); ?>
 							<?php else : ?>
 								&#8212;
 							<?php endif; ?>
 						</b>
 
-						<?php if ( ! empty( $started ) ) : ?>
+						<?php if ( ! empty( $countdownDate ) ) : ?>
 							<small style="margin-left:2em;">
 								(server time is <?php echo date( $datetime_format, current_time( 'timestamp' ) ); ?>)
 							</small>
@@ -275,7 +274,7 @@ class GreaterMediaCountdownClockMetaboxes {
 		$post = get_post( $post_id );
 
 		// Verify that the form nonce is valid.
-		if ( ! wp_verify_nonce( filter_input( INPUT_POST, '__contest_nonce' ), 'contest_meta_boxes' ) ) {
+		if ( ! wp_verify_nonce( filter_input( INPUT_POST, '__countdown_clock_nonce' ), 'countdown_clock_meta_boxes' ) ) {
 			return;
 		}
 
@@ -294,55 +293,13 @@ class GreaterMediaCountdownClockMetaboxes {
 			return;
 		}
 
-		if ( isset( $_POST['contest_embedded_form'] ) ) {
-			/**
-			 * Update the form's meta field
-			 * The form JSON has slashes in it which need to be stripped out.
-			 * json_decode() and json_encode() are used here to sanitize the JSON & keep out invalid values
-			 */
-			$form = addslashes( json_encode( json_decode( urldecode( $_POST['contest_embedded_form'] ) ) ) );
-			// PHP's json_encode() may add quotes around the encoded string. Remove them.
-			$form = trim( $form, '"' );
-			update_post_meta( $post_id, 'embedded_form', $form );
-		}
-
-		// Update the form's "submit button" text
-		if ( isset( $_POST['greatermedia_contest_form_title'] ) ) {
-			$form_title = $_POST['greatermedia_contest_form_title'];
-			if ( empty( $form_title ) ) {
-				$form_title = 'Enter Here to Win';
-			}
-			update_post_meta( $post_id, 'form-title', sanitize_text_field( $form_title ) );
-		}
-
-		// Update the form's "submit button" text
-		if ( isset( $_POST['greatermedia_contest_form_submit'] ) ) {
-			$submit_text = $_POST['greatermedia_contest_form_submit'];
-			if ( empty( $submit_text ) ) {
-				$submit_text = 'Submit';
-			}
-			update_post_meta( $post_id, 'form-submitbutton', sanitize_text_field( $submit_text ) );
-		}
-
-		// Update the form's "thank you" message
-		if ( isset( $_POST['greatermedia_contest_form_thankyou'] ) ) {
-			$thank_you = $_POST['greatermedia_contest_form_thankyou'];
-			if ( empty( $thank_you ) ) {
-				$thank_you = 'Thanks for entering!';
-			}
-			update_post_meta( $post_id, 'form-thankyou', sanitize_text_field( $thank_you ) );
-		}
-
-		// Update the contest rules meta fields
-		update_post_meta( $post_id, 'prizes-desc', wp_kses_post( $_POST['greatermedia_contest_prizes'] ) );
-		update_post_meta( $post_id, 'how-to-enter-desc', wp_kses_post( $_POST['greatermedia_contest_enter'] ) );
-		update_post_meta( $post_id, 'rules-desc', wp_kses_post( $_POST['greatermedia_contest_rules'] ) );
-		update_post_meta( $post_id, 'contest_type', filter_input( INPUT_POST, 'contest_type' ) );
+		// Update the countdown clock meta fields
+		update_post_meta( $post_id, 'countdown-message', wp_kses_post( $_POST['greatermedia_countdown_clock_countdown_message'] ) );
+		update_post_meta( $post_id, 'reached-message', wp_kses_post( $_POST['greatermedia_countdown_clock_reached_message'] ) );
 
 		$offset = get_option( 'gmt_offset' ) * HOUR_IN_SECONDS;
 		$dates = array(
-			'contest-start' => 'greatermedia_contest_start',
-			'contest-end'   => 'greatermedia_contest_end',
+			'countdown-date' => 'greatermedia_countdown_date'
 		);
 
 		foreach ( $dates as $meta => $param ) {
@@ -360,21 +317,6 @@ class GreaterMediaCountdownClockMetaboxes {
 				update_post_meta( $post_id, $meta, $value );
 			}
 		}
-
-		$members_only = filter_input( INPUT_POST, 'greatermedia_contest_members_only', FILTER_VALIDATE_BOOLEAN );
-		update_post_meta( $post_id, 'contest-members-only', $members_only );
-
-		$single_entry = filter_input( INPUT_POST, 'greatermedia_contest_single_entry', FILTER_VALIDATE_BOOLEAN );
-		update_post_meta( $post_id, 'contest-single-entry', $single_entry );
-
-		$max_etries = filter_input( INPUT_POST, 'greatermedia_contest_max_entries', FILTER_VALIDATE_INT, array( 'options' => array( 'min_range' => 1, 'default' => '' ) ) );
-		update_post_meta( $post_id, 'contest-max-entries', $max_etries );
-
-		$min_age = filter_input( INPUT_POST, 'greatermedia_contest_min_age', FILTER_VALIDATE_INT, array( 'options' => array( 'min_range' => 1, 'default' => '' ) ) );
-		update_post_meta( $post_id, 'contest-min-age', $min_age );
-
-		$show_submission_details = filter_input( INPUT_POST, 'show-submission-details', FILTER_VALIDATE_INT, array( 'options' => array( 'min_range' => 0, 'default' => 1 ) ) );
-		update_post_meta( $post_id, 'show-submission-details', $show_submission_details );
 	}
 
 }
