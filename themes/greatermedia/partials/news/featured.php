@@ -28,6 +28,7 @@ if ( $hp_featured_query->have_posts() ) : ?>
 				</div>
 			<?php endif; ?>
 		</div>
+
 	<?php
 	// if we still have more posts (we almost always will), render the 3 below the main section
 
@@ -59,6 +60,25 @@ if ( $hp_featured_query->have_posts() ) : ?>
 
 			?>
 		</div>
+		<?php
+		// Start Countdown Clocks
+		if ( function_exists( 'GreaterMedia\HomepageCountdownClock\current_countdown_clock_query' ) ) {
+			$countdown_clock_query = GreaterMedia\HomepageCountdownClock\current_countdown_clock_query();
+
+			if ( $countdown_clock_query->have_posts() ) : $countdown_clock_query->the_post(); ?>
+			<div class="homepage_countdown_clock">
+				<div class="homepage_countdown_clock_container">
+					<span class="homepage_countdown_clock_message"><?php echo get_post_meta( get_the_ID(), 'countdown-message', true ); ?></span>
+					<div class="homepage_countdown_clock_ticker"><!-- Fill in countdown here --></div>
+				</div>
+				<div class="ad__countdown-clock-sponsorship">
+					<?php do_action( 'acm_tag', 'countdown-clock-sponsorship' ); ?>
+				</div>
+			</div>
+			<?php endif;
+		}
+		// End Countdown Clocks
+		?>
 		<div class="featured__content">
 			<?php
 			if ( $hp_featured_query->have_posts() ) :

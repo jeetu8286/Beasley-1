@@ -378,7 +378,7 @@ function preview_post_setup( $url, $post ) {
  *
  * @return \WP_Post|bool Wether the post being previewed or false.
  */
-function get_preview_homepage() {
+function get_preview_countdown_clock() {
 	if ( is_preview() && isset( $_GET['preview_id'] ) ) {
 		$post_id = absint( $_GET['preview_id'] );
 
