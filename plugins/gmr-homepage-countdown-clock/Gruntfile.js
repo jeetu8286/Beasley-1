@@ -15,6 +15,10 @@ module.exports = function (grunt) {
 			backend_countdown_clock: {
 				src: ['js/src/countdown-clock-admin.js'],
 				dest: 'js/countdown-clock-admin.js'
+			},
+			frontend_countdown_clock: {
+				src: ['js/vendor/flipclock.min.js','js/src/countdown-clock.js'],
+				dest: 'js/countdown-clock.js'
 			}
 		},
 		jshint: {
@@ -55,7 +59,8 @@ module.exports = function (grunt) {
 		uglify: {
 			all: {
 				files: {
-					'js/countdown-clock-admin.min.js': ['js/countdown-clock-admin.js']
+					'js/countdown-clock-admin.min.js': ['js/countdown-clock-admin.js'],
+					'js/countdown-clock.min.js': ['js/countdown-clock.js']
 				},
 				options: {
 					banner: '/*! <%= pkg.title %> - v<%= pkg.version %>\n' +
@@ -77,7 +82,8 @@ module.exports = function (grunt) {
 					style: 'compressed'
 				},
 				files: {
-					'css/greatermedia-countdown-clock-admin.css': 'css/src/greatermedia-countdown-clock-admin.scss'
+					'css/greatermedia-countdown-clock-admin.css': 'css/src/greatermedia-countdown-clock-admin.scss',
+					'css/greatermedia-countdown-clock.css': 'css/src/greatermedia-countdown-clock.scss'
 				}
 			}
 		},

@@ -9,10 +9,29 @@ if ( ! defined( 'ABSPATH' ) ) {
 class GreaterMediaCountdownClockMetaboxes {
 
 	public function __construct() {
-		//add_action( 'admin_enqueue_scripts', array( $this, 'register_settings_fields' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'gmr_countdown_clock_enqueue_front_scripts' ), 100 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
 		add_action( 'save_post', array( $this, 'save_post' ) );
+	}
+
+	/**
+	 * Enqueue JavaScript & CSS
+	 * Implements wp_enqueue_scripts action
+	 */
+	public function gmr_countdown_clock_enqueue_front_scripts() {
+
+		// Only fire on the home page
+		if ( ! is_front_page() ) {
+			return;
+		}
+
+		$base_path = trailingslashit( GMEDIA_HOMEPAGE_COUNTDOWN_CLOCK_URL );
+		$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
+
+		wp_enqueue_style( 'greatermedia-countdown-clock', trailingslashit( GMEDIA_HOMEPAGE_COUNTDOWN_CLOCK_URL ) . 'css/greatermedia-countdown-clock.css', null, GMEDIA_HOMEPAGE_COUNTDOWN_CLOCK_VERSION );
+		wp_enqueue_script( 'greatermedia-countdown-clock', "{$base_path}js/countdown-clock{$postfix}.js", null, false, true );
+
 	}
 
 	/**
@@ -30,7 +49,7 @@ class GreaterMediaCountdownClockMetaboxes {
 		}
 
 		// Make sure there's a post
-		if ( ! isset( $GLOBALS['post'] ) || ! ( $GLOBALS['post'] instanceof \WP_Post ) ) {
+		if ( ! $post ) {
 			return;
 		}
 
