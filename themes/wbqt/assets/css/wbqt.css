@@ -10611,6 +10611,17 @@ category: Components - Shows
   .gmr_gallery .entry__related-posts .section-header a:hover, .gmr_gallery .entry__related-posts .section-header a:active, .gmr_gallery .entry__related-posts .section-header a:focus {
     color: #aa1c20; }
 
+.guitar-month-show .show__header.has-thumbnail:before {
+  display: none;
+  background-image: none; }
+.guitar-month-show .show__cast img {
+  -webkit-border-radius: 0%;
+  -moz-border-radius: 0%;
+  -ms-border-radius: 0%;
+  -o-border-radius: 0%;
+  -border-radius: 0%;
+  border-radius: 0%; }
+
 .widget--live-player {
   padding: 0;
   margin: 0 0 1em;
@@ -15308,7 +15319,7 @@ a.contest-attr--rules-toggler.pjax-exclude:hover {
 
 .header__logo {
   /*background:url(../../images/header-logo-large.png) no-repeat;*/
-  background: url(../../images/H96_Logo_Boston.png) no-repeat;
+  background: url(../../images/WBQTnewlogo-HF.png) no-repeat;
   border: solid 0px #6bb3ee;
   background-position: center top;
   background-size: contain;
@@ -15754,7 +15765,8 @@ media 768px
     height: auto;
     padding: 65px 1em 0; }
   .widget--live-player a:hover > div {
-    background-color: rgba(21, 9, 88, 0.5); }
+    background-color: #4e84c4;
+    color: #06357a !important; }
   a:hover .live-link__song:before, .live-link__song:hover .live-link__song--title, .live-link__song:hover .live-link__song--artist {
     color: #6bb3ee !important; }
   .live-links {
@@ -15991,8 +16003,8 @@ media 1400px
     background-position: center top;
     border: solid 0 #fff;
     width: 228px;
-    height: 228px;
     max-width: 228px;
+    left: 0px;
     display: block;
     position: absolute;
     top: -130px;
@@ -16003,7 +16015,7 @@ media 1400px
     width: 325px;
     height: 133px !important;
     top: -20px;
-    right: -330px; } }
+    right: -360px; } }
 
 /* new show mini nav page background and meta data */
 .show__mini-nav .show__header {

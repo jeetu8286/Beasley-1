@@ -97,6 +97,22 @@ class GMR_Audio_Shortcodes {
 			return $html;
 		}
 
+		$current_blog_id = get_current_blog_id();
+
+		/* Fix URLs on older podcasts.
+		 * This is a "quick fix", ideally we'd create a script to update the DB.
+		*/
+		if ( class_exists( 'S3_Uploads' ) ) {
+			// Ensure we have an S3 URL and not local, fixes issues with old URLs prior to S3
+			$site_url = trailingslashit( get_site_url( $current_blog_id, '', 'http' ) );
+			if ( false !== strpos( $mp3_src, $site_url ) ) {
+				$upload_dir = wp_upload_dir();
+				// Prod and stage includes the s3 URL, which is incorrect since we have them mapped
+				$upload_dir['baseurl'] = str_replace( '.s3.amazonaws.com', '', $upload_dir['baseurl'] );
+				$mp3_src = str_replace( $site_url . 'wp-content/uploads/' . 'sites/' . $current_blog_id, $upload_dir['baseurl'], $mp3_src );
+			}
+		}
+
 		/*
 		 * Breakdown on how we get title data.
 		 *
