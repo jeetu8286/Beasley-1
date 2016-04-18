@@ -304,9 +304,9 @@ class GreaterMediaContestsMetaboxes {
 		$datetime_format = get_option( 'date_format' ) . ' ' . get_option( 'time_format' );
 
 		$started    = get_post_meta( $post->ID, 'contest-start', true );
-		$vote_start = $this->get_vote_start( $post );
+		$vote_start = get_post_meta( $post->ID, 'contest-vote-start', true );
 		$ended      = get_post_meta( $post->ID, 'contest-end', true );
-		$vote_end   = $this->get_vote_end( $post );
+		$vote_end   = get_post_meta( $post->ID, 'contest-vote-end', true );
 		$offset     = get_option( 'gmt_offset' ) * HOUR_IN_SECONDS;
 
 		?><table class="form-table">
@@ -450,34 +450,6 @@ class GreaterMediaContestsMetaboxes {
 				</td>
 			</tr>
 		</table><?php
-	}
-
-	protected function get_vote_start( $post ) {
-		$post = get_post( $post );
-		if ( ! is_a( $post, 'WP_Post' ) ) {
-			return false;
-		}
-
-		$vote_start = get_post_meta( $post->ID, 'contest-vote-start', true );
-		if ( empty( $vote_start ) ) {
-			$vote_start = get_post_meta( $post->ID, 'contest-start', true );
-		}
-
-		return $vote_start;
-	}
-
-	protected function get_vote_end( $post ) {
-		$post = get_post( $post );
-		if ( ! is_a( $post, 'WP_Post' ) ) {
-			return false;
-		}
-
-		$vote_end = get_post_meta( $post->ID, 'contest-vote-end', true );
-		if ( empty( $vote_end ) ) {
-			$vote_end = get_post_meta( $post->ID, 'contest-end', true );
-		}
-
-		return $vote_end;
 	}
 
 	public function gallery_meta_box( WP_Post $post ) {
