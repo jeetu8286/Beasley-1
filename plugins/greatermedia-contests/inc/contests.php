@@ -428,11 +428,6 @@ function _gmr_contests_get_submission_for_voting_actions() {
 		wp_send_json_error();
 	}
 
-	// do nothing if an user is not logged in
-	if ( ! function_exists( 'is_gigya_user_logged_in' ) || ! is_gigya_user_logged_in() ) {
-		wp_send_json_error();
-	}
-
 	$query = new WP_Query();
 	$submissions = $query->query( array(
 		'posts_per_page'      => 1,
@@ -448,7 +443,14 @@ function _gmr_contests_get_submission_for_voting_actions() {
 		wp_send_json_error();
 	}
 
-	return get_post( current( $submissions ) );
+	$submission = get_post( current( $submissions ) );
+
+	// do nothing if an user is not logged in
+	if ( ! gmr_contests_allow_anonymous_votes( $submission ) && ( ! function_exists( 'is_gigya_user_logged_in' ) || ! is_gigya_user_logged_in() ) ) {
+		wp_send_json_error();
+	}
+
+	return $submission;
 }
 
 /**
@@ -1334,4 +1336,15 @@ function gmr_contests_can_show_vote_count( $submission = null ) {
 	if ( $submission->post_parent ) {
 		return get_post_meta( $submission->post_parent, 'contest_show_vote_counts', true ) ? true : false;
 	}
+}
+
+/**
+ * Returns true if anonymous voting is allowed for a contest, and false if it's not.
+ * 
+ * @param int $contest_id
+ *
+ * @return bool
+ */
+function gmr_contests_allow_anonymous_votes( $contest_id = 0 ) {
+	return (bool) get_post_meta( $contest_id, 'contest-allow-anonymous-voting', true );
 }
