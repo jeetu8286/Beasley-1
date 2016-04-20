@@ -466,7 +466,7 @@ a.contest-attr--rules-toggler.pjax-exclude:hover {
 
 .header__logo {
 	/*background:url(../../images/header-logo-large.png) no-repeat;*/
-	background:url(../../images/H96_Logo_Boston.png) no-repeat;
+	background:url(../../images/WBQTnewlogo-HF.png) no-repeat;
 	border:solid 0px #6bb3ee;
 	background-position:center top;
 	background-size:contain;
@@ -690,19 +690,6 @@ h3.podcast__title a:hover {
 }
 
 
-.article__content > * {
-  overflow: visible;
-  margin-bottom: 1.5em;
-}
-
-
-.article__content h2 {
-	margin: 0;
-}
-
-
-
-
 .show__meta .social-share-link{
 		background-color: transparent;
 	&:hover {
@@ -809,6 +796,52 @@ h2 {
     }
 }
 
+/* new CSS 2-23-16 */
+.gallery__slide--title {
+
+    font-size: 1.20em;
+    word-break: normal;
+}
+
+time.show__feature--date,
+time.top-three__date,
+time.entry2__date {
+  display: none;
+}
+
+
+.article__content .fluid-width-video-wrapper {
+    margin-bottom: 1em;
+}
+
+.top-three__feature--primary{
+    .top-three__desc h3 {
+		color: #140958;
+		font-family: 'Oswald', sans-serif ;
+		font-weight: 700;
+        &:hover {
+            color:#2484c6;
+            
+        }
+    }
+}
+
+.top-three__feature--secondary {
+
+    .top-three__desc h3 {
+        font-family: 'Oswald', sans-serif ; 
+        font-weight: 500;
+        color: #140958;
+        font-size: 1.50em;
+        &:hover {
+            color:#2484c6;
+            
+        }
+    }
+}
+
+
+/* end new CSS */
 /*----------------------------------------------------------------------------------------------------------------------
 media 400px
 ------------------------------------------------------------------------------------------------------------------------*/
@@ -1101,9 +1134,9 @@ media 768px
 
 
 
-
-	.widget--live-player a:hover>div {
-		background-color:rgba(21,9,88,.5);
+	.widget--live-player a:hover>div{
+		background-color: #4e84c4;
+		color:#06357a!important;
 	}
 
 	a:hover .live-link__song:before,.live-link__song:hover .live-link__song--title,.live-link__song:hover .live-link__song--artist {
@@ -1478,9 +1511,9 @@ media 1400px
 		border:solid 0 #fff;
 		
 		width:228px;
-		height:228px;
-		max-width: 228px;
 		
+		max-width: 228px;
+		left: 0px;
 		display:block;
 		position:absolute;
 		top:-130px;
@@ -1493,7 +1526,7 @@ media 1400px
 	    width: 325px;
 	    height: 133px!important;
 	    top: -20px;
-	    right: -330px;
+	    right: -360px;
     }
 
 }

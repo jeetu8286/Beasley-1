@@ -5342,6 +5342,11 @@ Link posts contain a link to an external site. They can also optionally have a f
 
 .article__header {
   margin-bottom: 2em; }
+  @media screen and (min-width: 1024px)  {
+    .article__header .article__thumbnail {
+      width: calc(100% - 355px); } }
+  .article__header .article__thumbnail:after {
+    padding-top: 0; }
 
 .article__date {
   display: block;
@@ -5362,21 +5367,20 @@ Link posts contain a link to an external site. They can also optionally have a f
       font-size: 2.2806973457em; } }
 
 .article__thumbnail {
-  position: relative;
-  background-position: center center;
-  background-size: 100%;
-  background-size: cover;
-  background-repeat: no-repeat; }
-  .article__thumbnail:after {
-    content: '';
-    display: block;
-    padding-top: 66%; }
+  position: relative; }
 
 .article__content {
   margin-bottom: 1.5em; }
   @media screen and (min-width: 1024px)  {
     .article__content {
       margin-bottom: 4.5em; } }
+  .article__content .article__thumbnail {
+    margin-bottom: 2em; }
+    @media screen and (min-width: 1024px)  {
+      .article__content .article__thumbnail {
+        width: calc(100% - 355px); } }
+    .article__content .article__thumbnail:after {
+      padding-top: 0; }
 
 .article .ad__inline--right.desktop {
   display: none; }
@@ -8012,14 +8016,7 @@ category: Components - Ads
 
 .contest__thumbnail {
   position: relative;
-  background-position: center center;
-  background-size: 100%;
-  background-size: cover;
-  background-repeat: no-repeat; }
-  .contest__thumbnail:after {
-    content: '';
-    display: block;
-    padding-top: 66%; }
+  margin-bottom: 2em; }
 
 .single__featured-img--contest {
   margin: 0 auto; }
@@ -8756,7 +8753,8 @@ category: Components - Ads
   width: 100%;
   background-color: #e8e9e9;
   margin: 0 auto 2em;
-  text-align: center; }
+  text-align: center;
+  position: relative; }
   .event__thumbnail:last-child {
     margin-right: 0; }
   @media screen and (min-width: 480px)  {
@@ -8791,6 +8789,10 @@ category: Components - Ads
       width: 100%; }
       .event__thumbnail:last-child {
         margin-right: 0; } }
+
+@media screen and (min-width: 1024px)  {
+  .event__thumbnail-inline .event__thumbnail {
+    width: calc(100% - 355px); } }
 
 .event__thumbnail img {
   margin: 0 auto; }
@@ -10608,6 +10610,17 @@ category: Components - Shows
     color: #282827; }
   .gmr_gallery .entry__related-posts .section-header a:hover, .gmr_gallery .entry__related-posts .section-header a:active, .gmr_gallery .entry__related-posts .section-header a:focus {
     color: #aa1c20; }
+
+.guitar-month-show .show__header.has-thumbnail:before {
+  display: none;
+  background-image: none; }
+.guitar-month-show .show__cast img {
+  -webkit-border-radius: 0%;
+  -moz-border-radius: 0%;
+  -ms-border-radius: 0%;
+  -o-border-radius: 0%;
+  -border-radius: 0%;
+  border-radius: 0%; }
 
 .widget--live-player {
   padding: 0;
@@ -15306,7 +15319,7 @@ a.contest-attr--rules-toggler.pjax-exclude:hover {
 
 .header__logo {
   /*background:url(../../images/header-logo-large.png) no-repeat;*/
-  background: url(../../images/H96_Logo_Boston.png) no-repeat;
+  background: url(../../images/WBQTnewlogo-HF.png) no-repeat;
   border: solid 0px #6bb3ee;
   background-position: center top;
   background-size: contain;
@@ -15485,13 +15498,6 @@ h3.podcast__title a:hover {
   border-color: #0c4da2;
   color: #0c4da2; }
 
-.article__content > * {
-  overflow: visible;
-  margin-bottom: 1.5em; }
-
-.article__content h2 {
-  margin: 0; }
-
 .show__meta .social-share-link {
   background-color: transparent; }
   .show__meta .social-share-link:hover {
@@ -15549,6 +15555,33 @@ h2 a:hover {
     border-color: #140958 !important;
     color: #fff !important; }
 
+/* new CSS 2-23-16 */
+.gallery__slide--title {
+  font-size: 1.2em;
+  word-break: normal; }
+
+time.show__feature--date, time.top-three__date, time.entry2__date {
+  display: none; }
+
+.article__content .fluid-width-video-wrapper {
+  margin-bottom: 1em; }
+
+.top-three__feature--primary .top-three__desc h3 {
+  color: #140958;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700; }
+  .top-three__feature--primary .top-three__desc h3:hover {
+    color: #2484c6; }
+
+.top-three__feature--secondary .top-three__desc h3 {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 500;
+  color: #140958;
+  font-size: 1.5em; }
+  .top-three__feature--secondary .top-three__desc h3:hover {
+    color: #2484c6; }
+
+/* end new CSS */
 /*----------------------------------------------------------------------------------------------------------------------
 media 400px
 ------------------------------------------------------------------------------------------------------------------------*/
@@ -15732,7 +15765,8 @@ media 768px
     height: auto;
     padding: 65px 1em 0; }
   .widget--live-player a:hover > div {
-    background-color: rgba(21, 9, 88, 0.5); }
+    background-color: #4e84c4;
+    color: #06357a !important; }
   a:hover .live-link__song:before, .live-link__song:hover .live-link__song--title, .live-link__song:hover .live-link__song--artist {
     color: #6bb3ee !important; }
   .live-links {
@@ -15969,8 +16003,8 @@ media 1400px
     background-position: center top;
     border: solid 0 #fff;
     width: 228px;
-    height: 228px;
     max-width: 228px;
+    left: 0px;
     display: block;
     position: absolute;
     top: -130px;
@@ -15981,7 +16015,7 @@ media 1400px
     width: 325px;
     height: 133px !important;
     top: -20px;
-    right: -330px; } }
+    right: -360px; } }
 
 /* new show mini nav page background and meta data */
 .show__mini-nav .show__header {

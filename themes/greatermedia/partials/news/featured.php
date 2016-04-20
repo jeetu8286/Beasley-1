@@ -28,6 +28,7 @@ if ( $hp_featured_query->have_posts() ) : ?>
 				</div>
 			<?php endif; ?>
 		</div>
+
 	<?php
 	// if we still have more posts (we almost always will), render the 3 below the main section
 
@@ -86,3 +87,9 @@ if ( $hp_featured_query->have_posts() ) : ?>
 
 else :
 endif;
+
+// Start Countdown Clock
+if ( function_exists( 'GreaterMedia\HomepageCountdownClock\render_homepage_countdown_clock' ) ) {
+	GreaterMedia\HomepageCountdownClock\render_homepage_countdown_clock();
+}
+// End Countdown Clock
