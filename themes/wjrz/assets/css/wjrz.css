@@ -5342,6 +5342,11 @@ Link posts contain a link to an external site. They can also optionally have a f
 
 .article__header {
   margin-bottom: 2em; }
+  @media screen and (min-width: 1024px)  {
+    .article__header .article__thumbnail {
+      width: calc(100% - 355px); } }
+  .article__header .article__thumbnail:after {
+    padding-top: 0; }
 
 .article__date {
   display: block;
@@ -5362,21 +5367,20 @@ Link posts contain a link to an external site. They can also optionally have a f
       font-size: 2.2806973457em; } }
 
 .article__thumbnail {
-  position: relative;
-  background-position: center center;
-  background-size: 100%;
-  background-size: cover;
-  background-repeat: no-repeat; }
-  .article__thumbnail:after {
-    content: '';
-    display: block;
-    padding-top: 66%; }
+  position: relative; }
 
 .article__content {
   margin-bottom: 1.5em; }
   @media screen and (min-width: 1024px)  {
     .article__content {
       margin-bottom: 4.5em; } }
+  .article__content .article__thumbnail {
+    margin-bottom: 2em; }
+    @media screen and (min-width: 1024px)  {
+      .article__content .article__thumbnail {
+        width: calc(100% - 355px); } }
+    .article__content .article__thumbnail:after {
+      padding-top: 0; }
 
 .article .ad__inline--right.desktop {
   display: none; }
@@ -8012,14 +8016,7 @@ category: Components - Ads
 
 .contest__thumbnail {
   position: relative;
-  background-position: center center;
-  background-size: 100%;
-  background-size: cover;
-  background-repeat: no-repeat; }
-  .contest__thumbnail:after {
-    content: '';
-    display: block;
-    padding-top: 66%; }
+  margin-bottom: 2em; }
 
 .single__featured-img--contest {
   margin: 0 auto; }
@@ -8756,7 +8753,8 @@ category: Components - Ads
   width: 100%;
   background-color: #e8e9e9;
   margin: 0 auto 2em;
-  text-align: center; }
+  text-align: center;
+  position: relative; }
   .event__thumbnail:last-child {
     margin-right: 0; }
   @media screen and (min-width: 480px)  {
@@ -8791,6 +8789,10 @@ category: Components - Ads
       width: 100%; }
       .event__thumbnail:last-child {
         margin-right: 0; } }
+
+@media screen and (min-width: 1024px)  {
+  .event__thumbnail-inline .event__thumbnail {
+    width: calc(100% - 355px); } }
 
 .event__thumbnail img {
   margin: 0 auto; }
@@ -10608,6 +10610,17 @@ category: Components - Shows
     color: #282827; }
   .gmr_gallery .entry__related-posts .section-header a:hover, .gmr_gallery .entry__related-posts .section-header a:active, .gmr_gallery .entry__related-posts .section-header a:focus {
     color: #015da6; }
+
+.guitar-month-show .show__header.has-thumbnail:before {
+  display: none;
+  background-image: none; }
+.guitar-month-show .show__cast img {
+  -webkit-border-radius: 0%;
+  -moz-border-radius: 0%;
+  -ms-border-radius: 0%;
+  -o-border-radius: 0%;
+  -border-radius: 0%;
+  border-radius: 0%; }
 
 .widget--live-player {
   padding: 0;
@@ -15006,9 +15019,8 @@ table.responsive tr:nth-of-type(even) {
   border-bottom: 1px solid white; }
 
 .now-playing__artist {
-  color: #303030; }
+  color: #fff; }
 
-/*.live-link__title, .live-link__title a:link, .live-link__title a:visited {color: $white;} */
 .live-link__song:before {
   color: #fff; }
 
@@ -15021,7 +15033,6 @@ table.responsive tr:nth-of-type(even) {
   .live-link__song--title a, .live-link__song--title a:visited {
     color: #fff; }
 
-/*.live-link__title a:link, .live-link__title a:visited {color: $white;}*/
 .live-link__title a:hover, .live-link__title a:focus, .live-link__title a:active {
   color: #015da6; }
 
@@ -15089,7 +15100,7 @@ table.responsive tr:nth-of-type(even) {
     border-radius: 0;
     background-color: transparent;
     margin-right: 0;
-    color: #0073cf; } }
+    color: #fff; } }
 
 /* Mobile phone listen live padding */
 .live-player--open .live-links {
@@ -15220,7 +15231,6 @@ a:hover .highlights__community--title {
 a:hover .highlights__event--date, a:hover .highlights__event--title {
   color: #fff; }
 
-/* NOT IN WMTR CODE */
 .featured__content--block {
   transition: all 200ms ease-in-out;
   -moz-transition: all 200ms ease-in-out;
@@ -15306,6 +15316,8 @@ a:hover .highlights__event--date, a:hover .highlights__event--title {
     border: none;
     background: #fdba30;
     color: #f2f2f2; }
+  .live-player, .now-playing__artist {
+    color: #015da6; }
   /* Social link color and padding */
   .header__social .social__list {
     padding: 0 10px; }
@@ -15334,16 +15346,14 @@ a:hover .highlights__event--date, a:hover .highlights__event--title {
   /* Live stream background color */
   .live-links {
     background-color: #0073cf; }
-  .live-stream {
-    background: #f2f2f2 url(../../images/wjrz_listenlive_header.png) no-repeat; }
   .live-player {
     color: #0073cf;
     font-weight: 400;
     font-family: 'Istok+Web', sans-serif; }
   .now-playing__title {
-    color: #0073cf;
+    color: #fdba30;
     font-size: 1em;
-    font-weight: lighter;
+    font-weight: bold;
     line-height: 1.2;
     margin: 0 0 8px; }
   #live-player--volume .noUi-base {
@@ -15354,11 +15364,25 @@ a:hover .highlights__event--date, a:hover .highlights__event--title {
   .live-link__song:hover, .live-link__song:hover .live-link__song--title, .live-link__song:hover:before {
     color: #000; }
   .live-player__container {
-    background-color: #f2f2f2;
+    background-color: transparent;
     transition: all 200ms ease-in-out;
     -moz-transition: all 200ms ease-in-out;
     -webkit-transition: all 200ms ease-in-out;
     overflow: hidden; }
+  .live-stream__now-playing--btn {
+    line-height: 1;
+    padding: .5em 1em;
+    background-color: transparent;
+    border: 1px solid transparent;
+    color: #fff !important;
+    border-radius: 100em;
+    display: none;
+    margin-right: 0;
+    font-weight: 700;
+    -webkit-transition: background .2s ease-in-out;
+    -moz-transition: background .2s ease-in-out;
+    transition: background .2s ease-in-out;
+    cursor: default; }
   .live-player__container {
     border-bottom: 1px #fff; }
   .live-link__title, .live-link__title a:link, .live-link__title a:visited {
@@ -15434,7 +15458,11 @@ a:hover .highlights__event--date, a:hover .highlights__event--title {
     -webkit-transition: all 200ms ease-in-out;
     -moz-transition: all 200ms ease-in-out;
     transition: all 200ms ease-in-out; }
-  /* Different in WMTR CODE */
+  .home__featured .featured__content--image {
+    padding-top: 66.6%;
+    width: 100%; }
+  .featured__content--block {
+    height: 100%; }
   .live-links--more:before {
     background: -moz-linear-gradient(top, #0073cf 0%, #f2f2f2 100%) !important;
     /* FF3.6+ */
@@ -15454,12 +15482,7 @@ a:hover .highlights__event--date, a:hover .highlights__event--title {
   .home__featured .featured__article--content {
     background-color: #0073cf;
     color: #0073cf;
-    opacity: 1; }
-  .home__featured .featured__article--content {
-    /*background-image: linear-gradient(to bottom,#033d6c 0%,#015da6 100%);*/
-    border-radius: 0 0 12px 12px;
-    -moz-border-radius: 0 0 12px 12px;
-    -webkit-border-radius: 0 0 12px 12px; } }
+    opacity: 1; } }
 
 @media screen and (min-width: 1024px) {
   .header__nav li {
@@ -15564,10 +15587,6 @@ a:hover .highlights__event--date, a:hover .highlights__event--title {
   border-color: #fdba30;
   color: #fff; }
 
-.header {
-  background-image: url("../../images/WJRZ_header-bkg.jpg");
-  background-position: center top; }
-
 .live-link__song:before, .live-link__type--audio:before, .live-link__type--gallery:before, .live-link__type--image:before, .live-link__type--link:before, .live-link__type--standard:before, .live-link__type--video:before {
   width: 0;
   height: 0;
@@ -15603,28 +15622,6 @@ a:hover .highlights__event--date, a:hover .highlights__event--title {
   color: #fff; }
 
 .live-links--more__btn:last-of-type {
-  margin-right: 0; }
-
-.live-links--more__btn:hover {
-  display: inline-block;
-  line-height: 1;
-  padding: .5em 1em;
-  margin-right: .5em;
-  outline: 0;
-  background-color: #0073cf;
-  border: 1px solid #0073cf;
-  font-size: .88889em;
-  color: #fff !important;
-  text-transform: uppercase;
-  cursor: pointer;
-  border-radius: 100em; }
-
-.live-links--more__btn:hover:focus, .live-links--more__btn:hover:hover {
-  background-color: #0073cf;
-  border-color: #0073cf;
-  color: #fff; }
-
-.live-links--more__btn:hover:last-of-type {
   margin-right: 0; }
 
 /* Login page */
@@ -15669,6 +15666,20 @@ a:hover .highlights__event--date, a:hover .highlights__event--title {
   a:link, a:visited {
     color: #0073cf;
     text-decoration: none; }
+  .live-player, .now-playing__artist {
+    color: #fff; }
+  .live-stream .on-air, .live-stream .up-next {
+    padding: 7px 1em;
+    position: relative;
+    top: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    font-family: 'Istok+Web',sans-serif; }
+  .header__main .header__search:hover {
+    background-color: #015da6;
+    color: #fff; }
+  .header__main .header__search {
+    padding: 0 16px; }
   /*navigation rollover color */
   .header__account ul li a:active, .header__account ul li a:focus, .header__account ul li a:hover, .header__account ul li:hover, .header__nav ul li a:active, .header__nav ul li a:focus, .header__nav ul li.active, .header__nav ul li.active a:hover, .ui-menu .ui-state-focus {
     background-color: #015da6; }
@@ -15759,8 +15770,10 @@ a:hover .highlights__event--date, a:hover .highlights__event--title {
     background: #0073cf;
     border: 2px solid #0073cf;
     color: #f2f2f2; }
+  .live-stream {
+    background-image: url("../../images/WJRZ-tuner-bg.jpg"); }
   .live-stream__now-playing--btn {
-    color: #015da6 !important; }
+    color: #fff !important; }
   /* Header search color */
   .header__search {
     color: #fff; }
@@ -15876,13 +15889,13 @@ a:hover .highlights__event--date, a:hover .highlights__event--title {
 .show__feature--desc time {
   display: none; }
 
-.show__mini-nav .show__header {
-  background-color: #e6a110;
-  border-bottom: solid 1px #0073cf;
-  padding: 0px 5px 1px 5px; }
-
-.show__mini-nav .show__header .show__nav .show__title a:hover {
-  color: #015da6; }
+.songs__group--list .song__time {
+  float: left;
+  display: block;
+  width: auto;
+  max-width: 30%;
+  margin-right: 1em;
+  color: #929497; }
 
 .live-link__type--show {
   border-bottom-color: white;
