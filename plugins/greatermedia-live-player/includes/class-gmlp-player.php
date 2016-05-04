@@ -110,7 +110,7 @@ class GMLP_Player {
 			$vast_url = gmr_streams_get_primary_stream_vast_url();
 		}
 
-		wp_register_script( 'nielsen-sdk', '//secure-uat-cert.imrworldwide.com/novms/js/2/ggcmb400.js', null, null );
+		wp_register_script( 'nielsen-sdk', '//secure-drm.imrworldwide.com/novms/js/2/ggcmb400.js', null, null );
 
 		$optout = false;
 		if ( function_exists( 'get_gigya_user_field' ) ) {
@@ -154,10 +154,10 @@ class GMLP_Player {
 	 */
 	public static function load_js() {
 		echo '<script>
-            var tdApiBaseUrl = \'http://api.listenlive.co/tdplayerapi/2.5/\';
+            var tdApiBaseUrl = \'http://api.listenlive.co/tdplayerapi/2.6/\';
         </script>';
 
-		echo '<script data-dojo-config="onReady:window.tdPlayerApiReady, async: 1, tlmSiblingOfDojo: 0, deps:[\'tdapi/run\']" src="//api.listenlive.co/tdplayerapi/2.5/dojo/dojo.js"></script>';
+		echo '<script data-dojo-config="onReady:window.tdPlayerApiReady, async: 1, tlmSiblingOfDojo: 0, deps:[\'tdapi/run\']" src="//api.listenlive.co/tdplayerapi/2.6/dojo/dojo.js"></script>';
 
 	}
 

@@ -9,16 +9,36 @@ class PhotoAlbumV2 extends BaseImporter {
 	}
 
 	function import_source( $source ) {
-		$albums = $this->albums_from_source( $source );
-		$total  = count( $albums );
-		$notify = new \WordPress\Utils\ProgressBar( "Importing $total albums", $total );
-		$entity = $this->get_entity( 'gallery' );
+		$albums     = $this->albums_from_source( $source );
+		$total      = count( $albums );
+		$notify     = new \WordPress\Utils\ProgressBar( "Importing $total albums", $total );
+		$entity     = $this->get_entity( 'gallery' );
+		$add_count  = 0;
+		$skip_count = 0;
 
 		foreach ( $albums as $album ) {
-			$gallery = $this->gallery_from_album( $album );
-			$entity->add( $gallery );
+			$album_name = $this->import_string( $album['AlbumName'] );
+
+			if ( $this->can_import_album( $album_name ) ) {
+				$gallery = $this->gallery_from_album( $album );
+
+				if ( ! $this->can_import_by_time( $gallery ) ) {
+					$skip_count++;
+					continue;
+				}
+
+				$entity->add( $gallery );
+				$add_count++;
+			} else {
+				//\WP_CLI::log( "    Skipped $album_name" );
+				$skip_count++;
+			}
+
 			$notify->tick();
 		}
+
+		\WP_CLI::success( "Added $add_count Albums" );
+		\WP_CLI::success( "Skipped $skip_count Albums" );
 
 		$notify->finish();
 	}
@@ -52,6 +72,10 @@ class PhotoAlbumV2 extends BaseImporter {
 
 		$gallery['gallery_show'] = $gallery_show;
 
+		if ( empty( $gallery_show ) ) {
+			//\WP_CLI::log( 'No Gallery Show: ' . $gallery['gallery_name'] );
+		}
+
 		return $gallery;
 	}
 
@@ -67,6 +91,9 @@ class PhotoAlbumV2 extends BaseImporter {
 		}
 
 		$gallery_show = $this->show_from_categories( $categories );
+		if ( empty( $gallery_show ) ) {
+			//\WP_CLI::error( 'No show for categories' );
+		}
 
 		return array(
 			'categories' => $categories,
@@ -156,6 +183,12 @@ class PhotoAlbumV2 extends BaseImporter {
 
 	function albums_from_source( $source ) {
 		return $source->Album;
+	}
+
+	function can_import_album( $name ) {
+		return $this->container->mappings->can_import_marketron_name(
+			$name, 'photo_album_v2'
+		);
 	}
 
 }

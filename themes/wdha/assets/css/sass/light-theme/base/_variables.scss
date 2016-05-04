@@ -46,8 +46,8 @@ $color-gray-darker: $darker-gray;
 $primary-bg: #fff;
 $primary-text: $color-text-gray;
 $primary-heading: $color-text-gray;
-$primary-link: $color-text-red;
-$primary-link-hover: darken($color-text-red, 9%);
+$primary-link: #c00000;
+$primary-link-hover: #781214;
 $primary-border: $light-gray;
 
 $secondary-bg: $color-gray-medium-dark;
@@ -60,7 +60,7 @@ $secondary-border: $dark-gray;
 // Section Variables
 $header-bg: $color-gray-medium-dark;
 $header-border: $dark-gray;
-$header-nav-bg: $cardinal;
+$header-nav-bg: #333333;
 $header-search-bg: $color-gray-medium-light;
 
 $liveplayer-bg: $color-gray-light;
@@ -82,8 +82,8 @@ $gallery-featured-bg: #f2f2f2;
 
 $footer-text: $gray;
 
-$btn-bg: $cardinal;
-$btn-hover: $yellow;
+$btn-bg: #c00000;
+$btn-hover: #781214;
 $btn-active: $black;
 $btn-muted: $gray;
 $btn-muted-hover: $cardinal;
@@ -91,9 +91,9 @@ $btn-muted-active: $black;
 $btn-inactive: $light-gray;
 
 $social-color: $medium-gray;
-$social-hover: $cardinal;
+$social-hover: #c00000;
 
 $form-bg: $light-gray;
 $form-text: $dark-gray;
 
-$breaking-news-bg: $cardinal;
+$breaking-news-bg: #781214;

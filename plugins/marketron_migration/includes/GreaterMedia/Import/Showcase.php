@@ -13,12 +13,24 @@ class Showcase extends BaseImporter {
 		$total     = count( $showcases );
 		$notify = new \WordPress\Utils\ProgressBar( "Importing $total Showcases", $total );
 		$entity = $this->get_entity( 'album' );
+		$add_count = 0;
+		$skip_count = 0;
 
 		foreach ( $showcases as $showcase ) {
 			$album = $this->album_from_showcase( $showcase );
+
+			if ( ! $this->can_import_by_time( $album ) ) {
+				$skip_count++;
+				continue;
+			}
+
 			$entity->add( $album );
+			$add_count++;
 			$notify->tick();
 		}
+
+		\WP_CLI::log( "Added $add_count Showcases" );
+		\WP_CLI::log( "Skipped $skip_count Showcases" );
 
 		$notify->finish();
 	}
@@ -58,6 +70,10 @@ class Showcase extends BaseImporter {
 		$gallery = array(
 			'gallery_name' => $this->import_string( $entry['ShowcaseEntryName'] ),
 			'gallery_content' => $this->import_string( $entry['LongText01'] ),
+			'marketron_id' => $this->import_string( $entry['ShowcaseEntryID'] ),
+			'redirects' => array(
+				array( 'url' => $this->import_string( $entry['ShowcaseEntryURL'] ) )
+			)
 		);
 
 		foreach ( $photos as $photo ) {

@@ -12,6 +12,8 @@
 
 @import "base/grid";
 
+@import "base/overrides";
+
 
 // Anything that doesn't print out CSS along with normalize and fonts
 
@@ -29,6 +31,7 @@
 @import "components/search";
 @import "components/entries";
 @import "components/liveplayer";
+@import "components/livefyre-apps";
 @import "components/shows";
 @import "components/gallery";
 @import "components/contests";

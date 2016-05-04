@@ -9,7 +9,7 @@ class GreaterMediaGallery {
 	public static $strip_shortcodes = false;
 
 	public static function init() {
-		if ( ! is_admin() && ! defined( 'WP_CLI' ) ) {
+		if ( ! is_admin() && ! defined( 'WP_CLI' ) && ( ! defined( 'DOING_CRON' ) || ! DOING_CRON ) ) {
 			// Override the core gallery shortcode with our own handler, only on the front end
 			remove_shortcode( 'gallery' );
 			add_shortcode( 'gallery', array( __CLASS__, 'render_shortcode' ) );
@@ -194,6 +194,9 @@ class GreaterMediaGallery {
 			?>
 			<div class="gallery">
 				<div class="container">
+					<?php if ( 'gmr_gallery' === get_post_type( $main_post_id ) ) { ?>
+						<?php get_template_part( 'partials/show-mini-nav' ); ?>
+					<?php } ?>
 					<div class="gallery__slides">
 						<div class="gallery__slide--images cycle-slideshow"
 						     data-cycle-log="false"

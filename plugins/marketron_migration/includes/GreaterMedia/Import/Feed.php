@@ -24,14 +24,25 @@ class Feed extends BaseImporter {
 		$max = 3000;
 		$min = 9500;
 		$index = 0;
+		$add_count = 0;
+		$skip_count = 0;
 
 		foreach ( $articles as $article ) {
 			if ( ! $this->container->mappings->can_import_marketron_name(
 				(string) $article->Feeds->Feed['Feed'], 'feed' ) ) {
+				//\WP_CLI::log( '    Excluded Feed: ' . (string) $article->Feeds->Feed['Feed'] );
+				$skip_count++;
 				continue;
 			}
 
 			$post = $this->post_from_article( $article );
+
+			if ( ! $this->can_import_by_time( $post ) ) {
+				$skip_count++;
+				continue;
+			}
+
+			$add_count++;
 
 			if ( ! empty( $post['feed_names'] ) && count( $post['feed_names'] ) > 1 ) {
 				foreach ( $post['feed_names'] as $feed_name ) {
@@ -57,24 +68,33 @@ class Feed extends BaseImporter {
 
 			} else {
 				if ( ! empty( $post['featured_audio'] ) && ! empty( $post['shows'] ) && ! empty( $this->mapped_podcast_for_show( $post['shows'][0] ) ) ) {
-					$post['episode_name']    = $post['post_title'];
-					$post['episode_podcast'] = $this->mapped_podcast_for_show( $post['shows'][0] );
-					$post['episode_file']    = $post['featured_audio'];
+					$episode_podcast = $this->mapped_podcast_for_show( $post['shows'][0] );
 
-					$podcast_episodes->add( $post );
-					$podcast_count++;
-					//error_log( 'Found Show Podcast Episode: ' . $post['show'] );
+					if ( ! empty( $episode_podcast ) ) {
+						$post['episode_name']    = $post['post_title'];
+						$post['episode_podcast'] = $episode_podcast;
+						$post['episode_file']    = $post['featured_audio'];
+
+						$podcast_episodes->add( $post );
+						$podcast_count++;
+
+						//\WP_CLI::log( 'Found Show Podcast Episode: ' . $episode_podcast );
+					} else {
+						$posts->add( $post );
+						$blog_post_count++;
+					}
 				} else {
 					$posts->add( $post );
 					$blog_post_count++;
 				}
 			}
 
-
 			$notify->tick();
 		}
 
 		//\WP_CLI::log( 'Total Lib Syn Replacements: ' . \WordPress\Utils\InlineLibSynReplacer::$replacements );
+		\WP_CLI::log( "Added $add_count Feeds" );
+		\WP_CLI::log( "Skipped $skip_count Feeds" );
 
 		$notify->finish();
 	}
@@ -139,6 +159,14 @@ class Feed extends BaseImporter {
 
 		if ( ! is_null( $featured_image ) ) {
 			$post['featured_image'] = $featured_image;
+
+			if ( ! empty( $article['FeaturedImageCaption'] ) ) {
+				$post['featured_image_caption'] = $this->import_string( $article['FeaturedImageCaption'] );
+			}
+
+			if ( ! empty( $article['FeaturedImageAttribute'] ) ) {
+				$post['featured_image_attribute'] = $this->import_string( $article['FeaturedImageAttribute'] );
+			}
 		}
 
 		if ( ! is_null( $featured_audio ) ) {
@@ -148,15 +176,23 @@ class Feed extends BaseImporter {
 		if ( ! empty( $shows ) ) {
 			$post['shows'] = $shows;
 		} else {
-			$post['shows'] = array( $this->show_from_tags( $tags ) );
+			$shows_from_tags = $this->show_from_tags( $tags );
+
+			if ( ! empty( $shows_from_tags ) ) {
+				$post['shows'] = $shows_from_tags;
+			}
 
 			if ( empty( $post['shows'] ) ) {
-				$post['shows'] = array( $this->show_from_title( $post['post_title'] ) );
+				$shows_from_title = $this->show_from_title( $post['post_title'] );
+
+				if ( ! empty( $shows_from_title ) ) {
+					$post['shows'] = $shows_from_title;
+				}
 			}
 		}
 
 		if ( ! empty( $post['shows'] ) ) {
-			//\WP_CLI::log( 'Found Show: ' . $post['show'] );
+			//\WP_CLI::log( 'Found Show: ' . print_r( $post['shows'], true ) );
 		}
 
 		return $post;
@@ -211,6 +247,29 @@ class Feed extends BaseImporter {
 				$content     = '[embed]' . $primary_media_ref . '[/embed]' . '<br/>' . $content;
 				$post_format = 'video';
 			}
+		} else if ( strpos( $content, 'RTEMp3Player.swf' ) !== false ) {
+			$result = $this->find_and_replace_flash_audio( $content );
+
+			if ( $result !== false ) {
+				$featured_audio = $result['featured_audio'];
+				//\WP_CLI::log( 'Featured Audio: ' . $featured_audio );
+				$content = $result['content'];
+				$post_format = 'audio';
+			}
+		} else if ( strpos( $content, 'youtube.com/embed' ) !== false ) {
+			$content = preg_replace_callback(
+				'#<iframe.*src="https?://www.youtube.com/embed/([^"]*)".*</iframe>#',
+				function( $matches ) {
+					$embed_params = $matches[1];
+					$embed_params = str_replace( '?', '&', $embed_params );
+					return "[embed]http://www.youtube.com/watch?v=${embed_params}[/embed]";
+				},
+				$content, -1, $videos
+			);
+
+			if ( $post_format !== 'video' && $videos > 0 ) {
+				$post_format = 'video';
+			}
 		}
 
 		$content = preg_replace(
@@ -241,6 +300,34 @@ class Feed extends BaseImporter {
 			'post_format' => $post_format,
 			'featured_audio' => $featured_audio,
 		);
+	}
+
+	function find_and_replace_flash_audio( $content ) {
+		if ( strpos( $content, 'RTEMp3Player.swf' ) !== false ) {
+			$object_pattern = '#<object[^>]+>.*</object>#';
+			$result         = preg_match_all( $object_pattern, $content, $matches );
+
+			if ( $result >= 1 ) {
+				$objects   = $matches[0];
+				$object    = $objects[0];
+				$pattern = '#data=".*RTEMp3Player\.swf\?File=([^"]+)"#';
+				$result = preg_match_all( $pattern, $object, $matches );
+
+				if ( $result >= 1 ) {
+					$featured_audio = parse_url( $matches[1][0], PHP_URL_PATH );
+					$content = str_replace( $object, '', $content );
+
+					return array(
+						'featured_audio' => $featured_audio,
+						'content' => $content,
+					);
+				}
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
 	}
 
 	function title_from_article( $article ) {

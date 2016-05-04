@@ -2,7 +2,7 @@
 /*
 Plugin Name: Greater Media Contests
 Description: Contest Features
-Version: 1.0.6
+Version: 1.1.2
 Author: 10up
 Author URI: http://10up.com
 */
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 define( 'GREATER_MEDIA_CONTESTS_URL', plugin_dir_url( __FILE__ ) );
 define( 'GREATER_MEDIA_CONTESTS_PATH', dirname( __FILE__ ) );
-define( 'GREATER_MEDIA_CONTESTS_VERSION', '1.0.6' );
+define( 'GREATER_MEDIA_CONTESTS_VERSION', '1.1.2' );
 
 define( 'GMR_CONTEST_CPT',         'contest' );
 define( 'GMR_CONTEST_ENTRY_CPT',   'contest_entry' );
@@ -24,6 +24,7 @@ define( 'GMR_SURVEY_RESPONSE_CPT', 'survey_response' );
 define( 'EP_GMR_CONTEST', EP_PAGES << 1 );
 define( 'EP_GMR_SURVEY', EP_PAGES << 2 );
 
+include 'inc/functions.php';
 include 'inc/contests.php';
 include 'inc/surveys.php';
 include 'inc/class-greatermedia-contest-entry.php';

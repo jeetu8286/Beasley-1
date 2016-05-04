@@ -98,7 +98,7 @@ function gmr_surveys_render_form() {
 	}
 
 	$survey_id = get_the_ID();
-	
+
 	// check if user already submitted survey response
 	if ( function_exists( 'has_user_entered_survey' ) && has_user_entered_survey( $survey_id ) ) {
 		wp_send_json_error( array( 'restriction' => 'one-entry' ) );
@@ -116,6 +116,14 @@ function gmr_surveys_render_form() {
 }
 
 /**
+ * Verifies form submission.
+ */
+function gmr_survey_verify_form_submission( $form ) {
+	_deprecated_function( 'gmr_survey_verify_form_submission', '1.1.3', 'gmr_verify_form_submission' );
+	gmr_verify_form_submission( $form );
+}
+
+/**
  * Processes survey submission.
  *
  * @action gmr_survey_submit
@@ -125,14 +133,16 @@ function gmr_surveys_process_form_submission() {
 		return;
 	}
 
+	$survey_id = get_the_ID();
+	$form = @json_decode( get_post_meta( $survey_id, 'survey_embedded_form', true ) );
+	gmr_verify_form_submission( $form );
+
 	require_once ABSPATH . 'wp-admin/includes/image.php';
 	require_once ABSPATH . 'wp-admin/includes/media.php';
 	require_once ABSPATH . 'wp-admin/includes/file.php';
 
 	$submitted_values = $submitted_files  = array();
 
-	$survey_id = get_the_ID();
-	$form = @json_decode( get_post_meta( $survey_id, 'survey_embedded_form', true ) );
 	foreach ( $form as $field ) {
 		$post_array_key = 'form_field_' . $field->cid;
 		if ( isset( $_POST[ $post_array_key ] ) ) {

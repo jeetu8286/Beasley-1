@@ -26,6 +26,12 @@ class GMR_Audio_Shortcodes {
 			return $result;
 		}
 
+		// Use local URL instead of S3, to ensure we get the correct post.
+		if ( false !== strpos( $url, 'amazonaws' ) || false !== strpos( $url, 'files.greatermedia.com' ) ) {
+			$url = strstr( $url, 'sites' );
+			$url = str_replace( 'sites/' . get_current_blog_id() . '/', '', $url );
+		}
+
 		$post_id = attachment_url_to_postid( $url );
 
 		if ( $post_id ) {
@@ -42,6 +48,10 @@ class GMR_Audio_Shortcodes {
 
 		if ( is_admin() ) {
 			return $html;
+		}
+
+		if ( is_feed() ) {
+			return ' ';
 		}
 
 //		/*
@@ -67,6 +77,11 @@ class GMR_Audio_Shortcodes {
 			}
 		}
 
+		// Sometimes, we just have "src" instead of something more specific
+		if ( empty( $mp3_src ) && isset( $atts['src'] ) && ! empty( $atts['src'] ) && filter_var( $atts['src'], FILTER_VALIDATE_URL ) ) {
+			$mp3_src = $atts['src'];
+		}
+
 		if ( ! function_exists( 'wp_read_audio_metadata' ) ) {
 			include_once trailingslashit( ABSPATH ) . 'wp-admin/includes/media.php';
 		}
@@ -80,6 +95,22 @@ class GMR_Audio_Shortcodes {
 		/* Don't look for data if the mp3 source is absent */
 		if ( empty( $mp3_src ) ) {
 			return $html;
+		}
+
+		$current_blog_id = get_current_blog_id();
+
+		/* Fix URLs on older podcasts.
+		 * This is a "quick fix", ideally we'd create a script to update the DB.
+		*/
+		if ( class_exists( 'S3_Uploads' ) ) {
+			// Ensure we have an S3 URL and not local, fixes issues with old URLs prior to S3
+			$site_url = trailingslashit( get_site_url( $current_blog_id, '', 'http' ) );
+			if ( false !== strpos( $mp3_src, $site_url ) ) {
+				$upload_dir = wp_upload_dir();
+				// Prod and stage includes the s3 URL, which is incorrect since we have them mapped
+				$upload_dir['baseurl'] = str_replace( '.s3.amazonaws.com', '', $upload_dir['baseurl'] );
+				$mp3_src = str_replace( $site_url . 'wp-content/uploads/' . 'sites/' . $current_blog_id, $upload_dir['baseurl'], $mp3_src );
+			}
 		}
 
 		/*
@@ -115,7 +146,9 @@ class GMR_Audio_Shortcodes {
 			$title = $metadata['title'];
 		}
 
+		$is_podcast = is_singular( array( ShowsCPT::SHOW_CPT, 'podcast' ) );
 		$is_podcast_archive = is_post_type_archive( 'podcast' );
+		$is_episode = get_post_type($post_id) == 'episode' ? true : false;
 		$is_home = is_home();
 
 		$parent_podcast = false;
@@ -131,7 +164,17 @@ class GMR_Audio_Shortcodes {
 		}
 
 		//get podcast featured image
-		$featured_image = wp_get_attachment_url( get_post_thumbnail_id( $parent_podcast_id ) );
+		$featured_image = false;
+		if ( $is_episode ) {
+			$featured_image = get_post_thumbnail_id( $post_id );
+			if ( $featured_image ) {
+				$featured_image = wp_get_attachment_url( $featured_image );
+			}
+		}
+
+		if ( ! $featured_image ) {
+			$featured_image = wp_get_attachment_url( get_post_thumbnail_id( $parent_podcast_id ) );
+		}
 
 		$series = get_post( $parent_podcast_id );
 		$series_slug = $series->post_name;
@@ -141,9 +184,8 @@ class GMR_Audio_Shortcodes {
 		}
 
 		$downloadable = get_post_meta( $post_id, 'gmp_audio_downloadable', true );
+		$downloadable = filter_var( $downloadable, FILTER_VALIDATE_BOOLEAN );
 		$new_html = '';
-
-		$is_podcast = is_singular( array( ShowsCPT::SHOW_CPT, 'podcast' ) );
 
 		// podcast archive details
 
@@ -190,7 +232,7 @@ class GMR_Audio_Shortcodes {
 
 		$new_html .= '</span>';
 
-		if ( ( $is_podcast || $is_podcast_archive || $is_home ) && ( $downloadable == 'on' || $downloadable == '' ) ) {
+		if ( ( $is_podcast || $is_podcast_archive || $is_home ) && $downloadable ) {
 			$new_html .= '<div class="podcast__download">';
 			if ( ! is_singular( 'podcast' ) ) {
 				if ( $parent_podcast_id && ( $is_podcast || $is_podcast_archive || $is_home ) ) {
@@ -220,7 +262,7 @@ class GMR_Audio_Shortcodes {
 		$new_html .= '<div class="podcast__meta">';
 		if ( $is_podcast || $is_home ) {
 			$new_html .= '<time class="podcast__date" datetime="' . get_the_time( 'c' ) . '">' . get_the_time( 'F j, Y' ) . '</time>';
-			$new_html .= '<h3 class="podcast__title">' . get_the_title() . '</h3>';
+			$new_html .= '<h3 class="podcast__title"><a href="' . esc_url( get_the_permalink( get_the_ID() ) ) . '">' . esc_html( get_the_title() ) . '</a></h3>';
 		} elseif ( $is_podcast_archive ) {
 			$parent_title = esc_html( $parent_podcast->post_title );
 			$new_html .= '<h3 class="podcast__title"><a href="' . esc_url( get_the_permalink( $parent_podcast ) ) . '">' . esc_html( $parent_title ) . '</a></h3>';

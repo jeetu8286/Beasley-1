@@ -20,10 +20,11 @@
 if ( defined( 'GMR_PARENT_ENV' ) && 'dev' == GMR_PARENT_ENV ) {
 	define( 'GREATERMEDIA_VERSION', time() );
 } else {
-	define( 'GREATERMEDIA_VERSION', '1.0.23' );
+	define( 'GREATERMEDIA_VERSION', '1.3.0' ); /* Version bump by Steve 4/13/2016 @ 8:00 a.m. EST */
 }
 
 add_theme_support( 'homepage-curation' );
+add_theme_support( 'homepage-countdown-clock' );
 
 require_once( __DIR__ . '/includes/liveplayer/class-liveplayer.php' );
 require_once( __DIR__ . '/includes/site-options/loader.php' );
@@ -34,6 +35,8 @@ require_once( __DIR__ . '/includes/image-attributes/loader.php');
 require_once( __DIR__ . '/includes/posts-screen-thumbnails/loader.php' );
 require_once( __DIR__ . '/includes/category-options.php' );
 require_once( __DIR__ . '/includes/class-favicon.php' );
+require_once( __DIR__ . '/includes/iframe-embed.php' );
+require_once( __DIR__ . '/includes/flexible-feature-images/gmr-flexible-feature-images.php' );
 
 /**
  * Required files
@@ -81,11 +84,13 @@ function greatermedia_setup() {
 	add_post_type_support( 'post', 'timed-content' );
 	add_post_type_support( 'post', 'login-restricted-content' );
 	add_post_type_support( 'post', 'age-restricted-content' );
+	add_post_type_support( 'post', 'flexible-feature-image' );
 
 	// Pages should also support same restrictions as posts
 	add_post_type_support( 'page', 'timed-content' );
 	add_post_type_support( 'page', 'login-restricted-content' );
 	add_post_type_support( 'page', 'age-restricted-content' );
+	add_post_type_support( 'page', 'flexible-feature-image' );
 
 	// Restrictions for galleries
 	add_post_type_support( 'gmr_gallery', 'timed-content' );
@@ -106,16 +111,24 @@ function greatermedia_setup() {
 	add_post_type_support( 'tribe_events', 'timed-content' );
 	add_post_type_support( 'tribe_events', 'login-restricted-content' );
 	add_post_type_support( 'tribe_events', 'age-restricted-content' );
+	add_post_type_support( 'tribe_events', 'flexible-feature-image' );
 
 	// Restrictions for contests
 	add_post_type_support( 'contest', 'timed-content' );
 	add_post_type_support( 'contest', 'login-restricted-content' );
 	add_post_type_support( 'contest', 'age-restricted-content' );
+	add_post_type_support( 'contest', 'flexible-feature-image' );
+
+	// Restrictions for surveys
+	add_post_type_support( 'survey', 'flexible-feature-image' );
 
 	// Add theme support for post-formats
 	$formats = array( 'gallery', 'link', 'image', 'video', 'audio' );
 	add_theme_support( 'post-formats', $formats );
 
+	// Embed providers
+	wp_embed_register_handler( 'pinterest', '~https?\:\/\/\w+\.pinterest\.com\/pin\/(\d+)\/?~i', 'greatermedia_pinterest_handler' );
+	wp_embed_register_handler( 'facebook', '~https?\:\/\/\w+\.facebook\.com\/\w+\/posts\/(\d+)\/?~i', 'greatermedia_facebook_handler' );
 }
 
 add_action( 'after_setup_theme', 'greatermedia_setup' );
@@ -172,17 +185,12 @@ function greatermedia_scripts_styles() {
 		true
 	);
 	wp_enqueue_script(
-		'placeholders',
-		"{$baseurl}/assets/js/vendor/placeholders.min.js",
-		array(),
-		'3.0.2',
-		false
-	);
-
-	wp_enqueue_script(
 		'greatermedia-load-more',
 		"{$baseurl}/assets/js/greater_media_load_more{$postfix}.js",
-		array( 'jquery', 'jquery-waypoints' ),
+		array(
+			'jquery',
+			'jquery-waypoints'
+		),
 		GREATERMEDIA_VERSION,
 		true
 	);
@@ -425,7 +433,7 @@ add_action( 'keyword_search_result', 'get_results_for_keyword' );
  * @param  WP_Query $query [description]
  */
 function greatermedia_alter_search_query( $query ) {
-	if( $query->is_search && $query->is_main_query() ) {
+	if( ! is_admin() && $query->is_search() && $query->is_main_query() ) {
 		$search_query_arg = sanitize_text_field( $query->query_vars['s'] );
 		$custom_post_id = intval( get_post_with_keyword( $search_query_arg ) );
 		if( $custom_post_id != 0 ) {
@@ -434,6 +442,30 @@ function greatermedia_alter_search_query( $query ) {
 	}
 }
 add_action( 'pre_get_posts', 'greatermedia_alter_search_query' );
+
+/**
+ * Alter search score to favor more recent posts first
+ *
+ * @param $request_args
+ */
+function ep_search_request_args( $request_args, $args = '', $scope = '' ) {
+	$gauss = new \stdClass();
+	$gauss->post_date = array( 'scale' => '52w', 'offset' => '12w', 'decay' => 0.3 );
+
+	$function_score = array(
+		'function_score' => array(
+			'functions' => array(
+				array( 'gauss' => $gauss )
+			),
+			'score_mode' => 'multiply',
+			'query' => $request_args['query']
+		)
+	);
+	$request_args['query'] = $function_score;
+
+	return $request_args;
+}
+add_filter( 'ep_formatted_args', 'ep_search_request_args' );
 
 /**
  * Alter query to show custom post types in category pages.
@@ -511,7 +543,7 @@ if ( ! function_exists( 'greatermedia_load_more_template' ) ) :
 			'paged'         => $gmr_loadmore_paged ?: $wp_query->query_vars['paged'],
 			'max_num_pages' => $gmr_loadmore_num_pages ?: $wp_query->max_num_pages,
 			'post_count'    => $gmr_loadmore_post_count ?: $wp_query->post_count,
-			'html'          => $html,
+			'html'          => apply_filters( 'dynamic_cdn_content', $html ), // Apply dynamic cdn filter so images aren't broken.
 		) );
 
 		exit;
@@ -557,8 +589,7 @@ function greatermedia_load_more_button( $args = array() ) {
 		return;
 	}
 
-
-	if ( ! $args['next_page'] ) {
+	if ( empty( $args['next_page'] ) || !is_numeric( $args['next_page'] ) ) {
 		$args['next_page'] = 2;
 	}
 
@@ -644,13 +675,18 @@ function greatermedia_deactivate_tribe_warning_on_dashboard( $option_value ) {
 add_filter( 'get_user_option_dashboard_quick_press_last_post_id', 'greatermedia_deactivate_tribe_warning_on_dashboard' );
 
 function add_google_analytics() {
+	global $post;
 	$google_analytics = get_option( 'gmr_google_analytics', '' );
 	$google_uid_dimension = absint( get_option( 'gmr_google_uid_dimension', '' ) );
 
 	if ( empty( $google_analytics ) ) {
 		return;
 	}
-
+	if ( is_singular() ) {
+		$args     = array( 'orderby' => 'name', 'order' => 'ASC', 'fields' => 'slugs' );
+		$shows    = implode( ', ', wp_get_post_terms( $post->ID, '_shows', $args ) );
+		$category = implode( ', ', wp_get_post_terms($post->ID, 'category', $args ) );
+	}
 	?>
 	<script>
 	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -676,6 +712,16 @@ function add_google_analytics() {
 		ga('set', 'location', window.location.href);
 		ga('send', 'pageview');
 	});
+	ga('require', 'displayfeatures');
+	<?php if ( is_singular() ) : ?>
+		<?php if ( ! empty( $shows ) ) : ?>
+			ga( 'set', 'contentGroup1', <?php echo json_encode( $shows ); ?> );
+		<?php endif; ?>
+		<?php if ( ! empty( $category ) ): ?>
+			ga( 'set', 'contentGroup2', <?php echo json_encode( $category ); ?> );
+		<?php endif; ?>
+	<?php endif ?>
+
 	ga('send', 'pageview');
 
 	jQuery(document).ready(function() {
@@ -971,7 +1017,7 @@ function greatermedia_newssite_class( $classes ) {
 	if ( is_news_site() ) {
 		$classes[] = 'news-site';
 	}
-	
+
 	return $classes;
 }
 add_filter( 'body_class', 'greatermedia_newssite_class' );
@@ -1051,3 +1097,43 @@ function greatermedia_podcasts_in_loop( $query ) {
 	return $query;
 }
 add_action( 'pre_get_posts', 'greatermedia_podcasts_in_loop' );
+
+function greatermedia_pinterest_handler( $matches, $attr, $url, $rawattr ) {
+	return sprintf(
+		'<a data-pin-do="embedPin" href="%s"></a>' .
+		'<script type="text/javascript" async defer src="//assets.pinterest.com/js/pinit.js"></script>',
+		esc_url( $url )
+	);
+}
+
+function greatermedia_facebook_handler( $matches, $attr, $url, $rawattr ) {
+	return '<script>!function(e,n,t){var o,c=e.getElementsByTagName(n)[0];e.getElementById(t)||(o=e.createElement(n),o.id=t,o.src="//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.2",c.parentNode.insertBefore(o,c))}(document,"script","facebook-jssdk");</script>
+			<div class="fb-post" data-href="' . esc_url( $url ) . '"></div>';
+}
+
+/**
+ * Disables wptexturize for compatibility with Embed.ly
+ */
+add_filter( 'run_wptexturize', '__return_false' );
+
+/**
+ * Adds default styles to Embedly cards added by the Embedly Wordpress plug-in as defined at:
+ * http://embed.ly/docs/products/cards
+ *
+ * @param $content
+ */
+
+function stylize_embedly_embeds( $content ) {
+	return preg_replace( '/(<a class=\\\\"embedly-card\\\\" )(href=\\\\"[^"]*\\\\">)/', ' ${1}data-card-width=\"100%\" data-card-chrome=\"0\" data-card-controls=\"0\" $2', $content );
+}
+
+add_filter( 'content_save_pre', 'stylize_embedly_embeds', 30, 1 );
+
+/**
+ * Enables Video Thumbnails to work with Embedly on first post save.
+ */
+function urldecode_markup_for_video_thumbnails( $markup, $post_id ) {
+	return urldecode($markup);
+}
+
+add_filter( 'video_thumbnail_markup', 'urldecode_markup_for_video_thumbnails', 10, 2 );

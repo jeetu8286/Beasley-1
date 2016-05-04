@@ -202,6 +202,10 @@ function gmr_contests_adjuste_attachments_query( $args ) {
 
 		unset( $post_status[ array_search( 'private', $post_status ) ] );
 
+		if ( empty( $post_status ) ) {
+			$post_status = array( 'inherit' );
+		}
+
 		$args['post_status'] = $post_status;
 	}
 
@@ -307,7 +311,7 @@ function gmr_contest_container_attributes( $post = null ) {
 	}
 
 	$endpoints = array();
-	
+
 	if ( is_preview() ) {
 		$endpoints = array(
 			'load'        => add_query_arg( 'action', 'load' ),
@@ -658,7 +662,7 @@ function gmr_contests_render_form( $skip_age = false ) {
 	// render the form
 	wp_send_json_success( array(
 		'contest_id' => $contest_id,
-		'html' => GreaterMediaFormbuilderRender::render( $contest_id ),
+		'html'       => GreaterMediaFormbuilderRender::render( $contest_id ),
 	) );
 }
 
@@ -676,6 +680,14 @@ function gmr_contests_get_login_url( $redirect = null ) {
 	return function_exists( 'gigya_profile_path' )
 		? gigya_profile_path( 'login', array( 'dest' => $redirect ) )
 		: '#';
+}
+
+/**
+ * Verifies form submission.
+ */
+function gmr_contests_verify_form_submission( $form ) {
+	_deprecated_function( 'gmr_contests_verify_form_submission', '1.1.3', 'gmr_verify_form_submission' );
+	gmr_verify_form_submission( $form );
 }
 
 /**
@@ -705,8 +717,10 @@ function gmr_contests_process_form_submission() {
 	require_once ABSPATH . 'wp-admin/includes/image.php';
 	require_once ABSPATH . 'wp-admin/includes/media.php';
 	require_once ABSPATH . 'wp-admin/includes/file.php';
-
+	
 	$form = @json_decode( get_post_meta( $contest_id, 'embedded_form', true ) );
+	gmr_verify_form_submission( $form );
+
 	foreach ( $form as $field ) {
 		$field_key = 'form_field_' . $field->cid;
 		if ( 'file' === $field->field_type ) {
@@ -766,7 +780,7 @@ function gmr_contests_process_form_submission() {
 		$contests[] = $contest_id;
 		$contests = array_filter( array_unique( $contests ) );
 		$contests = base64_encode( implode( ',', $contests ) );
-		
+
 		setcookie( '__cs', $contests, current_time( 'timestamp', 1 ) + YEAR_IN_SECONDS, '/', parse_url( home_url(), PHP_URL_HOST ) );
 	}
 
@@ -1290,6 +1304,11 @@ function gmr_filter_expired_contests( $query ) {
 				'value'   => '',
 				'compare' => 'NOT EXISTS',
 			),
+			array(
+				'key'     => 'contest-end',
+				'type'    => 'NUMERIC',
+				'value'   => 0,
+			),
 		);
 
 		$query->set( 'meta_query', $query_params );
@@ -1298,5 +1317,21 @@ function gmr_filter_expired_contests( $query ) {
 		return $query;
 	} else {
 		return $query;
+	}
+}
+
+/**
+ * Determines if we can show vote counts or not.
+ *
+ * @param  int|WP_Post $submission The post ID or object.
+ * @return boolean true/false if the vote counts should be displayed.
+ */
+function gmr_contests_can_show_vote_count( $submission = null ) {
+	if ( is_null( $submission ) || is_int( $submission ) ) {
+		$submission = get_post( get_the_ID() );
+	}
+
+	if ( $submission->post_parent ) {
+		return get_post_meta( $submission->post_parent, 'contest_show_vote_counts', true ) ? true : false;
 	}
 }
