@@ -29,8 +29,20 @@ $order_by = get_post_meta( get_the_ID(), 'entries-order-by', true );
 while ( $submissions_query->have_posts() ) :
 	$submissions_query->the_post();
 	$contest_id = get_post_meta( get_the_ID(), 'contest_entry_id', true );
-	$entrant_name = get_post_meta( $contest_id, 'entrant_name', true );
-	$post->entrant_name = $entrant_name;
+	if ( 'entrant_name' === $order_by ) {
+		$entrant_name = get_post_meta( $contest_id, 'entrant_name', true );
+		$post->entrant_name = $entrant_name;
+	} elseif ( 'display_name' === $order_by ) {
+		$fields = GreaterMediaFormbuilderRender::parse_entry( get_post()->post_parent, $contest_id );
+		$display_name = '';
+		foreach ( $fields as $field ) {
+			if ( $field['display_name'] ) {
+				$display_name = $field['value'];
+				break;
+			}
+		}
+		$post->display_name = $display_name;
+	}
 	$submissions[] = $post;
 endwhile;
 
@@ -38,10 +50,13 @@ endwhile;
  * Actually sort the submissions, if specified.
  */
 if ( 'entrant_name' === $order_by ) {
-	function sort_submissions( $a, $b ) {
+	usort( $submissions, function( $a, $b ) {
 		return strcasecmp( $a->entrant_name, $b->entrant_name );
-	}
-	usort( $submissions, 'sort_submissions' );
+	} );
+} elseif ( 'display_name' === $order_by ) {
+	usort( $submissions, function( $a, $b ) {
+		return strcasecmp( $a->display_name, $b->display_name );
+	} );
 } ?>
 
 <section class="contest__submissions">

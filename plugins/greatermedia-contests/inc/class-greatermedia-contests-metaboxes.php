@@ -177,6 +177,7 @@ class GreaterMediaContestsMetaboxes {
 		?><select name="entries-order-by">
 			<option value="date">Date</option>
 			<option value="entrant_name"<?php selected( 'entrant_name', $order ); ?>>Entrant name</option>
+			<option value="display_name"<?php selected( 'display_name', $order ); ?>>Display name</option>
 		</select><?php
 	}
 
