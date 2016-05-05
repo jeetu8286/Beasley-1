@@ -34,13 +34,7 @@ while ( $submissions_query->have_posts() ) :
 		$post->entrant_name = $entrant_name;
 	} elseif ( 'display_name' === $order_by ) {
 		$fields = GreaterMediaFormbuilderRender::parse_entry( get_post()->post_parent, $contest_id );
-		$display_name = '';
-		foreach ( $fields as $field ) {
-			if ( $field['display_name'] ) {
-				$display_name = $field['value'];
-				break;
-			}
-		}
+		$display_name = gmr_contest_submission_get_author( get_the_ID() );
 		$post->display_name = $display_name;
 	}
 	$submissions[] = $post;
