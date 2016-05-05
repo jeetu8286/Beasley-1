@@ -173,7 +173,6 @@ class GreaterMediaContestsMetaboxes {
 
 	public function render_order_by_field( $post_id ) {
 		$order = get_post_meta( $post_id, 'entries-order-by', true );
-		var_dump( $order );
 		?><select name="entries-order-by">
 			<option value="date">Date</option>
 			<option value="entrant_name"<?php selected( 'entrant_name', $order ); ?>>Entrant name</option>
