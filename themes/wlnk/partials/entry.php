@@ -40,7 +40,7 @@ if ( ! empty( $layout ) ) {
 		<h2 class="entry2__title" itemprop="headline"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
 		
 		<div class="entry2__excerpt">
-			<?php //the_excerpt(); ?>
+			<?php the_excerpt(); ?>
 		</div>		
 	</section>
 
