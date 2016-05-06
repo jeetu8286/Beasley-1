@@ -14,7 +14,7 @@ if ( ! empty( $layout ) ) {
 ?>
 <article id="post-<?php the_ID(); ?>" <?php post_class( 'entry2' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
 	<?php 
-	if ( has_post_thumbnail() || 'tribe_events' == $post->post_type ) : 
+	if ( has_post_thumbnail() || 'tribe_events' == '' ) : 
 		if ( has_post_format( 'audio' ) ) {
 			$thumbnail_size = 'gm-entry-thumbnail-1-1';
 		} else {
