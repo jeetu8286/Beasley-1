@@ -20,13 +20,13 @@ get_header();
 			<?php if ( is_news_site() ) : ?>
 				<h2 class="content__heading"><?php _e( 'News', 'greatermedia' ); ?></h2>
 			<?php else : ?>
-				<?php //get_template_part( 'partials/ad-in-loop' ); ?>
+				<?php get_template_part( 'partials/ad-in-loop' ); ?>
 				<h2 class="content__heading"><?php _e( 'Latest from ', 'greatermedia' ); ?><?php bloginfo( 'name' ); ?></h2>
 			<?php endif; ?>
 
 			<?php if ( have_posts() ) : ?>
 
-				<?php get_template_part( 'partials/loop', 'front-page' ); ?>
+				<?php //get_template_part( 'partials/loop', 'front-page' ); ?>
 				<?php greatermedia_load_more_button( array( 'partial_slug' => 'partials/loop', 'auto_load' => true ) ); ?>
 
 			<?php else : ?>
