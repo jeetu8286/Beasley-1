@@ -14,15 +14,7 @@ if ( ! empty( $layout ) ) {
 ?>
 <article id="post-<?php the_ID(); ?>" <?php post_class( 'entry2' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
 	
-	<section class="entry2__meta">
-		<time datetime="<?php the_time( 'c' ); ?>" class="entry2__date"><?php the_time( 'F j, Y' ); ?></time>
-		
-		<h2 class="entry2__title" itemprop="headline"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
-		
-		<div class="entry2__excerpt">
-			<?php the_excerpt(); ?>
-		</div>		
-	</section>
+	
 
 	<footer class="entry2__footer">
 		<?php
