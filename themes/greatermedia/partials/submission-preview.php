@@ -14,7 +14,7 @@
 			<dt>Submitted On</dt>
 			<dd><?php echo get_the_date( '' ); ?></dd>
 		<?php } ?>
-		
+
 		<?php
 		/*
 		 * Display the fields associated with an entry, checked as 'Display with entries' on the form builder.
@@ -73,11 +73,11 @@
 		<?php if ( is_gigya_user_logged_in() ) : ?>
 			<div>
 				<a class="contest__submission--vote" href="#" data-id="<?php echo esc_attr( get_post_field( 'post_name', null ) ); ?>">
-					<i class="fa fa-thumbs-o-up"></i> Upvote
+					<i class="fa fa-thumbs-o-up"></i> Vote For This Entry
 				</a>
 
 				<a class="contest__submission--unvote" href="#" data-id="<?php echo esc_attr( get_post_field( 'post_name', null ) ); ?>">
-					<i class="fa fa-thumbs-o-down"></i> Downvote
+					<i class="fa fa-thumbs-o-down"></i> Cancel Vote
 				</a>
 			</div>
 		<?php else : ?>
