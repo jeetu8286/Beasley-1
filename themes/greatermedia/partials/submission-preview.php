@@ -3,14 +3,12 @@
 </section>
 
 <section class="col__inner--right">
+	<h2><?php echo esc_html( gmr_contest_submission_get_author() ); ?></h2>
 	<dl class="contest__submission--entries">
 		<?php
 		$post_parent = get_post_field( 'post_parent', null );
 		$display_submitted_details = (int) get_post_meta( $post_parent, 'show-entrant-details', true );
 		if ( $display_submitted_details ) { ?>
-			<dt>Submitted By</dt>
-			<dd><?php echo esc_html( gmr_contest_submission_get_author() ); ?></dd>
-
 			<dt>Submitted On</dt>
 			<dd><?php echo get_the_date( '' ); ?></dd>
 		<?php } ?>
@@ -75,7 +73,7 @@
 	</dl>
 
 	<?php if ( function_exists( 'is_gigya_user_logged_in' ) ) : ?>
-		<?php if ( is_gigya_user_logged_in() ) : ?>
+		<?php if ( gmr_contests_is_voting_open( get_post()->post_parent ) && is_gigya_user_logged_in() ) : ?>
 			<div>
 				<a class="contest__submission--vote" href="#" data-id="<?php echo esc_attr( get_post_field( 'post_name', null ) ); ?>">
 					<i class="fa fa-thumbs-o-up"></i> Vote For This Entry
@@ -85,7 +83,23 @@
 					<i class="fa fa-thumbs-o-down"></i> Cancel Vote
 				</a>
 			</div>
-		<?php else : ?>
+		<?php
+		elseif (
+			! gmr_contests_is_voting_open( get_post()->post_parent ) &&
+			time() < gmr_contests_get_vote_start_date( get_post()->post_parent )
+		) :
+		?>
+			<p>Voting has not yet begun. Please check back soon to place your vote.</p>
+		<?php
+		elseif (
+			! gmr_contests_is_voting_open( get_post()->post_parent ) &&
+			gmr_contests_get_vote_end_date( get_post()->post_parent ) < time()
+		) :
+		?>
+			<p>Voting is now closed.</p>
+		<?php
+		else :
+		?>
 			<p>
 				You must be logged in to vote for the submission!
 				<a href="<?php echo esc_url( gmr_contests_get_login_url( parse_url( get_permalink( $post_parent ), PHP_URL_PATH ) ) ) ?>">Sign in here</a>.
