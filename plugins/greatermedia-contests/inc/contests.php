@@ -477,7 +477,7 @@ function _gmr_contests_get_vote_key() {
  * @return boolean TRUE if current gigya user voted for a submission, otherwise FALSE.
  */
 function gmr_contests_is_user_voted_for_submission( $submission = null ) {
-	if ( ! function_exists( 'is_gigya_user_logged_in' ) || ! is_gigya_user_logged_in() ) {
+	if ( ! gmr_contests_allow_anonymous_votes( $submission->post_parent ) && ( ! function_exists( 'is_gigya_user_logged_in' ) || ! is_gigya_user_logged_in() ) ) {
 		return false;
 	}
 
