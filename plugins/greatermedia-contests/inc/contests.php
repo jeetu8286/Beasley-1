@@ -502,7 +502,7 @@ function gmr_contests_is_user_voted_for_submission( $submission = null ) {
 		return false;
 	}
 
-	$vote_key = _gmr_contests_get_vote_key();
+	$vote_key = _gmr_contests_get_vote_key( $submission->post_parent );
 	if ( empty( $vote_key ) ) {
 		return false;
 	}
