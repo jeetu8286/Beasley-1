@@ -622,6 +622,8 @@ class GreaterMediaContestsMetaboxes {
 		
 		$show_entrant_details = filter_input( INPUT_POST, 'show-entrant-details', FILTER_VALIDATE_INT, array( 'options' => array( 'min_range' => 0, 'default' => 1 ) ) );
 		update_post_meta( $post_id, 'show-entrant-details', $show_entrant_details );
+
+		// update_post_meta( $post_id, 'contest-allow-anonymous-voting', isset( $_POST['greatermedia_contest_allow_anonymous_voting'] ) );
 	}
 
 }
