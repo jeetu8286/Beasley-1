@@ -15188,8 +15188,7 @@ header#header.header {
   background-image: url('../../images/mainbg.jpg'); }
 
 .home__highlights {
-  visibility: hidden;
-  height: 0px;
+  visibility: visible;
   padding: 0px; }
 
 .page__title, h1, h2, h3, h4, h5, h6 {
@@ -15221,6 +15220,9 @@ header#header.header {
   font-family: 'Open Sans', sans-serif;
   font-size: 16px;
   line-height: 20px; }
+
+.live-player__container {
+  background-image: url(https://files.greatermedia.com/uploads/sites/14/2016/04/listenliveamp-4.jpg); }
 
 #wcsx-social-stream {
   overflow: hidden;
