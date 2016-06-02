@@ -15163,7 +15163,8 @@ table.responsive tr:nth-of-type(even) {
   background-color: #23282D; }
 
 .home__highlights {
-  background-color: #252424; }
+  background-color: #252424;
+  padding: 3em 3.236em; }
 
 .main, #page-wrap.page-wrap {
   background-color: transparent; }
