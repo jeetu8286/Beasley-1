@@ -15100,7 +15100,8 @@ table.responsive tr:nth-of-type(even) {
     top: -7px; } }
 
 .home__highlights {
-  border-bottom-color: #d0d2d3; }
+  border-bottom-color: #d0d2d3;
+  padding: 3em 3.236em; }
 
 .highlights__events--more-btn:hover {
   color: #f5ed7f !important;
@@ -15163,7 +15164,8 @@ table.responsive tr:nth-of-type(even) {
   background-color: #23282D; }
 
 .home__highlights {
-  background-color: #252424; }
+  background-color: #252424;
+  padding: 3em 3.236em; }
 
 .main, #page-wrap.page-wrap {
   background-color: transparent; }
@@ -15188,9 +15190,7 @@ header#header.header {
   background-image: url('../../images/mainbg.jpg'); }
 
 .home__highlights {
-  visibility: hidden;
-  height: 0px;
-  padding: 0px; }
+  visibility: visible; }
 
 .page__title, h1, h2, h3, h4, h5, h6 {
   font-family: oswald !important; }
@@ -15221,6 +15221,9 @@ header#header.header {
   font-family: 'Open Sans', sans-serif;
   font-size: 16px;
   line-height: 20px; }
+
+.live-player__container {
+  background-image: url(https://files.greatermedia.com/uploads/sites/14/2016/04/listenliveamp-4.jpg); }
 
 #wcsx-social-stream {
   overflow: hidden;
