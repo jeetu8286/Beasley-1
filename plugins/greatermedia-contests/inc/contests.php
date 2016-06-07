@@ -696,7 +696,7 @@ function gmr_contests_verify_form_submission( $form ) {
  * @action gmr_contest_submit
  */
 function gmr_contests_process_form_submission() {
-	if ( 'POST' != $_SERVER['REQUEST_METHOD'] ) {
+	if ( 'POST' != $_SERVER['REQUEST_METHOD'] || gmr_contests_are_submissions_open( get_the_ID() ) ) {
 		return;
 	}
 
