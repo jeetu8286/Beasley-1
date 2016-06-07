@@ -95,7 +95,9 @@
 	</section>
 
 	<section class="col__inner--right">
+		<?php if ( gmr_contests_are_submissions_open( get_post()->post_parent )) : ?>
 		<section id="contest-form" class="contest__form"<?php gmr_contest_container_attributes(); ?>></section>
+		<?php endif; ?>
 		<div class="desktop">
 			<?php do_action( 'acm_tag', 'mrec-body' ); ?>
 		</div>
