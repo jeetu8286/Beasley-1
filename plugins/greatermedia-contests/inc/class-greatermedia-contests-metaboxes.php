@@ -625,10 +625,12 @@ class GreaterMediaContestsMetaboxes {
 
 		$offset = get_option( 'gmt_offset' ) * HOUR_IN_SECONDS;
 		$dates = array(
-			'contest-start'      => 'greatermedia_contest_start',
-			'contest-end'        => 'greatermedia_contest_end',
-			'contest-vote-start' => 'greatermedia_contest_vote_start',
-			'contest-vote-end'   => 'greatermedia_contest_vote_end',
+			'contest-start'            => 'greatermedia_contest_start',
+			'contest-end'              => 'greatermedia_contest_end',
+			'contest-vote-start'       => 'greatermedia_contest_vote_start',
+			'contest-vote-end'         => 'greatermedia_contest_vote_end',
+			'contest-submission-start' => 'greatermedia_contest_submission_start',
+			'contest-submission-end'   => 'greatermedia_contest_submission_end',
 		);
 
 		foreach ( $dates as $meta => $param ) {
