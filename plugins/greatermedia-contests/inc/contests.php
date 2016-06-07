@@ -1368,3 +1368,42 @@ function gmr_contest_get_fields( $submission = null, $field_type = 'entry_field'
 
 	return $contest_fields;
 }
+
+/**
+ * Get contest's submission start date.
+ *
+ * @param $contest_id
+ *
+ * @return int
+ */
+function gmr_contests_get_submission_start_date( $contest_id ) {
+	return (int) get_post_meta( $contest_id, 'contest-submission-start', true ) ?:
+		get_post_meta( $contest_id, 'contest-start', true );;
+}
+
+/**
+ * Get contest's submission end date.
+ *
+ * @param $contest_id
+ *
+ * @return int
+ */
+function gmr_contests_get_submission_end_date( $contest_id ) {
+	return (int) get_post_meta( $contest_id, 'contest-submission-end', true ) ?:
+		get_post_meta( $contest_id, 'contest-end', true );
+}
+
+/**
+ * Check whether or not submissions for the contest are open.
+ *
+ * @param int $contest_id ID of contest to check.
+ *
+ * @return bool
+ */
+function gmr_contests_are_submissions_open( $contest_id ) {
+	$submission_start = gmr_contests_get_submission_start_date( $contest_id );
+	$submission_end   = gmr_contests_get_submission_end_date( $contest_id );
+	$current_time     = time();
+
+	return ( $submission_start <= $current_time && $current_time < $submission_end );
+}
