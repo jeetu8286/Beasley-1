@@ -6,13 +6,7 @@
   border-bottom: 1px solid #58595b;
 }
 
-.home__featured {
-  @include bp(medium) {
-    background-position: left top;
-    background-color: #561015;
-    // background-size: cover; // Leave this out unless we want big crosshatches on WMGK. If we do want that, be sure to also add this to the .show__header
-  }
-}
+
 
 .live-links {
   border-top: 0;
@@ -80,21 +74,6 @@
   color: $color-gray-medium;
 }
 
-.live-link__song:before {
-  color: $medium-dark-gray;
-}
-
-.live-link__song--artist {
-  color: $medium-dark-gray;
-}
-
-.live-link__song--title {
-  color: $dark-gray;
-
-  a, a:visited {
-    color: $darker-gray;
-  }
-}
 
 .live-link__title a:link, .live-link__title a:visited {
   color: $color-gray-medium;
@@ -104,11 +83,7 @@
   color: $primary-link-hover;
 }
 
-.header__logo {
-  @include bp(medium) {
-    top: -7px;
-  }
-}
+
 .home__highlights {
   border-bottom-color: $primary-border;
 }
@@ -161,34 +136,34 @@ Denis Changes to _overrides.scss file 5/20
 /* CUSTOM OVERRIDES BELOW */
 /* ------------- HIGHLIGHTS -------------------------------*/
 
-#site-wrap.site-wrap {background-size: cover;
-                      background-color: #061222;
-                      /*background-image:url("http://i.imgur.com/AQ8tELI.jpg")!important;*/
-                      background-image:url("../../images/img_BGCrowd2.jpg");
-                      background-repeat: no-repeat;
-                      background-attachment: fixed;
 
-                    }
+
+
 .home__highlights{background: url(../../images/pw_maze_gray.png); padding: 3em 3.236em;}
 
 
 
 
- #page-wrap.page-wrap,
-.main,
-.home .container
-{background-color: transparent; background-image: none;}
 
-.highlights__heading {
-    color: #fff;
+
+.highlights__heading, .single-show .highlights__heading {
+    
     font-weight: 500;
     text-transform: uppercase;
     font-family: 'Ubuntu', sans-serif;
     padding: 10px;
-    background-color:#005596;
+    color: #fff;
+
+    text-shadow: 2px 2px 1px rgba(0, 0, 0, .7);
+            background-image: url(../../images/highlights-BG.png), linear-gradient(to left, #000000 0, #5cba47 100%);
+        background-repeat: no-repeat;
+        background-position: right;
 }
 
+.highlights__community--item:hover .highlights__community--title{
+        color:#5cba47;
 
+}
 /*Show header and link */
 
 .show__mini-nav {
@@ -209,12 +184,12 @@ Denis Changes to _overrides.scss file 5/20
 
 
 .show__header.has-thumbnail:before {
-  background-image: linear-gradient(to bottom,rgba(0,42,110,.45),rgba(0,42,110,.45));
-  background-image: -moz-linear-gradient(top,rgba(0,42,110,.45),rgba(0,42,110,.45));
-  background-image: -o-linear-gradient(top,rgba(0,42,110,.45),rgba(0,42,110,.45));
-  background-image: -ms-linear-gradient(top,rgba(0,42,110,.45),rgba(0,42,110,.45));
-  background-image: -webkit-gradient(linear,left top,left bottom,from(rgba(0,42,110,.45)),to(rgba(0,42,110,.45)));
-  background-image: -webkit-linear-gradient(top,rgba(0,42,110,.45),rgba(0,42,110,.45));
+  background-image: linear-gradient(to bottom,rgba(0,0,0,.45),rgba(0,0,0,.45));
+  background-image: -moz-linear-gradient(top,rgba(0,0,0,.45),rgba(0,0,0,.45));
+  background-image: -o-linear-gradient(top,rgba(0,0,0,.45),rgba(0,0,0,.45));
+  background-image: -ms-linear-gradient(top,rgba(0,0,0,.45),rgba(0,0,0,.45));
+  background-image: -webkit-gradient(linear,left top,left bottom,from(rgba(0,0,0,.45)),to(rgba(0,0,0,.45)));
+  background-image: -webkit-linear-gradient(top,rgba(0,0,0,.45),rgba(0,0,0,.45));
   content: " ";
 }
 
@@ -223,18 +198,50 @@ Denis Changes to _overrides.scss file 5/20
 /* end */
 /*members profile pages */
 
-.profile-page .profile-page__sidebar {background-color: #0e2242;}
+.profile-page {
 
-.profile-page__sidebar .profile-header-link {color: #005494;}
-.profile-page__sidebar .profile-header-link:hover {color: #f48325;}
+      .profile-page__sidebar {
+          background-color: #000000;
+          .profile-header-link {
+            color: #5cba47;
+            &:hover {
+              color: #ffffff;
+            }
+          }
+          .profile-header-sep {
+            color:#ffffff!important;
+          }
+      }
+}
 
-#profile-content .gigya-screen input[type="submit"] {background-color: #0e2242;}
+
+
+#profile-content {
+      .gigya-screen input[type="submit"] {
+        background-color: #000000;
+        color: #5cba47;
+        border-color: #5cba47;
+
+      }
+      .link-button {
+          color: #5cba47;
+
+          &:hover {
+          color: #000;
+          }
+      }
+}
+
+
+#profile-content .gigya-screen .new-account-msg a {color: #5cba47!important;}
+#profile-content .gigya-screen .new-account-msg a:hover {color: #000!important;}
+
 
 /* end */
 
 /* ------------- LIVE PLAYER BTN -------------------------------*/
 .live-player__stream{
-    margin-top: 110px;
+    margin-top: 114px;
     z-index: 1001;
     background-color: rgba(0,0,0,.5);
     color: #fff;
@@ -244,63 +251,194 @@ Denis Changes to _overrides.scss file 5/20
     }
 
 }
+
 .live-player {
-background-color: #002a6e;
+
+    background-image: url("../../images/brushed-metal.jpg");
+    background-position: center;
+    color:#fff;
+}
+
+
+
+#live-player--volume .noUi-base {background: #5cba47;}
+#live-player--volume.noUi-horizontal .noUi-handle {background: #000000;}
+
+
+
+ .no-volume-control{background-color: #5cba47;}
+
+
+
+
+/* begin */
+.live-link__song {
+    font-weight: 400;
+    font-family: 'Ubuntu', sans-serif;
+
+    &:before {
+        color: #000;
+        position: absolute;
+        left: 10px;
+    }
+
+    .live-link__song--artist {
+        color: #000;;
+    }
+    .live-link__song--title {
+        color: #000;
+        font-size: .95em;
+        text-shadow: 2px 2px 1px rgba(0, 0, 0, .3);
+    }
+}
+
+
+.live-link__song:hover {
+    background-color: rgba(0,0,0, .7);
+    color: #5cba47; 
+  }
+.live-link__song:hover:before {
+    color: #5cba47; 
+  }
+.live-link__song:hover .live-link__song--artist, .live-link__song:hover .live-link__song--title {
+    color: #5cba47; 
   }
 
+/* end */
+.live-links {
+    border-top: 0;
+    background: none;
+    &:before {
+        color: #092040;
+    }
+    .live-link__title {
+
+        a,
+        a:visited {
+            font-family: 'Ubuntu', sans-serif;
+            line-height: 1.1em;
+            color: $primary-link;
+            text-shadow: 0px 0px 10px rgba(255, 255, 255, 1);
+        }
+        a:hover {
+            color: $primary-link-hover;
+        }
+
+    }
 
 
+}
 
-#live-player--volume .noUi-base {background: #005596;}
-#live-player--volume.noUi-horizontal .noUi-handle {background: #002a6e;}
+.live-link__song:before, 
+.live-link__type--audio:before, 
+.live-link__type--gallery:before, 
+.live-link__type--image:before, 
+.live-link__type--link:before, 
+.live-link__type--standard:before, 
+.live-link__type--video:before {
 
-
-
-  .live-player__container, .no-volume-control{background-color: #002a6e;}
-
-ul#live-links__blogroll {background-color: #004c90;}
-
-.live-links--more:before {
-        background: -moz-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(14,34,66,1) 100%); /* FF3.6+ */
-        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,0)), color-stop(100%,rgba(14,34,66,1))); /* Chrome,Safari4+ */
-        background: -webkit-linear-gradient(top, rgba(255,255,255,0) 0%,rgba(14,34,66,1) 100%); /* Chrome10+,Safari5.1+ */
-        background: -o-linear-gradient(top, rgba(255,255,255,0) 0%,rgba(14,34,66,1) 100%); /* Opera 11.10+ */
-        background: -ms-linear-gradient(top, rgba(255,255,255,0) 0%,rgba(14,34,66,1) 100%); /* IE10+ */
-        background: linear-gradient(to bottom, rgba(255,255,255,0) 0%,rgba(14,34,66,1) 100%); /* W3C */
-        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#008b0000', endColorstr='#0e2242',GradientType=0 ); /* IE6-9 */
+    color: #000;
 }
 
 
-.live-links--more {
-position: fixed;bottom: 0;height: 40px;padding: 5px 0;text-align: center;background-color: #0e2242;
--webkit-transition: all 200ms ease-in-out;-moz-transition: all 200ms ease-in-out; transition: all 200ms ease-in-out;
-}
-
-.live-links--more__btn {line-height: 1;margin-right: .5em;outline: 0;  background-color: transparent;border: 1px solid #f3862b;  color: #f3862b;}
-.live-links--more__btn:hover:hover {background-color: transparent;border: 1px solid #f3862b;  color: #f3862b;}
-
-.live-link__song--artist, .live-link__song--title {color: #FFFFFF;}
-.live-link__song:before {margin-top: 10px;color: #FFFFFF;}
 
 .live-player--open .live-links {margin-top:0px;padding: 0px 0px 0px;}
 
 .gmr-user .on-air, .gmr-user .up-next {position: relative; top:0px;}
 
 /*mobile nav */
-.mobile-nav .mobile-menu-submenu-header {background-color: #002a6e;color: #fff;padding: 18px 1.25em;}
-.mobile-nav__list a:hover, .ui-menu .ui-state-focus {background-color: #002a6e;}
+.mobile-nav .mobile-menu-submenu-header {background-color: #5cba47;color: #fff;padding: 18px 1.25em;}
+.mobile-nav__list a:hover, .ui-menu .ui-state-focus {background-color: #5cba47;}
 .mobile-nav .social__link:visited {color:#fff;border-color: #fff;}
-.mobile-nav .social__link:hover{color:#f3862b;border-color: #f3862b;}
+.mobile-nav .social__link:hover{color:#5cba47;border-color: #5cba47;}
 
-.social__link:hover {color:#f3862b;border-color: #f3862b;}
+.social__link:hover {color:#5cba47;border-color: #5cba47;}
 
 /* mobile contests */
-.contest__prize--title {color: #002a6e;}
-button.button {background-color: #002a6e;border: 1px solid #80b1ff;}
-button.button:hover {background-color: #80b1ff;border: 1px solid #002a6e;}
-.contest-attr--rules-toggler {background-color: #0e2242;border:solid 1px #002a6e;}
-.contest-attr--rules-toggler:hover {background-color: #004c90; color: #002a6e;}
-a.contest-attr--rules-toggler.pjax-exclude:hover{background-color: #004c90; color: #fff;border: 1px solid #002a6e;}
+.contest__prize--title {color: #5cba47;}
+button.button {background-color: #000;border: 1px solid #5cba47;}
+button.button:hover {background-color: #5cba47;border: 1px solid #000;}
+
+
+
+
+.content {
+    background-color: #fff;
+
+    a:link,
+    a:visited,
+    a:active {
+        color:#5cba47;
+        font-family: 'Ubuntu', sans-serif ; font-weight: 700;
+
+    }
+
+    a:hover{
+        color:#000;
+    }
+
+    .contest__prize--title {
+        color: #5cba47;
+        text-shadow: 2px 2px 1px rgba(0, 0, 0, .5);
+    }
+
+    .contest-attr--rules-toggler {
+        background-color: #5cba47;
+        border: solid 1px #000;
+        color:#000!important;
+
+        &:hover {
+          background-color: #000;
+          border: solid 1px #5cba47;
+          color:#fff!important;
+        }
+    }
+
+    .article__title, .single-podcast .podcast__parent--title {
+
+        color: #5cba47;
+        text-shadow: 2px 2px 1px rgba(0, 0, 0, .5);
+    }
+
+    a.social__link, a.social-share-link {
+        color: #000;
+        border: solid 1px #000;
+
+        &:hover {
+            color: #5cba47;
+            border: solid 1px #5cba47; 
+        }
+    }
+
+
+
+    .entry2__title,
+      {
+        a:link,
+        a:visited,
+        a:active {
+            color:#000000;
+            font-family: 'Ubuntu', sans-serif ; font-weight: 700;
+
+        }
+
+        a:hover{
+            color:#5cba47;
+        }
+    }
+
+    .entry2__footer--read-more:link,.entry2__footer--read-more:visited,
+    .entry2__footer--category:link,.entry2__footer--category:visited {
+       
+          color: #000;
+    
+        &:hover {
+            color: #5cba47;
+        }
+    
+    }
+
+}
 
 /* ------------- LIVE PLAYER BTN -------------------------------*/
 
@@ -309,10 +447,14 @@ a.contest-attr--rules-toggler.pjax-exclude:hover{background-color: #004c90; colo
 
 .header__main {
     border-top: none;
-    background-color: rgba(14,34,66,.9);
+    background-color: rgba(0,0,0,.7);
     /*border-bottom: solid 1px #000;border-top: solid 1px #000;*/
     height:82px;
     margin-top:4px;
+}
+
+.header__account:hover {
+    background-color: #5cba47;
 }
 
 .featured__article--heading {color: #FFFFFF;   font-family: 'Ubuntu', sans-serif;}
@@ -325,58 +467,99 @@ a.contest-attr--rules-toggler.pjax-exclude:hover{background-color: #004c90; colo
 /* ------------- MASTHEAD -------------------------------*/
 
 .header {
-    background-color: #5cba47;
+    background-color: #000000;
     background-image: url("../../images/alt-header.png"); /* NEW WBOS ALT 92.9 masthead */
     background-repeat: repeat-x;
     background-position: center;
-    border-bottom: none;
-
+    
+    /* Denis change */
 }
 
 
 .header__nav { font-family: 'Ubuntu', sans-serif }
 
+
 .header__logo {
-        background:  url("../../images/logo_Radio929_mobile.png") no-repeat;
-        background-position: center top;
-        display: block;
-        width: 88px;
-        height: 50px;
-        z-index: 1000;
-        cursor: pointer;
-        margin: 16px 37% 0px;
+  background-image: url("../../images/wbos-alt-logo.png");
+  background-repeat: no-repeat;
+  float: left;
+  display: block;
+  width: 46.288514824%;
+  margin-left: 26.855742588%;
+  margin-top: 2%;
+
+  padding: 18px 0;
+  line-height: 1;
+  position: relative;
+  background-size: contain;
+  background-position:center;
+    .header__logo--img {
+        display: none;
     }
 
-.header__logo img {z-index: 1;display: none;}
-.header__logo--img {z-index: 1;display: none;}
+}
+
+
 
 /* ------------- END MASTHEAD -------------------------------*/
 
 
-.highlights__event--item {background-color: #0e2242;border-bottom-right-radius: 0em;border: solid 1px #005596; }
-.highlights__event--item:hover { background-color: #005596;  border: solid 1px #0e2242;border-top-right-radius: 0em; }
 
-.highlights__event--date,
-.highlights__event--title {
-    color: #ffffff;
-    font-family: 'Ubuntu', sans-serif;
+
+.highlights__event--item {
+    background-color: rgba(0,0,0,.1);
+    color: #000;
+    &:hover {
+      background-color: rgba(92,186,7,.3);
+    }
+
 }
+
+        .highlights__event--title {
+            font-family: 'Oswald', sans-serif;
+            font-weight: 400;
+            color: #092040;
+
+            a:hover & {
+                color: #000;
+            }
+        }
+
+        .highlights__event--date {
+            color: #716c6c;
+
+            a:hover & {
+                color: #000;
+            }
+        }
+
+
 
 
 .content__heading,
-.sponsors__heading { color: #002a6e;font-family: 'Ubuntu', sans-serif }
+.sponsors__heading { color: #000;font-family: 'Ubuntu', sans-serif }
+
+
 
 
 
 .highlights__events--more-btn {
-    background-color: #0e2242;
-    border: 2px solid #0e2242;
-    color: #fff;
+    background-color: #000;
+    border-color: #5cba47;
+    color: #5cba47!important;
     text-transform: uppercase;
-    font-weight: 400;
-    float: right;margin-top: 0px;
+    font-weight: 500;
+    margin-top:0px;
+    
+
+    &:hover {
+        color: #fff!important;
+        font-weight: bold;
+        background-color: #5cba47;
+        border-color: #000;
+        text-shadow: 2px 2px 1px rgba(0, 0, 0, .7);
+    }
 }
-.highlights__events--more-btn:hover {  background-color:#114598;color: #fff;  border-color: #114598;}
 
 .contest__prize--title {
     margin: 0 0 .25em;
@@ -391,10 +574,21 @@ a.contest-attr--rules-toggler.pjax-exclude:hover{background-color: #004c90; colo
     font-family: 'Ubuntu' sans-serif;
 }
 
-h2.entry2__title a:link{color: #002a6e;font-family: 'Ubuntu', sans-serif ; font-weight: 700;}
-h2.entry2__title a:hover{color: #f58426;}
-.entry2__footer--category:link {color: #000000;}
-.entry2__footer--read-more:link, .entry2__footer--read-more:visited {color: #002a6e;}
+h2 {
+    a:link,
+    a:visited,
+    a:active {
+        color:#000;
+        font-family: 'Ubuntu', sans-serif ; font-weight: 700;
+
+    }
+    a:hover{
+        color:#5cba47;
+    }
+}
+
+
+
 
     .entry2__thumbnail__overlay,
     .entry2__thumbnail__icon,
@@ -414,11 +608,14 @@ h2.entry2__title a:hover{color: #f58426;}
 
 .entries {background-color: #fff;}
 
-.content {background-color: #fff;}
+
+
 .home .content{float: left;display: block;width: 100%;}
 
 .featured__content--btn {
     display:none!important;
+
+
 }
 
 .now-playing__info{
@@ -428,8 +625,8 @@ h2.entry2__title a:hover{color: #f58426;}
         position: relative;
         top: 10px!important;
 
-        .now-playing__title {color: #fff;font-size: .95em;font-weight: 700;text-shadow: 0px 0px 5px rgba(0, 0, 0, .4); line-height:1.30em;}
-        .now-playing__artist {color: #fff;font-size: .90em;font-weight: 500;font-style: italic;text-shadow: 0px 0px 5px rgba(0, 0, 0, .4);line-height:1.30em;}
+        .now-playing__title {color: #fff;font-size: .95em;font-weight: 700;text-shadow: 2px 2px 1px rgba(0, 0, 0, .4); line-height:1.30em;}
+        .now-playing__artist {color: #fff;font-size: .90em;font-weight: 500;font-style: italic;text-shadow: 2px 2px 1px rgba(0, 0, 0, .4);line-height:1.30em;}
 
         .now-playing__title:before,
         .now-playing__title:after
@@ -443,38 +640,37 @@ h2.entry2__title a:hover{color: #f58426;}
 
 }
 
-        .live-stream__btn--play,
-        .live-stream__btn--loading,
-        .live-stream__btn--pause,
-        .live-stream__btn--resume
-         {
-            padding-left: 10px;
-            background: transparent url(../../images/play-button.png);
-            background-position: center center;
-            color: #fff;
-            border: 0px solid #002a6e;
-            -webkit-transform: rotateX(0deg);
-            -moz-transform: rotateX(0deg);
-            -ms-transform: rotateX(0deg);
-            -o-transform: rotateX(0deg);
-            transform: rotateX(0deg);
 
-        }
 
-    .live-stream {
+.live-stream {
+    background-color: #000;
 
-        background-color: #000;
+    .on-air, .up-next {
+          padding: 4px 1em;
+          color: #fff;
+          font-family: 'Oswald', sans-serif;
+    }
 
-          .on-air, .up-next,
-          .on-air__show, .up-next__show  {
-            display: none;
-          }
+    .on-air__show, .up-next__show {
+        font-size: 1.35em;
+        position: relative;
+        top: 10px;
+    }
+
+
+    .now-playing__title,
+    .now-playing__artist {
+        color: #fff;
+        font-size: .98em;
 
     }
 
+
+}
+
 .show__mini-nav .show__header .show__nav .show__title a:hover,
 .show__mini-nav .show__nav li a:hover {
-    color: #004c90;
+    color: #5cba47;
 }
 
 .article__author {
@@ -501,105 +697,69 @@ h2.entry2__title a:hover{color: #f58426;}
           background-color: #f58325;
   }
 
+/* new background for header__featured section */
 .home__featured {
 
-    background-color: transparent;
-    background:url(../../images/bg_60.png);
-    .featured__article--image {
-      background-color: #004794;
-    }
-    .featured__article--heading {
-        color: #FFFFFF;   font-family: 'Ubuntu', sans-serif;
-    }
+    background-color: white;
+    background-image: none;
+    border: 1px solid #eee;
+    background: url("../../images/pw_maze_white.png");
 
-    .featured__content--image {
-      float: left;
-      display: block;
-      width: 100%;
-      margin-right: 0;
-      padding-top: 66.6%;
-    }
-
+    
     .featured__article--content {
-        background-color: #0e2242;
+       
+
+        background-image: url(../../images/featured__article-BG.png), linear-gradient(to left, #000000 0, #5cba47 100%);
+        background-repeat: no-repeat;
+        background-position: right;
+        &:hover {
+            background-color: #000000;
+            color: #5cba47;
+        }
     }
 
     .featured__article:hover .featured__article--content  {
+            background-image: url(../../images/featured__article-BG.png), linear-gradient(to left, #000000 0, #000000 100%);
+            color: #5cba47!important;
+        
 
-          background:-moz-linear-gradient(top,rgba(30,119,215,1) 10%,rgba(0,71,148,1) 100%);
-      /* FF3.6+ */
-      background:-webkit-gradient(linear,left top,left bottom,color-stop(10%,rgba(30,119,215,1)),color-stop(100%,rgba(0,71,148,1)))!important;
-      /* Chrome,Safari4+ */
-      background:-webkit-linear-gradient(top,rgba(30,119,215,1) 10%,rgba(0,71,148,1) 100%);
-      /* Chrome10+,Safari5.1+ */
-      background:-o-linear-gradient(top,rgba(30,119,215,1) 10%,rgba(0,71,148,1) 100%);
-      /* Opera 11.10+ */
-      background:-ms-linear-gradient(top,rgba(30,119,215,1) 10%,rgba(0,71,148,1) 100%);
-      /* IE10+ */
-      background:linear-gradient(to bottom,rgba(30,119,215,1) 10%,rgba(0,71,148,1) 100%);
-      /* W3C */
-      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00ce1141',endColorstr='#004794',GradientType=0);
-      /* IE6-9 */       
-
-
-        color: #fff;
-        text-shadow: 2px 2px 1px rgba(9, 32, 64, .7);
     }
 
 
 
     .featured__content--block {
-        
-      border-radius: 0;
-      -moz-border-radius: 0;
-      -webkit-border-radius: 0;
-      height: 100%;
-      
-        background-color: #0e2242;
-
+        background-image:linear-gradient(to left, #000000 0, #5cba47 100%);
+        text-shadow: 2px 2px 1px rgba(0, 0, 0, .7);
         &:hover{
-            
-          background:-moz-linear-gradient(top,rgba(30,119,215,1) 75%,rgba(0,71,148,1) 100%);
-      /* FF3.6+ */
-      background:-webkit-gradient(linear,left top,left bottom,color-stop(75%,rgba(30,119,215,1)),color-stop(100%,rgba(0,71,148,1)))!important;
-      /* Chrome,Safari4+ */
-      background:-webkit-linear-gradient(top,rgba(30,119,215,1) 75%,rgba(0,71,148,1) 100%);
-      /* Chrome10+,Safari5.1+ */
-      background:-o-linear-gradient(top,rgba(30,119,215,1) 75%,rgba(0,71,148,1) 100%);
-      /* Opera 11.10+ */
-      background:-ms-linear-gradient(top,rgba(30,119,215,1) 75%,rgba(0,71,148,1) 100%);
-      /* IE10+ */
-      background:linear-gradient(to bottom,rgba(30,119,215,1) 75%,rgba(0,71,148,1) 100%);
-      /* W3C */
-      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00ce1141',endColorstr='#004794',GradientType=0);
-      /* IE6-9 */
-
-
+            background-image:linear-gradient(to left, #000000 0, #000000 100%); 
+            color: #5cba47;
             
         }
-        .featured__content--title  {
-          overflow: visible;
-        }
-
-    .featured__content--meta {
-          width: 100%;
-          min-height: 4.8em;
-      }
     }
 
     .featured__content--block:hover .featured__content--title {
              
-        color: #fff;
+        color: #5cba47;
         text-shadow: 2px 2px 1px rgba(9, 32, 64, .7);
-        overflow: visible!important;
 
     }
 
 
+
+    @include bp(medium) {
+        background-position: left top;
+        background-color: #561015;
+        // background-size: cover; // Leave this out unless we want big crosshatches on WMGK. If we do want that, be sure to also add this to the .show__header
+    }
+}
+/* end */
+
+.featured__article--heading {
+  text-shadow: 2px 2px 1px rgba(0, 0, 0, .7);
 }
 .featured__article:hover .featured__article--heading {
     text-shadow: 2px 2px 1px rgba(9, 32, 64, .7);
-    color: #fff;
+    color: #5cba47;
 }
 
 
@@ -609,11 +769,11 @@ time.show__feature--date {
 
 .show__feature--primary{
     .show__feature--desc h3 {
-color: #002a6e;
+color: #000000;
 font-family: 'Ubuntu', sans-serif ;
 font-weight: 700;
         &:hover {
-            color:#f58325;
+            color:#5cba47;
             
         }
     }
@@ -624,10 +784,10 @@ font-weight: 700;
     .show__feature--desc h3 {
         font-family: 'Ubuntu', sans-serif ; 
         font-weight: 500;
-        color: #002a6e;
+        color: #000000;
         font-size: 1.50em;
         &:hover {
-            color:#f58325;
+            color:#5cba47;
             
         }
     }
@@ -640,7 +800,50 @@ font-weight: 700;
 .article__title {
         font-family: 'Oswald',sans-serif;
         font-weight: 500;
-        color: #002a6e;
+        color: #5cba47;
+        text-shadow: 2px 2px 1px rgba(0, 0, 0, .7);
+}
+
+#live-player__sidebar {
+          .live-links--more {
+              background-color: rgba(0,0,0,.7);
+              &:before {
+                  background: linear-gradient(to bottom,rgba(255,255,255,0) 0,rgba(0,0,0,.7) 100%)!important;
+              }
+
+              .live-links--more__btn {
+                  border: #5cba47 2px solid;
+                  background-color: #000000;
+                  
+                  &:hover {
+                    color:#5cba47!important;
+                  }
+              }
+
+          }
+}
+
+.live-player__container {
+ 
+    height:auto;
+    .live-stream__status {
+
+        .live-stream__login{
+            background-color: #5cba47;
+            border: solid 0px #fff;
+        }
+    }
+
+        .live-stream__controls {
+        
+
+        div {
+            background-color: #5cba47;
+            border: solid 0px #fff;
+
+        }
+    }
+
 }
 /*----------------------------------------------------------------------------------------------------------------------
 media 400px
@@ -664,21 +867,67 @@ media 400px
 
 .footer__menu a.social__link:hover {color:#f3862b;border-color: #f3862b;}
 
+    .entry2 {
+
+
+        .entry2__meta {
+            padding: 0 10px;
+
+            .entry2__date {
+                margin: 0;
+            }
+        }
+
+        .entry2__footer {
+            padding: 10px;
+            margin-top: 1em;
+        }
+    }
+
 }
 
 /*-----------------------------------
 media 768px
 -----------------------------------*/
 @media screen and (min-width:768px) {
+.live-player{margin-top:14px!important;}
+.live-stream__btn--play,
+.live-stream__btn--loading,
+.live-stream__btn--pause,
+.live-stream__btn--resume
+ {
+    padding-left: 10px;
+    background: transparent url(../../images/play-button-alt.png);
+    background-position: center center;
+    color: #fff;
+    border: 0px solid #002a6e;
+    -webkit-transform: rotateX(0deg);
+    -moz-transform: rotateX(0deg);
+    -ms-transform: rotateX(0deg);
+    -o-transform: rotateX(0deg);
+    transform: rotateX(0deg);
+
+}
+
+.main {
+    background-image: url("../../images/mesh-bg-alt.png");
+
+    background-repeat: repeat;
+    /*background-size: cover;*/
+    background-color:#000;
+    background-attachment: fixed;
+}
 .article__author {
     font-size: 16px;
 }
-.live-player {
 
-    background-image: url(../../images/img_meshBG2.jpg);
-    background-position: center;
-    color:#fff;
-  }
+
+
+
+.live-player--fixed{
+        position:fixed;
+        top: 0;
+}
 
 .live-player--active .now-playing,
 .now-playing
@@ -686,11 +935,7 @@ media 768px
         padding: 75px 0em 0;
     }
 .header__main {
-    border-top: none;
-    background-color: rgba(14,34,66,.5);
-    /*border-bottom: solid 1px #000;border-top: solid 1px #000;*/
-    height:82px;
-    margin-top:4px;
+    background-color: rgba(0,0,0,.5);
 }
 
 
@@ -699,38 +944,19 @@ media 768px
 
  .ad__leaderboard.desktop {
 
-  background: url(../../images/img_leaderboardBG.png) no-repeat;
-  width:748px;
-  height:110px;
-  margin:10px auto;
-  padding: 10px 10px;
-   border: 0px solid #002a6e;
-   -webkit-border-radius: 0px;
-  border-radius: 0px;
-  -webkit-box-shadow: 0px 0px 0px 0px;
-  box-shadow: 0px 0px 0px 0px;
+        background:none;
+        width:730px;
+        height:92px;
+        margin:16px auto;
+        padding:0;
+        border:1px solid #000;
+        -webkit-border-radius:0;
+        border-radius:0;
+        -webkit-box-shadow:0 0 0 0;
+        box-shadow:0 0 0 0;
 }
 
 
-
-.header {
-  background-color: transparent;
-  background-image:url("../../images/hdr_Radio929_Full215.png");
-  background-position: center top;
-  -webkit-animation-name: no_name;
-  animation-name: no_name;
-}
-
-.header__logo {
-        background:  url("../../images/logo_Radio929_728.png") no-repeat;
-        background-position: center top;
-        display: block;
-        width: 150px;
-        height: 70px;
-        z-index: 1000;
-        cursor: pointer;
-        margin: 6px 35% 0px;
-    }
 
 .header__secondary {
   top: 0px;
@@ -739,26 +965,26 @@ media 768px
 span.icon-user { color: #fff;}
 
 
-ul#live-links__blogroll {
-    background-image: url(../../images/img_meshBG2.jpg);
-    background-position: center;}
 div#live-player { background-color: transparent;}
 
 
     .live-stream {
-        background-image: url("../../images/tuner-bg.png");
+        background-image: url("../../images/tuner-bg-alt.png");
 
         .on-air, .up-next {
               display: block;
               padding: 4px 1em;
               font-size: .88889em;
               position: relative;
-              top: -10px;
-              background-color: rgba(0,0,0,.3);
+              top: 5px;
+              background-color: rgba(0,0,0,.5);
               color: #000;
               font-family: 'Oswald', sans-serif;
+              height:40px;
         }
-
+        .on-air__title {
+          margin-bottom: 7px;
+        }
         .on-air__show, .up-next__show {
              display: block;
             font-size: 1.25em;
@@ -767,12 +993,14 @@ div#live-player { background-color: transparent;}
             font-family: 'Oswald', sans-serif;
             color: #fff;
             padding-top:0px;
+            position: relative;
+            top: 0px;
         }
 
         .live-stream__controls {
 
             position: relative;
-            top: 13px;
+            top: 20px;
             color: #fff;
 
 
@@ -785,7 +1013,7 @@ div#live-player { background-color: transparent;}
 
         .live-stream__login {
             /*display: none;*/
-
+            background-color: none;
             position: relative;
             top: -20px;
             padding: 6px 0 0 0;
@@ -820,51 +1048,39 @@ div#live-player { background-color: transparent;}
 
         .live-stream__now-playing--btn:after
           {
-            content: ' on\a Radio 92.9';
+            content: ' on\a ALT 92.9 Boston';
             white-space: pre;
           }
 
         .live-stream__listen-now--btn:after
           {
-            content: ' to\a Radio 92.9';
+            content: ' to\a ALT 92.9 Boston';
             white-space: pre;
           }
     }
 
+.live-player__container {
+ 
+    height:auto;
+    .live-stream__status {
 
-
-
-
-
-
-
-  .live-link__song {
-        transition: all 200ms ease-in-out;
-        -moz-transition: all 200ms ease-in-out;
-        -webkit-transition: all 200ms ease-in-out;
+        .live-stream__login{
+            background-color: rgba(0, 0, 0, 0.3);
+            border: solid 0px #fff;
+        }
     }
 
-    .widget--live-player a:hover {
-        color: #fff;
-    }
-    .widget--live-player a:hover > div {
-        background: #b30000;
-    }
-    .widget--live-player a:hover .live-link__song:before {
-        color: #fff;
-    }
-    .widget--live-player a:hover .live-link__song--title {
-        color: #fff;
-    }
+}
+
+
+
+
+
+
+
+   
     .live-links { background-color: transparent; }
-    .live-link__song { color: #fff }
 
-    .live-link__song--artist,
-    .live-link__song:before {
-        color: #FDFEFF;
-        font-weight: 500;
-    }
-    .live-link__song--title p:hover { color: #fff }
     .widget--live-player__title {
         color: #fff;
         font-weight: 500;
@@ -872,32 +1088,14 @@ div#live-player { background-color: transparent;}
         background-color: rgba(0,0,0,.3);
         padding: 15px 0px;
     }
-    .live-link__song--title { color: #EDED80 }
-
-    .live-links--more {
-        background-color: #0e2242;
-        -webkit-transition: all 200ms ease-in-out;
-        -moz-transition: all 200ms ease-in-out;
-        transition: all 200ms ease-in-out;
-    }
-    .live-links--more:before {
-
-
-        background: -moz-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(14,34,66,1) 100%); /* FF3.6+ */
-        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,0)), color-stop(100%,rgba(14,34,66,1))); /* Chrome,Safari4+ */
-        background: -webkit-linear-gradient(top, rgba(255,255,255,0) 0%,rgba(14,34,66,1) 100%); /* Chrome10+,Safari5.1+ */
-        background: -o-linear-gradient(top, rgba(255,255,255,0) 0%,rgba(14,34,66,1) 100%); /* Opera 11.10+ */
-        background: -ms-linear-gradient(top, rgba(255,255,255,0) 0%,rgba(14,34,66,1) 100%); /* IE10+ */
-        background: linear-gradient(to bottom, rgba(255,255,255,0) 0%,rgba(14,34,66,1) 100%); /* W3C */
-        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#008b0000', endColorstr='#0e2242',GradientType=0 ); /* IE6-9 */
-    }
-    .live-links--more__btn {line-height: 1;margin-right: .5em;outline: 0;  background-color: transparent;border: 1px solid #f3862b;  color: #f3862b!important;}
+ 
 
 
 
 
 
   .header__account ul li a:active,
+  .header__account ul li a:visited,
   .header__account ul li a:focus,
   .header__account ul li a:hover,
   .header__account ul li:hover,
@@ -909,23 +1107,77 @@ div#live-player { background-color: transparent;}
   .mobile-nav__list a:active,
   .mobile-nav__list a:focus,
   .mobile-nav__list a:hover,
-  .ui-menu .ui-state-focus{background-color: #004c90;}
+  .ui-menu .ui-state-focus{background-color: #5cba47;color: #fff;}
 
 
-.header__account--btn:hover {background-color: #004c90;}
-  .main {background-color: transparent; background-image: none;  }
+.header__account--btn:hover {
+    background-color: #5cba47;color: #000;
+}
+ 
 
 .now-playing__info{
-        .now-playing__title {font-size:1.10em;color: #002a6e;}
-        .now-playing__artist {font-size: .90em;color: #002a6e;}
+         position: relative;
+        top: 20px!important;
+        .now-playing__title {font-size:1.10em;color: #000000;}
+        .now-playing__artist {font-size: .90em;color: #000000;}
 
 }
 
 
 
+    .header__logo {
 
+        
+        /*top: -7px;*/
+        background-image: url("../../images/wbos-alt-logo.png");
+        background-repeat: no-repeat;
 
+        position: absolute;
+        z-index: 100;
+        top: -20px;
 
+        float: none;
+
+    
+    }
+
+    .home__featured {
+
+        background-color: #f2f2f2;
+
+        .featured__content--block {
+            border-radius: 0;
+            -moz-border-radius: 0;
+            -webkit-border-radius: 0;
+            height: 100%;
+        }
+
+        .featured__content--image {
+            float: left;
+            display: block;
+            width: 100%;
+            margin-right: 0;
+            padding-top: 66.6%;
+        }
+
+        .featured__content--meta {
+            width: 100%;
+            min-height: 4.8em;
+        }
+
+        .live-player--open {
+
+            .live-player__stream {
+                /*display: none;*/
+            }
+
+            .live-links {
+                /*margin-top: 0!important;*/
+            }
+
+        }
+
+    }
 
 }
 
@@ -934,15 +1186,19 @@ div#live-player { background-color: transparent;}
 media 1024px
 -----------------------------------*/
 @media screen and (min-width:1024px) {
+    .live-player{margin-top:0px!important;}
+    .header__logo{
+        margin-left: 0px;
+        width:150px;
+        max-width:150px;
+        height:150px;
+        top:-60px;
 
-    .header__logo {background-position: center top;margin: 6px 0px 0px 6px;}
+    }
 
     .header__secondary {position: relative;}
 
-    .live-link__song--artist {font-weight: 400;font-size: .95em;}
-    .live-link__song--title {font-weight: 300;font-size: .85em; font-style: italic;}
 
-    .live-link__song:before {margin-top: 10px;color: #FFFFFF;}
 
 
     .header__nav {padding-left: 20px;}
@@ -962,10 +1218,16 @@ media 1024px
     .header__nav ul li a:visited {
         padding: 33px .5em 32px;
     }
-.header__account--logged-out:hover {background-color: #004c90;}
+.header__account--logged-out:hover {background-color: #5cba47;}
 
-.header__account--links.sub-menu {  border-top: 3px solid #f58425;border-bottom: 3px solid #f58425;}
-.header__nav .sub-menu { border-top: 3px solid #f58425;border-bottom: 3px solid #f58425;background-color: #fff;}
+.header__account--links.sub-menu {  border-top: 3px solid #5cba47;border-bottom: 3px solid #5cba47;}
+.header__nav .sub-menu { 
+  border-top: 3px solid #5cba47;
+  border-bottom: 3px solid #5cba47;
+  background-color: #fff;
+  color: #000;
+
+}
 
 
 .header__social {float: right;}
@@ -979,26 +1241,9 @@ media 1175px
 .header__nav {padding-left: 220px;}
 .header__nav>ul>li {padding-right: 5px;}
 
-  .header__logo img {display: none;}
-  .header__logo--img {
-      display: block;
-      /*width: 200px;
-      height: 158px;*/
-      }
-    .header__logo {
-      background:  url("../../images/logo_Radio929_large.png") no-repeat;
-      background-size: contain;
-      background-position: center top;border: solid 0px #fff;
-      width: 180px;
-      height: 232px;
-      display: block;
-      position: absolute;
-      top: -120px;left:20px;
-      margin: 0;
-      padding: 0;
-      z-index: 1000;
-    }
-    .ad__leaderboard.desktop {float: right;margin: 10px 100px 10px 0;}
+
+
+    /*.ad__leaderboard.desktop {float: right;margin: 10px 100px 10px 0;}*/
 
     .show__mini-nav .show__header {
       padding-left: 225px;
@@ -1024,72 +1269,14 @@ media 1252px
 
 
 
-.widget--live-player a:hover>div{background-color: #114598;color:#0067b1;}
-
-@-webkit-keyframes artist_animation{
-
-        0%{background-image:url(../../images/img_Artists1.png);opacity:1;}
-        50%{background-image:url(../../images/img_Artists2.png);opacity:1;}
-        100%{background-image:url(../../images/img_Artists3.png);opacity:1;}
-        /*99%{background-image:url(http://i.imgur.com/P1MjtZx.png);opacity:1;}*/
-
-      }
-
-@-moz-keyframes artist_animation{
-        0%{background-image:url(../../images/img_Artists1.png);opacity:1;}
-        50%{background-image:url(../../images/img_Artists2.png);opacity:1;}
-        100%{background-image:url(../../images/img_Artists3.png);opacity:1;}
-        /*99%{background-image:url(http://i.imgur.com/P1MjtZx.png);opacity:1;}*/
-
-      }
-
-@keyframes artist_animation{
-        0%{background-image:url(../../images/img_Artists1.png);opacity:1;}
-        50%{background-image:url(../../images/img_Artists2.png);opacity:1;}
-        100%{background-image:url(../../images/img_Artists3.png);opacity:1;}
-        /*99%{background-image:url(http://i.imgur.com/P1MjtZx.png);opacity:1;}*/
-
-}
-
-.ad__leaderboard.desktop {float: none;margin: 10px auto;}
-.ad__leaderboard.desktop:after {
-  content: "";
-  display: inline-block;
-  background: url(../../images/img_Artists1.png) no-repeat;
-  background-size: contain;
-
-  position: absolute;
-  width: 275px;
-  height: 136px;
-  top: 10px;
-  right: -275px;
 
 
-
-  -webkit-animation-name: artist_animation;
-  -webkit-animation-duration: 12s;
-  -webkit-animation-iteration-count: 5;
-  -webkit-animation-timing-function: ease-in-out;
-  -webkit-animation-direction: alternate;
-  -webkit-animation-delay: 10s;
-  -webkit-animation-time: 10s;
-
-  -moz-animation-name: artist_animation;
-  -moz-animation-duration: 12s;
-  -moz-animation-iteration-count: 5;
-  -moz-animation-timing-function: ease-in-out;
-  -moz-animation-direction: alternate;
-  -moz-animation-delay: 10s;
-  -moz-animation-time: 10s;
-
-  animation-name: artist_animation;
-  animation-duration: 12s;
-  animation-delay: 10s;
-  animation-iteration-count: 5;
-  animation-timing-function: ease-in-out;
-  animation-direction: alternate;
-  animation-time: 10s;
-  }
+    .header__logo{
+        width:185px;
+        max-width:185px;
+        height:185px;
+        top:-120px;
+    }
 
 
 }
@@ -1098,10 +1285,12 @@ media 1400px
 -----------------------------------*/
 @media screen and (min-width:1400px) {
 
-    .header__logo {
-      width: 202px;
-      height: 260px;
-      top: -140px;
+    .header__logo{
+        width:215px;
+        max-width:215px;
+        height:215px;
+        top:-145px;
+        left: -10px;
     }
 
     .ad__leaderboard.desktop:after {
