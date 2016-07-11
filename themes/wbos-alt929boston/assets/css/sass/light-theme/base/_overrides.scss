@@ -147,7 +147,7 @@ Denis Changes to _overrides.scss file 5/20
 
 
 .highlights__heading, .single-show .highlights__heading {
-    
+
     font-weight: 500;
     text-transform: uppercase;
     font-family: 'Ubuntu', sans-serif;
@@ -155,19 +155,19 @@ Denis Changes to _overrides.scss file 5/20
     color: #fff;
 
     text-shadow: 2px 2px 1px rgba(0, 0, 0, .7);
-            background-image: url(../../images/highlights-BG.png), linear-gradient(to left, #000000 0, #5cba47 100%);
+            background-image: url(../../images/highlights-BG.png), linear-gradient(to left, #000000 0, #0083c0 100%);
         background-repeat: no-repeat;
         background-position: right;
 }
 
 .highlights__community--item:hover .highlights__community--title{
-        color:#5cba47;
+        color:#0083c0;
 
 }
 /*Show header and link */
 
 .show__mini-nav {
-        .show__header.has-thumbnail:before {           
+        .show__header.has-thumbnail:before {
         background-image: linear-gradient(to bottom,rgba(0,84,150,1),rgba(0,84,150,1));
         background-image: -moz-linear-gradient(top,rgba(0,84,150,1),rgba(0,84,150,1));
         background-image: -o-linear-gradient(top,rgba(0,84,150,1),rgba(78,132,192,1));
@@ -175,9 +175,9 @@ Denis Changes to _overrides.scss file 5/20
         background-image: -webkit-gradient(linear,left top,left bottom,from(rgba(0,84,150,1)),to(rgba(0,84,150,1)));
         background-image: -webkit-linear-gradient(top,rgba(0,84,150,1),rgba(0,84,150,1));
         content: " ";
-        }  
-         
-        .show__header { 
+        }
+
+        .show__header {
             padding: 3px;
         }
 }
@@ -203,7 +203,7 @@ Denis Changes to _overrides.scss file 5/20
       .profile-page__sidebar {
           background-color: #000000;
           .profile-header-link {
-            color: #5cba47;
+            color: #0083c0;
             &:hover {
               color: #ffffff;
             }
@@ -219,12 +219,12 @@ Denis Changes to _overrides.scss file 5/20
 #profile-content {
       .gigya-screen input[type="submit"] {
         background-color: #000000;
-        color: #5cba47;
-        border-color: #5cba47;
+        color: #0083c0;
+        border-color: #0083c0;
 
       }
       .link-button {
-          color: #5cba47;
+          color: #0083c0;
 
           &:hover {
           color: #000;
@@ -233,7 +233,7 @@ Denis Changes to _overrides.scss file 5/20
 }
 
 
-#profile-content .gigya-screen .new-account-msg a {color: #5cba47!important;}
+#profile-content .gigya-screen .new-account-msg a {color: #0083c0!important;}
 #profile-content .gigya-screen .new-account-msg a:hover {color: #000!important;}
 
 
@@ -261,12 +261,12 @@ Denis Changes to _overrides.scss file 5/20
 
 
 
-#live-player--volume .noUi-base {background: #5cba47;}
+#live-player--volume .noUi-base {background: #0083c0;}
 #live-player--volume.noUi-horizontal .noUi-handle {background: #000000;}
 
 
 
- .no-volume-control{background-color: #5cba47;}
+ .no-volume-control{background-color: #0083c0;}
 
 
 
@@ -295,13 +295,13 @@ Denis Changes to _overrides.scss file 5/20
 
 .live-link__song:hover {
     background-color: rgba(0,0,0, .7);
-    color: #5cba47; 
+    color: #0083c0;
   }
 .live-link__song:hover:before {
-    color: #5cba47; 
+    color: #0083c0;
   }
 .live-link__song:hover .live-link__song--artist, .live-link__song:hover .live-link__song--title {
-    color: #5cba47; 
+    color: #0083c0;
   }
 
 /* end */
@@ -329,12 +329,12 @@ Denis Changes to _overrides.scss file 5/20
 
 }
 
-.live-link__song:before, 
-.live-link__type--audio:before, 
-.live-link__type--gallery:before, 
-.live-link__type--image:before, 
-.live-link__type--link:before, 
-.live-link__type--standard:before, 
+.live-link__song:before,
+.live-link__type--audio:before,
+.live-link__type--gallery:before,
+.live-link__type--image:before,
+.live-link__type--link:before,
+.live-link__type--standard:before,
 .live-link__type--video:before {
 
     color: #000;
@@ -347,17 +347,17 @@ Denis Changes to _overrides.scss file 5/20
 .gmr-user .on-air, .gmr-user .up-next {position: relative; top:0px;}
 
 /*mobile nav */
-.mobile-nav .mobile-menu-submenu-header {background-color: #5cba47;color: #fff;padding: 18px 1.25em;}
-.mobile-nav__list a:hover, .ui-menu .ui-state-focus {background-color: #5cba47;}
+.mobile-nav .mobile-menu-submenu-header {background-color: #0083c0;color: #fff;padding: 18px 1.25em;}
+.mobile-nav__list a:hover, .ui-menu .ui-state-focus {background-color: #0083c0;}
 .mobile-nav .social__link:visited {color:#fff;border-color: #fff;}
-.mobile-nav .social__link:hover{color:#5cba47;border-color: #5cba47;}
+.mobile-nav .social__link:hover{color:#0083c0;border-color: #0083c0;}
 
-.social__link:hover {color:#5cba47;border-color: #5cba47;}
+.social__link:hover {color:#0083c0;border-color: #0083c0;}
 
 /* mobile contests */
-.contest__prize--title {color: #5cba47;}
-button.button {background-color: #000;border: 1px solid #5cba47;}
-button.button:hover {background-color: #5cba47;border: 1px solid #000;}
+.contest__prize--title {color: #0083c0;}
+button.button {background-color: #000;border: 1px solid #0083c0;}
+button.button:hover {background-color: #0083c0;border: 1px solid #000;}
 
 
 
@@ -368,7 +368,7 @@ button.button:hover {background-color: #5cba47;border: 1px solid #000;}
     a:link,
     a:visited,
     a:active {
-        color:#5cba47;
+        color:#0083c0;
         font-family: 'Ubuntu', sans-serif ; font-weight: 700;
 
     }
@@ -378,25 +378,25 @@ button.button:hover {background-color: #5cba47;border: 1px solid #000;}
     }
 
     .contest__prize--title {
-        color: #5cba47;
+        color: #0083c0;
         text-shadow: 2px 2px 1px rgba(0, 0, 0, .5);
     }
 
     .contest-attr--rules-toggler {
-        background-color: #5cba47;
+        background-color: #0083c0;
         border: solid 1px #000;
         color:#000!important;
 
         &:hover {
           background-color: #000;
-          border: solid 1px #5cba47;
+          border: solid 1px #0083c0;
           color:#fff!important;
         }
     }
 
     .article__title, .single-podcast .podcast__parent--title {
 
-        color: #5cba47;
+        color: #0083c0;
         text-shadow: 2px 2px 1px rgba(0, 0, 0, .5);
     }
 
@@ -405,8 +405,8 @@ button.button:hover {background-color: #5cba47;border: 1px solid #000;}
         border: solid 1px #000;
 
         &:hover {
-            color: #5cba47;
-            border: solid 1px #5cba47; 
+            color: #0083c0;
+            border: solid 1px #0083c0;
         }
     }
 
@@ -423,19 +423,19 @@ button.button:hover {background-color: #5cba47;border: 1px solid #000;}
         }
 
         a:hover{
-            color:#5cba47;
+            color:#0083c0;
         }
     }
 
     .entry2__footer--read-more:link,.entry2__footer--read-more:visited,
     .entry2__footer--category:link,.entry2__footer--category:visited {
-       
+
           color: #000;
-    
+
         &:hover {
-            color: #5cba47;
+            color: #0083c0;
         }
-    
+
     }
 
 }
@@ -454,7 +454,7 @@ button.button:hover {background-color: #5cba47;border: 1px solid #000;}
 }
 
 .header__account:hover {
-    background-color: #5cba47;
+    background-color: #0083c0;
 }
 
 .featured__article--heading {color: #FFFFFF;   font-family: 'Ubuntu', sans-serif;}
@@ -471,7 +471,7 @@ button.button:hover {background-color: #5cba47;border: 1px solid #000;}
     background-image: url("../../images/alt-header.png"); /* NEW WBOS ALT 92.9 masthead */
     background-repeat: repeat-x;
     background-position: center;
-    
+
     /* Denis change */
 }
 
@@ -545,17 +545,17 @@ button.button:hover {background-color: #5cba47;border: 1px solid #000;}
 
 .highlights__events--more-btn {
     background-color: #000;
-    border-color: #5cba47;
-    color: #5cba47!important;
+    border-color: #0083c0;
+    color: #0083c0!important;
     text-transform: uppercase;
     font-weight: 500;
     margin-top:0px;
-    
+
 
     &:hover {
         color: #fff!important;
         font-weight: bold;
-        background-color: #5cba47;
+        background-color: #0083c0;
         border-color: #000;
         text-shadow: 2px 2px 1px rgba(0, 0, 0, .7);
     }
@@ -583,7 +583,7 @@ h2 {
 
     }
     a:hover{
-        color:#5cba47;
+        color:#0083c0;
     }
 }
 
@@ -670,7 +670,7 @@ h2 {
 
 .show__mini-nav .show__header .show__nav .show__title a:hover,
 .show__mini-nav .show__nav li a:hover {
-    color: #5cba47;
+    color: #0083c0;
 }
 
 .article__author {
@@ -705,41 +705,41 @@ h2 {
     border: 1px solid #eee;
     background: url("../../images/pw_maze_white.png");
 
-    
-    .featured__article--content {
-       
 
-        background-image: url(../../images/featured__article-BG.png), linear-gradient(to left, #000000 0, #5cba47 100%);
+    .featured__article--content {
+
+
+        background-image: url(../../images/featured__article-BG.png), linear-gradient(to left, #000000 0, #0083c0 100%);
         background-repeat: no-repeat;
         background-position: right;
         &:hover {
             background-color: #000000;
-            color: #5cba47;
+            color: #0083c0;
         }
     }
 
     .featured__article:hover .featured__article--content  {
             background-image: url(../../images/featured__article-BG.png), linear-gradient(to left, #000000 0, #000000 100%);
-            color: #5cba47!important;
-        
+            color: #0083c0!important;
+
 
     }
 
 
 
     .featured__content--block {
-        background-image:linear-gradient(to left, #000000 0, #5cba47 100%);
+        background-image:linear-gradient(to left, #000000 0, #0083c0 100%);
         text-shadow: 2px 2px 1px rgba(0, 0, 0, .7);
         &:hover{
-            background-image:linear-gradient(to left, #000000 0, #000000 100%); 
-            color: #5cba47;
-            
+            background-image:linear-gradient(to left, #000000 0, #000000 100%);
+            color: #0083c0;
+
         }
     }
 
     .featured__content--block:hover .featured__content--title {
-             
-        color: #5cba47;
+
+        color: #0083c0;
         text-shadow: 2px 2px 1px rgba(9, 32, 64, .7);
 
     }
@@ -759,7 +759,7 @@ h2 {
 }
 .featured__article:hover .featured__article--heading {
     text-shadow: 2px 2px 1px rgba(9, 32, 64, .7);
-    color: #5cba47;
+    color: #0083c0;
 }
 
 
@@ -773,8 +773,8 @@ color: #000000;
 font-family: 'Ubuntu', sans-serif ;
 font-weight: 700;
         &:hover {
-            color:#5cba47;
-            
+            color:#0083c0;
+
         }
     }
 }
@@ -782,13 +782,13 @@ font-weight: 700;
 .show__feature--secondary {
 
     .show__feature--desc h3 {
-        font-family: 'Ubuntu', sans-serif ; 
+        font-family: 'Ubuntu', sans-serif ;
         font-weight: 500;
         color: #000000;
         font-size: 1.50em;
         &:hover {
-            color:#5cba47;
-            
+            color:#0083c0;
+
         }
     }
 }
@@ -800,7 +800,7 @@ font-weight: 700;
 .article__title {
         font-family: 'Oswald',sans-serif;
         font-weight: 500;
-        color: #5cba47;
+        color: #0083c0;
         text-shadow: 2px 2px 1px rgba(0, 0, 0, .7);
 }
 
@@ -812,11 +812,11 @@ font-weight: 700;
               }
 
               .live-links--more__btn {
-                  border: #5cba47 2px solid;
+                  border: #0083c0 2px solid;
                   background-color: #000000;
-                  
+
                   &:hover {
-                    color:#5cba47!important;
+                    color:#0083c0!important;
                   }
               }
 
@@ -824,21 +824,21 @@ font-weight: 700;
 }
 
 .live-player__container {
- 
+
     height:auto;
     .live-stream__status {
 
         .live-stream__login{
-            background-color: #5cba47;
+            background-color: #0083c0;
             border: solid 0px #fff;
         }
     }
 
         .live-stream__controls {
-        
+
 
         div {
-            background-color: #5cba47;
+            background-color: #0083c0;
             border: solid 0px #fff;
 
         }
@@ -1060,7 +1060,7 @@ div#live-player { background-color: transparent;}
     }
 
 .live-player__container {
- 
+
     height:auto;
     .live-stream__status {
 
@@ -1078,7 +1078,7 @@ div#live-player { background-color: transparent;}
 
 
 
-   
+
     .live-links { background-color: transparent; }
 
     .widget--live-player__title {
@@ -1088,7 +1088,7 @@ div#live-player { background-color: transparent;}
         background-color: rgba(0,0,0,.3);
         padding: 15px 0px;
     }
- 
+
 
 
 
@@ -1107,13 +1107,13 @@ div#live-player { background-color: transparent;}
   .mobile-nav__list a:active,
   .mobile-nav__list a:focus,
   .mobile-nav__list a:hover,
-  .ui-menu .ui-state-focus{background-color: #5cba47;color: #fff;}
+  .ui-menu .ui-state-focus{background-color: #0083c0;color: #fff;}
 
 
 .header__account--btn:hover {
-    background-color: #5cba47;color: #000;
+    background-color: #0083c0;color: #000;
 }
- 
+
 
 .now-playing__info{
          position: relative;
@@ -1127,7 +1127,7 @@ div#live-player { background-color: transparent;}
 
     .header__logo {
 
-        
+
         /*top: -7px;*/
         background-image: url("../../images/wbos-alt-logo.png");
         background-repeat: no-repeat;
@@ -1138,7 +1138,7 @@ div#live-player { background-color: transparent;}
 
         float: none;
 
-    
+
     }
 
     .home__featured {
@@ -1218,12 +1218,12 @@ media 1024px
     .header__nav ul li a:visited {
         padding: 33px .5em 32px;
     }
-.header__account--logged-out:hover {background-color: #5cba47;}
+.header__account--logged-out:hover {background-color: #0083c0;}
 
-.header__account--links.sub-menu {  border-top: 3px solid #5cba47;border-bottom: 3px solid #5cba47;}
-.header__nav .sub-menu { 
-  border-top: 3px solid #5cba47;
-  border-bottom: 3px solid #5cba47;
+.header__account--links.sub-menu {  border-top: 3px solid #0083c0;border-bottom: 3px solid #0083c0;}
+.header__nav .sub-menu {
+  border-top: 3px solid #0083c0;
+  border-bottom: 3px solid #0083c0;
   background-color: #fff;
   color: #000;
 
