@@ -1041,11 +1041,12 @@ media 1175px
         background-size: contain;
         background-position: center top;
         border: solid 0px #fff;
-        width: 180px;
-        height: 80px;
+        width: 250px;
+        height: 111px;
+        max-width: initial;
         display: block;
         position: absolute;
-        top: -40px;
+        top: -68px;
         left: 20px;
         margin: 0;
         padding: 0;
@@ -1087,9 +1088,10 @@ media 1400px
 
 @media screen and (min-width: 1400px) {
     .header__logo {
-        width: 202px;
-        height: 90px;
-        top: -40px;
+        width: 235px;
+        height: 235px;
+        top: -144px;
+        background-image: url("../../images/alt929-stacked.png");
     }
     .ad__leaderboard.desktop:after {
         width: 325px;
