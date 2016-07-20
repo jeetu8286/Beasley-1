@@ -11,7 +11,7 @@ module.exports = function( grunt ) {
 		sass:   {
 			all: {
 				files: {
-					'assets/css/_105_1_the_bounce.css': 'assets/css/sass/_105_1_the_bounce_light.scss'
+					'assets/css/the_bounce.css': 'assets/css/sass/the_bounce_light.scss'
 				}
 			}
 		},
@@ -20,7 +20,7 @@ module.exports = function( grunt ) {
 			minify: {
 				expand: true,
 				cwd: 'assets/css/',
-				src: ['_105_1_the_bounce.css'],
+				src: ['the_bounce.css'],
 				dest: 'assets/css/',
 				ext: '.min.css'
 			}
