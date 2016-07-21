@@ -149,7 +149,6 @@ class GMP_Meta {
 		// Sanitize and save the user input.
 		update_post_meta( $post_id, 'gmp_podcast_google_play_url', esc_url_raw( $google_play_url ) );
 
-
 		$gmp_subtitle =  sanitize_text_field( $_POST['gmp_subtitle'] );
 		update_post_meta( $post_id, 'gmp_subtitle', $gmp_subtitle );
 
