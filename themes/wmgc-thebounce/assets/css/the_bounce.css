@@ -15205,8 +15205,8 @@ table.responsive tr:nth-of-type(even) {
   border-bottom: none !important; }
 
 .home__featured {
-  background-color: #dddddd !important;
-  background-image: none !important; }
+  background-color: #dddddd;
+  background-image: none; }
 
 .featured__article:hover .featured__article--heading {
   color: #ffcccc !important; }
@@ -15215,7 +15215,7 @@ table.responsive tr:nth-of-type(even) {
   color: #ffcccc !important; }
 
 .featured__content--block:hover .featured__content--btn {
-  background-color: #660000 !important;
+  background-color: #660000;
   border-top-color: #660000 !important;
   border-right-color: #660000 !important;
   border-bottom-color: #660000 !important;
