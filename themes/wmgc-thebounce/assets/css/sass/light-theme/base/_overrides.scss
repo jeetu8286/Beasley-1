@@ -153,10 +153,8 @@
 
 //Overrides for 1051thebounce - July 19, 2016 noon
 
-#site-wrap.site-wrap{background-image: url(http://greatermedia.biz/wmgc/images/bouncebgd.jpg)!important;background-position: top center; }
-  #header.header{background-image: url(http://greatermedia.biz/wmgc/images/mastbg.jpg)!important;background-size:
-
-cover;background-position: top center;}
+#site-wrap.site-wrap{background-image: url(../../images/bouncebgd.jpg);background-position: top center; }
+  #header.header{background-image: url(../../images/mastbg.jpg);background-size:cover;background-position: top center;}
   .header__account ul li a:active, .header__account ul li a:focus, .header__account ul li a:hover, .header__account ul
 
 li:hover, .header__nav ul li a:active, .header__nav ul li a:focus, .header__nav ul li.active, .header__nav ul li.active
@@ -168,7 +166,7 @@ a:hover, .mobile-nav__list a:active, .mobile-nav__list a:focus, .mobile-nav__lis
     @media screen and (min-width: 400px) {
 
   .live-stream
-  {background-image: url(http://greatermedia.biz/wmgc/images/playerbg.jpg)!important;background-repeat: no-repeat;
+  {background-image: url(../../images/playerbg.jpg)!important;background-repeat: no-repeat;
 
 background-color: #000000!important;}
   }
@@ -234,7 +232,7 @@ background-color: #000000!important;}
   @media screen and (min-width: 1200px) {
   .header .container.container__leaderboard
 
-  {background-image: url(http://greatermedia.biz/wmgc/images/artistmast.png)!important;background-position: top right!
+  {background-image: url(../../images/artistmast.png)!important;background-position: top right!
 
 important;background-repeat: no-repeat!important;}
   }
