@@ -11,10 +11,10 @@
  * @package 105.1 The Bounce
  * @since 0.1.0
  */
- 
+
  // Useful global constants
 define( 'WMGC_VERSION', '0.1.0' );
- 
+
  /**
   * Set up theme defaults and register supported WordPress features.
   *
@@ -33,7 +33,7 @@ define( 'WMGC_VERSION', '0.1.0' );
 	load_theme_textdomain( 'wmgc', get_stylesheet_directory_uri() . '/languages' );
  }
  add_action( 'after_setup_theme', 'wmgc_setup' );
- 
+
  /**
   * Enqueue scripts and styles for front-end.
   *
@@ -43,17 +43,17 @@ define( 'WMGC_VERSION', '0.1.0' );
 	$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 
 	wp_dequeue_style( 'greatermedia' );
-	wp_deregister_style( 'greatermedia' );	
-	wp_enqueue_style( 'wmgc', get_stylesheet_directory_uri() . "/assets/css/_105_1_the_bounce{$postfix}.css", array(), WMGC_VERSION );
+	wp_deregister_style( 'greatermedia' );
+	wp_enqueue_style( 'wmgc', get_stylesheet_directory_uri() . "/assets/css/the_bounce{$postfix}.css", array(), WMGC_VERSION );
  }
  add_action( 'wp_enqueue_scripts', 'wmgc_scripts_styles', 20 );
- 
+
  /**
   * Add humans.txt to the <head> element.
   */
  function wmgc_header_meta() {
 	$humans = '<link type="text/plain" rel="author" href="' . get_stylesheet_directory_uri() . '/humans.txt" />';
-	
+
 	echo apply_filters( 'wmgc_humans', $humans );
  }
  add_action( 'wp_head', 'wmgc_header_meta' );
