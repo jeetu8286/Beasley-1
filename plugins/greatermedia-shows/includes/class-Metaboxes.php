@@ -226,6 +226,7 @@ class GMR_Show_Metaboxes {
 				'ignore_sticky_posts' => true,
 				'no_found_rows'       => true,
 				'fields'              => 'ids',
+				'suppress_filters'	  => true,
 				'meta_query'          => array(
 					'relation' => 'OR',
 					array(
