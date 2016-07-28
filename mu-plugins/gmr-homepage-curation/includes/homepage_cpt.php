@@ -183,6 +183,7 @@ function render_source_meta_box( $homepage, $metabox ) {
 			'ignore_sticky_posts' => true,
 			'no_found_rows'       => true,
 			'fields'              => 'ids',
+			'suppress_filters'	  => true,
 			'meta_query'          => array (
 				'relation' => 'OR',
 				array (
