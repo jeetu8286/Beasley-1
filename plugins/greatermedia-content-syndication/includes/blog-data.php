@@ -62,6 +62,10 @@ class BlogData {
 	public static function run( $syndication_id, $offset = 0 ) {
 		global $edit_flow, $gmrs_editflow_custom_status_disabled;
 
+		if ( ! defined( 'WP_IMPORTING' ) ) {
+    		define( 'WP_IMPORTING', true );
+		}
+
 		// disable editflow influence
 		if ( $edit_flow && ! empty( $edit_flow->custom_status ) && is_a( $edit_flow->custom_status, 'EF_Custom_Status' ) ) {
 			$gmrs_editflow_custom_status_disabled = true;
@@ -787,7 +791,7 @@ class BlogData {
 
 		return $success;
 	}
-	
+
 }
 
 BlogData::init();
