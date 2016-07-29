@@ -66,6 +66,18 @@ class BlogData {
     		define( 'WP_IMPORTING', true );
 		}
 
+		$is_running = get_post_meta( $syndication_id, 'subscription_running', true );
+
+		if ( $is_running ) {
+			$week_ahead = strtotime( '+1 week' );
+			if ( $week_ahead < $is_running ) {
+				// Send an alert
+			}
+			return 0;
+		} else {
+			add_post_meta( $syndication_id, 'subscription_running', current_time( 'timestamp', 1 ) );
+		}
+
 		// disable editflow influence
 		if ( $edit_flow && ! empty( $edit_flow->custom_status ) && is_a( $edit_flow->custom_status, 'EF_Custom_Status' ) ) {
 			$gmrs_editflow_custom_status_disabled = true;
@@ -132,6 +144,7 @@ class BlogData {
 
 		//update_option( 'syndication_last_performed', current_time( 'timestamp', 1 ) );
 		update_post_meta( $syndication_id, 'syndication_last_performed', current_time( 'timestamp', 1 ) );
+		delete_post_meta( $syndication_id, 'subscription_running' );
 
 		return $total_posts;
 	}
