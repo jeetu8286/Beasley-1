@@ -145,6 +145,21 @@ class BlogData {
 	 * @return array WP_Post objects
 	 */
 	public static function QueryContentSite( $subscription_id , $start_date = '', $end_date = '', $offset = 0 ) {
+		if ( is_null( $subscription_id ) ) {
+			return false;
+		}
+
+		// Ensure we have a valid post.
+		$subscription_post = get_post( $subscription_id );
+
+		if ( is_a( $subscription_post, 'WP_Post' ) ) {
+			return false;
+		}
+
+		if ( 'subscription' !== $subscription_post->post_type ) {
+			return false;
+		}
+
 		$result = array();
 
 		if ( $start_date == '' ) {
