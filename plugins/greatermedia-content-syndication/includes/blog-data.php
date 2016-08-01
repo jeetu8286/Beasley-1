@@ -152,7 +152,7 @@ class BlogData {
 		// Ensure we have a valid post.
 		$subscription_post = get_post( $subscription_id );
 
-		if ( is_a( $subscription_post, 'WP_Post' ) ) {
+		if ( ! is_a( $subscription_post, 'WP_Post' ) ) {
 			return false;
 		}
 
