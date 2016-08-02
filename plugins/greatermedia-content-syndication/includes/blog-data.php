@@ -64,16 +64,16 @@ class BlogData {
 			return false;
 		}
 
-		// Ensure we have a valid post.
-		$subscription_post = get_post( $syndication_id );
+		// // Ensure we have a valid post.
+		// $subscription_post = get_post( $syndication_id );
 
-		if ( ! is_a( $subscription_post, 'WP_Post' ) ) {
-			return false;
-		}
+		// if ( ! is_a( $subscription_post, 'WP_Post' ) ) {
+		// 	return false;
+		// }
 
-		if ( 'subscription' !== $subscription_post->post_type ) {
-			return false;
-		}
+		// if ( 'subscription' !== $subscription_post->post_type ) {
+		// 	return false;
+		// }
 
 		global $edit_flow, $gmrs_editflow_custom_status_disabled;
 
