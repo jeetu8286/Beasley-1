@@ -60,6 +60,21 @@ class BlogData {
 	}
 
 	public static function run( $syndication_id, $offset = 0 ) {
+		if ( is_null( $syndication_id ) ) {
+			return false;
+		}
+
+		// Ensure we have a valid post.
+		$subscription_post = get_post( $syndication_id );
+
+		if ( ! is_a( $subscription_post, 'WP_Post' ) ) {
+			return false;
+		}
+
+		if ( 'subscription' !== $subscription_post->post_type ) {
+			return false;
+		}
+
 		global $edit_flow, $gmrs_editflow_custom_status_disabled;
 
 		if ( ! defined( 'WP_IMPORTING' ) ) {
@@ -145,21 +160,6 @@ class BlogData {
 	 * @return array WP_Post objects
 	 */
 	public static function QueryContentSite( $subscription_id , $start_date = '', $end_date = '', $offset = 0 ) {
-		if ( is_null( $subscription_id ) ) {
-			return false;
-		}
-
-		// Ensure we have a valid post.
-		$subscription_post = get_post( $subscription_id );
-
-		if ( ! is_a( $subscription_post, 'WP_Post' ) ) {
-			return false;
-		}
-
-		if ( 'subscription' !== $subscription_post->post_type ) {
-			return false;
-		}
-
 		$result = array();
 
 		if ( $start_date == '' ) {
