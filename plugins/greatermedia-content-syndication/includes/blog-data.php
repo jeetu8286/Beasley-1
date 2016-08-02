@@ -69,8 +69,8 @@ class BlogData {
 		$is_running = get_post_meta( $syndication_id, 'subscription_running', true );
 
 		if ( $is_running ) {
-			$week_ahead = strtotime( '+1 week' );
-			if ( $week_ahead < $is_running ) {
+			$last_week = strtotime( '-1 week' );
+			if ( $last_week > $is_running ) {
 				// Send an alert
 			}
 			return 0;
