@@ -183,7 +183,7 @@
       'click .js-add-option': 'addOption',
       'click .js-remove-option': 'removeOption',
       'click .js-default-updated': 'defaultUpdated',
-      'input .option-label-input': 'forceRender'
+      'keydown input.option-label-input': 'forceRender'
     };
 
     EditFieldView.prototype.initialize = function(options) {
@@ -250,7 +250,7 @@
     };
 
     EditFieldView.prototype.forceRender = function() {
-      return this.model.trigger('change');
+      return this.model.trigger('change', this.model, {});
     };
 
     return EditFieldView;
@@ -888,7 +888,7 @@ function print() { __p += __j.call(arguments, '') }
 with (obj) {
 __p += '<label>\n  <input type=\'checkbox\' data-rv-checked=\'model.' +
 ((__t = ( Formbuilder.options.mappings.REQUIRED )) == null ? '' : __t) +
-'\' />\n  Required\n</label>\n\n<!-- Only display this field for contests. We use \'sticky\' for our only purposes, to save us adding additional mappings -->\n';
+'\' />\n  Required\n</label>\n\n<!-- Only display these fields for contests. We use \'sticky\' and \'admin_only\' for our own purposes, to save us adding additional mappings -->\n';
  if ( typeof typenow !== 'undefined' && 'contest' === typenow ) { ;
 __p += '\n\t<label>\n\t\t<br />\n\t \t<input type=\'checkbox\' data-rv-checked=\'model.' +
 ((__t = ( Formbuilder.options.mappings.STICKY )) == null ? '' : __t) +
