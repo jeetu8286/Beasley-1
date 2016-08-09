@@ -152,7 +152,7 @@
       $.getJSON('https://narrate.embed.ly/1/keys?' + $.param({
         key: EMBEDLY_CONFIG.analyticsKey
       })).then(function(response){
-        $(".embedly-analytics .active-viewers .active-count").html(response.active);
+        $(".embedly-analytics .active-viewers .active-count").text(response.active);
       });
     }
   };
@@ -309,7 +309,8 @@
 
           data.organizations.forEach(function(org){
             var $li = $('<li></li>'),
-              $a = $('<a>'+org.name.toUpperCase()+'</a>');
+              $a = $('<a></a>');
+              $a.text(org.name.toUpperCase());
 
             $a.on('click', selected(org));
             $li.append($a);
