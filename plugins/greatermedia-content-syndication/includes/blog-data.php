@@ -84,9 +84,10 @@ class BlogData {
 		$is_running = get_post_meta( $syndication_id, 'subscription_running', true );
 
 		if ( $is_running ) {
-			$last_week = strtotime( '-1 week' );
-			if ( $last_week > $is_running ) {
-				// Send an alert
+			$four_hours_ago = strtotime( '-4 hour' );
+			if ( $is_running <= $four_hours_ago ) {
+				// Delete the lock so the job can run again. We should also send an alert.
+				delete_post_meta( $syndication_id, 'subscription_running' );
 			}
 			return 0;
 		} else {
