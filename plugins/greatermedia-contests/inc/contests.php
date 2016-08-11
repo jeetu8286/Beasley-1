@@ -451,8 +451,8 @@ function _gmr_contests_get_submission_for_voting_actions() {
 	$submission = get_post( current( $submissions ) );
 
 	// Do nothing if voting is closed.
-	if ( gmr_contests_is_voting_open( $submission->post_parent ) ) {
-		wp_send_json_error();
+	if ( ! gmr_contests_is_voting_open( $submission->post_parent ) ) {
+		wp_send_json_error( array( 'restriction' => 'voting-not-open' ) );
 	}
 
 	return $submission;

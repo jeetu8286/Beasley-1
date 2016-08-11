@@ -28,7 +28,7 @@
 			</dt>
 
 			<dd>
-				<?php				
+				<?php
 				if ( strlen( $value ) > 200 ) {
 					$value = substr( $value, 0, 200 ) . '&hellip;';
 				}
@@ -80,7 +80,7 @@
 				</a>
 
 				<a class="contest__submission--unvote" href="#" data-id="<?php echo esc_attr( get_post_field( 'post_name', null ) ); ?>">
-					<i class="fa fa-thumbs-o-down"></i> Cancel Vote
+					<i class="fa fa-thumbs-o-down"></i> Thanks For Voting!
 				</a>
 			</div>
 		<?php
