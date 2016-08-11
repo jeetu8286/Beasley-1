@@ -448,7 +448,14 @@ function _gmr_contests_get_submission_for_voting_actions() {
 		wp_send_json_error();
 	}
 
-	return get_post( current( $submissions ) );
+	$submission = get_post( current( $submissions ) );
+
+	// Do nothing if voting is closed.
+	if ( gmr_contests_is_voting_open( $submission->post_parent ) ) {
+		wp_send_json_error();
+	}
+
+	return $submission;
 }
 
 /**
@@ -717,7 +724,7 @@ function gmr_contests_process_form_submission() {
 	require_once ABSPATH . 'wp-admin/includes/image.php';
 	require_once ABSPATH . 'wp-admin/includes/media.php';
 	require_once ABSPATH . 'wp-admin/includes/file.php';
-	
+
 	$form = @json_decode( get_post_meta( $contest_id, 'embedded_form', true ) );
 	gmr_verify_form_submission( $form );
 
@@ -1326,6 +1333,45 @@ function gmr_filter_expired_contests( $query ) {
 }
 
 /**
+ * Check whether or not voting for the contest is open.
+ *
+ * @param int $contest_id ID of contest to check.
+ *
+ * @return bool
+ */
+function gmr_contests_is_voting_open( $contest_id ) {
+	$vote_start   = gmr_contests_get_vote_start_date( $contest_id );
+	$vote_end     = gmr_contests_get_vote_end_date( $contest_id );
+	$current_time = time();
+
+	return ( $vote_start <= $current_time && $current_time < $vote_end );
+}
+
+/**
+ * Get contest's vote start date.
+ *
+ * @param $contest_id
+ *
+ * @return int
+ */
+function gmr_contests_get_vote_start_date( $contest_id ) {
+	return (int) get_post_meta( $contest_id, 'contest-vote-start', true ) ?:
+		get_post_meta( $contest_id, 'contest-start', true );;
+}
+
+/**
+ * Get contest's vote end date.
+ *
+ * @param $contest_id
+ *
+ * @return int
+ */
+function gmr_contests_get_vote_end_date( $contest_id ) {
+	return (int) get_post_meta( $contest_id, 'contest-vote-end', true ) ?:
+		get_post_meta( $contest_id, 'contest-end', true );
+}
+
+/**
  * Determines if we can show vote counts or not.
  *
  * @param  int|WP_Post $submission The post ID or object.
@@ -1353,7 +1399,7 @@ function gmr_contest_get_fields( $submission = null, $field_type = 'entry_field'
 	$entry_id = get_post_meta( $submission, 'contest_entry_id', true );
 
 	$entry = get_post( $entry_id );
-	
+
 	$entry_reference = get_post_meta( $entry->ID, 'entry_reference', true );
 
 	$fields = GreaterMediaFormbuilderRender::parse_entry( $entry->post_parent, $entry->ID, null, true );
