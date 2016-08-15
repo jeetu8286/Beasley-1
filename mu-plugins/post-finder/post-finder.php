@@ -9,7 +9,7 @@
 
 if( !class_exists( 'NS_Post_Finder' ) ) :
 
-define( 'POST_FINDER_VERSION', '0.2' );
+define( 'POST_FINDER_VERSION', '0.3' );
 
 /**
  * Namespacing the class with "NS" to ensure uniqueness
