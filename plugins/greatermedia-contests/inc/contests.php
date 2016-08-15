@@ -1348,6 +1348,17 @@ function gmr_contests_is_voting_open( $contest_id ) {
 }
 
 /**
+ * Determine if the contest has voting enabled.
+ *
+ * @param $contest_id
+ *
+ * @return int
+ */
+function gmr_contests_is_voting_enabled( $contest_id ) {
+	return (bool) get_post_meta( $contest_id, 'contest_enable_voting', true ) ? true : false;
+}
+
+/**
  * Get contest's vote start date.
  *
  * @param $contest_id
@@ -1356,7 +1367,7 @@ function gmr_contests_is_voting_open( $contest_id ) {
  */
 function gmr_contests_get_vote_start_date( $contest_id ) {
 	return (int) get_post_meta( $contest_id, 'contest-vote-start', true ) ?:
-		get_post_meta( $contest_id, 'contest-start', true );;
+		get_post_meta( $contest_id, 'contest-start', true );
 }
 
 /**

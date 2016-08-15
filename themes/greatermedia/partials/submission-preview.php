@@ -72,38 +72,40 @@
 		?>
 	</dl>
 
-	<?php if ( function_exists( 'is_gigya_user_logged_in' ) ) : ?>
-		<?php if ( gmr_contests_is_voting_open( get_post()->post_parent ) && is_gigya_user_logged_in() ) : ?>
-			<div>
-				<a class="contest__submission--vote" href="#" data-id="<?php echo esc_attr( get_post_field( 'post_name', null ) ); ?>">
-					<i class="fa fa-thumbs-o-up"></i> Vote For This Entry
-				</a>
+  <?php if ( gmr_contests_is_voting_enabled( get_post()->post_parent ) ) : ?>
+		<?php if ( function_exists( 'is_gigya_user_logged_in' ) ) : ?>
+			<?php if ( gmr_contests_is_voting_open( get_post()->post_parent ) && is_gigya_user_logged_in() ) : ?>
+				<div>
+					<a class="contest__submission--vote" href="#" data-id="<?php echo esc_attr( get_post_field( 'post_name', null ) ); ?>">
+						<i class="fa fa-thumbs-o-up"></i> Vote For This Entry
+					</a>
 
-				<a class="contest__submission--unvote" href="#" data-id="<?php echo esc_attr( get_post_field( 'post_name', null ) ); ?>">
-					<i class="fa fa-thumbs-o-down"></i> Thanks For Voting!
-				</a>
-			</div>
-		<?php
-		elseif (
-			! gmr_contests_is_voting_open( get_post()->post_parent ) &&
-			time() < gmr_contests_get_vote_start_date( get_post()->post_parent )
-		) :
-		?>
-			<p>Voting has not yet begun. Please check back soon to place your vote.</p>
-		<?php
-		elseif (
-			! gmr_contests_is_voting_open( get_post()->post_parent ) &&
-			gmr_contests_get_vote_end_date( get_post()->post_parent ) < time()
-		) :
-		?>
-			<p>Voting is now closed.</p>
-		<?php
-		else :
-		?>
-			<p>
-				You must be logged in to vote for the submission!
-				<a href="<?php echo esc_url( gmr_contests_get_login_url( parse_url( get_permalink( $post_parent ), PHP_URL_PATH ) ) ) ?>">Sign in here</a>.
-			</p>
+					<a class="contest__submission--unvote" href="#" data-id="<?php echo esc_attr( get_post_field( 'post_name', null ) ); ?>">
+						<i class="fa fa-thumbs-o-down"></i> Thanks For Voting!
+					</a>
+				</div>
+			<?php
+			elseif (
+				! gmr_contests_is_voting_open( get_post()->post_parent ) &&
+				time() < gmr_contests_get_vote_start_date( get_post()->post_parent )
+			) :
+			?>
+				<p>Voting has not yet begun. Please check back soon to place your vote.</p>
+			<?php
+			elseif (
+				! gmr_contests_is_voting_open( get_post()->post_parent ) &&
+				gmr_contests_get_vote_end_date( get_post()->post_parent ) < time()
+			) :
+			?>
+				<p>Voting is now closed.</p>
+			<?php
+			else :
+			?>
+				<p>
+					You must be logged in to vote for the submission!
+					<a href="<?php echo esc_url( gmr_contests_get_login_url( parse_url( get_permalink( $post_parent ), PHP_URL_PATH ) ) ) ?>">Sign in here</a>.
+				</p>
+			<?php endif; ?>
 		<?php endif; ?>
 	<?php endif; ?>
 </section>
