@@ -213,9 +213,15 @@ class PhpStreamRequestFactory implements StreamRequestFactoryInterface
         $http_response_header = null;
         $url = $this->url;
         $context = $this->context;
-        $fp = $this->createResource(function () use ($context, $url, &$http_response_header) {
-            return fopen((string) $url, 'r', false, $context);
-        });
+
+        // Catch exception if images are large and/or multiple are used. #bandaid
+        try {
+            $fp = $this->createResource(function () use ($context, $url, &$http_response_header) {
+                return fopen((string) $url, 'r', false, $context);
+            });
+        } catch ( \RuntimeException $e ) {
+            return false;
+        }
 
         // Determine the class to instantiate
         $className = isset($params['stream_class']) ? $params['stream_class'] : __NAMESPACE__ . '\\Stream';
