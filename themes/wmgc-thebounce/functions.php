@@ -54,7 +54,7 @@ define( 'WMGC_VERSION', '0.1.0' );
   *
   */
 
- function add_custom_gtm(){
+ function wmgc_add_custom_gtm(){
  ?>
  <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-KRWQX8" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
@@ -65,7 +65,7 @@ define( 'WMGC_VERSION', '0.1.0' );
       })(window,document,'script','dataLayer','GTM-KRWQX8');</script>
  <?php
  }
- add_action('wp_head', 'add_custom_gtm');
+ add_action('wp_head', 'wmgc_add_custom_gtm');
 
 
 
