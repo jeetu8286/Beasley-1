@@ -12,7 +12,7 @@
  * @return void
  */
 function gmr_verify_form_submission( $form ) {
-	
+
 	foreach ( (array) $form as $field ) {
 		if ( ! $field->required || 'section_break' === $field->field_type ) {
 			continue;
@@ -37,7 +37,7 @@ function gmr_verify_form_submission( $form ) {
 				}
 
 				$value = trim( $value );
-				if ( ! empty( $value ) || ( 'radio' === $field->field_type && in_array( $value, [ 0, '0' ] ) ) ) {
+				if ( ! empty( $value ) || ( 'radio' === $field->field_type && in_array( $value, [ 0, '0' ] ) ) || ( 'checkboxes' === $field->field_type && in_array( $value, [ 0, '0' ] ) ) ) {
 					continue;
 				}
 
@@ -67,7 +67,7 @@ function gmr_verify_form_submission( $form ) {
 		}
 
 		// required field is empty, so we need to interupt submission process
-		status_header( 400 );
+		status_header( 400, 'Failed validation' );
 		exit;
 	}
 }
