@@ -15350,7 +15350,6 @@ a.contest-attr--rules-toggler.pjax-exclude:hover {
   font-family: 'Ubuntu', sans-serif; }
 
 .header__logo {
-  background: url("../../images/alt929-horizonal-logo.png") no-repeat;
   background-size: contain;
   background-position: center top;
   display: block;
@@ -15362,12 +15361,10 @@ a.contest-attr--rules-toggler.pjax-exclude:hover {
   margin: 16px auto 0px auto; }
 
 .header__logo img {
-  z-index: 1;
-  display: none; }
+  z-index: 1; }
 
 .header__logo--img {
-  z-index: 1;
-  display: none; }
+  z-index: 1; }
 
 /* ------------- END MASTHEAD -------------------------------*/
 .highlights__event--item {
@@ -15662,7 +15659,6 @@ media 768px
     -webkit-animation-name: no_name;
     animation-name: no_name; }
   .header__logo {
-    background: url("../../images/alt929-horizonal-logo.png") no-repeat;
     background-size: cover;
     background-position: center top;
     display: block;
@@ -15853,17 +15849,14 @@ media 1175px
 -----------------------------------*/
 @media screen and (min-width: 1175px) {
   .header__nav {
-    padding-left: 220px; }
+    padding-left: 270px; }
   .header__nav > ul > li {
     padding-right: 5px; }
-  .header__logo img {
-    display: none; }
   .header__logo--img {
     display: block;
     /*width: 200px;
       height: 158px;*/ }
   .header__logo {
-    background: url("../../images/alt929-horizonal-logo.png") no-repeat;
     background-size: contain;
     background-position: center top;
     border: solid 0px #fff;
@@ -15903,8 +15896,7 @@ media 1400px
   .header__logo {
     width: 235px;
     height: 235px;
-    top: -144px;
-    background-image: url("../../images/alt929-stacked.png"); }
+    top: -144px; }
   .ad__leaderboard.desktop:after {
     width: 325px;
     height: 136px;
@@ -15912,6 +15904,167 @@ media 1400px
     right: -325px; }
   .show__mini-nav .show__header {
     padding-left: 233px; } }
+
+/*------------
+ Detroit Changes by Dwarner/Cbrunt
+ -------------------------------------*/
+.header__logo img {
+  height: auto;
+  max-height: inherit; }
+
+@media screen and (min-width: 1024px) {
+  .header__logo {
+    background-size: cover;
+    left: 0;
+    width: 290px;
+    max-width: 290px;
+    top: -10px; }
+  .header__logo--img {
+    display: block;
+    top: -70px !important; }
+  .header__logo img {
+    width: 100%;
+    height: auto;
+    max-height: inherit;
+    max-width: inherit;
+    z-index: 1;
+    display: block;
+    transform: none; } }
+
+#header.header {
+  background-image: url(https://files.greatermedia.com/uploads/sites/23/2016/08/altmastbg.jpg) !important;
+  background-size: cover;
+  background-position: top center; }
+
+.header {
+  border-bottom-color: #000000 !important; }
+
+.header__main {
+  border-bottom-color: #000000 !important;
+  background: #333399;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #333399 0%, #000000 100%);
+  /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, #333399 0%, #000000 100%);
+  /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, #333399 0%, #000000 100%);
+  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#333399', endColorstr='#000000',GradientType=0 ) !important; }
+
+.header__main {
+  font-family: 'Bigshot One' !important; }
+
+.header__account--links.sub-menu, .header__nav .format-fw > ul.header__account--links, .header__nav .format-sp > ul.header__account--links, .header__nav .format-fi > ul.header__account--links, .header__nav .format-fi > ul, .header__nav .format-fi > ul.header__account--links, .header__nav .format-fw > ul, .header__nav .format-fw > ul.header__account--links, .header__nav .format-sp > ul, .header__nav .format-sp > ul.header__account--links, .header__nav .sub-menu, .header__nav .format-fw > ul, .header__nav .format-sp > ul, .header__nav .format-fi > ul, .ui-menu {
+  border-top-color: #cccccc;
+  border-bottom-color: #cccccc; }
+
+.ad__leaderboard.desktop {
+  background-image: none !important;
+  background-color: transparent !important; }
+
+#site-wrap.site-wrap {
+  background-size: cover;
+  background-color: #061222;
+  background-image: url("https://files.greatermedia.com/uploads/sites/23/2016/08/altsitebg-2.jpg");
+  background-repeat: no-repeat;
+  background-attachment: fixed; }
+
+.on-air__show, .up-next__show {
+  color: #333399 !important;
+  text-shadow: 0px 0px 5px #092040;
+  font-family: 'Bigshot One' !important; }
+
+.widget--live-player__title {
+  color: #333399 !important;
+  text-shadow: 0px 0px 5px black;
+  text-transform: uppercase !important;
+  font-family: 'Bigshot One' !important; }
+
+.live-link__song--title {
+  color: #cccccc !important; }
+
+.live-links--more__btn {
+  color: #ffffff !important;
+  background-color: transparent !important;
+  border-top-color: #333399 !important;
+  border-right-color: #333399 !important;
+  border-bottom-color: #333399 !important;
+  border-left-color: #333399 !important; }
+
+#page-wrap.page-wrap, .home .container, .main {
+  background-color: transparent;
+  background-image: none; }
+
+/* Line 1 */
+.main {
+  background-color: transparent;
+  background-image: none; }
+
+.featured__article .featured__article--heading {
+  text-shadow: 0px 0px 5px white;
+  color: #333399 !important; }
+
+.featured__article:hover {
+  color: #ffffff !important;
+  background-color: #cccccc !important; }
+
+.featured__article--content {
+  background-color: #cccccc !important;
+  color: #333399 !important;
+  text-shadow: 0px 0px 5px white !important; }
+
+.featured__content--block:hover .featured__content--btn {
+  background: #333333 !important; }
+
+.featured__article:hover .featured__article--heading {
+  color: #ffffff !important; }
+
+.featured__content--title {
+  color: #333399 !important;
+  text-shadow: 0px 0px 5px white !important; }
+
+.home__featured .featured__article--content, .home__featured .featured__content--block {
+  background: #e0e0e0;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #e0e0e0 0%, #9e9e9e 100%);
+  /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, #e0e0e0 0%, #9e9e9e 100%);
+  /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, #e0e0e0 0%, #9e9e9e 100%);
+  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e0e0e0', endColorstr='#9e9e9e',GradientType=0 ); }
+
+.home__featured .featured__article--content {
+  background-color: #cccccc !important;
+  color: #333399 !important;
+  text-shadow: 0px 0px 5px white !important; }
+
+.featured__content--block:hover .featured__content--title {
+  color: #ffffff !important;
+  text-shadow: 0px 0px 5px black !important; }
+
+.live-stream__login {
+  background-color: #000000 !important; }
+
+.live-stream {
+  background-image: url(https://files.greatermedia.com/uploads/sites/23/2016/08/alt_listen_bg-1.jpg) !important;
+  background-repeat: no-repeat !important;
+  background-color: transparent; }
+
+.live-player {
+  background-image: none !important;
+  color: #ffffff;
+  background-color: #000000 !important; }
+
+@media screen and (min-width: 750px) {
+  .live-stream__btn--loading, .live-stream__btn--pause, .live-stream__btn--play, .live-stream__btn--resume {
+    background-color: transparent;
+    background-image: url("https://files.greatermedia.com/uploads/sites/23/2016/08/speaker-1.png");
+    width: 130px;
+    height: 130px; } }
+
+ul#live-links__blogroll {
+  background: none !important; }
 
 .live-link__type--show {
   border-bottom-color: white;
