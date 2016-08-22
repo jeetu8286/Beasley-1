@@ -1142,7 +1142,7 @@ media 1400px
    }
 }
 
-#header.header{background-image: url(https://files.greatermedia.com/uploads/sites/23/2016/08/altmastbg.jpg)!important;background-size: cover;background-position: top center;}
+#header.header{background-image: url(../../images/altmastbg.jpg)!important;background-size: cover;background-position: top center;}
 
 .header
   {  border-bottom-color: #000000!important;}
@@ -1179,7 +1179,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#333399', end
 {
   background-size: cover;
   background-color: #061222;
-  background-image: url("https://files.greatermedia.com/uploads/sites/23/2016/08/altsitebg-2.jpg");
+  background-image: url("../../images/altsitebg-2.jpg");
   background-repeat: no-repeat;
   background-attachment: fixed;
 }
@@ -1279,7 +1279,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e0e0e0', end
   }
 
   .live-stream
-  {background-image: url(https://files.greatermedia.com/uploads/sites/23/2016/08/alt_listen_bg-1.jpg)!important;
+  {background-image: url(../../images/alt_listen_bg-1.jpg)!important;
     background-repeat: no-repeat!important;
      background-color: transparent;}
 
@@ -1292,7 +1292,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e0e0e0', end
   .live-stream__btn--loading, .live-stream__btn--pause, .live-stream__btn--play, .live-stream__btn--resume
 {
   background-color: transparent;
-  background-image: url("https://files.greatermedia.com/uploads/sites/23/2016/08/speaker-1.png");
+  background-image: url("../../images/speaker-1.png");
   width: 130px;
   height: 130px;
   }
