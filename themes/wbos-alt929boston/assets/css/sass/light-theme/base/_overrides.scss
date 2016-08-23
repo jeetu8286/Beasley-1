@@ -820,7 +820,6 @@ media 768px
             border-radius: 0em;
             font-family: 'Oswald', sans-serif;
             font-size: 1.15em;
-            text-transform: uppercase;
         }
         .live-stream__now-playing--btn,
         .live-stream__listen-now--btn {
@@ -837,14 +836,7 @@ media 768px
             font-family: 'Oswald', sans-serif;
             font-size: 1.15em;
         }
-        .live-stream__now-playing--btn:after {
-            content: ' on\a Alt 92.9 Boston';
-            white-space: pre;
-        }
-        .live-stream__listen-now--btn:after {
-            content: ' to\a Alt 92.9 Boston';
-            white-space: pre;
-        }
+
     }
     .live-link__song {
         transition: all 200ms ease-in-out;

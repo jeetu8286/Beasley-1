@@ -15712,8 +15712,7 @@ media 768px
       width: 100%;
       border-radius: 0em;
       font-family: 'Oswald', sans-serif;
-      font-size: 1.15em;
-      text-transform: uppercase; }
+      font-size: 1.15em; }
     .live-stream .live-stream__now-playing--btn, .live-stream .live-stream__listen-now--btn, .live-stream .podcast__rss {
       /*display: none;*/
       position: relative;
@@ -15726,12 +15725,6 @@ media 768px
       border-radius: 0em;
       font-family: 'Oswald', sans-serif;
       font-size: 1.15em; }
-    .live-stream .live-stream__now-playing--btn:after {
-      content: ' on\a Alt 92.9 Boston';
-      white-space: pre; }
-    .live-stream .live-stream__listen-now--btn:after, .live-stream .podcast__rss:after {
-      content: ' to\a Alt 92.9 Boston';
-      white-space: pre; }
   .live-link__song {
     transition: all 200ms ease-in-out;
     -moz-transition: all 200ms ease-in-out;
