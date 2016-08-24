@@ -15685,13 +15685,13 @@ media 768px
       top: -10px;
       background-color: rgba(0, 0, 0, 0.3);
       color: #000;
-      font-family: 'Oswald', sans-serif; }
+      font-family: 'Bree Serif', serif; }
     .live-stream .on-air__show, .live-stream .up-next__show {
       display: block;
       font-size: 1.25em;
       font-weight: 700;
       text-transform: uppercase;
-      font-family: 'Oswald', sans-serif;
+      font-family: 'Bree Serif', serif;
       color: #fff;
       padding-top: 0px; }
     .live-stream .live-stream__controls {
@@ -15709,7 +15709,7 @@ media 768px
       background-color: rgba(0, 0, 0, 0.3);
       width: 100%;
       border-radius: 0em;
-      font-family: 'Oswald', sans-serif;
+      font-family: 'Bree Serif', serif;
       font-size: 1.15em; }
     .live-stream .live-stream__now-playing--btn, .live-stream .live-stream__listen-now--btn, .live-stream .podcast__rss {
       /*display: none;*/
@@ -15721,7 +15721,7 @@ media 768px
       background-color: rgba(0, 0, 0, 0.3);
       width: 100%;
       border-radius: 0em;
-      font-family: 'Oswald', sans-serif;
+      font-family: 'Bree Serif', serif;
       font-size: 1.15em; }
   .live-link__song {
     transition: all 200ms ease-in-out;
