@@ -41,10 +41,18 @@ define( 'WBOS_VERSION', '0.4.4' ); /* Version bump by Steve 7/13/2016 @ 6:30 a.m
   */
  function wbos_scripts_styles() {
 	$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
-
+  wp_register_style('google-fonts-wbos','//fonts.googleapis.com/css?family=Bree+Serif',array(),null);
 	wp_dequeue_style( 'greatermedia' );
 	wp_deregister_style( 'greatermedia' );
-	wp_enqueue_style( 'wbos', get_stylesheet_directory_uri() . "/assets/css/wbos{$postfix}.css", array(), WBOS_VERSION );
+	wp_enqueue_style( 'wbos', get_stylesheet_directory_uri() . "/assets/css/wbos{$postfix}.css", array('google-fonts-wbos'), WBOS_VERSION );
+  wp_enqueue_script(
+		'wbos',
+		get_stylesheet_directory_uri() . "/assets/js/wbos{$postfix}.js",
+		array(),
+		WBOS_VERSION,
+		true);
+
+
  }
  add_action( 'wp_enqueue_scripts', 'wbos_scripts_styles', 20 );
 

@@ -1,6 +1,4 @@
 @charset "UTF-8";
-@import url(http://fonts.googleapis.com/css?family=Ubuntu:400,500);
-@import url(http://fonts.googleapis.com/css?family=Oswald:400,300,700);
 /**
  * WBOS
  * http://greatermedia.com
@@ -15156,7 +15154,7 @@ Denis Changes to _overrides.scss file 5/20
   color: #fff;
   font-weight: 500;
   text-transform: uppercase;
-  font-family: 'Ubuntu', sans-serif;
+  font-family: 'Bree Serif', serif;
   padding: 10px;
   background-color: #005596; }
 
@@ -15335,7 +15333,7 @@ a.contest-attr--rules-toggler.pjax-exclude:hover {
 
 .featured__article--heading {
   color: #FFFFFF;
-  font-family: 'Ubuntu', sans-serif; }
+  font-family: 'Bree Serif', serif; }
 
 /* ------------- END HIGHLIGHTS -------------------------------*/
 /* ------------- MASTHEAD -------------------------------*/
@@ -15347,7 +15345,7 @@ a.contest-attr--rules-toggler.pjax-exclude:hover {
   background-position: left top; }
 
 .header__nav {
-  font-family: 'Ubuntu', sans-serif; }
+  font-family: 'Bree Serif', serif; }
 
 .header__logo {
   background-size: contain;
@@ -15379,11 +15377,11 @@ a.contest-attr--rules-toggler.pjax-exclude:hover {
 
 .highlights__event--date, .highlights__event--title {
   color: #ffffff;
-  font-family: 'Ubuntu', sans-serif; }
+  font-family: 'Bree Serif', serif; }
 
 .content__heading, .sponsors__heading, .sponsors__heading {
   color: #002a6e;
-  font-family: 'Ubuntu', sans-serif; }
+  font-family: 'Bree Serif', serif; }
 
 .highlights__events--more-btn {
   background-color: #0e2242;
@@ -15403,16 +15401,16 @@ a.contest-attr--rules-toggler.pjax-exclude:hover {
   margin: 0 0 .25em;
   font-size: 1.60181em;
   color: #d22228;
-  font-family: 'Ubuntu' sans-serif; }
+  font-family: 'Bree Serif', serif; }
 
 .entry__title, .page__title, .page__title {
   margin: 0 0 20px;
   font-size: 1.60181em;
-  font-family: 'Ubuntu' sans-serif; }
+  font-family: 'Bree Serif', serif; }
 
 h2.entry2__title a:link {
   color: #002a6e;
-  font-family: 'Ubuntu', sans-serif;
+  font-family: 'Bree Serif', serif;
   font-weight: 700; }
 
 h2.entry2__title a:hover {
@@ -15514,7 +15512,7 @@ h2.entry2__title a:hover {
     background-color: #004794; }
   .home__featured .featured__article--heading {
     color: #FFFFFF;
-    font-family: 'Ubuntu', sans-serif; }
+    font-family: 'Bree Serif', serif; }
   .home__featured .featured__content--image {
     float: left;
     display: block;
@@ -15580,13 +15578,13 @@ time.show__feature--date {
 
 .show__feature--primary .show__feature--desc h3 {
   color: #002a6e;
-  font-family: 'Ubuntu', sans-serif;
+  font-family: 'Bree Serif', serif;
   font-weight: 700; }
   .show__feature--primary .show__feature--desc h3:hover {
     color: #f58325; }
 
 .show__feature--secondary .show__feature--desc h3 {
-  font-family: 'Ubuntu', sans-serif;
+  font-family: 'Bree Serif', serif;
   font-weight: 500;
   color: #002a6e;
   font-size: 1.5em; }
@@ -15749,7 +15747,7 @@ media 768px
   .widget--live-player__title {
     color: #fff;
     font-weight: 500;
-    font-family: 'Ubuntu', sans-serif;
+    font-family: 'Bree Serif', serif;
     background-color: rgba(0, 0, 0, 0.3);
     padding: 15px 0px; }
   .live-link__song--title {
