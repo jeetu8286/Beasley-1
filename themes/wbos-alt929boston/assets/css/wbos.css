@@ -15595,7 +15595,7 @@ time.show__feature--date {
   font-size: 1.2em; }
 
 .article__title, .single-podcast .podcast__parent--title {
-  font-family: 'Oswald', sans-serif;
+  font-family: 'Bree Serif', serif;
   font-weight: 500;
   color: #002a6e; }
 
@@ -15902,6 +15902,9 @@ media 1400px
 .header__logo img {
   height: auto;
   max-height: inherit; }
+
+.page__title, h1, h2, h3, h4, h5, h6 {
+  font-family: 'Bree Serif', serif; }
 
 @media screen and (min-width: 1024px) {
   .header__logo {
