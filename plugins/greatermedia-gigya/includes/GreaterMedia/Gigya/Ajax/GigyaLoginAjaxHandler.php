@@ -4,6 +4,8 @@ namespace GreaterMedia\Gigya\Ajax;
 
 use GreaterMedia\Gigya\GigyaSession;
 
+use GreaterMedia\Gigya\Sync\EmmaGroupSyncTask;
+
 class GigyaLoginAjaxHandler extends AjaxHandler {
 
 	public function get_action() {
