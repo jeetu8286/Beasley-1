@@ -20,7 +20,7 @@ class GigyaLoginAjaxHandler extends AjaxHandler {
 		if ( is_gigya_user_logged_in() ) {
 			$user_id = get_gigya_user_id();
 			$gigya_account = get_gigya_user_profile_data( $user_id )
-			if ( empty( isset( $gigya_account['data']['EmmaSync'] ) ) {
+			if ( empty( $gigya_account['data']['EmmaSync'] ) ) {
 				$emma_group_sync_task = new EmmaGroupSyncTask();
 				$emma_group_sync_task->enqueue( array( 'user_id' => $user_id ) );
 			}
