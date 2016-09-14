@@ -12,11 +12,13 @@ mu-plugins/test-data-store.php
 plugins/wp-multi-network/
 plugins/wordpress-importer/
 plugins/debug-bar/
+plugins/debug-bar-cron/
+plugins/debug-bar-extender/
+plugins/query-monitor/
+plugins/core-control/
 plugins/theme-check/
 plugins/airplane-mode/
 plugins/index.php
-plugins/debug-bar-cron/
-plugins/debug-bar-extender/
 plugins/role-quick-changer/
 plugins/the-events-calendar/
 plugins/wp-crontrol/
@@ -27,6 +29,8 @@ plugins/simple-page-ordering/
 plugins/tag-pages/
 plugins/regenerate-thumbnails/
 plugins/gears
+plugins/wp-gears
+plugins/rest-api
 plugins/gravityforms
 plugins/json-rest-api/
 plugins/duplicate-post
