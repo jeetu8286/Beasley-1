@@ -1,0 +1,32 @@
+{
+	"name": "10up/greatermedia",
+	"minimum-stability": "beta",
+	"repositories": [
+		{
+			"type": "composer",
+			"url": "https://wpackagist.org"
+		},
+		{
+			"type": "vcs",
+			"url": "git@github.com:10up/WP-Gears.git"
+		}
+	],
+	"require": {
+		"composer/installers": "^1.0",
+		"wpackagist-plugin/debug-bar": "^0.8",
+		"wpackagist-plugin/debug-bar-extender": "^0.5",
+		"wpackagist-plugin/ooyala-video-browser": "^2.3",
+		"wpackagist-plugin/rest-api": "^2.0",
+		"wpackagist-plugin/wordpress-seo": "^3.5",
+		"wpackagist-plugin/edit-flow": "^0.8",
+		"wpackagist-plugin/query-monitor": "^2.13",
+		"wpackagist-plugin/the-events-calendar": "^4.2",
+		"wpackagist-plugin/core-control": "^1.2",
+		"10up/wp-gears": "^2.1"
+	},
+	"extra": {
+		"installer-paths": {
+			"plugins/{$name}/": ["type:wordpress-plugin"]
+		}
+	}
+}
