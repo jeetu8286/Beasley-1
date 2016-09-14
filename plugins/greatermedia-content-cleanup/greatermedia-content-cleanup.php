@@ -15,10 +15,12 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 }
 
 function gmr_content_cleanup_setup() {
-	require_once __DIR__ . '/includes/class-admin-settings.php';
+	require_once __DIR__ . '/includes/class-content-settings.php';
 
 	$settings = new GMR_Content_Settings();
 	$settings->setup();
 }
 
-add_action( 'admin_init', 'gmr_content_cleanup_setup' );
+if ( is_admin() ) {
+	add_action( 'plugins_loaded', 'gmr_content_cleanup_setup' );
+}
