@@ -13,3 +13,12 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 	require_once __DIR__ . '/includes/class-content-cleanup.php';
 	WP_CLI::add_command( 'gmr-content', 'GMR_Content_Cleanup' );
 }
+
+function gmr_content_cleanup_setup() {
+	require_once __DIR__ . '/includes/class-admin-settings.php';
+
+	$settings = new GMR_Content_Settings();
+	$settings->setup();
+}
+
+add_action( 'admin_init', 'gmr_content_cleanup_setup' );
