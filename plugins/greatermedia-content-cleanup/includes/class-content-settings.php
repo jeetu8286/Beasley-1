@@ -26,9 +26,11 @@ class GMR_Content_Settings {
 
 		add_settings_field( GMR_CLEANUP_STATUS_OPTION, 'Enabled', array( $this, 'render_enabled_field' ), $page, $section );
 		add_settings_field( GMR_CLEANUP_AUTHORS_OPTION, 'Authors', array( $this, 'render_authors_field' ), $page, $section );
+		add_settings_field( GMR_CLEANUP_AGE_OPTION, 'Age', array( $this, 'render_age_field' ), $page, $section );
 
 		register_setting( $page, GMR_CLEANUP_STATUS_OPTION, 'absint' );
 		register_setting( $page, GMR_CLEANUP_AUTHORS_OPTION, 'sanitize_text_field' );
+		register_setting( $page, GMR_CLEANUP_AGE_OPTION, 'absint' );
 	}
 
 	/**
@@ -48,8 +50,8 @@ class GMR_Content_Settings {
 	 * @access public
 	 */
 	public function render_enabled_field() {
-		echo '<input type="hidden" name="gmr-cleanup-status" value="0">';
-		echo '<input type="checkbox" name="gmr-cleanup-status" value="1"', checked( get_option( GMR_CLEANUP_STATUS_OPTION ), 1, false ), '>';
+		echo '<input type="hidden" name="', esc_attr( GMR_CLEANUP_STATUS_OPTION ), '" value="0">';
+		echo '<input type="checkbox" name="', esc_attr( GMR_CLEANUP_STATUS_OPTION ), '" value="1"', checked( get_option( GMR_CLEANUP_STATUS_OPTION ), 1, false ), '>';
 	}
 
 	/**
@@ -58,8 +60,18 @@ class GMR_Content_Settings {
 	 * @access public
 	 */
 	public function render_authors_field() {
-		echo '<input type="text" name="gmr-cleanup-authors" class="regular-text" value="', esc_attr( get_option( GMR_CLEANUP_AUTHORS_OPTION ) ), '"><br>';
-		echo '<span class="description">Comma separated list of users which articles will be deleted.</span>';
+		echo '<input type="text" name="', esc_attr( GMR_CLEANUP_AUTHORS_OPTION ), '" class="regular-text" value="', esc_attr( get_option( GMR_CLEANUP_AUTHORS_OPTION ) ), '"><br>';
+		echo '<span class="description">Comma separated list of user logins which articles will be deleted.</span>';
+	}
+
+	/**
+	 * Renders age field.
+	 *
+	 * @access public
+	 */
+	public function render_age_field() {
+		echo '<input type="text" name="', esc_attr( GMR_CLEANUP_AGE_OPTION ), '" class="regular-text" value="', esc_attr( get_option( GMR_CLEANUP_AGE_OPTION ) ), '"><br>';
+		echo '<span class="description">Enter number of days after which posts created by selected authors will de deleted.</span>';
 	}
 
 	/**

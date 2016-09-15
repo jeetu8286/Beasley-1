@@ -12,6 +12,7 @@
 define( 'GMR_CLEANUP_CRON', 'gmr_do_content_cleanup' );
 define( 'GMR_CLEANUP_STATUS_OPTION', 'gmr-cleanup-status' );
 define( 'GMR_CLEANUP_AUTHORS_OPTION', 'gmr-cleanup-authors' );
+define( 'GMR_CLEANUP_AGE_OPTION', 'gmr-cleanup-age' );
 
 if ( defined( 'WP_CLI' ) && WP_CLI ) {
 	require_once __DIR__ . '/includes/class-content-cleanup.php';
