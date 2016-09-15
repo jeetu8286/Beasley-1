@@ -61,7 +61,7 @@ class GMR_Content_Settings {
 	 */
 	public function render_authors_field() {
 		echo '<input type="text" name="', esc_attr( GMR_CLEANUP_AUTHORS_OPTION ), '" class="regular-text" value="', esc_attr( get_option( GMR_CLEANUP_AUTHORS_OPTION ) ), '"><br>';
-		echo '<span class="description">Comma separated list of user logins which articles will be deleted.</span>';
+		echo '<span class="description">Comma separated list of user logins which articles will be deleted. If authors are not provided, no posts will be deleted.</span>';
 	}
 
 	/**
@@ -71,7 +71,7 @@ class GMR_Content_Settings {
 	 */
 	public function render_age_field() {
 		echo '<input type="text" name="', esc_attr( GMR_CLEANUP_AGE_OPTION ), '" class="regular-text" value="', esc_attr( get_option( GMR_CLEANUP_AGE_OPTION ) ), '"><br>';
-		echo '<span class="description">Enter number of days after which posts created by selected authors will de deleted.</span>';
+		echo '<span class="description">Enter number of days after which posts created by selected authors will de deleted. If age is not provided, no posts will be deleted.</span>';
 	}
 
 	/**
