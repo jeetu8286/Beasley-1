@@ -10,6 +10,7 @@
  */
 
 define( 'GMR_CLEANUP_CRON', 'gmr_do_content_cleanup' );
+define( 'GMR_CLEANUP_ASYNC_TASK', 'gmr_do_content_cleanup_async' );
 define( 'GMR_CLEANUP_STATUS_OPTION', 'gmr-cleanup-status' );
 define( 'GMR_CLEANUP_AUTHORS_OPTION', 'gmr-cleanup-authors' );
 define( 'GMR_CLEANUP_AGE_OPTION', 'gmr-cleanup-age' );
@@ -49,4 +50,4 @@ function gmr_content_cleanup_deactivation() {
 register_activation_hook( __FILE__, 'gmr_cotnent_cleanup_activation' );
 register_deactivation_hook( __FILE__, 'gmr_content_cleanup_deactivation' );
 
-add_action( 'plugins_loaded', 'gmr_content_cleanup_setup' );
+gmr_content_cleanup_setup();

@@ -8,7 +8,8 @@ class GMR_Cleanup_Cron {
 	 * @access public
 	 */
 	public function setup() {
-		add_action( GMR_CLEANUP_CRON, array( $this, 'do_cleanup' ) );
+		add_action( GMR_CLEANUP_CRON, array( $this, 'queue_up_cleanup' ) );
+		add_action( GMR_CLEANUP_ASYNC_TASK, array( $this, 'do_cleanup' ) );
 	}
 
 	/**
@@ -16,7 +17,7 @@ class GMR_Cleanup_Cron {
 	 *
 	 * @access public
 	 */
-	public function do_cleanup() {
+	public function queue_up_cleanup() {
 		// do nothing if cron is disabled
 		if ( 1 != get_option( GMR_CLEANUP_STATUS_OPTION ) ) {
 			return;
@@ -35,9 +36,27 @@ class GMR_Cleanup_Cron {
 			return;
 		}
 
+		// add async task to cleanup content
+		if ( function_exists( 'wp_async_task_add' ) ) {
+			wp_async_task_add( GMR_CLEANUP_ASYNC_TASK, array(
+				'authors' => $authors,
+				'age'     => $age,
+			) );
+		}
+	}
+
+	/**
+	 * Cleans up content on the site.
+	 *
+	 * @access public
+	 * @param array $args The array of async task arguments.
+	 */
+	public function do_cleanup( $args ) {
+		error_log( 'running from async' );
+		error_log( var_export( $args, true ) );
 		$query = new WP_Query();
 		$query_args = array(
-			'author__in'          => $authors,
+			'author__in'          => $args['authors'],
 			'post_type'           => 'any',
 			'post_status'         => 'any',
 			'suppress_filters'    => true,
@@ -48,7 +67,7 @@ class GMR_Cleanup_Cron {
 			'date_query'          => array(
 				array(
 					'column' => 'post_date_gmt',
-					'before' => $age . ' days ago',
+					'before' => $args['age'] . ' days ago',
 				),
 			),
 		);
