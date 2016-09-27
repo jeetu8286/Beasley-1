@@ -28,9 +28,34 @@ class GMR_Content_Settings {
 		add_settings_field( GMR_CLEANUP_AUTHORS_OPTION, 'Authors', array( $this, 'render_authors_field' ), $page, $section );
 		add_settings_field( GMR_CLEANUP_AGE_OPTION, 'Age', array( $this, 'render_age_field' ), $page, $section );
 
-		register_setting( $page, GMR_CLEANUP_STATUS_OPTION, 'absint' );
+		register_setting( $page, GMR_CLEANUP_STATUS_OPTION, array( $this, 'sanitize_status_option' ) );
 		register_setting( $page, GMR_CLEANUP_AUTHORS_OPTION, 'sanitize_text_field' );
 		register_setting( $page, GMR_CLEANUP_AGE_OPTION, 'absint' );
+	}
+
+	/**
+	 * Sanitizes status option and configures cron event to cleanup content.
+	 *
+	 * @access public
+	 * @param string $status The original status.
+	 * @return int The sanitized status.
+	 */
+	public function sanitize_status_option( $status ) {
+		$status = absint( $status );
+		$timestamp = wp_next_scheduled( GMR_CLEANUP_CRON );
+
+		if ( $status ) {
+			if ( ! $timestamp ) {
+				$timestamp = current_time( 'timestamp', 1 ) + DAY_IN_SECONDS;
+				wp_schedule_event( $timestamp, 'daily', GMR_CLEANUP_CRON );
+			}
+		} else {
+			if ( $timestamp ) {
+				wp_unschedule_event( $timestamp, GMR_CLEANUP_CRON );
+			}
+		}
+
+		return $status;
 	}
 
 	/**

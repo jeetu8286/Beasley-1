@@ -52,8 +52,6 @@ class GMR_Cleanup_Cron {
 	 * @param array $args The array of async task arguments.
 	 */
 	public function do_cleanup( $args ) {
-		error_log( 'running from async' );
-		error_log( var_export( $args, true ) );
 		$query = new WP_Query();
 		$query_args = array(
 			'author__in'          => $args['authors'],

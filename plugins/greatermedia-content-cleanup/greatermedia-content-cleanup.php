@@ -32,22 +32,4 @@ function gmr_content_cleanup_setup() {
 	}
 }
 
-function gmr_cotnent_cleanup_activation() {
-	$timestamp = wp_next_scheduled( GMR_CLEANUP_CRON );
-	if ( ! $timestamp ) {
-		$timestamp = current_time( 'timestamp', 1 ) + DAY_IN_SECONDS;
-		wp_schedule_event( $timestamp, 'daily', GMR_CLEANUP_CRON );
-	}
-}
-
-function gmr_content_cleanup_deactivation() {
-	$timestamp = wp_next_scheduled( GMR_CLEANUP_CRON );
-	if ( $timestamp ) {
-		wp_unschedule_event( $timestamp, GMR_CLEANUP_CRON );
-	}
-}
-
-register_activation_hook( __FILE__, 'gmr_cotnent_cleanup_activation' );
-register_deactivation_hook( __FILE__, 'gmr_content_cleanup_deactivation' );
-
 gmr_content_cleanup_setup();
