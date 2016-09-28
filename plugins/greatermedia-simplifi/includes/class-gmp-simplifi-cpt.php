@@ -99,7 +99,11 @@ class GMP_SIMPLIFI_CPT {
 				'post_type'      => array( self::SIMPLIFI_PIXEL_POST_TYPE ),
 				'orderby'        => 'date',
 				'order'          => 'DESC',
-				'post_status'		 => 'publish'
+				'post_status'		 => 'publish',
+				'no_found_rows'  => true,
+				'fields' 				 => 'ids',
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false
 			);
 
 			$query = new WP_Query( $query_args );
