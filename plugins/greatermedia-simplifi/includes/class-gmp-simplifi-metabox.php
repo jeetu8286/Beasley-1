@@ -121,7 +121,7 @@ class GMP_SIMPLIFI_Meta {
 
 		<div class="gmp-meta-row">
 			<div class="gmp-meta-row-content gmp-upload">
-					<label for="gmp_simplifi_pixels_cid" class="gmp-meta-row-label"><?php _e( 'Company ID (cid):', 'gmsimplifi_pixels' ); ?></label>
+					<label for="gmp_simplifi_pixels_cid" class="gmp-meta-row-label"><?php esc_html_e( 'Company ID (cid):', 'gmsimplifi_pixels' ); ?></label>
 					<input type="text" id="gmp_simplifi_pixels_cid" name="gmp_simplifi_pixels_cid" value="<?php echo esc_attr( $cid ); ?>"/>
 					<br>
 					<span class="description">Your company id in the Simpli.fi UI.</span>
@@ -130,19 +130,19 @@ class GMP_SIMPLIFI_Meta {
 		<br>
 		<div class="gmp-meta-row">
 			<div class="gmp-meta-row-content gmp-upload">
-					<label for="gmp_simplifi_pixels_action" class="gmp-meta-row-label"><?php _e( 'Action (action):', 'gmsimplifi_pixels' ); ?></label>
+					<label for="gmp_simplifi_pixels_action" class="gmp-meta-row-label"><?php esc_html_e( 'Action (action):', 'gmsimplifi_pixels' ); ?></label>
 					<input type="text" id="gmp_simplifi_pixels_action" name="gmp_simplifi_pixels_action" value="<?php echo esc_attr( $action ); ?>"/>			</div>
 		  </div>
 		<br>
 		<div class="gmp-meta-row">
 			<div class="gmp-meta-row-content gmp-upload">
-					<label for="gmp_simplifi_pixels_segment" class="gmp-meta-row-label"><?php _e( 'Segment (segment):', 'gmsimplifi_pixels' ); ?></label>
+					<label for="gmp_simplifi_pixels_segment" class="gmp-meta-row-label"><?php esc_html_e( 'Segment (segment):', 'gmsimplifi_pixels' ); ?></label>
 					<input type="text" id="gmp_simplifi_pixels_segment" name="gmp_simplifi_pixels_segment" value="<?php echo esc_attr( $segment ); ?>"/>			</div>
 		  </div>
 		<br>
 		<div class="gmp-meta-row">
 			<div class="gmp-meta-row-content gmp-upload">
-					<label for="gmp_simplifi_pixels_m" class="gmp-meta-row-label"><?php _e( 'Allow Matching (m):', 'gmsimplifi_pixels' ); ?></label>
+					<label for="gmp_simplifi_pixels_m" class="gmp-meta-row-label"><?php esc_html_e( 'Allow Matching (m):', 'gmsimplifi_pixels' ); ?></label>
 					<input type="text" id="gmp_simplifi_pixels_m" name="gmp_simplifi_pixels_m" value="<?php echo esc_attr( $m ); ?>"/>
 					<br>
 					<span class="description">"Allow matching", whether to do user matching.</span>
@@ -151,7 +151,7 @@ class GMP_SIMPLIFI_Meta {
 		<br>
 		<div class="gmp-meta-row">
 			<div class="gmp-meta-row-content gmp-upload">
-					<label for="gmp_simplifi_pixels_conversion" class="gmp-meta-row-label"><?php _e( 'Type of Conversion Tag (conversion):', 'gmsimplifi_pixels' ); ?></label>
+					<label for="gmp_simplifi_pixels_conversion" class="gmp-meta-row-label"><?php esc_html_e( 'Type of Conversion Tag (conversion):', 'gmsimplifi_pixels' ); ?></label>
 					<input type="text" id="gmp_simplifi_pixels_conversion" name="gmp_simplifi_pixels_conversion" value="<?php echo esc_attr( $conversion ); ?>"/>
 					<br>
 					<span class="description">The type of conversion tag:  0, 10, 20, 40 for Purchase/Sale, Lead, Sign Up or Other.</span>
@@ -160,7 +160,7 @@ class GMP_SIMPLIFI_Meta {
 		<br>
 		<div class="gmp-meta-row">
 			<div class="gmp-meta-row-content gmp-upload">
-				<label for="gmp_simplifi_pixels_tid" class="gmp-meta-row-label"><?php _e( '"Other" Conversion Name (tid):', 'gmsimplifi_pixels' ); ?></label>
+				<label for="gmp_simplifi_pixels_tid" class="gmp-meta-row-label"><?php esc_html_e( '"Other" Conversion Name (tid):', 'gmsimplifi_pixels' ); ?></label>
 				<input type="text" id="gmp_simplifi_pixels_tid" name="gmp_simplifi_pixels_tid" value="<?php echo esc_attr( $tid ); ?>"/>
 				<br>
 				<span class="description">The meaning of the "other" type of conversion above.  A custom conversion type.</span>
@@ -169,7 +169,7 @@ class GMP_SIMPLIFI_Meta {
 		<br>
 		<div class="gmp-meta-row">
 			<div class="gmp-meta-row-content gmp-upload">
-				<label for="gmp_simplifi_pixels_c" class="gmp-meta-row-label"><?php _e( 'Conversion Value (c):', 'gmsimplifi_pixels' ); ?></label>
+				<label for="gmp_simplifi_pixels_c" class="gmp-meta-row-label"><?php esc_html_e( 'Conversion Value (c):', 'gmsimplifi_pixels' ); ?></label>
 				<input type="text" id="gmp_simplifi_pixels_c" name="gmp_simplifi_pixels_c" value="<?php echo esc_attr( $c ); ?>"/>
 				<br>
 				<span class="description">The conversion value, usually what the conversion is worth to you.</span>
@@ -178,7 +178,7 @@ class GMP_SIMPLIFI_Meta {
 		<br>
 		<div class="gmp-meta-row">
 			<div class="gmp-meta-row-content gmp-upload">
-				<label for="gmp_simplifi_pixels_campaign_id" class="gmp-meta-row-label"><?php _e( 'Campaign Id (campaign_id):', 'gmsimplifi_pixels' ); ?></label>
+				<label for="gmp_simplifi_pixels_campaign_id" class="gmp-meta-row-label"><?php esc_html_e( 'Campaign Id (campaign_id):', 'gmsimplifi_pixels' ); ?></label>
 				<input type="text" id="gmp_simplifi_pixels_campaign_id" name="gmp_simplifi_pixels_campaign_id" value="<?php echo esc_attr( $campaign_id ); ?>"/>
 				<br>
 				<span class="description">Either zero or your campaign ID from one of your active campaigns.  0 represents all campaigns.</span>
@@ -187,7 +187,7 @@ class GMP_SIMPLIFI_Meta {
 		<br>
 		<div class="gmp-meta-row">
 			<div class="gmp-meta-row-content gmp-upload">
-				<label for="gmp_simplifi_pixels_sifi_tuid" class="gmp-meta-row-label"><?php _e( 'SIFI TUID (sifi_tuid):', 'gmsimplifi_pixels' ); ?></label>
+				<label for="gmp_simplifi_pixels_sifi_tuid" class="gmp-meta-row-label"><?php esc_html_e( 'SIFI TUID (sifi_tuid):', 'gmsimplifi_pixels' ); ?></label>
 				<input type="text" id="gmp_simplifi_pixels_sifi_tuid" name="gmp_simplifi_pixels_sifi_tuid" value="<?php echo esc_attr( $sifi_tuid ); ?>"/>
 			</div>
 		</div>

@@ -101,7 +101,7 @@ class GMP_SIMPLIFI_CPT {
 				'order'          => 'DESC',
 				'post_status'		 => 'publish',
 				'no_found_rows'  => true,
-				'fields' 				 => 'ids',
+				'fields' 				 => 'ID',
 				'update_post_meta_cache' => false,
 				'update_post_term_cache' => false
 			);
