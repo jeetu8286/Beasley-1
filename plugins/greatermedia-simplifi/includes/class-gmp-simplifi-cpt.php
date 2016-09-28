@@ -101,7 +101,7 @@ class GMP_SIMPLIFI_CPT {
 				'order'          => 'DESC',
 				'post_status'		 => 'publish',
 				'no_found_rows'  => true,
-				'fields' 				 => 'ID',
+				'fields' 				 => 'ids',
 				'update_post_meta_cache' => false,
 				'update_post_term_cache' => false
 			);
@@ -115,15 +115,15 @@ class GMP_SIMPLIFI_CPT {
 
 				$pixel_tags .= '<script async src="https://i.simpli.fi/dpx.js?';
 
-				$cid = sanitize_text_field( get_post_meta( $pixel->ID, 'gmp_simplifi_pixels_cid', true ) );
-				$action = sanitize_text_field( get_post_meta( $pixel->ID, 'gmp_simplifi_pixels_action', true ) );
-				$segment = sanitize_text_field( get_post_meta( $pixel->ID, 'gmp_simplifi_pixels_segment', true ) );
-				$m = sanitize_text_field( get_post_meta( $pixel->ID, 'gmp_simplifi_pixels_m', true ) );
-				$conversion = sanitize_text_field( get_post_meta( $pixel->ID, 'gmp_simplifi_pixels_conversion', true ) );
-				$tid = sanitize_text_field( get_post_meta( $pixel->ID, 'gmp_simplifi_pixels_tid', true ) );
-				$c = sanitize_text_field( get_post_meta( $pixel->ID, 'gmp_simplifi_pixels_c', true ) );
-				$campaign_id = sanitize_text_field( get_post_meta( $pixel->ID, 'gmp_simplifi_pixels_campaign_id', true ) );
-				$sifi_tuid = sanitize_text_field( get_post_meta( $pixel->ID, 'gmp_simplifi_pixels_sifi_tuid', true ) );
+				$cid = sanitize_text_field( get_post_meta( $pixel, 'gmp_simplifi_pixels_cid', true ) );
+				$action = sanitize_text_field( get_post_meta( $pixel, 'gmp_simplifi_pixels_action', true ) );
+				$segment = sanitize_text_field( get_post_meta( $pixel, 'gmp_simplifi_pixels_segment', true ) );
+				$m = sanitize_text_field( get_post_meta( $pixel, 'gmp_simplifi_pixels_m', true ) );
+				$conversion = sanitize_text_field( get_post_meta( $pixel, 'gmp_simplifi_pixels_conversion', true ) );
+				$tid = sanitize_text_field( get_post_meta( $pixel, 'gmp_simplifi_pixels_tid', true ) );
+				$c = sanitize_text_field( get_post_meta( $pixel, 'gmp_simplifi_pixels_c', true ) );
+				$campaign_id = sanitize_text_field( get_post_meta( $pixel, 'gmp_simplifi_pixels_campaign_id', true ) );
+				$sifi_tuid = sanitize_text_field( get_post_meta( $pixel, 'gmp_simplifi_pixels_sifi_tuid', true ) );
 
 				$data = array();
 
