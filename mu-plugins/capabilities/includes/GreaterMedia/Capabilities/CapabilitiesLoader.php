@@ -5,12 +5,37 @@ namespace GreaterMedia\Capabilities;
 class CapabilitiesLoader {
 
 	public $role_defaults = array(
-		'administrator' => true,
-		'editor'        => true,
-		'author'        => false,
-		'subscriber'    => false,
-		'contributor'   => false,
-		'dj'            => false,
+		'administrator' 			=> true,
+		'editor'        			=> true,
+		'editor_with_export'	=> true,
+		'author'       				=> false,
+		'subscriber'    			=> false,
+		'contributor'   			=> false,
+		'dj'            			=> false,
+	);
+
+	/*
+	 * Capabilities loader should never overwrite the capabilities of built-in
+	 * Wordpress post types.  Identify those here so they won't be affected in
+	 * change_roles.
+	 *
+	 */
+	public $internal_capabilities = array(
+		'read',
+		'edit_post',
+		'read_post',
+		'delete_post',
+		'create_posts',
+		'edit_posts',
+		'edit_others_posts',
+		'publish_posts',
+		'read_private_posts',
+		'delete_posts',
+		'delete_private_posts',
+		'delete_published_posts',
+		'delete_others_posts',
+		'edit_private_posts',
+		'edit_published_posts'
 	);
 
 	function load( $post_type ) {
@@ -30,12 +55,14 @@ class CapabilitiesLoader {
 			$role_default = $this->get_role_default( $role_name );
 
 			foreach ( $capabilities as $capability ) {
-				if ( $action === 'add' ) {
-					//error_log( "add_cap: $post_type - $role_name - " . $capability );
-					$role->add_cap( $capability, $role_default );
-				} else if ( $action === 'remove' ) {
-					//error_log( "remove_cap: $post_type - $role_name - " . $capability );
-					$role->remove_cap( $capability );
+				if ( ! in_array( $capability, $this->internal_capabilities ) ){
+					if ( $action === 'add' ) {
+						//error_log( "add_cap: $post_type - $role_name - " . $capability );
+						$role->add_cap( $capability, $role_default );
+					} else if ( $action === 'remove' ) {
+						//error_log( "remove_cap: $post_type - $role_name - " . $capability );
+						$role->remove_cap( $capability );
+					}
 				}
 			}
 		}
