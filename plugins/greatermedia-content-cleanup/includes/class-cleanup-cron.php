@@ -36,11 +36,19 @@ class GMR_Cleanup_Cron {
 			return;
 		}
 
+		// fetch post types and return if its empty
+		$types = get_option( GMR_CLEANUP_CPT_OPTION, array() );
+		$types = array_filter( $types, 'post_type_exists' );
+		if ( empty( $types ) ) {
+			return;
+		}
+
 		// add async task to cleanup content
 		if ( function_exists( 'wp_async_task_add' ) ) {
 			wp_async_task_add( GMR_CLEANUP_ASYNC_TASK, array(
 				'authors' => $authors,
 				'age'     => $age,
+				'types'   => $types,
 			) );
 		}
 	}
@@ -55,7 +63,7 @@ class GMR_Cleanup_Cron {
 		$query = new WP_Query();
 		$query_args = array(
 			'author__in'          => $args['authors'],
-			'post_type'           => 'any',
+			'post_type'           => $args['types'],
 			'post_status'         => 'any',
 			'suppress_filters'    => true,
 			'posts_per_page'      => 100,
