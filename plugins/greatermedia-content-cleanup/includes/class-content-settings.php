@@ -27,8 +27,10 @@ class GMR_Content_Settings {
 		add_settings_field( GMR_CLEANUP_STATUS_OPTION, 'Enabled', array( $this, 'render_enabled_field' ), $page, $section );
 		add_settings_field( GMR_CLEANUP_AUTHORS_OPTION, 'Authors', array( $this, 'render_authors_field' ), $page, $section );
 		add_settings_field( GMR_CLEANUP_AGE_OPTION, 'Age', array( $this, 'render_age_field' ), $page, $section );
+		add_settings_field( GMR_CLEANUP_CPT_OPTION, 'Post Types', array( $this, 'render_types_field' ), $page, $section );
 
 		register_setting( $page, GMR_CLEANUP_STATUS_OPTION, array( $this, 'sanitize_status_option' ) );
+		register_setting( $page, GMR_CLEANUP_CPT_OPTION, array( $this, 'sanitize_types_option' ) );
 		register_setting( $page, GMR_CLEANUP_AUTHORS_OPTION, 'sanitize_text_field' );
 		register_setting( $page, GMR_CLEANUP_AGE_OPTION, 'absint' );
 	}
@@ -56,6 +58,17 @@ class GMR_Content_Settings {
 		}
 
 		return $status;
+	}
+
+	/**
+	 * Filters selected post types.
+	 *
+	 * @access public
+	 * @param array $types The original post types array.
+	 * @return array Filtered post types array.
+	 */
+	public function sanitize_types_option( $types ) {
+		return array_filter( $types, 'post_type_exists' );
 	}
 
 	/**
@@ -97,6 +110,26 @@ class GMR_Content_Settings {
 	public function render_age_field() {
 		echo '<input type="text" name="', esc_attr( GMR_CLEANUP_AGE_OPTION ), '" class="regular-text" value="', esc_attr( get_option( GMR_CLEANUP_AGE_OPTION ) ), '"><br>';
 		echo '<span class="description">Enter number of days after which posts created by selected authors will de deleted. If age is not provided, no posts will be deleted.</span>';
+	}
+
+	/**
+	 * Renders post types field.
+	 *
+	 * @access public
+	 */
+	public function render_types_field() {
+		$types = get_post_types( array(), 'objects' );
+		$selected = get_option( GMR_CLEANUP_CPT_OPTION, array() );
+
+		foreach ( $types as $type ) {
+			?><div>
+				<label>
+					<input type="checkbox" name="<?php echo esc_attr( GMR_CLEANUP_CPT_OPTION ); ?>[]" value="<?php echo esc_attr( $type->name ); ?>"<?php checked( in_array( $type->name, $selected ) ); ?>>
+					<?php echo esc_html( $type->label ); ?>
+					<code><small>(<?php echo esc_html( $type->name ); ?>)</small></code>
+				</label>
+			</div><?php
+		}
 	}
 
 	/**
