@@ -147,7 +147,7 @@ class Plugin {
 		$handlers   = array();
 
 		//$handlers[] = new Ajax\GigyaLogoutAjaxHandler();
-		$handlers[] = new Ajax\PreviewAjaxHandler();
+		$handlers[] = new Ajax\PreviewResultsAjaxHandler();
 		$handlers[] = new Ajax\ListEntryTypesAjaxHandler();
 		$handlers[] = new Ajax\ListEntryFieldsAjaxHandler();
 		$handlers[] = new Ajax\GetChoicesForConstraintType();
