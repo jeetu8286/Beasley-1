@@ -7,9 +7,9 @@ if ( ! empty( $imports ) ) :
 
 	$baseurl = sprintf(
 		'https://%s:%s@api.e2ma.net/%s/members/imports/',
-		esc_url( $settings['emma_public_key'] ),
-		esc_url( $settings['emma_private_key'] ),
-		esc_url( $settings['emma_account_id'] )
+		urlencode( $settings['emma_public_key'] ),
+		urlencode( $settings['emma_private_key'] ),
+		urlencode( $settings['emma_account_id'] )
 	);
 
 	$offset = get_option( 'gmt_offset' ) * HOUR_IN_SECONDS;
@@ -22,12 +22,12 @@ if ( ! empty( $imports ) ) :
 		return $a['timestamp'] < $b['timestamp'] ? -1 : 1;
 	} );
 
-	?><div class="preview-member-query-results" style="overflow-y:auto;max-height:400px">
-		<ul class="member-query-results collection-list">
+	?><div style="overflow-y:auto;max-height:400px">
+		<ul class="export-results">
 			<?php foreach ( $imports as $import ) : ?>
 				<li>
 					<span class="preview-result-name">
-						<a href="<?php echo esc_attr( $baseurl . $import['id'] ); ?>" target="_blank">
+						<a href="<?php echo esc_attr( $baseurl . urlencode( $import['id'] ) ); ?>" target="_blank">
 							#<?php echo esc_html( $import['id'] ); ?>
 						</a>
 					</span>

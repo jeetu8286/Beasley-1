@@ -158,17 +158,20 @@
 	color: #666666;
 }
 
+.export-results,
 .member-query-results {
 	border: 2px solid #f1f1f1;
 	border-bottom: none;
 }
 
+.export-results li,
 .member-query-results li {
 	padding: 0.7em;
 	margin: 0;
 	border-bottom: 2px solid #f1f1f1;
 }
 
+.export-results li span,
 .member-query-results li span {
 	float: left;
 	display: inline-block;
@@ -176,6 +179,7 @@
 	word-break: break-word;
 }
 
+.export-results li:after,
 .member-query-results li:after {
 	content: " ";
 	visibility: hidden;
