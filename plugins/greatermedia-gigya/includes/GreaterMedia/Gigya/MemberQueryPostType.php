@@ -63,6 +63,17 @@ class MemberQueryPostType {
 				$data
 			);
 
+			$this->meta_boxes['exports'] = $this->meta_box_for(
+				array(
+					'id'       => 'exports',
+					'title'    => __( 'Exports History', 'gmr_gigya' ),
+					'context'  => 'side',
+					'priority' => 'default',
+					'template' => 'exports',
+				),
+				$data
+			);
+
 			$this->meta_boxes['query_builder'] = $this->meta_box_for(
 				array(
 					'id'       => 'query_builder',
