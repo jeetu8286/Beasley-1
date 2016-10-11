@@ -15,11 +15,12 @@ class ExportResultsTask extends SyncTask {
 	}
 
 	function run() {
+		$member_query_id = $this->get_member_query_id();
 		$segment_id = $this->create_or_update_email_segment();
 		$cursor     = $this->get_cursor();
 		$paginator  = new ResultPaginator(
 			$this->get_site_id(),
-			$this->get_member_query_id(),
+			$member_query_id,
 			$this->page_size
 		);
 
@@ -47,6 +48,11 @@ class ExportResultsTask extends SyncTask {
 
 		$import_id = $this->add_members_to_segment( $users, $segment_id );
 		//$stats     = $this->get_member_import_stats( $import_id );
+
+		add_post_meta( $member_query_id, 'import', array(
+			'id'        => $import_id,
+			'timestamp' => current_time( 'timestamp', 1 ),
+		) );
 
 		$results_in_page = count( $users );
 		$total_results   = $count;
