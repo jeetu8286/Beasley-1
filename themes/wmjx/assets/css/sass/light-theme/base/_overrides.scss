@@ -1079,33 +1079,25 @@ media 1252px
 .header__nav { padding-left: 210px; }
 .main {background: #a8d6f7 ;}
 
-
+/*
 
 @-webkit-keyframes artist_animation{
-
-        0%{background-image:url(../../images/img_Artist1-update.png);opacity:1;}
-        50%{background-image:url(../../images/img_Artist2-update.png);opacity:1;}
-        100%{background-image:url(../../images/img_Artist3-update.png);opacity:1;}
-        /*99%{background-image:url(http://i.imgur.com/P1MjtZx.png);opacity:1;}*/
-
-      }
+    0%{background-image:url(../../images/img_Artist1-update.png);opacity:1;}
+    50%{background-image:url(../../images/img_Artist2-update.png);opacity:1;}
+    100%{background-image:url(../../images/img_Artist3-update.png);opacity:1;}
+  }
 
 @-moz-keyframes artist_animation{
-
-        0%{background-image:url(../../images/img_Artist1-update.png);opacity:1;}
-        50%{background-image:url(../../images/img_Artist2-update.png);opacity:1;}
-        100%{background-image:url(../../images/img_Artist3-update.png);opacity:1;}
-        /*99%{background-image:url(http://i.imgur.com/P1MjtZx.png);opacity:1;}*/
-
-      }
+    0%{background-image:url(../../images/img_Artist1-update.png);opacity:1;}
+    50%{background-image:url(../../images/img_Artist2-update.png);opacity:1;}
+    100%{background-image:url(../../images/img_Artist3-update.png);opacity:1;}
+  }
 
 @keyframes artist_animation{
-        0%{background-image:url(../../images/img_Artist1-update.png);opacity:1;}
-        50%{background-image:url(../../images/img_Artist2-update.png);opacity:1;}
-        100%{background-image:url(../../images/img_Artist3-update.png);opacity:1;}
-        /*99%{background-image:url(http://i.imgur.com/P1MjtZx.png);opacity:1;}*/
-
-}
+    0%{background-image:url(../../images/img_Artist1-update.png);opacity:1;}
+    50%{background-image:url(../../images/img_Artist2-update.png);opacity:1;}
+    100%{background-image:url(../../images/img_Artist3-update.png);opacity:1;}
+	}
 
 
 .ad__leaderboard.desktop:after {
@@ -1144,7 +1136,7 @@ media 1252px
   animation-direction: alternate;
   animation-time: 10s;
   }
-
+*/
 
 }
 /*-----------------------------------

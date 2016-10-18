@@ -16040,16 +16040,19 @@ media 1252px
   .ad__leaderboard.desktop {
     float: none !important;
     margin: 16px auto; }
-  .ad__leaderboard.desktop:after {
-    content: "";
-    display: inline-block;
-    background: url(../../images/artist-masthead3.png) no-repeat;
-    background-size: contain;
-    position: absolute;
-    width: 275px;
-    height: 133px !important;
-    top: -3px;
-    right: -275px; } }
+  /*
+	.ad__leaderboard.desktop:after {
+	    content: "";
+	    display: inline-block;
+	    background: url(../../images/artist-masthead3.png) no-repeat;
+	    background-size: contain;
+	    position: absolute;
+	    width: 275px;
+	    height: 133px!important;
+	    top: -3px;
+	    right: -275px;
+    }
+	*/ }
 
 /*-----------------------------------
 media 1400px
