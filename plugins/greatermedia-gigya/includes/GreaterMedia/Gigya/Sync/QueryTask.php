@@ -31,7 +31,7 @@ class QueryTask extends SyncTask {
 			$subquery_count = $this->get_subquery_count();
 
 			$paginator = new QueryPaginator( $store_type, $this->page_size );
-			$matches   = $paginator->fetch( $query, $cursor );
+			$matches   = $paginator->fetch_with_cursor( $query, $cursor );
 			$users     = $this->find_users( $matches['results'] );
 
 			$this->save_users( $users );
