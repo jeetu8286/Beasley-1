@@ -31,7 +31,7 @@ class QueryTask extends SyncTask {
 			$subquery_count = $this->get_subquery_count();
 
 			$paginator = new QueryPaginator( $store_type, $this->page_size );
-			$matches   = $paginator->fetch_with_cursor( $query, $cursor );
+			$matches   = $paginator->fetch( $query, $cursor );
 			$users     = $this->find_users( $matches['results'] );
 
 			$this->save_users( $users );
@@ -50,7 +50,7 @@ class QueryTask extends SyncTask {
 		$query      = str_replace( 'select *', 'select profile.email, profile.firstName, profile.lastName, UID', $query );
 
 		$paginator  = new QueryPaginator( 'profile', $this->preview_page_size );
-		$results    = $paginator->fetch_with_cursor( $query, $cursor );
+		$results    = $paginator->fetch( $query, $cursor );
 		$users      = $this->find_preview_users( $results['results'] );
 
 		$this->save_preview_users( $users, $results['total_results'] );
@@ -63,7 +63,7 @@ class QueryTask extends SyncTask {
 		$query     = $this->get_query();
 
 		$paginator = new QueryPaginator( 'data_store', $this->preview_page_size );
-		$results   = $paginator->fetch_with_cursor( $query, $cursor );
+		$results   = $paginator->fetch( $query, $cursor );
 		$user_ids  = $this->find_users( $results['results'] );
 
 		$finder    = new GigyaUserFinder();
