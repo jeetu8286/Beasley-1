@@ -23,12 +23,13 @@ class QueryTask extends SyncTask {
 	}
 
 	function run() {
-		$query          = $this->get_query();
-		$cursor         = $this->get_cursor();
 		$store_type     = $this->get_store_type();
-		$subquery_count = $this->get_subquery_count();
 
 		if ( ! $this->is_fast_preview() ) {
+			$query          = $this->get_query();
+			$cursor         = $this->get_cursor();
+			$subquery_count = $this->get_subquery_count();
+
 			$paginator = new QueryPaginator( $store_type, $this->page_size );
 			$matches   = $paginator->fetch( $query, $cursor );
 			$users     = $this->find_users( $matches['results'] );
@@ -56,16 +57,19 @@ class QueryTask extends SyncTask {
 	}
 
 	function run_fast_data_store_preview() {
-		$paginator = new QueryPaginator( 'data_store', $this->preview_page_size );
 		$query     = $this->get_query();
-		$matches   = $paginator->fetch( $query, 0 );
-		$user_ids  = $this->find_users( $matches['results'] );
+		$cursor    = $this->get_cursor();
+
+		$paginator = new QueryPaginator( 'data_store', $this->preview_page_size );
+		$results   = $paginator->fetch_with_cursor( $query, $cursor );
+		$user_ids  = $this->find_users( $results['results'] );
+
 		$finder    = new GigyaUserFinder();
 		$users     = $finder->find( $user_ids );
 
-		$this->save_preview_users( $users, $matches['total_results'] );
+		$this->save_preview_users( $users, $results['total_results'] );
 
-		return $matches;
+		return $results;
 	}
 
 	function find_users( $results ) {
@@ -108,7 +112,7 @@ class QueryTask extends SyncTask {
 		);
 	}
 
-	function after( $matches ) {
+	function after( $results ) {
 		$sentinel = $this->get_sentinel();
 
 		if ( $this->is_fast_preview() ) {
@@ -119,16 +123,16 @@ class QueryTask extends SyncTask {
 			return;
 		}
 
-		if ( array_key_exists( 'progress', $matches ) ) {
+		if ( array_key_exists( 'progress', $results ) ) {
 			$sentinel->set_task_progress(
 				$this->get_store_type(),
-				$matches['progress']
+				$results['progress']
 			);
 		}
 
-		if ( $matches['has_next'] ) {
+		if ( $results['has_next'] ) {
 			$params           = $this->export_params();
-			$params['cursor'] = $matches['cursor'];
+			$params['cursor'] = $results['cursor'];
 
 			$this->enqueue( $params );
 		} else if ( $this->get_sentinel()->can_compile_results() ) {
@@ -139,7 +143,7 @@ class QueryTask extends SyncTask {
 		} else if ( $this->cache_retries++ < $this->max_cache_retries ){
 			$sentinel->clear_task_meta_cache();
 			sleep( $this->cache_retry_delay );
-			$this->after( $matches );
+			$this->after( $results );
 		}
 	}
 
