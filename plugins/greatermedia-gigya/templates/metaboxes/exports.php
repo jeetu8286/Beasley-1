@@ -39,5 +39,5 @@ if ( ! empty( $imports ) ) :
 		</ul>
 	</div><?php
 else :
-	?><p class="count-status">No exports were found...</p><?php
+	?><p class="export-status">No exports were found...</p><?php
 endif;
