@@ -48,7 +48,7 @@ class GetChoicesForConstraintType extends AjaxHandler {
 
 		$query   = new \WP_Query( $args );
 		$posts   = $query->get_posts();
-		$choices = array( '' => '' );
+		$choices = array( array( 'label' => '', 'value' => '' ) );
 
 		foreach ( $posts as $post ) {
 			if ( ! empty( $required_meta ) ) {
