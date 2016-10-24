@@ -61,6 +61,9 @@ var _fotoramaClass = 'fotorama',
     fullscreenClass = _fotoramaClass + '--fullscreen',
     fullscreenIconClass = _fotoramaClass + '__fullscreen-icon',
 
+		downloadClass = _fotoramaClass + '--download',
+    downloadIconClass = _fotoramaClass + '__download-icon',
+
     errorClass = _fotoramaClass + '__error',
     loadingClass = _fotoramaClass + '__loading',
     loadedClass = _fotoramaClass + '__loaded',
@@ -1974,6 +1977,8 @@ jQuery.Fotorama = function ($fotorama, opts) {
 
       $fullscreenIcon = $(div(fullscreenIconClass + buttonAttributes)),
       fullscreenIcon = $fullscreenIcon[0],
+			$downloadIcon = $(div(downloadIconClass + buttonAttributes)),
+      downloadIcon = $downloadIcon[0],
       $videoPlay = $(div(videoPlayClass)),
       $videoClose = $(div(videoCloseClass)).appendTo($stage),
       videoClose = $videoClose[0],
@@ -2276,6 +2281,8 @@ jQuery.Fotorama = function ($fotorama, opts) {
       $fullscreenIcon.detach();
       o_nativeFullScreen = false;
     }
+
+		$downloadIcon.prependTo($stage);
 
     addOrRemoveClass(o_fade, wrapFadeClass);
     addOrRemoveClass(!o_fade, wrapSlideClass);
@@ -3159,6 +3166,10 @@ jQuery.Fotorama = function ($fotorama, opts) {
     return that[(that.fullScreen ? 'cancel' : 'request') + 'FullScreen']();
   };
 
+	that.requestDownload = function () {
+		window.open(this.activeFrame.full);
+	};
+
   addEvent(document, fullScreenApi.event, function () {
     if (data && !fullScreenApi.is() && !$videoPlaying) {
       cancelFullScreen();
@@ -3376,6 +3387,8 @@ jQuery.Fotorama = function ($fotorama, opts) {
       that.playVideo();
     } else if (target === fullscreenIcon) {
       that.toggleFullScreen();
+		} else if (target === downloadIcon) {
+      that.requestDownload();
     } else if ($videoPlaying) {
       target === videoClose && unloadVideo($videoPlaying, true, true);
     } else {
