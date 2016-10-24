@@ -48,7 +48,7 @@ class GetChoicesForConstraintType extends AjaxHandler {
 
 		$query   = new \WP_Query( $args );
 		$posts   = $query->get_posts();
-		$choices = [];
+		$choices = array( array( 'label' => '', 'value' => '' ) );
 
 		foreach ( $posts as $post ) {
 			if ( ! empty( $required_meta ) ) {
@@ -70,19 +70,19 @@ class GetChoicesForConstraintType extends AjaxHandler {
 
 	function get_contest_choices() {
 		return $this->get_choices_for_post_type(
-			'contest', 'publish'
+			'contest', array( 'publish', 'draft', 'private' )
 		);
 	}
 
 	function get_survey_choices() {
 		return $this->get_choices_for_post_type(
-			'survey', 'publish'
+			'survey', array( 'publish', 'draft', 'private' )
 		);
 	}
 
 	function get_member_query_choices() {
 		return $this->get_choices_for_post_type(
-			'member_query', 'publish', 'mqsm_email_segment_id'
+			'member_query', array( 'publish', 'draft', 'private' ), 'mqsm_email_segment_id'
 		);
 	}
 
