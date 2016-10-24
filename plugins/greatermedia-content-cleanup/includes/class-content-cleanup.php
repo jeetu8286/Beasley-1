@@ -1,20 +1,4 @@
 <?php
-/**
- * Plugin Name: Greater Media Content Cleanup
- * Plugin URI:  http://wordpress.org/plugins
- * Description: Content cleanup registers WP_CLI command to remove useless data from the site.
- * Version:     0.1.0
- * Author:      10up
- * Author URI:  http://10up.com
- * License:     GPLv2+
- */
-
-// do nothing if WP_CLI is not defined
-if ( ! defined( 'WP_CLI' ) || ! WP_CLI ) {
-	return;
-}
-
-WP_CLI::add_command( 'gmr-content', 'GMR_Content_Cleanup' );
 
 class GMR_Content_Cleanup extends WP_CLI_Command {
 
@@ -51,7 +35,7 @@ class GMR_Content_Cleanup extends WP_CLI_Command {
 		);
 
 		do {
-			// fetch posts 
+			// fetch posts
 			$query->query( array(
 				'post_type'           => $types,
 				'post_status'         => 'any',
@@ -85,5 +69,5 @@ class GMR_Content_Cleanup extends WP_CLI_Command {
 
 		$verbose && WP_CLI::success( 'Clean up completed.' );
 	}
-	
+
 }

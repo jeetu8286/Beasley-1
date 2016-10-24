@@ -60,7 +60,39 @@ class BlogData {
 	}
 
 	public static function run( $syndication_id, $offset = 0 ) {
+		if ( is_null( $syndication_id ) ) {
+			return false;
+		}
+
+		// // Ensure we have a valid post.
+		// $subscription_post = get_post( $syndication_id );
+
+		// if ( ! is_a( $subscription_post, 'WP_Post' ) ) {
+		// 	return false;
+		// }
+
+		// if ( 'subscription' !== $subscription_post->post_type ) {
+		// 	return false;
+		// }
+
 		global $edit_flow, $gmrs_editflow_custom_status_disabled;
+
+		if ( ! defined( 'WP_IMPORTING' ) ) {
+    		define( 'WP_IMPORTING', true );
+		}
+
+		$is_running = get_post_meta( $syndication_id, 'subscription_running', true );
+
+		if ( $is_running ) {
+			$four_hours_ago = strtotime( '-4 hour' );
+			if ( $is_running <= $four_hours_ago ) {
+				// Delete the lock so the job can run again. We should also send an alert.
+				delete_post_meta( $syndication_id, 'subscription_running' );
+			}
+			return 0;
+		} else {
+			add_post_meta( $syndication_id, 'subscription_running', current_time( 'timestamp', 1 ) );
+		}
 
 		// disable editflow influence
 		if ( $edit_flow && ! empty( $edit_flow->custom_status ) && is_a( $edit_flow->custom_status, 'EF_Custom_Status' ) ) {
@@ -128,6 +160,7 @@ class BlogData {
 
 		//update_option( 'syndication_last_performed', current_time( 'timestamp', 1 ) );
 		update_post_meta( $syndication_id, 'syndication_last_performed', current_time( 'timestamp', 1 ) );
+		delete_post_meta( $syndication_id, 'subscription_running' );
 
 		return $total_posts;
 	}
@@ -787,7 +820,7 @@ class BlogData {
 
 		return $success;
 	}
-	
+
 }
 
 BlogData::init();

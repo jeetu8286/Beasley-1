@@ -76,7 +76,7 @@ class EditFieldView extends Backbone.View
     'click .js-add-option': 'addOption'
     'click .js-remove-option': 'removeOption'
     'click .js-default-updated': 'defaultUpdated'
-    'input .option-label-input': 'forceRender'
+    'keydown input.option-label-input': 'forceRender'
 
   initialize: (options) ->
     {@parentView} = options
@@ -128,7 +128,7 @@ class EditFieldView extends Backbone.View
     @forceRender()
 
   forceRender: ->
-    @model.trigger('change')
+    @model.trigger('change', @model, {})
 
 
 class BuilderView extends Backbone.View

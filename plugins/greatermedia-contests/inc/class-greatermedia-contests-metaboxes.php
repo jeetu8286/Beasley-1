@@ -242,7 +242,7 @@ class GreaterMediaContestsMetaboxes {
 			echo ' <small>(server time is ' . date( $format, current_time( 'timestamp' ) ) . ')</small>';
 			$render_server_time = false;
 		}
-		
+
 	}
 
 	public function render_input( array $args ) {
@@ -351,7 +351,7 @@ class GreaterMediaContestsMetaboxes {
 								&#8212;
 							<?php endif; ?>
 						</b>
-					
+
 						<?php if ( ! empty( $started ) ) : ?>
 							<small style="margin-left:2em;">
 								(server time is <?php echo date( $datetime_format, current_time( 'timestamp' ) ); ?>)
@@ -524,6 +524,13 @@ class GreaterMediaContestsMetaboxes {
 			</tr>
 
 			<tr>
+				<th scope="row"><label for="greatermedia_contest_enable_voting">Enable Voting?</label></th>
+				<td>
+					<input type="checkbox" id="greatermedia_contest_enable_voting" name="greatermedia_contest_enable_voting" value="1" <?php checked( get_post_meta( $post->ID, 'contest_enable_voting', true ) ); ?>>
+				</td>
+			</tr>
+
+			<tr>
 				<th scope="row"><label for="greatermedia_contest_display_vote_counts">Display vote counts?</label></th>
 				<td>
 					<input type="checkbox" id="greatermedia_contest_display_vote_counts" name="greatermedia_contest_display_vote_counts" value="1" <?php checked( get_post_meta( $post->ID, 'contest_show_vote_counts', true ) ); ?>>
@@ -666,14 +673,20 @@ class GreaterMediaContestsMetaboxes {
 
 		if ( isset( $_POST['entries-order-by'] ) ) {
 			update_post_meta( $post_id, 'entries-order-by', sanitize_text_field( $_POST['entries-order-by'] ) );
-		}		
+		}
+
+		if ( isset( $_POST['greatermedia_contest_enable_voting'] ) ) {
+			update_post_meta( $post_id, 'contest_enable_voting', 1 );
+		} else {
+			delete_post_meta( $post_id, 'contest_enable_voting' );
+		}
 
 		if ( isset( $_POST['greatermedia_contest_display_vote_counts'] ) ) {
 			update_post_meta( $post_id, 'contest_show_vote_counts', 1 );
 		} else {
 			delete_post_meta( $post_id, 'contest_show_vote_counts' );
 		}
-		
+
 		$show_entrant_details = filter_input( INPUT_POST, 'show-entrant-details', FILTER_VALIDATE_INT, array( 'options' => array( 'min_range' => 0, 'default' => 1 ) ) );
 		update_post_meta( $post_id, 'show-entrant-details', $show_entrant_details );
 

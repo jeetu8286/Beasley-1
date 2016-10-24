@@ -186,6 +186,7 @@ class EmmaGroupSyncer {
 			$gigya_account                          = $this->get_gigya_account();
 			$gigya_account_data                     = $gigya_account['data'];
 			$gigya_account_data['subscribedToList'] = $this->get_user_group_ids();
+			$gigya_account_data['EmmaSync']         = true;
 
 			$this->new_gigya_account_data = $gigya_account_data;
 		}
@@ -248,6 +249,8 @@ class EmmaGroupSyncer {
 
 		$group_ids = $this->to_int_ids( $group_ids );
 
+		$signup_method = false;
+
 		if ( array_key_exists( 'optout', $gigya_account['data'] ) && $gigya_account['data']['optout'] === true ) {
 			// if optout, signup has to happen via Emma Signup email
 			$this->signup( $gigya_account, $group_ids );
@@ -260,6 +263,8 @@ class EmmaGroupSyncer {
 
 			$api      = $this->get_emma_api();
 			$response = $api->membersBatchAdd( $params );
+
+			$signup_method = true;
 		}
 
 		return true;

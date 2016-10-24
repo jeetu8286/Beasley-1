@@ -54,7 +54,7 @@ class QueryPaginator {
 		$limit_query = $this->to_cursor_limit_query( $query, $this->page_size );
 		$limit_query = $this->to_light_query( $limit_query );
 
-		if ( $cursor === false ) {
+		if ( ! $cursor ) {
 			$request->setParam( 'openCursor', true );
 			$request->setParam( 'query', $limit_query );
 		} else {
