@@ -119,6 +119,28 @@ class GreaterMediaGallery {
 	}
 
 	/**
+	 * Gets an array of ids for the attachments in the gallery
+	 * @param $post
+	 * @return Array
+	 */
+	public static function get_attachment_ids_for_post( $post ) {
+		$array_ids = get_post_meta( $post->ID, 'gallery-image' );
+
+		if ( empty( $array_ids ) && preg_match_all( '/\[gallery.*ids=.(.*).\]/', $post->post_content, $ids ) ) {
+			foreach( $ids[1] as $match ) {
+				$array_id = explode( ',', $match );
+				$array_id = array_map( 'intval', $array_id );
+
+				$array_ids = array_merge( $array_ids, $array_id );
+			}
+		}
+
+		return ! empty( $array_ids )
+			? $array_ids
+			: null;
+	}
+
+	/**
 	 * Gets a WP_Query for the attachments in the gallery
 	 * @param $post
 	 * @return WP_Query
@@ -147,30 +169,21 @@ class GreaterMediaGallery {
 		// So that we remove the gallery from content, since we're rendering it now
 		self::$strip_shortcodes = true;
 
-		$gallery_query = self::get_query_for_post( get_queried_object() );
-		if ( $gallery_query ) {
-			$content = self::render_gallery_from_query( $gallery_query );
+		// $gallery_query = self::get_query_for_post( get_queried_object() );
+		// if ( $gallery_query ) {
+		// 	$content = self::render_gallery_from_query( $gallery_query );
+		// 	echo apply_filters( 'the_secondary_content', $content );
+		// }
+
+		$ids = self::get_attachment_ids_for_post( get_queried_object() );
+		if ( ! empty( $ids ) ) {
+			$attr = array();
+
+			$attr['ids'] = implode( ',', $ids );
+
+			$content = self::fotorama_gallery_shortcode($attr);
 			echo apply_filters( 'the_secondary_content', $content );
 		}
-	}
-
-	/**
-	 * Renders the gallery shortcode
-	 *
-	 * @param $args
-	 */
-	public static function render_shortcode( $args ) {
-		$defaults = array(
-			'ids' => '',
-		);
-
-		$args = wp_parse_args( $args, $defaults );
-
-		$ids = array_map( 'intval', explode( ',', $args['ids'] ) );
-
-		$query = self::get_query_for_ids( $ids );
-
-		return self::render_gallery_from_query( $query );
 	}
 
 	/**
@@ -393,7 +406,7 @@ class GreaterMediaGallery {
 		return ob_get_clean();
 	}
 
-	function fotorama_gallery_shortcode( $attr ) {
+	public static function fotorama_gallery_shortcode( $attr ) {
 		if (!$attr) {
 			$attr = array();
 		}

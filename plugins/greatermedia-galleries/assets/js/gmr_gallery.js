@@ -3740,7 +3740,8 @@ fotoramaDefaults = {
 	allowfullscreen: 'native',
 	transition: 'crossfade',
 	loop: true,
-	keyboard: true
+	keyboard: true,
+	hash: true
 }
 
 $
