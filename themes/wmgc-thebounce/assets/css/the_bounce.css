@@ -15128,6 +15128,9 @@ table.responsive tr:nth-of-type(even) {
 .footer {
   background-color: #fff; }
 
+.footer__ad {
+  height: 90px; }
+
 #site-wrap.site-wrap {
   background-color: transparent !important;
   background-image: none !important; }
@@ -15265,9 +15268,7 @@ main.main {
   .home__featured .featured__article--content, .home__featured .featured__content--block {
     background-color: #cc3333 !important; }
   .home__featured .featured__article--content {
-    background-color: #cc3333 !important; }
-  .footer__ad {
-    height: 90px; } }
+    background-color: #cc3333 !important; } }
 
 .live-link__type--show {
   border-bottom-color: white;
