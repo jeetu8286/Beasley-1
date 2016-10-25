@@ -23,8 +23,12 @@
 			.fotoramaWPAdapter()
 			.fotorama();
 
-		$('.fotorama').on('fotorama:ready', function(e, fotorama, extra){
-			console.log('fotorama ready!');
+		$('.fotorama').on('fotorama:show fotorama:ready', function(e, fotorama, extra){
+			if ( fotorama && fotorama.activeFrame && ( true === fotorama.activeFrame.enabledownload ) ) {
+				$(this).removeClass('disable-download');
+			} else {
+				$(this).addClass('disable-download');
+			}
 		});
 	});
 })(jQuery);

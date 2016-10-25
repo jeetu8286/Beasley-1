@@ -522,6 +522,9 @@
 .fotorama__wrap--css2.fotorama__wrap--video .fotorama__download-icon {
   display: none !important; }
 
+.fotorama.disable-download .fotorama__download-icon {
+	display: none !important; }
+
 .fotorama__wrap--css3.fotorama__wrap--no-controls.fotorama__wrap--slide.fotorama__wrap--toggle-arrows .fotorama__fullscreen-icon:not(:focus) {
   -webkit-transform: translate3d(32px, -32px, 0);
   transform: translate3d(32px, -32px, 0); }
