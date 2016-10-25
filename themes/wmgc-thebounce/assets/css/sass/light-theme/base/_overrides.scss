@@ -499,7 +499,7 @@ btn:hover
 	display: block;
 	height: 50px; }
 
-	@media screen and (min-width: 728px) {
+	@media screen and (min-width: 958px) {
 		.footer__ad .mobile {
 			display: none; }
 		}
@@ -508,7 +508,7 @@ btn:hover
 .footer__ad .desktop {
 	display: none;
 	height: 90px; }
-	@media screen and (min-width: 728px) {
+	@media screen and (min-width: 958px) {
 		.footer__ad .desktop {
 			display: block; }
 		}

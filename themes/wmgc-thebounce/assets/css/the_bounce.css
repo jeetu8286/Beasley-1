@@ -15271,7 +15271,7 @@ main.main {
   display: block;
   height: 50px; }
 
-@media screen and (min-width: 728px) {
+@media screen and (min-width: 958px) {
   .footer__ad .mobile {
     display: none; } }
 
@@ -15279,7 +15279,7 @@ main.main {
   display: none;
   height: 90px; }
 
-@media screen and (min-width: 728px) {
+@media screen and (min-width: 958px) {
   .footer__ad .desktop {
     display: block; } }
 
