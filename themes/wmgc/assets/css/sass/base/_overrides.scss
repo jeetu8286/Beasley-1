@@ -1,12 +1,10 @@
 //Overrides for 1051thebounce - July 19, 2016
 
-#site-wrap.site-wrap{background-image: url(http://greatermedia.biz/wmgc/images/bouncebgd.jpg)!important;background-
+#site-wrap.site-wrap{background-image: url(http://greatermedia.biz/wmgc/images/bouncebgd.jpg)!important;background-position: top center; }
 
-position: top center; }
-  #header.header{background-image: url(http://greatermedia.biz/wmgc/images/mastbg.jpg)!important;background-size:
+#header.header{background-image: url(http://greatermedia.biz/wmgc/images/mastbg.jpg)!important;background-size:cover;background-position: top center;}
 
-cover;background-position: top center;}
-  .header__account ul li a:active, .header__account ul li a:focus, .header__account ul li a:hover, .header__account ul
+.header__account ul li a:active, .header__account ul li a:focus, .header__account ul li a:hover, .header__account ul
 
 li:hover, .header__nav ul li a:active, .header__nav ul li a:focus, .header__nav ul li.active, .header__nav ul li.active
 
@@ -139,7 +137,7 @@ btn:hover
     .live-links
   {background-color: #ffffff!important;background-image: none!important;}
 
-}
+//}
 
   .live-links--more
   {background-color: #000000!important;}

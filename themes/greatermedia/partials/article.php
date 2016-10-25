@@ -28,6 +28,8 @@
 
 					<?php the_content(); ?>
 
+					<?php wp_link_pages(); ?>
+
 				</section>
 
 				<?php get_template_part( 'partials/article-footer' ); ?>

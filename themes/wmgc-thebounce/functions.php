@@ -13,7 +13,7 @@
  */
 
  // Useful global constants
-define( 'WMGC_VERSION', '0.1.0' );
+define( 'WMGC_VERSION', '0.1.1' ); /* Version bump by Steve 10/25/2016 @ 3:30 p.m. EST */
 
  /**
   * Set up theme defaults and register supported WordPress features.
