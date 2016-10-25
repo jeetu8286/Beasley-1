@@ -15128,9 +15128,6 @@ table.responsive tr:nth-of-type(even) {
 .footer {
   background-color: #fff; }
 
-.footer__ad {
-  height: 90px; }
-
 #site-wrap.site-wrap {
   background-color: transparent !important;
   background-image: none !important; }
@@ -15269,6 +15266,22 @@ main.main {
     background-color: #cc3333 !important; }
   .home__featured .featured__article--content {
     background-color: #cc3333 !important; } }
+
+.footer__ad .mobile {
+  display: block;
+  height: 50px; }
+
+@media screen and (min-width: 728px) {
+  .footer__ad .mobile {
+    display: none; } }
+
+.footer__ad .desktop {
+  display: none;
+  height: 90px; }
+
+@media screen and (min-width: 728px) {
+  .footer__ad .desktop {
+    display: block; } }
 
 .live-link__type--show {
   border-bottom-color: white;

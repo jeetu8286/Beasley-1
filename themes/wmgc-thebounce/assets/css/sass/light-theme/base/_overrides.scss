@@ -152,10 +152,7 @@
 
 
 //Overrides for 1051thebounce - July 26, 2016 noon
-.footer__ad
-{
-	height:90px;
-}
+
 #site-wrap.site-wrap{background-color: transparent!important; background-image: none!important;}
 
   #page-wrap.page-wrap{background-color: transparent!important; background-image: none!important;}
@@ -496,3 +493,22 @@ btn:hover
 }
 
 }
+
+
+.footer__ad .mobile {
+	display: block;
+	height: 50px; }
+
+	@media screen and (min-width: 728px) {
+		.footer__ad .mobile {
+			display: none; }
+		}
+
+
+.footer__ad .desktop {
+	display: none;
+	height: 90px; }
+	@media screen and (min-width: 728px) {
+		.footer__ad .desktop {
+			display: block; }
+		}
