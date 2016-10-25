@@ -15213,78 +15213,61 @@ main.main {
 
 @media screen and (min-width: 1200px) {
   .header .container.container__leaderboard {
-    background-image: url(../../images/artistmast.png) !important;
-    background-position: top right !important;
-    background-repeat: no-repeat !important; } }
-
-.header {
-  border-bottom: none !important; }
-
-.home__featured {
-  background-color: #dddddd !important;
-  background-image: none !important; }
-
-.featured__article:hover .featured__article--heading {
-  color: #ffcccc !important; }
-
-.featured__content--block:hover .featured__content--title {
-  color: #ffcccc !important; }
-
-.featured__content--block:hover .featured__content--btn {
-  background-color: #660000 !important;
-  border-top-color: #660000 !important;
-  border-right-color: #660000 !important;
-  border-bottom-color: #660000 !important;
-  border-left-color: #660000 !important;
-  color: #ffffff; }
-
-.featured__content--btn:focus, .featured__content--btn:hover {
-  background-color: #660000 !important;
-  border-top-color: #660000 !important;
-  border-right-color: #660000 !important;
-  border-bottom-color: #660000 !important;
-  border-left-color: #660000 !important;
-  color: #ffcccc !important; }
-
-.featured__content--block:hover .featured__content--btn {
-  color: #ffffff !important;
-  background-color: #660000; }
-
-btn:hover {
-  background-color: #660000 !important;
-  border-top-color: #660000 !important;
-  border-right-color: #660000 !important;
-  border-bottom-color: #660000 !important;
-  border-left-color: #660000 !important;
-  color: #ffffff; }
-
-.featured__content--block:active .featured__content--btn, .featured__content--block:hover .featured__content--btn, .featured__content--btn {
-  background-color: #660000 !important; }
-
-.live-links {
-  background-color: #ffffff !important;
-  background-image: none !important; }
-
-.live-links--more {
-  background-color: #000000 !important; }
-
-#live-links.livelinks {
-  background-color: #000000 !important; }
-
-.live-player__container {
-  background-image: none !important; }
-
-.on-air__show, .up-next__show {
-  color: #ffffff !important; }
-
-.featured__article--content {
-  background-color: #cc3333 !important; }
-
-.home__featured .featured__article--content, .home__featured .featured__content--block {
-  background-color: #cc3333 !important; }
-
-.home__featured .featured__article--content {
-  background-color: #cc3333 !important; }
+    background-image: none; }
+  .header {
+    border-bottom: none; }
+  .home__featured {
+    background-color: #dddddd !important;
+    background-image: none !important; }
+  .featured__article:hover .featured__article--heading {
+    color: #ffcccc !important; }
+  .featured__content--block:hover .featured__content--title {
+    color: #ffcccc !important; }
+  .featured__content--block:hover .featured__content--btn {
+    background-color: #660000 !important;
+    border-top-color: #660000 !important;
+    border-right-color: #660000 !important;
+    border-bottom-color: #660000 !important;
+    border-left-color: #660000 !important;
+    color: #ffffff; }
+  .featured__content--btn:focus, .featured__content--btn:hover {
+    background-color: #660000 !important;
+    border-top-color: #660000 !important;
+    border-right-color: #660000 !important;
+    border-bottom-color: #660000 !important;
+    border-left-color: #660000 !important;
+    color: #ffcccc !important; }
+  .featured__content--block:hover .featured__content--btn {
+    color: #ffffff !important;
+    background-color: #660000; }
+  btn:hover {
+    background-color: #660000 !important;
+    border-top-color: #660000 !important;
+    border-right-color: #660000 !important;
+    border-bottom-color: #660000 !important;
+    border-left-color: #660000 !important;
+    color: #ffffff; }
+  .featured__content--block:active .featured__content--btn, .featured__content--block:hover .featured__content--btn, .featured__content--btn {
+    background-color: #660000 !important; }
+  .live-links {
+    background-color: #ffffff !important;
+    background-image: none !important; }
+  .live-links--more {
+    background-color: #000000 !important; }
+  #live-links.livelinks {
+    background-color: #000000 !important; }
+  .live-player__container {
+    background-image: none !important; }
+  .on-air__show, .up-next__show {
+    color: #ffffff !important; }
+  .featured__article--content {
+    background-color: #cc3333 !important; }
+  .home__featured .featured__article--content, .home__featured .featured__content--block {
+    background-color: #cc3333 !important; }
+  .home__featured .featured__article--content {
+    background-color: #cc3333 !important; }
+  .footer__ad {
+    height: 90px; } }
 
 .live-link__type--show {
   border-bottom-color: white;

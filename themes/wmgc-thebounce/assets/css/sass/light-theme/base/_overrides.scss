@@ -329,17 +329,13 @@ background-color: #000000!important;}
 
 
 
-  {background-image: url(../../images/artistmast.png)!important;background-position: top right!
-
-
-
-important;background-repeat: no-repeat!important;}
+  {background-image: none;
 
   }
 
     .header
 
-  {border-bottom:  none!important;}
+  {border-bottom:  none;}
 
 
 
@@ -494,4 +490,9 @@ btn:hover
 
   background-color: #cc3333!important;
 
+}
+.footer__ad
+{
+	height:90px;
+}
 }
