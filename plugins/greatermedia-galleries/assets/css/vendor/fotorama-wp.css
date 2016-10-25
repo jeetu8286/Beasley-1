@@ -20,3 +20,8 @@
 .fotorama--wp dt {
 	display: none;
 }
+
+.fotorama .attribution {
+	font-size: 10px;
+	text-transform: uppercase;
+}
