@@ -329,17 +329,13 @@ background-color: #000000!important;}
 
 
 
-  {background-image: url(../../images/artistmast.png)!important;background-position: top right!
-
-
-
-important;background-repeat: no-repeat!important;}
+  {background-image: none;
 
   }
 
     .header
 
-  {border-bottom:  none!important;}
+  {border-bottom:  none;}
 
 
 
@@ -495,3 +491,24 @@ btn:hover
   background-color: #cc3333!important;
 
 }
+
+}
+
+
+.footer__ad .mobile {
+	display: block;
+	height: 50px; }
+
+	@media screen and (min-width: 958px) {
+		.footer__ad .mobile {
+			display: none; }
+		}
+
+
+.footer__ad .desktop {
+	display: none;
+	height: 90px; }
+	@media screen and (min-width: 958px) {
+		.footer__ad .desktop {
+			display: block; }
+		}
