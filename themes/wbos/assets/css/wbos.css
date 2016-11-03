@@ -4138,7 +4138,7 @@ category: Components - Post Excerpts
 
 Standard posts are mostly text based but can include images. They can also optionally have a featured image.
 
-```html_example 
+```html_example
 <article class="post-1162 post type-post status-publish format-standard hentry category-uncategorized tag-post-tag cf" role="article" itemscope="" itemtype="http://schema.org/BlogPosting">
 	<section class="entry--standard__thumbnail">
 		<img src="http://placehold.it/600x400&amp;text=standard">
@@ -4163,14 +4163,14 @@ category: Components - Post Excerpts
 
 Gallery posts are mostly image based but can include some text. They can also optionally have a featured image.
 
-```html_example 
+```html_example
 <article id="post-922" class="post-922 post type-post status-publish format-gallery hentry category-uncategorized cf" role="article" itemscope="" itemtype="http://schema.org/BlogPosting">
 	<section class="entry--gallery__meta" itemprop="articleBody">
 		<time datetime="2014-11-10T20:11:28+00:00" class="entry__date">10 November</time>
 		<h2 class="entry__title"><a href="">Test Show Post</a></h2>
 	</section>
 
-	<section class="entry--gallery__thumbnail">	
+	<section class="entry--gallery__thumbnail">
 		<img src="http://placehold.it/400x400&amp;text=gallery">
 	</section>
 	<footer class="entry__footer">
@@ -4188,7 +4188,7 @@ category: Components - Post Excerpts
 
 Video posts display a video and minimal text. They can also optionally have a featured image.
 
-```html_example 
+```html_example
 <article id="post-581" class="post-581 post type-post status-publish format-video has-post-thumbnail hentry category-uncategorized cf" role="article" itemscope="" itemtype="http://schema.org/BlogPosting">
 	<section class="entry--video__meta" itemprop="articleBody">
 		<time datetime="2014-11-05T00:13:14+00:00" class="entry__date">5 November</time>
@@ -4213,7 +4213,7 @@ category: Components - Post Excerpts
 
 Standard posts are mostly text based but can include images. They can also optionally have a featured image.
 
-```html_example 
+```html_example
 <article id="post-558" class="post-558 post type-post status-publish format-image has-post-thumbnail hentry category-uncategorized cf" role="article" itemscope="" itemtype="http://schema.org/BlogPosting">
 	<section class="entry--standard__thumbnail">
 		<img src="http://placehold.it/600x400&amp;text=image">
@@ -4239,7 +4239,7 @@ category: Components - Post Excerpts
 
 Link posts contain a link to an external site. They can also optionally have a featured image.
 
-```html_example 
+```html_example
 <article id="post-886" class="post-886 post type-post status-publish format-link has-post-thumbnail hentry category-uncategorized cf" role="article" itemscope="" itemtype="http://schema.org/BlogPosting">
 	<section class="entry--link__meta" itemprop="articleBody">
 		<time datetime="2014-11-10T04:07:56+00:00" class="entry__date">10 November</time>
@@ -4899,20 +4899,61 @@ Link posts contain a link to an external site. They can also optionally have a f
   font-size: 0.8888888889em;
   float: left;
   margin: 0 0 1.5em;
-  text-align: center; }
+  text-align: center;
+  overflow: hidden !important; }
 
 .posts-pagination--previous {
-  float: left;
-  width: 50%;
-  text-align: left; }
+  display: inline-block;
+  line-height: 1;
+  padding: 0.5em 1em;
+  margin-right: .5em;
+  outline: none;
+  background-color: #d22228;
+  border: 1px solid #d22228;
+  font-size: 0.8888888889em;
+  color: #ffffff !important;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 100em;
+  width: 200px;
+  font-size: 1.5em;
+  text-align: center;
+  margin: 0 50px 20px 50px !important;
+  display: inline-block; }
+  .posts-pagination--previous:hover, .posts-pagination--previous:focus {
+    background-color: #aa1c20;
+    border-color: #aa1c20;
+    color: #ffffff; }
+  .posts-pagination--previous:last-of-type {
+    margin-right: 0; }
 
 .posts-pagination--previous .fa {
   margin-right: .5em; }
 
 .posts-pagination--next {
-  float: right;
-  width: 50%;
-  text-align: right; }
+  display: inline-block;
+  line-height: 1;
+  padding: 0.5em 1em;
+  margin-right: .5em;
+  outline: none;
+  background-color: #d22228;
+  border: 1px solid #d22228;
+  font-size: 0.8888888889em;
+  color: #ffffff !important;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 100em;
+  width: 200px;
+  font-size: 1.5em;
+  text-align: center;
+  margin: 0 50px 20px 50px !important;
+  display: inline-block; }
+  .posts-pagination--next:hover, .posts-pagination--next:focus {
+    background-color: #aa1c20;
+    border-color: #aa1c20;
+    color: #ffffff; }
+  .posts-pagination--next:last-of-type {
+    margin-right: 0; }
 
 .posts-pagination--next .fa {
   margin-left: .5em; }
