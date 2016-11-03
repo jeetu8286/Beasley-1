@@ -20,7 +20,7 @@
 if ( defined( 'GMR_PARENT_ENV' ) && 'dev' == GMR_PARENT_ENV ) {
 	define( 'GREATERMEDIA_VERSION', time() );
 } else {
-	define( 'GREATERMEDIA_VERSION', '1.3.4' ); /* Version bump by Steve 6/24/2016 @ 11:00 a.m. EST */
+	define( 'GREATERMEDIA_VERSION', '1.3.5' ); /* Version bump by Steve 10/25/2016 @ 3:30 p.m. EST */
 }
 
 add_theme_support( 'homepage-curation' );
@@ -1171,3 +1171,22 @@ function urldecode_markup_for_video_thumbnails( $markup, $post_id ) {
 }
 
 add_filter( 'video_thumbnail_markup', 'urldecode_markup_for_video_thumbnails', 10, 2 );
+
+/**
+ * Customizes the look and feel of the nextpage links in WordPress
+ */
+function custom_nextpage_links( $defaults ) {
+	$args = array(
+		'before' => '<div class=\'posts-pagination\'>',
+		'previouspagelink' => '<span class=\'posts-pagination--previous\'>&lt;&lt; Back</span>',
+		'nextpagelink' => '<span class=\'posts-pagination--next\'>Continue &gt;&gt;</span>',
+		'after' => '</div>',
+		'next_or_number' => 'next'
+	);
+
+	$r = wp_parse_args( $args, $defaults );
+
+	return $r;
+}
+
+add_filter('wp_link_pages_args','custom_nextpage_links');
