@@ -631,6 +631,11 @@ function gmr_contests_render_form( $skip_age = false ) {
 		wp_send_json_error( array( 'restriction' => 'max-entries' ) );
 	}
 
+	// check if submissions are open
+	if ( ! gmr_contests_are_submissions_open( $contest_id ) ) {
+		wp_send_json_error( array( 'restriction' => 'submissions-closed' ) );
+	}
+
 	// check if user has to be logged in
 	$gigya_logged_in_exists = function_exists( 'is_gigya_user_logged_in' );
 	if ( gmr_contest_allows_members_only( $contest_id ) && $gigya_logged_in_exists && ! is_gigya_user_logged_in() ) {
@@ -1462,5 +1467,13 @@ function gmr_contests_are_submissions_open( $contest_id ) {
 	$submission_end   = gmr_contests_get_submission_end_date( $contest_id );
 	$current_time     = time();
 
-	return ( $submission_start <= $current_time && $current_time < $submission_end );
+	if ( ( ! empty( $submission_start ) ) && ( $current_time < $submission_start ) ){
+		return false;
+	}
+
+	if ( ( ! empty( $submission_end ) ) && ( $current_time > $submission_end ) ){
+		return false;
+	}
+
+	return true;
 }
