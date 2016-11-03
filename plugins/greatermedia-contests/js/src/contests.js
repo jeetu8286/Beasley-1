@@ -24,8 +24,16 @@
 			sync_vote = false;
 
 		// init new gallery
-		if ($.fn.cycle) {
-			$previewInner.find('.cycle-slideshow').cycle();
+		if ($.fn.fotorama) {
+			$previewInner.find('.fotorama--wp')
+			.fotoramaWPAdapter()
+			.fotorama();
+
+			$previewInner.find('.fotorama').on('fotorama:show fotorama:ready', function(e, fotorama, extra){
+				if ( fotorama && fotorama.activeFrame ) {
+					$(this).addClass('disable-download');
+				}
+			});	
 		}
 
 		// bind vote click event

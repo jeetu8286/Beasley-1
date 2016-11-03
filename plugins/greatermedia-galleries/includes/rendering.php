@@ -354,7 +354,7 @@ class GreaterMediaGallery {
         }
         $output .= "<{$itemtag} class='gallery-item'>";
         $output .= "
-            <{$icontag} class='gallery-icon {$orientation}' data-attachment-id='$id''>
+            <{$icontag} class='gallery-icon {$orientation}' data-attachment-id='$id'>
                 $image_output
             </{$icontag}>";
         if ( $captiontag && trim($attachment->post_excerpt) ) {

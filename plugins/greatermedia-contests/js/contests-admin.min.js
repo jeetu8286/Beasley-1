@@ -1,4 +1,4 @@
-/*! Greater Media Contests - v1.0.6
+/*! Greater Media Contests - v1.3.0
  * http://10up.com/
  * Copyright (c) 2016;
  * Licensed GPLv2+

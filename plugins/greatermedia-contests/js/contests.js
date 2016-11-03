@@ -1,4 +1,4 @@
-/*! Greater Media Contests - v1.0.6
+/*! Greater Media Contests - v1.3.0
  * http://10up.com/
  * Copyright (c) 2016;
  * Licensed GPLv2+
@@ -592,8 +592,16 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 			sync_vote = false;
 
 		// init new gallery
-		if ($.fn.cycle) {
-			$previewInner.find('.cycle-slideshow').cycle();
+		if ($.fn.fotorama) {
+			$previewInner.find('.fotorama--wp')
+			.fotoramaWPAdapter()
+			.fotorama();
+
+			$previewInner.find('.fotorama').on('fotorama:show fotorama:ready', function(e, fotorama, extra){
+				if ( fotorama && fotorama.activeFrame ) {
+					$(this).addClass('disable-download');
+				}
+			});	
 		}
 
 		// bind vote click event
