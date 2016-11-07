@@ -631,6 +631,11 @@ function gmr_contests_render_form( $skip_age = false ) {
 		wp_send_json_error( array( 'restriction' => 'max-entries' ) );
 	}
 
+	// check if submissions are open
+	if ( ! gmr_contests_are_submissions_open( $contest_id ) ) {
+		wp_send_json_error( array( 'restriction' => 'submissions-closed' ) );
+	}
+
 	// check if user has to be logged in
 	$gigya_logged_in_exists = function_exists( 'is_gigya_user_logged_in' );
 	if ( gmr_contest_allows_members_only( $contest_id ) && $gigya_logged_in_exists && ! is_gigya_user_logged_in() ) {
@@ -703,7 +708,7 @@ function gmr_contests_verify_form_submission( $form ) {
  * @action gmr_contest_submit
  */
 function gmr_contests_process_form_submission() {
-	if ( 'POST' != $_SERVER['REQUEST_METHOD'] ) {
+	if ( 'POST' != $_SERVER['REQUEST_METHOD'] || ( ! gmr_contests_are_submissions_open( get_the_ID() ) ) ) {
 		return;
 	}
 
@@ -1424,4 +1429,51 @@ function gmr_contest_get_fields( $submission = null, $field_type = 'entry_field'
 	}
 
 	return $contest_fields;
+}
+
+/**
+ * Get contest's submission start date.
+ *
+ * @param $contest_id
+ *
+ * @return int
+ */
+function gmr_contests_get_submission_start_date( $contest_id ) {
+	return (int) get_post_meta( $contest_id, 'contest-submission-start', true ) ?:
+		get_post_meta( $contest_id, 'contest-start', true );;
+}
+
+/**
+ * Get contest's submission end date.
+ *
+ * @param $contest_id
+ *
+ * @return int
+ */
+function gmr_contests_get_submission_end_date( $contest_id ) {
+	return (int) get_post_meta( $contest_id, 'contest-submission-end', true ) ?:
+		get_post_meta( $contest_id, 'contest-end', true );
+}
+
+/**
+ * Check whether or not submissions for the contest are open.
+ *
+ * @param int $contest_id ID of contest to check.
+ *
+ * @return bool
+ */
+function gmr_contests_are_submissions_open( $contest_id ) {
+	$submission_start = gmr_contests_get_submission_start_date( $contest_id );
+	$submission_end   = gmr_contests_get_submission_end_date( $contest_id );
+	$current_time     = time();
+
+	if ( ( ! empty( $submission_start ) ) && ( $current_time < $submission_start ) ){
+		return false;
+	}
+
+	if ( ( ! empty( $submission_end ) ) && ( $current_time > $submission_end ) ){
+		return false;
+	}
+
+	return true;
 }
