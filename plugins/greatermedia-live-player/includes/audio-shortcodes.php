@@ -327,10 +327,11 @@ class GMR_Audio_Shortcodes {
 		$new_html .= '<div class="gmr-mediaelement-fallback">' . $html . '</div>';
 		$new_html .= '</div>'; // .podcast-player
 
-		update_post_meta( $post_id, 'enclosure', esc_attr( $mp3_src ) );
-
-		if ( isset( $metadata['length_formatted'] ) ) {
-			update_post_meta( $post_id, 'duration', esc_html( $metadata['length_formatted'] ) );
+		if ( $is_episode ) {
+			update_post_meta( $post_id, 'enclosure', esc_attr( $mp3_src ) );
+			if ( isset( $metadata['length_formatted'] ) ) {
+				update_post_meta( $post_id, 'duration', esc_html( $metadata['length_formatted'] ) );
+			}
 		}
 
 		return $new_html;
