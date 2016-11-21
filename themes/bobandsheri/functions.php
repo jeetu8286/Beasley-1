@@ -13,7 +13,7 @@
  */
 
  // Useful global constants
-define( 'BOBANDSHERI_VERSION', '0.1.10' ); /* Version bump by Jonathan 11/15/2016 @ 3:50 p.m. EST */
+define( 'BOBANDSHERI_VERSION', '0.1.11' ); /* Version bump by Jonathan 11/21/2016 @ 11:51 a.m. EST */
 
  /**
   * Set up theme defaults and register supported WordPress features.
