@@ -13,7 +13,7 @@
  */
 
  // Useful global constants
-define( 'WLNK_VERSION', '0.3.2' ); /* Version bump by Steve 10/25/2016 @ 3:30 p.m. EST */
+define( 'WLNK_VERSION', '0.3.3' ); /* Version bump by Jonathan 11/15/2016 @ 3:50 p.m. EST */
 
  /**
   * Set up theme defaults and register supported WordPress features.
@@ -65,6 +65,8 @@ define( 'WLNK_VERSION', '0.3.2' ); /* Version bump by Steve 10/25/2016 @ 3:30 p.
 	    true
 		);
     wp_enqueue_script( 'handlebars', get_stylesheet_directory_uri() . '/assets/js/vendor/handlebars-v3.0.3.js', array( 'jquery' ) );
+    wp_enqueue_script( 'quantcast', get_stylesheet_directory_uri() . '/assets/js/vendor/quantcast.js', array(), true );
+    wp_enqueue_script( 'cxense', get_stylesheet_directory_uri() . '/assets/js/vendor/cxense.js', array(), false );
     wp_enqueue_script( 'googlemaps', 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false', array() );
  }
  add_action( 'wp_enqueue_scripts', 'wlnk_scripts_styles', 20 );

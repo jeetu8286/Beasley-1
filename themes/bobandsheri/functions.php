@@ -13,7 +13,7 @@
  */
 
  // Useful global constants
-define( 'BOBANDSHERI_VERSION', '0.1.9' ); /* Version bump by Steve 10/25/2016 @ 3:30 p.m. EST */
+define( 'BOBANDSHERI_VERSION', '0.1.10' ); /* Version bump by Jonathan 11/15/2016 @ 3:50 p.m. EST */
 
  /**
   * Set up theme defaults and register supported WordPress features.
@@ -60,6 +60,8 @@ define( 'BOBANDSHERI_VERSION', '0.1.9' ); /* Version bump by Steve 10/25/2016 @ 
 	    null,
 	    true
 	);
+  wp_enqueue_script( 'quantcast', get_stylesheet_directory_uri() . '/assets/js/vendor/quantcast.js', array(), true );
+  wp_enqueue_script( 'cxense', get_stylesheet_directory_uri() . '/assets/js/vendor/cxense.js', array(), false );
 
  }
  add_action( 'wp_enqueue_scripts', 'bobandsheri_scripts_styles', 20 );
