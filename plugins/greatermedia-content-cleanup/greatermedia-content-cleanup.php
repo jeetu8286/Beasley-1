@@ -18,7 +18,7 @@ define( 'GMR_CLEANUP_CPT_OPTION', 'gmr-cleanup-cpts' );
 
 if ( defined( 'WP_CLI' ) && WP_CLI ) {
 	require_once __DIR__ . '/includes/class-content-cleanup.php';
-	WP_CLI::add_command( 'gmr-content', 'GMR_Content_Cleanup' );
+	WP_CLI::add_command( 'gmr-cleanup', 'GMR_Content_Cleanup' );
 }
 
 function gmr_content_cleanup_setup() {
