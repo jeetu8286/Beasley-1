@@ -57,14 +57,12 @@ class ContentRestrictedShortcodes {
 		global $post;
 		return is_admin() && ! empty( $post ) &&
 			(
-				post_type_supports( $post->post_type, 'age-restricted-content' ) ||
 				post_type_supports( $post->post_type, 'login-restricted-content' ) ||
 				post_type_supports( $post->post_type, 'time-restricted-content' )
 			);
 	}
 
 	function add_plugins( $plugins ) {
-		$plugins['ageRestricted']   = $this->get_plugin_url( 'age-restricted' );
 		$plugins['timeRestricted']  = $this->get_plugin_url( 'time-restricted' );
 		$plugins['loginRestricted'] = $this->get_plugin_url( 'login-restricted' );
 
@@ -72,7 +70,6 @@ class ContentRestrictedShortcodes {
 	}
 
 	function add_buttons( $buttons ) {
-		$buttons[] = 'ageRestricted';
 		$buttons[] = 'timeRestricted';
 		$buttons[] = 'loginRestricted';
 

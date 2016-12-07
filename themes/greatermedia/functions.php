@@ -38,6 +38,7 @@ require_once( __DIR__ . '/includes/class-favicon.php' );
 require_once( __DIR__ . '/includes/iframe-embed.php' );
 require_once( __DIR__ . '/includes/flexible-feature-images/gmr-flexible-feature-images.php' );
 require_once( __DIR__ . '/includes/auction-nudge/gmr-auction-nudge.php' );
+require_once( __DIR__ . '/includes/shortcodes.php' );
 
 /**
  * Required files
@@ -91,40 +92,33 @@ function greatermedia_setup() {
 	// Update this as appropriate content types are created and we want this functionality
 	add_post_type_support( 'post', 'timed-content' );
 	add_post_type_support( 'post', 'login-restricted-content' );
-	add_post_type_support( 'post', 'age-restricted-content' );
 	add_post_type_support( 'post', 'flexible-feature-image' );
 
 	// Pages should also support same restrictions as posts
 	add_post_type_support( 'page', 'timed-content' );
 	add_post_type_support( 'page', 'login-restricted-content' );
-	add_post_type_support( 'page', 'age-restricted-content' );
 	add_post_type_support( 'page', 'flexible-feature-image' );
 
 	// Restrictions for galleries
 	add_post_type_support( 'gmr_gallery', 'timed-content' );
 	add_post_type_support( 'gmr_gallery', 'login-restricted-content' );
-	add_post_type_support( 'gmr_gallery', 'age-restricted-content' );
 
 	// Restrictions for albums
 	add_post_type_support( 'gmr_album', 'timed-content' );
 	add_post_type_support( 'gmr_album', 'login-restricted-content' );
-	add_post_type_support( 'gmr_album', 'age-restricted-content' );
 
 	// Restrictions for podcasts episodes
 	add_post_type_support( 'episode', 'timed-content' );
 	add_post_type_support( 'episode', 'login-restricted-content' );
-	add_post_type_support( 'episode', 'age-restricted-content' );
 
 	// Restrictions for events
 	add_post_type_support( 'tribe_events', 'timed-content' );
 	add_post_type_support( 'tribe_events', 'login-restricted-content' );
-	add_post_type_support( 'tribe_events', 'age-restricted-content' );
 	add_post_type_support( 'tribe_events', 'flexible-feature-image' );
 
 	// Restrictions for contests
 	add_post_type_support( 'contest', 'timed-content' );
 	add_post_type_support( 'contest', 'login-restricted-content' );
-	add_post_type_support( 'contest', 'age-restricted-content' );
 	add_post_type_support( 'contest', 'flexible-feature-image' );
 
 	// Restrictions for surveys
