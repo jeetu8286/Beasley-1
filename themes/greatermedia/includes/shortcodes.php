@@ -8,3 +8,4 @@ function greatermedia_empty_shortcode( $atts, $content = null ) {
 }
 
 add_shortcode( 'age-restricted', 'greatermedia_empty_shortcode' );
+add_shortcode( 'login-restricted', 'greatermedia_empty_shortcode' );

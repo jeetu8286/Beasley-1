@@ -55,23 +55,17 @@ class ContentRestrictedShortcodes {
 
 	function can_add_base_plugin() {
 		global $post;
-		return is_admin() && ! empty( $post ) &&
-			(
-				post_type_supports( $post->post_type, 'login-restricted-content' ) ||
-				post_type_supports( $post->post_type, 'time-restricted-content' )
-			);
+		return is_admin() && ! empty( $post ) && post_type_supports( $post->post_type, 'time-restricted-content' );
 	}
 
 	function add_plugins( $plugins ) {
 		$plugins['timeRestricted']  = $this->get_plugin_url( 'time-restricted' );
-		$plugins['loginRestricted'] = $this->get_plugin_url( 'login-restricted' );
 
 		return $plugins;
 	}
 
 	function add_buttons( $buttons ) {
 		$buttons[] = 'timeRestricted';
-		$buttons[] = 'loginRestricted';
 
 		return $buttons;
 	}

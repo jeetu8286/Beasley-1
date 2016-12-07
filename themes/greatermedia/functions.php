@@ -91,34 +91,27 @@ function greatermedia_setup() {
 
 	// Update this as appropriate content types are created and we want this functionality
 	add_post_type_support( 'post', 'timed-content' );
-	add_post_type_support( 'post', 'login-restricted-content' );
 	add_post_type_support( 'post', 'flexible-feature-image' );
 
 	// Pages should also support same restrictions as posts
 	add_post_type_support( 'page', 'timed-content' );
-	add_post_type_support( 'page', 'login-restricted-content' );
 	add_post_type_support( 'page', 'flexible-feature-image' );
 
 	// Restrictions for galleries
 	add_post_type_support( 'gmr_gallery', 'timed-content' );
-	add_post_type_support( 'gmr_gallery', 'login-restricted-content' );
 
 	// Restrictions for albums
 	add_post_type_support( 'gmr_album', 'timed-content' );
-	add_post_type_support( 'gmr_album', 'login-restricted-content' );
 
 	// Restrictions for podcasts episodes
 	add_post_type_support( 'episode', 'timed-content' );
-	add_post_type_support( 'episode', 'login-restricted-content' );
 
 	// Restrictions for events
 	add_post_type_support( 'tribe_events', 'timed-content' );
-	add_post_type_support( 'tribe_events', 'login-restricted-content' );
 	add_post_type_support( 'tribe_events', 'flexible-feature-image' );
 
 	// Restrictions for contests
 	add_post_type_support( 'contest', 'timed-content' );
-	add_post_type_support( 'contest', 'login-restricted-content' );
 	add_post_type_support( 'contest', 'flexible-feature-image' );
 
 	// Restrictions for surveys
