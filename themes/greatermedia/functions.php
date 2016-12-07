@@ -290,6 +290,19 @@ function greatermedia_nav_menus() {
 add_action( 'init', 'greatermedia_nav_menus' );
 
 /**
+ * Removes comments support from all post types.
+ */
+function greatermedia_disable_comments() {
+	$posttypes = get_post_types();
+	foreach ( $posttypes as $posttype ) {
+		remove_post_type_support( $posttype, 'comments' );
+	}
+}
+
+add_action( 'init', 'greatermedia_disable_comments', 9999 );
+add_filter( 'comments_open', '__return_false' );
+
+/**
  * Add Post Formats
  */
 function greatermedia_post_formats() {
