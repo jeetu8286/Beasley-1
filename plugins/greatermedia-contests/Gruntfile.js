@@ -12,23 +12,9 @@ module.exports = function (grunt) {
 						' * Licensed GPLv2+\n' +
 						' */\n'
 			},
-			frontend_contest: {
-				src: [
-					'js/vendor/debouncedresize.js',
-					'js/vendor/imagesloaded.js',
-					'js/src/grid.js',
-					'js/src/contests.js',
-					'js/src/datepicker.js'
-				],
-				dest: 'js/contests.js'
-			},
 			backend_contest: {
 				src: ['js/src/contests-admin.js'],
 				dest: 'js/contests-admin.js'
-			},
-			backend_moderation: {
-				src: ['js/src/ugc-moderation.js'],
-				dest: 'js/ugc-moderation.js'
 			}
 		},
 		jshint: {
@@ -69,9 +55,7 @@ module.exports = function (grunt) {
 		uglify: {
 			all: {
 				files: {
-					'js/ugc-moderation.min.js': ['js/ugc-moderation.js'],
-					'js/contests-admin.min.js': ['js/contests-admin.js'],
-					'js/contests.min.js': ['js/contests.js']
+					'js/contests-admin.min.js': ['js/contests-admin.js']
 				},
 				options: {
 					banner: '/*! <%= pkg.title %> - v<%= pkg.version %>\n' +

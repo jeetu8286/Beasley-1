@@ -2,28 +2,15 @@
 
 // action hooks
 add_action( 'init', 'gmr_contests_register_post_type' );
-add_action( 'init', 'gmr_contests_register_rewrites_and_endpoints', 100 );
-add_action( 'wp_enqueue_scripts', 'gmr_contests_enqueue_front_scripts', 100 );
-add_action( 'template_redirect', 'gmr_contests_process_action' );
-add_action( 'template_redirect', 'gmr_contests_process_submission_action' );
 add_action( 'manage_' . GMR_CONTEST_CPT . '_posts_custom_column', 'gmr_contests_render_contest_column', 10, 2 );
 add_action( 'before_delete_post', 'gmr_contests_prevent_hard_delete' );
 add_action( 'wp_trash_post', 'gmr_contests_prevent_hard_delete' );
 add_action( 'transition_post_status', 'gmr_contests_prevent_trash_transition', 10, 3 );
 add_action( 'admin_enqueue_scripts', 'gmr_contests_admin_enqueue_scripts' );
 
-add_action( 'gmr_contest_load', 'gmr_contests_render_form' );
-add_action( 'gmr_contest_submit', 'gmr_contests_process_form_submission' );
-add_action( 'gmr_contest_confirm-age', 'gmr_contests_confirm_user_age' );
-add_action( 'gmr_contest_vote', 'gmr_contests_vote_for_submission' );
-add_action( 'gmr_contest_unvote', 'gmr_contests_unvote_for_submission' );
-
 // filter hooks
 add_filter( 'map_meta_cap', 'gmr_contests_map_meta_cap', 10, 4 );
 add_filter( 'ajax_query_attachments_args', 'gmr_contests_adjuste_attachments_query' );
-add_filter( 'gmr_contest_submissions_query', 'gmr_contests_submissions_query' );
-add_filter( 'post_type_link', 'gmr_contests_get_submission_permalink', 10, 2 );
-add_filter( 'request', 'gmr_contests_unpack_vars' );
 add_filter( 'wp_link_query_args', 'gmr_contests_exclude_ugc_from_editor_links_query' );
 add_filter( 'gmr-homepage-curation-post-types', 'gmr_contest_register_curration_post_type' );
 add_filter( 'gmr-show-curation-post-types', 'gmr_contest_register_curration_post_type' );
@@ -41,22 +28,7 @@ add_filter( 'pre_get_posts', 'gmr_filter_expired_contests' );
  */
 function gmr_contests_admin_enqueue_scripts() {
 	global $typenow;
-
-	$types = array(
-		GMR_SURVEY_CPT,
-		GMR_SURVEY_RESPONSE_CPT,
-		GMR_CONTEST_CPT,
-		GMR_CONTEST_ENTRY_CPT,
-		GMR_SUBMISSIONS_CPT,
-	);
-
-	$page = filter_input( INPUT_GET, 'page' );
-	$pages = array(
-		'gmr-contest-winner',
-		'gmr-survey-responses',
-	);
-
-	if ( in_array( $typenow, $types ) || in_array( $page, $pages ) ) {
+	if ( in_array( $typenow, array( GMR_SURVEY_CPT, GMR_CONTEST_CPT ) ) ) {
 		wp_enqueue_style( 'greatermedia-contests-admin', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'css/greatermedia-contests-admin.css', null, GREATER_MEDIA_CONTESTS_VERSION );
 	}
 }
@@ -109,7 +81,7 @@ function gmr_contests_exclude_ugc_from_editor_links_query( $args ) {
 function gmr_contests_map_meta_cap( $caps, $cap, $user_id, $args ) {
 	global $pagenow, $typenow;
 
-	if ( ! in_array( $typenow, array( GMR_CONTEST_CPT, GMR_CONTEST_ENTRY_CPT ) ) ) {
+	if ( ! in_array( $typenow, array( GMR_CONTEST_CPT ) ) ) {
 		return $caps;
 	}
 
@@ -254,206 +226,6 @@ function gmr_contests_register_post_type() {
 }
 
 /**
- * Registers rewrites and endpoints for contests related tasks.
- *
- * @action init 100
- * @global WP_Rewrite $wp_rewrite The rewrite API object.
- */
-function gmr_contests_register_rewrites_and_endpoints() {
-	global $wp_rewrite;
-
-	$rewrite_rules = array(
-		'^contest/type/([^/]*)/?$' => 'index.php?post_type=contest&contest_type=$matches[1]',
-	);
-
-	// add rewrite rules
-	foreach ( $rewrite_rules as $rewrite_regex => $rewrite_target ) {
-		$wp_rewrite->add_rule( $rewrite_regex, $rewrite_target, 'top' );
-	}
-
-	// add endpoints
-	add_rewrite_endpoint( 'action', EP_GMR_CONTEST | EP_GMR_SURVEY );
-	add_rewrite_endpoint( 'submission', EP_GMR_CONTEST | EP_GMR_SURVEY );
-
-	// flush rewrite rules only if our rules is not registered
-	$all_registered_rules = $wp_rewrite->wp_rewrite_rules();
-	$registered_rules = array_intersect( $rewrite_rules, $all_registered_rules );
-	if ( count( $registered_rules ) != count( $rewrite_rules ) ) {
-		$wp_rewrite->flush_rules( true );
-	}
-}
-
-/**
- * Registers contests related scripts.
- *
- * @action wp_enqueue_scripts 100
- */
-function gmr_contests_enqueue_front_scripts() {
-	// @NOTE: we have to always load frontend script, because we would have troubles when pjax is enabled
-	$base_path = trailingslashit( GREATER_MEDIA_CONTESTS_URL );
-	$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
-
-	//wp_enqueue_style( 'greatermedia-contests', "{$base_path}css/greatermedia-contests.css", array( 'datetimepicker' ), GREATER_MEDIA_CONTESTS_VERSION );
-
-	wp_enqueue_script( 'greatermedia-contests', "{$base_path}js/contests{$postfix}.js", array( 'modernizr', 'jquery-waypoints', 'jquery', 'datetimepicker', 'parsleyjs', 'gmr-gallery' ), GREATER_MEDIA_CONTESTS_VERSION, true );
-	wp_rocketloader_script( 'greatermedia-contests' );
-}
-
-/**
- * Displays contest container attributes required for proper work of contest JS.
- *
- * @param WP_Post|int $post The contest id or object.
- */
-function gmr_contest_container_attributes( $post = null ) {
-	$post = get_post( $post );
-	if ( ! $post ) {
-		return;
-	}
-
-	$endpoints = array();
-
-	if ( is_preview() ) {
-		$endpoints = array(
-			'load'        => add_query_arg( 'action', 'load' ),
-			'confirm-age' => add_query_arg( 'action', 'confirm-age' ),
-			'vote'        => add_query_arg( 'action', 'vote' ),
-			'unvote'      => add_query_arg( 'action', 'unvote' ),
-			'infinite'    => add_query_arg( 'page', '' ),
-		);
-	} else {
-		$permalink = untrailingslashit( get_permalink( $post->ID ) );
-		$permalink_action = "{$permalink}/action";
-
-		$endpoints = array(
-			'load'        => "{$permalink_action}/load/",
-			'confirm-age' => "{$permalink_action}/confirm-age/",
-			'vote'        => "{$permalink_action}/vote/",
-			'unvote'      => "{$permalink_action}/unvote/",
-			'infinite'    => "{$permalink}/page/",
-		);
-	}
-
-	foreach ( $endpoints as $attribute => $value ) {
-		echo sprintf( ' data-%s="%s"', $attribute, esc_url( $value ) );
-	}
-}
-
-/**
- * Processes contest submission page request via AJAX.
- *
- * @action template_redirect
- */
-function gmr_contests_process_submission_action() {
-	// do nothing if it is a regular request
-	if ( ! is_singular( GMR_SUBMISSIONS_CPT ) ) {
-		return;
-	}
-
-	if ( ! empty( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && strtolower( $_SERVER['HTTP_X_REQUESTED_WITH'] ) == 'xmlhttprequest' ) {
-		// disble HTTP cache
-		nocache_headers();
-
-		add_filter( 'gmr_gallery_use_hash', '__return_false' );
-
-		the_post();
-		get_template_part( 'partials/submission', 'preview' );
-		exit;
-	}
-}
-
-/**
- * Processes contest actions triggered from front end.
- *
- * @action template_redirect
- * @global int $submission_paged The submissions archive page number.
- */
-function gmr_contests_process_action() {
-	global $submission_paged;
-
-	// do nothing if it is a regular request
-	if ( ! is_singular( GMR_CONTEST_CPT ) ) {
-		return;
-	}
-
-	$doing_ajax = ! empty( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && strtolower( $_SERVER['HTTP_X_REQUESTED_WITH'] ) == 'xmlhttprequest';
-	if ( ! empty( $submission_paged ) && $doing_ajax ) {
-		$query = gmr_contests_submissions_query( get_the_ID() );
-		if ( ! $query->have_posts() ) {
-			exit;
-		}
-
-		while ( $query->have_posts() ) :
-			$query->the_post();
-			get_template_part( 'partials/submission', 'tile' );
-		endwhile;
-		exit;
-	}
-
-	$action = get_query_var( 'action' );
-	if ( ! empty( $action ) ) {
-		// disable batcache if it is activated
-		if ( function_exists( 'batcache_cancel' ) ) {
-			batcache_cancel();
-		}
-
-		// disble HTTP cache
-		nocache_headers();
-
-		// do contest action
-		do_action( "gmr_contest_{$action}" );
-		exit;
-	}
-}
-
-/**
- * Shows contest form after user confirmed his age.
- *
- * @action gmr_contest_confirm-age
- */
-function gmr_contests_confirm_user_age() {
-	gmr_contests_render_form( true );
-}
-
-/**
- * Returns a submission if for a voting action. Sends json error if a submission has not been found.
- *
- * @return WP_Post The submission object.
- */
-function _gmr_contests_get_submission_for_voting_actions() {
-	nocache_headers();
-
-	// do nothing if a submission slug is empty
-	$submission_slug = filter_input( INPUT_POST, 'ugc' );
-	if ( empty( $submission_slug ) ) {
-		wp_send_json_error();
-	}
-
-	$query = new WP_Query();
-	$submissions = $query->query( array(
-		'posts_per_page'      => 1,
-		'ignore_sticky_posts' => true,
-		'no_found_rows'       => true,
-		'post_type'           => GMR_SUBMISSIONS_CPT,
-		'fields'              => 'ids',
-		'name'                => $submission_slug,
-	) );
-
-	// do nothing if a submission has not been found
-	if ( empty( $submissions ) ) {
-		wp_send_json_error();
-	}
-
-	$submission = get_post( current( $submissions ) );
-
-	// Do nothing if voting is closed.
-	if ( ! gmr_contests_is_voting_open( $submission->post_parent ) ) {
-		wp_send_json_error( array( 'restriction' => 'voting-not-open' ) );
-	}
-
-	return $submission;
-}
-
-/**
  * Returns voting key.
  *
  * @return string The voting key.
@@ -470,57 +242,6 @@ function _gmr_contests_get_vote_key() {
  */
 function gmr_contests_is_user_voted_for_submission( $submission = null ) {
 	return false;
-}
-
-/**
- * Records user vote action for a submission.
- *
- * @action gmr_contest_vote
- */
-function gmr_contests_vote_for_submission() {
-	// grab submission object
-	$submission = _gmr_contests_get_submission_for_voting_actions();
-
-	// do nothing if an user has already voted for this submission
-	$vote_key = _gmr_contests_get_vote_key();
-	$voted = get_post_meta( $submission->ID, $vote_key, true );
-	if ( ! empty( $voted ) ) {
-		wp_send_json_error();
-	}
-
-	// increment votes count and record current vote
-	add_post_meta( $submission->ID, $vote_key, current_time( 'timestamp', 1 ) );
-	$submission->menu_order += 1;
-	wp_update_post( $submission->to_array() );
-
-	wp_send_json_success();
-}
-
-/**
- * Records user unvote action for a submission.
- *
- * @action gmr_contest_unvote
- */
-function gmr_contests_unvote_for_submission() {
-	// grab submission object
-	$submission = _gmr_contests_get_submission_for_voting_actions();
-
-	// do nothing if an user has not voted for this submission yet
-	$vote_key = _gmr_contests_get_vote_key();
-	$voted = get_post_meta( $submission->ID, $vote_key, true );
-	if ( empty( $voted ) ) {
-		wp_send_json_error();
-	}
-
-	// decrement votes count and delete current vote
-	delete_post_meta( $submission->ID, $vote_key );
-	$submission->menu_order -= 1;
-	if ( $submission->menu_order < 0 ) {
-		$submission->menu_order = 0;
-	}
-	wp_update_post( $submission->to_array() );
-
-	wp_send_json_success();
 }
 
 /**
@@ -589,61 +310,6 @@ function gmr_contest_allows_members_only( $contest_id = null ) {
 }
 
 /**
- * Renders contest form.
- *
- * @action gmr_contest_load
- * @param boolean $skip_age Determines whether to check user age or not.
- */
-function gmr_contests_render_form( $skip_age = false ) {
-	$contest_id = get_the_ID();
-
-	// check start date
-	if ( gmr_contest_is_not_started( $contest_id ) ) {
-		wp_send_json_error( array( 'restriction' => 'not-started' ) );
-	}
-
-	// check end date
-	if ( gmr_contest_is_finished( $contest_id ) ) {
-		wp_send_json_error( array( 'restriction' => 'finished' ) );
-	}
-
-	// check the max entries limit
-	if ( gmr_contest_has_max_entries( $contest_id ) ) {
-		wp_send_json_error( array( 'restriction' => 'max-entries' ) );
-	}
-
-	// check if submissions are open
-	if ( ! gmr_contests_are_submissions_open( $contest_id ) ) {
-		wp_send_json_error( array( 'restriction' => 'submissions-closed' ) );
-	}
-
-	// check if user has to be logged in
-	if ( gmr_contest_allows_members_only( $contest_id ) ) {
-		wp_send_json_error( array( 'restriction' => 'signin' ) );
-	}
-
-	// check if user can submit multiple entries
-	$single_entry = get_post_meta( $contest_id, 'contest-single-entry', true );
-	if ( $single_entry ) {
-		$contests = isset( $_COOKIE['__cs'] ) ? $_COOKIE['__cs'] : '';
-		$contests = wp_parse_id_list( base64_decode( $contests ) );
-		if ( in_array( $contest_id, $contests ) ) {
-			wp_send_json_error( array( 'restriction' => 'one-entry' ) );
-		}
-
-		if ( function_exists( 'has_user_entered_contest' ) && has_user_entered_contest( $contest_id ) ) {
-			wp_send_json_error( array( 'restriction' => 'one-entry' ) );
-		}
-	}
-
-	// render the form
-	wp_send_json_success( array(
-		'contest_id' => $contest_id,
-		'html'       => GreaterMediaFormbuilderRender::render( $contest_id ),
-	) );
-}
-
-/**
  * Returns login URL for a contest page.
  *
  * @param string $redirect The redirect URL.
@@ -651,122 +317,6 @@ function gmr_contests_render_form( $skip_age = false ) {
  */
 function gmr_contests_get_login_url( $redirect = null ) {
 	return '#';
-}
-
-/**
- * Verifies form submission.
- */
-function gmr_contests_verify_form_submission( $form ) {
-	_deprecated_function( 'gmr_contests_verify_form_submission', '1.1.3', 'gmr_verify_form_submission' );
-	gmr_verify_form_submission( $form );
-}
-
-/**
- * Processes contest submission.
- *
- * @action gmr_contest_submit
- */
-function gmr_contests_process_form_submission() {
-	if ( 'POST' != $_SERVER['REQUEST_METHOD'] || ( ! gmr_contests_are_submissions_open( get_the_ID() ) ) ) {
-		return;
-	}
-
-	$contest_id = get_the_ID();
-	$submitted_values = $submitted_files  = array();
-
-	require_once ABSPATH . 'wp-admin/includes/image.php';
-	require_once ABSPATH . 'wp-admin/includes/media.php';
-	require_once ABSPATH . 'wp-admin/includes/file.php';
-
-	$form = @json_decode( get_post_meta( $contest_id, 'embedded_form', true ) );
-	gmr_verify_form_submission( $form );
-
-	foreach ( $form as $field ) {
-		$field_key = 'form_field_' . $field->cid;
-		if ( 'file' === $field->field_type ) {
-
-			if ( isset( $_FILES[ $field_key ] ) && file_is_valid_image( $_FILES[ $field_key ]['tmp_name'] ) ) {
-				$file_id = media_handle_upload( $field_key, $contest_id, array( 'post_status' => 'private' ) );
-				$submitted_files[ $field->cid ] = $submitted_values[ $field->cid ] = $file_id;
-			}
-
-		} else if ( isset( $_POST[ $field_key ] ) ) {
-
-			if ( is_scalar( $_POST[ $field_key ] ) ) {
-
-				$value = $_POST[ $field_key ];
-				if ( 'radio' == $field->field_type && 'other' == $value ) {
-					if ( empty( $_POST[ "{$field_key}_other_value" ] ) ) {
-						continue;
-					}
-
-					$value = $_POST[ "{$field_key}_other_value" ];
-				}
-
-				$submitted_values[ $field->cid ] = sanitize_text_field( $value );
-
-			} else if ( is_array( $_POST[ $field_key ] ) ) {
-
-				$array_data = array();
-				foreach ( $_POST[ $field_key ] as $value ) {
-					if ( 'checkboxes' == $field->field_type && 'other' == $value ) {
-						if ( empty( $_POST[ "{$field_key}_other_value" ] ) ) {
-							continue;
-						}
-
-						$value = $_POST[ "{$field_key}_other_value" ];
-					}
-
-					$array_data[] = sanitize_text_field( $value );
-				}
-
-				$submitted_values[ $field->cid ] = $array_data;
-
-			}
-		}
-	}
-
-	$entry = ContestEntryEmbeddedForm::create_for_data( $contest_id, json_encode( $submitted_values ) );
-	$entry->save();
-
-	gmr_contests_handle_submitted_files( $submitted_files, $entry );
-
-	do_action( 'greatermedia_contest_entry_save', $entry );
-	delete_transient( 'contest_entries_' . $contest_id );
-
-	if ( ! headers_sent() ) {
-		$contests = isset( $_COOKIE['__cs'] ) ? $_COOKIE['__cs'] : '';
-		$contests = wp_parse_id_list( base64_decode( $contests ) );
-		$contests[] = $contest_id;
-		$contests = array_filter( array_unique( $contests ) );
-		$contests = base64_encode( implode( ',', $contests ) );
-
-		setcookie( '__cs', $contests, current_time( 'timestamp', 1 ) + YEAR_IN_SECONDS, '/', parse_url( home_url(), PHP_URL_HOST ) );
-	}
-
-	echo '<html>';
-		echo '<head></head>';
-		echo '<body>';
-			echo wpautop( get_post_meta( $contest_id, 'form-thankyou', true ) );
-
-			$fields = GreaterMediaFormbuilderRender::parse_entry( $contest_id, $entry->post_id(), null, true );
-			if ( ! empty( $fields ) ) :
-				?><h4 class="contest__submission--entries-title">Here is your submission:</h4>
-				<dl class="contest__submission--entries">
-					<?php foreach ( $fields as $field ) : ?>
-						<?php if ( 'file' != $field['type'] ) : ?>
-							<dt>
-								<?php echo esc_html( $field['label'] ); ?>
-							</dt>
-							<dd>
-								<?php echo esc_html( is_array( $field['value'] ) ? implode( ', ', $field['value'] ) : $field['value'] ); ?>
-							</dd>
-						<?php endif; ?>
-					<?php endforeach; ?>
-				</dl><?php
-			endif;
-		echo '</body>';
-	echo '</html>';
 }
 
 /**
@@ -847,97 +397,6 @@ function gmr_contests_get_entries_count( $contest_id ) {
 	}
 
 	return $contest_entries_count;
-}
-
-/**
- * Returns contest entries query.
- *
- * @filter gmr_contest_submissions_query
- * @global int $submission_paged The submissions archive page number.
- * @param int|WP_Query The contest id or submissions query.
- * @return WP_Query The entries query.
- */
-function gmr_contests_submissions_query( $contest_id = null ) {
-	global $submission_paged;
-
-	if ( is_a( $contest_id, 'WP_Query' ) ) {
-		return $contest_id;
-	}
-
-	if ( is_null( $contest_id ) ) {
-		$contest_id = get_the_ID();
-	}
-
-	return new WP_Query( array(
-		'post_type'      => GMR_SUBMISSIONS_CPT,
-		'post_parent'    => $contest_id,
-		'posts_per_page' => 500,
-		'paged'          => $submission_paged,
-	) );
-}
-
-/**
- * Builds permalink for contest submission object.
- *
- * @filter post_type_link 10 2
- * @param string $post_link The initial permalink
- * @param WP_Post $post The post object.
- * @return string The submission permalink.
- */
-function gmr_contests_get_submission_permalink( $post_link, $post ) {
-	if ( GMR_SUBMISSIONS_CPT == $post->post_type && ! empty( $post->post_parent ) ) {
-		$contest_link = get_permalink( $post->post_parent );
-		if ( $contest_link ) {
-			return trailingslashit( $contest_link ) . 'submission/' . $post->post_name . '/';
-		}
-	}
-
-	return $post_link;
-}
-
-/**
- * Unpacks query vars for contest submission page.
- *
- * @filter request
- * @global int $submission_paged The submissions archive page number.
- * @param array $query_vars The array of initial query vars.
- * @return array The array of unpacked query vars.
- */
-function gmr_contests_unpack_vars( $query_vars ) {
-	global $submission_paged;
-
-	if ( empty( $query_vars[ GMR_CONTEST_CPT ] ) ) {
-		return $query_vars;
-	}
-
-	if ( ! empty( $query_vars['paged'] ) ) {
-		$submission_paged = $query_vars['paged'];
-		unset( $query_vars['paged'] );
-	}
-
-	if ( ! empty( $query_vars['submission'] ) ) {
-		$query = new WP_Query( array(
-			'post_type'           => GMR_CONTEST_CPT,
-			'name'                => $query_vars[ GMR_CONTEST_CPT ],
-			'fields'              => 'ids',
-			'posts_per_page'      => 1,
-			'ignore_sticky_posts' => true,
-			'no_found_rows'       => true,
-		) );
-
-		if ( ! $query->have_posts() ) {
-			return $query_vars;
-		}
-
-		return array(
-			GMR_SUBMISSIONS_CPT => $query_vars['submission'],
-			'post_type'         => GMR_SUBMISSIONS_CPT,
-			'name'              => $query_vars['submission'],
-			'post_parent'       => $query->next_post(),
-		);
-	}
-
-	return $query_vars;
 }
 
 /**
@@ -1160,10 +619,6 @@ function gmr_contests_filter_contest_actions( $actions, WP_Post $post ) {
 		}
 	}
 
-	if ( ! current_user_can( 'edit_contest_entries' ) ) {
-		unset( $actions['gmr-contest-winner'] );
-	}
-
 	return $actions;
 }
 
@@ -1344,51 +799,4 @@ function gmr_contest_get_fields( $submission = null, $field_type = 'entry_field'
 	}
 
 	return $contest_fields;
-}
-
-/**
- * Get contest's submission start date.
- *
- * @param $contest_id
- *
- * @return int
- */
-function gmr_contests_get_submission_start_date( $contest_id ) {
-	return (int) get_post_meta( $contest_id, 'contest-submission-start', true ) ?:
-		get_post_meta( $contest_id, 'contest-start', true );;
-}
-
-/**
- * Get contest's submission end date.
- *
- * @param $contest_id
- *
- * @return int
- */
-function gmr_contests_get_submission_end_date( $contest_id ) {
-	return (int) get_post_meta( $contest_id, 'contest-submission-end', true ) ?:
-		get_post_meta( $contest_id, 'contest-end', true );
-}
-
-/**
- * Check whether or not submissions for the contest are open.
- *
- * @param int $contest_id ID of contest to check.
- *
- * @return bool
- */
-function gmr_contests_are_submissions_open( $contest_id ) {
-	$submission_start = gmr_contests_get_submission_start_date( $contest_id );
-	$submission_end   = gmr_contests_get_submission_end_date( $contest_id );
-	$current_time     = time();
-
-	if ( ( ! empty( $submission_start ) ) && ( $current_time < $submission_start ) ){
-		return false;
-	}
-
-	if ( ( ! empty( $submission_end ) ) && ( $current_time > $submission_end ) ){
-		return false;
-	}
-
-	return true;
 }

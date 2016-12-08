@@ -27,20 +27,8 @@ define( 'EP_GMR_SURVEY', EP_PAGES << 2 );
 include 'inc/functions.php';
 include 'inc/contests.php';
 include 'inc/surveys.php';
-include 'inc/class-greatermedia-contest-entry.php';
-include 'inc/class-greatermedia-contest-entry-embedded-form.php';
-include 'inc/class-greatermedia-formbuilder-render.php';
-include 'inc/class-greatermedia-ugc.php';
-include 'inc/class-greatermedia-uggallery.php';
-include 'inc/class-greatermedia-ugimage.php';
-include 'inc/class-greatermedia-uglink.php';
-include 'inc/class-ugc-moderation-table.php';
 
 if ( is_admin() || ( defined( 'DOING_ASYNC' ) && DOING_ASYNC ) ) {
-	// include list table class files if it hasn't been included yet
-	require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
-	require_once ABSPATH . 'wp-admin/includes/class-wp-posts-list-table.php';
-
 	include 'inc/class-greatermedia-contests-metaboxes.php';
 }
 
@@ -49,8 +37,6 @@ register_deactivation_hook( __FILE__, 'gmr_contests_deactivated' );
 
 function gmr_contests_activated() {
 	gmr_contests_register_post_type();
-	\GreaterMediaContestEntry::contest_entry();
-	\GreaterMediaUserGeneratedContent::user_generated_content();
 
 	$surveys = new GreaterMediaSurveys();
 	$surveys->register_survey_cpt();
