@@ -1,15 +1,59 @@
 <?php
 
 // action hooks
+add_action( 'init', 'gmr_survey_register_cpt' );
 add_action( 'template_redirect', 'gmr_surveys_process_action' );
-add_action( 'wp_enqueue_scripts', 'gmr_surveys_enqueue_scripts' );
-
 add_action( 'gmr_survey_load', 'gmr_surveys_render_form' );
-add_action( 'gmr_survey_submit', 'gmr_surveys_process_form_submission' );
 
 // filter hooks
 add_filter( 'gmr-homepage-curation-post-types', 'gmr_survey_register_curration_post_type' );
 add_filter( 'gmr-show-curation-post-types', 'gmr_survey_register_curration_post_type' );
+
+/**
+ * Registers custom post type for survey.
+ */
+function gmr_survey_register_cpt() {
+
+	$labels = array(
+		'name'                => 'Surveys',
+		'singular_name'       => 'Survey',
+		'add_new'             => 'Add New Survey',
+		'add_new_item'        => 'Add New Survey',
+		'edit_item'           => 'Edit Survey',
+		'new_item'            => 'New Survey',
+		'view_item'           => 'View Survey',
+		'search_items'        => 'Search Surveys',
+		'not_found'           => 'No surveys found',
+		'not_found_in_trash'  => 'No surveys found in Trash',
+		'parent_item_colon'   => 'Parent Survey:',
+		'menu_name'           => 'Surveys',
+	);
+
+	$args = array(
+		'labels'              => $labels,
+		'hierarchical'        => false,
+		'description'         => 'description',
+		'taxonomies'          => array(),
+		'public'              => true,
+		'show_ui'             => true,
+		'show_in_menu'        => true,
+		'show_in_admin_bar'   => true,
+		'menu_position'       => 33,
+		'menu_icon'           => 'dashicons-welcome-write-blog',
+		'show_in_nav_menus'   => true,
+		'publicly_queryable'  => true,
+		'exclude_from_search' => false,
+		'has_archive'         => true,
+		'query_var'           => true,
+		'can_export'          => true,
+		'rewrite'             => array( 'slug' => 'surveys', 'ep_mask' => EP_GMR_SURVEY ),
+		'capability_type'     => array( 'survey', 'surveys' ),
+		'map_meta_cap'        => true,
+		'supports'            => array( 'title', 'editor', 'thumbnail' ),
+	);
+
+	register_post_type( GMR_SURVEY_CPT, $args );
+}
 
 /**
  * Registers survey post type in the curration types list.
@@ -50,18 +94,6 @@ function gmr_surveys_process_action() {
 		do_action( "gmr_survey_{$action}" );
 		exit;
 	}
-}
-
-/**
- * Enqueues survey script.
- *
- * @action wp_enqueue_scripts
- */
-function gmr_surveys_enqueue_scripts() {
-	$base_path = trailingslashit( GREATER_MEDIA_CONTESTS_URL );
-	$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
-
-	wp_enqueue_script( 'greatermedia-surveys', "{$base_path}js/surveys{$postfix}.js", array( 'jquery' ), GREATER_MEDIA_CONTESTS_VERSION, true );
 }
 
 /**
@@ -119,69 +151,4 @@ function gmr_surveys_render_form() {
 function gmr_survey_verify_form_submission( $form ) {
 	_deprecated_function( 'gmr_survey_verify_form_submission', '1.1.3', 'gmr_verify_form_submission' );
 	gmr_verify_form_submission( $form );
-}
-
-/**
- * Processes survey submission.
- *
- * @action gmr_survey_submit
- */
-function gmr_surveys_process_form_submission() {
-	if ( 'POST' != $_SERVER['REQUEST_METHOD'] ) {
-		return;
-	}
-
-	$survey_id = get_the_ID();
-	$form = @json_decode( get_post_meta( $survey_id, 'survey_embedded_form', true ) );
-	gmr_verify_form_submission( $form );
-
-	require_once ABSPATH . 'wp-admin/includes/image.php';
-	require_once ABSPATH . 'wp-admin/includes/media.php';
-	require_once ABSPATH . 'wp-admin/includes/file.php';
-
-	$submitted_values = $submitted_files  = array();
-
-	foreach ( $form as $field ) {
-		$post_array_key = 'form_field_' . $field->cid;
-		if ( isset( $_POST[ $post_array_key ] ) ) {
-			if ( is_scalar( $_POST[ $post_array_key ] ) ) {
-				$submitted_values[ $field->cid ] = sanitize_text_field( $_POST[ $post_array_key ] );
-			} else if ( is_array( $_POST[ $post_array_key ] ) ) {
-				$submitted_values[ $field->cid ] = array_map( 'sanitize_text_field', $_POST[ $post_array_key ] );
-			}
-		}
-	}
-
-	$entrant_reference = $entrant_name = '';
-
-	$entry = GreaterMediaSurveyEntry::create_for_data( $survey_id, $entrant_name, $entrant_reference, GreaterMediaContestEntry::ENTRY_SOURCE_EMBEDDED_FORM, json_encode( $submitted_values ) );
-	$entry->save();
-
-	do_action( 'greatermedia_survey_entry_save', $entry );
-
-	echo '<html>';
-		echo '<head></head>';
-		echo '<body>';
-			$thankyou = get_post_meta( $survey_id, 'form-thankyou', true );
-			$thankyou = $thankyou ? $thankyou : "Thanks for your response!";
-			echo wpautop( $thankyou );
-
-			$fields = GreaterMediaFormbuilderRender::parse_entry( $survey_id, $entry->post->ID, $form );
-			if ( ! empty( $fields ) ) :
-				?><h4 class="contest__submission--entries-title">Here is your response:</h4>
-				<dl class="contest__submission--entries">
-					<?php foreach ( $fields as $field ) : ?>
-						<?php if ( 'file' != $field['type'] ) : ?>
-							<dt>
-								<?php echo esc_html( $field['label'] ); ?>
-							</dt>
-							<dd>
-								<?php echo esc_html( is_array( $field['value'] ) ? implode( ', ', $field['value'] ) : $field['value'] ); ?>
-							</dd>
-						<?php endif; ?>
-					<?php endforeach; ?>
-				</dl><?php
-			endif;
-		echo '</body>';
-	echo '</html>';
 }

@@ -724,24 +724,6 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 		};
 
 		var loadContainerState = function(url) {
-			$.get(url, function(response) {
-				var restriction = null;
-
-				if (response.success) {
-					container.html(response.data.html);
-
-					$('#contest-form form').parsley();
-					$('.type-contest.collapsed').removeClass('collapsed');
-				} else {
-					restriction = response.data.restriction;
-				}
-
-				showRestriction(restriction);
-
-				if (response.data && response.data.contest_id) {
-					loadUserContestMeta(response.data.contest_id);
-				}
-			});
 		};
 
 		var loadUserContestMeta = function(contestID) {

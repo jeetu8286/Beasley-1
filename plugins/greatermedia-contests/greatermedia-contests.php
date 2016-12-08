@@ -35,8 +35,6 @@ include 'inc/class-greatermedia-uggallery.php';
 include 'inc/class-greatermedia-ugimage.php';
 include 'inc/class-greatermedia-uglink.php';
 include 'inc/class-ugc-moderation-table.php';
-include 'inc/class-greatermedia-surveys.php';
-include 'inc/class-greatermedia-survey-entry.php';
 
 if ( is_admin() || ( defined( 'DOING_ASYNC' ) && DOING_ASYNC ) ) {
 	// include list table class files if it hasn't been included yet
@@ -44,8 +42,6 @@ if ( is_admin() || ( defined( 'DOING_ASYNC' ) && DOING_ASYNC ) ) {
 	require_once ABSPATH . 'wp-admin/includes/class-wp-posts-list-table.php';
 
 	include 'inc/class-greatermedia-contests-metaboxes.php';
-	include 'inc/contest-winner.php';
-	include 'inc/survey-responses.php';
 }
 
 register_activation_hook( __FILE__, 'gmr_contests_activated' );
@@ -58,8 +54,6 @@ function gmr_contests_activated() {
 
 	$surveys = new GreaterMediaSurveys();
 	$surveys->register_survey_cpt();
-
-	\GreaterMediaSurveyEntry::register_survey_response_cpt();
 
 	load_capabilities( GMR_CONTEST_CPT );
 	load_capabilities( GMR_CONTEST_ENTRY_CPT );
