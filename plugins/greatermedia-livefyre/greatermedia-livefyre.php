@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Greater Media LiveFyre
-Description: LiveFyre integration with Gigya
+Description: LiveFyre integration
 Author: 10up
 */
 
@@ -16,10 +16,6 @@ function gmr_livefyre_main_real() {
 	$plugin = new \GreaterMedia\LiveFyre\Plugin();
 	$plugin->enable();
 
-	if ( defined( 'WP_CLI' ) && WP_CLI ) {
-		\WP_CLI::add_command( 'livefyre', 'GreaterMedia\LiveFyre\Commands\LiveFyreCommand' );
-	}
-
 	new \GreaterMedia\LiveFyrePolls\ContentFilter();
 	new \GreaterMedia\LiveFyrePolls\ShortcodeHandler();
 
@@ -31,7 +27,6 @@ function gmr_livefyre_main_real() {
 }
 
 function gmr_livefyre_main() {
-	// Gigya has classes that are a dependency, so we need to ensure that the autoload from there is loaded first, so checking that it exists also!
 	if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 		gmr_livefyre_main_real();
 	} else {
