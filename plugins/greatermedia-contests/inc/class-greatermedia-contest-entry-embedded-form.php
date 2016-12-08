@@ -65,24 +65,6 @@ class ContestEntryEmbeddedForm extends GreaterMediaContestEntry {
 	}
 
 	protected function _fill_entrant_info() {
-		if ( function_exists( 'is_gigya_user_logged_in' ) && is_gigya_user_logged_in() ) {
-			$this->entrant_reference = get_gigya_user_id();
-			$this->entrant_name = trim( sprintf( '%s %s', self::_get_user_field( 'firstName' ), self::_get_user_field( 'lastName' ) ) );
-			$this->entrant_email = self::_get_user_field( 'email' );
-			$gender = self::_get_user_field( 'gender' );
-			$this->entrant_gender = $gender != 'u' ? $gender : null;
-			$this->entrant_zip = self::_get_user_field( 'zip' );
-			$this->entrant_birth_year = self::_get_user_field( 'birthYear' );
-			$this->entrant_birth_date = strtotime( sprintf(
-				'%s-%02s-%02s',
-				self::_get_user_field( 'birthYear' ),
-				self::_get_user_field( 'birthMonth', '01' ),
-				self::_get_user_field( 'birthDay', '01' )
-			) );
-
-			return;
-		}
-
 		$submitted_by = trim( strip_tags( filter_input( INPUT_POST, 'userinfo_submitted_by' ) ) );
 		if ( empty( $submitted_by ) ) {
 			$submitted_by = 'Anonymous Listener';
@@ -103,11 +85,7 @@ class ContestEntryEmbeddedForm extends GreaterMediaContestEntry {
 	}
 
 	private static function _get_user_field( $field, $default = null ) {
-		if ( is_null( self::$_profile ) ) {
-			self::$_profile = get_gigya_user_profile();
-		}
-
-		return ! empty( self::$_profile[ $field ] ) ? self::$_profile[ $field ] : $default;
+		return $default;
 	}
 
 }

@@ -3,7 +3,6 @@
 namespace GreaterMedia\LiveFyre\Ajax;
 
 use GreaterMedia\Gigya\Ajax\AjaxHandler;
-use GreaterMedia\LiveFyre\Ajax\PullGigyaProfile;
 use Livefyre\Livefyre;
 
 class ChangeLiveFyreSettings extends AjaxHandler {
@@ -53,8 +52,7 @@ class ChangeLiveFyreSettings extends AjaxHandler {
 	}
 
 	function get_user_sync_url_template( $settings ) {
-		$pull_gigya_profile = new PullGigyaProfile();
-		return $pull_gigya_profile->get_url();
+		return '';
 	}
 
 	function get_ping_for_pull_auth_token( $settings ) {

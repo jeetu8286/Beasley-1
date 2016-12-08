@@ -262,7 +262,7 @@ class GreaterMediaUserGeneratedContent {
 		}
 		$entry_fields[ $display_name[0]['cid'] ] = $display_name[0]; ?>
 		<table class="form-table">
-			<?php foreach ( $fields as $field ) {				
+			<?php foreach ( $fields as $field ) {
 				if ( 'file' === $field['field_type'] || 'email' === $field['field_type'] ) {
 					continue;
 				}
@@ -304,7 +304,7 @@ class GreaterMediaUserGeneratedContent {
 		$entry_id = get_post_meta( $post_id, 'contest_entry_id', true );
 
 		$entry = get_post( $entry_id );
-		
+
 		$entry_reference = get_post_meta( $entry->ID, 'entry_reference', true );
 
 		if ( is_string( $entry_reference ) ) {
@@ -660,14 +660,6 @@ class GreaterMediaUserGeneratedContent {
 	public function contest() {
 
 		return get_post( $this->post->post_parent );
-
-	}
-
-	public function listener_gigya_id() {
-
-		$listener_gigya_id = get_post_meta( $this->post_id, '_ugc_listener_gigya_id', true );
-
-		return $listener_gigya_id;
 
 	}
 

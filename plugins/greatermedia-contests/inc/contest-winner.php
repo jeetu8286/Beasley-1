@@ -267,11 +267,7 @@ function gmr_do_contest_export( $args ) {
 
 				$profile = get_post_meta( $entry->ID, 'entrant_reference', true );
 				if ( ! empty( $profile ) ) {
-					try {
-						$profile = get_gigya_user_profile( $profile );
-					} catch ( Exception $e ) {
-						$profile = array();
-					}
+					$profile = array();
 				}
 
 				$birthday = (int) get_post_meta( $entry->ID, 'entrant_birth_date', true );
@@ -426,9 +422,9 @@ function gmr_contests_render_contest_entry_column( $column_name, $post_id ) {
 
 	} elseif ( '_gmr_username' == $column_name ) {
 
-		$gigya_id = get_post_meta( $post_id, 'entrant_reference', true );
+		$user_id = get_post_meta( $post_id, 'entrant_reference', true );
 		$winners = get_post_meta( $entry->post_parent, 'winner' );
-		$is_winner = in_array( "{$post_id}:{$gigya_id}", $winners );
+		$is_winner = in_array( "{$post_id}:{$user_id}", $winners );
 
 		echo '<b>';
 			echo esc_html( gmr_contest_get_entry_author( $post_id ) );
@@ -504,8 +500,8 @@ function gmr_contests_render_contest_entry_column( $column_name, $post_id ) {
  * @param WP_Post $entry The contest entry object.
  */
 function _gmr_contests_add_entry_to_winners( $entry ) {
-	$gigya_id = get_post_meta( $entry->ID, 'entrant_reference', true );
-	add_post_meta( $entry->post_parent, 'winner', "{$entry->ID}:{$gigya_id}" );
+	$user_id = get_post_meta( $entry->ID, 'entrant_reference', true );
+	add_post_meta( $entry->post_parent, 'winner', "{$entry->ID}:{$user_id}" );
 }
 
 /**
@@ -556,8 +552,8 @@ function gmr_contests_unmark_contest_winner() {
 		wp_die( 'Contest entry was not found.' );
 	}
 
-	$gigya_id = get_post_meta( $entry->ID, 'entrant_reference', true );
-	delete_post_meta( $entry->post_parent, 'winner', "{$entry->ID}:{$gigya_id}" );
+	$user_id = get_post_meta( $entry->ID, 'entrant_reference', true );
+	delete_post_meta( $entry->post_parent, 'winner', "{$entry->ID}:{$user_id}" );
 
 	wp_redirect( add_query_arg( 'random', false, wp_get_referer() ) );
 	exit;

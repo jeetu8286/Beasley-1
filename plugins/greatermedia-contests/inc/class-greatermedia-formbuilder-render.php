@@ -191,11 +191,7 @@ class GreaterMediaFormbuilderRender {
 	}
 
 	private static function _get_user_field( $field, $default = null ) {
-		if ( is_null( self::$_profile ) ) {
-			self::$_profile = get_gigya_user_profile();
-		}
-
-		return ! empty( self::$_profile[ $field ] ) ? self::$_profile[ $field ] : $default;
+		return $default;
 	}
 
 	private static function _get_default_fields() {
@@ -266,17 +262,13 @@ class GreaterMediaFormbuilderRender {
 
 		if ( $use_user_info ) {
 			$html .= '<div class="contest__form--user-info" style="display:none">';
-			if ( function_exists( 'is_gigya_user_logged_in' ) && is_gigya_user_logged_in() ) {
-				$html .= '<div class="user-info-box"></div>';
-			} else {
-				$html .= '<i>Enter this contest as a guest</i> <a href="' . esc_url( gmr_contests_get_login_url() ) . '">Login or Register</a>';
-				foreach ( self::_get_default_fields() as $field ) {
-					$renderer_method = 'render_' . $field->field_type;
-					if ( method_exists( __CLASS__, $renderer_method ) ) {
-						$html .= '<div class="contest__form--row">';
-						$html .= self::$renderer_method( $post_id, $field );
-						$html .= '</div>';
-					}
+			$html .= '<i>Enter this contest as a guest</i> <a href="' . esc_url( gmr_contests_get_login_url() ) . '">Login or Register</a>';
+			foreach ( self::_get_default_fields() as $field ) {
+				$renderer_method = 'render_' . $field->field_type;
+				if ( method_exists( __CLASS__, $renderer_method ) ) {
+					$html .= '<div class="contest__form--row">';
+					$html .= self::$renderer_method( $post_id, $field );
+					$html .= '</div>';
 				}
 			}
 			$html .= '</div>';

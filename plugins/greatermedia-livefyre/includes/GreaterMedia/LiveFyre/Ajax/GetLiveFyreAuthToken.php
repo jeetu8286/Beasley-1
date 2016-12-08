@@ -16,12 +16,7 @@ class GetLiveFyreAuthToken extends AjaxHandler {
 	}
 
 	function run( $params ) {
-		if ( is_gigya_user_logged_in() ) {
-			$builder = new TokenBuilder( $this->get_livefyre_options() );
-			return $builder->get_auth_token();
-		} else {
-			return '';
-		}
+		return '';
 	}
 
 	function get_livefyre_options() {

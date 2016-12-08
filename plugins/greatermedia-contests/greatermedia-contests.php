@@ -48,10 +48,6 @@ if ( is_admin() || ( defined( 'DOING_ASYNC' ) && DOING_ASYNC ) ) {
 	include 'inc/survey-responses.php';
 }
 
-if ( defined( 'WP_CLI' ) && WP_CLI ) {
-	include 'inc/class-greatermedia-contests-wp-cli.php';
-}
-
 register_activation_hook( __FILE__, 'gmr_contests_activated' );
 register_deactivation_hook( __FILE__, 'gmr_contests_deactivated' );
 

@@ -693,16 +693,6 @@ function add_google_analytics() {
 
 	var googleUidDimension = '<?php echo esc_js( $google_uid_dimension ); ?>';
 
-	if( window.is_gigya_user_logged_in && is_gigya_user_logged_in() ) {
-		ga( 'set', '&uid', get_gigya_user_id() );
-
-		if ( googleUidDimension !== '0' ) {
-			googleUidDimension = 'dimension' + googleUidDimension;
-			ga( 'set', googleUidDimension, get_gigya_user_id() );
-		}
-
-	}
-
 	jQuery(document).on('pjax:end', function() {
 		ga('set', 'location', window.location.href);
 		ga('send', 'pageview');
@@ -761,26 +751,6 @@ function add_embedly_global_script() {
 	}
 }
 add_action( 'wp_head' , 'add_embedly_global_script' );
-
-/**
- * adds an additional body class if a user is authenticated with gigya
- *
- * @param $classes
- *
- * @return array
- */
-function greatermedia_add_gigya_body_class( $classes ) {
-
-	$classes[] = '';
-
-	if ( is_gigya_user_logged_in() ) {
-		$classes[] = 'gmr-user';
-	}
-
-	return $classes;
-
-}
-add_filter( 'body_class', 'greatermedia_add_gigya_body_class' );
 
 /**
  * Show more posts that usual for gmr_closure archives.

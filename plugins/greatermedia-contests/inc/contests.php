@@ -428,11 +428,6 @@ function _gmr_contests_get_submission_for_voting_actions() {
 		wp_send_json_error();
 	}
 
-	// do nothing if an user is not logged in
-	if ( ! function_exists( 'is_gigya_user_logged_in' ) || ! is_gigya_user_logged_in() ) {
-		wp_send_json_error();
-	}
-
 	$query = new WP_Query();
 	$submissions = $query->query( array(
 		'posts_per_page'      => 1,
@@ -464,31 +459,17 @@ function _gmr_contests_get_submission_for_voting_actions() {
  * @return string The voting key.
  */
 function _gmr_contests_get_vote_key() {
-	return function_exists( 'get_gigya_user_id' )
-		? 'vote_' . get_gigya_user_id()
-		: false;
+	return false;
 }
 
 /**
  * Determines whether an user voted for a submission or not.
  *
  * @param int|WP_Post $submission The submission id or object to check against.
- * @return boolean TRUE if current gigya user voted for a submission, otherwise FALSE.
+ * @return boolean TRUE if current user voted for a submission, otherwise FALSE.
  */
 function gmr_contests_is_user_voted_for_submission( $submission = null ) {
-	if ( ! function_exists( 'is_gigya_user_logged_in' ) || ! is_gigya_user_logged_in() ) {
-		return false;
-	}
-
-	$vote_key = _gmr_contests_get_vote_key();
-	if ( empty( $vote_key ) ) {
-		return false;
-	}
-
-	$submission = get_post( $submission );
-	$voted = get_post_meta( $submission->ID, $vote_key, true );
-
-	return ! empty( $voted );
+	return false;
 }
 
 /**
@@ -637,8 +618,7 @@ function gmr_contests_render_form( $skip_age = false ) {
 	}
 
 	// check if user has to be logged in
-	$gigya_logged_in_exists = function_exists( 'is_gigya_user_logged_in' );
-	if ( gmr_contest_allows_members_only( $contest_id ) && $gigya_logged_in_exists && ! is_gigya_user_logged_in() ) {
+	if ( gmr_contest_allows_members_only( $contest_id ) ) {
 		wp_send_json_error( array( 'restriction' => 'signin' ) );
 	}
 
@@ -656,21 +636,6 @@ function gmr_contests_render_form( $skip_age = false ) {
 		}
 	}
 
-	// check min age restriction
-	if ( ! $skip_age ) {
-		$min_age = (int) get_post_meta( $contest_id, 'contest-min-age', true );
-		if ( $min_age > 0 ) {
-			if ( $gigya_logged_in_exists && is_gigya_user_logged_in() ) {
-				$current_age = get_gigya_user_field( 'age' );
-				if ( $current_age < $min_age ) {
-					wp_send_json_error( array( 'restriction' => 'age-fails' ) );
-				}
-			} else {
-				wp_send_json_error( array( 'restriction' => 'age' ) );
-			}
-		}
-	}
-
 	// render the form
 	wp_send_json_success( array(
 		'contest_id' => $contest_id,
@@ -685,13 +650,7 @@ function gmr_contests_render_form( $skip_age = false ) {
  * @return string The login page URL.
  */
 function gmr_contests_get_login_url( $redirect = null ) {
-	if ( is_null( $redirect ) ) {
-		$redirect = parse_url( get_permalink(), PHP_URL_PATH );
-	}
-
-	return function_exists( 'gigya_profile_path' )
-		? gigya_profile_path( 'login', array( 'dest' => $redirect ) )
-		: '#';
+	return '#';
 }
 
 /**
@@ -714,17 +673,6 @@ function gmr_contests_process_form_submission() {
 
 	$contest_id = get_the_ID();
 	$submitted_values = $submitted_files  = array();
-
-	if ( function_exists( 'is_gigya_user_logged_in' ) && ! is_gigya_user_logged_in() ) {
-		$entrant_email = filter_input( INPUT_POST, 'userinfo_email', FILTER_VALIDATE_EMAIL );
-		if ( ! $entrant_email || ( function_exists( 'has_email_entered_contest' ) && has_email_entered_contest( $contest_id, $entrant_email ) ) ) {
-			echo '<html>';
-				echo '<head></head>';
-				echo '<body><b style="color:red">Sorry, but you can enter the contest only once.</b></body>';
-			echo '</html>';
-			exit;
-		}
-	}
 
 	require_once ABSPATH . 'wp-admin/includes/image.php';
 	require_once ABSPATH . 'wp-admin/includes/media.php';
@@ -855,10 +803,6 @@ function gmr_contests_handle_submitted_files( array $submitted_files, GreaterMed
 	set_post_thumbnail( $ugc->post->ID, $thumbnail );
 
 	add_post_meta( $ugc->post->ID, 'contest_entry_id', $entry->post->ID );
-	if ( function_exists( 'get_gigya_user_id' ) ) {
-		add_post_meta( $ugc->post->ID, 'gigya_user_id', get_gigya_user_id() );
-	}
-
 	update_post_meta( $entry->post->ID, 'submission_id', $ugc->post->ID );
 }
 
@@ -1050,26 +994,6 @@ function gmr_contest_submission_get_author( $submission = null ) {
  * @return string The author name.
  */
 function gmr_contest_get_entry_author( $entry_id, $return = 'string' ) {
-	if ( function_exists( 'get_gigya_user_profile' ) ) {
-		try {
-			$gigya_id = get_post_meta( $entry_id, 'entrant_reference', true );
-			if ( $gigya_id && ( $profile = get_gigya_user_profile( $gigya_id ) ) ) {
-				if ( 'string' == $return ) {
-					return trim( sprintf(
-						'%s %s',
-						isset( $profile['firstName'] ) ? $profile['firstName'] : '',
-						isset( $profile['lastName'] ) ? $profile['lastName'] : ''
-					) );
-				} else {
-					return array(
-						isset( $profile['firstName'] ) ? $profile['firstName'] : '',
-						isset( $profile['lastName'] ) ? $profile['lastName'] : ''
-					);
-				}
-			}
-		} catch( Exception $e ) {}
-	}
-
 	$username = trim( get_post_meta( $entry_id, 'entrant_name', true ) );
 	if ( ! $username ) {
 		$username = 'guest';
@@ -1087,22 +1011,13 @@ function gmr_contest_get_entry_author( $entry_id, $return = 'string' ) {
 }
 
 /**
- * Returns gigya user email.
+ * Returns user email.
  *
  * @param int|WP_Post $entry_id Contest post object or id.
  * @return string The email address.
  */
 function gmr_contest_get_entry_author_email( $entry_id ) {
 	$email = get_post_meta( $entry_id, 'entrant_email', true );
-	if ( function_exists( 'get_gigya_user_profile' ) ) {
-		try {
-			$gigya_id = get_post_meta( $entry_id, 'entrant_reference', true );
-			if ( $gigya_id && ( $profile = get_gigya_user_profile( $gigya_id ) ) && isset( $profile['email'] ) ) {
-				$email = $profile['email'];
-			}
-		} catch( Exception $e ) {}
-	}
-
 	return filter_var( $email, FILTER_VALIDATE_EMAIL );
 }
 
@@ -1148,12 +1063,12 @@ function gmr_contests_is_submission_winner( $submission = null ) {
 		return false;
 	}
 
-	$gigya_id = trim( get_post_meta( $entry_id, 'entrant_reference', true ) );
-	if ( empty( $gigya_id ) ) {
+	$user_id = trim( get_post_meta( $entry_id, 'entrant_reference', true ) );
+	if ( empty( $user_id ) ) {
 		return false;
 	}
 
-	return in_array( "{$entry_id}:{$gigya_id}", get_post_meta( $submission->post_parent, 'winner' ) );
+	return in_array( "{$entry_id}:{$user_id}", get_post_meta( $submission->post_parent, 'winner' ) );
 }
 
 /**
