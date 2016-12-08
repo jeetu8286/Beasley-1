@@ -51,29 +51,10 @@ class CommentsApp {
 	}
 
 	function initialize_livefyre() {
-		$comments_data = array(
-			'ajax_url'                      => admin_url( 'admin-ajax.php' ),
-			'get_livefyre_auth_token_nonce' => wp_create_nonce( 'get_livefyre_auth_token' ),
-			'data'                          => $this->get_comments_data()
-		);
-
 		wp_enqueue_script(
 			'livefyre_loader',
 			$this->get_livefyre_loader(),
 			array()
-		);
-
-		wp_enqueue_script(
-			'livefyre_comments',
-			plugins_url( 'js/comments_app.js', GMR_LIVEFYRE_PLUGIN_FILE ),
-			array( 'livefyre_loader', 'jquery', 'wp_ajax_api', 'cookies-js' ),
-			GMR_LIVEFYRE_VERSION
-		);
-
-		wp_localize_script(
-			'livefyre_comments',
-			'livefyre_comments_data',
-			$comments_data
 		);
 	}
 

@@ -1,4 +1,3 @@
-/* globals is_gigya_user_logged_in, gigya_profile_path, get_gigya_user_field */
 (function($) {
 
 	var ProfileMenuApp = function() {
@@ -29,12 +28,11 @@
 		},
 
 		getAvatarLink: function() {
-			var endpoint = is_gigya_user_logged_in() ? 'account' : 'login';
-			return gigya_profile_path(endpoint);
+			return '#';
 		},
 
 		getThumbnailURL: function() {
-			return get_gigya_user_field('thumbnailURL');
+			return '#';
 		},
 
 		getMenu: function() {
@@ -47,7 +45,7 @@
 				item = menu[i];
 				$li = $('<li></li>');
 
-				$a = $('<a></a>', { href: gigya_profile_path(item.endpoint) });
+				$a = $('<a></a>', { href: '#' });
 				$a.text(item.label);
 				$li.append($a);
 
@@ -60,17 +58,10 @@
 		getMenuLabels: function() {
 			var menu;
 
-			if (is_gigya_user_logged_in()) {
-				menu = [
-					{ label: 'Edit Account' , endpoint: 'account' } ,
-					{ label: 'Logout'       , endpoint: 'logout' }
-				];
-			} else {
-				menu = [
-					{ label: 'Login/Register', endpoint: 'login' }
-				];
-			}
-
+			menu = [
+				{ label: 'Login/Register', endpoint: 'login' }
+			];
+			
 			return menu;
 		}
 

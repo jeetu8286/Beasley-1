@@ -27,15 +27,6 @@
 	}
 
 	/**
-	 * Fallback for adding a body class when a user is a Gigya authenticated user
-	 */
-	function addGigyaBodyClass() {
-		if (! body.classList.contains('gmr-user')) {
-			body.classList.add('gmr-user');
-		}
-	}
-
-	/**
 	 * Function to add pop-up for social links
 	 *
 	 * @returns {boolean}
@@ -106,10 +97,6 @@
 	 */
 	responsiveTables();
 
-	if (is_gigya_user_logged_in()) {
-		addGigyaBodyClass();
-	}
-
 	/**
 	 * Functions called on Document Ready
 	 */
@@ -131,5 +118,5 @@
 	$(document).bind( 'pjax:end', function () {
 		personality_toggle();
 	});
-	
+
 })(jQuery, window, document);

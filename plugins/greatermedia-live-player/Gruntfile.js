@@ -40,9 +40,6 @@ module.exports = function( grunt ) {
 				globals: {
 					exports: true,
 					module:  false,
-					is_gigya_user_logged_in: false,
-					gigya_profile_path: false,
-					get_gigya_user_field: false,
 					gmr: true,
 					Cookies: true,
 					gmlp: true,
@@ -57,7 +54,7 @@ module.exports = function( grunt ) {
 					NOLCMB: false,
 					bindNielsenSDKEvents: true
 				}
-			}		
+			}
 		},
 		uglify: {
 			all: {
@@ -76,7 +73,7 @@ module.exports = function( grunt ) {
 		},
 
 		watch:  {
-			
+
 			scripts: {
 				files: ['assets/js/admin/**/*.js', 'assets/js/src/**/*.js', 'assets/js/vendor/**/*.js'],
 				tasks: ['jshint', 'concat', 'uglify'],
@@ -106,7 +103,7 @@ module.exports = function( grunt ) {
 					'!.gitmodules'
 				],
 				dest: 'release/<%= pkg.version %>/'
-			}		
+			}
 		},
 		compress: {
 			main: {
@@ -118,28 +115,28 @@ module.exports = function( grunt ) {
 				cwd: 'release/<%= pkg.version %>/',
 				src: ['**/*'],
 				dest: 'greater_media_live_player/'
-			}		
+			}
 		}
 	} );
-	
+
 	// Load other tasks
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
-	
+
 	grunt.loadNpmTasks('grunt-contrib-sass');
-	
+
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks( 'grunt-contrib-clean' );
 	grunt.loadNpmTasks( 'grunt-contrib-copy' );
 	grunt.loadNpmTasks( 'grunt-contrib-compress' );
-	
+
 	// Default task.
-	
+
 	grunt.registerTask( 'default', ['jshint', 'concat', 'uglify'] );
-	
-	
+
+
 	grunt.registerTask( 'build', ['default', 'clean', 'copy', 'compress'] );
 
 	grunt.util.linefeed = '\n';

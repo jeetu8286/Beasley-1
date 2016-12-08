@@ -567,8 +567,6 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 		return $grids;
 	};
 })(jQuery, Modernizr, Waypoint);
-/* globals get_gigya_profile_fields:false, gigya_profile_path:false */
-/* globals _:false */
 (function($) {
 	var $document = $(document), container, gridContainer;
 
@@ -747,13 +745,8 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 		};
 
 		var loadUserContestMeta = function(contestID) {
-			if (is_gigya_user_logged_in()) {
-				get_gigya_profile_fields(['email', 'dateOfBirth'])
-					.then(didLoadUserContestMeta);
-			} else {
-				var $form = $('.contest__form--user-info');
-				$form.css('display', 'block');
-			}
+			var $form = $('.contest__form--user-info');
+			$form.css('display', 'block');
 		};
 
 		var didLoadUserContestMeta = function(response) {
@@ -778,14 +771,14 @@ var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAO
 				'</dl>';
 
 			var data = {
-				editProfileUrl : gigya_profile_path('account'),
-				loginUrl       : gigya_profile_path('login'),
-				firstName      : get_gigya_user_field('firstName'),
-				lastName       : get_gigya_user_field('lastName'),
+				editProfileUrl : '#',
+				loginUrl       : '#',
+				firstName      : '',
+				lastName       : '',
 				email          : fields.email || 'N/A',
-				age            : get_gigya_user_field('age'),
+				age            : '',
 				dateOfBirth    : fields.dateOfBirth || 'N/A',
-				zip            : get_gigya_user_field('zip'),
+				zip            : '',
 			};
 
 			var template     = _.template(userTemplate);

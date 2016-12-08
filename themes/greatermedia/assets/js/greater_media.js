@@ -164,12 +164,11 @@
 		},
 
 		getAvatarLink: function() {
-			var endpoint = is_gigya_user_logged_in() ? 'account' : 'login';
-			return gigya_profile_path(endpoint);
+			return '#';
 		},
 
 		getThumbnailURL: function() {
-			return get_gigya_user_field('thumbnailURL');
+			return '#';
 		},
 
 		getMenu: function() {
@@ -182,7 +181,7 @@
 				item = menu[i];
 				$li = $('<li></li>');
 
-				$a = $('<a></a>', { href: gigya_profile_path(item.endpoint) });
+				$a = $('<a></a>', { href: '#' });
 				$a.text(item.label);
 				$li.append($a);
 
@@ -195,17 +194,10 @@
 		getMenuLabels: function() {
 			var menu;
 
-			if (is_gigya_user_logged_in()) {
-				menu = [
-					{ label: 'Edit Account' , endpoint: 'account' } ,
-					{ label: 'Logout'       , endpoint: 'logout' }
-				];
-			} else {
-				menu = [
-					{ label: 'Login/Register', endpoint: 'login' }
-				];
-			}
-
+			menu = [
+				{ label: 'Login/Register', endpoint: 'login' }
+			];
+			
 			return menu;
 		}
 
@@ -411,7 +403,6 @@
 	ShareLogger.prototype = {
 
 		share: function(action) {
-			save_gigya_action(action);
 		},
 
 		didShareClick: function(event) {
@@ -565,15 +556,6 @@
 	}
 
 	/**
-	 * Fallback for adding a body class when a user is a Gigya authenticated user
-	 */
-	function addGigyaBodyClass() {
-		if (! body.classList.contains('gmr-user')) {
-			body.classList.add('gmr-user');
-		}
-	}
-
-	/**
 	 * Function to add pop-up for social links
 	 *
 	 * @returns {boolean}
@@ -644,10 +626,6 @@
 	 */
 	responsiveTables();
 
-	if (is_gigya_user_logged_in()) {
-		addGigyaBodyClass();
-	}
-
 	/**
 	 * Functions called on Document Ready
 	 */
@@ -669,7 +647,7 @@
 	$(document).bind( 'pjax:end', function () {
 		personality_toggle();
 	});
-	
+
 })(jQuery, window, document);
 (function ($, window, document, undefined) {
 
