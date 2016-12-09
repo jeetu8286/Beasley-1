@@ -154,51 +154,14 @@ function greatermedia_scripts_styles() {
 	$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 	$baseurl = untrailingslashit( get_template_directory_uri() );
 
-	wp_register_style(
-		'google-fonts',
-		'//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,800italic,400,300,700,800',
-		array(),
-		null
-	);
-	wp_register_style(
-		'greatermedia',
-		"{$baseurl}/assets/css/greater_media{$postfix}.css",
-		array(
-			'google-fonts'
-		),
-		GREATERMEDIA_VERSION
-	);
-	wp_enqueue_script(
-		'greatermedia',
-		"{$baseurl}/assets/js/greater_media{$postfix}.js",
-		array(
-			'jquery',
-			'underscore',
-			'classlist-polyfill'
-		),
-		GREATERMEDIA_VERSION,
-		true
-	);
-	wp_enqueue_script(
-		'greatermedia-load-more',
-		"{$baseurl}/assets/js/greater_media_load_more{$postfix}.js",
-		array(
-			'jquery',
-			'jquery-waypoints'
-		),
-		GREATERMEDIA_VERSION,
-		true
-	);
-	wp_enqueue_style(
-		'greatermedia'
-	);
+	wp_enqueue_script( 'greatermedia', "{$baseurl}/assets/js/greater_media{$postfix}.js", array( 'jquery', 'underscore', 'classlist-polyfill' ), GREATERMEDIA_VERSION, true );
+	wp_enqueue_script( 'greatermedia-load-more', "{$baseurl}/assets/js/greater_media_load_more{$postfix}.js", array( 'jquery', 'jquery-waypoints' ), GREATERMEDIA_VERSION, true );
 
-	/**
-	 * YARPP styles are not being used, so let's get rid of them!
-	 */
-	wp_dequeue_style(
-		'yarppWidgetCss'
-	);
+	wp_enqueue_style( 'google-fonts', '//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,800italic,400,300,700,800', array(), null );
+	wp_enqueue_style( 'greatermedia', "{$baseurl}/assets/css/greater_media{$postfix}.css", array( 'google-fonts' ), GREATERMEDIA_VERSION );
+
+	// YARPP styles are not being used, so let's get rid of them!
+	wp_dequeue_style( 'yarppWidgetCss' );
 
 	/**
 	 * this is a fix to resolve conflicts with styles and javascript for The Events Calendar plugin that will not
@@ -208,17 +171,14 @@ function greatermedia_scripts_styles() {
 	 *
 	 * @see `wp_content/plugins/the-events-calendar/lib/the-events-calendar.class.php` lines 2235 - 2244
 	 */
-	if ( class_exists( 'Tribe_Template_Factory' ) && method_exists( 'Tribe_Template_Factory', 'asset_package' ) ) {
+	if ( class_exists( 'Tribe__Events__Template_Factory' ) && method_exists( 'Tribe__Events__Template_Factory', 'asset_package' ) ) {
 		// jquery-resize
-		Tribe_Template_Factory::asset_package( 'jquery-resize' );
-
+		Tribe__Events__Template_Factory::asset_package( 'jquery-resize' );
 		// smoothness
-		Tribe_Template_Factory::asset_package( 'smoothness' );
-
+		Tribe__Events__Template_Factory::asset_package( 'smoothness' );
 		// Tribe Calendar JS
-		Tribe_Template_Factory::asset_package( 'calendar-script' );
-
-		Tribe_Template_Factory::asset_package( 'events-css' );
+		Tribe__Events__Template_Factory::asset_package( 'calendar-script' );
+		Tribe__Events__Template_Factory::asset_package( 'events-css' );
 	}
 }
 
