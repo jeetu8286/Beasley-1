@@ -325,29 +325,6 @@ function gmr_contests_post_thumbnail_html( $html, $post_id, $post_thumbnail_id, 
 }
 
 /**
- * Return contest submission author.
- *
- * @param int|WP_Post $submission The contest submission id or object.
- * @return string The author name if available.
- */
-function gmr_contest_submission_get_author( $submission = null ) {
-	$submission = get_post( $submission );
-	if ( $submission ) {
-		$display_name = gmr_contest_get_fields( $submission->ID, 'display_name' );
-		if ( ! empty ( $display_name = $display_name[0] ) ) {
-			return $display_name['value'];
-		} else {
-			$entry = get_post_meta( $submission->ID, 'contest_entry_id', true );
-			if ( $entry ) {
-				return gmr_contest_get_entry_author( $entry );
-			}
-		}
-	}
-
-	return 'guest';
-}
-
-/**
  * Return contest entry author name.
  *
  * @param int $entry_id The contest entry id.
@@ -622,32 +599,4 @@ function gmr_contests_can_show_vote_count( $submission = null ) {
 	if ( $submission->post_parent ) {
 		return get_post_meta( $submission->post_parent, 'contest_show_vote_counts', true ) ? true : false;
 	}
-}
-
-/*
- * Return the custom fields associated with an entry; field => value.
- */
-function gmr_contest_get_fields( $submission = null, $field_type = 'entry_field' ) {
-	$contest_fields = array();
-	if ( is_null( $submission ) ) {
-		$submission = get_the_ID();
-	}
-
-	$entry_id = get_post_meta( $submission, 'contest_entry_id', true );
-
-	$entry = get_post( $entry_id );
-
-	$entry_reference = get_post_meta( $entry->ID, 'entry_reference', true );
-
-	$fields = GreaterMediaFormbuilderRender::parse_entry( $entry->post_parent, $entry->ID, null, true );
-
-	foreach ( $fields as $field ) {
-		if ( false === $field[ $field_type ] || ( 'file' === $field['type'] || 'email' === $field['type'] ) ) {
-			continue;
-		}
-
-		$contest_fields[] = $field;
-	}
-
-	return $contest_fields;
 }
