@@ -124,7 +124,6 @@ function gmr_contests_prevent_hard_delete( $post, $post_status = null ) {
 		return;
 	}
 
-	// check contest
 	if ( GMR_CONTEST_CPT == $post->post_type ) {
 		if ( empty( $post_status ) ) {
 			$post_status = $post->post_status;
@@ -135,11 +134,6 @@ function gmr_contests_prevent_hard_delete( $post, $post_status = null ) {
 			wp_die( 'You can not delete or trash already started contest.', '', array( 'back_link' => true ) );
 		}
 		return;
-	}
-
-	// check entry
-	if ( GMR_CONTEST_ENTRY_CPT == $post->post_type ) {
-		wp_die( 'You can not delete or trash contest entry.', '', array( 'back_link' => true ) );
 	}
 }
 
@@ -226,25 +220,6 @@ function gmr_contests_register_post_type() {
 }
 
 /**
- * Returns voting key.
- *
- * @return string The voting key.
- */
-function _gmr_contests_get_vote_key() {
-	return false;
-}
-
-/**
- * Determines whether an user voted for a submission or not.
- *
- * @param int|WP_Post $submission The submission id or object to check against.
- * @return boolean TRUE if current user voted for a submission, otherwise FALSE.
- */
-function gmr_contests_is_user_voted_for_submission( $submission = null ) {
-	return false;
-}
-
-/**
  * Determines whether contest is started or not.
  *
  * @param int|WP_Post $contest_id The contest object or id.
@@ -276,37 +251,6 @@ function gmr_contest_is_finished( $contest_id = null ) {
 	$end = (int) get_post_meta( $contest_id, 'contest-end', true );
 
 	return $end > 0 && $now > $end;
-}
-
-/**
- * Determines whether contest reached the maximum entries or not.
- *
- * @param int|WP_Post $contest_id The contest object or id.
- * @return boolean TRUE if contest reached the maximum entries, otherwise FALSE.
- */
-function gmr_contest_has_max_entries( $contest_id = null ) {
-	if ( ! $contest_id ) {
-		$contest_id = get_the_ID();
-	}
-
-	$max_entries = get_post_meta( $contest_id, 'contest-max-entries', true );
-	$current_entries = gmr_contests_get_entries_count( $contest_id );
-
-	return $max_entries > 0 && $current_entries >= $max_entries;
-}
-
-/**
- * Determines whether contest requires only signed in users or not.
- *
- * @param int|WP_Post $contest_id The contest object or id.
- * @return boolean TRUE if contest requires signed in users, otherwise FALSE.
- */
-function gmr_contest_allows_members_only( $contest_id = null ) {
-	if ( ! $contest_id ) {
-		$contest_id = get_the_ID();
-	}
-
-	return filter_var( get_post_meta( $contest_id, 'contest-members-only', true ), FILTER_VALIDATE_BOOLEAN );
 }
 
 /**
@@ -354,49 +298,6 @@ function gmr_contests_handle_submitted_files( array $submitted_files, GreaterMed
 
 	add_post_meta( $ugc->post->ID, 'contest_entry_id', $entry->post->ID );
 	update_post_meta( $entry->post->ID, 'submission_id', $ugc->post->ID );
-}
-
-/**
- * Returns submission associated with contest entry.
- *
- * @param WP_Post|int $entry The contest entry object or id.
- * @return WP_Post The submission object on success, otherwise NULL.
- */
-function get_contest_entry_submission( $entry = null ) {
-	$entry = get_post( $entry );
-	if ( $entry && GMR_CONTEST_ENTRY_CPT == $entry->post_type ) {
-		$submission_id = get_post_meta( $entry->ID, 'submission_id', true );
-		if ( $submission_id && ( $submission = get_post( $submission_id ) ) && GMR_SUBMISSIONS_CPT == $submission->post_type ) {
-			return $submission;
-		}
-	}
-
-	return null;
-}
-
-/**
- * Returns the amount of contest entries.
- *
- * @param int $contest_id The contest id.
- * @return int The contest entries amount.
- */
-function gmr_contests_get_entries_count( $contest_id ) {
-	$transient = 'contest_entries_' . $contest_id;
-	$contest_entries_count = get_transient( $transient );
-	if ( false === $contest_entries_count ) {
-		$query = new WP_Query( array(
-			'post_type'      => GMR_CONTEST_ENTRY_CPT,
-			'post_status'    => 'any',
-			'post_parent'    => $contest_id,
-			'posts_per_page' => 1,
-			'fields'         => 'ids',
-		) );
-
-		$contest_entries_count = $query->found_posts;
-		set_transient( $transient, $contest_entries_count, DAY_IN_SECONDS );
-	}
-
-	return $contest_entries_count;
 }
 
 /**
@@ -478,56 +379,6 @@ function gmr_contest_get_entry_author( $entry_id, $return = 'string' ) {
 function gmr_contest_get_entry_author_email( $entry_id ) {
 	$email = get_post_meta( $entry_id, 'entrant_email', true );
 	return filter_var( $email, FILTER_VALIDATE_EMAIL );
-}
-
-/**
- * Returns classes string for a submission.
- *
- * @param string|array $class The default class for a submission block.
- * @return string The submission classes.
- */
-function gmr_contests_submission_class( $class ) {
-	$classes = array();
-	$post = get_post();
-
-	if ( gmr_contests_is_user_voted_for_submission( $post ) ) {
-		$classes[] = 'voted';
-	}
-
-	if ( gmr_contests_is_submission_winner( $post ) ) {
-		$classes[] = 'winner';
-	}
-
-	if ( ! empty( $class ) ) {
-		$classes = array_merge( $classes, ! is_array( $class ) ? $class = preg_split( '#\s+#', $class ) : $class );
-	}
-
-	return implode( ' ', array_unique( $classes ) );
-}
-
-/**
- * Determines whether submission has been selected as a winner.
- *
- * @param WP_Post|int $submission The submission object or id.
- * @return boolean TRUE if submission has been selected as a winner, otherwise FALSE.
- */
-function gmr_contests_is_submission_winner( $submission = null ) {
-	$submission = get_post( $submission );
-	if ( ! $submission || GMR_SUBMISSIONS_CPT != $submission->post_type ) {
-		return false;
-	}
-
-	$entry_id = get_post_meta( $submission->ID, 'contest_entry_id', true );
-	if ( ! $entry_id ) {
-		return false;
-	}
-
-	$user_id = trim( get_post_meta( $entry_id, 'entrant_reference', true ) );
-	if ( empty( $user_id ) ) {
-		return false;
-	}
-
-	return in_array( "{$entry_id}:{$user_id}", get_post_meta( $submission->post_parent, 'winner' ) );
 }
 
 /**

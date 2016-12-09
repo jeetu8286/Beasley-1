@@ -16,7 +16,6 @@ define( 'GREATER_MEDIA_CONTESTS_PATH', dirname( __FILE__ ) );
 define( 'GREATER_MEDIA_CONTESTS_VERSION', '1.3.0' );
 
 define( 'GMR_CONTEST_CPT',         'contest' );
-define( 'GMR_CONTEST_ENTRY_CPT',   'contest_entry' );
 define( 'GMR_SUBMISSIONS_CPT',     'listener_submissions' );
 define( 'GMR_SURVEY_CPT',          'survey' );
 define( 'GMR_SURVEY_RESPONSE_CPT', 'survey_response' );
@@ -42,7 +41,6 @@ function gmr_contests_activated() {
 	$surveys->register_survey_cpt();
 
 	load_capabilities( GMR_CONTEST_CPT );
-	load_capabilities( GMR_CONTEST_ENTRY_CPT );
 	load_capabilities( GMR_SUBMISSIONS_CPT );
 	load_capabilities( GMR_SURVEY_CPT );
 	load_capabilities( GMR_SURVEY_RESPONSE_CPT );
@@ -56,7 +54,6 @@ function gmr_contests_activated() {
 
 function gmr_contests_deactivated() {
 	unload_capabilities( GMR_CONTEST_CPT );
-	unload_capabilities( GMR_CONTEST_ENTRY_CPT );
 	unload_capabilities( GMR_SUBMISSIONS_CPT );
 	unload_capabilities( GMR_SURVEY_CPT );
 	unload_capabilities( GMR_SURVEY_RESPONSE_CPT );
