@@ -254,16 +254,6 @@ function gmr_contest_is_finished( $contest_id = null ) {
 }
 
 /**
- * Returns login URL for a contest page.
- *
- * @param string $redirect The redirect URL.
- * @return string The login page URL.
- */
-function gmr_contests_get_login_url( $redirect = null ) {
-	return '#';
-}
-
-/**
  * Saves contest submitted files.
  *
  * @param array $submitted_files
@@ -532,71 +522,5 @@ function gmr_filter_expired_contests( $query ) {
 		return $query;
 	} else {
 		return $query;
-	}
-}
-
-/**
- * Check whether or not voting for the contest is open.
- *
- * @param int $contest_id ID of contest to check.
- *
- * @return bool
- */
-function gmr_contests_is_voting_open( $contest_id ) {
-	$vote_start   = gmr_contests_get_vote_start_date( $contest_id );
-	$vote_end     = gmr_contests_get_vote_end_date( $contest_id );
-	$current_time = time();
-
-	return ( $vote_start <= $current_time && $current_time < $vote_end );
-}
-
-/**
- * Determine if the contest has voting enabled.
- *
- * @param $contest_id
- *
- * @return int
- */
-function gmr_contests_is_voting_enabled( $contest_id ) {
-	return (bool) get_post_meta( $contest_id, 'contest_enable_voting', true ) ? true : false;
-}
-
-/**
- * Get contest's vote start date.
- *
- * @param $contest_id
- *
- * @return int
- */
-function gmr_contests_get_vote_start_date( $contest_id ) {
-	return (int) get_post_meta( $contest_id, 'contest-vote-start', true ) ?:
-		get_post_meta( $contest_id, 'contest-start', true );
-}
-
-/**
- * Get contest's vote end date.
- *
- * @param $contest_id
- *
- * @return int
- */
-function gmr_contests_get_vote_end_date( $contest_id ) {
-	return (int) get_post_meta( $contest_id, 'contest-vote-end', true ) ?:
-		get_post_meta( $contest_id, 'contest-end', true );
-}
-
-/**
- * Determines if we can show vote counts or not.
- *
- * @param  int|WP_Post $submission The post ID or object.
- * @return boolean true/false if the vote counts should be displayed.
- */
-function gmr_contests_can_show_vote_count( $submission = null ) {
-	if ( is_null( $submission ) || is_int( $submission ) ) {
-		$submission = get_post( get_the_ID() );
-	}
-
-	if ( $submission->post_parent ) {
-		return get_post_meta( $submission->post_parent, 'contest_show_vote_counts', true ) ? true : false;
 	}
 }
