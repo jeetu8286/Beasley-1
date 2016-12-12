@@ -7,7 +7,6 @@ add_action( 'before_delete_post', 'gmr_contests_prevent_hard_delete' );
 add_action( 'wp_trash_post', 'gmr_contests_prevent_hard_delete' );
 add_action( 'transition_post_status', 'gmr_contests_prevent_trash_transition', 10, 3 );
 add_action( 'admin_enqueue_scripts', 'gmr_contests_admin_enqueue_scripts' );
-add_action( 'template_redirect', 'gmr_register_secondstreet_shortcode' );
 
 // filter hooks
 add_filter( 'map_meta_cap', 'gmr_contests_map_meta_cap', 10, 4 );
@@ -65,15 +64,6 @@ function gmr_contests_exclude_ugc_from_editor_links_query( $args ) {
 		$args['post_type'] = $post_type;
 	}
 	return $args;
-}
-
-/**
- * Registers alternative shortcode (with dash instead of underscore) for second street plugin.
- */
-function gmr_register_secondstreet_shortcode() {
-	if ( function_exists( 'ss_promo_func' ) ) {
-		add_shortcode( 'ss-promo', 'ss_promo_func' );
-	}
 }
 
 /**

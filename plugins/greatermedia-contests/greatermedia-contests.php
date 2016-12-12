@@ -26,9 +26,10 @@ define( 'EP_GMR_SURVEY', EP_PAGES << 2 );
 include 'inc/functions.php';
 include 'inc/contests.php';
 include 'inc/surveys.php';
+include 'inc/secondstreet.php';
 
 if ( is_admin() || ( defined( 'DOING_ASYNC' ) && DOING_ASYNC ) ) {
-	include 'inc/class-greatermedia-contests-metaboxes.php';
+	include 'inc/metaboxes.php';
 }
 
 register_activation_hook( __FILE__, 'gmr_contests_activated' );

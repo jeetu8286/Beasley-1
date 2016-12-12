@@ -15,13 +15,17 @@ module.exports = function (grunt) {
 			backend_contest: {
 				src: ['js/src/contests-admin.js'],
 				dest: 'js/contests-admin.js'
+			},
+			backend_mce: {
+				src: ['js/src/contests-mce.js'],
+				dest: 'js/contests-mce.js'
 			}
 		},
 		jshint: {
 			all: ['js/src/**/*.js'],
 			options: {
 				curly: true,
-				eqeqeq: true,
+				eqeqeq: false,
 				immed: true,
 				latedef: true,
 				newcap: true,
@@ -31,29 +35,20 @@ module.exports = function (grunt) {
 				boss: true,
 				eqnull: true,
 				globals: {
-					exports: true,
-					module: false,
-					twttr: false,
-					jQuery: false,
-					Modernizr: false,
-					Waypoint: false,
-					Grid: true,
 					document: false,
-					window: false,
 					console: false,
-					setTimeout: false,
-					confirm: false,
-					GreaterMediaContestsForm: false,
-					GreaterMediaAdminNotifier: false,
-					GreaterMediaUGC: false,
-					FormData: false,
-					alert: false
+					jQuery: false,
+					tinymce: false,
+					tinyMCE: false,
+					wp: false,
+					_: false
 				}
 			}
 		},
 		uglify: {
 			all: {
 				files: {
+					'js/contests-mce.min.js': ['js/contests-mce.js'],
 					'js/contests-admin.min.js': ['js/contests-admin.js']
 				},
 				options: {
