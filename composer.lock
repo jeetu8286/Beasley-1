@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e1edab6523ffccc707b2abb899bbb152",
-    "content-hash": "4ee5249037ad6b95d5d0b96d0c9a5dbd",
+    "hash": "eb1cefe4732fb94fcfb06e930e471249",
+    "content-hash": "e5f545cb636dbd94d7b4956286ed11ea",
     "packages": [
         {
             "name": "10up/wp-gears",
@@ -222,16 +222,36 @@
             "homepage": "https://wordpress.org/plugins/rest-api/"
         },
         {
-            "name": "wpackagist-plugin/the-events-calendar",
-            "version": "4.3.3",
+            "name": "wpackagist-plugin/second-street-promotion",
+            "version": "1.0",
             "source": {
                 "type": "svn",
-                "url": "https://plugins.svn.wordpress.org/the-events-calendar/",
-                "reference": "tags/4.3.3"
+                "url": "https://plugins.svn.wordpress.org/second-street-promotion/",
+                "reference": "tags/1.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/the-events-calendar.4.3.3.zip",
+                "url": "https://downloads.wordpress.org/plugin/second-street-promotion.1.0.zip",
+                "reference": null,
+                "shasum": null
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/second-street-promotion/"
+        },
+        {
+            "name": "wpackagist-plugin/the-events-calendar",
+            "version": "4.3.4.1",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/the-events-calendar/",
+                "reference": "tags/4.3.4.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/the-events-calendar.4.3.4.1.zip",
                 "reference": null,
                 "shasum": null
             },
@@ -542,15 +562,15 @@
         },
         {
             "name": "wpackagist-plugin/query-monitor",
-            "version": "2.13.1",
+            "version": "2.13.2",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/query-monitor/",
-                "reference": "tags/2.13.1"
+                "reference": "tags/2.13.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/query-monitor.2.13.1.zip",
+                "url": "https://downloads.wordpress.org/plugin/query-monitor.2.13.2.zip",
                 "reference": null,
                 "shasum": null
             },
@@ -586,12 +606,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/wpengine/phpcompat.git",
-                "reference": "00807655ea9c8c847d0f53d232de2e324bc76153"
+                "reference": "a28914713ff006d3abdd4aa8afcd8de6bda6d18f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wpengine/phpcompat/zipball/00807655ea9c8c847d0f53d232de2e324bc76153",
-                "reference": "00807655ea9c8c847d0f53d232de2e324bc76153",
+                "url": "https://api.github.com/repos/wpengine/phpcompat/zipball/a28914713ff006d3abdd4aa8afcd8de6bda6d18f",
+                "reference": "a28914713ff006d3abdd4aa8afcd8de6bda6d18f",
                 "shasum": ""
             },
             "require": {
@@ -625,10 +645,10 @@
             ],
             "description": "Test PHP Compatibility.",
             "support": {
-                "source": "https://github.com/wpengine/phpcompat/tree/master",
+                "source": "https://github.com/wpengine/phpcompat/tree/v1.3.1",
                 "issues": "https://github.com/wpengine/phpcompat/issues"
             },
-            "time": "2016-11-03 22:58:46"
+            "time": "2016-12-09 19:18:38"
         }
     ],
     "aliases": [],
