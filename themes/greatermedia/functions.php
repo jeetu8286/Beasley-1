@@ -26,28 +26,23 @@ if ( defined( 'GMR_PARENT_ENV' ) && 'dev' == GMR_PARENT_ENV ) {
 add_theme_support( 'homepage-curation' );
 add_theme_support( 'homepage-countdown-clock' );
 
-require_once( __DIR__ . '/includes/liveplayer/class-liveplayer.php' );
-require_once( __DIR__ . '/includes/site-options/loader.php' );
-require_once( __DIR__ . '/includes/mega-menu/mega-menu-admin.php' );
-require_once( __DIR__ . '/includes/mega-menu/mega-menu-walker.php' );
-require_once( __DIR__ . '/includes/mega-menu/mega-menu-mobile-walker.php' );
-require_once( __DIR__ . '/includes/image-attributes/loader.php');
-require_once( __DIR__ . '/includes/posts-screen-thumbnails/loader.php' );
-require_once( __DIR__ . '/includes/category-options.php' );
-require_once( __DIR__ . '/includes/class-favicon.php' );
-require_once( __DIR__ . '/includes/iframe-embed.php' );
-require_once( __DIR__ . '/includes/flexible-feature-images/gmr-flexible-feature-images.php' );
-require_once( __DIR__ . '/includes/auction-nudge/gmr-auction-nudge.php' );
+require_once __DIR__ . '/includes/liveplayer/class-liveplayer.php';
+require_once __DIR__ . '/includes/site-options/class-gmr-site-options.php';
+require_once __DIR__ . '/includes/site-options/class-gmr-site-options-helper-functions.php';
+require_once __DIR__ . '/includes/site-options/class-gmr-site-member-text.php';
+require_once __DIR__ . '/includes/mega-menu/mega-menu-admin.php';
+require_once __DIR__ . '/includes/mega-menu/mega-menu-walker.php';
+require_once __DIR__ . '/includes/mega-menu/mega-menu-mobile-walker.php';
+require_once __DIR__ . '/includes/image-attributes/loader.php';
+require_once __DIR__ . '/includes/class-thumbnail-column.php';
+require_once __DIR__ . '/includes/category-options.php';
+require_once __DIR__ . '/includes/class-favicon.php';
+require_once __DIR__ . '/includes/iframe-embed.php';
+require_once __DIR__ . '/includes/flexible-feature-images/gmr-flexible-feature-images.php';
+require_once __DIR__ . '/includes/auction-nudge/gmr-auction-nudge.php';
+require_once __DIR__ . '/includes/class-gm-tinymce.php';
 
-/**
- * Required files
- */
-require_once( __DIR__ . '/includes/gm-tinymce/loader.php');
-
-/**
- * WP-CLI commands.
- */
-if ( defined( 'WP_CLI' ) && WP_CLI && file_exists( __DIR__ . '/includes/gmr-db-cli.php' ) ) {
+if ( defined( 'WP_CLI' ) && WP_CLI ) {
 	include __DIR__ . '/includes/gmr-db-cli.php';
 }
 

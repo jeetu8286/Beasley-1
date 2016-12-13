@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Class GM_TinyMCE
  *
@@ -9,12 +8,10 @@
  */
 class GM_TinyMCE {
 
-	public function __construct(){
-
+	public function __construct() {
 		add_action( 'after_setup_theme', array( $this, 'tinymce_styles' ) );
 		add_filter( 'mce_buttons_2', array( $this, 'mce_buttons' ) );
 		add_filter( 'tiny_mce_before_init', array( $this, 'insert_formats' ) );
-
 	}
 
 	/**
@@ -44,32 +41,30 @@ class GM_TinyMCE {
 	 * @return mixed
 	 */
 	public function insert_formats( $init_array ) {
-
 		$style_formats = array(
 			array(
-				'title' => '.gm-test-class',
-				'block' => 'blockquote',
+				'title'   => '.gm-test-class',
+				'block'   => 'blockquote',
 				'classes' => 'gm-test-class',
 				'wrapper' => true,
-
 			),
 			array(
-				'title' => '⇠.rtl',
-				'block' => 'blockquote',
+				'title'   => '⇠.rtl',
+				'block'   => 'blockquote',
 				'classes' => 'gm-rtl',
 				'wrapper' => true,
 			),
 			array(
-				'title' => '.ltr⇢',
-				'block' => 'blockquote',
+				'title'   => '.ltr⇢',
+				'block'   => 'blockquote',
 				'classes' => 'gm-ltr',
 				'wrapper' => true,
 			),
 		);
+
 		$init_array['style_formats'] = json_encode( $style_formats );
 
 		return $init_array;
-
 	}
 
 }
