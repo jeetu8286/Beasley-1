@@ -1,16 +1,28 @@
 <?php
 
 // add action hooks
-add_action( 'template_redirect', 'gmr_register_secondstreet_shortcode' );
 add_action( 'admin_head', 'gmr_setup_secondstreet_tinymce' );
+
+// add shortcodes
+add_shortcode( 'ss_promo', 'gmr_secondstreet_shortcode' );
+add_shortcode( 'ss-promo', 'gmr_secondstreet_shortcode' );
 
 /**
  * Registers alternative shortcode (with dash instead of underscore) for second street plugin.
  */
-function gmr_register_secondstreet_shortcode() {
-	if ( function_exists( 'ss_promo_func' ) ) {
-		add_shortcode( 'ss-promo', 'ss_promo_func' );
-	}
+function gmr_secondstreet_shortcode( $atts ) {
+	$attributes = shortcode_atts( array(
+		'op_id'   => '',
+		'op_guid' => '',
+		'routing' => ''
+	), $atts, 'ss-promo' );
+
+	return sprintf(
+		'<div src="https://embed-%s.secondstreetapp.com/Scripts/dist/embed.js" data-ss-embed="promotion" data-opguid="%s" data-routing="%s"></div>',
+		esc_url( $attributes['op_id'] ),
+		esc_attr( $attributes['op_guid'] ),
+		esc_attr( $attributes['routing'] )
+	);
 }
 
 /**
