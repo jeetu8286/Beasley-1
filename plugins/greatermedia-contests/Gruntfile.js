@@ -12,6 +12,12 @@ module.exports = function (grunt) {
 						' * Licensed GPLv2+\n' +
 						' */\n'
 			},
+			frontend_contest: {
+				src: [
+					'js/src/secondstreet.js'
+				],
+				dest: 'js/contests.js'
+			},
 			backend_contest: {
 				src: ['js/src/contests-admin.js'],
 				dest: 'js/contests-admin.js'
@@ -48,6 +54,7 @@ module.exports = function (grunt) {
 		uglify: {
 			all: {
 				files: {
+					'js/contests.min.js': ['js/contests.js'],
 					'js/contests-mce.min.js': ['js/contests-mce.js'],
 					'js/contests-admin.min.js': ['js/contests-admin.js']
 				},

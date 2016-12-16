@@ -1,8 +1,3 @@
-/*! Greater Media Contests - v1.3.0
- * http://10up.com/
- * Copyright (c) 2016;
- * Licensed GPLv2+
- */
 (function ($, document) {
 	var $document = $(document),
 		__ready;
