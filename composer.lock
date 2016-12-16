@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "eb1cefe4732fb94fcfb06e930e471249",
-    "content-hash": "e5f545cb636dbd94d7b4956286ed11ea",
+    "hash": "e1edab6523ffccc707b2abb899bbb152",
+    "content-hash": "4ee5249037ad6b95d5d0b96d0c9a5dbd",
     "packages": [
         {
             "name": "10up/wp-gears",
@@ -222,36 +222,16 @@
             "homepage": "https://wordpress.org/plugins/rest-api/"
         },
         {
-            "name": "wpackagist-plugin/second-street-promotion",
-            "version": "1.0",
-            "source": {
-                "type": "svn",
-                "url": "https://plugins.svn.wordpress.org/second-street-promotion/",
-                "reference": "tags/1.0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/second-street-promotion.1.0.zip",
-                "reference": null,
-                "shasum": null
-            },
-            "require": {
-                "composer/installers": "~1.0"
-            },
-            "type": "wordpress-plugin",
-            "homepage": "https://wordpress.org/plugins/second-street-promotion/"
-        },
-        {
             "name": "wpackagist-plugin/the-events-calendar",
-            "version": "4.3.4.1",
+            "version": "4.3.4.2",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/the-events-calendar/",
-                "reference": "tags/4.3.4.1"
+                "reference": "tags/4.3.4.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/the-events-calendar.4.3.4.1.zip",
+                "url": "https://downloads.wordpress.org/plugin/the-events-calendar.4.3.4.2.zip",
                 "reference": null,
                 "shasum": null
             },
@@ -459,12 +439,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/wimg/PHPCompatibility.git",
-                "reference": "a3263259daa3629d174d1ac25657466222d6607e"
+                "reference": "c637b750f8ec3e49646ef197eb78fec04293e708"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wimg/PHPCompatibility/zipball/a3263259daa3629d174d1ac25657466222d6607e",
-                "reference": "a3263259daa3629d174d1ac25657466222d6607e",
+                "url": "https://api.github.com/repos/wimg/PHPCompatibility/zipball/c637b750f8ec3e49646ef197eb78fec04293e708",
+                "reference": "c637b750f8ec3e49646ef197eb78fec04293e708",
                 "shasum": ""
             },
             "require": {
@@ -498,7 +478,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2016-10-30 14:34:26"
+            "time": "2016-12-12 22:28:01"
         },
         {
             "name": "wpackagist-plugin/core-control",

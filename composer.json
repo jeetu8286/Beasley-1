@@ -24,7 +24,6 @@
 		"wpackagist-plugin/the-events-calendar": "^4.2",
 		"wpackagist-plugin/video-thumbnails": "^2.12",
 		"wpackagist-plugin/yet-another-related-posts-plugin": "^4.3",
-		"wpackagist-plugin/second-street-promotion": "^1.0",
 		"10up/wp-gears": "^2.1"
 	},
 	"require-dev": {
