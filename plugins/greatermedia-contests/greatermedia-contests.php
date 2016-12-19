@@ -37,6 +37,7 @@ include 'inc/class-greatermedia-uglink.php';
 include 'inc/class-ugc-moderation-table.php';
 include 'inc/class-greatermedia-surveys.php';
 include 'inc/class-greatermedia-survey-entry.php';
+include 'inc/secondstreet.php';
 
 if ( is_admin() || ( defined( 'DOING_ASYNC' ) && DOING_ASYNC ) ) {
 	// include list table class files if it hasn't been included yet
