@@ -79,7 +79,7 @@ SELECT {$prefix}posts.ID
   FROM {$prefix}posts
  INNER JOIN {$prefix}postmeta ON {$prefix}posts.ID = {$prefix}postmeta.post_id
  WHERE {$prefix}posts.post_type = 'attachment'
-   AND {$prefix}postmeta.meta_key = '_thumbnail_id'
+   AND {$prefix}postmeta.meta_key = 'video_thumbnail'
    AND {$prefix}postmeta.meta_value = 1
  GROUP BY {$prefix}posts.ID
  ORDER BY {$prefix}posts.post_date DESC
