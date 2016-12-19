@@ -783,15 +783,12 @@ add_action( 'wp_head' , 'add_embedly_global_script' );
  * @return array
  */
 function greatermedia_add_gigya_body_class( $classes ) {
-
 	$classes[] = '';
-
-	if ( is_gigya_user_logged_in() ) {
+	if ( function_exists( 'is_gigya_user_logged_in' ) && is_gigya_user_logged_in() ) {
 		$classes[] = 'gmr-user';
 	}
 
 	return $classes;
-
 }
 add_filter( 'body_class', 'greatermedia_add_gigya_body_class' );
 
