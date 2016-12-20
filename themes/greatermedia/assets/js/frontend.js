@@ -1443,3 +1443,6 @@
 	} );
 	
 })(jQuery, window, document);
+(function() {
+	firebase.initializeApp(beasley.fireabase);
+})();

@@ -25,7 +25,8 @@ module.exports = function (grunt) {
 						'assets/js/src/load_more.js',
 						'assets/js/src/live_player.js',
 						'assets/js/src/menus.js',
-						'assets/js/src/search.js'
+						'assets/js/src/search.js',
+						'assets/js/src/firebase.js'
 					],
 					'assets/js/admin.js': [
 						'assets/js/src/admin.js'

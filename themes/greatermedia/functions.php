@@ -154,7 +154,19 @@ function greatermedia_scripts_styles() {
 	$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 	$baseurl = untrailingslashit( get_template_directory_uri() );
 
-	wp_enqueue_script( 'greatermedia', "{$baseurl}/assets/js/frontend{$postfix}.js", array( 'jquery', 'jquery-waypoints', 'underscore', 'classlist-polyfill' ), GREATERMEDIA_VERSION, true );
+	wp_register_script( 'firebase-app', '//www.gstatic.com/firebasejs/3.6.1/firebase-app.js', null, null );
+	wp_register_script( 'firebase-auth', '//www.gstatic.com/firebasejs/3.6.1/firebase-auth.js', array( 'firebase-app' ), null );
+
+	wp_enqueue_script( 'greatermedia', "{$baseurl}/assets/js/frontend{$postfix}.js", array( 'jquery', 'jquery-waypoints', 'underscore', 'classlist-polyfill', 'firebase-auth' ), GREATERMEDIA_VERSION, true );
+	wp_localize_script( 'greatermedia', 'beasley', array(
+		'firebase' => array(
+			'apiKey'            => '',
+			'authDomain'        => '',
+			'databaseURL'       => '',
+			'storageBucket'     => '',
+			'messagingSenderId' => '',
+		),
+	) );
 
 	wp_enqueue_style( 'google-fonts', '//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,800italic,400,300,700,800', array(), null );
 	wp_enqueue_style( 'greatermedia', "{$baseurl}/assets/css/greater_media{$postfix}.css", array( 'google-fonts' ), GREATERMEDIA_VERSION );
