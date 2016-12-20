@@ -155,10 +155,9 @@ function greatermedia_scripts_styles() {
 	$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 	$baseurl = untrailingslashit( get_template_directory_uri() );
 
-	wp_register_script( 'firebase-app', '//www.gstatic.com/firebasejs/3.6.1/firebase-app.js', null, null );
-	wp_register_script( 'firebase-auth', '//www.gstatic.com/firebasejs/3.6.1/firebase-auth.js', array( 'firebase-app' ), null );
+	wp_register_script( 'firebase', '//www.gstatic.com/firebasejs/3.6.4/firebase.js', null, null );
 
-	wp_enqueue_script( 'greatermedia', "{$baseurl}/assets/js/frontend{$postfix}.js", array( 'jquery', 'jquery-waypoints', 'underscore', 'classlist-polyfill', 'firebase-auth' ), GREATERMEDIA_VERSION, true );
+	wp_enqueue_script( 'greatermedia', "{$baseurl}/assets/js/frontend{$postfix}.js", array( 'jquery', 'jquery-waypoints', 'underscore', 'classlist-polyfill', 'firebase' ), GREATERMEDIA_VERSION, true );
 	wp_localize_script( 'greatermedia', 'beasley', array(
 		'firebase' => array(
 			'apiKey'            => get_option( 'beasley_firebase_apiKey' ),

@@ -1,3 +1,3 @@
-(function() {
-	firebase.initializeApp(beasley.fireabase);
-})();
+(function(config) {
+	firebase.initializeApp(config);
+})(window.beasley.firebase);

@@ -35,13 +35,36 @@ module.exports = function (grunt) {
 			}
 		},
 		jshint: {
-			browser: {
-				all: [
-					'assets/js/src/**/*.js',
-					'assets/js/test/**/*.js'
-				],
-				options: {
-					jshintrc: '.jshintrc',
+			all: [
+				'assets/js/src/**/*.js',
+				'!assets/js/src/vendor/**/*.js'
+			],
+			options: {
+				curly: true,
+				eqeqeq: false,
+				immed: true,
+				latedef: false,
+				newcap: true,
+				noarg: true,
+				sub: true,
+				undef: true,
+				boss: true,
+				eqnull: true,
+				globals: {
+					document: false,
+					window: false,
+					screen: false,
+					console: false,
+					location: false,
+					setTimeout: false,
+					setInterval: false,
+					CustomEvent: false,
+					jQuery: false,
+					firebase: false,
+					_: false,
+					beasley: false,
+					renderLogoUpload: false,
+					resetLogoUpload: false
 				}
 			}
 		},
