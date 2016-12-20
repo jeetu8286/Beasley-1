@@ -26,19 +26,20 @@ if ( defined( 'GMR_PARENT_ENV' ) && 'dev' == GMR_PARENT_ENV ) {
 add_theme_support( 'homepage-curation' );
 add_theme_support( 'homepage-countdown-clock' );
 
-require_once( __DIR__ . '/includes/liveplayer/class-liveplayer.php' );
-require_once( __DIR__ . '/includes/site-options/loader.php' );
-require_once( __DIR__ . '/includes/mega-menu/mega-menu-admin.php' );
-require_once( __DIR__ . '/includes/mega-menu/mega-menu-walker.php' );
-require_once( __DIR__ . '/includes/mega-menu/mega-menu-mobile-walker.php' );
-require_once( __DIR__ . '/includes/image-attributes/loader.php');
-require_once( __DIR__ . '/includes/posts-screen-thumbnails/loader.php' );
-require_once( __DIR__ . '/includes/category-options.php' );
-require_once( __DIR__ . '/includes/class-favicon.php' );
-require_once( __DIR__ . '/includes/iframe-embed.php' );
-require_once( __DIR__ . '/includes/flexible-feature-images/gmr-flexible-feature-images.php' );
-require_once( __DIR__ . '/includes/auction-nudge/gmr-auction-nudge.php' );
-require_once( __DIR__ . '/includes/shortcodes.php' );
+require_once __DIR__ . '/includes/liveplayer/class-liveplayer.php';
+require_once __DIR__ . '/includes/site-options/loader.php';
+require_once __DIR__ . '/includes/mega-menu/mega-menu-admin.php';
+require_once __DIR__ . '/includes/mega-menu/mega-menu-walker.php';
+require_once __DIR__ . '/includes/mega-menu/mega-menu-mobile-walker.php';
+require_once __DIR__ . '/includes/image-attributes/loader.php';
+require_once __DIR__ . '/includes/posts-screen-thumbnails/loader.php';
+require_once __DIR__ . '/includes/category-options.php';
+require_once __DIR__ . '/includes/class-favicon.php';
+require_once __DIR__ . '/includes/iframe-embed.php';
+require_once __DIR__ . '/includes/flexible-feature-images/gmr-flexible-feature-images.php';
+require_once __DIR__ . '/includes/auction-nudge/gmr-auction-nudge.php';
+require_once __DIR__ . '/includes/shortcodes.php';
+require_once __DIR__ . '/includes/class-firebase.php';
 
 /**
  * Required files
@@ -160,11 +161,11 @@ function greatermedia_scripts_styles() {
 	wp_enqueue_script( 'greatermedia', "{$baseurl}/assets/js/frontend{$postfix}.js", array( 'jquery', 'jquery-waypoints', 'underscore', 'classlist-polyfill', 'firebase-auth' ), GREATERMEDIA_VERSION, true );
 	wp_localize_script( 'greatermedia', 'beasley', array(
 		'firebase' => array(
-			'apiKey'            => '',
-			'authDomain'        => '',
-			'databaseURL'       => '',
-			'storageBucket'     => '',
-			'messagingSenderId' => '',
+			'apiKey'            => get_option( 'beasley_firebase_apiKey' ),
+			'authDomain'        => get_option( 'beasley_firebase_authDomain' ),
+			'databaseURL'       => get_option( 'beasley_firebase_databaseURL' ),
+			'storageBucket'     => get_option( 'beasley_firebase_storageBucket' ),
+			'messagingSenderId' => get_option( 'beasley_firebase_messagingSenderId' ),
 		),
 	) );
 
