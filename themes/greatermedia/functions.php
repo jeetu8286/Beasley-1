@@ -154,8 +154,7 @@ function greatermedia_scripts_styles() {
 	$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 	$baseurl = untrailingslashit( get_template_directory_uri() );
 
-	wp_enqueue_script( 'greatermedia', "{$baseurl}/assets/js/greater_media{$postfix}.js", array( 'jquery', 'underscore', 'classlist-polyfill' ), GREATERMEDIA_VERSION, true );
-	wp_enqueue_script( 'greatermedia-load-more', "{$baseurl}/assets/js/greater_media_load_more{$postfix}.js", array( 'jquery', 'jquery-waypoints' ), GREATERMEDIA_VERSION, true );
+	wp_enqueue_script( 'greatermedia', "{$baseurl}/assets/js/frontend{$postfix}.js", array( 'jquery', 'jquery-waypoints', 'underscore', 'classlist-polyfill' ), GREATERMEDIA_VERSION, true );
 
 	wp_enqueue_style( 'google-fonts', '//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,800italic,400,300,700,800', array(), null );
 	wp_enqueue_style( 'greatermedia', "{$baseurl}/assets/css/greater_media{$postfix}.css", array( 'google-fonts' ), GREATERMEDIA_VERSION );
