@@ -1450,11 +1450,19 @@
 			hours: []
 		};
 
+	// do nothing if apiKey is not set
+	if ($.trim(config.apiKey).length < 1) {
+		return;
+	}
+
+	// initialize a firebase instance
 	firebase.initializeApp(config);
 
+	// grab auth and database services
 	auth = firebase.auth();
 	database = firebase.database();
 
+	// listen to auth state change and authenticate an user anonymously if user is not logged in
 	auth.onAuthStateChanged(function(user) {
 		if (user) {
 			var userRef = database.ref('users/' + user.uid);
@@ -1468,6 +1476,7 @@
 		}
 	});
 
+	// listen to player start event to track listenings count
 	$document.on('player:starts', function() {
 		var date = new Date(),
 			hour = date.getHours();
