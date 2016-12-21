@@ -10,6 +10,8 @@
 (function ($, window, undefined) {
 	"use strict";
 
+	var $document = $(document);
+
 	var tech = getUrlVars()['tech'] || 'html5_flash';
 	var aSyncCuePointFallback = getUrlVars()['aSyncCuePointFallback'] == 'false' ? false : true;
 
@@ -63,6 +65,16 @@
 	var lpInit = false;
 	var volume_slider = $(document.getElementById('live-player--volume'));
 	var global_volume = 1;
+
+	/**
+	 * Stars playing a stream and triggers appropriate event.
+	 *
+	 * @param {string} station
+	 */
+	function playStream(station) {
+		player.play({station: station, timeShift: true});
+		$document.trigger('player:starts');
+	}
 
 	/**
 	 * function to detect if the current browser can use `addEventListener`, if not, use `attachEvent`
@@ -548,7 +560,7 @@
 			listenLiveStopCustomInlineAudio();
 		}
 
-		player.play({station: station, timeShift: true});
+		playStream(station);
 
 		livePlayer.classList.add('live-player--active');
 		setPlayingStyles();
@@ -580,7 +592,7 @@
 
 				body.classList.add('live-player--active');
 				livePlayer.classList.add('live-player--active');
-				player.play({station: station, timeShift: true});
+				playStream(station);
 				setPlayingStyles();
 			});
 		} else if (player.attachEvent) {
@@ -594,7 +606,7 @@
 
 				body.classList.add('live-player--active');
 				livePlayer.classList.add('live-player--active');
-				player.play({station: station, timeShift: true});
+				playStream(station);
 				setPlayingStyles();
 			});
 		}
@@ -622,7 +634,7 @@
 
 		body.classList.add('live-player--active');
 		livePlayer.classList.add('live-player--active');
-		player.play({station: station, timeShift: true});
+		playStream(station);
 		setPlayingStyles();
 
 	}
@@ -657,7 +669,7 @@
 
 					body.classList.add('live-player--active');
 					livePlayer.classList.add('live-player--active');
-					player.play({station: station, timeShift: true});
+					playStream(station);
 					setPlayingStyles();
 				});
 			} else if (player.attachEvent) {
@@ -671,7 +683,7 @@
 
 					body.classList.add('live-player--active');
 					livePlayer.classList.add('live-player--active');
-					player.play({station: station, timeShift: true});
+					playStream(station);
 					setPlayingStyles();
 				});
 			}
@@ -704,7 +716,7 @@
 
 			body.classList.add('live-player--active');
 			livePlayer.classList.add('live-player--active');
-			player.play({station: station, timeShift: true});
+			playStream(station);
 			setPlayingStyles();
 		}
 	}
@@ -729,7 +741,7 @@
 			}
 
 			livePlayer.classList.add('live-player--active');
-			player.play({station: station, timeShift: true});
+			playStream(station);
 			setPlayingStyles();
 		}
 	}
@@ -923,7 +935,7 @@
 		}
 
 		livePlayer.classList.add('live-player--active');
-		player.play({station: station, timeShift: true});
+		playStream(station);
 		setPlayingStyles();
 	}
 
