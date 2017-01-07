@@ -56,7 +56,7 @@ define( 'WBT_VERSION', '0.2.4' ); /* Version bump by Jonathan 11/21/2016 @ 11:51
 	wp_enqueue_script(
         'wbt',
         get_stylesheet_directory_uri() . "/assets/js/wbt{$postfix}.js",
-        array(),
+        array( 'jquery', 'livefyre_loader' ),
         WBT_VERSION,
         true
     );
