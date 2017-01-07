@@ -31,19 +31,21 @@ abstract class Webhook extends AjaxHandler {
 	}
 
 	function handle_ajax() {
-		$this->authorize();
+		try {
+			$this->authorize();
 
-		$params = $this->get_params();
+			$params = $this->get_params();
 
-		if ( is_array( $params ) ) {
-			$result = $this->run( $params );
-			if ( is_null( $result ) ) {
-				$result = true;
+			if ( is_array( $params ) ) {
+				$result = $this->run( $params );
+				if ( is_null( $result ) ) {
+					$result = true;
+				}
+
+				$this->send_json_success( $result );
 			}
-
-			$this->send_json_success( $result );
-		} else {
-			throw new \Exception( 'Invalid params' );
+		} catch( \Exception $e ) {
+			$this->send_json_error( $e->getMessage() );
 		}
 	}
 
