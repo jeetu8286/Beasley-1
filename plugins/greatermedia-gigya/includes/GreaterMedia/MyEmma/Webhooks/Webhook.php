@@ -43,9 +43,11 @@ abstract class Webhook extends AjaxHandler {
 				}
 
 				$this->send_json_success( $result );
+			} else {
+				throw new \Exception( 'Invalid params' );
 			}
 		} catch( \Exception $e ) {
-			$this->send_json_error( $e->getMessage() );
+			$this->send_json_error( array( 'error_message' => $e->getMessage() ) );
 		}
 	}
 
