@@ -13,7 +13,7 @@
  */
 
  // Useful global constants
-define( 'WLNK_VERSION', '0.3.5' ); /* Version bump by Jonathan 1/10/2017 @ 12:26 p.m. EST */
+define( 'WLNK_VERSION', '0.3.6' ); /* Version bump by Jonathan 1/10/2017 @ 12:26 p.m. EST */
 
  /**
   * Set up theme defaults and register supported WordPress features.
