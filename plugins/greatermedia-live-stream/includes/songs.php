@@ -51,7 +51,7 @@ function gmr_songs_render_custom_column( $column_name, $post_id ) {
 				return;
 			}
 		}
-		
+
 		echo '&#8212;';
 	}
 }
@@ -108,7 +108,6 @@ function gmr_songs_register_post_type() {
 		'show_in_nav_menus'    => false,
 		'can_export'           => true,
 		'has_archive'          => true,
-		'rewrite'              => false,
 		'register_meta_box_cb' => 'gmr_songs_register_meta_boxes',
 		'supports'             => array( 'title' ),
 	);
@@ -268,7 +267,7 @@ function gmr_songs_register_meta_boxes() {
  */
 function gmr_songs_render_artist_meta_box( WP_Post $post ) {
 	wp_nonce_field( 'gmr_songs_meta_boxes', '_gmr_songs_nonce', false );
-	
+
 	?><input type="text" name="song_artist" class="widefat" value="<?php echo esc_attr( get_post_meta( $post->ID, 'artist', true ) ) ?>">
 	<p class="description">Enter artist of this song.</p><?php
 }
