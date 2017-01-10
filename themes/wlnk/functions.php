@@ -101,4 +101,4 @@ define( 'WLNK_VERSION', '0.3.6' ); /* Version bump by Jonathan 1/10/2017 @ 12:26
 
 }
 
-//add_action( 'rss2_item', 'add_featured_image_in_rss' );
+add_action( 'rss2_item', 'add_featured_image_in_rss' );
