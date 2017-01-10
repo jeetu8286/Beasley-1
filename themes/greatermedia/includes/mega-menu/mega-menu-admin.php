@@ -21,7 +21,7 @@ class GreaterMediaMegaMenuAdmin {
 	 * @var array
 	 */
 	public static $options = array(
-		''      => 'Standard',
+		''   => 'Standard',
 		'fw' => 'Full-width, four column',
 		'sp' => 'Small Previews',
 		'fi' => 'Featured Items'
@@ -37,14 +37,23 @@ class GreaterMediaMegaMenuAdmin {
 	 * WP Hooks
 	 */
 	public static function init() {
-		add_action( 'wp_nav_menu_item_custom_fields', array(
-			__CLASS__,
-			'nav_menu_fields'
-		), null, 4 );
-		add_action( 'wp_update_nav_menu_item', array(
-			__CLASS__,
-			'save_nav_menu_fields'
-		), null, 3 );
+		add_action( 'wp_nav_menu_item_custom_fields', array( __CLASS__, 'nav_menu_fields' ), 10, 4 );
+		add_action( 'wp_update_nav_menu_item', array( __CLASS__, 'save_nav_menu_fields' ), 10, 3 );
+
+		add_filter( 'wp_edit_nav_menu_walker', array( __CLASS__, 'get_edit_nav_menu_walker' ) );
+	}
+
+	/**
+	 * Returns Filterable_Walker_Nav_Menu_Edit class name to use it for nav menu walker.
+	 */
+	public static function get_edit_nav_menu_walker( $class ) {
+		include_once __DIR__ . '/mega-menu-admin-walker.php';
+
+		if ( class_exists( 'Filterable_Walker_Nav_Menu_Edit' ) ) {
+			$class = 'Filterable_Walker_Nav_Menu_Edit';
+		}
+
+		return $class;
 	}
 
 	/**
@@ -56,7 +65,6 @@ class GreaterMediaMegaMenuAdmin {
 	 * @param $args    array Arguments passed to the walker
 	 */
 	public static function nav_menu_fields( $item_id, $item, $depth, $args ) {
-
 		// Only apply this drop down to the root-level menus.
 		if ( $depth > 0 ) {
 			return;
