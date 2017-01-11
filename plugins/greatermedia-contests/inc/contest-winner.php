@@ -133,6 +133,9 @@ function gmr_contests_render_winner_page() {
 	$export_link = admin_url( 'admin.php?action=gmr_contest_export&contest=' . $contest->ID );
 	$export_link = wp_nonce_url( $export_link, 'gmr-contest-export' );
 
+	// export type
+	$exported = filter_input( INPUT_GET, 'export', FILTER_VALIDATE_INT );
+
 	?><div id="contest-winner-selection" class="wrap">
 		<h2>
 			Entries:
@@ -143,9 +146,13 @@ function gmr_contests_render_winner_page() {
 			<?php endif; ?>
 		</h2>
 
-		<?php if ( filter_input( INPUT_GET, 'export', FILTER_VALIDATE_BOOLEAN ) ) : ?>
+		<?php if ( $exported > 0 ) : ?>
 			<div class="updated">
-				<p>Export process has been started. We will email you a CSV file when export is finished. If you don't receive an email in the nearest time, then check your spam folder.</p>
+				<?php if ( 1 == $exported ) : ?>
+					<p>Export process has been started. We will email you a CSV file when export is finished. If you don't receive an email in the nearest time, then check your spam folder.</p>
+				<?php elseif ( 2 == $exported ) : ?>
+					<p>An email with CSV file has been sent to you, please, go to your inbox and find it. If you don't receive an email in the nearest time, then check your spam folder.</p>
+				<?php endif; ?>
 			</div>
 		<?php endif; ?>
 
@@ -187,12 +194,29 @@ function gmr_contests_export_to_csv() {
 		exit;
 	}
 
-	wp_async_task_add( 'gmr_do_contest_export', array(
+	$query = new WP_Query( array(
+		'post_type'           => GMR_CONTEST_ENTRY_CPT,
+		'post_parent'         => $contest->ID,
+		'suppress_filters'    => true,
+		'posts_per_page'      => 1,
+		'ignore_sticky_posts' => true,
+	) );
+
+	$args = array(
 		'contest' => $contest->ID,
 		'email'   => wp_get_current_user()->user_email,
-	), 'high' );
+	);
 
-	$redirect = admin_url( 'admin.php?page=gmr-contest-winner&export=1&contest_id=' . $contest->ID );
+	$exported = 0;
+	if ( $query->have_posts() && $query->found_posts < 1000 ) {
+		gmr_do_contest_export( $args );
+		$exported = 2;
+	} else {
+		wp_async_task_add( 'gmr_do_contest_export', $args, 'high' );
+		$exported = 1;
+	}
+
+	$redirect = admin_url( "admin.php?page=gmr-contest-winner&export={$exported}&contest_id={$contest->ID}" );
 	wp_redirect( $redirect );
 	exit;
 }
