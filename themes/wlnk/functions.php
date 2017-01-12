@@ -13,7 +13,7 @@
  */
 
  // Useful global constants
-define( 'WLNK_VERSION', '0.3.7' ); /* Version bump by Jonathan 1/10/2017 @ 12:26 p.m. EST */
+define( 'WLNK_VERSION', '0.3.8' ); /* Version bump by Jonathan 1/12/2017 @ 07:56 a.m. EST */
 
  /**
   * Set up theme defaults and register supported WordPress features.
@@ -82,20 +82,14 @@ define( 'WLNK_VERSION', '0.3.7' ); /* Version bump by Jonathan 1/10/2017 @ 12:26
  add_action( 'wp_head', 'wlnk_header_meta' );
 
  function add_featured_image_in_rss() {
-    if ( function_exists( 'get_the_image' ) && ( $featured_image = get_the_image('format=array&echo=0') ) ) {
-        $featured_image[0] = $featured_image['url'];
-    } elseif ( function_exists( 'has_post_thumbnail' ) and has_post_thumbnail() ) {
-        $featured_image = wp_get_attachment_image_src( get_post_thumbnail_id(), 'post-thumbnail' );
-    } elseif ( function_exists( 'get_post_thumbnail_src' ) ) {
-        $featured_image = get_post_thumbnail_src();
-        if ( preg_match( '|^<img src="([^"]+)"|', $featured_image[0], $m ) )
-            $featured_image[0] = $m[1];
-    } else {
-        $featured_image = false;
-    }
-    if ( ! empty( $featured_image ) ) {
-        echo "\t" . '<enclosure url="' . $featured_image[0] . '" />' . "\n";
-    }
+   $featured_image = get_post_thumbnail_id();
+   if ( $featured_image ) {
+     $featured_image = current( wp_get_attachment_image_src( $featured_image, 'post-thumbnail' ) );
+   }
+
+   if ( ! empty( $featured_image ) ) {
+     echo "\t" . '<enclosure url="' . esc_url($featured_image[0]) . '" />' . "\n";
+   }
 
 }
 add_action( 'rss2_item', 'add_featured_image_in_rss' );
