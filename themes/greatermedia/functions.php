@@ -41,7 +41,6 @@ require_once __DIR__ . '/includes/iframe-embed.php';
 require_once __DIR__ . '/includes/flexible-feature-images/gmr-flexible-feature-images.php';
 require_once __DIR__ . '/includes/auction-nudge/gmr-auction-nudge.php';
 require_once __DIR__ . '/includes/class-gm-tinymce.php';
-require_once __DIR__ . '/includes/ad-code/manager.php';
 
 if ( defined( 'WP_CLI' ) && WP_CLI ) {
 	include __DIR__ . '/includes/gmr-db-cli.php';

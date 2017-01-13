@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "fd9f53bc66150c46894114fd88b8b11e",
-    "content-hash": "e5eb9aa6749a6718bf75018f46044c4f",
+    "hash": "e1edab6523ffccc707b2abb899bbb152",
+    "content-hash": "4ee5249037ad6b95d5d0b96d0c9a5dbd",
     "packages": [
         {
             "name": "10up/wp-gears",
@@ -162,26 +162,6 @@
             "time": "2016-08-13 20:53:52"
         },
         {
-            "name": "wpackagist-plugin/ad-code-manager",
-            "version": "0.5",
-            "source": {
-                "type": "svn",
-                "url": "https://plugins.svn.wordpress.org/ad-code-manager/",
-                "reference": "tags/0.5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/ad-code-manager.0.5.zip",
-                "reference": null,
-                "shasum": null
-            },
-            "require": {
-                "composer/installers": "~1.0"
-            },
-            "type": "wordpress-plugin",
-            "homepage": "https://wordpress.org/plugins/ad-code-manager/"
-        },
-        {
             "name": "wpackagist-plugin/edit-flow",
             "version": "0.8.2",
             "source": {
@@ -243,15 +223,15 @@
         },
         {
             "name": "wpackagist-plugin/the-events-calendar",
-            "version": "4.3.4.1",
+            "version": "4.4.0.1",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/the-events-calendar/",
-                "reference": "tags/4.3.4.1"
+                "reference": "tags/4.4.0.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/the-events-calendar.4.3.4.1.zip",
+                "url": "https://downloads.wordpress.org/plugin/the-events-calendar.4.4.0.1.zip",
                 "reference": null,
                 "shasum": null
             },
@@ -303,15 +283,15 @@
         },
         {
             "name": "wpackagist-plugin/yet-another-related-posts-plugin",
-            "version": "4.3.1",
+            "version": "4.3.6",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/yet-another-related-posts-plugin/",
-                "reference": "tags/4.3.1"
+                "reference": "tags/4.3.6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/yet-another-related-posts-plugin.4.3.1.zip",
+                "url": "https://downloads.wordpress.org/plugin/yet-another-related-posts-plugin.4.3.6.zip",
                 "reference": null,
                 "shasum": null
             },
@@ -373,6 +353,7 @@
                 "standards",
                 "typo3"
             ],
+            "abandoned": true,
             "time": "2016-05-12 11:58:38"
         },
         {
@@ -459,12 +440,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/wimg/PHPCompatibility.git",
-                "reference": "c637b750f8ec3e49646ef197eb78fec04293e708"
+                "reference": "4853c6da08a6cb0f53029170e93c97120a6a2335"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wimg/PHPCompatibility/zipball/c637b750f8ec3e49646ef197eb78fec04293e708",
-                "reference": "c637b750f8ec3e49646ef197eb78fec04293e708",
+                "url": "https://api.github.com/repos/wimg/PHPCompatibility/zipball/4853c6da08a6cb0f53029170e93c97120a6a2335",
+                "reference": "4853c6da08a6cb0f53029170e93c97120a6a2335",
                 "shasum": ""
             },
             "require": {
@@ -498,7 +479,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2016-12-12 22:28:01"
+            "time": "2017-01-03 20:31:50"
         },
         {
             "name": "wpackagist-plugin/core-control",
@@ -606,12 +587,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/wpengine/phpcompat.git",
-                "reference": "a28914713ff006d3abdd4aa8afcd8de6bda6d18f"
+                "reference": "27926a3449463930e0a9d97454f6bd650b1199f6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wpengine/phpcompat/zipball/a28914713ff006d3abdd4aa8afcd8de6bda6d18f",
-                "reference": "a28914713ff006d3abdd4aa8afcd8de6bda6d18f",
+                "url": "https://api.github.com/repos/wpengine/phpcompat/zipball/27926a3449463930e0a9d97454f6bd650b1199f6",
+                "reference": "27926a3449463930e0a9d97454f6bd650b1199f6",
                 "shasum": ""
             },
             "require": {
@@ -645,10 +626,10 @@
             ],
             "description": "Test PHP Compatibility.",
             "support": {
-                "source": "https://github.com/wpengine/phpcompat/tree/v1.3.1",
+                "source": "https://github.com/wpengine/phpcompat/tree/v1.3.2",
                 "issues": "https://github.com/wpengine/phpcompat/issues"
             },
-            "time": "2016-12-09 19:18:38"
+            "time": "2017-01-04 14:42:38"
         }
     ],
     "aliases": [],
