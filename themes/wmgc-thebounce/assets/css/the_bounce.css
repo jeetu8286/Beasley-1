@@ -15635,8 +15635,8 @@ table.responsive tr:nth-of-type(even) {
     color: #d22228; }
 
 .live-player__stream {
-  border: 1px solid #b0b0b0;
-  color: #b0b0b0;
+  border: 1px solid #b0afaf;
+  color: #b0afaf;
   -webkit-border-radius: 1em;
   -moz-border-radius: 1em;
   -ms-border-radius: 1em;
@@ -15650,7 +15650,7 @@ table.responsive tr:nth-of-type(even) {
     display: none; }
   .live-player__stream .live-player__stream--current.open .live-player__stream--available {
     color: #282827;
-    border-top: 1px solid #d9d9d9; }
+    border-top: 1px solid #d9d8d8; }
     .live-player__stream .live-player__stream--current.open .live-player__stream--available:after {
       background: transparent; }
     .live-player__stream .live-player__stream--current.open .live-player__stream--available .live-player__stream--item, .live-player__stream .live-player__stream--current.open .live-player__stream--available .live-player__stream--desc {
