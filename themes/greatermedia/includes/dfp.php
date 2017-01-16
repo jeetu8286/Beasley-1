@@ -189,3 +189,52 @@ function greatermedia_display_dfp_slot( $slot, $sizes = false ) {
 	echo '</script>';
 }
 add_action( 'acm_tag', 'greatermedia_display_dfp_slot', 10, 2 );
+
+function greatermedia_register_dfp_widget() {
+	register_widget( 'GreatermediaDfpWidget' );
+}
+add_action( 'widgets_init', 'greatermedia_register_dfp_widget' );
+
+class GreatermediaDfpWidget extends \WP_Widget {
+
+	public static $sizes = array(
+		'mrec'      => '300x250',
+		'half-page' => '300x600',
+	);
+
+	public function __construct() {
+		$widget_ops = array( 'description' => 'Displays DFP slot.' );
+		parent::__construct( 'gmr-dfp-widget', 'DFP widget', $widget_ops );
+	}
+
+	public function update( $new_instance, $old_instance ) {
+		$new_instance['unit-code'] = sanitize_text_field( $new_instance['unit-code'] );
+		$new_instance['sizes'] = sanitize_text_field( implode( ',', (array) $new_instance['sizes'] ) );
+
+		return $new_instance;
+	}
+
+	public function form( $instance ) {
+		$instance = wp_parse_args( $instance, array(
+			'unit-code' => '',
+			'sizes'     => '',
+		) );
+
+		$sizes = explode( ',', $instance['sizes'] );
+
+		?><p>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'unit-code' ) ); ?>">Unit Code:</label>
+			<input type="text" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'unit-code' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'unit-code' ) ); ?>" value="<?php echo esc_attr( $instance['unit-code'] ); ?>">
+		</p>
+		<p>
+			<label>Sizes:</label><br>
+			<?php foreach ( self::$sizes as $key => $label ) : ?>
+				<label>
+					<input type="checkbox" name="<?php echo esc_attr( $this->get_field_name( 'sizes[]' ) ); ?>" value="<?php echo esc_attr( $key ); ?>"<?php checked( in_array( $key, $sizes ) ); ?>>
+					<?php echo esc_html( $label ); ?>
+				</label><br>
+			<?php endforeach; ?>
+		</p><?php
+	}
+
+}
