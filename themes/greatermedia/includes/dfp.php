@@ -116,6 +116,9 @@ function greatermedia_dfp_footer() {
 				googletag.cmd.push(function() {
 					var i, j, slot, targeting;
 
+					googletag.destroySlots();
+					googletag.pubads().clearTargeting();
+
 					for (i in slots) {
 						slot = googletag.defineSlot(slots[i][0], slots[i][1], slots[i][2]);
 						slot.addService(googletag.pubads());
@@ -141,10 +144,7 @@ function greatermedia_dfp_footer() {
 				});
 			};
 
-			$(document)
-				.on('pjax:start', $.proxy(googletag.destroySlots, googletag))
-				.on('pjax:end', __ready)
-				.ready(__ready);
+			$(document).on('pjax:end', __ready).ready(__ready);
 		})(jQuery, googletag);
 	</script><?php
 }
@@ -163,8 +163,6 @@ function greatermedia_display_dfp_slot( $slot, $sizes = false ) {
 
 	if ( isset( $slots[ $slot ] ) ) {
 		$slot = $slots[ $slot ];
-	} else {
-		return;
 	}
 
 	$render_targeting = false;
@@ -235,6 +233,26 @@ class GreatermediaDfpWidget extends \WP_Widget {
 				</label><br>
 			<?php endforeach; ?>
 		</p><?php
+	}
+
+	public function widget( $args, $instance ) {
+		$instance = wp_parse_args( $instance, array(
+			'unit-code' => '',
+			'sizes'     => '',
+		) );
+
+		$sizes = array();
+		foreach ( explode( ',', $instance['sizes'] ) as $size ) {
+			if ( isset( self::$sizes[ $size ] ) ) {
+				$sizes[] = array_map( 'intval', explode( 'x', self::$sizes[ $size ] ) );
+			}
+		}
+
+		if ( ! empty( $instance['unit-code'] ) && ! empty( $sizes ) ) {
+			echo $args['before_widget'];
+				do_action( 'acm_tag', $instance['unit-code'], $sizes );
+			echo $args['after_widget'];
+		}
 	}
 
 }
