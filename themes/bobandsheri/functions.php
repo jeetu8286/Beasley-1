@@ -13,7 +13,7 @@
  */
 
  // Useful global constants
-define( 'BOBANDSHERI_VERSION', '0.1.12' ); /* Version bump by Jonathan 01/10/2017 @ 1:52 p.m. EST */
+define( 'BOBANDSHERI_VERSION', '0.1.13' ); /* Version bump by Jonathan 01/16/2017 @ 3:12 p.m. EST */
 
  /**
   * Set up theme defaults and register supported WordPress features.
@@ -76,24 +76,14 @@ define( 'BOBANDSHERI_VERSION', '0.1.12' ); /* Version bump by Jonathan 01/10/201
  }
  add_action( 'wp_head', 'bobandsheri_header_meta' );
 
- function add_featured_image_in_rss() {
-
-    if ( function_exists( 'get_the_image' ) && ( $featured_image = get_the_image('format=array&echo=0') ) ) {
-        $featured_image[0] = $featured_image['url'];
-    } elseif ( function_exists( 'has_post_thumbnail' ) and has_post_thumbnail() ) {
-        $featured_image = wp_get_attachment_image_src( get_post_thumbnail_id(), 'post-thumbnail' );
-    } elseif ( function_exists( 'get_post_thumbnail_src' ) ) {
-        $featured_image = get_post_thumbnail_src();
-        if ( preg_match( '|^<img src="([^"]+)"|', $featured_image[0], $m ) )
-            $featured_image[0] = $m[1];
-    } else {
-        $featured_image = false;
-    }
-
-    if ( ! empty( $featured_image ) ) {
-        echo "\t" . '<enclosure url="' . $featured_image[0] . '" />' . "\n";
-    }
-
+ $featured_image = get_post_thumbnail_id();
+ if ( $featured_image ) {
+   $featured_image = current( wp_get_attachment_image_src( $featured_image, 'post-thumbnail' ) );
  }
 
- add_action( 'rss2_item', 'add_featured_image_in_rss' );
+ if ( ! empty( $featured_image ) ) {
+   echo "\t" . '<enclosure url="' . esc_url($featured_image) . '" />' . "\n";
+ }
+
+}
+add_action( 'rss2_item', 'add_featured_image_in_rss' );

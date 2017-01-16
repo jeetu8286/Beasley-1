@@ -13,7 +13,7 @@
  */
 
  // Useful global constants
-define( 'WLNK_VERSION', '0.3.8' ); /* Version bump by Jonathan 1/12/2017 @ 07:56 a.m. EST */
+define( 'WLNK_VERSION', '0.3.9' ); /* Version bump by Jonathan 01/16/2017 @ 3:12 p.m. EST */
 
  /**
   * Set up theme defaults and register supported WordPress features.
@@ -88,7 +88,7 @@ define( 'WLNK_VERSION', '0.3.8' ); /* Version bump by Jonathan 1/12/2017 @ 07:56
    }
 
    if ( ! empty( $featured_image ) ) {
-     echo "\t" . '<enclosure url="' . esc_url($featured_image[0]) . '" />' . "\n";
+     echo "\t" . '<enclosure url="' . esc_url($featured_image) . '" />' . "\n";
    }
 
 }
