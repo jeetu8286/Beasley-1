@@ -62,7 +62,7 @@ function greatermedia_dfp_head() {
 		googletag.beasley.defineSlot = function(slot, sizes, targeting) {
 			var id = 'dfp-slot-' + ++googletag.beasley.slotsIndex;
 			googletag.beasley.slots.push([id, slot, sizes, targeting || []]);
-			document.writeln('<div id="' + id + '"></div>');
+			document.writeln('<div id="' + id + '" class="gmr-ad"></div>');
 		};
 	</script><?php
 }
@@ -91,7 +91,7 @@ function greatermedia_dfp_footer() {
 		'dfp_ad_incontent_pos1'    => array( array( 300, 250 ) ),
 		'dfp_ad_incontent_pos2'    => array( array( 300, 250 ) ),
 		'dfp_ad_inlist_infinite'   => array( array( 300, 250 ) ),
-		'dfp_ad_interstitial'      => array( array( -1, -1 ) ),
+		'dfp_ad_interstitial'      => false,
 		'dfp_ad_playersponsorship' => array( 'fluid' ),
 		'dfp_ad_wallpaper'         => array( array( 1, 1 ) ),
 	);
@@ -102,15 +102,18 @@ function greatermedia_dfp_footer() {
 				var unitCodes = <?php echo json_encode( $unit_codes ); ?>,
 					sizes = <?php echo json_encode( $sizes ) ?>,
 					slots = [],
-					slot;
+					slot, unitCode;
 
 				while ((slot = googletag.beasley.slots.pop())) {
-					slots.push([
-						'/<?php echo esc_js( $network_id ); ?>/' + (unitCodes[slot[1]] || slot[1]),
-						slot[2] || sizes[slot[1]] || [[300, 250]],
-						slot[0],
-						slot[3]
-					]);
+					unitCode = unitCodes[slot[1]] || slot[1];
+					if (unitCode) {
+						slots.push([
+							'/<?php echo esc_js( $network_id ); ?>/' + unitCode,
+							slot[2] || sizes[slot[1]],
+							slot[0],
+							slot[3]
+						]);
+					}
 				}
 
 				googletag.cmd.push(function() {
@@ -120,7 +123,10 @@ function greatermedia_dfp_footer() {
 					googletag.pubads().clearTargeting();
 
 					for (i in slots) {
-						slot = googletag.defineSlot(slots[i][0], slots[i][1], slots[i][2]);
+						slot = false !== slots[i][1]
+							? googletag.defineSlot(slots[i][0], slots[i][1], slots[i][2])
+							: googletag.defineOutOfPageSlot(slots[i][0], slots[i][2]);
+
 						slot.addService(googletag.pubads());
 						for (j in slots[i][3]) {
 							slot.setTargeting(slots[i][3][j][0], slots[i][3][j][1]);
@@ -187,6 +193,11 @@ function greatermedia_display_dfp_slot( $slot, $sizes = false ) {
 	echo '</script>';
 }
 add_action( 'acm_tag', 'greatermedia_display_dfp_slot', 10, 2 );
+
+function greatermedia_display_dfp_outofpage() {
+	do_action( 'acm_tag', 'dfp_ad_interstitial' );
+}
+add_action( 'get_footer', 'greatermedia_display_dfp_outofpage' );
 
 function greatermedia_register_dfp_widget() {
 	register_widget( 'GreatermediaDfpWidget' );
