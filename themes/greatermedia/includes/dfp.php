@@ -91,10 +91,11 @@ function greatermedia_dfp_head() {
 		googletag.beasley = googletag.beasley || {};
 		googletag.beasley.slots = googletag.beasley.slots || [];
 		googletag.beasley.slotsIndex = googletag.beasley.slotsIndex || 0;
+		googletag.beasley.targeting = googletag.beasley.targeting || [];
 
-		googletag.beasley.defineSlot = function(slot, sizes) {
+		googletag.beasley.defineSlot = function(slot, sizes, targeting) {
 			var id = 'dfp-slot-' + ++googletag.beasley.slotsIndex;
-			googletag.beasley.slots.push([id, slot, sizes]);
+			googletag.beasley.slots.push([id, slot, sizes, targeting || []]);
 			document.writeln('<div id="' + id + '"></div>');
 		};
 	</script><?php
@@ -130,7 +131,7 @@ function greatermedia_dfp_footer() {
 	);
 
 	?><script type="text/javascript">
-		(function($) {
+		(function($, googletag) {
 			var __ready = function() {
 				var unitCodes = <?php echo json_encode( $unit_codes ); ?>,
 					sizes = <?php echo json_encode( $sizes ) ?>,
@@ -141,16 +142,20 @@ function greatermedia_dfp_footer() {
 					slots.push([
 						'/<?php echo esc_js( $network_id ); ?>/' + (unitCodes[slot[1]] || slot[1]),
 						slot[2] || sizes[slot[1]] || [[300, 250]],
-						slot[0]
+						slot[0],
+						slot[3]
 					]);
 				}
 
 				googletag.cmd.push(function() {
-					var i, slot;
+					var i, j, slot;
 
 					for (i in slots) {
-						slot = slots[i];
-						googletag.defineSlot(slot[0], slot[1], slot[2]).addService(googletag.pubads());
+						slot = googletag.defineSlot(slots[i][0], slots[i][1], slots[i][2]);
+						slot.addService(googletag.pubads());
+						for (j in slots[i][3]) {
+							slot.setTargeting(slots[i][3][j][0], slots[i][3][j][1]);
+						}
 					}
 
 					googletag.pubads().enableSingleRequest();
@@ -166,13 +171,18 @@ function greatermedia_dfp_footer() {
 				});
 			};
 
-			$(document).on('pjax:end', __ready).ready(__ready);
-		})(jQuery);
+			$(document)
+				.on('pjax:start', $.proxy(googletag.destroySlots, googletag))
+				.on('pjax:end', __ready)
+				.ready(__ready);
+		})(jQuery, googletag);
 	</script><?php
 }
 add_action( 'wp_footer', 'greatermedia_dfp_footer', 1000 );
 
 function greatermedia_display_dfp_slot( $slot, $sizes = false ) {
+	static $position = 0;
+
 	$slots = array(
 		'leaderboard-top-of-site'    => 'dfp_ad_leaderboard_pos1',
 		'smartphone-wide-banner'     => 'dfp_ad_leaderboard_pos1',
@@ -188,7 +198,11 @@ function greatermedia_display_dfp_slot( $slot, $sizes = false ) {
 	}
 
 	?><script type="text/javascript">
-		googletag.beasley.defineSlot('<?php echo esc_js( $slot ); ?>', <?php echo json_encode( $sizes ); ?>);
+		googletag.beasley.defineSlot(
+			'<?php echo esc_js( $slot ); ?>',
+			<?php echo json_encode( $sizes ); ?>,
+			[['pos', <?php echo intval( ++$position ); ?>]]
+		);
 	</script><?php
 }
 add_action( 'acm_tag', 'greatermedia_display_dfp_slot', 10, 2 );
