@@ -7,11 +7,8 @@
 	<?php do_action( 'show_breaking_news_banner' ); ?>
 	<div class="header__leaderboard">
 		<div class="container container__leaderboard">
-			<div class="ad__leaderboard desktop">
+			<div class="ad__leaderboard">
 				<?php do_action( 'acm_tag', 'leaderboard-top-of-site' ); ?>
-			</div>
-			<div class="ad__leaderboard mobile">
-				<?php do_action( 'acm_tag', 'smartphone-wide-banner' ); ?>
 			</div>
 		</div>
 	</div>

@@ -22,12 +22,7 @@
 
 				if ( is_singular( $post_types ) ) { ?>
 					<div class="footer__ad">
-						<div class="desktop">
-							<?php do_action( 'acm_tag', 'leaderboard-footer-desktop' ); ?>
-						</div>
-						<div class="mobile">
-							<?php do_action( 'acm_tag', 'leaderboard-footer-mobile' ); ?>
-						</div>
+						<?php do_action( 'acm_tag', 'leaderboard-footer-desktop' ); ?>
 					</div>
 				<?php } ?>
 				<div class="footer__content">

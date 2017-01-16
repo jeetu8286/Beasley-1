@@ -161,9 +161,7 @@ function greatermedia_display_dfp_slot( $slot, $sizes = false ) {
 
 	$slots = array(
 		'leaderboard-top-of-site'    => 'dfp_ad_leaderboard_pos1',
-		'smartphone-wide-banner'     => 'dfp_ad_leaderboard_pos1',
 		'leaderboard-footer-desktop' => 'dfp_ad_leaderboard_pos2',
-		'leaderboard-footer-mobile'  => 'dfp_ad_leaderboard_pos2',
 		'mrec-body'                  => 'dfp_ad_inlist_infinite',
 	);
 
