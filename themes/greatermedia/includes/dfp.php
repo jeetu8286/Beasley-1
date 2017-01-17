@@ -57,15 +57,7 @@ function greatermedia_dfp_head() {
 		googletag.cmd = googletag.cmd || [];
 
 		googletag.beasley = googletag.beasley || {};
-		googletag.beasley.slots = googletag.beasley.slots || [];
-		googletag.beasley.slotsIndex = googletag.beasley.slotsIndex || 0;
 		googletag.beasley.targeting = googletag.beasley.targeting || [];
-
-		googletag.beasley.defineSlot = function(slot, sizes, targeting) {
-			var id = 'dfp-slot-' + ++googletag.beasley.slotsIndex;
-			googletag.beasley.slots.push([id, slot, sizes, targeting || []]);
-			document.writeln('<div id="' + id + '" class="gmr-ad"></div>');
-		};
 	</script><?php
 }
 add_action( 'wp_head', 'greatermedia_dfp_head', 7 );
@@ -104,24 +96,34 @@ function greatermedia_dfp_footer() {
 
 	?><script type="text/javascript">
 		(function($, googletag) {
-			var __ready = function() {
+			var slotsIndex = 0, __ready;
+
+			__ready = function() {
 				var unitCodes = <?php echo json_encode( $unit_codes ); ?>,
 					sizes = <?php echo json_encode( $sizes ) ?>,
 					slots = [],
-					slot, unitCode;
+					unitCode;
 
-				while ((slot = googletag.beasley.slots.pop())) {
-					unitCode = unitCodes[slot[1]] || slot[1];
+				$('[data-dfp-slot]:empty').each(function() {
+					var id = 'dfp-slot-' + ++slotsIndex,
+						$this = $(this),
+						slotType = $this.attr('data-dfp-slot'),
+						slotSizes = JSON.parse($this.attr('data-sizes')),
+						targeting = JSON.parse($this.attr('data-targeting'));
+
+					$this.html('<div id="' + id + '" class="gmr-ad"></div>');
+
+					unitCode = unitCodes[slotType] || slotType;
 					if (unitCode) {
 						slots.push([
 							'/<?php echo esc_js( $network_id ); ?>/' + unitCode,
-							slot[2] || sizes[slot[1]],
-							slot[0],
-							slot[3],
-							slot[1]
+							slotSizes || sizes[slotType],
+							id,
+							targeting,
+							slotType
 						]);
 					}
-				}
+				});
 
 				googletag.cmd.push(function() {
 					var i, j, slot, targeting, leaderboardSizeMapping, infiniteSizeMapping, isOutOfPage;
@@ -216,10 +218,11 @@ function greatermedia_display_dfp_slot( $slot, $sizes = false ) {
 		$single_targeting[] = array( 'remnant', 'yes' );
 	}
 
-	echo '<script type="text/javascript">';
-		$render_targeting && printf( 'googletag.beasley.targeting = %s;', json_encode( $targeting ) );
-		echo 'googletag.beasley.defineSlot("', esc_js( $slot ), '", ', json_encode( $sizes ), ', ', json_encode( $single_targeting ), ');';
-	echo '</script>';
+	if ( $render_targeting ) {
+		echo '<script type="text/javascript">googletag.beasley.targeting=', json_encode( $targeting ), ';</script>';
+	}
+
+	echo '<div data-dfp-slot="', esc_js( $slot ), '" data-sizes="', esc_attr( json_encode( $sizes ) ), '" data-targeting="', esc_attr( json_encode( $single_targeting ) ), '"></div>';
 }
 add_action( 'acm_tag', 'greatermedia_display_dfp_slot', 10, 2 );
 
