@@ -111,13 +111,22 @@ function greatermedia_dfp_footer() {
 							'/<?php echo esc_js( $network_id ); ?>/' + unitCode,
 							slot[2] || sizes[slot[1]],
 							slot[0],
-							slot[3]
+							slot[3],
+							slot[1]
 						]);
 					}
 				}
 
 				googletag.cmd.push(function() {
-					var i, j, slot, targeting;
+					var i, j, slot, targeting, leaderboardSizeMapping;
+
+					leaderboardSizeMapping = googletag.sizeMapping()
+						.addSize([970, 200], [970, 66])
+						.addSize([970, 200], [970, 90])
+						.addSize([729, 200], [728, 90])
+						.addSize([0, 0], [320, 50])
+						.addSize([0, 0], [320, 100])
+						.build();
 
 					googletag.destroySlots();
 					googletag.pubads().clearTargeting();
@@ -127,10 +136,15 @@ function greatermedia_dfp_footer() {
 							? googletag.defineSlot(slots[i][0], slots[i][1], slots[i][2])
 							: googletag.defineOutOfPageSlot(slots[i][0], slots[i][2]);
 
-						slot.addService(googletag.pubads());
+						if ('dfp_ad_leaderboard_pos1' == slots[i][4] || 'dfp_ad_leaderboard_pos2' == slots[i][4]) {
+							slot.defineSizeMapping(leaderboardSizeMapping);
+						}
+
 						for (j in slots[i][3]) {
 							slot.setTargeting(slots[i][3][j][0], slots[i][3][j][1]);
 						}
+
+						slot.addService(googletag.pubads());
 					}
 
 					while ((targeting = googletag.beasley.targeting.pop())) {
@@ -138,7 +152,7 @@ function greatermedia_dfp_footer() {
 					}
 
 					googletag.pubads().enableSingleRequest();
-					googletag.pubads().collapseEmptyDivs();
+					googletag.pubads().collapseEmptyDivs(true);
 
 					googletag.enableServices();
 				});
