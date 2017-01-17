@@ -81,6 +81,8 @@ function greatermedia_dfp_footer() {
 		'dfp_ad_leaderboard_pos2'  => get_option( 'dfp_ad_leaderboard_pos2' ),
 		'dfp_ad_incontent_pos1'    => get_option( 'dfp_ad_incontent_pos1' ),
 		'dfp_ad_incontent_pos2'    => get_option( 'dfp_ad_incontent_pos2' ),
+		'dfp_ad_right_rail_pos1'   => get_option( 'dfp_ad_right_rail_pos1' ),
+		'dfp_ad_right_rail_pos2'   => get_option( 'dfp_ad_right_rail_pos2' ),
 		'dfp_ad_inlist_infinite'   => get_option( 'dfp_ad_inlist_infinite' ),
 		'dfp_ad_interstitial'      => get_option( 'dfp_ad_interstitial' ),
 		'dfp_ad_playersponsorship' => get_option( 'dfp_ad_playersponsorship' ),
@@ -203,9 +205,21 @@ function greatermedia_display_dfp_slot( $slot, $sizes = false ) {
 		}
 	}
 
+	$remnant_slots = array(
+		'dfp_ad_leaderboard_pos1',
+		'dfp_ad_leaderboard_pos2',
+		'dfp_ad_right_rail_pos1',
+		'dfp_ad_right_rail_pos2',
+	);
+
+	$single_targeting = array( array( 'pos', ++$position ) );
+	if ( in_array( $slot, $remnant_slots ) ) {
+		$single_targeting[] = array( 'remnant', 'yes' );
+	}
+
 	echo '<script type="text/javascript">';
 		$render_targeting && printf( 'googletag.beasley.targeting = %s;', json_encode( $targeting ) );
-		echo 'googletag.beasley.defineSlot("', esc_js( $slot ), '", ', json_encode( $sizes ), ', [["pos", ', intval( ++$position ), ']]);';
+		echo 'googletag.beasley.defineSlot("', esc_js( $slot ), '", ', json_encode( $sizes ), ', ', json_encode( $single_targeting ), ');';
 	echo '</script>';
 }
 add_action( 'acm_tag', 'greatermedia_display_dfp_slot', 10, 2 );
