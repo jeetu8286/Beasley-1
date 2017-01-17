@@ -250,12 +250,12 @@ function greatermedia_display_dfp_incontent( $content ) {
 
 		// in-content pos1 slot after first 2 paragraphs
 		if ( 1 == $i || $len < 2 ) {
-			$new_content .= greatermedia_display_dfp_slot( 'dfp_ad_incontent_pos1', false, false, 'mobile' );
+			$new_content .= greatermedia_display_dfp_slot( 'dfp_ad_incontent_pos1', false, false, 'ad__in-content ad__in-content--mobile' );
 		}
 
 		// in-content pos2 slot after 6th parapraph
 		if ( 5 == $i && $len > 6 ) {
-			$new_content .= greatermedia_display_dfp_slot( 'dfp_ad_incontent_pos2', false, false, 'mobile' );
+			$new_content .= greatermedia_display_dfp_slot( 'dfp_ad_incontent_pos2', false, false, 'ad__in-content ad__in-content--mobile' );
 		}
 	}
 
