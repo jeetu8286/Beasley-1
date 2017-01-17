@@ -8,7 +8,7 @@
 	<div class="header__leaderboard">
 		<div class="container container__leaderboard">
 			<div class="ad__leaderboard">
-				<?php do_action( 'acm_tag', 'leaderboard-top-of-site' ); ?>
+				<?php do_action( 'acm_tag', 'dfp_ad_leaderboard_pos1' ); ?>
 			</div>
 		</div>
 	</div>

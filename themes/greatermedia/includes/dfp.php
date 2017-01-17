@@ -94,7 +94,7 @@ function greatermedia_dfp_footer() {
 		'dfp_ad_leaderboard_pos2'  => array( array( 728, 90 ), array( 970, 90 ), array( 320, 50 ), array( 320, 100 ) ),
 		'dfp_ad_incontent_pos1'    => array( array( 300, 250 ) ),
 		'dfp_ad_incontent_pos2'    => array( array( 300, 250 ) ),
-		'dfp_ad_inlist_infinite'   => array( array( 300, 250 ) ),
+		'dfp_ad_inlist_infinite'   => array( array( 728, 90 ), array( 300, 250 ) ),
 		'dfp_ad_right_rail_pos1'   => array( array( 300, 600 ), array( 300, 250 ) ),
 		'dfp_ad_right_rail_pos2'   => array( array( 300, 600 ), array( 300, 250 ) ),
 		'dfp_ad_interstitial'      => array( array( 1, 1 ) ),
@@ -124,7 +124,7 @@ function greatermedia_dfp_footer() {
 				}
 
 				googletag.cmd.push(function() {
-					var i, j, slot, targeting, leaderboardSizeMapping, isOutOfPage;
+					var i, j, slot, targeting, leaderboardSizeMapping, infiniteSizeMapping, isOutOfPage;
 
 					leaderboardSizeMapping = googletag.sizeMapping()
 						.addSize([970, 200], [970, 66])
@@ -132,6 +132,11 @@ function greatermedia_dfp_footer() {
 						.addSize([729, 200], [728, 90])
 						.addSize([0, 0], [320, 50])
 						.addSize([0, 0], [320, 100])
+						.build();
+
+					infiniteSizeMapping = googletag.sizeMapping()
+						.addSize([970, 200], [728, 90])
+						.addSize([0, 0], [300, 250])
 						.build();
 
 					googletag.destroySlots();
@@ -146,6 +151,8 @@ function greatermedia_dfp_footer() {
 
 						if ('dfp_ad_leaderboard_pos1' == slots[i][4] || 'dfp_ad_leaderboard_pos2' == slots[i][4]) {
 							slot.defineSizeMapping(leaderboardSizeMapping);
+						} else if ('dfp_ad_inlist_infinite' == slots[i][4]) {
+							slot.defineSizeMapping(infiniteSizeMapping);
 						}
 
 						for (j in slots[i][3]) {
@@ -180,16 +187,6 @@ add_action( 'wp_footer', 'greatermedia_dfp_footer', 1000 );
 
 function greatermedia_display_dfp_slot( $slot, $sizes = false ) {
 	static $targeting = null, $position = 0;
-
-	$slots = array(
-		'leaderboard-top-of-site'    => 'dfp_ad_leaderboard_pos1',
-		'leaderboard-footer-desktop' => 'dfp_ad_leaderboard_pos2',
-		'mrec-body'                  => 'dfp_ad_inlist_infinite',
-	);
-
-	if ( isset( $slots[ $slot ] ) ) {
-		$slot = $slots[ $slot ];
-	}
 
 	$render_targeting = false;
 	if ( is_null( $targeting ) ) {
