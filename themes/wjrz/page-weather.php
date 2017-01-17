@@ -44,7 +44,6 @@ while ( have_posts() ) : the_post(); ?>
                 </header>
 
                 <section class="article__content" itemprop="articleBody">
-
                     <?php the_content(); ?>
 
                     <a href="http://www.accuweather.com/en/us/manahawkin-nj/08050/sun-sand-current-weather/2192064" class="aw-widget-legal">
@@ -59,14 +58,9 @@ while ( have_posts() ) : the_post(); ?>
                     <p><strong>Check out the latest ski reports from SnoCountry</strong>:</p><iframe src="http://www.snocountry.com/widget/widget_us_states.php?pettabs=1&region=us&size=small" frameborder="0" height="435" width="250" scrolling="no"><br />
                     <p>Your browser does not support iframes.</p><br />
                     </iframe></center>
-
                 </section>
 
                 <?php get_template_part( 'partials/article-footer' ); ?>
-
-                <div class="ad__inline--right mobile">
-                    <?php do_action( 'acm_tag_gmr_variant', 'mrec-body', 'mobile', array( 'max_width' => 1023 ) ); ?>
-                </div>
 
                 <?php if ( post_type_supports( get_post_type(), 'comments' ) ) { // If comments are open or we have at least one comment, load up the comment template. ?>
                     <div class='article__comments'>

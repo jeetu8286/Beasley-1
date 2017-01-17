@@ -76,10 +76,6 @@ playlistsPlugin: {"data":["65c0d8a9a17d46c4b9845a749b42777c","e4c4cac195bf482c99
 
 				<?php get_template_part( 'partials/article-footer' ); ?>
 
-				<div class="ad__inline--right mobile">
-					<?php do_action( 'acm_tag_gmr_variant', 'mrec-body', 'mobile', array( 'max_width' => 1023 ) ); ?>
-				</div>
-
 				<?php if ( post_type_supports( get_post_type(), 'comments' ) ) { // If comments are open or we have at least one comment, load up the comment template. ?>
 					<div class='article__comments'>
 						<?php comments_template(); ?>

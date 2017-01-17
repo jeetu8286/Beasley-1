@@ -36,8 +36,7 @@ get_header();
 
 				<div id="gmclt_narrowColumnContent"></div>
 				<div class="gmclt_adDiv">
-					<?php do_action( 'acm_tag_gmr_variant', 'mrec-lists', 'desktop' ); ?>
-					<?php do_action( 'acm_tag_gmr_variant', 'mrec-lists', 'mobile' ); ?>
+					<?php do_action( 'acm_tag', 'dfp_ad_right_rail_pos1' ); ?>
 				</div>
 			</div>
 

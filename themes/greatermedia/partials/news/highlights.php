@@ -55,12 +55,7 @@
 </div>
 
 <div class="highlights__ad">
-
 	<div class="highlights__ad--desktop">
-		<?php do_action( 'acm_tag_gmr_variant', 'mrec-lists', 'desktop', array( 'min_width' => 1024 ) ); ?>
+		<?php do_action( 'acm_tag', 'dfp_ad_incontent_pos1' ); ?>
 	</div>
-	<div class="highlights__ad--mobile">
-		<?php do_action( 'acm_tag_gmr_variant', 'mrec-lists', 'mobile', array( 'max_width' => 1023 ) ); ?>
-	</div>
-
 </div>

@@ -18,26 +18,20 @@ get_header();
 			</header>
 			<section class="article__content" itemprop="articleBody">
 				<?php the_content(); ?>
-				
+
 				<div class="gmclt_wideColumn left">
 					<script type="text/javascript" src="https://form.jotform.com/jsform/60634920496157"></script>
 				</div>
-				
+
 				<div class="gmclt_narrowColumn">
 					<div class="gmclt_adDiv">
-						<?php do_action( 'acm_tag_gmr_variant', 'mrec-lists', 'desktop' ); ?>
-						<?php do_action( 'acm_tag_gmr_variant', 'mrec-lists', 'mobile' ); ?>
+						<?php do_action( 'acm_tag', 'dfp_ad_right_rail_pos1' ); ?>
 					</div>
 				</div>
-				
+
 			</section>
 		</section>
 	</article>
 </div>
 
 <?php get_footer(); ?>
-
-
-
-
-		

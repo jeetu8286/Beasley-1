@@ -82,10 +82,6 @@ $event_id = get_the_ID();
 			?>
 			<?php do_action( 'tribe_events_single_event_after_the_meta' ) ?>
 
-
-			<div class="ad__inline--right mobile">
-				<?php do_action( 'acm_tag_gmr_variant', 'mrec-body', 'mobile', array( 'max_width' => 1023 ) ); ?>
-			</div>
 			<!-- .tribe-events-single-event-description -->
 		</div> <!-- #post-x -->
 		<?php if ( get_post_type() == TribeEvents::POSTTYPE && tribe_get_option( 'showComments', false ) ) comments_template() ?>

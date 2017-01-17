@@ -18,7 +18,7 @@ get_header();
 		</header>
 		<section class="article__content" itemprop="articleBody">
 			<?php the_content(); ?>
-			
+
 			Choose a state to view National Weather Service Alerts Alerts:<br />
 				<select id="gmclt_selectState" name="gmclt_selectState">
 					<option value="NC" selected="selected">NORTH CAROLINA</option>
@@ -83,20 +83,19 @@ get_header();
 				</div>
 				<div id="gmclt_stormwatchMapCanvas"></div>
 			</div>
-			
+
 			<div class="gmclt_narrowColumn">
-				
+
 				<div id="gmclt_narrowColumnContent"></div>
 				<div class="gmclt_adDiv">
-					<?php do_action( 'acm_tag_gmr_variant', 'mrec-lists', 'desktop' ); ?>
-					<?php do_action( 'acm_tag_gmr_variant', 'mrec-lists', 'mobile' ); ?>
+					<?php do_action( 'acm_tag', 'dfp_ad_right_rail_pos1' ); ?>
 				</div>
 			</div>
-			
-			
+
+
 		</section>
-		
-	
+
+
 	</section>
 	</article>
 </div>
@@ -118,7 +117,7 @@ get_header();
 <script type="text/javascript">
 jQuery(document).ready(function(){
 	GMCLT.Weather.stormwatchInit();
-	
+
 });
 </script>
 
@@ -127,4 +126,3 @@ jQuery(document).ready(function(){
 
 
 
-		

@@ -71,7 +71,7 @@
 				<aside class="inner-right-col">
 
 					<div class="show__ad">
-						<?php do_action( 'acm_tag', 'mrec-lists' ); ?>
+						<?php do_action( 'acm_tag', 'dfp_ad_right_rail_pos1' ); ?>
 					</div>
 
 					<?php

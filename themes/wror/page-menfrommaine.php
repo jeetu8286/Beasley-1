@@ -67,10 +67,6 @@ get_header();
 
 				</section>
 
-				<div class="ad__inline--right mobile">
-					<?php do_action( 'acm_tag_gmr_variant', 'mrec-body', 'mobile' ); ?>
-				</div>
-
 				<?php get_template_part( 'partials/article', 'footer' ); ?>
 
 			</article>

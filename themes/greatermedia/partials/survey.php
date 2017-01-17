@@ -44,7 +44,7 @@
 	<section class="col__inner--right">
 		<section id="contest-form" class="contest__form"<?php gmr_contest_container_attributes(); ?>></section>
 		<div class="desktop">
-			<?php do_action( 'acm_tag', 'mrec-body' ); ?>
+			<?php do_action( 'acm_tag', 'dfp_ad_right_rail_pos1' ); ?>
 		</div>
 	</section>
 
