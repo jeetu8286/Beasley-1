@@ -97,7 +97,7 @@ function greatermedia_dfp_footer() {
 		'dfp_ad_inlist_infinite'   => array( array( 300, 250 ) ),
 		'dfp_ad_right_rail_pos1'   => array( array( 300, 600 ), array( 300, 250 ) ),
 		'dfp_ad_right_rail_pos2'   => array( array( 300, 600 ), array( 300, 250 ) ),
-		'dfp_ad_interstitial'      => false,
+		'dfp_ad_interstitial'      => array( array( 1, 1 ) ),
 		'dfp_ad_playersponsorship' => array( 'fluid' ),
 		'dfp_ad_wallpaper'         => array( array( 1, 1 ) ),
 	);
@@ -124,7 +124,7 @@ function greatermedia_dfp_footer() {
 				}
 
 				googletag.cmd.push(function() {
-					var i, j, slot, targeting, leaderboardSizeMapping;
+					var i, j, slot, targeting, leaderboardSizeMapping, isOutOfPage;
 
 					leaderboardSizeMapping = googletag.sizeMapping()
 						.addSize([970, 200], [970, 66])
@@ -138,9 +138,11 @@ function greatermedia_dfp_footer() {
 					googletag.pubads().clearTargeting();
 
 					for (i in slots) {
-						slot = false !== slots[i][1]
-							? googletag.defineSlot(slots[i][0], slots[i][1], slots[i][2])
-							: googletag.defineOutOfPageSlot(slots[i][0], slots[i][2]);
+						isOutOfPage = 'dfp_ad_interstitial' == slots[i][4] || 'dfp_ad_wallpaper' == slots[i][4];
+
+						slot = isOutOfPage
+							? googletag.defineOutOfPageSlot(slots[i][0], slots[i][2])
+							: googletag.defineSlot(slots[i][0], slots[i][1], slots[i][2]);
 
 						if ('dfp_ad_leaderboard_pos1' == slots[i][4] || 'dfp_ad_leaderboard_pos2' == slots[i][4]) {
 							slot.defineSizeMapping(leaderboardSizeMapping);
@@ -226,6 +228,7 @@ add_action( 'acm_tag', 'greatermedia_display_dfp_slot', 10, 2 );
 
 function greatermedia_display_dfp_outofpage() {
 	do_action( 'acm_tag', 'dfp_ad_interstitial' );
+	do_action( 'acm_tag', 'dfp_ad_wallpaper' );
 }
 add_action( 'get_footer', 'greatermedia_display_dfp_outofpage' );
 
