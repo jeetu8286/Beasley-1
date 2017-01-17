@@ -31,8 +31,8 @@ function greatermedia_dfp_customizer( \WP_Customize_Manager $wp_customize ) {
 			'dfp_ad_leaderboard_pos1'  => 'Leaderboard (pos1)',
 			'dfp_ad_leaderboard_pos2'  => 'Leaderboard (pos2)',
 			'dfp_ad_playersponsorship' => 'Player Sponsorship',
-			'dfp_ad_right_rail_pos1'   => 'Right Rail (pos1)',
-			'dfp_ad_right_rail_pos2'   => 'Right Rail (pos2)',
+//			'dfp_ad_right_rail_pos1'   => 'Right Rail (pos1)',
+//			'dfp_ad_right_rail_pos2'   => 'Right Rail (pos2)',
 			'dfp_ad_wallpaper'         => 'Wallpaper',
 		),
 	);
@@ -187,7 +187,7 @@ function greatermedia_dfp_footer() {
 }
 add_action( 'wp_footer', 'greatermedia_dfp_footer', 1000 );
 
-function greatermedia_display_dfp_slot( $slot, $sizes = false ) {
+function greatermedia_display_dfp_slot( $slot, $sizes = false, $echo = true, $class = '' ) {
 	static $targeting = null, $position = 0;
 
 	$render_targeting = false;
@@ -211,6 +211,8 @@ function greatermedia_display_dfp_slot( $slot, $sizes = false ) {
 		'dfp_ad_leaderboard_pos2',
 		'dfp_ad_right_rail_pos1',
 		'dfp_ad_right_rail_pos2',
+		'dfp_ad_incontent_pos1',
+		'dfp_ad_incontent_pos2',
 	);
 
 	$single_targeting = array( array( 'pos', ++$position ) );
@@ -218,11 +220,18 @@ function greatermedia_display_dfp_slot( $slot, $sizes = false ) {
 		$single_targeting[] = array( 'remnant', 'yes' );
 	}
 
+	$html = '';
 	if ( $render_targeting ) {
-		echo '<script type="text/javascript">googletag.beasley.targeting=', json_encode( $targeting ), ';</script>';
+		$html .= '<script type="text/javascript">googletag.beasley.targeting=' . json_encode( $targeting ) . ';</script>';
 	}
 
-	echo '<div data-dfp-slot="', esc_js( $slot ), '" data-sizes="', esc_attr( json_encode( $sizes ) ), '" data-targeting="', esc_attr( json_encode( $single_targeting ) ), '"></div>';
+	$html .= '<div class="' . $class . '" data-dfp-slot="' . esc_attr( $slot ) . '" data-sizes="' . esc_attr( json_encode( $sizes ) ) . '" data-targeting="' . esc_attr( json_encode( $single_targeting ) ) . '"></div>';
+
+	if ( $echo ) {
+		echo $html;
+	}
+
+	return $html;
 }
 add_action( 'acm_tag', 'greatermedia_display_dfp_slot', 10, 2 );
 
@@ -231,6 +240,28 @@ function greatermedia_display_dfp_outofpage() {
 	do_action( 'acm_tag', 'dfp_ad_wallpaper' );
 }
 add_action( 'get_footer', 'greatermedia_display_dfp_outofpage' );
+
+function greatermedia_display_dfp_incontent( $content ) {
+	$parts = explode( '</p>', $content );
+	$new_content = '';
+
+	for ( $i = 0, $len = count( $parts ); $i < $len; $i++ ) {
+		$new_content .= $parts[ $i ] . '</p>';
+
+		// in-content pos1 slot after first 2 paragraphs
+		if ( 1 == $i || $len < 2 ) {
+			$new_content .= greatermedia_display_dfp_slot( 'dfp_ad_incontent_pos1', false, false, 'mobile' );
+		}
+
+		// in-content pos2 slot after 6th parapraph
+		if ( 5 == $i && $len > 6 ) {
+			$new_content .= greatermedia_display_dfp_slot( 'dfp_ad_incontent_pos2', false, false, 'mobile' );
+		}
+	}
+
+	return $new_content;
+}
+add_filter( 'the_content', 'greatermedia_display_dfp_incontent', 1000 );
 
 function greatermedia_register_dfp_widget() {
 	register_widget( 'GreatermediaDfpWidget' );
