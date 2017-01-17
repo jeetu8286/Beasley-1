@@ -32,7 +32,7 @@ while ( have_posts() ) : the_post(); ?>
             <article id="post-<?php the_ID(); ?>" <?php post_class( 'article cf' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
 
                 <div class="ad__inline--right desktop">
-                    <?php do_action( 'acm_tag_gmr_variant', 'mrec-body', 'desktop', array( 'min_width' => 1024 ) ); ?>
+                    <?php do_action( 'acm_tag', 'dfp_ad_right_rail_pos1' ); ?>
                 </div>
 
                 <header class="article__header">
@@ -52,7 +52,7 @@ while ( have_posts() ) : the_post(); ?>
                     By accessing and/or using this code snippet, you agree to AccuWeather’s terms and conditions (in English) which can be found at http://www.accuweather.com/en/free-weather-widgets/terms and AccuWeather’s Privacy Statement (in English) which can be found at http://www.accuweather.com/en/privacy.
                     -->
                     </a><div id="awtd1406746145996" class="aw-widget-36hour"  data-locationkey="2192064" data-unit="f" data-language="en-us" data-useip="false" data-uid="awtd1406746145996" data-editlocation="true" data-lifestyle="sun-sand"></div><script type="text/javascript" src="http://oap.accuweather.com/launch.js"></script>
-                    
+
                     <hr />
 
                     <center>

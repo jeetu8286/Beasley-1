@@ -36,12 +36,12 @@ get_header();
 			<article id="post-<?php the_ID(); ?>" <?php post_class( 'article cf' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
 
 				<div class="ad__inline--right desktop">
-					<?php do_action( 'acm_tag_gmr_variant', 'mrec-body', 'desktop', array( 'min_width' => 1024 ) ); ?>
+					<?php do_action( 'acm_tag', 'dfp_ad_right_rail_pos1' ); ?>
 				</div>
 
 				<header class="article__header">
 
-					
+
 					<h2 class="article__title" itemprop="headline"><?php the_title(); ?></h2>
 					<?php get_template_part( 'partials/social-share' ); ?>
 
@@ -60,7 +60,7 @@ get_header();
 
 						OO.ready(function() {
 						    var playerConfiguration = {
-						adSetCode:'dd11d74dc90643d08199ca46b2caf9b0', 
+						adSetCode:'dd11d74dc90643d08199ca46b2caf9b0',
 						        playlistsPlugin: {"data":["98e4c101998c44a2b351b20831b54cac","b4db237b7ee4427792263eaeec8f26f6","72367a253f0471690803127867ab69f"]},
 						        autoplay: false,
 						        loop: false,

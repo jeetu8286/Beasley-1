@@ -40,15 +40,14 @@ $event_id = get_the_ID();
 			<div class="event__thumbnail-inline">
 				<?php Greater_Media\Flexible_Feature_Images\feature_image_preference_is( get_the_ID(), 'inline' ) ? get_template_part( 'partials/feature-image-event' ) : ''; ?>
 			</div>
-			
+
 			<?php
 			$event_secondary_content = ob_get_clean();
 			echo apply_filters( 'the_secondary_content', $event_secondary_content );
 			?>
 
 			<div class="ad__inline--right desktop">
-				<?php // 'desktop' is a variant, can call a 'mobile' variant elsewhere if we need it, but never the same variant twice ?>
-				<?php do_action( 'acm_tag_gmr_variant', 'mrec-body', 'desktop', array( 'min_width' => 1024 ) ); ?>
+				<?php do_action( 'acm_tag', 'dfp_ad_right_rail_pos1' ); ?>
 			</div>
 
 			<div class="event__info">

@@ -48,8 +48,7 @@ $event_id = get_the_ID();
 			?>
 
 			<div class="ad__inline--right desktop">
-				<?php // 'desktop' is a variant, can call a 'mobile' variant elsewhere if we need it, but never the same variant twice ?>
-				<?php do_action( 'acm_tag_gmr_variant', 'mrec-body', 'desktop', array( 'min_width' => 1024 ) ); ?>
+				<?php do_action( 'acm_tag', 'dfp_ad_right_rail_pos1' ); ?>
 			</div>
 
 			<div class="event__info">

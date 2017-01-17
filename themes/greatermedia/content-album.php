@@ -31,7 +31,7 @@
 
 
 				<div class="ad__inline--right">
-					<?php do_action( 'acm_tag', 'mrec-body' ); ?>
+					<?php do_action( 'acm_tag', 'dfp_ad_right_rail_pos1' ); ?>
 				</div>
 
 				<header class="entry__header">

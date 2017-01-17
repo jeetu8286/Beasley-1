@@ -1,7 +1,7 @@
 <?php $contest_id = get_the_ID(); ?>
 
 <article id="post-<?php the_ID(); ?>" <?php post_class( 'cf' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
-	
+
 	<section class="col__inner--left">
 	<header class="entry__header">
 		<time class="entry__date" datetime="<?php echo get_the_time(); ?>"><?php the_date( 'F j, Y' ); ?></time>
@@ -45,7 +45,7 @@
 	</section>
 	<section class="col__inner--right">
 		<div class="ad__inline--right desktop">
-			<?php do_action( 'acm_tag', 'mrec-body' ); ?>
+			<?php do_action( 'acm_tag', 'dfp_ad_right_rail_pos1' ); ?>
 		</div>
 	</section>
 </article>

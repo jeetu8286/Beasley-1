@@ -25,8 +25,7 @@ get_header();
 			<article id="post-<?php the_ID(); ?>" <?php post_class( 'cf' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
 
 				<div class="ad__inline--right desktop">
-					<?php // 'desktop' is a variant, can call a 'mobile' variant elsewhere if we need it, but never the same variant twice ?>
-					<?php do_action( 'acm_tag_gmr_variant', 'mrec-body', 'desktop' ); ?>
+					<?php do_action( 'acm_tag', 'dfp_ad_right_rail_pos1' ); ?>
 				</div>
 
 				<header class="entry__header">
@@ -42,7 +41,7 @@ get_header();
 					<?php the_content(); ?>
 
 					<!-- begin video player -->
-					
+
 						<div id="playerContainer" ></div>
 						<script type="text/javascript" src="https://player.ooyala.com/v3/fb285cf1ba8544b6b653c1a7d8a1eab3"></script>
 						<script type="text/javascript">
