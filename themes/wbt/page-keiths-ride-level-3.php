@@ -23,6 +23,12 @@ get_header();
 					<script type="text/javascript" src="https://form.jotform.com/jsform/60595824939168"></script>
 				</div>
 
+				<div class="gmclt_narrowColumn">
+					<div class="gmclt_adDiv">
+						<?php do_action( 'acm_tag', 'dfp_ad_right_rail_pos1' ); ?>
+					</div>
+				</div>
+
 			</section>
 		</section>
 	</article>

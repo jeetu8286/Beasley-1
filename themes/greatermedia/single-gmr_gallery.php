@@ -16,7 +16,12 @@ if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
 
 	<section class="content">
 
-	<article id="post-<?php the_ID(); ?>" <?php post_class( 'cf' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
+	<article id="post-<?php the_ID(); ?>" <?php post_class( 'cf' ); ?> role="article" itemscope
+	         itemtype="http://schema.org/BlogPosting">
+
+		<div class="ad__inline--right desktop">
+			<?php do_action( 'acm_tag', 'dfp_ad_right_rail_pos1' ); ?>
+		</div>
 
 		<header class="entry__header">
 

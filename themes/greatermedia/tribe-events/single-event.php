@@ -47,6 +47,10 @@ $event_id = get_the_ID();
 			echo apply_filters( 'the_secondary_content', $event_secondary_content );
 			?>
 
+			<div class="ad__inline--right desktop">
+				<?php do_action( 'acm_tag', 'dfp_ad_right_rail_pos1' ); ?>
+			</div>
+
 			<div class="event__info">
 
 			<!-- Event meta -->

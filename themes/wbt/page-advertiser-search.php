@@ -19,6 +19,7 @@ get_header();
 		<section class="article__content" itemprop="articleBody">
 			<?php the_content(); ?>
 
+
 			<div class="gmclt_wideColumn left">
 				<div id="gmclt_categoryDropdown"></div>
 				<div class="gmclt_searchBar">
@@ -30,6 +31,15 @@ get_header();
 				</div>
 				<div id="gmclt_wideColumnContent"></div>
 			</div>
+
+			<div class="gmclt_narrowColumn">
+
+				<div id="gmclt_narrowColumnContent"></div>
+				<div class="gmclt_adDiv">
+					<?php do_action( 'acm_tag', 'dfp_ad_right_rail_pos1' ); ?>
+				</div>
+			</div>
+
 
 		</section>
 
