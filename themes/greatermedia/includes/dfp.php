@@ -126,18 +126,21 @@ function greatermedia_dfp_footer() {
 				});
 
 				googletag.cmd.push(function() {
-					var i, j, slot, targeting, leaderboardSizeMapping, infiniteSizeMapping, isOutOfPage;
+					var i, j, slot, targeting, leaderboardSizeMapping, infiniteSizeMapping, incontentSizeMapping, isOutOfPage;
 
 					leaderboardSizeMapping = googletag.sizeMapping()
-						.addSize([970, 200], [970, 66])
-						.addSize([970, 200], [970, 90])
+						.addSize([970, 200], [[970, 66], [970, 90]])
 						.addSize([729, 200], [728, 90])
-						.addSize([0, 0], [320, 50])
-						.addSize([0, 0], [320, 100])
+						.addSize([0, 0], [[320, 50], [320, 100]])
 						.build();
 
 					infiniteSizeMapping = googletag.sizeMapping()
 						.addSize([970, 200], [728, 90])
+						.addSize([0, 0], [300, 250])
+						.build();
+
+					incontentSizeMapping = googletag.sizeMapping()
+						.addSize([729, 200], [])
 						.addSize([0, 0], [300, 250])
 						.build();
 
@@ -155,6 +158,8 @@ function greatermedia_dfp_footer() {
 							slot.defineSizeMapping(leaderboardSizeMapping);
 						} else if ('dfp_ad_inlist_infinite' == slots[i][4]) {
 							slot.defineSizeMapping(infiniteSizeMapping);
+						} else if ('dfp_ad_incontent_pos1' == slots[i][4] || 'dfp_ad_incontent_pos2' == slots[i][4]) {
+							slot.defineSizeMapping(incontentSizeMapping);
 						}
 
 						for (j in slots[i][3]) {
