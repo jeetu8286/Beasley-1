@@ -4112,6 +4112,7 @@ a.highlights__contest--btn {
   min-height: 0;
   padding-top: 40px;
   padding-bottom: 40px;
+  padding-right: 0;
   background-color: #ffffff;
   border-top: 1px solid #b8babc; }
 
@@ -10672,8 +10673,7 @@ category: Components - Shows
     font-size: 1.125em; }
   @media screen and (min-width: 970px) {
     .show__blogroll {
-      width: 100%;
-      padding-right: 330px; } }
+      width: 100%; } }
 
 .inner-right-col {
   border-top: 1px solid #b8babc;
