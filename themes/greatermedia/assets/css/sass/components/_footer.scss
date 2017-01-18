@@ -46,10 +46,10 @@
 		@include omega;
 	}
 
-	@include bp(x-large) {
+	/*@include bp(x-large) {
 		@include span-columns(12);
 		@include omega;
-	}
+	}*/
 
 	.mobile {
 		display: block;
@@ -87,9 +87,9 @@
 	@include bp(large) {
 		@include span-columns(12);
 	}
-	@include bp(x-large) {
+	/*@include bp(x-large) {
 		@include span-columns(12);
-	}
+	}*/
 }
 
 .footer__copyright {

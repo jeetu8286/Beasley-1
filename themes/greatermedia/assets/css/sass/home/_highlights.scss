@@ -156,13 +156,13 @@ Community Highlights and Events
 			font-size: ms(3);
 		}
 
-		@include bp(larger) {
+		/*@include bp(larger) {
 			font-size: ms(4);
-		}
+		}*/
 
-		@include bp(x-large) {
+		/*@include bp(x-large) {
 			font-size: ms(6);
-		}
+		}*/
 	}
 }
 
@@ -181,14 +181,14 @@ Community Highlights and Events
 			@include omega;
 		}
 
-		@include bp(larger) {
+		/*@include bp(larger) {
 			@include span-columns(12 of 12);
 			@include omega;
-		}
+		}*/
 
-		@include bp(x-large) {
+		/*@include bp(x-large) {
 			@include span-columns(8 of 12);
-		}
+		}*/
 	}
 }
 
@@ -245,15 +245,15 @@ Community Highlights and Events
 			@include omega;
 		}
 
-		@include bp(larger) {
+		/*@include bp(larger) {
 			@include span-columns(12 of 12);
 			@include omega;
-		}
+		}*/
 
-		@include bp(x-large) {
+		/*@include bp(x-large) {
 			@include span-columns(12 of 12);
 			@include omega;
-		}
+		}*/
 	}
 }
 
@@ -270,13 +270,13 @@ Community Highlights and Events
 			padding-top: 0;
 		}
 
-		@include bp(larger) {
+		/*@include bp(larger) {
 			@include span-columns(6 of 12);
-		}
+		}*/
 
-		@include bp(x-large) {
+		/*@include bp(x-large) {
 			@include span-columns(6 of 12);
-		}
+		}*/
 	}
 }
 
@@ -381,11 +381,11 @@ Community Highlights and Events
 			font-size: ms(0);
 		}
 
-		@include bp(x-large) {
+		/*@include bp(x-large) {
 			max-height: 3.9em;
 			margin-top: -5px;
 			font-size: ms(2);
-		}
+		}*/
 	}
 }
 
@@ -410,13 +410,13 @@ Community Highlights and Events
 			padding-top: 0;
 		}
 
-		@include bp(larger) {
+		/*@include bp(larger) {
 			@include span-columns(6 of 12);
-		}
+		}*/
 
-		@include bp(x-large) {
+		/*@include bp(x-large) {
 			@include span-columns(4 of 12);
-		}
+		}*/
 	}
 }
 
@@ -620,10 +620,10 @@ Community Highlights and Events
 		max-height: 1.25em;
 	}
 
-	@media(min-width: 1250px) {
+	/*@media(min-width: 1250px) {
 		// Back to two lines.
 		max-height: 2.5em;
-	}
+	}*/
 
 	// Highlight on hover
 	a:hover & {
@@ -639,10 +639,10 @@ Community Highlights and Events
 			font-size: ms(0);
 		}
 
-		@include bp(x-large) {
+		/*@include bp(x-large) {
 			margin-top: -5px;
 			font-size: ms(2);
-		}
+		}*/
 	}
 }
 
@@ -662,9 +662,9 @@ Community Highlights and Events
 			font-size: ms(-1);
 		}
 
-		@include bp(x-large) {
+		/*@include bp(x-large) {
 			font-size: ms(1);
-		}
+		}*/
 	}
 }
 
@@ -679,9 +679,9 @@ Community Highlights and Events
 			font-size: ms(-1);
 		}
 
-		@include bp(x-large) {
+		/*@include bp(x-large) {
 			font-size: ms(1);
-		}
+		}*/
 	}
 }
 
@@ -733,11 +733,11 @@ a.highlights__contest--btn {
 			text-align: center;
 		}
 
-		@include bp(x-large) {
+		/*@include bp(x-large) {
 			@include span-columns(4 of 12);
 			@include omega;
 			clear: none;
-		}
+		}*/
 	}
 
 	.highlights__ad--mobile {

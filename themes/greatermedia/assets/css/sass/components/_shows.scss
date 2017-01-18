@@ -4,9 +4,9 @@
 			padding: $base-line-height $gutter / 2;
 		}
 
-		@include bp(larger) {
+		/*@include bp(larger) {
 			padding: $base-line-height * 2 $gutter * 2;
-		}
+		}*/
 	}
 
 	.featured__content {
@@ -329,7 +329,7 @@ category: Components - Shows
 		}
 	}
 
-	@include bp(larger) {
+	/*@include bp(larger) {
 		ul {
 			text-align: justify;
 			width: auto;
@@ -340,7 +340,7 @@ category: Components - Shows
 				}
 			}
 		}
-	}
+	}*/
 }
 
 .show__nav--mobile {
@@ -672,10 +672,10 @@ category: Components - Shows
 		padding-right: 330px;
 	}
 
-	@include bp(larger) {
+	/*@include bp(larger) {
 		@include span-columns(8 of 12);
 		padding-right: 25px;
-	}
+	}*/
 }
 
 .inner-right-col {
@@ -698,11 +698,11 @@ category: Components - Shows
 		width: 300px;
 	}
 
-	@include bp(larger) {
+	/*@include bp(larger) {
 		@include span-columns(4 of 12);
 		@include omega;
 		float: right;
-	}
+	}*/
 }
 
 .show__ad {
@@ -974,11 +974,11 @@ category: Components - Shows
 	}
 }
 
-@include bp(x-large) {
+/*@include bp(x-large) {
 	.shows__schedule--day {
 		@include show-schedule-columns(5);
 	}
-}
+}*/
 
 .shows__schedule--dayofweek {
 	background: $primary-bg;
