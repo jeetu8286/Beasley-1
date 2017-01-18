@@ -754,10 +754,10 @@ img {
     clear: both; }
   @media screen and (min-width: 768px) {
     .container, .single-gmr_gallery .gallery .container, .main .widecolumn {
-      max-width: 100%;
+      max-width: 970px;
       margin-left: auto;
       margin-right: auto;
-      padding-right: 225px;
+      padding-right: 340px;
       min-height: 800px; }
       .container:before, .container:after, .single-gmr_gallery .gallery .container:before, .main .widecolumn:before, .single-gmr_gallery .gallery .container:after, .main .widecolumn:after {
         content: " ";
@@ -766,7 +766,7 @@ img {
         clear: both; } }
   @media screen and (min-width: 1400px) {
     .container, .single-gmr_gallery .gallery .container, .main .widecolumn {
-      max-width: 1400px;
+      max-width: 970px;
       margin-left: auto;
       margin-right: auto; }
       .container:before, .container:after, .single-gmr_gallery .gallery .container:before, .main .widecolumn:before, .single-gmr_gallery .gallery .container:after, .main .widecolumn:after {
@@ -781,8 +781,26 @@ img {
   margin: 0;
   background-color: #303030; }
 
-.main .container {
+.main > .container {
   background-color: #fff; }
+  @media screen and (min-width: 768px) {
+    .main > .container {
+      margin-top: 40px;
+      position: relative;
+      padding: 20px 340px 20px 20px; } }
+
+.main > .container > .sidebar {
+  background-color: #ccc;
+  float: left;
+  height: 500px;
+  width: 100%; }
+  @media screen and (min-width: 768px) {
+    .main > .container > .sidebar {
+      float: none;
+      position: absolute;
+      right: 20px;
+      top: 20px;
+      width: 300px; } }
 
 .content, .gallery__archive, .main .lead-in,
 .main #signup-welcome,
@@ -835,6 +853,7 @@ img {
       padding: 1.5em 1.5em; } }
 
 .live-player {
+  display: none;
   position: fixed;
   bottom: 0;
   right: 0;
@@ -865,8 +884,8 @@ img {
       transition: none; } }
   @media screen and (min-width: 1400px) {
     .live-player {
-      right: -webkit-calc(50% - 700px);
-      right: calc(50% - 700px); } }
+      right: -webkit-calc(50% - 485px);
+      right: calc(50% - 485px); } }
   .live-player--open .live-player {
     max-height: calc(48vh + 58px);
     -webkit-transition: all 200ms ease-in-out;
@@ -4142,7 +4161,6 @@ a.highlights__contest--btn {
   display: none; }
   @media screen and (min-width: 1400px) {
     .header__search--span {
-      display: block;
       float: left;
       height: 82px;
       padding: 36px 0;

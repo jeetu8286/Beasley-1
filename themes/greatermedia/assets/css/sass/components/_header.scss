@@ -684,7 +684,7 @@
 .header__search--span {
 	display: none;
 	@include bp(x-large) {
-		display: block;
+		//display: block; Limiting header to 970px, this causes wrap.
 		float: left;
 		height: 82px;
 		padding: 36px 0;

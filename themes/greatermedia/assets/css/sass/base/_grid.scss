@@ -46,13 +46,13 @@ img {
 	padding-right: 0;
 
 	@include bp(medium) {
-		@include outer-container(100%);
-		padding-right: 225px;
+		@include outer-container(970px);
+		padding-right: 340px;
 		min-height: 800px;
 	}
 	
 	@include bp(x-large) {
-		@include outer-container(1400px);
+		@include outer-container(970px);
 	}
 }
 
@@ -63,8 +63,29 @@ img {
 	background-color: $secondary-bg;
 }
 
-.main .container {
+.main > .container {
 	background-color: $primary-bg;
+
+	@include bp(medium) {
+		margin-top: 40px;
+		position: relative;
+		padding: 20px 340px 20px 20px;
+	}
+}
+
+.main > .container > .sidebar {
+	background-color: #ccc;
+	float: left;
+	height: 500px;
+	width: 100%;
+
+	@include bp(medium) {
+		float: none;
+		position: absolute;
+		right: 20px;
+		top: 20px;
+		width: 300px;
+	}
 }
 
 .content, %content {
@@ -103,6 +124,7 @@ img {
 }
 
 .live-player {
+display: none;
 	position: fixed;
 	bottom: 0;
 	right: 0;
@@ -128,7 +150,7 @@ img {
 		@include transition(none);
 	}
 	@include bp(x-large) {
-		@include calc(right, '50% - 700px');
+		@include calc(right, '50% - 485px'); // Half of 970px max-width
 	}
 
 	.live-player--open & {

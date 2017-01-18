@@ -51,6 +51,8 @@ get_header();
 
 		</section>
 
+		<aside class="sidebar"></aside>
+
 	</div>
 
 <?php get_footer(); ?>
