@@ -18,13 +18,18 @@ module.exports = function (grunt) {
 					'js/vendor/imagesloaded.js',
 					'js/src/grid.js',
 					'js/src/contests.js',
-					'js/src/datepicker.js'
+					'js/src/datepicker.js',
+					'js/src/secondstreet.js'
 				],
 				dest: 'js/contests.js'
 			},
 			backend_contest: {
 				src: ['js/src/contests-admin.js'],
 				dest: 'js/contests-admin.js'
+			},
+			backend_mce: {
+				src: ['js/src/contests-mce.js'],
+				dest: 'js/contests-mce.js'
 			},
 			backend_moderation: {
 				src: ['js/src/ugc-moderation.js'],
@@ -73,7 +78,11 @@ module.exports = function (grunt) {
 					GreaterMediaUGC: false,
 					Formbuilder: false,
 					FormData: false,
-					alert: false
+					alert: false,
+					tinymce: false,
+					tinyMCE: false,
+					wp: false,
+					_: false
 				}
 			}
 		},
@@ -84,7 +93,8 @@ module.exports = function (grunt) {
 					'js/surveys_admin.min.js': ['js/surveys_admin.js'],
 					'js/ugc-moderation.min.js': ['js/ugc-moderation.js'],
 					'js/contests-admin.min.js': ['js/contests-admin.js'],
-					'js/contests.min.js': ['js/contests.js']
+					'js/contests.min.js': ['js/contests.js'],
+					'js/contests-mce.min.js': ['js/contests-mce.js']
 				},
 				options: {
 					banner: '/*! <%= pkg.title %> - v<%= pkg.version %>\n' +
