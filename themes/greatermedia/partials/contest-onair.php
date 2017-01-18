@@ -45,7 +45,7 @@
 	</section>
 	<section class="col__inner--right">
 		<div class="ad__inline--right desktop">
-			<?php do_action( 'acm_tag', 'dfp_ad_right_rail_pos1' ); ?>
+			<?php do_action( 'dfp_tag', 'dfp_ad_right_rail_pos1' ); ?>
 		</div>
 	</section>
 </article>

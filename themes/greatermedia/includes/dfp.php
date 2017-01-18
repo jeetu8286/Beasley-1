@@ -31,7 +31,7 @@ function greatermedia_dfp_customizer( \WP_Customize_Manager $wp_customize ) {
 			'dfp_ad_leaderboard_pos1'  => 'Leaderboard (pos1)',
 			'dfp_ad_leaderboard_pos2'  => 'Leaderboard (pos2)',
 			'dfp_ad_playersponsorship' => 'Player Sponsorship',
-//			'dfp_ad_right_rail_pos1'   => 'Right Rail (pos1)',
+			'dfp_ad_right_rail_pos1'   => 'Right Rail (pos1)',
 //			'dfp_ad_right_rail_pos2'   => 'Right Rail (pos2)',
 			'dfp_ad_wallpaper'         => 'Wallpaper',
 		),

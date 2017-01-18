@@ -29,7 +29,7 @@ get_header();
 				</div>
 				<div id="gmclt_narrowColumnContent"></div>
 				<div class="gmclt_adDiv">
-					<?php do_action( 'acm_tag', 'dfp_ad_right_rail_pos1' ); ?>
+					<?php do_action( 'dfp_tag', 'dfp_ad_right_rail_pos1' ); ?>
 				</div>
 			</div>
 
