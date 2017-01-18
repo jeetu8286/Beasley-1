@@ -72,29 +72,14 @@
 			$logo = jQuery(document.querySelector('.header__logo')),
 			$subHeader = jQuery(document.querySelector('.header__sub'));
 
-		$menu.on('mouseover', '.menu-item-has-children, .header__account--small', function (e) {
+		$menu.on('mouseover', '.menu-item-has-children', function (e) {
 			$overlay.addClass('is-visible');
 			if($body.hasClass('news-site')) {
 				$logo.addClass('is-visible');
 				$subHeader.addClass('is-visible');
 			}
 		});
-		$menu.on('mouseout', '.menu-item-has-children, .header__account--small', function (e) {
-			$overlay.removeClass('is-visible');
-			if($body.hasClass('news-site')) {
-				$logo.removeClass('is-visible');
-				$subHeader.removeClass('is-visible');
-			}
-		});
-
-		$secondary.on('mouseover', '.header__account--small, .header__account--large.logged-in', function (e) {
-			$overlay.addClass('is-visible');
-			if($body.hasClass('news-site')) {
-				$logo.addClass('is-visible');
-				$subHeader.addClass('is-visible');
-			}
-		});
-		$secondary.on('mouseout', '.header__account--small, .header__account--large.logged-in', function (e) {
+		$menu.on('mouseout', '.menu-item-has-children', function (e) {
 			$overlay.removeClass('is-visible');
 			if($body.hasClass('news-site')) {
 				$logo.removeClass('is-visible');
