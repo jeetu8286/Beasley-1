@@ -30,7 +30,7 @@ class ShortcodeHandler
 		<div class="lf-app-container">
 			<div class="ad__lf-app-sponsorship-container">
 				<div class="ad__lf-app-sponsorship">
-					<?php do_action( 'acm_tag', 'livefyre-app-sponsorship' ); ?>
+					<?php do_action( 'dfp_tag', 'livefyre-app-sponsorship' ); ?>
 				</div>
 			</div>
 			<script src="//cdn.livefyre.com/Livefyre.js"></script>

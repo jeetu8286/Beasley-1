@@ -7,7 +7,7 @@
 	<?php do_action( 'show_breaking_news_banner' ); ?>
 	<div class="container container__leaderboard">
 		<div class="ad__leaderboard">
-			<?php do_action( 'acm_tag', 'dfp_ad_leaderboard_pos1' ); ?>
+			<?php do_action( 'dfp_tag', 'dfp_ad_leaderboard_pos1' ); ?>
 		</div>
 	</div>
 	<div class="header__main">

@@ -238,11 +238,11 @@ function greatermedia_display_dfp_slot( $slot, $sizes = false, $echo = true, $cl
 
 	return $html;
 }
-add_action( 'acm_tag', 'greatermedia_display_dfp_slot', 10, 2 );
+add_action( 'dfp_tag', 'greatermedia_display_dfp_slot', 10, 2 );
 
 function greatermedia_display_dfp_outofpage() {
-	do_action( 'acm_tag', 'dfp_ad_interstitial' );
-	do_action( 'acm_tag', 'dfp_ad_wallpaper' );
+	do_action( 'dfp_tag', 'dfp_ad_interstitial' );
+	do_action( 'dfp_tag', 'dfp_ad_wallpaper' );
 }
 add_action( 'get_footer', 'greatermedia_display_dfp_outofpage' );
 
@@ -330,7 +330,7 @@ class GreatermediaDfpWidget extends \WP_Widget {
 
 		if ( ! empty( $instance['unit-code'] ) && ! empty( $sizes ) ) {
 			echo $args['before_widget'];
-				do_action( 'acm_tag', $instance['unit-code'], $sizes );
+				do_action( 'dfp_tag', $instance['unit-code'], $sizes );
 			echo $args['after_widget'];
 		}
 	}
