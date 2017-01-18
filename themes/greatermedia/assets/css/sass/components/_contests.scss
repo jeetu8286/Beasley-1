@@ -23,9 +23,9 @@
 			width: calc(100% - 300px - 2.35765%);
 		}
 
-		@include bp(x-large) {
+		/*@include bp(x-large) {
 			@include span-columns(8 of 12);
-		}
+		}*/
 	}
 
 	.col__inner--right {
@@ -35,10 +35,10 @@
 			width: 300px;
 		}
 
-		@include bp(x-large) {
+		/*@include bp(x-large) {
 			@include span-columns(4 of 12);
 			@include omega;
-		}
+		}*/
 
 		.desktop {
 			text-align: center;
@@ -771,7 +771,7 @@
 	}
 }
 
-@include bp(x-large) {
+/*@include bp(x-large) {
 	.contest__submission {
 		width: 20%;
 		float: left;
@@ -790,7 +790,7 @@
 			height: 117px;
 		}
 	}
-}
+}*/
 
 /**
  * @file override some default styles in the jQuery UI datepicker so it looks less broken

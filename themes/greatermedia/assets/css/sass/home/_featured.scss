@@ -89,10 +89,10 @@ Curated posts for Featured Articles
 		@include span-columns(12);
 		@include omega;
 	}
-	@include bp(x-large) {
+	/*@include bp(x-large) {
 		@include span-columns(12);
 		@include omega;
-	}
+	}*/
 
 	.news-site & {
 		width: 100%;
@@ -237,11 +237,11 @@ a.featured__article--link {
 		@include omega;
 		padding: 28px 3.921568627451%;
 	}
-	@include bp(x-large) {
-		@include span-columns(12 of 12);
-		@include omega;
-		padding: 28px 2.898550724638%;
-	}
+	//@include bp(x-large) {
+	//	@include span-columns(12 of 12);
+	//	@include omega;
+	//	padding: 28px 2.898550724638%;
+	//}
 
 	.home__featured & {
 		background-color: $featured-secondary-bg;
@@ -345,10 +345,10 @@ a.featured__article--link {
 		font-size: ms(-1);
 		line-height: 1.5;
 	}
-	@include bp(x-large) {
+	/*@include bp(x-large) {
 		@include span-columns(8 of 12);
 		@include omega;
-	}
+	}*/
 	display: none;
 }
 
@@ -417,9 +417,9 @@ a.featured__article--link {
 		@include span-columns(4 of 12);
 		padding-top: 0;
 	}
-	@include bp(x-large) {
+	/*@include bp(x-large) {
 		@include span-columns(4 of 12);
-	}
+	}*/
 
 	.news-site & {
 		width: calc(100% - 5px);
@@ -499,9 +499,9 @@ a.featured__article--link {
 				width: 100%;
 			}
 
-			@include bp(x-large) {
+			/*@include bp(x-large) {
 				width: 100%;
-			}
+			}*/
 		}
 	}
 }

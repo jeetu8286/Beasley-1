@@ -1630,9 +1630,9 @@ category: Components
 		width: 225px;
 	}
 
-	@include bp(x-large) {
+	/*@include bp(x-large) {
 		@include calc(right, '50% - 700px');
-	}
+	}*/
 
 	&.show-more--muted {
 		display: none;

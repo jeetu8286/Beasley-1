@@ -231,9 +231,9 @@
 	@include bp(large) {
 		@include span-columns(2 of 10);
 	}
-	@include bp(x-large) {
+	/*@include bp(x-large) {
 		@include span-columns(2 of 10);
-	}
+	}*/
 }
 
 .search__result--title {
@@ -256,10 +256,10 @@
 		@include span-columns(8 of 10);
 		@include omega;
 	}
-	@include bp(x-large) {
+	/*@include bp(x-large) {
 		@include span-columns(8 of 10);
 		@include omega;
-	}
+	}*/
 }
 
 .search__result--title a:link, .search__result--title a:visited {
