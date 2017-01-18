@@ -126,23 +126,7 @@ function greatermedia_dfp_footer() {
 				});
 
 				googletag.cmd.push(function() {
-					var i, j, slot, targeting, leaderboardSizeMapping, infiniteSizeMapping, incontentSizeMapping, isOutOfPage;
-
-					leaderboardSizeMapping = googletag.sizeMapping()
-						.addSize([970, 200], [[970, 66], [970, 90]])
-						.addSize([729, 200], [728, 90])
-						.addSize([0, 0], [[320, 50], [320, 100]])
-						.build();
-
-					infiniteSizeMapping = googletag.sizeMapping()
-						.addSize([1024, 200], [600, 400])
-						.addSize([0, 0], [300, 250])
-						.build();
-
-					incontentSizeMapping = googletag.sizeMapping()
-						.addSize([1024, 200], [])
-						.addSize([0, 0], [300, 250])
-						.build();
+					var i, j, slot, targeting, sizeMapping, isOutOfPage;
 
 					googletag.destroySlots();
 					googletag.pubads().clearTargeting();
@@ -155,11 +139,33 @@ function greatermedia_dfp_footer() {
 							: googletag.defineSlot(slots[i][0], slots[i][1], slots[i][2]);
 
 						if ('dfp_ad_leaderboard_pos1' == slots[i][4] || 'dfp_ad_leaderboard_pos2' == slots[i][4]) {
-							slot.defineSizeMapping(leaderboardSizeMapping);
+							sizeMapping = googletag.sizeMapping()
+								.addSize([1024, 200], [[970, 66], [970, 90], [728, 90]])
+								.addSize([0, 0], [[320, 50], [320, 100]])
+								.build();
+
+							slot.defineSizeMapping(sizeMapping);
 						} else if ('dfp_ad_inlist_infinite' == slots[i][4]) {
-							slot.defineSizeMapping(infiniteSizeMapping);
+							sizeMapping = googletag.sizeMapping()
+								.addSize([1024, 200], [600, 400])
+								.addSize([0, 0], [300, 250])
+								.build();
+
+							slot.defineSizeMapping(sizeMapping);
 						} else if ('dfp_ad_incontent_pos1' == slots[i][4] || 'dfp_ad_incontent_pos2' == slots[i][4]) {
-							slot.defineSizeMapping(incontentSizeMapping);
+							sizeMapping = googletag.sizeMapping()
+								.addSize([1024, 200], [])
+								.addSize([0, 0], [300, 250])
+								.build();
+
+							slot.defineSizeMapping(sizeMapping);
+						} else if ('dfp_ad_right_rail_pos1' == slots[i][4] || 'dfp_ad_right_rail_pos2' == slots[i][4]) {
+							sizeMapping = googletag.sizeMapping()
+								.addSize([1024, 200], [[300, 600], [300, 250]])
+								.addSize([0, 0], [])
+								.build();
+
+							slot.defineSizeMapping(sizeMapping);
 						}
 
 						for (j in slots[i][3]) {
