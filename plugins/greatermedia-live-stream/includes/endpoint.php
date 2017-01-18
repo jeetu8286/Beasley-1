@@ -82,8 +82,8 @@ function gmr_streams_process_endpoint( /*$sign,*/ $data ) {
 	$song = array(
 		'post_type'     => GMR_SONG_CPT,
 		'post_status'   => 'publish',
-		'post_date'     => date( DATE_ISO8601, $params['timestamp'] + get_option( 'gmt_offset' ) * HOUR_IN_SECONDS ),
-		'post_date_gmt' => date( DATE_ISO8601, $params['timestamp'] ),
+		'post_date'     => date( DATE_ISO8601, trim( $params['timestamp'] ) + get_option( 'gmt_offset' ) * HOUR_IN_SECONDS ),
+		'post_date_gmt' => date( DATE_ISO8601, trim( $params['timestamp'] ) ),
 		'post_parent'   => $query->next_post()->ID,
 		'post_title'    => $params['title'],
 	);

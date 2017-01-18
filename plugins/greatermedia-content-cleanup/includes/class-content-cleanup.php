@@ -75,10 +75,14 @@ EOQ;
 		$prefix = $wpdb->get_blog_prefix();
 
 		$query = <<<EOQ
-SELECT {$prefix}postmeta.post_id
-  FROM {$prefix}postmeta
- WHERE {$prefix}postmeta.meta_key = '_thumbnail_id'
+SELECT {$prefix}posts.ID
+  FROM {$prefix}posts
+ INNER JOIN {$prefix}postmeta ON {$prefix}posts.ID = {$prefix}postmeta.post_id
+ WHERE {$prefix}posts.post_type = 'attachment'
+   AND {$prefix}postmeta.meta_key = 'video_thumbnail'
    AND {$prefix}postmeta.meta_value = 1
+ GROUP BY {$prefix}posts.ID
+ ORDER BY {$prefix}posts.post_date DESC
  LIMIT 0, 100
 EOQ;
 
