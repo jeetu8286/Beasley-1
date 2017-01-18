@@ -1086,18 +1086,15 @@ add_filter( 'body_class', 'greatermedia_liveplayer_disabled' );
  *
  * @return int
  */
-function greatermedia_extend_featured_curation_limit( $limit ) {
-
-	if ( is_news_site() ) {
+function greatermedia_extend_featured_curation_limit( $limit, $homepage ) {
+	$template = get_page_template_slug( $homepage->ID );
+	if ( 'page-templates/homepage-news.php' == $template || ( empty( $template ) && is_news_site() ) ) {
 		$limit = 6;
-	} else {
-		$limit = 4;
 	}
 
 	return $limit;
-
 }
-add_filter( 'gmr-homepage-featured-limit', 'greatermedia_extend_featured_curation_limit' );
+add_filter( 'gmr-homepage-featured-limit', 'greatermedia_extend_featured_curation_limit', 10, 2 );
 
 /**
  * Extends the homepage community curation limit
@@ -1109,18 +1106,15 @@ add_filter( 'gmr-homepage-featured-limit', 'greatermedia_extend_featured_curatio
  *
  * @return int
  */
-function greatermedia_extend_community_curation_limit( $limit ) {
-
-	if ( is_news_site() ) {
+function greatermedia_extend_community_curation_limit( $limit, $homepage ) {
+	$template = get_page_template_slug( $homepage->ID );
+	if ( 'page-templates/homepage-news.php' == $template || ( empty( $template ) && is_news_site() ) ) {
 		$limit = 4;
-	} else {
-		$limit = 3;
 	}
 
 	return $limit;
-
 }
-add_filter( 'gmr-homepage-community-limit', 'greatermedia_extend_community_curation_limit' );
+add_filter( 'gmr-homepage-community-limit', 'greatermedia_extend_community_curation_limit', 10, 2 );
 
 function greatermedia_podcasts_in_loop( $query ) {
 
