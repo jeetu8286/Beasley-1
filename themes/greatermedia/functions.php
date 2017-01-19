@@ -513,12 +513,12 @@ function greatermedia_load_more_button( $args = array() ) {
 
 	// $partial_slug = null, $partial_name = null, $query_or_page_link_template = null, $next_page = null
 	$args = wp_parse_args( $args, array(
-		'partial_slug' => '',
-		'partial_name' => '',
-		'query' => null,
+		'partial_slug'       => '',
+		'partial_name'       => '',
+		'query'              => null,
 		'page_link_template' => null,
-		'next_page' => null,
-		'auto_load' => false,
+		'next_page'          => null,
+		'auto_load'          => false,
 	) );
 
 	if ( ! $args['query'] && ! $args['page_link_template'] ) {
@@ -529,7 +529,8 @@ function greatermedia_load_more_button( $args = array() ) {
 		$temp_wp_query = $wp_query;
 
 		$wp_query = $args['query'];
-		$args['page_link_template'] = str_replace( PHP_INT_MAX, '%d', get_pagenum_link( PHP_INT_MAX ) );
+		$args['page_link_template'] = str_replace( '%', '%%', get_pagenum_link( PHP_INT_MAX ) );
+		$args['page_link_template'] = str_replace( PHP_INT_MAX, '%d', $args['page_link_template'] );
 
 		if ( ! $args['next_page'] ) {
 			$args['next_page'] = max( 2, $wp_query->query_vars['paged'] + 1);
@@ -548,9 +549,11 @@ function greatermedia_load_more_button( $args = array() ) {
 		$args['next_page'] = 2;
 	}
 
-	$default_page_link = sprintf( $args['page_link_template'], $args['next_page'] );
-	?>
-	<div class="posts-pagination">
+	$default_page_link = strpos( $args['page_link_template'], '%d' )
+		? sprintf( $args['page_link_template'], $args['next_page'] )
+		: $args['page_link_template'];
+
+	?><div class="posts-pagination">
 		<a
 			class="button posts-pagination--load-more is-loaded"
 			href="<?php echo esc_url( $default_page_link ); ?>"
@@ -562,8 +565,7 @@ function greatermedia_load_more_button( $args = array() ) {
 			>
 			<i class="gmr-icon icon-spin icon-loading"></i> Load More
 		</a>
-	</div>
-<?php
+	</div><?php
 }
 
 add_action( 'current_screen', 'hide_seo_columns' );

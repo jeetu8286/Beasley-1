@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "85494a1e8505c9e52da63a1bc1487b9f",
-    "content-hash": "a52b36f8523aec800acb71cd5d9d0a68",
+    "hash": "67a864363033acc06cc6496597bad882",
+    "content-hash": "d5b3384761dff00eccdc3afa1d1d3dbb",
     "packages": [
         {
             "name": "firebase/php-jwt",
@@ -520,7 +520,7 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v2.8.14",
+            "version": "v2.8.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
