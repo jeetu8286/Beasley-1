@@ -38,6 +38,7 @@ require_once( __DIR__ . '/includes/class-favicon.php' );
 require_once( __DIR__ . '/includes/iframe-embed.php' );
 require_once( __DIR__ . '/includes/flexible-feature-images/gmr-flexible-feature-images.php' );
 require_once( __DIR__ . '/includes/auction-nudge/gmr-auction-nudge.php' );
+require_once __DIR__ . '/includes/shortcodes.php';
 
 /**
  * Required files
