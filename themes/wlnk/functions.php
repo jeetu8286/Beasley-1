@@ -13,7 +13,7 @@
  */
 
  // Useful global constants
-define( 'WLNK_VERSION', '0.3.4' ); /* Version bump by Jonathan 11/21/2016 @ 11:51 a.m. EST */
+define( 'WLNK_VERSION', '0.3.9' ); /* Version bump by Jonathan 01/16/2017 @ 3:12 p.m. EST */
 
  /**
   * Set up theme defaults and register supported WordPress features.
@@ -80,3 +80,16 @@ define( 'WLNK_VERSION', '0.3.4' ); /* Version bump by Jonathan 11/21/2016 @ 11:5
 	echo apply_filters( 'wlnk_humans', $humans );
  }
  add_action( 'wp_head', 'wlnk_header_meta' );
+
+ function add_featured_image_in_rss() {
+   $featured_image = get_post_thumbnail_id();
+   if ( $featured_image ) {
+     $featured_image = current( wp_get_attachment_image_src( $featured_image, 'post-thumbnail' ) );
+   }
+
+   if ( ! empty( $featured_image ) ) {
+     echo "\t" . '<enclosure url="' . esc_url($featured_image) . '" />' . "\n";
+   }
+
+}
+add_action( 'rss2_item', 'add_featured_image_in_rss' );

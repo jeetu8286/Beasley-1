@@ -53,6 +53,7 @@ plugins/term-management-tools/
 plugins/feed-pull/
 plugins/dynamic-hostname/
 plugins/video-thumbnails/
+plugins/user-role-editor/
 
 themes/index.php
 themes/twentyfourteen
