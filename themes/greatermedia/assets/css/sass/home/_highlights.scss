@@ -92,7 +92,7 @@ Community Highlights and Events
 	border-bottom: 1px solid darken( $highlights-bg, 3% );
 
 	@include bp(medium) {
-		padding: $base-line-height * 2 $gutter * 2;
+		padding: 20px;
 	}
 
 	.news-site & {
@@ -136,7 +136,7 @@ Community Highlights and Events
 .highlights__heading {
 	margin: 0 0 $base-line-height / 2;
 	line-height: 1;
-	font-size: ms(2);
+	font-size: ms(1);
 	font-weight: lighter;
 	color: $secondary-heading;
 	vertical-align: top;
