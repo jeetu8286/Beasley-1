@@ -26,19 +26,19 @@ if ( defined( 'GMR_PARENT_ENV' ) && 'dev' == GMR_PARENT_ENV ) {
 add_theme_support( 'homepage-curation' );
 add_theme_support( 'homepage-countdown-clock' );
 
-require_once( __DIR__ . '/includes/liveplayer/class-liveplayer.php' );
-require_once( __DIR__ . '/includes/site-options/loader.php' );
-require_once( __DIR__ . '/includes/mega-menu/mega-menu-admin.php' );
-require_once( __DIR__ . '/includes/mega-menu/mega-menu-walker.php' );
-require_once( __DIR__ . '/includes/mega-menu/mega-menu-mobile-walker.php' );
-require_once( __DIR__ . '/includes/image-attributes/loader.php');
-require_once( __DIR__ . '/includes/posts-screen-thumbnails/loader.php' );
-require_once( __DIR__ . '/includes/category-options.php' );
-require_once( __DIR__ . '/includes/class-favicon.php' );
-require_once( __DIR__ . '/includes/iframe-embed.php' );
-require_once( __DIR__ . '/includes/flexible-feature-images/gmr-flexible-feature-images.php' );
-require_once( __DIR__ . '/includes/auction-nudge/gmr-auction-nudge.php' );
-require_once( __DIR__ . '/includes/shortcodes.php' );
+require_once __DIR__ . '/includes/liveplayer/class-liveplayer.php';
+require_once __DIR__ . '/includes/site-options/loader.php';
+require_once __DIR__ . '/includes/mega-menu/mega-menu-admin.php';
+require_once __DIR__ . '/includes/mega-menu/mega-menu-walker.php';
+require_once __DIR__ . '/includes/mega-menu/mega-menu-mobile-walker.php';
+require_once __DIR__ . '/includes/image-attributes/loader.php';
+require_once __DIR__ . '/includes/posts-screen-thumbnails/loader.php';
+require_once __DIR__ . '/includes/category-options.php';
+require_once __DIR__ . '/includes/class-favicon.php';
+require_once __DIR__ . '/includes/iframe-embed.php';
+require_once __DIR__ . '/includes/flexible-feature-images/gmr-flexible-feature-images.php';
+require_once __DIR__ . '/includes/auction-nudge/gmr-auction-nudge.php';
+require_once __DIR__ . '/includes/shortcodes.php';
 
 /**
  * Required files
