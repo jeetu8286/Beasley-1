@@ -226,7 +226,7 @@ class GreaterMediaGallery {
 									$attr['data-cycle-hash'] = $slide_hash;
 								}
 
-								$image = wp_get_attachment_image_src( get_the_ID(), array( 775, 516 ), false );
+								$image = wp_get_attachment_image_src( get_the_ID(), 'gm-article-thumbnail', false );
 								$image_url = $image[0];
 								$image_attribution = get_post_meta( get_the_ID(), 'gmr_image_attribution', true );
 								$img_link = filter_var( $image_attribution, FILTER_VALIDATE_URL );
