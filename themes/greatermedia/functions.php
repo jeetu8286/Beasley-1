@@ -1201,3 +1201,5 @@ function greatermedia_update_image_attributes( $attributes ) {
 	return $attributes;
 }
 add_filter( 'wp_get_attachment_image_attributes', 'greatermedia_update_image_attributes' );
+
+remove_filter( 'the_content', 'wp_make_content_images_responsive' );
