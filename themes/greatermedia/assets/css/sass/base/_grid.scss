@@ -74,7 +74,7 @@ img {
 }
 
 .main > .container > .sidebar {
-	background-color: #ccc;
+	background-color: $primary-bg;
 	float: left;
 	height: 500px;
 	width: 100%;
@@ -85,6 +85,40 @@ img {
 		right: 20px;
 		top: 20px;
 		width: 300px;
+	}
+
+	.player {
+		align-items: center;
+		display: flex;
+		padding: 10px;
+		border-bottom: 3px solid #000;
+	}
+
+	.play-button {
+		background: #D22228;
+		border: none;
+		border-radius: 50%;
+		float: left;
+		height: 41px;
+		margin-right: 20px;
+		padding: 3px 5px;
+		width: 41px;
+
+		&:focus {
+			box-shadow: 0 0 3px 3px #4D90FE;
+			outline: none;
+		}
+
+		svg {
+			fill: #fff;
+			height: 36px;
+			width: 36px;
+		}
+	}
+
+	.player-info {
+		font-weight: bold;
+		text-transform: uppercase;
 	}
 }
 
@@ -124,7 +158,7 @@ img {
 }
 
 .live-player {
-display: none; // Temp
+// display: none; // Temp
 	position: fixed;
 	bottom: 0;
 	right: 0;
