@@ -802,6 +802,7 @@ img {
     font-weight: bold;
     text-transform: uppercase; }
   .main > .container > .sidebar .social__list {
+    padding: 20px 0;
     text-align: center; }
   .main > .container > .sidebar .social__link {
     margin: 0 5px; }
