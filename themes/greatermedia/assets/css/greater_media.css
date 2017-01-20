@@ -801,6 +801,10 @@ img {
   .main > .container > .sidebar .player-info {
     font-weight: bold;
     text-transform: uppercase; }
+  .main > .container > .sidebar .social__list {
+    text-align: center; }
+  .main > .container > .sidebar .social__link {
+    margin: 0 5px; }
 
 .content, .gallery__archive, .main .lead-in,
 .main #signup-welcome,
