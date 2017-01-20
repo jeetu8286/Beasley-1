@@ -332,7 +332,7 @@ Community Highlights and Events
 	bottom: 0;
 	left: 0;
 	right: 0;
-	padding: $base-line-height * 1.5 $gutter / 2 $base-line-height / 2;
+	padding: 5px;
 	margin: 0;
 	font-size: ms(0);
 	font-weight: normal;
@@ -347,6 +347,10 @@ Community Highlights and Events
 
 	@include bp(ie9medium) {
 		@include css-gradient(rgba(0, 0, 0, 0), $darker-gray);
+	}
+
+	@include bp(medium) {
+		font-size: ms(-1);
 	}
 
 	a:hover & {
@@ -371,6 +375,7 @@ Community Highlights and Events
 		text-overflow: initial;
 		font-size: ms(0);
 		font-weight: normal;
+		color: $color-text-black;
 		text-transform: uppercase;
 
 		@include bp(ie9medium) {
@@ -386,6 +391,9 @@ Community Highlights and Events
 			margin-top: -5px;
 			font-size: ms(2);
 		}*/
+	}
+	.news-site a:hover & {
+		color: $color-text-red;
 	}
 }
 
@@ -582,11 +590,6 @@ Community Highlights and Events
 	@include transform(translateY(-50%));
 	padding: 0 $gutter 0 0;
 	margin-left: 35%;
-	font-size: ms(2);
-
-	@include bp(medium) {
-		font-size: ms(1);
-	}
 
 	@include bp(large) {
 		width: auto;
@@ -613,8 +616,11 @@ Community Highlights and Events
 	// Never show more than two lines of text (layout will break).
 	overflow: hidden;
 	line-height: 1.25;
-	max-height: 2.5em;
+	max-height: 3.5em;
 
+	@include bp(medium) {
+		font-size: ms(-1);
+	}
 	@include bp(large) {
 		// One line of text at this breakpoint because we need to fit the date.
 		max-height: 1.25em;
@@ -631,7 +637,7 @@ Community Highlights and Events
 	}
 
 	.news-site & {
-		font-size: ms(-2);
+		font-size: ms(-1);
 		font-weight: normal;
 		text-transform: uppercase;
 
@@ -654,12 +660,16 @@ Community Highlights and Events
 	font-size: ms(-2);
 	color: $gray;
 
+	@include bp(large) {
+		font-size: ms(-3);
+	}
+
 	.news-site & {
 		font-size: ms(-3);
 		text-transform: none;
 
 		@include bp(large) {
-			font-size: ms(-1);
+			font-size: ms(-2);
 		}
 
 		/*@include bp(x-large) {
