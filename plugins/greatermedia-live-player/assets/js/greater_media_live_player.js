@@ -1943,7 +1943,6 @@ var $ = jQuery;
 		}
 	});
 })(jQuery, window);
-/* global: gigya_profile_path */
 (function ($, window, undefined) {
 	"use strict";
 
@@ -1988,7 +1987,6 @@ var $ = jQuery;
 	var nowPlaying = document.getElementById('live-stream__now-playing');
 	var listenLogin = document.getElementById('live-stream__login');
 	var $trackInfo = $(document.getElementById('trackInfo'));
-	var gigyaLogin = gigya_profile_path('login');
 	var clearDebug = document.getElementById('clearDebug');
 	var onAir = document.getElementById('on-air');
 	var streamStatus = document.getElementById('live-stream__status');
@@ -2142,13 +2140,7 @@ var $ = jQuery;
 		}
 
 		if (resumeBtn != null) {
-			if ( is_gigya_user_logged_in() ) {
-				addEventHandler(resumeBtn, 'click', resumeLiveStream);
-			} else {
-				addEventHandler(resumeBtn, 'click', function () {
-					window.location.href = gigyaLogin;
-				});
-			}
+			addEventHandler(resumeBtn, 'click', resumeLiveStream);
 		}
 
 		if (clearDebug != null) {
@@ -2159,7 +2151,6 @@ var $ = jQuery;
 
 	function setPlayingStyles() {
 		if (null === tdContainer) {
-			// gigya user is logged out, so everything is different ಠ_ಠ - Should we force login for inline audio as well??
 			return;
 		}
 
@@ -2197,7 +2188,6 @@ var $ = jQuery;
 
 	function setStoppedStyles() {
 		if (null === tdContainer) {
-			// gigya user is logged out, so everything is different ಠ_ಠ - Should we force login for inline audio as well??
 			return;
 		}
 
@@ -2212,7 +2202,6 @@ var $ = jQuery;
 
 	function setPausedStyles() {
 		if (null === tdContainer) {
-			// gigya user is logged out, so everything is different ಠ_ಠ - Should we force login for inline audio as well??
 			return;
 		}
 
@@ -2394,7 +2383,7 @@ var $ = jQuery;
 	}
 
 	function playLiveStreamDevice() {
-		if (is_gigya_user_logged_in() && lpInit === true) {
+		if (lpInit === true) {
 			setStoppedStyles();
 			if (window.innerWidth >= 768) {
 				playLiveStream();
@@ -2474,25 +2463,21 @@ var $ = jQuery;
 	var currentStream = $('.live-player__stream--current-name');
 
 	currentStream.bind('DOMSubtreeModified', function () {
-		if ( is_gigya_user_logged_in() ) {
-			debug('--- new stream select ---');
-			var station = currentStream.text();
+		debug('--- new stream select ---');
+		var station = currentStream.text();
 
-			if (livePlaying) {
-				player.stop();
-			}
-
-			if (true === playingCustomAudio) {
-				listenLiveStopCustomInlineAudio();
-			}
-
-			player.play({station: station, timeShift: true});
-
-			livePlayer.classList.add('live-player--active');
-			setPlayingStyles();
-		} else {
-			window.location.href = gigyaLogin;
+		if (livePlaying) {
+			player.stop();
 		}
+
+		if (true === playingCustomAudio) {
+			listenLiveStopCustomInlineAudio();
+		}
+
+		player.play({station: station, timeShift: true});
+
+		livePlayer.classList.add('live-player--active');
+		setPlayingStyles();
 	});
 
 	function playLiveStreamMobile() {
