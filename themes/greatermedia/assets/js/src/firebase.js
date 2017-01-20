@@ -2,7 +2,7 @@
 	var auth;
 
 	// do nothing if apiKey is not set
-	if ($.trim(config.apiKey).length < 1) {
+	if (!config.apiKey || $.trim(config.apiKey).length < 1) {
 		return;
 	}
 
