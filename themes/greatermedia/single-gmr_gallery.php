@@ -102,10 +102,14 @@ if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
 
 	</article>
 
+<?php endif; ?>
+
 	</section>
+
+		<aside class="sidebar">
+			<?php dynamic_sidebar( 'liveplayer_sidebar' ); ?>
+		</aside>
 
 	</div>
 
-<?php endif;
-
-get_footer();
+<?php get_footer();

@@ -14,10 +14,8 @@ get_header(); ?>
 			<div id="wall"></div>
 		</section>
 
-		<aside class="sidebar" role="complementary">
-
-			Sidebar area
-
+		<aside class="sidebar">
+			<?php dynamic_sidebar( 'liveplayer_sidebar' ); ?>
 		</aside>
 
 	</div>

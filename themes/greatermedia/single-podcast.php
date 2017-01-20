@@ -67,12 +67,16 @@ get_header(); ?>
 
 				</article>
 
-			</section>
-
 		</div>
 
-	<?php endif;
-	wp_reset_query();
-	?>
+	<?php endif; ?>
+
+	</section>
+
+	<aside class="sidebar">
+		<?php dynamic_sidebar( 'liveplayer_sidebar' ); ?>
+	</aside>
+
+	<?php wp_reset_query(); ?>
 
 <?php get_footer();

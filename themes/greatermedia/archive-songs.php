@@ -65,6 +65,10 @@ get_header(); ?>
 
 		</section>
 
+		<aside class="sidebar">
+			<?php dynamic_sidebar( 'liveplayer_sidebar' ); ?>
+		</aside>
+
 	</div>
 
 <?php get_footer(); ?>

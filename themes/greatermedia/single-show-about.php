@@ -34,6 +34,10 @@
 
 		</section>
 
+		<aside class="sidebar">
+			<?php dynamic_sidebar( 'liveplayer_sidebar' ); ?>
+		</aside>
+
 		<?php
 		$personalities = GreaterMedia\Shows\get_show_personalities( get_the_ID() );
 		if ( count( $personalities ) > 0 ): ?>
