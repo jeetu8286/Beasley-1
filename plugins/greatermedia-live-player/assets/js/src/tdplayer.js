@@ -183,23 +183,7 @@
 			],
 			playerReady: onPlayerReady,
 			configurationError: onConfigurationError,
-			moduleError: onModuleError,
-			trackCuePoint: onTrackCuePoint,
-			adBreakCuePoint: onAdBreak,
-			streamTrackChange: onTrackChange,
-			hlsCuePoint: onHlsCuePoint,
-			streamStart: onStreamStarted,
-			streamStop: onStreamStopped,
-			streamSelect: onStreamSelect,
-			streamStatus: onStatus,
-			streamGeoBlocked: onGeoBlocked,
-			timeoutAlert: onTimeOutAlert,
-			timeoutReach: onTimeOutReach,
-//			npeSong: onNPESong,
-			listLoaded: onListLoaded,
-			listEmpty: onListEmpty,
-			nowplayingApiError: onNowPlayingApiError,
-			pwaDataLoaded: onPwaDataLoaded
+			moduleError: onModuleError
 		});
 	}
 
@@ -793,6 +777,40 @@
 		//companions.addEventListener("companion-load-error", onCompanionLoadError);
 		initControlsUi();
 
+		if (player.addEventListener) {
+			player.addEventListener('track-cue-point', onTrackCuePoint);
+			player.addEventListener('ad-break-cue-point', onAdBreak);
+			player.addEventListener('stream-track-change', onTrackChange);
+			player.addEventListener('hls-cue-point', onHlsCuePoint);
+
+			player.addEventListener('stream-status', onStatus);
+			player.addEventListener('stream-geo-blocked', onGeoBlocked);
+			player.addEventListener('timeout-alert', onTimeOutAlert);
+			player.addEventListener('timeout-reach', onTimeOutReach);
+//			player.addEventListener('npe-song', onNPESong);
+
+			player.addEventListener('stream-select', onStreamSelect);
+
+			player.addEventListener('stream-start', onStreamStarted);
+			player.addEventListener('stream-stop', onStreamStopped);
+		} else if (player.attachEvent) {
+			player.attachEvent('track-cue-point', onTrackCuePoint);
+			player.attachEvent('ad-break-cue-point', onAdBreak);
+			player.attachEvent('stream-track-change', onTrackChange);
+			player.attachEvent('hls-cue-point', onHlsCuePoint);
+
+			player.attachEvent('stream-status', onStatus);
+			player.attachEvent('stream-geo-blocked', onGeoBlocked);
+			player.attachEvent('timeout-alert', onTimeOutAlert);
+			player.attachEvent('timeout-reach', onTimeOutReach);
+//			player.attachEvent('npe-song', onNPESong);
+
+			player.attachEvent('stream-select', onStreamSelect);
+
+			player.attachEvent('stream-start', onStreamStarted);
+			player.attachEvent('stream-stop', onStreamStopped);
+		}
+
 		player.setVolume(1);
 
 		setStatus('Api Ready');
@@ -811,11 +829,32 @@
 		}
 		setTech(player.MediaPlayer.tech.type);
 
-		$("#fetchSongHistoryByUserCallsignButton").click(loadNpApi);
-		$("#pwaButton").click(loadPwaData);
+		if (player.addEventListener) {
+			player.addEventListener('list-loaded', onListLoaded);
+			player.addEventListener('list-empty', onListEmpty);
+			player.addEventListener('nowplaying-api-error', onNowPlayingApiError);
+		} else if (player.attachEvent) {
+			player.attachEvent('list-loaded', onListLoaded);
+			player.attachEvent('list-empty', onListEmpty);
+			player.attachEvent('nowplaying-api-error', onNowPlayingApiError);
+		}
+
+		$("#fetchSongHistoryByUserCallsignButton").click(function () {
+			loadNpApi();
+		});
+
+		if (player.addEventListener) {
+			player.addEventListener('pwa-data-loaded', onPwaDataLoaded);
+		} else if (player.attachEvent) {
+			player.attachEvent('pwa-data-loaded', onPwaDataLoaded);
+		}
+
+		$("#pwaButton").click(function () {
+			loadPwaData();
+		});
 
 		$(document).ready(function() {
-			var opted_out = window.get_gigya_user_field && get_gigya_user_field('nielsen_optout');
+			var opted_out = false;
 			if (!opted_out && window._nolggGlobalParams) {
 				var beacon = new NOLCMB.ggInitialize(window._nolggGlobalParams);
 				bindNielsenSDKEvents(beacon, player);
