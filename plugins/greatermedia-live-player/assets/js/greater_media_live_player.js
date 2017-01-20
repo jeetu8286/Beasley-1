@@ -2096,8 +2096,7 @@ var $ = jQuery;
 		var techPriority = calcTechPriority();
 		debug('+++ initPlayer - techPriority = ' + techPriority.join(', '));
 
-		/* TD player configuration object used to create player instance */
-		var tdPlayerConfig = {
+		window.player = player = new TDSdk({
 			coreModules: [
 				{
 					id: 'MediaPlayer',
@@ -2117,25 +2116,27 @@ var $ = jQuery;
 				{id: 'PlayerWebAdmin'},
 				{id: 'SyncBanners', elements: [{id: 'td_synced_bigbox', width: 300, height: 250}]},
 				{id: 'TargetSpot'}
-			]
-		};
-
-		require(['tdapi/base/util/Companions'], function (Companions) {
-				companions = new Companions();
-			}
-		);
-
-		window.player = player = new TdPlayerApi(tdPlayerConfig);
-		if (player.addEventListener) {
-			player.addEventListener('player-ready', onPlayerReady);
-			player.addEventListener('configuration-error', onConfigurationError);
-			player.addEventListener('module-error', onModuleError);
-		} else if (player.attachEvent) {
-			player.attachEvent('player-ready', onPlayerReady);
-			player.attachEvent('configuration-error', onConfigurationError);
-			player.attachEvent('module-error', onModuleError);
-		}
-		player.loadModules();
+			],
+			playerReady: onPlayerReady,
+			configurationError: onConfigurationError,
+			moduleError: onModuleError,
+			trackCuePoint: onTrackCuePoint,
+			adBreakCuePoint: onAdBreak,
+			streamTrackChange: onTrackChange,
+			hlsCuePoint: onHlsCuePoint,
+			streamStart: onStreamStarted,
+			streamStop: onStreamStopped,
+			streamSelect: onStreamSelect,
+			streamStatus: onStatus,
+			streamGeoBlocked: onGeoBlocked,
+			timeoutAlert: onTimeOutAlert,
+			timeoutReach: onTimeOutReach,
+//			npeSong: onNPESong,
+			listLoaded: onListLoaded,
+			listEmpty: onListEmpty,
+			nowplayingApiError: onNowPlayingApiError,
+			pwaDataLoaded: onPwaDataLoaded
+		});
 	}
 
 	/**
@@ -2420,44 +2421,22 @@ var $ = jQuery;
 	}
 
 	function changePlayerState() {
-		if (is_gigya_user_logged_in()) {
-			if (playBtn != null) {
-				addEventHandler(playBtn, 'click', function(){
-					if (lpInit === true) {
-						setStoppedStyles();
-						if (window.innerWidth >= 768) {
-							playLiveStream();
-						} else {
-							playLiveStreamMobile();
-						}
+		if (playBtn != null) {
+			addEventHandler(playBtn, 'click', function(){
+				if (lpInit === true) {
+					setStoppedStyles();
+					if (window.innerWidth >= 768) {
+						playLiveStream();
 					} else {
-						setInitialPlay();
+						playLiveStreamMobile();
 					}
-				});
-			}
-			if (listenNow != null) {
-				addEventHandler(listenNow, 'click', listenLiveStopCustomInlineAudio);
-			}
-		} else {
-			if (playBtn != null) {
-				addEventHandler(playBtn, 'click', function () {
-					window.location.href = gigyaLogin;
-					setPlayerReady();
-				});
-			}
-			if (listenNow != null) {
-				addEventHandler(listenNow, 'click', function () {
-					window.location.href = gigyaLogin;
-				});
-			}
-			if (listenLogin != null && window.innerWidth <= 767) {
-				addEventHandler(listenLogin, 'click', function () {
-					window.location.href = gigyaLogin;
-				});
-			}
-			if (podcastPlayBtn != null) {
-				 addEventHandler(podcastPlayBtn, 'click', pjaxInit);
-			}
+				} else {
+					setInitialPlay();
+				}
+			});
+		}
+		if (listenNow != null) {
+			addEventHandler(listenNow, 'click', listenLiveStopCustomInlineAudio);
 		}
 	}
 
@@ -2750,40 +2729,6 @@ var $ = jQuery;
 		//companions.addEventListener("companion-load-error", onCompanionLoadError);
 		initControlsUi();
 
-		if (player.addEventListener) {
-			player.addEventListener('track-cue-point', onTrackCuePoint);
-			player.addEventListener('ad-break-cue-point', onAdBreak);
-			player.addEventListener('stream-track-change', onTrackChange);
-			player.addEventListener('hls-cue-point', onHlsCuePoint);
-
-			player.addEventListener('stream-status', onStatus);
-			player.addEventListener('stream-geo-blocked', onGeoBlocked);
-			player.addEventListener('timeout-alert', onTimeOutAlert);
-			player.addEventListener('timeout-reach', onTimeOutReach);
-//			player.addEventListener('npe-song', onNPESong);
-
-			player.addEventListener('stream-select', onStreamSelect);
-
-			player.addEventListener('stream-start', onStreamStarted);
-			player.addEventListener('stream-stop', onStreamStopped);
-		} else if (player.attachEvent) {
-			player.attachEvent('track-cue-point', onTrackCuePoint);
-			player.attachEvent('ad-break-cue-point', onAdBreak);
-			player.attachEvent('stream-track-change', onTrackChange);
-			player.attachEvent('hls-cue-point', onHlsCuePoint);
-
-			player.attachEvent('stream-status', onStatus);
-			player.attachEvent('stream-geo-blocked', onGeoBlocked);
-			player.attachEvent('timeout-alert', onTimeOutAlert);
-			player.attachEvent('timeout-reach', onTimeOutReach);
-//			player.attachEvent('npe-song', onNPESong);
-
-			player.attachEvent('stream-select', onStreamSelect);
-
-			player.attachEvent('stream-start', onStreamStarted);
-			player.attachEvent('stream-stop', onStreamStopped);
-		}
-
 		player.setVolume(1);
 
 		setStatus('Api Ready');
@@ -2802,29 +2747,8 @@ var $ = jQuery;
 		}
 		setTech(player.MediaPlayer.tech.type);
 
-		if (player.addEventListener) {
-			player.addEventListener('list-loaded', onListLoaded);
-			player.addEventListener('list-empty', onListEmpty);
-			player.addEventListener('nowplaying-api-error', onNowPlayingApiError);
-		} else if (player.attachEvent) {
-			player.attachEvent('list-loaded', onListLoaded);
-			player.attachEvent('list-empty', onListEmpty);
-			player.attachEvent('nowplaying-api-error', onNowPlayingApiError);
-		}
-
-		$("#fetchSongHistoryByUserCallsignButton").click(function () {
-			loadNpApi();
-		});
-
-		if (player.addEventListener) {
-			player.addEventListener('pwa-data-loaded', onPwaDataLoaded);
-		} else if (player.attachEvent) {
-			player.attachEvent('pwa-data-loaded', onPwaDataLoaded);
-		}
-
-		$("#pwaButton").click(function () {
-			loadPwaData();
-		});
+		$("#fetchSongHistoryByUserCallsignButton").click(loadNpApi);
+		$("#pwaButton").click(loadPwaData);
 
 		$(document).ready(function() {
 			var opted_out = window.get_gigya_user_field && get_gigya_user_field('nielsen_optout');
@@ -3505,30 +3429,12 @@ var $ = jQuery;
 	}
 
 	function pjaxInit() {
-		if (is_gigya_user_logged_in()) {
-			if ($.support.pjax) {
-				$(document).pjax('a:not(.ab-item)', '.main', {
-					'fragment': '.main',
-					'maxCacheLength': 500,
-					'timeout': 10000
-				});
-			}
-		} else if (gmr.wpLoggedIn) {
-			if ($.support.pjax) {
-				$(document).pjax('a:not(.ab-item)', '.page-wrap', {
-					'fragment': '.page-wrap',
-					'maxCacheLength': 500,
-					'timeout': 10000
-				});
-			}
-		} else {
-			if ($.support.pjax) {
-				$(document).pjax('a:not(.ab-item)', '.main', {
-					'fragment': '.main',
-					'maxCacheLength': 500,
-					'timeout': 10000
-				});
-			}
+		if ($.support.pjax) {
+			$(document).pjax('a:not(.ab-item)', '.main', {
+				'fragment': '.main',
+				'maxCacheLength': 500,
+				'timeout': 10000
+			});
 		}
 	}
 
@@ -3655,4 +3561,5 @@ var $ = jQuery;
 		addEventHandler(podcastPauseBtn, 'click', pauseCustomInlineAudio);
 	});
 
+	$(document).ready(initPlayer);
 })(jQuery, window);
