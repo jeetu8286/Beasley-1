@@ -106,9 +106,7 @@ if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
 
 	</section>
 
-		<aside class="sidebar">
-			<?php dynamic_sidebar( 'liveplayer_sidebar' ); ?>
-		</aside>
+		<?php get_sidebar(); ?>
 
 	</div>
 

@@ -53,9 +53,7 @@
 
 		</section>
 
-		<aside class="sidebar">
-			<?php dynamic_sidebar( 'liveplayer_sidebar' ); ?>
-		</aside>
+		<?php get_sidebar(); ?>
 
 	</div>
 

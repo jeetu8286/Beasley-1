@@ -73,9 +73,7 @@ get_header(); ?>
 
 	</section>
 
-	<aside class="sidebar">
-		<?php dynamic_sidebar( 'liveplayer_sidebar' ); ?>
-	</aside>
+	<?php get_sidebar(); ?>
 
 	<?php wp_reset_query(); ?>
 
