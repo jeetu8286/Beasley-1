@@ -343,9 +343,9 @@ class live_player_widget extends WP_Widget {
 			// Base ID of the widget
 			'live_player_widget',
 			// Widget Name
-			esc_html( 'Live Player Widget' ),
+			'Live Player Widget',
 			// Widget description
-			array( 'description' => esc_html( 'Sidebar controls for the live player' ) )
+			array( 'description' => 'Sidebar controls for the live player' )
 		);
 	}
 
@@ -367,7 +367,7 @@ class live_player_widget extends WP_Widget {
 					</div>
 					<div class="player-info">%1$s</div>
 				</div>',
-				esc_html( 'Philadelphia&rsquo;s Classic Rock 102.9 WMGK' )
+				'Philadelphia&rsquo;s Classic Rock 102.9 WMGK'
 			);
 		echo $args['after_widget'];
 	}
@@ -405,9 +405,9 @@ class social_icon_widget extends WP_Widget {
 			// Base ID of the widget
 			'social_icon_widget',
 			// Widget Name
-			esc_html( 'Social Icon Widget' ),
+			'Social Icon Widget',
 			// Widget description
-			array( 'description' => esc_html( 'Show social icons' ) )
+			array( 'description' => 'Show social icons' )
 		);
 	}
 
