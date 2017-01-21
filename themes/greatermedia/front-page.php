@@ -51,7 +51,7 @@ get_header();
 
 		</section>
 
-		<aside class="sidebar"></aside>
+		<?php get_sidebar(); ?>
 
 	</div>
 

@@ -35,4 +35,6 @@
 
 		</section>
 
+		<?php get_sidebar(); ?>
+
 <?php endwhile; ?>

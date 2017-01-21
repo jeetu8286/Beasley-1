@@ -42,6 +42,8 @@
 
 		</section>
 
+		<?php get_sidebar(); ?>
+
 	</div>
 
 <?php endwhile; ?>

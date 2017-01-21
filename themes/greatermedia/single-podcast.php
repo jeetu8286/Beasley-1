@@ -67,12 +67,14 @@ get_header(); ?>
 
 				</article>
 
-			</section>
-
 		</div>
 
-	<?php endif;
-	wp_reset_query();
-	?>
+	<?php endif; ?>
+
+	</section>
+
+	<?php get_sidebar(); ?>
+
+	<?php wp_reset_query(); ?>
 
 <?php get_footer();
