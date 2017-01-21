@@ -12,7 +12,7 @@ get_header();
 
 	<div class="container">
 
-		<?php //get_template_part( 'partials/frontpage', 'featured' ); ?>
+		<!-- :: Begin Temporary Static slider code ::  -->
 		<div class="featured-post-slider">
 			<div class="feature-post-slide">
 				<div class="slide-content">
@@ -39,6 +39,8 @@ get_header();
 				</div>
 			</div>
 		</div>
+		<!-- :: End Temporary Static slider code ::  -->
+
 		<?php get_template_part( 'partials/frontpage', 'highlights' ); ?>
 
 		<section class="content">
