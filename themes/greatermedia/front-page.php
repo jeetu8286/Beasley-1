@@ -12,7 +12,33 @@ get_header();
 
 	<div class="container">
 
-		<?php get_template_part( 'partials/frontpage', 'featured' ); ?>
+		<?php //get_template_part( 'partials/frontpage', 'featured' ); ?>
+		<div class="featured-post-slider">
+			<div class="feature-post-slide">
+				<div class="slide-content">
+					<img src="http://files.greatermedia.com/uploads/sites/2/2016/10/Roger-Waters-2017-Hero-1175x572.jpg" alt="">
+					<h3 class="slide-heading">This is the Post Title</h3>
+				</div>
+			</div>
+			<div class="feature-post-slide">
+				<div class="slide-content">
+					<img src="http://placehold.it/800x400" alt="">
+					<h3 class="slide-heading">This is the Post Title</h3>
+				</div>
+			</div>
+			<div class="feature-post-slide">
+				<div class="slide-content">
+					<img src="http://placehold.it/800x400" alt="">
+					<h3 class="slide-heading">This is the Post Title</h3>
+				</div>
+			</div>
+			<div class="feature-post-slide">
+				<div class="slide-content">
+					<img src="http://placehold.it/800x400" alt="">
+					<h3 class="slide-heading">This is the Post Title</h3>
+				</div>
+			</div>
+		</div>
 		<?php get_template_part( 'partials/frontpage', 'highlights' ); ?>
 
 		<section class="content">
