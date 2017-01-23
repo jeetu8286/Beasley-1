@@ -10244,6 +10244,9 @@ a.podcast__rss:active {
     .single-show .format-standard .entry2__thumbnail {
       margin-left: 0.75em; } }
 
+.single-show .main > .container > .sidebar {
+  top: 390px; }
+
 .show-attr--name {
   position: absolute;
   top: 50%;
@@ -10300,7 +10303,8 @@ category: Components - Shows
   padding: 38px 1em;
   width: 100%;
   display: block;
-  color: #ffffff; }
+  color: #ffffff;
+  width: calc( 100% + 320px); }
   .show__header:before, .show__header:after {
     content: " ";
     display: table; }
