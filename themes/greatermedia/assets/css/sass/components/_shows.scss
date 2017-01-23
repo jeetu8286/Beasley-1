@@ -128,8 +128,13 @@
 		}
 	}
 
+
 	.main > .container > .sidebar {
-		top: 390px;
+		top: 558px;
+
+		@include bp(large) {
+			top: 390px;
+		}
 	}
 }
 
@@ -190,7 +195,10 @@ category: Components - Shows
 	@include row();
 	@include display-context(table);
 	color: $secondary-text;
-	width: calc( 100% + 320px );
+
+	@include bp(medium) {
+		width: calc( 100% + 320px );
+	}
 
 	&.has-thumbnail {
 		background-repeat: no-repeat;

@@ -10245,7 +10245,10 @@ a.podcast__rss:active {
       margin-left: 0.75em; } }
 
 .single-show .main > .container > .sidebar {
-  top: 390px; }
+  top: 558px; }
+  @media screen and (min-width: 970px) {
+    .single-show .main > .container > .sidebar {
+      top: 390px; } }
 
 .show-attr--name {
   position: absolute;
@@ -10303,13 +10306,15 @@ category: Components - Shows
   padding: 38px 1em;
   width: 100%;
   display: block;
-  color: #ffffff;
-  width: calc( 100% + 320px); }
+  color: #ffffff; }
   .show__header:before, .show__header:after {
     content: " ";
     display: table; }
   .show__header:after {
     clear: both; }
+  @media screen and (min-width: 768px) {
+    .show__header {
+      width: calc( 100% + 320px); } }
   .show__header.has-thumbnail {
     background-repeat: no-repeat;
     background-size: 100% auto;
