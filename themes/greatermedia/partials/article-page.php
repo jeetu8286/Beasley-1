@@ -26,4 +26,6 @@
 
 	</section>
 
+	<?php get_sidebar(); ?>
+
 </div>

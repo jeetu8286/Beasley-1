@@ -357,6 +357,127 @@ function greatermedia_widgets_init() {
 add_action( 'widgets_init', 'greatermedia_widgets_init' );
 
 /**
+ * Create custom live player widget
+ */
+class live_player_widget extends WP_Widget {
+
+	function __construct() {
+		parent::__construct(
+			// Base ID of the widget
+			'live_player_widget',
+			// Widget Name
+			'Live Player Widget',
+			// Widget description
+			array( 'description' => 'Sidebar controls for the live player' )
+		);
+	}
+
+	// Creating widget front-end
+	public function widget( $args, $instance ) {
+		$title = apply_filters( 'widget_title', $instance['title'] );
+		echo $args['before_widget'];
+		if ( ! empty( $title ) )
+		echo $args['before_title'] . $title . $args['after_title'];
+
+		printf(
+				'<div class="player">
+					<div class="player-control">
+						<button class="play-button" aria-live="assertive" tabindex="32" aria-label="Play">
+							<svg viewBox="0 0 36 36">
+								<path d="M11,10 L18,13.74 18,22.28 11,26 M18,13.74 L26,18 26,18 18,22.28"></path>
+							</svg>
+						</button>
+					</div>
+					<div class="player-info">%1$s</div>
+				</div>',
+				'Philadelphia&rsquo;s Classic Rock 102.9 WMGK'
+			);
+		echo $args['after_widget'];
+	}
+
+	// Widget Backend
+	public function form( $instance ) {
+		if ( isset( $instance[ 'title' ] ) ) {
+			$title = $instance[ 'title' ];
+		}
+
+		// Widget admin form
+		?>
+		<p>
+			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
+			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
+		</p>
+		<?php
+	}
+
+	// Updating widget replacing old instances with new
+	public function update( $new_instance, $old_instance ) {
+		$instance = array();
+		$instance['title'] = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
+		return $instance;
+	}
+}
+
+/**
+ * Create custom social icon widget
+ */
+class social_icon_widget extends WP_Widget {
+
+	function __construct() {
+		parent::__construct(
+			// Base ID of the widget
+			'social_icon_widget',
+			// Widget Name
+			'Social Icon Widget',
+			// Widget description
+			array( 'description' => 'Show social icons' )
+		);
+	}
+
+	// Creating widget front-end
+	public function widget( $args, $instance ) {
+		$title = apply_filters( 'widget_title', $instance['title'] );
+		echo $args['before_widget'];
+		if ( ! empty( $title ) )
+		echo $args['before_title'] . $title . $args['after_title'];
+		do_action( 'gmr_social' );
+		echo $args['after_widget'];
+	}
+
+	// Widget Backend
+	public function form( $instance ) {
+		if ( isset( $instance[ 'title' ] ) ) {
+			$title = $instance[ 'title' ];
+		}
+
+		// Widget admin form
+		?>
+		<p>
+			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
+			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
+		</p>
+		<?php
+	}
+
+	// Updating widget replacing old instances with new
+	public function update( $new_instance, $old_instance ) {
+		$instance = array();
+		$instance['title'] = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
+		return $instance;
+	}
+}
+
+/**
+ * Add Custom Widgets
+ */
+function greatermedia_load_widget() {
+	register_widget( 'live_player_widget' );
+	register_widget( 'social_icon_widget' );
+}
+
+add_action( 'widgets_init', 'greatermedia_load_widget' );
+
+/**
  * Helper function to get the post id from options or transient cache
  *
  * @param $query_arg
