@@ -783,7 +783,7 @@
 				liveLinksMore.classList.add('show-more--muted');
 			}
 		} else if (liveLinksWidget === null || liveLinksMore === null || liveLinksBlogRoll === null) {
-			liveLinksMore.classList.add('show-more--muted');
+			return false;
 		}
 	}
 
