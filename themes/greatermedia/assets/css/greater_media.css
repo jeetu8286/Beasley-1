@@ -2126,7 +2126,7 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
       content: '→'; }
 
 .slick-dotted.slick-slider {
-  margin-bottom: 60px; }
+  margin-bottom: 30px; }
 
 .slick-dots {
   position: absolute;
