@@ -25,7 +25,7 @@
 	var liveLinks = document.getElementById( 'live-links' );
 	var liveLinksWidget = document.querySelector( '.widget--live-player' );
 	var liveLinksWidgetTitle = document.querySelector('.widget--live-player__title');
-	var liveLinksMore = document.querySelector('.live-links--more') || null;
+	var liveLinksMore = document.querySelector('.live-links--more');
 	var scrollObject = {};
 	var livePlayerMore = document.getElementById('live-player--more');
 	var footer = document.querySelector('.footer');
@@ -118,7 +118,7 @@
 				if (liveLinksItem.length <= 0) {
 					liveLinksMore.classList.add('show-more--muted');
 				}
-			} else if (liveLinksWidget === null || liveLinksMore === null || liveLinksBlogRoll === null) {
+			} else if (liveLinksMore && (liveLinksWidget === null || liveLinksBlogRoll === null)) {
 				liveLinksMore.classList.add('show-more--muted');
 			}
 		}
