@@ -127,6 +127,15 @@
 			margin-left: 0.75em;
 		}
 	}
+
+
+	.main > .container > .sidebar {
+		top: 558px;
+
+		@include bp(large) {
+			top: 390px;
+		}
+	}
 }
 
 .show-attr--name {
@@ -186,6 +195,10 @@ category: Components - Shows
 	@include row();
 	@include display-context(table);
 	color: $secondary-text;
+
+	@include bp(medium) {
+		width: calc( 100% + 320px );
+	}
 
 	&.has-thumbnail {
 		background-repeat: no-repeat;
