@@ -592,7 +592,7 @@
 	var liveLinks = document.getElementById( 'live-links' );
 	var liveLinksWidget = document.querySelector( '.widget--live-player' );
 	var liveLinksWidgetTitle = document.querySelector('.widget--live-player__title');
-	var liveLinksMore = document.querySelector('.live-links--more');
+	var liveLinksMore = document.querySelector('.live-links--more') || null;
 	var scrollObject = {};
 	var livePlayerMore = document.getElementById('live-player--more');
 	var footer = document.querySelector('.footer');
@@ -679,13 +679,15 @@
 	function liveLinksHeight() {
 		var liveLinksBlogRoll = document.getElementById('live-links__blogroll');
 
-		if (liveLinksWidget !== null && liveLinksMore !== null && liveLinksBlogRoll !== null) {
-			var liveLinksItem = liveLinksBlogRoll.getElementsByTagName('li');
-			if (liveLinksItem.length <= 0) {
+		if (liveLinksBlogRoll) {
+			if (liveLinksWidget !== null && liveLinksMore !== null && liveLinksBlogRoll !== null) {
+				var liveLinksItem = liveLinksBlogRoll.getElementsByTagName('li');
+				if (liveLinksItem.length <= 0) {
+					liveLinksMore.classList.add('show-more--muted');
+				}
+			} else if (liveLinksWidget === null || liveLinksMore === null || liveLinksBlogRoll === null) {
 				liveLinksMore.classList.add('show-more--muted');
 			}
-		} else if (liveLinksWidget === null || liveLinksMore === null || liveLinksBlogRoll === null) {
-			liveLinksMore.classList.add('show-more--muted');
 		}
 	}
 
@@ -768,7 +770,7 @@
 			livePlayer.style.right = '0';
 		}
 	}
-	
+
 	/**
 	 * Function to handle stream selection through a dropdown
 	 */
