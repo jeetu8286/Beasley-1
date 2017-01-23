@@ -155,7 +155,14 @@
 	}
 
 	function initPlayer() {
-		var techPriority = calcTechPriority();
+		var container = document.getElementById('td_container'),
+			techPriority;
+
+		if (!container) {
+			return;
+		}
+
+		techPriority = calcTechPriority();
 		debug('+++ initPlayer - techPriority = ' + techPriority.join(', '));
 
 		window.player = player = new TDSdk({
