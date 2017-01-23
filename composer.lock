@@ -440,12 +440,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/wimg/PHPCompatibility.git",
-                "reference": "4853c6da08a6cb0f53029170e93c97120a6a2335"
+                "reference": "4fa57b3a0251a14198c001492c595d03020e2f05"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wimg/PHPCompatibility/zipball/4853c6da08a6cb0f53029170e93c97120a6a2335",
-                "reference": "4853c6da08a6cb0f53029170e93c97120a6a2335",
+                "url": "https://api.github.com/repos/wimg/PHPCompatibility/zipball/4fa57b3a0251a14198c001492c595d03020e2f05",
+                "reference": "4fa57b3a0251a14198c001492c595d03020e2f05",
                 "shasum": ""
             },
             "require": {
@@ -479,7 +479,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2017-01-03 20:31:50"
+            "time": "2017-01-15 22:45:24"
         },
         {
             "name": "wpackagist-plugin/core-control",
@@ -587,12 +587,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/wpengine/phpcompat.git",
-                "reference": "27926a3449463930e0a9d97454f6bd650b1199f6"
+                "reference": "9278e7f4d184be4fbb8d39be690c9b3abac14ed7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wpengine/phpcompat/zipball/27926a3449463930e0a9d97454f6bd650b1199f6",
-                "reference": "27926a3449463930e0a9d97454f6bd650b1199f6",
+                "url": "https://api.github.com/repos/wpengine/phpcompat/zipball/9278e7f4d184be4fbb8d39be690c9b3abac14ed7",
+                "reference": "9278e7f4d184be4fbb8d39be690c9b3abac14ed7",
                 "shasum": ""
             },
             "require": {
@@ -626,10 +626,10 @@
             ],
             "description": "Test PHP Compatibility.",
             "support": {
-                "source": "https://github.com/wpengine/phpcompat/tree/v1.3.2",
+                "source": "https://github.com/wpengine/phpcompat/tree/master",
                 "issues": "https://github.com/wpengine/phpcompat/issues"
             },
-            "time": "2017-01-04 14:42:38"
+            "time": "2017-01-13 22:40:16"
         }
     ],
     "aliases": [],
