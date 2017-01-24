@@ -1183,3 +1183,14 @@ function custom_nextpage_links( $defaults ) {
 }
 
 add_filter('wp_link_pages_args','custom_nextpage_links');
+
+/**
+ * Removes srcset and sizes attributes from image tag.
+ */
+function greatermedia_update_image_attributes( $attributes ) {
+	unset( $attributes['srcset'], $attributes['sizes'] );
+	return $attributes;
+}
+add_filter( 'wp_get_attachment_image_attributes', 'greatermedia_update_image_attributes' );
+
+remove_filter( 'the_content', 'wp_make_content_images_responsive' );
