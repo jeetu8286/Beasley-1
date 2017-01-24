@@ -13,7 +13,13 @@ get_header();
 	<div class="container">
 
 		<!-- :: Begin Temporary Static slider code ::  -->
-		<div class="featured-post-slider">
+		<div class="cycle-slideshow"
+			data-cycle-timeout="5000"
+			data-cycle-prev=".slick-prev"
+			data-cycle-next=".slick-next"
+			data-cycle-slides="> div.feature-post-slide"
+			data-cycle-auto-height=container
+			data-cycle-pager=".slick-dots" >
 			<div class="feature-post-slide">
 				<div class="slide-content">
 					<img src="http://files.greatermedia.com/uploads/sites/2/2016/10/Roger-Waters-2017-Hero-1175x572.jpg" alt="">
@@ -38,7 +44,12 @@ get_header();
 					<h3 class="slide-heading">This is the Post Title</h3>
 				</div>
 			</div>
+			<div class="slick-arrow">
+				<a href=# class="slick-prev">Prev</a>
+				<a href=# class="slick-next">Next</a>
+			</div>
 		</div>
+		<div class="slick-dots"></div>
 		<!-- :: End Temporary Static slider code ::  -->
 
 		<?php get_template_part( 'partials/frontpage', 'highlights' ); ?>
