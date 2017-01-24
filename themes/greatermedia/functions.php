@@ -181,28 +181,6 @@ function greatermedia_scripts_styles() {
 		),
 		GREATERMEDIA_VERSION
 	);
-	wp_register_style(
-		'slick',
-		"{$baseurl}/assets/css/vendor/slick.css",
-		array(),
-		GREATERMEDIA_VERSION
-	);
-
-	if( is_front_page() ) {
-		wp_enqueue_style(
-			'slick'
-		);
-
-		wp_enqueue_script(
-			'slick',
-			"{$baseurl}/assets/js/vendor/slick.js",
-			array(
-				'jquery'
-			),
-			GREATERMEDIA_VERSION,
-			true
-		);
-	}
 
 	wp_enqueue_script(
 		'greatermedia',
