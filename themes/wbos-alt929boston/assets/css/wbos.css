@@ -10260,6 +10260,12 @@ a.podcast__rss:active {
     .single-show .format-standard .entry2__thumbnail {
       margin-left: 0.75em; } }
 
+.single-show .main > .container > .sidebar {
+  top: 558px; }
+  @media screen and (min-width: 970px) {
+    .single-show .main > .container > .sidebar {
+      top: 390px; } }
+
 .show-attr--name {
   position: absolute;
   top: 50%;
@@ -10322,6 +10328,9 @@ category: Components - Shows
     display: table; }
   .show__header:after {
     clear: both; }
+  @media screen and (min-width: 768px) {
+    .show__header {
+      width: calc( 100% + 320px); } }
   .show__header.has-thumbnail {
     background-repeat: no-repeat;
     background-size: 100% auto;
