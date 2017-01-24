@@ -7,7 +7,6 @@
  * conditionals were added that would use `attachEvent` if `addEventListener` is not supported. A custom function --
  * `addEventHandler` -- that will handle the switch is also being used throughout.
  */
-/* global: gigya_profile_path */
 (function ($, window, undefined) {
 	"use strict";
 
@@ -52,7 +51,6 @@
 	var nowPlaying = document.getElementById('live-stream__now-playing');
 	var listenLogin = document.getElementById('live-stream__login');
 	var $trackInfo = $(document.getElementById('trackInfo'));
-	var gigyaLogin = gigya_profile_path('login');
 	var clearDebug = document.getElementById('clearDebug');
 	var onAir = document.getElementById('on-air');
 	var streamStatus = document.getElementById('live-stream__status');
@@ -157,11 +155,17 @@
 	}
 
 	function initPlayer() {
-		var techPriority = calcTechPriority();
+		var container = document.getElementById('td_container'),
+			techPriority;
+
+		if (!container) {
+			return;
+		}
+
+		techPriority = calcTechPriority();
 		debug('+++ initPlayer - techPriority = ' + techPriority.join(', '));
 
-		/* TD player configuration object used to create player instance */
-		var tdPlayerConfig = {
+		window.player = player = new TDSdk({
 			coreModules: [
 				{
 					id: 'MediaPlayer',
@@ -181,25 +185,11 @@
 				{id: 'PlayerWebAdmin'},
 				{id: 'SyncBanners', elements: [{id: 'td_synced_bigbox', width: 300, height: 250}]},
 				{id: 'TargetSpot'}
-			]
-		};
-
-		require(['tdapi/base/util/Companions'], function (Companions) {
-				companions = new Companions();
-			}
-		);
-
-		window.player = player = new TdPlayerApi(tdPlayerConfig);
-		if (player.addEventListener) {
-			player.addEventListener('player-ready', onPlayerReady);
-			player.addEventListener('configuration-error', onConfigurationError);
-			player.addEventListener('module-error', onModuleError);
-		} else if (player.attachEvent) {
-			player.attachEvent('player-ready', onPlayerReady);
-			player.attachEvent('configuration-error', onConfigurationError);
-			player.attachEvent('module-error', onModuleError);
-		}
-		player.loadModules();
+			],
+			playerReady: onPlayerReady,
+			configurationError: onConfigurationError,
+			moduleError: onModuleError
+		});
 	}
 
 	/**
@@ -221,13 +211,7 @@
 		}
 
 		if (resumeBtn != null) {
-			if ( is_gigya_user_logged_in() ) {
-				addEventHandler(resumeBtn, 'click', resumeLiveStream);
-			} else {
-				addEventHandler(resumeBtn, 'click', function () {
-					window.location.href = gigyaLogin;
-				});
-			}
+			addEventHandler(resumeBtn, 'click', resumeLiveStream);
 		}
 
 		if (clearDebug != null) {
@@ -238,7 +222,6 @@
 
 	function setPlayingStyles() {
 		if (null === tdContainer) {
-			// gigya user is logged out, so everything is different ಠ_ಠ - Should we force login for inline audio as well??
 			return;
 		}
 
@@ -276,7 +259,6 @@
 
 	function setStoppedStyles() {
 		if (null === tdContainer) {
-			// gigya user is logged out, so everything is different ಠ_ಠ - Should we force login for inline audio as well??
 			return;
 		}
 
@@ -291,7 +273,6 @@
 
 	function setPausedStyles() {
 		if (null === tdContainer) {
-			// gigya user is logged out, so everything is different ಠ_ಠ - Should we force login for inline audio as well??
 			return;
 		}
 
@@ -473,7 +454,7 @@
 	}
 
 	function playLiveStreamDevice() {
-		if (is_gigya_user_logged_in() && lpInit === true) {
+		if (lpInit === true) {
 			setStoppedStyles();
 			if (window.innerWidth >= 768) {
 				playLiveStream();
@@ -484,44 +465,22 @@
 	}
 
 	function changePlayerState() {
-		if (is_gigya_user_logged_in()) {
-			if (playBtn != null) {
-				addEventHandler(playBtn, 'click', function(){
-					if (lpInit === true) {
-						setStoppedStyles();
-						if (window.innerWidth >= 768) {
-							playLiveStream();
-						} else {
-							playLiveStreamMobile();
-						}
+		if (playBtn != null) {
+			addEventHandler(playBtn, 'click', function(){
+				if (lpInit === true) {
+					setStoppedStyles();
+					if (window.innerWidth >= 768) {
+						playLiveStream();
 					} else {
-						setInitialPlay();
+						playLiveStreamMobile();
 					}
-				});
-			}
-			if (listenNow != null) {
-				addEventHandler(listenNow, 'click', listenLiveStopCustomInlineAudio);
-			}
-		} else {
-			if (playBtn != null) {
-				addEventHandler(playBtn, 'click', function () {
-					window.location.href = gigyaLogin;
-					setPlayerReady();
-				});
-			}
-			if (listenNow != null) {
-				addEventHandler(listenNow, 'click', function () {
-					window.location.href = gigyaLogin;
-				});
-			}
-			if (listenLogin != null && window.innerWidth <= 767) {
-				addEventHandler(listenLogin, 'click', function () {
-					window.location.href = gigyaLogin;
-				});
-			}
-			if (podcastPlayBtn != null) {
-				 addEventHandler(podcastPlayBtn, 'click', pjaxInit);
-			}
+				} else {
+					setInitialPlay();
+				}
+			});
+		}
+		if (listenNow != null) {
+			addEventHandler(listenNow, 'click', listenLiveStopCustomInlineAudio);
 		}
 	}
 
@@ -575,25 +534,21 @@
 	var currentStream = $('.live-player__stream--current-name');
 
 	currentStream.bind('DOMSubtreeModified', function () {
-		if ( is_gigya_user_logged_in() ) {
-			debug('--- new stream select ---');
-			var station = currentStream.text();
+		debug('--- new stream select ---');
+		var station = currentStream.text();
 
-			if (livePlaying) {
-				player.stop();
-			}
-
-			if (true === playingCustomAudio) {
-				listenLiveStopCustomInlineAudio();
-			}
-
-			player.play({station: station, timeShift: true});
-
-			livePlayer.classList.add('live-player--active');
-			setPlayingStyles();
-		} else {
-			window.location.href = gigyaLogin;
+		if (livePlaying) {
+			player.stop();
 		}
+
+		if (true === playingCustomAudio) {
+			listenLiveStopCustomInlineAudio();
+		}
+
+		player.play({station: station, timeShift: true});
+
+		livePlayer.classList.add('live-player--active');
+		setPlayingStyles();
 	});
 
 	function playLiveStreamMobile() {
@@ -891,7 +846,7 @@
 		});
 
 		$(document).ready(function() {
-			var opted_out = window.get_gigya_user_field && get_gigya_user_field('nielsen_optout');
+			var opted_out = false;
 			if (!opted_out && window._nolggGlobalParams) {
 				var beacon = new NOLCMB.ggInitialize(window._nolggGlobalParams);
 				bindNielsenSDKEvents(beacon, player);
@@ -1569,30 +1524,12 @@
 	}
 
 	function pjaxInit() {
-		if (is_gigya_user_logged_in()) {
-			if ($.support.pjax) {
-				$(document).pjax('a:not(.ab-item)', '.main', {
-					'fragment': '.main',
-					'maxCacheLength': 500,
-					'timeout': 10000
-				});
-			}
-		} else if (gmr.wpLoggedIn) {
-			if ($.support.pjax) {
-				$(document).pjax('a:not(.ab-item)', '.page-wrap', {
-					'fragment': '.page-wrap',
-					'maxCacheLength': 500,
-					'timeout': 10000
-				});
-			}
-		} else {
-			if ($.support.pjax) {
-				$(document).pjax('a:not(.ab-item)', '.main', {
-					'fragment': '.main',
-					'maxCacheLength': 500,
-					'timeout': 10000
-				});
-			}
+		if ($.support.pjax) {
+			$(document).pjax('a:not(.ab-item)', '.main', {
+				'fragment': '.main',
+				'maxCacheLength': 500,
+				'timeout': 10000
+			});
 		}
 	}
 
@@ -1719,4 +1656,5 @@
 		addEventHandler(podcastPauseBtn, 'click', pauseCustomInlineAudio);
 	});
 
+	$(document).ready(initPlayer);
 })(jQuery, window);
