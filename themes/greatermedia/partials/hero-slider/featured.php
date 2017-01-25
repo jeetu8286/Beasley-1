@@ -26,6 +26,10 @@ if ( $hp_featured_query->have_posts() ) : ?>
 				</a>
 			</div>
 		<?php endwhile; ?>
+		<div class="slick-arrow">
+			<a href=# class="slick-prev">Prev</a>
+			<a href=# class="slick-next">Next</a>
+		</div>
 	</div>
 	<div class="slick-dots"></div>
 <?php
