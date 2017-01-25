@@ -1,4 +1,4 @@
-.cycle-slideshow {
+.slideshow {
   .slide-content {
     position: relative;
     .slide-heading {
@@ -67,10 +67,6 @@
   }
 }
 
-.slick-dotted.slick-slider {
-  margin-bottom: 30px;
-}
-
 .slick-dots {
   display: block;
   width: 100%;
@@ -78,51 +74,47 @@
   margin: 0;
   list-style: none;
   text-align: center;
+  span {
+    display: inline-block;
+    margin: 0 5px;
+    position: relative;
+    font-size: 0;
+    line-height: 0;
+    width: 20px;
+    height: 20px;
+    padding: 5px;
+    cursor: pointer;
+    color: transparent;
+    border: 0;
+    outline: none;
+    background: transparent;
+    &:before {
+      font-size: 26px;
+      line-height: 20px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 20px;
+      height: 20px;
+      content: '•';
+      text-align: center;
+      opacity: .25;
+      color: #fff;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    &:hover,
+    &:focus {
+      outline: none;
+      &:before{
+        opacity: 1;
+      }
+    }
+    &.cycle-pager-active:before {
+      opacity: .75;
+      color: #fff;
+    }
+  }
 }
-.slick-dots span {
-  display: inline-block;
-  margin: 0 5px;
-  position: relative;
-  font-size: 0;
-  line-height: 0;
-  width: 20px;
-  height: 20px;
-  padding: 5px;
-  cursor: pointer;
-  color: transparent;
-  border: 0;
-  outline: none;
-  background: transparent;
-}
-.slick-dots span:hover,
-.slick-dots span:focus {
-  outline: none;
-}
-.slick-dots span:hover:before,
-.slick-dots span:focus:before {
-  opacity: 1;
-}
-.slick-dots span:before {
-  font-size: 26px;
-  line-height: 20px;
-  
-  position: absolute;
-  top: 0;
-  left: 0;
-  
-  width: 20px;
-  height: 20px;
-  
-  content: '•';
-  text-align: center;
-  
-  opacity: .25;
-  color: black;
-  
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-.slick-dots span.cycle-pager-active:before {
-  opacity: .75;
-  color: black;
-}
+
+
