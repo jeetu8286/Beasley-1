@@ -877,7 +877,7 @@
 		$('.home__featured_hero_slider .slideshow').each(function() {
 			var $this = $(this);
 
-			$('.featured__article--image', $this).width($this.width())
+			$('.featured__article--image', $this).width($this.width());
 			$('.feature-post-slide', $this).show();
 
 			$this.cycle({
