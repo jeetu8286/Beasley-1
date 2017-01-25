@@ -221,17 +221,11 @@ function greatermedia_scripts_styles() {
 	 *
 	 * @see `wp_content/plugins/the-events-calendar/lib/the-events-calendar.class.php` lines 2235 - 2244
 	 */
-	if ( class_exists( 'Tribe_Template_Factory' ) && method_exists( 'Tribe_Template_Factory', 'asset_package' ) ) {
-		// jquery-resize
-		Tribe_Template_Factory::asset_package( 'jquery-resize' );
-
-		// smoothness
-		Tribe_Template_Factory::asset_package( 'smoothness' );
-
-		// Tribe Calendar JS
-		Tribe_Template_Factory::asset_package( 'calendar-script' );
-
-		Tribe_Template_Factory::asset_package( 'events-css' );
+	if ( class_exists( 'Tribe__Events__Template_Factory' ) && method_exists( 'Tribe__Events__Template_Factory', 'asset_package' ) ) {
+		Tribe__Events__Template_Factory::asset_package( 'jquery-resize' );
+		Tribe__Events__Template_Factory::asset_package( 'smoothness' );
+		Tribe__Events__Template_Factory::asset_package( 'calendar-script' );
+		Tribe__Events__Template_Factory::asset_package( 'events-css' );
 	}
 }
 
