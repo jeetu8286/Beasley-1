@@ -197,7 +197,7 @@ class GreaterMediaLoginRestrictedContent extends VisualShortcode {
 	 *
 	 * @return null|string output to display
 	 */
-	public function process_shortcode( array $attributes, $content = null ) {
+	public function process_shortcode( $attributes, $content = null ) {
 
 		if ( isset( $attributes['status'] ) ) {
 			$login_restriction = self::sanitize_login_restriction( $attributes['status'] );

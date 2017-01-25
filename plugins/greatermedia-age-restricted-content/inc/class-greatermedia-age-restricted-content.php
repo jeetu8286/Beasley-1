@@ -192,7 +192,7 @@ class GreaterMediaAgeRestrictedContent extends VisualShortcode {
 	 *
 	 * @return null|string output to display
 	 */
-	public function process_shortcode( array $attributes, $content = null ) {
+	public function process_shortcode( $attributes, $content = null ) {
 
 		global $wp;
 		if ( isset( $attributes['status'] ) ) {
