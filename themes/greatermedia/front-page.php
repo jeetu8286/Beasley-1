@@ -12,8 +12,6 @@ get_header();
 
 	<div class="container">
 
-		<?php get_template_part( 'partials/frontpage', 'featured' ); ?>
-		
 <!--	<div class="cycle-slideshow"
 			data-cycle-timeout="5000"
 			data-cycle-prev=".slick-prev"
@@ -52,7 +50,7 @@ get_header();
 		</div>
 		<div class="slick-dots"></div>  -->
 
-		<?php get_template_part( 'partials/frontpage', 'highlights' ); ?>
+		<?php do_action( 'do_frontpage_highlights' ); ?>
 
 		<section class="content">
 
