@@ -11,45 +11,6 @@ get_header();
 ?>
 
 	<div class="container">
-
-<!--	<div class="cycle-slideshow"
-			data-cycle-timeout="5000"
-			data-cycle-prev=".slick-prev"
-			data-cycle-next=".slick-next"
-			data-cycle-slides="> div.feature-post-slide"
-			data-cycle-auto-height=container
-			data-cycle-pager=".slick-dots" >
-			<div class="feature-post-slide">
-				<div class="slide-content">
-					<img src="http://files.greatermedia.com/uploads/sites/2/2016/10/Roger-Waters-2017-Hero-1175x572.jpg" alt="">
-					<h3 class="slide-heading">This is the Post Title</h3>
-				</div>
-			</div>
-			<div class="feature-post-slide">
-				<div class="slide-content">
-					<img src="http://placehold.it/800x400" alt="">
-					<h3 class="slide-heading">This is the Post Title</h3>
-				</div>
-			</div>
-			<div class="feature-post-slide">
-				<div class="slide-content">
-					<img src="http://placehold.it/800x400" alt="">
-					<h3 class="slide-heading">This is the Post Title</h3>
-				</div>
-			</div>
-			<div class="feature-post-slide">
-				<div class="slide-content">
-					<img src="http://placehold.it/800x400" alt="">
-					<h3 class="slide-heading">This is the Post Title</h3>
-				</div>
-			</div>
-			<div class="slick-arrow">
-				<a href=# class="slick-prev">Prev</a>
-				<a href=# class="slick-next">Next</a>
-			</div>
-		</div>
-		<div class="slick-dots"></div>  -->
-
 		<?php do_action( 'do_frontpage_highlights' ); ?>
 
 		<section class="content">
