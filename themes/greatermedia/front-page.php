@@ -12,8 +12,9 @@ get_header();
 
 	<div class="container">
 
-		<!-- :: Begin Temporary Static slider code ::  -->
-		<div class="cycle-slideshow"
+		<?php get_template_part( 'partials/frontpage', 'featured' ); ?>
+		
+<!--	<div class="cycle-slideshow"
 			data-cycle-timeout="5000"
 			data-cycle-prev=".slick-prev"
 			data-cycle-next=".slick-next"
@@ -49,8 +50,7 @@ get_header();
 				<a href=# class="slick-next">Next</a>
 			</div>
 		</div>
-		<div class="slick-dots"></div>
-		<!-- :: End Temporary Static slider code ::  -->
+		<div class="slick-dots"></div>  -->
 
 		<?php get_template_part( 'partials/frontpage', 'highlights' ); ?>
 
