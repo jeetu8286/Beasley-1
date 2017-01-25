@@ -24,16 +24,15 @@ class ACM_WP_List_Table extends WP_List_Table {
 	 *
 	 * @return array $columns, the array of columns to use with the table
 	 */
-	function get_columns( $columns = false ) {
-		$default = array(
+	function get_columns() {
+		$columns = apply_filters( 'acm_list_table_columns', array(
 			'cb'             => '<input type="checkbox" />',
 			'id'             => __( 'ID', 'ad-code-manager' ),
 			'name'           => __( 'Name', 'ad-code-manager' ),
 			'priority'       => __( 'Priority', 'ad-code-manager' ),
 			'operator'       => __( 'Logical Operator', 'ad-code-manager' ),
 			'conditionals'   => __( 'Conditionals', 'ad-code-manager' ),
-		);
-		$columns = apply_filters( 'acm_list_table_columns', !is_array( $columns ) || empty( $columns ) ? $default : $columns );
+		) );
 		// Fail-safe for misconfiguration
 		$required_before = array(
 			'id'             => __( 'ID', 'ad-code-manager' ),
@@ -224,8 +223,8 @@ class ACM_WP_List_Table extends WP_List_Table {
 			$column_id = 'acm-column[' . $slug . ']';
 			$output .= '<label for="' . esc_attr( $column_id ) . '">' . esc_html( $slug ) . '</label>';
 			// Support for select dropdowns
-			$ad_code_args = $ad_code_manager->current_provider->ad_code_args;
-			$ad_code_arg = array_shift( wp_filter_object_list( $ad_code_args, array( 'key' => $slug ) ) );
+			$ad_code_args = wp_filter_object_list( $ad_code_manager->current_provider->ad_code_args, array( 'key' => $slug ) );
+			$ad_code_arg = array_shift( $ad_code_args );
 			if ( isset( $ad_code_arg['type'] ) && 'select' == $ad_code_arg['type'] ) {
 				$output .= '<select name="' . esc_attr( $column_id ) . '">';
 				foreach ( $ad_code_arg['options'] as $key => $label ) {
