@@ -15503,9 +15503,6 @@ table.responsive tr:nth-of-type(even) {
 .page__title {
   text-transform: uppercase; }
 
-.main, .home__highlights {
-  background-color: #fff; }
-
 .header {
   background-color: #262626;
   background-image: url("../../images/header-red-1.jpg");
