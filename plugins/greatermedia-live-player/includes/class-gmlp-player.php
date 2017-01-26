@@ -132,7 +132,7 @@ class GMLP_Player {
 		wp_enqueue_script( 'gmlp-js', GMLIVEPLAYER_URL . "assets/js/greater_media_live_player{$postfix}.js", array( 'jquery', 'liveplayer', 'underscore', 'classlist-polyfill', 'nielsen-sdk', 'pjax', 'wp-mediaelement', 'cookies-js' ), GMLIVEPLAYER_VERSION, true );
 		wp_localize_script( 'gmlp-js', 'gmr', array(
 			'debug'      => $script_debug,
-			'logged_in'  => is_gigya_user_logged_in(),
+			'logged_in'  => function_exists( 'is_gigya_user_logged_in' ) ? is_gigya_user_logged_in() : false,
 			'callsign'   => $callsign,
 			'streamUrl'  => $vast_url,
 			'wpLoggedIn' => is_user_logged_in(),

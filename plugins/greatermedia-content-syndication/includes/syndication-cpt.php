@@ -153,33 +153,18 @@ class SyndicationCPT {
 	public function subscription_admin_scripts() {
 		$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 
-		if( wp_script_is( 'select2', $list = 'registered' ) ) {
-
+		if ( wp_script_is( 'select2', $list = 'registered' ) ) {
 			wp_enqueue_script( 'select2' );
 			wp_enqueue_style( 'select2' );
 
-			wp_enqueue_script(
-				'syndication_js'
-				,GMR_SYNDICATION_URL . "assets/js/greater_media_content_syndication{$postfix}.js"
-				,array( 'jquery' , 'select2')
-				,'0.0.1'
-			);
+			wp_enqueue_script( 'syndication_js', GMR_SYNDICATION_URL . "assets/js/syndication{$postfix}.js", array( 'jquery' , 'select2' ), GMR_SYNDICATION_VERSION, true );
 
-			wp_localize_script(
-				'syndication_js'
-				,'syndication_ajax'
-				,array(
-					'ajaxurl' => admin_url( 'admin-ajax.php' ),
-					'syndication_nonce' => wp_create_nonce( 'perform-syndication-nonce' )
-				)
-			);
+			wp_localize_script( 'syndication_js', 'syndication_ajax', array(
+				'ajaxurl'           => admin_url( 'admin-ajax.php' ),
+				'syndication_nonce' => wp_create_nonce( 'perform-syndication-nonce' ),
+			) );
 
-			wp_enqueue_style(
-				'syndication_css'
-				,GMR_SYNDICATION_URL . "assets/css/greater_media_content_syndication{$postfix}.css"
-				,array()
-				,'0.0.1'
-			);
+			wp_enqueue_style( 'syndication_css', GMR_SYNDICATION_URL . "assets/css/syndication{$postfix}.css", array(), GMR_SYNDICATION_VERSION );
 		}
 	}
 

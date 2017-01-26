@@ -11,28 +11,17 @@
  * Domain Path: /languages
  */
 
-/**
- * Built using grunt-wp-plugin
- * Copyright (c) 2013 10up, LLC
- * https://github.com/10up/grunt-wp-plugin
- */
-
-if ( ! defined( 'WPINC' ) ) {
-	die;
-}
-
 // Useful global constants
 define( 'GMR_SYNDICATION_VERSION', '0.1.0' );
-define( 'GMR_SYNDICATION_URL',     plugin_dir_url( __FILE__ ) );
-define( 'GMR_SYNDICATION_PATH',    dirname( __FILE__ ) . '/' );
+define( 'GMR_SYNDICATION_URL', plugins_url( '/', __FILE__ ) );
 
-require_once GMR_SYNDICATION_PATH . 'includes/syndication-cpt.php';
-require_once GMR_SYNDICATION_PATH . 'includes/blog-data.php';
-require_once GMR_SYNDICATION_PATH . 'includes/cron-tasks.php';
-require_once GMR_SYNDICATION_PATH . 'includes/content-kit.php';
+require_once __DIR__ . '/includes/syndication-cpt.php';
+require_once __DIR__ . '/includes/blog-data.php';
+require_once __DIR__ . '/includes/cron-tasks.php';
+require_once __DIR__ . '/includes/content-kit.php';
 
 if ( defined( 'WP_CLI' ) && WP_CLI  ) {
-	require_once GMR_SYNDICATION_PATH . 'includes/syndication-cli.php';
+	require_once __DIR__ . '/includes/syndication-cli.php';
 }
 
 register_activation_hook( __FILE__, 'gmr_content_syndication_activated' );

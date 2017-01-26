@@ -181,6 +181,7 @@ function greatermedia_scripts_styles() {
 		),
 		GREATERMEDIA_VERSION
 	);
+
 	wp_enqueue_script(
 		'greatermedia',
 		"{$baseurl}/assets/js/greater_media{$postfix}.js",
@@ -221,17 +222,11 @@ function greatermedia_scripts_styles() {
 	 *
 	 * @see `wp_content/plugins/the-events-calendar/lib/the-events-calendar.class.php` lines 2235 - 2244
 	 */
-	if ( class_exists( 'Tribe_Template_Factory' ) && method_exists( 'Tribe_Template_Factory', 'asset_package' ) ) {
-		// jquery-resize
-		Tribe_Template_Factory::asset_package( 'jquery-resize' );
-
-		// smoothness
-		Tribe_Template_Factory::asset_package( 'smoothness' );
-
-		// Tribe Calendar JS
-		Tribe_Template_Factory::asset_package( 'calendar-script' );
-
-		Tribe_Template_Factory::asset_package( 'events-css' );
+	if ( class_exists( 'Tribe__Events__Template_Factory' ) && method_exists( 'Tribe__Events__Template_Factory', 'asset_package' ) ) {
+		Tribe__Events__Template_Factory::asset_package( 'jquery-resize' );
+		Tribe__Events__Template_Factory::asset_package( 'smoothness' );
+		Tribe__Events__Template_Factory::asset_package( 'calendar-script' );
+		Tribe__Events__Template_Factory::asset_package( 'events-css' );
 	}
 }
 
@@ -906,15 +901,12 @@ add_action( 'wp_head' , 'add_embedly_global_script' );
  * @return array
  */
 function greatermedia_add_gigya_body_class( $classes ) {
-
 	$classes[] = '';
-
-	if ( is_gigya_user_logged_in() ) {
+	if ( function_exists( 'is_gigya_user_logged_in' ) && is_gigya_user_logged_in() ) {
 		$classes[] = 'gmr-user';
 	}
 
 	return $classes;
-
 }
 add_filter( 'body_class', 'greatermedia_add_gigya_body_class' );
 
@@ -1210,18 +1202,15 @@ add_filter( 'body_class', 'greatermedia_liveplayer_disabled' );
  *
  * @return int
  */
-function greatermedia_extend_featured_curation_limit( $limit ) {
-
-	if ( is_news_site() ) {
+function greatermedia_extend_featured_curation_limit( $limit, $homepage ) {
+	$template = get_page_template_slug( $homepage->ID );
+	if ( 'page-templates/homepage-news.php' == $template || ( empty( $template ) && is_news_site() ) ) {
 		$limit = 6;
-	} else {
-		$limit = 4;
 	}
 
 	return $limit;
-
 }
-add_filter( 'gmr-homepage-featured-limit', 'greatermedia_extend_featured_curation_limit' );
+add_filter( 'gmr-homepage-featured-limit', 'greatermedia_extend_featured_curation_limit', 10, 2 );
 
 /**
  * Extends the homepage community curation limit
@@ -1233,18 +1222,15 @@ add_filter( 'gmr-homepage-featured-limit', 'greatermedia_extend_featured_curatio
  *
  * @return int
  */
-function greatermedia_extend_community_curation_limit( $limit ) {
-
-	if ( is_news_site() ) {
+function greatermedia_extend_community_curation_limit( $limit, $homepage ) {
+	$template = get_page_template_slug( $homepage->ID );
+	if ( 'page-templates/homepage-news.php' == $template || ( empty( $template ) && is_news_site() ) ) {
 		$limit = 4;
-	} else {
-		$limit = 3;
 	}
 
 	return $limit;
-
 }
-add_filter( 'gmr-homepage-community-limit', 'greatermedia_extend_community_curation_limit' );
+add_filter( 'gmr-homepage-community-limit', 'greatermedia_extend_community_curation_limit', 10, 2 );
 
 function greatermedia_podcasts_in_loop( $query ) {
 

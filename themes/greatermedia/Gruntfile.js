@@ -13,6 +13,10 @@ module.exports = function (grunt) {
 			},
 			greater_media: {
 				src: [
+					'assets/js/vendor/cycle2/jquery.cycle2.js',
+					'assets/js/vendor/cycle2/jquery.cycle2.center.js',
+					'assets/js/vendor/cycle2/jquery.cycle2.swipe.js',
+					'assets/js/vendor/cycle2/jquery.cycle2.carousel.js',
 					'assets/js/vendor/placeholders.min.js',
 					'assets/js/vendor/jquery.fitvids.js',
 					'assets/js/src/mobile-sub-menus.js',
@@ -22,6 +26,7 @@ module.exports = function (grunt) {
 					'assets/js/src/greater_media_pjax.js',
 					'assets/js/src/greater_media.js',
 					'assets/js/src/menus.js',
+					'assets/js/src/hero-slider.js',
 					'assets/js/src/search.js'
 				],
 				dest: 'assets/js/greater_media.js'

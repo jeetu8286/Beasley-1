@@ -11,9 +11,7 @@ get_header();
 ?>
 
 	<div class="container">
-
-		<?php get_template_part( 'partials/frontpage', 'featured' ); ?>
-		<?php get_template_part( 'partials/frontpage', 'highlights' ); ?>
+		<?php do_action( 'do_frontpage_highlights' ); ?>
 
 		<section class="content">
 
