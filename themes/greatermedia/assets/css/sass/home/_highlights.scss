@@ -167,6 +167,7 @@ Community Highlights and Events
 }
 
 .highlights__community {
+	padding-bottom: 10px;
 	@include bp(large) {
 		@include span-columns(9 of 15);
 	}
@@ -193,28 +194,31 @@ Community Highlights and Events
 }
 
 .highlights__community--item {
+	float: left;
 	position: relative;
-	@include span-columns(6 of 12);
-	@include omega;
+	margin-right: 2%;
+	width: 31.33333%;
+	// @include span-columns(4 of 12);
+	// @include omega;
 
-	&:nth-of-type(2n) {
-		margin-left: 2.35765%;
-	}
-	&:nth-of-type(3) {
-		display: none;
-	}
-	@include bp(small) {
-		@include span-columns(4 of 12);
-		&:nth-of-type(2n) {
-			margin-left: 0;
-		}
-		&:nth-of-type(3) {
-			display: block;
-		}
-	}
-	@include bp(large) {
-		@include span-columns(3 of 9);
-	}
+	// &:nth-of-type(2n) {
+	// 	margin-left: 2.35765%;
+	// }
+	// &:nth-of-type(3) {
+	// 	display: none;
+	// }
+	// @include bp(small) {
+	// 	@include span-columns(4 of 12);
+	// 	&:nth-of-type(2n) {
+	// 		margin-left: 0;
+	// 	}
+	// 	&:nth-of-type(3) {
+	// 		display: block;
+	// 	}
+	// }
+	// @include bp(large) {
+	// 	@include span-columns(3 of 9);
+	// }
 
 	.news-site & {
 		@include span-columns(12 of 12);
@@ -732,6 +736,7 @@ a.highlights__contest--btn {
 }
 
 .highlights__ad {
+		clear: both;
 
 	.news-site & {
 		clear: both;
