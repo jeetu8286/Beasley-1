@@ -99,7 +99,7 @@
       content: '•';
       text-align: center;
       opacity: .25;
-      color: #fff;
+      color: #000;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
     }
@@ -112,7 +112,7 @@
     }
     &.cycle-pager-active:before {
       opacity: .75;
-      color: #fff;
+      color: #000;
     }
   }
 }
