@@ -280,6 +280,6 @@ CSS;
 	 * @return string HTML rendered from the shortcode
 	 * @see http://codex.wordpress.org/Function_Reference/add_shortcode
 	 */
-	abstract function process_shortcode( array $attributes, $content = null );
+	abstract function process_shortcode( $attributes, $content = null );
 
 }
