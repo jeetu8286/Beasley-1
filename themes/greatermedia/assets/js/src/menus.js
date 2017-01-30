@@ -24,10 +24,11 @@
 	 * @param handler
 	 */
 	function addEventHandler(elem, eventType, handler) {
-		if (elem.addEventListener)
+		if (elem.addEventListener) {
 			elem.addEventListener(eventType, handler, false);
-		else if (elem.attachEvent)
+		} else if (elem.attachEvent) {
 			elem.attachEvent('on' + eventType, handler);
+		}
 	}
 
 	/**
@@ -45,6 +46,46 @@
 	function mobileCloseLocation() {
 		siteWrap.style.removeProperty('top');
 	}
+
+	/**
+	 * Inserts a new element on mobile to provide a blocker
+	 *
+	 * @returns {*|jQuery|HTMLElement}
+	 */
+	var getBlockerDiv = function() {
+		var $div = $('#mobile-nav-blocker');
+		if ($div.length === 0) {
+			$('<div id="mobile-nav-blocker"></div>').insertAfter('#mobile-nav');
+			$div = $('#mobile-nav-blocker');
+			$div.on('click', toggleNavButton);
+		}
+
+		return $div;
+	};
+
+	/**
+	 * Shows the blocker div that is created by getBlockerDiv
+	 */
+	var showBlocker = function() {
+		var $blocker = getBlockerDiv();
+
+		$blocker.css({
+			width: $(document).width(),
+			height: $(document).height(),
+			display: 'block',
+		});
+	};
+
+	/**
+	 * Hides the blocker div that is shown by showBlocker
+	 */
+	var hideBlocker = function() {
+		var $blocker = getBlockerDiv();
+		$blocker.css({'display': 'none'});
+		if ($blocker.hasClass('active')) {
+			$blocker.removeClass('active');
+		}
+	};
 
 	/**
 	 * Toggles a class to the body when the mobile nav button is clicked
@@ -147,46 +188,6 @@
 			}
 		});
 	}
-
-	/**
-	 * Inserts a new element on mobile to provide a blocker
-	 *
-	 * @returns {*|jQuery|HTMLElement}
-	 */
-	var getBlockerDiv = function() {
-		var $div = $('#mobile-nav-blocker');
-		if ($div.length === 0) {
-			$('<div id="mobile-nav-blocker"></div>').insertAfter('#mobile-nav');
-			$div = $('#mobile-nav-blocker');
-			$div.on('click', toggleNavButton);
-		}
-
-		return $div;
-	};
-
-	/**
-	 * Shows the blocker div that is created by getBlockerDiv
-	 */
-	var showBlocker = function() {
-		var $blocker = getBlockerDiv();
-
-		$blocker.css({
-			width: $(document).width(),
-			height: $(document).height(),
-			display: 'block',
-		});
-	};
-
-	/**
-	 * Hides the blocker div that is shown by showBlocker
-	 */
-	var hideBlocker = function() {
-		var $blocker = getBlockerDiv();
-		$blocker.css({'display': 'none'});
-		if ($blocker.hasClass('active')) {
-			$blocker.removeClass('active');
-		}
-	};
 
 	/**
 	 * Init Functions

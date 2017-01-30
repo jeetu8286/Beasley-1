@@ -18,19 +18,6 @@
 		$menuOverlay = $(document.querySelector('.menu-overlay-mask'));
 
 	/**
-	 * Init Function
-	 */
-	function init() {
-
-		$mobileMenu.on('click.greaterMedia.Menus', 'a.show-subnavigation', openSubMenu);
-
-		$mobileMenu.on('click.greaterMedia.Menus', 'a.mobile-menu-submenu-back-link', closeSubMenu);
-
-		$menuOverlay.on('click', closeSubMenu);
-
-	}
-
-	/**
 	 * Closes the SubMenu
 	 *
 	 * @param event
@@ -51,6 +38,15 @@
 		// collapse any other open menus before opening ours.
 		$mobileMenu.find('.is-visible').removeClass('is-visible');
 		$(this).siblings('.sub-menu').addClass('is-visible');
+	}
+
+	/**
+	 * Init Function
+	 */
+	function init() {
+		$mobileMenu.on('click.greaterMedia.Menus', 'a.show-subnavigation', openSubMenu);
+		$mobileMenu.on('click.greaterMedia.Menus', 'a.mobile-menu-submenu-back-link', closeSubMenu);
+		$menuOverlay.on('click', closeSubMenu);
 	}
 
 	init();
