@@ -52,10 +52,11 @@ add_action( 'after_setup_theme', 'wmgc_setup' );
 function wmgc_scripts_styles() {
 	$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 
+	wp_enqueue_script( 'livefyre', '//cdn.livefyre.com/Livefyre.js', null, null, true );
 	wp_enqueue_script(
 		'wmgc',
 		get_stylesheet_directory_uri() . "/assets/js/wmgc{$postfix}.js",
-		array(),
+		array( 'livefyre' ),
 		WMGC_VERSION,
 		true
 	);

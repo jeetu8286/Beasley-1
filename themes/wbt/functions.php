@@ -51,10 +51,11 @@ function wbt_scripts_styles() {
 	wp_enqueue_style( 'wbt-ie', get_stylesheet_directory_uri() . "/assets/css/wbt_ie.css", array('wbt'), WBT_VERSION );
 	$wp_styles->add_data( 'wbt-ie', 'conditional', 'lte IE 9' );
 	wp_enqueue_style( 'wbt-font', "http://fonts.googleapis.com/css?family=Lato", array(), WBT_VERSION );
+	wp_enqueue_script( 'livefyre', '//cdn.livefyre.com/Livefyre.js', null, null, true );
 	wp_enqueue_script(
         'wbt',
         get_stylesheet_directory_uri() . "/assets/js/wbt{$postfix}.js",
-        array( 'jquery', 'livefyre_loader' ),
+        array( 'jquery', 'livefyre' ),
         WBT_VERSION,
         true
 	);
