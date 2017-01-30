@@ -183,11 +183,8 @@ function greatermedia_scripts_styles() {
 	 * @see `wp_content/plugins/the-events-calendar/lib/the-events-calendar.class.php` lines 2235 - 2244
 	 */
 	if ( class_exists( 'Tribe__Events__Template_Factory' ) && method_exists( 'Tribe__Events__Template_Factory', 'asset_package' ) ) {
-		// jquery-resize
 		Tribe__Events__Template_Factory::asset_package( 'jquery-resize' );
-		// smoothness
 		Tribe__Events__Template_Factory::asset_package( 'smoothness' );
-		// Tribe Calendar JS
 		Tribe__Events__Template_Factory::asset_package( 'calendar-script' );
 		Tribe__Events__Template_Factory::asset_package( 'events-css' );
 	}
@@ -246,6 +243,19 @@ function greatermedia_nav_menus() {
 }
 
 add_action( 'init', 'greatermedia_nav_menus' );
+
+/**
+ * Removes comments support from all post types.
+ */
+function greatermedia_disable_comments() {
+	$posttypes = get_post_types();
+	foreach ( $posttypes as $posttype ) {
+		remove_post_type_support( $posttype, 'comments' );
+	}
+}
+
+add_action( 'init', 'greatermedia_disable_comments', 9999 );
+add_filter( 'comments_open', '__return_false' );
 
 /**
  * Add Post Formats
@@ -1120,3 +1130,14 @@ function custom_nextpage_links( $defaults ) {
 }
 
 add_filter('wp_link_pages_args','custom_nextpage_links');
+
+/**
+ * Removes srcset and sizes attributes from image tag.
+ */
+function greatermedia_update_image_attributes( $attributes ) {
+	unset( $attributes['srcset'], $attributes['sizes'] );
+	return $attributes;
+}
+add_filter( 'wp_get_attachment_image_attributes', 'greatermedia_update_image_attributes' );
+
+remove_filter( 'the_content', 'wp_make_content_images_responsive' );

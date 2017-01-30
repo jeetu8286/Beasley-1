@@ -369,6 +369,7 @@ class BlogData {
 			if ( $hash_value != $post_hash || $force_update ) {
 				// post has been updated, override existing one
 				$args['ID'] = $post_id;
+				unset( $args['post_status'] );
 
 				wp_update_post( $args );
 				if ( ! empty( $metas ) ) {

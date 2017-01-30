@@ -44,11 +44,12 @@ define( 'WCTC_VERSION', '0.2.2' ); /* Version bump by Steve 10/25/2016 @ 3:30 p.
 
 	wp_dequeue_style( 'greatermedia' );
 	wp_deregister_style( 'greatermedia' );
+	wp_enqueue_script( 'livefyre', '//cdn.livefyre.com/Livefyre.js', null, null, true );
 	wp_enqueue_style( 'wctc', get_stylesheet_directory_uri() . "/assets/css/wctc{$postfix}.css", array(), WCTC_VERSION );
             wp_enqueue_script(
                 'wctc',
                 get_stylesheet_directory_uri() . "/assets/js/wctc{$postfix}.js",
-                array(),
+                array( 'livefyre' ),
                 WCTC_VERSION,
                 true
             );

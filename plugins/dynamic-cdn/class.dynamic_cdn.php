@@ -47,8 +47,6 @@ class Dynamic_CDN {
 		add_action( 'template_redirect', array( $this, 'template_redirect' ) );
 		add_action( 'wp_get_attachment_url', array( $this, 'filter_attachment_url' ) );
 
-		add_filter( 'wp_calculate_image_srcset', array( $this, 'filter_image_srcset' ) );
-
 		if ( $this->uploads_only ) {
 			add_filter( 'the_content'/*'dynamic_cdn_content'*/, array( $this, 'filter_uploads_only' ) );
 		} else {
@@ -121,24 +119,6 @@ class Dynamic_CDN {
 		// Targeted replace just on uploads URLs
 		//return preg_replace( "#=([\"'])(https?://{$domain})?$preg_path/((?:(?!\\1]).)+)\.(" . implode( '|', $this->extensions ) . ")(\?((?:(?!\\1).)+))?\\1#", '=$1http://' . $this->cdn_domain( $path ) . $path . '/$3.$4$5$1', $content );
 		return preg_replace_callback( "#=([\"'])(https?://{$domain})?$preg_path/((?:(?!\\1]).)+)\.(" . implode( '|', $this->extensions ) . ")(\?((?:(?!\\1).)+))?\\1#", array( $this, 'filter_cb' ), $content );
-	}
-
-	/**
-	 * Filter srcset images and rewrite to a CDN.
-	 */
-	public function filter_image_srcset( $sources ) {
-		foreach ( $sources as &$source ) {
-			// since filter function works only with HTML content, we need to wrap url with img tag to get it replaced correctly
-			$image = sprintf( '<img src="%s">', $source['url'] );
-			$image = $this->filter( $image );
-
-			// after replacement we need to unpack img tag and grab replaced url
-			if ( preg_match( '/\"(.*?)\"/', $image, $match ) ) {
-				$source['url'] = $match[1];
-			}
-		}
-
-		return $sources;
 	}
 
 	/**
