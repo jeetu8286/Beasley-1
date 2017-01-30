@@ -1873,7 +1873,7 @@ var $ = jQuery;
 	 * in with WordPress. If a user is logged in with WordPress, we change the element that pjax is targeting to
 	 * `.page-wrap`.
 	 *
-	 * @summary Detects if a user is authenticated with Gigya, then runs pjax against `a` links in `.page-wrap`
+	 * @summary Detects if a user is authenticated, then runs pjax against `a` links in `.page-wrap`
 	 *
 	 * @event click
 	 * @fires pjax
@@ -1881,30 +1881,12 @@ var $ = jQuery;
 	 * @see https://github.com/defunkt/jquery-pjax
 	 */
 	function pjaxInit() {
-		if (is_gigya_user_logged_in()) {
-			if ($.support.pjax) {
-				$(document).pjax('a:not(.ab-item)', '.main', {
-					'fragment': '.main',
-					'maxCacheLength': 500,
-					'timeout': 10000
-				});
-			}
-		} else if (gmr.wpLoggedIn) {
-			if ($.support.pjax) {
-				$(document).pjax('a:not(.ab-item)', '.page-wrap', {
-					'fragment': '.page-wrap',
-					'maxCacheLength': 500,
-					'timeout': 10000
-				});
-			}
-		} else {
-			if ($.support.pjax) {
-				$(document).pjax('a:not(.ab-item)', '.main', {
-					'fragment': '.main',
-					'maxCacheLength': 500,
-					'timeout': 10000
-				});
-			}
+		if ($.support.pjax) {
+			$(document).pjax('a:not(.ab-item)', '.main', {
+				'fragment': '.main',
+				'maxCacheLength': 500,
+				'timeout': 10000
+			});
 		}
 	}
 
@@ -1915,36 +1897,11 @@ var $ = jQuery;
 	resumeButton.on('click', function() {
 		pjaxInit();
 	});
-
-	playButton.on( 'click', function() {
-		if( !is_gigya_user_logged_in() ) {
-			Cookies.set('gmlp_play_button_pushed', 1);
-			Cookies.set('gmr_play_live_audio', 0);
-		}
-	});
-
-	listenLogin.on( 'click', function() {
-		if( !is_gigya_user_logged_in() ) {
-			Cookies.set('gmlp_play_button_pushed', 1);
-			Cookies.set('gmr_play_live_audio', 0);
-		}
-	});
-
-	listenNow.on( 'click', function() {
-		if( !is_gigya_user_logged_in() ) {
-			Cookies.set('gmlp_play_button_pushed', 1);
-			Cookies.set('gmr_play_live_audio', 0);
-		}
-	});
-
-	accountLogin.on( 'click', function() {
-		if( !is_gigya_user_logged_in() ) {
-			Cookies.set('gmr_play_live_audio', 0);
-		}
-	});
 })(jQuery, window);
 (function ($, window, undefined) {
 	"use strict";
+
+	var $document = $(document);
 
 	var tech = getUrlVars()['tech'] || 'html5_flash';
 	var aSyncCuePointFallback = getUrlVars()['aSyncCuePointFallback'] == 'false' ? false : true;
@@ -1999,6 +1956,16 @@ var $ = jQuery;
 	var lpInit = false;
 	var volume_slider = $(document.getElementById('live-player--volume'));
 	var global_volume = 1;
+
+	/**
+	 * Stars playing a stream and triggers appropriate event.
+	 *
+	 * @param {string} station
+	 */
+	function playStream(station) {
+		player.play({station: station, timeShift: true});
+		$document.trigger('player:starts');
+	}
 
 	/**
 	 * function to detect if the current browser can use `addEventListener`, if not, use `attachEvent`
@@ -2424,11 +2391,6 @@ var $ = jQuery;
 		changePlayerState();
 	});
 
-	function loggedInGigyaUser() {
-		playLiveStreamDevice();
-		Cookies.set("gmlp_play_button_pushed", 0);
-	}
-
 	function preVastAd() {
 		var preRoll = document.getElementById('live-stream__container');
 
@@ -2481,7 +2443,7 @@ var $ = jQuery;
 			listenLiveStopCustomInlineAudio();
 		}
 
-		player.play({station: station, timeShift: true});
+		playStream(station);
 
 		livePlayer.classList.add('live-player--active');
 		setPlayingStyles();
@@ -2513,7 +2475,7 @@ var $ = jQuery;
 
 				body.classList.add('live-player--active');
 				livePlayer.classList.add('live-player--active');
-				player.play({station: station, timeShift: true});
+				playStream(station);
 				setPlayingStyles();
 			});
 		} else if (player.attachEvent) {
@@ -2527,7 +2489,7 @@ var $ = jQuery;
 
 				body.classList.add('live-player--active');
 				livePlayer.classList.add('live-player--active');
-				player.play({station: station, timeShift: true});
+				playStream(station);
 				setPlayingStyles();
 			});
 		}
@@ -2555,7 +2517,7 @@ var $ = jQuery;
 
 		body.classList.add('live-player--active');
 		livePlayer.classList.add('live-player--active');
-		player.play({station: station, timeShift: true});
+		playStream(station);
 		setPlayingStyles();
 
 	}
@@ -2590,7 +2552,7 @@ var $ = jQuery;
 
 					body.classList.add('live-player--active');
 					livePlayer.classList.add('live-player--active');
-					player.play({station: station, timeShift: true});
+					playStream(station);
 					setPlayingStyles();
 				});
 			} else if (player.attachEvent) {
@@ -2604,7 +2566,7 @@ var $ = jQuery;
 
 					body.classList.add('live-player--active');
 					livePlayer.classList.add('live-player--active');
-					player.play({station: station, timeShift: true});
+					playStream(station);
 					setPlayingStyles();
 				});
 			}
@@ -2637,7 +2599,7 @@ var $ = jQuery;
 
 			body.classList.add('live-player--active');
 			livePlayer.classList.add('live-player--active');
-			player.play({station: station, timeShift: true});
+			playStream(station);
 			setPlayingStyles();
 		}
 	}
@@ -2662,7 +2624,7 @@ var $ = jQuery;
 			}
 
 			livePlayer.classList.add('live-player--active');
-			player.play({station: station, timeShift: true});
+			playStream(station);
 			setPlayingStyles();
 		}
 	}
@@ -2856,7 +2818,7 @@ var $ = jQuery;
 		}
 
 		livePlayer.classList.add('live-player--active');
-		player.play({station: station, timeShift: true});
+		playStream(station);
 		setPlayingStyles();
 	}
 

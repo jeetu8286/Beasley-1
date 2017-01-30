@@ -172,36 +172,11 @@ function render_source_meta_box( $homepage, $metabox ) {
 	);
 
 	if ( 'events_meta_box' !== $metabox['args']['slug'] ) {
-		// Query restricted posts.
-		$query            = new \WP_Query();
-		$restricted_posts = $query->query( array (
-			'post_type'           => get_supported_post_types(),
-			'post_status'         => 'any',
-			'posts_per_page'      => 50,
-			'ignore_sticky_posts' => true,
-			'no_found_rows'       => true,
-			'fields'              => 'ids',
-			'suppress_filters'	  => true,
-			'meta_query'          => array (
-				'relation' => 'OR',
-				array (
-					'key'     => 'post_age_restriction',
-					'compare' => 'EXISTS',
-				),
-				array (
-					'key'     => 'post_login_restriction',
-					'compare' => 'EXISTS',
-				),
-			),
-		) );
-
 		if ( 'featured_meta_box' === $metabox['args']['slug'] ) {
 			$post_picker_args['limit'] = $homepage_curation_featured_limit;
 		} else {
 			$post_picker_args['limit'] = $homepage_curation_community_limit;
 		}
-
-		$post_picker_args['args']['exclude'] = $restricted_posts;
 	} else {
 		// Fetch future events post ids
 		$query = new \WP_Query();

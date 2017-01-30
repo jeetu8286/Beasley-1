@@ -40,9 +40,6 @@ module.exports = function( grunt ) {
 				globals: {
 					exports: true,
 					module:  false,
-					is_gigya_user_logged_in: false,
-					gigya_profile_path: false,
-					get_gigya_user_field: false,
 					gmr: true,
 					Cookies: true,
 					gmlp: true,

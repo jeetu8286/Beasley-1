@@ -6,7 +6,6 @@
  */
 class GMR_Show_Metaboxes {
 
-	private $_restricted_posts = null;
 	private $_curation_post_types = null;
 
 	/**
@@ -216,34 +215,6 @@ class GMR_Show_Metaboxes {
 		echo '</div>';
 	}
 
-	private function _get_restricted_post_ids() {
-		if ( is_null( $this->_restricted_posts ) ) {
-			$query = new \WP_Query();
-			$this->_restricted_posts = $query->query( array(
-				'post_type'           => 'any',
-				'post_status'         => 'any',
-				'posts_per_page'      => 50,
-				'ignore_sticky_posts' => true,
-				'no_found_rows'       => true,
-				'fields'              => 'ids',
-				'suppress_filters'	  => true,
-				'meta_query'          => array(
-					'relation' => 'OR',
-					array(
-						'key'     => 'post_age_restriction',
-						'compare' => 'EXISTS',
-					),
-					array(
-						'key'     => 'post_login_restriction',
-						'compare' => 'EXISTS',
-					),
-				),
-			) );
-		}
-
-		return $this->_restricted_posts;
-	}
-
 	private function _get_curation_post_types() {
 		if ( is_null( $this->_curation_post_types ) ) {
 			$this->_curation_post_types = apply_filters( 'gmr-show-curation-post-types', array( 'post', 'page', 'tribe_events' ) );
@@ -263,7 +234,6 @@ class GMR_Show_Metaboxes {
 			'args' => array(
 				'post_type' => $this->_get_curation_post_types(),
 				'meta_key'  => '_thumbnail_id',
-				'exclude'   => $this->_get_restricted_post_ids(),
 			),
 			'limit' => 3,
 		);
@@ -286,7 +256,6 @@ class GMR_Show_Metaboxes {
 			'args' => array(
 				'post_type' => $this->_get_curation_post_types(),
 				'meta_key'  => '_thumbnail_id',
-				'exclude'   => $this->_get_restricted_post_ids(),
 			),
 			'limit' => 3,
 		);

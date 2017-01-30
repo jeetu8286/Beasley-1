@@ -1,4 +1,3 @@
-/* global save_gigya_action */
 (function($) {
 
 	var findElementByClassPrefix = function($node, prefix) {
@@ -84,7 +83,6 @@
 	ShareLogger.prototype = {
 
 		share: function(action) {
-			save_gigya_action(action);
 		},
 
 		didShareClick: function(event) {
