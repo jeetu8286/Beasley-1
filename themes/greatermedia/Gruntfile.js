@@ -11,57 +11,71 @@ module.exports = function (grunt) {
 			options: {
 				stripBanners: true
 			},
-			greater_media: {
-				src: [
-					'assets/js/vendor/cycle2/jquery.cycle2.js',
-					'assets/js/vendor/cycle2/jquery.cycle2.center.js',
-					'assets/js/vendor/cycle2/jquery.cycle2.swipe.js',
-					'assets/js/vendor/cycle2/jquery.cycle2.carousel.js',
-					'assets/js/vendor/placeholders.min.js',
-					'assets/js/vendor/jquery.fitvids.js',
-					'assets/js/src/mobile-sub-menus.js',
-					'assets/js/src/profile.js',
-					'assets/js/src/show-schedule.js',
-					'assets/js/src/social_share.js',
-					'assets/js/src/greater_media_pjax.js',
-					'assets/js/src/greater_media.js',
-					'assets/js/src/menus.js',
-					'assets/js/src/hero-slider.js',
-					'assets/js/src/search.js'
-				],
-				dest: 'assets/js/greater_media.js'
-			},
-			greater_media_admin: {
-				src: [
-					'assets/js/src/greater_media_admin.js'
-				],
-				dest: 'assets/js/greater_media_admin.js'
+			scripts: {
+				files: {
+					'assets/js/frontend.js': [
+						'assets/js/vendor/cycle2/jquery.cycle2.js',
+						'assets/js/vendor/cycle2/jquery.cycle2.center.js',
+						'assets/js/vendor/cycle2/jquery.cycle2.swipe.js',
+						'assets/js/vendor/cycle2/jquery.cycle2.carousel.js',
+						'assets/js/vendor/placeholders.min.js',
+						'assets/js/vendor/jquery.fitvids.js',
+						'assets/js/src/mobile-sub-menus.js',
+						'assets/js/src/show-schedule.js',
+						'assets/js/src/social_share.js',
+						'assets/js/src/pjax.js',
+						'assets/js/src/greater_media.js',
+						'assets/js/src/load_more.js',
+						'assets/js/src/menus.js',
+						'assets/js/src/hero-slider.js',
+						'assets/js/src/search.js',
+						'assets/js/src/firebase.js'
+					],
+					'assets/js/admin.js': [
+						'assets/js/src/admin.js'
+					]
+				}
 			}
 		},
 		jshint: {
-			browser: {
-				all: [
-					'assets/js/src/**/*.js',
-					'assets/js/test/**/*.js'
-				],
-				options: {
-					jshintrc: '.jshintrc'
-				}
-			},
-			grunt: {
-				all: [
-					'Gruntfile.js'
-				],
-				options: {
-					jshintrc: '.gruntjshintrc'
+			all: [
+				'assets/js/src/**/*.js',
+				'!assets/js/src/vendor/**/*.js'
+			],
+			options: {
+				curly: true,
+				eqeqeq: false,
+				immed: true,
+				latedef: false,
+				newcap: true,
+				noarg: true,
+				sub: true,
+				undef: true,
+				boss: true,
+				eqnull: true,
+				globals: {
+					document: false,
+					window: false,
+					screen: false,
+					console: false,
+					location: false,
+					setTimeout: false,
+					setInterval: false,
+					CustomEvent: false,
+					jQuery: false,
+					firebase: false,
+					_: false,
+					beasley: false,
+					renderLogoUpload: false,
+					resetLogoUpload: false
 				}
 			}
 		},
 		uglify: {
 			all: {
 				files: {
-					'assets/js/greater_media.min.js': ['assets/js/greater_media.js'],
-					'assets/js/greater_media_admin.min.js': ['assets/js/greater_media_admin.js']
+					'assets/js/frontend.min.js': ['assets/js/frontend.js'],
+					'assets/js/admin.min.js': ['assets/js/admin.js']
 				},
 				options: {
 					mangle: {

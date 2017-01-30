@@ -57,7 +57,6 @@ class GreaterMediaCountdownClockMetaboxes {
 			$base_path = trailingslashit( GMEDIA_HOMEPAGE_COUNTDOWN_CLOCK_URL );
 			$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 
-			//wp_enqueue_style( 'formbuilder' );
 			wp_enqueue_style( 'datetimepicker' );
 			wp_enqueue_style( 'font-awesome' );
 
@@ -66,7 +65,6 @@ class GreaterMediaCountdownClockMetaboxes {
 			wp_enqueue_script( 'backbone-deep-model' );
 			wp_enqueue_script( 'datetimepicker' );
 
-			//wp_enqueue_script( 'formbuilder' );
 			wp_enqueue_script( 'rivets' );
 
 			$form = @json_decode( get_post_meta( $post->ID, 'embedded_form', true ), true );

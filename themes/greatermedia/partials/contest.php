@@ -1,8 +1,6 @@
 <?php $contest_id = get_the_ID(); ?>
 <article id="post-<?php the_ID(); ?>" <?php post_class( 'cf' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
-
 	<section class="col__inner--left">
-
 		<?php Greater_Media\Flexible_Feature_Images\feature_image_preference_is( get_the_ID(), 'top' ) ? get_template_part( 'partials/feature-image-contest' ) : ''; ?>
 
 		<header class="entry__header">
@@ -16,52 +14,6 @@
 		</header>
 
 		<?php Greater_Media\Flexible_Feature_Images\feature_image_preference_is( get_the_ID(), 'inline' ) ? get_template_part( 'partials/feature-image-contest' ) : ''; ?>
-
-		<div class="contest__restrictions">
-			<div class="contest__restriction--not-started">
-				<p>The contest is not started yet.</p>
-			</div>
-
-			<div class="contest__restriction--finished">
-				<p>The contest is already finished.</p>
-			</div>
-
-			<div class="contest__restriction--max-entries">
-				<p>This contest has reached maximum number of entries!</p>
-			</div>
-
-			<div class="contest__restriction--age">
-				<p>
-					Please, <a href="<?php echo esc_url( gmr_contests_get_login_url() ); ?>">sign in</a>
-					or confirm that you are at least <?php echo absint( get_post_meta( $contest_id, 'contest-min-age', true ) ); ?> years old.
-				</p>
-				<p>
-					<a class="contest__restriction--min-age-yes" href="#">Yes, I am</a>
-					<a class="contest__restriction--min-age-no" href="#">No, I am not</a>
-				</p>
-			</div>
-
-			<div class="contest__restriction--age-fails">
-				<p>You must be at least <?php echo absint( get_post_meta( $contest_id, 'contest-min-age', true ) ); ?> years old to enter the contest!</p>
-			</div>
-
-			<div class="contest__restriction--signin">
-				<p>
-					You must be signed in to enter the contest!
-				</p>
-				<p>
-					<a href="<?php echo esc_url( gmr_contests_get_login_url() ); ?>">Sign in here</a>
-				</p>
-			</div>
-
-			<div class="contest__restriction--one-entry">
-				<p>You have already entered this contest!</p>
-			</div>
-		</div>
-
-		<p class="contest__entry--link">
-			<a href="#contest-form" class="contest__entry--btn">Skip to Entry Form</a>
-		</p>
 
 		<?php the_content(); ?>
 
@@ -95,12 +47,9 @@
 	</section>
 
 	<section class="col__inner--right">
-		<section id="contest-form" class="contest__form"<?php gmr_contest_container_attributes(); ?>></section>
+		<section id="contest-form" class="contest__form"></section>
 		<div class="desktop">
 			<?php do_action( 'acm_tag', 'mrec-body' ); ?>
 		</div>
 	</section>
-
-	<?php get_template_part( 'partials/submission', 'tiles' ); ?>
-
 </article>
