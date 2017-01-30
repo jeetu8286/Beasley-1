@@ -310,7 +310,13 @@ class GreaterMediaTimedContent extends VisualShortcode {
 	 *
 	 * @return null|string output to display
 	 */
-	function process_shortcode( array $attributes, $content = null ) {
+	function process_shortcode( $attributes, $content = null ) {
+		$attributes = wp_parse_args( $attributes );
+
+		$attributes = shortcode_atts( array(
+			'show' => null,
+			'hide' => null,
+		), $attributes );
 
 		if ( isset( $attributes['show'] ) ) {
 			$show = strtotime( $attributes['show'] );
