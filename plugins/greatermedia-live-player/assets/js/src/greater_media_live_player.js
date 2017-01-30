@@ -39,7 +39,7 @@
 	 * in with WordPress. If a user is logged in with WordPress, we change the element that pjax is targeting to
 	 * `.page-wrap`.
 	 *
-	 * @summary Detects if a user is authenticated with Gigya, then runs pjax against `a` links in `.page-wrap`
+	 * @summary Detects if a user is authenticated, then runs pjax against `a` links in `.page-wrap`
 	 *
 	 * @event click
 	 * @fires pjax
@@ -47,30 +47,12 @@
 	 * @see https://github.com/defunkt/jquery-pjax
 	 */
 	function pjaxInit() {
-		if (is_gigya_user_logged_in()) {
-			if ($.support.pjax) {
-				$(document).pjax('a:not(.ab-item)', '.main', {
-					'fragment': '.main',
-					'maxCacheLength': 500,
-					'timeout': 10000
-				});
-			}
-		} else if (gmr.wpLoggedIn) {
-			if ($.support.pjax) {
-				$(document).pjax('a:not(.ab-item)', '.page-wrap', {
-					'fragment': '.page-wrap',
-					'maxCacheLength': 500,
-					'timeout': 10000
-				});
-			}
-		} else {
-			if ($.support.pjax) {
-				$(document).pjax('a:not(.ab-item)', '.main', {
-					'fragment': '.main',
-					'maxCacheLength': 500,
-					'timeout': 10000
-				});
-			}
+		if ($.support.pjax) {
+			$(document).pjax('a:not(.ab-item)', '.main', {
+				'fragment': '.main',
+				'maxCacheLength': 500,
+				'timeout': 10000
+			});
 		}
 	}
 
@@ -80,32 +62,5 @@
 
 	resumeButton.on('click', function() {
 		pjaxInit();
-	});
-
-	playButton.on( 'click', function() {
-		if( !is_gigya_user_logged_in() ) {
-			Cookies.set('gmlp_play_button_pushed', 1);
-			Cookies.set('gmr_play_live_audio', 0);
-		}
-	});
-
-	listenLogin.on( 'click', function() {
-		if( !is_gigya_user_logged_in() ) {
-			Cookies.set('gmlp_play_button_pushed', 1);
-			Cookies.set('gmr_play_live_audio', 0);
-		}
-	});
-
-	listenNow.on( 'click', function() {
-		if( !is_gigya_user_logged_in() ) {
-			Cookies.set('gmlp_play_button_pushed', 1);
-			Cookies.set('gmr_play_live_audio', 0);
-		}
-	});
-
-	accountLogin.on( 'click', function() {
-		if( !is_gigya_user_logged_in() ) {
-			Cookies.set('gmr_play_live_audio', 0);
-		}
 	});
 })(jQuery, window);

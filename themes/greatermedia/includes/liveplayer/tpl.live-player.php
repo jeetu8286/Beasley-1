@@ -12,12 +12,7 @@ if ( empty( $active_stream ) ) {
 	$active_stream = 'None';
 }
 
-?>
-<style type="text/css">
-	#up-next {
-	}
-</style>
-<aside id="live-player__sidebar" class="live-player">
+?><aside id="live-player__sidebar" class="live-player">
 
 	<?php // start the live streaming section of the live player
 	$liveplayer_disabled = get_option( 'gmr_liveplayer_disabled' );
@@ -66,7 +61,6 @@ if ( empty( $active_stream ) ) {
 			</div>
 
 			<div id="live-stream__status" class="live-stream__status">
-				<div id="live-stream__login" class="live-stream__login"><?php _e( 'Log In To', 'greatermedia' ); ?></div>
 				<div id="live-stream__now-playing" class="live-stream__now-playing--btn"><?php _e( 'Now Playing', 'greatermedia' ); ?></div>
 				<div id="live-stream__listen-now" class="live-stream__listen-now--btn"><?php _e( 'Listen Live', 'greatermedia' ); ?></div>
 			</div>

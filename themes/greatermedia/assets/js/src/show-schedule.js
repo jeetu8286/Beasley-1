@@ -7,7 +7,7 @@
 			current_show = {},
 			track_schedule, update_onair;
 
-		if ($onair.length == 0) {
+		if ($onair.length === 0) {
 			return;
 		}
 
@@ -25,7 +25,7 @@
 			for (var i = 0; i < schedule.length; i++) {
 				starts = new Date(schedule[i].starts * 1000);
 				ends = new Date(schedule[i].ends * 1000);
-				
+
 				if (starts <= now && now <= ends) {
 					current_show = schedule[i];
 					update_onair('On Air:', schedule[i].title);
@@ -42,14 +42,14 @@
 				update_onair('', fallback);
 			}
 		};
-		
+
 		$.get($onair.data('endpoint'), function(response) {
 			if (response.success && response.data) {
 				fallback = response.data.tagline || '';
 				if ($.isArray(schedule)) {
 					schedule = response.data.schedule;
 				}
-				
+
 				track_schedule();
 				setInterval(track_schedule, 1000);
 			}
@@ -67,7 +67,7 @@
 
 		on_scroll = function() {
 			var scroll_top = $window.scrollTop();
-			
+
 			$days.each(function() {
 				var $day = $(this),
 					$weekday = $day.find('.shows__schedule--dayofweek'),
@@ -80,9 +80,7 @@
 				if (scroll_top + header_bottom >= day_top) {
 					$day.addClass('fixed');
 
-					top = scroll_top + header_bottom + own_height >= day_bottom
-						? day_bottom - scroll_top - own_height
-						: header_bottom;
+					top = scroll_top + header_bottom + own_height >= day_bottom ? day_bottom - scroll_top - own_height : header_bottom;
 
 					$weekday.width($day.width()).css({
 						top: top + 'px',
