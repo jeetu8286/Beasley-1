@@ -2088,7 +2088,8 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
     margin: 0; } }
 
 .slideshow .slide-content {
-  position: relative; }
+  position: relative;
+  overflow: hidden; }
   .slideshow .slide-content .slide-heading {
     background: #D22228;
     bottom: 0;
