@@ -134,90 +134,6 @@
 	init();
 
 })(jQuery, document);
-(function($) {
-
-	var ProfileMenuApp = function() {
-
-	};
-
-	ProfileMenuApp.prototype = {
-
-		run: function() {
-			var $body = $('body');
-			var $largeLink = $('.header__account--large');
-			if ($body.hasClass('gmr-user')) {
-				$largeLink.toggleClass('logged-in');
-			}
-
-			var $container = $('.header__account--container');
-			$container.append(this.getMenu());
-
-			var $avatar = $('.header__account--btn');
-			$avatar.attr('href', this.getAvatarLink());
-
-			var thumbnailURL = this.getThumbnailURL();
-			if (thumbnailURL) {
-				var $img = $('<img />', { src: thumbnailURL });
-				$avatar.html($img);
-				$avatar.addClass('avatar');
-			}
-		},
-
-		getAvatarLink: function() {
-			var endpoint = is_gigya_user_logged_in() ? 'account' : 'login';
-			return gigya_profile_path(endpoint);
-		},
-
-		getThumbnailURL: function() {
-			return get_gigya_user_field('thumbnailURL');
-		},
-
-		getMenu: function() {
-			var menu  = this.getMenuLabels();
-			var n     = menu.length;
-			var $menu = $('<ul class="header__account--links sub-menu"></ul>');
-			var $li, $a, item;
-
-			for ( var i = 0; i < n; i++ ) {
-				item = menu[i];
-				$li = $('<li></li>');
-
-				$a = $('<a></a>', { href: gigya_profile_path(item.endpoint) });
-				$a.text(item.label);
-				$li.append($a);
-
-				$menu.append($li);
-			}
-
-			return $menu;
-		},
-
-		getMenuLabels: function() {
-			var menu;
-
-			if (is_gigya_user_logged_in()) {
-				menu = [
-					{ label: 'Edit Account' , endpoint: 'account' } ,
-					{ label: 'Logout'       , endpoint: 'logout' }
-				];
-			} else {
-				menu = [
-					{ label: 'Login/Register', endpoint: 'login' }
-				];
-			}
-
-			return menu;
-		}
-
-	};
-
-	$(document).ready(function() {
-		var app = new ProfileMenuApp();
-		app.run();
-	});
-
-}(jQuery));
-
 (function ($) {
 	// we don't need to use pjax:end event here
 	$(document).ready(function() {
@@ -411,7 +327,6 @@
 	ShareLogger.prototype = {
 
 		share: function(action) {
-			save_gigya_action(action);
 		},
 
 		didShareClick: function(event) {
@@ -565,15 +480,6 @@
 	}
 
 	/**
-	 * Fallback for adding a body class when a user is a Gigya authenticated user
-	 */
-	function addGigyaBodyClass() {
-		if (! body.classList.contains('gmr-user')) {
-			body.classList.add('gmr-user');
-		}
-	}
-
-	/**
 	 * Function to add pop-up for social links
 	 *
 	 * @returns {boolean}
@@ -644,10 +550,6 @@
 	 */
 	responsiveTables();
 
-	if (is_gigya_user_logged_in()) {
-		addGigyaBodyClass();
-	}
-
 	/**
 	 * Functions called on Document Ready
 	 */
@@ -669,7 +571,7 @@
 	$(document).bind( 'pjax:end', function () {
 		personality_toggle();
 	});
-	
+
 })(jQuery, window, document);
 (function ($, window, document, undefined) {
 
@@ -777,13 +679,15 @@
 	function liveLinksHeight() {
 		var liveLinksBlogRoll = document.getElementById('live-links__blogroll');
 
-		if (liveLinksWidget !== null && liveLinksMore !== null && liveLinksBlogRoll !== null) {
-			var liveLinksItem = liveLinksBlogRoll.getElementsByTagName('li');
-			if (liveLinksItem.length <= 0) {
+		if (liveLinksBlogRoll) {
+			if (liveLinksWidget !== null && liveLinksMore !== null && liveLinksBlogRoll !== null) {
+				var liveLinksItem = liveLinksBlogRoll.getElementsByTagName('li');
+				if (liveLinksItem.length <= 0) {
+					liveLinksMore.classList.add('show-more--muted');
+				}
+			} else if (liveLinksMore && (liveLinksWidget === null || liveLinksBlogRoll === null)) {
 				liveLinksMore.classList.add('show-more--muted');
 			}
-		} else if (liveLinksWidget === null || liveLinksMore === null || liveLinksBlogRoll === null) {
-			liveLinksMore.classList.add('show-more--muted');
 		}
 	}
 
@@ -866,7 +770,7 @@
 			livePlayer.style.right = '0';
 		}
 	}
-	
+
 	/**
 	 * Function to handle stream selection through a dropdown
 	 */

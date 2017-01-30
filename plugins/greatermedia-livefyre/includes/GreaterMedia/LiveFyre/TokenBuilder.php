@@ -41,15 +41,7 @@ class TokenBuilder {
 	}
 
 	function get_auth_token() {
-		$network_name = $this->get_option( 'network_name' );
-		$network_key  = $this->get_option( 'network_key' );
-		$network      = Livefyre::getNetwork( $network_name, $network_key );
-
-		return $network->buildUserAuthToken(
-			rtrim( base64_encode( get_gigya_user_id() ), '=' ),
-			get_gigya_user_field( 'firstName' ) . ' ' . get_gigya_user_field( 'lastName' ),
-			$this->expires
-		);
+		return '';
 	}
 
 	function get_option( $name ) {
