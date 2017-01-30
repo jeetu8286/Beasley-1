@@ -26,18 +26,18 @@ if ( defined( 'GMR_PARENT_ENV' ) && 'dev' == GMR_PARENT_ENV ) {
 add_theme_support( 'homepage-curation' );
 add_theme_support( 'homepage-countdown-clock' );
 
-require_once( __DIR__ . '/includes/liveplayer/class-liveplayer.php' );
-require_once( __DIR__ . '/includes/site-options/loader.php' );
-require_once( __DIR__ . '/includes/mega-menu/mega-menu-admin.php' );
-require_once( __DIR__ . '/includes/mega-menu/mega-menu-walker.php' );
-require_once( __DIR__ . '/includes/mega-menu/mega-menu-mobile-walker.php' );
-require_once( __DIR__ . '/includes/image-attributes/loader.php');
-require_once( __DIR__ . '/includes/posts-screen-thumbnails/loader.php' );
-require_once( __DIR__ . '/includes/category-options.php' );
-require_once( __DIR__ . '/includes/class-favicon.php' );
-require_once( __DIR__ . '/includes/iframe-embed.php' );
-require_once( __DIR__ . '/includes/flexible-feature-images/gmr-flexible-feature-images.php' );
-require_once( __DIR__ . '/includes/auction-nudge/gmr-auction-nudge.php' );
+require_once __DIR__ . '/includes/liveplayer/class-liveplayer.php';
+require_once __DIR__ . '/includes/site-options/loader.php';
+require_once __DIR__ . '/includes/mega-menu/mega-menu-admin.php';
+require_once __DIR__ . '/includes/mega-menu/mega-menu-walker.php';
+require_once __DIR__ . '/includes/mega-menu/mega-menu-mobile-walker.php';
+require_once __DIR__ . '/includes/image-attributes/loader.php';
+require_once __DIR__ . '/includes/posts-screen-thumbnails/loader.php';
+require_once __DIR__ . '/includes/category-options.php';
+require_once __DIR__ . '/includes/class-favicon.php';
+require_once __DIR__ . '/includes/iframe-embed.php';
+require_once __DIR__ . '/includes/flexible-feature-images/gmr-flexible-feature-images.php';
+require_once __DIR__ . '/includes/auction-nudge/gmr-auction-nudge.php';
 require_once __DIR__ . '/includes/shortcodes.php';
 
 /**
@@ -91,41 +91,27 @@ function greatermedia_setup() {
 
 	// Update this as appropriate content types are created and we want this functionality
 	add_post_type_support( 'post', 'timed-content' );
-	add_post_type_support( 'post', 'login-restricted-content' );
-	add_post_type_support( 'post', 'age-restricted-content' );
 	add_post_type_support( 'post', 'flexible-feature-image' );
 
 	// Pages should also support same restrictions as posts
 	add_post_type_support( 'page', 'timed-content' );
-	add_post_type_support( 'page', 'login-restricted-content' );
-	add_post_type_support( 'page', 'age-restricted-content' );
 	add_post_type_support( 'page', 'flexible-feature-image' );
 
 	// Restrictions for galleries
 	add_post_type_support( 'gmr_gallery', 'timed-content' );
-	add_post_type_support( 'gmr_gallery', 'login-restricted-content' );
-	add_post_type_support( 'gmr_gallery', 'age-restricted-content' );
 
 	// Restrictions for albums
 	add_post_type_support( 'gmr_album', 'timed-content' );
-	add_post_type_support( 'gmr_album', 'login-restricted-content' );
-	add_post_type_support( 'gmr_album', 'age-restricted-content' );
 
 	// Restrictions for podcasts episodes
 	add_post_type_support( 'episode', 'timed-content' );
-	add_post_type_support( 'episode', 'login-restricted-content' );
-	add_post_type_support( 'episode', 'age-restricted-content' );
 
 	// Restrictions for events
 	add_post_type_support( 'tribe_events', 'timed-content' );
-	add_post_type_support( 'tribe_events', 'login-restricted-content' );
-	add_post_type_support( 'tribe_events', 'age-restricted-content' );
 	add_post_type_support( 'tribe_events', 'flexible-feature-image' );
 
 	// Restrictions for contests
 	add_post_type_support( 'contest', 'timed-content' );
-	add_post_type_support( 'contest', 'login-restricted-content' );
-	add_post_type_support( 'contest', 'age-restricted-content' );
 	add_post_type_support( 'contest', 'flexible-feature-image' );
 
 	// Restrictions for surveys
@@ -168,51 +154,14 @@ function greatermedia_scripts_styles() {
 	$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 	$baseurl = untrailingslashit( get_template_directory_uri() );
 
-	wp_register_style(
-		'google-fonts',
-		'//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,800italic,400,300,700,800',
-		array(),
-		null
-	);
-	wp_register_style(
-		'greatermedia',
-		"{$baseurl}/assets/css/greater_media{$postfix}.css",
-		array(
-			'google-fonts'
-		),
-		GREATERMEDIA_VERSION
-	);
-	wp_enqueue_script(
-		'greatermedia',
-		"{$baseurl}/assets/js/greater_media{$postfix}.js",
-		array(
-			'jquery',
-			'underscore',
-			'classlist-polyfill'
-		),
-		GREATERMEDIA_VERSION,
-		true
-	);
-	wp_enqueue_script(
-		'greatermedia-load-more',
-		"{$baseurl}/assets/js/greater_media_load_more{$postfix}.js",
-		array(
-			'jquery',
-			'jquery-waypoints'
-		),
-		GREATERMEDIA_VERSION,
-		true
-	);
-	wp_enqueue_style(
-		'greatermedia'
-	);
+	wp_enqueue_script( 'greatermedia', "{$baseurl}/assets/js/greater_media{$postfix}.js", array( 'jquery', 'underscore', 'classlist-polyfill' ), GREATERMEDIA_VERSION, true );
+	wp_enqueue_script( 'greatermedia-load-more', "{$baseurl}/assets/js/greater_media_load_more{$postfix}.js", array( 'jquery', 'jquery-waypoints' ), GREATERMEDIA_VERSION, true );
 
-	/**
-	 * YARPP styles are not being used, so let's get rid of them!
-	 */
-	wp_dequeue_style(
-		'yarppWidgetCss'
-	);
+	wp_enqueue_style( 'google-fonts', '//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,800italic,400,300,700,800', array(), null );
+	wp_enqueue_style( 'greatermedia', "{$baseurl}/assets/css/greater_media{$postfix}.css", array( 'google-fonts' ), GREATERMEDIA_VERSION );
+
+	// YARPP styles are not being used, so let's get rid of them!
+	wp_dequeue_style( 'yarppWidgetCss' );
 
 	/**
 	 * this is a fix to resolve conflicts with styles and javascript for The Events Calendar plugin that will not
@@ -716,16 +665,6 @@ function add_google_analytics() {
 
 	var googleUidDimension = '<?php echo esc_js( $google_uid_dimension ); ?>';
 
-	if( window.is_gigya_user_logged_in && is_gigya_user_logged_in() ) {
-		ga( 'set', '&uid', get_gigya_user_id() );
-
-		if ( googleUidDimension !== '0' ) {
-			googleUidDimension = 'dimension' + googleUidDimension;
-			ga( 'set', googleUidDimension, get_gigya_user_id() );
-		}
-
-	}
-
 	jQuery(document).on('pjax:end', function() {
 		ga('set', 'location', window.location.href);
 		ga('send', 'pageview');
@@ -784,26 +723,6 @@ function add_embedly_global_script() {
 	}
 }
 add_action( 'wp_head' , 'add_embedly_global_script' );
-
-/**
- * adds an additional body class if a user is authenticated with gigya
- *
- * @param $classes
- *
- * @return array
- */
-function greatermedia_add_gigya_body_class( $classes ) {
-
-	$classes[] = '';
-
-	if ( is_gigya_user_logged_in() ) {
-		$classes[] = 'gmr-user';
-	}
-
-	return $classes;
-
-}
-add_filter( 'body_class', 'greatermedia_add_gigya_body_class' );
 
 /**
  * Show more posts that usual for gmr_closure archives.

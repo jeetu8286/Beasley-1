@@ -55,6 +55,7 @@ plugins/dynamic-hostname/
 plugins/greatermedia-livefyre/
 plugins/video-thumbnails/
 plugins/user-role-editor/
+plugins/greatermedia-gigya/
 
 themes/index.php
 themes/twentyfourteen
