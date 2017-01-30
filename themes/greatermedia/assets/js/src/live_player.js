@@ -78,10 +78,11 @@
 	 * @param handler
 	 */
 	function addEventHandler(elem, eventType, handler) {
-		if (elem.addEventListener)
+		if (elem.addEventListener) {
 			elem.addEventListener(eventType, handler, false);
-		else if (elem.attachEvent)
+		} else if (elem.attachEvent) {
 			elem.attachEvent('on' + eventType, handler);
+		}
 	}
 
 	/**
@@ -185,6 +186,19 @@
 	}
 
 	/**
+	 * Sets states needed for the liveplayer on mobile
+	 */
+	function liveLinksMobileState() {
+		if ( $('body').hasClass('live-player--open')) {
+			document.body.style.overflow = 'hidden';
+			html.style.overflow = 'hidden';
+		} else {
+			document.body.style.overflow = 'initial';
+			html.style.overflow = 'initial';
+		}
+	}
+
+	/**
 	 * Adds some styles to the live player that would be called at desktop breakpoints. This is added specifically to
 	 * deal with a window being resized.
 	 */
@@ -260,19 +274,6 @@
 	}
 
 	/**
-	 * Sets states needed for the liveplayer on mobile
-	 */
-	function liveLinksMobileState() {
-		if ( $('body').hasClass('live-player--open')) {
-			document.body.style.overflow = 'hidden';
-			html.style.overflow = 'hidden';
-		} else {
-			document.body.style.overflow = 'initial';
-			html.style.overflow = 'initial';
-		}
-	}
-
-	/**
 	 * Closes the live links
 	 */
 	function liveLinksClose() {
@@ -282,6 +283,12 @@
 			}
 		}
 	}
+
+	/**
+	 * variables that define debounce and throttling for window resizing and scrolling
+	 */
+	var scrollDebounce = _.debounce(getScrollPosition, 50),
+		scrollThrottle = _.throttle(getScrollPosition, 50);
 
 	/**
 	 * Resize Window function for when a user scales down their browser window below 767px
@@ -302,12 +309,7 @@
 		}
 	}
 
-	/**
-	 * variables that define debounce and throttling for window resizing and scrolling
-	 */
-	var scrollDebounce = _.debounce(getScrollPosition, 50),
-		scrollThrottle = _.throttle(getScrollPosition, 50),
-		resizeDebounce = _.debounce(resizeWindow, 50),
+	var resizeDebounce = _.debounce(resizeWindow, 50),
 		resizeThrottle = _.throttle(resizeWindow, 50);
 
 	/**

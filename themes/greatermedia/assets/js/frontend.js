@@ -96,19 +96,6 @@
 		$menuOverlay = $(document.querySelector('.menu-overlay-mask'));
 
 	/**
-	 * Init Function
-	 */
-	function init() {
-
-		$mobileMenu.on('click.greaterMedia.Menus', 'a.show-subnavigation', openSubMenu);
-
-		$mobileMenu.on('click.greaterMedia.Menus', 'a.mobile-menu-submenu-back-link', closeSubMenu);
-
-		$menuOverlay.on('click', closeSubMenu);
-
-	}
-
-	/**
 	 * Closes the SubMenu
 	 *
 	 * @param event
@@ -131,6 +118,15 @@
 		$(this).siblings('.sub-menu').addClass('is-visible');
 	}
 
+	/**
+	 * Init Function
+	 */
+	function init() {
+		$mobileMenu.on('click.greaterMedia.Menus', 'a.show-subnavigation', openSubMenu);
+		$mobileMenu.on('click.greaterMedia.Menus', 'a.mobile-menu-submenu-back-link', closeSubMenu);
+		$menuOverlay.on('click', closeSubMenu);
+	}
+
 	init();
 
 })(jQuery, document);
@@ -143,7 +139,7 @@
 			current_show = {},
 			track_schedule, update_onair;
 
-		if ($onair.length == 0) {
+		if ($onair.length === 0) {
 			return;
 		}
 
@@ -161,7 +157,7 @@
 			for (var i = 0; i < schedule.length; i++) {
 				starts = new Date(schedule[i].starts * 1000);
 				ends = new Date(schedule[i].ends * 1000);
-				
+
 				if (starts <= now && now <= ends) {
 					current_show = schedule[i];
 					update_onair('On Air:', schedule[i].title);
@@ -178,14 +174,14 @@
 				update_onair('', fallback);
 			}
 		};
-		
+
 		$.get($onair.data('endpoint'), function(response) {
 			if (response.success && response.data) {
 				fallback = response.data.tagline || '';
 				if ($.isArray(schedule)) {
 					schedule = response.data.schedule;
 				}
-				
+
 				track_schedule();
 				setInterval(track_schedule, 1000);
 			}
@@ -203,7 +199,7 @@
 
 		on_scroll = function() {
 			var scroll_top = $window.scrollTop();
-			
+
 			$days.each(function() {
 				var $day = $(this),
 					$weekday = $day.find('.shows__schedule--dayofweek'),
@@ -216,9 +212,7 @@
 				if (scroll_top + header_bottom >= day_top) {
 					$day.addClass('fixed');
 
-					top = scroll_top + header_bottom + own_height >= day_bottom
-						? day_bottom - scroll_top - own_height
-						: header_bottom;
+					top = scroll_top + header_bottom + own_height >= day_bottom ? day_bottom - scroll_top - own_height : header_bottom;
 
 					$weekday.width($day.width()).css({
 						top: top + 'px',
@@ -517,15 +511,15 @@
 	 * Personality Toggle
 	 */
 	function personality_toggle() {
-		var $button = $('.person-toggle');
-		start = $('.personality__meta').first().height(); // get the height of the meta before we start, basically tells us whether we're using the mobile or desktop height
+		var $button = $('.person-toggle'),
+			start = $('.personality__meta').first().height(); // get the height of the meta before we start, basically tells us whether we're using the mobile or desktop height
 
 		$button.on('click', function (e) {
-			var $this = $(this);
-			$parent = $this.parent().parent('.personality');
-			$meta = $this.siblings('.personality__meta');
-			curr = $meta.height();
-			auto = $meta.css('height', 'auto').height(),
+			var $this = $(this),
+				$parent = $this.parent().parent('.personality'),
+				$meta = $this.siblings('.personality__meta'),
+				curr = $meta.height(),
+				auto = $meta.css('height', 'auto').height(),
 				offset = '';
 
 			$parent.toggleClass('open');
@@ -573,6 +567,104 @@
 	});
 
 })(jQuery, window, document);
+(function ($, document) {
+	var __ready, reset_page = true, pagenums = {};
+
+	__ready = function() {
+		$('.posts-pagination--load-more').each(function () {
+			var $button = $(this),
+				loading = false,
+				page_link_template = $button.data('page-link-template'),
+				page = parseInt($button.data('page')),
+				partial_slug = $button.data('partial-slug'),
+				partial_name = $button.data('partial-name'),
+				auto_load = $button.data('auto-load');
+	
+			if (reset_page) {
+				pagenums[page_link_template] = !isNaN(page) && page > 0 ? page : 1;
+			}
+
+			// If auto_load is set, create a Waypoint that will trigger the button
+			// when it is reached. 
+			var waypoint_context = null; 
+			if ( auto_load ) {
+				try {					
+					$button.waypoint({
+						handler: function(direction) {
+							// Store the Waypoint context so we can refresh it later.
+							waypoint_context = this.context; 
+						$button.trigger('click'); 
+						},
+						offset: 'bottom-in-view'
+					});
+				} catch ( e ) {
+					// Waypoints not supported, disable autoload. 
+					auto_load = false; 
+				}
+			}
+
+			var hide_button = function() {
+				$button.hide();
+				if (waypoint_context) {
+					waypoint_context.destroy();
+				}
+			};
+	
+			$button.click(function() {
+				var $self = $(this);
+	
+				if (!loading) {
+					loading = true;
+					$self.removeClass('is-loaded');
+	
+					// let's use ?ajax=1 to distinguish AJAX and non AJAX requests
+					// if we don't do it and HTTP cache is enabled, then we might encounter
+					// unpleasant condition when users see cached version of a page loaded by AJAX
+					// instead of normal one.
+					$.get(page_link_template.replace('%d', pagenums[page_link_template]), {ajax: 1, partial_slug: partial_slug, partial_name: partial_name }).done(function(response) {
+						// We're done loading now.
+						loading = false;
+						$self.addClass('is-loaded');
+						
+						if ( response.post_count ) {
+							// Add content to page. 
+							$($('<div>' + $.trim(response.html) + '</div>').html()).insertBefore($button.parents('.posts-pagination'));							
+	
+							// Increment page number
+							pagenums[page_link_template]++;
+							
+							// Trigger event.
+							$( document ).trigger( 'gmr_lazy_load_end' ); 
+						}
+												
+						if ( ! response.post_count || pagenums[page_link_template] > response.max_num_pages ) {
+							hide_button();
+						} else if ( waypoint_context ) {
+							// Refresh Waypoint context, if any.
+							waypoint_context.refresh(); 
+						}
+					}).fail(function() {
+						hide_button();
+					});
+				}
+				
+				return false;
+			});
+		}); 
+	};
+
+	if (tribe_ev && tribe_ev.events) {
+		$(tribe_ev.events).bind('tribe_ev_ajaxSuccess', __ready);
+	}
+
+	$(document).bind('pjax:end', function(e, xhr) {
+		reset_page = xhr !== null;
+		__ready();
+	});
+
+	$(document).ready(__ready);
+})(jQuery, document);
+
 (function ($, window, document, undefined) {
 
 	/**
@@ -645,10 +737,11 @@
 	 * @param handler
 	 */
 	function addEventHandler(elem, eventType, handler) {
-		if (elem.addEventListener)
+		if (elem.addEventListener) {
 			elem.addEventListener(eventType, handler, false);
-		else if (elem.attachEvent)
+		} else if (elem.attachEvent) {
 			elem.attachEvent('on' + eventType, handler);
+		}
 	}
 
 	/**
@@ -752,6 +845,19 @@
 	}
 
 	/**
+	 * Sets states needed for the liveplayer on mobile
+	 */
+	function liveLinksMobileState() {
+		if ( $('body').hasClass('live-player--open')) {
+			document.body.style.overflow = 'hidden';
+			html.style.overflow = 'hidden';
+		} else {
+			document.body.style.overflow = 'initial';
+			html.style.overflow = 'initial';
+		}
+	}
+
+	/**
 	 * Adds some styles to the live player that would be called at desktop breakpoints. This is added specifically to
 	 * deal with a window being resized.
 	 */
@@ -827,19 +933,6 @@
 	}
 
 	/**
-	 * Sets states needed for the liveplayer on mobile
-	 */
-	function liveLinksMobileState() {
-		if ( $('body').hasClass('live-player--open')) {
-			document.body.style.overflow = 'hidden';
-			html.style.overflow = 'hidden';
-		} else {
-			document.body.style.overflow = 'initial';
-			html.style.overflow = 'initial';
-		}
-	}
-
-	/**
 	 * Closes the live links
 	 */
 	function liveLinksClose() {
@@ -849,6 +942,12 @@
 			}
 		}
 	}
+
+	/**
+	 * variables that define debounce and throttling for window resizing and scrolling
+	 */
+	var scrollDebounce = _.debounce(getScrollPosition, 50),
+		scrollThrottle = _.throttle(getScrollPosition, 50);
 
 	/**
 	 * Resize Window function for when a user scales down their browser window below 767px
@@ -869,12 +968,7 @@
 		}
 	}
 
-	/**
-	 * variables that define debounce and throttling for window resizing and scrolling
-	 */
-	var scrollDebounce = _.debounce(getScrollPosition, 50),
-		scrollThrottle = _.throttle(getScrollPosition, 50),
-		resizeDebounce = _.debounce(resizeWindow, 50),
+	var resizeDebounce = _.debounce(resizeWindow, 50),
 		resizeThrottle = _.throttle(resizeWindow, 50);
 
 	/**
@@ -916,6 +1010,7 @@
 	});
 
 })(jQuery, window, document);
+
 (function ($, window, document, undefined) {
 
 	/**
@@ -934,10 +1029,11 @@
 	 * @param handler
 	 */
 	function addEventHandler(elem, eventType, handler) {
-		if (elem.addEventListener)
+		if (elem.addEventListener) {
 			elem.addEventListener(eventType, handler, false);
-		else if (elem.attachEvent)
+		} else if (elem.attachEvent) {
 			elem.attachEvent('on' + eventType, handler);
+		}
 	}
 
 	/**
@@ -955,6 +1051,46 @@
 	function mobileCloseLocation() {
 		siteWrap.style.removeProperty('top');
 	}
+
+	/**
+	 * Inserts a new element on mobile to provide a blocker
+	 *
+	 * @returns {*|jQuery|HTMLElement}
+	 */
+	var getBlockerDiv = function() {
+		var $div = $('#mobile-nav-blocker');
+		if ($div.length === 0) {
+			$('<div id="mobile-nav-blocker"></div>').insertAfter('#mobile-nav');
+			$div = $('#mobile-nav-blocker');
+			$div.on('click', toggleNavButton);
+		}
+
+		return $div;
+	};
+
+	/**
+	 * Shows the blocker div that is created by getBlockerDiv
+	 */
+	var showBlocker = function() {
+		var $blocker = getBlockerDiv();
+
+		$blocker.css({
+			width: $(document).width(),
+			height: $(document).height(),
+			display: 'block',
+		});
+	};
+
+	/**
+	 * Hides the blocker div that is shown by showBlocker
+	 */
+	var hideBlocker = function() {
+		var $blocker = getBlockerDiv();
+		$blocker.css({'display': 'none'});
+		if ($blocker.hasClass('active')) {
+			$blocker.removeClass('active');
+		}
+	};
 
 	/**
 	 * Toggles a class to the body when the mobile nav button is clicked
@@ -1074,46 +1210,6 @@
 	}
 
 	/**
-	 * Inserts a new element on mobile to provide a blocker
-	 *
-	 * @returns {*|jQuery|HTMLElement}
-	 */
-	var getBlockerDiv = function() {
-		var $div = $('#mobile-nav-blocker');
-		if ($div.length === 0) {
-			$('<div id="mobile-nav-blocker"></div>').insertAfter('#mobile-nav');
-			$div = $('#mobile-nav-blocker');
-			$div.on('click', toggleNavButton);
-		}
-
-		return $div;
-	};
-
-	/**
-	 * Shows the blocker div that is created by getBlockerDiv
-	 */
-	var showBlocker = function() {
-		var $blocker = getBlockerDiv();
-
-		$blocker.css({
-			width: $(document).width(),
-			height: $(document).height(),
-			display: 'block',
-		});
-	};
-
-	/**
-	 * Hides the blocker div that is shown by showBlocker
-	 */
-	var hideBlocker = function() {
-		var $blocker = getBlockerDiv();
-		$blocker.css({'display': 'none'});
-		if ($blocker.hasClass('active')) {
-			$blocker.removeClass('active');
-		}
-	};
-
-	/**
 	 * Init Functions
 	 */
 	addEventHandler(mobileNavButton, 'click', toggleNavButton);
@@ -1139,7 +1235,7 @@
 		$searchBtn = $( '#header__search'),
 		$searchInput = $( '#header-search' ),
 		$overlay = $('.header-search-overlay-mask' );
-	
+
 	/**
 	 * A function to show the header search when an event is targeted.
 	 *
@@ -1147,27 +1243,27 @@
 	 */
 	function showSearch(e) {
 		e.preventDefault();
-		
+
 		if ( $searchContainer.hasClass( 'header__search--open' ) ) {
-			return; 
+			return;
 		}
-		
-		$overlay.addClass( 'is-visible' )
-		
+
+		$overlay.addClass( 'is-visible' );
+
 		// Now, show the search form, but don't set focus until the transition
-		// animation is complete. This is because Webkit browsers scroll to 
+		// animation is complete. This is because Webkit browsers scroll to
 		// the element when it gets focus, and they scroll to it where it was
-		// before the transition started.		
+		// before the transition started.
 		if ( '0s' !== $searchContainer.css('transitionDuration') ) {
 			$searchContainer.one('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', function () {
 				$searchInput.focus().select();
 			} );
 		} else {
-			$searchInput.focus().select();			
+			$searchInput.focus().select();
 		}
-		$searchContainer.addClass('header__search--open'); 
+		$searchContainer.addClass('header__search--open');
 	}
-	
+
 	/**
 	 * A function to hide the header search when an event is targeted.
 	 *
@@ -1175,29 +1271,29 @@
 	 */
 	function closeSearch(e) {
 		e.preventDefault();
-		
+
 		if ( ! $searchContainer.hasClass( 'header__search--open' ) ) {
 			return;
 		}
-		
+
 		$searchContainer.removeClass( 'header__search--open' );
 		$overlay.removeClass('is-visible');
 		document.activeElement.blur();
 	}
-	
+
 	/**
 	 * Event listeners to run on click to show and close the search.
 	 */
-	$searchBtn.click( showSearch ); 
-	
+	$searchBtn.click( showSearch );
+
 	/**
 	 * Open search if user clicks on it.
 	 */
 	$searchInput.add( $searchForm.find( 'button[type=submit]' ) ).click( showSearch );
-	
+
 	function checkSearchField () {
 		var $search_body = $searchContainer.find( '.header-search-body' );
-		
+
 		// Show the body only if there's text in the search field.
 		if ( $searchInput.val().length ) {
 			$search_body.addClass( 'is-visible' );
@@ -1205,36 +1301,36 @@
 			$search_body.removeClass( 'is-visible' );
 		}
 	}
-	
+
 	$searchInput.keyup( checkSearchField );
-	
-	checkSearchField(); 
-	
+
+	checkSearchField();
+
 	/**
 	 * Close the search box when user presses escape.
 	 */
 	$(window).keydown(function (e) {
 		if (e.keyCode === 27){
 			closeSearch(e);
-		}		
+		}
 	});
-	
+
 	/**
-	 * Handle enter key for Safari. 
+	 * Handle enter key for Safari.
 	 */
 	$searchForm.keydown( function ( e ) {
 		if ( 13 === e.keyCode ) {
-			$( this ).submit(); 
+			$( this ).submit();
 		}
 	} );
-	
+
 	/**
 	 * Close the search box (if open) if the user clicks on the overlay.
 	 */
 	$overlay.click(function (e) {
 		closeSearch(e);
 	});
-	
+
 	/**
 	 * Close the search box (if open) if the user clicks the close button.
 	 */
@@ -1242,32 +1338,53 @@
 		e.preventDefault();
 		closeSearch( e );
 	} );
-	
+
 	/**
 	 * Make "Search All Content" button trigger form submit.
 	 */
 	$searchContainer.find( '.header-search__search-all-btn' ).click( function () {
-		$searchForm.submit(); 	
+		$searchForm.submit();
 	} );
-	
+
 	/**
 	 * PJAX workaround. PJAX is set to only handle links when they're clicked,
-	 * so to get the form to work over PJAX we need to create a fake link and 
-	 * then click it. Clunky but it is the quick fix for now. 
-	 * 
-	 * Note that we are calling click() on the DOM object, not the jQuery 
-	 * object. This is the only way to get this to work on Safari. 
+	 * so to get the form to work over PJAX we need to create a fake link and
+	 * then click it. Clunky but it is the quick fix for now.
+	 *
+	 * Note that we are calling click() on the DOM object, not the jQuery
+	 * object. This is the only way to get this to work on Safari.
 	 */
 	$searchForm.submit( function ( e ) {
-		e.preventDefault();		
-		
+		e.preventDefault();
+
 		$( '<a></a>' )
 			.attr( 'href', $( this ).attr( 'action' ) + '?s=' + $( this ).find( 'input[name=s]' ).val() )
 			.appendTo( $( this ) )
 			.get( 0 ).click() // Note we are triggering click on the DOM object, not the jQuery object.
 		;
-		
+
 		closeSearch( e );
 	} );
-	
+
 })(jQuery, window, document);
+(function($, config) {
+	var auth;
+
+	// do nothing if apiKey is not set
+	if (!config.apiKey || $.trim(config.apiKey).length < 1) {
+		return;
+	}
+
+	// initialize a firebase instance
+	firebase.initializeApp(config);
+
+	// grab auth service
+	auth = firebase.auth();
+
+	// listen to auth state change and authenticate an user anonymously if user is not logged in
+	auth.onAuthStateChanged(function(user) {
+		if (!user) {
+			auth.signInAnonymously();
+		}
+	});
+})(jQuery, window.beasley.firebase);
