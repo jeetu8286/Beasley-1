@@ -57,13 +57,6 @@ while ( have_posts() ) : the_post(); ?>
 
                 <?php get_template_part( 'partials/article-footer' ); ?>
 
-                <?php if ( post_type_supports( get_post_type(), 'comments' ) ) { // If comments are open or we have at least one comment, load up the comment template. ?>
-                    <div class='article__comments'>
-                        <?php comments_template(); ?>
-                    </div>
-                <?php } ?>
-
-
                 <?php if ( function_exists( 'related_posts' ) ): ?>
                     <?php related_posts( array( 'template' => 'partials/related-posts.php' ) ); ?>
                 <?php endif; ?>

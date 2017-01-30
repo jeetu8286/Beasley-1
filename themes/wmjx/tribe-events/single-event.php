@@ -85,7 +85,6 @@ $event_id = get_the_ID();
 
 			<!-- .tribe-events-single-event-description -->
 		</div> <!-- #post-x -->
-		<?php if ( get_post_type() == TribeEvents::POSTTYPE && tribe_get_option( 'showComments', false ) ) comments_template() ?>
 	<?php endwhile; ?>
 
 	<!-- Event footer -->
