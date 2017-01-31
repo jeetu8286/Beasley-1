@@ -27,6 +27,7 @@ module.exports = function (grunt) {
 						'assets/js/src/greater_media.js',
 						'assets/js/src/load_more.js',
 						'assets/js/src/menus.js',
+						'assets/js/src/hero-slider.js',
 						'assets/js/src/search.js',
 						'assets/js/src/firebase.js'
 					],

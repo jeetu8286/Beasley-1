@@ -1,6 +1,8 @@
 .slideshow {
   .slide-content {
     position: relative;
+    overflow: hidden;
+
     .slide-heading {
       background: #D22228;
       bottom: 0;
