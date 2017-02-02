@@ -12,17 +12,17 @@
  * @since 0.1.0
  */
 
- // Useful global constants
-define( 'BOBANDSHERI_VERSION', '0.1.9' ); /* Version bump by Steve 10/25/2016 @ 3:30 p.m. EST */
+// Useful global constants
+define( 'BOBANDSHERI_VERSION', '0.1.13' ); /* Version bump by Jonathan 01/16/2017 @ 3:12 p.m. EST */
 
- /**
-  * Set up theme defaults and register supported WordPress features.
-  *
-  * @uses load_theme_textdomain() For translation/localization support.
-  *
-  * @since 0.1.0
-  */
- function bobandsheri_setup() {
+/**
+ * Set up theme defaults and register supported WordPress features.
+ *
+ * @uses load_theme_textdomain() For translation/localization support.
+ *
+ * @since 0.1.0
+ */
+function bobandsheri_setup() {
 	/**
 	 * Makes BOBANDSHERI available for translation.
 	 *
@@ -31,45 +31,59 @@ define( 'BOBANDSHERI_VERSION', '0.1.9' ); /* Version bump by Steve 10/25/2016 @ 
 	 * to change 'bobandsheri' to the name of your theme in all template files.
 	 */
 	load_theme_textdomain( 'bobandsheri', get_stylesheet_directory_uri() . '/languages' );
- }
- add_action( 'after_setup_theme', 'bobandsheri_setup' );
+}
+add_action( 'after_setup_theme', 'bobandsheri_setup' );
 
- /**
-  * Enqueue scripts and styles for front-end.
-  *
-  * @since 0.1.0
-  */
- function bobandsheri_scripts_styles() {
+/**
+ * Enqueue scripts and styles for front-end.
+ *
+ * @since 0.1.0
+ */
+function bobandsheri_scripts_styles() {
 	$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 
 	wp_dequeue_style( 'greatermedia' );
 	wp_deregister_style( 'greatermedia' );
 	wp_enqueue_style( 'bobandsheri', get_stylesheet_directory_uri() . "/assets/css/bobandsheri{$postfix}.css", array(), BOBANDSHERI_VERSION );
 	wp_enqueue_style( 'bobandsheri_font', "http://fonts.googleapis.com/css?family=Work+Sans", array(), BOBANDSHERI_VERSION );
+	wp_enqueue_script( 'livefyre', '//cdn.livefyre.com/Livefyre.js', null, null, true );
 	wp_enqueue_script(
         'bobandsheri',
         get_stylesheet_directory_uri() . "/assets/js/bobandsheri{$postfix}.js",
-        array(),
+        array( 'livefyre' ),
         WBT_VERSION,
         true
-    );
-    wp_enqueue_script(
+	);
+	wp_enqueue_script(
 	    'steel-media',
 	    'https://secure.adnxs.com/seg?add=3581739&t=1',
 	    array(),
 	    null,
 	    true
 	);
+	wp_enqueue_script( 'quantcast', get_stylesheet_directory_uri() . '/assets/js/vendor/quantcast.js', array(), true );
+	wp_enqueue_script( 'cxense', get_stylesheet_directory_uri() . '/assets/js/vendor/cxense.js', array(), false );
+}
+add_action( 'wp_enqueue_scripts', 'bobandsheri_scripts_styles', 20 );
 
- }
- add_action( 'wp_enqueue_scripts', 'bobandsheri_scripts_styles', 20 );
-
- /**
-  * Add humans.txt to the <head> element.
-  */
- function bobandsheri_header_meta() {
+/**
+ * Add humans.txt to the <head> element.
+ */
+function bobandsheri_header_meta() {
 	$humans = '<link type="text/plain" rel="author" href="' . get_stylesheet_directory_uri() . '/humans.txt" />';
 
 	echo apply_filters( 'bobandsheri_humans', $humans );
- }
- add_action( 'wp_head', 'bobandsheri_header_meta' );
+}
+add_action( 'wp_head', 'bobandsheri_header_meta' );
+
+function add_featured_image_in_rss() {
+	$featured_image = get_post_thumbnail_id();
+	if ( $featured_image ) {
+		$featured_image = current( wp_get_attachment_image_src( $featured_image, 'post-thumbnail' ) );
+	}
+
+	if ( ! empty( $featured_image ) ) {
+		echo "\t" . '<enclosure url="' . esc_url( $featured_image ) . '" />' . "\n";
+	}
+}
+add_action( 'rss2_item', 'add_featured_image_in_rss' );

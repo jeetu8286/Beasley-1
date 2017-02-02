@@ -27,15 +27,6 @@
 	}
 
 	/**
-	 * Fallback for adding a body class when a user is a Gigya authenticated user
-	 */
-	function addGigyaBodyClass() {
-		if (! body.classList.contains('gmr-user')) {
-			body.classList.add('gmr-user');
-		}
-	}
-
-	/**
 	 * Function to add pop-up for social links
 	 *
 	 * @returns {boolean}
@@ -73,15 +64,15 @@
 	 * Personality Toggle
 	 */
 	function personality_toggle() {
-		var $button = $('.person-toggle');
-		start = $('.personality__meta').first().height(); // get the height of the meta before we start, basically tells us whether we're using the mobile or desktop height
+		var $button = $('.person-toggle'),
+			start = $('.personality__meta').first().height(); // get the height of the meta before we start, basically tells us whether we're using the mobile or desktop height
 
 		$button.on('click', function (e) {
-			var $this = $(this);
-			$parent = $this.parent().parent('.personality');
-			$meta = $this.siblings('.personality__meta');
-			curr = $meta.height();
-			auto = $meta.css('height', 'auto').height(),
+			var $this = $(this),
+				$parent = $this.parent().parent('.personality'),
+				$meta = $this.siblings('.personality__meta'),
+				curr = $meta.height(),
+				auto = $meta.css('height', 'auto').height(),
 				offset = '';
 
 			$parent.toggleClass('open');
@@ -106,10 +97,6 @@
 	 */
 	responsiveTables();
 
-	if (is_gigya_user_logged_in()) {
-		addGigyaBodyClass();
-	}
-
 	/**
 	 * Functions called on Document Ready
 	 */
@@ -131,5 +118,5 @@
 	$(document).bind( 'pjax:end', function () {
 		personality_toggle();
 	});
-	
+
 })(jQuery, window, document);

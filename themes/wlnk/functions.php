@@ -13,7 +13,7 @@
  */
 
  // Useful global constants
-define( 'WLNK_VERSION', '0.3.2' ); /* Version bump by Steve 10/25/2016 @ 3:30 p.m. EST */
+define( 'WLNK_VERSION', '0.3.9' ); /* Version bump by Jonathan 01/16/2017 @ 3:12 p.m. EST */
 
  /**
   * Set up theme defaults and register supported WordPress features.
@@ -65,6 +65,8 @@ define( 'WLNK_VERSION', '0.3.2' ); /* Version bump by Steve 10/25/2016 @ 3:30 p.
 	    true
 		);
     wp_enqueue_script( 'handlebars', get_stylesheet_directory_uri() . '/assets/js/vendor/handlebars-v3.0.3.js', array( 'jquery' ) );
+    wp_enqueue_script( 'quantcast', get_stylesheet_directory_uri() . '/assets/js/vendor/quantcast.js', array(), true );
+    wp_enqueue_script( 'cxense', get_stylesheet_directory_uri() . '/assets/js/vendor/cxense.js', array(), false );
     wp_enqueue_script( 'googlemaps', 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false', array() );
  }
  add_action( 'wp_enqueue_scripts', 'wlnk_scripts_styles', 20 );
@@ -78,3 +80,16 @@ define( 'WLNK_VERSION', '0.3.2' ); /* Version bump by Steve 10/25/2016 @ 3:30 p.
 	echo apply_filters( 'wlnk_humans', $humans );
  }
  add_action( 'wp_head', 'wlnk_header_meta' );
+
+ function add_featured_image_in_rss() {
+   $featured_image = get_post_thumbnail_id();
+   if ( $featured_image ) {
+     $featured_image = current( wp_get_attachment_image_src( $featured_image, 'post-thumbnail' ) );
+   }
+
+   if ( ! empty( $featured_image ) ) {
+     echo "\t" . '<enclosure url="' . esc_url($featured_image) . '" />' . "\n";
+   }
+
+}
+add_action( 'rss2_item', 'add_featured_image_in_rss' );

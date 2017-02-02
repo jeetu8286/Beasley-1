@@ -7,6 +7,7 @@ class GMR_Audio_Shortcodes {
 
 	public static function init() {
 		add_filter( 'wp_audio_shortcode', array( __CLASS__, 'custom_audio_styling' ), 10, 5 );
+		add_filter( 'shortcode_atts_audio', array( __CLASS__, 'update_default_attributes' ) );
 	}
 
 	/**
@@ -327,10 +328,11 @@ class GMR_Audio_Shortcodes {
 		$new_html .= '<div class="gmr-mediaelement-fallback">' . $html . '</div>';
 		$new_html .= '</div>'; // .podcast-player
 
-		update_post_meta( $post_id, 'enclosure', esc_attr( $mp3_src ) );
-
-		if ( isset( $metadata['length_formatted'] ) ) {
-			update_post_meta( $post_id, 'duration', esc_html( $metadata['length_formatted'] ) );
+		if ( $is_episode ) {
+			update_post_meta( $post_id, 'enclosure', esc_attr( $mp3_src ) );
+			if ( isset( $metadata['length_formatted'] ) ) {
+				update_post_meta( $post_id, 'duration', esc_html( $metadata['length_formatted'] ) );
+			}
 		}
 
 		return $new_html;
@@ -346,6 +348,15 @@ class GMR_Audio_Shortcodes {
 		$post     = $old_post;
 
 		return $content;
+	}
+
+	public static function update_default_attributes( $atts ) {
+		$visibility = 'visibility: hidden;';
+		if ( ! empty( $atts['style'] ) && false === stripos( $atts['style'], $visibility ) ) {
+			$atts['style'] = rtrim( $atts['style'], ';' ) . ';' . $visibility;
+		}
+
+		return $atts;
 	}
 
 }

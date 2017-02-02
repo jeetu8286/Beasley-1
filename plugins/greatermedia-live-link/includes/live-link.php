@@ -21,6 +21,15 @@ add_filter( 'gmr_blogroll_widget_item', 'gmr_ll_output_blogroll_widget_live_link
 add_filter( 'posts_where', 'gmr_ll_suggestion_by_post_title', 10, 2 );
 add_filter( 'post_type_link', 'gmr_ll_get_link_permalink', 10, 2 );
 
+// Dont index live links in elasticpress - causing segfaults, and not really useful
+add_filter( 'ep_indexable_post_types', function( $post_types ) {
+	if ( isset( $post_types['gmr-live-link'] ) ) {
+		unset( $post_types['gmr-live-link'] );
+	}
+
+	return $post_types;
+});
+
 /**
  * Updates live link post title when a parent post title has been changed.
  *

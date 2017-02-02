@@ -59,9 +59,4 @@ $post_taxonomies = get_post_taxonomies();
 			</ul>
 		</div>
 	<?php endif; ?>
-
-	<?php if ( post_type_supports( get_post_type(), 'comments' ) ) { // If comments are open or we have at least one comment, load up the comment template. ?>
-		<?php comments_template(); ?>
-	<?php } ?>
-
 </footer>

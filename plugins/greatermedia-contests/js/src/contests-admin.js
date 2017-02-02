@@ -1,25 +1,5 @@
 (function ($) {
 	$(document).ready(function () {
-		if (document.getElementById('contest_embedded_form')) {
-			var formbuilder = new Formbuilder({
-				selector: '#contest_embedded_form',
-				bootstrapData: GreaterMediaContestsForm.form,
-				controls: ['address', 'checkboxes', 'date', 'dropdown', 'email', 'paragraph', 'radio', 'section_break', 'text', 'website', 'file']
-			});
-
-			formbuilder.on('save', function (payload) {
-				// payload is a JSON string representation of the form
-				$('#contest_embedded_form_data').val(encodeURIComponent(JSON.stringify(JSON.parse(payload).fields)).replace(/'/g, "%27"));
-			});
-
-			// Default the hidden field with the form data loaded from the server
-			$('#contest_embedded_form_data').val(encodeURIComponent(JSON.stringify(GreaterMediaContestsForm.form)).replace(/'/g, "%27"));
-		}
-	});
-})(jQuery);
-
-(function ($) {
-	$(document).ready(function () {
 		$('#contest-settings ul.tabs a').click(function() {
 			$('#contest-settings ul.tabs li.active').removeClass('active');
 			$(this).parent().addClass('active');
@@ -127,12 +107,12 @@ document.addEventListener("DOMContentLoaded", function() {
 	// Add datepickers for start & end dates if not supported natively
 	var supported_input_types = check_supported_input_types();
 	if (!supported_input_types.hasOwnProperty('date') || false === supported_input_types.date) {
-		jQuery('#greatermedia_contest_start,#greatermedia_contest_end,#greatermedia_contest_vote_end,#greatermedia_contest_vote_start').datetimepicker({
+		jQuery('#greatermedia_contest_start,#greatermedia_contest_end,#greatermedia_contest_vote_end,#greatermedia_contest_vote_start,#greatermedia_contest_submission_end,#greatermedia_contest_submission_start').datetimepicker({
 			format: 'm/d/Y',
 			timepicker: false
 		});
 
-		jQuery('#greatermedia_contest_start_time,#greatermedia_contest_end_time,#greatermedia_contest_vote_end_time,#greatermedia_contest_vote_start_time').datetimepicker({
+		jQuery('#greatermedia_contest_start_time,#greatermedia_contest_end_time,#greatermedia_contest_vote_end_time,#greatermedia_contest_vote_start_time,#greatermedia_contest_submission_end_time,#greatermedia_contest_submission_start_time').datetimepicker({
 			format: 'H:i',
 			datepicker: false
 		});

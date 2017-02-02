@@ -33,7 +33,7 @@
 				if ( fotorama && fotorama.activeFrame ) {
 					$(this).addClass('disable-download');
 				}
-			});	
+			});
 		}
 
 		// bind vote click event
@@ -112,7 +112,7 @@
 					if (iframe_body.length > 0) {
 						container.html(iframe_body);
 					} else {
-						alert('Your submission failed. Please, enter required fields and try again.');
+						//alert('Your submission failed. Please, enter required fields and try again.');
 						form.find('input, textarea, select, button').removeAttr('readonly');
 						form.find('i.gmr-icon').hide();
 					}

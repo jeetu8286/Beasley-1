@@ -44,10 +44,11 @@ define( 'WRIF_VERSION', '0.2.7' ); /* Version bump by Steve 10/25/2016 @ 3:30 p.
 	wp_dequeue_style( 'greatermedia' );
 	wp_deregister_style( 'greatermedia' );
 	wp_enqueue_style( 'wrif', get_stylesheet_directory_uri() . "/assets/css/wrif{$postfix}.css", array( 'google-fonts-wrif' ), WRIF_VERSION );
+	wp_enqueue_script( 'livefyre', '//cdn.livefyre.com/Livefyre.js', null, null, true );
 	wp_enqueue_script(
 		'wrif',
 		get_stylesheet_directory_uri() . "/assets/js/wrif{$postfix}.js",
-		array(),
+		array( 'livefyre' ),
 		WRIF_VERSION,
 		true
 	);

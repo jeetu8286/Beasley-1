@@ -4,7 +4,7 @@ Plugin Name: Ad Code Manager
 Plugin URI: http://automattic.com
 Description: Easy ad code management
 Author: Rinat Khaziev, Jeremy Felt, Daniel Bachhuber, Automattic, doejo
-Version: 0.4.1
+Version: 0.5
 Author URI: http://automattic.com
 
 GNU General Public License, Free Software Foundation <http://creativecommons.org/licenses/GPL/2.0/>
@@ -24,7 +24,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-define( 'AD_CODE_MANAGER_VERSION', '0.4.1' );
+define( 'AD_CODE_MANAGER_VERSION', '0.5' );
 define( 'AD_CODE_MANAGER_ROOT' , dirname( __FILE__ ) );
 define( 'AD_CODE_MANAGER_FILE_PATH' , AD_CODE_MANAGER_ROOT . '/' . basename( __FILE__ ) );
 define( 'AD_CODE_MANAGER_URL' , plugins_url( '/', __FILE__ ) );
@@ -78,10 +78,7 @@ class Ad_Code_Manager {
 	 * which holds all necessary configuration properties
 	 */
 	function action_load_providers() {
-		$module_dirs = is_dir( AD_CODE_MANAGER_ROOT . '/providers/' ) 
-			? array_diff( scandir( AD_CODE_MANAGER_ROOT . '/providers/' ), array( '..', '.' ) )
-			: array();
-		
+		$module_dirs = array_diff( scandir( AD_CODE_MANAGER_ROOT . '/providers/' ), array( '..', '.' ) );
 		foreach ( $module_dirs as $module_dir ) {
 			$module_dir = str_replace( '.php', '', $module_dir );
 			if ( file_exists( AD_CODE_MANAGER_ROOT . "/providers/$module_dir.php" ) ) {
@@ -122,7 +119,7 @@ class Ad_Code_Manager {
 
 		/**
 		 * Configuration filter: acm_provider_slug
-		 *CM_Ad_Zones
+		 *
 		 * By default we use doubleclick-for-publishers provider
 		 * To switch to a different ad provider use this filter
 		 */
@@ -395,6 +392,8 @@ class Ad_Code_Manager {
 
 		$ad_codes_formatted = wp_cache_get( 'ad_codes' , 'acm' );
 		if ( false === $ad_codes_formatted ) {
+			// Store an empty array when no ad codes exist so this block doesn't run on each page load
+			$ad_codes_formatted = array();
 			$ad_codes = get_posts( $args );
 			foreach ( $ad_codes as $ad_code_cpt ) {
 				$provider_url_vars = array();
@@ -719,9 +718,7 @@ class Ad_Code_Manager {
 	 *
 	 */
 	function register_widget() {
-		if ( class_exists( 'WP_Widget' ) ) {
-			register_widget( 'ACM_Ad_Zones' );
-		}
+		register_widget( 'ACM_Ad_Zones' );
 	}
 
 	/**
@@ -839,8 +836,9 @@ class Ad_Code_Manager {
 	 * @uses do_action( 'acm_tag, 'your_tag_id' )
 	 *
 	 * @param string  $tag_id Unique ID for the ad tag
+	 * @param bool $echo whether to echo or return ( defaults to echo )
 	 */
-	function action_acm_tag( $tag_id ) {
+	function action_acm_tag( $tag_id, $echo = true ) {
 		/**
 		 * See http://adcodemanager.wordpress.com/2013/04/10/hi-all-on-a-dotcom-site-that-uses/
 		 *
@@ -881,8 +879,11 @@ class Ad_Code_Manager {
 		 */
 		$output_html = apply_filters( 'acm_output_html_after_tokens_processed', $output_html, $tag_id );
 
-		// Print the ad code
-		echo $output_html;
+		if ( $echo )
+			// Print the ad code
+			echo $output_html;
+		else
+			return $output_html;
 	}
 
 	/**
@@ -891,9 +892,29 @@ class Ad_Code_Manager {
 	 * @since 0.4
 	 */
 	public function get_matching_ad_code( $tag_id ) {
+		global $wp_query;
 		// If there aren't any ad codes, it's not worth it for us to do anything.
 		if ( !isset( $this->ad_codes[$tag_id] ) )
 			return;
+
+		// This method might be expensive when there's a lot of ad codes
+		// So instead of executing over and over again, return cached matching ad code
+		$cache_key = "acm:{$tag_id}:" . md5( serialize( $wp_query->query_vars ) );
+
+		if ( false !== $ad_code = wp_cache_get( $cache_key, 'acm' ) )
+			return $ad_code;
+
+		/**
+		 * Prevent $post polution if ad code is getting rendered inside a loop:
+		 *
+		 * Most of conditionals are getting checked against global $post,
+		 * Getting matched ad code inside the loop might result in wrong ad code matched.
+		 *
+		 * Filter is for back compat since not thoroughly tested
+		 */
+		if ( apply_filters( 'acm_reset_postdata_before_match', false ) ) {
+			wp_reset_postdata();
+		}
 
 		// Run our ad codes through all of the conditionals to make sure we should
 		// be displaying it
@@ -935,15 +956,15 @@ class Ad_Code_Manager {
 					$cond_result = true;
 				}
 
-				// Special trick: include '!' in front of the function name to reverse the result
-				if ( 0 === strpos( $cond_func, '!' ) ) {
-					$cond_func = ltrim( $cond_func, '!' );
+				// Special trick: include 'not_' in front of the function name to reverse the result
+				if ( 0 === strpos( $cond_func, 'not_' ) ) {
+					$cond_func = ltrim( $cond_func, 'not_' );
 					$cond_result = false;
 				}
 
 				// Don't run the conditional if the conditional function doesn't exist or
 				// isn't in our whitelist
-				if ( !function_exists( $cond_func ) || !in_array( $cond_func, $this->whitelisted_conditionals ) )
+				if ( !is_callable( $cond_func ) || !in_array( $cond_func, $this->whitelisted_conditionals ) )
 					continue;
 
 				// Run our conditional and use any arguments that were passed
@@ -993,8 +1014,12 @@ class Ad_Code_Manager {
 			$prioritized_display_codes[$priority][] = $display_code;
 		}
 		ksort( $prioritized_display_codes, SORT_NUMERIC );
-		$prioritized_display_codes = array_shift( $prioritized_display_codes );
-		$code_to_display = array_shift( $prioritized_display_codes );
+
+		$shifted_prioritized_display_codes = array_shift( $prioritized_display_codes );
+
+		$code_to_display = array_shift( $shifted_prioritized_display_codes );
+
+		wp_cache_add( $cache_key, $code_to_display, 'acm', 600 );
 
 		return $code_to_display;
 	}
@@ -1063,7 +1088,7 @@ class Ad_Code_Manager {
 		if ( empty( $id ) )
 			return;
 
-		$this->action_acm_tag( $id );
+		return $this->action_acm_tag( $id, false );
 	}
 
 }

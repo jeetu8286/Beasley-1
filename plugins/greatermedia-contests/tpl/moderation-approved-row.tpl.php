@@ -1,1 +1,0 @@
-<span class="approved"><?php _e( 'Approved!', 'greatermedia_ugc' ); ?></span>

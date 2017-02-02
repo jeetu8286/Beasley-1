@@ -103,7 +103,8 @@ class BlogData {
 		$result = self::QueryContentSite( $syndication_id, '', '', $offset );
 		$taxonomy_names = SyndicationCPT::$support_default_tax;
 		$defaults = array(
-			'status' =>  get_post_meta( $syndication_id, 'subscription_post_status', true ),
+			'status'         =>  get_post_meta( $syndication_id, 'subscription_post_status', true ),
+			'last_performed' => get_post_meta( $syndication_id, 'syndication_last_performed', true ),
 		);
 
 		$max_pages = $result['max_pages'];
@@ -364,19 +365,24 @@ class BlogData {
 
 		// check whether post with that name exist
 		if ( ! empty( $existing ) ) {
-			$post_id = intval( $existing[0]->ID );
-			$hash_value = get_post_meta( $post_id, 'syndication_import', true );
-			if ( $hash_value != $post_hash || $force_update ) {
-				// post has been updated, override existing one
-				$args['ID'] = $post_id;
+			$existing_post = current( $existing );
+			// update existing post only if it hasn't been updated manually
+			if ( ! empty( $defaults['last_performed'] ) && strtotime( $existing_post->post_modified_gmt ) < $defaults['last_performed'] ) {
+				$post_id = intval( $existing_post->ID );
+				$hash_value = get_post_meta( $post_id, 'syndication_import', true );
+				if ( $hash_value != $post_hash || $force_update ) {
+					// post has been updated, override existing one
+					$args['ID'] = $post_id;
+					unset( $args['post_status'] );
 
-				wp_update_post( $args );
-				if ( ! empty( $metas ) ) {
-					foreach ( $metas as $meta_key => $meta_value ) {
-						update_post_meta( $post_id, $meta_key, $meta_value[0] );
+					wp_update_post( $args );
+					if ( ! empty( $metas ) ) {
+						foreach ( $metas as $meta_key => $meta_value ) {
+							update_post_meta( $post_id, $meta_key, $meta_value[0] );
+						}
 					}
+					$updated = 2;
 				}
-				$updated = 2;
 			}
 		} else {
 			$post_id = wp_insert_post( $args );

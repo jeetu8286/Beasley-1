@@ -40,7 +40,7 @@ $event_id = get_the_ID();
 			<div class="event__thumbnail-inline">
 				<?php Greater_Media\Flexible_Feature_Images\feature_image_preference_is( get_the_ID(), 'inline' ) ? get_template_part( 'partials/feature-image-event' ) : ''; ?>
 			</div>
-			
+
 			<?php
 			$event_secondary_content = ob_get_clean();
 			echo apply_filters( 'the_secondary_content', $event_secondary_content );
@@ -90,7 +90,6 @@ $event_id = get_the_ID();
 			</div>
 			<!-- .tribe-events-single-event-description -->
 		</div> <!-- #post-x -->
-		<?php if ( get_post_type() == TribeEvents::POSTTYPE && tribe_get_option( 'showComments', false ) ) comments_template() ?>
 	<?php endwhile; ?>
 
 	<!-- Event footer -->
