@@ -240,7 +240,8 @@ class GreaterMediaGallery {
         'include'    => '',
         'exclude'    => '',
         'link'       => 'file',
-				'width'			 => '100%'
+				'width'			 => '100%',
+				'hash'			 => 'false'
     ), $attr, 'gallery' );
 
     $id = intval( $atts['id'] );
