@@ -6,6 +6,10 @@
   margin: 0;
 }
 
+.fotorama__wrap {
+	background: #000;
+}
+
 .gallery-settings h3:after {
   content: ' (Fotorama ignores them)';
   font-weight: normal;

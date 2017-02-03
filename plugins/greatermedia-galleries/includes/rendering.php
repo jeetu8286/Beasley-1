@@ -239,7 +239,8 @@ class GreaterMediaGallery {
         'size'       => 'thumbnail',
         'include'    => '',
         'exclude'    => '',
-        'link'       => 'file'
+        'link'       => 'file',
+				'width'			 => '100%'
     ), $attr, 'gallery' );
 
     $id = intval( $atts['id'] );
@@ -384,8 +385,8 @@ class GreaterMediaGallery {
 
     $gallery = $output;
 
-		$width = array_key_exists('width', $atts) ? $atts['width'] : '';
-		$height = array_key_exists('height', $atts) ? $atts['height'] : '';
+		//$atts['width'] = array_key_exists('width', $atts) ? $atts['width'] : '100%';
+		//$atts['height'] = array_key_exists('height', $atts) ? $atts['height'] : '400';
 
 		$atts['size'] = 'large';
 		preg_match_all('/(<img[^<>]*>).*\n*.*<\/dt/', gallery_shortcode($atts), $images);
@@ -395,19 +396,22 @@ class GreaterMediaGallery {
 			$image = $images[1][$i];
 			preg_match('/src=(\'|")([^"\']+)(\'|")/', $image, $src);
 
-			if (!$i) {
+			if ( empty( $_width ) ) {
 				preg_match('/width=(\'|")([^"\']+)(\'|")/', $image, $__width);
-				$_width = $__width[2];
-
 				preg_match('/height=(\'|")([^"\']+)(\'|")/', $image, $__height);
-				$_height = $__height[2];
 
-				if (!$width) {
-					$atts['width'] = $_width;
-				}
+				// Ensure that the gallery is horizontal unless all images are portrait
+				if ( ( $__width[2] > $__height[2] ) || ( $i === $l - 1 ) ){
+					$_width = $__width[2];
+					$_height = $__height[2];
 
-				if (!$height) {
-					$height = $_height;
+					if (!$width) {
+						$atts['width'] = $_width;
+					}
+
+					if (!$height) {
+						$height = $_height;
+					}
 				}
 			}
 
@@ -426,7 +430,7 @@ class GreaterMediaGallery {
 		$data = '';
 		foreach ($atts as $key => $value) {
 			if ($key != 'fotorama') {
-				$data .= "data-$key='$value'";
+				$data .= "data-$key='$value' ";
 			}
 		}
 
