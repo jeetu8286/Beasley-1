@@ -20,37 +20,9 @@
 			<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="header__logo">
 				<?php do_action( 'gmr_site_logo' ); ?>
 			</a>
-			<div class="header__subnav">
-				<?php
-				$secondary_nav = array(
-					'theme_location'  => 'secondary-nav',
-					'menu'            => '',
-					'container'       => 'nav',
-					'container_class' => 'secondary-nav',
-					'container_id'    => '',
-					'menu_class'      => 'secondary-nav-list',
-					'menu_id'         => '',
-					'echo'            => true,
-					'fallback_cb'     => '',
-					'before'          => '',
-					'after'           => '',
-					'link_before'     => '<div class="secondary-link">',
-					'link_after'      => '</div>',
-					'items_wrap'      => '<ul id="%1$s" class="%2$s">%3$s</ul>',
-					'depth'           => 0,
-				);
-				wp_nav_menu( $secondary_nav );
-				?>
-				<div id="header__search" class="header__search">
-					<label for="s" class="header__search--label"><i class="header__search--btn"></i><div class="header__search--span"><?php _e( 'Search', 'greatermedia' ); ?></div></label>
-				</div>
+			<div id="header__search" class="header__search">
+				<label for="s" class="header__search--label"><i class="header__search--btn"></i><div class="header__search--span"><?php _e( 'Search', 'greatermedia' ); ?></div></label>
 			</div>
-			<?php
-			/**
-			 * Comment out the sports scores for now
-			 */
-			/* get_template_part( 'partials/news/header', 'scores'); */
-			?>
 		</div>
 	</div>
 	<div class="header__main">

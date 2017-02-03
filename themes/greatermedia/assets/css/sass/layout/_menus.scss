@@ -236,14 +236,13 @@
 }
 
 // main header navigation
-.header__nav ul, .header__account ul {
+.header__nav ul {
 	padding: 0;
 	margin: 0;
 	list-style: none;
 }
 
-.header__nav > ul > li,
-.header__account > ul > li {
+.header__nav > ul > li {
 	padding: 0;
 	margin: 0;
 	list-style: none;
@@ -282,10 +281,7 @@
 
 .header__nav ul li a,
 .header__nav ul li a:link,
-.header__nav ul li a:visited,
-.header__account ul li a,
-.header__account ul li a:link,
-.header__account ul li a:visited, {
+.header__nav ul li a:visited {
 	display: block;
 	padding: 34px .5em 33px;
 
@@ -310,23 +306,10 @@
 	}
 }
 
-.header__account ul li a,
-.header__account ul li a:link,
-.header__account ul li a:visited {
-
-	.news-site & {
-		border-right: none;
-	}
-}
-
 .header__nav ul li.active a:hover,
 .header__nav ul li a:focus,
 .header__nav ul li a:active,
 .header__nav ul li.active,
-.header__account ul li a:hover,
-.header__account ul li a:focus,
-.header__account ul li a:active,
-.header__account ul li:hover,
 .ui-menu .ui-state-focus {
 	background-color: $header-nav-bg;
 }

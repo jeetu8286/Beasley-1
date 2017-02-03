@@ -74,7 +74,6 @@
 }
 
 .header__nav .sub-menu,
-.header__account--links.sub-menu,
 .ui-menu {
 	position: absolute;
 	border-top: 7px solid $color-text-red;
@@ -122,14 +121,6 @@
 	}
 
 }
-
-.header__account--container {
-	display: none;
-	.gmr-user & {
-
-	}
-}
-
 
 .mobile-nav {
 
