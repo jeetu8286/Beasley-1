@@ -497,7 +497,7 @@ category: Base - Typography
   font-weight: normal;
   font-style: normal; }
 
-[class^="icon-"], [class*=" icon-"], .entry__thumbnail--video:before, .entry__thumbnail--events:before, .entry__thumbnail--audio:before, .header__search--btn:before, .entry2__thumbnail__icon, .live-link__song:before, .live-link__type--audio:before, .live-link__type--gallery:before, .live-link__type--image:before, .live-link__type--link:before, .live-link__type--standard:before, .live-link__type--video:before, .live-player--open__btn:before, .social__link--facebook, .social__link--twitter, .social__link--google-plus:before, .social__link--youtube:before, .social__link--instagram:before, .header__search--submit, .header__search--cancel, .gallery__prev--btn:before, .gallery__next--btn:after, .gallery__paging--prev, .gallery__paging--next, .gallery__grid--album, .top-three__play, .gmr-icon, .contest__submission .preview .preview-close {
+[class^="icon-"], [class*=" icon-"], .header__nav .menu-item-has-children:after, .entry__thumbnail--video:before, .entry__thumbnail--events:before, .entry__thumbnail--audio:before, .header__search--btn:before, .entry2__thumbnail__icon, .live-link__song:before, .live-link__type--audio:before, .live-link__type--gallery:before, .live-link__type--image:before, .live-link__type--link:before, .live-link__type--standard:before, .live-link__type--video:before, .live-player--open__btn:before, .social__link--facebook, .social__link--twitter, .social__link--google-plus:before, .social__link--youtube:before, .social__link--instagram:before, .header__search--submit, .header__search--cancel, .gallery__prev--btn:before, .gallery__next--btn:after, .gallery__paging--prev, .gallery__paging--next, .gallery__grid--album, .top-three__play, .gmr-icon, .contest__submission .preview .preview-close {
   font-family: 'gmr-icons';
   speak: none;
   font-style: normal;
@@ -1413,24 +1413,16 @@ blockquote p {
 .header__main a, .header__main a:visited {
   color: #000000; }
 
-.header__main a:hover,
-.header__main li:hover a,
-.header__main a:active {
-  color: #ffffff; }
-
-.header__nav ul li a,
-.header__nav ul li a:link,
-.header__nav ul li a:visited {
+.header__nav > ul li a {
   display: block;
   padding: 10px;
   text-transform: uppercase; }
 
-.header__nav ul li.active a:hover,
-.header__nav ul li a:focus,
-.header__nav ul li a:active,
-.header__nav ul li.active,
-.ui-menu .ui-state-focus {
-  background-color: #d22228; }
+.header__main ul li a:hover,
+.header__main ul li:hover a,
+.header__main ul li a:active {
+  background-color: #d22228;
+  color: #ffffff; }
 
 ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw > ul li:not(.mobile-menu-submenu-header):hover, .header__nav .format-sp > ul li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fi > ul li:not(.mobile-menu-submenu-header):hover {
   background-color: transparent; }
@@ -1449,14 +1441,11 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
  */
 /* Psuedo element helps with selection by preventing the menu from collapsing on just a bit of a mouse-out */
 .header__nav .menu-item-has-children:after {
-  content: ' ';
+  content: '\e618';
   display: none;
-  position: relative;
-  bottom: 40px;
-  right: -40px;
-  float: right;
-  width: 40px;
-  height: 40px; }
+  height: 15px;
+  transform: rotate(45deg);
+  width: 15px; }
   .header__nav .menu-item-has-children:after.active {
     display: block; }
     .header__nav .menu-item-has-children:after.active:hover {
@@ -1505,8 +1494,7 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
 .header__nav .sub-menu, .header__nav .format-fw > ul, .header__nav .format-sp > ul, .header__nav .format-fi > ul,
 .ui-menu {
   position: absolute;
-  border-top: 7px solid #d22228;
-  background-color: #ffffff;
+  background-color: #d22228;
   color: #000000;
   min-width: 300px;
   z-index: 5000100;
@@ -1516,29 +1504,22 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
     display: block; }
   .header__nav .sub-menu a, .header__nav .format-fw > ul a, .header__nav .format-sp > ul a, .header__nav .format-fi > ul a,
   .ui-menu a {
-    color: #000000;
+    color: #ffffff;
+    font-size: 0.79012em;
+    font-weight: normal;
+    text-transform: none;
     /*
 		 * Important used here to override a declaration on .header__nav ul li a
 		 * We could make the selector more specific here, but I felt it was important
 		 * to keep this as a component (e.g. context independent). - TD
 		 */
     padding: 1em !important; }
-    .header__nav .sub-menu a:visited, .header__nav .format-fw > ul a:visited, .header__nav .format-sp > ul a:visited, .header__nav .format-fi > ul a:visited,
-    .ui-menu a:visited {
-      color: #000000; }
-    .header__nav .sub-menu a:hover, .header__nav .format-fw > ul a:hover, .header__nav .format-sp > ul a:hover, .header__nav .format-fi > ul a:hover,
+    .header__nav .sub-menu a.active, .header__nav .format-fw > ul a.active, .header__nav .format-sp > ul a.active, .header__nav .format-fi > ul a.active, .header__nav .sub-menu a:focus, .header__nav .format-fw > ul a:focus, .header__nav .format-sp > ul a:focus, .header__nav .format-fi > ul a:focus, .header__nav .sub-menu a:hover, .header__nav .format-fw > ul a:hover, .header__nav .format-sp > ul a:hover, .header__nav .format-fi > ul a:hover,
+    .ui-menu a.active,
+    .ui-menu a:focus,
     .ui-menu a:hover {
-      color: #ffffff; }
-  .news-site .header__nav .sub-menu, .news-site .header__nav .format-fw > ul, .news-site .header__nav .format-sp > ul, .news-site .header__nav .format-fi > ul, .news-site
-  .ui-menu {
-    border-top: none;
-    border-bottom: 7px solid #d22228; }
-    .news-site .header__nav .sub-menu li a, .news-site .header__nav .format-fw > ul li a, .news-site .header__nav .format-sp > ul li a, .news-site .header__nav .format-fi > ul li a, .news-site
-    .ui-menu li a {
-      border-right: none !important;
-      font-size: 0.79012em;
-      font-weight: normal;
-      text-transform: none; }
+      background-color: #ffffff;
+      color: #d22228; }
 
 .mobile-nav .sub-menu, .mobile-nav .header__nav .format-fw > ul, .header__nav .mobile-nav .format-fw > ul, .mobile-nav .header__nav .format-sp > ul, .header__nav .mobile-nav .format-sp > ul, .mobile-nav .header__nav .format-fi > ul, .header__nav .mobile-nav .format-fi > ul {
   -webkit-transition: left 100ms ease-out;
@@ -1619,7 +1600,7 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
     line-height: 1.25em; }
 
 .header__nav .format-fw > ul > li:not(:nth-child(3n+1)), .header__nav .format-sp > ul > li:not(:nth-child(3n+1)) {
-  border-left: 1px solid #d0d2d3;
+  border-left: 1px solid rgba(0, 0, 0, 0.2);
   padding-left: 1%;
   margin-left: 1%; }
 
@@ -1642,7 +1623,7 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
   margin-left: 0; }
 
 .news-site .header__nav .format-fw > ul > li:not(:nth-child(4n+1)), .header__nav .news-site .format-fw > ul > li:not(:nth-child(4n+1)), .news-site .header__nav .format-sp > ul > li:not(:nth-child(4n+1)), .header__nav .news-site .format-sp > ul > li:not(:nth-child(4n+1)) {
-  border-left: 1px solid #d0d2d3 !important;
+  border-left: 1px solid rgba(0, 0, 0, 0.2) !important;
   padding-left: 1%;
   margin-left: 1%; }
 
@@ -1655,12 +1636,12 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
 .format-sp a:hover {
   color: #ffffff; }
   .format-sp a:hover .meta-text {
-    color: #ffffff; }
+    color: #d22228; }
 
 .format-sp .meta-text {
   display: block;
   font-size: 0.79012em;
-  color: #404041;
+  color: #ffffff;
   margin-top: .5em; }
   .format-sp .meta-text .times {
     display: inline-block;
@@ -3607,16 +3588,19 @@ a.highlights__contest--btn {
 .header__search {
   cursor: pointer;
   display: none;
-  padding-right: 15px; }
+  padding-right: 10px; }
   @media screen and (min-width: 768px) {
     .header__search {
       display: block;
       float: right;
       position: relative; } }
+  .header__search:hover,
+  .header__search:hover .header__search--btn:before {
+    color: #d22228; }
 
 .header__search--span {
   display: inline-block;
-  margin-right: 5px; }
+  margin-right: 2px; }
   @media screen and (min-width: 970px) {
     .header__search--span {
       font-size: 0.79012em; } }

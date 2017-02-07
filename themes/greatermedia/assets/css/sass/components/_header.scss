@@ -99,18 +99,23 @@
 .header__search {
 	cursor: pointer;
 	display: none;
-	padding-right: 15px;
+	padding-right: 10px;
 
 	@include bp(medium) {
 		display: block;
 		float: right;
 		position: relative;
 	}
+
+	&:hover,
+	&:hover .header__search--btn:before {
+		color: $primary-link;
+	}
 }
 
 .header__search--span {
 	display: inline-block;
-	margin-right: 5px;
+	margin-right: 2px;
 
 	@include bp(large) {
 		font-size: ms(-2);
@@ -124,7 +129,7 @@
 
 .header__search--btn:before {
 	@extend %gmr-icons;
-	color: $primary-border;
+	color: $secondary-link;
 	font-size: ms(3);
 	content: "\e612";
 

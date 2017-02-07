@@ -259,26 +259,17 @@
 	color: $color-text-black;
 }
 
-.header__main a:hover,
-.header__main li:hover a,
-.header__main a:active {
-	color: $color-text-white;
-}
-
-.header__nav ul li a,
-.header__nav ul li a:link,
-.header__nav ul li a:visited {
+.header__nav > ul li a {
 	display: block;
 	padding: 10px;
 	text-transform: uppercase;
 }
 
-.header__nav ul li.active a:hover,
-.header__nav ul li a:focus,
-.header__nav ul li a:active,
-.header__nav ul li.active,
-.ui-menu .ui-state-focus {
+.header__main ul li a:hover,
+.header__main ul li:hover a,
+.header__main ul li a:active {
 	background-color: $header-nav-bg;
+	color: $color-text-white;
 }
 
 ul.sub-menu li:not(.mobile-menu-submenu-header):hover {
