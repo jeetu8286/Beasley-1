@@ -2724,21 +2724,18 @@ $.fn.cycle.transitions.carousel = {
 			$secondary = jQuery(document.querySelector('.header__secondary')),
 			$overlay = jQuery(document.querySelector('.menu-overlay-mask')),
 			$body = jQuery(document.querySelector('body')),
-			$logo = jQuery(document.querySelector('.header__logo')),
-			$subHeader = jQuery(document.querySelector('.header__sub'));
+			$logo = jQuery(document.querySelector('.header__logo'));
 
 		$menu.on('mouseover', '.menu-item-has-children', function (e) {
 			$overlay.addClass('is-visible');
 			if($body.hasClass('news-site')) {
 				$logo.addClass('is-visible');
-				$subHeader.addClass('is-visible');
 			}
 		});
 		$menu.on('mouseout', '.menu-item-has-children', function (e) {
 			$overlay.removeClass('is-visible');
 			if($body.hasClass('news-site')) {
 				$logo.removeClass('is-visible');
-				$subHeader.removeClass('is-visible');
 			}
 		});
 	}

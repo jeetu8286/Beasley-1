@@ -1,15 +1,12 @@
 .header {
+	@include transition(all 200ms linear);
+	background-color: $header-bg;
+	padding: 0;
 	position: relative;
 	width: 100%;
-	padding: 0;
-	background-color: $header-bg;
-	@include transition(all 200ms linear);
-	@include bp(medium) {
-		border-bottom: 1px solid $primary-border;
-	}
 
-	.news-site & {
-		border-bottom: none;
+	@include bp(medium) {
+		border-bottom: 3px solid $primary-border;
 	}
 }
 
@@ -22,95 +19,13 @@
 }
 
 .header .container {
-	padding: 0 .714285714286%;
+	padding: 0 10px 0 20px;
 	position: relative;
 	min-height: 0;
-
-	&.container__leaderboard {
-		padding: 0;
-
-		@include bp(medium) {
-			padding: 0 .714285714286%;
-		}
-	}
-
-	.news-site & {
-		padding: 0;
-	}
 }
 
-.header__leaderboard {
-	width: auto;
-}
-
-.header__sub {
-	display: none;
-	width: auto;
-	height: 40px;
-
-	@include bp(medium) {
-		height: 48px;
-	}
-
-	.news-site & {
-		display: block;
-
-		&.is-visible {
-			z-index: 5000101;
-		}
-	}
-}
-
-.header__subnav {
-	position: absolute;
-	display: block;
-	width: auto;
-	padding: 4px 1em;
-	margin: 0;
-	line-height: 1;
-	font-size: ms(0);
-	text-transform: uppercase;
-
-	@include bp(medium) {
-		padding: 0 1em;
-		font-size: ms(-2);
-	}
-
-	@include bp(large) {
-		position: relative;
-		left: auto;
-		float: left;
-		height: 48px;
-		margin-right: 1.25em;
-	}
-
-	/*@include bp(larger) {
-		font-size: ms(0);
-	}*/
-
-}
-
-%header__subnav--icon {
-	@extend %gmr-icons;
-	display: block;
-	width: 24px;
-	height: 24px;
-	padding-right: .25em;
-	vertical-align: middle;
-	font-size: ms(6);
-
-	@include bp(medium) {
-		display: table-cell;
-		width: 0;
-		height: 18px;
-		padding-right: .75em;
-		font-size: ms(2);
-	}
-}
-
-.header__link--search:before {
-	@extend %header__subnav--icon;
-	@extend .icon-search;
+.container__leaderboard {
+	@include clearfix;
 }
 
 .header__link--text {
@@ -119,256 +34,101 @@
 	@include bp(medium) {
 		display: table-cell;
 		width: auto;
-		height: 18px;
 		vertical-align: middle;
 	}
 }
 
 .header__main {
 	width: 100%;
-	height: 70px;
 	padding: 0;
-	border-bottom: 1px solid $header-border;
-	@include bp(medium) {
-		height: 82px;
-		border-top: 1px solid $header-border;
-	}
 
-	.news-site & {
-		border-top: none;
-		border-bottom: none;
-
-		@include bp(medium) {
-			height: 78px;
-		}
+	.container {
+		align-items: flex-end;
+		display: flex;
+		justify-content: space-between;
 	}
 }
 
 .header__logo {
-	@include span-columns(2);
-	@include shift(1);
-	@include omega;
-	height: 70px;
-	padding: $header-logo-padding 0;
+	display: block;
+	float: left;
 	line-height: 1;
+	padding: 30px 0 $header-logo-padding 0;
 	position: relative;
-
-	@include bp(medium) {
-		@include shift(0);
-		max-width: 200px;
-		height: 82px;
-	}
-
-	@include bp(large) {
-		@include span-columns(2);
-		padding-left: $header-logo-padding;
-	}
-
-	.news-site & {
-		top: 40px;
-		width: 20%;
-		margin-left: 40%;
-		z-index: 1;
-
-		@include bp(medium) {
-			top: 48px;
-			height: 78px;
-		}
-
-		@include bp(large) {
-			top: auto;
-			height: 126px;
-			padding-right: 1.5em;
-			padding-left: 1.5em;
-			margin-right: 0;
-			margin-left: 0;
-		}
-
-		&.is-visible {
-			z-index: 5000101;
-		}
-	}
 }
 
 .header__logo--img {
-	margin: 0 auto;
-	max-height: 100%;
-	max-width: 100%;
 	height: auto;
-	width: auto;
+	margin: 0 auto;
+	max-height: 70px;
 	position: relative;
-	top: 50%;
-	@include transform(translateY(-50%));
+	width: auto;
 
 	@include bp(medium) {
 		margin-left: 70px; /* space enough for the mobile menu */
+		max-height: 80px;
+		max-width: 150px;
 		text-align: left;
 	}
 
 	@include bp(large) {
 		margin-left: auto;
 	}
-
-	.news-site & {
-		margin-left: auto;
-	}
 }
 
 // container for main header navigation
+.header__main--navwrap {
+	flex: 1 1 auto;
+	padding-bottom: 5px;
+}
+
 .header__nav {
-	height: 82px;
+	clear: right;
 	display: none;
 	line-height: 1;
+	padding-top: 15px;
 
 	@include bp(large) {
-		display: block;
-		float: left;
-		width: auto;
-	}
-
-	.news-site & {
-		height: 78px;
-	}
-}
-
-// container for social links
-.header__social {
-	display: none;
-	/*@include bp(x-large) {
 		display: block;
 		float: right;
-		height: 82px;
-		margin-right: 2em;
-		font-size: ms(0);
-	}*/
-
-	.news-site & {
-
-		@include bp(medium) {
-			height: 48px;
-		}
-	}
-}
-
-.header__social > .social__list {
-	padding: 0;
-}
-
-.header__social > .social__list > li {
-	margin-right: 1em;
-
-	&:last-of-type {
-		margin-right: 0;
-	}
-}
-
-.header__social a.social__link {
-
-	@include bp(large) {
 		width: auto;
-		height: auto;
-		padding: 2.1875em 0;
-		border: none;
-		font-size: 1em;
-		color: white;
-	}
-
-	.news-site & {
-
-		@include bp(large) {
-			padding: 15px 0 14px;
-			font-size: 1.25em;
-		}
 	}
 }
 
 // container for search button
 .header__search {
-	display: none;
-	color: $primary-border;
 	cursor: pointer;
+	display: none;
+	padding-right: 15px;
+
 	@include bp(medium) {
-		position: relative;
 		display: block;
 		float: right;
-		height: 82px;
-		margin-right: 1em;
-	}
-
-	.news-site & {
-		display: inline-block;
-		padding-left: 1.25em;
-		margin-right: 0;
-		color: white;
-
-		@include bp(medium) {
-			height: 48px;
-		}
+		position: relative;
 	}
 }
 
 .header__search--span {
-	display: none;
-	/*@include bp(x-large) {
-		display: block;
-		float: left;
-		height: 82px;
-		padding: 36px 0;
-		margin-left: .625em;
-		font-size: ms(0);
-	}*/
+	display: inline-block;
+	margin-right: 5px;
 
 	@include bp(large) {
 		font-size: ms(-2);
 	}
-
-	.news-site & {
-		text-transform: uppercase;
-
-		@include bp(medium) {
-			height: 48px;
-			padding: 16px 0;
-			margin: 0;
-		}
-
-		@include bp(large) {
-			font-size: ms(0);
-		}
-	}
-
-	.news-site .header__search:hover & {
-
-		color: $primary-link;
-	}
 }
 
 .header__search--btn {
-	display: block;
-	float: left;
-	height: 82px;
-	padding: 34px 0 30px;
-
-	.news-site & {
-		height: 48px;
-		padding: 16px 1.25em 14px 0;
-	}
-
-	.news-site .header__search:hover & {
-
-		color: $primary-link;
-	}
+	display: inline-block;
+	vertical-align: middle;
 }
 
 .header__search--btn:before {
 	@extend %gmr-icons;
+	color: $primary-border;
 	font-size: ms(3);
 	content: "\e612";
 
 	@include bp(large) {
 		font-size: ms(1);
-	}
-
-	.news-site & {
-		font-size: ms(0);
 	}
 }

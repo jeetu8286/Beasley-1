@@ -72,14 +72,7 @@
 			<?php get_template_part( 'partials/header-search' ); ?>
 
 			<div id="page-wrap" class="page-wrap">
-				<?php if ( is_news_site() ) {
 
-					get_template_part( 'partials/news/header');
-
-				} else {
-
-					get_template_part( 'partials/music/header' );
-
-				} ?>
+				<?php get_template_part( 'partials/header-site' );?>
 
 				<main class="main" role="main">
