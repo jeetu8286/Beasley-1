@@ -7,53 +7,43 @@
 .mobile-nav__toggle {
 	position: absolute;
 	top: 20px;
-	left: 20px;
-	width: 32px;
-	height: 32px;
+	right: 10px;
+	width: 25px;
+	height: 25px;
 	box-sizing: border-box;
 	padding: 0;
 	@include transition(all 500ms ease-in-out);
 	cursor: pointer;
 	z-index: 2;
+
 	@include bp(medium) {
-		top: 25px;
+		right: 20px;
 	}
 	@include bp(large) {
 		display: none;
 	}
 }
 
-.mobile-nav__toggle--span {
+.mobile-nav__toggle--span,
+.mobile-nav__toggle--span:before,
+.mobile-nav__toggle--span:after {
 	position: absolute;
-	top: 14px;
+	top: 8px;
 	display: block;
-	width: 32px;
-	height: 4px;
+	width: 25px;
+	height: 3px;
 	@include transition(all 500ms ease-in-out);
-	background: $color-text-white;
+	background: $color-text-black;
 	content: "";
 }
 
 .mobile-nav__toggle--span:before {
-	position: absolute;
-	top: -10px;
-	display: block;
-	width: 32px;
-	height: 4px;
-	@include transition(all 500ms ease-in-out);
-	background: $color-text-white;
-	content: "";
+	top: -8px;
 }
 
 .mobile-nav__toggle--span:after {
-	position: absolute;
-	bottom: -10px;
-	display: block;
-	width: 32px;
-	height: 4px;
-	@include transition(all 500ms ease-in-out);
-	background: $color-text-white;
-	content: "";
+	bottom: -8px;
+	top: auto;
 }
 
 .mobile-nav {
