@@ -2088,6 +2088,7 @@ Curated posts for Featured Articles
   margin-right: 0;
   padding: 1.5em 0.809em;
   background-color: #ffffff;
+  z-index: 1;
   /*@include bp(x-large) {
 		@include span-columns(12);
 		@include omega;
