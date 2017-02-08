@@ -1,20 +1,21 @@
 .header__search--form {
-	display: block;
+	border-bottom: 1px solid $header-nav-border;
+	display: none;
 	position: relative;
-	width: 100%;
-	height: 40px;
-	padding: 0 20px;
-	border-top: 1px solid $secondary-bg;
+	padding: 10px;
 	background-color: $header-search-bg;
 	
-	@include bp(medium) {
+	@include bp(large) {
+		display: block;
 		position: fixed;
 		top: 0;
 		left: 0;
 		width: 100%;
 		height: auto;
+		margin: 0;
 		padding: 16px 2.5%;
 		background-color: $primary-bg;
+		border-bottom: 0 none;
 		border-top: none;
 		@include transition(all 200ms ease-in-out);
 		@include transform(translate(0, -200%)); /* 200% ensures it's out of the way of the .wp-admin bar */
@@ -24,6 +25,19 @@
 			top: 32px
 		}
 	}
+
+	.mobile-nav--open & {
+		display: block;
+	}
+}
+
+.header__search--form .searchform {
+	@include clearfix;
+	border: 1px solid #cccccc;
+
+	@include bp(large) {
+		border: 0 none;
+	}
 }
 
 .header__search--label {
@@ -31,18 +45,19 @@
 }
 
 .header__search--open {
-  	z-index: 6000001; // Higher than .header-search-overlay-mask.
+	z-index: 6000001; // Higher than .header-search-overlay-mask.
 	
-	@include bp(medium) {
+	@include bp(large) {
 		@include transition(all 200ms ease-in-out);
 		@include transform(translate(0, 0));		
 	}
 }
 
-.header__search--input {
+.header__search--form .header__search--input {
 	float: left;
-	width: 90% !important;
-	height: 40px;
+	width: 80% !important;
+	height: 30px;
+	margin-left: 10px;
 	padding: 0 !important;
 	background-color: transparent !important;
 	border: none !important;
@@ -52,74 +67,61 @@
 	@include placeholder {
 		color: $secondary-heading;
 	}
-	@include bp(medium) {
+	@include bp(large) {
 		height: 100px;
 		background-color: $primary-bg !important;
 		outline: none;
 		font-size: ms(7);
 		color: $color-text-black;
+		margin-left: 0;
 		@include placeholder {
 			color: $secondary-link;
 		}
 	}
-
-	.news-site & {
-
-		@include bp(medium) {
-			height: 72px;
-		}
-	}
 }
 
-.header__search--submit,
-.header__search--cancel{
+.header__search--form .header__search--submit,
+.header__search--form .header__search--cancel {
 	position: relative;
 	float: right;
-	height: 40px;
+	height: 30px;
 	border: none;
 	width: 14px;
 	background-color: transparent;
 	color: $secondary-heading;
+	margin-right: 10px;
 	padding: 0;
 	
 	&:hover, &:focus {
 		color: $primary-link;
 	}
 
-	@include bp(medium) {
+	@include bp(large) {
 		width: 10%;
 		height: 100px;
 		color: $color-text-black;
 		font-size: ms(5);
-	}
-
-	.news-site & {
-
-		@include bp(medium) {
-			height: 72px;
-		}
+		margin-right: 0;
 	}
 }
 
-.header__search--submit {
+.header__search--form .header__search--submit {
 	@extend %gmr-icons;
 	@extend .icon-search;
-	
-	// Hide when the panel is open. 
-	.header__search--open & {
-		display: none;
-	}
+}
+// Hide when the panel is open.
+.header__search--open.header__search--form .header__search--submit {
+	display: none;
 }
 
-.header__search--cancel {
+.header__search--form .header__search--cancel {
 	@extend %gmr-icons;
 	@extend .icon-close;
-
-	// Only show when the panel is open.
-	display: none;	
-	.header__search--open & {
-		display: block;
-	}
+	display: none;
+}
+// Only show when the panel is open.
+.header__search--open.header__search--form .header__search--cancel {
+	display: block;
 }
 
 .header-search-body {
@@ -135,7 +137,7 @@
 		display: block;
 	}
 	
-	@include bp(medium) {
+	@include bp(large) {
 		margin: 0 -2.5%;
 		padding: $base-line-height 2.5%;
 	}
@@ -147,6 +149,7 @@
 }
 
 .header-search-overlay-mask {
+	display: none;
 	visibility: hidden;
 	background-color: rgba(0, 0, 0, .333);
 	position: fixed;
@@ -159,9 +162,12 @@
 	@include transition(visibility 0s linear, opacity 100ms ease-out);
 	
 	&.is-visible {
-		visibility: visible;
-		opacity: 1;
-		@include transition(visibility 0s linear, opacity 100ms ease-out);
+		@include bp(large) {
+			display: block;
+			visibility: visible;
+			opacity: 1;
+			@include transition(visibility 0s linear, opacity 100ms ease-out);
+		}
 	}
 }
 
@@ -231,9 +237,6 @@
 	@include bp(large) {
 		@include span-columns(2 of 10);
 	}
-	/*@include bp(x-large) {
-		@include span-columns(2 of 10);
-	}*/
 }
 
 .search__result--title {
@@ -256,10 +259,6 @@
 		@include span-columns(8 of 10);
 		@include omega;
 	}
-	/*@include bp(x-large) {
-		@include span-columns(8 of 10);
-		@include omega;
-	}*/
 }
 
 .search__result--title a:link, .search__result--title a:visited {

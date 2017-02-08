@@ -158,14 +158,15 @@
 	}
 
 	.show-subnavigation {
+		background-color: lighten($header-nav-border, 46%);
 		float: right;
 		width: 25%;
 		text-align: center;
-		border-left: 1px solid $header-border;
+		border-left: 1px solid $header-nav-border;
 	}
 
 	.mobile-menu-submenu-header {
-		background-color: $primary-link;
+		background-color: $header-nav-bg;
 		color: #fff;
 		padding: 18px 1.25em;
 	}
@@ -176,6 +177,7 @@
 		padding: 0;
 
 		&:link, &:visited {
+			background-color: transparent;
 			color: #fff;
 		}
 

@@ -1,6 +1,7 @@
 .header {
 	@include transition(all 200ms linear);
 	background-color: $header-bg;
+	border-bottom: 2px solid $primary-border;
 	padding: 0;
 	position: relative;
 	width: 100%;
@@ -57,6 +58,9 @@
 	padding: 10px 0;
 	position: relative;
 
+	@include bp(medium) {
+		padding: $header-logo-padding 0;
+	}
 	@include bp(large) {
 		padding-top: 30px 0 $header-logo-padding 0;
 	}
@@ -70,7 +74,7 @@
 	position: relative;
 	width: auto;
 
-	@include bp(large) {
+	@include bp(medium) {
 		max-height: 80px;
 		max-width: 150px;
 	}

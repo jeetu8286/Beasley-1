@@ -47,12 +47,3 @@
 		</div>
 	</div>
 </header>
-
-<div class="container__leaderboard">
-	<div class="ad__leaderboard desktop">
-		<?php do_action( 'acm_tag', 'leaderboard-top-of-site' ); ?>
-	</div>
-	<div class="ad__leaderboard mobile">
-		<?php do_action( 'acm_tag', 'smartphone-wide-banner' ); ?>
-	</div>
-</div>
