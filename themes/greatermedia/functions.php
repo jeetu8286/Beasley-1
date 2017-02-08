@@ -236,7 +236,6 @@ add_action( 'wp_head', 'greatermedia_header_meta' );
 function greatermedia_nav_menus() {
 	$locations = array(
 		'main-nav' => __( 'Main Navigation', 'greatermedia' ),
-		'secondary-nav' => __( 'Secondary Navigation', 'greatermedia' ),
 		'footer-nav' => __( 'Footer Navigation', 'greatermedia' )
 	);
 	register_nav_menus( $locations );

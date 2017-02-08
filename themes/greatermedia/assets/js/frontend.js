@@ -2625,9 +2625,8 @@ $.fn.cycle.transitions.carousel = {
 	/**
 	 * Global variables
 	 */
-	var body = document.querySelector('body');
-	var mobileNavButton = document.querySelector('.mobile-nav__toggle');
-	var siteWrap = document.getElementById('site-wrap');
+	var body = document.querySelector('body'),
+		mobileNavButton = document.querySelector('.mobile-nav__toggle');
 
 	/**
 	 * Function to detect if the current browser can use `addEventListener`, if not, use `attachEvent`
@@ -2643,22 +2642,6 @@ $.fn.cycle.transitions.carousel = {
 		} else if (elem.attachEvent) {
 			elem.attachEvent('on' + eventType, handler);
 		}
-	}
-
-	/**
-	 * Allows the main content body to maintain it's vertical position when the mobile menu is opened
-	 */
-	function mobileOpenLocation() {
-		var y = window.pageYOffset;
-
-		siteWrap.style.top = '-' + y + 'px';
-	}
-
-	/**
-	 * Returns the main content body to it's vertical position when the mobile menu is closed
-	 */
-	function mobileCloseLocation() {
-		siteWrap.style.removeProperty('top');
 	}
 
 	/**
@@ -2684,9 +2667,7 @@ $.fn.cycle.transitions.carousel = {
 		var $blocker = getBlockerDiv();
 
 		$blocker.css({
-			width: $(document).width(),
-			height: $(document).height(),
-			display: 'block',
+			display: 'block'
 		});
 	};
 
@@ -2709,10 +2690,8 @@ $.fn.cycle.transitions.carousel = {
 
 		if ($('.mobile-nav--open').length) {
 			showBlocker();
-			mobileOpenLocation();
 		} else {
 			hideBlocker();
-			mobileCloseLocation();
 		}
 	}
 
@@ -2724,21 +2703,18 @@ $.fn.cycle.transitions.carousel = {
 			$secondary = jQuery(document.querySelector('.header__secondary')),
 			$overlay = jQuery(document.querySelector('.menu-overlay-mask')),
 			$body = jQuery(document.querySelector('body')),
-			$logo = jQuery(document.querySelector('.header__logo')),
-			$subHeader = jQuery(document.querySelector('.header__sub'));
+			$logo = jQuery(document.querySelector('.header__logo'));
 
 		$menu.on('mouseover', '.menu-item-has-children', function (e) {
 			$overlay.addClass('is-visible');
 			if($body.hasClass('news-site')) {
 				$logo.addClass('is-visible');
-				$subHeader.addClass('is-visible');
 			}
 		});
 		$menu.on('mouseout', '.menu-item-has-children', function (e) {
 			$overlay.removeClass('is-visible');
 			if($body.hasClass('news-site')) {
 				$logo.removeClass('is-visible');
-				$subHeader.removeClass('is-visible');
 			}
 		});
 	}

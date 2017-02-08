@@ -9,21 +9,22 @@
  */
 
 /* Psuedo element helps with selection by preventing the menu from collapsing on just a bit of a mouse-out */
-.header__nav .menu-item-has-children:after {
-	content: ' ';
-	display: none;
-	position: relative;
-	bottom: 40px;
-	right: -40px;
-	float: right;
-	width: 40px;
-	height: 40px;
+.header__nav .menu-item-has-children {
 
-	&.active {
-		display: block;
+	&:after {
+		@extend %gmr-icons;
+		content: '\e618';
+		display: none;
+		height: 15px;
+		transform: rotate(45deg);
+		width: 15px;
 
-		&:hover {
-			color: white;
+		&.active {
+			display: block;
+
+			&:hover {
+				color: white;
+			}
 		}
 	}
 }
@@ -74,11 +75,9 @@
 }
 
 .header__nav .sub-menu,
-.header__account--links.sub-menu,
 .ui-menu {
 	position: absolute;
-	border-top: 7px solid $color-text-red;
-	background-color: $primary-bg;
+	background-color: $header-nav-bg;
 	color: $color-text-black;
 	min-width: 300px;
 	z-index: 5000100; /* IAB z-index standard for drop nav is 5000000 - 5999999 */
@@ -88,7 +87,11 @@
 	}
 
 	a {
-		color: $color-text-black;
+		//border-right: none !important;
+		color: $color-text-white;
+		font-size: ms(-2);
+		font-weight: normal;
+		text-transform: none;
 
 		/*
 		 * Important used here to override a declaration on .header__nav ul li a
@@ -97,39 +100,15 @@
 		 */
 		padding: 1em !important;
 
-		&:visited {
-			color: $color-text-black;
-		}
-
+		&.active,
+		&:focus,
 		&:hover {
-			color: $color-text-white;
-		}
-
-	}
-
-	.news-site & {
-		border-top: none;
-		border-bottom: 7px solid $color-text-red;
-
-		li {
-			a {
-				border-right: none !important;
-				font-size: ms(-2);
-				font-weight: normal;
-				text-transform: none;
-			}
+			background-color: $color-text-white;
+			color: $header-nav-bg;
 		}
 	}
 
 }
-
-.header__account--container {
-	display: none;
-	.gmr-user & {
-
-	}
-}
-
 
 .mobile-nav {
 
@@ -179,14 +158,15 @@
 	}
 
 	.show-subnavigation {
+		background-color: lighten($header-nav-border, 46%);
 		float: right;
 		width: 25%;
 		text-align: center;
-		border-left: 1px solid $header-border;
+		border-left: 1px solid $header-nav-border;
 	}
 
 	.mobile-menu-submenu-header {
-		background-color: $primary-link;
+		background-color: $header-nav-bg;
 		color: #fff;
 		padding: 18px 1.25em;
 	}
@@ -197,7 +177,8 @@
 		padding: 0;
 
 		&:link, &:visited {
-			color: #fff;			
+			background-color: transparent;
+			color: #fff;
 		}
 
 		.icon-arrow-prev:before {

@@ -30,7 +30,7 @@ $yellow: #f5ed7f;
  *
  * @type length
  */
-$header-logo-padding: 18px !default;
+$header-logo-padding: 15px !default;
 
 // Hologram Styleguide Swatches
 .hologram-color-swatch {
@@ -88,7 +88,7 @@ $primary-link: $color-text-red !default;
 $primary-link-hover: darken($color-text-red, 9%) !default;
 $primary-border: $light-gray !default;
 
-$secondary-bg: $black !default;
+$secondary-bg: $extra-light-gray !default;
 $secondary-text: $color-text-white !default;
 $secondary-heading: $gray !default;
 $secondary-link: $light-gray !default;
@@ -96,11 +96,11 @@ $secondary-link-hover: darken($color-text-red, 9%) !default;
 $secondary-border: $dark-gray !default;
 
 // Section Variables
-$header-bg: $black !default;
+$header-bg: $white !default;
 $header-border: $dark-gray !default;
 $header-nav-bg: $cardinal !default;
 $header-nav-border: $dark-gray !default;
-$header-search-bg: $black !default;
+$header-search-bg: $white !default;
 
 $liveplayer-bg: $black !default;
 $liveplayer-color: lighten($color-gray-medium, 20%) !default;
