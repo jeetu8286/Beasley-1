@@ -11,9 +11,8 @@
 	/**
 	 * Global variables
 	 */
-	var body = document.querySelector('body');
-	var mobileNavButton = document.querySelector('.mobile-nav__toggle');
-	var siteWrap = document.getElementById('site-wrap');
+	var body = document.querySelector('body'),
+		mobileNavButton = document.querySelector('.mobile-nav__toggle');
 
 	/**
 	 * Function to detect if the current browser can use `addEventListener`, if not, use `attachEvent`
@@ -29,22 +28,6 @@
 		} else if (elem.attachEvent) {
 			elem.attachEvent('on' + eventType, handler);
 		}
-	}
-
-	/**
-	 * Allows the main content body to maintain it's vertical position when the mobile menu is opened
-	 */
-	function mobileOpenLocation() {
-		var y = window.pageYOffset;
-
-		siteWrap.style.top = '-' + y + 'px';
-	}
-
-	/**
-	 * Returns the main content body to it's vertical position when the mobile menu is closed
-	 */
-	function mobileCloseLocation() {
-		siteWrap.style.removeProperty('top');
 	}
 
 	/**
@@ -70,9 +53,7 @@
 		var $blocker = getBlockerDiv();
 
 		$blocker.css({
-			width: $(document).width(),
-			height: $(document).height(),
-			display: 'block',
+			display: 'block'
 		});
 	};
 
@@ -95,10 +76,8 @@
 
 		if ($('.mobile-nav--open').length) {
 			showBlocker();
-			mobileOpenLocation();
 		} else {
 			hideBlocker();
-			mobileCloseLocation();
 		}
 	}
 

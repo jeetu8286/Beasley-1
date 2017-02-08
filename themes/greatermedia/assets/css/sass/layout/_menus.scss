@@ -67,7 +67,7 @@
 	display: none;
 	position: fixed;
 	width: 100%;
-	height: 100%;
+	//height: 100%;
 	background-color: $header-bg;
 	z-index: 1;
 	overflow-y: auto;
@@ -86,12 +86,12 @@
 }
 
 #mobile-nav-blocker {
-	background-color: rgba(0,0,0,0.4);
-	/*background-color: red;*/
-	/*opacity: 0.7;*/
+	background-color: rgba(0,0,0,0.75);
 	z-index: 20;
-	position: absolute;
+	position: fixed;
 	display: none;
+	height: 100%;
+	width: 100%;
 }
 
 .mobile-nav--open {
@@ -100,25 +100,28 @@
 	}
 }
 
-.admin-bar .mobile-nav {
-	//top: 32px;
-	height: calc( 100% - 32px ); /* doesn't work in IE8, but probably ok. Just don't edit the site and expect the front-end to be bug-free in IE8 */
-
-	/* Matches, exactly, the media query for the admin bar, so when it changes height, the menu also does */
-	@media screen and (max-width: 782px) {
-		//top: 46px;
-		height: calc(100% - 46px); /* doesn't work in IE8, but probably ok. Just don't edit the site and expect the front-end to be bug-free in IE8 */
-	}
-}
-
-.mobile-nav--open {
+/*.mobile-nav--open {
 	overflow: hidden;
 
-	/*.site-wrap {
-		position: fixed;
+	.site-wrap,
+	.page-wrap {
+		height: 100%;
 		overflow: hidden;
-	}*/
-}
+		position: fixed;
+	}
+}*/
+/*.mobile-nav--open.admin-bar {
+	.site-wrap {
+		top: 32px;
+		height: calc( 100% - 32px ); !* doesn't work in IE8, but probably ok. Just don't edit the site and expect the front-end to be bug-free in IE8 *!
+
+		!* Matches, exactly, the media query for the admin bar, so when it changes height, the menu also does *!
+		@media screen and (max-width: 782px) {
+			top: 46px;
+			height: calc(100% - 46px); !* doesn't work in IE8, but probably ok. Just don't edit the site and expect the front-end to be bug-free in IE8 *!
+		}
+	}
+}*/
 
 .mobile-nav--open .mobile-nav {
 	@include transform(translate(0, 0));
@@ -152,6 +155,7 @@
 }
 
 .mobile-nav__list a {
+	background-color: $header-bg;
 	color: $color-text-black;
 	display: block;
 	padding: 18px 1.25em;
@@ -170,17 +174,14 @@
 }
 
 .mobile-nav .social__link {
-	margin: 0 0 0 1em;
+	color: $color-text-black;
+	border-color: $color-text-black;
 	font-size: ms(3);
+	margin: 0 0 0 1em;
 }
 
 .mobile-nav .social__link:last-child {
 	margin: 0 0 0 1em;
-}
-
-.mobile-nav .social__link {
-	color: #fff;
-	border-color: #fff;
 }
 
 // main header navigation
