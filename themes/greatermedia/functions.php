@@ -20,7 +20,7 @@
 if ( defined( 'GMR_PARENT_ENV' ) && 'dev' == GMR_PARENT_ENV ) {
 	define( 'GREATERMEDIA_VERSION', time() );
 } else {
-	define( 'GREATERMEDIA_VERSION', '1.4' ); /* Version bump by Eugene 01/30/2017 */
+	define( 'GREATERMEDIA_VERSION', '1.5' ); /* Version bump by Steve 02/08/2017 */
 }
 
 add_theme_support( 'homepage-curation' );
@@ -155,10 +155,10 @@ function greatermedia_scripts_styles() {
 	$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 	$baseurl = untrailingslashit( get_template_directory_uri() );
 
-	wp_register_script( 'firebase', '//www.gstatic.com/firebasejs/3.6.4/firebase.js', null, null );
+	wp_register_script( 'firebase', '//www.gstatic.com/firebasejs/3.6.9/firebase.js', null, null );
 
 	wp_enqueue_script( 'greatermedia', "{$baseurl}/assets/js/frontend{$postfix}.js", array( 'jquery', 'jquery-waypoints', 'underscore', 'classlist-polyfill', 'firebase' ), GREATERMEDIA_VERSION, true );
-	wp_localize_script( 'greatermedia', 'beasley', array(
+	wp_localize_script( 'greatermedia', 'platformConfig', array(
 		'firebase' => array(
 			'apiKey'            => get_option( 'beasley_firebase_apiKey' ),
 			'authDomain'        => get_option( 'beasley_firebase_authDomain' ),
