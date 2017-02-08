@@ -18,4 +18,4 @@
 			auth.signInAnonymously();
 		}
 	});
-})(jQuery, window.beasley.firebase);
+})(jQuery, window.platformConfig.firebase);

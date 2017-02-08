@@ -1,0 +1,32 @@
+.fotorama--wp {
+  margin: 1em 0;
+}
+
+.fotorama--fullscreen {
+  margin: 0;
+}
+
+.fotorama__wrap {
+	background: #000;
+}
+
+.gallery-settings h3:after {
+  content: ' (Fotorama ignores them)';
+  font-weight: normal;
+  text-transform: none;
+  white-space: nowrap;
+}
+
+[lang="ru-RU"] .gallery-settings h3:after {
+	content: ' (Фоторама игнорирует их)';
+}
+
+.fotorama--wp dt,
+.fotorama--wp dd {
+	display: none;
+}
+
+.fotorama .attribution {
+	font-size: 10px;
+	text-transform: uppercase;
+}
