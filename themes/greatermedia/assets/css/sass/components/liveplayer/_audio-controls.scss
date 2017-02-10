@@ -1,0 +1,150 @@
+.audio-controls__play,
+.audio-controls__resume,
+.audio-controls__pause,
+.audio-controls__loading {
+	@extend %live-audio__btn;
+	position: relative;
+}
+
+.audio-controls__resume,
+.audio-controls__pause {
+	display: none;
+}
+
+.audio-controls__play:before,
+.audio-controls__resume:before {
+	@include transform(translate(-50%, -50%));
+	content: "\e606";
+	font-family: $icon-font;
+	font-size: ms(2);
+	left: 54%;
+	line-height: 1;
+	position: absolute;
+	top: 50%;
+}
+
+.audio-controls__pause:before {
+	@include transform(translate(-50%, -50%));
+	content: "\e61f";
+	font-family: $icon-font;
+	font-size: ms(2);
+	left: 50%;
+	position: absolute;
+	top: 50%;
+
+	.live-audio__player.audio__playing & {
+		content: "\e61f";
+	}
+}
+
+.audio-controls__loading .gmr-icon {
+	@include transform(translate(-50%, -50%));
+	font-size: ms(1);
+	left: 23%;
+	position: absolute;
+	top: 20%;
+
+	@include bp(medium) {
+		left: 32%;
+		top: 28%;
+	}
+}
+
+.audio-controls__play {
+	@include transform(rotateX(180deg));
+	@include transform-style(preserve-3d);
+	@include transition(500ms);
+	@include transition-delay(200ms);
+	border: none;
+
+	.live-audio__player.audio__playing & {
+		display: block;
+		position: absolute;
+		right: 0;
+
+		@include bp(medium) {
+			display: none;
+			position: relative;
+			right: auto;
+		}
+	}
+
+	.live-player--active & {
+		display: none;
+	}
+
+	.vast-ad--playing & {
+		display: block;
+	}
+
+	&.live-player__muted {
+		display: none;
+	}
+
+	&.play-btn--heartbeat:before {
+		top: 52%;
+	}
+
+}
+
+.audio-controls__loading {
+	display: none;
+	border: none;
+
+	&.loading {
+		display: block;
+	}
+}
+
+.audio-controls__pause {
+	@include transition(all 500ms ease-in-out 500ms);
+	display: none;
+	float: left;
+	visibility: hidden;
+
+	@include bp(medium) {
+		float: none;
+	}
+
+	.live-audio__player.audio__playing & {
+		@include transition(all 500ms ease-in-out 500ms);
+		display: block;
+		float: left;
+		visibility: visible;
+
+		@include bp(medium) {
+			float: none;
+		}
+
+		&.live-player__muted {
+			display: none;
+		}
+	}
+
+	.live-player--active & {
+		display: block;
+		visibility: visible;
+	}
+
+	&.live-player__muted {
+		display: none;
+	}
+}
+
+.audio-controls__resume {
+
+	&.resume__audio, &.resume__live {
+		display: block;
+		position: absolute;
+		left: 0;
+
+		@include bp(medium) {
+			position: relative;
+			left: auto;
+		}
+	}
+
+	&.live-player__muted {
+		display: none;
+	}
+}

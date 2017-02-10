@@ -1,0 +1,44 @@
+.audio-volume {
+	@include range-slider;
+	display: block;
+	padding: 5px 10px 0 10px;
+	width: percentage(170/550);
+
+	&.-open {
+		display: flex;
+	}
+
+	input[type=range] {
+		margin: 0 5px;
+	}
+}
+
+.audio-volume__btn,
+.audio-volume__mute {
+	appearance: none;
+	-webkit-appearance: none;
+	background-color: transparent;
+	border: 0 none;
+	display: block;
+	margin: 0;
+	padding: 0;
+	width: 20px;
+
+	&:before {
+		color: $liveplayer-color;
+		content: "\e60c";
+		font-family: $icon-font;
+		font-style: normal;
+		font-weight: normal;
+		height: 0;
+		line-height: 1;
+		text-indent: 0;
+		width: 0;
+	}
+}
+.audio-volume__mute:before {
+	content: "\e60d";
+}
+.audio-volume__text {
+	@extend .screen-reader-text;
+}

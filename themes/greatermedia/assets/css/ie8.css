@@ -14,8 +14,8 @@
 /* LIVEPLAYER */
 
 .live-stream__container.vast__pre-roll .live-stream__container--player, .pre-roll__notification {
-	top: 25%;
 	left: 25%;
+	top: 25%;
 }
 
 

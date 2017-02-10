@@ -16,13 +16,13 @@
 	font-style: italic;
 }
 
-%live-stream__btn {
+%live-audio__btn {
 	width: 34px;
 	height: 34px;
 	margin: 0 auto;
 	@include border-radius(50%);
-	background-color: $liveplayer-bg;
-	border: 2px solid $btn-bg;
+	background-color: $liveplayer-controls;
+	border: 2px solid $liveplayer-controls;
 	outline: none;
 	font-size: 1.25em;
 	font-style: normal;
@@ -30,7 +30,7 @@
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	text-rendering: auto;
-	color: $color-text-red;
+	color: $color-text-white;
 	cursor: pointer;
 	z-index: 1;
 

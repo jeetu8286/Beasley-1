@@ -1,4 +1,4 @@
-.live-audio {
+.audio-interface {
 	@include clearfix;
 	background-color: $liveplayer-bg;
 	color: $liveplayer-color;
@@ -7,7 +7,7 @@
 	width: 100%;
 	z-index: 2;
 
-	.live-audio__container {
+	.audio-interface__container {
 		display: flex;
 		margin: 0 auto;
 		max-width: 970px;

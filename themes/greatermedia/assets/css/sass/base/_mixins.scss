@@ -234,3 +234,105 @@
 	opacity: $opacity;
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=#{$opacity * 100})";
 }
+
+// http://danielstern.ca/range.css/?ref=css-tricks#/
+@mixin range-slider {
+	input[type=range] {
+		background-color: transparent;
+		margin: 5px 0;
+		width: 100%;
+		-webkit-appearance: none;
+	}
+	input[type=range]:focus {
+		outline: none;
+	}
+	input[type=range]::-webkit-slider-runnable-track {
+		background-color: lighten($liveplayer-color, 10%);
+		border: 0 none;
+		border-radius: 8px;
+		box-shadow: none;
+		cursor: pointer;
+		height: 4px;
+		width: 100%;
+	}
+	input[type=range]::-webkit-slider-thumb {
+		background-color: $liveplayer-color;
+		border: 1px solid $liveplayer-color;
+		border-radius: 50%;
+		box-shadow: none;
+		cursor: pointer;
+		height: 14px;
+		margin-top: -5.2px;
+		position: relative;
+		width: 14px;
+		-webkit-appearance: none;
+
+		&:hover {
+			background-color: lighten($liveplayer-color, 20%);
+		}
+	}
+	input[type=range]:focus::-webkit-slider-runnable-track {
+		background-color: lighten($liveplayer-color, 10%);
+	}
+	input[type=range]::-moz-range-track {
+		background-color: lighten($liveplayer-color, 10%);
+		border: 0 none;
+		border-radius: 8px;
+		box-shadow: none;
+		cursor: pointer;
+		height: 4px;
+		width: 100%;
+	}
+	input[type=range]::-moz-range-thumb {
+		background-color: $liveplayer-color;
+		border: 1px solid $liveplayer-color;
+		border-radius: 50%;
+		box-shadow: none;
+		cursor: pointer;
+		height: 12px;
+		width: 12px;
+
+		&:hover {
+			background-color: lighten($liveplayer-color, 20%);
+		}
+	}
+	input[type=range]::-ms-track {
+		background-color: transparent;
+		border-color: transparent;
+		color: transparent;
+		cursor: pointer;
+		height: 4px;
+		width: 100%;
+	}
+	input[type=range]::-ms-fill-lower {
+		background-color: lighten($liveplayer-color, 10%);
+		border: 0 none;
+		border-radius: 8px;
+		box-shadow: none;
+	}
+	input[type=range]::-ms-fill-upper {
+		background-color: lighten($liveplayer-color, 10%);
+		border: 0.2px solid lighten($liveplayer-color, 10%);;
+		border-radius: 8px;
+		box-shadow: none;
+	}
+	input[type=range]::-ms-thumb {
+		background-color: $liveplayer-color;
+		border: 1px solid $liveplayer-color;
+		border-radius: 50%;
+		box-shadow: none;
+		cursor: pointer;
+		height: 12px;
+		width: 12px;
+
+		&:hover {
+			background-color: lighten($liveplayer-color, 20%);
+		}
+	}
+	input[type=range]:focus::-ms-fill-lower {
+		background-color: lighten($liveplayer-color, 10%);
+	}
+	input[type=range]:focus::-ms-fill-upper {
+		background-color: lighten($liveplayer-color, 10%);
+	}
+}
