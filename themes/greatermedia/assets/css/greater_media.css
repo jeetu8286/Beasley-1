@@ -948,7 +948,6 @@ body {
   margin: 0; }
 
 .audio-controls__play,
-.audio-controls__resume,
 .audio-controls__pause,
 .audio-controls__loading, .podcast__btn--play,
 .podcast__btn--pause {
@@ -975,7 +974,6 @@ body {
   z-index: 1; }
   @media screen and (min-width: 768px) {
     .audio-controls__play,
-    .audio-controls__resume,
     .audio-controls__pause,
     .audio-controls__loading, .podcast__btn--play,
     .podcast__btn--pause {
@@ -5527,17 +5525,11 @@ Link posts contain a link to an external site. They can also optionally have a f
   content: "\e60d"; }
 
 .audio-controls__play,
-.audio-controls__resume,
 .audio-controls__pause,
 .audio-controls__loading {
   position: relative; }
 
-.audio-controls__resume,
-.audio-controls__pause {
-  display: none; }
-
-.audio-controls__play:before,
-.audio-controls__resume:before {
+.audio-controls__play:before {
   -webkit-transform: translate(-50%, -50%);
   -moz-transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
@@ -5563,8 +5555,6 @@ Link posts contain a link to an external site. They can also optionally have a f
   left: 50%;
   position: absolute;
   top: 50%; }
-  .live-audio__player.audio__playing .audio-controls__pause:before {
-    content: "\e61f"; }
 
 .audio-controls__loading .gmr-icon, .audio-controls__loading .contest__submission .preview .preview-close, .contest__submission .preview .audio-controls__loading .preview-close {
   -webkit-transform: translate(-50%, -50%);
@@ -5581,87 +5571,20 @@ Link posts contain a link to an external site. They can also optionally have a f
       left: 32%;
       top: 28%; } }
 
-.audio-controls__play {
-  -webkit-transform: rotateX(180deg);
-  -moz-transform: rotateX(180deg);
-  -ms-transform: rotateX(180deg);
-  -o-transform: rotateX(180deg);
-  transform: rotateX(180deg);
-  -webkit-transform-style: preserve-3d;
-  -moz-transform-style: preserve-3d;
-  -ms-transform-style: preserve-3d;
-  -o-transform-style: preserve-3d;
-  transform-style: preserve-3d;
-  -webkit-transition: 500ms;
-  -moz-transition: 500ms;
-  transition: 500ms;
-  -webkit-transition-delay: 200ms;
-  -moz-transition-delay: 200ms;
-  transition-delay: 200ms;
-  border: none; }
-  .live-audio__player.audio__playing .audio-controls__play {
-    display: block;
-    position: absolute;
-    right: 0; }
-    @media screen and (min-width: 768px) {
-      .live-audio__player.audio__playing .audio-controls__play {
-        display: none;
-        position: relative;
-        right: auto; } }
-  .live-player--active .audio-controls__play {
-    display: none; }
-  .vast-ad--playing .audio-controls__play {
-    display: block; }
-  .audio-controls__play.live-player__muted {
-    display: none; }
-  .audio-controls__play.play-btn--heartbeat:before {
-    top: 52%; }
+.-playing .audio-controls__play,
+.-loading .audio-controls__play {
+  display: none; }
 
 .audio-controls__loading {
   display: none;
   border: none; }
-  .audio-controls__loading.loading {
+  .-loading .audio-controls__loading {
     display: block; }
 
 .audio-controls__pause {
-  -webkit-transition: all 500ms ease-in-out 500ms;
-  -moz-transition: all 500ms ease-in-out 500ms;
-  transition: all 500ms ease-in-out 500ms;
-  display: none;
-  float: left;
-  visibility: hidden; }
-  @media screen and (min-width: 768px) {
-    .audio-controls__pause {
-      float: none; } }
-  .live-audio__player.audio__playing .audio-controls__pause {
-    -webkit-transition: all 500ms ease-in-out 500ms;
-    -moz-transition: all 500ms ease-in-out 500ms;
-    transition: all 500ms ease-in-out 500ms;
-    display: block;
-    float: left;
-    visibility: visible; }
-    @media screen and (min-width: 768px) {
-      .live-audio__player.audio__playing .audio-controls__pause {
-        float: none; } }
-    .live-audio__player.audio__playing .audio-controls__pause.live-player__muted {
-      display: none; }
-  .live-player--active .audio-controls__pause {
-    display: block;
-    visibility: visible; }
-  .audio-controls__pause.live-player__muted {
-    display: none; }
-
-.audio-controls__resume.resume__audio, .audio-controls__resume.resume__live {
-  display: block;
-  position: absolute;
-  left: 0; }
-  @media screen and (min-width: 768px) {
-    .audio-controls__resume.resume__audio, .audio-controls__resume.resume__live {
-      position: relative;
-      left: auto; } }
-
-.audio-controls__resume.live-player__muted {
   display: none; }
+  .-playing .audio-controls__pause {
+    display: block; }
 
 .audio-readout {
   flex: 1 0 320px;

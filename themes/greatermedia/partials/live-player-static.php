@@ -42,7 +42,6 @@
 				<div id="playButton" class="audio-controls__play" data-action="play-live"></div>
 				<div id="loadButton" class="audio-controls__loading"><i class="gmr-icon icon-spin icon-loading"></i></div>
 				<div id="pauseButton" class="audio-controls__pause"></div>
-				<div id="resumeButton" class="audio-controls__resume"></div>
 			</div>
 
 			<div id="js-audio-readout" class="audio-readout">
