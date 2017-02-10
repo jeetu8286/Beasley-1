@@ -1006,12 +1006,6 @@ category: Components - Gallery Archive
 			font-size: ms(-1);
 		}
 	}
-
-	@include bp( larger ) {
-		h3 {
-			font-size: ms(1);
-		}
-	}
 }
 
 .gallery__grid--column {

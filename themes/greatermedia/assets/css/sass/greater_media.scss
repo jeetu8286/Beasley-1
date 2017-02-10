@@ -13,7 +13,6 @@
 @import "base/variables";
 @import "base/functions";
 @import "base/mixins";
-@import "base/placeholders";
 @import "base/helpers";
 @import "base/normalize";
 @import "base/breakpoints";
@@ -21,6 +20,7 @@
 @import "base/grid";
 @import "base/base";
 @import "base/vendor-style-fixes";
+@import "base/placeholders";
 
 // Main layout components: menu, typography, etc.
 @import "layout/typography";
@@ -44,7 +44,10 @@
 @import "components/entries"; // Temporary!
 @import "components/article";
 @import "components/sidebar";
-@import "components/liveplayer/liveplayer";
+//@import "components/liveplayer"; // Original
+@import "components/liveplayer/live-audio";
+@import "components/liveplayer/live-audio-stream";
+@import "components/liveplayer/live-player";
 @import "components/breaking-news";
 @import "components/ads";
 @import "components/closures";

@@ -102,8 +102,8 @@ $header-nav-bg: $cardinal !default;
 $header-nav-border: $dark-gray !default;
 $header-search-bg: $white !default;
 
-$liveplayer-bg: $black !default;
-$liveplayer-color: lighten($color-gray-medium, 20%) !default;
+$liveplayer-bg: $light-gray !default;
+$liveplayer-color: $cardinal !default;
 $liveplayer-vol-bg: $gray !default;
 $liveplayer-vol-level: $cardinal !default;
 $liveplayer-vol-control: $medium-gray !default;
