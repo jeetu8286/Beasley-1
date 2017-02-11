@@ -5556,6 +5556,7 @@ Link posts contain a link to an external site. They can also optionally have a f
   align-items: center;
   display: flex;
   flex: 1 0 320px;
+  justify-content: space-between;
   margin-left: 15px;
   min-height: 50px;
   position: relative;
@@ -5572,7 +5573,7 @@ Link posts contain a link to an external site. They can also optionally have a f
 
 .audio-playing {
   display: none;
-  flex: 0 1 auto;
+  flex: 1 1 auto;
   margin-right: 15px;
   overflow: hidden; }
   .audio-playing.-show {
@@ -5595,7 +5596,7 @@ Link posts contain a link to an external site. They can also optionally have a f
 
 .audio-status {
   display: none;
-  flex: 1 0 auto;
+  flex: 0 0 auto;
   margin-right: 15px; }
   .audio-status.-show {
     display: block; }
