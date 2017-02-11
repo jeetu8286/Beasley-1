@@ -1,0 +1,20 @@
+.audio-status {
+	display: none;
+	flex: 1 0 auto;
+	margin-right: 10px;
+
+	&.-show {
+		display: block;
+	}
+
+	.audio-status__btn {
+		@include btn(transparent, $liveplayer-color-secondary, $liveplayer-color-secondary, 5px, 12px, ms(-2));
+		display: inline-block;
+
+		&:hover,
+		&:focus {
+			background-color: $liveplayer-color-secondary;
+			color: $color-text-white;
+		}
+	}
+}

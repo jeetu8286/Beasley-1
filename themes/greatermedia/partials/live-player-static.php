@@ -50,18 +50,18 @@
 				<div id="js-notification-listen" class="audio-readout__notification audio-readout__notification--listen"><?php esc_html_e( 'Listen Live', ' gmliveplayer' ); ?></div>
 				<div id="js-notification-preroll" class="audio-readout__notification audio-readout__notification--preroll"><?php esc_html_e( 'Live stream will be available after this brief ad from our sponsors', ' gmliveplayer' ); ?></div>
 
-				<div id="js-now-playing" class="audio-playing">
+		  	<?php // @TODO Available classes to add to audio-playing: -show ?>
+				<div id="js-audio-playing" class="audio-playing -show">
 					<div id="js-track-info" class="audio-playing__track"><?php esc_html_e( 'Track Name', 'greatermedia' ); ?></div>
 					<div id="js-artist-info" class="audio-playing__artist"><?php esc_html_e( 'Artist Name', 'greatermedia' ); ?></div>
 				</div><!-- .audio-playing -->
 
-
-				<div id="live-stream__status" class="live-stream__status">
-					<div id="live-stream__now-playing" class="live-stream__now-playing--btn"><?php esc_html_e( 'Now Playing', 'greatermedia' ); ?></div>
-					<div id="live-stream__listen-now" class="live-stream__listen-now--btn"><?php esc_html_e( 'Listen Live', 'greatermedia' ); ?></div>
+				<?php // @TODO Available classes to add to audio-status: -show ?>
+				<div id="js-audio-status" class="audio-status -show">
+					<div id="js-audio-status-listen" class="audio-status__btn"><?php esc_html_e( 'Listen Live', 'greatermedia' ); ?></div>
 				</div>
 
-				<div id="live-player--more" class="live-player--more"><?php esc_html_e( '...', 'greatermedia' ); ?></div>
+				<div id="js-audio-more" class="audio-more"><a href="#"><?php esc_html_e( '...', 'greatermedia' ); ?></a></div>
 
 				<div id="js-audio-time" class="audio-time">
 					<div id="js-audio-time__progressbar" class="audio-time__progressbar">
@@ -72,7 +72,7 @@
 				</div><!-- .audio-time -->
 
 		  	<?php // @TODO Available classes to add to audio-ad: -show ?>
-				<div id="js-audio-ad" class="audio-ad -show">
+				<div id="js-audio-ad" class="audio-ad">
 					<?php // @TODO Ad code ?>
 					Ad code here
 				</div>

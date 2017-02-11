@@ -23,7 +23,7 @@
 	background-color: $bgcolor;
 	border: 1px solid $border-color;
 	font-size: $font-size;
-	color: $textcolor !important;
+	color: $textcolor;
 	text-transform: uppercase;
 	cursor: pointer;
 	&:hover, &:focus {

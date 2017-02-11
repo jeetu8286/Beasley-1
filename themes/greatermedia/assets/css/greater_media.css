@@ -2541,7 +2541,7 @@ a.featured__content--link {
   background-color: #d22228;
   border: 1px solid #d22228;
   font-size: 0.7em;
-  color: #ffffff !important;
+  color: #ffffff;
   text-transform: uppercase;
   cursor: pointer;
   border-radius: 100em;
@@ -2563,7 +2563,7 @@ a.featured__content--link {
   background-color: #f5ed7f;
   border: 1px solid #f5ed7f;
   font-size: 0.7em;
-  color: #000000 !important;
+  color: #000000;
   text-transform: uppercase;
   cursor: pointer;
   border-radius: 100em; }
@@ -2583,7 +2583,7 @@ a.featured__content--link {
   background-color: #000000;
   border: 1px solid #000000;
   font-size: 0.7em;
-  color: #ffffff !important;
+  color: #ffffff;
   text-transform: uppercase;
   cursor: pointer;
   border-radius: 100em; }
@@ -3041,7 +3041,7 @@ Community Highlights and Events
   background-color: transparent;
   border: 1px solid #acaeb0;
   font-size: 0.8em;
-  color: #acaeb0 !important;
+  color: #acaeb0;
   text-transform: uppercase;
   cursor: pointer;
   border-radius: 100em;
@@ -3318,7 +3318,7 @@ Community Highlights and Events
   background-color: transparent;
   border: 1px solid #acaeb0;
   font-size: 0.8em;
-  color: #acaeb0 !important;
+  color: #acaeb0;
   text-transform: uppercase;
   cursor: pointer;
   border-radius: 100em;
@@ -3351,7 +3351,7 @@ a.highlights__contest--btn {
   background-color: #d22228;
   border: 1px solid #d22228;
   font-size: 0.875em;
-  color: #ffffff !important;
+  color: #ffffff;
   text-transform: uppercase;
   cursor: pointer;
   border-radius: 100em;
@@ -4519,7 +4519,7 @@ Link posts contain a link to an external site. They can also optionally have a f
   background-color: #d22228;
   border: 1px solid #d22228;
   font-size: 0.88889em;
-  color: #ffffff !important;
+  color: #ffffff;
   text-transform: uppercase;
   cursor: pointer;
   border-radius: 100em;
@@ -4547,7 +4547,7 @@ Link posts contain a link to an external site. They can also optionally have a f
   background-color: #d22228;
   border: 1px solid #d22228;
   font-size: 0.88889em;
-  color: #ffffff !important;
+  color: #ffffff;
   text-transform: uppercase;
   cursor: pointer;
   border-radius: 100em;
@@ -4575,7 +4575,7 @@ Link posts contain a link to an external site. They can also optionally have a f
   background-color: #d22228;
   border: 1px solid #d22228;
   font-size: 0.88889em;
-  color: #ffffff !important;
+  color: #ffffff;
   text-transform: uppercase;
   cursor: pointer;
   border-radius: 100em; }
@@ -4599,7 +4599,7 @@ Link posts contain a link to an external site. They can also optionally have a f
     background-color: #929497;
     border: 1px solid #929497;
     font-size: 0.88889em;
-    color: #ffffff !important;
+    color: #ffffff;
     text-transform: uppercase;
     cursor: pointer;
     border-radius: 100em; }
@@ -5281,48 +5281,6 @@ Link posts contain a link to an external site. They can also optionally have a f
       .audio-interface .audio-interface__container {
         padding: 10px 20px; } }
 
-.live-stream__listen-now--btn, .podcast__rss {
-  display: none; }
-  @media screen and (min-width: 768px) {
-    .live-stream__listen-now--btn, .podcast__rss {
-      display: block;
-      margin-right: 0;
-      display: inline-block;
-      line-height: 1;
-      padding: 0.5em 1em;
-      margin-right: .5em;
-      outline: none;
-      background-color: #d22228;
-      border: 1px solid #d22228;
-      font-size: 0.88889em;
-      color: #ffffff !important;
-      text-transform: uppercase;
-      cursor: pointer;
-      border-radius: 100em;
-      font-weight: 700;
-      z-index: 1;
-      -webkit-transition: all 200ms ease-in-out;
-      -moz-transition: all 200ms ease-in-out;
-      transition: all 200ms ease-in-out; }
-      .live-stream__listen-now--btn:hover, .podcast__rss:hover, .live-stream__listen-now--btn:focus, .podcast__rss:focus {
-        background-color: #aa1c20;
-        border-color: #aa1c20;
-        color: #ffffff; }
-      .live-stream__listen-now--btn:last-of-type, .podcast__rss:last-of-type {
-        margin-right: 0; } }
-  .audio__playing .live-stream__listen-now--btn, .audio__playing .podcast__rss {
-    max-width: 100px;
-    -webkit-transition: all 200ms ease-in-out;
-    -moz-transition: all 200ms ease-in-out;
-    transition: all 200ms ease-in-out;
-    -webkit-transition-delay: 1s;
-    -moz-transition-delay: 1s;
-    transition-delay: 1s;
-    text-align: center; }
-    @media screen and (min-width: 768px) {
-      .audio__playing .live-stream__listen-now--btn, .audio__playing .podcast__rss {
-        max-width: none; } }
-
 .audio-stream {
   color: #282827;
   cursor: pointer;
@@ -5587,6 +5545,8 @@ Link posts contain a link to an external site. They can also optionally have a f
     top: 50%; }
 
 .audio-readout {
+  align-items: center;
+  display: flex;
   flex: 1 0 320px;
   margin-left: 10px;
   min-height: 50px;
@@ -5602,14 +5562,57 @@ Link posts contain a link to an external site. They can also optionally have a f
   .audio-readout .audio-readout__notification--preroll {
     font-size: 0.79012em; }
 
-.audio-playing .audio-playing__track {
-  color: #282827;
-  text-transform: uppercase; }
+.audio-playing {
+  display: none;
+  flex: 0 1 auto;
+  margin-right: 10px; }
+  .audio-playing.-show {
+    display: block; }
+  .audio-playing .audio-playing__track {
+    color: #282827;
+    line-height: 1.3;
+    text-transform: uppercase; }
+  .audio-playing .audio-playing__artist {
+    color: #d22228;
+    font-size: 0.70233em;
+    line-height: 1.3;
+    text-transform: uppercase; }
 
-.audio-playing .audio-playing__artist {
-  color: #d22228;
-  font-size: 0.70233em;
-  text-transform: uppercase; }
+.audio-status {
+  display: none;
+  flex: 1 0 auto;
+  margin-right: 10px; }
+  .audio-status.-show {
+    display: block; }
+  .audio-status .audio-status__btn, .audio-status .podcast__rss {
+    display: inline-block;
+    line-height: 1;
+    padding: 5px 12px;
+    margin-right: .5em;
+    outline: none;
+    background-color: transparent;
+    border: 1px solid #d22228;
+    font-size: 0.79012em;
+    color: #d22228;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 100em;
+    display: inline-block; }
+    .audio-status .audio-status__btn:hover, .audio-status .podcast__rss:hover, .audio-status .audio-status__btn:focus, .audio-status .podcast__rss:focus {
+      background-color: transparent;
+      border-color: #aa1c20;
+      color: #d22228; }
+    .audio-status .audio-status__btn:last-of-type, .audio-status .podcast__rss:last-of-type {
+      margin-right: 0; }
+    .audio-status .audio-status__btn:hover, .audio-status .podcast__rss:hover, .audio-status .audio-status__btn:focus, .audio-status .podcast__rss:focus {
+      background-color: #d22228;
+      color: #ffffff; }
+
+.audio-more {
+  color: #282827;
+  display: inline-block;
+  flex: 0 0 auto;
+  margin-top: -10px; }
 
 .audio-ad {
   background-color: #000000;
@@ -5864,7 +5867,7 @@ category: Components - Ads
   background-color: #d0d2d3;
   border: 1px solid #d0d2d3;
   font-size: 0.6243em;
-  color: #ffffff !important;
+  color: #ffffff;
   text-transform: uppercase;
   cursor: pointer;
   border-radius: 100em;
@@ -5976,7 +5979,7 @@ category: Components - Ads
   background-color: #d22228;
   border: 1px solid #d22228;
   font-size: 0.88889em;
-  color: #ffffff !important;
+  color: #ffffff;
   text-transform: uppercase;
   cursor: pointer;
   border-radius: 100em; }
@@ -6018,7 +6021,7 @@ category: Components - Ads
   background-color: #d22228;
   border: 1px solid #d22228;
   font-size: 0.88889em;
-  color: #ffffff !important;
+  color: #ffffff;
   text-transform: uppercase;
   cursor: pointer;
   border-radius: 100em; }
@@ -6041,7 +6044,7 @@ category: Components - Ads
     background-color: #f5ed7f;
     border: 1px solid #f5ed7f;
     font-size: 0.88889em;
-    color: #000000 !important;
+    color: #000000;
     text-transform: uppercase;
     cursor: pointer;
     border-radius: 100em; }
@@ -6064,7 +6067,7 @@ category: Components - Ads
     background-color: #000000;
     border: 1px solid #000000;
     font-size: 0.88889em;
-    color: #ffffff !important;
+    color: #ffffff;
     text-transform: uppercase;
     cursor: pointer;
     border-radius: 100em; }
@@ -6102,7 +6105,7 @@ category: Components - Ads
   background-color: #929497;
   border: 1px solid #929497;
   font-size: 0.79012em;
-  color: #ffffff !important;
+  color: #ffffff;
   text-transform: uppercase;
   cursor: pointer;
   border-radius: 100em; }
@@ -6122,7 +6125,7 @@ category: Components - Ads
   background-color: #d22228;
   border: 1px solid #d22228;
   font-size: 0.79012em;
-  color: #ffffff !important;
+  color: #ffffff;
   text-transform: uppercase;
   cursor: pointer;
   border-radius: 100em; }
@@ -6142,7 +6145,7 @@ category: Components - Ads
   background-color: #000000;
   border: 1px solid #000000;
   font-size: 0.79012em;
-  color: #ffffff !important;
+  color: #ffffff;
   text-transform: uppercase;
   cursor: pointer;
   border-radius: 100em; }
@@ -6222,7 +6225,7 @@ category: Components - Ads
     background-color: #d22228;
     border: 1px solid #d22228;
     font-size: 1.42383em;
-    color: #ffffff !important;
+    color: #ffffff;
     text-transform: uppercase;
     cursor: pointer;
     border-radius: 100em;
@@ -6250,7 +6253,7 @@ category: Components - Ads
       background-color: #f5ed7f;
       border: 1px solid #f5ed7f;
       font-size: 1.42383em;
-      color: #000000 !important;
+      color: #000000;
       text-transform: uppercase;
       cursor: pointer;
       border-radius: 100em; }
@@ -6277,7 +6280,7 @@ category: Components - Ads
       background-color: #000000;
       border: 1px solid #000000;
       font-size: 1.42383em;
-      color: #ffffff !important;
+      color: #ffffff;
       text-transform: uppercase;
       cursor: pointer;
       border-radius: 100em; }
@@ -6312,7 +6315,7 @@ category: Components - Ads
       background-color: #282827;
       border: 1px solid #000000;
       font-size: 1.42383em;
-      color: #000000 !important;
+      color: #000000;
       text-transform: uppercase;
       cursor: pointer;
       border-radius: 100em; }
@@ -6347,7 +6350,7 @@ category: Components - Ads
         background-color: #282827;
         border: 1px solid #000000;
         font-size: 1.42383em;
-        color: #000000 !important;
+        color: #000000;
         text-transform: uppercase;
         cursor: pointer;
         border-radius: 100em; }
@@ -6374,7 +6377,7 @@ category: Components - Ads
         background-color: #282827;
         border: 1px solid #000000;
         font-size: 1.42383em;
-        color: #000000 !important;
+        color: #000000;
         text-transform: uppercase;
         cursor: pointer;
         border-radius: 100em; }
@@ -6516,7 +6519,7 @@ category: Components - Ads
   background-color: #d22228;
   border: 1px solid #d22228;
   font-size: 0.88889em;
-  color: #ffffff !important;
+  color: #ffffff;
   text-transform: uppercase;
   cursor: pointer;
   border-radius: 100em;
@@ -6617,7 +6620,7 @@ category: Components - Ads
     background-color: #d22228;
     border: 1px solid #d22228;
     font-size: 0.88889em;
-    color: #ffffff !important;
+    color: #ffffff;
     text-transform: uppercase;
     cursor: pointer;
     border-radius: 100em; }
@@ -7296,7 +7299,7 @@ a.podcast__rss:link, a.podcast__rss:visited {
   background-color: transparent;
   border: 1px solid #929497;
   font-size: 0.88889em;
-  color: #929497 !important;
+  color: #929497;
   text-transform: uppercase;
   cursor: pointer;
   border-radius: 100em;
@@ -7329,7 +7332,7 @@ a.podcast__rss:hover, a.podcast__rss:focus {
   background-color: #d22228;
   border: 1px solid #d22228;
   font-size: 0.88889em;
-  color: #ffffff !important;
+  color: #ffffff;
   text-transform: uppercase;
   cursor: pointer;
   border-radius: 100em;
@@ -7350,7 +7353,7 @@ a.podcast__rss:active {
   background-color: #000000;
   border: 1px solid #000000;
   font-size: 0.88889em;
-  color: #ffffff !important;
+  color: #ffffff;
   text-transform: uppercase;
   cursor: pointer;
   border-radius: 100em;
@@ -7391,7 +7394,7 @@ a.podcast__rss:active {
   background-color: transparent;
   border: 1px solid #929497;
   font-size: 0.88889em;
-  color: #929497 !important;
+  color: #929497;
   text-transform: uppercase;
   cursor: pointer;
   border-radius: 100em;
@@ -7425,7 +7428,7 @@ a.podcast__rss:active {
   background-color: #d22228;
   border: 1px solid #d22228;
   font-size: 0.88889em;
-  color: #ffffff !important;
+  color: #ffffff;
   text-transform: uppercase;
   cursor: pointer;
   border-radius: 100em;
@@ -7450,7 +7453,7 @@ a.podcast__rss:active {
   background-color: #000000;
   border: 1px solid #000000;
   font-size: 0.88889em;
-  color: #ffffff !important;
+  color: #ffffff;
   text-transform: uppercase;
   cursor: pointer;
   border-radius: 100em;
@@ -7475,7 +7478,7 @@ a.podcast__rss:active {
   background-color: #d22228;
   border: 1px solid #d22228;
   font-size: 0.88889em;
-  color: #ffffff !important;
+  color: #ffffff;
   text-transform: uppercase;
   cursor: pointer;
   border-radius: 100em;
@@ -7722,7 +7725,7 @@ a.podcast__rss:active {
   background-color: #d22228;
   border: 1px solid #d22228;
   font-size: 0.88889em;
-  color: #ffffff !important;
+  color: #ffffff;
   text-transform: uppercase;
   cursor: pointer;
   border-radius: 100em;
@@ -8995,7 +8998,7 @@ a.social-share-link {
   background-color: #d22228;
   border: 1px solid #d22228;
   font-size: 0.88889em;
-  color: #ffffff !important;
+  color: #ffffff;
   text-transform: uppercase;
   cursor: pointer;
   border-radius: 100em;
@@ -10045,7 +10048,7 @@ category: Components - Gallery Archive
   background-color: #d22228;
   border: 1px solid #d22228;
   font-size: 1em;
-  color: #ffffff !important;
+  color: #ffffff;
   text-transform: uppercase;
   cursor: pointer;
   border-radius: 100em; }
@@ -10916,7 +10919,7 @@ select {
   background-color: #d22228;
   border: 1px solid #d22228;
   font-size: 0.88889em;
-  color: white !important;
+  color: white;
   text-transform: uppercase;
   cursor: pointer;
   border-radius: 100em; }
@@ -10936,7 +10939,7 @@ select {
   background-color: #f5ed7f;
   border: 1px solid #f5ed7f;
   font-size: 0.88889em;
-  color: white !important;
+  color: white;
   text-transform: uppercase;
   cursor: pointer;
   border-radius: 100em; }
@@ -10956,7 +10959,7 @@ select {
   background-color: #000000;
   border: 1px solid #000000;
   font-size: 0.88889em;
-  color: white !important;
+  color: white;
   text-transform: uppercase;
   cursor: pointer;
   border-radius: 100em; }

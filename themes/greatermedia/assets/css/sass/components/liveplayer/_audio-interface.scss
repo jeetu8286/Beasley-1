@@ -19,27 +19,3 @@
 		}
 	}
 }
-
-.live-stream__listen-now--btn {
-	display: none;
-
-	@include bp(medium) {
-		display: block;
-		margin-right: 0;
-		@include btn($btn-bg, $color-text-white, $btn-bg, .5em, 1em, ms(-1));
-		font-weight: 700;
-		z-index: 1;
-		@include transition(all 200ms ease-in-out);
-	}
-
-	.audio__playing & {
-		max-width: 100px;
-		@include transition(all 200ms ease-in-out);
-		@include transition-delay(1s);
-		text-align: center;
-
-		@include bp(medium) {
-			max-width: none;
-		}
-	}
-}

@@ -345,7 +345,7 @@ a.podcast__rss:active {
 }
 
 .podcast__rss {
-	@extend .live-stream__listen-now--btn;
+	@extend .audio-status__btn;
 }
 
 .gmr-mediaelement-fallback {
