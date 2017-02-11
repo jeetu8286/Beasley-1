@@ -1,0 +1,14 @@
+.audio-ad {
+	background-color: $black;
+	color: $white;
+	display: none;
+	height: 50px;
+	left: 0;
+	position: absolute;
+	top: 0;
+	width: 320px;
+
+	&.-show {
+		display: block;
+	}
+}

@@ -1,0 +1,13 @@
+.audio-playing {
+
+	.audio-playing__track {
+		color: $liveplayer-color;
+		text-transform: uppercase;
+	}
+
+	.audio-playing__artist {
+		color: $liveplayer-color-secondary;
+		font-size: ms(-3);
+		text-transform: uppercase;
+	}
+}

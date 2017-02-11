@@ -1,4 +1,24 @@
 .audio-readout {
 	flex: 1 0 320px;
+	margin-left: 10px;
+	min-height: 50px;
+	position: relative;
 	width: 320px;
+
+	.audio-readout__notification {
+		display: none;
+
+		&.-show {
+			display: block;
+		}
+	}
+
+	.audio-readout__notification--listen {
+		font-size: ms(3);
+		text-transform: uppercase;
+	}
+
+	.audio-readout__notification--preroll {
+		font-size: ms(-2);
+	}
 }

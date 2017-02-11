@@ -951,8 +951,8 @@ body {
 .audio-controls__pause,
 .audio-controls__loading, .podcast__btn--play,
 .podcast__btn--pause {
-  width: 34px;
-  height: 34px;
+  width: 40px;
+  height: 40px;
   margin: 0 auto;
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
@@ -977,8 +977,8 @@ body {
     .audio-controls__pause,
     .audio-controls__loading, .podcast__btn--play,
     .podcast__btn--pause {
-      width: 56px;
-      height: 56px;
+      width: 48px;
+      height: 48px;
       z-index: initial; } }
 
 body {
@@ -5261,7 +5261,7 @@ Link posts contain a link to an external site. They can also optionally have a f
 
 .audio-interface {
   background-color: #d0d2d3;
-  color: #d22228;
+  color: #282827;
   display: block;
   position: relative;
   width: 100%;
@@ -5272,6 +5272,7 @@ Link posts contain a link to an external site. They can also optionally have a f
   .audio-interface:after {
     clear: both; }
   .audio-interface .audio-interface__container {
+    align-items: flex-start;
     display: flex;
     margin: 0 auto;
     max-width: 970px;
@@ -5323,7 +5324,7 @@ Link posts contain a link to an external site. They can also optionally have a f
         max-width: none; } }
 
 .audio-stream {
-  color: #d22228;
+  color: #282827;
   cursor: pointer;
   flex: 1 1 auto;
   width: 40.86022%; }
@@ -5407,13 +5408,14 @@ Link posts contain a link to an external site. They can also optionally have a f
     font-size: 0.79012em; }
 
 .audio-player {
+  align-items: center;
   display: flex;
   flex: 1 1 auto;
   width: 58.51064%; }
 
 .audio-volume {
   display: block;
-  padding: 5px 10px 0 10px;
+  padding: 0 10px;
   width: 30.90909%; }
   .audio-volume input[type=range] {
     background-color: transparent;
@@ -5423,7 +5425,7 @@ Link posts contain a link to an external site. They can also optionally have a f
   .audio-volume input[type=range]:focus {
     outline: none; }
   .audio-volume input[type=range]::-webkit-slider-runnable-track {
-    background-color: #e1464b;
+    background-color: #424240;
     border: 0 none;
     border-radius: 8px;
     box-shadow: none;
@@ -5431,8 +5433,8 @@ Link posts contain a link to an external site. They can also optionally have a f
     height: 4px;
     width: 100%; }
   .audio-volume input[type=range]::-webkit-slider-thumb {
-    background-color: #d22228;
-    border: 1px solid #d22228;
+    background-color: #282827;
+    border: 1px solid #282827;
     border-radius: 50%;
     box-shadow: none;
     cursor: pointer;
@@ -5442,11 +5444,11 @@ Link posts contain a link to an external site. They can also optionally have a f
     width: 14px;
     -webkit-appearance: none; }
     .audio-volume input[type=range]::-webkit-slider-thumb:hover {
-      background-color: #e87276; }
+      background-color: #5c5c59; }
   .audio-volume input[type=range]:focus::-webkit-slider-runnable-track {
-    background-color: #e1464b; }
+    background-color: #424240; }
   .audio-volume input[type=range]::-moz-range-track {
-    background-color: #e1464b;
+    background-color: #424240;
     border: 0 none;
     border-radius: 8px;
     box-shadow: none;
@@ -5454,15 +5456,15 @@ Link posts contain a link to an external site. They can also optionally have a f
     height: 4px;
     width: 100%; }
   .audio-volume input[type=range]::-moz-range-thumb {
-    background-color: #d22228;
-    border: 1px solid #d22228;
+    background-color: #282827;
+    border: 1px solid #282827;
     border-radius: 50%;
     box-shadow: none;
     cursor: pointer;
     height: 12px;
     width: 12px; }
     .audio-volume input[type=range]::-moz-range-thumb:hover {
-      background-color: #e87276; }
+      background-color: #5c5c59; }
   .audio-volume input[type=range]::-ms-track {
     background-color: transparent;
     border-color: transparent;
@@ -5471,29 +5473,29 @@ Link posts contain a link to an external site. They can also optionally have a f
     height: 4px;
     width: 100%; }
   .audio-volume input[type=range]::-ms-fill-lower {
-    background-color: #e1464b;
+    background-color: #424240;
     border: 0 none;
     border-radius: 8px;
     box-shadow: none; }
   .audio-volume input[type=range]::-ms-fill-upper {
-    background-color: #e1464b;
-    border: 0.2px solid #e1464b;
+    background-color: #424240;
+    border: 0.2px solid #424240;
     border-radius: 8px;
     box-shadow: none; }
   .audio-volume input[type=range]::-ms-thumb {
-    background-color: #d22228;
-    border: 1px solid #d22228;
+    background-color: #282827;
+    border: 1px solid #282827;
     border-radius: 50%;
     box-shadow: none;
     cursor: pointer;
     height: 12px;
     width: 12px; }
     .audio-volume input[type=range]::-ms-thumb:hover {
-      background-color: #e87276; }
+      background-color: #5c5c59; }
   .audio-volume input[type=range]:focus::-ms-fill-lower {
-    background-color: #e1464b; }
+    background-color: #424240; }
   .audio-volume input[type=range]:focus::-ms-fill-upper {
-    background-color: #e1464b; }
+    background-color: #424240; }
   .audio-volume.-open {
     display: flex; }
   .audio-volume input[type=range] {
@@ -5511,7 +5513,7 @@ Link posts contain a link to an external site. They can also optionally have a f
   width: 20px; }
   .audio-volume__btn:before,
   .audio-volume__mute:before {
-    color: #d22228;
+    color: #282827;
     content: "\e60c";
     font-family: "gmr-icons";
     font-style: normal;
@@ -5529,6 +5531,10 @@ Link posts contain a link to an external site. They can also optionally have a f
 .audio-controls__loading {
   position: relative; }
 
+.-playing .audio-controls__play,
+.-loading .audio-controls__play {
+  display: none; }
+
 .audio-controls__play:before {
   -webkit-transform: translate(-50%, -50%);
   -moz-transform: translate(-50%, -50%);
@@ -5543,52 +5549,79 @@ Link posts contain a link to an external site. They can also optionally have a f
   position: absolute;
   top: 50%; }
 
-.audio-controls__pause:before {
-  -webkit-transform: translate(-50%, -50%);
-  -moz-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  -o-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-  content: "\e61f";
-  font-family: "gmr-icons";
-  font-size: 1.26562em;
-  left: 50%;
-  position: absolute;
-  top: 50%; }
-
-.audio-controls__loading .gmr-icon, .audio-controls__loading .contest__submission .preview .preview-close, .contest__submission .preview .audio-controls__loading .preview-close {
-  -webkit-transform: translate(-50%, -50%);
-  -moz-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  -o-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-  font-size: 1.125em;
-  left: 23%;
-  position: absolute;
-  top: 20%; }
-  @media screen and (min-width: 768px) {
-    .audio-controls__loading .gmr-icon, .audio-controls__loading .contest__submission .preview .preview-close, .contest__submission .preview .audio-controls__loading .preview-close {
-      left: 32%;
-      top: 28%; } }
-
-.-playing .audio-controls__play,
-.-loading .audio-controls__play {
-  display: none; }
-
 .audio-controls__loading {
   display: none;
   border: none; }
   .-loading .audio-controls__loading {
     display: block; }
+  .audio-controls__loading .gmr-icon, .audio-controls__loading .contest__submission .preview .preview-close, .contest__submission .preview .audio-controls__loading .preview-close {
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    font-size: 1.125em;
+    left: 23%;
+    position: absolute;
+    top: 20%; }
+    @media screen and (min-width: 768px) {
+      .audio-controls__loading .gmr-icon, .audio-controls__loading .contest__submission .preview .preview-close, .contest__submission .preview .audio-controls__loading .preview-close {
+        left: 32%;
+        top: 28%; } }
 
 .audio-controls__pause {
   display: none; }
   .-playing .audio-controls__pause {
     display: block; }
+  .audio-controls__pause:before {
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    content: "\e61f";
+    font-family: "gmr-icons";
+    font-size: 1.26562em;
+    left: 50%;
+    position: absolute;
+    top: 50%; }
 
 .audio-readout {
   flex: 1 0 320px;
+  margin-left: 10px;
+  min-height: 50px;
+  position: relative;
   width: 320px; }
+  .audio-readout .audio-readout__notification {
+    display: none; }
+    .audio-readout .audio-readout__notification.-show {
+      display: block; }
+  .audio-readout .audio-readout__notification--listen {
+    font-size: 1.42383em;
+    text-transform: uppercase; }
+  .audio-readout .audio-readout__notification--preroll {
+    font-size: 0.79012em; }
+
+.audio-playing .audio-playing__track {
+  color: #282827;
+  text-transform: uppercase; }
+
+.audio-playing .audio-playing__artist {
+  color: #d22228;
+  font-size: 0.70233em;
+  text-transform: uppercase; }
+
+.audio-ad {
+  background-color: #000000;
+  color: #ffffff;
+  display: none;
+  height: 50px;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 320px; }
+  .audio-ad.-show {
+    display: block; }
 
 .breaking-news-banner {
   width: 100%;

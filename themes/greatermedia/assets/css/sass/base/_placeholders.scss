@@ -16,13 +16,13 @@
 	font-style: italic;
 }
 
-%live-audio__btn {
-	width: 34px;
-	height: 34px;
+%audio-controls__button {
+	width: 40px;
+	height: 40px;
 	margin: 0 auto;
 	@include border-radius(50%);
-	background-color: $liveplayer-controls;
-	border: 2px solid $liveplayer-controls;
+	background-color: $liveplayer-color-secondary;
+	border: 2px solid $liveplayer-color-secondary;
 	outline: none;
 	font-size: 1.25em;
 	font-style: normal;
@@ -35,8 +35,8 @@
 	z-index: 1;
 
 	@include bp(medium) {
-		width: 56px;
-		height: 56px;
+		width: 48px;
+		height: 48px;
 		z-index: initial;
 	}
 }

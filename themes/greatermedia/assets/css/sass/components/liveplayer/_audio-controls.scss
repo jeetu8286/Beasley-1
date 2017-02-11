@@ -1,7 +1,7 @@
 .audio-controls__play,
 .audio-controls__pause,
 .audio-controls__loading {
-	@extend %live-audio__btn;
+	@extend %audio-controls__button;
 	position: relative;
 }
 

@@ -84,7 +84,7 @@ category: Components - Shows
 .podcast__btn--play,
 .podcast__btn--pause {
 	position: absolute;
-	@extend %live-audio__btn;
+	@extend %audio-controls__button;
 	width: 45%;
 	margin: 0px;
 	position: absolute;
