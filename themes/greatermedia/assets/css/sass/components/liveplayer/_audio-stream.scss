@@ -23,12 +23,12 @@
 		position: relative;
 		text-transform: uppercase;
 	}
-	&.-multiplestreams .audio-stream__current {
+	&.-multiple .audio-stream__current {
 		border: 1px solid rgba(0,0,0,.25);
 		padding: 10px;
 	}
 
-	&.-multiplestreams .audio-stream__current:after {
+	&.-multiple .audio-stream__current:after {
 		@include transform(rotate(90deg));
 		content: "\e606";
 		font-family: $icon-font;
@@ -40,7 +40,7 @@
 		width: 0;
 	}
 
-	&.-multiplestreams.-open .audio-stream__current:after {
+	&.-multiple.-open .audio-stream__current:after {
 		@include transform(rotate(270deg));
 		right: 18px;
 		top: 19px;
@@ -84,7 +84,8 @@
 		}
 	}
 
-	&.-multiplestreams .audio-stream__sponsored {
+	&.-multiple .audio-stream__sponsored {
+		line-height: 1;
 		margin-left: 10px;
 	}
 	.audio-stream__sponsored--text {

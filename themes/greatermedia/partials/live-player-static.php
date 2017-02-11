@@ -6,20 +6,20 @@
 
 <div class="audio-interface">
 	<div class="audio-interface__container">
-	  <?php // @TODO Available classes to add to audio-stream: -multiplestreams, -open ?>
-		<nav class="audio-stream <?php // if ( count( $streams ) >= 2 ) { ?>-multiplestreams -open<?php //} ?>">
+	  <?php // @TODO Available classes to add to audio-stream: -multiple, -open ?>
+		<nav class="audio-stream <?php // if ( count( $streams ) >= 2 ) { ?>-multiple -open<?php //} ?>">
 			<ul class="audio-stream__list">
 				<li class="audio-stream__current">
 					<div class="audio-stream__title"><?php esc_html_e( '$active_stream', 'greatermedia' ); ?></div>
 					<ul class="audio-stream__available">
-						<?php // foreach ( $streams as $stream => $description ) : ?>
+						<?php // @TODO uncomment foreach ( $streams as $stream => $description ) : ?>
 						<?php for ( $i = 1; $i <= 4; $i ++ ) : ?>
 							<li class="audio-stream__item">
 								<span class="audio-stream__name"><?php esc_html_e( '$stream', 'greatermedia' ); ?></span>
 								<span class="audio-stream__desc"><?php esc_html_e( '$description', 'greatermedia' ); ?></span>
 							</li>
 						<?php endfor; ?>
-						<?php // endforeach; ?>
+						<?php // @TODO uncomment endforeach; ?>
 					</ul>
 				</li>
 			</ul><!-- .audio-stream__list -->
@@ -31,11 +31,11 @@
 
 		<div id="js-audio-player" class="audio-player">
 
-			<?php // @TODO Available classes to add to live-player__volume: -open ?>
-			<div class="audio-volume -open">
-				<button class="audio-volume__mute"><span class="audio-volume__text">Mute Volume</span></button>
-				<input type="range" name="player-volume" id="player-volume" min="0" max="100" step="1" value="75" title="Volume"/>
-				<button class="audio-volume__btn"><span class="audio-volume__text">Volume</span></button>
+			<?php // @TODO Available classes to add to audio-volume: -open ?>
+			<div id="js-audio-volume" class="audio-volume -open">
+				<button id="audio-volume-mute" class="audio-volume__mute"><span class="audio-volume__text">Mute Volume</span></button>
+				<input type="range" name="player-volume" id="audio-volume-slider" min="0" max="100" step="1" value="75" title="Volume"/>
+				<button id="js-audio-volume-button" class="audio-volume__btn"><span class="audio-volume__text">Volume</span></button>
 			</div><!-- .audio-volume -->
 
 			<div class="audio-controls">
