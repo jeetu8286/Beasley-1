@@ -126,7 +126,7 @@ function greatermedia_dfp_footer() {
 				});
 
 				googletag.cmd.push(function() {
-					var i, j, slot, targeting, sizeMapping, isOutOfPage;
+					var i, j, slot, targeting, sizeMapping;
 
 					if (needCleanup) {
 						googletag.destroySlots();
@@ -134,11 +134,11 @@ function greatermedia_dfp_footer() {
 					}
 
 					for (i in slots) {
-						isOutOfPage = 'dfp_ad_interstitial' == slots[i][4] || 'dfp_ad_wallpaper' == slots[i][4];
-
-						slot = isOutOfPage
-							? googletag.defineOutOfPageSlot(slots[i][0], slots[i][2])
-							: googletag.defineSlot(slots[i][0], slots[i][1], slots[i][2]);
+						if ('dfp_ad_interstitial' == slots[i][4] || 'dfp_ad_wallpaper' == slots[i][4]) {
+							slot = googletag.defineOutOfPageSlot(slots[i][0], slots[i][2]);
+						} else {
+							slot = googletag.defineSlot(slots[i][0], slots[i][1], slots[i][2]);
+						}
 
 						if ('dfp_ad_leaderboard_pos1' == slots[i][4] || 'dfp_ad_leaderboard_pos2' == slots[i][4]) {
 							sizeMapping = googletag.sizeMapping()
