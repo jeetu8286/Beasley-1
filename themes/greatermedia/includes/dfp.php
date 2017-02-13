@@ -105,16 +105,19 @@ function greatermedia_dfp_footer() {
 					unitCode;
 
 				$('[data-dfp-slot]:empty').each(function() {
-					var id = 'dfp-slot-' + ++slotsIndex,
-						$this = $(this),
+					var $this = $(this),
 						slotType = $this.attr('data-dfp-slot'),
 						slotSizes = JSON.parse($this.attr('data-sizes')),
-						targeting = JSON.parse($this.attr('data-targeting'));
-
-					$this.html('<div id="' + id + '" class="gmr-ad"></div>');
+						targeting = JSON.parse($this.attr('data-targeting')),
+						id;
 
 					unitCode = unitCodes[slotType] || slotType;
 					if (unitCode) {
+						id = 'dfp-slot-' + ++slotsIndex;
+						$this.html('<div id="' + id + '" class="gmr-ad"></div>');
+
+						targeting.push(['pos', lotsIndex]);
+
 						slots.push([
 							'/<?php echo esc_js( $network_id ); ?>/' + unitCode,
 							slotSizes || sizes[slotType],
@@ -274,7 +277,7 @@ function greatermedia_display_dfp_slot( $slot, $sizes = false, $echo = true, $cl
 		'dfp_ad_incontent_pos2',
 	);
 
-	$single_targeting = array( array( 'pos', ++$position ) );
+	$single_targeting = array();
 	if ( in_array( $slot, $remnant_slots ) ) {
 		$single_targeting[] = array( 'remnant', 'yes' );
 	}
