@@ -10,8 +10,6 @@ get_header();
 
 if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
 
-	<?php do_action( 'gmr_gallery' ); ?>
-
 	<div class="container">
 
 	<section class="content">
@@ -35,6 +33,10 @@ if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
 		<section class="entry-content" itemprop="articleBody">
 
 			<?php the_content(); ?>
+
+			<?php get_template_part( 'partials/ad-in-loop' ); ?>
+
+			<?php do_action( 'gmr_gallery' ); ?>
 
 		</section>
 
