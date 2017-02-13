@@ -45,16 +45,16 @@
 @import "components/article";
 @import "components/sidebar";
 //@import "components/liveplayer"; // Original
-@import "components/liveplayer/audio-interface";
-@import "components/liveplayer/audio-stream";
-@import "components/liveplayer/audio-player";
-@import "components/liveplayer/audio-volume";
-@import "components/liveplayer/audio-controls";
-@import "components/liveplayer/audio-readout";
-@import "components/liveplayer/audio-playing";
-@import "components/liveplayer/audio-status";
-@import "components/liveplayer/audio-more";
-@import "components/liveplayer/audio-ad";
+@import "components/audio-interface/audio-interface";
+@import "components/audio-interface/audio-stream";
+@import "components/audio-interface/audio-player";
+@import "components/audio-interface/audio-volume";
+@import "components/audio-interface/audio-controls";
+@import "components/audio-interface/audio-readout";
+@import "components/audio-interface/audio-playing";
+@import "components/audio-interface/audio-status";
+@import "components/audio-interface/audio-more";
+@import "components/audio-interface/audio-ad";
 @import "components/breaking-news";
 @import "components/ads";
 @import "components/closures";
