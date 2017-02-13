@@ -980,6 +980,15 @@ body {
       width: 48px;
       height: 48px;
       z-index: initial; } }
+  .audio-controls__play:hover,
+  .audio-controls__pause:hover,
+  .audio-controls__loading:hover, .podcast__btn--play:hover,
+  .podcast__btn--pause:hover, .audio-controls__play:focus,
+  .audio-controls__pause:focus,
+  .audio-controls__loading:focus, .podcast__btn--play:focus,
+  .podcast__btn--pause:focus {
+    background-color: #ffffff;
+    color: #d22228; }
 
 body {
   line-height: 2;
@@ -5448,6 +5457,7 @@ Link posts contain a link to an external site. They can also optionally have a f
     border-radius: 50%;
     box-shadow: none;
     cursor: pointer;
+    margin-top: 0;
     height: 12px;
     width: 12px; }
     .audio-volume input[type=range]::-ms-thumb:hover {

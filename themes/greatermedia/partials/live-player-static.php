@@ -7,7 +7,7 @@
 <div class="audio-interface">
 	<div class="audio-interface__container">
 	  <?php // @TODO Available classes to add to audio-stream: -multiple, -open ?>
-		<nav class="audio-stream <?php // if ( count( $streams ) >= 2 ) { ?>-multiple -open<?php //} ?>">
+		<nav class="audio-stream <?php // if ( count( $streams ) >= 2 ) { ?>-multiple<?php //} ?> -open">
 			<ul class="audio-stream__list">
 				<li class="audio-stream__current">
 					<div class="audio-stream__title"><?php esc_html_e( '$active_stream', 'greatermedia' ); ?></div>
@@ -38,6 +38,7 @@
 				<button id="js-audio-volume-button" class="audio-volume__btn"><span class="audio-volume__text">Volume</span></button>
 			</div><!-- .audio-volume -->
 
+		<?php // @TODO Available classes to add to audio-controls: -playing, -loading ?>
 			<div class="audio-controls">
 				<div id="playButton" class="audio-controls__play" data-action="play-live"></div>
 				<div id="loadButton" class="audio-controls__loading"><i class="gmr-icon icon-spin icon-loading"></i></div>
