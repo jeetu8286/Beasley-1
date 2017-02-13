@@ -17,7 +17,7 @@
 		<nav class="audio-stream <?php // if ( count( $streams ) >= 2 ) { ?>-multiple<?php //} ?> -open">
 			<ul class="audio-stream__list">
 				<li class="audio-stream__current">
-					<?php //@TODO On desktop, the .audio-stream__title button below would control the -open class for .audio-stream ?>
+					<?php // @TODO On desktop, the .audio-stream__title button below would control the -open class for .audio-stream ?>
 					<button class="audio-stream__title"><?php esc_html_e( '$active_stream', 'greatermedia' ); ?></button>
 					<ul class="audio-stream__available">
 						<?php // @TODO uncomment foreach ( $streams as $stream => $description ) : ?>
@@ -43,9 +43,9 @@
 
 			<?php // @TODO Available classes to add to audio-volume: -open ?>
 			<div id="js-audio-volume" class="audio-volume -open">
-				<button id="audio-volume-mute" class="audio-volume__mute"><span class="audio-volume__text">Mute Volume</span></button>
-				<input type="range" name="player-volume" id="audio-volume-slider" min="0" max="100" step="1" value="75" title="Volume"/>
-				<button id="js-audio-volume-button" class="audio-volume__btn"><span class="audio-volume__text">Volume</span></button>
+				<button id="audio-volume-mute" class="audio-volume__mute"><span class="audio-volume__text"><?php esc_html_e( 'Mute Volume', ' gmliveplayer' ); ?></span></button>
+				<input type="range" name="audio-volume-slider" id="audio-volume-slider" min="0" max="100" step="1" value="75" title="<?php esc_attr_e( 'Volume Slider', 'greatermedia' ); ?>"/>
+				<button id="js-audio-volume-button" class="audio-volume__btn"><span class="audio-volume__text"><?php esc_html_e( 'Volume', ' gmliveplayer' ); ?></span></button>
 			</div><!-- .audio-volume -->
 
 		<?php // @TODO Available classes to add to audio-controls: -playing, -loading ?>
@@ -77,6 +77,13 @@
 				<div id="js-audio-playing" class="audio-playing -show">
 					<div id="js-track-info" class="audio-playing__track"><?php esc_html_e( 'Track Name', 'greatermedia' ); ?></div>
 					<div id="js-artist-info" class="audio-playing__artist"><?php esc_html_e( 'Artist Name', 'greatermedia' ); ?></div>
+
+					<?php // @TODO Available classes to add to audio-podcast: -show ?>
+					<div id="js-audio-podcast" class="audio-podcast -show">
+						<span class="audio-podcast__text">15:20</span>
+						<input type="range" name="audio-podcast" id="audio-podcast-slider" min="0" max="100" step="1" value="75" title="<?php esc_attr_e( 'Podcast Time Slider', 'greatermedia' ); ?>"/>
+						<span class="audio-podcast__text">28:15</span>
+					</div><!-- .audio-podcast -->
 				</div><!-- .audio-playing -->
 
 				<?php // @TODO Available classes to add to audio-status: -show ?>
@@ -96,7 +103,7 @@
 
 			</div><!-- .audio-readout -->
 
-			<?php //@TODO On desktop, the .audio-expand button below would control the -open class for .audio-stream. Available classes: -open ?>
+			<?php // @TODO On desktop, the .audio-expand button below would control the -open class for .audio-stream. Available classes: -open ?>
 			<button id="js-audio-expand" class="audio-expand -open">
 				<span class="audio-expand__text"><?php esc_html_e( 'View Audio Streams', 'greatermedia' ); ?></span>
 			</button>
