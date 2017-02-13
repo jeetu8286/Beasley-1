@@ -1,10 +1,19 @@
 .audio-player {
-	align-items: center;
+	box-shadow: 0 0 15px rgba(0,0,0,.3);
 	display: flex;
-	flex: 0 1 auto;
+	order: 1;
+	width: 100%;
+	z-index: 2;
 	
+	@include bp(medium) {
+		align-items: center;
+		box-shadow: none;
+		flex: 0 1 auto;
+		width: auto;
+	}
 	@include bp(large) {
 		flex: 1 1 auto;
+		order: 2;
 		width: percentage(550/930);
 	}
 }

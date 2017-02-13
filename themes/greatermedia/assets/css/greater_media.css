@@ -65,7 +65,7 @@ category: Base
 /**
  * Hides text from sighted users
  */
-.screen-reader-text, .audio-volume .audio-volume__text {
+.screen-reader-text, .audio-volume .audio-volume__text, .audio-controls__text, .audio-expand__text {
   position: absolute;
   left: -10000px;
   top: auto;
@@ -678,11 +678,6 @@ img {
   background-color: #f1f1f3; }
 
 .page-wrap {
-  -webkit-transform: translate(0, 0);
-  -moz-transform: translate(0, 0);
-  -ms-transform: translate(0, 0);
-  -o-transform: translate(0, 0);
-  transform: translate(0, 0);
   width: 100%;
   padding-bottom: 0;
   -webkit-transition: all 100ms ease-out;
@@ -692,11 +687,6 @@ img {
   background-color: #f1f1f3; }
   @media screen and (min-width: 768px) {
     .page-wrap {
-      -webkit-transform: none;
-      -moz-transform: none;
-      -ms-transform: none;
-      -o-transform: none;
-      transform: none;
       min-height: 800px; } }
 
 .container, .single-gmr_gallery .gallery .container, .main .widecolumn {
@@ -954,34 +944,33 @@ body {
 .audio-controls__pause,
 .audio-controls__loading, .podcast__btn--play,
 .podcast__btn--pause {
-  width: 40px;
-  height: 40px;
-  margin: 0 auto;
-  -webkit-border-radius: 50%;
-  -moz-border-radius: 50%;
-  -ms-border-radius: 50%;
-  -o-border-radius: 50%;
-  -border-radius: 50%;
-  border-radius: 50%;
   background-color: #d22228;
   border: 2px solid #d22228;
-  outline: none;
+  border-radius: 50%;
+  color: #ffffff;
+  cursor: pointer;
   font-size: 1.25em;
   font-style: normal;
   font-weight: normal;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: auto;
-  color: #ffffff;
-  cursor: pointer;
+  height: 30px;
+  margin: 0 auto;
+  outline: none;
+  width: 30px;
   z-index: 1; }
+  @media screen and (min-width: 480px) {
+    .audio-controls__play,
+    .audio-controls__pause,
+    .audio-controls__loading, .podcast__btn--play,
+    .podcast__btn--pause {
+      height: 40px;
+      width: 40px; } }
   @media screen and (min-width: 768px) {
     .audio-controls__play,
     .audio-controls__pause,
     .audio-controls__loading, .podcast__btn--play,
     .podcast__btn--pause {
-      width: 48px;
       height: 48px;
+      width: 48px;
       z-index: initial; } }
   .audio-controls__play:hover,
   .audio-controls__pause:hover,
@@ -5273,9 +5262,12 @@ Link posts contain a link to an external site. They can also optionally have a f
 
 .audio-interface {
   background-color: #d0d2d3;
+  bottom: 0;
   color: #282827;
   display: block;
-  position: relative;
+  left: 0;
+  position: fixed;
+  right: 0;
   width: 100%;
   z-index: 2; }
   .audio-interface:before, .audio-interface:after {
@@ -5283,34 +5275,52 @@ Link posts contain a link to an external site. They can also optionally have a f
     display: table; }
   .audio-interface:after {
     clear: both; }
+  @media screen and (min-width: 768px) {
+    .audio-interface {
+      bottom: auto;
+      left: auto;
+      position: relative;
+      right: auto; } }
   .audio-interface .audio-interface__container {
     align-items: flex-start;
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     margin: 0 auto;
-    max-width: 970px;
-    padding: 10px; }
+    max-width: 970px; }
     @media screen and (min-width: 768px) {
       .audio-interface .audio-interface__container {
+        flex-wrap: nowrap;
         padding: 10px 20px; } }
 
 .audio-stream {
   color: #282827;
-  cursor: pointer;
-  flex: 0 1 auto; }
+  order: 2;
+  width: 100%; }
   @media screen and (min-width: 768px) {
     .audio-stream {
-      min-width: 300px; } }
+      flex: 0 1 auto;
+      width: 300px;
+      order: 1; } }
   @media screen and (min-width: 970px) {
     .audio-stream {
       flex: 1 1 auto;
       width: 40.86022%; } }
   .audio-stream .audio-stream__list {
+    background-color: #b6b9ba;
+    display: none;
     list-style: none;
     margin: 0;
-    padding: 0;
+    padding: 10px;
     position: relative;
     z-index: 2; }
+    @media screen and (min-width: 768px) {
+      .audio-stream .audio-stream__list {
+        background-color: transparent;
+        display: block;
+        padding: 0; } }
+  .audio-stream.-open .audio-stream__list {
+    display: block; }
   .audio-stream .audio-stream__current {
     border-radius: 12px;
     display: block;
@@ -5318,12 +5328,14 @@ Link posts contain a link to an external site. They can also optionally have a f
     line-height: 1;
     list-style: none;
     margin: 0;
-    padding: 10px 10px 0 0;
-    position: relative;
-    text-transform: uppercase; }
-  .audio-stream.-multiple .audio-stream__current {
-    border: 1px solid rgba(0, 0, 0, 0.25);
-    padding: 10px; }
+    padding: 0;
+    position: relative; }
+    @media screen and (min-width: 768px) {
+      .audio-stream .audio-stream__current {
+        text-transform: uppercase; } }
+  @media screen and (min-width: 768px) {
+    .audio-stream.-multiple .audio-stream__current {
+      border: 1px solid rgba(0, 0, 0, 0.25); } }
   .audio-stream.-multiple .audio-stream__current:after {
     -webkit-transform: rotate(90deg);
     -moz-transform: rotate(90deg);
@@ -5331,6 +5343,7 @@ Link posts contain a link to an external site. They can also optionally have a f
     -o-transform: rotate(90deg);
     transform: rotate(90deg);
     content: "\e606";
+    display: none;
     font-family: "gmr-icons";
     font-size: 0.79012em;
     height: 0;
@@ -5338,6 +5351,9 @@ Link posts contain a link to an external site. They can also optionally have a f
     right: 10px;
     top: 11px;
     width: 0; }
+    @media screen and (min-width: 768px) {
+      .audio-stream.-multiple .audio-stream__current:after {
+        display: block; } }
   .audio-stream.-multiple.-open .audio-stream__current:after {
     -webkit-transform: rotate(270deg);
     -moz-transform: rotate(270deg);
@@ -5347,37 +5363,90 @@ Link posts contain a link to an external site. They can also optionally have a f
     right: 18px;
     top: 19px; }
   .audio-stream .audio-stream__title {
+    background-color: #282827;
+    border: 0 none;
+    border-radius: 12px;
+    color: #ffffff;
+    display: block;
     overflow: hidden;
-    padding-right: 20px;
+    padding: 6px;
+    text-align: left;
     text-overflow: ellipsis;
-    white-space: nowrap; }
+    white-space: nowrap;
+    width: 100%; }
+    @media screen and (min-width: 768px) {
+      .audio-stream .audio-stream__title {
+        background-color: transparent;
+        border-radius: 0;
+        color: #282827;
+        padding: 10px 20px 0 0; } }
+    .audio-stream .audio-stream__title:before {
+      color: #ffffff;
+      content: "\e901";
+      display: inline;
+      font-family: "gmr-icons";
+      font-style: normal;
+      font-weight: normal;
+      height: 0;
+      line-height: 1;
+      margin-right: 5px;
+      text-indent: 0;
+      vertical-align: middle;
+      width: 0; }
+      @media screen and (min-width: 768px) {
+        .audio-stream .audio-stream__title:before {
+          display: none; } }
+  @media screen and (min-width: 768px) {
+    .audio-stream.-multiple .audio-stream__title {
+      padding: 10px 20px 10px 10px; } }
   .audio-stream .audio-stream__available {
-    background-color: #d0d2d3;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.25);
-    border-left: 1px solid rgba(0, 0, 0, 0.25);
-    border-right: 1px solid rgba(0, 0, 0, 0.25);
     display: none;
-    left: -1px;
     list-style: none;
     margin: 0;
-    padding: 30px 10px 20px 10px;
-    position: absolute;
-    right: -1px;
-    top: calc(100% - 10px);
-    z-index: -1; }
+    padding: 0; }
+    @media screen and (min-width: 768px) {
+      .audio-stream .audio-stream__available {
+        background-color: #d0d2d3;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+        border-left: 1px solid rgba(0, 0, 0, 0.25);
+        border-right: 1px solid rgba(0, 0, 0, 0.25);
+        left: -1px;
+        padding: 20px 10px 10px 10px;
+        position: absolute;
+        right: -1px;
+        top: calc(100% - 10px);
+        z-index: -1; } }
   .audio-stream.-open .audio-stream__available {
     display: block; }
   .audio-stream .audio-stream__item {
+    padding: 2px 0;
+    text-transform: none; }
+  .audio-stream .audio-stream__link {
+    background-color: transparent;
+    border: 0 none;
+    border-radius: 12px;
+    color: #282827;
+    display: block;
     overflow: hidden;
-    padding: 8px;
+    padding: 6px;
+    text-align: left;
     text-overflow: ellipsis;
-    text-transform: none;
-    white-space: nowrap; }
-    .audio-stream .audio-stream__item:hover {
-      text-decoration: underline; }
-  .audio-stream.-multiple .audio-stream__sponsored {
+    white-space: nowrap;
+    width: 100%; }
+    .audio-stream .audio-stream__link:hover {
+      background-color: #282827;
+      color: #ffffff; }
+  .audio-stream .audio-stream__sponsored {
+    border-top: 1px solid rgba(0, 0, 0, 0.25);
     line-height: 1;
-    margin-left: 10px; }
+    padding: 5px 10px; }
+    @media screen and (min-width: 768px) {
+      .audio-stream .audio-stream__sponsored {
+        border: 0 none;
+        padding: 0; } }
+  @media screen and (min-width: 768px) {
+    .audio-stream.-multiple .audio-stream__sponsored {
+      margin-left: 10px; } }
   .audio-stream .audio-stream__sponsored--text {
     color: rgba(0, 0, 0, 0.5);
     font-size: 0.6243em;
@@ -5386,16 +5455,25 @@ Link posts contain a link to an external site. They can also optionally have a f
     font-size: 0.79012em; }
 
 .audio-player {
-  align-items: center;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
   display: flex;
-  flex: 0 1 auto; }
+  order: 1;
+  width: 100%;
+  z-index: 2; }
+  @media screen and (min-width: 768px) {
+    .audio-player {
+      align-items: center;
+      box-shadow: none;
+      flex: 0 1 auto;
+      width: auto; } }
   @media screen and (min-width: 970px) {
     .audio-player {
       flex: 1 1 auto;
+      order: 2;
       width: 59.13978%; } }
 
 .audio-volume {
-  display: block;
+  display: none;
   padding: 0 15px;
   text-align: right;
   width: 30.90909%; }
@@ -5479,9 +5557,6 @@ Link posts contain a link to an external site. They can also optionally have a f
     background-color: #424240; }
   .audio-volume input[type=range]:focus::-ms-fill-upper {
     background-color: #424240; }
-  @media screen and (min-width: 768px) {
-    .audio-volume {
-      display: none; } }
   @media screen and (min-width: 970px) {
     .audio-volume {
       display: block; } }
@@ -5523,6 +5598,12 @@ Link posts contain a link to an external site. They can also optionally have a f
   .audio-volume.-open .audio-volume__mute {
     display: block; }
 
+.audio-controls {
+  padding: 3px 0 3px 10px; }
+  @media screen and (min-width: 768px) {
+    .audio-controls {
+      padding: 0; } }
+
 .audio-controls__play,
 .audio-controls__pause,
 .audio-controls__loading {
@@ -5540,11 +5621,13 @@ Link posts contain a link to an external site. They can also optionally have a f
   transform: translate(-50%, -50%);
   content: "\e606";
   font-family: "gmr-icons";
-  font-size: 1.26562em;
   left: 54%;
   line-height: 1;
   position: absolute;
   top: 50%; }
+  @media screen and (min-width: 480px) {
+    .audio-controls__play:before {
+      font-size: 1.26562em; } }
 
 .audio-controls__loading {
   display: none;
@@ -5586,12 +5669,15 @@ Link posts contain a link to an external site. They can also optionally have a f
 .audio-readout {
   align-items: center;
   display: flex;
-  flex: 1 0 320px;
+  flex: 1 0 auto;
   justify-content: space-between;
-  margin-left: 15px;
-  min-height: 50px;
-  position: relative;
-  width: 320px; }
+  margin-left: 5px;
+  position: relative; }
+  @media screen and (min-width: 480px) {
+    .audio-readout {
+      margin-left: 15px;
+      min-height: 50px;
+      width: 320px; } }
   .audio-readout .audio-readout__notification {
     display: none; }
     .audio-readout .audio-readout__notification.-show {
@@ -5605,30 +5691,43 @@ Link posts contain a link to an external site. They can also optionally have a f
 .audio-playing {
   display: none;
   flex: 1 1 auto;
-  margin-right: 15px;
+  margin-right: 5px;
   overflow: hidden; }
+  @media screen and (min-width: 480px) {
+    .audio-playing {
+      margin-right: 15px; } }
   .audio-playing.-show {
     display: block; }
   .audio-playing .audio-playing__track {
     color: #282827;
+    font-size: 0.79012em;
     line-height: 1.3;
     overflow: hidden;
     text-transform: uppercase;
     text-overflow: ellipsis;
     white-space: nowrap; }
+    @media screen and (min-width: 480px) {
+      .audio-playing .audio-playing__track {
+        font-size: 1em; } }
   .audio-playing .audio-playing__artist {
     color: #d22228;
-    font-size: 0.70233em;
+    font-size: 0.6243em;
     line-height: 1.3;
     overflow: hidden;
     text-transform: uppercase;
     text-overflow: ellipsis;
     white-space: nowrap; }
+    @media screen and (min-width: 480px) {
+      .audio-playing .audio-playing__artist {
+        font-size: 0.70233em; } }
 
 .audio-status {
   display: none;
   flex: 0 0 auto;
-  margin-right: 15px; }
+  margin-right: 10px; }
+  @media screen and (min-width: 480px) {
+    .audio-status {
+      margin-right: 15px; } }
   .audio-status.-show {
     display: block; }
   .audio-status .audio-status__btn, .audio-status .podcast__rss {
@@ -5661,17 +5760,61 @@ Link posts contain a link to an external site. They can also optionally have a f
   flex: 0 0 auto;
   margin-top: -10px; }
 
+.audio-expand {
+  background-color: #b6b9ba;
+  border: 0 none;
+  display: block;
+  margin-left: 10px;
+  padding: 0;
+  position: relative;
+  width: 40px; }
+  @media screen and (min-width: 768px) {
+    .audio-expand {
+      display: none; } }
+  .audio-expand:after {
+    -webkit-transform: rotate(270deg);
+    -moz-transform: rotate(270deg);
+    -ms-transform: rotate(270deg);
+    -o-transform: rotate(270deg);
+    transform: rotate(270deg);
+    content: "\e606";
+    display: block;
+    font-family: "gmr-icons";
+    font-size: 0.79012em;
+    height: 0;
+    position: absolute;
+    right: 28px;
+    top: 23px;
+    width: 0; }
+  .audio-expand.-open:after {
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    transform: rotate(90deg);
+    right: 9px;
+    top: 15px; }
+
 .audio-ad {
   background-color: #000000;
   color: #ffffff;
   display: none;
   height: 50px;
-  left: 0;
-  position: absolute;
-  top: 0;
   width: 320px; }
-  .audio-ad.-show {
-    display: block; }
+  .audio-ad.audio-ad--aboveplayer.-show {
+    display: block;
+    margin: 0 auto; }
+    @media screen and (min-width: 480px) {
+      .audio-ad.audio-ad--aboveplayer.-show {
+        display: none; } }
+  .audio-ad.audio-ad--inplayer.-show {
+    display: none; }
+    @media screen and (min-width: 480px) {
+      .audio-ad.audio-ad--inplayer.-show {
+        display: block;
+        left: 0;
+        position: absolute;
+        top: 0; } }
 
 .breaking-news-banner {
   width: 100%;

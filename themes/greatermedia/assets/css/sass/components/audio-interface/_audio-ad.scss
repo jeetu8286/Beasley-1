@@ -3,12 +3,25 @@
 	color: $white;
 	display: none;
 	height: 50px;
-	left: 0;
-	position: absolute;
-	top: 0;
 	width: 320px;
 
-	&.-show {
+	&.audio-ad--aboveplayer.-show {
 		display: block;
+		margin: 0 auto;
+
+		@include bp(small) {
+			display: none;
+		}
+	}
+
+	&.audio-ad--inplayer.-show {
+		display: none;
+
+		@include bp(small) {
+			display: block;
+			left: 0;
+			position: absolute;
+			top: 0;
+		}
 	}
 }

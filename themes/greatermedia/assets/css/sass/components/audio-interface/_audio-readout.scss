@@ -1,12 +1,16 @@
 .audio-readout {
 	align-items: center;
 	display: flex;
-	flex: 1 0 320px;
+	flex: 1 0 auto;
 	justify-content: space-between;
-	margin-left: 15px;
-	min-height: 50px;
+	margin-left: 5px;
 	position: relative;
-	width: 320px;
+
+	@include bp(small) {
+		margin-left: 15px;
+		min-height: 50px;
+		width: 320px;
+	}
 
 	.audio-readout__notification {
 		display: none;

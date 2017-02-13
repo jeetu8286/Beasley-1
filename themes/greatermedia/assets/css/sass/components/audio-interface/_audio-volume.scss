@@ -1,13 +1,10 @@
 .audio-volume {
 	@include range-slider;
-	display: block;
+	display: none;
 	padding: 0 15px;
 	text-align: right;
 	width: percentage(170/550);
 
-	@include bp(medium) {
-		display: none;
-	}
 	@include bp(large) {
 		display: block;
 	}

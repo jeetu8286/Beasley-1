@@ -1,7 +1,11 @@
 .audio-status {
 	display: none;
 	flex: 0 0 auto;
-	margin-right: 15px;
+	margin-right: 10px;
+
+	@include bp(small) {
+		margin-right: 15px;
+	}
 
 	&.-show {
 		display: block;

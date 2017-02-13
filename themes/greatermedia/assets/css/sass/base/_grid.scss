@@ -29,14 +29,12 @@ img {
 // The `.page-wrap` class is being used in conjunction with the off-canvas mobile navigation. On click of the
 // `.mobile-nav--toggle` button, the contents of `.page-wrap` will be pushed to the left by a particular value. This
 .page-wrap {
-	@include transform(translate(0, 0));
 	width: 100%;
 	padding-bottom: 0;
 	@include transition(all 100ms ease-out);
 	overflow: hidden;
 	background-color: $secondary-bg;
 	@include bp(medium) {
-		@include transform(none);
 		min-height: 800px;
 	}
 }

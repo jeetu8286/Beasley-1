@@ -17,26 +17,27 @@
 }
 
 %audio-controls__button {
-	width: 40px;
-	height: 40px;
-	margin: 0 auto;
-	@include border-radius(50%);
 	background-color: $liveplayer-color-secondary;
 	border: 2px solid $liveplayer-color-secondary;
-	outline: none;
+	border-radius: 50%;
+	color: $white;
+	cursor: pointer;
 	font-size: 1.25em;
 	font-style: normal;
 	font-weight: normal;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-	text-rendering: auto;
-	color: $white;
-	cursor: pointer;
+	height: 30px;
+	margin: 0 auto;
+	outline: none;
+	width: 30px;
 	z-index: 1;
 
+	@include bp(small) {
+		height: 40px;
+		width: 40px;
+	}
 	@include bp(medium) {
-		width: 48px;
 		height: 48px;
+		width: 48px;
 		z-index: initial;
 	}
 

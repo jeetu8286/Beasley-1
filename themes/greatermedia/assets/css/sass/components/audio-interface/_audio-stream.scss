@@ -1,10 +1,12 @@
 .audio-stream {
 	color: $liveplayer-color;
-	cursor: pointer;
-	flex: 0 1 auto;
+	order: 2;
+	width: 100%;
 
 	@include bp(medium) {
-		min-width: 300px;
+		flex: 0 1 auto;
+		width: 300px;
+		order: 1;
 	}
 	@include bp(large) {
 		flex: 1 1 auto;
@@ -12,11 +14,22 @@
 	}
 
 	.audio-stream__list {
+		background-color: darken($liveplayer-bg, 10%);
+		display: none;
 		list-style: none;
 		margin: 0;
-		padding: 0;
+		padding: 10px;
 		position: relative;
 		z-index: 2;
+
+		@include bp(medium) {
+			background-color: transparent;
+			display: block;
+			padding: 0;
+		}
+	}
+	&.-open .audio-stream__list {
+		display: block;
 	}
 
 	.audio-stream__current {
@@ -26,18 +39,24 @@
 		line-height: 1;
 		list-style: none;
 		margin: 0;
-		padding: 10px 10px 0 0;
+		padding: 0;
 		position: relative;
-		text-transform: uppercase;
+
+		@include bp(medium) {
+			text-transform: uppercase;
+		}
 	}
 	&.-multiple .audio-stream__current {
-		border: 1px solid rgba(0,0,0,.25);
-		padding: 10px;
+
+		@include bp(medium) {
+			border: 1px solid rgba(0,0,0,.25);
+		}
 	}
 
 	&.-multiple .audio-stream__current:after {
 		@include transform(rotate(90deg));
 		content: "\e606";
+		display: none;
 		font-family: $icon-font;
 		font-size: ms(-2);
 		height: 0;
@@ -45,6 +64,10 @@
 		right: 10px;
 		top: 11px;
 		width: 0;
+
+		@include bp(medium) {
+			display: block;
+		}
 	}
 
 	&.-multiple.-open .audio-stream__current:after {
@@ -54,46 +77,112 @@
 	}
 
 	.audio-stream__title {
+		background-color: $liveplayer-color;
+		border: 0 none;
+		border-radius: 12px;
+		color: $color-text-white;
+		display: block;
 		overflow: hidden;
-		padding-right: 20px;
+		padding: 6px;
+		text-align: left;
 		text-overflow: ellipsis;
 		white-space: nowrap;
+		width: 100%;
+
+		@include bp(medium) {
+			background-color: transparent;
+			border-radius: 0;
+			color: $liveplayer-color;
+			padding: 10px 20px 0 0;
+		}
+
+		&:before {
+			color: $color-text-white;
+			content: "\e901";
+			display: inline;
+			font-family: $icon-font;
+			font-style: normal;
+			font-weight: normal;
+			height: 0;
+			line-height: 1;
+			margin-right: 5px;
+			text-indent: 0;
+			vertical-align: middle;
+			width: 0;
+
+			@include bp(medium) {
+				display: none;
+			}
+		}
+	}
+	&.-multiple .audio-stream__title {
+		@include bp(medium) {
+			padding: 10px 20px 10px 10px;
+		}
 	}
 
 	.audio-stream__available {
-		background-color: $liveplayer-bg;
-		border-bottom: 1px solid rgba(0,0,0,.25);
-		border-left: 1px solid rgba(0,0,0,.25);
-		border-right: 1px solid rgba(0,0,0,.25);
 		display: none;
-		left: -1px;
 		list-style: none;
 		margin: 0;
-		padding: 30px 10px 20px 10px;
-		position: absolute;
-		right: -1px;
-		top: calc(100% - 10px);
-		z-index: -1;
+		padding: 0;
+
+		@include bp(medium) {
+			background-color: $liveplayer-bg;
+			border-bottom: 1px solid rgba(0,0,0,.25);
+			border-left: 1px solid rgba(0,0,0,.25);
+			border-right: 1px solid rgba(0,0,0,.25);
+			left: -1px;
+			padding: 20px 10px 10px 10px;
+			position: absolute;
+			right: -1px;
+			top: calc(100% - 10px);
+			z-index: -1;
+		}
 	}
 	&.-open .audio-stream__available {
 		display: block;
 	}
 
 	.audio-stream__item {
-		overflow: hidden;
-		padding: 8px;
-		text-overflow: ellipsis;
+		padding: 2px 0;
 		text-transform: none;
+	}
+
+	.audio-stream__link {
+		background-color: transparent;
+		border: 0 none;
+		border-radius: 12px;
+		color: $liveplayer-color;
+		display: block;
+		overflow: hidden;
+		padding: 6px;
+		text-align: left;
+		text-overflow: ellipsis;
 		white-space: nowrap;
+		width: 100%;
 
 		&:hover {
-			text-decoration: underline;
+			background-color: $liveplayer-color;
+			color: $color-text-white;
 		}
 	}
 
-	&.-multiple .audio-stream__sponsored {
+	.audio-stream__sponsored {
+		border-top: 1px solid rgba(0,0,0,.25);
 		line-height: 1;
-		margin-left: 10px;
+		padding: 5px 10px;
+
+		@include bp(medium) {
+			border: 0 none;
+			padding: 0;
+		}
+	}
+	&.-multiple .audio-stream__sponsored {
+
+		@include bp(medium) {
+			margin-left: 10px;
+		}
 	}
 	.audio-stream__sponsored--text {
 		color: rgba(0,0,0,.5);
