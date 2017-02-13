@@ -214,7 +214,44 @@ function greatermedia_display_dfp_slot( $slot, $sizes = false, $echo = true, $cl
 		);
 
 		if ( is_singular() ) {
-			$targeting[] = array( 'cpostid', get_queried_object_id() );
+			$post_id = get_queried_object_id();
+			$targeting[] = array( 'cpostid', $post_id );
+
+			if ( class_exists( 'ShowsCPT' ) && defined( 'ShowsCPT::SHOW_TAXONOMY' ) ) {
+				$terms = get_the_terms( $post_id, ShowsCPT::SHOW_TAXONOMY );
+				if ( $terms && ! is_wp_error( $terms ) ) {
+					$targeting[] = array( 'shows', implode( ",", wp_list_pluck( $terms, 'slug' ) ) );
+				}
+			}
+
+			if ( class_exists( 'GMP_CPT' ) && defined( 'GMP_CPT::PODCAST_POST_TYPE' ) && defined( 'GMP_CPT::EPISODE_POST_TYPE' ) ) {
+				$podcast = false;
+
+				$post = get_post( $post_id );
+				$post_type = get_post_type( $post );
+				if ( GMP_CPT::PODCAST_POST_TYPE == $post_type ) {
+					$podcast = $post->post_name;
+				}
+
+				if ( GMP_CPT::EPISODE_POST_TYPE == $post_type ) {
+					$parent_podcast_id = wp_get_post_parent_id( $post );
+					if ( $parent_podcast_id && ! is_wp_error( $parent_podcast_id ) ) {
+						$parent_podcast = get_post( $parent_podcast_id );
+						$podcast = $parent_podcast->post_name;
+					}
+				}
+
+				if ( $podcast ) {
+					$targeting[] = array( 'podcast', $podcast );
+				}
+			}
+
+			$categories = wp_get_post_categories( get_queried_object_id() );
+			if ( ! empty( $categories ) ) {
+				$categories = array_filter( array_map( 'get_category', $categories ) );
+				$categories = wp_list_pluck( $categories, 'slug' );
+				$targeting[] = array( 'category', implode( ',', $categories ) );
+			}
 		}
 	}
 
