@@ -34,8 +34,8 @@
 				</li>
 			</ul><!-- .audio-stream__list -->
 
-			<div class="audio-stream__sponsored">
-				<span class="audio-stream__sponsored--text"><?php esc_html_e( 'Sponsored', 'greatermedia' ); ?></span> <span class="audio-stream__sponsored--name"><?php esc_html_e( 'Company Name', 'greatermedia' ); ?></span>
+			<div class="audio-sponsor">
+				<span class="audio-sponsor--text"><?php esc_html_e( 'Sponsored', 'greatermedia' ); ?></span> <span class="audio-sponsor--name"><?php esc_html_e( 'Company Name', 'greatermedia' ); ?></span>
 			</div>
 		</nav><!-- .audio-stream -->
 

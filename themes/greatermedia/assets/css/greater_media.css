@@ -955,6 +955,7 @@ body {
   height: 30px;
   margin: 0 auto;
   outline: none;
+  padding: 0;
   width: 30px;
   z-index: 1; }
   @media screen and (min-width: 480px) {
@@ -970,8 +971,7 @@ body {
     .audio-controls__loading, .podcast__btn--play,
     .podcast__btn--pause {
       height: 48px;
-      width: 48px;
-      z-index: initial; } }
+      width: 48px; } }
   .audio-controls__play:hover,
   .audio-controls__pause:hover,
   .audio-controls__loading:hover, .podcast__btn--play:hover,
@@ -5436,26 +5436,31 @@ Link posts contain a link to an external site. They can also optionally have a f
     .audio-stream .audio-stream__link:hover {
       background-color: #282827;
       color: #ffffff; }
-  .audio-stream .audio-stream__sponsored {
-    border-top: 1px solid rgba(0, 0, 0, 0.25);
-    line-height: 1;
-    padding: 5px 10px; }
-    @media screen and (min-width: 768px) {
-      .audio-stream .audio-stream__sponsored {
-        border: 0 none;
-        padding: 0; } }
+
+.audio-sponsor {
+  border-top: 1px solid rgba(0, 0, 0, 0.25);
+  line-height: 1;
+  padding: 5px 10px; }
   @media screen and (min-width: 768px) {
-    .audio-stream.-multiple .audio-stream__sponsored {
-      margin-left: 10px; } }
-  .audio-stream .audio-stream__sponsored--text {
-    color: rgba(0, 0, 0, 0.5);
-    font-size: 0.6243em;
-    text-transform: uppercase; }
-  .audio-stream .audio-stream__sponsored--name {
-    font-size: 0.79012em; }
+    .audio-sponsor {
+      border: 0 none;
+      padding: 0; } }
+
+@media screen and (min-width: 768px) {
+  .-multiple .audio-sponsor {
+    margin-left: 10px; } }
+
+.audio-sponsor--text {
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 0.6243em;
+  text-transform: uppercase; }
+
+.audio-sponsor--name {
+  font-size: 0.79012em; }
 
 .audio-player {
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
+  border-top: 1px solid rgba(0, 0, 0, 0.25);
   display: flex;
   order: 1;
   width: 100%;
@@ -5464,6 +5469,7 @@ Link posts contain a link to an external site. They can also optionally have a f
     .audio-player {
       align-items: center;
       box-shadow: none;
+      border: 0 none;
       flex: 0 1 auto;
       width: auto; } }
   @media screen and (min-width: 970px) {
@@ -5599,7 +5605,11 @@ Link posts contain a link to an external site. They can also optionally have a f
     display: block; }
 
 .audio-controls {
+  line-height: 1;
   padding: 3px 0 3px 10px; }
+  @media screen and (min-width: 480px) {
+    .audio-controls {
+      padding: 5px 0 5px 10px; } }
   @media screen and (min-width: 768px) {
     .audio-controls {
       padding: 0; } }
@@ -5743,7 +5753,7 @@ Link posts contain a link to an external site. They can also optionally have a f
     text-transform: uppercase;
     cursor: pointer;
     border-radius: 100em;
-    display: inline-block; }
+    display: block; }
     .audio-status .audio-status__btn:hover, .audio-status .podcast__rss:hover, .audio-status .audio-status__btn:focus, .audio-status .podcast__rss:focus {
       background-color: transparent;
       border-color: #aa1c20;
@@ -5786,6 +5796,9 @@ Link posts contain a link to an external site. They can also optionally have a f
     right: 28px;
     top: 23px;
     width: 0; }
+    @media screen and (min-width: 480px) {
+      .audio-expand:after {
+        top: 28px; } }
   .audio-expand.-open:after {
     -webkit-transform: rotate(90deg);
     -moz-transform: rotate(90deg);
@@ -5794,6 +5807,9 @@ Link posts contain a link to an external site. They can also optionally have a f
     transform: rotate(90deg);
     right: 9px;
     top: 15px; }
+    @media screen and (min-width: 480px) {
+      .audio-expand.-open:after {
+        top: 20px; } }
 
 .audio-ad {
   background-color: #000000;
@@ -5803,7 +5819,7 @@ Link posts contain a link to an external site. They can also optionally have a f
   width: 320px; }
   .audio-ad.audio-ad--aboveplayer.-show {
     display: block;
-    margin: 0 auto; }
+    margin: 3px auto; }
     @media screen and (min-width: 480px) {
       .audio-ad.audio-ad--aboveplayer.-show {
         display: none; } }
@@ -5812,6 +5828,9 @@ Link posts contain a link to an external site. They can also optionally have a f
     @media screen and (min-width: 480px) {
       .audio-ad.audio-ad--inplayer.-show {
         display: block;
+        flex: 1 1 auto; } }
+    @media screen and (min-width: 768px) {
+      .audio-ad.audio-ad--inplayer.-show {
         left: 0;
         position: absolute;
         top: 0; } }

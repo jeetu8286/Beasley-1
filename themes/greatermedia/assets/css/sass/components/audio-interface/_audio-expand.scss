@@ -22,12 +22,20 @@
 		right: 28px;
 		top: 23px;
 		width: 0;
+
+		@include bp(small) {
+			top: 28px;
+		}
 	}
 
 	&.-open:after {
 		@include transform(rotate(90deg));
 		right: 9px;
 		top: 15px;
+
+		@include bp(small) {
+			top: 20px;
+		}
 	}
 }
 

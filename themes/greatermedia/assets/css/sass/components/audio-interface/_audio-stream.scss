@@ -49,7 +49,7 @@
 	&.-multiple .audio-stream__current {
 
 		@include bp(medium) {
-			border: 1px solid rgba(0,0,0,.25);
+			border: 1px solid rgba(0, 0, 0, .25);
 		}
 	}
 
@@ -129,9 +129,9 @@
 
 		@include bp(medium) {
 			background-color: $liveplayer-bg;
-			border-bottom: 1px solid rgba(0,0,0,.25);
-			border-left: 1px solid rgba(0,0,0,.25);
-			border-right: 1px solid rgba(0,0,0,.25);
+			border-bottom: 1px solid rgba(0, 0, 0, .25);
+			border-left: 1px solid rgba(0, 0, 0, .25);
+			border-right: 1px solid rgba(0, 0, 0, .25);
 			left: -1px;
 			padding: 20px 10px 10px 10px;
 			position: absolute;
@@ -166,30 +166,5 @@
 			background-color: $liveplayer-color;
 			color: $color-text-white;
 		}
-	}
-
-	.audio-stream__sponsored {
-		border-top: 1px solid rgba(0,0,0,.25);
-		line-height: 1;
-		padding: 5px 10px;
-
-		@include bp(medium) {
-			border: 0 none;
-			padding: 0;
-		}
-	}
-	&.-multiple .audio-stream__sponsored {
-
-		@include bp(medium) {
-			margin-left: 10px;
-		}
-	}
-	.audio-stream__sponsored--text {
-		color: rgba(0,0,0,.5);
-		font-size: ms(-4);
-		text-transform: uppercase;
-	}
-	.audio-stream__sponsored--name {
-		font-size: ms(-2);
 	}
 }

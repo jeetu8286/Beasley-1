@@ -28,6 +28,7 @@
 	height: 30px;
 	margin: 0 auto;
 	outline: none;
+	padding: 0;
 	width: 30px;
 	z-index: 1;
 
@@ -38,7 +39,6 @@
 	@include bp(medium) {
 		height: 48px;
 		width: 48px;
-		z-index: initial;
 	}
 
 	&:hover,

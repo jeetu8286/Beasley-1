@@ -1,10 +1,15 @@
 .audio-controls {
+	line-height: 1;
 	padding: 3px 0 3px 10px;
 
+	@include bp(small) {
+		padding: 5px 0 5px 10px;
+	}
 	@include bp(medium) {
 		padding: 0;
 	}
 }
+
 .audio-controls__play,
 .audio-controls__pause,
 .audio-controls__loading {

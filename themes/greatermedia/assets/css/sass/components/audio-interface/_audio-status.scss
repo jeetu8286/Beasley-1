@@ -13,7 +13,7 @@
 
 	.audio-status__btn {
 		@include btn(transparent, $liveplayer-color-secondary, $liveplayer-color-secondary, 6px, 12px, ms(-2));
-		display: inline-block;
+		display: block;
 
 		&:hover,
 		&:focus {

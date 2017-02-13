@@ -7,7 +7,7 @@
 
 	&.audio-ad--aboveplayer.-show {
 		display: block;
-		margin: 0 auto;
+		margin: 3px auto;
 
 		@include bp(small) {
 			display: none;
@@ -19,6 +19,9 @@
 
 		@include bp(small) {
 			display: block;
+			flex: 1 1 auto;
+		}
+		@include bp(medium) {
 			left: 0;
 			position: absolute;
 			top: 0;
