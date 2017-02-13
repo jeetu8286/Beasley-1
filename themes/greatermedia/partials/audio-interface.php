@@ -14,7 +14,7 @@
 
 	<div class="audio-interface__container">
 	  <?php // @TODO Available classes to add to audio-stream: -multiple, -open ?>
-		<nav class="audio-stream <?php // if ( count( $streams ) >= 2 ) { ?>-multiple<?php //} ?> -open">
+		<nav class="audio-stream <?php // if ( count( $streams ) >= 2 ) { ?>-multiple<?php //} ?>">
 			<ul class="audio-stream__list">
 				<li class="audio-stream__current">
 					<?php // @TODO On desktop, the .audio-stream__title button below would control the -open class for .audio-stream ?>
@@ -79,7 +79,7 @@
 					<div id="js-artist-info" class="audio-playing__artist"><?php esc_html_e( 'Artist Name', 'greatermedia' ); ?></div>
 
 					<?php // @TODO Available classes to add to audio-podcast: -show ?>
-					<div id="js-audio-podcast" class="audio-podcast -show">
+					<div id="js-audio-podcast" class="audio-podcast">
 						<span class="audio-podcast__text">15:20</span>
 						<input type="range" name="audio-podcast" id="audio-podcast-slider" min="0" max="100" step="1" value="75" title="<?php esc_attr_e( 'Podcast Time Slider', 'greatermedia' ); ?>"/>
 						<span class="audio-podcast__text">28:15</span>
