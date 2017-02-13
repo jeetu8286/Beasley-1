@@ -2,7 +2,10 @@
 	color: $liveplayer-color;
 	cursor: pointer;
 	flex: 1 1 auto;
-	width: percentage(380/930);
+
+	@include bp(large) {
+		width: percentage(380/930);
+	}
 
 	.audio-stream__list {
 		list-style: none;

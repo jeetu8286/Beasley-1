@@ -126,15 +126,19 @@ $icon-font:		'gmr-icons';
 }
 
 .icon-volume:before {
-	content: "\e60c";
+	content: "\e901";
 }
 
 .icon-volume-mute:before {
-	content: "\e60d";
+	content: "\e900";
 }
 
 .icon-volume-up:before {
-	content: "\e60e";
+	content: "\e901";
+}
+
+.icon-volume-down:before {
+	content: "\e902";
 }
 
 .icon-facebook:before {

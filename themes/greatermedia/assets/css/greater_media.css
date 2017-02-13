@@ -537,13 +537,16 @@ category: Base - Typography
   content: "\e60b"; }
 
 .icon-volume:before {
-  content: "\e60c"; }
+  content: "\e901"; }
 
 .icon-volume-mute:before {
-  content: "\e60d"; }
+  content: "\e900"; }
 
 .icon-volume-up:before {
-  content: "\e60e"; }
+  content: "\e901"; }
+
+.icon-volume-down:before {
+  content: "\e902"; }
 
 .icon-facebook:before, .social__link--facebook:before {
   content: "\e60f"; }
@@ -5293,8 +5296,10 @@ Link posts contain a link to an external site. They can also optionally have a f
 .audio-stream {
   color: #282827;
   cursor: pointer;
-  flex: 1 1 auto;
-  width: 40.86022%; }
+  flex: 1 1 auto; }
+  @media screen and (min-width: 970px) {
+    .audio-stream {
+      width: 40.86022%; } }
   .audio-stream .audio-stream__list {
     list-style: none;
     margin: 0;
@@ -5378,8 +5383,10 @@ Link posts contain a link to an external site. They can also optionally have a f
 .audio-player {
   align-items: center;
   display: flex;
-  flex: 1 1 auto;
-  width: 58.51064%; }
+  flex: 1 1 auto; }
+  @media screen and (min-width: 970px) {
+    .audio-player {
+      width: 59.13978%; } }
 
 .audio-volume {
   display: block;
@@ -5466,9 +5473,16 @@ Link posts contain a link to an external site. They can also optionally have a f
     background-color: #424240; }
   .audio-volume input[type=range]:focus::-ms-fill-upper {
     background-color: #424240; }
-  .audio-volume.-open {
-    display: flex;
-    text-align: left; }
+  @media screen and (min-width: 768px) {
+    .audio-volume {
+      display: none; } }
+  @media screen and (min-width: 970px) {
+    .audio-volume {
+      display: block; } }
+  @media screen and (min-width: 970px) {
+    .audio-volume.-open {
+      text-align: left;
+      display: flex; } }
   .audio-volume input[type=range] {
     display: none;
     margin: 0 5px; }
@@ -5481,13 +5495,14 @@ Link posts contain a link to an external site. They can also optionally have a f
     background-color: transparent;
     border: 0 none;
     display: inline-block;
+    font-size: 17px;
     margin: 0;
     padding: 0;
     width: 20px; }
     .audio-volume .audio-volume__btn:before,
     .audio-volume .audio-volume__mute:before {
       color: #282827;
-      content: "\e60c";
+      content: "\e901";
       font-family: "gmr-icons";
       font-style: normal;
       font-weight: normal;
@@ -5498,7 +5513,7 @@ Link posts contain a link to an external site. They can also optionally have a f
   .audio-volume .audio-volume__mute {
     display: none; }
     .audio-volume .audio-volume__mute:before {
-      content: "\e60d"; }
+      content: "\e900"; }
   .audio-volume.-open .audio-volume__mute {
     display: block; }
 

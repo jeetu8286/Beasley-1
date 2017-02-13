@@ -2,5 +2,8 @@
 	align-items: center;
 	display: flex;
 	flex: 1 1 auto;
-	width: percentage(550/940);
+
+	@include bp(large) {
+		width: percentage(550/930);
+	}
 }

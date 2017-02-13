@@ -5,9 +5,19 @@
 	text-align: right;
 	width: percentage(170/550);
 
+	@include bp(medium) {
+		display: none;
+	}
+	@include bp(large) {
+		display: block;
+	}
+
 	&.-open {
-		display: flex;
-		text-align: left;
+		
+		@include bp(large) {
+			text-align: left;
+			display: flex;
+		}
 	}
 
 	input[type=range] {
@@ -25,13 +35,14 @@
 		background-color: transparent;
 		border: 0 none;
 		display: inline-block;
+		font-size: 17px;
 		margin: 0;
 		padding: 0;
 		width: 20px;
 
 		&:before {
 			color: $liveplayer-color;
-			content: "\e60c";
+			content: "\e901";
 			font-family: $icon-font;
 			font-style: normal;
 			font-weight: normal;
@@ -45,7 +56,7 @@
 		display: none;
 
 		&:before {
-			content: "\e60d";
+			content: "\e900";
 		}
 	}
 	&.-open .audio-volume__mute {
