@@ -96,7 +96,7 @@ function greatermedia_dfp_footer() {
 
 	?><script type="text/javascript">
 		(function($, googletag) {
-			var slotsIndex = 0, __ready;
+			var slotsIndex = 0, needCleanup = false, __ready;
 
 			__ready = function() {
 				var unitCodes = <?php echo json_encode( $unit_codes ); ?>,
@@ -128,8 +128,10 @@ function greatermedia_dfp_footer() {
 				googletag.cmd.push(function() {
 					var i, j, slot, targeting, sizeMapping, isOutOfPage;
 
-					googletag.destroySlots();
-					googletag.pubads().clearTargeting();
+					if (needCleanup) {
+						googletag.destroySlots();
+						googletag.pubads().clearTargeting();
+					}
 
 					for (i in slots) {
 						isOutOfPage = 'dfp_ad_interstitial' == slots[i][4] || 'dfp_ad_wallpaper' == slots[i][4];
@@ -193,7 +195,13 @@ function greatermedia_dfp_footer() {
 				});
 			};
 
-			$(document).on('pjax:end gmr_lazy_load_end', __ready).ready(__ready);
+			$(document).on('pjax:end', function() {
+				needCleanup = true;
+				__ready();
+			}).on('gmr_lazy_load_end', function() {
+				needCleanup = false;
+				__ready();
+			}).ready(__ready);
 		})(jQuery, googletag);
 	</script><?php
 }
