@@ -29,14 +29,12 @@ img {
 // The `.page-wrap` class is being used in conjunction with the off-canvas mobile navigation. On click of the
 // `.mobile-nav--toggle` button, the contents of `.page-wrap` will be pushed to the left by a particular value. This
 .page-wrap {
-	@include transform(translate(0, 0));
 	width: 100%;
 	padding-bottom: 0;
 	@include transition(all 100ms ease-out);
 	overflow: hidden;
 	background-color: $secondary-bg;
 	@include bp(medium) {
-		@include transform(none);
 		min-height: 800px;
 	}
 }
@@ -162,58 +160,6 @@ img {
 
 		@include bp(medium) {
 			padding: $base-line-height 1.5em;
-		}
-	}
-}
-
-.live-player {
-// display: none; // Temp
-	position: fixed;
-	bottom: 0;
-	right: 0;
-	left: 0;
-	width: 100%;
-	max-height: 58px;
-	background-color: $liveplayer-bg;
-	color: $liveplayer-color;
-	cursor: pointer;
-	@include transition(all 200ms ease-in-out);
-	@include bp(medium){
-		position: absolute;
-		top: 215px;
-		bottom: auto;
-		right: 0;
-		left: auto;
-		width: 225px;
-		height: 100%;
-		max-height: none;
-		overflow: hidden;
-		box-sizing: border-box;
-		cursor: default;
-		@include transition(none);
-	}
-	/*@include bp(x-large) {
-		@include calc(right, '50% - 485px'); // Half of 970px max-width
-	}*/
-
-	.live-player--open & {
-		max-height: calc(48vh + 58px);
-		@include transition(all 200ms ease-in-out);
-	}
-
-	.logged-in & {
-		@include bp(medium) {
-			top: 261px;
-		}
-		@include media(min-width 783px) {
-			top: 247px;
-		}
-	}
-
-	.news-site & {
-
-		@include bp(medium) {
-			border-left: 1px solid $primary-border;
 		}
 	}
 }

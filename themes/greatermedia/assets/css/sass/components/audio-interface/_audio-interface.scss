@@ -1,0 +1,33 @@
+.audio-interface {
+	@include clearfix;
+	background-color: $liveplayer-bg;
+	bottom: 0;
+	color: $liveplayer-color;
+	display: block;
+	left: 0;
+	position: fixed;
+	right: 0;
+	width: 100%;
+	z-index: 2;
+
+	@include bp(medium) {
+		bottom: auto;
+		left: auto;
+		position: relative;
+		right: auto;
+	}
+
+	.audio-interface__container {
+		align-items: flex-start;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		margin: 0 auto;
+		max-width: 970px;
+
+		@include bp(medium) {
+			flex-wrap: nowrap;
+			padding: 10px 20px;
+		}
+	}
+}

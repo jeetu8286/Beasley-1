@@ -1,0 +1,30 @@
+.audio-ad {
+	background-color: $black;
+	color: $white;
+	display: none;
+	height: 50px;
+	width: 320px;
+
+	&.audio-ad--aboveplayer.-show {
+		display: block;
+		margin: 3px auto;
+
+		@include bp(small) {
+			display: none;
+		}
+	}
+
+	&.audio-ad--inplayer.-show {
+		display: none;
+
+		@include bp(small) {
+			display: block;
+			flex: 1 1 auto;
+		}
+		@include bp(medium) {
+			left: 0;
+			position: absolute;
+			top: 0;
+		}
+	}
+}
