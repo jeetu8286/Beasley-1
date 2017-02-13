@@ -1,9 +1,10 @@
 .audio-player {
 	align-items: center;
 	display: flex;
-	flex: 1 1 auto;
-
+	flex: 0 1 auto;
+	
 	@include bp(large) {
+		flex: 1 1 auto;
 		width: percentage(550/930);
 	}
 }

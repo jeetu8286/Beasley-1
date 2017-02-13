@@ -1,9 +1,13 @@
 .audio-stream {
 	color: $liveplayer-color;
 	cursor: pointer;
-	flex: 1 1 auto;
+	flex: 0 1 auto;
 
+	@include bp(medium) {
+		min-width: 300px;
+	}
 	@include bp(large) {
+		flex: 1 1 auto;
 		width: percentage(380/930);
 	}
 

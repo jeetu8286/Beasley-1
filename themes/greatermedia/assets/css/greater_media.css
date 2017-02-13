@@ -5286,6 +5286,7 @@ Link posts contain a link to an external site. They can also optionally have a f
   .audio-interface .audio-interface__container {
     align-items: flex-start;
     display: flex;
+    justify-content: space-between;
     margin: 0 auto;
     max-width: 970px;
     padding: 10px; }
@@ -5296,9 +5297,13 @@ Link posts contain a link to an external site. They can also optionally have a f
 .audio-stream {
   color: #282827;
   cursor: pointer;
-  flex: 1 1 auto; }
+  flex: 0 1 auto; }
+  @media screen and (min-width: 768px) {
+    .audio-stream {
+      min-width: 300px; } }
   @media screen and (min-width: 970px) {
     .audio-stream {
+      flex: 1 1 auto;
       width: 40.86022%; } }
   .audio-stream .audio-stream__list {
     list-style: none;
@@ -5383,9 +5388,10 @@ Link posts contain a link to an external site. They can also optionally have a f
 .audio-player {
   align-items: center;
   display: flex;
-  flex: 1 1 auto; }
+  flex: 0 1 auto; }
   @media screen and (min-width: 970px) {
     .audio-player {
+      flex: 1 1 auto;
       width: 59.13978%; } }
 
 .audio-volume {
