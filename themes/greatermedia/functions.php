@@ -1149,8 +1149,8 @@ add_filter( 'body_class', 'greatermedia_liveplayer_disabled' );
  */
 function greatermedia_extend_featured_curation_limit( $limit, $homepage ) {
 	$template = get_page_template_slug( $homepage->ID );
-	if ( 'page-templates/homepage-news.php' == $template || ( empty( $template ) && is_news_site() ) ) {
-		$limit = 6;
+	if ( ! is_admin() && 'page-templates/homepage-slider.php' == $template ) {
+		$limit = 4;
 	}
 
 	return $limit;
