@@ -140,19 +140,19 @@ function greatermedia_dfp_footer() {
 
 						if ('dfp_ad_leaderboard_pos1' == slots[i][4] || 'dfp_ad_leaderboard_pos2' == slots[i][4]) {
 							sizeMapping = googletag.sizeMapping()
-								.addSize([1024, 200], [[970, 66], [970, 90]])
+								.addSize([1024, 200], [[970, 66], [970, 90], [728, 90]])
 								.addSize([768, 200], [728, 90])
 								.addSize([0, 0], [[320, 50], [320, 100]])
 								.build();
 
 							slot.defineSizeMapping(sizeMapping);
-						} else if ('dfp_ad_inlist_infinite' == slots[i][4]) {
-							sizeMapping = googletag.sizeMapping()
-								.addSize([768, 200], [])
-								.addSize([0, 0], [300, 250])
-								.build();
-
-							slot.defineSizeMapping(sizeMapping);
+//						} else if ('dfp_ad_inlist_infinite' == slots[i][4]) {
+//							sizeMapping = googletag.sizeMapping()
+//								.addSize([768, 200], [])
+//								.addSize([0, 0], [300, 250])
+//								.build();
+//
+//							slot.defineSizeMapping(sizeMapping);
 						} else if ('dfp_ad_incontent_pos1' == slots[i][4] || 'dfp_ad_incontent_pos2' == slots[i][4]) {
 							sizeMapping = googletag.sizeMapping()
 								.addSize([1024, 200], [])
