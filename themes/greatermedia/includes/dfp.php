@@ -193,7 +193,7 @@ function greatermedia_dfp_footer() {
 				});
 			};
 
-			$(document).on('pjax:end', __ready).ready(__ready);
+			$(document).on('pjax:end gmr_lazy_load_end', __ready).ready(__ready);
 		})(jQuery, googletag);
 	</script><?php
 }
