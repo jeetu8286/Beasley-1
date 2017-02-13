@@ -116,7 +116,7 @@ function greatermedia_dfp_footer() {
 						id = 'dfp-slot-' + ++slotsIndex;
 						$this.html('<div id="' + id + '" class="gmr-ad"></div>');
 
-						targeting.push(['pos', lotsIndex]);
+						targeting.push(['pos', slotsIndex]);
 
 						slots.push([
 							'/<?php echo esc_js( $network_id ); ?>/' + unitCode,
