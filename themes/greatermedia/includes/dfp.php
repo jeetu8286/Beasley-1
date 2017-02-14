@@ -144,9 +144,15 @@ function greatermedia_dfp_footer() {
 						}
 
 						sizeMapping = false;
-						if ('dfp_ad_leaderboard_pos1' == slots[i][4] || 'dfp_ad_leaderboard_pos2' == slots[i][4]) {
+						if ('dfp_ad_leaderboard_pos1' == slots[i][4]) {
 							sizeMapping = googletag.sizeMapping()
 								.addSize([1024, 200], [[970, 66], [970, 90], [728, 90]])
+								.addSize([768, 200], [728, 90])
+								.addSize([0, 0], [[320, 50], [320, 100]])
+								.build();
+						} else if ('dfp_ad_leaderboard_pos2' == slots[i][4]) {
+							sizeMapping = googletag.sizeMapping()
+								.addSize([1024, 200], [[970, 90], [728, 90]])
 								.addSize([768, 200], [728, 90])
 								.addSize([0, 0], [[320, 50], [320, 100]])
 								.build();
