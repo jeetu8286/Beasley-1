@@ -1,111 +1,111 @@
 #!/usr/bin/env bash
 
 cd greatermedia
-npm update
+yarn
 grunt
 
 cd ../thefanatic
-npm update
+yarn
 grunt
 
 cd ../wben
-npm update
+yarn
 grunt
 
 cd ../wbos
-npm update
+yarn
 grunt
 
 cd ../wbos-alt929boston
-npm update
+yarn
 grunt
 
 cd ../wbqt
-npm update
+yarn
 grunt
 
 cd ../wcsx
-npm update
+yarn
 grunt
 
 cd ../wctc
-npm update
+yarn
 grunt
 
 cd ../wdha
-npm update
+yarn
 grunt
 
 cd ../wjrz
-npm update
+yarn
 grunt
 
 cd ../wjrz-christmas
-npm update
+yarn
 grunt
 
 cd ../wklb
-npm update
+yarn
 grunt
 
 cd ../wmgc
-npm update
+yarn
 grunt
 
 cd ../wmgc-thebounce
-npm update
+yarn
 grunt
 
 cd ../wmgk
-npm update
+yarn
 grunt
 
 cd ../wmgq
-npm update
+yarn
 grunt
 
 cd ../wmgq-christmas
-npm update
+yarn
 grunt
 
 cd ../wmjx
-npm update
+yarn
 grunt
 
 cd ../wmjx-christmas
-npm update
+yarn
 grunt
 
 cd ../wmmr
-npm update
+yarn
 grunt
 
 cd ../wmtr
-npm update
+yarn
 grunt
 
 cd ../wrat
-npm update
+yarn
 grunt
 
 cd ../wrif
-npm update
+yarn
 grunt
 
 cd ../wror
-npm update
+yarn
 grunt
 
 cd ../wbt
-npm update
+yarn
 grunt
 
 cd ../wlnk
-npm update
+yarn
 grunt
 
 cd ../bobandsheri
-npm update
+yarn
 grunt
 
 cd ../

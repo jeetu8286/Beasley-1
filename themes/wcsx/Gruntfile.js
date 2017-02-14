@@ -35,7 +35,7 @@ module.exports = function( grunt ) {
 				options: {
 					jshintrc: '.gruntjshintrc'
 				}
-			}   
+			}
 		},
 		uglify: {
 			all: {
@@ -49,10 +49,6 @@ module.exports = function( grunt ) {
 				}
 			}
 		},
-		test:   {
-			files: ['assets/js/test/**/*.js']
-		},
-		
 		sass:   {
 			options: {
 				require: 'sass-globbing',
@@ -65,7 +61,7 @@ module.exports = function( grunt ) {
 				}
 			}
 		},
-		
+
 		cssmin: {
 			minify: {
 				expand: true,
@@ -76,7 +72,7 @@ module.exports = function( grunt ) {
 			}
 		},
 		watch:  {
-			
+
 			sass: {
 				files: ['assets/css/sass/**/*.scss'],
 				tasks: ['sass', 'cssmin'],
@@ -84,7 +80,7 @@ module.exports = function( grunt ) {
 					debounceDelay: 500
 				}
 			},
-			
+
 			scripts: {
 				files: ['assets/js/src/**/*.js', 'assets/js/vendor/**/*.js'],
 				tasks: ['jshint', 'concat', 'uglify'],
@@ -96,9 +92,9 @@ module.exports = function( grunt ) {
 	} );
 
 	// Default task.
-	
+
 	grunt.registerTask( 'default', ['jshint', 'concat', 'uglify', 'sass', 'cssmin'] );
-	
+
 
 	grunt.util.linefeed = '\n';
 };
