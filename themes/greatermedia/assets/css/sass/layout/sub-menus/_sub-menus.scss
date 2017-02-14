@@ -60,8 +60,10 @@
 .header__main {
 	position: relative;
 
-	&:hover {
-		z-index: 5000100; /* IAB z-index standard for drop nav is 5000000 - 5999999 */
+	@include bp(medium) {
+		&:hover {
+			z-index: 5000100; /* IAB z-index standard for drop nav is 5000000 - 5999999 */
+		}
 	}
 }
 
@@ -113,28 +115,27 @@
 .mobile-nav {
 
 	.sub-menu {
-		@include transition(left 100ms ease-out);
-		position: absolute;
-		height: 100%;
-		width: 100%;
-		left: -100%;
-		top: 0;
-		bottom: 0;
-		background-color: #fff;
+		background-color: $secondary-bg;
+		display: none;
+		float: left;
+		list-style: none;
 		padding: 0;
+		width: 100%;
 
 		& li:not(.mobile-menu-submenu-header) {
 			list-style-type: none;
 			border: none;
-			background-color: $primary-bg;
+			background-color: $secondary-bg;
 		}
 
 		a {
+			background-color: $secondary-bg;
 			&:link, &:visited {
-				color: #000;
+				color: $color-text-black;
 			}
 			&:hover, &:active {
-				color: #fff;
+				background-color: $header-nav-bg;
+				color: $color-text-white;
 			}
 		}
 	}
@@ -142,9 +143,6 @@
 	.sub-menu.is-visible {
 		display: block;
 		left: 0;
-		overflow: hidden;
-		overflow-y: auto;
-		-webkit-overflow-scrolling: touch;
 		z-index: 1;
 	}
 
@@ -163,6 +161,11 @@
 		width: 25%;
 		text-align: center;
 		border-left: 1px solid $header-nav-border;
+
+		&:before {
+			display: block;
+			transform: rotate(90deg);
+		}
 	}
 
 	.mobile-menu-submenu-header {

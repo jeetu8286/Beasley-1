@@ -1,21 +1,13 @@
 // Headroom.js Specific Settings
 .header__main.headroom {
-	background-color: $header-bg;
-	z-index: 5000001;
-
-	&.headroom--unpinned {
-		display: none;
-	}
-	&.headroom--pinned {
-		position: fixed;
-	}
 
 	@include bp(medium) {
+		background-color: $header-bg;
+		z-index: 5000001;
 
 		&.headroom--pinned,
 		&.headroom--unpinned,
 		&.headroom--not-top {
-			display: block;
 			position: fixed;
 			transition: transform 200ms linear;
 		}

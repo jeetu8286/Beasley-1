@@ -6,15 +6,15 @@
  * Copyright (c) 2014 10up
  * Licensed under the GPLv2+ license.
  */
-(function ($, window, document, undefined) {
+(function( window, document, undefined ) {
 
 	/**
 	 * Variables
 	 */
-	var body = document.querySelector('body'),
-		header = document.getElementById('header'),
-		header_main = header.getElementsByClassName('header__main')[0],
-		header_container = header.querySelectorAll('.header__main > .container')[0],
+	var body = document.querySelector( 'body' ),
+		header = document.getElementById( 'header' ),
+		header_main = header.getElementsByClassName( 'header__main' )[0],
+		header_container = header.querySelectorAll( '.header__main > .container' )[0],
 		header_container_height_min,
 		admin_bar;
 
@@ -32,7 +32,7 @@
 			header.style.height = header_height + 'px';
 
 			// Is admin bar present
-			if (  body.classList.contains( 'admin-bar' ) ) {
+			if ( body.classList.contains( 'admin-bar' ) ) {
 				admin_bar = true;
 			}
 
@@ -82,4 +82,4 @@
 
 	}
 
-})(jQuery, window, document);
+})( window, document );

@@ -2973,15 +2973,15 @@ $.fn.cycle.transitions.carousel = {
 	} );
 
 })(jQuery, window, document);
-(function ($, window, document, undefined) {
+(function( window, document, undefined ) {
 
 	/**
 	 * Variables
 	 */
-	var body = document.querySelector('body'),
-		header = document.getElementById('header'),
-		header_main = header.getElementsByClassName('header__main')[0],
-		header_container = header.querySelectorAll('.header__main > .container')[0],
+	var body = document.querySelector( 'body' ),
+		header = document.getElementById( 'header' ),
+		header_main = header.getElementsByClassName( 'header__main' )[0],
+		header_container = header.querySelectorAll( '.header__main > .container' )[0],
 		header_container_height_min,
 		admin_bar;
 
@@ -2999,7 +2999,7 @@ $.fn.cycle.transitions.carousel = {
 			header.style.height = header_height + 'px';
 
 			// Is admin bar present
-			if (  body.classList.contains( 'admin-bar' ) ) {
+			if ( body.classList.contains( 'admin-bar' ) ) {
 				admin_bar = true;
 			}
 
@@ -3049,7 +3049,7 @@ $.fn.cycle.transitions.carousel = {
 
 	}
 
-})(jQuery, window, document);
+})( window, document );
 (function($, config) {
 	var auth;
 
