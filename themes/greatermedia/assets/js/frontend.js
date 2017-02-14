@@ -2423,61 +2423,9 @@ $.fn.cycle.transitions.carousel = {
 	var body = document.querySelector('body');
 	var html = document.querySelector('html');
 	var header = document.getElementById('header');
-	var header_main = document.getElementsByClassName('header__main')[0];
-	var header_container = document.querySelectorAll('.header__main > .container')[0];
-	var audio_interface = document.getElementById('js-audio-interface');
 	var footer = document.querySelector('.footer');
 	var $table = $('table');
 	var $tableTd = $('table td');
-
-	/**
-	 * Headroom.js
-	 */
-	$( document ).ready( function() {
-		// Set variables
-		var header_height = header.offsetHeight,
-			header_container_height_full = header_container.offsetHeight,
-			offset_height = header_container_height_full,
-			header_container_height_min,
-			admin_bar;
-
-		// Set header height
-		header.style.height = header_height + 'px';
-
-		// Is admin bar present
-		if (  body.classList.contains( 'admin-bar' ) ) {
-			admin_bar = true;
-			// offset_height = offset_height + 32;
-		}
-
-		// Manage the position of the header during headroom.js events
-		var headroomManagePosition = function() {
-			header_container_height_min = header_container.offsetHeight;
-			header_main.style.top = '-' + header_container_height_min + 'px';
-		};
-
-		// Headroom.js
-		/* jshint ignore:start */
-		var headroom_header = new Headroom( header_main, {
-			'offset': offset_height,
-			'tolerance': 5,
-			onPin: function() {
-				header_main.style.top = '0px';
-			},
-			onUnpin: function() {
-				headroomManagePosition();
-			},
-			onTop: function() {
-				header_main.style.top = '0px';
-			},
-			onNotTop: function() {
-				headroomManagePosition();
-			}
-		} );
-		headroom_header.init();
-		/* jshint ignore:end */
-
-	} );
 
 	/**
 	 * Adds a class to a HTML table to make the table responsive
@@ -3023,6 +2971,83 @@ $.fn.cycle.transitions.carousel = {
 
 		closeSearch( e );
 	} );
+
+})(jQuery, window, document);
+(function ($, window, document, undefined) {
+
+	/**
+	 * Variables
+	 */
+	var body = document.querySelector('body'),
+		header = document.getElementById('header'),
+		header_main = header.getElementsByClassName('header__main')[0],
+		header_container = header.querySelectorAll('.header__main > .container')[0],
+		header_container_height_min,
+		admin_bar;
+
+	if ( window.matchMedia( '(min-width: 768px)' ).matches ) {
+
+		// Using window.onload because heights we want need to be rendered.
+		window.onload = function() {
+
+			// Set variables after things are loaded
+			var header_container_height_full = header_container.offsetHeight,
+				offset_height = header_container_height_full,
+				header_height = header.offsetHeight;
+
+			// Set header height
+			header.style.height = header_height + 'px';
+
+			// Is admin bar present
+			if (  body.classList.contains( 'admin-bar' ) ) {
+				admin_bar = true;
+			}
+
+			// Manage the position of the header during headroom.js events
+			var headroomManagePosition = function() {
+				header_container_height_min = header_container.offsetHeight;
+
+				if ( admin_bar ) {
+					header_main.style.transform = 'translateY(-' + (header_container_height_min + 32) + 'px)';
+				} else {
+					header_main.style.transform = 'translateY(-' + header_container_height_min + 'px)';
+				}
+			};
+
+			// Headroom.js
+			/* jshint ignore:start */
+			var headroom_header = new Headroom( header_main, {
+				'offset': offset_height,
+				'tolerance': 5,
+				onPin: function() {
+					header_main.style.transform = 'translateY(0)';
+				},
+				onUnpin: function() {
+					headroomManagePosition();
+				},
+				onTop: function() {
+					header_main.style.transform = 'translateY(0)';
+					header_main.classList.remove( 'headroom--pinned' ); // This removes the animation on first pin
+				},
+				onNotTop: function() {
+					headroomManagePosition();
+				}
+			} );
+			headroom_header.init();
+			/* jshint ignore:end */
+
+		};
+	} else {
+
+		/* jshint ignore:start */
+		var headroom_header = new Headroom( header_main, {
+			'offset': 0,
+			'tolerance': 5
+		} );
+		headroom_header.init();
+		/* jshint ignore:end */
+
+	}
 
 })(jQuery, window, document);
 (function($, config) {

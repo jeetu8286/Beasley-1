@@ -30,6 +30,7 @@ module.exports = function (grunt) {
 						'assets/js/src/menus.js',
 						'assets/js/src/hero-slider.js',
 						'assets/js/src/search.js',
+						'assets/js/src/fixed-header-player.js',
 						'assets/js/src/firebase.js'
 					],
 					'assets/js/admin.js': [

@@ -3541,42 +3541,33 @@ a.highlights__contest--btn {
     .header__search--btn:before {
       font-size: 1.125em; } }
 
-@media screen and (min-width: 768px) {
-  .header__main.headroom {
-    background-color: #ffffff;
-    z-index: 5000001; }
-    .header__main.headroom.headroom--pinned, .header__main.headroom.headroom--unpinned {
+.header__main.headroom {
+  background-color: #ffffff;
+  z-index: 5000001; }
+  .header__main.headroom.headroom--unpinned {
+    display: none; }
+  .header__main.headroom.headroom--pinned {
+    position: fixed; }
+  @media screen and (min-width: 768px) {
+    .header__main.headroom.headroom--pinned, .header__main.headroom.headroom--unpinned, .header__main.headroom.headroom--not-top {
+      display: block;
       position: fixed;
-      transition: top 200ms linear; }
+      transition: transform 200ms linear; }
     .header__main.headroom.headroom--pinned {
-      top: 0; }
-    .header__main.headroom.headroom--pinned.headroom--not-top {
+      transform: translateY(0); }
+    .header__main.headroom:not(.headroom--pinned):not(.headroom--unpinned) {
       transition: none; }
-    .header__main.headroom.headroom--top,
-    .admin-bar .header__main.headroom.headroom--top {
+    .header__main.headroom.headroom--top {
       position: relative;
-      top: auto; }
-    .header__main.headroom:not(.headroom--top) .header__logo {
+      transform: translateY(0); }
+    .header__main.headroom.headroom--not-top .header__logo {
       padding: 10px 0; }
-    .header__main.headroom:not(.headroom--top) .header__logo--img {
+    .header__main.headroom.headroom--not-top .header__logo--img {
       max-height: 32px; }
-    .header__main.headroom:not(.headroom--top) .header__search {
+    .header__main.headroom.headroom--not-top .header__search {
       display: none; }
-    .header__main.headroom:not(.headroom--top) .header__nav {
-      padding-top: 0; }
-    .header__main.headroom .header__main--navwrap {
-      flex: 1 1 auto;
-      padding-bottom: 5px; }
-    .header__main.headroom .header__nav {
-      clear: right;
-      display: none;
-      line-height: 1;
-      padding-top: 15px; } }
-    @media screen and (min-width: 768px) and (min-width: 970px) {
-      .header__main.headroom .header__nav {
-        display: block;
-        float: right;
-        width: auto; } }
+    .header__main.headroom.headroom--not-top .header__nav {
+      padding-top: 0; } }
 
 .footer {
   width: 100%;
