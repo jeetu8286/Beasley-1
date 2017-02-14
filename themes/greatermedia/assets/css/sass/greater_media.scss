@@ -13,7 +13,6 @@
 @import "base/variables";
 @import "base/functions";
 @import "base/mixins";
-@import "base/placeholders";
 @import "base/helpers";
 @import "base/normalize";
 @import "base/breakpoints";
@@ -21,6 +20,7 @@
 @import "base/grid";
 @import "base/base";
 @import "base/vendor-style-fixes";
+@import "base/placeholders";
 
 // Main layout components: menu, typography, etc.
 @import "layout/typography";
@@ -33,6 +33,7 @@
 // Home
 @import "home/blog-roll";
 @import "home/blog-roll-new";
+@import "home/featured-slider";
 @import "home/featured";
 @import "home/highlights";
 
@@ -43,7 +44,20 @@
 @import "components/entries"; // Temporary!
 @import "components/article";
 @import "components/sidebar";
-@import "components/liveplayer";
+//@import "components/liveplayer"; // Original
+@import "components/audio-interface/audio-interface";
+@import "components/audio-interface/audio-stream";
+@import "components/audio-interface/audio-sponsor";
+@import "components/audio-interface/audio-player";
+@import "components/audio-interface/audio-volume";
+@import "components/audio-interface/audio-controls";
+@import "components/audio-interface/audio-readout";
+@import "components/audio-interface/audio-playing";
+@import "components/audio-interface/audio-podcast";
+@import "components/audio-interface/audio-status";
+@import "components/audio-interface/audio-more";
+@import "components/audio-interface/audio-expand";
+@import "components/audio-interface/audio-ad";
 @import "components/breaking-news";
 @import "components/ads";
 @import "components/closures";

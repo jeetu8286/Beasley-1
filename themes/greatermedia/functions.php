@@ -232,7 +232,6 @@ add_action( 'wp_head', 'greatermedia_header_meta' );
 function greatermedia_nav_menus() {
 	$locations = array(
 		'main-nav' => __( 'Main Navigation', 'greatermedia' ),
-		'secondary-nav' => __( 'Secondary Navigation', 'greatermedia' ),
 		'footer-nav' => __( 'Footer Navigation', 'greatermedia' )
 	);
 	register_nav_menus( $locations );
@@ -296,6 +295,127 @@ function greatermedia_widgets_init() {
 }
 
 add_action( 'widgets_init', 'greatermedia_widgets_init' );
+
+/**
+ * Create custom live player widget
+ */
+class live_player_widget extends WP_Widget {
+
+	function __construct() {
+		parent::__construct(
+			// Base ID of the widget
+			'live_player_widget',
+			// Widget Name
+			'Live Player Widget',
+			// Widget description
+			array( 'description' => 'Sidebar controls for the live player' )
+		);
+	}
+
+	// Creating widget front-end
+	public function widget( $args, $instance ) {
+		$title = apply_filters( 'widget_title', $instance['title'] );
+		echo $args['before_widget'];
+		if ( ! empty( $title ) )
+		echo $args['before_title'] . $title . $args['after_title'];
+
+		printf(
+				'<div class="player">
+					<div class="player-control">
+						<button class="play-button" aria-live="assertive" tabindex="32" aria-label="Play">
+							<svg viewBox="0 0 36 36">
+								<path d="M11,10 L18,13.74 18,22.28 11,26 M18,13.74 L26,18 26,18 18,22.28"></path>
+							</svg>
+						</button>
+					</div>
+					<div class="player-info">%1$s</div>
+				</div>',
+				'Philadelphia&rsquo;s Classic Rock 102.9 WMGK'
+			);
+		echo $args['after_widget'];
+	}
+
+	// Widget Backend
+	public function form( $instance ) {
+		if ( isset( $instance[ 'title' ] ) ) {
+			$title = $instance[ 'title' ];
+		}
+
+		// Widget admin form
+		?>
+		<p>
+			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
+			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
+		</p>
+		<?php
+	}
+
+	// Updating widget replacing old instances with new
+	public function update( $new_instance, $old_instance ) {
+		$instance = array();
+		$instance['title'] = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
+		return $instance;
+	}
+}
+
+/**
+ * Create custom social icon widget
+ */
+class social_icon_widget extends WP_Widget {
+
+	function __construct() {
+		parent::__construct(
+			// Base ID of the widget
+			'social_icon_widget',
+			// Widget Name
+			'Social Icon Widget',
+			// Widget description
+			array( 'description' => 'Show social icons' )
+		);
+	}
+
+	// Creating widget front-end
+	public function widget( $args, $instance ) {
+		$title = apply_filters( 'widget_title', $instance['title'] );
+		echo $args['before_widget'];
+		if ( ! empty( $title ) )
+		echo $args['before_title'] . $title . $args['after_title'];
+		do_action( 'gmr_social' );
+		echo $args['after_widget'];
+	}
+
+	// Widget Backend
+	public function form( $instance ) {
+		if ( isset( $instance[ 'title' ] ) ) {
+			$title = $instance[ 'title' ];
+		}
+
+		// Widget admin form
+		?>
+		<p>
+			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
+			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
+		</p>
+		<?php
+	}
+
+	// Updating widget replacing old instances with new
+	public function update( $new_instance, $old_instance ) {
+		$instance = array();
+		$instance['title'] = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
+		return $instance;
+	}
+}
+
+/**
+ * Add Custom Widgets
+ */
+function greatermedia_load_widget() {
+	register_widget( 'live_player_widget' );
+	register_widget( 'social_icon_widget' );
+}
+
+add_action( 'widgets_init', 'greatermedia_load_widget' );
 
 /**
  * Helper function to get the post id from options or transient cache
@@ -1023,18 +1143,15 @@ add_filter( 'body_class', 'greatermedia_liveplayer_disabled' );
  *
  * @return int
  */
-function greatermedia_extend_featured_curation_limit( $limit ) {
-
-	if ( is_news_site() ) {
+function greatermedia_extend_featured_curation_limit( $limit, $homepage ) {
+	$template = get_page_template_slug( $homepage->ID );
+	if ( 'page-templates/homepage-news.php' == $template || ( empty( $template ) && is_news_site() ) ) {
 		$limit = 6;
-	} else {
-		$limit = 4;
 	}
 
 	return $limit;
-
 }
-add_filter( 'gmr-homepage-featured-limit', 'greatermedia_extend_featured_curation_limit' );
+add_filter( 'gmr-homepage-featured-limit', 'greatermedia_extend_featured_curation_limit', 10, 2 );
 
 /**
  * Extends the homepage community curation limit
@@ -1046,18 +1163,15 @@ add_filter( 'gmr-homepage-featured-limit', 'greatermedia_extend_featured_curatio
  *
  * @return int
  */
-function greatermedia_extend_community_curation_limit( $limit ) {
-
-	if ( is_news_site() ) {
+function greatermedia_extend_community_curation_limit( $limit, $homepage ) {
+	$template = get_page_template_slug( $homepage->ID );
+	if ( 'page-templates/homepage-news.php' == $template || ( empty( $template ) && is_news_site() ) ) {
 		$limit = 4;
-	} else {
-		$limit = 3;
 	}
 
 	return $limit;
-
 }
-add_filter( 'gmr-homepage-community-limit', 'greatermedia_extend_community_curation_limit' );
+add_filter( 'gmr-homepage-community-limit', 'greatermedia_extend_community_curation_limit', 10, 2 );
 
 function greatermedia_podcasts_in_loop( $query ) {
 

@@ -1,0 +1,66 @@
+.audio-volume {
+	@include range-slider;
+	display: none;
+	padding: 0 15px;
+	text-align: right;
+	width: percentage(170/550);
+
+	@include bp(large) {
+		display: block;
+	}
+
+	&.-open {
+		
+		@include bp(large) {
+			text-align: left;
+			display: flex;
+		}
+	}
+
+	input[type=range] {
+		display: none;
+		margin: 0 5px;
+	}
+	&.-open input[type=range] {
+		display: block;
+	}
+
+	.audio-volume__btn,
+	.audio-volume__mute {
+		appearance: none;
+		-webkit-appearance: none;
+		background-color: transparent;
+		border: 0 none;
+		display: inline-block;
+		font-size: 17px;
+		margin: 0;
+		padding: 0;
+		width: 20px;
+
+		&:before {
+			color: $liveplayer-color;
+			content: "\e901";
+			font-family: $icon-font;
+			font-style: normal;
+			font-weight: normal;
+			height: 0;
+			line-height: 1;
+			text-indent: 0;
+			width: 0;
+		}
+	}
+	.audio-volume__mute {
+		display: none;
+
+		&:before {
+			content: "\e900";
+		}
+	}
+	&.-open .audio-volume__mute {
+		display: block;
+	}
+
+	.audio-volume__text {
+		@extend .screen-reader-text;
+	}
+}

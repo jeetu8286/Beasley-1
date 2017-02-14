@@ -11,9 +11,8 @@
 	/**
 	 * Global variables
 	 */
-	var body = document.querySelector('body');
-	var mobileNavButton = document.querySelector('.mobile-nav__toggle');
-	var siteWrap = document.getElementById('site-wrap');
+	var body = document.querySelector('body'),
+		mobileNavButton = document.querySelector('.mobile-nav__toggle');
 
 	/**
 	 * Function to detect if the current browser can use `addEventListener`, if not, use `attachEvent`
@@ -29,22 +28,6 @@
 		} else if (elem.attachEvent) {
 			elem.attachEvent('on' + eventType, handler);
 		}
-	}
-
-	/**
-	 * Allows the main content body to maintain it's vertical position when the mobile menu is opened
-	 */
-	function mobileOpenLocation() {
-		var y = window.pageYOffset;
-
-		siteWrap.style.top = '-' + y + 'px';
-	}
-
-	/**
-	 * Returns the main content body to it's vertical position when the mobile menu is closed
-	 */
-	function mobileCloseLocation() {
-		siteWrap.style.removeProperty('top');
 	}
 
 	/**
@@ -70,9 +53,7 @@
 		var $blocker = getBlockerDiv();
 
 		$blocker.css({
-			width: $(document).width(),
-			height: $(document).height(),
-			display: 'block',
+			display: 'block'
 		});
 	};
 
@@ -95,10 +76,8 @@
 
 		if ($('.mobile-nav--open').length) {
 			showBlocker();
-			mobileOpenLocation();
 		} else {
 			hideBlocker();
-			mobileCloseLocation();
 		}
 	}
 
@@ -110,36 +89,18 @@
 			$secondary = jQuery(document.querySelector('.header__secondary')),
 			$overlay = jQuery(document.querySelector('.menu-overlay-mask')),
 			$body = jQuery(document.querySelector('body')),
-			$logo = jQuery(document.querySelector('.header__logo')),
-			$subHeader = jQuery(document.querySelector('.header__sub'));
+			$logo = jQuery(document.querySelector('.header__logo'));
 
-		$menu.on('mouseover', '.menu-item-has-children, .header__account--small', function (e) {
+		$menu.on('mouseover', '.menu-item-has-children', function (e) {
 			$overlay.addClass('is-visible');
 			if($body.hasClass('news-site')) {
 				$logo.addClass('is-visible');
-				$subHeader.addClass('is-visible');
 			}
 		});
-		$menu.on('mouseout', '.menu-item-has-children, .header__account--small', function (e) {
+		$menu.on('mouseout', '.menu-item-has-children', function (e) {
 			$overlay.removeClass('is-visible');
 			if($body.hasClass('news-site')) {
 				$logo.removeClass('is-visible');
-				$subHeader.removeClass('is-visible');
-			}
-		});
-
-		$secondary.on('mouseover', '.header__account--small, .header__account--large.logged-in', function (e) {
-			$overlay.addClass('is-visible');
-			if($body.hasClass('news-site')) {
-				$logo.addClass('is-visible');
-				$subHeader.addClass('is-visible');
-			}
-		});
-		$secondary.on('mouseout', '.header__account--small, .header__account--large.logged-in', function (e) {
-			$overlay.removeClass('is-visible');
-			if($body.hasClass('news-site')) {
-				$logo.removeClass('is-visible');
-				$subHeader.removeClass('is-visible');
 			}
 		});
 	}

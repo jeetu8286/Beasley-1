@@ -84,7 +84,7 @@ category: Components - Shows
 .podcast__btn--play,
 .podcast__btn--pause {
 	position: absolute;
-	@extend %live-stream__btn;
+	@extend %audio-controls__button;
 	width: 45%;
 	margin: 0px;
 	position: absolute;
@@ -345,7 +345,7 @@ a.podcast__rss:active {
 }
 
 .podcast__rss {
-	@extend .live-stream__listen-now--btn;
+	@extend .audio-status__btn;
 }
 
 .gmr-mediaelement-fallback {

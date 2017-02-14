@@ -25,29 +25,18 @@ category: Components - Ads
 }
 
 .ad__leaderboard {
+	line-height: 0;
 	position: relative;
-	padding: em(20px) 0;
 	text-align: center;
 
 	&.desktop { display: none; }
 	&.mobile {
 		display: block;
-		height: 50px;
-		padding: 0;
 	}
 
 	@include bp(medium) {
-		height: 132px;
-
 		&.desktop { display: block; }
 		&.mobile { display: none; }
-	}
-
-	.news-site & {
-		@include bp(medium) {
-			height: 104px;
-			padding: 7px 0;
-		}
 	}
 }
 
@@ -82,10 +71,10 @@ category: Components - Ads
 		margin: 0 0 1em 1em;
 	}
 
-	@include bp(x-large) {
+	/*@include bp(x-large) {
 		float: right;
 		margin: 0 0 1em 1em;
-	}
+	}*/
 }
 
 .ad__in-loop {
@@ -125,9 +114,9 @@ category: Components - Ads
 				height: 175px;
 			}
 
-			@include bp(x-large) {
+			/*@include bp(x-large) {
 				height: 200px;
-			}
+			}*/
 		}
 }
 

@@ -103,7 +103,7 @@
 
 				</aside>
 
-				<section class="show__blogroll inner-left-col">
+				<section class="show__blogroll">
 					<h2 class="section-header">Stories</h2>
 					<?php get_template_part( 'partials/loop', 'show' ); ?>
 				</section>
@@ -111,6 +111,8 @@
 			</div>
 
 		</section>
+
+		<?php get_sidebar(); ?>
 
 	</div>
 

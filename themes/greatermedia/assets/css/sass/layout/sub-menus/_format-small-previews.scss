@@ -7,7 +7,7 @@
 		color: $color-text-white;
 
 		.meta-text {
-			color: $color-text-white;
+			color: $header-nav-bg;
 		}
 
 	}
@@ -15,7 +15,7 @@
 	.meta-text {
 		display: block;
 		font-size: ms(-2);
-		color: $color-text-gray;
+		color: $color-text-white;
 		margin-top: .5em;
 
 		.times {

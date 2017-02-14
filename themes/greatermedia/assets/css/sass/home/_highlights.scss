@@ -92,7 +92,7 @@ Community Highlights and Events
 	border-bottom: 1px solid darken( $highlights-bg, 3% );
 
 	@include bp(medium) {
-		padding: $base-line-height * 2 $gutter * 2;
+		padding: 20px;
 	}
 
 	.news-site & {
@@ -136,7 +136,7 @@ Community Highlights and Events
 .highlights__heading {
 	margin: 0 0 $base-line-height / 2;
 	line-height: 1;
-	font-size: ms(2);
+	font-size: ms(1);
 	font-weight: lighter;
 	color: $secondary-heading;
 	vertical-align: top;
@@ -156,17 +156,18 @@ Community Highlights and Events
 			font-size: ms(3);
 		}
 
-		@include bp(larger) {
+		/*@include bp(larger) {
 			font-size: ms(4);
-		}
+		}*/
 
-		@include bp(x-large) {
+		/*@include bp(x-large) {
 			font-size: ms(6);
-		}
+		}*/
 	}
 }
 
 .highlights__community {
+	padding-bottom: 10px;
 	@include bp(large) {
 		@include span-columns(9 of 15);
 	}
@@ -181,40 +182,22 @@ Community Highlights and Events
 			@include omega;
 		}
 
-		@include bp(larger) {
+		/*@include bp(larger) {
 			@include span-columns(12 of 12);
 			@include omega;
-		}
+		}*/
 
-		@include bp(x-large) {
+		/*@include bp(x-large) {
 			@include span-columns(8 of 12);
-		}
+		}*/
 	}
 }
 
 .highlights__community--item {
+	float: left;
 	position: relative;
-	@include span-columns(6 of 12);
-	@include omega;
-
-	&:nth-of-type(2n) {
-		margin-left: 2.35765%;
-	}
-	&:nth-of-type(3) {
-		display: none;
-	}
-	@include bp(small) {
-		@include span-columns(4 of 12);
-		&:nth-of-type(2n) {
-			margin-left: 0;
-		}
-		&:nth-of-type(3) {
-			display: block;
-		}
-	}
-	@include bp(large) {
-		@include span-columns(3 of 9);
-	}
+	margin-right: 2%;
+	width: 31.33333%;
 
 	.news-site & {
 		@include span-columns(12 of 12);
@@ -245,15 +228,15 @@ Community Highlights and Events
 			@include omega;
 		}
 
-		@include bp(larger) {
+		/*@include bp(larger) {
 			@include span-columns(12 of 12);
 			@include omega;
-		}
+		}*/
 
-		@include bp(x-large) {
+		/*@include bp(x-large) {
 			@include span-columns(12 of 12);
 			@include omega;
-		}
+		}*/
 	}
 }
 
@@ -270,13 +253,13 @@ Community Highlights and Events
 			padding-top: 0;
 		}
 
-		@include bp(larger) {
+		/*@include bp(larger) {
 			@include span-columns(6 of 12);
-		}
+		}*/
 
-		@include bp(x-large) {
+		/*@include bp(x-large) {
 			@include span-columns(6 of 12);
-		}
+		}*/
 	}
 }
 
@@ -332,7 +315,7 @@ Community Highlights and Events
 	bottom: 0;
 	left: 0;
 	right: 0;
-	padding: $base-line-height * 1.5 $gutter / 2 $base-line-height / 2;
+	padding: 5px;
 	margin: 0;
 	font-size: ms(0);
 	font-weight: normal;
@@ -347,6 +330,10 @@ Community Highlights and Events
 
 	@include bp(ie9medium) {
 		@include css-gradient(rgba(0, 0, 0, 0), $darker-gray);
+	}
+
+	@include bp(medium) {
+		font-size: ms(-1);
 	}
 
 	a:hover & {
@@ -371,6 +358,7 @@ Community Highlights and Events
 		text-overflow: initial;
 		font-size: ms(0);
 		font-weight: normal;
+		color: $color-text-black;
 		text-transform: uppercase;
 
 		@include bp(ie9medium) {
@@ -381,11 +369,14 @@ Community Highlights and Events
 			font-size: ms(0);
 		}
 
-		@include bp(x-large) {
+		/*@include bp(x-large) {
 			max-height: 3.9em;
 			margin-top: -5px;
 			font-size: ms(2);
-		}
+		}*/
+	}
+	.news-site a:hover & {
+		color: $color-text-red;
 	}
 }
 
@@ -410,13 +401,13 @@ Community Highlights and Events
 			padding-top: 0;
 		}
 
-		@include bp(larger) {
+		/*@include bp(larger) {
 			@include span-columns(6 of 12);
-		}
+		}*/
 
-		@include bp(x-large) {
+		/*@include bp(x-large) {
 			@include span-columns(4 of 12);
-		}
+		}*/
 	}
 }
 
@@ -582,11 +573,6 @@ Community Highlights and Events
 	@include transform(translateY(-50%));
 	padding: 0 $gutter 0 0;
 	margin-left: 35%;
-	font-size: ms(2);
-
-	@include bp(medium) {
-		font-size: ms(1);
-	}
 
 	@include bp(large) {
 		width: auto;
@@ -613,17 +599,20 @@ Community Highlights and Events
 	// Never show more than two lines of text (layout will break).
 	overflow: hidden;
 	line-height: 1.25;
-	max-height: 2.5em;
+	max-height: 3.5em;
 
+	@include bp(medium) {
+		font-size: ms(-1);
+	}
 	@include bp(large) {
 		// One line of text at this breakpoint because we need to fit the date.
 		max-height: 1.25em;
 	}
 
-	@media(min-width: 1250px) {
+	/*@media(min-width: 1250px) {
 		// Back to two lines.
 		max-height: 2.5em;
-	}
+	}*/
 
 	// Highlight on hover
 	a:hover & {
@@ -631,7 +620,7 @@ Community Highlights and Events
 	}
 
 	.news-site & {
-		font-size: ms(-2);
+		font-size: ms(-1);
 		font-weight: normal;
 		text-transform: uppercase;
 
@@ -639,10 +628,10 @@ Community Highlights and Events
 			font-size: ms(0);
 		}
 
-		@include bp(x-large) {
+		/*@include bp(x-large) {
 			margin-top: -5px;
 			font-size: ms(2);
-		}
+		}*/
 	}
 }
 
@@ -654,17 +643,21 @@ Community Highlights and Events
 	font-size: ms(-2);
 	color: $gray;
 
+	@include bp(large) {
+		font-size: ms(-3);
+	}
+
 	.news-site & {
 		font-size: ms(-3);
 		text-transform: none;
 
 		@include bp(large) {
-			font-size: ms(-1);
+			font-size: ms(-2);
 		}
 
-		@include bp(x-large) {
+		/*@include bp(x-large) {
 			font-size: ms(1);
-		}
+		}*/
 	}
 }
 
@@ -679,9 +672,9 @@ Community Highlights and Events
 			font-size: ms(-1);
 		}
 
-		@include bp(x-large) {
+		/*@include bp(x-large) {
 			font-size: ms(1);
-		}
+		}*/
 	}
 }
 
@@ -722,6 +715,7 @@ a.highlights__contest--btn {
 }
 
 .highlights__ad {
+		clear: both;
 
 	.news-site & {
 		clear: both;
@@ -733,11 +727,11 @@ a.highlights__contest--btn {
 			text-align: center;
 		}
 
-		@include bp(x-large) {
+		/*@include bp(x-large) {
 			@include span-columns(4 of 12);
 			@include omega;
 			clear: none;
-		}
+		}*/
 	}
 
 	.highlights__ad--mobile {

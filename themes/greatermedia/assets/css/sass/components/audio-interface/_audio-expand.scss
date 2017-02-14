@@ -1,0 +1,44 @@
+.audio-expand {
+	background-color: darken($liveplayer-bg, 10%);
+	border: 0 none;
+	display: block;
+	margin-left: 10px;
+	padding: 0;
+	position: relative;
+	width: 40px;
+
+	@include bp(medium) {
+		display: none;
+	}
+
+	&:after {
+		@include transform(rotate(270deg));
+		content: "\e606";
+		display: block;
+		font-family: $icon-font;
+		font-size: ms(-2);
+		height: 0;
+		position: absolute;
+		right: 28px;
+		top: 23px;
+		width: 0;
+
+		@include bp(small) {
+			top: 28px;
+		}
+	}
+
+	&.-open:after {
+		@include transform(rotate(90deg));
+		right: 9px;
+		top: 15px;
+
+		@include bp(small) {
+			top: 20px;
+		}
+	}
+}
+
+.audio-expand__text {
+	@extend .screen-reader-text;
+}

@@ -1,0 +1,84 @@
+.audio-controls {
+	line-height: 1;
+	padding: 3px 0 3px 10px;
+
+	@include bp(small) {
+		padding: 5px 0 5px 10px;
+	}
+	@include bp(medium) {
+		padding: 0;
+	}
+}
+
+.audio-controls__play,
+.audio-controls__pause,
+.audio-controls__loading {
+	@extend %audio-controls__button;
+	position: relative;
+}
+
+.audio-controls__play {
+
+	.-playing &,
+	.-loading & {
+		display: none;
+	}
+
+	&:before {
+		@include transform(translate(-50%, -50%));
+		content: "\e606";
+		font-family: $icon-font;
+		left: 54%;
+		line-height: 1;
+		position: absolute;
+		top: 50%;
+
+		@include bp(small) {
+			font-size: ms(2);
+		}
+	}
+}
+
+.audio-controls__loading {
+	display: none;
+	border: none;
+
+	.-loading & {
+		display: block;
+	}
+
+	.gmr-icon {
+		@include transform(translate(-50%, -50%));
+		font-size: ms(1);
+		left: 23%;
+		position: absolute;
+		top: 20%;
+
+		@include bp(medium) {
+			left: 32%;
+			top: 28%;
+		}
+	}
+}
+
+.audio-controls__pause {
+	display: none;
+
+	.-playing & {
+		display: block;
+	}
+
+	&:before {
+		@include transform(translate(-50%, -50%));
+		content: "\e61f";
+		font-family: $icon-font;
+		font-size: ms(2);
+		left: 50%;
+		position: absolute;
+		top: 50%;
+	}
+}
+
+.audio-controls__text {
+	@extend .screen-reader-text;
+}
