@@ -1,111 +1,27 @@
 #!/usr/bin/env bash
 
-cd greatermedia
-yarn
-grunt
+read -p "Remove all node_modules? (y/N): " -r
+if [[ $REPLY =~ ^[Yy]$ ]]
+	then
+	    find . -name "node_modules" -type d -exec rm -r "{}" \;
+fi
 
-cd ../thefanatic
-yarn
-grunt
+RUN_YARN=0
+read -p "Install NPM dependencies using Yarn? (y/N): " -r
+if [[ $REPLY =~ ^[Yy]$ ]]
+	then
+		RUN_YARN=1
+fi
 
-cd ../wben
-yarn
-grunt
+for d in */ ; do
+	cd $d
 
-cd ../wbos
-yarn
-grunt
+	if [[ $RUN_YARN = 1 ]]
+		then
+			yarn
+	fi
 
-cd ../wbos-alt929boston
-yarn
-grunt
+	grunt
 
-cd ../wbqt
-yarn
-grunt
-
-cd ../wcsx
-yarn
-grunt
-
-cd ../wctc
-yarn
-grunt
-
-cd ../wdha
-yarn
-grunt
-
-cd ../wjrz
-yarn
-grunt
-
-cd ../wjrz-christmas
-yarn
-grunt
-
-cd ../wklb
-yarn
-grunt
-
-cd ../wmgc
-yarn
-grunt
-
-cd ../wmgc-thebounce
-yarn
-grunt
-
-cd ../wmgk
-yarn
-grunt
-
-cd ../wmgq
-yarn
-grunt
-
-cd ../wmgq-christmas
-yarn
-grunt
-
-cd ../wmjx
-yarn
-grunt
-
-cd ../wmjx-christmas
-yarn
-grunt
-
-cd ../wmmr
-yarn
-grunt
-
-cd ../wmtr
-yarn
-grunt
-
-cd ../wrat
-yarn
-grunt
-
-cd ../wrif
-yarn
-grunt
-
-cd ../wror
-yarn
-grunt
-
-cd ../wbt
-yarn
-grunt
-
-cd ../wlnk
-yarn
-grunt
-
-cd ../bobandsheri
-yarn
-grunt
-
-cd ../
+	cd ..
+done
