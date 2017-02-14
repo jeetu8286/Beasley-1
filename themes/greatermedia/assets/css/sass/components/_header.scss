@@ -11,14 +11,6 @@
 	}
 }
 
-.header--pinned {
-	@include transform(translateY(0%));
-}
-
-.header--unpinned {
-	@include transform(translateY(-100%));
-}
-
 .header .container {
 	align-items: flex-end;
 	display: flex;
@@ -47,8 +39,8 @@
 }
 
 .header__main {
-	width: 100%;
 	padding: 0;
+	width: 100%;
 }
 
 .header__logo {

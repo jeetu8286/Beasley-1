@@ -76,8 +76,6 @@
 					do_action( 'gmr_social' ); ?>
 				</nav>
 
-				<?php get_template_part( 'partials/audio-interface' ); ?>
-
 				<div class="container__leaderboard">
 					<div class="ad__leaderboard desktop">
 			  		<?php do_action( 'acm_tag', 'leaderboard-top-of-site' ); ?>

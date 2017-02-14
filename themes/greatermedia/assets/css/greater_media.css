@@ -3441,20 +3441,6 @@ a.highlights__contest--btn {
     .header {
       border-bottom: 3px solid #929497; } }
 
-.header--pinned {
-  -webkit-transform: translateY(0%);
-  -moz-transform: translateY(0%);
-  -ms-transform: translateY(0%);
-  -o-transform: translateY(0%);
-  transform: translateY(0%); }
-
-.header--unpinned {
-  -webkit-transform: translateY(-100%);
-  -moz-transform: translateY(-100%);
-  -ms-transform: translateY(-100%);
-  -o-transform: translateY(-100%);
-  transform: translateY(-100%); }
-
 .header .container {
   align-items: flex-end;
   display: flex;
@@ -3482,8 +3468,8 @@ a.highlights__contest--btn {
       vertical-align: middle; } }
 
 .header__main {
-  width: 100%;
-  padding: 0; }
+  padding: 0;
+  width: 100%; }
 
 .header__logo {
   display: block;
@@ -3554,6 +3540,43 @@ a.highlights__contest--btn {
   @media screen and (min-width: 970px) {
     .header__search--btn:before {
       font-size: 1.125em; } }
+
+@media screen and (min-width: 768px) {
+  .header__main.headroom {
+    background-color: #ffffff;
+    z-index: 5000001; }
+    .header__main.headroom.headroom--pinned, .header__main.headroom.headroom--unpinned {
+      position: fixed;
+      transition: top 200ms linear; }
+    .header__main.headroom.headroom--pinned {
+      top: 0; }
+    .header__main.headroom.headroom--pinned.headroom--not-top {
+      transition: none; }
+    .header__main.headroom.headroom--top,
+    .admin-bar .header__main.headroom.headroom--top {
+      position: relative;
+      top: auto; }
+    .header__main.headroom:not(.headroom--top) .header__logo {
+      padding: 10px 0; }
+    .header__main.headroom:not(.headroom--top) .header__logo--img {
+      max-height: 32px; }
+    .header__main.headroom:not(.headroom--top) .header__search {
+      display: none; }
+    .header__main.headroom:not(.headroom--top) .header__nav {
+      padding-top: 0; }
+    .header__main.headroom .header__main--navwrap {
+      flex: 1 1 auto;
+      padding-bottom: 5px; }
+    .header__main.headroom .header__nav {
+      clear: right;
+      display: none;
+      line-height: 1;
+      padding-top: 15px; } }
+    @media screen and (min-width: 768px) and (min-width: 970px) {
+      .header__main.headroom .header__nav {
+        display: block;
+        float: right;
+        width: auto; } }
 
 .footer {
   width: 100%;
@@ -5475,14 +5498,15 @@ Link posts contain a link to an external site. They can also optionally have a f
   .-multiple .audio-sponsor {
     margin-left: 10px; } }
 
-.audio-sponsor--text {
-  color: rgba(0, 0, 0, 0.5);
-  font-size: 0.6243em;
-  text-transform: uppercase; }
+/*.audio-sponsor--text {
+	color: rgba(0, 0, 0, .5);
+	font-size: ms(-4);
+	text-transform: uppercase;
+}
 
 .audio-sponsor--name {
-  font-size: 0.79012em; }
-
+	font-size: ms(-2);
+}*/
 .audio-player {
   border-top: 1px solid rgba(0, 0, 0, 0.25);
   display: flex;
