@@ -76,23 +76,11 @@ get_header();
 					<option value="WI">WISCONSIN</option>
 					<option value="WY">WYOMING</option>
 				</select>
-			<div class="gmclt_wideColumn left">
 				<div class="gmcltWX_mapLoading">
 					<p>Loading...</p>
 					<img src="<?php echo trailingslashit( get_stylesheet_directory_uri() ); ?>images/WLNKajaxLoader.gif">
 				</div>
 				<div id="gmclt_stormwatchMapCanvas"></div>
-			</div>
-
-			<div class="gmclt_narrowColumn">
-
-				<div id="gmclt_narrowColumnContent"></div>
-				<div class="gmclt_adDiv">
-					<?php do_action( 'dfp_tag', 'dfp_ad_right_rail_pos1' ); ?>
-				</div>
-			</div>
-
-
 		</section>
 
 

@@ -9,11 +9,6 @@
 		<section class="content">
 
 			<article id="post-<?php the_ID(); ?>" <?php post_class( 'article cf' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
-
-				<div class="ad__inline--right desktop">
-					<?php do_action( 'dfp_tag', 'dfp_ad_right_rail_pos1' ); ?>
-				</div>
-
 				<header class="article__header">
 					<?php Greater_Media\Flexible_Feature_Images\feature_image_preference_is( get_the_ID(), 'top' ) ? get_template_part( 'partials/feature-image-article' ) : ''; ?>
 					<time class="article__date" datetime="<?php echo get_the_time(); ?>"><?php the_date('F j, Y'); ?></time>

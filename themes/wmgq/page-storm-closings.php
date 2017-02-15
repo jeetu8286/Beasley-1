@@ -30,11 +30,6 @@ while ( have_posts() ) : the_post(); ?>
         <section class="content">
 
             <article id="post-<?php the_ID(); ?>" <?php post_class( 'article cf' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
-
-                <div class="ad__inline--right desktop">
-                    <?php do_action( 'dfp_tag', 'dfp_ad_right_rail_pos1' ); ?>
-                </div>
-
                 <header class="article__header">
 
                     <time class="article__date" datetime="<?php echo esc_attr( get_the_time() ); ?>"><?php the_date('F j, Y'); ?></time>

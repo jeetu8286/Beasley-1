@@ -18,17 +18,7 @@ get_header();
 			</header>
 			<section class="article__content" itemprop="articleBody">
 				<?php the_content(); ?>
-
-				<div class="gmclt_wideColumn left">
-					<script type="text/javascript" src="https://form.jotform.com/jsform/60595824939168"></script>
-				</div>
-
-				<div class="gmclt_narrowColumn">
-					<div class="gmclt_adDiv">
-						<?php do_action( 'dfp_tag', 'dfp_ad_right_rail_pos1' ); ?>
-					</div>
-				</div>
-
+				<script type="text/javascript" src="https://form.jotform.com/jsform/60595824939168"></script>
 			</section>
 		</section>
 	</article>
