@@ -2058,17 +2058,11 @@ var $ = jQuery;
 	}
 
 	function initPlayer() {
-		var container = document.getElementById('td_container'),
-			techPriority;
-
-		if (!container) {
-			return;
-		}
-
-		techPriority = calcTechPriority();
+		var techPriority = calcTechPriority();
 		debug('+++ initPlayer - techPriority = ' + techPriority.join(', '));
 
-		window.player = player = new TDSdk({
+		/* TD player configuration object used to create player instance */
+		var tdPlayerConfig = {
 			coreModules: [
 				{
 					id: 'MediaPlayer',
@@ -2088,11 +2082,25 @@ var $ = jQuery;
 				{id: 'PlayerWebAdmin'},
 				{id: 'SyncBanners', elements: [{id: 'td_synced_bigbox', width: 300, height: 250}]},
 				{id: 'TargetSpot'}
-			],
-			playerReady: onPlayerReady,
-			configurationError: onConfigurationError,
-			moduleError: onModuleError
-		});
+			]
+		};
+
+		require(['tdapi/base/util/Companions'], function (Companions) {
+				companions = new Companions();
+			}
+		);
+
+		window.player = player = new TdPlayerApi(tdPlayerConfig);
+		if (player.addEventListener) {
+			player.addEventListener('player-ready', onPlayerReady);
+			player.addEventListener('configuration-error', onConfigurationError);
+			player.addEventListener('module-error', onModuleError);
+		} else if (player.attachEvent) {
+			player.attachEvent('player-ready', onPlayerReady);
+			player.attachEvent('configuration-error', onConfigurationError);
+			player.attachEvent('module-error', onModuleError);
+		}
+		player.loadModules();
 	}
 
 	/**
@@ -3554,5 +3562,4 @@ var $ = jQuery;
 		addEventHandler(podcastPauseBtn, 'click', pauseCustomInlineAudio);
 	});
 
-	$(document).ready(initPlayer);
 })(jQuery, window);

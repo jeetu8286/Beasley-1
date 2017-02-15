@@ -52,7 +52,8 @@ module.exports = function( grunt ) {
 					'_': false,
 					Modernizr: true,
 					NOLCMB: false,
-					bindNielsenSDKEvents: true
+					bindNielsenSDKEvents: true,
+					TdPlayerApi: false
 				}
 			}
 		},
