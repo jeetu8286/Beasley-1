@@ -65,7 +65,7 @@ category: Base
 /**
  * Hides text from sighted users
  */
-.screen-reader-text, .audio-volume .audio-volume__text, .audio-controls__text, .audio-expand__text {
+.screen-reader-text, .mobile-nav .mobile-menu-submenu-heading, .audio-volume .audio-volume__text, .audio-controls__text, .audio-expand__text {
   position: absolute;
   left: -10000px;
   top: auto;
@@ -1435,13 +1435,12 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
     list-style-type: none;
     border: none;
     background-color: #f1f1f3; }
-  .mobile-nav .sub-menu a, .mobile-nav .header__nav .format-fw > ul a, .header__nav .mobile-nav .format-fw > ul a, .mobile-nav .header__nav .format-sp > ul a, .header__nav .mobile-nav .format-sp > ul a, .mobile-nav .header__nav .format-fi > ul a, .header__nav .mobile-nav .format-fi > ul a {
-    background-color: #f1f1f3; }
-    .mobile-nav .sub-menu a:link, .mobile-nav .header__nav .format-fw > ul a:link, .header__nav .mobile-nav .format-fw > ul a:link, .mobile-nav .header__nav .format-sp > ul a:link, .header__nav .mobile-nav .format-sp > ul a:link, .mobile-nav .header__nav .format-fi > ul a:link, .header__nav .mobile-nav .format-fi > ul a:link, .mobile-nav .sub-menu a:visited, .mobile-nav .header__nav .format-fw > ul a:visited, .header__nav .mobile-nav .format-fw > ul a:visited, .mobile-nav .header__nav .format-sp > ul a:visited, .header__nav .mobile-nav .format-sp > ul a:visited, .mobile-nav .header__nav .format-fi > ul a:visited, .header__nav .mobile-nav .format-fi > ul a:visited {
-      color: #000000; }
-    .mobile-nav .sub-menu a:hover, .mobile-nav .header__nav .format-fw > ul a:hover, .header__nav .mobile-nav .format-fw > ul a:hover, .mobile-nav .header__nav .format-sp > ul a:hover, .header__nav .mobile-nav .format-sp > ul a:hover, .mobile-nav .header__nav .format-fi > ul a:hover, .header__nav .mobile-nav .format-fi > ul a:hover, .mobile-nav .sub-menu a:active, .mobile-nav .header__nav .format-fw > ul a:active, .header__nav .mobile-nav .format-fw > ul a:active, .mobile-nav .header__nav .format-sp > ul a:active, .header__nav .mobile-nav .format-sp > ul a:active, .mobile-nav .header__nav .format-fi > ul a:active, .header__nav .mobile-nav .format-fi > ul a:active {
-      background-color: #d22228;
-      color: #ffffff; }
+  .mobile-nav .sub-menu a:link, .mobile-nav .header__nav .format-fw > ul a:link, .header__nav .mobile-nav .format-fw > ul a:link, .mobile-nav .header__nav .format-sp > ul a:link, .header__nav .mobile-nav .format-sp > ul a:link, .mobile-nav .header__nav .format-fi > ul a:link, .header__nav .mobile-nav .format-fi > ul a:link, .mobile-nav .sub-menu a:visited, .mobile-nav .header__nav .format-fw > ul a:visited, .header__nav .mobile-nav .format-fw > ul a:visited, .mobile-nav .header__nav .format-sp > ul a:visited, .header__nav .mobile-nav .format-sp > ul a:visited, .mobile-nav .header__nav .format-fi > ul a:visited, .header__nav .mobile-nav .format-fi > ul a:visited {
+    background-color: #d22228;
+    color: #ffffff; }
+  .mobile-nav .sub-menu a:hover, .mobile-nav .header__nav .format-fw > ul a:hover, .header__nav .mobile-nav .format-fw > ul a:hover, .mobile-nav .header__nav .format-sp > ul a:hover, .header__nav .mobile-nav .format-sp > ul a:hover, .mobile-nav .header__nav .format-fi > ul a:hover, .header__nav .mobile-nav .format-fi > ul a:hover, .mobile-nav .sub-menu a:active, .mobile-nav .header__nav .format-fw > ul a:active, .header__nav .mobile-nav .format-fw > ul a:active, .mobile-nav .header__nav .format-sp > ul a:active, .header__nav .mobile-nav .format-sp > ul a:active, .mobile-nav .header__nav .format-fi > ul a:active, .header__nav .mobile-nav .format-fi > ul a:active {
+    background-color: #f1f1f3;
+    color: #000000; }
 
 .mobile-nav .sub-menu.is-visible, .mobile-nav .header__nav .format-fw > ul.is-visible, .header__nav .mobile-nav .format-fw > ul.is-visible, .mobile-nav .header__nav .format-sp > ul.is-visible, .header__nav .mobile-nav .format-sp > ul.is-visible, .mobile-nav .header__nav .format-fi > ul.is-visible, .header__nav .mobile-nav .format-fi > ul.is-visible {
   display: block;
@@ -1458,14 +1457,18 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
   width: 25%;
   text-align: center;
   border-left: 1px solid #282827; }
+  .mobile-nav .show-subnavigation.is-open {
+    background-color: #d22228;
+    color: #ffffff; }
   .mobile-nav .show-subnavigation:before {
     display: block;
     transform: rotate(90deg); }
+  .mobile-nav .show-subnavigation.is-open:before {
+    transform: rotate(-90deg); }
 
 .mobile-nav .mobile-menu-submenu-header {
   background-color: #d22228;
-  color: #fff;
-  padding: 18px 1.25em; }
+  height: 10px; }
 
 .mobile-nav a.mobile-menu-submenu-back-link {
   display: inline-block;
@@ -1478,14 +1481,6 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
     position: relative;
     bottom: -0.09em;
     /* optical, vertical, centering next to "Back" */ }
-
-.mobile-nav .mobile-menu-submenu-heading {
-  display: inline-block;
-  width: 65%;
-  text-align: right;
-  line-height: 1;
-  font-size: 1.60181em;
-  color: #fff; }
 
 .header__nav .format-fw > ul, .header__nav .format-sp > ul {
   left: 0;

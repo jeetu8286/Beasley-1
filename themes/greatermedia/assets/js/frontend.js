@@ -2064,7 +2064,8 @@ $.fn.cycle.transitions.carousel = {
 	 */
 	function closeSubMenu(event) {
 		event.preventDefault();
-		$(this).parents('.sub-menu').removeClass('is-visible');
+		console.log( 'close' );
+		$(this).removeClass('is-open').siblings('.sub-menu').removeClass('is-visible');
 	}
 
 	/**
@@ -2077,7 +2078,8 @@ $.fn.cycle.transitions.carousel = {
 
 		// collapse any other open menus before opening ours.
 		$mobileMenu.find('.is-visible').removeClass('is-visible');
-		$(this).siblings('.sub-menu').addClass('is-visible');
+		$mobileMenu.find('.is-open').removeClass('is-open');
+		$(this).addClass('is-open').siblings('.sub-menu').addClass('is-visible');
 	}
 
 	/**
@@ -2085,7 +2087,7 @@ $.fn.cycle.transitions.carousel = {
 	 */
 	function init() {
 		$mobileMenu.on('click.greaterMedia.Menus', 'a.show-subnavigation', openSubMenu);
-		$mobileMenu.on('click.greaterMedia.Menus', 'a.mobile-menu-submenu-back-link', closeSubMenu);
+		$mobileMenu.on('click.greaterMedia.Menus', 'a.show-subnavigation.is-open', closeSubMenu);
 		$menuOverlay.on('click', closeSubMenu);
 	}
 

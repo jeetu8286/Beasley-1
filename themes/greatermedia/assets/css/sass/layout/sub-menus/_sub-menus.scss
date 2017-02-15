@@ -129,13 +129,13 @@
 		}
 
 		a {
-			background-color: $secondary-bg;
 			&:link, &:visited {
-				color: $color-text-black;
-			}
-			&:hover, &:active {
 				background-color: $header-nav-bg;
 				color: $color-text-white;
+			}
+			&:hover, &:active {
+				background-color: $secondary-bg;
+				color: $color-text-black;
 			}
 		}
 	}
@@ -162,16 +162,23 @@
 		text-align: center;
 		border-left: 1px solid $header-nav-border;
 
+		&.is-open {
+			background-color: $header-nav-bg;
+			color: $color-text-white;
+		}
+
 		&:before {
 			display: block;
 			transform: rotate(90deg);
+		}
+		&.is-open:before {
+			transform: rotate(-90deg);
 		}
 	}
 
 	.mobile-menu-submenu-header {
 		background-color: $header-nav-bg;
-		color: #fff;
-		padding: 18px 1.25em;
+		height: 10px;
 	}
 
 	a.mobile-menu-submenu-back-link {
@@ -191,12 +198,7 @@
 	}
 
 	.mobile-menu-submenu-heading {
-		display: inline-block;
-		width: 65%;
-		text-align: right;
-		line-height: 1;
-		font-size: ms(4);
-		color: #fff;
+		@extend .screen-reader-text;
 	}
 }
 

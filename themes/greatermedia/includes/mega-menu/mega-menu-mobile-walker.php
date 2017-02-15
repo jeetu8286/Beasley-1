@@ -79,14 +79,6 @@ class GreaterMediaMobileNavWalker extends Walker_Nav_Menu {
 			self::$item_count_in_sub_menu = 0;
 		}
 
-
-		if ( 1 === self::$item_count_in_sub_menu && $depth === 1 ) {
-			$output .= '<li class="mobile-menu-submenu-header">';
-			$output .= '<a href="#" class="mobile-menu-submenu-back-link"><span class="icon-arrow-prev"></span>Back</a>';
-			$output .= '<span class="mobile-menu-submenu-heading">' . esc_html( $item->menu_item_parent_title ) . '</span>';
-			$output .= '</li>';
-		}
-
 		if ( 'fi' === $parent_format && 1 === self::$item_count_in_sub_menu && $depth === 1 ) {
 
 			$featured_items_query = array(
