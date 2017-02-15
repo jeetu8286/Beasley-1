@@ -5717,7 +5717,8 @@ Link posts contain a link to an external site. They can also optionally have a f
       min-height: 50px;
       width: 320px; } }
   .audio-readout .audio-readout__notification {
-    display: none; }
+    display: none;
+    width: 100%; }
     .audio-readout .audio-readout__notification.-show {
       display: block; }
   .audio-readout .audio-readout__notification--listen {
