@@ -17,7 +17,7 @@ if ( empty( $active_stream ) ) {
 ?><div id="live-player" class="audio-interface">
 
 	<?php // @TODO Available classes to add to audio-ad: -show ?>
-	<div id="js-audio-ad-aboveplayer" class="audio-ad audio-ad--aboveplayer -show">
+	<div id="js-audio-ad-aboveplayer" class="audio-ad audio-ad--aboveplayer">
 	  <?php // @TODO Mobile ad code ?>
 		Mobile ad code here
 	</div>
@@ -116,7 +116,7 @@ if ( empty( $active_stream ) ) {
 			</div><!-- .audio-readout -->
 
 			<?php // @TODO On desktop, the .audio-expand button below would control the -open class for .audio-stream. Available classes: -open ?>
-			<button id="js-audio-expand" class="audio-expand -open">
+			<button id="js-audio-expand" class="audio-expand">
 				<span class="audio-expand__text"><?php esc_html_e( 'View Audio Streams', 'greatermedia' ); ?></span>
 			</button>
 

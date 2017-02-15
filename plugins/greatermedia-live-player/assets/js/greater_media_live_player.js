@@ -364,6 +364,7 @@
 	var $audioStatus = $(document.getElementById('js-audio-status'));
 	var $audioTrackInfo = $(document.getElementById('js-track-info'));
 	var $audioAuthorInfo = $(document.getElementById('js-artist-info'));
+	var $audioExpandBtn = $(document.getElementById('js-audio-expand'));
 
 	/**
 	 * Stars playing a stream and triggers appropriate event.
@@ -893,6 +894,11 @@
 
 		livePlayer.classList.add('live-player--active');
 		setPlayingStyles();
+	});
+
+	$audioExpandBtn.click(function() {
+		$(document.getElementById('js-audio-ad-aboveplayer')).toggleClass('-show');
+		$(this).toggleClass('-open');
 	});
 
 	var currentStream = $('.live-player__stream--current-name');
