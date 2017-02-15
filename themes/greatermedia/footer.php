@@ -15,9 +15,10 @@
 				$post_types = array(
 					'page',
 					'post',
-					GMR_CONTEST_CPT,
-					GreaterMediaGalleryCPT::GALLERY_POST_TYPE,
-					'tribe_events'
+					'contest',
+					'gmr_gallery',
+					'tribe_events',
+					'show',
 				);
 
 				if ( is_singular( $post_types ) ) { ?>
