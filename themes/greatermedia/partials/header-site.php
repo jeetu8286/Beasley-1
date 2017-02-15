@@ -45,5 +45,9 @@
 				<div class="mobile-nav__toggle--span"></div>
 			</div>
 		</div>
+
+		<?php get_template_part( 'partials/audio-interface' ); ?>
+
 	</div>
+
 </header>
