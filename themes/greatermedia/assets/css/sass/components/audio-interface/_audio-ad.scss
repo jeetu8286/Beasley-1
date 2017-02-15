@@ -28,3 +28,67 @@
 		}
 	}
 }
+
+/**
+ * Preroll ads
+ */
+.live-stream__container {
+	width: 0;
+	height: 0;
+	@include transition(background 500ms ease-in-out);
+}
+
+.live-stream__container.vast__pre-roll {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0,.75);
+	z-index: 20000;
+}
+
+.live-stream__container--player {
+	height: 0;
+}
+
+.live-stream__container.vast__pre-roll .live-stream__container--player {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 280px;
+	height: 210px;
+	background-color: black;
+	@include transform(translate(-50%, -50%));
+
+	@include bp(medium) {
+		width: 640px;
+		height: 480px;
+	}
+}
+
+.pre-roll__notification {
+	display: none;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 280px;
+	margin-top: 121px;
+	@include transform(translate(-50%, -50%));
+	@include transition(all 1s ease-in-out 2s);
+	padding: .5em 1em;
+	background-color: $secondary-bg;
+	font-size: ms(-2);
+	color: $color-text-white;
+	text-align: center;
+
+	@include bp(medium) {
+		width: 640px;
+		margin-top: 256px;
+	}
+
+	.live-stream__container.vast__pre-roll & {
+		display: block;
+		z-index: 20010;
+	}
+}
