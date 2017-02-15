@@ -859,15 +859,7 @@
 		$("#pwaButton").click(function () {
 			loadPwaData();
 		});
-
-		$(document).ready(function() {
-			var opted_out = false;
-			if (!opted_out && window._nolggGlobalParams) {
-				var beacon = new NOLCMB.ggInitialize(window._nolggGlobalParams);
-				bindNielsenSDKEvents(beacon, player);
-			}
-		});
-
+		
 		if (bowser.ios) {
 			livePlayer.classList.add('no-volume-control');
 		} else {

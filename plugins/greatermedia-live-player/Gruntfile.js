@@ -12,7 +12,6 @@ module.exports = function( grunt ) {
 					'assets/js/vendor/bowser.js',
 					'assets/js/vendor/jquery.nouislider.js',
 					'assets/js/src/jquery.load.js',
-					'assets/js/src/nielsen_sdk_embed.js',
 					'assets/js/src/greater_media_live_player.js',
 					'assets/js/src/tdplayer.js'
 				],
@@ -51,8 +50,6 @@ module.exports = function( grunt ) {
 					TDSdk: true,
 					'_': false,
 					Modernizr: true,
-					NOLCMB: false,
-					bindNielsenSDKEvents: true,
 					TdPlayerApi: false
 				}
 			}
