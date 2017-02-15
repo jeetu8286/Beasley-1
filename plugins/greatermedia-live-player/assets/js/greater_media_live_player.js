@@ -298,9 +298,10 @@
 		pjaxInit();
 	});
 })(jQuery, window);
-(function ($, window, undefined) {
+(function ($, window, document, undefined) {
 	"use strict";
 
+	var $window = $(window);
 	var $document = $(document);
 
 	var tech = getUrlVars()['tech'] || 'html5_flash';
@@ -361,6 +362,8 @@
 	var $audioVolume = $(document.getElementById('js-audio-volume'));
 	var $audioVolumeBtn = $(document.getElementById('js-audio-volume-button'));
 	var $audioStatus = $(document.getElementById('js-audio-status'));
+	var $audioTrackInfo = $(document.getElementById('js-track-info'));
+	var $audioAuthorInfo = $(document.getElementById('js-artist-info'));
 
 	/**
 	 * Stars playing a stream and triggers appropriate event.
@@ -586,6 +589,9 @@
 
 		$audioControls.removeClass('-playing -loading -paused');
 		$audioStatus.removeClass('-show');
+
+		$audioTrackInfo.text('');
+		$audioAuthorInfo.text('');
 
 		if (resumeBtn.classList.contains('live-player__muted')) {
 			resumeBtn.classList.remove('live-player__muted');
@@ -815,9 +821,7 @@
 		}
 	}
 
-	$(document).ready(function () {
-		changePlayerState();
-	});
+	$document.ready(changePlayerState);
 
 	function preVastAd() {
 		var preRoll = document.getElementById('live-stream__container');
@@ -856,6 +860,40 @@
 			this.stop();
 		}, 25000);
 	}
+
+	$window.on('click', function() {
+		$('.audio-stream.-open').removeClass('-open');
+	});
+
+	$document.on('click', '.audio-stream.-multiple .audio-stream__title', function(e) {
+		e.stopPropagation();
+		$(this).parents('.audio-stream').toggleClass('-open');
+	});
+
+	$document.on('click', '.audio-stream__item', function(e) {
+		var $this = $(this),
+			callSign = $this.find('.audio-stream__name').text(),
+			$audioStream = $this.parents('.audio-stream');
+
+		e.stopPropagation();
+
+		$audioStream.find('.audio-stream__title').text(callSign);
+		$audioStream.removeClass('-open');
+
+		if (livePlaying) {
+			player.stop();
+			setStoppedStyles();
+		}
+
+		if (true === playingCustomAudio) {
+			listenLiveStopCustomInlineAudio();
+		}
+
+		playStream(callSign);
+
+		livePlayer.classList.add('live-player--active');
+		setPlayingStyles();
+	});
 
 	var currentStream = $('.live-player__stream--current-name');
 
@@ -1364,8 +1402,8 @@
 		debug('New Track cuepoint received');
 		debug('Title: ' + e.data.cuePoint.cueTitle + ' - Artist: ' + e.data.cuePoint.artistName);
 
-		$('#js-track-info').text(e.data.cuePoint.cueTitle);
-		$('#js-artist-info').text(e.data.cuePoint.artistName);
+		$audioTrackInfo.text(e.data.cuePoint.cueTitle);
+		$audioAuthorInfo.text(e.data.cuePoint.artistName);
 
 		if (currentTrackCuePoint && currentTrackCuePoint != e.data.cuePoint) {
 			clearNpe();
@@ -1882,7 +1920,7 @@
 		}
 	}
 
-	$(document).bind('pjax:click', pjaxStop);
+	$document.bind('pjax:click', pjaxStop);
 
 	/**
 	 * calculates the time of an inline audio element and outputs the duration as a % displayed in the progress bar
@@ -1985,11 +2023,11 @@
 	addEventHandler(podcastPauseBtn, 'click', pauseCustomInlineAudio);
 
 	// Ensures our listeners work even after a PJAX load
-	$(document).on('pjax:end', function () {
+	$document.on('pjax:end', function () {
 		initInlineAudioUI();
 		setInlineAudioStates();
 		addEventHandler(podcastPlayBtn, 'click', setInlineAudioUX);
 		addEventHandler(podcastPauseBtn, 'click', pauseCustomInlineAudio);
 	});
 
-})(jQuery, window);
+})(jQuery, window, document);
