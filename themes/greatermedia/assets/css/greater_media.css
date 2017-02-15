@@ -1218,7 +1218,6 @@ blockquote p {
   .mobile-nav--open .site-wrap,
   .mobile-nav--open .page-wrap {
     height: 100%;
-    overflow: hidden;
     position: fixed; }
 
 /*.mobile-nav--open.admin-bar {
