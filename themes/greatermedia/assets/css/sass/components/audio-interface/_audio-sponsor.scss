@@ -1,31 +1,27 @@
 .audio-sponsor {
-	display: none;
-    border-top: 1px solid rgba(0, 0, 0, .25);
-    line-height: 1;
-    padding: 0 10px 4px 10px;
+	border-top: 1px solid rgba(0, 0, 0, .25);
+	line-height: 1;
+	padding: 0 10px 4px 10px;
 
-	&.-open {
-		display: block;
+	@include bp(medium) {
+		border: 0 none;
+		padding: 0;
 	}
 
-    @include bp(medium) {
-        border: 0 none;
-        padding: 0;
-    }
+	.-multiple & {
+		@include bp(medium) {
+			margin-left: 10px;
+		}
+	}
 
-    .-multiple & {
-        @include bp(medium) {
-            margin-left: 10px;
-        }
-    }
+	// This is now being set in DFP
+	/*.audio-sponsor--text {
+			color: rgba(0, 0, 0, .5);
+			font-size: ms(-4);
+			text-transform: uppercase;
+	}
 
-    .audio-sponsor--text {
-        color: rgba(0, 0, 0, .5);
-        font-size: ms(-4);
-        text-transform: uppercase;
-    }
-
-    .audio-sponsor--name {
-        font-size: ms(-2);
-    }
+	.audio-sponsor--name {
+			font-size: ms(-2);
+	}*/
 }

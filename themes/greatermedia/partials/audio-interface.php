@@ -42,9 +42,9 @@ if ( empty( $active_stream ) ) {
 				</li>
 			</ul><!-- .audio-stream__list -->
 
-			<?php // @TODO Available classes to add to audio-sponsor: -open ?>
-			<div class="audio-sponsor -open">
-				<span class="audio-sponsor--text"><?php esc_html_e( 'Sponsored', 'greatermedia' ); ?></span> <span class="audio-sponsor--name"><?php esc_html_e( 'Company Name', 'greatermedia' ); ?></span>
+			<div class="audio-sponsor">
+				<?php // @TODO DFP code goes here. ?>
+				Sponsor Text.
 			</div>
 		</nav><!-- .audio-stream -->
 

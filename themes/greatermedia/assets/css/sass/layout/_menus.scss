@@ -11,7 +11,7 @@
 	height: 19px;
 	position: absolute;
 	right: 10px;
-	top: 20px;
+	top: 15px;
 	width: 25px;
 	padding: 0;
 	z-index: 2;
@@ -64,13 +64,14 @@
 }
 
 .mobile-nav {
+	bottom: 0;
 	display: none;
 	position: fixed;
 	width: 100%;
-	//height: 100%;
 	background-color: $header-bg;
 	z-index: 1;
 	overflow-y: auto;
+	top: 105px;
 	-webkit-overflow-scrolling: touch;
 
 	.mobile-nav--open & {
@@ -86,12 +87,12 @@
 }
 
 #mobile-nav-blocker {
-	background-color: rgba(0,0,0,0.75);
-	z-index: 20;
-	position: fixed;
-	display: none;
-	height: 100%;
-	width: 100%;
+	//background-color: rgba(0,0,0,0.75);
+	//z-index: 20;
+	//position: fixed;
+	//display: none;
+	//height: 100%;
+	//width: 100%;
 }
 
 .mobile-nav--open {
@@ -100,16 +101,16 @@
 	}
 }
 
-/*.mobile-nav--open {
+.mobile-nav--open {
 	overflow: hidden;
 
 	.site-wrap,
 	.page-wrap {
 		height: 100%;
-		overflow: hidden;
+		//overflow: hidden;
 		position: fixed;
 	}
-}*/
+}
 /*.mobile-nav--open.admin-bar {
 	.site-wrap {
 		top: 32px;
