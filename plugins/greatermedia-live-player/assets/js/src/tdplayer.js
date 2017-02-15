@@ -1068,6 +1068,9 @@
 		debug('New Track cuepoint received');
 		debug('Title: ' + e.data.cuePoint.cueTitle + ' - Artist: ' + e.data.cuePoint.artistName);
 
+		$('#js-track-info').text(e.data.cuePoint.cueTitle);
+		$('#js-artist-info').text(e.data.cuePoint.artistName);
+
 		if (currentTrackCuePoint && currentTrackCuePoint != e.data.cuePoint) {
 			clearNpe();
 		}

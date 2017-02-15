@@ -86,8 +86,8 @@ if ( empty( $active_stream ) ) {
 
 				<?php // @TODO Available classes to add to audio-playing: -show ?>
 				<div id="live-stream__now-playing" class="audio-playing">
-					<div id="js-track-info" class="audio-playing__track"><?php esc_html_e( 'Track Name', 'greatermedia' ); ?></div>
-					<div id="js-artist-info" class="audio-playing__artist"><?php esc_html_e( 'Artist Name', 'greatermedia' ); ?></div>
+					<div id="js-track-info" class="audio-playing__track"></div>
+					<div id="js-artist-info" class="audio-playing__artist"></div>
 
 					<?php // @TODO Available classes to add to audio-podcast: -show ?>
 					<div id="js-audio-podcast" class="audio-podcast">
