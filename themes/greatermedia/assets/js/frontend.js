@@ -2064,7 +2064,6 @@ $.fn.cycle.transitions.carousel = {
 	 */
 	function closeSubMenu(event) {
 		event.preventDefault();
-		console.log( 'close' );
 		$(this).removeClass('is-open').siblings('.sub-menu').removeClass('is-visible');
 	}
 
