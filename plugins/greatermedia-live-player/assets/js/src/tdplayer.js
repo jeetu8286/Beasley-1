@@ -68,6 +68,7 @@
 
 	var $audioControls = $(document.getElementById('js-audio-controls'));
 	var $audioVolume = $(document.getElementById('js-audio-volume'));
+	var $audioVolumeBtn = $(document.getElementById('js-audio-volume-button'));
 
 	/**
 	 * Stars playing a stream and triggers appropriate event.
@@ -904,6 +905,10 @@
 				if (typeof(localStorage) !== "undefined") {
 					localStorage.setItem("gmr-live-player-volume", global_volume);
 				}
+			});
+
+			$audioVolumeBtn.click(function() {
+				$audioVolume.toggleClass('-open');
 			});
 		}
 	}

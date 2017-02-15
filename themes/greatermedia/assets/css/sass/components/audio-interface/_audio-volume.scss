@@ -9,8 +9,7 @@
 		display: block;
 	}
 
-	&.-open,
-	&:hover {
+	&.-open {
 		@include bp(large) {
 			text-align: left;
 			display: flex;
@@ -22,8 +21,7 @@
 		margin: 0 5px;
 	}
 
-	&.-open input[type=range],
-	&:hover input[type=range] {
+	&.-open input[type=range] {
 		display: block;
 	}
 
@@ -51,6 +49,7 @@
 			width: 0;
 		}
 	}
+	
 	.audio-volume__mute {
 		display: none;
 
@@ -59,8 +58,7 @@
 		}
 	}
 
-	&.-open .audio-volume__mute,
-	&:hover .audio-volume__mute {
+	&.-open .audio-volume__mute {
 		display: block;
 	}
 

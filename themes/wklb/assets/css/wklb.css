@@ -5614,14 +5614,13 @@ Link posts contain a link to an external site. They can also optionally have a f
     .audio-volume {
       display: block; } }
   @media screen and (min-width: 970px) {
-    .audio-volume.-open, .audio-volume:hover {
+    .audio-volume.-open {
       text-align: left;
       display: flex; } }
   .audio-volume input[type=range] {
     display: none;
     margin: 0 5px; }
-  .audio-volume.-open input[type=range],
-  .audio-volume:hover input[type=range] {
+  .audio-volume.-open input[type=range] {
     display: block; }
   .audio-volume .audio-volume__btn,
   .audio-volume .audio-volume__mute {
@@ -5649,8 +5648,7 @@ Link posts contain a link to an external site. They can also optionally have a f
     display: none; }
     .audio-volume .audio-volume__mute:before {
       content: "\e900"; }
-  .audio-volume.-open .audio-volume__mute,
-  .audio-volume:hover .audio-volume__mute {
+  .audio-volume.-open .audio-volume__mute {
     display: block; }
 
 .audio-controls {
