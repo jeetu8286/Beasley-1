@@ -23,7 +23,7 @@
 
 				if ( is_singular( $post_types ) ) { ?>
 					<div class="footer__ad">
-						<?php do_action( 'dfp_tag', 'dfp_ad_leaderboard_pos2' ); ?>
+						<?php do_action( 'dfp_tag', 'dfp_ad_leaderboard_pos2', false, array( array( 'pos', 2 ) ) ); ?>
 					</div>
 				<?php } ?>
 				<div class="footer__content">

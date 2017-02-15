@@ -114,8 +114,6 @@ function greatermedia_dfp_footer() {
 						id = 'dfp-slot-' + ++slotsIndex;
 						$this.html('<div id="' + id + '" class="gmr-ad"></div>');
 
-						targeting.push(['pos', slotsIndex]);
-
 						slots.push([
 							'/<?php echo esc_js( $network_id ); ?>/' + unitCode,
 							slotSizes || sizes[slotType],
@@ -154,11 +152,6 @@ function greatermedia_dfp_footer() {
 								.addSize([768, 200], [728, 90])
 								.addSize([0, 0], [[320, 50], [320, 100]])
 								.build();
-//						} else if ('dfp_ad_inlist_infinite' == slots[i][4]) {
-//							sizeMapping = googletag.sizeMapping()
-//								.addSize([768, 200], [])
-//								.addSize([0, 0], [300, 250])
-//								.build();
 						} else if ('dfp_ad_incontent_pos1' == slots[i][4] || 'dfp_ad_incontent_pos2' == slots[i][4]) {
 							sizeMapping = googletag.sizeMapping()
 								.addSize([1024, 200], [])
@@ -216,8 +209,8 @@ function greatermedia_dfp_footer() {
 }
 add_action( 'wp_footer', 'greatermedia_dfp_footer', 1000 );
 
-function greatermedia_display_dfp_slot( $slot, $sizes = false, $echo = true, $class = '' ) {
-	static $targeting = null, $position = 0;
+function greatermedia_display_dfp_slot( $slot, $sizes = false, $single_targeting = array(), $echo = true, $class = '' ) {
+	static $targeting = null;
 
 	$render_targeting = false;
 	if ( is_null( $targeting ) ) {
@@ -281,7 +274,6 @@ function greatermedia_display_dfp_slot( $slot, $sizes = false, $echo = true, $cl
 		'dfp_ad_incontent_pos2',
 	);
 
-	$single_targeting = array();
 	if ( in_array( $slot, $remnant_slots ) ) {
 		$single_targeting[] = array( 'remnant', 'yes' );
 	}
@@ -299,7 +291,7 @@ function greatermedia_display_dfp_slot( $slot, $sizes = false, $echo = true, $cl
 
 	return $html;
 }
-add_action( 'dfp_tag', 'greatermedia_display_dfp_slot', 10, 2 );
+add_action( 'dfp_tag', 'greatermedia_display_dfp_slot', 10, 3 );
 
 function greatermedia_display_dfp_outofpage() {
 	do_action( 'dfp_tag', 'dfp_ad_interstitial' );
@@ -316,12 +308,12 @@ function greatermedia_display_dfp_incontent( $content ) {
 
 		// in-content pos1 slot after first 2 paragraphs
 		if ( 1 == $i || $len < 2 ) {
-			$new_content .= greatermedia_display_dfp_slot( 'dfp_ad_incontent_pos1', false, false, 'ad__in-content ad__in-content--mobile' );
+			$new_content .= greatermedia_display_dfp_slot( 'dfp_ad_incontent_pos1', false, array(), false, 'ad__in-content ad__in-content--mobile' );
 		}
 
 		// in-content pos2 slot after 6th parapraph
 		if ( 5 == $i && $len > 6 ) {
-			$new_content .= greatermedia_display_dfp_slot( 'dfp_ad_incontent_pos2', false, false, 'ad__in-content ad__in-content--mobile' );
+			$new_content .= greatermedia_display_dfp_slot( 'dfp_ad_incontent_pos2', false, array(), false, 'ad__in-content ad__in-content--mobile' );
 		}
 	}
 
@@ -349,6 +341,7 @@ class GreatermediaDfpWidget extends \WP_Widget {
 	public function update( $new_instance, $old_instance ) {
 		$new_instance['unit-code'] = sanitize_text_field( $new_instance['unit-code'] );
 		$new_instance['sizes'] = sanitize_text_field( implode( ',', (array) $new_instance['sizes'] ) );
+		$new_instance['pos'] = is_numeric( $new_instance['pos'] ) ? absint( $new_instance['pos'] ) : '';
 
 		return $new_instance;
 	}
@@ -357,6 +350,7 @@ class GreatermediaDfpWidget extends \WP_Widget {
 		$instance = wp_parse_args( $instance, array(
 			'unit-code' => '',
 			'sizes'     => '',
+			'pos'       => '',
 		) );
 
 		$sizes = explode( ',', $instance['sizes'] );
@@ -373,6 +367,10 @@ class GreatermediaDfpWidget extends \WP_Widget {
 					<?php echo esc_html( $label ); ?>
 				</label><br>
 			<?php endforeach; ?>
+		</p>
+		<p>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'pos' ) ); ?>"><code>pos</code> value:</label>
+			<input type="text" class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'pos' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'pos' ) ); ?>" value="<?php echo esc_attr( $instance['pos'] ); ?>">
 		</p><?php
 	}
 
@@ -380,6 +378,7 @@ class GreatermediaDfpWidget extends \WP_Widget {
 		$instance = wp_parse_args( $instance, array(
 			'unit-code' => '',
 			'sizes'     => '',
+			'pos'       => '',
 		) );
 
 		$sizes = array();
@@ -389,9 +388,14 @@ class GreatermediaDfpWidget extends \WP_Widget {
 			}
 		}
 
+		$targeting = array();
+		if ( is_numeric( $instance['pos'] ) ) {
+			$targeting[] = array( 'pos', absint( $instance['pos'] ) );
+		}
+
 		if ( ! empty( $instance['unit-code'] ) && ! empty( $sizes ) ) {
 			echo $args['before_widget'];
-				do_action( 'dfp_tag', $instance['unit-code'], $sizes );
+				do_action( 'dfp_tag', $instance['unit-code'], $sizes, $targeting );
 			echo $args['after_widget'];
 		}
 	}
