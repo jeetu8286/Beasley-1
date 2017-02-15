@@ -5480,25 +5480,24 @@ Link posts contain a link to an external site. They can also optionally have a f
 .audio-sponsor {
   border-top: 1px solid rgba(0, 0, 0, 0.25);
   line-height: 1;
-  padding: 0 10px 4px 10px; }
+  padding: 0 10px 4px 10px;
+  /*.audio-sponsor--text {
+			color: rgba(0, 0, 0, .5);
+			font-size: ms(-4);
+			text-transform: uppercase;
+	}
+
+	.audio-sponsor--name {
+			font-size: ms(-2);
+	}*/ }
   @media screen and (min-width: 768px) {
     .audio-sponsor {
       border: 0 none;
       padding: 0; } }
+  @media screen and (min-width: 768px) {
+    .-multiple .audio-sponsor {
+      margin-left: 10px; } }
 
-@media screen and (min-width: 768px) {
-  .-multiple .audio-sponsor {
-    margin-left: 10px; } }
-
-/*.audio-sponsor--text {
-	color: rgba(0, 0, 0, .5);
-	font-size: ms(-4);
-	text-transform: uppercase;
-}
-
-.audio-sponsor--name {
-	font-size: ms(-2);
-}*/
 .audio-player {
   border-top: 1px solid rgba(0, 0, 0, 0.25);
   display: flex;
