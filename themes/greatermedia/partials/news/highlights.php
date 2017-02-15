@@ -53,9 +53,3 @@
 	endif;
 	wp_reset_query(); ?>
 </div>
-
-<div class="highlights__ad">
-	<div class="highlights__ad--desktop">
-		<?php do_action( 'dfp_tag', 'dfp_ad_incontent_pos1' ); ?>
-	</div>
-</div>
