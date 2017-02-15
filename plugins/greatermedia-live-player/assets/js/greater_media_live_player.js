@@ -1798,6 +1798,8 @@ function closure ( target, options, originalOptions ){
 	var volume_slider = $(document.getElementById('live-player--volume'));
 	var global_volume = 1;
 
+	var $audioControls = $(document.getElementById('js-audio-controls'));
+
 	/**
 	 * Stars playing a stream and triggers appropriate event.
 	 *
@@ -1984,6 +1986,10 @@ function closure ( target, options, originalOptions ){
 		} else {
 			playBtn.classList.add('live-player__muted');
 		}
+
+		$audioControls.removeClass('-playing -paused');
+		$audioControls.addClass('-loading');
+
 		if (!resumeBtn.classList.contains('live-player__muted')) {
 			resumeBtn.classList.add('live-player__muted');
 		}
@@ -2015,6 +2021,8 @@ function closure ( target, options, originalOptions ){
 			return;
 		}
 
+		$audioControls.removeClass('-playing -loading -paused');
+
 		if (resumeBtn.classList.contains('live-player__muted')) {
 			resumeBtn.classList.remove('live-player__muted');
 			resumeBtn.classList.add('resume__live');
@@ -2028,6 +2036,9 @@ function closure ( target, options, originalOptions ){
 		if (null === tdContainer) {
 			return;
 		}
+
+		$audioControls.removeClass('-playing -loading');
+		$audioControls.addClass('-paused');
 
 		if (true === playingCustomAudio && window.innerWidth <= 767) {
 			playBtn.classList.add('live-player__login');
@@ -2743,6 +2754,9 @@ function closure ( target, options, originalOptions ){
 	function onStreamStarted() {
 		livePlaying = true;
 		playingLiveAudio = true;
+
+		$audioControls.removeClass('-loading -paused');
+		$audioControls.addClass('-playing');
 
 		if (loadingBtn.classList.contains('loading')) {
 			loadingBtn.classList.remove('loading');

@@ -57,7 +57,7 @@ if ( empty( $active_stream ) ) {
 			</div><!-- .audio-volume -->
 
 			<?php // @TODO Available classes to add to audio-controls: -playing, -loading ?>
-			<div class="audio-controls">
+			<div id="js-audio-controls" class="audio-controls">
 				<button id="playButton" class="audio-controls__play" data-action="play-live">
 					<span class="audio-controls__text">Play</span>
 				</button>

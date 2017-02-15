@@ -962,7 +962,8 @@ body {
 
 .audio-controls__play,
 .audio-controls__pause,
-.audio-controls__loading, .podcast__btn--play,
+.audio-controls__loading,
+.audio-controls__resume, .podcast__btn--play,
 .podcast__btn--pause {
   background-color: #d22228;
   border: 2px solid #d22228;
@@ -981,23 +982,27 @@ body {
   @media screen and (min-width: 480px) {
     .audio-controls__play,
     .audio-controls__pause,
-    .audio-controls__loading, .podcast__btn--play,
+    .audio-controls__loading,
+    .audio-controls__resume, .podcast__btn--play,
     .podcast__btn--pause {
       height: 40px;
       width: 40px; } }
   @media screen and (min-width: 768px) {
     .audio-controls__play,
     .audio-controls__pause,
-    .audio-controls__loading, .podcast__btn--play,
+    .audio-controls__loading,
+    .audio-controls__resume, .podcast__btn--play,
     .podcast__btn--pause {
       height: 48px;
       width: 48px; } }
   .audio-controls__play:hover,
   .audio-controls__pause:hover,
-  .audio-controls__loading:hover, .podcast__btn--play:hover,
+  .audio-controls__loading:hover,
+  .audio-controls__resume:hover, .podcast__btn--play:hover,
   .podcast__btn--pause:hover, .audio-controls__play:focus,
   .audio-controls__pause:focus,
-  .audio-controls__loading:focus, .podcast__btn--play:focus,
+  .audio-controls__loading:focus,
+  .audio-controls__resume:focus, .podcast__btn--play:focus,
   .podcast__btn--pause:focus {
     background-color: #ffffff;
     color: #d22228; }
@@ -5657,11 +5662,13 @@ Link posts contain a link to an external site. They can also optionally have a f
 
 .audio-controls__play,
 .audio-controls__pause,
-.audio-controls__loading {
+.audio-controls__loading,
+.audio-controls__resume {
   position: relative; }
 
 .-playing .audio-controls__play,
-.-loading .audio-controls__play {
+.-loading .audio-controls__play,
+.-paused .audio-controls__play {
   display: none; }
 
 .audio-controls__play:before {
@@ -5716,6 +5723,26 @@ Link posts contain a link to an external site. They can also optionally have a f
     left: 50%;
     position: absolute;
     top: 50%; }
+
+.audio-controls__resume {
+  display: none; }
+  .-paused .audio-controls__resume {
+    display: block; }
+  .audio-controls__resume:before {
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    content: "\e606";
+    font-family: "gmr-icons";
+    left: 54%;
+    line-height: 1;
+    position: absolute;
+    top: 50%; }
+    @media screen and (min-width: 480px) {
+      .audio-controls__resume:before {
+        font-size: 1.265625em; } }
 
 .audio-readout {
   align-items: center;
