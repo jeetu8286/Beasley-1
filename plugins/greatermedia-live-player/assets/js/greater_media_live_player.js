@@ -1804,6 +1804,7 @@ function closure ( target, options, originalOptions ){
 	 * @param {string} station
 	 */
 	function playStream(station) {
+		debug('tdplayer::play: ' + station);
 		player.play({station: station, timeShift: true});
 		$document.trigger('player:starts');
 	}
@@ -2532,6 +2533,11 @@ function closure ( target, options, originalOptions ){
 
 			player.addEventListener('stream-start', onStreamStarted);
 			player.addEventListener('stream-stop', onStreamStopped);
+
+			player.addEventListener('stream-config-error', streamError);
+			player.addEventListener('stream-config-load-error', streamError);
+			player.addEventListener('stream-fail', streamError);
+			player.addEventListener('stream-error', streamError);
 		} else if (player.attachEvent) {
 			player.attachEvent('track-cue-point', onTrackCuePoint);
 			player.attachEvent('ad-break-cue-point', onAdBreak);
@@ -2548,6 +2554,11 @@ function closure ( target, options, originalOptions ){
 
 			player.attachEvent('stream-start', onStreamStarted);
 			player.attachEvent('stream-stop', onStreamStopped);
+
+			player.attachEvent('stream-config-error', streamError);
+			player.attachEvent('stream-config-load-error', streamError);
+			player.attachEvent('stream-fail', streamError);
+			player.attachEvent('stream-error', streamError);
 		}
 
 		player.setVolume(1);
@@ -2591,7 +2602,7 @@ function closure ( target, options, originalOptions ){
 		$("#pwaButton").click(function () {
 			loadPwaData();
 		});
-		
+
 		if (bowser.ios) {
 			livePlayer.classList.add('no-volume-control');
 		} else {
@@ -2622,6 +2633,11 @@ function closure ( target, options, originalOptions ){
 				}
 			});
 		}
+	}
+
+	function streamError(e) {
+		debug('Stream error', 1);
+		debug(e);
 	}
 
 	/**
