@@ -1680,7 +1680,6 @@ function closure ( target, options, originalOptions ){
 
 }( window.jQuery || window.Zepto ));
 
-var $ = jQuery;
 (function($, window, undefined) {
 	"use strict";
 

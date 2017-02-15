@@ -11,7 +11,6 @@ module.exports = function( grunt ) {
 				src: [
 					'assets/js/vendor/bowser.js',
 					'assets/js/vendor/jquery.nouislider.js',
-					'assets/js/src/jquery.load.js',
 					'assets/js/src/greater_media_live_player.js',
 					'assets/js/src/tdplayer.js'
 				],
