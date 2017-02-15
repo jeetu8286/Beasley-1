@@ -42,7 +42,8 @@ if ( empty( $active_stream ) ) {
 				</li>
 			</ul><!-- .audio-stream__list -->
 
-			<div class="audio-sponsor">
+			<?php // @TODO Available classes to add to audio-sponsor: -open ?>
+			<div class="audio-sponsor -open">
 				<span class="audio-sponsor--text"><?php esc_html_e( 'Sponsored', 'greatermedia' ); ?></span> <span class="audio-sponsor--name"><?php esc_html_e( 'Company Name', 'greatermedia' ); ?></span>
 			</div>
 		</nav><!-- .audio-stream -->
@@ -50,7 +51,7 @@ if ( empty( $active_stream ) ) {
 		<div id="js-audio-player" class="audio-player">
 
 			<?php // @TODO Available classes to add to audio-volume: -open ?>
-			<div id="js-audio-volume" class="audio-volume -open">
+			<div id="js-audio-volume" class="audio-volume">
 				<button id="audio-volume-mute" class="audio-volume__mute"><span class="audio-volume__text">Mute Volume</span></button>
 				<input type="range" min="0" max="1" step="0.01" value="1" title="Volume Slider">
 				<button id="js-audio-volume-button" class="audio-volume__btn"><span class="audio-volume__text">Volume</span></button>

@@ -67,6 +67,7 @@
 	var global_volume = 1;
 
 	var $audioControls = $(document.getElementById('js-audio-controls'));
+	var $audioVolume = $(document.getElementById('js-audio-volume'));
 
 	/**
 	 * Stars playing a stream and triggers appropriate event.
@@ -884,17 +885,10 @@
 
 		if (bowser.ios) {
 			livePlayer.classList.add('no-volume-control');
+			$audioVolume.hide();
 		} else {
-			volume_slider.noUiSlider({
-				start: getVolume(),
-				range: {
-					min: 0,
-					max: 1
-				}
-			});
-
-			volume_slider.on('slide', function () {
-				global_volume = parseFloat(volume_slider.val());
+			$audioVolume.find('input[type="range"]').val(getVolume()).change(function() {
+				global_volume = parseFloat($(this).val());
 				if (isNaN(global_volume)) {
 					global_volume = 1;
 				}

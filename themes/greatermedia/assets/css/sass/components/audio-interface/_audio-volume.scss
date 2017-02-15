@@ -9,8 +9,8 @@
 		display: block;
 	}
 
-	&.-open {
-		
+	&.-open,
+	&:hover {
 		@include bp(large) {
 			text-align: left;
 			display: flex;
@@ -21,7 +21,9 @@
 		display: none;
 		margin: 0 5px;
 	}
-	&.-open input[type=range] {
+
+	&.-open input[type=range],
+	&:hover input[type=range] {
 		display: block;
 	}
 
@@ -56,7 +58,9 @@
 			content: "\e900";
 		}
 	}
-	&.-open .audio-volume__mute {
+
+	&.-open .audio-volume__mute,
+	&:hover .audio-volume__mute {
 		display: block;
 	}
 
