@@ -17,13 +17,6 @@
 }
 
 .slick-arrow {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 101;
-
   .slick-next,
   .slick-prev {
     background: transparent;
@@ -41,7 +34,7 @@
     top: 50%;
     transform: translate(0, -50%);
     width: 25px;
-    z-index: 1;
+    z-index: 101;
 
     &:before {
       background: rgba(#fff, 0.6);
