@@ -279,9 +279,14 @@
 		if (true === playingCustomAudio) {
 			$audioPodcast.addClass('-show');
 			$audioControls.addClass('-playing');
+			$('.audio-stream .audio-stream__title').text('SWITCH TO LIVE STREAM');
 		} else {
 			$audioPodcast.removeClass('-show');
 			$audioControls.addClass('-loading');
+			$('.audio-stream .audio-stream__title').each(function() {
+				var $this = $(this);
+				$this.text($this.attr('data-callsign'));
+			});
 		}
 
 		if (false === playingCustomAudio && loadingBtn != null) {
@@ -607,7 +612,7 @@
 
 		e.stopPropagation();
 
-		$audioStream.find('.audio-stream__title').text(callSign);
+		$audioStream.find('.audio-stream__title').text(callSign).attr('data-callsign', callSign);
 		$audioStream.removeClass('-open');
 
 		if (livePlaying) {
@@ -650,14 +655,24 @@
 		setPlayingStyles();
 	});
 
-	function playLiveStreamMobile() {
-		var station = gmr.callsign;
+	function getCurrentStation() {
+		var station = $.trim($('.audio-stream .audio-stream__title').attr('data-callsign'));
 
-		pjaxInit();
-		if (station === '') {
-			alert('Please enter a Station');
+		if (station.length < 1) {
+			station = gmr.callsign;
+		}
+
+		return station;
+	}
+
+	function playLiveStreamMobile() {
+		var station = getCurrentStation();
+
+		if (!station) {
 			return;
 		}
+
+		pjaxInit();
 		if (true === playingCustomAudio) {
 			listenLiveStopCustomInlineAudio();
 		}
@@ -666,33 +681,9 @@
 		preVastAd();
 		streamVastAd();
 		if (player.addEventListener) {
-			player.addEventListener('ad-playback-complete', function () {
-				postVastAd();
-				debug("--- ad complete ---");
-
-				if (livePlaying) {
-					player.stop();
-				}
-
-				body.classList.add('live-player--active');
-				livePlayer.classList.add('live-player--active');
-				playStream(station);
-				setPlayingStyles();
-			});
+			player.addEventListener('ad-playback-complete', onAdPlaybackComplete);
 		} else if (player.attachEvent) {
-			player.attachEvent('ad-playback-complete', function () {
-				postVastAd();
-				debug("--- ad complete ---");
-
-				if (livePlaying) {
-					player.stop();
-				}
-
-				body.classList.add('live-player--active');
-				livePlayer.classList.add('live-player--active');
-				playStream(station);
-				setPlayingStyles();
-			});
+			player.attachEvent('ad-playback-complete', onAdPlaybackComplete);
 		}
 
 	}
@@ -701,12 +692,12 @@
 	 * Temp to remove vast ad while issues are resolves
 	 */
 	function playLiveStreamMobileNoAd() {
-		var station = gmr.callsign;
+		var station = getCurrentStation();
 
-		if (station === '') {
-			alert('Please enter a Station');
+		if (!station) {
 			return;
 		}
+
 		if (true === playingCustomAudio) {
 			listenLiveStopCustomInlineAudio();
 		}
@@ -724,52 +715,25 @@
 	}
 
 	function playLiveStream() {
-		var station = gmr.callsign;
+		var station = getCurrentStation();
+
+		if (!station) {
+			return;
+		}
 
 		pjaxInit();
 		if (true === playingCustomAudio) {
 			resumeCustomInlineAudio();
-
 			setPlayingStyles();
 		} else {
-
-			if (station === '') {
-				alert('Please enter a Station');
-				return;
-			}
-
 			debug('playLiveStream - station=' + station);
 
 			preVastAd();
 			streamVastAd();
 			if (player.addEventListener) {
-				player.addEventListener('ad-playback-complete', function () {
-					postVastAd();
-					debug("--- ad complete ---");
-
-					if (livePlaying) {
-						player.stop();
-					}
-
-					body.classList.add('live-player--active');
-					livePlayer.classList.add('live-player--active');
-					playStream(station);
-					setPlayingStyles();
-				});
+				player.addEventListener('ad-playback-complete', onAdPlaybackComplete);
 			} else if (player.attachEvent) {
-				player.attachEvent('ad-playback-complete', function () {
-					postVastAd();
-					debug("--- ad complete ---");
-
-					if (livePlaying) {
-						player.stop();
-					}
-
-					body.classList.add('live-player--active');
-					livePlayer.classList.add('live-player--active');
-					playStream(station);
-					setPlayingStyles();
-				});
+				player.attachEvent('ad-playback-complete', onAdPlaybackComplete);
 			}
 		}
 	}
@@ -778,20 +742,17 @@
 	 * Temp to remove vast ad while issues are resolves
 	 */
 	function playLiveStreamNoAd() {
-		var station = gmr.callsign;
+		var station = getCurrentStation();
+
+		if (!station) {
+			return;
+		}
 
 		pjaxInit();
 		if (true === playingCustomAudio) {
 			resumeCustomInlineAudio();
-
 			setPlayingStyles();
 		} else {
-
-			if (station === '') {
-				alert('Please enter a Station');
-				return;
-			}
-
 			debug('playLiveStream - station=' + station);
 
 			if (livePlaying) {
@@ -812,9 +773,9 @@
 
 			setPlayingStyles();
 		} else {
-			var station = gmr.callsign;
+			var station = getCurrentStation();
+
 			if (station === '') {
-				alert('Please enter a Station');
 				return;
 			}
 
@@ -884,11 +845,6 @@
 
 			player.addEventListener('stream-start', onStreamStarted);
 			player.addEventListener('stream-stop', onStreamStopped);
-
-			player.addEventListener('stream-config-error', streamError);
-			player.addEventListener('stream-config-load-error', streamError);
-			player.addEventListener('stream-fail', streamError);
-			player.addEventListener('stream-error', streamError);
 		} else if (player.attachEvent) {
 			player.attachEvent('track-cue-point', onTrackCuePoint);
 			player.attachEvent('ad-break-cue-point', onAdBreak);
@@ -905,11 +861,6 @@
 
 			player.attachEvent('stream-start', onStreamStarted);
 			player.attachEvent('stream-stop', onStreamStopped);
-
-			player.attachEvent('stream-config-error', streamError);
-			player.attachEvent('stream-config-load-error', streamError);
-			player.attachEvent('stream-fail', streamError);
-			player.attachEvent('stream-error', streamError);
 		}
 
 		player.setVolume(1);
@@ -983,11 +934,6 @@
 		}
 	}
 
-	function streamError(e) {
-		debug('Stream error', 1);
-		debug(e);
-	}
-
 	/**
 	 * Event fired in case the loading of the companion ad returned an error.
 	 * @param e
@@ -1002,10 +948,28 @@
 	}
 
 	function onAdPlaybackComplete(e) {
+		var station = getCurrentStation();
+
 		adPlaying = false;
 		$("#td_adserver_bigbox").empty();
 		$("#td_adserver_leaderboard").empty();
 		setStatus('Ready');
+
+		if (!station) {
+			return;
+		}
+
+		postVastAd();
+		debug("--- ad complete ---");
+
+		if (livePlaying) {
+			player.stop();
+		}
+
+		body.classList.add('live-player--active');
+		livePlayer.classList.add('live-player--active');
+		playStream(station);
+		setPlayingStyles();
 	}
 
 	/**
@@ -1017,7 +981,7 @@
 		setStatus('Ready');
 
 		postVastAd();
-		var station = gmr.callsign;
+		var station = getCurrentStation();
 		if (livePlaying) {
 			player.stop();
 		}
@@ -1283,7 +1247,6 @@
 
 		$("#asyncData").html("<div>" + tableContent + "</div>");
 	}
-
 
 	function attachAdListeners() {
 		if (player.addEventListener) {

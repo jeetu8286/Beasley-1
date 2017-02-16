@@ -27,7 +27,9 @@ if ( empty( $active_stream ) ) {
 			<ul class="audio-stream__list">
 				<li class="audio-stream__current">
 					<?php // @TODO On desktop, the .audio-stream__title button below would control the -open class for .audio-stream ?>
-					<button class="audio-stream__title"><?php echo esc_html( $active_stream ); ?></button>
+					<button class="audio-stream__title" data-callsign="<?php echo esc_html( $active_stream ); ?>">
+						<?php echo esc_html( $active_stream ); ?>
+					</button>
 					<ul class="audio-stream__available">
 						<?php foreach ( $streams as $stream => $description ) : ?>
 							<li class="audio-stream__item">
