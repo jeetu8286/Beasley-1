@@ -6186,8 +6186,8 @@ category: Components - Ads
     width: 100%;
     height: 75px;
     /*@include bp(x-large) {
-				height: 200px;
-			}*/ }
+			height: 200px;
+		}*/ }
     @media screen and (min-width: 480px) {
       .ad__events-sponsorship iframe {
         height: 124px; } }
@@ -6197,6 +6197,16 @@ category: Components - Ads
     @media screen and (min-width: 970px) {
       .ad__events-sponsorship iframe {
         height: 175px; } }
+
+.ad__in-content.ad__in-content--mobile {
+  display: block; }
+  @media screen and (min-width: 970px) {
+    .ad__in-content.ad__in-content--mobile {
+      display: none; } }
+
+.ad__in-content iframe {
+  display: block;
+  margin: 0 auto 1.5em; }
 
 .closures {
   margin-bottom: 2em; }
