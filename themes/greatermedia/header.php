@@ -77,11 +77,8 @@
 				</nav>
 
 				<div class="container__leaderboard">
-					<div class="ad__leaderboard desktop">
-			  		<?php do_action( 'acm_tag', 'leaderboard-top-of-site' ); ?>
-					</div>
-					<div class="ad__leaderboard mobile">
-			  		<?php do_action( 'acm_tag', 'smartphone-wide-banner' ); ?>
+					<div class="ad__leaderboard">
+						<?php do_action( 'dfp_tag', 'dfp_ad_leaderboard_pos1', false, array( array( 'pos', 1 ) ) ); ?>
 					</div>
 				</div>
 

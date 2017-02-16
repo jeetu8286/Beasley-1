@@ -18,8 +18,7 @@ if ( empty( $active_stream ) ) {
 
 	<?php // @TODO Available classes to add to audio-ad: -show ?>
 	<div id="js-audio-ad-aboveplayer" class="audio-ad audio-ad--aboveplayer">
-	  <?php // @TODO Mobile ad code ?>
-		Mobile ad code here
+		<?php do_action( 'dfp_tag', 'dfp_ad_playersponsorship' ); ?>
 	</div>
 
 	<div class="audio-interface__container">

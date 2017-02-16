@@ -17,11 +17,6 @@ get_header(); ?>
 			<section class="content">
 
 				<article id="post-<?php the_ID(); ?>" <?php post_class( 'article cf' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
-
-					<div class="ad__inline--right desktop">
-						<?php do_action( 'acm_tag_gmr_variant', 'mrec-body', 'desktop', array( 'min_width' => 1024 ) ); ?>
-					</div>
-
 					<header class="article__header">
 
 						<time class="article__date" datetime="<?php echo get_the_time(); ?>"><?php the_date( 'F j, Y' ); ?></time>
@@ -84,10 +79,6 @@ get_header(); ?>
 					</section>
 
 					<?php get_template_part( 'partials/article-footer' ); ?>
-
-					<div class="ad__inline--right mobile">
-						<?php do_action( 'acm_tag_gmr_variant', 'mrec-body', 'mobile', array( 'max_width' => 1023 ) ); ?>
-					</div>
 
 					<?php if ( function_exists( 'related_posts' ) ): ?>
 						<?php related_posts( array( 'template' => 'partials/related-posts.php' ) ); ?>

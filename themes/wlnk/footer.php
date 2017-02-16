@@ -15,19 +15,15 @@
 				$post_types = array(
 					'page',
 					'post',
-					GMR_CONTEST_CPT,
-					GreaterMediaGalleryCPT::GALLERY_POST_TYPE,
-					'tribe_events'
+					'contest',
+					'gmr_gallery',
+					'tribe_events',
+					'show',
 				);
 
 				if ( is_singular( $post_types ) ) { ?>
 					<div class="footer__ad">
-						<div class="desktop">
-							<?php do_action( 'acm_tag', 'leaderboard-footer-desktop' ); ?>
-						</div>
-						<div class="mobile">
-							<?php do_action( 'acm_tag', 'leaderboard-footer-mobile' ); ?>
-						</div>
+						<?php do_action( 'dfp_tag', 'dfp_ad_leaderboard_pos2', false, array( array( 'pos', 2 ) ) ); ?>
 					</div>
 				<?php } ?>
 				<div class="footer__content">

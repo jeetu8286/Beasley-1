@@ -16,7 +16,6 @@ if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
 
 	<article id="post-<?php the_ID(); ?>" <?php post_class( 'cf' ); ?> role="article" itemscope
 	         itemtype="http://schema.org/BlogPosting">
-
 		<header class="entry__header">
 
 			<time class="entry__date" datetime="<?php echo get_the_time(); ?>"><?php the_date( 'F j, Y' ); ?></time>

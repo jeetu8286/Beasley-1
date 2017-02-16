@@ -28,10 +28,6 @@ get_header();
 					<input type="text" name="gmclt_wxSearch" id="gmclt_wxSearch" placeholder="Search for location..."><input type="submit" id="gmclt_wxSearchsubmit" value="Search">
 				</div>
 				<div id="gmclt_narrowColumnContent"></div>
-				<div class="gmclt_adDiv">
-					<?php do_action( 'acm_tag_gmr_variant', 'mrec-lists', 'desktop' ); ?>
-					<?php do_action( 'acm_tag_gmr_variant', 'mrec-lists', 'mobile' ); ?>
-				</div>
 			</div>
 
 			<div class="gmclt_wideColumn right">
