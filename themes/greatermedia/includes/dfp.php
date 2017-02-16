@@ -24,14 +24,15 @@ function greatermedia_dfp_customizer( \WP_Customize_Manager $wp_customize ) {
 			'dfp_targeting_ctest'  => 'CTest Targeting Value',
 		),
 		'dfp_unit_codes' => array(
+			'dfp_ad_leaderboard_pos1'  => 'Header Leaderboard',
+			'dfp_ad_leaderboard_pos2'  => 'Footer Leaderboard',
 			'dfp_ad_incontent_pos1'    => 'In Content (pos1)',
 			'dfp_ad_incontent_pos2'    => 'In Content (pos2)',
 			'dfp_ad_inlist_infinite'   => 'In List (infinite)',
 			'dfp_ad_interstitial'      => 'Out-of-Page',
-			'dfp_ad_leaderboard_pos1'  => 'Leaderboard (pos1)',
-			'dfp_ad_leaderboard_pos2'  => 'Leaderboard (pos2)',
-			'dfp_ad_playersponsorship' => 'Player Sponsorship',
 			'dfp_ad_wallpaper'         => 'Wallpaper',
+			'dfp_ad_playersponsorship' => 'Player Sponsorship',
+			'dfp_ad_playercommercial'  => 'Player Commercial Break',
 		),
 	);
 
@@ -76,6 +77,7 @@ function greatermedia_dfp_footer() {
 		'dfp_ad_inlist_infinite'   => get_option( 'dfp_ad_inlist_infinite' ),
 		'dfp_ad_interstitial'      => get_option( 'dfp_ad_interstitial' ),
 		'dfp_ad_playersponsorship' => get_option( 'dfp_ad_playersponsorship' ),
+		'dfp_ad_playercommercial'  => get_option( 'dfp_ad_playercommercial' ),
 		'dfp_ad_wallpaper'         => get_option( 'dfp_ad_wallpaper' ),
 	);
 
@@ -89,6 +91,7 @@ function greatermedia_dfp_footer() {
 		'dfp_ad_right_rail_pos2'   => array( array( 300, 600 ), array( 300, 250 ) ),
 		'dfp_ad_interstitial'      => array( array( 1, 1 ) ),
 		'dfp_ad_playersponsorship' => array( 'fluid' ),
+		'dfp_ad_playercommercial'  => array( array( 320, 50 ) ),
 		'dfp_ad_wallpaper'         => array( array( 1, 1 ) ),
 	);
 
@@ -187,7 +190,7 @@ function greatermedia_dfp_footer() {
 					if (!initialized) {
 						googletag.pubads().enableSingleRequest();
 						googletag.pubads().collapseEmptyDivs(true);
-						
+
 						googletag.enableServices();
 
 						initialized = true;
