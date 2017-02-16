@@ -309,6 +309,10 @@ function greatermedia_display_dfp_outofpage() {
 add_action( 'get_footer', 'greatermedia_display_dfp_outofpage' );
 
 function greatermedia_display_dfp_incontent( $content ) {
+	if ( ! is_single() ) {
+		return $content;
+	}
+
 	$parts = explode( '</p>', $content );
 	$new_content = '';
 
