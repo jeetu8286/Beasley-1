@@ -18,7 +18,7 @@ if ( empty( $active_stream ) ) {
 
 	<?php // @TODO Available classes to add to audio-ad: -show ?>
 	<div id="js-audio-ad-aboveplayer" class="audio-ad audio-ad--aboveplayer">
-		<?php do_action( 'dfp_tag', 'dfp_ad_playersponsorship' ); ?>
+		<!--<?php do_action( 'dfp_tag', 'dfp_ad_playercommercial' ); // need to be wrapped with <!-- --> ?>-->
 	</div>
 
 	<div class="audio-interface__container">
@@ -44,8 +44,7 @@ if ( empty( $active_stream ) ) {
 			</ul><!-- .audio-stream__list -->
 
 			<div class="audio-sponsor">
-				<?php // @TODO DFP code goes here. ?>
-				Sponsor Text.
+				<?php do_action( 'dfp_tag', 'dfp_ad_playersponsorship' ); ?>
 			</div>
 		</nav><!-- .audio-stream -->
 
@@ -125,8 +124,3 @@ if ( empty( $active_stream ) ) {
 
 	</div>
 </div><!-- .audio-interface -->
-
-<div id="live-stream__container" class="live-stream__container">
-	<div id="td_container" class="live-stream__container--player"></div>
-	<div class="pre-roll__notification">Live stream will be available after this brief ad from our sponsors</div>
-</div>

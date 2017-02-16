@@ -76,10 +76,10 @@
 					do_action( 'gmr_social' ); ?>
 				</nav>
 
+				<main class="main" role="main">
+
 				<div class="container__leaderboard">
 					<div class="ad__leaderboard">
 						<?php do_action( 'dfp_tag', 'dfp_ad_leaderboard_pos1', false, array( array( 'pos', 1 ) ) ); ?>
 					</div>
 				</div>
-
-				<main class="main" role="main">

@@ -5440,6 +5440,8 @@ Link posts contain a link to an external site. They can also optionally have a f
       @media screen and (min-width: 768px) {
         .audio-stream .audio-stream__title:before {
           display: none; } }
+    .audio-stream .audio-stream__title:focus {
+      outline: none; }
   @media screen and (min-width: 768px) {
     .audio-stream.-multiple .audio-stream__title {
       padding: 10px 20px 10px 10px; } }
@@ -6007,7 +6009,7 @@ Link posts contain a link to an external site. They can also optionally have a f
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.75);
-  z-index: 20000; }
+  z-index: 9000001; }
 
 .live-stream__container--player {
   height: 0; }
@@ -6186,8 +6188,8 @@ category: Components - Ads
     width: 100%;
     height: 75px;
     /*@include bp(x-large) {
-				height: 200px;
-			}*/ }
+			height: 200px;
+		}*/ }
     @media screen and (min-width: 480px) {
       .ad__events-sponsorship iframe {
         height: 124px; } }
@@ -6197,6 +6199,16 @@ category: Components - Ads
     @media screen and (min-width: 970px) {
       .ad__events-sponsorship iframe {
         height: 175px; } }
+
+.ad__in-content.ad__in-content--mobile {
+  display: block; }
+  @media screen and (min-width: 970px) {
+    .ad__in-content.ad__in-content--mobile {
+      display: none; } }
+
+.ad__in-content iframe {
+  display: block;
+  margin: 0 auto 1.5em; }
 
 .closures {
   margin-bottom: 2em; }
