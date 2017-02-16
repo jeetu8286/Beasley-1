@@ -6009,7 +6009,7 @@ Link posts contain a link to an external site. They can also optionally have a f
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.75);
-  z-index: 20000; }
+  z-index: 9000001; }
 
 .live-stream__container--player {
   height: 0; }
