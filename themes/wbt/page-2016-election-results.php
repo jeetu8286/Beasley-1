@@ -24,8 +24,10 @@ get_header();
 				</iframe>
 
 			</section>
-		</section>
-	</article>
+		</article>
+	</section>
+
+	<?php get_sidebar(); ?>
 </div>
 
 <?php get_footer(); ?>

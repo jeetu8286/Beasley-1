@@ -60,6 +60,8 @@ while ( have_posts() ) : the_post(); ?>
 
         </section>
 
+		<?php get_sidebar(); ?>
+
     </div>
 
 <?php endwhile;
