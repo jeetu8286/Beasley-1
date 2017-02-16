@@ -10,7 +10,6 @@
 	}
 
 	&.-open {
-		
 		@include bp(large) {
 			text-align: left;
 			display: flex;
@@ -21,6 +20,7 @@
 		display: none;
 		margin: 0 5px;
 	}
+
 	&.-open input[type=range] {
 		display: block;
 	}
@@ -49,6 +49,7 @@
 			width: 0;
 		}
 	}
+	
 	.audio-volume__mute {
 		display: none;
 
@@ -56,6 +57,7 @@
 			content: "\e900";
 		}
 	}
+
 	&.-open .audio-volume__mute {
 		display: block;
 	}

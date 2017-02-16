@@ -134,7 +134,7 @@ function recent_homepage_query( $meta_key ) {
 
 	$limit = 0;
 	if ( 'featured_meta_box' == $meta_key ) {
-		$limit = apply_filters( 'gmr-homepage-featured-limit', 4, $homepage );
+		$limit = apply_filters( 'gmr-homepage-featured-limit', 6, $homepage );
 	} elseif ( 'dont_miss_meta_box' == $meta_key ) {
 		$limit = apply_filters( 'gmr-homepage-community-limit', 3, $homepage );
 	} elseif ( 'events_meta_box' == $meta_key ) {
