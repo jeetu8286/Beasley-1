@@ -18,7 +18,7 @@ get_header();
 		</header>
 		<section class="article__content" itemprop="articleBody">
 			<?php the_content(); ?>
-			
+
 			Choose a state to view WBT Operation Storm Watch Alerts:<br />
 				<select id="gmclt_selectState" name="gmclt_selectState">
 					<option value="NC" selected="selected">NORTH CAROLINA</option>
@@ -76,27 +76,15 @@ get_header();
 					<option value="WI">WISCONSIN</option>
 					<option value="WY">WYOMING</option>
 				</select>
-			<div class="gmclt_wideColumn left">
+
 				<div class="gmcltWX_mapLoading">
 					<p>Loading...</p>
 					<img src="<?php echo trailingslashit( get_stylesheet_directory_uri() ); ?>images/WBTajaxLoader.gif">
 				</div>
 				<div id="gmclt_stormwatchMapCanvas"></div>
-			</div>
-			
-			<div class="gmclt_narrowColumn">
-				
-				<div id="gmclt_narrowColumnContent"></div>
-				<div class="gmclt_adDiv">
-					<?php do_action( 'acm_tag_gmr_variant', 'mrec-lists', 'desktop' ); ?>
-					<?php do_action( 'acm_tag_gmr_variant', 'mrec-lists', 'mobile' ); ?>
-				</div>
-			</div>
-			
-			
 		</section>
-		
-	
+
+
 	</section>
 	</article>
 </div>
@@ -118,7 +106,7 @@ get_header();
 <script type="text/javascript">
 jQuery(document).ready(function(){
 	GMCLT.Weather.stormwatchInit();
-	
+
 });
 </script>
 
@@ -127,4 +115,3 @@ jQuery(document).ready(function(){
 
 
 
-		

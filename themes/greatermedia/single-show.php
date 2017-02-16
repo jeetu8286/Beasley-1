@@ -69,11 +69,6 @@
 			<div class="row">
 
 				<aside class="inner-right-col">
-
-					<div class="show__ad">
-						<?php do_action( 'acm_tag', 'mrec-lists' ); ?>
-					</div>
-
 					<?php
 					$live_links_query = \GreaterMedia\Shows\get_show_live_links_query();
 					if ( $live_links_query->have_posts() ) :

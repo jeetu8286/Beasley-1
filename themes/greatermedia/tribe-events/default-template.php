@@ -22,9 +22,6 @@ get_header(); ?>
 		<section class="content">
 
 			<div id="tribe-events-pg-template">
-				<div class="ad__events-sponsorship">
-					<?php do_action( 'acm_tag', 'events-sponsorship' ); ?>
-				</div>
 				<?php tribe_events_before_html(); ?>
 				<h2 class="content__heading" itemprop="headline"><?php _e( 'Upcoming Events', 'greatermedia' ); ?></h2>
 				<div class="tribe-clearfix">

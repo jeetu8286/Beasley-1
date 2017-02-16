@@ -30,11 +30,6 @@ while ( have_posts() ) : the_post(); ?>
         <section class="content">
 
             <article id="post-<?php the_ID(); ?>" <?php post_class( 'article cf' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
-
-                <div class="ad__inline--right desktop">
-                    <?php do_action( 'acm_tag_gmr_variant', 'mrec-body', 'desktop', array( 'min_width' => 1024 ) ); ?>
-                </div>
-
                 <header class="article__header">
 
                     <time class="article__date" datetime="<?php echo get_the_time(); ?>"><?php the_date('F j, Y'); ?></time>
@@ -44,21 +39,13 @@ while ( have_posts() ) : the_post(); ?>
                 </header>
 
                 <section class="article__content" itemprop="articleBody">
-
                     <?php the_content(); ?>
 
                     <p style="text-align: center;"><strong>Is your organization not a member of 105.5 WDHA's storm closings system yet? <a href="http://www.centraljerseysnow.com/members/signupform.cfm"><br />SIGN UP NOW!</a></strong></p>
                     <iframe src="http://www.centraljerseysnow.com/members/closings/index.cfm" width="590" height="3000" scrolling="auto" frameborder="0"></iframe>
-
-
-
                 </section>
 
                 <?php get_template_part( 'partials/article-footer' ); ?>
-
-                <div class="ad__inline--right mobile">
-                    <?php do_action( 'acm_tag_gmr_variant', 'mrec-body', 'mobile', array( 'max_width' => 1023 ) ); ?>
-                </div>
 
                 <?php if ( function_exists( 'related_posts' ) ): ?>
                     <?php related_posts( array( 'template' => 'partials/related-posts.php' ) ); ?>

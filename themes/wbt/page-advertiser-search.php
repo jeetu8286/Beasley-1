@@ -19,32 +19,19 @@ get_header();
 		<section class="article__content" itemprop="articleBody">
 			<?php the_content(); ?>
 
+			<div id="gmclt_categoryDropdown"></div>
 
-			<div class="gmclt_wideColumn left">
-				<div id="gmclt_categoryDropdown"></div>
-				<div class="gmclt_searchBar">
-					<input type="text" name="gmclt_advertiserSearch" id="gmclt_advertiserSearch" placeholder="search for an advertiser or product..." value=""><input type="submit" id="gmclt_searchSubmit" value="Search">
-				</div>
-				<div class="gmclt_searching">
-					<p>Searching...</p>
-					<img src="/wp-content/themes/wbt/images/WBTajaxLoader.gif">
-				</div>
-				<div id="gmclt_wideColumnContent"></div>
+			<div class="gmclt_searchBar">
+				<input type="text" name="gmclt_advertiserSearch" id="gmclt_advertiserSearch" placeholder="search for an advertiser or product..." value=""><input type="submit" id="gmclt_searchSubmit" value="Search">
 			</div>
 
-			<div class="gmclt_narrowColumn">
-
-				<div id="gmclt_narrowColumnContent"></div>
-				<div class="gmclt_adDiv">
-					<?php do_action( 'acm_tag_gmr_variant', 'mrec-lists', 'desktop' ); ?>
-					<?php do_action( 'acm_tag_gmr_variant', 'mrec-lists', 'mobile' ); ?>
-				</div>
+			<div class="gmclt_searching">
+				<p>Searching...</p>
+				<img src="/wp-content/themes/wbt/images/WBTajaxLoader.gif">
 			</div>
 
-
+			<div id="gmclt_wideColumnContent"></div>
 		</section>
-
-
 	</section>
 	</article>
 </div>

@@ -53,14 +53,3 @@
 	endif;
 	wp_reset_query(); ?>
 </div>
-
-<div class="highlights__ad">
-
-	<div class="highlights__ad--desktop">
-		<?php do_action( 'acm_tag_gmr_variant', 'mrec-lists', 'desktop', array( 'min_width' => 1024 ) ); ?>
-	</div>
-	<div class="highlights__ad--mobile">
-		<?php do_action( 'acm_tag_gmr_variant', 'mrec-lists', 'mobile', array( 'max_width' => 1023 ) ); ?>
-	</div>
-
-</div>

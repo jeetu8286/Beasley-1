@@ -25,7 +25,7 @@ class GMR_DB_Upgrade extends WP_CLI_Command {
 	 * @synopsis --url=<url> [--live]
 	 */
 	public function utf8mb4_upgrade( $args, $assoc_args ) {
-		$dry_run = (bool) ! isset( $assoc_args['live'] );
+		$dry_run = ! isset( $assoc_args['live'] );
 
 		global $wpdb;
 
@@ -75,7 +75,7 @@ class GMR_DB_Upgrade extends WP_CLI_Command {
 	 * @synopsis --url=<url> [--live]
 	 */
 	public function convert_to_utf8( $args, $assoc_args ) {
-		$dry_run = (bool) ! isset( $assoc_args['live'] );
+		$dry_run = ! isset( $assoc_args['live'] );
 
 		global $wpdb;
 
@@ -145,4 +145,5 @@ class GMR_DB_Upgrade extends WP_CLI_Command {
 
 		return $wpdb->query( "ALTER TABLE $table CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci" );
 	}
+
 }

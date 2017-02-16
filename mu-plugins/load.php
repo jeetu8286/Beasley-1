@@ -19,6 +19,5 @@ include __DIR__ . '/edit-flow-notification-block/edit-flow-notification-block.ph
 // These are going to be activated no matter what to ensure that themes can always rely on the functionality
 include __DIR__ . '/gmr-template-tags/gmr-template-tags.php';
 include __DIR__ . '/gmr-homepage-curation/gmr-homepage-curation.php';
-include __DIR__ . '/acm-additions/acm-additions.php';
 include __DIR__ . '/legacy-redirects/class-CMM_Legacy_Redirects.php';
 include __DIR__ . '/gmr-fallback-thumbnails/gmr-fallback-thumbnails.php';
