@@ -511,6 +511,7 @@
 	}
 
 	function playLiveStreamDevice() {
+		playingCustomAudio = false;
 		if (lpInit === true) {
 			setStoppedStyles();
 			if (window.innerWidth >= 768) {
@@ -585,9 +586,18 @@
 		$('.audio-stream.-open').removeClass('-open');
 	});
 
-	$document.on('click', '.audio-stream.-multiple .audio-stream__title', function(e) {
+	$document.on('click', '.audio-stream .audio-stream__title', function(e) {
 		e.stopPropagation();
-		$(this).parents('.audio-stream').toggleClass('-open');
+		var audioStream = $(this).parents('.audio-stream');
+
+		if (playingCustomAudio) {
+			stopCustomInlineAudio();
+			playLiveStreamDevice();
+		} else {
+			if (audioStream.is('.-multiple')) {
+				audioStream.toggleClass('-open');
+			}
+		}
 	});
 
 	$document.on('click', '.audio-stream__item', function(e) {
