@@ -20,8 +20,10 @@ get_header();
 				<?php the_content(); ?>
 				<script type="text/javascript" src="https://form.jotform.com/jsform/60595824939168"></script>
 			</section>
-		</section>
-	</article>
+		</article>
+	</section>
+
+	<?php get_sidebar(); ?>
 </div>
 
 <?php get_footer(); ?>

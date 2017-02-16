@@ -18,16 +18,18 @@ get_header();
 			</header>
 			<section class="article__content" itemprop="articleBody">
 				<?php the_content(); ?>
-				
+
 				<style>
 					.jsx {
 						margin: 0 auto;
 					}
 				</style>
-				<script type="text/javascript" src="http://s1.march.dellsportsgames.com/atx/init/atx-pool=26/" id="x-march-generator"></script> 
+				<script type="text/javascript" src="http://s1.march.dellsportsgames.com/atx/init/atx-pool=26/" id="x-march-generator"></script>
 			</section>
-		</section>
-	</article>
+		</article>
+	</section>
+
+	<?php get_sidebar(); ?>
 </div>
 
 <?php get_footer(); ?>
@@ -35,4 +37,3 @@ get_header();
 
 
 
-		
