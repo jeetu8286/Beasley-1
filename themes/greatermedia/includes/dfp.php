@@ -181,6 +181,8 @@ function greatermedia_dfp_footer() {
 						}
 
 						slot.addService(googletag.pubads());
+
+						$(document.getElementById(slots[i][2])).data('slot', slot);
 					}
 
 					while ((targeting = googletag.beasley.targeting.pop())) {
@@ -207,7 +209,7 @@ function greatermedia_dfp_footer() {
 			$(document).on('pjax:end', function() {
 				needCleanup = true;
 				__ready();
-			}).on('gmr_lazy_load_end', function() {
+			}).on('gmr_lazy_load_end ad-break-started', function() {
 				needCleanup = false;
 				__ready();
 			}).ready(__ready);

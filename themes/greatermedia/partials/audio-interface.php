@@ -18,6 +18,7 @@ if ( empty( $active_stream ) ) {
 
 	<?php // @TODO Available classes to add to audio-ad: -show ?>
 	<div id="js-audio-ad-aboveplayer" class="audio-ad audio-ad--aboveplayer">
+		<!--<?php do_action( 'dfp_tag', 'dfp_ad_playercommercial' ); // need to be wrapped with <!-- --> ?>-->
 	</div>
 
 	<div class="audio-interface__container">

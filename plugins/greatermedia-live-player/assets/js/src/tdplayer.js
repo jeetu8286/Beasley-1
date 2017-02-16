@@ -74,6 +74,18 @@
 	var $audioTrackInfo = $(document.getElementById('js-track-info'));
 	var $audioAuthorInfo = $(document.getElementById('js-artist-info'));
 	var $audioExpandBtn = $(document.getElementById('js-audio-expand'));
+	var $audioAdBreakContainer = $(document.getElementById('js-audio-ad-aboveplayer'));
+
+	/**
+	 * Reads comments of an element.
+	 */
+	$.fn.getComments = function() {
+		return this.contents().map(function () {
+			if (this.nodeType === 8) {
+				return this.nodeValue;
+			}
+		}).get();
+	};
 
 	/**
 	 * Stars playing a stream and triggers appropriate event.
@@ -851,6 +863,7 @@
 		if (player.addEventListener) {
 			player.addEventListener('track-cue-point', onTrackCuePoint);
 			player.addEventListener('ad-break-cue-point', onAdBreak);
+			player.addEventListener('ad-break-cue-point', onAdBreakComplete);
 			player.addEventListener('stream-track-change', onTrackChange);
 			player.addEventListener('hls-cue-point', onHlsCuePoint);
 
@@ -872,6 +885,7 @@
 		} else if (player.attachEvent) {
 			player.attachEvent('track-cue-point', onTrackCuePoint);
 			player.attachEvent('ad-break-cue-point', onAdBreak);
+			player.attachEvent('ad-break-cue-point', onAdBreakComplete);
 			player.attachEvent('stream-track-change', onTrackChange);
 			player.attachEvent('hls-cue-point', onHlsCuePoint);
 
@@ -1147,7 +1161,25 @@
 	}
 
 	function onAdBreak(e) {
-		setStatus('Commercial break...');
+		var comments = $audioAdBreakContainer.getComments();
+
+		if (comments[0]) {
+			$audioAdBreakContainer.html(comments[0]);
+			$document.trigger('ad-break-started');
+		}
+	}
+
+	function onAdBreakComplete() {
+		$audioAdBreakContainer.find('> div').each(function() {
+			var $slot = $(this),
+				slot = $slot.data('slot');
+
+			if (slot && window.googletag) {
+				window.googletag.destroySlots([slot]);
+			}
+
+			$slot.remove();
+		});
 	}
 
 	function clearNpe() {
