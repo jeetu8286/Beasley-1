@@ -27,7 +27,9 @@ if ( empty( $active_stream ) ) {
 			<ul class="audio-stream__list">
 				<li class="audio-stream__current">
 					<?php // @TODO On desktop, the .audio-stream__title button below would control the -open class for .audio-stream ?>
-					<button class="audio-stream__title"><?php echo esc_html( $active_stream ); ?></button>
+					<button class="audio-stream__title" data-callsign="<?php echo esc_html( $active_stream ); ?>">
+						<?php echo esc_html( $active_stream ); ?>
+					</button>
 					<ul class="audio-stream__available">
 						<?php foreach ( $streams as $stream => $description ) : ?>
 							<li class="audio-stream__item">
@@ -90,9 +92,9 @@ if ( empty( $active_stream ) ) {
 
 					<?php // @TODO Available classes to add to audio-podcast: -show ?>
 					<div id="js-audio-podcast" class="audio-podcast">
-						<span class="audio-podcast__text">15:20</span>
-						<input type="range" name="audio-podcast" id="audio-podcast-slider" min="0" max="100" step="1" value="75" title="Podcast Time Slider"/>
-						<span class="audio-podcast__text">28:15</span>
+						<span class="audio-podcast__text">00:00</span>
+						<input type="range" name="audio-podcast" id="audio-podcast-slider" min="0" max="1" step="0.001" value="0">
+						<span class="audio-podcast__text">00:00</span>
 					</div><!-- .audio-podcast -->
 				</div><!-- .audio-playing -->
 
