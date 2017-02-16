@@ -365,6 +365,7 @@
 	var $audioTrackInfo = $(document.getElementById('js-track-info'));
 	var $audioAuthorInfo = $(document.getElementById('js-artist-info'));
 	var $audioExpandBtn = $(document.getElementById('js-audio-expand'));
+	var $audioPodcast = $(document.getElementById('js-audio-podcast'));
 
 	/**
 	 * Stars playing a stream and triggers appropriate event.
@@ -553,23 +554,32 @@
 			playBtn.classList.add('live-player__muted');
 		}
 
-		$audioControls.removeClass('-playing -paused');
-		$audioControls.addClass('-loading');
-		$audioStatus.removeClass('-show');
-
 		if (!resumeBtn.classList.contains('live-player__muted')) {
 			resumeBtn.classList.add('live-player__muted');
 		}
 		if (resumeBtn.classList.contains('resume__live')) {
 			resumeBtn.classList.remove('resume__live');
 		}
+
+		$audioStatus.removeClass('-show');
+		$audioControls.removeClass('-playing -paused -loading');
+
+		$(nowPlaying).addClass('-show');
+		$(listenNow).removeClass('-show');
+
 		if (true === playingCustomAudio) {
-			nowPlaying.style.display = 'none';
-			listenNow.style.display = 'inline-block';
+			$audioPodcast.addClass('-show');
+			$audioControls.addClass('-playing');
+			$('.audio-stream .audio-stream__title').text('SWITCH TO LIVE STREAM');
 		} else {
-			nowPlaying.style.display = 'inline-block';
-			listenNow.style.display = 'none';
+			$audioPodcast.removeClass('-show');
+			$audioControls.addClass('-loading');
+			$('.audio-stream .audio-stream__title').each(function() {
+				var $this = $(this);
+				$this.text($this.attr('data-callsign'));
+			});
 		}
+
 		if (false === playingCustomAudio && loadingBtn != null) {
 			loadingBtn.classList.add('loading');
 		}
@@ -598,8 +608,10 @@
 			resumeBtn.classList.remove('live-player__muted');
 			resumeBtn.classList.add('resume__live');
 		}
-		listenNow.style.display = 'inline-block';
-		nowPlaying.style.display = 'none';
+
+		$(listenNow).addClass('-show');
+		$(nowPlaying).removeClass('-show');
+
 		pauseBtn.classList.add('live-player__muted');
 	}
 
@@ -610,7 +622,9 @@
 
 		$audioControls.removeClass('-playing -loading');
 		$audioControls.addClass('-paused');
-		$audioStatus.addClass('-show');
+		if (!playingCustomAudio) {
+			$audioStatus.addClass('-show');
+		}
 
 		if (true === playingCustomAudio && window.innerWidth <= 767) {
 			playBtn.classList.add('live-player__login');
@@ -655,11 +669,12 @@
 			nowPlayingInfo.classList.add('playing');
 		}
 
-		if (listenNow != null) {
-			setTimeout(function () {
-				listenNow.innerHTML = 'Switch to Live Stream';
-			}, 1000);
-		}
+		$(listenNow).removeClass('-show');
+		$(nowPlaying).addClass('-show');
+		$audioPodcast.addClass('-show');
+
+		$audioControls.removeClass('-loading -paused');
+		$audioControls.addClass('-playing');
 	}
 
 	function nearestPodcastPlaying(event) {
@@ -792,6 +807,7 @@
 	}
 
 	function playLiveStreamDevice() {
+		playingCustomAudio = false;
 		if (lpInit === true) {
 			setStoppedStyles();
 			if (window.innerWidth >= 768) {
@@ -804,7 +820,7 @@
 
 	function changePlayerState() {
 		if (playBtn != null) {
-			addEventHandler(playBtn, 'click', function(){
+			addEventHandler(playBtn, 'click', function() {
 				if (lpInit === true) {
 					setStoppedStyles();
 					if (window.innerWidth >= 768) {
@@ -866,9 +882,18 @@
 		$('.audio-stream.-open').removeClass('-open');
 	});
 
-	$document.on('click', '.audio-stream.-multiple .audio-stream__title', function(e) {
+	$document.on('click', '.audio-stream .audio-stream__title', function(e) {
 		e.stopPropagation();
-		$(this).parents('.audio-stream').toggleClass('-open');
+		var audioStream = $(this).parents('.audio-stream');
+
+		if (playingCustomAudio) {
+			stopCustomInlineAudio();
+			playLiveStreamDevice();
+		} else {
+			if (audioStream.is('.-multiple')) {
+				audioStream.toggleClass('-open');
+			}
+		}
 	});
 
 	$document.on('click', '.audio-stream__item', function(e) {
@@ -878,7 +903,7 @@
 
 		e.stopPropagation();
 
-		$audioStream.find('.audio-stream__title').text(callSign);
+		$audioStream.find('.audio-stream__title').text(callSign).attr('data-callsign', callSign);
 		$audioStream.removeClass('-open');
 
 		if (livePlaying) {
@@ -921,14 +946,24 @@
 		setPlayingStyles();
 	});
 
-	function playLiveStreamMobile() {
-		var station = gmr.callsign;
+	function getCurrentStation() {
+		var station = $.trim($('.audio-stream .audio-stream__title').attr('data-callsign'));
 
-		pjaxInit();
-		if (station === '') {
-			alert('Please enter a Station');
+		if (station.length < 1) {
+			station = gmr.callsign;
+		}
+
+		return station;
+	}
+
+	function playLiveStreamMobile() {
+		var station = getCurrentStation();
+
+		if (!station) {
 			return;
 		}
+
+		pjaxInit();
 		if (true === playingCustomAudio) {
 			listenLiveStopCustomInlineAudio();
 		}
@@ -937,33 +972,9 @@
 		preVastAd();
 		streamVastAd();
 		if (player.addEventListener) {
-			player.addEventListener('ad-playback-complete', function () {
-				postVastAd();
-				debug("--- ad complete ---");
-
-				if (livePlaying) {
-					player.stop();
-				}
-
-				body.classList.add('live-player--active');
-				livePlayer.classList.add('live-player--active');
-				playStream(station);
-				setPlayingStyles();
-			});
+			player.addEventListener('ad-playback-complete', onAdPlaybackComplete);
 		} else if (player.attachEvent) {
-			player.attachEvent('ad-playback-complete', function () {
-				postVastAd();
-				debug("--- ad complete ---");
-
-				if (livePlaying) {
-					player.stop();
-				}
-
-				body.classList.add('live-player--active');
-				livePlayer.classList.add('live-player--active');
-				playStream(station);
-				setPlayingStyles();
-			});
+			player.attachEvent('ad-playback-complete', onAdPlaybackComplete);
 		}
 
 	}
@@ -972,12 +983,12 @@
 	 * Temp to remove vast ad while issues are resolves
 	 */
 	function playLiveStreamMobileNoAd() {
-		var station = gmr.callsign;
+		var station = getCurrentStation();
 
-		if (station === '') {
-			alert('Please enter a Station');
+		if (!station) {
 			return;
 		}
+
 		if (true === playingCustomAudio) {
 			listenLiveStopCustomInlineAudio();
 		}
@@ -995,52 +1006,25 @@
 	}
 
 	function playLiveStream() {
-		var station = gmr.callsign;
+		var station = getCurrentStation();
+
+		if (!station) {
+			return;
+		}
 
 		pjaxInit();
 		if (true === playingCustomAudio) {
 			resumeCustomInlineAudio();
-
 			setPlayingStyles();
 		} else {
-
-			if (station === '') {
-				alert('Please enter a Station');
-				return;
-			}
-
 			debug('playLiveStream - station=' + station);
 
 			preVastAd();
 			streamVastAd();
 			if (player.addEventListener) {
-				player.addEventListener('ad-playback-complete', function () {
-					postVastAd();
-					debug("--- ad complete ---");
-
-					if (livePlaying) {
-						player.stop();
-					}
-
-					body.classList.add('live-player--active');
-					livePlayer.classList.add('live-player--active');
-					playStream(station);
-					setPlayingStyles();
-				});
+				player.addEventListener('ad-playback-complete', onAdPlaybackComplete);
 			} else if (player.attachEvent) {
-				player.attachEvent('ad-playback-complete', function () {
-					postVastAd();
-					debug("--- ad complete ---");
-
-					if (livePlaying) {
-						player.stop();
-					}
-
-					body.classList.add('live-player--active');
-					livePlayer.classList.add('live-player--active');
-					playStream(station);
-					setPlayingStyles();
-				});
+				player.attachEvent('ad-playback-complete', onAdPlaybackComplete);
 			}
 		}
 	}
@@ -1049,20 +1033,17 @@
 	 * Temp to remove vast ad while issues are resolves
 	 */
 	function playLiveStreamNoAd() {
-		var station = gmr.callsign;
+		var station = getCurrentStation();
+
+		if (!station) {
+			return;
+		}
 
 		pjaxInit();
 		if (true === playingCustomAudio) {
 			resumeCustomInlineAudio();
-
 			setPlayingStyles();
 		} else {
-
-			if (station === '') {
-				alert('Please enter a Station');
-				return;
-			}
-
 			debug('playLiveStream - station=' + station);
 
 			if (livePlaying) {
@@ -1083,9 +1064,9 @@
 
 			setPlayingStyles();
 		} else {
-			var station = gmr.callsign;
+			var station = getCurrentStation();
+
 			if (station === '') {
-				alert('Please enter a Station');
 				return;
 			}
 
@@ -1155,11 +1136,6 @@
 
 			player.addEventListener('stream-start', onStreamStarted);
 			player.addEventListener('stream-stop', onStreamStopped);
-
-			player.addEventListener('stream-config-error', streamError);
-			player.addEventListener('stream-config-load-error', streamError);
-			player.addEventListener('stream-fail', streamError);
-			player.addEventListener('stream-error', streamError);
 		} else if (player.attachEvent) {
 			player.attachEvent('track-cue-point', onTrackCuePoint);
 			player.attachEvent('ad-break-cue-point', onAdBreak);
@@ -1176,11 +1152,6 @@
 
 			player.attachEvent('stream-start', onStreamStarted);
 			player.attachEvent('stream-stop', onStreamStopped);
-
-			player.attachEvent('stream-config-error', streamError);
-			player.attachEvent('stream-config-load-error', streamError);
-			player.attachEvent('stream-fail', streamError);
-			player.attachEvent('stream-error', streamError);
 		}
 
 		player.setVolume(1);
@@ -1254,11 +1225,6 @@
 		}
 	}
 
-	function streamError(e) {
-		debug('Stream error', 1);
-		debug(e);
-	}
-
 	/**
 	 * Event fired in case the loading of the companion ad returned an error.
 	 * @param e
@@ -1273,10 +1239,28 @@
 	}
 
 	function onAdPlaybackComplete(e) {
+		var station = getCurrentStation();
+
 		adPlaying = false;
 		$("#td_adserver_bigbox").empty();
 		$("#td_adserver_leaderboard").empty();
 		setStatus('Ready');
+
+		if (!station) {
+			return;
+		}
+
+		postVastAd();
+		debug("--- ad complete ---");
+
+		if (livePlaying) {
+			player.stop();
+		}
+
+		body.classList.add('live-player--active');
+		livePlayer.classList.add('live-player--active');
+		playStream(station);
+		setPlayingStyles();
 	}
 
 	/**
@@ -1288,7 +1272,7 @@
 		setStatus('Ready');
 
 		postVastAd();
-		var station = gmr.callsign;
+		var station = getCurrentStation();
 		if (livePlaying) {
 			player.stop();
 		}
@@ -1555,7 +1539,6 @@
 		$("#asyncData").html("<div>" + tableContent + "</div>");
 	}
 
-
 	function attachAdListeners() {
 		if (player.addEventListener) {
 			player.addEventListener('ad-playback-start', onAdPlaybackStart);
@@ -1779,8 +1762,15 @@
 	var resumeCustomInlineAudio = function () {
 		playingCustomAudio = true;
 		stopLiveStreamIfPlaying();
+
+		// restart audio if it eneded
+		if (customAudio && customAudio.duration == customAudio.currentTime) {
+			customAudio.currentTime = 0;
+		}
+
 		customAudio.play();
 		customAudio.volume = getVolume();
+
 		setPlayerTrackName();
 		setPlayerArtist();
 		resetInlineAudioStates();
@@ -1793,6 +1783,8 @@
 	var playCustomInlineAudio = function (src) {
 		pjaxInit();
 
+		playingCustomAudio = true;
+
 		// Only set the src if its different than what is already there, so we can resume the audio with the inline buttons
 		if (src !== customAudio.src) {
 			setInlineAudioSrc(src);
@@ -1803,7 +1795,6 @@
 	var pauseCustomInlineAudio = function () {
 		customAudio.pause();
 		resetInlineAudioStates();
-		playingCustomAudio = false;
 		setPausedStyles();
 		stopInlineAudioInterval();
 	};
@@ -1831,6 +1822,9 @@
 		} else {
 			$trackInfo.prepend(template({title: customTrack}));
 		}
+
+		$audioTrackInfo.text(customTrack);
+		$audioAuthorInfo.text('');
 	};
 
 	var setPlayerArtist = function () {
@@ -1861,14 +1855,16 @@
 			// Revert the button states back to play once the file is done playing
 			if (customAudio.addEventListener) {
 				customAudio.addEventListener('ended', function () {
+					playingCustomAudio = false;
 					resetInlineAudioStates();
-					setPausedStyles();
+					setStoppedStyles();
 					stopInlineAudioInterval();
 				});
 			} else if (customAudio.attachEvent) {
 				customAudio.attachEvent('ended', function () {
+					playingCustomAudio = false;
 					resetInlineAudioStates();
-					setPausedStyles();
+					setStoppedStyles();
 					stopInlineAudioInterval();
 				});
 			}
@@ -1885,15 +1881,19 @@
 				var $play = $(e.currentTarget);
 
 				nearestPodcastPlaying(e);
-
 				playCustomInlineAudio($play.attr('data-mp3-src'));
-
 				resetInlineAudioStates();
-
 				setCustomAudioMetadata($play.attr('data-mp3-title'), $play.attr('data-mp3-artist'), $play.attr('data-mp3-hash'));
 			});
 
 			$content.on('click', '.podcast__btn--pause', pauseCustomInlineAudio);
+
+			$audioPodcast.find('input[type="range"]').change(function() {
+				if (customAudio) {
+					var duration = parseInt(customAudio.duration);
+					customAudio.currentTime = Math.floor(duration * parseFloat($(this).val()));
+				}
+			});
 		} else {
 			var $meFallbacks = $('.gmr-mediaelement-fallback audio'),
 				$customInterfaces = $('.podcast__play');
@@ -1934,12 +1934,16 @@
 	function audioUpdateProgress() {
 		var progress = document.querySelectorAll('.audio__progress'), i,
 			value = 0;
+
 		for (i = 0; i < progress.length; ++i) {
 			if (customAudio.currentTime > 0) {
 				value = Math.floor((100 / customAudio.duration) * customAudio.currentTime);
 			}
+
 			progress[i].style.width = value + "%";
 		}
+
+		$audioPodcast.find('input[type="range"]').val(value / 100);
 	}
 
 	/**
@@ -1985,6 +1989,8 @@
 		for (i = 0; i < ramainings.length; ++i) {
 			ramainings[i].innerHTML = timeleft;
 		}
+
+		$audioPodcast.find('span:last').text(timeleft);
 	}
 
 	/**
@@ -2010,6 +2016,8 @@
 		for (i = 0; i < timeline.length; ++i) {
 			timeline[i].innerHTML = currentTime;
 		}
+
+		$audioPodcast.find('span:first').text(currentTime);
 	}
 
 	initCustomAudioPlayer();
