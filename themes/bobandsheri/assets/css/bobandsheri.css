@@ -5440,6 +5440,8 @@ Link posts contain a link to an external site. They can also optionally have a f
       @media screen and (min-width: 768px) {
         .audio-stream .audio-stream__title:before {
           display: none; } }
+    .audio-stream .audio-stream__title:focus {
+      outline: none; }
   @media screen and (min-width: 768px) {
     .audio-stream.-multiple .audio-stream__title {
       padding: 10px 20px 10px 10px; } }
