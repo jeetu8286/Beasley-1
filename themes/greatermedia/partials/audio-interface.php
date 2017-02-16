@@ -91,9 +91,9 @@ if ( empty( $active_stream ) ) {
 
 					<?php // @TODO Available classes to add to audio-podcast: -show ?>
 					<div id="js-audio-podcast" class="audio-podcast">
-						<span class="audio-podcast__text">15:20</span>
-						<input type="range" name="audio-podcast" id="audio-podcast-slider" min="0" max="100" step="1" value="75" title="Podcast Time Slider"/>
-						<span class="audio-podcast__text">28:15</span>
+						<span class="audio-podcast__text">00:00</span>
+						<input type="range" name="audio-podcast" id="audio-podcast-slider" min="0" max="1" step="0.001" value="0">
+						<span class="audio-podcast__text">00:00</span>
 					</div><!-- .audio-podcast -->
 				</div><!-- .audio-playing -->
 

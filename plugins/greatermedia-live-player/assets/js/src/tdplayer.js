@@ -74,6 +74,7 @@
 	var $audioTrackInfo = $(document.getElementById('js-track-info'));
 	var $audioAuthorInfo = $(document.getElementById('js-artist-info'));
 	var $audioExpandBtn = $(document.getElementById('js-audio-expand'));
+	var $audioPodcast = $(document.getElementById('js-audio-podcast'));
 
 	/**
 	 * Stars playing a stream and triggers appropriate event.
@@ -272,13 +273,17 @@
 		if (resumeBtn.classList.contains('resume__live')) {
 			resumeBtn.classList.remove('resume__live');
 		}
+
 		if (true === playingCustomAudio) {
-			nowPlaying.style.display = 'none';
-			listenNow.style.display = 'inline-block';
+			$(nowPlaying).removeClass('-show');
+			$(listenNow).addClass('-show');
+			$audioPodcast.addClass('-show');
 		} else {
-			nowPlaying.style.display = 'inline-block';
-			listenNow.style.display = 'none';
+			$(nowPlaying).addClass('-show');
+			$(listenNow).removeClass('-show');
+			$audioPodcast.removeClass('-show');
 		}
+
 		if (false === playingCustomAudio && loadingBtn != null) {
 			loadingBtn.classList.add('loading');
 		}
@@ -307,8 +312,10 @@
 			resumeBtn.classList.remove('live-player__muted');
 			resumeBtn.classList.add('resume__live');
 		}
-		listenNow.style.display = 'inline-block';
-		nowPlaying.style.display = 'none';
+
+		$(listenNow).addClass('-show');
+		$(nowPlaying).removeClass('-show');
+
 		pauseBtn.classList.add('live-player__muted');
 	}
 
@@ -364,11 +371,12 @@
 			nowPlayingInfo.classList.add('playing');
 		}
 
-		if (listenNow != null) {
-			setTimeout(function () {
-				listenNow.innerHTML = 'Switch to Live Stream';
-			}, 1000);
-		}
+		$(listenNow).removeClass('-show');
+		$(nowPlaying).addClass('-show');
+		$audioPodcast.addClass('-show');
+
+		$audioControls.removeClass('-loading -paused');
+		$audioControls.addClass('-playing');
 	}
 
 	function nearestPodcastPlaying(event) {
@@ -1488,8 +1496,15 @@
 	var resumeCustomInlineAudio = function () {
 		playingCustomAudio = true;
 		stopLiveStreamIfPlaying();
+
+		// restart audio if it eneded
+		if (customAudio && customAudio.duration == customAudio.currentTime) {
+			customAudio.currentTime = 0;
+		}
+
 		customAudio.play();
 		customAudio.volume = getVolume();
+
 		setPlayerTrackName();
 		setPlayerArtist();
 		resetInlineAudioStates();
@@ -1540,6 +1555,9 @@
 		} else {
 			$trackInfo.prepend(template({title: customTrack}));
 		}
+
+		$audioTrackInfo.text(customTrack);
+		$audioAuthorInfo.text('');
 	};
 
 	var setPlayerArtist = function () {
@@ -1571,13 +1589,13 @@
 			if (customAudio.addEventListener) {
 				customAudio.addEventListener('ended', function () {
 					resetInlineAudioStates();
-					setPausedStyles();
+					setStoppedStyles();
 					stopInlineAudioInterval();
 				});
 			} else if (customAudio.attachEvent) {
 				customAudio.attachEvent('ended', function () {
 					resetInlineAudioStates();
-					setPausedStyles();
+					setStoppedStyles();
 					stopInlineAudioInterval();
 				});
 			}
@@ -1594,15 +1612,19 @@
 				var $play = $(e.currentTarget);
 
 				nearestPodcastPlaying(e);
-
 				playCustomInlineAudio($play.attr('data-mp3-src'));
-
 				resetInlineAudioStates();
-
 				setCustomAudioMetadata($play.attr('data-mp3-title'), $play.attr('data-mp3-artist'), $play.attr('data-mp3-hash'));
 			});
 
 			$content.on('click', '.podcast__btn--pause', pauseCustomInlineAudio);
+
+			$audioPodcast.find('input[type="range"]').change(function() {
+				if (customAudio) {
+					var duration = parseInt(customAudio.duration);
+					customAudio.currentTime = Math.floor(duration * parseFloat($(this).val()));
+				}
+			});
 		} else {
 			var $meFallbacks = $('.gmr-mediaelement-fallback audio'),
 				$customInterfaces = $('.podcast__play');
@@ -1643,12 +1665,16 @@
 	function audioUpdateProgress() {
 		var progress = document.querySelectorAll('.audio__progress'), i,
 			value = 0;
+
 		for (i = 0; i < progress.length; ++i) {
 			if (customAudio.currentTime > 0) {
 				value = Math.floor((100 / customAudio.duration) * customAudio.currentTime);
 			}
+
 			progress[i].style.width = value + "%";
 		}
+
+		$audioPodcast.find('input[type="range"]').val(value / 100);
 	}
 
 	/**
@@ -1694,6 +1720,8 @@
 		for (i = 0; i < ramainings.length; ++i) {
 			ramainings[i].innerHTML = timeleft;
 		}
+
+		$audioPodcast.find('span:last').text(timeleft);
 	}
 
 	/**
@@ -1719,6 +1747,8 @@
 		for (i = 0; i < timeline.length; ++i) {
 			timeline[i].innerHTML = currentTime;
 		}
+
+		$audioPodcast.find('span:first').text(currentTime);
 	}
 
 	initCustomAudioPlayer();
