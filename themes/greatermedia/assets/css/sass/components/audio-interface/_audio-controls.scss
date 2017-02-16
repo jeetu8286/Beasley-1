@@ -12,15 +12,16 @@
 
 .audio-controls__play,
 .audio-controls__pause,
-.audio-controls__loading {
+.audio-controls__loading,
+.audio-controls__resume {
 	@extend %audio-controls__button;
 	position: relative;
 }
 
 .audio-controls__play {
-
 	.-playing &,
-	.-loading & {
+	.-loading &,
+	.-paused & {
 		display: none;
 	}
 
@@ -76,6 +77,28 @@
 		left: 50%;
 		position: absolute;
 		top: 50%;
+	}
+}
+
+.audio-controls__resume {
+	display: none;
+
+	.-paused & {
+		display: block;
+	}
+
+	&:before {
+		@include transform(translate(-50%, -50%));
+		content: "\e606";
+		font-family: $icon-font;
+		left: 54%;
+		line-height: 1;
+		position: absolute;
+		top: 50%;
+
+		@include bp(small) {
+			font-size: ms(2);
+		}
 	}
 }
 

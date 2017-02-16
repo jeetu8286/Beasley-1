@@ -15,8 +15,8 @@ class GMLP_Player {
 	public static $is_loading_popup = false;
 
 	public static function init() {
+		add_action( 'wp_footer', array( __CLASS__, 'load_js' ), 50 );
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'enqueue_scripts' ), 50 );
-		add_action( 'gm_live_player', array( __CLASS__, 'render_player' ) );
 		add_action( 'radio_callsign', array( __CLASS__, 'get_radio_callsign' ) );
 
 		//EP_ROOT
@@ -66,32 +66,8 @@ class GMLP_Player {
 	 * Helper function to call the Radio Callsign
 	 */
 	public static function get_radio_callsign() {
-
 		$radio_callsign = get_option( 'gmlp_radio_callsign', '' );
-
 		echo sanitize_text_field( $radio_callsign );
-
-	}
-
-	/**
-	 * Render the player for the front end
-	 */
-	public static function render_player() {
-		?><div class="live-stream__player">
-			<div class="live-stream__controls">
-				<div id="playButton" class="live-stream__btn--play" data-action="play-live"></div>
-				<div id="loadButton" class="live-stream__btn--loading"><i class="gmr-icon icon-spin icon-loading"></i></div>
-				<div id="pauseButton" class="live-stream__btn--pause"></div>
-				<div id="resumeButton" class="live-stream__btn--resume"></div>
-			</div>
-
-			<div id="live-stream__container" class="live-stream__container">
-				<div id="td_container" class="live-stream__container--player"></div>
-				<div class="pre-roll__notification"><?php _e( 'Live stream will be available after this brief ad from our sponsors', ' gmliveplayer' ); ?></div>
-			</div>
-
-			<div id="live-player--volume"></div>
-		</div><?php
 	}
 
 	/**
@@ -109,23 +85,8 @@ class GMLP_Player {
 			$vast_url = gmr_streams_get_primary_stream_vast_url();
 		}
 
-		wp_register_script( 'nielsen-sdk', '//secure-drm.imrworldwide.com/novms/js/2/ggcmb400.js', null, null );
-
-		$optout = false;
-		if ( ! $optout ) {
-			$apid = get_option( 'gmr_nielsen_sdk_apid' );
-			if ( ! empty( $apid ) ) {
-				wp_localize_script( 'nielsen-sdk', '_nolggGlobalParams', array(
-					'apid'   => $apid,
-					'apn'    => get_option( 'gmr_nielsen_sdk_apn', get_bloginfo( 'name' ) ),
-					'sfcode' => get_option( 'gmr_nielsen_sdk_mode' ) ? 'DRM' : 'uat-cert',
-				) );
-			}
-		}
-
 		$home_url = home_url( '/' );
-		wp_enqueue_script( 'liveplayer', '//sdk.listenlive.co/web/2.9/td-sdk.min.js', null, null, true );
-		wp_enqueue_script( 'gmlp-js', GMLIVEPLAYER_URL . "assets/js/greater_media_live_player{$postfix}.js", array( 'jquery', 'liveplayer', 'underscore', 'classlist-polyfill', 'nielsen-sdk', 'pjax', 'wp-mediaelement', 'cookies-js' ), GMLIVEPLAYER_VERSION, true );
+		wp_enqueue_script( 'gmlp-js', GMLIVEPLAYER_URL . "assets/js/greater_media_live_player{$postfix}.js", array( 'jquery', 'underscore', 'classlist-polyfill', 'pjax', 'wp-mediaelement', 'cookies-js' ), GMLIVEPLAYER_VERSION, true );
 		wp_localize_script( 'gmlp-js', 'gmr', array(
 			'debug'      => $script_debug,
 			'logged_in'  => false,
@@ -142,38 +103,37 @@ class GMLP_Player {
 		) );
 	}
 
+	/**
+	 * this script has to be loaded as Async and as shown
+	 *
+	 * @todo find a way to add this to wp_enqueue_script. This seemed to be interesting - http://wordpress.stackexchange.com/questions/38319/how-to-add-defer-defer-tag-in-plugin-javascripts/38335#38335
+	 *       but causes `data-dojo-config` to load after the src, which then causes the script to fail and the TD Player API will not fully load
+	 */
+	public static function load_js() {
+		echo '<script>
+            var tdApiBaseUrl = \'http://api.listenlive.co/tdplayerapi/2.6/\';
+        </script>';
+
+		echo '<script data-dojo-config="onReady:window.tdPlayerApiReady, async: 1, tlmSiblingOfDojo: 0, deps:[\'tdapi/run\']" src="//api.listenlive.co/tdplayerapi/2.6/dojo/dojo.js"></script>';
+
+	}
+
 	public static function register_settings() {
 		$text_callback = array( __CLASS__, 'render_text_setting' );
 		$interval_callback = array( __CLASS__, 'render_interval_settings' );
 
 		add_settings_section( 'greatermedia_live_player', 'Live Player', array( __CLASS__, 'render_settings_description' ), 'media' );
 
-		add_settings_field( 'gmr_nielsen_sdk_apid', 'Nielsen SDK App ID', $text_callback, 'media', 'greatermedia_live_player', array(
-			'name' => 'gmr_nielsen_sdk_apid',
-			'desc' => 'Enter Nielsen Browser SDK identifier for the application.',
-		) );
-
-		add_settings_field( 'gmr_nielsen_sdk_apn', 'Nielsen SDK App Name', $text_callback, 'media', 'greatermedia_live_player', array(
-			'name'    => 'gmr_nielsen_sdk_apn',
-			'desc'    => 'Enter a string value for describing your player (for example, prime-time channel browser player).',
-			'default' => get_bloginfo( 'name' ),
-		) );
-
-		add_settings_field( 'gmr_nielsen_sdk_mode', 'Nielsen SDK Mode', array( __CLASS__, 'render_nielsen_sdk_mode_settings' ), 'media', 'greatermedia_live_player' );
-
 		add_settings_field( 'gmr_live_streaming_interval', 'Live Streaming Interval', $interval_callback, 'media', 'greatermedia_live_player', array( 'name' => 'gmr_live_streaming_interval' ) );
 		add_settings_field( 'gmr_inline_audio_interval', 'Inline Audio Interval', $interval_callback, 'media', 'greatermedia_live_player', array( 'name' => 'gmr_inline_audio_interval' ) );
 
-		register_setting( 'media', 'gmr_nielsen_sdk_apid', 'trim' );
-		register_setting( 'media', 'gmr_nielsen_sdk_apn', 'trim' );
-		register_setting( 'media', 'gmr_nielsen_sdk_mode', 'boolval' );
 		register_setting( 'media', 'gmr_live_streaming_interval', 'intval' );
 		register_setting( 'media', 'gmr_inline_audio_interval', 'intval' );
 	}
 
 	public static function render_settings_description() {
 		?><p>
-			Use following settings to setup Nielsen Browser SDK and live player events tracking intervals. Intervals will be used to track live player activity. Each interval is in minutes; setting it to &quot;0&quot; (zero) will disable that event recoding for the site.
+			Use following settings to setup live player events tracking intervals. Intervals will be used to track live player activity. Each interval is in minutes; setting it to &quot;0&quot; (zero) will disable that event recoding for the site.
 		</p><?php
 	}
 
@@ -192,13 +152,6 @@ class GMLP_Player {
 
 		?><input type="text" class="regular-text" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( get_option( $name, $default ) ); ?>">
 		<p class="description"><?php echo esc_html( $args['desc'] ); ?></p><?php
-	}
-
-	public static function render_nielsen_sdk_mode_settings() {
-		?><select name="gmr_nielsen_sdk_mode">
-			<option value="0">Test</option>
-			<option value="1"<?php selected( get_option( 'gmr_nielsen_sdk_mode' ) ); ?>>Production</option>
-		</select><?php
 	}
 
 }

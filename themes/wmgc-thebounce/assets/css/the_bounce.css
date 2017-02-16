@@ -958,7 +958,8 @@ body {
 
 .audio-controls__play,
 .audio-controls__pause,
-.audio-controls__loading, .podcast__btn--play,
+.audio-controls__loading,
+.audio-controls__resume, .podcast__btn--play,
 .podcast__btn--pause {
   background-color: #d22228;
   border: 2px solid #d22228;
@@ -977,23 +978,27 @@ body {
   @media screen and (min-width: 480px) {
     .audio-controls__play,
     .audio-controls__pause,
-    .audio-controls__loading, .podcast__btn--play,
+    .audio-controls__loading,
+    .audio-controls__resume, .podcast__btn--play,
     .podcast__btn--pause {
       height: 40px;
       width: 40px; } }
   @media screen and (min-width: 768px) {
     .audio-controls__play,
     .audio-controls__pause,
-    .audio-controls__loading, .podcast__btn--play,
+    .audio-controls__loading,
+    .audio-controls__resume, .podcast__btn--play,
     .podcast__btn--pause {
       height: 48px;
       width: 48px; } }
   .audio-controls__play:hover,
   .audio-controls__pause:hover,
-  .audio-controls__loading:hover, .podcast__btn--play:hover,
+  .audio-controls__loading:hover,
+  .audio-controls__resume:hover, .podcast__btn--play:hover,
   .podcast__btn--pause:hover, .audio-controls__play:focus,
   .audio-controls__pause:focus,
-  .audio-controls__loading:focus, .podcast__btn--play:focus,
+  .audio-controls__loading:focus,
+  .audio-controls__resume:focus, .podcast__btn--play:focus,
   .podcast__btn--pause:focus {
     background-color: #ffffff;
     color: #d22228; }
@@ -5654,11 +5659,13 @@ Link posts contain a link to an external site. They can also optionally have a f
 
 .audio-controls__play,
 .audio-controls__pause,
-.audio-controls__loading {
+.audio-controls__loading,
+.audio-controls__resume {
   position: relative; }
 
 .-playing .audio-controls__play,
-.-loading .audio-controls__play {
+.-loading .audio-controls__play,
+.-paused .audio-controls__play {
   display: none; }
 
 .audio-controls__play:before {
@@ -5713,6 +5720,26 @@ Link posts contain a link to an external site. They can also optionally have a f
     left: 50%;
     position: absolute;
     top: 50%; }
+
+.audio-controls__resume {
+  display: none; }
+  .-paused .audio-controls__resume {
+    display: block; }
+  .audio-controls__resume:before {
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    content: "\e606";
+    font-family: "gmr-icons";
+    left: 54%;
+    line-height: 1;
+    position: absolute;
+    top: 50%; }
+    @media screen and (min-width: 480px) {
+      .audio-controls__resume:before {
+        font-size: 1.265625em; } }
 
 .audio-readout {
   align-items: center;
@@ -5962,6 +5989,73 @@ Link posts contain a link to an external site. They can also optionally have a f
         left: 0;
         position: absolute;
         top: 0; } }
+
+/**
+ * Preroll ads
+ */
+.live-stream__container {
+  width: 0;
+  height: 0;
+  -webkit-transition: background 500ms ease-in-out;
+  -moz-transition: background 500ms ease-in-out;
+  transition: background 500ms ease-in-out; }
+
+.live-stream__container.vast__pre-roll {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.75);
+  z-index: 20000; }
+
+.live-stream__container--player {
+  height: 0; }
+
+.live-stream__container.vast__pre-roll .live-stream__container--player {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 280px;
+  height: 210px;
+  background-color: black;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%); }
+  @media screen and (min-width: 768px) {
+    .live-stream__container.vast__pre-roll .live-stream__container--player {
+      width: 640px;
+      height: 480px; } }
+
+.pre-roll__notification {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 280px;
+  margin-top: 121px;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  -webkit-transition: all 1s ease-in-out 2s;
+  -moz-transition: all 1s ease-in-out 2s;
+  transition: all 1s ease-in-out 2s;
+  padding: .5em 1em;
+  background-color: #303030;
+  font-size: 0.7901234568em;
+  color: #ffffff;
+  text-align: center; }
+  @media screen and (min-width: 768px) {
+    .pre-roll__notification {
+      width: 640px;
+      margin-top: 256px; } }
+  .live-stream__container.vast__pre-roll .pre-roll__notification {
+    display: block;
+    z-index: 20010; }
 
 .breaking-news-banner {
   width: 100%;
