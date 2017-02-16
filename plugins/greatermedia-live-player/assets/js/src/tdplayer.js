@@ -263,10 +263,6 @@
 			playBtn.classList.add('live-player__muted');
 		}
 
-		$audioControls.removeClass('-playing -paused');
-		$audioControls.addClass('-loading');
-		$audioStatus.removeClass('-show');
-
 		if (!resumeBtn.classList.contains('live-player__muted')) {
 			resumeBtn.classList.add('live-player__muted');
 		}
@@ -274,14 +270,18 @@
 			resumeBtn.classList.remove('resume__live');
 		}
 
+		$audioStatus.removeClass('-show');
+		$audioControls.removeClass('-playing -paused -loading');
+
+		$(nowPlaying).addClass('-show');
+		$(listenNow).removeClass('-show');
+
 		if (true === playingCustomAudio) {
-			$(nowPlaying).removeClass('-show');
-			$(listenNow).addClass('-show');
 			$audioPodcast.addClass('-show');
+			$audioControls.addClass('-playing');
 		} else {
-			$(nowPlaying).addClass('-show');
-			$(listenNow).removeClass('-show');
 			$audioPodcast.removeClass('-show');
+			$audioControls.addClass('-loading');
 		}
 
 		if (false === playingCustomAudio && loadingBtn != null) {
@@ -326,7 +326,9 @@
 
 		$audioControls.removeClass('-playing -loading');
 		$audioControls.addClass('-paused');
-		$audioStatus.addClass('-show');
+		if (!playingCustomAudio) {
+			$audioStatus.addClass('-show');
+		}
 
 		if (true === playingCustomAudio && window.innerWidth <= 767) {
 			playBtn.classList.add('live-player__login');
@@ -521,7 +523,7 @@
 
 	function changePlayerState() {
 		if (playBtn != null) {
-			addEventHandler(playBtn, 'click', function(){
+			addEventHandler(playBtn, 'click', function() {
 				if (lpInit === true) {
 					setStoppedStyles();
 					if (window.innerWidth >= 768) {
@@ -1517,6 +1519,8 @@
 	var playCustomInlineAudio = function (src) {
 		pjaxInit();
 
+		playingCustomAudio = true;
+
 		// Only set the src if its different than what is already there, so we can resume the audio with the inline buttons
 		if (src !== customAudio.src) {
 			setInlineAudioSrc(src);
@@ -1527,7 +1531,6 @@
 	var pauseCustomInlineAudio = function () {
 		customAudio.pause();
 		resetInlineAudioStates();
-		playingCustomAudio = false;
 		setPausedStyles();
 		stopInlineAudioInterval();
 	};
@@ -1588,12 +1591,14 @@
 			// Revert the button states back to play once the file is done playing
 			if (customAudio.addEventListener) {
 				customAudio.addEventListener('ended', function () {
+					playingCustomAudio = false;
 					resetInlineAudioStates();
 					setStoppedStyles();
 					stopInlineAudioInterval();
 				});
 			} else if (customAudio.attachEvent) {
 				customAudio.attachEvent('ended', function () {
+					playingCustomAudio = false;
 					resetInlineAudioStates();
 					setStoppedStyles();
 					stopInlineAudioInterval();
