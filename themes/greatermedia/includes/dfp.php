@@ -94,7 +94,7 @@ function greatermedia_dfp_footer() {
 
 	?><script type="text/javascript">
 		(function($, googletag) {
-			var slotsIndex = 0, needCleanup = false, __ready;
+			var slotsIndex = 0, needCleanup = false, initialized = false, __ready;
 
 			__ready = function() {
 				var unitCodes = <?php echo json_encode( $unit_codes ); ?>,
@@ -184,10 +184,14 @@ function greatermedia_dfp_footer() {
 						googletag.pubads().setTargeting(targeting[0], targeting[1]);
 					}
 
-					googletag.pubads().enableSingleRequest();
-					googletag.pubads().collapseEmptyDivs(true);
+					if (!initialized) {
+						googletag.pubads().enableSingleRequest();
+						googletag.pubads().collapseEmptyDivs(true);
+						
+						googletag.enableServices();
 
-					googletag.enableServices();
+						initialized = true;
+					}
 				});
 
 				googletag.cmd.push(function() {
