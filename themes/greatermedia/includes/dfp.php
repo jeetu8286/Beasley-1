@@ -55,6 +55,7 @@ function greatermedia_dfp_head() {
 		return;
 	}
 
+	$dfp_ad_interstitial = get_option( 'dfp_ad_interstitial' );
 	$dfp_ad_wallpaper = get_option( 'dfp_ad_wallpaper' );
 
 	?><script async="async" src="https://www.googletagservices.com/tag/js/gpt.js"></script>
@@ -66,8 +67,19 @@ function greatermedia_dfp_head() {
 		googletag.beasley.targeting = googletag.beasley.targeting || [];
 
 		googletag.cmd.push(function() {
+			<?php if ( ! empty( $dfp_ad_interstitial ) || ! empty( $dfp_ad_wallpaper ) ) : ?>
+			var sizeMapping = googletag.sizeMapping()
+				.addSize([1024, 200], [[1, 1]])
+				.addSize([0, 0], [])
+				.build();
+			<?php endif; ?>
+
 			<?php if ( ! empty( $dfp_ad_wallpaper ) ) : ?>
-			googletag.defineOutOfPageSlot('/<?php echo esc_js( $network_id ); ?>/<?php echo esc_js( $dfp_ad_wallpaper ); ?>', 'div-gpt-ad-1487289548015-0').addService(googletag.pubads());
+			googletag.defineOutOfPageSlot('/<?php echo esc_js( $network_id ); ?>/<?php echo esc_js( $dfp_ad_wallpaper ); ?>', 'div-gpt-ad-1487289548015-0').defineSizeMapping(sizeMapping).addService(googletag.pubads());
+			<?php endif; ?>
+
+			<?php if ( ! empty( $dfp_ad_interstitial ) ) : ?>
+			googletag.defineOutOfPageSlot('/<?php echo esc_js( $network_id ); ?>/<?php echo esc_js( $dfp_ad_interstitial ); ?>', 'div-gpt-ad-1484200509775-3').defineSizeMapping(sizeMapping).addService(googletag.pubads());
 			<?php endif; ?>
 
 			googletag.pubads().enableSingleRequest();
@@ -93,7 +105,6 @@ function greatermedia_dfp_footer() {
 		'dfp_ad_right_rail_pos1'   => get_option( 'dfp_ad_right_rail_pos1' ),
 		'dfp_ad_right_rail_pos2'   => get_option( 'dfp_ad_right_rail_pos2' ),
 		'dfp_ad_inlist_infinite'   => get_option( 'dfp_ad_inlist_infinite' ),
-		'dfp_ad_interstitial'      => get_option( 'dfp_ad_interstitial' ),
 		'dfp_ad_playersponsorship' => get_option( 'dfp_ad_playersponsorship' ),
 		'dfp_ad_playercommercial'  => get_option( 'dfp_ad_playercommercial' ),
 	);
@@ -106,7 +117,6 @@ function greatermedia_dfp_footer() {
 		'dfp_ad_inlist_infinite'   => array( array( 300, 250 ) ),
 		'dfp_ad_right_rail_pos1'   => array( array( 300, 600 ), array( 300, 250 ) ),
 		'dfp_ad_right_rail_pos2'   => array( array( 300, 600 ), array( 300, 250 ) ),
-		'dfp_ad_interstitial'      => array( array( 1, 1 ) ),
 		'dfp_ad_playersponsorship' => array( 'fluid' ),
 		'dfp_ad_playercommercial'  => array( array( 320, 50 ) ),
 	);
@@ -152,11 +162,7 @@ function greatermedia_dfp_footer() {
 					}
 
 					for (i in slots) {
-						if ('dfp_ad_interstitial' == slots[i][4]) {
-							slot = googletag.defineOutOfPageSlot(slots[i][0], slots[i][2]);
-						} else {
-							slot = googletag.defineSlot(slots[i][0], slots[i][1], slots[i][2]);
-						}
+						slot = googletag.defineSlot(slots[i][0], slots[i][1], slots[i][2]);
 
 						sizeMapping = false;
 						if ('dfp_ad_leaderboard_pos1' == slots[i][4]) {
@@ -175,11 +181,6 @@ function greatermedia_dfp_footer() {
 							sizeMapping = googletag.sizeMapping()
 								.addSize([1024, 200], [])
 								.addSize([0, 0], [300, 250])
-								.build();
-						} else if ('dfp_ad_interstitial' == slots[i][4] || 'dfp_ad_wallpaper' == slots[i][4]) {
-							sizeMapping = googletag.sizeMapping()
-								.addSize([1024, 200], [[1, 1]])
-								.addSize([0, 0], [])
 								.build();
 						} else if ($(document.getElementById(slots[i][2])).parents('.widget_gmr-dfp-widget').length > 0) {
 							sizeMapping = googletag.sizeMapping()
@@ -315,11 +316,19 @@ function greatermedia_display_dfp_outofpage() {
 		return;
 	}
 
-	do_action( 'dfp_tag', 'dfp_ad_interstitial' );
+	$dfp_ad_interstitial = get_option( 'dfp_ad_interstitial' );
+	if ( ! empty( $dfp_ad_interstitial ) ) :
+		?><!-- /<?php echo esc_html( $network_id ); ?>/<?php echo esc_html( $dfp_ad_interstitial ); ?> -->
+		<div id="div-gpt-ad-1484200509775-3" style="height:-1px; width:-1px;">
+			<script type="text/javascript">
+				googletag.cmd.push(function() { googletag.display('div-gpt-ad-1484200509775-3'); });
+			</script>
+		</div><?php
+	endif;
 
 	$dfp_ad_wallpaper = get_option( 'dfp_ad_wallpaper' );
 	if ( $dfp_ad_wallpaper ) :
-		?><!-- /50807014/WMMR_FM_Wallpaper -->
+		?><!-- /<?php echo esc_html( $network_id ); ?>/<?php echo esc_html( $dfp_ad_wallpaper ); ?> -->
 		<div id='div-gpt-ad-1487289548015-0'>
 			<script type="text/javascript">
 				googletag.cmd.push(function() { googletag.display('div-gpt-ad-1487289548015-0'); });
