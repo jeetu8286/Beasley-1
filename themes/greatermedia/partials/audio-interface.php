@@ -14,11 +14,18 @@ if ( empty( $active_stream ) ) {
 	$active_stream = 'None';
 }
 
+/**
+ * Changes the url that will be used by the live links more button based on whether a checkbox has been checked in
+ * the Station Site Administration Screen
+ */
+$livelinks_redirect = filter_var( get_option( 'gmr_livelinks_more_redirect' ), FILTER_VALIDATE_BOOLEAN);
+$livelinks_template = home_url( $livelinks_redirect === true ? '/stream/%s/' : '/live-links/' );
+
 ?><div id="live-player" class="audio-interface">
 
 	<?php // @TODO Available classes to add to audio-ad: -show ?>
 	<div id="js-audio-ad-aboveplayer" class="audio-ad audio-ad--aboveplayer">
-		<!--<?php do_action( 'dfp_tag', 'dfp_ad_playercommercial' ); // need to be wrapped with <!-- --> ?>-->
+		<!--<?php do_action( 'dfp_tag', 'dfp_ad_playercommercial' ); // must be wrapped with <!-- --> ?>-->
 	</div>
 
 	<div class="audio-interface__container">
@@ -103,7 +110,9 @@ if ( empty( $active_stream ) ) {
 					<button id="js-audio-status-listen" class="audio-status__btn">Listen Live</button>
 				</div>
 
-				<div id="js-audio-more" class="audio-more"><a href="#">&hellip;</a></div>
+				<div id="js-audio-more" class="audio-more">
+					<a href="<?php echo esc_url( sprintf( $livelinks_template, $active_stream ) ); ?>" data-tmpl="<?php echo esc_attr( $livelinks_template ); ?>">&hellip;</a>
+				</div>
 
 				<div id="js-audio-time" class="audio-time">
 					<div id="js-audio-time__progressbar" class="audio-time__progressbar">

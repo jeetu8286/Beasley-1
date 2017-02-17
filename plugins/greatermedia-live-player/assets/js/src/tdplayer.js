@@ -76,6 +76,7 @@
 	var $audioExpandBtn = $(document.getElementById('js-audio-expand'));
 	var $audioPodcast = $(document.getElementById('js-audio-podcast'));
 	var $audioAdBreakContainer = $(document.getElementById('js-audio-ad-aboveplayer'));
+	var $audioMore = $(document.getElementById('js-audio-more')).find('a');
 
 	/**
 	 * Reads comments of an element.
@@ -626,6 +627,8 @@
 
 		$audioStream.find('.audio-stream__title').text(callSign).attr('data-callsign', callSign);
 		$audioStream.removeClass('-open');
+
+		$audioMore.attr('href', $audioMore.attr('data-tmpl').split('%s').join(callSign));
 
 		if (livePlaying) {
 			player.stop();
