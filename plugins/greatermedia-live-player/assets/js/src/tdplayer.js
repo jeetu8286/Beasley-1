@@ -1660,9 +1660,7 @@
 	 * @param event
 	 */
 	function pjaxStop(event) {
-		if (playingLiveAudio === true || true === playingCustomAudio) {
-			// do nothing
-		} else {
+		if (!playingLiveAudio && !playingCustomAudio) {
 			event.preventDefault();
 		}
 	}
