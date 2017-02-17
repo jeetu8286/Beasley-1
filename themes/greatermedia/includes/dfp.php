@@ -222,7 +222,7 @@ function greatermedia_display_dfp_slot( $slot, $sizes = false, $single_targeting
 	static $targeting = null;
 
 	$render_targeting = false;
-	if ( is_null( $targeting ) ) {
+	if ( is_null( $targeting ) && 'dfp_ad_playersponsorship' != $slot && 'dfp_ad_playercommercial' != $slot ) {
 		$render_targeting = true;
 		$targeting = array(
 			array( 'cdomain', parse_url( home_url( '/' ), PHP_URL_HOST ) ),
