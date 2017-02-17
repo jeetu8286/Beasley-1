@@ -126,7 +126,25 @@ function greatermedia_dfp_footer() {
 
 	?><script type="text/javascript">
 		(function($, googletag) {
-			var slotsIndex = 0, needCleanup = false, __ready;
+			var slotsIndex = 0, __ready, __cleanup;
+
+			__cleanup = function() {
+				var slots = [];
+
+				$('.main [data-dfp-slot] .gmr-ad').each(function() {
+					var slot = $(this).data('slot');
+
+					if (slot) {
+						slots.push(slot);
+					}
+				});
+
+				if (slots.length > 0) {
+					googletag.destroySlots(slots);
+				}
+				
+				googletag.pubads().clearTargeting();
+			};
 
 			__ready = function() {
 				var unitCodes = <?php echo json_encode( $unit_codes ); ?>,
@@ -158,11 +176,6 @@ function greatermedia_dfp_footer() {
 
 				googletag.cmd.push(function() {
 					var i, j, slot, targeting, sizeMapping;
-
-					if (needCleanup) {
-						googletag.destroySlots();
-						googletag.pubads().clearTargeting();
-					}
 
 					for (i in slots) {
 						slot = googletag.defineSlot(slots[i][0], slots[i][1], slots[i][2]);
@@ -217,13 +230,10 @@ function greatermedia_dfp_footer() {
 				});
 			};
 
-			$(document).on('pjax:end', function() {
-				needCleanup = true;
-				__ready();
-			}).on('gmr_lazy_load_end ad-break-started', function() {
-				needCleanup = false;
-				__ready();
-			}).ready(__ready);
+			$(document)
+				.on('pjax:start', __cleanup)
+				.on('pjax:end gmr_lazy_load_end ad-break-started', __ready)
+				.ready(__ready);
 		})(jQuery, googletag);
 	</script><?php
 }
