@@ -57,6 +57,7 @@ function greatermedia_dfp_head() {
 
 	$dfp_ad_interstitial = get_option( 'dfp_ad_interstitial' );
 	$dfp_ad_wallpaper = get_option( 'dfp_ad_wallpaper' );
+	$dfp_ad_playersponsorship = get_option( 'dfp_ad_playersponsorship' );
 
 	?><script async="async" src="https://www.googletagservices.com/tag/js/gpt.js"></script>
 	<script>
@@ -82,6 +83,10 @@ function greatermedia_dfp_head() {
 			googletag.defineOutOfPageSlot('/<?php echo esc_js( $network_id ); ?>/<?php echo esc_js( $dfp_ad_interstitial ); ?>', 'div-gpt-ad-1484200509775-3').defineSizeMapping(sizeMapping).addService(googletag.pubads());
 			<?php endif; ?>
 
+			<?php if ( ! empty( $dfp_ad_playersponsorship ) ) : ?>
+			googletag.defineSlot('/<?php echo esc_js( $network_id ); ?>/<?php echo esc_js( $dfp_ad_playersponsorship ); ?>', ['fluid'], 'div-gpt-ad-1487117572008-0').addService(googletag.pubads());
+			<?php endif; ?>
+
 			googletag.pubads().enableSingleRequest();
 			googletag.pubads().collapseEmptyDivs(true);
 
@@ -105,7 +110,6 @@ function greatermedia_dfp_footer() {
 		'dfp_ad_right_rail_pos1'   => get_option( 'dfp_ad_right_rail_pos1' ),
 		'dfp_ad_right_rail_pos2'   => get_option( 'dfp_ad_right_rail_pos2' ),
 		'dfp_ad_inlist_infinite'   => get_option( 'dfp_ad_inlist_infinite' ),
-		'dfp_ad_playersponsorship' => get_option( 'dfp_ad_playersponsorship' ),
 		'dfp_ad_playercommercial'  => get_option( 'dfp_ad_playercommercial' ),
 	);
 
@@ -117,7 +121,6 @@ function greatermedia_dfp_footer() {
 		'dfp_ad_inlist_infinite'   => array( array( 300, 250 ) ),
 		'dfp_ad_right_rail_pos1'   => array( array( 300, 600 ), array( 300, 250 ) ),
 		'dfp_ad_right_rail_pos2'   => array( array( 300, 600 ), array( 300, 250 ) ),
-		'dfp_ad_playersponsorship' => array( 'fluid' ),
 		'dfp_ad_playercommercial'  => array( array( 320, 50 ) ),
 	);
 
@@ -336,7 +339,7 @@ function greatermedia_display_dfp_outofpage() {
 		</div><?php
 	endif;
 }
-add_action( 'wp_footer', 'greatermedia_display_dfp_outofpage' );
+add_action( 'wp_footer', 'greatermedia_display_dfp_outofpage', 1 );
 
 function greatermedia_display_dfp_incontent( $content ) {
 	if ( ! is_single() ) {
