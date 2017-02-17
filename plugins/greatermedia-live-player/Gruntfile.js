@@ -10,7 +10,6 @@ module.exports = function( grunt ) {
 			greater_media_live_player: {
 				src: [
 					'assets/js/vendor/bowser.js',
-					'assets/js/src/greater_media_live_player.js',
 					'assets/js/src/tdplayer.js'
 				],
 				dest: 'assets/js/greater_media_live_player.js'
