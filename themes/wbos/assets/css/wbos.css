@@ -6051,7 +6051,7 @@ Link posts contain a link to an external site. They can also optionally have a f
   padding: .5em 1em;
   background-color: #303030;
   font-size: 0.7901234568em;
-  color: #ffffff;
+  color: #000000;
   text-align: center; }
   @media screen and (min-width: 768px) {
     .pre-roll__notification {

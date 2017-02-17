@@ -24,10 +24,10 @@ if ( empty( $active_stream ) ) {
 						<div class="live-player__stream--title">Stream</div>
 						<div class="live-player__stream--current-name"><?php echo esc_html( $active_stream ); ?></div>
 						<ul class="live-player__stream--available">
-							<?php foreach ( $streams as $stream => $description ) : ?>
+							<?php foreach ( $streams as $stream => $meta ) : ?>
 								<li class="live-player__stream--item">
 									<div class="live-player__stream--name"><?php echo esc_html( $stream ); ?></div>
-									<div class="live-player__stream--desc"><?php echo esc_html( $description ); ?></div>
+									<div class="live-player__stream--desc"><?php echo esc_html( $meta['description'] ); ?></div>
 								</li>
 							<?php endforeach; ?>
 						</ul>

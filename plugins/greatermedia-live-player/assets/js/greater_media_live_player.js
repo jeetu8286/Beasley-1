@@ -819,14 +819,22 @@
 	}
 
 	function streamVastAd() {
-		var vastUrl = gmr.streamUrl;
+		var stationId = parseInt($('.audio-stream .audio-stream__title').attr('data-station-id'));
 
 		detachAdListeners();
 		attachAdListeners();
 
 		player.stop();
 		player.skipAd();
-		player.playAd('vastAd', {url: vastUrl});
+
+		player.playAd('tap', {
+			host: 'cmod.live.streamtheworld.com',
+			type: 'preroll',
+			format: 'vast',
+			stationId: !isNaN(stationId) ? stationId : false,
+			trackingParameters: {dist: "debug"}
+		});
+
 		setTimeout(function() {
 			this.stop();
 		}, 25000);
@@ -850,15 +858,20 @@
 		}
 	});
 
-	$document.on('click', '.audio-stream__item', function(e) {
+	$document.on('click', '.audio-stream__item .audio-stream__link', function(e) {
 		var $this = $(this),
 			callSign = $this.find('.audio-stream__name').text(),
+			stationId = $this.attr('data-station-id'),
 			$audioStream = $this.parents('.audio-stream');
 
 		e.stopPropagation();
 
-		$audioStream.find('.audio-stream__title').text(callSign).attr('data-callsign', callSign);
-		$audioStream.removeClass('-open');
+		$audioStream
+			.removeClass('-open')
+			.find('.audio-stream__title')
+			.text(callSign)
+			.attr('data-callsign', callSign)
+			.attr('data-station-id', stationId);
 
 		$audioMore.attr('href', $audioMore.attr('data-tmpl').split('%s').join(callSign));
 
@@ -1246,11 +1259,7 @@
 
 	function onVastProcessComplete(e) {
 		debug('Vast Process complete');
-
-		var vastCompanions = e.data.companions;
-
-		//Load Vast Ad companion (bigbox & leaderbaord ads)
-		displayVastCompanionAds(vastCompanions);
+//		displayVastCompanionAds(e.data.companions);
 	}
 
 	function onVpaidAdCompanions(e) {
