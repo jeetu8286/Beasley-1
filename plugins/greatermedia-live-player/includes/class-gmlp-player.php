@@ -15,7 +15,6 @@ class GMLP_Player {
 	public static $is_loading_popup = false;
 
 	public static function init() {
-		add_action( 'wp_footer', array( __CLASS__, 'load_js' ), 50 );
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'enqueue_scripts' ), 50 );
 		add_action( 'radio_callsign', array( __CLASS__, 'get_radio_callsign' ) );
 
@@ -86,7 +85,8 @@ class GMLP_Player {
 		}
 
 		$home_url = home_url( '/' );
-		wp_enqueue_script( 'gmlp-js', GMLIVEPLAYER_URL . "assets/js/greater_media_live_player{$postfix}.js", array( 'jquery', 'underscore', 'classlist-polyfill', 'pjax', 'wp-mediaelement', 'cookies-js' ), GMLIVEPLAYER_VERSION, true );
+		wp_enqueue_script( 'liveplayer', '//sdk.listenlive.co/web/2.9/td-sdk.min.js', null, null, true );
+		wp_enqueue_script( 'gmlp-js', GMLIVEPLAYER_URL . "assets/js/greater_media_live_player{$postfix}.js", array( 'jquery', 'liveplayer', 'underscore', 'classlist-polyfill', 'pjax', 'wp-mediaelement', 'cookies-js' ), GMLIVEPLAYER_VERSION, true );
 		wp_localize_script( 'gmlp-js', 'gmr', array(
 			'debug'      => $script_debug,
 			'logged_in'  => false,
@@ -103,23 +103,7 @@ class GMLP_Player {
 		) );
 	}
 
-	/**
-	 * this script has to be loaded as Async and as shown
-	 *
-	 * @todo find a way to add this to wp_enqueue_script. This seemed to be interesting - http://wordpress.stackexchange.com/questions/38319/how-to-add-defer-defer-tag-in-plugin-javascripts/38335#38335
-	 *       but causes `data-dojo-config` to load after the src, which then causes the script to fail and the TD Player API will not fully load
-	 */
-	public static function load_js() {
-		echo '<script>
-            var tdApiBaseUrl = \'http://api.listenlive.co/tdplayerapi/2.6/\';
-        </script>';
-
-		echo '<script data-dojo-config="onReady:window.tdPlayerApiReady, async: 1, tlmSiblingOfDojo: 0, deps:[\'tdapi/run\']" src="//api.listenlive.co/tdplayerapi/2.6/dojo/dojo.js"></script>';
-
-	}
-
 	public static function register_settings() {
-		$text_callback = array( __CLASS__, 'render_text_setting' );
 		$interval_callback = array( __CLASS__, 'render_interval_settings' );
 
 		add_settings_section( 'greatermedia_live_player', 'Live Player', array( __CLASS__, 'render_settings_description' ), 'media' );

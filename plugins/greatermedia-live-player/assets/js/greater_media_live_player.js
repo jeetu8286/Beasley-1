@@ -402,10 +402,7 @@
 		debug('Inline audio interval off');
 	}
 
-	/**
-	 * @todo remove the console log before beta
-	 */
-	window.tdPlayerApiReady = function () {
+	window.tdPlayerApiReady = function() {
 		debug("--- TD Player API Loaded ---");
 		initPlayer();
 	};
@@ -423,11 +420,17 @@
 	}
 
 	function initPlayer() {
-		var techPriority = calcTechPriority();
+		var container = document.getElementById('td_container'),
+			techPriority;
+
+		if (!container) {
+			return;
+		}
+
+		techPriority = calcTechPriority();
 		debug('+++ initPlayer - techPriority = ' + techPriority.join(', '));
 
-		/* TD player configuration object used to create player instance */
-		var tdPlayerConfig = {
+		window.player = player = new TDSdk({
 			coreModules: [
 				{
 					id: 'MediaPlayer',
@@ -447,25 +450,11 @@
 				{id: 'PlayerWebAdmin'},
 				{id: 'SyncBanners', elements: [{id: 'td_synced_bigbox', width: 300, height: 250}]},
 				{id: 'TargetSpot'}
-			]
-		};
-
-		require(['tdapi/base/util/Companions'], function (Companions) {
-				companions = new Companions();
-			}
-		);
-
-		window.player = player = new TdPlayerApi(tdPlayerConfig);
-		if (player.addEventListener) {
-			player.addEventListener('player-ready', onPlayerReady);
-			player.addEventListener('configuration-error', onConfigurationError);
-			player.addEventListener('module-error', onModuleError);
-		} else if (player.attachEvent) {
-			player.attachEvent('player-ready', onPlayerReady);
-			player.attachEvent('configuration-error', onConfigurationError);
-			player.attachEvent('module-error', onModuleError);
-		}
-		player.loadModules();
+			],
+			playerReady: onPlayerReady,
+			configurationError: onConfigurationError,
+			moduleError: onModuleError
+		});
 	}
 
 	/**
@@ -792,7 +781,10 @@
 		}
 	}
 
-	$document.ready(changePlayerState);
+	$document.ready(function() {
+		initPlayer();
+		changePlayerState();
+	});
 
 	function preVastAd() {
 		var preRoll = document.getElementById('live-stream__container');
