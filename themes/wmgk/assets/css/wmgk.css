@@ -3496,8 +3496,8 @@ a.highlights__contest--btn {
   width: auto; }
   @media screen and (min-width: 768px) {
     .header__logo--img {
-      max-height: 80px;
-      max-width: 150px; } }
+      max-height: 120px;
+      max-width: 200px; } }
 
 .header__main--navwrap {
   flex: 1 1 auto;
@@ -4796,8 +4796,8 @@ Link posts contain a link to an external site. They can also optionally have a f
 
 .entry2__title {
   margin: 0;
-  font-size: 2.02729em;
-  line-height: 1.2; }
+  font-size: 1.26562em;
+  line-height: 1.26562em; }
   .news-site .entry2__title {
     margin: .5em 0 .75em;
     font-weight: normal; }
@@ -5050,11 +5050,15 @@ Link posts contain a link to an external site. They can also optionally have a f
     float: left;
     margin-right: 3.236em; } }
 
+.main > .article__thumbnail {
+  max-width: 970px;
+  margin: 0 auto; }
+
 .article__header {
   margin-bottom: 2em; }
   @media screen and (min-width: 970px) {
     .article__header .article__thumbnail {
-      width: calc(100% - 355px); } }
+      width: 100%; } }
   .article__header .article__thumbnail:after {
     padding-top: 0; }
 
@@ -5088,7 +5092,7 @@ Link posts contain a link to an external site. They can also optionally have a f
     margin-bottom: 2em; }
     @media screen and (min-width: 970px) {
       .article__content .article__thumbnail {
-        width: calc(100% - 355px); } }
+        width: 100%; } }
     .article__content .article__thumbnail:after {
       padding-top: 0; }
 
