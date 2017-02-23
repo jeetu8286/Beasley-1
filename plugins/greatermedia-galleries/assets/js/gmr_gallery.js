@@ -1,2230 +1,3764 @@
 /*!
-* jQuery Cycle2; version: 2.1.6 build: 20141007
-* http://jquery.malsup.com/cycle2/
-* Copyright (c) 2014 M. Alsup; Dual licensed: MIT/GPL
-*/
+ * Fotorama 4.6.3 | http://fotorama.io/license/
+ */
+fotoramaVersion = '4.6.3';
+(function (window, document, location, $, undefined) {
+  "use strict";
+var _fotoramaClass = 'fotorama',
+    _fullscreenClass = 'fullscreen',
 
-/* Cycle2 core engine */
-;(function($) {
-"use strict";
+    wrapClass = _fotoramaClass + '__wrap',
+    wrapCss2Class = wrapClass + '--css2',
+    wrapCss3Class = wrapClass + '--css3',
+    wrapVideoClass = wrapClass + '--video',
+    wrapFadeClass = wrapClass + '--fade',
+    wrapSlideClass = wrapClass + '--slide',
+    wrapNoControlsClass = wrapClass + '--no-controls',
+    wrapNoShadowsClass = wrapClass + '--no-shadows',
+    wrapPanYClass = wrapClass + '--pan-y',
+    wrapRtlClass = wrapClass + '--rtl',
+    wrapOnlyActiveClass = wrapClass + '--only-active',
+    wrapNoCaptionsClass = wrapClass + '--no-captions',
+    wrapToggleArrowsClass = wrapClass + '--toggle-arrows',
 
-var version = '2.1.6';
+    stageClass = _fotoramaClass + '__stage',
+    stageFrameClass = stageClass + '__frame',
+    stageFrameVideoClass = stageFrameClass + '--video',
+    stageShaftClass = stageClass + '__shaft',
 
-$.fn.cycle = function( options ) {
-    // fix mistakes with the ready state
-    var o;
-    if ( this.length === 0 && !$.isReady ) {
-        o = { s: this.selector, c: this.context };
-        $.fn.cycle.log('requeuing slideshow (dom not ready)');
-        $(function() {
-            $( o.s, o.c ).cycle(options);
-        });
-        return this;
-    }
+    grabClass = _fotoramaClass + '__grab',
+    pointerClass = _fotoramaClass + '__pointer',
 
-    return this.each(function() {
-        var data, opts, shortName, val;
-        var container = $(this);
-        var log = $.fn.cycle.log;
+    arrClass = _fotoramaClass + '__arr',
+    arrDisabledClass = arrClass + '--disabled',
+    arrPrevClass = arrClass + '--prev',
+    arrNextClass = arrClass + '--next',
+    arrArrClass = arrClass + '__arr',
 
-        if ( container.data('cycle.opts') )
-            return; // already initialized
+    navClass = _fotoramaClass + '__nav',
+    navWrapClass = navClass + '-wrap',
+    navShaftClass = navClass + '__shaft',
+    navDotsClass = navClass + '--dots',
+    navThumbsClass = navClass + '--thumbs',
+    navFrameClass = navClass + '__frame',
+    navFrameDotClass = navFrameClass + '--dot',
+    navFrameThumbClass = navFrameClass + '--thumb',
 
-        if ( container.data('cycle-log') === false || 
-            ( options && options.log === false ) ||
-            ( opts && opts.log === false) ) {
-            log = $.noop;
+    fadeClass = _fotoramaClass + '__fade',
+    fadeFrontClass = fadeClass + '-front',
+    fadeRearClass = fadeClass + '-rear',
+
+    shadowClass = _fotoramaClass + '__shadow',
+    shadowsClass = shadowClass + 's',
+    shadowsLeftClass = shadowsClass + '--left',
+    shadowsRightClass = shadowsClass + '--right',
+
+    activeClass = _fotoramaClass + '__active',
+    selectClass = _fotoramaClass + '__select',
+
+    hiddenClass = _fotoramaClass + '--hidden',
+
+    fullscreenClass = _fotoramaClass + '--fullscreen',
+    fullscreenIconClass = _fotoramaClass + '__fullscreen-icon',
+
+		downloadClass = _fotoramaClass + '--download',
+    downloadIconClass = _fotoramaClass + '__download-icon',
+
+    errorClass = _fotoramaClass + '__error',
+    loadingClass = _fotoramaClass + '__loading',
+    loadedClass = _fotoramaClass + '__loaded',
+    loadedFullClass = loadedClass + '--full',
+    loadedImgClass = loadedClass + '--img',
+
+    grabbingClass = _fotoramaClass + '__grabbing',
+
+    imgClass = _fotoramaClass + '__img',
+    imgFullClass = imgClass + '--full',
+
+    dotClass = _fotoramaClass + '__dot',
+    thumbClass = _fotoramaClass + '__thumb',
+    thumbBorderClass = thumbClass + '-border',
+
+    htmlClass = _fotoramaClass + '__html',
+
+    videoClass = _fotoramaClass + '__video',
+    videoPlayClass = videoClass + '-play',
+    videoCloseClass = videoClass + '-close',
+
+    captionClass = _fotoramaClass + '__caption',
+    captionWrapClass = _fotoramaClass + '__caption__wrap',
+
+    spinnerClass = _fotoramaClass + '__spinner',
+
+    buttonAttributes = '" tabindex="0" role="button';
+var JQUERY_VERSION = $ && $.fn.jquery.split('.');
+
+if (!JQUERY_VERSION
+    || JQUERY_VERSION[0] < 1
+    || (JQUERY_VERSION[0] == 1 && JQUERY_VERSION[1] < 8)) {
+  throw 'Fotorama requires jQuery 1.8 or later and will not run without it.';
+}
+// My Underscore :-)
+var _ = {};
+/* Modernizr 2.6.2 (Custom Build) | MIT & BSD
+ * Build: http://modernizr.com/download/#-csstransforms3d-prefixed-teststyles-testprop-testallprops-prefixes-domprefixes
+ */
+
+var Modernizr = (function (window, document, undefined) {
+
+  var version = '2.6.2',
+
+      Modernizr = {},
+
+      docElement = document.documentElement,
+
+      mod = 'modernizr',
+      modElem = document.createElement(mod),
+      mStyle = modElem.style,
+
+      inputElem,
+
+      toString = {}.toString,
+
+      prefixes = ' -webkit- -moz- -o- -ms- '.split(' '),
+
+      omPrefixes = 'Webkit Moz O ms',
+
+      cssomPrefixes = omPrefixes.split(' '),
+
+      domPrefixes = omPrefixes.toLowerCase().split(' '),
+
+      tests = {},
+      inputs = {},
+      attrs = {},
+
+      classes = [],
+
+      slice = classes.slice,
+
+      featureName,
+
+      injectElementWithStyles = function (rule, callback, nodes, testnames) {
+
+        var style, ret, node, docOverflow,
+            div = document.createElement('div'),
+            body = document.body,
+            fakeBody = body || document.createElement('body');
+
+        if (parseInt(nodes, 10)) {
+          while (nodes--) {
+            node = document.createElement('div');
+            node.id = testnames ? testnames[nodes] : mod + (nodes + 1);
+            div.appendChild(node);
+          }
         }
 
-        log('--c2 init--');
-        data = container.data();
-        for (var p in data) {
-            // allow props to be accessed sans 'cycle' prefix and log the overrides
-            if (data.hasOwnProperty(p) && /^cycle[A-Z]+/.test(p) ) {
-                val = data[p];
-                shortName = p.match(/^cycle(.*)/)[1].replace(/^[A-Z]/, lowerCase);
-                log(shortName+':', val, '('+typeof val +')');
-                data[shortName] = val;
-            }
+        style = ['&#173;', '<style id="s', mod, '">', rule, '</style>'].join('');
+        div.id = mod;
+        (body ? div : fakeBody).innerHTML += style;
+        fakeBody.appendChild(div);
+        if (!body) {
+          fakeBody.style.background = '';
+          fakeBody.style.overflow = 'hidden';
+          docOverflow = docElement.style.overflow;
+          docElement.style.overflow = 'hidden';
+          docElement.appendChild(fakeBody);
         }
 
-        opts = $.extend( {}, $.fn.cycle.defaults, data, options || {});
-
-        opts.timeoutId = 0;
-        opts.paused = opts.paused || false; // #57
-        opts.container = container;
-        opts._maxZ = opts.maxZ;
-
-        opts.API = $.extend ( { _container: container }, $.fn.cycle.API );
-        opts.API.log = log;
-        opts.API.trigger = function( eventName, args ) {
-            opts.container.trigger( eventName, args );
-            return opts.API;
-        };
-
-        container.data( 'cycle.opts', opts );
-        container.data( 'cycle.API', opts.API );
-
-        // opportunity for plugins to modify opts and API
-        opts.API.trigger('cycle-bootstrap', [ opts, opts.API ]);
-
-        opts.API.addInitialSlides();
-        opts.API.preInitSlideshow();
-
-        if ( opts.slides.length )
-            opts.API.initSlideshow();
-    });
-};
-
-$.fn.cycle.API = {
-    opts: function() {
-        return this._container.data( 'cycle.opts' );
-    },
-    addInitialSlides: function() {
-        var opts = this.opts();
-        var slides = opts.slides;
-        opts.slideCount = 0;
-        opts.slides = $(); // empty set
-        
-        // add slides that already exist
-        slides = slides.jquery ? slides : opts.container.find( slides );
-
-        if ( opts.random ) {
-            slides.sort(function() {return Math.random() - 0.5;});
-        }
-
-        opts.API.add( slides );
-    },
-
-    preInitSlideshow: function() {
-        var opts = this.opts();
-        opts.API.trigger('cycle-pre-initialize', [ opts ]);
-        var tx = $.fn.cycle.transitions[opts.fx];
-        if (tx && $.isFunction(tx.preInit))
-            tx.preInit( opts );
-        opts._preInitialized = true;
-    },
-
-    postInitSlideshow: function() {
-        var opts = this.opts();
-        opts.API.trigger('cycle-post-initialize', [ opts ]);
-        var tx = $.fn.cycle.transitions[opts.fx];
-        if (tx && $.isFunction(tx.postInit))
-            tx.postInit( opts );
-    },
-
-    initSlideshow: function() {
-        var opts = this.opts();
-        var pauseObj = opts.container;
-        var slideOpts;
-        opts.API.calcFirstSlide();
-
-        if ( opts.container.css('position') == 'static' )
-            opts.container.css('position', 'relative');
-
-        $(opts.slides[opts.currSlide]).css({
-            opacity: 1,
-            display: 'block',
-            visibility: 'visible'
-        });
-        opts.API.stackSlides( opts.slides[opts.currSlide], opts.slides[opts.nextSlide], !opts.reverse );
-
-        if ( opts.pauseOnHover ) {
-            // allow pauseOnHover to specify an element
-            if ( opts.pauseOnHover !== true )
-                pauseObj = $( opts.pauseOnHover );
-
-            pauseObj.hover(
-                function(){ opts.API.pause( true ); }, 
-                function(){ opts.API.resume( true ); }
-            );
-        }
-
-        // stage initial transition
-        if ( opts.timeout ) {
-            slideOpts = opts.API.getSlideOpts( opts.currSlide );
-            opts.API.queueTransition( slideOpts, slideOpts.timeout + opts.delay );
-        }
-
-        opts._initialized = true;
-        opts.API.updateView( true );
-        opts.API.trigger('cycle-initialized', [ opts ]);
-        opts.API.postInitSlideshow();
-    },
-
-    pause: function( hover ) {
-        var opts = this.opts(),
-            slideOpts = opts.API.getSlideOpts(),
-            alreadyPaused = opts.hoverPaused || opts.paused;
-
-        if ( hover )
-            opts.hoverPaused = true; 
-        else
-            opts.paused = true;
-
-        if ( ! alreadyPaused ) {
-            opts.container.addClass('cycle-paused');
-            opts.API.trigger('cycle-paused', [ opts ]).log('cycle-paused');
-
-            if ( slideOpts.timeout ) {
-                clearTimeout( opts.timeoutId );
-                opts.timeoutId = 0;
-                
-                // determine how much time is left for the current slide
-                opts._remainingTimeout -= ( $.now() - opts._lastQueue );
-                if ( opts._remainingTimeout < 0 || isNaN(opts._remainingTimeout) )
-                    opts._remainingTimeout = undefined;
-            }
-        }
-    },
-
-    resume: function( hover ) {
-        var opts = this.opts(),
-            alreadyResumed = !opts.hoverPaused && !opts.paused,
-            remaining;
-
-        if ( hover )
-            opts.hoverPaused = false; 
-        else
-            opts.paused = false;
-
-    
-        if ( ! alreadyResumed ) {
-            opts.container.removeClass('cycle-paused');
-            // #gh-230; if an animation is in progress then don't queue a new transition; it will
-            // happen naturally
-            if ( opts.slides.filter(':animated').length === 0 )
-                opts.API.queueTransition( opts.API.getSlideOpts(), opts._remainingTimeout );
-            opts.API.trigger('cycle-resumed', [ opts, opts._remainingTimeout ] ).log('cycle-resumed');
-        }
-    },
-
-    add: function( slides, prepend ) {
-        var opts = this.opts();
-        var oldSlideCount = opts.slideCount;
-        var startSlideshow = false;
-        var len;
-
-        if ( $.type(slides) == 'string')
-            slides = $.trim( slides );
-
-        $( slides ).each(function(i) {
-            var slideOpts;
-            var slide = $(this);
-
-            if ( prepend )
-                opts.container.prepend( slide );
-            else
-                opts.container.append( slide );
-
-            opts.slideCount++;
-            slideOpts = opts.API.buildSlideOpts( slide );
-
-            if ( prepend )
-                opts.slides = $( slide ).add( opts.slides );
-            else
-                opts.slides = opts.slides.add( slide );
-
-            opts.API.initSlide( slideOpts, slide, --opts._maxZ );
-
-            slide.data('cycle.opts', slideOpts);
-            opts.API.trigger('cycle-slide-added', [ opts, slideOpts, slide ]);
-        });
-
-        opts.API.updateView( true );
-
-        startSlideshow = opts._preInitialized && (oldSlideCount < 2 && opts.slideCount >= 1);
-        if ( startSlideshow ) {
-            if ( !opts._initialized )
-                opts.API.initSlideshow();
-            else if ( opts.timeout ) {
-                len = opts.slides.length;
-                opts.nextSlide = opts.reverse ? len - 1 : 1;
-                if ( !opts.timeoutId ) {
-                    opts.API.queueTransition( opts );
-                }
-            }
-        }
-    },
-
-    calcFirstSlide: function() {
-        var opts = this.opts();
-        var firstSlideIndex;
-        firstSlideIndex = parseInt( opts.startingSlide || 0, 10 );
-        if (firstSlideIndex >= opts.slides.length || firstSlideIndex < 0)
-            firstSlideIndex = 0;
-
-        opts.currSlide = firstSlideIndex;
-        if ( opts.reverse ) {
-            opts.nextSlide = firstSlideIndex - 1;
-            if (opts.nextSlide < 0)
-                opts.nextSlide = opts.slides.length - 1;
-        }
-        else {
-            opts.nextSlide = firstSlideIndex + 1;
-            if (opts.nextSlide == opts.slides.length)
-                opts.nextSlide = 0;
-        }
-    },
-
-    calcNextSlide: function() {
-        var opts = this.opts();
-        var roll;
-        if ( opts.reverse ) {
-            roll = (opts.nextSlide - 1) < 0;
-            opts.nextSlide = roll ? opts.slideCount - 1 : opts.nextSlide-1;
-            opts.currSlide = roll ? 0 : opts.nextSlide+1;
-        }
-        else {
-            roll = (opts.nextSlide + 1) == opts.slides.length;
-            opts.nextSlide = roll ? 0 : opts.nextSlide+1;
-            opts.currSlide = roll ? opts.slides.length-1 : opts.nextSlide-1;
-        }
-    },
-
-    calcTx: function( slideOpts, manual ) {
-        var opts = slideOpts;
-        var tx;
-
-        if ( opts._tempFx )
-            tx = $.fn.cycle.transitions[opts._tempFx];
-        else if ( manual && opts.manualFx )
-            tx = $.fn.cycle.transitions[opts.manualFx];
-
-        if ( !tx )
-            tx = $.fn.cycle.transitions[opts.fx];
-
-        opts._tempFx = null;
-        this.opts()._tempFx = null;
-
-        if (!tx) {
-            tx = $.fn.cycle.transitions.fade;
-            opts.API.log('Transition "' + opts.fx + '" not found.  Using fade.');
-        }
-        return tx;
-    },
-
-    prepareTx: function( manual, fwd ) {
-        var opts = this.opts();
-        var after, curr, next, slideOpts, tx;
-
-        if ( opts.slideCount < 2 ) {
-            opts.timeoutId = 0;
-            return;
-        }
-        if ( manual && ( !opts.busy || opts.manualTrump ) ) {
-            opts.API.stopTransition();
-            opts.busy = false;
-            clearTimeout(opts.timeoutId);
-            opts.timeoutId = 0;
-        }
-        if ( opts.busy )
-            return;
-        if ( opts.timeoutId === 0 && !manual )
-            return;
-
-        curr = opts.slides[opts.currSlide];
-        next = opts.slides[opts.nextSlide];
-        slideOpts = opts.API.getSlideOpts( opts.nextSlide );
-        tx = opts.API.calcTx( slideOpts, manual );
-
-        opts._tx = tx;
-
-        if ( manual && slideOpts.manualSpeed !== undefined )
-            slideOpts.speed = slideOpts.manualSpeed;
-
-        // if ( opts.nextSlide === opts.currSlide )
-        //     opts.API.calcNextSlide();
-
-        // ensure that:
-        //      1. advancing to a different slide
-        //      2. this is either a manual event (prev/next, pager, cmd) or 
-        //              a timer event and slideshow is not paused
-        if ( opts.nextSlide != opts.currSlide && 
-            (manual || (!opts.paused && !opts.hoverPaused && opts.timeout) )) { // #62
-
-            opts.API.trigger('cycle-before', [ slideOpts, curr, next, fwd ]);
-            if ( tx.before )
-                tx.before( slideOpts, curr, next, fwd );
-
-            after = function() {
-                opts.busy = false;
-                // #76; bail if slideshow has been destroyed
-                if (! opts.container.data( 'cycle.opts' ) )
-                    return;
-
-                if (tx.after)
-                    tx.after( slideOpts, curr, next, fwd );
-                opts.API.trigger('cycle-after', [ slideOpts, curr, next, fwd ]);
-                opts.API.queueTransition( slideOpts);
-                opts.API.updateView( true );
-            };
-
-            opts.busy = true;
-            if (tx.transition)
-                tx.transition(slideOpts, curr, next, fwd, after);
-            else
-                opts.API.doTransition( slideOpts, curr, next, fwd, after);
-
-            opts.API.calcNextSlide();
-            opts.API.updateView();
+        ret = callback(div, rule);
+        if (!body) {
+          fakeBody.parentNode.removeChild(fakeBody);
+          docElement.style.overflow = docOverflow;
         } else {
-            opts.API.queueTransition( slideOpts );
+          div.parentNode.removeChild(div);
         }
-    },
 
-    // perform the actual animation
-    doTransition: function( slideOpts, currEl, nextEl, fwd, callback) {
-        var opts = slideOpts;
-        var curr = $(currEl), next = $(nextEl);
-        var fn = function() {
-            // make sure animIn has something so that callback doesn't trigger immediately
-            next.animate(opts.animIn || { opacity: 1}, opts.speed, opts.easeIn || opts.easing, callback);
-        };
+        return !!ret;
 
-        next.css(opts.cssBefore || {});
-        curr.animate(opts.animOut || {}, opts.speed, opts.easeOut || opts.easing, function() {
-            curr.css(opts.cssAfter || {});
-            if (!opts.sync) {
-                fn();
+      },
+      _hasOwnProperty = ({}).hasOwnProperty, hasOwnProp;
+
+  if (!is(_hasOwnProperty, 'undefined') && !is(_hasOwnProperty.call, 'undefined')) {
+    hasOwnProp = function (object, property) {
+      return _hasOwnProperty.call(object, property);
+    };
+  }
+  else {
+    hasOwnProp = function (object, property) {
+      return ((property in object) && is(object.constructor.prototype[property], 'undefined'));
+    };
+  }
+
+
+  if (!Function.prototype.bind) {
+    Function.prototype.bind = function bind (that) {
+
+      var target = this;
+
+      if (typeof target != "function") {
+        throw new TypeError();
+      }
+
+      var args = slice.call(arguments, 1),
+          bound = function () {
+
+            if (this instanceof bound) {
+
+              var F = function () {
+              };
+              F.prototype = target.prototype;
+              var self = new F();
+
+              var result = target.apply(
+                  self,
+                  args.concat(slice.call(arguments))
+              );
+              if (Object(result) === result) {
+                return result;
+              }
+              return self;
+
+            } else {
+
+              return target.apply(
+                  that,
+                  args.concat(slice.call(arguments))
+              );
+
             }
-        });
-        if (opts.sync) {
-            fn();
-        }
-    },
 
-    queueTransition: function( slideOpts, specificTimeout ) {
-        var opts = this.opts();
-        var timeout = specificTimeout !== undefined ? specificTimeout : slideOpts.timeout;
-        if (opts.nextSlide === 0 && --opts.loop === 0) {
-            opts.API.log('terminating; loop=0');
-            opts.timeout = 0;
-            if ( timeout ) {
-                setTimeout(function() {
-                    opts.API.trigger('cycle-finished', [ opts ]);
-                }, timeout);
-            }
-            else {
-                opts.API.trigger('cycle-finished', [ opts ]);
-            }
-            // reset nextSlide
-            opts.nextSlide = opts.currSlide;
-            return;
-        }
-        if ( opts.continueAuto !== undefined ) {
-            if ( opts.continueAuto === false || 
-                ($.isFunction(opts.continueAuto) && opts.continueAuto() === false )) {
-                opts.API.log('terminating automatic transitions');
-                opts.timeout = 0;
-                if ( opts.timeoutId )
-                    clearTimeout(opts.timeoutId);
-                return;
-            }
-        }
-        if ( timeout ) {
-            opts._lastQueue = $.now();
-            if ( specificTimeout === undefined )
-                opts._remainingTimeout = slideOpts.timeout;
+          };
 
-            if ( !opts.paused && ! opts.hoverPaused ) {
-                opts.timeoutId = setTimeout(function() { 
-                    opts.API.prepareTx( false, !opts.reverse ); 
-                }, timeout );
-            }
-        }
-    },
+      return bound;
+    };
+  }
 
-    stopTransition: function() {
-        var opts = this.opts();
-        if ( opts.slides.filter(':animated').length ) {
-            opts.slides.stop(false, true);
-            opts.API.trigger('cycle-transition-stopped', [ opts ]);
+  function setCss (str) {
+    mStyle.cssText = str;
+  }
+
+  function setCssAll (str1, str2) {
+    return setCss(prefixes.join(str1 + ';') + ( str2 || '' ));
+  }
+
+  function is (obj, type) {
+    return typeof obj === type;
+  }
+
+  function contains (str, substr) {
+    return !!~('' + str).indexOf(substr);
+  }
+
+  function testProps (props, prefixed) {
+    for (var i in props) {
+      var prop = props[i];
+      if (!contains(prop, "-") && mStyle[prop] !== undefined) {
+        return prefixed == 'pfx' ? prop : true;
+      }
+    }
+    return false;
+  }
+
+  function testDOMProps (props, obj, elem) {
+    for (var i in props) {
+      var item = obj[props[i]];
+      if (item !== undefined) {
+
+        if (elem === false) return props[i];
+
+        if (is(item, 'function')) {
+          return item.bind(elem || obj);
         }
 
-        if ( opts._tx && opts._tx.stopTransition )
-            opts._tx.stopTransition( opts );
-    },
+        return item;
+      }
+    }
+    return false;
+  }
 
-    // advance slide forward or back
-    advanceSlide: function( val ) {
-        var opts = this.opts();
-        clearTimeout(opts.timeoutId);
-        opts.timeoutId = 0;
-        opts.nextSlide = opts.currSlide + val;
-        
-        if (opts.nextSlide < 0)
-            opts.nextSlide = opts.slides.length - 1;
-        else if (opts.nextSlide >= opts.slides.length)
-            opts.nextSlide = 0;
+  function testPropsAll (prop, prefixed, elem) {
 
-        opts.API.prepareTx( true,  val >= 0 );
+    var ucProp = prop.charAt(0).toUpperCase() + prop.slice(1),
+        props = (prop + ' ' + cssomPrefixes.join(ucProp + ' ') + ucProp).split(' ');
+
+    if (is(prefixed, "string") || is(prefixed, "undefined")) {
+      return testProps(props, prefixed);
+
+    } else {
+      props = (prop + ' ' + (domPrefixes).join(ucProp + ' ') + ucProp).split(' ');
+      return testDOMProps(props, prefixed, elem);
+    }
+  }
+
+  tests['csstransforms3d'] = function () {
+
+    var ret = !!testPropsAll('perspective');
+
+// Chrome fails that test, ignore
+//		if (ret && 'webkitPerspective' in docElement.style) {
+//
+//			injectElementWithStyles('@media (transform-3d),(-webkit-transform-3d){#modernizr{left:9px;position:absolute;height:3px;}}', function (node, rule) {
+//				ret = node.offsetLeft === 9 && node.offsetHeight === 3;
+//			});
+//		}
+    return ret;
+  };
+
+  for (var feature in tests) {
+    if (hasOwnProp(tests, feature)) {
+      featureName = feature.toLowerCase();
+      Modernizr[featureName] = tests[feature]();
+
+      classes.push((Modernizr[featureName] ? '' : 'no-') + featureName);
+    }
+  }
+
+  Modernizr.addTest = function (feature, test) {
+    if (typeof feature == 'object') {
+      for (var key in feature) {
+        if (hasOwnProp(feature, key)) {
+          Modernizr.addTest(key, feature[ key ]);
+        }
+      }
+    } else {
+
+      feature = feature.toLowerCase();
+
+      if (Modernizr[feature] !== undefined) {
+        return Modernizr;
+      }
+
+      test = typeof test == 'function' ? test() : test;
+
+      if (typeof enableClasses !== "undefined" && enableClasses) {
+        docElement.className += ' ' + (test ? '' : 'no-') + feature;
+      }
+      Modernizr[feature] = test;
+
+    }
+
+    return Modernizr;
+  };
+
+
+  setCss('');
+  modElem = inputElem = null;
+
+
+  Modernizr._version = version;
+
+  Modernizr._prefixes = prefixes;
+  Modernizr._domPrefixes = domPrefixes;
+  Modernizr._cssomPrefixes = cssomPrefixes;
+
+  Modernizr.testProp = function (prop) {
+    return testProps([prop]);
+  };
+
+  Modernizr.testAllProps = testPropsAll;
+
+  Modernizr.testStyles = injectElementWithStyles;
+  Modernizr.prefixed = function (prop, obj, elem) {
+    if (!obj) {
+      return testPropsAll(prop, 'pfx');
+    } else {
+      return testPropsAll(prop, obj, elem);
+    }
+  };
+
+  return Modernizr;
+})(window, document);
+var fullScreenApi = {
+      ok: false,
+      is: function () {
         return false;
+      },
+      request: function () {
+      },
+      cancel: function () {
+      },
+      event: '',
+      prefix: ''
     },
+    browserPrefixes = 'webkit moz o ms khtml'.split(' ');
 
-    buildSlideOpts: function( slide ) {
-        var opts = this.opts();
-        var val, shortName;
-        var slideOpts = slide.data() || {};
-        for (var p in slideOpts) {
-            // allow props to be accessed sans 'cycle' prefix and log the overrides
-            if (slideOpts.hasOwnProperty(p) && /^cycle[A-Z]+/.test(p) ) {
-                val = slideOpts[p];
-                shortName = p.match(/^cycle(.*)/)[1].replace(/^[A-Z]/, lowerCase);
-                opts.API.log('['+(opts.slideCount-1)+']', shortName+':', val, '('+typeof val +')');
-                slideOpts[shortName] = val;
-            }
-        }
-
-        slideOpts = $.extend( {}, $.fn.cycle.defaults, opts, slideOpts );
-        slideOpts.slideNum = opts.slideCount;
-
-        try {
-            // these props should always be read from the master state object
-            delete slideOpts.API;
-            delete slideOpts.slideCount;
-            delete slideOpts.currSlide;
-            delete slideOpts.nextSlide;
-            delete slideOpts.slides;
-        } catch(e) {
-            // no op
-        }
-        return slideOpts;
-    },
-
-    getSlideOpts: function( index ) {
-        var opts = this.opts();
-        if ( index === undefined )
-            index = opts.currSlide;
-
-        var slide = opts.slides[index];
-        var slideOpts = $(slide).data('cycle.opts');
-        return $.extend( {}, opts, slideOpts );
-    },
-    
-    initSlide: function( slideOpts, slide, suggestedZindex ) {
-        var opts = this.opts();
-        slide.css( slideOpts.slideCss || {} );
-        if ( suggestedZindex > 0 )
-            slide.css( 'zIndex', suggestedZindex );
-
-        // ensure that speed settings are sane
-        if ( isNaN( slideOpts.speed ) )
-            slideOpts.speed = $.fx.speeds[slideOpts.speed] || $.fx.speeds._default;
-        if ( !slideOpts.sync )
-            slideOpts.speed = slideOpts.speed / 2;
-
-        slide.addClass( opts.slideClass );
-    },
-
-    updateView: function( isAfter, isDuring, forceEvent ) {
-        var opts = this.opts();
-        if ( !opts._initialized )
-            return;
-        var slideOpts = opts.API.getSlideOpts();
-        var currSlide = opts.slides[ opts.currSlide ];
-
-        if ( ! isAfter && isDuring !== true ) {
-            opts.API.trigger('cycle-update-view-before', [ opts, slideOpts, currSlide ]);
-            if ( opts.updateView < 0 )
-                return;
-        }
-
-        if ( opts.slideActiveClass ) {
-            opts.slides.removeClass( opts.slideActiveClass )
-                .eq( opts.currSlide ).addClass( opts.slideActiveClass );
-        }
-
-        if ( isAfter && opts.hideNonActive )
-            opts.slides.filter( ':not(.' + opts.slideActiveClass + ')' ).css('visibility', 'hidden');
-
-        if ( opts.updateView === 0 ) {
-            setTimeout(function() {
-                opts.API.trigger('cycle-update-view', [ opts, slideOpts, currSlide, isAfter ]);
-            }, slideOpts.speed / (opts.sync ? 2 : 1) );
-        }
-
-        if ( opts.updateView !== 0 )
-            opts.API.trigger('cycle-update-view', [ opts, slideOpts, currSlide, isAfter ]);
-        
-        if ( isAfter )
-            opts.API.trigger('cycle-update-view-after', [ opts, slideOpts, currSlide ]);
-    },
-
-    getComponent: function( name ) {
-        var opts = this.opts();
-        var selector = opts[name];
-        if (typeof selector === 'string') {
-            // if selector is a child, sibling combinator, adjancent selector then use find, otherwise query full dom
-            return (/^\s*[\>|\+|~]/).test( selector ) ? opts.container.find( selector ) : $( selector );
-        }
-        if (selector.jquery)
-            return selector;
-        
-        return $(selector);
-    },
-
-    stackSlides: function( curr, next, fwd ) {
-        var opts = this.opts();
-        if ( !curr ) {
-            curr = opts.slides[opts.currSlide];
-            next = opts.slides[opts.nextSlide];
-            fwd = !opts.reverse;
-        }
-
-        // reset the zIndex for the common case:
-        // curr slide on top,  next slide beneath, and the rest in order to be shown
-        $(curr).css('zIndex', opts.maxZ);
-
-        var i;
-        var z = opts.maxZ - 2;
-        var len = opts.slideCount;
-        if (fwd) {
-            for ( i = opts.currSlide + 1; i < len; i++ )
-                $( opts.slides[i] ).css( 'zIndex', z-- );
-            for ( i = 0; i < opts.currSlide; i++ )
-                $( opts.slides[i] ).css( 'zIndex', z-- );
-        }
-        else {
-            for ( i = opts.currSlide - 1; i >= 0; i-- )
-                $( opts.slides[i] ).css( 'zIndex', z-- );
-            for ( i = len - 1; i > opts.currSlide; i-- )
-                $( opts.slides[i] ).css( 'zIndex', z-- );
-        }
-
-        $(next).css('zIndex', opts.maxZ - 1);
-    },
-
-    getSlideIndex: function( el ) {
-        return this.opts().slides.index( el );
+// check for native support
+if (typeof document.cancelFullScreen != 'undefined') {
+  fullScreenApi.ok = true;
+} else {
+  // check for fullscreen support by vendor prefix
+  for (var i = 0, il = browserPrefixes.length; i < il; i++) {
+    fullScreenApi.prefix = browserPrefixes[i];
+    if (typeof document[fullScreenApi.prefix + 'CancelFullScreen' ] != 'undefined') {
+      fullScreenApi.ok = true;
+      break;
     }
-
-}; // API
-
-// default logger
-$.fn.cycle.log = function log() {
-    /*global console:true */
-    if (window.console && console.log)
-        console.log('[cycle2] ' + Array.prototype.join.call(arguments, ' ') );
-};
-
-$.fn.cycle.version = function() { return 'Cycle2: ' + version; };
-
-// helper functions
-
-function lowerCase(s) {
-    return (s || '').toLowerCase();
+  }
 }
 
-// expose transition object
-$.fn.cycle.transitions = {
-    custom: {
-    },
-    none: {
-        before: function( opts, curr, next, fwd ) {
-            opts.API.stackSlides( next, curr, fwd );
-            opts.cssBefore = { opacity: 1, visibility: 'visible', display: 'block' };
-        }
-    },
-    fade: {
-        before: function( opts, curr, next, fwd ) {
-            var css = opts.API.getSlideOpts( opts.nextSlide ).slideCss || {};
-            opts.API.stackSlides( curr, next, fwd );
-            opts.cssBefore = $.extend(css, { opacity: 0, visibility: 'visible', display: 'block' });
-            opts.animIn = { opacity: 1 };
-            opts.animOut = { opacity: 0 };
-        }
-    },
-    fadeout: {
-        before: function( opts , curr, next, fwd ) {
-            var css = opts.API.getSlideOpts( opts.nextSlide ).slideCss || {};
-            opts.API.stackSlides( curr, next, fwd );
-            opts.cssBefore = $.extend(css, { opacity: 1, visibility: 'visible', display: 'block' });
-            opts.animOut = { opacity: 0 };
-        }
-    },
-    scrollHorz: {
-        before: function( opts, curr, next, fwd ) {
-            opts.API.stackSlides( curr, next, fwd );
-            var w = opts.container.css('overflow','hidden').width();
-            opts.cssBefore = { left: fwd ? w : - w, top: 0, opacity: 1, visibility: 'visible', display: 'block' };
-            opts.cssAfter = { zIndex: opts._maxZ - 2, left: 0 };
-            opts.animIn = { left: 0 };
-            opts.animOut = { left: fwd ? -w : w };
-        }
+// update methods to do something useful
+if (fullScreenApi.ok) {
+  fullScreenApi.event = fullScreenApi.prefix + 'fullscreenchange';
+  fullScreenApi.is = function () {
+    switch (this.prefix) {
+      case '':
+        return document.fullScreen;
+      case 'webkit':
+        return document.webkitIsFullScreen;
+      default:
+        return document[this.prefix + 'FullScreen'];
     }
-};
-
-// @see: http://jquery.malsup.com/cycle2/api
-$.fn.cycle.defaults = {
-    allowWrap:        true,
-    autoSelector:     '.cycle-slideshow[data-cycle-auto-init!=false]',
-    delay:            0,
-    easing:           null,
-    fx:              'fade',
-    hideNonActive:    true,
-    loop:             0,
-    manualFx:         undefined,
-    manualSpeed:      undefined,
-    manualTrump:      true,
-    maxZ:             100,
-    pauseOnHover:     false,
-    reverse:          false,
-    slideActiveClass: 'cycle-slide-active',
-    slideClass:       'cycle-slide',
-    slideCss:         { position: 'absolute', top: 0, left: 0 },
-    slides:          '> img',
-    speed:            500,
-    startingSlide:    0,
-    sync:             true,
-    timeout:          4000,
-    updateView:       0
-};
-
-// automatically find and run slideshows
-$(document).ready(function() {
-    $( $.fn.cycle.defaults.autoSelector ).cycle();
-});
-
-})(jQuery);
-
-/*! Cycle2 autoheight plugin; Copyright (c) M.Alsup, 2012; version: 20130913 */
-(function($) {
-"use strict";
-
-$.extend($.fn.cycle.defaults, {
-    autoHeight: 0, // setting this option to false disables autoHeight logic
-    autoHeightSpeed: 250,
-    autoHeightEasing: null
-});    
-
-$(document).on( 'cycle-initialized', function( e, opts ) {
-    var autoHeight = opts.autoHeight;
-    var t = $.type( autoHeight );
-    var resizeThrottle = null;
-    var ratio;
-
-    if ( t !== 'string' && t !== 'number' )
-        return;
-
-    // bind events
-    opts.container.on( 'cycle-slide-added cycle-slide-removed', initAutoHeight );
-    opts.container.on( 'cycle-destroyed', onDestroy );
-
-    if ( autoHeight == 'container' ) {
-        opts.container.on( 'cycle-before', onBefore );
-    }
-    else if ( t === 'string' && /\d+\:\d+/.test( autoHeight ) ) { 
-        // use ratio
-        ratio = autoHeight.match(/(\d+)\:(\d+)/);
-        ratio = ratio[1] / ratio[2];
-        opts._autoHeightRatio = ratio;
-    }
-
-    // if autoHeight is a number then we don't need to recalculate the sentinel
-    // index on resize
-    if ( t !== 'number' ) {
-        // bind unique resize handler per slideshow (so it can be 'off-ed' in onDestroy)
-        opts._autoHeightOnResize = function () {
-            clearTimeout( resizeThrottle );
-            resizeThrottle = setTimeout( onResize, 50 );
-        };
-
-        $(window).on( 'resize orientationchange', opts._autoHeightOnResize );
-    }
-
-    setTimeout( onResize, 30 );
-
-    function onResize() {
-        initAutoHeight( e, opts );
-    }
-});
-
-function initAutoHeight( e, opts ) {
-    var clone, height, sentinelIndex;
-    var autoHeight = opts.autoHeight;
-
-    if ( autoHeight == 'container' ) {
-        height = $( opts.slides[ opts.currSlide ] ).outerHeight();
-        opts.container.height( height );
-    }
-    else if ( opts._autoHeightRatio ) { 
-        opts.container.height( opts.container.width() / opts._autoHeightRatio );
-    }
-    else if ( autoHeight === 'calc' || ( $.type( autoHeight ) == 'number' && autoHeight >= 0 ) ) {
-        if ( autoHeight === 'calc' )
-            sentinelIndex = calcSentinelIndex( e, opts );
-        else if ( autoHeight >= opts.slides.length )
-            sentinelIndex = 0;
-        else 
-            sentinelIndex = autoHeight;
-
-        // only recreate sentinel if index is different
-        if ( sentinelIndex == opts._sentinelIndex )
-            return;
-
-        opts._sentinelIndex = sentinelIndex;
-        if ( opts._sentinel )
-            opts._sentinel.remove();
-
-        // clone existing slide as sentinel
-        clone = $( opts.slides[ sentinelIndex ].cloneNode(true) );
-        
-        // #50; remove special attributes from cloned content
-        clone.removeAttr( 'id name rel' ).find( '[id],[name],[rel]' ).removeAttr( 'id name rel' );
-
-        clone.css({
-            position: 'static',
-            visibility: 'hidden',
-            display: 'block'
-        }).prependTo( opts.container ).addClass('cycle-sentinel cycle-slide').removeClass('cycle-slide-active');
-        clone.find( '*' ).css( 'visibility', 'hidden' );
-
-        opts._sentinel = clone;
-    }
-}    
-
-function calcSentinelIndex( e, opts ) {
-    var index = 0, max = -1;
-
-    // calculate tallest slide index
-    opts.slides.each(function(i) {
-        var h = $(this).height();
-        if ( h > max ) {
-            max = h;
-            index = i;
-        }
-    });
-    return index;
+  };
+  fullScreenApi.request = function (el) {
+    return (this.prefix === '') ? el.requestFullScreen() : el[this.prefix + 'RequestFullScreen']();
+  };
+  fullScreenApi.cancel = function (el) {
+    return (this.prefix === '') ? document.cancelFullScreen() : document[this.prefix + 'CancelFullScreen']();
+  };
 }
+//fgnass.github.com/spin.js#v1.3.2
 
-function onBefore( e, opts, outgoing, incoming, forward ) {
-    var h = $(incoming).outerHeight();
-    opts.container.animate( { height: h }, opts.autoHeightSpeed, opts.autoHeightEasing );
+/**
+ * Copyright (c) 2011-2013 Felix Gnass
+ * Licensed under the MIT license
+ */
+
+var Spinner,
+    spinnerDefaults = {
+      lines: 12, // The number of lines to draw
+      length: 5, // The length of each line
+      width: 2, // The line thickness
+      radius: 7, // The radius of the inner circle
+      corners: 1, // Corner roundness (0..1)
+      rotate: 15, // The rotation offset
+      color: 'rgba(128, 128, 128, .75)',
+      hwaccel: true
+    },
+    spinnerOverride = {
+      top: 'auto',
+      left: 'auto',
+      className: ''
+    };
+
+(function(root, factory) {
+
+  /* CommonJS */
+  //if (typeof exports == 'object')  module.exports = factory()
+
+  /* AMD module */
+  //else if (typeof define == 'function' && define.amd) define(factory)
+
+  /* Browser global */
+  //else root.Spinner = factory()
+
+  Spinner = factory();
 }
+(this, function() {
+  "use strict";
 
-function onDestroy( e, opts ) {
-    if ( opts._autoHeightOnResize ) {
-        $(window).off( 'resize orientationchange', opts._autoHeightOnResize );
-        opts._autoHeightOnResize = null;
-    }
-    opts.container.off( 'cycle-slide-added cycle-slide-removed', initAutoHeight );
-    opts.container.off( 'cycle-destroyed', onDestroy );
-    opts.container.off( 'cycle-before', onBefore );
+  var prefixes = ['webkit', 'Moz', 'ms', 'O'] /* Vendor prefixes */
+    , animations = {} /* Animation rules keyed by their name */
+    , useCssAnimations /* Whether to use CSS animations or setTimeout */
 
-    if ( opts._sentinel ) {
-        opts._sentinel.remove();
-        opts._sentinel = null;
-    }
-}
+  /**
+   * Utility function to create elements. If no tag name is given,
+   * a DIV is created. Optionally properties can be passed.
+   */
+  function createEl(tag, prop) {
+    var el = document.createElement(tag || 'div')
+      , n
 
-})(jQuery);
+    for(n in prop) el[n] = prop[n]
+    return el
+  }
 
-/*! caption plugin for Cycle2;  version: 20130306 */
-(function($) {
-"use strict";
+  /**
+   * Appends children and returns the parent.
+   */
+  function ins(parent /* child1, child2, ...*/) {
+    for (var i=1, n=arguments.length; i<n; i++)
+      parent.appendChild(arguments[i])
 
-$.extend($.fn.cycle.defaults, {
-    caption:          '> .cycle-caption',
-    captionTemplate:  '{{slideNum}} / {{slideCount}}',
-    overlay:          '> .cycle-overlay',
-    overlayTemplate:  '<div>{{title}}</div><div>{{desc}}</div>',
-    captionModule:    'caption'
-});    
+    return parent
+  }
 
-$(document).on( 'cycle-update-view', function( e, opts, slideOpts, currSlide ) {
-    if ( opts.captionModule !== 'caption' )
-        return;
-    var el;
-    $.each(['caption','overlay'], function() {
-        var name = this; 
-        var template = slideOpts[name+'Template'];
-        var el = opts.API.getComponent( name );
-        if( el.length && template ) {
-            el.html( opts.API.tmpl( template, slideOpts, opts, currSlide ) );
-            el.show();
-        }
-        else {
-            el.hide();
-        }
-    });
-});
+  /**
+   * Insert a new stylesheet to hold the @keyframe or VML rules.
+   */
+  var sheet = (function() {
+    var el = createEl('style', {type : 'text/css'})
+    ins(document.getElementsByTagName('head')[0], el)
+    return el.sheet || el.styleSheet
+  }())
 
-$(document).on( 'cycle-destroyed', function( e, opts ) {
-    var el;
-    $.each(['caption','overlay'], function() {
-        var name = this, template = opts[name+'Template'];
-        if ( opts[name] && template ) {
-            el = opts.API.getComponent( 'caption' );
-            el.empty();
-        }
-    });
-});
+  /**
+   * Creates an opacity keyframe animation rule and returns its name.
+   * Since most mobile Webkits have timing issues with animation-delay,
+   * we create separate rules for each line/segment.
+   */
+  function addAnimation(alpha, trail, i, lines) {
+    var name = ['opacity', trail, ~~(alpha*100), i, lines].join('-')
+      , start = 0.01 + i/lines * 100
+      , z = Math.max(1 - (1-alpha) / trail * (100-start), alpha)
+      , prefix = useCssAnimations.substring(0, useCssAnimations.indexOf('Animation')).toLowerCase()
+      , pre = prefix && '-' + prefix + '-' || ''
 
-})(jQuery);
+    if (!animations[name]) {
+      sheet.insertRule(
+        '@' + pre + 'keyframes ' + name + '{' +
+        '0%{opacity:' + z + '}' +
+        start + '%{opacity:' + alpha + '}' +
+        (start+0.01) + '%{opacity:1}' +
+        (start+trail) % 100 + '%{opacity:' + alpha + '}' +
+        '100%{opacity:' + z + '}' +
+        '}', sheet.cssRules.length)
 
-/*! command plugin for Cycle2;  version: 20140415 */
-(function($) {
-"use strict";
-
-var c2 = $.fn.cycle;
-
-$.fn.cycle = function( options ) {
-    var cmd, cmdFn, opts;
-    var args = $.makeArray( arguments );
-
-    if ( $.type( options ) == 'number' ) {
-        return this.cycle( 'goto', options );
+      animations[name] = 1
     }
 
-    if ( $.type( options ) == 'string' ) {
-        return this.each(function() {
-            var cmdArgs;
-            cmd = options;
-            opts = $(this).data('cycle.opts');
+    return name
+  }
 
-            if ( opts === undefined ) {
-                c2.log('slideshow must be initialized before sending commands; "' + cmd + '" ignored');
-                return;
-            }
-            else {
-                cmd = cmd == 'goto' ? 'jump' : cmd; // issue #3; change 'goto' to 'jump' internally
-                cmdFn = opts.API[ cmd ];
-                if ( $.isFunction( cmdFn )) {
-                    cmdArgs = $.makeArray( args );
-                    cmdArgs.shift();
-                    return cmdFn.apply( opts.API, cmdArgs );
-                }
-                else {
-                    c2.log( 'unknown command: ', cmd );
-                }
-            }
-        });
+  /**
+   * Tries various vendor prefixes and returns the first supported property.
+   */
+  function vendor(el, prop) {
+    var s = el.style
+      , pp
+      , i
+
+    prop = prop.charAt(0).toUpperCase() + prop.slice(1)
+    for(i=0; i<prefixes.length; i++) {
+      pp = prefixes[i]+prop
+      if(s[pp] !== undefined) return pp
     }
-    else {
-        return c2.apply( this, arguments );
+    if(s[prop] !== undefined) return prop
+  }
+
+  /**
+   * Sets multiple style properties at once.
+   */
+  function css(el, prop) {
+    for (var n in prop)
+      el.style[vendor(el, n)||n] = prop[n]
+
+    return el
+  }
+
+  /**
+   * Fills in default values.
+   */
+  function merge(obj) {
+    for (var i=1; i < arguments.length; i++) {
+      var def = arguments[i]
+      for (var n in def)
+        if (obj[n] === undefined) obj[n] = def[n]
     }
-};
+    return obj
+  }
 
-// copy props
-$.extend( $.fn.cycle, c2 );
+  /**
+   * Returns the absolute page-offset of the given element.
+   */
+  function pos(el) {
+    var o = { x:el.offsetLeft, y:el.offsetTop }
+    while((el = el.offsetParent))
+      o.x+=el.offsetLeft, o.y+=el.offsetTop
 
-$.extend( c2.API, {
-    next: function() {
-        var opts = this.opts();
-        if ( opts.busy && ! opts.manualTrump )
-            return;
+    return o
+  }
 
-        var count = opts.reverse ? -1 : 1;
-        if ( opts.allowWrap === false && ( opts.currSlide + count ) >= opts.slideCount )
-            return;
+  /**
+   * Returns the line color from the given string or array.
+   */
+  function getColor(color, idx) {
+    return typeof color == 'string' ? color : color[idx % color.length]
+  }
 
-        opts.API.advanceSlide( count );
-        opts.API.trigger('cycle-next', [ opts ]).log('cycle-next');
+  // Built-in defaults
+
+  var defaults = {
+    lines: 12,            // The number of lines to draw
+    length: 7,            // The length of each line
+    width: 5,             // The line thickness
+    radius: 10,           // The radius of the inner circle
+    rotate: 0,            // Rotation offset
+    corners: 1,           // Roundness (0..1)
+    color: '#000',        // #rgb or #rrggbb
+    direction: 1,         // 1: clockwise, -1: counterclockwise
+    speed: 1,             // Rounds per second
+    trail: 100,           // Afterglow percentage
+    opacity: 1/4,         // Opacity of the lines
+    fps: 20,              // Frames per second when using setTimeout()
+    zIndex: 2e9,          // Use a high z-index by default
+    className: 'spinner', // CSS class to assign to the element
+    top: 'auto',          // center vertically
+    left: 'auto',         // center horizontally
+    position: 'relative'  // element position
+  }
+
+  /** The constructor */
+  function Spinner(o) {
+    if (typeof this == 'undefined') return new Spinner(o)
+    this.opts = merge(o || {}, Spinner.defaults, defaults)
+  }
+
+  // Global defaults that override the built-ins:
+  Spinner.defaults = {}
+
+  merge(Spinner.prototype, {
+
+    /**
+     * Adds the spinner to the given target element. If this instance is already
+     * spinning, it is automatically removed from its previous target b calling
+     * stop() internally.
+     */
+    spin: function(target) {
+      this.stop()
+
+      var self = this
+        , o = self.opts
+        , el = self.el = css(createEl(0, {className: o.className}), {position: o.position, width: 0, zIndex: o.zIndex})
+        , mid = o.radius+o.length+o.width
+        , ep // element position
+        , tp // target position
+
+      if (target) {
+        target.insertBefore(el, target.firstChild||null)
+        tp = pos(target)
+        ep = pos(el)
+        css(el, {
+          left: (o.left == 'auto' ? tp.x-ep.x + (target.offsetWidth >> 1) : parseInt(o.left, 10) + mid) + 'px',
+          top: (o.top == 'auto' ? tp.y-ep.y + (target.offsetHeight >> 1) : parseInt(o.top, 10) + mid)  + 'px'
+        })
+      }
+
+      el.setAttribute('role', 'progressbar')
+      self.lines(el, self.opts)
+
+      if (!useCssAnimations) {
+        // No CSS animation support, use setTimeout() instead
+        var i = 0
+          , start = (o.lines - 1) * (1 - o.direction) / 2
+          , alpha
+          , fps = o.fps
+          , f = fps/o.speed
+          , ostep = (1-o.opacity) / (f*o.trail / 100)
+          , astep = f/o.lines
+
+        ;(function anim() {
+          i++;
+          for (var j = 0; j < o.lines; j++) {
+            alpha = Math.max(1 - (i + (o.lines - j) * astep) % f * ostep, o.opacity)
+
+            self.opacity(el, j * o.direction + start, alpha, o)
+          }
+          self.timeout = self.el && setTimeout(anim, ~~(1000/fps))
+        })()
+      }
+      return self
     },
 
-    prev: function() {
-        var opts = this.opts();
-        if ( opts.busy && ! opts.manualTrump )
-            return;
-        var count = opts.reverse ? 1 : -1;
-        if ( opts.allowWrap === false && ( opts.currSlide + count ) < 0 )
-            return;
-
-        opts.API.advanceSlide( count );
-        opts.API.trigger('cycle-prev', [ opts ]).log('cycle-prev');
-    },
-
-    destroy: function() {
-        this.stop(); //#204
-
-        var opts = this.opts();
-        var clean = $.isFunction( $._data ) ? $._data : $.noop;  // hack for #184 and #201
-        clearTimeout(opts.timeoutId);
-        opts.timeoutId = 0;
-        opts.API.stop();
-        opts.API.trigger( 'cycle-destroyed', [ opts ] ).log('cycle-destroyed');
-        opts.container.removeData();
-        clean( opts.container[0], 'parsedAttrs', false );
-
-        // #75; remove inline styles
-        if ( ! opts.retainStylesOnDestroy ) {
-            opts.container.removeAttr( 'style' );
-            opts.slides.removeAttr( 'style' );
-            opts.slides.removeClass( opts.slideActiveClass );
-        }
-        opts.slides.each(function() {
-            var slide = $(this);
-            slide.removeData();
-            slide.removeClass( opts.slideClass );
-            clean( this, 'parsedAttrs', false );
-        });
-    },
-
-    jump: function( index, fx ) {
-        // go to the requested slide
-        var fwd;
-        var opts = this.opts();
-        if ( opts.busy && ! opts.manualTrump )
-            return;
-        var num = parseInt( index, 10 );
-        if (isNaN(num) || num < 0 || num >= opts.slides.length) {
-            opts.API.log('goto: invalid slide index: ' + num);
-            return;
-        }
-        if (num == opts.currSlide) {
-            opts.API.log('goto: skipping, already on slide', num);
-            return;
-        }
-        opts.nextSlide = num;
-        clearTimeout(opts.timeoutId);
-        opts.timeoutId = 0;
-        opts.API.log('goto: ', num, ' (zero-index)');
-        fwd = opts.currSlide < opts.nextSlide;
-        opts._tempFx = fx;
-        opts.API.prepareTx( true, fwd );
-    },
-
+    /**
+     * Stops and removes the Spinner.
+     */
     stop: function() {
-        var opts = this.opts();
-        var pauseObj = opts.container;
-        clearTimeout(opts.timeoutId);
-        opts.timeoutId = 0;
-        opts.API.stopTransition();
-        if ( opts.pauseOnHover ) {
-            if ( opts.pauseOnHover !== true )
-                pauseObj = $( opts.pauseOnHover );
-            pauseObj.off('mouseenter mouseleave');
-        }
-        opts.API.trigger('cycle-stopped', [ opts ]).log('cycle-stopped');
+      var el = this.el
+      if (el) {
+        clearTimeout(this.timeout)
+        if (el.parentNode) el.parentNode.removeChild(el)
+        this.el = undefined
+      }
+      return this
     },
 
-    reinit: function() {
-        var opts = this.opts();
-        opts.API.destroy();
-        opts.container.cycle();
+    /**
+     * Internal method that draws the individual lines. Will be overwritten
+     * in VML fallback mode below.
+     */
+    lines: function(el, o) {
+      var i = 0
+        , start = (o.lines - 1) * (1 - o.direction) / 2
+        , seg
+
+      function fill(color, shadow) {
+        return css(createEl(), {
+          position: 'absolute',
+          width: (o.length+o.width) + 'px',
+          height: o.width + 'px',
+          background: color,
+          boxShadow: shadow,
+          transformOrigin: 'left',
+          transform: 'rotate(' + ~~(360/o.lines*i+o.rotate) + 'deg) translate(' + o.radius+'px' +',0)',
+          borderRadius: (o.corners * o.width>>1) + 'px'
+        })
+      }
+
+      for (; i < o.lines; i++) {
+        seg = css(createEl(), {
+          position: 'absolute',
+          top: 1+~(o.width/2) + 'px',
+          transform: o.hwaccel ? 'translate3d(0,0,0)' : '',
+          opacity: o.opacity,
+          animation: useCssAnimations && addAnimation(o.opacity, o.trail, start + i * o.direction, o.lines) + ' ' + 1/o.speed + 's linear infinite'
+        })
+
+        if (o.shadow) ins(seg, css(fill('#000', '0 0 4px ' + '#000'), {top: 2+'px'}))
+        ins(el, ins(seg, fill(getColor(o.color, i), '0 0 1px rgba(0,0,0,.1)')))
+      }
+      return el
     },
 
-    remove: function( index ) {
-        var opts = this.opts();
-        var slide, slideToRemove, slides = [], slideNum = 1;
-        for ( var i=0; i < opts.slides.length; i++ ) {
-            slide = opts.slides[i];
-            if ( i == index ) {
-                slideToRemove = slide;
-            }
-            else {
-                slides.push( slide );
-                $( slide ).data('cycle.opts').slideNum = slideNum;
-                slideNum++;
-            }
-        }
-        if ( slideToRemove ) {
-            opts.slides = $( slides );
-            opts.slideCount--;
-            $( slideToRemove ).remove();
-            if (index == opts.currSlide)
-                opts.API.advanceSlide( 1 );
-            else if ( index < opts.currSlide )
-                opts.currSlide--;
-            else
-                opts.currSlide++;
-
-            opts.API.trigger('cycle-slide-removed', [ opts, index, slideToRemove ]).log('cycle-slide-removed');
-            opts.API.updateView();
-        }
+    /**
+     * Internal method that adjusts the opacity of a single line.
+     * Will be overwritten in VML fallback mode below.
+     */
+    opacity: function(el, i, val) {
+      if (i < el.childNodes.length) el.childNodes[i].style.opacity = val
     }
 
-});
-
-// listen for clicks on elements with data-cycle-cmd attribute
-$(document).on('click.cycle', '[data-cycle-cmd]', function(e) {
-    // issue cycle command
-    e.preventDefault();
-    var el = $(this);
-    var command = el.data('cycle-cmd');
-    var context = el.data('cycle-context') || '.cycle-slideshow';
-    $(context).cycle(command, el.data('cycle-arg'));
-});
+  })
 
 
-})(jQuery);
+  function initVML() {
 
-/*! hash plugin for Cycle2;  version: 20130905 */
-(function($) {
-"use strict";
+    /* Utility function to create a VML tag */
+    function vml(tag, attr) {
+      return createEl('<' + tag + ' xmlns="urn:schemas-microsoft.com:vml" class="spin-vml">', attr)
+    }
 
-$(document).on( 'cycle-pre-initialize', function( e, opts ) {
-    onHashChange( opts, true );
+    // No CSS transforms but VML support, add a CSS rule for VML elements:
+    sheet.addRule('.spin-vml', 'behavior:url(#default#VML)')
 
-    opts._onHashChange = function() {
-        onHashChange( opts, false );
+    Spinner.prototype.lines = function(el, o) {
+      var r = o.length+o.width
+        , s = 2*r
+
+      function grp() {
+        return css(
+          vml('group', {
+            coordsize: s + ' ' + s,
+            coordorigin: -r + ' ' + -r
+          }),
+          { width: s, height: s }
+        )
+      }
+
+      var margin = -(o.width+o.length)*2 + 'px'
+        , g = css(grp(), {position: 'absolute', top: margin, left: margin})
+        , i
+
+      function seg(i, dx, filter) {
+        ins(g,
+          ins(css(grp(), {rotation: 360 / o.lines * i + 'deg', left: ~~dx}),
+            ins(css(vml('roundrect', {arcsize: o.corners}), {
+                width: r,
+                height: o.width,
+                left: o.radius,
+                top: -o.width>>1,
+                filter: filter
+              }),
+              vml('fill', {color: getColor(o.color, i), opacity: o.opacity}),
+              vml('stroke', {opacity: 0}) // transparent stroke to fix color bleeding upon opacity change
+            )
+          )
+        )
+      }
+
+      if (o.shadow)
+        for (i = 1; i <= o.lines; i++)
+          seg(i, -2, 'progid:DXImageTransform.Microsoft.Blur(pixelradius=2,makeshadow=1,shadowopacity=.3)')
+
+      for (i = 1; i <= o.lines; i++) seg(i)
+      return ins(el, g)
+    }
+
+    Spinner.prototype.opacity = function(el, i, val, o) {
+      var c = el.firstChild
+      o = o.shadow && o.lines || 0
+      if (c && i+o < c.childNodes.length) {
+        c = c.childNodes[i+o]; c = c && c.firstChild; c = c && c.firstChild
+        if (c) c.opacity = val
+      }
+    }
+  }
+
+  var probe = css(createEl('group'), {behavior: 'url(#default#VML)'})
+
+  if (!vendor(probe, 'transform') && probe.adj) initVML()
+  else useCssAnimations = vendor(probe, 'animation')
+
+  return Spinner
+
+}));
+
+/* Bez v1.0.10-g5ae0136
+ * http://github.com/rdallasgray/bez
+ *
+ * A plugin to convert CSS3 cubic-bezier co-ordinates to jQuery-compatible easing functions
+ *
+ * With thanks to Nikolay Nemshilov for clarification on the cubic-bezier maths
+ * See http://st-on-it.blogspot.com/2011/05/calculating-cubic-bezier-function.html
+ *
+ * Copyright 2011 Robert Dallas Gray. All rights reserved.
+ * Provided under the FreeBSD license: https://github.com/rdallasgray/bez/blob/master/LICENSE.txt
+ */
+function bez (coOrdArray) {
+  var encodedFuncName = "bez_" + $.makeArray(arguments).join("_").replace(".", "p");
+  if (typeof $['easing'][encodedFuncName] !== "function") {
+    var polyBez = function (p1, p2) {
+      var A = [null, null],
+          B = [null, null],
+          C = [null, null],
+          bezCoOrd = function (t, ax) {
+            C[ax] = 3 * p1[ax];
+            B[ax] = 3 * (p2[ax] - p1[ax]) - C[ax];
+            A[ax] = 1 - C[ax] - B[ax];
+            return t * (C[ax] + t * (B[ax] + t * A[ax]));
+          },
+          xDeriv = function (t) {
+            return C[0] + t * (2 * B[0] + 3 * A[0] * t);
+          },
+          xForT = function (t) {
+            var x = t, i = 0, z;
+            while (++i < 14) {
+              z = bezCoOrd(x, 0) - t;
+              if (Math.abs(z) < 1e-3) break;
+              x -= z / xDeriv(x);
+            }
+            return x;
+          };
+      return function (t) {
+        return bezCoOrd(xForT(t), 1);
+      }
     };
-
-    $( window ).on( 'hashchange', opts._onHashChange);
-});
-
-$(document).on( 'cycle-update-view', function( e, opts, slideOpts ) {
-    if ( slideOpts.hash && ( '#' + slideOpts.hash ) != window.location.hash ) {
-        opts._hashFence = true;
-        window.location.hash = slideOpts.hash;
+    $['easing'][encodedFuncName] = function (x, t, b, c, d) {
+      return c * polyBez([coOrdArray[0], coOrdArray[1]], [coOrdArray[2], coOrdArray[3]])(t / d) + b;
     }
-});
+  }
+  return encodedFuncName;
+}
+var $WINDOW = $(window),
+    $DOCUMENT = $(document),
+    $HTML,
+    $BODY,
 
-$(document).on( 'cycle-destroyed', function( e, opts) {
-    if ( opts._onHashChange ) {
-        $( window ).off( 'hashchange', opts._onHashChange );
-    }
-});
+    QUIRKS_FORCE = location.hash.replace('#', '') === 'quirks',
+    TRANSFORMS3D = Modernizr.csstransforms3d,
+    CSS3 = TRANSFORMS3D && !QUIRKS_FORCE,
+    COMPAT = TRANSFORMS3D || document.compatMode === 'CSS1Compat',
+    FULLSCREEN = fullScreenApi.ok,
 
-function onHashChange( opts, setStartingSlide ) {
-    var hash;
-    if ( opts._hashFence ) {
-        opts._hashFence = false;
-        return;
-    }
-    
-    hash = window.location.hash.substring(1);
+    MOBILE = navigator.userAgent.match(/Android|webOS|iPhone|iPad|iPod|BlackBerry|Windows Phone/i),
+    SLOW = !CSS3 || MOBILE,
 
-    opts.slides.each(function(i) {
-        if ( $(this).data( 'cycle-hash' ) == hash ) {
-            if ( setStartingSlide === true ) {
-                opts.startingSlide = i;
-            }
-            else {
-                var fwd = opts.currSlide < i;
-                opts.nextSlide = i;
-                opts.API.prepareTx( true, fwd );
-            }
-            return false;
-        }
-    });
+    MS_POINTER = navigator.msPointerEnabled,
+
+    WHEEL = "onwheel" in document.createElement("div") ? "wheel" : document.onmousewheel !== undefined ? "mousewheel" : "DOMMouseScroll",
+
+    TOUCH_TIMEOUT = 250,
+    TRANSITION_DURATION = 300,
+
+    SCROLL_LOCK_TIMEOUT = 1400,
+
+    AUTOPLAY_INTERVAL = 5000,
+    MARGIN = 2,
+    THUMB_SIZE = 64,
+
+    WIDTH = 500,
+    HEIGHT = 333,
+
+    STAGE_FRAME_KEY = '$stageFrame',
+    NAV_DOT_FRAME_KEY = '$navDotFrame',
+    NAV_THUMB_FRAME_KEY = '$navThumbFrame',
+
+    AUTO = 'auto',
+
+    BEZIER = bez([.1, 0, .25, 1]),
+
+    MAX_WIDTH = 99999,
+
+    FIFTYFIFTY = '50%',
+
+    OPTIONS = {
+      // dimensions
+      width: null, // 500 || '100%'
+      minwidth: null,
+      maxwidth: '100%', // '100%'
+      height: null,
+      minheight: null,
+      maxheight: null,
+
+      ratio: null, // '16/9' || 500/333 || 1.5
+
+      margin: MARGIN,
+      glimpse: 0,
+
+      fit: 'contain', // 'cover' || 'scaledown' || 'none'
+
+      position: FIFTYFIFTY,
+      thumbposition: FIFTYFIFTY,
+
+      // navigation, thumbs
+      nav: 'dots', // 'thumbs' || false
+      navposition: 'bottom', // 'top'
+      navwidth: null,
+      thumbwidth: THUMB_SIZE,
+      thumbheight: THUMB_SIZE,
+      thumbmargin: MARGIN,
+      thumbborderwidth: MARGIN,
+      thumbfit: 'cover', // 'contain' || 'scaledown' || 'none'
+
+      allowfullscreen: false, // true || 'native'
+
+      transition: 'slide', // 'crossfade' || 'dissolve'
+      clicktransition: null,
+      transitionduration: TRANSITION_DURATION,
+
+      captions: true,
+
+      hash: false,
+      startindex: 0,
+
+      loop: false,
+
+      autoplay: false,
+      stopautoplayontouch: true,
+
+      keyboard: false,
+
+      arrows: true,
+      click: true,
+      swipe: true,
+      trackpad: false,
+
+      enableifsingleframe: false,
+
+      controlsonstart: true,
+
+      shuffle: false,
+
+      direction: 'ltr', // 'rtl'
+
+      shadows: true,
+      spinner: null
+    },
+
+    KEYBOARD_OPTIONS = {
+      left: true,
+      right: true,
+      down: false,
+      up: false,
+      space: false,
+      home: false,
+      end: false
+    };
+function noop () {}
+
+function minMaxLimit (value, min, max) {
+  return Math.max(isNaN(min) ? -Infinity : min, Math.min(isNaN(max) ? Infinity : max, value));
 }
 
-})(jQuery);
+function readTransform (css) {
+  return css.match(/ma/) && css.match(/-?\d+(?!d)/g)[css.match(/3d/) ? 12 : 4];
+}
 
-/*! loader plugin for Cycle2;  version: 20131121 */
-(function($) {
-"use strict";
+function readPosition ($el) {
+  if (CSS3) {
+    return +readTransform($el.css('transform'));
+  } else {
+    return +$el.css('left').replace('px', '');
+  }
+}
 
-$.extend($.fn.cycle.defaults, {
-    loader: false
-});
+function getTranslate (pos/*, _001*/) {
+  var obj = {};
+  if (CSS3) {
+    obj.transform = 'translate3d(' + (pos/* + (_001 ? 0.001 : 0)*/) + 'px,0,0)'; // 0.001 to remove Retina artifacts
+  } else {
+    obj.left = pos;
+  }
+  return obj;
+}
 
-$(document).on( 'cycle-bootstrap', function( e, opts ) {
-    var addFn;
+function getDuration (time) {
+  return {'transition-duration': time + 'ms'};
+}
 
-    if ( !opts.loader )
-        return;
+function unlessNaN (value, alternative) {
+  return isNaN(value) ? alternative : value;
+}
 
-    // override API.add for this slideshow
-    addFn = opts.API.add;
-    opts.API.add = add;
+function numberFromMeasure (value, measure) {
+  return unlessNaN(+String(value).replace(measure || 'px', ''));
+}
 
-    function add( slides, prepend ) {
-        var slideArr = [];
-        if ( $.type( slides ) == 'string' )
-            slides = $.trim( slides );
-        else if ( $.type( slides) === 'array' ) {
-            for (var i=0; i < slides.length; i++ )
-                slides[i] = $(slides[i])[0];
+function numberFromPercent (value) {
+  return /%$/.test(value) ? numberFromMeasure(value, '%') : undefined;
+}
+
+function numberFromWhatever (value, whole) {
+  return unlessNaN(numberFromPercent(value) / 100 * whole, numberFromMeasure(value));
+}
+
+function measureIsValid (value) {
+  return (!isNaN(numberFromMeasure(value)) || !isNaN(numberFromMeasure(value, '%'))) && value;
+}
+
+function getPosByIndex (index, side, margin, baseIndex) {
+  ////console.log('getPosByIndex', index, side, margin, baseIndex);
+  ////console.log((index - (baseIndex || 0)) * (side + (margin || 0)));
+
+  return (index - (baseIndex || 0)) * (side + (margin || 0));
+}
+
+function getIndexByPos (pos, side, margin, baseIndex) {
+  return -Math.round(pos / (side + (margin || 0)) - (baseIndex || 0));
+}
+
+function bindTransitionEnd ($el) {
+  var elData = $el.data();
+
+  if (elData.tEnd) return;
+
+  var el = $el[0],
+      transitionEndEvent = {
+        WebkitTransition: 'webkitTransitionEnd',
+        MozTransition: 'transitionend',
+        OTransition: 'oTransitionEnd otransitionend',
+        msTransition: 'MSTransitionEnd',
+        transition: 'transitionend'
+      };
+  addEvent(el, transitionEndEvent[Modernizr.prefixed('transition')], function (e) {
+    elData.tProp && e.propertyName.match(elData.tProp) && elData.onEndFn();
+  });
+  elData.tEnd = true;
+}
+
+function afterTransition ($el, property, fn, time) {
+  var ok,
+      elData = $el.data();
+
+  if (elData) {
+    elData.onEndFn = function () {
+      if (ok) return;
+      ok = true;
+      clearTimeout(elData.tT);
+      fn();
+    };
+    elData.tProp = property;
+
+    // Passive call, just in case of fail of native transition-end event
+    clearTimeout(elData.tT);
+    elData.tT = setTimeout(function () {
+      elData.onEndFn();
+    }, time * 1.5);
+
+    bindTransitionEnd($el);
+  }
+}
+
+
+function stop ($el, left/*, _001*/) {
+  if ($el.length) {
+    var elData = $el.data();
+    if (CSS3) {
+      $el.css(getDuration(0));
+      elData.onEndFn = noop;
+      clearTimeout(elData.tT);
+    } else {
+      $el.stop();
+    }
+    var lockedLeft = getNumber(left, function () {
+      return readPosition($el);
+    });
+
+    $el.css(getTranslate(lockedLeft/*, _001*/));//.width(); // `.width()` for reflow
+    return lockedLeft;
+  }
+}
+
+function getNumber () {
+  var number;
+  for (var _i = 0, _l = arguments.length; _i < _l; _i++) {
+    number = _i ? arguments[_i]() : arguments[_i];
+    if (typeof number === 'number') {
+      break;
+    }
+  }
+
+  return number;
+}
+
+function edgeResistance (pos, edge) {
+  return Math.round(pos + ((edge - pos) / 1.5));
+}
+
+function getProtocol () {
+  getProtocol.p = getProtocol.p || (location.protocol === 'https:' ? 'https://' : 'http://');
+  return getProtocol.p;
+}
+
+function parseHref (href) {
+  var a = document.createElement('a');
+  a.href = href;
+  return a;
+}
+
+function findVideoId (href, forceVideo) {
+  if (typeof href !== 'string') return href;
+  href = parseHref(href);
+
+  var id,
+      type;
+
+  if (href.host.match(/youtube\.com/) && href.search) {
+    //.log();
+    id = href.search.split('v=')[1];
+    if (id) {
+      var ampersandPosition = id.indexOf('&');
+      if (ampersandPosition !== -1) {
+        id = id.substring(0, ampersandPosition);
+      }
+      type = 'youtube';
+    }
+  } else if (href.host.match(/youtube\.com|youtu\.be/)) {
+    id = href.pathname.replace(/^\/(embed\/|v\/)?/, '').replace(/\/.*/, '');
+    type = 'youtube';
+  } else if (href.host.match(/vimeo\.com/)) {
+    type = 'vimeo';
+    id = href.pathname.replace(/^\/(video\/)?/, '').replace(/\/.*/, '');
+  }
+
+  if ((!id || !type) && forceVideo) {
+    id = href.href;
+    type = 'custom';
+  }
+
+  return id ? {id: id, type: type, s: href.search.replace(/^\?/, ''), p: getProtocol()} : false;
+}
+
+function getVideoThumbs (dataFrame, data, fotorama) {
+  var img, thumb, video = dataFrame.video;
+  if (video.type === 'youtube') {
+    thumb = getProtocol() + 'img.youtube.com/vi/' + video.id + '/default.jpg';
+    img = thumb.replace(/\/default.jpg$/, '/hqdefault.jpg');
+    dataFrame.thumbsReady = true;
+  } else if (video.type === 'vimeo') {
+    $.ajax({
+      url: getProtocol() + 'vimeo.com/api/v2/video/' + video.id + '.json',
+      dataType: 'jsonp',
+      success: function (json) {
+        dataFrame.thumbsReady = true;
+        updateData(data, {img: json[0].thumbnail_large, thumb: json[0].thumbnail_small}, dataFrame.i, fotorama);
+      }
+    });
+  } else {
+    dataFrame.thumbsReady = true;
+  }
+
+  return {
+    img: img,
+    thumb: thumb
+  }
+}
+
+function updateData (data, _dataFrame, i, fotorama) {
+  for (var _i = 0, _l = data.length; _i < _l; _i++) {
+    var dataFrame = data[_i];
+
+    if (dataFrame.i === i && dataFrame.thumbsReady) {
+      var clear = {videoReady: true};
+      clear[STAGE_FRAME_KEY] = clear[NAV_THUMB_FRAME_KEY] = clear[NAV_DOT_FRAME_KEY] = false;
+
+      fotorama.splice(_i, 1, $.extend(
+          {},
+          dataFrame,
+          clear,
+          _dataFrame
+      ));
+
+      break;
+    }
+  }
+}
+
+function getDataFromHtml ($el) {
+  var data = [];
+
+  function getDataFromImg ($img, imgData, checkVideo) {
+    var $child = $img.children('img').eq(0),
+        _imgHref = $img.attr('href'),
+        _imgSrc = $img.attr('src'),
+        _thumbSrc = $child.attr('src'),
+        _video = imgData.video,
+        video = checkVideo ? findVideoId(_imgHref, _video === true) : false;
+
+    if (video) {
+      _imgHref = false;
+    } else {
+      video = _video;
+    }
+
+    getDimensions($img, $child, $.extend(imgData, {
+      video: video,
+      img: imgData.img || _imgHref || _imgSrc || _thumbSrc,
+      thumb: imgData.thumb || _thumbSrc || _imgSrc || _imgHref
+    }));
+  }
+
+  function getDimensions ($img, $child, imgData) {
+    var separateThumbFLAG = imgData.thumb && imgData.img !== imgData.thumb,
+        width = numberFromMeasure(imgData.width || $img.attr('width')),
+        height = numberFromMeasure(imgData.height || $img.attr('height'));
+
+    $.extend(imgData, {
+      width: width,
+      height: height,
+      thumbratio: getRatio(imgData.thumbratio || (numberFromMeasure(imgData.thumbwidth || ($child && $child.attr('width')) || separateThumbFLAG || width) / numberFromMeasure(imgData.thumbheight || ($child && $child.attr('height')) || separateThumbFLAG || height)))
+    });
+  }
+
+  $el.children().each(function () {
+    var $this = $(this),
+        dataFrame = optionsToLowerCase($.extend($this.data(), {id: $this.attr('id')}));
+    if ($this.is('a, img')) {
+      getDataFromImg($this, dataFrame, true);
+    } else if (!$this.is(':empty')) {
+      getDimensions($this, null, $.extend(dataFrame, {
+        html: this,
+        _html: $this.html() // Because of IE
+      }));
+    } else return;
+
+    data.push(dataFrame);
+  });
+
+  return data;
+}
+
+function isHidden (el) {
+  return el.offsetWidth === 0 && el.offsetHeight === 0;
+}
+
+function isDetached (el) {
+  return !$.contains(document.documentElement, el);
+}
+
+function waitFor (test, fn, timeout, i) {
+  if (!waitFor.i) {
+    waitFor.i = 1;
+    waitFor.ii = [true];
+  }
+
+  i = i || waitFor.i;
+
+  if (typeof waitFor.ii[i] === 'undefined') {
+    waitFor.ii[i] = true;
+  }
+
+  if (test()) {
+    fn();
+  } else {
+    waitFor.ii[i] && setTimeout(function () {
+      waitFor.ii[i] && waitFor(test, fn, timeout, i);
+    }, timeout || 100);
+  }
+
+  return waitFor.i++;
+}
+
+waitFor.stop = function (i) {
+  waitFor.ii[i] = false;
+};
+
+function setHash (hash) {
+  //////console.time('setHash ' + hash);
+  location.replace(location.protocol
+      + '//'
+      + location.host
+      + location.pathname.replace(/^\/?/, '/')
+      + location.search
+      + '#' + hash);
+  //////console.timeEnd('setHash ' + hash);
+}
+
+function fit ($el, measuresToFit, method, position) {
+  var elData = $el.data(),
+      measures = elData.measures;
+
+  if (measures && (!elData.l ||
+      elData.l.W !== measures.width ||
+      elData.l.H !== measures.height ||
+      elData.l.r !== measures.ratio ||
+      elData.l.w !== measuresToFit.w ||
+      elData.l.h !== measuresToFit.h ||
+      elData.l.m !== method ||
+      elData.l.p !== position)) {
+
+    //console.log('fit');
+
+    var width = measures.width,
+        height = measures.height,
+        ratio = measuresToFit.w / measuresToFit.h,
+        biggerRatioFLAG = measures.ratio >= ratio,
+        fitFLAG = method === 'scaledown',
+        containFLAG = method === 'contain',
+        coverFLAG = method === 'cover',
+        pos = parsePosition(position);
+
+    if (biggerRatioFLAG && (fitFLAG || containFLAG) || !biggerRatioFLAG && coverFLAG) {
+      width = minMaxLimit(measuresToFit.w, 0, fitFLAG ? width : Infinity);
+      height = width / measures.ratio;
+    } else if (biggerRatioFLAG && coverFLAG || !biggerRatioFLAG && (fitFLAG || containFLAG)) {
+      height = minMaxLimit(measuresToFit.h, 0, fitFLAG ? height : Infinity);
+      width = height * measures.ratio;
+    }
+
+    $el.css({
+      width: width,
+      height: height,
+      left: numberFromWhatever(pos.x, measuresToFit.w - width),
+      top: numberFromWhatever(pos.y, measuresToFit.h- height)
+    });
+
+    elData.l = {
+      W: measures.width,
+      H: measures.height,
+      r: measures.ratio,
+      w: measuresToFit.w,
+      h: measuresToFit.h,
+      m: method,
+      p: position
+    };
+  }
+
+  return true;
+}
+
+function setStyle ($el, style) {
+  var el = $el[0];
+  if (el.styleSheet) {
+    el.styleSheet.cssText = style;
+  } else {
+    $el.html(style);
+  }
+}
+
+function findShadowEdge (pos, min, max) {
+  return min === max ? false : pos <= min ? 'left' : pos >= max ? 'right' : 'left right';
+}
+
+function getIndexFromHash (hash, data, ok, startindex) {
+  if (!ok) return false;
+  if (!isNaN(hash)) return hash - (startindex ? 0 : 1);
+
+  var index;
+
+  for (var _i = 0, _l = data.length; _i < _l; _i++) {
+    var dataFrame = data[_i];
+
+    if (dataFrame.id === hash) {
+      index = _i;
+      break;
+    }
+  }
+
+  return index;
+}
+
+function smartClick ($el, fn, _options) {
+  _options = _options || {};
+
+  $el.each(function () {
+    var $this = $(this),
+        thisData = $this.data(),
+        startEvent;
+
+    if (thisData.clickOn) return;
+
+    thisData.clickOn = true;
+
+    $.extend(touch($this, {
+      onStart: function (e) {
+        startEvent = e;
+        (_options.onStart || noop).call(this, e);
+      },
+      onMove: _options.onMove || noop,
+      onTouchEnd: _options.onTouchEnd || noop,
+      onEnd: function (result) {
+        ////console.log('smartClick → result.moved', result.moved);
+        if (result.moved) return;
+        fn.call(this, startEvent);
+      }
+    }), {noMove: true});
+  });
+}
+
+function div (classes, child) {
+  return '<div class="' + classes + '">' + (child || '') + '</div>';
+}
+
+// Fisher–Yates Shuffle
+// http://bost.ocks.org/mike/shuffle/
+function shuffle (array) {
+  // While there remain elements to shuffle
+  var l = array.length;
+  while (l) {
+    // Pick a remaining element
+    var i = Math.floor(Math.random() * l--);
+
+    // And swap it with the current element
+    var t = array[l];
+    array[l] = array[i];
+    array[i] = t;
+  }
+
+  return array;
+}
+
+function clone (array) {
+  return Object.prototype.toString.call(array) == '[object Array]'
+      && $.map(array, function (frame) {
+       return $.extend({}, frame);
+      });
+}
+
+function lockScroll ($el, left, top) {
+  $el
+    .scrollLeft(left || 0)
+    .scrollTop(top || 0);
+}
+
+function optionsToLowerCase (options) {
+  if (options) {
+    var opts = {};
+    $.each(options, function (key, value) {
+      opts[key.toLowerCase()] = value;
+    });
+
+    return opts;
+  }
+}
+
+function getRatio (_ratio) {
+  if (!_ratio) return;
+  var ratio = +_ratio;
+  if (!isNaN(ratio)) {
+    return ratio;
+  } else {
+    ratio = _ratio.split('/');
+    return +ratio[0] / +ratio[1] || undefined;
+  }
+}
+
+function addEvent (el, e, fn, bool) {
+  if (!e) return;
+  el.addEventListener ? el.addEventListener(e, fn, !!bool) : el.attachEvent('on'+e, fn);
+}
+
+function elIsDisabled (el) {
+  return !!el.getAttribute('disabled');
+}
+
+function disableAttr (FLAG) {
+  return {tabindex: FLAG * -1 + '', disabled: FLAG};
+}
+
+function addEnterUp (el, fn) {
+  addEvent(el, 'keyup', function (e) {
+    elIsDisabled(el) || e.keyCode == 13 && fn.call(el, e);
+  });
+}
+
+function addFocus (el, fn) {
+  addEvent(el, 'focus', el.onfocusin = function (e) {
+    fn.call(el, e);
+  }, true);
+}
+
+function stopEvent (e, stopPropagation) {
+  e.preventDefault ? e.preventDefault() : (e.returnValue = false);
+  stopPropagation && e.stopPropagation && e.stopPropagation();
+}
+
+function getDirectionSign (forward) {
+  return forward ? '>' : '<';
+}
+
+function parsePosition (rule) {
+  rule = (rule + '').split(/\s+/);
+  return {
+    x: measureIsValid(rule[0]) || FIFTYFIFTY,
+    y: measureIsValid(rule[1]) || FIFTYFIFTY
+  }
+}
+function slide ($el, options) {
+  var elData = $el.data(),
+      elPos = Math.round(options.pos),
+      onEndFn = function () {
+        elData.sliding = false;
+        (options.onEnd || noop)();
+      };
+
+  if (typeof options.overPos !== 'undefined' && options.overPos !== options.pos) {
+    elPos = options.overPos;
+    onEndFn = function () {
+      slide($el, $.extend({}, options, {overPos: options.pos, time: Math.max(TRANSITION_DURATION, options.time / 2)}))
+    };
+  }
+
+  ////////console.time('var translate = $.extend');
+  var translate = $.extend(getTranslate(elPos/*, options._001*/), options.width && {width: options.width});
+  ////////console.timeEnd('var translate = $.extend');
+
+  elData.sliding = true;
+
+  if (CSS3) {
+    $el.css($.extend(getDuration(options.time), translate));
+    if (options.time > 10) {
+      ////////console.time('afterTransition');
+      afterTransition($el, 'transform', onEndFn, options.time);
+      ////////console.timeEnd('afterTransition');
+    } else {
+      onEndFn();
+    }
+  } else {
+    $el.stop().animate(translate, options.time, BEZIER, onEndFn);
+  }
+}
+
+function fade ($el1, $el2, $frames, options, fadeStack, chain) {
+  var chainedFLAG = typeof chain !== 'undefined';
+  if (!chainedFLAG) {
+    fadeStack.push(arguments);
+    Array.prototype.push.call(arguments, fadeStack.length);
+    if (fadeStack.length > 1) return;
+  }
+
+  $el1 = $el1 || $($el1);
+  $el2 = $el2 || $($el2);
+
+  var _$el1 = $el1[0],
+      _$el2 = $el2[0],
+      crossfadeFLAG = options.method === 'crossfade',
+      onEndFn = function () {
+        if (!onEndFn.done) {
+          onEndFn.done = true;
+          var args = (chainedFLAG || fadeStack.shift()) && fadeStack.shift();
+          args && fade.apply(this, args);
+          (options.onEnd || noop)(!!args);
+        }
+      },
+      time = options.time / (chain || 1);
+
+  $frames.removeClass(fadeRearClass + ' ' + fadeFrontClass);
+
+  $el1
+      .stop()
+      .addClass(fadeRearClass);
+  $el2
+      .stop()
+      .addClass(fadeFrontClass);
+
+  crossfadeFLAG && _$el2 && $el1.fadeTo(0, 0);
+
+  $el1.fadeTo(crossfadeFLAG ? time : 0, 1, crossfadeFLAG && onEndFn);
+  $el2.fadeTo(time, 0, onEndFn);
+
+  (_$el1 && crossfadeFLAG) || _$el2 || onEndFn();
+}
+var lastEvent,
+    moveEventType,
+    preventEvent,
+    preventEventTimeout;
+
+function extendEvent (e) {
+  var touch = (e.touches || [])[0] || e;
+  e._x = touch.pageX;
+  e._y = touch.clientY;
+  e._now = $.now();
+}
+
+function touch ($el, options) {
+  var el = $el[0],
+      tail = {},
+      touchEnabledFLAG,
+      startEvent,
+      $target,
+      controlTouch,
+      touchFLAG,
+      targetIsSelectFLAG,
+      targetIsLinkFlag,
+      tolerance,
+      moved;
+
+  function onStart (e) {
+    $target = $(e.target);
+    tail.checked = targetIsSelectFLAG = targetIsLinkFlag = moved = false;
+
+    if (touchEnabledFLAG
+        || tail.flow
+        || (e.touches && e.touches.length > 1)
+        || e.which > 1
+        || (lastEvent && lastEvent.type !== e.type && preventEvent)
+        || (targetIsSelectFLAG = options.select && $target.is(options.select, el))) return targetIsSelectFLAG;
+
+    touchFLAG = e.type === 'touchstart';
+    targetIsLinkFlag = $target.is('a, a *', el);
+    controlTouch = tail.control;
+
+    tolerance = (tail.noMove || tail.noSwipe || controlTouch) ? 16 : !tail.snap ? 4 : 0;
+
+    extendEvent(e);
+
+    startEvent = lastEvent = e;
+    moveEventType = e.type.replace(/down|start/, 'move').replace(/Down/, 'Move');
+
+    (options.onStart || noop).call(el, e, {control: controlTouch, $target: $target});
+
+    touchEnabledFLAG = tail.flow = true;
+
+    if (!touchFLAG || tail.go) stopEvent(e);
+  }
+
+  function onMove (e) {
+    if ((e.touches && e.touches.length > 1)
+        || (MS_POINTER && !e.isPrimary)
+        || moveEventType !== e.type
+        || !touchEnabledFLAG) {
+      touchEnabledFLAG && onEnd();
+      (options.onTouchEnd || noop)();
+      return;
+    }
+
+    extendEvent(e);
+
+    var xDiff = Math.abs(e._x - startEvent._x), // opt _x → _pageX
+        yDiff = Math.abs(e._y - startEvent._y),
+        xyDiff = xDiff - yDiff,
+        xWin = (tail.go || tail.x || xyDiff >= 0) && !tail.noSwipe,
+        yWin = xyDiff < 0;
+
+    if (touchFLAG && !tail.checked) {
+      if (touchEnabledFLAG = xWin) {
+        stopEvent(e);
+      }
+    } else {
+      ////console.log('onMove e.preventDefault');
+      stopEvent(e);
+      (options.onMove || noop).call(el, e, {touch: touchFLAG});
+    }
+
+    if (!moved && Math.sqrt(Math.pow(xDiff, 2) + Math.pow(yDiff, 2)) > tolerance) {
+      moved = true;
+    }
+
+    tail.checked = tail.checked || xWin || yWin;
+  }
+
+  function onEnd (e) {
+    //////console.time('touch.js onEnd');
+
+    (options.onTouchEnd || noop)();
+
+    var _touchEnabledFLAG = touchEnabledFLAG;
+    tail.control = touchEnabledFLAG = false;
+
+    if (_touchEnabledFLAG) {
+      tail.flow = false;
+    }
+
+    if (!_touchEnabledFLAG || (targetIsLinkFlag && !tail.checked)) return;
+
+    e && stopEvent(e);
+
+    preventEvent = true;
+    clearTimeout(preventEventTimeout);
+    preventEventTimeout = setTimeout(function () {
+      preventEvent = false;
+    }, 1000);
+
+    (options.onEnd || noop).call(el, {moved: moved, $target: $target, control: controlTouch, touch: touchFLAG, startEvent: startEvent, aborted: !e || e.type === 'MSPointerCancel'});
+    //////console.timeEnd('touch.js onEnd');
+  }
+
+  function onOtherStart () {
+    if (tail.flow) return;
+    setTimeout(function () {
+      tail.flow = true;
+    }, 10);
+  }
+
+  function onOtherEnd () {
+    if (!tail.flow) return;
+    setTimeout(function () {
+      tail.flow = false;
+    }, TOUCH_TIMEOUT);
+  }
+
+  if (MS_POINTER) {
+    addEvent(el, 'MSPointerDown', onStart);
+    addEvent(document, 'MSPointerMove', onMove);
+    addEvent(document,'MSPointerCancel', onEnd);
+    addEvent(document, 'MSPointerUp', onEnd);
+  } else {
+    addEvent(el, 'touchstart', onStart);
+    addEvent(el, 'touchmove', onMove);
+    addEvent(el, 'touchend', onEnd);
+
+    addEvent(document, 'touchstart', onOtherStart);
+    addEvent(document, 'touchend', onOtherEnd);
+    addEvent(document, 'touchcancel', onOtherEnd);
+
+    $WINDOW.on('scroll', onOtherEnd);
+
+    $el.on('mousedown', onStart);
+    $DOCUMENT
+        .on('mousemove', onMove)
+        .on('mouseup', onEnd);
+  }
+
+  $el.on('click', 'a', function (e) {
+    tail.checked && stopEvent(e);
+  });
+
+  return tail;
+}
+
+function moveOnTouch ($el, options) {
+  var el = $el[0],
+      elData = $el.data(),
+      tail = {},
+      startCoo,
+      coo,
+      startElPos,
+      moveElPos,
+      edge,
+      moveTrack,
+      startTime,
+      endTime,
+      min,
+      max,
+      snap,
+      slowFLAG,
+      controlFLAG,
+      moved,
+      tracked;
+
+  function startTracking (e, noStop) {
+    tracked = true;
+    startCoo = coo = e._x;
+    startTime = e._now;
+
+    moveTrack = [
+      [startTime, startCoo]
+    ];
+
+    startElPos = moveElPos = tail.noMove || noStop ? 0 : stop($el, (options.getPos || noop)()/*, options._001*/);
+
+    (options.onStart || noop).call(el, e);
+  }
+
+  function onStart (e, result) {
+    min = tail.min;
+    max = tail.max;
+    snap = tail.snap;
+
+    slowFLAG = e.altKey;
+    tracked = moved = false;
+
+    controlFLAG = result.control;
+
+    if (!controlFLAG && !elData.sliding) {
+      startTracking(e);
+    }
+  }
+
+  function onMove (e, result) {
+    if (!tail.noSwipe) {
+      if (!tracked) {
+        startTracking(e);
+      }
+
+      coo = e._x;
+
+      moveTrack.push([e._now, coo]);
+
+      moveElPos = startElPos - (startCoo - coo);
+
+      edge = findShadowEdge(moveElPos, min, max);
+
+      if (moveElPos <= min) {
+        moveElPos = edgeResistance(moveElPos, min);
+      } else if (moveElPos >= max) {
+        moveElPos = edgeResistance(moveElPos, max);
+      }
+
+      if (!tail.noMove) {
+        $el.css(getTranslate(moveElPos/*, options._001*/));
+        if (!moved) {
+          moved = true;
+          // only for mouse
+          result.touch || MS_POINTER || $el.addClass(grabbingClass);
         }
 
-        slides = $( slides );
-        var slideCount = slides.length;
+        (options.onMove || noop).call(el, e, {pos: moveElPos, edge: edge});
+      }
+    }
+  }
 
-        if ( ! slideCount )
-            return;
+  function onEnd (result) {
+    //////console.time('moveontouch.js onEnd');
+    if (tail.noSwipe && result.moved) return;
 
-        slides.css('visibility','hidden').appendTo('body').each(function(i) { // appendTo fixes #56
-            var count = 0;
-            var slide = $(this);
-            var images = slide.is('img') ? slide : slide.find('img');
-            slide.data('index', i);
-            // allow some images to be marked as unimportant (and filter out images w/o src value)
-            images = images.filter(':not(.cycle-loader-ignore)').filter(':not([src=""])');
-            if ( ! images.length ) {
-                --slideCount;
-                slideArr.push( slide );
-                return;
+    if (!tracked) {
+      startTracking(result.startEvent, true);
+    }
+
+    ////console.log('onEnd');
+
+    result.touch || MS_POINTER || $el.removeClass(grabbingClass);
+
+    endTime = $.now();
+
+    var _backTimeIdeal = endTime - TOUCH_TIMEOUT,
+        _backTime,
+        _timeDiff,
+        _timeDiffLast,
+        backTime = null,
+        backCoo,
+        virtualPos,
+        limitPos,
+        newPos,
+        overPos,
+        time = TRANSITION_DURATION,
+        speed,
+        friction = options.friction;
+
+    for (var _i = moveTrack.length - 1; _i >= 0; _i--) {
+      _backTime = moveTrack[_i][0];
+      _timeDiff = Math.abs(_backTime - _backTimeIdeal);
+      if (backTime === null || _timeDiff < _timeDiffLast) {
+        backTime = _backTime;
+        backCoo = moveTrack[_i][1];
+      } else if (backTime === _backTimeIdeal || _timeDiff > _timeDiffLast) {
+        break;
+      }
+      _timeDiffLast = _timeDiff;
+    }
+
+    newPos = minMaxLimit(moveElPos, min, max);
+
+    var cooDiff = backCoo - coo,
+        forwardFLAG = cooDiff >= 0,
+        timeDiff = endTime - backTime,
+        longTouchFLAG = timeDiff > TOUCH_TIMEOUT,
+        swipeFLAG = !longTouchFLAG && moveElPos !== startElPos && newPos === moveElPos;
+
+    if (snap) {
+      newPos = minMaxLimit(Math[swipeFLAG ? (forwardFLAG ? 'floor' : 'ceil') : 'round'](moveElPos / snap) * snap, min, max);
+      min = max = newPos;
+    }
+
+    if (swipeFLAG && (snap || newPos === moveElPos)) {
+      speed = -(cooDiff / timeDiff);
+      time *= minMaxLimit(Math.abs(speed), options.timeLow, options.timeHigh);
+      virtualPos = Math.round(moveElPos + speed * time / friction);
+
+      if (!snap) {
+        newPos = virtualPos;
+      }
+
+      if (!forwardFLAG && virtualPos > max || forwardFLAG && virtualPos < min) {
+        limitPos = forwardFLAG ? min : max;
+        overPos = virtualPos - limitPos;
+        if (!snap) {
+          newPos = limitPos;
+        }
+        overPos = minMaxLimit(newPos + overPos * .03, limitPos - 50, limitPos + 50);
+        time = Math.abs((moveElPos - overPos) / (speed / friction));
+      }
+    }
+
+    time *= slowFLAG ? 10 : 1;
+
+    (options.onEnd || noop).call(el, $.extend(result, {moved: result.moved || longTouchFLAG && snap, pos: moveElPos, newPos: newPos, overPos: overPos, time: time}));
+  }
+
+  tail = $.extend(touch(options.$wrap, $.extend({}, options, {
+    onStart: onStart,
+    onMove: onMove,
+    onEnd: onEnd
+  })), tail);
+
+  return tail;
+}
+function wheel ($el, options) {
+  var el = $el[0],
+      lockFLAG,
+      lastDirection,
+      lastNow,
+      tail = {
+        prevent: {}
+      };
+
+  addEvent(el, WHEEL, function (e) {
+    var yDelta = e.wheelDeltaY || -1 * e.deltaY || 0,
+        xDelta = e.wheelDeltaX || -1 * e.deltaX || 0,
+        xWin = Math.abs(xDelta) && !Math.abs(yDelta),
+        direction = getDirectionSign(xDelta < 0),
+        sameDirection = lastDirection === direction,
+        now = $.now(),
+        tooFast = now - lastNow < TOUCH_TIMEOUT;
+
+    lastDirection = direction;
+    lastNow = now;
+
+    if (!xWin || !tail.ok || tail.prevent[direction] && !lockFLAG) {
+      return;
+    } else {
+      stopEvent(e, true);
+      if (lockFLAG && sameDirection && tooFast) {
+        return;
+      }
+    }
+
+    if (options.shift) {
+      lockFLAG = true;
+      clearTimeout(tail.t);
+      tail.t = setTimeout(function () {
+        lockFLAG = false;
+      }, SCROLL_LOCK_TIMEOUT);
+    }
+
+    (options.onEnd || noop)(e, options.shift ? direction : xDelta);
+
+  });
+
+  return tail;
+}
+jQuery.Fotorama = function ($fotorama, opts) {
+  $HTML = $('html');
+  $BODY = $('body');
+
+  var that = this,
+      stamp = $.now(),
+      stampClass = _fotoramaClass + stamp,
+      fotorama = $fotorama[0],
+      data,
+      dataFrameCount = 1,
+      fotoramaData = $fotorama.data(),
+      size,
+
+      $style = $('<style></style>'),
+
+      $anchor = $(div(hiddenClass)),
+      $wrap = $(div(wrapClass)),
+      $stage = $(div(stageClass)).appendTo($wrap),
+      stage = $stage[0],
+
+      $stageShaft = $(div(stageShaftClass)).appendTo($stage),
+      $stageFrame = $(),
+      $arrPrev = $(div(arrClass + ' ' + arrPrevClass + buttonAttributes)),
+      $arrNext = $(div(arrClass + ' ' + arrNextClass + buttonAttributes)),
+      $arrs = $arrPrev.add($arrNext).appendTo($stage),
+      $navWrap = $(div(navWrapClass)),
+      $nav = $(div(navClass)).appendTo($navWrap),
+      $navShaft = $(div(navShaftClass)).appendTo($nav),
+      $navFrame,
+      $navDotFrame = $(),
+      $navThumbFrame = $(),
+
+      stageShaftData = $stageShaft.data(),
+      navShaftData = $navShaft.data(),
+
+      $thumbBorder = $(div(thumbBorderClass)).appendTo($navShaft),
+
+      $fullscreenIcon = $(div(fullscreenIconClass + buttonAttributes)),
+      fullscreenIcon = $fullscreenIcon[0],
+			$downloadIcon = $(div(downloadIconClass + buttonAttributes)),
+      downloadIcon = $downloadIcon[0],
+      $videoPlay = $(div(videoPlayClass)),
+      $videoClose = $(div(videoCloseClass)).appendTo($stage),
+      videoClose = $videoClose[0],
+
+      spinner,
+      $spinner = $(div(spinnerClass)),
+
+      $videoPlaying,
+
+      activeIndex = false,
+      activeFrame,
+      activeIndexes,
+      repositionIndex,
+      dirtyIndex,
+      lastActiveIndex,
+      prevIndex,
+      nextIndex,
+      nextAutoplayIndex,
+      startIndex,
+
+      o_loop,
+      o_nav,
+      o_navThumbs,
+      o_navTop,
+      o_allowFullScreen,
+      o_nativeFullScreen,
+      o_fade,
+      o_thumbSide,
+      o_thumbSide2,
+      o_transitionDuration,
+      o_transition,
+      o_shadows,
+      o_rtl,
+      o_keyboard,
+      lastOptions = {},
+
+      measures = {},
+      measuresSetFLAG,
+
+      stageShaftTouchTail = {},
+      stageWheelTail = {},
+      navShaftTouchTail = {},
+      navWheelTail = {},
+
+      scrollTop,
+      scrollLeft,
+
+      showedFLAG,
+      pausedAutoplayFLAG,
+      stoppedAutoplayFLAG,
+
+      toDeactivate = {},
+      toDetach = {},
+
+      measuresStash,
+
+      touchedFLAG,
+
+      hoverFLAG,
+
+      navFrameKey,
+      stageLeft = 0,
+
+      fadeStack = [];
+
+  $wrap[STAGE_FRAME_KEY] = $(div(stageFrameClass));
+  $wrap[NAV_THUMB_FRAME_KEY] = $(div(navFrameClass + ' ' + navFrameThumbClass + buttonAttributes, div(thumbClass)));
+  $wrap[NAV_DOT_FRAME_KEY] = $(div(navFrameClass + ' ' + navFrameDotClass + buttonAttributes, div(dotClass)));
+
+  toDeactivate[STAGE_FRAME_KEY] = [];
+  toDeactivate[NAV_THUMB_FRAME_KEY] = [];
+  toDeactivate[NAV_DOT_FRAME_KEY] = [];
+  toDetach[STAGE_FRAME_KEY] = {};
+
+  $wrap
+      .addClass(CSS3 ? wrapCss3Class : wrapCss2Class)
+      .toggleClass(wrapNoControlsClass, !opts.controlsonstart);
+
+  fotoramaData.fotorama = this;
+
+  function checkForVideo () {
+    $.each(data, function (i, dataFrame) {
+      if (!dataFrame.i) {
+        dataFrame.i = dataFrameCount++;
+        var video = findVideoId(dataFrame.video, true);
+        if (video) {
+          var thumbs = {};
+          dataFrame.video = video;
+          if (!dataFrame.img && !dataFrame.thumb) {
+            thumbs = getVideoThumbs(dataFrame, data, that);
+          } else {
+            dataFrame.thumbsReady = true;
+          }
+          updateData(data, {img: thumbs.img, thumb: thumbs.thumb}, dataFrame.i, that);
+        }
+      }
+    });
+  }
+
+  function allowKey (key) {
+    return o_keyboard[key] || that.fullScreen;
+  }
+
+  function bindGlobalEvents (FLAG) {
+    var keydownCommon = 'keydown.' + _fotoramaClass,
+        localStamp = _fotoramaClass + stamp,
+        keydownLocal = 'keydown.' + localStamp,
+        resizeLocal = 'resize.' + localStamp + ' ' + 'orientationchange.' + localStamp;
+
+    if (FLAG) {
+      $DOCUMENT
+          .on(keydownLocal, function (e) {
+            var catched,
+                index;
+
+            if ($videoPlaying && e.keyCode === 27) {
+              catched = true;
+              unloadVideo($videoPlaying, true, true);
+            } else if (that.fullScreen || (opts.keyboard && !that.index)) {
+              if (e.keyCode === 27) {
+                catched = true;
+                that.cancelFullScreen();
+              } else if ((e.shiftKey && e.keyCode === 32 && allowKey('space')) || (e.keyCode === 37 && allowKey('left')) || (e.keyCode === 38 && allowKey('up'))) {
+                index = '<';
+              } else if ((e.keyCode === 32 && allowKey('space')) || (e.keyCode === 39 && allowKey('right')) || (e.keyCode === 40 && allowKey('down'))) {
+                index = '>';
+              } else if (e.keyCode === 36 && allowKey('home')) {
+                index = '<<';
+              } else if (e.keyCode === 35 && allowKey('end')) {
+                index = '>>';
+              }
             }
 
-            count = images.length;
-            images.each(function() {
-                // add images that are already loaded
-                if ( this.complete ) {
-                    imageLoaded();
-                }
-                else {
-                    $(this).load(function() {
-                        imageLoaded();
-                    }).on("error", function() {
-                        if ( --count === 0 ) {
-                            // ignore this slide
-                            opts.API.log('slide skipped; img not loaded:', this.src);
-                            if ( --slideCount === 0 && opts.loader == 'wait') {
-                                addFn.apply( opts.API, [ slideArr, prepend ] );
-                            }
-                        }
-                    });
-                }
+            (catched || index) && stopEvent(e);
+            index && that.show({index: index, slow: e.altKey, user: true});
+          });
+
+      if (!that.index) {
+        $DOCUMENT
+            .off(keydownCommon)
+            .on(keydownCommon, 'textarea, input, select', function (e) {
+              !$BODY.hasClass(_fullscreenClass) && e.stopPropagation();
             });
+      }
 
-            function imageLoaded() {
-                if ( --count === 0 ) {
-                    --slideCount;
-                    addSlide( slide );
-                }
-            }
-        });
+      $WINDOW.on(resizeLocal, that.resize);
+    } else {
+      $DOCUMENT.off(keydownLocal);
+      $WINDOW.off(resizeLocal);
+    }
+  }
 
-        if ( slideCount )
-            opts.container.addClass('cycle-loading');
-        
+  function appendElements (FLAG) {
+    if (FLAG === appendElements.f) return;
 
-        function addSlide( slide ) {
-            var curr;
-            if ( opts.loader == 'wait' ) {
-                slideArr.push( slide );
-                if ( slideCount === 0 ) {
-                    // #59; sort slides into original markup order
-                    slideArr.sort( sorter );
-                    addFn.apply( opts.API, [ slideArr, prepend ] );
-                    opts.container.removeClass('cycle-loading');
-                }
-            }
-            else {
-                curr = $(opts.slides[opts.currSlide]);
-                addFn.apply( opts.API, [ slide, prepend ] );
-                curr.show();
-                opts.container.removeClass('cycle-loading');
-            }
+    if (FLAG) {
+      $fotorama
+          .html('')
+          .addClass(_fotoramaClass + ' ' + stampClass)
+          .append($wrap)
+          .before($style)
+          .before($anchor);
+
+      addInstance(that);
+    } else {
+      $wrap.detach();
+      $style.detach();
+      $anchor.detach();
+      $fotorama
+          .html(fotoramaData.urtext)
+          .removeClass(stampClass);
+
+      hideInstance(that);
+    }
+
+    bindGlobalEvents(FLAG);
+    appendElements.f = FLAG;
+  }
+
+  function setData () {
+    data = that.data = data || clone(opts.data) || getDataFromHtml($fotorama);
+    size = that.size = data.length;
+
+    !ready.ok && opts.shuffle && shuffle(data);
+
+    checkForVideo();
+
+    activeIndex = limitIndex(activeIndex);
+
+    size && appendElements(true);
+  }
+
+  function stageNoMove () {
+    var _noMove = (size < 2 && !opts.enableifsingleframe) || $videoPlaying;
+    stageShaftTouchTail.noMove = _noMove || o_fade;
+    stageShaftTouchTail.noSwipe = _noMove || !opts.swipe;
+
+    !o_transition && $stageShaft.toggleClass(grabClass, !opts.click && !stageShaftTouchTail.noMove && !stageShaftTouchTail.noSwipe);
+    MS_POINTER && $wrap.toggleClass(wrapPanYClass, !stageShaftTouchTail.noSwipe);
+  }
+
+  function setAutoplayInterval (interval) {
+    if (interval === true) interval = '';
+    opts.autoplay = Math.max(+interval || AUTOPLAY_INTERVAL, o_transitionDuration * 1.5);
+  }
+
+  /**
+   * Options on the fly
+   * */
+  function setOptions () {
+    that.options = opts = optionsToLowerCase(opts);
+
+    o_fade = (opts.transition === 'crossfade' || opts.transition === 'dissolve');
+
+    o_loop = opts.loop && (size > 2 || (o_fade && (!o_transition || o_transition !== 'slide')));
+
+    o_transitionDuration = +opts.transitionduration || TRANSITION_DURATION;
+
+    o_rtl = opts.direction === 'rtl';
+
+    o_keyboard = $.extend({}, opts.keyboard && KEYBOARD_OPTIONS, opts.keyboard);
+
+    var classes = {add: [], remove: []};
+
+    function addOrRemoveClass (FLAG, value) {
+      classes[FLAG ? 'add' : 'remove'].push(value);
+    }
+
+    if (size > 1 || opts.enableifsingleframe) {
+      o_nav = opts.nav;
+      o_navTop = opts.navposition === 'top';
+      classes.remove.push(selectClass);
+
+      $arrs.toggle(!!opts.arrows);
+    } else {
+      o_nav = false;
+      $arrs.hide();
+    }
+
+    spinnerStop();
+    spinner = new Spinner($.extend(spinnerDefaults, opts.spinner, spinnerOverride, {direction: o_rtl ? -1 : 1}));
+
+    arrsUpdate();
+    stageWheelUpdate();
+
+    if (opts.autoplay) setAutoplayInterval(opts.autoplay);
+
+    o_thumbSide = numberFromMeasure(opts.thumbwidth) || THUMB_SIZE;
+    o_thumbSide2 = numberFromMeasure(opts.thumbheight) || THUMB_SIZE;
+
+    stageWheelTail.ok = navWheelTail.ok = opts.trackpad && !SLOW;
+
+    stageNoMove();
+
+    extendMeasures(opts, [measures]);
+
+    o_navThumbs = o_nav === 'thumbs';
+
+    if (o_navThumbs) {
+      frameDraw(size, 'navThumb');
+
+      $navFrame = $navThumbFrame;
+      navFrameKey = NAV_THUMB_FRAME_KEY;
+
+      setStyle($style, $.Fotorama.jst.style({w: o_thumbSide, h: o_thumbSide2, b: opts.thumbborderwidth, m: opts.thumbmargin, s: stamp, q: !COMPAT}));
+
+      $nav
+          .addClass(navThumbsClass)
+          .removeClass(navDotsClass);
+    } else if (o_nav === 'dots') {
+      frameDraw(size, 'navDot');
+
+      $navFrame = $navDotFrame;
+      navFrameKey = NAV_DOT_FRAME_KEY;
+
+      $nav
+          .addClass(navDotsClass)
+          .removeClass(navThumbsClass);
+    } else {
+      o_nav = false;
+      $nav.removeClass(navThumbsClass + ' ' + navDotsClass);
+    }
+
+    if (o_nav) {
+      if (o_navTop) {
+        $navWrap.insertBefore($stage);
+      } else {
+        $navWrap.insertAfter($stage);
+      }
+      frameAppend.nav = false;
+      frameAppend($navFrame, $navShaft, 'nav');
+    }
+
+    o_allowFullScreen = opts.allowfullscreen;
+
+    if (o_allowFullScreen) {
+      $fullscreenIcon.prependTo($stage);
+      o_nativeFullScreen = FULLSCREEN && o_allowFullScreen === 'native';
+    } else {
+      $fullscreenIcon.detach();
+      o_nativeFullScreen = false;
+    }
+
+		$downloadIcon.prependTo($stage);
+
+    addOrRemoveClass(o_fade, wrapFadeClass);
+    addOrRemoveClass(!o_fade, wrapSlideClass);
+    addOrRemoveClass(!opts.captions, wrapNoCaptionsClass);
+    addOrRemoveClass(o_rtl, wrapRtlClass);
+    addOrRemoveClass(opts.arrows !== 'always', wrapToggleArrowsClass);
+
+    o_shadows = opts.shadows && !SLOW;
+    addOrRemoveClass(!o_shadows, wrapNoShadowsClass);
+
+    $wrap
+        .addClass(classes.add.join(' '))
+        .removeClass(classes.remove.join(' '));
+
+    lastOptions = $.extend({}, opts);
+  }
+
+  function normalizeIndex (index) {
+    return index < 0 ? (size + (index % size)) % size : index >= size ? index % size : index;
+  }
+
+  function limitIndex (index) {
+    return minMaxLimit(index, 0, size - 1);
+  }
+
+  function edgeIndex (index) {
+    return o_loop ? normalizeIndex(index) : limitIndex(index);
+  }
+
+  function getPrevIndex (index) {
+    return index > 0 || o_loop ? index - 1 : false;
+  }
+
+  function getNextIndex (index) {
+    return index < size - 1 || o_loop ? index + 1 : false;
+  }
+
+  function setStageShaftMinmaxAndSnap () {
+    stageShaftTouchTail.min = o_loop ? -Infinity : -getPosByIndex(size - 1, measures.w, opts.margin, repositionIndex);
+    stageShaftTouchTail.max = o_loop ? Infinity : -getPosByIndex(0, measures.w, opts.margin, repositionIndex);
+    stageShaftTouchTail.snap = measures.w + opts.margin;
+  }
+
+  function setNavShaftMinMax () {
+    ////////console.log('setNavShaftMinMax', measures.nw);
+    navShaftTouchTail.min = Math.min(0, measures.nw - $navShaft.width());
+    navShaftTouchTail.max = 0;
+    $navShaft.toggleClass(grabClass, !(navShaftTouchTail.noMove = navShaftTouchTail.min === navShaftTouchTail.max));
+  }
+
+  function eachIndex (indexes, type, fn) {
+    if (typeof indexes === 'number') {
+      indexes = new Array(indexes);
+      var rangeFLAG = true;
+    }
+    return $.each(indexes, function (i, index) {
+      if (rangeFLAG) index = i;
+      if (typeof index === 'number') {
+        var dataFrame = data[normalizeIndex(index)];
+
+        if (dataFrame) {
+          var key = '$' + type + 'Frame',
+              $frame = dataFrame[key];
+
+          fn.call(this, i, index, dataFrame, $frame, key, $frame && $frame.data());
         }
-
-        function sorter(a, b) {
-            return a.data('index') - b.data('index');
-        }
-    }
-});
-
-})(jQuery);
-
-/*! pager plugin for Cycle2;  version: 20140415 */
-(function($) {
-"use strict";
-
-$.extend($.fn.cycle.defaults, {
-    pager:            '> .cycle-pager',
-    pagerActiveClass: 'cycle-pager-active',
-    pagerEvent:       'click.cycle',
-    pagerEventBubble: undefined,
-    pagerTemplate:    '<span>&bull;</span>'
-});
-
-$(document).on( 'cycle-bootstrap', function( e, opts, API ) {
-    // add method to API
-    API.buildPagerLink = buildPagerLink;
-});
-
-$(document).on( 'cycle-slide-added', function( e, opts, slideOpts, slideAdded ) {
-    if ( opts.pager ) {
-        opts.API.buildPagerLink ( opts, slideOpts, slideAdded );
-        opts.API.page = page;
-    }
-});
-
-$(document).on( 'cycle-slide-removed', function( e, opts, index, slideRemoved ) {
-    if ( opts.pager ) {
-        var pagers = opts.API.getComponent( 'pager' );
-        pagers.each(function() {
-            var pager = $(this);
-            $( pager.children()[index] ).remove();
-        });
-    }
-});
-
-$(document).on( 'cycle-update-view', function( e, opts, slideOpts ) {
-    var pagers;
-
-    if ( opts.pager ) {
-        pagers = opts.API.getComponent( 'pager' );
-        pagers.each(function() {
-           $(this).children().removeClass( opts.pagerActiveClass )
-            .eq( opts.currSlide ).addClass( opts.pagerActiveClass );
-        });
-    }
-});
-
-$(document).on( 'cycle-destroyed', function( e, opts ) {
-    var pager = opts.API.getComponent( 'pager' );
-
-    if ( pager ) {
-        pager.children().off( opts.pagerEvent ); // #202
-        if ( opts.pagerTemplate )
-            pager.empty();
-    }
-});
-
-function buildPagerLink( opts, slideOpts, slide ) {
-    var pagerLink;
-    var pagers = opts.API.getComponent( 'pager' );
-    pagers.each(function() {
-        var pager = $(this);
-        if ( slideOpts.pagerTemplate ) {
-            var markup = opts.API.tmpl( slideOpts.pagerTemplate, slideOpts, opts, slide[0] );
-            pagerLink = $( markup ).appendTo( pager );
-        }
-        else {
-            pagerLink = pager.children().eq( opts.slideCount - 1 );
-        }
-        pagerLink.on( opts.pagerEvent, function(e) {
-            if ( ! opts.pagerEventBubble )
-                e.preventDefault();
-            opts.API.page( pager, e.currentTarget);
-        });
+      }
     });
-}
+  }
 
-function page( pager, target ) {
-    /*jshint validthis:true */
-    var opts = this.opts();
-    if ( opts.busy && ! opts.manualTrump )
-        return;
+  function setMeasures (width, height, ratio, index) {
+    if (!measuresSetFLAG || (measuresSetFLAG === '*' && index === startIndex)) {
 
-    var index = pager.children().index( target );
-    var nextSlide = index;
-    var fwd = opts.currSlide < nextSlide;
-    if (opts.currSlide == nextSlide) {
-        return; // no op, clicked pager for the currently displayed slide
+      //////console.log('setMeasures', index, opts.width, opts.height);
+
+      width = measureIsValid(opts.width) || measureIsValid(width) || WIDTH;
+      height = measureIsValid(opts.height) || measureIsValid(height) || HEIGHT;
+      that.resize({
+        width: width,
+        ratio: opts.ratio || ratio || width / height
+      }, 0, index !== startIndex && '*');
     }
-    opts.nextSlide = nextSlide;
-    opts._tempFx = opts.pagerFx;
-    opts.API.prepareTx( true, fwd );
-    opts.API.trigger('cycle-pager-activated', [opts, pager, target ]);
-}
+  }
 
-})(jQuery);
+  function loadImg (indexes, type, specialMeasures, method, position, again) {
+    eachIndex(indexes, type, function (i, index, dataFrame, $frame, key, frameData) {
 
-/*! prevnext plugin for Cycle2;  version: 20140408 */
-(function($) {
-"use strict";
+      if (!$frame) return;
 
-$.extend($.fn.cycle.defaults, {
-    next:           '> .cycle-next',
-    nextEvent:      'click.cycle',
-    disabledClass:  'disabled',
-    prev:           '> .cycle-prev',
-    prevEvent:      'click.cycle',
-    swipe:          false
-});
+      var fullFLAG = that.fullScreen && dataFrame.full && dataFrame.full !== dataFrame.img && !frameData.$full && type === 'stage';
 
-$(document).on( 'cycle-initialized', function( e, opts ) {
-    opts.API.getComponent( 'next' ).on( opts.nextEvent, function(e) {
-        e.preventDefault();
-        opts.API.next();
-    });
+      if (frameData.$img && !again && !fullFLAG) return;
 
-    opts.API.getComponent( 'prev' ).on( opts.prevEvent, function(e) {
-        e.preventDefault();
-        opts.API.prev();
-    });
+      var img = new Image(),
+          $img = $(img),
+          imgData = $img.data();
 
-    if ( opts.swipe ) {
-        var nextEvent = opts.swipeVert ? 'swipeUp.cycle' : 'swipeLeft.cycle swipeleft.cycle';
-        var prevEvent = opts.swipeVert ? 'swipeDown.cycle' : 'swipeRight.cycle swiperight.cycle';
-        opts.container.on( nextEvent, function(e) {
-            opts._tempFx = opts.swipeFx;
-            opts.API.next();
+      frameData[fullFLAG ? '$full' : '$img'] = $img;
+
+      var srcKey = type === 'stage' ? (fullFLAG ? 'full' : 'img') : 'thumb',
+          src = dataFrame[srcKey],
+          dummy = fullFLAG ? null : dataFrame[type === 'stage' ? 'thumb' : 'img'];
+
+      if (type === 'navThumb') $frame = frameData.$wrap;
+
+      function triggerTriggerEvent (event) {
+        var _index = normalizeIndex(index);
+        triggerEvent(event, {
+          index: _index,
+          src: src,
+          frame: data[_index]
         });
-        opts.container.on( prevEvent, function() {
-            opts._tempFx = opts.swipeFx;
-            opts.API.prev();
-        });
-    }
-});
+      }
 
-$(document).on( 'cycle-update-view', function( e, opts, slideOpts, currSlide ) {
-    if ( opts.allowWrap )
-        return;
+      function error () {
+        $img.remove();
 
-    var cls = opts.disabledClass;
-    var next = opts.API.getComponent( 'next' );
-    var prev = opts.API.getComponent( 'prev' );
-    var prevBoundry = opts._prevBoundry || 0;
-    var nextBoundry = (opts._nextBoundry !== undefined)?opts._nextBoundry:opts.slideCount - 1;
+        $.Fotorama.cache[src] = 'error';
 
-    if ( opts.currSlide == nextBoundry )
-        next.addClass( cls ).prop( 'disabled', true );
-    else
-        next.removeClass( cls ).prop( 'disabled', false );
+        if ((!dataFrame.html || type !== 'stage') && dummy && dummy !== src) {
+          dataFrame[srcKey] = src = dummy;
+          loadImg([index], type, specialMeasures, method, position, true);
+        } else {
+          if (src && !dataFrame.html && !fullFLAG) {
+            $frame
+                .trigger('f:error')
+                .removeClass(loadingClass)
+                .addClass(errorClass);
 
-    if ( opts.currSlide === prevBoundry )
-        prev.addClass( cls ).prop( 'disabled', true );
-    else
-        prev.removeClass( cls ).prop( 'disabled', false );
-});
+            triggerTriggerEvent('error');
+          } else if (type === 'stage') {
+            $frame
+                .trigger('f:load')
+                .removeClass(loadingClass + ' ' + errorClass)
+                .addClass(loadedClass);
 
+            triggerTriggerEvent('load');
+            setMeasures();
+          }
 
-$(document).on( 'cycle-destroyed', function( e, opts ) {
-    opts.API.getComponent( 'prev' ).off( opts.nextEvent );
-    opts.API.getComponent( 'next' ).off( opts.prevEvent );
-    opts.container.off( 'swipeleft.cycle swiperight.cycle swipeLeft.cycle swipeRight.cycle swipeUp.cycle swipeDown.cycle' );
-});
+          frameData.state = 'error';
 
-})(jQuery);
-
-/*! progressive loader plugin for Cycle2;  version: 20130315 */
-(function($) {
-"use strict";
-
-$.extend($.fn.cycle.defaults, {
-    progressive: false
-});
-
-$(document).on( 'cycle-pre-initialize', function( e, opts ) {
-    if ( !opts.progressive )
-        return;
-
-    var API = opts.API;
-    var nextFn = API.next;
-    var prevFn = API.prev;
-    var prepareTxFn = API.prepareTx;
-    var type = $.type( opts.progressive );
-    var slides, scriptEl;
-
-    if ( type == 'array' ) {
-        slides = opts.progressive;
-    }
-    else if ($.isFunction( opts.progressive ) ) {
-        slides = opts.progressive( opts );
-    }
-    else if ( type == 'string' ) {
-        scriptEl = $( opts.progressive );
-        slides = $.trim( scriptEl.html() );
-        if ( !slides )
-            return;
-        // is it json array?
-        if ( /^(\[)/.test( slides ) ) {
-            try {
-                slides = $.parseJSON( slides );
-            }
-            catch(err) {
-                API.log( 'error parsing progressive slides', err );
-                return;
-            }
+          if (size > 1 && data[index] === dataFrame && !dataFrame.html && !dataFrame.deleted && !dataFrame.video && !fullFLAG) {
+            dataFrame.deleted = true;
+            that.splice(index, 1);
+          }
         }
-        else {
-            // plain text, split on delimeter
-            slides = slides.split( new RegExp( scriptEl.data('cycle-split') || '\n') );
-            
-            // #95; look for empty slide
-            if ( ! slides[ slides.length - 1 ] )
-                slides.pop();
-        }
-    }
+      }
 
+      function loaded () {
+        //////console.log('loaded: ' + src);
 
+        ////console.log('$.Fotorama.measures[src]', $.Fotorama.measures[src]);
 
-    if ( prepareTxFn ) {
-        API.prepareTx = function( manual, fwd ) {
-            var index, slide;
-
-            if ( manual || slides.length === 0 ) {
-                prepareTxFn.apply( opts.API, [ manual, fwd ] );
-                return;
-            }
-
-            if ( fwd && opts.currSlide == ( opts.slideCount-1) ) {
-                slide = slides[ 0 ];
-                slides = slides.slice( 1 );
-                opts.container.one('cycle-slide-added', function(e, opts ) {
-                    setTimeout(function() {
-                        opts.API.advanceSlide( 1 );
-                    },50);
-                });
-                opts.API.add( slide );
-            }
-            else if ( !fwd && opts.currSlide === 0 ) {
-                index = slides.length-1;
-                slide = slides[ index ];
-                slides = slides.slice( 0, index );
-                opts.container.one('cycle-slide-added', function(e, opts ) {
-                    setTimeout(function() {
-                        opts.currSlide = 1;
-                        opts.API.advanceSlide( -1 );
-                    },50);
-                });
-                opts.API.add( slide, true );
-            }
-            else {
-                prepareTxFn.apply( opts.API, [ manual, fwd ] );
-            }
+        $.Fotorama.measures[src] = imgData.measures = $.Fotorama.measures[src] || {
+          width: img.width,
+          height: img.height,
+          ratio: img.width / img.height
         };
-    }
 
-    if ( nextFn ) {
-        API.next = function() {
-            var opts = this.opts();
-            if ( slides.length && opts.currSlide == ( opts.slideCount - 1 ) ) {
-                var slide = slides[ 0 ];
-                slides = slides.slice( 1 );
-                opts.container.one('cycle-slide-added', function(e, opts ) {
-                    nextFn.apply( opts.API );
-                    opts.container.removeClass('cycle-loading');
-                });
-                opts.container.addClass('cycle-loading');
-                opts.API.add( slide );
-            }
-            else {
-                nextFn.apply( opts.API );    
-            }
-        };
-    }
-    
-    if ( prevFn ) {
-        API.prev = function() {
-            var opts = this.opts();
-            if ( slides.length && opts.currSlide === 0 ) {
-                var index = slides.length-1;
-                var slide = slides[ index ];
-                slides = slides.slice( 0, index );
-                opts.container.one('cycle-slide-added', function(e, opts ) {
-                    opts.currSlide = 1;
-                    opts.API.advanceSlide( -1 );
-                    opts.container.removeClass('cycle-loading');
-                });
-                opts.container.addClass('cycle-loading');
-                opts.API.add( slide, true );
-            }
-            else {
-                prevFn.apply( opts.API );
-            }
-        };
-    }
-});
+        setMeasures(imgData.measures.width, imgData.measures.height, imgData.measures.ratio, index);
 
-})(jQuery);
+        $img
+            .off('load error')
+            .addClass(imgClass + (fullFLAG ? ' ' + imgFullClass : ''))
+            .prependTo($frame);
 
-/*! tmpl plugin for Cycle2;  version: 20121227 */
-(function($) {
-"use strict";
+        fit($img, ($.isFunction(specialMeasures) ? specialMeasures() : specialMeasures) || measures, method || dataFrame.fit || opts.fit, position || dataFrame.position || opts.position);
 
-$.extend($.fn.cycle.defaults, {
-    tmplRegex: '{{((.)?.*?)}}'
-});
+        $.Fotorama.cache[src] = frameData.state = 'loaded';
 
-$.extend($.fn.cycle.API, {
-    tmpl: function( str, opts /*, ... */) {
-        var regex = new RegExp( opts.tmplRegex || $.fn.cycle.defaults.tmplRegex, 'g' );
-        var args = $.makeArray( arguments );
-        args.shift();
-        return str.replace(regex, function(_, str) {
-            var i, j, obj, prop, names = str.split('.');
-            for (i=0; i < args.length; i++) {
-                obj = args[i];
-                if ( ! obj )
-                    continue;
-                if (names.length > 1) {
-                    prop = obj;
-                    for (j=0; j < names.length; j++) {
-                        obj = prop;
-                        prop = prop[ names[j] ] || str;
-                    }
-                } else {
-                    prop = obj[str];
-                }
+        setTimeout(function () {
+          $frame
+              .trigger('f:load')
+              .removeClass(loadingClass + ' ' + errorClass)
+              .addClass(loadedClass + ' ' + (fullFLAG ? loadedFullClass : loadedImgClass));
 
-                if ($.isFunction(prop))
-                    return prop.apply(obj, args);
-                if (prop !== undefined && prop !== null && prop != str)
-                    return prop;
-            }
-            return str;
-        });
-    }
-});    
+          if (type === 'stage') {
+            triggerTriggerEvent('load');
+          } else if (dataFrame.thumbratio === AUTO || !dataFrame.thumbratio && opts.thumbratio === AUTO) {
+            // danger! reflow for all thumbnails
+            dataFrame.thumbratio = imgData.measures.ratio;
+            reset();
+          }
+        }, 0);
+      }
 
-})(jQuery);
-
-/*! center plugin for Cycle2;  version: 20140121 */
-(function($) {
-"use strict";
-
-$.extend($.fn.cycle.defaults, {
-    centerHorz: false,
-    centerVert: false
-});
-
-$(document).on( 'cycle-pre-initialize', function( e, opts ) {
-    if ( !opts.centerHorz && !opts.centerVert )
+      if (!src) {
+        error();
         return;
+      }
 
-    // throttle resize event
-    var timeout, timeout2;
+      function waitAndLoad () {
+        var _i = 10;
+        waitFor(function () {
+          return !touchedFLAG || !_i-- && !SLOW;
+        }, function () {
+          loaded();
+        });
+      }
 
-    $(window).on( 'resize orientationchange load', resize );
-    
-    opts.container.on( 'cycle-destroyed', destroy );
+      if (!$.Fotorama.cache[src]) {
+        $.Fotorama.cache[src] = '*';
 
-    opts.container.on( 'cycle-initialized cycle-slide-added cycle-slide-removed', function( e, opts, slideOpts, slide ) {
-        resize();
+        $img
+            .on('load', waitAndLoad)
+            .on('error', error);
+      } else {
+        (function justWait () {
+          if ($.Fotorama.cache[src] === 'error') {
+            error();
+          } else if ($.Fotorama.cache[src] === 'loaded') {
+            ////console.log('take from cache: ' + src);
+            setTimeout(waitAndLoad, 0);
+          } else {
+            setTimeout(justWait, 100);
+          }
+        })();
+      }
+
+      frameData.state = '';
+      img.src = src;
     });
+  }
 
-    adjustActive();
+  function spinnerSpin ($el) {
+    $spinner.append(spinner.spin().el).appendTo($el);
+  }
 
-    function resize() {
-        clearTimeout( timeout );
-        timeout = setTimeout( adjustActive, 50 );
+  function spinnerStop () {
+    $spinner.detach();
+    spinner && spinner.stop();
+  }
+
+  function updateFotoramaState () {
+    var $frame = activeFrame[STAGE_FRAME_KEY];
+
+    if ($frame && !$frame.data().state) {
+      spinnerSpin($frame);
+      $frame.on('f:load f:error', function () {
+        $frame.off('f:load f:error');
+        spinnerStop();
+      });
     }
+  }
 
-    function destroy( e, opts ) {
-        clearTimeout( timeout );
-        clearTimeout( timeout2 );
-        $( window ).off( 'resize orientationchange', resize );
-    }
+  function addNavFrameEvents (frame) {
+    addEnterUp(frame, onNavFrameClick);
+    addFocus(frame, function () {
 
-    function adjustAll() {
-        opts.slides.each( adjustSlide ); 
-    }
+      setTimeout(function () {
+        lockScroll($nav);
+      }, 0);
+      slideNavShaft({time: o_transitionDuration, guessIndex: $(this).data().eq, minMax: navShaftTouchTail});
+    });
+  }
 
-    function adjustActive() {
-        /*jshint validthis: true */
-        adjustSlide.apply( opts.container.find( '.' + opts.slideActiveClass ) );
-        clearTimeout( timeout2 );
-        timeout2 = setTimeout( adjustAll, 50 );
-    }
+  function frameDraw (indexes, type) {
+    eachIndex(indexes, type, function (i, index, dataFrame, $frame, key, frameData) {
+      if ($frame) return;
 
-    function adjustSlide() {
-        /*jshint validthis: true */
-        var slide = $(this);
-        var contW = opts.container.width();
-        var contH = opts.container.height();
-        var w = slide.outerWidth();
-        var h = slide.outerHeight();
-        if (w) {
-            if (opts.centerHorz && w <= contW)
-                slide.css( 'marginLeft', (contW - w) / 2 );
-            if (opts.centerVert && h <= contH)
-                slide.css( 'marginTop', (contH - h) / 2 );
+      $frame = dataFrame[key] = $wrap[key].clone();
+      frameData = $frame.data();
+      frameData.data = dataFrame;
+      var frame = $frame[0];
+
+      if (type === 'stage') {
+
+        if (dataFrame.html) {
+          $('<div class="' + htmlClass + '"></div>')
+              .append(
+                  dataFrame._html ? $(dataFrame.html)
+                      .removeAttr('id')
+                      .html(dataFrame._html) // Because of IE
+                  : dataFrame.html
+              )
+              .appendTo($frame);
         }
-    }
-});
 
-})(jQuery);
+        dataFrame.caption && $(div(captionClass, div(captionWrapClass, dataFrame.caption))).appendTo($frame);
 
-/*! swipe plugin for Cycle2;  version: 20121120 */
-(function($) {
-"use strict";
+        dataFrame.video && $frame
+          .addClass(stageFrameVideoClass)
+          .append($videoPlay.clone());
 
-// this script adds support for touch events.  the logic is lifted from jQuery Mobile.
-// if you have jQuery Mobile installed, you do NOT need this script
-
-var supportTouch = 'ontouchend' in document;
-
-$.event.special.swipe = $.event.special.swipe || {
-    scrollSupressionThreshold: 10,   // More than this horizontal displacement, and we will suppress scrolling.
-    durationThreshold: 1000,         // More time than this, and it isn't a swipe.
-    horizontalDistanceThreshold: 30, // Swipe horizontal displacement must be more than this.
-    verticalDistanceThreshold: 75,   // Swipe vertical displacement must be less than this.
-
-    setup: function() {
-        var $this = $( this );
-
-        $this.bind( 'touchstart', function( event ) {
-            var data = event.originalEvent.touches ? event.originalEvent.touches[ 0 ] : event;
-            var stop, start = {
-                time: ( new Date() ).getTime(),
-                coords: [ data.pageX, data.pageY ],
-                origin: $( event.target )
-            };
-
-            function moveHandler( event ) {
-                if ( !start )
-                    return;
-
-                var data = event.originalEvent.touches ? event.originalEvent.touches[ 0 ] : event;
-
-                stop = {
-                    time: ( new Date() ).getTime(),
-                    coords: [ data.pageX, data.pageY ]
-                };
-
-                // prevent scrolling
-                if ( Math.abs( start.coords[ 0 ] - stop.coords[ 0 ] ) > $.event.special.swipe.scrollSupressionThreshold ) {
-                    event.preventDefault();
-                }
-            }
-
-            $this.bind( 'touchmove', moveHandler )
-                .one( 'touchend', function( event ) {
-                    $this.unbind( 'touchmove', moveHandler );
-
-                    if ( start && stop ) {
-                        if ( stop.time - start.time < $.event.special.swipe.durationThreshold &&
-                                Math.abs( start.coords[ 0 ] - stop.coords[ 0 ] ) > $.event.special.swipe.horizontalDistanceThreshold &&
-                                Math.abs( start.coords[ 1 ] - stop.coords[ 1 ] ) < $.event.special.swipe.verticalDistanceThreshold ) {
-
-                            start.origin.trigger( "swipe" )
-                                .trigger( start.coords[0] > stop.coords[ 0 ] ? "swipeleft" : "swiperight" );
-                        }
-                    }
-                    start = stop = undefined;
-                });
+        // This solves tabbing problems
+        addFocus(frame, function () {
+          setTimeout(function () {
+            lockScroll($stage);
+          }, 0);
+          clickToShow({index: frameData.eq, user: true});
         });
+
+        $stageFrame = $stageFrame.add($frame);
+      } else if (type === 'navDot') {
+        addNavFrameEvents(frame);
+        $navDotFrame = $navDotFrame.add($frame);
+      } else if (type === 'navThumb') {
+        addNavFrameEvents(frame);
+        frameData.$wrap = $frame.children(':first');
+        $navThumbFrame = $navThumbFrame.add($frame);
+        if (dataFrame.video) {
+          frameData.$wrap.append($videoPlay.clone());
+        }
+      }
+    });
+  }
+
+  function callFit ($img, measuresToFit, method, position) {
+    return $img && $img.length && fit($img, measuresToFit, method, position);
+  }
+
+  function stageFramePosition (indexes) {
+    eachIndex(indexes, 'stage', function (i, index, dataFrame, $frame, key, frameData) {
+      if (!$frame) return;
+
+      var normalizedIndex = normalizeIndex(index),
+          method = dataFrame.fit || opts.fit,
+          position = dataFrame.position || opts.position;
+      frameData.eq = normalizedIndex;
+
+      toDetach[STAGE_FRAME_KEY][normalizedIndex] = $frame.css($.extend({left: o_fade ? 0 : getPosByIndex(index, measures.w, opts.margin, repositionIndex)}, o_fade && getDuration(0)));
+
+      if (isDetached($frame[0])) {
+        $frame.appendTo($stageShaft);
+        unloadVideo(dataFrame.$video);
+      }
+
+      callFit(frameData.$img, measures, method, position);
+      callFit(frameData.$full, measures, method, position);
+    });
+  }
+
+  function thumbsDraw (pos, loadFLAG) {
+    if (o_nav !== 'thumbs' || isNaN(pos)) return;
+
+    var leftLimit = -pos,
+        rightLimit = -pos + measures.nw;
+
+    $navThumbFrame.each(function () {
+      var $this = $(this),
+          thisData = $this.data(),
+          eq = thisData.eq,
+          getSpecialMeasures = function () {
+            return {
+              h: o_thumbSide2,
+              w: thisData.w
+            }
+          },
+          specialMeasures = getSpecialMeasures(),
+          dataFrame = data[eq] || {},
+          method = dataFrame.thumbfit || opts.thumbfit,
+          position = dataFrame.thumbposition || opts.thumbposition;
+
+      specialMeasures.w = thisData.w;
+
+      if (thisData.l + thisData.w < leftLimit
+          || thisData.l > rightLimit
+          || callFit(thisData.$img, specialMeasures, method, position)) return;
+
+      loadFLAG && loadImg([eq], 'navThumb', getSpecialMeasures, method, position);
+    });
+  }
+
+  function frameAppend ($frames, $shaft, type) {
+    if (!frameAppend[type]) {
+
+      var thumbsFLAG = type === 'nav' && o_navThumbs,
+          left = 0;
+
+      $shaft.append(
+        $frames
+            .filter(function () {
+              var actual,
+                  $this = $(this),
+                  frameData = $this.data();
+              for (var _i = 0, _l = data.length; _i < _l; _i++) {
+                if (frameData.data === data[_i]) {
+                  actual = true;
+                  frameData.eq = _i;
+                  break;
+                }
+              }
+              return actual || $this.remove() && false;
+            })
+            .sort(function (a, b) {
+              return $(a).data().eq - $(b).data().eq;
+            })
+            .each(function () {
+
+              if (!thumbsFLAG) return;
+
+              var $this = $(this),
+                  frameData = $this.data(),
+                  thumbwidth = Math.round(o_thumbSide2 * frameData.data.thumbratio) || o_thumbSide;
+
+              frameData.l = left;
+              frameData.w = thumbwidth;
+
+              $this.css({width: thumbwidth});
+
+              left += thumbwidth + opts.thumbmargin;
+            })
+      );
+
+      frameAppend[type] = true;
     }
-};
+  }
 
-$.event.special.swipeleft = $.event.special.swipeleft || {
-    setup: function() {
-        $( this ).bind( 'swipe', $.noop );
+  function getDirection (x) {
+    return x - stageLeft > measures.w / 3;
+  }
+
+  function disableDirrection (i) {
+    return !o_loop && (!(activeIndex + i) || !(activeIndex - size + i)) && !$videoPlaying;
+  }
+
+  function arrsUpdate () {
+    var disablePrev = disableDirrection(0),
+        disableNext = disableDirrection(1);
+    $arrPrev
+        .toggleClass(arrDisabledClass, disablePrev)
+        .attr(disableAttr(disablePrev));
+    $arrNext
+        .toggleClass(arrDisabledClass, disableNext)
+        .attr(disableAttr(disableNext));
+  }
+
+  function stageWheelUpdate () {
+    if (stageWheelTail.ok) {
+      stageWheelTail.prevent = {'<': disableDirrection(0), '>': disableDirrection(1)};
     }
-};
-$.event.special.swiperight = $.event.special.swiperight || $.event.special.swipeleft;
+  }
 
-})(jQuery);
+  function getNavFrameBounds ($navFrame) {
+    var navFrameData = $navFrame.data(),
+        left,
+        width;
 
-/*! carousel transition plugin for Cycle2;  version: 20130528 */
-(function($) {
-"use strict";
+    if (o_navThumbs) {
+      left = navFrameData.l;
+      width = navFrameData.w;
+    } else {
+      left = $navFrame.position().left;
+      width = $navFrame.width();
+    }
 
-$( document ).on('cycle-bootstrap', function( e, opts, API ) {
-    if ( opts.fx !== 'carousel' )
-        return;
-
-    API.getSlideIndex = function( el ) {
-        var slides = this.opts()._carouselWrap.children();
-        var i = slides.index( el );
-        return i % slides.length;
+    return {
+      c: left + width / 2,
+      min: -left + opts.thumbmargin * 10,
+      max: -left + measures.w - width - opts.thumbmargin * 10
     };
+  }
 
-    // override default 'next' function
-    API.next = function() {
-        var count = opts.reverse ? -1 : 1;
-        if ( opts.allowWrap === false && ( opts.currSlide + count ) > opts.slideCount - opts.carouselVisible )
-            return;
-        opts.API.advanceSlide( count );
-        opts.API.trigger('cycle-next', [ opts ]).log('cycle-next');
-    };
+  function slideThumbBorder (time) {
+    var navFrameData = activeFrame[navFrameKey].data();
+    slide($thumbBorder, {
+      time: time * 1.2,
+      pos: navFrameData.l,
+      width: navFrameData.w - opts.thumbborderwidth * 2
+    });
+  }
 
-});
+  function slideNavShaft (options) {
+    ////console.log('slideNavShaft', options.guessIndex, options.keep, slideNavShaft.l);
+    var $guessNavFrame = data[options.guessIndex][navFrameKey];
+    if ($guessNavFrame) {
+      var overflowFLAG = navShaftTouchTail.min !== navShaftTouchTail.max,
+          minMax = options.minMax || overflowFLAG && getNavFrameBounds(activeFrame[navFrameKey]),
+          l = overflowFLAG && (options.keep && slideNavShaft.l ? slideNavShaft.l : minMaxLimit((options.coo || measures.nw / 2) - getNavFrameBounds($guessNavFrame).c, minMax.min, minMax.max)),
+          pos = overflowFLAG && minMaxLimit(l, navShaftTouchTail.min, navShaftTouchTail.max),
+          time = options.time * 1.1;
 
-
-$.fn.cycle.transitions.carousel = {
-    // transition API impl
-    preInit: function( opts ) {
-        opts.hideNonActive = false;
-        
-        opts.container.on('cycle-destroyed', $.proxy(this.onDestroy, opts.API));
-        // override default API implementation
-        opts.API.stopTransition = this.stopTransition;
-
-        // issue #10
-        for (var i=0; i < opts.startingSlide; i++) {
-            opts.container.append( opts.slides[0] );
-        }        
-    },
-
-    // transition API impl
-    postInit: function( opts ) {
-        var i, j, slide, pagerCutoffIndex, wrap;
-        var vert = opts.carouselVertical;
-        if (opts.carouselVisible && opts.carouselVisible > opts.slideCount)
-            opts.carouselVisible = opts.slideCount - 1;
-        var visCount = opts.carouselVisible || opts.slides.length;
-        var slideCSS = { display: vert ? 'block' : 'inline-block', position: 'static' };
-
-        // required styles
-        opts.container.css({ position: 'relative', overflow: 'hidden' });
-        opts.slides.css( slideCSS );
-
-        opts._currSlide = opts.currSlide;
-
-        // wrap slides in a div; this div is what is animated
-        wrap = $('<div class="cycle-carousel-wrap"></div>')
-            .prependTo( opts.container )
-            .css({ margin: 0, padding: 0, top: 0, left: 0, position: 'absolute' })
-            .append( opts.slides );
-
-        opts._carouselWrap = wrap;
-
-        if ( !vert )
-            wrap.css('white-space', 'nowrap');
-
-        if ( opts.allowWrap !== false ) {
-            // prepend and append extra slides so we don't see any empty space when we
-            // near the end of the carousel.  for fluid containers, add even more clones
-            // so there is plenty to fill the screen
-            // @todo: optimzie this based on slide sizes
-
-            for ( j=0; j < (opts.carouselVisible === undefined ? 2 : 1); j++ ) {
-                for ( i=0; i < opts.slideCount; i++ ) {
-                    wrap.append( opts.slides[i].cloneNode(true) );
-                }
-                i = opts.slideCount;
-                while ( i-- ) { // #160, #209
-                    wrap.prepend( opts.slides[i].cloneNode(true) );
-                }
-            }
-
-            wrap.find('.cycle-slide-active').removeClass('cycle-slide-active');
-            opts.slides.eq(opts.startingSlide).addClass('cycle-slide-active');
+      slide($navShaft, {
+        time: time,
+        pos: pos || 0,
+        onEnd: function () {
+          thumbsDraw(pos, true);
         }
+      });
 
-        if ( opts.pager && opts.allowWrap === false ) {
-            // hide "extra" pagers
-            pagerCutoffIndex = opts.slideCount - visCount;
-            $( opts.pager ).children().filter( ':gt('+pagerCutoffIndex+')' ).hide();
-        }
+      //if (time) thumbsDraw(pos);
 
-        opts._nextBoundry = opts.slideCount - opts.carouselVisible;
-
-        this.prepareDimensions( opts );
-    },
-
-    prepareDimensions: function( opts ) {
-        var dim, offset, pagerCutoffIndex, tmp, j;
-        var vert = opts.carouselVertical;
-        var visCount = opts.carouselVisible || opts.slides.length;
-
-        if ( opts.carouselFluid && opts.carouselVisible ) {
-            if ( ! opts._carouselResizeThrottle ) {
-            // fluid container AND fluid slides; slides need to be resized to fit container
-                this.fluidSlides( opts );
-            }
-        }
-        else if ( opts.carouselVisible && opts.carouselSlideDimension ) {
-            dim = visCount * opts.carouselSlideDimension;
-            opts.container[ vert ? 'height' : 'width' ]( dim );
-        }
-        else if ( opts.carouselVisible ) {
-            dim = visCount * $(opts.slides[0])[vert ? 'outerHeight' : 'outerWidth'](true);
-            opts.container[ vert ? 'height' : 'width' ]( dim );
-        }
-        // else {
-        //     // fluid; don't size the container
-        // }
-
-        offset = ( opts.carouselOffset || 0 );
-        if ( opts.allowWrap !== false ) {
-            if ( opts.carouselSlideDimension ) {
-                offset -= ( (opts.slideCount + opts.currSlide) * opts.carouselSlideDimension );
-            }
-            else {
-                // calculate offset based on actual slide dimensions
-                tmp = opts._carouselWrap.children();
-                for (j=0; j < (opts.slideCount + opts.currSlide); j++) {
-                    offset -= $(tmp[j])[vert?'outerHeight':'outerWidth'](true);
-                }
-            }
-        }
-
-        opts._carouselWrap.css( vert ? 'top' : 'left', offset );
-    },
-
-    fluidSlides: function( opts ) {
-        var timeout;
-        var slide = opts.slides.eq(0);
-        var adjustment = slide.outerWidth() - slide.width();
-        var prepareDimensions = this.prepareDimensions;
-
-        // throttle resize event
-        $(window).on( 'resize', resizeThrottle);
-
-        opts._carouselResizeThrottle = resizeThrottle;
-        onResize();
-
-        function resizeThrottle() {
-            clearTimeout( timeout );
-            timeout = setTimeout( onResize, 20 );
-        }
-
-        function onResize() {
-            opts._carouselWrap.stop( false, true );
-            var slideWidth = opts.container.width() / opts.carouselVisible;
-            slideWidth = Math.ceil( slideWidth - adjustment );
-            opts._carouselWrap.children().width( slideWidth );
-            if ( opts._sentinel )
-                opts._sentinel.width( slideWidth );
-            prepareDimensions( opts );
-        }
-    },
-
-    // transition API impl
-    transition: function( opts, curr, next, fwd, callback ) {
-        var moveBy, props = {};
-        var hops = opts.nextSlide - opts.currSlide;
-        var vert = opts.carouselVertical;
-        var speed = opts.speed;
-
-        // handle all the edge cases for wrapping & non-wrapping
-        if ( opts.allowWrap === false ) {
-            fwd = hops > 0;
-            var currSlide = opts._currSlide;
-            var maxCurr = opts.slideCount - opts.carouselVisible;
-            if ( hops > 0 && opts.nextSlide > maxCurr && currSlide == maxCurr ) {
-                hops = 0;
-            }
-            else if ( hops > 0 && opts.nextSlide > maxCurr ) {
-                hops = opts.nextSlide - currSlide - (opts.nextSlide - maxCurr);
-            }
-            else if ( hops < 0 && opts.currSlide > maxCurr && opts.nextSlide > maxCurr ) {
-                hops = 0;
-            }
-            else if ( hops < 0 && opts.currSlide > maxCurr ) {
-                hops += opts.currSlide - maxCurr;
-            }
-            else 
-                currSlide = opts.currSlide;
-
-            moveBy = this.getScroll( opts, vert, currSlide, hops );
-            opts.API.opts()._currSlide = opts.nextSlide > maxCurr ? maxCurr : opts.nextSlide;
-        }
-        else {
-            if ( fwd && opts.nextSlide === 0 ) {
-                // moving from last slide to first
-                moveBy = this.getDim( opts, opts.currSlide, vert );
-                callback = this.genCallback( opts, fwd, vert, callback );
-            }
-            else if ( !fwd && opts.nextSlide == opts.slideCount - 1 ) {
-                // moving from first slide to last
-                moveBy = this.getDim( opts, opts.currSlide, vert );
-                callback = this.genCallback( opts, fwd, vert, callback );
-            }
-            else {
-                moveBy = this.getScroll( opts, vert, opts.currSlide, hops );
-            }
-        }
-
-        props[ vert ? 'top' : 'left' ] = fwd ? ( "-=" + moveBy ) : ( "+=" + moveBy );
-
-        // throttleSpeed means to scroll slides at a constant rate, rather than
-        // a constant speed
-        if ( opts.throttleSpeed )
-            speed = (moveBy / $(opts.slides[0])[vert ? 'height' : 'width']() ) * opts.speed;
-
-        opts._carouselWrap.animate( props, speed, opts.easing, callback );
-    },
-
-    getDim: function( opts, index, vert ) {
-        var slide = $( opts.slides[index] );
-        return slide[ vert ? 'outerHeight' : 'outerWidth'](true);
-    },
-
-    getScroll: function( opts, vert, currSlide, hops ) {
-        var i, moveBy = 0;
-
-        if (hops > 0) {
-            for (i=currSlide; i < currSlide+hops; i++)
-                moveBy += this.getDim( opts, i, vert);
-        }
-        else {
-            for (i=currSlide; i > currSlide+hops; i--)
-                moveBy += this.getDim( opts, i, vert);
-        }
-        return moveBy;
-    },
-
-    genCallback: function( opts, fwd, vert, callback ) {
-        // returns callback fn that resets the left/top wrap position to the "real" slides
-        return function() {
-            var pos = $(opts.slides[opts.nextSlide]).position();
-            var offset = 0 - pos[vert?'top':'left'] + (opts.carouselOffset || 0);
-            opts._carouselWrap.css( opts.carouselVertical ? 'top' : 'left', offset );
-            callback();
-        };
-    },
-
-    // core API override
-    stopTransition: function() {
-        var opts = this.opts();
-        opts.slides.stop( false, true );
-        opts._carouselWrap.stop( false, true );
-    },
-
-    // core API supplement
-    onDestroy: function( e ) {
-        var opts = this.opts();
-        if ( opts._carouselResizeThrottle )
-            $( window ).off( 'resize', opts._carouselResizeThrottle );
-        opts.slides.prependTo( opts.container );
-        opts._carouselWrap.remove();
+      setShadow($nav, findShadowEdge(pos, navShaftTouchTail.min, navShaftTouchTail.max));
+      slideNavShaft.l = l;
     }
-};
+  }
 
-})(jQuery);
+  function navUpdate () {
+    deactivateFrames(navFrameKey);
+    toDeactivate[navFrameKey].push(activeFrame[navFrameKey].addClass(activeClass));
+  }
 
-(function ($, window, undefined) {
-	"use strict";
+  function deactivateFrames (key) {
+    var _toDeactivate = toDeactivate[key];
 
-	var $document = $(document),
-		$window = $(window),
-		__ready;
+    while (_toDeactivate.length) {
+      _toDeactivate.shift().removeClass(activeClass);
+    }
+  }
 
-	__ready = function() {
-		$document.find('.gallery').each(function() {
-			var $gallery = $(this),
-				gallery = $gallery.get(),
-				$main = $gallery.find('.gallery__slide--images'),
-				main = $main.get(0),
-				$main_wrapper = $gallery.find('.gallery__slides'),
-				slideshow = $gallery.find('.gallery__slide--images.cycle-slideshow'),
-				$caption = $gallery.find('.gallery__content'),
-				$sidebar = $gallery.find('.gallery__thumbnails'),
-				$slide_paging = $gallery.find('.gallery__paging'),
-				$slide_paging_previews = $gallery.find('.gallery__previews'),
-				$single_thumbnail = $gallery.find('.gallery__previews div div');
-	
-			/**
-			 * Bind the gallery full screen toggle
-			 */
-			function bind_events() {
-				var hashChange = false,
-					transitioning = false;
-	
-				slideshow = $gallery.find('.gallery__slide--images');
-				
-				// Don't enable the centering plugin on IE8. Note that removing 
-				// the attributes (instead of adding them) doesn't work. 
-				if (!$('html').hasClass('lt-ie9')) {
-					slideshow.attr('data-cycle-center-horz', true);
-					slideshow.attr('data-cycle-center-vert', true);
-				}
-				
-				// Initialize the slideshow.
-				slideshow.cycle();
-				
-				$slide_paging_previews = $gallery.find( '.gallery__previews' );
-	
-				/**
-				 * Make sure thumbnails are updated before the slideshow cycles.
-				 */
-				slideshow.on('cycle-before', function (event, optionHash) {
-					update_thumbnails(optionHash.nextSlide); // nextSlide = incoming slide. could be backward
-					//$caption.cycle( 'goto', optionHash.nextSlide );
-				});
+  function detachFrames (key) {
+    var _toDetach = toDetach[key];
 
-				// Record page view
-				slideshow.on('cycle-after', function() {
-					// reset transition flag
-					transitioning = false;
-					
-					// track page views
-					if ("function" === typeof(ga)) {
-						ga('send', 'pageview');
-					} else if ("object" === typeof(_gaq)) {
-						// Older google analytics
-						_gaq.push(['_trackPageview']);
-					}
-				});
-	
-				/**
-				 * Wire up additional events after the slideshow has fully initialized.
-				 */
-				slideshow.on('cycle-update-view', function (event, optionHash) {
-					update_thumbnails(optionHash.currSlide);
-				});
-	
-				/**
-				 * On mobile, regroup thumbnails on page load
-				 */
-				slideshow.on('cycle-initialized', function (e, opts) {
-					responsive_thumbnails();
-				});
-	
-				/**
-				 * Make sure the preview buttons transition the slideshow.
-				 */
-				$slide_paging_previews.on('click', '.cycle-slide div', function () {
-					var $this = $(this),
-						index = $this.data('cycle-index');
+    //////console.log('_toDetach', _toDetach);
+    //////console.log('activeIndexes', activeIndexes);
 
-					slideshow.cycle('goto', index);
-					$caption.cycle('goto', index);
-				});
-	
-				// Make sure we disable other hashchange events that attempt to capture manual hash changes.
-				$document.on('cycle-pre-initialize', function (e, opts) {
-					$window.off('hashchange', opts._onHashChange);
-				});
-	
-				// Rebind Captions - Code taken directly from jquery2.cycle.caption.js (with certain code standard updates)
-				$document.on('cycle-update-view', function (e, opts, slideOpts, currSlide) {
-					if (opts.captionModule !== 'caption') {
-						return;
-					}
+    $.each(activeIndexes, function (i, index) {
+      delete _toDetach[normalizeIndex(index)];
+    });
 
-					var el;
-					$.each(['caption', 'overlay'], function () {
-						var name = this,
-								template = slideOpts[name + 'Template'],
-								el = opts.API.getComponent(name);
+    $.each(_toDetach, function (index, $frame) {
+      delete _toDetach[index];
+      //////console.log('Detach', index);
+      $frame.detach();
+    });
+  }
 
-						if (el.length && template) {
-							el.html(opts.API.tmpl(template, slideOpts, opts, currSlide));
-							el.show();
-						} else {
-							el.hide();
-						}
-					});
-				});
+  function stageShaftReposition (skipOnEnd) {
 
-				$gallery.find('.gallery__prev--btn').click(function() {
-					if (!transitioning) {
-						transitioning = true;
-						slideshow.cycle('prev');
-					}
-				});
+    repositionIndex = dirtyIndex = activeIndex;
 
-				$gallery.find('.gallery__next--btn').click(function() {
-					if (!transitioning) {
-						transitioning = true;
-						slideshow.cycle('next');
-					}
-				});
-	
-				$window.resize(responsive_thumbnails);
-			}
-	
-			/**
-			 * Are we on a mobile browser (or anything smaller than 768px)?
-			 * @returns bool
-			 */
-			function isMobile() {
-				return $gallery.hasClass( 'ismobile' );
-			}
-	
-			function isTablet() {
-				return $gallery.hasClass( 'istablet' );
-			}
-	
-			/**
-			 * Regroup the thumbnails in mobile to fit the screen
-			 */
-			function responsive_thumbnails() {
-				// If we're moving from mobile to normal, shift things around
-				if ( $window.width() >= 768 && isMobile() ) {
-					$gallery.removeClass( 'ismobile' );
-					$sidebar.append( $caption );
-					regroup_thumbnails( get_thumbs_per_page() );
-					update_thumbnails( $main.data( "cycle.opts" ).currSlide );
-	
-					$main.css( 'height', '' );
-					$main_wrapper.css( 'height', '' );
-					$gallery.find( '.gallery__previews, .gallery__previews--group' ).css( 'height', '' );
-					return;
-				}
-	
-				// If we're on a small screen but ismobile is not set, shift things around
-				if ( $window.width() < 480 && ! isMobile() ) {
-					$gallery.addClass( 'ismobile' );
-					regroup_thumbnails( get_thumbs_per_page() );
-					update_thumbnails( $main.data( "cycle.opts" ).currSlide );
-				}
-	
-				// If the window is being resized, adjust the thumbnail and main image height
-				if ( isMobile() ) {
-					var main_height, thumb_height;
-					$main.css( 'height', ( main_height - 20 ) + 'px' );
-					$main_wrapper.css( 'height', main_height );
-	
-					thumb_height = $single_thumbnail.width();
-					$gallery.find( '.gallery__previews, .gallery__previews--group' ).css( 'height', thumb_height + 'px' );
-				}
-	
-				if ( $window.width() >= 480 && $window.width() < 769 && ! isTablet() ) {
-					$gallery.addClass( 'istablet' );
-					regroup_thumbnails( get_thumbs_per_page() );
-					update_thumbnails( $main.data( "cycle.opts" ).currSlide );
-				}
-	
-			}
-	
-			/**
-			 * Regroup the thumbnails in paged divs
-			 *
-			 * This is used when going between widescreen and other views, because the
-			 * widescreen view can only hold 8 thumbnails per page while the other views
-			 * can hold 15 per page.
-			 *
-			 * @param number_in_group
-			 */
-			function regroup_thumbnails( number_in_group ) {
-				var $thumbnails_group = $gallery.find( '.gallery__previews--group' );
-	
-				$thumbnails_group.children( 'div' ).appendTo( '.gallery__previews' );
-				$thumbnails_group.remove();
-				$gallery.find( '.gallery__previews div' ).each( function() {
-					var $this = $( this );
-					if ( undefined === $this.attr( 'id' ) ) {
-						$this.remove();
-					}
-				} );
-				$slide_paging_previews
-					.each( function () {
-						var divs = $( 'div', this );
-						for ( var i = 0; i < divs.length; i += number_in_group ) {
-							divs.slice( i, i + number_in_group ).wrapAll( '<div class="gallery__previews--group"></div>' );
-						}
-					} )
-					.cycle( 'reinit' );
-			}
-	
-			/**
-			 * Update the slide thumbnails to we're viewing the correct group.
-			 *
-			 * @param {Number} selected_slide
-			 */
-			function update_thumbnails( selected_slide ) {
-				var slides_per_page = get_thumbs_per_page();
-	
-				$gallery.find( '.gallery__slide--active' ).removeClass( 'gallery__slide--active' );
-				$gallery.find( '#preview-' + selected_slide ).addClass( 'gallery__slide--active' );
-				var selected_slide_group = Math.floor( selected_slide / slides_per_page );
-				$slide_paging_previews.cycle( 'goto', selected_slide_group );
-			}
-	
-			function get_thumbs_per_page() {
-				var slides_per_page = 8;
-				if ( isMobile() ) {
-					slides_per_page = 3;
-				}
-				if ( isTablet() ) {
-					slides_per_page = 5;
-				}
-				return slides_per_page;
-			}
-	
-			/**
-			 * Update sharing links and short URL in sharing overlay
-			 */
-			function update_share_urls() {
-				var share_url, share_title;
-				if ( $gallery.find( '#share-image' ).is( ':checked' ) ) {
-					share_url   = $gallery.find( 'input.slide-url' ).val();
-					share_title = $gallery.find( 'input.slide-title' ).val();
-				} else {
-					share_url   = $gallery.find( 'input.gallery-url' ).val();
-					share_title = $gallery.find( 'input.gallery-title' ).val();
-				}
-				var url_twitter  = 'http://twitter.com/home?status=' + share_url + '%20-%20' + share_title;
-				var url_facebook = 'http://www.facebook.com/sharer.php?u=' + share_url + '&amp;t=' + share_title;
-				var url_linkedin = '#';
-	
-				$gallery.find( '.gallery-toolbar .fa-twitter' ).attr( 'href', url_twitter );
-				$gallery.find( '.gallery-toolbar .fa-facebook' ).attr( 'href', url_facebook );
-				$gallery.find( '.gallery-toolbar .short-url' ).html( '<a href="' + share_url + '">' + share_url + '</a>' );
-			}
-	
-			bind_events();
-		} ); 
+    var $frame = activeFrame[STAGE_FRAME_KEY];
+
+    if ($frame) {
+      deactivateFrames(STAGE_FRAME_KEY);
+      toDeactivate[STAGE_FRAME_KEY].push($frame.addClass(activeClass));
+
+      skipOnEnd || that.show.onEnd(true);
+      stop($stageShaft, 0, true);
+
+      detachFrames(STAGE_FRAME_KEY);
+      stageFramePosition(activeIndexes);
+      setStageShaftMinmaxAndSnap();
+      setNavShaftMinMax();
+    }
+  }
+
+  function extendMeasures (options, measuresArray) {
+    if (!options) return;
+
+    $.each(measuresArray, function (i, measures) {
+      if (!measures) return;
+
+      $.extend(measures, {
+        width: options.width || measures.width,
+        height: options.height,
+        minwidth: options.minwidth,
+        maxwidth: options.maxwidth,
+        minheight: options.minheight,
+        maxheight: options.maxheight,
+        ratio: getRatio(options.ratio)
+      })
+    });
+  }
+
+  function triggerEvent (event, extra) {
+    $fotorama.trigger(_fotoramaClass + ':' + event, [that, extra]);
+  }
+
+  function onTouchStart () {
+    clearTimeout(onTouchEnd.t);
+    touchedFLAG = 1;
+
+    if (opts.stopautoplayontouch) {
+      that.stopAutoplay();
+    } else {
+      pausedAutoplayFLAG = true;
+    }
+  }
+
+  function onTouchEnd () {
+    if (!touchedFLAG) return;
+    if (!opts.stopautoplayontouch) {
+      releaseAutoplay();
+      changeAutoplay();
+    }
+
+    onTouchEnd.t = setTimeout(function () {
+      touchedFLAG = 0;
+    }, TRANSITION_DURATION + TOUCH_TIMEOUT);
+    //////console.timeEnd('onTouchEnd');
+  }
+
+  function releaseAutoplay () {
+    ////console.log('releaseAutoplay');
+    pausedAutoplayFLAG = !!($videoPlaying || stoppedAutoplayFLAG);
+  }
+
+  function changeAutoplay () {
+    ////console.log('changeAutoplay');
+
+    clearTimeout(changeAutoplay.t);
+    waitFor.stop(changeAutoplay.w);
+
+    if (!opts.autoplay || pausedAutoplayFLAG) {
+      if (that.autoplay) {
+        that.autoplay = false;
+        triggerEvent('stopautoplay');
+      }
+
+      return;
+    }
+
+    ////console.log('changeAutoplay continue');
+
+    if (!that.autoplay) {
+      that.autoplay = true;
+      triggerEvent('startautoplay');
+    }
+
+    var _activeIndex = activeIndex;
+
+
+    var frameData = activeFrame[STAGE_FRAME_KEY].data();
+    changeAutoplay.w = waitFor(function () {
+      ////console.log('wait for the state of the current frame');
+      return frameData.state || _activeIndex !== activeIndex;
+    }, function () {
+      ////console.log('the current frame is ready');
+      changeAutoplay.t = setTimeout(function () {
+        ////console.log('changeAutoplay.t setTimeout', pausedAutoplayFLAG, _activeIndex !== activeIndex);
+        if (pausedAutoplayFLAG || _activeIndex !== activeIndex) return;
+
+        var _nextAutoplayIndex = nextAutoplayIndex,
+            nextFrameData = data[_nextAutoplayIndex][STAGE_FRAME_KEY].data();
+
+        changeAutoplay.w = waitFor(function () {
+          ////console.log('wait for the state of the next frame');
+          return nextFrameData.state || _nextAutoplayIndex !== nextAutoplayIndex;
+        }, function () {
+          if (pausedAutoplayFLAG || _nextAutoplayIndex !== nextAutoplayIndex) return;
+          that.show(o_loop ? getDirectionSign(!o_rtl) : nextAutoplayIndex);
+        });
+      }, opts.autoplay);
+    });
+
+  }
+
+  that.startAutoplay = function (interval) {
+    if (that.autoplay) return this;
+    pausedAutoplayFLAG = stoppedAutoplayFLAG = false;
+    setAutoplayInterval(interval || opts.autoplay);
+    changeAutoplay();
+
+    return this;
+  };
+
+  that.stopAutoplay = function () {
+    if (that.autoplay) {
+      pausedAutoplayFLAG = stoppedAutoplayFLAG = true;
+      changeAutoplay();
+    }
+    return this;
+  };
+
+  that.show = function (options) {
+    ////console.log('that.show');
+    //////console.time('that.show prepare');
+    var index;
+
+    if (typeof options !== 'object') {
+      index = options;
+      options = {};
+    } else {
+      index = options.index;
+    }
+
+    index = index === '>' ? dirtyIndex + 1 : index === '<' ? dirtyIndex - 1 : index === '<<' ? 0 : index === '>>' ? size - 1 : index;
+    index = isNaN(index) ? getIndexFromHash(index, data, true) : index;
+    index = typeof index === 'undefined' ? activeIndex || 0 : index;
+
+    that.activeIndex = activeIndex = edgeIndex(index);
+    prevIndex = getPrevIndex(activeIndex);
+    nextIndex = getNextIndex(activeIndex);
+    nextAutoplayIndex = normalizeIndex(activeIndex + (o_rtl ? -1 : 1));
+    activeIndexes = [activeIndex, prevIndex, nextIndex];
+
+    dirtyIndex = o_loop ? index : activeIndex;
+
+    var diffIndex = Math.abs(lastActiveIndex - dirtyIndex),
+        time = getNumber(options.time, function () {
+          return Math.min(o_transitionDuration * (1 + (diffIndex - 1) / 12), o_transitionDuration * 2);
+        }),
+        overPos = options.overPos;
+
+    if (options.slow) time *= 10;
+
+    var _activeFrame = activeFrame;
+    that.activeFrame = activeFrame = data[activeIndex];
+    //////console.timeEnd('that.show prepare');
+
+    var silent = _activeFrame === activeFrame && !options.user;
+
+    //setTimeout(function () {
+    //////console.time('unloadVideo');
+    unloadVideo($videoPlaying, activeFrame.i !== data[normalizeIndex(repositionIndex)].i);
+    //////console.timeEnd('unloadVideo');
+    //////console.time('frameDraw');
+    frameDraw(activeIndexes, 'stage');
+    //////console.timeEnd('frameDraw');
+    //////console.time('stageFramePosition');
+    stageFramePosition(SLOW ? [dirtyIndex] : [dirtyIndex, getPrevIndex(dirtyIndex), getNextIndex(dirtyIndex)]);
+    //////console.timeEnd('stageFramePosition');
+    //////console.time('updateTouchTails');
+    updateTouchTails('go', true);
+    //////console.timeEnd('updateTouchTails');
+    //////console.time('triggerEvent');
+
+    silent || triggerEvent('show', {
+      user: options.user,
+      time: time
+    });
+    //////console.timeEnd('triggerEvent');
+    //}, 0);
+
+    //////console.time('bind onEnd');
+
+    pausedAutoplayFLAG = true;
+
+    var onEnd = that.show.onEnd = function (skipReposition) {
+      if (onEnd.ok) return;
+      onEnd.ok = true;
+
+      skipReposition || stageShaftReposition(true);
+
+      if (!silent) {
+        triggerEvent('showend', {
+          user: options.user
+        });
+      }
+
+      ////console.log('o_transition', o_transition);
+
+      if (!skipReposition && o_transition && o_transition !== opts.transition) {
+        ////console.log('set transition back to: ' + o_transition);
+        that.setOptions({transition: o_transition});
+        o_transition = false;
+        return;
+      }
+
+      updateFotoramaState();
+      loadImg(activeIndexes, 'stage');
+
+      updateTouchTails('go', false);
+      stageWheelUpdate();
+
+      stageCursor();
+      releaseAutoplay();
+      changeAutoplay();
+    };
+    //////console.timeEnd('bind onEnd');
+
+    if (!o_fade) {
+      //////console.time('slide');
+      slide($stageShaft, {
+        pos: -getPosByIndex(dirtyIndex, measures.w, opts.margin, repositionIndex),
+        overPos: overPos,
+        time: time,
+        onEnd: onEnd/*,
+        _001: true*/
+      });
+      //////console.timeEnd('slide');
+    } else {
+      var $activeFrame = activeFrame[STAGE_FRAME_KEY],
+          $prevActiveFrame = activeIndex !== lastActiveIndex ? data[lastActiveIndex][STAGE_FRAME_KEY] : null;
+
+      fade($activeFrame, $prevActiveFrame, $stageFrame, {
+        time: time,
+        method: opts.transition,
+        onEnd: onEnd
+      }, fadeStack);
+    }
+
+    //////console.time('arrsUpdate');
+    arrsUpdate();
+    //////console.timeEnd('arrsUpdate');
+
+    if (o_nav) {
+      //////console.time('navUpdate');
+      navUpdate();
+      //////console.timeEnd('navUpdate');
+
+      //////console.time('slideNavShaft');
+      var guessIndex = limitIndex(activeIndex + minMaxLimit(dirtyIndex - lastActiveIndex, -1, 1));
+      slideNavShaft({time: time, coo: guessIndex !== activeIndex && options.coo, guessIndex: typeof options.coo !== 'undefined' ? guessIndex : activeIndex, keep: silent});
+      //////console.timeEnd('slideNavShaft');
+
+      //////console.time('slideThumbBorder');
+      if (o_navThumbs) slideThumbBorder(time);
+      //////console.timeEnd('slideThumbBorder');
+    }
+
+    //////console.time('that.show end');
+    showedFLAG = typeof lastActiveIndex !== 'undefined' && lastActiveIndex !== activeIndex;
+    lastActiveIndex = activeIndex;
+    opts.hash && showedFLAG && !that.eq && setHash(activeFrame.id || activeIndex + 1);
+    //////console.timeEnd('that.show end');
+
+    //////console.timeEnd('that.show');
+
+    return this;
+  };
+
+  that.requestFullScreen = function () {
+    if (o_allowFullScreen && !that.fullScreen) {
+      scrollTop = $WINDOW.scrollTop();
+      scrollLeft = $WINDOW.scrollLeft();
+
+      lockScroll($WINDOW);
+
+      updateTouchTails('x', true);
+
+      measuresStash = $.extend({}, measures);
+
+      $fotorama
+          .addClass(fullscreenClass)
+          .appendTo($BODY.addClass(_fullscreenClass));
+
+      $HTML.addClass(_fullscreenClass);
+
+      unloadVideo($videoPlaying, true, true);
+
+      that.fullScreen = true;
+
+      if (o_nativeFullScreen) {
+        fullScreenApi.request(fotorama);
+      }
+
+      that.resize();
+      loadImg(activeIndexes, 'stage');
+      updateFotoramaState();
+
+      triggerEvent('fullscreenenter');
+    }
+
+    return this;
+  };
+
+  function cancelFullScreen () {
+    if (that.fullScreen) {
+      that.fullScreen = false;
+
+      if (FULLSCREEN) {
+        fullScreenApi.cancel(fotorama);
+      }
+
+      $BODY.removeClass(_fullscreenClass);
+      $HTML.removeClass(_fullscreenClass);
+
+      $fotorama
+          .removeClass(fullscreenClass)
+          .insertAfter($anchor);
+
+      measures = $.extend({}, measuresStash);
+
+      unloadVideo($videoPlaying, true, true);
+
+      updateTouchTails('x', false);
+
+      that.resize();
+      loadImg(activeIndexes, 'stage');
+
+      lockScroll($WINDOW, scrollLeft, scrollTop);
+
+      triggerEvent('fullscreenexit');
+    }
+  }
+
+  that.cancelFullScreen = function () {
+    if (o_nativeFullScreen && fullScreenApi.is()) {
+      fullScreenApi.cancel(document);
+    } else {
+      cancelFullScreen();
+    }
+
+    return this;
+  };
+
+  that.toggleFullScreen = function () {
+    return that[(that.fullScreen ? 'cancel' : 'request') + 'FullScreen']();
+  };
+
+	that.requestDownload = function () {
+		window.open(this.activeFrame.full);
 	};
 
-	$document.bind('pjax:end', function() {
-		$document.find('.cycle-slideshow').cycle();
-		__ready();
-	});
+  addEvent(document, fullScreenApi.event, function () {
+    if (data && !fullScreenApi.is() && !$videoPlaying) {
+      cancelFullScreen();
+    }
+  });
 
-	$document.bind('contest:preview-loaded', __ready);
-	
-	$document.ready(__ready);
-})(jQuery, window);
+  that.resize = function (options) {
+    if (!data) return this;
+
+    var time = arguments[1] || 0,
+        setFLAG = arguments[2];
+
+    extendMeasures(!that.fullScreen ? optionsToLowerCase(options) : {width: '100%', maxwidth: null, minwidth: null, height: '100%', maxheight: null, minheight: null}, [measures, setFLAG || that.fullScreen || opts]);
+
+    var width = measures.width,
+        height = measures.height,
+        ratio = measures.ratio,
+        windowHeight = $WINDOW.height() - (o_nav ? $nav.height() : 0);
+
+    if (measureIsValid(width)) {
+      $wrap
+          .addClass(wrapOnlyActiveClass)
+          .css({width: width, minWidth: measures.minwidth || 0, maxWidth: measures.maxwidth || MAX_WIDTH});
+
+      width = measures.W = measures.w = $wrap.width();
+      measures.nw = o_nav && numberFromWhatever(opts.navwidth, width) || width;
+
+      if (opts.glimpse) {
+        // Glimpse
+        measures.w -= Math.round((numberFromWhatever(opts.glimpse, width) || 0) * 2);
+      }
+
+      $stageShaft.css({width: measures.w, marginLeft: (measures.W - measures.w) / 2});
+
+      //////console.log('measures.W', measures.W);
+      //////console.log('measures.w', measures.w);
+
+      height = numberFromWhatever(height, windowHeight);
+
+      height = height || (ratio && width / ratio);
+
+      if (height) {
+        width = Math.round(width);
+        height = measures.h = Math.round(minMaxLimit(height, numberFromWhatever(measures.minheight, windowHeight), numberFromWhatever(measures.maxheight, windowHeight)));
+
+        $stage
+            .stop()
+            .animate({width: width, height: height}, time, function () {
+              $wrap.removeClass(wrapOnlyActiveClass);
+            });
+
+        stageShaftReposition();
+
+        if (o_nav) {
+          $nav
+              .stop()
+              .animate({width: measures.nw}, time);
+
+          slideNavShaft({guessIndex: activeIndex, time: time, keep: true});
+          if (o_navThumbs && frameAppend.nav) slideThumbBorder(time);
+        }
+
+        measuresSetFLAG = setFLAG || true;
+
+        ready();
+      }
+    }
+
+    stageLeft = $stage.offset().left;
+
+    return this;
+  };
+
+  that.setOptions = function (options) {
+    $.extend(opts, options);
+    reset();
+    return this;
+  };
+
+  that.shuffle = function () {
+    data && shuffle(data) && reset();
+    return this;
+  };
+
+  function setShadow ($el, edge) {
+    //////console.time('setShadow');
+    if (o_shadows) {
+      $el.removeClass(shadowsLeftClass + ' ' + shadowsRightClass);
+      edge && !$videoPlaying && $el.addClass(edge.replace(/^|\s/g, ' ' + shadowsClass + '--'));
+    }
+    //////console.timeEnd('setShadow');
+  }
+
+  that.destroy = function () {
+    that.cancelFullScreen();
+    that.stopAutoplay();
+
+    data = that.data = null;
+
+    appendElements();
+
+    activeIndexes = [];
+    detachFrames(STAGE_FRAME_KEY);
+
+    reset.ok = false;
+
+    return this;
+  };
+
+  that.playVideo = function () {
+    var dataFrame = activeFrame,
+        video = dataFrame.video,
+        _activeIndex = activeIndex;
+
+    if (typeof video === 'object' && dataFrame.videoReady) {
+      o_nativeFullScreen && that.fullScreen && that.cancelFullScreen();
+
+      waitFor(function () {
+        return !fullScreenApi.is() || _activeIndex !== activeIndex;
+      }, function () {
+        if (_activeIndex === activeIndex) {
+          dataFrame.$video = dataFrame.$video || $($.Fotorama.jst.video(video));
+          dataFrame.$video.appendTo(dataFrame[STAGE_FRAME_KEY]);
+
+          $wrap.addClass(wrapVideoClass);
+          $videoPlaying = dataFrame.$video;
+
+          stageNoMove();
+
+          $arrs.blur();
+          $fullscreenIcon.blur();
+
+          triggerEvent('loadvideo');
+        }
+      });
+    }
+
+    return this;
+  };
+
+  that.stopVideo = function () {
+    unloadVideo($videoPlaying, true, true);
+    return this;
+  };
+
+  function unloadVideo ($video, unloadActiveFLAG, releaseAutoplayFLAG) {
+    if (unloadActiveFLAG) {
+      $wrap.removeClass(wrapVideoClass);
+      $videoPlaying = false;
+
+      stageNoMove();
+    }
+
+    if ($video && $video !== $videoPlaying) {
+      $video.remove();
+      triggerEvent('unloadvideo');
+    }
+
+    if (releaseAutoplayFLAG) {
+      releaseAutoplay();
+      changeAutoplay();
+    }
+  }
+
+  function toggleControlsClass (FLAG) {
+    $wrap.toggleClass(wrapNoControlsClass, FLAG);
+  }
+
+  function stageCursor (e) {
+    if (stageShaftTouchTail.flow) return;
+
+    var x = e ? e.pageX : stageCursor.x,
+        pointerFLAG = x && !disableDirrection(getDirection(x)) && opts.click;
+
+    if (stageCursor.p !== pointerFLAG
+        && $stage.toggleClass(pointerClass, pointerFLAG)) {
+      stageCursor.p = pointerFLAG;
+      stageCursor.x = x;
+    }
+  }
+
+  $stage.on('mousemove', stageCursor);
+
+  function clickToShow (showOptions) {
+    clearTimeout(clickToShow.t);
+
+    if (opts.clicktransition && opts.clicktransition !== opts.transition) {
+      ////console.log('change transition to: ' + opts.clicktransition);
+
+      // this timeout is for yield events flow
+      setTimeout(function () {
+        // save original transition for later
+        var _o_transition = opts.transition;
+
+        that.setOptions({transition: opts.clicktransition});
+
+        // now safe to pass base transition to o_transition, so that.show will restor it
+        o_transition = _o_transition;
+        // this timeout is here to prevent jerking in some browsers
+        clickToShow.t = setTimeout(function () {
+          that.show(showOptions);
+        }, 10);
+      }, 0);
+    } else {
+      that.show(showOptions);
+    }
+  }
+
+  function onStageTap (e, toggleControlsFLAG) {
+    //////console.time('onStageTap');
+    var target = e.target,
+        $target = $(target);
+
+    if ($target.hasClass(videoPlayClass)) {
+      that.playVideo();
+    } else if (target === fullscreenIcon) {
+      that.toggleFullScreen();
+		} else if (target === downloadIcon) {
+      that.requestDownload();
+    } else if ($videoPlaying) {
+      target === videoClose && unloadVideo($videoPlaying, true, true);
+    } else {
+      if (toggleControlsFLAG) {
+        toggleControlsClass();
+      } else if (opts.click) {
+
+        clickToShow({index: e.shiftKey || getDirectionSign(getDirection(e._x)), slow: e.altKey, user: true});
+      }
+    }
+    //////console.timeEnd('onStageTap');
+  }
+
+  function updateTouchTails (key, value) {
+    stageShaftTouchTail[key] = navShaftTouchTail[key] = value;
+  }
+
+  stageShaftTouchTail = moveOnTouch($stageShaft, {
+    onStart: onTouchStart,
+    onMove: function (e, result) {
+      setShadow($stage, result.edge);
+    },
+    onTouchEnd: onTouchEnd,
+    onEnd: function (result) {
+      //////console.time('stageShaftTouchTail.onEnd');
+      setShadow($stage);
+
+      //////console.log('result', result);
+
+      var toggleControlsFLAG = (MS_POINTER && !hoverFLAG || result.touch) && opts.arrows && opts.arrows !== 'always';
+
+      if (result.moved || (toggleControlsFLAG && result.pos !== result.newPos && !result.control)) {
+        var index = getIndexByPos(result.newPos, measures.w, opts.margin, repositionIndex);
+        that.show({
+          index: index,
+          time: o_fade ? o_transitionDuration : result.time,
+          overPos: result.overPos,
+          user: true
+        });
+      } else if (!result.aborted && !result.control) {
+        onStageTap(result.startEvent, toggleControlsFLAG);
+      }
+      //////console.timeEnd('stageShaftTouchTail.onEnd');
+    },
+//    getPos: function () {
+//      return -getPosByIndex(dirtyIndex, measures.w, opts.margin, repositionIndex);
+//    },
+    //_001: true,
+    timeLow: 1,
+    timeHigh: 1,
+    friction: 2,
+    select: '.' + selectClass + ', .' + selectClass + ' *',
+    $wrap: $stage
+  });
+
+  navShaftTouchTail = moveOnTouch($navShaft, {
+    onStart: onTouchStart,
+    onMove: function (e, result) {
+      setShadow($nav, result.edge);
+    },
+    onTouchEnd: onTouchEnd,
+    onEnd: function (result) {
+
+      function onEnd () {
+        slideNavShaft.l = result.newPos;
+        releaseAutoplay();
+        changeAutoplay();
+        thumbsDraw(result.newPos, true);
+      }
+
+      if (!result.moved) {
+        var target = result.$target.closest('.' + navFrameClass, $navShaft)[0];
+        target && onNavFrameClick.call(target, result.startEvent);
+      } else if (result.pos !== result.newPos) {
+        pausedAutoplayFLAG = true;
+        slide($navShaft, {
+          time: result.time,
+          pos: result.newPos,
+          overPos: result.overPos,
+          onEnd: onEnd
+        });
+        thumbsDraw(result.newPos);
+        o_shadows && setShadow($nav, findShadowEdge(result.newPos, navShaftTouchTail.min, navShaftTouchTail.max));
+      } else {
+        onEnd();
+      }
+    },
+    timeLow: .5,
+    timeHigh: 2,
+    friction: 5,
+    $wrap: $nav
+  });
+
+  stageWheelTail = wheel($stage, {
+    shift: true,
+    onEnd: function (e, direction) {
+      //////console.log('wheel $stage onEnd', direction);
+      onTouchStart();
+      onTouchEnd();
+      that.show({index: direction, slow: e.altKey})
+    }
+  });
+
+  navWheelTail = wheel($nav, {
+    onEnd: function (e, direction) {
+      //////console.log('wheel $nav onEnd', direction);
+      onTouchStart();
+      onTouchEnd();
+      var newPos = stop($navShaft) + direction * .25;
+      $navShaft.css(getTranslate(minMaxLimit(newPos, navShaftTouchTail.min, navShaftTouchTail.max)));
+      o_shadows && setShadow($nav, findShadowEdge(newPos, navShaftTouchTail.min, navShaftTouchTail.max));
+      navWheelTail.prevent = {'<': newPos >= navShaftTouchTail.max, '>': newPos <= navShaftTouchTail.min};
+      clearTimeout(navWheelTail.t);
+      navWheelTail.t = setTimeout(function () {
+        slideNavShaft.l = newPos;
+        thumbsDraw(newPos, true)
+      }, TOUCH_TIMEOUT);
+      thumbsDraw(newPos);
+    }
+  });
+
+  $wrap.hover(
+      function () {
+        setTimeout(function () {
+          if (touchedFLAG) return;
+          toggleControlsClass(!(hoverFLAG = true));
+        }, 0);
+      }, function () {
+        if (!hoverFLAG) return;
+        toggleControlsClass(!(hoverFLAG = false));
+      }
+  );
+
+  function onNavFrameClick (e) {
+    var index = $(this).data().eq;
+    clickToShow({index: index, slow: e.altKey, user: true, coo: e._x - $nav.offset().left});
+  }
+
+  function onArrClick (e) {
+    clickToShow({index: $arrs.index(this) ? '>' : '<', slow: e.altKey, user: true});
+  }
+
+  smartClick($arrs, function (e) {
+    stopEvent(e);
+    onArrClick.call(this, e);
+  }, {
+    onStart: function () {
+      onTouchStart();
+      stageShaftTouchTail.control = true;
+    },
+    onTouchEnd: onTouchEnd
+  });
+
+  function addFocusOnControls (el) {
+    addFocus(el, function () {
+      setTimeout(function () {
+        lockScroll($stage);
+      }, 0);
+      toggleControlsClass(false);
+    });
+  }
+
+  $arrs.each(function () {
+    addEnterUp(this, function (e) {
+      onArrClick.call(this, e);
+    });
+    addFocusOnControls(this);
+  });
+
+  addEnterUp(fullscreenIcon, that.toggleFullScreen);
+  addFocusOnControls(fullscreenIcon);
+
+  function reset () {
+    setData();
+    setOptions();
+
+    if (!reset.i) {
+      reset.i = true;
+      // Only once
+      var _startindex = opts.startindex;
+      if (_startindex || opts.hash && location.hash) {
+        startIndex = getIndexFromHash(_startindex || location.hash.replace(/^#/, ''), data, that.index === 0 || _startindex, _startindex);
+      }
+      activeIndex = repositionIndex = dirtyIndex = lastActiveIndex = startIndex = edgeIndex(startIndex) || 0;/*(o_rtl ? size - 1 : 0)*///;
+    }
+
+    if (size) {
+      if (changeToRtl()) return;
+
+      if ($videoPlaying) {
+        unloadVideo($videoPlaying, true);
+      }
+
+      activeIndexes = [];
+      detachFrames(STAGE_FRAME_KEY);
+
+      reset.ok = true;
+
+      that.show({index: activeIndex, time: 0});
+      that.resize();
+    } else {
+      that.destroy();
+    }
+  }
+
+  function changeToRtl () {
+    //////console.log('changeToRtl');
+    if (!changeToRtl.f === o_rtl) {
+      changeToRtl.f = o_rtl;
+      activeIndex = size - 1 - activeIndex;
+      //////console.log('changeToRtl execute, activeIndex is', activeIndex);
+      that.reverse();
+
+      return true;
+    }
+  }
+
+  $.each('load push pop shift unshift reverse sort splice'.split(' '), function (i, method) {
+    that[method] = function () {
+      data = data || [];
+      if (method !== 'load') {
+        Array.prototype[method].apply(data, arguments);
+      } else if (arguments[0] && typeof arguments[0] === 'object' && arguments[0].length) {
+        data = clone(arguments[0]);
+      }
+      reset();
+      return that;
+    }
+  });
+
+  function ready () {
+    if (!ready.ok) {
+      ready.ok = true;
+      setTimeout(function(){triggerEvent('ready');}, 100);
+    }
+  }
+
+  reset();
+};
+
+
+$.fn.fotorama = function (opts) {
+  return this.each(function () {
+    var that = this,
+        $fotorama = $(this),
+        fotoramaData = $fotorama.data(),
+        fotorama = fotoramaData.fotorama;
+
+    if (!fotorama) {
+      waitFor(function () {
+        return !isHidden(that);
+      }, function () {
+        fotoramaData.urtext = $fotorama.html();
+        new $.Fotorama($fotorama,
+            /* Priority for options:
+             * 1. <div data-loop="true"></div>
+             * 2. $('div').fotorama({loop: false})
+             * 3. Defaults */
+            $.extend(
+                {},
+                OPTIONS,
+                window.fotoramaDefaults,
+                opts,
+                fotoramaData
+            )
+        );
+      });
+    } else {
+      fotorama.setOptions(opts, true);
+    }
+  });
+};
+$.Fotorama.instances = [];
+
+function calculateIndexes () {
+  $.each($.Fotorama.instances, function (index, instance) {
+    instance.index = index;
+  });
+}
+
+function addInstance (instance) {
+  $.Fotorama.instances.push(instance);
+  calculateIndexes();
+}
+
+function hideInstance (instance) {
+  $.Fotorama.instances.splice(instance.index, 1);
+  calculateIndexes();
+}
+$.Fotorama.cache = {};
+$.Fotorama.measures = {};
+$ = $ || {};
+$.Fotorama = $.Fotorama || {};
+$.Fotorama.jst = $.Fotorama.jst || {};
+
+$.Fotorama.jst.style = function(v) {
+var __t, __p = '', __e = _.escape;
+__p += '.fotorama' +
+((__t = ( v.s )) == null ? '' : __t) +
+' .fotorama__nav--thumbs .fotorama__nav__frame{\npadding:' +
+((__t = ( v.m )) == null ? '' : __t) +
+'px;\nheight:' +
+((__t = ( v.h )) == null ? '' : __t) +
+'px}\n.fotorama' +
+((__t = ( v.s )) == null ? '' : __t) +
+' .fotorama__thumb-border{\nheight:' +
+((__t = ( v.h - v.b * (v.q ? 0 : 2) )) == null ? '' : __t) +
+'px;\nborder-width:' +
+((__t = ( v.b )) == null ? '' : __t) +
+'px;\nmargin-top:' +
+((__t = ( v.m )) == null ? '' : __t) +
+'px}';
+return __p
+};
+
+$.Fotorama.jst.video = function(v) {
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
+__p += '<div class="fotorama__video"><iframe src="';
+ print((v.type == 'youtube' ? v.p + 'youtube.com/embed/' + v.id +'?autoplay=1' : v.type == 'vimeo' ? v.p + 'player.vimeo.com/video/' + v.id + '?autoplay=1&badge=0' : v.id)  + (v.s && v.type != 'custom' ? '&' + v.s : '')) ;
+__p += '" frameborder="0" allowfullscreen></iframe></div>\n';
+return __p
+};
+$(function () {
+  $('.' + _fotoramaClass + ':not([data-auto="false"])').fotorama();
+});
+})(window, document, location, typeof jQuery !== 'undefined' && jQuery);
+
+(function ($) {
+	$(function () {
+		$.fn.fotoramaWPAdapter = function () {
+		    this.each(function () {
+		        var $this = $(this),
+		        	data = $this.data(),
+		        	$fotorama = $('<div></div>');
+
+		        $('dl', this).each(function () {
+		            var $a = $('dt a', this);
+		            $fotorama.append(
+		            	$a.attr('data-caption', $('dd', this).html())
+		            );
+		        });
+
+		        $this.html($fotorama.html());
+		    });
+
+		    return this;
+		};
+
+		$('.fotorama--wp')
+			.fotoramaWPAdapter()
+			.fotorama();
+
+		$('.fotorama').on('fotorama:show fotorama:ready', function(e, fotorama, extra){
+			if ( fotorama && fotorama.activeFrame && ( true === fotorama.activeFrame.enabledownload ) ) {
+				$(this).removeClass('disable-download');
+			} else {
+				$(this).addClass('disable-download');
+			}
+		});
+	});
+})(jQuery);
+
+fotoramaDefaults = {
+	nav: 'thumbs',
+	allowfullscreen: 'native',
+	transition: 'crossfade',
+	loop: true,
+	keyboard: true,
+	hash: true
+}
+
+$

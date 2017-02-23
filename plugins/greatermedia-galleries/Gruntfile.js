@@ -8,11 +8,8 @@ module.exports = function (grunt) {
 			},
 			gmr_gallery: {
 				src: [
-					'assets/js/vendor/cycle2/jquery.cycle2.js',
-					'assets/js/vendor/cycle2/jquery.cycle2.center.js',
-					'assets/js/vendor/cycle2/jquery.cycle2.swipe.js',
-					'assets/js/vendor/cycle2/jquery.cycle2.carousel.js',
-					'assets/js/src/gmr_gallery.js'
+					'assets/js/vendor/fotorama.js',
+					'assets/js/vendor/fotorama-wp.js'
 				],
 				dest: 'assets/js/gmr_gallery.js'
 			},
@@ -70,12 +67,16 @@ module.exports = function (grunt) {
 		sass: {
 			all: {
 				files: {
-					'assets/css/gmr_gallery.css': 'assets/css/sass/gmr_gallery.scss',
 					'assets/css/gmr_gallery_admin.css': 'assets/css/sass/gmr_gallery_admin.scss'
 				}
 			}
 		},
 		cssmin: {
+			combine: {
+				files: {
+					'assets/css/gmr_gallery.css': ['assets/css/vendor/fotorama.css', 'assets/css/vendor/fotorama-wp.css']
+				}
+			},
 			minify: {
 				expand: true,
 				cwd: 'assets/css/',

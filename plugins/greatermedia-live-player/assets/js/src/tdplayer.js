@@ -7,9 +7,10 @@
  * conditionals were added that would use `attachEvent` if `addEventListener` is not supported. A custom function --
  * `addEventHandler` -- that will handle the switch is also being used throughout.
  */
-/* global: gigya_profile_path */
 (function ($, window, undefined) {
 	"use strict";
+
+	var $document = $(document);
 
 	var tech = getUrlVars()['tech'] || 'html5_flash';
 	var aSyncCuePointFallback = getUrlVars()['aSyncCuePointFallback'] == 'false' ? false : true;
@@ -52,7 +53,6 @@
 	var nowPlaying = document.getElementById('live-stream__now-playing');
 	var listenLogin = document.getElementById('live-stream__login');
 	var $trackInfo = $(document.getElementById('trackInfo'));
-	var gigyaLogin = gigya_profile_path('login');
 	var clearDebug = document.getElementById('clearDebug');
 	var onAir = document.getElementById('on-air');
 	var streamStatus = document.getElementById('live-stream__status');
@@ -65,6 +65,16 @@
 	var lpInit = false;
 	var volume_slider = $(document.getElementById('live-player--volume'));
 	var global_volume = 1;
+
+	/**
+	 * Stars playing a stream and triggers appropriate event.
+	 *
+	 * @param {string} station
+	 */
+	function playStream(station) {
+		player.play({station: station, timeShift: true});
+		$document.trigger('player:starts');
+	}
 
 	/**
 	 * function to detect if the current browser can use `addEventListener`, if not, use `attachEvent`
@@ -221,13 +231,7 @@
 		}
 
 		if (resumeBtn != null) {
-			if ( is_gigya_user_logged_in() ) {
-				addEventHandler(resumeBtn, 'click', resumeLiveStream);
-			} else {
-				addEventHandler(resumeBtn, 'click', function () {
-					window.location.href = gigyaLogin;
-				});
-			}
+			addEventHandler(resumeBtn, 'click', resumeLiveStream);
 		}
 
 		if (clearDebug != null) {
@@ -238,7 +242,6 @@
 
 	function setPlayingStyles() {
 		if (null === tdContainer) {
-			// gigya user is logged out, so everything is different ಠ_ಠ - Should we force login for inline audio as well??
 			return;
 		}
 
@@ -276,7 +279,6 @@
 
 	function setStoppedStyles() {
 		if (null === tdContainer) {
-			// gigya user is logged out, so everything is different ಠ_ಠ - Should we force login for inline audio as well??
 			return;
 		}
 
@@ -291,7 +293,6 @@
 
 	function setPausedStyles() {
 		if (null === tdContainer) {
-			// gigya user is logged out, so everything is different ಠ_ಠ - Should we force login for inline audio as well??
 			return;
 		}
 
@@ -473,7 +474,7 @@
 	}
 
 	function playLiveStreamDevice() {
-		if (is_gigya_user_logged_in() && lpInit === true) {
+		if (lpInit === true) {
 			setStoppedStyles();
 			if (window.innerWidth >= 768) {
 				playLiveStream();
@@ -484,55 +485,28 @@
 	}
 
 	function changePlayerState() {
-		if (is_gigya_user_logged_in()) {
-			if (playBtn != null) {
-				addEventHandler(playBtn, 'click', function(){
-					if (lpInit === true) {
-						setStoppedStyles();
-						if (window.innerWidth >= 768) {
-							playLiveStream();
-						} else {
-							playLiveStreamMobile();
-						}
+		if (playBtn != null) {
+			addEventHandler(playBtn, 'click', function(){
+				if (lpInit === true) {
+					setStoppedStyles();
+					if (window.innerWidth >= 768) {
+						playLiveStream();
 					} else {
-						setInitialPlay();
+						playLiveStreamMobile();
 					}
-				});
-			}
-			if (listenNow != null) {
-				addEventHandler(listenNow, 'click', listenLiveStopCustomInlineAudio);
-			}
-		} else {
-			if (playBtn != null) {
-				addEventHandler(playBtn, 'click', function () {
-					window.location.href = gigyaLogin;
-					setPlayerReady();
-				});
-			}
-			if (listenNow != null) {
-				addEventHandler(listenNow, 'click', function () {
-					window.location.href = gigyaLogin;
-				});
-			}
-			if (listenLogin != null && window.innerWidth <= 767) {
-				addEventHandler(listenLogin, 'click', function () {
-					window.location.href = gigyaLogin;
-				});
-			}
-			if (podcastPlayBtn != null) {
-				 addEventHandler(podcastPlayBtn, 'click', pjaxInit);
-			}
+				} else {
+					setInitialPlay();
+				}
+			});
+		}
+		if (listenNow != null) {
+			addEventHandler(listenNow, 'click', listenLiveStopCustomInlineAudio);
 		}
 	}
 
 	$(document).ready(function () {
 		changePlayerState();
 	});
-
-	function loggedInGigyaUser() {
-		playLiveStreamDevice();
-		Cookies.set("gmlp_play_button_pushed", 0);
-	}
 
 	function preVastAd() {
 		var preRoll = document.getElementById('live-stream__container');
@@ -575,25 +549,21 @@
 	var currentStream = $('.live-player__stream--current-name');
 
 	currentStream.bind('DOMSubtreeModified', function () {
-		if ( is_gigya_user_logged_in() ) {
-			debug('--- new stream select ---');
-			var station = currentStream.text();
+		debug('--- new stream select ---');
+		var station = currentStream.text();
 
-			if (livePlaying) {
-				player.stop();
-			}
-
-			if (true === playingCustomAudio) {
-				listenLiveStopCustomInlineAudio();
-			}
-
-			player.play({station: station, timeShift: true});
-
-			livePlayer.classList.add('live-player--active');
-			setPlayingStyles();
-		} else {
-			window.location.href = gigyaLogin;
+		if (livePlaying) {
+			player.stop();
 		}
+
+		if (true === playingCustomAudio) {
+			listenLiveStopCustomInlineAudio();
+		}
+
+		playStream(station);
+
+		livePlayer.classList.add('live-player--active');
+		setPlayingStyles();
 	});
 
 	function playLiveStreamMobile() {
@@ -622,7 +592,7 @@
 
 				body.classList.add('live-player--active');
 				livePlayer.classList.add('live-player--active');
-				player.play({station: station, timeShift: true});
+				playStream(station);
 				setPlayingStyles();
 			});
 		} else if (player.attachEvent) {
@@ -636,7 +606,7 @@
 
 				body.classList.add('live-player--active');
 				livePlayer.classList.add('live-player--active');
-				player.play({station: station, timeShift: true});
+				playStream(station);
 				setPlayingStyles();
 			});
 		}
@@ -664,7 +634,7 @@
 
 		body.classList.add('live-player--active');
 		livePlayer.classList.add('live-player--active');
-		player.play({station: station, timeShift: true});
+		playStream(station);
 		setPlayingStyles();
 
 	}
@@ -699,7 +669,7 @@
 
 					body.classList.add('live-player--active');
 					livePlayer.classList.add('live-player--active');
-					player.play({station: station, timeShift: true});
+					playStream(station);
 					setPlayingStyles();
 				});
 			} else if (player.attachEvent) {
@@ -713,7 +683,7 @@
 
 					body.classList.add('live-player--active');
 					livePlayer.classList.add('live-player--active');
-					player.play({station: station, timeShift: true});
+					playStream(station);
 					setPlayingStyles();
 				});
 			}
@@ -746,7 +716,7 @@
 
 			body.classList.add('live-player--active');
 			livePlayer.classList.add('live-player--active');
-			player.play({station: station, timeShift: true});
+			playStream(station);
 			setPlayingStyles();
 		}
 	}
@@ -771,7 +741,7 @@
 			}
 
 			livePlayer.classList.add('live-player--active');
-			player.play({station: station, timeShift: true});
+			playStream(station);
 			setPlayingStyles();
 		}
 	}
@@ -891,7 +861,7 @@
 		});
 
 		$(document).ready(function() {
-			var opted_out = window.get_gigya_user_field && get_gigya_user_field('nielsen_optout');
+			var opted_out = false;
 			if (!opted_out && window._nolggGlobalParams) {
 				var beacon = new NOLCMB.ggInitialize(window._nolggGlobalParams);
 				bindNielsenSDKEvents(beacon, player);
@@ -965,7 +935,7 @@
 		}
 
 		livePlayer.classList.add('live-player--active');
-		player.play({station: station, timeShift: true});
+		playStream(station);
 		setPlayingStyles();
 	}
 
@@ -1569,30 +1539,12 @@
 	}
 
 	function pjaxInit() {
-		if (is_gigya_user_logged_in()) {
-			if ($.support.pjax) {
-				$(document).pjax('a:not(.ab-item)', '.main', {
-					'fragment': '.main',
-					'maxCacheLength': 500,
-					'timeout': 10000
-				});
-			}
-		} else if (gmr.wpLoggedIn) {
-			if ($.support.pjax) {
-				$(document).pjax('a:not(.ab-item)', '.page-wrap', {
-					'fragment': '.page-wrap',
-					'maxCacheLength': 500,
-					'timeout': 10000
-				});
-			}
-		} else {
-			if ($.support.pjax) {
-				$(document).pjax('a:not(.ab-item)', '.main', {
-					'fragment': '.main',
-					'maxCacheLength': 500,
-					'timeout': 10000
-				});
-			}
+		if ($.support.pjax) {
+			$(document).pjax('a:not(.ab-item)', '.main', {
+				'fragment': '.main',
+				'maxCacheLength': 500,
+				'timeout': 10000
+			});
 		}
 	}
 

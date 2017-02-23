@@ -41,7 +41,7 @@ get_header();
 
 				<header class="article__header">
 
-					
+
 					<h2 class="article__title" itemprop="headline"><?php the_title(); ?></h2>
 					<?php get_template_part( 'partials/social-share' ); ?>
 
@@ -60,7 +60,7 @@ get_header();
 
 						OO.ready(function() {
 						    var playerConfiguration = {
-						adSetCode:'dd11d74dc90643d08199ca46b2caf9b0', 
+						adSetCode:'dd11d74dc90643d08199ca46b2caf9b0',
 						        playlistsPlugin: {"data":["98e4c101998c44a2b351b20831b54cac","b4db237b7ee4427792263eaeec8f26f6","72367a253f0471690803127867ab69f"]},
 						        autoplay: false,
 						        loop: false,
@@ -81,13 +81,6 @@ get_header();
 				<div class="ad__inline--right mobile">
 					<?php do_action( 'acm_tag_gmr_variant', 'mrec-body', 'mobile', array( 'max_width' => 1023 ) ); ?>
 				</div>
-
-				<?php if ( post_type_supports( get_post_type(), 'comments' ) ) { // If comments are open or we have at least one comment, load up the comment template. ?>
-					<div class='article__comments'>
-						<?php comments_template(); ?>
-					</div>
-				<?php } ?>
-
 
 				<?php if ( function_exists( 'related_posts' ) ): ?>
 					<?php related_posts( array( 'template' => 'partials/related-posts.php' ) ); ?>

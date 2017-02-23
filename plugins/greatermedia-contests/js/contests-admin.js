@@ -1,28 +1,8 @@
 /*! Greater Media Contests - v1.3.0
  * http://10up.com/
- * Copyright (c) 2016;
+ * Copyright (c) 2017;
  * Licensed GPLv2+
  */
-(function ($) {
-	$(document).ready(function () {
-		if (document.getElementById('contest_embedded_form')) {
-			var formbuilder = new Formbuilder({
-				selector: '#contest_embedded_form',
-				bootstrapData: GreaterMediaContestsForm.form,
-				controls: ['address', 'checkboxes', 'date', 'dropdown', 'email', 'paragraph', 'radio', 'section_break', 'text', 'website', 'file']
-			});
-
-			formbuilder.on('save', function (payload) {
-				// payload is a JSON string representation of the form
-				$('#contest_embedded_form_data').val(encodeURIComponent(JSON.stringify(JSON.parse(payload).fields)).replace(/'/g, "%27"));
-			});
-
-			// Default the hidden field with the form data loaded from the server
-			$('#contest_embedded_form_data').val(encodeURIComponent(JSON.stringify(GreaterMediaContestsForm.form)).replace(/'/g, "%27"));
-		}
-	});
-})(jQuery);
-
 (function ($) {
 	$(document).ready(function () {
 		$('#contest-settings ul.tabs a').click(function() {
