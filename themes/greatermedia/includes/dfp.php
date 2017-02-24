@@ -229,7 +229,7 @@ function greatermedia_dfp_footer() {
 
 			$(document)
 				.on('pjax:start', __cleanup)
-				.on('pjax:end gmr_lazy_load_end ad-break-started', __ready)
+				.on('pjax:end gmr_lazy_load_end', __ready)
 				.ready(__ready);
 		})(jQuery, googletag);
 	</script><?php

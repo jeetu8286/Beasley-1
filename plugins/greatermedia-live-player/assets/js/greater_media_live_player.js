@@ -307,7 +307,8 @@
 	var $audioAuthorInfo = $(document.getElementById('js-artist-info'));
 	var $audioExpandBtn = $(document.getElementById('js-audio-expand'));
 	var $audioPodcast = $(document.getElementById('js-audio-podcast'));
-	var $audioAdBreakContainer = $(document.getElementById('js-audio-ad-aboveplayer'));
+	var $audioAdBreakContainerAbovePlayer = $(document.getElementById('js-audio-ad-aboveplayer'));
+	var $audioAdBreakContainerInPlayer = $(document.getElementById('js-audio-ad-inplayer'));
 	var $audioMore = $(document.getElementById('js-audio-more')).find('a');
 
 	/**
@@ -448,7 +449,7 @@
 				{id: 'NowPlayingApi'},
 				{id: 'Npe'},
 				{id: 'PlayerWebAdmin'},
-				{id: 'SyncBanners', elements: [{id: 'td_synced_bigbox', width: 300, height: 250}]},
+				{id: 'SyncBanners', elements: [{id: window.innerWidth >= 768 ? 'js-audio-ad-inplayer' : 'js-audio-ad-aboveplayer', width: 320, height: 50}]},
 				{id: 'TargetSpot'}
 			],
 			playerReady: onPlayerReady,
@@ -1086,6 +1087,7 @@
 			player.addEventListener('track-cue-point', onTrackCuePoint);
 			player.addEventListener('ad-break-cue-point', onAdBreak);
 			player.addEventListener('ad-break-cue-point-complete', onAdBreakComplete);
+			player.addEventListener('ad-break-synced-element', onAdBreakSyncedElement);
 			player.addEventListener('stream-track-change', onTrackChange);
 			player.addEventListener('hls-cue-point', onHlsCuePoint);
 
@@ -1103,6 +1105,7 @@
 			player.attachEvent('track-cue-point', onTrackCuePoint);
 			player.attachEvent('ad-break-cue-point', onAdBreak);
 			player.attachEvent('ad-break-cue-point-complete', onAdBreakComplete);
+			player.attachEvent('ad-break-synced-element', onAdBreakSyncedElement);
 			player.attachEvent('stream-track-change', onTrackChange);
 			player.attachEvent('hls-cue-point', onHlsCuePoint);
 
@@ -1382,30 +1385,26 @@
 	}
 
 	function onAdBreak(e) {
-		var comments = $audioAdBreakContainer.getComments();
-
 		debug('New Ad Break cuepoint was received');
 		debug('Title: ' + e.data.adBreakData.cueTitle + ' - URL: ' + e.data.adBreakData.url + ' - Duration: ' + e.data.adBreakData.duration);
 
-		if (comments[0]) {
-			$audioAdBreakContainer.append(comments[0]).addClass('-show');
-			$document.trigger('ad-break-started');
+		if (window.innerWidth >= 768) {
+			$audioAdBreakContainerInPlayer.addClass('-show');
+		} else {
+			$audioAdBreakContainerAbovePlayer.addClass('-show');
 		}
 	}
 
 	function onAdBreakComplete() {
 		debug('Ad Break complete');
 
-		$audioAdBreakContainer.removeClass('-show').find('> div').each(function() {
-			var $slot = $(this),
-				slot = $slot.data('slot');
+		$audioAdBreakContainerAbovePlayer.removeClass('-show');
+		$audioAdBreakContainerInPlayer.removeClass('-show');
+	}
 
-			if (slot && window.googletag) {
-				window.googletag.destroySlots([slot]);
-			}
-
-			$slot.remove();
-		});
+	function onAdBreakSyncedElement(e) {
+		debug('Ad Break Synced Element');
+		debug(e);
 	}
 
 	function clearNpe() {

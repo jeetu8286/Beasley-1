@@ -99,8 +99,6 @@ $dfp_ad_playersponsorship = get_option( 'dfp_ad_playersponsorship' );
 
 				<?php // @TODO Available classes to add to audio-ad: -show ?>
 				<div id="js-audio-ad-inplayer" class="audio-ad audio-ad--inplayer">
-					<?php // @TODO Desktop ad code ?>
-					Desktop ad code here
 				</div>
 
 				<?php // @TODO Available classes to add to audio-readout__notification: -show ?>
