@@ -76,6 +76,7 @@
 	var $audioExpandBtn = $(document.getElementById('js-audio-expand'));
 	var $audioPodcast = $(document.getElementById('js-audio-podcast'));
 	var $audioAdBreakContainer = $(document.getElementById('js-audio-ad-aboveplayer'));
+	var $audioMore = $(document.getElementById('js-audio-more')).find('a');
 
 	/**
 	 * Reads comments of an element.
@@ -169,10 +170,7 @@
 		debug('Inline audio interval off');
 	}
 
-	/**
-	 * @todo remove the console log before beta
-	 */
-	window.tdPlayerApiReady = function () {
+	window.tdPlayerApiReady = function() {
 		debug("--- TD Player API Loaded ---");
 		initPlayer();
 	};
@@ -190,11 +188,17 @@
 	}
 
 	function initPlayer() {
-		var techPriority = calcTechPriority();
+		var container = document.getElementById('td_container'),
+			techPriority;
+
+		if (!container) {
+			return;
+		}
+
+		techPriority = calcTechPriority();
 		debug('+++ initPlayer - techPriority = ' + techPriority.join(', '));
 
-		/* TD player configuration object used to create player instance */
-		var tdPlayerConfig = {
+		window.player = player = new TDSdk({
 			coreModules: [
 				{
 					id: 'MediaPlayer',
@@ -214,25 +218,11 @@
 				{id: 'PlayerWebAdmin'},
 				{id: 'SyncBanners', elements: [{id: 'td_synced_bigbox', width: 300, height: 250}]},
 				{id: 'TargetSpot'}
-			]
-		};
-
-		require(['tdapi/base/util/Companions'], function (Companions) {
-				companions = new Companions();
-			}
-		);
-
-		window.player = player = new TdPlayerApi(tdPlayerConfig);
-		if (player.addEventListener) {
-			player.addEventListener('player-ready', onPlayerReady);
-			player.addEventListener('configuration-error', onConfigurationError);
-			player.addEventListener('module-error', onModuleError);
-		} else if (player.attachEvent) {
-			player.attachEvent('player-ready', onPlayerReady);
-			player.attachEvent('configuration-error', onConfigurationError);
-			player.attachEvent('module-error', onModuleError);
-		}
-		player.loadModules();
+			],
+			playerReady: onPlayerReady,
+			configurationError: onConfigurationError,
+			moduleError: onModuleError
+		});
 	}
 
 	/**
@@ -559,7 +549,10 @@
 		}
 	}
 
-	$document.ready(changePlayerState);
+	$document.ready(function() {
+		initPlayer();
+		changePlayerState();
+	});
 
 	function preVastAd() {
 		var preRoll = document.getElementById('live-stream__container');
@@ -586,14 +579,22 @@
 	}
 
 	function streamVastAd() {
-		var vastUrl = gmr.streamUrl;
+		var stationId = parseInt($('.audio-stream .audio-stream__title').attr('data-station-id'));
 
 		detachAdListeners();
 		attachAdListeners();
 
 		player.stop();
 		player.skipAd();
-		player.playAd('vastAd', {url: vastUrl});
+
+		player.playAd('tap', {
+			host: 'cmod.live.streamtheworld.com',
+			type: 'preroll',
+			format: 'vast',
+			stationId: !isNaN(stationId) ? stationId : false,
+			trackingParameters: {dist: "debug"}
+		});
+
 		setTimeout(function() {
 			this.stop();
 		}, 25000);
@@ -617,15 +618,24 @@
 		}
 	});
 
-	$document.on('click', '.audio-stream__item', function(e) {
+	$document.on('click', '.audio-stream__item .audio-stream__link', function(e) {
 		var $this = $(this),
 			callSign = $this.find('.audio-stream__name').text(),
+			stationId = $this.attr('data-station-id'),
 			$audioStream = $this.parents('.audio-stream');
 
 		e.stopPropagation();
 
-		$audioStream.find('.audio-stream__title').text(callSign).attr('data-callsign', callSign);
-		$audioStream.removeClass('-open');
+		$audioStream
+			.removeClass('-open')
+			.find('.audio-stream__title')
+			.text(callSign)
+			.attr('data-callsign', callSign)
+			.attr('data-station-id', stationId);
+
+		$audioExpandBtn.removeClass('-open');
+
+		$audioMore.attr('href', $audioMore.attr('data-tmpl').split('%s').join(callSign));
 
 		if (livePlaying) {
 			player.stop();
@@ -636,14 +646,13 @@
 			listenLiveStopCustomInlineAudio();
 		}
 
-		playStream(callSign);
-
-		livePlayer.classList.add('live-player--active');
-		setPlayingStyles();
+		playLiveStreamDevice();
 	});
 
-	$audioExpandBtn.click(function() {
-		$(document.getElementById('js-audio-ad-aboveplayer')).toggleClass('-show');
+	$audioExpandBtn.click(function(e) {
+		e.stopPropagation();
+
+		$('.audio-stream').toggleClass('-open');
 		$(this).toggleClass('-open');
 	});
 
@@ -844,7 +853,7 @@
 		if (player.addEventListener) {
 			player.addEventListener('track-cue-point', onTrackCuePoint);
 			player.addEventListener('ad-break-cue-point', onAdBreak);
-			player.addEventListener('ad-break-cue-point', onAdBreakComplete);
+			player.addEventListener('ad-break-cue-point-complete', onAdBreakComplete);
 			player.addEventListener('stream-track-change', onTrackChange);
 			player.addEventListener('hls-cue-point', onHlsCuePoint);
 
@@ -861,7 +870,7 @@
 		} else if (player.attachEvent) {
 			player.attachEvent('track-cue-point', onTrackCuePoint);
 			player.attachEvent('ad-break-cue-point', onAdBreak);
-			player.attachEvent('ad-break-cue-point', onAdBreakComplete);
+			player.attachEvent('ad-break-cue-point-complete', onAdBreakComplete);
 			player.attachEvent('stream-track-change', onTrackChange);
 			player.attachEvent('hls-cue-point', onHlsCuePoint);
 
@@ -1011,11 +1020,7 @@
 
 	function onVastProcessComplete(e) {
 		debug('Vast Process complete');
-
-		var vastCompanions = e.data.companions;
-
-		//Load Vast Ad companion (bigbox & leaderbaord ads)
-		displayVastCompanionAds(vastCompanions);
+//		displayVastCompanionAds(e.data.companions);
 	}
 
 	function onVpaidAdCompanions(e) {
@@ -1147,14 +1152,19 @@
 	function onAdBreak(e) {
 		var comments = $audioAdBreakContainer.getComments();
 
+		debug('New Ad Break cuepoint was received');
+		debug('Title: ' + e.data.adBreakData.cueTitle + ' - URL: ' + e.data.adBreakData.url + ' - Duration: ' + e.data.adBreakData.duration);
+
 		if (comments[0]) {
-			$audioAdBreakContainer.html(comments[0]);
+			$audioAdBreakContainer.append(comments[0]).addClass('-show');
 			$document.trigger('ad-break-started');
 		}
 	}
 
 	function onAdBreakComplete() {
-		$audioAdBreakContainer.find('> div').each(function() {
+		debug('Ad Break complete');
+
+		$audioAdBreakContainer.removeClass('-show').find('> div').each(function() {
 			var $slot = $(this),
 				slot = $slot.data('slot');
 

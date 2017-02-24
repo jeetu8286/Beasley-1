@@ -196,8 +196,8 @@ function gmr_streams_register_post_type() {
  */
 function gmr_streams_register_meta_boxes() {
 	add_meta_box( 'call-sign', 'Call Sign', 'gmr_streams_render_call_sign_meta_box', GMR_LIVE_STREAM_CPT, 'normal', 'high' );
-	add_meta_box( 'description', 'Description', 'gmr_streams_render_description_meta_box', GMR_LIVE_STREAM_CPT, 'normal' );
-	add_meta_box( 'vast-ad', 'Vast Ad URL', 'gmr_streams_render_vast_url_meta_box', GMR_LIVE_STREAM_CPT, 'normal' );
+	add_meta_box( 'description', 'Description', 'gmr_streams_render_description_meta_box', GMR_LIVE_STREAM_CPT, 'normal', 'high' );
+	add_meta_box( 'station-id', 'Station ID', 'gmr_streams_render_stationid_meta_box', GMR_LIVE_STREAM_CPT, 'normal', 'high' );
 }
 
 /**
@@ -223,13 +223,13 @@ function gmr_streams_render_description_meta_box( WP_Post $post ) {
 }
 
 /**
- * Renders Vast URL meta box.
+ * Renders Station ID meta box.
  *
  * @param WP_Post $post The stream post object.
  */
-function gmr_streams_render_vast_url_meta_box( WP_Post $post ) {
-	echo '<input type="text" name="stream_vast_url" class="widefat" value="', esc_attr( get_post_meta( $post->ID, 'vast_url', true ) ), '">';
-	echo '<p class="vast_url">Enter the Vast Ad URL for the stream, for instance <em>', esc_html( 'http://ad3.liverail.com/?LR_PUBLISHER_ID=1331&LR_CAMPAIGN_ID=229&LR_SCHEMA=vast2' ), '</em>.</p>';
+function gmr_streams_render_stationid_meta_box( WP_Post $post ) {
+	echo '<input type="text" name="station_id" class="widefat" value="', esc_attr( get_post_meta( $post->ID, 'station_id', true ) ), '">';
+	echo '<p class="description">Enter the Station ID for the stream.</p>';
 }
 
 /**
@@ -256,8 +256,8 @@ function gmr_streams_save_meta_box_data( $post_id ) {
 	$description = sanitize_text_field( filter_input( INPUT_POST, 'stream_description' ) );
 	update_post_meta( $post_id, 'description', $description );
 
-	$vast_url = esc_url_raw( filter_input( INPUT_POST, 'stream_vast_url' ) );
-	update_post_meta( $post_id, 'vast_url', $vast_url );
+	$station_id = sanitize_text_field( filter_input( INPUT_POST, 'station_id' ) );
+	update_post_meta( $post_id, 'station_id', $station_id );
 }
 
 /**
@@ -396,7 +396,10 @@ function gmr_streams_get_public_streams() {
 				continue;
 			}
 
-			$streams[ $call_sign ] = get_post_meta( $stream_id, 'description', true );
+			$streams[ $call_sign ] = array(
+				'description' => get_post_meta( $stream_id, 'description', true ),
+				'station_id'  => get_post_meta( $stream_id, 'station_id', true ),
+			);
 		}
 	} while ( $paged <= $query->max_num_pages );
 

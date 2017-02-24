@@ -9,10 +9,23 @@ if ( $liveplayer_disabled ) {
 }
 
 $streams = apply_filters( 'gmr_live_player_streams', array() );
+
 $active_stream = key( $streams );
+$active_station_id = $active_callsign = '';
+
 if ( empty( $active_stream ) ) {
 	$active_stream = 'None';
+} else {
+	$active_callsign = $active_stream;
+	$active_station_id = $streams[ $active_stream ]['station_id'];
 }
+
+/**
+ * Changes the url that will be used by the live links more button based on whether a checkbox has been checked in
+ * the Station Site Administration Screen
+ */
+$livelinks_redirect = filter_var( get_option( 'gmr_livelinks_more_redirect' ), FILTER_VALIDATE_BOOLEAN);
+$livelinks_template = home_url( $livelinks_redirect === true ? '/stream/%s/' : '/live-links/' );
 
 $network_id = trim( get_option( 'dfp_network_code' ) );
 $dfp_ad_playersponsorship = get_option( 'dfp_ad_playersponsorship' );
@@ -21,7 +34,7 @@ $dfp_ad_playersponsorship = get_option( 'dfp_ad_playersponsorship' );
 
 	<?php // @TODO Available classes to add to audio-ad: -show ?>
 	<div id="js-audio-ad-aboveplayer" class="audio-ad audio-ad--aboveplayer">
-		<!--<?php do_action( 'dfp_tag', 'dfp_ad_playercommercial' ); // need to be wrapped with <!-- --> ?>-->
+		<!--<?php do_action( 'dfp_tag', 'dfp_ad_playercommercial' ); // must be wrapped with <!-- --> ?>-->
 	</div>
 
 	<div class="audio-interface__container">
@@ -30,15 +43,15 @@ $dfp_ad_playersponsorship = get_option( 'dfp_ad_playersponsorship' );
 			<ul class="audio-stream__list">
 				<li class="audio-stream__current">
 					<?php // @TODO On desktop, the .audio-stream__title button below would control the -open class for .audio-stream ?>
-					<button class="audio-stream__title" data-callsign="<?php echo esc_html( $active_stream ); ?>">
+					<button class="audio-stream__title" data-callsign="<?php echo esc_attr( $active_callsign ); ?>" data-station-id="<?php echo esc_attr( $active_station_id ); ?>">
 						<?php echo esc_html( $active_stream ); ?>
 					</button>
 					<ul class="audio-stream__available">
-						<?php foreach ( $streams as $stream => $description ) : ?>
+						<?php foreach ( $streams as $stream => $meta ) : ?>
 							<li class="audio-stream__item">
-								<button class="audio-stream__link">
+								<button class="audio-stream__link" data-callsign="<?php echo esc_attr( $stream ); ?>" data-station-id="<?php echo esc_attr( $meta['station_id'] ); ?>">
 									<span class="audio-stream__name"><?php echo esc_html( $stream ); ?></span>
-									<span class="audio-stream__desc"><?php echo esc_html( $description ); ?></span>
+									<span class="audio-stream__desc"><?php echo esc_html( $meta['description'] ); ?></span>
 								</button>
 							</li>
 						<?php endforeach; ?>
@@ -113,7 +126,9 @@ $dfp_ad_playersponsorship = get_option( 'dfp_ad_playersponsorship' );
 					<button id="js-audio-status-listen" class="audio-status__btn">Listen Live</button>
 				</div>
 
-				<div id="js-audio-more" class="audio-more"><a href="#">&hellip;</a></div>
+				<div id="js-audio-more" class="audio-more">
+					<a href="<?php echo esc_url( sprintf( $livelinks_template, $active_stream ) ); ?>" data-tmpl="<?php echo esc_attr( $livelinks_template ); ?>">&hellip;</a>
+				</div>
 
 				<div id="js-audio-time" class="audio-time">
 					<div id="js-audio-time__progressbar" class="audio-time__progressbar">
