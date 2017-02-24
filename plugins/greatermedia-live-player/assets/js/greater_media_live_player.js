@@ -878,10 +878,12 @@
 			listenLiveStopCustomInlineAudio();
 		}
 
-		playStream(callSign);
+		playLiveStreamDevice();
 
-		livePlayer.classList.add('live-player--active');
-		setPlayingStyles();
+//		playStream(callSign);
+//
+//		livePlayer.classList.add('live-player--active');
+//		setPlayingStyles();
 	});
 
 	$audioExpandBtn.click(function(e) {

@@ -646,10 +646,7 @@
 			listenLiveStopCustomInlineAudio();
 		}
 
-		playStream(callSign);
-
-		livePlayer.classList.add('live-player--active');
-		setPlayingStyles();
+		playLiveStreamDevice();
 	});
 
 	$audioExpandBtn.click(function(e) {
