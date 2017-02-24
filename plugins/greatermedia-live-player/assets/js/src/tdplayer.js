@@ -853,7 +853,7 @@
 		if (player.addEventListener) {
 			player.addEventListener('track-cue-point', onTrackCuePoint);
 			player.addEventListener('ad-break-cue-point', onAdBreak);
-			player.addEventListener('ad-break-cue-point', onAdBreakComplete);
+			player.addEventListener('ad-break-cue-point-complete', onAdBreakComplete);
 			player.addEventListener('stream-track-change', onTrackChange);
 			player.addEventListener('hls-cue-point', onHlsCuePoint);
 
@@ -870,7 +870,7 @@
 		} else if (player.attachEvent) {
 			player.attachEvent('track-cue-point', onTrackCuePoint);
 			player.attachEvent('ad-break-cue-point', onAdBreak);
-			player.attachEvent('ad-break-cue-point', onAdBreakComplete);
+			player.attachEvent('ad-break-cue-point-complete', onAdBreakComplete);
 			player.attachEvent('stream-track-change', onTrackChange);
 			player.attachEvent('hls-cue-point', onHlsCuePoint);
 
@@ -1152,6 +1152,9 @@
 	function onAdBreak(e) {
 		var comments = $audioAdBreakContainer.getComments();
 
+		debug('New Ad Break cuepoint was received');
+		debug('Title: ' + e.data.adBreakData.cueTitle + ' - URL: ' + e.data.adBreakData.url + ' - Duration: ' + e.data.adBreakData.duration);
+
 		if (comments[0]) {
 			$audioAdBreakContainer.append(comments[0]).addClass('-show');
 			$document.trigger('ad-break-started');
@@ -1159,6 +1162,8 @@
 	}
 
 	function onAdBreakComplete() {
+		debug('Ad Break complete');
+
 		$audioAdBreakContainer.removeClass('-show').find('> div').each(function() {
 			var $slot = $(this),
 				slot = $slot.data('slot');
