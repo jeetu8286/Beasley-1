@@ -633,6 +633,8 @@
 			.attr('data-callsign', callSign)
 			.attr('data-station-id', stationId);
 
+		$audioExpandBtn.removeClass('-open');
+
 		$audioMore.attr('href', $audioMore.attr('data-tmpl').split('%s').join(callSign));
 
 		if (livePlaying) {
@@ -650,8 +652,10 @@
 		setPlayingStyles();
 	});
 
-	$audioExpandBtn.click(function() {
-		$(document.getElementById('js-audio-ad-aboveplayer')).toggleClass('-show');
+	$audioExpandBtn.click(function(e) {
+		e.stopPropagation();
+
+		$('.audio-stream').toggleClass('-open');
 		$(this).toggleClass('-open');
 	});
 
@@ -1152,13 +1156,13 @@
 		var comments = $audioAdBreakContainer.getComments();
 
 		if (comments[0]) {
-			$audioAdBreakContainer.html(comments[0]);
+			$audioAdBreakContainer.append(comments[0]).addClass('-show');
 			$document.trigger('ad-break-started');
 		}
 	}
 
 	function onAdBreakComplete() {
-		$audioAdBreakContainer.find('> div').each(function() {
+		$audioAdBreakContainer.removeClass('-show').find('> div').each(function() {
 			var $slot = $(this),
 				slot = $slot.data('slot');
 
