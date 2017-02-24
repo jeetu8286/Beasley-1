@@ -32,7 +32,6 @@ function greatermedia_dfp_customizer( \WP_Customize_Manager $wp_customize ) {
 			'dfp_ad_interstitial'      => 'Out-of-Page',
 			'dfp_ad_wallpaper'         => 'Wallpaper',
 			'dfp_ad_playersponsorship' => 'Player Sponsorship',
-			'dfp_ad_playercommercial'  => 'Player Commercial Break',
 		),
 	);
 
@@ -110,7 +109,6 @@ function greatermedia_dfp_footer() {
 		'dfp_ad_right_rail_pos1'   => get_option( 'dfp_ad_right_rail_pos1' ),
 		'dfp_ad_right_rail_pos2'   => get_option( 'dfp_ad_right_rail_pos2' ),
 		'dfp_ad_inlist_infinite'   => get_option( 'dfp_ad_inlist_infinite' ),
-		'dfp_ad_playercommercial'  => get_option( 'dfp_ad_playercommercial' ),
 	);
 
 	$sizes = array(
@@ -121,7 +119,6 @@ function greatermedia_dfp_footer() {
 		'dfp_ad_inlist_infinite'   => array( array( 300, 250 ) ),
 		'dfp_ad_right_rail_pos1'   => array( array( 300, 600 ), array( 300, 250 ) ),
 		'dfp_ad_right_rail_pos2'   => array( array( 300, 600 ), array( 300, 250 ) ),
-		'dfp_ad_playercommercial'  => array( array( 320, 50 ) ),
 	);
 
 	?><script type="text/javascript">
@@ -142,7 +139,7 @@ function greatermedia_dfp_footer() {
 				if (slots.length > 0) {
 					googletag.destroySlots(slots);
 				}
-				
+
 				googletag.pubads().clearTargeting();
 			};
 
@@ -243,7 +240,7 @@ function greatermedia_display_dfp_slot( $slot, $sizes = false, $single_targeting
 	static $targeting = null;
 
 	$render_targeting = false;
-	if ( is_null( $targeting ) && 'dfp_ad_playersponsorship' != $slot && 'dfp_ad_playercommercial' != $slot ) {
+	if ( is_null( $targeting ) && 'dfp_ad_playersponsorship' != $slot ) {
 		$render_targeting = true;
 		$targeting = array(
 			array( 'cdomain', parse_url( home_url( '/' ), PHP_URL_HOST ) ),

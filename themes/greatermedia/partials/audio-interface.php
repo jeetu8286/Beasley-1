@@ -34,7 +34,6 @@ $dfp_ad_playersponsorship = get_option( 'dfp_ad_playersponsorship' );
 
 	<?php // @TODO Available classes to add to audio-ad: -show ?>
 	<div id="js-audio-ad-aboveplayer" class="audio-ad audio-ad--aboveplayer">
-		<!--<?php do_action( 'dfp_tag', 'dfp_ad_playercommercial' ); // must be wrapped with <!-- --> ?>-->
 	</div>
 
 	<div class="audio-interface__container">
