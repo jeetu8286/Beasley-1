@@ -38,7 +38,7 @@ $header-logo-padding: 15px !default;
 	height: 200px;
 	display: inline-block;
 	margin: 10px;
-	
+
 }
 
 /*doc
@@ -91,7 +91,7 @@ $primary-border: $gray !default;
 $secondary-bg: $extra-light-gray !default;
 $secondary-text: $color-text-white !default;
 $secondary-heading: $gray !default;
-$secondary-link: $light-gray !default;
+$secondary-link: $darker-gray !default;
 $secondary-link-hover: darken($color-text-red, 9%) !default;
 $secondary-border: $dark-gray !default;
 
@@ -106,8 +106,8 @@ $liveplayer-bg: $light-gray !default;
 $liveplayer-color: $dark-gray !default;
 $liveplayer-color-secondary: $cardinal !default;
 
-$featured-primary-bg: $heath !default;
-$featured-secondary-bg: $coffee-bean !default;
+$featured-primary-bg: #ffffff !default;
+$featured-secondary-bg: #ffffff !default;
 
 $highlights-bg: $extra-light-gray !default;
 $highlights-text: $gray !default;
