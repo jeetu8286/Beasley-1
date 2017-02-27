@@ -286,9 +286,13 @@
 		} else {
 			$audioPodcast.removeClass('-show');
 			$audioControls.addClass('-loading');
+
 			$('.audio-stream .audio-stream__title').each(function() {
-				var $this = $(this);
-				$this.text($this.attr('data-callsign'));
+				var $this = $(this),
+					callSign = $.trim($this.attr('data-callsign')),
+					description = $.trim($('.audio-stream__link[data-callsign="' + callSign +'"] .audio-stream__desc').text());
+
+				$this.text(description && description.length > 0 ? description : callSign);
 			});
 		}
 
