@@ -5349,7 +5349,8 @@ Link posts contain a link to an external site. They can also optionally have a f
 .audio-stream {
   color: #404041;
   order: 2;
-  width: 100%; }
+  width: 100%;
+  margin: auto 0; }
   @media screen and (min-width: 768px) {
     .audio-stream {
       flex: 0 1 auto;
@@ -13509,11 +13510,38 @@ table.responsive tr:nth-of-type(even) {
 
 .header__main {
   border-top: none;
-  background-color: rgba(0, 0, 0, 0.3); }
+  background-color: rgba(0, 0, 0, 0.3) !important; }
+
+@media screen and (min-width: 970px) {
+  .header__search {
+    color: #fff;
+    padding: 4px;
+    background-color: rgba(0, 0, 0, 0.7);
+    text-transform: uppercase; }
+    .header__search .header__search--btn:before {
+      color: #fff; }
+  .header__nav > ul > li {
+    background-color: rgba(0, 0, 0, 0.7); }
+    .header__nav > ul > li a {
+      color: #ffffff; } }
+
+.mobile-nav {
+  background-color: #fff; }
+
+.mobile-nav__list a {
+  background-color: #fff; }
+
+.mobile-nav__toggle--span,
+.mobile-nav__toggle--span:before,
+.mobile-nav__toggle--span:after {
+  background: #fff; }
 
 .home__featured .featured__article--content,
 .home__featured .featured__content--block {
   background-image: linear-gradient(to left, #7e080f 0, #c02925 100%); }
+
+.featured__content--title {
+  color: #ffffff; }
 
 .home__featured {
   border: 1px solid #eee;
@@ -13646,18 +13674,6 @@ table.responsive tr:nth-of-type(even) {
 @media screen and (min-width: 768px) {
   .header {
     background-position: center bottom; }
-  .ad__leaderboard.desktop {
-    border: 10px solid #8b0000;
-    width: 748px;
-    height: 110px;
-    margin: 10px auto;
-    padding: 0;
-    -webkit-border-radius: 10px;
-    border-radius: 10px;
-    -webkit-box-shadow: 1px 1px 30px 5px #8b0000;
-    box-shadow: 1px 1px 30px 2px #8b0000; }
-  .ad__leaderboard.mobile {
-    display: none; }
   .live-player {
     background-image: url("../../images/metal-texture.jpg"); }
   .live-stream {

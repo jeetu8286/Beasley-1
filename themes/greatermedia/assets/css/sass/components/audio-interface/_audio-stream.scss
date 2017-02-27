@@ -2,6 +2,7 @@
 	color: $liveplayer-color;
 	order: 2;
 	width: 100%;
+	margin: auto 0;
 
 	@include bp(medium) {
 		flex: 0 1 auto;
