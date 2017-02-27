@@ -62,6 +62,7 @@
 	var liveStreamSelector = document.querySelector('.live-player__stream');
 	var inlineAudioInterval = null;
 	var liveStreamInterval = null;
+	var adBreakInterval = null;
 	var footer = document.querySelector('.footer');
 	var lpInit = false;
 	var volume_slider = $(document.getElementById('live-player--volume'));
@@ -1123,8 +1124,7 @@
 		debug('New Track cuepoint received');
 		debug('Title: ' + e.data.cuePoint.cueTitle + ' - Artist: ' + e.data.cuePoint.artistName);
 
-		$audioAdBreakContainerAbovePlayer.removeClass('-show');
-		$audioAdBreakContainerInPlayer.removeClass('-show');
+		hideAdBreakBanner();
 
 		$audioTrackInfo.text(e.data.cuePoint.cueTitle);
 		$audioAuthorInfo.text(e.data.cuePoint.artistName);
@@ -1155,9 +1155,24 @@
 		debug('Track Id:' + e.data.cuePoint.hlsTrackId + ' SegmentId:' + e.data.cuePoint.hlsSegmentId);
 	}
 
+	function hideAdBreakBanner() {
+		$audioAdBreakContainerAbovePlayer.removeClass('-show');
+		$audioAdBreakContainerInPlayer.removeClass('-show');
+	}
+
 	function onAdBreak(e) {
+		var data = e.data && e.data.adBreakData ? e.data.adBreakData : {};
+
 		debug('New Ad Break cuepoint was received');
-		debug('Title: ' + e.data.adBreakData.cueTitle + ' - URL: ' + e.data.adBreakData.url + ' - Duration: ' + e.data.adBreakData.duration);
+		debug('Title: ' + data.cueTitle + ' - URL: ' + data.url + ' - Duration: ' + data.duration);
+
+		if (data.duration) {
+			if (adBreakInterval) {
+				clearInterval(adBreakInterval);
+			}
+
+			adBreakInterval = setInterval(hideAdBreakBanner, data.duration);
+		}
 
 		if (window.innerWidth >= 768) {
 			$audioAdBreakContainerInPlayer.addClass('-show');
@@ -1168,9 +1183,7 @@
 
 	function onAdBreakComplete() {
 		debug('Ad Break complete');
-
-		$audioAdBreakContainerAbovePlayer.removeClass('-show');
-		$audioAdBreakContainerInPlayer.removeClass('-show');
+		hideAdBreakBanner();
 	}
 
 	function onAdBreakSyncedElement(e) {
