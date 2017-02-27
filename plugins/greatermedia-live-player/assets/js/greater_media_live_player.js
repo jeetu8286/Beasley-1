@@ -565,6 +565,8 @@
 		$(nowPlaying).removeClass('-show');
 
 		pauseBtn.classList.add('live-player__muted');
+
+		hideAdBreakBanner();
 	}
 
 	function setPausedStyles() {
@@ -596,6 +598,8 @@
 		}
 
 		resumeBtn.classList.add('resume__audio');
+
+		hideAdBreakBanner();
 	}
 
 	function setInlineAudioUX() {
