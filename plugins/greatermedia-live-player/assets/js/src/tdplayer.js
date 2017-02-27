@@ -78,6 +78,7 @@
 	var $audioAdBreakContainerAbovePlayer = $(document.getElementById('js-audio-ad-aboveplayer'));
 	var $audioAdBreakContainerInPlayer = $(document.getElementById('js-audio-ad-inplayer'));
 	var $audioMore = $(document.getElementById('js-audio-more')).find('a');
+	var $audioStatusListen = $(document.getElementById('js-audio-status-listen'));
 
 	/**
 	 * Reads comments of an element.
@@ -248,19 +249,9 @@
 	}
 
 	function initControlsUi() {
-
-		if (pauseBtn != null) {
-			addEventHandler(pauseBtn, 'click', pauseStream);
-		}
-
-		if (resumeBtn != null) {
-			addEventHandler(resumeBtn, 'click', resumeLiveStream);
-		}
-
-		if (clearDebug != null) {
-			addEventHandler(clearDebug, 'click', clearDebugInfo);
-		}
-
+		pauseBtn != null && addEventHandler(pauseBtn, 'click', pauseStream);
+		resumeBtn != null && addEventHandler(resumeBtn, 'click', resumeLiveStream);
+		$audioStatusListen.click(resumeLiveStream);
 	}
 
 	function setPlayingStyles() {
