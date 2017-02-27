@@ -1,11 +1,16 @@
 .article {}
 
+.main > .article__thumbnail {
+	max-width: 970px;
+	margin: 0 auto;
+}
+
 .article__header {
 	margin-bottom: 2em;
 
 	.article__thumbnail {
 		@include bp(large) {
-			width: calc(100% - 355px);
+			width: 100%;
 		}
 
 		&:after {
@@ -51,7 +56,7 @@
 		margin-bottom: 2em;
 
 		@include bp(large) {
-			width: calc(100% - 355px);
+			width: 100%;
 		}
 
 		&:after {
