@@ -28,8 +28,6 @@
 
 	var adPlaying;
 	/* boolean - Ad break currently playing */
-	var currentTrackCuePoint;
-	/* Current Track */
 	var livePlaying;
 	/* boolean - Live stream currently playing */
 	var song;
@@ -62,7 +60,8 @@
 	var liveStreamSelector = document.querySelector('.live-player__stream');
 	var inlineAudioInterval = null;
 	var liveStreamInterval = null;
-	var adBreakInterval = null;
+	var trackTimeout = null;
+	var adBreakTimeout = null;
 	var footer = document.querySelector('.footer');
 	var lpInit = false;
 	var volume_slider = $(document.getElementById('live-player--volume'));
@@ -218,7 +217,16 @@
 				{id: 'NowPlayingApi'},
 				{id: 'Npe'},
 				{id: 'PlayerWebAdmin'},
-				{id: 'SyncBanners', elements: [{id: window.innerWidth >= 768 ? 'js-audio-ad-inplayer' : 'js-audio-ad-aboveplayer', width: 320, height: 50}]},
+				{
+					id: 'SyncBanners',
+					elements: [
+						{
+							id: window.innerWidth >= 768 ? 'js-audio-ad-inplayer' : 'js-audio-ad-aboveplayer',
+							width: 320,
+							height: 50
+						}
+					]
+				},
 				{id: 'TargetSpot'}
 			],
 			playerReady: onPlayerReady,
@@ -314,8 +322,7 @@
 		$audioControls.removeClass('-playing -loading -paused');
 		$audioStatus.removeClass('-show');
 
-		$audioTrackInfo.text('');
-		$audioAuthorInfo.text('');
+		clearTrackInfo();
 
 		if (resumeBtn.classList.contains('live-player__muted')) {
 			resumeBtn.classList.remove('live-player__muted');
@@ -454,18 +461,6 @@
 
 		if (nowPlayingInfo != null) {
 			nowPlayingInfo.classList.remove('playing');
-		}
-	}
-
-	function replaceNPInfo() {
-		if (window.innerWidth <= 767) {
-			if (trackInfo.innerHTML === '') {
-				onAir.classList.add('on-air__npe');
-				liveStreamSelector.classList.add('full__width');
-			} else if (onAir.classList.contains('on-air__npe')) {
-				onAir.classList.remove('on-air__npe');
-				liveStreamSelector.classList.remove('full__width');
-			}
 		}
 	}
 
@@ -1107,7 +1102,6 @@
 		livePlaying = false;
 		playingLiveAudio = false;
 
-		clearNpe();
 		$("#trackInfo").html('');
 		$("#asyncData").html('');
 
@@ -1120,28 +1114,32 @@
 		stopLiveStreamInterval();
 	}
 
+	function clearTrackInfo() {
+		$audioTrackInfo.text('');
+		$audioAuthorInfo.text('');
+	}
+
 	function onTrackCuePoint(e) {
+		var data = e.data && e.data.cuePoint ? e.data.cuePoint : {},
+			duration = parseInt(data.cueTimeDuration);
+
 		debug('New Track cuepoint received');
-		debug('Title: ' + e.data.cuePoint.cueTitle + ' - Artist: ' + e.data.cuePoint.artistName);
+		debug('Title: ' + data.cueTitle + ' - Artist: ' + data.artistName);
 
 		hideAdBreakBanner();
 
-		$audioTrackInfo.text(e.data.cuePoint.cueTitle);
-		$audioAuthorInfo.text(e.data.cuePoint.artistName);
+		$audioTrackInfo.text(data.cueTitle);
+		$audioAuthorInfo.text(data.artistName);
 
-		if (currentTrackCuePoint && currentTrackCuePoint != e.data.cuePoint) {
-			clearNpe();
+		if (data.nowplayingURL) {
+			player.Npe.loadNpeMetadata(data.nowplayingURL, data.artistName, data.cueTitle);
 		}
 
-		if (e.data.cuePoint.nowplayingURL) {
-			player.Npe.loadNpeMetadata(e.data.cuePoint.nowplayingURL, e.data.cuePoint.artistName, e.data.cuePoint.cueTitle);
+		if (!isNaN(duration)) {
+			trackTimeout && clearTimeout(trackTimeout);
+			trackTimeout = setTimeout(clearTrackInfo, duration);
 		}
 
-		currentTrackCuePoint = e.data.cuePoint;
-
-		$("#trackInfo").html('<div class="now-playing__title">' + currentTrackCuePoint.cueTitle + '</div><div class="now-playing__artist">' + currentTrackCuePoint.artistName + '</div>');
-
-		setTimeout(replaceNPInfo, 10000);
 		$(body).trigger("liveAudioTrack.gmr");
 	}
 
@@ -1167,11 +1165,8 @@
 		debug('Title: ' + data.cueTitle + ' - URL: ' + data.url + ' - Duration: ' + data.duration);
 
 		if (data.duration) {
-			if (adBreakInterval) {
-				clearInterval(adBreakInterval);
-			}
-
-			adBreakInterval = setInterval(hideAdBreakBanner, data.duration);
+			adBreakTimeout && clearTimeout(adBreakTimeout);
+			adBreakTimeout = setTimeout(hideAdBreakBanner, data.duration);
 		}
 
 		if (window.innerWidth >= 768) {
@@ -1189,11 +1184,6 @@
 	function onAdBreakSyncedElement(e) {
 		debug('Ad Break Synced Element');
 		debug(e);
-	}
-
-	function clearNpe() {
-		$("#npeInfo").html('');
-		$("#asyncData").html('');
 	}
 
 	//Song History
