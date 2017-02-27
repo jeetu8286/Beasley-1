@@ -123,7 +123,7 @@ class GreaterMediaSiteOptions {
 		/**
 		 * Allows us to register extra settings that are not necessarily always present on all child sites.
 		 */
-		do_action( 'greatermedia-settings-register-settings', self::option_group );
+		do_action( 'greatermedia-settings-register-settings', self::option_group, $this->_settings_page_hook );
 	}
 
 	public function render_fallback_section_info() {

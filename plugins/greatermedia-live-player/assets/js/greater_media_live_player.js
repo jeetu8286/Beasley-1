@@ -310,6 +310,7 @@
 	var $audioAdBreakContainerAbovePlayer = $(document.getElementById('js-audio-ad-aboveplayer'));
 	var $audioAdBreakContainerInPlayer = $(document.getElementById('js-audio-ad-inplayer'));
 	var $audioMore = $(document.getElementById('js-audio-more')).find('a');
+	var $audioStatusListen = $(document.getElementById('js-audio-status-listen'));
 
 	/**
 	 * Reads comments of an element.
@@ -480,19 +481,9 @@
 	}
 
 	function initControlsUi() {
-
-		if (pauseBtn != null) {
-			addEventHandler(pauseBtn, 'click', pauseStream);
-		}
-
-		if (resumeBtn != null) {
-			addEventHandler(resumeBtn, 'click', resumeLiveStream);
-		}
-
-		if (clearDebug != null) {
-			addEventHandler(clearDebug, 'click', clearDebugInfo);
-		}
-
+		pauseBtn != null && addEventHandler(pauseBtn, 'click', pauseStream);
+		resumeBtn != null && addEventHandler(resumeBtn, 'click', resumeLiveStream);
+		$audioStatusListen.click(resumeLiveStream);
 	}
 
 	function setPlayingStyles() {
@@ -527,9 +518,13 @@
 		} else {
 			$audioPodcast.removeClass('-show');
 			$audioControls.addClass('-loading');
+
 			$('.audio-stream .audio-stream__title').each(function() {
-				var $this = $(this);
-				$this.text($this.attr('data-callsign'));
+				var $this = $(this),
+					callSign = $.trim($this.attr('data-callsign')),
+					description = $.trim($('.audio-stream__link[data-callsign="' + callSign +'"] .audio-stream__desc').text());
+
+				$this.text(description && description.length > 0 ? description : callSign);
 			});
 		}
 
@@ -853,7 +848,8 @@
 
 	$document.on('click', '.audio-stream__item .audio-stream__link', function(e) {
 		var $this = $(this),
-			callSign = $this.find('.audio-stream__name').text(),
+			callSign = $.trim($this.find('.audio-stream__name').text()),
+			description = $.trim($this.find('.audio-stream__desc').text()),
 			stationId = $this.attr('data-station-id'),
 			$audioStream = $this.parents('.audio-stream');
 
@@ -862,7 +858,7 @@
 		$audioStream
 			.removeClass('-open')
 			.find('.audio-stream__title')
-			.text(callSign)
+			.text(description && description.length > 0 ? description : callSign)
 			.attr('data-callsign', callSign)
 			.attr('data-station-id', stationId);
 
@@ -1085,8 +1081,8 @@
 
 		if (player.addEventListener) {
 			player.addEventListener('track-cue-point', onTrackCuePoint);
-			player.addEventListener('ad-break-cue-point', onAdBreak);
-			player.addEventListener('ad-break-cue-point-complete', onAdBreakComplete);
+//			player.addEventListener('ad-break-cue-point', onAdBreak);
+//			player.addEventListener('ad-break-cue-point-complete', onAdBreakComplete);
 			player.addEventListener('ad-break-synced-element', onAdBreakSyncedElement);
 			player.addEventListener('stream-track-change', onTrackChange);
 			player.addEventListener('hls-cue-point', onHlsCuePoint);
@@ -1103,8 +1099,8 @@
 			player.addEventListener('stream-stop', onStreamStopped);
 		} else if (player.attachEvent) {
 			player.attachEvent('track-cue-point', onTrackCuePoint);
-			player.attachEvent('ad-break-cue-point', onAdBreak);
-			player.attachEvent('ad-break-cue-point-complete', onAdBreakComplete);
+//			player.attachEvent('ad-break-cue-point', onAdBreak);
+//			player.attachEvent('ad-break-cue-point-complete', onAdBreakComplete);
 			player.attachEvent('ad-break-synced-element', onAdBreakSyncedElement);
 			player.attachEvent('stream-track-change', onTrackChange);
 			player.attachEvent('hls-cue-point', onHlsCuePoint);
@@ -1419,7 +1415,12 @@
 
 	function onAdBreakSyncedElement(e) {
 		debug('Ad Break Synced Element');
-		debug(e);
+
+		if (window.innerWidth >= 768) {
+			$audioAdBreakContainerInPlayer.addClass('-show');
+		} else {
+			$audioAdBreakContainerAbovePlayer.addClass('-show');
+		}
 	}
 
 	//Song History
@@ -1705,20 +1706,13 @@
 	}
 
 	function debug(info, error) {
-		if (!gmr.debug) {
-			return;
-		}
-
-		if (window.console) {
+		if (gmr.debug && window.console) {
 			if (error) {
 				console.error(info);
 			} else {
-				console.log(info);
+				console.info('[' + (new Date()).toLocaleString() + ']: ' + info);
 			}
 		}
-
-		$('#debugInformation').append(info);
-		$('#debugInformation').append('\n');
 	}
 
 	function clearDebugInfo() {
