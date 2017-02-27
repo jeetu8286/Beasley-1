@@ -27,11 +27,13 @@ if ( empty( $active_stream ) ) {
 $livelinks_redirect = filter_var( get_option( 'gmr_livelinks_more_redirect' ), FILTER_VALIDATE_BOOLEAN);
 $livelinks_template = home_url( $livelinks_redirect === true ? '/stream/%s/' : '/live-links/' );
 
+$network_id = trim( get_option( 'dfp_network_code' ) );
+$dfp_ad_playersponsorship = get_option( 'dfp_ad_playersponsorship' );
+
 ?><div id="live-player" class="audio-interface">
 
 	<?php // @TODO Available classes to add to audio-ad: -show ?>
 	<div id="js-audio-ad-aboveplayer" class="audio-ad audio-ad--aboveplayer">
-		<!--<?php do_action( 'dfp_tag', 'dfp_ad_playercommercial' ); // must be wrapped with <!-- --> ?>-->
 	</div>
 
 	<div class="audio-interface__container">
@@ -56,8 +58,15 @@ $livelinks_template = home_url( $livelinks_redirect === true ? '/stream/%s/' : '
 				</li>
 			</ul><!-- .audio-stream__list -->
 
-			<div class="audio-sponsor">
-				<?php do_action( 'dfp_tag', 'dfp_ad_playersponsorship' ); ?>
+			<div class="audio-sponsor -open">
+				<?php if ( ! empty( $network_id ) && ! empty( $dfp_ad_playersponsorship ) ) : ?>
+					<!-- /<?php echo esc_html( $network_id ); ?>/<?php echo esc_html( $dfp_ad_playersponsorship ); ?> -->
+					<div id='div-gpt-ad-1487117572008-0'>
+						<script type="text/javascript">
+							googletag.cmd.push(function() { googletag.display('div-gpt-ad-1487117572008-0'); });
+						</script>
+					</div>
+				<?php endif; ?>
 			</div>
 		</nav><!-- .audio-stream -->
 
@@ -90,8 +99,6 @@ $livelinks_template = home_url( $livelinks_redirect === true ? '/stream/%s/' : '
 
 				<?php // @TODO Available classes to add to audio-ad: -show ?>
 				<div id="js-audio-ad-inplayer" class="audio-ad audio-ad--inplayer">
-					<?php // @TODO Desktop ad code ?>
-					Desktop ad code here
 				</div>
 
 				<?php // @TODO Available classes to add to audio-readout__notification: -show ?>

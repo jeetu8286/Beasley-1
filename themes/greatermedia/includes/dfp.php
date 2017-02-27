@@ -32,7 +32,6 @@ function greatermedia_dfp_customizer( \WP_Customize_Manager $wp_customize ) {
 			'dfp_ad_interstitial'      => 'Out-of-Page',
 			'dfp_ad_wallpaper'         => 'Wallpaper',
 			'dfp_ad_playersponsorship' => 'Player Sponsorship',
-			'dfp_ad_playercommercial'  => 'Player Commercial Break',
 		),
 	);
 
@@ -57,6 +56,7 @@ function greatermedia_dfp_head() {
 
 	$dfp_ad_interstitial = get_option( 'dfp_ad_interstitial' );
 	$dfp_ad_wallpaper = get_option( 'dfp_ad_wallpaper' );
+	$dfp_ad_playersponsorship = get_option( 'dfp_ad_playersponsorship' );
 
 	?><script async="async" src="https://www.googletagservices.com/tag/js/gpt.js"></script>
 	<script>
@@ -82,6 +82,10 @@ function greatermedia_dfp_head() {
 			googletag.defineOutOfPageSlot('/<?php echo esc_js( $network_id ); ?>/<?php echo esc_js( $dfp_ad_interstitial ); ?>', 'div-gpt-ad-1484200509775-3').defineSizeMapping(sizeMapping).addService(googletag.pubads());
 			<?php endif; ?>
 
+			<?php if ( ! empty( $dfp_ad_playersponsorship ) ) : ?>
+			googletag.defineSlot('/<?php echo esc_js( $network_id ); ?>/<?php echo esc_js( $dfp_ad_playersponsorship ); ?>', ['fluid'], 'div-gpt-ad-1487117572008-0').addService(googletag.pubads());
+			<?php endif; ?>
+
 			googletag.pubads().enableSingleRequest();
 			googletag.pubads().collapseEmptyDivs(true);
 
@@ -105,8 +109,6 @@ function greatermedia_dfp_footer() {
 		'dfp_ad_right_rail_pos1'   => get_option( 'dfp_ad_right_rail_pos1' ),
 		'dfp_ad_right_rail_pos2'   => get_option( 'dfp_ad_right_rail_pos2' ),
 		'dfp_ad_inlist_infinite'   => get_option( 'dfp_ad_inlist_infinite' ),
-		'dfp_ad_playersponsorship' => get_option( 'dfp_ad_playersponsorship' ),
-		'dfp_ad_playercommercial'  => get_option( 'dfp_ad_playercommercial' ),
 	);
 
 	$sizes = array(
@@ -117,13 +119,29 @@ function greatermedia_dfp_footer() {
 		'dfp_ad_inlist_infinite'   => array( array( 300, 250 ) ),
 		'dfp_ad_right_rail_pos1'   => array( array( 300, 600 ), array( 300, 250 ) ),
 		'dfp_ad_right_rail_pos2'   => array( array( 300, 600 ), array( 300, 250 ) ),
-		'dfp_ad_playersponsorship' => array( 'fluid' ),
-		'dfp_ad_playercommercial'  => array( array( 320, 50 ) ),
 	);
 
 	?><script type="text/javascript">
 		(function($, googletag) {
-			var slotsIndex = 0, needCleanup = false, __ready;
+			var slotsIndex = 0, __ready, __cleanup;
+
+			__cleanup = function() {
+				var slots = [];
+
+				$('.main [data-dfp-slot] .gmr-ad').each(function() {
+					var slot = $(this).data('slot');
+
+					if (slot) {
+						slots.push(slot);
+					}
+				});
+
+				if (slots.length > 0) {
+					googletag.destroySlots(slots);
+				}
+
+				googletag.pubads().clearTargeting();
+			};
 
 			__ready = function() {
 				var unitCodes = <?php echo json_encode( $unit_codes ); ?>,
@@ -155,11 +173,6 @@ function greatermedia_dfp_footer() {
 
 				googletag.cmd.push(function() {
 					var i, j, slot, targeting, sizeMapping;
-
-					if (needCleanup) {
-						googletag.destroySlots();
-						googletag.pubads().clearTargeting();
-					}
 
 					for (i in slots) {
 						slot = googletag.defineSlot(slots[i][0], slots[i][1], slots[i][2]);
@@ -214,13 +227,10 @@ function greatermedia_dfp_footer() {
 				});
 			};
 
-			$(document).on('pjax:end', function() {
-				needCleanup = true;
-				__ready();
-			}).on('gmr_lazy_load_end ad-break-started', function() {
-				needCleanup = false;
-				__ready();
-			}).ready(__ready);
+			$(document)
+				.on('pjax:start', __cleanup)
+				.on('pjax:end gmr_lazy_load_end', __ready)
+				.ready(__ready);
 		})(jQuery, googletag);
 	</script><?php
 }
@@ -230,7 +240,7 @@ function greatermedia_display_dfp_slot( $slot, $sizes = false, $single_targeting
 	static $targeting = null;
 
 	$render_targeting = false;
-	if ( is_null( $targeting ) && 'dfp_ad_playersponsorship' != $slot && 'dfp_ad_playercommercial' != $slot ) {
+	if ( is_null( $targeting ) && 'dfp_ad_playersponsorship' != $slot ) {
 		$render_targeting = true;
 		$targeting = array(
 			array( 'cdomain', parse_url( home_url( '/' ), PHP_URL_HOST ) ),
@@ -336,7 +346,7 @@ function greatermedia_display_dfp_outofpage() {
 		</div><?php
 	endif;
 }
-add_action( 'wp_footer', 'greatermedia_display_dfp_outofpage' );
+add_action( 'wp_footer', 'greatermedia_display_dfp_outofpage', 1 );
 
 function greatermedia_display_dfp_incontent( $content ) {
 	if ( ! is_single() ) {

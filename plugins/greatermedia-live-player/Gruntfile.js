@@ -32,6 +32,7 @@ module.exports = function( grunt ) {
 				boss:    false,
 				eqnull:  true,
 				devel:   true,
+				expr:    true,
 				browser: true,
 				globals: {
 					exports: true,
