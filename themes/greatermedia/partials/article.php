@@ -1,10 +1,10 @@
 <?php while ( have_posts() ) : the_post(); ?>
 
+	<?php Greater_Media\Flexible_Feature_Images\feature_image_preference_is( get_the_ID(), 'poster' ) ? get_template_part( 'partials/feature-image-article' ) : ''; ?>
+
 	<div class="container">
 
 		<?php get_template_part( 'partials/show-mini-nav' ); ?>
-
-		<?php Greater_Media\Flexible_Feature_Images\feature_image_preference_is( get_the_ID(), 'poster' ) ? get_template_part( 'partials/feature-image-article' ) : ''; ?>
 
 		<section class="content">
 			<article id="post-<?php the_ID(); ?>" <?php post_class( 'article cf' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">

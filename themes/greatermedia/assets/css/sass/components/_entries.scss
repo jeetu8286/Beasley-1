@@ -167,8 +167,8 @@
 
 .entry2__title {
 	margin: 0;
-	font-size: ms(6);
-	line-height: 1.2;
+	font-size: ms(2);
+	line-height: ms(2);
 
 	.news-site & {
 		margin: .5em 0 .75em;
@@ -276,7 +276,7 @@
 }
 
 // Special tweaks for the standard type
-// Basically just puts the image on the right instead of the left. 
+// Basically just puts the image on the right instead of the left.
 .entry2.format-standard {
 	@include bp(small) {
 		.entry2__thumbnail {

@@ -1,53 +1,69 @@
 <?php
 
-function greatermedia_dfp_customizer( \WP_Customize_Manager $wp_customize ) {
-	$wp_customize->add_panel( 'dfp' , array(
-		'title'    => 'DoubleClick for Publishers',
-		'priority' => 30,
-	) );
+function greatermedia_init_dfp_settings( $group, $page ) {
+	add_settings_section( 'greatermedia_dfp_settings', 'DoubleClick for Publishers', 'greatermedia_render_dfp_settings_section', $page );
 
-	$wp_customize->add_section( 'dfp_settings', array(
-		'title' => 'Settings',
-		'panel' => 'dfp',
-	) );
+	register_setting( $group, 'dfp_network_code', 'sanitize_text_field' );
+	register_setting( $group, 'dfp_targeting_market', 'sanitize_text_field' );
+	register_setting( $group, 'dfp_targeting_genre', 'sanitize_text_field' );
+	register_setting( $group, 'dfp_targeting_ctest', 'sanitize_text_field' );
+	register_setting( $group, 'dfp_ad_leaderboard_pos1', 'sanitize_text_field' );
+	register_setting( $group, 'dfp_ad_leaderboard_pos2', 'sanitize_text_field' );
+	register_setting( $group, 'dfp_ad_incontent_pos1', 'sanitize_text_field' );
+	register_setting( $group, 'dfp_ad_incontent_pos2', 'sanitize_text_field' );
+	register_setting( $group, 'dfp_ad_inlist_infinite', 'sanitize_text_field' );
+	register_setting( $group, 'dfp_ad_interstitial', 'sanitize_text_field' );
+	register_setting( $group, 'dfp_ad_wallpaper', 'sanitize_text_field' );
+	register_setting( $group, 'dfp_ad_playersponsorship', 'sanitize_text_field' );
+}
+add_action( 'greatermedia-settings-register-settings', 'greatermedia_init_dfp_settings', 10, 2 );
 
-	$wp_customize->add_section( 'dfp_unit_codes', array(
-		'title' => 'Unit Codes',
-		'panel' => 'dfp',
-	) );
+function greatermedia_render_dfp_settings_section() {
+	echo '<div class="gmr__option">';
+		echo '<label for="dfp_network_code" class="gmr__option--label">Network Code</label>';
+		echo '<input type="text" class="gmr__option--input" name="dfp_network_code" id="dfp_network_code" value="', esc_attr( get_option( 'dfp_network_code' ) ), '">';
+		echo '<div class="gmr-option__field--desc"></div>';
+	echo '</div>';
 
 	$settings = array(
-		'dfp_settings' => array(
-			'dfp_network_code'     => 'Network Code',
-			'dfp_targeting_market' => 'Market Targeting Value',
-			'dfp_targeting_genre'  => 'Genre Targeting Value',
-			'dfp_targeting_ctest'  => 'CTest Targeting Value',
-		),
-		'dfp_unit_codes' => array(
-			'dfp_ad_leaderboard_pos1'  => 'Header Leaderboard',
-			'dfp_ad_leaderboard_pos2'  => 'Footer Leaderboard',
-			'dfp_ad_incontent_pos1'    => 'In Content (pos1)',
-			'dfp_ad_incontent_pos2'    => 'In Content (pos2)',
-			'dfp_ad_inlist_infinite'   => 'In List (infinite)',
-			'dfp_ad_interstitial'      => 'Out-of-Page',
-			'dfp_ad_wallpaper'         => 'Wallpaper',
-			'dfp_ad_playersponsorship' => 'Player Sponsorship',
-			'dfp_ad_playercommercial'  => 'Player Commercial Break',
-		),
+		'dfp_targeting_market' => 'Market Targeting Value',
+		'dfp_targeting_genre'  => 'Genre Targeting Value',
+		'dfp_targeting_ctest'  => 'CTest Targeting Value',
 	);
 
-	foreach ( $settings as $section => $items ) {
-		foreach ( $items as $key => $label ) {
-			$wp_customize->add_setting( $key, array( 'type' => 'option' ) );
-			$wp_customize->add_control( new \WP_Customize_Control( $wp_customize, $key, array(
-				'label'    => $label,
-				'section'  => $section,
-				'settings' => $key,
-			) ) );
-		}
+	echo '<hr>';
+	echo '<h3>Global Targeting</h3>';
+
+	foreach ( $settings as $key => $label ) {
+		echo '<div class="gmr__option">';
+			echo '<label for="', esc_attr( $key ), '" class="gmr__option--label">', esc_html( $label ), '</label>';
+			echo '<input type="text" class="gmr__option--input" name="', esc_attr( $key ), '" id="', esc_attr( $key ), '" value="', esc_attr( get_option( $key ) ), '">';
+			echo '<div class="gmr-option__field--desc"></div>';
+		echo '</div>';
+	}
+
+	$settings = array(
+		'dfp_ad_leaderboard_pos1'  => 'Header Leaderboard',
+		'dfp_ad_leaderboard_pos2'  => 'Footer Leaderboard',
+		'dfp_ad_incontent_pos1'    => 'In Content (pos1)',
+		'dfp_ad_incontent_pos2'    => 'In Content (pos2)',
+		'dfp_ad_inlist_infinite'   => 'In List (infinite)',
+		'dfp_ad_interstitial'      => 'Out-of-Page',
+		'dfp_ad_wallpaper'         => 'Wallpaper',
+		'dfp_ad_playersponsorship' => 'Player Sponsorship',
+	);
+
+	echo '<hr>';
+	echo '<h3>Unit Codes</h3>';
+	
+	foreach ( $settings as $key => $label ) {
+		echo '<div class="gmr__option">';
+			echo '<label for="', esc_attr( $key ), '" class="gmr__option--label">', esc_html( $label ), '</label>';
+			echo '<input type="text" class="gmr__option--input" name="', esc_attr( $key ), '" id="', esc_attr( $key ), '" value="', esc_attr( get_option( $key ) ), '">';
+			echo '<div class="gmr-option__field--desc"></div>';
+		echo '</div>';
 	}
 }
-add_action( 'customize_register', 'greatermedia_dfp_customizer' );
 
 function greatermedia_dfp_head() {
 	$network_id = trim( get_option( 'dfp_network_code' ) );
@@ -57,6 +73,7 @@ function greatermedia_dfp_head() {
 
 	$dfp_ad_interstitial = get_option( 'dfp_ad_interstitial' );
 	$dfp_ad_wallpaper = get_option( 'dfp_ad_wallpaper' );
+	$dfp_ad_playersponsorship = get_option( 'dfp_ad_playersponsorship' );
 
 	?><script async="async" src="https://www.googletagservices.com/tag/js/gpt.js"></script>
 	<script>
@@ -82,6 +99,10 @@ function greatermedia_dfp_head() {
 			googletag.defineOutOfPageSlot('/<?php echo esc_js( $network_id ); ?>/<?php echo esc_js( $dfp_ad_interstitial ); ?>', 'div-gpt-ad-1484200509775-3').defineSizeMapping(sizeMapping).addService(googletag.pubads());
 			<?php endif; ?>
 
+			<?php if ( ! empty( $dfp_ad_playersponsorship ) ) : ?>
+			googletag.defineSlot('/<?php echo esc_js( $network_id ); ?>/<?php echo esc_js( $dfp_ad_playersponsorship ); ?>', ['fluid'], 'div-gpt-ad-1487117572008-0').addService(googletag.pubads());
+			<?php endif; ?>
+
 			googletag.pubads().enableSingleRequest();
 			googletag.pubads().collapseEmptyDivs(true);
 
@@ -105,8 +126,6 @@ function greatermedia_dfp_footer() {
 		'dfp_ad_right_rail_pos1'   => get_option( 'dfp_ad_right_rail_pos1' ),
 		'dfp_ad_right_rail_pos2'   => get_option( 'dfp_ad_right_rail_pos2' ),
 		'dfp_ad_inlist_infinite'   => get_option( 'dfp_ad_inlist_infinite' ),
-		'dfp_ad_playersponsorship' => get_option( 'dfp_ad_playersponsorship' ),
-		'dfp_ad_playercommercial'  => get_option( 'dfp_ad_playercommercial' ),
 	);
 
 	$sizes = array(
@@ -117,13 +136,29 @@ function greatermedia_dfp_footer() {
 		'dfp_ad_inlist_infinite'   => array( array( 300, 250 ) ),
 		'dfp_ad_right_rail_pos1'   => array( array( 300, 600 ), array( 300, 250 ) ),
 		'dfp_ad_right_rail_pos2'   => array( array( 300, 600 ), array( 300, 250 ) ),
-		'dfp_ad_playersponsorship' => array( 'fluid' ),
-		'dfp_ad_playercommercial'  => array( array( 320, 50 ) ),
 	);
 
 	?><script type="text/javascript">
 		(function($, googletag) {
-			var slotsIndex = 0, needCleanup = false, __ready;
+			var slotsIndex = 0, __ready, __cleanup;
+
+			__cleanup = function() {
+				var slots = [];
+
+				$('.main [data-dfp-slot] .gmr-ad').each(function() {
+					var slot = $(this).data('slot');
+
+					if (slot) {
+						slots.push(slot);
+					}
+				});
+
+				if (slots.length > 0) {
+					googletag.destroySlots(slots);
+				}
+
+				googletag.pubads().clearTargeting();
+			};
 
 			__ready = function() {
 				var unitCodes = <?php echo json_encode( $unit_codes ); ?>,
@@ -155,11 +190,6 @@ function greatermedia_dfp_footer() {
 
 				googletag.cmd.push(function() {
 					var i, j, slot, targeting, sizeMapping;
-
-					if (needCleanup) {
-						googletag.destroySlots();
-						googletag.pubads().clearTargeting();
-					}
 
 					for (i in slots) {
 						slot = googletag.defineSlot(slots[i][0], slots[i][1], slots[i][2]);
@@ -214,13 +244,10 @@ function greatermedia_dfp_footer() {
 				});
 			};
 
-			$(document).on('pjax:end', function() {
-				needCleanup = true;
-				__ready();
-			}).on('gmr_lazy_load_end ad-break-started', function() {
-				needCleanup = false;
-				__ready();
-			}).ready(__ready);
+			$(document)
+				.on('pjax:start', __cleanup)
+				.on('pjax:end gmr_lazy_load_end', __ready)
+				.ready(__ready);
 		})(jQuery, googletag);
 	</script><?php
 }
@@ -230,7 +257,7 @@ function greatermedia_display_dfp_slot( $slot, $sizes = false, $single_targeting
 	static $targeting = null;
 
 	$render_targeting = false;
-	if ( is_null( $targeting ) && 'dfp_ad_playersponsorship' != $slot && 'dfp_ad_playercommercial' != $slot ) {
+	if ( is_null( $targeting ) && 'dfp_ad_playersponsorship' != $slot ) {
 		$render_targeting = true;
 		$targeting = array(
 			array( 'cdomain', parse_url( home_url( '/' ), PHP_URL_HOST ) ),
@@ -336,7 +363,7 @@ function greatermedia_display_dfp_outofpage() {
 		</div><?php
 	endif;
 }
-add_action( 'wp_footer', 'greatermedia_display_dfp_outofpage' );
+add_action( 'wp_footer', 'greatermedia_display_dfp_outofpage', 1 );
 
 function greatermedia_display_dfp_incontent( $content ) {
 	if ( ! is_single() ) {
