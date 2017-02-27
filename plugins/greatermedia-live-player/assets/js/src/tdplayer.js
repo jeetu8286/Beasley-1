@@ -612,7 +612,8 @@
 
 	$document.on('click', '.audio-stream__item .audio-stream__link', function(e) {
 		var $this = $(this),
-			callSign = $this.find('.audio-stream__name').text(),
+			callSign = $.trim($this.find('.audio-stream__name').text()),
+			description = $.trim($this.find('.audio-stream__desc').text()),
 			stationId = $this.attr('data-station-id'),
 			$audioStream = $this.parents('.audio-stream');
 
@@ -621,7 +622,7 @@
 		$audioStream
 			.removeClass('-open')
 			.find('.audio-stream__title')
-			.text(callSign)
+			.text(description && description.length > 0 ? description : callSign)
 			.attr('data-callsign', callSign)
 			.attr('data-station-id', stationId);
 
