@@ -1085,8 +1085,8 @@
 
 		if (player.addEventListener) {
 			player.addEventListener('track-cue-point', onTrackCuePoint);
-			player.addEventListener('ad-break-cue-point', onAdBreak);
-			player.addEventListener('ad-break-cue-point-complete', onAdBreakComplete);
+//			player.addEventListener('ad-break-cue-point', onAdBreak);
+//			player.addEventListener('ad-break-cue-point-complete', onAdBreakComplete);
 			player.addEventListener('ad-break-synced-element', onAdBreakSyncedElement);
 			player.addEventListener('stream-track-change', onTrackChange);
 			player.addEventListener('hls-cue-point', onHlsCuePoint);
@@ -1103,8 +1103,8 @@
 			player.addEventListener('stream-stop', onStreamStopped);
 		} else if (player.attachEvent) {
 			player.attachEvent('track-cue-point', onTrackCuePoint);
-			player.attachEvent('ad-break-cue-point', onAdBreak);
-			player.attachEvent('ad-break-cue-point-complete', onAdBreakComplete);
+//			player.attachEvent('ad-break-cue-point', onAdBreak);
+//			player.attachEvent('ad-break-cue-point-complete', onAdBreakComplete);
 			player.attachEvent('ad-break-synced-element', onAdBreakSyncedElement);
 			player.attachEvent('stream-track-change', onTrackChange);
 			player.attachEvent('hls-cue-point', onHlsCuePoint);
@@ -1419,7 +1419,12 @@
 
 	function onAdBreakSyncedElement(e) {
 		debug('Ad Break Synced Element');
-		debug(e);
+
+		if (window.innerWidth >= 768) {
+			$audioAdBreakContainerInPlayer.addClass('-show');
+		} else {
+			$audioAdBreakContainerAbovePlayer.addClass('-show');
+		}
 	}
 
 	//Song History
@@ -1705,20 +1710,13 @@
 	}
 
 	function debug(info, error) {
-		if (!gmr.debug) {
-			return;
-		}
-
-		if (window.console) {
+		if (gmr.debug && window.console) {
 			if (error) {
 				console.error(info);
 			} else {
-				console.log(info);
+				console.info('[' + (new Date()).toLocaleString() + ']: ' + info);
 			}
 		}
-
-		$('#debugInformation').append(info);
-		$('#debugInformation').append('\n');
 	}
 
 	function clearDebugInfo() {
