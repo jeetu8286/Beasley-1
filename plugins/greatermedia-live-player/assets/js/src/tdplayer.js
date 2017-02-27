@@ -1123,6 +1123,9 @@
 		debug('New Track cuepoint received');
 		debug('Title: ' + e.data.cuePoint.cueTitle + ' - Artist: ' + e.data.cuePoint.artistName);
 
+		$audioAdBreakContainerAbovePlayer.removeClass('-show');
+		$audioAdBreakContainerInPlayer.removeClass('-show');
+
 		$audioTrackInfo.text(e.data.cuePoint.cueTitle);
 		$audioAuthorInfo.text(e.data.cuePoint.artistName);
 
