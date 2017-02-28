@@ -509,7 +509,7 @@
 		$audioControls.removeClass('-playing -paused -loading');
 
 		$(nowPlaying).addClass('-show');
-		$(listenNow).removeClass('-show');
+		$(listenNow).text('On Air');
 
 		if (true === playingCustomAudio) {
 			$audioPodcast.addClass('-show');
@@ -556,7 +556,7 @@
 			resumeBtn.classList.add('resume__live');
 		}
 
-		$(listenNow).addClass('-show');
+		$(listenNow).addClass('-show').text('Listen Live');
 		$(nowPlaying).removeClass('-show');
 
 		pauseBtn.classList.add('live-player__muted');
@@ -727,9 +727,11 @@
 			playingCustomAudio = false;
 			stopInlineAudioInterval();
 		}
-		if (listenNowText === 'Switch to Live Stream') {
+
+		if (listenNowText !== 'Listen Live') {
 			listenNow.innerHTML = 'Listen Live';
 		}
+
 		if (window.innerWidth >= 768) {
 			playLiveStream();
 		}
@@ -762,18 +764,19 @@
 			addEventHandler(playBtn, 'click', function() {
 				if (lpInit === true) {
 					setStoppedStyles();
-					if (window.innerWidth >= 768) {
-						playLiveStream();
-					} else {
-						playLiveStreamMobile();
-					}
+					playLiveStreamDevice();
 				} else {
 					setInitialPlay();
 				}
 			});
 		}
+
 		if (listenNow != null) {
-			addEventHandler(listenNow, 'click', listenLiveStopCustomInlineAudio);
+			addEventHandler(listenNow, 'click', function() {
+				if (!livePlaying && !playingCustomAudio) {
+					listenLiveStopCustomInlineAudio();
+				}
+			});
 		}
 	}
 
@@ -1360,8 +1363,11 @@
 
 		hideAdBreakBanner();
 
-		$audioTrackInfo.text(data.cueTitle);
-		$audioAuthorInfo.text(data.artistName);
+		if (data.cueTitle || data.artistName) {
+			data.cueTitle && $audioTrackInfo.text(data.cueTitle);
+			data.artistName && $audioAuthorInfo.text(data.artistName);
+			$(listenNow).removeClass('-show');
+		}
 
 		if (data.nowplayingURL) {
 			player.Npe.loadNpeMetadata(data.nowplayingURL, data.artistName, data.cueTitle);
@@ -1369,7 +1375,10 @@
 
 		if (!isNaN(duration)) {
 			trackTimeout && clearTimeout(trackTimeout);
-			trackTimeout = setTimeout(clearTrackInfo, duration);
+			trackTimeout = setTimeout(function() {
+				clearTrackInfo();
+				$(listenNow).addClass('-show').text('On Air');
+			}, duration);
 		}
 
 		$(body).trigger("liveAudioTrack.gmr");
