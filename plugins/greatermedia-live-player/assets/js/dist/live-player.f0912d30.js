@@ -714,13 +714,9 @@
 
 	var listenLiveStopCustomInlineAudio = function () {
 		var listenNowText = listenNow.textContent;
-		var nowPlayingTitle = document.getElementById('trackInfo');
-		var nowPlayingInfo = document.getElementById('npeInfo');
 
 		if (true === playingCustomAudio) {
 			customAudio.pause();
-			nowPlayingTitle.innerHTML = '';
-			nowPlayingInfo.innerHTML = '';
 			resetInlineAudioStates();
 			resetInlineAudioUX();
 			playingCustomAudio = false;
@@ -731,9 +727,7 @@
 			listenNow.innerHTML = 'Listen Live';
 		}
 
-		if (window.innerWidth >= 768) {
-			playLiveStream();
-		}
+		playLiveStreamDevice();
 	};
 
 	function setInitialPlay() {
@@ -875,9 +869,9 @@
 
 		if (true === playingCustomAudio) {
 			listenLiveStopCustomInlineAudio();
+		} else {
+			playLiveStreamDevice();
 		}
-
-		playLiveStreamDevice();
 	});
 
 	$audioExpandBtn.click(function(e) {
