@@ -83,43 +83,29 @@ category: Components - Shows
 
 .podcast__btn--play,
 .podcast__btn--pause {
-	position: absolute;
-	@extend %audio-controls__button;
-	width: 45%;
-	margin: 0px;
-	position: absolute;
-	top: 28%;
-	left: 28%;
-	height: 45%;
-	border-width: 3px;
 	background-color: rgba($primary-bg, 0.5);
-}
+	border: 3px solid $liveplayer-color-secondary;
+	border-radius: 50%;
+	color: $liveplayer-color-secondary;
+	cursor: pointer;
+	font-size: 1.25em;
+	font-style: normal;
+	font-weight: normal;
+	height: 40px;
+	left: 50%;
+	outline: none;
+	padding: 0;
+	position: absolute;
+	top: 50%;
+	@include transform(translate(-50%, -50%));
+	width: 40px;
+	z-index: 1;
 
-.show__blogroll {
-	.podcast__btn--play,
-	.podcast__btn--pause {
-		width: 80%;
-		height: 80%;
-		left: 10%;
-		top: 10%;
+	&:hover,
+	&:focus {
+		background-color: $white;
+		color: $liveplayer-color-secondary;
 	}
-}
-
-.podcast__btn--play:hover, .podcast__btn--pause:focus {
-	border-color: darken($btn-bg, 9%);
-	color: darken($btn-bg, 9%);
-}
-
-.podcast__btn--play:active {
-	border-color: $btn-active;
-	color: $btn-active;
-}
-
-.podcast__btn--play, .podcast__btn--pause, .podcast__runtime {
-	display: block;
-	margin: 0 auto;
-	text-align: center;
-	padding-top: 1em;
 }
 
 .podcast__btn--play:before,
@@ -129,11 +115,9 @@ category: Components - Shows
 	left: 50%;
 	@include transform(translate(-50%, -50%));
 	font-family: $icon-font !important;
-	font-size: ms(5);
 }
 .podcast__btn--play:before {
 	left: 54%;
-
 }
 .podcast__btn--play {
 	&:before {
@@ -158,8 +142,11 @@ category: Components - Shows
 }
 
 .podcast__runtime {
+	display: block;
+	margin: 0 auto;
 	padding-top: 0;
 	padding-bottom: 1em;
+	text-align: center;
 	@include opacity(1);
 	@include transition(all 200ms ease-in-out);
 
@@ -298,27 +285,27 @@ a.podcast__rss:active {
 	}
 }
 
-.podcast__link,
-.podcast__download--btn {
+a.podcast__link,
+a.podcast__download--btn {
 	@include btn(transparent, $gray, $gray, .5em, 1em, ms(-1));
 	@include border-radius(1em);
 	@include transition(all 200ms linear);
 	text-transform: none;
 }
 
-.podcast__link:hover,
-.podcast__download--btn:hover {
+a.podcast__link:hover,
+a.podcast__download--btn:hover {
 	@include btn($btn-bg, $color-text-white, $btn-bg, .5em, 1em, ms(-1));
 	text-transform: none;
 }
 
-.podcast__link:active,
-.podcast__download--btn:active {
+a.podcast__link:active,
+a.podcast__download--btn:active {
 	@include btn($btn-active, $color-text-white, $btn-active, .5em, 1em, ms(-1));
 	text-transform: none;
 }
 
-.podcast__subscribe {
+a.podcast__subscribe {
 	display: block;
 	@include btn($btn-bg, $color-text-white, $btn-bg, .5em, 1em, ms(-1));
 	font-weight: 700;

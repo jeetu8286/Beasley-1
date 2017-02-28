@@ -849,7 +849,7 @@ category: Components - Gallery Archive
 	}
 }
 
-.gallery__back--btn {
+a.gallery__back--btn {
 	@include btn($btn-bg, $color-text-white, $btn-bg, .5em, 1.5em, ms(0));
 }
 
