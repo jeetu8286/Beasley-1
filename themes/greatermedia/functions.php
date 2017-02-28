@@ -1145,7 +1145,7 @@ add_filter( 'body_class', 'greatermedia_liveplayer_disabled' );
  */
 function greatermedia_extend_featured_curation_limit( $limit, $homepage ) {
 	$template = get_page_template_slug( $homepage->ID );
-	if ( ! is_admin() && 'page-templates/homepage-slider.php' == $template ) {
+	if ( ! is_admin() && 'page-templates/homepage-music.php' == $template ) {
 		$limit = 4;
 	}
 
