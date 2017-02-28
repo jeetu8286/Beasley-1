@@ -530,11 +530,7 @@
 			addEventHandler(playBtn, 'click', function() {
 				if (lpInit === true) {
 					setStoppedStyles();
-					if (window.innerWidth >= 768) {
-						playLiveStream();
-					} else {
-						playLiveStreamMobile();
-					}
+					playLiveStreamDevice();
 				} else {
 					setInitialPlay();
 				}

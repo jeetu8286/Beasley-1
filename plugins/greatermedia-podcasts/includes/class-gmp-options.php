@@ -46,7 +46,6 @@ class GMP_Settings {
 	protected function _init() {
 		add_action( 'admin_menu', array( $this, 'add_settings_page' ) );
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 	}
 
 	/**
@@ -106,16 +105,6 @@ class GMP_Settings {
 		</p>
 
 	<?php
-	}
-
-	/**
-	 * Enqueue scripts
-	 */
-	public static function enqueue_scripts() {
-
-		$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
-		//wp_enqueue_style( 'gmp-admin-styles', GMLIVEPLAYER_URL . "assets/css/greater_media_live_player_admin{$postfix}.css", array(), GMLIVEPLAYER_VERSION );
-
 	}
 
 }

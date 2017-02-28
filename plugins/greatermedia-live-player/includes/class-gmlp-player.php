@@ -73,27 +73,23 @@ class GMLP_Player {
 	 * Enqueue scripts
 	 */
 	public static function enqueue_scripts() {
+		$assets = include GMLIVEPLAYER_PATH . 'assets/js/dist/assets.php';
+		if ( empty( $assets ) ) {
+			return;
+		}
+
 		$script_debug = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG;
-		$postfix = $script_debug ? '' : '.min';
+		$script_path = $script_debug ? $assets->{'live-player.js'} : $assets->{'live-player.min.js'};
 
-		if ( function_exists( 'gmr_streams_get_primary_stream_callsign') ) {
-			$callsign = gmr_streams_get_primary_stream_callsign();
-		}
-
-		if ( function_exists( 'gmr_streams_get_primary_stream_vast_url') ) {
-			$vast_url = gmr_streams_get_primary_stream_vast_url();
-		}
-
-		$home_url = home_url( '/' );
 		wp_enqueue_script( 'liveplayer', '//sdk.listenlive.co/web/2.9/td-sdk.min.js', null, null, true );
-		wp_enqueue_script( 'gmlp-js', GMLIVEPLAYER_URL . "assets/js/greater_media_live_player{$postfix}.js", array( 'jquery', 'liveplayer', 'underscore', 'classlist-polyfill', 'pjax', 'wp-mediaelement', 'cookies-js' ), GMLIVEPLAYER_VERSION, true );
+		wp_enqueue_script( 'gmlp-js', GMLIVEPLAYER_URL . $script_path, array( 'jquery', 'liveplayer', 'underscore', 'classlist-polyfill', 'pjax', 'wp-mediaelement', 'cookies-js' ), null, true );
 		wp_localize_script( 'gmlp-js', 'gmr', array(
 			'debug'      => $script_debug,
 			'logged_in'  => false,
-			'callsign'   => $callsign,
-			'streamUrl'  => $vast_url,
+			'callsign'   => function_exists( 'gmr_streams_get_primary_stream_callsign') ? gmr_streams_get_primary_stream_callsign() : '',
+			'streamUrl'  => function_exists( 'gmr_streams_get_primary_stream_vast_url') ? gmr_streams_get_primary_stream_vast_url() : '',
 			'wpLoggedIn' => is_user_logged_in(),
-			'homeUrl'    => $home_url,
+			'homeUrl'    => home_url( '/' ),
 			'popup_url'  => home_url( self::$endpoint_slug ),
 			'is_popup'   => self::$is_loading_popup,
 			'intervals'  => array(
