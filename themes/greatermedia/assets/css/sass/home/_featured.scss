@@ -69,7 +69,7 @@ Curated posts for Featured Articles
 	position: relative;
 	@include span-columns(4);
 	@include omega;
-	padding: $base-line-height $gutter / 2;
+	padding: 20px;
 	background-color: $featured-primary-bg;
 	z-index: 1;
 	@include bp(small) {
@@ -79,8 +79,7 @@ Curated posts for Featured Articles
 	@include bp(medium) {
 		@include span-columns(8);
 		@include omega;
-		padding: 20px;
-		background-image: url('../../images/featured-bg.png');
+		padding: 0;
 		background-repeat: repeat;
 		background-position: center center;
 		background-color: $featured-primary-bg;
@@ -275,10 +274,10 @@ a.featured__article--link {
 	font-size: ms(1);
 	line-height: 1.3;
 	font-weight: bold;
-	color: $color-text-white;
+	color: $color-gray-darker;
 
 	.featured__article:hover & {
-		color: $color-text-yellow;
+		color: $color-gray-medium;
 	}
 
 	@include bp(small) {
@@ -317,15 +316,15 @@ a.featured__article--link {
 }
 
 .featured__article--heading a, .featured__article--heading a:visited {
-	color: $color-text-white;
+	color: $color-gray-darker;
 }
 
 .featured__article--heading a:hover, .featured__article--heading a:focus {
-	color: $color-text-yellow;
+	color: $color-gray-medium;
 }
 
 .featured__article--heading a:active{
-	color: darken($color-text-yellow, 9%);
+	color: darken($color-gray-medium, 9%);
 }
 
 .featured__article--excerpt {
@@ -370,6 +369,12 @@ a.featured__article--link {
 		height: 110px;
 		margin-top: 20px;
 	}
+	@include bp(medium) {
+		border-radius: 0;
+		-moz-border-radius: 0;
+		-webkit-border-radius: 0;
+		height: 100%;
+	}
 
 	.home__featured & {
 		background-color: $featured-secondary-bg;
@@ -411,6 +416,13 @@ a.featured__article--link {
 	@include bp(large) {
 		@include span-columns(4 of 12);
 		padding-top: 0;
+	}
+	@include bp(medium) {
+		float: left;
+		display: block;
+		width: 100%;
+		margin-right: 0;
+		padding-top: 66.6%;
 	}
 	/*@include bp(x-large) {
 		@include span-columns(4 of 12);
@@ -503,15 +515,14 @@ a.featured__article--link {
 	margin: 0 auto .15em;
 	// Never show more than two lines of text (layout will break).
 	line-height: 1.25;
-	max-height: 2.5em;
 	overflow: hidden;
 	-webkit-line-clamp: 3;
 	-webkit-box-orient: vertical;
 	text-overflow: ellipsis;
-	color: $color-text-white;
+	color: $color-gray-darker;
 
 	.featured__content--block:hover & {
-		color: $color-text-yellow;
+		color: $color-gray-medium;
 	}
 
 	.news-site &,
@@ -561,6 +572,10 @@ a.featured__content--link {
 	position: relative;
 	display: block;
 	overflow: auto;
+}
+
+div.featured__content--link {
+	display: none;
 }
 
 .featured__content--btn {

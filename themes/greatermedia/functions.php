@@ -20,7 +20,7 @@
 if ( defined( 'GMR_PARENT_ENV' ) && 'dev' == GMR_PARENT_ENV ) {
 	define( 'GREATERMEDIA_VERSION', time() );
 } else {
-	define( 'GREATERMEDIA_VERSION', '1.5' ); /* Version bump by Steve 02/08/2017 */
+	define( 'GREATERMEDIA_VERSION', '1.6' ); /* Version bump by Steve 02/23/2017 */
 }
 
 add_theme_support( 'homepage-curation' );
@@ -1145,7 +1145,7 @@ add_filter( 'body_class', 'greatermedia_liveplayer_disabled' );
  */
 function greatermedia_extend_featured_curation_limit( $limit, $homepage ) {
 	$template = get_page_template_slug( $homepage->ID );
-	if ( ! is_admin() && 'page-templates/homepage-slider.php' == $template ) {
+	if ( ! is_admin() && 'page-templates/homepage-music.php' == $template ) {
 		$limit = 4;
 	}
 

@@ -11,13 +11,14 @@ if ( $liveplayer_disabled ) {
 $streams = apply_filters( 'gmr_live_player_streams', array() );
 
 $active_stream = key( $streams );
-$active_station_id = $active_callsign = '';
+$active_station_id = $active_callsign = $active_description = '';
 
 if ( empty( $active_stream ) ) {
 	$active_stream = 'None';
 } else {
 	$active_callsign = $active_stream;
 	$active_station_id = $streams[ $active_stream ]['station_id'];
+	$active_description = $streams[ $active_stream ]['description'];
 }
 
 /**
@@ -43,7 +44,7 @@ $dfp_ad_playersponsorship = get_option( 'dfp_ad_playersponsorship' );
 				<li class="audio-stream__current">
 					<?php // @TODO On desktop, the .audio-stream__title button below would control the -open class for .audio-stream ?>
 					<button class="audio-stream__title" data-callsign="<?php echo esc_attr( $active_callsign ); ?>" data-station-id="<?php echo esc_attr( $active_station_id ); ?>">
-						<?php echo esc_html( $active_stream ); ?>
+						<?php echo esc_attr( ! empty( $active_description ) ? $active_description : $active_stream ); ?>
 					</button>
 					<ul class="audio-stream__available">
 						<?php foreach ( $streams as $stream => $meta ) : ?>
