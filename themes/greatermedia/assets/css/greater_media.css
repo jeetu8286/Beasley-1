@@ -5339,7 +5339,8 @@ Link posts contain a link to an external site. They can also optionally have a f
 .audio-stream {
   color: #282827;
   order: 2;
-  width: 100%; }
+  width: 100%;
+  margin: auto 0; }
   @media screen and (min-width: 768px) {
     .audio-stream {
       flex: 0 1 auto;
@@ -5377,10 +5378,8 @@ Link posts contain a link to an external site. They can also optionally have a f
     position: relative; }
     @media screen and (min-width: 768px) {
       .audio-stream .audio-stream__current {
+        border: 1px solid rgba(0, 0, 0, 0.25);
         text-transform: uppercase; } }
-  @media screen and (min-width: 768px) {
-    .audio-stream.-multiple .audio-stream__current {
-      border: 1px solid rgba(0, 0, 0, 0.25); } }
   .audio-stream.-multiple .audio-stream__current:after {
     -webkit-transform: rotate(90deg);
     -moz-transform: rotate(90deg);
@@ -5414,6 +5413,7 @@ Link posts contain a link to an external site. They can also optionally have a f
     border-radius: 12px;
     color: #ffffff;
     display: block;
+    font-weight: 700;
     overflow: hidden;
     padding: 6px;
     text-align: left;
@@ -5425,7 +5425,7 @@ Link posts contain a link to an external site. They can also optionally have a f
         background-color: transparent;
         border-radius: 0;
         color: #282827;
-        padding: 10px 20px 0 0; } }
+        padding: 10px 20px 10px 10px; } }
     .audio-stream .audio-stream__title:before {
       color: #ffffff;
       content: "\e901";
@@ -5444,9 +5444,6 @@ Link posts contain a link to an external site. They can also optionally have a f
           display: none; } }
     .audio-stream .audio-stream__title:focus {
       outline: none; }
-  @media screen and (min-width: 768px) {
-    .audio-stream.-multiple .audio-stream__title {
-      padding: 10px 20px 10px 10px; } }
   .audio-stream .audio-stream__available {
     display: none;
     list-style: none;
@@ -5501,10 +5498,8 @@ Link posts contain a link to an external site. They can also optionally have a f
   @media screen and (min-width: 768px) {
     .audio-sponsor {
       border: 0 none;
+      margin-left: 10px;
       padding: 0; } }
-  @media screen and (min-width: 768px) {
-    .-multiple .audio-sponsor {
-      margin-left: 10px; } }
 
 .audio-player {
   border-top: 1px solid rgba(0, 0, 0, 0.25);
@@ -5615,11 +5610,12 @@ Link posts contain a link to an external site. They can also optionally have a f
       display: block; } }
   @media screen and (min-width: 970px) {
     .audio-volume.-open {
-      text-align: left;
-      display: flex; } }
+      display: flex;
+      text-align: left; } }
   .audio-volume input[type=range] {
     display: none;
-    margin: 0 5px; }
+    padding: 0 5px;
+    width: calc(100% - 40px); }
   .audio-volume.-open input[type=range] {
     display: block; }
   .audio-volume .audio-volume__btn,
@@ -13489,5 +13485,8 @@ table.responsive tr:nth-of-type(even) {
 
 .page__title {
   text-transform: uppercase; }
+
+#wpadminbar {
+  z-index: 9000002; }
 
 /*# sourceMappingURL=greater_media.css.map */
