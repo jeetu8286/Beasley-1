@@ -293,7 +293,6 @@
 	var inlineAudioInterval = null;
 	var liveStreamInterval = null;
 	var trackTimeout = null;
-	var adBreakTimeout = null;
 	var footer = document.querySelector('.footer');
 	var lpInit = false;
 	var volume_slider = $(document.getElementById('live-player--volume'));
@@ -715,13 +714,9 @@
 
 	var listenLiveStopCustomInlineAudio = function () {
 		var listenNowText = listenNow.textContent;
-		var nowPlayingTitle = document.getElementById('trackInfo');
-		var nowPlayingInfo = document.getElementById('npeInfo');
 
 		if (true === playingCustomAudio) {
 			customAudio.pause();
-			nowPlayingTitle.innerHTML = '';
-			nowPlayingInfo.innerHTML = '';
 			resetInlineAudioStates();
 			resetInlineAudioUX();
 			playingCustomAudio = false;
@@ -732,9 +727,7 @@
 			listenNow.innerHTML = 'Listen Live';
 		}
 
-		if (window.innerWidth >= 768) {
-			playLiveStream();
-		}
+		playLiveStreamDevice();
 	};
 
 	function setInitialPlay() {
@@ -876,9 +869,9 @@
 
 		if (true === playingCustomAudio) {
 			listenLiveStopCustomInlineAudio();
+		} else {
+			playLiveStreamDevice();
 		}
-
-		playLiveStreamDevice();
 	});
 
 	$audioExpandBtn.click(function(e) {
@@ -1084,7 +1077,7 @@
 
 		if (player.addEventListener) {
 			player.addEventListener('track-cue-point', onTrackCuePoint);
-//			player.addEventListener('ad-break-cue-point', onAdBreak);
+			player.addEventListener('ad-break-cue-point', onAdBreak);
 //			player.addEventListener('ad-break-cue-point-complete', onAdBreakComplete);
 			player.addEventListener('ad-break-synced-element', onAdBreakSyncedElement);
 			player.addEventListener('stream-track-change', onTrackChange);
@@ -1102,7 +1095,7 @@
 			player.addEventListener('stream-stop', onStreamStopped);
 		} else if (player.attachEvent) {
 			player.attachEvent('track-cue-point', onTrackCuePoint);
-//			player.attachEvent('ad-break-cue-point', onAdBreak);
+			player.attachEvent('ad-break-cue-point', onAdBreak);
 //			player.attachEvent('ad-break-cue-point-complete', onAdBreakComplete);
 			player.attachEvent('ad-break-synced-element', onAdBreakSyncedElement);
 			player.attachEvent('stream-track-change', onTrackChange);
@@ -1354,6 +1347,11 @@
 		$audioAuthorInfo.text('');
 	}
 
+	function setOnAir() {
+		clearTrackInfo();
+		$(listenNow).addClass('-show').text('On Air');
+	}
+
 	function onTrackCuePoint(e) {
 		var data = e.data && e.data.cuePoint ? e.data.cuePoint : {},
 			duration = parseInt(data.cueTimeDuration);
@@ -1375,10 +1373,11 @@
 
 		if (!isNaN(duration)) {
 			trackTimeout && clearTimeout(trackTimeout);
-			trackTimeout = setTimeout(function() {
-				clearTrackInfo();
-				$(listenNow).addClass('-show').text('On Air');
-			}, duration);
+
+			// set a timeout if duration is longer than a minute
+			if (duration > 60000) {
+				trackTimeout = setTimeout(setOnAir, duration);
+			}
 		}
 
 		$(body).trigger("liveAudioTrack.gmr");
@@ -1405,16 +1404,7 @@
 		debug('New Ad Break cuepoint was received');
 		debug('Title: ' + data.cueTitle + ' - URL: ' + data.url + ' - Duration: ' + data.duration);
 
-		if (data.duration) {
-			adBreakTimeout && clearTimeout(adBreakTimeout);
-			adBreakTimeout = setTimeout(hideAdBreakBanner, data.duration);
-		}
-
-		if (window.innerWidth >= 768) {
-			$audioAdBreakContainerInPlayer.addClass('-show');
-		} else {
-			$audioAdBreakContainerAbovePlayer.addClass('-show');
-		}
+		setOnAir();
 	}
 
 	function onAdBreakComplete() {
