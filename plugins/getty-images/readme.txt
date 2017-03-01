@@ -2,8 +2,8 @@
 Contributors: Getty Images
 Tags: image library, media, images, getty
 Requires at least: 3.9
-Tested up to: 4.1
-Stable tag: 2.4.1
+Tested up to: 4.7.1
+Stable tag: 2.4.4
 License: GPLv2 or later
 
 Search and use Getty Images photos in your posts without ever leaving WordPress.
@@ -49,6 +49,16 @@ Using the plugin once installed
 3. Click on "Getty Images" in edit post screen to browse the Getty Images library.
 
 == Changelog ==
+
+= 2.4.4 =
+* Adding Google Analytics and Google Tag Manager.
+
+= 2.4.3 =
+* Changed static reference syntax to use self:: instead of $this for PHP 5.2 compatibility.
+* Added text domains to localization functions.
+
+= 2.4.2 =
+* Fix CSS regression introduced by WP 4.4
 
 = 2.4.1 =
 * Fix bug that prevented image embed searches from https sites
@@ -98,3 +108,4 @@ Initial release preview.
 
 = 2.3.0 =
 Fixes display bugs in WordPress 4.1 and address https/http security issues when accessing the Getty Connect API.
+
