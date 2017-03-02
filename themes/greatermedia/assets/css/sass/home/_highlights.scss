@@ -168,9 +168,9 @@ Community Highlights and Events
 
 .highlights__community {
 	padding-bottom: 10px;
-	@include bp(large) {
+	/*@include bp(large) {
 		@include span-columns(9 of 15);
-	}
+	}*/
 
 	.news-site & {
 		@include span-columns(12 of 12);
@@ -384,11 +384,11 @@ Community Highlights and Events
 .highlights__contests {
 	clear: both;
 	padding-top: 1.5em;
-	@include bp(large) {
+	/*@include bp(large) {
 		@include span-columns(6 of 15);
 		clear: none;
 		padding-top: 0;
-	}
+	}*/
 
 	.news-site & {
 		@include span-columns(12 of 12);
@@ -469,13 +469,13 @@ Community Highlights and Events
 		margin-bottom: 0;
 	}
 
-	@include bp(large) {
+	/*@include bp(large) {
 		@include span-columns(6 of 6);
 		// Force a specific height relative to the grid
 		height: 0;
 		padding-bottom: 21.5%;
 		margin: 0 0 5%;
-	}
+	}*/
 
 	// Ugly hack to make sure the <a> tag covers the entire block. The better
 	// fix would be to put the <a> tag around the entire block, instead of just
