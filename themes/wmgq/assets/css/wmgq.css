@@ -13635,10 +13635,6 @@ table.responsive tr:nth-of-type(even) {
   width: 65%;
   min-height: 4.2em; }
 
-.home__featured .featured__content--meta {
-  width: 100%;
-  min-height: 4.2em; }
-
 .featured__content--block:hover .featured__content--title {
   color: #fff; }
 
