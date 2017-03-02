@@ -2057,12 +2057,8 @@ Curated posts for Featured Articles
   width: 100%;
   margin-right: 0;
   padding: 20px;
-<<<<<<< HEAD
-  background-color: #000;
-=======
   margin-bottom: 20px;
-  background-color: #561015;
->>>>>>> feature/site-migration
+  background-color: #000;
   z-index: 1;
   /*@include bp(x-large) {
 		@include span-columns(12);
@@ -13601,7 +13597,7 @@ table.responsive tr:nth-of-type(even) {
   text-transform: none; }
 
 .header__nav .format-fi .header__nav-submenu--features li:hover p {
-  color: #fff; }
+  color: #999999; }
 
 /* Header search color */
 .header__search {
@@ -13617,7 +13613,6 @@ table.responsive tr:nth-of-type(even) {
 .featured__article--heading {
   color: #fff;
   text-transform: uppercase;
-  font-family: 'Istok+Web', sans-serif;
   text-shadow: 1px 1px 1px black; }
 
 .home__featured {
