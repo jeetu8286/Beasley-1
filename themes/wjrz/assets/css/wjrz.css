@@ -2056,7 +2056,7 @@ Curated posts for Featured Articles
   margin-right: 0;
   padding: 20px;
   margin-bottom: 20px;
-  background-color: #561015;
+  background-color: 15190;
   z-index: 1;
   /*@include bp(x-large) {
 		@include span-columns(12);
@@ -2083,7 +2083,7 @@ Curated posts for Featured Articles
       padding: 0;
       background-repeat: repeat;
       background-position: center center;
-      background-color: #561015;
+      background-color: 15190;
       background-size: auto 40%; }
       .home__featured:last-child {
         margin-right: 0; } }
@@ -2191,7 +2191,7 @@ a.featured__article--link {
   width: 100%;
   margin-right: 0;
   overflow: hidden;
-  background-color: #270e10;
+  background-color: #0073cf;
   position: relative;
   padding-top: 35.71%;
   background-size: 100%;
@@ -2249,7 +2249,7 @@ a.featured__article--link {
       .featured__article--content:last-child {
         margin-right: 0; } }
   .home__featured .featured__article--content {
-    background-color: #270e10;
+    background-color: #0073cf;
     color: #d0d2d3; }
   .news-site .featured__article--content,
   .home__featured_news .featured__article--content {
@@ -2386,7 +2386,7 @@ a.featured__article--link {
       -webkit-border-radius: 0;
       height: 100%; } }
   .home__featured .featured__content--block {
-    background-color: #270e10;
+    background-color: #0073cf;
     color: #d0d2d3; }
   .news-site .featured__content--block,
   .home__featured_news .featured__content--block {
@@ -8425,7 +8425,7 @@ category: Components - Shows
     .show__header {
       background-image: url("../../images/featured-bg.png");
       background-position: center center;
-      background-color: #561015;
+      background-color: 15190;
       background-size: auto 65%; } }
 
 @media screen and (min-width: 970px) {
@@ -11277,7 +11277,7 @@ select {
         width: 50%;
         padding: 2em 7.0833333333335%; } }
   .profile-page .profile-page__sidebar {
-    background-color: #561015;
+    background-color: 15190;
     color: #ffffff;
     background-image: url("../../images/profile_bg.jpg");
     text-align: center;
@@ -13536,6 +13536,147 @@ table.responsive tr:nth-of-type(even) {
 /**
  * Misc overides for the child theme
  */
+.header {
+  background-color: #781214 !important;
+  background-image: url("../../images/WJRZ_header-bkg.jpg") !important;
+  background-repeat: repeat-x;
+  background-position: center top;
+  border-bottom: none; }
+
+.header__main {
+  border-top: none;
+  background-color: rgba(0, 0, 0, 0.1) !important; }
+
+.header__logo--img {
+  max-height: 100px;
+  max-width: 167px; }
+
+/* Navigation */
+.header__account ul li a:active, .header__account ul li a:focus, .header__account ul li a:hover, .header__account ul li:hover, .header__nav ul li a:active, .header__nav ul li a:focus, .header__nav ul li.active, .header__nav ul li.active a:hover, .ui-menu .ui-state-focus {
+  background-color: #0073cf; }
+
+.header__account--links.sub-menu, .header__nav .format-fw > ul.header__account--links, .header__nav .format-sp > ul.header__account--links, .header__nav .format-fi > ul.header__account--links, .header__nav .format-fi > ul, .header__nav .format-fi > ul.header__account--links, .header__nav .format-fw > ul, .header__nav .format-fw > ul.header__account--links, .header__nav .format-sp > ul, .header__nav .format-sp > ul.header__account--links, .header__nav .sub-menu, .header__nav .format-fw > ul, .header__nav .format-sp > ul, .header__nav .format-fi > ul, .ui-menu {
+  border-top: 7px solid #c20000;
+  color: #fff;
+  min-width: 300px;
+  position: absolute;
+  z-index: 5000100; }
+
+.header__nav .sub-menu a.active, .header__nav .format-fw > ul a.active, .header__nav .format-sp > ul a.active, .header__nav .format-fi > ul a.active, .header__nav .format-fw > ul a.active, .header__nav .format-sp > ul a.active, .header__nav .format-fi > ul a.active, .header__nav .sub-menu a:focus, .header__nav .format-fw > ul a:focus, .header__nav .format-sp > ul a:focus, .header__nav .format-fi > ul a:focus, .header__nav .format-fw > ul a:focus, .header__nav .format-sp > ul a:focus, .header__nav .format-fi > ul a:focus, .header__nav .sub-menu a:hover, .header__nav .format-fw > ul a:hover, .header__nav .format-sp > ul a:hover, .header__nav .format-fi > ul a:hover, .header__nav .format-fw > ul a:hover, .header__nav .format-sp > ul a:hover, .header__nav .format-fi > ul a:hover, .ui-menu a.active, .ui-menu a:focus, .ui-menu a:hover {
+  color: #fdba30; }
+
+.format-sp a:hover .meta-text {
+  color: #fdba30; }
+
+.header__main a, .header__main a:active, .header__main a:hover, .header__main a:visited {
+  color: #fff; }
+
+.header__nav li {
+  font-weight: 600; }
+
+.header__nav li:hover {
+  font-weight: 600; }
+
+.header__nav > ul li a {
+  display: block;
+  padding: 7px;
+  text-transform: uppercase; }
+
+.header__account--links.sub-menu, .header__nav .format-fw > ul.header__account--links, .header__nav .format-sp > ul.header__account--links, .header__nav .format-fi > ul.header__account--links, .header__nav .format-fi > ul, .header__nav .format-fi > ul.header__account--links, .header__nav .format-fw > ul, .header__nav .format-fw > ul.header__account--links, .header__nav .format-sp > ul, .header__nav .format-sp > ul.header__account--links, .header__nav .sub-menu, .header__nav .format-fw > ul, .header__nav .format-sp > ul, .header__nav .format-fi > ul, .ui-menu {
+  border-top: 3px solid #3cb7e3;
+  color: #000;
+  min-width: 300px;
+  position: absolute;
+  z-index: 5000100; }
+
+.header__nav .sub-menu a, .header__nav .format-fw > ul a, .header__nav .format-sp > ul a, .header__nav .format-fi > ul a, .header__nav .format-fw > ul a, .header__nav .format-sp > ul a, .header__nav .format-fi > ul a, .ui-menu a {
+  color: #ffffff;
+  font-size: 0.7901234568em;
+  font-weight: bold;
+  text-transform: none; }
+
+.header__nav .format-fi .header__nav-submenu--features li:hover p {
+  color: #fdba30; }
+
+/* Header search color */
+.header__main .header__search:hover {
+  background-color: #0073cf;
+  color: #fff;
+  padding-left: 8px; }
+
+.header__search:hover, .header__search:hover .header__search--btn::before {
+  color: #fff; }
+
+/* Listen live */
+.audio-controls__play, .audio-controls__pause, .audio-controls__loading, .audio-controls__resume {
+  background-color: #0073cf;
+  border: 2px solid #0073cf; }
+
+.audio-controls__play:hover, .audio-controls__pause:hover, .audio-controls__loading:hover, .audio-controls__resume:hover, .audio-controls__play:focus, .audio-controls__pause:focus, .audio-controls__loading:focus, .audio-controls__resume:focus {
+  background-color: #ffffff;
+  color: #0073cf; }
+
+/* Home page feature items */
+.featured__article--heading {
+  color: #fff;
+  text-transform: uppercase;
+  font-family: 'Istok+Web', sans-serif;
+  text-shadow: 1px 1px 1px black; }
+
+.home__featured {
+  background: url("../../images/wjrz-body-bkg.jpg") no-repeat;
+  background-color: #015da6; }
+
+.home__featured .featured__article a:hover .featured__article--content {
+  background-color: #015da6; }
+
+.featured__article:hover .featured__article--heading {
+  color: #fff; }
+
+.featured__content--title {
+  font-size: 1em;
+  display: block;
+  width: 100%;
+  margin: 0 auto .15em;
+  line-height: 1.25;
+  overflow: hidden;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  color: #fff; }
+
+.home__featured .featured__content--meta {
+  width: 65%;
+  min-height: 4.2em; }
+
+.featured__content--block:hover .featured__content--title {
+  color: #fff; }
+
+.featured__content--block:hover {
+  background: #015da6; }
+
+.highlights__heading {
+  margin: 0 0 0.75em;
+  line-height: 1;
+  font-size: 1.125em;
+  font-weight: lighter;
+  color: #fff;
+  vertical-align: top; }
+
+a:hover .highlights__community--title {
+  color: #fdba30; }
+
+.highlights__events--more-btn {
+  background-color: #0073cf;
+  border: 1px solid #0073cf;
+  color: #fff !important;
+  font-weight: 700; }
+
+.highlights__events--more-btn:hover {
+  background-color: #015da6;
+  border-color: #015da6;
+  color: #fff !important; }
+
 .live-link__type--show {
   border-bottom-color: white;
   background: none; }
