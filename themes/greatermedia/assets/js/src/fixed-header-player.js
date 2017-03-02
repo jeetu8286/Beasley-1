@@ -14,9 +14,7 @@
 	var body = document.querySelector( 'body' ),
 		header = document.getElementById( 'header' ),
 		header_main = header.getElementsByClassName( 'header__main' )[0],
-		header_container = header.querySelectorAll( '.header__main > .container' )[0],
-		header_container_height_min,
-		admin_bar;
+		header_container = header.querySelectorAll( '.header__main > .container' )[0];
 
 	if ( window.matchMedia( '(min-width: 768px)' ).matches ) {
 
@@ -31,20 +29,9 @@
 			// Set header height
 			header.style.height = header_height + 'px';
 
-			// Is admin bar present
-			if ( body.classList.contains( 'admin-bar' ) ) {
-				admin_bar = true;
-			}
-
 			// Manage the position of the header during headroom.js events
 			var headroomManagePosition = function() {
-				header_container_height_min = header_container.offsetHeight;
-
-				if ( admin_bar ) {
-					header_main.style.transform = 'translateY(-' + (header_container_height_min + 32) + 'px)';
-				} else {
-					header_main.style.transform = 'translateY(-' + header_container_height_min + 'px)';
-				}
+				header_main.style.transform = 'translateY(-' + header_container.offsetHeight + 'px)';
 			};
 
 			// Headroom.js
