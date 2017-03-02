@@ -70,7 +70,17 @@
     color: #fdba30;
 }
 
-/* Header search color */      
+/* Header search color */ 
+.header__search {
+  color: #f0f0f0;
+  font-weight: bold}
+
+.header__search--btn:before {
+    color: #f0f0f0;
+    font-size: 1em;
+    content: "\e612";
+}
+     
  .header__main .header__search:hover {
     background-color: #0073cf;
     color: #fff;
