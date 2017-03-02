@@ -23,10 +23,11 @@
 		}
 	}
 
-	.header__nav > ul > li {
+	.header__nav ul li {
 		background-color: rgba(0,0,0,.7);
 
-		a {
+		a,
+		a:visited {
 			color: #ffffff;
 		}
 	}
@@ -227,6 +228,12 @@
 	background-color: $primary-bg;
 }
 
+@media screen and (min-width: 480px) {
+	.featured__content--image {
+		padding-top: 65%;
+	}
+}
+
 /***** Tablet *****/
 
 @media screen and (min-width: 768px) {
@@ -291,7 +298,6 @@
     .featured__content--image {
         margin-right: 0;
         width: 100%;
-        padding-top: 66.6%;
     }
     .featured__content--meta {
         width: 100%;
