@@ -1,0 +1,33 @@
+.widget_triton_song_history {
+
+	// don't show on mobile
+	display: none;
+
+	// show on desktop
+	@include bp('medium') {
+
+		display: block;
+		margin-bottom: 2em;
+
+		.td-song-history__header {
+			background: none;
+			line-height: inherit;
+			height: auto;
+			padding: inherit;
+
+			.td-song-history__header__title {
+				text-transform: uppercase;
+			}
+		}
+
+		.td-song-history__song__buy {
+			display: none;
+		}
+
+		.td-song-history__song__picture img {
+			margin-left: 0;
+		}
+
+	}
+
+}
