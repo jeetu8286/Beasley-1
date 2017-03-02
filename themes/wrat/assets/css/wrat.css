@@ -13581,7 +13581,7 @@ table.responsive tr:nth-of-type(even) {
   text-transform: uppercase; }
 
 .header__account--links.sub-menu, .header__nav .format-fw > ul.header__account--links, .header__nav .format-sp > ul.header__account--links, .header__nav .format-fi > ul.header__account--links, .header__nav .format-fi > ul, .header__nav .format-fi > ul.header__account--links, .header__nav .format-fw > ul, .header__nav .format-fw > ul.header__account--links, .header__nav .format-sp > ul, .header__nav .format-sp > ul.header__account--links, .header__nav .sub-menu, .header__nav .format-fw > ul, .header__nav .format-sp > ul, .header__nav .format-fi > ul, .ui-menu {
-  border-top: 3px solid #B9B903;
+  border-top: 3px solid #828386;
   color: #000;
   min-width: 300px;
   position: absolute;
@@ -13618,7 +13618,7 @@ table.responsive tr:nth-of-type(even) {
   background-color: #000; }
 
 .home__featured .featured__article a:hover .featured__article--content {
-  background-color: #303030; }
+  background-color: #828386; }
 
 .featured__article:hover .featured__article--heading {
   color: #fff; }
@@ -13643,7 +13643,7 @@ table.responsive tr:nth-of-type(even) {
   color: #fff; }
 
 .featured__content--block:hover {
-  background: #303030; }
+  background: #828386; }
 
 .highlights__heading {
   margin: 0 0 0.75em;
@@ -13654,7 +13654,7 @@ table.responsive tr:nth-of-type(even) {
   vertical-align: top; }
 
 a:hover .highlights__community--title {
-  color: #f5a81c; }
+  color: #ffff00; }
 
 .highlights__events--more-btn {
   background-color: #000;
