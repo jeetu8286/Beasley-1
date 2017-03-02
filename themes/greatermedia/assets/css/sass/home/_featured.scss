@@ -70,6 +70,7 @@ Curated posts for Featured Articles
 	@include span-columns(4);
 	@include omega;
 	padding: 20px;
+	margin-bottom: 20px;
 	background-color: $featured-primary-bg;
 	z-index: 1;
 	@include bp(small) {
@@ -463,10 +464,10 @@ a.featured__article--link {
 	}
 	@include bp(medium) {
 	}
-	@include bp(large) {
+	/*@include bp(large) {
 		@include span-columns(8 of 12);
 		min-height: 100%;
-	}
+	}*/
 
 	.home__featured & {
 		color: $highlights-text;
