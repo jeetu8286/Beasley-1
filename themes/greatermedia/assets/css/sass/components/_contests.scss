@@ -803,3 +803,59 @@
 .ui-datepicker .ui-datepicker-next {
 	right: 1em;
 }
+
+div.widget-recent-contests {
+	// don't show on mobile
+	display: none;
+
+	// show on desktop
+	@include bp('medium') {
+
+		display: block;
+		margin-bottom: 2em;
+
+		h3 {
+			margin: 0;
+		}
+
+		ul li {
+			float: left;
+			width: 100%;
+			padding-top: 10px;
+			padding-bottom: 10px;
+			border-bottom: #f5f5f5 1px solid;
+
+			.widget-recent-contests__meta {
+				float: left;
+		    padding-left: 5px;
+		    padding-top: 5px;
+				font-size: 14px;
+				font-weight: bold;
+				line-height: 21px;
+				color: $color-gray-darker;
+
+				img {
+					width: 45px;
+			    height: 45px;
+			    margin: 0 5px 0 0;
+			    overflow: hidden;
+			    vertical-align: center;
+			    float: left;
+				}
+			}
+		}
+
+		.more-contests {
+			clear: both;
+			text-align: center;
+
+			.more-contests-btn {
+				font-size: 13px;
+				font-weight: bold;
+				line-height: 20px;
+				color: $color-gray-darker;
+				text-transform: uppercase;
+			}
+		}
+	}
+}

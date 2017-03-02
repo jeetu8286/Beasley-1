@@ -20,7 +20,7 @@
 if ( defined( 'GMR_PARENT_ENV' ) && 'dev' == GMR_PARENT_ENV ) {
 	define( 'GREATERMEDIA_VERSION', time() );
 } else {
-	define( 'GREATERMEDIA_VERSION', '1.6' ); /* Version bump by Steve 02/23/2017 */
+	define( 'GREATERMEDIA_VERSION', '1.7' ); /* Version bump by Steve 02/28/2017 */
 }
 
 add_theme_support( 'homepage-curation' );
@@ -44,6 +44,8 @@ require_once __DIR__ . '/includes/class-gm-tinymce.php';
 require_once __DIR__ . '/includes/dfp.php';
 require_once __DIR__ . '/includes/shortcodes.php';
 require_once __DIR__ . '/includes/class-firebase.php';
+require_once __DIR__ . '/includes/class-wp-widget-triton-song-history.php';
+require_once __DIR__ . '/includes/class-wp-widget-recent-contests.php';
 
 if ( defined( 'WP_CLI' ) && WP_CLI ) {
 	include __DIR__ . '/includes/gmr-db-cli.php';
