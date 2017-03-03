@@ -1639,24 +1639,32 @@ blockquote p {
     .has-excerpt .header__nav .format-fi .entry2__thumbnail:after {
       padding-top: 75%; }
 
-.format-fi .menu__featured-post--mobile {
+.format-fi li.menu__featured-post--mobile {
+  background: #d22228;
   float: left;
   width: 100%; }
-  .format-fi .menu__featured-post--mobile a {
-    border-bottom: 1px solid #929497;
-    padding: 0;
-    margin: 18px 5% 0;
-    float: left;
-    width: 90%; }
-    @media screen and (min-width: 480px) {
-      .format-fi .menu__featured-post--mobile a {
-        padding-bottom: 20px;
-        margin: 18px 1.25em 0; } }
-    .format-fi .menu__featured-post--mobile a:hover {
+  .format-fi li.menu__featured-post--mobile a {
+    background-color: #ffffff;
+    border-bottom: 1px solid #ffffff;
+    color: #000000;
+    display: block;
+    padding: 18px 1.25em;
+    line-height: 1;
+    font-size: 1.26562em;
+    /*padding: 0;
+			margin: 18px 5% 0;
+			float: left;
+			width: 90%;
+
+			@include bp(small) {
+				padding-bottom: 20px;
+				margin: 18px 1.25em 0;
+			}*/ }
+    .format-fi li.menu__featured-post--mobile a:hover {
       background-color: transparent; }
-      .format-fi .menu__featured-post--mobile a:hover p {
+      .format-fi li.menu__featured-post--mobile a:hover p {
         color: #aa1c20; }
-  .format-fi .menu__featured-post--mobile + li {
+  .format-fi li.menu__featured-post--mobile + li {
     clear: left; }
 
 .content__heading, .sponsors__heading {
