@@ -1,6 +1,6 @@
 .header {
   background-color: #40b9fd !important;
-  background-image: url("../../images/WMGQ-Header-Background3.jpg") !important;
+  background-image: url("../../images/WMGQ-Header-Background4.jpg") !important;
   background-repeat: repeat-x;
   background-position: center top;
   border-bottom: none;
@@ -42,6 +42,22 @@
     color: #fff;
 }
 
+.mobile-nav__toggle--span, .mobile-nav__toggle--span::before, .mobile-nav__toggle--span::after {
+    background: #002449;
+}
+
+.mobile-nav .show-subnavigation {
+    background-color: #007abd;
+    float: right;
+    width: 25%;
+    text-align: center;
+    border-left: 1px solid #282827;
+}
+
+.mobile-nav .sub-menu a:link, .mobile-nav .header__nav .format-fw > ul a:link, .header__nav .mobile-nav .format-fw > ul a:link, .mobile-nav .header__nav .format-sp > ul a:link, .header__nav .mobile-nav .format-sp > ul a:link, .mobile-nav .header__nav .format-fi > ul a:link, .header__nav .mobile-nav .format-fi > ul a:link, .mobile-nav .sub-menu a:visited, .mobile-nav .header__nav .format-fw > ul a:visited, .header__nav .mobile-nav .format-fw > ul a:visited, .mobile-nav .header__nav .format-sp > ul a:visited, .header__nav .mobile-nav .format-sp > ul a:visited, .mobile-nav .header__nav .format-fi > ul a:visited, .header__nav .mobile-nav .format-fi > ul a:visited {
+    color: #fff;
+}
+
 /* Header search color */      
  .header__search {
   color: #f0f0f0;
@@ -51,6 +67,17 @@
     color: #f0f0f0;
     font-size: 1em;
     content: "\e612";
+}
+
+/* Listen live */
+.audio-controls__play, .audio-controls__pause, .audio-controls__loading, .audio-controls__resume {
+    background-color: #f5a81c;
+    border: 2px solid #f5a81c;
+}
+
+.audio-controls__play:hover, .audio-controls__pause:hover, .audio-controls__loading:hover, .audio-controls__resume:hover, .audio-controls__play:focus, .audio-controls__pause:focus, .audio-controls__loading:focus, .audio-controls__resume:focus {
+    background-color: #ffffff;
+    color: #f5a81c;
 }
 
 /* Home page feature items */
