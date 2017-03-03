@@ -13581,6 +13581,16 @@ table.responsive tr:nth-of-type(even) {
 .header__nav .format-fi .header__nav-submenu--features li:hover p {
   color: #fff; }
 
+.mobile-nav .sub-menu a:hover, .mobile-nav .header__nav .format-fw > ul a:hover, .header__nav .mobile-nav .format-fw > ul a:hover, .mobile-nav .header__nav .format-sp > ul a:hover, .header__nav .mobile-nav .format-sp > ul a:hover, .mobile-nav .header__nav .format-fi > ul a:hover, .header__nav .mobile-nav .format-fi > ul a:hover, .mobile-nav .header__nav .format-fw > ul a:hover, .header__nav .mobile-nav .format-fw > ul a:hover, .mobile-nav .header__nav .format-sp > ul a:hover, .header__nav .mobile-nav .format-sp > ul a:hover, .mobile-nav .header__nav .format-fi > ul a:hover, .header__nav .mobile-nav .format-fi > ul a:hover, .mobile-nav .sub-menu a:active, .mobile-nav .header__nav .format-fw > ul a:active, .header__nav .mobile-nav .format-fw > ul a:active, .mobile-nav .header__nav .format-sp > ul a:active, .header__nav .mobile-nav .format-sp > ul a:active, .mobile-nav .header__nav .format-fi > ul a:active, .header__nav .mobile-nav .format-fi > ul a:active, .mobile-nav .header__nav .format-fw > ul a:active, .header__nav .mobile-nav .format-fw > ul a:active, .mobile-nav .header__nav .format-sp > ul a:active, .header__nav .mobile-nav .format-sp > ul a:active, .mobile-nav .header__nav .format-fi > ul a:active, .header__nav .mobile-nav .format-fi > ul a:active {
+  color: #F7F845; }
+
+.mobile-nav .sub-menu a:link, .mobile-nav .header__nav .format-fw > ul a:link, .header__nav .mobile-nav .format-fw > ul a:link, .mobile-nav .header__nav .format-sp > ul a:link, .header__nav .mobile-nav .format-sp > ul a:link, .mobile-nav .header__nav .format-fi > ul a:link, .header__nav .mobile-nav .format-fi > ul a:link, .mobile-nav .header__nav .format-fw > ul a:link, .header__nav .mobile-nav .format-fw > ul a:link, .mobile-nav .header__nav .format-sp > ul a:link, .header__nav .mobile-nav .format-sp > ul a:link, .mobile-nav .header__nav .format-fi > ul a:link, .header__nav .mobile-nav .format-fi > ul a:link, .mobile-nav .sub-menu a:visited, .mobile-nav .header__nav .format-fw > ul a:visited, .header__nav .mobile-nav .format-fw > ul a:visited, .mobile-nav .header__nav .format-sp > ul a:visited, .header__nav .mobile-nav .format-sp > ul a:visited, .mobile-nav .header__nav .format-fi > ul a:visited, .header__nav .mobile-nav .format-fi > ul a:visited, .mobile-nav .header__nav .format-fw > ul a:visited, .header__nav .mobile-nav .format-fw > ul a:visited, .mobile-nav .header__nav .format-sp > ul a:visited, .header__nav .mobile-nav .format-sp > ul a:visited, .mobile-nav .header__nav .format-fi > ul a:visited, .header__nav .mobile-nav .format-fi > ul a:visited {
+  background-color: #303030;
+  color: #ffffff; }
+
+.format-fi .menu__featured-post--mobile a:hover p {
+  color: #F7F845; }
+
 /* Header search color */
 .header__search {
   color: #303030;
@@ -13650,6 +13660,10 @@ a:hover .highlights__community--title {
   background-color: #303030;
   border-color: #303030;
   color: #fff !important; }
+
+a.social__link:hover, a.social-share-link:hover {
+  color: #666;
+  border-color: #666; }
 
 .live-link__type--show {
   border-bottom-color: white;
