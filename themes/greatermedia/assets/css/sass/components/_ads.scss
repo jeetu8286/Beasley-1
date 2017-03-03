@@ -134,3 +134,23 @@ category: Components - Ads
 		margin: 0 auto 1.5em;
 	}
 }
+
+.ad__wallpaper {
+	height: 100%;
+	min-height: 1200px;
+	position: absolute;
+	width: 100%;
+
+	> div,
+	> div > div,
+	> div > div > iframe {
+		bottom: 0;
+		height: 100% !important;
+		left: 0;
+		min-height: 1200px;
+		position: absolute;
+		right: 0;
+		top: 0;
+		width: 100% !important;
+	}
+}

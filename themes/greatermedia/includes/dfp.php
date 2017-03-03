@@ -352,16 +352,6 @@ function greatermedia_display_dfp_outofpage() {
 			</script>
 		</div><?php
 	endif;
-
-	$dfp_ad_wallpaper = get_option( 'dfp_ad_wallpaper' );
-	if ( $dfp_ad_wallpaper ) :
-		?><!-- /<?php echo esc_html( $network_id ); ?>/<?php echo esc_html( $dfp_ad_wallpaper ); ?> -->
-		<div id='div-gpt-ad-1487289548015-0'>
-			<script type="text/javascript">
-				googletag.cmd.push(function() { googletag.display('div-gpt-ad-1487289548015-0'); });
-			</script>
-		</div><?php
-	endif;
 }
 add_action( 'wp_footer', 'greatermedia_display_dfp_outofpage', 1 );
 

@@ -78,6 +78,19 @@
 
 				<main class="main" role="main">
 
+					<div class="ad__wallpaper">
+						<?php
+						$dfp_ad_wallpaper = get_option( 'dfp_ad_wallpaper' );
+						if ( $dfp_ad_wallpaper ) :
+						?><!-- /<?php echo esc_html( $network_id ); ?>/<?php echo esc_html( $dfp_ad_wallpaper ); ?> -->
+						<div id='div-gpt-ad-1487289548015-0'>
+							<script type="text/javascript">
+								googletag.cmd.push(function() { googletag.display('div-gpt-ad-1487289548015-0'); });
+							</script>
+						</div><?php
+						endif;?>
+					</div>
+
 				<div class="container__leaderboard">
 					<div class="ad__leaderboard">
 						<?php do_action( 'dfp_tag', 'dfp_ad_leaderboard_pos1', false, array( array( 'pos', 1 ) ) ); ?>
