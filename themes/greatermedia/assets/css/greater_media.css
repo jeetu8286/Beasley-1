@@ -57,7 +57,7 @@ category: Base
 /**
  * Helpers
  */
-.cf:after, .mobile-nav .menu-item-has-children:after, .header__nav .format-fi .header__nav-submenu--features:after, .contest__submission .preview .preview-inner:after, .inner-right-col:after, .profile-page .profile-page__container:after {
+.cf:after, .mobile-nav .menu-item-has-children:after, .header__nav .format-fi ul.header__nav-submenu--features:after, .contest__submission .preview .preview-inner:after, .inner-right-col:after, .profile-page .profile-page__container:after {
   content: "";
   display: table;
   clear: both; }
@@ -731,7 +731,6 @@ img {
 .main > .container > .sidebar {
   background-color: #ffffff;
   float: left;
-  height: 500px;
   width: 100%; }
   @media screen and (min-width: 768px) {
     .main > .container > .sidebar {
@@ -1325,9 +1324,9 @@ blockquote p {
   background-color: #d22228;
   color: #ffffff; }
 
-ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw > ul li:not(.mobile-menu-submenu-header):hover, .header__nav .format-sp > ul li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fi > ul li:not(.mobile-menu-submenu-header):hover {
-  background-color: transparent; }
-
+/*ul.sub-menu li:not(.mobile-menu-submenu-header):hover {
+	background-color: transparent;
+}*/
 .header__nav ul li ul {
   display: none; }
 
@@ -1591,21 +1590,24 @@ ul.sub-menu li:not(.mobile-menu-submenu-header):hover, .header__nav .format-fw >
       vertical-align: top;
       width: 49%;
       line-height: 1.25em; }
-  .header__nav .format-fi .header__nav-submenu--features {
-    width: 66%;
-    border-left: 1px solid #929497; }
-    .header__nav .format-fi .header__nav-submenu--features li {
+  .header__nav .format-fi ul.header__nav-submenu--features {
+    border-left: 1px solid rgba(0, 0, 0, 0.25);
+    display: flex;
+    width: 66%; }
+    .header__nav .format-fi ul.header__nav-submenu--features li {
       display: block;
       width: 25%;
       float: left;
       padding: 2%; }
-      .header__nav .format-fi .header__nav-submenu--features li:hover a {
-        background-color: transparent; }
-      .header__nav .format-fi .header__nav-submenu--features li:hover p {
-        color: #aa1c20; }
-    .header__nav .format-fi .header__nav-submenu--features a {
+      .header__nav .format-fi ul.header__nav-submenu--features li:hover {
+        background-color: #ffffff; }
+        .header__nav .format-fi ul.header__nav-submenu--features li:hover a {
+          background-color: transparent; }
+        .header__nav .format-fi ul.header__nav-submenu--features li:hover p {
+          color: #aa1c20; }
+    .header__nav .format-fi ul.header__nav-submenu--features a {
       padding: 0 !important; }
-    .header__nav .format-fi .header__nav-submenu--features p {
+    .header__nav .format-fi ul.header__nav-submenu--features p {
       line-height: 1.25em; }
   .header__nav .format-fi p {
     margin-top: .5em; }

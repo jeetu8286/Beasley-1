@@ -28,10 +28,11 @@
 		}
 	}
 
-	.header__nav-submenu--features {
+	ul.header__nav-submenu--features {
 		@extend .cf;
+		border-left: 1px solid rgba(0, 0, 0, 0.25);
+		display: flex;
 		width: 66%;
-		border-left: 1px solid $primary-border;
 
 		li {
 			display: block;
@@ -40,6 +41,7 @@
 			padding: 2%;
 
 			&:hover {
+				background-color: $white;
 
 				a {
 					background-color: transparent;
