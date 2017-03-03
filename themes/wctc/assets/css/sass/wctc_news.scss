@@ -36,9 +36,13 @@
 @import "news-sports/components/shows";
 @import "news-sports/base/overrides";
 
+.main, .home__highlights {
+    background-color: #333;
+}
+
 .header {
-  background-color: #531f23 !important;
-  background-image: url("http://greatermedianj.com/WMTR/background2.jpg") !important;
+  background-color: #999 !important;
+  background-image: url("http://greatermedianj.com/WCTC/WCTC_header.jpg") !important;
   background-repeat: repeat-x;
   background-position: center top;
   border-bottom: none;
@@ -46,48 +50,49 @@
 
 .header__main {
     border-top: none;
-    background-color: rgba(0, 0, 0, .3) !important;
+    background-color: rgba(0, 0, 0, .1) !important;
 }
 
-.header__logo--img {
-    max-height: 110px;
-    max-width: 183px;
+
+.header__logo {
+    background-color: transparent;
+    border-bottom: 0px solid #000;
+    border-top: 0px solid #000;
+}
+
+element.style {
+    height: 186px;
 }
 
 /* Navigation */
 
-.header__account ul li a:active, .header__account ul li a:focus, .header__account ul li a:hover, .header__account ul li:hover, .header__nav ul li a:active, .header__nav ul li a:focus, .header__nav ul li.active, .header__nav ul li.active a:hover, .ui-menu .ui-state-focus {background-color: #531f23;}        
+.header__account ul li a:active, .header__account ul li a:focus, .header__account ul li a:hover, .header__account ul li:hover, .header__nav ul li a:active, .header__nav ul li a:focus, .header__nav ul li.active, .header__nav ul li.active a:hover, .ui-menu .ui-state-focus {background-color: #fff;}        
 .header__account--links.sub-menu, .header__nav .format-fi > ul, .header__nav .format-fi > ul.header__account--links, .header__nav .format-fw > ul, .header__nav .format-fw > ul.header__account--links, .header__nav .format-sp > ul, .header__nav .format-sp > ul.header__account--links, .header__nav .sub-menu, .ui-menu {
-  border-top: 7px solid #531f23;
+  border-top: 7px solid #c20000;
   color: #fff;
   min-width: 300px;
   position: absolute;
   z-index: 5000100;
 }
 
-.header__nav .sub-menu, .header__nav .format-fw > ul, .header__nav .format-sp > ul, .header__nav .format-fi > ul, .ui-menu {
-    position: absolute;
-    background-color: #270e10;
-    color: #000;
-    min-width: 300px;
-    z-index: 5000100;
-}
-
-
-.header__main ul li a:hover, .header__main ul li:hover a, .header__main ul li a:active {
-    background-color: #270e10;
-    color: #fff;
-}
-
 .header__nav .sub-menu a.active, .header__nav .format-fw > ul a.active, .header__nav .format-sp > ul a.active, .header__nav .format-fi > ul a.active, .header__nav .sub-menu a:focus, .header__nav .format-fw > ul a:focus, .header__nav .format-sp > ul a:focus, .header__nav .format-fi > ul a:focus, .header__nav .sub-menu a:hover, .header__nav .format-fw > ul a:hover, .header__nav .format-sp > ul a:hover, .header__nav .format-fi > ul a:hover, .ui-menu a.active, .ui-menu a:focus, .ui-menu a:hover {
     color: #fff;
 }
 
-.format-sp a:hover .meta-text {
+.header__nav .sub-menu li.active > a, .header__nav .format-fw > ul li.active > a, .header__nav .format-sp > ul li.active > a, .header__nav .format-fi > ul li.active > a, .header__nav .sub-menu li:hover > a, .header__nav .format-fw > ul li:hover > a, .header__nav .format-sp > ul li:hover > a, .header__nav .format-fi > ul li:hover > a, .header__nav > ul > li > ul > li.active > a:hover {
+    background-color: #fff;
+    color: #e11f3e;
+}
+
+.header__nav ul li.active > a {
     color: #fff;
 }
 
-.header__main a, .header__main a:active, .header__main a:hover, .header__main a:visited {color: #fff;}
+.format-sp a:hover .meta-text {
+    color: #e11f3e;
+}
+
+.header__main a, .header__main a:active, .header__main a:hover, .header__main a:visited {color: #000;}
 
 .header__nav li {
   font-weight: 600;
@@ -104,50 +109,41 @@
 }
 
 .header__account--links.sub-menu, .header__nav .format-fi > ul, .header__nav .format-fi > ul.header__account--links, .header__nav .format-fw > ul, .header__nav .format-fw > ul.header__account--links, .header__nav .format-sp > ul, .header__nav .format-sp > ul.header__account--links, .header__nav .sub-menu, .ui-menu {
-  border-top: 3px solid #eaba1a;
-  color: #000;
+  border-top: 3px solid #000;
+  color: #fff;
   min-width: 300px;
   position: absolute;
   z-index: 5000100;
 }
 
 .header__nav .sub-menu a, .header__nav .format-fw > ul a, .header__nav .format-sp > ul a, .header__nav .format-fi > ul a, .ui-menu a {
-    color: #ffffff;
+    color: #fff;
     font-size: 0.7901234568em;
     font-weight: bold;
     text-transform: none;
 }
 
 .header__nav .format-fi .header__nav-submenu--features li:hover p {
-    color: #999999;
+    color: #ccc;
 }
-
-.mobile-nav__toggle--span, .mobile-nav__toggle--span::before, .mobile-nav__toggle--span::after {
-    background: #ccc;   
-}
-    
 
 /* Header search color */      
  .header__search {
-  color: #f0f0f0;
+  color: #000;
   font-weight: bold}
 
 .header__search--btn:before {
-    color: #f0f0f0;
+    color: #000;
     font-size: 1em;
     content: "\e612";
 }
 
-.header__main .header__search:hover {
-    background-color: #531f23;
-    color: #fff;
-    padding-left: 8px;
-} 
-
-.header__search:hover, .header__search:hover .header__search--btn::before {
-    color: #fff;
+.header__search--btn {
+    display: inline;
+    float: inherit;
+    height: 82px;
+    padding: 34px 0 30px;
 }
-
 
 /* Home page feature items */
 .featured__article--heading {
@@ -157,7 +153,17 @@
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 1);
 }
 
-.home__featured .featured__article a:hover .featured__article--content {background-color: #620000;}
+.home__featured .featured__article--content {
+    background-color: #d22228;
+    color: #191919;
+}
+
+.home__featured .featured__content--block {
+    background-color: #d22228;
+    color: #191919;
+}
+
+.home__featured .featured__article a:hover .featured__article--content {background-color: #c00000;}
 
 .featured__article:hover .featured__article--heading {color: #fff;}
 
@@ -184,7 +190,7 @@
 }
 
 .featured__content--block:hover {
-  background: #620000;
+  background: #c00000;
 }
 
 .highlights__heading {
@@ -196,11 +202,15 @@
     vertical-align: top;
 }
 
-a:hover .highlights__community--title {color:#eaba1a;}
+.highlights__community--title {
+    color: #fff;
+}
+
+a:hover .highlights__community--title {color:#e3e4e5;}
 
 .highlights__events--more-btn {
-  background-color: #781214;
-  border: 1px solid #781214;
+  background-color: #e11f3e;
+  border: 1px solid #e11f3e;
   color: #fff !important;
   font-weight: 700;
 }
@@ -209,4 +219,8 @@ a:hover .highlights__community--title {color:#eaba1a;}
   background-color: #c00000;
   border-color: #c00000;
   color: #fff !important;
+}
+
+a:hover .highlights__event--title, a:hover .highlights__event--date {
+    color: #e3e4e5;
 }
