@@ -13562,14 +13562,22 @@ table.responsive tr:nth-of-type(even) {
   position: absolute;
   z-index: 5000100; }
 
+.header__nav .sub-menu, .header__nav .format-fw > ul, .header__nav .format-sp > ul, .header__nav .format-fi > ul, .header__nav .format-fw > ul, .header__nav .format-sp > ul, .header__nav .format-fi > ul, .ui-menu {
+  position: absolute;
+  background-color: #270e10;
+  color: #000;
+  min-width: 300px;
+  z-index: 5000100; }
+
+.header__main ul li a:hover, .header__main ul li:hover a, .header__main ul li a:active {
+  background-color: #270e10;
+  color: #fff; }
+
 .header__nav .sub-menu a.active, .header__nav .format-fw > ul a.active, .header__nav .format-sp > ul a.active, .header__nav .format-fi > ul a.active, .header__nav .format-fw > ul a.active, .header__nav .format-sp > ul a.active, .header__nav .format-fi > ul a.active, .header__nav .sub-menu a:focus, .header__nav .format-fw > ul a:focus, .header__nav .format-sp > ul a:focus, .header__nav .format-fi > ul a:focus, .header__nav .format-fw > ul a:focus, .header__nav .format-sp > ul a:focus, .header__nav .format-fi > ul a:focus, .header__nav .sub-menu a:hover, .header__nav .format-fw > ul a:hover, .header__nav .format-sp > ul a:hover, .header__nav .format-fi > ul a:hover, .header__nav .format-fw > ul a:hover, .header__nav .format-sp > ul a:hover, .header__nav .format-fi > ul a:hover, .ui-menu a.active, .ui-menu a:focus, .ui-menu a:hover {
   color: #fff; }
 
 .format-sp a:hover .meta-text {
   color: #fff; }
-
-.header__nav {
-  font-family: 'Oswald', sans-serif; }
 
 .header__main a, .header__main a:active, .header__main a:hover, .header__main a:visited {
   color: #fff; }
@@ -13667,7 +13675,7 @@ table.responsive tr:nth-of-type(even) {
   vertical-align: top; }
 
 a:hover .highlights__community--title {
-  color: #999999; }
+  color: #eaba1a; }
 
 .highlights__events--more-btn {
   background-color: #781214;
