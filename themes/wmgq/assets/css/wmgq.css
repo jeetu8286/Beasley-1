@@ -2055,12 +2055,8 @@ Curated posts for Featured Articles
   width: 100%;
   margin-right: 0;
   padding: 20px;
-<<<<<<< HEAD
-  background-color: #103368;
-=======
   margin-bottom: 20px;
-  background-color: #561015;
->>>>>>> feature/site-migration
+  background-color: #103368;
   z-index: 1;
   /*@include bp(x-large) {
 		@include span-columns(12);
@@ -13597,6 +13593,10 @@ table.responsive tr:nth-of-type(even) {
 
 .home__featured .featured__article a:hover .featured__article--content {
   background-color: #007abd; }
+
+.home__featured {
+  background: url("../../images/wmgq-body-bkg2.jpg") no-repeat;
+  background-color: #103368; }
 
 .featured__article:hover .featured__article--heading {
   color: #fff; }
