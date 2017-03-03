@@ -109,6 +109,10 @@
     color: #fff;
 }
 
+.mobile-nav__toggle--span, .mobile-nav__toggle--span::before, .mobile-nav__toggle--span::after {
+    background: #ccc;   
+}
+
 /* Home page feature items */
 .featured__article--heading {
   color: #fff;
