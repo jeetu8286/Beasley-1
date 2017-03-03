@@ -48,6 +48,11 @@
   border-bottom: none;
 }
 
+.header__main {
+    border-top: none;
+    background-color: rgba(0, 0, 0, 0) !important;
+}
+
 .header__logo {
     background-color: transparent;
     border-bottom: 0px solid #000;
