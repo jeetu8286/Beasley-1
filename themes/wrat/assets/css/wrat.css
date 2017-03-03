@@ -2055,12 +2055,8 @@ Curated posts for Featured Articles
   width: 100%;
   margin-right: 0;
   padding: 20px;
-<<<<<<< HEAD
-  background-color: #000;
-=======
   margin-bottom: 20px;
-  background-color: #561015;
->>>>>>> feature/site-migration
+  background-color: #000;
   z-index: 1;
   /*@include bp(x-large) {
 		@include span-columns(12);
@@ -13547,9 +13543,16 @@ table.responsive tr:nth-of-type(even) {
   background-position: center top;
   border-bottom: none; }
 
+.header__main {
+  border-top: none;
+  background-color: transparent !important; }
+
 /* Navigation */
+.header__nav ul li {
+  background-color: rgba(0, 0, 0, 0.5); }
+
 .header__main a, .header__main a:active, .header__main a:hover, .header__main a:visited {
-  color: #000; }
+  color: #fff; }
 
 .header__nav li {
   font-weight: 600; }
@@ -13592,7 +13595,6 @@ table.responsive tr:nth-of-type(even) {
 .featured__article--heading {
   color: #fff;
   text-transform: uppercase;
-  font-family: 'Istok+Web', sans-serif;
   text-shadow: 1px 1px 1px black; }
 
 .home__featured {

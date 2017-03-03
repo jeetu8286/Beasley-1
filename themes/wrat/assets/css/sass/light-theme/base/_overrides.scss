@@ -4,10 +4,19 @@
   background-repeat: repeat-x;
   background-position: center top;
   border-bottom: none;
-}        
+} 
+
+.header__main {
+    border-top: none;
+    background-color: rgba(0, 0, 0, 0) !important;
+}       
 
 /* Navigation */
-.header__main a, .header__main a:active, .header__main a:hover, .header__main a:visited {color: #000;}
+.header__nav ul li {
+    background-color: rgba(0,0,0,.5);
+}
+
+.header__main a, .header__main a:active, .header__main a:hover, .header__main a:visited {color: #fff;}
 
 .header__nav li {
   font-weight: 600;
