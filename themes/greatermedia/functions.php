@@ -40,6 +40,7 @@ require_once __DIR__ . '/includes/flexible-feature-images/gmr-flexible-feature-i
 require_once __DIR__ . '/includes/auction-nudge/gmr-auction-nudge.php';
 require_once __DIR__ . '/includes/shortcodes.php';
 require_once __DIR__ . '/includes/class-firebase.php';
+require_once __DIR__ . '/includes/dfp.php';
 
 /**
  * Required files
