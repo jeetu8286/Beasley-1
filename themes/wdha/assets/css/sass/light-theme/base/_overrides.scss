@@ -175,3 +175,37 @@ a:hover .highlights__community--title {color:#999999;}
   border-color: #c00000;
   color: #fff !important;
 }
+
+/* Events header color */
+.highlights__heading {
+  color: #fff;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-family: 'Oswald', sans-serif;
+}
+
+/* Feature bar font color */
+.featured__article:hover
+.featured__article--heading {
+  color: #fff;
+  font-family: 'Oswald', sans-serif;
+}
+
+.featured__article--heading {
+  color: #fff;
+  text-transform: uppercase;
+  font-family: 'Oswald', sans-serif;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 1);
+}
+
+.home__featured .featured__article--content {
+  background-color:#7d0000;
+  color:#7d0000;
+  font-family: 'Oswald', sans-serif;
+}
+
+/* Sub-Feature font color */
+.featured__content--title {
+    color: #fff;
+    font-family: 'Oswald', sans-serif; 
+}
