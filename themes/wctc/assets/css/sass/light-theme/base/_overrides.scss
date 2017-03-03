@@ -23,8 +23,17 @@ element.style {
     color: #fff;
 }
 
-.format-sp a:hover .meta-text {
+.header__nav .sub-menu li.active > a, .header__nav .format-fw > ul li.active > a, .header__nav .format-sp > ul li.active > a, .header__nav .format-fi > ul li.active > a, .header__nav .sub-menu li:hover > a, .header__nav .format-fw > ul li:hover > a, .header__nav .format-sp > ul li:hover > a, .header__nav .format-fi > ul li:hover > a, .header__nav > ul > li > ul > li.active > a:hover {
+    background-color: #fff;
+    color: #e11f3e;
+}
+
+.header__nav ul li.active > a {
     color: #fff;
+}
+
+.format-sp a:hover .meta-text {
+    color: #e11f3e;
 }
 
 .header__main a, .header__main a:active, .header__main a:hover, .header__main a:visited {color: #000;}
@@ -52,14 +61,14 @@ element.style {
 }
 
 .header__nav .sub-menu a, .header__nav .format-fw > ul a, .header__nav .format-sp > ul a, .header__nav .format-fi > ul a, .ui-menu a {
-    color: #ffffff;
+    color: #fff;
     font-size: 0.7901234568em;
     font-weight: bold;
     text-transform: none;
 }
 
 .header__nav .format-fi .header__nav-submenu--features li:hover p {
-    color: #999999;
+    color: #ccc;
 }
 
 /* Header search color */      
@@ -153,12 +162,4 @@ a:hover .highlights__community--title {color:#e3e4e5;}
 
 a:hover .highlights__event--title, a:hover .highlights__event--date {
     color: #e3e4e5;
-}
-
-@media screen and (min-width: 768px)
-_audio-interface.scss:20
-.audio-interface .audio-interface__container {
-    flex-wrap: nowrap;
-    padding: 13px 20px;
-}
 }
