@@ -4,7 +4,12 @@
   background-repeat: repeat-x;
   background-position: center top;
   border-bottom: none;
-}        
+} 
+
+.header__main {
+    border-top: none;
+    background-color: rgba(0, 0, 0, .3) !important;
+}       
 
 /* Navigation */
 .header__main a, .header__main a:active, .header__main a:hover, .header__main a:visited {color: #fff;}
