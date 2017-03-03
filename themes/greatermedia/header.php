@@ -46,6 +46,8 @@
 
 			<div id="page-wrap" class="page-wrap">
 
+				<?php do_action( 'dfp_wallpaper_tag' ); ?>
+
 				<?php get_template_part( 'partials/header-site' ); ?>
 
 				<?php get_template_part( 'partials/header-search' ); ?>
@@ -75,8 +77,6 @@
 
 					do_action( 'gmr_social' ); ?>
 				</nav>
-
-				<?php do_action( 'dfp_wallpaper_tag' ); ?>
 
 				<main class="main" role="main">
 					<div class="container__leaderboard">

@@ -6182,9 +6182,12 @@ category: Components - Ads
   margin: 0 auto 1.5em; }
 
 .ad__wallpaper {
+  bottom: 0;
   height: 100%;
-  min-height: 1200px;
-  position: absolute;
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
   width: 100%; }
   .ad__wallpaper > div,
   .ad__wallpaper > div > div,
@@ -6192,8 +6195,7 @@ category: Components - Ads
     bottom: 0;
     height: 100% !important;
     left: 0;
-    min-height: 1200px;
-    position: absolute;
+    position: fixed;
     right: 0;
     top: 0;
     width: 100% !important; }
