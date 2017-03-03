@@ -84,6 +84,10 @@
     color: #999999;
 }
 
+.mobile-nav__toggle--span, .mobile-nav__toggle--span::before, .mobile-nav__toggle--span::after {
+    background: #ccc;   
+}
+
 /* Header search color */      
  .header__search {
   color: #f0f0f0;
@@ -112,11 +116,6 @@
   text-transform: uppercase;
   font-family: 'Istok+Web', sans-serif;
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 1);
-}
-
-.home__featured { 
-  background: url("../../images/wdha-body-bkg.jpg") no-repeat;
-  background-color: #000;
 }
 
 .home__featured .featured__article a:hover .featured__article--content {background-color: #620000;}

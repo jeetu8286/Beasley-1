@@ -97,11 +97,6 @@ element.style {
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 1);
 }
 
-.home__featured { 
-  background: url("../../images/wdha-body-bkg.jpg") no-repeat;
-  background-color: #000;
-}
-
 .home__featured .featured__article a:hover .featured__article--content {background-color: #c00000;}
 
 .featured__article:hover .featured__article--heading {color: #fff;}
