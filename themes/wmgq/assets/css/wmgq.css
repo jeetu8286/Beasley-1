@@ -13545,7 +13545,7 @@ table.responsive tr:nth-of-type(even) {
 
 .header__main {
   border-top: none;
-  background-color: rgba(0, 0, 0, 0.3) !important; }
+  background-color: transparent !important; }
 
 /* Navigation */
 .header__main a, .header__main a:active, .header__main a:hover, .header__main a:visited {
@@ -13561,6 +13561,9 @@ table.responsive tr:nth-of-type(even) {
   display: block;
   padding: 7px;
   text-transform: uppercase; }
+
+.header__nav ul li {
+  background-color: rgba(0, 0, 0, 0.5); }
 
 .header__account--links.sub-menu, .header__nav .format-fw > ul.header__account--links, .header__nav .format-sp > ul.header__account--links, .header__nav .format-fi > ul.header__account--links, .header__nav .format-fi > ul, .header__nav .format-fi > ul.header__account--links, .header__nav .format-fw > ul, .header__nav .format-fw > ul.header__account--links, .header__nav .format-sp > ul, .header__nav .format-sp > ul.header__account--links, .header__nav .sub-menu, .header__nav .format-fw > ul, .header__nav .format-sp > ul, .header__nav .format-fi > ul, .ui-menu {
   border-top: 3px solid #f5a81c;

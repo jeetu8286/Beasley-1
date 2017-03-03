@@ -8,7 +8,7 @@
 
 .header__main {
     border-top: none;
-    background-color: rgba(0, 0, 0, .3) !important;
+    background-color: rgba(0, 0, 0, 0) !important;
 }       
 
 /* Navigation */
@@ -26,6 +26,10 @@
     display: block;
     padding: 7px;
     text-transform: uppercase;
+}
+
+.header__nav ul li {
+    background-color: rgba(0,0,0,.5);
 }
 
 .header__account--links.sub-menu, .header__nav .format-fi > ul, .header__nav .format-fi > ul.header__account--links, .header__nav .format-fw > ul, .header__nav .format-fw > ul.header__account--links, .header__nav .format-sp > ul, .header__nav .format-sp > ul.header__account--links, .header__nav .sub-menu, .ui-menu {
