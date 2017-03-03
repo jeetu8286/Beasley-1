@@ -1162,8 +1162,8 @@
 	}
 
 	function hideAdBreakBanner() {
-		$audioAdBreakContainerAbovePlayer.removeClass('-show');
-		$audioAdBreakContainerInPlayer.removeClass('-show');
+		$audioAdBreakContainerAbovePlayer.hide();
+		$audioAdBreakContainerInPlayer.hide();
 	}
 
 	function onAdBreak(e) {
@@ -1184,9 +1184,9 @@
 		debug('Ad Break Synced Element');
 
 		if (window.innerWidth >= 768) {
-			$audioAdBreakContainerInPlayer.addClass('-show');
+			$audioAdBreakContainerInPlayer.show();
 		} else {
-			$audioAdBreakContainerAbovePlayer.addClass('-show');
+			$audioAdBreakContainerAbovePlayer.show();
 		}
 	}
 
