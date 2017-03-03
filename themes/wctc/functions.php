@@ -27,7 +27,7 @@ define( 'WCTC_VERSION', '0.2.5 ); /* Version bump by Tom 3/3/17 */
 	 * Makes WCTC available for translation.
 	 *
 	 * Translations can be added to the /lang directory.
-	 * If you're building a theme based on WCTC, use a find and replace
+	 * If you are building a theme based on WCTC, use a find and replace
 	 * to change 'wctc' to the name of your theme in all template files.
 	 */
 	load_theme_textdomain( 'wctc', get_stylesheet_directory_uri() . '/languages' );
