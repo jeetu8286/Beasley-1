@@ -14044,10 +14044,6 @@ a.entry2__category:focus {
   background-position: center top;
   border-bottom: none; }
 
-.header__main {
-  border-top: none;
-  background-color: rgba(0, 0, 0, 0.1) !important; }
-
 .header__logo {
   background-color: transparent;
   border-bottom: 0px solid #000;
@@ -14081,7 +14077,7 @@ element.style {
   color: #e11f3e; }
 
 .header__main a, .header__main a:active, .header__main a:hover, .header__main a:visited {
-  color: #000; }
+  color: #fff; }
 
 .header__nav li {
   font-weight: 600; }
