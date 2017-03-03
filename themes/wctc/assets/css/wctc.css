@@ -14034,6 +14034,17 @@ a.entry2__category:focus {
 .news-site .highlights__heading {
   color: #999999; }
 
+.header {
+  background-color: #999 !important;
+  background-image: url("http://greatermedianj.com/WCTC/WCTC_header.jpg") !important;
+  background-repeat: repeat-x;
+  background-position: center top;
+  border-bottom: none; }
+
+.header__main {
+  border-top: none;
+  background-color: rgba(0, 0, 0, 0.1) !important; }
+
 .header__logo {
   background-color: transparent;
   border-bottom: 0px solid #000;
@@ -14118,6 +14129,14 @@ element.style {
   text-transform: uppercase;
   font-family: 'Istok+Web', sans-serif;
   text-shadow: 1px 1px 1px black; }
+
+.home__featured .featured__article--content {
+  background-color: #d22228;
+  color: #191919; }
+
+.home__featured .featured__content--block {
+  background-color: #d22228;
+  color: #191919; }
 
 .home__featured .featured__article a:hover .featured__article--content {
   background-color: #c00000; }
