@@ -42,7 +42,7 @@
 
 .header {
   background-color: #999 !important;
-  background-image: url("../../images/WCTC_header2.jpg") !important;
+  background-image: url("../../images/WCTC_header.jpg") !important;
   background-repeat: repeat-x;
   background-position: center top;
   border-bottom: none;
@@ -59,6 +59,10 @@ element.style {
 }
 
 /* Navigation */
+
+.header__nav ul li {
+    background-color: rgba(0,0,0,.5);
+}
 
 .header__account ul li a:active, .header__account ul li a:focus, .header__account ul li a:hover, .header__account ul li:hover, .header__nav ul li a:active, .header__nav ul li a:focus, .header__nav ul li.active, .header__nav ul li.active a:hover, .ui-menu .ui-state-focus {background-color: #fff;}        
 .header__account--links.sub-menu, .header__nav .format-fi > ul, .header__nav .format-fi > ul.header__account--links, .header__nav .format-fw > ul, .header__nav .format-fw > ul.header__account--links, .header__nav .format-sp > ul, .header__nav .format-sp > ul.header__account--links, .header__nav .sub-menu, .ui-menu {
