@@ -63,6 +63,11 @@
 
 .home__featured .featured__article a:hover .featured__article--content {background-color: #007abd;}
 
+.home__featured { 
+  background: url("../../images/wmgq-body-bkg2.jpg") no-repeat;
+  background-color: #103368;
+}
+
 .featured__article:hover .featured__article--heading {color: #fff;}
 
 .featured__content--title {
