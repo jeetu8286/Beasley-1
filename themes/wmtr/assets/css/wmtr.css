@@ -13538,7 +13538,11 @@ table.responsive tr:nth-of-type(even) {
  */
 .header {
   background-color: #531f23 !important;
+<<<<<<< HEAD
   background-image: url("http://greatermedianj.com/WMTR/background2.jpg") !important;
+=======
+  background-image: url("../../images/WMTR-Header-Desktop2.jpg") !important;
+>>>>>>> feature/site-migration
   background-repeat: repeat-x;
   background-position: center top;
   border-bottom: none; }
@@ -13547,10 +13551,13 @@ table.responsive tr:nth-of-type(even) {
   border-top: none;
   background-color: rgba(0, 0, 0, 0.3) !important; }
 
+<<<<<<< HEAD
 .header__logo--img {
   max-height: 110px;
   max-width: 183px; }
 
+=======
+>>>>>>> feature/site-migration
 /* Navigation */
 .header__account ul li a:active, .header__account ul li a:focus, .header__account ul li a:hover, .header__account ul li:hover, .header__nav ul li a:active, .header__nav ul li a:focus, .header__nav ul li.active, .header__nav ul li.active a:hover, .ui-menu .ui-state-focus {
   background-color: #531f23; }
@@ -13571,6 +13578,45 @@ table.responsive tr:nth-of-type(even) {
 
 .header__main ul li a:hover, .header__main ul li:hover a, .header__main ul li a:active {
   background-color: #270e10;
+<<<<<<< HEAD
+  color: #fff; }
+
+.header__nav .sub-menu a.active, .header__nav .format-fw > ul a.active, .header__nav .format-sp > ul a.active, .header__nav .format-fi > ul a.active, .header__nav .format-fw > ul a.active, .header__nav .format-sp > ul a.active, .header__nav .format-fi > ul a.active, .header__nav .sub-menu a:focus, .header__nav .format-fw > ul a:focus, .header__nav .format-sp > ul a:focus, .header__nav .format-fi > ul a:focus, .header__nav .format-fw > ul a:focus, .header__nav .format-sp > ul a:focus, .header__nav .format-fi > ul a:focus, .header__nav .sub-menu a:hover, .header__nav .format-fw > ul a:hover, .header__nav .format-sp > ul a:hover, .header__nav .format-fi > ul a:hover, .header__nav .format-fw > ul a:hover, .header__nav .format-sp > ul a:hover, .header__nav .format-fi > ul a:hover, .ui-menu a.active, .ui-menu a:focus, .ui-menu a:hover {
+  color: #fff; }
+
+.format-sp a:hover .meta-text {
+  color: #fff; }
+
+.header__main a, .header__main a:active, .header__main a:hover, .header__main a:visited {
+  color: #fff; }
+
+.header__nav li {
+  font-weight: 600; }
+
+.header__nav li:hover {
+  font-weight: 600; }
+
+.header__nav > ul li a {
+  display: block;
+  padding: 7px;
+  text-transform: uppercase; }
+
+.header__account--links.sub-menu, .header__nav .format-fw > ul.header__account--links, .header__nav .format-sp > ul.header__account--links, .header__nav .format-fi > ul.header__account--links, .header__nav .format-fi > ul, .header__nav .format-fi > ul.header__account--links, .header__nav .format-fw > ul, .header__nav .format-fw > ul.header__account--links, .header__nav .format-sp > ul, .header__nav .format-sp > ul.header__account--links, .header__nav .sub-menu, .header__nav .format-fw > ul, .header__nav .format-sp > ul, .header__nav .format-fi > ul, .ui-menu {
+  border-top: 3px solid #eaba1a;
+  color: #000;
+  min-width: 300px;
+  position: absolute;
+  z-index: 5000100; }
+
+.header__nav .sub-menu a, .header__nav .format-fw > ul a, .header__nav .format-sp > ul a, .header__nav .format-fi > ul a, .header__nav .format-fw > ul a, .header__nav .format-sp > ul a, .header__nav .format-fi > ul a, .ui-menu a {
+  color: #ffffff;
+  font-size: 0.7901234568em;
+  font-weight: bold;
+  text-transform: none; }
+
+.header__nav .format-fi .header__nav-submenu--features li:hover p {
+  color: #999999; }
+=======
   color: #fff; }
 
 .header__nav .sub-menu a.active, .header__nav .format-fw > ul a.active, .header__nav .format-sp > ul a.active, .header__nav .format-fi > ul a.active, .header__nav .format-fw > ul a.active, .header__nav .format-sp > ul a.active, .header__nav .format-fi > ul a.active, .header__nav .sub-menu a:focus, .header__nav .format-fw > ul a:focus, .header__nav .format-sp > ul a:focus, .header__nav .format-fi > ul a:focus, .header__nav .format-fw > ul a:focus, .header__nav .format-sp > ul a:focus, .header__nav .format-fi > ul a:focus, .header__nav .sub-menu a:hover, .header__nav .format-fw > ul a:hover, .header__nav .format-sp > ul a:hover, .header__nav .format-fi > ul a:hover, .header__nav .format-fw > ul a:hover, .header__nav .format-sp > ul a:hover, .header__nav .format-fi > ul a:hover, .ui-menu a.active, .ui-menu a:focus, .ui-menu a:hover {
@@ -13609,6 +13655,31 @@ table.responsive tr:nth-of-type(even) {
 .header__nav .format-fi .header__nav-submenu--features li:hover p {
   color: #999999; }
 
+.mobile-nav__toggle--span, .mobile-nav__toggle--span::before, .mobile-nav__toggle--span::after {
+  background: #ccc; }
+
+.mobile-nav__list a {
+  background-color: #303030;
+  color: #fff;
+  display: block;
+  padding: 18px 1.25em;
+  line-height: 1;
+  font-size: 1.265625em; }
+
+.mobile-nav .sub-menu a:link, .mobile-nav .header__nav .format-fw > ul a:link, .header__nav .mobile-nav .format-fw > ul a:link, .mobile-nav .header__nav .format-sp > ul a:link, .header__nav .mobile-nav .format-sp > ul a:link, .mobile-nav .header__nav .format-fi > ul a:link, .header__nav .mobile-nav .format-fi > ul a:link, .mobile-nav .header__nav .format-fw > ul a:link, .header__nav .mobile-nav .format-fw > ul a:link, .mobile-nav .header__nav .format-sp > ul a:link, .header__nav .mobile-nav .format-sp > ul a:link, .mobile-nav .header__nav .format-fi > ul a:link, .header__nav .mobile-nav .format-fi > ul a:link, .mobile-nav .sub-menu a:visited, .mobile-nav .header__nav .format-fw > ul a:visited, .header__nav .mobile-nav .format-fw > ul a:visited, .mobile-nav .header__nav .format-sp > ul a:visited, .header__nav .mobile-nav .format-sp > ul a:visited, .mobile-nav .header__nav .format-fi > ul a:visited, .header__nav .mobile-nav .format-fi > ul a:visited, .mobile-nav .header__nav .format-fw > ul a:visited, .header__nav .mobile-nav .format-fw > ul a:visited, .mobile-nav .header__nav .format-sp > ul a:visited, .header__nav .mobile-nav .format-sp > ul a:visited, .mobile-nav .header__nav .format-fi > ul a:visited, .header__nav .mobile-nav .format-fi > ul a:visited {
+  color: #ffffff; }
+
+.mobile-nav .sub-menu a:link, .mobile-nav .header__nav .format-fw > ul a:link, .header__nav .mobile-nav .format-fw > ul a:link, .mobile-nav .header__nav .format-sp > ul a:link, .header__nav .mobile-nav .format-sp > ul a:link, .mobile-nav .header__nav .format-fi > ul a:link, .header__nav .mobile-nav .format-fi > ul a:link, .mobile-nav .header__nav .format-fw > ul a:link, .header__nav .mobile-nav .format-fw > ul a:link, .mobile-nav .header__nav .format-sp > ul a:link, .header__nav .mobile-nav .format-sp > ul a:link, .mobile-nav .header__nav .format-fi > ul a:link, .header__nav .mobile-nav .format-fi > ul a:link, .mobile-nav .sub-menu a:visited, .mobile-nav .header__nav .format-fw > ul a:visited, .header__nav .mobile-nav .format-fw > ul a:visited, .mobile-nav .header__nav .format-sp > ul a:visited, .header__nav .mobile-nav .format-sp > ul a:visited, .mobile-nav .header__nav .format-fi > ul a:visited, .header__nav .mobile-nav .format-fi > ul a:visited, .mobile-nav .header__nav .format-fw > ul a:visited, .header__nav .mobile-nav .format-fw > ul a:visited, .mobile-nav .header__nav .format-sp > ul a:visited, .header__nav .mobile-nav .format-sp > ul a:visited, .mobile-nav .header__nav .format-fi > ul a:visited, .header__nav .mobile-nav .format-fi > ul a:visited {
+  background-color: #303030;
+  color: #ffffff; }
+
+.mobile-nav .social__link {
+  color: #ccc;
+  border-color: #ccc;
+  font-size: 1.423828125em;
+  margin: 0 0 0 1em; }
+>>>>>>> feature/site-migration
+
 /* Header search color */
 .header__search {
   color: #f0f0f0;
@@ -13634,10 +13705,13 @@ table.responsive tr:nth-of-type(even) {
   font-family: 'Istok+Web', sans-serif;
   text-shadow: 1px 1px 1px black; }
 
+<<<<<<< HEAD
 .home__featured {
   background: url("../../images/wdha-body-bkg.jpg") no-repeat;
   background-color: #000; }
 
+=======
+>>>>>>> feature/site-migration
 .home__featured .featured__article a:hover .featured__article--content {
   background-color: #620000; }
 
