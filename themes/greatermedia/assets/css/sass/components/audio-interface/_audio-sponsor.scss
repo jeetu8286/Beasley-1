@@ -5,13 +5,8 @@
 
 	@include bp(medium) {
 		border: 0 none;
+		margin-left: 10px;
 		padding: 0;
-	}
-
-	.-multiple & {
-		@include bp(medium) {
-			margin-left: 10px;
-		}
 	}
 
 	// This is now being set in DFP

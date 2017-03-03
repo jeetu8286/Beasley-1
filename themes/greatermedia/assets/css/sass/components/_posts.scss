@@ -638,7 +638,7 @@ Link posts contain a link to an external site. They can also optionally have a f
 	margin-left: .5em;
 }
 
-.posts-pagination--load-more {
+a.posts-pagination--load-more {
 	@include btn($btn-bg, $color-text-white, $btn-bg, 0.5em, 1em, ms(-1));
 
 	.gmr-icon {
