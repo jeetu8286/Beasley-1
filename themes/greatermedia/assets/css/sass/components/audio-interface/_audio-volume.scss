@@ -11,14 +11,15 @@
 
 	&.-open {
 		@include bp(large) {
-			text-align: left;
 			display: flex;
+			text-align: left;
 		}
 	}
 
 	input[type=range] {
 		display: none;
-		margin: 0 5px;
+		padding: 0 5px;
+		width: calc(100% - 40px);
 	}
 
 	&.-open input[type=range] {

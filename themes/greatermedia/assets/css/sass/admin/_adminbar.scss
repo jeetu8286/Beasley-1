@@ -1,0 +1,4 @@
+#wpadminbar {
+	// The z-indexes on the site are set really high. When making the header fixed, it had to be a z-index higher than what the admin bar is by default. To make the admin bar still useful, we're increasing its z-index here.
+	z-index: 9000002;
+}
