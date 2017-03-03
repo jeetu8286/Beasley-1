@@ -6,13 +6,13 @@ var matchHeights = function( elements ) {
 
 	var height = 0;
 
-	elements.forEach( function( el, i ) {
+	Array.prototype.forEach.call(elements, function(el, i) {
 		if ( height < el.offsetHeight ) {
 			height = el.offsetHeight;
 		}
 	} );
 
-	elements.forEach( function( el, i ) {
+	Array.prototype.forEach.call(elements, function(el, i) {
 		el.style.minHeight = height + 'px';
 	} );
 

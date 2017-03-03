@@ -1,12 +1,9 @@
 /**
  * Greater Media
  *
- * Set the content and sidebar columns to equal heights
- *
- * Copyright (c) 2014 10up
- * Licensed under the GPLv2+ license.
+ * Set the content and sidebar columns to equal heights.
  */
-(function( window, document, jQuery ) {
+(function( window, document ) {
 	/**
 	 * Variables
 	 */
@@ -15,11 +12,11 @@
 	if ( window.matchMedia( '(min-width: 768px)' ).matches ) {
 
 		// Using window.onload because heights we want need to be rendered.
-		window.onload = function() {
+		window.addEventListener( 'load', function( e ) {
 			/* jshint ignore:start */
 			matchHeights( elements );
 			/* jshint ignore:end */
-		};
+		} );
 	}
 
-})( window, document, jQuery );
+})( window, document );

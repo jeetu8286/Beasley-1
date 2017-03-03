@@ -21,7 +21,7 @@ module.exports = function (grunt) {
 						'assets/js/vendor/placeholders.min.js',
 						'assets/js/vendor/jquery.fitvids.js',
 						'assets/js/vendor/headroom.min.js',
-						'assets/js/src/_equalHeights.js',
+						'assets/js/src/_matchHeights.js',
 						'assets/js/src/mobile-sub-menus.js',
 						'assets/js/src/show-schedule.js',
 						'assets/js/src/social_share.js',

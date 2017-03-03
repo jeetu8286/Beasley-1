@@ -1142,7 +1142,8 @@ blockquote p {
   height: 19px;
   position: absolute;
   right: 10px;
-  top: 15px;
+  top: 50%;
+  transform: translateY(-50%);
   width: 25px;
   padding: 0;
   z-index: 2; }
@@ -1150,7 +1151,6 @@ blockquote p {
     .mobile-nav__toggle {
       height: 28px;
       right: 20px;
-      top: 40px;
       width: 40px; } }
   @media screen and (min-width: 970px) {
     .mobile-nav__toggle {
@@ -1202,6 +1202,9 @@ blockquote p {
   -webkit-overflow-scrolling: touch; }
   .mobile-nav--open .mobile-nav {
     display: block; }
+  @media screen and (min-width: 768px) {
+    .mobile-nav {
+      top: 276px; } }
   @media screen and (min-width: 970px) {
     .mobile-nav {
       display: none; } }

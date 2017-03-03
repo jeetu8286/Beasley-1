@@ -2055,13 +2055,13 @@ var matchHeights = function( elements ) {
 
 	var height = 0;
 
-	elements.forEach( function( el, i ) {
+	Array.prototype.forEach.call(elements, function(el, i) {
 		if ( height < el.offsetHeight ) {
 			height = el.offsetHeight;
 		}
 	} );
 
-	elements.forEach( function( el, i ) {
+	Array.prototype.forEach.call(elements, function(el, i) {
 		el.style.minHeight = height + 'px';
 	} );
 
@@ -2672,54 +2672,22 @@ var matchHeights = function( elements ) {
 	}
 
 	/**
-	 * Inserts a new element on mobile to provide a blocker
-	 *
-	 * @returns {*|jQuery|HTMLElement}
+	 * Sets the mobile menu just below the header and search
 	 */
-	var getBlockerDiv = function() {
-		var $div = $('#mobile-nav-blocker');
-		if ($div.length === 0) {
-			$('<div id="mobile-nav-blocker"></div>').insertAfter('#mobile-nav');
-			$div = $('#mobile-nav-blocker');
-			$div.on('click', toggleNavButton);
-		}
+	function setMenuTop() {
+		var headerHeight = document.getElementById( 'header' ).offsetHeight,
+			searchHeight = document.getElementById( 'header__search--form' ).offsetHeight,
+			mobileMenu = document.getElementById( 'mobile-nav' );
 
-		return $div;
-	};
-
-	/**
-	 * Shows the blocker div that is created by getBlockerDiv
-	 */
-	var showBlocker = function() {
-		var $blocker = getBlockerDiv();
-
-		$blocker.css({
-			display: 'block'
-		});
-	};
-
-	/**
-	 * Hides the blocker div that is shown by showBlocker
-	 */
-	var hideBlocker = function() {
-		var $blocker = getBlockerDiv();
-		$blocker.css({'display': 'none'});
-		if ($blocker.hasClass('active')) {
-			$blocker.removeClass('active');
-		}
-	};
+		mobileMenu.style.top = headerHeight + searchHeight + 'px';
+	}
 
 	/**
 	 * Toggles a class to the body when the mobile nav button is clicked
 	 */
 	function toggleNavButton() {
 		body.classList.toggle('mobile-nav--open');
-
-		if ($('.mobile-nav--open').length) {
-			showBlocker();
-		} else {
-			hideBlocker();
-		}
+		setMenuTop();
 	}
 
 	/**
@@ -2819,7 +2787,6 @@ var matchHeights = function( elements ) {
 	 * Functions that run after the pjax:end event
 	 */
 	$(document).bind( 'pjax:end', function () {
-		hideBlocker();
 		removeHoverMobile();
 		removeoverlay();
 	});
@@ -3006,7 +2973,7 @@ var matchHeights = function( elements ) {
 	if ( window.matchMedia( '(min-width: 768px)' ).matches ) {
 
 		// Using window.onload because heights we want need to be rendered.
-		window.onload = function() {
+		window.addEventListener( 'load', function( e ) {
 
 			// Set variables after things are loaded
 			var header_container_height_full = header_container.offsetHeight,
@@ -3043,7 +3010,7 @@ var matchHeights = function( elements ) {
 			headroom_header.init();
 			/* jshint ignore:end */
 
-		};
+		} );
 	} else {
 
 		/* jshint ignore:start */
@@ -3057,7 +3024,7 @@ var matchHeights = function( elements ) {
 	}
 
 })( window, document );
-(function( window, document, jQuery ) {
+(function( window, document ) {
 	/**
 	 * Variables
 	 */
@@ -3066,14 +3033,14 @@ var matchHeights = function( elements ) {
 	if ( window.matchMedia( '(min-width: 768px)' ).matches ) {
 
 		// Using window.onload because heights we want need to be rendered.
-		window.onload = function() {
+		window.addEventListener( 'load', function( e ) {
 			/* jshint ignore:start */
 			matchHeights( elements );
 			/* jshint ignore:end */
-		};
+		} );
 	}
 
-})( window, document, jQuery );
+})( window, document );
 (function($, config) {
 	var auth;
 
