@@ -70,6 +70,35 @@
     color: #999999;
 }
 
+.mobile-nav__toggle--span, .mobile-nav__toggle--span:before, .mobile-nav__toggle--span:after {
+    background: #fff;
+}
+
+.mobile-nav__list a {
+    background-color: #303030;
+    color: #FFF;
+    display: block;
+    padding: 18px 1.25em;
+    line-height: 1;
+    font-size: 1.265625em;
+}
+
+.format-fi .menu__featured-post--mobile a:hover p {
+    color: #CCC;
+}
+
+.mobile-nav .sub-menu a:hover, .mobile-nav .header__nav .format-fw > ul a:hover, .header__nav .mobile-nav .format-fw > ul a:hover, .mobile-nav .header__nav .format-sp > ul a:hover, .header__nav .mobile-nav .format-sp > ul a:hover, .mobile-nav .header__nav .format-fi > ul a:hover, .header__nav .mobile-nav .format-fi > ul a:hover, .mobile-nav .sub-menu a:active, .mobile-nav .header__nav .format-fw > ul a:active, .header__nav .mobile-nav .format-fw > ul a:active, .mobile-nav .header__nav .format-sp > ul a:active, .header__nav .mobile-nav .format-sp > ul a:active, .mobile-nav .header__nav .format-fi > ul a:active, .header__nav .mobile-nav .format-fi > ul a:active {
+    background-color: #303030;
+    color: #ccc;
+}
+
+.mobile-nav .social__link {
+    color: #ccc;
+    border-color: #ccc;
+    font-size: 1.423828125em;
+    margin: 0 0 0 1em;
+}
+
 /* Header search color */      
  .header__search {
   color: #f0f0f0;
