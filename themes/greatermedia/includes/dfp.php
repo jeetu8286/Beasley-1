@@ -346,6 +346,24 @@ function greatermedia_display_dfp_slot( $slot, $sizes = false, $single_targeting
 }
 add_action( 'dfp_tag', 'greatermedia_display_dfp_slot', 10, 3 );
 
+function greatermedia_display_dfp_wallpaper() {
+	$network_id = trim( get_option( 'dfp_network_code' ) );
+	if ( empty( $network_id ) ) {
+		return;
+	}
+
+	$dfp_ad_playersponsorship = get_option( 'dfp_ad_playersponsorship' );
+	if ( $dfp_ad_playersponsorship ) :
+		?><!-- /<?php echo esc_html( $network_id ); ?>/<?php echo esc_html( $dfp_ad_playersponsorship ); ?> -->
+		<div id='div-gpt-ad-1487117572008-0'>
+			<script type="text/javascript">
+				googletag.cmd.push(function() { googletag.display('div-gpt-ad-1487117572008-0'); });
+			</script>
+		</div><?php
+	endif;
+}
+add_action( 'dfp_sponsorship_tag', 'greatermedia_display_dfp_wallpaper' );
+
 function greatermedia_display_dfp_outofpage() {
 	if ( ! greatermedia_is_dfp_active() ) {
 		return;
