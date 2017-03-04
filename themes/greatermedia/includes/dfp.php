@@ -346,7 +346,7 @@ function greatermedia_display_dfp_slot( $slot, $sizes = false, $single_targeting
 }
 add_action( 'dfp_tag', 'greatermedia_display_dfp_slot', 10, 3 );
 
-function greatermedia_display_dfp_wallpaper() {
+function greatermedia_display_dfp_playersponsorship() {
 	$network_id = trim( get_option( 'dfp_network_code' ) );
 	if ( empty( $network_id ) ) {
 		return;
@@ -362,7 +362,7 @@ function greatermedia_display_dfp_wallpaper() {
 		</div><?php
 	endif;
 }
-add_action( 'dfp_sponsorship_tag', 'greatermedia_display_dfp_wallpaper' );
+add_action( 'dfp_sponsorship_tag', 'greatermedia_display_dfp_playersponsorship' );
 
 function greatermedia_display_dfp_outofpage() {
 	if ( ! greatermedia_is_dfp_active() ) {
