@@ -55,7 +55,7 @@ function greatermedia_render_dfp_settings_section() {
 
 	echo '<hr>';
 	echo '<h3>Unit Codes</h3>';
-	
+
 	foreach ( $settings as $key => $label ) {
 		echo '<div class="gmr__option">';
 			echo '<label for="', esc_attr( $key ), '" class="gmr__option--label">', esc_html( $label ), '</label>';
@@ -63,6 +63,11 @@ function greatermedia_render_dfp_settings_section() {
 			echo '<div class="gmr-option__field--desc"></div>';
 		echo '</div>';
 	}
+}
+
+function greatermedia_is_dfp_active() {
+	$network_id = trim( get_option( 'dfp_network_code' ) );
+	return ! empty( $network_id );
 }
 
 function greatermedia_dfp_head() {
@@ -256,6 +261,10 @@ add_action( 'wp_footer', 'greatermedia_dfp_footer', 1000 );
 function greatermedia_display_dfp_slot( $slot, $sizes = false, $single_targeting = array(), $echo = true, $class = '' ) {
 	static $targeting = null;
 
+	if ( ! greatermedia_is_dfp_active() ) {
+		return;
+	}
+
 	$render_targeting = false;
 	if ( is_null( $targeting ) && 'dfp_ad_playersponsorship' != $slot ) {
 		$render_targeting = true;
@@ -338,8 +347,7 @@ function greatermedia_display_dfp_slot( $slot, $sizes = false, $single_targeting
 add_action( 'dfp_tag', 'greatermedia_display_dfp_slot', 10, 3 );
 
 function greatermedia_display_dfp_outofpage() {
-	$network_id = trim( get_option( 'dfp_network_code' ) );
-	if ( empty( $network_id ) ) {
+	if ( ! greatermedia_is_dfp_active() ) {
 		return;
 	}
 
@@ -366,7 +374,7 @@ function greatermedia_display_dfp_outofpage() {
 add_action( 'wp_footer', 'greatermedia_display_dfp_outofpage', 1 );
 
 function greatermedia_display_dfp_incontent( $content ) {
-	if ( ! is_single() ) {
+	if ( ! is_single() || ! greatermedia_is_dfp_active() ) {
 		return $content;
 	}
 
