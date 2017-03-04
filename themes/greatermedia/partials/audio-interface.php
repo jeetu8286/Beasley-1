@@ -21,12 +21,7 @@ if ( empty( $active_stream ) ) {
 	$active_description = $streams[ $active_stream ]['description'];
 }
 
-/**
- * Changes the url that will be used by the live links more button based on whether a checkbox has been checked in
- * the Station Site Administration Screen
- */
-$livelinks_redirect = filter_var( get_option( 'gmr_livelinks_more_redirect' ), FILTER_VALIDATE_BOOLEAN);
-$livelinks_template = home_url( $livelinks_redirect === true ? '/stream/%s/' : '/live-links/' );
+$livelinks_template = home_url( '/stream/%s/' );
 
 $network_id = trim( get_option( 'dfp_network_code' ) );
 $dfp_ad_playersponsorship = get_option( 'dfp_ad_playersponsorship' );
