@@ -805,6 +805,11 @@
 	function streamVastAd() {
 		var stationId = parseInt($('.audio-stream .audio-stream__title').attr('data-station-id'));
 
+		if (isNaN(stationId) || !stationId) {
+			onAdPlaybackComplete();
+			return;
+		}
+
 		detachAdListeners();
 		attachAdListeners();
 
@@ -815,7 +820,7 @@
 			host: 'cmod.live.streamtheworld.com',
 			type: 'preroll',
 			format: 'vast',
-			stationId: !isNaN(stationId) ? stationId : false,
+			stationId: stationId,
 			trackingParameters: {dist: "debug"}
 		});
 
@@ -1197,7 +1202,7 @@
 		setStatus('Advertising... Type=' + e.data.type);
 	}
 
-	function onAdPlaybackComplete(e) {
+	function onAdPlaybackComplete() {
 		var station = getCurrentStation();
 
 		adPlaying = false;
