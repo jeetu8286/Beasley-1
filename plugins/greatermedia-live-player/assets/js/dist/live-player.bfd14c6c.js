@@ -1423,6 +1423,8 @@
 		} else {
 			$audioAdBreakContainerAbovePlayer.show();
 		}
+
+		setTimeout(hideAdBreakBanner, 60000);
 	}
 
 	//Song History
