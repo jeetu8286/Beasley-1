@@ -824,9 +824,7 @@
 			trackingParameters: {dist: "debug"}
 		});
 
-		setTimeout(function() {
-			this.stop();
-		}, 25000);
+		setTimeout($.proxy(player.skipAd, player), 25000);
 	}
 
 	$window.on('click', function() {

@@ -1,1 +1,1 @@
-<?php return json_decode('{"live-player.js":"assets/js/dist/live-player.1d1cbe72.js","live-player.min.js":"assets/js/dist/live-player.min.6fb0828d.js"}'); ?>
+<?php return json_decode('{"live-player.js":"assets/js/dist/live-player.e7716832.js","live-player.min.js":"assets/js/dist/live-player.min.5f7e0bc6.js"}'); ?>
