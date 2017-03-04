@@ -365,7 +365,8 @@ function greatermedia_display_dfp_playersponsorship() {
 add_action( 'dfp_sponsorship_tag', 'greatermedia_display_dfp_playersponsorship' );
 
 function greatermedia_display_dfp_outofpage() {
-	if ( ! greatermedia_is_dfp_active() ) {
+	$network_id = trim( get_option( 'dfp_network_code' ) );
+	if ( empty( $network_id ) ) {
 		return;
 	}
 
