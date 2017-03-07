@@ -21,15 +21,7 @@ if ( empty( $active_stream ) ) {
 	$active_description = $streams[ $active_stream ]['description'];
 }
 
-/**
- * Changes the url that will be used by the live links more button based on whether a checkbox has been checked in
- * the Station Site Administration Screen
- */
-$livelinks_redirect = filter_var( get_option( 'gmr_livelinks_more_redirect' ), FILTER_VALIDATE_BOOLEAN);
-$livelinks_template = home_url( $livelinks_redirect === true ? '/stream/%s/' : '/live-links/' );
-
-$network_id = trim( get_option( 'dfp_network_code' ) );
-$dfp_ad_playersponsorship = get_option( 'dfp_ad_playersponsorship' );
+$livelinks_template = home_url( '/stream/%s/' );
 
 ?><div id="live-player" class="audio-interface">
 
@@ -60,14 +52,7 @@ $dfp_ad_playersponsorship = get_option( 'dfp_ad_playersponsorship' );
 			</ul><!-- .audio-stream__list -->
 
 			<div class="audio-sponsor -open">
-				<?php if ( ! empty( $network_id ) && ! empty( $dfp_ad_playersponsorship ) ) : ?>
-					<!-- /<?php echo esc_html( $network_id ); ?>/<?php echo esc_html( $dfp_ad_playersponsorship ); ?> -->
-					<div id='div-gpt-ad-1487117572008-0'>
-						<script type="text/javascript">
-							googletag.cmd.push(function() { googletag.display('div-gpt-ad-1487117572008-0'); });
-						</script>
-					</div>
-				<?php endif; ?>
+				<?php do_action( 'dfp_sponsorship_tag' ); ?>
 			</div>
 		</nav><!-- .audio-stream -->
 
