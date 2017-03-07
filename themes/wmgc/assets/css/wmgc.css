@@ -7291,15 +7291,15 @@ div.widget-recent-contests {
 
 .event__info {
   display: block;
-  margin-bottom: 2em; }
+  margin-bottom: 2em;
+  /*@include bp(large) {
+		padding-right: 320px;
+	}*/ }
   .event__info:before, .event__info:after {
     content: " ";
     display: table; }
   .event__info:after {
     clear: both; }
-  @media screen and (min-width: 970px) {
-    .event__info {
-      padding-right: 320px; } }
 
 .tribe-events-single .ad__inline--right.desktop {
   display: none; }

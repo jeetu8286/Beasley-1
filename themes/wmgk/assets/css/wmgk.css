@@ -7291,15 +7291,15 @@ div.widget-recent-contests {
 
 .event__info {
   display: block;
-  margin-bottom: 2em; }
+  margin-bottom: 2em;
+  /*@include bp(large) {
+		padding-right: 320px;
+	}*/ }
   .event__info:before, .event__info:after {
     content: " ";
     display: table; }
   .event__info:after {
     clear: both; }
-  @media screen and (min-width: 970px) {
-    .event__info {
-      padding-right: 320px; } }
 
 .tribe-events-single .ad__inline--right.desktop {
   display: none; }
@@ -13536,7 +13536,12 @@ table.responsive tr:nth-of-type(even) {
 
 .header__main {
   border-top: none;
-  background-color: rgba(0, 0, 0, 0.3) !important; }
+  background-color: rgba(0, 0, 0, 0.3) !important;
+  -webkit-transition: transform 200ms linear, background-color 1s !important;
+  /* Safari */
+  transition: transform 200ms linear, background-color 1s !important; }
+  .header__main.headroom--not-top {
+    background-color: rgba(0, 0, 0, 0.8) !important; }
 
 @media screen and (min-width: 970px) {
   .header__search {
