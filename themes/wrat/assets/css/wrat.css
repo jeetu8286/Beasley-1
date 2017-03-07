@@ -13552,7 +13552,7 @@ table.responsive tr:nth-of-type(even) {
   background-color: rgba(0, 0, 0, 0.5); }
 
 .header__main ul li a:hover, .header__main ul li:hover a, .header__main ul li a:active {
-  color: #c3bebe; }
+  color: #ccc; }
 
 .header__main a, .header__main a:active, .header__main a:hover, .header__main a:visited {
   color: #fff; }
