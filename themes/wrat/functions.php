@@ -13,7 +13,7 @@
  */
 
  // Useful global constants
-define( 'WRAT_VERSION', '0.2.10' ); /* Version bump by Tom 3/7/17 */
+define( 'WRAT_VERSION', '0.2.11' ); /* Version bump by Tom 3/7/17 */
 
  /**
   * Set up theme defaults and register supported WordPress features.

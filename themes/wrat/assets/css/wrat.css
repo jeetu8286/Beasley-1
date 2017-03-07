@@ -13604,6 +13604,9 @@ table.responsive tr:nth-of-type(even) {
   font-size: 1em;
   content: "\e612"; }
 
+.header__search:hover, .header__search:hover .header__search--btn::before {
+  color: #666; }
+
 /* Home page feature items */
 .featured__article--heading {
   color: #fff;
