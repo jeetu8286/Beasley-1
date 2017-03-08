@@ -13971,4 +13971,13 @@ a:hover .highlights__community--title {
   background-color: #d22228;
   color: #191919; }
 
+.featured__content--block:hover {
+  background: #c00000; }
+
+a:hover .highlights__community--title {
+  color: #c00000; }
+
+a:hover .highlights__event--title, a:hover .highlights__event--date {
+  color: #e3e4e5; }
+
 /*# sourceMappingURL=wctc.css.map */
