@@ -50,9 +50,9 @@
 	@include row();
 	margin-bottom: 2em;
 
-	@include bp(large) {
+	/*@include bp(large) {
 		padding-right: 320px;
-	}
+	}*/
 }
 
 .tribe-events-single {

@@ -1659,7 +1659,7 @@ blockquote p {
       padding-top: 75%; }
 
 .format-fi li.menu__featured-post--mobile {
-  background: #40b9fd;
+  background: #007abd;
   float: left;
   width: 100%; }
   .format-fi li.menu__featured-post--mobile a {
@@ -3462,6 +3462,10 @@ a.highlights__contest--btn {
 .container__leaderboard:after {
   clear: both; }
 
+@media screen and (min-width: 970px) {
+  .container__leaderboard {
+    margin-top: 20px; } }
+
 .header__link--text {
   display: none; }
   @media screen and (min-width: 768px) {
@@ -3576,8 +3580,9 @@ a.highlights__contest--btn {
 .footer {
   margin: 0 auto;
   overflow: auto;
-  background-color: #0a244a; }
-
+  padding-bottom: 58px;
+  position: relative;
+  width: 100%; }
   @media screen and (min-width: 768px) {
     .footer {
       padding-bottom: 0; } }
@@ -7328,15 +7333,15 @@ div.widget-recent-contests {
 
 .event__info {
   display: block;
-  margin-bottom: 2em; }
+  margin-bottom: 2em;
+  /*@include bp(large) {
+		padding-right: 320px;
+	}*/ }
   .event__info:before, .event__info:after {
     content: " ";
     display: table; }
   .event__info:after {
     clear: both; }
-  @media screen and (min-width: 970px) {
-    .event__info {
-      padding-right: 320px; } }
 
 .tribe-events-single .ad__inline--right.desktop {
   display: none; }
