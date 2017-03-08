@@ -28,10 +28,11 @@
 		}
 	}
 
-	.header__nav-submenu--features {
+	ul.header__nav-submenu--features {
 		@extend .cf;
+		border-left: 1px solid rgba(0, 0, 0, 0.25);
+		display: flex;
 		width: 66%;
-		border-left: 1px solid $primary-border;
 
 		li {
 			display: block;
@@ -40,6 +41,7 @@
 			padding: 2%;
 
 			&:hover {
+				background-color: $white;
 
 				a {
 					background-color: transparent;
@@ -107,13 +109,20 @@
 
 .format-fi {
 
-	.menu__featured-post--mobile {
+	li.menu__featured-post--mobile {
+		background: $header-nav-bg;
 		float: left;
 		width: 100%;
 
 		a {
-			border-bottom: 1px solid $primary-border;
-			padding: 0;
+			background-color: $header-bg;
+			border-bottom: 1px solid $white;
+			color: $color-text-black;
+			display: block;
+			padding: 18px 1.25em;
+			line-height: 1;
+			font-size: ms(2);
+			/*padding: 0;
 			margin: 18px 5% 0;
 			float: left;
 			width: 90%;
@@ -121,7 +130,7 @@
 			@include bp(small) {
 				padding-bottom: 20px;
 				margin: 18px 1.25em 0;
-			}
+			}*/
 
 			&:hover {
 				background-color: transparent;
