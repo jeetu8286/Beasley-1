@@ -1119,7 +1119,7 @@ blockquote p {
   display: none;
   position: fixed;
   width: 100%;
-  background-color: #7892c5;
+  background-color: #0A47B4;
   z-index: 1;
   overflow-y: auto;
   top: 105px;
@@ -1193,7 +1193,7 @@ blockquote p {
   /* the anchor inside the <li> provides all the box model sizing */ }
 
 .mobile-nav__list a {
-  background-color: #7892c5;
+  background-color: #0A47B4;
   color: #000000;
   display: block;
   padding: 18px 1.25em;
@@ -3224,7 +3224,7 @@ a.highlights__contest--btn {
   -webkit-transition: all 200ms linear;
   -moz-transition: all 200ms linear;
   transition: all 200ms linear;
-  background-color: #7892c5;
+  background-color: #0A47B4;
   border-bottom: 2px solid #CF000F;
   padding: 0;
   position: relative;
@@ -3341,7 +3341,7 @@ a.highlights__contest--btn {
 
 @media screen and (min-width: 768px)  {
   .header__main.headroom {
-    background-color: #7892c5;
+    background-color: #0A47B4;
     z-index: 5000001; }
     .header__main.headroom.headroom--pinned, .header__main.headroom.headroom--unpinned, .header__main.headroom.headroom--not-top {
       position: fixed;
@@ -13254,6 +13254,23 @@ body {
 .header__logo {
   background-color: transparent; }
 
+.header__main {
+  background-color: #0A47B4 !important; }
+
+.header__search {
+  padding-left: 8px !important; }
+
+.menu-item {
+  padding-left: 0 !important;
+  margin-left: 0 !important; }
+
+.mobile-nav .show-subnavigation {
+  background-color: #CCCCCC !important; }
+
+@media screen and (min-width: 768px)  {
+  .header__nav ul li, .header__search {
+    background-color: rgba(255, 255, 255, 0.7); } }
+
 .format-sp a:hover .meta-text {
   color: #FFFFFF; }
 
@@ -13273,5 +13290,11 @@ body {
   background-image: -ms-linear-gradient(top, transparent, transparent);
   background-image: -webkit-gradient(linear, left top, left bottom, from(transparent), to(transparent));
   background-image: -webkit-linear-gradient(top, transparent, transparent); }
+
+.main {
+  background-image: url(/wp-content/themes/wbt/images/burst-background.jpg) !important;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-attachment: fixed; }
 
 /*# sourceMappingURL=wbt.css.map */

@@ -6,6 +6,29 @@ body {
 	background-color: transparent;
 }
 
+.header__main {
+	background-color: #0A47B4 !important;
+}
+
+.header__search {
+	padding-left: 8px !important;
+}
+
+.menu-item {
+	padding-left: 0 !important;
+	margin-left: 0 !important;
+}
+
+.mobile-nav .show-subnavigation {
+	background-color: #CCCCCC !important;
+}
+
+@include bp(medium){
+	.header__nav ul li, .header__search {
+	    background-color: rgba(255, 255, 255, .7)
+	}
+}
+
 .format-sp a:hover .meta-text {
 	color: #FFFFFF;
 }
@@ -29,4 +52,11 @@ body {
 	background-image: -ms-linear-gradient(top,rgba(0,0,0,0),rgba(0,0,0,0));
 	background-image: -webkit-gradient(linear,left top,left bottom,from(rgba(0,0,0,0)),to(rgba(0,0,0,0)));
 	background-image: -webkit-linear-gradient(top,rgba(0, 0, 0, 00),rgba(0, 0, 0, 00));
+}
+
+.main {
+	background-image: url(/wp-content/themes/wbt/images/burst-background.jpg) !important;
+	background-size:100%;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
 }
