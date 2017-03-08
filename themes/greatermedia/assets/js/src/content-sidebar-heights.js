@@ -17,6 +17,12 @@
 			matchHeights( elements );
 			/* jshint ignore:end */
 		} );
+
+		/* jshint ignore:start */
+		googletag.pubads().addEventListener( 'slotRenderEnded', function( e ) {
+			matchHeights( elements );
+		} );
+		/* jshint ignore:end */
 	}
 
 })( window, document );

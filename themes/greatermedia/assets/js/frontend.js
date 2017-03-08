@@ -3038,6 +3038,12 @@ var matchHeights = function( elements ) {
 			matchHeights( elements );
 			/* jshint ignore:end */
 		} );
+
+		/* jshint ignore:start */
+		googletag.pubads().addEventListener( 'slotRenderEnded', function( event ) {
+			matchHeights( elements );
+		} );
+		/* jshint ignore:end */
 	}
 
 })( window, document );
