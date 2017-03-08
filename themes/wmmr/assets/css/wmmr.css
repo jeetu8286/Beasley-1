@@ -13598,6 +13598,28 @@ table.responsive tr:nth-of-type(even) {
   .header__main.headroom--not-top {
     background-color: rgba(0, 0, 0, 0.8) !important; }
 
+@media screen and (min-width: 970px) {
+  .header__search {
+    color: #fff;
+    padding: 4px;
+    background-color: rgba(0, 0, 0, 0.7);
+    text-transform: uppercase; }
+    .header__search .header__search--btn:before {
+      color: #fff; }
+  .header__nav {
+    text-transform: uppercase;
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700; }
+  .header__nav ul li {
+    background-color: rgba(0, 0, 0, 0.7);
+    font-size: 1.2em; }
+    .header__nav ul li a,
+    .header__nav ul li a:visited {
+      color: #ffffff; } }
+
+.header__nav .sub-menu a, .header__nav .format-fw > ul a, .header__nav .format-sp > ul a, .header__nav .format-fi > ul a, .header__nav .format-fw > ul a, .header__nav .format-sp > ul a, .header__nav .format-fi > ul a, .ui-menu a {
+  padding: .5em !important; }
+
 .live-link__type--show {
   border-bottom-color: white;
   background: none; }
