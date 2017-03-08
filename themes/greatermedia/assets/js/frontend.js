@@ -3032,17 +3032,23 @@ var matchHeights = function( elements ) {
 
 	if ( window.matchMedia( '(min-width: 768px)' ).matches ) {
 
+		/* jshint ignore:start */
+
 		// Using window.onload because heights we want need to be rendered.
 		window.addEventListener( 'load', function( e ) {
-			/* jshint ignore:start */
 			matchHeights( elements );
-			/* jshint ignore:end */
 		} );
 
-		/* jshint ignore:start */
-		googletag.pubads().addEventListener( 'slotRenderEnded', function( event ) {
+		// Match heights any time an ad renders.
+		googletag.pubads().addEventListener( 'slotRenderEnded', function( e ) {
 			matchHeights( elements );
 		} );
+
+		// Not ideal: Match heights every 3 seconds for additional content loading.
+		setInterval( function() {
+			matchHeights( elements );
+		}, 3000 );
+
 		/* jshint ignore:end */
 	}
 
