@@ -805,6 +805,11 @@
 	function streamVastAd() {
 		var stationId = parseInt($('.audio-stream .audio-stream__title').attr('data-station-id'));
 
+		if (isNaN(stationId) || !stationId) {
+			onAdPlaybackComplete();
+			return;
+		}
+
 		detachAdListeners();
 		attachAdListeners();
 
@@ -815,13 +820,11 @@
 			host: 'cmod.live.streamtheworld.com',
 			type: 'preroll',
 			format: 'vast',
-			stationId: !isNaN(stationId) ? stationId : false,
+			stationId: stationId,
 			trackingParameters: {dist: "debug"}
 		});
 
-		setTimeout(function() {
-			this.stop();
-		}, 25000);
+		setTimeout($.proxy(player.skipAd, player), 25000);
 	}
 
 	$window.on('click', function() {
@@ -1197,7 +1200,7 @@
 		setStatus('Advertising... Type=' + e.data.type);
 	}
 
-	function onAdPlaybackComplete(e) {
+	function onAdPlaybackComplete() {
 		var station = getCurrentStation();
 
 		adPlaying = false;
@@ -1394,8 +1397,8 @@
 	}
 
 	function hideAdBreakBanner() {
-		$audioAdBreakContainerAbovePlayer.removeClass('-show');
-		$audioAdBreakContainerInPlayer.removeClass('-show');
+		$audioAdBreakContainerAbovePlayer.hide();
+		$audioAdBreakContainerInPlayer.hide();
 	}
 
 	function onAdBreak(e) {
@@ -1416,10 +1419,12 @@
 		debug('Ad Break Synced Element');
 
 		if (window.innerWidth >= 768) {
-			$audioAdBreakContainerInPlayer.addClass('-show');
+			$audioAdBreakContainerInPlayer.show();
 		} else {
-			$audioAdBreakContainerAbovePlayer.addClass('-show');
+			$audioAdBreakContainerAbovePlayer.show();
 		}
+
+		setTimeout(hideAdBreakBanner, 60000);
 	}
 
 	//Song History
