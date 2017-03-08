@@ -46,6 +46,8 @@
 
 			<div id="page-wrap" class="page-wrap">
 
+				<?php do_action( 'dfp_wallpaper_tag' ); ?>
+
 				<?php get_template_part( 'partials/header-site' ); ?>
 
 				<?php get_template_part( 'partials/header-search' ); ?>
@@ -77,9 +79,8 @@
 				</nav>
 
 				<main class="main" role="main">
-
-				<div class="container__leaderboard">
-					<div class="ad__leaderboard">
-						<?php do_action( 'dfp_tag', 'dfp_ad_leaderboard_pos1', false, array( array( 'pos', 1 ) ) ); ?>
+					<div class="container__leaderboard">
+						<div class="ad__leaderboard">
+							<?php do_action( 'dfp_tag', 'dfp_ad_leaderboard_pos1', false, array( array( 'pos', 1 ) ) ); ?>
+						</div>
 					</div>
-				</div>
