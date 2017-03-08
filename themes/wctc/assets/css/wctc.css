@@ -13956,9 +13956,16 @@ a:hover .highlights__event--title, a:hover .highlights__event--date {
   background-position: center top;
   border-bottom: none; }
 
+.header__main {
+  border-top: none;
+  background-color: transparent !important; }
+
 .home__featured .featured__article--content {
   background-color: #d22228;
   color: #191919; }
+
+a:hover .highlights__community--title {
+  color: #e3e4e5; }
 
 .home__featured .featured__content--block {
   background-color: #d22228;
