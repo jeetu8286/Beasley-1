@@ -4,7 +4,7 @@
 $asset_root: "../../../../themes/greatermedia/assets/";
 
 // Color from parent theme
-$cardinal: #d22228;
+$cardinal: #CF000F;
 $light-gray: #d0d2d3;
 $gray: #929497;
 $medium-gray: #404041;
@@ -27,11 +27,11 @@ $color-gray-medium: #58595b;
 $color-gray-medium-dark: #303030;
 $color-gray-dark: #221f1f;
 
-$color-red: #db261d;
-$color-red-dark: #580f0c;
+$color-red: #CF000F;
+$color-red-dark: #CF000F;
 
 $primary-bg: #ffffff;
-$primary-border: #b8babc;
+$primary-border: #CF000F;
 $primary-text: $color-gray-medium;
 $primary-heading: #000000;
 $primary-link: $color-red;
@@ -39,7 +39,8 @@ $primary-link-hover: darken($primary-link, 9%);
 $liveplayer-bg: $primary-bg;
 $liveplayer-color: #404041;
 $secondary-bg: $color-gray-light;
-$header-bg: $color-gray-light;
+$header-bg: #0A47B4;
+$header-nav-bg: $color-red-dark;
 $header-nav-border: $color-red-dark;
 $header-search-bg: $color-gray-medium-light;
 
