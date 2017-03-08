@@ -13949,4 +13949,19 @@ a:hover .highlights__community--title {
 a:hover .highlights__event--title, a:hover .highlights__event--date {
   color: #e3e4e5; }
 
+.header {
+  background-color: #999 !important;
+  background-image: url("../../images/WCTC_header.jpg") !important;
+  background-repeat: repeat-x;
+  background-position: center top;
+  border-bottom: none; }
+
+.home__featured .featured__article--content {
+  background-color: #d22228;
+  color: #191919; }
+
+.home__featured .featured__content--block {
+  background-color: #d22228;
+  color: #191919; }
+
 /*# sourceMappingURL=wctc.css.map */
