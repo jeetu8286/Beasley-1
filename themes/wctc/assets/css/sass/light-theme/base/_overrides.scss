@@ -114,6 +114,18 @@ element.style {
     color: #fff;
 }
 
+.news-site .featured__content--block {
+    width: 33.33333%;
+    height: 100%;
+    padding: 10px 0 0;
+    margin: 0;
+    background-color: transparent;
+}
+
+.home__featured {
+    margin-bottom: 0px;
+}
+
 .home__featured .featured__content--meta {
     width: 65%;
     min-height: 4.2em;
