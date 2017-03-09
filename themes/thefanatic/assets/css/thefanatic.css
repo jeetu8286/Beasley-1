@@ -13574,8 +13574,35 @@ table.responsive tr:nth-of-type(even) {
       width: 300px;
       background-color: #ffffff; } }
 
+.main {
+  background-image: url("../../images/pw_pattern.png"); }
+
 .header {
   border-bottom: 1px solid #58595b; }
+
+@media screen and (min-width: 768px) {
+  .header__main.headroom {
+    background-color: #580f0c; } }
+
+@media screen and (min-width: 970px) {
+  .header__search {
+    color: #fff;
+    padding: 4px;
+    background-color: rgba(0, 0, 0, 0.7);
+    text-transform: uppercase; }
+    .header__search .header__search--btn:before {
+      color: #fff; }
+  .header__nav > ul > li {
+    background-color: rgba(0, 0, 0, 0.7); }
+    .header__nav > ul > li a,
+    .header__nav > ul > li a:visited {
+      color: #ffffff; }
+  /*.header__nav .sub-menu a:hover, .header__nav .format-fw > ul a:hover, .header__nav .format-sp > ul a:hover, .header__nav .format-fi > ul a:hover, .header__account--links.sub-menu a:hover, .header__nav .format-fw > ul.header__account--links a:hover, .header__nav .format-sp > ul.header__account--links a:hover, .header__nav .format-fi > ul.header__account--links a:hover, .ui-menu a:hover {
+		background-color: $white;
+	}*/
+  .news-site .header__nav .format-fw > ul > li:not(:nth-child(4n+1)), .header__nav .news-site .format-fw > ul > li:not(:nth-child(4n+1)), .news-site .header__nav .format-sp > ul > li:not(:nth-child(4n+1)), .header__nav .news-site .format-sp > ul > li:not(:nth-child(4n+1)) {
+    padding-left: 0;
+    margin-left: 0; } }
 
 @media screen and (min-width: 768px) {
   .home__featured {
@@ -13623,50 +13650,6 @@ table.responsive tr:nth-of-type(even) {
   border: 1px solid #333;
   color: #333; }
 
-@media screen and (min-width: 768px) {
-  .audio__playing #live-player--volume {
-    display: block; }
-  .live-player {
-    background: url("../../images/listen-live-bg.jpg") no-repeat; }
-  .live-stream {
-    margin: 1em auto 4em auto !important;
-    background: none !important; }
-    .live-stream .live-player__stream {
-      visibility: hidden; }
-  .news-site .live-stream__status.audio__playing {
-    top: 78px; } }
-
-.live-links {
-  border-top: 0;
-  margin: 0 !important;
-  width: 100%; }
-  .live-links .widget--live-player__title {
-    display: none; }
-  .live-links .widget_gmr_blogroll_widget {
-    display: none; }
-
-.live-links--more.show-more--muted {
-  display: block; }
-
-.streamhub-wall-component article.content-default .content-body {
-  font-family: 'Open Sans', sans-serif;
-  font-size: 16px;
-  line-height: 20px; }
-
-#fanatic-social-stream {
-  overflow: hidden;
-  border-top: 1px solid #eee; }
-  #fanatic-social-stream article {
-    border-width: 0 0 1px 0;
-    margin: 0;
-    padding: 20px 0; }
-    #fanatic-social-stream article.content .content-header .content-header-inner {
-      padding-top: 0; }
-    #fanatic-social-stream article.content-instagram .content-header .content-header-inner {
-      padding-top: 20px; }
-  #fanatic-social-stream .hub-list-more {
-    display: none; }
-
 .single-gmr_gallery .gallery__paging--prev,
 .single-gmr_gallery .gallery__paging--next {
   color: #d0d2d3; }
@@ -13674,71 +13657,8 @@ table.responsive tr:nth-of-type(even) {
   .single-gmr_gallery .gallery__paging--next:hover {
     color: #d22228; }
 
-.live-player__stream {
-  visibility: hidden;
-  border: 1px solid #b0b0b0;
-  color: #b0b0b0;
-  -webkit-border-radius: 1em;
-  -moz-border-radius: 1em;
-  -ms-border-radius: 1em;
-  -o-border-radius: 1em;
-  -border-radius: 1em;
-  border-radius: 1em;
-  background-color: #ffffff; }
-  .live-player__stream li {
-    height: auto; }
-  .live-player__stream .live-player__stream--available {
-    display: none; }
-  .live-player__stream .live-player__stream--current.open .live-player__stream--available {
-    color: #282827;
-    border-top: 1px solid #c9cbcc; }
-    .live-player__stream .live-player__stream--current.open .live-player__stream--available:after {
-      background: transparent; }
-    .live-player__stream .live-player__stream--current.open .live-player__stream--available .live-player__stream--item, .live-player__stream .live-player__stream--current.open .live-player__stream--available .live-player__stream--desc {
-      color: #282827; }
-    .live-player__stream .live-player__stream--current.open .live-player__stream--available .live-player__stream--item {
-      background-color: #ffffff; }
-      .live-player__stream .live-player__stream--current.open .live-player__stream--available .live-player__stream--item:hover {
-        background-color: #d0d2d3; }
-    .live-player__stream .live-player__stream--current.open .live-player__stream--available li:last-child {
-      border-bottom-left-radius: 1em;
-      border-bottom-right-radius: 1em; }
-
-.live-player--open .live-links {
-  margin-top: 0 !important; }
-
-.live-player__container {
-  border-bottom: none; }
-
-.now-playing__artist {
-  color: #303030; }
-
-.live-link__title, .live-link__title a:link, .live-link__title a:visited {
-  color: #58595b; }
-
-.live-link__song:before {
-  color: #6d6e70; }
-
-.live-link__song--artist {
-  color: #6d6e70; }
-
-.live-link__song--title {
-  color: #282827; }
-  .live-link__song--title a, .live-link__song--title a:visited {
-    color: #191919; }
-
-.live-link__title a:link, .live-link__title a:visited {
-  color: #58595b; }
-
-.live-link__title a:hover, .live-link__title a:focus, .live-link__title a:active {
-  color: #b21f18; }
-
 .header__leaderboard {
   background-image: url("../../images/pw_pattern.png"); }
-
-@media screen and (min-width: 768px) {
-  .header__logo {
-    top: -7px; } }
 
 .home__highlights {
   border-bottom-color: #b8babc; }
@@ -13824,7 +13744,7 @@ h1, .h1, .type-tribe_events .entry2__thumbnail--event-date, .type-contest .entry
 .header__nav .sub-menu li.active > a, .header__nav .format-fw > ul li.active > a, .header__nav .format-sp > ul li.active > a, .header__nav .format-fi > ul li.active > a,
 .header__nav .sub-menu li:hover > a, .header__nav .format-fw > ul li:hover > a, .header__nav .format-sp > ul li:hover > a, .header__nav .format-fi > ul li:hover > a,
 .header__nav > ul > li > ul > li.active > a:hover {
-  background-color: #db261d;
+  background-color: rgba(0, 0, 0, 0.2);
   color: white; }
 
 .mobile-nav .mobile-menu-submenu-header {
@@ -13836,10 +13756,12 @@ h1, .h1, .type-tribe_events .entry2__thumbnail--event-date, .type-contest .entry
 .header__nav .sub-menu a:hover, .header__nav .format-fw > ul a:hover, .header__nav .format-sp > ul a:hover, .header__nav .format-fi > ul a:hover,
 .header__account--links.sub-menu a:hover, .header__nav .format-fw > ul.header__account--links a:hover, .header__nav .format-sp > ul.header__account--links a:hover, .header__nav .format-fi > ul.header__account--links a:hover,
 .ui-menu a:hover {
-  background-color: #db261d; }
+  background-color: rgba(0, 0, 0, 0.2); }
 
-.featured__article:hover .featured__article--heading {
-  color: #db261d; }
+.featured__article--heading {
+  color: #ffffff; }
+  .featured__article:hover .featured__article--heading {
+    color: #db261d; }
 
 .featured__content--title {
   color: white; }
@@ -13876,7 +13798,7 @@ h1, .h1, .type-tribe_events .entry2__thumbnail--event-date, .type-contest .entry
   color: #db261d; }
 
 .header__main {
-  background-color: #db261d; }
+  background-color: #580f0c; }
 
 .header__logo {
   background-color: #580f0c; }
