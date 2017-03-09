@@ -190,7 +190,7 @@ category: Components - Shows
 	background-color: rgb(86, 16, 21);
 	background-repeat: repeat;
 	position: relative;
-	padding: 38px 1em;
+	padding: 24px 1em;
 	@include fill-parent();
 	@include row();
 	@include display-context(table);
@@ -227,10 +227,6 @@ category: Components - Shows
 		vertical-align: middle;
 	}
 
-	@include bp(medium) {
-		padding: $gutter * 4 $gutter * 2;
-	}
-
 	@include bp(large) {
 		background-image: url('../../images/featured-bg.png');
 		background-position: center center;
@@ -250,11 +246,12 @@ category: Components - Shows
 
 .show__cast {
 	@include fill-parent;
+	height: auto;
+	margin: 0 auto;
 	position: relative;
-	height: 100%;
+	width: 100px;
 
 	@include bp(large) {
-		width: 150px;
 		display: table-cell;
 		vertical-align: middle;
 	}
@@ -324,8 +321,8 @@ category: Components - Shows
 		display: table-cell;
 		vertical-align: middle;
 		text-align: left;
-		padding-left: 3em;
-		padding-right: 3em;
+		padding-left: 2em;
+		padding-right: 2em;
 		overflow: visible;
 
 		.show__title {
@@ -334,9 +331,8 @@ category: Components - Shows
 		}
 
 		ul {
-			position: absolute;
 			text-align: left;
-			margin-left: -9px;
+			margin-left: -7px;
 			padding-top: 8px;
 			width: auto;
 		}
@@ -389,7 +385,7 @@ category: Components - Shows
 }
 
 .show__title {
-	font-size: 2em;
+	font-size: 1.5em;
 }
 
 .show__meta {
