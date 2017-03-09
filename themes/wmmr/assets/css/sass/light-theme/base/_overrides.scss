@@ -66,3 +66,150 @@
 .header__nav .sub-menu a, .header__nav .format-fw > ul a, .header__nav .format-sp > ul a, .header__nav .format-fi > ul a, .ui-menu a {
 	padding: .5em !important;
 }
+
+.header__account ul li a:active,
+.header__account ul li a:focus,
+.header__account ul li a:hover,
+.header__account ul li:hover,
+.header__nav ul li a:active,
+.header__nav ul li a:focus,
+.header__nav ul li.active,
+.header__nav ul li.active a:hover,
+.ui-menu .ui-state-focus {
+    background-color: #f8c50f;
+}
+
+.header__account--links.sub-menu,
+.header__nav .format-fi > ul,
+.header__nav .format-fi > ul.header__account--links,
+.header__nav .format-fw > ul,
+.header__nav .format-fw > ul.header__account--links,
+.header__nav .format-sp > ul,
+.header__nav .format-sp > ul.header__account--links,
+.header__nav .sub-menu, .ui-menu {
+    position: absolute;
+    border-top: 7px solid #f8c50f;
+    color: #000;
+    min-width: 300px;
+    z-index: 5000100;
+}
+
+.home__featured {
+
+    background-color: white;
+    background-image: none;
+    border: 1px solid #eee;
+    background: url("../../images/pw_maze_white.png");
+
+    .featured__article--content {
+        background-image: -ms-linear-gradient(right, #db5b15 0%, #910101 100%);
+        background-image: -moz-linear-gradient(right, #db5b15 0%, #910101 100%);
+        background-image: -o-linear-gradient(right, #db5b15 0%, #910101 100%);
+        background-image: -webkit-gradient(linear, right top, left top, color-stop(0, #db5b15), color-stop(1, #910101));
+        background-image: -webkit-linear-gradient(right, #db5b15 0%, #910101 100%);
+        background-image: linear-gradient(to left, #db5b15 0%, #910101 100%);
+    }
+
+    .featured__content--block {
+        background-image: -ms-linear-gradient(right, #db5b15 0%, #910101 100%);
+        background-image: -moz-linear-gradient(right, #db5b15 0%, #910101 100%);
+        background-image: -o-linear-gradient(right, #db5b15 0%, #910101 100%);
+        background-image: -webkit-gradient(linear, right top, left top, color-stop(0, #db5b15), color-stop(1, #910101));
+        background-image: -webkit-linear-gradient(right, #db5b15 0%, #910101 100%);
+        background-image: linear-gradient(to left, #db5b15 0%, #910101 100%);
+    }
+
+    @include bp(medium) {
+        background-position: left top;
+        background-color: #561015;
+        // background-size: cover; // Leave this out unless we want big crosshatches on WMGK. If we do want that, be sure to also add this to the .show__header
+    }
+}
+
+.home__highlights {
+    background: url("../../images/pw_maze_gray.png");
+    border-bottom-color: $primary-border;
+}
+
+.single-show .home__highlights {
+    background: none;
+}
+
+.highlights__events {
+    text-decoration: none;
+}
+
+.highlights__events--more-btn {
+    background-color: #878787;
+    color: #fff!important;
+
+    &:hover {
+        color: $yellow !important;
+        border-color: $yellow;
+    }
+}
+
+.highlights__event--item {
+    background-color: rgba(0,0,0,.1);
+    color: $white;
+}
+
+.highlights__event--title {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 400;
+    color: #b72f2c;
+
+    a:hover & {
+        color: $yellow;
+    }
+}
+
+.highlights__event--date {
+    color: #716c6c;
+
+    a:hover & {
+        color: $yellow;
+    }
+}
+
+.highlights__heading {
+    text-transform: uppercase;
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+    color: #b72f2c;
+    text-shadow: 2px 2px 2px rgba(139, 128, 146, 0.4);
+}
+
+.type-contest .entry__title--tag {
+    background-color: $light-gray;
+    border-color: $light-gray;
+}
+
+.audio__progress-bar {
+    background-color: $gray;
+}
+
+.footer {
+    background-color: $primary-bg;
+}
+
+.featured__content--btn {
+    display:none!important;
+}
+
+.featured__article--heading {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    text-shadow: 2px 2px 1px rgba(83, 6, 6, 1);
+    color: #fbe374;
+}
+
+.featured__content--title {
+    font-size: 1.23em;
+    font-family: 'Oswald', sans-serif;
+    font-weight: 400;
+		text-transform: uppercase;
+    text-shadow: 2px 2px 1px rgba(83, 6, 6, 1);
+    color: #fbe374;
+}
