@@ -431,44 +431,7 @@
 		techPriority = calcTechPriority();
 		debug('+++ initPlayer - techPriority = ' + techPriority.join(', '));
 
-		// @todo: uncomment when updating sdk to 2.9+ and remove old initialization below this commented section
-//		window.player = player = new TDSdk({
-//			coreModules: [
-//				{
-//					id: 'MediaPlayer',
-//					playerId: 'td_container',
-//					isDebug: false,
-//					techPriority: techPriority,
-//					timeShift: { // timeShifting is currently available on Flash only. Leaving for HTML5 future
-//						active: 0, /* 1 = active, 0 = inactive */
-//						max_listening_time: 35 /* If max_listening_time is undefined, the default value will be 30 minutes */
-//					},
-//					// set geoTargeting to false on devices in order to remove the daily geoTargeting in browser
-//					geoTargeting: {desktop: {isActive: false}, iOS: {isActive: false}, android: {isActive: false}},
-//					plugins: [{id: "vastAd"}]
-//				},
-//				{id: 'NowPlayingApi'},
-//				{id: 'Npe'},
-//				{id: 'PlayerWebAdmin'},
-//				{
-//					id: 'SyncBanners',
-//					elements: [
-//						{
-//							id: window.innerWidth >= 768 ? 'js-audio-ad-inplayer' : 'js-audio-ad-aboveplayer',
-//							width: 320,
-//							height: 50
-//						}
-//					]
-//				},
-//				{id: 'TargetSpot'}
-//			],
-//			playerReady: onPlayerReady,
-//			configurationError: onConfigurationError,
-//			moduleError: onModuleError
-//		});
-
-		/* TD player configuration object used to create player instance */
-		var tdPlayerConfig = {
+		window.player = player = new TDSdk({
 			coreModules: [
 				{
 					id: 'MediaPlayer',
@@ -497,25 +460,11 @@
 					]
 				},
 				{id: 'TargetSpot'}
-			]
-		};
-
-		require(['tdapi/base/util/Companions'], function (Companions) {
-				companions = new Companions();
-			}
-		);
-
-		window.player = player = new TdPlayerApi(tdPlayerConfig);
-		if (player.addEventListener) {
-			player.addEventListener('player-ready', onPlayerReady);
-			player.addEventListener('configuration-error', onConfigurationError);
-			player.addEventListener('module-error', onModuleError);
-		} else if (player.attachEvent) {
-			player.attachEvent('player-ready', onPlayerReady);
-			player.attachEvent('configuration-error', onConfigurationError);
-			player.attachEvent('module-error', onModuleError);
-		}
-		player.loadModules();
+			],
+			playerReady: onPlayerReady,
+			configurationError: onConfigurationError,
+			moduleError: onModuleError
+		});
 	}
 
 	/**
@@ -825,8 +774,7 @@
 	}
 
 	$document.ready(function() {
-		// @todo: uncomment when upgrading sdk to 2.9+ version
-		// initPlayer();
+		initPlayer();
 		changePlayerState();
 	});
 
