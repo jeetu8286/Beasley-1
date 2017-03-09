@@ -160,7 +160,7 @@ GMCLT.Weather = function() {
 
 	function initializeStormwatchMap() {
 		geocoder = new google.maps.Geocoder();
-	  	geocoder.geocode( { 'address': GMCLTstate}, function(results, status) {
+	  	geocoder.geocode( { 'address': GMCLTstate + ', US'}, function(results, status) {
 	    	if (status == google.maps.GeocoderStatus.OK) {
 				var mapOptions = {
 					zoom: 7,

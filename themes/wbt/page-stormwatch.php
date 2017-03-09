@@ -82,6 +82,7 @@ get_header();
 						<img src="<?php echo trailingslashit( get_stylesheet_directory_uri() ); ?>images/WBTajaxLoader.gif">
 					</div>
 					<div id="gmclt_stormwatchMapCanvas"></div>
+					<div id="gmclt_narrowColumnContent"></div>
 			</section>
 		</article>
 	</section>
@@ -111,7 +112,3 @@ jQuery(document).ready(function(){
 </script>
 
 <?php get_footer(); ?>
-
-
-
-
