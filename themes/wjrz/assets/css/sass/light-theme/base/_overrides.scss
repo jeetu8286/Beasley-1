@@ -9,12 +9,18 @@
 .header__main {
     border-top: none;
     background-color: rgba(0, 0, 0, .1) !important;
-}
 
+		-webkit-transition: transform 200ms linear, background-color 1s !important; /* Safari */
+    transition: transform 200ms linear, background-color 1s !important;
+
+		&.headroom--not-top {
+			background-color: rgba(0, 0, 0, .8) !important;
+		}
+}
 
 /* Navigation */
 
-.header__account ul li a:active, .header__account ul li a:focus, .header__account ul li a:hover, .header__account ul li:hover, .header__nav ul li a:active, .header__nav ul li a:focus, .header__nav ul li.active, .header__nav ul li.active a:hover, .ui-menu .ui-state-focus {background-color: #0073cf;}        
+.header__account ul li a:active, .header__account ul li a:focus, .header__account ul li a:hover, .header__account ul li:hover, .header__nav ul li a:active, .header__nav ul li a:focus, .header__nav ul li.active, .header__nav ul li.active a:hover, .ui-menu .ui-state-focus {background-color: #0073cf;}
 .header__account--links.sub-menu, .header__nav .format-fi > ul, .header__nav .format-fi > ul.header__account--links, .header__nav .format-fw > ul, .header__nav .format-fw > ul.header__account--links, .header__nav .format-sp > ul, .header__nav .format-sp > ul.header__account--links, .header__nav .sub-menu, .ui-menu {
   border-top: 7px solid #c20000;
   color: #fff;
@@ -87,7 +93,7 @@
     margin: 0 0 0 1em;
 }
 
-/* Header search color */ 
+/* Header search color */
 .header__search {
   color: #f0f0f0;
   font-weight: bold}
@@ -97,12 +103,12 @@
     font-size: 1em;
     content: "\e612";
 }
-     
+
  .header__main .header__search:hover {
     background-color: #0073cf;
     color: #fff;
     padding-left: 8px;
-} 
+}
 
 .header__search:hover, .header__search:hover .header__search--btn::before {
     color: #fff;
@@ -127,7 +133,7 @@
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 1);
 }
 
-.home__featured { 
+.home__featured {
     background: url("../../images/wjrz-body-bkg.jpg") no-repeat;
     background-color: #015da6;
 }
@@ -152,7 +158,7 @@
 .home__featured .featured__content--meta {
     width: 65%;
     min-height: 4.2em;
-} 
+}
 
 .featured__content--block:hover .featured__content--title {
     color: #fff;
