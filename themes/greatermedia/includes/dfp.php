@@ -365,7 +365,8 @@ function greatermedia_display_dfp_playersponsorship() {
 add_action( 'dfp_sponsorship_tag', 'greatermedia_display_dfp_playersponsorship' );
 
 function greatermedia_display_dfp_outofpage() {
-	if ( ! greatermedia_is_dfp_active() ) {
+	$network_id = trim( get_option( 'dfp_network_code' ) );
+	if ( empty( $network_id ) ) {
 		return;
 	}
 
@@ -378,18 +379,28 @@ function greatermedia_display_dfp_outofpage() {
 			</script>
 		</div><?php
 	endif;
+}
+add_action( 'wp_footer', 'greatermedia_display_dfp_outofpage', 1 );
+
+function greatermedia_display_dfp_wallpaper() {
+	$network_id = trim( get_option( 'dfp_network_code' ) );
+	if ( empty( $network_id ) ) {
+		return;
+	}
 
 	$dfp_ad_wallpaper = get_option( 'dfp_ad_wallpaper' );
 	if ( $dfp_ad_wallpaper ) :
-		?><!-- /<?php echo esc_html( $network_id ); ?>/<?php echo esc_html( $dfp_ad_wallpaper ); ?> -->
-		<div id='div-gpt-ad-1487289548015-0'>
-			<script type="text/javascript">
-				googletag.cmd.push(function() { googletag.display('div-gpt-ad-1487289548015-0'); });
-			</script>
+		?><div class="ad__wallpaper">
+			<!-- /<?php echo esc_html( $network_id ); ?>/<?php echo esc_html( $dfp_ad_wallpaper ); ?> -->
+			<div id='div-gpt-ad-1487289548015-0'>
+				<script type="text/javascript">
+					googletag.cmd.push(function() { googletag.display('div-gpt-ad-1487289548015-0'); });
+				</script>
+			</div>
 		</div><?php
 	endif;
 }
-add_action( 'wp_footer', 'greatermedia_display_dfp_outofpage', 1 );
+add_action( 'dfp_wallpaper_tag', 'greatermedia_display_dfp_wallpaper' );
 
 function greatermedia_display_dfp_incontent( $content ) {
 	if ( ! is_single() || ! greatermedia_is_dfp_active() ) {

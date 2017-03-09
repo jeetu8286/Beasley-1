@@ -28,6 +28,10 @@
 
 .container__leaderboard {
 	@include clearfix;
+
+	@include bp(large){
+		margin: 5px 0;
+	}
 }
 
 .header__link--text {
