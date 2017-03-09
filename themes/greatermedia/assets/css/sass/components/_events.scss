@@ -29,9 +29,9 @@
 	@include bp(large) {
 		@include span-columns(8 of 8);
 	}
-	@include bp(x-large) {
+	/*@include bp(x-large) {
 		@include span-columns(8 of 8);
-	}
+	}*/
 }
 
 .event__thumbnail-inline {
@@ -50,9 +50,9 @@
 	@include row();
 	margin-bottom: 2em;
 
-	@include bp(large) {
+	/*@include bp(large) {
 		padding-right: 320px;
-	}
+	}*/
 }
 
 .tribe-events-single {
@@ -149,9 +149,9 @@
 	@include bp(large) {
 		@include span-columns(4 of 8);
 	}
-	@include bp(x-large) {
+	/*@include bp(x-large) {
 		@include span-columns(4 of 8);
-	}
+	}*/
 }
 
 .tribe-events-event-meta .tribe-events-meta-group-venue {
@@ -173,10 +173,10 @@
 		@include span-columns(4 of 8);
 		@include omega;
 	}
-	@include bp(x-large) {
+	/*@include bp(x-large) {
 		@include span-columns(4 of 8);
 		@include omega;
-	}
+	}*/
 }
 
 .single-tribe_events .tribe-events-venue-map {
@@ -203,10 +203,10 @@
 		@include span-columns(8 of 8);
 		@include omega;
 	}
-	@include bp(x-large) {
+	/*@include bp(x-large) {
 		@include span-columns(8 of 8);
 		@include omega;
-	}
+	}*/
 
 }
 

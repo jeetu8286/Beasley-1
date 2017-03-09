@@ -1,9 +1,10 @@
 .footer {
-	width: 100%;
-	padding-bottom: 58px;
 	margin: 0 auto;
 	overflow: auto;
-	background-color: $secondary-bg;
+	padding-bottom: 58px;
+	position: relative;
+	width: 100%;
+
 	@include bp(medium) {
 		padding-bottom: 0;
 	}
@@ -21,9 +22,9 @@
 	min-height: 0;
 	padding-top: 40px;
 	padding-bottom: 40px;
+	padding-right: 0;
 	background-color: $primary-bg;
 	border-top: 1px solid $primary-border;
-
 }
 
 .footer__ad {
@@ -46,10 +47,10 @@
 		@include omega;
 	}
 
-	@include bp(x-large) {
+	/*@include bp(x-large) {
 		@include span-columns(12);
 		@include omega;
-	}
+	}*/
 
 	.mobile {
 		display: block;
@@ -87,9 +88,9 @@
 	@include bp(large) {
 		@include span-columns(12);
 	}
-	@include bp(x-large) {
+	/*@include bp(x-large) {
 		@include span-columns(12);
-	}
+	}*/
 }
 
 .footer__copyright {

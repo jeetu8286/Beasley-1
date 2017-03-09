@@ -43,43 +43,44 @@
 
 	<body <?php body_class(); ?>>
 		<div id="site-wrap" class="site-wrap">
-			<nav id="mobile-nav" class="mobile-nav">
-				<?php
-				$mobile_nav = array(
-					'theme_location'  => 'main-nav',
-					'menu'            => '',
-					'container'       => '',
-					'container_class' => '',
-					'container_id'    => '',
-					'menu_class'      => 'mobile-nav__list js-mobile-sub-menus',
-					'menu_id'         => '',
-					'echo'            => true,
-					'fallback_cb'     => 'wp_page_menu',
-					'before'          => '',
-					'after'           => '',
-					'link_before'     => '',
-					'link_after'      => '',
-					'items_wrap'      => '<ul id="%1$s" class="%2$s">%3$s</ul>',
-					'depth'           => 0,
-					'walker'          => new GreaterMediaMobileNavWalker(),
-				);
-
-				wp_nav_menu( $mobile_nav );
-
-				do_action( 'gmr_social' ); ?>
-			</nav>
-
-			<?php get_template_part( 'partials/header-search' ); ?>
 
 			<div id="page-wrap" class="page-wrap">
-				<?php if ( is_news_site() ) {
 
-					get_template_part( 'partials/news/header');
+				<?php do_action( 'dfp_wallpaper_tag' ); ?>
 
-				} else {
+				<?php get_template_part( 'partials/header-site' ); ?>
 
-					get_template_part( 'partials/music/header' );
+				<?php get_template_part( 'partials/header-search' ); ?>
 
-				} ?>
+				<nav id="mobile-nav" class="mobile-nav">
+					<?php
+					$mobile_nav = array(
+						'theme_location'  => 'main-nav',
+						'menu'            => '',
+						'container'       => '',
+						'container_class' => '',
+						'container_id'    => '',
+						'menu_class'      => 'mobile-nav__list js-mobile-sub-menus',
+						'menu_id'         => '',
+						'echo'            => true,
+						'fallback_cb'     => 'wp_page_menu',
+						'before'          => '',
+						'after'           => '',
+						'link_before'     => '',
+						'link_after'      => '',
+						'items_wrap'      => '<ul id="%1$s" class="%2$s">%3$s</ul>',
+						'depth'           => 0,
+						'walker'          => new GreaterMediaMobileNavWalker(),
+					);
+
+					wp_nav_menu( $mobile_nav );
+
+					do_action( 'gmr_social' ); ?>
+				</nav>
 
 				<main class="main" role="main">
+					<div class="container__leaderboard">
+						<div class="ad__leaderboard">
+							<?php do_action( 'dfp_tag', 'dfp_ad_leaderboard_pos1', false, array( array( 'pos', 1 ) ) ); ?>
+						</div>
+					</div>

@@ -1,4 +1,4 @@
-( function( window, undefined ) {
+/*( function( window, undefined ) {
 	'use strict';
 
     Livefyre.require([
@@ -19,3 +19,4 @@
     jQuery('.live-links--more__btn').attr('href', '/social/');
 
  } )( this );
+*/

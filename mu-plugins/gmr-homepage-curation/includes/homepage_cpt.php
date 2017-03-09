@@ -156,12 +156,10 @@ function register_meta_boxes( $homepage ) {
 }
 
 function render_source_meta_box( $homepage, $metabox ) {
-	$post_ids = get_preview_aware_post_meta( $homepage->ID, $metabox['args']['slug'], true );
-
 	// Can hook into these to change the limit for each curated area
-	$homepage_curation_featured_limit = apply_filters( 'gmr-homepage-featured-limit', 4 );
-	$homepage_curation_community_limit = apply_filters( 'gmr-homepage-community-limit', 3 );
-	$homepage_curation_events_limit = apply_filters( 'gmr-homepage-events-limit', 2 );
+	$homepage_curation_featured_limit = apply_filters( 'gmr-homepage-featured-limit', 6, $homepage );
+	$homepage_curation_community_limit = apply_filters( 'gmr-homepage-community-limit', 3, $homepage );
+	$homepage_curation_events_limit = apply_filters( 'gmr-homepage-events-limit', 2, $homepage );
 
 	$post_picker_args = array (
 		'show_numbers'            => true,
@@ -208,6 +206,9 @@ function render_source_meta_box( $homepage, $metabox ) {
 		$post_picker_args['args']['post_type'] = 'tribe_events';
 		$post_picker_args['args']['include']   = $future_events;
 	}
+
+	$post_ids = get_preview_aware_post_meta( $homepage->ID, $metabox['args']['slug'], true );
+	$post_ids = implode( ',', array_slice( explode( ',', $post_ids ), 0, $post_picker_args['limit'] ) );
 
 	render_post_picker( $metabox['args']['slug'], $post_ids, $post_picker_args );
 }

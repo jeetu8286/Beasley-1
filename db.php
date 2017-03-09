@@ -1,0 +1,1 @@
+/srv/www/gmr/htdocs/wp-content/plugins/query-monitor/wp-content/db.php

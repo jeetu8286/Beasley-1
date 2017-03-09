@@ -3,6 +3,27 @@ module.exports = function( grunt ) {
 	// Project configuration
 	grunt.initConfig( {
 		pkg:    grunt.file.readJSON( 'package.json' ),
+		hash: {
+			options: {
+				mapping: 'assets/js/dist/assets.php', // mapping file so your server can serve the right files
+				srcBasePath: 'assets/js/', // the base Path you want to remove from the `key` string in the mapping file
+//				destBasePath: 'out/', // the base Path you want to remove from the `value` string in the mapping file
+				flatten: false, // Set to true if you don't want to keep folder structure in the `key` value in the mapping file
+				hashLength: 8, // hash length, the max value depends on your hash function
+				hashFunction: function(source, encoding) { // default is md5
+					return require('crypto').createHash('sha1').update(source, encoding).digest('hex');
+				}
+			},
+			js: {
+				src: 'assets/js/*.js',  // all your js that needs a hash appended to it
+				dest: 'assets/js/dist/' // where the new files will be created
+			}
+		},
+		clean: {
+			build: {
+				src: ['assets/js/dist/**']
+			}
+		},
 		concat: {
 			options: {
 				stripBanners: true
@@ -10,13 +31,9 @@ module.exports = function( grunt ) {
 			greater_media_live_player: {
 				src: [
 					'assets/js/vendor/bowser.js',
-					'assets/js/vendor/jquery.nouislider.js',
-					'assets/js/src/jquery.load.js',
-					'assets/js/src/nielsen_sdk_embed.js',
-					'assets/js/src/greater_media_live_player.js',
 					'assets/js/src/tdplayer.js'
 				],
-				dest: 'assets/js/greater_media_live_player.js'
+				dest: 'assets/js/live-player.js'
 			}
 		},
 		jshint: {
@@ -36,6 +53,7 @@ module.exports = function( grunt ) {
 				boss:    false,
 				eqnull:  true,
 				devel:   true,
+				expr:    true,
 				browser: true,
 				globals: {
 					exports: true,
@@ -48,18 +66,17 @@ module.exports = function( grunt ) {
 					window: true,
 					bowser: true,
 					require: true,
-					TdPlayerApi: true,
+					TDSdk: true,
 					'_': false,
 					Modernizr: true,
-					NOLCMB: false,
-					bindNielsenSDKEvents: true
+					TdPlayerApi: false
 				}
 			}
 		},
 		uglify: {
 			all: {
 				files: {
-					'assets/js/greater_media_live_player.min.js': ['assets/js/greater_media_live_player.js'],
+					'assets/js/live-player.min.js': ['assets/js/live-player.js'],
 				},
 				options: {
 					mangle: {
@@ -68,53 +85,13 @@ module.exports = function( grunt ) {
 				}
 			}
 		},
-		test:   {
-			files: ['assets/js/test/**/*.js']
-		},
-
 		watch:  {
-
 			scripts: {
 				files: ['assets/js/admin/**/*.js', 'assets/js/src/**/*.js', 'assets/js/vendor/**/*.js'],
-				tasks: ['jshint', 'concat', 'uglify'],
+				tasks: ['default'],
 				options: {
 					debounceDelay: 500
 				}
-			}
-		},
-		clean: {
-			main: ['release/<%= pkg.version %>']
-		},
-		copy: {
-			// Copy the plugin to a versioned release directory
-			main: {
-				src:  [
-					'**',
-					'!node_modules/**',
-					'!release/**',
-					'!.git/**',
-					'!.sass-cache/**',
-					'!css/src/**',
-					'!js/src/**',
-					'!img/src/**',
-					'!Gruntfile.js',
-					'!package.json',
-					'!.gitignore',
-					'!.gitmodules'
-				],
-				dest: 'release/<%= pkg.version %>/'
-			}
-		},
-		compress: {
-			main: {
-				options: {
-					mode: 'zip',
-					archive: './release/greater_media_live_player.<%= pkg.version %>.zip'
-				},
-				expand: true,
-				cwd: 'release/<%= pkg.version %>/',
-				src: ['**/*'],
-				dest: 'greater_media_live_player/'
 			}
 		}
 	} );
@@ -122,22 +99,13 @@ module.exports = function( grunt ) {
 	// Load other tasks
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-concat');
+	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
-	grunt.loadNpmTasks('grunt-contrib-cssmin');
-
-	grunt.loadNpmTasks('grunt-contrib-sass');
-
 	grunt.loadNpmTasks('grunt-contrib-watch');
-	grunt.loadNpmTasks( 'grunt-contrib-clean' );
-	grunt.loadNpmTasks( 'grunt-contrib-copy' );
-	grunt.loadNpmTasks( 'grunt-contrib-compress' );
+	grunt.loadNpmTasks('grunt-hash');
 
-	// Default task.
-
-	grunt.registerTask( 'default', ['jshint', 'concat', 'uglify'] );
-
-
-	grunt.registerTask( 'build', ['default', 'clean', 'copy', 'compress'] );
+	// Default task
+	grunt.registerTask('default', ['jshint', 'concat', 'uglify', 'clean', 'hash']);
 
 	grunt.util.linefeed = '\n';
 };

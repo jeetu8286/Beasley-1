@@ -11,9 +11,12 @@
 	/**
 	 * Global variables
 	 */
-	var body = document.querySelector('body');
-	var mobileNavButton = document.querySelector('.mobile-nav__toggle');
-	var siteWrap = document.getElementById('site-wrap');
+	var html = document.querySelector( 'html' ),
+		body = document.querySelector( 'body' ),
+		mobileNavButton = document.querySelector( '.mobile-nav__toggle' ),
+		mobileMenu = document.getElementById( 'mobile-nav' ),
+		header = document.getElementById( 'header' ),
+		search = document.getElementById( 'header__search--form' );
 
 	/**
 	 * Function to detect if the current browser can use `addEventListener`, if not, use `attachEvent`
@@ -32,74 +35,22 @@
 	}
 
 	/**
-	 * Allows the main content body to maintain it's vertical position when the mobile menu is opened
+	 * Sets the mobile menu just below the header and search
 	 */
-	function mobileOpenLocation() {
-		var y = window.pageYOffset;
+	function setMenuTop() {
+		var headerHeight = header.offsetHeight,
+			searchHeight = search.offsetHeight,
+			htmlTopMargin = parseInt( window.getComputedStyle( html )['marginTop'], 10 );
 
-		siteWrap.style.top = '-' + y + 'px';
+		mobileMenu.style.top = headerHeight + searchHeight + htmlTopMargin + 'px';
 	}
-
-	/**
-	 * Returns the main content body to it's vertical position when the mobile menu is closed
-	 */
-	function mobileCloseLocation() {
-		siteWrap.style.removeProperty('top');
-	}
-
-	/**
-	 * Inserts a new element on mobile to provide a blocker
-	 *
-	 * @returns {*|jQuery|HTMLElement}
-	 */
-	var getBlockerDiv = function() {
-		var $div = $('#mobile-nav-blocker');
-		if ($div.length === 0) {
-			$('<div id="mobile-nav-blocker"></div>').insertAfter('#mobile-nav');
-			$div = $('#mobile-nav-blocker');
-			$div.on('click', toggleNavButton);
-		}
-
-		return $div;
-	};
-
-	/**
-	 * Shows the blocker div that is created by getBlockerDiv
-	 */
-	var showBlocker = function() {
-		var $blocker = getBlockerDiv();
-
-		$blocker.css({
-			width: $(document).width(),
-			height: $(document).height(),
-			display: 'block',
-		});
-	};
-
-	/**
-	 * Hides the blocker div that is shown by showBlocker
-	 */
-	var hideBlocker = function() {
-		var $blocker = getBlockerDiv();
-		$blocker.css({'display': 'none'});
-		if ($blocker.hasClass('active')) {
-			$blocker.removeClass('active');
-		}
-	};
 
 	/**
 	 * Toggles a class to the body when the mobile nav button is clicked
 	 */
 	function toggleNavButton() {
 		body.classList.toggle('mobile-nav--open');
-
-		if ($('.mobile-nav--open').length) {
-			showBlocker();
-			mobileOpenLocation();
-		} else {
-			hideBlocker();
-			mobileCloseLocation();
-		}
+		setMenuTop();
 	}
 
 	/**
@@ -110,36 +61,18 @@
 			$secondary = jQuery(document.querySelector('.header__secondary')),
 			$overlay = jQuery(document.querySelector('.menu-overlay-mask')),
 			$body = jQuery(document.querySelector('body')),
-			$logo = jQuery(document.querySelector('.header__logo')),
-			$subHeader = jQuery(document.querySelector('.header__sub'));
+			$logo = jQuery(document.querySelector('.header__logo'));
 
-		$menu.on('mouseover', '.menu-item-has-children, .header__account--small', function (e) {
+		$menu.on('mouseover', '.menu-item-has-children', function (e) {
 			$overlay.addClass('is-visible');
 			if($body.hasClass('news-site')) {
 				$logo.addClass('is-visible');
-				$subHeader.addClass('is-visible');
 			}
 		});
-		$menu.on('mouseout', '.menu-item-has-children, .header__account--small', function (e) {
+		$menu.on('mouseout', '.menu-item-has-children', function (e) {
 			$overlay.removeClass('is-visible');
 			if($body.hasClass('news-site')) {
 				$logo.removeClass('is-visible');
-				$subHeader.removeClass('is-visible');
-			}
-		});
-
-		$secondary.on('mouseover', '.header__account--small, .header__account--large.logged-in', function (e) {
-			$overlay.addClass('is-visible');
-			if($body.hasClass('news-site')) {
-				$logo.addClass('is-visible');
-				$subHeader.addClass('is-visible');
-			}
-		});
-		$secondary.on('mouseout', '.header__account--small, .header__account--large.logged-in', function (e) {
-			$overlay.removeClass('is-visible');
-			if($body.hasClass('news-site')) {
-				$logo.removeClass('is-visible');
-				$subHeader.removeClass('is-visible');
 			}
 		});
 	}
@@ -217,7 +150,6 @@
 	 * Functions that run after the pjax:end event
 	 */
 	$(document).bind( 'pjax:end', function () {
-		hideBlocker();
 		removeHoverMobile();
 		removeoverlay();
 	});

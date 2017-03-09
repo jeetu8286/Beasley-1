@@ -7,9 +7,10 @@
  * conditionals were added that would use `attachEvent` if `addEventListener` is not supported. A custom function --
  * `addEventHandler` -- that will handle the switch is also being used throughout.
  */
-(function ($, window, undefined) {
+(function ($, window, document, undefined) {
 	"use strict";
 
+	var $window = $(window);
 	var $document = $(document);
 
 	var tech = getUrlVars()['tech'] || 'html5_flash';
@@ -27,8 +28,6 @@
 
 	var adPlaying;
 	/* boolean - Ad break currently playing */
-	var currentTrackCuePoint;
-	/* Current Track */
 	var livePlaying;
 	/* boolean - Live stream currently playing */
 	var song;
@@ -61,10 +60,35 @@
 	var liveStreamSelector = document.querySelector('.live-player__stream');
 	var inlineAudioInterval = null;
 	var liveStreamInterval = null;
+	var trackTimeout = null;
 	var footer = document.querySelector('.footer');
 	var lpInit = false;
 	var volume_slider = $(document.getElementById('live-player--volume'));
 	var global_volume = 1;
+
+	var $audioControls = $(document.getElementById('js-audio-controls'));
+	var $audioVolume = $(document.getElementById('js-audio-volume'));
+	var $audioVolumeBtn = $(document.getElementById('js-audio-volume-button'));
+	var $audioStatus = $(document.getElementById('js-audio-status'));
+	var $audioTrackInfo = $(document.getElementById('js-track-info'));
+	var $audioAuthorInfo = $(document.getElementById('js-artist-info'));
+	var $audioExpandBtn = $(document.getElementById('js-audio-expand'));
+	var $audioPodcast = $(document.getElementById('js-audio-podcast'));
+	var $audioAdBreakContainerAbovePlayer = $(document.getElementById('js-audio-ad-aboveplayer'));
+	var $audioAdBreakContainerInPlayer = $(document.getElementById('js-audio-ad-inplayer'));
+	var $audioMore = $(document.getElementById('js-audio-more')).find('a');
+	var $audioStatusListen = $(document.getElementById('js-audio-status-listen'));
+
+	/**
+	 * Reads comments of an element.
+	 */
+	$.fn.getComments = function() {
+		return this.contents().map(function () {
+			if (this.nodeType === 8) {
+				return this.nodeValue;
+			}
+		}).get();
+	};
 
 	/**
 	 * Stars playing a stream and triggers appropriate event.
@@ -72,6 +96,7 @@
 	 * @param {string} station
 	 */
 	function playStream(station) {
+		debug('tdplayer::play: ' + station);
 		player.play({station: station, timeShift: true});
 		$document.trigger('player:starts');
 	}
@@ -146,10 +171,7 @@
 		debug('Inline audio interval off');
 	}
 
-	/**
-	 * @todo remove the console log before beta
-	 */
-	window.tdPlayerApiReady = function () {
+	window.tdPlayerApiReady = function() {
 		debug("--- TD Player API Loaded ---");
 		initPlayer();
 	};
@@ -167,11 +189,17 @@
 	}
 
 	function initPlayer() {
-		var techPriority = calcTechPriority();
+		var container = document.getElementById('td_container'),
+			techPriority;
+
+		if (!container) {
+			return;
+		}
+
+		techPriority = calcTechPriority();
 		debug('+++ initPlayer - techPriority = ' + techPriority.join(', '));
 
-		/* TD player configuration object used to create player instance */
-		var tdPlayerConfig = {
+		window.player = player = new TDSdk({
 			coreModules: [
 				{
 					id: 'MediaPlayer',
@@ -189,27 +217,22 @@
 				{id: 'NowPlayingApi'},
 				{id: 'Npe'},
 				{id: 'PlayerWebAdmin'},
-				{id: 'SyncBanners', elements: [{id: 'td_synced_bigbox', width: 300, height: 250}]},
+				{
+					id: 'SyncBanners',
+					elements: [
+						{
+							id: window.innerWidth >= 768 ? 'js-audio-ad-inplayer' : 'js-audio-ad-aboveplayer',
+							width: 320,
+							height: 50
+						}
+					]
+				},
 				{id: 'TargetSpot'}
-			]
-		};
-
-		require(['tdapi/base/util/Companions'], function (Companions) {
-				companions = new Companions();
-			}
-		);
-
-		window.player = player = new TdPlayerApi(tdPlayerConfig);
-		if (player.addEventListener) {
-			player.addEventListener('player-ready', onPlayerReady);
-			player.addEventListener('configuration-error', onConfigurationError);
-			player.addEventListener('module-error', onModuleError);
-		} else if (player.attachEvent) {
-			player.attachEvent('player-ready', onPlayerReady);
-			player.attachEvent('configuration-error', onConfigurationError);
-			player.attachEvent('module-error', onModuleError);
-		}
-		player.loadModules();
+			],
+			playerReady: onPlayerReady,
+			configurationError: onConfigurationError,
+			moduleError: onModuleError
+		});
 	}
 
 	/**
@@ -225,19 +248,9 @@
 	}
 
 	function initControlsUi() {
-
-		if (pauseBtn != null) {
-			addEventHandler(pauseBtn, 'click', pauseStream);
-		}
-
-		if (resumeBtn != null) {
-			addEventHandler(resumeBtn, 'click', resumeLiveStream);
-		}
-
-		if (clearDebug != null) {
-			addEventHandler(clearDebug, 'click', clearDebugInfo);
-		}
-
+		pauseBtn != null && addEventHandler(pauseBtn, 'click', pauseStream);
+		resumeBtn != null && addEventHandler(resumeBtn, 'click', resumeLiveStream);
+		$audioStatusListen.click(resumeLiveStream);
 	}
 
 	function setPlayingStyles() {
@@ -251,19 +264,37 @@
 		} else {
 			playBtn.classList.add('live-player__muted');
 		}
+
 		if (!resumeBtn.classList.contains('live-player__muted')) {
 			resumeBtn.classList.add('live-player__muted');
 		}
 		if (resumeBtn.classList.contains('resume__live')) {
 			resumeBtn.classList.remove('resume__live');
 		}
+
+		$audioStatus.removeClass('-show');
+		$audioControls.removeClass('-playing -paused -loading');
+
+		$(nowPlaying).addClass('-show');
+		$(listenNow).text('On Air');
+
 		if (true === playingCustomAudio) {
-			nowPlaying.style.display = 'none';
-			listenNow.style.display = 'inline-block';
+			$audioPodcast.addClass('-show');
+			$audioControls.addClass('-playing');
+			$('.audio-stream .audio-stream__title').text('SWITCH TO LIVE STREAM');
 		} else {
-			nowPlaying.style.display = 'inline-block';
-			listenNow.style.display = 'none';
+			$audioPodcast.removeClass('-show');
+			$audioControls.addClass('-loading');
+
+			$('.audio-stream .audio-stream__title').each(function() {
+				var $this = $(this),
+					callSign = $.trim($this.attr('data-callsign')),
+					description = $.trim($('.audio-stream__link[data-callsign="' + callSign +'"] .audio-stream__desc').text());
+
+				$this.text(description && description.length > 0 ? description : callSign);
+			});
 		}
+
 		if (false === playingCustomAudio && loadingBtn != null) {
 			loadingBtn.classList.add('loading');
 		}
@@ -282,13 +313,22 @@
 			return;
 		}
 
+		$audioControls.removeClass('-playing -loading -paused');
+		$audioStatus.removeClass('-show');
+
+		clearTrackInfo();
+
 		if (resumeBtn.classList.contains('live-player__muted')) {
 			resumeBtn.classList.remove('live-player__muted');
 			resumeBtn.classList.add('resume__live');
 		}
-		listenNow.style.display = 'inline-block';
-		nowPlaying.style.display = 'none';
+
+		$(listenNow).addClass('-show').text('Listen Live');
+		$(nowPlaying).removeClass('-show');
+
 		pauseBtn.classList.add('live-player__muted');
+
+		hideAdBreakBanner();
 	}
 
 	function setPausedStyles() {
@@ -296,22 +336,32 @@
 			return;
 		}
 
+		$audioControls.removeClass('-playing -loading');
+		$audioControls.addClass('-paused');
+		if (!playingCustomAudio) {
+			$audioStatus.addClass('-show');
+		}
+
 		if (true === playingCustomAudio && window.innerWidth <= 767) {
 			playBtn.classList.add('live-player__login');
 		} else {
 			playBtn.classList.add('live-player__muted');
 		}
+
 		if (body.classList.contains('live-player--active')) {
 			body.classList.remove('live-player--active');
 		}
-		listenNow.style.display = 'inline-block';
-		nowPlaying.style.display = 'none';
+
 		pauseBtn.classList.add('live-player__muted');
+
 		if (resumeBtn.classList.contains('live-player__muted')) {
 			resumeBtn.classList.remove('live-player__muted');
 			resumeBtn.classList.add('resume__live');
 		}
+
 		resumeBtn.classList.add('resume__audio');
+
+		hideAdBreakBanner();
 	}
 
 	function setInlineAudioUX() {
@@ -337,11 +387,12 @@
 			nowPlayingInfo.classList.add('playing');
 		}
 
-		if (listenNow != null) {
-			setTimeout(function () {
-				listenNow.innerHTML = 'Switch to Live Stream';
-			}, 1000);
-		}
+		$(listenNow).removeClass('-show');
+		$(nowPlaying).addClass('-show');
+		$audioPodcast.addClass('-show');
+
+		$audioControls.removeClass('-loading -paused');
+		$audioControls.addClass('-playing');
 	}
 
 	function nearestPodcastPlaying(event) {
@@ -411,18 +462,6 @@
 		}
 	}
 
-	function replaceNPInfo() {
-		if (window.innerWidth <= 767) {
-			if (trackInfo.innerHTML === '') {
-				onAir.classList.add('on-air__npe');
-				liveStreamSelector.classList.add('full__width');
-			} else if (onAir.classList.contains('on-air__npe')) {
-				onAir.classList.remove('on-air__npe');
-				liveStreamSelector.classList.remove('full__width');
-			}
-		}
-	}
-
 	function addPlayBtnHeartbeat() {
 		if (playBtn != null) {
 			playBtn.classList.add('play-btn--heartbeat');
@@ -443,24 +482,20 @@
 
 	var listenLiveStopCustomInlineAudio = function () {
 		var listenNowText = listenNow.textContent;
-		var nowPlayingTitle = document.getElementById('trackInfo');
-		var nowPlayingInfo = document.getElementById('npeInfo');
 
 		if (true === playingCustomAudio) {
 			customAudio.pause();
-			nowPlayingTitle.innerHTML = '';
-			nowPlayingInfo.innerHTML = '';
 			resetInlineAudioStates();
 			resetInlineAudioUX();
 			playingCustomAudio = false;
 			stopInlineAudioInterval();
 		}
-		if (listenNowText === 'Switch to Live Stream') {
+
+		if (listenNowText !== 'Listen Live') {
 			listenNow.innerHTML = 'Listen Live';
 		}
-		if (window.innerWidth >= 768) {
-			playLiveStream();
-		}
+
+		playLiveStreamDevice();
 	};
 
 	function setInitialPlay() {
@@ -474,6 +509,7 @@
 	}
 
 	function playLiveStreamDevice() {
+		playingCustomAudio = false;
 		if (lpInit === true) {
 			setStoppedStyles();
 			if (window.innerWidth >= 768) {
@@ -486,25 +522,27 @@
 
 	function changePlayerState() {
 		if (playBtn != null) {
-			addEventHandler(playBtn, 'click', function(){
+			addEventHandler(playBtn, 'click', function() {
 				if (lpInit === true) {
 					setStoppedStyles();
-					if (window.innerWidth >= 768) {
-						playLiveStream();
-					} else {
-						playLiveStreamMobile();
-					}
+					playLiveStreamDevice();
 				} else {
 					setInitialPlay();
 				}
 			});
 		}
+
 		if (listenNow != null) {
-			addEventHandler(listenNow, 'click', listenLiveStopCustomInlineAudio);
+			addEventHandler(listenNow, 'click', function() {
+				if (!livePlaying && !playingCustomAudio) {
+					listenLiveStopCustomInlineAudio();
+				}
+			});
 		}
 	}
 
-	$(document).ready(function () {
+	$document.ready(function() {
+		initPlayer();
 		changePlayerState();
 	});
 
@@ -533,18 +571,86 @@
 	}
 
 	function streamVastAd() {
-		var vastUrl = gmr.streamUrl;
+		var stationId = parseInt($('.audio-stream .audio-stream__title').attr('data-station-id'));
+
+		if (isNaN(stationId) || !stationId) {
+			onAdPlaybackComplete();
+			return;
+		}
 
 		detachAdListeners();
 		attachAdListeners();
 
 		player.stop();
 		player.skipAd();
-		player.playAd('vastAd', {url: vastUrl});
-		setTimeout(function() {
-			this.stop();
-		}, 25000);
+
+		player.playAd('tap', {
+			host: 'cmod.live.streamtheworld.com',
+			type: 'preroll',
+			format: 'vast',
+			stationId: stationId,
+			trackingParameters: {dist: "debug"}
+		});
+
+		setTimeout($.proxy(player.skipAd, player), 25000);
 	}
+
+	$window.on('click', function() {
+		$('.audio-stream.-open').removeClass('-open');
+	});
+
+	$document.on('click', '.audio-stream .audio-stream__title', function(e) {
+		e.stopPropagation();
+		var audioStream = $(this).parents('.audio-stream');
+
+		if (playingCustomAudio) {
+			stopCustomInlineAudio();
+			playLiveStreamDevice();
+		} else {
+			if (audioStream.is('.-multiple')) {
+				audioStream.toggleClass('-open');
+			}
+		}
+	});
+
+	$document.on('click', '.audio-stream__item .audio-stream__link', function(e) {
+		var $this = $(this),
+			callSign = $.trim($this.find('.audio-stream__name').text()),
+			description = $.trim($this.find('.audio-stream__desc').text()),
+			stationId = $this.attr('data-station-id'),
+			$audioStream = $this.parents('.audio-stream');
+
+		e.stopPropagation();
+
+		$audioStream
+			.removeClass('-open')
+			.find('.audio-stream__title')
+			.text(description && description.length > 0 ? description : callSign)
+			.attr('data-callsign', callSign)
+			.attr('data-station-id', stationId);
+
+		$audioExpandBtn.removeClass('-open');
+
+		$audioMore.attr('href', $audioMore.attr('data-tmpl').split('%s').join(callSign));
+
+		if (livePlaying) {
+			player.stop();
+			setStoppedStyles();
+		}
+
+		if (true === playingCustomAudio) {
+			listenLiveStopCustomInlineAudio();
+		} else {
+			playLiveStreamDevice();
+		}
+	});
+
+	$audioExpandBtn.click(function(e) {
+		e.stopPropagation();
+
+		$('.audio-stream').toggleClass('-open');
+		$(this).toggleClass('-open');
+	});
 
 	var currentStream = $('.live-player__stream--current-name');
 
@@ -566,14 +672,24 @@
 		setPlayingStyles();
 	});
 
-	function playLiveStreamMobile() {
-		var station = gmr.callsign;
+	function getCurrentStation() {
+		var station = $.trim($('.audio-stream .audio-stream__title').attr('data-callsign'));
 
-		pjaxInit();
-		if (station === '') {
-			alert('Please enter a Station');
+		if (station.length < 1) {
+			station = gmr.callsign;
+		}
+
+		return station;
+	}
+
+	function playLiveStreamMobile() {
+		var station = getCurrentStation();
+
+		if (!station) {
 			return;
 		}
+
+		pjaxInit();
 		if (true === playingCustomAudio) {
 			listenLiveStopCustomInlineAudio();
 		}
@@ -582,33 +698,9 @@
 		preVastAd();
 		streamVastAd();
 		if (player.addEventListener) {
-			player.addEventListener('ad-playback-complete', function () {
-				postVastAd();
-				debug("--- ad complete ---");
-
-				if (livePlaying) {
-					player.stop();
-				}
-
-				body.classList.add('live-player--active');
-				livePlayer.classList.add('live-player--active');
-				playStream(station);
-				setPlayingStyles();
-			});
+			player.addEventListener('ad-playback-complete', onAdPlaybackComplete);
 		} else if (player.attachEvent) {
-			player.attachEvent('ad-playback-complete', function () {
-				postVastAd();
-				debug("--- ad complete ---");
-
-				if (livePlaying) {
-					player.stop();
-				}
-
-				body.classList.add('live-player--active');
-				livePlayer.classList.add('live-player--active');
-				playStream(station);
-				setPlayingStyles();
-			});
+			player.attachEvent('ad-playback-complete', onAdPlaybackComplete);
 		}
 
 	}
@@ -617,12 +709,12 @@
 	 * Temp to remove vast ad while issues are resolves
 	 */
 	function playLiveStreamMobileNoAd() {
-		var station = gmr.callsign;
+		var station = getCurrentStation();
 
-		if (station === '') {
-			alert('Please enter a Station');
+		if (!station) {
 			return;
 		}
+
 		if (true === playingCustomAudio) {
 			listenLiveStopCustomInlineAudio();
 		}
@@ -640,52 +732,25 @@
 	}
 
 	function playLiveStream() {
-		var station = gmr.callsign;
+		var station = getCurrentStation();
+
+		if (!station) {
+			return;
+		}
 
 		pjaxInit();
 		if (true === playingCustomAudio) {
 			resumeCustomInlineAudio();
-
 			setPlayingStyles();
 		} else {
-
-			if (station === '') {
-				alert('Please enter a Station');
-				return;
-			}
-
 			debug('playLiveStream - station=' + station);
 
 			preVastAd();
 			streamVastAd();
 			if (player.addEventListener) {
-				player.addEventListener('ad-playback-complete', function () {
-					postVastAd();
-					debug("--- ad complete ---");
-
-					if (livePlaying) {
-						player.stop();
-					}
-
-					body.classList.add('live-player--active');
-					livePlayer.classList.add('live-player--active');
-					playStream(station);
-					setPlayingStyles();
-				});
+				player.addEventListener('ad-playback-complete', onAdPlaybackComplete);
 			} else if (player.attachEvent) {
-				player.attachEvent('ad-playback-complete', function () {
-					postVastAd();
-					debug("--- ad complete ---");
-
-					if (livePlaying) {
-						player.stop();
-					}
-
-					body.classList.add('live-player--active');
-					livePlayer.classList.add('live-player--active');
-					playStream(station);
-					setPlayingStyles();
-				});
+				player.attachEvent('ad-playback-complete', onAdPlaybackComplete);
 			}
 		}
 	}
@@ -694,20 +759,17 @@
 	 * Temp to remove vast ad while issues are resolves
 	 */
 	function playLiveStreamNoAd() {
-		var station = gmr.callsign;
+		var station = getCurrentStation();
+
+		if (!station) {
+			return;
+		}
 
 		pjaxInit();
 		if (true === playingCustomAudio) {
 			resumeCustomInlineAudio();
-
 			setPlayingStyles();
 		} else {
-
-			if (station === '') {
-				alert('Please enter a Station');
-				return;
-			}
-
 			debug('playLiveStream - station=' + station);
 
 			if (livePlaying) {
@@ -728,9 +790,9 @@
 
 			setPlayingStyles();
 		} else {
-			var station = gmr.callsign;
+			var station = getCurrentStation();
+
 			if (station === '') {
-				alert('Please enter a Station');
 				return;
 			}
 
@@ -787,6 +849,8 @@
 		if (player.addEventListener) {
 			player.addEventListener('track-cue-point', onTrackCuePoint);
 			player.addEventListener('ad-break-cue-point', onAdBreak);
+//			player.addEventListener('ad-break-cue-point-complete', onAdBreakComplete);
+			player.addEventListener('ad-break-synced-element', onAdBreakSyncedElement);
 			player.addEventListener('stream-track-change', onTrackChange);
 			player.addEventListener('hls-cue-point', onHlsCuePoint);
 
@@ -803,6 +867,8 @@
 		} else if (player.attachEvent) {
 			player.attachEvent('track-cue-point', onTrackCuePoint);
 			player.attachEvent('ad-break-cue-point', onAdBreak);
+//			player.attachEvent('ad-break-cue-point-complete', onAdBreakComplete);
+			player.attachEvent('ad-break-synced-element', onAdBreakSyncedElement);
 			player.attachEvent('stream-track-change', onTrackChange);
 			player.attachEvent('hls-cue-point', onHlsCuePoint);
 
@@ -860,27 +926,12 @@
 			loadPwaData();
 		});
 
-		$(document).ready(function() {
-			var opted_out = false;
-			if (!opted_out && window._nolggGlobalParams) {
-				var beacon = new NOLCMB.ggInitialize(window._nolggGlobalParams);
-				bindNielsenSDKEvents(beacon, player);
-			}
-		});
-
 		if (bowser.ios) {
 			livePlayer.classList.add('no-volume-control');
+			$audioVolume.hide();
 		} else {
-			volume_slider.noUiSlider({
-				start: getVolume(),
-				range: {
-					min: 0,
-					max: 1
-				}
-			});
-
-			volume_slider.on('slide', function () {
-				global_volume = parseFloat(volume_slider.val());
+			$audioVolume.find('input[type="range"]').val(getVolume()).change(function() {
+				global_volume = parseFloat($(this).val());
 				if (isNaN(global_volume)) {
 					global_volume = 1;
 				}
@@ -896,6 +947,10 @@
 				if (typeof(localStorage) !== "undefined") {
 					localStorage.setItem("gmr-live-player-volume", global_volume);
 				}
+			});
+
+			$audioVolumeBtn.click(function() {
+				$audioVolume.toggleClass('-open');
 			});
 		}
 	}
@@ -913,11 +968,29 @@
 		setStatus('Advertising... Type=' + e.data.type);
 	}
 
-	function onAdPlaybackComplete(e) {
+	function onAdPlaybackComplete() {
+		var station = getCurrentStation();
+
 		adPlaying = false;
 		$("#td_adserver_bigbox").empty();
 		$("#td_adserver_leaderboard").empty();
 		setStatus('Ready');
+
+		if (!station) {
+			return;
+		}
+
+		postVastAd();
+		debug("--- ad complete ---");
+
+		if (livePlaying) {
+			player.stop();
+		}
+
+		body.classList.add('live-player--active');
+		livePlayer.classList.add('live-player--active');
+		playStream(station);
+		setPlayingStyles();
 	}
 
 	/**
@@ -929,7 +1002,7 @@
 		setStatus('Ready');
 
 		postVastAd();
-		var station = gmr.callsign;
+		var station = getCurrentStation();
 		if (livePlaying) {
 			player.stop();
 		}
@@ -945,11 +1018,7 @@
 
 	function onVastProcessComplete(e) {
 		debug('Vast Process complete');
-
-		var vastCompanions = e.data.companions;
-
-		//Load Vast Ad companion (bigbox & leaderbaord ads)
-		displayVastCompanionAds(vastCompanions);
+//		displayVastCompanionAds(e.data.companions);
 	}
 
 	function onVpaidAdCompanions(e) {
@@ -1004,6 +1073,9 @@
 		livePlaying = true;
 		playingLiveAudio = true;
 
+		$audioControls.removeClass('-loading -paused');
+		$audioControls.addClass('-playing');
+
 		if (loadingBtn.classList.contains('loading')) {
 			loadingBtn.classList.remove('loading');
 		}
@@ -1029,7 +1101,6 @@
 		livePlaying = false;
 		playingLiveAudio = false;
 
-		clearNpe();
 		$("#trackInfo").html('');
 		$("#asyncData").html('');
 
@@ -1042,23 +1113,44 @@
 		stopLiveStreamInterval();
 	}
 
+	function clearTrackInfo() {
+		$audioTrackInfo.text('');
+		$audioAuthorInfo.text('');
+	}
+
+	function setOnAir() {
+		clearTrackInfo();
+		$(listenNow).addClass('-show').text('On Air');
+	}
+
 	function onTrackCuePoint(e) {
+		var data = e.data && e.data.cuePoint ? e.data.cuePoint : {},
+			duration = parseInt(data.cueTimeDuration);
+
 		debug('New Track cuepoint received');
-		debug('Title: ' + e.data.cuePoint.cueTitle + ' - Artist: ' + e.data.cuePoint.artistName);
+		debug('Title: ' + data.cueTitle + ' - Artist: ' + data.artistName);
 
-		if (currentTrackCuePoint && currentTrackCuePoint != e.data.cuePoint) {
-			clearNpe();
+		hideAdBreakBanner();
+
+		if (data.cueTitle || data.artistName) {
+			data.cueTitle && $audioTrackInfo.text(data.cueTitle);
+			data.artistName && $audioAuthorInfo.text(data.artistName);
+			$(listenNow).removeClass('-show');
 		}
 
-		if (e.data.cuePoint.nowplayingURL) {
-			player.Npe.loadNpeMetadata(e.data.cuePoint.nowplayingURL, e.data.cuePoint.artistName, e.data.cuePoint.cueTitle);
+		if (data.nowplayingURL) {
+			player.Npe.loadNpeMetadata(data.nowplayingURL, data.artistName, data.cueTitle);
 		}
 
-		currentTrackCuePoint = e.data.cuePoint;
+		if (!isNaN(duration)) {
+			trackTimeout && clearTimeout(trackTimeout);
 
-		$("#trackInfo").html('<div class="now-playing__title">' + currentTrackCuePoint.cueTitle + '</div><div class="now-playing__artist">' + currentTrackCuePoint.artistName + '</div>');
+			// set a timeout if duration is longer than a minute
+			if (duration > 60000) {
+				trackTimeout = setTimeout(setOnAir, duration);
+			}
+		}
 
-		setTimeout(replaceNPInfo, 10000);
 		$(body).trigger("liveAudioTrack.gmr");
 	}
 
@@ -1072,13 +1164,35 @@
 		debug('Track Id:' + e.data.cuePoint.hlsTrackId + ' SegmentId:' + e.data.cuePoint.hlsSegmentId);
 	}
 
-	function onAdBreak(e) {
-		setStatus('Commercial break...');
+	function hideAdBreakBanner() {
+		$audioAdBreakContainerAbovePlayer.hide();
+		$audioAdBreakContainerInPlayer.hide();
 	}
 
-	function clearNpe() {
-		$("#npeInfo").html('');
-		$("#asyncData").html('');
+	function onAdBreak(e) {
+		var data = e.data && e.data.adBreakData ? e.data.adBreakData : {};
+
+		debug('New Ad Break cuepoint was received');
+		debug('Title: ' + data.cueTitle + ' - URL: ' + data.url + ' - Duration: ' + data.duration);
+
+		setOnAir();
+	}
+
+	function onAdBreakComplete() {
+		debug('Ad Break complete');
+		hideAdBreakBanner();
+	}
+
+	function onAdBreakSyncedElement(e) {
+		debug('Ad Break Synced Element');
+
+		if (window.innerWidth >= 768) {
+			$audioAdBreakContainerInPlayer.show();
+		} else {
+			$audioAdBreakContainerAbovePlayer.show();
+		}
+
+		setTimeout(hideAdBreakBanner, 60000);
 	}
 
 	//Song History
@@ -1189,7 +1303,6 @@
 
 		$("#asyncData").html("<div>" + tableContent + "</div>");
 	}
-
 
 	function attachAdListeners() {
 		if (player.addEventListener) {
@@ -1365,20 +1478,13 @@
 	}
 
 	function debug(info, error) {
-		if (!gmr.debug) {
-			return;
-		}
-
-		if (window.console) {
+		if (gmr.debug && window.console) {
 			if (error) {
 				console.error(info);
 			} else {
-				console.log(info);
+				console.info('[' + (new Date()).toLocaleString() + ']: ' + info);
 			}
 		}
-
-		$('#debugInformation').append(info);
-		$('#debugInformation').append('\n');
 	}
 
 	function clearDebugInfo() {
@@ -1414,8 +1520,15 @@
 	var resumeCustomInlineAudio = function () {
 		playingCustomAudio = true;
 		stopLiveStreamIfPlaying();
+
+		// restart audio if it eneded
+		if (customAudio && customAudio.duration == customAudio.currentTime) {
+			customAudio.currentTime = 0;
+		}
+
 		customAudio.play();
 		customAudio.volume = getVolume();
+
 		setPlayerTrackName();
 		setPlayerArtist();
 		resetInlineAudioStates();
@@ -1428,6 +1541,8 @@
 	var playCustomInlineAudio = function (src) {
 		pjaxInit();
 
+		playingCustomAudio = true;
+
 		// Only set the src if its different than what is already there, so we can resume the audio with the inline buttons
 		if (src !== customAudio.src) {
 			setInlineAudioSrc(src);
@@ -1438,7 +1553,6 @@
 	var pauseCustomInlineAudio = function () {
 		customAudio.pause();
 		resetInlineAudioStates();
-		playingCustomAudio = false;
 		setPausedStyles();
 		stopInlineAudioInterval();
 	};
@@ -1466,6 +1580,9 @@
 		} else {
 			$trackInfo.prepend(template({title: customTrack}));
 		}
+
+		$audioTrackInfo.text(customTrack);
+		$audioAuthorInfo.text('');
 	};
 
 	var setPlayerArtist = function () {
@@ -1496,14 +1613,16 @@
 			// Revert the button states back to play once the file is done playing
 			if (customAudio.addEventListener) {
 				customAudio.addEventListener('ended', function () {
+					playingCustomAudio = false;
 					resetInlineAudioStates();
-					setPausedStyles();
+					setStoppedStyles();
 					stopInlineAudioInterval();
 				});
 			} else if (customAudio.attachEvent) {
 				customAudio.attachEvent('ended', function () {
+					playingCustomAudio = false;
 					resetInlineAudioStates();
-					setPausedStyles();
+					setStoppedStyles();
 					stopInlineAudioInterval();
 				});
 			}
@@ -1520,15 +1639,19 @@
 				var $play = $(e.currentTarget);
 
 				nearestPodcastPlaying(e);
-
 				playCustomInlineAudio($play.attr('data-mp3-src'));
-
 				resetInlineAudioStates();
-
 				setCustomAudioMetadata($play.attr('data-mp3-title'), $play.attr('data-mp3-artist'), $play.attr('data-mp3-hash'));
 			});
 
 			$content.on('click', '.podcast__btn--pause', pauseCustomInlineAudio);
+
+			$audioPodcast.find('input[type="range"]').change(function() {
+				if (customAudio) {
+					var duration = parseInt(customAudio.duration);
+					customAudio.currentTime = Math.floor(duration * parseFloat($(this).val()));
+				}
+			});
 		} else {
 			var $meFallbacks = $('.gmr-mediaelement-fallback audio'),
 				$customInterfaces = $('.podcast__play');
@@ -1554,14 +1677,12 @@
 	 * @param event
 	 */
 	function pjaxStop(event) {
-		if (playingLiveAudio === true || true === playingCustomAudio) {
-			// do nothing
-		} else {
+		if (!playingLiveAudio && !playingCustomAudio) {
 			event.preventDefault();
 		}
 	}
 
-	$(document).bind('pjax:click', pjaxStop);
+	$document.bind('pjax:click', pjaxStop);
 
 	/**
 	 * calculates the time of an inline audio element and outputs the duration as a % displayed in the progress bar
@@ -1569,12 +1690,16 @@
 	function audioUpdateProgress() {
 		var progress = document.querySelectorAll('.audio__progress'), i,
 			value = 0;
+
 		for (i = 0; i < progress.length; ++i) {
 			if (customAudio.currentTime > 0) {
 				value = Math.floor((100 / customAudio.duration) * customAudio.currentTime);
 			}
+
 			progress[i].style.width = value + "%";
 		}
+
+		$audioPodcast.find('input[type="range"]').val(value / 100);
 	}
 
 	/**
@@ -1620,6 +1745,8 @@
 		for (i = 0; i < ramainings.length; ++i) {
 			ramainings[i].innerHTML = timeleft;
 		}
+
+		$audioPodcast.find('span:last').text(timeleft);
 	}
 
 	/**
@@ -1645,6 +1772,8 @@
 		for (i = 0; i < timeline.length; ++i) {
 			timeline[i].innerHTML = currentTime;
 		}
+
+		$audioPodcast.find('span:first').text(currentTime);
 	}
 
 	initCustomAudioPlayer();
@@ -1664,11 +1793,11 @@
 	addEventHandler(podcastPauseBtn, 'click', pauseCustomInlineAudio);
 
 	// Ensures our listeners work even after a PJAX load
-	$(document).on('pjax:end', function () {
+	$document.on('pjax:end', function () {
 		initInlineAudioUI();
 		setInlineAudioStates();
 		addEventHandler(podcastPlayBtn, 'click', setInlineAudioUX);
 		addEventHandler(podcastPauseBtn, 'click', pauseCustomInlineAudio);
 	});
 
-})(jQuery, window);
+})(jQuery, window, document);

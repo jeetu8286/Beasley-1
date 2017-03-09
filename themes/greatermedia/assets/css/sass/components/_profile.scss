@@ -37,11 +37,6 @@
 			text-align: left;
 			background-position: 50% 50%;
 		}
-
-		@include bp('x-large') {
-			text-align: left;
-			background-position: 50% 50%;
-		}
 	}
 
 	.profile-page__sidebar h1 {
@@ -54,10 +49,6 @@
 		}
 
 		@include bp('large') {
-			margin-bottom: 0.6em;
-		}
-
-		@include bp('x-large') {
 			margin-bottom: 0.6em;
 		}
 	}

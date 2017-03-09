@@ -1,0 +1,16 @@
+.audio-podcast {
+	@include range-slider;
+	display: none;
+
+	&.-show {
+		display: flex;
+	}
+
+	input[type=range] {
+		margin: 0 5px;
+	}
+
+	.audio-podcast__text {
+		font-size: ms(-4);
+	}
+}

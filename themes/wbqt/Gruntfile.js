@@ -7,7 +7,7 @@ module.exports = function( grunt ) {
 	// Project configuration
 	grunt.initConfig( {
 		pkg:    grunt.file.readJSON( 'package.json' ),
-		
+
 		concat: {
 			options: {
 				stripBanners: true
@@ -36,7 +36,7 @@ module.exports = function( grunt ) {
 				options: {
 					jshintrc: '.gruntjshintrc'
 				}
-			}   
+			}
 		},
 		uglify: {
 			all: {
@@ -50,10 +50,6 @@ module.exports = function( grunt ) {
 				}
 			}
 		},
-		test:   {
-			files: ['assets/js/test/**/*.js']
-		},
-
 		sass:   {
 			all: {
 				files: {
@@ -61,7 +57,7 @@ module.exports = function( grunt ) {
 				}
 			}
 		},
-		
+
 		cssmin: {
 			minify: {
 				expand: true,

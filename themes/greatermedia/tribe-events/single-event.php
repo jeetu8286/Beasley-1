@@ -47,11 +47,6 @@ $event_id = get_the_ID();
 			echo apply_filters( 'the_secondary_content', $event_secondary_content );
 			?>
 
-			<div class="ad__inline--right desktop">
-				<?php // 'desktop' is a variant, can call a 'mobile' variant elsewhere if we need it, but never the same variant twice ?>
-				<?php do_action( 'acm_tag_gmr_variant', 'mrec-body', 'desktop', array( 'min_width' => 1024 ) ); ?>
-			</div>
-
 			<div class="event__info">
 
 			<!-- Event meta -->
@@ -80,14 +75,9 @@ $event_id = get_the_ID();
 			<!-- Event content -->
 			<?php do_action( 'tribe_events_single_event_before_the_content' ) ?>
 			<div class="tribe-events-single-event-description tribe-events-content entry-content description">
-
 				<?php the_content(); ?>
-
 			</div>
 
-			<div class="ad__inline--right mobile">
-				<?php do_action( 'acm_tag_gmr_variant', 'mrec-body', 'mobile', array( 'max_width' => 1023 ) ); ?>
-			</div>
 			<!-- .tribe-events-single-event-description -->
 		</div> <!-- #post-x -->
 	<?php endwhile; ?>

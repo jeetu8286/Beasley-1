@@ -1,111 +1,26 @@
 #!/usr/bin/env bash
 
-cd greatermedia
-npm update
-grunt
+read -p "Remove all node_modules? (y/N): " -r
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+	find . -name "node_modules" -type d -exec rm -r "{}" \;
+fi
 
-cd ../thefanatic
-npm update
-grunt
+RUN_YARN=0
+read -p "Install NPM dependencies using Yarn? (y/N): " -r
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+	RUN_YARN=1
+fi
 
-cd ../wben
-npm update
-grunt
+for d in */ ; do
+	cd $d
 
-cd ../wbos
-npm update
-grunt
+	if [[ -e Gruntfile.js ]]; then
+		if [[ $RUN_YARN = 1 ]]; then
+			yarn
+		fi
 
-cd ../wbos-alt929boston
-npm update
-grunt
+		grunt
+	fi
 
-cd ../wbqt
-npm update
-grunt
-
-cd ../wcsx
-npm update
-grunt
-
-cd ../wctc
-npm update
-grunt
-
-cd ../wdha
-npm update
-grunt
-
-cd ../wjrz
-npm update
-grunt
-
-cd ../wjrz-christmas
-npm update
-grunt
-
-cd ../wklb
-npm update
-grunt
-
-cd ../wmgc
-npm update
-grunt
-
-cd ../wmgc-thebounce
-npm update
-grunt
-
-cd ../wmgk
-npm update
-grunt
-
-cd ../wmgq
-npm update
-grunt
-
-cd ../wmgq-christmas
-npm update
-grunt
-
-cd ../wmjx
-npm update
-grunt
-
-cd ../wmjx-christmas
-npm update
-grunt
-
-cd ../wmmr
-npm update
-grunt
-
-cd ../wmtr
-npm update
-grunt
-
-cd ../wrat
-npm update
-grunt
-
-cd ../wrif
-npm update
-grunt
-
-cd ../wror
-npm update
-grunt
-
-cd ../wbt
-npm update
-grunt
-
-cd ../wlnk
-npm update
-grunt
-
-cd ../bobandsheri
-npm update
-grunt
-
-cd ../
+	cd ..
+done

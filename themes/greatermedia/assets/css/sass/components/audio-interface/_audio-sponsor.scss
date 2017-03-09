@@ -1,0 +1,22 @@
+.audio-sponsor {
+	border-top: 1px solid rgba(0, 0, 0, .25);
+	line-height: 1;
+	padding: 0 10px 4px 10px;
+
+	@include bp(medium) {
+		border: 0 none;
+		margin-left: 10px;
+		padding: 0;
+	}
+
+	// This is now being set in DFP
+	/*.audio-sponsor--text {
+			color: rgba(0, 0, 0, .5);
+			font-size: ms(-4);
+			text-transform: uppercase;
+	}
+
+	.audio-sponsor--name {
+			font-size: ms(-2);
+	}*/
+}

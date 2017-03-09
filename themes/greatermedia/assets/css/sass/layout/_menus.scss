@@ -5,68 +5,81 @@
  * button will slide over to accommodate the nav.
  */
 .mobile-nav__toggle {
-	position: absolute;
-	top: 20px;
-	left: 20px;
-	width: 32px;
-	height: 32px;
+	@include transition(all 200ms ease-in-out);
 	box-sizing: border-box;
-	padding: 0;
-	@include transition(all 500ms ease-in-out);
 	cursor: pointer;
+	height: 19px;
+	position: absolute;
+	right: 10px;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 25px;
+	padding: 0;
 	z-index: 2;
+
 	@include bp(medium) {
-		top: 25px;
+		height: 28px;
+		right: 20px;
+		width: 40px;
 	}
 	@include bp(large) {
 		display: none;
 	}
 }
 
-.mobile-nav__toggle--span {
-	position: absolute;
-	top: 14px;
-	display: block;
-	width: 32px;
-	height: 4px;
-	@include transition(all 500ms ease-in-out);
-	background: $color-text-white;
+.mobile-nav__toggle--span,
+.mobile-nav__toggle--span:before,
+.mobile-nav__toggle--span:after {
+	@include transition(all 200ms ease-in-out);
+	background: $color-text-black;
 	content: "";
+	display: block;
+	height: 3px;
+	position: absolute;
+	top: 8px;
+	width: 25px;
+
+	@include bp(medium) {
+		height: 4px;
+		width: 40px;
+		top: 12px;
+	}
 }
 
 .mobile-nav__toggle--span:before {
-	position: absolute;
-	top: -10px;
-	display: block;
-	width: 32px;
-	height: 4px;
-	@include transition(all 500ms ease-in-out);
-	background: $color-text-white;
-	content: "";
+	top: -8px;
+
+	@include bp(medium) {
+		top: -12px;
+	}
 }
 
 .mobile-nav__toggle--span:after {
-	position: absolute;
-	bottom: -10px;
-	display: block;
-	width: 32px;
-	height: 4px;
-	@include transition(all 500ms ease-in-out);
-	background: $color-text-white;
-	content: "";
+	bottom: -8px;
+	top: auto;
+
+	@include bp(medium) {
+		bottom: -12px;
+	}
 }
 
 .mobile-nav {
+	bottom: 0;
+	display: none;
 	position: fixed;
-	top: 0;
-	width: 78%;
-	height: 100%;
-	@include transform(translate(-100%, 0));
-	@include transition(all 100ms ease-out);
-	background-color: $secondary-bg;
+	width: 100%;
+	background-color: $header-bg;
 	z-index: 1;
 	overflow-y: auto;
+	top: 105px;
 	-webkit-overflow-scrolling: touch;
+
+	.mobile-nav--open & {
+		display: block;
+	}
+	@include bp(medium) {
+		top: 276px;
+	}
 	@include bp(large) {
 		display: none;
 	}
@@ -77,12 +90,12 @@
 }
 
 #mobile-nav-blocker {
-	background-color: rgba(0,0,0,0.4);
-	/*background-color: red;*/
-	/*opacity: 0.7;*/
-	z-index: 20;
-	position: absolute;
-	display: none;
+	//background-color: rgba(0,0,0,0.75);
+	//z-index: 20;
+	//position: fixed;
+	//display: none;
+	//height: 100%;
+	//width: 100%;
 }
 
 .mobile-nav--open {
@@ -91,25 +104,28 @@
 	}
 }
 
-.admin-bar .mobile-nav {
-	top: 32px;
-	height: calc( 100% - 32px ); /* doesn't work in IE8, but probably ok. Just don't edit the site and expect the front-end to be bug-free in IE8 */
-
-	/* Matches, exactly, the media query for the admin bar, so when it changes height, the menu also does */
-	@media screen and (max-width: 782px) {
-		top: 46px;
-		height: calc(100% - 46px); /* doesn't work in IE8, but probably ok. Just don't edit the site and expect the front-end to be bug-free in IE8 */
-	}
-}
-
 .mobile-nav--open {
 	overflow: hidden;
 
-	.site-wrap {
+	.site-wrap,
+	.page-wrap {
+		height: 100%;
+		//overflow: hidden;
 		position: fixed;
-		overflow: hidden;
 	}
 }
+/*.mobile-nav--open.admin-bar {
+	.site-wrap {
+		top: 32px;
+		height: calc( 100% - 32px ); !* doesn't work in IE8, but probably ok. Just don't edit the site and expect the front-end to be bug-free in IE8 *!
+
+		!* Matches, exactly, the media query for the admin bar, so when it changes height, the menu also does *!
+		@media screen and (max-width: 782px) {
+			top: 46px;
+			height: calc(100% - 46px); !* doesn't work in IE8, but probably ok. Just don't edit the site and expect the front-end to be bug-free in IE8 *!
+		}
+	}
+}*/
 
 .mobile-nav--open .mobile-nav {
 	@include transform(translate(0, 0));
@@ -129,91 +145,31 @@
 	@include transform(rotate(-45deg));
 }
 
-.mobile-nav--open .page-wrap {
-	@include transform(translate(78%, 0));
-	width: 100%;
-	@include transition(transform 100ms ease-out);
-}
-
-.mobile-nav--open .header__search--open {
-	@include transform(translate(78%, 0));
-}
-
-.moble-nav--open .header__search--form {
-	@include transform(translate(78%, 0));
-	@include bp('medium') {
-		@include transform(translate(78%, -200%));
-	}
-}
-
-.mobile-nav--open .footer {
-	display: none;
-}
-
-.mobile-nav--open .live-player {
-	@include transform(translate(78%, 0));
-	@include bp(medium) {
-		@include transform(translate(178%, 0));
-	}
-}
-
-.mobile-nav--open .page-wrap {
-	top: 40px;
-
-}
-
-
-/**
- * Provides an overlay mask to help focus attention on the menu
- * z-index is 2 so that it sits under the close button, but above most content
- */
-.mobile-nav--open .page-wrap:before {
-	position: absolute;
-	top: 0;
-	width: 100%;
-	height: 100%;
-	background-color: rgba(0,0,0,.4);
-	content: " ";
-	z-index: 2;
-}
-
-.mobile-nav--open .live-player:before {
-	position: absolute;
-	top: 0;
-	display: block;
-	width: 100%;
-	height: 100%;
-	background-color: rgba(0,0,0,.4);
-	content: " ";
-	z-index: 2;
-
-	@include bp(medium) {
-		display: none;
-	}
-}
-
 .mobile-nav__list {
-	padding: 0;
+	list-style: none;
 	margin: 0;
+	padding: 0;
 }
 
 .mobile-nav__list .menu-item {
 	padding: 0;
 	margin: 0;
-	border-bottom: 1px solid $header-border;
+	border-bottom: 1px solid $header-nav-border;
 	line-height: 0; /* the anchor inside the <li> provides all the box model sizing */
 }
 
-.mobile-nav__list a:link, .mobile-nav__list a:visited {
+.mobile-nav__list a {
+	background-color: $header-bg;
+	color: $color-text-black;
 	display: block;
 	padding: 18px 1.25em;
 	line-height: 1;
 	font-size: ms(2);
-	color: $color-text-white;
 }
 
 .mobile-nav__list a:hover, .mobile-nav__list a:focus, .mobile-nav__list a:active {
-	background-color: $color-text-red;
+	background-color: $header-nav-bg;
+	color: $color-text-white;
 }
 
 .mobile-nav .social__list {
@@ -222,28 +178,24 @@
 }
 
 .mobile-nav .social__link {
-	margin: 0 0 0 1em;
+	color: $color-text-black;
+	border-color: $color-text-black;
 	font-size: ms(3);
+	margin: 0 0 0 1em;
 }
 
 .mobile-nav .social__link:last-child {
 	margin: 0 0 0 1em;
 }
 
-.mobile-nav .social__link {
-	color: #fff;
-	border-color: #fff;
-}
-
 // main header navigation
-.header__nav ul, .header__account ul {
+.header__nav ul {
 	padding: 0;
 	margin: 0;
 	list-style: none;
 }
 
-.header__nav > ul > li,
-.header__account > ul > li {
+.header__nav > ul > li {
 	padding: 0;
 	margin: 0;
 	list-style: none;
@@ -251,89 +203,31 @@
 	font-size: ms(-1);
 	float: left;
 
-	@include bp(larger) {
+	@include bp(large) {
 		font-size: ms(0);
-	}
-
-	.news-site  & {
-
-		@include bp(large) {
-			font-weight: 900;
-			text-transform: uppercase;
-		}
-
-		@include bp(larger) {
-			font-size: ms(1);
-		}
-
-		@include bp(x-large) {
-			font-size: ms(2);
-		}
 	}
 }
 
 .header__main a, .header__main a:visited {
-	color: $color-text-white;
+	color: $color-text-black;
 }
 
-.header__main a:hover, .header__main a:active {
-	color: $color-text-white;
-}
-
-.header__nav ul li a,
-.header__nav ul li a:link,
-.header__nav ul li a:visited,
-.header__account ul li a,
-.header__account ul li a:link,
-.header__account ul li a:visited, {
+.header__nav > ul li a {
 	display: block;
-	padding: 34px .5em 33px;
-
-	@include bp(larger) {
-		padding: 33px .5em 32px;
-	}
-
-	.news-site & {
-		padding-top: 32px;
-		padding-bottom: 31px;
-		border-right: 1px solid $header-nav-border;
-
-		@include bp(larger) {
-			padding-top: 31px;
-			padding-bottom: 30px;
-		}
-
-		@include bp(x-large) {
-			padding-top: 29px;
-			padding-bottom: 29px;
-		}
-	}
+	padding: 10px;
+	text-transform: uppercase;
 }
 
-.header__account ul li a,
-.header__account ul li a:link,
-.header__account ul li a:visited, {
-
-	.news-site & {
-		border-right: none;
-	}
-}
-
-.header__nav ul li.active a:hover,
-.header__nav ul li a:focus,
-.header__nav ul li a:active,
-.header__nav ul li.active,
-.header__account ul li a:hover,
-.header__account ul li a:focus,
-.header__account ul li a:active,
-.header__account ul li:hover,
-.ui-menu .ui-state-focus {
+.header__main ul li a:hover,
+.header__main ul li:hover a,
+.header__main ul li a:active {
 	background-color: $header-nav-bg;
+	color: $color-text-white;
 }
 
-ul.sub-menu li:not(.mobile-menu-submenu-header):hover {
+/*ul.sub-menu li:not(.mobile-menu-submenu-header):hover {
 	background-color: transparent;
-}
+}*/
 
 // main header navigation mega-menu dropdowns
 .header__nav ul li ul {

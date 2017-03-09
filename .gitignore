@@ -70,3 +70,5 @@ atlassian-ide-plugin.xml
 **/.sass-cache/**
 style.css.md
 /vendor/
+/plugins/greatermedia-live-player/assets/js/live-player.min.js
+/plugins/greatermedia-live-player/assets/js/live-player.js

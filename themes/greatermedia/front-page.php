@@ -11,18 +11,17 @@ get_header();
 ?>
 
 	<div class="container">
-
-		<?php get_template_part( 'partials/frontpage', 'featured' ); ?>
-		<?php get_template_part( 'partials/frontpage', 'highlights' ); ?>
+		<?php do_action( 'do_frontpage_highlights' ); ?>
 
 		<section class="content">
 
 			<?php if ( is_news_site() ) : ?>
 				<h2 class="content__heading"><?php _e( 'News', 'greatermedia' ); ?></h2>
 			<?php else : ?>
-				<?php get_template_part( 'partials/ad-in-loop' ); ?>
 				<h2 class="content__heading"><?php _e( 'Latest from ', 'greatermedia' ); ?><?php bloginfo( 'name' ); ?></h2>
 			<?php endif; ?>
+
+			<?php get_template_part( 'partials/ad-in-loop' ); ?>
 
 			<?php if ( have_posts() ) : ?>
 
@@ -32,24 +31,20 @@ get_header();
 			<?php else : ?>
 
 				<article id="post-not-found" class="hentry cf">
-
 					<header class="article-header">
-
 						<h1><?php _e( 'Oops, Post Not Found!', 'greatermedia' ); ?></h1>
-
 					</header>
 
 					<section class="entry-content">
-
 						<p><?php _e( 'Uh Oh. Something is missing. Try double checking things.', 'greatermedia' ); ?></p>
-
 					</section>
-
 				</article>
 
 			<?php endif; ?>
 
 		</section>
+
+		<?php get_sidebar(); ?>
 
 	</div>
 

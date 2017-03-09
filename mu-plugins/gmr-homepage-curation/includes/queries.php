@@ -84,27 +84,39 @@ function get_contests_query() {
 	return $query;
 }
 
+function get_current_homepage() {
+	static $homepage = null;
+
+	if ( is_null( $homepage ) ) {
+		$homepages = new WP_Query( array(
+			'post_type'              => gmr_homepages_slug(),
+			'posts_per_page'         => 1,
+			'no_found_rows'          => true,
+			'ignore_sticky_posts'    => true,
+			'update_post_term_cache' => false,
+		) );
+
+		$homepage = $homepages->have_posts()
+			? $homepages->next_post()
+			: false;
+	}
+
+	return $homepage;
+}
+
 function recent_homepage_query( $meta_key ) {
 	$posts = '';
 	$homepages = get_preview_homepage();
 
+	$homepage = false;
 	if ( false === $homepages ) {
-		$homepages = new WP_Query(
-			array(
-				'post_type'              => gmr_homepages_slug(),
-				'posts_per_page'         => 1,
-				'no_found_rows'          => true,
-				'ignore_sticky_posts'    => true,
-				'update_post_term_cache' => false
-			)
-		);
+		$homepage = get_current_homepage();
+	} elseif ( $homepages->have_posts() ) {
+		$homepage = $homepages->next_post();
 	}
 
-	if ( $homepages->have_posts() ) {
-		while ( $homepages->have_posts() ) {
-			$homepages->the_post();
-			$posts = get_post_meta( get_the_ID(), $meta_key, true );
-		}
+	if ( $homepage ) {
+		$posts = get_post_meta( $homepage->ID, $meta_key, true );
 	} else {
 		// fallback to old style with options
 		switch ( $meta_key ) {
@@ -120,6 +132,18 @@ function recent_homepage_query( $meta_key ) {
 		}
 	}
 
-	wp_reset_postdata();
+	$limit = 0;
+	if ( 'featured_meta_box' == $meta_key ) {
+		$limit = apply_filters( 'gmr-homepage-featured-limit', 6, $homepage );
+	} elseif ( 'dont_miss_meta_box' == $meta_key ) {
+		$limit = apply_filters( 'gmr-homepage-community-limit', 3, $homepage );
+	} elseif ( 'events_meta_box' == $meta_key ) {
+		$limit = apply_filters( 'gmr-homepage-events-limit', 2, $homepage );
+	}
+
+	if ( $limit > 0 ) {
+		$posts = implode( ',', array_slice( explode( ',', $posts ), 0, $limit ) );
+	}
+
 	return $posts;
 }

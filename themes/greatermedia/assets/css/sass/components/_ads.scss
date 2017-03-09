@@ -25,29 +25,18 @@ category: Components - Ads
 }
 
 .ad__leaderboard {
+	line-height: 0;
 	position: relative;
-	padding: em(20px) 0;
 	text-align: center;
 
 	&.desktop { display: none; }
 	&.mobile {
 		display: block;
-		height: 50px;
-		padding: 0;
 	}
 
 	@include bp(medium) {
-		height: 132px;
-
 		&.desktop { display: block; }
 		&.mobile { display: none; }
-	}
-
-	.news-site & {
-		@include bp(medium) {
-			height: 104px;
-			padding: 7px 0;
-		}
 	}
 }
 
@@ -82,10 +71,10 @@ category: Components - Ads
 		margin: 0 0 1em 1em;
 	}
 
-	@include bp(x-large) {
+	/*@include bp(x-large) {
 		float: right;
 		margin: 0 0 1em 1em;
-	}
+	}*/
 }
 
 .ad__in-loop {
@@ -107,27 +96,64 @@ category: Components - Ads
 	}
 
 .ad__events-sponsorship {
-		text-align: center;
+	text-align: center;
 
-		iframe {
-			width: 100%;
-			height: 75px;
+	iframe {
+		width: 100%;
+		height: 75px;
 
-			@include bp(small) {
-				height: 124px;
-			}
-
-			@include bp(medium) {
-				height: 150px;
-			}
-
-			@include bp(large) {
-				height: 175px;
-			}
-
-			@include bp(x-large) {
-				height: 200px;
-			}
+		@include bp(small) {
+			height: 124px;
 		}
+
+		@include bp(medium) {
+			height: 150px;
+		}
+
+		@include bp(large) {
+			height: 175px;
+		}
+
+		/*@include bp(x-large) {
+			height: 200px;
+		}*/
+	}
 }
 
+.ad__in-content {
+	&.ad__in-content--mobile {
+		display: block;
+
+		@include bp(large) {
+			display: none;
+		}
+	}
+
+	iframe {
+		display: block;
+		margin: 0 auto 1.5em;
+	}
+}
+
+.ad__wallpaper {
+	bottom: 0;
+	height: 100%;
+	left: 0;
+	position: fixed;
+	right: 0;
+	top: 0;
+	width: 100%;
+
+	// The below targets the DFP ad, and overrides any inline height/width values.
+	> div,
+	> div > div,
+	> div > div > iframe {
+		bottom: 0;
+		height: 100% !important;
+		left: 0;
+		position: fixed;
+		right: 0;
+		top: 0;
+		width: 100% !important;
+	}
+}

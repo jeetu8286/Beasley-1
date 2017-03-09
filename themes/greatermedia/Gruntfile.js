@@ -14,17 +14,25 @@ module.exports = function (grunt) {
 			scripts: {
 				files: {
 					'assets/js/frontend.js': [
+						'assets/js/vendor/cycle2/jquery.cycle2.js',
+						'assets/js/vendor/cycle2/jquery.cycle2.center.js',
+						'assets/js/vendor/cycle2/jquery.cycle2.swipe.js',
+						'assets/js/vendor/cycle2/jquery.cycle2.carousel.js',
 						'assets/js/vendor/placeholders.min.js',
 						'assets/js/vendor/jquery.fitvids.js',
+						'assets/js/vendor/headroom.min.js',
+						'assets/js/src/_matchHeights.js',
 						'assets/js/src/mobile-sub-menus.js',
 						'assets/js/src/show-schedule.js',
 						'assets/js/src/social_share.js',
 						'assets/js/src/pjax.js',
 						'assets/js/src/greater_media.js',
 						'assets/js/src/load_more.js',
-						'assets/js/src/live_player.js',
 						'assets/js/src/menus.js',
+						'assets/js/src/hero-slider.js',
 						'assets/js/src/search.js',
+						'assets/js/src/fixed-header-player.js',
+						'assets/js/src/content-sidebar-heights.js',
 						'assets/js/src/firebase.js'
 					],
 					'assets/js/admin.js': [

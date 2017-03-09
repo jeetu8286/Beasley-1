@@ -42,9 +42,9 @@
 		margin-bottom: 1em;
 	}
 
-	@include bp(larger) {
+	/*@include bp(larger) {
 		margin-bottom: 0;
-	}
+	}*/
 
 	.has-excerpt &:after {
 		padding-top: 75%;
@@ -140,10 +140,10 @@
 				float: none;
 			}
 
-			@include bp(larger) {
+			/*@include bp(larger) {
 				@include span-columns(4 of 6);
 				@include omega;
-			}
+			}*/
 		}
 	}
 }
@@ -167,8 +167,8 @@
 
 .entry2__title {
 	margin: 0;
-	font-size: ms(6);
-	line-height: 1.2;
+	font-size: ms(2);
+	line-height: ms(2);
 
 	.news-site & {
 		margin: .5em 0 .75em;
@@ -276,7 +276,7 @@
 }
 
 // Special tweaks for the standard type
-// Basically just puts the image on the right instead of the left. 
+// Basically just puts the image on the right instead of the left.
 .entry2.format-standard {
 	@include bp(small) {
 		.entry2__thumbnail {
@@ -294,12 +294,12 @@
 		}
 	}
 
-	@include bp(larger) {
+	/*@include bp(larger) {
 		.entry2__thumbnail {
 			margin-left: 0;
 			margin-bottom: 0;
 		}
-	}
+	}*/
 }
 
 // Layout tweaks for audio posts.

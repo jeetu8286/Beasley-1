@@ -14,11 +14,7 @@ get_header(); ?>
 			<div id="wall"></div>
 		</section>
 
-		<aside class="sidebar" role="complementary">
-
-			Sidebar area
-
-		</aside>
+		<?php get_sidebar(); ?>
 
 	</div>
 

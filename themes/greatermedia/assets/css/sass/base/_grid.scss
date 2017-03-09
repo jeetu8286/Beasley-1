@@ -29,14 +29,12 @@ img {
 // The `.page-wrap` class is being used in conjunction with the off-canvas mobile navigation. On click of the
 // `.mobile-nav--toggle` button, the contents of `.page-wrap` will be pushed to the left by a particular value. This
 .page-wrap {
-	@include transform(translate(0, 0));
 	width: 100%;
 	padding-bottom: 0;
 	@include transition(all 100ms ease-out);
 	overflow: hidden;
 	background-color: $secondary-bg;
 	@include bp(medium) {
-		@include transform(none);
 		min-height: 800px;
 	}
 }
@@ -46,14 +44,14 @@ img {
 	padding-right: 0;
 
 	@include bp(medium) {
-		@include outer-container(100%);
-		padding-right: 225px;
+		@include outer-container(970px);
+		padding-right: 340px;
 		min-height: 800px;
 	}
 	
-	@include bp(x-large) {
-		@include outer-container(1400px);
-	}
+	/*@include bp(x-large) {
+		@include outer-container(970px);
+	}*/
 }
 
 .main, %main {
@@ -63,8 +61,71 @@ img {
 	background-color: $secondary-bg;
 }
 
-.main .container {
+.main > .container {
 	background-color: $primary-bg;
+
+	@include bp(medium) {
+		//margin-top: 40px;
+		position: relative;
+		padding: 20px 340px 20px 20px;
+	}
+}
+
+.main > .container > .sidebar {
+	background-color: $primary-bg;
+	float: left;
+	width: 100%;
+
+	@include bp(medium) {
+		float: none;
+		position: absolute;
+		right: 20px;
+		top: 20px;
+		width: 300px;
+	}
+
+	.player {
+		align-items: center;
+		display: flex;
+		padding: 10px;
+		border-bottom: 3px solid #000;
+	}
+
+	.play-button {
+		background: #D22228;
+		border: none;
+		border-radius: 50%;
+		float: left;
+		height: 41px;
+		margin-right: 20px;
+		padding: 3px 5px;
+		width: 41px;
+
+		&:focus {
+			box-shadow: 0 0 3px 3px #4D90FE;
+			outline: none;
+		}
+
+		svg {
+			fill: #fff;
+			height: 36px;
+			width: 36px;
+		}
+	}
+
+	.player-info {
+		font-weight: bold;
+		text-transform: uppercase;
+	}
+
+	.social__list {
+		padding: 20px 0;
+		text-align: center;
+	}
+
+	.social__link {
+		margin: 0 5px;
+	}
 }
 
 .content, %content {
@@ -102,57 +163,6 @@ img {
 	}
 }
 
-.live-player {
-	position: fixed;
-	bottom: 0;
-	right: 0;
-	left: 0;
-	width: 100%;
-	max-height: 58px;
-	background-color: $liveplayer-bg;
-	color: $liveplayer-color;
-	cursor: pointer;
-	@include transition(all 200ms ease-in-out);
-	@include bp(medium){
-		position: absolute;
-		top: 215px;
-		bottom: auto;
-		right: 0;
-		left: auto;
-		width: 225px;
-		height: 100%;
-		max-height: none;
-		overflow: hidden;
-		box-sizing: border-box;
-		cursor: default;
-		@include transition(none);
-	}
-	@include bp(x-large) {
-		@include calc(right, '50% - 700px');
-	}
-
-	.live-player--open & {
-		max-height: calc(48vh + 58px);
-		@include transition(all 200ms ease-in-out);
-	}
-
-	.logged-in & {
-		@include bp(medium) {
-			top: 261px;
-		}
-		@include media(min-width 783px) {
-			top: 247px;
-		}
-	}
-
-	.news-site & {
-
-		@include bp(medium) {
-			border-left: 1px solid $primary-border;
-		}
-	}
-}
-
 .row {
 	@include row();
 }
@@ -173,10 +183,10 @@ img {
 		@include omega;
 	}
 
-	@include bp(x-large) {
+	/*@include bp(x-large) {
 		@include span-columns(4 of 12);
 		@include omega;
-	}
+	}*/
 }
 
 .col__inner--left {
@@ -202,7 +212,7 @@ img {
 		@include span-columns(8 of 12);
 	}
 
-	@include bp(x-large) {
+	/*@include bp(x-large) {
 		@include span-columns(8 of 12);
-	}
+	}*/
 }

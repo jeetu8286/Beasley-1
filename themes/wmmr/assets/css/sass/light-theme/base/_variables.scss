@@ -43,18 +43,18 @@ $color-gray-medium: #58595B;
 $color-gray-medium-dark: #303030;
 $color-gray-darker: $darker-gray;
 
-$primary-bg: #000;
+$primary-bg: $white;
 $primary-text: $color-text-gray;
 $primary-heading: $color-text-gray;
 $primary-link: $color-text-red;
 $primary-link-hover: darken($color-text-red, 9%);
 $primary-border: $light-gray;
 
-$secondary-bg: $color-gray-medium-dark;
-$secondary-text: $color-text-white;
-$secondary-heading: $gray;
-$secondary-link: $light-gray;
-$secondary-link-hover: darken($color-text-red, 9%);
+$secondary-bg: $black;
+$secondary-text: $white;
+$secondary-heading: $white;
+$secondary-link: $white;
+$secondary-link-hover: darken($white, 9%);
 $secondary-border: $dark-gray;
 
 // Section Variables
@@ -66,8 +66,8 @@ $header-search-bg: $color-gray-medium-light;
 $liveplayer-bg: $color-gray-light;
 $liveplayer-color: #404041;
 
-$featured-primary-bg: $heath;
-$featured-secondary-bg: $coffee-bean;
+$featured-primary-bg: $white;
+$featured-secondary-bg: $white;
 
 $highlights-text: $gray;
 $highlights-link: $dark-gray;

@@ -34,6 +34,8 @@
 
 		</section>
 
+		<?php get_sidebar(); ?>
+
 		<?php
 		$personalities = GreaterMedia\Shows\get_show_personalities( get_the_ID() );
 		if ( count( $personalities ) > 0 ): ?>
