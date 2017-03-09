@@ -10,7 +10,7 @@ $asset_root: "../../../../themes/greatermedia/assets/";
 //
 $black: #000000;
 $white: #ffffff;
-$cardinal: #d22228;
+$cardinal: #034ea2;
 $heath: #561015;
 $coffee-bean: #270e10;
 $extra-light-gray: #f1f1f3;
@@ -45,9 +45,9 @@ $color-gray-darker: $darker-gray;
 
 $primary-bg: #fff;
 $primary-text: $color-text-gray;
-$primary-heading: $color-text-gray;
-$primary-link: $color-text-red;
-$primary-link-hover: darken($color-text-red, 9%);
+$primary-heading: #034ea2;
+$primary-link: #034ea2;
+$primary-link-hover: darken(#034ea2, 9%);
 $primary-border: $light-gray;
 
 $secondary-bg: $color-gray-medium-dark;
@@ -58,18 +58,19 @@ $secondary-link-hover: darken($color-text-red, 9%);
 $secondary-border: $dark-gray;
 
 // Section Variables
-$header-bg: $color-gray-medium-dark;
+$header-bg: $white;
 $header-border: $dark-gray;
-$header-nav-bg: $cardinal;
-$header-search-bg: $color-gray-medium-light;
+$header-nav-bg: #034ea2;
+$header-search-bg: #034ea2;
 
 $liveplayer-bg: $color-gray-light;
 $liveplayer-color: #404041;
+$liveplayer-color-secondary: #034ea2;
 
-$featured-primary-bg: $heath;
+$featured-primary-bg: $white;
 $featured-secondary-bg: $coffee-bean;
 
-$highlights-text: $gray;
+$highlights-text: $white;
 $highlights-link: $dark-gray;
 
 $gallery-bg: $color-gray-medium-light;
