@@ -19,7 +19,7 @@
 	if ( window.matchMedia( '(min-width: 768px)' ).matches ) {
 
 		// Using window.onload because heights we want need to be rendered.
-		window.onload = function() {
+		window.addEventListener( 'load', function( e ) {
 
 			// Set variables after things are loaded
 			var header_container_height_full = header_container.offsetHeight,
@@ -56,7 +56,7 @@
 			headroom_header.init();
 			/* jshint ignore:end */
 
-		};
+		} );
 	} else {
 
 		/* jshint ignore:start */

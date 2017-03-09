@@ -11,8 +11,12 @@
 	/**
 	 * Global variables
 	 */
-	var body = document.querySelector('body'),
-		mobileNavButton = document.querySelector('.mobile-nav__toggle');
+	var html = document.querySelector( 'html' ),
+		body = document.querySelector( 'body' ),
+		mobileNavButton = document.querySelector( '.mobile-nav__toggle' ),
+		mobileMenu = document.getElementById( 'mobile-nav' ),
+		header = document.getElementById( 'header' ),
+		search = document.getElementById( 'header__search--form' );
 
 	/**
 	 * Function to detect if the current browser can use `addEventListener`, if not, use `attachEvent`
@@ -31,54 +35,22 @@
 	}
 
 	/**
-	 * Inserts a new element on mobile to provide a blocker
-	 *
-	 * @returns {*|jQuery|HTMLElement}
+	 * Sets the mobile menu just below the header and search
 	 */
-	var getBlockerDiv = function() {
-		var $div = $('#mobile-nav-blocker');
-		if ($div.length === 0) {
-			$('<div id="mobile-nav-blocker"></div>').insertAfter('#mobile-nav');
-			$div = $('#mobile-nav-blocker');
-			$div.on('click', toggleNavButton);
-		}
+	function setMenuTop() {
+		var headerHeight = header.offsetHeight,
+			searchHeight = search.offsetHeight,
+			htmlTopMargin = parseInt( window.getComputedStyle( html )['marginTop'], 10 );
 
-		return $div;
-	};
-
-	/**
-	 * Shows the blocker div that is created by getBlockerDiv
-	 */
-	var showBlocker = function() {
-		var $blocker = getBlockerDiv();
-
-		$blocker.css({
-			display: 'block'
-		});
-	};
-
-	/**
-	 * Hides the blocker div that is shown by showBlocker
-	 */
-	var hideBlocker = function() {
-		var $blocker = getBlockerDiv();
-		$blocker.css({'display': 'none'});
-		if ($blocker.hasClass('active')) {
-			$blocker.removeClass('active');
-		}
-	};
+		mobileMenu.style.top = headerHeight + searchHeight + htmlTopMargin + 'px';
+	}
 
 	/**
 	 * Toggles a class to the body when the mobile nav button is clicked
 	 */
 	function toggleNavButton() {
 		body.classList.toggle('mobile-nav--open');
-
-		if ($('.mobile-nav--open').length) {
-			showBlocker();
-		} else {
-			hideBlocker();
-		}
+		setMenuTop();
 	}
 
 	/**
@@ -178,7 +150,6 @@
 	 * Functions that run after the pjax:end event
 	 */
 	$(document).bind( 'pjax:end', function () {
-		hideBlocker();
 		removeHoverMobile();
 		removeoverlay();
 	});

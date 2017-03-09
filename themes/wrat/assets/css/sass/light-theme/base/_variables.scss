@@ -47,7 +47,7 @@ $primary-bg: #fff;
 $primary-text: $color-text-gray;
 $primary-heading: $color-text-gray;
 $primary-link: #cc0000;
-$primary-link-hover: #828386;
+$primary-link-hover: #303030;
 $primary-border: $light-gray;
 
 $secondary-bg: $color-gray-medium-dark;
@@ -58,7 +58,7 @@ $secondary-link-hover: darken($color-text-red, 9%);
 $secondary-border: $dark-gray;
 
 // Section Variables
-$header-bg: $color-gray-medium-dark;
+$header-bg: #ffff00;
 $header-border: $dark-gray;
 $header-nav-bg: #000;
 $header-search-bg: $color-gray-medium-light;
@@ -66,8 +66,8 @@ $header-search-bg: $color-gray-medium-light;
 $liveplayer-bg: $color-gray-light;
 $liveplayer-color: #404041;
 
-$featured-primary-bg: $heath;
-$featured-secondary-bg: $coffee-bean;
+$featured-primary-bg: #000;
+$featured-secondary-bg: #303030;
 
 $highlights-text: $gray;
 $highlights-link: $dark-gray;
