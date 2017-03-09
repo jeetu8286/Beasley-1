@@ -13581,7 +13581,12 @@ table.responsive tr:nth-of-type(even) {
 
 .header__main {
   border-top: none;
-  background-color: transparent !important; }
+  background-color: transparent !important;
+  -webkit-transition: transform 200ms linear, background-color 1s !important;
+  /* Safari */
+  transition: transform 200ms linear, background-color 1s !important; }
+  .header__main.headroom--not-top {
+    background-color: rgba(0, 0, 0, 0.8) !important; }
 
 /* Navigation */
 .header__nav ul li {

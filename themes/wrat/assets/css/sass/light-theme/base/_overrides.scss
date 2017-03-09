@@ -4,12 +4,19 @@
   background-repeat: repeat-x;
   background-position: center top;
   border-bottom: none;
-} 
+}
 
 .header__main {
     border-top: none;
     background-color: rgba(0, 0, 0, 0) !important;
-}       
+
+		-webkit-transition: transform 200ms linear, background-color 1s !important; /* Safari */
+    transition: transform 200ms linear, background-color 1s !important;
+
+		&.headroom--not-top {
+			background-color: rgba(0, 0, 0, .8) !important;
+		}
+}
 
 /* Navigation */
 .header__nav ul li {
@@ -68,7 +75,7 @@
     color: #F7F845;
 }
 
-/* Header search color */      
+/* Header search color */
  .header__search {
   color: #303030;
   font-weight: bold}
@@ -90,7 +97,7 @@
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 1);
 }
 
-.home__featured { 
+.home__featured {
     background: url("../../images/WRAT-body-bkg.jpg") no-repeat;
     background-color: #000;
 }
@@ -115,7 +122,7 @@
 .home__featured .featured__content--meta {
     width: 65%;
     min-height: 4.2em;
-} 
+}
 
 .featured__content--block:hover .featured__content--title {
     color: #fff;

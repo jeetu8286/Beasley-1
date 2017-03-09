@@ -13583,7 +13583,12 @@ table.responsive tr:nth-of-type(even) {
 
 .header__main {
   border-top: none;
-  background-color: rgba(0, 0, 0, 0.3) !important; }
+  background-color: rgba(0, 0, 0, 0.3) !important;
+  -webkit-transition: transform 200ms linear, background-color 1s !important;
+  /* Safari */
+  transition: transform 200ms linear, background-color 1s !important; }
+  .header__main.headroom--not-top {
+    background-color: rgba(0, 0, 0, 0.8) !important; }
 
 /* Navigation */
 .header__account ul li a:active, .header__account ul li a:focus, .header__account ul li a:hover, .header__account ul li:hover, .header__nav ul li a:active, .header__nav ul li a:focus, .header__nav ul li.active, .header__nav ul li.active a:hover, .ui-menu .ui-state-focus {
