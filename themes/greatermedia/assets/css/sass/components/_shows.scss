@@ -196,9 +196,9 @@ category: Components - Shows
 	@include display-context(table);
 	color: $secondary-text;
 
-	@include bp(medium) {
+	/*@include bp(medium) {
 		width: calc( 100% + 320px );
-	}
+	}*/
 
 	&.has-thumbnail {
 		background-repeat: no-repeat;
