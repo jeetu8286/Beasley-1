@@ -11,8 +11,12 @@
 	/**
 	 * Global variables
 	 */
-	var body = document.querySelector('body'),
-		mobileNavButton = document.querySelector('.mobile-nav__toggle');
+	var html = document.querySelector( 'html' ),
+		body = document.querySelector( 'body' ),
+		mobileNavButton = document.querySelector( '.mobile-nav__toggle' ),
+		mobileMenu = document.getElementById( 'mobile-nav' ),
+		header = document.getElementById( 'header' ),
+		search = document.getElementById( 'header__search--form' );
 
 	/**
 	 * Function to detect if the current browser can use `addEventListener`, if not, use `attachEvent`
@@ -34,11 +38,11 @@
 	 * Sets the mobile menu just below the header and search
 	 */
 	function setMenuTop() {
-		var headerHeight = document.getElementById( 'header' ).offsetHeight,
-			searchHeight = document.getElementById( 'header__search--form' ).offsetHeight,
-			mobileMenu = document.getElementById( 'mobile-nav' );
+		var headerHeight = header.offsetHeight,
+			searchHeight = search.offsetHeight,
+			htmlTopMargin = parseInt( window.getComputedStyle( html )['marginTop'], 10 );
 
-		mobileMenu.style.top = headerHeight + searchHeight + 'px';
+		mobileMenu.style.top = headerHeight + searchHeight + htmlTopMargin + 'px';
 	}
 
 	/**
