@@ -10,7 +10,7 @@ $asset_root: "../../../../themes/greatermedia/assets/";
 //
 $black: #000000;
 $white: #ffffff;
-$cardinal: #d22228;
+$cardinal: #004794;
 $heath: #561015;
 $coffee-bean: #270e10;
 $extra-light-gray: #f1f1f3;
@@ -58,15 +58,16 @@ $secondary-link-hover: darken($color-text-red, 9%);
 $secondary-border: $dark-gray;
 
 // Section Variables
-$header-bg: $color-gray-medium-dark;
+$header-bg: $white;
 $header-border: $dark-gray;
 $header-nav-bg: $cardinal;
 $header-search-bg: $color-gray-medium-light;
 
 $liveplayer-bg: $color-gray-light;
 $liveplayer-color: #404041;
+$liveplayer-color-secondary: $cardinal;
 
-$featured-primary-bg: $heath;
+$featured-primary-bg: $white;
 $featured-secondary-bg: $coffee-bean;
 
 $highlights-text: $gray;
