@@ -3044,9 +3044,11 @@ var matchHeights = function( elements ) {
 		} );
 
 		// Match heights any time an ad renders.
-		googletag.pubads().addEventListener( 'slotRenderEnded', function( e ) {
+
+		// Commented out by Steve as this was throwing a JS error
+		/*googletag.pubads().addEventListener( 'slotRenderEnded', function( e ) {
 			matchHeights( elements );
-		} );
+		} );*/
 
 		// Not ideal: Match heights every 3 seconds for additional content loading.
 		setInterval( function() {
@@ -3057,6 +3059,7 @@ var matchHeights = function( elements ) {
 	}
 
 })( window, document );
+
 (function($, config) {
 	var auth;
 

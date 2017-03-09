@@ -3465,7 +3465,7 @@ a.highlights__contest--btn {
 
 @media screen and (min-width: 970px) {
   .container__leaderboard {
-    margin-top: 20px; } }
+    margin: 5px 0; } }
 
 .header__link--text {
   display: none; }
