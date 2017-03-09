@@ -13579,6 +13579,12 @@ table.responsive tr:nth-of-type(even) {
 .header {
   border-bottom: 1px solid #58595b; }
 
+.mobile-nav__list a {
+  color: #fff; }
+
+.mobile-nav__toggle--span, .mobile-nav__toggle--span:before, .mobile-nav__toggle--span:after {
+  background: #fff; }
+
 @media screen and (min-width: 768px) {
   .home__featured {
     background-position: left top;
