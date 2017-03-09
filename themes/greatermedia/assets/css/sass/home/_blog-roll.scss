@@ -19,12 +19,11 @@
 
 	.single-podcast & {
 		display: block;
+		font-size: ms(4);
 		margin-bottom: .25em;
 
 		@include bp(medium) {
-			display: inline-block;
-			margin-bottom: $base-line-height;
-			margin-right: 10px;
+			font-size: ms(6);
 		}
 	}
 

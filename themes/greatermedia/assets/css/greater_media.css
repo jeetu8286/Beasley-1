@@ -1684,12 +1684,11 @@ blockquote p {
     margin-bottom: 30px; }
   .single-podcast .content__heading, .single-podcast .sponsors__heading {
     display: block;
+    font-size: 1.60181em;
     margin-bottom: .25em; }
     @media screen and (min-width: 768px) {
       .single-podcast .content__heading, .single-podcast .sponsors__heading {
-        display: inline-block;
-        margin-bottom: 1.5em;
-        margin-right: 10px; } }
+        font-size: 2.02729em; } }
   .news-site .content__heading, .news-site .sponsors__heading {
     font-size: 2.02729em;
     font-weight: lighter;
@@ -8017,17 +8016,6 @@ a.podcast__subscribe {
     width: 50px;
     height: 50px;
     padding: 0; }
-  .podcast-player--compact .podcast__btn--play,
-  .podcast-player--compact .podcast__btn--pause {
-    border-width: 2px;
-    width: 100%;
-    height: 100%;
-    /* Commented out by Steve on 3/9/17 to fix play button on inline audio
-				left: 0;
-				top: 0;*/ }
-    .podcast-player--compact .podcast__btn--play:before,
-    .podcast-player--compact .podcast__btn--pause:before {
-      font-size: 150%; }
   .podcast-player--compact .podcast__runtime {
     position: absolute;
     right: 0;
@@ -8069,12 +8057,6 @@ a.podcast__subscribe {
       width: 80px;
       height: 80px;
       padding: 0; }
-    .podcast-player--compact .podcast__btn--play,
-    .podcast-player--compact .podcast__btn--pause {
-      border-width: 3px; }
-      .podcast-player--compact .podcast__btn--play:before,
-      .podcast-player--compact .podcast__btn--pause:before {
-        font-size: 40px; }
     .podcast-player--compact .podcast__meta {
       padding-left: 1.5em;
       padding-right: 8em; }
@@ -8181,11 +8163,9 @@ a.podcast__subscribe {
 
 .single-podcast .podcast__header {
   margin-bottom: 1.75em; }
-  @media screen and (min-width: 768px) {
-    .single-podcast .podcast__header {
-      margin-bottom: 0; } }
   .single-podcast .podcast__header a.podcast__subscribe,
   .single-podcast .podcast__header a.podcast__rss {
+    margin-bottom: 5px;
     vertical-align: text-bottom; }
 
 .single-podcast .podcast__parent--title {
@@ -8406,7 +8386,7 @@ category: Components - Shows
   background-color: #561015;
   background-repeat: repeat;
   position: relative;
-  padding: 38px 1em;
+  padding: 24px 1em;
   width: 100%;
   display: block;
   color: #ffffff;
@@ -8439,9 +8419,6 @@ category: Components - Shows
       content: " "; }
   .show__header > div {
     vertical-align: middle; }
-  @media screen and (min-width: 768px) {
-    .show__header {
-      padding: 6.472em 3.236em; } }
   @media screen and (min-width: 970px) {
     .show__header {
       background-image: url("../../images/featured-bg.png");
@@ -8457,11 +8434,12 @@ category: Components - Shows
 
 .show__cast {
   width: 100%;
+  height: auto;
+  margin: 0 auto;
   position: relative;
-  height: 100%; }
+  width: 100px; }
   @media screen and (min-width: 970px) {
     .show__cast {
-      width: 150px;
       display: table-cell;
       vertical-align: middle; } }
   .show__cast img {
@@ -8528,16 +8506,15 @@ category: Components - Shows
       display: table-cell;
       vertical-align: middle;
       text-align: left;
-      padding-left: 3em;
-      padding-right: 3em;
+      padding-left: 2em;
+      padding-right: 2em;
       overflow: visible; }
       .show__nav .show__title {
         margin-top: 0;
         margin-bottom: 0; }
       .show__nav ul {
-        position: absolute;
         text-align: left;
-        margin-left: -9px;
+        margin-left: -7px;
         padding-top: 8px;
         width: auto; } }
 
@@ -8563,7 +8540,7 @@ category: Components - Shows
       display: none; } }
 
 .show__title {
-  font-size: 2em; }
+  font-size: 1.5em; }
 
 .show__meta {
   width: 100%;
