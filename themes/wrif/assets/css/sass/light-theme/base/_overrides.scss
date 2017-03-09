@@ -7,6 +7,14 @@
     border-bottom: 1px solid #58595b;
 }
 
+.mobile-nav__list a {
+	color: #fff;
+}
+
+.mobile-nav__toggle--span, .mobile-nav__toggle--span:before, .mobile-nav__toggle--span:after {
+	background: #fff;
+}
+
 .home__featured {
     @include bp(medium) {
         background-position: left top;
