@@ -51,10 +51,10 @@ $primary-link-hover: darken($color-text-red, 9%);
 $primary-border: $light-gray;
 
 $secondary-bg: $black;
-$secondary-text: $dark-gray;
-$secondary-heading: $gray;
-$secondary-link: $light-gray;
-$secondary-link-hover: darken($color-text-red, 9%);
+$secondary-text: $white;
+$secondary-heading: $white;
+$secondary-link: $white;
+$secondary-link-hover: darken($white, 9%);
 $secondary-border: $dark-gray;
 
 // Section Variables

@@ -8439,12 +8439,12 @@ category: Components - Shows
       left: 0;
       width: 100%;
       height: 100%;
-      background-image: linear-gradient(to bottom, rgba(86, 16, 21, 0.85), rgba(86, 16, 21, 0.85));
-      background-image: -moz-linear-gradient(top, rgba(86, 16, 21, 0.85), rgba(86, 16, 21, 0.85));
-      background-image: -o-linear-gradient(top, rgba(86, 16, 21, 0.85), rgba(86, 16, 21, 0.85));
-      background-image: -ms-linear-gradient(top, rgba(86, 16, 21, 0.85), rgba(86, 16, 21, 0.85));
-      background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(86, 16, 21, 0.85)), to(rgba(86, 16, 21, 0.85)));
-      background-image: -webkit-linear-gradient(top, rgba(86, 16, 21, 0.85), rgba(86, 16, 21, 0.85));
+      background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85));
+      background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85));
+      background-image: -o-linear-gradient(top, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85));
+      background-image: -ms-linear-gradient(top, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85));
+      background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.85)), to(rgba(86, 16, 21, 0.85)));
+      background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85));
       content: " "; }
   .show__header > div {
     vertical-align: middle; }

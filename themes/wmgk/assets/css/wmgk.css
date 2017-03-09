@@ -2063,7 +2063,7 @@ Curated posts for Featured Articles
   margin-right: 0;
   padding: 20px;
   margin-bottom: 20px;
-  background-color: #ffffff;
+  background-color: #561015;
   z-index: 1;
   /*@include bp(x-large) {
 		@include span-columns(12);
@@ -2090,7 +2090,7 @@ Curated posts for Featured Articles
       padding: 0;
       background-repeat: repeat;
       background-position: center center;
-      background-color: #ffffff;
+      background-color: #561015;
       background-size: auto 40%; }
       .home__featured:last-child {
         margin-right: 0; } }
@@ -8439,12 +8439,12 @@ category: Components - Shows
       left: 0;
       width: 100%;
       height: 100%;
-      background-image: linear-gradient(to bottom, rgba(86, 16, 21, 0.85), rgba(86, 16, 21, 0.85));
-      background-image: -moz-linear-gradient(top, rgba(86, 16, 21, 0.85), rgba(86, 16, 21, 0.85));
-      background-image: -o-linear-gradient(top, rgba(86, 16, 21, 0.85), rgba(86, 16, 21, 0.85));
-      background-image: -ms-linear-gradient(top, rgba(86, 16, 21, 0.85), rgba(86, 16, 21, 0.85));
-      background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(86, 16, 21, 0.85)), to(rgba(86, 16, 21, 0.85)));
-      background-image: -webkit-linear-gradient(top, rgba(86, 16, 21, 0.85), rgba(86, 16, 21, 0.85));
+      background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85));
+      background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85));
+      background-image: -o-linear-gradient(top, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85));
+      background-image: -ms-linear-gradient(top, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85));
+      background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.85)), to(rgba(86, 16, 21, 0.85)));
+      background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85));
       content: " "; }
   .show__header > div {
     vertical-align: middle; }
@@ -8455,7 +8455,7 @@ category: Components - Shows
     .show__header {
       background-image: url("../../images/featured-bg.png");
       background-position: center center;
-      background-color: #ffffff;
+      background-color: #561015;
       background-size: auto 65%; } }
 
 @media screen and (min-width: 970px) {
@@ -11307,7 +11307,7 @@ select {
         width: 50%;
         padding: 2em 7.0833333333335%; } }
   .profile-page .profile-page__sidebar {
-    background-color: #ffffff;
+    background-color: #561015;
     color: #ffffff;
     background-image: url("../../images/profile_bg.jpg");
     text-align: center;
