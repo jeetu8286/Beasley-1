@@ -1,5 +1,49 @@
+.main {
+	background-image: url('../../images/pw_pattern.png');
+}
+
 .header {
 	border-bottom: 1px solid #58595b;
+}
+
+.header__main {
+	@media screen and (min-width: 768px) {
+		&.headroom {
+			background-color: $color-red-dark;
+		}
+	}
+}
+
+@media screen and (min-width: 970px) {
+	.header__search {
+		color: #fff;
+    padding: 4px;
+    background-color: rgba(0,0,0,.7);
+		text-transform: uppercase;
+
+		.header__search--btn:before {
+			color: #fff;
+		}
+	}
+
+	.header__nav > ul > li {
+		background-color: rgba(0,0,0,.7);
+
+		a,
+		a:visited {
+			color: #ffffff;
+		}
+	}
+
+	/*.header__nav .sub-menu a:hover, .header__nav .format-fw > ul a:hover, .header__nav .format-sp > ul a:hover, .header__nav .format-fi > ul a:hover, .header__account--links.sub-menu a:hover, .header__nav .format-fw > ul.header__account--links a:hover, .header__nav .format-sp > ul.header__account--links a:hover, .header__nav .format-fi > ul.header__account--links a:hover, .ui-menu a:hover {
+		background-color: $white;
+	}*/
+
+	.news-site .header__nav .format-fw > ul > li:not(:nth-child(4n+1)), .header__nav .news-site .format-fw > ul > li:not(:nth-child(4n+1)), .news-site .header__nav .format-sp > ul > li:not(:nth-child(4n+1)), .header__nav .news-site .format-sp > ul > li:not(:nth-child(4n+1)) {
+		padding-left: 0;
+		margin-left: 0;
+	}
+
 }
 
 .home__featured {
@@ -60,81 +104,6 @@
 	color: #333;
 }
 
-@include bp(medium) {
-
-	.audio__playing #live-player--volume {
-		display: block;
-	}
-
-	.live-player {
-		background: url('../../images/listen-live-bg.jpg') no-repeat;
-	}
-
-	.live-stream {
-		margin: 1em auto 4em auto !important;
-		background: none !important;
-
-		.live-player__stream {
-			visibility: hidden;
-		}
-	}
-
-	.news-site .live-stream__status.audio__playing {
-		top: 78px;
-	}
-}
-
-.live-links {
-	border-top: 0;
-	margin: 0!important;
-	width: 100%;
-
-	.widget--live-player__title {
-		display: none;
-	}
-
-	.widget_gmr_blogroll_widget {
-		display: none;
-	}
-}
-
-.live-links--more.show-more--muted {
-	display: block;
-}
-
-.streamhub-wall-component {
-	article {
-		&.content-default .content-body {
-			font-family: 'Open Sans', sans-serif;
-			font-size: 16px;
-			line-height: 20px;
-		}
-	}
-}
-
-#fanatic-social-stream {
-	overflow: hidden;
-	border-top: 1px solid #eee;
-
-	article {
-		border-width: 0 0 1px 0;
-		margin: 0;
-		padding: 20px 0;
-
-		&.content .content-header .content-header-inner {
-			padding-top: 0;
-		}
-
-		&.content-instagram .content-header .content-header-inner {
-			padding-top: 20px;
-		}
-	}
-
-	.hub-list-more {
-		display: none;
-	}
-}
-
 .single-gmr_gallery .gallery__paging--prev,
 .single-gmr_gallery .gallery__paging--next {
 	color: $light-gray;
@@ -144,97 +113,10 @@
 	}
 }
 
-.live-player__stream {
-	visibility: hidden;
-	border: 1px solid lighten($color-gray-medium-dark,50%);
-	color: lighten($color-gray-medium-dark,50%);
-	@include border-radius(1em);
-	background-color: $liveplayer-bg;
-
-	li {
-		height: auto;
-	}
-
-	.live-player__stream--available {
-		display: none;
-	}
-
-	.live-player__stream--current.open .live-player__stream--available {
-		color: $dark-gray;
-		border-top: 1px solid darken($color-gray-light, 10%);
-
-		&:after {
-			background: transparent;
-		}
-
-		.live-player__stream--item, .live-player__stream--desc {
-			color: $dark-gray;
-		}
-
-		.live-player__stream--item {
-			background-color: $liveplayer-bg;
-
-			&:hover {
-				background-color: $light-gray;
-			}
-		}
-
-		li:last-child {
-			@include border-bottom-radius(1em);
-		}
-	}
-
-}
-
-.live-player--open .live-links {
-	margin-top: 0 !important;
-}
-
-.live-player__container {
-	border-bottom: none;
-}
-
-.now-playing__artist {
-	color: $color-gray-medium-dark;
-}
-
-.live-link__title, .live-link__title a:link, .live-link__title a:visited {
-	color: $color-gray-medium;
-}
-
-.live-link__song:before {
-	color: $medium-dark-gray;
-}
-
-.live-link__song--artist {
-	color: $medium-dark-gray;
-}
-
-.live-link__song--title {
-	color: $dark-gray;
-
-	a, a:visited {
-		color: $darker-gray;
-	}
-}
-
-.live-link__title a:link, .live-link__title a:visited {
-	color: $color-gray-medium;
-}
-
-.live-link__title a:hover, .live-link__title a:focus, .live-link__title a:active {
-	color: $primary-link-hover;
-}
-
 .header__leaderboard {
 	background-image: url('../../images/pw_pattern.png');
 }
 
-.header__logo {
-	@include bp(medium) {
-		top: -7px;
-	}
-}
 .home__highlights {
 	border-bottom-color: $primary-border;
 }
