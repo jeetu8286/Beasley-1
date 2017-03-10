@@ -403,7 +403,7 @@ function greatermedia_display_dfp_wallpaper() {
 add_action( 'dfp_wallpaper_tag', 'greatermedia_display_dfp_wallpaper' );
 
 function greatermedia_display_dfp_incontent( $content ) {
-	if ( ! is_single() || ! greatermedia_is_dfp_active() ) {
+	if ( ! is_single() || ! greatermedia_is_dfp_active() || ! did_action( 'body_class' ) ) {
 		return $content;
 	}
 
