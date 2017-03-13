@@ -127,15 +127,6 @@
 			margin-left: 0.75em;
 		}
 	}
-
-
-	.main > .container > .sidebar {
-		top: 558px;
-
-		@include bp(large) {
-			top: 390px;
-		}
-	}
 }
 
 .show-attr--name {
