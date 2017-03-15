@@ -1,7 +1,12 @@
 @import url(http://fonts.googleapis.com/css?family=Exo+2:400,600,700,800,900);
 
-.main, %main {
-	color: #555;
+.main {
+	@include bp(large) {
+		background-image: url(../../images/wben-main-bg3.jpg);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: top center;
+	}
 }
 
 .mobile-nav__toggle--span, .mobile-nav__toggle--span:before, .mobile-nav__toggle--span:after {

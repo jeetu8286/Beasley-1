@@ -68,36 +68,6 @@
 
 			<div class="row">
 
-				<aside class="inner-right-col">
-					<?php
-					$live_links_query = \GreaterMedia\Shows\get_show_live_links_query();
-					if ( $live_links_query->have_posts() ) :
-						$live_link_archive = \GreaterMedia\Shows\get_live_links_permalink( get_the_ID() );
-						?>
-						<section class="show__live-links cf">
-							<h2 class="section-header"><?php do_action( 'gmr_livelinks_title' ); ?></h2>
-							<ul>
-								<?php while ( $live_links_query->have_posts() ) : ?>
-									<?php $live_links_query->the_post(); ?>
-									<li class="live-link__type--<?php echo ( $format = get_post_format() ) ? $format : 'standard'; ?>">
-										<div class="live-link__title">
-											<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-										</div>
-									</li>
-								<?php endwhile; ?>
-								<?php wp_reset_query(); ?>
-							</ul>
-
-						</section>
-
-						<div class="show__live-links--more">
-							<a class="more-btn" href="<?php echo $live_link_archive; ?>">more</a>
-						</div>
-
-					<?php endif; ?>
-
-				</aside>
-
 				<section class="show__blogroll">
 					<h2 class="section-header">Blog</h2>
 					<?php get_template_part( 'partials/loop', 'show' ); ?>

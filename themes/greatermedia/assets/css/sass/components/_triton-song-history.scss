@@ -31,3 +31,26 @@
 	}
 
 }
+
+article > .triton-song-history {
+	margin-bottom: 2em;
+
+	.td-song-history__header {
+		background: none;
+		line-height: inherit;
+		height: auto;
+		padding: inherit;
+
+		.td-song-history__header__title {
+			display: none;
+		}
+	}
+
+	.td-song-history__song__buy {
+		display: none;
+	}
+
+	.td-song-history__song__picture img {
+		margin-left: 0;
+	}
+}

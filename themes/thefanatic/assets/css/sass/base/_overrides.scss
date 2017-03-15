@@ -177,15 +177,3 @@
 	background-image: -webkit-gradient(linear,left top,left bottom,from(rgba(20, 16, 16, 0.55)),to(rgba(88,15,12,.55)));
 	background-image: -webkit-linear-gradient(top,rgba(20, 16, 16, 0.55),rgba(88,15,12,.55));
 }
-
-@include bp(x-large) {
-	.main {
-		background-image: url('../../images/pw_pattern.png');
-
-		.container {
-			-webkit-box-shadow: 0px 0px 25px 1px rgba(0,0,0,0.75);
-			-moz-box-shadow: 0px 0px 25px 1px rgba(0,0,0,0.75);
-			box-shadow: 0px 0px 25px 1px rgba(0,0,0,0.75);
-		}
-	}
-}

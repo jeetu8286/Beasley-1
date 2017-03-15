@@ -54,9 +54,9 @@ $primary-border: $light-gray;
 
 $secondary-bg: $black;
 $secondary-text: $white;
-$secondary-heading: $white;
-$secondary-link: $white;
-$secondary-link-hover: darken($white, 9%);
+$secondary-heading: $color-gray-medium-dark;
+$secondary-link: $color-gray-medium-dark;
+$secondary-link-hover: darken($color-gray-medium-dark, 9%);
 $secondary-border: $dark-gray;
 
 // Section Variables
@@ -68,7 +68,7 @@ $header-search-bg: $color-gray-medium-light;
 $liveplayer-bg: $color-gray-light;
 $liveplayer-color: #404041;
 
-$featured-primary-bg: $black;
+$featured-primary-bg: $white;
 $featured-secondary-bg: $white;
 
 $highlights-text: $gray;

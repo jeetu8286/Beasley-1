@@ -14,7 +14,7 @@
 	$hp_comm_query = \GreaterMedia\HomepageCuration\get_community_query();
 	while( $hp_comm_query->have_posts() ) : $hp_comm_query->the_post(); ?>
 		<div class="highlights__community--item">
-			<a href="<?php the_permalink(); ?>">
+			<a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>">
 
 				<div class="highlights__community--thumb" style='background-image: url(<?php gm_post_thumbnail_url( 'gmr-featured-secondary', null, true ) ?>)'></div>
 
@@ -40,7 +40,7 @@
 	$events_query = \GreaterMedia\HomepageCuration\get_events_query();
 	while( $events_query->have_posts() ) : $events_query->the_post(); ?>
 		<div class="highlights__event--item">
-			<a href="<?php the_permalink(); ?>">
+			<a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>">
 				<?php if ( has_post_thumbnail() ) : ?>
 					<div class="highlights__event--thumb" style='background-image: url(<?php gm_post_thumbnail_url( 'gmr-featured-secondary', null, true ) ?>)'></div>
 				<?php endif; ?>
