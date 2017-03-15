@@ -13559,6 +13559,13 @@ article > .triton-song-history {
 a:hover .highlights__community--title {
   color: #00cec7; }
 
+@media screen and (min-width: 970px) {
+  .main {
+    background-image: url("../../images/wjbr-wallpaper-2017.jpg");
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-color: #000000; } }
+
 .live-link__type--show {
   border-bottom-color: white;
   background: none; }
