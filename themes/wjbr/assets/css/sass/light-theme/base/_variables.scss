@@ -21,7 +21,7 @@ $medium-dark-gray: #6d6e70;
 $dark-gray: #282827;
 $darker-gray: #191919;
 $yellow: #f5ed7f;
-$highlights-bg: #5a5a5a;
+$highlights-bg: #eeeeee;
 $highlights-heading: #ffffff;
 
 // KCYE colors
@@ -48,7 +48,7 @@ $primary-text: $color-text-gray;
 $primary-heading: $color-text-gray;
 $primary-link: $cardinal;
 $primary-link-hover: darken($cardinal, 9%);
-$primary-border: $light-gray;
+$primary-border: $cardinal;
 
 $secondary-bg: $color-gray-medium-dark;
 $secondary-text: $color-text-white;

@@ -95,12 +95,12 @@
 
 	h3 {
 		margin: 0;
-		font-size: ms(3);
+		font-size: ms(0);
 		line-height: 1.2;
 	}
 
 	.top-three__feature--primary & h3 {
-		font-size: ms(5);
+		font-size: ms(0);
 	}
 
 	time {
@@ -125,11 +125,11 @@
 		bottom: 0;
 
 		h3 {
-			font-size: ms(1);
+			font-size: ms(0);
 		}
 
 		.top-three__feature--primary & h3 {
-			font-size: ms(6);
+			font-size: ms(0);
 		}
 
 		time {

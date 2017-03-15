@@ -12781,18 +12781,6 @@ category: Components - Article
     display: none; }
   .related-posts .related-post:nth-child(-n+4) {
     display: block; }
-  @media screen and (min-width: 970px) {
-    .related-posts .related-post {
-      float: left;
-      display: block;
-      margin-right: 2.35765%;
-      width: 23.23176%;
-      width: 23%;
-      margin-right: 2%; }
-      .related-posts .related-post:last-child {
-        margin-right: 0; }
-      .related-posts .related-post:nth-child(-n+8) {
-        display: block; } }
 
 .related-posts__title {
   color: #929497;
@@ -13450,10 +13438,10 @@ table.responsive tr:nth-of-type(even) {
   color: #404041; }
   .top-three__desc h3 {
     margin: 0;
-    font-size: 1.42383em;
+    font-size: 1em;
     line-height: 1.2; }
   .top-three__feature--primary .top-three__desc h3 {
-    font-size: 1.80203em; }
+    font-size: 1em; }
   .top-three__desc time {
     font-size: 1em;
     text-transform: uppercase;
@@ -13469,9 +13457,9 @@ table.responsive tr:nth-of-type(even) {
       left: 0;
       bottom: 0; }
       .top-three__desc h3 {
-        font-size: 1.125em; }
+        font-size: 1em; }
       .top-three__feature--primary .top-three__desc h3 {
-        font-size: 2.02729em; }
+        font-size: 1em; }
       .top-three__desc time {
         font-size: 0.88889em; } }
 
