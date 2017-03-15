@@ -178,7 +178,7 @@ category: Components - Shows
 */
 
 .show__header {
-	background-color: rgb(86, 16, 21);
+	background-color: $cardinal;
 	background-repeat: repeat;
 	position: relative;
 	padding: 24px 1em;
@@ -196,35 +196,35 @@ category: Components - Shows
 		background-size: 100% auto;
 		background-size: cover;
 		background-position: center;
+	}
 
-		&:before {
-			position: absolute;
-			display: block;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			background-image: linear-gradient(to bottom, rgba(0, 0, 0, .85), rgba(0, 0, 0, .85));
-			background-image: -moz-linear-gradient(top, rgba(0, 0, 0, .85), rgba(0, 0, 0, .85));
-			background-image: -o-linear-gradient(top, rgba(0, 0, 0, .85), rgba(0, 0, 0, .85));
-			background-image: -ms-linear-gradient(top, rgba(0, 0, 0, .85), rgba(0, 0, 0, .85));
-			background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, .85)), to(rgba(86, 16, 21, .85)));
-			background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, .85), rgba(0, 0, 0, .85));
-			content: " ";
-		}
+	&:before {
+		position: absolute;
+		display: block;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-image: linear-gradient(to bottom, rgba(0, 0, 0, .6), rgba(0, 0, 0, .85));
+		background-image: -moz-linear-gradient(top, rgba(0, 0, 0, .6), rgba(0, 0, 0, .85));
+		background-image: -o-linear-gradient(top, rgba(0, 0, 0, .6), rgba(0, 0, 0, .85));
+		background-image: -ms-linear-gradient(top, rgba(0, 0, 0, .6), rgba(0, 0, 0, .85));
+		background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, .6)), to(rgba(86, 16, 21, .85)));
+		background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, .6), rgba(0, 0, 0, .85));
+		content: " ";
 	}
 
 	> div {
 		vertical-align: middle;
 	}
 
-	@include bp(large) {
+	/*@include bp(large) {
 		background-image: url('../../images/featured-bg.png');
 		background-position: center center;
 		background-color: $featured-primary-bg;
 		background-size: auto 65%;
 
-	}
+	}*/
 }
 
 .show__header-content {
@@ -285,7 +285,7 @@ category: Components - Shows
 		text-align: center;
 
 		a {
-			font-size: ms(0);
+			font-size: ms(-1);
 			font-weight: bold;
 			padding: 5px;
 			border-radius: 20px;
@@ -610,12 +610,12 @@ category: Components - Shows
 
 	h3 {
 		margin: 0;
-		font-size: ms(3);
+		font-size: ms(1);
 		line-height: 1.2;
 	}
 
 	.show__feature--primary & h3 {
-		font-size: ms(5);
+		font-size: ms(1);
 	}
 
 	time {
@@ -640,15 +640,16 @@ category: Components - Shows
 		bottom: 0;
 
 		h3 {
-			font-size: ms(1);
+			font-size: ms(-2);
 		}
 
 		.show__feature--primary & h3 {
-			font-size: ms(6);
+			font-size: ms(1);
 		}
 
 		time {
 			font-size: ms(-1);
+			display: none;
 		}
 	}
 }

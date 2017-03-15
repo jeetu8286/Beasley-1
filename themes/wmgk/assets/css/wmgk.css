@@ -8387,7 +8387,7 @@ category: Components - Shows
 ```
 */
 .show__header {
-  background-color: #561015;
+  background-color: #d22228;
   background-repeat: repeat;
   position: relative;
   padding: 24px 1em;
@@ -8396,6 +8396,13 @@ category: Components - Shows
   color: #ffffff;
   /*@include bp(medium) {
 		width: calc( 100% + 320px );
+	}*/
+  /*@include bp(large) {
+		background-image: url('../../images/featured-bg.png');
+		background-position: center center;
+		background-color: $featured-primary-bg;
+		background-size: auto 65%;
+
 	}*/ }
   .show__header:before, .show__header:after {
     content: " ";
@@ -8407,28 +8414,22 @@ category: Components - Shows
     background-size: 100% auto;
     background-size: cover;
     background-position: center; }
-    .show__header.has-thumbnail:before {
-      position: absolute;
-      display: block;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85));
-      background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85));
-      background-image: -o-linear-gradient(top, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85));
-      background-image: -ms-linear-gradient(top, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85));
-      background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.85)), to(rgba(86, 16, 21, 0.85)));
-      background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85));
-      content: " "; }
+  .show__header:before {
+    position: absolute;
+    display: block;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.85));
+    background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.85));
+    background-image: -o-linear-gradient(top, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.85));
+    background-image: -ms-linear-gradient(top, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.85));
+    background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.6)), to(rgba(86, 16, 21, 0.85)));
+    background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.85));
+    content: " "; }
   .show__header > div {
     vertical-align: middle; }
-  @media screen and (min-width: 970px) {
-    .show__header {
-      background-image: url("../../images/featured-bg.png");
-      background-position: center center;
-      background-color: #561015;
-      background-size: auto 65%; } }
 
 @media screen and (min-width: 970px) {
   .show__header-content {
@@ -8491,7 +8492,7 @@ category: Components - Shows
     display: inline-block;
     text-align: center; }
     .show__nav li a {
-      font-size: 1em;
+      font-size: 0.88889em;
       font-weight: bold;
       padding: 5px;
       border-radius: 20px;
@@ -8732,10 +8733,10 @@ category: Components - Shows
   color: #404041; }
   .show__feature--desc h3 {
     margin: 0;
-    font-size: 1.42383em;
+    font-size: 1.125em;
     line-height: 1.2; }
   .show__feature--primary .show__feature--desc h3 {
-    font-size: 1.80203em; }
+    font-size: 1.125em; }
   .show__feature--desc time {
     font-size: 1em;
     text-transform: uppercase;
@@ -8751,11 +8752,12 @@ category: Components - Shows
       left: 0;
       bottom: 0; }
       .show__feature--desc h3 {
-        font-size: 1.125em; }
+        font-size: 0.79012em; }
       .show__feature--primary .show__feature--desc h3 {
-        font-size: 2.02729em; }
+        font-size: 1.125em; }
       .show__feature--desc time {
-        font-size: 0.88889em; } }
+        font-size: 0.88889em;
+        display: none; } }
 
 /*doc
 ---
@@ -13521,6 +13523,20 @@ table.responsive tr:nth-of-type(even) {
       .widget_triton_song_history .td-song-history__song__picture img {
         margin-left: 0; } }
 
+article > .triton-song-history {
+  margin-bottom: 2em; }
+  article > .triton-song-history .td-song-history__header {
+    background: none;
+    line-height: inherit;
+    height: auto;
+    padding: inherit; }
+    article > .triton-song-history .td-song-history__header .td-song-history__header__title {
+      display: none; }
+  article > .triton-song-history .td-song-history__song__buy {
+    display: none; }
+  article > .triton-song-history .td-song-history__song__picture img {
+    margin-left: 0; }
+
 /**
  * Single Page Styles
  */
@@ -13590,6 +13606,9 @@ table.responsive tr:nth-of-type(even) {
 .home__highlights {
   background: url("../../images/pattern2.png");
   border-bottom-color: #d0d2d3; }
+
+.single-show .home__highlights {
+  background: none; }
 
 .live-links {
   border-top: 0; }
@@ -13773,30 +13792,5 @@ table.responsive tr:nth-of-type(even) {
     background-image: url("../../images/gtr.png"), linear-gradient(to left, #7e080f 0, #c02925 100%);
     background-repeat: no-repeat;
     background-position: right; } }
-
-.live-link__type--show {
-  border-bottom-color: white;
-  background: none; }
-
-.live-links--more:before {
-  background: -moz-linear-gradient(top, rgba(255, 255, 255, 0) 0%, #f2f2f2 100%);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(255, 255, 255, 0), color-stop(100%, #f2f2f2)));
-  background: -webkit-linear-gradient(top, rgba(255, 255, 255, 0) 0%, #f2f2f2 100%);
-  background: -o-linear-gradient(top, rgba(255, 255, 255, 0) 0%, #f2f2f2 100%);
-  background: -ms-linear-gradient(top, rgba(255, 255, 255, 0) 0%, #f2f2f2 100%);
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, #f2f2f2 100%); }
-
-.live-player--open__btn:hover, .live-player--open__btn:active, .live-player--open__btn:focus {
-  background-color: #d0d2d3; }
-
-.show__header.has-thumbnail:before {
-  position: absolute;
-  display: none;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: none;
-  content: " "; }
 
 /*# sourceMappingURL=wmgk.css.map */

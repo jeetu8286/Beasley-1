@@ -71,9 +71,14 @@
     border: 1px solid #eee;
     background: url("../../images/pattern1.png");
 }
+
 .home__highlights {
     background: url("../../images/pattern2.png");
     border-bottom-color: #d0d2d3;
+}
+
+.single-show .home__highlights {
+    background: none;
 }
 
 .live-links {

@@ -22,7 +22,7 @@
 			while ( $hp_comm_query->have_posts() && $count < 2 ) : $hp_comm_query->the_post();
 				$count++; ?>
 				<div class="highlights__community--item">
-					<a href="<?php the_permalink(); ?>">
+					<a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>">
 
 						<div class="highlights__community--thumb" style='background-image: url(<?php gm_post_thumbnail_url( 'gmr-featured-secondary', null, true ) ?>)'></div>
 
@@ -36,7 +36,7 @@
 		</div>
 			<div class="highlights__community--column">
 			<?php while( $hp_comm_query->have_posts() && $count >= 2 ) : $hp_comm_query->the_post(); ?>
-				<div class="highlights__community--item">
+				<div class="highlights__community--item" title="<?php the_title(); ?>">
 					<a href="<?php the_permalink(); ?>">
 
 						<div class="highlights__community--thumb" style='background-image: url(<?php gm_post_thumbnail_url( 'gmr-featured-secondary', null, true ) ?>)'></div>
