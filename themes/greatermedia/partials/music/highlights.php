@@ -41,9 +41,7 @@
 	while( $events_query->have_posts() ) : $events_query->the_post(); ?>
 		<div class="highlights__event--item">
 			<a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>">
-				<?php if ( has_post_thumbnail() ) : ?>
-					<div class="highlights__event--thumb" style='background-image: url(<?php gm_post_thumbnail_url( 'gmr-featured-secondary', null, true ) ?>)'></div>
-				<?php endif; ?>
+				<div class="highlights__event--thumb" style='background-image: url(<?php gm_post_thumbnail_url( 'gmr-featured-secondary', null, true ) ?>)'></div>
 
 				<div class="highlights__event--meta">
 					<h3 class="highlights__event--title"><?php the_title(); ?></h3>
