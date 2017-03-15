@@ -8,10 +8,6 @@
 	font-weight: bold;
 	text-align: left;
 	color: $secondary-heading;
-	
-	@include bp(medium) {
-		font-size: ms(2);
-	}
 
 	#tribe-events & {
 		margin-bottom: 30px;
@@ -53,7 +49,7 @@
 
 .ad__in-loop {
 	margin: $base-line-height 0;
-	clear: both; 
+	clear: both;
 }
 
 .entry__thumbnail {

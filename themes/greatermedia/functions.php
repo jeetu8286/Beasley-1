@@ -20,7 +20,7 @@
 if ( defined( 'GMR_PARENT_ENV' ) && 'dev' == GMR_PARENT_ENV ) {
 	define( 'GREATERMEDIA_VERSION', time() );
 } else {
-	define( 'GREATERMEDIA_VERSION', '2.0.3' ); /* Version bump by Steve 03/14/2017 */
+	define( 'GREATERMEDIA_VERSION', '2.0.4' ); /* Version bump by Steve 03/15/2017 */
 }
 
 add_theme_support( 'homepage-curation' );
@@ -1084,7 +1084,7 @@ function greatermedia_archive_title() {
 	echo '<h2 class="content__heading">';
 
 	if ( is_category() ) :
-		echo 'Browsing articles labeled "' . $current_category . '"';
+		echo $current_category;
 	elseif ( is_tag() ) :
 		echo 'Browsing articles tagged "';
 		single_tag_title();

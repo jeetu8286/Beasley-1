@@ -1693,9 +1693,6 @@ blockquote p {
   font-weight: bold;
   text-align: left;
   color: #929497; }
-  @media screen and (min-width: 768px) {
-    .content__heading, .sponsors__heading {
-      font-size: 1.265625em; } }
   #tribe-events .content__heading, #tribe-events .sponsors__heading {
     margin-bottom: 30px; }
   .single-podcast .content__heading, .single-podcast .sponsors__heading {
@@ -2205,7 +2202,7 @@ a.featured__article--link {
   overflow: hidden;
   background-color: #270e10;
   position: relative;
-  padding-top: 35.71%;
+  padding-top: 50.45%;
   background-size: 100%;
   background-size: cover;
   background-position: center center; }
@@ -5341,6 +5338,11 @@ a.posts-pagination--load-more {
         flex-wrap: nowrap;
         padding: 10px 20px; } }
 
+.headroom--not-top .audio-interface {
+  -webkit-box-shadow: -1px 2px 5px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: -1px 2px 5px 0px rgba(0, 0, 0, 0.75);
+  box-shadow: -1px 2px 5px 0px rgba(0, 0, 0, 0.75); }
+
 .audio-stream {
   color: #404041;
   order: 2;
@@ -7256,7 +7258,8 @@ div.widget-recent-contests {
           font-size: 14px;
           font-weight: bold;
           line-height: 21px;
-          color: #191919; }
+          color: #191919;
+          text-transform: uppercase; }
           div.widget-recent-contests ul li .widget-recent-contests__meta img {
             width: 45px;
             height: 45px;
@@ -9198,7 +9201,8 @@ category: Components - Shows
       display: block;
       margin: 0 0 1em;
       font-size: 1em;
-      font-weight: normal; } }
+      font-weight: 600;
+      text-transform: uppercase; } }
   @media screen and (min-width: 768px) {
     .news-site .widget--live-player__title {
       margin-bottom: 0;
@@ -13527,7 +13531,9 @@ table.responsive tr:nth-of-type(even) {
       .widget_triton_song_history .td-song-history__song__buy {
         display: none; }
       .widget_triton_song_history .td-song-history__song__picture img {
-        margin-left: 0; } }
+        margin-left: 0; }
+      .widget_triton_song_history .td-song-history__song__infos {
+        text-transform: uppercase; } }
 
 article > .triton-song-history {
   margin-bottom: 2em; }

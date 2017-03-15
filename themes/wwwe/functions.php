@@ -13,7 +13,7 @@
  */
 
  // Useful global constants
-define( 'WWWE_VERSION', '0.1.1' ); /* Version bump by Steve 03/14/2017 */
+define( 'WWWE_VERSION', '0.1.2' ); /* Version bump by Steve 03/15/2017 */
 
  /**
   * Set up theme defaults and register supported WordPress features.

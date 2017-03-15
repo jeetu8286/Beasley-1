@@ -1084,7 +1084,7 @@ h6, .h6 {
 .section-header {
   font-weight: 200;
   font-size: 1.25em;
-  color: #929497;
+  color: #404041;
   margin-top: 0;
   margin-bottom: 20px; }
   @media screen and (min-width: 768px) {
@@ -1692,10 +1692,7 @@ blockquote p {
   font-size: 2.0272865295em;
   font-weight: bold;
   text-align: left;
-  color: #929497; }
-  @media screen and (min-width: 768px) {
-    .content__heading, .sponsors__heading {
-      font-size: 1.265625em; } }
+  color: #404041; }
   #tribe-events .content__heading, #tribe-events .sponsors__heading {
     margin-bottom: 30px; }
   .single-podcast .content__heading, .single-podcast .sponsors__heading {
@@ -2205,7 +2202,7 @@ a.featured__article--link {
   overflow: hidden;
   background-color: #ffffff;
   position: relative;
-  padding-top: 35.71%;
+  padding-top: 50.45%;
   background-size: 100%;
   background-size: cover;
   background-position: center center; }
@@ -2760,7 +2757,7 @@ Community Highlights and Events
   line-height: 1;
   font-size: 1.125em;
   font-weight: lighter;
-  color: #929497;
+  color: #404041;
   vertical-align: top; }
   .news-site .highlights__heading {
     padding: .35em 0 .6em;
@@ -3939,7 +3936,7 @@ Link posts contain a link to an external site. They can also optionally have a f
 .entry__date {
   font-size: 0.7901234568em;
   font-weight: lighter;
-  color: #929497;
+  color: #404041;
   text-transform: uppercase; }
 
 .entry__show {
@@ -4001,7 +3998,7 @@ Link posts contain a link to an external site. They can also optionally have a f
   display: inline-block;
   line-height: 1;
   font-weight: bold;
-  color: #929497; }
+  color: #404041; }
 
 .entry__footer--category:hover, .entry__footer--category:focus, .entry__footer--category:active {
   color: #00a09b; }
@@ -4792,7 +4789,7 @@ a.posts-pagination--load-more {
 .entry2__date {
   font-size: 1em;
   font-weight: lighter;
-  color: #929497;
+  color: #404041;
   text-transform: uppercase;
   display: block;
   margin: -0.3em 0 0.5em; }
@@ -4864,7 +4861,7 @@ a.posts-pagination--load-more {
   line-height: 1;
   font-weight: bold;
   font-size: 1.125em;
-  color: #929497; }
+  color: #404041; }
   @media screen and (min-width: 768px) {
     .entry2__footer--category:link, .entry2__footer--category:visited {
       font-size: 1em; } }
@@ -5340,6 +5337,11 @@ a.posts-pagination--load-more {
       .audio-interface .audio-interface__container {
         flex-wrap: nowrap;
         padding: 10px 20px; } }
+
+.headroom--not-top .audio-interface {
+  -webkit-box-shadow: -1px 2px 5px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: -1px 2px 5px 0px rgba(0, 0, 0, 0.75);
+  box-shadow: -1px 2px 5px 0px rgba(0, 0, 0, 0.75); }
 
 .audio-stream {
   color: #404041;
@@ -6632,7 +6634,7 @@ category: Components - Ads
   font-size: 0.8888888889em;
   font-weight: normal;
   text-transform: uppercase;
-  color: #929497; }
+  color: #404041; }
 
 .contest__sponsor {
   display: inline-block;
@@ -7256,7 +7258,8 @@ div.widget-recent-contests {
           font-size: 14px;
           font-weight: bold;
           line-height: 21px;
-          color: #191919; }
+          color: #191919;
+          text-transform: uppercase; }
           div.widget-recent-contests ul li .widget-recent-contests__meta img {
             width: 45px;
             height: 45px;
@@ -8318,7 +8321,7 @@ a.podcast__subscribe {
 
 .single-show .highlights__heading {
   font-size: 1.125em;
-  color: #929497; }
+  color: #404041; }
 
 .single-show .highlights__event--item {
   background-color: #F1F1F3; }
@@ -9198,7 +9201,8 @@ category: Components - Shows
       display: block;
       margin: 0 0 1em;
       font-size: 1em;
-      font-weight: normal; } }
+      font-weight: 600;
+      text-transform: uppercase; } }
   @media screen and (min-width: 768px) {
     .news-site .widget--live-player__title {
       margin-bottom: 0;
@@ -9302,7 +9306,7 @@ a.social-share-link {
   margin: 0; }
 
 .social__link a, .social__link a:visited {
-  color: #929497; }
+  color: #404041; }
 
 .social__link a:hover, .social__link a:focus {
   color: #d0d2d3; }
@@ -9393,15 +9397,15 @@ a.social-share-link {
   border: none !important;
   outline: none;
   font-size: 1em;
-  color: #929497; }
+  color: #404041; }
   .header__search--form .header__search--input::-webkit-input-placeholder {
-    color: #929497; }
+    color: #404041; }
   .header__search--form .header__search--input::-moz-placeholder {
-    color: #929497; }
+    color: #404041; }
   .header__search--form .header__search--input:-moz-placeholder {
-    color: #929497; }
+    color: #404041; }
   .header__search--form .header__search--input:-ms-input-placeholder {
-    color: #929497; }
+    color: #404041; }
   @media screen and (min-width: 970px) {
     .header__search--form .header__search--input {
       height: 100px;
@@ -9427,7 +9431,7 @@ a.social-share-link {
   border: none;
   width: 14px;
   background-color: transparent;
-  color: #929497;
+  color: #404041;
   margin-right: 10px;
   padding: 0; }
   .header__search--form .header__search--submit:hover, .header__search--form .header__search--submit:focus,
@@ -9562,7 +9566,7 @@ a.social-share-link {
   width: 19.432772236%;
   padding: 5px 0;
   font-size: 0.8888888889em;
-  color: #929497; }
+  color: #404041; }
   .search__result--date:last-child {
     margin-right: 0; }
   @media screen and (min-width: 480px) {
@@ -11206,7 +11210,7 @@ category: Components
 */
 input[type=text], input[type=number], input[type=date], input[type=time], input[type=url], input[type=email], textarea, fieldset input[type=text], fieldset input[type=number] {
   border: none;
-  background: #929497;
+  background: #404041;
   margin-bottom: 1em;
   display: block;
   padding: 0.25em 0.5em; }
@@ -11233,7 +11237,7 @@ fieldset {
 select {
   -webkit-appeaerance: none;
   border-radius: none;
-  background: #929497;
+  background: #404041;
   border: none;
   width: 100%; }
 
@@ -11326,7 +11330,7 @@ select {
 .show__live-links .group-date {
   font-size: 3.2473210255em;
   font-weight: 700;
-  color: #929497;
+  color: #404041;
   /*@include bp(larger) {
 			font-size: ms(10);
 		}*/ }
@@ -12976,7 +12980,7 @@ category: Components
 .songs__group--date {
   font-size: 3.2473210255em;
   font-weight: 700;
-  color: #929497; }
+  color: #404041; }
   @media screen and (min-width: 970px) {
     .songs__group--date {
       float: left;
@@ -13527,7 +13531,9 @@ table.responsive tr:nth-of-type(even) {
       .widget_triton_song_history .td-song-history__song__buy {
         display: none; }
       .widget_triton_song_history .td-song-history__song__picture img {
-        margin-left: 0; } }
+        margin-left: 0; }
+      .widget_triton_song_history .td-song-history__song__infos {
+        text-transform: uppercase; } }
 
 article > .triton-song-history {
   margin-bottom: 2em; }
