@@ -22,12 +22,12 @@ category: Components - Article
 
 // Layout
 .related-posts {
-	
+
 	// No stupid grid system is the boss of me!
 	@include bp(small) {
-		margin-right: -2%;	 
+		margin-right: -2%;
 	}
-	
+
 	.related-post {
 		@include span-columns(3 of 6);
 		width: 48%;
@@ -38,25 +38,14 @@ category: Components - Article
 			display: block;
 		}
 
-		// Select all, but in a way that they won't get selected if nth-child doesn't work anyway. 
+		// Select all, but in a way that they won't get selected if nth-child doesn't work anyway.
 		&:nth-child(n+0) {
 			display: none;
 		}
-		
-		// Select first four. 
+
+		// Select first four.
 		&:nth-child(-n+4) {
 			display: block;
-		}
-		
-		@include bp(large) {
-			@include span-columns(3 of 12);
-			width: 23%; 
-			margin-right: 2%;
-			 
-			// Select first eight.
-			&:nth-child(-n+8) {
-				display: block; 
-			}
 		}
 	}
 }
@@ -67,7 +56,7 @@ category: Components - Article
 	}
 
 .related-post {
-	display: block; 
+	display: block;
 	color: $color-text-white;
 	margin-bottom: 1em;
 
@@ -87,9 +76,9 @@ category: Components - Article
 		.thumbnail {
 			background-position: center center;
 			background-size: 100%;
-			background-size: cover; 
+			background-size: cover;
 			padding-bottom: 66.666%;
-            background-repeat: no-repeat; 
+            background-repeat: no-repeat;
 		}
 	}
 
@@ -129,7 +118,7 @@ category: Components - Article
 			margin-top: 1.5em;
 		}
 	}
-	
+
 	// Hover state
 	.related-post:hover {
 		.related-post__title,
@@ -137,4 +126,3 @@ category: Components - Article
 			color: $color-text-yellow;
 		}
 	}
-	
