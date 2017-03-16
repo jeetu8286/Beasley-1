@@ -14345,6 +14345,9 @@ a:hover .highlights__event--date, a:hover .highlights__event--title {
 .audio-expand {
   background-color: #cc0000 !important; }
 
+.header__search--form .header__search--input {
+  color: #000 !important; }
+
 .live-link__type--show {
   border-bottom-color: white;
   background: none; }

@@ -14394,6 +14394,9 @@ a:hover .highlights__event--date, a:hover .highlights__event--title {
 #wrif-social-stream {
   border: solid 1px #e5e5e5; }
 
+.header__search--form .header__search--input {
+  color: #000 !important; }
+
 .live-link__type--show {
   border-bottom-color: white;
   background: none; }
