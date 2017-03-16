@@ -14077,16 +14077,6 @@ a.entry2__category:focus {
   background-color: #db261d !important;
   border-color: #db261d !important; }
 
-.show__header.has-thumbnail:before {
-  position: absolute;
-  display: none;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: none;
-  content: " "; }
-
 .shows__schedule--now {
   border-color: #db261d; }
 
@@ -14106,16 +14096,6 @@ a.entry2__category:focus {
 
 .error__title--span {
   color: #db261d; }
-
-.show__header.has-thumbnail:before {
-  position: absolute;
-  display: none;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: none;
-  content: " "; }
 
 .shows__schedule--now {
   border-color: #db261d; }
