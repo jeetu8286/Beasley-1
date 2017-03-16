@@ -10,6 +10,11 @@ a:hover .highlights__community--title
 	color: #4a67c4;
 }
 
+
+.show__header {
+	background-color: #4a67c4;
+}
+
 @include bp(large) {
 
     .main {
