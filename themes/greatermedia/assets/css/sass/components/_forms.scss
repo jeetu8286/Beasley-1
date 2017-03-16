@@ -299,7 +299,8 @@ category: Components
 
 %form-field {
 	border: none;
-	background: $secondary-heading;
+	background: $extra-light-gray;
+	border: 1px solid $light-gray;
 	margin-bottom: 1em;
 	display: block;
 	padding: 0.25em 0.5em;
@@ -338,7 +339,7 @@ fieldset {
 select {
 	-webkit-appeaerance: none;
 	border-radius: none;
-	background: $secondary-heading;
-	border: none;
+	background: $extra-light-gray;
+	border: 1px solid $light-gray;
 	width: 100%;
 }

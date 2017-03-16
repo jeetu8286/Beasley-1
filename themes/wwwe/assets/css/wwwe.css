@@ -8702,7 +8702,7 @@ category: Components - Shows
 ```
 */
 .show__header {
-  background-color: #d22228;
+  background-color: #ffffff;
   background-repeat: repeat;
   position: relative;
   padding: 24px 1em;
@@ -8877,7 +8877,7 @@ category: Components - Shows
   .show__meta em {
     display: block;
     line-height: 1.5;
-    font-weight: 200; }
+    font-weight: 400; }
   .show__meta .social-share-link {
     color: #ffffff;
     border: 1px solid #ffffff;
@@ -11516,7 +11516,8 @@ category: Components
 */
 input[type=text], input[type=number], input[type=date], input[type=time], input[type=url], input[type=email], textarea, fieldset input[type=text], fieldset input[type=number] {
   border: none;
-  background: #404041;
+  background: #f1f1f3;
+  border: 1px solid #d0d2d3;
   margin-bottom: 1em;
   display: block;
   padding: 0.25em 0.5em; }
@@ -11543,8 +11544,8 @@ fieldset {
 select {
   -webkit-appeaerance: none;
   border-radius: none;
-  background: #404041;
-  border: none;
+  background: #f1f1f3;
+  border: 1px solid #d0d2d3;
   width: 100%; }
 
 .ui-menu {
@@ -13868,6 +13869,9 @@ article > .triton-song-history {
 .featured__content--block:hover .featured__content--title,
 a:hover .highlights__community--title {
   color: #e6050d; }
+
+.show__header {
+  background-color: #e6050d; }
 
 @media screen and (min-width: 970px) {
   .main {
