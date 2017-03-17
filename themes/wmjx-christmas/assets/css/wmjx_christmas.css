@@ -13460,6 +13460,11 @@ category: Components
   background-color: #000000;
   font-size: 0.8888888889em;
   color: #ffffff; }
+  .slideshow .image__attribution {
+    background-color: transparent;
+    margin: 0;
+    padding: 0;
+    position: static; }
   .image__attribution a, .image__attribution a:visited {
     color: #d0d2d3;
     text-decoration: underline; }
