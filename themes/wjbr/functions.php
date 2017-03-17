@@ -13,7 +13,7 @@
  */
 
  // Useful global constants
-define( 'WJBR_VERSION', '0.1.4' ); /* Version bump by Steve 03/16/2017 */
+define( 'WJBR_VERSION', '0.1.5' ); /* Version bump by Steve 03/17/2017 */
 
  /**
   * Set up theme defaults and register supported WordPress features.
