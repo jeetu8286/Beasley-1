@@ -7,6 +7,13 @@
 	background-color: $color-text-black;
 	font-size: ms(-1);
 	color: $color-text-white;
+
+	.slideshow & {
+		background-color: transparent;
+		margin: 0;
+		padding: 0;
+		position: static;
+	}
 	
 	a, a:visited {
 		color: $secondary-link;

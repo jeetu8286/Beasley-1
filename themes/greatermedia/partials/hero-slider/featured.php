@@ -15,12 +15,12 @@ if ( $hp_featured_query->have_posts() ) : ?>
 				<a href="<?php the_permalink(); ?>">
 					<div class="slide-content">
 						<div class="featured__article--image" style="background-image: url(<?php gm_post_thumbnail_url( 'gmr-featured-primary', null, true ); ?>)">
-							<?php image_attribution(); ?>
 						</div>
 						<div class="featured__article--content">
 							<div class="featured__article--heading">
 								<?php the_title(); ?>
 							</div>
+							<?php image_attribution(); ?>
 						</div>
 					</div>
 				</a>
