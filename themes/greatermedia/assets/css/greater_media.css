@@ -9688,7 +9688,7 @@ a.social-share-link {
   border: none !important;
   outline: none;
   font-size: 1em;
-  color: #929497; }
+  color: #000000; }
   .header__search--form .header__search--input::-webkit-input-placeholder {
     color: #929497; }
   .header__search--form .header__search--input::-moz-placeholder {
@@ -13440,6 +13440,11 @@ category: Components
   background-color: #000000;
   font-size: 0.88889em;
   color: #ffffff; }
+  .slideshow .image__attribution {
+    background-color: transparent;
+    margin: 0;
+    padding: 0;
+    position: static; }
   .image__attribution a, .image__attribution a:visited {
     color: #191919;
     text-decoration: underline; }
