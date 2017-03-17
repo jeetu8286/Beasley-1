@@ -299,10 +299,13 @@
 	 * It's a bit heavy-handed (universal selector and all), but seems to do the trick
 	 *
 	 * @see https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Block_formatting_context
+	 *
+	 * Steve commenting out on 3/16/2017 as we no longer have an ad to flow around
+	 * in our new template design.
 	 */
-	& > * {
-		overflow: auto;
-	}
+	 // & > * {
+	 //	  overflow: auto;
+	 // }*/
 }
 
 .article__comments {
