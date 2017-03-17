@@ -5261,6 +5261,9 @@ a.posts-pagination--load-more {
 	 * It's a bit heavy-handed (universal selector and all), but seems to do the trick
 	 *
 	 * @see https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Block_formatting_context
+	 *
+	 * Steve commenting out on 3/16/2017 as we no longer have an ad to flow around
+	 * in our new template design.
 	 */ }
   .article__content h1, .article__content h2, .article__content h3, .article__content h4, .article__content h5, .article__content h6 {
     margin: 25.6px 0;
@@ -5282,8 +5285,6 @@ a.posts-pagination--load-more {
     line-height: 1.6; }
   .article__content .livefyre-poll {
     margin: 1.5em 0; }
-  .article__content > * {
-    overflow: auto; }
 
 .article__comments {
   margin: 3em 0; }
