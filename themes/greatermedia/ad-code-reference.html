@@ -1,0 +1,88 @@
+<!-- Interstitial -->
+<style type="text/css">
+	.interstitial__ad {
+		position: fixed;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		z-index: 110000;
+		background: rgba(0, 0, 0, .9);
+	}
+
+	.interstitial__top {
+		background: #ffffff;
+		box-sizing: border-box;
+		left: 0;
+		padding: 20px;
+		position: absolute;
+		right: 0;
+		text-align: right;
+		top: 0;
+		width: 100%;
+	}
+
+	.interstitial__close {
+		-moz-appearance: none;
+		-webkit-appearance: none;
+		appearance: none;
+		background: transparent;
+		border: 0 none;
+		color: #000000;
+		cursor: pointer;
+		display: inline-block;
+		font-family: Helvetica, Arial, sans-serif;
+		font-size: 15px;
+		font-weight: bold;
+		margin: 0;
+		padding: 0;
+		text-decoration: underline;
+	}
+
+	.interstitial__image {
+		left: 50%;
+		position: absolute;
+		top: 50%;
+		transform: translate(-50%, -50%);
+	}
+</style>
+
+<div class="interstitial__ad">
+	<div class="interstitial__top">
+		<button class="interstitial__close">Skip the ad &rarr;</button>
+	</div>
+	<div class="interstitial__image">
+		<!-- START ad clickthrough and creative -->
+		<a href="%%CLICK_URL_UNESC%%[%ClickthroughURL%]" target="_blank"><img src="%%VIEW_URL_UNESC%%[%Imagefile%]" width="[%Creativewidth%]" height="[%Creativeheight%]" border="0" alt="Advertisement"/></a>
+		<!-- END ad clickthrough and creative -->
+	</div>
+</div>
+
+<script type="text/javascript">
+	var parentBody = window.top.document.body,
+		parentAdDiv = window.top.document.getElementById( 'div-gpt-ad-1484200509775-3' ),
+		iframeDiv = parentAdDiv.getElementsByTagName('div')[0],
+		iframe = iframeDiv.getElementsByTagName('iframe')[0],
+		closeButton = document.getElementsByClassName( 'interstitial__close' )[0];
+
+	// Show the ad.
+	parentAdDiv.setAttribute( 'style', '' );
+	parentBody.style.overflow = 'hidden';
+
+	// Set styles of iframe and div.
+	var cssStyles = 'bottom: 0; height: 100%; left: 0; position: fixed; right: 0; top: 0; width: 100%; z-index: 9000003;';
+	iframeDiv.style.cssText = cssStyles;
+	iframe.style.cssText = cssStyles;
+
+	function closeInterstitial() {
+		parentBody.style.overflow = 'auto';
+		parentAdDiv.style.display = 'none';
+	}
+
+	// Click close button.
+	closeButton.onclick = closeInterstitial;
+
+	// Close timeout.
+	var displaySeconds = parseInt( '[%DisplaySeconds%]' ) * 1000,
+		displayTimeout = setTimeout( closeInterstitial, displaySeconds );
+</script>
