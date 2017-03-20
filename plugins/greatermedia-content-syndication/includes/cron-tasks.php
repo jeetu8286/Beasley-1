@@ -24,9 +24,11 @@ class CronTasks {
 	 * Runs actual syndication
 	 */
 	public static function run_syndication() {
-		$active_subscriptions = BlogData::GetActiveSubscriptions();
-		foreach ( $active_subscriptions as $active_subscription ) {
-			wp_async_task_add( 'gmr_do_syndication', array( 'subscription' => $active_subscription->ID ), 'high' );
+		if ( function_exists( 'wp_async_task_add' ) ) {
+			$active_subscriptions = BlogData::GetActiveSubscriptions();
+			foreach ( $active_subscriptions as $active_subscription ) {
+				wp_async_task_add( 'gmr_do_syndication', array( 'subscription' => $active_subscription->ID ), 'high' );
+			}
 		}
 	}
 
@@ -86,7 +88,7 @@ class CronTasks {
 
 		return $time_string;
 	}
-	
+
 }
 
 CronTasks::init();
