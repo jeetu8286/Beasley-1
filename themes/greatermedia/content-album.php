@@ -34,6 +34,53 @@
 				<section class="entry-content" itemprop="articleBody">
 					<?php the_content(); ?>
 				</section>
+				<!-- begin album galleries -->
+				<?php
+
+				// Secondary content needs to go through a filter to allow the
+				// restriction plugins to do their work
+				ob_start();
+				?>
+				<section class="inline__gallery__archive">
+
+					<div class="gallery__grid">
+
+						<?php
+
+							$gallery_content_types = array(
+								GreaterMediaGalleryCPT::GALLERY_POST_TYPE,
+								'post'
+							);
+
+							$child_galleries = array(
+								'post_type'         => $gallery_content_types,
+								'post_parent'       => $post->ID,
+								'posts_per_page'    => 16,
+								'orderby'           => 'post_date',
+								'order'             => 'DESC',
+								'paged'             => get_query_var('paged')
+							);
+
+							$gallery_query = new WP_Query( $child_galleries );
+
+							while ($gallery_query->have_posts()) : $gallery_query->the_post();
+
+								get_template_part( 'partials/gallery-grid' );
+
+							endwhile;
+
+							wp_reset_query();
+						?>
+
+					</div>
+
+				</section>
+
+				<?php
+				$secondary_content = ob_get_clean();
+				echo apply_filters( 'the_secondary_content', $secondary_content );
+				?>
+				<!-- end galleries -->
 			</article>
 		</section>
 
@@ -45,50 +92,6 @@
 		wp_reset_query();
 	?>
 
-	<?php
 
-	// Secondary content needs to go through a filter to allow the
-	// restriction plugins to do their work
-	ob_start();
-	?>
-	<section class="gallery__archive">
-
-		<div class="gallery__grid">
-
-			<?php
-
-				$gallery_content_types = array(
-					GreaterMediaGalleryCPT::GALLERY_POST_TYPE,
-					'post'
-				);
-
-				$child_galleries = array(
-					'post_type'         => $gallery_content_types,
-					'post_parent'       => $post->ID,
-					'posts_per_page'    => 16,
-					'orderby'           => 'post_date',
-					'order'             => 'DESC',
-					'paged'             => get_query_var('paged')
-				);
-
-				$gallery_query = new WP_Query( $child_galleries );
-
-				while ($gallery_query->have_posts()) : $gallery_query->the_post();
-
-					get_template_part( 'partials/gallery-grid' );
-
-				endwhile;
-
-				wp_reset_query();
-			?>
-
-		</div>
-
-	</section>
-
-	<?php
-	$secondary_content = ob_get_clean();
-	echo apply_filters( 'the_secondary_content', $secondary_content );
-	?>
 
 </div>
