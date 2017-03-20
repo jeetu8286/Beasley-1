@@ -19,7 +19,7 @@
 	input[type=range] {
 		display: none;
 		padding: 0 5px;
-		width: calc(100% - 40px);
+		width: calc(100% - 32px);
 	}
 
 	&.-open input[type=range] {
@@ -40,7 +40,7 @@
 
 		&:before {
 			color: $liveplayer-color;
-			content: "\e901";
+			content: "\e900";
 			font-family: $icon-font;
 			font-style: normal;
 			font-weight: normal;
@@ -49,13 +49,24 @@
 			text-indent: 0;
 			width: 0;
 		}
+
+		&.-off:before {
+			content: "\e902";
+		}
+		&.-low:before {
+			content: "\e901";
+		}
+		&.-medium:before {
+			content: "\e903";
+		}
 	}
 	
 	.audio-volume__mute {
 		display: none;
+		width: 12px;
 
 		&:before {
-			content: "\e900";
+			content: "\e902";
 		}
 	}
 

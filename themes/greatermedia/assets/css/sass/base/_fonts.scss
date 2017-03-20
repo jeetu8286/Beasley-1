@@ -125,20 +125,17 @@ $icon-font:		'gmr-icons';
 	content: "\e60b";
 }
 
-.icon-volume:before {
-	content: "\e901";
-}
-
-.icon-volume-mute:before {
+.icon-volume-up:before {
 	content: "\e900";
 }
-
-.icon-volume-up:before {
+.icon-volume-down:before {
 	content: "\e901";
 }
-
-.icon-volume-down:before {
+.icon-volume-off:before {
 	content: "\e902";
+}
+.icon-volume-medium:before {
+	content: "\e903";
 }
 
 .icon-facebook:before {
