@@ -11,10 +11,10 @@
  * @package WNKS
  * @since 0.1.0
  */
- 
+
  // Useful global constants
-define( 'WNKS_VERSION', '0.1.0' );
- 
+define( 'WNKS_VERSION', '0.1.1' ); /* Version bump by Steve 03/17/2017 */
+
  /**
   * Set up theme defaults and register supported WordPress features.
   *
@@ -33,7 +33,7 @@ define( 'WNKS_VERSION', '0.1.0' );
 	load_theme_textdomain( 'wnks', get_stylesheet_directory_uri() . '/languages' );
  }
  add_action( 'after_setup_theme', 'wnks_setup' );
- 
+
  /**
   * Enqueue scripts and styles for front-end.
   *
@@ -43,17 +43,17 @@ define( 'WNKS_VERSION', '0.1.0' );
 	$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 
 	wp_dequeue_style( 'greatermedia' );
-	wp_deregister_style( 'greatermedia' );	
+	wp_deregister_style( 'greatermedia' );
 	wp_enqueue_style( 'wnks', get_stylesheet_directory_uri() . "/assets/css/wnks{$postfix}.css", array(), WNKS_VERSION );
  }
  add_action( 'wp_enqueue_scripts', 'wnks_scripts_styles', 20 );
- 
+
  /**
   * Add humans.txt to the <head> element.
   */
  function wnks_header_meta() {
 	$humans = '<link type="text/plain" rel="author" href="' . get_stylesheet_directory_uri() . '/humans.txt" />';
-	
+
 	echo apply_filters( 'wnks_humans', $humans );
  }
  add_action( 'wp_head', 'wnks_header_meta' );
