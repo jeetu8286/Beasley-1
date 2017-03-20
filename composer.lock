@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "0bc03749f25f8306ca8fc41c0c220f89",
-    "content-hash": "930d499986505109b79f945ff0c61756",
+    "hash": "e1edab6523ffccc707b2abb899bbb152",
+    "content-hash": "4ee5249037ad6b95d5d0b96d0c9a5dbd",
     "packages": [
         {
             "name": "10up/wp-gears",
@@ -580,26 +580,6 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/rewrite-rules-inspector/"
-        },
-        {
-            "name": "wpackagist-plugin/wp-debug-logger",
-            "version": "0.1",
-            "source": {
-                "type": "svn",
-                "url": "https://plugins.svn.wordpress.org/wp-debug-logger/",
-                "reference": "trunk"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/wp-debug-logger.zip",
-                "reference": null,
-                "shasum": null
-            },
-            "require": {
-                "composer/installers": "~1.0"
-            },
-            "type": "wordpress-plugin",
-            "homepage": "https://wordpress.org/plugins/wp-debug-logger/"
         },
         {
             "name": "wpengine/phpcompat",
