@@ -13881,6 +13881,7 @@ a:hover .highlights__community--title {
 
 @media screen and (min-width: 970px) {
   .main {
+    background-image: url("../../images/wbav-wallpaper-2017.jpg");
     background-position: top center;
     background-repeat: no-repeat;
     background-color: #000000; } }
