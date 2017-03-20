@@ -665,6 +665,9 @@ category: Base - Typography
 .icon-post-format-album:before {
   content: "\e62f"; }
 
+.icon-clock:before {
+  content: "\e904"; }
+
 .icon-spin {
   -webkit-animation: icon-spin 2s infinite linear;
   animation: icon-spin 2s infinite linear; }
@@ -5942,8 +5945,12 @@ a.posts-pagination--load-more {
 .audio-more {
   color: #404041;
   display: inline-block;
-  flex: 0 0 auto;
-  margin-top: -10px; }
+  flex: 0 0 auto; }
+  .audio-more .icon-clock:before {
+    color: #404041;
+    opacity: .75; }
+  .audio-more .icon-clock:hover:before {
+    opacity: 1; }
 
 .audio-expand {
   background-color: #d9d8d8;
