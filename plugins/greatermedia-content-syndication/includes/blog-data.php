@@ -60,6 +60,14 @@ class BlogData {
 	}
 
 	public static function run( $syndication_id, $offset = 0 ) {
+		try {
+			self::_run( $syndication_id, $offset );
+		} catch ( Exception $e ) {
+			self::log( "[EXCEPTION]: %s", $e->getMessage() );
+		}
+	}
+
+	private static function _run( $syndication_id, $offset = 0 ) {
 		if ( is_null( $syndication_id ) ) {
 			return false;
 		}
@@ -825,6 +833,30 @@ class BlogData {
 		}
 
 		return $success;
+	}
+
+	/**
+	 * Adds message to the log file.
+	 *
+	 * @global array $wp_log
+	 * @param string $message
+	 */
+	public static function log( $message ) {
+		global $wp_log;
+
+		if ( defined( 'WP_DEBUG_LOG' ) ) {
+			if ( ! is_array( $wp_log ) ) {
+				$wp_log = array();
+			}
+
+			if ( empty( $wp_log['greatermedia-content-syndication'] ) ) {
+				$wp_log['greatermedia-content-syndication'] = array();
+			}
+
+			$wp_log['greatermedia-content-syndication'][] = func_num_args() > 1
+				? sprintf( $message, array_slice( func_get_args(), 1 ) )
+				: $message;
+		}
 	}
 
 }
