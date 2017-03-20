@@ -373,7 +373,7 @@ function greatermedia_display_dfp_outofpage() {
 	$dfp_ad_interstitial = get_option( 'dfp_ad_interstitial' );
 	if ( ! empty( $dfp_ad_interstitial ) ) :
 		?><!-- /<?php echo esc_html( $network_id ); ?>/<?php echo esc_html( $dfp_ad_interstitial ); ?> -->
-		<div id="div-gpt-ad-1484200509775-3" style="height:-1px; width:-1px;">
+		<div id="div-gpt-ad-1484200509775-3" style="height:0; overflow: hidden; width:0;">
 			<script type="text/javascript">
 				googletag.cmd.push(function() { googletag.display('div-gpt-ad-1484200509775-3'); });
 			</script>
