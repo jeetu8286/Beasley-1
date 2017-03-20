@@ -32,6 +32,7 @@
 		"wpackagist-plugin/query-monitor": "^2.13",
 		"wpackagist-plugin/core-control": "^1.2",
 		"wpackagist-plugin/rewrite-rules-inspector": "^1.2",
+		"wpackagist-plugin/wp-debug-logger": "^0.1",
 		"wpengine/phpcompat": "dev-master"
 	},
 	"extra": {
