@@ -46,3 +46,10 @@ function gmr_content_syndication_deactivated() {
 
 	flush_rewrite_rules();
 }
+
+// set up debug logger info
+if ( ! isset( $GLOBALS['wp_log_plugins'] ) ) {
+	$GLOBALS['wp_log_plugins'] = array();
+}
+
+$GLOBALS['wp_log_plugins'][] = 'greatermedia-content-syndication';
