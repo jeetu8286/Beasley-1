@@ -92,6 +92,7 @@ class BlogData {
 		$is_running = get_post_meta( $syndication_id, 'subscription_running', true );
 
 		if ( $is_running ) {
+			self::log( "Syndication %s is running. Halting...", $syndication_id );
 			$four_hours_ago = strtotime( '-4 hour' );
 			if ( $is_running <= $four_hours_ago ) {
 				// Delete the lock so the job can run again. We should also send an alert.
@@ -99,7 +100,9 @@ class BlogData {
 			}
 			return 0;
 		} else {
-			add_post_meta( $syndication_id, 'subscription_running', current_time( 'timestamp', 1 ) );
+			$timestamp = current_time( 'timestamp', 1 );
+			self::log( "Syndication %s is starting at %s", $syndication_id, date( DATE_ISO8601, $timestamp ) );
+			add_post_meta( $syndication_id, 'subscription_running', $timestamp );
 		}
 
 		// disable editflow influence
@@ -838,25 +841,14 @@ class BlogData {
 	/**
 	 * Adds message to the log file.
 	 *
-	 * @global array $wp_log
 	 * @param string $message
 	 */
-	public static function log( $message ) {
-		global $wp_log;
+	public static function log() {
+		$message = func_num_args() > 1
+			? vsprintf( func_get_arg( 0 ), array_slice( func_get_args(), 1 ) )
+			: func_get_arg( 0 );
 
-		if ( defined( 'WP_DEBUG_LOG' ) ) {
-			if ( ! is_array( $wp_log ) ) {
-				$wp_log = array();
-			}
-
-			if ( empty( $wp_log['greatermedia-content-syndication'] ) ) {
-				$wp_log['greatermedia-content-syndication'] = array();
-			}
-
-			$wp_log['greatermedia-content-syndication'][] = func_num_args() > 1
-				? sprintf( $message, array_slice( func_get_args(), 1 ) )
-				: $message;
-		}
+		error_log( $message );
 	}
 
 }
