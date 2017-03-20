@@ -12,6 +12,8 @@ class BlogData {
 		'collection'    =>  'single',
 	);
 
+	public static $syndication_id;
+
 	public static $content_site_id;
 
 	public static function init() {
@@ -60,56 +62,62 @@ class BlogData {
 	}
 
 	public static function run( $syndication_id, $offset = 0 ) {
+		$result = false;
+		self::$syndication_id = $syndication_id;
+
 		try {
-			self::_run( $syndication_id, $offset );
+			if ( is_null( $syndication_id ) ) {
+				return false;
+			}
+
+			// // Ensure we have a valid post.
+			// $subscription_post = get_post( $syndication_id );
+
+			// if ( ! is_a( $subscription_post, 'WP_Post' ) ) {
+			// 	return false;
+			// }
+
+			// if ( 'subscription' !== $subscription_post->post_type ) {
+			// 	return false;
+			// }
+
+			global $edit_flow, $gmrs_editflow_custom_status_disabled;
+
+			if ( ! defined( 'WP_IMPORTING' ) ) {
+				define( 'WP_IMPORTING', true );
+			}
+
+			$is_running = get_post_meta( $syndication_id, 'subscription_running', true );
+
+			if ( $is_running ) {
+				self::log( "Syndication is running. Halting..." );
+				$four_hours_ago = strtotime( '-4 hour' );
+				if ( $is_running <= $four_hours_ago ) {
+					// Delete the lock so the job can run again. We should also send an alert.
+					delete_post_meta( $syndication_id, 'subscription_running' );
+				}
+				return 0;
+			} else {
+				self::log( "Syndication has started" );
+				add_post_meta( $syndication_id, 'subscription_running', current_time( 'timestamp', 1 ) );
+			}
+
+			// disable editflow influence
+			if ( $edit_flow && ! empty( $edit_flow->custom_status ) && is_a( $edit_flow->custom_status, 'EF_Custom_Status' ) ) {
+				$gmrs_editflow_custom_status_disabled = true;
+				remove_filter( 'wp_insert_post_data', array( $edit_flow->custom_status, 'fix_custom_status_timestamp' ), 10, 2 );
+			}
+
+			$result = self::_run( $syndication_id, $offset );
 		} catch ( Exception $e ) {
 			self::log( "[EXCEPTION]: %s", $e->getMessage() );
 		}
+
+		return $result;
 	}
 
 	private static function _run( $syndication_id, $offset = 0 ) {
-		if ( is_null( $syndication_id ) ) {
-			return false;
-		}
-
-		// // Ensure we have a valid post.
-		// $subscription_post = get_post( $syndication_id );
-
-		// if ( ! is_a( $subscription_post, 'WP_Post' ) ) {
-		// 	return false;
-		// }
-
-		// if ( 'subscription' !== $subscription_post->post_type ) {
-		// 	return false;
-		// }
-
-		global $edit_flow, $gmrs_editflow_custom_status_disabled;
-
-		if ( ! defined( 'WP_IMPORTING' ) ) {
-    		define( 'WP_IMPORTING', true );
-		}
-
-		$is_running = get_post_meta( $syndication_id, 'subscription_running', true );
-
-		if ( $is_running ) {
-			self::log( "Syndication %s is running. Halting...", $syndication_id );
-			$four_hours_ago = strtotime( '-4 hour' );
-			if ( $is_running <= $four_hours_ago ) {
-				// Delete the lock so the job can run again. We should also send an alert.
-				delete_post_meta( $syndication_id, 'subscription_running' );
-			}
-			return 0;
-		} else {
-			$timestamp = current_time( 'timestamp', 1 );
-			self::log( "Syndication %s is starting at %s", $syndication_id, date( DATE_ISO8601, $timestamp ) );
-			add_post_meta( $syndication_id, 'subscription_running', $timestamp );
-		}
-
-		// disable editflow influence
-		if ( $edit_flow && ! empty( $edit_flow->custom_status ) && is_a( $edit_flow->custom_status, 'EF_Custom_Status' ) ) {
-			$gmrs_editflow_custom_status_disabled = true;
-			remove_filter( 'wp_insert_post_data', array( $edit_flow->custom_status, 'fix_custom_status_timestamp' ), 10, 2 );
-		}
+		self::log( "Start querying content site with offset = %s...", $offset );
 
 		$result = self::QueryContentSite( $syndication_id, '', '', $offset );
 		$taxonomy_names = SyndicationCPT::$support_default_tax;
@@ -123,6 +131,8 @@ class BlogData {
 
 		unset( $result['max_pages'] );
 		unset( $result['found_posts'] );
+
+		self::log( "Received %s posts (%s max pages) from content site", $total_posts, $max_pages );
 
 		foreach( $taxonomy_names as $taxonomy ) {
 			$taxonomy = get_taxonomy( $taxonomy );
@@ -143,20 +153,24 @@ class BlogData {
 
 		// @remove after debugging
 		foreach ( $result as $single_post ) {
-			$post_id = self::ImportPosts(
-				$single_post['post_obj']
-				, $single_post['post_metas']
-				, $defaults
-				, $single_post['featured']
-				, $single_post['attachments']
-				, $single_post['gallery_attachments']
-				, $single_post['galleries']
-				, $single_post['term_tax']
-			);
+			try {
+				$post_id = self::ImportPosts(
+					$single_post['post_obj']
+					, $single_post['post_metas']
+					, $defaults
+					, $single_post['featured']
+					, $single_post['attachments']
+					, $single_post['gallery_attachments']
+					, $single_post['galleries']
+					, $single_post['term_tax']
+				);
 
-			if ( $post_id > 0 ) {
-				array_push( $imported_post_ids, $post_id );
-				self::NormalizeLinks( $post_id, $my_home_url, $content_home_url );
+				if ( $post_id > 0 ) {
+					array_push( $imported_post_ids, $post_id );
+					self::NormalizeLinks( $post_id, $my_home_url, $content_home_url );
+				}
+			} catch( Exception $e ) {
+				self::log( "[EXCEPTION-DURING-IMPORT_POST]: %s", $e->getMessage() );
 			}
 		}
 
@@ -167,8 +181,10 @@ class BlogData {
 
 		$offset += 1;
 		if( $max_pages > $offset )  {
-			self::run( $syndication_id, $offset );
+			self::_run( $syndication_id, $offset );
 		}
+
+		self::log( "Finished processing content with offset %s", $offset );
 
 		//update_option( 'syndication_last_performed', current_time( 'timestamp', 1 ) );
 		update_post_meta( $syndication_id, 'syndication_last_performed', current_time( 'timestamp', 1 ) );
@@ -332,6 +348,8 @@ class BlogData {
 			return;
 		}
 
+		self::log( 'Start importing "%s" (%s) post...', $post->post_title, $post->ID );
+
 		$post_name = sanitize_title( $post->post_name );
 		$post_title = sanitize_text_field( $post->post_title );
 		$post_type = sanitize_text_field( $post->post_type );
@@ -393,6 +411,8 @@ class BlogData {
 						}
 					}
 					$updated = 2;
+
+					self::log( 'Post %s already exists in the destination site, so it has been updated...', $post_id );
 				}
 			}
 		} else {
@@ -403,6 +423,8 @@ class BlogData {
 				}
 			}
 			$updated = 1;
+
+			self::log( 'New post (%s) has been created in the destination site.', $post_id );
 		}
 
 		/**
@@ -684,6 +706,8 @@ class BlogData {
 			}
 		}
 
+		self::log( "Media file (%s) has been imported...", $filename );
+
 		return $id;
 	}
 
@@ -844,11 +868,12 @@ class BlogData {
 	 * @param string $message
 	 */
 	public static function log() {
+		$syndication_id = self::$syndication_id;
 		$message = func_num_args() > 1
 			? vsprintf( func_get_arg( 0 ), array_slice( func_get_args(), 1 ) )
 			: func_get_arg( 0 );
 
-		error_log( $message );
+		error_log( "[SYNDICATION:{$syndication_id}] {$message}" );
 	}
 
 }
