@@ -65,7 +65,7 @@ class BlogData {
 
 	public static function run( $syndication_id, $offset = 0 ) {
 		$result = false;
-		
+
 		self::$syndication_id = $syndication_id;
 		self::$log = array();
 
@@ -840,18 +840,14 @@ class BlogData {
 	 * @return array of post objects
 	 */
 	public static function GetActiveSubscriptions() {
-
-		$args = array(
-			'post_type' => 'subscription',
-			'post_status' => 'publish',
-			'meta_key' => 'subscription_post_status',
-			'orderby' => 'meta_value',
-			'order' => 'ASC',
-		);
-
-		$active_subscriptions = get_posts( $args );
-
-		return $active_subscriptions;
+		return get_posts( array(
+			'post_type'      => 'subscription',
+			'post_status'    => 'publish',
+			'meta_key'       => 'subscription_post_status',
+			'orderby'        => 'meta_value',
+			'order'          => 'ASC',
+			'posts_per_page' => 200,
+		) );
 	}
 
 	/**
