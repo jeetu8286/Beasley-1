@@ -1179,6 +1179,8 @@
 				if (typeof(localStorage) !== "undefined") {
 					localStorage.setItem("gmr-live-player-volume", global_volume);
 				}
+
+				setVolumeIcon( global_volume );
 			});
 
 			$audioVolumeBtn.click(function() {
@@ -1298,7 +1300,23 @@
 			}
 		}
 
+		setVolumeIcon( volume );
+
 		return volume;
+	}
+
+	function setVolumeIcon( volume ) {
+		volume = typeof volume !== 'undefined' ? volume : 1;
+
+		if ( 0 === volume ) {
+			$audioVolumeBtn.attr( 'class', 'audio-volume__btn -off' );
+		} else if ( volume > 0 && volume < 0.33 ) {
+			$audioVolumeBtn.attr( 'class', 'audio-volume__btn -low' );
+		} else if ( volume > 0.33 && volume < 0.66 ) {
+			$audioVolumeBtn.attr( 'class', 'audio-volume__btn -medium' );
+		} else if ( volume > 0.66 ) {
+			$audioVolumeBtn.attr( 'class', 'audio-volume__btn' );
+		}
 	}
 
 	function onStreamStarted() {

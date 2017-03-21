@@ -554,17 +554,17 @@ category: Base - Typography
 .icon-stop:before {
   content: "\e60b"; }
 
-.icon-volume:before {
-  content: "\e901"; }
-
-.icon-volume-mute:before {
+.icon-volume-up:before {
   content: "\e900"; }
 
-.icon-volume-up:before {
+.icon-volume-down:before {
   content: "\e901"; }
 
-.icon-volume-down:before {
+.icon-volume-off:before {
   content: "\e902"; }
+
+.icon-volume-medium:before {
+  content: "\e903"; }
 
 .icon-facebook:before, .social__link--facebook:before {
   content: "\e60f"; }
@@ -664,6 +664,9 @@ category: Base - Typography
 
 .icon-post-format-album:before {
   content: "\e62f"; }
+
+.icon-clock:before {
+  content: "\e904"; }
 
 .icon-spin {
   -webkit-animation: icon-spin 2s infinite linear;
@@ -5438,7 +5441,7 @@ a.posts-pagination--load-more {
         padding: 10px 20px 10px 10px; } }
     .audio-stream .audio-stream__title:before {
       color: #ffffff;
-      content: "\e901";
+      content: "\e900";
       display: inline;
       font-family: "gmr-icons";
       font-style: normal;
@@ -5625,7 +5628,7 @@ a.posts-pagination--load-more {
   .audio-volume input[type=range] {
     display: none;
     padding: 0 5px;
-    width: calc(100% - 40px); }
+    width: calc(100% - 32px); }
   .audio-volume.-open input[type=range] {
     display: block; }
   .audio-volume .audio-volume__btn,
@@ -5642,7 +5645,7 @@ a.posts-pagination--load-more {
     .audio-volume .audio-volume__btn:before,
     .audio-volume .audio-volume__mute:before {
       color: #404041;
-      content: "\e901";
+      content: "\e900";
       font-family: "gmr-icons";
       font-style: normal;
       font-weight: normal;
@@ -5650,10 +5653,20 @@ a.posts-pagination--load-more {
       line-height: 1;
       text-indent: 0;
       width: 0; }
+    .audio-volume .audio-volume__btn.-off:before,
+    .audio-volume .audio-volume__mute.-off:before {
+      content: "\e902"; }
+    .audio-volume .audio-volume__btn.-low:before,
+    .audio-volume .audio-volume__mute.-low:before {
+      content: "\e901"; }
+    .audio-volume .audio-volume__btn.-medium:before,
+    .audio-volume .audio-volume__mute.-medium:before {
+      content: "\e903"; }
   .audio-volume .audio-volume__mute {
-    display: none; }
+    display: none;
+    width: 12px; }
     .audio-volume .audio-volume__mute:before {
-      content: "\e900"; }
+      content: "\e902"; }
   .audio-volume.-open .audio-volume__mute {
     display: block; }
 
@@ -5932,8 +5945,12 @@ a.posts-pagination--load-more {
 .audio-more {
   color: #404041;
   display: inline-block;
-  flex: 0 0 auto;
-  margin-top: -10px; }
+  flex: 0 0 auto; }
+  .audio-more .icon-clock:before {
+    color: #404041;
+    opacity: .75; }
+  .audio-more .icon-clock:hover:before {
+    opacity: 1; }
 
 .audio-expand {
   background-color: #d9d8d8;

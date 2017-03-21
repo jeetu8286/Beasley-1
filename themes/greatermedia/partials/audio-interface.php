@@ -110,7 +110,7 @@ $livelinks_template = home_url( '/stream/%s/' );
 				</div>
 
 				<div id="js-audio-more" class="audio-more">
-					<a href="<?php echo esc_url( sprintf( $livelinks_template, $active_stream ) ); ?>" data-tmpl="<?php echo esc_attr( $livelinks_template ); ?>">&hellip;</a>
+					<a href="<?php echo esc_url( sprintf( $livelinks_template, $active_stream ) ); ?>" data-tmpl="<?php echo esc_attr( $livelinks_template ); ?>" title="<?php esc_attr_e( 'Play History', 'greatermedia' ) ?>"><span class="icon-clock"></span></a>
 				</div>
 
 				<div id="js-audio-time" class="audio-time">
