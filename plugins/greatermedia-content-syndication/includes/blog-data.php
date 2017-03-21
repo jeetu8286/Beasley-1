@@ -12,6 +12,8 @@ class BlogData {
 		'collection'    =>  'single',
 	);
 
+	public static $log = array();
+
 	public static $syndication_id;
 
 	public static $content_site_id;
@@ -63,7 +65,9 @@ class BlogData {
 
 	public static function run( $syndication_id, $offset = 0 ) {
 		$result = false;
+
 		self::$syndication_id = $syndication_id;
+		self::$log = array();
 
 		try {
 			if ( is_null( $syndication_id ) ) {
@@ -112,6 +116,8 @@ class BlogData {
 		} catch ( Exception $e ) {
 			self::log( "[EXCEPTION]: %s", $e->getMessage() );
 		}
+
+		self::flush_log();
 
 		return $result;
 	}
@@ -413,7 +419,11 @@ class BlogData {
 					$updated = 2;
 
 					self::log( 'Post %s already exists in the destination site, so it has been updated...', $post_id );
+				} else {
+					self::log( "Post %s content hasn't been modified since last import... Skipping...", $post_id );
 				}
+			} else {
+				self::log( "Post %s hasn't been modified since last import... Skipping...", $post_id );
 			}
 		} else {
 			$post_id = wp_insert_post( $args );
@@ -830,18 +840,14 @@ class BlogData {
 	 * @return array of post objects
 	 */
 	public static function GetActiveSubscriptions() {
-
-		$args = array(
-			'post_type' => 'subscription',
-			'post_status' => 'publish',
-			'meta_key' => 'subscription_post_status',
-			'orderby' => 'meta_value',
-			'order' => 'ASC',
-		);
-
-		$active_subscriptions = get_posts( $args );
-
-		return $active_subscriptions;
+		return get_posts( array(
+			'post_type'      => 'subscription',
+			'post_status'    => 'publish',
+			'meta_key'       => 'subscription_post_status',
+			'orderby'        => 'meta_value',
+			'order'          => 'ASC',
+			'posts_per_page' => 200,
+		) );
 	}
 
 	/**
@@ -873,7 +879,19 @@ class BlogData {
 			? vsprintf( func_get_arg( 0 ), array_slice( func_get_args(), 1 ) )
 			: func_get_arg( 0 );
 
-		error_log( "[SYNDICATION:{$syndication_id}] {$message}" );
+		self::$log[] = "[SYNDICATION:{$syndication_id}] {$message}";
+	}
+
+	/**
+	 * Records log into error log file and clears log array.
+	 */
+	public static function flush_log() {
+		$delimiter = PHP_EOL . '    ';
+		if ( is_array( self::$log ) && count( self::$log ) > 0 ) {
+			error_log( $delimiter . implode( $delimiter, self::$log ) );
+		}
+
+		self::$log = array();
 	}
 
 }
