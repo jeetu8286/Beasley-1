@@ -10929,7 +10929,7 @@ a.gallery__back--btn {
     float: left;
     display: block;
     margin-right: 2.3576515979%;
-    width: 65.8807828007%; }
+    width: 100%; }
     .gallery__featured--primary:last-child {
       margin-right: 0; } }
 
@@ -10938,7 +10938,7 @@ a.gallery__back--btn {
     float: left;
     display: block;
     margin-right: 2.3576515979%;
-    width: 31.7615656014%; }
+    width: 100%; }
     .gallery__featured--secondary:last-child {
       margin-right: 0; } }
 
@@ -10977,10 +10977,10 @@ a.gallery__back--btn {
   color: #ffffff; }
   .gallery__featured--caption h3 {
     margin: 0;
-    font-size: 1.423828125em;
+    font-size: 1em;
     line-height: 1.2; }
   .gallery__featured--primary .gallery__featured--caption h3 {
-    font-size: 1.8020324707em; }
+    font-size: 1em; }
   .gallery__featured--caption time {
     font-size: 1em;
     text-transform: uppercase;
@@ -10996,7 +10996,7 @@ a.gallery__back--btn {
       .gallery__featured--caption h3 {
         font-size: 1em; }
       .gallery__featured--primary .gallery__featured--caption h3 {
-        font-size: 2.0272865295em; }
+        font-size: 1em; }
       .gallery__featured--caption time {
         font-size: 0.8888888889em; } }
 

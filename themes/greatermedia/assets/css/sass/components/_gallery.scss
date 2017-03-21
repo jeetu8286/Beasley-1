@@ -894,14 +894,14 @@ a.gallery__back--btn {
 
 .gallery__featured--primary {
 	@include bp(large) {
-		@include span-columns(8 of 12);
+		@include span-columns(12 of 12);
 	}
 
 }
 
 .gallery__featured--secondary {
 	@include bp(large) {
-		@include span-columns(4 of 12);
+		@include span-columns(12 of 12);
 	}
 }
 
@@ -969,12 +969,12 @@ a.gallery__back--btn {
 
 	h3 {
 		margin: 0;
-		font-size: ms(3);
+		font-size: ms(0);
 		line-height: 1.2;
 	}
 
 	.gallery__featured--primary & h3 {
-		font-size: ms(5);
+		font-size: ms(0);
 	}
 
 	time {
@@ -999,7 +999,7 @@ a.gallery__back--btn {
 		}
 
 		.gallery__featured--primary & h3 {
-			font-size: ms(6);
+			font-size: ms(0);
 		}
 
 		time {
