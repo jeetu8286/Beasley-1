@@ -11,10 +11,10 @@
  * @package KKLZ
  * @since 0.1.0
  */
- 
+
  // Useful global constants
-define( 'KKLZ_VERSION', '0.1.0' );
- 
+define( 'KKLZ_VERSION', '0.1.1' ); /* Version bump by Steve 03/21/2017 */
+
  /**
   * Set up theme defaults and register supported WordPress features.
   *
@@ -33,7 +33,7 @@ define( 'KKLZ_VERSION', '0.1.0' );
 	load_theme_textdomain( 'kklz', get_stylesheet_directory_uri() . '/languages' );
  }
  add_action( 'after_setup_theme', 'kklz_setup' );
- 
+
  /**
   * Enqueue scripts and styles for front-end.
   *
@@ -43,17 +43,17 @@ define( 'KKLZ_VERSION', '0.1.0' );
 	$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 
 	wp_dequeue_style( 'greatermedia' );
-	wp_deregister_style( 'greatermedia' );	
+	wp_deregister_style( 'greatermedia' );
 	wp_enqueue_style( 'kklz', get_stylesheet_directory_uri() . "/assets/css/kklz{$postfix}.css", array(), KKLZ_VERSION );
  }
  add_action( 'wp_enqueue_scripts', 'kklz_scripts_styles', 20 );
- 
+
  /**
   * Add humans.txt to the <head> element.
   */
  function kklz_header_meta() {
 	$humans = '<link type="text/plain" rel="author" href="' . get_stylesheet_directory_uri() . '/humans.txt" />';
-	
+
 	echo apply_filters( 'kklz_humans', $humans );
  }
  add_action( 'wp_head', 'kklz_header_meta' );
