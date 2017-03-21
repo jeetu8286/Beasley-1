@@ -13,7 +13,7 @@
  */
 
  // Useful global constants
-define( 'WKQC_VERSION', '0.1.2' ); /* Version bump by Steve 03/17/2017 */
+define( 'WKQC_VERSION', '0.1.3' ); /* Version bump by Steve 03/20/2017 */
 
  /**
   * Set up theme defaults and register supported WordPress features.

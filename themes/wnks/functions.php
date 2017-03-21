@@ -13,7 +13,7 @@
  */
 
  // Useful global constants
-define( 'WNKS_VERSION', '0.1.1' ); /* Version bump by Steve 03/17/2017 */
+define( 'WNKS_VERSION', '0.1.2' ); /* Version bump by Steve 03/20/2017 */
 
  /**
   * Set up theme defaults and register supported WordPress features.
