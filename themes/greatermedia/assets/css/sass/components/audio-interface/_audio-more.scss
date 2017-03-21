@@ -2,5 +2,12 @@
 	color: $liveplayer-color;
 	display: inline-block;
 	flex: 0 0 auto;
-	margin-top: -10px;
+
+	.icon-clock:before {
+		color: $liveplayer-color;
+		opacity: .75;
+	}
+	.icon-clock:hover:before {
+		opacity: 1;
+	}
 }
