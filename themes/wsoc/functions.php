@@ -13,7 +13,7 @@
  */
 
  // Useful global constants
-define( 'WSOC_VERSION', '0.1.2' ); /* Version bump by Steve 03/20/2017 */
+define( 'WSOC_VERSION', '0.1.3' ); /* Version bump by Steve 03/21/2017 */
 
  /**
   * Set up theme defaults and register supported WordPress features.

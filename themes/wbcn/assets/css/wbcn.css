@@ -13896,6 +13896,10 @@ a:hover .highlights__community--title {
 .show__header {
   background-color: #d30007; }
 
+@media screen and (min-width: 768px) {
+  .home section.content {
+    padding: 0; } }
+
 @media screen and (min-width: 970px) {
   .main {
     background-position: top center;
