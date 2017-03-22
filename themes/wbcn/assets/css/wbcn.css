@@ -13907,6 +13907,9 @@ a:hover .highlights__community--title {
     background-repeat: no-repeat;
     background-color: #ffffff; } }
 
+.audio-more {
+  display: none; }
+
 .live-link__type--show {
   border-bottom-color: white;
   background: none; }
