@@ -80,6 +80,8 @@ function greatermedia_dfp_head() {
 	$dfp_ad_wallpaper = get_option( 'dfp_ad_wallpaper' );
 	$dfp_ad_playersponsorship = get_option( 'dfp_ad_playersponsorship' );
 
+	$targeting = greatermedia_get_global_targeting();
+
 	?><script async="async" src="https://www.googletagservices.com/tag/js/gpt.js"></script>
 	<script>
 		var googletag = googletag || {};
@@ -110,6 +112,10 @@ function greatermedia_dfp_head() {
 
 			googletag.pubads().enableSingleRequest();
 			googletag.pubads().collapseEmptyDivs(true);
+
+			<?php foreach ( $targeting as $pair ) : ?>
+				googletag.pubads().setTargeting(<?php echo json_encode( $pair[0] ); ?>, <?php echo json_encode( $pair[1] ); ?>);
+			<?php endforeach; ?>
 
 			googletag.enableServices();
 		});
@@ -145,7 +151,7 @@ function greatermedia_dfp_footer() {
 
 	?><script type="text/javascript">
 		(function($, googletag) {
-			var slotsIndex = 0, __ready, __cleanup;
+			var slotsIndex = 0, setGlobalTargeting = false, __ready, __cleanup;
 
 			__cleanup = function() {
 				var slots = [];
@@ -237,9 +243,15 @@ function greatermedia_dfp_footer() {
 						$(document.getElementById(slots[i][2])).data('slot', slot);
 					}
 
-					while ((targeting = googletag.beasley.targeting.pop())) {
-						googletag.pubads().setTargeting(targeting[0], targeting[1]);
+					// we need to skip first targeting setup because it will be set in the header for the first page,
+					// all pjax/ajax loaded pages will use this block to reset global targeting
+					if (setGlobalTargeting) {
+						while ((targeting = googletag.beasley.targeting.pop())) {
+							googletag.pubads().setTargeting(targeting[0], targeting[1]);
+						}
 					}
+
+					setGlobalTargeting = true;
 				});
 
 				googletag.cmd.push(function() {
@@ -258,16 +270,10 @@ function greatermedia_dfp_footer() {
 }
 add_action( 'wp_footer', 'greatermedia_dfp_footer', 1000 );
 
-function greatermedia_display_dfp_slot( $slot, $sizes = false, $single_targeting = array(), $echo = true, $class = '' ) {
+function greatermedia_get_global_targeting() {
 	static $targeting = null;
 
-	if ( ! greatermedia_is_dfp_active() ) {
-		return;
-	}
-
-	$render_targeting = false;
-	if ( is_null( $targeting ) && 'dfp_ad_playersponsorship' != $slot ) {
-		$render_targeting = true;
+	if ( is_null( $targeting ) ) {
 		$targeting = array(
 			array( 'cdomain', parse_url( home_url( '/' ), PHP_URL_HOST ) ),
 			array( 'cpage', untrailingslashit( current( explode( '?', $_SERVER['REQUEST_URI'], 2 ) ) ) ), // strip query part and trailing slash of the current uri
@@ -316,6 +322,22 @@ function greatermedia_display_dfp_slot( $slot, $sizes = false, $single_targeting
 				$targeting[] = array( 'category', implode( ',', $categories ) );
 			}
 		}
+	}
+
+	return $targeting;
+}
+
+function greatermedia_display_dfp_slot( $slot, $sizes = false, $single_targeting = array(), $echo = true, $class = '' ) {
+	static $targeting = null;
+
+	if ( ! greatermedia_is_dfp_active() ) {
+		return;
+	}
+
+	$render_targeting = false;
+	if ( is_null( $targeting ) && 'dfp_ad_playersponsorship' != $slot ) {
+		$render_targeting = true;
+		$targeting = greatermedia_get_global_targeting();
 	}
 
 	$remnant_slots = array(
