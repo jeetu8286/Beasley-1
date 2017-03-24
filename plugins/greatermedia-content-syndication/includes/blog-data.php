@@ -117,7 +117,7 @@ class BlogData {
 			self::log( "[EXCEPTION]: %s", $e->getMessage() );
 		}
 
-		self::flush_log();
+		// self::flush_log(); // uncomment it if you need debugging log
 
 		return $result;
 	}
