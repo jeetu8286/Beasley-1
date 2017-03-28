@@ -14,7 +14,7 @@ if ( $hp_featured_query->have_posts() ) : ?>
 			<div class="feature-post-slide" style="display:none">
 				<a href="<?php the_permalink(); ?>">
 					<div class="slide-content">
-						<div class="featured__article--image" style="background-image: url(<?php gm_post_thumbnail_url( 'gmr-featured-primary', null, true ); ?>)">
+						<div class="featured__article--image" style="background-image: url(<?php gm_post_thumbnail_url( 'gmr-gallery-grid-featured', null, true ); ?>)">
 						</div>
 						<div class="featured__article--content">
 							<div class="featured__article--heading">
