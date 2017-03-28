@@ -9570,6 +9570,17 @@ category: Components - Shows
       color: #a1000c;
       border-color: #a1000c; }
 
+.widget_rss {
+  overflow: inherit; }
+  .widget_rss li {
+    margin: 0 0 1em 0; }
+    .widget_rss li a {
+      line-height: 1.2em; }
+    .widget_rss li .rss-date {
+      display: block;
+      font-size: .8em;
+      line-height: 1.6em; }
+
 /*doc
 ---
 title: Social Share Buttons

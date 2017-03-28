@@ -13,7 +13,7 @@
  */
 
  // Useful global constants
-define( 'KOAS_VERSION', '0.1.1' ); /* Version bump by Steve 03/21/2017 */
+define( 'KOAS_VERSION', '0.1.2' ); /* Version bump by Steve 03/23/2017 */
 
  /**
   * Set up theme defaults and register supported WordPress features.

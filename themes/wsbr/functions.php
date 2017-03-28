@@ -13,7 +13,7 @@
  */
 
  // Useful global constants
-define( 'WSBR_VERSION', '0.1.1' ); /* Version bump by Steve 03/21/2017 */
+define( 'WSBR_VERSION', '0.1.2' ); /* Version bump by Steve 03/27/2017 */
 
  /**
   * Set up theme defaults and register supported WordPress features.
