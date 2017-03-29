@@ -325,6 +325,9 @@ function greatermedia_get_global_targeting() {
 				$categories = wp_list_pluck( $categories, 'slug' );
 				$targeting[] = array( 'categories', implode( ',', $categories ) );
 			}
+		} elseif ( is_category() ) {
+			$category = get_queried_object();
+			$targeting[] = array( 'categories', $category->slug );
 		}
 	}
 
