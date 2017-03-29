@@ -288,7 +288,7 @@ function greatermedia_get_global_targeting() {
 
 		if ( is_singular() ) {
 			$post_id = get_queried_object_id();
-			$targeting[] = array( 'cpostid', $post_id );
+			$targeting[] = array( 'cpostid', "{$post_id}" );
 
 			if ( class_exists( 'ShowsCPT' ) && defined( 'ShowsCPT::SHOW_TAXONOMY' ) ) {
 				$terms = get_the_terms( $post_id, ShowsCPT::SHOW_TAXONOMY );
