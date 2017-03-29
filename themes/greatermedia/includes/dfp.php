@@ -274,9 +274,13 @@ function greatermedia_get_global_targeting() {
 	static $targeting = null;
 
 	if ( is_null( $targeting ) ) {
+		$cpage = ! is_home() && ! is_front_page()
+			? untrailingslashit( current( explode( '?', $_SERVER['REQUEST_URI'], 2 ) ) ) // strip query part and trailing slash of the current uri
+			: 'home';
+
 		$targeting = array(
 			array( 'cdomain', parse_url( home_url( '/' ), PHP_URL_HOST ) ),
-			array( 'cpage', untrailingslashit( current( explode( '?', $_SERVER['REQUEST_URI'], 2 ) ) ) ), // strip query part and trailing slash of the current uri
+			array( 'cpage', $cpage ),
 			array( 'ctest', trim( get_option( 'dfp_targeting_ctest' ) ) ),
 			array( 'genre', trim( get_option( 'dfp_targeting_genre' ) ) ),
 			array( 'market', trim( get_option( 'dfp_targeting_market' ) ) ),
