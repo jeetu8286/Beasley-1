@@ -315,7 +315,7 @@ function greatermedia_get_global_targeting() {
 				}
 
 				if ( $podcast ) {
-					$targeting[] = array( 'podcast', $podcast );
+					$targeting[] = array( 'podcasts', $podcast );
 				}
 			}
 
@@ -323,7 +323,7 @@ function greatermedia_get_global_targeting() {
 			if ( ! empty( $categories ) ) {
 				$categories = array_filter( array_map( 'get_category', $categories ) );
 				$categories = wp_list_pluck( $categories, 'slug' );
-				$targeting[] = array( 'category', implode( ',', $categories ) );
+				$targeting[] = array( 'categories', implode( ',', $categories ) );
 			}
 		}
 	}
