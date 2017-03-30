@@ -274,9 +274,13 @@ function greatermedia_get_global_targeting() {
 	static $targeting = null;
 
 	if ( is_null( $targeting ) ) {
+		$cpage = ! is_home() && ! is_front_page()
+			? untrailingslashit( current( explode( '?', $_SERVER['REQUEST_URI'], 2 ) ) ) // strip query part and trailing slash of the current uri
+			: 'home';
+
 		$targeting = array(
 			array( 'cdomain', parse_url( home_url( '/' ), PHP_URL_HOST ) ),
-			array( 'cpage', untrailingslashit( current( explode( '?', $_SERVER['REQUEST_URI'], 2 ) ) ) ), // strip query part and trailing slash of the current uri
+			array( 'cpage', $cpage ),
 			array( 'ctest', trim( get_option( 'dfp_targeting_ctest' ) ) ),
 			array( 'genre', trim( get_option( 'dfp_targeting_genre' ) ) ),
 			array( 'market', trim( get_option( 'dfp_targeting_market' ) ) ),
@@ -284,7 +288,7 @@ function greatermedia_get_global_targeting() {
 
 		if ( is_singular() ) {
 			$post_id = get_queried_object_id();
-			$targeting[] = array( 'cpostid', $post_id );
+			$targeting[] = array( 'cpostid', "{$post_id}" );
 
 			if ( class_exists( 'ShowsCPT' ) && defined( 'ShowsCPT::SHOW_TAXONOMY' ) ) {
 				$terms = get_the_terms( $post_id, ShowsCPT::SHOW_TAXONOMY );
@@ -311,7 +315,7 @@ function greatermedia_get_global_targeting() {
 				}
 
 				if ( $podcast ) {
-					$targeting[] = array( 'podcast', $podcast );
+					$targeting[] = array( 'podcasts', $podcast );
 				}
 			}
 
@@ -319,8 +323,11 @@ function greatermedia_get_global_targeting() {
 			if ( ! empty( $categories ) ) {
 				$categories = array_filter( array_map( 'get_category', $categories ) );
 				$categories = wp_list_pluck( $categories, 'slug' );
-				$targeting[] = array( 'category', implode( ',', $categories ) );
+				$targeting[] = array( 'categories', implode( ',', $categories ) );
 			}
+		} elseif ( is_category() ) {
+			$category = get_queried_object();
+			$targeting[] = array( 'categories', $category->slug );
 		}
 	}
 
