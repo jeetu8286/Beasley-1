@@ -3,6 +3,7 @@ table.responsive {
 	margin-bottom: 0;
 	border: 1px solid $light-gray;
 	font-size: ms(-2);
+	table-layout: fixed;
 
 	@include bp(medium) {
 		font-size: ms(-1);
