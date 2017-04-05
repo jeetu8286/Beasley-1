@@ -11,10 +11,10 @@
  * @package KCYE
  * @since 0.1.0
  */
- 
+
  // Useful global constants
-define( 'KCYE_VERSION', '0.1.0' );
- 
+define( 'KCYE_VERSION', '0.1.1' );
+
  /**
   * Set up theme defaults and register supported WordPress features.
   *
@@ -33,7 +33,7 @@ define( 'KCYE_VERSION', '0.1.0' );
 	load_theme_textdomain( 'kcye', get_stylesheet_directory_uri() . '/languages' );
  }
  add_action( 'after_setup_theme', 'kcye_setup' );
- 
+
  /**
   * Enqueue scripts and styles for front-end.
   *
@@ -43,17 +43,17 @@ define( 'KCYE_VERSION', '0.1.0' );
 	$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 
 	wp_dequeue_style( 'greatermedia' );
-	wp_deregister_style( 'greatermedia' );	
+	wp_deregister_style( 'greatermedia' );
 	wp_enqueue_style( 'kcye', get_stylesheet_directory_uri() . "/assets/css/kcye{$postfix}.css", array(), KCYE_VERSION );
  }
  add_action( 'wp_enqueue_scripts', 'kcye_scripts_styles', 20 );
- 
+
  /**
   * Add humans.txt to the <head> element.
   */
  function kcye_header_meta() {
 	$humans = '<link type="text/plain" rel="author" href="' . get_stylesheet_directory_uri() . '/humans.txt" />';
-	
+
 	echo apply_filters( 'kcye_humans', $humans );
  }
  add_action( 'wp_head', 'kcye_header_meta' );
