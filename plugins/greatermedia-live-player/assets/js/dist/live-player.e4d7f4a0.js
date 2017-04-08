@@ -824,7 +824,7 @@
 			trackingParameters: {dist: "debug"}
 		});
 
-		setTimeout($.proxy(player.skipAd, player), 25000);
+		setTimeout($.proxy(player.skipAd, player), 35000);
 	}
 
 	$window.on('click', function() {
@@ -927,7 +927,7 @@
 		}
 		debug('playLiveStream - station=' + station);
 
-		preVastAd();
+		//preVastAd();
 		streamVastAd();
 		if (player.addEventListener) {
 			player.addEventListener('ad-playback-complete', onAdPlaybackComplete);
@@ -977,7 +977,7 @@
 		} else {
 			debug('playLiveStream - station=' + station);
 
-			preVastAd();
+			//preVastAd();
 			streamVastAd();
 			if (player.addEventListener) {
 				player.addEventListener('ad-playback-complete', onAdPlaybackComplete);
@@ -1198,6 +1198,9 @@
 	}
 
 	function onAdPlaybackStart(e) {
+		console.log('******** ad playback start **********');
+		console.log(e);
+		preVastAd();
 		adPlaying = true;
 		setStatus('Advertising... Type=' + e.data.type);
 	}
