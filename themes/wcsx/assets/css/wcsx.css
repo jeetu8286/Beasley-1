@@ -13923,6 +13923,9 @@ a:hover .highlights__event--date, a:hover .highlights__event--title {
 .featured__article--heading:hover {
   color: #eeeeee; }
 
+.featured__content--title:hover {
+  color: #eeeeee; }
+
 .header__main.headroom {
   background-color: #000000; }
 
