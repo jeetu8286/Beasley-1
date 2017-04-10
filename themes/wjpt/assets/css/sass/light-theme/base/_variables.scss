@@ -10,7 +10,7 @@ $asset_root: "../../../../themes/greatermedia/assets/";
 //
 $black: #000000;
 $white: #ffffff;
-$cardinal: #d22228;
+$cardinal: #000093;
 $heath: #561015;
 $coffee-bean: #270e10;
 $extra-light-gray: #f1f1f3;
@@ -21,10 +21,10 @@ $medium-dark-gray: #6d6e70;
 $dark-gray: #282827;
 $darker-gray: #191919;
 $yellow: #f5ed7f;
-$highlights-bg: #5a5a5a;
+$highlights-bg: #eeeeee;
 $highlights-heading: #ffffff;
 
-// WJPT colors
+// KCYE colors
 //
 // @author Steve Meyers
 // @since 0.1.0
@@ -46,28 +46,29 @@ $color-gray-darker: $darker-gray;
 $primary-bg: #fff;
 $primary-text: $color-text-gray;
 $primary-heading: $color-text-gray;
-$primary-link: $color-text-red;
-$primary-link-hover: darken($color-text-red, 9%);
-$primary-border: $light-gray;
+$primary-link: $cardinal;
+$primary-link-hover: darken($cardinal, 9%);
+$primary-border: $cardinal;
 
 $secondary-bg: $color-gray-medium-dark;
 $secondary-text: $color-text-white;
-$secondary-heading: $gray;
+$secondary-heading: $medium-gray;
 $secondary-link: $light-gray;
 $secondary-link-hover: darken($color-text-red, 9%);
 $secondary-border: $dark-gray;
 
 // Section Variables
-$header-bg: $color-gray-medium-dark;
+$header-bg: #ffffff;
 $header-border: $dark-gray;
 $header-nav-bg: $cardinal;
 $header-search-bg: $color-gray-medium-light;
 
 $liveplayer-bg: $color-gray-light;
 $liveplayer-color: #404041;
+$liveplayer-color-secondary: $cardinal;
 
-$featured-primary-bg: $heath;
-$featured-secondary-bg: $coffee-bean;
+$featured-primary-bg: #ffffff;
+$featured-secondary-bg: #ffffff;
 
 $highlights-text: $gray;
 $highlights-link: $dark-gray;

@@ -11,10 +11,10 @@
  * @package WWCN
  * @since 0.1.0
  */
- 
+
  // Useful global constants
-define( 'WWCN_VERSION', '0.1.0' );
- 
+define( 'WWCN_VERSION', '0.1.3' );
+
  /**
   * Set up theme defaults and register supported WordPress features.
   *
@@ -33,7 +33,7 @@ define( 'WWCN_VERSION', '0.1.0' );
 	load_theme_textdomain( 'wwcn', get_stylesheet_directory_uri() . '/languages' );
  }
  add_action( 'after_setup_theme', 'wwcn_setup' );
- 
+
  /**
   * Enqueue scripts and styles for front-end.
   *
@@ -43,17 +43,17 @@ define( 'WWCN_VERSION', '0.1.0' );
 	$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 
 	wp_dequeue_style( 'greatermedia' );
-	wp_deregister_style( 'greatermedia' );	
+	wp_deregister_style( 'greatermedia' );
 	wp_enqueue_style( 'wwcn', get_stylesheet_directory_uri() . "/assets/css/wwcn{$postfix}.css", array(), WWCN_VERSION );
  }
  add_action( 'wp_enqueue_scripts', 'wwcn_scripts_styles', 20 );
- 
+
  /**
   * Add humans.txt to the <head> element.
   */
  function wwcn_header_meta() {
 	$humans = '<link type="text/plain" rel="author" href="' . get_stylesheet_directory_uri() . '/humans.txt" />';
-	
+
 	echo apply_filters( 'wwcn_humans', $humans );
  }
  add_action( 'wp_head', 'wwcn_header_meta' );

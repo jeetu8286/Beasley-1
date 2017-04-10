@@ -13648,7 +13648,8 @@ table.responsive {
   width: 100% !important;
   margin-bottom: 0;
   border: 1px solid #d0d2d3;
-  font-size: 0.79012em; }
+  font-size: 0.79012em;
+  table-layout: fixed; }
   @media screen and (min-width: 768px) {
     table.responsive {
       font-size: 0.88889em; } }
