@@ -19,11 +19,6 @@ module.exports = function( grunt ) {
 				dest: 'assets/js/dist/' // where the new files will be created
 			}
 		},
-		clean: {
-			build: {
-				src: ['assets/js/dist/**']
-			}
-		},
 		concat: {
 			options: {
 				stripBanners: true
@@ -99,13 +94,12 @@ module.exports = function( grunt ) {
 	// Load other tasks
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-concat');
-	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-hash');
 
 	// Default task
-	grunt.registerTask('default', ['jshint', 'concat', 'uglify', 'clean', 'hash']);
+	grunt.registerTask('default', ['jshint', 'concat', 'uglify', 'hash']);
 
 	grunt.util.linefeed = '\n';
 };
