@@ -13885,7 +13885,7 @@ a:hover .highlights__event--date, a:hover .highlights__event--title {
   color: #cccccc;
 }
 */
-h2.featured__article--heading:hover, h2.featured__content--block:hover h2.featured__content--title {
+h2.featured__article--heading:hover, .featured__content--block:hover h2.featured__content--title {
   color: #cccccc; }
 
 h2.featured__article:hover h2.featured__article--heading {
