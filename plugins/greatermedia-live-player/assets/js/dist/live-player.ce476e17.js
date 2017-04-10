@@ -1198,8 +1198,8 @@
 	}
 
 	function onAdPlaybackStart(e) {
-		console.log('******** ad playback start **********');
-		console.log(e);
+		debug('******** ad playback start **********');
+		debug(e);
 		preVastAd();
 		adPlaying = true;
 		setStatus('Advertising... Type=' + e.data.type);
