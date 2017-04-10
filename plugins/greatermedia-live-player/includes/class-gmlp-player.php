@@ -73,16 +73,11 @@ class GMLP_Player {
 	 * Enqueue scripts
 	 */
 	public static function enqueue_scripts() {
-		$assets = include GMLIVEPLAYER_PATH . 'assets/js/dist/assets.php';
-		if ( empty( $assets ) ) {
-			return;
-		}
-
 		$script_debug = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG;
-		$script_path = $script_debug ? $assets->{'live-player.js'} : $assets->{'live-player.min.js'};
+		$postfix = $script_debug ? '' : '.min';
 
 		wp_enqueue_script( 'liveplayer', '//sdk.listenlive.co/web/2.9/td-sdk.min.js', null, null, true );
-		wp_enqueue_script( 'gmlp-js', GMLIVEPLAYER_URL . $script_path, array( 'jquery', 'liveplayer', 'underscore', 'classlist-polyfill', 'pjax', 'wp-mediaelement', 'cookies-js' ), null, true );
+		wp_enqueue_script( 'gmlp-js', GMLIVEPLAYER_URL . "assets/js/live-player{$postfix}.js", array( 'jquery', 'liveplayer', 'underscore', 'classlist-polyfill', 'pjax', 'wp-mediaelement', 'cookies-js' ), GMLIVEPLAYER_VERSION, true );
 		wp_localize_script( 'gmlp-js', 'gmr', array(
 			'debug'      => $script_debug,
 			'logged_in'  => false,
