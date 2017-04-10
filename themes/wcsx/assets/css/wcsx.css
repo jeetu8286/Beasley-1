@@ -13879,7 +13879,16 @@ a:hover .highlights__event--date, a:hover .highlights__event--title {
 .featured__article--image {
   background-color: #000000; }
 
-.featured__article:hover {
+/* hover problem on homepage 4-2017
+.featured__article:hover
+{
+  color: #cccccc;
+}
+*/
+.featured__article--heading:hover, .featured__content--block:hover .featured__content--title {
+  color: #cccccc; }
+
+.featured__article:hover .featured__article--heading {
   color: #cccccc; }
 
 #wcsx-social-stream {

@@ -510,13 +510,21 @@ a:hover .highlights__event--date, a:hover .highlights__event--title
 .featured__article--image
 {background-color: #000000;}
 
+/* hover problem on homepage 4-2017
 .featured__article:hover
 {
   color: #cccccc;
 }
+*/
+
+.featured__article--heading:hover, .featured__content--block:hover .featured__content--title {
+    color: #cccccc;
+}
+.featured__article:hover .featured__article--heading {
+    color: #cccccc;}
+
 #wcsx-social-stream
-{
-  border: solid 1px #e5e5e5;}
+{border: solid 1px #e5e5e5;}
 
 .header{background-image: none; background-color: #000000;}
 .audio-expand
@@ -553,21 +561,14 @@ a:hover .highlights__event--date, a:hover .highlights__event--title
 .featured__content--block:hover .featured__content--title
   {color: #eeeeee;}
 
-  .featured__article--heading:hover {color: #eeeeee;}
-  .featured__content--title:hover {color: #eeeeee;}
-
-.header__main.headroom
-  {background-color: #000000;}
-  .mobile-nav__list a{background-color: #ffffff;}
-  .header__search--form{background-color: #bbbbbb;}
-  .header__search--form .searchform{background-color: #ffffff;}
-  .mobile-nav__toggle{color: #ffffff;}
-.mobile-nav__toggle--span, .mobile-nav__toggle--span::after, .mobile-nav__toggle--span::before
-  {background-color: #ffffff;}
-.mobile-nav .social__list
-  {background-color: #ffffff;}
-  .mobile-nav__list a:active, a:focus, a:hover
-  {color: #666666;}
-
-  .tribe-events-list-widget .tribe-events-list-widget-events
-  {font-size: 60%;}
+.featured__article--heading:hover {color: #eeeeee;}
+.featured__content--title:hover {color: #eeeeee;}
+.header__main.headroom {background-color: #000000;}
+.mobile-nav__list a{background-color: #ffffff;}
+.header__search--form{background-color: #bbbbbb;}
+.header__search--form .searchform{background-color: #ffffff;}
+.mobile-nav__toggle{color: #ffffff;}
+.mobile-nav__toggle--span, .mobile-nav__toggle--span::after, .mobile-nav__toggle--span::before {background-color: #ffffff;}
+.mobile-nav .social__list {background-color: #ffffff;}
+.mobile-nav__list a:active, a:focus, a:hover {color: #666666;}
+.tribe-events-list-widget .tribe-events-list-widget-events {font-size: 60%;}
