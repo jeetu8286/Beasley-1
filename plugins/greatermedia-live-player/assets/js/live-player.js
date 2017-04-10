@@ -927,7 +927,7 @@
 		}
 		debug('playLiveStream - station=' + station);
 
-		preVastAd();
+//		preVastAd();
 		streamVastAd();
 		if (player.addEventListener) {
 			player.addEventListener('ad-playback-complete', onAdPlaybackComplete);
@@ -977,7 +977,7 @@
 		} else {
 			debug('playLiveStream - station=' + station);
 
-			preVastAd();
+//			preVastAd();
 			streamVastAd();
 			if (player.addEventListener) {
 				player.addEventListener('ad-playback-complete', onAdPlaybackComplete);
@@ -1200,7 +1200,7 @@
 	function onAdPlaybackStart(e) {
 		debug('******** ad playback start **********');
 		debug(e);
-//		preVastAd();
+		preVastAd();
 		adPlaying = true;
 		setStatus('Advertising... Type=' + e.data.type);
 	}
