@@ -56,3 +56,32 @@
 	  background-attachment:fixed
 	}
 }
+/* Overrides April 2017 */
+
+
+/* remove contest type */
+  .type-contest .entry2__thumbnail--contest-type
+  {visibility: hidden;}
+  .type-contest .entry2__thumbnail--end-date
+  {visibility: hidden;}
+
+ /* remove contest icon */
+  .entry2__thumbnail__icon
+    {visibility: hidden;}
+/* remove thumbnail color tint */
+  .entry2__thumbnail__overlay
+  {opacity: 0;}
+
+ /* date font size in recently played */
+  .songs__group--date
+  {font-size: 1em;}
+
+   /* date font size in recently played */
+  .songs__group--date
+  {font-size: 1em;}
+
+  /* remove event text*/
+  .type-tribe_events .entry2__thumbnail--month-and-day
+    {visibility: hidden;}
+  .type-tribe_events .entry2__thumbnail--day-of-week
+    {visibility: hidden;}
