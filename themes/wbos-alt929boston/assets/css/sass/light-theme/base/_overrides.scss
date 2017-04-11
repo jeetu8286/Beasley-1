@@ -87,3 +87,51 @@
   color: #fff;
   border-color: #114598;
 }
+/* April 2017 updates */
+.header__main
+{
+  border-bottom-color: #000000;  background: rgb(51,51,153); /* Old browsers */
+background: -moz-linear-gradient(top, rgba(51,51,153,1) 0%, rgba(0,0,0,1) 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(top, rgba(51,51,153,1) 0%,rgba(0,0,0,1) 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom, rgba(51,51,153,1) 0%,rgba(0,0,0,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#333399', endColorstr='#000000',GradientType=0 );
+}
+
+  /* text changes for legibility */
+  .type-tribe_events .entry2__thumbnail--month-and-day
+  {text-shadow: 1px 1px 8px #000000,1px 1px 5px #000000;font-size: 1em;}
+  .type-tribe_events .entry2__thumbnail--day-of-week
+  {  font-weight: 600;text-shadow: 1px 1px 8px #000000,1px 1px 5px #000000 ;font-size: 1em;}
+   /* remove contest thumbnail text */
+
+  .type-contest .entry2__thumbnail--end-date
+  {visibility: hidden;}
+
+  .type-contest .entry2__thumbnail--contest-type
+  {visibility: hidden;}
+ /* remove contest icon */
+  .entry2__thumbnail__icon
+    {visibility: hidden;}
+/* remove thumbnail color tint */
+  .entry2__thumbnail__overlay
+  {opacity: 0;}
+
+ /* date font size in recently played */
+  .songs__group--date
+  {font-size: 1em;}
+    .header__nav ul li a
+  {color: #ffffff;}
+
+    /* swearch background color */
+
+  .header__search
+{ color: #ffffff;
+}
+.header__search:hover, .header__search:hover .header__search--btn::before
+ { color:  #6699cc;}
+
+  .audio-stream .audio-stream__title
+  {text-transform: uppercase;}
+
+  .header__main{font-family: 'Bree Serif', serif;}
+  h1,h2,h3,h4,h5,h6{font-family: 'Bree Serif', serif;}
