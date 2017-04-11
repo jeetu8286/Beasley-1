@@ -67,3 +67,52 @@
   color:#fff;
   border-color:#004794
 }
+
+/* April 2017 updates - Made in Detroit */
+/* remove contest thumbnail text */
+
+.type-contest .entry2__thumbnail--end-date
+{visibility: hidden;}
+/* remove contest type */
+
+.type-contest .entry2__thumbnail--contest-type
+{visibility: hidden;}
+/* remove contest icon */
+.entry2__thumbnail__icon
+	{visibility: hidden;}
+/* remove thumbnail color tint */
+.entry2__thumbnail__overlay
+{opacity: 0;}
+
+ /* date font size in recently played */
+.songs__group--date
+{font-size: 1em;}
+
+/* remove event text*/
+.type-tribe_events .entry2__thumbnail--month-and-day
+	{visibility: hidden;}
+.type-tribe_events .entry2__thumbnail--day-of-week
+	{visibility: hidden;}
+ /* header skyline background */
+
+.header__main.headroom
+{background-image: url(../../images/header1025.jpg);}
+
+ /* nav background color */
+
+.header__nav ul li
+{
+background-color: rgba(255, 255, 255, 0.7);}
+
+	 /* search background color */
+
+.header__search
+{ color: #ffffff;
+padding-top: 4px;
+padding-right: 4px;
+padding-bottom: 4px;
+padding-left: 4px;
+text-transform: uppercase;
+background-color: rgba(1, 1, 1, 0.7);}
+.header__search:hover, .header__search:hover .header__search--btn::before
+{ color:  #6699cc;}
