@@ -13,7 +13,7 @@
  */
 
  // Useful global constants
-define( 'WHFSAM_VERSION', '0.1.1' ); /* Version bump by Steve 03/21/2017 */
+define( 'WHFSAM_VERSION', '0.1.2' ); /* Version bump by Steve 04/12/2017 */
 
  /**
   * Set up theme defaults and register supported WordPress features.
