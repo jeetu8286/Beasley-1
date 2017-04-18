@@ -7,17 +7,17 @@
 .featured__content--block:hover .featured__content--title,
 a:hover .highlights__community--title
 {
-	color: #4db85d;
+	color: #177ed8;
 }
 
 .show__header {
-	background-color: #4db85d;
+	background-color: #177ed8;
 }
 
 @include bp(large) {
 
     .main {
-        background-image: url("../../images/wxkb-wallpaper-2017.jpg");
+        background-image: url("../../images/wazz-wallpaper-2017.jpg");
         background-position: top center;
         background-repeat: no-repeat;
 				background-color: #000000;
