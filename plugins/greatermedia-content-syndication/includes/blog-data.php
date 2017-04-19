@@ -370,9 +370,7 @@ class BlogData {
 			'post_name'         => $post_name,
 			'post_status'       => ! empty( $post_status ) ? $post_status : $post->post_status,
 			'post_date'         => $post->post_date,
-			'post_date_gmt'     => $post->post_date_gmt,
 			'post_modified'     => $post->post_modified,
-			'post_modified_gmt' => $post->post_modified_gmt,
 		);
 
 		if ( 'publish' == $post_status ) {
