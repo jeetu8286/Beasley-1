@@ -92,31 +92,31 @@
 	}
 }
 
-/* April 2017 updates *?
+/* April 2017 updates - Made in Detroit */
 
 /* remove contest thumbnail text */
 
  .type-contest .entry2__thumbnail--end-date
- {visibility: hidden;}
+ {visibility: hidden!important;}
 
  .type-contest .entry2__thumbnail--contest-type
- {visibility: hidden;}
+ {visibility: hidden!important;}
 /* remove contest icon */
  .entry2__thumbnail__icon
-	 {visibility: hidden;}
+	 {visibility: hidden!important;}
 /* remove thumbnail color tint */
  .entry2__thumbnail__overlay
- {opacity: 0;}
+ {opacity: 0!important;}
 
 /* date font size in recently played */
  .songs__group--date
- {font-size: 1em;}
+ {font-size: 1em!important;}
 
  /* remove event text*/
  .type-tribe_events .entry2__thumbnail--month-and-day
-	 {visibility: hidden;}
+	 {visibility: hidden!important;}
  .type-tribe_events .entry2__thumbnail--day-of-week
-	 {visibility: hidden;}
+	 {visibility: hidden!important;}
 
 
 /* Post title Color */
@@ -149,7 +149,16 @@
 {
  background-color: rgba(255, 255, 255, 0.7);}
 
-		/* swearch background color */
+	.header__nav .format-fi > ul a.active, .header__nav .format-fi > ul a:focus, .header__nav .format-fi > ul a:hover, .header__nav .format-fw > ul a.active, .header__nav .format-fw > ul a:focus, .header__nav .format-fw > ul a:hover, .header__nav .format-sp > ul a.active, .header__nav .format-sp > ul a:focus, .header__nav .format-sp > ul a:hover, .header__nav .sub-menu a.active, .header__nav .sub-menu a:focus, .header__nav .sub-menu a:hover, .ui-menu a.active, .ui-menu a:focus, .ui-menu a:hover
+{
+ color: #ffffff!important
+
+	;
+
+}
+
+
+		/* search background color */
 
  .header__search
 { color: #ffffff;
