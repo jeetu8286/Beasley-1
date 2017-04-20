@@ -11,10 +11,10 @@
  * @package WKML
  * @since 0.1.0
  */
- 
+
  // Useful global constants
-define( 'WKML_VERSION', '0.1.0' );
- 
+define( 'WKML_VERSION', '0.1.2' );
+
  /**
   * Set up theme defaults and register supported WordPress features.
   *
@@ -33,7 +33,7 @@ define( 'WKML_VERSION', '0.1.0' );
 	load_theme_textdomain( 'wkml', get_stylesheet_directory_uri() . '/languages' );
  }
  add_action( 'after_setup_theme', 'wkml_setup' );
- 
+
  /**
   * Enqueue scripts and styles for front-end.
   *
@@ -43,17 +43,17 @@ define( 'WKML_VERSION', '0.1.0' );
 	$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 
 	wp_dequeue_style( 'greatermedia' );
-	wp_deregister_style( 'greatermedia' );	
+	wp_deregister_style( 'greatermedia' );
 	wp_enqueue_style( 'wkml', get_stylesheet_directory_uri() . "/assets/css/wkml{$postfix}.css", array(), WKML_VERSION );
  }
  add_action( 'wp_enqueue_scripts', 'wkml_scripts_styles', 20 );
- 
+
  /**
   * Add humans.txt to the <head> element.
   */
  function wkml_header_meta() {
 	$humans = '<link type="text/plain" rel="author" href="' . get_stylesheet_directory_uri() . '/humans.txt" />';
-	
+
 	echo apply_filters( 'wkml_humans', $humans );
  }
  add_action( 'wp_head', 'wkml_header_meta' );

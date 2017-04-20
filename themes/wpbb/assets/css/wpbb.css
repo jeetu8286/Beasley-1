@@ -13664,7 +13664,8 @@ table.responsive {
   width: 100% !important;
   margin-bottom: 0;
   border: 1px solid #d0d2d3;
-  font-size: 0.7901234568em; }
+  font-size: 0.7901234568em;
+  table-layout: fixed; }
   @media screen and (min-width: 768px) {
     table.responsive {
       font-size: 0.8888888889em; } }
@@ -13909,6 +13910,7 @@ a:hover .highlights__community--title {
 
 @media screen and (min-width: 970px) {
   .main {
+    background-image: url("../../images/wpbb-wallpaper-2017.jpg");
     background-position: top center;
     background-repeat: no-repeat;
     background-color: #000000; } }
