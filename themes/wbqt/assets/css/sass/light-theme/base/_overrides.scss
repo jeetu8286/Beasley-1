@@ -85,3 +85,32 @@
     {visibility: hidden;}
   .type-tribe_events .entry2__thumbnail--day-of-week
     {visibility: hidden;}
+
+
+  /* masthead*/
+
+  .header__main.headroom
+{background-color: transparent!important;background-image: url(http://hot969boston.com/wp-content/themes/wbqt/images/header.jpg)!important;}
+
+
+  /* nav background color */
+
+  .header__nav ul li
+{
+ color: #ffffff!important;
+  background-color: rgba(1, 1, 1, 0.7);}
+
+    .header__nav ul li a
+{ color: #ffffff!important;
+  }
+  .header__search
+{ color: #ffffff;
+  padding-top: 4px;
+  padding-right: 4px;
+  padding-bottom: 4px;
+  padding-left: 4px;
+  text-transform: uppercase!important;
+  background-color: rgba(1, 1, 1, 0.7);}
+
+.header__search:hover, .header__search:hover .header__search--btn::before
+ { color:  #6699cc!important;}

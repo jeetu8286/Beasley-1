@@ -13492,65 +13492,67 @@ article > .triton-song-history {
   border-color: #114598; }
 
 /* April 2017 updates */
-.header__main {
-  border-bottom-color: #000000;
-  background: #333399;
-  /* Old browsers */
-  background: -moz-linear-gradient(top, #333399 0%, #000000 100%);
-  /* FF3.6-15 */
-  background: -webkit-linear-gradient(top, #333399 0%, #000000 100%);
-  /* Chrome10-25,Safari5.1-6 */
-  background: linear-gradient(to bottom, #333399 0%, #000000 100%);
-  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#333399', endColorstr='#000000',GradientType=0 ); }
-
-/* text changes for legibility */
-.type-tribe_events .entry2__thumbnail--month-and-day {
-  text-shadow: 1px 1px 8px #000000, 1px 1px 5px #000000;
-  font-size: 1em; }
-
-.type-tribe_events .entry2__thumbnail--day-of-week {
-  font-weight: 600;
-  text-shadow: 1px 1px 8px #000000, 1px 1px 5px #000000;
-  font-size: 1em; }
-
-/* remove contest thumbnail text */
-.type-contest .entry2__thumbnail--end-date {
-  visibility: hidden; }
-
+/* remove contest type */
 .type-contest .entry2__thumbnail--contest-type {
-  visibility: hidden; }
+  visibility: hidden !important; }
+
+.type-contest .entry2__thumbnail--end-date {
+  visibility: hidden !important; }
 
 /* remove contest icon */
 .entry2__thumbnail__icon {
-  visibility: hidden; }
+  visibility: hidden !important; }
 
 /* remove thumbnail color tint */
 .entry2__thumbnail__overlay {
-  opacity: 0; }
+  opacity: 0 !important; }
 
 /* date font size in recently played */
 .songs__group--date {
-  font-size: 1em; }
+  font-size: 1em !important; }
+
+/* date font size in recently played */
+.songs__group--date {
+  font-size: 1em !important; }
+
+/* remove event text*/
+.type-tribe_events .entry2__thumbnail--month-and-day {
+  visibility: hidden !important; }
+
+.type-tribe_events .entry2__thumbnail--day-of-week {
+  visibility: hidden; }
+
+/* masthead*/
+.header__main.headroom {
+  background-color: transparent;
+  background-image: url(../../images/altmastbg.jpg) !important; }
+
+/* nav background color */
+.header__nav .format-fi > ul a.active, .header__nav .format-fi > ul a:focus, .header__nav .format-fi > ul a:hover, .header__nav .format-fw > ul a.active, .header__nav .format-fw > ul a:focus, .header__nav .format-fw > ul a:hover, .header__nav .format-sp > ul a.active, .header__nav .format-sp > ul a:focus, .header__nav .format-sp > ul a:hover, .header__nav .sub-menu a.active, .header__nav .format-fw > ul a.active, .header__nav .format-sp > ul a.active, .header__nav .format-fi > ul a.active, .header__nav .sub-menu a:focus, .header__nav .format-fw > ul a:focus, .header__nav .format-sp > ul a:focus, .header__nav .format-fi > ul a:focus, .header__nav .sub-menu a:hover, .header__nav .format-fw > ul a:hover, .header__nav .format-sp > ul a:hover, .header__nav .format-fi > ul a:hover, .ui-menu a.active, .ui-menu a:focus, .ui-menu a:hover {
+  background-color: #000033;
+  color: #ffffff; }
+
+.format-sp a:hover .meta-text {
+  color: #ffffff; }
+
+.header__nav ul li {
+  color: #ffffff;
+  background-color: rgba(1, 1, 1, 0.7); }
 
 .header__nav ul li a {
   color: #ffffff; }
 
-/* swearch background color */
 .header__search {
-  color: #ffffff; }
+  color: #ffffff;
+  padding-top: 4px;
+  padding-right: 4px;
+  padding-bottom: 4px;
+  padding-left: 4px;
+  text-transform: uppercase;
+  background-color: rgba(1, 1, 1, 0.7); }
 
 .header__search:hover, .header__search:hover .header__search--btn::before {
   color: #6699cc; }
-
-.audio-stream .audio-stream__title {
-  text-transform: uppercase; }
-
-.header__main {
-  font-family: 'Bree Serif', serif; }
-
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Bree Serif', serif; }
 
 .live-link__type--show {
   border-bottom-color: white;
