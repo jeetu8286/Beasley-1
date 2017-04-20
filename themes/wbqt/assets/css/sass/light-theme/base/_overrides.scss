@@ -50,58 +50,57 @@
 @include bp(large){
 	.main {
 	  background-size:cover;
-	  background-color:#061222!important;
-	  background-image:url(../../images/site-wrap-blue.png)!important;
+	  background-color:#061222;
+	  background-image:url(../../images/site-wrap-blue.png);
 	  background-repeat:no-repeat;
 	  background-attachment:fixed
 	}
 }
 /* Overrides April 2017 */
-
-
 /* remove contest type */
   .type-contest .entry2__thumbnail--contest-type
-  {visibility: hidden;}
+  {visibility: hidden!important;}
   .type-contest .entry2__thumbnail--end-date
-  {visibility: hidden;}
+  {visibility: hidden!important;}
 
  /* remove contest icon */
   .entry2__thumbnail__icon
-    {visibility: hidden;}
+    {visibility: hidden!important;}
 /* remove thumbnail color tint */
   .entry2__thumbnail__overlay
-  {opacity: 0;}
+  {opacity: 0!important;}
 
  /* date font size in recently played */
   .songs__group--date
-  {font-size: 1em;}
+  {font-size: 1em!important;}
 
    /* date font size in recently played */
   .songs__group--date
-  {font-size: 1em;}
+  {font-size: 1em!important;}
 
   /* remove event text*/
   .type-tribe_events .entry2__thumbnail--month-and-day
-    {visibility: hidden;}
+    {visibility: hidden!important;}
   .type-tribe_events .entry2__thumbnail--day-of-week
-    {visibility: hidden;}
+    {visibility: hidden!important;}
+
 
 
   /* masthead*/
 
   .header__main.headroom
-{background-color: transparent!important;background-image: url(http://hot969boston.com/wp-content/themes/wbqt/images/header.jpg)!important;}
+{background-color: transparent;background-image: url(../../images/header.jpg);}
 
 
   /* nav background color */
 
   .header__nav ul li
 {
- color: #ffffff!important;
+ color: #ffffff;
   background-color: rgba(1, 1, 1, 0.7);}
 
     .header__nav ul li a
-{ color: #ffffff!important;
+{ color: #ffffff;
   }
   .header__search
 { color: #ffffff;
@@ -109,8 +108,39 @@
   padding-right: 4px;
   padding-bottom: 4px;
   padding-left: 4px;
-  text-transform: uppercase!important;
+  text-transform: uppercase;
   background-color: rgba(1, 1, 1, 0.7);}
 
 .header__search:hover, .header__search:hover .header__search--btn::before
- { color:  #6699cc!important;}
+ { color:  #6699cc;}
+.ui-menu a.active, .ui-menu a:focus, .ui-menu a:hover
+{
+  background-color: #000033;color: #ffffff;
+
+}
+
+   .header__nav .format-fi > ul a.active, .header__nav .format-fi > ul a:focus, .header__nav .format-fi > ul a:hover, .header__nav .format-fw > ul a.active, .header__nav .format-fw > ul a:focus, .header__nav .format-fw > ul a:hover, .header__nav .format-sp > ul a.active, .header__nav .format-sp > ul a:focus, .header__nav .format-sp > ul a:hover, .header__nav .sub-menu a.active, .header__nav .sub-menu a:focus, .header__nav .sub-menu a:hover, .ui-menu a.active, .ui-menu a:focus, .ui-menu a:hover
+{
+  background-color: #000033;
+
+}
+  .format-sp a:hover .meta-text
+{
+  color: #ffffff;
+}
+
+
+  /* more btn */
+
+  .highlights__events--more-btn
+  {color: #ffffff;background-color: #003366;}
+
+.highlights__events--more-btn:focus, .highlights__events--more-btn:hover
+{
+  background-color: #000033;
+  border-top-color: #000033;
+  border-right-color: #000033;
+  border-bottom-color: #000033;
+  border-left-color: #000033;
+  color: #ffffff;
+}
