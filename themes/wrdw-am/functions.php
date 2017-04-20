@@ -11,10 +11,10 @@
  * @package WRDW-AM
  * @since 0.1.0
  */
- 
+
  // Useful global constants
-define( 'WRDWAM_VERSION', '0.1.0' );
- 
+define( 'WRDWAM_VERSION', '0.1.3' );
+
  /**
   * Set up theme defaults and register supported WordPress features.
   *
@@ -33,7 +33,7 @@ define( 'WRDWAM_VERSION', '0.1.0' );
 	load_theme_textdomain( 'wrdwam', get_stylesheet_directory_uri() . '/languages' );
  }
  add_action( 'after_setup_theme', 'wrdwam_setup' );
- 
+
  /**
   * Enqueue scripts and styles for front-end.
   *
@@ -43,17 +43,17 @@ define( 'WRDWAM_VERSION', '0.1.0' );
 	$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 
 	wp_dequeue_style( 'greatermedia' );
-	wp_deregister_style( 'greatermedia' );	
+	wp_deregister_style( 'greatermedia' );
 	wp_enqueue_style( 'wrdwam', get_stylesheet_directory_uri() . "/assets/css/wrdw_am{$postfix}.css", array(), WRDWAM_VERSION );
  }
  add_action( 'wp_enqueue_scripts', 'wrdwam_scripts_styles', 20 );
- 
+
  /**
   * Add humans.txt to the <head> element.
   */
  function wrdwam_header_meta() {
 	$humans = '<link type="text/plain" rel="author" href="' . get_stylesheet_directory_uri() . '/humans.txt" />';
-	
+
 	echo apply_filters( 'wrdwam_humans', $humans );
  }
  add_action( 'wp_head', 'wrdwam_header_meta' );
