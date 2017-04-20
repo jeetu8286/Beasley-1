@@ -13,8 +13,8 @@
  */
 
  // Useful global constants
-define( 'WUKS_VERSION', '0.1.1' );
- 
+define( 'WUKS_VERSION', '0.1.2' );
+
  /**
   * Set up theme defaults and register supported WordPress features.
   *
