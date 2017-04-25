@@ -13512,7 +13512,7 @@ article > .triton-song-history {
 
 /* header background*/
 .header__main.headroom {
-  background-image: url(../../wror-header-blue.jpg); }
+  background-image: url(../../images/wror-header-blue.jpg); }
 
 /* nav background color */
 .header__nav ul li {
@@ -13542,7 +13542,7 @@ article > .triton-song-history {
 
 /* body background color */
 .main {
-  background-image: url(../../wrorbg.jpg); }
+  background-image: url(../../images/wrorbg.jpg); }
 
 .live-link__type--show {
   border-bottom-color: white;
