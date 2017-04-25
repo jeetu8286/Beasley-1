@@ -13469,18 +13469,7 @@ article > .triton-song-history {
     background-repeat: no-repeat;
     background-attachment: fixed; } }
 
-/* Overrides April 2017 */
-/* remove contest type */
-.type-contest .entry2__thumbnail--contest-type {
-  visibility: hidden !important; }
-
-.type-contest .entry2__thumbnail--end-date {
-  visibility: hidden !important; }
-
-/* remove contest icon */
-.entry2__thumbnail__icon {
-  visibility: hidden !important; }
-
+/* Overrides April 2017 - Made in Detroit */
 /* remove thumbnail color tint */
 .entry2__thumbnail__overlay {
   opacity: 0 !important; }
@@ -13503,7 +13492,10 @@ article > .triton-song-history {
 /* masthead*/
 .header__main.headroom {
   background-color: transparent;
-  background-image: url(../../images/header.jpg); }
+  background-image: url(../../images/header.jpg) !important; }
+
+.mobile-nav__toggle--span, .mobile-nav__toggle--span::after, .mobile-nav__toggle--span::before {
+  background-color: #ffffff; }
 
 /* nav background color */
 .header__nav ul li {
@@ -13511,6 +13503,9 @@ article > .triton-song-history {
   background-color: rgba(1, 1, 1, 0.7); }
 
 .header__nav ul li a {
+  color: #ffffff; }
+
+.header__main a, .header__main a:visited {
   color: #ffffff; }
 
 .header__search {
@@ -13523,7 +13518,7 @@ article > .triton-song-history {
   background-color: rgba(1, 1, 1, 0.7); }
 
 .header__search:hover, .header__search:hover .header__search--btn::before {
-  color: #6699cc; }
+  color: #6699cc !important; }
 
 .ui-menu a.active, .ui-menu a:focus, .ui-menu a:hover {
   background-color: #000033;

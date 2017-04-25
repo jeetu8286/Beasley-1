@@ -107,7 +107,7 @@
 		/* header background*/
 
 	 .header__main.headroom
-{background-image: url(../../images/wror-header-blue.jpg);}
+{background-image: url(../../wror-header-blue.jpg);}
 
 	 /* nav background color */
 
@@ -119,6 +119,11 @@
  color: #ffffff;
 
 }
+
+.mobile-nav__toggle--span, .mobile-nav__toggle--span::after, .mobile-nav__toggle--span::before
+ {background-color: #ffffff;}
+
+
  .format-sp a:hover .meta-text
 {
  color: #ffffff;
@@ -140,4 +145,4 @@
 			/* body background color */
 
  .main
-{background-image: url(../../images/wrorbg.jpg);}
+{background-image: url(../../wrorbg.jpg);}
