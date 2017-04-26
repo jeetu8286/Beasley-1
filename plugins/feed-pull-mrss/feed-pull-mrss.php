@@ -587,3 +587,47 @@ function fpmrss_save_settings( $post_id ) {
 	}
 }
 add_action( 'save_post', 'fpmrss_save_settings' );
+
+/**
+ * Fetches post content.
+ *
+ * @param array $postargs
+ * @param \SimpleXMLElement $post
+ * @param int $feed_id
+ * @return array
+ */
+function fpmrss_fetch_post_content( $postargs, $post, $feed_id ) {
+	$url_field = get_post_meta( $feed_id, 'fpmrss-content-url', true );
+	$xpath_selector = get_post_meta( $feed_id, 'fpmrss-content-xpath', true );
+	if ( ! empty( $url_field ) && ! empty( $xpath_selector ) ) {
+		$elements = $post->xpath( $url_field );
+		if ( ! empty( $elements ) ) {
+			$url = (string) current( $elements );
+			if ( filter_var( $url, FILTER_VALIDATE_URL ) ) {
+				$response = wp_remote_get( $url, array() );
+				if ( 200 == wp_remote_retrieve_response_code( $response ) ) {
+					$use_errors = libxml_use_internal_errors( true );
+
+					$doc = new \DOMDocument();
+					$doc->loadHTML( wp_remote_retrieve_body( $response ) );
+
+					$xpath = new \DOMXPath( $doc );
+					$elements = $xpath->evaluate( $xpath_selector );
+					if ( ! empty( $elements ) ) {
+						$content = array();
+						foreach ( $elements as $element ) {
+							$content[] = trim( $element->textContent );
+						}
+
+						$postargs['post_content'] = implode( PHP_EOL . PHP_EOL, $content );
+					}
+
+					libxml_use_internal_errors( $use_errors );
+				}
+			}
+		}
+	}
+
+	return $postargs;
+}
+add_filter( 'fp_post_args', 'fpmrss_fetch_post_content', 10, 3 );
