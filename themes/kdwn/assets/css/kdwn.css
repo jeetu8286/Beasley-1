@@ -13921,6 +13921,9 @@ a:hover .highlights__community--title {
 .home .main .content {
   padding: 0; }
 
+.widget_rss .rss-widget-icon {
+  display: inline; }
+
 .live-link__type--show {
   border-bottom-color: white;
   background: none; }
