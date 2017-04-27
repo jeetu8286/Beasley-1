@@ -628,6 +628,13 @@ function fpmrss_fetch_post_content( $postargs, $post, $feed_id ) {
 		}
 	}
 
+	$fields = array( 'post_content', 'post_excerpt', 'post_title' );
+	foreach ( $fields as $field ) {
+		if ( ! empty( $postargs[ $field ] ) ) {
+			$postargs[ $field ] = wp_kses_post( htmlspecialchars_decode( $postargs[ $field ] ) );
+		}
+	}
+
 	return $postargs;
 }
 add_filter( 'fp_post_args', 'fpmrss_fetch_post_content', 10, 3 );
