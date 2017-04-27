@@ -54,13 +54,13 @@ function fpmrss_extract_media_thumbnail( SimpleXMLElement $element ) {
 	if ( ! is_a( $group, 'SimpleXMLElement' ) ) {
 		$group = $element;
 	}
-	
+
 	$thumbnail_url = false;
 	$thumbnails = $group->xpath( 'media:thumbnail' );
 	if ( empty( $thumbnails ) && $element != $group ) {
 		$thumbnails = $element->xpath( 'media:thumbnail' );
 	}
-	
+
 	if ( ! empty( $thumbnails ) ) {
 		$max_width = 0;
 		foreach ( $thumbnails as $thumbnail ) {
@@ -98,7 +98,7 @@ function fpmrss_extract_media_player( SimpleXMLElement $element ) {
 	if ( empty( $player ) && $group != $element ) {
 		$player = $element->xpath( 'media:player' );
 	}
-	
+
 	if ( ! empty( $player ) ) {
 		$player = current( $player );
 		$player_value = trim( strval( $player ) );
@@ -322,7 +322,7 @@ function fpmrss_generate_image_name( $image ) {
 			$file_name = substr( sanitize_title( pathinfo( $image, PATHINFO_FILENAME ) ), 0, 254 ) . $ext;
 		}
 	}
-	
+
 	return $file_name;
 }
 
@@ -340,7 +340,7 @@ function fpmrss_update_content( $content ) {
 		}
 		$content = $player . PHP_EOL . PHP_EOL . $content;
 	}
-	
+
 	return $content;
 }
 add_action( 'the_content', 'fpmrss_update_content', 1 );
@@ -407,6 +407,7 @@ function fpmrss_add_meta_box() {
 		}
 
 		if ( 'fp_feed' == $typenow ) {
+			add_meta_box( 'fpmrss-fetch-content', 'Fetch content', 'fpmrss_render_fetch_metabox', $typenow, 'side', 'core' );
 			add_meta_box( 'fpmrss-shows', 'Show', 'fpmrss_render_shows_metabox', $typenow, 'side', 'core' );
 		}
 
@@ -435,7 +436,7 @@ function fpmrss_render_ooyala_metabox( $post ) {
 	if ( class_exists( 'OoyalaApi' ) && ! empty( $ooyala['api_key'] ) && ! empty( $ooyala['api_secret'] ) ) {
 		$ooyala_api = new OoyalaApi( $ooyala['api_key'], $ooyala['api_secret'] );
 	}
-	
+
 	$selected_player = get_post_meta( $post->ID, 'fpmrss-ooyala-player-id', true );
 	$players = get_transient( 'gmr_ooyala_players' );
 	if ( $players === false ) {
@@ -467,7 +468,7 @@ function fpmrss_render_ooyala_metabox( $post ) {
 			endforeach;
 		echo '</select>';
 	echo '</p>';
-	
+
 	$selected_ad_set = get_post_meta( $post->ID, 'fpmrss-ooyala-ad-set', true );
 	$ad_sets = get_transient( 'gmr_ooyala_ad_sets' );
 	if ( $ad_sets === false ) {
@@ -483,12 +484,12 @@ function fpmrss_render_ooyala_metabox( $post ) {
 
 		set_transient( 'gmr_ooyala_ad_sets', $ad_sets, $transient_ttl );
 	}
-	
+
 	echo '<p>';
 		echo '<label for="fpmrss-ooyala-ad-set">Ad Set:</label>';
 		echo '<select id="fpmrss-ooyala-ad-set" name="fpmrss-ooyala-ad-set" class="widefat">';
 			echo '<option value="">';
-				echo 'fp_feed' == $post->post_type 
+				echo 'fp_feed' == $post->post_type
 					? '--- no add set ---'
 					: '--- ad set defined in the feed ---';
 			echo '</option>';
@@ -498,6 +499,31 @@ function fpmrss_render_ooyala_metabox( $post ) {
 				echo '</option>';
 			endforeach;
 		echo '</select>';
+	echo '</p>';
+}
+
+/**
+ * Renders "Fetch content" metabox.
+ *
+ * @param \WP_Post $post
+ */
+function fpmrss_render_fetch_metabox( $post ) {
+	$url_field = get_post_meta( $post->ID, 'fpmrss-content-url', true );
+	$xpath_field = get_post_meta( $post->ID, 'fpmrss-content-xpath', true );
+
+	echo '<p>';
+		echo '<label>';
+			echo '<b>Source Field (XPath)</b><br>';
+			echo '<input type="text" class="widefat" name="fpmrss-content-url" value="', esc_attr( $url_field ), '"><br>';
+			echo '<span class="description">Enter field name which contains a link to original article.</span>';
+		echo '</label>';
+	echo '</p>';
+	echo '<p>';
+		echo '<label>';
+			echo '<b>Content XPath</b><br>';
+			echo '<input type="text" class="widefat" name="fpmrss-content-xpath" value="', esc_attr( $xpath_field ), '"><br>';
+			echo '<span class="description">Enter xpath to extract content from remote page.</span>';
+		echo '</label>';
 	echo '</p>';
 }
 
@@ -547,7 +573,7 @@ function fpmrss_save_settings( $post_id ) {
 
 	$nonce = filter_input( INPUT_POST, 'fpmrss_nonce' );
 	if ( $nonce && wp_verify_nonce( $nonce, 'fpmrss' ) ) {
-		$fields = array( 'fpmrss-ooyala-player-id', 'fpmrss-ooyala-ad-set', 'fpmrss-show' );
+		$fields = array( 'fpmrss-ooyala-player-id', 'fpmrss-ooyala-ad-set', 'fpmrss-show', 'fpmrss-content-url', 'fpmrss-content-xpath' );
 		foreach ( $fields as $field ) {
 			$value = wp_kses_post( filter_input( INPUT_POST, $field ) );
 			$value = trim( $value );
@@ -561,3 +587,47 @@ function fpmrss_save_settings( $post_id ) {
 	}
 }
 add_action( 'save_post', 'fpmrss_save_settings' );
+
+/**
+ * Fetches post content.
+ *
+ * @param array $postargs
+ * @param \SimpleXMLElement $post
+ * @param int $feed_id
+ * @return array
+ */
+function fpmrss_fetch_post_content( $postargs, $post, $feed_id ) {
+	$url_field = get_post_meta( $feed_id, 'fpmrss-content-url', true );
+	$xpath_selector = get_post_meta( $feed_id, 'fpmrss-content-xpath', true );
+	if ( ! empty( $url_field ) && ! empty( $xpath_selector ) ) {
+		$elements = $post->xpath( $url_field );
+		if ( ! empty( $elements ) ) {
+			$url = (string) current( $elements );
+			if ( filter_var( $url, FILTER_VALIDATE_URL ) ) {
+				$response = wp_remote_get( $url, array() );
+				if ( 200 == wp_remote_retrieve_response_code( $response ) ) {
+					$use_errors = libxml_use_internal_errors( true );
+
+					$doc = new \DOMDocument();
+					$doc->loadHTML( wp_remote_retrieve_body( $response ) );
+
+					$xpath = new \DOMXPath( $doc );
+					$elements = $xpath->evaluate( $xpath_selector );
+					if ( ! empty( $elements ) ) {
+						$content = array();
+						foreach ( $elements as $element ) {
+							$content[] = trim( $element->textContent );
+						}
+
+						$postargs['post_content'] = implode( PHP_EOL . PHP_EOL, $content );
+					}
+
+					libxml_use_internal_errors( $use_errors );
+				}
+			}
+		}
+	}
+
+	return $postargs;
+}
+add_filter( 'fp_post_args', 'fpmrss_fetch_post_content', 10, 3 );
