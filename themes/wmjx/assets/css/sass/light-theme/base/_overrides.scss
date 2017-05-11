@@ -146,8 +146,10 @@
 
 /* header skyline background */
 
- .header__main.headroom
-{background-image: url(../../images/magic-Header.jpg);}
+
+
+.header__main.headroom
+{background-image: url(../../images/magic-Header.jpg);background-size: auto;background-position: top center;}
 
 	/* nav background color */
 

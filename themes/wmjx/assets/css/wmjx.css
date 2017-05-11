@@ -13540,7 +13540,9 @@ article > .triton-song-history {
 
 /* header skyline background */
 .header__main.headroom {
-  background-image: url(../../images/magic-Header.jpg); }
+  background-image: url(../../images/magic-Header.jpg);
+  background-size: auto;
+  background-position: top center; }
 
 /* nav background color */
 .header__nav ul li {
