@@ -13502,8 +13502,15 @@ article > .triton-song-history {
 
 /* masthead*/
 .header__main.headroom {
-  background-color: transparent;
-  background-image: url(../../images/header.jpg); }
+  background-color: #585858 !important;
+  background-image: url(../../images/hotheader.jpg) !important;
+  background-position: top center !important;
+  background-repeat: no-repeat !important; }
+
+.main {
+  background-image: url(../../images/hot_Background.jpg) !important;
+  background-attachment: fixed !important;
+  background-position: top center; }
 
 .mobile-nav__toggle--span, .mobile-nav__toggle--span::after, .mobile-nav__toggle--span::before {
   background-color: #ffffff; }

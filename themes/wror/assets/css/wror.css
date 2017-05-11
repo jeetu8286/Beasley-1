@@ -13547,6 +13547,12 @@ article > .triton-song-history {
 .main {
   background-image: url(../../images/wrorbg.jpg); }
 
+/* Additional Updates May 10, 2017 **/
+.header__main.headroom {
+  background-color: #585858;
+  background-image: url(../../images/wror-header.jpg);
+  background-position: top center; }
+
 .live-link__type--show {
   border-bottom-color: white;
   background: none; }
