@@ -57,3 +57,11 @@ define( 'KDWN_VERSION', '0.1.3' );
 	echo apply_filters( 'kdwn_humans', $humans );
  }
  add_action( 'wp_head', 'kdwn_header_meta' );
+
+ // Only show local posts on the home page
+ function local_news_home_category( $query ) {
+    if ( $query->is_home() && $query->is_main_query() ) {
+        $query->set( 'category_name', 'local-news' );
+    }
+}
+add_action( 'pre_get_posts', 'local_news_home_category' );
