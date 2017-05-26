@@ -4,8 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e1edab6523ffccc707b2abb899bbb152",
-    "content-hash": "4ee5249037ad6b95d5d0b96d0c9a5dbd",
+    "content-hash": "460dc3ee1783ca89559427158ff8bae7",
     "packages": [
         {
             "name": "10up/wp-gears",
@@ -52,20 +51,20 @@
                 "source": "https://github.com/10up/WP-Gears/tree/2.1.0",
                 "issues": "https://github.com/10up/WP-Gears/issues"
             },
-            "time": "2016-05-31 17:33:47"
+            "time": "2016-05-31T17:33:47+00:00"
         },
         {
             "name": "composer/installers",
-            "version": "v1.2.0",
+            "version": "v1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/installers.git",
-                "reference": "d78064c68299743e0161004f2de3a0204e33b804"
+                "reference": "79ad876c7498c0bbfe7eed065b8651c93bfd6045"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/installers/zipball/d78064c68299743e0161004f2de3a0204e33b804",
-                "reference": "d78064c68299743e0161004f2de3a0204e33b804",
+                "url": "https://api.github.com/repos/composer/installers/zipball/79ad876c7498c0bbfe7eed065b8651c93bfd6045",
+                "reference": "79ad876c7498c0bbfe7eed065b8651c93bfd6045",
                 "shasum": ""
             },
             "require": {
@@ -107,12 +106,16 @@
             "keywords": [
                 "Craft",
                 "Dolibarr",
+                "Eliasis",
                 "Hurad",
                 "ImageCMS",
+                "Kanboard",
                 "MODX Evo",
                 "Mautic",
+                "Maya",
                 "OXID",
                 "Plentymarkets",
+                "Porto",
                 "RadPHP",
                 "SMF",
                 "Thelia",
@@ -135,9 +138,11 @@
                 "fuelphp",
                 "grav",
                 "installer",
+                "itop",
                 "joomla",
                 "kohana",
                 "laravel",
+                "lavalite",
                 "lithium",
                 "magento",
                 "mako",
@@ -152,6 +157,7 @@
                 "roundcube",
                 "shopware",
                 "silverstripe",
+                "sydes",
                 "symfony",
                 "typo3",
                 "wordpress",
@@ -159,7 +165,27 @@
                 "zend",
                 "zikula"
             ],
-            "time": "2016-08-13 20:53:52"
+            "time": "2017-04-24T06:37:16+00:00"
+        },
+        {
+            "name": "wpackagist-plugin/duplicate-post",
+            "version": "3.2",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/duplicate-post/",
+                "reference": "tags/3.2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/duplicate-post.3.2.zip",
+                "reference": null,
+                "shasum": null
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/duplicate-post/"
         },
         {
             "name": "wpackagist-plugin/edit-flow",
@@ -183,15 +209,15 @@
         },
         {
             "name": "wpackagist-plugin/ooyala-video-browser",
-            "version": "2.3.3",
+            "version": "2.4.0",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/ooyala-video-browser/",
-                "reference": "tags/2.3.3"
+                "reference": "tags/2.4.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/ooyala-video-browser.2.3.3.zip",
+                "url": "https://downloads.wordpress.org/plugin/ooyala-video-browser.2.4.0.zip",
                 "reference": null,
                 "shasum": null
             },
@@ -223,15 +249,15 @@
         },
         {
             "name": "wpackagist-plugin/the-events-calendar",
-            "version": "4.4.4",
+            "version": "4.5.2.1",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/the-events-calendar/",
-                "reference": "tags/4.4.4"
+                "reference": "tags/4.5.2.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/the-events-calendar.4.4.4.zip",
+                "url": "https://downloads.wordpress.org/plugin/the-events-calendar.4.5.2.1.zip",
                 "reference": null,
                 "shasum": null
             },
@@ -432,7 +458,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2016-07-13 23:29:13"
+            "time": "2016-07-13T23:29:13+00:00"
         },
         {
             "name": "wimg/php-compatibility",
@@ -440,21 +466,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/wimg/PHPCompatibility.git",
-                "reference": "e572fe50f1dc79c048697a60292a28c00b8c8059"
+                "reference": "cc15951d9e6db1aef7982caa31a8516c39443868"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wimg/PHPCompatibility/zipball/e572fe50f1dc79c048697a60292a28c00b8c8059",
-                "reference": "e572fe50f1dc79c048697a60292a28c00b8c8059",
+                "url": "https://api.github.com/repos/wimg/PHPCompatibility/zipball/cc15951d9e6db1aef7982caa31a8516c39443868",
+                "reference": "cc15951d9e6db1aef7982caa31a8516c39443868",
                 "shasum": ""
             },
             "require": {
                 "ext-tokenizer": "*",
                 "php": ">=5.1.2",
-                "squizlabs/php_codesniffer": "~2.0"
-            },
-            "require-dev": {
-                "satooshi/php-coveralls": "dev-master"
+                "squizlabs/php_codesniffer": "^2.0"
             },
             "type": "phpcodesniffer-standard",
             "autoload": {
@@ -479,7 +502,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2017-03-19 16:16:19"
+            "time": "2017-05-24 19:50:55"
         },
         {
             "name": "wpackagist-plugin/core-control",
