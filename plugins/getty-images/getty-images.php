@@ -5,7 +5,7 @@ Plugin URI: http://www.oomphinc.com/work/getty-images-wordpress-plugin/
 Description: Integrate your site with Getty Images
 Author: gettyImages
 Author URI: http://gettyimages.com/
-Version: 2.4.4
+Version: 2.5.2
 */
 
 /*  Copyright 2014  Getty Images
@@ -44,6 +44,17 @@ class Getty_Images {
 	const getty_details_meta_key = 'getty_images_image_details';
 
 	/**
+	* Returns current plugin version.
+	*
+	* @return string Plugin version
+	*/
+	private function __plugin_get_version() {
+		$plugin_data = get_plugin_data( __FILE__ );
+		$plugin_version = $plugin_data['Version'];
+		return $plugin_version;
+	}
+
+	/**
 	 * Register actions and filters
 	 *
 	 * @uses add_action, add_filter
@@ -77,6 +88,7 @@ class Getty_Images {
 		// Add styles for alignment
 		add_action( 'wp_head', array( $this, 'frontend_style' ) );
 
+		//Add Google Tag Manager
 		add_action( 'admin_footer', array( $this, 'admin_footer' ));
 	}
 
@@ -177,13 +189,13 @@ class Getty_Images {
 		$isWPcom = self::isWPcom();
 
 		// Determine if the Omniture Javascript should be loaded
-		$load_omniture = true;
+		$load_tracking = true;
+		$settings = isset( $_COOKIE['wpGIc'] ) ? json_decode( stripslashes( $_COOKIE['wpGIc'] ) ) : false;
+		if ( isset( $settings->{'omniture-opt-in'} ) && ! $settings->{'omniture-opt-in'} ) {
+			// Don't load the s_code script if the user has opted out
+			$load_tracking = false;
+		}
 		if ( $isWPcom ) {
-			$settings = isset( $_COOKIE['wpGIc'] ) ? json_decode( stripslashes( $_COOKIE['wpGIc'] ) ) : false;
-			if ( isset( $settings->{'omniture-opt-in'} ) && ! $settings->{'omniture-opt-in'} ) {
-				// Don't load the s_code script if the user has opted out
-				$load_omniture = false;
-			}
 			$googleAnalyticsId = 'UA-85194766-9';
 			$googleTagManagerId = 'GTM-TBS9LM9';
 		} else {
@@ -191,36 +203,46 @@ class Getty_Images {
 			$googleTagManagerId = 'GTM-WCPDGK9';
 		}
 
-		wp_enqueue_script( 'spin-js', plugins_url( '/js/spin.js', __FILE__ ), array(), 1, true );
-		wp_enqueue_script( 'getty-images-filters', plugins_url( '/js/getty-filters.js', __FILE__ ), array(), 1, true );
-		wp_enqueue_script( 'getty-images-views', plugins_url( '/js/getty-views.js', __FILE__ ), array( 'getty-images-filters', 'spin-js' ), 1, true );
+		wp_enqueue_script( 'spin-js', plugins_url( '/js/spin.js', __FILE__ ), array(), $this->__plugin_get_version(), true );
+		wp_enqueue_script( 'getty-images-filters', plugins_url( '/js/getty-filters-2-5.js', __FILE__ ), array(), $this->__plugin_get_version(), true );
+		wp_enqueue_script( 'getty-images-views', plugins_url( '/js/getty-views-2-5.js', __FILE__ ), array( 'getty-images-filters', 'spin-js' ), $this->__plugin_get_version(), true );
 
 		// Register Omniture s-code
-		wp_register_script( 'getty-omniture-scode', apply_filters( 'getty_images_s_code_js_url', plugins_url( '/js/s_code.js', __FILE__ ) ), array(), 1, true );
+		wp_register_script( 'getty-omniture-scode', apply_filters( 'getty_images_s_code_js_url', plugins_url( '/js/s_code.js', __FILE__ ) ), array(), $this->__plugin_get_version(), true );
 
 		// Optionally load it as a dependency
-		$models_depend = $load_omniture ? array( 'jquery-cookie', 'getty-omniture-scode' ) : array( 'jquery-cookie' );
+		$models_depend = $load_tracking ? array( 'jquery-cookie', 'getty-omniture-scode' ) : array( 'jquery-cookie' );
 
-		wp_enqueue_script( 'getty-images-models', plugins_url( '/js/getty-models.js', __FILE__ ), $models_depend, 1, true );
-		wp_enqueue_script( 'getty-images', plugins_url( '/js/getty-images.js', __FILE__ ), array( 'getty-images-views', 'getty-images-models' ), 1.1, true );
+		wp_enqueue_script( 'getty-images-models', plugins_url( '/js/getty-models-2-5.js', __FILE__ ), $models_depend, $this->__plugin_get_version(), true );
+		wp_enqueue_script( 'getty-images', plugins_url( '/js/getty-images-2-5.js', __FILE__ ), array( 'getty-images-views', 'getty-images-models' ), $this->__plugin_get_version(), true );
 
-		wp_enqueue_style( 'getty-images', plugins_url( '/getty-images.css', __FILE__ ) );
+		wp_enqueue_style( 'getty-about-text', plugins_url( '/css/getty-about-text.css', __FILE__ ), array(), $this->__plugin_get_version() );
+		wp_enqueue_style( 'getty-browser', plugins_url( '/css/getty-browser.css', __FILE__ ), array(), $this->__plugin_get_version() );
+		wp_enqueue_style( 'getty-choose-mode', plugins_url( '/css/getty-choose-mode.css', __FILE__ ), array(), $this->__plugin_get_version() );
+		wp_enqueue_style( 'getty-images-login', plugins_url( '/css/getty-images-login.css', __FILE__ ), array(), $this->__plugin_get_version() );
+		wp_enqueue_style( 'getty-refinement-panel', plugins_url( '/css/getty-refinement-panel.css', __FILE__ ), array(), $this->__plugin_get_version() );
+		wp_enqueue_style( 'getty-sidebar-container', plugins_url( '/css/getty-sidebar-container.css', __FILE__ ), array(), $this->__plugin_get_version() );
+		wp_enqueue_style( 'getty-title-bar', plugins_url( '/css/getty-title-bar.css', __FILE__ ), array(), $this->__plugin_get_version() );
+		wp_enqueue_style( 'getty-toolbar', plugins_url( '/css/getty-toolbar.css', __FILE__ ), array(), $this->__plugin_get_version() );
+		wp_enqueue_style( 'getty-welcome', plugins_url( '/css/getty-welcome.css', __FILE__ ), array(), $this->__plugin_get_version() );
 
-		// Register Google Analytics
-		wp_enqueue_script( 'google-analytics', plugins_url( '/js/google-analytics.js', __FILE__ ), array(), 1, true );
-		wp_localize_script( 'google-analytics', 'google_analytics_data',
-				array( 
-					'ID' => $googleAnalyticsId
-				)
-			);
+		if( $load_tracking ) {
+			// Register Google Analytics
+			wp_enqueue_script( 'google-analytics', plugins_url( '/js/google-analytics.js', __FILE__ ), array(), $this->__plugin_get_version(), true );
+			wp_localize_script( 'google-analytics', 'google_analytics_data',
+					array( 
+						'ID' => $googleAnalyticsId
+					)
+				);
 
-		//Register Google Tag Manager
-		wp_enqueue_script( 'google-tag-manager-head', plugins_url( '/js/google-tag-manager-head.js', __FILE__ ), array(), 1, true );
-		wp_localize_script( 'google-tag-manager-head', 'google_tag_manager_data',
-				array( 
-					'ID' => $googleTagManagerId
-				)
-			);
+			//Register Google Tag Manager
+			wp_enqueue_script( 'google-tag-manager-head', plugins_url( '/js/google-tag-manager-head.js', __FILE__ ), array(), $this->__plugin_get_version(), true );
+			wp_localize_script( 'google-tag-manager-head', 'google_tag_manager_data',
+					array( 
+						'ID' => $googleTagManagerId
+					)
+				);
+		}
 
 		// Nonce 'n' localize!
 		wp_localize_script( 'getty-images-filters', 'gettyImages',
@@ -289,6 +311,9 @@ class Getty_Images {
 					'excludeNudity' => __( "Exclude Nudity?", 'getty-images' ),
 
 					'sortOrder' => __( "Sort Order", 'getty-images' ),
+					'bestMatch' => __( "Best Match", 'getty-images' ),
+					'newest' => __( "Newest", 'getty-images' ),
+					'oldest' => __( "Oldest", 'getty-images' ),
 					'mostPopular' => __( "Most Popular", 'getty-images' ),
 					'mostRecent' => __( "Most Recent", 'getty-images' ),
 
@@ -301,6 +326,93 @@ class Getty_Images {
 						'center' => __( 'Center', 'getty-images' ),
 						'right' => __( 'Right', 'getty-images' ),
 					),
+
+					'numberOfPeople' => __( "Number of people", 'getty-images' ),
+					'noPeople' => __( "No people", 'getty-images' ),
+					'onePerson' => __( "One person", 'getty-images' ),
+					'twoPerson' => __( "Two person", 'getty-images' ),
+					'groupOfPeople' => __( "Group of people", 'getty-images' ),
+
+					'age' => __( "Age", 'getty-images' ),
+					'newborn' => __( "Newborn", 'getty-images' ),
+					'baby' => __( "Baby", 'getty-images' ),
+					'child' => __( "Child", 'getty-images' ),
+					'teenager' => __( "Teenager", 'getty-images' ),
+					'youngAdult' => __( "Young adult", 'getty-images' ),
+					'adult' => __( "Adult", 'getty-images' ),
+					'adultsOnly' => __( "Adults Only", 'getty-images' ),
+					'matureAdult' => __( "Mature adult", 'getty-images' ),
+					'seniorAdult' => __( "Senior adult", 'getty-images' ),
+					'_0_1months' => __( "0-1 months", 'getty-images' ),
+					'_2_5months' => __( "2-5 months", 'getty-images' ),
+					'_6_11months' => __( "6-11 months", 'getty-images' ),
+					'_12_17months' => __( "12-17 months", 'getty-images' ),
+					'_18_23months' => __( "18-23 months", 'getty-images' ),
+					'_2_3years' => __( "2-3 years", 'getty-images' ),
+					'_4_5years' => __( "4-5 years", 'getty-images' ),
+					'_6_7years' => __( "6-7 years", 'getty-images' ),
+					'_8_9years' => __( "8-9 years", 'getty-images' ),
+					'_10_11years' => __( "10-11 years", 'getty-images' ),
+					'_12_13years' => __( "12-13 years", 'getty-images' ),
+					'_14_15years' => __( "14-15 years", 'getty-images' ),
+					'_16_17years' => __( "16-17 years", 'getty-images' ),
+					'_18_19years' => __( "18-19 years", 'getty-images' ),
+					'_20_24years' => __( "20-24 years", 'getty-images' ),
+					'_20_29years' => __( "20-29 years", 'getty-images' ),
+					'_25_29years' => __( "25-29 years", 'getty-images' ),
+					'_30_34years' => __( "30-34 years", 'getty-images' ),
+					'_30_39years' => __( "30-39 years", 'getty-images' ),
+					'_35_39years' => __( "35-39 years", 'getty-images' ),
+					'_40_44years' => __( "40-44 years", 'getty-images' ),
+					'_40_49years' => __( "40-49 years", 'getty-images' ),
+					'_45_49years' => __( "45-49 years", 'getty-images' ),
+					'_50_54years' => __( "50-54 years", 'getty-images' ),
+					'_50_59years' => __( "50-59 years", 'getty-images' ),
+					'_55_59years' => __( "55-59 years", 'getty-images' ),
+					'_60_64years' => __( "60-64 years", 'getty-images' ),
+					'_60_69years' => __( "60-69 years", 'getty-images' ),
+					'_65_69years' => __( "65-69 years", 'getty-images' ),
+					'_70_79years' => __( "70-79 years", 'getty-images' ),
+					'_80_89years' => __( "80-89 years", 'getty-images' ),
+					'_90_plusYears' => __( "90 plus years", 'getty-images' ),
+					'over100' => __( "Over 100", 'getty-images' ),
+
+					'peopleComposition' => __( "People composition", 'getty-images' ),
+					'headShot' => __( "Head shot", 'getty-images' ),
+					'waistUp' => __( "Waist up", 'getty-images' ),
+					'threeQuarterLength' => __( "Three quarter length", 'getty-images' ),
+					'fullLength' => __( "Full length", 'getty-images' ),
+					'lookingAtCamera' => __( "Looking at camera", 'getty-images' ),
+					'candid' => __( "Candid", 'getty-images' ),
+
+					'imageStyle' => __( "Image style", 'getty-images' ),
+					'fullFrame' => __( "Full frame", 'getty-images' ),
+					'closeUp' => __( "Close up", 'getty-images' ),
+					'portrait' => __( "Portrait", 'getty-images' ),
+					'sparse' => __( "Sparse", 'getty-images' ),
+					'abstract' => __( "Abstract", 'getty-images' ),
+					'macro' => __( "Macro", 'getty-images' ),
+					'stillLife' => __( "Still life", 'getty-images' ),
+					'cutOut' => __( "Cut out", 'getty-images' ),
+					'copySpace' => __( "Copy space", 'getty-images' ),
+
+					'ethnicity' => __( "Ethnicity", 'getty-images' ),
+					'eastAsian' => __( "Easn Asian", 'getty-images' ),
+					'southeastAsian' => __( "Southeast Asian", 'getty-images' ),
+					'southAsian' => __( "South Asian", 'getty-images' ),
+					'black' => __( "Black", 'getty-images' ),
+					'hispanicLatino' => __( "Hispanic/Latino", 'getty-images' ),
+					'caucasian' => __( "Caucasian", 'getty-images' ),
+					'middleEastern' => __( "Middle Eastern", 'getty-images' ),
+					'nativeAmericanFirstNations' => __( "Native American/First Nations", 'getty-images' ),
+					'pacificIslander' => __( "Pacific Islander", 'getty-images' ),
+					'mixedRacePerson' => __( "Mixed Race Person", 'getty-images' ),
+					'multiEthnicGroup' => __( "Multi-Ethnic Group", 'getty-images' ),
+				),
+				'tracking' => array(
+					'user' => array('username' => ''),
+					'search' => array('results_count' => 0, 'search_term' => ''),
+					'asset' => array('id' => '', )
 				)
 			)
 		);
@@ -412,7 +524,7 @@ class Getty_Images {
 
 		$meta = $_POST['meta'];
 
-		if( !is_array( $_POST['meta'] ) || !isset( $_POST['meta']['ImageId'] ) ) {
+		if( !is_array( $_POST['meta'] ) || !isset( $_POST['meta']['id'] ) ) {
 			$this->ajax_error( __( "Invalid image meta", 'getty-images' ) );
 		}
 
@@ -429,7 +541,7 @@ class Getty_Images {
 		// http://delivery.gettyimages.com/../<filename>.<ext>?TONSOFAUTHORIZATIONDATA
 		//
 		// Check that the URL component is correct:
-		if( strpos( $url, 'http://delivery.gettyimages.com/' ) !== 0 ) {
+		if( strpos( $url, 'https://delivery.gettyimages.com/' ) !== 0 ) {
 			$this->ajax_error( "Invalid URL" );
 		}
 
@@ -475,7 +587,7 @@ class Getty_Images {
 
 		// Trash any existing attachment for this Getty Images image. Don't force
 		// delete since posts may be using the image. Let the user force file delete explicitly.
-		$getty_id = sanitize_text_field( $_POST['meta']['ImageId'] );
+		$getty_id = sanitize_text_field( $_POST['meta']['id'] );
 
 		$existing_image_ids = get_posts( array(
 			'post_type' => 'attachment',
