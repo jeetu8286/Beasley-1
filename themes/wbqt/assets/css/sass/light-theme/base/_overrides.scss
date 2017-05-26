@@ -73,11 +73,14 @@
 }
 .header__main.headroom {
     background-color: #585858!important;
-		//@include bp(medium) {
-		    background-image: url(../../images/hotheader.jpg)!important;
-		    background-position: top center!important;
-		    background-repeat: no-repeat!important;
-		//}
+		background-image: url(../../images/hotheader.jpg)!important;
+		background-position: top center!important;
+		background-repeat: no-repeat!important;
+		background-size: contain;
+
+		@include bp(medium) {
+		    background-size: auto;
+		}
 }
 .main {
     background-image: url(../../images/hot_Background.jpg)!important;

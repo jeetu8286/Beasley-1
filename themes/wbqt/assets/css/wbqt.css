@@ -889,7 +889,7 @@ img {
   display: block;
   margin-right: 7.4229703521%;
   width: 100%;
-  border-bottom: 1px solid #d0d2d3;
+  border-bottom: 1px solid #034ea2;
   padding-bottom: 30px;
   margin-bottom: 30px;
   /*@include bp(x-large) {
@@ -915,7 +915,7 @@ img {
         margin-right: 0; } }
   @media screen and (min-width: 970px) {
     .col__inner--left {
-      border-right: 1px solid #d0d2d3;
+      border-right: 1px solid #034ea2;
       border-bottom: none;
       padding-right: 2em;
       padding-bottom: 0;
@@ -1137,7 +1137,7 @@ p {
 blockquote {
   padding: 8px .625em;
   margin: 24px .625em;
-  border-left: 10px solid #d0d2d3;
+  border-left: 10px solid #034ea2;
   quotes: "“" "”" "‘" "’";
   color: #404041;
   font-style: italic; }
@@ -1714,13 +1714,13 @@ blockquote p {
     padding: .35em 0 1.65em;
     margin: 0;
     line-height: 1;
-    border-top: 1px solid #d0d2d3;
+    border-top: 1px solid #034ea2;
     font-size: 2.0272865295em;
     font-weight: lighter;
     text-transform: uppercase; }
 
 .news-site .highlights__col {
-  border-top: 1px solid #d0d2d3; }
+  border-top: 1px solid #034ea2; }
 
 .ad__in-loop {
   margin: 1.5em 0;
@@ -2754,7 +2754,7 @@ Community Highlights and Events
         padding: 0 1.5em; } }
 
 .news-site .highlights__col {
-  border-top: 1px solid #d0d2d3; }
+  border-top: 1px solid #034ea2; }
 
 .highlights__heading {
   margin: 0 0 0.75em;
@@ -3434,13 +3434,13 @@ a.highlights__contest--btn {
   -moz-transition: all 200ms linear;
   transition: all 200ms linear;
   background-color: #ffffff;
-  border-bottom: 2px solid #d0d2d3;
+  border-bottom: 2px solid #034ea2;
   padding: 0;
   position: relative;
   width: 100%; }
   @media screen and (min-width: 768px) {
     .header {
-      border-bottom: 3px solid #d0d2d3; } }
+      border-bottom: 3px solid #034ea2; } }
 
 .header .container {
   align-items: center;
@@ -3599,7 +3599,7 @@ a.highlights__contest--btn {
   padding-bottom: 40px;
   padding-right: 0;
   background-color: #fff;
-  border-top: 1px solid #d0d2d3; }
+  border-top: 1px solid #034ea2; }
 
 .footer__ad {
   float: left;
@@ -4183,7 +4183,7 @@ Link posts contain a link to an external site. They can also optionally have a f
   -o-border-radius: 3px;
   -border-radius: 3px;
   border-radius: 3px;
-  background-color: #d0d2d3;
+  background-color: #034ea2;
   color: #ffffff; }
 
 .entry__comments--count a:link:after, .entry__comments--count a:visited:after {
@@ -4679,7 +4679,7 @@ a.posts-pagination--load-more {
   width: 100%;
   margin-right: 0;
   margin-bottom: 2.25em;
-  border-bottom: 1px solid #d0d2d3; }
+  border-bottom: 1px solid #034ea2; }
   .entry2:last-child, .home .episode:last-child {
     margin-right: 0; }
   .entry2:last-of-type, .home .episode:last-of-type {
@@ -5298,7 +5298,7 @@ a.posts-pagination--load-more {
   width: 100%;
   margin-bottom: 2em;
   max-width: 300px;
-  background-color: #d0d2d3; }
+  background-color: #034ea2; }
 
 .ad-unit--text {
   position: absolute;
@@ -6565,7 +6565,7 @@ category: Components - Ads
 .closure {
   padding: 10px;
   padding-left: 0;
-  border-bottom: 1px solid rgba(208, 210, 211, 0.2); }
+  border-bottom: 1px solid rgba(3, 78, 162, 0.2); }
 
 .closure p {
   margin: 0;
@@ -6879,7 +6879,7 @@ category: Components - Ads
 .contest-attr--rules {
   padding: 2em;
   margin: 0 0 1.5em;
-  border: 1px solid #d0d2d3;
+  border: 1px solid #034ea2;
   border-right: none;
   border-left: none;
   font-size: 0.8888888889em; }
@@ -7617,7 +7617,7 @@ div.widget-recent-contests {
   display: block;
   margin-right: 7.4229703521%;
   width: 100%;
-  background-color: #e8e9e9;
+  background-color: #0464cf;
   margin: 0 auto 2em;
   text-align: center;
   position: relative;
@@ -8097,7 +8097,7 @@ category: Components - Shows
 .show__blogroll .episode {
   padding-bottom: 2.25em;
   margin-bottom: 2.25em;
-  border-bottom: 1px solid #d0d2d3; }
+  border-bottom: 1px solid #034ea2; }
 
 .podcast__parent {
   margin-bottom: 10px; }
@@ -8687,7 +8687,7 @@ a.podcast__subscribe {
   height: 60px;
   margin-right: .5em;
   display: inline-block;
-  background-color: #d0d2d3; }
+  background-color: #034ea2; }
 
 /*doc
 ---
@@ -9113,8 +9113,8 @@ category: Components - Shows
       width: 100%; } }
 
 .inner-right-col {
-  border-top: 1px solid #d0d2d3;
-  border-bottom: 1px solid #d0d2d3;
+  border-top: 1px solid #034ea2;
+  border-bottom: 1px solid #034ea2;
   float: none;
   margin-left: -.809em;
   /* this is the padding on .content */
@@ -9432,7 +9432,7 @@ category: Components - Shows
 
 .shows__schedule--day.fixed .shows__schedule--dayofweek {
   position: fixed;
-  border-top: 1px solid #d0d2d3; }
+  border-top: 1px solid #034ea2; }
 
 .shows__schedule--episodes {
   position: relative;
@@ -9443,7 +9443,7 @@ category: Components - Shows
   position: absolute;
   left: 0;
   right: 0;
-  border-bottom: 1px solid #d0d2d3;
+  border-bottom: 1px solid #034ea2;
   padding: 0.5em 1em; }
   .shows__schedule--episode:hover {
     background-color: #f1f1f3; }
@@ -9878,7 +9878,7 @@ a.social-share-link {
   padding-bottom: 12px;
   margin: 0;
   line-height: 1;
-  border-bottom: 6px solid #d0d2d3;
+  border-bottom: 6px solid #034ea2;
   font-size: 0.8888888889em;
   font-weight: lighter;
   color: #404041; }
@@ -9889,7 +9889,7 @@ a.social-share-link {
   padding-bottom: 26px;
   margin: 0;
   overflow: auto;
-  border-bottom: 1px solid #d0d2d3; }
+  border-bottom: 1px solid #034ea2; }
 
 .search__result:last-of-type {
   padding-bottom: 0;
@@ -10605,7 +10605,7 @@ category: Components - Gallery Archive
   height: 130px;
   padding: 20px 0;
   overflow: auto;
-  border-top: 1px solid #d0d2d3;
+  border-top: 1px solid #034ea2;
   /*@include bp(x-large) {
 		@include span-columns(12);
 		height: 126px;
@@ -10847,7 +10847,7 @@ category: Components - Gallery Archive
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
   border: 1px solid #404041; }
   .single-gmr_gallery .gallery__slide--active {
-    border-color: #d0d2d3; }
+    border-color: #034ea2; }
 
 .gallery__archive {
   overflow: auto;
@@ -10882,7 +10882,7 @@ a.gallery__back--btn {
   margin-right: 7.4229703521%;
   width: 100%;
   margin-right: 0;
-  border-top: 1px solid #d0d2d3;
+  border-top: 1px solid #034ea2;
   /*@include bp(x-large) {
 		@include span-columns(10 of 10);
 		@include omega;
@@ -11183,7 +11183,7 @@ category: Components - Shows
   .personality:after {
     clear: both; }
   .personality.open {
-    background-color: #d0d2d3; }
+    background-color: #034ea2; }
   @media screen and (min-width: 768px) {
     .personality {
       padding: 1.5em 3em; } }
@@ -13404,13 +13404,13 @@ category: Components
 .sponsors {
   width: 100%;
   overflow: auto;
-  border: 1px solid #d0d2d3;
+  border: 1px solid #034ea2;
   border-bottom: none; }
   @media screen and (min-width: 768px) {
     .sponsors {
       display: table;
       table-layout: fixed;
-      border: 1px solid #d0d2d3;
+      border: 1px solid #034ea2;
       border-collapse: collapse;
       background-color: #f2f2f2; } }
 
@@ -13425,20 +13425,20 @@ category: Components
   background-color: #f2f2f2; }
   @media screen and (min-width: 768px) {
     .sponsors__row {
-      border-bottom: 1px solid #d0d2d3;
+      border-bottom: 1px solid #034ea2;
       display: table-row; } }
 
 .sponsor {
   display: block;
   padding: 2em;
   background-color: white;
-  border-bottom: 1px solid #d0d2d3; }
+  border-bottom: 1px solid #034ea2; }
   @media screen and (min-width: 768px) {
     .sponsor {
       display: table-cell;
       vertical-align: middle;
       width: 50%;
-      border: 1px solid #d0d2d3;
+      border: 1px solid #034ea2;
       box-sizing: content-box;
       height: 200px; } }
   @media screen and (min-width: 970px) {
@@ -13538,7 +13538,7 @@ img.aligncenter {
 .wp-caption {
   max-width: 100%;
   padding: 0;
-  background: #d0d2d3; }
+  background: #034ea2; }
 
 .wp-caption img {
   width: 100%;
@@ -13972,7 +13972,11 @@ article > .triton-song-history {
   background-color: #585858 !important;
   background-image: url(../../images/hotheader.jpg) !important;
   background-position: top center !important;
-  background-repeat: no-repeat !important; }
+  background-repeat: no-repeat !important;
+  background-size: contain; }
+  @media screen and (min-width: 768px) {
+    .header__main.headroom {
+      background-size: auto; } }
 
 .main {
   background-image: url(../../images/hot_Background.jpg) !important;
