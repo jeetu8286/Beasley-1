@@ -24,6 +24,8 @@
 
 					<?php the_content(); ?>
 
+					<?php wp_link_pages(); ?>
+
 				</section>
 
 				<?php if ( function_exists( 'related_posts' ) ): ?>

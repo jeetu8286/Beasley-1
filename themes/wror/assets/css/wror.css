@@ -21,7 +21,7 @@
  * Copyright (c) 2014 10up
  * Licensed under the GPLv2+ license.
  */
-@import url(http://fonts.googleapis.com/css?family=Oswald:400,300,700);
+@import url("http://fonts.googleapis.com/css?family=Oswald:400,300,700");
 html {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -13901,12 +13901,11 @@ article > .triton-song-history {
   .main {
     background: url(../../images/pw_maze_white.png); } }
 
-.home__featured .featured__article--content,
-.home__featured .featured__content--block {
+.home__featured .featured__article--content, .home__featured .featured__content--block {
   background-color: #091f40; }
 
 .featured__article--heading {
-  font-family: 'Oswald', sans-serif;
+  font-family: 'Oswald',sans-serif;
   font-weight: 700;
   text-transform: uppercase;
   text-shadow: 2px 2px 1px rgba(36, 132, 198, 0.7);
@@ -13918,7 +13917,7 @@ article > .triton-song-history {
 
 .featured__content--title {
   font-size: 1.23em;
-  font-family: 'Oswald', sans-serif;
+  font-family: 'Oswald',sans-serif;
   font-weight: 400;
   text-shadow: 2px 2px 1px rgba(36, 132, 198, 0.5);
   color: #fff; }
@@ -13955,6 +13954,69 @@ article > .triton-song-history {
     color: #092040; }
   .highlights__event--item:hover .highlights__event--date, .highlights__event--item:hover .highlights__event--item, .highlights__event--item:hover .highlights__event--title {
     color: #2484c6; }
+
+.type-contest .entry2__thumbnail--end-date {
+  visibility: hidden !important; }
+
+.type-contest .entry2__thumbnail--contest-type {
+  visibility: hidden !important; }
+
+.entry2__thumbnail__icon {
+  visibility: hidden !important; }
+
+.entry2__thumbnail__overlay {
+  opacity: 0 !important; }
+
+.songs__group--date {
+  font-size: 1em !important; }
+
+.type-tribe_events .entry2__thumbnail--month-and-day {
+  visibility: hidden !important; }
+
+.type-tribe_events .entry2__thumbnail--day-of-week {
+  visibility: hidden !important; }
+
+.h1, .type-tribe_events .entry2__thumbnail--event-date, .type-contest .entry2__thumbnail--end-date,
+.type-contest .entry2__thumbnail--contest-type, .type-contest .entry2__thumbnail--contest-type, .type-contest .entry2__thumbnail--end-date, .type-tribe_events .entry2__thumbnail--event-date {
+  visibility: hidden !important; }
+
+.header__main.headroom {
+  background-image: url(../../images/wror-header-blue.jpg); }
+
+.header__nav > ul > li {
+  background-color: rgba(255, 255, 255, 0.7); }
+
+.header__nav .format-fi > ul a.active, .header__nav .format-fi > ul a:focus, .header__nav .format-fi > ul a:hover, .header__nav .format-fw > ul a.active, .header__nav .format-fw > ul a:focus, .header__nav .format-fw > ul a:hover, .header__nav .format-sp > ul a.active, .header__nav .format-sp > ul a:focus, .header__nav .format-sp > ul a:hover, .header__nav .sub-menu a.active, .header__nav .format-fw > ul a.active, .header__nav .format-sp > ul a.active, .header__nav .format-fi > ul a.active, .header__nav .sub-menu a:focus, .header__nav .format-fw > ul a:focus, .header__nav .format-sp > ul a:focus, .header__nav .format-fi > ul a:focus, .header__nav .sub-menu a:hover, .header__nav .format-fw > ul a:hover, .header__nav .format-sp > ul a:hover, .header__nav .format-fi > ul a:hover, .ui-menu a.active, .ui-menu a:focus, .ui-menu a:hover {
+  color: #ffffff; }
+
+.header__nav .format-fi > ul a.active, .header__nav .format-fi > ul a:focus, .header__nav .format-fi > ul a:hover, .header__nav .format-fw > ul a.active, .header__nav .format-fw > ul a:focus, .header__nav .format-fw > ul a:hover, .header__nav .format-sp > ul a.active, .header__nav .format-sp > ul a:focus, .header__nav .format-sp > ul a:hover, .header__nav .sub-menu a.active, .header__nav .format-fw > ul a.active, .header__nav .format-sp > ul a.active, .header__nav .format-fi > ul a.active, .header__nav .sub-menu a:focus, .header__nav .format-fw > ul a:focus, .header__nav .format-sp > ul a:focus, .header__nav .format-fi > ul a:focus, .header__nav .sub-menu a:hover, .header__nav .format-fw > ul a:hover, .header__nav .format-sp > ul a:hover, .header__nav .format-fi > ul a:hover, .ui-menu a.active, .ui-menu a:focus, .ui-menu a:hover {
+  background-color: #000000; }
+
+.mobile-nav__toggle--span, .mobile-nav__toggle--span::after, .mobile-nav__toggle--span::before {
+  background-color: #ffffff; }
+
+.format-sp a:hover .meta-text {
+  color: #ffffff; }
+
+.header__search {
+  color: #ffffff;
+  padding-top: 4px;
+  padding-right: 4px;
+  padding-bottom: 4px;
+  padding-left: 4px;
+  text-transform: uppercase;
+  background-color: rgba(1, 1, 1, 0.7); }
+
+.header__search:hover, .header__search:hover .header__search--btn::before {
+  color: #6699cc; }
+
+.main {
+  background-image: url(../../images/wrorbg.jpg); }
+
+.header__main.headroom {
+  background-color: #585858;
+  background-image: url(../../images/wror-header.jpg);
+  background-position: top center; }
 
 .live-link__type--show {
   border-bottom-color: white;
