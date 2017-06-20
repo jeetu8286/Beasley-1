@@ -33,7 +33,7 @@ if ( !class_exists( "Breaking_News" ) ) {
 			?>
 			<div id="breaking-news-meta-fields">
 				<div id="breaking-news-meta" class="misc-pub-section">
-					<input type="checkbox" name="breaking_news_option" id="breaking_news_option" <?php checked( 1, $is_breaking_news ); ?> /> <label for="breaking_news_option"><?php _e( 'Show Breaking News alert', 'breaking_news' ); ?></label>
+					<input type="checkbox" name="breaking_news_option" id="breaking_news_option" <?php checked( $is_breaking_news ); ?> /> <label for="breaking_news_option"><?php _e( 'Show Breaking News alert', 'breaking_news' ); ?></label>
 				</div>
 			</div>
 
@@ -179,6 +179,9 @@ if ( !class_exists( "Breaking_News" ) ) {
 	     */
 	    public static function sanitize_boolean( $input ) {
 	        $new_input = 0;
+	        if( $input === 'on' ) {
+	        	$input = 1; // account for browsers POSTing input values as "on"
+	        }
 	        $input = absint( intval( $input ) );
 
 	        if ( in_array( $input, array( 0, 1 ) ) ) {
