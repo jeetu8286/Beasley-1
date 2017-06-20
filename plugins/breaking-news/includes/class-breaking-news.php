@@ -33,7 +33,7 @@ if ( !class_exists( "Breaking_News" ) ) {
 			?>
 			<div id="breaking-news-meta-fields">
 				<div id="breaking-news-meta" class="misc-pub-section">
-					<input type="checkbox" name="breaking_news_option" id="breaking_news_option" value="1" <?php checked( 1, $is_breaking_news ); ?> /> <label for="breaking_news_option"><?php _e( 'Show Breaking News alert', 'breaking_news' ); ?></label>
+					<input type="checkbox" name="breaking_news_option" id="breaking_news_option" <?php checked( 1, $is_breaking_news ); ?> /> <label for="breaking_news_option"><?php _e( 'Show Breaking News alert', 'breaking_news' ); ?></label>
 				</div>
 			</div>
 
