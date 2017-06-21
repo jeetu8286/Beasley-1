@@ -35,7 +35,8 @@ function edit_flow_hotfix_296() {
 	);
 
 	// Enqueue an alternate calendar.js
-	wp_enqueue_script( 'edit-flow-calendar-js', plugins_url( '/js/calendar.js' ), $js_libraries, EDIT_FLOW_VERSION, true );
+	// REMOVED AS IT WASN"T ACTUALLY DOIN ANYTHING (FILE PATH INCORRECT 06-20-2017)
+	// wp_enqueue_script( 'edit-flow-calendar-js', plugins_url( '/js/calendar.js' ), $js_libraries, EDIT_FLOW_VERSION, true );
 
 	// "Localize" the script with configuration options. See calendar.php.
 	$create_post_cap = apply_filters( 'ef_calendar_create_post_cap', 'edit_posts' );
