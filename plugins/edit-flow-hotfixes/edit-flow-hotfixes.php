@@ -60,12 +60,3 @@ function fix_edit_flow_compatibility_with_tribe_events() {
 }
 
 add_action( 'admin_enqueue_scripts', 'fix_edit_flow_compatibility_with_tribe_events', 100 );
-
-/**
- * Sets checkbox of "Needs Photo" to false by default, see bug created here: https://github.com/Automattic/Edit-Flow/issues/397
- */
-function fix_needs_photo_checkbox_default() {
-	wp_enqueue_script( 'edit-flow-checkbox-js', plugins_url( 'edit-flow-hotfixes/js/checkbox.js' ), 'jquery', EDIT_FLOW_VERSION, true );
-}
-
-add_action( 'admin_enqueue_scripts', 'fix_needs_photo_checkbox_default', 100 );
