@@ -13,7 +13,7 @@
  */
 
  // Useful global constants
-define( 'WJRZ_VERSION', '2.0.9' ); /* Version bump by Steve 03/20/2017 */
+define( 'WJRZ_VERSION', '2.1.0' ); /* Version bump by Tom 07/20/2017 */
 
  /**
   * Set up theme defaults and register supported WordPress features.

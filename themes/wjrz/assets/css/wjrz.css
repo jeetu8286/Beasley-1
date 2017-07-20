@@ -13905,12 +13905,7 @@ article > .triton-song-history {
 
 .header__main {
   border-top: none;
-  background-color: rgba(0, 0, 0, 0.1) !important;
-  -webkit-transition: transform 200ms linear, background-color 1s !important;
-  /* Safari */
-  transition: transform 200ms linear, background-color 1s !important; }
-  .header__main.headroom--not-top {
-    background-color: rgba(0, 0, 0, 0.8) !important; }
+  background-color: rgba(0, 0, 0, 0.1) !important; }
 
 /* Navigation */
 .header__account ul li a:active, .header__account ul li a:focus, .header__account ul li a:hover, .header__account ul li:hover, .header__nav ul li a:active, .header__nav ul li a:focus, .header__nav ul li.active, .header__nav ul li.active a:hover, .ui-menu .ui-state-focus {
@@ -14004,6 +13999,15 @@ article > .triton-song-history {
   background-color: #ffffff;
   color: #0073cf; }
 
+@media screen and (min-width: 970px) {
+  .main {
+    background-image: url("../../images/main-bg.png");
+    background-position: center;
+    background-repeat: no-repeat; } }
+
+.main {
+  background-color: #014b89; }
+
 /* Home page feature items */
 .featured__article--heading {
   color: #fff;
@@ -14021,6 +14025,22 @@ article > .triton-song-history {
 .featured__article:hover .featured__article--heading {
   color: #fff; }
 
+@media screen and (min-width: 480px) {
+  .home__featured .featured__content--meta {
+    float: left;
+    display: block;
+    width: 100%;
+    min-height: 6.8em; } }
+
+.featured__content--meta {
+  float: left;
+  display: block;
+  margin-right: 2.35765%;
+  width: 65%;
+  padding: 10px;
+  font-weight: lighter;
+  overflow: hidden; }
+
 .featured__content--title {
   font-size: 1em;
   display: block;
@@ -14033,15 +14053,17 @@ article > .triton-song-history {
   text-overflow: ellipsis;
   color: #fff; }
 
-.home__featured .featured__content--meta {
-  width: 65%;
-  min-height: 4.2em; }
-
 .featured__content--block:hover .featured__content--title {
   color: #fff; }
 
 .featured__content--block:hover {
   background: #015da6; }
+
+.featured__content {
+  padding-bottom: 8px;
+  padding-left: 6px;
+  padding-right: 6px;
+  display: block; }
 
 .highlights__heading {
   margin: 0 0 0.75em;
@@ -14054,6 +14076,26 @@ article > .triton-song-history {
 a:hover .highlights__community--title {
   color: #fdba30; }
 
+.highlights__community--thumb:after {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, 0);
+  -moz-transform: translate(-50%, 0);
+  -ms-transform: translate(-50%, 0);
+  -o-transform: translate(-50%, 0);
+  transform: translate(-50%, 0);
+  width: 102%;
+  height: 50%;
+  background: -moz-linear-gradient(top, transparent 0, rgba(0, 0, 0, 0.65) 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0, transparent), color-stop(100%, rgba(0, 0, 0, 0.65)));
+  background: -webkit-linear-gradient(top, transparent 0, rgba(0, 0, 0, 0.65) 100%);
+  background: -o-linear-gradient(top, transparent 0, rgba(0, 0, 0, 0.65) 100%);
+  background: -ms-linear-gradient(top, transparent 0, rgba(0, 0, 0, 0.65) 100%);
+  background: linear-gradient(to bottom, transparent 0, rgba(0, 0, 0, 0.65) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#000000', endColorstr='#000000', GradientType=0);
+  content: ""; }
+
 .highlights__events--more-btn {
   background-color: #0073cf;
   border: 1px solid #0073cf;
@@ -14064,6 +14106,25 @@ a:hover .highlights__community--title {
   background-color: #015da6;
   border-color: #015da6;
   color: #fff !important; }
+
+.highlights__contest--thumb, .highlights__event--thumb {
+  float: left;
+  display: block;
+  margin-right: 4.8291579146%;
+  width: 40.5%;
+  position: absolute;
+  left: 0;
+  top: 0; }
+
+.highlights__contest--meta, .highlights__event--meta {
+  width: 167px;
+  margin-left: 44%;
+  padding-top: 0; }
+
+.entry2__thumbnail__image, .highlights__contest--thumb, .highlights__event--thumb {
+  background-size: 96%;
+  background-position: center center;
+  background-repeat: no-repeat; }
 
 .live-link__type--show {
   border-bottom-color: white;
