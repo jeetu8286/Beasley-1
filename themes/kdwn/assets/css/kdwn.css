@@ -13921,6 +13921,16 @@ a:hover .highlights__community--title {
 .widget_rss .rss-widget-icon {
   display: inline; }
 
+/* Changing to use the NEWS homepage format; CSS fixes */
+body {
+  font-family: "Oswald", "Open Sans", sans-serif; }
+
+.entry2__excerpt {
+  font-family: "Open Sans", sans-serif; }
+
+.home .featured__article--heading, .home .featured__content--title {
+  color: white; }
+
 .live-link__type--show {
   border-bottom-color: white;
   background: none; }
