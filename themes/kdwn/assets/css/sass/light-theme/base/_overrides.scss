@@ -32,3 +32,20 @@ a:hover .highlights__community--title
 .widget_rss .rss-widget-icon {
 	display: inline;
 }
+
+
+/* Changing to use the NEWS homepage format; CSS fixes */
+
+// Change font to use Oswald...
+body {
+    font-family: "Oswald", "Open Sans", sans-serif;
+}
+// ...except teaser text
+.entry2__excerpt {
+    font-family: "Open Sans", sans-serif;
+}
+
+// Change text to white 
+.home .featured__article--heading, .home .featured__content--title {
+    color: white;
+}
