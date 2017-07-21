@@ -13897,7 +13897,7 @@ article > .triton-song-history {
  * Misc overides for the child theme
  */
 .header {
-  background-color: #ffc901 !important;
+  background-color: #e97e01 !important;
   background-image: url("../../images/WJRZ_header-bkg2.jpg") !important;
   background-repeat: repeat-x;
   background-position: center top;
@@ -14019,8 +14019,15 @@ article > .triton-song-history {
   background: url("../../images/wjrz-body-bkg.jpg") no-repeat;
   background-color: #015da6; }
 
-.home__featured .featured__article a:hover .featured__article--content {
+.home__featured .featured__article--content {
+  background-color: #015da6;
+  color: #015da6; }
+
+.home__featured .featured__content--block {
   background-color: #015da6; }
+
+.home__featured .featured__article a:hover .featured__article--content {
+  background-color: #0073cf; }
 
 .featured__article:hover .featured__article--heading {
   color: #fff; }
@@ -14057,7 +14064,7 @@ article > .triton-song-history {
   color: #fff; }
 
 .featured__content--block:hover {
-  background: #015da6; }
+  background: #0073cf; }
 
 .featured__content {
   padding-bottom: 8px;
