@@ -210,18 +210,6 @@ class BlogData {
 	public static function QueryContentSite( $subscription_id , $start_date = '', $end_date = '', $offset = 0 ) {
 		$result = array();
 
-		if ( $start_date == '' ) {
-			//$last_queried = get_option( 'syndication_last_performed', 0);
-			$last_queried = get_post_meta( $subscription_id, 'syndication_last_performed', true );
-			if ( $last_queried ) {
-				$last_queried = date( 'Y-m-d H:i:s', $last_queried );
-			} else {
-				$last_queried = date( 'Y-m-d H:i:s', 0 );
-			}
-		} else {
-			$last_queried = $start_date;
-		}
-
 		$post_type = get_post_meta( $subscription_id, 'subscription_type', true );
 		if ( empty( $post_type ) ) {
 			$post_type = SyndicationCPT::$supported_subscriptions;
@@ -235,10 +223,25 @@ class BlogData {
 			'offset'         => $offset * 500,
 			'tax_query'      => array(),
 			'date_query'     => array(
-				'column' => 'post_modified_gmt',
-				'after'  => $last_queried,
-			),
+					'column' => 'post_modified_gmt',
+			)
 		);
+
+
+		if ( $start_date == '' ) {
+			$last_queried = get_post_meta( $subscription_id, 'syndication_last_performed', true );
+			if ( $last_queried ) {
+				$args['date_query']['after'] = $last_queried;
+			} else {
+				// Should only be the first time - only pull in 10 posts: https://basecamp.com/1778700/projects/8324102/todos/315096975#comment_546418020
+				// Avoids cases where we try and pull in the entire history of posts and it locks up
+				$args['posts_per_page'] = 10;
+				$args['orderby'] = 'modified';
+				$args['order'] = 'DESC';
+			}
+		} else {
+			$args['date_query']['after'] = $start_date;
+		}
 
 		if ( ! empty( $end_date ) ) {
 			$args['date_query']['before'] = $end_date;
