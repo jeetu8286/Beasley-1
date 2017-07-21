@@ -120,10 +120,11 @@
 }
 
 @media screen and (min-width: 970px) {
-   .main {
-    background-image: url("../../images/main-bg.png");
-    background-repeat: no-repeat;
-    background-position: top;
+.main {
+    background-image: url("../../images/main-bg.jpg");
+    background-repeat: repeat-x;
+    background-attachment: fixed !important;;
+     }
 }
 
 .main {
@@ -131,10 +132,10 @@
 
 /* Home page feature items */
 .featured__article--heading {
-  color: #fff;
-  text-transform: uppercase;
-  font-family: 'Istok+Web', sans-serif;
-  text-shadow: 1px 1px 1px rgba(0, 0, 0, 1);
+    color: #fff;
+    text-transform: uppercase;
+    font-family: 'Istok+Web', sans-serif;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 1);
 }
 
 .home__featured { 
@@ -149,7 +150,7 @@
 @media screen and (min-width: 480px) {
 .home__featured .featured__content--meta {
     float: left;
-  display: block;
+    display: block;
     width: 100%;
     min-height: 6.8em;
 } 
