@@ -14001,9 +14001,9 @@ article > .triton-song-history {
 
 @media screen and (min-width: 970px) {
   .main {
-    background-image: url("../../images/main-bg.png");
-    background-position: center;
-    background-repeat: no-repeat; } }
+    background-image: url("../../images/main-bg.jpg");
+    background-repeat: repeat-x;
+    background-attachment: fixed !important; } }
 
 .main {
   background-color: #014b89; }
