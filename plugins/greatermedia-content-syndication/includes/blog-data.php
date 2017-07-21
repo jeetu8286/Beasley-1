@@ -236,7 +236,7 @@ class BlogData {
 				// Should only be the first time - only pull in 10 posts: https://basecamp.com/1778700/projects/8324102/todos/315096975#comment_546418020
 				// Avoids cases where we try and pull in the entire history of posts and it locks up
 				$args['posts_per_page'] = 10;
-				$args['orderby'] = 'modified';
+				$args['orderby'] = 'date';
 				$args['order'] = 'DESC';
 			}
 		} else {
