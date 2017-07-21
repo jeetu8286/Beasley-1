@@ -218,7 +218,7 @@ class BlogData {
 		// query args
 		$args = array(
 			'post_type'      => $post_type,
-			'post_status'    => array( 'publish', 'future', 'private' ),
+			'post_status'    => SyndicationCPT::$supported_syndication_statuses,
 			'posts_per_page' => 500,
 			'offset'         => $offset * 500,
 			'tax_query'      => array(),

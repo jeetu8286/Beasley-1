@@ -19,6 +19,7 @@ require_once __DIR__ . '/includes/syndication-cpt.php';
 require_once __DIR__ . '/includes/blog-data.php';
 require_once __DIR__ . '/includes/cron-tasks.php';
 require_once __DIR__ . '/includes/content-kit.php';
+require_once __DIR__ . '/includes/instant-syndication.php';
 
 if ( defined( 'WP_CLI' ) && WP_CLI  ) {
 	require_once __DIR__ . '/includes/syndication-cli.php';
