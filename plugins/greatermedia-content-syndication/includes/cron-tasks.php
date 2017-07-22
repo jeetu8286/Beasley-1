@@ -7,7 +7,7 @@ class CronTasks {
 
 	public static function init() {
 		add_action( 'admin_init', array( __CLASS__, 'syndication_setup_schedule' ) );
-		//add_action( 'syndication_five_minute_event', array( __CLASS__, 'run_syndication' ) );
+		add_action( 'syndication_five_minute_event', array( __CLASS__, 'run_syndication' ) );
 		add_action( 'gmr_do_syndication', array( __CLASS__, 'do_syndication' ) );
 	}
 
