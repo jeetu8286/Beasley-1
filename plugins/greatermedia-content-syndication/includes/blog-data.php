@@ -185,9 +185,12 @@ class BlogData {
 		self::add_or_update( 'syndication_imported_posts', $imported_post_ids );
 		set_transient( 'syndication_imported_posts', $imported_post_ids, WEEK_IN_SECONDS * 4 );
 
-		$offset += 1;
-		if( $max_pages > $offset )  {
-			self::_run( $syndication_id, $offset );
+		// Only allow iterating past the first 10 results with wp-cli (edge case)
+		if ( defined( 'WP_CLI' ) && WP_CLI ) {
+			$offset += 1;
+			if( $max_pages > $offset )  {
+				self::_run( $syndication_id, $offset );
+			}
 		}
 
 		self::log( "Finished processing content with offset %s", $offset );
@@ -215,16 +218,22 @@ class BlogData {
 			$post_type = SyndicationCPT::$supported_subscriptions;
 		}
 
+		// Should only be the first time - only pull in 10 posts: https://basecamp.com/1778700/projects/8324102/todos/315096975#comment_546418020
+		// Avoids cases where we try and pull in the entire history of posts and it locks up
+		$posts_per_page = defined( 'WP_CLI' ) && WP_CLI ? 500 : 10;
+
 		// query args
 		$args = array(
 			'post_type'      => $post_type,
 			'post_status'    => SyndicationCPT::$supported_syndication_statuses,
-			'posts_per_page' => 500,
-			'offset'         => $offset * 500,
+			'posts_per_page' => $posts_per_page,
+			'offset'         => $offset * $posts_per_page,
 			'tax_query'      => array(),
 			'date_query'     => array(
 					'column' => 'post_modified_gmt',
-			)
+			),
+			'orderby' => 'date',
+			'order' => 'DESC',
 		);
 
 
@@ -233,9 +242,6 @@ class BlogData {
 			if ( $last_queried ) {
 				$args['date_query']['after'] = $last_queried;
 			} else {
-				// Should only be the first time - only pull in 10 posts: https://basecamp.com/1778700/projects/8324102/todos/315096975#comment_546418020
-				// Avoids cases where we try and pull in the entire history of posts and it locks up
-				$args['posts_per_page'] = 10;
 				$args['orderby'] = 'date';
 				$args['order'] = 'DESC';
 			}
