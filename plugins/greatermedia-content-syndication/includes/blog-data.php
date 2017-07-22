@@ -847,15 +847,19 @@ class BlogData {
 	 *
 	 * @return array of post objects
 	 */
-	public static function GetActiveSubscriptions() {
-		return get_posts( array(
+	public static function GetActiveSubscriptions( $args = array() ) {
+		$defaults = array(
 			'post_type'      => 'subscription',
 			'post_status'    => 'publish',
 			'meta_key'       => 'subscription_post_status',
 			'orderby'        => 'meta_value',
 			'order'          => 'ASC',
 			'posts_per_page' => 200,
-		) );
+		);
+
+		$args = wp_parse_args( $args, $defaults );
+
+		return get_posts( $args );
 	}
 
 	/**
