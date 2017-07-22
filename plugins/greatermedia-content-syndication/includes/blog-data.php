@@ -196,6 +196,7 @@ class BlogData {
 		self::log( "Finished processing content with offset %s", $offset );
 
 		//update_option( 'syndication_last_performed', current_time( 'timestamp', 1 ) );
+		// @todo this could cause problems if something was modified in the time between when we queried and when we finished!
 		update_post_meta( $syndication_id, 'syndication_last_performed', current_time( 'timestamp', 1 ) );
 		delete_post_meta( $syndication_id, 'subscription_running' );
 
