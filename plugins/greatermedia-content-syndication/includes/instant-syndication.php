@@ -35,7 +35,7 @@ class InstantSyndication {
 
 		if ( in_array( $post->post_type, SyndicationCPT::$supported_subscriptions ) && in_array( $post->post_status, SyndicationCPT::$supported_syndication_statuses ) ) {
 			if ( function_exists( 'wp_async_task_add' ) ) {
-				wp_async_task_add( self::$network_subscription_check_actionq, 'high' );
+				wp_async_task_add( self::$network_subscription_check_action, 'high' );
 			}
 		}
 	}
