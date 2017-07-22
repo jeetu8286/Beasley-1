@@ -31,6 +31,10 @@ class InstantSyndication {
 	 * @param $post_id
 	 */
 	public static function save_post( $post_id ) {
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+			return;
+		}
+
 		$post = get_post( $post_id );
 
 		if ( in_array( $post->post_type, SyndicationCPT::$supported_subscriptions ) && in_array( $post->post_status, SyndicationCPT::$supported_syndication_statuses ) ) {
