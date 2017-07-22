@@ -61,6 +61,7 @@ class InstantSyndication {
 
 		foreach( $sites as $site_id ) {
 			switch_to_blog( $site_id );
+			// @todo need to pass tags, categories, and collections for the post, so we can queue up ONLY RELEVANT subscriptions to speed this up!
 			wp_async_task_add( self::$single_site_sub_check_action, array( 'site_id' => $site_id ), 'high' );
 			restore_current_blog();
 		}
