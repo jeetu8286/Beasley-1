@@ -10,6 +10,12 @@ class SyndicationCPT {
 
 	public static $supported_subscriptions = array( 'post', 'content-kit', 'contest', 'survey', 'gmr_gallery' );
 
+	/**
+	 * The post statuses that are supported during syndication
+	 * We will only look for posts with THESE statuses on the content factory when syndicating content
+	 */
+	public static $supported_syndication_statuses = array( 'publish', 'future', 'private' );
+
 	public static $support_default_tax = array(
 		'_shows',
 		'category'

@@ -8,6 +8,7 @@ upgrade/
 
 mu-plugins/dependencies/formbuilder/bower_components/
 mu-plugins/test-data-store.php
+mu-plugins/async-debug.php
 
 plugins/wp-multi-network/
 plugins/wordpress-importer/
