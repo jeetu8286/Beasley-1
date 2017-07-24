@@ -268,7 +268,7 @@ class BlogData {
 			}
 
 			$tax_query['taxonomy'] = $enabled_taxonomy;
-			$tax_query['field'] = 'slug';
+			$tax_query['field'] = 'name';
 			$tax_query['terms'] = $subscription_filter;
 			$tax_query['operator'] = 'AND';
 
