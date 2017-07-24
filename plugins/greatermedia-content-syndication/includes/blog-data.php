@@ -125,6 +125,12 @@ class BlogData {
 	private static function _run( $syndication_id, $offset = 0 ) {
 		self::log( "Start querying content site with offset = %s...", $offset );
 
+		// Get the current time before we start querying, so that we know next time we use this value it was the value
+		// from before querying for content
+		// Taking 5 seconds off just in case databases, cache, etc are behind slightly
+		$last_run = current_time( 'timestamp', 1 );
+		$last_run = $last_run - 5;
+
 		$result = self::QueryContentSite( $syndication_id, '', '', $offset );
 		$taxonomy_names = SyndicationCPT::$support_default_tax;
 		$defaults = array(
@@ -195,9 +201,7 @@ class BlogData {
 
 		self::log( "Finished processing content with offset %s", $offset );
 
-		//update_option( 'syndication_last_performed', current_time( 'timestamp', 1 ) );
-		// @todo this could cause problems if something was modified in the time between when we queried and when we finished!
-		update_post_meta( $syndication_id, 'syndication_last_performed', current_time( 'timestamp', 1 ) );
+		update_post_meta( $syndication_id, 'syndication_last_performed', intval( $last_run ) );
 		delete_post_meta( $syndication_id, 'subscription_running' );
 
 		return $total_posts;
