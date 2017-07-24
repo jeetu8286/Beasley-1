@@ -17,10 +17,19 @@
  * Add this constant to wp-config and set value to "dev" to trigger time() as the cache buster on css/js that use this,
  * instead of the version - useful for dev, especially when cloudflare or other cdn's are involved
  */
+$version = '2.0.8';
+
+// If .version.php file exists, the content of this file (timestamp) is added to the $version value set above
+if ( file_exists( __DIR__ . '/../.version.php' ) ) {
+	$suffix  = intval( file_get_contents( __DIR__ . '/../.version.php' ) );
+	$version = $version . "." . $suffix;
+}
+
+// Useful global constants
 if ( defined( 'GMR_PARENT_ENV' ) && 'dev' == GMR_PARENT_ENV ) {
 	define( 'GREATERMEDIA_VERSION', time() );
 } else {
-	define( 'GREATERMEDIA_VERSION', '2.0.8' ); /* Version bump by Steve 03/27/2017 */
+	define( 'GREATERMEDIA_VERSION', $version ); /* Version bump by Steve 03/27/2017 */
 }
 
 add_theme_support( 'homepage-curation' );
