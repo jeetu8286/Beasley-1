@@ -125,6 +125,12 @@ class BlogData {
 	private static function _run( $syndication_id, $offset = 0 ) {
 		self::log( "Start querying content site with offset = %s...", $offset );
 
+		// Get the current time before we start querying, so that we know next time we use this value it was the value
+		// from before querying for content
+		// Taking 5 seconds off just in case databases, cache, etc are behind slightly
+		$last_run = current_time( 'timestamp', 1 );
+		$last_run = $last_run - 5;
+
 		$result = self::QueryContentSite( $syndication_id, '', '', $offset );
 		$taxonomy_names = SyndicationCPT::$support_default_tax;
 		$defaults = array(
@@ -185,15 +191,17 @@ class BlogData {
 		self::add_or_update( 'syndication_imported_posts', $imported_post_ids );
 		set_transient( 'syndication_imported_posts', $imported_post_ids, WEEK_IN_SECONDS * 4 );
 
-		$offset += 1;
-		if( $max_pages > $offset )  {
-			self::_run( $syndication_id, $offset );
+		// Only allow iterating past the first 10 results with wp-cli (edge case)
+		if ( defined( 'WP_CLI' ) && WP_CLI ) {
+			$offset += 1;
+			if( $max_pages > $offset )  {
+				self::_run( $syndication_id, $offset );
+			}
 		}
 
 		self::log( "Finished processing content with offset %s", $offset );
 
-		//update_option( 'syndication_last_performed', current_time( 'timestamp', 1 ) );
-		update_post_meta( $syndication_id, 'syndication_last_performed', current_time( 'timestamp', 1 ) );
+		update_post_meta( $syndication_id, 'syndication_last_performed', intval( $last_run ) );
 		delete_post_meta( $syndication_id, 'subscription_running' );
 
 		return $total_posts;
@@ -210,35 +218,41 @@ class BlogData {
 	public static function QueryContentSite( $subscription_id , $start_date = '', $end_date = '', $offset = 0 ) {
 		$result = array();
 
-		if ( $start_date == '' ) {
-			//$last_queried = get_option( 'syndication_last_performed', 0);
-			$last_queried = get_post_meta( $subscription_id, 'syndication_last_performed', true );
-			if ( $last_queried ) {
-				$last_queried = date( 'Y-m-d H:i:s', $last_queried );
-			} else {
-				$last_queried = date( 'Y-m-d H:i:s', 0 );
-			}
-		} else {
-			$last_queried = $start_date;
-		}
-
 		$post_type = get_post_meta( $subscription_id, 'subscription_type', true );
 		if ( empty( $post_type ) ) {
 			$post_type = SyndicationCPT::$supported_subscriptions;
 		}
 
+		// Should only be the first time - only pull in 10 posts: https://basecamp.com/1778700/projects/8324102/todos/315096975#comment_546418020
+		// Avoids cases where we try and pull in the entire history of posts and it locks up
+		$posts_per_page = defined( 'WP_CLI' ) && WP_CLI ? 500 : 10;
+
 		// query args
 		$args = array(
 			'post_type'      => $post_type,
-			'post_status'    => array( 'publish', 'future', 'private' ),
-			'posts_per_page' => 500,
-			'offset'         => $offset * 500,
+			'post_status'    => SyndicationCPT::$supported_syndication_statuses,
+			'posts_per_page' => $posts_per_page,
+			'offset'         => $offset * $posts_per_page,
 			'tax_query'      => array(),
 			'date_query'     => array(
-				'column' => 'post_modified_gmt',
-				'after'  => $last_queried,
+					'column' => 'post_modified_gmt',
 			),
+			'orderby' => 'date',
+			'order' => 'DESC',
 		);
+
+
+		if ( $start_date == '' ) {
+			$last_queried = get_post_meta( $subscription_id, 'syndication_last_performed', true );
+			if ( $last_queried ) {
+				$args['date_query']['after'] = $last_queried;
+			} else {
+				$args['orderby'] = 'date';
+				$args['order'] = 'DESC';
+			}
+		} else {
+			$args['date_query']['after'] = $start_date;
+		}
 
 		if ( ! empty( $end_date ) ) {
 			$args['date_query']['before'] = $end_date;
@@ -258,7 +272,7 @@ class BlogData {
 			}
 
 			$tax_query['taxonomy'] = $enabled_taxonomy;
-			$tax_query['field'] = 'slug';
+			$tax_query['field'] = 'name';
 			$tax_query['terms'] = $subscription_filter;
 			$tax_query['operator'] = 'AND';
 
@@ -837,15 +851,19 @@ class BlogData {
 	 *
 	 * @return array of post objects
 	 */
-	public static function GetActiveSubscriptions() {
-		return get_posts( array(
+	public static function GetActiveSubscriptions( $args = array() ) {
+		$defaults = array(
 			'post_type'      => 'subscription',
 			'post_status'    => 'publish',
 			'meta_key'       => 'subscription_post_status',
 			'orderby'        => 'meta_value',
 			'order'          => 'ASC',
 			'posts_per_page' => 200,
-		) );
+		);
+
+		$args = wp_parse_args( $args, $defaults );
+
+		return get_posts( $args );
 	}
 
 	/**
