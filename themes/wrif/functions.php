@@ -13,7 +13,7 @@
  */
 
  // Useful global constants
-define( 'WRIF_VERSION', '2.0.9' ); /* Version bump by Steve 07/17/2017 */
+define( 'WRIF_VERSION', '2.1.0' ); /* Version bump by Steve 07/23/2017 */
 
  /**
   * Set up theme defaults and register supported WordPress features.
@@ -83,7 +83,7 @@ add_action( 'wp_head', 'wrif_chartbeat_header' );
 * 'dave-chuck-the-freak'
 */
 function wrif_dave_and_chuck_geo_redirect() {
-	if ( in_category( 'dave-chuck-the-freak' ) ){
+	if ( in_category( 'dave-chuck-the-freak' ) || ( 'dave-and-chuck' === get_page_uri() ) ){
 		?>
 		<script>
 			var geolifygeoredirect = document.createElement('script')
