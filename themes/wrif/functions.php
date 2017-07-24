@@ -21,7 +21,7 @@ if ( file_exists( __DIR__ . '/../.version.php' ) ) {
 }
 
  // Useful global constants
-define( 'WRIF_VERSION', $version ); /* Version bump by Steve 03/20/2017 */
+define( 'WRIF_VERSION', $version );
 
  /**
   * Set up theme defaults and register supported WordPress features.
@@ -84,6 +84,26 @@ function wrif_chartbeat_header() {
 	echo apply_filters( 'wrif_chartbeat_header', $content );
 }
 add_action( 'wp_head', 'wrif_chartbeat_header' );
+
+/**
+* Add Dave & Chuck Geo Redirect to site
+* only when the post content is in the category-options
+* 'dave-chuck-the-freak'
+*/
+function wrif_dave_and_chuck_geo_redirect() {
+	if ( in_category( 'dave-chuck-the-freak' ) || ( 'dave-and-chuck' === get_page_uri() ) ){
+		?>
+		<script>
+			var geolifygeoredirect = document.createElement('script')
+			geolifygeoredirect.setAttribute('type','text/javascript')
+			geolifygeoredirect.async = 1
+			geolifygeoredirect.setAttribute('src', '//www.geolify.com/georedirectv2.php?id=29964&refurl='+document.referrer)
+			document.getElementsByTagName('head')[0].appendChild(geolifygeoredirect)
+		</script>
+		<?php
+	}
+}
+add_action( 'wp_head', 'wrif_dave_and_chuck_geo_redirect' );
 
 function wrif_chartbeat_footer() {
 	$content = '<script type="text/javascript">var cbjspath = "static.chartbeat.com/js/chartbeat.js?uid=2332&domain=wrif.com";var cbjsprotocol = (("https:" == document.location.protocol) ? "/web/20150305155406/https://s3.amazonaws.com/" : "http://"); document.write(unescape("%3Cscript src=\'"+cbjsprotocol+cbjspath+"\' type=\'text/javascript\'%3E%3C/script%3E"))</script>';
