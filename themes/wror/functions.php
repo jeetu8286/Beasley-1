@@ -21,7 +21,7 @@ if ( file_exists( __DIR__ . '/../.version.php' ) ) {
 }
 
  // Useful global constants
-define( 'WROR_VERSION', '2.0.9' ); /* Version bump by Steve 05/25/2017 */
+define( 'WROR_VERSION', $version );
 
  /**
   * Set up theme defaults and register supported WordPress features.
