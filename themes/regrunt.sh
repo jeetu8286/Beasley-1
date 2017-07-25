@@ -22,5 +22,6 @@ for d in */ ; do
 		grunt
 	fi
 
+
 	cd ..
 done
