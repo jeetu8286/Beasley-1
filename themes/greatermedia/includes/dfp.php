@@ -432,7 +432,7 @@ function greatermedia_display_dfp_wallpaper() {
 add_action( 'dfp_wallpaper_tag', 'greatermedia_display_dfp_wallpaper' );
 
 function greatermedia_display_dfp_incontent( $content ) {
-	if ( ! is_single() || ! greatermedia_is_dfp_active() || ! did_action( 'body_class' ) ) {
+	if ( ! is_single() || ! greatermedia_is_dfp_active() || ! did_action( 'gmr_body_class' ) ) {
 		return $content;
 	}
 
@@ -461,6 +461,20 @@ function greatermedia_register_dfp_widget() {
 	register_widget( 'GreatermediaDfpWidget' );
 }
 add_action( 'widgets_init', 'greatermedia_register_dfp_widget' );
+
+/**
+ * Prior to the revamp of WP Core hook system, filters added to the global $wp_actions
+ * Since filters no longer do this, when checking for did_ation( 'body_class' ) in greatermedia_display_dfp_incontent
+ * it seemed as though the filter hadn't run, when in reality it had. We hook into the filter, return the value as is
+ * and fire our own `gmr_body_class` action, so that we can check in the incontent function that body_class has run
+ * as we used to (and thus, get the in content ads back)
+ */
+function greatermedia_body_class( $classes ) {
+	do_action( 'gmr_body_class' );
+
+	return $classes;
+}
+add_filter( 'body_class', 'greatermedia_body_class' );
 
 class GreatermediaDfpWidget extends \WP_Widget {
 
