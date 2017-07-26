@@ -4,6 +4,8 @@ global $wpseo_og;
 
 $encoded_title = urlencode( get_the_title() );
 $encoded_url = urlencode( get_permalink() );
+$facebook_encoded_title = false;
+$twitter_encoded_title = false;
 
 if ( $wpseo_og && class_exists( 'WPSEO_Meta' ) ){
   // Use Yoast SEO to dictate title of page
