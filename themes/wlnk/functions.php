@@ -12,8 +12,16 @@
  * @since 0.1.0
  */
 
+$version = '0.3.9';
+
+// If .version.php file exists, the content of this file (timestamp) is added to the $version value set above
+if ( file_exists( __DIR__ . '/../.version.php' ) ) {
+  $suffix  = intval( file_get_contents( __DIR__ . '/../.version.php' ) );
+  $version = $version . "." . $suffix;
+}
+
  // Useful global constants
-define( 'WLNK_VERSION', '0.3.9' ); /* Version bump by Jonathan 01/16/2017 @ 3:12 p.m. EST */
+define( 'WLNK_VERSION', $version ); /* Version bump by Jonathan 01/16/2017 @ 3:12 p.m. EST */
 
  /**
   * Set up theme defaults and register supported WordPress features.

@@ -12,8 +12,16 @@
  * @since 0.1.0
  */
 
+$version = '2.0.9';
+
+// If .version.php file exists, the content of this file (timestamp) is added to the $version value set above
+if ( file_exists( __DIR__ . '/../.version.php' ) ) {
+	$suffix  = intval( file_get_contents( __DIR__ . '/../.version.php' ) );
+	$version = $version . "." . $suffix;
+}
+
  // Useful global constants
-define( 'WROR_VERSION', '2.0.9' ); /* Version bump by Steve 05/25/2017 */
+define( 'WROR_VERSION', $version );
 
  /**
   * Set up theme defaults and register supported WordPress features.
