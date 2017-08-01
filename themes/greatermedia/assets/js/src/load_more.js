@@ -64,6 +64,12 @@
 	
 							// Increment page number
 							pagenums[page_link_template]++;
+
+							// Call Analytics
+							if ( typeof window.ga === 'function' ) {
+								console.log('analytics');
+								ga( 'send', 'page', '/page' + pagenums[page_link_template] );
+							}
 							
 							// Trigger event.
 							$( document ).trigger( 'gmr_lazy_load_end' ); 
