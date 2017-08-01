@@ -445,7 +445,7 @@
     .homepage_countdown_clock_container {
       position: relative;
       background-color: rgba(0, 0, 0, 0.7);
-      margin: 5px;
+      margin: 5px 0px;
       padding: 5px;
       width: 54%;
       float: left;
@@ -493,7 +493,7 @@
       }
 
       margin-top: 5px;
-      width: 44%;
+      width: 45%;
       float: right;
       @media screen and (max-width: 965px) {
         width: 98%;
