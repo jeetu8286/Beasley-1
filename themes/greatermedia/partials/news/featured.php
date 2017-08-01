@@ -87,9 +87,3 @@ if ( $hp_featured_query->have_posts() ) : ?>
 
 else :
 endif;
-
-// Start Countdown Clock
-if ( function_exists( 'GreaterMedia\HomepageCountdownClock\render_homepage_countdown_clock' ) ) {
-	GreaterMedia\HomepageCountdownClock\render_homepage_countdown_clock();
-}
-// End Countdown Clock

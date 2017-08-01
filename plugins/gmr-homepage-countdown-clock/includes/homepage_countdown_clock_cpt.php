@@ -127,7 +127,7 @@ function render_homepage_countdown_clock() {
 			</div>
 			<div class="ad__countdown-clock-sponsorship">
 				<span class="homepage_countdown_clock_sponsored_by">Sponsored By:</span>
-				<?php do_action( 'dfp_tag', 'countdown-clock-sponsorship' ); ?>
+				<?php do_action( 'dfp_tag', get_dfp_ad_slot() ); ?>
 			</div>
 			<div style="clear:both"></div>
 		</div>

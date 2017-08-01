@@ -447,7 +447,7 @@
       background-color: rgba(0, 0, 0, 0.7);
       margin: 5px;
       padding: 5px;
-      width: 50%;
+      width: 54%;
       float: left;
 
       @media screen and (max-width: 965px) {
@@ -485,13 +485,22 @@
         color: #fff;
         background-color: rgba(0,0,0,.8);
         padding: 2px 4px;
-        margin: 10px;
+        margin: 0px;
+        margin-bottom: 5px;
         display: inline-block;
         text-transform: uppercase;
         font-size: 10px;
       }
 
-      margin-top: 10px;
+      margin-top: 5px;
+      width: 44%;
+      float: right;
+      @media screen and (max-width: 965px) {
+        width: 98%;
+        padding: 1%;
+        margin: 5px auto;
+        float: none;
+      }
     }
   }
 }

@@ -1,6 +1,6 @@
 /*! Greater Media Countdown Clock - v1.0.0
  * http://greatermedia.com/
- * Copyright (c) 2016;
+ * Copyright (c) 2017;
  * Licensed GPLv2+
  */
 /*! flipclock 2015-08-31 */

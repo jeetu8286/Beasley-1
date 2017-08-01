@@ -23,3 +23,11 @@ function current_countdown_clock_query() {
 
 	return $post;
 }
+
+/**
+ * Return home page countdown clock ad slot name.
+ * @return string
+ */
+function get_dfp_ad_slot() {
+	return 'dfp_ad_homepage_countdown_clock';
+}
