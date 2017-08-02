@@ -25,10 +25,19 @@ class BlogData {
 	 */
 	public static $syndicate_now = false;
 
+	/**
+	 * Unique ID for this syndication process. Added to logs, to make tracking a single event easier
+	 *
+	 * @var string
+	 */
+	public static $syndication_uniqid = '';
+
 	public static function init() {
 		add_action( 'init', array( __CLASS__, 'get_content_site_id' ), 1 );
 		add_action( 'wp_ajax_syndicate-now', array( __CLASS__, 'syndicate_now' ) );
 		add_action( 'admin_notices', array( __CLASS__, 'add_notice_for_undefined' ) );
+
+		self::$syndication_uniqid = uniqid( "SYN", true );
 	}
 
 	public static function add_notice_for_undefined() {
@@ -912,12 +921,13 @@ class BlogData {
 	 */
 	public static function log() {
 		$syndication_id = self::$syndication_id;
+		$uniqid = self::$syndication_uniqid;
 		$site_id = get_current_blog_id();
 		$message = func_num_args() > 1
 			? vsprintf( func_get_arg( 0 ), array_slice( func_get_args(), 1 ) )
 			: func_get_arg( 0 );
 
-		$message = "[SYNDICATION:{$syndication_id} SITE:{$site_id}] {$message}";
+		$message = "[SYNDICATION:{$syndication_id} SITE:{$site_id} {$uniqid}] {$message}";
 		self::$log[] = $message;
 		syslog( LOG_ERR, $message );
 	}
