@@ -78,7 +78,7 @@ class BlogData {
 		$syndication_id = filter_input( INPUT_POST, 'syndication_id', FILTER_VALIDATE_INT );
 		$total = $syndication_id > 0 ? self::run( $syndication_id ) : 0;
 
-		if ( ! is_int( $total ) ) {
+		if ( ! is_numeric( $total ) ) {
 			self::log( "A non numerical response was received from self::run in " . __FILE__ . ":" . __LINE__ . ". Response was " . var_export( $total, true ) );
 		}
 
