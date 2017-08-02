@@ -12,7 +12,14 @@
  */
 
 // Useful global constants
-define( 'GMR_SYNDICATION_VERSION', '0.1.0' );
+$version = '0.1.0';
+
+// If .version.php file exists, the content of this file (timestamp) is added to the $version value set above
+if ( file_exists( WP_CONTENT_DIR . '/themes/.version.php' ) ) {
+	$suffix  = intval( file_get_contents( WP_CONTENT_DIR . '/themes/.version.php' ) );
+	$version = $version . "." . $suffix;
+}
+define( 'GMR_SYNDICATION_VERSION', $version );
 define( 'GMR_SYNDICATION_URL', plugins_url( '/', __FILE__ ) );
 
 require_once __DIR__ . '/includes/syndication-cpt.php';
