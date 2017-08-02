@@ -81,7 +81,11 @@ class BlogData {
 		if ( ! is_int( $total ) ) {
 			self::log( "A non numerical response was received from self::run in " . __FILE__ . ":" . __LINE__ . ". Response was " . var_export( $total, true ) );
 		}
-		echo (int) $total;
+
+		wp_send_json( array(
+			'total' => (int) $total,
+			'unique_id' => self::$syndication_uniqid,
+		) );
 		exit;
 	}
 

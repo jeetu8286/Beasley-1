@@ -1,7 +1,5 @@
-(function (window, undefined) {
-	'use strict';
-
-	jQuery(function ($) {
+(function ($) {
+	$(document).ready(function () {
 		$(".subscription_terms").select2({
 			placeholder: "Select term"
 		});
@@ -14,7 +12,7 @@
 		$("#syndicate_now").on('click', function (event) {
 			event.preventDefault();
 			var post_id = $(this).data('postid');
-			jQuery.ajax({
+			$.ajax({
 				type: "post",
 				url: syndication_ajax.ajaxurl,
 				data: {action: "syndicate-now",
@@ -25,10 +23,12 @@
 					$('#syndication_status').html('Checking...');
 				},
 				success: function (response) {
-					if (Math.floor(response) !== 0) {
-						$('#syndication_status').html('Imported ' + response + ' item(s).');
+					var total = response.total;
+
+					if (Math.floor(total) !== 0) {
+						$('#syndication_status').html('Imported ' + total + ' item(s). </br>Debugging ID ' + response.unique_id );
 					} else {
-						$('#syndication_status').html('No match found!');
+						$('#syndication_status').html('No matches found! </br>Debugging ID ' + response.unique_id );
 					}
 				}
 			});
@@ -54,5 +54,4 @@
 			syndicated_posts.show('600');
 		});
 	});
-
-})(this);
+})(jQuery);
