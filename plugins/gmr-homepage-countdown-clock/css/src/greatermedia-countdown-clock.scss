@@ -437,7 +437,7 @@
   clear: both;
   padding-top: 0px;
   text-align: center;
-
+  margin: 20px 0;
   .homepage_countdown_clock {
   	background-size: cover;
     overflow: hidden;
@@ -446,7 +446,6 @@
       position: relative;
       background-color: rgba(0, 0, 0, 0.7);
       margin: 0px;
-      margin-bottom: 20px;
       padding: 5px;
       width: 50%;
       float: left;
@@ -454,7 +453,8 @@
       @media screen and (max-width: 965px) {
         width: 100%;
         padding: 1%;
-        margin: 20px auto;
+        margin: 0 auto;
+        margin-bottom: 10px;
         float: none;
       }
 
@@ -494,14 +494,12 @@
       }
 
       margin: 0px;
-      margin-bottom: 20px;
       width: 50%;
       float: right;
       @media screen and (max-width: 965px) {
         width: 100%;
         padding: 1%;
         margin: 0px auto;
-        margin-bottom: 20px;
         float: none;
       }
     }
