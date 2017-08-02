@@ -70,7 +70,7 @@ class BlogData {
 		$total = $syndication_id > 0 ? self::run( $syndication_id ) : 0;
 
 		if ( ! is_int( $total ) ) {
-			self::log( "A non numerical response was received from self::run in " . __FILE__ . ":" . __LINE__ );
+			self::log( "A non numerical response was received from self::run in " . __FILE__ . ":" . __LINE__ . ". Response was " . var_dump ( $total ) );
 		}
 		echo (int) $total;
 		exit;
