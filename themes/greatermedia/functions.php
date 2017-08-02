@@ -17,7 +17,7 @@
  * Add this constant to wp-config and set value to "dev" to trigger time() as the cache buster on css/js that use this,
  * instead of the version - useful for dev, especially when cloudflare or other cdn's are involved
  */
-$version = '2.0.8';
+$version = '2.0.9';
 
 // If .version.php file exists, the content of this file (timestamp) is added to the $version value set above
 if ( file_exists( __DIR__ . '/../.version.php' ) ) {
@@ -1262,3 +1262,16 @@ function greatermedia_update_image_attributes( $attributes ) {
 add_filter( 'wp_get_attachment_image_attributes', 'greatermedia_update_image_attributes' );
 
 remove_filter( 'the_content', 'wp_make_content_images_responsive' );
+
+/**
+ * Adds an image node to each RSS item that has a feature image.
+ */
+add_action('rss2_item', 'add_my_rss_node');
+
+function add_my_rss_node() {
+	global $post;
+	if(has_post_thumbnail($post->ID)):
+		$thumbnail = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'gmr-gallery-grid-featured' );
+		echo("<image>{$thumbnail[0]}</image>");
+	endif;
+}
