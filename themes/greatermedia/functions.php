@@ -1266,12 +1266,14 @@ remove_filter( 'the_content', 'wp_make_content_images_responsive' );
 /**
  * Adds an image node to each RSS item that has a feature image.
  */
-add_action('rss2_item', 'add_my_rss_node');
+add_action('rss2_item', 'add_image_node_to_rss');
 
-function add_my_rss_node() {
+function add_image_node_to_rss() {
 	global $post;
-	if(has_post_thumbnail($post->ID)):
+	if ( has_post_thumbnail( $post->ID ) ):
 		$thumbnail = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'gmr-gallery-grid-featured' );
-		echo("<image>{$thumbnail[0]}</image>");
+		if ( ! empty( $thumbnail[0] ) ) {
+			echo( '<image>' . $thumbnail[0] . '</image>' );
+		}
 	endif;
 }
