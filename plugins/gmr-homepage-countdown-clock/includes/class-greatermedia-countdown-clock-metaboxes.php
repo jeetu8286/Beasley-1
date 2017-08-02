@@ -66,7 +66,7 @@ class GreaterMediaCountdownClockMetaboxes {
 	 * @return mixed
 	 */
 	public function footer_sizes( $sizes ) {
-		$sizes[ $this->ad_slot_name ] = array( array( 250, 70 ) );
+		$sizes[ $this->ad_slot_name ] = array( array( 320, 50 ) );
 
 		return $sizes;
 	}

@@ -52,7 +52,7 @@
   text-align: center;
   position: relative;
   width: 100%;
-  margin: 1em;
+  margin: 1em 0;
 }
 
 .flip-clock-wrapper:before,
@@ -447,7 +447,7 @@
       background-color: rgba(0, 0, 0, 0.7);
       margin: 5px 0px;
       padding: 5px;
-      width: 54%;
+      width: 50%;
       float: left;
 
       @media screen and (max-width: 965px) {
@@ -477,7 +477,7 @@
 
     .homepage_countdown_clock_ticker_wrapper {
       margin: 0 auto;
-      width: 320px;
+      width: 292px;
     }
 
     .ad__countdown-clock-sponsorship {
@@ -493,7 +493,7 @@
       }
 
       margin-top: 5px;
-      width: 45%;
+      width: 50%;
       float: right;
       @media screen and (max-width: 965px) {
         width: 98%;
