@@ -18,6 +18,13 @@ class BlogData {
 
 	public static $content_site_id;
 
+	/**
+	 * Did we use the "Syndicate Now" Button
+	 *
+	 * @var bool
+	 */
+	public static $syndicate_now = false;
+
 	public static function init() {
 		add_action( 'init', array( __CLASS__, 'get_content_site_id' ), 1 );
 		add_action( 'wp_ajax_syndicate-now', array( __CLASS__, 'syndicate_now' ) );
@@ -52,13 +59,19 @@ class BlogData {
 	public static function syndicate_now() {
 		// verify nonce, with predifined
 		if ( ! wp_verify_nonce( $_POST['syndication_nonce'], 'perform-syndication-nonce' ) ) {
+			self::log( "Nonce did not verify for Syndicate Now Button" );
 			die( ':P' );
 		}
 
 		// run syndication
+		self::log( "Starting 'Syndicate Now' Process" );
+		self::$syndicate_now = true;
 		$syndication_id = filter_input( INPUT_POST, 'syndication_id', FILTER_VALIDATE_INT );
 		$total = $syndication_id > 0 ? self::run( $syndication_id ) : 0;
 
+		if ( ! is_int( $total ) ) {
+			self::log( "A non numerical response was received from self::run in " . __FILE__ . ":" . __LINE__ );
+		}
 		echo (int) $total;
 		exit;
 	}
@@ -71,6 +84,7 @@ class BlogData {
 
 		try {
 			if ( is_null( $syndication_id ) ) {
+				self::log( "Syndication ID is Null " . __FILE__ . ":" . __LINE__ );
 				return false;
 			}
 
@@ -241,7 +255,6 @@ class BlogData {
 			'order' => 'DESC',
 		);
 
-
 		if ( $start_date == '' ) {
 			$last_queried = get_post_meta( $subscription_id, 'syndication_last_performed', true );
 			if ( $last_queried ) {
@@ -279,11 +292,19 @@ class BlogData {
 			array_push( $args['tax_query'], $tax_query );
 		}
 
+		if ( self::$syndicate_now ) {
+			self::log_variable( $args, "Query Args for Syndicate Now" );
+		}
+
 		// switch to content site
 		switch_to_blog( self::$content_site_id );
 
 		// get all postst matching filters
 		$wp_custom_query = new WP_Query( $args );
+
+		if ( self::$syndicate_now ) {
+			self::log_variable( $wp_custom_query, "Result of Query during Syndicate Now" );
+		}
 
 		// get all metas
 		foreach ( $wp_custom_query->posts as $single_result ) {
@@ -891,11 +912,18 @@ class BlogData {
 	 */
 	public static function log() {
 		$syndication_id = self::$syndication_id;
+		$site_id = get_current_blog_id();
 		$message = func_num_args() > 1
 			? vsprintf( func_get_arg( 0 ), array_slice( func_get_args(), 1 ) )
 			: func_get_arg( 0 );
 
-		self::$log[] = "[SYNDICATION:{$syndication_id}] {$message}";
+		$message = "[SYNDICATION:{$syndication_id} SITE:{$site_id}] {$message}";
+		self::$log[] = $message;
+		syslog( LOG_ERR, $message );
+	}
+
+	public static function log_variable( $var, $context = '' ) {
+		self::log( "$context \n" . print_r( $var, true ) );
 	}
 
 	/**
