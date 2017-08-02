@@ -434,9 +434,9 @@ class BlogData {
 		// check whether post with that name exist
 		if ( ! empty( $existing ) ) {
 			$existing_post = current( $existing );
+			$post_id = intval( $existing_post->ID );
 			// update existing post only if it hasn't been updated manually
 			if ( ! empty( $defaults['last_performed'] ) && strtotime( $existing_post->post_modified_gmt ) < $defaults['last_performed'] ) {
-				$post_id = intval( $existing_post->ID );
 				$hash_value = get_post_meta( $post_id, 'syndication_import', true );
 				if ( $hash_value != $post_hash || $force_update ) {
 					// post has been updated, override existing one
