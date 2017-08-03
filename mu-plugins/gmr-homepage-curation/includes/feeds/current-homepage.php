@@ -1,6 +1,6 @@
 <?php
 
-namespace GreaterMedia\HomepageCuration\feed\current_homepage;
+namespace GreaterMedia\HomepageCuration\Feed\CurrentHomepage;
 
 use function GreaterMedia\HomepageCuration\recent_homepage_query;
 
