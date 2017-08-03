@@ -15,6 +15,7 @@ function load() {
 		require __DIR__ . '/includes/homepage_cpt.php';
 		require __DIR__ . '/includes/queries.php';
 		require __DIR__ . '/includes/homepage-exclude.php';
+		require __DIR__ . '/includes/feeds/current-homepage-featured.php';
 	}
 }
 
