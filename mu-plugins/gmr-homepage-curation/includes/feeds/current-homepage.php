@@ -30,15 +30,27 @@ function filter_query( $query ) {
 	if ( ! $query->is_feed( 'current_homepage' ) ) {
 		return;
 	}
+
+	$types = array( 'featured', 'dont_miss', 'events' );
+	if ( isset( $_REQUEST['type'] ) && false === empty( $_REQUEST['type'] ) ) {
+		$types = explode( ',', $_REQUEST['type'] );
+	}
 	// Change the feed query.
-	$post_ids = array();
+	$post_ids                    = array();
 	$GLOBALS['current_homepage'] = array();
-	$GLOBALS['current_homepage']['featured'] = explode( ',', recent_homepage_query( 'featured_meta_box' ) );
-	$GLOBALS['current_homepage']['dont_miss'] = explode( ',', recent_homepage_query( 'dont_miss_meta_box' ) );
-	$GLOBALS['current_homepage']['events'] = explode( ',', recent_homepage_query( 'events_meta_box' ) );
-	$post_ids = array_merge( $post_ids, $GLOBALS['current_homepage']['featured'] );
-	$post_ids = array_merge( $post_ids, $GLOBALS['current_homepage']['dont_miss'] );
-	$post_ids = array_merge( $post_ids, $GLOBALS['current_homepage']['events'] );
+
+	if ( in_array( 'featured', $types ) ) {
+		$GLOBALS['current_homepage']['featured'] = explode( ',', recent_homepage_query( 'featured_meta_box' ) );
+		$post_ids                                = array_merge( $post_ids, $GLOBALS['current_homepage']['featured'] );
+	}
+	if ( in_array( 'dont_miss', $types ) ) {
+		$GLOBALS['current_homepage']['dont_miss'] = explode( ',', recent_homepage_query( 'dont_miss_meta_box' ) );
+		$post_ids                                 = array_merge( $post_ids, $GLOBALS['current_homepage']['dont_miss'] );
+	}
+	if ( in_array( 'events', $types ) ) {
+		$GLOBALS['current_homepage']['events'] = explode( ',', recent_homepage_query( 'events_meta_box' ) );
+		$post_ids                              = array_merge( $post_ids, $GLOBALS['current_homepage']['events'] );
+	}
 
 
 	$query->set( 'post__in', $post_ids );
