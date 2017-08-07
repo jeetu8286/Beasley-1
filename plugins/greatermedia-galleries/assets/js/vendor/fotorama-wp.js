@@ -18,18 +18,20 @@
 
 		    return this;
 		};
+		var __ready = function () {
+			$( '.fotorama--wp' )
+				.fotoramaWPAdapter()
+				.fotorama();
 
-		$('.fotorama--wp')
-			.fotoramaWPAdapter()
-			.fotorama();
-
-		$('.fotorama').on('fotorama:show fotorama:ready', function(e, fotorama, extra){
-			if ( fotorama && fotorama.activeFrame && ( true === fotorama.activeFrame.enabledownload ) ) {
-				$(this).removeClass('disable-download');
-			} else {
-				$(this).addClass('disable-download');
-			}
-		});
+			$( '.fotorama' ).on( 'fotorama:show fotorama:ready', function ( e, fotorama, extra ) {
+				if ( fotorama && fotorama.activeFrame && ( true === fotorama.activeFrame.enabledownload ) ) {
+					$( this ).removeClass( 'disable-download' );
+				} else {
+					$( this ).addClass( 'disable-download' );
+				}
+			} );
+		}
+		$( document ).bind( 'pjax:end', __ready ).ready( __ready );
 	});
 })(jQuery);
 
