@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( "Please don't try to access this file directly." );
 }
 
-define( 'GREATER_MEDIA_GALLERIES_VERSION', '2.2.1' );
+define( 'GREATER_MEDIA_GALLERIES_VERSION', '2.2.2' );
 define( 'GREATER_MEDIA_GALLERIES_URL', plugin_dir_url( __FILE__ ) );
 define( 'GREATER_MEDIA_GALLERIES_PATH', dirname( __FILE__ ) );
 
