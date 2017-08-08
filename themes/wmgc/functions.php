@@ -12,6 +12,14 @@
  * @since   0.1.0
  */
 
+$version = '0.3.7';
+
+// If .version.php file exists, the content of this file (timestamp) is added to the $version value set above
+if ( file_exists( __DIR__ . '/../.version.php' ) ) {
+	$suffix  = intval( file_get_contents( __DIR__ . '/../.version.php' ) );
+	$version = $version . "." . $suffix;
+}
+
 // Useful global constants
 /*
  * Add this constant to wp-config and set value to "dev" to trigger time() as the cache buster on css/js that use this,
@@ -21,7 +29,7 @@ if ( defined( 'WMGC_ENV' ) && 'dev' == WMGC_ENV ) {
 	// So that things like cloudflare don't hold on to our css during dev
 	define( 'WMGC_VERSION', time() );
 } else {
-	define( 'WMGC_VERSION', '0.3.7' ); /* Version bump by Steve 10/25/2016 @ 3:30 p.m. EST */
+	define( 'WMGC_VERSION', $version ); /* Version bump by Steve 10/25/2016 @ 3:30 p.m. EST */
 }
 
 /**

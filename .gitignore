@@ -62,6 +62,7 @@ themes/index.php
 themes/twentyfourteen
 themes/twentyfifteen
 
+.version.php
 /index.php
 .idea
 debug.log

@@ -1,4 +1,4 @@
-/*global $:false, jQuery:false, wp:false, console:false, syndication_ajax:false, alert:false */
+/*global $:false, jQuery:false, wp:false, console:false, syndication_ajax:false, alert:false, document:false */
 (function ($) {
 	$(document).ready(function () {
 		$(".subscription_terms").select2({
@@ -24,10 +24,12 @@
 					$('#syndication_status').html('Checking...');
 				},
 				success: function (response) {
-					if (Math.floor(response) !== 0) {
-						$('#syndication_status').html('Imported ' + response + ' item(s).');
+					var total = response.total;
+
+					if (Math.floor(total) !== 0) {
+						$('#syndication_status').html('Imported ' + total + ' item(s). </br>Debugging ID ' + response.unique_id );
 					} else {
-						$('#syndication_status').html('No match found!');
+						$('#syndication_status').html('No matches found! </br>Debugging ID ' + response.unique_id );
 					}
 				}
 			});

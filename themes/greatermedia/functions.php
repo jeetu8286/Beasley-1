@@ -17,10 +17,19 @@
  * Add this constant to wp-config and set value to "dev" to trigger time() as the cache buster on css/js that use this,
  * instead of the version - useful for dev, especially when cloudflare or other cdn's are involved
  */
+$version = '2.0.8';
+
+// If .version.php file exists, the content of this file (timestamp) is added to the $version value set above
+if ( file_exists( __DIR__ . '/../.version.php' ) ) {
+	$suffix  = intval( file_get_contents( __DIR__ . '/../.version.php' ) );
+	$version = $version . "." . $suffix;
+}
+
+// Useful global constants
 if ( defined( 'GMR_PARENT_ENV' ) && 'dev' == GMR_PARENT_ENV ) {
 	define( 'GREATERMEDIA_VERSION', time() );
 } else {
-	define( 'GREATERMEDIA_VERSION', '2.0.8' ); /* Version bump by Steve 03/27/2017 */
+	define( 'GREATERMEDIA_VERSION', $version ); /* Version bump by Steve 03/27/2017 */
 }
 
 add_theme_support( 'homepage-curation' );
@@ -87,6 +96,9 @@ function greatermedia_setup() {
 	add_image_size( 'gmr-gallery-grid-secondary',       560,    300,    true    );
 	add_image_size( 'gmr-gallery-grid-thumb',           500,    368,    true    ); // thumbnail for gallery grid areas
 	add_image_size( 'gmr-album-thumbnail',              1876,   576,    true    ); // thumbnail for albums
+
+	//new custom image size for JacApps mobile app rotator panels.
+	add_image_size( 'gmr-homepage-featured-feed', 640, 400, true );
 
 	// Update this as appropriate content types are created and we want this functionality
 	add_post_type_support( 'post', 'timed-content' );

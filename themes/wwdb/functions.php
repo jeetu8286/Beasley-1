@@ -12,8 +12,16 @@
  * @since 0.1.0
  */
 
+$version = '0.1.2';
+
+// If .version.php file exists, the content of this file (timestamp) is added to the $version value set above
+if ( file_exists( __DIR__ . '/../.version.php' ) ) {
+	$suffix  = intval( file_get_contents( __DIR__ . '/../.version.php' ) );
+	$version = $version . "." . $suffix;
+}
+
  // Useful global constants
-define( 'WWDB_VERSION', '0.1.2' );
+define( 'WWDB_VERSION', $version );
 
  /**
   * Set up theme defaults and register supported WordPress features.
