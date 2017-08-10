@@ -97,6 +97,9 @@ function greatermedia_setup() {
 	add_image_size( 'gmr-gallery-grid-thumb',           500,    368,    true    ); // thumbnail for gallery grid areas
 	add_image_size( 'gmr-album-thumbnail',              1876,   576,    true    ); // thumbnail for albums
 
+	//new custom image size for JacApps mobile app rotator panels.
+	add_image_size( 'gmr-homepage-featured-feed', 640, 400, true );
+
 	// Update this as appropriate content types are created and we want this functionality
 	add_post_type_support( 'post', 'timed-content' );
 	add_post_type_support( 'post', 'flexible-feature-image' );
