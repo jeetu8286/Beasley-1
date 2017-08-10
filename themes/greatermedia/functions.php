@@ -1269,14 +1269,23 @@ remove_filter( 'the_content', 'wp_make_content_images_responsive' );
 /**
  * Adds an image node to each RSS item that has a feature image.
  */
-add_action('rss2_item', 'add_image_node_to_rss');
+add_action( 'rss2_item', 'greatermedia_add_mrss_node_to_rss' );
 
-function add_image_node_to_rss() {
+function greatermedia_add_mrss_node_to_rss() {
 	global $post;
 	if ( has_post_thumbnail( $post->ID ) ):
 		$thumbnail = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'gmr-gallery-grid-featured' );
-		if ( ! empty( $thumbnail[0] ) ) {
-			echo( '<image>' . $thumbnail[0] . '</image>' );
+		if ( ! empty( $thumbnail[0] ) ) { ?>
+			<media:thumbnail url="<?php echo esc_attr( $thumbnail[0] ); ?>"  width="<?php echo esc_attr( $thumbnail[1] ); ?>"  height="<?php echo esc_attr( $thumbnail[2] ); ?>" /><?php
 		}
 	endif;
+}
+
+
+add_action( 'rss2_ns', 'greatermedia_add_mrss_ns_to_rss' );
+/**
+ * Add required ns
+ */
+function greatermedia_add_mrss_ns_to_rss() {
+	?> xmlns:media="http://search.yahoo.com/mrss/" <?php
 }

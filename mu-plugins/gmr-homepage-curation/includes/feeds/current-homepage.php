@@ -63,7 +63,6 @@ function filter_query( $query ) {
 	$query->set( 'nopaging', true);
 
 	add_action( 'rss2_item', __NAMESPACE__ . '\rss2_item' );
-	add_action( 'rss2_ns', __NAMESPACE__ . '\rss2_ns' );
 
 	return $query;
 }
@@ -73,16 +72,6 @@ function filter_query( $query ) {
  */
 function render() {
 	load_template( ABSPATH . WPINC . '/feed-rss2.php' );
-}
-
-/**
- * Add required ns
- */
-function rss2_ns() {
-	?>
-	xmlns:media="http://search.yahoo.com/mrss/"
-	<?php
-
 }
 
 /**
@@ -100,6 +89,5 @@ function rss2_item() {
 	?>
 	<post_format><?php echo esc_html( get_post_format() ); ?></post_format>
 	<featured_section><?php echo $current_type; ?></featured_section>
-	<media:thumbnail url="<?php echo esc_attr( gm_post_thumbnail_url( 'gmr-gallery-grid-featured', null, true ) ); ?>"/>
 	<?php
 }
