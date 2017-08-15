@@ -2635,8 +2635,8 @@ var matchHeights = function( elements ) {
 		}); 
 	};
 
-	if (tribe_ev && tribe_ev.events) {
-		$(tribe_ev.events).bind('tribe_ev_ajaxSuccess', __ready);
+	if ( window.tribe_ev && window.tribe_ev.events ) {
+		$( tribe_ev.events ).bind( 'tribe_ev_ajaxSuccess', __ready );
 	}
 
 	$(document).bind('pjax:end', function(e, xhr) {

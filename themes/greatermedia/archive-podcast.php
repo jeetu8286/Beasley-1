@@ -16,13 +16,12 @@ get_header(); ?>
 
 			<?php get_template_part( 'partials/loop', 'podcast_archive' ); ?>
 
+		<?php endwhile; ?>
 			<?php greatermedia_load_more_button( array(
 				'partial_slug' => 'partials/loop',
 				'partial_name' => 'podcast_archive',
 				'auto_load'    => true
 			) ); ?>
-
-		<?php endwhile; ?>
 		<?php else : ?>
 
 			<article id="post-not-found" class="hentry cf">
