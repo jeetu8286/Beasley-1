@@ -641,7 +641,17 @@ if ( ! function_exists( 'greatermedia_load_more_template' ) ) :
 
 		ob_start();
 
-		get_template_part( $partial_slug, $partial_name );
+		if ( 'podcast_archive' === $partial_name ) {
+			// Only doing loop for podcast archive
+			if ( have_posts() ) {
+				while ( have_posts() ) {
+					the_post();
+					get_template_part( $partial_slug, $partial_name );
+				}
+			}
+		} else {
+			get_template_part( $partial_slug, $partial_name );
+		}
 
 		$html = ob_get_clean();
 
