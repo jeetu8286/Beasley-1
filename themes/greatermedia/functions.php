@@ -1289,3 +1289,12 @@ add_action( 'rss2_ns', 'greatermedia_add_mrss_ns_to_rss' );
 function greatermedia_add_mrss_ns_to_rss() {
 	?> xmlns:media="http://search.yahoo.com/mrss/" <?php
 }
+
+
+add_action( 'admin_init', 'greatermedia_wpseo_save_compare_data', 10, 0 );
+/**
+ * Remove yoast seo compare meta hook which is doing facebook api call.
+ */
+function greatermedia_wpseo_save_compare_data() {
+	remove_all_actions( 'wpseo_save_compare_data', 10 );
+}
