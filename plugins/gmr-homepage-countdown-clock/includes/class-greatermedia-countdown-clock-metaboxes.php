@@ -8,11 +8,67 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class GreaterMediaCountdownClockMetaboxes {
 
+	private $ad_slot_name;
+
 	public function __construct() {
+
+		$this->ad_slot_name = get_dfp_ad_slot();
+
 		add_action( 'wp_enqueue_scripts', array( $this, 'gmr_countdown_clock_enqueue_front_scripts' ), 100 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
 		add_action( 'save_post', array( $this, 'save_post' ) );
+		//DFP Setting and ad slot rendering
+		add_action( 'greatermedia-settings-register-settings', array( $this, 'init_dfp_settings' ), 10, 2 );
+		add_filter( 'greatermedia_filter_dfp_settings_section_title', array( $this, 'settings_section_title' ), 10, 1 );
+		add_filter( 'greatermedia_dfp_footer_unit_codes', array( $this, 'footer_unit_codes' ), 10, 1 );
+		add_filter( 'greatermedia_dfp_footer_sizes', array( $this, 'footer_sizes' ), 10, 1 );
+	}
+
+	/**
+	 * Register countdown clock sponsorship section.
+	 * @param $group
+	 * @param $page
+	 */
+	public function init_dfp_settings( $group, $page ) {
+		register_setting( $group, $this->ad_slot_name, 'sanitize_text_field' );
+	}
+
+	/**
+	 * Add section title for countdown clock sponsorship section.
+	 *
+	 * @param $settings array
+	 *
+	 * @return array
+	 */
+	public function settings_section_title( $settings ) {
+		$settings[ $this->ad_slot_name ] = 'Homepage Countdown Clock';
+
+		return $settings;
+	}
+
+	/**
+	 * Add slot name in unit codes
+	 * @param $unit_codes
+	 *
+	 * @return mixed
+	 */
+	public function footer_unit_codes( $unit_codes ) {
+		$unit_codes[ $this->ad_slot_name ] = get_option( $this->ad_slot_name );
+
+		return $unit_codes;
+	}
+
+	/**
+	 * Add sizes for slot name
+	 * @param $sizes
+	 *
+	 * @return mixed
+	 */
+	public function footer_sizes( $sizes ) {
+		$sizes[ $this->ad_slot_name ] = array( array( 320, 50 ) );
+
+		return $sizes;
 	}
 
 	/**

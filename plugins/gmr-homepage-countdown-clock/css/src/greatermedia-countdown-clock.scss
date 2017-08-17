@@ -52,7 +52,7 @@
   text-align: center;
   position: relative;
   width: 100%;
-  margin: 1em;
+  margin: 1em 0;
 }
 
 .flip-clock-wrapper:before,
@@ -435,9 +435,9 @@
 
 .homepage_countdown_clock_wrapper {
   clear: both;
-  padding-top: 5px;
+  padding-top: 0px;
   text-align: center;
-
+  margin: 20px 0;
   .homepage_countdown_clock {
   	background-size: cover;
     overflow: hidden;
@@ -445,15 +445,16 @@
     .homepage_countdown_clock_container {
       position: relative;
       background-color: rgba(0, 0, 0, 0.7);
-      margin: 5px;
+      margin: 0px;
       padding: 5px;
       width: 50%;
       float: left;
 
       @media screen and (max-width: 965px) {
-        width: 98%;
+        width: 100%;
         padding: 1%;
-        margin: 5px auto;
+        margin: 0 auto;
+        margin-bottom: 10px;
         float: none;
       }
 
@@ -477,7 +478,7 @@
 
     .homepage_countdown_clock_ticker_wrapper {
       margin: 0 auto;
-      width: 320px;
+      width: 292px;
     }
 
     .ad__countdown-clock-sponsorship {
@@ -485,13 +486,22 @@
         color: #fff;
         background-color: rgba(0,0,0,.8);
         padding: 2px 4px;
-        margin: 10px;
+        margin: 0px;
+        margin-bottom: 5px;
         display: inline-block;
         text-transform: uppercase;
         font-size: 10px;
       }
 
-      margin-top: 10px;
+      margin: 0px;
+      width: 50%;
+      float: right;
+      @media screen and (max-width: 965px) {
+        width: 100%;
+        padding: 1%;
+        margin: 0px auto;
+        float: none;
+      }
     }
   }
 }
