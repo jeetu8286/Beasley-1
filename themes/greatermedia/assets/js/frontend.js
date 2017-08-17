@@ -2598,7 +2598,7 @@ var matchHeights = function( elements ) {
 				if (!loading) {
 					loading = true;
 					$self.removeClass('is-loaded');
-	
+
 					// let's use ?ajax=1 to distinguish AJAX and non AJAX requests
 					// if we don't do it and HTTP cache is enabled, then we might encounter
 					// unpleasant condition when users see cached version of a page loaded by AJAX
@@ -2611,7 +2611,13 @@ var matchHeights = function( elements ) {
 						if ( response.post_count ) {
 							// Add content to page. 
 							$($('<div>' + $.trim(response.html) + '</div>').html()).insertBefore($button.parents('.posts-pagination'));							
-	
+
+							// Call Analytics
+							if ( typeof window.ga === 'function' ) {
+								var page = page_link_template.replace( '%d', pagenums[page_link_template] ).replace( location.href, '/' );
+								window.ga( 'send', 'pageview', page );
+							}
+
 							// Increment page number
 							pagenums[page_link_template]++;
 							
