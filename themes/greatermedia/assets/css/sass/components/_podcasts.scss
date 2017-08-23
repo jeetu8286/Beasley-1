@@ -570,6 +570,9 @@ a.podcast__subscribe {
 			vertical-align: text-bottom;
 		}
 	}
+	.podcast__content {
+		margin-bottom: 1.75em;
+	}
 
 	.podcast__parent--title {
 		@extend .article__title;

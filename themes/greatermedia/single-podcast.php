@@ -45,6 +45,10 @@ get_header(); ?>
 						}
 						?>
 					</header>
+					<section class="entry-content podcast__content">
+					<?php the_content(); ?>
+					</section>
+
 					<?php get_template_part( 'partials/loop-gmr_podcast_episodes' ); ?>
 				</article>
 			<?php
