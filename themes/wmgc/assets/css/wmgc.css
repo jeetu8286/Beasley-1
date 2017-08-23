@@ -8505,6 +8505,9 @@ a.podcast__subscribe {
     margin-bottom: 5px;
     vertical-align: text-bottom; }
 
+.single-podcast .podcast__content {
+  margin-bottom: 1.75em; }
+
 .single-podcast .podcast__parent--title {
   margin-right: 10px; }
 
