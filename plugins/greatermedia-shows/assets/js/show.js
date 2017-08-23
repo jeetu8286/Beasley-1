@@ -1,6 +1,6 @@
 /*! GreaterMedia Shows - v1.0.0
  * http://wordpress.org/plugins
- * Copyright (c) 2015; * Licensed GPLv2+ */
+ * Copyright (c) 2017; * Licensed GPLv2+ */
 (function ($, gmr) {
 	var __ready = function() {
 		var paged = 1,

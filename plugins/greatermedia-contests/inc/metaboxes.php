@@ -194,6 +194,10 @@ class GreaterMediaContestsMetaboxes {
 
 		$started = get_post_meta( $post->ID, 'contest-start', true );
 		$ended = get_post_meta( $post->ID, 'contest-end', true );
+
+		$is_secret = get_post_meta( $post->ID, 'secret', true );
+		$is_secret = filter_var( $is_secret, FILTER_VALIDATE_BOOLEAN );
+
 		$offset = get_option( 'gmt_offset' ) * HOUR_IN_SECONDS;
 
 		?><table class="form-table">
@@ -252,6 +256,15 @@ class GreaterMediaContestsMetaboxes {
 					<?php endif; ?>
 				</td>
 			</tr>
+		<tr>
+			<th scope="row"><label for="content_is_secret">Make this contest secret</label></th>
+			<td>
+				<input type="hidden" name="content_is_secret"
+					   value="0"/>
+				<input type="checkbox" value="1" <?php checked( $is_secret ); ?> id="content_is_secret"
+					   name="content_is_secret"/>
+			</td>
+		</tr>
 		</table><?php
 	}
 
@@ -313,6 +326,13 @@ class GreaterMediaContestsMetaboxes {
 			'contest-end'   => 'greatermedia_contest_end',
 		);
 
+		if ( isset( $_POST['content_is_secret'] ) ) {
+			$secret = filter_input( INPUT_POST, 'content_is_secret', FILTER_VALIDATE_BOOLEAN );
+			update_post_meta( $post_id, 'secret', $secret );
+			add_action( 'wpseo_saved_postdata', array( $this, 'update_noindex' ), 999 );
+
+		}
+
 		foreach ( $dates as $meta => $param ) {
 			if ( isset( $_POST[ $param ]['date'] ) ) {
 				$value = 0;
@@ -328,6 +348,15 @@ class GreaterMediaContestsMetaboxes {
 				update_post_meta( $post_id, $meta, $value );
 			}
 		}
+	}
+
+	public function update_noindex( $post_id ) {
+		global $post_id;
+
+		$is_secret = get_post_meta( $post_id, 'secret', true );
+		$is_secret = filter_var( $is_secret, FILTER_VALIDATE_BOOLEAN );
+
+		update_post_meta( $post_id, '_yoast_wpseo_meta-robots-noindex', $is_secret );
 	}
 
 }

@@ -1,6 +1,6 @@
 /*! GreaterMedia Shows - v1.0.0
  * http://wordpress.org/plugins
- * Copyright (c) 2015; * Licensed GPLv2+ */
+ * Copyright (c) 2017; * Licensed GPLv2+ */
 /**
  * Handles automatically selecting a user's show in the taxonomy metabox.
  *
@@ -23,7 +23,7 @@ var usersShow = SHOW_JS.usersShow;
 		// If there isn't already a show selected...
 		if ( 0 === $( '#_showschecklist input[type=checkbox]:checked' ).length ) {
 			$.each( SHOW_JS.usersShow, function( index, value ) {
-				$( 'input:checkbox[value=' + value + ']' ).attr( 'checked', true );
+				$( '#_showschecklist input:checkbox[value=' + value + ']' ).attr( 'checked', true );
 			});
 		}
 	}

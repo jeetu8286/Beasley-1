@@ -28,7 +28,7 @@ var usersShow = SHOW_JS.usersShow;
 		// If there isn't already a show selected...
 		if ( 0 === $( '#_showschecklist input[type=checkbox]:checked' ).length ) {
 			$.each( SHOW_JS.usersShow, function( index, value ) {
-				$( 'input:checkbox[value=' + value + ']' ).attr( 'checked', true );
+				$( '#_showschecklist input:checkbox[value=' + value + ']' ).attr( 'checked', true );
 			});
 		}
 	}

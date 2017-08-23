@@ -509,26 +509,42 @@ function gmr_filter_expired_contests( $query ) {
 	if ( ! is_admin() && ( is_search() || is_post_type_archive( GMR_CONTEST_CPT ) ) && ! $did_filter_expired_contests ) {
 		$now           = time();
 		$query_params = array(
-			'relation' => 'OR',
-			/* This is a contest with an valid end timestamp */
+			'relation' => 'AND',
 			array(
-				'key'     => 'contest-end',
-				'type'    => 'NUMERIC',
-				'value'   => $now,
-				'compare' => '>',
+				'relation' => 'OR',
+				/* This is a contest with an valid end timestamp */
+				array(
+					'key'     => 'contest-end',
+					'type'    => 'NUMERIC',
+					'value'   => $now,
+					'compare' => '>',
+				),
+				/* any other post/type which matches the search query */
+				array(
+					'key'     => 'contest-end',
+					'type'    => 'NUMERIC',
+					'value'   => '',
+					'compare' => 'NOT EXISTS',
+				),
+				array(
+					'key'   => 'contest-end',
+					'type'  => 'NUMERIC',
+					'value' => 0,
+				)
 			),
-			/* any other post/type which matches the search query */
 			array(
-				'key'     => 'contest-end',
-				'type'    => 'NUMERIC',
-				'value'   => '',
-				'compare' => 'NOT EXISTS',
-			),
-			array(
-				'key'     => 'contest-end',
-				'type'    => 'NUMERIC',
-				'value'   => 0,
-			),
+				'relation' => 'OR',
+				array(
+					'key'     => 'secret',
+					'compare' => 'NOT EXISTS',
+				),
+				array(
+					'key'     => 'secret',
+					'type'    => 'NUMERIC',
+					'value'   => 1,
+					'compare' => '!=',
+				),
+			)
 		);
 
 		$query->set( 'meta_query', $query_params );
