@@ -57,7 +57,8 @@ body {
 
 
 @media screen and (min-width: 480px)  {.header__main.headroom
-{background-color: transparent;background-image: url(../../KDWN-Top-Nav.jpg); background-position: top center;background-size: auto;}}
+{background-color: transparent;background-image: url(../../images/KDWN-Top-Nav.jpg); background-position: top center;background-size: auto;}
+.header .content {height:145px;}}
 
 .header__nav ul li
 {
