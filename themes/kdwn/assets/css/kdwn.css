@@ -13466,7 +13466,7 @@ body {
     background-image: url(../../images/KDWN-Top-Nav.jpg);
     background-position: top center;
     background-size: auto; }
-  .header .content {
+  .header .container {
     height: 145px; } }
 
 .header__nav ul li {
