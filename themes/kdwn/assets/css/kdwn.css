@@ -13460,14 +13460,14 @@ body {
   background-size: cover;
   background-repeat: no-repeat; }
 
-@media screen and (min-width: 480px) {
+@media screen and (min-width: 468px) {
   .header__main.headroom {
     background-color: transparent;
     background-image: url(../../images/KDWN-Top-Nav.jpg);
     background-position: top center;
     background-size: auto; } }
 
-@media screen and (min-width: 750px) {
+@media screen and (min-width: 768px) {
   .header .container {
     height: 145px; } }
 
