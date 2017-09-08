@@ -13460,7 +13460,7 @@ body {
   background-size: cover;
   background-repeat: no-repeat; }
 
-@media screen and (min-width: 468px) {
+@media screen and (min-width: 768px) {
   .header__main.headroom {
     background-color: transparent;
     background-image: url(../../images/KDWN-Top-Nav.jpg);
