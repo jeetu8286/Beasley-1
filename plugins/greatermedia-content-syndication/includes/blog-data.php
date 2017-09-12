@@ -78,6 +78,9 @@ class BlogData {
 		$syndication_id = filter_input( INPUT_POST, 'syndication_id', FILTER_VALIDATE_INT );
 		$total = $syndication_id > 0 ? self::run( $syndication_id ) : 0;
 
+		// Remove syndication lock when running manually
+		delete_post_meta( $syndication_id, 'subscription_running' );
+
 		if ( ! is_numeric( $total ) ) {
 			self::log( "A non numerical response was received from self::run in " . __FILE__ . ":" . __LINE__ . ". Response was " . var_export( $total, true ) );
 		}
@@ -271,7 +274,7 @@ class BlogData {
 		if ( $start_date == '' ) {
 			$last_queried = get_post_meta( $subscription_id, 'syndication_last_performed', true );
 			if ( $last_queried ) {
-				$args['date_query']['after'] = $last_queried;
+				$args['date_query']['after'] = date( 'Y-m-d H:i:s', $last_queried );
 			} else {
 				$args['orderby'] = 'date';
 				$args['order'] = 'DESC';
