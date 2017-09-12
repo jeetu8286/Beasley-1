@@ -92,11 +92,24 @@ class BlogData {
 		exit;
 	}
 
+	/**
+	 * If available, will set HyperDB to query the master DB, to avoid any issues with lagging replicas
+	 */
+	public static function set_primary_db() {
+		global $wpdb;
+
+		if ( method_exists( $wpdb, 'send_reads_to_masters' ) ) {
+			$wpdb->send_reads_to_masters();
+		}
+
+	}
+
 	public static function run( $syndication_id, $offset = 0 ) {
 		$result = false;
 
 		self::$syndication_id = $syndication_id;
 		self::$log = array();
+		self::set_primary_db();
 
 		try {
 			if ( is_null( $syndication_id ) ) {
