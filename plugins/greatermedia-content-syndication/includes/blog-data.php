@@ -78,6 +78,9 @@ class BlogData {
 		$syndication_id = filter_input( INPUT_POST, 'syndication_id', FILTER_VALIDATE_INT );
 		$total = $syndication_id > 0 ? self::run( $syndication_id ) : 0;
 
+		// Remove syndication lock when running manually
+		delete_post_meta( $syndication_id, 'subscription_running' );
+
 		if ( ! is_numeric( $total ) ) {
 			self::log( "A non numerical response was received from self::run in " . __FILE__ . ":" . __LINE__ . ". Response was " . var_export( $total, true ) );
 		}
@@ -89,11 +92,24 @@ class BlogData {
 		exit;
 	}
 
+	/**
+	 * If available, will set HyperDB to query the master DB, to avoid any issues with lagging replicas
+	 */
+	public static function set_primary_db() {
+		global $wpdb;
+
+		if ( method_exists( $wpdb, 'send_reads_to_masters' ) ) {
+			$wpdb->send_reads_to_masters();
+		}
+
+	}
+
 	public static function run( $syndication_id, $offset = 0 ) {
 		$result = false;
 
 		self::$syndication_id = $syndication_id;
 		self::$log = array();
+		self::set_primary_db();
 
 		try {
 			if ( is_null( $syndication_id ) ) {
@@ -271,7 +287,7 @@ class BlogData {
 		if ( $start_date == '' ) {
 			$last_queried = get_post_meta( $subscription_id, 'syndication_last_performed', true );
 			if ( $last_queried ) {
-				$args['date_query']['after'] = $last_queried;
+				$args['date_query']['after'] = date( 'Y-m-d H:i:s', $last_queried );
 			} else {
 				$args['orderby'] = 'date';
 				$args['order'] = 'DESC';
@@ -309,15 +325,17 @@ class BlogData {
 			self::log_variable( $args, "Query Args for Syndicate Now" );
 		}
 
+		self::log( "Site ID before switching: " . get_current_blog_id() );
+
 		// switch to content site
 		switch_to_blog( self::$content_site_id );
+
+		self::log( "Site ID after switching: " . get_current_blog_id() );
 
 		// get all postst matching filters
 		$wp_custom_query = new WP_Query( $args );
 
-		if ( self::$syndicate_now ) {
-			self::log_variable( $wp_custom_query, "Result of Query during Syndicate Now" );
-		}
+		self::log( "SQL Query: " . $wp_custom_query->request );
 
 		// get all metas
 		foreach ( $wp_custom_query->posts as $single_result ) {
