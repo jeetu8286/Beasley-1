@@ -8513,7 +8513,11 @@ a.podcast__subscribe {
     vertical-align: text-bottom; }
 
 .single-podcast .podcast__content {
-  margin-bottom: 1.75em; }
+  margin-bottom: 34px;
+  overflow: auto; }
+  @media screen and (min-width: 768px) {
+    .single-podcast .podcast__content {
+      margin-bottom: 66px; } }
 
 .single-podcast .podcast__parent--title {
   margin-right: 10px; }
@@ -8526,7 +8530,7 @@ a.podcast__subscribe {
   width: 100%;
   height: auto; }
 
-.episode__buttons {
+entry-episode.php .episode__buttons {
   margin-top: 1.5em; }
 
 .login-restricted-login-btn,

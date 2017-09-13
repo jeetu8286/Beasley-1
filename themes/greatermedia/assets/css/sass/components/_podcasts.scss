@@ -571,7 +571,11 @@ a.podcast__subscribe {
 		}
 	}
 	.podcast__content {
-		margin-bottom: 1.75em;
+		margin-bottom: 34px;
+		overflow: auto;
+		@include bp(medium) {
+			margin-bottom: 66px
+		}
 	}
 
 	.podcast__parent--title {
@@ -594,7 +598,7 @@ a.podcast__subscribe {
 	}
 
 }
-
+entry-episode.php
 .episode__buttons {
 	margin-top: 1.5em;
 }
