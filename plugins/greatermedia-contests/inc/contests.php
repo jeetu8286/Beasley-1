@@ -228,10 +228,29 @@ function gmr_contests_register_post_type() {
 		'rewrite'             => array( 'slug' => 'contests', 'ep_mask' => EP_GMR_CONTEST ),
 		'capability_type'     => array( 'contest', 'contests' ),
 		'map_meta_cap'        => true,
+		'show_in_rest'        => true
 	);
 
 	register_post_type( GMR_CONTEST_CPT, $args );
 	add_post_type_support( GMR_CONTEST_CPT, 'timed-content' );
+	add_filter( 'rest_prepare_' . GMR_CONTEST_CPT, 'gmr_contest_filter_rest_response', 10, 3 );
+}
+
+/**
+ * Add secret key in api response
+ * @param $response
+ * @param $post
+ * @param $request
+ *
+ * @return mixed
+ */
+function gmr_contest_filter_rest_response( $response, $post, $request ) {
+
+	$is_secret                 = get_post_meta( $post->ID, 'secret', true );
+	$is_secret                 = ( '1' === $is_secret ) ? true : false;
+	$response->data['_secret'] = $is_secret;
+
+	return $response;
 }
 
 /**
