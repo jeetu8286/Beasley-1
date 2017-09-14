@@ -1308,3 +1308,19 @@ add_action( 'admin_init', 'greatermedia_wpseo_save_compare_data', 10, 0 );
 function greatermedia_wpseo_save_compare_data() {
 	remove_all_actions( 'wpseo_save_compare_data', 10 );
 }
+
+/**
+ * Ignore all graph.facebook.com calls
+ */
+add_action( 'pre_http_request', 'greatermedia_facebook_graph_http_request', 10, 3 );
+
+function greatermedia_facebook_graph_http_request( $response, $r, $url ) {
+
+	$host = @parse_url( $url, PHP_URL_HOST );
+	if ( 'graph.facebook.com' === $host ) {
+		return true;
+	}
+
+	return $response;
+
+}
