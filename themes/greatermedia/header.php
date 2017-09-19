@@ -39,6 +39,7 @@
 		<?php // drop Google Analytics Here ?>
 		<?php // end analytics ?>
 
+		<script async src="https://i.simpli.fi/dpx.js?cid=19240&action=100&segment=bbgi&m=1&sifi_tuid=61984"></script>
 	</head>
 
 	<body <?php body_class(); ?>>
