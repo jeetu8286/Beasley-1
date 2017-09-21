@@ -228,10 +228,29 @@ function gmr_contests_register_post_type() {
 		'rewrite'             => array( 'slug' => 'contests', 'ep_mask' => EP_GMR_CONTEST ),
 		'capability_type'     => array( 'contest', 'contests' ),
 		'map_meta_cap'        => true,
+		'show_in_rest'        => true
 	);
 
 	register_post_type( GMR_CONTEST_CPT, $args );
 	add_post_type_support( GMR_CONTEST_CPT, 'timed-content' );
+	add_filter( 'rest_prepare_' . GMR_CONTEST_CPT, 'gmr_contest_filter_rest_response', 10, 3 );
+}
+
+/**
+ * Add secret key in api response
+ * @param $response
+ * @param $post
+ * @param $request
+ *
+ * @return mixed
+ */
+function gmr_contest_filter_rest_response( $response, $post, $request ) {
+
+	$is_secret                 = get_post_meta( $post->ID, 'secret', true );
+	$is_secret                 = ( '1' === $is_secret ) ? true : false;
+	$response->data['_secret'] = $is_secret;
+
+	return $response;
 }
 
 /**
@@ -509,26 +528,42 @@ function gmr_filter_expired_contests( $query ) {
 	if ( ! is_admin() && ( is_search() || is_post_type_archive( GMR_CONTEST_CPT ) ) && ! $did_filter_expired_contests ) {
 		$now           = time();
 		$query_params = array(
-			'relation' => 'OR',
-			/* This is a contest with an valid end timestamp */
+			'relation' => 'AND',
 			array(
-				'key'     => 'contest-end',
-				'type'    => 'NUMERIC',
-				'value'   => $now,
-				'compare' => '>',
+				'relation' => 'OR',
+				/* This is a contest with an valid end timestamp */
+				array(
+					'key'     => 'contest-end',
+					'type'    => 'NUMERIC',
+					'value'   => $now,
+					'compare' => '>',
+				),
+				/* any other post/type which matches the search query */
+				array(
+					'key'     => 'contest-end',
+					'type'    => 'NUMERIC',
+					'value'   => '',
+					'compare' => 'NOT EXISTS',
+				),
+				array(
+					'key'   => 'contest-end',
+					'type'  => 'NUMERIC',
+					'value' => 0,
+				)
 			),
-			/* any other post/type which matches the search query */
 			array(
-				'key'     => 'contest-end',
-				'type'    => 'NUMERIC',
-				'value'   => '',
-				'compare' => 'NOT EXISTS',
-			),
-			array(
-				'key'     => 'contest-end',
-				'type'    => 'NUMERIC',
-				'value'   => 0,
-			),
+				'relation' => 'OR',
+				array(
+					'key'     => 'secret',
+					'compare' => 'NOT EXISTS',
+				),
+				array(
+					'key'     => 'secret',
+					'type'    => 'NUMERIC',
+					'value'   => 1,
+					'compare' => '!=',
+				),
+			)
 		);
 
 		$query->set( 'meta_query', $query_params );
