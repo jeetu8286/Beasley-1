@@ -63,7 +63,8 @@ blockquote p {
 	max-width: 100%;
 	@include padding(0);
 	@include margin(0 0 em(16px));
-	background: $primary-border;
+	background: $extra-light-gray;
+	color: $black;
 }
 
 .wp-caption img {

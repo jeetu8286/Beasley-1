@@ -13544,7 +13544,8 @@ img.aligncenter {
 .wp-caption {
   max-width: 100%;
   padding: 0;
-  background: #f0622f; }
+  background: #f1f1f3;
+  color: #000000; }
 
 .wp-caption img {
   width: 100%;
