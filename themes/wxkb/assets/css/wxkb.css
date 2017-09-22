@@ -8511,6 +8511,13 @@ a.podcast__subscribe {
     margin-bottom: 5px;
     vertical-align: text-bottom; }
 
+.single-podcast .podcast__content {
+  margin-bottom: 34px;
+  overflow: auto; }
+  @media screen and (min-width: 768px) {
+    .single-podcast .podcast__content {
+      margin-bottom: 66px; } }
+
 .single-podcast .podcast__parent--title {
   margin-right: 10px; }
 
@@ -8522,7 +8529,7 @@ a.podcast__subscribe {
   width: 100%;
   height: auto; }
 
-.episode__buttons {
+entry-episode.php .episode__buttons {
   margin-top: 1.5em; }
 
 .login-restricted-login-btn,
@@ -13537,7 +13544,8 @@ img.aligncenter {
 .wp-caption {
   max-width: 100%;
   padding: 0;
-  background: #4db85d; }
+  background: #f1f1f3;
+  color: #000000; }
 
 .wp-caption img {
   width: 100%;
@@ -13903,14 +13911,14 @@ article > .triton-song-history {
 .featured__article:hover .featured__article--heading,
 .featured__content--block:hover .featured__content--title,
 a:hover .highlights__community--title {
-  color: #4db85d; }
+  color: #177ed8; }
 
 .show__header {
-  background-color: #4db85d; }
+  background-color: #177ed8; }
 
 @media screen and (min-width: 970px) {
   .main {
-    background-image: url("../../images/wxkb-wallpaper-2017.jpg");
+    background-image: url("../../images/wazz-wallpaper-2017.jpg");
     background-position: top center;
     background-repeat: no-repeat;
     background-color: #000000; } }
