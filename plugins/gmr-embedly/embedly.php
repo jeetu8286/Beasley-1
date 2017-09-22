@@ -365,7 +365,12 @@ class WP_Embedly
             add_filter('oembed_providers', '__return_empty_array');
             // add embedly provider
             $provider_uri = $this->build_uri_with_options();
-            wp_oembed_add_provider('#https?://[^\s]+#i', $provider_uri, true);
+	        //Use default polldaddy embed
+	        wp_oembed_add_provider( '#https?://(.+\.)?polldaddy\.com/.*#i', 'https://polldaddy.com/oembed/', true );
+	        wp_oembed_add_provider( '#https?://poll\.fm/.*#i', 'https://polldaddy.com/oembed/', true );
+
+	        wp_oembed_add_provider( '#https?://[^\s]+#i', $provider_uri, true );
+
         }
     }
 
