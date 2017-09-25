@@ -183,7 +183,7 @@ function greatermedia_scripts_styles() {
 	 */
 	wp_enqueue_script(
 		'simpli-fi-global-retargeting',
-		'https://i.simpli.fi/dpx.js?cid=19240&action=100&segment=bbgi&m=1&sifi_tuid=61984',
+		'https://tag.simpli.fi/sifitag/273421f0-841f-0135-dc80-06659b33d47c',
 		array(),
 		null,
 		false
