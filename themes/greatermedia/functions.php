@@ -178,6 +178,17 @@ function greatermedia_scripts_styles() {
 		),
 	) );
 
+	/**
+	 * Insert the global Simpli.fi retargeting script tag.
+	 */
+	wp_enqueue_script(
+		'simpli-fi-global-retargeting',
+		'https://tag.simpli.fi/sifitag/273421f0-841f-0135-dc80-06659b33d47c',
+		array(),
+		null,
+		false
+	);
+
 	wp_enqueue_style( 'google-fonts', '//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,800italic,400,300,700,800', array(), null );
 	wp_enqueue_style( 'greatermedia', "{$baseurl}/assets/css/greater_media{$postfix}.css", array( 'google-fonts' ), GREATERMEDIA_VERSION );
 
@@ -1324,3 +1335,23 @@ function greatermedia_facebook_graph_http_request( $response, $r, $url ) {
 	return $response;
 
 }
+
+/**
+ * Filter the Simpli-Fi script and make it async
+ *
+ * @param $tag
+ * @param $handle
+ * @param $src
+ *
+ * @return mixed|void
+ */
+function simplifi_global_aysnc_script( $tag, $handle, $src ) {
+
+    if ( 'simpli-fi-global-retargeting' !== $handle ) {
+      return $tag;
+    }
+
+    return str_replace( '<script', '<script async', $tag );
+}
+
+add_filter( 'script_loader_tag', 'simplifi_global_aysnc_script', 10, 3 );
