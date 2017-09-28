@@ -13,6 +13,10 @@
 		{
 			"type": "vcs",
 			"url": "git@github.com:wpengine/phpcompat.git"
+		},
+		{
+			"type": "vcs",
+			"url": "git@github.com:Automattic/facebook-instant-articles-wp.git"
 		}
 	],
 	"require": {
@@ -33,7 +37,8 @@
 		"wpackagist-plugin/query-monitor": "^2.13",
 		"wpackagist-plugin/core-control": "^1.2",
 		"wpackagist-plugin/rewrite-rules-inspector": "^1.2",
-		"wpengine/phpcompat": "dev-master"
+		"wpengine/phpcompat": "dev-master",
+		"Automattic/facebook-instant-articles-wp" : "dev-master"
 	},
 	"extra": {
 		"installer-paths": {
