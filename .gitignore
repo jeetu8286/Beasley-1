@@ -32,6 +32,7 @@ plugins/phpcompat/
 plugins/regenerate-thumbnails/
 plugins/gears/
 plugins/wp-gears/
+plugins/wp-minions/
 plugins/rest-api/
 plugins/gravityforms/
 plugins/json-rest-api/

@@ -8,7 +8,7 @@
 		},
 		{
 			"type": "vcs",
-			"url": "git@github.com:10up/WP-Gears.git"
+			"url": "git@github.com:10up/WP-Minions.git"
 		},
 		{
 			"type": "vcs",
@@ -25,7 +25,7 @@
 		"wpackagist-plugin/video-thumbnails": "^2.12",
 		"wpackagist-plugin/yet-another-related-posts-plugin": "^4.3",
 		"wpackagist-plugin/duplicate-post": "^3.2",
-		"10up/wp-gears": "^2.1"
+		"10up/wp-minions": "^3.0"
 	},
 	"require-dev": {
 		"wpackagist-plugin/debug-bar": "^0.8",

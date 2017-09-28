@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "460dc3ee1783ca89559427158ff8bae7",
+    "content-hash": "fd86409bd97841ede55ea6fc7fe97a34",
     "packages": [
         {
-            "name": "10up/wp-gears",
-            "version": "2.1.0",
+            "name": "10up/wp-minions",
+            "version": "3.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/10up/WP-Gears.git",
-                "reference": "f497bdea36be425fb7de5090678db3c069c7344c"
+                "url": "https://github.com/10up/WP-Minions.git",
+                "reference": "fe37083445db4173ae24ee5dc193095298ff968b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/10up/WP-Gears/zipball/f497bdea36be425fb7de5090678db3c069c7344c",
-                "reference": "f497bdea36be425fb7de5090678db3c069c7344c",
+                "url": "https://api.github.com/repos/10up/WP-Minions/zipball/fe37083445db4173ae24ee5dc193095298ff968b",
+                "reference": "fe37083445db4173ae24ee5dc193095298ff968b",
                 "shasum": ""
             },
             "require": {
@@ -30,7 +30,7 @@
             "type": "wordpress-plugin",
             "autoload": {
                 "psr-4": {
-                    "WpGears\\": "includes/WpGears"
+                    "WpMinions\\": "includes/WpMinions"
                 }
             },
             "license": [
@@ -39,32 +39,38 @@
             "authors": [
                 {
                     "name": "Chris Marslender",
-                    "email": "chrismarslender@gmail.com"
+                    "email": "chrismarslender@gmail.com",
+                    "homepage": "https://chrismarslender.com/",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Darshan Sawardekar",
+                    "role": "Developer"
                 },
                 {
                     "name": "10up",
                     "homepage": "http://10up.com"
                 }
             ],
-            "description": "Integrate Gearman with WordPress",
+            "description": "Job Queue for WordPress",
             "support": {
-                "source": "https://github.com/10up/WP-Gears/tree/2.1.0",
-                "issues": "https://github.com/10up/WP-Gears/issues"
+                "source": "https://github.com/10up/WP-Minions/tree/3.0.0",
+                "issues": "https://github.com/10up/WP-Minions/issues"
             },
-            "time": "2016-05-31T17:33:47+00:00"
+            "time": "2017-07-06T22:15:30+00:00"
         },
         {
             "name": "composer/installers",
-            "version": "v1.3.0",
+            "version": "v1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/installers.git",
-                "reference": "79ad876c7498c0bbfe7eed065b8651c93bfd6045"
+                "reference": "9ce17fb70e9a38dd8acff0636a29f5cf4d575c1b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/installers/zipball/79ad876c7498c0bbfe7eed065b8651c93bfd6045",
-                "reference": "79ad876c7498c0bbfe7eed065b8651c93bfd6045",
+                "url": "https://api.github.com/repos/composer/installers/zipball/9ce17fb70e9a38dd8acff0636a29f5cf4d575c1b",
+                "reference": "9ce17fb70e9a38dd8acff0636a29f5cf4d575c1b",
                 "shasum": ""
             },
             "require": {
@@ -110,6 +116,7 @@
                 "Hurad",
                 "ImageCMS",
                 "Kanboard",
+                "Lan Management System",
                 "MODX Evo",
                 "Mautic",
                 "Maya",
@@ -133,6 +140,7 @@
                 "croogo",
                 "dokuwiki",
                 "drupal",
+                "eZ Platform",
                 "elgg",
                 "expressionengine",
                 "fuelphp",
@@ -149,6 +157,7 @@
                 "mediawiki",
                 "modulework",
                 "moodle",
+                "osclass",
                 "phpbb",
                 "piwik",
                 "ppi",
@@ -165,7 +174,7 @@
                 "zend",
                 "zikula"
             ],
-            "time": "2017-04-24T06:37:16+00:00"
+            "time": "2017-08-09T07:53:48+00:00"
         },
         {
             "name": "wpackagist-plugin/duplicate-post",
@@ -209,15 +218,15 @@
         },
         {
             "name": "wpackagist-plugin/ooyala-video-browser",
-            "version": "2.4.0",
+            "version": "2.5.2",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/ooyala-video-browser/",
-                "reference": "tags/2.4.0"
+                "reference": "tags/2.5.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/ooyala-video-browser.2.4.0.zip",
+                "url": "https://downloads.wordpress.org/plugin/ooyala-video-browser.2.5.2.zip",
                 "reference": null,
                 "shasum": null
             },
@@ -249,15 +258,15 @@
         },
         {
             "name": "wpackagist-plugin/the-events-calendar",
-            "version": "4.5.2.1",
+            "version": "4.6",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/the-events-calendar/",
-                "reference": "tags/4.5.2.1"
+                "reference": "tags/4.6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/the-events-calendar.4.5.2.1.zip",
+                "url": "https://downloads.wordpress.org/plugin/the-events-calendar.4.6.zip",
                 "reference": null,
                 "shasum": null
             },
@@ -380,20 +389,20 @@
                 "typo3"
             ],
             "abandoned": true,
-            "time": "2016-05-12 11:58:38"
+            "time": "2016-05-12T11:58:38+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
-            "version": "2.6.2",
+            "version": "2.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "4edb770cb853def6e60c93abb088ad5ac2010c83"
+                "reference": "d7cf0d894e8aa4c73712ee4a331cc1eaa37cdc7d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/4edb770cb853def6e60c93abb088ad5ac2010c83",
-                "reference": "4edb770cb853def6e60c93abb088ad5ac2010c83",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/d7cf0d894e8aa4c73712ee4a331cc1eaa37cdc7d",
+                "reference": "d7cf0d894e8aa4c73712ee4a331cc1eaa37cdc7d",
                 "shasum": ""
             },
             "require": {
@@ -458,7 +467,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2016-07-13T23:29:13+00:00"
+            "time": "2017-03-01T22:17:45+00:00"
         },
         {
             "name": "wimg/php-compatibility",
@@ -466,23 +475,31 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/wimg/PHPCompatibility.git",
-                "reference": "cc15951d9e6db1aef7982caa31a8516c39443868"
+                "reference": "e3a7ae6920033130f4cd76cf09384481224f206f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wimg/PHPCompatibility/zipball/cc15951d9e6db1aef7982caa31a8516c39443868",
-                "reference": "cc15951d9e6db1aef7982caa31a8516c39443868",
+                "url": "https://api.github.com/repos/wimg/PHPCompatibility/zipball/e3a7ae6920033130f4cd76cf09384481224f206f",
+                "reference": "e3a7ae6920033130f4cd76cf09384481224f206f",
                 "shasum": ""
             },
             "require": {
-                "ext-tokenizer": "*",
-                "php": ">=5.1.2",
-                "squizlabs/php_codesniffer": "^2.0"
+                "php": ">=5.3",
+                "squizlabs/php_codesniffer": "^2.2 || ^3.0.2"
+            },
+            "conflict": {
+                "squizlabs/php_codesniffer": "2.6.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.0 || ^5.0 || ^6.0"
+            },
+            "suggest": {
+                "dealerdirect/phpcodesniffer-composer-installer": "^0.4.1"
             },
             "type": "phpcodesniffer-standard",
             "autoload": {
                 "psr-4": {
-                    "PHPCompatibility\\": ""
+                    "PHPCompatibility\\": "PHPCompatibility/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -495,14 +512,14 @@
                     "role": "lead"
                 }
             ],
-            "description": "This is a set of sniffs for PHP_CodeSniffer that checks for PHP version compatibility.",
+            "description": "A set of sniffs for PHP_CodeSniffer that checks for PHP version compatibility.",
             "homepage": "http://techblog.wimgodden.be/tag/codesniffer/",
             "keywords": [
                 "compatibility",
                 "phpcs",
                 "standards"
             ],
-            "time": "2017-05-24 19:50:55"
+            "time": "2017-08-07T19:44:46+00:00"
         },
         {
             "name": "wpackagist-plugin/core-control",
@@ -554,7 +571,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/debug-bar-extender.zip",
+                "url": "https://downloads.wordpress.org/plugin/debug-bar-extender.zip?timestamp=1314968773",
                 "reference": null,
                 "shasum": null
             },
@@ -566,15 +583,15 @@
         },
         {
             "name": "wpackagist-plugin/query-monitor",
-            "version": "2.13.4",
+            "version": "2.14.0",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/query-monitor/",
-                "reference": "tags/2.13.4"
+                "reference": "tags/2.14.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/query-monitor.2.13.4.zip",
+                "url": "https://downloads.wordpress.org/plugin/query-monitor.2.14.0.zip",
                 "reference": null,
                 "shasum": null
             },
@@ -610,17 +627,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/wpengine/phpcompat.git",
-                "reference": "de9cc725bea3864777dc2ec9808929a1cd31d017"
+                "reference": "e0632b72de92aef8026ad79ea57676e9356ed927"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wpengine/phpcompat/zipball/de9cc725bea3864777dc2ec9808929a1cd31d017",
-                "reference": "de9cc725bea3864777dc2ec9808929a1cd31d017",
+                "url": "https://api.github.com/repos/wpengine/phpcompat/zipball/e0632b72de92aef8026ad79ea57676e9356ed927",
+                "reference": "e0632b72de92aef8026ad79ea57676e9356ed927",
                 "shasum": ""
             },
             "require": {
                 "simplyadmire/composer-plugins": "@dev",
-                "squizlabs/php_codesniffer": "2.6.*",
+                "squizlabs/php_codesniffer": "2.8.*",
                 "wimg/php-compatibility": "dev-master"
             },
             "require-dev": {
@@ -649,10 +666,10 @@
             ],
             "description": "Test PHP Compatibility.",
             "support": {
-                "source": "https://github.com/wpengine/phpcompat/tree/v1.4.0",
+                "source": "https://github.com/wpengine/phpcompat/tree/master",
                 "issues": "https://github.com/wpengine/phpcompat/issues"
             },
-            "time": "2017-02-16 20:32:05"
+            "time": "2017-07-31T22:16:27+00:00"
         }
     ],
     "aliases": [],
