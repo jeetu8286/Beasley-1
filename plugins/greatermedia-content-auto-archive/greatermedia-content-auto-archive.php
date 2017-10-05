@@ -20,7 +20,7 @@ function gmr_content_auto_archive_setup() {
 	require_once __DIR__ . '/includes/class-archive-cron.php';
 
 	$core = new GMR_Archive_Core();
-	$cron = new GMR_Cleanup_Cron();
+	$cron = new GMR_Archive_Cron();
 
 	$core->setup();
 	$cron->setup();

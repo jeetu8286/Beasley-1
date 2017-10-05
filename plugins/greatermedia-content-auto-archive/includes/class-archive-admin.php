@@ -23,9 +23,36 @@ class GMR_Archive_Admin {
 			'render_section'
 		), $page );
 
-		register_setting( $group, 'content_auto_archive_days', 'absint' );
+		register_setting( $group, 'content_auto_archive_days', array( $this, 'sanitize_days' ) );
 	}
 
+	/**
+	 * Sanitize days and schedule cron event
+	 * @param $days
+	 *
+	 * @return int
+	 */
+	function sanitize_days( $days ) {
+		$days      = absint( $days );
+		$timestamp = wp_next_scheduled( GMR_AUTO_ARCHIVE_CRON );
+
+		if ( $days ) {
+			if ( ! $timestamp ) {
+				$timestamp = current_time( 'timestamp', 1 ) + DAY_IN_SECONDS;
+				wp_schedule_event( $timestamp, 'daily', GMR_AUTO_ARCHIVE_CRON );
+			}
+		} else {
+			if ( $timestamp ) {
+				wp_unschedule_event( $timestamp, GMR_AUTO_ARCHIVE_CRON );
+			}
+		}
+
+		return $days;
+	}
+
+	/**
+	 * Render setting section
+	 */
 	function render_section() {
 		$days = get_option( GMR_AUTO_ARCHIVE_OPTION_NAME, 0 );
 		?>
@@ -186,6 +213,7 @@ class GMR_Archive_Admin {
 				'post_status' => GMR_AUTO_ARCHIVE_POST_STATUS
 			)
 		);
+		delete_post_meta( $post_id, '_unarchived' );
 	}
 
 	/**
@@ -204,5 +232,6 @@ class GMR_Archive_Admin {
 				'post_status' => 'draft'
 			)
 		);
+		update_post_meta( $post_id, '_unarchived', 1 );
 	}
 }
