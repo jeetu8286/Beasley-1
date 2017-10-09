@@ -10,6 +10,9 @@
         "type": "multiple",
         "children": [{
           "type": "element",
+          "selector": "video-container"
+        }, {
+          "type": "element",
           "selector": "div.ooyala-video-wrapper"
         }]
       }
