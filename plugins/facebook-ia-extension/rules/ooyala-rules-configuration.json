@@ -1,0 +1,24 @@
+{
+  "rules": [{
+    "class": "IgnoreRule",
+    "selector": "//script[contains(@src,'ooyala')]"
+  }, {
+    "class": "InteractiveRule",
+    "selector": "div.video-container",
+    "properties": {
+      "interactive.iframe": {
+        "type": "multiple",
+        "children": [{
+          "type": "element",
+          "selector": "div.video-container"
+        }, {
+          "type": "element",
+          "selector": "div.video-container + script"
+        }, {
+          "type": "element",
+          "selector": "div.video-container + script + script"
+        }]
+      }
+    }
+  }]
+}
