@@ -4,19 +4,13 @@
     "selector": "//script[contains(@src,'ooyala')]"
   }, {
     "class": "InteractiveRule",
-    "selector": "div.video-container",
+    "selector": "div.ooyala-video-wrapper",
     "properties": {
       "interactive.iframe": {
         "type": "multiple",
         "children": [{
           "type": "element",
-          "selector": "div.video-container"
-        }, {
-          "type": "element",
-          "selector": "div.video-container + script"
-        }, {
-          "type": "element",
-          "selector": "div.video-container + script + script"
+          "selector": "div.ooyala-video-wrapper"
         }]
       }
     }
