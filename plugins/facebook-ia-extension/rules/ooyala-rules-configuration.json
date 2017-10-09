@@ -1,7 +1,7 @@
 {
   "rules": [{
     "class": "IgnoreRule",
-    "selector": "//script[contains(@src,'ooyala')]"
+    "selector": "div.ooyala-video-wrapper"
   }, {
     "class": "InteractiveRule",
     "selector": "div.ooyala-video-wrapper",
