@@ -14,6 +14,7 @@ class Instant_Articles_Ooyala {
 	 */
 	function init() {
 		add_filter( 'instant_articles_transformer_rules_loaded', array( $this, 'transformer_loaded' ) );
+		add_filter( 'do_shortcode_tag', array( $this, 'wrap_shortcode' ) );
 	}
 
 	public static function transformer_loaded( $transformer ) {
@@ -24,5 +25,9 @@ class Instant_Articles_Ooyala {
 		$transformer->loadRules( $configuration );
 
 		return $transformer;
+	}
+
+	public function wrap_shortcode( $output ) {
+		return '<div class="ooyala-video-wrapper">' . $output . '</div>';
 	}
 }
