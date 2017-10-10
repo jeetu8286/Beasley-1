@@ -3,18 +3,15 @@
     "class": "IgnoreRule",
     "selector": "div.ooyala-video-wrapper"
   }, {
+    "class": "IgnoreRule",
+    "selector": "div.ooyala-video-wrapper .video-container"
+  }, {
     "class": "InteractiveRule",
     "selector": "div.ooyala-video-wrapper",
     "properties": {
       "interactive.iframe": {
-        "type": "multiple",
-        "children": [{
-          "type": "element",
-          "selector": "video-container"
-        }, {
-          "type": "element",
-          "selector": "div.ooyala-video-wrapper"
-        }]
+        "type": "children",
+        "selector": "div.ooyala-video-wrapper"
       }
     }
   }]
