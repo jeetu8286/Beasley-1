@@ -23,7 +23,7 @@ class Instant_Articles_Ooyala {
 	 * so normal is_feed condition will not work
 	 */
 	function start() {
-		add_filter( 'ooyala_video_responsive_player_shortcode', array( $this, 'wrap_shortcode' ), 10, 3 );
+		add_filter( 'ooyala_video_responsive_player_shortcode', array( $this, 'ooyola_fbia_markup' ), 10, 3 );
 	}
 
 	/**
