@@ -1,18 +1,3 @@
 {
-  "rules": [{
-    "class": "IgnoreRule",
-    "selector": "div.ooyala-video-wrapper"
-  }, {
-    "class": "IgnoreRule",
-    "selector": "div.ooyala-video-wrapper .video-container"
-  }, {
-    "class": "InteractiveRule",
-    "selector": "div.ooyala-video-wrapper",
-    "properties": {
-      "interactive.iframe": {
-        "type": "children",
-        "selector": "div.ooyala-video-wrapper"
-      }
-    }
-  }]
+  "rules": []
 }

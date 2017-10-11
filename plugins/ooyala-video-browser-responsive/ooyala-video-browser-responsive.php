@@ -106,8 +106,7 @@ function ooyala_responsive_shortcode( $atts ) {
 	ob_start();
 	ooyala_print_footer_scripts();
 	$output .= ob_get_clean();
-
-	return $output;
+	return apply_filters( 'ooyala_video_responsive_player_shortcode', $output, $atts, $shortcode_atts );
 
 }
 

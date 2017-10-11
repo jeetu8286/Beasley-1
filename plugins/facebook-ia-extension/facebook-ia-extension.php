@@ -12,10 +12,10 @@
  * @package         Facebook_Ia_Extension
  */
 
-define( 'GM_FBIA_URL',  trailingslashit( plugin_dir_url( __FILE__ ) ) );
+define( 'GM_FBIA_URL', trailingslashit( plugin_dir_url( __FILE__ ) ) );
 define( 'GM_FBIA_PATH', trailingslashit( dirname( __FILE__ ) ) );
 
 include( GM_FBIA_PATH . 'includes/class-instant-articles-ooyala.php' );
 
 $ooyala = new Instant_Articles_Ooyala();
-$ooyala->init();
+$ooyala->setup();
