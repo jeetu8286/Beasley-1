@@ -66,8 +66,8 @@ class Instant_Articles_Ooyala {
 			$pcode = ! empty( $shortcode_atts['pcode'] ) ? $shortcode_atts['pcode'] : substr( $settings['api_key'], 0, strpos( $settings['api_key'], '.' ) );
 
 			$url    = add_query_arg( array(
-				'ec'    => $attr['code'],
-				'pbid'  => $attr['player_id'],
+				'ec'    => $shortcode_atts['code'],
+				'pbid'  => $shortcode_atts['player_id'],
 				'pcode' => $pcode,
 			), 'https://player.ooyala.com/static/v4/production/skin-plugin/iframe.html' );
 			$output = '<iframe width="480" height="320" src="' . $url . '" frameborder="0" allowfullscreen></iframe>';
