@@ -1,5 +1,5 @@
 <?php
-
+use Facebook\InstantArticles\Elements\Ad;
 /**
  * Support class for Ooyala
  *
@@ -30,8 +30,62 @@ class Instant_Articles_Ooyala {
 	/**
 	 * remove action/filter after facebook content transform
 	 */
-	function end() {
+	function end( $instant_article ) {
+		$this->add_ads( $instant_article->instant_article );
 		remove_filter( 'ooyala_video_responsive_player_shortcode', array( $this, 'ooyola_fbia_markup' ), 10, 3 );
+	}
+
+	public function add_ads( $instant_article ) {
+		$header   = $instant_article->getHeader();
+		$document = new DOMDocument();
+		$fragment = $document->createDocumentFragment();
+		$width    = 300;
+		$height   = 250;
+
+		$ad1 = Ad::create()
+		         ->enableDefaultForReuse()
+		         ->withWidth( $width )
+		         ->withHeight( $height );
+
+		$valid_html = @$fragment->appendXML( $this->get_ad_code( 'dfp_ad_incontent_pos1' ) );
+
+
+		if ( $valid_html ) {
+			$ad1->withHTML(
+				$fragment
+			);
+			$header->addAd( $ad1 );
+		}
+
+		$ad2 = Ad::create()
+		         ->enableDefaultForReuse()
+		         ->withWidth( $width )
+		         ->withHeight( $height );
+		$fragment = $document->createDocumentFragment();
+		$valid_html = @$fragment->appendXML( $this->get_ad_code( 'dfp_ad_incontent_pos2' ) );
+		if ( $valid_html ) {
+			$ad2->withHTML(
+				$fragment
+			);
+			$header->addAd( $ad2 );
+		}
+		$instant_article->enableAutomaticAdPlacement();
+	}
+
+	function get_ad_code( $slot ) {
+		ob_start();
+		greatermedia_dfp_footer();
+		?>
+		<div id="<?php echo esc_attr( $slot ); ?>">
+			<script type="text/javascript">
+				googletag.cmd.push( function () {
+					googletag.display( '<?php echo esc_js( $slot ); ?>' );
+				} );
+			</script>
+		</div>
+		<?php
+
+		return ob_get_clean();
 	}
 
 	public static function transformer_loaded( $transformer ) {
