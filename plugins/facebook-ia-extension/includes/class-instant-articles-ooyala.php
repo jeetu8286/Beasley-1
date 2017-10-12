@@ -15,6 +15,7 @@ class Instant_Articles_Ooyala {
 	function setup() {
 		add_action( 'instant_articles_before_transform_post', array( $this, 'start' ) );
 		add_action( 'instant_articles_after_transform_post', array( $this, 'end' ) );
+		add_filter( 'instant_articles_transformer_rules_loaded', array( 'Instant_Articles_Ooyala', 'transformer_loaded' ) );
 	}
 
 	/**
