@@ -1,5 +1,7 @@
 <?php
+
 use Facebook\InstantArticles\Elements\Ad;
+
 /**
  * Support class for Ooyala
  *
@@ -15,7 +17,10 @@ class Instant_Articles_Ooyala {
 	function setup() {
 		add_action( 'instant_articles_before_transform_post', array( $this, 'start' ) );
 		add_action( 'instant_articles_after_transform_post', array( $this, 'end' ) );
-		add_filter( 'instant_articles_transformer_rules_loaded', array( 'Instant_Articles_Ooyala', 'transformer_loaded' ) );
+		add_filter( 'instant_articles_transformer_rules_loaded', array(
+			'Instant_Articles_Ooyala',
+			'transformer_loaded'
+		) );
 	}
 
 	/**
@@ -36,55 +41,47 @@ class Instant_Articles_Ooyala {
 	}
 
 	public function add_ads( $instant_article ) {
-		$header   = $instant_article->getHeader();
-		$document = new DOMDocument();
-		$fragment = $document->createDocumentFragment();
-		$width    = 300;
-		$height   = 250;
+		$header = $instant_article->getHeader();
 
-		$ad1 = Ad::create()
-		         ->enableDefaultForReuse()
-		         ->withWidth( $width )
-		         ->withHeight( $height );
-
-		$valid_html = @$fragment->appendXML( $this->get_ad_code( 'dfp_ad_incontent_pos1' ) );
-
-
-		if ( $valid_html ) {
-			$ad1->withHTML(
-				$fragment
-			);
+		$ad1 = $this->get_ad_object( 'dfp_ad_incontent_pos1' );
+		if ( $ad1 ) {
 			$header->addAd( $ad1 );
 		}
 
-		$ad2 = Ad::create()
-		         ->enableDefaultForReuse()
-		         ->withWidth( $width )
-		         ->withHeight( $height );
-		$fragment = $document->createDocumentFragment();
-		$valid_html = @$fragment->appendXML( $this->get_ad_code( 'dfp_ad_incontent_pos2' ) );
-		if ( $valid_html ) {
-			$ad2->withHTML(
-				$fragment
-			);
+		$ad2 = $this->get_ad_object( 'dfp_ad_incontent_pos2' );
+		if ( $ad2 ) {
 			$header->addAd( $ad2 );
 		}
+
 		$instant_article->enableAutomaticAdPlacement();
+	}
+
+	function get_ad_object( $slot, $width = 300, $height = 250 ) {
+		$document = new DOMDocument();
+		$fragment = $document->createDocumentFragment();
+		$ad       = Ad::create()
+		              ->enableDefaultForReuse()
+		              ->withWidth( $width )
+		              ->withHeight( $height );
+
+		$valid_html = @$fragment->appendXML( $this->get_ad_code( $slot ) );
+
+
+		if ( $valid_html ) {
+			$ad->withHTML(
+				$fragment
+			);
+
+			return $ad;
+		}
+
+		return false;
 	}
 
 	function get_ad_code( $slot ) {
 		ob_start();
 		greatermedia_dfp_footer();
-		?>
-		<div id="<?php echo esc_attr( $slot ); ?>">
-			<script type="text/javascript">
-				googletag.cmd.push( function () {
-					googletag.display( '<?php echo esc_js( $slot ); ?>' );
-				} );
-			</script>
-		</div>
-		<?php
-
+		greatermedia_display_dfp_slot( $slot, false, array(), true, 'ad__in-content ad__in-content--mobile' );
 		return ob_get_clean();
 	}
 
