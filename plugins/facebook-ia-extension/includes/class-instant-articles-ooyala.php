@@ -57,32 +57,27 @@ class Instant_Articles_Ooyala {
 	}
 
 	function get_ad_object( $slot, $width = 300, $height = 250 ) {
-		$document = new DOMDocument();
-		$fragment = $document->createDocumentFragment();
-		$ad       = Ad::create()
-		              ->enableDefaultForReuse()
-		              ->withWidth( $width )
-		              ->withHeight( $height );
 
-		$valid_html = @$fragment->appendXML( $this->get_ad_code( $slot ) );
-
-
-		if ( $valid_html ) {
-			$ad->withHTML(
-				$fragment
-			);
-
-			return $ad;
+		$ad         = Ad::create()
+		                ->enableDefaultForReuse()
+		                ->withWidth( $width )
+		                ->withHeight( $height );
+		$network_id = trim( get_option( 'dfp_network_code' ) );
+		$slot_code  = get_option( $slot );
+		if ( ! $network_id || ! $slot_code ) {
+			return;
 		}
+		$source = "http://pubads.g.doubleclick.net/gampad/adx?iu=/" . $network_id . "/" . $slot_code;
 
-		return false;
-	}
+		$source = add_query_arg( array(
+			"iu" => '/' . $network_id . '/' . $slot_code,
+			'sz' => $width . 'x' . $height
+		), $source );
+		$ad->withSource(
+			$source
+		);
 
-	function get_ad_code( $slot ) {
-		ob_start();
-		greatermedia_dfp_footer();
-		greatermedia_display_dfp_slot( $slot, false, array(), true, 'ad__in-content ad__in-content--mobile' );
-		return ob_get_clean();
+		return $ad;
 	}
 
 	public static function transformer_loaded( $transformer ) {
