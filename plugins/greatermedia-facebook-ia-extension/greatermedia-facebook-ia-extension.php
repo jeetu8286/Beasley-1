@@ -5,7 +5,7 @@
  * Description:     Extending FBIA for GreaterMedia
  * Author:          10up
  * Author URI:      https://10up.com
- * Text Domain:     facebook-ia-extension
+ * Text Domain:     greatermedia-facebook-ia-extension
  * Domain Path:     /languages
  * Version:         0.1.0
  *
