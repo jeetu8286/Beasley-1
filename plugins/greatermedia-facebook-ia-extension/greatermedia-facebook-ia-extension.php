@@ -15,7 +15,11 @@
 define( 'GM_FBIA_URL', trailingslashit( plugin_dir_url( __FILE__ ) ) );
 define( 'GM_FBIA_PATH', trailingslashit( dirname( __FILE__ ) ) );
 
+include( GM_FBIA_PATH . 'includes/class-instant-articles-ads.php' );
 include( GM_FBIA_PATH . 'includes/class-instant-articles-ooyala.php' );
+
+$ads = new Instant_Articles_Ads();
+$ads->setup();
 
 $ooyala = new Instant_Articles_Ooyala();
 $ooyala->setup();

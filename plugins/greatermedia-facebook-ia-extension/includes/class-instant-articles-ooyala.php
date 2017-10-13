@@ -1,7 +1,5 @@
 <?php
 
-use Facebook\InstantArticles\Elements\Ad;
-
 /**
  * Support class for Ooyala
  *
@@ -17,10 +15,6 @@ class Instant_Articles_Ooyala {
 	function setup() {
 		add_action( 'instant_articles_before_transform_post', array( $this, 'start' ) );
 		add_action( 'instant_articles_after_transform_post', array( $this, 'end' ) );
-		add_filter( 'instant_articles_transformer_rules_loaded', array(
-			'Instant_Articles_Ooyala',
-			'transformer_loaded'
-		) );
 	}
 
 	/**
@@ -36,58 +30,11 @@ class Instant_Articles_Ooyala {
 	 * remove action/filter after facebook content transform
 	 */
 	function end( $instant_article ) {
-		$this->add_ads( $instant_article->instant_article );
 		remove_filter( 'ooyala_video_responsive_player_shortcode', array( $this, 'ooyola_fbia_markup' ), 10, 3 );
 	}
 
 	public function add_ads( $instant_article ) {
 		$header = $instant_article->getHeader();
-
-		$ad1 = $this->get_ad_object( 'dfp_ad_incontent_pos1' );
-		if ( $ad1 ) {
-			$header->addAd( $ad1 );
-		}
-
-		$ad2 = $this->get_ad_object( 'dfp_ad_incontent_pos2' );
-		if ( $ad2 ) {
-			$header->addAd( $ad2 );
-		}
-
-		$instant_article->enableAutomaticAdPlacement();
-	}
-
-	function get_ad_object( $slot, $width = 300, $height = 250 ) {
-
-		$ad         = Ad::create()
-		                ->enableDefaultForReuse()
-		                ->withWidth( $width )
-		                ->withHeight( $height );
-		$network_id = trim( get_option( 'dfp_network_code' ) );
-		$slot_code  = get_option( $slot );
-		if ( ! $network_id || ! $slot_code ) {
-			return;
-		}
-		$source = "http://pubads.g.doubleclick.net/gampad/adx?iu=/" . $network_id . "/" . $slot_code;
-
-		$source = add_query_arg( array(
-			"iu" => '/' . $network_id . '/' . $slot_code,
-			'sz' => $width . 'x' . $height
-		), $source );
-		$ad->withSource(
-			$source
-		);
-
-		return $ad;
-	}
-
-	public static function transformer_loaded( $transformer ) {
-		// Appends more rules to transformer
-		$file_path     = GM_FBIA_URL . 'rules/ooyala-rules-configuration.json';
-		$configuration = file_get_contents( $file_path );
-
-		$transformer->loadRules( $configuration );
-
-		return $transformer;
 	}
 
 	/**
