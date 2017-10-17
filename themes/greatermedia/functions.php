@@ -807,6 +807,7 @@ function add_google_analytics() {
 	global $post;
 	$google_analytics = get_option( 'gmr_google_analytics', '' );
 	$google_uid_dimension = absint( get_option( 'gmr_google_uid_dimension', '' ) );
+	$google_author_dimension = absint( get_option( 'gmr_google_author_dimension', '' ) );
 
 	if ( empty( $google_analytics ) ) {
 		return;
@@ -840,8 +841,8 @@ function add_google_analytics() {
 		<?php if ( ! empty( $category ) ): ?>
 			ga( 'set', 'contentGroup2', <?php echo json_encode( $category ); ?> );
 		<?php endif; ?>
-		<?php if ( ! empty( $author ) ): ?>
-			ga( 'set', 'dimension2', <?php echo json_encode( $author ); ?> );
+		<?php if ( ( ! empty( $author ) ) && ( ! empty( $google_author_dimension ) ) ): ?>
+			ga( 'set', 'dimension<?php echo esc_js( $google_author_dimension ); ?>', <?php echo json_encode( $author ); ?> );
 		<?php endif; ?>
 	<?php endif ?>
 
