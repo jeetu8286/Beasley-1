@@ -815,6 +815,7 @@ function add_google_analytics() {
 		$args     = array( 'orderby' => 'name', 'order' => 'ASC', 'fields' => 'slugs' );
 		$shows    = implode( ', ', wp_get_post_terms( $post->ID, '_shows', $args ) );
 		$category = implode( ', ', wp_get_post_terms($post->ID, 'category', $args ) );
+		$author = get_the_author_meta( 'login', $post->post_author );
 	}
 	?>
 	<script>
@@ -838,6 +839,9 @@ function add_google_analytics() {
 		<?php endif; ?>
 		<?php if ( ! empty( $category ) ): ?>
 			ga( 'set', 'contentGroup2', <?php echo json_encode( $category ); ?> );
+		<?php endif; ?>
+		<?php if ( ! empty( $author ) ): ?>
+			ga( 'set', 'dimension2', <?php echo json_encode( $author ); ?> );
 		<?php endif; ?>
 	<?php endif ?>
 
