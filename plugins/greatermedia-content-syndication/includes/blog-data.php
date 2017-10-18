@@ -563,6 +563,14 @@ class BlogData {
 				}
 			}
 		}
+		/**
+		 * Fires once a post has been saved.
+		 *
+		 * @param int $post_ID Post ID.
+		 * @param WP_Post $post Post object.
+		 * @param bool $update Whether this is an existing post being updated or not.
+		 */
+		do_action( 'save_post', $post_id, $post, $updated );
 
 		clean_post_cache( $post_id );
 
