@@ -9,7 +9,7 @@ module.exports = function( grunt ) {
 
 		addtextdomain: {
 			options: {
-				textdomain: 'facebook-ia-extension',
+				textdomain: 'greatermedia-facebook-ia-extension',
 			},
 			update_all_domains: {
 				options: {
@@ -32,8 +32,8 @@ module.exports = function( grunt ) {
 				options: {
 					domainPath: '/languages',
 					exclude: [ '\.git/*', 'bin/*', 'node_modules/*', 'tests/*' ],
-					mainFile: 'facebook-ia-extension.php',
-					potFilename: 'facebook-ia-extension.pot',
+					mainFile: 'greatermedia-facebook-ia-extension.php',
+					potFilename: 'greatermedia-facebook-ia-extension.pot',
 					potHeaders: {
 						poedit: true,
 						'x-poedit-keywordslist': true

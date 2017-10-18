@@ -1,5 +1,6 @@
 {
-  "rules": [
+  "rules":
+  [
     {
       "class": "InteractiveRule",
       "selector": "blockquote.embedly-card",
@@ -18,6 +19,12 @@
           ]
         }
       }
+    }, {
+      "class": "PassThroughRule",
+      "selector": "blockquote h4"
+    }, {
+      "class": "PassThroughRule",
+      "selector" : "hr"
     }
   ]
 }
