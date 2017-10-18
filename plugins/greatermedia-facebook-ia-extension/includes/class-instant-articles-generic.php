@@ -16,9 +16,12 @@ class Instant_Articles_Generic {
 		add_filter( 'instant_articles_transformer_rules_loaded', array( $this, 'transformer_loaded' ) );
 		add_action( 'greatermedia-post-update', array( $this, 'invalidate_post_transformation_info_cache' ), 10, 1 );
 
+		add_action( 'fp_created_post', array( $this, 'invalidate_post_transformation_info_cache' ), 20, 1 );
+		add_action( 'fp_updated_post', array( $this, 'invalidate_post_transformation_info_cache' ), 20, 1 );
+
 	}
 
-	public static function _loaded( $transformer ) {
+	public static function transformer_loaded( $transformer ) {
 		// Appends more rules to transformer
 		$file_path     = GM_FBIA_URL . 'rules/generic-rules-configuration.json';
 		$configuration = file_get_contents( $file_path );
@@ -33,6 +36,7 @@ class Instant_Articles_Generic {
 		// a post is in good state to be converted to an Instant Article or not
 		delete_post_meta( $post_id, '_has_warnings_after_transformation' );
 		delete_post_meta( $post_id, '_is_empty_after_transformation' );
+		delete_transient( 'instantarticles_mod_' . $post_id );
 	}
 
 }
