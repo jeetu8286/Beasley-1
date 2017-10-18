@@ -563,6 +563,9 @@ class BlogData {
 				}
 			}
 		}
+
+		clean_post_cache( $post_id );
+
 		/**
 		 * Fires once a post has been saved.
 		 *
@@ -570,9 +573,7 @@ class BlogData {
 		 * @param WP_Post $post Post object.
 		 * @param bool $update Whether this is an existing post being updated or not.
 		 */
-		do_action( 'save_post', $post_id, $post, $updated );
-
-		clean_post_cache( $post_id );
+		do_action( 'greatermedia-post-update', $post_id, $post, $updated );
 
 		return $post_id;
 	}
