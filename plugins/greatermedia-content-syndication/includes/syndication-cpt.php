@@ -8,6 +8,12 @@ class SyndicationCPT {
 
 	private $post_type = 'subscription';
 
+	/**
+	 * Syndication filter nonce
+	 * @var string
+	 */
+	private static $filter_nonce = 'filter-syndication-nonce';
+
 	public static $supported_subscriptions = array( 'post', 'content-kit', 'contest', 'survey', 'gmr_gallery' );
 
 	/**
@@ -29,6 +35,7 @@ class SyndicationCPT {
 		add_action( 'admin_head-post.php', array( $this, 'hide_publishing_actions' ) );
 		add_action( 'admin_head-post-new.php', array( $this, 'hide_publishing_actions' ) );
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_box' ) );
+		add_action( 'edit_form_after_title', array( $this, 'render_subscription_source' ), 9, 1 );
 		add_action( 'edit_form_after_title', array( $this, 'render_subscription_type' ) );
 		add_action( 'edit_form_after_title', array( $this, 'render_filter_metabox' ) );
 		//add_action( 'edit_form_after_title', array( $this, 'render_defaults_metabox' ) );
@@ -43,6 +50,9 @@ class SyndicationCPT {
 		add_filter( 'is_protected_meta', array( $this, 'hide_meta_keys' ), 10, 2);
 		add_filter( 'manage_edit-subscription_columns', array( $this, 'subscription_columns_filter' ),10, 1 );
 		add_filter( 'post_updated_messages', array( $this, 'custom_messages_for_subscription' ) );
+
+		add_action( 'wp_ajax_syndication_taxonomy_filters', array( $this, 'taxonomy_filters_callback' ) );
+
 	}
 
 	/**
@@ -166,8 +176,9 @@ class SyndicationCPT {
 			wp_enqueue_script( 'syndication_js', GMR_SYNDICATION_URL . "assets/js/syndication{$postfix}.js", array( 'jquery' , 'select2' ), GMR_SYNDICATION_VERSION, true );
 
 			wp_localize_script( 'syndication_js', 'syndication_ajax', array(
-				'ajaxurl'           => admin_url( 'admin-ajax.php' ),
-				'syndication_nonce' => wp_create_nonce( 'perform-syndication-nonce' ),
+				'ajaxurl'                  => admin_url( 'admin-ajax.php' ),
+				'syndication_nonce'        => wp_create_nonce( 'perform-syndication-nonce' ),
+				'syndication_filter_nonce' => wp_create_nonce( self::$filter_nonce ),
 			) );
 
 			wp_enqueue_style( 'syndication_css', GMR_SYNDICATION_URL . "assets/css/syndication{$postfix}.css", array(), GMR_SYNDICATION_VERSION );
@@ -438,6 +449,14 @@ class SyndicationCPT {
 			update_post_meta( $post_id, 'subscription_post_status', $sanitized );
 		}
 
+		// save subscription source
+		if ( isset( $_POST['subscription_source'] ) ) {
+			$sanitized = absint( $_POST['subscription_source'] );
+
+			// Update the meta field.
+			update_post_meta( $post_id, 'subscription_source', $sanitized );
+		}
+
 		// get filter metas
 		foreach ( BlogData::$taxonomies as $taxonomy => $type ) {
 			$terms = '';
@@ -464,6 +483,65 @@ class SyndicationCPT {
 		}
 	}
 
+	/**
+	 * Render subscription source dropdown
+	 * @param $post \WP_Post object
+	 */
+	public function render_subscription_source( $post ) {
+
+		if ( $post->post_type != $this->post_type ) {
+			return;
+		}
+
+		$subscription_source = absint( get_post_meta( $post->ID, 'subscription_source', true ) );
+
+		if ( $subscription_source > 0 ) {
+			BlogData::set_content_site_id( $subscription_source );
+		}
+
+		$sites = get_sites();
+
+		?>
+
+		<div class="subscription_source">
+			<label for="subscription_source">Choose subscription source</label>
+			<select name="subscription_source" id="subscription_source" class="subscription_source_select2"
+			        style="width:300px;">
+				<option value="">Content Factory</option>
+				<?php foreach ( $sites as $site ) : ?>
+					<option <?php selected( $site->blog_id, $subscription_source ); ?>
+						value="<?php esc_attr( $site->blog_id ); ?>">
+						<?php echo esc_html( get_blog_details( $site->blog_id )->blogname ); ?>
+					</option>
+				<?php endforeach; ?>
+
+			</select>
+			<span class="description">Choose subscription Source site from where posts will be fetched</span>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Return taxonomy filter markup
+	 */
+	public function taxonomy_filters_callback() {
+		$nonce = $_REQUEST['security'];
+		if ( ! wp_verify_nonce( $nonce, self::$filter_nonce ) ) {
+			wp_send_json_error();
+		}
+
+		$site_id = filter_input( INPUT_POST, 'site_id', FILTER_VALIDATE_INT );
+		$post_id = filter_input( INPUT_POST, 'post_id', FILTER_VALIDATE_INT );
+
+		BlogData::set_content_site_id( $site_id );
+		$post = get_post( $post_id );
+		ob_start();
+		$this->render_filter_metabox( $post );
+		$content = ob_get_clean();
+		wp_send_json_success( array(
+			'content' => $content
+		) );
+	}
 
 	public function render_subscription_type( $post ) {
 

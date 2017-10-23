@@ -9,13 +9,16 @@
 #filter_metaboxes span.description {
   margin-left: 1%; }
 
-.subscription_type {
+#filter_metaboxes > img.subscription_loader {
+  padding: 40px; }
+
+.subscription_type, .subscription_source {
   margin-top: 2em; }
-  .subscription_type label {
+  .subscription_type label, .subscription_source label {
     float: left;
     width: 12em;
     margin-right: 1.5em; }
-  .subscription_type span.description {
+  .subscription_type span.description, .subscription_source span.description {
     margin-left: 1%; }
 
 .subscription_post_status label {
