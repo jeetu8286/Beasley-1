@@ -15,6 +15,8 @@ class GMR_Archive_Admin {
 		add_action( 'post_row_actions', array( $this, 'post_row_actions' ), 10, 2 );
 		add_action( 'post_action_archive_post', array( $this, 'archive_post' ) );
 		add_action( 'post_action_unarchive_post', array( $this, 'unarchive_post' ) );
+		add_action( 'post_submitbox_misc_actions', array( $this, 'post_submitbox_misc_actions' ) );
+		add_action( 'save_post', array( $this, 'save_post' ) );
 	}
 
 	function init_setting( $group, $page ) {
@@ -28,6 +30,7 @@ class GMR_Archive_Admin {
 
 	/**
 	 * Sanitize days and schedule cron event
+	 *
 	 * @param $days
 	 *
 	 * @return int
@@ -232,6 +235,54 @@ class GMR_Archive_Admin {
 				'post_status' => 'draft'
 			)
 		);
-		update_post_meta( $post_id, '_unarchived', 1 );
+		update_post_meta( $post_id, '_exclude_auto_archive', 1 );
+	}
+
+	/**
+	 * Added Do not auto archive metabox
+	 */
+	function post_submitbox_misc_actions() {
+		$post_id = get_the_ID();
+
+		if ( get_post_type( $post_id ) != 'post' ) {
+			return;
+		}
+
+		$value = get_post_meta( $post_id, '_exclude_auto_archive', true );
+		wp_nonce_field( 'do_not_archive_' . $post_id, 'auto_archive_nonce' );
+		?>
+		<div class="misc-pub-section misc-pub-section-last">
+			<label><input type="checkbox" value="1" <?php checked( $value, true, true ); ?>
+						  name="_exclude_auto_archive"/><strong><?php esc_html_e( 'Do not Auto Archive', 'greatermedia' ); ?></strong>
+			</label>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Add / Delete meta omn save post
+	 *
+	 * @param $post_id
+	 */
+	function save_post( $post_id ) {
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+			return;
+		}
+
+		if (
+			! isset( $_POST['auto_archive_nonce'] ) ||
+			! wp_verify_nonce( $_POST['auto_archive_nonce'], 'do_not_archive_' . $post_id )
+		) {
+			return;
+		}
+
+		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+			return;
+		}
+		if ( isset( $_POST['_exclude_auto_archive'] ) ) {
+			update_post_meta( $post_id, '_exclude_auto_archive', absint( $_POST['_exclude_auto_archive'] ) );
+		} else {
+			delete_post_meta( $post_id, '_exclude_auto_archive' );
+		}
 	}
 }

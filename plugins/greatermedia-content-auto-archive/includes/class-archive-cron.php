@@ -54,6 +54,12 @@ class GMR_Archive_Cron {
 					'before' => $args['age'] . ' days ago',
 				),
 			),
+			'meta_query'          => array(
+				array(
+					'key'     => '_exclude_auto_archive',
+					'compare' => 'NOT EXISTS',
+				),
+			),
 		);
 
 		do {
@@ -64,7 +70,7 @@ class GMR_Archive_Cron {
 				$post_id = $query->next_post();
 				wp_update_post( array( 'ID' => $post_id, 'post_status' => GMR_AUTO_ARCHIVE_POST_STATUS ) );
 			}
-			$query_args['paged']++;
+			$query_args['paged'] ++;
 
 		} while ( $query->post_count > 0 );
 	}
