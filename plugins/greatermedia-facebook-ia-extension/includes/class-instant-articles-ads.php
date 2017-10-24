@@ -15,37 +15,23 @@ class Instant_Articles_Ads {
 	 *
 	 */
 	function setup() {
-		add_action( 'instant_articles_before_transform_post', array( $this, 'start' ) );
 		add_action( 'instant_articles_after_transform_post', array( $this, 'end' ) );
-	}
-
-	function start() {
-		add_filter( 'the_content', array( $this, 'the_content' ) );
-	}
-
-	function the_content( $content ) {
-
-		$ad1 = $this->get_ad_object( 'dfp_ad_leaderboard_pos1', 320, 50 );
-		if ( $ad1 ) {
-			$adNode = $ad1->toDOMElement();
-			if ( $adNode ) {
-				$content = $adNode->ownerDocument->saveHTML( $adNode ) . $content;
-			}
-		}
-
-		return $content;
 	}
 
 	/**
 	 * Add Ads
 	 */
 	function end( $instant_article ) {
-		remove_filter( 'the_content', array( $this, 'the_content' ) );
 		$this->add_ads( $instant_article->instant_article );
 	}
 
 	public function add_ads( $instant_article ) {
 		$header = $instant_article->getHeader();
+		$ad     = $this->get_ad_object( 'dfp_ad_leaderboard_pos1', 320, 50 );
+
+		if ( $ad ) {
+			$header->addAd( $ad );
+		}
 
 		$ad1 = $this->get_ad_object( 'dfp_ad_incontent_pos1' );
 		if ( $ad1 ) {
