@@ -76,35 +76,20 @@ class SyndicationCPT {
 			'menu_name'				=> __( 'Collections', 'greatermedia' ),
 		);
 
-		if( BlogData::$content_site_id != get_current_blog_id() ) {
-			$args = array(
-				'labels'            => $labels,
-				'public'            => false,
-				'show_in_nav_menus' => false,
-				'show_admin_column' => false,
-				'hierarchical'      => false,
-				'show_tagcloud'     => false,
-				'show_ui'           => false,
-				'query_var'         => true,
-				'rewrite'           => true,
-				'query_var'         => true,
-				'capabilities'      => array(),
-			);
-		} else {
-			$args = array(
-				'labels'            => $labels,
-				'public'            => true,
-				'show_in_nav_menus' => true,
-				'show_admin_column' => false,
-				'hierarchical'      => false,
-				'show_tagcloud'     => true,
-				'show_ui'           => true,
-				'query_var'         => true,
-				'rewrite'           => true,
-				'query_var'         => true,
-				'capabilities'      => array(),
-			);
-		}
+
+		$args = array(
+			'labels'            => $labels,
+			'public'            => true,
+			'show_in_nav_menus' => true,
+			'show_admin_column' => false,
+			'hierarchical'      => false,
+			'show_tagcloud'     => true,
+			'show_ui'           => true,
+			'query_var'         => true,
+			'rewrite'           => true,
+			'query_var'         => true,
+			'capabilities'      => array(),
+		);
 
 		register_taxonomy( 'collection', array( 'post', 'announcement', 'content-kit' ), $args );
 	}
