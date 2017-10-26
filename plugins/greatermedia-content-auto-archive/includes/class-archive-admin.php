@@ -251,10 +251,12 @@ class GMR_Archive_Admin {
 		$value = get_post_meta( $post_id, '_exclude_auto_archive', true );
 		wp_nonce_field( 'do_not_archive_' . $post_id, 'auto_archive_nonce' );
 		?>
-		<div class="misc-pub-section misc-pub-section-last">
-			<label><input type="checkbox" value="1" <?php checked( $value, true, true ); ?>
-						  name="_exclude_auto_archive"/><strong><?php esc_html_e( 'Do not Auto Archive', 'greatermedia' ); ?></strong>
-			</label>
+		<div id="content-auto-archive-meta-fields">
+			<div class="misc-pub-section">
+				<input id="_exclude_auto_archive" type="checkbox" value="1" <?php checked( $value, true, true ); ?>
+					   name="_exclude_auto_archive"/> <label
+						for="_exclude_auto_archive"><?php esc_html_e( 'Do Not Auto Archive', 'greatermedia' ); ?></label>
+			</div>
 		</div>
 		<?php
 	}
