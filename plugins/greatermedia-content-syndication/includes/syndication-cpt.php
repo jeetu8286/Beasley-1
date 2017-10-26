@@ -510,7 +510,7 @@ class SyndicationCPT {
 				<option value="">Content Factory</option>
 				<?php foreach ( $sites as $site ) : ?>
 					<option <?php selected( $site->blog_id, $subscription_source ); ?>
-						value="<?php esc_attr( $site->blog_id ); ?>">
+						value="<?php echo esc_attr( $site->blog_id ); ?>">
 						<?php echo esc_html( get_blog_details( $site->blog_id )->blogname ); ?>
 					</option>
 				<?php endforeach; ?>
