@@ -13907,10 +13907,11 @@ article > .triton-song-history {
  */
 .main {
   background-attachment: fixed;
-  background-color: #ffffff; }
+  background-color: #ffffff;
+  background-position: top center; }
   @media screen and (min-width: 970px) {
     .main {
-      background: url(../../images/christmas-2017-skin-final.jpg); } }
+      background-image: url(../../images/christmas-2017-skin-final.jpg); } }
 
 .home__featured .featured__article--content, .home__featured .featured__content--block {
   background-color: #002a6e; }
