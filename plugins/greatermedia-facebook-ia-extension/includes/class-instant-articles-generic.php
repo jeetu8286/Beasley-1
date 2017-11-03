@@ -19,6 +19,8 @@ class Instant_Articles_Generic {
 		add_action( 'fp_created_post', array( $this, 'invalidate_post_transformation_info_cache' ), 20, 1 );
 		add_action( 'fp_updated_post', array( $this, 'invalidate_post_transformation_info_cache' ), 20, 1 );
 
+		add_action( 'instant_articles_before_transform_post', array( $this, 'start' ) );
+		add_action( 'instant_articles_after_transform_post', array( $this, 'end' ) );
 	}
 
 	public static function transformer_loaded( $transformer ) {
@@ -39,4 +41,19 @@ class Instant_Articles_Generic {
 		delete_transient( 'instantarticles_mod_' . $post_id );
 	}
 
+	function start() {
+		add_filter( 'the_content', array( $this, 'the_content' ), 10, 1 );
+	}
+
+	function end() {
+		remove_filter( 'the_content', array( $this, 'the_content' ), 10, 1 );
+	}
+
+	function the_content( $content ) {
+		$listen_now = sprintf( '<iframe class="no-margin">
+    							<a href="%1$s" rel="noopener"><img  src="%2$s" /></a>
+    						</iframe>', esc_url( home_url() . '#listen-live' ), esc_url( GM_FBIA_URL . 'images/listen-live-btn.png' ) );
+
+		return $content . $listen_now;
+	}
 }
