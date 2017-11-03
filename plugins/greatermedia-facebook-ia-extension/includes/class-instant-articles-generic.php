@@ -52,7 +52,7 @@ class Instant_Articles_Generic {
 	function the_content( $content ) {
 		// width have %% to skip facebook-instant-article replacement of %
 		$listen_now = sprintf( '<iframe class="no-margin">
-    							<a href="%1$s" rel="noopener"><img  id="listenNow" src="%2$s" width="100%%" /></a>
+    							<a href="%1$s" rel="noopener"><img  id="listenNow" src="%2$s" /></a>
     							<script>
     							var listenNowImage = document.getElementById("listenNow");
 								if(listenNowImage && listenNowImage.style) {
