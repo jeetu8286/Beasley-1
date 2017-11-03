@@ -50,8 +50,9 @@ class Instant_Articles_Generic {
 	}
 
 	function the_content( $content ) {
+		// width have %% to skip facebook-instant-article replacement of %
 		$listen_now = sprintf( '<iframe class="no-margin">
-    							<a href="%1$s" rel="noopener"><img  src="%2$s" /></a>
+    							<a href="%1$s" rel="noopener"><img  id="listenNow" src="%2$s" width="100%%" /></a>
     						</iframe>', esc_url( home_url() . '#listen-live' ), esc_url( GM_FBIA_URL . 'images/listen-live-btn.png' ) );
 
 		return $content . $listen_now;
