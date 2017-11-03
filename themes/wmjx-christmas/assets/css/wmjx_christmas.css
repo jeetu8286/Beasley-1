@@ -14024,10 +14024,10 @@ article > .triton-song-history {
 .header__main.headroom {
   background-image: url(../../images/header-bg-christmas.jpg);
   background-position: top center;
-  /*@include bp(medium) {
-		background-image: url(../../images/magic-Header.jpg);
-		background-size: auto;
-	}*/ }
+  background-size: cover; }
+  @media screen and (min-width: 768px) {
+    .header__main.headroom {
+      background-size: auto; } }
 
 .mobile-nav__toggle--span, .mobile-nav__toggle--span::after, .mobile-nav__toggle--span::before {
   background-color: #002a6e; }

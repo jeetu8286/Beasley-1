@@ -121,11 +121,11 @@
 .header__main.headroom {
 	background-image: url(../../images/header-bg-christmas.jpg);
 	background-position: top center;
+	background-size: cover;
 
-	/*@include bp(medium) {
-		background-image: url(../../images/magic-Header.jpg);
+	@include bp(medium) {
 		background-size: auto;
-	}*/
+	}
 }
 .mobile-nav__toggle--span, .mobile-nav__toggle--span::after, .mobile-nav__toggle--span::before {
     background-color: #002a6e;
