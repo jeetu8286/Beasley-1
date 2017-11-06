@@ -2104,10 +2104,4 @@
 		addEventHandler(podcastPlayBtn, 'click', setInlineAudioUX);
 		addEventHandler(podcastPauseBtn, 'click', pauseCustomInlineAudio);
 	});
-
-	$( window ).load( function () {
-		if ( window.location.hash === '#listen-live' ){
-			playBtn.click();
-		}
-	} );
 })(jQuery, window, document);
