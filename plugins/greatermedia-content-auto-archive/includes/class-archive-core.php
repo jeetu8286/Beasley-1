@@ -14,8 +14,10 @@ class GMR_Archive_Core {
 	function register_post_status() {
 		$args = array(
 			'label'                     => __( 'Archived', 'greatermedia' ),
+			'publicly_queryable'        => false,
 			'public'                    => false,
-			'private'                   => true,
+			'internal'                  => true,
+			'private'                   => false,
 			'exclude_from_search'       => true,
 			'show_in_admin_all_list'    => true,
 			'show_in_admin_status_list' => true,
