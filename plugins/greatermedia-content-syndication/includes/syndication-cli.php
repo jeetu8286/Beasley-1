@@ -72,6 +72,13 @@ class GMR_Syndication_CLI extends WP_CLI_Command {
 				$terms = explode( ',', $terms );
 				$defaults[$label] = $terms;
 			}
+			$subscription_source = absint( get_post_meta( $single_subscription->ID, 'subscription_source', true ) );
+			if ( $subscription_source > 0 ) {
+				BlogData::set_content_site_id( $subscription_source );
+			} else {
+				//reset it to default in case of empty / Legacy subscriptions
+				BlogData::get_content_site_id();
+			}
 
 			$total = count( $result );
 			$notify = new \cli\progress\Bar( "Importing $total articles", $total );

@@ -10,9 +10,12 @@
 	span.description {
 		margin-left: 1%;
 	}
+	>img.subscription_loader{
+		padding: 40px;
+	}
 }
 
-.subscription_type {
+.subscription_type, .subscription_source {
 	margin-top: 2em;
 	label {
 		float: left;
