@@ -1,7 +1,7 @@
 <?php
-
 /**
- * Adjusted remote IP address. Uses IP address provided by CloudFlare if available.
+ * Plugin Name: Beasley RSA Cloudflare
+ * Description: Filters the IP address passed to Restricted Site Access so use IP address provided by CloudFlare if available.
  *
  * @param string $remote_ip The initial IP address.
  * @return string CloudFlare IP address if available, otherwise initial IP address.
