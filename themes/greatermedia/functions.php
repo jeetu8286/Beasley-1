@@ -803,11 +803,13 @@ function greatermedia_deactivate_tribe_warning_on_dashboard( $option_value ) {
 }
 add_filter( 'get_user_option_dashboard_quick_press_last_post_id', 'greatermedia_deactivate_tribe_warning_on_dashboard' );
 
-function add_google_analytics() {
+function greatermedia_add_google_analytics() {
 	global $post;
 	$google_analytics = get_option( 'gmr_google_analytics', '' );
 	$google_uid_dimension = absint( get_option( 'gmr_google_uid_dimension', '' ) );
 	$google_author_dimension = absint( get_option( 'gmr_google_author_dimension', '' ) );
+
+	$ignore_jquery = apply_filters( 'greatermedia_ignore_jquery_events_analytics', false );
 
 	if ( empty( $google_analytics ) ) {
 		return;
@@ -829,10 +831,12 @@ function add_google_analytics() {
 
 	var googleUidDimension = '<?php echo esc_js( $google_uid_dimension ); ?>';
 
-	jQuery(document).on('pjax:end', function() {
-		ga('set', 'location', window.location.href);
-		ga('send', 'pageview');
-	});
+	<?php if(! $ignore_jquery) : ?>
+	jQuery( document ).on( 'pjax:end', function () {
+		ga( 'set', 'location', window.location.href );
+		ga( 'send', 'pageview' );
+	} );
+	<?php endif; ?>
 	ga('require', 'displayfeatures');
 	<?php if ( is_singular() ) : ?>
 		<?php if ( ! empty( $shows ) ) : ?>
@@ -848,22 +852,37 @@ function add_google_analytics() {
 
 	ga('send', 'pageview');
 
-	jQuery(document).ready(function() {
-		var $body = jQuery('body');
+	<?php if(! $ignore_jquery) : ?>
 
-		$body.on('inlineAudioPlaying.gmr', function() {
-			ga('send', 'event', 'audio', 'Inline audio playing');
-		});
+	jQuery( document ).ready( function () {
+		var $body = jQuery( 'body' );
 
-		$body.on('liveStreamPlaying.gmr', function () {
-			ga('send', 'event', 'audio', 'Live stream playing');
-		});
-	});
+		$body.on( 'inlineAudioPlaying.gmr', function () {
+			ga( 'send', 'event', 'audio', 'Inline audio playing' );
+		} );
 
+		$body.on( 'liveStreamPlaying.gmr', function () {
+			ga( 'send', 'event', 'audio', 'Live stream playing' );
+		} );
+	} );
+	<?php endif; ?>
 	</script>
 	<?php
 }
-add_action( 'wp_head' , 'add_google_analytics' );
+
+add_action( 'wp_head', 'greatermedia_add_google_analytics' );
+add_filter( 'greater_media_analytics_makrup', 'gretermedia_get_google_analytics' );
+
+function gretermedia_get_google_analytics( $content ) {
+	add_filter( 'greatermedia_ignore_jquery_events_analytics', '__return_true' );
+	ob_start();
+	greatermedia_add_google_analytics( true );
+	$content = ob_get_clean();
+	remove_filter( 'greatermedia_ignore_jquery_events_analytics', '__return_true' );
+
+	return $content;
+
+}
 
 /**
  * Adds Embedly global script to each page to ensure no broken embeds.
