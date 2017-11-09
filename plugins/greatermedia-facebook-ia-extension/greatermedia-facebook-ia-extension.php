@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name:     GreaterMedia FBIA Extension
+ * Plugin Name:     GreaterMedia Facebook Instant Article Extension
  * Plugin URI:      https://10up.com
  * Description:     Extending FBIA for GreaterMedia
  * Author:          10up
@@ -16,12 +16,16 @@ define( 'GM_FBIA_URL', trailingslashit( plugin_dir_url( __FILE__ ) ) );
 define( 'GM_FBIA_PATH', trailingslashit( dirname( __FILE__ ) ) );
 
 include( GM_FBIA_PATH . 'includes/class-instant-articles-ads.php' );
+include( GM_FBIA_PATH . 'includes/class-instant-articles-analytics.php' );
 include( GM_FBIA_PATH . 'includes/class-instant-articles-generic.php' );
 include( GM_FBIA_PATH . 'includes/class-instant-articles-related.php' );
 include( GM_FBIA_PATH . 'includes/class-instant-articles-ooyala.php' );
 
 $ads = new Instant_Articles_Ads();
 $ads->setup();
+
+$analytics = new Instant_Articles_Analytics();
+$analytics->setup();
 
 $generic = new Instant_Articles_Generic();
 $generic->setup();
