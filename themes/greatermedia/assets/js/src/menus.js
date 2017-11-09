@@ -140,7 +140,9 @@
 	/**
 	 * Init Functions
 	 */
-	addEventHandler(mobileNavButton, 'click', toggleNavButton);
+	if ( mobileNavButton ){
+		addEventHandler( mobileNavButton, 'click', toggleNavButton );
+	}
 	init_menu_overlay();
 	addHoverMobile();
 	addMenuHover();

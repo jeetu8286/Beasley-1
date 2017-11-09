@@ -17,7 +17,7 @@
  * Add this constant to wp-config and set value to "dev" to trigger time() as the cache buster on css/js that use this,
  * instead of the version - useful for dev, especially when cloudflare or other cdn's are involved
  */
-$version = '2.0.9';
+$version = '2.0.10';
 
 // If .version.php file exists, the content of this file (timestamp) is added to the $version value set above
 if ( file_exists( __DIR__ . '/../.version.php' ) ) {
@@ -1379,3 +1379,21 @@ function simplifi_global_aysnc_script( $tag, $handle, $src ) {
 }
 
 add_filter( 'script_loader_tag', 'simplifi_global_aysnc_script', 10, 3 );
+
+
+function greatermedia_is_jacapps() {
+	$agent = strtolower( $_SERVER['HTTP_USER_AGENT'] );
+	if ( false !== strpos( $agent, 'jacapps' ) ) {
+		return true;
+	}
+
+	return false;
+}
+
+add_action( 'wp_enqueue_scripts', 'greatermedia_dequeue_scripts_styles', 50 );
+
+function greatermedia_dequeue_scripts_styles(){
+	if ( greatermedia_is_jacapps() ) {
+		wp_dequeue_script( 'gmedia_keywords-autocomplete-script' );
+	}
+}

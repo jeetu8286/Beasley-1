@@ -24,16 +24,19 @@
 							<?php do_action( 'dfp_tag', 'dfp_ad_leaderboard_pos2', false, array( array( 'pos', 2 ) ) ); ?>
 						</div>
 					<?php } ?>
-					<div class="footer__content">
-						<div class="footer__copyright">
-							<div class="footer__copyright--logo">
-								<a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php bloginfo( 'name' ); ?></a>
+					<?php if ( ! greatermedia_is_jacapps() ) : ?>
+						<div class="footer__content">
+							<div class="footer__copyright">
+								<div class="footer__copyright--logo">
+									<a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php bloginfo( 'name' ); ?></a>
+								</div>
+								<span class="footer__copyright--span"><?php _e( '&copy;', 'greatermedia' ); ?><?php bloginfo( 'name' ); ?></span><?php _e( '-', 'greatermedia' ); ?>
+								<span class="footer__copyright--span"><a href="http://bbgi.com/"
+																		 target="_blank"><?php _e( 'Beasley Media Group, Inc.', 'greatermedia' ); ?></a></span>
 							</div>
-							<span class="footer__copyright--span"><?php _e( '&copy;', 'greatermedia' ); ?> <?php bloginfo( 'name' ); ?></span><?php _e( '-', 'greatermedia' ); ?><span class="footer__copyright--span"><a href="http://bbgi.com/" target="_blank"><?php _e( 'Beasley Media Group, Inc.', 'greatermedia' ); ?></a></span>
-						</div>
-						<div class="footer__menu">
-							<?php do_action( 'gmr_social' ); ?>
-							<?php
+							<div class="footer__menu">
+								<?php do_action( 'gmr_social' ); ?>
+								<?php
 								$footer_nav = array(
 									'theme_location'  => 'footer-nav',
 									'menu'            => '',
@@ -53,9 +56,10 @@
 									'walker'          => ''
 								);
 								wp_nav_menu( $footer_nav );
-							?>
+								?>
+							</div>
 						</div>
-					</div>
+					<?php endif; ?>
 				</div>
 			</footer>
 		</main>
