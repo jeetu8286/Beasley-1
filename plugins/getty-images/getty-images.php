@@ -5,7 +5,7 @@ Plugin URI: http://www.oomphinc.com/work/getty-images-wordpress-plugin/
 Description: Integrate your site with Getty Images
 Author: gettyImages
 Author URI: http://gettyimages.com/
-Version: 3.0.3
+Version: 3.0.3.1
 */
 
 /*  Copyright 2014  Getty Images
@@ -588,7 +588,14 @@ class Getty_Images {
 		preg_match( '/[^?]+\.(jpe?g|jpe|gif|png)\b/i', $url, $matches );
 
 		if( empty( $matches ) ) {
-			$this->ajax_error( __( "Invalid filename", 'getty-images' ) );
+			$query  = parse_url( $_POST['meta']['SelectedDownloadSize']['uri'] );
+			$parsed = wp_parse_args( $query['query'] );
+			$name   = "GettyImages-" . $_POST['meta']['id'] . '.' . $parsed['file_type'];
+			if ( empty( $parsed['file_type'] ) ) {
+				$this->ajax_error( __( "Invalid filename", 'getty-images' ) );
+			} else {
+				$matches = array( $name );
+			}
 		}
 
 		$file_array = array();
