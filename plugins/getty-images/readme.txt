@@ -2,8 +2,8 @@
 Contributors: Getty Images
 Tags: image library, media, images, getty
 Requires at least: 3.9
-Tested up to: 4.7.1
-Stable tag: 2.5.2
+Tested up to: 4.8
+Stable tag: 3.0.3
 License: GPLv2 or later
 
 Search and use Getty Images photos in your posts without ever leaving WordPress.
@@ -49,6 +49,18 @@ Using the plugin once installed
 3. Click on "Getty Images" in edit post screen to browse the Getty Images library.
 
 == Changelog ==
+
+= 3.0.3 =
+* Bug Fix: Removing API call.
+
+= 3.0.2 =
+* Bug Fix: Wordpress VIP login issue.
+
+= 3.0.1 =
+* Bug Fix: Search results order issue.
+
+= 3.0.0 =
+* Adding landing page and updating user interface.
 
 = 2.5.2 =
 * Bug Fix: Solving Sort Order Filters issue.

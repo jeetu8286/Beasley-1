@@ -16,7 +16,7 @@
 
 				<p><?php esc_html_e( "By clicking CONTINUE, you accept our ", 'getty-images' ); ?>
 				<a href="http://www.gettyimages.com/company/privacy-policy" target="_blank"><?php esc_html_e( "Privacy Policy", 'getty-images' ); ?></a>
-				<?php esc_html_e( " (including Use of Coockies and Other Technologies) and  ", 'getty-images' ); ?>
+				<?php esc_html_e( " (including Use of Cookies and Other Technologies) and  ", 'getty-images' ); ?>
 				<a href="http://www.gettyimages.com/company/terms" target="_blank"><?php esc_html_e( "Terms of Use", 'getty-images' ); ?></a>.</p>
 
 				<div>
@@ -64,15 +64,15 @@
 
 	<div class="getty-title-links">
 		<# var loggedIn = gettyImages.user.get('loggedIn'); #>
-		<# if((gettyImages.isWPcom && gettyImages.user.settings.get('omniture-opt-in') !== undefined) || data.mode == 'login' && loggedIn) { #>
+		<# if(data.mode == 'login' && loggedIn) { #>
 		<span class="getty-title-link">
 			<a class="getty-login-toggle getty-title-link {{ loggedIn ? 'getty-logged-in' : '' }}">{{ loggedIn ? gettyImages.user.get('username') : "<?php esc_html_e( "Log in", 'getty-images' ); ?>" }}</a>
 			<div class="getty-user-session"></div>
 		</span>
 		<# } #>
-		<# if(!gettyImages.isWPcom && data.mode == 'login' && !loggedIn) { #>
+		<# if(data.mode == 'login' && !loggedIn) { #>
 			<a class="getty-title-link getty-mode-change">Change Mode</a>
-		<# } else if(!gettyImages.isWPcom && data.mode == 'embed') { #>
+		<# } else if(data.mode == 'embed') { #>
 			<a class="getty-title-link getty-mode-change">Go to Customer Login</a>
 		<# } #>
 
@@ -95,19 +95,21 @@
 </script>
 
 <script type="text/html" id="tmpl-getty-attachments-browser">
+<div class="getty-refine"></div>
 <div class="getty-browser-container">
 	<table class="getty-browser-flex-container">
-		<tbody>
+		<tbody style="height: 100%">
 			<tr>
 				<td class="getty-search-toolbar"></td>
 			</tr>
 			<tr>
 				<td class="getty-browser-container">
-					<div class="getty-browser">
-					
-						<div class="getty-refine"></div>
+					<div class="getty-browser" style="display: none">
+
 						<div class="getty-results"></div>
 						<div class="getty-search-spinner"></div>
+					</div>
+					<div  class="getty-landing-container">
 					</div>
 				</td>
 			</tr>
@@ -124,8 +126,10 @@
 <# var classes = [];
 	classes.push('style-' + data.GraphicStyle);
 	classes.push('licensing-' + data.LicensingModel);
+	classes.push('viewMode-' + data.viewMode);
 	#>
 
+<# if ( data.viewMode === 'gridView' ) { #>
 	<div class="attachment-preview js--select-attachment getty-attachment {{ classes.join(' ') }}">
 		<# if ( data.uploading ) { #>
 			<div class="media-progress-bar"><div></div></div>
@@ -136,8 +140,12 @@
 				</div>
 			</div>
 			<div class="image-details">
-				<span class="image-id">#{{ data.id }}</span>
-				<span class="image-collection">{{ data.collection_name }}</span>
+				<div class="image-title">{{ data.title }}</div>
+				<div class="image-family">{{ data.asset_family }}</div>
+				<div class="image-date">{{ data.DateSubmittedString }}</div>
+				<div class="image-artist">{{ data.artist }}</div>
+				<div class="image-collection">{{ data.collection_name }}</div>
+				<div class="image-id">{{ data.id }}</div>
 			</div>
 		<# } #>
 
@@ -149,6 +157,23 @@
 			<a class="check" href="#" title="<?php esc_attr_e('Deselect', 'getty-images'); ?>"><div class="media-modal-icon"></div></a>
 		<# } #>
 	</div>
+<# } else { #>
+	<# if ( data.uploading ) { #>
+		<div class="media-progress-bar"><div></div></div>
+	<# } else { #>
+		<div class='js--select-attachment {{ classes.join(' ') }}' style="height:{{ data.height }}px;">
+			<img src="{{ data.url_comp }}" draggable="false" height="{{ data.height }}" />
+		</div>
+	<# } #>
+
+	<# if ( data.buttons.close ) { #>
+		<a class="close media-modal-icon" href="#" title="<?php esc_attr_e('Remove', 'getty-images'); ?>"></a>
+	<# } #>
+
+	<# if ( data.buttons.check ) { #>
+		<a class="check" href="#" title="<?php esc_attr_e('Deselect', 'getty-images'); ?>"><div class="media-modal-icon"></div></a>
+	<# } #>
+<# } #>
 </script>
 
 <script type="text/html" id="tmpl-getty-download-authorizations">
@@ -158,7 +183,7 @@
 else if(gettyImages.user.get('loggedIn') && data.sizesByAgreement) { #>
 	<div class="getty-download-authorizations">
 		<ul class="getty-download-with">
-		Download With:
+		<h3>Download options</h3>
 		<#
 		for(var agreement in data.sizesByAgreement) {
 		#>
@@ -167,16 +192,16 @@ else if(gettyImages.user.get('loggedIn') && data.sizesByAgreement) { #>
 				<# if(_.size(data.sizesByAgreement) > 1) {
 					var selected = data.ProductOffering == agreement ? 'checked="checked"' : '';
 				#>
-					<input type="radio" name="DownloadProductOffering" value="{{ agreement }}" {{ selected }} />
+					<input type="radio" name="DownloadProductOffering" value="{{ gettyImages.getProductName(agreement) }}" {{ selected }} />
 				<# } #>
-					{{ agreement }}
+					{{ gettyImages.getProductName(agreement) }}
 				</h3>
 			</li>
 		<#  } #>
 		</ul>
 
 		<select name="DownloadSizeKey">
-			<# 		
+			<#
 			var attachment = data.attachment;
 
 			var sizes = _.sortBy(data.sizesByAgreement[data.ProductOffering], 'bytes');
@@ -187,7 +212,7 @@ else if(gettyImages.user.get('loggedIn') && data.sizesByAgreement) { #>
 				var note;
 
 				if(size.downloads_remaining) {
-					note = '(' + size.downloads_remaining + ' ' + <?php echo json_encode( __( "remaining", 'getty-images' ) ); ?> + ')';
+					note = '(' + size.downloads_remaining + ' ' + <?php echo wp_json_encode( __( "remaining", 'getty-images' ) ); ?> + ')';
 				}
 				else {
 					note = '';
@@ -197,9 +222,9 @@ else if(gettyImages.user.get('loggedIn') && data.sizesByAgreement) { #>
 				}
 				if(attachment && attachment.get('width') == size.width && attachment.get('height') == size.height) {
 					attrs = attrs + ' data-downloaded="true"';
-					note = <?php echo json_encode( __( "(downloaded)", 'getty-images' ) ); ?>;
+					note = <?php echo wp_json_encode( __( "(downloaded)", 'getty-images' ) ); ?>;
 				} #>
-				<option {{{ attrs }}} value="{{ size.name }}">
+				<option {{ attrs }} value="{{ size.name }}">
 					{{ data.ProductOffering.toUpperCase() }}:
 					{{ size.width }} &times; {{ size.height }}
 					<#
@@ -221,7 +246,16 @@ else if(gettyImages.user.get('loggedIn') && data.sizesByAgreement) { #>
 		</select>
 	</div>
 
+
 	<# if(data.SelectedDownloadSize) { #>
+
+	<div id="download-options-container" class="getty-filter">
+		<div><input id="download_option_media_only" name="download-option" value="media-only" type="radio" checked="checked" <# if (data.SelectedDownloadOption === "media-only"){ #> checked <# } #> /><label for="download_option_media_only"><?php esc_html_e( "Download to Media Library only", 'getty-images' ); ?></label></div>
+		<div><input id="download_option_download_as_featured" name="download-option" value="download-as-featured" type="radio" <# if (data.SelectedDownloadOption === "download-as-featured"){ #> checked <# } #>/><label for="download_option_download_as_featured"><?php esc_html_e( "Download and set as featured image", 'getty-images' ); ?></label></div>
+		<div><input id="download_option_download_and_insert" name="download-option" value="download-and-insert" type="radio" <# if (data.SelectedDownloadOption === "download-and-insert"){ #> checked <# } #>/><label for="download_option_download_and_insert"><?php esc_html_e( "Download and insert image into post", 'getty-images' ); ?></label></div>
+		<div><input id="download_option_download_and_insert_as_featured" name="download-option" value="download-and-insert-as-featured" type="radio" <# if (data.SelectedDownloadOption === "download-and-insert-as-featured"){ #> checked <# } #> /><label for="download_option_download_and_insert_as_featured"><?php esc_html_e( "Download, insert image into post and set as featured image", 'getty-images' ); ?></label></div>
+	</div>
+
 	<div class="getty-download">
 		<#
 			var disabled = data.downloading ? 'disabled="disabled"' : '';
@@ -235,77 +269,150 @@ else if(gettyImages.user.get('loggedIn') && data.sizesByAgreement) { #>
 				text = gettyImages.text.downloading;
 			}
 		#>
-		<input type="submit" class="button-primary download-image-button" value="{{ text }}" {{ disabled }} />
 		<div class="getty-download-spinner"></div>
 	</div><#
 	}
-} #>
+}
+else if(data.authorizing) { #>
+	<p class="description"><?php esc_html_e( "Downloading authorizations...", 'getty-images' ); ?></p>
+<# } #>
+
+
+	<div id="getty-comp-license-dialog">
+		<p class="getty-comp-please-read"><?php esc_html_e( "Please read and accept the following terms before using image comps in your website:", 'getty-images' ); ?></p>
+		<div class="getty-comp-license-frame"><?php
+			/* TODO: Localize this text. */
+			include( __DIR__ . '/getty-comp-license.html' );
+		?></div>
+	</div>
+
+	</div>
+		<div class="getty-comp-buttons">
+
+		<# var canLicense = data.download_sizes && data.download_sizes.length > 0;
+
+		if(gettyImages.user.get('loggedIn')) {
+			if(canLicense) {  #>
+				<input type="button" class="button-primary download-button" value="<?php esc_attr_e( "Download", 'getty-images' ); ?>" />
+				<a class="insert-comp-button"><?php esc_attr_e( "Insert Comp", 'getty-images' ); ?></a>
+			<# }
+		} else { #>
+			<input type="button" class="button-primary insert-comp-button" value="<?php esc_attr_e( "Insert into Post", 'getty-images' ); ?>" />
+		<# } #>
+
+		</div>
+		<div class="getty-comp-license-chevron"></div>
+	</div>
+
+
 </script>
 
 <script type="text/html" id="tmpl-getty-image-details-list">
-<dl class="getty-image-details-list">
-	<dt class="getty-title"><?php esc_html_e( "Title: ", 'getty-images' ); ?></dt>
-	<dd class="getty-title">{{ data.title }}</dd>
+	<div class="getty-title">{{ data.title }}</div>
 
-	<dt class="getty-image-id"><?php esc_html_e( "Image #: ", 'getty-images' ); ?></dt>
-	<dd class="getty-image-id">{{ data.id }}</dd>
+	<div class="getty-artist">Credit: {{ data.artist }}</div>
 
-	<dt class="getty-artist"><?php esc_html_e( "Artist: ", 'getty-images' ); ?></dt>
-	<dd class="getty-artist">{{ data.artist }}</dd>
+	<div class="getty-image-id">Image #: {{ data.id }}</div>
 
-	<dt class="getty-collection"><?php esc_html_e( "Collection: ", 'getty-images' ); ?></dt>
-	<dd class="getty-collection">{{ data.collection_name }}</dd>
 
-	<# if(data.downloadingDetails) { #>
-	<dt><?php esc_html_e( "Downloading Details...", 'getty-images' ); ?></dt>
-	<# } else if(!data.haveDetails) { #>
-	<dt><?php esc_html_e( "Could not not get image details.", 'getty-images' ); ?></dt>
-	<# }#>
 
-	<# if(data.allowed_use) { #>
-	<dt class="getty-release-info"><?php esc_html_e( "Release Information: ", 'getty-images' ); ?></dt>
-	<dd class="getty-release-info"><p class="description">{{{ data.allowed_use.release_info.gettyLinkifyText() }}}</p></dd>
-	<# } #>
+	<div class="separator"></div>
+	<div class="getty-image-accordion">
+		<h3 class="license-info-accordion-header accordion-header"><span class="accordion-title">License Info</span><span class="collapse-icon">+</span></h3>
+		<div class="license-info-accordion-content accordion-closed">
+			<# var licenseTypeText;
+				switch (data.license_model) {
+				case 'royaltyfree':
+					licenseTypeText = "Creative Royalty Free";
+					break;
+				case 'rightsmanaged':
+					licenseTypeText = "Creative Rights Managed";
+					break;
+				}
+			#>
 
-	<# if(data.allowed_use && data.allowed_use.usage_restrictions && data.allowed_use.usage_restrictions.length) { #>
-		<dt class="getty-release-info"><?php esc_html_e( "Restrictions: ", 'getty-images' ); ?></dt>
-		<# for(var i in data.allowed_use.usage_restrictions) { #>
-		<dd class="getty-restrictions"><p class="description">{{{ data.allowed_use.usage_restrictions[i].gettyLinkifyText() }}}</p></dd>
+			<div class="getty-license-info">License type: {{ data.asset_family == "editorial" ? "Editorial" : licenseTypeText }}</div>
+
+			<# if(data.allowed_use && data.allowed_use.how_can_i_use_it) { #>
+				<div class="getty-how-can-i-use-it">{{ data.allowed_use.how_can_i_use_it.replace(/\|/g, "").replace(/Learn more/g, "") }}</div>
+			<# }#>
+
+		</div>
+
+	</div>
+
+	<div class="separator"></div>
+	<div class="getty-image-accordion">
+		<h3 class="details-accordion-header accordion-header"><span class="accordion-title">Details</span><span class="collapse-icon">+</span></h3>
+		<div class="details-accordion-content accordion-closed">
+			<div class="getty-collection">Collection: {{ data.collection_name }}</div>
+
+
+			<# if(data.allowed_use && data.allowed_use.release_info) { #>
+				<div class="getty-release-info">Release Info: {{ data.allowed_use.release_info }}</div>
+			<# } #>
+
+			<# if(data.downloadingDetails) { #>
+			<dt><?php esc_html_e( "Downloading Details...", 'getty-images' ); ?></dt>
+			<# } else if(!data.haveDetails) { #>
+			<dt><?php esc_html_e( "Could not not get image details.", 'getty-images' ); ?></dt>
+			<# }#>
+
+			<# if(data.ReleaseMessage) { #>
+			<div class="getty-release-info"><p class="description">{{ data.ReleaseMessage.gettyLinkifyText() }}</p></div>
+			<# } #>
+
+			<# if(data.allowed_use && data.allowed_use.usage_restrictions) { #>
+				<# for(var i in data.allowed_use.usage_restrictions) { #>
+				<div class="getty-restrictions"><p class="description">{{ data.allowed_use.usage_restrictions[i].gettyLinkifyText() }}</p></div>
+				<# }
+			}#>
+
+		</div>
+
+	</div>
+	<div class="separator"></div>
+	<div class="getty-image-accordion">
+
+		<h3 class="keywords-accordion-header accordion-header"><span class="accordion-title">Keywords</span><span class="collapse-icon">+</span></h3>
+		<div class="keywords-accordion-content accordion-closed">
+		<# if(data.keywords) {
+			var filter = function(kw) { return kw.Type == 'SpecificPeople'; };
+
+			var people = _.filter(data.keywords, filter);
+			var keywords = _.reject(data.keywords, filter);
+
+			if(people.length) {
+		#>
+		<div class="getty-keywords"><?php esc_html_e( "People: ", 'getty-images' ); ?></div>
+		<dd class="getty-keywords">
+			<ul>
+			<# for(var i = 0; i < people.length; i++) { #>
+				<li class="getty-keyword"><a href="#keyword-{{ people[i].Id }}">{{ people[i].Text }}</a></li>
+			<# } #>
+			</ul>
+		</dd>
 		<# }
-	}#>
+			if(keywords.length) {
+		#>
+		<dd class="getty-keywords">
+			<ul>
+			<# for(var i = 0; i < keywords.length; i++) { #>
+				<li class="getty-keyword"><a href="#keyword-{{ keywords[i].keyword_id }}">{{ keywords[i].text }}</a></li>
+			<# } #>
+			</ul>
+		</dd>
 
-	<dd class="getty-licensing">{{ data.licensing }}</dd>
-	<# if(data.keywords) {
-		var filter = function(kw) { return kw.type == 'SpecificPeople'; };
-
-		var people = _.filter(data.keywords, filter);
-		var keywords = _.reject(data.keywords, filter);
-
-		if(people.length) {
-	#>
-	<dt class="getty-keywords"><?php esc_html_e( "People: ", 'getty-images' ); ?></dt>
-	<dd class="getty-keywords">
-		<ul>
-		<# for(var i = 0; i < people.length; i++) { #>
-			<li class="getty-keyword"><a href="#keyword-{{ people[i].Id }}">{{ people[i].text }}</a></li>
 		<# } #>
-		</ul>
-	</dd>
-	<# }
-		if(keywords.length) {
-	#>
-	<dt class="getty-keywords"><?php esc_html_e( "Keywords: ", 'getty-images' ); ?></dt>
-	<dd class="getty-keywords">
-		<ul>
-		<# for(var i = 0; i < keywords.length; i++) { #>
-			<li class="getty-keyword"><a href="#keyword-{{ keywords[i].Id }}">{{ keywords[i].text }}</a></li>
-		<# } #>
-		</ul>
-	</dd>
-	<# }
-	// Specific for non logged in users (i.e. embedable images)
-	if ( !gettyImages.isWPcom && !gettyImages.user.get('loggedIn') ) { #>
-		<dt class="getty-image-caption"><?php esc_html_e( "Caption: ", 'getty-images' ); ?></dt>
+
+		</div>
+	</div>
+	<div class="separator"></div>
+
+
+	<# // Specific for non logged in users (i.e. embedable images)
+	if (!gettyImages.user.get('loggedIn') ) { #>
+		<dt class="getty-image-caption"><?php esc_html_e( "Caption Text: ", 'getty-images' ); ?></dt>
 		<dd class="getty-image-caption"><p class="description">{{ data.caption }}</p></dd>
 
 		<dt class="getty-image-alt"><?php esc_html_e( "Alt Text: ", 'getty-images' ); ?></dt>
@@ -313,7 +420,6 @@ else if(gettyImages.user.get('loggedIn') && data.sizesByAgreement) { #>
 	<#
 	}
 } #>
-</dl>
 </script>
 
 <script type="text/html" id="tmpl-getty-detail-image">
@@ -349,13 +455,12 @@ else if(gettyImages.user.get('loggedIn') && data.sizesByAgreement) { #>
 <script type="text/html" id="tmpl-getty-image-details">
 <# if(data.id) {
 	var attachment = data.attachment ? data.attachment.attributes : false; #>
-	<h3>
-		<?php esc_html_e('Image Details', 'getty-images'); ?>
-	</h3>
-
+	<br/>
 	<div class="attachment-info getty-attachment-details {{ data.downloading ? 'downloading' : '' }}">
 		<div class="getty-image-thumbnail"></div>
 		<div class="getty-image-details-list"></div>
+
+		<div class="getty-display-settings"></div>
 		<div class="getty-image-sizes"></div>
 		<div class="getty-download-authorizations"></div>
 	</div>
@@ -364,7 +469,7 @@ else if(gettyImages.user.get('loggedIn') && data.sizesByAgreement) { #>
 </script>
 
 <script type="text/html" id="tmpl-getty-display-settings">
-	<h3><?php esc_html_e( "Display Options", 'getty-images' ); ?></h3>
+	<h3><?php esc_html_e( "Display options", 'getty-images' ); ?></h3>
 
 	<div class="attachment-info">
 		<div class="setting align">
@@ -387,20 +492,20 @@ else if(gettyImages.user.get('loggedIn') && data.sizesByAgreement) { #>
 			<# _.each(data.model.sizes, function(size, value) {
 				var selected = data.model.size == size ? 'selected="selected"' : '';
 				#>
-				<option value="{{ value }}" {{{ selected }}}>{{ size.label }} &ndash; {{ parseInt(size.width) }} &times; {{ parseInt(size.height) }}</option>
+				<option value="{{ value }}" {{ selected }}>{{ size.label }} &ndash; {{ parseInt(size.width) }} &times; {{ parseInt(size.height) }}</option>
 			<# }); #>
 			</select>
 		<# } #>
 		</label>
 
-	<# if(gettyImages.isWPcom || gettyImages.user.get('loggedIn')) { #>
+	<# if(gettyImages.user.get('loggedIn')) { #>
 		<label class="setting alt-text">
 			<span><?php esc_html_e('Alt Text', 'getty-images'); ?></span>
 			<input type="text" data-setting="alt" value="{{ data.model.alt }}" data-user-setting="getty_alt" />
 		</label>
 
 		<label class="setting caption">
-			<span><?php esc_html_e('Caption', 'getty-images'); ?></span>
+			<span><?php esc_html_e('Caption Text', 'getty-images'); ?></span>
 			<textarea data-setting="caption">{{ data.model.caption }}</textarea>
 		</label>
 	<# } #>
@@ -431,12 +536,16 @@ else if(gettyImages.user.get('loggedIn') && data.sizesByAgreement) { #>
 </script>
 
 <script type="text/html" id="tmpl-getty-images-more">
-	<div class="attachment-preview">
+	<div class="attachment-preview getty-attachment">
 		<div class="getty-more-spinner">
 		</div>
 		<div class="getty-more-text-container">
 			<span class="getty-number-remaining"></span>
-			<span class="getty-more-text"><?php esc_html_e( "More", 'getty-images' ); ?></span>
+			<span class="getty-more-text"><?php esc_html_e( "more images", 'getty-images' ); ?></span>
+		</div>
+		<div class="getty-load-more-container">
+			<?php esc_html_e( "Load more", 'getty-images' ); ?>
+		&nbsp;>
 		</div>
 	</div>
 </script>
@@ -456,6 +565,9 @@ else if(gettyImages.user.get('loggedIn') && data.sizesByAgreement) { #>
 	</div>
 	<div class="getty-comp-license-chevron"></div>
 </script>
+
+
+
 
 <script type="text/html" id="tmpl-getty-unsupported-browser">
 	<h1><?php esc_html_e( "Sorry, this browser is unsupported!", 'getty-images' ); ?></h1>
@@ -498,9 +610,9 @@ else if(gettyImages.user.get('loggedIn') && data.sizesByAgreement) { #>
 				<div class="legal-text">
 					<p class="stop-propagation"><?php esc_html_e( "By clicking CONTINUE, you accept our ", 'getty-images' ); ?>
 					<a class="stop-propagation" href="http://www.gettyimages.com/company/privacy-policy" target="_blank"><?php esc_html_e( "Privacy Policy", 'getty-images' ); ?></a>
-					<?php esc_html_e( " (including Use of Coockies and Other Technologies) and  ", 'getty-images' ); ?>
+					<?php esc_html_e( " (including Use of Cookies and Other Technologies) and  ", 'getty-images' ); ?>
 					<a class="stop-propagation" href="http://www.gettyimages.com/company/terms" target="_blank"><?php esc_html_e( "Terms of Use", 'getty-images' ); ?></a>.</p>
-					
+
 					<div class="embed-tacking-opt-in-checkbox-container">
 						<input id="embed-tacking-opt-in-checkbox" class="embed-tacking-opt-in-checkbox" type="checkbox" {{(data.enableTracking)?"checked":""}}>
 							<label class="stop-propagation" for="embed-tacking-opt-in-checkbox">
@@ -541,4 +653,68 @@ else if(gettyImages.user.get('loggedIn') && data.sizesByAgreement) { #>
 	</div>
 	<# } #>
 	</div>
+</script>
+
+<script type="text/html" id="tmpl-getty-landing-page">
+	<ul class='landing-tabs'>
+		<li class='landing-tab creative-tab' data-key='creative'>Creative</li>
+		<li class='landing-tab featured-tab' data-key='featured'>Featured</li>
+		<li class='landing-tab events-tab' data-key='events'>Events</li>
+	</ul>
+	<div class='landing-content'>
+	</div>
+</script>
+
+<script type="text/html" id="tmpl-getty-landing-page-tab-creative">
+
+</script>
+
+<script type="text/html" id="tmpl-getty-landing-page-tab-featured">
+
+</script>
+
+<script type="text/html" id="tmpl-getty-landing-page-tab-creative-item">
+	<# if (data) { #>
+		<div class="image-container" style="background-image: url({{data.get('imgUrl')}})">
+
+		</div>
+		<div class="display-title">
+			<p class="display-title-text">{{data.get('displayTitle')}}<p>
+		</div>
+	<# } #>
+</script>
+
+<script type="text/html" id="tmpl-getty-landing-page-tab-events-item">
+	<# if (data) { #>
+		<div class="image-container" style="background-image: url({{data.get('imgUrl')}})">
+
+		</div>
+		<div class="display-title">
+			<p class="display-title-text">{{data.get('eventName')}}<p>
+		</div>
+	<# } #>
+</script>
+
+<script type="text/html" id="tmpl-getty-landing-page-tab-featured-item">
+	<# if (data) { #>
+		<div class="image-container" style="background-image: url({{data.get('imgUrl')}})">
+
+		</div>
+		<div class="display-title">
+			<p class="display-title-text">{{data.get('title')}}<p>
+		</div>
+	<# } #>
+</script>
+
+<script type="text/html" id="tmpl-getty-landing-page-tab-events">
+	<div class="events-dropdowns-container">
+		<select id="editorial-segment-dropdown">
+			<option value="entertainment" <# if (data.editorialSegment == 'entertainment') { #>selected<# } #>>Entertainment</option>
+			<option value="news" <# if (data.editorialSegment == 'news') { #>selected<# } #>>News</option>
+			<option value="sport" <# if (data.editorialSegment == 'sport') { #>selected<# } #>>Sports</option>
+			<option value="archival" <# if (data.editorialSegment == 'archival') { #>selected<# } #>>Archival</option>
+			<option value="royalty" <# if (data.editorialSegment == 'royalty') { #>selected<# } #>>Royalty</option>
+		</select>
+	</div>
+	<div class="items"></div>
 </script>

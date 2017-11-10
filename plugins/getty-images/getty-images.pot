@@ -397,7 +397,7 @@ msgid "Caption"
 msgstr ""
 
 #: getty-templates.php:404
-msgid "More"
+msgid "more images"
 msgstr ""
 
 #: getty-templates.php:410
@@ -406,4 +406,8 @@ msgstr ""
 
 #: getty-templates.php:416
 msgid "Agree"
+msgstr ""
+
+#: getty-templates.php:467
+msgid "Load more"
 msgstr ""
