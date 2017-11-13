@@ -183,7 +183,7 @@
   float: left;
   display: inline-block;
   position: relative;
-  width: 20px;
+  width: 16px;
   height: 100px; }
 
 .flip-clock-divider:first-child {
@@ -447,7 +447,7 @@
       background-color: rgba(0, 0, 0, 0.7);
       margin: 0px;
       padding: 5px;
-      width: 50%;
+      width: 48%;
       float: left;
 
       @media screen and (max-width: 965px) {
@@ -494,7 +494,7 @@
       }
 
       margin: 0px;
-      width: 50%;
+      width: 52%;
       float: right;
       @media screen and (max-width: 965px) {
         width: 100%;
@@ -522,7 +522,7 @@
   background-color: #000;
   background-color: rgba(0, 0, 0, 0.4); }
 .flip-clock-divider { height: 40px; }
-.flip-clock-dot { height: 6px; width: 6px; left: 7px;}
+.flip-clock-dot { height: 6px; width: 6px; left: 5px;}
 .flip-clock-dot.top { top: 17px; }
 .flip-clock-dot.bottom { bottom: 8px; }
 .flip-clock-divider .flip-clock-label { color: #fff; }
