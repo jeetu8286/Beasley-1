@@ -442,6 +442,9 @@
     display: flex;
   	background-size: cover;
     overflow: hidden;
+    @media screen and (max-width: 965px) {
+      display: block;
+    }
 
     .homepage_countdown_clock_container {
       position: relative;
@@ -455,6 +458,7 @@
       align-items: center;
 
       @media screen and (max-width: 965px) {
+        display: block;
         width: 100%;
         padding: 1%;
         margin: 0 auto;
@@ -505,6 +509,7 @@
       justify-content: center;
       align-items: center;
       @media screen and (max-width: 965px) {
+        display: block;
         width: 100%;
         padding: 1%;
         margin: 0px auto;
