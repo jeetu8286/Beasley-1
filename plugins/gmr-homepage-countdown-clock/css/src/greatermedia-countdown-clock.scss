@@ -439,6 +439,7 @@
   text-align: center;
   margin: 20px 0;
   .homepage_countdown_clock {
+    display: flex;
   	background-size: cover;
     overflow: hidden;
 
@@ -448,7 +449,10 @@
       margin: 0px;
       padding: 5px;
       width: 48%;
-      float: left;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
 
       @media screen and (max-width: 965px) {
         width: 100%;
@@ -496,6 +500,10 @@
       margin: 0px;
       width: 52%;
       float: right;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
       @media screen and (max-width: 965px) {
         width: 100%;
         padding: 1%;
