@@ -63,7 +63,9 @@
 
 	function checkSearchField () {
 		var $search_body = $searchContainer.find( '.header-search-body' );
-
+		if ( !$search_body.length ){
+			return;
+		}
 		// Show the body only if there's text in the search field.
 		if ( $searchInput.val().length ) {
 			$search_body.addClass( 'is-visible' );

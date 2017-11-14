@@ -1872,5 +1872,4 @@
 		addEventHandler(podcastPlayBtn, 'click', setInlineAudioUX);
 		addEventHandler(podcastPauseBtn, 'click', pauseCustomInlineAudio);
 	});
-
 })(jQuery, window, document);

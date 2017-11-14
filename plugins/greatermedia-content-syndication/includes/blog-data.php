@@ -65,6 +65,15 @@ class BlogData {
 		}
 	}
 
+	/**
+	 * Set content site id
+	 *
+	 * @param $id int
+	 */
+	public static function set_content_site_id( $id ) {
+		self::$content_site_id = $id;
+	}
+
 	public static function syndicate_now() {
 		// verify nonce, with predifined
 		if ( ! wp_verify_nonce( $_POST['syndication_nonce'], 'perform-syndication-nonce' ) ) {
@@ -264,6 +273,17 @@ class BlogData {
 		$post_type = get_post_meta( $subscription_id, 'subscription_type', true );
 		if ( empty( $post_type ) ) {
 			$post_type = SyndicationCPT::$supported_subscriptions;
+		}
+
+		$subscription_source = absint( get_post_meta( $subscription_id, 'subscription_source', true ) );
+		if ( $subscription_source > 0 ) {
+			BlogData::set_content_site_id( $subscription_source );
+			self::log( "Switch to Custom Source Site : %d", self::$content_site_id );
+
+		} else {
+			//Set it to default in case of empty / Legacy subscriptions
+			self::get_content_site_id();
+			self::log( "Switch to default source site : %d", self::$content_site_id );
 		}
 
 		// Should only be the first time - only pull in 10 posts: https://basecamp.com/1778700/projects/8324102/todos/315096975#comment_546418020
@@ -565,6 +585,15 @@ class BlogData {
 		}
 
 		clean_post_cache( $post_id );
+
+		/**
+		 * Fires once a post has been saved.
+		 *
+		 * @param int $post_ID Post ID.
+		 * @param WP_Post $post Post object.
+		 * @param bool $update Whether this is an existing post being updated or not.
+		 */
+		do_action( 'greatermedia-post-update', $post_id, $post, $updated );
 
 		return $post_id;
 	}

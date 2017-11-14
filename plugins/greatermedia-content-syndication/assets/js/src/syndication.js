@@ -1,9 +1,11 @@
 /*global $:false, jQuery:false, wp:false, console:false, syndication_ajax:false, alert:false, document:false */
 (function ($) {
 	$(document).ready(function () {
-		$(".subscription_terms").select2({
-			placeholder: "Select term"
-		});
+		var $filter_metaboxes = $( '#filter_metaboxes' );
+
+		function get_subscription_loader(){
+			return $( '<img>', { src: './images/spinner.gif', class : 'subscription_loader' } );
+		}
 
 		$(".subscription_defaults").select2({
 			placeholder: "Select term"
@@ -35,17 +37,38 @@
 			});
 		});
 
-		$('#filter_metaboxes input[type=radio]').on("click", function () {
-			$('#filter_metaboxes input[type=radio]').each(function () {
-				var el = '#' + $(this).data('enabled');
-				if ($(this).prop('checked')) {
-					$(el).select2('enable', true);
-					$('#enabled_filter_taxonomy').val($(this).data('enabled'));
-				} else {
-					$(el).select2('enable', false);
-				}
-			});
-		});
+		function init_subscription_terms() {
+			$( ".subscription_terms" ).select2( {
+				placeholder: "Select term"
+			} );
+			$( '#filter_metaboxes input[type=radio]' ).off( 'click' ).on( "click", function () {
+				$( '#filter_metaboxes input[type=radio]' ).each( function () {
+					var el = '#' + $( this ).data( 'enabled' );
+					if ( $( this ).prop( 'checked' ) ){
+						$( el ).select2( 'enable', true );
+						$( '#enabled_filter_taxonomy' ).val( $( this ).data( 'enabled' ) );
+					} else {
+						$( el ).select2( 'enable', false );
+					}
+				} );
+			} );
+		}
+
+		init_subscription_terms();
+
+		$( "select.subscription_source_select2" ).select2( { placeholder: "Select term" } ).on( "change", function ( e ) {
+			$filter_metaboxes.html( get_subscription_loader() );
+			wp.ajax.post( 'syndication_taxonomy_filters', {
+				'security': syndication_ajax.syndication_filter_nonce,
+				'site_id': $( '#subscription_source' ).val(),
+				'post_id': $( '#post_ID' ).val(),
+			} ).done( function ( response ) {
+				$filter_metaboxes.html( response.content );
+				init_subscription_terms();
+			} ).fail( function ( response ) {
+
+			} );
+		} );
 
 		var syndicated_posts = $('ul.syndicated_posts li');
 		syndicated_posts.hide().slice(0, 2).show();

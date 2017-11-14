@@ -2787,7 +2787,9 @@ var matchHeights = function( elements ) {
 	/**
 	 * Init Functions
 	 */
-	addEventHandler(mobileNavButton, 'click', toggleNavButton);
+	if ( mobileNavButton ){
+		addEventHandler( mobileNavButton, 'click', toggleNavButton );
+	}
 	init_menu_overlay();
 	addHoverMobile();
 	addMenuHover();
@@ -2896,7 +2898,9 @@ var matchHeights = function( elements ) {
 
 	function checkSearchField () {
 		var $search_body = $searchContainer.find( '.header-search-body' );
-
+		if ( !$search_body.length ){
+			return;
+		}
 		// Show the body only if there's text in the search field.
 		if ( $searchInput.val().length ) {
 			$search_body.addClass( 'is-visible' );
@@ -2977,9 +2981,12 @@ var matchHeights = function( elements ) {
 	 */
 	var body = document.querySelector( 'body' ),
 		header = document.getElementById( 'header' ),
-		header_main = header.getElementsByClassName( 'header__main' )[0],
-		header_container = header.querySelectorAll( '.header__main > .container' )[0];
+		header_main = (header) ? header.getElementsByClassName( 'header__main' )[0] : false,
+		header_container = (header) ? header.querySelectorAll( '.header__main > .container' )[0] : false;
 
+	if ( !header ){
+		return;
+	}
 	if ( window.matchMedia( '(min-width: 768px)' ).matches ) {
 
 		// Using window.onload because heights we want need to be rendered.

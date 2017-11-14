@@ -5,7 +5,7 @@ Plugin URI: http://www.oomphinc.com/work/getty-images-wordpress-plugin/
 Description: Integrate your site with Getty Images
 Author: gettyImages
 Author URI: http://gettyimages.com/
-Version: 2.5.2
+Version: 3.0.3.1
 */
 
 /*  Copyright 2014  Getty Images
@@ -77,14 +77,20 @@ class Getty_Images {
 		// Handle the various AJAX actions from the UI
 		add_action( 'wp_ajax_getty_images_download', array( $this, 'ajax_download' ) );
 		add_action( 'wp_ajax_getty_image_details', array( $this, 'ajax_image_details' ) );
+		add_action( 'wp_ajax_getty_get_facets', array( $this, 'ajax_get_facets' ) );
 
 		// Allow for validation of comp images
 		add_filter( 'contains_getty_comp', array( $this, 'filter_contains_getty_comp' ), 0, 2 );
 
 		// Register shorcodes
 		add_action( 'init', array( $this, 'action_init' ) );
+
 		// Handle shortcode alignment
 		add_filter( 'embed_oembed_html', array( $this, 'align_embed' ), 10, 4 );
+
+		// Add caller to oembed call
+		add_filter( 'oembed_fetch_url', array( $this, 'add_caller_oembed' ), 10, 3 );
+
 		// Add styles for alignment
 		add_action( 'wp_head', array( $this, 'frontend_style' ) );
 
@@ -98,7 +104,24 @@ class Getty_Images {
 	function action_init() {
 		wp_oembed_add_provider( 'http://gty.im/*', 'http://embed.gettyimages.com/oembed' );
 	}
+	
+	/**
+	 * Filter embed fetch url
+	 * @param  string $provider    oembed provider url
+	 * @param  string $url     original oembed URL
+	 * @param  string $args     additional arguments
+	 **/
+	function add_caller_oembed( $provider, $url, $args ) {
+		$domain = home_url();
+		$caller = rawurlencode($domain . '#wp-plugin');
 
+        // check that this is a getty embed
+		if ( strpos( $url, 'http://gty.im/' ) === 0 ) {
+			$provider = add_query_arg('caller', $caller, $provider);
+		}
+		return $provider;
+	}
+	
 	/**
 	 * Filter embed shortcode html
 	 * @param  string $html    html generated from embed shortcode
@@ -110,9 +133,9 @@ class Getty_Images {
 	function align_embed( $html, $url, $attr, $post_ID ) {
 		// check that this is a getty embed
 		if ( strpos( $url, 'http://gty.im/' ) === 0 ) {
-			if ( isset( $attr['align'] ) && in_array( $attr['align'], array( 'left', 'center', 'right' ) ) ) {
+			if ( isset( $attr['align'] ) && in_array( $attr['align'], array( 'left', 'center', 'right' ), true ) ) {
 				// container div must be displayed as block, rather than inline-block for center align
-				if ( $attr['align'] == 'center' ) {
+				if ( 'center' === $attr['align'] ) {
 					$html = preg_replace( '/^(<div[^>]*)inline-block/', '$1block', $html );
 				}
 				return str_replace( 'class="', 'class="' . esc_attr( 'align' . $attr['align'] ) . ' ', $html );
@@ -178,21 +201,20 @@ class Getty_Images {
 		global $pagenow;
 
 		// Only operate on edit post pages
-		if( $pagenow != 'post.php' && $pagenow != 'post-new.php' )
+		if( 'post.php' !== $pagenow  && 'post-new.php' !== $pagenow )
 			return;
 
 		// Ensure all the files required by the media manager are present
 		wp_enqueue_media();
 
-		wp_register_script( 'jquery-cookie', plugins_url( '/js/jquery.cookie.js', __FILE__ ), array( 'jquery' ), '2006', true );
+		wp_register_script( 'jquery-cookie', plugins_url( '/js/vendor/jquery.cookie.js', __FILE__ ), array( 'jquery' ), '2006', true );
 
 		$isWPcom = self::isWPcom();
 
-		// Determine if the Omniture Javascript should be loaded
+		// Determine if the Ga and GTM Javascript should be loaded
 		$load_tracking = true;
 		$settings = isset( $_COOKIE['wpGIc'] ) ? json_decode( stripslashes( $_COOKIE['wpGIc'] ) ) : false;
 		if ( isset( $settings->{'omniture-opt-in'} ) && ! $settings->{'omniture-opt-in'} ) {
-			// Don't load the s_code script if the user has opted out
 			$load_tracking = false;
 		}
 		if ( $isWPcom ) {
@@ -203,32 +225,49 @@ class Getty_Images {
 			$googleTagManagerId = 'GTM-WCPDGK9';
 		}
 
-		wp_enqueue_script( 'spin-js', plugins_url( '/js/spin.js', __FILE__ ), array(), $this->__plugin_get_version(), true );
-		wp_enqueue_script( 'getty-images-filters', plugins_url( '/js/getty-filters-2-5.js', __FILE__ ), array(), $this->__plugin_get_version(), true );
-		wp_enqueue_script( 'getty-images-views', plugins_url( '/js/getty-views-2-5.js', __FILE__ ), array( 'getty-images-filters', 'spin-js' ), $this->__plugin_get_version(), true );
+		wp_enqueue_script('jquery-ui-core');
+		wp_enqueue_script('jquery-ui-dialog');
 
-		// Register Omniture s-code
-		wp_register_script( 'getty-omniture-scode', apply_filters( 'getty_images_s_code_js_url', plugins_url( '/js/s_code.js', __FILE__ ) ), array(), $this->__plugin_get_version(), true );
+		wp_enqueue_style('wp-jquery-ui-dialog');
 
-		// Optionally load it as a dependency
-		$models_depend = $load_tracking ? array( 'jquery-cookie', 'getty-omniture-scode' ) : array( 'jquery-cookie' );
+		wp_enqueue_script( 'moment-js', plugins_url( '/js/vendor/moment.min.js', __FILE__ ), array(), 1, true );
 
-		wp_enqueue_script( 'getty-images-models', plugins_url( '/js/getty-models-2-5.js', __FILE__ ), $models_depend, $this->__plugin_get_version(), true );
-		wp_enqueue_script( 'getty-images', plugins_url( '/js/getty-images-2-5.js', __FILE__ ), array( 'getty-images-views', 'getty-images-models' ), $this->__plugin_get_version(), true );
+		wp_enqueue_script( 'spin-js', plugins_url( '/js/vendor/spin.js', __FILE__ ), array(), 1, true );
+		wp_enqueue_script( 'firebase-app-js', plugins_url( '/js/vendor/firebase-app.js', __FILE__ ), array(), 1, true );
+		wp_enqueue_script( 'firebase-auth-js', plugins_url( '/js/vendor/firebase-auth.js', __FILE__ ), array( 'firebase-app-js' ), 1, true );
+		wp_enqueue_script( 'firebase-database-js', plugins_url( '/js/vendor/firebase-database.js', __FILE__ ), array( 'firebase-app-js' ), 1, true );
+		wp_enqueue_script( 'firebase-messaging-js', plugins_url( '/js/vendor/firebase-messaging.js', __FILE__ ), array( 'firebase-app-js' ), 1, true );
+		wp_enqueue_script( 'getty-mosaic', plugins_url( '/js/getty-mosaic.js', __FILE__ ), array(), 1, true );
+		wp_enqueue_script( 'getty-images-filters', plugins_url( '/js/getty-filters-3-0.js', __FILE__ ), array(), 1, true );
+		wp_enqueue_script( 'getty-images-views', plugins_url( '/js/getty-views-3-0.js', __FILE__ ), array( 'getty-images-filters', 'spin-js' ), 1, true );
+		wp_enqueue_script( 'getty-images-firebase', plugins_url( '/js/getty-firebase.js', __FILE__ ), array( 'firebase-app-js' ), 1, true );
 
-		wp_enqueue_style( 'getty-about-text', plugins_url( '/css/getty-about-text.css', __FILE__ ), array(), $this->__plugin_get_version() );
-		wp_enqueue_style( 'getty-browser', plugins_url( '/css/getty-browser.css', __FILE__ ), array(), $this->__plugin_get_version() );
-		wp_enqueue_style( 'getty-choose-mode', plugins_url( '/css/getty-choose-mode.css', __FILE__ ), array(), $this->__plugin_get_version() );
-		wp_enqueue_style( 'getty-images-login', plugins_url( '/css/getty-images-login.css', __FILE__ ), array(), $this->__plugin_get_version() );
-		wp_enqueue_style( 'getty-refinement-panel', plugins_url( '/css/getty-refinement-panel.css', __FILE__ ), array(), $this->__plugin_get_version() );
-		wp_enqueue_style( 'getty-sidebar-container', plugins_url( '/css/getty-sidebar-container.css', __FILE__ ), array(), $this->__plugin_get_version() );
-		wp_enqueue_style( 'getty-title-bar', plugins_url( '/css/getty-title-bar.css', __FILE__ ), array(), $this->__plugin_get_version() );
-		wp_enqueue_style( 'getty-toolbar', plugins_url( '/css/getty-toolbar.css', __FILE__ ), array(), $this->__plugin_get_version() );
-		wp_enqueue_style( 'getty-welcome', plugins_url( '/css/getty-welcome.css', __FILE__ ), array(), $this->__plugin_get_version() );
+		// Register specific Omniture version of s_code for VIP or .org
+		if($isWPcom) {
+			wp_register_script( 'getty-omniture-scode', apply_filters( 'getty_images_s_code_js_url', plugins_url( '/js/vendor/s_code_vip.js', __FILE__ ) ), array(), $this->__plugin_get_version(), true );
+		} else {
+			wp_register_script( 'getty-omniture-scode', apply_filters( 'getty_images_s_code_js_url', plugins_url( '/js/vendor/s_code_org.js', __FILE__ ) ), array(), $this->__plugin_get_version(), true );
+		}
+		
+
+		wp_enqueue_script( 'getty-images-models', plugins_url( '/js/getty-models-3-0.js', __FILE__ ), array( 'jquery-cookie', 'getty-omniture-scode' ), $this->__plugin_get_version(), true );
+		wp_enqueue_script( 'getty-images', plugins_url( '/js/getty-images-3-0.js', __FILE__ ), array( 'getty-images-views', 'getty-images-models' ), $this->__plugin_get_version(), true );
+
+		wp_enqueue_style( 'getty-base-styles', plugins_url( '/css/getty-base-styles.css', __FILE__ ) );
+		wp_enqueue_style( 'getty-about-text', plugins_url( '/css/getty-about-text.css', __FILE__ ) );
+		wp_enqueue_style( 'getty-browser', plugins_url( '/css/getty-browser.css', __FILE__ ) );
+		wp_enqueue_style( 'getty-choose-mode', plugins_url( '/css/getty-choose-mode.css', __FILE__ ) );
+		wp_enqueue_style( 'getty-images-login', plugins_url( '/css/getty-images-login.css', __FILE__ ) );
+		wp_enqueue_style( 'getty-refinement-panel', plugins_url( '/css/getty-refinement-panel.css', __FILE__ ) );
+		wp_enqueue_style( 'getty-sidebar-container', plugins_url( '/css/getty-sidebar-container.css', __FILE__ ) );
+		wp_enqueue_style( 'getty-title-bar', plugins_url( '/css/getty-title-bar.css', __FILE__ ) );
+		wp_enqueue_style( 'getty-toolbar', plugins_url( '/css/getty-toolbar.css', __FILE__ ) );
+		wp_enqueue_style( 'getty-welcome', plugins_url( '/css/getty-welcome.css', __FILE__ ) );
+		wp_enqueue_style( 'getty-landing', plugins_url( '/css/getty-landing.css', __FILE__ ) );
 
 		if( $load_tracking ) {
 			// Register Google Analytics
-			wp_enqueue_script( 'google-analytics', plugins_url( '/js/google-analytics.js', __FILE__ ), array(), $this->__plugin_get_version(), true );
+			wp_enqueue_script( 'google-analytics', plugins_url( '/js/vendor/google-analytics.js', __FILE__ ), array(), $this->__plugin_get_version(), true );
 			wp_localize_script( 'google-analytics', 'google_analytics_data',
 					array( 
 						'ID' => $googleAnalyticsId
@@ -236,7 +275,7 @@ class Getty_Images {
 				);
 
 			//Register Google Tag Manager
-			wp_enqueue_script( 'google-tag-manager-head', plugins_url( '/js/google-tag-manager-head.js', __FILE__ ), array(), $this->__plugin_get_version(), true );
+			wp_enqueue_script( 'google-tag-manager-head', plugins_url( '/js/vendor/google-tag-manager-head.js', __FILE__ ), array(), $this->__plugin_get_version(), true );
 			wp_localize_script( 'google-tag-manager-head', 'google_tag_manager_data',
 					array( 
 						'ID' => $googleTagManagerId
@@ -296,6 +335,7 @@ class Getty_Images {
 					'selectImage' => __( "Select Image", 'getty-images' ),
 
 					//// Filters
+					'imageType' => __( "Image Type", 'getty-images' ),
 					'assetType' => __( "Asset Type", 'getty-images' ),
 					'editorial' => __( "Editorial", 'getty-images' ),
 					'creative' => __( "Creative", 'getty-images' ),
@@ -419,7 +459,7 @@ class Getty_Images {
 	}
 
 	static function isWPcom() {
-		return isset( $_GET['gettyTestWPcomIsVip'] ) || ( function_exists( 'wpcom_is_vip' ) && wpcom_is_vip() );
+		return function_exists( 'wpcom_is_vip' ) && wpcom_is_vip();
 	}
 
 	/**
@@ -462,7 +502,7 @@ class Getty_Images {
 	 * @return array $postdata
 	 */
 	function wp_insert_post_data( $data, $postarr ) {
-		if( $this->contains_comp( $data['post_content'] ) && $data['post_status'] == 'publish' ) {
+		if( $this->contains_comp( $data['post_content'] ) && 'publish' === $data['post_status'] ) {
 			$data['post_status'] = 'draft';
 		}
 
@@ -476,11 +516,11 @@ class Getty_Images {
 	function admin_notices() {
 		global $pagenow;
 
-		if( $pagenow != 'post.php' || !isset( $_GET['post'] ) ) {
+		if( 'post.php' !== $pagenow || !isset( $_GET['post'] ) ) {
 			return;
 		}
 
-		$post = get_post( (int) $_GET['post'] );
+		$post = get_post();
 
 		if( !$post ) {
 			return;
@@ -522,8 +562,6 @@ class Getty_Images {
 			$this->ajax_error( __( "Missing image meta", 'getty-images' ) );
 		}
 
-		$meta = $_POST['meta'];
-
 		if( !is_array( $_POST['meta'] ) || !isset( $_POST['meta']['id'] ) ) {
 			$this->ajax_error( __( "Invalid image meta", 'getty-images' ) );
 		}
@@ -550,8 +588,17 @@ class Getty_Images {
 		preg_match( '/[^?]+\.(jpe?g|jpe|gif|png)\b/i', $url, $matches );
 
 		if( empty( $matches ) ) {
-			$this->ajax_error( __( "Invalid filename", 'getty-images' ) );
+			$query  = parse_url( $_POST['meta']['SelectedDownloadSize']['uri'] );
+			$parsed = wp_parse_args( $query['query'] );
+			$name   = "GettyImages-" . $_POST['meta']['id'] . '.' . $parsed['file_type'];
+			if ( empty( $parsed['file_type'] ) ) {
+				$this->ajax_error( __( "Invalid filename", 'getty-images' ) );
+			} else {
+				$matches = array( $name );
+			}
 		}
+
+		$file_array = array();
 
 		$file_array['name'] = basename( $matches[0] );
 		$file_array['tmp_name'] = $tmp;
@@ -581,8 +628,8 @@ class Getty_Images {
 		wp_update_post( array(
 			'ID' => $attachment->ID,
 			'post_content' => '',
-      'post_excerpt' => $attachment->post_content,
-      'post_parent' => $post_parent
+      		'post_excerpt' => $attachment->post_content,
+      		'post_parent' => $post_parent
 		) );
 
 		// Trash any existing attachment for this Getty Images image. Don't force
@@ -594,7 +641,8 @@ class Getty_Images {
 			'post_status' => 'any',
 			'meta_key' => self::getty_details_meta_key,
 			'meta_value' => $getty_id,
-			'fields' => 'ids'
+			'fields' => 'ids',
+			'suppress_filters' => false
 		) );
 
 		foreach( $existing_image_ids as $existing_image_id ) {
@@ -620,9 +668,6 @@ class Getty_Images {
 	 * @return array
 	 */
 	function get_possible_image_sizes() {
-		global $_wp_additional_image_sizes;
-
-		$sizes = array();
 		$possible_sizes = apply_filters( 'image_size_names_choose', array(
 			'thumbnail' => __('Thumbnail', 'getty-images'),
 			'medium'    => __('Medium', 'getty-images'),
@@ -641,6 +686,32 @@ class Getty_Images {
 		}
 
 		return $possible_sizes;
+	}
+
+	/**
+	 * Fetch facets for current query to get the specific people filter values.
+	 *
+	 * @action wp_ajax_getty_get_facets
+	 */
+	function ajax_get_facets() {
+		$this->ajax_check();
+
+		$url = $_POST["url"];
+
+		$request = function_exists('vip_safe_wp_remote_get') ? vip_safe_wp_remote_get( $url ) : wp_remote_get( $url );
+
+		if( is_wp_error( $request ) ) {
+			$this->ajax_error( __( "Error getting facets", 'getty-images' ), $request );
+		}
+
+		$body = wp_remote_retrieve_body( $request );
+
+		$data = json_decode( $body );
+
+		$response = array();
+		$response['facets'] = $data;
+
+		$this->ajax_success( __( "Succesfully loaded facets", 'getty-images' ), $response ); 
 	}
 
 	/**
@@ -671,7 +742,8 @@ class Getty_Images {
 			'post_type' => 'attachment',
 			'meta_key' => self::getty_imageid_meta_key,
 			'meta_value' => $id,
-			'posts_per_page' => 1
+			'posts_per_page' => 1,
+			'suppress_filters' => false
 		) );
 
 		if( empty( $posts ) ) {
@@ -691,9 +763,9 @@ class Getty_Images {
 		}
 
 		echo '
-		<!-- Google Tag Manager (noscript) -->
-		<noscript><iframe src="https://www.googletagmanager.com/ns.html?id='.$googleTagManagerID.'" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-		<!-- End Google Tag Manager (noscript) -->
+			<!-- Google Tag Manager (noscript) -->
+			<noscript><iframe src="https://www.googletagmanager.com/ns.html?id='.esc_html($googleTagManagerID).'" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+			<!-- End Google Tag Manager (noscript) -->
 		';
 	}
 
