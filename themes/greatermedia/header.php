@@ -48,36 +48,38 @@
 
 				<?php do_action( 'dfp_wallpaper_tag' ); ?>
 
-				<?php get_template_part( 'partials/header-site' ); ?>
+				<?php if ( ! greatermedia_is_jacapps() ) : ?>
 
-				<?php get_template_part( 'partials/header-search' ); ?>
+					<?php get_template_part( 'partials/header-site' ); ?>
 
-				<nav id="mobile-nav" class="mobile-nav">
-					<?php
-					$mobile_nav = array(
-						'theme_location'  => 'main-nav',
-						'menu'            => '',
-						'container'       => '',
-						'container_class' => '',
-						'container_id'    => '',
-						'menu_class'      => 'mobile-nav__list js-mobile-sub-menus',
-						'menu_id'         => '',
-						'echo'            => true,
-						'fallback_cb'     => 'wp_page_menu',
-						'before'          => '',
-						'after'           => '',
-						'link_before'     => '',
-						'link_after'      => '',
-						'items_wrap'      => '<ul id="%1$s" class="%2$s">%3$s</ul>',
-						'depth'           => 0,
-						'walker'          => new GreaterMediaMobileNavWalker(),
-					);
+					<?php get_template_part( 'partials/header-search' ); ?>
 
-					wp_nav_menu( $mobile_nav );
+					<nav id="mobile-nav" class="mobile-nav">
+						<?php
+						$mobile_nav = array(
+							'theme_location'  => 'main-nav',
+							'menu'            => '',
+							'container'       => '',
+							'container_class' => '',
+							'container_id'    => '',
+							'menu_class'      => 'mobile-nav__list js-mobile-sub-menus',
+							'menu_id'         => '',
+							'echo'            => true,
+							'fallback_cb'     => 'wp_page_menu',
+							'before'          => '',
+							'after'           => '',
+							'link_before'     => '',
+							'link_after'      => '',
+							'items_wrap'      => '<ul id="%1$s" class="%2$s">%3$s</ul>',
+							'depth'           => 0,
+							'walker'          => new GreaterMediaMobileNavWalker(),
+						);
 
-					do_action( 'gmr_social' ); ?>
-				</nav>
+						wp_nav_menu( $mobile_nav );
 
+						do_action( 'gmr_social' ); ?>
+					</nav>
+				<?php endif; ?>
 				<main class="main" role="main">
 					<div class="container__leaderboard">
 						<div class="ad__leaderboard">
