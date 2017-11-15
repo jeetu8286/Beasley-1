@@ -1397,3 +1397,8 @@ function greatermedia_dequeue_scripts_styles(){
 		wp_dequeue_script( 'gmedia_keywords-autocomplete-script' );
 	}
 }
+
+if ( function_exists( 'vary_cache_on_function' ) ) {
+	// batcache variant
+	vary_cache_on_function( 'return (bool) preg_match("/jacapps/i", $_SERVER["HTTP_USER_AGENT"]);' );
+}
