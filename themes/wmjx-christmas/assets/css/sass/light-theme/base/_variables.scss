@@ -10,7 +10,7 @@ $asset_root: "../../../../themes/greatermedia/assets/";
 //
 $black: #000000;
 $white: #ffffff;
-$cardinal: #d22228;
+$cardinal: #002a6e;
 $heath: #561015;
 $coffee-bean: #270e10;
 $extra-light-gray: #f1f1f3;
@@ -20,11 +20,11 @@ $medium-gray: #404041;
 $medium-dark-gray: #6d6e70;
 $dark-gray: #282827;
 $darker-gray: #191919;
-$yellow: #f5ed7f;
-$highlights-bg: #5a5a5a;
+$yellow: #ffe513;
+$highlights-bg: $white;
 $highlights-heading: #ffffff;
 
-// WMJX - Christmas colors
+// WMJX colors
 //
 // @author Denis Prindeville
 // @since 0.1.0
@@ -46,8 +46,8 @@ $color-gray-darker: $darker-gray;
 $primary-bg: #fff;
 $primary-text: $color-text-gray;
 $primary-heading: $color-text-gray;
-$primary-link: $color-text-red;
-$primary-link-hover: darken($color-text-red, 9%);
+$primary-link: $cardinal;
+$primary-link-hover: darken($cardinal, 9%);
 $primary-border: $light-gray;
 
 $secondary-bg: $color-gray-medium-dark;
@@ -58,7 +58,7 @@ $secondary-link-hover: darken($color-text-red, 9%);
 $secondary-border: $dark-gray;
 
 // Section Variables
-$header-bg: $color-gray-medium-dark;
+$header-bg: $white;
 $header-border: $dark-gray;
 $header-nav-bg: $cardinal;
 $header-search-bg: $color-gray-medium-light;
@@ -66,8 +66,9 @@ $header-search-bg: $color-gray-medium-light;
 $liveplayer-bg: $color-gray-light;
 $liveplayer-color: #404041;
 
-$featured-primary-bg: $heath;
+$featured-primary-bg: $white;
 $featured-secondary-bg: $coffee-bean;
+$liveplayer-color-secondary: $cardinal;
 
 $highlights-text: $gray;
 $highlights-link: $dark-gray;

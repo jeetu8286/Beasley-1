@@ -13,9 +13,12 @@
 	 */
 	var body = document.querySelector( 'body' ),
 		header = document.getElementById( 'header' ),
-		header_main = header.getElementsByClassName( 'header__main' )[0],
-		header_container = header.querySelectorAll( '.header__main > .container' )[0];
+		header_main = (header) ? header.getElementsByClassName( 'header__main' )[0] : false,
+		header_container = (header) ? header.querySelectorAll( '.header__main > .container' )[0] : false;
 
+	if ( !header ){
+		return;
+	}
 	if ( window.matchMedia( '(min-width: 768px)' ).matches ) {
 
 		// Using window.onload because heights we want need to be rendered.

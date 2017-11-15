@@ -63,29 +63,45 @@ class WP_Widget_Recent_Contests extends WP_Widget {
 		 *
 		 * @param array $args An array of arguments used to retrieve the recent posts.
 		 */
-		 $now           = time();
- 		 $query_meta_params = array(
- 			'relation' => 'OR',
- 			/* This is a contest with an valid end timestamp */
- 			array(
- 				'key'     => 'contest-end',
- 				'type'    => 'NUMERIC',
- 				'value'   => $now,
- 				'compare' => '>',
- 			),
- 			/* any other post/type which matches the search query */
- 			array(
- 				'key'     => 'contest-end',
- 				'type'    => 'NUMERIC',
- 				'value'   => '',
- 				'compare' => 'NOT EXISTS',
- 			),
- 			array(
- 				'key'     => 'contest-end',
- 				'type'    => 'NUMERIC',
- 				'value'   => 0,
- 			),
- 		);
+		$now               = time();
+		$query_meta_params = array(
+			'relation' => 'AND',
+			array(
+				'relation' => 'OR',
+				/* This is a contest with an valid end timestamp */
+				array(
+					'key'     => 'contest-end',
+					'type'    => 'NUMERIC',
+					'value'   => $now,
+					'compare' => '>',
+				),
+				/* any other post/type which matches the search query */
+				array(
+					'key'     => 'contest-end',
+					'type'    => 'NUMERIC',
+					'value'   => '',
+					'compare' => 'NOT EXISTS',
+				),
+				array(
+					'key'   => 'contest-end',
+					'type'  => 'NUMERIC',
+					'value' => 0,
+				),
+			),
+			array(
+				'relation' => 'OR',
+				array(
+					'key'     => 'secret',
+					'compare' => 'NOT EXISTS',
+				),
+				array(
+					'key'     => 'secret',
+					'type'    => 'NUMERIC',
+					'value'   => 1,
+					'compare' => '!=',
+				),
+			),
+		);
 
 		$r = new WP_Query( apply_filters( 'widget_posts_args', array(
 			'post_type'						=> 'contest',
