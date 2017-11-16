@@ -19,7 +19,7 @@ get_header();
 			<section class="article__content" itemprop="articleBody">
 				<?php the_content(); ?>
 
-				<iframe src="http://interactives.ap.org/2016/general-election/?SITE=WBTAMELN" class="ap-embed" width="100%" height="900" style="border: 1px solid #eee;">
+				<iframe src="https://interactives.ap.org/2016/general-election/?SITE=WBTAMELN" class="ap-embed" width="100%" height="900" style="border: 1px solid #eee;">
 					Your browser does not support the <code>iframe</code> HTML tag. Try viewing this in a modern browser like Chrome, Safari, Firefox or Internet Explorer 9 or later.
 				</iframe>
 

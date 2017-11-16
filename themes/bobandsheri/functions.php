@@ -53,7 +53,7 @@ function bobandsheri_scripts_styles() {
 	wp_dequeue_style( 'greatermedia' );
 	wp_deregister_style( 'greatermedia' );
 	wp_enqueue_style( 'bobandsheri', get_stylesheet_directory_uri() . "/assets/css/bobandsheri{$postfix}.css", array(), BOBANDSHERI_VERSION );
-	wp_enqueue_style( 'bobandsheri_font', "http://fonts.googleapis.com/css?family=Work+Sans", array(), BOBANDSHERI_VERSION );
+	wp_enqueue_style( 'bobandsheri_font', "https://fonts.googleapis.com/css?family=Work+Sans", array(), BOBANDSHERI_VERSION );
 	wp_enqueue_script( 'livefyre', '//cdn.livefyre.com/Livefyre.js', null, null, true );
 	wp_enqueue_script(
         'bobandsheri',

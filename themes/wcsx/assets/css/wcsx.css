@@ -14193,7 +14193,7 @@ h6 {
 #site-wrap.site-wrap {
   background-size: 100%;
   background-color: #000;
-  background-image: url("http://wcsx.com/wp-content/themes/wcsx/images/starbg.jpg");
+  background-image: url("//wcsx.com/wp-content/themes/wcsx/images/starbg.jpg");
   background-repeat: repeat-x; }
 
 .content {
@@ -14223,7 +14223,7 @@ a.entry2__footer--read-more {
 /* header */
 .header__main.headroom {
   background-size: cover;
-  background-image: url(https://files.greatermedia.com/uploads/sites/14/2017/03/wcsxmastbg317-1.jpg);
+  background-image: url(//files.greatermedia.com/uploads/sites/14/2017/03/wcsxmastbg317-1.jpg);
   background-color: #4c1d68; }
 
 .header__main a, .header__main a:visited {

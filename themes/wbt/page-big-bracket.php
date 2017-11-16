@@ -24,6 +24,7 @@ get_header();
 						margin: 0 auto;
 					}
 				</style>
+				<!-- @todo : Update to HTTPS when supports -->
 				<script type="text/javascript" src="http://s1.march.dellsportsgames.com/atx/init/atx-pool=26/" id="x-march-generator"></script>
 			</section>
 		</article>

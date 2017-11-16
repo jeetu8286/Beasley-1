@@ -57,7 +57,7 @@ define( 'WLNK_VERSION', $version ); /* Version bump by Jonathan 01/16/2017 @ 3:1
 	wp_enqueue_style( 'wlnk', get_stylesheet_directory_uri() . "/assets/css/wlnk{$postfix}.css", array(), WLNK_VERSION );
 	wp_enqueue_style( 'wlnk_ie', get_stylesheet_directory_uri() . "/assets/css/wlnk_ie.css", array('wlnk'), WLNK_VERSION );
 	$wp_styles->add_data( 'wlnk_ie', 'conditional', 'lte IE 9' );
-	wp_enqueue_style( 'wlnk_font', "http://fonts.googleapis.com/css?family=Work+Sans", array(), WLNK_VERSION );
+	wp_enqueue_style( 'wlnk_font', "https://fonts.googleapis.com/css?family=Work+Sans", array(), WLNK_VERSION );
 	wp_enqueue_script(
         'wlnk',
         get_stylesheet_directory_uri() . "/assets/js/wlnk{$postfix}.js",
