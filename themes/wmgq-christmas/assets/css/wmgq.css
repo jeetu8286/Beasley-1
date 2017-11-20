@@ -13906,7 +13906,7 @@ article > .triton-song-history {
  */
 .header {
   background-color: #40b9fd !important;
-  background-image: url("../images/WMGQ-Christmas-Header-Background6.jpg") !important;
+  background-image: url("../../images/WMGQ-Christmas-Header-Background6.jpg") !important;
   background-repeat: repeat-x;
   background-position: center top;
   border-bottom: none; }
@@ -13951,7 +13951,7 @@ article > .triton-song-history {
 
 @media screen and (min-width: 970px) {
   .main {
-    background-image: url("../images/WMGQ-Christmas-body-bkg.jpg");
+    background-image: url("../../images/WMGQ-Christmas-body-bkg.jpg");
     background-repeat: repeat-x;
     background-attachment: fixed !important; } }
 
@@ -13994,6 +13994,10 @@ article > .triton-song-history {
   font-family: 'Istok+Web', sans-serif;
   text-shadow: 1px 1px 1px black; }
 
+.home__featured .featured__article--content {
+  background-color: #061c3a;
+  color: #d0d2d3; }
+
 .home__featured .featured__article a:hover .featured__article--content {
   background-color: #007abd; }
 
@@ -14018,6 +14022,10 @@ article > .triton-song-history {
 .home__featured .featured__content--meta {
   width: 65%;
   min-height: 4.2em; }
+
+.home__featured .featured__content--block {
+  background-color: #061c3a;
+  color: #d0d2d3; }
 
 .featured__content--block:hover .featured__content--title {
   color: #fff; }
