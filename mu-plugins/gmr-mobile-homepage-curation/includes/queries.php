@@ -113,6 +113,9 @@ function recent_homepage_query( $meta_key ) {
 	} elseif ( $homepages->have_posts() ) {
 		$homepage = $homepages->next_post();
 	}
+	if ( ! $homepage && function_exists( '\GreaterMedia\HomepageCuration\get_current_homepage' ) ) {
+		$homepage = \GreaterMedia\HomepageCuration\get_current_homepage();
+	}
 
 	if ( $homepage ) {
 		$posts = get_post_meta( $homepage->ID, $meta_key, true );
