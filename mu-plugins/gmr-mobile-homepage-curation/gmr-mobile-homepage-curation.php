@@ -1,22 +1,21 @@
 <?php
 /**
- * Homepage Curation Functionality
+ * Mobile Homepage Curation Functionality
  *
  * Themes *must* declare support for homepage curation using add_theme_support( 'homepage-curation' )
  */
 
-namespace GreaterMedia\HomepageCuration;
+namespace GreaterMedia\MobileHomepageCuration;
 
-define( 'GMEDIA_HOMEPAGE_CURATION_VERSION', '1.0.0' );
-define( 'GMEDIA_HOMEPAGE_CURATION_URL', plugin_dir_url( __FILE__ ) );
+define( 'GMEDIA_MOBILE_HOMEPAGE_CURATION_VERSION', '1.0.0' );
+define( 'GMEDIA_MOBILE_HOMEPAGE_CURATION_URL', plugin_dir_url( __FILE__ ) );
 
 function load() {
 	if ( current_theme_supports( 'homepage-curation' ) ) {
 		require __DIR__ . '/includes/homepage_cpt.php';
 		require __DIR__ . '/includes/queries.php';
-		require __DIR__ . '/includes/homepage-exclude.php';
-//		require __DIR__ . '/includes/feeds/current-homepage.php';
-//		require __DIR__ . '/includes/feeds/current-homepage-featured.php';
+		require __DIR__ . '/includes/feeds/current-homepage.php';
+		require __DIR__ . '/includes/feeds/current-homepage-featured.php';
 	}
 }
 
@@ -56,4 +55,4 @@ function do_frontpage_highlights() {
 		locate_template( $template, true, false );
 	}
 }
-add_action( 'do_frontpage_highlights', __NAMESPACE__ . '\do_frontpage_highlights' );
+//add_action( 'do_frontpage_highlights', __NAMESPACE__ . '\do_frontpage_highlights' );
