@@ -124,7 +124,7 @@ function register_homepage_cpt() {
 		'taxonomies'           => array(),
 		'public'               => true,
 		'show_ui'              => true,
-		'show_in_menu'         => true,
+		'show_in_menu'         => 'edit.php?post_type=gmr_homepage',
 		'show_in_admin_bar'    => true,
 		'menu_position'        => 3,
 		'menu_icon'            => 'dashicons-admin-home',
