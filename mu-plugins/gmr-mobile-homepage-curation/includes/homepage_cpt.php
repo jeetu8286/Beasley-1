@@ -1,26 +1,37 @@
 <?php
 
-namespace GreaterMedia\HomepageCuration;
+namespace GreaterMedia\MobileHomepageCuration;
 
 use \WP_Query;
 
-add_action( 'init',                  __NAMESPACE__ . '\register_homepage_cpt' );
-add_action( 'save_post',             __NAMESPACE__ . '\save_meta_data' );
-add_action( 'post_submitbox_start',  __NAMESPACE__ . '\create_homepages_nonce' );
-add_action( 'add_meta_boxes',        __NAMESPACE__ . '\remove_yoast_metabox', PHP_INT_MAX );
-add_action( 'wp_print_scripts',      __NAMESPACE__ . '\remove_yoast_metabox_js', PHP_INT_MAX );
+add_action( 'init', __NAMESPACE__ . '\register_homepage_cpt' );
+add_action( 'save_post', __NAMESPACE__ . '\save_meta_data' );
+add_action( 'post_submitbox_start', __NAMESPACE__ . '\create_homepages_nonce' );
+add_action( 'add_meta_boxes', __NAMESPACE__ . '\remove_yoast_metabox', PHP_INT_MAX );
+add_action( 'wp_print_scripts', __NAMESPACE__ . '\remove_yoast_metabox_js', PHP_INT_MAX );
 
-add_filter( 'preview_post_link',     __NAMESPACE__ . '\preview_post_setup', PHP_INT_MAX, 2 );
+add_filter( 'gmg_homepage_preview_post_type', __NAMESPACE__ . '\preview_post_type_query', 10, 2 );
+
+add_filter( 'preview_post_link', __NAMESPACE__ . '\preview_post_setup', PHP_INT_MAX, 2 );
 
 // Enqueue scripts
 add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\enqueue_admin_scripts' );
+
+function preview_post_type_query( $post_type, $post_id ) {
+	if ( get_post_type( $post_id ) == gmr_homepages_slug() ) {
+		return gmr_homepages_slug();
+	}
+
+	return $post_type;
+}
+
 /**
  * Homepage save nonce
  *
  * @return string
  */
 function get_homepage_save_nonce() {
-	return '_save_hompage_nonce';
+	return '_save_mobile_homepage_nonce';
 }
 
 /**
@@ -38,7 +49,7 @@ function preview_meta_key_suffix() {
  * @return string
  */
 function gmr_homepages_slug() {
-	return 'gmr_homepage';
+	return 'gmr_mobile_homepage';
 }
 
 /**
@@ -60,7 +71,7 @@ function metabox_data() {
  * @return array
  */
 function get_supported_post_types() {
-	return (array) apply_filters( 'gmr-homepage-curation-post-types', array( 'post', 'page', 'tribe_events' )  );
+	return (array) apply_filters( 'gmr-homepage-curation-post-types', array( 'post', 'page', 'tribe_events' ) );
 }
 
 /**
@@ -69,6 +80,7 @@ function get_supported_post_types() {
  * @param $homepage_id       Homepage post ID
  * @param $key               The post meta key to get
  * @param bool|false $single Whether to return a single meta value or not
+ *
  * @return mixed             Will be an array if $single is false. Will be value of meta data field if $single is true.
  */
 function get_preview_aware_post_meta( $homepage_id, $key, $single = false ) {
@@ -81,51 +93,52 @@ function get_preview_aware_post_meta( $homepage_id, $key, $single = false ) {
 }
 
 /**
-* Registers Homepage post type
-*
-* @param string  Post type key, must not exceed 20 characters
-* @param array|string  See optional args description above.
-* @return object|WP_Error the registered post type object, or an error object
-*/
+ * Registers Homepage post type
+ *
+ * @param string  Post type key, must not exceed 20 characters
+ * @param array|string See optional args description above.
+ *
+ * @return object|WP_Error the registered post type object, or an error object
+ */
 function register_homepage_cpt() {
 
 	$labels = array(
-		'name'                => __( 'Homepages', 'greatermedia' ),
-		'singular_name'       => __( 'Homepage', 'greatermedia' ),
-		'add_new'             => _x( 'Add New Homepage', 'greatermedia', 'greatermedia' ),
-		'add_new_item'        => __( 'Add New Homepage', 'greatermedia' ),
-		'edit_item'           => __( 'Edit Homepage', 'greatermedia' ),
-		'new_item'            => __( 'New Homepage', 'greatermedia' ),
-		'view_item'           => __( 'View Homepage', 'greatermedia' ),
-		'search_items'        => __( 'Search Homepages', 'greatermedia' ),
-		'not_found'           => __( 'No Homepages found', 'greatermedia' ),
-		'not_found_in_trash'  => __( 'No Homepages found in Trash', 'greatermedia' ),
-		'parent_item_colon'   => __( 'Parent Homepage:', 'greatermedia' ),
-		'menu_name'           => __( 'Homepages', 'greatermedia' ),
+		'name'               => __( 'Mobile Homepages', 'greatermedia' ),
+		'singular_name'      => __( 'Mobile Homepage', 'greatermedia' ),
+		'add_new'            => _x( 'Add New Mobile Homepage', 'greatermedia', 'greatermedia' ),
+		'add_new_item'       => __( 'Add New Mobile Homepage', 'greatermedia' ),
+		'edit_item'          => __( 'Edit Mobile Homepage', 'greatermedia' ),
+		'new_item'           => __( 'New Mobile Homepage', 'greatermedia' ),
+		'view_item'          => __( 'View Mobile Homepage', 'greatermedia' ),
+		'search_items'       => __( 'Search Mobile Homepages', 'greatermedia' ),
+		'not_found'          => __( 'No Mobile Homepages found', 'greatermedia' ),
+		'not_found_in_trash' => __( 'No Mobile Homepages found in Trash', 'greatermedia' ),
+		'parent_item_colon'  => __( 'Parent Mobile Homepage:', 'greatermedia' ),
+		'menu_name'          => __( 'Mobile Homepages', 'greatermedia' ),
 	);
 
 	$args = array(
-		'labels'              => $labels,
-		'hierarchical'        => false,
-		'description'         => 'description',
-		'taxonomies'          => array(),
-		'public'              => true,
-		'show_ui'             => true,
-		'show_in_menu'        => true,
-		'show_in_admin_bar'   => true,
-		'menu_position'       => 3,
-		'menu_icon'           => 'dashicons-admin-home',
-		'show_in_nav_menus'   => true,
-		'publicly_queryable'  => true,
-		'exclude_from_search' => true,
-		'has_archive'         => true,
-		'query_var'           => true,
-		'can_export'          => true,
-		'rewrite'             => true,
-		'capability_type'     => 'post',
-		'show_in_rest'       => true,
-        'rest_base'          => 'homepages',
-		'supports'            => array( 'title' ),
+		'labels'               => $labels,
+		'hierarchical'         => false,
+		'description'          => 'description',
+		'taxonomies'           => array(),
+		'public'               => true,
+		'show_ui'              => true,
+		'show_in_menu'         => 'edit.php?post_type=gmr_homepage',
+		'show_in_admin_bar'    => true,
+		'menu_position'        => 3,
+		'menu_icon'            => 'dashicons-admin-home',
+		'show_in_nav_menus'    => true,
+		'publicly_queryable'   => true,
+		'exclude_from_search'  => true,
+		'has_archive'          => true,
+		'query_var'            => true,
+		'can_export'           => true,
+		'rewrite'              => true,
+		'capability_type'      => 'post',
+		'show_in_rest'         => true,
+		'rest_base'            => 'mobilehomepages',
+		'supports'             => array( 'title' ),
 		'register_meta_box_cb' => __NAMESPACE__ . '\register_meta_boxes',
 	);
 
@@ -157,15 +170,15 @@ function register_meta_boxes( $homepage ) {
 
 function render_source_meta_box( $homepage, $metabox ) {
 	// Can hook into these to change the limit for each curated area
-	$homepage_curation_featured_limit = apply_filters( 'gmr-homepage-featured-limit', 6, $homepage );
+	$homepage_curation_featured_limit  = apply_filters( 'gmr-homepage-featured-limit', 6, $homepage );
 	$homepage_curation_community_limit = apply_filters( 'gmr-homepage-community-limit', 3, $homepage );
-	$homepage_curation_events_limit = apply_filters( 'gmr-homepage-events-limit', 2, $homepage );
+	$homepage_curation_events_limit    = apply_filters( 'gmr-homepage-events-limit', 2, $homepage );
 
-	$post_picker_args = array (
+	$post_picker_args = array(
 		'show_numbers'            => true,
 		'show_icons'              => true,
 		'show_recent_select_list' => true,
-		'args'                    => array (
+		'args'                    => array(
 			'post_type'   => get_supported_post_types(),
 			'post_status' => array( 'publish', 'future' )
 		),
@@ -179,7 +192,7 @@ function render_source_meta_box( $homepage, $metabox ) {
 		}
 	} else {
 		// Fetch future events post ids
-		$query = new \WP_Query();
+		$query         = new \WP_Query();
 		$future_events = $query->query( array(
 			'post_type'           => 'tribe_events',
 			'post_status'         => array( 'publish', 'future', 'private' ),
@@ -202,7 +215,7 @@ function render_source_meta_box( $homepage, $metabox ) {
 			),
 		) );
 
-		$post_picker_args['limit'] = $homepage_curation_events_limit;
+		$post_picker_args['limit']             = $homepage_curation_events_limit;
 		$post_picker_args['args']['post_type'] = 'tribe_events';
 		$post_picker_args['args']['include']   = $future_events;
 	}
@@ -232,6 +245,7 @@ function render_post_picker( $name, $value, $options = array() ) {
  * Saves meta box data.
  *
  * @param int $post_id The post id.
+ *
  * @return boolean TRUE if meta data have been saved, otherwise FALSE.
  */
 function save_meta_data( $post_id ) {
@@ -306,6 +320,7 @@ function save_meta_data_field( $post_id, $meta_key, $meta_key_suffix, $meta_valu
  *
  * @param  string $url The post preview URL
  * @param  WP_Post $post The post being previewd
+ *
  * @return string The post preview URL
  */
 function preview_post_setup( $url, $post ) {
@@ -329,14 +344,14 @@ function preview_post_setup( $url, $post ) {
 
 	// Build a new preview URL. We can't just include the front page template here
 	// because the body classes added affect the layout, i.e., WP thinks you're on a single post page.
-	$url_parts = parse_url( $url );
+	$url_parts  = parse_url( $url );
 	$query_args = array();
 
 	// Get the current URL query args.
 	parse_str( $url_parts['query'], $query_args );
 
 	// Unset query vars that cause the single page template to be shown instead of the the front page template.
-	unset( $query_args[$post->post_type] );
+	unset( $query_args[ $post->post_type ] );
 	unset( $query_args['post_type'] );
 	unset( $query_args['p'] );
 
@@ -363,11 +378,12 @@ function get_preview_homepage() {
 
 		$homepages = new WP_Query(
 			array(
-				'post_type'              => apply_filters( 'gmg_homepage_preview_post_type', gmr_homepages_slug(), $post_id ),
+				'post_type'              => gmr_homepages_slug(),
 				'post_status'            => 'any',
 				'posts_per_page'         => 1,
 				'no_found_rows'          => true,
 				'ignore_sticky_posts'    => true,
+				'fields'                 => 'ids',
 				'update_post_term_cache' => false,
 				'post__in'               => array( $post_id )
 			)
@@ -403,11 +419,12 @@ function remove_yoast_metabox_js() {
 
 /**
  * Enqueue admin scripts.
+ *
  * @param $page
  */
 function enqueue_admin_scripts( $page ) {
 	global $gmr_homepage_curation, $typenow;
-	if ( $gmr_homepage_curation == $page || 'show' == $typenow || 'gmr_homepage' == $typenow ) {
+	if ( $gmr_homepage_curation == $page || 'show' == $typenow || 'gmr_mobile_homepage' == $typenow ) {
 		wp_enqueue_style( 'homepage-curation', GMEDIA_HOMEPAGE_CURATION_URL . 'css/admin.css', null, GMEDIA_HOMEPAGE_CURATION_VERSION );
 		wp_enqueue_script( 'homepage-curation', GMEDIA_HOMEPAGE_CURATION_URL . 'js/curation.js', array( 'jquery' ), GMEDIA_HOMEPAGE_CURATION_VERSION, true );
 	}
