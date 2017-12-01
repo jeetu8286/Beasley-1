@@ -40,7 +40,7 @@ while ( have_posts() ) : the_post(); ?>
 
                 <section class="article__content" itemprop="articleBody">
                     <?php the_content(); ?>
-                    <iframe src="http://www.sigalert.com/Custom/Map.asp?partner=WDHA-FM&lat=40.66415&lon=-74.21608&z=1&th=blue&ap=left&showCams=1&sp=p&urqs=1" width="570" height="665" style="border:1px solid #000000" frameborder="0" scrolling="auto" marginwidth="0" marginheight="0" allowtransparency="true"></iframe>
+                    <iframe src="https://www.sigalert.com/Custom/Map.asp?partner=WDHA-FM&lat=40.66415&lon=-74.21608&z=1&th=blue&ap=left&showCams=1&sp=p&urqs=1" width="570" height="665" style="border:1px solid #000000" frameborder="0" scrolling="auto" marginwidth="0" marginheight="0" allowtransparency="true"></iframe>
                 </section>
 
                 <?php get_template_part( 'partials/article-footer' ); ?>

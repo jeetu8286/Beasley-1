@@ -109,7 +109,7 @@
     margin: 0 0 0 1em;
 }
 
-/* Header search color */ 
+/* Header search color */
 .header__search {
   color: #f0f0f0;
   font-weight: bold}
@@ -119,12 +119,12 @@
     font-size: 1em;
     content: "\e612";
 }
-     
+
  .header__main .header__search:hover {
     background-color: #26a903;
     color: #fff;
     padding-left: 8px;
-} 
+}
 
 .header__search:hover, .header__search:hover .header__search--btn::before {
     color: #fff;

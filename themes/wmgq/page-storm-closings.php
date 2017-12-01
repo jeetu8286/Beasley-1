@@ -43,7 +43,8 @@ while ( have_posts() ) : the_post(); ?>
                     <?php the_content(); ?>
 
                     <p style="text-align: center;"><strong>Is your organization not a member of Magic 98.3's storm closings system yet? <a href="http://www.centraljerseysnow.com/members/signupform.cfm"><br />SIGN UP NOW!</a></strong></p>
-                    <iframe src="http://www.centraljerseysnow.com/members/closings/index.cfm" width="590" height="3000" scrolling="auto" frameborder="0"></iframe>
+					<!-- @todo : Update to HTTPS when supports -->
+					<iframe src="http://www.centraljerseysnow.com/members/closings/index.cfm" width="590" height="3000" scrolling="auto" frameborder="0"></iframe>
 
 
                 </section>

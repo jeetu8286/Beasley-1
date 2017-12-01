@@ -49,6 +49,7 @@ while ( have_posts() ) : the_post(); ?>
                     </a><div id="awtd1385567990060" class="aw-widget-36hour"  data-locationkey="329549" data-unit="f" data-language="en-us" data-useip="false" data-uid="awtd1385567990060" data-editlocation="true"></div><script type="text/javascript" src="http://oap.accuweather.com/launch.js"></script>
                     <hr />
                     <strong>Your Central Jersey Forecast</strong>
+					<!-- @todo : Update to HTTPS when supports -->
                     <br /><iframe src="http://www.jerseysgreatest.com/wx/wmgqweather.php" frameborder="0" scrolling="yes" width=“100%" height=“500"></iframe></div>
 
                 </section>

@@ -40,14 +40,14 @@ while ( have_posts() ) : the_post(); ?>
 
                 <section class="article__content" itemprop="articleBody">
                     <?php the_content(); ?>
-
+					<!-- @todo : Update to HTTPS when supports -->
                     <div><iframe src="http://www.jerseysgreatest.com/wx/wctcweather.php" frameborder="0" scrolling="yes" width="560" height="250"></iframe></div>
 
                     <a href="http://www.accuweather.com/en/us/new-brunswick-nj/08901/current-weather/329549" class="aw-widget-legal">
                     <!--
                     By accessing and/or using this code snippet, you agree to AccuWeather’s terms and conditions (in English) which can be found at http://www.accuweather.com/en/free-weather-widgets/terms and AccuWeather’s Privacy Statement (in English) which can be found at http://www.accuweather.com/en/privacy.
                     -->
-                    </a><div id="awtd1386960987542" class="aw-widget-36hour"  data-locationkey="329549" data-unit="f" data-language="en-us" data-useip="false" data-uid="awtd1386960987542" data-editlocation="true"></div><script type="text/javascript" src="http://oap.accuweather.com/launch.js"></script>
+                    </a><div id="awtd1386960987542" class="aw-widget-36hour"  data-locationkey="329549" data-unit="f" data-language="en-us" data-useip="false" data-uid="awtd1386960987542" data-editlocation="true"></div><script type="text/javascript" src="https://oap.accuweather.com/launch.js"></script>
                 </section>
 
                 <?php get_template_part( 'partials/article-footer' ); ?>
