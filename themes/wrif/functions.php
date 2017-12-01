@@ -105,7 +105,7 @@ function wrif_dave_and_chuck_geo_redirect() {
 add_action( 'wp_head', 'wrif_dave_and_chuck_geo_redirect', 0 );
 
 function wrif_chartbeat_footer() {
-	$content = '<script type="text/javascript">var cbjspath = "static.chartbeat.com/js/chartbeat.js?uid=2332&domain=wrif.com";var cbjsprotocol = (("https:" == document.location.protocol) ? "/web/20150305155406/https://s3.amazonaws.com/" : "http://"); document.write(unescape("%3Cscript src=\'"+cbjsprotocol+cbjspath+"\' type=\'text/javascript\'%3E%3C/script%3E"))</script>';
+	$content = '<script type="text/javascript">var cbjspath = "static.chartbeat.com/js/chartbeat.js?uid=2332&domain=wrif.com";var cbjsprotocol = (("https:" == document.location.protocol) ? "https://" : "http://"); document.write(unescape("%3Cscript src=\'"+cbjsprotocol+cbjspath+"\' type=\'text/javascript\'%3E%3C/script%3E"))</script>';
 
 	echo apply_filters( 'wrif_chartbeat_footer', $content );
 }

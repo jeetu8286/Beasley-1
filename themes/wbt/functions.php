@@ -58,7 +58,7 @@ function wbt_scripts_styles() {
 	wp_enqueue_style( 'wbt', get_stylesheet_directory_uri() . "/assets/css/wbt{$postfix}.css", array(), WBT_VERSION );
 	wp_enqueue_style( 'wbt-ie', get_stylesheet_directory_uri() . "/assets/css/wbt_ie.css", array('wbt'), WBT_VERSION );
 	$wp_styles->add_data( 'wbt-ie', 'conditional', 'lte IE 9' );
-	wp_enqueue_style( 'wbt-font', "http://fonts.googleapis.com/css?family=Lato", array(), WBT_VERSION );
+	wp_enqueue_style( 'wbt-font', "https://fonts.googleapis.com/css?family=Lato", array(), WBT_VERSION );
 	wp_enqueue_script( 'livefyre', '//cdn.livefyre.com/Livefyre.js', null, null, true );
 	wp_enqueue_script(
         'wbt',
@@ -69,7 +69,7 @@ function wbt_scripts_styles() {
 	);
 	wp_enqueue_script(
 	    'steel-media',
-	    'http://ib.adnxs.com/seg?add=3513887&t=1',
+	    'https://ib.adnxs.com/seg?add=3513887&t=1',
 	    array(),
 	    null,
 	    true
