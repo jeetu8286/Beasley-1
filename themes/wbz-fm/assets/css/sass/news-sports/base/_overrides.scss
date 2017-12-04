@@ -23,7 +23,7 @@
 	}
 }
 
-@include bp(large) {
+/*@include bp(large) {
 
     .main {
         background-image: url("../../images/wbz-fm-wallpaper-2017.jpg");
@@ -32,7 +32,7 @@
 				background-color: #000000;
     }
 
-}
+}*/
 
 .header__nav ul > li.active > ul > li.active {
 	background: none;
