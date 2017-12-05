@@ -484,8 +484,11 @@ class BlogData {
 		if ( ! empty( $existing ) ) {
 			$existing_post = current( $existing );
 			$post_id = intval( $existing_post->ID );
+
 			// update existing post only if it hasn't been updated manually
-			if ( ! empty( $defaults['last_performed'] ) && strtotime( $existing_post->post_modified_gmt ) < $defaults['last_performed'] ) {
+			$detached = get_post_meta( $post_id, 'syndication-detached', true );
+
+			if ( $detached !== 'true' ) {
 				$hash_value = get_post_meta( $post_id, 'syndication_import', true );
 				if ( $hash_value != $post_hash || $force_update ) {
 					// post has been updated, override existing one
@@ -505,7 +508,7 @@ class BlogData {
 					self::log( "Post %s content hasn't been modified since last import... Skipping...", $post_id );
 				}
 			} else {
-				self::log( "Post %s hasn't been modified since last import... Skipping...", $post_id );
+				self::log( "Post %s was modified on the child site, and is detached from syndication. Skipping...", $post_id );
 			}
 		} else {
 			$post_id = wp_insert_post( $args );
