@@ -307,7 +307,7 @@ class BlogData {
 		if ( $start_date == '' ) {
 			$last_queried = get_post_meta( $subscription_id, 'syndication_last_performed', true );
 			if ( $last_queried ) {
-				$args['date_query']['after'] = date( 'Y-m-d H:i:s', $last_queried );
+				$args['date_query']['after'] = date( 'Y-m-d H:i:s', ( $last_queried - 900 ) ); // Subtracting 900 so that we pull in slightly more posts than we need, in case timing is off.
 			} else {
 				$args['orderby'] = 'date';
 				$args['order'] = 'DESC';
