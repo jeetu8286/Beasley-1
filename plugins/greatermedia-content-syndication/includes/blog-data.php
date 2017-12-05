@@ -179,9 +179,7 @@ class BlogData {
 
 		// Get the current time before we start querying, so that we know next time we use this value it was the value
 		// from before querying for content
-		// Taking 5 seconds off just in case databases, cache, etc are behind slightly
 		$last_run = current_time( 'timestamp', 1 );
-		$last_run = $last_run - 5;
 
 		$result = self::QueryContentSite( $syndication_id, '', '', $offset );
 		$taxonomy_names = SyndicationCPT::$support_default_tax;
@@ -307,7 +305,7 @@ class BlogData {
 		if ( $start_date == '' ) {
 			$last_queried = get_post_meta( $subscription_id, 'syndication_last_performed', true );
 			if ( $last_queried ) {
-				$args['date_query']['after'] = date( 'Y-m-d H:i:s', ( $last_queried - 900 ) ); // Subtracting 900 so that we pull in slightly more posts than we need, in case timing is off.
+				$args['date_query']['after'] = date( 'Y-m-d H:i:s', ( $last_queried - 60 ) ); // Subtracting 60 so that we pull in slightly more posts than we need, in case timing is off.
 			} else {
 				$args['orderby'] = 'date';
 				$args['order'] = 'DESC';
