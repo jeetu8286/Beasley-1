@@ -172,6 +172,33 @@ class GMR_Syndication_CLI extends WP_CLI_Command {
 		\WP_CLI::success( 'The post has been updated.' );
 	}
 
+	/**
+	 * Adds metadata that detaches the post from the original content factory source based on modified date
+	 *
+	 * ## OPTIONS
+	 *
+	 * [--dry-run]
+	 * :Don't save the metadata, just report on what would change
+	 *
+	 * [--network-wide]
+	 * : Run on the whole network
+	 *
+	 * ## EXAMPLES
+	 *
+	 * wp gmr-syndication detach-posts-by-modified
+	 *
+	 * wp gmr-syndication detach-posts-by-modified --network-wide
+	 *
+	 * wp gmr-syndication detach-posts-by-modified --dry-run
+	 *
+	 * @synopsis [--network-wide] [--dry-run]
+	 *
+	 * @subcommand detach-posts-by-modified
+	 */
+	public function detach_posts_by_modified() {
+		
+	}
+
 }
 
 WP_CLI::add_command( 'gmr-syndication', 'GMR_Syndication_CLI' );
