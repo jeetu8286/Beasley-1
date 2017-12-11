@@ -14155,30 +14155,40 @@ a.entry2__category:focus {
   text-transform: uppercase; }
 
 .header__main {
-  background-image: url("../../images/site-header.jpg");
+  background-image: url("../../images/site-header-mobile.jpg");
   background-position: top center;
   background-repeat: no-repeat;
-  background-size: cover; }
-  .header__main .header__search {
-    background-color: rgba(255, 255, 255, 0.6);
-    padding-left: 15px; }
-    .header__main .header__search label span {
-      color: #000; }
-  .header__main .header__nav--list > li {
-    background-color: rgba(255, 255, 255, 0.6); }
+  background-size: cover;
+  background-color: #000000; }
 
-/*@include bp(large) {
+@media only screen and (max-width: 374px) {
+  .header__main {
+    background-image: none; } }
 
-    .main {
-        background-image: url("../../images/wbz-fm-wallpaper-2017.jpg");
-        background-position: top center;
-        background-repeat: no-repeat;
-				background-color: #000000;
-    }
+@media screen and (min-width: 768px) {
+  .header__main {
+    background-image: url("../../images/site-header.jpg");
+    background-position: middle center;
+    background-repeat: no-repeat;
+    background-size: cover; }
+    .header__main .header__search {
+      background-color: rgba(255, 255, 255, 0.6);
+      padding-left: 15px; }
+      .header__main .header__search label span {
+        color: #000; }
+    .header__main .header__nav--list > li {
+      background-color: rgba(255, 255, 255, 0.6); }
+  .main {
+    background-image: url("../../images/wbz-fm-wallpaper-2017.jpg");
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-color: #000000; } }
 
-}*/
 .header__nav ul > li.active > ul > li.active {
   background: none; }
 
 .format-sp a:hover .meta-text {
   color: #fff; }
+
+.mobile-nav__toggle--span, .mobile-nav__toggle--span:before, .mobile-nav__toggle--span:after {
+  background-color: #ffffff; }
