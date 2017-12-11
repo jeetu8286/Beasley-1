@@ -21,8 +21,8 @@
  * Copyright (c) 2014 10up
  * Licensed under the GPLv2+ license.
  */
-@import url(http://fonts.googleapis.com/css?family=Oswald:400,300,700);
-@import url(http://fonts.googleapis.com/css?family=Istok+Web:400,700);
+@import url(//fonts.googleapis.com/css?family=Oswald:400,300,700);
+@import url(//fonts.googleapis.com/css?family=Istok+Web:400,700);
 html {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;

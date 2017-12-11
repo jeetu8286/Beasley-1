@@ -4,12 +4,12 @@
   background-repeat: repeat-x;
   background-position: center top;
   border-bottom: none;
-} 
+}
 
 .header__main {
     border-top: none;
     background-color: rgba(0, 0, 0, 0) !important;
-}       
+}
 
 /* Navigation */
 .header__main a, .header__main a:active, .header__main a:hover, .header__main a:visited {color: #fff;}
@@ -75,7 +75,7 @@
     color: #fff;
 }
 
-/* Header search color */      
+/* Header search color */
  .header__search {
   color: #f0f0f0;
   font-weight: bold}
@@ -112,7 +112,7 @@
 
 .home__featured .featured__article a:hover .featured__article--content {background-color: #007abd;}
 
-.home__featured { 
+.home__featured {
   background-color: #103368;
 }
 
@@ -134,7 +134,7 @@
 .home__featured .featured__content--meta {
     width: 65%;
     min-height: 4.2em;
-} 
+}
 
 .home__featured .featured__content--block {
     background-color: #061c3a;

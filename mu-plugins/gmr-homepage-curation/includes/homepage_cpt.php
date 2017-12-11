@@ -363,12 +363,11 @@ function get_preview_homepage() {
 
 		$homepages = new WP_Query(
 			array(
-				'post_type'              => gmr_homepages_slug(),
+				'post_type'              => apply_filters( 'gmg_homepage_preview_post_type', gmr_homepages_slug(), $post_id ),
 				'post_status'            => 'any',
 				'posts_per_page'         => 1,
 				'no_found_rows'          => true,
 				'ignore_sticky_posts'    => true,
-				'fields'                 => 'ids',
 				'update_post_term_cache' => false,
 				'post__in'               => array( $post_id )
 			)

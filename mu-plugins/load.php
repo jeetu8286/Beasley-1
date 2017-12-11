@@ -12,7 +12,7 @@ include __DIR__ . '/term-data-store/term-data-store.php';
 include __DIR__ . '/visual-shortcode/visual-shortcode.php';
 include __DIR__ . '/dependencies/dependencies.php';
 include __DIR__ . '/post-finder/post-finder.php';
-include __DIR__ . '/force-frontend-http/force-frontend-http.php';
+//include __DIR__ . '/force-frontend-http/force-frontend-http.php';
 include __DIR__ . '/capabilities/capabilities.php';
 include __DIR__ . '/edit-flow-notification-block/edit-flow-notification-block.php';
 
@@ -21,3 +21,4 @@ include __DIR__ . '/gmr-template-tags/gmr-template-tags.php';
 include __DIR__ . '/gmr-homepage-curation/gmr-homepage-curation.php';
 include __DIR__ . '/legacy-redirects/class-CMM_Legacy_Redirects.php';
 include __DIR__ . '/gmr-fallback-thumbnails/gmr-fallback-thumbnails.php';
+include __DIR__ . '/gmr-mobile-homepage-curation/gmr-mobile-homepage-curation.php';
