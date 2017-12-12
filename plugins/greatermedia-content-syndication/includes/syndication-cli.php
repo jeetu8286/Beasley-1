@@ -177,26 +177,42 @@ class GMR_Syndication_CLI extends WP_CLI_Command {
 	 *
 	 * ## OPTIONS
 	 *
+	 * <csv_file>
+	 * : Path to write csv with detached posts to
+	 *
 	 * [--dry-run]
-	 * :Don't save the metadata, just report on what would change
+	 * :Don't save the metadata, just report on what would change and write the CSV
 	 *
 	 * [--network-wide]
 	 * : Run on the whole network
 	 *
 	 * ## EXAMPLES
 	 *
-	 * wp gmr-syndication detach-posts-by-modified
+	 * wp gmr-syndication detach-posts-by-modified ./output.csv
 	 *
-	 * wp gmr-syndication detach-posts-by-modified --network-wide
+	 * wp gmr-syndication detach-posts-by-modified ./output.csv --network-wide
 	 *
-	 * wp gmr-syndication detach-posts-by-modified --dry-run
+	 * wp gmr-syndication detach-posts-by-modified ./output.csv --dry-run
 	 *
-	 * @synopsis [--network-wide] [--dry-run]
+	 * @synopsis <csv_file> [--network-wide] [--dry-run]
 	 *
 	 * @subcommand detach-posts-by-modified
 	 */
-	public function detach_posts_by_modified() {
-		
+	public function detach_posts_by_modified( $args, $assoc_args ) {
+		// @todo implement network wide
+		$dry_run = isset( $assoc_args['dry-run'] ) ? true : false;
+
+		$csv_file = fopen( $args[0], 'w' );
+
+		$args = array(
+			'post_type' => SyndicationCPT::$supported_subscriptions,
+			'post_status' => 'any',
+		);
+
+		$iterator = new \Beasley\Syndication\CLI\DetachPostIterator( $args, $csv_file, $dry_run );
+		$iterator->go();
+
+		fclose( $csv_file );
 	}
 
 }
