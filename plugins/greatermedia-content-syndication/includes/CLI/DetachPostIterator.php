@@ -24,21 +24,7 @@ class DetachPostIterator extends \Cmmarslender\PostIterator\PostIterator {
 		$this->csv_file = $csv_file;
 		$this->dry_run = $dry_run;
 
-		$this->write_csv_headers();
-
 		parent::__construct( $args );
-	}
-
-	public function write_csv_headers() {
-		$headers = array(
-			'blog_id',
-			'post_id',
-			'post_title',
-			'post_url',
-			'source_site_id'
-		);
-
-		fputcsv( $this->csv_file, $headers );
 	}
 
 	public function process_post() {

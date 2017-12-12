@@ -199,18 +199,49 @@ class GMR_Syndication_CLI extends WP_CLI_Command {
 	 * @subcommand detach-posts-by-modified
 	 */
 	public function detach_posts_by_modified( $args, $assoc_args ) {
-		// @todo implement network wide
+		$network_wide = isset( $assoc_args['network-wide'] ) ? true : false;
 		$dry_run = isset( $assoc_args['dry-run'] ) ? true : false;
 
 		$csv_file = fopen( $args[0], 'w' );
+
+		$headers = array(
+			'blog_id',
+			'post_id',
+			'post_title',
+			'post_url',
+			'source_site_id'
+		);
+
+		fputcsv( $csv_file, $headers );
 
 		$args = array(
 			'post_type' => SyndicationCPT::$supported_subscriptions,
 			'post_status' => 'any',
 		);
 
-		$iterator = new \Beasley\Syndication\CLI\DetachPostIterator( $args, $csv_file, $dry_run );
-		$iterator->go();
+		if ( $network_wide ) {
+
+			$args = array(
+				'number' => 500,
+				'fields' => 'ids',
+			);
+			$site_query = new WP_Site_Query( $args );
+
+			foreach ( $site_query->get_sites() as $site_id ) {
+				\Cmmarslender\PostIterator\Logger::log( "----------------------------------------");
+				\Cmmarslender\PostIterator\Logger::log( "Switching to Site {$site_id}");
+				\Cmmarslender\PostIterator\Logger::log( "----------------------------------------");
+				switch_to_blog( $site_id );
+
+				$iterator = new \Beasley\Syndication\CLI\DetachPostIterator( $args, $csv_file, $dry_run );
+				$iterator->go();
+
+				restore_current_blog();
+			}
+		} else {
+			$iterator = new \Beasley\Syndication\CLI\DetachPostIterator( $args, $csv_file, $dry_run );
+			$iterator->go();
+		}
 
 		fclose( $csv_file );
 	}
