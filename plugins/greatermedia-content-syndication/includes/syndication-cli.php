@@ -196,9 +196,9 @@ class GMR_Syndication_CLI extends WP_CLI_Command {
 	 *
 	 * @synopsis <csv_file> [--network-wide] [--dry-run]
 	 *
-	 * @subcommand detach-posts-by-modified
+	 * @subcommand detach-posts-if-modified
 	 */
-	public function detach_posts_by_modified( $args, $assoc_args ) {
+	public function detach_posts_if_modified( $args, $assoc_args ) {
 		$network_wide = isset( $assoc_args['network-wide'] ) ? true : false;
 		$dry_run = isset( $assoc_args['dry-run'] ) ? true : false;
 
