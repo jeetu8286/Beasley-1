@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "fe0e7ec578c48b3a698c20c8edc261c8",
+    "content-hash": "d71a98b1fc6684b3395c1294e742420e",
     "packages": [
         {
             "name": "cmmarslender/post-iterator",
-            "version": "dev-master",
+            "version": "2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cmmarslender/post-iterator.git",
-                "reference": "6955e66696193fb6d9c1f504ad3d6f73cf173eb3"
+                "reference": "5c9007614a4979183c77ea5fb009bb577d44d3a1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cmmarslender/post-iterator/zipball/6955e66696193fb6d9c1f504ad3d6f73cf173eb3",
-                "reference": "6955e66696193fb6d9c1f504ad3d6f73cf173eb3",
+                "url": "https://api.github.com/repos/cmmarslender/post-iterator/zipball/5c9007614a4979183c77ea5fb009bb577d44d3a1",
+                "reference": "5c9007614a4979183c77ea5fb009bb577d44d3a1",
                 "shasum": ""
             },
             "require": {
@@ -44,7 +44,7 @@
                 }
             ],
             "description": "WPDB Based Post Iterator for WordPress",
-            "time": "2016-01-19T06:53:04+00:00"
+            "time": "2017-12-12T22:26:03+00:00"
         },
         {
             "name": "cmmarslender/timer",
@@ -200,9 +200,7 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "cmmarslender/post-iterator": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],

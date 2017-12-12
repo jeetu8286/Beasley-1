@@ -4,6 +4,6 @@
     "type": "wordpress-plugin",
     "minimum-stability": "dev",
     "require": {
-        "cmmarslender/post-iterator": "dev-master"
+        "cmmarslender/post-iterator": "2.0.1"
     }
 }
