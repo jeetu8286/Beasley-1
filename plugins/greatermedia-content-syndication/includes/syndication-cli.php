@@ -214,18 +214,18 @@ class GMR_Syndication_CLI extends WP_CLI_Command {
 
 		fputcsv( $csv_file, $headers );
 
-		$args = array(
+		$query_args = array(
 			'post_type' => SyndicationCPT::$supported_subscriptions,
 			'post_status' => 'any',
 		);
 
 		if ( $network_wide ) {
 
-			$args = array(
+			$network_args = array(
 				'number' => 500,
 				'fields' => 'ids',
 			);
-			$site_query = new WP_Site_Query( $args );
+			$site_query = new WP_Site_Query( $network_args );
 
 			foreach ( $site_query->get_sites() as $site_id ) {
 				\Cmmarslender\PostIterator\Logger::log( "----------------------------------------");
@@ -233,13 +233,13 @@ class GMR_Syndication_CLI extends WP_CLI_Command {
 				\Cmmarslender\PostIterator\Logger::log( "----------------------------------------");
 				switch_to_blog( $site_id );
 
-				$iterator = new \Beasley\Syndication\CLI\DetachPostIterator( $args, $csv_file, $dry_run );
+				$iterator = new \Beasley\Syndication\CLI\DetachPostIterator( $query_args, $csv_file, $dry_run );
 				$iterator->go();
 
 				restore_current_blog();
 			}
 		} else {
-			$iterator = new \Beasley\Syndication\CLI\DetachPostIterator( $args, $csv_file, $dry_run );
+			$iterator = new \Beasley\Syndication\CLI\DetachPostIterator( $query_args, $csv_file, $dry_run );
 			$iterator->go();
 		}
 
