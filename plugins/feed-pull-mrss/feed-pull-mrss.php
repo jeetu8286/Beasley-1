@@ -2,7 +2,7 @@
 /*
 Plugin Name: Feed Pull MRSS
 Description: Extends Feed Pull plugin by adding ability to extract media information from RSS feeds.
-Version: 1.0.0
+Version: 2.0.0
 Author: 10up
 Author URI: http://10up.com/
 */
@@ -11,8 +11,10 @@ Author URI: http://10up.com/
  * Catches SimpleXML element to use in the next steps.
  *
  * @global SimpleXMLElement $fpmrss_feed_item Current SimpleXML element.
+ *
  * @param array $pre_filter_post_value The array of post data.
  * @param SimpleXMLElement $xml_element The current xml element.
+ *
  * @return array The inital post data.
  */
 function fpmrss_catch_feed_item_xml( $pre_filter_post_value, $xml_element ) {
@@ -21,12 +23,14 @@ function fpmrss_catch_feed_item_xml( $pre_filter_post_value, $xml_element ) {
 
 	return $pre_filter_post_value;
 }
+
 add_filter( 'fp_post_args', 'fpmrss_catch_feed_item_xml', 10, 2 );
 
 /**
  * Extracts media group element.
  *
  * @param SimpleXMLElement $element Current RSS element.
+ *
  * @return SimpleXMLElement Media group element on success, otherwise FALSE.
  */
 function fpmrss_get_media_group( SimpleXMLElement $element ) {
@@ -47,6 +51,7 @@ function fpmrss_get_media_group( SimpleXMLElement $element ) {
  * Extracts media thumbnail from an RSS element.
  *
  * @param SimpleXMLElement $element Current RSS element.
+ *
  * @return string Thumbnail URL on success, otherwise FALSE.
  */
 function fpmrss_extract_media_thumbnail( SimpleXMLElement $element ) {
@@ -56,16 +61,25 @@ function fpmrss_extract_media_thumbnail( SimpleXMLElement $element ) {
 	}
 
 	$thumbnail_url = false;
-	$thumbnails = $group->xpath( 'media:thumbnail' );
+	$thumbnails    = $group->xpath( 'media:thumbnail' );
 	if ( empty( $thumbnails ) && $element != $group ) {
 		$thumbnails = $element->xpath( 'media:thumbnail' );
+	}
+
+	if ( empty( $thumbnails ) ) {
+		//Fetch itunes image from feed if present
+		$thumbnails = $element->xpath( 'itunes:image' );
 	}
 
 	if ( ! empty( $thumbnails ) ) {
 		$max_width = 0;
 		foreach ( $thumbnails as $thumbnail ) {
-			if ( empty( $thumbnail['url'] ) || ! filter_var( $thumbnail['url'], FILTER_VALIDATE_URL ) ) {
-				continue;
+			$key = 'url';
+			if ( empty( $thumbnail[ $key ] ) || ! filter_var( $thumbnail[ $key ], FILTER_VALIDATE_URL ) ) {
+				$key = 'href';
+				if ( empty( $thumbnail[ $key ] ) || ! filter_var( $thumbnail[ $key ], FILTER_VALIDATE_URL ) ) {
+					continue;
+				}
 			}
 
 			$current_width = intval( $thumbnail['width'] );
@@ -73,8 +87,8 @@ function fpmrss_extract_media_thumbnail( SimpleXMLElement $element ) {
 				continue;
 			}
 
-			$thumbnail_url = strval( $thumbnail['url'] );
-			$max_width = $current_width;
+			$thumbnail_url = strval( $thumbnail[ $key ] );
+			$max_width     = $current_width;
 		}
 	}
 
@@ -85,6 +99,7 @@ function fpmrss_extract_media_thumbnail( SimpleXMLElement $element ) {
  * Extracts media player from an RSS element.
  *
  * @param SimpleXMLElement $element Current RSS elemenet.
+ *
  * @return string Player value on success, otherwise FALSE.
  */
 function fpmrss_extract_media_player( SimpleXMLElement $element ) {
@@ -94,13 +109,13 @@ function fpmrss_extract_media_player( SimpleXMLElement $element ) {
 	}
 
 	$player_value = false;
-	$player = $group->xpath( 'media:player' );
+	$player       = $group->xpath( 'media:player' );
 	if ( empty( $player ) && $group != $element ) {
 		$player = $element->xpath( 'media:player' );
 	}
 
 	if ( ! empty( $player ) ) {
-		$player = current( $player );
+		$player       = current( $player );
 		$player_value = trim( strval( $player ) );
 		if ( empty( $player_value ) && ! empty( $player['url'] ) && filter_var( $player['url'], FILTER_VALIDATE_URL ) ) {
 			$player_value = strval( $player['url'] );
@@ -126,7 +141,7 @@ function fpmrss_extract_media_player( SimpleXMLElement $element ) {
 				}
 
 				$player_value = strval( $content['url'] );
-				$max_width = $current_width;
+				$max_width    = $current_width;
 			}
 		}
 	}
@@ -149,6 +164,7 @@ function fpmrss_extract_media_player( SimpleXMLElement $element ) {
  *
  * @global SimpleXMLElement $fpmrss_feed_item The current SimpleXML element.
  * @global array $fpmrss_feed_thumbnails The array of feed thumbnails to import.
+ *
  * @param int $post_id Newly imported post id.
  * @param int $feed_id The feed id.
  */
@@ -167,6 +183,12 @@ function fpmrss_fetch_media_data( $post_id, $feed_id ) {
 		if ( $term ) {
 			wp_set_object_terms( $post_id, $term->term_id, ShowsCPT::SHOW_TAXONOMY );
 		}
+	}
+
+	//set podcast
+	$podcast = get_post_meta( $feed_id, 'fpmrss-podcast', true );
+	if ( $podcast && 'episode' === get_post_type( $post_id ) ) {
+		wp_update_post( array( 'ID' => $post_id, 'post_parent' => $podcast ) );
 	}
 
 	// init feed thumbnails array if it isn't
@@ -209,6 +231,7 @@ function fpmrss_fetch_media_data( $post_id, $feed_id ) {
 
 	$fpmrss_feed_item = null;
 }
+
 add_action( 'fp_created_post', 'fpmrss_fetch_media_data', 10, 2 );
 add_action( 'fp_updated_post', 'fpmrss_fetch_media_data', 10, 2 );
 
@@ -228,6 +251,7 @@ function fpmrss_launch_async_thumbnails_import() {
 	// try to launch async task if available, otherwise schedule single event
 	wp_schedule_single_event( current_time( 'timestamp', 1 ), 'fpmrss_import_thumbnails', array( $fpmrss_feed_thumbnails ) );
 }
+
 add_action( 'fp_post_feed_pull', 'fpmrss_launch_async_thumbnails_import' );
 
 /**
@@ -247,6 +271,7 @@ function fpmrss_import_thumbnails( $thumbnails ) {
 		}
 	}
 }
+
 add_action( 'fpmrss_import_thumbnails', 'fpmrss_import_thumbnails' );
 
 /**
@@ -254,6 +279,7 @@ add_action( 'fpmrss_import_thumbnails', 'fpmrss_import_thumbnails' );
  *
  * @param string $image The remote image URL.
  * @param int $post_id The post id to which the image would be assigned.
+ *
  * @return int The attachment ID on success, otherwise FALSE.
  */
 function fpmrss_download_image( $image, $post_id ) {
@@ -282,12 +308,12 @@ function fpmrss_download_image( $image, $post_id ) {
 	// Set variables for storage, fix file filename for query strings
 	$matches = array();
 	preg_match( '/[^\?]+\.(jpe?g|jpe|gif|png)\b/i', $image, $matches );
-	$file_array['name'] = fpmrss_generate_image_name( $image );
+	$file_array['name']     = fpmrss_generate_image_name( $image );
 	$file_array['tmp_name'] = $tmp;
-	$file_array['error'] = 0;
+	$file_array['error']    = 0;
 
 	$post_data = array();
-	$post = get_post( $post_id );
+	$post      = get_post( $post_id );
 	if ( $post ) {
 		$post_data['post_author'] = $post->post_author;
 	}
@@ -306,11 +332,12 @@ function fpmrss_download_image( $image, $post_id ) {
  * Generates image name based on its file path.
  *
  * @param string $image The image path.
+ *
  * @return string The image name.
  */
 function fpmrss_generate_image_name( $image ) {
 	$file_name = '';
-	$matches = array();
+	$matches   = array();
 
 	preg_match( '/[^\?]+\.(jpe?g|jpe|gif|png)\b/i', $image, $matches );
 	if ( is_array( $matches ) && count( $matches ) ) {
@@ -318,7 +345,7 @@ function fpmrss_generate_image_name( $image ) {
 	} else {
 		$sizes = getimagesize( $image );
 		if ( is_array( $sizes ) && isset( $sizes['mime'] ) && ! empty( $sizes['mime'] ) ) {
-			$ext = image_type_to_extension( $sizes[2] );
+			$ext       = image_type_to_extension( $sizes[2] );
 			$file_name = substr( sanitize_title( pathinfo( $image, PATHINFO_FILENAME ) ), 0, 254 ) . $ext;
 		}
 	}
@@ -330,9 +357,26 @@ function fpmrss_generate_image_name( $image ) {
  * Appends player content if it is available for the current post.
  *
  * @param string $content The initial content of the post.
+ *
  * @return string Updated post content if player code available, otherwise initial value.
  */
 function fpmrss_update_content( $content ) {
+	$player = get_post_meta( get_the_ID(), 'gmr-podcast-audio', true );
+	if ( ! empty( $player ) ) {
+		if ( filter_var( $player, FILTER_VALIDATE_URL ) ) {
+			//Remove query args from audio player url
+			//to make shortcode working !!
+			$player_arr = parse_url( $player );
+			$query      = $player_arr['query'];
+			$player     = str_replace( array( $query, '?' ), '', $player );
+
+			$player = '[audio mp3="' . $player . '"][/audio]';
+		}
+		$content = $player . PHP_EOL . PHP_EOL . $content;
+
+		return $content;
+	}
+
 	$player = get_post_meta( get_the_ID(), 'gmr-player', true );
 	if ( ! empty( $player ) ) {
 		if ( filter_var( $player, FILTER_VALIDATE_URL ) ) {
@@ -343,12 +387,14 @@ function fpmrss_update_content( $content ) {
 
 	return $content;
 }
+
 add_action( 'the_content', 'fpmrss_update_content', 1 );
 
 /**
  * Filters ooyala player arguments to set proper player id.
  *
  * @param array $args Initial ooyala player arguments.
+ *
  * @return array Filtered ooyala player arguments.
  */
 function fpmrss_filter_ooyala_args( $args ) {
@@ -366,6 +412,7 @@ function fpmrss_filter_ooyala_args( $args ) {
 
 	return $args;
 }
+
 add_filter( 'ooyala_default_query_args', 'fpmrss_filter_ooyala_args' );
 
 /**
@@ -373,6 +420,7 @@ add_filter( 'ooyala_default_query_args', 'fpmrss_filter_ooyala_args' );
  *
  * @param int $post_id The ooyala video post id.
  * @param string $meta_key The meta key to fetch.
+ *
  * @return mixed The meta value.
  */
 function fpmrss_extract_ooyala_post_meta( $post_id, $meta_key ) {
@@ -414,6 +462,7 @@ function fpmrss_add_meta_box() {
 		add_action( 'edit_form_top', 'fpmrss_render_nonce_field' );
 	}
 }
+
 add_action( 'add_meta_boxes', 'fpmrss_add_meta_box' );
 
 /**
@@ -431,14 +480,14 @@ function fpmrss_render_nonce_field() {
 function fpmrss_render_ooyala_metabox( $post ) {
 	$transient_ttl = 5 * MINUTE_IN_SECONDS;
 
-	$ooyala = get_option( 'ooyala' );
+	$ooyala     = get_option( 'ooyala' );
 	$ooyala_api = null;
 	if ( class_exists( 'OoyalaApi' ) && ! empty( $ooyala['api_key'] ) && ! empty( $ooyala['api_secret'] ) ) {
 		$ooyala_api = new OoyalaApi( $ooyala['api_key'], $ooyala['api_secret'] );
 	}
 
 	$selected_player = get_post_meta( $post->ID, 'fpmrss-ooyala-player-id', true );
-	$players = get_transient( 'gmr_ooyala_players' );
+	$players         = get_transient( 'gmr_ooyala_players' );
 	if ( $players === false ) {
 		$players = array();
 		if ( $ooyala_api ) {
@@ -454,23 +503,23 @@ function fpmrss_render_ooyala_metabox( $post ) {
 	}
 
 	echo '<p>';
-		echo '<label for="fpmrss-ooyala-player-id">Player ID:</label>';
-		echo '<select id="fpmrss-ooyala-player-id" name="fpmrss-ooyala-player-id" class="widefat">';
-			echo '<option value="">';
-				echo 'fp_feed' == $post->post_type
-					? '--- player by default ---'
-					: '--- player defined in the feed ---';
-			echo '</option>';
-			foreach ( $players as $id => $name ) :
-				echo '<option value="', esc_attr( $id ), '"', selected( $id, $selected_player, false ), '>';
-					echo esc_html( $name );
-				echo '</option>';
-			endforeach;
-		echo '</select>';
+	echo '<label for="fpmrss-ooyala-player-id">Player ID:</label>';
+	echo '<select id="fpmrss-ooyala-player-id" name="fpmrss-ooyala-player-id" class="widefat">';
+	echo '<option value="">';
+	echo 'fp_feed' == $post->post_type
+		? '--- player by default ---'
+		: '--- player defined in the feed ---';
+	echo '</option>';
+	foreach ( $players as $id => $name ) :
+		echo '<option value="', esc_attr( $id ), '"', selected( $id, $selected_player, false ), '>';
+		echo esc_html( $name );
+		echo '</option>';
+	endforeach;
+	echo '</select>';
 	echo '</p>';
 
 	$selected_ad_set = get_post_meta( $post->ID, 'fpmrss-ooyala-ad-set', true );
-	$ad_sets = get_transient( 'gmr_ooyala_ad_sets' );
+	$ad_sets         = get_transient( 'gmr_ooyala_ad_sets' );
 	if ( $ad_sets === false ) {
 		$ad_sets = array();
 		if ( $ooyala_api ) {
@@ -486,19 +535,19 @@ function fpmrss_render_ooyala_metabox( $post ) {
 	}
 
 	echo '<p>';
-		echo '<label for="fpmrss-ooyala-ad-set">Ad Set:</label>';
-		echo '<select id="fpmrss-ooyala-ad-set" name="fpmrss-ooyala-ad-set" class="widefat">';
-			echo '<option value="">';
-				echo 'fp_feed' == $post->post_type
-					? '--- no add set ---'
-					: '--- ad set defined in the feed ---';
-			echo '</option>';
-			foreach ( $ad_sets as $id => $name ) :
-				echo '<option value="', esc_attr( $id ), '"', selected( $id, $selected_ad_set, false ), '>';
-					echo esc_html( $name );
-				echo '</option>';
-			endforeach;
-		echo '</select>';
+	echo '<label for="fpmrss-ooyala-ad-set">Ad Set:</label>';
+	echo '<select id="fpmrss-ooyala-ad-set" name="fpmrss-ooyala-ad-set" class="widefat">';
+	echo '<option value="">';
+	echo 'fp_feed' == $post->post_type
+		? '--- no add set ---'
+		: '--- ad set defined in the feed ---';
+	echo '</option>';
+	foreach ( $ad_sets as $id => $name ) :
+		echo '<option value="', esc_attr( $id ), '"', selected( $id, $selected_ad_set, false ), '>';
+		echo esc_html( $name );
+		echo '</option>';
+	endforeach;
+	echo '</select>';
 	echo '</p>';
 }
 
@@ -508,22 +557,22 @@ function fpmrss_render_ooyala_metabox( $post ) {
  * @param \WP_Post $post
  */
 function fpmrss_render_fetch_metabox( $post ) {
-	$url_field = get_post_meta( $post->ID, 'fpmrss-content-url', true );
+	$url_field   = get_post_meta( $post->ID, 'fpmrss-content-url', true );
 	$xpath_field = get_post_meta( $post->ID, 'fpmrss-content-xpath', true );
 
 	echo '<p>';
-		echo '<label>';
-			echo '<b>Source Field (XPath)</b><br>';
-			echo '<input type="text" class="widefat" name="fpmrss-content-url" value="', esc_attr( $url_field ), '"><br>';
-			echo '<span class="description">Enter field name which contains a link to original article.</span>';
-		echo '</label>';
+	echo '<label>';
+	echo '<b>Source Field (XPath)</b><br>';
+	echo '<input type="text" class="widefat" name="fpmrss-content-url" value="', esc_attr( $url_field ), '"><br>';
+	echo '<span class="description">Enter field name which contains a link to original article.</span>';
+	echo '</label>';
 	echo '</p>';
 	echo '<p>';
-		echo '<label>';
-			echo '<b>Content XPath</b><br>';
-			echo '<input type="text" class="widefat" name="fpmrss-content-xpath" value="', esc_attr( $xpath_field ), '"><br>';
-			echo '<span class="description">Enter xpath to extract content from remote page.</span>';
-		echo '</label>';
+	echo '<label>';
+	echo '<b>Content XPath</b><br>';
+	echo '<input type="text" class="widefat" name="fpmrss-content-xpath" value="', esc_attr( $xpath_field ), '"><br>';
+	echo '<span class="description">Enter xpath to extract content from remote page.</span>';
+	echo '</label>';
 	echo '</p>';
 }
 
@@ -534,7 +583,7 @@ function fpmrss_render_fetch_metabox( $post ) {
  */
 function fpmrss_render_shows_metabox( $post ) {
 	$selected_show = get_post_meta( $post->ID, 'fpmrss-show', true );
-	$shows = new WP_Query( array(
+	$shows         = new WP_Query( array(
 		'post_type'           => ShowsCPT::SHOW_CPT,
 		'post_status'         => 'publish',
 		'posts_per_page'      => 500,
@@ -545,15 +594,15 @@ function fpmrss_render_shows_metabox( $post ) {
 	) );
 
 	echo '<p>';
-		echo '<select id="fpmrss-show" name="fpmrss-show" class="widefat">';
-			echo '<option value="">---</option>';
-			while ( $shows->have_posts() ) :
-				$show = $shows->next_post();
-				echo '<option value="', esc_attr( $show->ID ), '"', selected( $show->ID, $selected_show, false ), '>';
-					echo esc_html( $show->post_title );
-				echo '</option>';
-			endwhile;
-		echo '</select>';
+	echo '<select id="fpmrss-show" name="fpmrss-show" class="widefat">';
+	echo '<option value="">---</option>';
+	while ( $shows->have_posts() ) :
+		$show = $shows->next_post();
+		echo '<option value="', esc_attr( $show->ID ), '"', selected( $show->ID, $selected_show, false ), '>';
+		echo esc_html( $show->post_title );
+		echo '</option>';
+	endwhile;
+	echo '</select>';
 	echo '</p>';
 }
 
@@ -563,9 +612,9 @@ function fpmrss_render_shows_metabox( $post ) {
  * @param int $post_id The post id.
  */
 function fpmrss_save_settings( $post_id ) {
-	$doing_autosave = defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE;
+	$doing_autosave   = defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE;
 	$has_capabilities = current_user_can( 'edit_post', $post_id );
-	$is_revision = 'revision' == get_post_type( $post_id );
+	$is_revision      = 'revision' == get_post_type( $post_id );
 
 	if ( $doing_autosave || ! $has_capabilities || $is_revision ) {
 		return;
@@ -573,7 +622,14 @@ function fpmrss_save_settings( $post_id ) {
 
 	$nonce = filter_input( INPUT_POST, 'fpmrss_nonce' );
 	if ( $nonce && wp_verify_nonce( $nonce, 'fpmrss' ) ) {
-		$fields = array( 'fpmrss-ooyala-player-id', 'fpmrss-ooyala-ad-set', 'fpmrss-show', 'fpmrss-content-url', 'fpmrss-content-xpath' );
+		$fields = array(
+			'fpmrss-ooyala-player-id',
+			'fpmrss-ooyala-ad-set',
+			'fpmrss-show',
+			'fpmrss-podcast',
+			'fpmrss-content-url',
+			'fpmrss-content-xpath'
+		);
 		foreach ( $fields as $field ) {
 			$value = wp_kses_post( filter_input( INPUT_POST, $field ) );
 			$value = trim( $value );
@@ -586,6 +642,7 @@ function fpmrss_save_settings( $post_id ) {
 		}
 	}
 }
+
 add_action( 'save_post', 'fpmrss_save_settings' );
 
 /**
@@ -594,10 +651,11 @@ add_action( 'save_post', 'fpmrss_save_settings' );
  * @param array $postargs
  * @param \SimpleXMLElement $post
  * @param int $feed_id
+ *
  * @return array
  */
 function fpmrss_fetch_post_content( $postargs, $post, $feed_id ) {
-	$url_field = get_post_meta( $feed_id, 'fpmrss-content-url', true );
+	$url_field      = get_post_meta( $feed_id, 'fpmrss-content-url', true );
 	$xpath_selector = get_post_meta( $feed_id, 'fpmrss-content-xpath', true );
 	if ( ! empty( $url_field ) && ! empty( $xpath_selector ) ) {
 		$elements = $post->xpath( $url_field );
@@ -611,7 +669,7 @@ function fpmrss_fetch_post_content( $postargs, $post, $feed_id ) {
 					$doc = new \DOMDocument();
 					$doc->loadHTML( wp_remote_retrieve_body( $response ) );
 
-					$xpath = new \DOMXPath( $doc );
+					$xpath    = new \DOMXPath( $doc );
 					$elements = $xpath->evaluate( $xpath_selector );
 					if ( ! empty( $elements ) ) {
 						$content = array();
@@ -637,4 +695,56 @@ function fpmrss_fetch_post_content( $postargs, $post, $feed_id ) {
 
 	return $postargs;
 }
+
 add_filter( 'fp_post_args', 'fpmrss_fetch_post_content', 10, 3 );
+
+add_action( 'fp_created_post', 'fpmrss_fetch_media_data_remove_player', 20, 2 );
+add_action( 'fp_updated_post', 'fpmrss_fetch_media_data_remove_player', 20, 2 );
+function fpmrss_fetch_media_data_remove_player( $post_id, $feed_id ) {
+	$player = get_post_meta( get_the_ID(), 'gmr-podcast-audio', true );
+	if ( ! empty( $player ) ) {
+		delete_post_meta( $post_id, 'gmr-player' ); //remove unwated player code
+	}
+}
+
+/**
+ * Register meta box(es).
+ */
+function fpmrss_audio_register_metabox() {
+	add_meta_box( 'fp_content_details_episodes', __( 'Podcast', 'feed-pull' ), 'fpmrss_audio_podcast_metabox', 'fp_feed', 'side', 'low' );
+}
+
+add_action( 'add_meta_boxes', 'fpmrss_audio_register_metabox', 99 );
+
+/**
+ * Renders Shows metabox.
+ * checkout fpmrss_save_settings for save
+ *
+ * @param WP_Post $post The post object.
+ */
+function fpmrss_audio_podcast_metabox( $post ) {
+	$selected_podcast = get_post_meta( $post->ID, 'fpmrss-podcast', true );
+	$podcasts         = new WP_Query( array(
+		'post_type'           => 'podcast',
+		'post_status'         => 'publish',
+		'posts_per_page'      => 1000,
+		'no_found_rows'       => true,
+		'ignore_sticky_posts' => true,
+		'orderby'             => 'title',
+		'order'               => 'ASC',
+	) );
+	?>
+	<p>
+		<select id="fpmrss-podcast" name="fpmrss-podcast" class="widefat">';
+			<option value="">---</option>
+			<?php while ( $podcasts->have_posts() ) :
+				$podcast = $podcasts->next_post(); ?>
+				<option value="<?php echo esc_attr( $podcast->ID ); ?>" <?php selected( $podcast->ID, $selected_podcast ); ?>>
+					<?php echo esc_html( $podcast->post_title ); ?>
+				</option>
+			<?php endwhile; ?>
+		</select>
+	</p>
+	<p class="description">Use <code>gmr-podcast-audio</code> meta key to store podcast episode mp3 file.</p>
+	<?php
+}
