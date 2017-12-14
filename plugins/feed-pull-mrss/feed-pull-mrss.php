@@ -171,6 +171,9 @@ function fpmrss_extract_media_player( SimpleXMLElement $element ) {
 function fpmrss_fetch_media_data( $post_id, $feed_id ) {
 	global $fpmrss_feed_item, $fpmrss_feed_thumbnails;
 
+	if ( is_wp_error( $post_id ) ) {
+		return;
+	}
 	// do nothing if an xml element is not caught
 	if ( ! $fpmrss_feed_item ) {
 		return;
@@ -229,11 +232,28 @@ function fpmrss_fetch_media_data( $post_id, $feed_id ) {
 		set_post_format( $post_id, 'video' );
 	}
 
+
+	$player = get_post_meta( $post_id, 'gmr-podcast-audio', true );
+	if ( ! empty( $player ) ) {
+		if ( filter_var( $player, FILTER_VALIDATE_URL ) ) {
+			$post = get_post( $post_id );
+			//Remove query args from audio player url
+			//to make shortcode working !!
+			$player_arr = parse_url( $player );
+			$query      = $player_arr['query'];
+			$player     = str_replace( array( $query, '?' ), '', $player );
+
+			$player = '[audio mp3="' . $player . '"][/audio]';
+			$content = $post->post_content . PHP_EOL . '<!--more-->' . PHP_EOL . $player;
+			wp_update_post( array( 'ID' => $post_id, 'post_content' => $content ) );
+			delete_post_meta( $post_id, 'gmr-player' ); //remove unwated player code
+		}
+	}
+
 	$fpmrss_feed_item = null;
 }
 
-add_action( 'fp_created_post', 'fpmrss_fetch_media_data', 10, 2 );
-add_action( 'fp_updated_post', 'fpmrss_fetch_media_data', 10, 2 );
+add_action( 'fp_handled_post', 'fpmrss_fetch_media_data', 10, 2 );
 
 /**
  * Lauches async task to import thumbnails.
@@ -361,22 +381,6 @@ function fpmrss_generate_image_name( $image ) {
  * @return string Updated post content if player code available, otherwise initial value.
  */
 function fpmrss_update_content( $content ) {
-	$player = get_post_meta( get_the_ID(), 'gmr-podcast-audio', true );
-	if ( ! empty( $player ) ) {
-		if ( filter_var( $player, FILTER_VALIDATE_URL ) ) {
-			//Remove query args from audio player url
-			//to make shortcode working !!
-			$player_arr = parse_url( $player );
-			$query      = $player_arr['query'];
-			$player     = str_replace( array( $query, '?' ), '', $player );
-
-			$player = '[audio mp3="' . $player . '"][/audio]';
-		}
-		$content = $player . PHP_EOL . PHP_EOL . $content;
-
-		return $content;
-	}
-
 	$player = get_post_meta( get_the_ID(), 'gmr-player', true );
 	if ( ! empty( $player ) ) {
 		if ( filter_var( $player, FILTER_VALIDATE_URL ) ) {
@@ -697,16 +701,6 @@ function fpmrss_fetch_post_content( $postargs, $post, $feed_id ) {
 }
 
 add_filter( 'fp_post_args', 'fpmrss_fetch_post_content', 10, 3 );
-
-add_action( 'fp_created_post', 'fpmrss_fetch_media_data_remove_player', 20, 2 );
-add_action( 'fp_updated_post', 'fpmrss_fetch_media_data_remove_player', 20, 2 );
-function fpmrss_fetch_media_data_remove_player( $post_id, $feed_id ) {
-	$player = get_post_meta( get_the_ID(), 'gmr-podcast-audio', true );
-	if ( ! empty( $player ) ) {
-		delete_post_meta( $post_id, 'gmr-player' ); //remove unwated player code
-	}
-}
-
 /**
  * Register meta box(es).
  */
