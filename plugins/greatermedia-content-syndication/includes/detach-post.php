@@ -20,23 +20,42 @@ class Syndication_Detach_Post {
 		}
 
 		wp_nonce_field( 'detach-post-' . $post->ID, 'syndication-detach-post' );
-
-		$detached = get_post_meta( $post->ID, 'syndication-detached', true );
-		if ( $detached === 'true' ) {
+		$old_data = get_post_meta( $post->ID, 'syndication_old_data', true );
+		if ( empty( $old_data ) ) {
 			?>
 			<div class="misc-pub-section syndication-detached misc-pub-syndication-detached">
 				<i class="dashicons dashicons-rss"></i>
-				<?php
-				$reset_url = admin_url( 'admin-post.php' );
-				$reset_url = add_query_arg( array(
-					'action' => 'reset-syndication',
-					'post_id' => get_the_ID(),
-					'nonce' => wp_create_nonce( 'reset-syndication-' . get_the_ID() ),
-				), $reset_url );
-				?>
-				<span id="feature-image-preference-value">Detached from Syndication</span>&nbsp;<a href="<?php echo esc_url( $reset_url ); ?>" id="js-syndication-reset">Reset</a>
+				<span id="syndication-detached-value">Created on this site</span>
 			</div>
 			<?php
+		} else {
+			$old_data = unserialize( $old_data );
+
+			$detached = get_post_meta( $post->ID, 'syndication-detached', true );
+			if ( $detached === 'true' ) {
+				?>
+				<div class="misc-pub-section syndication-detached misc-pub-syndication-detached">
+					<i class="dashicons dashicons-rss"></i>
+					<?php
+					$reset_url = admin_url( 'admin-post.php' );
+					$reset_url = add_query_arg( array(
+						'action' => 'reset-syndication',
+						'post_id' => get_the_ID(),
+						'nonce' => wp_create_nonce( 'reset-syndication-' . get_the_ID() ),
+					), $reset_url );
+					?>
+					<span id="syndication-detached-value">Detached from Syndication</span>&nbsp;<a href="<?php echo esc_url( $reset_url ); ?>" id="js-syndication-reset">Reset</a>
+				</div>
+				<?php
+			} else {
+				$blog_details = get_blog_details( $old_data['blog_id'] );
+				?>
+				<div class="misc-pub-section syndication-detached misc-pub-syndication-detached">
+					<i class="dashicons dashicons-rss"></i>
+					<span id="syndication-detached-value">Linked to post on <em><?php echo esc_html( $blog_details->blogname ); ?></em></span>
+				</div>
+				<?php
+			}
 		}
 	}
 
