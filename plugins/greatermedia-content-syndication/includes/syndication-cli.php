@@ -172,6 +172,80 @@ class GMR_Syndication_CLI extends WP_CLI_Command {
 		\WP_CLI::success( 'The post has been updated.' );
 	}
 
+	/**
+	 * Adds metadata that detaches the post from the original content factory source based on modified date
+	 *
+	 * ## OPTIONS
+	 *
+	 * <csv_file>
+	 * : Path to write csv with detached posts to
+	 *
+	 * [--dry-run]
+	 * :Don't save the metadata, just report on what would change and write the CSV
+	 *
+	 * [--network-wide]
+	 * : Run on the whole network
+	 *
+	 * ## EXAMPLES
+	 *
+	 * wp gmr-syndication detach-posts-by-modified ./output.csv
+	 *
+	 * wp gmr-syndication detach-posts-by-modified ./output.csv --network-wide
+	 *
+	 * wp gmr-syndication detach-posts-by-modified ./output.csv --dry-run
+	 *
+	 * @synopsis <csv_file> [--network-wide] [--dry-run]
+	 *
+	 * @subcommand detach-posts-if-modified
+	 */
+	public function detach_posts_if_modified( $args, $assoc_args ) {
+		$network_wide = isset( $assoc_args['network-wide'] ) ? true : false;
+		$dry_run = isset( $assoc_args['dry-run'] ) ? true : false;
+
+		$csv_file = fopen( $args[0], 'w' );
+
+		$headers = array(
+			'blog_id',
+			'post_id',
+			'post_title',
+			'post_url',
+			'source_site_id'
+		);
+
+		fputcsv( $csv_file, $headers );
+
+		$query_args = array(
+			'post_type' => SyndicationCPT::$supported_subscriptions,
+			'post_status' => 'any',
+		);
+
+		if ( $network_wide ) {
+
+			$network_args = array(
+				'number' => 500,
+				'fields' => 'ids',
+			);
+			$site_query = new WP_Site_Query( $network_args );
+
+			foreach ( $site_query->get_sites() as $site_id ) {
+				\Cmmarslender\PostIterator\Logger::log( "----------------------------------------");
+				\Cmmarslender\PostIterator\Logger::log( "Switching to Site {$site_id}");
+				\Cmmarslender\PostIterator\Logger::log( "----------------------------------------");
+				switch_to_blog( $site_id );
+
+				$iterator = new \Beasley\Syndication\CLI\DetachPostIterator( $query_args, $csv_file, $dry_run );
+				$iterator->go();
+
+				restore_current_blog();
+			}
+		} else {
+			$iterator = new \Beasley\Syndication\CLI\DetachPostIterator( $query_args, $csv_file, $dry_run );
+			$iterator->go();
+		}
+
+		fclose( $csv_file );
+	}
+
 }
 
 WP_CLI::add_command( 'gmr-syndication', 'GMR_Syndication_CLI' );

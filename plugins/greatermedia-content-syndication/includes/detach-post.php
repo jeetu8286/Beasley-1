@@ -11,7 +11,7 @@ class Syndication_Detach_Post {
 	}
 
 	public static function misc_actions( $post ) {
-		$valid_post_types = array( 'post', 'content-kit', 'contest', 'survey', 'gmr_gallery' );
+		$valid_post_types = SyndicationCPT::$supported_subscriptions;
 
 		if ( ! in_array( $post->post_type, $valid_post_types ) ) {
 			return;
