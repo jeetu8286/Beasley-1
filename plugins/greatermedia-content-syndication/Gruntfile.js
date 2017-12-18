@@ -7,10 +7,11 @@ module.exports = function (grunt) {
 			},
 			greater_media_content_syndication: {
 				src: [
-					'assets/js/src/syndication.js'
+					'assets/js/src/syndication.js',
+					'assets/js/src/syndication-post.js'
 				],
 				dest: 'assets/js/syndication.js'
-			}
+			},
 		},
 		jshint: {
 			all: [
@@ -27,6 +28,7 @@ module.exports = function (grunt) {
 				undef: true,
 				boss: true,
 				eqnull: true,
+				browser: true,
 				globals: {
 					exports: true,
 					module: false
