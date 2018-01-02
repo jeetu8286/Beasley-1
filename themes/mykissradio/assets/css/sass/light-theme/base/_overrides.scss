@@ -1,0 +1,27 @@
+.featured__article--heading,
+.featured__content--title {
+	text-transform: uppercase;
+}
+
+.featured__article:hover .featured__article--heading,
+.featured__content--block:hover .featured__content--title,
+a:hover .highlights__community--title
+{
+	color: #eb008b;
+}
+
+.show__header {
+	background-color: #eb008b;
+}
+
+@include bp(large) {
+
+    .main {
+        background-image: url("../../images/mykissradio-wallpaper-2018.jpg");
+        background-position: top center;
+        background-repeat: no-repeat;
+				background-attachment: fixed;
+				background-color: #000000;
+    }
+
+}
