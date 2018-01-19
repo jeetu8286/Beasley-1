@@ -2495,7 +2495,7 @@ a.featured__article--link {
       .featured__content--meta:last-child {
         margin-right: 0; } }
   .home__featured .featured__content--meta {
-    color: #929497; }
+    color: #90298e; }
   .news-site .featured__content--meta,
   .home__featured_news .featured__content--meta {
     position: absolute;
@@ -2549,7 +2549,7 @@ a.featured__article--link {
         font-size: 1em; } }
 
 .featured__content--title a:link, .featured__content--title a:visited {
-  color: #282827; }
+  color: #90298e; }
 
 .featured__content--title a:hover, .featured__content--title a:focus {
   color: #00a09b; }
