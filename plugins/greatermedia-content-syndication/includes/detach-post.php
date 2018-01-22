@@ -72,6 +72,11 @@ class Syndication_Detach_Post {
 			return;
 		}
 
+		$site_id = get_current_blog_id();
+		$user = wp_get_current_user();
+		$user_id = $user->ID;
+		$message = "[SYNDICATION: DETACHED SITE:{$site_id} POST:{$post_id} USER:{$user_id}] Post has been detached from syndication";
+		syslog( LOG_ERR, $message );
 		update_post_meta( $post_id, 'syndication-detached', 'true' );
 	}
 
