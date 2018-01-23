@@ -517,6 +517,9 @@ class BlogData {
 			$post_id = wp_insert_post( $args );
 			if ( is_numeric( $post_id ) && ! empty( $metas ) ) {
 				foreach ( $metas as $meta_key => $meta_value ) {
+					if ( $meta_key === 'syndication-detached' ) {
+						continue;
+					}
 					update_post_meta( $post_id, $meta_key, $meta_value[0] );
 				}
 			}
