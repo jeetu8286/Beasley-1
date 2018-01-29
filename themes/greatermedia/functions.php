@@ -17,7 +17,7 @@
  * Add this constant to wp-config and set value to "dev" to trigger time() as the cache buster on css/js that use this,
  * instead of the version - useful for dev, especially when cloudflare or other cdn's are involved
  */
-$version = '2.1.0';
+$version = '2.1.1';
 
 // If .version.php file exists, the content of this file (timestamp) is added to the $version value set above
 if ( file_exists( __DIR__ . '/../.version.php' ) ) {

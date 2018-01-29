@@ -731,6 +731,10 @@ img {
     .main > .container {
       padding: 20px 340px 20px 20px; } }
 
+@media screen and (min-width: 768px) {
+  .page-template-full-bleed .main > .container {
+    padding: 20px 20px 20px 20px; } }
+
 .main > .container > .sidebar {
   background-color: #ffffff;
   float: left;
