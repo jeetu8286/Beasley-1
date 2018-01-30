@@ -1,27 +1,15 @@
 #!/usr/bin/env bash
 
-read -p "Remove all node_modules? (y/N): " -r
-if [[ $REPLY =~ ^[Yy]$ ]]; then
-	find . -name "node_modules" -type d -exec rm -r "{}" \;
-fi
-
-RUN_YARN=0
-read -p "Install NPM dependencies using Yarn? (y/N): " -r
-if [[ $REPLY =~ ^[Yy]$ ]]; then
-	RUN_YARN=1
-fi
+npm i
 
 for d in */ ; do
-	cd $d
+	pushd $d
 
 	if [[ -e Gruntfile.js ]]; then
-		if [[ $RUN_YARN = 1 ]]; then
-			yarn
-		fi
-
+		ln -s ../node_modules
 		grunt
+		rm node_modules
 	fi
 
-
-	cd ..
+	popd
 done
