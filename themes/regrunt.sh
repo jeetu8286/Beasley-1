@@ -3,13 +3,16 @@
 npm i
 
 for d in */ ; do
-	pushd $d
+	pushd $d > /dev/null
 
 	if [[ -e Gruntfile.js ]]; then
+		echo ""
+		echo "============= $d ============="
+
 		ln -s ../node_modules
 		grunt
 		rm node_modules
 	fi
 
-	popd
+	popd > /dev/null
 done
