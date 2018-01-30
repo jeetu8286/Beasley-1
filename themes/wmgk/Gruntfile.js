@@ -7,48 +7,6 @@ module.exports = function( grunt ) {
 	// Project configuration
 	grunt.initConfig( {
 		pkg:    grunt.file.readJSON( 'package.json' ),
-		concat: {
-			options: {
-				stripBanners: true
-			},
-			wmgk: {
-				src: [
-					'assets/js/src/wmgk.js'
-				],
-				dest: 'assets/js/wmgk.js'
-			}
-		},
-		jshint: {
-			browser: {
-				all: [
-					'assets/js/src/**/*.js',
-					'assets/js/test/**/*.js'
-				],
-				options: {
-					jshintrc: '.jshintrc'
-				}
-			},
-			grunt: {
-				all: [
-					'Gruntfile.js'
-				],
-				options: {
-					jshintrc: '.gruntjshintrc'
-				}
-			}
-		},
-		uglify: {
-			all: {
-				files: {
-					'assets/js/wmgk.min.js': ['assets/js/wmgk.js']
-				},
-				options: {
-					mangle: {
-						reserved: ['jQuery']
-					}
-				}
-			}
-		},
 		sass:   {
 			options: {
 				require: 'sass-globbing',
@@ -73,7 +31,6 @@ module.exports = function( grunt ) {
 			}
 		},
 		watch:  {
-
 			sass: {
 				files: ['assets/css/sass/**/*.scss'],
 				tasks: ['sass', 'cssmin'],
@@ -81,21 +38,12 @@ module.exports = function( grunt ) {
 					debounceDelay: 500
 				}
 			},
-
-			scripts: {
-				files: ['assets/js/src/**/*.js', 'assets/js/vendor/**/*.js'],
-				tasks: ['jshint', 'concat', 'uglify'],
-				options: {
-					debounceDelay: 500
-				}
-			}
 		}
 	} );
 
 	// Default task.
 
-	grunt.registerTask( 'default', ['jshint', 'concat', 'uglify', 'sass', 'cssmin'] );
-
+	grunt.registerTask( 'default', ['sass', 'cssmin'] );
 
 	grunt.util.linefeed = '\n';
 };

@@ -80,13 +80,6 @@ function thefanatic_scripts_styles() {
 	$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 
 	wp_enqueue_script( 'livefyre', '//cdn.livefyre.com/Livefyre.js', null, null, true );
-	wp_enqueue_script(
-		'thefanatic',
-		get_stylesheet_directory_uri() . "/assets/js/thefanatic{$postfix}.js",
-		array( 'livefyre' ),
-		THEFANATIC_VERSION,
-		true
-	);
 	/**
 	 * We are dequeueing and deregistering the parent theme's style sheets.
 	 * The purpose for this is we are importing the parent's sass files into the child's sass files so that we can
