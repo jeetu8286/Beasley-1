@@ -8,7 +8,9 @@ build_assets() {
 		echo "============= $1 ============="
 
 		ln -s ../node_modules
+		ln -s ../package.json
 		grunt
+		rm package.json
 		rm node_modules
 	fi
 
