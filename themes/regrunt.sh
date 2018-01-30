@@ -15,8 +15,6 @@ build_assets() {
 	popd > /dev/null
 }
 
-npm i
-
 if [ -z "$1" ]; then
 	for d in */ ; do
 		build_assets "$d"
