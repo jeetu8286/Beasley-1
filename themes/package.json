@@ -1,5 +1,8 @@
 {
 	"name": "beasley",
+	"scripts": {
+		"build": "./regrunt.sh"
+	},
 	"devDependencies": {
 		"grunt": "^1.0.1",
 		"grunt-contrib-concat": "^1.0.1",

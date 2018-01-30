@@ -1,13 +1,11 @@
 #!/usr/bin/env bash
 
-npm i
-
-for d in */ ; do
-	pushd $d > /dev/null
+build_assets() {
+	pushd $1 > /dev/null
 
 	if [[ -e Gruntfile.js ]]; then
 		echo ""
-		echo "============= $d ============="
+		echo "============= $1 ============="
 
 		ln -s ../node_modules
 		grunt
@@ -15,4 +13,10 @@ for d in */ ; do
 	fi
 
 	popd > /dev/null
+}
+
+npm i
+
+for d in */ ; do
+	build_assets "$d"
 done
