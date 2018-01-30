@@ -17,6 +17,10 @@ build_assets() {
 
 npm i
 
-for d in */ ; do
-	build_assets "$d"
-done
+if [ -z "$1" ]; then
+	for d in */ ; do
+		build_assets "$d"
+	done
+else
+	build_assets "$1"
+fi
