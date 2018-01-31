@@ -241,17 +241,6 @@ add_action( 'get_footer', function () {
 } );
 
 /**
- * Add humans.txt to the <head> element.
- */
-function greatermedia_header_meta() {
-	$humans = '<link type="text/plain" rel="author" href="' . get_template_directory_uri() . '/humans.txt" />';
-
-	echo apply_filters( 'greatermedia_humans', $humans );
-}
-
-add_action( 'wp_head', 'greatermedia_header_meta' );
-
-/**
  * Register Navigation Menus
  */
 function greatermedia_nav_menus() {
