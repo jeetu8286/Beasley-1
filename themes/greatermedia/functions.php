@@ -29,7 +29,7 @@ if ( file_exists( __DIR__ . '/../.version.php' ) ) {
 if ( defined( 'GMR_PARENT_ENV' ) && 'dev' == GMR_PARENT_ENV ) {
 	define( 'GREATERMEDIA_VERSION', time() );
 } else {
-	define( 'GREATERMEDIA_VERSION', $version ); /* Version bump by Steve 03/27/2017 */
+	define( 'GREATERMEDIA_VERSION', $version );
 }
 
 add_theme_support( 'homepage-curation' );
