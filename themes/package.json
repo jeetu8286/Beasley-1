@@ -1,7 +1,7 @@
 {
 	"name": "beasley",
 	"scripts": {
-		"build": "./regrunt.sh"
+		"build": "grunt"
 	},
 	"devDependencies": {
 		"grunt": "^1.0.1",
