@@ -243,7 +243,7 @@ function fpmrss_fetch_media_data( $post_id, $feed_id ) {
 			$query      = $player_arr['query'];
 			$player     = str_replace( array( $query, '?' ), '', $player );
 
-			$player = '[audio mp3="' . $player . '"][/audio]';
+			$player = '[audio src="' . $player . '"][/audio]';
 			$content = $post->post_content . PHP_EOL . '<!--more-->' . PHP_EOL . $player;
 			wp_update_post( array( 'ID' => $post_id, 'post_content' => $content ) );
 			delete_post_meta( $post_id, 'gmr-player' ); //remove unwated player code
