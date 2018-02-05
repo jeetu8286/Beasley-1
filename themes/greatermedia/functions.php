@@ -815,6 +815,8 @@ function greatermedia_add_google_analytics( $instant_article = false ) {
 		$author = get_the_author_meta( 'login', $post->post_author );
 	}
 
+	$title_prefix = $instant_article ? 'ai_' : '';
+
 	?><script>
 		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -852,7 +854,7 @@ function greatermedia_add_google_analytics( $instant_article = false ) {
 			<?php endif; ?>
 		<?php endif ?>
 
-		ga('send', 'pageview');
+		ga('send', 'pageview', { title: '<?php echo esc_js( $title_prefix ); ?>' + document.title });
 
 		<?php if ( ! $ignore_jquery ) : ?>
 		jQuery( document ).ready( function () {
