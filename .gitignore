@@ -77,3 +77,4 @@ style.css.md
 *.map
 **/css/*.css
 **/js/*.js
+/plugins/fb-instant-articles/
