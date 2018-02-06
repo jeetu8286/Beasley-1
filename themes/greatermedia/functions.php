@@ -815,7 +815,7 @@ function greatermedia_add_google_analytics( $instant_article = false ) {
 		$author = get_the_author_meta( 'login', $post->post_author );
 	}
 
-	$title_prefix = $instant_article ? 'ai_' : '';
+	$title_prefix = $instant_article ? 'ia_' : '';
 
 	?><script>
 		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
