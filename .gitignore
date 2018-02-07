@@ -10,6 +10,7 @@ mu-plugins/dependencies/formbuilder/bower_components/
 mu-plugins/test-data-store.php
 mu-plugins/async-debug.php
 mu-plugins/advanced-custom-fields/
+mu-plugins/post-finder/
 
 plugins/wp-multi-network/
 plugins/wordpress-importer/
