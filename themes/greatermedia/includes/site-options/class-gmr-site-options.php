@@ -116,8 +116,6 @@ class GreaterMediaSiteOptions {
 		register_setting( self::option_group, 'gmr_google_analytics', 'sanitize_text_field' );
 		register_setting( self::option_group, 'gmr_google_uid_dimension', 'absint' );
 		register_setting( self::option_group, 'gmr_google_author_dimension', 'absint' );
-		register_setting( self::option_group, 'gmr_google_campaign_source_dimension', 'absint' );
-		register_setting( self::option_group, 'gmr_google_campaign_medium_dimension', 'absint' );
 		register_setting( self::option_group, 'gmr_livelinks_title', 'sanitize_text_field');
 		register_setting( self::option_group, 'gmr_newssite', 'esc_attr' );
 		register_setting( self::option_group, 'gmr_livelinks_more_redirect', 'esc_attr' );
@@ -244,16 +242,6 @@ class GreaterMediaSiteOptions {
 			$google_author_dimension = '';
 		}
 
-		$google_campaign_source_dimension = get_option( 'gmr_google_campaign_source_dimension', '' );
-		if ( 0 === $google_campaign_source_dimension ) {
-			$google_campaign_source_dimension = '';
-		}
-
-		$google_campaign_medium_dimension = get_option( 'gmr_google_campaign_medium_dimension', '' );
-		if ( 0 === $google_campaign_medium_dimension ) {
-			$google_campaign_medium_dimension = '';
-		}
-
 		?><div class="gmr__option">
 			<label for="gmr_google_analytics" class="gmr__option--label">Google Analytics ID</label>
 			<input type="text" class="gmr__option--input" name="gmr_google_analytics" id="gmr_google_analytics" value="<?php echo esc_attr( $google_analytics ); ?>" />
@@ -275,24 +263,6 @@ class GreaterMediaSiteOptions {
 			<div class="gmr-option__field--desc">
 				Sends the current post's author login ID to this custom Google Analytics dimension<br>
 				Most sites can use dimension2 unless it is already in use.
-			</div>
-		</div>
-
-		<div class="gmr__option">
-			<label for="gmr_google_campaign_source_dimension" class="gmr__option--label">Campaign Source Custom Dimension</label>
-			dimension<input type="text" name="gmr_google_campaign_source_dimension" id="gmr_google_campaign_source_dimension" value="<?php echo esc_attr( $google_campaign_source_dimension ); ?>" size="3" length="3">
-			<div class="gmr-option__field--desc">
-				Sends the current campaign source to this custom Google Analytics dimension<br>
-				Most sites can use dimension3 unless it is already in use.
-			</div>
-		</div>
-
-		<div class="gmr__option">
-			<label for="gmr_google_campaign_medium_dimension" class="gmr__option--label">Campaign Medium Custom Dimension</label>
-			dimension<input type="text" name="gmr_google_campaign_medium_dimension" id="gmr_google_campaign_medium_dimension" value="<?php echo esc_attr( $google_campaign_medium_dimension ); ?>" size="3" length="3">
-			<div class="gmr-option__field--desc">
-				Sends the current campaign medium to this custom Google Analytics dimension<br>
-				Most sites can use dimension4 unless it is already in use.
 			</div>
 		</div><?php
 	}
