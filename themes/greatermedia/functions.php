@@ -803,8 +803,6 @@ function greatermedia_add_google_analytics( $instant_article = false ) {
 
 	$google_uid_dimension = absint( get_option( 'gmr_google_uid_dimension', '' ) );
 	$google_author_dimension = absint( get_option( 'gmr_google_author_dimension', '' ) );
-	$google_campaign_source_dimension = absint( get_option( 'gmr_google_campaign_source_dimension', '' ) );
-	$google_campaign_medium_dimension = absint( get_option( 'gmr_google_campaign_medium_dimension', '' ) );
 
 	$ignore_jquery = apply_filters( 'greatermedia_ignore_jquery_events_analytics', false );
 
@@ -814,8 +812,6 @@ function greatermedia_add_google_analytics( $instant_article = false ) {
 		$category = implode( ', ', wp_get_post_terms($post->ID, 'category', $args ) );
 		$author = get_the_author_meta( 'login', $post->post_author );
 	}
-
-	$title_prefix = $instant_article ? 'ia_' : '';
 
 	?><script>
 		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -846,15 +842,14 @@ function greatermedia_add_google_analytics( $instant_article = false ) {
 			<?php if ( ( ! empty( $author ) ) && ( ! empty( $google_author_dimension ) ) ): ?>
 				ga( 'set', 'dimension<?php echo esc_js( $google_author_dimension ); ?>', <?php echo json_encode( $author ); ?> );
 			<?php endif; ?>
-			<?php if ( $instant_article && ! empty( $google_campaign_source_dimension ) ) : ?>
-				ga( 'set', 'dimension<?php echo esc_js( $google_campaign_source_dimension ); ?>', 'facebook');
-			<?php endif; ?>
-			<?php if ( $instant_article && ! empty( $google_campaign_medium_dimension ) ) : ?>
-				ga( 'set', 'dimension<?php echo esc_js( $google_campaign_medium_dimension ); ?>', 'Social Instant Article');
+			<?php if ( $instant_article ) : ?>
+				ga('set', 'campaignSource', 'Facebook');
+				ga('set', 'campaignMedium', 'Social Instant Article');
+				ga('set', 'title', 'FBIA: ' + ia_document.title);
 			<?php endif; ?>
 		<?php endif ?>
 
-		ga('send', 'pageview', { title: '<?php echo esc_js( $title_prefix ); ?>' + document.title });
+		ga('send', 'pageview');
 
 		<?php if ( ! $ignore_jquery ) : ?>
 		jQuery( document ).ready( function () {
