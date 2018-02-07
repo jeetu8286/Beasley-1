@@ -1,0 +1,12 @@
+{
+    "name": "vagrant/wp-content",
+    "authors": [
+        {
+            "name": "Eugene Manuilov",
+            "email": "eugene.manuilov@get10up.com"
+        }
+    ],
+    "require": {
+        "composer/installers": "^1.5"
+    }
+}
