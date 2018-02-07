@@ -793,71 +793,78 @@ function greatermedia_deactivate_tribe_warning_on_dashboard( $option_value ) {
 }
 add_filter( 'get_user_option_dashboard_quick_press_last_post_id', 'greatermedia_deactivate_tribe_warning_on_dashboard' );
 
-function greatermedia_add_google_analytics() {
+function greatermedia_add_google_analytics( $instant_article = false ) {
 	global $post;
+
 	$google_analytics = get_option( 'gmr_google_analytics', '' );
+	if ( empty( $google_analytics ) ) {
+		return;
+	}
+
 	$google_uid_dimension = absint( get_option( 'gmr_google_uid_dimension', '' ) );
 	$google_author_dimension = absint( get_option( 'gmr_google_author_dimension', '' ) );
 
 	$ignore_jquery = apply_filters( 'greatermedia_ignore_jquery_events_analytics', false );
 
-	if ( empty( $google_analytics ) ) {
-		return;
-	}
 	if ( is_singular() ) {
 		$args     = array( 'orderby' => 'name', 'order' => 'ASC', 'fields' => 'slugs' );
 		$shows    = implode( ', ', wp_get_post_terms( $post->ID, '_shows', $args ) );
 		$category = implode( ', ', wp_get_post_terms($post->ID, 'category', $args ) );
 		$author = get_the_author_meta( 'login', $post->post_author );
 	}
-	?>
-	<script>
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-	ga('create', '<?php echo esc_js( $google_analytics ); ?>', 'auto');
+	?><script>
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-	var googleUidDimension = '<?php echo esc_js( $google_uid_dimension ); ?>';
+		ga('create', '<?php echo esc_js( $google_analytics ); ?>', 'auto');
 
-	<?php if(! $ignore_jquery) : ?>
-	jQuery( document ).on( 'pjax:end', function () {
-		ga( 'set', 'location', window.location.href );
-		ga( 'send', 'pageview' );
-	} );
-	<?php endif; ?>
-	ga('require', 'displayfeatures');
-	<?php if ( is_singular() ) : ?>
-		<?php if ( ! empty( $shows ) ) : ?>
-			ga( 'set', 'contentGroup1', <?php echo json_encode( $shows ); ?> );
-		<?php endif; ?>
-		<?php if ( ! empty( $category ) ): ?>
-			ga( 'set', 'contentGroup2', <?php echo json_encode( $category ); ?> );
-		<?php endif; ?>
-		<?php if ( ( ! empty( $author ) ) && ( ! empty( $google_author_dimension ) ) ): ?>
-			ga( 'set', 'dimension<?php echo esc_js( $google_author_dimension ); ?>', <?php echo json_encode( $author ); ?> );
-		<?php endif; ?>
-	<?php endif ?>
+		var googleUidDimension = '<?php echo esc_js( $google_uid_dimension ); ?>';
 
-	ga('send', 'pageview');
-
-	<?php if(! $ignore_jquery) : ?>
-
-	jQuery( document ).ready( function () {
-		var $body = jQuery( 'body' );
-
-		$body.on( 'inlineAudioPlaying.gmr', function () {
-			ga( 'send', 'event', 'audio', 'Inline audio playing' );
+		<?php if(! $ignore_jquery) : ?>
+		jQuery( document ).on( 'pjax:end', function () {
+			ga( 'set', 'location', window.location.href );
+			ga( 'send', 'pageview' );
 		} );
+		<?php endif; ?>
 
-		$body.on( 'liveStreamPlaying.gmr', function () {
-			ga( 'send', 'event', 'audio', 'Live stream playing' );
+		ga('require', 'displayfeatures');
+
+		<?php if ( is_singular() ) : ?>
+			<?php if ( ! empty( $shows ) ) : ?>
+				ga( 'set', 'contentGroup1', <?php echo json_encode( $shows ); ?> );
+			<?php endif; ?>
+			<?php if ( ! empty( $category ) ): ?>
+				ga( 'set', 'contentGroup2', <?php echo json_encode( $category ); ?> );
+			<?php endif; ?>
+			<?php if ( ( ! empty( $author ) ) && ( ! empty( $google_author_dimension ) ) ): ?>
+				ga( 'set', 'dimension<?php echo esc_js( $google_author_dimension ); ?>', <?php echo json_encode( $author ); ?> );
+			<?php endif; ?>
+			<?php if ( $instant_article ) : ?>
+				ga('set', 'campaignSource', 'Facebook');
+				ga('set', 'campaignMedium', 'Social Instant Article');
+				ga('set', 'title', 'FBIA: ' + ia_document.title);
+			<?php endif; ?>
+		<?php endif ?>
+
+		ga('send', 'pageview');
+
+		<?php if ( ! $ignore_jquery ) : ?>
+		jQuery( document ).ready( function () {
+			var $body = jQuery( 'body' );
+
+			$body.on( 'inlineAudioPlaying.gmr', function () {
+				ga( 'send', 'event', 'audio', 'Inline audio playing' );
+			} );
+
+			$body.on( 'liveStreamPlaying.gmr', function () {
+				ga( 'send', 'event', 'audio', 'Live stream playing' );
+			} );
 		} );
-	} );
-	<?php endif; ?>
-	</script>
-	<?php
+		<?php endif; ?>
+	</script><?php
 }
 
 add_action( 'wp_head', 'greatermedia_add_google_analytics' );
