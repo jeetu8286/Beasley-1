@@ -9,12 +9,14 @@
 	"require": {
 		"oomphinc/composer-installers-extender": "^1.1",
 		"wpackagist-plugin/advanced-custom-fields": "5.6.8",
-		"wpackagist-plugin/fb-instant-articles": "4.0.6"
+		"wpackagist-plugin/fb-instant-articles": "4.0.6",
+		"10up/post-finder": "^0.3.0"
 	},
 	"extra": {
 		"installer-paths": {
 			"mu-plugins/{$name}": [
-				"wpackagist-plugin/advanced-custom-fields"
+				"wpackagist-plugin/advanced-custom-fields",
+				"10up/post-finder"
 			],
 			"plugins/{$name}/": [
 				"type:wordpress-plugin"

@@ -17,7 +17,7 @@
  * Add this constant to wp-config and set value to "dev" to trigger time() as the cache buster on css/js that use this,
  * instead of the version - useful for dev, especially when cloudflare or other cdn's are involved
  */
-$version = '2.1.1';
+$version = time();
 
 // If .version.php file exists, the content of this file (timestamp) is added to the $version value set above
 if ( file_exists( __DIR__ . '/../.version.php' ) ) {
@@ -26,11 +26,7 @@ if ( file_exists( __DIR__ . '/../.version.php' ) ) {
 }
 
 // Useful global constants
-if ( defined( 'GMR_PARENT_ENV' ) && 'dev' == GMR_PARENT_ENV ) {
-	define( 'GREATERMEDIA_VERSION', time() );
-} else {
-	define( 'GREATERMEDIA_VERSION', $version );
-}
+define( 'GREATERMEDIA_VERSION', $version );
 
 add_theme_support( 'homepage-curation' );
 add_theme_support( 'homepage-countdown-clock' );
@@ -213,25 +209,6 @@ function greatermedia_scripts_styles() {
 }
 
 add_action( 'wp_enqueue_scripts', 'greatermedia_scripts_styles');
-
-/**
- * Add custom admin stylesheet.
- */
-function greatermedia_admin_styles() {
-	$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
-	$baseurl = untrailingslashit( get_template_directory_uri() );
-
-	wp_register_style(
-		'gmr-admin-styles',
-		"{$baseurl}/assets/css/gm_admin{$postfix}.css",
-		array(),
-		GREATERMEDIA_VERSION
-	);
-
-	wp_enqueue_style( 'gmr-admin-styles' );
-}
-
-add_action( 'admin_enqueue_scripts', 'greatermedia_admin_styles' );
 
 /**
  * Unload YARPP stylesheets.
