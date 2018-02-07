@@ -9,6 +9,7 @@ upgrade/
 mu-plugins/dependencies/formbuilder/bower_components/
 mu-plugins/test-data-store.php
 mu-plugins/async-debug.php
+mu-plugins/advanced-custom-fields/
 
 plugins/wp-multi-network/
 plugins/wordpress-importer/
@@ -57,6 +58,7 @@ plugins/greatermedia-livefyre/
 plugins/video-thumbnails/
 plugins/user-role-editor/
 plugins/greatermedia-gigya/
+/plugins/fb-instant-articles/
 
 themes/index.php
 themes/twentyfourteen

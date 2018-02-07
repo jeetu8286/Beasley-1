@@ -1,12 +1,24 @@
 {
-    "name": "vagrant/wp-content",
-    "authors": [
-        {
-            "name": "Eugene Manuilov",
-            "email": "eugene.manuilov@get10up.com"
-        }
-    ],
-    "require": {
-        "composer/installers": "^1.5"
-    }
+	"name": "vagrant/wp-content",
+	"repositories": [
+		{
+			"type": "composer",
+			"url": "https://wpackagist.org"
+		}
+	],
+	"require": {
+		"oomphinc/composer-installers-extender": "^1.1",
+		"wpackagist-plugin/advanced-custom-fields": "5.6.8",
+		"wpackagist-plugin/fb-instant-articles": "4.0.6"
+	},
+	"extra": {
+		"installer-paths": {
+			"mu-plugins/{$name}": [
+				"wpackagist-plugin/advanced-custom-fields"
+			],
+			"plugins/{$name}/": [
+				"type:wordpress-plugin"
+			]
+		}
+	}
 }
