@@ -9,6 +9,10 @@
  */
 
 function omny_init() {
+	if ( ! function_exists( 'acf_add_local_field_group' ) ) {
+		return;
+	}
+
 	$location = array(
 		array(
 			array(
@@ -39,4 +43,18 @@ function omny_init() {
 	) );
 }
 
+function omny_register_settings( $group, $page ) {
+	add_settings_section( 'omny_settings', 'Omny Studio', '__return_false', $page );
+	add_settings_field( 'omny_organization', 'Organization ID', 'omny_render_settings', $page, 'omny_settings' );
+
+	register_setting( $group, 'omny_organization_id', 'sanitize_text_field' );
+}
+
+function omny_render_settings() {
+	$organization_id = get_option( 'omny_organization_id' );
+
+	?><input type="text" name="omny_organization_id" class="regular-text" value="<?php echo esc_attr( $organization_id ); ?>"><?php
+}
+
 add_action( 'init', 'omny_init' );
+add_action( 'beasley-register-settings', 'omny_register_settings', 1, 2 );
