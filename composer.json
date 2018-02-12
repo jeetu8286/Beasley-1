@@ -12,6 +12,9 @@
 		"wpackagist-plugin/fb-instant-articles": "4.0.6",
 		"10up/post-finder": "^0.3.0"
 	},
+	"require-dev": {
+		"wpackagist-plugin/wp-crontrol": "1.6.2"
+	},
 	"extra": {
 		"installer-paths": {
 			"mu-plugins/{$name}": [

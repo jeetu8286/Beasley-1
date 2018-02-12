@@ -34,27 +34,48 @@ function omny_init() {
 		'location'              => $location,
 		'fields'                => array(
 			array(
-				'key'   => 'omny_playlist_id',
-				'label' => 'Playlist ID',
-				'name'  => 'omny_playlist_id',
+				'key'   => 'omny_program_id',
+				'label' => 'Program ID',
+				'name'  => 'omny_program_id',
 				'type'  => 'text',
 			),
 		),
 	) );
 }
 
-function omny_register_settings( $group, $page ) {
-	add_settings_section( 'omny_settings', 'Omny Studio', '__return_false', $page );
-	add_settings_field( 'omny_organization', 'Organization ID', 'omny_render_settings', $page, 'omny_settings' );
-
-	register_setting( $group, 'omny_organization_id', 'sanitize_text_field' );
+function omny_register_scheduled_events() {
+	if ( ! wp_next_scheduled( 'omny_do_syndication' ) ) {
+		wp_schedule_event( current_time( 'timestamp', 1 ), 'hourly', 'omny_do_syndication' );
+	}
 }
 
-function omny_render_settings() {
-	$organization_id = get_option( 'omny_organization_id' );
+function omny_register_settings( $group, $page ) {
+	add_settings_section( 'omny_settings', 'Omny Studio', '__return_false', $page );
+	add_settings_field( 'omny_token', 'Access Token', 'beasley_input_field', $page, 'omny_settings', 'name=omny_token' );
 
-	?><input type="text" name="omny_organization_id" class="regular-text" value="<?php echo esc_attr( $organization_id ); ?>"><?php
+	register_setting( $group, 'omny_token', 'sanitize_text_field' );
+}
+
+function omny_api_request() {
+
+}
+
+function omny_syndicate_programs() {
+	$podcasts = get_posts( array(
+		'post_type'      => 'podcast',
+		'posts_per_page' => 1000, // should be enough to get all podcasts
+		'fields'         => 'ids',
+	) );
+
+	foreach ( $podcasts as $podcast ) {
+		$program_id = get_post_meta( $podcast, 'omny_program_id', true );
+		if ( empty( $program_id ) ) {
+			continue;
+		}
+	}
 }
 
 add_action( 'init', 'omny_init' );
+add_action( 'admin_init', 'omny_register_scheduled_events' );
 add_action( 'beasley-register-settings', 'omny_register_settings', 1, 2 );
+add_action( 'omny_do_syndication', 'omny_syndicate_programs' );
