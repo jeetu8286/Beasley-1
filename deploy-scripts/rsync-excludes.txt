@@ -1,0 +1,17 @@
+.git
+.gitignore
+.gitlab-ci.yml
+node_modules
+bower_components
+deploy-scripts
+
+# There aren't `plugins/`, `themes/`, or `mu-plugins/` prefixes on these since rsync is run
+# independently for each directory
+
+# themes/
+
+
+# plugins/
+
+
+# mu-plugins/
