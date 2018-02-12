@@ -12,7 +12,7 @@ mu-plugins/async-debug.php
 mu-plugins/advanced-custom-fields/
 mu-plugins/post-finder/
 
-/plugins/
+/plugins/*
 !/plugins/beasley*
 !/plugins/breaking-news/
 !/plugins/dynamic-cdn/
@@ -23,6 +23,7 @@ mu-plugins/post-finder/
 !/plugins/greatermedia-*
 !/plugins/ooyala-video-browser-responsive/
 !/plugins/S3-Uploads-master
+!/plugins/gravityforms/
 
 themes/index.php
 themes/twentyfourteen
