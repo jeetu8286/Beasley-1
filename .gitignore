@@ -38,9 +38,7 @@ atlassian-ide-plugin.xml
 **/.sass-cache/**
 style.css.md
 /vendor/
-/plugins/wp-debug-logger/
 
 *.map
 **/css/*.css
 **/js/*.js
-/plugins/fb-instant-articles/
