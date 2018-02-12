@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "1eb0ec1df6cd6500173d664e0bc7d6e7",
+    "content-hash": "0411d796d34527e7d37ea58820e0d768",
     "packages": [
         {
             "name": "10up/post-finder",
@@ -231,6 +231,26 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/advanced-custom-fields/"
+        },
+        {
+            "name": "wpackagist-plugin/duplicate-post",
+            "version": "3.2",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/duplicate-post/",
+                "reference": "tags/3.2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/duplicate-post.3.2.zip",
+                "reference": null,
+                "shasum": null
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/duplicate-post/"
         },
         {
             "name": "wpackagist-plugin/fb-instant-articles",
