@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "647306131e654f6a2d7f6fa90cae527d",
+    "content-hash": "81eda93e52df096971eaefb8c2f4737c",
     "packages": [
         {
             "name": "10up/post-finder",
@@ -291,6 +291,26 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/edit-flow/"
+        },
+        {
+            "name": "wpackagist-plugin/elasticpress",
+            "version": "2.4.2",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/elasticpress/",
+                "reference": "tags/2.4.2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/elasticpress.2.4.2.zip",
+                "reference": null,
+                "shasum": null
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/elasticpress/"
         },
         {
             "name": "wpackagist-plugin/fb-instant-articles",
