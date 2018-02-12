@@ -3,6 +3,8 @@
 # Print commands to the screen
 set -x
 
+composer install --no-dev -o
+
 pushd plugins/greatermedia-content-syndication || exit 1
 composer install --no-dev -o
 popd || exit 1
