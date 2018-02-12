@@ -12,7 +12,8 @@
 		"wpackagist-plugin/fb-instant-articles": "4.0.6",
 		"10up/post-finder": "^0.3.0",
 		"wpackagist-plugin/duplicate-post": "3.2",
-		"wpackagist-plugin/configure-smtp": "^3.1"
+		"wpackagist-plugin/configure-smtp": "3.1",
+        "wpackagist-plugin/edit-flow": "0.8.2"
 	},
 	"extra": {
 		"installer-paths": {
