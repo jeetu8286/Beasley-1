@@ -13,7 +13,7 @@ mu-plugins/advanced-custom-fields/
 mu-plugins/post-finder/
 
 /plugins/
-!/plugins/beasley-admin-fixes/
+!/plugins/beasley*
 !/plugins/breaking-news/
 !/plugins/dynamic-cdn/
 !/plugins/edit-flow-hotfixes/
