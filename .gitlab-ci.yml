@@ -13,7 +13,7 @@ cache:
 test:
   stage: test
   script:
-    - 10up-scripts
+#    - 10up-scripts
 
 deploy_stage:
   stage: deploy
