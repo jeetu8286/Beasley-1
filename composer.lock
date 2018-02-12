@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "81eda93e52df096971eaefb8c2f4737c",
+    "content-hash": "ee1594e0ac142f041a6dcc3d41a11d5a",
     "packages": [
         {
             "name": "10up/post-finder",
@@ -331,6 +331,26 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/fb-instant-articles/"
+        },
+        {
+            "name": "wpackagist-plugin/feed-pull",
+            "version": "0.2.6",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/feed-pull/",
+                "reference": "tags/0.2.6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/feed-pull.0.2.6.zip",
+                "reference": null,
+                "shasum": null
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/feed-pull/"
         }
     ],
     "packages-dev": [],
