@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "c7848336710107b8ea09ffe51aa3de33",
+    "content-hash": "c356e8f074c5bc2c9164355c2d5b9a6e",
     "packages": [
         {
             "name": "10up/post-finder",
@@ -431,6 +431,26 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/feed-pull/"
+        },
+        {
+            "name": "wpackagist-plugin/ooyala-video-browser",
+            "version": "2.5.2",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/ooyala-video-browser/",
+                "reference": "tags/2.5.2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/ooyala-video-browser.2.5.2.zip",
+                "reference": null,
+                "shasum": null
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/ooyala-video-browser/"
         },
         {
             "name": "wpackagist-plugin/public-post-preview",
