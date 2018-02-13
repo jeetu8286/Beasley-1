@@ -108,6 +108,10 @@ function omny_syndicate_programs() {
 
 		$clips = $clips['Clips'];
 		foreach ( $clips as $clip ) {
+			if ( $clip['PublishState'] != 'Published' ) {
+				continue;
+			}
+
 			$query = $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->postmeta} WHERE `meta_key` = 'omny-clip-id' AND `meta_value` = %s", $clip['Id'] );
 			$found = $wpdb->get_var( $query );
 			if ( $found > 0 ) {
@@ -117,11 +121,20 @@ function omny_syndicate_programs() {
 			$date_gmt = date( 'Y-m-d H:i:s', strtotime( $clip['PublishedUtc'] ) );
 			$date = get_date_from_gmt( $date_gmt );
 
+			switch ( $clip['Visibility'] ) {
+				case 'Private':
+					$status = 'private';
+					break;
+				default:
+					$status = 'publish';
+					break;
+			}
+
 			$args = array(
 				'post_title'    => $clip['Title'],
 				'post_content'  => sprintf( '[audio mp3="%s"][/audio]', $clip['AudioUrl'] ),
 				'post_excerpt'  => $clip['Description'],
-				'post_status'   => 'publish',
+				'post_status'   => $status,
 				'post_type'     => 'episode',
 				'ping_status'   => 'closed',
 				'post_parent'   => $podcast,
