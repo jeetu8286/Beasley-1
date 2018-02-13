@@ -39,8 +39,8 @@ deploy_prod:
     - bash ./deploy-scripts/build.sh
     - bash ./deploy-scripts/deploy-prod.sh
     - ssh beanstalk@52.0.13.41 'echo $(date +%s) > /var/www/html/wordpress/wp-content/themes/.version.php'
-#    - ssh beanstalk@52.0.13.41 'touch /var/www/html/deploy-date'
-#    - ssh beanstalk@52.0.13.41 'echo $(date +%s) > /var/www/html/deploy-date'
+    - ssh beanstalk@52.0.13.41 'touch /var/www/html/deploy-date'
+    - ssh beanstalk@52.0.13.41 'echo $(date +%s) > /var/www/html/deploy-date'
   only:
     - master
   when: manual
