@@ -20,7 +20,8 @@
 		"wpackagist-plugin/restricted-site-access": "^6.0",
 		"wpackagist-plugin/term-management-tools": "^1.1",
         "wpackagist-plugin/the-events-calendar": "4.6.2",
-		"wpackagist-plugin/video-thumbnails": "^2.12"
+		"wpackagist-plugin/video-thumbnails": "^2.12",
+		"wpackagist-plugin/wordpress-importer": "^0.6.3"
 	},
 	"extra": {
 		"installer-paths": {
