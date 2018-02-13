@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "6805bb61b57d027045d76a0f9b1d3b5d",
+    "content-hash": "ad212d206c825e89dc1e5a6839e673df",
     "packages": [
         {
             "name": "10up/post-finder",
@@ -431,6 +431,26 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/the-events-calendar/"
+        },
+        {
+            "name": "wpackagist-plugin/video-thumbnails",
+            "version": "2.12.3",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/video-thumbnails/",
+                "reference": "tags/2.12.3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/video-thumbnails.2.12.3.zip",
+                "reference": null,
+                "shasum": null
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/video-thumbnails/"
         }
     ],
     "packages-dev": [
