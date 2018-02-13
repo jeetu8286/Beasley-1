@@ -23,7 +23,8 @@
 		"wpackagist-plugin/video-thumbnails": "^2.12",
 		"wpackagist-plugin/wordpress-importer": "^0.6.3",
 		"wpackagist-plugin/wp-crontrol": "^1.6",
-		"wpackagist-plugin/yet-another-related-posts-plugin": "^4.4"
+		"wpackagist-plugin/yet-another-related-posts-plugin": "^4.4",
+        "wpackagist-plugin/wordpress-seo": "5.6.1"
 	},
 	"extra": {
 		"installer-paths": {
