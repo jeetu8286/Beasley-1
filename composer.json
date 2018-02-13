@@ -45,6 +45,7 @@
 	},
 	"require-dev": {
 		"wpackagist-plugin/query-monitor": "^2.17",
-		"wpackagist-plugin/rewrite-rules-inspector": "^1.2"
+		"wpackagist-plugin/rewrite-rules-inspector": "^1.2",
+		"wpackagist-plugin/user-switching": "^1.3"
 	}
 }
