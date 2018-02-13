@@ -28,7 +28,8 @@
 		"wpackagist-plugin/wordpress-importer": "^0.6.3",
 		"wpackagist-plugin/wp-crontrol": "^1.6",
 		"wpackagist-plugin/yet-another-related-posts-plugin": "^4.4",
-        "wpackagist-plugin/wordpress-seo": "5.6.1"
+        "wpackagist-plugin/wordpress-seo": "5.6.1",
+		"wpackagist-plugin/simple-local-avatars": "^2.0"
 	},
 	"extra": {
 		"installer-paths": {
