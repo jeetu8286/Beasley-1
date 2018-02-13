@@ -56,11 +56,39 @@ function omny_register_settings( $group, $page ) {
 	register_setting( $group, 'omny_token', 'sanitize_text_field' );
 }
 
-function omny_api_request() {
+function omny_api_request( $url, $args = array() ) {
+	$args = wp_parse_args( $args, array(
+		'headers' => array(),
+		'method'  => 'GET',
+	) );
 
+	$args['headers']['Authorization'] = 'OmnyToken ' . get_option( 'omny_token' );
+
+	$response = wp_remote_request( "https://api.omnystudio.com/v0/{$url}", $args );
+
+	if ( wp_remote_retrieve_response_code( $response ) !== 200 ) {
+		return new \WP_Error();
+	}
+
+	$body = wp_remote_retrieve_body( $response );
+	$json = json_decode( $body, true );
+
+	return $json;
 }
 
+/**
+ *
+ * @global \wpdb $wpdb
+ * @return type
+ */
 function omny_syndicate_programs() {
+	global $wpdb;
+
+	$token = trim( get_option( 'omny_token' ) );
+	if ( empty( $token ) ) {
+		return;
+	}
+
 	$podcasts = get_posts( array(
 		'post_type'      => 'podcast',
 		'posts_per_page' => 1000, // should be enough to get all podcasts
@@ -71,6 +99,46 @@ function omny_syndicate_programs() {
 		$program_id = get_post_meta( $podcast, 'omny_program_id', true );
 		if ( empty( $program_id ) ) {
 			continue;
+		}
+
+		$clips = omny_api_request( "programs/{$program_id}/clips?pageSize=100" );
+		if ( is_wp_error( $clips ) ) {
+			continue;
+		}
+
+		$clips = $clips['Clips'];
+		foreach ( $clips as $clip ) {
+			$query = $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->postmeta} WHERE `meta_key` = 'omny-clip-id' AND `meta_value` = %s", $clip['Id'] );
+			$found = $wpdb->get_var( $query );
+			if ( $found > 0 ) {
+				continue;
+			}
+
+			$date_gmt = date( 'Y-m-d H:i:s', strtotime( $clip['PublishedUtc'] ) );
+			$date = get_date_from_gmt( $date_gmt );
+
+			$args = array(
+				'post_title'    => $clip['Title'],
+				'post_content'  => sprintf( '[audio mp3="%s"][/audio]', $clip['AudioUrl'] ),
+				'post_excerpt'  => $clip['Description'],
+				'post_status'   => 'publish',
+				'post_type'     => 'episode',
+				'ping_status'   => 'closed',
+				'post_parent'   => $podcast,
+				'post_date'     => $date,
+				'post_date_gmt' => $date_gmt,
+				'guid'          => $clip['Id'],
+				'meta_input'    => array(
+					'omny-clip-id'   => $clip['Id'],
+					'omny-embed-url' => $clip['EmbedUrl'],
+					'omny-image-url' => $clip['ImageUrl'],
+				),
+			);
+
+			$post_id = wp_insert_post( $args, true );
+			if ( is_wp_error( $post_id ) ) {
+				continue;
+			}
 		}
 	}
 }
