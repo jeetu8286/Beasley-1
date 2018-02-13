@@ -22,7 +22,8 @@
         "wpackagist-plugin/the-events-calendar": "4.6.2",
 		"wpackagist-plugin/video-thumbnails": "^2.12",
 		"wpackagist-plugin/wordpress-importer": "^0.6.3",
-		"wpackagist-plugin/wp-crontrol": "^1.6"
+		"wpackagist-plugin/wp-crontrol": "^1.6",
+		"wpackagist-plugin/yet-another-related-posts-plugin": "^4.4"
 	},
 	"extra": {
 		"installer-paths": {
