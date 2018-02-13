@@ -81,19 +81,23 @@ class GMP_Player{
 		$content = get_post()->post_content;
 		$pattern = get_shortcode_regex();
 
-		$html = '';
-		if ( preg_match_all( '/'. $pattern .'/s', $content, $matches ) && array_key_exists( 2, $matches ) && in_array( 'audio', $matches[2] ) ) {
+		$matches = array();
+		if ( preg_match_all( '/'. $pattern .'/s', $content, $matches ) && array_key_exists( 2, $matches ) ) {
+			$keys = array( 'embed', 'audio' );
+			foreach ( $keys as $key ) {
+				if ( in_array( $key, $matches[2] ) ) {
+					$shortcode = $matches[0][ array_search( $key, $matches[2] ) ];
 
-			// Return first audio shortcode (don't assume audio is the first one)
-			foreach ( $matches[0] as $shortcode ){
-				if ( preg_match( '#^\[audio#', $shortcode ) && empty( $html ) ){
-					$html = trim( do_shortcode( $shortcode ) );
-					break;
+					remove_filter( 'the_content', 'wpautop' );
+					$html = apply_filters( 'the_content', $shortcode );
+					add_filter( 'the_content', 'wpautop' );
+
+					return $html;
 				}
 			}
 		}
 
-		return $html;
+		return '';
 	}
 
 	/**
