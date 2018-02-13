@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "2c2195a33fd56021f9b0d65655b85db3",
+    "content-hash": "3107eef67ed1826542dd0b79bc05209b",
     "packages": [
         {
             "name": "10up/post-finder",
@@ -351,6 +351,26 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/feed-pull/"
+        },
+        {
+            "name": "wpackagist-plugin/public-post-preview",
+            "version": "2.6.0",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/public-post-preview/",
+                "reference": "tags/2.6.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/public-post-preview.2.6.0.zip",
+                "reference": null,
+                "shasum": null
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/public-post-preview/"
         }
     ],
     "packages-dev": [],
