@@ -9,14 +9,13 @@
 	"require": {
 		"oomphinc/composer-installers-extender": "^1.1",
 		"wpackagist-plugin/advanced-custom-fields": "5.6.8",
-		"wpackagist-plugin/fb-instant-articles": "4.0.6",
+		"wpackagist-plugin/fb-instant-articles": "4.0.5",
 		"10up/post-finder": "^0.3.0",
 		"wpackagist-plugin/duplicate-post": "3.2",
 		"wpackagist-plugin/configure-smtp": "3.1",
         "wpackagist-plugin/edit-flow": "^0.8",
         "wpackagist-plugin/elasticpress": "^2.4",
-		"wpackagist-plugin/feed-pull": "^0.2.6",
-        "wpackagist-plugin/fb-instant-articles": "4.0.5"
+		"wpackagist-plugin/feed-pull": "^0.2.6"
 	},
 	"extra": {
 		"installer-paths": {
