@@ -9,38 +9,38 @@
  */
 
 function omny_init() {
-	if ( ! function_exists( 'acf_add_local_field_group' ) ) {
-		return;
+	wp_oembed_add_provider( 'https://omny.fm/shows/*', 'https://omny.fm/oembed', false );
+
+	if ( function_exists( 'acf_add_local_field_group' ) ) {
+		$location = array(
+			array(
+				array(
+					'param' => 'post_type',
+					'operator' => '==',
+					'value' => 'podcast',
+				),
+			),
+		);
+
+		acf_add_local_field_group( array(
+			'key'                   => 'group_5a7b2b84a6adb',
+			'title'                 => 'Omny Studio',
+			'position'              => 'side',
+			'style'                 => 'default',
+			'label_placement'       => 'top',
+			'instruction_placement' => 'label',
+			'active'                => 1,
+			'location'              => $location,
+			'fields'                => array(
+				array(
+					'key'   => 'omny_program_id',
+					'label' => 'Program ID',
+					'name'  => 'omny_program_id',
+					'type'  => 'text',
+				),
+			),
+		) );
 	}
-
-	$location = array(
-		array(
-			array(
-				'param' => 'post_type',
-				'operator' => '==',
-				'value' => 'podcast',
-			),
-		),
-	);
-
-	acf_add_local_field_group( array(
-		'key'                   => 'group_5a7b2b84a6adb',
-		'title'                 => 'Omny Studio',
-		'position'              => 'side',
-		'style'                 => 'default',
-		'label_placement'       => 'top',
-		'instruction_placement' => 'label',
-		'active'                => 1,
-		'location'              => $location,
-		'fields'                => array(
-			array(
-				'key'   => 'omny_program_id',
-				'label' => 'Program ID',
-				'name'  => 'omny_program_id',
-				'type'  => 'text',
-			),
-		),
-	) );
 }
 
 function omny_register_scheduled_events() {
@@ -132,7 +132,7 @@ function omny_syndicate_programs() {
 
 			$args = array(
 				'post_title'    => $clip['Title'],
-				'post_content'  => sprintf( '[audio mp3="%s"][/audio]', $clip['AudioUrl'] ),
+				'post_content'  => sprintf( '[embed]%s[/embed]', $clip['PublishedUrl'] ),
 				'post_excerpt'  => $clip['Description'],
 				'post_status'   => $status,
 				'post_type'     => 'episode',
@@ -142,9 +142,11 @@ function omny_syndicate_programs() {
 				'post_date_gmt' => $date_gmt,
 				'guid'          => $clip['Id'],
 				'meta_input'    => array(
-					'omny-clip-id'   => $clip['Id'],
-					'omny-embed-url' => $clip['EmbedUrl'],
-					'omny-image-url' => $clip['ImageUrl'],
+					'omny-clip-id'     => $clip['Id'],
+					'omny-embed-url'   => $clip['EmbedUrl'],
+					'omny-publish-url' => $clip['PublishedUrl'],
+					'omny-audio-url'   => $clip['AudioUrl'],
+					'omny-image-url'   => $clip['ImageUrl'],
 				),
 			);
 
