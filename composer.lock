@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "bad405cc9c4bb2239ff8d991ed579ffd",
+    "content-hash": "cd0975a06fb9034bf0256aa8381838b2",
     "packages": [
         {
             "name": "10up/post-finder",
@@ -471,6 +471,26 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/restricted-site-access/"
+        },
+        {
+            "name": "wpackagist-plugin/safe-redirect-manager",
+            "version": "1.7.8",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/safe-redirect-manager/",
+                "reference": "tags/1.7.8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/safe-redirect-manager.1.7.8.zip",
+                "reference": null,
+                "shasum": null
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/safe-redirect-manager/"
         },
         {
             "name": "wpackagist-plugin/simple-local-avatars",
