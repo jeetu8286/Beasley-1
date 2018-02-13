@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "ee1594e0ac142f041a6dcc3d41a11d5a",
+    "content-hash": "2c2195a33fd56021f9b0d65655b85db3",
     "packages": [
         {
             "name": "10up/post-finder",
@@ -314,15 +314,15 @@
         },
         {
             "name": "wpackagist-plugin/fb-instant-articles",
-            "version": "4.0.6",
+            "version": "4.0.5",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/fb-instant-articles/",
-                "reference": "tags/4.0.6"
+                "reference": "tags/4.0.5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/fb-instant-articles.4.0.6.zip",
+                "url": "https://downloads.wordpress.org/plugin/fb-instant-articles.4.0.5.zip",
                 "reference": null,
                 "shasum": null
             },

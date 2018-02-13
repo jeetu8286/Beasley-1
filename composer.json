@@ -15,7 +15,8 @@
 		"wpackagist-plugin/configure-smtp": "3.1",
         "wpackagist-plugin/edit-flow": "^0.8",
         "wpackagist-plugin/elasticpress": "^2.4",
-		"wpackagist-plugin/feed-pull": "^0.2.6"
+		"wpackagist-plugin/feed-pull": "^0.2.6",
+        "wpackagist-plugin/fb-instant-articles": "4.0.5"
 	},
 	"extra": {
 		"installer-paths": {
