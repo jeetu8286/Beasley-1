@@ -29,3 +29,18 @@ deploy_stage:
     - ssh beanstalk@54.87.4.54 'echo $(date +%s) > /var/www/html/wordpress/wp-content/themes/.version.php'
   only:
     - stage
+
+deploy_prod:
+  stage: deploy
+  environment:
+    name: Production
+    url: https://sites.greatermedia.com/
+  script:
+    - bash ./deploy-scripts/build.sh
+    - bash ./deploy-scripts/deploy-prod.sh
+    - ssh beanstalk@52.0.13.41 'echo $(date +%s) > /var/www/html/wordpress/wp-content/themes/.version.php'
+#    - ssh beanstalk@52.0.13.41 'touch /var/www/html/deploy-date'
+#    - ssh beanstalk@52.0.13.41 'echo $(date +%s) > /var/www/html/deploy-date'
+  only:
+    - master
+  when: manual
