@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "c356e8f074c5bc2c9164355c2d5b9a6e",
+    "content-hash": "76fd8beeca5183c483773f63534000ca",
     "packages": [
         {
             "name": "10up/post-finder",
@@ -49,6 +49,56 @@
                 "wordpress"
             ],
             "time": "2017-07-05T21:15:47+00:00"
+        },
+        {
+            "name": "10up/wp-minions",
+            "version": "3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/10up/WP-Minions.git",
+                "reference": "fe37083445db4173ae24ee5dc193095298ff968b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/10up/WP-Minions/zipball/fe37083445db4173ae24ee5dc193095298ff968b",
+                "reference": "fe37083445db4173ae24ee5dc193095298ff968b",
+                "shasum": ""
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "~0.9.0",
+                "phpunit/phpunit": "~3.7"
+            },
+            "type": "wordpress-plugin",
+            "autoload": {
+                "psr-4": {
+                    "WpMinions\\": "includes/WpMinions"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPLv2"
+            ],
+            "authors": [
+                {
+                    "name": "10up",
+                    "homepage": "http://10up.com"
+                },
+                {
+                    "name": "Chris Marslender",
+                    "email": "chrismarslender@gmail.com",
+                    "homepage": "https://chrismarslender.com/",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Darshan Sawardekar",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Job Queue for WordPress",
+            "time": "2017-07-06T22:15:30+00:00"
         },
         {
             "name": "composer/installers",
