@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "e997526ed43d0a944ee4c665ca98dda0",
+    "content-hash": "89dbd6f088568caebf1f028f3f4189aa",
     "packages": [
         {
             "name": "10up/post-finder",
@@ -371,6 +371,26 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/public-post-preview/"
+        },
+        {
+            "name": "wpackagist-plugin/restricted-site-access",
+            "version": "6.0.2",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/restricted-site-access/",
+                "reference": "tags/6.0.2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/restricted-site-access.6.0.2.zip",
+                "reference": null,
+                "shasum": null
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/restricted-site-access/"
         }
     ],
     "packages-dev": [
