@@ -9,7 +9,7 @@ cache:
   paths:
     - themes/node_modules
     - plugins/greatermedia-content-syndication/vendor
-    - /tmp/cache # Composer
+    - .composer-cache # Composer
 
 #test:
 #  stage: test
