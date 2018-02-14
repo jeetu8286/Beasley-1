@@ -119,3 +119,4 @@ function display_results( $target_plugin, $found_sites ) {
 	$table->setRows( $found_sites );
 	$table->display();
 }
+
