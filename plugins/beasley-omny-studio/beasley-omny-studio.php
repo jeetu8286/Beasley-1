@@ -8,6 +8,8 @@
  * Author URI:  http://10up.com/
  */
 
+define( 'OMNY_STUDIO_VERSION', '20180214.1' );
+
 function omny_init() {
 	wp_oembed_add_provider( 'https://omny.fm/shows/*', 'https://omny.fm/oembed', false );
 
@@ -43,6 +45,11 @@ function omny_init() {
 	}
 }
 
+function omny_enqueue_scripts() {
+	wp_enqueue_script( 'playerjs', '//cdn.embed.ly/player-0.1.0.min.js', null, null, true );
+	wp_enqueue_script( 'omny', plugins_url( '/player.js', __FILE__ ), array( 'jquery', 'playerjs' ), OMNY_STUDIO_VERSION, true );
+}
+
 function omny_register_scheduled_events() {
 	if ( ! wp_next_scheduled( 'omny_do_syndication' ) ) {
 		wp_schedule_event( current_time( 'timestamp', 1 ), 'hourly', 'omny_do_syndication' );
@@ -76,11 +83,6 @@ function omny_api_request( $url, $args = array() ) {
 	return $json;
 }
 
-/**
- *
- * @global \wpdb $wpdb
- * @return type
- */
 function omny_syndicate_programs() {
 	global $wpdb;
 
@@ -162,3 +164,4 @@ add_action( 'init', 'omny_init' );
 add_action( 'admin_init', 'omny_register_scheduled_events' );
 add_action( 'beasley-register-settings', 'omny_register_settings', 1, 2 );
 add_action( 'omny_do_syndication', 'omny_syndicate_programs' );
+add_action( 'wp_enqueue_scripts', 'omny_enqueue_scripts' );
