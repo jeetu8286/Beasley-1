@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "ee3160192b41698efb44b25224d0a827",
+    "content-hash": "3e9f3044ab08820ca31178df0998bd89",
     "packages": [
         {
             "name": "10up/post-finder",
@@ -444,15 +444,15 @@
         },
         {
             "name": "wpackagist-plugin/elasticpress",
-            "version": "2.3.2",
+            "version": "2.4.2",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/elasticpress/",
-                "reference": "tags/2.3.2"
+                "reference": "tags/2.4.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/elasticpress.2.3.2.zip",
+                "url": "https://downloads.wordpress.org/plugin/elasticpress.2.4.2.zip",
                 "reference": null,
                 "shasum": null
             },
@@ -464,15 +464,15 @@
         },
         {
             "name": "wpackagist-plugin/fb-instant-articles",
-            "version": "4.0.5",
+            "version": "4.0.6",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/fb-instant-articles/",
-                "reference": "tags/4.0.5"
+                "reference": "tags/4.0.6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/fb-instant-articles.4.0.5.zip",
+                "url": "https://downloads.wordpress.org/plugin/fb-instant-articles.4.0.6.zip",
                 "reference": null,
                 "shasum": null
             },
