@@ -15,9 +15,6 @@ get_header();
 		<?php do_action( 'do_frontpage_highlights' ); ?>
 
 		<section class="content">
-
-			<div data-crowdynews-widget="BeasleyBroadcastGroupInc_wgac-home-fullpage-news"><script src="//widget.crowdynews.com/BeasleyBroadcastGroupInc_wgac-home-fullpage-news.js" async="true"></script></div>
-			
 		</section>
 
 		<?php get_sidebar(); ?>
