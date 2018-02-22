@@ -76,9 +76,20 @@ class GMP_Player{
 
 	}
 
-
 	public static function get_podcast_episode() {
-		$content = get_post()->post_content;
+		$post = get_post();
+		if ( ! is_a( $post, '\WP_Post' ) ) {
+			return '';
+		}
+
+		if ( ! is_singular( \GMP_CPT::EPISODE_POST_TYPE ) ) {
+			$audio_url = apply_filters( 'beasley-episode-audio-url', false, $post );
+			if ( filter_var( $audio_url, FILTER_VALIDATE_URL ) ) {
+				return do_shortcode( '[audio mp3="' . esc_url( $audio_url ) . '"][/audio]' );
+			}
+		}
+
+		$content = $post->post_content;
 		$pattern = get_shortcode_regex();
 
 		$matches = array();

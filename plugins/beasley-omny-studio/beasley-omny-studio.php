@@ -160,8 +160,18 @@ function omny_syndicate_programs() {
 	}
 }
 
+function omny_get_episode_audio_url( $url, $post ) {
+	if ( empty( $url ) ) {
+		$url = get_post_meta( $post->ID, 'omny-audio-url', true );
+		$url = filter_var( $url, FILTER_VALIDATE_URL );
+	}
+
+	return $url;
+}
+
 add_action( 'init', 'omny_init' );
 add_action( 'admin_init', 'omny_register_scheduled_events' );
 add_action( 'beasley-register-settings', 'omny_register_settings', 1, 2 );
+add_filter( 'beasley-episode-audio-url', 'omny_get_episode_audio_url', 10, 2 );
 add_action( 'omny_do_syndication', 'omny_syndicate_programs' );
 add_action( 'wp_enqueue_scripts', 'omny_enqueue_scripts' );
