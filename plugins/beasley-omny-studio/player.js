@@ -44,5 +44,5 @@
 		});
 	};
 
-	$document.ready(connectToEmbeds);
+	$document.bind('pjax:end', connectToEmbeds).ready(connectToEmbeds);
 })(jQuery, playerjs);
