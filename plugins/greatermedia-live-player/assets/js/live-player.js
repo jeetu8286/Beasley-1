@@ -2027,7 +2027,7 @@
 	 * calculates the time of an inline audio element and outputs the time remaining
 	 */
 	function audioTimeRemaining() {
-		var ramainings = document.querySelectorAll('.audio__time--remaining'), i,
+		var $playing = $('.podcast__btn--play.playing').parents('.podcast-player'),
 			duration = parseInt(customAudio.duration),
 			currentTime = parseInt(customAudio.currentTime),
 			timeleft = new Date(2000,1,1,0,0,0),
@@ -2050,10 +2050,7 @@
 			timeleft = mins + ':' + secs;
 		}
 
-		for (i = 0; i < ramainings.length; ++i) {
-			ramainings[i].innerHTML = timeleft;
-		}
-
+		$playing.find('.audio__time--remaining').text(timeleft);
 		$audioPodcast.find('span:last').text(timeleft);
 	}
 
@@ -2061,7 +2058,7 @@
 	 * calculates the time of an inline audio element and outputs the time that has elapsed
 	 */
 	function audioTimeElapsed() {
-		var timeline = document.querySelectorAll('.audio__time--elapsed'),
+		var $playing = $('.podcast__btn--play.playing').parents('.podcast-player'),
 			passedSeconds = parseInt(customAudio.currentTime),
 			currentTime = new Date(2000,1,1,0,0,0),
 			hours, mins, secs, i;
@@ -2077,10 +2074,7 @@
 			currentTime = mins + ':' + secs;
 		}
 
-		for (i = 0; i < timeline.length; ++i) {
-			timeline[i].innerHTML = currentTime;
-		}
-
+		$playing.find('.audio__time--elapsed').text(currentTime);
 		$audioPodcast.find('span:first').text(currentTime);
 	}
 
