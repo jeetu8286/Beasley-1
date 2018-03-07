@@ -2027,8 +2027,7 @@
 	 * calculates the time of an inline audio element and outputs the time remaining
 	 */
 	function audioTimeRemaining() {
-		var $playing = $('.podcast__btn--play.playing').parents('.podcast-player'),
-			duration = parseInt(customAudio.duration),
+		var duration = parseInt(customAudio.duration),
 			currentTime = parseInt(customAudio.currentTime),
 			timeleft = new Date(2000,1,1,0,0,0),
 			hours, mins, secs;
@@ -2039,7 +2038,8 @@
 			currentTime = 0;
 		}
 
-		timeleft.setSeconds(duration - currentTime);
+//		timeleft.setSeconds(duration - currentTime);
+		timeleft.setSeconds(duration);
 
 		hours = timeleft.getHours();
 		mins = ('0' + timeleft.getMinutes()).slice(-2);
@@ -2050,7 +2050,7 @@
 			timeleft = mins + ':' + secs;
 		}
 
-		$playing.find('.audio__time--remaining').text(timeleft);
+//		$('.podcast__btn--play.playing').parents('.podcast-player').find('.audio__time--remaining').text(timeleft);
 		$audioPodcast.find('span:last').text(timeleft);
 	}
 
@@ -2058,8 +2058,7 @@
 	 * calculates the time of an inline audio element and outputs the time that has elapsed
 	 */
 	function audioTimeElapsed() {
-		var $playing = $('.podcast__btn--play.playing').parents('.podcast-player'),
-			passedSeconds = parseInt(customAudio.currentTime),
+		var passedSeconds = parseInt(customAudio.currentTime),
 			currentTime = new Date(2000,1,1,0,0,0),
 			hours, mins, secs, i;
 
@@ -2074,7 +2073,7 @@
 			currentTime = mins + ':' + secs;
 		}
 
-		$playing.find('.audio__time--elapsed').text(currentTime);
+//		$('.podcast__btn--play.playing').parents('.podcast-player').find('.audio__time--elapsed').text(currentTime);
 		$audioPodcast.find('span:first').text(currentTime);
 	}
 
