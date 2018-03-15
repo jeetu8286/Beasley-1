@@ -159,45 +159,59 @@ echo '<?xml version="1.0" encoding="' . get_option('blog_charset') . '"?'.'>'; ?
 
 	$qry = new WP_Query( $args );
 
-	if( $qry->have_posts() ) :
-		while( $qry->have_posts()) : $qry->the_post();
+	if ( $qry->have_posts() ) :
+		while( $qry->have_posts() ) :
+
+		$qry->the_post();
+		$episode_id = get_the_ID();
+
+		// Featured image
+		$image = false;
+		$thumbnail_id = get_post_thumbnail_id( $episode_id );
+		if ( empty( $thumbnail_id ) ) {
+			$thumbnail_id = get_post_thumbnail_id( $parent_podcast_id );
+		}
+
+		if ( ! empty( $thumbnail_id ) ) {
+			$image = wp_get_attachment_image_src( $thumbnail_id, 'gm-entry-thumbnail-4-3' );
+		}
 
 		// Enclosure (audio file)
-		$enclosure = get_post_meta( get_the_ID(), 'enclosure', true );
+		$enclosure = get_post_meta( $episode_id, 'enclosure', true );
 
 		// Episode duration
-		$duration = get_post_meta( get_the_ID() , 'duration' , true );
-		if( ! $duration || strlen( $duration ) == 0 || $duration == '' ) {
+		$duration = get_post_meta( $episode_id, 'duration' , true );
+		if ( ! $duration || strlen( $duration ) == 0 || $duration == '' ) {
 			$duration = '0:00';
 		}
 
 		// File size
-		$size = get_post_meta( get_the_ID() , 'filesize_raw' , true );
-		if( ! $size || strlen( $size ) == 0 || $size == '' ) {
+		$size = get_post_meta( $episode_id, 'filesize_raw' , true );
+		if ( ! $size || strlen( $size ) == 0 || $size == '' ) {
 			$size = GMPFeed::get_file_size( $enclosure );
 			$size = esc_html( $size['raw'] );
 		}
 
-		if( ! $size || strlen( $size ) == 0 || $size == '' ) {
+		if ( ! $size || strlen( $size ) == 0 || $size == '' ) {
 			$size = 1;
 		}
 
 		// File MIME type (default to MP3 to ensure that there is always a value for this)
 		$mime_type = GMPFeed::get_attachment_mimetype( $enclosure );
-		if( ! $mime_type || strlen( $mime_type ) == 0 || $mime_type == '' ) {
+		if ( ! $mime_type || strlen( $mime_type ) == 0 || $mime_type == '' ) {
 			$mime_type = 'audio/mpeg';
 		}
 
 		// Episode explicit flag
-		$ep_explicit = get_post_meta( get_the_ID() , 'gmp_episode_explicit' , true );
-		if( $ep_explicit && $ep_explicit == 'on' ) {
+		$ep_explicit = get_post_meta( $episode_id, 'gmp_episode_explicit' , true );
+		if ( $ep_explicit && $ep_explicit == 'on' ) {
 			$explicit_flag = 'Yes';
 		} else {
 			$explicit_flag = 'No';
 		}
 
 		// Episode block flag
-		$ep_block = get_post_meta( get_the_ID() , 'gmp_block' , true );
+		$ep_block = get_post_meta( $episode_id, 'gmp_block' , true );
 		if( $ep_block && $ep_block == 'on' ) {
 			$block_flag = 'Yes';
 		} else {
@@ -205,12 +219,12 @@ echo '<?xml version="1.0" encoding="' . get_option('blog_charset') . '"?'.'>'; ?
 		}
 
 		// Episode keywords
-		$keyword_list = wp_get_post_terms( get_the_ID() , 'keywords' );
+		$keyword_list = wp_get_post_terms( $episode_id, 'keywords' );
 		$keywords = false;
-		if( $keyword_list && count( $keyword_list ) > 0 ) {
+		if ( $keyword_list && count( $keyword_list ) > 0 ) {
 			$c = 0;
-			foreach( $keyword_list as $k ) {
-				if( $c == 0 ) {
+			foreach ( $keyword_list as $k ) {
+				if ( $c == 0 ) {
 					$keywords = esc_html( $k->name );
 					++$c;
 				} else {
@@ -251,8 +265,13 @@ echo '<?xml version="1.0" encoding="' . get_option('blog_charset') . '"?'.'>'; ?
 		<itunes:explicit><?php echo esc_html( $explicit_flag ); ?></itunes:explicit>
 		<itunes:block><?php echo esc_html( $block_flag ); ?></itunes:block>
 		<itunes:duration><?php echo esc_html( $duration ); ?></itunes:duration>
-		<itunes:author><?php echo esc_html( $author ); ?></itunes:author><?php if( $keywords ) { ?>
-		<itunes:keywords><?php echo esc_html( $keywords ); ?></itunes:keywords><?php } ?>
+		<itunes:author><?php echo esc_html( $author ); ?></itunes:author>
+		<?php if( $keywords ) : ?>
+		<itunes:keywords><?php echo esc_html( $keywords ); ?></itunes:keywords>
+		<?php endif; ?>
+		<?php if ( ! empty( $image ) ) : ?>
+		<media:content medium="image" url="<?php echo esc_url( $image[0] ); ?>" width="<?php echo esc_attr( $image[1] ); ?>" height="<?php echo esc_attr( $image[2] ); ?>" />
+		<?php endif; ?>
 	</item><?php endwhile; endif; ?>
 </channel>
 </rss><?php exit; ?>
