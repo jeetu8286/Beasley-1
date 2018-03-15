@@ -183,7 +183,7 @@ function greatermedia_scripts_styles() {
 		'https://tag.simpli.fi/sifitag/273421f0-841f-0135-dc80-06659b33d47c',
 		array(),
 		null,
-		false
+		true
 	);
 
 	wp_enqueue_style( 'google-fonts', '//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,800italic,400,300,700,800', array(), null );
