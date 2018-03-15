@@ -133,9 +133,8 @@ function omny_syndicate_programs() {
 			}
 
 			$args = array(
-				'post_title'    => $clip['Title'],
-				'post_content'  => sprintf( '[embed]%s[/embed]', $clip['PublishedUrl'] ),
-				'post_excerpt'  => $clip['Description'],
+				'post_title'    => html_entity_decode( $clip['Title'] ),
+				'post_content'  => sprintf( '[embed]%s[/embed]%s%s', $clip['PublishedUrl'], PHP_EOL, html_entity_decode( $clip['Description'] ) ),
 				'post_status'   => $status,
 				'post_type'     => 'episode',
 				'ping_status'   => 'closed',
