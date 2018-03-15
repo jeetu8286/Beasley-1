@@ -51,8 +51,14 @@ function omny_enqueue_scripts() {
 }
 
 function omny_register_scheduled_events() {
-	if ( ! wp_next_scheduled( 'omny_do_syndication' ) ) {
-		wp_schedule_event( current_time( 'timestamp', 1 ), 'hourly', 'omny_do_syndication' );
+	// unschedule old event, please, remove this next time
+	$next = wp_next_scheduled( 'omny_do_syndication' );
+	if ( $next ) {
+		wp_unschedule_event( $next, 'omny_do_syndication' );
+	}
+
+	if ( ! wp_next_scheduled( 'omny_import_episodes' ) ) {
+		wp_schedule_single_event( current_time( 'timestamp', 1 ) + 15 * MINUTE_IN_SECONDS, 'omny_import_episodes' );
 	}
 }
 
@@ -83,7 +89,7 @@ function omny_api_request( $url, $args = array() ) {
 	return $json;
 }
 
-function omny_syndicate_programs() {
+function omny_import_episodes() {
 	global $wpdb;
 
 	$token = trim( get_option( 'omny_token' ) );
@@ -172,5 +178,5 @@ add_action( 'init', 'omny_init' );
 add_action( 'admin_init', 'omny_register_scheduled_events' );
 add_action( 'beasley-register-settings', 'omny_register_settings', 1, 2 );
 add_filter( 'beasley-episode-audio-url', 'omny_get_episode_audio_url', 10, 2 );
-add_action( 'omny_do_syndication', 'omny_syndicate_programs' );
+add_action( 'omny_import_episodes', 'omny_import_episodes' );
 add_action( 'wp_enqueue_scripts', 'omny_enqueue_scripts' );
