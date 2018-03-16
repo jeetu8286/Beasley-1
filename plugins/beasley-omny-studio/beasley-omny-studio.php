@@ -8,7 +8,7 @@
  * Author URI:  http://10up.com/
  */
 
-define( 'OMNY_STUDIO_VERSION', '20180222.0' );
+define( 'OMNY_STUDIO_VERSION', '20180316.0' );
 
 function omny_init() {
 	wp_oembed_add_provider( 'https://omny.fm/shows/*', 'https://omny.fm/oembed', false );

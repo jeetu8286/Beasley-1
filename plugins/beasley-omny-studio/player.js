@@ -23,8 +23,10 @@
 				if (streamAudio) {
 					if (streamAudio.addEventListener) {
 						streamAudio.addEventListener('stream-start', pauseOnCustomAudioPlay);
+						streamAudio.addEventListener('ad-playback-start', pauseOnCustomAudioPlay);
 					} else if (player.attachEvent) {
 						streamAudio.attachEvent('stream-start', pauseOnCustomAudioPlay);
+						streamAudio.attachEvent('ad-playback-start', pauseOnCustomAudioPlay);
 					}
 				}
 			});
