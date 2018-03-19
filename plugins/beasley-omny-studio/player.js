@@ -6,29 +6,29 @@
 			var player = new playerjs.Player(this);
 
 			player.on(playerjs.EVENTS.READY, function() {
-				var pauseOnCustomAudioPlay = function() {
+				var pausePlayer = function() {
 					player.pause();
 				};
 
 				var customAudio = window.customAudio || false;
 				if (customAudio) {
 					if (customAudio.addEventListener) {
-						customAudio.addEventListener('playing', pauseOnCustomAudioPlay);
+						customAudio.addEventListener('playing', pausePlayer);
 					} else if (customAudio.attachEvent) {
-						customAudio.attachEvent('playing', pauseOnCustomAudioPlay);
+						customAudio.attachEvent('playing', pausePlayer);
 					}
 				}
 
 				var streamAudio = window.player || false;
 				if (streamAudio) {
 					if (streamAudio.addEventListener) {
-						streamAudio.addEventListener('stream-start', pauseOnCustomAudioPlay);
-						streamAudio.addEventListener('ad-playback-start', pauseOnCustomAudioPlay);
+						streamAudio.addEventListener('stream-start', pausePlayer);
 					} else if (player.attachEvent) {
-						streamAudio.attachEvent('stream-start', pauseOnCustomAudioPlay);
-						streamAudio.attachEvent('ad-playback-start', pauseOnCustomAudioPlay);
+						streamAudio.attachEvent('stream-start', pausePlayer);
 					}
 				}
+
+				$document.on('ad-playback-start', pausePlayer);
 			});
 
 			player.on(playerjs.EVENTS.PLAY, function() {
