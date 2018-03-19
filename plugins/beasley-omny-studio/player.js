@@ -28,7 +28,8 @@
 					}
 				}
 
-				$document.on('ad-playback-start', pausePlayer);
+				$document.on('click', '#playButton', pausePlayer);
+				$document.on('click', '#resumeButton', pausePlayer);
 			});
 
 			player.on(playerjs.EVENTS.PLAY, function() {
