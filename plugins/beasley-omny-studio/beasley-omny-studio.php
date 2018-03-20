@@ -129,7 +129,8 @@ function omny_import_episodes() {
 				continue;
 			}
 
-			$date_gmt = date( 'Y-m-d H:i:s', strtotime( $clip['PublishedUtc'] ) );
+			$published_utc = strtotime( $clip['PublishedUtc'] );
+			$date_gmt = date( 'Y-m-d H:i:s', $published_utc );
 			$date = get_date_from_gmt( $date_gmt );
 
 			switch ( $clip['Visibility'] ) {
@@ -137,7 +138,7 @@ function omny_import_episodes() {
 					$status = 'private';
 					break;
 				default:
-					$status = 'publish';
+					$status = $published_utc > time() ? 'future' : 'publish';
 					break;
 			}
 
