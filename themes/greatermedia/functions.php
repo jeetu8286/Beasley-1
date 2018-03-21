@@ -57,6 +57,9 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 	include __DIR__ . '/includes/gmr-db-cli.php';
 }
 
+// disable do_pings cron
+remove_action( 'do_pings', 'do_all_pings' );
+
 /**
  * Set up theme defaults and register supported WordPress features.
  *
