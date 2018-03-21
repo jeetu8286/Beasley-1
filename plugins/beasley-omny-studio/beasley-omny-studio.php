@@ -132,8 +132,12 @@ function omny_import_episodes() {
 					$status = 'private';
 					break;
 				default:
-					$status = $published_utc > time() ? 'future' : 'publish';
+					$status = 'publish';
 					break;
+			}
+
+			if ( $published_utc > time() ) {
+				$status = 'future';
 			}
 
 			$args = array(
