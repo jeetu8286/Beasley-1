@@ -54,12 +54,6 @@ function omny_register_oembed( $providers ) {
 }
 
 function omny_register_scheduled_events() {
-	// unschedule old event, please, remove this next time
-	$next = wp_next_scheduled( 'omny_do_syndication' );
-	if ( $next ) {
-		wp_unschedule_event( $next, 'omny_do_syndication' );
-	}
-
 	if ( ! wp_next_scheduled( 'omny_import_episodes' ) ) {
 		wp_schedule_single_event( current_time( 'timestamp', 1 ) + 15 * MINUTE_IN_SECONDS, 'omny_import_episodes' );
 	}
@@ -165,6 +159,60 @@ function omny_import_episodes() {
 			if ( is_wp_error( $post_id ) ) {
 				continue;
 			}
+
+			$url = $clip['ImageUrl'];
+			if ( filter_var( $url, FILTER_VALIDATE_URL ) ) {
+				$response = wp_remote_head( $url, array( 'redirection' => 0 ) );
+				if ( ! is_wp_error( $response ) ) {
+					$headers = wp_remote_retrieve_headers( $response );
+					if ( ! empty( $headers['location'] ) ) {
+						if ( preg_match( '#^/[^/]#', $headers['location'] ) ) {
+							$parsed = parse_url( $url );
+							$replace = $parsed['path'];
+
+							if ( ! empty( $parsed['query'] ) ) {
+								$replace .= '?' . $parsed['query'];
+							}
+
+							if ( ! empty( $parsed['fragment'] ) ) {
+								$replace .= '#' . $parsed['fragment'];
+							}
+
+							$url = str_replace( $replace, $headers['location'], $url );
+						} else {
+							$url = $headers['location'];
+						}
+					}
+				}
+
+				$url = preg_replace( '#\?.*#', '', $url );
+				$key = 'omny-image-id-' . $url;
+				$attachment_id = wp_cache_get( $key, 'omny-studio' );
+				if ( $attachment_id === false ) {
+					$query = $wpdb->prepare( "SELECT `ID` FROM {$wpdb->posts} WHERE `post_type` = 'attachment' AND `guid` = %s LIMIT 1", $url );
+					$attachment_id = $wpdb->get_var( $query );
+					if ( $attachment_id > 0 ) {
+						wp_cache_set( $key, $attachment_id, 'omny-studio' );
+					}
+				}
+
+				if ( empty( $attachment_id ) ) {
+					require_once ABSPATH . 'wp-admin/includes/media.php';
+					require_once ABSPATH . 'wp-admin/includes/file.php';
+					require_once ABSPATH . 'wp-admin/includes/image.php';
+
+					$file_array = array();
+					$file_array['name'] = md5( $url ) . '.jpg';
+					$file_array['tmp_name'] = download_url( $url );
+					if ( ! is_wp_error( $file_array['tmp_name'] ) ) {
+						$attachment_id = media_handle_sideload( $file_array, $post_id, null, array( 'guid' => $url ) );
+					}
+				}
+
+				if ( $attachment_id > 0 ) {
+					set_post_thumbnail( $post_id, $attachment_id );
+				}
+			}
 		}
 	}
 }
@@ -186,3 +234,7 @@ add_action( 'wp_enqueue_scripts', 'omny_enqueue_scripts' );
 
 add_filter( 'oembed_providers', 'omny_register_oembed', 100 );
 add_filter( 'beasley-episode-audio-url', 'omny_get_episode_audio_url', 10, 2 );
+
+if ( defined( 'WP_CLI' ) && WP_CLI ) {
+	WP_CLI::add_command( 'omny import', 'omny_import_episodes' );
+}
