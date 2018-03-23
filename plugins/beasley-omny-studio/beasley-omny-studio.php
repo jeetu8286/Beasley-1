@@ -120,28 +120,14 @@ function omny_run_import_episodes() {
 		}
 
 		$clips = $clips['Clips'];
-
-		$clip_ids = array_map( 'esc_sql', wp_list_pluck( $clips, 'Id' ) );
-		$clips_hash_key = 'omny-clips-' . md5( $program_id . '-' . implode( '-', $clip_ids ) );
-		$clips_hash = wp_cache_get( $clips_hash_key, 'omny-studio' );
-		if ( empty( $clips_hash ) ) {
-			$results = $wpdb->get_results( sprintf(
-				"SELECT `post_id`, `meta_value` FROM {$wpdb->postmeta} WHERE `meta_key` = 'omny-clip-id' AND `meta_value` IN ('%s')",
-				implode( "', '", $clip_ids )
-			) );
-
-			$clips_hash = array();
-			foreach ( $results as $result ) {
-				$clips_hash[ $result->meta_value ] = $result->post_id;
-			}
-		}
-
 		foreach ( $clips as $clip ) {
 			if ( $clip['PublishState'] != 'Published' ) {
 				continue;
 			}
 
-			if ( isset( $clips_hash[ $clip['Id'] ] ) ) {
+			$query = $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->postmeta} WHERE `meta_key` = 'omny-clip-id' AND `meta_value` = %s", $clip['Id'] );
+			$found = $wpdb->get_var( $query );
+			if ( $found > 0 ) {
 				continue;
 			}
 
@@ -185,8 +171,6 @@ function omny_run_import_episodes() {
 			if ( is_wp_error( $post_id ) ) {
 				continue;
 			}
-
-			$clips_hash[ $clip['Id'] ] = $post_id;
 
 //			$url = $clip['ImageUrl'];
 //			if ( filter_var( $url, FILTER_VALIDATE_URL ) ) {
@@ -242,8 +226,6 @@ function omny_run_import_episodes() {
 //				}
 //			}
 		}
-
-		wp_cache_set( $clips_hash_key, $clips_hash, 'omny-studio' );
 	}
 }
 
