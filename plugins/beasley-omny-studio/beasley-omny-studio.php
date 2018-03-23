@@ -87,11 +87,11 @@ function omny_api_request( $url, $args = array() ) {
 }
 
 function omny_start_import_episodes() {
-	if ( function_exists( 'wp_async_task_add' ) ) {
-		wp_async_task_add( 'omny_run_import_episodes', array(), 'high' );
-	} else {
+//	if ( function_exists( 'wp_async_task_add' ) ) {
+//		wp_async_task_add( 'omny_run_import_episodes', array(), 'high' );
+//	} else {
 		omny_run_import_episodes();
-	}
+//	}
 }
 
 function omny_run_import_episodes() {
@@ -120,28 +120,14 @@ function omny_run_import_episodes() {
 		}
 
 		$clips = $clips['Clips'];
-
-		$clip_ids = array_map( 'esc_sql', wp_list_pluck( $clips, 'Id' ) );
-		$clips_hash_key = 'omny-clips-' . md5( $program_id . '-' . implode( '-', $clip_ids ) );
-		$clips_hash = wp_cache_get( $clips_hash_key, 'omny-studio' );
-		if ( empty( $clips_hash ) ) {
-			$results = $wpdb->get_results( sprintf(
-				"SELECT `post_id`, `meta_value` FROM {$wpdb->postmeta} WHERE `meta_key` = 'omny-clip-id' AND `meta_value` IN ('%s')",
-				implode( "', '", $clip_ids )
-			) );
-
-			$clips_hash = array();
-			foreach ( $results as $result ) {
-				$clips_hash[ $result->meta_value ] = $result->post_id;
-			}
-		}
-
 		foreach ( $clips as $clip ) {
 			if ( $clip['PublishState'] != 'Published' ) {
 				continue;
 			}
 
-			if ( isset( $clips_hash[ $clip['Id'] ] ) ) {
+			$query = $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->postmeta} WHERE `meta_key` = 'omny-clip-id' AND `meta_value` = %s", $clip['Id'] );
+			$found = $wpdb->get_var( $query );
+			if ( $found > 0 ) {
 				continue;
 			}
 
@@ -186,64 +172,60 @@ function omny_run_import_episodes() {
 				continue;
 			}
 
-			$clips_hash[ $clip['Id'] ] = $post_id;
-
-			$url = $clip['ImageUrl'];
-			if ( filter_var( $url, FILTER_VALIDATE_URL ) ) {
-				$response = wp_remote_head( $url, array( 'redirection' => 0 ) );
-				if ( ! is_wp_error( $response ) ) {
-					$headers = wp_remote_retrieve_headers( $response );
-					if ( ! empty( $headers['location'] ) ) {
-						if ( preg_match( '#^/[^/]#', $headers['location'] ) ) {
-							$parsed = parse_url( $url );
-							$replace = $parsed['path'];
-
-							if ( ! empty( $parsed['query'] ) ) {
-								$replace .= '?' . $parsed['query'];
-							}
-
-							if ( ! empty( $parsed['fragment'] ) ) {
-								$replace .= '#' . $parsed['fragment'];
-							}
-
-							$url = str_replace( $replace, $headers['location'], $url );
-						} else {
-							$url = $headers['location'];
-						}
-					}
-				}
-
-				$url = preg_replace( '#\?.*#', '', $url );
-				$key = 'omny-image-id-' . $url;
-				$attachment_id = wp_cache_get( $key, 'omny-studio' );
-				if ( $attachment_id === false ) {
-					$query = $wpdb->prepare( "SELECT `ID` FROM {$wpdb->posts} WHERE `post_type` = 'attachment' AND `guid` = %s LIMIT 1", $url );
-					$attachment_id = $wpdb->get_var( $query );
-					if ( $attachment_id > 0 ) {
-						wp_cache_set( $key, $attachment_id, 'omny-studio' );
-					}
-				}
-
-				if ( empty( $attachment_id ) ) {
-					require_once ABSPATH . 'wp-admin/includes/media.php';
-					require_once ABSPATH . 'wp-admin/includes/file.php';
-					require_once ABSPATH . 'wp-admin/includes/image.php';
-
-					$file_array = array();
-					$file_array['name'] = md5( $url ) . '.jpg';
-					$file_array['tmp_name'] = download_url( $url );
-					if ( ! is_wp_error( $file_array['tmp_name'] ) ) {
-						$attachment_id = media_handle_sideload( $file_array, $post_id, null, array( 'guid' => $url ) );
-					}
-				}
-
-				if ( $attachment_id > 0 ) {
-					set_post_thumbnail( $post_id, $attachment_id );
-				}
-			}
+//			$url = $clip['ImageUrl'];
+//			if ( filter_var( $url, FILTER_VALIDATE_URL ) ) {
+//				$response = wp_remote_head( $url, array( 'redirection' => 0 ) );
+//				if ( ! is_wp_error( $response ) ) {
+//					$headers = wp_remote_retrieve_headers( $response );
+//					if ( ! empty( $headers['location'] ) ) {
+//						if ( preg_match( '#^/[^/]#', $headers['location'] ) ) {
+//							$parsed = parse_url( $url );
+//							$replace = $parsed['path'];
+//
+//							if ( ! empty( $parsed['query'] ) ) {
+//								$replace .= '?' . $parsed['query'];
+//							}
+//
+//							if ( ! empty( $parsed['fragment'] ) ) {
+//								$replace .= '#' . $parsed['fragment'];
+//							}
+//
+//							$url = str_replace( $replace, $headers['location'], $url );
+//						} else {
+//							$url = $headers['location'];
+//						}
+//					}
+//				}
+//
+//				$url = preg_replace( '#\?.*#', '', $url );
+//				$key = 'omny-image-id-' . $url;
+//				$attachment_id = wp_cache_get( $key, 'omny-studio' );
+//				if ( $attachment_id === false ) {
+//					$query = $wpdb->prepare( "SELECT `ID` FROM {$wpdb->posts} WHERE `post_type` = 'attachment' AND `guid` = %s LIMIT 1", $url );
+//					$attachment_id = $wpdb->get_var( $query );
+//					if ( $attachment_id > 0 ) {
+//						wp_cache_set( $key, $attachment_id, 'omny-studio' );
+//					}
+//				}
+//
+//				if ( empty( $attachment_id ) ) {
+//					require_once ABSPATH . 'wp-admin/includes/media.php';
+//					require_once ABSPATH . 'wp-admin/includes/file.php';
+//					require_once ABSPATH . 'wp-admin/includes/image.php';
+//
+//					$file_array = array();
+//					$file_array['name'] = md5( $url ) . '.jpg';
+//					$file_array['tmp_name'] = download_url( $url );
+//					if ( ! is_wp_error( $file_array['tmp_name'] ) ) {
+//						$attachment_id = media_handle_sideload( $file_array, $post_id, null, array( 'guid' => $url ) );
+//					}
+//				}
+//
+//				if ( $attachment_id > 0 ) {
+//					set_post_thumbnail( $post_id, $attachment_id );
+//				}
+//			}
 		}
-
-		wp_cache_set( $clips_hash_key, $clips_hash, 'omny-studio' );
 	}
 }
 
@@ -267,5 +249,5 @@ add_filter( 'oembed_providers', 'omny_register_oembed', 100 );
 add_filter( 'beasley-episode-audio-url', 'omny_get_episode_audio_url', 10, 2 );
 
 if ( defined( 'WP_CLI' ) && WP_CLI ) {
-	WP_CLI::add_command( 'omny import', 'omny_import_episodes' );
+	WP_CLI::add_command( 'omny import', 'omny_run_import_episodes' );
 }
