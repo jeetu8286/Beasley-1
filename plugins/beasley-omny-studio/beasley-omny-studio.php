@@ -102,20 +102,24 @@ function omny_run_import_episodes() {
 		return;
 	}
 
+	$is_wp_cli = defined( 'WP_CLI' ) && WP_CLI;
+
 	delete_option( 'omny_last_import_finished' );
 	update_option( 'omny_last_import_started', time(), 'no' );
 
 	$podcasts = get_posts( array(
 		'post_type'      => 'podcast',
 		'posts_per_page' => 1000, // should be enough to get all podcasts
-		'fields'         => 'ids',
 	) );
 
 	foreach ( $podcasts as $podcast ) {
-		$program_id = get_post_meta( $podcast, 'omny_program_id', true );
+		$program_id = get_post_meta( $podcast->ID, 'omny_program_id', true );
 		if ( empty( $program_id ) ) {
+			$is_wp_cli && \WP_CLI::log( sprintf( 'Skipping %s (%s) podcast...', $podcast->post_title, $podcast->ID ) );
 			continue;
 		}
+
+		$is_wp_cli && \WP_CLI::log( sprintf( 'Processing %s (%s) podcast...', $podcast->post_title, $podcast->ID ) );
 
 		$clips = omny_api_request( "programs/{$program_id}/clips?pageSize=10" );
 		if ( is_wp_error( $clips ) ) {
@@ -131,6 +135,7 @@ function omny_run_import_episodes() {
 			$query = $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->postmeta} WHERE `meta_key` = 'omny-clip-id' AND `meta_value` = %s", $clip['Id'] );
 			$found = $wpdb->get_var( $query );
 			if ( $found > 0 ) {
+				$is_wp_cli && \WP_CLI::log( sprintf( 'Skipping %s (%s) episode...', $clip['Title'], $clip['Id'] ) );
 				continue;
 			}
 
@@ -157,7 +162,7 @@ function omny_run_import_episodes() {
 				'post_status'   => $status,
 				'post_type'     => 'episode',
 				'ping_status'   => 'closed',
-				'post_parent'   => $podcast,
+				'post_parent'   => $podcast->ID,
 				'post_date'     => $date,
 				'post_date_gmt' => $date_gmt,
 				'guid'          => $clip['Id'],
@@ -174,6 +179,8 @@ function omny_run_import_episodes() {
 			if ( is_wp_error( $post_id ) ) {
 				continue;
 			}
+
+			$is_wp_cli && \WP_CLI::success( sprintf( 'Imported %s (%s) episode...', $clip['Title'], $clip['Id'] ) );
 
 //			$url = $clip['ImageUrl'];
 //			if ( filter_var( $url, FILTER_VALIDATE_URL ) ) {
