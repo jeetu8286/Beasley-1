@@ -87,11 +87,11 @@ function omny_api_request( $url, $args = array() ) {
 }
 
 function omny_start_import_episodes() {
-//	if ( function_exists( 'wp_async_task_add' ) ) {
-//		wp_async_task_add( 'omny_run_import_episodes', array(), 'high' );
-//	} else {
+	if ( function_exists( 'wp_async_task_add' ) ) {
+		wp_async_task_add( 'omny_run_import_episodes', array(), 'high' );
+	} else {
 		omny_run_import_episodes();
-//	}
+	}
 }
 
 function omny_run_import_episodes() {
@@ -101,6 +101,9 @@ function omny_run_import_episodes() {
 	if ( empty( $token ) ) {
 		return;
 	}
+
+	delete_option( 'omny_last_import_finished' );
+	update_option( 'omny_last_import_started', time(), 'no' );
 
 	$podcasts = get_posts( array(
 		'post_type'      => 'podcast',
@@ -227,6 +230,8 @@ function omny_run_import_episodes() {
 //			}
 		}
 	}
+
+	update_option( 'omny_last_import_finished', time(), 'no' );
 }
 
 function omny_get_episode_audio_url( $url, $post ) {
