@@ -2,7 +2,7 @@
 /**
  * The main template file
  *
- * @package WBZ-FM
+ * @package WBZ FM (Music-based)
  * @since 0.1.0
  */
  
