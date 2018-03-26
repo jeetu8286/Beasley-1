@@ -168,10 +168,6 @@ echo '<?xml version="1.0" encoding="' . get_option('blog_charset') . '"?'.'>'; ?
 		// Featured image
 		$image = false;
 		$thumbnail_id = get_post_thumbnail_id( $episode_id );
-		if ( empty( $thumbnail_id ) ) {
-			$thumbnail_id = get_post_thumbnail_id( $parent_podcast_id );
-		}
-
 		if ( ! empty( $thumbnail_id ) ) {
 			$image = wp_get_attachment_image_src( $thumbnail_id, 'gm-entry-thumbnail-4-3' );
 		}

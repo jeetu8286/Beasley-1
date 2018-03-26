@@ -974,7 +974,6 @@
 		preVastAd();
 		adPlaying = true;
 		setStatus('Advertising... Type=' + e.data.type);
-		$document.trigger('ad-playback-start');
 	}
 
 	function onAdPlaybackComplete() {

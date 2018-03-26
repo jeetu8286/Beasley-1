@@ -23,13 +23,12 @@
 				if (streamAudio) {
 					if (streamAudio.addEventListener) {
 						streamAudio.addEventListener('stream-start', pausePlayer);
+						streamAudio.addEventListener('ad-playback-start', pausePlayer);
 					} else if (player.attachEvent) {
 						streamAudio.attachEvent('stream-start', pausePlayer);
+						streamAudio.attachEvent('ad-playback-start', pausePlayer);
 					}
 				}
-
-				$document.on('click', '#playButton', pausePlayer);
-				$document.on('click', '#resumeButton', pausePlayer);
 			});
 
 			player.on(playerjs.EVENTS.PLAY, function() {
