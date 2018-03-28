@@ -749,7 +749,11 @@ function fpmrss_audio_podcast_metabox( $post ) {
 function fpmrss_feed_pull() {
 	if ( function_exists( 'wp_async_task_add' ) ) {
 		wp_async_task_add( 'fp_async_feed_pull', array(), 'low' );
-		exit;
+
+		if ( class_exists( '\FP_Cron' ) ) {
+			$cron = \FP_Cron::factory();
+			remove_action( 'fp_feed_pull', array( $cron, 'pull' ) );
+		}
 	}
 }
 
