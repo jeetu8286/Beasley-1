@@ -14,6 +14,41 @@ a:hover .highlights__community--title
 	background-color: #ed2024;
 }
 
+.header__main {
+	background-image: url("../../images/site-header-mobile.jpg");
+	background-position: top center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-color: #ffffff;
+
+	@include bp(medium) {
+		background-image: url("../../images/site-header.jpg");
+	}
+}
+
+@include bp(medium) {
+	.header__search {
+		background-color: rgba(255,255,255,.6);
+		padding-left: 15px;
+
+		label span {
+			color: #000;
+		}
+	}
+
+	.header__search--btn:before {
+    color: #333333;
+	}
+
+	.header__nav--list > li {
+		background-color: rgba(255,255,255,.6);
+	}
+}
+
+.mobile-nav__toggle--span, .mobile-nav__toggle--span:before, .mobile-nav__toggle--span:after {
+	background-color: #ffffff;
+}
+
 @include bp(large) {
 
     .main {
