@@ -68,12 +68,12 @@ class GM_FlexibleFeatureImages {
 	protected static function feature_image_preference_description( $feature_image_preference ) {
 		if ( 'none' === $feature_image_preference ) {
 			return __( 'None', 'greatermedia-feature-image-preference' );
-		} else if ( 'top' === $feature_image_preference ) {
-			return __( 'Top', 'greatermedia-feature-image-preference' );
+		} else if ( 'poster' === $feature_image_preference ) {
+			return __( 'Poster', 'greatermedia-feature-image-preference' );
 		} else if ( 'inline' === $feature_image_preference ) {
 			return __( 'Inline', 'greatermedia-feature-image-preference' );
 		} else {
-			return __( 'Poster', 'greatermedia-feature-image-preference' );
+			return __( 'Top', 'greatermedia-feature-image-preference' );
 		}
 	}
 
