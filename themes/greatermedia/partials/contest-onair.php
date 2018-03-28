@@ -1,6 +1,7 @@
 <?php $contest_id = get_the_ID(); ?>
-
 <article id="post-<?php the_ID(); ?>" <?php post_class( 'cf' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
+	<?php Greater_Media\Flexible_Feature_Images\feature_image_preference_is( get_the_ID(), 'top' ) ? get_template_part( 'partials/feature-image-contest' ) : ''; ?>
+
 	<header class="entry__header">
 		<time class="entry__date" datetime="<?php echo get_the_time(); ?>"><?php the_date( 'F j, Y' ); ?></time>
 		<h2 class="entry__title" itemprop="headline">
@@ -10,6 +11,8 @@
 
 		<?php get_template_part( 'partials/social-share' ); ?>
 	</header>
+
+	<?php Greater_Media\Flexible_Feature_Images\feature_image_preference_is( get_the_ID(), 'inline' ) ? get_template_part( 'partials/feature-image-contest' ) : ''; ?>
 
 	<?php the_content(); ?>
 
