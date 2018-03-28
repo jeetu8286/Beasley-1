@@ -742,3 +742,29 @@ function fpmrss_audio_podcast_metabox( $post ) {
 	<p class="description">Use <code>gmr-podcast-audio</code> meta key to store podcast episode mp3 file.</p>
 	<?php
 }
+
+/**
+ * Move feed pull to jobs server.
+ */
+function fpmrss_feed_pull() {
+	if ( function_exists( 'wp_async_task_add' ) ) {
+		wp_async_task_add( 'fp_async_feed_pull', array(), 'low' );
+
+		if ( class_exists( '\FP_Cron' ) ) {
+			$cron = \FP_Cron::factory();
+			remove_action( 'fp_feed_pull', array( $cron, 'pull' ) );
+		}
+	}
+}
+
+add_action( 'fp_feed_pull', 'fpmrss_feed_pull', 1 );
+
+/**
+ * Processes feed pull on the jobs server.
+ */
+function fp_async_feed_pull() {
+	remove_action( 'fp_feed_pull', 'fpmrss_feed_pull', 1 );
+	do_action( 'fp_feed_pull' );
+}
+
+add_action( 'fp_async_feed_pull', 'fp_async_feed_pull' );
