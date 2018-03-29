@@ -25,6 +25,7 @@ mu-plugins/post-finder/
 !/plugins/S3-Uploads-master
 !/plugins/gravityforms/
 !/plugins/user-role-editor-pro/
+!/plugins/configure-smtp/
 
 themes/index.php
 themes/twentyfourteen
