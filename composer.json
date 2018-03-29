@@ -15,7 +15,6 @@
 		"wpackagist-plugin/debug-bar-extender": "^0.5.0",
 		"wpackagist-plugin/debug-bar-remote-requests": "^0.1.2",
 		"wpackagist-plugin/duplicate-post": "3.2",
-		"wpackagist-plugin/configure-smtp": "3.1",
 		"wpackagist-plugin/edit-flow": "^0.8",
 		"wpackagist-plugin/elasticpress": "*",
 		"wpackagist-plugin/feed-pull": "^0.2.6",
