@@ -1,19 +1,34 @@
-.git
-.gitignore
-.gitlab-ci.yml
-.composer-cache
-node_modules
-bower_components
+*node_modules*
+*.gitignore
+*.gitmodules
+*.git
+*/composer.json
+composer.json
+*/composer.lock
+composer.lock
+*/installed.json
+installed.json
+tasks
+conf
 deploy-scripts
-.version.php
+.gitlab-ci.yml
+*/package-lock.json
+package-lock.json
+*/Gruntfile.js
+Gruntfile.js
+*/bower.json
+bower.json
+*.bowerrc
+*/package.json
+package.json
+*/readme.txt
+readme.txt
+*phpcs.xml
+*.editorconfig
+.composer-cache
 
-# There aren't `plugins/`, `themes/`, or `mu-plugins/` prefixes on these since rsync is run
-# independently for each directory
+# Specific to wp-content based delpoys
+uploads
+upgrade
 
-# themes/
-
-
-# plugins/
-
-
-# mu-plugins/
+/themes/.version.php
