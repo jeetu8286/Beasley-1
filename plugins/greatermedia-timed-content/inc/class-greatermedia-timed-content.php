@@ -163,20 +163,23 @@ class GreaterMediaTimedContent extends VisualShortcode {
 				}
 
 				$local_to_gmt_time_offset = get_option( 'gmt_offset' ) * - 1 * 3600;
-				$exp_timestamp_gmt        = $exp_timestamp + $local_to_gmt_time_offset;
 				delete_post_meta( $post_id, 'post_expiration' );
 				if ( '' !== $exp_timestamp ) {
 					add_post_meta( $post_id, 'post_expiration', $exp_timestamp );
+
+					$exp_timestamp_gmt        = $exp_timestamp + $local_to_gmt_time_offset;
 				}
 
 				// If the expiration date is in the future, set a cron to expire the post
-				if ( $exp_timestamp_gmt > gmdate( 'U' ) ) {
-					wp_clear_scheduled_hook( 'greatermedia_expire_post', array( $post_id ) ); // clear anything else in the system
-					wp_schedule_single_event( $exp_timestamp_gmt, 'greatermedia_expire_post', array( $post_id ) );
-				} else if ( $this->is_past_timestamp( $exp_timestamp, $exp_timestamp_gmt ) ){
-					wp_clear_scheduled_hook( 'greatermedia_expire_post', array( $post_id ) ); // clear anything else in the system
-					remove_action( 'save_post', array( $this, 'save_post' ) );
-					$this->greatermedia_expire_post( $post_id );
+				if ( $exp_timestamp !== '' ) {
+					if ( $exp_timestamp_gmt > gmdate( 'U' ) ) {
+						wp_clear_scheduled_hook( 'greatermedia_expire_post', array( $post_id ) ); // clear anything else in the system
+						wp_schedule_single_event( $exp_timestamp_gmt, 'greatermedia_expire_post', array( $post_id ) );
+					} else if ( $this->is_past_timestamp( $exp_timestamp, $exp_timestamp_gmt ) ){
+						wp_clear_scheduled_hook( 'greatermedia_expire_post', array( $post_id ) ); // clear anything else in the system
+						remove_action( 'save_post', array( $this, 'save_post' ) );
+						$this->greatermedia_expire_post( $post_id );
+					}
 				}
 
 			}
