@@ -71,7 +71,7 @@ function ignore_posts( $query ) {
 		return;
 	}
 
-	$meta_query   = $query->get( 'meta_query' );
+	$meta_query   = (array) $query->get( 'meta_query' );
 	$meta_query[] = [
 		'key'     => META_KEY,
 		'compare' => 'NOT EXISTS',
