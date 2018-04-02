@@ -38,9 +38,6 @@ register_deactivation_hook( __FILE__, 'gmr_contests_deactivated' );
 function gmr_contests_activated() {
 	gmr_contests_register_post_type();
 
-	$surveys = new GreaterMediaSurveys();
-	$surveys->register_survey_cpt();
-
 	load_capabilities( GMR_CONTEST_CPT );
 	load_capabilities( GMR_SUBMISSIONS_CPT );
 	load_capabilities( GMR_SURVEY_CPT );
