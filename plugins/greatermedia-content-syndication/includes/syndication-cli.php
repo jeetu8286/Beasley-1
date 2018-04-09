@@ -123,15 +123,16 @@ class GMR_Syndication_CLI extends WP_CLI_Command {
 	 *
 	 * wp gmr-syndication import-subscription 123
 	 *
-	 * wp gmr-syndication import-subscription 123 --force
+	 * wp gmr-syndication import-subscription 123 --force --ignore-detached
 	 *
-	 * @synopsis <subscription_id> [--force] [--start_date=<start-date>]
+	 * @synopsis <subscription_id> [--force] [--ignore-detached] [--start_date=<start-date>]
 	 *
 	 * @subcommand import-subscription
 	 */
 	public function import_single_subscription( $args, $assoc_args ) {
 		$subscription_id = array_shift( $args );
 		$force = ! empty( $assoc_args['force'] );
+		$ignore_detached = ! empty( $assoc_args['ignore-detached'] );
 		$start_date = ! empty( $assoc_args['start_date'] ) ? $assoc_args['start_date'] : false;
 
 		if ( $start_date ) {
@@ -140,6 +141,10 @@ class GMR_Syndication_CLI extends WP_CLI_Command {
 
 				return $start_date;
 			} );
+		}
+
+		if ( $ignore_detached ) {
+			add_filter( 'beasley_syndication_post_is_detached', '__return_false' );
 		}
 
 		BlogData::run( $subscription_id, 0, $force );
