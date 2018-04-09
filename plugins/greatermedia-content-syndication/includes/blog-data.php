@@ -989,6 +989,10 @@ class BlogData {
 		$message = "[SYNDICATION:{$syndication_id} SITE:{$site_id} {$uniqid}] {$message}";
 		self::$log[] = $message;
 		syslog( LOG_ERR, $message );
+
+		if ( defined( 'WP_CLI' ) && WP_CLI ) {
+			WP_CLI::log( $message );
+		}
 	}
 
 	public static function log_variable( $var, $context = '' ) {
