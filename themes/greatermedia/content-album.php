@@ -43,7 +43,7 @@
 				?>
 				<section class="inline__gallery__archive">
 
-					<div class="gallery__grid">
+					<div class="gallery__grid gallery__grid-album">
 
 						<?php
 
@@ -83,8 +83,6 @@
 				<!-- end galleries -->
 			</article>
 		</section>
-
-		<?php get_sidebar(); ?>
 
 	<?php
 		endwhile;
