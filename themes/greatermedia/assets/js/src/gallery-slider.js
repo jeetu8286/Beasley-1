@@ -1,0 +1,221 @@
+( function ( $ ) {
+	var sidebar = document.querySelector( '.swiper-sidebar' );
+	var swiperContainer = document.querySelector( '.gallery-top' );
+	var sidebarExpand = document.getElementById( 'js-expand' );
+
+	var $galleryTopSlider = $( '.gallery-top .swiper-wrapper' );
+	var $galleryThumbsSlider = $( '.gallery-thumbs' );
+
+	if ( ! $galleryTopSlider.length ) {
+		return;
+	}
+
+	function positionSidebar() {
+		var swiperWrapper = document.querySelector( '.gallery-top .slick-track' );
+		var newActiveSlide = document.querySelector( '.gallery-top .slick-current' );
+		var newActiveSlidePos = newActiveSlide.getBoundingClientRect();
+		var paddingRight = parseInt( window.innerWidth - newActiveSlidePos.right - 385, 10 );
+
+		// We want to move the sidebar and add enough padding so that it's always at least 300px wide (exluding padding).
+		// In some cases where the image is too wide, we want to apply a negative margin left to pull the image to the left
+		// so that the sidebar has enough room.
+
+		if ( ! swiperContainer.classList.contains( 'show-ad' ) ) {
+			sidebar.classList.remove( 'hidden' );
+
+			if (window.matchMedia("(min-width: 768px)").matches) {
+				if ( paddingRight < 0 ) {
+					swiperWrapper.style.marginLeft = paddingRight + 'px';
+					sidebar.setAttribute( 'style', 'left:' + parseInt(newActiveSlidePos.right + paddingRight, 10) + 'px' );
+				} else {
+					swiperWrapper.style.marginLeft = '0px';
+					sidebar.setAttribute( 'style', 'left:' + newActiveSlidePos.right + 'px;padding-right:' + paddingRight + 'px' );
+				}
+			}
+		} else {
+			// If a centered ad is active, hide the sidebar
+			sidebar.setAttribute( 'style', '' );
+			sidebar.classList.add( 'hidden' );
+		}
+
+	};
+
+	function updateURL( slide ) {
+		var newActiveSlide = document.querySelector( '.gallery-top .slick-slide:nth-child(' + parseInt( slide+1, 10 ) + ')' );
+
+		// If we're not on an ad slide, update the URL
+		if ( ! newActiveSlide.classList.contains( 'meta-spacer' ) ) {
+			var slug = '#' + newActiveSlide.getAttribute( 'data-slug' );
+			var title = newActiveSlide.getAttribute( 'data-title' );
+			// Save index in state object to navigate back to slide
+			var stateObject = { index: slide };
+
+			if ( window.history ) {
+				history.pushState( stateObject, title, slug );
+			}
+		}
+	};
+
+	function resetSidebarMargin() {
+		var swiperWrapper = document.querySelector( '.gallery-top .slick-track' );
+
+		swiperWrapper.style.marginLeft = '0px';
+	};
+
+	function updateSidebarInfo( slide ) {
+		var newActiveSlide = document.querySelector( '.gallery-top .slick-slide:nth-child(' + parseInt( slide+1, 10 ) + ')' );
+		var sidebarTitle = document.getElementById( 'js-swiper-sidebar-title' );
+		var sidebarCaption = document.getElementById( 'js-swiper-sidebar-caption' );
+
+		var facebookButton = sidebar.querySelector( '.social__link.icon-facebook' );
+		var twitterButton = sidebar.querySelector( '.social__link.icon-twitter' );
+		var googleButton = sidebar.querySelector( '.social__link.icon-google-plus' );
+
+		// If we're not on an ad slide, update the sidebar information with new title, caption and social sharing
+		if ( ! newActiveSlide.classList.contains( 'meta-spacer' ) ) {
+			var title = newActiveSlide.getAttribute( 'data-title' );
+			var caption = newActiveSlide.getAttribute( 'data-caption' );
+			var url = window.location.href;
+			var facebookURL = 'http://www.facebook.com/sharer/sharer.php?u=' + encodeURI( url ) + '&title=' + encodeURIComponent( title );
+			var twitterURL = 'http://twitter.com/home?status=' + encodeURIComponent( title ) + '+' + encodeURI( url );
+			var googleURL = 'https://plus.google.com/share?url=' + encodeURI( url );
+
+			sidebarTitle.innerText = title;
+			sidebarCaption.innerText = caption;
+			facebookButton.href = facebookURL;
+			twitterButton.href = twitterURL;
+			googleButton.href = googleURL;
+		}
+	};
+
+	function maybeRefreshSidebarAd( newSlide ) {
+		var newActiveSlide = document.querySelector( '.gallery-top .slick-slide:nth-child(' + parseInt( newSlide+1, 10 ) + ')' );
+		if ( newActiveSlide.classList.contains( 'meta-refresh' ) ) {
+			// @TODO Sidebar ad refresh code
+			console.log( 'refresh ad' );
+		}
+	};
+
+	function maybeShowCenteredAd( newSlide ) {
+		var newActiveSlide = document.querySelector( '.gallery-top .slick-slide:nth-child(' + parseInt( newSlide+1, 10 ) + ')' );
+
+		if ( newActiveSlide.classList.contains( 'meta-spacer' ) ) {
+			sidebar.classList.add( 'hidden' );
+			swiperContainer.classList.add( 'show-ad' );
+			// @TODO Centered ad refresh code here
+		} else {
+			sidebar.classList.remove( 'hidden' );
+			swiperContainer.classList.remove( 'show-ad' );
+		}
+	};
+
+	function reposition() {
+		resetSidebarMargin();
+		setTimeout( positionSidebar, 310 );
+	};
+
+	// Expand sidebar on mobile
+	sidebarExpand.addEventListener( 'click', function( e ) {
+		e.preventDefault();
+		if ( sidebar.classList.contains( 'expand' ) ) {
+			sidebar.classList.remove( 'expand' );
+		} else {
+			sidebar.classList.add( 'expand' );
+		}
+	} );
+
+	// Go to the correct slide if users press back button
+	window.onpopstate = function( event ) {
+		if ( event.state && event.state.index ) {
+			$galleryTopSlider.slick( 'slickGoTo', event.state.index, true );
+		} else {
+			$galleryTopSlider.slick( 'slickGoTo', 0, true );
+		}
+	};
+
+	// Go to correct slide if accessed directly via its URL
+	window.onload = function( event ) {
+		if ( window.location.hash ) {
+			var slug = window.location.hash.substring( 1 );
+			var slide = document.querySelector( '.gallery-top[data-slug="' + slug + '"]' );
+
+			if ( slide ) {
+				$galleryTopSlider.slick( 'slickGoTo', parseInt( slide.getAttribute( 'data-index' ), 10 ), true );
+			}
+		}
+	};
+
+	$( document ).ready( function() {
+
+		var cleanIndex = [];
+		var sidebarAdRefreshInterval = parseInt( document.querySelector( '.gallery-top' ).getAttribute( 'data-refresh-interval' ), 10 );
+
+		$galleryTopSlider.on( 'init', function( event, slick ) {
+			// 300ms is the global animation speed
+		  setTimeout( positionSidebar, 310 );
+
+		  // Extract slides that are not ad spacers
+		  slick.$slides.each( function() {
+		  	if ( ! $( this ).find( '.meta-spacer' ).length ) {
+		  		cleanIndex.push( $( this ) );
+		  	}
+		  } );
+		  // Add a class every X real slides to know when to refresh the sidebar ad
+		  $.each( cleanIndex, function( i ) {
+		  	if ( parseInt( i+1, 10 ) % sidebarAdRefreshInterval === 0 ) {
+		  		$( this ).addClass( 'meta-refresh' );
+		  	}
+		  } );
+		} );
+
+		$galleryThumbsSlider.on( 'init', function( event, slick ) {
+			// We want to know which thumb is an ad spacer.
+		  slick.$slides.each( function() {
+		  	if ( $( this ).find( '.meta-spacer' ).length ) {
+		  		$( this ).addClass( 'is-meta' );
+		  	}
+		  } );
+		} );
+
+	  $galleryTopSlider.slick( {
+			infinite: false,
+			speed: 300,
+			slidesToShow: 1,
+			centerMode: true,
+			variableWidth: true,
+			asNavFor: '.gallery-thumbs',
+			arrows: true,
+			prevArrow: '<button type="button" class="slick-prev"><span class="icon-arrow-prev"></span></button>',
+			nextArrow: '<button type="button" class="slick-next"><span class="icon-arrow-next"></span></button>',
+	  } );
+
+	  $galleryThumbsSlider.slick( {
+			infinite: false,
+			speed: 300,
+			slidesToShow: 10,
+			centerMode: true,
+			focusOnSelect: true,
+			variableWidth: true,
+			asNavFor: '.gallery-top .swiper-wrapper',
+			arrows: false
+	  } );
+
+	  $galleryTopSlider.on( 'beforeChange', function( event, slick, currentSlide, nextSlide ) {
+		  resetSidebarMargin();
+		  maybeRefreshSidebarAd( nextSlide );
+		  maybeShowCenteredAd( nextSlide );
+	  } );
+
+	  $galleryTopSlider.on( 'afterChange', function( event, slick, currentSlide ) {
+	  	// 300ms is the global animation speed
+	    setTimeout( positionSidebar, 310 );
+	    updateURL( currentSlide );
+		  updateSidebarInfo( currentSlide );
+	  } );
+
+	} );
+
+	var debounced_repositioning = _.debounce( reposition, 300 );
+	$( window ).on( 'resize', debounced_repositioning );
+
+} )( jQuery );
