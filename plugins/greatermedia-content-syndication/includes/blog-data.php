@@ -491,7 +491,8 @@ class BlogData {
 			// update existing post only if it hasn't been updated manually
 			$detached = get_post_meta( $post_id, 'syndication-detached', true );
 
-			if ( $detached !== 'true' ) {
+			$detached = apply_filters( 'beasley_syndication_post_is_detached', $detached === 'true' );
+			if ( $detached !== true ) {
 				$hash_value = get_post_meta( $post_id, 'syndication_import', true );
 				if ( $hash_value != $post_hash || $force_update ) {
 					// post has been updated, override existing one
