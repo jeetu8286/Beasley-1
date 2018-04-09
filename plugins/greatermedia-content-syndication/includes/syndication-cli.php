@@ -116,6 +116,9 @@ class GMR_Syndication_CLI extends WP_CLI_Command {
 	 * [<force>]
 	 * : Forces syndication to reload content.
 	 *
+	 * [<start_date>]
+	 * : Choose a start date. Y-m-d H:i:s
+	 *
 	 * ## EXAMPLES
 	 *
 	 * wp gmr-syndication import-subscription 123
@@ -129,6 +132,15 @@ class GMR_Syndication_CLI extends WP_CLI_Command {
 	public function import_single_subscription( $args, $assoc_args ) {
 		$subscription_id = array_shift( $args );
 		$force = ! empty( $assoc_args['force'] );
+		$start_date = ! empty( $assoc_args['start_date'] ) ? $assoc_args['start_date'] : false;
+
+		if ( $start_date ) {
+			add_filter( 'beasley_syndication_query_start_date', function( $filter_date ) use ( $start_date ) {
+				$start_date = date( 'Y-m-d H:i:s', strtotime( $start_date ) );
+
+				return $start_date;
+			} );
+		}
 
 		BlogData::run( $subscription_id, 0, $force );
 	}
