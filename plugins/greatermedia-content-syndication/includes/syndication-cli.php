@@ -107,6 +107,32 @@ class GMR_Syndication_CLI extends WP_CLI_Command {
 		\WP_CLI::success( "Finished Import" );
 	}
 
+	/**
+	 * : Import articles from a single subscription
+	 *
+	 * <subscription_id>
+	 * : Subscription ID to process
+	 *
+	 * [<force>]
+	 * : Forces syndication to reload content.
+	 *
+	 * ## EXAMPLES
+	 *
+	 * wp gmr-syndication import-subscription 123
+	 *
+	 * wp gmr-syndication import-subscription 123 --force
+	 *
+	 * @synopsis <subscription_id> [--force]
+	 *
+	 * @subcommand import-subscription
+	 */
+	public function import_single_subscription( $args, $assoc_args ) {
+		$subscription_id = array_shift( $args );
+		$force = ! empty( $assoc_args['force'] );
+
+		BlogData::run( $subscription_id, 0, $force );
+	}
+
 	protected function validate_date( $date ) {
 		$pattern = '/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/';
 		if ( ! preg_match( $pattern, $date ) ) {

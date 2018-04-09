@@ -113,7 +113,7 @@ class BlogData {
 
 	}
 
-	public static function run( $syndication_id, $offset = 0 ) {
+	public static function run( $syndication_id, $offset = 0, $force = false ) {
 		$result = false;
 
 		self::$syndication_id = $syndication_id;
@@ -164,7 +164,7 @@ class BlogData {
 				remove_filter( 'wp_insert_post_data', array( $edit_flow->custom_status, 'fix_custom_status_timestamp' ), 10, 2 );
 			}
 
-			$result = self::_run( $syndication_id, $offset );
+			$result = self::_run( $syndication_id, $offset, $force );
 		} catch ( Exception $e ) {
 			self::log( "[EXCEPTION]: %s", $e->getMessage() );
 		}
@@ -174,7 +174,7 @@ class BlogData {
 		return $result;
 	}
 
-	private static function _run( $syndication_id, $offset = 0 ) {
+	private static function _run( $syndication_id, $offset = 0, $force = false ) {
 		self::log( "Start querying content site with offset = %s...", $offset );
 
 		// Get the current time before we start querying, so that we know next time we use this value it was the value
@@ -217,14 +217,15 @@ class BlogData {
 		foreach ( $result as $single_post ) {
 			try {
 				$post_id = self::ImportPosts(
-					$single_post['post_obj']
-					, $single_post['post_metas']
-					, $defaults
-					, $single_post['featured']
-					, $single_post['attachments']
-					, $single_post['gallery_attachments']
-					, $single_post['galleries']
-					, $single_post['term_tax']
+					$single_post['post_obj'],
+					$single_post['post_metas'],
+					$defaults,
+					$single_post['featured'],
+					$single_post['attachments'],
+					$single_post['gallery_attachments'],
+					$single_post['galleries'],
+					$single_post['term_tax'],
+					$force
 				);
 
 				if ( $post_id > 0 ) {
@@ -563,7 +564,7 @@ class BlogData {
 				}
 			}
 
-			if ( $updated == 1 ) {
+			if ( $updated == 1 || $force_update ) {
 				self::AssignDefaultTerms( $post_id, $defaults );
 			}
 
