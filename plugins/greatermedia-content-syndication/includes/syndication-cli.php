@@ -125,7 +125,7 @@ class GMR_Syndication_CLI extends WP_CLI_Command {
 	 *
 	 * wp gmr-syndication import-subscription 123 --force
 	 *
-	 * @synopsis <subscription_id> [--force]
+	 * @synopsis <subscription_id> [--force] [--start_date=<start-date>]
 	 *
 	 * @subcommand import-subscription
 	 */
