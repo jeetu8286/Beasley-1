@@ -1,10 +1,15 @@
-( function ( $ ) {
+( function ( $, window, document ) {
+	var $window = $( window );
+	var $document = $( document );
+
 	var sidebar = document.querySelector( '.swiper-sidebar' );
 	var swiperContainer = document.querySelector( '.gallery-top' );
 	var sidebarExpand = document.getElementById( 'js-expand' );
 
 	var $galleryTopSlider = $( '.gallery-top .swiper-wrapper' );
 	var $galleryThumbsSlider = $( '.gallery-thumbs' );
+
+	var updateHistory = true;
 
 	if ( ! $galleryTopSlider.length ) {
 		return;
@@ -45,7 +50,7 @@
 
 		// If we're not on an ad slide, update the URL
 		if ( ! newActiveSlide.classList.contains( 'meta-spacer' ) ) {
-			var slug = '#' + newActiveSlide.getAttribute( 'data-slug' );
+			var slug = newActiveSlide.getAttribute( 'data-slug' );
 			var title = newActiveSlide.getAttribute( 'data-title' );
 			// Save index in state object to navigate back to slide
 			var stateObject = { index: slide };
@@ -114,6 +119,13 @@
 		setTimeout( positionSidebar, 310 );
 	};
 
+	function updateCurrentSlide() {
+		var slide = document.querySelector( '.gallery-top .swiper-slide[data-slug="' + window.location.href + '"]' );
+		if ( slide ) {
+			$galleryTopSlider.slick( 'slickGoTo', parseInt( slide.getAttribute( 'data-index' ), 10 ), true );
+		}
+	}
+
 	// Expand sidebar on mobile
 	sidebarExpand.addEventListener( 'click', function( e ) {
 		e.preventDefault();
@@ -125,59 +137,47 @@
 	} );
 
 	// Go to the correct slide if users press back button
-	window.onpopstate = function( event ) {
-		if ( event.state && event.state.index ) {
-			$galleryTopSlider.slick( 'slickGoTo', event.state.index, true );
-		} else {
-			$galleryTopSlider.slick( 'slickGoTo', 0, true );
-		}
-	};
+	$window.on( 'popstate', function( event ) {
+		updateHistory = false;
+		updateCurrentSlide();
+		updateHistory = true;
+	} );
 
 	// Go to correct slide if accessed directly via its URL
-	window.onload = function( event ) {
-		if ( window.location.hash ) {
-			var slug = window.location.hash.substring( 1 );
-			var slide = document.querySelector( '.gallery-top[data-slug="' + slug + '"]' );
+	$window.load( updateCurrentSlide );
 
-			if ( slide ) {
-				$galleryTopSlider.slick( 'slickGoTo', parseInt( slide.getAttribute( 'data-index' ), 10 ), true );
-			}
-		}
-	};
-
-	$( document ).ready( function() {
-
+	$document.ready( function() {
 		var cleanIndex = [];
 		var sidebarAdRefreshInterval = parseInt( document.querySelector( '.gallery-top' ).getAttribute( 'data-refresh-interval' ), 10 );
 
 		$galleryTopSlider.on( 'init', function( event, slick ) {
 			// 300ms is the global animation speed
-		  setTimeout( positionSidebar, 310 );
+			setTimeout( positionSidebar, 310 );
 
-		  // Extract slides that are not ad spacers
-		  slick.$slides.each( function() {
-		  	if ( ! $( this ).find( '.meta-spacer' ).length ) {
-		  		cleanIndex.push( $( this ) );
-		  	}
-		  } );
-		  // Add a class every X real slides to know when to refresh the sidebar ad
-		  $.each( cleanIndex, function( i ) {
-		  	if ( parseInt( i+1, 10 ) % sidebarAdRefreshInterval === 0 ) {
-		  		$( this ).addClass( 'meta-refresh' );
-		  	}
-		  } );
+			// Extract slides that are not ad spacers
+			slick.$slides.each( function() {
+				if ( ! $( this ).find( '.meta-spacer' ).length ) {
+					cleanIndex.push( $( this ) );
+				}
+			} );
+			// Add a class every X real slides to know when to refresh the sidebar ad
+			$.each( cleanIndex, function( i ) {
+				if ( parseInt( i+1, 10 ) % sidebarAdRefreshInterval === 0 ) {
+					$( this ).addClass( 'meta-refresh' );
+				}
+			} );
 		} );
 
 		$galleryThumbsSlider.on( 'init', function( event, slick ) {
 			// We want to know which thumb is an ad spacer.
-		  slick.$slides.each( function() {
-		  	if ( $( this ).find( '.meta-spacer' ).length ) {
-		  		$( this ).addClass( 'is-meta' );
-		  	}
-		  } );
+			slick.$slides.each( function() {
+				if ( $( this ).find( '.meta-spacer' ).length ) {
+					$( this ).addClass( 'is-meta' );
+				}
+			} );
 		} );
 
-	  $galleryTopSlider.slick( {
+		$galleryTopSlider.slick( {
 			infinite: false,
 			speed: 300,
 			slidesToShow: 1,
@@ -187,9 +187,9 @@
 			arrows: true,
 			prevArrow: '<button type="button" class="slick-prev"><span class="icon-arrow-prev"></span></button>',
 			nextArrow: '<button type="button" class="slick-next"><span class="icon-arrow-next"></span></button>',
-	  } );
+		} );
 
-	  $galleryThumbsSlider.slick( {
+		$galleryThumbsSlider.slick( {
 			infinite: false,
 			speed: 300,
 			slidesToShow: 10,
@@ -198,24 +198,27 @@
 			variableWidth: true,
 			asNavFor: '.gallery-top .swiper-wrapper',
 			arrows: false
-	  } );
+		} );
 
-	  $galleryTopSlider.on( 'beforeChange', function( event, slick, currentSlide, nextSlide ) {
-		  resetSidebarMargin();
-		  maybeRefreshSidebarAd( nextSlide );
-		  maybeShowCenteredAd( nextSlide );
-	  } );
+		$galleryTopSlider.on( 'beforeChange', function( event, slick, currentSlide, nextSlide ) {
+			resetSidebarMargin();
+			maybeRefreshSidebarAd( nextSlide );
+			maybeShowCenteredAd( nextSlide );
+		} );
 
-	  $galleryTopSlider.on( 'afterChange', function( event, slick, currentSlide ) {
-	  	// 300ms is the global animation speed
-	    setTimeout( positionSidebar, 310 );
-	    updateURL( currentSlide );
-		  updateSidebarInfo( currentSlide );
-	  } );
+		$galleryTopSlider.on( 'afterChange', function( event, slick, currentSlide ) {
+			// 300ms is the global animation speed
+			setTimeout( positionSidebar, 310 );
+
+			if ( updateHistory ) {
+				updateURL( currentSlide );
+			}
+
+			updateSidebarInfo( currentSlide );
+		} );
 
 	} );
 
-	var debounced_repositioning = _.debounce( reposition, 300 );
-	$( window ).on( 'resize', debounced_repositioning );
+	$window.on( 'resize', _.debounce( reposition, 300 ) );
 
-} )( jQuery );
+} )( jQuery, window, document );

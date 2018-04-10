@@ -18,7 +18,7 @@ $base_url = untrailingslashit( get_permalink( $gallery ) );
 		<?php foreach ( $images as $index => $image ) : ?>
 			<div data-index="<?php echo esc_html( $index ); ?>"
 				 class="swiper-slide"
-				 data-slug="<?php echo esc_url( $base_url ); ?>/view/<?php echo esc_attr( $image->post_name ); ?>/"
+				 data-slug="<?php echo esc_attr( $base_url ); ?>/view/<?php echo esc_attr( $image->post_name ); ?>/"
 				 data-title="<?php echo esc_attr( get_the_title( $image ) ); ?>"
 				 data-caption="<?php echo esc_attr( get_the_excerpt( $image ) ); ?>"
 				 >
