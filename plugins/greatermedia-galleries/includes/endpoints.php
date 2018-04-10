@@ -10,18 +10,17 @@
 class GreaterMediaGalleryEndpoints {
 
 	public static function init() {
-		add_action( 'init', array( __CLASS__, 'add_rewrite_tag' ) );
 		add_action( 'init', array( __CLASS__, 'add_rewrites' ) );
 		add_filter( 'template_include', array( __CLASS__, 'filter_template' ) );
 		add_action( 'pre_get_posts', array( __CLASS__, 'pre_get_posts' ) );
 	}
 
-	public static function add_rewrite_tag() {
+	public static function add_rewrites() {
 		add_rewrite_tag( '%photos_category%', '([^&]+)' );
 		add_rewrite_tag( '%photos_category_page%', '([0-9]+)' );
-	}
 
-	public static function add_rewrites() {
+		add_rewrite_endpoint( 'view', EP_PERMALINK );
+
 		// Supports the /photos/<category> endpoint
 		$rule = sprintf( '%1$s/([^/]+)(/page/([0-9]+))?/?$', 'photos' );
 		\add_rewrite_rule( $rule, 'index.php?photos_category=$matches[1]&photos_category_page=$matches[3]', 'top' );
@@ -71,6 +70,7 @@ class GreaterMediaGalleryEndpoints {
 			$query->is_home = false; // For whatever reason, this was true
 		}
 	}
+
 }
 
 GreaterMediaGalleryEndpoints::init();
