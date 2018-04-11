@@ -13,21 +13,7 @@
 			<section class="entry-content" itemprop="articleBody"><?php
 				the_content();
 				get_template_part( 'partials/ad-in-loop' );
-				if ( class_exists( 'GreaterMediaGallery' ) ) :
-					$gallery = get_queried_object();
-					$ids = \GreaterMediaGallery::get_attachment_ids_for_post( $gallery );
-					if ( ! empty( $ids ) ) :
-						$image = current( $ids );
-						$content = sprintf(
-							'<a href="%s/view/%s/">%s</a>',
-							esc_attr( untrailingslashit( get_permalink( $gallery ) ) ),
-							esc_attr( get_post_field( 'post_name', $image ) ),
-							wp_get_attachment_image( $image )
-						);
-
-						echo apply_filters( 'the_secondary_content', $content );
-					endif;
-				endif;
+				do_action( 'gmr_gallery' );
 			?></section><?php
 
 			get_template_part( 'partials/article', 'footer' );
@@ -50,7 +36,7 @@
 					?><section class="entry__related-posts">
 						<h2 class="section-header">
 							More Galleries in
-							<a href="<?php echo esc_url( post_permalink( $parent_post ) ); ?>"><?php echo esc_html( get_the_title( $parent_post ) ); ?></a>
+							<a href="<?php the_permalink( $parent_post ); ?>"><?php echo esc_html( get_the_title( $parent_post ) ); ?></a>
 						</h2>
 
 						<?php while ( $siblings->have_posts() ) : $siblings->the_post(); ?>
