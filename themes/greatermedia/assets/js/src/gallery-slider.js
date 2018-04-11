@@ -87,9 +87,15 @@
 
 			sidebarTitle.innerText = title;
 			sidebarCaption.innerText = caption;
-			facebookButton.href = facebookURL;
-			twitterButton.href = twitterURL;
-			googleButton.href = googleURL;
+			if ( facebookButton ) {
+				facebookButton.href = facebookURL;
+			}
+			if ( twitterButton ) {
+				twitterButton.href = twitterURL;
+			}
+			if ( googleButton ) {
+				googleButton.href = googleURL;
+			}
 		}
 	};
 
