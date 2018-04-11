@@ -133,6 +133,14 @@
 	}
 
 	&.loading {
+		background-color: #fff;
+		background-image: url(#{$asset-root}ajax-loader.gif);
+		background-repeat: no-repeat;
+		background-position: center 100px;
+	}
+
+	&.loading .swiper-sidebar,
+	&.loading .swiper-wrapper {
 		opacity: 0;
 	}
 
