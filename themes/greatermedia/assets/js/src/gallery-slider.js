@@ -19,7 +19,7 @@
 		var swiperWrapper = document.querySelector( '.gallery-top .slick-track' );
 		var newActiveSlide = document.querySelector( '.gallery-top .slick-current' );
 		var newActiveSlidePos = newActiveSlide.getBoundingClientRect();
-		var paddingRight = parseInt( window.innerWidth - newActiveSlidePos.right - 385, 10 );
+		var paddingRight = parseInt( ( $window.width() - newActiveSlidePos.width )/2 - 385, 10 );
 
 		// We want to move the sidebar and add enough padding so that it's always at least 300px wide (exluding padding).
 		// In some cases where the image is too wide, we want to apply a negative margin left to pull the image to the left
@@ -31,10 +31,10 @@
 			if (window.matchMedia("(min-width: 768px)").matches) {
 				if ( paddingRight < 0 ) {
 					swiperWrapper.style.marginLeft = paddingRight + 'px';
-					sidebar.setAttribute( 'style', 'left:' + parseInt(newActiveSlidePos.right + paddingRight, 10) + 'px' );
+					sidebar.setAttribute( 'style', 'left:' + parseInt( ($window.width() - newActiveSlidePos.width)/2 + newActiveSlidePos.width + paddingRight, 10 ) + 'px' );
 				} else {
 					swiperWrapper.style.marginLeft = '0px';
-					sidebar.setAttribute( 'style', 'left:' + newActiveSlidePos.right + 'px;padding-right:' + paddingRight + 'px' );
+					sidebar.setAttribute( 'style', 'left:' + parseInt( ($window.width() - newActiveSlidePos.width)/2 + newActiveSlidePos.width, 10 ) + 'px;padding-right:' + paddingRight + 'px' );
 				}
 			}
 		} else {
@@ -116,7 +116,7 @@
 
 	function reposition() {
 		resetSidebarMargin();
-		setTimeout( positionSidebar, 310 );
+		positionSidebar();
 	};
 
 	function updateCurrentSlide() {
@@ -143,16 +143,20 @@
 		updateHistory = true;
 	} );
 
-	// Go to correct slide if accessed directly via its URL
-	$window.load( updateCurrentSlide );
-
-	$document.ready( function() {
+	$window.load( function() {
 		var cleanIndex = [];
 		var sidebarAdRefreshInterval = parseInt( document.querySelector( '.gallery-top' ).getAttribute( 'data-refresh-interval' ), 10 );
 
+		var initialSlide = document.querySelector( '.gallery-top .swiper-slide[data-slug="' + window.location.href + '"]' );
+		if ( initialSlide ) {
+			var galleryInitialIndex = parseInt( initialSlide.getAttribute( 'data-index' ), 10 );
+		}
+
 		$galleryTopSlider.on( 'init', function( event, slick ) {
 			// 300ms is the global animation speed
-			setTimeout( positionSidebar, 310 );
+			positionSidebar();
+			updateSidebarInfo( galleryInitialIndex );
+			setTimeout( swiperContainer.classList.remove( 'loading' ), 300 );
 
 			// Extract slides that are not ad spacers
 			slick.$slides.each( function() {
@@ -175,6 +179,8 @@
 					$( this ).addClass( 'is-meta' );
 				}
 			} );
+
+			setTimeout( $galleryThumbsSlider.removeClass( 'loading' ), 300 );
 		} );
 
 		$galleryTopSlider.slick( {
@@ -187,6 +193,7 @@
 			arrows: true,
 			prevArrow: '<button type="button" class="slick-prev"><span class="icon-arrow-prev"></span></button>',
 			nextArrow: '<button type="button" class="slick-next"><span class="icon-arrow-next"></span></button>',
+			initialSlide: galleryInitialIndex
 		} );
 
 		$galleryThumbsSlider.slick( {
@@ -197,7 +204,8 @@
 			focusOnSelect: true,
 			variableWidth: true,
 			asNavFor: '.gallery-top .swiper-wrapper',
-			arrows: false
+			arrows: false,
+			initialSlide: galleryInitialIndex
 		} );
 
 		$galleryTopSlider.on( 'beforeChange', function( event, slick, currentSlide, nextSlide ) {
@@ -208,7 +216,7 @@
 
 		$galleryTopSlider.on( 'afterChange', function( event, slick, currentSlide ) {
 			// 300ms is the global animation speed
-			setTimeout( positionSidebar, 310 );
+			positionSidebar();
 
 			if ( updateHistory ) {
 				updateURL( currentSlide );

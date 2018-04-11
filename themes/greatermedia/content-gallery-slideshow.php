@@ -12,11 +12,17 @@ if ( empty( $images ) ) :
 endif;
 
 $base_url = untrailingslashit( get_permalink( $gallery ) );
-
-?><div class="swiper-container gallery-top" data-refresh-interval="3">
+$slide_index = 0;
+?><div class="swiper-container gallery-top loading" data-refresh-interval="3">
     <div class="swiper-wrapper">
 		<?php foreach ( $images as $index => $image ) : ?>
-			<div data-index="<?php echo esc_html( $index ); ?>"
+
+			<?php if ( $index > 0 && $index % 2 == 0 ) : ?>
+				<div data-index="<?php echo esc_html( $slide_index ); ?>" class="swiper-slide meta-spacer"><div class="swiper-slide meta-spacer"></div></div>
+				<?php $slide_index++; ?>
+			<?php endif; ?>
+
+			<div data-index="<?php echo esc_html( $slide_index ); ?>"
 				 class="swiper-slide"
 				 data-slug="<?php echo esc_attr( $base_url ); ?>/view/<?php echo esc_attr( $image->post_name ); ?>/"
 				 data-title="<?php echo esc_attr( get_the_title( $image ) ); ?>"
@@ -24,10 +30,8 @@ $base_url = untrailingslashit( get_permalink( $gallery ) );
 				 >
 				<?php echo wp_get_attachment_image( $image->ID, 'full', false, array( 'class' => 'swiper-image' ) ); ?>
 			</div>
+			<?php $slide_index++; ?>
 
-			<?php if ( $index > 0 && $index % 2 == 0 ) : ?>
-				<div data-index="2" class="swiper-slide meta-spacer"></div>
-			<?php endif; ?>
 		<?php endforeach; ?>
     </div>
     <!-- .swiper-wrapper -->
@@ -57,13 +61,15 @@ $base_url = untrailingslashit( get_permalink( $gallery ) );
 </div>
 <!-- .gallery-top -->
 
-<div class="gallery-thumbs">
+<div class="gallery-thumbs loading">
 	<?php foreach ( $images as $index => $image ) : ?>
-		<div><div class="swiper-slide" style="background-image:url(<?php echo esc_url( wp_get_attachment_image_url( $image->ID, 'full' ) ); ?>)"></div></div>
 
 		<?php if ( $index > 0 && $index % 2 == 0 ) : ?>
 			<div><div class="swiper-slide meta-spacer"></div></div>
 		<?php endif; ?>
+
+		<div><div class="swiper-slide" style="background-image:url(<?php echo esc_url( wp_get_attachment_image_url( $image->ID, 'full' ) ); ?>)"></div></div>
+
 	<?php endforeach; ?>
 </div>
 <!-- .gallery-thumbs -->
