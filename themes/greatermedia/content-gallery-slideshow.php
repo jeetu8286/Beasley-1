@@ -32,21 +32,15 @@ $base_url = untrailingslashit( get_permalink( $gallery ) );
     </div>
     <!-- .swiper-wrapper -->
 
-	<!--
-	@TODO Notes
-	The initial sidebar information must be filled with the first slide's information.
-	This will be updated with JS
-	-->
 	<div class="swiper-sidebar">
 		<div class="swiper-sidebar-text">
-			<h2 id="js-swiper-sidebar-title">Slide 1 title</h2>
-			<p id="js-swiper-sidebar-caption">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis, maiores, perferendis. Nam, ex, quia. Et excepturi veritatis, earum atque laboriosam enim provident eos vel libero fugiat cumque reiciendis, repellat alias.</p>
+			<h2 id="js-swiper-sidebar-title"><?php echo esc_html( get_the_title( $images[0] ) ); ?></h2>
+			<p id="js-swiper-sidebar-caption"><?php echo esc_attr( get_the_excerpt( $images[0] ) ); ?></p>
 		</div>
 		<div class="swiper-sidebar-sharing">
 			<?php get_template_part( 'partials/social-share' ); ?>
 		</div>
 		<div class="swiper-sidebar-meta">
-			<!-- @TODO Not sure if this is the right ad to use? -->
 			<?php do_action( 'dfp_tag', 'dfp_ad_inlist_infinite' ); ?>
 		</div>
 		<button id="js-expand" class="swiper-sidebar-expand"><span class="icon-arrow-next"></span> <span class="screen-reader-text">Expand</span></button>
