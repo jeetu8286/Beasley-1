@@ -81,6 +81,7 @@
 					</nav>
 				<?php endif; ?>
 				<main class="main" role="main">
+					<?php // @TODO Remove for gallery slideshows ?>
 					<div class="container__leaderboard">
 						<div class="ad__leaderboard">
 							<?php do_action( 'dfp_tag', 'dfp_ad_leaderboard_pos1', false, array( array( 'pos', 1 ) ) ); ?>

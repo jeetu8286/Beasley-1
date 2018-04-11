@@ -9,6 +9,18 @@
 	position: relative;
 }
 
+.slideshow-title {
+	margin: 0;
+	background-color: $secondary-bg;
+	color: $secondary-text;
+	border-bottom: 1px solid $btn-bg;
+	text-transform: uppercase;
+	.container {
+		min-height: 0;
+		padding-right: 0;
+	}
+}
+
 /* Sidebar */
 .swiper-sidebar {
 	position: absolute;
@@ -127,10 +139,6 @@
 
 /* Gallery top */
 .gallery-top {
-	height: calc(100vh - 142px);
-	@include bp(medium) {
-		height: 600px;
-	}
 
 	&.loading {
 		background-color: #fff;
@@ -156,6 +164,12 @@
 		transition: 300ms all ease-in-out;
 		@include bp(medium) {
 			height: 600px;
+		}
+	}
+	.slick-slide {
+		min-height: calc(100vh - 142px);
+		@include bp(medium) {
+			min-height: 600px;
 		}
 	}
 	.slick-current.meta-spacer {
@@ -189,6 +203,10 @@
 .gallery-thumbs {
 	&.loading {
 		opacity: 0;
+	}
+
+	&.hidden {
+		display: none;
 	}
 
 	.swiper-slide {
@@ -230,6 +248,29 @@
 	}
 }
 
+/* Last slide */
+.last-slide {
+	width: 80vw;
+	max-width: 800px;
+	color: $secondary-text;
+	padding: 20px;
+	.gallery__grid--title {
+		color: $secondary-text;
+		text-align: center;
+		font-weight: bold;
+		text-transform: uppercase;
+	}
+	.gallery__grid--featured:hover {
+		.gallery__grid--title {
+			color: $primary-link-hover;
+		}
+	}
+	h2 {
+		text-transform: uppercase;
+		text-align: center;
+		color: $color-text-yellow;
+	}
+}
 /* Ads */
 
 .swiper-meta-container {
@@ -289,7 +330,7 @@
 .slick-arrow {
 	z-index: 9999;
 	position: absolute;
-	top: 50%;
+	top: 300px;
 	padding: 0;
 	border: 0;
 	background-color: $btn-bg;
@@ -301,5 +342,5 @@
 
 .slick-arrow.slick-disabled {
 	pointer-events: none;
-	opacity: .2;
+	opacity: 0;
 }

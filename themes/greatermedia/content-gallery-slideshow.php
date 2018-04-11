@@ -7,13 +7,16 @@ endif;
 $gallery = get_queried_object();
 $ids = \GreaterMediaGallery::get_attachment_ids_for_post( $gallery );
 $images = array_filter( array_map( 'get_post', $ids ) );
+$total_images = sizeof( $images );
 if ( empty( $images ) ) :
 	return;
 endif;
 
 $base_url = untrailingslashit( get_permalink( $gallery ) );
 $slide_index = 0;
-?><div class="swiper-container gallery-top loading" data-refresh-interval="3">
+?>
+	<h1 class="slideshow-title"><div class="container"><?php the_title(); ?></div></h1>
+	<div class="swiper-container gallery-top loading" data-refresh-interval="3">
     <div class="swiper-wrapper">
 		<?php foreach ( $images as $index => $image ) : ?>
 
@@ -31,6 +34,70 @@ $slide_index = 0;
 				<?php echo wp_get_attachment_image( $image->ID, 'full', false, array( 'class' => 'swiper-image' ) ); ?>
 			</div>
 			<?php $slide_index++; ?>
+
+			<?php if ( $total_images === ( $index + 1 ) ) : ?>
+				<?php // Last slide has links to other galleries ?>
+				<div data-index="<?php echo esc_html( $slide_index ); ?>" class="swiper-slide last-slide">
+					<div class="other-galleries">
+						<?php // @TODO Add other galleries grid here, similar to Album grid. ?>
+						<!-- Featured gallery -->
+						<article class="gallery__grid--featured">
+							<a href="#">
+								<div class="gallery__grid--meta">
+									<h3 class="gallery__grid--title">Gallery title</h3>
+								</div>
+								<div class="gallery__grid--thumbnail">
+									<div class="thumbnail" style="background-image: url(https://placem.at/things?w=1600&h=1200&random=1)"></div>
+								</div>
+							</a>
+						</article>
+						<!-- Other galleries -->
+						<h2>More from ____</h2>
+						<div class="gallery__grid gallery__grid-album">
+							<article class="gallery__grid--column">
+								<a href="#">
+									<div class="gallery__grid--thumbnail">
+										<div class="thumbnail" style="background-image: url(https://placem.at/things?w=1600&h=1200&random=1)"></div>
+									</div>
+									<div class="gallery__grid--meta">
+										<h3 class="gallery__grid--title">Gallery title</h3>
+									</div>
+								</a>
+							</article>
+							<article class="gallery__grid--column">
+								<a href="#">
+									<div class="gallery__grid--thumbnail">
+										<div class="thumbnail" style="background-image: url(https://placem.at/things?w=1600&h=1200&random=1)"></div>
+									</div>
+									<div class="gallery__grid--meta">
+										<h3 class="gallery__grid--title">Gallery title</h3>
+									</div>
+								</a>
+							</article>
+							<article class="gallery__grid--column">
+								<a href="#">
+									<div class="gallery__grid--thumbnail">
+										<div class="thumbnail" style="background-image: url(https://placem.at/things?w=1600&h=1200&random=1)"></div>
+									</div>
+									<div class="gallery__grid--meta">
+										<h3 class="gallery__grid--title">Gallery title</h3>
+									</div>
+								</a>
+							</article>
+							<article class="gallery__grid--column">
+								<a href="#">
+									<div class="gallery__grid--thumbnail">
+										<div class="thumbnail" style="background-image: url(https://placem.at/things?w=1600&h=1200&random=1)"></div>
+									</div>
+									<div class="gallery__grid--meta">
+										<h3 class="gallery__grid--title">Gallery title</h3>
+									</div>
+								</a>
+							</article>
+						</div>
+					</div>
+				</div>
+			<?php endif; ?>
 
 		<?php endforeach; ?>
     </div>
@@ -69,6 +136,11 @@ $slide_index = 0;
 		<?php endif; ?>
 
 		<div><div class="swiper-slide" style="background-image:url(<?php echo esc_url( wp_get_attachment_image_url( $image->ID, 'full' ) ); ?>)"></div></div>
+
+		<?php if ( $total_images === ( $index + 1 ) ) : ?>
+			<?php // Last slide thumbnail placeholder ?>
+			<div><div class="swiper-slide meta-spacer"></div></div>
+		<?php endif; ?>
 
 	<?php endforeach; ?>
 </div>

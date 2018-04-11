@@ -25,7 +25,7 @@
 		// In some cases where the image is too wide, we want to apply a negative margin left to pull the image to the left
 		// so that the sidebar has enough room.
 
-		if ( ! swiperContainer.classList.contains( 'show-ad' ) ) {
+		if ( ! swiperContainer.classList.contains( 'show-ad' ) && ! newActiveSlide.classList.contains( 'last-slide' ) ) {
 			sidebar.classList.remove( 'hidden' );
 
 			if (window.matchMedia("(min-width: 768px)").matches) {
@@ -114,6 +114,18 @@
 		}
 	};
 
+	function maybeHideSidebar( newSlide ) {
+		var newActiveSlide = document.querySelector( '.gallery-top .slick-slide:nth-child(' + parseInt( newSlide+1, 10 ) + ')' );
+
+		if ( newActiveSlide.classList.contains( 'last-slide' ) ) {
+			sidebar.classList.add( 'hidden' );
+			$galleryThumbsSlider.addClass( 'hidden' );
+		} else {
+			sidebar.classList.remove( 'hidden' );
+			$galleryThumbsSlider.removeClass( 'hidden' );
+		}
+	};
+
 	function reposition() {
 		resetSidebarMargin();
 		positionSidebar();
@@ -189,6 +201,7 @@
 			slidesToShow: 1,
 			centerMode: true,
 			variableWidth: true,
+			adaptiveHeight: true,
 			asNavFor: '.gallery-thumbs',
 			arrows: true,
 			prevArrow: '<button type="button" class="slick-prev"><span class="icon-arrow-prev"></span></button>',
@@ -212,6 +225,7 @@
 			resetSidebarMargin();
 			maybeRefreshSidebarAd( nextSlide );
 			maybeShowCenteredAd( nextSlide );
+			maybeHideSidebar( nextSlide );
 		} );
 
 		$galleryTopSlider.on( 'afterChange', function( event, slick, currentSlide ) {
