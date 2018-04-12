@@ -108,9 +108,13 @@ $slide_index = 0;
 			<h2 id="js-swiper-sidebar-title"><?php echo esc_html( get_the_title( $images[0] ) ); ?></h2>
 			<p id="js-swiper-sidebar-caption"><?php echo esc_attr( get_the_excerpt( $images[0] ) ); ?></p>
 		</div>
-		<div class="swiper-sidebar-sharing">
-			<?php get_template_part( 'partials/social-share' ); ?>
-		</div>
+
+		<?php if ( ! get_field( 'hide_social_share' ) ) : ?>
+			<div class="swiper-sidebar-sharing">
+				<?php get_template_part( 'partials/social-share' ); ?>
+			</div>
+		<?php endif; ?>
+
 		<div class="swiper-sidebar-meta">
 			<?php do_action( 'dfp_tag', 'dfp_ad_inlist_infinite' ); ?>
 		</div>
