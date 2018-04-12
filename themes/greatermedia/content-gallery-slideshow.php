@@ -23,7 +23,7 @@ $base_url = untrailingslashit( get_permalink( $current_gallery ) );
 $galleries = get_posts( array(
 	'post_type'      => 'gmr_gallery',
 	'post__not_in'   => array( $current_gallery->ID ),
-	'posts_per_page' => 5,
+	'posts_per_page' => 4,
 ) );
 
 ?><h1 class="slideshow-title"><div class="container"><?php the_title(); ?></div></h1>
@@ -56,26 +56,12 @@ $galleries = get_posts( array(
 
 		<div data-index="<?php echo esc_html( $slide_index ); ?>" class="swiper-slide last-slide">
 			<div class="other-galleries">
-				<?php $gallery = current( $galleries ); ?>
 				<!-- Featured gallery -->
 				<h2>More from <?php bloginfo( 'name' ); ?></h2>
-				<article class="gallery__grid--featured">
-					<a href="<?php the_permalink( $gallery ); ?>">
-						<div class="gallery__grid--thumbnail">
-							<div class="thumbnail" style="background-image: url('<?php echo esc_attr( wp_get_attachment_image_url( get_post_thumbnail_id( $gallery ), 'gmr-gallery-grid-featured' ) ); ?>')"></div>
-						</div>
-						<div class="gallery__grid--meta">
-							<h3 class="gallery__grid--title">
-								<?php echo esc_html( get_the_title( $gallery ) ); ?>
-							</h3>
-						</div>
-					</a>
-				</article>
-
 
 				<!-- Other galleries -->
 				<div class="gallery__grid gallery__grid-album">
-					<?php while ( ( $gallery = next( $galleries ) ) ) : ?>
+					<?php foreach ( $galleries as $gallery ) : ?>
 						<article class="gallery__grid--column">
 							<a href="<?php the_permalink( $gallery ); ?>">
 								<div class="gallery__grid--thumbnail">
@@ -88,7 +74,7 @@ $galleries = get_posts( array(
 								</div>
 							</a>
 						</article>
-					<?php endwhile; ?>
+					<?php endforeach; ?>
 				</div>
 			</div>
 		</div>
