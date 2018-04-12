@@ -36,13 +36,20 @@ $galleries = get_posts( array(
 				<?php $slide_index++; ?>
 			<?php endif; ?>
 
+			<?php
+			$data = wp_get_attachment_image_src( $image->ID, 'gmr-gallery-grid-featured' );
+			$width = $data[1];
+			$height = $data[2];
+			?>
 			<div data-index="<?php echo esc_html( $slide_index ); ?>"
 				 class="swiper-slide"
 				 data-slug="<?php echo esc_attr( $base_url ); ?>/view/<?php echo esc_attr( $image->post_name ); ?>/"
 				 data-title="<?php echo esc_attr( get_the_title( $image ) ); ?>"
 				 data-caption="<?php echo esc_attr( get_the_excerpt( $image ) ); ?>"
+				 data-width="<?php echo esc_attr( $width ); ?>"
+				 data-height="<?php echo esc_attr( $height ); ?>"
 				 >
-				<?php echo wp_get_attachment_image( $image->ID, 'gmr-gallery-grid-featured', false, array( 'class' => 'swiper-image' ) ); ?>
+				<img data-src="<?php echo esc_url( wp_get_attachment_image_url( $image->ID, 'gmr-gallery-grid-featured' ) ); ?>" width="<?php echo esc_attr( $width ); ?>" height="<?php echo esc_attr( $height ); ?>" alt="<?php echo esc_attr( get_the_excerpt( $image ) ); ?>" class="swiper-image" />
 			</div>
 			<?php $slide_index++; ?>
 		<?php endforeach; ?>

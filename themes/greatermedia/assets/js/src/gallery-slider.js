@@ -181,17 +181,25 @@
 		}
 
 		$galleryTopSlider.on( 'init', function( event, slick ) {
-			// 300ms is the global animation speed
-			positionSidebar();
-			updateSidebarInfo( galleryInitialIndex );
-			setTimeout( swiperContainer.classList.remove( 'loading' ), 300 );
 
 			// Extract slides that are not ad spacers
 			slick.$slides.each( function() {
 				if ( ! $( this ).find( '.meta-spacer' ).length ) {
 					cleanIndex.push( $( this ) );
+
+					// Start loading images
+					if ( $( this ).find( '.swiper-image' ).length ) {
+						var slideImageSrc = $( this ).find( '.swiper-image' ).attr( 'data-src' );
+
+						$( this ).find( '.swiper-image' ).attr( 'src', slideImageSrc );
+					}
 				}
 			} );
+
+			// 300ms is the global animation speed
+			positionSidebar();
+			updateSidebarInfo( galleryInitialIndex );
+			swiperContainer.classList.remove( 'loading' );
 		} );
 
 		$galleryThumbsSlider.on( 'init', function( event, slick ) {
@@ -202,7 +210,8 @@
 				}
 			} );
 
-			setTimeout( $galleryThumbsSlider.removeClass( 'loading' ), 300 );
+			$galleryThumbsSlider.removeClass( 'loading' )
+
 		} );
 
 		$galleryTopSlider.slick( {

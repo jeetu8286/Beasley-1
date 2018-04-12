@@ -154,6 +154,7 @@
 
 	.slick-slide {
 		opacity: .5;
+		transition: 300ms all ease-in-out;
 	}
 	.slick-slide.slick-current {
 		opacity: 1;
@@ -171,6 +172,9 @@
 		@include bp(medium) {
 			min-height: 600px;
 		}
+	}
+	.meta-spacer {
+		width: 0;
 	}
 	.slick-current.meta-spacer {
 		width: 100vw !important;
@@ -279,7 +283,7 @@
 	left: 0;
 	width: 0;
 	height: 100%;
-	transition: 300ms all 100ms ease-in-out;
+	transition: none;
 	background-color: $secondary-bg;
 	color: $secondary-text;
 	overflow: hidden;
@@ -296,6 +300,7 @@
 	.show-ad & {
 		width: 100vw;
 		z-index: 999;
+		transition: 300ms all 100ms ease-in-out;
 		@include bp(medium) {
 			width: 400px;
 			margin-left: -200px;
