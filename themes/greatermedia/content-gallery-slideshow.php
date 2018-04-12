@@ -35,7 +35,7 @@ $non_sponsored_galleries = get_posts( array(
 	'posts_per_page' => $sponsored_gallery ? 4 : 5,
 ) );
 
-$galleries = array_merge( array( $sponsored_gallery ), $non_sponsored_galleries );
+$galleries = array_filter( array_merge( array( $sponsored_gallery ), $non_sponsored_galleries ) );
 
 ?><h1 class="slideshow-title"><div class="container"><?php the_title(); ?></div></h1>
 <div class="swiper-container gallery-top loading" data-refresh-interval="<?php echo esc_attr( $ads_interval ); ?>">
