@@ -8,6 +8,6 @@
 
 get_header();
 
-	get_template_part( 'content', 'album' );
+	get_template_part( 'content-album' );
 
 get_footer();

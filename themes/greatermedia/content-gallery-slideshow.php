@@ -14,9 +14,9 @@ endif;
 
 $base_url = untrailingslashit( get_permalink( $gallery ) );
 $slide_index = 0;
-?>
-	<h1 class="slideshow-title"><div class="container"><?php the_title(); ?></div></h1>
-	<div class="swiper-container gallery-top loading" data-refresh-interval="3">
+
+?><h1 class="slideshow-title"><div class="container"><?php the_title(); ?></div></h1>
+<div class="swiper-container gallery-top loading" data-refresh-interval="3">
     <div class="swiper-wrapper">
 		<?php foreach ( $images as $index => $image ) : ?>
 
