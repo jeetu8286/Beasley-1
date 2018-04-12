@@ -118,7 +118,7 @@ $galleries = get_posts( array(
 <div class="gallery-thumbs loading">
 	<?php foreach ( $images as $index => $image ) : ?>
 
-		<?php if ( $index > 0 && $index % 2 == 0 ) : ?>
+		<?php if ( $index > 0 && $index % $ads_interval == 0 ) : ?>
 			<div><div class="swiper-slide meta-spacer"></div></div>
 		<?php endif; ?>
 
@@ -126,11 +126,8 @@ $galleries = get_posts( array(
 			<div class="swiper-slide" style="background-image:url(<?php echo esc_url( wp_get_attachment_image_url( $image->ID, 'thumbnail' ) ); ?>)"></div>
 		</div>
 
-		<?php if ( $total_images === ( $index + 1 ) ) : ?>
-			<?php // Last slide thumbnail placeholder ?>
-			<div><div class="swiper-slide meta-spacer"></div></div>
-		<?php endif; ?>
-
 	<?php endforeach; ?>
+	<?php // Last slide thumbnail placeholder ?>
+	<div><div class="swiper-slide meta-spacer"></div></div>
 </div>
 <!-- .gallery-thumbs -->
