@@ -37,7 +37,7 @@ $galleries = get_posts( array(
 			<?php endif; ?>
 
 			<?php
-			$data = wp_get_attachment_image_src( $image->ID, 'gmr-gallery-grid-featured' );
+			$data = wp_get_attachment_image_src( $image->ID, 'gm-article-thumbnail' );
 			$width = $data[1];
 			$height = $data[2];
 			?>
@@ -49,7 +49,7 @@ $galleries = get_posts( array(
 				 data-width="<?php echo esc_attr( $width ); ?>"
 				 data-height="<?php echo esc_attr( $height ); ?>"
 				 >
-				<img data-src="<?php echo esc_url( wp_get_attachment_image_url( $image->ID, 'gmr-gallery-grid-featured' ) ); ?>" width="<?php echo esc_attr( $width ); ?>" height="<?php echo esc_attr( $height ); ?>" alt="<?php echo esc_attr( get_the_excerpt( $image ) ); ?>" class="swiper-image" />
+				<img data-src="<?php echo esc_url( wp_get_attachment_image_url( $image->ID, 'gm-article-thumbnail' ) ); ?>" width="<?php echo esc_attr( $width ); ?>" height="<?php echo esc_attr( $height ); ?>" alt="<?php echo esc_attr( get_the_excerpt( $image ) ); ?>" class="swiper-image" />
 			</div>
 			<?php $slide_index++; ?>
 		<?php endforeach; ?>
