@@ -53,7 +53,7 @@ $galleries = array_merge( array( $sponsored_gallery ), $non_sponsored_galleries 
 				 data-title="<?php echo esc_attr( get_the_title( $image ) ); ?>"
 				 data-caption="<?php echo esc_attr( get_the_excerpt( $image ) ); ?>"
 				 >
-				<?php echo wp_get_attachment_image( $image->ID, 'gm-article-thumbnail', false, array( 'class' => 'swiper-image' ) ); ?>
+				<?php echo wp_get_attachment_image( $image->ID, 'gmr-gallery-grid-featured', false, array( 'class' => 'swiper-image' ) ); ?>
 			</div>
 			<?php $slide_index++; ?>
 		<?php endforeach; ?>
@@ -133,7 +133,9 @@ $galleries = array_merge( array( $sponsored_gallery ), $non_sponsored_galleries 
 			<div><div class="swiper-slide meta-spacer"></div></div>
 		<?php endif; ?>
 
-		<div><div class="swiper-slide" style="background-image:url(<?php echo esc_url( wp_get_attachment_image_url( $image->ID, 'gm-article-thumbnail' ) ); ?>)"></div></div>
+		<div>
+			<div class="swiper-slide" style="background-image:url(<?php echo esc_url( wp_get_attachment_image_url( $image->ID, 'thumbnail' ) ); ?>)"></div>
+		</div>
 
 		<?php if ( $total_images === ( $index + 1 ) ) : ?>
 			<?php // Last slide thumbnail placeholder ?>
