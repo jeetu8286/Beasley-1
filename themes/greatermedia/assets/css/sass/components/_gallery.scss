@@ -1008,6 +1008,11 @@ a.gallery__back--btn {
 	}
 }
 
+.gallery__grid-album .gallery__grid--featured {
+	text-align: center;
+	text-transform: uppercase;
+}
+
 .gallery__grid--column {
 	@include span-columns(4);
 	margin-bottom: 22px;
@@ -1035,6 +1040,8 @@ a.gallery__back--btn {
 	}
 
 	.gallery__grid-album & {
+		text-align: center;
+		text-transform: uppercase;
 		@include span-columns(4 of 4);
 
 		@include bp(small) {
