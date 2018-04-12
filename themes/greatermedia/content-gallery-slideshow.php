@@ -119,7 +119,7 @@ $galleries = array_merge( array( $sponsored_gallery ), $non_sponsored_galleries 
 
 	<div class="swiper-meta-container">
 		<div class="swiper-meta-inner">
-			<?php do_action( 'dfp_tag', 'dfp_ad_right_rail_pos1' ); ?>
+			<?php do_action( 'dfp_tag', 'dfp_ad_inlist_infinite' ); ?>
 		</div>
 	</div>
 	<!-- .swiper-meta-container -->

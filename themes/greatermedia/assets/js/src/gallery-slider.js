@@ -99,25 +99,32 @@
 		}
 	};
 
+	function refreshAds( ads ) {
+		var sidebarSlots = [];
+
+		ads.each( function() {
+			sidebarSlots.push( $( this ).data( 'slot' ) );
+		} );
+
+		if ( sidebarSlots.length && googletag ) {
+			setTimeout( function() {
+				googletag.pubads().refresh( sidebarSlots );
+			}, 500 );
+		}
+	}
+
 	function maybeShowCenteredAd( newSlide ) {
 		var newActiveSlide = document.querySelector( '.gallery-top .slick-slide:nth-child(' + parseInt( newSlide+1, 10 ) + ')' );
 
 		if ( newActiveSlide.classList.contains( 'meta-spacer' ) ) {
 			sidebar.classList.add( 'hidden' );
 			swiperContainer.classList.add( 'show-ad' );
-			// @TODO Centered ad refresh code here
-
-			setTimeout( function() {
-				var sidebarSlots = [];
-				$( '.swiper-sidebar-meta .gmr-ad' ).each( function() {
-					sidebarSlots.push( $( this ).data( 'slot' ) );
-				} );
-
-				if ( sidebarSlots.length && googletag ) {
-					googletag.pubads().refresh( sidebarSlots );
-				}
-			}, 500 );
+			refreshAds( $( '.swiper-sidebar-meta .gmr-ad' ) );
 		} else {
+			if ( swiperContainer.classList.contains( 'show-ad' ) ) {
+				refreshAds( $( '.swiper-meta-inner .gmr-ad' ) );
+			}
+
 			sidebar.classList.remove( 'hidden' );
 			swiperContainer.classList.remove( 'show-ad' );
 		}
