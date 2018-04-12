@@ -258,6 +258,7 @@
 	max-width: 750px;
 	color: $secondary-text;
 	padding: 20px;
+	background-color: $header-nav-bg;
 	.gallery__grid--title {
 		color: $secondary-text;
 		text-align: center;
@@ -266,7 +267,7 @@
 	}
 	.gallery__grid--featured:hover {
 		.gallery__grid--title {
-			color: $primary-link-hover;
+			color: $color-text-black;
 		}
 	}
 	h2 {

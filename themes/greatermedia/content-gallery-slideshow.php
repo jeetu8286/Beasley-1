@@ -55,22 +55,23 @@ $galleries = get_posts( array(
 		<?php endforeach; ?>
 
 		<div data-index="<?php echo esc_html( $slide_index ); ?>" class="swiper-slide last-slide">
-			<h2>More from <?php bloginfo( 'name' ); ?></h2>
 			<div class="other-galleries">
 				<?php $gallery = current( $galleries ); ?>
 				<!-- Featured gallery -->
+				<h2>More from <?php bloginfo( 'name' ); ?></h2>
 				<article class="gallery__grid--featured">
 					<a href="<?php the_permalink( $gallery ); ?>">
+						<div class="gallery__grid--thumbnail">
+							<div class="thumbnail" style="background-image: url('<?php echo esc_attr( wp_get_attachment_image_url( get_post_thumbnail_id( $gallery ), 'gmr-gallery-grid-featured' ) ); ?>')"></div>
+						</div>
 						<div class="gallery__grid--meta">
 							<h3 class="gallery__grid--title">
 								<?php echo esc_html( get_the_title( $gallery ) ); ?>
 							</h3>
 						</div>
-						<div class="gallery__grid--thumbnail">
-							<div class="thumbnail" style="background-image: url('<?php echo esc_attr( wp_get_attachment_image_url( get_post_thumbnail_id( $gallery ), 'gmr-gallery-grid-featured' ) ); ?>')"></div>
-						</div>
 					</a>
 				</article>
+
 
 				<!-- Other galleries -->
 				<div class="gallery__grid gallery__grid-album">
