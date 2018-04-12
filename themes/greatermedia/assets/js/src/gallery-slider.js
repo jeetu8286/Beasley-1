@@ -186,13 +186,6 @@
 			slick.$slides.each( function() {
 				if ( ! $( this ).find( '.meta-spacer' ).length ) {
 					cleanIndex.push( $( this ) );
-
-					// Start loading images
-					if ( $( this ).find( '.swiper-image' ).length ) {
-						var slideImageSrc = $( this ).find( '.swiper-image' ).attr( 'data-src' );
-
-						$( this ).find( '.swiper-image' ).attr( 'src', slideImageSrc );
-					}
 				}
 			} );
 

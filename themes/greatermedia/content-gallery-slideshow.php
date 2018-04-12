@@ -49,12 +49,13 @@ $galleries = get_posts( array(
 				 data-width="<?php echo esc_attr( $width ); ?>"
 				 data-height="<?php echo esc_attr( $height ); ?>"
 				 >
-				<img data-src="<?php echo esc_url( wp_get_attachment_image_url( $image->ID, 'gm-article-thumbnail' ) ); ?>" width="<?php echo esc_attr( $width ); ?>" height="<?php echo esc_attr( $height ); ?>" alt="<?php echo esc_attr( get_the_excerpt( $image ) ); ?>" class="swiper-image" />
+				<img src="<?php echo esc_url( wp_get_attachment_image_url( $image->ID, 'gm-article-thumbnail' ) ); ?>" width="<?php echo esc_attr( $width ); ?>" height="<?php echo esc_attr( $height ); ?>" alt="<?php echo esc_attr( get_the_excerpt( $image ) ); ?>" class="swiper-image" />
 			</div>
 			<?php $slide_index++; ?>
 		<?php endforeach; ?>
 
 		<div data-index="<?php echo esc_html( $slide_index ); ?>" class="swiper-slide last-slide">
+			<h2>More from <?php bloginfo( 'name' ); ?></h2>
 			<div class="other-galleries">
 				<?php $gallery = current( $galleries ); ?>
 				<!-- Featured gallery -->
@@ -72,7 +73,6 @@ $galleries = get_posts( array(
 				</article>
 
 				<!-- Other galleries -->
-				<h2>More from <?php bloginfo( 'name' ); ?></h2>
 				<div class="gallery__grid gallery__grid-album">
 					<?php while ( ( $gallery = next( $galleries ) ) ) : ?>
 						<article class="gallery__grid--column">
