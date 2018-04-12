@@ -53,7 +53,7 @@ $galleries = array_merge( array( $sponsored_gallery ), $non_sponsored_galleries 
 				 data-title="<?php echo esc_attr( get_the_title( $image ) ); ?>"
 				 data-caption="<?php echo esc_attr( get_the_excerpt( $image ) ); ?>"
 				 >
-				<?php echo wp_get_attachment_image( $image->ID, 'full', false, array( 'class' => 'swiper-image' ) ); ?>
+				<?php echo wp_get_attachment_image( $image->ID, 'gm-article-thumbnail', false, array( 'class' => 'swiper-image' ) ); ?>
 			</div>
 			<?php $slide_index++; ?>
 		<?php endforeach; ?>
@@ -70,7 +70,7 @@ $galleries = array_merge( array( $sponsored_gallery ), $non_sponsored_galleries 
 							</h3>
 						</div>
 						<div class="gallery__grid--thumbnail">
-							<div class="thumbnail" style="background-image: url('<?php echo esc_attr( wp_get_attachment_image_url( get_post_thumbnail_id( $gallery ), 'full' ) ); ?>')"></div>
+							<div class="thumbnail" style="background-image: url('<?php echo esc_attr( wp_get_attachment_image_url( get_post_thumbnail_id( $gallery ), 'gmr-gallery-grid-featured' ) ); ?>')"></div>
 						</div>
 					</a>
 				</article>
@@ -82,7 +82,7 @@ $galleries = array_merge( array( $sponsored_gallery ), $non_sponsored_galleries 
 						<article class="gallery__grid--column">
 							<a href="<?php the_permalink( $gallery ); ?>">
 								<div class="gallery__grid--thumbnail">
-									<div class="thumbnail" style="background-image: url('<?php echo esc_attr( wp_get_attachment_image_url( get_post_thumbnail_id( $gallery ), 'full' ) ); ?>')"></div>
+									<div class="thumbnail" style="background-image: url('<?php echo esc_attr( wp_get_attachment_image_url( get_post_thumbnail_id( $gallery ), 'gmr-gallery-grid-secondary' ) ); ?>')"></div>
 								</div>
 								<div class="gallery__grid--meta">
 									<h3 class="gallery__grid--title">
@@ -133,7 +133,7 @@ $galleries = array_merge( array( $sponsored_gallery ), $non_sponsored_galleries 
 			<div><div class="swiper-slide meta-spacer"></div></div>
 		<?php endif; ?>
 
-		<div><div class="swiper-slide" style="background-image:url(<?php echo esc_url( wp_get_attachment_image_url( $image->ID, 'full' ) ); ?>)"></div></div>
+		<div><div class="swiper-slide" style="background-image:url(<?php echo esc_url( wp_get_attachment_image_url( $image->ID, 'gm-article-thumbnail' ) ); ?>)"></div></div>
 
 		<?php if ( $total_images === ( $index + 1 ) ) : ?>
 			<?php // Last slide thumbnail placeholder ?>
