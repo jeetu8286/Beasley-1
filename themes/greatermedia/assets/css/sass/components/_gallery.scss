@@ -1011,6 +1011,9 @@ a.gallery__back--btn {
 .gallery__grid-album .gallery__grid--featured {
 	text-align: center;
 	text-transform: uppercase;
+	@include bp(medium) {
+		margin-bottom: 10px;
+	}
 }
 
 .gallery__grid--column {

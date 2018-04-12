@@ -46,21 +46,21 @@ if ( $query->have_posts() ) : ?>
 
 	<div class="gallery__featured">
 
-		<div class="gallery__featured--primary">
+		<div class="gallery__featured--primary gallery__grid-album">
 			<?php $query->the_post(); ?>
 			<?php get_template_part( 'partials/gallery-featured', 'primary' ); ?>
 		</div>
 
-		<div class="gallery__featured--secondary">
+		<div class="gallery__featured--secondary gallery__grid gallery__grid-album">
 
 			<?php if ( $query->have_posts() && $query->post_count > 1 ) : ?>
 				<?php $query->the_post(); ?>
-				<?php get_template_part( 'partials/gallery-featured', 'secondary' ); ?>
+				<?php get_template_part( 'partials/gallery-grid' ); ?>
 			<?php endif; ?>
 
 			<?php if ( $query->have_posts() && $query->post_count > 2 ) : ?>
 				<?php $query->the_post(); ?>
-				<?php get_template_part( 'partials/gallery-featured', 'secondary' ); ?>
+				<?php get_template_part( 'partials/gallery-grid' ); ?>
 			<?php endif; ?>
 
 		</div>
@@ -69,7 +69,7 @@ if ( $query->have_posts() ) : ?>
 
 	<?php wp_reset_postdata(); ?>
 
-	<div class="gallery__grid">
+	<div class="gallery__grid gallery__grid-album">
 
 		<?php get_template_part( 'partials/loop', 'album' ); ?>
 
@@ -77,7 +77,7 @@ if ( $query->have_posts() ) : ?>
 
 	<?php wp_reset_postdata(); ?>
 
-	<div class="gallery__grid">
+	<div class="gallery__grid gallery__grid-album">
 
 		<?php get_template_part( 'partials/loop', 'gallery' ); ?>
 
