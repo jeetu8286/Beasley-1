@@ -99,14 +99,6 @@
 		}
 	};
 
-	function maybeRefreshSidebarAd( newSlide ) {
-		var newActiveSlide = document.querySelector( '.gallery-top .slick-slide:nth-child(' + parseInt( newSlide+1, 10 ) + ')' );
-		if ( newActiveSlide.classList.contains( 'meta-refresh' ) ) {
-			// @TODO Sidebar ad refresh code
-			console.log( 'refresh ad' );
-		}
-	};
-
 	function maybeShowCenteredAd( newSlide ) {
 		var newActiveSlide = document.querySelector( '.gallery-top .slick-slide:nth-child(' + parseInt( newSlide+1, 10 ) + ')' );
 
@@ -114,6 +106,17 @@
 			sidebar.classList.add( 'hidden' );
 			swiperContainer.classList.add( 'show-ad' );
 			// @TODO Centered ad refresh code here
+
+			setTimeout( function() {
+				var sidebarSlots = [];
+				$( '.swiper-sidebar-meta .gmr-ad' ).each( function() {
+					sidebarSlots.push( $( this ).data( 'slot' ) );
+				} );
+
+				if ( sidebarSlots.length && googletag ) {
+					googletag.pubads().refresh( sidebarSlots );
+				}
+			}, 500 );
 		} else {
 			sidebar.classList.remove( 'hidden' );
 			swiperContainer.classList.remove( 'show-ad' );
@@ -182,12 +185,6 @@
 					cleanIndex.push( $( this ) );
 				}
 			} );
-			// Add a class every X real slides to know when to refresh the sidebar ad
-			$.each( cleanIndex, function( i ) {
-				if ( parseInt( i+1, 10 ) % sidebarAdRefreshInterval === 0 ) {
-					$( this ).addClass( 'meta-refresh' );
-				}
-			} );
 		} );
 
 		$galleryThumbsSlider.on( 'init', function( event, slick ) {
@@ -229,7 +226,6 @@
 
 		$galleryTopSlider.on( 'beforeChange', function( event, slick, currentSlide, nextSlide ) {
 			resetSidebarMargin();
-			maybeRefreshSidebarAd( nextSlide );
 			maybeShowCenteredAd( nextSlide );
 			maybeHideSidebar( nextSlide );
 		} );

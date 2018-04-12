@@ -11,6 +11,12 @@ if ( empty( $images ) ) :
 	return;
 endif;
 
+$ads_interval = filter_var( get_field( 'images_per_ad', $current_gallery ), FILTER_VALIDATE_INT, array( 'options' => array(
+	'min_range' => 1,
+	'max_range' => 99,
+	'default'   => 3,
+) ) );
+
 $slide_index = 0;
 $base_url = untrailingslashit( get_permalink( $current_gallery ) );
 
@@ -32,11 +38,11 @@ $non_sponsored_galleries = get_posts( array(
 $galleries = array_merge( array( $sponsored_gallery ), $non_sponsored_galleries );
 
 ?><h1 class="slideshow-title"><div class="container"><?php the_title(); ?></div></h1>
-<div class="swiper-container gallery-top loading" data-refresh-interval="3">
+<div class="swiper-container gallery-top loading" data-refresh-interval="<?php echo esc_attr( $ads_interval ); ?>">
     <div class="swiper-wrapper">
 		<?php foreach ( $images as $index => $image ) : ?>
 
-			<?php if ( $index > 0 && $index % 2 == 0 ) : ?>
+			<?php if ( $index > 0 && $index % $ads_interval == 0 ) : ?>
 				<div data-index="<?php echo esc_html( $slide_index ); ?>" class="swiper-slide meta-spacer"><div class="swiper-slide meta-spacer"></div></div>
 				<?php $slide_index++; ?>
 			<?php endif; ?>
@@ -113,7 +119,7 @@ $galleries = array_merge( array( $sponsored_gallery ), $non_sponsored_galleries 
 
 	<div class="swiper-meta-container">
 		<div class="swiper-meta-inner">
-			<?php do_action( 'dfp_tag', 'dfp_ad_inlist_infinite' ); ?>
+			<?php do_action( 'dfp_tag', 'dfp_ad_right_rail_pos1' ); ?>
 		</div>
 	</div>
 	<!-- .swiper-meta-container -->

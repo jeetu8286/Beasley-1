@@ -127,6 +127,21 @@ class GreaterMediaGalleryCPT {
 					'ui_on_text'    => '',
 					'ui_off_text'   => '',
 				),
+				array(
+					'key'           => 'field_images_per_ad',
+					'label'         => 'Ad Banner Every # Images',
+					'name'          => 'images_per_ad',
+					'type'          => 'number',
+					'instructions'  => '',
+					'required'      => 0,
+					'default_value' => 3,
+					'placeholder'   => 'Show Ad banner after each # of images viewed in the gallery.',
+					'prepend'       => '',
+					'append'        => '',
+					'min'           => 1,
+					'max'           => 99,
+					'step'          => 1,
+				),
 			),
 		) );
 	}
