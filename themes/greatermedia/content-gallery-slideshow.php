@@ -20,22 +20,11 @@ $ads_interval = filter_var( get_field( 'images_per_ad', $current_gallery ), FILT
 $slide_index = 0;
 $base_url = untrailingslashit( get_permalink( $current_gallery ) );
 
-$sponsored_gallery = current( get_posts( array(
+$galleries = get_posts( array(
 	'post_type'      => 'gmr_gallery',
 	'post__not_in'   => array( $current_gallery->ID ),
-	'posts_per_page' => 1,
-	'meta_key'       => 'sponsored_gallery',
-	'meta_value'     => 1,
-	'orderby'        => array( 'meta_value', 'date' ),
-) ) );
-
-$non_sponsored_galleries = get_posts( array(
-	'post_type'      => 'gmr_gallery',
-	'post__not_in'   => array_filter( array( $current_gallery->ID, $sponsored_gallery ? $sponsored_gallery->ID : 0 ) ),
-	'posts_per_page' => $sponsored_gallery ? 4 : 5,
+	'posts_per_page' => 5,
 ) );
-
-$galleries = array_filter( array_merge( array( $sponsored_gallery ), $non_sponsored_galleries ) );
 
 ?><h1 class="slideshow-title"><div class="container"><?php the_title(); ?></div></h1>
 <div class="swiper-container gallery-top loading" data-refresh-interval="<?php echo esc_attr( $ads_interval ); ?>">
@@ -66,7 +55,7 @@ $galleries = array_filter( array_merge( array( $sponsored_gallery ), $non_sponso
 					<a href="<?php the_permalink( $gallery ); ?>">
 						<div class="gallery__grid--meta">
 							<h3 class="gallery__grid--title">
-								<?php echo get_field( 'sponsored_gallery', $gallery ) ? 'Sponsored Gallery' : esc_html( get_the_title( $gallery ) ); ?>
+								<?php echo esc_html( get_the_title( $gallery ) ); ?>
 							</h3>
 						</div>
 						<div class="gallery__grid--thumbnail">
