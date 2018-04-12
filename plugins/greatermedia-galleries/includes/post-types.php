@@ -104,7 +104,19 @@ class GreaterMediaGalleryCPT {
 			),
 			'fields'                => array(
 				array(
-					'key'           => 'field_5acf3734f37ae',
+					'key'           => 'field_sponsored_gallery',
+					'label'         => 'Sponsored Gallery',
+					'name'          => 'sponsored_gallery',
+					'type'          => 'true_false',
+					'instructions'  => 'Is this gallery sponsored.',
+					'required'      => 0,
+					'default_value' => 0,
+					'ui'            => 1,
+					'ui_on_text'    => '',
+					'ui_off_text'   => '',
+				),
+				array(
+					'key'           => 'field_hide_social_share',
 					'label'         => 'Hide Social Share',
 					'name'          => 'hide_social_share',
 					'type'          => 'true_false',
