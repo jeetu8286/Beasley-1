@@ -36,7 +36,7 @@
 	height: 100px;
 
 	@include bp(medium) {
-		left: 50%;
+		left: 75%;
 		right: 0;
 		top: 0;
 		height: 100%;
@@ -287,6 +287,8 @@
 	display: flex;
 	align-items: center;
 	pointer-events: none;
+	text-align: center;
+	justify-content: center;
 	@include bp(medium) {
 		left: 50%;
 	}
@@ -306,6 +308,7 @@
 	pointer-events: all;
 	opacity: 0;
 	transition: none;
+	margin: 0 auto;
 
 	.show-ad & {
 		opacity: 1;
@@ -338,6 +341,15 @@
 	margin-top: -50px;
 	width: 20px;
 	color: #fff;
+	@include bp(medium) {
+		height: 150px;
+		margin-top: -75px;
+		width: 40px;
+		font-size: 25px;
+	}
+	&:hover {
+		background-color: $btn-hover;
+	}
 }
 
 .slick-arrow.slick-disabled {
