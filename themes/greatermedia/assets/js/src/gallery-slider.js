@@ -5,6 +5,7 @@
 	var sidebar = document.querySelector( '.swiper-sidebar' );
 	var swiperContainer = document.querySelector( '.gallery-top' );
 	var sidebarExpand = document.getElementById( 'js-expand' );
+	var sidebarFullscreen = document.getElementById( 'js-fullscreen' );
 
 	var $galleryTopSlider = $( '.gallery-top .swiper-wrapper' );
 	var $galleryThumbsSlider = $( '.gallery-thumbs' );
@@ -71,6 +72,7 @@
 		var newActiveSlide = document.querySelector( '.gallery-top .slick-slide:nth-child(' + parseInt( slide+1, 10 ) + ')' );
 		var sidebarTitle = document.getElementById( 'js-swiper-sidebar-title' );
 		var sidebarCaption = document.getElementById( 'js-swiper-sidebar-caption' );
+		var sidebarDownload = document.getElementById( 'js-swiper-sidebar-download' );
 
 		var facebookButton = sidebar.querySelector( '.social__link.icon-facebook' );
 		var twitterButton = sidebar.querySelector( '.social__link.icon-twitter' );
@@ -80,6 +82,7 @@
 		if ( ! newActiveSlide.classList.contains( 'meta-spacer' ) ) {
 			var title = newActiveSlide.getAttribute( 'data-title' );
 			var caption = newActiveSlide.getAttribute( 'data-caption' );
+			var imageSrc = newActiveSlide.getAttribute( 'data-source' );
 			var url = window.location.href;
 			var facebookURL = 'http://www.facebook.com/sharer/sharer.php?u=' + encodeURI( url ) + '&title=' + encodeURIComponent( title );
 			var twitterURL = 'http://twitter.com/home?status=' + encodeURIComponent( title ) + '+' + encodeURI( url );
@@ -87,6 +90,9 @@
 
 			sidebarTitle.innerText = title;
 			sidebarCaption.innerText = caption;
+			if ( sidebarDownload ) {
+				sidebarDownload.href = imageSrc;
+			}
 			if ( facebookButton ) {
 				facebookButton.href = facebookURL;
 			}
@@ -164,6 +170,20 @@
 		}
 	} );
 
+	// Fullscreen
+	sidebarFullscreen.addEventListener( 'click', function( e ) {
+		e.preventDefault();
+		if ( swiperContainer.classList.contains( 'fullscreen' ) ) {
+			swiperContainer.classList.remove( 'fullscreen' );
+		} else {
+			swiperContainer.classList.add( 'fullscreen' );
+		}
+		setTimeout( function() {
+			$galleryTopSlider.slick( 'setPosition' );
+			reposition();
+		}, 400 );
+	} );
+
 	// Go to the correct slide if users press back button
 	$window.on( 'popstate', function( event ) {
 		updateHistory = false;
@@ -203,7 +223,7 @@
 				}
 			} );
 
-			$galleryThumbsSlider.removeClass( 'loading' )
+			$galleryThumbsSlider.removeClass( 'loading' );
 
 		} );
 
