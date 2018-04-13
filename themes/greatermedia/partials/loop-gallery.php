@@ -31,11 +31,8 @@ if ( 'show' == get_post_type() ) {
 $query = new WP_Query( $query_args );
 
 if ( $query->have_posts() ) :
-	if ( $page == 1 ) : ?>
-
-<h2 class="section-header"><?php _e( 'Galleries', 'greatermedia' ); ?></h2>
-
-	<?php
+	if ( $page == 1 && ! is_post_type_archive( 'gmr_gallery' ) ) :
+		?><h2 class="section-header">Galleries</h2><?php
 	endif;
 
 	while ( $query->have_posts() ) :
