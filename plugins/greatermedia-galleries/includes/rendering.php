@@ -184,28 +184,24 @@ class GreaterMediaGallery {
 			return gallery_shortcode( $attr );
 		}
 
-
 		$post = get_queried_object();
+		$sponsored_image = get_field( 'sponsored_image', $post );
+
 		$image = current( $ids );
 		$content = sprintf(
-			'<a href="%s/view/%s/">%s</a>',
+			'<a href="%s/view/%s/"><div>%s</div>',
 			esc_attr( untrailingslashit( get_permalink( $post ) ) ),
-			esc_attr( get_post_field( 'post_name', $image ) ),
+			esc_attr( get_post_field( 'post_name', $sponsored_image ? $sponsored_image : $image ) ),
 			wp_get_attachment_image( $image, 'gmr-gallery-grid-featured' )
 		);
 
 		$content .= '<div style="display:flex">';
 
 		for ( $i = 1, $len = count( $ids ); $i < $len && $i < 6; $i++ ) {
-			$content .= sprintf(
-				'<a href="%s/view/%s/">%s</a>',
-				esc_attr( untrailingslashit( get_permalink( $post ) ) ),
-				esc_attr( get_post_field( 'post_name', $ids[ $i ] ) ),
-				wp_get_attachment_image( $ids[ $i ], 'gmr-gallery-grid-thumb' )
-			);
+			$content .= '<div style="max-width:20%">' . wp_get_attachment_image( $ids[ $i ], 'gmr-gallery-grid-thumb' ) . '</div>';
 		}
 
-		$content .= '</div>';
+		$content .= '</div></a>';
 
 		return $content;
 	}

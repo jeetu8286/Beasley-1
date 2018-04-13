@@ -6,7 +6,16 @@ endif;
 
 $current_gallery = get_queried_object();
 $ids = \GreaterMediaGallery::get_attachment_ids_for_post( $current_gallery );
-$images = array_filter( array_map( 'get_post', $ids ) );
+if ( ! is_array( $ids ) ) :
+	$ids = array();
+endif;
+
+$sponsored_image = get_field( 'sponsored_image', $current_gallery );
+if ( ! empty( $sponsored_image ) ) :
+	array_unshift( $ids, $sponsored_image );
+endif;
+
+$images = array_filter( array_map( 'get_post', array_values( $ids ) ) );
 if ( empty( $images ) ) :
 	return;
 endif;
@@ -28,33 +37,39 @@ $galleries = get_posts( array(
 
 ?><h1 class="slideshow-title"><div class="container"><?php the_title(); ?></div></h1>
 <div class="swiper-container gallery-top loading" data-refresh-interval="<?php echo esc_attr( $ads_interval ); ?>">
-    <div class="swiper-wrapper">
-		<?php foreach ( $images as $index => $image ) : ?>
+    <div class="swiper-wrapper"><?php
+		foreach ( $images as $index => $image ) :
+			if ( $index > 0 && $index % $ads_interval == 0 ) :
+				?><div data-index="<?php echo esc_attr( $slide_index ); ?>" class="swiper-slide meta-spacer">
+					<div class="swiper-slide meta-spacer"></div>
+				</div><?php
+				$slide_index++;
+			endif;
 
-			<?php if ( $index > 0 && $index % $ads_interval == 0 ) : ?>
-				<div data-index="<?php echo esc_html( $slide_index ); ?>" class="swiper-slide meta-spacer"><div class="swiper-slide meta-spacer"></div></div>
-				<?php $slide_index++; ?>
-			<?php endif; ?>
-
-			<?php
 			$data = wp_get_attachment_image_src( $image->ID, 'gm-article-thumbnail' );
+			if ( empty( $data ) ) :
+				continue;
+			endif;
+
+			$src = $data[0];
 			$width = $data[1];
 			$height = $data[2];
-			?>
-			<div data-index="<?php echo esc_html( $slide_index ); ?>"
-				 class="swiper-slide"
+
+			?><div class="swiper-slide"
+				 data-index="<?php echo esc_attr( $slide_index ); ?>"
 				 data-slug="<?php echo esc_attr( $base_url ); ?>/view/<?php echo esc_attr( $image->post_name ); ?>/"
 				 data-title="<?php echo esc_attr( get_the_title( $image ) ); ?>"
 				 data-caption="<?php echo esc_attr( get_the_excerpt( $image ) ); ?>"
 				 data-width="<?php echo esc_attr( $width ); ?>"
 				 data-height="<?php echo esc_attr( $height ); ?>"
 				 >
-				<img src="<?php echo esc_url( wp_get_attachment_image_url( $image->ID, 'gm-article-thumbnail' ) ); ?>" width="<?php echo esc_attr( $width ); ?>" height="<?php echo esc_attr( $height ); ?>" alt="<?php echo esc_attr( get_the_excerpt( $image ) ); ?>" class="swiper-image" />
-			</div>
-			<?php $slide_index++; ?>
-		<?php endforeach; ?>
+				<img src="<?php echo esc_url( $src ); ?>" width="<?php echo esc_attr( $width ); ?>" height="<?php echo esc_attr( $height ); ?>" alt="<?php echo esc_attr( get_the_excerpt( $image ) ); ?>" class="swiper-image">
+			</div><?php
 
-		<div data-index="<?php echo esc_html( $slide_index ); ?>" class="swiper-slide last-slide">
+			$slide_index++;
+		endforeach;
+
+		?><div data-index="<?php echo esc_attr( $slide_index ); ?>" class="swiper-slide last-slide">
 			<div class="other-galleries">
 				<h2>More from <?php bloginfo( 'name' ); ?></h2>
 				<div class="gallery__grid gallery__grid-album">
