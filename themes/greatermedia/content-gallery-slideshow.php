@@ -56,10 +56,7 @@ $galleries = get_posts( array(
 
 		<div data-index="<?php echo esc_html( $slide_index ); ?>" class="swiper-slide last-slide">
 			<div class="other-galleries">
-				<!-- Featured gallery -->
 				<h2>More from <?php bloginfo( 'name' ); ?></h2>
-
-				<!-- Other galleries -->
 				<div class="gallery__grid gallery__grid-album">
 					<?php foreach ( $galleries as $gallery ) : ?>
 						<article class="gallery__grid--column">
@@ -94,7 +91,7 @@ $galleries = get_posts( array(
 		<?php endif; ?>
 
 		<div class="swiper-sidebar-meta">
-			<?php do_action( 'dfp_tag', 'dfp_ad_inlist_infinite' ); ?>
+			<?php do_action( 'dfp_tag', 'dfp_ad_gallery_sidebar' ); ?>
 		</div>
 		<button id="js-expand" class="swiper-sidebar-expand"><span class="icon-arrow-next"></span> <span class="screen-reader-text">Expand</span></button>
 	</div>

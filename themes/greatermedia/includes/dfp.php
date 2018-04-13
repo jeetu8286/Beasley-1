@@ -110,25 +110,27 @@ function greatermedia_dfp_footer() {
 	}
 
 	$unit_codes = array(
-		'dfp_ad_leaderboard_pos1'  => get_option( 'dfp_ad_leaderboard_pos1' ),
-		'dfp_ad_leaderboard_pos2'  => get_option( 'dfp_ad_leaderboard_pos2' ),
-		'dfp_ad_incontent_pos1'    => get_option( 'dfp_ad_incontent_pos1' ),
-		'dfp_ad_incontent_pos2'    => get_option( 'dfp_ad_incontent_pos2' ),
-		'dfp_ad_right_rail_pos1'   => get_option( 'dfp_ad_right_rail_pos1' ),
-		'dfp_ad_right_rail_pos2'   => get_option( 'dfp_ad_right_rail_pos2' ),
-		'dfp_ad_inlist_infinite'   => get_option( 'dfp_ad_inlist_infinite' ),
+		'dfp_ad_leaderboard_pos1' => get_option( 'dfp_ad_leaderboard_pos1' ),
+		'dfp_ad_leaderboard_pos2' => get_option( 'dfp_ad_leaderboard_pos2' ),
+		'dfp_ad_incontent_pos1'   => get_option( 'dfp_ad_incontent_pos1' ),
+		'dfp_ad_incontent_pos2'   => get_option( 'dfp_ad_incontent_pos2' ),
+		'dfp_ad_gallery_sidebar'  => get_option( 'dfp_ad_incontent_pos1' ),
+		'dfp_ad_right_rail_pos1'  => get_option( 'dfp_ad_right_rail_pos1' ),
+		'dfp_ad_right_rail_pos2'  => get_option( 'dfp_ad_right_rail_pos2' ),
+		'dfp_ad_inlist_infinite'  => get_option( 'dfp_ad_inlist_infinite' ),
 	);
 
 	$unit_codes = apply_filters( 'greatermedia_dfp_footer_unit_codes', $unit_codes );
 
 	$sizes = array(
-		'dfp_ad_leaderboard_pos1'  => array( array( 728, 90 ), array( 970, 90 ), array( 970, 66 ), array( 320, 50 ), array( 320, 100 ) ),
-		'dfp_ad_leaderboard_pos2'  => array( array( 728, 90 ), array( 970, 90 ), array( 320, 50 ), array( 320, 100 ) ),
-		'dfp_ad_incontent_pos1'    => array( array( 300, 250 ) ),
-		'dfp_ad_incontent_pos2'    => array( array( 300, 250 ) ),
-		'dfp_ad_inlist_infinite'   => array( array( 300, 250 ) ),
-		'dfp_ad_right_rail_pos1'   => array( array( 300, 600 ), array( 300, 250 ) ),
-		'dfp_ad_right_rail_pos2'   => array( array( 300, 600 ), array( 300, 250 ) ),
+		'dfp_ad_leaderboard_pos1' => array( array( 728, 90 ), array( 970, 90 ), array( 970, 66 ), array( 320, 50 ), array( 320, 100 ) ),
+		'dfp_ad_leaderboard_pos2' => array( array( 728, 90 ), array( 970, 90 ), array( 320, 50 ), array( 320, 100 ) ),
+		'dfp_ad_incontent_pos1'   => array( array( 300, 250 ) ),
+		'dfp_ad_incontent_pos2'   => array( array( 300, 250 ) ),
+		'dfp_ad_gallery_sidebar'  => array( array( 300, 250 ) ),
+		'dfp_ad_inlist_infinite'  => array( array( 300, 250 ) ),
+		'dfp_ad_right_rail_pos1'  => array( array( 300, 600 ), array( 300, 250 ) ),
+		'dfp_ad_right_rail_pos2'  => array( array( 300, 600 ), array( 300, 250 ) ),
 	);
 
 	$sizes = apply_filters( 'greatermedia_dfp_footer_sizes', $sizes );
@@ -206,6 +208,11 @@ function greatermedia_dfp_footer() {
 							sizeMapping = googletag.sizeMapping()
 								.addSize([768, 200], [])
 								.addSize([0, 0], [300, 250])
+								.build();
+						} else if ('dfp_ad_gallery_sidebar' == slots[i][4]) {
+							sizeMapping = googletag.sizeMapping()
+								.addSize([768, 200], [300, 250])
+								.addSize([0, 0], [])
 								.build();
 						} else if ($(document.getElementById(slots[i][2])).parents('.widget_gmr-dfp-widget').length > 0) {
 							sizeMapping = googletag.sizeMapping()
