@@ -1014,6 +1014,11 @@ a.gallery__back--btn {
 	@include bp(medium) {
 		margin-bottom: 10px;
 	}
+
+	&:hover .gallery__grid--title,
+	&:hover .gallery__grid--title a {
+		color: $primary-link-hover;
+	}
 }
 
 .gallery__grid--column {
@@ -1038,7 +1043,8 @@ a.gallery__back--btn {
 		@include span-columns(3);
 	}*/
 
-	&:hover .gallery__grid--title {
+	&:hover .gallery__grid--title,
+	&:hover .gallery__grid--title a {
 		color: $primary-link-hover;
 	}
 
@@ -1118,7 +1124,7 @@ a.gallery__back--btn {
 
 .gallery__grid--meta {
 	@include bp(medium) {
-		height: 78px;
+		min-height: 78px;
 	}
 }
 
