@@ -104,6 +104,18 @@ class GreaterMediaGalleryCPT {
 			),
 			'fields'                => array(
 				array(
+					'key'           => 'field_hide_download_link',
+					'label'         => 'Hide Download Link',
+					'name'          => 'hide_download_link',
+					'type'          => 'true_false',
+					'instructions'  => 'Whether or not to display download links on the gallery page.',
+					'required'      => 0,
+					'default_value' => 0,
+					'ui'            => 1,
+					'ui_on_text'    => '',
+					'ui_off_text'   => '',
+				),
+				array(
 					'key'           => 'field_hide_social_share',
 					'label'         => 'Hide Social Share',
 					'name'          => 'hide_social_share',

@@ -39,7 +39,6 @@ $galleries = get_posts( array(
 
 <div class="gallery-thumbs loading">
 	<?php foreach ( $images as $index => $image ) : ?>
-
 		<?php if ( $index > 0 && $index % $ads_interval == 0 ) : ?>
 			<div><div class="swiper-slide meta-spacer"></div></div>
 		<?php endif; ?>
@@ -47,8 +46,8 @@ $galleries = get_posts( array(
 		<div>
 			<div class="swiper-slide" style="background-image:url(<?php echo esc_url( wp_get_attachment_image_url( $image->ID, 'thumbnail' ) ); ?>)"></div>
 		</div>
-
 	<?php endforeach; ?>
+
 	<?php // Last slide thumbnail placeholder ?>
 	<div><div class="swiper-slide meta-spacer"></div></div>
 </div>
@@ -78,7 +77,7 @@ $galleries = get_posts( array(
 				 data-slug="<?php echo esc_attr( $base_url ); ?>/view/<?php echo esc_attr( $image->post_name ); ?>/"
 				 data-title="<?php echo esc_attr( get_the_title( $image ) ); ?>"
 				 data-caption="<?php echo esc_attr( get_the_excerpt( $image ) ); ?>"
-				 data-source="<?php echo esc_url( $src ); ?>"
+				 data-source="<?php echo esc_url( wp_get_attachment_image_url( $image->ID, 'full' ) ); ?>"
 				 data-width="<?php echo esc_attr( $width ); ?>"
 				 data-height="<?php echo esc_attr( $height ); ?>"
 				 >
@@ -114,27 +113,46 @@ $galleries = get_posts( array(
 
 	<div class="swiper-sidebar">
 		<div class="swiper-sidebar-text">
-			<h2 id="js-swiper-sidebar-title"><?php echo esc_html( get_the_title( $images[0] ) ); ?></h2>
-			<p id="js-swiper-sidebar-caption"><?php echo esc_attr( get_the_excerpt( $images[0] ) ); ?></p>
-			<?php $data = wp_get_attachment_image_src( $images[0]->ID, 'gm-article-thumbnail' ); ?>
-			<p><a href="<?php echo esc_url( $data[0] ); ?>" id="js-swiper-sidebar-download" target="_blank"><span class="icon-download-arrow"></span> Download image</a></p>
+			<h2 id="js-swiper-sidebar-title">
+				<?php echo esc_html( get_the_title( $images[0] ) ); ?>
+			</h2>
+
+			<p id="js-swiper-sidebar-caption">
+				<?php echo esc_attr( get_the_excerpt( $images[0] ) ); ?>
+			</p>
+
+			<?php if ( ! get_field( 'hide_download_link', $current_gallery ) ) : ?>
+				<p>
+					<a href="<?php echo esc_url( wp_get_attachment_image_url( $images[0]->ID, 'full' ) ); ?>" id="js-swiper-sidebar-download" download target="_blank">
+						<span class="icon-download-arrow"></span> Download image
+					</a>
+				</p>
+			<?php endif; ?>
 		</div>
 
-
-		<?php if ( ! get_field( 'hide_social_share' ) ) : ?>
+		<?php if ( ! get_field( 'hide_social_share', $current_gallery ) ) : ?>
 			<div class="swiper-sidebar-sharing">
 				<?php get_template_part( 'partials/social-share' ); ?>
 			</div>
 		<?php endif; ?>
 
-
 		<div class="swiper-sidebar-meta">
 			<?php do_action( 'dfp_tag', 'dfp_ad_gallery_sidebar' ); ?>
 		</div>
-		<button id="js-expand" class="swiper-sidebar-expand"><span class="icon-arrow-next"></span> <span class="screen-reader-text">Expand</span></button>
+
+		<button id="js-expand" class="swiper-sidebar-expand">
+			<span class="icon-arrow-next"></span> <span class="screen-reader-text">Expand</span>
+		</button>
+
 		<button id="js-fullscreen" class="swiper-sidebar-fullscreen">
-			<svg class="enter-fullscreen" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18"><path d="M4.5 11H3v4h4v-1.5H4.5V11zM3 7h1.5V4.5H7V3H3v4zm10.5 6.5H11V15h4v-4h-1.5v2.5zM11 3v1.5h2.5V7H15V3h-4z"/></svg>
-			<svg class="exit-fullscreen" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18"><path d="M3 12.5h2.5V15H7v-4H3v1.5zm2.5-7H3V7h4V3H5.5v2.5zM11 15h1.5v-2.5H15V11h-4v4zm1.5-9.5V3H11v4h4V5.5h-2.5z"/></svg>
+			<svg class="enter-fullscreen" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+				<path d="M4.5 11H3v4h4v-1.5H4.5V11zM3 7h1.5V4.5H7V3H3v4zm10.5 6.5H11V15h4v-4h-1.5v2.5zM11 3v1.5h2.5V7H15V3h-4z"/>
+			</svg>
+
+			<svg class="exit-fullscreen" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+				<path d="M3 12.5h2.5V15H7v-4H3v1.5zm2.5-7H3V7h4V3H5.5v2.5zM11 15h1.5v-2.5H15V11h-4v4zm1.5-9.5V3H11v4h4V5.5h-2.5z"/>
+			</svg>
+
 			<span class="screen-reader-text">Fullscreen</span>
 		</button>
 	</div>
