@@ -53,7 +53,7 @@ $galleries = get_posts( array(
 </div>
 <!-- .gallery-thumbs -->
 
-<div class="swiper-container gallery-top loading" data-refresh-interval="<?php echo esc_attr( $ads_interval ); ?>">
+<div class="swiper-container gallery-top loading" data-refresh-interval="<?php echo esc_attr( $ads_interval ); ?>" data-share-photos="<?php echo get_field( 'share_photos', $current_gallery ) ? 1 : 0; ?>">
     <div class="swiper-wrapper"><?php
 		foreach ( $images as $index => $image ) :
 			if ( $index > 0 && $index % $ads_interval == 0 ) :

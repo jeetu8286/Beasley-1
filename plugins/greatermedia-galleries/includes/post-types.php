@@ -128,6 +128,18 @@ class GreaterMediaGalleryCPT {
 					'ui_off_text'   => '',
 				),
 				array(
+					'key'           => 'field_share_photos',
+					'label'         => 'Share Individual Photos',
+					'name'          => 'share_photos',
+					'type'          => 'true_false',
+					'instructions'  => 'Detemines whether social share buttons should share the gallery page or just individual photos.',
+					'required'      => 0,
+					'default_value' => 0,
+					'ui'            => 1,
+					'ui_on_text'    => '',
+					'ui_off_text'   => '',
+				),
+				array(
 					'key'           => 'field_images_per_ad',
 					'label'         => 'Ads Interval',
 					'name'          => 'images_per_ad',

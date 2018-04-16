@@ -84,6 +84,10 @@
 			var caption = newActiveSlide.getAttribute( 'data-caption' );
 			var imageSrc = newActiveSlide.getAttribute( 'data-source' );
 			var url = window.location.href;
+			if ( !! document.querySelector( '.gallery-top' ).getAttribute( 'data-share-photos' ) ) {
+				url = imageSrc;
+			}
+
 			var facebookURL = 'http://www.facebook.com/sharer/sharer.php?u=' + encodeURI( url ) + '&title=' + encodeURIComponent( title );
 			var twitterURL = 'http://twitter.com/home?status=' + encodeURIComponent( title ) + '+' + encodeURI( url );
 			var googleURL = 'https://plus.google.com/share?url=' + encodeURI( url );
