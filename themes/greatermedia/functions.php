@@ -1380,3 +1380,44 @@ if ( function_exists( 'vary_cache_on_function' ) ) {
 	// batcache variant
 	vary_cache_on_function( 'return (bool) preg_match("/jacapps/i", $_SERVER["HTTP_USER_AGENT"]);' );
 }
+
+function greatermedia_get_featured_gallery() {
+	static $featured = null;
+
+	if ( is_null( $featured ) ) {
+		$query_args = array(
+			'post_type'      => array( 'gmr_gallery' ),
+			'orderby'        => 'date',
+			'order'          => 'DESC',
+			'meta_key'       => 'is_featured',
+			'meta_value'     => '1',
+			'posts_per_page' => 1,
+			'offset'         => 0,
+		);
+
+		if ( 'show' == get_post_type() ) {
+			$term = \TDS\get_related_term( get_the_ID() );
+			if ( $term ) {
+				$query_args['tax_query'] = array(
+					array(
+						'taxonomy' => '_shows',
+						'field'    => 'slug',
+						'terms'    => $term->slug,
+					)
+				);
+			}
+		}
+
+		$query = new WP_Query( $query_args );
+		if ( ! $query->have_posts() ) {
+			unset( $query_args['meta_key'] );
+			$query->query( $query_args );
+		}
+
+		if ( $query->have_posts() ) {
+			$featured = $query->next_post();
+		}
+	}
+
+	return $featured;
+}

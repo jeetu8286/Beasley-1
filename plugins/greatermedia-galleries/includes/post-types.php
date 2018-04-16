@@ -104,6 +104,18 @@ class GreaterMediaGalleryCPT {
 			),
 			'fields'                => array(
 				array(
+					'key'           => 'field_is_featured',
+					'label'         => 'Is Featured',
+					'name'          => 'is_featured',
+					'type'          => 'true_false',
+					'instructions'  => 'Determines if this gallery is featured.',
+					'required'      => 0,
+					'default_value' => 0,
+					'ui'            => 1,
+					'ui_on_text'    => '',
+					'ui_off_text'   => '',
+				),
+				array(
 					'key'           => 'field_hide_download_link',
 					'label'         => 'Hide Download Link',
 					'name'          => 'hide_download_link',

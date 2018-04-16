@@ -7,13 +7,20 @@ if ( empty( $page ) ) {
 	$page = 1;
 }
 
+$per_page = 16;
+
 $query_args = array(
 	'post_type'      => array( 'gmr_gallery' ),
 	'orderby'        => 'date',
 	'order'          => 'DESC',
-	'posts_per_page' => 16,
-	'offset'         => 3 + 16 * ( $page - 1 ),
+	'posts_per_page' => $per_page,
+	'offset'         => $per_page * ( $page - 1 ),
 );
+
+$featured = greatermedia_get_featured_gallery();
+if ( $featured ) {
+	$query_args['post__not_in'] = array( $featured->ID );
+}
 
 if ( 'show' == get_post_type() ) {
 	$term = \TDS\get_related_term( get_the_ID() );
