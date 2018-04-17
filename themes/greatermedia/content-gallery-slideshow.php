@@ -160,7 +160,7 @@ $galleries = get_posts( array(
 
 	<div class="swiper-meta-container">
 		<div class="swiper-meta-inner">
-			<?php do_action( 'dfp_tag', 'dfp_ad_inlist_infinite' ); ?>
+			<?php do_action( 'dfp_tag', 'dfp_ad_ingallery' ); ?>
 		</div>
 	</div>
 	<!-- .swiper-meta-container -->
