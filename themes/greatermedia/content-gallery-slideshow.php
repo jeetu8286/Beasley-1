@@ -121,6 +121,12 @@ $galleries = get_posts( array(
 				<?php echo esc_attr( get_the_excerpt( $images[0] ) ); ?>
 			</p>
 
+			<button id="js-expand" class="swiper-sidebar-expand">
+				<span class="expand-label">Read more</span>
+				<span class="close-label">Read less</span>
+				<span class="icon-arrow-next"></span>
+			</button>
+
 			<?php if ( ! get_field( 'hide_download_link', $current_gallery ) ) : ?>
 				<p>
 					<a href="<?php echo esc_url( wp_get_attachment_image_url( $images[0]->ID, 'full' ) ); ?>" id="js-swiper-sidebar-download" download target="_blank">
@@ -140,9 +146,6 @@ $galleries = get_posts( array(
 			<?php do_action( 'dfp_tag', 'dfp_ad_gallery_sidebar' ); ?>
 		</div>
 
-		<button id="js-expand" class="swiper-sidebar-expand">
-			<span class="icon-arrow-next"></span> <span class="screen-reader-text">Expand</span>
-		</button>
 
 		<button id="js-fullscreen" class="swiper-sidebar-fullscreen">
 			<svg class="enter-fullscreen" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">

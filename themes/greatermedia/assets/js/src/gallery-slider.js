@@ -31,6 +31,9 @@
 
 			if ( ! swiperContainer.classList.contains( 'show-ad' ) && ! newActiveSlide.classList.contains( 'last-slide' ) ) {
 				sidebar.classList.remove( 'hidden' );
+				if ( sidebar.classList.contains( 'expand' ) ) {
+					sidebar.classList.remove( 'expand' );
+				}
 
 				if (window.matchMedia("(min-width: 768px)").matches) {
 					if ( paddingRight < 0 ) {
