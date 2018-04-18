@@ -236,7 +236,16 @@
 			arrows: true,
 			prevArrow: '<button type="button" class="slick-prev"><span class="icon-arrow-prev"></span></button>',
 			nextArrow: '<button type="button" class="slick-next"><span class="icon-arrow-next"></span></button>',
-			initialSlide: galleryInitialIndex
+			initialSlide: galleryInitialIndex,
+			responsive: [
+				{
+					breakpoint: 767,
+					settings: {
+						variableWidth: false,
+						centerMode: false,
+					}
+				}
+			]
 		} );
 
 		$galleryThumbsSlider.slick( {

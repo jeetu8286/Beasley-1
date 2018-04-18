@@ -15,6 +15,10 @@
 	color: $secondary-text;
 	border-bottom: 1px solid $btn-bg;
 	text-transform: uppercase;
+	font-size: ms(2);
+	@include bp(medium) {
+		font-size: ms(7);
+	}
 	.container {
 		min-height: 0;
 		padding: 0 20px;
@@ -33,7 +37,7 @@
 
 	bottom: 0;
 	padding: 40px 20px 10px 20px;
-	height: 110px;
+	height: 96px;
 
 	@include bp(medium) {
 		left: 75%;
@@ -51,9 +55,9 @@
 
 	&.expand {
 		height: 100%;
+		overflow: auto;
 
 		@include bp(medium) {
-			overflow: auto;
 			.close-label {
 				display: inline-block;
 			}
@@ -163,6 +167,10 @@
 
 #js-swiper-sidebar-title {
 	margin: 0;
+	font-size: ms(2);
+	@include bp(medium) {
+		font-size: ms(6);
+	}
 }
 
 #js-swiper-sidebar-download {
@@ -221,6 +229,11 @@
 /* Gallery top */
 .gallery-top {
 
+	padding-bottom: 96px;
+	@include bp(medium) {
+		padding-bottom: 0;
+	}
+
 	&.loading {
 		background-color: #fff;
 		background-image: url(#{$asset-root}ajax-loader.gif);
@@ -274,15 +287,24 @@
 		@include bp(medium) {
 			height: 600px;
 		}
+		@media (max-width: 767px) {
+			height: auto;
+			width: 100%;
+			max-width: 100%;
+		}
 	}
 	.slick-slide {
 		min-height: calc(100vh - 142px);
 		@include bp(medium) {
 			min-height: 600px;
 		}
+		@media (max-width: 767px) {
+			min-height: 0;
+		}
 	}
 	.meta-spacer {
 		width: 0;
+		min-height: calc(100vh - 142px);
 	}
 	.slick-current.meta-spacer {
 		width: 100vw !important;
@@ -452,7 +474,7 @@
 .slick-arrow {
 	z-index: 9999;
 	position: absolute;
-	top: 300px;
+	top: 50%;
 	padding: 0;
 	border: 0;
 	background-color: transparent;
@@ -461,6 +483,7 @@
 	width: 20px;
 	color: #fff;
 	@include bp(medium) {
+		top: 300px;
 		height: 150px;
 		margin-top: -75px;
 		width: 40px;
