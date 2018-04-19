@@ -42,8 +42,9 @@
 	</head>
 
 	<body <?php body_class(); ?>>
-		<div id="site-wrap" class="site-wrap">
+		<?php do_action( 'beasley_after_body' ); ?>
 
+		<div id="site-wrap" class="site-wrap">
 			<div id="page-wrap" class="page-wrap">
 
 				<?php do_action( 'dfp_wallpaper_tag' ); ?>
@@ -51,7 +52,6 @@
 				<?php if ( ! greatermedia_is_jacapps() ) : ?>
 
 					<?php get_template_part( 'partials/header-site' ); ?>
-
 					<?php get_template_part( 'partials/header-search' ); ?>
 
 					<nav id="mobile-nav" class="mobile-nav">

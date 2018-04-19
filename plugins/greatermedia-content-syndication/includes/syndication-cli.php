@@ -107,6 +107,49 @@ class GMR_Syndication_CLI extends WP_CLI_Command {
 		\WP_CLI::success( "Finished Import" );
 	}
 
+	/**
+	 * : Import articles from a single subscription
+	 *
+	 * <subscription_id>
+	 * : Subscription ID to process
+	 *
+	 * [<force>]
+	 * : Forces syndication to reload content.
+	 *
+	 * [<start_date>]
+	 * : Choose a start date. Y-m-d H:i:s
+	 *
+	 * ## EXAMPLES
+	 *
+	 * wp gmr-syndication import-subscription 123
+	 *
+	 * wp gmr-syndication import-subscription 123 --force --ignore-detached
+	 *
+	 * @synopsis <subscription_id> [--force] [--ignore-detached] [--start_date=<start-date>]
+	 *
+	 * @subcommand import-subscription
+	 */
+	public function import_single_subscription( $args, $assoc_args ) {
+		$subscription_id = array_shift( $args );
+		$force = ! empty( $assoc_args['force'] );
+		$ignore_detached = ! empty( $assoc_args['ignore-detached'] );
+		$start_date = ! empty( $assoc_args['start_date'] ) ? $assoc_args['start_date'] : false;
+
+		if ( $start_date ) {
+			add_filter( 'beasley_syndication_query_start_date', function( $filter_date ) use ( $start_date ) {
+				$start_date = date( 'Y-m-d H:i:s', strtotime( $start_date ) );
+
+				return $start_date;
+			} );
+		}
+
+		if ( $ignore_detached ) {
+			add_filter( 'beasley_syndication_post_is_detached', '__return_false' );
+		}
+
+		BlogData::run( $subscription_id, 0, $force );
+	}
+
 	protected function validate_date( $date ) {
 		$pattern = '/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/';
 		if ( ! preg_match( $pattern, $date ) ) {

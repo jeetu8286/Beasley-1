@@ -113,7 +113,7 @@ class BlogData {
 
 	}
 
-	public static function run( $syndication_id, $offset = 0 ) {
+	public static function run( $syndication_id, $offset = 0, $force = false ) {
 		$result = false;
 
 		self::$syndication_id = $syndication_id;
@@ -164,7 +164,7 @@ class BlogData {
 				remove_filter( 'wp_insert_post_data', array( $edit_flow->custom_status, 'fix_custom_status_timestamp' ), 10, 2 );
 			}
 
-			$result = self::_run( $syndication_id, $offset );
+			$result = self::_run( $syndication_id, $offset, $force );
 		} catch ( Exception $e ) {
 			self::log( "[EXCEPTION]: %s", $e->getMessage() );
 		}
@@ -174,7 +174,7 @@ class BlogData {
 		return $result;
 	}
 
-	private static function _run( $syndication_id, $offset = 0 ) {
+	private static function _run( $syndication_id, $offset = 0, $force = false ) {
 		self::log( "Start querying content site with offset = %s...", $offset );
 
 		// Get the current time before we start querying, so that we know next time we use this value it was the value
@@ -217,14 +217,15 @@ class BlogData {
 		foreach ( $result as $single_post ) {
 			try {
 				$post_id = self::ImportPosts(
-					$single_post['post_obj']
-					, $single_post['post_metas']
-					, $defaults
-					, $single_post['featured']
-					, $single_post['attachments']
-					, $single_post['gallery_attachments']
-					, $single_post['galleries']
-					, $single_post['term_tax']
+					$single_post['post_obj'],
+					$single_post['post_metas'],
+					$defaults,
+					$single_post['featured'],
+					$single_post['attachments'],
+					$single_post['gallery_attachments'],
+					$single_post['galleries'],
+					$single_post['term_tax'],
+					$force
 				);
 
 				if ( $post_id > 0 ) {
@@ -301,6 +302,8 @@ class BlogData {
 			'orderby' => 'date',
 			'order' => 'DESC',
 		);
+
+		$start_date = apply_filters( 'beasley_syndication_query_start_date', '' );
 
 		if ( $start_date == '' ) {
 			$last_queried = get_post_meta( $subscription_id, 'syndication_last_performed', true );
@@ -488,7 +491,8 @@ class BlogData {
 			// update existing post only if it hasn't been updated manually
 			$detached = get_post_meta( $post_id, 'syndication-detached', true );
 
-			if ( $detached !== 'true' ) {
+			$detached = apply_filters( 'beasley_syndication_post_is_detached', $detached === 'true' );
+			if ( $detached !== true ) {
 				$hash_value = get_post_meta( $post_id, 'syndication_import', true );
 				if ( $hash_value != $post_hash || $force_update ) {
 					// post has been updated, override existing one
@@ -563,7 +567,7 @@ class BlogData {
 				}
 			}
 
-			if ( $updated == 1 ) {
+			if ( $updated == 1 || $force_update ) {
 				self::AssignDefaultTerms( $post_id, $defaults );
 			}
 
@@ -988,6 +992,10 @@ class BlogData {
 		$message = "[SYNDICATION:{$syndication_id} SITE:{$site_id} {$uniqid}] {$message}";
 		self::$log[] = $message;
 		syslog( LOG_ERR, $message );
+
+		if ( defined( 'WP_CLI' ) && WP_CLI ) {
+			WP_CLI::log( $message );
+		}
 	}
 
 	public static function log_variable( $var, $context = '' ) {
