@@ -143,9 +143,8 @@ $galleries = get_posts( array(
 		<?php endif; ?>
 
 		<div class="swiper-sidebar-meta">
-			<?php do_action( 'dfp_tag', 'dfp_ad_gallery_sidebar' ); ?>
+			<?php do_action( 'dfp_tag', 'dfp_ad_sidegallery' ); ?>
 		</div>
-
 
 		<button id="js-fullscreen" class="swiper-sidebar-fullscreen">
 			<svg class="enter-fullscreen" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
