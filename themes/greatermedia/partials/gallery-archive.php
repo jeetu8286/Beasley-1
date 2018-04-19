@@ -1,9 +1,5 @@
+<h2 class="content__heading" itemprop="headline">Latest Galleries</h2>
 <?php
-
-if ( ! is_post_type_archive( 'gmr_gallery' ) ) :
-	?><h2 class="page__title" itemprop="headline">Latest Galleries</h2><?php
-endif;
-
 $featured = greatermedia_get_featured_gallery();
 if ( $featured ) :
 	$GLOBALS['post'] = $featured;
