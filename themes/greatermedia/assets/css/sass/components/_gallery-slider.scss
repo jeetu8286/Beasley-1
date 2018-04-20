@@ -234,6 +234,10 @@
 		padding-bottom: 0;
 	}
 
+	&.show-ad {
+		padding-bottom: 0;
+	}
+
 	&.loading {
 		background-color: #fff;
 		background-image: url(#{$asset-root}ajax-loader.gif);
@@ -454,7 +458,21 @@
 	.show-ad & {
 		opacity: 1;
 		transition: 300ms all 300ms ease-in-out;
+		&:after {
+			content: "swipe here to continue";
+			text-transform: uppercase;
+			display: inline-block;
+			pointer-events: none;
+			position: absolute;
+			bottom: 20px;
+			width: 100%;
+			left: 0;
+			@include bp(medium) {
+				display: none;
+			}
+		}
 	}
+
 }
 
 .meta-spacer {
