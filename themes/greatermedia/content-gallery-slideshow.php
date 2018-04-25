@@ -87,27 +87,29 @@ $galleries = get_posts( array(
 			$slide_index++;
 		endforeach;
 
-		?><div data-index="<?php echo esc_attr( $slide_index ); ?>" class="swiper-slide last-slide">
-			<div class="other-galleries">
-				<h2>More from <?php bloginfo( 'name' ); ?></h2>
-				<div class="gallery__grid gallery__grid-album">
-					<?php foreach ( $galleries as $gallery ) : ?>
-						<article class="gallery__grid--column">
-							<a href="<?php the_permalink( $gallery ); ?>">
-								<div class="gallery__grid--thumbnail">
-									<div class="thumbnail" style="background-image: url('<?php echo esc_attr( wp_get_attachment_image_url( get_post_thumbnail_id( $gallery ), 'gmr-gallery-grid-secondary' ) ); ?>')"></div>
-								</div>
-								<div class="gallery__grid--meta">
-									<h3 class="gallery__grid--title">
-										<?php echo esc_html( get_the_title( $gallery ) ); ?>
-									</h3>
-								</div>
-							</a>
-						</article>
-					<?php endforeach; ?>
+		if ( is_singular( 'gmr_gallery' ) ) :
+			?><div data-index="<?php echo esc_attr( $slide_index ); ?>" class="swiper-slide last-slide">
+				<div class="other-galleries">
+					<h2>More from <?php bloginfo( 'name' ); ?></h2>
+					<div class="gallery__grid gallery__grid-album">
+						<?php foreach ( $galleries as $gallery ) : ?>
+							<article class="gallery__grid--column">
+								<a href="<?php the_permalink( $gallery ); ?>">
+									<div class="gallery__grid--thumbnail">
+										<div class="thumbnail" style="background-image: url('<?php echo esc_attr( wp_get_attachment_image_url( get_post_thumbnail_id( $gallery ), 'gmr-gallery-grid-secondary' ) ); ?>')"></div>
+									</div>
+									<div class="gallery__grid--meta">
+										<h3 class="gallery__grid--title">
+											<?php echo esc_html( get_the_title( $gallery ) ); ?>
+										</h3>
+									</div>
+								</a>
+							</article>
+						<?php endforeach; ?>
+					</div>
 				</div>
 			</div>
-		</div>
+		<?php endif; ?>
     </div>
     <!-- .swiper-wrapper -->
 
