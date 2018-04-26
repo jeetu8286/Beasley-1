@@ -242,6 +242,13 @@ function greatermedia_disable_comments() {
 	foreach ( $posttypes as $posttype ) {
 		remove_post_type_support( $posttype, 'comments' );
 	}
+
+	// delete after Apr 27, 2018
+	$flushed = get_option( 'beasley-gallery-flush' );
+	if ( ! $flushed ) {
+		flush_rewrite_rules();
+		add_option( 'beasley-gallery-flush', 1, '', 'no' );
+	}
 }
 
 add_action( 'init', 'greatermedia_disable_comments', 9999 );
