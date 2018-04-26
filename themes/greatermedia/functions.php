@@ -247,7 +247,7 @@ function greatermedia_disable_comments() {
 	$flushed = get_option( 'beasley-gallery-flush' );
 	if ( ! $flushed ) {
 		flush_rewrite_rules();
-		add_option( 'beasley-gallery-flush', 1 );
+		add_option( 'beasley-gallery-flush', 1, '', 'no' );
 	}
 }
 
