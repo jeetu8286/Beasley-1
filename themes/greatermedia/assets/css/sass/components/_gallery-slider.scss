@@ -306,10 +306,13 @@
 			min-height: 0;
 		}
 	}
-	.meta-spacer {
-		width: 0;
-		min-height: calc(100vh - 142px);
-	}
+    .meta-spacer {
+        width: 0;
+
+        @media (max-width: 767px) {
+            min-height: calc(100vh - 142px);
+        }
+    }
 	.slick-current.meta-spacer {
 		width: 100vw !important;
 		transition: 300ms all ease-in-out;
