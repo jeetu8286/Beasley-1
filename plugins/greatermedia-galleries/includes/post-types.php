@@ -34,31 +34,32 @@ class GreaterMediaGalleryCPT {
 	 * Add the Gallery Content Type
 	 */
 	public static function gallery_cpt() {
-
 		$labels = array(
-			'name'                => _x( 'Galleries', 'Post Type General Name', 'greatermedia' ),
-			'singular_name'       => _x( 'Gallery', 'Post Type Singular Name', 'greatermedia' ),
-			'menu_name'           => __( 'Galleries', 'greatermedia' ),
-			'parent_item_colon'   => __( 'Parent Item:', 'greatermedia' ),
-			'all_items'           => __( 'All Galleries', 'greatermedia' ),
-			'view_item'           => __( 'View Gallery', 'greatermedia' ),
-			'add_new_item'        => __( 'Add New Gallery', 'greatermedia' ),
-			'add_new'             => __( 'Add New', 'greatermedia' ),
-			'edit_item'           => __( 'Edit Gallery', 'greatermedia' ),
-			'update_item'         => __( 'Update Gallery', 'greatermedia' ),
-			'search_items'        => __( 'Search Galleries', 'greatermedia' ),
-			'not_found'           => __( 'Not found', 'greatermedia' ),
-			'not_found_in_trash'  => __( 'Not found in Trash', 'greatermedia' ),
+			'name'                => 'Galleries',
+			'singular_name'       => 'Gallery',
+			'menu_name'           => 'Galleries',
+			'parent_item_colon'   => 'Parent Item:',
+			'all_items'           => 'All Galleries',
+			'view_item'           => 'View Gallery',
+			'add_new_item'        => 'Add New Gallery',
+			'add_new'             => 'Add New',
+			'edit_item'           => 'Edit Gallery',
+			'update_item'         => 'Update Gallery',
+			'search_items'        => 'Search Galleries',
+			'not_found'           => 'Not found',
+			'not_found_in_trash'  => 'Not found in Trash',
 		);
+
 		$rewrite = array(
 			'slug'                => 'galleries',
 			'with_front'          => true,
 			'pages'               => true,
 			'feeds'               => true,
 		);
+
 		$args = array(
-			'label'               => __( 'gallery', 'greatermedia' ),
-			'description'         => __( 'A post type for Galleries', 'greatermedia' ),
+			'label'               => 'gallery',
+			'description'         => 'A post type for Galleries',
 			'labels'              => $labels,
 			'supports'            => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', ),
 			'taxonomies'          => array( 'post_tag', 'category' ),
@@ -78,8 +79,114 @@ class GreaterMediaGalleryCPT {
 			'capability_type'     => array( 'gallery', 'galleries' ),
 			'map_meta_cap'        => true,
 		);
+
 		register_post_type( self::GALLERY_POST_TYPE, $args );
 
+		acf_add_local_field_group( array(
+			'key'                   => 'gallery_settings',
+			'title'                 => 'Gallery Settings',
+			'menu_order'            => 0,
+			'position'              => 'side',
+			'style'                 => 'default',
+			'label_placement'       => 'top',
+			'instruction_placement' => 'label',
+			'hide_on_screen'        => '',
+			'active'                => 1,
+			'description'           => '',
+			'location'              => array(
+				array(
+					array(
+						'param'    => 'post_type',
+						'operator' => '==',
+						'value'    => self::GALLERY_POST_TYPE,
+					),
+				),
+			),
+			'fields'                => array(
+				array(
+					'key'           => 'field_is_featured',
+					'label'         => 'Is Featured',
+					'name'          => 'is_featured',
+					'type'          => 'true_false',
+					'instructions'  => 'Determines if this gallery is featured.',
+					'required'      => 0,
+					'default_value' => 0,
+					'ui'            => 1,
+					'ui_on_text'    => '',
+					'ui_off_text'   => '',
+				),
+				array(
+					'key'           => 'field_hide_download_link',
+					'label'         => 'Hide Download Link',
+					'name'          => 'hide_download_link',
+					'type'          => 'true_false',
+					'instructions'  => 'Whether or not to display download links on the gallery page.',
+					'required'      => 0,
+					'default_value' => 0,
+					'ui'            => 1,
+					'ui_on_text'    => '',
+					'ui_off_text'   => '',
+				),
+				array(
+					'key'           => 'field_hide_social_share',
+					'label'         => 'Hide Social Share',
+					'name'          => 'hide_social_share',
+					'type'          => 'true_false',
+					'instructions'  => 'Whether or not to display social share buttons on the gallery page.',
+					'required'      => 0,
+					'default_value' => 0,
+					'ui'            => 1,
+					'ui_on_text'    => '',
+					'ui_off_text'   => '',
+				),
+				array(
+					'key'           => 'field_share_photos',
+					'label'         => 'Share Individual Photos',
+					'name'          => 'share_photos',
+					'type'          => 'true_false',
+					'instructions'  => 'Detemines whether social share buttons should share the gallery page or just individual photos.',
+					'required'      => 0,
+					'default_value' => 0,
+					'ui'            => 1,
+					'ui_on_text'    => '',
+					'ui_off_text'   => '',
+				),
+				array(
+					'key'           => 'field_images_per_ad',
+					'label'         => 'Ads Interval',
+					'name'          => 'images_per_ad',
+					'type'          => 'number',
+					'instructions'  => 'Show central ad banner after every {X} images viewed in the gallery.',
+					'required'      => 0,
+					'default_value' => 3,
+					'placeholder'   => '',
+					'prepend'       => '',
+					'append'        => '',
+					'min'           => 1,
+					'max'           => 99,
+					'step'          => 1,
+				),
+				array(
+					'key'               => 'field_sponsored_image',
+					'label'             => 'Sponsored Image',
+					'name'              => 'sponsored_image',
+					'type'              => 'image',
+					'instructions'      => 'Select an image for the sponsored slide.',
+					'required'          => 0,
+					'conditional_logic' => 0,
+					'return_format'     => 'id',
+					'preview_size'      => 'medium',
+					'library'           => 'all',
+					'min_width'         => '',
+					'min_height'        => '',
+					'min_size'          => '',
+					'max_width'         => '',
+					'max_height'        => '',
+					'max_size'          => '',
+					'mime_types'        => '',
+				),
+			),
+		) );
 	}
 
 	public static function album_cpt() {

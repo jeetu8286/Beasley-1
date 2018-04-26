@@ -98,9 +98,13 @@
 @import "components/top-three";
 @import "components/iframe-embed";
 @import "components/triton-song-history";
+@import "components/gallery-slider";
 
 // Custom styles only used on single pages
 @import "pages/single";
 
 // Admin
 @import "admin/adminbar";
+
+// Vendor
+@import "vendor/slick";

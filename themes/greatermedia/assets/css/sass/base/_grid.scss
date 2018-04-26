@@ -71,6 +71,8 @@ img {
 	}
 }
 
+.post-type-archive-gmr_gallery .main > .container,
+.single-gmr_album .main > .container,
 .page-template-full-bleed .main > .container {
 	@include bp(medium) {
 		padding: 20px 20px 20px 20px;

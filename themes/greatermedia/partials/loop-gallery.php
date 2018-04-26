@@ -7,13 +7,20 @@ if ( empty( $page ) ) {
 	$page = 1;
 }
 
+$per_page = 16;
+
 $query_args = array(
 	'post_type'      => array( 'gmr_gallery' ),
 	'orderby'        => 'date',
 	'order'          => 'DESC',
-	'posts_per_page' => 16,
-	'offset'         => 3 + 16 * ( $page - 1 ),
+	'posts_per_page' => $per_page,
+	'offset'         => $per_page * ( $page - 1 ),
 );
+
+$featured = greatermedia_get_featured_gallery();
+if ( $featured ) {
+	$query_args['post__not_in'] = array( $featured->ID );
+}
 
 if ( 'show' == get_post_type() ) {
 	$term = \TDS\get_related_term( get_the_ID() );
@@ -31,11 +38,8 @@ if ( 'show' == get_post_type() ) {
 $query = new WP_Query( $query_args );
 
 if ( $query->have_posts() ) :
-	if ( $page == 1 ) : ?>
-
-<h2 class="section-header"><?php _e( 'Galleries', 'greatermedia' ); ?></h2>
-
-	<?php
+	if ( $page == 1 && ! is_post_type_archive( 'gmr_gallery' ) ) :
+		?><h2 class="section-header">Galleries</h2><?php
 	endif;
 
 	while ( $query->have_posts() ) :

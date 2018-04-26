@@ -81,8 +81,10 @@
 					</nav>
 				<?php endif; ?>
 				<main class="main" role="main">
-					<div class="container__leaderboard">
-						<div class="ad__leaderboard">
-							<?php do_action( 'dfp_tag', 'dfp_ad_leaderboard_pos1', false, array( array( 'pos', 1 ) ) ); ?>
+					<?php if ( ! get_query_var( 'view' ) ) : ?>
+						<div class="container__leaderboard">
+							<div class="ad__leaderboard">
+								<?php do_action( 'dfp_tag', 'dfp_ad_leaderboard_pos1', false, array( array( 'pos', 1 ) ) ); ?>
+							</div>
 						</div>
-					</div>
+					<?php endif; ?>
