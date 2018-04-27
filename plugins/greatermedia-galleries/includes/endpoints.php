@@ -19,11 +19,11 @@ class GreaterMediaGalleryEndpoints {
 		add_rewrite_tag( '%photos_category%', '([^&]+)' );
 		add_rewrite_tag( '%photos_category_page%', '([0-9]+)' );
 
-		add_rewrite_endpoint( 'view', EP_PERMALINK );
+		add_rewrite_endpoint( 'view', EP_PERMALINK | EP_PAGES );
 
 		// Supports the /photos/<category> endpoint
 		$rule = sprintf( '%1$s/([^/]+)(/page/([0-9]+))?/?$', 'photos' );
-		\add_rewrite_rule( $rule, 'index.php?photos_category=$matches[1]&photos_category_page=$matches[3]', 'top' );
+		add_rewrite_rule( $rule, 'index.php?photos_category=$matches[1]&photos_category_page=$matches[3]', 'top' );
 	}
 
 	/**
