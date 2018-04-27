@@ -243,11 +243,11 @@ function greatermedia_disable_comments() {
 		remove_post_type_support( $posttype, 'comments' );
 	}
 
-	// delete after Apr 27, 2018
-	$flushed = get_option( 'beasley-gallery-flush' );
+	// delete after Apr 28, 2018
+	$flushed = get_option( 'beasley-gallery-flush2' );
 	if ( ! $flushed ) {
 		flush_rewrite_rules();
-		add_option( 'beasley-gallery-flush', 1, '', 'no' );
+		add_option( 'beasley-gallery-flush2', 1, '', 'no' );
 	}
 }
 

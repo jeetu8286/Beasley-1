@@ -8,6 +8,10 @@
 
 get_header();
 
+if ( ! get_query_var( 'view' ) ) :
 	get_template_part( 'partials/article', 'page' );
+else :
+	get_template_part( 'content-gallery-slideshow' );
+endif;
 
 get_footer();

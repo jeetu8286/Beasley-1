@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "7fcb65ff7a8b2070be20b08d7c3951e9",
+    "content-hash": "dff7a7988de35ad990ee73555dc9a588",
     "packages": [
         {
             "name": "10up/post-finder",
@@ -424,15 +424,15 @@
         },
         {
             "name": "wpackagist-plugin/elasticpress",
-            "version": "2.4.2",
+            "version": "2.5",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/elasticpress/",
-                "reference": "tags/2.4.2"
+                "reference": "tags/2.5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/elasticpress.2.4.2.zip",
+                "url": "https://downloads.wordpress.org/plugin/elasticpress.2.5.zip",
                 "reference": null,
                 "shasum": null
             },
@@ -524,15 +524,15 @@
         },
         {
             "name": "wpackagist-plugin/restricted-site-access",
-            "version": "6.0.2",
+            "version": "6.1.0",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/restricted-site-access/",
-                "reference": "tags/6.0.2"
+                "reference": "tags/6.1.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/restricted-site-access.6.0.2.zip",
+                "url": "https://downloads.wordpress.org/plugin/restricted-site-access.6.1.0.zip",
                 "reference": null,
                 "shasum": null
             },
@@ -644,15 +644,15 @@
         },
         {
             "name": "wpackagist-plugin/wordpress-importer",
-            "version": "0.6.3",
+            "version": "0.6.4",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/wordpress-importer/",
-                "reference": "tags/0.6.3"
+                "reference": "tags/0.6.4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/wordpress-importer.0.6.3.zip",
+                "url": "https://downloads.wordpress.org/plugin/wordpress-importer.0.6.4.zip",
                 "reference": null,
                 "shasum": null
             },
@@ -746,15 +746,15 @@
     "packages-dev": [
         {
             "name": "wpackagist-plugin/query-monitor",
-            "version": "2.17.0",
+            "version": "3.0.0",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/query-monitor/",
-                "reference": "tags/2.17.0"
+                "reference": "tags/3.0.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/query-monitor.2.17.0.zip",
+                "url": "https://downloads.wordpress.org/plugin/query-monitor.3.0.0.zip",
                 "reference": null,
                 "shasum": null
             },
