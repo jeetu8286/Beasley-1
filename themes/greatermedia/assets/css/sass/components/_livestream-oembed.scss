@@ -1,0 +1,15 @@
+.livestream-oembed {
+	@include ratio-percent(315, 560);
+	margin: 0 auto;
+	max-width: 100%;
+
+	> iframe,
+	> object,
+	> embed {
+		height: 100%;
+		left: 0;
+		position: absolute;
+		top: 0;
+		width: 100%;
+	}
+}
