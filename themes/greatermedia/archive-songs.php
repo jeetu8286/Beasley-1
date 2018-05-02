@@ -58,14 +58,18 @@ get_header(); ?>
 			<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js"></script>
 			<script>
 				var currentDateOfLoop;
-				jQuery.get( "https://nowplaying.bbgi.com/<?php echo esc_html($call_sign); ?>/list?limit=100&offset=0", function( data ) {
+				jQuery.get( "https://nowplaying.bbgi.com/<?php echo esc_js($call_sign); ?>/list?limit=100&offset=0", function( data ) {
 					_.each(data, function(song){
 						var songDate = moment(song.timestamp * 1000);
 						if (!currentDateOfLoop || (currentDateOfLoop.format('MM/DD/YY') != songDate.format('MM/DD/YY'))){
 							currentDateOfLoop = songDate;
-							jQuery('.songs__group').append('<div class="songs__group--date">' + currentDateOfLoop.format('MMM D, YYYY') + '</div><ul class="songs__group--list"></ul>');
+							jQuery('.songs__group').append('<div class="songs__group--date"></div><ul class="songs__group--list"></ul>');
+							jQuery('.songs__group--date').last().text(currentDateOfLoop.format('MMM D, YYYY'));
 						}
-						jQuery('.songs__group--list').last().append('<li class="song__item"><div class="song__time">' + songDate.format('HH:mm A') + '</div><div class="song__meta"><span class="song__title">' + song.title + '</span><span class="song__artist"> — ' + song.artist + '</span></div></li>');
+						jQuery('.songs__group--list').last().append('<li class="song__item"><div class="song__time"></div><div class="song__meta"><span class="song__title"></span><span class="song__artist"></span></div></li>');
+						jQuery('.song__time').last().text(songDate.format('HH:mm A'));
+						jQuery('.song__title').last().text(song.title);
+						jQuery('.song__artist').last().text(' — ' + song.artist);
 					});
 				});
 			</script>
