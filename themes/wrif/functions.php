@@ -19,7 +19,7 @@
  */
 function wrif_scripts_styles() {
 	$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
-	
+
 	wp_register_style( 'google-fonts-wrif', '//fonts.googleapis.com/css?family=Oswald:400,300,700', array(), null );
 	wp_dequeue_style( 'greatermedia' );
 	wp_deregister_style( 'greatermedia' );
@@ -48,10 +48,11 @@ add_action( 'wp_head', 'wrif_chartbeat_header' );
 function wrif_dave_and_chuck_geo_redirect() {
 	if ( in_category( 'dave-chuck-the-freak' ) || ( 'dave-and-chuck' === get_page_uri() ) ) {
 		?><script>
-			var geolifygeoredirect = document.createElement('script')
-			geolifygeoredirect.setAttribute('type', 'text/javascript')
-			geolifygeoredirect.setAttribute('src', '//www.geolify.com/georedirectv2.php?id=29964&refurl=' + document.referrer)
-			document.getElementsByTagName('head')[0].appendChild(geolifygeoredirect)
+		var geotargetlyredirect1525180397350 = document.createElement('script');
+		geotargetlyredirect1525180397350.setAttribute('type','text/javascript');
+		geotargetlyredirect1525180397350.async = 1;
+		geotargetlyredirect1525180397350.setAttribute('src', '//geotargetly-1a441.appspot.com/georedirect?id=-LBQpUQq5yDhYiCS_8JG&refurl='+document.referrer);
+		document.getElementsByTagName('head')[0].appendChild(geotargetlyredirect1525180397350);
 		</script><?php
 	}
 }
