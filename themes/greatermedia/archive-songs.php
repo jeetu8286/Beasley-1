@@ -13,7 +13,7 @@ get_header(); ?>
 		<section class="content">
 
 			<h2 class="content__heading">
-				Recently Played 
+				Recently Played
 				<?php $call_sign = get_query_var( GMR_LIVE_STREAM_CPT ); ?>
 				<?php if ( ! empty( $call_sign ) && ! is_numeric( $call_sign ) ) : ?>
 					<?php
@@ -26,7 +26,7 @@ get_header(); ?>
 						'no_found_rows'       => true,
 						'fields'              => 'ids',
 					) );
-					if ( $stream_query->have_posts() ) : $stream_query->the_post(); 
+					if ( $stream_query->have_posts() ) : $stream_query->the_post();
 						$description = get_post_meta( get_the_ID(), 'description', true );
 						if ( !empty( $description ) ){
 							echo 'on ' . esc_html( $description );
@@ -37,31 +37,39 @@ get_header(); ?>
 					wp_reset_postdata();
 					?>
 				<?php endif; ?>
-			</h2><?php
+			</h2>
 
-			if ( have_posts() ) : ?>
-
-				<?php get_template_part( 'partials/loop', 'songs' ); ?>
-				<?php greatermedia_load_more_button( array(
-					'partial_slug' => 'partials/loop-songs',
-					'auto_load'    => true
-				) ); ?>
-
-			<?php else : ?>
-
-				<article id="post-not-found" class="hentry cf">
-
-					<header class="article-header">
-						<h1><?php _e( 'Oops, Songs Not Found!', 'greatermedia' ); ?></h1>
-					</header>
-
-					<section class="entry-content">
-						<p><?php _e( 'Uh Oh. Something is missing. Try double checking things.', 'greatermedia' ); ?></p>
-					</section>
-
-				</article>
-
-			<?php endif; ?>
+			<!-- list songs -->
+			<div class="songs__group songs__group--new-date">
+			   <!--<div class="songs__group--date">May 2, 2018</div>
+			   <ul class="songs__group--list">
+			      <li class="song__item">
+			         <div class="song__time">
+			            08:10 AM
+			         </div>
+			         <div class="song__meta">
+			            <span class="song__title">Refugee</span>
+			            <span class="song__artist">
+			            — Tom Petty			</span>
+			         </div>
+			      </li>
+			   </ul>-->
+			</div>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js"></script>
+			<script>
+				var currentDateOfLoop;
+				jQuery.get( "https://nowplaying.bbgi.com/<?php echo esc_html($call_sign); ?>/list?limit=100&offset=0", function( data ) {
+					_.each(data, function(song){
+						var songDate = moment(song.timestamp * 1000);
+						if (!currentDateOfLoop || (currentDateOfLoop.format('MM/DD/YY') != songDate.format('MM/DD/YY'))){
+							currentDateOfLoop = songDate;
+							jQuery('.songs__group').append('<div class="songs__group--date">' + currentDateOfLoop.format('MMM D, YYYY') + '</div><ul class="songs__group--list"></ul>');
+						}
+						jQuery('.songs__group--list').last().append('<li class="song__item"><div class="song__time">' + songDate.format('HH:mm A') + '</div><div class="song__meta"><span class="song__title">' + song.title + '</span><span class="song__artist"> — ' + song.artist + '</span></div></li>');
+					});
+				});
+			</script>
+			<!-- end list songs -->
 
 		</section>
 
