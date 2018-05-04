@@ -235,6 +235,13 @@
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=#{$opacity * 100})";
 }
 
+@mixin ratio-percent($height, $width) {
+	height: auto;
+	overflow: hidden;
+	padding-top: percentage($height / $width);
+	position: relative;
+}
+
 // http://danielstern.ca/range.css/?ref=css-tricks#/
 @mixin range-slider {
 	input[type=range] {
