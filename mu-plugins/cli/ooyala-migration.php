@@ -33,7 +33,7 @@ class Beasley_Ooyala_Migration_CLI {
 		WP_CLI::success( 'done' );
 	}
 
-	public function _replace_ooyala_shortcodes( $record ) {
+	protected function _replace_ooyala_shortcodes( $record ) {
 		global $wpdb;
 		$ooyala_id = $record['video_map_id'];
 		$account_id = $record['livestream_account_id'];
@@ -66,13 +66,26 @@ class Beasley_Ooyala_Migration_CLI {
 		if ( $query->have_posts() ) {
 			while( $query->have_posts() ) {
 				$post = $query->next_post();
-				dout($post,true);
-				// @todo pickup here.. Not finding these IDs in post content. Waiting on https://tenup.teamwork.com/#tasks/17126172
+
+				$matches = array();
+				preg_match_all( '/\[ooyala\s[^\]]*\]/i', $post->post_content, $matches );
+
+				if ( ! empty( $matches[0] ) ) {
+					foreach( $matches[0] as $shortcode ) {
+						// Since we're only working with one ooyala code at a time, we'll ignore any shortcodes that don't match
+						if ( stripos( $shortcode, $ooyala_id ) !== false ) {
+							$new_shortcode = $this->_generate_livestream_shortcode( $account_id, $event_id, $video_id );
+							WP_CLI::log( " - Updating post {$post->ID} from $shortcode to $new_shortcode" );
+							$post->post_content = str_replace( $shortcode, $new_shortcode, $post->post_content );
+							wp_update_post( $post );
+						}
+					}
+				}
 			}
 		}
 	}
 
-	public function _generate_livestream_shortcode( $account_id, $event_id, $video_id ) {
+	protected function _generate_livestream_shortcode( $account_id, $event_id, $video_id ) {
 		return sprintf( '[livestream_video account_id="%s" event_id="%s" video_id="%s"]', $account_id, $event_id, $video_id );
 	}
 
