@@ -2,6 +2,6 @@
 
 if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 	require_once __DIR__ . '/vendor/autoload.php';
-	require_once __DIR__ . '/ooyala-migration.php';
+	require_once __DIR__ . '/includes/ooyala-migration.php';
 }
 
