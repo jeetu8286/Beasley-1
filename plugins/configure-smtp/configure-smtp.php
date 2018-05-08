@@ -62,15 +62,11 @@ class c2c_ConfigureSMTP extends C2C_Plugin_023 {
 	 * @return void
 	 */
 	public function __construct() {
-		$this->c2c_ConfigureSMTP();
-	}
-
-	public function c2c_ConfigureSMTP() {
 		// Be a singleton
 		if ( ! is_null( self::$instance ) )
 			return;
 
-		$this->C2C_Plugin_023( '3.1', 'configure-smtp', 'c2c', __FILE__, array() );
+		parent::__construct( '3.1', 'configure-smtp', 'c2c', __FILE__, array() );
 		register_activation_hook( __FILE__, array( __CLASS__, 'activation' ) );
 		self::$instance = $this;
 	}
