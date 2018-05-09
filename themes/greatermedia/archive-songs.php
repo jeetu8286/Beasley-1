@@ -67,7 +67,7 @@ get_header(); ?>
 							jQuery('.songs__group--date').last().text(currentDateOfLoop.format('MMM D, YYYY'));
 						}
 						jQuery('.songs__group--list').last().append('<li class="song__item"><div class="song__time"></div><div class="song__meta"><span class="song__title"></span><span class="song__artist"></span></div></li>');
-						jQuery('.song__time').last().text(songDate.format('HH:mm A'));
+						jQuery('.song__time').last().text(songDate.format('hh:mm A'));
 						jQuery('.song__title').last().text(song.title);
 						jQuery('.song__artist').last().text(' — ' + song.artist);
 					});
