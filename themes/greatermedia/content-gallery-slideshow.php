@@ -72,6 +72,8 @@ $galleries = get_posts( array(
 			$width = $data[1];
 			$height = $data[2];
 
+			$attribution = get_post_meta( $image->ID, 'gmr_image_attribution', true );
+
 			?><div class="swiper-slide"
 				 data-index="<?php echo esc_attr( $slide_index ); ?>"
 				 data-slug="<?php echo esc_attr( $base_url ); ?>/view/<?php echo esc_attr( $image->post_name ); ?>/"
@@ -82,6 +84,10 @@ $galleries = get_posts( array(
 				 data-height="<?php echo esc_attr( $height ); ?>"
 				 >
 				<img src="<?php echo esc_url( $src ); ?>" width="<?php echo esc_attr( $width ); ?>" height="<?php echo esc_attr( $height ); ?>" alt="<?php echo esc_attr( get_the_excerpt( $image ) ); ?>" class="swiper-image">
+
+				<?php if ( ! empty( $attribution ) ) : ?>
+					<div class="image-attribution"><?php echo esc_html( $attribution ); ?></div>
+				<?php endif; ?>
 			</div><?php
 
 			$slide_index++;
