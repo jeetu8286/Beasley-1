@@ -280,6 +280,16 @@
 	.slick-slide {
 		opacity: .3;
 		transition: 300ms all ease-in-out;
+		position: relative;
+	}
+	.image-attribution {
+	    	background-color: rgba(0, 0, 0, 0.5);
+    		color: white;
+		padding: 5px 10px;
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		max-width: 369px; // For the 768 breakpoint. Everything else constrains this properly
 	}
 	.slick-slide.slick-current {
 		opacity: 1;
