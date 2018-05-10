@@ -5,6 +5,70 @@ use League\Csv\Reader;
 class Beasley_Ooyala_Migration_CLI {
 
 	/**
+	 * Verifies that shortcodes in post_content are in the mapping files
+	 *
+	 * @subcommand verify-post-content
+	 * @synopsis <csv_file>
+	 */
+	public function verify_post_content( $args, $assoc_args ) {
+		$csv = reset( $args );
+
+		if ( ! file_exists( $csv ) ) {
+			WP_CLI::error( "Unable to read {$csv}" );
+		}
+
+		if ( ! ini_get( "auto_detect_line_endings" ) ) {
+			ini_set( "auto_detect_line_endings", '1' );
+		}
+
+		$csv = Reader::createFromPath( $csv, 'r' );
+		$csv->setHeaderOffset(0);
+
+		$records = $csv->getRecords();
+
+		// We'll dump the mapped codes in this array, for easy checking later
+		$mapped_ids = array();
+
+		WP_CLI::log( "Building array of IDs" );
+		foreach( $records as $record ) {
+			$mapped_ids[ $record['video_map_id'] ] = true;
+		}
+
+		// check for posts that match
+		$query = new WP_Query(array(
+			's' => '[ooyala ',
+			'posts_per_page' => -1,
+			'post_type' => 'any',
+		));
+		if ( $query->have_posts() ) {
+			while( $query->have_posts() ) {
+				$post = $query->next_post();
+
+				$shortcodes = array();
+				preg_match_all( '/\[ooyala\s[^\]]*\]/i', $post->post_content, $shortcodes );
+
+				if ( ! empty( $shortcodes[0] ) ) {
+					foreach( $shortcodes[0] as $shortcode ) {
+						$code = array();
+						preg_match( '/\scode="([^"]*)"/i', $shortcode, $code );
+						$code = $code[1];
+
+						// @todo check if code in array.
+						if ( $mapped_ids[ $code ] ) {
+							WP_CLI::success( "Matched Code: $code" );
+						} else {
+							WP_CLI::warning( "Code doesn't match: $code" );
+						}
+					}
+				}
+			}
+		}
+
+		WP_CLI::success( 'done' );
+
+	}
+
+	/**
 	 * Migrates old Ooyala content to livestream based on a CSV mapping
 	 *
          * @subcommand migrate
@@ -62,6 +126,7 @@ class Beasley_Ooyala_Migration_CLI {
 		$query = new WP_Query(array(
 			's' => 'code="' . $ooyala_id . '"',
 			'posts_per_page' => 500,
+			'post_type' => 'any',
 		));
 		if ( $query->have_posts() ) {
 			while( $query->have_posts() ) {
