@@ -87,9 +87,15 @@
 			if ( ! newActiveSlide.classList.contains( 'meta-spacer' ) ) {
 				var title = newActiveSlide.getAttribute( 'data-title' );
 				var caption = newActiveSlide.getAttribute( 'data-caption' );
+
+				var shareIndividualPhotos = parseInt( document.querySelector( '.gallery-top' ).getAttribute( 'data-share-photos' ), 10 );
+				if ( isNaN( shareIndividualPhotos ) ) {
+					shareIndividualPhotos = 0;
+				}
+
 				var imageSrc = newActiveSlide.getAttribute( 'data-source' );
 				var url = getCurrentLocation();
-				if ( !! document.querySelector( '.gallery-top' ).getAttribute( 'data-share-photos' ) ) {
+				if ( shareIndividualPhotos ) {
 					url = imageSrc;
 				}
 
