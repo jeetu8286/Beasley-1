@@ -79,7 +79,7 @@ $galleries = get_posts( array(
 				 data-slug="<?php echo esc_attr( $base_url ); ?>/view/<?php echo esc_attr( $image->post_name ); ?>/"
 				 data-title="<?php echo esc_attr( get_the_title( $image ) ); ?>"
 				 data-caption="<?php echo esc_attr( get_the_excerpt( $image ) ); ?>"
-				 data-source="<?php echo esc_url( wp_get_attachment_image_url( $image->ID, 'full' ) ); ?>"
+				 data-source="<?php echo esc_url( get_permalink( $image->ID ) ); ?>"
 				 data-width="<?php echo esc_attr( $width ); ?>"
 				 data-height="<?php echo esc_attr( $height ); ?>"
 				 >
