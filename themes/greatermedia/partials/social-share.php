@@ -2,8 +2,10 @@
 
 global $wpseo_og;
 
+$url = apply_filters( 'beasley-share-url', get_permalink() );
+
 $encoded_title = urlencode( get_the_title() );
-$encoded_url = urlencode( get_permalink() );
+$encoded_url = urlencode( $url );
 $facebook_encoded_title = false;
 $twitter_encoded_title = false;
 

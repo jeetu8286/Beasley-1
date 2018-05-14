@@ -15,7 +15,7 @@ if ( ! empty( $sponsored_image ) ) :
 	array_unshift( $ids, $sponsored_image );
 endif;
 
-$images = array_filter( array_map( 'get_post', array_values( $ids ) ) );
+$images = array_values( array_filter( array_map( 'get_post', array_values( $ids ) ) ) );
 if ( empty( $images ) ) :
 	return;
 endif;
@@ -34,6 +34,10 @@ $galleries = get_posts( array(
 	'post__not_in'   => array( $current_gallery->ID ),
 	'posts_per_page' => 4,
 ) );
+
+add_filter( 'beasley-share-url', function() use ( $images, $current_gallery ) {
+	return untrailingslashit( get_permalink( $current_gallery->ID ) ) . '/view/' . urlencode( $images[0]->post_name ) . '/';
+} );
 
 ?><h1 class="slideshow-title"><div class="container"><?php the_title(); ?></div></h1>
 
