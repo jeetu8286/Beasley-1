@@ -74,6 +74,12 @@
 		};
 
 		var updateSidebarInfo = function( slide ) {
+			var shareIndividualPhotos = parseInt( document.querySelector( '.gallery-top' ).getAttribute( 'data-share-photos' ), 10 );
+			if ( isNaN( shareIndividualPhotos ) || ! shareIndividualPhotos ) {
+				// if we don't need to share individual photos, then we don't need to change share buttons
+				return;
+			}
+
 			var newActiveSlide = document.querySelector( '.gallery-top .slick-slide:nth-child(' + parseInt( slide+1, 10 ) + ')' );
 			var sidebarTitle = document.getElementById( 'js-swiper-sidebar-title' );
 			var sidebarCaption = document.getElementById( 'js-swiper-sidebar-caption' );
@@ -88,25 +94,15 @@
 				var title = newActiveSlide.getAttribute( 'data-title' );
 				var caption = newActiveSlide.getAttribute( 'data-caption' );
 
-				var shareIndividualPhotos = parseInt( document.querySelector( '.gallery-top' ).getAttribute( 'data-share-photos' ), 10 );
-				if ( isNaN( shareIndividualPhotos ) ) {
-					shareIndividualPhotos = 0;
-				}
-
-				var imageSrc = newActiveSlide.getAttribute( 'data-source' );
-				var url = getCurrentLocation();
-				if ( shareIndividualPhotos ) {
-					url = imageSrc;
-				}
-
-				var facebookURL = 'http://www.facebook.com/sharer/sharer.php?u=' + encodeURI( url ) + '&title=' + encodeURIComponent( title );
-				var twitterURL = 'http://twitter.com/home?status=' + encodeURIComponent( title ) + '+' + encodeURI( url );
-				var googleURL = 'https://plus.google.com/share?url=' + encodeURI( url );
+				var url = encodeURIComponent( newActiveSlide.getAttribute( 'data-share' ) );
+				var facebookURL = 'http://www.facebook.com/sharer/sharer.php?u=' + url + '&title=' + encodeURIComponent( title );
+				var twitterURL = 'http://twitter.com/home?status=' + encodeURIComponent( title ) + '+' + url;
+				var googleURL = 'https://plus.google.com/share?url=' + url;
 
 				sidebarTitle.innerText = title;
 				sidebarCaption.innerText = caption;
 				if ( sidebarDownload ) {
-					sidebarDownload.href = imageSrc;
+					sidebarDownload.href = newActiveSlide.getAttribute( 'data-source' );
 				}
 				if ( facebookButton ) {
 					facebookButton.href = facebookURL;
