@@ -5,7 +5,7 @@ add_action( 'wpseo_add_opengraph_images', function( \WPSEO_OpenGraph_Image $open
 	if ( empty( $view ) ) {
 		return;
 	}
-	
+
 	$current_gallery = get_queried_object();
 	$ids = \GreaterMediaGallery::get_attachment_ids_for_post( $current_gallery );
 	if ( ! is_array( $ids ) ) {
@@ -24,6 +24,21 @@ add_action( 'wpseo_add_opengraph_images', function( \WPSEO_OpenGraph_Image $open
 			break;
 		}
 	}
+} );
+
+add_filter( 'wpseo_canonical', function( $canonical ) {
+	$view = get_query_var( 'view' );
+	if ( empty( $view ) ) {
+		return $canonical;
+	}
+
+	$post = get_queried_object();
+
+	return sprintf(
+		'%s/view/%s/',
+		untrailingslashit(get_permalink( $post->ID ) ),
+		urlencode( $view )
+	);
 } );
 
 get_header();
