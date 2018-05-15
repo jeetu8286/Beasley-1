@@ -5,12 +5,14 @@ use League\Csv\Reader;
 class Beasley_Ooyala_Migration_CLI {
 
 	/**
-	 * Verifies that shortcodes in post_content are in the mapping files
+	 * Verifies that shortcodes in post_content and meta are in the mapping files
 	 *
-	 * @subcommand verify-post-content
+	 * @subcommand verify
 	 * @synopsis <csv_file>
 	 */
-	public function verify_post_content( $args, $assoc_args ) {
+	public function verify( $args, $assoc_args ) {
+		global $wpdb;
+
 		$csv = reset( $args );
 
 		if ( ! file_exists( $csv ) ) {
@@ -55,12 +57,29 @@ class Beasley_Ooyala_Migration_CLI {
 
 						// @todo check if code in array.
 						if ( $mapped_ids[ $code ] ) {
-							WP_CLI::success( "Matched Code: $code" );
+							WP_CLI::success( "Matched Code [post_content]: $code" );
 						} else {
-							WP_CLI::warning( "Code doesn't match: $code" );
+							WP_CLI::warning( "Code doesn't match [post_content]: $code" );
 						}
 					}
 				}
+			}
+		}
+
+		$query = "select * from {$wpdb->postmeta} where meta_key='gmr-player'";
+		$results = $wpdb->get_results( $query );
+
+		foreach ( $results as $result ) {
+			$shortcode = $result->meta_value;
+			$code = array();
+			preg_match( '/\scode="([^"]*)"/i', $shortcode, $code );
+			$code = $code[1];
+
+			// @todo check if code in array.
+			if ( $mapped_ids[ $code ] ) {
+				WP_CLI::success( "Matched Code [meta]: $code" );
+			} else {
+				WP_CLI::warning( "Code doesn't match [meta]: $code" );
 			}
 		}
 
