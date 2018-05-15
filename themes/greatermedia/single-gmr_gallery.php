@@ -19,8 +19,9 @@ add_action( 'wpseo_add_opengraph_images', function( \WPSEO_OpenGraph_Image $open
 		return;
 	}
 
+	$view = strtolower( $view );
 	foreach ( $images as $image ) {
-		if ( $image->post_name == $view ) {
+		if ( strtolower( $image->post_name ) == $view ) {
 			$src = wp_get_attachment_image_src( $image->ID, 'full' );
 			if ( ! empty( $src ) && count( $src ) == 3 ) {
 				$opengraph->add_image( $src[0] );
