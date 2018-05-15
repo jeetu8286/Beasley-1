@@ -215,7 +215,9 @@ class GreaterMediaGallery {
 			$content .= '</div>';
 		}
 
-		$content .= '</div></a></div>';
+		$content .= '</div>';
+		$content .= '<small class="gallery__embed--cta">Click to see all</small>';
+		$content .= '</a></div>';
 
 		return $content;
 	}
