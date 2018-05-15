@@ -124,19 +124,26 @@ class GreaterMediaGallery {
 	 * @return Array
 	 */
 	public static function get_attachment_ids_for_post( $post ) {
-		$array_ids = get_post_meta( $post->ID, 'gallery-image' );
+		static $ids = array();
 
-		if ( empty( $array_ids ) && preg_match_all( '/\[gallery.*ids=.(.*).\]/', $post->post_content, $ids ) ) {
-			foreach( $ids[1] as $match ) {
-				$array_id = explode( ',', $match );
-				$array_id = array_map( 'intval', $array_id );
+		$post = get_post( $post );
+		if ( ! isset( $ids[ $post->ID ] ) ) {
+			$array_ids = get_post_meta( $post->ID, 'gallery-image' );
 
-				$array_ids = array_merge( $array_ids, $array_id );
+			if ( empty( $array_ids ) && preg_match_all( '/\[gallery.*ids=.(.*).\]/', $post->post_content, $ids ) ) {
+				foreach( $ids[1] as $match ) {
+					$array_id = explode( ',', $match );
+					$array_id = array_map( 'intval', $array_id );
+
+					$array_ids = array_merge( $array_ids, $array_id );
+				}
 			}
+
+			$ids[ $post->ID ] = $array_ids;
 		}
 
-		return ! empty( $array_ids )
-			? $array_ids
+		return ! empty( $ids[ $post->ID ] )
+			? $ids[ $post->ID ]
 			: null;
 	}
 
