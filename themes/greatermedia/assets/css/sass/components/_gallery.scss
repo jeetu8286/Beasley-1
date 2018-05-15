@@ -1195,3 +1195,31 @@ a.gallery__back--btn {
 	border-color: $primary-text;
 	color: $primary-text;
 }
+
+.gallery__embed {
+	margin: 3em 0;
+}
+
+.gallery__embed--thumbnails {
+	display: flex;
+}
+
+.gallery__embed--thumbnail {
+	max-width: 20%;
+	position: relative;
+}
+
+.gallery__embed--more {
+	display: block;
+	position: absolute;
+	color: white;
+	font-weight: bold;
+	background-color: #000;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	opacity: .75;
+	text-align: center;
+	padding-top: 25%;
+}

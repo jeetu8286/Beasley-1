@@ -196,19 +196,26 @@ class GreaterMediaGallery {
 
 		$image = current( $ids );
 		$content = sprintf(
-			'<a href="%s/view/%s/"><div>%s</div>',
+			'<div class="gallery__embed"><a href="%s/view/%s/"><div>%s</div>',
 			esc_attr( untrailingslashit( get_permalink( $post ) ) ),
 			esc_attr( get_post_field( 'post_name', $sponsored_image ? $sponsored_image : $image ) ),
 			wp_get_attachment_image( $image, 'gmr-gallery-grid-featured' )
 		);
 
-		$content .= '<div style="display:flex">';
+		$content .= '<div class="gallery__embed--thumbnails">';
 
-		for ( $i = 1, $len = count( $ids ); $i < $len && $i < 6; $i++ ) {
-			$content .= '<div style="max-width:20%">' . wp_get_attachment_image( $ids[ $i ], 'gmr-gallery-grid-thumb' ) . '</div>';
+		for ( $max = 5, $i = 1, $len = count( $ids ); $i < $len && $i <= $max; $i++ ) {
+			$content .= '<div class="gallery__embed--thumbnail">';
+
+			$content .= wp_get_attachment_image( $ids[ $i ], 'gmr-gallery-grid-thumb' );
+			if ( $i == $max && $len > $max ) {
+				$content .= '<span class="gallery__embed--more">+' . ( $len - $max ) . ' more</span>';
+			}
+
+			$content .= '</div>';
 		}
 
-		$content .= '</div></a>';
+		$content .= '</div></a></div>';
 
 		return $content;
 	}
