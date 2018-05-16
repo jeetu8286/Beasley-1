@@ -125,6 +125,9 @@ class Beasley_Ooyala_Migration_CLI {
 		foreach ( $results as $result ) {
 			WP_CLI::log( "Checking Meta ID {$result->meta_id}" );
 			$shortcode = $result->meta_value;
+			if ( strpos( $shortcode, 'ooyala' ) === false ) {
+				continue;
+			}
 			$code = array();
 			preg_match( '/\scode="([^"]*)"/i', $shortcode, $code );
 			$code = $code[1];
