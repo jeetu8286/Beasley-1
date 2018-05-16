@@ -4,6 +4,7 @@ use League\Csv\Reader;
 
 class Beasley_Ooyala_Migration_CLI {
 
+
 	/**
 	 * Verifies that shortcodes in post_content and meta are in the mapping files
 	 *
@@ -15,26 +16,7 @@ class Beasley_Ooyala_Migration_CLI {
 
 		$csv = reset( $args );
 
-		if ( ! file_exists( $csv ) ) {
-			WP_CLI::error( "Unable to read {$csv}" );
-		}
-
-		if ( ! ini_get( "auto_detect_line_endings" ) ) {
-			ini_set( "auto_detect_line_endings", '1' );
-		}
-
-		$csv = Reader::createFromPath( $csv, 'r' );
-		$csv->setHeaderOffset(0);
-
-		$records = $csv->getRecords();
-
-		// We'll dump the mapped codes in this array, for easy checking later
-		$mapped_ids = array();
-
-		WP_CLI::log( "Building array of IDs" );
-		foreach( $records as $record ) {
-			$mapped_ids[ $record['video_map_id'] ] = true;
-		}
+		$mapped_ids = $this->_get_csv_mapping( $csv );
 
 		// check for posts that match
 		$query = new WP_Query(array(
@@ -171,6 +153,31 @@ class Beasley_Ooyala_Migration_CLI {
 
 	protected function _generate_livestream_shortcode( $account_id, $event_id, $video_id ) {
 		return sprintf( '[livestream_video account_id="%s" event_id="%s" video_id="%s"]', $account_id, $event_id, $video_id );
+	}
+
+	protected function _get_csv_mapping( $csv ) {
+		if ( ! file_exists( $csv ) ) {
+			WP_CLI::error( "Unable to read {$csv}" );
+		}
+
+		if ( ! ini_get( "auto_detect_line_endings" ) ) {
+			ini_set( "auto_detect_line_endings", '1' );
+		}
+
+		$csv = Reader::createFromPath( $csv, 'r' );
+		$csv->setHeaderOffset(0);
+
+		$records = $csv->getRecords();
+
+		// We'll dump the mapped codes in this array, for easy checking later
+		$mapped_ids = array();
+
+		WP_CLI::log( "Building array of IDs" );
+		foreach( $records as $record ) {
+			$mapped_ids[ $record['video_map_id'] ] = true;
+		}
+
+		return $mapped_ids;
 	}
 
 }
