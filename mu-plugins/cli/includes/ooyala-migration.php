@@ -53,6 +53,9 @@ class Beasley_Ooyala_Migration_CLI {
 
 		foreach ( $results as $result ) {
 			$shortcode = $result->meta_value;
+			if ( strpos( $shortcode, 'ooyala' ) === false ) {
+				continue;
+			}
 			$code = array();
 			preg_match( '/\scode="([^"]*)"/i', $shortcode, $code );
 			$code = $code[1];
