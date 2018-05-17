@@ -52,7 +52,6 @@ class SyndicationCPT {
 		add_filter( 'post_updated_messages', array( $this, 'custom_messages_for_subscription' ) );
 
 		add_action( 'wp_ajax_syndication_taxonomy_filters', array( $this, 'taxonomy_filters_callback' ) );
-
 	}
 
 	/**
@@ -91,9 +90,8 @@ class SyndicationCPT {
 			'capabilities'      => array(),
 		);
 
-		register_taxonomy( 'collection', array( 'post', 'announcement', 'content-kit' ), $args );
+		register_taxonomy( 'collection', array( 'post', 'announcement', 'content-kit', 'gmr_gallery' ), $args );
 	}
-
 
 	public function subscription_columns_filter( $columns ) {
 
@@ -122,7 +120,6 @@ class SyndicationCPT {
 	 *
 	 * @return bool
 	 */
-
 	public function hide_meta_keys( $protected, $meta_key ) {
 		$hidden_keys = array(
 			'subscription_post_status',
@@ -260,8 +257,7 @@ class SyndicationCPT {
 		return $post_states;
 	}
 
-	public function change_status_labels( $views )
-	{
+	public function change_status_labels( $views ) {
 		if( isset( $views['draft'] ) ) {
 			$views['draft'] = str_replace( 'Draft', 'Inactive', $views['draft'] );
 		}
@@ -272,7 +268,6 @@ class SyndicationCPT {
 
 		return $views;
 	}
-
 
 	public function hide_publishing_actions(){
 		global $post;
