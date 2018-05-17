@@ -1217,14 +1217,23 @@ function greatermedia_extend_community_curation_limit( $limit, $homepage ) {
 }
 add_filter( 'gmr-homepage-community-limit', 'greatermedia_extend_community_curation_limit', 10, 2 );
 
-function greatermedia_podcasts_in_loop( $query ) {
+function beasley_homepage_post_types( \WP_Query $query ) {
+	if ( is_home() && $query->is_main_query() ) {
+		$post_type = array_filter( (array) $query->get( 'post_type' ) );
+		if ( empty( $post_type ) ) {
+			$post_type[] = 'post';
+		}
 
-	if ( is_home() && $query->is_main_query() )
-		$query->set( 'post_type', array( 'post', 'episode' ) );
+		if ( in_array( 'post', $post_type ) ) {
+			$post_type[] = 'episode';
+			$post_type[] = 'gmr_gallery';
+			$query->set( 'post_type', $post_type );
+		}
+	}
 
 	return $query;
 }
-add_action( 'pre_get_posts', 'greatermedia_podcasts_in_loop' );
+add_action( 'pre_get_posts', 'beasley_homepage_post_types' );
 
 function greatermedia_pinterest_handler( $matches, $attr, $url, $rawattr ) {
 	return sprintf(
