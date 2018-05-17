@@ -334,6 +334,7 @@ class BlogData {
 				$args['tax_query']['relation'] = 'AND';
 			}
 
+			$tax_query = array();
 			$tax_query['taxonomy'] = $enabled_taxonomy;
 			$tax_query['field'] = 'name';
 			$tax_query['terms'] = $subscription_filter;
