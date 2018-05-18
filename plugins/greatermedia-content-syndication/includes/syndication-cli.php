@@ -197,7 +197,7 @@ class GMR_Syndication_CLI extends WP_CLI_Command {
 		$info = unserialize( $info );
 		switch_to_blog( $info['blog_id'] );
 		$original_post = get_post( $info['id'] );
-		$data = BlogData::PostDataExtractor( $syndicated_post->post_type, $original_post );
+		$data = BlogData::PostDataExtractor( $original_post );
 		restore_current_blog();
 
 		BlogData::ImportPosts(
