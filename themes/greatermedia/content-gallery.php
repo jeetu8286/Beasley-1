@@ -12,8 +12,8 @@
 
 			<section class="entry-content" itemprop="articleBody"><?php
 				the_content();
-				get_template_part( 'partials/ad-in-loop' );
 				do_action( 'gmr_gallery' );
+				get_template_part( 'partials/ad-in-loop' );
 			?></section><?php
 
 			get_template_part( 'partials/article', 'footer' );
