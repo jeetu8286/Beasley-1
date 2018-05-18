@@ -361,7 +361,7 @@ class BlogData {
 
 		// get all metas
 		foreach ( $wp_custom_query->posts as $single_result ) {
-			$result[] = self::PostDataExtractor( $post_type, $single_result );
+			$result[] = self::PostDataExtractor( $single_result );
 		}
 
 		$result['max_pages'] = $wp_custom_query->max_num_pages;
@@ -373,7 +373,7 @@ class BlogData {
 	}
 
 	// Rgister setting to store last syndication timestamp
-	public static function PostDataExtractor( $post_type, $single_result ) {
+	public static function PostDataExtractor( $single_result ) {
 		$metas = get_metadata( 'post', $single_result->ID, '', true );
 		$media = get_attached_media( 'image', $single_result->ID );
 
@@ -404,7 +404,7 @@ class BlogData {
 		}
 
 		$attachments = array();
-		if ( 'gmr_gallery' == $post_type ) {
+		if ( 'gmr_gallery' == $single_result->post_type ) {
 			$attachments = get_post_meta( $single_result->ID, 'gallery-image' );
 			$attachments = array_filter( array_map( 'get_post', $attachments ) );
 		}
