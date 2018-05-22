@@ -129,8 +129,10 @@ class GreaterMediaGallery {
 		$post = get_post( $post );
 		if ( ! isset( $ids[ $post->ID ] ) ) {
 			$array_ids = get_post_meta( $post->ID, 'gallery-image' );
+			$empty = empty( $array_ids ) || is_wp_error( $array_ids );
 
-			if ( empty( $array_ids ) && preg_match_all( '/\[gallery.*ids=.(.*).\]/', $post->post_content, $ids ) ) {
+			if ( $empty && preg_match_all( '/\[gallery.*ids=.(.*).\]/', $post->post_content, $ids ) ) {
+				$array_ids = array();
 				foreach( $ids[1] as $match ) {
 					$array_id = explode( ',', $match );
 					$array_id = array_map( 'intval', $array_id );
@@ -139,7 +141,7 @@ class GreaterMediaGallery {
 				}
 			}
 
-			$ids[ $post->ID ] = $array_ids;
+			$ids[ $post->ID ] = array_filter( array_map( 'absint', $array_ids ) );
 		}
 
 		return ! empty( $ids[ $post->ID ] )
@@ -209,7 +211,7 @@ class GreaterMediaGallery {
 
 			$content .= wp_get_attachment_image( $ids[ $i ], 'gmr-gallery-grid-thumb' );
 			if ( $i == $max && $len > $max ) {
-				$content .= '<span class="gallery__embed--more">+' . ( $len - $max ) . ' more</span>';
+				$content .= '<span class="gallery__embed--more">+' . ( $len - $max ) . '</span>';
 			}
 
 			$content .= '</div>';
