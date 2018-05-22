@@ -129,6 +129,9 @@ class GreaterMediaGallery {
 		$post = get_post( $post );
 		if ( ! isset( $ids[ $post->ID ] ) ) {
 			$array_ids = get_post_meta( $post->ID, 'gallery-image' );
+			if ( isset( $_GET['debug'] ) ) {
+				echo '<!-- ', var_export( $array_ids, true ), ' -->';
+			}
 			$empty = empty( $array_ids ) || is_wp_error( $array_ids );
 
 			if ( $empty && preg_match_all( '/\[gallery.*ids=.(.*).\]/', $post->post_content, $ids ) ) {
