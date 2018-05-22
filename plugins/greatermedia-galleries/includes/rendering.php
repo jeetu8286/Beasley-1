@@ -129,12 +129,9 @@ class GreaterMediaGallery {
 		$post = get_post( $post );
 		if ( ! isset( $ids[ $post->ID ] ) ) {
 			$array_ids = get_post_meta( $post->ID, 'gallery-image' );
-			if ( isset( $_GET['debug'] ) ) {
-				echo '<!-- ', var_export( $array_ids, true ), ' -->';
-			}
-			$empty = empty( $array_ids ) || is_wp_error( $array_ids );
+			$array_ids = array_filter( array_map( 'absint', $array_ids ) );
 
-			if ( $empty && preg_match_all( '/\[gallery.*ids=.(.*).\]/', $post->post_content, $ids ) ) {
+			if ( empty( $array_ids ) && preg_match_all( '/\[gallery.*ids=.(.*).\]/', $post->post_content, $ids ) ) {
 				$array_ids = array();
 				foreach( $ids[1] as $match ) {
 					$array_id = explode( ',', $match );
