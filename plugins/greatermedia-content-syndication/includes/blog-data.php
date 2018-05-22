@@ -591,7 +591,9 @@ class BlogData {
 				delete_post_meta( $post_id, 'gallery-image' );
 				$imported = self::ImportAttachedImages( $post_id, $gallery_attachments );
 				foreach ( $imported as $attachment ) {
-					add_post_meta( $post_id, 'gallery-image', $attachment );
+					if ( is_numeric( $attachment ) ) {
+						add_post_meta( $post_id, 'gallery-image', $attachment );
+					}
 				}
 			}
 		}
@@ -735,7 +737,6 @@ class BlogData {
 	 * @return int|object
 	 */
 	public static function ImportMedia( $post_id, $filename, $featured = false, $old_id = 0 ) {
-
 		require_once( ABSPATH . 'wp-admin' . '/includes/image.php' );
 		require_once( ABSPATH . 'wp-admin' . '/includes/file.php' );
 		require_once( ABSPATH . 'wp-admin' . '/includes/media.php' );
@@ -781,7 +782,6 @@ class BlogData {
 				if ( is_wp_error( $id ) ) {
 					@unlink( $file_array['tmp_name'] );
 				} else {
-
 					// Try to migrate the post attachment to S3 if it failed for whatever reason
 					self::MigrateAttachmentToS3( $id );
 
@@ -802,8 +802,9 @@ class BlogData {
 			}
 		} else {
 			$id = $existing[0]->ID;
-				// Try to migrate the post attachment to S3 if it failed for whatever reason
-				self::MigrateAttachmentToS3( $id );
+
+			// Try to migrate the post attachment to S3 if it failed for whatever reason
+			self::MigrateAttachmentToS3( $id );
 			if ( $featured == true && $post_id != 0 ) {
 				set_post_thumbnail( $post_id, $id );
 			}
@@ -836,7 +837,10 @@ class BlogData {
 		$imported = array();
 		foreach ( $attachments as $attachment ) {
 			$filename = esc_url_raw( $attachment->guid );
-			$imported[] = self::ImportMedia( $post_id, $filename, false, $attachment->ID );
+			$id = self::ImportMedia( $post_id, $filename, false, $attachment->ID );
+			if ( is_numeric( $id ) ) {
+				$imported[] = $id;
+			}
 		}
 
 		return $imported;

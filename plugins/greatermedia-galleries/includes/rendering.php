@@ -129,19 +129,21 @@ class GreaterMediaGallery {
 		$post = get_post( $post );
 		if ( ! isset( $ids[ $post->ID ] ) ) {
 			$array_ids = get_post_meta( $post->ID, 'gallery-image' );
-			$array_ids = array_filter( array_map( 'absint', $array_ids ) );
+			$array_ids = array_filter( array_map( 'intval', $array_ids ) );
 
 			if ( empty( $array_ids ) && preg_match_all( '/\[gallery.*ids=.(.*).\]/', $post->post_content, $ids ) ) {
 				$array_ids = array();
 				foreach( $ids[1] as $match ) {
 					$array_id = explode( ',', $match );
-					$array_id = array_map( 'intval', $array_id );
+					$array_id = array_filter( array_map( 'intval', $array_id ) );
 
 					$array_ids = array_merge( $array_ids, $array_id );
 				}
 			}
 
-			$ids[ $post->ID ] = array_filter( array_map( 'absint', $array_ids ) );
+			$ids[ $post->ID ] = is_array( $array_ids )
+				? array_values( array_filter( array_map( 'intval', $array_ids ) ) )
+				: array();
 		}
 
 		return ! empty( $ids[ $post->ID ] )
