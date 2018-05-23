@@ -74,45 +74,50 @@
 		};
 
 		var updateSidebarInfo = function( slide ) {
+			var newActiveSlide = document.querySelector( '.gallery-top .slick-slide:nth-child(' + parseInt( slide + 1, 10 ) + ')' );
+			if ( newActiveSlide.classList.contains( 'meta-spacer' ) ) {
+				return;
+			}
+
+			var title = newActiveSlide.getAttribute( 'data-title' );
+			var caption = newActiveSlide.getAttribute( 'data-caption' );
+
+			var sidebarTitle = document.getElementById( 'js-swiper-sidebar-title' );
+			if ( sidebarTitle ) {
+				sidebarTitle.innerText = title;
+			}
+
+			var sidebarCaption = document.getElementById( 'js-swiper-sidebar-caption' );
+			if ( sidebarCaption ) {
+				sidebarCaption.innerText = caption;
+			}
+
+			var sidebarDownload = document.getElementById( 'js-swiper-sidebar-download' );
+			if ( sidebarDownload ) {
+				sidebarDownload.href = newActiveSlide.getAttribute( 'data-source' );
+			}
+
 			var shareIndividualPhotos = parseInt( document.querySelector( '.gallery-top' ).getAttribute( 'data-share-photos' ), 10 );
 			if ( isNaN( shareIndividualPhotos ) || ! shareIndividualPhotos ) {
 				// if we don't need to share individual photos, then we don't need to change share buttons
 				return;
 			}
 
-			var newActiveSlide = document.querySelector( '.gallery-top .slick-slide:nth-child(' + parseInt( slide+1, 10 ) + ')' );
-			var sidebarTitle = document.getElementById( 'js-swiper-sidebar-title' );
-			var sidebarCaption = document.getElementById( 'js-swiper-sidebar-caption' );
-			var sidebarDownload = document.getElementById( 'js-swiper-sidebar-download' );
+			var url = encodeURIComponent( newActiveSlide.getAttribute( 'data-share' ) );
 
 			var facebookButton = sidebar.querySelector( '.social__link.icon-facebook' );
+			if ( facebookButton ) {
+				facebookButton.href = 'https://www.facebook.com/sharer/sharer.php?u=' + url + '&title=' + encodeURIComponent( title );
+			}
+
 			var twitterButton = sidebar.querySelector( '.social__link.icon-twitter' );
+			if ( twitterButton ) {
+				twitterButton.href = 'https://twitter.com/home?status=' + encodeURIComponent( title ) + '+' + url;
+			}
+
 			var googleButton = sidebar.querySelector( '.social__link.icon-google-plus' );
-
-			// If we're not on an ad slide, update the sidebar information with new title, caption and social sharing
-			if ( ! newActiveSlide.classList.contains( 'meta-spacer' ) ) {
-				var title = newActiveSlide.getAttribute( 'data-title' );
-				var caption = newActiveSlide.getAttribute( 'data-caption' );
-
-				var url = encodeURIComponent( newActiveSlide.getAttribute( 'data-share' ) );
-				var facebookURL = 'http://www.facebook.com/sharer/sharer.php?u=' + url + '&title=' + encodeURIComponent( title );
-				var twitterURL = 'http://twitter.com/home?status=' + encodeURIComponent( title ) + '+' + url;
-				var googleURL = 'https://plus.google.com/share?url=' + url;
-
-				sidebarTitle.innerText = title;
-				sidebarCaption.innerText = caption;
-				if ( sidebarDownload ) {
-					sidebarDownload.href = newActiveSlide.getAttribute( 'data-source' );
-				}
-				if ( facebookButton ) {
-					facebookButton.href = facebookURL;
-				}
-				if ( twitterButton ) {
-					twitterButton.href = twitterURL;
-				}
-				if ( googleButton ) {
-					googleButton.href = googleURL;
-				}
+			if ( googleButton ) {
+				googleButton.href = 'https://plus.google.com/share?url=' + url;
 			}
 		};
 
