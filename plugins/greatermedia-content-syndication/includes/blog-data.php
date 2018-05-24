@@ -407,6 +407,9 @@ class BlogData {
 		if ( 'gmr_gallery' == $single_result->post_type ) {
 			$attachments = get_post_meta( $single_result->ID, 'gallery-image' );
 			$attachments = array_filter( array_map( 'get_post', $attachments ) );
+			foreach ( $attachments as $attachment ) {
+				$attachment->guid = wp_get_attachment_image_url( $attachment->ID, 'full' );
+			}
 		}
 
 		$term_tax = array();
