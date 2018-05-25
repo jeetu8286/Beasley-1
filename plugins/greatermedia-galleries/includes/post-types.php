@@ -122,7 +122,7 @@ class GreaterMediaGalleryCPT {
 					'type'          => 'true_false',
 					'instructions'  => 'Whether or not to display download links on the gallery page.',
 					'required'      => 0,
-					'default_value' => 0,
+					'default_value' => 1,
 					'ui'            => 1,
 					'ui_on_text'    => '',
 					'ui_off_text'   => '',
