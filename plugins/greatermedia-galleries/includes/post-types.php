@@ -18,6 +18,7 @@ class GreaterMediaGalleryCPT {
 		add_filter( 'gmr_live_link_suggestion_post_types', array( __CLASS__, 'extend_live_link_suggestion_post_types' ) );
 		add_filter( 'gmr-homepage-curation-post-types', array( __CLASS__, 'extend_curration_post_types' ) );
 		add_filter( 'gmr-show-curation-post-types', array( __CLASS__, 'extend_curration_post_types' ) );
+		add_filter( 'gmr-homepage-exclude-post-types', array( __CLASS__, 'add_keep_off_homepage_widget' ) );
 
 		self::add_save_actions();
 	}
@@ -264,6 +265,11 @@ class GreaterMediaGalleryCPT {
 	 */
 	public static function extend_curration_post_types( $post_types ) {
 		$post_types[] = self::ALBUM_POST_TYPE;
+		$post_types[] = self::GALLERY_POST_TYPE;
+		return $post_types;
+	}
+
+	public static function add_keep_off_homepage_widget( $post_types ) {
 		$post_types[] = self::GALLERY_POST_TYPE;
 		return $post_types;
 	}
