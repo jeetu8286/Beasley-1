@@ -112,7 +112,7 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-contrib-watch');
 
 	// Default tasks
-	grunt.registerTask('js', ['jshint', 'concat', 'uglify']);
+	grunt.registerTask('js', ['concat', 'uglify']);
 	grunt.registerTask('css', ['sass', 'cssmin']);
 	grunt.registerTask('default', ['js', 'css']);
 
