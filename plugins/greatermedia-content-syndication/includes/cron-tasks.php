@@ -9,6 +9,7 @@ class CronTasks {
 		add_action( 'admin_init', array( __CLASS__, 'syndication_setup_schedule' ) );
 		add_action( 'syndication_five_minute_event', array( __CLASS__, 'run_syndication' ) );
 		add_action( 'gmr_do_syndication', array( __CLASS__, 'do_syndication' ) );
+		add_filter( 'ep_sync_insert_permissions_bypass', array( __CLASS__, 'ep_sync_insert_permissions_bypass' ) );
 	}
 
 	/**
@@ -87,6 +88,21 @@ class CronTasks {
 		}
 
 		return $time_string;
+	}
+
+	/**
+	 * Async tasks don't have a user, so we need to make sure content is still indexed when coming from syndication processes
+	 *
+	 * @param $bypass
+	 *
+	 * @return bool
+	 */
+	public static function ep_sync_insert_permissions_bypass( $bypass ) {
+		if ( defined( 'DOING_ASYNC' ) && DOING_ASYNC ) {
+			$bypass = true;
+		}
+
+		return $bypass;
 	}
 
 }
