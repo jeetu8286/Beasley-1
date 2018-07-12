@@ -15,12 +15,12 @@ a:hover .highlights__community--title
 }
 
 @include bp(large) {
-
     .main {
         background-image: url("../../images/PLAYA-Y-ARENA-JUNE2018-bg.png");
         background-position: top center;
         background-repeat: no-repeat;
-				background-color: #000000;
+		background-color: #005dac;
+		background-attachment: fixed;
+		background-size: cover;
     }
-
 }
