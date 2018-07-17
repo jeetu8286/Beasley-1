@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e929192b227b53a400cb3d899538cd50",
+    "content-hash": "a16b5f713d1d98b729adbef94594ef6e",
     "packages": [
         {
             "name": "10up/post-finder",
@@ -543,6 +543,26 @@
             "homepage": "https://wordpress.org/plugins/public-post-preview/"
         },
         {
+            "name": "wpackagist-plugin/query-monitor",
+            "version": "3.1.0",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/query-monitor/",
+                "reference": "tags/3.1.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/query-monitor.3.1.0.zip",
+                "reference": null,
+                "shasum": null
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/query-monitor/"
+        },
+        {
             "name": "wpackagist-plugin/restricted-site-access",
             "version": "6.2.1",
             "source": {
@@ -764,26 +784,6 @@
         }
     ],
     "packages-dev": [
-        {
-            "name": "wpackagist-plugin/query-monitor",
-            "version": "3.0.1",
-            "source": {
-                "type": "svn",
-                "url": "https://plugins.svn.wordpress.org/query-monitor/",
-                "reference": "tags/3.0.1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/query-monitor.3.0.1.zip",
-                "reference": null,
-                "shasum": null
-            },
-            "require": {
-                "composer/installers": "~1.0"
-            },
-            "type": "wordpress-plugin",
-            "homepage": "https://wordpress.org/plugins/query-monitor/"
-        },
         {
             "name": "wpackagist-plugin/rewrite-rules-inspector",
             "version": "1.2.1",
