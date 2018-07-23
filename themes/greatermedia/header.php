@@ -14,7 +14,6 @@
 <html class="no-js lt-ie9"><![endif]-->
 <!--[if gt IE 8]><!-->
 <html class="no-js"><!--<![endif]-->
-
 	<head>
 		<meta charset="utf-8">
 
@@ -38,7 +37,6 @@
 
 		<?php // drop Google Analytics Here ?>
 		<?php // end analytics ?>
-
 	</head>
 
 	<body <?php body_class(); ?>>

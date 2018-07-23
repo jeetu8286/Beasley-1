@@ -787,11 +787,23 @@ function greatermedia_add_google_analytics( $instant_article = false ) {
 
 		var googleUidDimension = '<?php echo esc_js( $google_uid_dimension ); ?>';
 
-		<?php if(! $ignore_jquery) : ?>
-		jQuery( document ).on( 'pjax:end', function () {
-			ga( 'set', 'location', window.location.href );
-			ga( 'send', 'pageview' );
-		} );
+		<?php if( ! $ignore_jquery ) : ?>
+		document.addEventListener("DOMContentLoaded", function() {
+			jQuery( document ).on( 'pjax:end', function () {
+				ga( 'set', 'location', window.location.href );
+				ga( 'send', 'pageview' );
+			} );
+
+			var $body = jQuery( 'body' );
+
+			$body.on( 'inlineAudioPlaying.gmr', function () {
+				ga( 'send', 'event', 'audio', 'Inline audio playing' );
+			} );
+
+			$body.on( 'liveStreamPlaying.gmr', function () {
+				ga( 'send', 'event', 'audio', 'Live stream playing' );
+			} );
+		});
 		<?php endif; ?>
 
 		ga('require', 'displayfeatures');
@@ -814,24 +826,10 @@ function greatermedia_add_google_analytics( $instant_article = false ) {
 		<?php endif ?>
 
 		ga('send', 'pageview');
-
-		<?php if ( ! $ignore_jquery ) : ?>
-		jQuery( document ).ready( function () {
-			var $body = jQuery( 'body' );
-
-			$body.on( 'inlineAudioPlaying.gmr', function () {
-				ga( 'send', 'event', 'audio', 'Inline audio playing' );
-			} );
-
-			$body.on( 'liveStreamPlaying.gmr', function () {
-				ga( 'send', 'event', 'audio', 'Live stream playing' );
-			} );
-		} );
-		<?php endif; ?>
 	</script><?php
 }
 
-add_action( 'wp_head', 'greatermedia_add_google_analytics' );
+add_action( 'wp_head', 'greatermedia_add_google_analytics', 0 );
 add_filter( 'greater_media_analytics_makrup', 'gretermedia_get_google_analytics' );
 
 function gretermedia_get_google_analytics( $content ) {
