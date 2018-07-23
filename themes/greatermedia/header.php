@@ -31,14 +31,6 @@
 
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
-		<script type="text/javascript">
-			window.addEventListener('error', function(event) {
-				console.log(event);
-				console.log(typeof event.preventDefault);
-				console.log(typeof event.stopPropagation);
-			});
-		</script>
-
 		<?php // wordpress head functions ?>
 		<?php wp_head(); ?>
 		<?php // end of wordpress head ?>

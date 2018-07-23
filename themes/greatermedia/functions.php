@@ -831,7 +831,7 @@ function greatermedia_add_google_analytics( $instant_article = false ) {
 	</script><?php
 }
 
-add_action( 'wp_head', 'greatermedia_add_google_analytics' );
+add_action( 'wp_head', 'greatermedia_add_google_analytics', 0 );
 add_filter( 'greater_media_analytics_makrup', 'gretermedia_get_google_analytics' );
 
 function gretermedia_get_google_analytics( $content ) {
