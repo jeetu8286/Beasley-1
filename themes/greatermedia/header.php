@@ -14,7 +14,6 @@
 <html class="no-js lt-ie9"><![endif]-->
 <!--[if gt IE 8]><!-->
 <html class="no-js"><!--<![endif]-->
-
 	<head>
 		<meta charset="utf-8">
 
@@ -32,13 +31,20 @@
 
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
+		<script type="text/javascript">
+			window.addEventListener('error', function(event) {
+				console.log(event);
+				console.log(typeof event.preventDefault);
+				console.log(typeof event.stopPropagation);
+			});
+		</script>
+
 		<?php // wordpress head functions ?>
 		<?php wp_head(); ?>
 		<?php // end of wordpress head ?>
 
 		<?php // drop Google Analytics Here ?>
 		<?php // end analytics ?>
-
 	</head>
 
 	<body <?php body_class(); ?>>
