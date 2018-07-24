@@ -67,7 +67,7 @@ add_filter( 'beasley-share-url', function() use ( $images, $current_gallery ) {
 				$slide_index++;
 			endif;
 
-			$data = wp_get_attachment_image_src( $image->ID, 'gm-article-thumbnail' );
+			$data = wp_get_attachment_image_src( $image->ID, 'beasley-gallery-slide' );
 			if ( empty( $data ) ) :
 				continue;
 			endif;
