@@ -84,6 +84,7 @@ function greatermedia_setup() {
 	add_image_size( 'gm-entry-thumbnail-4-3' ,          500,    375,    true    );
 	add_image_size( 'gmr-gallery',              		800,    534,    true    ); // large images for the gallery
 	add_image_size( 'gmr-gallery-thumbnail',    		100,    100             ); // thumbnails for the gallery
+    add_image_size( 'beasley-gallery-slide', 9999, 600, false ); // content-gallery-slideshow - set max height to 600 and scale the rest of the image
 	add_image_size( 'gmr-featured-primary',     		1600,   572,    true    ); // image for primary featured post on front page
 	add_image_size( 'gmr-featured-secondary',   		336,    224,    true    ); // thumbnails for secondary featured posts on front page
 	add_image_size( 'gmr-show-featured-primary',   		708,    389,    true    ); // thumbnails for secondary featured posts on front page
