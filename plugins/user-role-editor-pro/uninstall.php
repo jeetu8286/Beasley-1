@@ -18,16 +18,19 @@ function ure_delete_options() {
   
   $backup_option_name = $wpdb->prefix.'backup_user_roles';
   delete_option($backup_option_name);
-  delete_option('ure_caps_readable');
-  delete_option('ure_show_deprecated_caps');
-  delete_option('ure_hide_pro_banner');    
   delete_option('external_updates-user-role-editor-pro');
   delete_option('user_role_editor');
+  delete_option('ure_role_additional_options_values');
   delete_option('ure_admin_menu_copy');
   delete_option('ure_admin_submenu_copy');
+  delete_option('ure_admin_menu_hashes');
   delete_option('ure_admin_menu_access_data');
   delete_option('ure_widgets_access_data');
+  delete_option('ure_widgets_show_access_data');
   delete_option('ure_other_roles_access_data');
+  delete_option('ure_task_queue');
+  delete_option('ure_admin_menu_access_data_version');
+  delete_site_option('ure_assign_role_job');
 }
 
 
