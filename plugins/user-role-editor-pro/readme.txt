@@ -1,9 +1,9 @@
 === User Role Editor Pro ===
-Contributors: Vladimir Garagulya (shinephp)
+Contributors: Vladimir Garagulya (https://www.role-editor.com)
 Tags: user, role, editor, security, access, permission, capability
-Requires at least: 3.5
-Tested up to: 4.1.1
-Stable tag: trunk
+Requires at least: 4.4
+Tested up to: 4.9.7
+Stable tag: 4.47.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -11,7 +11,7 @@ With User Role Editor WordPress plugin you may change WordPress user roles and c
 
 == Description ==
 
-With User Role Editor WordPress plugin you can change user role (except Administrator) capabilities easy, with a few clicks.
+With User Role Editor WordPress plugin you can change user role capabilities easy.
 Just turn on check boxes of capabilities you wish to add to the selected role and click "Update" button to save your changes. That's done. 
 Add new roles and customize its capabilities according to your needs, from scratch of as a copy of other existing role. 
 Unnecessary self-made role can be deleted if there are no users whom such role is assigned.
@@ -24,183 +24,133 @@ Multi-site support is provided.
 
 Installation procedure:
 
-1. Deactivate plugin if you have the previous version installed. If you have free version you should deactivate it too.
+1. Deactivate plugin if you have the previous version installed.
 2. Extract "user-role-editor-pro.zip" archive content to the "/wp-content/plugins/user-role-editor-pro" directory.
 3. Activate "User Role Editor Pro" plugin via 'Plugins' menu in WordPress admin menu. 
 4. Go to the "Settings"-"User Role Editor" and adjust plugin options according to your needs. For WordPress multisite URE options page is located under Network Admin Settings menu.
 5. Go to the "Users"-"User Role Editor" menu item and change WordPress roles and capabilities according to your needs.
 
+In case you have a free version of User Role Editor installed: 
+Pro version includes its own copy of a free version (or the core of a User Role Editor). So you should deactivate free version and can remove it before installing of a Pro version. 
+The only thing that you should remember is that both versions (free and Pro) use the same place to store their settings data. 
+So if you delete free version via WordPress Plugins Delete link, plugin will delete automatically its settings data. Changes made to the roles will stay unchanged.
+You will have to configure lost part of the settings at the User Role Editor Pro Settings page again after that.
+Right decision in this case is to delete free version folder (user-role-editor) after deactivation via FTP, not via WordPress.
+
 
 == Changelog ==
+= [4.47.2] 05.07.2018 =
+* Core version: 4.44
+* Update: Widgets admin access add-on: It's possible now to block the access to sidebars (widgets areas) created by a user with help of Divi theme.
+* Fix: Content view restrictions add-on: 'warning index not defined' (content-view-restrictions-posts-list.php, line #395) was fixed. 
+* Core version was updated to 4.44:
+* Update: URE had executed 'profile_update' action after update of user permissions from the user permissions editor page: Users->selected user->Capabilities. 
+  It was replaced with 'ure_user_permissions_update' action now. It will allow to exclude conflicts with other plugins - "WP Members" [lost checkbox fields values](https://wordpress.org/support/topic/conflict-with-wp-members-2/), for example.
+* Update: Additional options for role (like "Hide admin bar" at the bottom of URE page) did not applied to the user with 'ure_edit_roles' capability. This condition was removed.
+* Update: fix PHP notice 'Undefined offset: 0 in ...' at includes/classes/protect-admin.php, not_edit_admin(), where the 1st element of $caps array not always has index 0.
+* Update: PHP required version was increased up to 5.4.
 
 
-= 4.18.1 =
-* 24.02.2015
-* Fixed PHP fatal error for "Reset" roles operation.
-* Fixed current user capability checking before URE Options page open.
-* 3 missed phrases were added to the translations files.
-
-= 4.18 =
-* 11.02.2015
-* Own custom user capabilities, e.g. 'ure_edit_roles' are used to restrict access to User Role Editor functionality.
-* Posts/pages edit access restriction add-on functionality was extended to the Media Library. Posts/pages attachments becomes unavailable automatically if correspondent post/page edit is prohibited.
-* Posts/pages edit access restriction add-on works with custom post types now.
-* Posts/pages view access restriction works with custom post types now.
-* Admin menu items with empty user capability are available in "Admin menu access" add-on now. "Participants Database" plugin defines its menu this way.
-* Some plugins use meta capabilities instead of real user capabilities, like 'jetpack_admin_page' in "JetPack" or 'wpcf7_read_contact_forms' in "Contact Form 7". "Admin menu access" add-on recognizes such meta capabilities now. These meta-caps are replaced at "Admin menu" window with correspondent (mapped) real user capabilities for your further reference.
-* Admin menu access add-on updated: 'Howdy, ...' menu including 'Logout' menu item at top bar admin menu will not disappear after blocking 'Profile' menu. 
-* Top bar menu 'SEO' from "WP SEO from Yoast" plugin is blocked if user has no 'manage_options' capability or correspondent admin menu is blocked.
-* Admin menu blocking is available for 'administrator' role under multisite. You should be superadmin. Do not give administrator access to URE in this case.
-* More universal checking applied to the custom post type capabilities creation to exclude not existing property notices.
-* New option "Edit user capabilities" was added. If it is unchecked - capabilities section of selected user will be shown in the readonly mode. Administrator (except superadmin for multisite) can not assign capabilities to the user directly. He should make it using roles only.
-* Fixed JavaScript bug with 'Reset Roles' for FireFox v.34.
-
-= 4.17 =
-* 03.10.2014
-* "Other roles access" additional module was added. It allows to define which other roles user with current role may see at WordPress: dropdown menus, e.g assign role to user editing user profile, etc.
-* Correspondent front-end admin menu bar items are blocked according to settings of "Admin menu blocking" add-on.
-* Edit access restrictions add-on: Bulk actions helper was added. It is possible to select posts from the posts list and allow/prohibit access for editing them to the group of users. Go to the "Posts/Pages", select bulk action "Edit Access" and click "Apply".
-* uninstall.php was updated to delete data of "Widgets access", "Other roles access" add-ons.
-* Multisite: - case when URE was not network activated: It is possible to use own settings for single site activated instances of User Role Editor. It used the only version of settings values from the main blog earlier. 
-  Important - in order to have ability to setup updates automatically URE should be activated for the main blog of the network.
-  Some critical options were hidden from the "Multisite" tab for single site administrators. Single site admin should not have access to the options which purpose is to restrict him.
-  Attention! In case you decide to allow single site administrator activate/deactivate User Role Editor himself, setup this PHP constant at the wp-config.php file:
-  define('URE_ENABLE_SIMPLE_ADMIN_FOR_MULTISITE', 1);
-  Otherwise single site admin will not see User Role Editor in the plugins list after its activation. User Role Editor hides itself under multisite from all users except superadmin by default.
-
-= 4.16 =
-* 12.09.2014
-* "Rename role" button was added to the URE toolbar. It allows to change user role display name (role ID is always the same). Be careful and double think before rename some built-in WordPress role.
-* "create_sites" user capability was added to the list of built-in WordPress user capabilities for WordPress multisite. It does not exist by default. But it is used to control "Add New" button at the "Sites" page under WordPress multisite network admin.
-* bug fix: WordPress database prefix value was not used in 2 SQL queries related to the "count users without role" module - updated.
-* Admin menu access module: front-end admin menu bar was hidden for user for which you blocked at least one admin menu items.
-* Admin menu access module: fixes for the processing of "Appearance" menu and its items "Themes", "Customize" (required user capability, etc.).
-* Roles export: file name with exported roles data is built now using this scheme: ure-roles-backup_Y-m-d_h_i_s.dat, e.g. ure-roles-backup_2014-09-05_15_23_09.dat
-
-= 4.15 =
-* 30.08.2014
-* Widgets permissions module was added. If role has access to the "Widgets" menu item of "Appearance" menu, you may block access to the selected widgets for that role. Use a new "Widgets" button at the role editor page.
-
-= 4.14.4 =
-* 04.08.2014
-* Fix for: PHP Notice:  Undefined variable: user_role_editor in user-role-editor-pro.php on line 69 introduced in version 4.14.2. If automatic updates feature was broken for you for that reason, update to this version manually.
-* Integration with Gravity Forms permissions system was updated for admin menu blocking module.
-
-= 4.14.3 =
-* 25.07.2014
-* Integer "1" as default capability value for new added empty role was excluded for the better compatibility with WordPress core. Boolean "true" is used instead as WordPress itself does.
-* Integration with Gravity Forms permissions system was enhanced for WordPress multisite.
-* Roles import module may import role with integer (not boolean) capability value "1". Error was shown earlier. 
-* Error message from import roles module shows role and capability which does not pass the validation rule.
-
-= 4.14.2 =
-* 24.07.2014
-* Admin menu access module: 
-  - Bug was fixed which prevented to prohibit direct URL access to the blocked menu items. Recheck roles blocked admin menu items after installing this update as with low probability you may need to redefine them from the scratch. Try to deactivate/activate plugin 1st (Network deactivate/Network Activate for WP multisite). Generally it helps according to the test results;
-  - role menu permissions processing was updated for the Gravity Forms plugin under WP multisite.
-* Integration with Gravity Forms permissions system was enhanced for WP multisite.
-* MySQL query optimized in order to reduce memory consumption.
-* Extra WordPress nonce field was removed from the post at main role editor page.
-* The instance of main plugin class User_Role_Editor is available for other developers via $GLOBALS['user_role_editor']
-* Compatibility issue with the theme ["WD TechGoStore"](http://wpdance.com) is resolved. This theme loads its JS and CSS stuff for admin backend unconditionally - for all pages except loading for its own pages only. 
-While the problem is caused just by CSS, URE unloads for optimization purpose all this theme's JS and CSS from WP admin backend pages where conflict is possible.
-* Fix for the issue with periodic URE license key value disappearance at WordPress multi-site.
-* Minor code enhancements.
+= [4.47.1] 05.06.2018 =
+* Core version: 4.43
+* Core version was updated to 4.43:
+* Update: references to non-existed roles are removed from the URE role additional options data storage after any role update.
+* Fix: Additional options section view for the current role was not refreshed properly after other current role selection.
 
 
-= 4.12.1 =
-* 01.07.2014
-* Technical update to fix the issue with the automatic updates API link. This link should start from https://www.role-editor.com instead of https://role-editor.com
-This is related to migration or role-editor.com to the Google App Engine platform, which does not support SSL for the naked custom domains and 
-force us SSL secured links from www subdomain, e.g. https://www.role-editor.com in our case.
+= [4.47] 22.05.2018 =
+* Core version: 4.42
+* New: support for new user capabilities introduced by WordPress 4.9.6 was added: manage_privacy_options (Settings->Privacy), export_others_personal_data (Tools->Export Personal Data), erase_others_personal_data (Tools->Erase Personal Data).
+* Fix: Divi theme et_pb_layout (Divi Library) custom post type (CPT) was unavailable even for admin when "Force custom post types to use their own capabilities" URE option was turned ON.
+et_pb_layout CPT is not available by default at User Role Editor pages (users.php), and we have to tell Divi to load et_pb_layout for URE pages via Divi's custom filter 'et_builder_should_load_framework'.
 
 
-= 4.12 =
-* 22.04.2014
-* Use new "Admin Menu" button to block selected admin menu items for role. You need to activate this module at the "Additional Modules". 
-This feature is useful when a lot of submenu items are restricted by the same user capability, e.g. "Settings" submenu, but you wish allow to user work just with part of it. 
-You may use "Admin Menu" dialog as the reference for your work with roles and capabilities as "Admin Menu" shows 
-what user capability restrict access to what admin menu item.
-* Posts/Pages edit restriction feature does not prohibit to add new post/page now. Now it should be managed via 'create_posts' or 'create_pages' user capabilities.
-* If you use Posts/Pages edit restriction by author IDs, there is no need to add user ID to allow him edit his own posts or page. Current user is added to the allowed authors list automatically.
-* New tab "Additional Modules" was added to the User Role Editor options page. As per name all options related to additional modules were moved there.
-* Bug was fixed. It had prevented bulk move users without role (--No role for this site--) to the selected role in case such users were shown more than at one WordPress Users page.
+= [4.46] 16.05.2018 =
+* Core version: 4.42
+* Fix: Gravity Forms Access add-on:
+*   - "Fatal error: Maximum function nesting level of 256 reached, aborting!" raised in some cases was fixed.
+*   - Not allowed forms were excluded from top admin menu bar "Forms" recent forms list.
+* Core version was updated to 4.42:
+* Fix: Type checking was added (URE_Lib::restore_visual_composer_caps()) to fix "Warning: Invalid argument supplied for foreach() in .../user-role-editor-pro/includes/classes/ure-lib.php on line 315".
 
 
-= 4.11 =
-* 06.04.2014
-* Single-site: It is possible to bulk move users without role (--No role for this site--) to the selected role or automatically created role "No rights" without any capabilities. 
-Get more details at https://www.role-editor.com/no-role-for-this-site/
-* Posts/pages edit restriction controls are shown at user profile in case only if user can edit posts/pages.
-* It is possible to restrict editing posts/pages by its authors user ID (targeted user should have edit_others_posts or edit_others_pages capability).
-* Multi-site: Superadmin can setup individual lists of themes available for activation to selected sites administrators.
-* Gravity Forms access restriction module was tested and compatible with Gravity Forms version 1.8.5
-* Plugin uses for dialogs jQuery UI CSS included into WordPress package instead of external one.
+= [4.45] 07.05.2018 =
+* Core version: 4.41
+* New: WordPress Multisite: it's possbile to automatically copy selected add-ons data from the main site to the new created subsite. 
+Use custom filter [ure_addons_to_copy_for_new_blog](https://www.role-editor.com/documentation/hooks/ure_addons_to_copy_for_new_blog/) to build list of add-on, which data URE should copy. 
+* Update: Admin menu access add-on: 
+*   - menu item title was shown empty at "Admin menu" window, if it began from '<span' HTML tag.
+*   - blocked menu item was not removed automatically if its submenu had the only item with the same link. It was possible in case menu item used another user capability then related submenu item.
+* Update: Content view restrictions add-on:
+    - when you leave 'Redirect to:' parameter empty user is redirected to the login page and back to the initial URL after the successful login.
+* Update: Gravity Forms access add-on:
+*   - Function GFFormsModel::get_lead_table_name() call was replaced with GFFormsModel::get_entry_table_name() to provide compatibility with Gravity Forms v. 2.3+.
+*   - Gravity forms entry_detail page was added to the list of pages for which URE should control the list of available Gravity Forms.
+* Fix: Posts/Pages edit restrictions add-on: 
+*   - infinite recursion was possible in some cases for 'pre_get_posts' action in posts-edit-access.php;
+*   - "Fatal error: Call to undefined method URE_Content_View_Restrictions::is_page_template_resticted_for_role() in content-view-restrictions.php on line 581" was fixed.
+* Core version was updated to 4.41:
+* New: URE changes currently selected role via AJAX request, without full "Users->User Role Editor" page refresh.
+* Update: All [WPBakery Visual Composer](http://vc.wpbakery.com) plugin custom user capabilities (started from 'vc_access_rules_') were excluded from processing by User Role Editor. Visual Composer loses settings made via its own "Role Manager" after the role update by User Role Editor in other case. The reason - Visual Composer stores not boolean values with user capabilities granted to the roles via own "Role Manager". User Role Editor converted them to related boolean values during role(s) update.
 
 
-= 4.10 =
-* 15.02.2014
-* Security enhancement: '__()' and '_e()' WordPress text translation functions were replaced with more secure 'esc_html__()' and 'esc_html_e()'.
-* It is possible to restrict access to the post or page content view for selected roles. Activate the option at plugin "Settings" page and use new "Content View Restrictions" metabox 
-at post/page editor to setup content view access restrictions.
-* Gravity Forms access management module was updated for compatibility with Gravity Forms version 1.8.3. If you need compatibility with earlier Gravity Forms versions, e.g. 1.7.9, use User Role Editor version 4.9.
+= [4.44] 06.04.2018 =
+* Core version: 4.40.3
+* Update: Integration with bbPress was enhanced.
+* Core version was updated to 4.40.3:
+* Update: bbPress detection and code for integration with it was updated to support multisite installations when URE is network activated but bbPress is activated on some sites of the network only. (Free version does not support bbPress roles. It excludes them from processing as bbPress creates them dynamically.)
 
-= 4.9 =
-* 19.01.2014
-* New tab "Default Roles" was added to the User Role Editor settings page. It is possible to select multiple default roles to assign them automatically to the new registered user.
-* CSS and dialog windows layout various enhancements.
-* 'members_get_capabilities' filter was applied to provide better compatibility with themes and plugins which may use it to add its own user capabilities.
-* jQuery UI CSS was updated to version 1.10.4.
-* Option was added to download jQuery UI CSS from the jQuery CDN.
-* Bug was fixed: Plugins activation assess restriction section was not shown for selected user under multi-site environment.
+= [4.43] 04.04.2018 =
+* Core version: 4.40.1
+* Fix: Core version was reversed back to 4.40.1 due to fatal error cause by 4.40.2 update for some installations with active bbPress.
+
+= [4.42] 04.04.2018 =
+* Core version: 4.40.2
+* New: Content View Restrictions add-on: 
+* - New criteria "Page Templates" were added to content view restrictions for roles.
+* - It's possible to extend 'Any User Role (logged in only)' condition using custom filter 'ure_is_user_logged_in', in order to check the additional conditions, for example: date, user name, subdomain, etc.
+* Update: Admin menu access add-on: full admin menu copy creation code priority at 'admin_menu' hook was increased from 1000 to 9999. It should be executed after other plugins. MetaSlider plugin adds its admin menu with 9553 priority.
+* Fix: Content View Restrictions add-on: 
+  - "Redirect to URL" option did not work for pages.
+  - pages linked to BuddyPress components activity, groups, members ignored restrictions set by URE.
+* Fix: Meta Boxes Access add-on: meta boxes blocking code hooked to the general 'add_meta_boxes' action had fired too early and could not block meta boxes added via 'add_meta_boxes_{post_type}' hook executed later.
+*
+* Core version was updated to 4.40.2:
+* Update: Load required .php files from the active bbPress plugin directly, as in some cases URE code may be executed earlier than they are loaded by bbPress.
+
+= [4.41] 06.02.2018 =
+* Core version: 4.40.1
+* New: Export-import module was rewritten:
+* - Attention: New exported data format is not compatible with data exported by older versions.
+* - Users->User Role Editor: Export/Import buttons applied to the single currently selected role only.
+* - Settings->Tools-> Export/Import buttons will work for all roles of current site (main site from the network admin) in the next version.
+* - It's possible to export/import add-ons data, like 'Admin Menu', 'Posts Edit', 'Post View', 'Meta Boxes'.
+* New: Content View Restrictions add-on: redirect to URL option was added for access error action.
+* Update: URE_Admin_Menu::load_menu_access_data_for_role() method was renamed to URE_Admin_Menu::load_data_for_role().
+* Update: URE_Admin_Menu::load_menu_access_data_for_user() method was renamed to URE_Admin_Menu::load_data_for_user().
+* Update: Page permissions viewer add-on: source code tracing was returned back (if available).
+* Update: Other roles access add-on: changes were applied for compatibility with PHP versions prior 5.5
+* Fix: Content View Restrictions add-on: 
+* - HTML layout issue was fixed at the "Action" section of post editor meta box.
+* - Restrictions were not applied properly for WooCommerce products list via [products] shortcode as WooCommerce may cache query result of unrestricted user for 30 days and show that cached data to users with restricted view access.
+* Fix: Admin menu access add-on (URE_Admin_Menu_Access::update_menu()): bug in menu update may lead to the indefinite redirection loop as a blocked URL was selected as the 1st available menu item link.
+*
+* Core version was updated to 4.40.1:
+* Update: use wp_roles() function from WordPress API instead of initializing $wp_roles global directly. wp_roles() function (introduced with WP 4.3) was included conditionally to URE code for backward compatibility with WordPress 4.0+
+* Fix: Bug was introduced by version 4.37 with users recalculation for "All" tab after excluding users with "administrator" role. Code worked incorrectly for Japanese locale.
+* Fix: WordPress multisite: bbPress plugin detection code was changed from checking bbPress API function existence to checking WordPress active plugins list. bbPress plugin activated for the site was not available yet for the network activated User Role Editor at the point of URE instance creation. URE did not work with bbPress roles as it should by design for that reason. URE (free version) should ignore bbPress roles and capabilities as the special efforts are required for this.
 
 
-= 4.8 =
-* 10.12.2013
-* Role ID validation rule was added to prohibit numeric role ID - WordPress does not support them.
-* HTML markup was updated to provide compatibility with upcoming WordPress 3.8 new administrator backend theme MP6
-* It is possible to restrict access of single sites administrators to the selected user capabilities and Add/Delete role operations inside User Role Editor.
-* Shortcode [user_role_editor roles="none"]text for not logged in users[/user_role_editor] is available
-* Gravity Forms available at "Export Entries", "Export Forms" pages is under URE access restriction now, if such one was set for the user.
-* Gravity Forms import could be set under "gravityforms_import" user capability control
-* Option was added to show/hide help links (question signs) near the capabilities from single site administrators.
-* Plugin "Options" page was divided into sections (tabs): General, Multisite, About.
-* Author's information box was removed from URE plugin page.
-* Restore previous blog 'switch_to_blog($old_blog_id)' call was replaced to 'restore_current_blog()' where it is possible to provide better compatibility with WordPress API. 
-After use 'switch_to_blog()' in cycle, URE clears '_wp_switched_stack' global variable directly instead of call 'restore_current_blog()' inside the cycle to work faster.
+== Upgrade Notice ==
+= [4.47.2] 05.07.2018 =
+* Core version: 4.44
+* Update: Widgets admin access add-on: It's possible now to block the access to sidebars (widgets areas) created by a user with help of Divi theme.
+* Fix: Content view restrictions add-on: 'warning index not defined' (content-view-restrictions-posts-list.php, line #395) was fixed. 
+* Core version was updated to 4.44:
+* Update: URE had executed 'profile_update' action after update of user permissions from the user permissions editor page: Users->selected user->Capabilities. 
+  It was replaced with 'ure_user_permissions_update' action now. It will allow to exclude conflicts with other plugins - "WP Members" [lost checkbox fields values](https://wordpress.org/support/topic/conflict-with-wp-members-2/), for example.
+* Update: Additional options for role (like "Hide admin bar" at the bottom of URE page) did not applied to the user with 'ure_edit_roles' capability. This condition was removed.
+* Update: fix PHP notice 'Undefined offset: 0 in ...' at includes/classes/protect-admin.php, not_edit_admin(), where the 1st element of $caps array not always has index 0.
+* Update: PHP required version was increased up to 5.4.
 
-= 4.7. =
-* 04.11.2013
-* "Delete Role" menu has "Delete All Unused Roles" menu item now.
-* More detailed warning was added before fulfill "Reset" roles command in order to reduce accident use of this critical operation.
-* Bug was fixed at Ure_Lib::reset_user_roles() method. Method did not work correctly for the rest sites of the network except the main blog.
-* Post/Pages editing restriction could be setup for the user by one of two modes: 'Allow' or 'Prohibit'.
-* Shortcode [user_role_editor roles="role1, role2, ..."]bla-bla[/user_role_editor] for posts and pages was added. 
-You may restrict access to content inside this shortcode tags this way to the users only who have one of the roles noted at the "roles" attribute.
-* If license key was installed it is shown as asterisks at the input field.
-* In case site domain change you should input license key at the Settings page again.
 
-= 4.6.0.2 =
-* 27.10.2013
-* Bug fix: Invalid notice "Unknown error: Roles import was failed" was shown after successful roles import to the single WordPress site.
-* Update: Spaces in user capability are allowed for import to provide compatibility with other plugins, which use spaces in user capabilities, e.g. NextGen Gallery's "NextGEN Change options", etc.
-
-= 4.6.0.1 =
-* 26.10.2013
-* Bug fix: PHP error prevented to view Gravity Forms entries and WooCommerce coupons after turning on the "Activate user access management to editing selected posts and pages" option.
-
-= 4.6 =
-* 23.10.2013
-* Content editing restriction: It is possible to differentiate permissions for posts/pages creation and editing. Use the "Activate "Create Post/Page" capability" option for that.
-* Content editing restriction: Restrict user to edit just selected posts and pages. Use the "Activate user access management to editing selected posts and pages" option for that.
-* Multi-site: Assign roles and capabilities to the users from one point at the Network Admin. Add user with his permissions together to all sites of your network with one click.
-* Multi-site: unfiltered_html capability marked as deprecated one. Read this post for more information (http://shinephp.com/is-unfiltered_html-capability-deprecated/).
-* Multi-site: 'manage_network%' capabilities were included into WordPress core capabilities list.
-* On screen help was added to the "User Role Editor Options" page - click "Help" at the top right corner to read it.
-* 'wp-content/uploads' folder is used now instead of plugin's own one to process file with importing roles data.
-* Bug fix: Nonexistent method was called to notify user about folder write permission error during roles import.
-* Bug fix: turning off capability at the Administrator role fully removed that capability from capabilities list.
-* Various internal code enhancements.
-* Information about GPLv2 license was added to show apparently – “User Role Editor Pro” are licensed under GPLv2 or later.
-
-Click [here](http://role-editor.com/changelog)</a> to look at [the full list of changes](http://role-editor.com/changelog) of User Role Editor plugin.
