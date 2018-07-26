@@ -1,0 +1,3 @@
+[submodule "plugins/10up-experience"]
+	path = plugins/10up-experience
+	url = git@github.com:10up/10up-experience.git
