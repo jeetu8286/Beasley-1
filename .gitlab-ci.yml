@@ -11,6 +11,9 @@ cache:
     - plugins/greatermedia-content-syndication/vendor
     - .composer-cache # Composer
 
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+  
 #test:
 #  stage: test
 #  script:

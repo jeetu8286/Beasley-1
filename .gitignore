@@ -28,6 +28,7 @@ mu-plugins/post-finder/
 !/plugins/user-role-editor-pro/
 !/plugins/configure-smtp/
 !/plugins/wp-newrelic/
+!/plugins/10up-experience/
 
 themes/index.php
 themes/twentyfourteen
