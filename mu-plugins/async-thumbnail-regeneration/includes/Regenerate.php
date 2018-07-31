@@ -6,9 +6,10 @@ use TenUp\AsyncThumbnails\Logger as WP_CLI; // Cheating, so I don't have to chan
 
 class Regenerate {
 
+    const ASYNC_ACTION = 'async_thumbnail_process_image';
 
     public function setup() {
-        add_action( 'async_thumbnail_process_image', array( $this, 'process_image' ) );
+        add_action( self::ASYNC_ACTION, array( $this, 'process_image' ) );
     }
 
     /**

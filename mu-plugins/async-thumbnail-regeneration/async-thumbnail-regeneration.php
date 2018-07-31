@@ -1,8 +1,13 @@
 <?php
 
-if ( ! file_exists( __DIR__ .'/vendor/autoload.php' ) ) {
-    return;
+include_once __DIR__ . '/includes/Logger.php';
+include_once __DIR__ . '/includes/Regenerate.php';
+
+if ( defined( 'WP_CLI' ) && WP_CLI ) {
+    include_once __DIR__ . '/cli/AsyncMedia.php';
 }
 
-include_once __DIR__ . '/vendor/autoload.php';
+$regenerate = new \TenUp\AsyncThumbnails\Regenerate();
+$regenerate->setup();
+
 
