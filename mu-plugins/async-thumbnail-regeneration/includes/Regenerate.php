@@ -9,6 +9,12 @@ class Regenerate {
     const ASYNC_ACTION = 'async_thumbnail_process_image';
 
     public function setup() {
+        if ( ! function_exists( 'wp_generate_attachment_metadata' ) ) {
+            require_once( ABSPATH . 'wp-admin/includes/media.php' );
+            require_once( ABSPATH . 'wp-admin/includes/file.php' );
+            require_once( ABSPATH . 'wp-admin/includes/image.php' );
+        }
+
         add_action( self::ASYNC_ACTION, array( $this, 'process_image' ) );
     }
 
