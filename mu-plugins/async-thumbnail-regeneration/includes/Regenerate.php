@@ -21,8 +21,17 @@ class Regenerate {
         $image_id = $args['image_id'];
 
         $successes = $errors = $skips = 0;
+
         $this->process_regeneration( $image_id, true, true, '', '', $successes, $errors, $skips );
     }
+
+
+
+
+    // From this point down, the code is all from the WP CLI Media Regenerate file
+
+
+
 
     /**
      * Regenerate thumbnails for a given ID
@@ -54,7 +63,7 @@ class Regenerate {
         $thumbnail_desc = $image_size ? sprintf( '"%s" thumbnail', $image_size ) : 'thumbnail';
         $fullsizepath = get_attached_file( $id );
         if ( false === $fullsizepath || !file_exists( $fullsizepath ) ) {
-            //WP_CLI::warning( "Can't find $att_desc." );
+            WP_CLI::warning( "Can't find $att_desc." );
             $errors++;
             return;
         }
@@ -95,6 +104,26 @@ class Regenerate {
             WP_CLI::log( "$progress Regenerated thumbnails for $att_desc." );
         }
         $successes++;
+    }
+
+    private function remove_old_images( $metadata, $fullsizepath, $image_size ) {
+        if ( empty( $metadata['sizes'] ) ) {
+            return;
+        }
+        if ( $image_size ) {
+            if ( empty( $metadata['sizes'][ $image_size ] ) ) {
+                return;
+            }
+            $metadata['sizes'] = array( $image_size => $metadata['sizes'][ $image_size ] );
+        }
+        $dir_path = dirname( $fullsizepath ) . '/';
+        foreach ( $metadata['sizes'] as $size_info ) {
+            $intermediate_path = $dir_path . $size_info['file'];
+            if ( $intermediate_path === $fullsizepath )
+                continue;
+            if ( file_exists( $intermediate_path ) )
+                unlink( $intermediate_path );
+        }
     }
 
     private function needs_regeneration( $att_id, $fullsizepath, $is_pdf, $image_size, $skip_delete, &$skip_it ) {
@@ -154,6 +183,98 @@ class Regenerate {
             }
         }
         return false;
+    }
+
+    // Whether there's new image sizes or the width/height of existing image sizes have changed.
+    private function image_sizes_differ( $image_sizes, $meta_sizes ) {
+        // Check if have new image size(s).
+        if ( array_diff( array_keys( $image_sizes ), array_keys( $meta_sizes ) ) ) {
+            return true;
+        }
+        // Check if image sizes have changed.
+        foreach ( $image_sizes as $name => $image_size ) {
+            if ( $image_size['width'] !== $meta_sizes[ $name ]['width'] || $image_size['height'] !== $meta_sizes[ $name ]['height'] ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Like WP's get_intermediate_image_sizes(), but removes sizes that won't be generated for a particular attachment due to its being on or below their thresholds,
+    // and returns associative array with size name => width/height entries, resolved to crop values if applicable.
+    private function get_intermediate_image_sizes_for_attachment( $fullsizepath, $is_pdf, $metadata ) {
+        // Need to get width, height of attachment for image_resize_dimensions().
+        $editor = wp_get_image_editor( $fullsizepath );
+        if ( is_wp_error( $editor ) ) {
+            return $editor;
+        }
+        if ( is_wp_error( $result = $editor->load() ) ) {
+            unset( $editor );
+            return $result;
+        }
+        list( $width, $height ) = array_values( $editor->get_size() );
+        unset( $editor );
+        $sizes = array();
+        foreach ( $this->get_intermediate_sizes( $is_pdf, $metadata ) as $name => $size ) {
+            // Need to check destination and original width or height differ before calling image_resize_dimensions(), otherwise it will return non-false.
+            if ( ( $width !== $size['width'] || $height !== $size['height'] ) && ( $dims = image_resize_dimensions( $width, $height, $size['width'], $size['height'], $size['crop'] ) ) ) {
+                list( $dst_x, $dst_y, $src_x, $src_y, $dst_w, $dst_h, $src_w, $src_h ) = $dims;
+                $sizes[ $name ] = array( 'width' => $dst_w, 'height' => $dst_h );
+            }
+        }
+        return $sizes;
+    }
+    // Like WP's get_intermediate_image_sizes(), but returns associative array with name => size info entries (and caters for PDFs also).
+    private function get_intermediate_sizes( $is_pdf, $metadata ) {
+        if ( $is_pdf ) {
+            // Copied from wp_generate_attachment_metadata() in "wp-admin/includes/image.php".
+            $fallback_sizes = array(
+                'thumbnail',
+                'medium',
+                'large',
+            );
+            $intermediate_image_sizes = apply_filters( 'fallback_intermediate_image_sizes', $fallback_sizes, $metadata );
+        } else {
+            $intermediate_image_sizes = get_intermediate_image_sizes();
+        }
+        // Adapted from wp_generate_attachment_metadata() in "wp-admin/includes/image.php".
+        if ( function_exists( 'wp_get_additional_image_sizes' ) ) {
+            $_wp_additional_image_sizes = wp_get_additional_image_sizes();
+        } else {
+            // For WP < 4.7.0.
+            global $_wp_additional_image_sizes;
+            if ( ! $_wp_additional_image_sizes ) {
+                $_wp_additional_image_sizes = array();
+            }
+        }
+        $sizes = array();
+        foreach ( $intermediate_image_sizes as $s ) {
+            if ( isset( $_wp_additional_image_sizes[ $s ]['width'] ) ) {
+                $sizes[ $s ]['width'] = (int) $_wp_additional_image_sizes[ $s ]['width'];
+            } else {
+                $sizes[ $s ]['width'] = (int) get_option( "{$s}_size_w" );
+            }
+            if ( isset( $_wp_additional_image_sizes[ $s ]['height'] ) ) {
+                $sizes[ $s ]['height'] = (int) $_wp_additional_image_sizes[ $s ]['height'];
+            } else {
+                $sizes[ $s ]['height'] = (int) get_option( "{$s}_size_h" );
+            }
+            if ( isset( $_wp_additional_image_sizes[ $s ]['crop'] ) ) {
+                $sizes[ $s ]['crop'] = (bool) $_wp_additional_image_sizes[ $s ]['crop'];
+            } else {
+                // Force PDF thumbnails to be soft crops.
+                if ( $is_pdf && 'thumbnail' === $s ) {
+                    $sizes[ $s ]['crop'] = false;
+                } else {
+                    $sizes[ $s ]['crop'] = (bool) get_option( "{$s}_crop" );
+                }
+            }
+        }
+        // Check here that not PDF (as filter not applied in core if is) and `$metadata` is array (as may not be and filter only applied in core when is).
+        if ( ! $is_pdf && is_array( $metadata ) ) {
+            $sizes = apply_filters( 'intermediate_image_sizes_advanced', $sizes, $metadata );
+        }
+        return $sizes;
     }
 
     // Update attachment sizes metadata just for a particular intermediate image size.
