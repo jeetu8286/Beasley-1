@@ -12,7 +12,7 @@ class AsyncMedia {
         }
 
         if ( empty( $args ) ) {
-            \WP_CLI::confirm( 'Do you really want to regenerate all images?' );
+            \WP_CLI::confirm( 'Do you really want to regenerate all images?', $assoc_args );
         }
 
         $query_args = array(
