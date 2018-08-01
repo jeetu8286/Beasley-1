@@ -6,15 +6,18 @@ use TenUp\AsyncThumbnails\Regenerate;
 
 class AsyncMedia {
 
-    public function regenerate() {
+    public function regenerate( $args, $assoc_args = array() ) {
         if ( ! function_exists( 'wp_async_task_add' ) ) {
             \WP_CLI::error( "WP Minions not found." );
         }
 
-        \WP_CLI::confirm( 'Do you really want to regenerate all images?' );
+        if ( empty( $args ) ) {
+            \WP_CLI::confirm( 'Do you really want to regenerate all images?' );
+        }
 
         $query_args = array(
             'post_type' => 'attachment',
+            'post__in' => $args,
             'post_mime_type' => array( 'image' ),
             'post_status' => 'any',
             'posts_per_page' => -1,
