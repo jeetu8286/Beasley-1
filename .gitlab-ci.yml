@@ -44,3 +44,4 @@ deploy_prod:
   only:
     - master
   when: manual
+  allow_failure: false
