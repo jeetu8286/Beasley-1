@@ -4,7 +4,7 @@
 	position: relative;
 	padding: 10px;
 	background-color: $header-search-bg;
-	
+
 	@include bp(large) {
 		display: block;
 		position: fixed;
@@ -46,10 +46,10 @@
 
 .header__search--open {
 	z-index: 6000001; // Higher than .header-search-overlay-mask.
-	
+
 	@include bp(large) {
 		@include transition(all 200ms ease-in-out);
-		@include transform(translate(0, 0));		
+		@include transform(translate(0, 0));
 	}
 }
 
@@ -91,7 +91,7 @@
 	color: $secondary-heading;
 	margin-right: 10px;
 	padding: 0;
-	
+
 	&:hover, &:focus {
 		color: $primary-link;
 	}
@@ -130,13 +130,13 @@
 	margin: 0 -20px;
 	padding: $base-line-height 20px;
 	clear: both;
-	
-	display: none; 
-	
+
+	display: none;
+
 	.header__search--open &.is-visible {
 		display: block;
 	}
-	
+
 	@include bp(large) {
 		margin: 0 -2.5%;
 		padding: $base-line-height 2.5%;
@@ -160,7 +160,7 @@
 	z-index: 6000000; /* IAB z-index standard for drop nav is 5000000 - 5999999 */
 	opacity: 0;
 	@include transition(visibility 0s linear, opacity 100ms ease-out);
-	
+
 	&.is-visible {
 		@include bp(large) {
 			display: block;
@@ -182,13 +182,20 @@
 	color: $color-text-gray;
 }
 
+.search__site {
+	padding: 0;
+	margin: 0 0 26px;
+	font-size: ms(2);
+	color: $color-text-gray;
+	text-transform: uppercase;
+}
+
 .search__keyword {
 	padding: 0;
 	margin-top: 26px;
 	margin-bottom: 0;
 	font-size: ms(2);
 	color: $color-text-gray;
-	text-transform: uppercase;
 }
 
 .search__keyword--term {
@@ -275,4 +282,29 @@
 
 body.search-results .posts-pagination {
 	margin-top: $base-line-height * 2;
+}
+
+.search-form {
+	display: flex;
+
+	label {
+		display: block;
+		width: 100%;
+		margin-right: 1em;
+	}
+
+	.search-field {
+		@extend %form-field;
+		display: block;
+		box-sizing: border-box;
+		width: 100%;
+		margin: 0 !important;
+		padding: 0.5em 1em !important;
+	}
+
+	.search-submit {
+		@include btn($btn-bg, $color-text-white, $btn-bg, 0.5em, 1em, ms(-1));
+		text-transform: none;
+
+	}
 }

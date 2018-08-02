@@ -30,6 +30,7 @@ define( 'GREATERMEDIA_VERSION', $version );
 
 add_theme_support( 'homepage-curation' );
 add_theme_support( 'homepage-countdown-clock' );
+add_theme_support( 'html5', array( 'search-form' ) );
 
 require_once __DIR__ . '/includes/liveplayer/class-liveplayer.php';
 require_once __DIR__ . '/includes/site-options/class-gmr-site-options.php';
