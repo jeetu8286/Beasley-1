@@ -1413,3 +1413,12 @@ function greatermedia_get_featured_gallery() {
 
 	return $featured;
 }
+
+function beasley_suppress_empty_search( $where, \WP_Query $query ) {
+	if ( $query->is_main_query() && $query->is_search() && empty( $query->query_vars['s'] ) ) {
+		return ' AND 1=0';
+	}
+
+	return $where;
+}
+add_filter( 'posts_where', 'beasley_suppress_empty_search', 10, 2 );
