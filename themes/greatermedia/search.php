@@ -25,28 +25,34 @@
 			</div><?php
 		endif;
 
+		?><h3 class="search__site">
+			Search <?php bloginfo( 'name' ); ?>
+		</h3><?php
+
 		get_search_form();
 
-		if ( have_posts() ) :
-			?><h3 class="search__keyword">
-				<?php echo intval( $count ); ?> Results Found:
-			</h3><?php
+		if ( ! empty( $search_query ) ) :
+			if ( have_posts() ) :
+				?><h3 class="search__keyword">
+					<?php echo intval( $count ); ?> Results Found
+				</h3><?php
 
-			get_template_part( 'partials/loop', 'search' );
-			greatermedia_load_more_button( array( 'partial_slug' => 'partials/loop-search' ) );
-		else :
-			if ( $keyword_post_id == 0 ):
-				?><article id="post-not-found" class="hentry cf">
-					<header class="article-header">
-						<h1>No Results Found!</h1>
-					</header>
+				get_template_part( 'partials/loop', 'search' );
+				greatermedia_load_more_button( array( 'partial_slug' => 'partials/loop-search' ) );
+			else :
+				if ( $keyword_post_id == 0 ):
+					?><article id="post-not-found" class="hentry cf">
+						<header class="article-header">
+							<h3>No Results Found!</h3>
+						</header>
 
-					<section class="entry-content">
-						<p>
-							Try searching for something else, or click one of the links above.
-						</p>
-					</section>
-				</article><?php
+						<section class="entry-content">
+							<p>
+								Try searching for something else, or click one of the links above.
+							</p>
+						</section>
+					</article><?php
+				endif;
 			endif;
 		endif;
 	?></section>

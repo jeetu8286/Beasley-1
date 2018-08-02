@@ -182,13 +182,20 @@
 	color: $color-text-gray;
 }
 
+.search__site {
+	padding: 0;
+	margin: 0 0 26px;
+	font-size: ms(2);
+	color: $color-text-gray;
+	text-transform: uppercase;
+}
+
 .search__keyword {
 	padding: 0;
 	margin-top: 26px;
 	margin-bottom: 0;
 	font-size: ms(2);
 	color: $color-text-gray;
-	text-transform: uppercase;
 }
 
 .search__keyword--term {
