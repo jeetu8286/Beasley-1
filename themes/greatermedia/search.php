@@ -25,12 +25,11 @@
 			</div><?php
 		endif;
 
+		get_search_form();
+
 		if ( have_posts() ) :
 			?><h3 class="search__keyword">
-				<?php echo intval( $count ); ?> Search Results for:
-				<span class="search__keyword--term">
-					<?php echo esc_html( $search_query ); ?>
-				</span>
+				<?php echo intval( $count ); ?> Results Found:
 			</h3><?php
 
 			get_template_part( 'partials/loop', 'search' );
