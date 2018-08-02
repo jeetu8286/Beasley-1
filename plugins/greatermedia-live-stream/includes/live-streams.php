@@ -374,36 +374,43 @@ function gmr_streams_make_primary() {
  * @return array The array of public streams.
  */
 function gmr_streams_get_public_streams() {
-	$paged   = 0;
-	$streams = array();
+	$found = false;
+	$key = 'public-streams';
+	$streams = wp_cache_get( $key, 'bbgi', false, $found);
+	if ( ! $found ) {
+		$paged   = 0;
 
-	do {
-		$paged ++;
-		$query = new WP_Query( array(
-			'post_type'           => GMR_LIVE_STREAM_CPT,
-			'posts_per_page'      => 100,
-			'paged'               => $paged,
-			'ignore_sticky_posts' => true,
-			'orderby'             => 'menu_order',
-			'fields'              => 'ids',
-		) );
+		do {
+			$paged ++;
+			$query = new WP_Query( array(
+				'post_type'           => GMR_LIVE_STREAM_CPT,
+				'post_status'         => 'publish',
+				'posts_per_page'      => 100,
+				'paged'               => $paged,
+				'ignore_sticky_posts' => true,
+				'orderby'             => 'menu_order',
+				'fields'              => 'ids',
+			) );
 
-		while ( $query->have_posts() ) {
-			$stream_id = $query->next_post();
+			while ( $query->have_posts() ) {
+				$stream_id = $query->next_post();
 
-			$call_sign = get_post_meta( $stream_id, 'call_sign', true );
-			if ( empty( $call_sign ) ) {
-				continue;
+				$call_sign = get_post_meta( $stream_id, 'call_sign', true );
+				if ( empty( $call_sign ) ) {
+					continue;
+				}
+
+				$streams[ $call_sign ] = array(
+					'description' => get_post_meta( $stream_id, 'description', true ),
+					'station_id'  => get_post_meta( $stream_id, 'station_id', true ),
+				);
 			}
+		} while ( $paged <= $query->max_num_pages );
 
-			$streams[ $call_sign ] = array(
-				'description' => get_post_meta( $stream_id, 'description', true ),
-				'station_id'  => get_post_meta( $stream_id, 'station_id', true ),
-			);
-		}
-	} while ( $paged <= $query->max_num_pages );
+		wp_cache_set( $key, $streams, 'bbgi', 10 * MINUTE_IN_SECONDS );
+	}
 
-	return $streams;
+	return is_array( $streams ) ? $streams : array();
 }
 
 /**
@@ -437,27 +444,29 @@ function gmr_streams_get_stream_by_sign( $sign ) {
 /**
  * Returns primary stream.
  *
- * @return WP_Post The primary stream if exists, otherwise FALSE.
+ * @return \WP_Post The primary stream if exists, otherwise FALSE.
  */
 function gmr_streams_get_primary_stream() {
-	static $stream = null;
-
-	if ( is_null( $stream ) ) {
+	$found = false;
+	$key = 'primary-stream-id';
+	$primary_id = wp_cache_get( $key, 'bbgi', false, $found );
+	if ( ! $found ) {
 		$query = new WP_Query( array(
 			'post_type'           => GMR_LIVE_STREAM_CPT,
+			'post_status'         => 'publish',
 			'order'               => 'DESC',
 			'orderby'             => 'menu_order',
 			'posts_per_page'      => 1,
 			'ignore_sticky_posts' => 1,
 			'no_found_rows'       => true,
+			'fields'              => 'ids',
 		) );
 
-		$stream = $query->have_posts()
-			? $query->next_post()
-			: false;
+		$primary_id = $query->have_posts() ? $query->next_post() : 0;
+		wp_cache_set( $key, $primary_id, 'bbgi' );
 	}
 
-	return $stream;
+	return $primary_id > 0 ? get_post( $primary_id ) : null;
 }
 
 function gmr_streams_get_primary_stream_callsign() {
@@ -465,12 +474,9 @@ function gmr_streams_get_primary_stream_callsign() {
 
 	if ( is_null( $callsign ) ) {
 		$stream = gmr_streams_get_primary_stream();
-
-		if ( ! isset( $stream->ID ) ) {
-			return '';
-		}
-
-		$callsign = get_post_meta( $stream->ID, 'call_sign', true );
+		$callsign = is_a( $stream, '\WP_Post' )
+			? get_post_meta( $stream->ID, 'call_sign', true )
+			: '';
 	}
 
 	return $callsign;
@@ -481,12 +487,9 @@ function gmr_streams_get_primary_stream_vast_url() {
 
 	if ( is_null( $vast_url ) ) {
 		$stream = gmr_streams_get_primary_stream();
-
-		if ( ! isset( $stream->ID ) ) {
-			return '';
-		}
-
-		$vast_url = get_post_meta( $stream->ID, 'vast_url', true );
+		$vast_url = is_a( $stream, '\WP_Post' )
+			? get_post_meta( $stream->ID, 'vast_url', true )
+			: '';
 	}
 
 	return $vast_url;
