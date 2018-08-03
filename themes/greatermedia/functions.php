@@ -1422,3 +1422,80 @@ function beasley_suppress_empty_search( $where, \WP_Query $query ) {
 	return $where;
 }
 add_filter( 'posts_where', 'beasley_suppress_empty_search', 10, 2 );
+
+function beasley_image_resize_dimensions( $payload, $orig_w, $orig_h, $dest_w, $dest_h, $crop ) {
+	if ( is_array( $payload ) ) {
+		list( $dest_x, $dest_y, $src_x, $src_y, $new_w, $new_h, $src_w, $src_h ) = $payload;
+	}
+
+	// Get faces area.
+	$hotspot_src_x     = $hotspot_src_y = PHP_INT_MAX;
+	$hotspot_src_max_x = $hotspot_src_max_w = 0;
+	$hotspot_src_max_y = $hotspot_src_max_h = 0;
+
+	// Create bounding box.
+	$hotspot = array(
+		'x' => round( $orig_w / 2 ),
+		'y' => $orig_h > $orig_w ? 0 : round( $orig_h / 2 ),
+	);
+
+	// Left and top most x,y.
+	if ( $hotspot_src_x > $hotspot['x'] ) {
+		$hotspot_src_x = $hotspot['x'];
+	}
+
+	if ( $hotspot_src_y > $hotspot['y'] ) {
+		$hotspot_src_y = $hotspot['y'];
+	}
+
+	// Right and bottom most x,y.
+	if ( $hotspot_src_max_x < $hotspot['x'] ) {
+		$hotspot_src_max_x = $hotspot['x'];
+	}
+
+	if ( $hotspot_src_max_y < $hotspot['y'] ) {
+		$hotspot_src_max_y = $hotspot['y'];
+	}
+
+	$hotspot_src_w = $hotspot_src_max_x - $hotspot_src_x;
+	$hotspot_src_h = $hotspot_src_max_y - $hotspot_src_y;
+
+	// Crop the largest possible portion of the original image that we can size to $dest_w x $dest_h.
+	$aspect_ratio = $orig_w / $orig_h;
+
+	// Preserve settings already filtered in.
+	if ( null === $payload ) {
+		$new_w = min( $dest_w, $orig_w );
+		$new_h = min( $dest_h, $orig_h );
+
+		if ( ! $new_w ) {
+			$new_w = intval( $new_h * $aspect_ratio );
+		}
+
+		if ( ! $new_h ) {
+			$new_h = intval( $new_w / $aspect_ratio );
+		}
+	}
+
+	$size_ratio = max( $new_w / $orig_w, $new_h / $orig_h );
+
+	$crop_w = round( $new_w / $size_ratio );
+	$crop_h = round( $new_h / $size_ratio );
+
+	$src_x = floor( ( $orig_w - $crop_w ) / 2 );
+	$src_y = floor( ( $orig_h - $crop_h ) / 2 );
+
+	// Bounding box.
+	if ( 0 == $src_x ) {
+		$src_y = ( $hotspot_src_y + $hotspot_src_h / 2 ) - $crop_h / 2;
+		$src_y = min( max( 0, $src_y ), $orig_h - $crop_h );
+	}
+
+	if ( 0 == $src_y ) {
+		$src_x = ( $hotspot_src_x + $hotspot_src_w / 2 ) - $crop_w / 2;
+		$src_x = min( max( 0, $src_x ), $orig_w - $crop_w );
+	}
+
+	return array( 0, 0, (int) $src_x, (int) $src_y, (int) $new_w, (int) $new_h, (int) $crop_w, (int) $crop_h );
+}
+add_filter( 'image_resize_dimensions', 'beasley_image_resize_dimensions', 1, 6 );
