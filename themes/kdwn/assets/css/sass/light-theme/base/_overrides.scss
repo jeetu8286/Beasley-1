@@ -5,8 +5,7 @@
 
 .featured__article:hover .featured__article--heading,
 .featured__content--block:hover .featured__content--title,
-a:hover .highlights__community--title
-{
+a:hover .highlights__community--title {
 	color: #ed2024;
 }
 
@@ -15,14 +14,13 @@ a:hover .highlights__community--title
 }
 
 @include bp(large) {
-
     .main {
-        background-image: url("../../images/kdwn-wallpaper-2017.jpg");
-        background-position: top center;
-        background-repeat: no-repeat;
-				background-color: #000000;
+        background-image: url("../../images/KDWN-SKIN-RESIZE-V2.jpg");
+        background-position: center center;
+		background-size: cover;
+		background-repeat: no-repeat;
+		background-attachment: fixed;
     }
-
 }
 
 .audio-more {
@@ -33,50 +31,69 @@ a:hover .highlights__community--title
 	display: inline;
 }
 
-
 /* Changing to use the NEWS homepage format; CSS fixes */
 
 // Change font to use Oswald...
 body {
     font-family: "Oswald", "Open Sans", sans-serif;
 }
+
 // ...except teaser text
 .entry2__excerpt {
     font-family: "Open Sans", sans-serif;
 }
 
 // Change text to white
-.home .featured__article--heading, .home .featured__content--title {
+.home .featured__article--heading,
+.home .featured__content--title {
     color: white;
 }
 
 /// August 2017 overrides - Made in Detroit
 
-.header__main.headroom
-{background-color: transparent;background-image: url(../../images/KDWN-Top-Nav.jpg); background-position: top center;background-size: cover;background-repeat: no-repeat;}
-
-
-@media screen and (min-width: 768px)  {.header__main.headroom
-{background-color: transparent;background-image: url(../../images/KDWN-Top-Nav.jpg); background-position: top center;background-size: auto;}
-}
-@media screen and (min-width: 768px)  {.header .container {height:145px;}}
-
-.header__nav ul li
-{
- color: #ffffff;}
-
-.header__main a, .header__main a:visited
-{
-  color: #ffffff;
-}
-  .header__search
-{ color: #ffffff;
-  padding-top: 4px;
-  padding-right: 4px;
-  padding-bottom: 4px;
-  padding-left: 4px;
-  text-transform: uppercase;
+.header__main.headroom {
+	background-color: transparent;
+	background-image: url(../../images/KDWN-Top-Nav.jpg);
+	background-position: top center;
+	background-size: cover;
+	background-repeat: no-repeat;
 }
 
-.mobile-nav__toggle--span, .mobile-nav__toggle--span::after, .mobile-nav__toggle--span::before
-  {background-color: #ffffff;}
+
+@media screen and (min-width: 768px)  {
+	.header__main.headroom {
+		background-color: transparent;
+		background-image: url(../../images/KDWN-Top-Nav.jpg);
+		background-position: top center;
+		background-size: auto;
+	}
+}
+
+@media screen and (min-width: 768px)  {
+	.header .container {
+		height:145px;
+	}
+}
+
+.header__nav ul li {
+	color: #ffffff;
+}
+
+.header__main a, .header__main a:visited {
+	color: #ffffff;
+}
+
+.header__search {
+	color: #ffffff;
+	padding-top: 4px;
+	padding-right: 4px;
+	padding-bottom: 4px;
+	padding-left: 4px;
+	text-transform: uppercase;
+}
+
+.mobile-nav__toggle--span,
+.mobile-nav__toggle--span::after,
+.mobile-nav__toggle--span::before {
+	background-color: #ffffff;
+}
