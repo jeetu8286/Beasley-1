@@ -38,9 +38,10 @@ deploy_prod:
   script:
     - bash ./deploy-scripts/build.sh
     - bash ./deploy-scripts/deploy-prod.sh
+    - bash ./deploy-scripts/sync-jobs-to-web.sh # Sync all code first, before updating version timestamp to avoid cache issues
     - ssh beanstalk@52.0.13.41 'echo $(date +%s) > /var/www/html/wordpress/wp-content/themes/.version.php'
-    - ssh beanstalk@52.0.13.41 'touch /var/www/html/deploy-date'
-    - ssh beanstalk@52.0.13.41 'echo $(date +%s) > /var/www/html/deploy-date'
+    - bash ./deploy-scripts/sync-jobs-to-web.sh # Sync code again, with updated version timestamp (Should only update the .version)
   only:
     - master
   when: manual
+  allow_failure: false
