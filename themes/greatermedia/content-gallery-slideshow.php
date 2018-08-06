@@ -69,7 +69,7 @@ add_filter( 'beasley-share-url', function() use ( $images, $current_gallery ) {
 				$slide_index++;
 			endif;
 
-			$data = wp_get_attachment_image_src( $image->ID, 'beasley-gallery-slide' );
+			$data = wp_get_attachment_image_src( $image->ID, 'gm-article-thumbnail' );
 			if ( empty( $data ) ) :
 				continue;
 			endif;
@@ -85,7 +85,7 @@ add_filter( 'beasley-share-url', function() use ( $images, $current_gallery ) {
 				 data-slug="<?php echo esc_attr( $base_url ); ?>/view/<?php echo esc_attr( $image->post_name ); ?>/"
 				 data-title="<?php echo get_post_modified_time( 'U', true, $image, false ) > $april15th ? esc_attr( get_the_title( $image ) ) : ''; ?>"
 				 data-caption="<?php echo esc_attr( get_the_excerpt( $image ) ); ?>"
-				 data-source="<?php echo esc_url( wp_get_attachment_image_url( $image->ID, 'beasley-gallery-slide' ) ); ?>"
+				 data-source="<?php echo esc_url( wp_get_attachment_image_url( $image->ID, 'full' ) ); ?>"
 				 data-share="<?php echo esc_attr( $base_url ); ?>/view/<?php echo esc_attr( $image->post_name ); ?>/"
 				 data-width="<?php echo esc_attr( $width ); ?>"
 				 data-height="<?php echo esc_attr( $height ); ?>"
