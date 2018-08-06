@@ -33,9 +33,10 @@
 		"wpackagist-plugin/wp-fail2ban": "^3.5",
 		"wpackagist-plugin/disable-real-mime-check": "^1.0",
 		"wpackagist-plugin/my-eyes-are-up-here":"^1.1.9",
+		"wpackagist-plugin/query-monitor": "^3.1",
+		"wpackagist-plugin/regenerate-thumbnails":"^3.0.2",
 		"10up/wp-minions": "^4.0",
-		"10up/post-finder": "^0.3.0",
-		"wpackagist-plugin/query-monitor": "^3.1"
+		"10up/post-finder": "^0.3.0"
 	},
 	"require-dev": {
 		"wpackagist-plugin/rewrite-rules-inspector": "*",
