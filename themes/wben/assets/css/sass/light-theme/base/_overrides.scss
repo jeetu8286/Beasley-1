@@ -149,6 +149,15 @@
     font-size: 1.60181em;
     font-family: 'Exo 2' sans-serif;
 }
+
+.mobile-nav__list a {
+    background-color: #ddd;
+}
+
+.header__search--form .searchform {
+    background-color: #ddd;
+}
+
 @media screen and (min-width:768px) {
 
 		.header__logo--img {
