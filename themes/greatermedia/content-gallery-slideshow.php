@@ -26,7 +26,7 @@ $ads_interval = filter_var( get_field( 'images_per_ad', $current_gallery ), FILT
 	'default'   => 3,
 ) ) );
 
-$may1st = strtotime( '2018-05-01' );
+$april15th = strtotime( '2018-04-15' );
 
 $slide_index = 0;
 $base_url = untrailingslashit( get_permalink( $current_gallery ) );
@@ -83,7 +83,7 @@ add_filter( 'beasley-share-url', function() use ( $images, $current_gallery ) {
 			?><div class="swiper-slide"
 				 data-index="<?php echo esc_attr( $slide_index ); ?>"
 				 data-slug="<?php echo esc_attr( $base_url ); ?>/view/<?php echo esc_attr( $image->post_name ); ?>/"
-				 data-title="<?php echo get_post_modified_time( 'U', true, $image, false ) > $may1st ? esc_attr( get_the_title( $image ) ) : ''; ?>"
+				 data-title="<?php echo get_post_modified_time( 'U', true, $image, false ) > $april15th ? esc_attr( get_the_title( $image ) ) : ''; ?>"
 				 data-caption="<?php echo esc_attr( get_the_excerpt( $image ) ); ?>"
 				 data-source="<?php echo esc_url( wp_get_attachment_image_url( $image->ID, 'beasley-gallery-slide' ) ); ?>"
 				 data-share="<?php echo esc_attr( $base_url ); ?>/view/<?php echo esc_attr( $image->post_name ); ?>/"
