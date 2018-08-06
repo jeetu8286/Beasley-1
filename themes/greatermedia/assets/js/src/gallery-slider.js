@@ -23,7 +23,7 @@
 			var swiperWrapper = document.querySelector( '.gallery-top .slick-track' );
 			var newActiveSlide = document.querySelector( '.gallery-top .slick-current' );
 			var newActiveSlidePos = newActiveSlide.getBoundingClientRect();
-			var paddingRight = parseInt( ( $window.width() - newActiveSlidePos.width )/2 - 385, 10 );
+			var paddingRight = Math.floor( ( $window.width() - newActiveSlidePos.width ) / 2 ) - 385;
 
 			// We want to move the sidebar and add enough padding so that it's always at least 300px wide (exluding padding).
 			// In some cases where the image is too wide, we want to apply a negative margin left to pull the image to the left
@@ -38,10 +38,10 @@
 				if (window.matchMedia("(min-width: 768px)").matches) {
 					if ( paddingRight < 0 ) {
 						swiperWrapper.style.marginLeft = paddingRight + 'px';
-						sidebar.setAttribute( 'style', 'left:' + parseInt( ($window.width() - newActiveSlidePos.width)/2 + newActiveSlidePos.width + paddingRight, 10 ) + 'px' );
+						sidebar.setAttribute( 'style', 'left:' + Math.floor( newActiveSlidePos.width + paddingRight + ( $window.width() - newActiveSlidePos.width ) / 2 ) + 'px' );
 					} else {
 						swiperWrapper.style.marginLeft = '0px';
-						sidebar.setAttribute( 'style', 'left:' + parseInt( ($window.width() - newActiveSlidePos.width)/2 + newActiveSlidePos.width, 10 ) + 'px;padding-right:' + paddingRight + 'px' );
+						sidebar.setAttribute( 'style', 'left:' + Math.floor( newActiveSlidePos.width + ( $window.width() - newActiveSlidePos.width ) / 2 ) + 'px;padding-right:' + paddingRight + 'px' );
 					}
 				}
 			} else {
@@ -52,8 +52,12 @@
 		};
 
 		var updateURL = function( slide ) {
-			var newActiveSlide = document.querySelector( '.gallery-top .slick-slide:nth-child(' + parseInt( slide+1, 10 ) + ')' );
+			var slideIndex = parseInt( slide + 1, 10 );
+			if ( Number.isNaN( slideIndex ) ) {
+				return;
+			}
 
+			var newActiveSlide = document.querySelector( '.gallery-top .slick-slide:nth-child(' + slideIndex + ')' );
 			// If we're not on an ad slide, update the URL
 			if ( ! newActiveSlide.classList.contains( 'meta-spacer' ) ) {
 				var slug = newActiveSlide.getAttribute( 'data-slug' );
@@ -74,7 +78,12 @@
 		};
 
 		var updateSidebarInfo = function( slide ) {
-			var newActiveSlide = document.querySelector( '.gallery-top .slick-slide:nth-child(' + parseInt( slide + 1, 10 ) + ')' );
+			var slideIndex = parseInt( slide + 1, 10 );
+			if ( Number.isNaN( slideIndex ) ) {
+				return;
+			}
+
+			var newActiveSlide = document.querySelector( '.gallery-top .slick-slide:nth-child(' + slideIndex + ')' );
 			if ( newActiveSlide.classList.contains( 'meta-spacer' ) ) {
 				return;
 			}
@@ -98,7 +107,7 @@
 			}
 
 			var shareIndividualPhotos = parseInt( document.querySelector( '.gallery-top' ).getAttribute( 'data-share-photos' ), 10 );
-			if ( isNaN( shareIndividualPhotos ) || ! shareIndividualPhotos ) {
+			if ( Number.isNaN( shareIndividualPhotos ) || ! shareIndividualPhotos ) {
 				// if we don't need to share individual photos, then we don't need to change share buttons
 				return;
 			}
@@ -136,8 +145,12 @@
 		};
 
 		var maybeShowCenteredAd = function( newSlide ) {
-			var newActiveSlide = document.querySelector( '.gallery-top .slick-slide:nth-child(' + parseInt( newSlide+1, 10 ) + ')' );
+			var slideIndex = parseInt( newSlide + 1, 10 );
+			if ( Number.isNaN( slideIndex ) ) {
+				return;
+			}
 
+			var newActiveSlide = document.querySelector( '.gallery-top .slick-slide:nth-child(' + slideIndex + ')' );
 			if ( newActiveSlide.classList.contains( 'meta-spacer' ) ) {
 				sidebar.classList.add( 'hidden' );
 				swiperContainer.classList.add( 'show-ad' );
@@ -153,8 +166,12 @@
 		};
 
 		var maybeHideSidebar = function( newSlide ) {
-			var newActiveSlide = document.querySelector( '.gallery-top .slick-slide:nth-child(' + parseInt( newSlide+1, 10 ) + ')' );
+			var slideIndex = parseInt( newSlide + 1, 10 );
+			if ( Number.isNaN( slideIndex ) ) {
+				return;
+			}
 
+			var newActiveSlide = document.querySelector( '.gallery-top .slick-slide:nth-child(' + slideIndex + ')' );
 			if ( newActiveSlide.classList.contains( 'last-slide' ) ) {
 				sidebar.classList.add( 'hidden' );
 				$galleryThumbsSlider.addClass( 'hidden' );
@@ -172,7 +189,10 @@
 		var updateCurrentSlide = function() {
 			var slide = document.querySelector( '.gallery-top .swiper-slide[data-slug="' + getCurrentLocation() + '"]' );
 			if ( slide ) {
-				$galleryTopSlider.slick( 'slickGoTo', parseInt( slide.getAttribute( 'data-index' ), 10 ), true );
+				var slideIndex = parseInt( slide.getAttribute( 'data-index' ), 10 );
+				if ( ! Number.isNaN( slideIndex ) ) {
+					$galleryTopSlider.slick( 'slickGoTo', slideIndex, true );
+				}
 			}
 		};
 
@@ -208,9 +228,13 @@
 			updateHistory = true;
 		} );
 
+		var galleryInitialIndex = 0;
 		var initialSlide = document.querySelector( '.gallery-top .swiper-slide[data-slug="' + getCurrentLocation() + '"]' );
 		if ( initialSlide ) {
-			var galleryInitialIndex = parseInt( initialSlide.getAttribute( 'data-index' ), 10 );
+			galleryInitialIndex = parseInt( initialSlide.getAttribute( 'data-index' ), 10 );
+			if ( Number.isNaN( galleryInitialIndex ) ) {
+				galleryInitialIndex = 0;
+			}
 		}
 
 		$galleryTopSlider.on( 'init', function( event, slick ) {
