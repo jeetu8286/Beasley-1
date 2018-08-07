@@ -404,12 +404,16 @@
 /* Last slide */
 .last-slide {
 	color: white;
-	padding: 20px;
 	background-color: black;
 	width: 100vw;
 	@include bp(medium) {
 		width: 80vw;
 		max-width: 750px;
+	}
+	.other-galleries {
+		float: left;
+		padding: 20px;
+		width: 100%;
 	}
 	.gallery__grid--title {
 		color: white;
