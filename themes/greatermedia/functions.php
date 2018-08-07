@@ -1499,3 +1499,8 @@ function beasley_image_resize_dimensions( $payload, $orig_w, $orig_h, $dest_w, $
 	return array( 0, 0, (int) $src_x, (int) $src_y, (int) $new_w, (int) $new_h, (int) $crop_w, (int) $crop_h );
 }
 add_filter( 'image_resize_dimensions', 'beasley_image_resize_dimensions', 1, 6 );
+
+function beasley_opengraph_image_size() {
+	return 'large';
+}
+add_filter( 'wpseo_opengraph_image_size', 'beasley_opengraph_image_size' );
