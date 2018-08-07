@@ -1501,6 +1501,6 @@ function beasley_image_resize_dimensions( $payload, $orig_w, $orig_h, $dest_w, $
 add_filter( 'image_resize_dimensions', 'beasley_image_resize_dimensions', 1, 6 );
 
 function beasley_opengraph_image_size() {
-	return 'gm-article-thumbnail';
+	return 'large';
 }
 add_filter( 'wpseo_opengraph_image_size', 'beasley_opengraph_image_size' );
