@@ -29,7 +29,7 @@ function bobandsheri_scripts_styles() {
         'bobandsheri',
         get_stylesheet_directory_uri() . "/assets/js/bobandsheri{$postfix}.js",
         array( 'livefyre' ),
-        WBT_VERSION,
+        GREATERMEDIA_VERSION,
         true
 	);
 	wp_enqueue_script(

@@ -247,7 +247,7 @@ class GreaterMediaNavWalker extends Walker_Nav_Menu {
 			}
 		}
 
-		$item_output = $args->before;
+		$item_output = ! empty( $args->before ) ? $args->before : '';
 		$item_output .= '<a' . $attributes . '>';
 
 		/**
