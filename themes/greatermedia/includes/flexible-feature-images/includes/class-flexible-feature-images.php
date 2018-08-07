@@ -67,13 +67,13 @@ class GM_FlexibleFeatureImages {
 	 */
 	protected static function feature_image_preference_description( $feature_image_preference ) {
 		if ( 'none' === $feature_image_preference ) {
-			return __( 'None', 'greatermedia-feature-image-preference' );
+			return 'None';
 		} else if ( 'poster' === $feature_image_preference ) {
-			return __( 'Poster', 'greatermedia-feature-image-preference' );
+			return 'Poster';
 		} else if ( 'inline' === $feature_image_preference ) {
-			return __( 'Inline', 'greatermedia-feature-image-preference' );
+			return 'Inline';
 		} else {
-			return __( 'Top', 'greatermedia-feature-image-preference' );
+			return 'Top';
 		}
 	}
 
@@ -103,25 +103,17 @@ class GM_FlexibleFeatureImages {
 
 		$html .= wp_nonce_field( 'feature_image_preference_meta_boxes', '__feature_image_preference_nonce', true, false );
 		$html .= '<div class="feature-image-preference-wrap">';
-		$html .= '<label for="fip_status" class="screen-reader-text">' . __( 'Feature Image Preference', 'greatermedia-feature-image-preference' ) . '</label>';
+		$html .= '<label for="fip_status" class="screen-reader-text">Feature Image Preference</label>';
 		$html .= '<fieldset id="fip_status"' . $tab_index_attribute . ">\n";
-		$html .= '<p><input type="radio" name="fip_status" value="poster" ' . checked( 'poster', $feature_image_preference, false ) . ' />' .
-				__( 'Poster', 'greatermedia-feature-image-preference' ) .
-				'</p>';
-		$html .= '<p><input type="radio" name="fip_status" value="top" ' . ( empty( $feature_image_preference ) ? 'checked="checked"' : checked( 'top', $feature_image_preference, false ) ) . ' />' .
-				__( 'Top', 'greatermedia-feature-image-preference' ) .
-				'</p>';
-		$html .= '<p><input type="radio" name="fip_status" value="inline" ' . checked( 'inline', $feature_image_preference, false ) . ' />' .
-				__( 'Inline', 'greatermedia-feature-image-preference' ) .
-				'</p>';
-		$html .= '<p><input type="radio" name="fip_status" value="none" ' . checked( 'none', $feature_image_preference, false ) . ' />' .
-				__( 'None', 'greatermedia-feature-image-preference' ) .
-				'</p>';
+		$html .= '<p><input type="radio" name="fip_status" value="poster" ' . checked( 'poster', $feature_image_preference, false ) . ' /> Poster</p>';
+		$html .= '<p><input type="radio" name="fip_status" value="top" ' . ( empty( $feature_image_preference ) ? 'checked="checked"' : checked( 'top', $feature_image_preference, false ) ) . ' /> Top</p>';
+		$html .= '<p><input type="radio" name="fip_status" value="inline" ' . checked( 'inline', $feature_image_preference, false ) . ' /> Inline</p>';
+		$html .= '<p><input type="radio" name="fip_status" value="none" ' . checked( 'none', $feature_image_preference, false ) . ' /> None</p>';
 		$html .= '<input type="hidden" id="hidden_feature_image_preference" name="hidden_feature_image_preference" value="' . esc_attr( $feature_image_preference ) . '" />';
 		$html .= '</fieldset>';
 		$html .= '<p>';
-		$html .= '<a href="#edit_feature_image_preference" class="save-feature-image-preference hide-if-no-js button">' . __( 'OK' ) . '</a>';
-		$html .= '<a href="#edit_feature_image_preference" class="cancel-feature-image-preference hide-if-no-js button-cancel">' . __( 'Cancel' ) . '</a>';
+		$html .= '<a href="#edit_feature_image_preference" class="save-feature-image-preference hide-if-no-js button">OK</a>';
+		$html .= '<a href="#edit_feature_image_preference" class="cancel-feature-image-preference hide-if-no-js button-cancel">Cancel</a>';
 		$html .= '</p>';
 		$html .= '</div>';
 
