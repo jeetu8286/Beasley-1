@@ -47,3 +47,4 @@ style.css.md
 themes/**/*.map
 themes/**/css/*.css
 themes/**/js/*.js
+themes/greatermedia/vendor/

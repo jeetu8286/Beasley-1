@@ -24,5 +24,9 @@ npm install
 npm run build
 popd || exit 1
 
+pushd themes/greatermedia || exit 1
+composer install --no-dev -o
+popd || exit 1
+
 # Stop printing commands to screen
 set +x

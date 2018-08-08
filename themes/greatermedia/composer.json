@@ -1,0 +1,11 @@
+{
+	"name": "10up/beasley",
+	"autoload": {
+		"files": [
+			"includes/bootstrap.php"
+		],
+		"psr-0": {
+			"Beasley": "includes"
+		}
+	}
+}
