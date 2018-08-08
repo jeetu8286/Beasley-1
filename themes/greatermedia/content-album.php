@@ -1,28 +1,15 @@
 <div class="container">
 
-	<?php if (have_posts()) : while ( have_posts() ) : the_post(); ?>
+	<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
 
 		<?php get_template_part( 'partials/show-mini-nav' ); ?>
 
-		<?php if ( has_post_thumbnail() ) { ?>
-
+		<?php if ( has_post_thumbnail() ) : ?>
 			<div class="entry__thumbnail">
-
 				<?php the_post_thumbnail( 'gmr-album-thumbnail', array( 'class' => 'single__featured-img' ) ); ?>
-
-				<?php
-
-					$image_attr = image_attribution();
-
-					if ( ! empty( $image_attr ) ) {
-						echo $image_attr;
-					}
-
-				?>
-
+				<?php image_attribution(); ?>
 			</div>
-
-		<?php } ?>
+		<?php endif; ?>
 
 		<section class="content">
 			<article id="post-<?php the_ID(); ?>" <?php post_class( 'cf' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
