@@ -15,9 +15,12 @@ class Google extends \Beasley\Module {
 	 * @access public
 	 */
 	public function register() {
+		add_action( 'wp_head', array( $this, 'render_analytics_head' ), 0 );
 		add_action( 'wp_head', array( $this, 'render_gtm_head' ) );
 		add_action( 'beasley_after_body', array( $this, 'render_gtm_body' ) );
 		add_action( 'beasley-register-settings', array( $this, 'register_settings' ), 10, 2 );
+
+		add_filter( 'fbia_analytics_makrup', array( $this, 'get_fbia_analytics_markup' ) );
 	}
 
 	/**
@@ -52,6 +55,111 @@ class Google extends \Beasley\Module {
 		register_setting( $group, self::OPTION_UA, 'sanitize_text_field' );
 		register_setting( $group, self::OPTION_UA_UID, 'sanitize_text_field' );
 		register_setting( $group, self::OPTION_UA_AUTHOR, 'sanitize_text_field' );
+	}
+
+	/**
+	 * Assembles Google Analytics code and returns it.
+	 *
+	 * @access public
+	 * @param string $extra
+	 * @return string
+	 */
+	public function get_analytics_code( $extra = '' ) {
+		$google_analytics = trim( get_option( self::OPTION_UA ) );
+		if ( empty( $google_analytics ) ) {
+			return;
+		}
+
+		$google_uid_dimension = absint( get_option( self::OPTION_UA_UID ) );
+		$google_author_dimension = absint( get_option( self::OPTION_UA_AUTHOR ) );
+
+		$shows = $category = $author = false;
+		if ( is_singular() ) {
+			$post = get_queried_object();
+
+			$args = array(
+				'orderby' => 'name',
+				'order'   => 'ASC',
+				'fields'  => 'slugs',
+			);
+
+			$shows = implode( ', ', wp_get_post_terms( $post->ID, '_shows', $args ) );
+			$category = implode( ', ', wp_get_post_terms( $post->ID, 'category', $args ) );
+			$author = get_the_author_meta( 'login', $post->post_author );
+		}
+
+		$script  = '<script>';
+
+		$script .= "(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');";
+		$script .= sprintf( "var googleUidDimension = '%s';", esc_js( $google_uid_dimension ) );
+
+		$script .= sprintf( "ga('create', '%s', 'auto');", esc_js( $google_analytics ) );
+		$script .= "ga('require', 'displayfeatures');";
+
+		if ( ! empty( $shows ) ) {
+			$script .= sprintf( "ga( 'set', 'contentGroup1', '%s');", esc_js( $shows ) );
+		}
+
+		if ( ! empty( $category ) ) {
+			$script .= sprintf( "ga( 'set', 'contentGroup2', '%s');", esc_js( $category ) );
+		}
+
+		if ( ! empty( $author ) && ! empty( $google_author_dimension ) ) {
+			$script .= sprintf( "ga( 'set', 'dimension%s', '%s');", esc_js( $google_author_dimension ), esc_js( $author ) );
+		}
+
+		$script .= $extra;
+
+		$script .= "ga('send', 'pageview');";
+		$script .= '</script>';
+
+		return $script;
+	}
+
+	/**
+	 * Returns Google Analytics code for FB instant articles.
+	 *
+	 * @access public
+	 * @filter fbia_analytics_makrup
+	 * @return string
+	 */
+	public function get_fbia_analytics_markup() {
+		$extra = <<<EOL
+ga('set', 'campaignSource', 'Facebook');
+ga('set', 'campaignMedium', 'Social Instant Article');
+ga('set', 'title', 'FBIA: ' + ia_document.title);
+EOL;
+
+		return $this->get_analytics_code( $extra );
+	}
+
+	/**
+	 * Renders Google Analytics code in the header.
+	 *
+	 * @access public
+	 * @action wp_head
+	 */
+	public function render_analytics_head() {
+		$onload = <<<EOL
+document.addEventListener("DOMContentLoaded", function() {
+	jQuery( document ).on( 'pjax:end', function () {
+		ga( 'set', 'location', window.location.href );
+		ga( 'send', 'pageview' );
+	} );
+
+	var \$body = jQuery( 'body' );
+
+	\$body.on( 'inlineAudioPlaying.gmr', function () {
+		ga( 'send', 'event', 'audio', 'Inline audio playing' );
+	} );
+
+	\$body.on( 'liveStreamPlaying.gmr', function () {
+		ga( 'send', 'event', 'audio', 'Live stream playing' );
+	} );
+});
+EOL;
+
+		echo $this->get_analytics_code( $onload );
 	}
 
 	/**
