@@ -196,6 +196,23 @@
 			}
 		};
 
+		var promises = [];
+		$galleryTopSlider.find( 'img[data-src]' ).each( function() {
+			var $this = $( this );
+			var image = new Image();
+			var promise = $.Deferred();
+
+			promises.push( promise );
+
+			image.src = $this.attr( 'data-src' );
+			image.onload = function() {
+				$this.attr( 'src', image.src );
+				promise.resolve();
+			};
+
+			$this.removeAttr( 'data-src' );
+		} );
+
 		// Expand sidebar on mobile
 		sidebarExpand.addEventListener( 'click', function( e ) {
 			e.preventDefault();
@@ -238,10 +255,15 @@
 		}
 
 		$galleryTopSlider.on( 'init', function( event, slick ) {
-			// 300ms is the global animation speed
-			positionSidebar();
-			updateSidebarInfo( galleryInitialIndex );
-			swiperContainer.classList.remove( 'loading' );
+			$.when.apply( $, promises ).then( _.debounce( function() {
+				positionSidebar();
+				updateSidebarInfo( galleryInitialIndex );
+				swiperContainer.classList.remove( 'loading' );
+
+				updateHistory = false;
+				updateCurrentSlide();
+				updateHistory = true;
+			}, 500 ) );
 		} );
 
 		$galleryThumbsSlider.on( 'init', function( event, slick ) {

@@ -90,7 +90,13 @@ add_filter( 'beasley-share-url', function() use ( $images, $current_gallery ) {
 				 data-width="<?php echo esc_attr( $width ); ?>"
 				 data-height="<?php echo esc_attr( $height ); ?>"
 				 >
-				<img src="<?php echo esc_url( $src ); ?>" width="<?php echo esc_attr( $width ); ?>" height="<?php echo esc_attr( $height ); ?>" alt="<?php echo esc_attr( get_the_excerpt( $image ) ); ?>" class="swiper-image">
+				<img class="swiper-image"
+					 src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+					 data-src="<?php echo esc_url( $src ); ?>"
+					 width="<?php echo esc_attr( $width ); ?>"
+					 height="<?php echo esc_attr( $height ); ?>"
+					 alt="<?php echo esc_attr( get_the_excerpt( $image ) ); ?>"
+					 >
 
 				<?php if ( ! empty( $attribution ) ) : ?>
 					<div class="image-attribution"><?php echo esc_html( $attribution ); ?></div>
