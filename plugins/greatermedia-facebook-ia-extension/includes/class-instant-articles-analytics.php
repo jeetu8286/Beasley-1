@@ -29,13 +29,11 @@ class Instant_Articles_Analytics {
 	 * @param $instant_article
 	 */
 	public function add_analytics( $instant_article ) {
-		$analytics = apply_filters( 'greater_media_analytics_makrup', '' );
+		$analytics = apply_filters( 'fbia_analytics_makrup', '' );
 		if ( ! empty( $analytics ) ) {
-
 			$document   = new DOMDocument();
 			$fragment   = $document->createDocumentFragment();
 			$valid_html = @$fragment->appendXML( $analytics );
-
 			if ( $valid_html ) {
 				$instant_article->addChild( Analytics::create()->withHTML( $fragment ) );
 			}

@@ -101,7 +101,6 @@ class GreaterMediaSiteOptions {
 		// Settings Section
 		add_settings_section( 'beasley_site_settings', 'Station Site', array( $this, 'render_site_settings_section' ), $this->_settings_page_hook );
 		add_settings_section( 'beasley_social_networks', 'Social Networks', '__return_false', $this->_settings_page_hook );
-		add_settings_section( 'beasley_google_analytics', 'Google Analytics', '__return_false', $this->_settings_page_hook );
 
 		add_settings_field( 'gmr_livelinks_title', 'Live Links Sidebar Title', 'beasley_input_field', $this->_settings_page_hook, 'beasley_site_settings', 'name=gmr_livelinks_title' );
 
@@ -110,27 +109,12 @@ class GreaterMediaSiteOptions {
 		add_settings_field( 'gmr_youtube_url', 'Youtube', 'beasley_input_field', $this->_settings_page_hook, 'beasley_social_networks', 'name=gmr_youtube_url' );
 		add_settings_field( 'gmr_instagram_name', 'Instagram', 'beasley_input_field', $this->_settings_page_hook, 'beasley_social_networks', 'name=gmr_instagram_name' );
 
-		add_settings_field( 'gmr_google_analytics', 'Tracking ID', 'beasley_input_field', $this->_settings_page_hook, 'beasley_google_analytics', 'name=gmr_google_analytics&desc=UA-xxxxxx-xx' );
-
-		add_settings_field( 'gmr_google_uid_dimension', 'User ID Dimension #', 'beasley_input_field', $this->_settings_page_hook, 'beasley_google_analytics', array(
-			'name' => 'gmr_google_uid_dimension',
-			'desc' => 'Sends the current user\'s ID to this custom Google Analytics dimension. Most sites can use dimension1 unless it is already in use.',
-		) );
-
-		add_settings_field( 'gmr_google_author_dimension', 'Author Dimension #', 'beasley_input_field', $this->_settings_page_hook, 'beasley_google_analytics', array(
-			'name' => 'gmr_google_author_dimension',
-			'desc' => 'Sends the current post\'s author login ID to this custom Google Analytics dimension. Most sites can use dimension2 unless it is already in use.',
-		) );
-
 		// Social URLs
 		register_setting( self::option_group, 'gmr_facebook_url', 'esc_url_raw' );
 		register_setting( self::option_group, 'gmr_twitter_name', 'sanitize_text_field' );
 		register_setting( self::option_group, 'gmr_youtube_url', 'esc_url_raw' );
 		register_setting( self::option_group, 'gmr_instagram_name', 'sanitize_text_field' );
 		register_setting( self::option_group, 'gmr_site_logo', 'intval' );
-		register_setting( self::option_group, 'gmr_google_analytics', 'sanitize_text_field' );
-		register_setting( self::option_group, 'gmr_google_uid_dimension', 'sanitize_text_field' );
-		register_setting( self::option_group, 'gmr_google_author_dimension', 'sanitize_text_field' );
 		register_setting( self::option_group, 'gmr_livelinks_title', 'sanitize_text_field');
 		register_setting( self::option_group, 'gmr_newssite', 'esc_attr' );
 		register_setting( self::option_group, 'gmr_livelinks_more_redirect', 'esc_attr' );
