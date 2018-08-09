@@ -129,7 +129,7 @@ class Video extends \Beasley\Module {
 	}
 
 	/**
-	 * Renders embed code for livestream video.
+	 * Returns embed code for a Livestream video.
 	 *
 	 * @access public
 	 * @param string $account_id
@@ -138,6 +138,22 @@ class Video extends \Beasley\Module {
 	 * @return string
 	 */
 	public function get_embed_code( $account_id, $event_id, $video_id ) {
+		$key = get_option( 'livestream_secret_key' );
+		return ! empty( $key )
+			? $this->_get_videojs_embed( $key, $account_id, $event_id, $video_id )
+			: $this->_get_iframe_embed( $account_id, $event_id, $video_id );
+	}
+
+	/**
+	 * Returns fallback iframe embed when Livestream secret key is not provided.
+	 *
+	 * @access protected
+	 * @param string $account_id
+	 * @param string $event_id
+	 * @param string $video_id
+	 * @return string
+	 */
+	protected function _get_iframe_embed( $account_id, $event_id, $video_id ) {
 		$embed_id = rand( 1, getrandmax() );
 
 		ob_start();
@@ -156,6 +172,30 @@ class Video extends \Beasley\Module {
 		</div><?php
 
 		return ob_get_clean();
+	}
+
+	/**
+	 * Returns embed code to use with videojs.
+	 *
+	 * @access protected
+	 * @param string $key
+	 * @param string $account_id
+	 * @param string $event_id
+	 * @param string $video_id
+	 * @return string
+	 */
+	protected function _get_videojs_embed( $key, $account_id, $event_id, $video_id ) {
+		$json = \Beasley\Cache::get( func_get_args(), function() use ( $key, $account_id, $event_id, $video_id ) {
+			$response = wp_remote_get( "https://{$key}:@livestreamapis.com/v3/accounts/{$account_id}/events/{$event_id}/videos/{$video_id}" );
+
+			return ! is_wp_error( $response )
+				? wp_remote_retrieve_body( $response )
+				: '';
+		}, DAY_IN_SECONDS );
+
+		return ! empty( $json )
+			? sprintf( '<div class="livestream-video-player" data-json="%s"></div>', esc_attr( $json ) )
+			: '';
 	}
 
 }
