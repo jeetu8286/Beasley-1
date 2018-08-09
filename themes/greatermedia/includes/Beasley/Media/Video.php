@@ -28,6 +28,9 @@ class Video extends \Beasley\Module {
 		add_action( 'init', $this( 'setup_embeds' ) );
 		add_action( 'init', $this( 'setup_shortcodes' ) );
 		add_action( 'beasley-register-settings', $this( 'register_settings' ), 10, 2 );
+
+		add_action( 'wp_ajax_livestream_m3u8_proxy', $this( 'livestream_m3u8_proxy' ) );
+		add_action( 'wp_ajax_nopriv_livestream_m3u8_proxy', $this( 'livestream_m3u8_proxy' ) );
 	}
 
 	/**
@@ -72,7 +75,11 @@ class Video extends \Beasley\Module {
 		$section_id = 'beasley_livestream_settings';
 
 		add_settings_section( $section_id, 'Livestream', '__return_false', $page );
+
+		add_settings_field( 'livestream_client_id', 'Client ID', 'beasley_input_field', $page, $section_id, 'name=livestream_client_id' );
 		add_settings_field( 'livestream_secret_key', 'Secret Key', 'beasley_input_field', $page, $section_id, 'name=livestream_secret_key' );
+
+		register_setting( $group, 'livestream_client_id', 'sanitize_text_field' );
 		register_setting( $group, 'livestream_secret_key', 'sanitize_text_field' );
 	}
 
@@ -138,6 +145,11 @@ class Video extends \Beasley\Module {
 	 * @return string
 	 */
 	public function get_embed_code( $account_id, $event_id, $video_id ) {
+		// do nothing if it is rendered before body
+		if ( ! did_action( 'beasley_after_body' ) ) {
+			return '';
+		}
+
 		$key = get_option( 'livestream_secret_key' );
 		return ! empty( $key )
 			? $this->_get_videojs_embed( $key, $account_id, $event_id, $video_id )
@@ -193,9 +205,64 @@ class Video extends \Beasley\Module {
 				: '';
 		}, DAY_IN_SECONDS );
 
-		return ! empty( $json )
-			? sprintf( '<div class="livestream-video-player" data-json="%s"></div>', esc_attr( $json ) )
-			: '';
+		if ( empty( $json ) ) {
+			return '';
+		}
+
+		$json = json_decode( $json, true );
+		if ( empty( $json['m3u8'] ) ) {
+			return '';
+		}
+
+		$timestamp = round( microtime( true ) * 1000 );
+		$srouce = add_query_arg( array(
+			'timestamp' => $timestamp,
+			'clientId'  => get_option( 'livestream_client_id' ),
+			'token'     => hash_hmac( "md5", "{$key}:playback:{$timestamp}", $key ),
+		), $json['m3u8'] );
+
+		$proxy = admin_url( '/admin-ajax.php?action=livestream_m3u8_proxy&url=' . urlencode( $srouce ) );
+
+		return sprintf(
+			'<video class="video-js vjs-default-skin livestream livestream-oembed" controls preload="auto" poster="%s" data-src="%s"></video>',
+			! empty( $json['thumbnailUrl'] ) ? esc_attr( $json['thumbnailUrl'] ) : '',
+			esc_url_raw( $proxy )
+		);
+	}
+
+	/**
+	 * Proxies request to Livestream server.
+	 *
+	 * @access public
+	 * @action wp_ajax_livestream_m3u8_proxy
+	 * @action wp_ajax_nopriv_livestream_m3u8_proxy
+	 */
+	public function livestream_m3u8_proxy() {
+		$url = filter_input( INPUT_GET, 'url', FILTER_VALIDATE_URL );
+		if ( ! $url ) {
+			status_header( 404 );
+			exit;
+		}
+
+		$response = wp_remote_get( $url );
+		if ( is_wp_error( $response ) ) {
+			status_header( 400 );
+			exit;
+		}
+
+		$headers = wp_remote_retrieve_headers( $response );
+		foreach ( $headers as $header => $values ) {
+			if ( ! is_array( $values ) ) {
+				$values = array( $values );
+			}
+
+			foreach ( $values as $value ) {
+				header( sprintf( '%s: %s', $header, $value ) );
+			}
+		}
+
+		echo wp_remote_retrieve_body( $response );
+		exit;
 	}
 
 }

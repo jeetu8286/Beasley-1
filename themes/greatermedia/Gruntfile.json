@@ -23,6 +23,7 @@
 				"greatermedia/assets/js/src/search.js",
 				"greatermedia/assets/js/src/fixed-header-player.js",
 				"greatermedia/assets/js/src/content-sidebar-heights.js",
+				"greatermedia/assets/js/src/video.js",
 				"greatermedia/assets/js/src/firebase.js"
 			],
 			"greatermedia/assets/js/admin.js": [

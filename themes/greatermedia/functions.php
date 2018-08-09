@@ -169,9 +169,12 @@ function greatermedia_scripts_styles() {
 	$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 	$baseurl = untrailingslashit( get_template_directory_uri() );
 
-	wp_register_script( 'firebase', '//www.gstatic.com/firebasejs/3.6.9/firebase.js', null, null );
+	wp_enqueue_script( 'videojs', '//cdnjs.cloudflare.com/ajax/libs/video.js/7.2.0/video.min.js', null, null );
+	wp_enqueue_script( 'videojs-contrib-hls', '//cdnjs.cloudflare.com/ajax/libs/videojs-contrib-hls/5.14.1/videojs-contrib-hls.min.js', null, null );
 
-	wp_enqueue_script( 'greatermedia', "{$baseurl}/assets/js/frontend{$postfix}.js", array( 'jquery', 'jquery-waypoints', 'underscore', 'classlist-polyfill', 'firebase' ), GREATERMEDIA_VERSION, true );
+	wp_enqueue_script( 'firebase', '//www.gstatic.com/firebasejs/3.6.9/firebase.js', null, null );
+
+	wp_enqueue_script( 'greatermedia', "{$baseurl}/assets/js/frontend{$postfix}.js", array( 'jquery', 'jquery-waypoints', 'underscore', 'classlist-polyfill' ), GREATERMEDIA_VERSION, true );
 	wp_localize_script( 'greatermedia', 'platformConfig', array(
 		'firebase' => array(
 			'apiKey'            => get_option( 'beasley_firebase_apiKey' ),
@@ -193,7 +196,8 @@ function greatermedia_scripts_styles() {
 		true
 	);
 
-	wp_enqueue_style( 'google-fonts', '//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,800italic,400,300,700,800', array(), null );
+	wp_enqueue_style( 'videojs', '//vjs.zencdn.net/7.1.0/video-js.css', null, null );
+	wp_enqueue_style( 'google-fonts', '//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,800italic,400,300,700,800', null, null );
 	wp_enqueue_style( 'greatermedia', "{$baseurl}/assets/css/greater_media{$postfix}.css", array( 'google-fonts' ), GREATERMEDIA_VERSION );
 
 	// YARPP styles are not being used, so let's get rid of them!
