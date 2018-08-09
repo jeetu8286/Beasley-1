@@ -15,12 +15,12 @@ class Google extends \Beasley\Module {
 	 * @access public
 	 */
 	public function register() {
-		add_action( 'wp_head', array( $this, 'render_analytics_head' ), 0 );
-		add_action( 'wp_head', array( $this, 'render_gtm_head' ) );
-		add_action( 'beasley_after_body', array( $this, 'render_gtm_body' ) );
-		add_action( 'beasley-register-settings', array( $this, 'register_settings' ), 10, 2 );
+		add_action( 'wp_head', $this( 'render_analytics_head' ), 0 );
+		add_action( 'wp_head', $this( 'render_gtm_head' ) );
+		add_action( 'beasley_after_body', $this( 'render_gtm_body' ) );
+		add_action( 'beasley-register-settings', $this( 'register_settings' ), 10, 2 );
 
-		add_filter( 'fbia_analytics_makrup', array( $this, 'get_fbia_analytics_markup' ) );
+		add_filter( 'fbia_analytics_makrup', $this( 'get_fbia_analytics_markup' ) );
 	}
 
 	/**
