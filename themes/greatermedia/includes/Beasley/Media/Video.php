@@ -27,6 +27,7 @@ class Video extends \Beasley\Module {
 	public function register() {
 		add_action( 'init', $this( 'setup_embeds' ) );
 		add_action( 'init', $this( 'setup_shortcodes' ) );
+		add_action( 'beasley-register-settings', $this( 'register_settings' ), 10, 2 );
 	}
 
 	/**
@@ -57,6 +58,22 @@ class Video extends \Beasley\Module {
 	 */
 	public function setup_shortcodes() {
 		add_shortcode( 'livestream_video', $this( 'shortcode_handler' ) );
+	}
+
+	/**
+	 * Registers Livestream video settings.
+	 *
+	 * @access public
+	 * @action beasley-register-settings
+	 * @param string $group
+	 * @param string $page
+	 */
+	public function register_settings( $group, $page ) {
+		$section_id = 'beasley_livestream_settings';
+
+		add_settings_section( $section_id, 'Livestream', '__return_false', $page );
+		add_settings_field( 'livestream_secret_key', 'Secret Key', 'beasley_input_field', $page, $section_id, 'name=livestream_secret_key' );
+		register_setting( $group, 'livestream_secret_key', 'sanitize_text_field' );
 	}
 
 	/**
