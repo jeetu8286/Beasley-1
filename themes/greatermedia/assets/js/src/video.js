@@ -2,7 +2,7 @@
 	var $document = $( document );
 
 	var __ready = function() {
-		$( '.livestream-oembed.video-js[data-src]' ).each( function() {
+		$( '.livestream-oembed .video-js[data-src]' ).each( function() {
 			var player = videojs( this );
 
 			player.src({

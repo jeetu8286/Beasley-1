@@ -224,7 +224,9 @@ class Video extends \Beasley\Module {
 		$proxy = admin_url( '/admin-ajax.php?action=livestream_m3u8_proxy&url=' . urlencode( $srouce ) );
 
 		return sprintf(
-			'<video class="video-js vjs-default-skin livestream livestream-oembed" controls preload="auto" poster="%s" data-src="%s"></video>',
+			'<div class="livestream livestream-oembed">' .
+				'<video class="video-js vjs-default-skin" controls preload="auto" poster="%s" data-src="%s"></video>' .
+			'</div>',
 			! empty( $json['thumbnailUrl'] ) ? esc_attr( $json['thumbnailUrl'] ) : '',
 			esc_url_raw( $proxy )
 		);
