@@ -31,6 +31,8 @@ class Video extends \Beasley\Module {
 
 		add_action( 'wp_ajax_livestream_m3u8_proxy', $this( 'livestream_m3u8_proxy' ) );
 		add_action( 'wp_ajax_nopriv_livestream_m3u8_proxy', $this( 'livestream_m3u8_proxy' ) );
+
+		add_filter( 'beasley_js_platform_config', $this( 'update_js_config' ) );
 	}
 
 	/**
@@ -78,9 +80,11 @@ class Video extends \Beasley\Module {
 
 		add_settings_field( 'livestream_client_id', 'Client ID', 'beasley_input_field', $page, $section_id, 'name=livestream_client_id' );
 		add_settings_field( 'livestream_secret_key', 'Secret Key', 'beasley_input_field', $page, $section_id, 'name=livestream_secret_key' );
+		add_settings_field( 'livestream_ad_tag_url', 'Ad Tag URL', 'beasley_input_field', $page, $section_id, 'name=livestream_ad_tag_url' );
 
 		register_setting( $group, 'livestream_client_id', 'sanitize_text_field' );
 		register_setting( $group, 'livestream_secret_key', 'sanitize_text_field' );
+		register_setting( $group, 'livestream_ad_tag_url', 'strip_tags' );
 	}
 
 	/**
@@ -166,19 +170,19 @@ class Video extends \Beasley\Module {
 	 * @return string
 	 */
 	protected function _get_iframe_embed( $account_id, $event_id, $video_id ) {
-		$embed_id = rand( 1, getrandmax() );
+		$embed_id = $this->_get_embed_id();
 
 		ob_start();
 
 		?><div class="livestream livestream-oembed">
 			<iframe
-				id="ls_embed_<?php echo esc_attr( $embed_id ); ?>"
+				id="<?php echo esc_attr( $embed_id ); ?>"
 				src="//livestream.com/accounts/<?php echo esc_attr( $account_id ); ?>/events/<?php echo esc_attr( $event_id ); ?>/videos/<?php echo esc_attr( $video_id ); ?>/player?autoPlay=false&mute=false"
 				frameborder="0" scrolling="no" allowfullscreen>
 			</iframe>
 			<script
 				type="text/javascript"
-				data-embed_id="ls_embed_<?php echo esc_attr( $embed_id ); ?>"
+				data-embed_id="<?php echo esc_attr( $embed_id ); ?>"
 				src="//livestream.com/assets/plugins/referrer_tracking.js">
 			</script>
 		</div><?php
@@ -225,11 +229,22 @@ class Video extends \Beasley\Module {
 
 		return sprintf(
 			'<div class="livestream livestream-oembed">' .
-				'<video class="video-js vjs-default-skin" controls preload="auto" poster="%s" data-src="%s"></video>' .
+				'<video id="%s" class="video-js vjs-default-skin" controls preload="auto" poster="%s" data-src="%s"></video>' .
 			'</div>',
+			$this->_get_embed_id(),
 			! empty( $json['thumbnailUrl'] ) ? esc_attr( $json['thumbnailUrl'] ) : '',
 			esc_url_raw( $proxy )
 		);
+	}
+
+	/**
+	 * Returns id attribute for Livestream video.
+	 *
+	 * @access protected
+	 * @return string
+	 */
+	protected function _get_embed_id() {
+		return 'ls_embed_' . rand( 1, getrandmax() );
 	}
 
 	/**
@@ -265,6 +280,14 @@ class Video extends \Beasley\Module {
 
 		echo wp_remote_retrieve_body( $response );
 		exit;
+	}
+
+	public function update_js_config( $config ) {
+		$config['videojs'] = array(
+			'adTagUrl' => trim( get_option( 'livestream_ad_tag_url' ) ),
+		);
+
+		return $config;
 	}
 
 }

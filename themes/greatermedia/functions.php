@@ -169,13 +169,11 @@ function greatermedia_scripts_styles() {
 	$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 	$baseurl = untrailingslashit( get_template_directory_uri() );
 
-	wp_enqueue_script( 'videojs', '//cdnjs.cloudflare.com/ajax/libs/video.js/7.2.0/video.min.js', null, null );
-	wp_enqueue_script( 'videojs-contrib-hls', '//cdnjs.cloudflare.com/ajax/libs/videojs-contrib-hls/5.14.1/videojs-contrib-hls.min.js', null, null );
-
+	wp_enqueue_script( 'imasdk', '//imasdk.googleapis.com/js/sdkloader/ima3.js', null, null );
 	wp_enqueue_script( 'firebase', '//www.gstatic.com/firebasejs/3.6.9/firebase.js', null, null );
 
 	wp_enqueue_script( 'greatermedia', "{$baseurl}/assets/js/frontend{$postfix}.js", array( 'jquery', 'jquery-waypoints', 'underscore', 'classlist-polyfill' ), GREATERMEDIA_VERSION, true );
-	wp_localize_script( 'greatermedia', 'platformConfig', array(
+	wp_localize_script( 'greatermedia', 'platformConfig', apply_filters( 'beasley_js_platform_config', array(
 		'firebase' => array(
 			'apiKey'            => get_option( 'beasley_firebase_apiKey' ),
 			'authDomain'        => get_option( 'beasley_firebase_authDomain' ),
@@ -183,7 +181,7 @@ function greatermedia_scripts_styles() {
 			'storageBucket'     => get_option( 'beasley_firebase_storageBucket' ),
 			'messagingSenderId' => get_option( 'beasley_firebase_messagingSenderId' ),
 		),
-	) );
+	) ) );
 
 	/**
 	 * Insert the global Simpli.fi retargeting script tag.
@@ -196,7 +194,6 @@ function greatermedia_scripts_styles() {
 		true
 	);
 
-	wp_enqueue_style( 'videojs', '//vjs.zencdn.net/7.1.0/video-js.css', null, null );
 	wp_enqueue_style( 'google-fonts', '//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,800italic,400,300,700,800', null, null );
 	wp_enqueue_style( 'greatermedia', "{$baseurl}/assets/css/greater_media{$postfix}.css", array( 'google-fonts' ), GREATERMEDIA_VERSION );
 

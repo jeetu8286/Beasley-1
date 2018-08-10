@@ -2,6 +2,10 @@
 	"concat": {
 		"files": {
 			"greatermedia/assets/js/frontend.js": [
+				"node_modules/video.js/dist/video.js",
+				"node_modules/videojs-contrib-hls/dist/videojs-contrib-hls.js",
+				"node_modules/videojs-contrib-ads/dist/videojs.ads.js",
+				"node_modules/videojs-ima/dist/videojs.ima.js",
 				"greatermedia/assets/js/vendor/cycle2/jquery.cycle2.js",
 				"greatermedia/assets/js/vendor/cycle2/jquery.cycle2.center.js",
 				"greatermedia/assets/js/vendor/cycle2/jquery.cycle2.swipe.js",
