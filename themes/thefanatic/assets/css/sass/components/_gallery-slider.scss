@@ -1,0 +1,10 @@
+/* Sidebar */
+.swiper-sidebar {
+	background: rgba(darken($gallery-bg, 30%),.7);
+	color: $gallery-text;
+
+	#js-swiper-sidebar-title,
+	#js-swiper-sidebar-caption {
+		color: $gallery-text;
+	}
+}
