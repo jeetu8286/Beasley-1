@@ -5,7 +5,7 @@
 			<?php if ( 'gmr_album' == get_post_type() ) { ?>
 				<div class="gallery__grid--album"></div>
 			<?php } ?>
-			<div class="thumbnail" style="background-image: url(<?php gm_post_thumbnail_url( 'gmr-gallery-grid-thumb', null, true ); ?>)"></div>
+			<div class="thumbnail" style="background-image: url(<?php gm_post_thumbnail_url( 'gmr-gallery-grid-featured', null, true ); ?>)"></div>
 		</div>
 	</a>
 
