@@ -199,12 +199,21 @@
 		var promises = [];
 		$galleryTopSlider.find( 'img[data-src]' ).each( function() {
 			var $this = $( this );
+			var $parent = $this.parent();
+
 			var image = new Image();
 			var promise = $.Deferred();
 
 			promises.push( promise );
 
-			image.src = $this.attr( 'data-src' );
+			var src = $this.attr( 'data-src' ).split( '?' );
+			if ( src.length < 2 ) {
+				src[1] = '';
+			}
+
+			src[1] = 'maxwidth=' + $parent.width() + '&maxheight=' + $parent.height() + '&' + src[1];
+
+			image.src = src[0] + '?' + src[1];
 			image.onload = function() {
 				$this.attr( 'src', image.src );
 				promise.resolve();
@@ -331,7 +340,6 @@
 		} );
 
 		$window.on( 'resize', _.debounce( reposition, 300 ) );
-
 	};
 
 	$window.load( __ready );

@@ -41,21 +41,30 @@ add_filter( 'beasley-share-url', function() use ( $images, $current_gallery ) {
 	return untrailingslashit( get_permalink( $current_gallery->ID ) ) . '/view/' . urlencode( $images[0]->post_name ) . '/';
 } );
 
+$thumbnail_query_args = array(
+	'width'  => 75,
+	'height' => 75,
+	'mode'   => 'crop',
+);
+
 ?><h1 class="slideshow-title"><div class="container"><?php the_title(); ?></div></h1>
 
-<div class="gallery-thumbs loading">
-	<?php foreach ( $images as $index => $image ) : ?>
-		<?php if ( $index > 0 && $index % $ads_interval == 0 ) : ?>
-			<div><div class="swiper-slide meta-spacer"></div></div>
-		<?php endif; ?>
+<div class="gallery-thumbs loading"><?php
+	foreach ( $images as $index => $image ) :
+		if ( $index > 0 && $index % $ads_interval == 0 ) :
+			?><div><div class="swiper-slide meta-spacer"></div></div><?php
+		endif;
 
-		<div>
-			<div class="swiper-slide" style="background-image:url(<?php echo esc_url( wp_get_attachment_image_url( $image->ID, 'thumbnail' ) ); ?>)"></div>
-		</div>
-	<?php endforeach; ?>
+		$src = wp_get_attachment_image_url( $image->ID, 'original' );
+		$src = add_query_arg( $thumbnail_query_args, $src );
 
-	<?php // Last slide thumbnail placeholder ?>
-	<div><div class="swiper-slide meta-spacer"></div></div>
+		?><div>
+			<div class="swiper-slide" style="background-image:url(<?php echo esc_url( $src ); ?>)"></div>
+		</div><?php
+	endforeach;
+
+	// Last slide thumbnail placeholder
+	?><div><div class="swiper-slide meta-spacer"></div></div>
 </div>
 <!-- .gallery-thumbs -->
 
@@ -74,7 +83,7 @@ add_filter( 'beasley-share-url', function() use ( $images, $current_gallery ) {
 				continue;
 			endif;
 
-			$src = $data[0];
+			$src = wp_get_attachment_image_url( $image->ID, 'original' );
 			$width = $data[1];
 			$height = $data[2];
 
@@ -85,7 +94,7 @@ add_filter( 'beasley-share-url', function() use ( $images, $current_gallery ) {
 				 data-slug="<?php echo esc_attr( $base_url ); ?>/view/<?php echo esc_attr( $image->post_name ); ?>/"
 				 data-title="<?php echo get_post_modified_time( 'U', true, $image, false ) > $april15th ? esc_attr( get_the_title( $image ) ) : ''; ?>"
 				 data-caption="<?php echo esc_attr( get_the_excerpt( $image ) ); ?>"
-				 data-source="<?php echo esc_url( wp_get_attachment_image_url( $image->ID, 'full' ) ); ?>"
+				 data-source="<?php echo esc_url( $src ); ?>"
 				 data-share="<?php echo esc_attr( $base_url ); ?>/view/<?php echo esc_attr( $image->post_name ); ?>/"
 				 data-width="<?php echo esc_attr( $width ); ?>"
 				 data-height="<?php echo esc_attr( $height ); ?>"
