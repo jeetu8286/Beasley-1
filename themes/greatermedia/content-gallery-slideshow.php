@@ -27,6 +27,7 @@ $ads_interval = filter_var( get_field( 'images_per_ad', $current_gallery ), FILT
 ) ) );
 
 $april15th = strtotime( '2018-04-15' );
+$current_image_slug = get_query_var( 'view' );
 
 $slide_index = 0;
 $base_url = untrailingslashit( get_permalink( $current_gallery ) );
@@ -41,14 +42,6 @@ add_filter( 'beasley-share-url', function() use ( $images, $current_gallery ) {
 	return untrailingslashit( get_permalink( $current_gallery->ID ) ) . '/view/' . urlencode( $images[0]->post_name ) . '/';
 } );
 
-$thumbnail_query_args = array(
-	'width'  => 75,
-	'height' => 75,
-	'mode'   => 'crop',
-);
-
-$current_image_slug = get_query_var( 'view' );
-
 ?><h1 class="slideshow-title">
 	<div class="container"><?php the_title(); ?></div>
 </h1>
@@ -60,11 +53,21 @@ $current_image_slug = get_query_var( 'view' );
 				?><div><div class="swiper-slide meta-spacer"></div></div><?php
 			endif;
 
-			$src = wp_get_attachment_image_url( $image->ID, 'original' );
-			$src = add_query_arg( $thumbnail_query_args, $src );
+			$image_data = wp_get_attachment_image_src( $image->ID, 'original' );
+			if ( empty( $image_data ) ) :
+				continue;
+			endif;
+
+			$aspect = ! empty( $image_data[2] ) ? $image_data[1] / $image_data[2] : 1;
+			$thumbnail_args = array(
+				'width'  => 75,
+				'height' => 75,
+				'mode'   => 'crop',
+				'anchor' => $aspect < 1 ? 'topleft' : 'middlecenter',
+			);
 
 			?><div>
-				<div class="swiper-slide" style="background-image:url(<?php echo esc_url( $src ); ?>)"></div>
+				<div class="swiper-slide" style="background-image:url(<?php echo esc_url( add_query_arg( $thumbnail_args, $image_data[0] ) ); ?>)"></div>
 			</div><?php
 		endforeach;
 
