@@ -47,7 +47,11 @@ $thumbnail_query_args = array(
 	'mode'   => 'crop',
 );
 
-?><h1 class="slideshow-title"><div class="container"><?php the_title(); ?></div></h1>
+$current_image_slug = get_query_var( 'view' );
+
+?><h1 class="slideshow-title">
+	<div class="container"><?php the_title(); ?></div>
+</h1>
 
 <div class="gallery">
 	<div class="gallery-thumbs loading"><?php
@@ -79,14 +83,10 @@ $thumbnail_query_args = array(
 					$slide_index++;
 				endif;
 
-				$data = wp_get_attachment_image_src( $image->ID, 'gm-article-thumbnail' );
-				if ( empty( $data ) ) :
+				$image_data = wp_get_attachment_image_src( $image->ID, 'original' );
+				if ( empty( $image_data ) ) :
 					continue;
 				endif;
-
-				$src = wp_get_attachment_image_url( $image->ID, 'original' );
-				$width = $data[1];
-				$height = $data[2];
 
 				$attribution = get_post_meta( $image->ID, 'gmr_image_attribution', true );
 
@@ -95,16 +95,14 @@ $thumbnail_query_args = array(
 					 data-slug="<?php echo esc_attr( $base_url ); ?>/view/<?php echo esc_attr( $image->post_name ); ?>/"
 					 data-title="<?php echo get_post_modified_time( 'U', true, $image, false ) > $april15th ? esc_attr( get_the_title( $image ) ) : ''; ?>"
 					 data-caption="<?php echo esc_attr( get_the_excerpt( $image ) ); ?>"
-					 data-source="<?php echo esc_url( $src ); ?>"
+					 data-source="<?php echo esc_url( $image_data[0] ); ?>"
 					 data-share="<?php echo esc_attr( $base_url ); ?>/view/<?php echo esc_attr( $image->post_name ); ?>/"
-					 data-width="<?php echo esc_attr( $width ); ?>"
-					 data-height="<?php echo esc_attr( $height ); ?>"
+					 <?php echo $image->post_name == $current_image_slug ? 'data-initial="true"' : ''; ?>
 					 >
 					<img class="swiper-image"
 						 src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
-						 data-src="<?php echo esc_url( $src ); ?>"
-						 width="<?php echo esc_attr( $width ); ?>"
-						 height="<?php echo esc_attr( $height ); ?>"
+						 data-src="<?php echo esc_url( $image_data[0] ); ?>"
+						 data-aspect="<?php echo ! empty( $image_data[2] ) ? $image_data[1] / $image_data[2] : 1; ?>"
 						 alt="<?php echo esc_attr( get_the_excerpt( $image ) ); ?>"
 						 >
 

@@ -45,6 +45,9 @@
 				// so that the sidebar has enough room.
 
 				if ( ! $swiperContainer.hasClass( 'show-ad' ) && ! $newActiveSlide.hasClass( 'last-slide' ) ) {
+					$newActiveSlide.prevAll().find( 'img[data-src]' ).slice( -2 ).each( lazyloadImage );
+					$newActiveSlide.nextAll().find( 'img[data-src]' ).slice( 0, 2 ).each( lazyloadImage );
+
 					$sidebar.removeClass( 'hidden expand' );
 					if ( window.matchMedia( "(min-width: 768px)" ).matches ) {
 						if ( paddingRight < 0 ) {
@@ -169,17 +172,22 @@
 				}
 			};
 
-			var promises = [];
-			$galleryTopSlider.find( 'img[data-src]' ).each( function() {
-				var $this = $( this );
-				var $parent = $this.parent();
+			var lazyloadImage = function() {
+				var $image = $( this );
+				var $parent = $image.parent();
 
 				var image = new Image();
 				var promise = $.Deferred();
 
-				promises.push( promise );
+				var src = $image.attr( 'data-src' );
+				if ( ! src || ! src.length ) {
+					promise.resolve();
+					return promise;
+				}
 
-				var src = $this.attr( 'data-src' ).split( '?' );
+				$image.removeAttr( 'data-src' );
+
+				src = src.split( '?' );
 				if ( src.length < 2 ) {
 					src[1] = '';
 				}
@@ -188,11 +196,24 @@
 
 				image.src = src[0] + '?' + src[1];
 				image.onload = function() {
-					$this.attr( 'src', image.src );
+					$image.attr( 'src', image.src );
 					promise.resolve();
 				};
 
-				$this.removeAttr( 'data-src' );
+				return promise;
+			};
+
+			var promises = [];
+			$galleryTopSlider.find( '.swiper-slide[data-initial="true"]' ).each( function() {
+				var $this = $( this );
+
+				var loadImage = function() {
+					promises.push( lazyloadImage.apply( this, [] ) );
+				};
+
+				$this.find( 'img[data-src]' ).each( loadImage );
+				$this.prevAll().find( 'img[data-src]' ).slice( -2 ).each( loadImage );
+				$this.nextAll().find( 'img[data-src]' ).slice( 0, 2 ).each( loadImage );
 			} );
 
 			// Expand sidebar on mobile
