@@ -45,9 +45,6 @@
 				// so that the sidebar has enough room.
 
 				if ( ! $swiperContainer.hasClass( 'show-ad' ) && ! $newActiveSlide.hasClass( 'last-slide' ) ) {
-					$newActiveSlide.prevAll().find( 'img[data-src]' ).slice( -2 ).each( lazyloadImage );
-					$newActiveSlide.nextAll().find( 'img[data-src]' ).slice( 0, 2 ).each( lazyloadImage );
-
 					$sidebar.removeClass( 'hidden expand' );
 					if ( window.matchMedia( "(min-width: 768px)" ).matches ) {
 						if ( paddingRight < 0 ) {
@@ -172,50 +169,6 @@
 				}
 			};
 
-			var lazyloadImage = function() {
-				var $image = $( this );
-				var $parent = $image.parent();
-
-				var image = new Image();
-				var promise = $.Deferred();
-
-				var src = $image.attr( 'data-src' );
-				if ( ! src || ! src.length ) {
-					promise.resolve();
-					return promise;
-				}
-
-				$image.removeAttr( 'data-src' );
-
-				src = src.split( '?' );
-				if ( src.length < 2 ) {
-					src[1] = '';
-				}
-
-				src[1] = 'maxwidth=' + $parent.width() + '&maxheight=' + $parent.height() + '&' + src[1];
-
-				image.src = src[0] + '?' + src[1];
-				image.onload = function() {
-					$image.attr( 'src', image.src );
-					promise.resolve();
-				};
-
-				return promise;
-			};
-
-			var promises = [];
-			$galleryTopSlider.find( '.swiper-slide[data-initial="true"]' ).each( function() {
-				var $this = $( this );
-
-				var loadImage = function() {
-					promises.push( lazyloadImage.apply( this, [] ) );
-				};
-
-				$this.find( 'img[data-src]' ).each( loadImage );
-				$this.prevAll().find( 'img[data-src]' ).slice( -2 ).each( loadImage );
-				$this.nextAll().find( 'img[data-src]' ).slice( 0, 2 ).each( loadImage );
-			} );
-
 			// Expand sidebar on mobile
 			$gallery.find( '.swiper-sidebar-expand' ).click( function( e ) {
 				e.preventDefault();
@@ -251,15 +204,9 @@
 			}
 
 			$galleryTopSlider.on( 'init', function( event, slick ) {
-				$.when.apply( $, promises ).then( _.debounce( function() {
-					positionSidebar();
-					updateSidebarInfo( galleryInitialIndex );
-					$swiperContainer.removeClass( 'loading' );
-
-					updateHistory = false;
-					updateCurrentSlide();
-					updateHistory = true;
-				}, 500 ) );
+				positionSidebar();
+				updateSidebarInfo( galleryInitialIndex );
+				$swiperContainer.removeClass( 'loading' );
 			} );
 
 			$galleryThumbsSlider.on( 'init', function( event, slick ) {
