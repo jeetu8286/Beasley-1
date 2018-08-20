@@ -20,8 +20,34 @@
 		font-size: ms(7);
 	}
 	.container {
+		display: block;
 		min-height: 0;
-		padding: 0 20px;
+		padding: 10px 20px;
+	}
+
+	.backbutton {
+		display: block;
+		float: right;
+		font-size: 12px;
+		font-weight: normal;
+		margin-left: 20px;
+		padding: 4px 0;
+		position: relative;
+		text-transform: none;
+		white-space: nowrap;
+
+		@include bp(medium) {
+			display: none;
+		}
+
+		a {
+			color: $secondary-text;
+			opacity: 0.8;
+
+			&:hover {
+				opacity: 1;
+			}
+		}
 	}
 }
 

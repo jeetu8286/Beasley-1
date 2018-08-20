@@ -41,7 +41,14 @@ add_filter( 'beasley-share-url', function() use ( $images, $current_gallery ) {
 	return untrailingslashit( get_permalink( $current_gallery->ID ) ) . '/view/' . urlencode( $images[0]->post_name ) . '/';
 } );
 
-?><h1 class="slideshow-title"><div class="container"><?php the_title(); ?></div></h1>
+?><h1 class="slideshow-title">
+	<span class="container">
+		<span class="backbutton">
+			<a href="<?php echo esc_url( home_url( '/' ) ); ?>galleries">View All Galleries</a>
+		</span>
+		<?php the_title(); ?>
+	</span>
+</h1>
 
 <div class="gallery-thumbs loading">
 	<?php foreach ( $images as $index => $image ) : ?>
